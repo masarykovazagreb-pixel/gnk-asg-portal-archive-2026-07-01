@@ -1,178 +1,344 @@
 {
-  "conclusion": "failure",
-  "createdAt": "2026-07-15T07:14:58Z",
-  "databaseId": 29396723644,
+  "conclusion": "success",
+  "createdAt": "2026-08-12T12:17:38Z",
+  "databaseId": 31595745946,
   "event": "workflow_dispatch",
-  "headSha": "bc39b66f0492988e899fa63180e8818893c7080c",
+  "headSha": "40ca6009aee238b53b8ef6f7b6247602d51a3e22",
   "jobs": [
     {
-      "completedAt": "2026-07-15T07:16:15Z",
-      "conclusion": "failure",
-      "databaseId": 87291794083,
-      "name": "deploy",
-      "startedAt": "2026-07-15T07:15:02Z",
+      "completedAt": "2026-08-12T12:18:05Z",
+      "conclusion": "success",
+      "databaseId": 94110701566,
+      "name": "authorize-production",
+      "startedAt": "2026-08-12T12:17:42Z",
       "status": "completed",
       "steps": [
         {
-          "completedAt": "2026-07-15T07:15:04Z",
+          "completedAt": "2026-08-12T12:17:43Z",
           "conclusion": "success",
           "name": "Set up job",
           "number": 1,
-          "startedAt": "2026-07-15T07:15:03Z",
+          "startedAt": "2026-08-12T12:17:43Z",
           "status": "completed"
         },
         {
-          "completedAt": "2026-07-15T07:15:04Z",
-          "conclusion": "success",
-          "name": "Validate approval input",
-          "number": 2,
-          "startedAt": "2026-07-15T07:15:04Z",
-          "status": "completed"
-        },
-        {
-          "completedAt": "2026-07-15T07:15:11Z",
+          "completedAt": "2026-08-12T12:17:59Z",
           "conclusion": "success",
           "name": "Run actions/checkout@v4",
-          "number": 3,
-          "startedAt": "2026-07-15T07:15:04Z",
+          "number": 2,
+          "startedAt": "2026-08-12T12:17:43Z",
           "status": "completed"
         },
         {
-          "completedAt": "2026-07-15T07:15:11Z",
+          "completedAt": "2026-08-12T12:17:59Z",
+          "conclusion": "success",
+          "name": "Verify main ref, exact reviewed SHA and executive approval",
+          "number": 3,
+          "startedAt": "2026-08-12T12:17:59Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:18:02Z",
           "conclusion": "success",
           "name": "Run actions/setup-node@v4",
           "number": 4,
-          "startedAt": "2026-07-15T07:15:11Z",
+          "startedAt": "2026-08-12T12:17:59Z",
           "status": "completed"
         },
         {
-          "completedAt": "2026-07-15T07:15:12Z",
+          "completedAt": "2026-08-12T12:18:03Z",
           "conclusion": "success",
-          "name": "Verify exact approved release source",
+          "name": "Validate current V38 release package",
           "number": 5,
-          "startedAt": "2026-07-15T07:15:11Z",
+          "startedAt": "2026-08-12T12:18:02Z",
           "status": "completed"
         },
         {
-          "completedAt": "2026-07-15T07:15:17Z",
+          "completedAt": "2026-08-12T12:18:03Z",
           "conclusion": "success",
-          "name": "Validate release source",
-          "number": 6,
-          "startedAt": "2026-07-15T07:15:12Z",
-          "status": "completed"
-        },
-        {
-          "completedAt": "2026-07-15T07:15:19Z",
-          "conclusion": "success",
-          "name": "Upload approved source and audit snapshot",
-          "number": 7,
-          "startedAt": "2026-07-15T07:15:17Z",
-          "status": "completed"
-        },
-        {
-          "completedAt": "2026-07-15T07:15:19Z",
-          "conclusion": "success",
-          "name": "Preflight Newsroom route ownership",
-          "number": 8,
-          "startedAt": "2026-07-15T07:15:19Z",
-          "status": "completed"
-        },
-        {
-          "completedAt": "2026-07-15T07:15:20Z",
-          "conclusion": "success",
-          "name": "Upload preflight evidence",
-          "number": 9,
-          "startedAt": "2026-07-15T07:15:19Z",
-          "status": "completed"
-        },
-        {
-          "completedAt": "2026-07-15T07:15:20Z",
-          "conclusion": "success",
-          "name": "Resolve token hash",
-          "number": 10,
-          "startedAt": "2026-07-15T07:15:20Z",
-          "status": "completed"
-        },
-        {
-          "completedAt": "2026-07-15T07:15:23Z",
-          "conclusion": "success",
-          "name": "Install direct operator dependencies",
-          "number": 11,
-          "startedAt": "2026-07-15T07:15:20Z",
-          "status": "completed"
-        },
-        {
-          "completedAt": "2026-07-15T07:15:36Z",
-          "conclusion": "success",
-          "name": "Deploy contact session bridge",
-          "number": 12,
-          "startedAt": "2026-07-15T07:15:23Z",
-          "status": "completed"
-        },
-        {
-          "completedAt": "2026-07-15T07:15:45Z",
-          "conclusion": "success",
-          "name": "Deploy direct operator and shared assets",
-          "number": 13,
-          "startedAt": "2026-07-15T07:15:36Z",
-          "status": "completed"
-        },
-        {
-          "completedAt": "2026-07-15T07:15:53Z",
-          "conclusion": "success",
-          "name": "Deploy operator center",
-          "number": 14,
-          "startedAt": "2026-07-15T07:15:45Z",
-          "status": "completed"
-        },
-        {
-          "completedAt": "2026-07-15T07:16:12Z",
-          "conclusion": "failure",
-          "name": "Verify production release and route ownership",
-          "number": 15,
-          "startedAt": "2026-07-15T07:15:53Z",
-          "status": "completed"
-        },
-        {
-          "completedAt": "2026-07-15T07:16:13Z",
-          "conclusion": "success",
-          "name": "Upload production verification evidence",
-          "number": 16,
-          "startedAt": "2026-07-15T07:16:12Z",
-          "status": "completed"
-        },
-        {
-          "completedAt": "2026-07-15T07:16:13Z",
-          "conclusion": "skipped",
           "name": "Post Run actions/setup-node@v4",
-          "number": 31,
-          "startedAt": "2026-07-15T07:16:13Z",
+          "number": 9,
+          "startedAt": "2026-08-12T12:18:03Z",
           "status": "completed"
         },
         {
-          "completedAt": "2026-07-15T07:16:14Z",
+          "completedAt": "2026-08-12T12:18:04Z",
           "conclusion": "success",
           "name": "Post Run actions/checkout@v4",
-          "number": 32,
-          "startedAt": "2026-07-15T07:16:13Z",
+          "number": 10,
+          "startedAt": "2026-08-12T12:18:03Z",
           "status": "completed"
         },
         {
-          "completedAt": "2026-07-15T07:16:14Z",
+          "completedAt": "2026-08-12T12:18:04Z",
           "conclusion": "success",
           "name": "Complete job",
-          "number": 33,
-          "startedAt": "2026-07-15T07:16:14Z",
+          "number": 11,
+          "startedAt": "2026-08-12T12:18:04Z",
           "status": "completed"
         }
       ],
-      "url": "https://github.com/beckuphome-gnk/gnk-asg-portal/actions/runs/29396723644/job/87291794083"
+      "url": "https://github.com/beckuphome-gnk/gnk-asg-portal/actions/runs/31595745946/job/94110701566"
+    },
+    {
+      "completedAt": "2026-08-12T12:19:20Z",
+      "conclusion": "success",
+      "databaseId": 94110808106,
+      "name": "deploy-production",
+      "startedAt": "2026-08-12T12:18:08Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-08-12T12:18:10Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-08-12T12:18:09Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:18:27Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 2,
+          "startedAt": "2026-08-12T12:18:10Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:18:27Z",
+          "conclusion": "success",
+          "name": "Reconfirm exact authorized SHA immediately before production deployment",
+          "number": 3,
+          "startedAt": "2026-08-12T12:18:27Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:18:28Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-node@v4",
+          "number": 4,
+          "startedAt": "2026-08-12T12:18:27Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:18:28Z",
+          "conclusion": "success",
+          "name": "Preflight Newsroom route ownership",
+          "number": 5,
+          "startedAt": "2026-08-12T12:18:28Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:18:29Z",
+          "conclusion": "success",
+          "name": "Upload preflight evidence",
+          "number": 6,
+          "startedAt": "2026-08-12T12:18:28Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:18:33Z",
+          "conclusion": "success",
+          "name": "Install locked direct operator dependencies without lifecycle scripts",
+          "number": 7,
+          "startedAt": "2026-08-12T12:18:29Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:18:33Z",
+          "conclusion": "success",
+          "name": "Reconfirm tracked release integrity before any production secret",
+          "number": 8,
+          "startedAt": "2026-08-12T12:18:33Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:18:33Z",
+          "conclusion": "success",
+          "name": "Resolve token hash after integrity verification",
+          "number": 9,
+          "startedAt": "2026-08-12T12:18:33Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:18:46Z",
+          "conclusion": "success",
+          "name": "Deploy contact session bridge",
+          "number": 10,
+          "startedAt": "2026-08-12T12:18:33Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:19:03Z",
+          "conclusion": "success",
+          "name": "Deploy direct operator and shared assets with bounded Cloudflare retry",
+          "number": 11,
+          "startedAt": "2026-08-12T12:18:46Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:19:03Z",
+          "conclusion": "success",
+          "name": "Upload Wrangler deployment diagnostics",
+          "number": 12,
+          "startedAt": "2026-08-12T12:19:03Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:19:11Z",
+          "conclusion": "success",
+          "name": "Deploy operator center",
+          "number": 13,
+          "startedAt": "2026-08-12T12:19:03Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:19:11Z",
+          "conclusion": "success",
+          "name": "Validate Mail Center Worker source",
+          "number": 14,
+          "startedAt": "2026-08-12T12:19:11Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:19:11Z",
+          "conclusion": "success",
+          "name": "Build temporary Wrangler configuration for Mail Center Worker",
+          "number": 15,
+          "startedAt": "2026-08-12T12:19:11Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:19:16Z",
+          "conclusion": "success",
+          "name": "Deploy Mail Center Worker (auto-reply / inbound email)",
+          "number": 16,
+          "startedAt": "2026-08-12T12:19:11Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:19:18Z",
+          "conclusion": "success",
+          "name": "Verify exact production release (with retry for automation-commit races)",
+          "number": 17,
+          "startedAt": "2026-08-12T12:19:16Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:19:19Z",
+          "conclusion": "success",
+          "name": "Upload production verification evidence",
+          "number": 18,
+          "startedAt": "2026-08-12T12:19:18Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:19:19Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-node@v4",
+          "number": 35,
+          "startedAt": "2026-08-12T12:19:19Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:19:19Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 36,
+          "startedAt": "2026-08-12T12:19:19Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:19:19Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 37,
+          "startedAt": "2026-08-12T12:19:19Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/beckuphome-gnk/gnk-asg-portal/actions/runs/31595745946/job/94110808106"
+    },
+    {
+      "completedAt": "2026-08-12T12:19:41Z",
+      "conclusion": "success",
+      "databaseId": 94111132030,
+      "name": "Obavijesti IndexNow (Bing/Yandex) o novom deployu",
+      "startedAt": "2026-08-12T12:19:24Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-08-12T12:19:26Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-08-12T12:19:25Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:19:36Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 2,
+          "startedAt": "2026-08-12T12:19:26Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:19:37Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-node@v4",
+          "number": 3,
+          "startedAt": "2026-08-12T12:19:36Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:19:37Z",
+          "conclusion": "success",
+          "name": "Pošalji sve URL-ove na IndexNow",
+          "number": 4,
+          "startedAt": "2026-08-12T12:19:37Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:19:38Z",
+          "conclusion": "success",
+          "name": "Ping Google i Bing sitemap (index + editorial + image)",
+          "number": 5,
+          "startedAt": "2026-08-12T12:19:37Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:19:38Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-node@v4",
+          "number": 9,
+          "startedAt": "2026-08-12T12:19:38Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:19:39Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 10,
+          "startedAt": "2026-08-12T12:19:38Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-08-12T12:19:39Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 11,
+          "startedAt": "2026-08-12T12:19:39Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/beckuphome-gnk/gnk-asg-portal/actions/runs/31595745946/job/94111132030"
     }
   ],
   "status": "completed",
-  "updatedAt": "2026-07-15T07:16:16Z",
-  "url": "https://github.com/beckuphome-gnk/gnk-asg-portal/actions/runs/29396723644",
+  "updatedAt": "2026-08-12T12:19:42Z",
+  "url": "https://github.com/beckuphome-gnk/gnk-asg-portal/actions/runs/31595745946",
   "workflowName": "Deploy Admin Auth V6",
   "approvedSha": "14868bc98bd4c9af51a095329c5c226ea3613f36",
-  "recordedAt": "2026-07-15T07:17:01Z"
+  "recordedAt": "2026-08-12T12:45:22Z"
 }
