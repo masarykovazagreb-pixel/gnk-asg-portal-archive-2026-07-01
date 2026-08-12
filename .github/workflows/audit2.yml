@@ -1,16 +1,56 @@
 name: Puni audit 2
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 3 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: audit2
+  cancel-in-progress: false
 jobs:
   audit:
     runs-on: ubuntu-latest
-    permissions: {contents: write}
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v4
+        with:
+          ref: main
       - run: bash audit2_script.sh
-      - run: |
-          git config user.name "gnk-asg-bot"; git config user.email "it@gnk-asg.hr"
-          BRANCH="audit2-${{ github.run_id }}"
-          git checkout -b "$BRANCH"
+      - name: Sazetak
+        if: always()
+        run: |
+          if [ -f apps/portal/data/tmp-audit2/r.txt ]; then
+            ukupno=$(wc -l < apps/portal/data/tmp-audit2/r.txt)
+            ok=$(grep -c '^200 ' apps/portal/data/tmp-audit2/r.txt || true)
+            fail=$(grep -vc '^200 ' apps/portal/data/tmp-audit2/r.txt || true)
+            {
+              echo "## Puni audit 2"
+              echo "- Ukupno: **${ukupno}** | OK: **${ok}** | Ne-200: **${fail}**"
+              if [ "$fail" -gt 0 ]; then
+                echo '```'
+                grep -v '^200 ' apps/portal/data/tmp-audit2/r.txt || true
+                echo '```'
+              fi
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Commit rezultata
+        if: always()
+        run: |
+          git config user.name "gnk-asg-bot"
+          git config user.email "it@gnk-asg.hr"
           git add apps/portal/data/tmp-audit2
-          git commit -m "audit2"
-          git push origin "$BRANCH"
+          if git diff --cached --quiet; then
+            echo "Nema promjena za commit."
+            exit 0
+          fi
+          git commit -m "audit2: rezultati"
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            git fetch origin main
+            git rebase origin/main || { echo "Rebase konflikt."; exit 1; }
+            sleep $((attempt * 5))
+          done
+          exit 1
