@@ -91,7 +91,11 @@ function loadSources() {
   const news = read('apps/portal/data/news.json', []);
   const newsItems = Array.isArray(news) ? news : (news.items || news.news || []);
   const worldTopicsSchedule = read('apps/portal/data/aktual-world-topics-schedule.json', { schedule: [] });
-  return { registry, newsItems, worldTopicsSchedule };
+  const worldMonitor = read('apps/portal/data/world-monitor.json', { categories: {} });
+  const cibonaNews = read('apps/portal/data/cibona-news.json', { items: [] });
+  const weather = read('apps/portal/data/weather-zagreb.json', {});
+  const market = read('apps/portal/data/market.json', {});
+  return { registry, newsItems, worldTopicsSchedule, worldMonitor, cibonaNews, weather, market };
 }
 
 function zagrebDate() {
@@ -100,7 +104,9 @@ function zagrebDate() {
 }
 function zagrebSlot() {
   const hour = parseInt(new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Zagreb', hour: '2-digit', hour12: false }).format(new Date()), 10);
-  return hour < 14 ? 'morning' : 'afternoon';
+  if (hour < 12) return 'morning';
+  if (hour < 18) return 'afternoon';
+  return 'digest';
 }
 
 function pickMorningItem(registry, state) {
@@ -108,6 +114,58 @@ function pickMorningItem(registry, state) {
     .filter(x => x?.path && x?.url && !state.usedIds?.includes(x.path))
     .sort((a, b) => new Date(b.publishedAt || 0) - new Date(a.publishedAt || 0));
   return items[0] || null;
+}
+
+function pickDigestItem(worldMonitor, cibonaNews, weather, market, state) {
+  // Sastavlja dnevni digest iz World Monitor (besplatni izvori), Cibona,
+  // vremena i tržišta — "posredna tablica" u čitljivom, skeniranom obliku
+  // (ne HTML tablica, nego strukturiran sažetak pogodan za sve platforme).
+  const today = zagrebDate();
+  const digestId = `digest-${today}`;
+  if (state.usedIds?.includes(digestId)) return null;
+
+  const lines = [];
+  const wmCats = worldMonitor?.categories || {};
+  const eq = wmCats.natural?.seismology;
+  if (eq?.state === 'live' && eq.items?.[0]) {
+    lines.push({ label_hr: 'Potres', label_en: 'Earthquake', value: eq.items[0].title });
+  }
+  const econ = wmCats.economy?.economic;
+  if (econ?.state === 'live' && econ.items?.[0]) {
+    lines.push({ label_hr: 'Ekonomija', label_en: 'Economy', value: econ.items[0].title });
+  }
+  const conflicts = wmCats.geopolitical?.conflicts;
+  if (conflicts?.state === 'live' && conflicts.items?.[0]) {
+    lines.push({ label_hr: 'Svijet', label_en: 'World', value: conflicts.items[0].title });
+  }
+  const cibonaItem = (cibonaNews?.items || [])[0];
+  if (cibonaItem) {
+    lines.push({ label_hr: 'Cibona', label_en: 'Cibona', value: cibonaItem.title_hr });
+  }
+  if (weather?.state === 'live' && weather.current) {
+    lines.push({ label_hr: 'Vrijeme u Zagrebu', label_en: 'Zagreb weather', value: `${Math.round(weather.current.temperature_c)}°C, ${weather.current.condition_hr}` });
+  }
+  const marketPairs = (market?.pairs || market?.rates || []);
+  if (Array.isArray(marketPairs) && marketPairs.length) {
+    const eurUsd = marketPairs.find(p => p.pair === 'EUR/USD' || p.symbol === 'EURUSD');
+    if (eurUsd) lines.push({ label_hr: 'EUR/USD', label_en: 'EUR/USD', value: String(eurUsd.value || eurUsd.rate || '') });
+  }
+
+  if (lines.length < 2) return null; // premalo za smislen digest
+
+  const description = lines.map(l => `${l.label_hr}: ${l.value}`).join(' · ');
+
+  return {
+    path: '/gnk-aktual/',
+    url: `${SITE}/gnk-aktual/`,
+    title: `AKTUAL dnevni pregled — ${today}`,
+    description,
+    image: null,
+    hashtags: ['GNKASG', 'AKTUALMedia', 'NerminSefic'],
+    language: 'hr',
+    kind: 'digest',
+    id: digestId,
+  };
 }
 
 function pickAfternoonItem(newsItems, worldTopicsSchedule, state) {
@@ -307,7 +365,7 @@ const ADAPTERS = { facebook: postToFacebook, instagram: postToInstagram, linkedi
 // ---------------------------------------------------------------------------
 // Glavni tijek
 // ---------------------------------------------------------------------------
-const { registry, newsItems, worldTopicsSchedule } = loadSources();
+const { registry, newsItems, worldTopicsSchedule, worldMonitor, cibonaNews, weather, market } = loadSources();
 const state = read(STATE_PATH, { usedIds: [], history: [] });
 const plan = read(PLAN_PATH, { generatedAt: null, slot: null, items: [] });
 const log = read(LOG_PATH, { runs: [] });
@@ -315,7 +373,9 @@ const log = read(LOG_PATH, { runs: [] });
 const slot = zagrebSlot();
 const item = slot === 'morning'
   ? pickMorningItem(registry, state)
-  : pickAfternoonItem(newsItems, worldTopicsSchedule, state);
+  : slot === 'afternoon'
+  ? pickAfternoonItem(newsItems, worldTopicsSchedule, state)
+  : pickDigestItem(worldMonitor, cibonaNews, weather, market, state);
 
 const runEntry = { at: new Date().toISOString(), slot, zagrebDate: zagrebDate() };
 

@@ -15,6 +15,7 @@ on:
   schedule:
     - cron: '30 6 * * *'    # 08:30 Zagreb (ljeti) — jutarnji slot
     - cron: '30 12 * * *'   # 14:30 Zagreb (ljeti) — popodnevni slot
+    - cron: '30 16 * * *'   # 18:30 Zagreb (ljeti) — digest slot (World Monitor + Cibona + vrijeme + trzista)
 
 permissions:
   contents: write
