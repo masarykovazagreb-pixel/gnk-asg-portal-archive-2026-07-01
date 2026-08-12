@@ -1,50 +1,83 @@
 // GNK ASG — World Monitor data refresh za AKTUAL MEDIA.
-// Izvor: api.worldmonitor.app (open-source, javan REST API), zahtijeva
-// X-WorldMonitor-Key za sve podatkovne pozive (WORLDMONITOR_API_KEY secret).
-// Bez ključa: piše "needs-key" stanje po kategoriji, nikad izmišljene podatke.
-//
-// Kategorije/podkategorije prate stvarni katalog usluga (worldmonitor.app/docs/api-reference):
-// Geopolitical(Conflicts,Military,Unrest,Intelligence,Displacement,Cyber,Sanctions)
-// Natural events(Natural Disasters,Seismology,Climate,Wildfires,Radiation,Thermal)
-// Economy & markets(Economic,Markets,Trade,Supply Chain,Consumer Prices,Predictions,Forecasts)
-// Infrastructure & transport(Aviation,Maritime,Infrastructure,Resilience)
-// Health & environment(Public Health,Imagery,Webcams)
-// Other(News,Research,Positive Events)
-//
-// ENDPOINT_CONFIG niže povezuje svaku podkategoriju sa stvarnom rpc putanjom.
-// Potvrđeni endpointi (iz službene dokumentacije): list-acled-events,
-// get-country-risk, get-fear-greed-index, get-resilience-ranking.
-// Ostali su označeni verified:false - staviti verified:true nakon provjere
-// protiv živog /openapi.yaml kad ključ bude dostupan, prije uključivanja.
+// Dva sloja izvora:
+// 1) WorldMonitor API (api.worldmonitor.app) - zahtijeva WORLDMONITOR_API_KEY,
+//    piše "needs-key" dok ključ ne postoji (nikad izmišljene podatke).
+// 2) Izravni besplatni izvori bez ključa - GDELT (rat/sukobi) i CISA KEV
+//    (aktivno eksploatirane ranjivosti - stvarni cyber napadi), koji rade
+//    ODMAH bez čekanja na WorldMonitor ključ.
 import { writeFileSync, mkdirSync } from 'node:fs';
 
 const API_BASE = 'https://api.worldmonitor.app';
 const API_KEY = String(process.env.WORLDMONITOR_API_KEY || '').trim();
 
-const ENDPOINT_CONFIG = [
-  { category: 'geopolitical', sub: 'conflicts', path: '/api/conflict/v1/list-acled-events', verified: true, params: '' },
+const WM_ENDPOINT_CONFIG = [
   { category: 'geopolitical', sub: 'intelligence', path: '/api/intelligence/v1/get-country-risk', verified: true, params: '?country=HR' },
   { category: 'economy', sub: 'markets', path: '/api/market/v1/get-fear-greed-index', verified: true, params: '' },
   { category: 'infrastructure', sub: 'resilience', path: '/api/resilience/v1/get-resilience-ranking', verified: true, params: '' },
-  // Dodati dodatne potvrđene endpointe ovdje kad se provjere protiv /openapi.yaml.
 ];
 
-async function fetchOne(cfg) {
-  const url = API_BASE + cfg.path + cfg.params;
+async function fetchJson(url, opts = {}, timeoutMs = 12000) {
   const ac = new AbortController();
-  const t = setTimeout(() => ac.abort(), 10000);
+  const t = setTimeout(() => ac.abort(), timeoutMs);
   try {
-    const r = await fetch(url, {
-      signal: ac.signal,
-      headers: { 'X-WorldMonitor-Key': API_KEY, accept: 'application/json' },
-    });
+    const r = await fetch(url, { ...opts, signal: ac.signal });
     clearTimeout(t);
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    const data = await r.json();
-    return { ok: true, data };
+    return await r.json();
   } catch (e) {
     clearTimeout(t);
+    throw e;
+  }
+}
+
+async function fetchWmOne(cfg) {
+  const url = API_BASE + cfg.path + cfg.params;
+  try {
+    const data = await fetchJson(url, { headers: { 'X-WorldMonitor-Key': API_KEY, accept: 'application/json' } });
+    return { ok: true, data };
+  } catch (e) {
     return { ok: false, error: String(e?.message || e).slice(0, 200) };
+  }
+}
+
+// --- GDELT (rat/sukobi) - besplatan, bez kljuca ---
+async function fetchConflicts() {
+  const query = encodeURIComponent('war OR conflict OR "military strike" OR invasion OR offensive');
+  const url = `https://api.gdeltproject.org/api/v2/doc/doc?query=${query}&mode=artlist&format=json&maxrecords=12&sort=datedesc&timespan=1d`;
+  try {
+    const data = await fetchJson(url, { headers: { 'User-Agent': 'GNK-ASG-WorldMonitor/1.0' } });
+    const articles = (data.articles || []).slice(0, 12).map(a => ({
+      title: a.title,
+      url: a.url,
+      domain: a.domain,
+      country: a.sourcecountry,
+      seenAt: a.seendate,
+    }));
+    return { state: 'live', items: articles, fetched_at: new Date().toISOString(), source_name: 'GDELT Project' };
+  } catch (e) {
+    return { state: 'unavailable', error: String(e?.message || e).slice(0, 200) };
+  }
+}
+
+// --- CISA KEV (cyber napadi - aktivno eksploatirane ranjivosti) - besplatan, bez kljuca ---
+async function fetchCyber() {
+  const url = 'https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json';
+  try {
+    const data = await fetchJson(url, { headers: { 'User-Agent': 'GNK-ASG-WorldMonitor/1.0', accept: 'application/json' } });
+    const sorted = (data.vulnerabilities || []).slice().sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
+    const items = sorted.slice(0, 12).map(v => ({
+      cveId: v.cveID,
+      vendor: v.vendorProject,
+      product: v.product,
+      name: v.vulnerabilityName,
+      dateAdded: v.dateAdded,
+      dueDate: v.dueDate,
+      ransomware: v.knownRansomwareCampaignUse === 'Known',
+      description: (v.shortDescription || '').slice(0, 220),
+    }));
+    return { state: 'live', items, fetched_at: new Date().toISOString(), source_name: 'CISA Known Exploited Vulnerabilities Catalog', catalogVersion: data.catalogVersion };
+  } catch (e) {
+    return { state: 'unavailable', error: String(e?.message || e).slice(0, 200) };
   }
 }
 
@@ -53,37 +86,43 @@ mkdirSync('apps/portal/data', { recursive: true });
 
 const payload = {
   updated_at: new Date().toISOString(),
-  source: 'api.worldmonitor.app',
-  categories: {},
+  source: 'api.worldmonitor.app + GDELT + CISA KEV',
+  categories: {
+    geopolitical: {},
+    economy: {},
+    infrastructure: {},
+  },
 };
 
+// Besplatni izvori bez ključa - uvijek pokušaj, neovisno o WORLDMONITOR_API_KEY.
+payload.categories.geopolitical.conflicts = await fetchConflicts();
+await new Promise(r => setTimeout(r, 300));
+payload.categories.geopolitical.cyber = await fetchCyber();
+
+// WorldMonitor endpointi - trebaju kljuc.
 if (!API_KEY) {
-  // Pošteno stanje: nema ključa, ne izmišljamo podatke.
-  for (const cfg of ENDPOINT_CONFIG) {
+  for (const cfg of WM_ENDPOINT_CONFIG) {
     payload.categories[cfg.category] = payload.categories[cfg.category] || {};
     payload.categories[cfg.category][cfg.sub] = { state: 'needs-key' };
   }
-  writeFileSync(outPath, JSON.stringify(payload, null, 2) + '\n');
-  console.log(JSON.stringify({ ok: false, state: 'needs-key', message: 'WORLDMONITOR_API_KEY nije postavljen - pisem needs-key stanje za sve kategorije.' }, null, 2));
-  process.exit(0);
-}
-
-let anyLive = false;
-for (const cfg of ENDPOINT_CONFIG) {
-  payload.categories[cfg.category] = payload.categories[cfg.category] || {};
-  if (!cfg.verified) {
-    payload.categories[cfg.category][cfg.sub] = { state: 'unverified-endpoint' };
-    continue;
+} else {
+  for (const cfg of WM_ENDPOINT_CONFIG) {
+    payload.categories[cfg.category] = payload.categories[cfg.category] || {};
+    if (!cfg.verified) {
+      payload.categories[cfg.category][cfg.sub] = { state: 'unverified-endpoint' };
+      continue;
+    }
+    const result = await fetchWmOne(cfg);
+    payload.categories[cfg.category][cfg.sub] = result.ok
+      ? { state: 'live', data: result.data, fetched_at: new Date().toISOString() }
+      : { state: 'unavailable', error: result.error };
+    await new Promise(r => setTimeout(r, 500));
   }
-  const result = await fetchOne(cfg);
-  if (result.ok) {
-    payload.categories[cfg.category][cfg.sub] = { state: 'live', data: result.data, fetched_at: new Date().toISOString() };
-    anyLive = true;
-  } else {
-    payload.categories[cfg.category][cfg.sub] = { state: 'unavailable', error: result.error };
-  }
-  await new Promise((res) => setTimeout(res, 500)); // blagi razmak izmedu poziva
 }
 
 writeFileSync(outPath, JSON.stringify(payload, null, 2) + '\n');
-console.log(JSON.stringify({ ok: anyLive, categoriesWritten: Object.keys(payload.categories).length }, null, 2));
+console.log(JSON.stringify({
+  conflicts: payload.categories.geopolitical.conflicts.state,
+  cyber: payload.categories.geopolitical.cyber.state,
+  wmKeyPresent: !!API_KEY,
+}, null, 2));

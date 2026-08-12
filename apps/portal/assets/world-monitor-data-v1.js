@@ -54,12 +54,31 @@ const CATEGORIES = [
 
 function esc(s){ return String(s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 
+function fmtTime(iso){
+  try { return new Date(iso).toLocaleString(en?'en-GB':'hr-HR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}); } catch { return iso||''; }
+}
+
+function renderItemsList(sub){
+  if (!sub.items || !sub.items.length) return `<div class="wmd-empty">${en?'No items right now.':'Trenutno nema stavki.'}</div>`;
+  const rows = sub.items.map(it => {
+    if (it.cveId) {
+      // CISA KEV cyber stavka
+      return `<div class="wmd-item"><div class="wmd-item-head"><span class="wmd-item-tag${it.ransomware?' wmd-item-tag-danger':''}">${esc(it.cveId)}</span>${it.ransomware?`<span class="wmd-item-ransomware">${en?'Ransomware use':'Ransomware upotreba'}</span>`:''}</div><div class="wmd-item-title">${esc(it.name||it.product||'')}</div><div class="wmd-item-meta">${esc(it.vendor||'')} · ${en?'Added':'Dodano'} ${esc(it.dateAdded||'')}</div></div>`;
+    }
+    // GDELT vijest
+    return `<a class="wmd-item wmd-item-link" href="${esc(it.url)}" target="_blank" rel="noopener noreferrer nofollow"><div class="wmd-item-title">${esc(it.title||'')}</div><div class="wmd-item-meta">${esc(it.domain||'')} · ${esc(it.country||'')} · ${fmtTime(it.seenAt)}</div></a>`;
+  }).join('');
+  const sourceLine = sub.source_name ? `<div class="wmd-source">${en?'Source':'Izvor'}: ${esc(sub.source_name)}</div>` : '';
+  return `<div class="wmd-items">${rows}</div>${sourceLine}`;
+}
+
 function renderSubState(catData, subKey){
   const sub = catData && catData[subKey];
   if (!sub) return `<span class="wmd-pending">${en?'Not yet configured':'Još nije konfigurirano'}</span>`;
   if (sub.state === 'needs-key') return `<span class="wmd-needs-key">${en?'Awaiting API connection':'Čeka se API veza'}</span>`;
   if (sub.state === 'unverified-endpoint') return `<span class="wmd-pending">${en?'Endpoint pending verification':'Endpoint čeka provjeru'}</span>`;
   if (sub.state === 'unavailable') return `<span class="wmd-unavailable">${en?'Temporarily unavailable':'Trenutno nedostupno'}</span>`;
+  if (sub.state === 'live' && sub.items) return renderItemsList(sub);
   if (sub.state === 'live') return `<span class="wmd-live">${en?'Live':'Uživo'} ✓</span>`;
   return '';
 }
@@ -70,7 +89,15 @@ function render(payload){
   const cats = (payload && payload.categories) || {};
   const tabsHtml = CATEGORIES.map((c,i) => `<button type="button" class="wmd-tab${i===0?' active':''}" data-wmd-tab="${c.key}">${en?c.label_en:c.label_hr}</button>`).join('');
   const panelsHtml = CATEGORIES.map((c,i) => {
-    const subsHtml = c.subs.map(s => `<div class="wmd-sub-row"><span class="wmd-sub-label">${en?s.label_en:s.label_hr}</span>${renderSubState(cats[c.key], s.key)}</div>`).join('');
+    const subsHtml = c.subs.map(s => {
+      const sub = cats[c.key] && cats[c.key][s.key];
+      const hasItems = sub && sub.state === 'live' && sub.items;
+      const stateHtml = renderSubState(cats[c.key], s.key);
+      if (hasItems) {
+        return `<div class="wmd-sub-block"><div class="wmd-sub-block-label">${en?s.label_en:s.label_hr}</div>${stateHtml}</div>`;
+      }
+      return `<div class="wmd-sub-row"><span class="wmd-sub-label">${en?s.label_en:s.label_hr}</span>${stateHtml}</div>`;
+    }).join('');
     return `<div class="wmd-panel${i===0?' active':''}" data-wmd-panel="${c.key}">${subsHtml}</div>`;
   }).join('');
   root.innerHTML = `<div class="wmd-tabs">${tabsHtml}</div><div class="wmd-panels">${panelsHtml}</div>` +
