@@ -10,11 +10,8 @@ const description=english?'Open the complete archive of columns by Nermin Sefić
 const cta=english?'Open all columns →':'Otvori sve kolumne →';
 
 function hideLegacyGrid(){
-  const legacy=document.getElementById('akKomentari');
-  if(!legacy)return;
-  legacy.hidden=true;
-  legacy.setAttribute('aria-hidden','true');
-  legacy.style.setProperty('display','none','important');
+  // NAPOMENA: #akKomentari je stvarna 'Komentari — Nermin Sefić' sekcija (Commentary),
+  // razlicita od Kolumna arhive - namjerno se NE skriva.
 }
 
 function renderHub(image,count){

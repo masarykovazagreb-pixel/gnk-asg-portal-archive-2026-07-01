@@ -433,25 +433,6 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
     })
     .catch(function(){});
 
-  fetch('/data/kolumne.json?v=' + Date.now(), { cache: 'no-store' })
-    .then(function(r){ return r.ok ? r.json() : null; })
-    .then(function(d){
-      var items = d && (Array.isArray(d) ? d : d.items);
-      var k = items && items[0];
-      if (!k || !k.naslov_en) return;
-      var uvod = (k.tekst_en || '').split('\n\n')[0] || '';
-      var enUrl = (k.url || '').replace('/gnk-aktual/kolumne/', '/en/gnk-aktual/columns/');
-      var slikaHtml = k.slika ? '<img src="' + esc(k.slika) + '" onerror="this.onerror=null;this.src=\'/assets/gnk-asg-social-card.png\'" alt="' + esc(k.slika_alt_en || k.naslov_en || '') + '" loading="lazy" style="max-width:120px;max-height:120px;object-fit:contain;float:right;margin:0 0 10px 14px" onerror="this.remove()">' : '';
-      document.getElementById('akKolumnaTijelo').innerHTML =
-        '<span class="oznaka">Column · Saturdays</span>' +
-        slikaHtml +
-        '<h2>' + esc(k.naslov_en) + '</h2>' +
-        '<p>' + esc(uvod.slice(0, 260)) + (uvod.length > 260 ? '…' : '') + '</p>' +
-        '<a href="' + esc(enUrl || '#') + '">Read the full column →</a>';
-      document.getElementById('akKolumna').classList.add('vidljivo');
-    })
-    .catch(function(){});
-
   Promise.all([
     fetch('https://en.wikinews.org/w/api.php?action=query&list=recentchanges&rcnamespace=0&rclimit=4&format=json&origin=*').then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; }),
     fetch('https://api.nobelprize.org/2.1/nobelPrizes?limit=1&sort=desc').then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; })
@@ -530,4 +511,5 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
 <script src="/assets/weather-render-v1.js?v=20260812-weather-v2-cachefix" defer></script>
 <script src="/assets/cibona-render-v1.js?v=20260812-cibona-v1" defer></script>
 <script src="/assets/world-monitor-aktual-v1.js?v=20260812-wm-v1" defer></script>
+<script src="/assets/aktual-columnist-hub-v1.js?v=20260812-hub-v1" defer></script>
 </body></html>
