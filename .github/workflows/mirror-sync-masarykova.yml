@@ -18,6 +18,9 @@ on:
   schedule:
     - cron: '0 0,6,12,18 * * *'
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Deploy Admin Auth V6"]
+    types: [completed]
 
 concurrency:
   group: masarykova-mirror-sync
@@ -28,6 +31,7 @@ permissions:
 
 jobs:
   mirror:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
