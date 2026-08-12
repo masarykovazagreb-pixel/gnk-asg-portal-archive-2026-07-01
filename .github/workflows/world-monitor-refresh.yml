@@ -1,9 +1,9 @@
-name: World Monitor Data Refresh
+name: World Monitor Data Refresh (free sources)
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '15 * * * *'   # svaki sat u :15
+    - cron: '20 * * * *'   # svaki sat u :20
 
 permissions:
   contents: write
@@ -16,8 +16,6 @@ jobs:
   refresh:
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    env:
-      WORLDMONITOR_API_KEY: ${{ secrets.WORLDMONITOR_API_KEY }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -25,7 +23,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: Fetch World Monitor data
+      - name: Fetch World Monitor data (USGS, GDELT, World Bank)
         run: node scripts/world-monitor-refresh-v1.mjs
       - name: Commit if changed
         shell: bash
@@ -38,7 +36,7 @@ jobs:
             echo "Nema promjena."
             exit 0
           fi
-          git commit -m "World Monitor: refresh data"
+          git commit -m "World Monitor: refresh data (free sources)"
           for attempt in 1 2 3 4 5; do
             if git push origin HEAD:main; then
               exit 0

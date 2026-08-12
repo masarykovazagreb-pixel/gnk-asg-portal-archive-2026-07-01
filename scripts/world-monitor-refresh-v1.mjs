@@ -1,26 +1,23 @@
-// GNK ASG — World Monitor data refresh za AKTUAL MEDIA.
-// Dva sloja izvora:
-// 1) WorldMonitor API (api.worldmonitor.app) - zahtijeva WORLDMONITOR_API_KEY,
-//    piše "needs-key" dok ključ ne postoji (nikad izmišljene podatke).
-// 2) Izravni besplatni izvori bez ključa - GDELT (rat/sukobi) i CISA KEV
-//    (aktivno eksploatirane ranjivosti - stvarni cyber napadi), koji rade
-//    ODMAH bez čekanja na WorldMonitor ključ.
-import { writeFileSync, mkdirSync } from 'node:fs';
+// GNK ASG — World Monitor podaci za AKTUAL, izravno s besplatnih javnih izvora
+// (bez WorldMonitor.app pretplate). Svaki izvor je zaseban, besplatan, bez ključa:
+//
+//   Seismology  -> USGS Earthquake Hazards Program (earthquake.usgs.gov)
+//   Conflicts   -> GDELT Project DOC 2.0 API (api.gdeltproject.org) - "armed conflict"
+//   Unrest      -> GDELT Project DOC 2.0 API - "protest unrest"
+//   Economic    -> World Bank Open Data API (api.worldbank.org)
+//
+// Isti obrazac poštenih stanja kao Weather/Cibona: live/stale/unavailable,
+// nikad izmišljeni podaci.
+import { writeFileSync, mkdirSync, readFileSync } from 'node:fs';
 
-const API_BASE = 'https://api.worldmonitor.app';
-const API_KEY = String(process.env.WORLDMONITOR_API_KEY || '').trim();
+const outPath = 'apps/portal/data/world-monitor.json';
+mkdirSync('apps/portal/data', { recursive: true });
 
-const WM_ENDPOINT_CONFIG = [
-  { category: 'geopolitical', sub: 'intelligence', path: '/api/intelligence/v1/get-country-risk', verified: true, params: '?country=HR' },
-  { category: 'economy', sub: 'markets', path: '/api/market/v1/get-fear-greed-index', verified: true, params: '' },
-  { category: 'infrastructure', sub: 'resilience', path: '/api/resilience/v1/get-resilience-ranking', verified: true, params: '' },
-];
-
-async function fetchJson(url, opts = {}, timeoutMs = 12000) {
+async function fetchJson(url, opts = {}) {
   const ac = new AbortController();
-  const t = setTimeout(() => ac.abort(), timeoutMs);
+  const t = setTimeout(() => ac.abort(), 10000);
   try {
-    const r = await fetch(url, { ...opts, signal: ac.signal });
+    const r = await fetch(url, { signal: ac.signal, headers: { accept: 'application/json', 'user-agent': 'gnk-asg-portal/1.0 (contact: it@gnk-asg.hr)', ...opts.headers } });
     clearTimeout(t);
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
     return await r.json();
@@ -30,99 +27,63 @@ async function fetchJson(url, opts = {}, timeoutMs = 12000) {
   }
 }
 
-async function fetchWmOne(cfg) {
-  const url = API_BASE + cfg.path + cfg.params;
-  try {
-    const data = await fetchJson(url, { headers: { 'X-WorldMonitor-Key': API_KEY, accept: 'application/json' } });
-    return { ok: true, data };
-  } catch (e) {
-    return { ok: false, error: String(e?.message || e).slice(0, 200) };
-  }
+async function fetchSeismology() {
+  // USGS: significant earthquakes, last 7 days
+  const data = await fetchJson('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson');
+  const items = (data.features || []).slice(0, 8).map((f) => ({
+    title: f.properties.title,
+    magnitude: f.properties.mag,
+    place: f.properties.place,
+    time: new Date(f.properties.time).toISOString(),
+    url: f.properties.url,
+  }));
+  return { state: 'live', items, source_name: 'USGS Earthquake Hazards Program', source_url: 'https://earthquake.usgs.gov/' };
 }
 
-// --- GDELT (rat/sukobi) - besplatan, bez kljuca ---
-async function fetchConflicts() {
-  const query = encodeURIComponent('(war OR conflict OR invasion OR offensive OR airstrike)');
-  const url = `https://api.gdeltproject.org/api/v2/doc/doc?query=${query}&mode=artlist&format=json&maxrecords=12&sort=datedesc&timespan=1d`;
-  try {
-    const data = await fetchJson(url, { headers: { 'User-Agent': 'GNK-ASG-WorldMonitor/1.0' } });
-    const articles = (data.articles || []).slice(0, 12).map(a => ({
-      title: a.title,
-      url: a.url,
-      domain: a.domain,
-      country: a.sourcecountry,
-      seenAt: a.seendate,
-    }));
-    return { state: 'live', items: articles, fetched_at: new Date().toISOString(), source_name: 'GDELT Project' };
-  } catch (e) {
-    return { state: 'unavailable', error: String(e?.message || e).slice(0, 200) };
-  }
+async function fetchGdelt(query, sourceLabel) {
+  const url = `https://api.gdeltproject.org/api/v2/doc/doc?query=${encodeURIComponent(query)}&mode=artlist&maxrecords=8&timespan=24H&format=json&sort=hybridrel`;
+  const data = await fetchJson(url);
+  const items = (data.articles || []).slice(0, 8).map((a) => ({
+    title: a.title,
+    domain: a.domain,
+    time: a.seendate,
+    url: a.url,
+  }));
+  return { state: 'live', items, source_name: `GDELT Project (${sourceLabel})`, source_url: 'https://www.gdeltproject.org/' };
 }
 
-// --- CISA KEV (cyber napadi - aktivno eksploatirane ranjivosti) - besplatan, bez kljuca ---
-async function fetchCyber() {
-  const url = 'https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json';
+async function fetchWorldBankEconomic() {
+  // GDP growth (annual %), world aggregate, most recent available years
+  const data = await fetchJson('https://api.worldbank.org/v2/country/WLD/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=6&mrnev=6');
+  const rows = Array.isArray(data) && data[1] ? data[1] : [];
+  const items = rows.filter((r) => r.value !== null).map((r) => ({
+    title: `${r.country?.value || 'World'} GDP growth ${r.date}: ${Number(r.value).toFixed(2)}%`,
+    year: r.date,
+    value: r.value,
+  }));
+  return { state: 'live', items, source_name: 'World Bank Open Data', source_url: 'https://data.worldbank.org/' };
+}
+
+async function safeFetch(fn) {
   try {
-    const data = await fetchJson(url, { headers: { 'User-Agent': 'GNK-ASG-WorldMonitor/1.0', accept: 'application/json' } });
-    const sorted = (data.vulnerabilities || []).slice().sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
-    const items = sorted.slice(0, 12).map(v => ({
-      cveId: v.cveID,
-      vendor: v.vendorProject,
-      product: v.product,
-      name: v.vulnerabilityName,
-      dateAdded: v.dateAdded,
-      dueDate: v.dueDate,
-      ransomware: v.knownRansomwareCampaignUse === 'Known',
-      description: (v.shortDescription || '').slice(0, 220),
-    }));
-    return { state: 'live', items, fetched_at: new Date().toISOString(), source_name: 'CISA Known Exploited Vulnerabilities Catalog', catalogVersion: data.catalogVersion };
+    return await fn();
   } catch (e) {
     return { state: 'unavailable', error: String(e?.message || e).slice(0, 200) };
   }
 }
-
-const outPath = 'apps/portal/data/world-monitor.json';
-mkdirSync('apps/portal/data', { recursive: true });
 
 const payload = {
   updated_at: new Date().toISOString(),
-  source: 'api.worldmonitor.app + GDELT + CISA KEV',
   categories: {
-    geopolitical: {},
-    economy: {},
-    infrastructure: {},
+    natural: { seismology: await safeFetch(fetchSeismology) },
+    geopolitical: {
+      conflicts: await safeFetch(() => fetchGdelt('armed conflict OR clash OR strike', 'Conflicts')),
+      unrest: await safeFetch(() => fetchGdelt('protest OR riot OR unrest', 'Unrest')),
+    },
+    economy: { economic: await safeFetch(fetchWorldBankEconomic) },
   },
 };
 
-// Besplatni izvori bez ključa - uvijek pokušaj, neovisno o WORLDMONITOR_API_KEY.
-payload.categories.geopolitical.conflicts = await fetchConflicts();
-await new Promise(r => setTimeout(r, 300));
-payload.categories.geopolitical.cyber = await fetchCyber();
-
-// WorldMonitor endpointi - trebaju kljuc.
-if (!API_KEY) {
-  for (const cfg of WM_ENDPOINT_CONFIG) {
-    payload.categories[cfg.category] = payload.categories[cfg.category] || {};
-    payload.categories[cfg.category][cfg.sub] = { state: 'needs-key' };
-  }
-} else {
-  for (const cfg of WM_ENDPOINT_CONFIG) {
-    payload.categories[cfg.category] = payload.categories[cfg.category] || {};
-    if (!cfg.verified) {
-      payload.categories[cfg.category][cfg.sub] = { state: 'unverified-endpoint' };
-      continue;
-    }
-    const result = await fetchWmOne(cfg);
-    payload.categories[cfg.category][cfg.sub] = result.ok
-      ? { state: 'live', data: result.data, fetched_at: new Date().toISOString() }
-      : { state: 'unavailable', error: result.error };
-    await new Promise(r => setTimeout(r, 500));
-  }
-}
-
 writeFileSync(outPath, JSON.stringify(payload, null, 2) + '\n');
-console.log(JSON.stringify({
-  conflicts: payload.categories.geopolitical.conflicts.state,
-  cyber: payload.categories.geopolitical.cyber.state,
-  wmKeyPresent: !!API_KEY,
-}, null, 2));
+const liveCounts = Object.values(payload.categories).flatMap((c) => Object.values(c)).filter((s) => s.state === 'live').length;
+console.log(JSON.stringify({ ok: true, liveSubcategories: liveCounts, updated_at: payload.updated_at }, null, 2));
