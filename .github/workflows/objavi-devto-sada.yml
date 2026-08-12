@@ -42,5 +42,20 @@ jobs:
           git config user.name "gnk-asg-bot"
           git config user.email "it@gnk-asg.hr"
           git add apps/portal/data/devto-content/
-          git diff --cached --quiet || git commit -m "Dev.to: evidencija objavljenog"
-          git push
+          if git diff --cached --quiet; then
+            echo "Nema promjena za commit."
+            exit 0
+          fi
+          git commit -m "Dev.to: evidencija objavljenog"
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then
+              echo "Push uspio (pokusaj $attempt)."
+              exit 0
+            fi
+            echo "Push odbijen (pokusaj $attempt) - main se pomaknuo, radim fetch+rebase i pokusavam ponovno."
+            git fetch origin main
+            git rebase origin/main || { echo "Rebase konflikt - zaustavljam se, evidencija ostaje u workflow logu."; exit 1; }
+            sleep $((attempt * 5))
+          done
+          echo "Push nije uspio nakon 5 pokusaja."
+          exit 1
