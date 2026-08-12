@@ -4,7 +4,7 @@
 <meta name="keywords" content="AKTUAL MEDIA, news, GNK ASG, economy, technology, digital assets, world">
 <meta name="author" content="GNK ASG d.o.o.">
 <meta name="robots" content="index,follow,max-image-preview:large">
-<link rel="canonical" href="https://gnk-asg.hr/en/gnk-aktual/"><link rel="alternate" hreflang="hr" href="https://gnk-asg.hr/gnk-aktual/"><link rel="alternate" hreflang="en" href="https://gnk-asg.hr/en/gnk-aktual/">
+<link rel="canonical" href="https://gnk-asg.hr/en/gnk-aktual/"><link rel="alternate" hreflang="hr" href="https://gnk-asg.hr/gnk-aktual/"><link rel="alternate" hreflang="en" href="https://gnk-asg.hr/en/gnk-aktual/"><link rel="alternate" hreflang="x-default" href="https://gnk-asg.hr/gnk-aktual/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="GNK ASG">
@@ -392,10 +392,29 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
       var fullBox = document.createElement('div');
       fullBox.id='akReceptPuni';
       fullBox.style.cssText='display:none;padding:0 22px 18px;font-family:Arial,sans-serif';
-      fullBox.innerHTML='<h4 style="margin:14px 0 6px;font-size:.9rem;color:var(--ak-red);text-transform:uppercase;letter-spacing:.06em">All ingredients</h4><ul style="margin:0 0 14px 18px;font-size:.9rem;line-height:1.55">'+(recept.ingredients||[]).map(function(s){return '<li>'+escH(s.ingredient||'')+(s.amount?' — '+escH(s.amount):'')+'</li>'}).join('')+'</ul><h4 style="margin:0 0 6px;font-size:.9rem;color:var(--ak-red);text-transform:uppercase;letter-spacing:.06em">Method</h4><p style="font-size:.95rem;line-height:1.65;margin:0;white-space:pre-line">'+escH(recept.method||'')+'</p>';
+      fullBox.innerHTML='<h4 style="margin:14px 0 6px;font-size:.9rem;color:var(--ak-red);text-transform:uppercase;letter-spacing:.06em">All ingredients</h4><ul style="margin:0 0 14px 18px;font-size:.9rem;line-height:1.55">'+(recept.ingredients||[]).map(function(s){return '<li>'+esc(s.ingredient||'')+(s.amount?' — '+esc(s.amount):'')+'</li>'}).join('')+'</ul><h4 style="margin:0 0 6px;font-size:.9rem;color:var(--ak-red);text-transform:uppercase;letter-spacing:.06em">Method</h4><p style="font-size:.95rem;line-height:1.65;margin:0;white-space:pre-line">'+esc(recept.method||'')+'</p>';
       document.getElementById('akReceptDana').appendChild(fullBox);
       var btn=document.getElementById('akReceptToggle');
       if(btn){btn.addEventListener('click',function(){var open=fullBox.style.display==='block';fullBox.style.display=open?'none':'block';btn.textContent=open?'Full recipe →':'Hide ↑';});}
+    })
+    .catch(function(){});
+
+  fetch('/data/kolumne.json?v=' + Date.now(), { cache: 'no-store' })
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(d){
+      var items = d && (Array.isArray(d) ? d : d.items);
+      var k = items && items[0];
+      if (!k || !k.naslov_en) return;
+      var uvod = (k.tekst_en || '').split('\n\n')[0] || '';
+      var enUrl = (k.url || '').replace('/gnk-aktual/kolumne/', '/en/gnk-aktual/columns/');
+      var slikaHtml = k.slika ? '<img src="' + esc(k.slika) + '" onerror="this.onerror=null;this.src=\'/assets/gnk-asg-social-card.png\'" alt="' + esc(k.slika_alt_en || k.naslov_en || '') + '" loading="lazy" style="max-width:120px;max-height:120px;object-fit:contain;float:right;margin:0 0 10px 14px" onerror="this.remove()">' : '';
+      document.getElementById('akKolumnaTijelo').innerHTML =
+        '<span class="oznaka">Column · Saturdays</span>' +
+        slikaHtml +
+        '<h2>' + esc(k.naslov_en) + '</h2>' +
+        '<p>' + esc(uvod.slice(0, 260)) + (uvod.length > 260 ? '…' : '') + '</p>' +
+        '<a href="' + esc(enUrl || '#') + '">Read the full column →</a>';
+      document.getElementById('akKolumna').classList.add('vidljivo');
     })
     .catch(function(){});
 
@@ -417,7 +436,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
     });
     if (!stavke.length) return;
     var html = stavke.slice(0,5).map(function(s, i){
-      return '<div class="ak-st-stavka"><span class="ak-st-broj">' + String(i+1).padStart(2,'0') + '</span><a href="' + escH(s.link) + '" target="_blank" rel="noopener noreferrer nofollow">' + escH(s.naslov) + '</a></div>';
+      return '<div class="ak-st-stavka"><span class="ak-st-broj">' + String(i+1).padStart(2,'0') + '</span><a href="' + esc(s.link) + '" target="_blank" rel="noopener noreferrer nofollow">' + esc(s.naslov) + '</a></div>';
     }).join('');
     document.getElementById('akStopTiskaLista').innerHTML = html;
     document.getElementById('akStopTiska').classList.add('vidljivo');
@@ -434,12 +453,12 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
         .map(function(s){ return s.ingredient; }).join(' · ');
       var priprema = (recept.method || '').slice(0, 220);
       document.getElementById('akReceptDana').innerHTML =
-        '<img src="/assets/world-cookbook/' + escH(recept.image) + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">' +
+        '<img src="/assets/world-cookbook/' + esc(recept.image) + '" alt="' + esc(recept.naslov || recept.title || '') + '" loading="lazy" onerror="this.style.display=\'none\'">' +
         '<div class="ak-recept-tijelo">' +
-        '<span class="oznaka">' + escH(recept.origin || '') + ' · ' + escH(recept.category || '') + '</span>' +
-        '<h3>' + escH(recept.name) + '</h3>' +
-        '<p class="sastojci">' + escH(sastojci) + '…</p>' +
-        '<p class="priprema">' + escH(priprema) + (priprema.length >= 220 ? '…' : '') + '</p>' +
+        '<span class="oznaka">' + esc(recept.origin || '') + ' · ' + esc(recept.category || '') + '</span>' +
+        '<h3>' + esc(recept.name) + '</h3>' +
+        '<p class="sastojci">' + esc(sastojci) + '…</p>' +
+        '<p class="priprema">' + esc(priprema) + (priprema.length >= 220 ? '…' : '') + '</p>' +
         '<button type="button" id="akReceptToggle" style="font-family:Arial,sans-serif;font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--ak-red);background:transparent;border:none;border-bottom:2px solid var(--ak-red);padding:0 0 1px;cursor:pointer">Full recipe →</button>' +
         '</div>';
     })
@@ -457,16 +476,16 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
 
       if (istaknuta) {
         document.getElementById('akKomentarIstaknuti').innerHTML =
-          '<a class="ak-komentar-istaknuti" href="' + escH(istaknuta.url) + '" target="_blank" rel="noopener">' +
-          (istaknuta.image ? '<img src="' + escH(istaknuta.image) + '" onerror="this.onerror=null;this.src=\'/assets/gnk-asg-social-card.png\'" alt="" loading="lazy" onerror="this.remove()">' : '') +
-          '<div class="tijelo"><span class="oznaka">Commentary · Nermin Sefić</span><h3>' + escH(istaknuta.title) + '</h3><p>' +
-          escH((istaknuta.description||'').slice(0,160)) + '</p></div></a>';
+          '<a class="ak-komentar-istaknuti" href="' + esc(istaknuta.url) + '" target="_blank" rel="noopener">' +
+          (istaknuta.image ? '<img src="' + esc(istaknuta.image) + '" onerror="this.onerror=null;this.src=\'/assets/gnk-asg-social-card.png\'" alt="' + esc(istaknuta.naslov || istaknuta.title || '') + '" loading="lazy" onerror="this.remove()">' : '') +
+          '<div class="tijelo"><span class="oznaka">Commentary · Nermin Sefić</span><h3>' + esc(istaknuta.title) + '</h3><p>' +
+          esc((istaknuta.description||'').slice(0,160)) + '</p></div></a>';
       }
 
       var html = ostalih.map(function(k){
-        return '<a class="ak-komentar-kartica" href="' + escH(k.url) + '" target="_blank" rel="noopener">' +
-          (k.image ? '<img src="' + escH(k.image) + '" onerror="this.onerror=null;this.src=\'/assets/gnk-asg-social-card.png\'" alt="" loading="lazy" onerror="this.remove()">' : '') +
-          '<div class="tijelo"><span class="oznaka">Commentary</span><h3>' + escH(k.title) + '</h3></div></a>';
+        return '<a class="ak-komentar-kartica" href="' + esc(k.url) + '" target="_blank" rel="noopener">' +
+          (k.image ? '<img src="' + esc(k.image) + '" onerror="this.onerror=null;this.src=\'/assets/gnk-asg-social-card.png\'" alt="' + esc(k.naslov || k.title || '') + '" loading="lazy" onerror="this.remove()">' : '') +
+          '<div class="tijelo"><span class="oznaka">Commentary</span><h3>' + esc(k.title) + '</h3></div></a>';
       }).join('');
       document.getElementById('akKomentariGrid').innerHTML = html;
       document.getElementById('akKomentari').classList.add('vidljivo');
