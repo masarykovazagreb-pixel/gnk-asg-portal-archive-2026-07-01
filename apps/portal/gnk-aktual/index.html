@@ -4,7 +4,7 @@
 <meta name="keywords" content="AKTUAL MEDIA, Nermin Sefić, Nermin Sefic, GNK ASG, GNK ASG d.o.o., GNK DINAMO Ltd., Cibona, Victor Dodig, Abraham Mišetić, Tomislav Šerić, vijesti, novosti, ekonomija, tehnologija, digitalna imovina, svijet, kolumna, hrvatska košarka">
 <meta name="author" content="Nermin Sefić, GNK ASG d.o.o.">
 <meta name="robots" content="index,follow,max-image-preview:large">
-<link rel="canonical" href="https://gnk-asg.hr/gnk-aktual/"><link rel="alternate" hreflang="hr" href="https://gnk-asg.hr/gnk-aktual/"><link rel="alternate" hreflang="en" href="https://gnk-asg.hr/en/gnk-aktual/">
+<link rel="canonical" href="https://gnk-asg.hr/gnk-aktual/"><link rel="alternate" hreflang="hr" href="https://gnk-asg.hr/gnk-aktual/"><link rel="alternate" hreflang="en" href="https://gnk-asg.hr/en/gnk-aktual/"><link rel="alternate" hreflang="x-default" href="https://gnk-asg.hr/gnk-aktual/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="hr_HR">
 <meta property="og:site_name" content="GNK ASG">
@@ -584,7 +584,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
       var k = items && items[0];
       if (!k || !k.naslov) return;
       var uvod = (k.tekst || '').split('\n\n')[0] || '';
-      var slikaHtml = k.slika ? '<img src="' + escH(k.slika) + '" onerror="this.onerror=null;this.src=\'/assets/gnk-asg-social-card.png\'" alt="" loading="lazy" style="max-width:120px;max-height:120px;object-fit:contain;float:right;margin:0 0 10px 14px" onerror="this.remove()">' : '';
+      var slikaHtml = k.slika ? '<img src="' + escH(k.slika) + '" onerror="this.onerror=null;this.src=\'/assets/gnk-asg-social-card.png\'" alt="' + escH(k.naslov || '') + '" loading="lazy" style="max-width:120px;max-height:120px;object-fit:contain;float:right;margin:0 0 10px 14px" onerror="this.remove()">' : '';
       document.getElementById('akKolumnaTijelo').innerHTML =
         '<span class="oznaka">Kolumna · subotom</span>' +
         slikaHtml +
@@ -632,7 +632,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
         .map(function(s){ return s.ingredient; }).join(' · ');
       var priprema = (recept.method || '').slice(0, 220);
       document.getElementById('akReceptDana').innerHTML =
-        '<img src="/assets/world-cookbook/' + escH(recept.image) + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">' +
+        '<img src="/assets/world-cookbook/' + escH(recept.image) + '" alt="' + escH(recept.naslov || recept.title || '') + '" loading="lazy" onerror="this.style.display=\'none\'">' +
         '<div class="ak-recept-tijelo">' +
         '<span class="oznaka">' + escH(recept.origin || '') + ' · ' + escH(recept.category || '') + '</span>' +
         '<h3>' + escH(recept.name) + '</h3>' +
@@ -661,14 +661,14 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
       if (istaknuta) {
         document.getElementById('akKomentarIstaknuti').innerHTML =
           '<a class="ak-komentar-istaknuti" href="' + escH(istaknuta.url) + '" target="_blank" rel="noopener">' +
-          (istaknuta.image ? '<img src="' + escH(istaknuta.image) + '" onerror="this.onerror=null;this.src=\'/assets/gnk-asg-social-card.png\'" alt="" loading="lazy" onerror="this.remove()">' : '') +
+          (istaknuta.image ? '<img src="' + escH(istaknuta.image) + '" onerror="this.onerror=null;this.src=\'/assets/gnk-asg-social-card.png\'" alt="' + escH(istaknuta.naslov || istaknuta.title || '') + '" loading="lazy" onerror="this.remove()">' : '') +
           '<div class="tijelo"><span class="oznaka">Komentar · Nermin Sefić</span><h3>' + escH(istaknuta.title) + '</h3><p>' +
           escH((istaknuta.description||'').slice(0,160)) + '</p></div></a>';
       }
 
       var html = ostalih.map(function(k){
         return '<a class="ak-komentar-kartica" href="' + escH(k.url) + '" target="_blank" rel="noopener">' +
-          (k.image ? '<img src="' + escH(k.image) + '" onerror="this.onerror=null;this.src=\'/assets/gnk-asg-social-card.png\'" alt="" loading="lazy" onerror="this.remove()">' : '') +
+          (k.image ? '<img src="' + escH(k.image) + '" onerror="this.onerror=null;this.src=\'/assets/gnk-asg-social-card.png\'" alt="' + escH(k.naslov || k.title || '') + '" loading="lazy" onerror="this.remove()">' : '') +
           '<div class="tijelo"><span class="oznaka">Komentar</span><h3>' + escH(k.title) + '</h3></div></a>';
       }).join('');
       document.getElementById('akKomentariGrid').innerHTML = html;
