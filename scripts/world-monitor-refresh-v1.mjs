@@ -42,7 +42,7 @@ async function fetchWmOne(cfg) {
 
 // --- GDELT (rat/sukobi) - besplatan, bez kljuca ---
 async function fetchConflicts() {
-  const query = encodeURIComponent('war OR conflict OR "military strike" OR invasion OR offensive');
+  const query = encodeURIComponent('(war OR conflict OR invasion OR offensive OR airstrike)');
   const url = `https://api.gdeltproject.org/api/v2/doc/doc?query=${query}&mode=artlist&format=json&maxrecords=12&sort=datedesc&timespan=1d`;
   try {
     const data = await fetchJson(url, { headers: { 'User-Agent': 'GNK-ASG-WorldMonitor/1.0' } });
