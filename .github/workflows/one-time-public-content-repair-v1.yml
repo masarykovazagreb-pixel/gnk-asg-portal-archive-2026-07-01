@@ -119,7 +119,16 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add apps/portal/assets/editorial-latest-index-v1.js apps/portal/objave/index.html apps/portal/komentari/index.html workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           git commit -m 'fix(public): restore home and surface latest editorial content'
-          git push origin HEAD:main
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then
+              break
+            fi
+            echo "Push odbijen (pokusaj $attempt) - main se pomaknuo, radim fetch+rebase."
+            git fetch origin main
+            git rebase origin/main || { echo "Rebase konflikt."; exit 1; }
+            sleep $((attempt * 5))
+            if [ "$attempt" = "5" ]; then echo "Push nije uspio nakon 5 pokusaja."; exit 1; fi
+          done
 
       - name: Dispatch exact-SHA production deploy
         env:

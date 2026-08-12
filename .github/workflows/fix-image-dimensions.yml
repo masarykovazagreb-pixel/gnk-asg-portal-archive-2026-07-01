@@ -37,7 +37,16 @@ jobs:
             echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           else
             git commit -m "CLS: explicit width/height on local images (automated)"
-            git push origin HEAD:main
+            for attempt in 1 2 3 4 5; do
+              if git push origin HEAD:main; then
+                break
+              fi
+              echo "Push odbijen (pokusaj $attempt) - main se pomaknuo, radim fetch+rebase."
+              git fetch origin main
+              git rebase origin/main || { echo "Rebase konflikt."; exit 1; }
+              sleep $((attempt * 5))
+              if [ "$attempt" = "5" ]; then echo "Push nije uspio nakon 5 pokusaja."; exit 1; fi
+            done
             echo "changed=true" >> "$GITHUB_OUTPUT"
             echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           fi

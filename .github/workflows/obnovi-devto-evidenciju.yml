@@ -1,11 +1,13 @@
 name: Dohvati slike b07 (jednokratno)
 on: workflow_dispatch
+permissions: {contents: write}
 jobs:
   dohvati:
     runs-on: ubuntu-latest
-    permissions: {contents: write}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v4
+        with:
+          ref: main
       - run: |
           mkdir -p apps/portal/data/tmp-b07
           curl -s "https://gnk-asg.hr/api/slike?upit=digital+twin+industrial+factory+sensors" -o apps/portal/data/tmp-b07/dvojnik.json
@@ -13,8 +15,18 @@ jobs:
           curl -s "https://gnk-asg.hr/api/slike?upit=startup+founders+pitch+investment" -o apps/portal/data/tmp-b07/startup.json
       - run: |
           git config user.name "gnk-asg-bot"; git config user.email "it@gnk-asg.hr"
-          BRANCH="slikeb07-${{ github.run_id }}"
-          git checkout -b "$BRANCH"
           git add apps/portal/data/tmp-b07
+          if git diff --cached --quiet; then
+            echo "Nema promjena za commit."
+            exit 0
+          fi
           git commit -m "slike b07"
-          git push origin "$BRANCH"
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            git fetch origin main
+            git rebase origin/main || { echo "Rebase konflikt."; exit 1; }
+            sleep $((attempt * 5))
+          done
+          exit 1

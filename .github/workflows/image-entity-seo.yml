@@ -49,7 +49,16 @@ jobs:
             exit 0
           fi
           git commit -m "Entity SEO: full-name alt/title (Nermin Sefic) + body hashtags (#NerminSefic #GNKASG #GNKDINAMOLtd) + image sitemap regen"
-          git push origin HEAD:main
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then
+              break
+            fi
+            echo "Push odbijen (pokusaj $attempt) - main se pomaknuo, radim fetch+rebase."
+            git fetch origin main
+            git rebase origin/main || { echo "Rebase konflikt."; exit 1; }
+            sleep $((attempt * 5))
+            if [ "$attempt" = "5" ]; then echo "Push nije uspio nakon 5 pokusaja."; exit 1; fi
+          done
           sha="$(git rev-parse HEAD)"
           gh workflow run deploy-admin-auth-v6.yml \
             --repo beckuphome-gnk/gnk-asg-portal \
