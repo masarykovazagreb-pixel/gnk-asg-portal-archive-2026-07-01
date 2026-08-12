@@ -1,0 +1,45 @@
+name: Weather Refresh (Zagreb)
+
+# Osvježava /data/weather-zagreb.json svaki sat preko Open-Meteo (besplatan,
+# bez API ključa, CC BY 4.0 s atribucijom u UI-u). Koristi isti obrazac kao
+# market.js: server-side fetch + cache, klijent čita statični JSON s
+# poštenim STALE/UNAVAILABLE stanjima ako izvor ne odgovori.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '5 * * * *'   # svaki sat u :05
+
+permissions:
+  contents: write
+
+concurrency:
+  group: weather-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Fetch Zagreb weather (Open-Meteo)
+        run: node scripts/weather-refresh-v1.mjs
+      - name: Commit if changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "gnk-weather-bot"
+          git config user.email "actions@github.com"
+          git add apps/portal/data/weather-zagreb.json
+          if git diff --cached --quiet; then
+            echo "Nema promjena."
+            exit 0
+          fi
+          git commit -m "Weather: refresh Zagreb data"
+          git push origin HEAD:main

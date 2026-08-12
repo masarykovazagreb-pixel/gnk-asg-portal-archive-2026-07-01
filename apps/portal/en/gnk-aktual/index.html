@@ -153,6 +153,34 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
   <section class="ak-narrative"><img src="/assets/editorial/aktual-media-800.webp" width="600" height="600" alt="AKTUAL MEDIA — the most important world news in one place" class="ak-narrative-img" loading="lazy"><div class="ak-narrative-copy"><p class="ak-narrative-eyebrow">AKTUAL MEDIA</p><h2>The most important world news in one place</h2><p>AKTUAL MEDIA brings an overview of the latest news from economy, technology, digital assets and international affairs.</p><p>Content refreshes automatically every hour, giving users a quick view of the topics shaping the global business, financial and technology environment. The latest news is highlighted, while a full list of published content is available in the expanded view.</p><p>Every item shows a headline, photo and short summary, linking directly to the original publisher's article. News is sourced from publicly available RSS feeds of international media, including Reuters, BBC, CNN, The Guardian and others. GNK ASG does not copy or store the full text of articles, but directs readers to the original source.</p><p>The goal of the platform is to enable clear, fast and responsible tracking of current events without the need to search across dozens of different sites.</p><p class="ak-narrative-tagline">Economy. Technology. Digital assets. World. One overview.</p></div></section>
   <style>.ak-narrative{display:grid;grid-template-columns:.85fr 1.15fr;gap:40px;align-items:center;max-width:1100px;margin:32px auto 48px;padding:0 20px}.ak-narrative-img{width:100%;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.4);border:1px solid rgba(212,175,55,.3)}.ak-narrative-eyebrow{color:#e0bd69;font-size:.75rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin:0 0 8px}.ak-narrative-copy h2{color:#f8fafc;font-size:clamp(1.5rem,2.6vw,2rem);line-height:1.25;margin:0 0 16px}.ak-narrative-copy p{color:#c5cfdb;font-size:.98rem;line-height:1.7;margin:0 0 13px}.ak-narrative-tagline{color:#f8fafc;font-weight:800;font-size:1.05rem;border-top:1px solid rgba(255,255,255,.12);padding-top:14px;margin-top:6px!important}@media(max-width:800px){.ak-narrative{grid-template-columns:1fr}}</style>
   <div class="ak-burza" id="akBurza"><div class="ak-burza-trak" id="akBurzaTrak"></div></div>
+  <div class="ak-weather" id="akWeather">
+    <div class="ak-weather-head">
+      <span class="ak-weather-city">Zagreb</span>
+      <span class="ak-weather-updated" id="akWeatherUpdated">Loading…</span>
+    </div>
+    <div class="ak-weather-body" id="akWeatherBody">
+      <span class="ak-weather-loading">Fetching weather data…</span>
+    </div>
+  </div>
+  <style>
+  .ak-weather{max-width:1100px;margin:0 auto 24px;padding:16px 20px;border-radius:14px;background:linear-gradient(135deg,#0d1b2e,#152a45);border:1px solid rgba(212,175,55,.25);color:#e8edf3}
+  .ak-weather-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;flex-wrap:wrap;gap:6px}
+  .ak-weather-city{font-weight:800;font-size:1.05rem;letter-spacing:.02em}
+  .ak-weather-updated{font-size:.78rem;color:#9db3c9}
+  .ak-weather-body{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .ak-weather-loading{color:#9db3c9;font-size:.9rem}
+  .ak-weather-temp{font-size:2.1rem;font-weight:900;line-height:1}
+  .ak-weather-cond{font-size:.95rem;color:#c5d3e0}
+  .ak-weather-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:.82rem;color:#9db3c9}
+  .ak-weather-forecast{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap}
+  .ak-weather-day{background:rgba(255,255,255,.05);border-radius:8px;padding:6px 10px;font-size:.78rem;color:#c5d3e0;min-width:70px;text-align:center}
+  .ak-weather-day b{display:block;font-size:.9rem;color:#fff}
+  .ak-weather-source{font-size:.68rem;color:#6f849b;margin-top:10px;display:block}
+  .ak-weather-source a{color:#9db3c9}
+  .ak-weather.state-stale .ak-weather-updated{color:#e0bd69}
+  .ak-weather.state-unavailable .ak-weather-body{color:#c98a8a}
+  @media(max-width:640px){.ak-weather{padding:14px 16px}.ak-weather-temp{font-size:1.7rem}.ak-weather-forecast{gap:8px}.ak-weather-day{min-width:60px;padding:5px 8px}}
+  </style>
   <div class="ak-stoptiska" id="akStopTiska">
     <h2>Stop Press</h2><div class="prat">Science &amp; Society</div>
     <div id="akStopTiskaLista"></div>
@@ -213,7 +241,7 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
   </section>
   <p class="ak-note">All news items are sourced from public RSS feeds (Guardian, BBC, Reuters, CNN and others). GNK ASG does not store the full text of articles — only the title, image and a short excerpt are shown, linking to the original publisher.</p>
 </main>
-<script src="/assets/app.js?v=20260728-remove-tech-radar-more-sources-v1" defer></script>
+<script src="/assets/app.js?v=20260812-weather-widget-v1" defer></script>
 <script>
 (function(){
   var GROUP_LABELS = { hrvatska:'Croatia', international:'World', regije:'Regions', technology:'Technology', economy:'Business & Economy', 'digital-assets':'Digital Assets', 'digital-workforce-simulation':'GNK ASG · Simulation', magazin:'Magazine', sport:'Sport', bih:'BiH', slovenija:'Slovenia', srbija:'Serbia', mobilnost:'Mobility', znanost:'Science & Research', zdravlje:'Health & Wellness', okolis:'Environment & Climate', djeca:'Children & Family', ljubimci:'Pets & Animals', kultura:'Culture & Arts', zanimljivosti:'Curiosities', turizam:'Travel & Tourism' };
@@ -428,4 +456,5 @@ body{margin:0;background:var(--ak-bg);color:var(--ak-text);font-family:'Georgia'
     .catch(function(){});
 })();
 </script>
+<script src="/assets/weather-render-v1.js?v=20260812-weather-v1" defer></script>
 </body></html>
