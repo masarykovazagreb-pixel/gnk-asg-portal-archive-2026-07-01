@@ -42,7 +42,14 @@ async function fetchSeismology() {
 
 async function fetchGdelt(query, sourceLabel) {
   const url = `https://api.gdeltproject.org/api/v2/doc/doc?query=${encodeURIComponent(query)}&mode=artlist&maxrecords=8&timespan=24H&format=json&sort=hybridrel`;
-  const data = await fetchJson(url);
+  const ac2 = new AbortController();
+  const t2 = setTimeout(() => ac2.abort(), 20000);
+  const r2 = await fetch(url, { signal: ac2.signal, headers: { accept: 'application/json', 'user-agent': 'gnk-asg-portal/1.0 (contact: it@gnk-asg.hr)' } });
+  clearTimeout(t2);
+  const raw = await r2.text();
+  let data;
+  try { data = JSON.parse(raw); } catch { throw new Error(`GDELT non-JSON response (status ${r2.status}): ${raw.slice(0, 80)}`); }
+  if (!r2.ok) throw new Error(`HTTP ${r2.status}`);
   const items = (data.articles || []).slice(0, 8).map((a) => ({
     title: a.title,
     domain: a.domain,
@@ -77,14 +84,11 @@ const payload = {
   categories: {
     natural: { seismology: await safeFetch(fetchSeismology) },
     geopolitical: {
-      conflicts: await safeFetch(() => fetchGdelt('armed conflict OR clash OR strike', 'Conflicts')),
+      conflicts: await safeFetch(() => fetchGdelt('armed conflict OR clash OR protest OR riot OR unrest', 'Conflicts & Unrest')),
     },
     economy: { economic: await safeFetch(fetchWorldBankEconomic) },
   },
 };
-
-await new Promise((res) => setTimeout(res, 3000)); // pauza da se izbjegne GDELT rate-limit (429) na dijeljenim CI IP adresama
-payload.categories.geopolitical.unrest = await safeFetch(() => fetchGdelt('protest OR riot OR unrest', 'Unrest'));
 
 writeFileSync(outPath, JSON.stringify(payload, null, 2) + '\n');
 const liveCounts = Object.values(payload.categories).flatMap((c) => Object.values(c)).filter((s) => s.state === 'live').length;

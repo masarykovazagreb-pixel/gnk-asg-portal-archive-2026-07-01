@@ -9,8 +9,7 @@ const en = isEnglish();
 
 const SECTIONS = [
   { cat: 'natural', sub: 'seismology', label_hr: 'Potresi (USGS)', label_en: 'Earthquakes (USGS)' },
-  { cat: 'geopolitical', sub: 'conflicts', label_hr: 'Sukobi (GDELT)', label_en: 'Conflicts (GDELT)' },
-  { cat: 'geopolitical', sub: 'unrest', label_hr: 'Nemiri (GDELT)', label_en: 'Unrest (GDELT)' },
+  { cat: 'geopolitical', sub: 'conflicts', label_hr: 'Sukobi i nemiri (GDELT)', label_en: 'Conflicts & Unrest (GDELT)' },
   { cat: 'economy', sub: 'economic', label_hr: 'Ekonomski pokazatelji (World Bank)', label_en: 'Economic indicators (World Bank)' },
 ];
 
