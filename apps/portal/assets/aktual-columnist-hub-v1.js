@@ -31,7 +31,8 @@ function renderHub(image,count){
 
 function renderCommentaryHub(){
   const card=document.getElementById('akKomentari');
-  if(!card)return;
+  if(!card||card.dataset.commentaryHub==='1')return;
+  card.dataset.commentaryHub='1';
   card.className='ak-kolumna vidljivo';
   card.innerHTML='<div class="ak-kolumna-autor"><div class="krug">KO</div><b>'+commentaryTitle+'</b><span>'+(english?'GNK ASG editorial':'GNK ASG uredništvo')+'</span></div><div class="ak-kolumna-tijelo"><span class="oznaka">'+commentaryEyebrow+'</span><h2>'+commentaryTitle+'</h2><p>'+commentaryDescription+'</p><a href="'+commentaryUrl+'">'+commentaryCta+'</a></div>';
 }
