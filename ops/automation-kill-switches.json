@@ -11,15 +11,42 @@
     "reason": "inactive by default; enable only for a controlled exact-SHA production release window"
   },
   "channels": {
-    "portalPublish": { "enabled": false, "reason": "stabilization" },
-    "bloggerPublish": { "enabled": false, "reason": "stabilization and quota control" },
-    "devtoPublish": { "enabled": false, "reason": "preview-only until reviewed PR-based state persistence is implemented" },
-    "linkedinPublish": { "enabled": false, "reason": "publishing connector not yet verified" },
-    "mailSend": { "enabled": false, "reason": "no live send during stabilization" },
-    "newsWrite": { "enabled": true, "reason": "GNK News Refresh V2 is the canonical hourly single writer for AKTUAL/news data" },
-    "marketRefresh": { "enabled": true, "reason": "read-only data refresh" },
-    "backupMirror": { "enabled": true, "reason": "recovery protection" },
-    "workerTelemetry": { "enabled": true, "reason": "observation only" }
+    "portalPublish": {
+      "enabled": false,
+      "reason": "stabilization"
+    },
+    "bloggerPublish": {
+      "enabled": false,
+      "reason": "stabilization and quota control"
+    },
+    "devtoPublish": {
+      "enabled": true,
+      "reason": "Reviewed 2026-08-12: git-push race condition in state persistence identified and fixed (fetch+rebase+retry before push, matching the pattern already used elsewhere in this repo). Script's own reconcileState()/reconcileOneAfter422() cross-references the live Dev.to API before every publish attempt, so retries cannot create duplicates even if a push still failed. Enabled by explicit owner request (Nermin Sefic) to clear a 149-item backlog."
+    },
+    "linkedinPublish": {
+      "enabled": false,
+      "reason": "publishing connector not yet verified"
+    },
+    "mailSend": {
+      "enabled": false,
+      "reason": "no live send during stabilization"
+    },
+    "newsWrite": {
+      "enabled": true,
+      "reason": "GNK News Refresh V2 is the canonical hourly single writer for AKTUAL/news data"
+    },
+    "marketRefresh": {
+      "enabled": true,
+      "reason": "read-only data refresh"
+    },
+    "backupMirror": {
+      "enabled": true,
+      "reason": "recovery protection"
+    },
+    "workerTelemetry": {
+      "enabled": true,
+      "reason": "observation only"
+    }
   },
   "releaseRules": {
     "requireGreenPremiumContract": true,
@@ -27,6 +54,10 @@
     "requireExternalPostIdForSuccess": true,
     "requireIdempotencyKey": true,
     "forbidActionEndpointSmokePost": true,
-    "safeHealthMethods": ["GET", "HEAD", "OPTIONS"]
+    "safeHealthMethods": [
+      "GET",
+      "HEAD",
+      "OPTIONS"
+    ]
   }
 }
