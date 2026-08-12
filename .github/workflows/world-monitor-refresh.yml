@@ -1,0 +1,50 @@
+name: World Monitor Data Refresh
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 * * * *'   # svaki sat u :15
+
+permissions:
+  contents: write
+
+concurrency:
+  group: world-monitor-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      WORLDMONITOR_API_KEY: ${{ secrets.WORLDMONITOR_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Fetch World Monitor data
+        run: node scripts/world-monitor-refresh-v1.mjs
+      - name: Commit if changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "gnk-worldmonitor-bot"
+          git config user.email "actions@github.com"
+          git add apps/portal/data/world-monitor.json
+          if git diff --cached --quiet; then
+            echo "Nema promjena."
+            exit 0
+          fi
+          git commit -m "World Monitor: refresh data"
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            git fetch origin main
+            git rebase origin/main || { echo "Rebase konflikt."; exit 1; }
+            sleep $((attempt * 5))
+          done
+          exit 1
