@@ -72,5 +72,6 @@ jobs:
         run: |
           echo "## Image Health" >> "$GITHUB_STEP_SUMMARY"
           if [ -f apps/portal/data/seo-audit/image-health.json ]; then
-            jq . apps/portal/data/seo-audit/image-health.json | head -40 >> "$GITHUB_STEP_SUMMARY"
+            jq . apps/portal/data/seo-audit/image-health.json > "$RUNNER_TEMP/image-health-pretty.json"
+            head -40 "$RUNNER_TEMP/image-health-pretty.json" >> "$GITHUB_STEP_SUMMARY"
           fi
