@@ -21,9 +21,32 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '24'
+      - name: Pripremi durable state bez pomicanja production maina
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "gnk-asg-bot"
+          git config user.email "it@gnk-asg.hr"
+          git fetch origin main --no-tags
+          git reset --hard origin/main
+          git fetch origin automation/blog-mirror-state:refs/remotes/origin/automation/blog-mirror-state --no-tags 2>/dev/null || true
+          remote_state_sha="$(git rev-parse refs/remotes/origin/automation/blog-mirror-state 2>/dev/null || true)"
+          echo "BLOG_MIRROR_REMOTE_SHA=$remote_state_sha" >> "$GITHUB_ENV"
+          git checkout -B automation/blog-mirror-state origin/main
+          path='apps/portal/data/devto-content/published.json'
+          tmp="${path}.state-tmp"
+          if git show "refs/remotes/origin/automation/blog-mirror-state:${path}" > "$tmp" 2>/dev/null \
+            && node -e "JSON.parse(require('fs').readFileSync(process.argv[1],'utf8'))" "$tmp" 2>/dev/null; then
+            mv "$tmp" "$path"
+          else
+            rm -f "$tmp"
+          fi
       - name: Maskiraj kljuc u logovima
         run: echo "::add-mask::${{ inputs.devto_key }}"
       - name: Prvo azuriraj stare objave bez slike
@@ -37,25 +60,36 @@ jobs:
           DEVTO_PER_RUN: '16'
           DEVTO_PAUSE_MS: '10000'
         run: node scripts/devto-publish-v1.mjs --live
-      - name: Commit evidencije objavljenog
+      - name: Spremi Dev.to evidenciju na durable state granu
+        if: always()
+        shell: bash
         run: |
-          git config user.name "gnk-asg-bot"
-          git config user.email "it@gnk-asg.hr"
+          set -euo pipefail
+          test "$(git rev-parse --abbrev-ref HEAD)" = "automation/blog-mirror-state"
           git add apps/portal/data/devto-content/
           if git diff --cached --quiet; then
-            echo "Nema promjena za commit."
+            echo "Nema promjena za spremanje."
             exit 0
           fi
-          git commit -m "Dev.to: evidencija objavljenog"
-          for attempt in 1 2 3 4 5; do
-            if git push origin HEAD:main; then
-              echo "Push uspio (pokusaj $attempt)."
-              exit 0
-            fi
-            echo "Push odbijen (pokusaj $attempt) - main se pomaknuo, radim fetch+rebase i pokusavam ponovno."
-            git fetch origin main
-            git rebase origin/main || { echo "Rebase konflikt - zaustavljam se, evidencija ostaje u workflow logu."; exit 1; }
-            sleep $((attempt * 5))
-          done
-          echo "Push nije uspio nakon 5 pokusaja."
-          exit 1
+          git commit -m "Dev.to: durable evidence sync"
+          expected="${BLOG_MIRROR_REMOTE_SHA:-}"
+          lease="--force-with-lease=refs/heads/automation/blog-mirror-state:${expected}"
+          if git push "$lease" origin HEAD:automation/blog-mirror-state; then
+            exit 0
+          fi
+          git fetch origin automation/blog-mirror-state:refs/remotes/origin/automation/blog-mirror-state --force --no-tags
+          latest="$(git rev-parse refs/remotes/origin/automation/blog-mirror-state)"
+          remote_tmp=/tmp/devto-published-remote.json
+          if git show "refs/remotes/origin/automation/blog-mirror-state:apps/portal/data/devto-content/published.json" > "$remote_tmp" 2>/dev/null; then
+            node - "$remote_tmp" apps/portal/data/devto-content/published.json <<'NODE'
+          const fs=require('fs');
+          const [remotePath,localPath]=process.argv.slice(2);
+          const read=p=>{try{return JSON.parse(fs.readFileSync(p,'utf8'))}catch{return {posted:{}}}};
+          const remote=read(remotePath), local=read(localPath);
+          const merged={...remote,...local,posted:{...(remote.posted||{}),...(local.posted||{})}};
+          fs.writeFileSync(localPath,JSON.stringify(merged,null,2)+'\n');
+          NODE
+          fi
+          git add apps/portal/data/devto-content/
+          git commit --amend --no-edit
+          git push "--force-with-lease=refs/heads/automation/blog-mirror-state:${latest}" origin HEAD:automation/blog-mirror-state
