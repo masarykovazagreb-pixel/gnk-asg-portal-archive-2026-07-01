@@ -8,10 +8,14 @@ const title=english?'Nermin Sefić — columnist':'Nermin Sefić — kolumnist';
 const eyebrow=english?'Columnist · archive':'Kolumnist · arhiva';
 const description=english?'Open the complete archive of columns by Nermin Sefić. Every column retains its own image, date, canonical URL and article metadata.':'Otvorite cjelovitu arhivu kolumni Nermina Sefića. Svaka kolumna zadržava vlastitu sliku, datum, canonical URL i zasebne SEO metapodatke.';
 const cta=english?'Open all columns →':'Otvori sve kolumne →';
+const commentaryUrl=english?'/en/commentary/':'/komentari/';
+const commentaryTitle=english?'Commentary':'Komentari';
+const commentaryEyebrow=english?'Commentary · archive':'Komentari · arhiva';
+const commentaryDescription=english?'Open all GNK ASG commentary in one place. The complete commentary archive stays behind this single AKTUAL entry.':'Otvorite sve komentare GNK ASG na jednom mjestu. Cjelovita arhiva komentara ostaje iza ovog jednog AKTUAL ulaza.';
+const commentaryCta=english?'Open all commentary →':'Otvori sve komentare →';
 
 function hideLegacyGrid(){
-  // NAPOMENA: #akKomentari je stvarna 'Komentari — Nermin Sefić' sekcija (Commentary),
-  // razlicita od Kolumna arhive - namjerno se NE skriva.
+  // #akKomentari is intentionally converted into a single hub card below.
 }
 
 function renderHub(image,count){
@@ -25,6 +29,13 @@ function renderHub(image,count){
   card.classList.add('vidljivo');
 }
 
+function renderCommentaryHub(){
+  const card=document.getElementById('akKomentari');
+  if(!card)return;
+  card.className='ak-kolumna vidljivo';
+  card.innerHTML='<div class="ak-kolumna-autor"><div class="krug">KO</div><b>'+commentaryTitle+'</b><span>'+(english?'GNK ASG editorial':'GNK ASG uredništvo')+'</span></div><div class="ak-kolumna-tijelo"><span class="oznaka">'+commentaryEyebrow+'</span><h2>'+commentaryTitle+'</h2><p>'+commentaryDescription+'</p><a href="'+commentaryUrl+'">'+commentaryCta+'</a></div>';
+}
+
 function removeColumnsFromNews(root){
   const scope=root||document;
   scope.querySelectorAll('a[href*="/gnk-aktual/kolumne/"],a[href*="/en/gnk-aktual/columns/"]').forEach(link=>{
@@ -36,6 +47,7 @@ function removeColumnsFromNews(root){
 
 function boot(){
   hideLegacyGrid();
+  renderCommentaryHub();
   fetch('/data/kolumne.json?v='+Date.now(),{cache:'no-store'})
     .then(r=>r.ok?r.json():null)
     .then(data=>{
@@ -47,6 +59,7 @@ function boot(){
   removeColumnsFromNews(document);
   new MutationObserver(()=>{
     hideLegacyGrid();
+    renderCommentaryHub();
     removeColumnsFromNews(document);
   }).observe(document.body,{childList:true,subtree:true});
 }
