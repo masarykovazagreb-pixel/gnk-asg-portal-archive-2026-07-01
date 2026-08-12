@@ -115,6 +115,85 @@ async function postArticle(article, canonicalPath) {
   throw lastError || new Error('Dev.to objava nije uspjela.');
 }
 
+async function fetchAllMyArticles() {
+  const all = [];
+  for (let page = 1; page <= 20; page++) {
+    const response = await fetch(`https://dev.to/api/articles/me/all?per_page=1000&page=${page}`, {
+      headers: { 'api-key': API_KEY },
+    });
+    if (!response.ok) throw new Error(`Dev.to reconciliation ${response.status}: ${await response.text()}`);
+    const batch = await response.json();
+    if (!Array.isArray(batch)) throw new Error('Dev.to reconciliation returned non-array payload');
+    all.push(...batch);
+    if (batch.length < 1000) break;
+  }
+  return all;
+}
+
+function normalizeCanonical(value = '') {
+  try {
+    const u = new URL(value);
+    u.hash = ''; u.search = '';
+    u.pathname = u.pathname.replace(/\/{2,}/g, '/').replace(/\/$/, '') || '/';
+    return u.toString().replace(/\/$/, '');
+  } catch {
+    return String(value || '').trim().replace(/\/$/, '');
+  }
+}
+
+async function reconcileState(state, pending) {
+  if (!LIVE) return { reconciled: 0 };
+  let remote;
+  try {
+    remote = await fetchAllMyArticles();
+  } catch (error) {
+    console.error('Dev.to reconciliation failed, continuing without it:', error?.message || error);
+    return { reconciled: 0 };
+  }
+  const byCanonical = new Map();
+  for (const article of remote) {
+    const key = normalizeCanonical(article?.canonical_url || '');
+    if (key) byCanonical.set(key, article);
+  }
+  let reconciled = 0;
+  for (const entry of pending) {
+    const wanted = normalizeCanonical(SITE + entry.canonicalPath);
+    const hit = byCanonical.get(wanted);
+    if (!hit) continue;
+    state.posted[entry.canonicalPath] = {
+      at: hit.published_at || hit.created_at || new Date().toISOString(),
+      devtoUrl: hit.url,
+      id: hit.id,
+      reconciledAt: new Date().toISOString(),
+    };
+    reconciled++;
+  }
+  if (reconciled) writeJson(STATE, state);
+  console.log(`Dev.to reconciliation: remote=${remote.length}, local additions=${reconciled}.`);
+  return { reconciled };
+}
+
+async function reconcileOneAfter422(entry, state) {
+  try {
+    const remote = await fetchAllMyArticles();
+    const wanted = normalizeCanonical(SITE + entry.canonicalPath);
+    const hit = remote.find((article) => normalizeCanonical(article?.canonical_url || '') === wanted);
+    if (!hit) return false;
+    state.posted[entry.canonicalPath] = {
+      at: hit.published_at || new Date().toISOString(),
+      devtoUrl: hit.url,
+      id: hit.id,
+      reconciledAt: new Date().toISOString(),
+    };
+    writeJson(STATE, state);
+    console.log(`Reconciled after 422: ${entry.canonicalPath} -> ${hit.url}`);
+    return true;
+  } catch (error) {
+    console.error('Reconcile-after-422 failed:', error?.message || error);
+    return false;
+  }
+}
+
 async function main() {
   const registry = readJson(REGISTRY, { items: [] });
   const state = readJson(STATE, { posted: {} });
@@ -154,7 +233,13 @@ async function main() {
     return;
   }
 
-  for (const entry of batch) {
+  if (LIVE) {
+    const rec = await reconcileState(state, pending);
+    health.reconciled = rec.reconciled;
+  }
+  const freshBatch = LIVE ? candidates(registry, state).slice(0, PER_RUN) : batch;
+
+  for (const entry of freshBatch) {
     health.processed++;
     const article = readArticle(entry.articlePath);
     if (!article) {
@@ -185,7 +270,12 @@ async function main() {
       writeJson(STATE, state);
       console.log(`Objavljeno: ${result.value.url}`);
     } catch (error) {
-      health.failures.push({ path: entry.canonicalPath, error: String(error?.message || error).slice(0, 300) });
+      const msg = String(error?.message || error);
+      if (msg.includes('422') && msg.toLowerCase().includes('canonical')) {
+        const fixed = await reconcileOneAfter422(entry, state);
+        if (fixed) { health.reconciled = (health.reconciled || 0) + 1; await sleep(PAUSE_MS); continue; }
+      }
+      health.failures.push({ path: entry.canonicalPath, error: msg.slice(0, 300) });
     }
     await sleep(PAUSE_MS);
   }
