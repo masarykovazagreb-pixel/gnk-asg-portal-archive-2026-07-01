@@ -64,6 +64,7 @@ for(const file of pages){
 
   const has = re => re.test(html);
   const insertHead = tag => { html = html.replace('</head>', tag+'</head>'); };
+  const defaultOgImg=`${SITE}/assets/people/nermin-sefic/og/nermin-sefic-01-official-desk-portrait.jpg`;
 
   if(!has(/<meta\s+name="description"/i)){
     insertHead(`<meta name="description" content="${attrEsc(desc)}">`); stats.descAdded++;
@@ -76,13 +77,21 @@ for(const file of pages){
   }
   if(!has(/property="og:title"/i)){
     const ogT=pageTitle.split(' | ')[0];
-    const ogImg=`${SITE}/assets/people/nermin-sefic/og/nermin-sefic-01-official-desk-portrait.jpg`;
-    insertHead(`<meta property="og:type" content="website"><meta property="og:title" content="${attrEsc(ogT)}"><meta property="og:description" content="${attrEsc(desc.slice(0,300))}"><meta property="og:url" content="${SITE}${routePath}"><meta property="og:image" content="${ogImg}"><meta property="og:image:type" content="image/jpeg"><meta property="og:image:width" content="1200"><meta property="og:site_name" content="GNK ASG">`);
+    insertHead(`<meta property="og:type" content="website"><meta property="og:title" content="${attrEsc(ogT)}"><meta property="og:description" content="${attrEsc(desc.slice(0,300))}"><meta property="og:url" content="${SITE}${routePath}"><meta property="og:image" content="${defaultOgImg}"><meta property="og:image:type" content="image/jpeg"><meta property="og:image:width" content="1200"><meta property="og:site_name" content="GNK ASG">`);
+    stats.ogAdded++;
+  }
+  // Partial OG sets are common on older/demo pages. Backfill the image even when og:title already exists.
+  if(!has(/property="og:image"/i)){
+    insertHead(`<meta property="og:image" content="${defaultOgImg}"><meta property="og:image:type" content="image/jpeg"><meta property="og:image:width" content="1200">`);
     stats.ogAdded++;
   }
   if(!has(/name="twitter:card"/i)){
-    const ogImg=`${SITE}/assets/people/nermin-sefic/og/nermin-sefic-01-official-desk-portrait.jpg`;
-    insertHead(`<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${attrEsc(pageTitle.split(' | ')[0])}"><meta name="twitter:description" content="${attrEsc(desc.slice(0,240))}"><meta name="twitter:image" content="${ogImg}">`);
+    insertHead(`<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${attrEsc(pageTitle.split(' | ')[0])}"><meta name="twitter:description" content="${attrEsc(desc.slice(0,240))}"><meta name="twitter:image" content="${defaultOgImg}">`);
+    stats.twAdded++;
+  }
+  // Same rule for partial Twitter cards: image is independently required.
+  if(!has(/name="twitter:image"/i)){
+    insertHead(`<meta name="twitter:image" content="${defaultOgImg}">`);
     stats.twAdded++;
   }
   // WebPage JSON-LD linked to canonical Person + Organization if no Person JSON-LD already exists
