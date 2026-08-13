@@ -22,7 +22,7 @@ export const PREVIOUS_PUBLIC_EDITORIAL_VERSION='GNK_ASG_UNIFIED_AUTH_V37_NEWS_SO
 export const ENTRYPOINT='src/index-unified-auth-v23.js';
 export const VERSION=`GNK_ASG_UNIFIED_AUTH_V38_RELEASE_PROOF_NEWS_SOURCE_LINKS_MARKET_ORIGIN_HOTFIX_CONTACT_MAIL_CANONICAL_FEED_${CANONICAL_NEWS_FEED_VERSION}_DYNAMIC_IMAGES_${DYNAMIC_EDITORIAL_IMAGE_VERSION}_${CONTACT_RESILIENCE_VERSION}_${DIGITAL_WORKFORCE_SUITE_VERSION}_${MARKET_DATA_VERSION}_${EDITORIAL_ASSET_VERSION}_${PRODUCT_CATALOG_API_VERSION}_${BESTBUY_PROVIDER_VERSION}_${PUBLIC_CATALOG_VERSION}_${TECH_RADAR_VERSION}_${ENTITY_SEO_VERSION}_${AHD_VERSION}_${BASE_VERSION}`;
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
-const SHARE_ROUTE=/^\/podijeli\/vijest\/([a-z0-9]{8,64})\/?$/i;
+const SHARE_ROUTE=/^\/podijeli\/vijest\/([a-z0-9][a-z0-9_-]{7,63})\/?$/i;
 function stampRelease(response,env){const headers=new Headers(response.headers);headers.set('x-gnk-active-entrypoint',ENTRYPOINT);headers.set('x-gnk-active-release',VERSION);const revision=String(env?.DEPLOY_REVISION||'').trim();if(revision)headers.set('x-gnk-deploy-revision',revision);return new Response(response.body,{status:response.status,statusText:response.statusText,headers});}
 async function finishPublicResponse(response,request,env){return stampRelease(await enhancePublicEntitySeo(response,request),env)}
 async function fetchCurrentNews(env,method='GET'){if(!env.ASSETS?.fetch)return null;const response=await env.ASSETS.fetch(new Request(new URL('/data/news.json','https://assets.local'),{method,headers:{accept:'application/json'},redirect:'follow'}));return response.status===200?response:null;}
