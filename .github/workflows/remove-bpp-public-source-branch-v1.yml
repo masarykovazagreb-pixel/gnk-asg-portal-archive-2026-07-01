@@ -1,0 +1,39 @@
+name: P0 BPP public source branch sanitizer
+
+on:
+  push:
+    branches:
+      - fix/remove-bpp-public-source-20260813-v2
+
+permissions:
+  contents: write
+
+jobs:
+  sanitize-public-source:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout cleanup branch
+        uses: actions/checkout@v4
+        with:
+          ref: fix/remove-bpp-public-source-20260813-v2
+          fetch-depth: 0
+
+      - name: Sanitize public HTML and verify zero BPP references
+        run: |
+          node scripts/remove-bpp-public-v1.mjs --write
+          node scripts/remove-bpp-public-v1.mjs
+          git diff --check
+
+      - name: Commit deterministic cleanup and remove transient runner
+        shell: bash
+        run: |
+          git config user.name "gnk-asg-bpp-cleanup-bot"
+          git config user.email "actions@github.com"
+          git rm .github/workflows/remove-bpp-public-source-branch-v1.yml
+          git add apps/portal scripts/remove-bpp-public-v1.mjs
+          if git diff --cached --quiet; then
+            echo "No source changes required."
+            exit 0
+          fi
+          git commit -m "P0: remove BPP from public indexed source"
+          git push origin HEAD:fix/remove-bpp-public-source-20260813-v2
