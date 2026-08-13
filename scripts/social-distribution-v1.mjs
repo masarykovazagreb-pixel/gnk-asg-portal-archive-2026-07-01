@@ -134,9 +134,9 @@ function pickDigestItem(worldMonitor, cibonaNews, weather, market, state) {
   if (econ?.state === 'live' && econ.items?.[0]) {
     lines.push({ label_hr: 'Ekonomija', label_en: 'Economy', value: econ.items[0].title });
   }
-  const conflicts = wmCats.geopolitical?.conflicts;
-  if (conflicts?.state === 'live' && conflicts.items?.[0]) {
-    lines.push({ label_hr: 'Svijet', label_en: 'World', value: conflicts.items[0].title });
+  const events = wmCats.natural?.events;
+  if (events?.state === 'live' && events.items?.[0]) {
+    lines.push({ label_hr: 'Prirodni događaj', label_en: 'Natural event', value: events.items[0].title });
   }
   const cibonaItem = (cibonaNews?.items || [])[0];
   if (cibonaItem) {
