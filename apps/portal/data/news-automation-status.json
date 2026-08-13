@@ -1,7 +1,7 @@
 {
   "ok": true,
   "status": "refreshed",
-  "updated_at": "2026-08-13T12:19:56+02:00",
+  "updated_at": "2026-08-13T13:56:20+02:00",
   "engine": "single_publication_engine_v14_github_actions",
   "cadence": "hourly at minute 12 UTC; watchdog recovery if stale",
   "timezone": "Europe/Zagreb",
@@ -61,7 +61,7 @@
     {
       "source": "The Independent Business",
       "ok": true,
-      "items": 8,
+      "items": 11,
       "error": null
     },
     {
@@ -108,9 +108,9 @@
     },
     {
       "source": "Engadget",
-      "ok": true,
-      "items": 8,
-      "error": null
+      "ok": false,
+      "items": 0,
+      "error": "fetch failed"
     },
     {
       "source": "BBC Technology",
@@ -139,7 +139,7 @@
     {
       "source": "CoinDesk",
       "ok": true,
-      "items": 23,
+      "items": 22,
       "error": null
     },
     {
@@ -175,7 +175,7 @@
     {
       "source": "The Hindu BusinessLine",
       "ok": true,
-      "items": 46,
+      "items": 44,
       "error": null
     },
     {
@@ -205,13 +205,13 @@
     {
       "source": "The Japan Times",
       "ok": true,
-      "items": 29,
+      "items": 28,
       "error": null
     },
     {
       "source": "Channel News Asia",
       "ok": true,
-      "items": 6,
+      "items": 4,
       "error": null
     },
     {
@@ -253,7 +253,7 @@
     {
       "source": "BBC News",
       "ok": true,
-      "items": 31,
+      "items": 34,
       "error": null
     },
     {
@@ -319,7 +319,7 @@
     {
       "source": "Poslovni dnevnik",
       "ok": true,
-      "items": 16,
+      "items": 17,
       "error": null
     },
     {
@@ -342,9 +342,9 @@
     },
     {
       "source": "Netokracija",
-      "ok": false,
-      "items": 0,
-      "error": "fetch failed"
+      "ok": true,
+      "items": 10,
+      "error": null
     },
     {
       "source": "NASA Breaking News",
@@ -421,7 +421,7 @@
     {
       "source": "BBC Newsround",
       "ok": true,
-      "items": 76,
+      "items": 75,
       "error": null
     },
     {
@@ -469,7 +469,7 @@
     {
       "source": "BBC Sport",
       "ok": true,
-      "items": 72,
+      "items": 74,
       "error": null
     },
     {
