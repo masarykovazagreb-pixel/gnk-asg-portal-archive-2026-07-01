@@ -9,6 +9,6 @@ function addScript(path){if(document.querySelector('script[src^="'+path+'"]')){r
 function isEnglish(){return document.documentElement.lang==='en'||/\/en(?:\/|$)/.test(window.location.pathname);}
 function adjustDeskLink(){var link=document.querySelector('#aiMini .ai-full-link');if(!link){return false;}if(!document.getElementById('assistant')){link.setAttribute('href',isEnglish()?'/en/intelligence-desk/':'/intelligence-desk/');}return true;}
 function watchDesk(){var tries=0;var timer=window.setInterval(function(){tries+=1;if(adjustDeskLink()||tries>60){window.clearInterval(timer);}},100);}
-function start(){normalizeDataFetch();addCss('/assets/site-share.css');addCss('/assets/floating-intelligence.css');addCss('/assets/bpp-public-card.css');addScript('/assets/site-share.js');addScript('/assets/content-share.js');addScript('/assets/share-routing-fix.js');addScript('/assets/share-permanent-cards.js');addScript('/assets/floating-intelligence.js');addScript('/assets/bpp-public-card.js');watchDesk();}
+function start(){normalizeDataFetch();addCss('/assets/site-share.css');addCss('/assets/floating-intelligence.css');addScript('/assets/site-share.js');addScript('/assets/content-share.js');addScript('/assets/share-routing-fix.js');addScript('/assets/share-permanent-cards.js');addScript('/assets/floating-intelligence.js');watchDesk();}
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',start);}else{start();}
 }());

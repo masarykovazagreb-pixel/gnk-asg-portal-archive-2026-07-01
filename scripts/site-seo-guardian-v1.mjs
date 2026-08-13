@@ -10,6 +10,7 @@
 //   - JSON-LD WebPage graf linkan na kanonski Person + Organization  (dodano samo ako nedostaje)
 //   - alt/title enrichment za portret/logo/chart slike (isti standardi kao editorial)
 // Aditivno u svakom koraku, nikad ne uklanja postojeće metapodatke.
+import './remove-bpp-public-v2.mjs';
 import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
