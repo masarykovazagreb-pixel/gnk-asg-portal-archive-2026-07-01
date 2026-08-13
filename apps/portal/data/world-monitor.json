@@ -1,10 +1,24 @@
 {
-  "updated_at": "2026-08-13T08:44:05.289Z",
+  "updated_at": "2026-08-13T10:28:22.357Z",
   "categories": {
     "natural": {
       "seismology": {
         "state": "live",
         "items": [
+          {
+            "title": "M 5.1 - 22 km ENE of Lapuan, Philippines",
+            "magnitude": 5.1,
+            "place": "22 km ENE of Lapuan, Philippines",
+            "time": "2026-08-13T09:22:58.999Z",
+            "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000tkfh"
+          },
+          {
+            "title": "M 4.5 - 222 km SSW of Severo-Kuril’sk, Russia",
+            "magnitude": 4.5,
+            "place": "222 km SSW of Severo-Kuril’sk, Russia",
+            "time": "2026-08-13T07:09:24.608Z",
+            "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000tkeb"
+          },
           {
             "title": "M 5.1 - 59 km NNW of Barishal, Pakistan",
             "magnitude": 5.1,
@@ -46,20 +60,6 @@
             "place": "15 km WSW of Honmachi, Japan",
             "time": "2026-08-12T21:21:29.025Z",
             "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000tkaw"
-          },
-          {
-            "title": "M 4.6 - 55 km SW of Champerico, Guatemala",
-            "magnitude": 4.6,
-            "place": "55 km SW of Champerico, Guatemala",
-            "time": "2026-08-12T11:56:29.774Z",
-            "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000tk75"
-          },
-          {
-            "title": "M 6.0 - South Sandwich Islands region",
-            "magnitude": 6,
-            "place": "South Sandwich Islands region",
-            "time": "2026-08-12T11:47:12.117Z",
-            "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000tk74"
           }
         ],
         "source_name": "USGS Earthquake Hazards Program",
@@ -69,7 +69,7 @@
     "geopolitical": {
       "conflicts": {
         "state": "unavailable",
-        "error": "GDELT non-JSON response (status 429): Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com"
+        "error": "fetch failed"
       }
     },
     "economy": {
