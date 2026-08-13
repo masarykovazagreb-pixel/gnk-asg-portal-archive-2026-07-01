@@ -40,18 +40,18 @@ async function fetchSeismology() {
   return { state: 'live', items, source_name: 'USGS Earthquake Hazards Program', source_url: 'https://earthquake.usgs.gov/' };
 }
 
-async function fetchReliefWeb() {
-  // ReliefWeb (UN OCHA) — javni API bez kljuca, institucionalno pouzdana
-  // infrastruktura (GDELT je bio nestabilan na dijeljenim CI IP adresama).
-  const url = 'https://api.reliefweb.int/v2/reports?appname=gnk-asg-portal&limit=8&sort[]=date:desc&fields[include][]=title&fields[include][]=url&fields[include][]=date&fields[include][]=country&profile=list';
+async function fetchEonet() {
+  // NASA EONET — javni API bez kljuca (razlicit od placenog api.nasa.gov sustava).
+  // Aktivni prirodni dogadaji: pozari, vulkani, oluje, poplave.
+  const url = 'https://eonet.gsfc.nasa.gov/api/v3/events?status=open&limit=8';
   const data = await fetchJson(url);
-  const items = (data.data || []).slice(0, 8).map((r) => ({
-    title: r.fields?.title,
-    country: (r.fields?.country || []).map((c) => c.name).join(', '),
-    time: r.fields?.date?.created,
-    url: r.fields?.url || `https://reliefweb.int/node/${r.id}`,
+  const items = (data.events || []).slice(0, 8).map((e) => ({
+    title: e.title,
+    category: (e.categories || []).map((c) => c.title).join(', '),
+    time: e.geometry?.[e.geometry.length - 1]?.date,
+    url: e.sources?.[0]?.url || `https://eonet.gsfc.nasa.gov/api/v3/events/${e.id}`,
   }));
-  return { state: 'live', items, source_name: 'ReliefWeb (UN OCHA)', source_url: 'https://reliefweb.int/' };
+  return { state: 'live', items, source_name: 'NASA EONET', source_url: 'https://eonet.gsfc.nasa.gov/' };
 }
 
 async function fetchWorldBankEconomic() {
@@ -77,10 +77,7 @@ async function safeFetch(fn) {
 const payload = {
   updated_at: new Date().toISOString(),
   categories: {
-    natural: { seismology: await safeFetch(fetchSeismology) },
-    geopolitical: {
-      conflicts: await safeFetch(fetchReliefWeb),
-    },
+    natural: { seismology: await safeFetch(fetchSeismology), events: await safeFetch(fetchEonet) },
     economy: { economic: await safeFetch(fetchWorldBankEconomic) },
   },
 };
