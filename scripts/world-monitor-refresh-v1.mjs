@@ -40,23 +40,18 @@ async function fetchSeismology() {
   return { state: 'live', items, source_name: 'USGS Earthquake Hazards Program', source_url: 'https://earthquake.usgs.gov/' };
 }
 
-async function fetchGdelt(query, sourceLabel) {
-  const url = `https://api.gdeltproject.org/api/v2/doc/doc?query=${encodeURIComponent(query)}&mode=artlist&maxrecords=8&timespan=24H&format=json&sort=hybridrel`;
-  const ac2 = new AbortController();
-  const t2 = setTimeout(() => ac2.abort(), 20000);
-  const r2 = await fetch(url, { signal: ac2.signal, headers: { accept: 'application/json', 'user-agent': 'gnk-asg-portal/1.0 (contact: it@gnk-asg.hr)' } });
-  clearTimeout(t2);
-  const raw = await r2.text();
-  let data;
-  try { data = JSON.parse(raw); } catch { throw new Error(`GDELT non-JSON response (status ${r2.status}): ${raw.slice(0, 80)}`); }
-  if (!r2.ok) throw new Error(`HTTP ${r2.status}`);
-  const items = (data.articles || []).slice(0, 8).map((a) => ({
-    title: a.title,
-    domain: a.domain,
-    time: a.seendate,
-    url: a.url,
+async function fetchReliefWeb() {
+  // ReliefWeb (UN OCHA) — javni API bez kljuca, institucionalno pouzdana
+  // infrastruktura (GDELT je bio nestabilan na dijeljenim CI IP adresama).
+  const url = 'https://api.reliefweb.int/v2/reports?appname=gnk-asg-portal&limit=8&sort[]=date:desc&fields[include][]=title&fields[include][]=url&fields[include][]=date&fields[include][]=country&profile=list';
+  const data = await fetchJson(url);
+  const items = (data.data || []).slice(0, 8).map((r) => ({
+    title: r.fields?.title,
+    country: (r.fields?.country || []).map((c) => c.name).join(', '),
+    time: r.fields?.date?.created,
+    url: r.fields?.url || `https://reliefweb.int/node/${r.id}`,
   }));
-  return { state: 'live', items, source_name: `GDELT Project (${sourceLabel})`, source_url: 'https://www.gdeltproject.org/' };
+  return { state: 'live', items, source_name: 'ReliefWeb (UN OCHA)', source_url: 'https://reliefweb.int/' };
 }
 
 async function fetchWorldBankEconomic() {
@@ -84,7 +79,7 @@ const payload = {
   categories: {
     natural: { seismology: await safeFetch(fetchSeismology) },
     geopolitical: {
-      conflicts: await safeFetch(() => fetchGdelt('armed conflict OR clash OR protest OR riot OR unrest', 'Conflicts & Unrest')),
+      conflicts: await safeFetch(fetchReliefWeb),
     },
     economy: { economic: await safeFetch(fetchWorldBankEconomic) },
   },
