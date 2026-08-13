@@ -8,6 +8,8 @@
 <meta name="robots" content="index,follow,max-image-preview:large">
 <link rel="canonical" href="https://gnk-asg.hr/gnk-aktual/kolumne/">
 <link rel="alternate" hreflang="hr" href="https://gnk-asg.hr/gnk-aktual/kolumne/">
+<link rel="alternate" hreflang="en" href="https://gnk-asg.hr/en/gnk-aktual/columns/">
+<link rel="alternate" hreflang="x-default" href="https://gnk-asg.hr/gnk-aktual/kolumne/">
 <meta property="og:type" content="profile">
 <meta property="og:site_name" content="AKTUAL MEDIA">
 <meta property="og:title" content="Nermin Sefić — kolumnist | AKTUAL MEDIA">
@@ -55,7 +57,7 @@
   const unique=items.filter((x,i,a)=>a.findIndex(y=>y.url===x.url)===i).sort((a,b)=>String(b.objavljeno||'').localeCompare(String(a.objavljeno||'')));
   const root=document.getElementById('columns');
   if(!unique.length){root.innerHTML='<p class="empty">Kolumne trenutačno nisu dostupne.</p>';return}
-  root.innerHTML=unique.map(k=>{const img=k.slika||portrait,summary=text(k.meta_opis||k.tekst||'').slice(0,180),date=k.objavljeno?new Date(k.objavljeno).toLocaleDateString('hr-HR'):'',tag=k.tag||'Kolumna Nermina Sefića';return '<a class="card" href="'+esc(k.url)+'"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(k.naslov)+' — Nermin Sefić"><div class="body"><span class="tag">'+esc(tag)+'</span><h2>'+esc(k.naslov)+'</h2><p class="summary">'+esc(summary)+(summary.length===180?'…':'')+'</p><div class="meta">'+esc(date)+' · AKTUAL MEDIA</div></div></a>'}).join('');
+  root.innerHTML=unique.map(k=>{const img=k.slika||portrait,summary=text(k.meta_opis||k.tekst||'').slice(0,180),date=k.objavljeno?new Date(k.objavljeno).toLocaleDateString('hr-HR'):'',tag=k.tag||'Kolumna Nermina Sefića';return '<a class="card" href="'+esc(k.url)+'"><img loading="lazy" width="1600" height="900" src="'+esc(img)+'" alt="'+esc(k.naslov)+' — Nermin Sefić"><div class="body"><span class="tag">'+esc(tag)+'</span><h2>'+esc(k.naslov)+'</h2><p class="summary">'+esc(summary)+(summary.length===180?'…':'')+'</p><div class="meta">'+esc(date)+' · AKTUAL MEDIA</div></div></a>'}).join('');
  }).catch(()=>{document.getElementById('columns').innerHTML='<p class="empty">Kolumne trenutačno nisu dostupne.</p>'});
 })();
 </script>
