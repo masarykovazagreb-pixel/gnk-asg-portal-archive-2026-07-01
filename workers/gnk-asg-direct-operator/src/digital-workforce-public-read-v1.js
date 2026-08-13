@@ -1,7 +1,11 @@
-export const VERSION='GNK_ASG_DIGITAL_WORKFORCE_PUBLIC_READ_V1_20260808';
+export const VERSION='GNK_ASG_DIGITAL_WORKFORCE_PUBLIC_READ_V2_20260813';
 
 const PREFIX='/api/public/digital-workforce/';
-const PUBLIC_VIEWS=new Set(['state','plan','projects','risks','opinions','dependencies','tasks','credits','newsroom','workers','activity-log','bulletins']);
+// Truthful compatibility layer is deliberately narrow. Operational views such as
+// projects/tasks/activity-log/bulletins are owned by digital-workforce-suite-v1.js.
+// Keeping them out of this layer prevents empty compatibility payloads from
+// shadowing the existing Workforce Suite reports and bulletins.
+const PUBLIC_VIEWS=new Set(['state','workers']);
 const TOTAL_WORKER_PROFILES=1573;
 const now=()=>new Date().toISOString();
 const json=(payload,status=200)=>new Response(JSON.stringify(payload,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','access-control-allow-origin':'*','x-gnk-workforce-data-semantics':'operational-model-not-runtime-evidence','x-gnk-workforce-public-read':VERSION}});
