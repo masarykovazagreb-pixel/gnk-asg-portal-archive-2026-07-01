@@ -24,7 +24,7 @@ function assertMarketPayload(file, data) {
   }
   if (file.endsWith('fast_market_status.json')) {
     const status = String(data.status || '').toLowerCase();
-    if (!status || status === 'degraded' || status === 'error' || status === 'failed') fail('Fast market operational status', status || 'missing status');
+    if (!status || ['degraded', 'error', 'failed', 'unavailable'].includes(status)) fail('Fast market operational status', status || 'missing status');
     else ok('Fast market operational status', status);
     if (typeof data.indices === 'number' && data.indices <= 0) fail('Fast market indices count', String(data.indices));
     else if (typeof data.indices === 'number') ok('Fast market indices count', String(data.indices));
@@ -61,8 +61,8 @@ for (const f of jsFiles) {
 }
 
 try {
-  const status = JSON.parse(fs.readFileSync('apps/portal/data/update_status.json', 'utf8'));
-  const statusTimestamp = status?.news?.last_successful_refresh_at || status?.news?.updated_at || status?.updated_at;
+  const status = JSON.parse(fs.readFileSync('apps/portal/data/news-automation-status.json', 'utf8'));
+  const statusTimestamp = status?.updated_at || status?.last_successful_refresh_at;
   let feedTimestamp = null;
   try {
     const news = JSON.parse(fs.readFileSync('apps/portal/data/news.json', 'utf8'));
@@ -79,8 +79,9 @@ try {
     .filter(value => value && !Number.isNaN(Date.parse(value)))
     .sort((a, b) => Date.parse(b) - Date.parse(a))[0];
   assertFresh('Repository news freshness', freshnessTimestamp, MAX_NEWS_AGE_HOURS);
-  if (!['ok', 'degraded'].includes(status?.news?.status)) fail('Repository news status', String(status?.news?.status || 'missing'));
-  else ok('Repository news status', status.news.status);
+  const newsOk = status?.ok === true && ['refreshed', 'ok', 'healthy'].includes(String(status?.status || '').toLowerCase());
+  if (!newsOk) fail('Repository news status', `ok=${String(status?.ok)} status=${String(status?.status || 'missing')}`);
+  else ok('Repository news status', String(status.status));
 } catch (err) { fail('Repository news freshness', String(err.message || err)); }
 
 for (const [file, label] of [
@@ -90,7 +91,7 @@ for (const [file, label] of [
 ]) {
   try {
     const data = JSON.parse(fs.readFileSync(file, 'utf8'));
-    assertFresh(label, data.updated_at || data.checked_at || data.last_updated_at, MAX_MARKET_AGE_HOURS);
+    assertFresh(label, data.timestamp_utc || data.updated_at || data.checked_at || data.last_updated_at, MAX_MARKET_AGE_HOURS);
     assertMarketPayload(file, data);
   } catch (err) { fail(label, String(err.message || err)); }
 }
