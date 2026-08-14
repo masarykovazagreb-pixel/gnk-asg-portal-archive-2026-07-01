@@ -23,5 +23,9 @@ Cadence reductions:
 - World Monitor: hourly to four times daily.
 - Automation SLA watchdog: hourly to twice daily.
 - Image Health Scan: daily to weekly.
+- GNK News Refresh V2: hourly to six times daily (every four hours).
+- Site Health Check: four times daily to twice daily, staggered against the twice-daily SLA watchdog.
+
+The allowlist validator calculates 38 invocations Monday-Saturday and 39 on Sunday (the weekly image scan), averaging 38.142857 scheduled workflow invocations per day.
 
 The exact-SHA `Deploy Admin Auth V6` release workflow remains manual-only. SOCIAL LIVE remains off.

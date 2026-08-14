@@ -8,9 +8,9 @@ on:
       - 'scripts/normalize-aktual-hourly-contract.mjs'
       - 'ops/automation-kill-switches.json'
   schedule:
-    # Canonical AKTUAL owner: refresh every hour at minute 12 UTC.
+    # Canonical AKTUAL owner: refresh six times daily, every four hours.
     # Operational watchdog separately verifies the result and can redispatch this writer.
-    - cron: '12 * * * *'
+    - cron: '12 1,5,9,13,17,21 * * *'
 
 permissions:
   contents: write
@@ -55,7 +55,7 @@ jobs:
         if: steps.control.outputs.should_run == 'true'
         run: node scripts/gnk-news-refresh.mjs
 
-      - name: Normalize public hourly contract
+      - name: Normalize public refresh contract
         if: steps.control.outputs.should_run == 'true'
         run: |
           node scripts/normalize-aktual-hourly-contract.mjs
@@ -69,9 +69,9 @@ jobs:
           const status = JSON.parse(fs.readFileSync('apps/portal/data/news-automation-status.json','utf8'));
           const news = JSON.parse(fs.readFileSync('apps/portal/data/news.json','utf8'));
           if (!status.ok) throw new Error('AKTUAL status is not OK');
-          if (status.scheduled_interval_hours !== 1) throw new Error('AKTUAL cadence contract is not hourly');
+          if (status.scheduled_interval_hours !== 4) throw new Error('AKTUAL cadence contract is not four-hourly');
           if (!Array.isArray(news) || news.length < 50) throw new Error(`AKTUAL public feed too small: ${news.length}`);
-          console.log(`AKTUAL validated: ${news.length} items, hourly contract active.`);
+          console.log(`AKTUAL validated: ${news.length} items, six-refresh daily contract active.`);
           NODE
 
       - name: Commit refreshed news data

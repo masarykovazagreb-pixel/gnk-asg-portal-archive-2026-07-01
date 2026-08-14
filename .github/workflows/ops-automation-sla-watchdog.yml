@@ -114,8 +114,8 @@ jobs:
                   failures.append('AKTUAL data status ok=false')
               if int(status.get('public_items_written') or 0) < 50:
                   failures.append(f'AKTUAL public feed too small: {status.get("public_items_written")}')
-              if age > 110:
-                  failures.append(f'AKTUAL data stale {age:.1f} min > 110 min SLA')
+              if age > 290:
+                  failures.append(f'AKTUAL data stale {age:.1f} min > 290 min SLA')
                   dispatch('gnk-news-refresh-v2.yml')
           except Exception as exc:
               failures.append(f'AKTUAL status unreadable: {exc}')
@@ -137,7 +137,7 @@ jobs:
                   failures.append(f'{label}: live check failed: {exc}')
 
           # 3) Canonical writer/control SLAs. A stale check dispatches the EXISTING owner only.
-          ensure_age('gnk-news-refresh-v2.yml', 130, 'AKTUAL canonical refresh')
+          ensure_age('gnk-news-refresh-v2.yml', 310, 'AKTUAL canonical refresh')
           ensure_age('blog-mirror-publish.yml', 420, 'Blogger + Dev.to + Tumblr + Telegraph distribution')
           ensure_age('gnk-seo-nightly-audit.yml', 1800, 'Nightly SEO/IndexNow audit')
 
@@ -172,8 +172,8 @@ jobs:
         if: always()
         run: |
           echo '## GNK ASG Automation SLA Watchdog' >> "$GITHUB_STEP_SUMMARY"
-          echo '- AKTUAL freshness target: **<= 110 min**' >> "$GITHUB_STEP_SUMMARY"
-          echo '- Canonical AKTUAL run target: **<= 130 min**' >> "$GITHUB_STEP_SUMMARY"
+          echo '- AKTUAL freshness target: **<= 290 min**' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Canonical AKTUAL run target: **<= 310 min**' >> "$GITHUB_STEP_SUMMARY"
           echo '- Blogger / Dev.to / Tumblr / Telegraph target: **<= 7 h (4/4)**' >> "$GITHUB_STEP_SUMMARY"
           echo '- Nightly SEO/IndexNow target: **<= 30 h**' >> "$GITHUB_STEP_SUMMARY"
           echo '- Editorial: **successful run required each Zagreb day after 10:35**' >> "$GITHUB_STEP_SUMMARY"

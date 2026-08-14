@@ -16,7 +16,7 @@ const evaluate = (name, path, stampKeys, maxAgeMinutes, sourceStateKeys = []) =>
 };
 const resources = {
   weather:evaluate('Weather','apps/portal/data/weather-zagreb.json',['updated_at','checked_at'],180,['state']),
-  aktual:evaluate('News/AKTUAL','apps/portal/data/news-automation-status.json',['updated_at'],110,['ok','status']),
+  aktual:evaluate('News/AKTUAL','apps/portal/data/news-automation-status.json',['updated_at'],290,['ok','status']),
   digitalAssets:evaluate('Digital Assets','apps/portal/data/update_status.json',['updated_at'],1080,['status']),
 };
 const values = Object.values(resources);

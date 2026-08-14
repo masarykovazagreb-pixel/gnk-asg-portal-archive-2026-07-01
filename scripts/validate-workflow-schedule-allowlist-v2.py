@@ -11,6 +11,22 @@ WORKFLOWS = ROOT / ".github" / "workflows"
 ALLOWLIST = ROOT / "ops" / "production-workflow-allowlist-v2.json"
 
 
+def daily_invocations(cron: str) -> tuple[float, list[int]]:
+    """Return average/day and Sunday-first per-day counts for simple production crons."""
+    fields = cron.split()
+    if len(fields) != 5 or fields[2] != "*" or fields[3] != "*":
+        raise ValueError(f"Unsupported production cron shape: {cron}")
+    hours = 24 if fields[1] == "*" else len(fields[1].split(","))
+    if fields[4] == "*":
+        days = [hours] * 7
+    elif fields[4].isdigit() and 0 <= int(fields[4]) <= 6:
+        days = [0] * 7
+        days[int(fields[4])] = hours
+    else:
+        raise ValueError(f"Unsupported production day-of-week field: {cron}")
+    return sum(days) / 7, days
+
+
 def scheduled_workflows() -> dict[str, list[str]]:
     result: dict[str, list[str]] = {}
     for path in sorted((*WORKFLOWS.glob("*.yml"), *WORKFLOWS.glob("*.yaml"))):
@@ -36,7 +52,14 @@ def main() -> int:
     for name in sorted(set(actual) & set(allowed)):
         if actual[name] != allowed[name]:
             errors.append(f"Cron drift for {name}: actual={actual[name]} allowed={allowed[name]}")
-    print(json.dumps({"version":"GNK_ASG_WORKFLOW_SCHEDULE_GATE_V2","scheduledWorkflows":actual,"count":len(actual),"errors":errors}, indent=2))
+    daily = [0] * 7
+    average = 0.0
+    for crons in actual.values():
+        for cron in crons:
+            cron_average, cron_days = daily_invocations(cron)
+            average += cron_average
+            daily = [left + right for left, right in zip(daily, cron_days)]
+    print(json.dumps({"version":"GNK_ASG_WORKFLOW_SCHEDULE_GATE_V2","scheduledWorkflows":actual,"count":len(actual),"scheduledInvocationsPerDay":{"sundayThroughSaturday":daily,"average":round(average, 6)},"errors":errors}, indent=2))
     return 1 if errors else 0
 
 
