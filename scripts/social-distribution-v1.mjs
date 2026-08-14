@@ -26,6 +26,7 @@
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { dirname } from 'node:path';
+import { publishedItems } from './lib/publication-gate-v2.mjs';
 
 const SITE = 'https://gnk-asg.hr';
 const DATA_DIR = 'apps/portal/data/social-distribution';
@@ -110,7 +111,7 @@ function zagrebSlot() {
 }
 
 function pickMorningItem(registry, state) {
-  const items = (registry.items || [])
+  const items = publishedItems(registry)
     .filter(x => x?.path && x?.url && !state.usedIds?.includes(x.path))
     .sort((a, b) => new Date(b.publishedAt || 0) - new Date(a.publishedAt || 0));
   return items[0] || null;

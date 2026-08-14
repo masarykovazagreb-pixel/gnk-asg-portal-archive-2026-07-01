@@ -3,6 +3,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
+import { publishedItems } from './lib/publication-gate-v2.mjs';
 
 const ROOT = process.cwd();
 const REGISTRY = resolve(ROOT, 'apps/portal/data/editorial-registry.json');
@@ -37,7 +38,7 @@ function runPublisher() {
 function currentPublicationState() {
   const registry = readJson(REGISTRY, { items: [] });
   const state = readJson(STATE, { posted: {} });
-  const items = Array.isArray(registry.items) ? registry.items : [];
+  const items = publishedItems(registry);
   const posted = state && typeof state.posted === 'object' && state.posted ? state.posted : {};
   const pending = items.filter((item) => item?.path && !posted[item.path]).length;
   return {

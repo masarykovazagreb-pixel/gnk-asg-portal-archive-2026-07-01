@@ -57,7 +57,9 @@ jobs:
 
       - name: Normalize public hourly contract
         if: steps.control.outputs.should_run == 'true'
-        run: node scripts/normalize-aktual-hourly-contract.mjs
+        run: |
+          node scripts/normalize-aktual-hourly-contract.mjs
+          node scripts/freshness-status-v2.mjs
 
       - name: Validate AKTUAL output before commit
         if: steps.control.outputs.should_run == 'true'
@@ -82,6 +84,7 @@ jobs:
             apps/portal/data/news.json \
             apps/portal/data/news_archive.json \
             apps/portal/data/news-automation-status.json \
+            apps/portal/data/freshness-status.json \
             apps/portal/gnk-aktual/index.html
           if git diff --cached --quiet; then
             echo "No news data changes to commit."

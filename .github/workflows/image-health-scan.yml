@@ -70,7 +70,7 @@ jobs:
           if [ "${APPLY_FIXES:-0}" = "1" ]; then
             sha="$(git rev-parse HEAD)"
             gh workflow run deploy-admin-auth-v6.yml \
-              --repo beckuphome-gnk/gnk-asg-portal \
+              --repo "$GITHUB_REPOSITORY" \
               --ref main \
               -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
               -f approved_sha="$sha"

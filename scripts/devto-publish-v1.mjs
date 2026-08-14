@@ -7,6 +7,7 @@
  */
 import { readFileSync, existsSync, writeFileSync, mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
+import { publishedItems } from './lib/publication-gate-v2.mjs';
 
 const PORTAL = resolve('apps/portal');
 const REGISTRY = resolve('apps/portal/data/editorial-registry.json');
@@ -170,7 +171,7 @@ async function main() {
     throw e;
   }
 
-  const svi = registry.items || [];
+  const svi = publishedItems(registry);
   const enZapisi = svi.filter((i) => i.lang === 'en');
   const hrZapisiBezEn = svi.filter((i) => i.lang !== 'en' && !enZapisi.some((e) => e.path.includes(i.slug)));
   const pending = [];

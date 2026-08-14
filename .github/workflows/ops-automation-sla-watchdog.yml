@@ -138,9 +138,7 @@ jobs:
 
           # 3) Canonical writer/control SLAs. A stale check dispatches the EXISTING owner only.
           ensure_age('gnk-news-refresh-v2.yml', 130, 'AKTUAL canonical refresh')
-          ensure_age('blog-mirror-publish.yml', 420, 'Blogger + Dev.to + Tumblr distribution')
-          ensure_age('telegraph-mirror-publish.yml', 420, 'Telegraph distribution')
-          ensure_age('mirror-sync-masarykova.yml', 480, 'Masarykova backup mirror')
+          ensure_age('blog-mirror-publish.yml', 420, 'Blogger + Dev.to + Tumblr + Telegraph distribution')
           ensure_age('gnk-seo-nightly-audit.yml', 1800, 'Nightly SEO/IndexNow audit')
 
           # 4) Daily editorial must have a successful run today after the 10:20 CEST slot + grace.
@@ -176,9 +174,7 @@ jobs:
           echo '## GNK ASG Automation SLA Watchdog' >> "$GITHUB_STEP_SUMMARY"
           echo '- AKTUAL freshness target: **<= 110 min**' >> "$GITHUB_STEP_SUMMARY"
           echo '- Canonical AKTUAL run target: **<= 130 min**' >> "$GITHUB_STEP_SUMMARY"
-          echo '- Blogger / Dev.to / Tumblr target: **<= 7 h**' >> "$GITHUB_STEP_SUMMARY"
-          echo '- Telegraph target: **<= 7 h**' >> "$GITHUB_STEP_SUMMARY"
-          echo '- Masarykova mirror target: **<= 8 h**' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Blogger / Dev.to / Tumblr / Telegraph target: **<= 7 h (4/4)**' >> "$GITHUB_STEP_SUMMARY"
           echo '- Nightly SEO/IndexNow target: **<= 30 h**' >> "$GITHUB_STEP_SUMMARY"
           echo '- Editorial: **successful run required each Zagreb day after 10:35**' >> "$GITHUB_STEP_SUMMARY"
           echo '- Recovery policy: **dispatch canonical owner only; watchdog never becomes a second writer**' >> "$GITHUB_STEP_SUMMARY"

@@ -13,7 +13,9 @@ await writeFile(statusPath, JSON.stringify(status, null, 2) + '\n', 'utf8');
 let hr = await readFile(hrPath, 'utf8');
 hr = hr
   .replaceAll('Ažurira se svaka dva sata.', 'Ažurira se svaki sat.')
+  .replaceAll('Ažurira se svaka dva sata', 'Ažurira se svaki sat')
   .replaceAll('Ažurira se svaka 2 sata.', 'Ažurira se svaki sat.')
+  .replaceAll('Sadržaj se automatski osvježava svaka dva sata', 'Sadržaj se automatski osvježava svaki sat')
   .replaceAll('ažurira se svaka dva sata', 'ažurira se svaki sat')
   .replaceAll('ažurira se svaka 2 sata', 'ažurira se svaki sat');
 await writeFile(hrPath, hr, 'utf8');

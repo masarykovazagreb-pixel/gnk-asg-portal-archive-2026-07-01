@@ -1,0 +1,26 @@
+{
+  "version": "GNK_ASG_PRODUCTION_WORKFLOW_ALLOWLIST_V2",
+  "repository": "masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01",
+  "policy": "Only listed workflows may own scheduled production publishing, freshness writes, distribution or deployment. Other workflows remain reviewable/manual unless separately approved.",
+  "scheduledProductionOwners": [
+    "aeo-ai-visibility.yml",
+    "blog-mirror-publish.yml",
+    "editorial-scheduled-publish.yml",
+    "gnk-news-refresh-v2.yml",
+    "refresh-index-live-data.yml",
+    "weather-refresh.yml",
+    "world-monitor-refresh.yml",
+    "ops-automation-sla-watchdog.yml",
+    "gnk-seo-nightly-audit.yml"
+  ],
+  "protectedManualRelease": [
+    "deploy-admin-auth-v6.yml"
+  ],
+  "explicitlyRetiredExecutionClasses": [
+    "Beckuphome dispatch",
+    "repository mirror or disaster-recovery mirror",
+    "SHA-specific one-time deploy and status recorder"
+  ],
+  "socialLive": false,
+  "publicPortalAudit": "manual-major-release-only"
+}

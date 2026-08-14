@@ -29,14 +29,16 @@ jobs:
         with:
           node-version: '24'
       - name: Fetch Zagreb weather (Open-Meteo)
-        run: node scripts/weather-refresh-v1.mjs
+        run: |
+          node scripts/weather-refresh-v1.mjs
+          node scripts/freshness-status-v2.mjs
       - name: Commit if changed
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "gnk-weather-bot"
           git config user.email "actions@github.com"
-          git add apps/portal/data/weather-zagreb.json
+          git add apps/portal/data/weather-zagreb.json apps/portal/data/freshness-status.json
           if git diff --cached --quiet; then
             echo "Nema promjena."
             exit 0
