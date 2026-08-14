@@ -10,14 +10,14 @@ const evaluate = (name, path, stampKeys, maxAgeMinutes, sourceStateKeys = []) =>
   const stamp = raw ? new Date(raw) : null;
   if (!stamp || Number.isNaN(stamp.getTime())) return {name, state:'error', path, maxAgeMinutes, reason:'missing-or-invalid-timestamp'};
   const ageMinutes = Math.max(0, (now.getTime() - stamp.getTime()) / 60000);
-  const sourceState = sourceStateKeys.map((key) => payload[key]).find(Boolean);
-  const sourceError = sourceState === false || ['error','failed','unavailable'].includes(String(sourceState).toLowerCase());
+  const sourceState = sourceStateKeys.map((key) => payload[key]).find((value) => value !== undefined && value !== null);
+  const sourceError = sourceState === false || ['error','failed','unavailable','degraded'].includes(String(sourceState).toLowerCase());
   return {name,state:sourceError?'error':ageMinutes>maxAgeMinutes?'stale':'fresh',path,observedAt:stamp.toISOString(),ageMinutes:Math.round(ageMinutes),maxAgeMinutes,sourceState:sourceState ?? null};
 };
 const resources = {
-  weather:evaluate('Weather','apps/portal/data/weather-zagreb.json',['updated_at','checked_at'],180,['state']),
+  weather:evaluate('Weather','apps/portal/data/weather-zagreb.json',['updated_at','checked_at'],360,['state','status']),
   aktual:evaluate('News/AKTUAL','apps/portal/data/news-automation-status.json',['updated_at'],290,['ok','status']),
-  digitalAssets:evaluate('Digital Assets','apps/portal/data/update_status.json',['updated_at'],1080,['status']),
+  digitalAssets:evaluate('Digital Assets','apps/portal/data/fast_market_status.json',['timestamp_utc','updated_at','checked_at'],1080,['status']),
 };
 const values = Object.values(resources);
 const overall = values.some(x=>x.state==='error')?'error':values.some(x=>x.state==='stale')?'stale':'fresh';
