@@ -21,11 +21,12 @@ permissions:
   actions: write
 
 concurrency:
-  group: image-health-scan
+  group: gnk-asg-main-mutation
   cancel-in-progress: false
 
 jobs:
   scan:
+    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

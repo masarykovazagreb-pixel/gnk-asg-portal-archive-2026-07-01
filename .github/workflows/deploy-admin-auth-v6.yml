@@ -16,7 +16,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: gnk-asg-production-deploy
+  group: gnk-asg-main-mutation
   cancel-in-progress: false
 
 jobs:

@@ -16,11 +16,12 @@ permissions:
   contents: write
 
 concurrency:
-  group: gnk-news-refresh
+  group: gnk-asg-main-mutation
   cancel-in-progress: false
 
 jobs:
   refresh-news:
+    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
     name: Refresh public news feed
     runs-on: ubuntu-latest
     timeout-minutes: 15

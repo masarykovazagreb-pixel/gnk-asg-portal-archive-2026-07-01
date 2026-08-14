@@ -24,7 +24,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: refresh-index-live-data-${{ github.event_name }}
+  group: ${{ github.event_name == 'pull_request' && format('refresh-index-live-data-{0}', github.event_name) || 'gnk-asg-main-mutation' }}
   cancel-in-progress: true
 
 jobs:
@@ -61,7 +61,7 @@ jobs:
           retention-days: 3
 
   refresh-main:
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    if: vars.GNK_ASG_RELEASE_FENCE != 'true' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     timeout-minutes: 12
     permissions:

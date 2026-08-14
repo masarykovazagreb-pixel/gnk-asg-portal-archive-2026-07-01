@@ -16,6 +16,7 @@ concurrency:
 
 jobs:
   fix-and-deploy:
+    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

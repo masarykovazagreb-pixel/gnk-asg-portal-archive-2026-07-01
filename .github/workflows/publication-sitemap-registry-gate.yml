@@ -49,6 +49,8 @@ jobs:
         run: python scripts/validate_publication_sitemap_registry_v1.py
       - name: Enforce production workflow schedule allowlist
         run: python scripts/validate-workflow-schedule-allowlist-v2.py
+      - name: Enforce exact-SHA release-race hygiene
+        run: python scripts/validate-release-race-hygiene-v1.py
       - name: Upload validation evidence
         if: always()
         uses: actions/upload-artifact@v4

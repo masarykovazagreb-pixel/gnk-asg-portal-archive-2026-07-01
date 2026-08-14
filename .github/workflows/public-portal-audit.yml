@@ -1,21 +1,6 @@
 name: Public Portal Audit
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'apps/portal/**'
-      - 'workers/**'
-      - 'scripts/**'
-      - '.github/workflows/public-portal-audit.yml'
-  pull_request:
-    paths:
-      - 'apps/portal/**'
-      - 'workers/**'
-      - 'scripts/**'
-      - '.github/workflows/deploy-admin-auth-v6.yml'
-      - '.github/workflows/public-portal-audit.yml'
   workflow_dispatch:
 
 permissions:

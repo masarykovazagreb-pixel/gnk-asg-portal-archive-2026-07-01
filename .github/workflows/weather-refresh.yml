@@ -14,11 +14,12 @@ permissions:
   contents: write
 
 concurrency:
-  group: weather-refresh
+  group: gnk-asg-main-mutation
   cancel-in-progress: false
 
 jobs:
   refresh:
+    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
