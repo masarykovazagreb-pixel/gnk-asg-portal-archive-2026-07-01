@@ -1,0 +1,34 @@
+{
+  "version": "2026-06-26-gallery-v5",
+  "minimum_verified_images": 100,
+  "generated_count": 100,
+  "physical_image_count": 2055,
+  "quarantined_image_count": 23,
+  "catalog_url": "/data/gallery.catalog.json",
+  "quarantine_url": "/data/gallery.quarantine.json",
+  "visual_identity_policy": {
+    "football_club_logo_allowed": false,
+    "football_club_crest_allowed": false,
+    "football_club_badge_allowed": false,
+    "company_text_allowed": "GNK DINAMO Ltd."
+  },
+  "auto_index": true,
+  "single_source_of_truth": true,
+  "updated_at": "2026-08-14T13:59:30.833Z",
+  "editorial_policy": {
+    "publication_pool_only": true,
+    "excludes": [
+      "logos",
+      "wordmarks",
+      "favicons",
+      "icons",
+      "badges",
+      "emblems",
+      "crests",
+      "shields",
+      "social cards",
+      "UI placeholders"
+    ],
+    "generated_business_visuals_allowed": true
+  }
+}
