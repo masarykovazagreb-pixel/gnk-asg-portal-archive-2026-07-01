@@ -1,6 +1,6 @@
 name: GNK ASG Automation SLA Watchdog
 
-# Read/verify first, then dispatch ONLY the existing canonical writer when stale.
+# Read/verify twice daily, then dispatch ONLY the existing canonical writer when stale.
 # This workflow never writes news, editorial content, blog state or mirror state itself.
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ on:
     paths:
       - '.github/workflows/ops-automation-sla-watchdog.yml'
   schedule:
-    - cron: '42 * * * *'
+    - cron: '42 5,17 * * *'  # twice daily; Control Plane V2
 
 permissions:
   contents: read

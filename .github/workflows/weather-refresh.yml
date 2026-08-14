@@ -1,6 +1,6 @@
 name: Weather Refresh (Zagreb)
 
-# Osvježava /data/weather-zagreb.json svaki sat preko Open-Meteo (besplatan,
+# Osvježava /data/weather-zagreb.json četiri puta dnevno preko Open-Meteo (besplatan,
 # bez API ključa, CC BY 4.0 s atribucijom u UI-u). Koristi isti obrazac kao
 # market.js: server-side fetch + cache, klijent čita statični JSON s
 # poštenim STALE/UNAVAILABLE stanjima ako izvor ne odgovori.
@@ -8,7 +8,7 @@ name: Weather Refresh (Zagreb)
 on:
   workflow_dispatch:
   schedule:
-    - cron: '5 * * * *'   # svaki sat u :05
+    - cron: '5 2,8,14,20 * * *'   # four times daily; Control Plane V2
 
 permissions:
   contents: write

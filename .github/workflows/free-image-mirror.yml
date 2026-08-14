@@ -6,8 +6,6 @@ name: Free Image Mirror (catbox.moe)
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '45 4 * * *'   # svaki dan u 06:45 Zagreb, nakon AEO boosta
 
 permissions:
   contents: write

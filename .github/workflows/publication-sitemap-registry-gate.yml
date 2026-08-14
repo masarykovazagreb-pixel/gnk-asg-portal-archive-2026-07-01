@@ -9,6 +9,9 @@ on:
       - 'scripts/validate_publication_sitemap_registry_v1.py'
       - 'scripts/generate-editorial-sitemap-v2.mjs'
       - 'scripts/lib/publication-gate-v2.mjs'
+      - 'scripts/validate-workflow-schedule-allowlist-v2.py'
+      - 'ops/production-workflow-allowlist-v2.json'
+      - '.github/workflows/**'
       - 'apps/portal/editorial-sitemap.xml'
       - 'apps/portal/sitemap-index.xml'
       - 'apps/portal/data/editorial-registry.json'
@@ -44,6 +47,8 @@ jobs:
           diff -u "$RUNNER_TEMP/sitemap-index.xml" apps/portal/sitemap-index.xml
       - name: Validate published routes, lastmod and canonical registry
         run: python scripts/validate_publication_sitemap_registry_v1.py
+      - name: Enforce production workflow schedule allowlist
+        run: python scripts/validate-workflow-schedule-allowlist-v2.py
       - name: Upload validation evidence
         if: always()
         uses: actions/upload-artifact@v4

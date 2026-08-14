@@ -1,25 +1,44 @@
 {
-  "version": "GNK_ASG_PRODUCTION_WORKFLOW_ALLOWLIST_V2",
+  "version": "GNK_ASG_PRODUCTION_WORKFLOW_ALLOWLIST_V2_1",
   "repository": "masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01",
-  "policy": "Only listed workflows may own scheduled production publishing, freshness writes, distribution or deployment. Other workflows remain reviewable/manual unless separately approved.",
-  "scheduledProductionOwners": [
-    "aeo-ai-visibility.yml",
-    "blog-mirror-publish.yml",
-    "editorial-scheduled-publish.yml",
-    "gnk-news-refresh-v2.yml",
-    "refresh-index-live-data.yml",
-    "weather-refresh.yml",
-    "world-monitor-refresh.yml",
-    "ops-automation-sla-watchdog.yml",
-    "gnk-seo-nightly-audit.yml"
-  ],
+  "policy": "Every workflow containing an Actions schedule trigger must appear here with the exact cron expression. All other workflows are manual, event-scoped validation, or retired.",
+  "scheduledProductionOwners": {
+    "aeo-ai-visibility.yml": ["20 2,8,14,20 * * *"],
+    "blog-mirror-publish.yml": ["30 9 * * *"],
+    "content-queue-publish.yml": ["20 7,11,15 * * *"],
+    "editorial-scheduled-publish.yml": ["20 8 * * *"],
+    "generate-digital-workforce-newsroom-pages.yml": ["0 6 * * *"],
+    "gnk-news-refresh-v2.yml": ["12 * * * *"],
+    "gnk-seo-nightly-audit.yml": ["15 1 * * *"],
+    "image-health-scan.yml": ["15 3 * * 0"],
+    "macro-market-refresh.yml": ["25 6,14 * * *"],
+    "market-pulse-refresh.yml": ["10 6,14 * * *"],
+    "ops-automation-sla-watchdog.yml": ["42 5,17 * * *"],
+    "refresh-gnkc-index.yml": ["20 6,14 * * *"],
+    "refresh-index-live-data.yml": ["5 7,15 * * *"],
+    "site-health-check-v1.yml": ["0 2,6,12,18 * * *"],
+    "sync-webshop-products.yml": ["35 5 * * *"],
+    "weather-refresh.yml": ["5 2,8,14,20 * * *"],
+    "world-monitor-refresh.yml": ["20 1,7,13,19 * * *"]
+  },
   "protectedManualRelease": [
     "deploy-admin-auth-v6.yml"
   ],
-  "explicitlyRetiredExecutionClasses": [
-    "Beckuphome dispatch",
-    "repository mirror or disaster-recovery mirror",
-    "SHA-specific one-time deploy and status recorder"
+  "manualOnlyCompatibility": [
+    "scheduled-production-deploy.yml",
+    "social-distribution.yml",
+    "linkedin-daily-rotation.yml",
+    "devto-mirror-publish.yml",
+    "telegraph-mirror-publish.yml"
+  ],
+  "explicitlyRetiredScheduledExecutionClasses": [
+    "Beckuphome or repository mirror",
+    "duplicate GNK news writers",
+    "separate Dev.to or Telegraph writers outside the unified 4/4 writer",
+    "scheduled social preview or live distribution",
+    "hourly automatic production deploy",
+    "duplicate full-site and SEO audits",
+    "free-image external mirror"
   ],
   "socialLive": false,
   "publicPortalAudit": "manual-major-release-only"

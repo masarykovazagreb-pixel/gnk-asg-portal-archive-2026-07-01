@@ -3,7 +3,7 @@ name: World Monitor Data Refresh (free sources)
 on:
   workflow_dispatch:
   schedule:
-    - cron: '20 * * * *'   # svaki sat u :20
+    - cron: '20 1,7,13,19 * * *'  # four times daily; Control Plane V2
 
 permissions:
   contents: write

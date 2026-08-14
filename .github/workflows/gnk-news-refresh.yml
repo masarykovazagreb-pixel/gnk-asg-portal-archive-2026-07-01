@@ -2,9 +2,6 @@ name: GNK News Refresh
 
 on:
   workflow_dispatch:
-  schedule:
-    # Svaka 2 sata.
-    - cron: '0 7,15 * * *'
 
 permissions:
   contents: write

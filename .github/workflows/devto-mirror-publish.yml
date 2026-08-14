@@ -5,15 +5,11 @@ name: Dev.to Mirror Publish
 # svakog pokusaja objave, pa retry nikad ne stvara duplikat) i self-heal nakon
 # 422 "canonical url already taken" gresaka.
 #
-# Cadenca: 3x dnevno dok se ne isprazni pocetni backlog, zatim moze preci na
-# rjede (npr. 1x dnevno) - promijeniti raspored kasnije ako treba usporiti.
+# Control Plane V2 keeps this legacy channel-specific writer manual-only.
+# Scheduled Dev.to delivery belongs to the unified 4/4 blog writer.
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '45 6 * * *'    # 08:45 Zagreb
-    - cron: '45 12 * * *'   # 14:45 Zagreb
-    - cron: '45 18 * * *'   # 20:45 Zagreb
 
 permissions:
   contents: write

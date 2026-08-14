@@ -14,7 +14,7 @@ on:
         type: choice
         options: ["false","true"]
   schedule:
-    - cron: '15 3 * * *'   # svaki dan u 03:15 UTC (05:15 Zagreb), prije AEO ciklusa
+    - cron: '15 3 * * 0'   # weekly Sunday; Control Plane V2
 
 permissions:
   contents: write

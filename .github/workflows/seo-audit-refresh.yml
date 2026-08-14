@@ -1,8 +1,6 @@
 name: SEO Audit Refresh
 
 on:
-  schedule:
-    - cron: '40 4 * * *'
   workflow_dispatch: {}
 
 permissions:
