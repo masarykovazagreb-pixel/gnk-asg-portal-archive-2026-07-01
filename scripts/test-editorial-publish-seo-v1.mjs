@@ -75,8 +75,8 @@ assert.match(scheduler,/approved_sha="\$APPROVED_SHA"/);
 assert.match(scheduler,/force_deploy/);
 
 assert.match(seoWorkflow,/timeout-minutes: 10/);
-assert.match(seoWorkflow,/cron: '17 9 \* \* \*'/);
-assert.doesNotMatch(seoWorkflow,/cron: '17 \*\/2 \* \* \*'/);
+assert.match(seoWorkflow,/workflow_dispatch:/);
+assert.doesNotMatch(seoWorkflow,/\n  schedule:/);
 assert.doesNotMatch(seoWorkflow,/\n  push:/);
 assert.match(scheduler,/steps\.commit\.outputs\.changed == 'true'/);
 assert.match(scheduler,/github\.event_name == 'push'/);
@@ -85,4 +85,4 @@ const regressionIndex=scheduler.indexOf('node scripts/test-editorial-content-pol
 const policyIndex=scheduler.indexOf('node scripts/validate-editorial-content-policy-v1.mjs');
 const materializeIndex=scheduler.indexOf('node scripts/editorial-publish-scheduled-v1.mjs');
 assert.ok(regressionIndex>=0&&policyIndex>regressionIndex&&materializeIndex>policyIndex,'policy test and gate must run before materialization');
-console.log(JSON.stringify({ok:true,packages:plan.packages.map(x=>({id:x.id,publications:x.items.filter(i=>i.type==='objava').length,commentaries:x.items.filter(i=>i.type==='komentar').length,publishAt:x.publishAt})),seo:{cycleHours:24,scheduleUtc:'17 9 * * *',timeoutMinutes:10,artificialTraffic:false,idempotent:true,readOnly:true,nightlyReadOnly:true},editorialPolicy:{minimumWords:3000,minimumInternalLinks:5,preMaterialization:true,publicationHolds:holds.holds.length},deploy:{directExactShaDispatch:true,noOpScheduleDeploy:false,owner:'editorial-scheduled-publish'}},null,2));
+console.log(JSON.stringify({ok:true,packages:plan.packages.map(x=>({id:x.id,publications:x.items.filter(i=>i.type==='objava').length,commentaries:x.items.filter(i=>i.type==='komentar').length,publishAt:x.publishAt})),seo:{cycleHours:null,scheduleUtc:null,trigger:'manual-only',timeoutMinutes:10,artificialTraffic:false,idempotent:true,readOnly:true,nightlyReadOnly:true},editorialPolicy:{minimumWords:3000,minimumInternalLinks:5,preMaterialization:true,publicationHolds:holds.holds.length},deploy:{directExactShaDispatch:true,noOpScheduleDeploy:false,owner:'editorial-scheduled-publish'}},null,2));
