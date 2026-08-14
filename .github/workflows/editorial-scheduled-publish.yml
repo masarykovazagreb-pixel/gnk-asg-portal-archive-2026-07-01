@@ -24,10 +24,11 @@ permissions:
   contents: write
   actions: write
 concurrency:
-  group: editorial-main-writer
+  group: gnk-asg-main-mutation
   cancel-in-progress: false
 jobs:
   publish:
+    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:

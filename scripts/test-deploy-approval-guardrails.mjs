@@ -16,7 +16,7 @@ requireText('workflow approval contract',workflow,[
  'approved_sha:','ref: ${{ inputs.approved_sha }}','authorize-production:','deploy-production:',
  "github.ref == 'refs/heads/main'",'needs: [authorize-production]','environment: production',
  'require_eq "$GITHUB_SHA" "$APPROVED_SHA"','require_eq "$(git rev-parse origin/main)" "$APPROVED_SHA"',
- "inputs.confirm_production_deploy == 'DEPLOY_ADMIN_AUTH_V6'",'group: gnk-asg-production-deploy',
+ "inputs.confirm_production_deploy == 'DEPLOY_ADMIN_AUTH_V6'",'group: gnk-asg-main-mutation',
  'cancel-in-progress: false','production-verification-${{ inputs.approved_sha }}',
  'deploy-preflight-${{ inputs.approved_sha }}','bash scripts/verify-production-release-v38.sh deploy-verification',
  'bash ../../scripts/deploy-direct-operator-with-retry-v1.sh','deploy-wrangler-logs-${{ inputs.approved_sha }}'

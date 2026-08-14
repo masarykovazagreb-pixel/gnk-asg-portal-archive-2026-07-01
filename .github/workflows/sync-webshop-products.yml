@@ -18,7 +18,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: sync-webshop-products
+  group: gnk-asg-main-mutation
   cancel-in-progress: false
 
 permissions:
@@ -26,6 +26,7 @@ permissions:
 
 jobs:
   sync:
+    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:

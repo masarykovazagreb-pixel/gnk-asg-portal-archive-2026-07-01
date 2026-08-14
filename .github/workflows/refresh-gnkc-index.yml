@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: gnkc-index-refresh
+  group: gnk-asg-main-mutation
   cancel-in-progress: false
 
 permissions:
@@ -19,6 +19,7 @@ permissions:
 
 jobs:
   refresh:
+    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:

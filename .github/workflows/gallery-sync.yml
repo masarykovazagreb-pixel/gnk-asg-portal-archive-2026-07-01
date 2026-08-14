@@ -1,24 +1,18 @@
 name: GNK ASG Gallery Sync
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "apps/portal/**"
-      - "scripts/gallery-sync.mjs"
-      - "scripts/gallery-editorial-filter.mjs"
-      - ".github/workflows/gallery-sync.yml"
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: gnk-asg-gallery-sync
+  group: gnk-asg-main-mutation
   cancel-in-progress: true
 
 jobs:
   sync-gallery:
+    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
