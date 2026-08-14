@@ -1,9 +1,6 @@
 name: GNK News V14 Refresh
 
 on:
-  schedule:
-    # Europe/Zagreb summer time: 09:00, 16:00, 21:00 local.
-    - cron: '0 7,15 * * *'
   workflow_dispatch:
 
 permissions:

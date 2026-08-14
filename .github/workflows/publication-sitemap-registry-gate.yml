@@ -7,8 +7,14 @@ on:
     paths:
       - '.github/workflows/publication-sitemap-registry-gate.yml'
       - 'scripts/validate_publication_sitemap_registry_v1.py'
-      - 'apps/portal/sitemap.xml'
-      - 'apps/portal/data/editorial-plan/**'
+      - 'scripts/generate-editorial-sitemap-v2.mjs'
+      - 'scripts/lib/publication-gate-v2.mjs'
+      - 'scripts/validate-workflow-schedule-allowlist-v2.py'
+      - 'ops/production-workflow-allowlist-v2.json'
+      - '.github/workflows/**'
+      - 'apps/portal/editorial-sitemap.xml'
+      - 'apps/portal/sitemap-index.xml'
+      - 'apps/portal/data/editorial-registry.json'
       - 'apps/portal/objave/**'
       - 'apps/portal/komentari/**'
       - 'apps/portal/analize/**'
@@ -32,8 +38,17 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Validate approved routes, sitemap lastmod and publication registry
+      - name: Reproduce canonical editorial sitemap
+        run: |
+          cp apps/portal/editorial-sitemap.xml "$RUNNER_TEMP/editorial-sitemap.xml"
+          cp apps/portal/sitemap-index.xml "$RUNNER_TEMP/sitemap-index.xml"
+          node scripts/generate-editorial-sitemap-v2.mjs
+          diff -u "$RUNNER_TEMP/editorial-sitemap.xml" apps/portal/editorial-sitemap.xml
+          diff -u "$RUNNER_TEMP/sitemap-index.xml" apps/portal/sitemap-index.xml
+      - name: Validate published routes, lastmod and canonical registry
         run: python scripts/validate_publication_sitemap_registry_v1.py
+      - name: Enforce production workflow schedule allowlist
+        run: python scripts/validate-workflow-schedule-allowlist-v2.py
       - name: Upload validation evidence
         if: always()
         uses: actions/upload-artifact@v4

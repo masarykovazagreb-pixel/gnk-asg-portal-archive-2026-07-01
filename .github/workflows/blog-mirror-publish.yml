@@ -1,7 +1,7 @@
 name: Blog Mirror Publish
 
-# GNK ASG je kanonski izvor. Blogger, Dev.to i Tumblr su kontrolirane preslike.
-# Jedan workflow upravlja sva tri izlaza kako bi se izbjegli paralelni writeri,
+# GNK ASG je kanonski izvor. Blogger, Dev.to, Tumblr i Telegraph su kontrolirani distribucijski kanali.
+# Jedan workflow upravlja sva cetiri izlaza kako bi se izbjegli paralelni writeri,
 # duplikati i razlicita stanja evidencije. Svaka platforma zadrzava vlastiti
 # published.json i skripta nikad ponovno ne salje vec evidentiranu rutu.
 # Durable publish state zivi na automation/blog-mirror-state grani kako bot
@@ -27,7 +27,7 @@ concurrency:
 
 jobs:
   publish:
-    name: Mirror published articles to Blogger, Dev.to and Tumblr
+    name: Distribute published articles to Blogger, Dev.to, Tumblr and Telegraph
     runs-on: ubuntu-latest
     timeout-minutes: 45
     env:
@@ -155,7 +155,7 @@ jobs:
           TELEGRAPH_PAUSE_MS: '4000'
         run: node scripts/telegraph-publish-v1.mjs
 
-      - name: Write three-channel parity health
+      - name: Write four-channel parity health
         if: always()
         shell: bash
         run: |
@@ -170,7 +170,7 @@ jobs:
           const telegraph=read('apps/portal/data/telegraph-content/published.json',{posted:{}});
           const countState=(v)=>Array.isArray(v)?v.length:(v&&v.posted?Object.keys(v.posted).length:(v&&v.items?Object.keys(v.items).length:Object.keys(v||{}).length));
           const health={
-            version:'GNK_ASG_THREE_BLOG_PARITY_V4_RACE_SAFE',
+            version:'GNK_ASG_FOUR_BLOG_PARITY_V5_PUBLICATION_GATED',
             generatedAt:new Date().toISOString(),
             canonicalSource:'https://gnk-asg.hr',
             registryTotal:(registry.items||[]).length,
@@ -192,7 +192,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          echo '## GNK ASG — Blogger / Dev.to / Tumblr' >> "$GITHUB_STEP_SUMMARY"
+          echo '## GNK ASG — Blogger / Dev.to / Tumblr / Telegraph (4/4)' >> "$GITHUB_STEP_SUMMARY"
           echo "- Blogger credentials: **${BLOGGER_CREDENTIAL_STATE:-unknown}**" >> "$GITHUB_STEP_SUMMARY"
           echo "- Dev.to credentials: **${DEVTO_CREDENTIAL_STATE:-unknown}**" >> "$GITHUB_STEP_SUMMARY"
           echo "- Tumblr credentials: **${TUMBLR_CREDENTIAL_STATE:-unknown}**" >> "$GITHUB_STEP_SUMMARY"
@@ -216,7 +216,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "Nema promjena za spremanje."
           else
-            git commit -m "Blog mirror state: sync Blogger Dev.to Tumblr"
+            git commit -m "Blog distribution state: sync four channels"
           fi
 
           expected="${BLOG_MIRROR_REMOTE_SHA:-}"
@@ -258,24 +258,25 @@ jobs:
           test -n "$remote_main"
           echo "Production main remote je $remote_main; ovaj korak pise iskljucivo na automation/blog-mirror-state."
 
-      - name: Enforce three-channel operational result
+      - name: Enforce four-channel operational result
         if: always()
         env:
           BLOGGER_OUTCOME: ${{ steps.blogger_publish.outcome }}
           DEVTO_OUTCOME: ${{ steps.devto_publish.outcome }}
           TUMBLR_OUTCOME: ${{ steps.tumblr_publish.outcome }}
+          TELEGRAPH_OUTCOME: ${{ steps.telegraph_publish.outcome }}
         shell: bash
         run: |
           if [ "${PARITY_BLOCKED:-1}" = 1 ]; then
-            echo "Distribucija nije potpuno automatizirana: najmanje jedan od tri kanala nema trajne GitHub Actions credentials."
+            echo "Distribucija nije potpuno automatizirana: najmanje jedan credentialed kanal nema trajne GitHub Actions credentials."
             exit 1
           fi
           failed=0
-          for result in "$BLOGGER_OUTCOME" "$DEVTO_OUTCOME" "$TUMBLR_OUTCOME"; do
+          for result in "$BLOGGER_OUTCOME" "$DEVTO_OUTCOME" "$TUMBLR_OUTCOME" "$TELEGRAPH_OUTCOME"; do
             [ "$result" = failure ] && failed=1
           done
           if [ "$failed" = 1 ]; then
             echo "Najmanje jedan kanal imao je operativni neuspjeh; ostali kanali su ipak odradjeni i state je sacuvan."
             exit 1
           fi
-          echo "Sva tri kanala imaju trajne credentials i odradila su isti single-writer ciklus."
+          echo "Sva četiri kanala odradila su isti publication-gated single-writer ciklus."

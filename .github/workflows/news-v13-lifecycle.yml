@@ -2,16 +2,6 @@ name: GNK ASG News V14 Lifecycle
 
 on:
   workflow_dispatch:
-  schedule:
-    # UTC windows covering CET and CEST; the Zagreb gate permits only 09:00, 16:00 and 21:00 local.
-    - cron: '0 7,15 * * *'
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/news-v13-lifecycle.yml'
-      - 'apps/portal/scripts/news_publication.py'
-      - 'apps/portal/scripts/news_v13_lifecycle.py'
-      - 'apps/portal/data/news_config_v2.json'
 
 permissions:
   contents: write

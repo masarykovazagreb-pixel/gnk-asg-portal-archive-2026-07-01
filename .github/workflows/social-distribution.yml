@@ -1,7 +1,8 @@
 name: Social Distribution (dry-run → live)
 
 # Priprema (i, kad platform secrets budu dodani, šalje) objave za Facebook,
-# Instagram, LinkedIn i X — 2x dnevno (jutro + popodne, Europe/Zagreb).
+# Instagram, LinkedIn i X. Control Plane V2 keeps this manual-only while
+# SOCIAL LIVE is disabled, so enabling Actions cannot schedule social work.
 # Dok SOCIAL_LIVE nije postavljen na '1' (kroz repo variable), radi samo
 # dry-run: generira plan.json + preview.html, ništa ne šalje na platforme.
 #
@@ -12,10 +13,6 @@ name: Social Distribution (dry-run → live)
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '30 6 * * *'    # 08:30 Zagreb (ljeti) — jutarnji slot
-    - cron: '30 12 * * *'   # 14:30 Zagreb (ljeti) — popodnevni slot
-    - cron: '30 16 * * *'   # 18:30 Zagreb (ljeti) — digest slot (World Monitor + Cibona + vrijeme + trzista)
 
 permissions:
   contents: write

@@ -7,6 +7,7 @@
 import { readFileSync, existsSync, writeFileSync, mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { createHmac, randomBytes } from 'node:crypto';
+import { publishedItems } from './lib/publication-gate-v2.mjs';
 
 const PORTAL = resolve('apps/portal');
 const REGISTRY = resolve('apps/portal/data/editorial-registry.json');
@@ -121,8 +122,9 @@ async function publishTumblr(clanak, item) {
 async function main() {
   const registry = readJson(REGISTRY, { items: [] });
   const state = readJson(STATE, { posted: {} });
-  const enZapisi = (registry.items || []).filter((i) => i.lang === 'en');
-  const hrZapisiBezEn = (registry.items || []).filter((i) => i.lang !== 'en' && !enZapisi.some((e) => e.path.includes(i.slug)));
+  const publicRegistry = publishedItems(registry);
+  const enZapisi = publicRegistry.filter((i) => (i.language || i.lang) === 'en');
+  const hrZapisiBezEn = publicRegistry.filter((i) => (i.language || i.lang) !== 'en' && !enZapisi.some((e) => e.path.includes(i.slug)));
   const pending = [];
 
   for (const item of enZapisi.sort((a, b) => new Date(a.publishedAt || 0) - new Date(b.publishedAt || 0))) {

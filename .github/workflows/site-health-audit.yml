@@ -1,8 +1,6 @@
 name: Site Health & Speed Audit
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '45 2 * * *'   # svaki dan u 02:45 UTC (04:45 Zagreb), prije image-health + AEO
 
 permissions:
   contents: write

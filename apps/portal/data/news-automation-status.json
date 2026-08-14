@@ -3,9 +3,9 @@
   "status": "refreshed",
   "updated_at": "2026-08-13T13:56:20+02:00",
   "engine": "single_publication_engine_v14_github_actions",
-  "cadence": "hourly at minute 12 UTC; watchdog recovery if stale",
+  "cadence": "six times daily at 01:12, 05:12, 09:12, 13:12, 17:12 and 21:12 UTC; watchdog recovery if stale",
   "timezone": "Europe/Zagreb",
-  "scheduled_interval_hours": 1,
+  "scheduled_interval_hours": 4,
   "max_items_per_source": 6,
   "feeds_configured": 85,
   "public_items_target": 300,
@@ -528,6 +528,6 @@
     }
   ],
   "last_checked_issue": null,
-  "freshness_sla_minutes": 110,
+  "freshness_sla_minutes": 290,
   "watchdog": ".github/workflows/ops-automation-sla-watchdog.yml"
 }

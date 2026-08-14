@@ -6,6 +6,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { removeDuplicateIntroParagraph } from './lib/blog-content-v1.mjs';
+import { isPublished } from './lib/publication-gate-v2.mjs';
 
 const PORTAL = resolve('apps/portal');
 const REGISTRY = resolve('apps/portal/data/editorial-registry.json');
@@ -121,7 +122,7 @@ const haveCreds = ['BLOGGER_BLOG_ID', 'BLOGGER_CLIENT_ID', 'BLOGGER_CLIENT_SECRE
 const registry = readJson(REGISTRY, { items: [] });
 const featured = readJson(FEATURED, { items: [] });
 const state = readJson(STATE, { posted: {} });
-const combined = [...(featured.items || []), ...(registry.items || [])];
+const combined = [...(featured.items || []), ...(registry.items || [])].filter((item) => isPublished(item));
 const seenPaths = new Set();
 const allItems = combined.filter((item) => {
   if (!item?.path || seenPaths.has(item.path)) return false;

@@ -1,6 +1,7 @@
 // GNK ASG — Telegraph mirror (4. kanal). Self-bootstrap račun; state na automation/blog-mirror-state.
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { dirname } from 'node:path';
+import { publishedItems } from './lib/publication-gate-v2.mjs';
 
 const SITE='https://gnk-asg.hr';
 const PER_RUN=parseInt(process.env.TELEGRAPH_PER_RUN||'12',10);
@@ -52,7 +53,7 @@ function toNodes(html, item){
 
 const registry=read('apps/portal/data/editorial-registry.json',{items:[]});
 const state=read(STATE,{posted:{}});
-const pending=(registry.items||[])
+const pending=publishedItems(registry)
   .filter(x=>x&&x.path&&x.url&&!state.posted[x.path])
   .sort((a,b)=>new Date(a.publishedAt||0)-new Date(b.publishedAt||0))
   .slice(0,PER_RUN);

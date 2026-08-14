@@ -1,25 +1,21 @@
 {
-  "version": "GNK_ASG_THREE_BLOG_PARITY_V1",
-  "generatedAt": "2026-08-07T22:19:06.600Z",
+  "version": "GNK_ASG_FOUR_BLOG_PARITY_V5_PUBLICATION_GATED",
+  "generatedAt": "2026-08-14T12:26:59.612Z",
   "canonicalSource": "https://gnk-asg.hr",
-  "registryTotal": 373,
+  "registryTotal": 448,
+  "publishedRegistryTotal": 405,
+  "requiredParity": "4/4",
   "channels": {
-    "blogger": {
-      "credentials": "ok",
-      "published": 334
-    },
-    "devto": {
-      "credentials": "ok",
-      "published": 32
-    },
-    "tumblr": {
-      "credentials": "ok",
-      "published": 181
-    }
+    "blogger": { "credentials": "ok", "published": 361 },
+    "devto": { "credentials": "ok", "published": 184 },
+    "tumblr": { "credentials": "ok", "published": 184 },
+    "telegraph": { "credentials": "self-bootstrap", "published": 11 }
   },
   "policy": {
     "singleWriter": true,
+    "publicationGate": "scripts/lib/publication-gate-v2.mjs",
     "dedupeByPlatformState": true,
-    "canonicalBacklinkRequired": true
+    "canonicalBacklinkRequired": true,
+    "futureDatedContentExcluded": true
   }
 }

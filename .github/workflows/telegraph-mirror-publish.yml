@@ -1,14 +1,13 @@
 name: Telegraph Mirror Publish
 
 # GNK ASG (https://gnk-asg.hr) is the canonical source.
-# Telegraph is a controlled mirror channel with one dedicated writer.
+# Telegraph is a controlled channel. This legacy dedicated writer is manual-only;
+# scheduled delivery belongs to the unified 4/4 blog writer.
 # Durable Telegraph dedupe/account state lives on automation/telegraph-mirror-state,
 # never on production main after a run.
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '45 3,9,15,21 * * *'
 
 permissions:
   contents: write

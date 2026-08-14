@@ -25,6 +25,6 @@ jobs:
         run: |
           set -euo pipefail
           gh workflow run gnk-news-refresh-v2.yml \
-            --repo beckuphome-gnk/gnk-asg-portal \
+            --repo "$GITHUB_REPOSITORY" \
             --ref main
           echo "Canonical GNK News Refresh V2 dispatched. Legacy Python writer is disabled."

@@ -1,10 +1,8 @@
 name: Scheduled Production Deploy
 
-# Drzi produkciju sto blize exact-SHA stanju bez zaobilazenja postojeceg
-# "Deploy Admin Auth V6" release fencea. Svaki push na main odmah pokrece
-# ovu provjeru, a satni schedule ostaje samo kao fallback ako push-event
-# iz bilo kojeg razloga izostane. Wrapper nikad ne deploya ako je zadnji
-# uspjesni Deploy Admin Auth V6 vec na aktualnom main SHA-u.
+# Manual compatibility wrapper for the exact-SHA "Deploy Admin Auth V6"
+# release fence. Control Plane V2 forbids scheduled or push-triggered
+# production deploys; the verified release workflow remains manual-only.
 #
 # Ukljucuje retry: automatizirani commitovi mogu pomaknuti main IZMEDU
 # authorize i deploy koraka unutar samog deploy pipelinea. To je ispravan
@@ -13,10 +11,6 @@ name: Scheduled Production Deploy
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-  schedule:
-    - cron: '20 * * * *'   # satni fallback u :20
 
 permissions:
   contents: read

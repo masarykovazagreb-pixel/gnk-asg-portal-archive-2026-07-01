@@ -14,7 +14,7 @@ on:
         type: choice
         options: ["false","true"]
   schedule:
-    - cron: '15 3 * * *'   # svaki dan u 03:15 UTC (05:15 Zagreb), prije AEO ciklusa
+    - cron: '15 3 * * 0'   # weekly Sunday; Control Plane V2
 
 permissions:
   contents: write
@@ -70,7 +70,7 @@ jobs:
           if [ "${APPLY_FIXES:-0}" = "1" ]; then
             sha="$(git rev-parse HEAD)"
             gh workflow run deploy-admin-auth-v6.yml \
-              --repo beckuphome-gnk/gnk-asg-portal \
+              --repo "$GITHUB_REPOSITORY" \
               --ref main \
               -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
               -f approved_sha="$sha"
