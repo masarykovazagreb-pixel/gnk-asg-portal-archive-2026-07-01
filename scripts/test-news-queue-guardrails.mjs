@@ -5,7 +5,7 @@ const source=fs.readFileSync('workers/gnk-asg-direct-operator/src/news-auto-publ
 
 // --- Canonical news retention owner: scripts/gnk-news-refresh.mjs (JS pipeline),
 // dispatched by the canonical writer workflow .github/workflows/gnk-news-refresh-v2.yml
-// (hourly cron, single writer). The old Python-based retention system
+// (four-hour cadence / six refreshes daily, single writer). The old Python-based retention system
 // (apps/portal/scripts/refresh_news_policy.py) and the workflow that used to embed
 // its inline logic were both retired; news-refresh.yml is now recovery-only and
 // MUST NOT re-embed a second parser/archive/writer implementation.
@@ -21,10 +21,11 @@ assert.match(canonicalPipeline,/const MIN_ITEMS_FLOOR = 200;/);
 assert.match(canonicalPipeline,/const ARCHIVE_MAX_BEFORE_PRUNE = \d+;/);
 assert.match(canonicalPipeline,/const ARCHIVE_KEEP_WHEN_FULL = \d+;/);
 
-// Canonical writer workflow must be the single owner: hourly cron, invokes the
-// canonical pipeline script, reads the central release fence, and is the one that
-// commits news.json / news_archive.json only when the control plane authorizes it.
-assert.match(canonicalWriterWorkflow,/cron: '12 \* \* \* \*'/);
+// Canonical writer workflow must be the single owner: six runs daily at 01:12,
+// 05:12, 09:12, 13:12, 17:12 and 21:12 UTC, invokes the canonical pipeline script,
+// reads the central release fence, and is the one that commits news.json /
+// news_archive.json only when the control plane authorizes it.
+assert.match(canonicalWriterWorkflow,/cron: '12 1,5,9,13,17,21 \* \* \*'/);
 assert.match(canonicalWriterWorkflow,/node scripts\/gnk-news-refresh\.mjs/);
 assert.match(canonicalWriterWorkflow,/git add[\s\S]{0,120}news\.json[\s\S]{0,120}news_archive\.json/);
 assert.match(canonicalWriterWorkflow,/automation-kill-switches\.json/);
