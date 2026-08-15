@@ -1,0 +1,37 @@
+name: SEO and News Visibility Audit
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: editorial-seo-audit
+  cancel-in-progress: true
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Audit editorial SEO in read-only mode
+        run: node scripts/seo-visibility-cycle-v1.mjs
+      - name: Confirm no repository writes occur
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "SEO audit is intentionally read-only. Any deterministic diff remains ephemeral and is not committed or deployed."
+          git status --short || true
+      - name: Upload SEO audit evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-visibility-audit-${{ github.sha }}
+          path: |
+            artifacts/seo-visibility-report.json
+            apps/portal/data/seo-visibility-status.json
+          if-no-files-found: warn
+          retention-days: 1
