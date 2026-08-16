@@ -1,0 +1,83 @@
+name: Operator Register 504M Publication
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/operator-control/register-504m.json'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gnk-asg-main-mutation
+  cancel-in-progress: false
+
+jobs:
+  register:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Validate request and register scheduled publication
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, pathlib, re
+          ctl=json.loads(pathlib.Path('ops/operator-control/register-504m.json').read_text(encoding='utf-8'))
+          expected={'version':1,'action':'register-504m-publication','approval':'APPROVED_504M_BODY_LOCKED','publishedAt':'2026-08-17T06:00:00+02:00'}
+          if ctl != expected: raise SystemExit(f'control mismatch: {ctl!r}')
+          article=pathlib.Path('apps/portal/aktual/gnk-asg-504-milijuna-eura-prihoda/index.html').read_text(encoding='utf-8')
+          if '2026-08-17T06:00:00+02:00' not in article: raise SystemExit('article publication time drift')
+          if 'pocetna-infografika.webp' not in article: raise SystemExit('approved social image metadata missing')
+          p=pathlib.Path('apps/portal/data/editorial-registry.json')
+          d=json.loads(p.read_text(encoding='utf-8'))
+          slug='gnk-asg-504-milijuna-eura-prihoda'
+          item={
+            'slug':slug,
+            'type':'komentar',
+            'collection':'Komentari',
+            'path':'/aktual/gnk-asg-504-milijuna-eura-prihoda/',
+            'url':'https://gnk-asg.hr/aktual/gnk-asg-504-milijuna-eura-prihoda/',
+            'title':'GNK ASG: 504 milijuna € prihoda, 46,2 milijuna € kapitala i 167,35 € na računu',
+            'description':'Istinita satira o brojkama GNK ASG-a: 504 milijuna eura prihoda, 46,2 milijuna eura kapitala i 167,35 eura na računu na dan bilance.',
+            'keywords':['GNK ASG','Nermin Sefić','504 milijuna eura prihoda','hrvatski izvoz softvera','financijski izvještaji 2025','poslovna satira','izvoz softvera','bilanca GNK ASG'],
+            'hashtags':['GNKASG','NerminSefic','Izvoz','Hrvatska','Business','Technology','PoslovnaSatira'],
+            'image':'https://gnk-asg.hr/aktual/gnk-asg-504-milijuna-eura-prihoda/img/pocetna-infografika.webp',
+            'publishedAt':'2026-08-17T06:00:00+02:00',
+            'inPlan':True,
+            'seoComplete':True,
+            'language':'hr'
+          }
+          existing=[i for i,x in enumerate(d.get('items',[])) if x.get('slug')==slug]
+          if existing:
+            d['items'][existing[0]]=item
+            for i in reversed(existing[1:]): del d['items'][i]
+          else:
+            d.setdefault('items',[]).append(item)
+          d['total']=len(d['items'])
+          by={}
+          for x in d['items']: by[x.get('type','unknown')]=by.get(x.get('type','unknown'),0)+1
+          d['byType']=by
+          d['inPlan']=sum(1 for x in d['items'] if x.get('inPlan') is True)
+          d['outsidePlan']=d['total']-d['inPlan']
+          d['seoIncomplete']=sum(1 for x in d['items'] if x.get('seoComplete') is not True)
+          d['generatedAt']='2026-08-16T03:15:00+02:00'
+          p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print('registered',slug,'total',d['total'],'komentar',d['byType'].get('komentar'))
+          PY
+          git diff --check
+          git diff -- apps/portal/data/editorial-registry.json | head -240
+      - name: Commit registration
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'gnk-asg-operator'
+          git config user.email 'operator@users.noreply.github.com'
+          git add apps/portal/data/editorial-registry.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'content: register approved 504M satire for Monday distribution'
+          git push origin HEAD:main
