@@ -1,0 +1,58 @@
+name: Operator Deploy Current Main
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/operator-control/deploy-current.json'
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: gnk-asg-main-mutation
+  cancel-in-progress: false
+
+jobs:
+  dispatch-exact-main:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Validate request and exact current main
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, pathlib
+          d=json.loads(pathlib.Path('ops/operator-control/deploy-current.json').read_text())
+          assert d == {'version':1,'action':'deploy-current-main','approval':'DEPLOY_ADMIN_AUTH_V6'}, d
+          PY
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          for i in 1 2 3 4 5 6; do
+            git fetch origin main --no-tags
+            [ "$(git rev-parse origin/main)" = "$GITHUB_SHA" ] && exit 0
+            sleep 5
+          done
+          echo '::error::origin/main did not settle on trigger SHA' >&2
+          exit 1
+      - name: Dispatch existing exact-SHA production gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, urllib.request
+          repo=os.environ['GITHUB_REPOSITORY']; sha=os.environ['SHA']
+          url=f'https://api.github.com/repos/{repo}/actions/workflows/deploy-admin-auth-v6.yml/dispatches'
+          payload=json.dumps({'ref':'main','inputs':{'confirm_production_deploy':'DEPLOY_ADMIN_AUTH_V6','approved_sha':sha}}).encode()
+          req=urllib.request.Request(url,data=payload,method='POST',headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28','Content-Type':'application/json'})
+          with urllib.request.urlopen(req,timeout=30) as r:
+            assert r.status == 204, r.status
+          print('Dispatched existing Deploy Admin Auth V6 for exact main '+sha)
+          PY
