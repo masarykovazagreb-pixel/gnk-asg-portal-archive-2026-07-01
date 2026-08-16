@@ -1,0 +1,133 @@
+name: Operator Approved Control
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/operator-control/request.json'
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: gnk-asg-main-mutation
+  cancel-in-progress: false
+
+jobs:
+  execute-approved-control:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate narrow control request
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, pathlib, re, subprocess, sys
+          p=pathlib.Path('ops/operator-control/request.json')
+          d=json.loads(p.read_text(encoding='utf-8'))
+          expected={
+            'version':1,
+            'action':'patch-504m-social-and-deploy',
+            'approval':'DEPLOY_ADMIN_AUTH_V6',
+            'target':'apps/portal/aktual/gnk-asg-504-milijuna-eura-prihoda/index.html',
+            'expected_blob':'6dd72eeaf6879d6148abc93ecb7ab67ebd0280b6',
+            'image':'https://www.gnk-asg.hr/aktual/gnk-asg-504-milijuna-eura-prihoda/img/pocetna-infografika.webp',
+            'canonical':'https://www.gnk-asg.hr/aktual/gnk-asg-504-milijuna-eura-prihoda/'
+          }
+          for k,v in expected.items():
+              if d.get(k)!=v:
+                  raise SystemExit(f'control mismatch for {k}: {d.get(k)!r}')
+          changed=subprocess.check_output(['git','diff-tree','--no-commit-id','--name-only','-r','HEAD^','HEAD'],text=True).splitlines()
+          allowed={'ops/operator-control/request.json'}
+          extra=set(changed)-allowed
+          if extra:
+              raise SystemExit(f'control commit contains unauthorized paths: {sorted(extra)}')
+          target=pathlib.Path(expected['target'])
+          blob=subprocess.check_output(['git','hash-object',str(target)],text=True).strip()
+          if blob!=expected['expected_blob']:
+              raise SystemExit(f'target blob drift: expected {expected["expected_blob"]}, got {blob}')
+          img=pathlib.Path('apps/portal/aktual/gnk-asg-504-milijuna-eura-prihoda/img/pocetna-infografika.webp')
+          if not img.is_file() or img.stat().st_size < 10000:
+              raise SystemExit('approved social image missing or implausibly small')
+          print('Narrow request validated; source blob and image confirmed.')
+          PY
+
+      - name: Patch social metadata only and prove body unchanged
+        id: patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, pathlib, re
+          req=json.loads(pathlib.Path('ops/operator-control/request.json').read_text(encoding='utf-8'))
+          p=pathlib.Path(req['target'])
+          s=p.read_text(encoding='utf-8')
+          m=re.search(r'(?is)<body\b.*?</body>',s)
+          if not m: raise SystemExit('body not found')
+          body_before=hashlib.sha256(m.group(0).encode()).hexdigest()
+          old_image='https://www.gnk-asg.hr/aktual/img/gnk-asg-novcanik-poslije-vecere-hero.png'
+          if s.count(old_image) != 3:
+              raise SystemExit(f'expected exactly 3 old social/schema image references, found {s.count(old_image)}')
+          s=s.replace(old_image,req['image'])
+          base='https://www.gnk-asg.hr/aktual/gnk-asg-504-milijuna-eura-prihoda'
+          # Only metadata/schema occurrences in <head>; never touch the approved article body.
+          head, bodytail=s.split('<body',1)
+          head=head.replace(f'href="{base}"',f'href="{req["canonical"]}"')
+          head=head.replace(f'content="{base}"',f'content="{req["canonical"]}"')
+          head=head.replace(f'"@id": "{base}"',f'"@id": "{req["canonical"]}"')
+          if 'og:image:type' not in head:
+              head=head.replace(f'<meta property="og:image" content="{req["image"]}">',f'<meta property="og:image" content="{req["image"]}">\n<meta property="og:image:type" content="image/webp">')
+          out=head+'<body'+bodytail
+          m2=re.search(r'(?is)<body\b.*?</body>',out)
+          body_after=hashlib.sha256(m2.group(0).encode()).hexdigest()
+          if body_before!=body_after:
+              raise SystemExit('approved article body changed; refusing commit')
+          p.write_text(out,encoding='utf-8')
+          print('body_sha256='+body_after)
+          PY
+          git diff --check
+          git diff -- apps/portal/aktual/gnk-asg-504-milijuna-eura-prihoda/index.html
+
+      - name: Commit metadata-only patch
+        id: commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'gnk-asg-operator'
+          git config user.email 'operator@users.noreply.github.com'
+          git add apps/portal/aktual/gnk-asg-504-milijuna-eura-prihoda/index.html
+          git diff --cached --quiet && { echo 'No patch produced'; exit 1; }
+          git commit -m 'fix(aktual): repair 504M social preview metadata'
+          git push origin HEAD:main
+          sha=$(git rev-parse HEAD)
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          echo "Metadata patch committed at $sha"
+
+      - name: Dispatch existing exact-SHA production gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ steps.commit.outputs.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, urllib.request
+          repo=os.environ['GITHUB_REPOSITORY']
+          sha=os.environ['SHA']
+          url=f'https://api.github.com/repos/{repo}/actions/workflows/deploy-admin-auth-v6.yml/dispatches'
+          payload=json.dumps({'ref':'main','inputs':{'confirm_production_deploy':'DEPLOY_ADMIN_AUTH_V6','approved_sha':sha}}).encode()
+          req=urllib.request.Request(url,data=payload,method='POST',headers={
+              'Authorization':'Bearer '+os.environ['GH_TOKEN'],
+              'Accept':'application/vnd.github+json',
+              'X-GitHub-Api-Version':'2022-11-28',
+              'Content-Type':'application/json'})
+          with urllib.request.urlopen(req,timeout=30) as r:
+              if r.status not in (204,): raise SystemExit(f'dispatch failed: HTTP {r.status}')
+          print('Existing Deploy Admin Auth V6 dispatched for exact SHA '+sha)
+          PY
