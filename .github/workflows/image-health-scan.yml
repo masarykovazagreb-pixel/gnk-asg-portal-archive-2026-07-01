@@ -78,7 +78,8 @@ jobs:
       - name: Read-only scan policy
         if: ${{ inputs.apply_fixes != 'true' }}
         shell: bash
-        run: echo "Read-only scan: report is emitted to this run summary; main is not mutated."
+        run: |
+          echo "Read-only scan: report is emitted to this run summary; main is not mutated."
       - name: Summary
         if: always()
         shell: bash
