@@ -27,9 +27,14 @@ jobs:
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import json, pathlib
+          import json, pathlib, re
           d=json.loads(pathlib.Path('ops/operator-control/deploy-current.json').read_text())
-          assert d == {'version':1,'action':'deploy-current-main','approval':'DEPLOY_ADMIN_AUTH_V6'}, d
+          assert d.get('version') == 1, d
+          assert d.get('action') == 'deploy-current-main', d
+          assert d.get('approval') == 'DEPLOY_ADMIN_AUTH_V6', d
+          rid=d.get('request_id','')
+          assert re.fullmatch(r'[A-Za-z0-9._:-]{8,80}', rid), f'invalid request_id: {rid!r}'
+          assert set(d) == {'version','action','approval','request_id'}, d
           PY
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           for i in 1 2 3 4 5 6; do
