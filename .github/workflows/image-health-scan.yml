@@ -1,8 +1,8 @@
 name: Image Health Scan
 
-# Detektira slomljene / niske-rezolucije slike u editorial-registry + news feedu,
-# generira JSON+HTML report u apps/portal/data/seo-audit/, i (kad APPLY_FIXES=1)
-# automatski zamjenjuje slomljene slike u editorial-registry s fallback-om.
+# Detektira slomljene / niske-rezolucije slike u editorial-registry + news feedu.
+# Read-only scan ostaje u Actions summaryju bez mutacije maina.
+# Samo eksplicitni APPLY_FIXES=1 smije mijenjati editorial-registry/report artefakte i deployati.
 
 on:
   workflow_dispatch:
@@ -43,9 +43,11 @@ jobs:
           IMAGE_MIN_BYTES: '5000'
           APPLY_FIXES: ${{ inputs.apply_fixes == 'true' && '1' || '0' }}
         run: node scripts/image-health-scanner-v1.mjs
-      - name: Commit report (and fixes if any) + dispatch deploy
+      - name: Commit remediation + dispatch deploy
+        if: ${{ inputs.apply_fixes == 'true' }}
         env:
           GH_TOKEN: ${{ github.token }}
+          APPLY_FIXES: '1'
         shell: bash
         run: |
           set -euo pipefail
@@ -53,10 +55,10 @@ jobs:
           git config user.email "actions@github.com"
           git add apps/portal/data/seo-audit apps/portal/data/editorial-registry.json 2>/dev/null || true
           if git diff --cached --quiet; then
-            echo "Nema promjena za commit."
+            echo "Nema remediation promjena za commit."
             exit 0
           fi
-          git commit -m "Image Health: refresh report$([ "${APPLY_FIXES:-0}" = "1" ] && echo ' + auto-remediation')"
+          git commit -m "Image Health: auto-remediation"
           for attempt in 1 2 3 4 5; do
             if git push origin HEAD:main; then
               break
@@ -67,15 +69,16 @@ jobs:
             sleep $((attempt * 5))
             if [ "$attempt" = "5" ]; then echo "Push nije uspio nakon 5 pokusaja."; exit 1; fi
           done
-          # Deploy only if we actually mutated production HTML sources (fixes on)
-          if [ "${APPLY_FIXES:-0}" = "1" ]; then
-            sha="$(git rev-parse HEAD)"
-            gh workflow run deploy-admin-auth-v6.yml \
-              --repo "$GITHUB_REPOSITORY" \
-              --ref main \
-              -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
-              -f approved_sha="$sha"
-          fi
+          sha="$(git rev-parse HEAD)"
+          gh workflow run deploy-admin-auth-v6.yml \
+            --repo "$GITHUB_REPOSITORY" \
+            --ref main \
+            -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
+            -f approved_sha="$sha"
+      - name: Read-only scan policy
+        if: ${{ inputs.apply_fixes != 'true' }}
+        shell: bash
+        run: echo "Read-only scan: report is emitted to this run summary; main is not mutated."
       - name: Summary
         if: always()
         shell: bash
