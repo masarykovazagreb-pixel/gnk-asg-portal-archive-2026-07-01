@@ -33,6 +33,9 @@ const writeJson = (p, data) => {
 const unescapeHtml = (s = '') => s
   .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
   .replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+const escapeHtmlText = (s = '') => String(s)
+  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 
 function readArticle(routePath) {
   const file = resolve(PORTAL, '.' + routePath, 'index.html');
@@ -69,11 +72,12 @@ function buildPost(a) {
   const tags = [...new Set([...BASE_TAGS, ...a.keywords.map((k) => k.replace(/[^\p{L}\p{N}]/gu, ''))])]
     .filter((t) => t.length > 2 && t.length < 30)
     .slice(0, 12);
+  const safeTitle = escapeHtmlText(a.title);
   const body = [
-    a.image ? `<p><img src="${a.image.startsWith('http') ? a.image : SITE + a.image}" alt="${a.title}" style="max-width:100%;height:auto"></p>` : '',
+    a.image ? `<p><img src="${a.image.startsWith('http') ? a.image : SITE + a.image}" alt="${safeTitle}" style="max-width:100%;height:auto"></p>` : '',
     `<p><em>Autor: ${AUTHOR}</em></p>`,
-    a.description ? `<p><strong>${a.description}</strong></p>` : '',
-    ...articleParagraphs.map((p) => `<p>${p}</p>`),
+    a.description ? `<p><strong>${escapeHtmlText(a.description)}</strong></p>` : '',
+    ...articleParagraphs.map((p) => `<p>${escapeHtmlText(p)}</p>`),
     '<hr>',
     `<p>Cjelovit tekst i izvor: <a href="${a.url}" rel="canonical">${a.url}</a></p>`,
     `<p><em>Odobrio urednik: Nermin Sefić — GNK ASG (GNK DINAMO Ltd.). Autor i urednička odgovornost: ${AUTHOR}. Izdavač: ${PUBLISHER}.</em></p>`,
@@ -106,15 +110,36 @@ async function accessToken() {
   return (await res.json()).access_token;
 }
 
-async function publish(post, token) {
-  const blogId = process.env.BLOGGER_BLOG_ID;
-  const res = await fetch(`https://www.googleapis.com/blogger/v3/blogs/${blogId}/posts/`, {
+async function sendBloggerPost(blogId, payload, token) {
+  return fetch(`https://www.googleapis.com/blogger/v3/blogs/${blogId}/posts/`, {
     method: 'POST',
     headers: { authorization: `Bearer ${token}`, 'content-type': 'application/json' },
-    body: JSON.stringify({ kind: post.kind, title: post.title, content: post.content, labels: post.labels }),
+    body: JSON.stringify(payload),
   });
-  if (!res.ok) throw new Error(`blogger_${res.status}: ${(await res.text()).slice(0, 200)}`);
-  return res.json();
+}
+
+async function publish(post, token) {
+  const blogId = process.env.BLOGGER_BLOG_ID;
+  const primaryPayload = { kind: post.kind, title: post.title, content: post.content, labels: post.labels };
+  let res = await sendBloggerPost(blogId, primaryPayload, token);
+  if (res.ok) return res.json();
+
+  const primaryError = await res.text();
+  const invalidArgument = res.status === 400 && /invalid argument/i.test(primaryError);
+  if (!invalidArgument) throw new Error(`blogger_${res.status}: ${primaryError.slice(0, 800)}`);
+
+  // Blogger occasionally rejects a post-specific labels payload with a generic 400.
+  // Retry only that narrow case without optional labels. The approved source article,
+  // canonical URL, rendered text and preview image are untouched.
+  const fallbackPayload = { kind: post.kind, title: post.title, content: post.content };
+  res = await sendBloggerPost(blogId, fallbackPayload, token);
+  if (!res.ok) {
+    const fallbackError = await res.text();
+    throw new Error(`blogger_${res.status}: ${fallbackError.slice(0, 800)} | primary_400: ${primaryError.slice(0, 400)}`);
+  }
+  const data = await res.json();
+  data._transportFallback = 'labels_omitted_after_invalid_argument';
+  return data;
 }
 
 const haveCreds = ['BLOGGER_BLOG_ID', 'BLOGGER_CLIENT_ID', 'BLOGGER_CLIENT_SECRET', 'BLOGGER_REFRESH_TOKEN']
