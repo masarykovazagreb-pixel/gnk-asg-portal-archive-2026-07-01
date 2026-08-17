@@ -1,0 +1,38 @@
+{
+  "version": "GNK_ASG_CANONICAL_TRUTH_V1",
+  "effectiveDate": "2026-08-17",
+  "scope": "public-web-seo-aeo-schema-editorial",
+  "groupNetwork": {
+    "connectedCompanies": 33,
+    "plannedLocations": 12,
+    "displayHr": "33 povezana društva + 12 planiranih lokacija",
+    "displayEn": "33 group companies + 12 planned locations",
+    "note": "Do not collapse companies and planned locations into a single company count. 45 is not an approved connected-company count."
+  },
+  "marketFreshness": {
+    "publicCadenceHours": 2,
+    "displayHr": "osvježavanje svaka 2 sata",
+    "displayEn": "updated every 2 hours",
+    "note": "All homepage, market-page and structured-data cadence claims must match this value."
+  },
+  "prohibitedPublicTerms": [
+    "bpp.is",
+    "Bitcoin Payment Processor"
+  ],
+  "prohibitedPublicEntityIds": [
+    "#bitcoin-payment-processor"
+  ],
+  "rules": {
+    "homepageHrEnMustMatch": true,
+    "schemaMustMatchVisibleContent": true,
+    "seoKeywordsMustMatchVisibleContent": true,
+    "generatorsMustNotReintroduceProhibitedTerms": true,
+    "stagedContentIsNotPublishedContent": true,
+    "futureDatedContentMustNotBeMarkedPublished": true
+  },
+  "sourceOfTruth": {
+    "repository": "masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01",
+    "branch": "main",
+    "productionRule": "Production state is the last successful exact-SHA deploy, not automatically the current main HEAD."
+  }
+}
