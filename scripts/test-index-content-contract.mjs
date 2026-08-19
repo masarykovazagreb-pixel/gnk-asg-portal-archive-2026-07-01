@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
+import './ensure-editorial-sitemap-contract-v1.mjs';
 
 const editorial=fs.readFileSync('apps/portal/assets/index-editorial-order-v6.js','utf8');
 const newsroom=fs.readFileSync('apps/portal/assets/newsroom-live-v1.js','utf8');
