@@ -26,6 +26,7 @@ const writeJson = (p, data) => { mkdirSync(dirname(p), { recursive: true }); wri
 const unescapeHtml = (s = '') => s
   .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
   .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&#x27;/gi, "'");
+const languageOf = (item) => String(item?.lang || item?.language || '').trim().toLowerCase();
 
 function normalizeUrl(value = '') {
   try {
@@ -172,8 +173,8 @@ async function main() {
   }
 
   const svi = publishedItems(registry);
-  const enZapisi = svi.filter((i) => i.lang === 'en');
-  const hrZapisiBezEn = svi.filter((i) => i.lang !== 'en' && !enZapisi.some((e) => e.path.includes(i.slug)));
+  const enZapisi = svi.filter((i) => languageOf(i) === 'en');
+  const hrZapisiBezEn = svi.filter((i) => languageOf(i) !== 'en' && !enZapisi.some((e) => e.path.includes(i.slug)));
   const pending = [];
   for (const item of enZapisi.sort((a, b) => new Date(a.publishedAt || 0) - new Date(b.publishedAt || 0))) {
     if (item.path && !state.posted[item.path]) pending.push({ item, direktno: true });
@@ -184,7 +185,7 @@ async function main() {
 
   console.log(`U registru ukupno: ${svi.length}. Cekaju na Dev.to nakon reconciliationa: ${pending.length}.`);
   for (const { item, direktno } of pending.slice(0, PER_RUN)) {
-    const clanak = direktno ? readArticle(item.path) : readEnglishArticle(item.path);
+    const clanak = direktno ? readArticle(item.path) : (readEnglishArticle(item.path) || readArticle(item.path));
     if (!clanak) { rezultat.preskoceno_bez_en++; continue; }
     if (!LIVE) { console.log(`[PRIPREMA] bi poslao: ${clanak.title}`); rezultat.poslano++; continue; }
     try {
