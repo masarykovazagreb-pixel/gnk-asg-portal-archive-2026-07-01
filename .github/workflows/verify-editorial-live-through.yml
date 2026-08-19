@@ -1,0 +1,75 @@
+name: Verify Editorial Live Through 2026-10-01
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-editorial-live-through.yml'
+      - 'scripts/verify-editorial-live-through-v1.mjs'
+      - '.github/editorial-live-through.trigger'
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: verify-editorial-live-through
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Verify every planned route through 2026-10-01
+        id: verify
+        continue-on-error: true
+        env:
+          EDITORIAL_VERIFY_THROUGH: '2026-10-01'
+          EDITORIAL_VERIFY_CONCURRENCY: '20'
+        run: node scripts/verify-editorial-live-through-v1.mjs
+      - name: Upload full live evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: editorial-live-through-2026-10-01
+          path: artifacts/editorial-live-through-2026-10-01.json
+          if-no-files-found: error
+          retention-days: 14
+      - name: Report concise result to canonical audit issue
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERIFY_OUTCOME: ${{ steps.verify.outcome }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          RUN_SHA: ${{ github.sha }}
+        shell: bash
+        run: |
+          summary=$(node - <<'NODE'
+          const fs=require('fs');
+          try {
+            const r=JSON.parse(fs.readFileSync('artifacts/editorial-live-through-2026-10-01.json','utf8'));
+            console.log(JSON.stringify({version:r.version,ok:r.ok,checkedAt:r.checkedAt,cutoff:r.cutoff,registryTotal:r.registryTotal,plannedThroughCutoff:r.plannedThroughCutoff,verifiedLive:r.verifiedLive,failed:r.failed,languages:r.languages,failures:(r.failures||[]).slice(0,40)},null,2));
+          } catch(e) { console.log(JSON.stringify({error:'live report unavailable',message:String(e)},null,2)); }
+          NODE
+          )
+          {
+            echo "Editorial live-through audit **${VERIFY_OUTCOME}** · commit \`${RUN_SHA}\` · ${RUN_URL}"
+            echo
+            echo '```json'
+            echo "$summary"
+            echo '```'
+          } > editorial-live-comment.md
+          gh issue comment 120 --body-file editorial-live-comment.md
+      - name: Enforce all planned routes live
+        if: always()
+        env:
+          VERIFY_OUTCOME: ${{ steps.verify.outcome }}
+        run: test "$VERIFY_OUTCOME" = success
