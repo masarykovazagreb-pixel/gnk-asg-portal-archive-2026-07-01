@@ -145,6 +145,11 @@
     styleEl.textContent = STYLE;
     document.head.appendChild(styleEl);
 
+    const antfarm = document.createElement('script');
+    antfarm.src = '/assets/digital-workforce-antfarm-v1.js?v=20260819';
+    antfarm.defer = true;
+    document.head.appendChild(antfarm);
+
     const dash = document.createElement('div');
     dash.className = 'dw-dash';
     dash.innerHTML = `
