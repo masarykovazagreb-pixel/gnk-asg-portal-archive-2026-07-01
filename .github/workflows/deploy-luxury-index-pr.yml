@@ -33,7 +33,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          node --check apps/portal/assets/public-menu-v18.js
+          # Validate the active unified public menu asset. public-menu-v18.js was retired;
+          # keeping this syntax gate pointed at a deleted legacy file created a false P0.
+          node --check apps/portal/assets/public-unified-menu-v6.js
           node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
