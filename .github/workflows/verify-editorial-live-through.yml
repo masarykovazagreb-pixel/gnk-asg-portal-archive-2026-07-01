@@ -67,7 +67,7 @@ jobs:
             echo "$summary"
             echo '```'
           } > editorial-live-comment.md
-          gh issue comment 120 --body-file editorial-live-comment.md
+          gh issue comment 8 --body-file editorial-live-comment.md
       - name: Enforce all planned routes live
         if: always()
         env:
