@@ -35,12 +35,69 @@ jobs:
           EDITORIAL_VERIFY_THROUGH: '2026-10-01'
           EDITORIAL_VERIFY_CONCURRENCY: '20'
         run: node scripts/verify-editorial-live-through-v1.mjs
-      - name: Upload full live evidence
+      - name: Export verified live links TXT
+        if: always()
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const report=JSON.parse(fs.readFileSync('artifacts/editorial-live-through-2026-10-01.json','utf8'));
+          const clean=(v)=>String(v||'').trim();
+          const date=(v)=>clean(v).slice(0,10);
+          const lang=(r)=>{
+            const e=clean(r.language).toLowerCase();
+            if(e==='hr'||e==='en') return e.toUpperCase();
+            const p=clean(r.path).toLowerCase();
+            if(p.startsWith('/en/')||p.startsWith('/publications/')) return 'EN';
+            return 'N/O';
+          };
+          const rows=(report.results||[]).filter(r=>r.ok&&Number(r.status)===200).map(r=>({...r,_lang:lang(r),_date:date(r.publishedAt),_slug:clean(r.path).replace(/\/$/,'').split('/').filter(Boolean).pop()||''}));
+          const bySlug=new Map();
+          for(const r of rows){if(!bySlug.has(r._slug))bySlug.set(r._slug,[]);bySlug.get(r._slug).push(r)}
+          const used=new Set(), lines=[];
+          lines.push('GNK ASG — OBJAVLJENI TEKSTOVI DO 01.10.2026.');
+          lines.push('LIVE VERIFIKACIJA: '+report.checkedAt);
+          lines.push('Potvrđeno LIVE: '+report.verifiedLive+'/'+report.plannedThroughCutoff+' · Neuspjele rute: '+report.failed);
+          lines.push('Kriterij: HTTP 200 + canonical + title + meta description + sadržaj.');
+          lines.push('N/O = jezik nije eksplicitno naveden u registru niti ga je sigurno zaključiti iz strukture rute.');
+          lines.push('');
+          lines.push('='.repeat(100));
+          lines.push('HR ↔ EN PAROVI');
+          lines.push('='.repeat(100));
+          let pair=0;
+          for(const [slug,items] of [...bySlug.entries()].sort((a,b)=>a[0].localeCompare(b[0]))){
+            const hr=items.filter(x=>x._lang==='HR'), en=items.filter(x=>x._lang==='EN');
+            const n=Math.min(hr.length,en.length);
+            for(let i=0;i<n;i++){
+              pair++; used.add(hr[i]); used.add(en[i]);
+              lines.push('PAR '+pair);
+              for(const r of [hr[i],en[i]]){
+                lines.push(`${r._lang} | ${r._date} | ${clean(r.registryTitle||r.title||r.htmlTitle)}`);
+                lines.push('   '+clean(r.expectedCanonical||r.finalUrl||r.url));
+              }
+              lines.push('');
+            }
+          }
+          lines.push('='.repeat(100));
+          lines.push('OSTALE POTVRĐENE LIVE OBJAVE');
+          lines.push('='.repeat(100));
+          const rest=rows.filter(r=>!used.has(r)).sort((a,b)=>(a._date+a._lang+clean(a.registryTitle||a.title)).localeCompare(b._date+b._lang+clean(b.registryTitle||b.title)));
+          let i=0;
+          for(const r of rest){i++; lines.push(`${String(i).padStart(3,'0')}. ${r._lang} | ${r._date} | ${clean(r.registryTitle||r.title||r.htmlTitle)}`); lines.push('     '+clean(r.expectedCanonical||r.finalUrl||r.url));}
+          lines.push('');
+          lines.push('UKUPNO POTVRĐENIH LIVE RUTA: '+rows.length);
+          lines.push('HR↔EN PAROVA: '+pair);
+          lines.push('Audit cutoff: '+report.cutoff);
+          fs.writeFileSync('artifacts/GNK_ASG_OBJAVLJENI_TEKSTOVI_DO_2026-10-01_LIVE_LINKOVI.txt',lines.join('\n')+'\n');
+          NODE
+      - name: Upload full live evidence and TXT
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: editorial-live-through-2026-10-01
-          path: artifacts/editorial-live-through-2026-10-01.json
+          path: |
+            artifacts/editorial-live-through-2026-10-01.json
+            artifacts/GNK_ASG_OBJAVLJENI_TEKSTOVI_DO_2026-10-01_LIVE_LINKOVI.txt
           if-no-files-found: error
           retention-days: 14
       - name: Report concise result to canonical audit issue
@@ -56,7 +113,7 @@ jobs:
           const fs=require('fs');
           try {
             const r=JSON.parse(fs.readFileSync('artifacts/editorial-live-through-2026-10-01.json','utf8'));
-            console.log(JSON.stringify({version:r.version,ok:r.ok,checkedAt:r.checkedAt,cutoff:r.cutoff,registryTotal:r.registryTotal,plannedThroughCutoff:r.plannedThroughCutoff,verifiedLive:r.verifiedLive,failed:r.failed,languages:r.languages,failures:(r.failures||[]).slice(0,40)},null,2));
+            console.log(JSON.stringify({version:r.version,ok:r.ok,checkedAt:r.checkedAt,cutoff:r.cutoff,registryTotal:r.registryTotal,plannedThroughCutoff:r.plannedThroughCutoff,verifiedLive:r.verifiedLive,failed:r.failed,languages:r.languages,failures:(r.failures||[]).slice(0,40),txt:'GNK_ASG_OBJAVLJENI_TEKSTOVI_DO_2026-10-01_LIVE_LINKOVI.txt'},null,2));
           } catch(e) { console.log(JSON.stringify({error:'live report unavailable',message:String(e)},null,2)); }
           NODE
           )
