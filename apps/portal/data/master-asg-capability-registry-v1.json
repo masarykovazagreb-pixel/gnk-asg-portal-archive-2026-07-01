@@ -1,0 +1,25 @@
+{
+  "version": "MASTER_ASG_CAPABILITY_REGISTRY_V1",
+  "updatedAt": "2026-08-19T21:58:00+02:00",
+  "policy": {
+    "singleWriter": true,
+    "exactShaRequired": true,
+    "fallbackForCriticalReads": true,
+    "quarantineOnRepeatedFailure": true
+  },
+  "riskClasses": {"R0":"read","R1":"analyse","R2":"content_write","R3":"release_action"},
+  "capabilities": [
+    {"id":"workforce.state","class":"R0","critical":true,"provider":"/api/public/digital-workforce/state"},
+    {"id":"workforce.projects","class":"R0","critical":true,"provider":"/api/public/digital-workforce/projects"},
+    {"id":"workforce.tasks","class":"R0","critical":true,"provider":"/api/public/digital-workforce/tasks"},
+    {"id":"workforce.comms","class":"R0","critical":false,"provider":"/api/public/digital-workforce/comms"},
+    {"id":"news.ingest","class":"R0","critical":true,"fallback":true},
+    {"id":"market.read","class":"R0","critical":true,"fallback":true},
+    {"id":"weather.read","class":"R0","critical":false,"fallback":true},
+    {"id":"seo.audit","class":"R1","critical":true},
+    {"id":"seo.metadata","class":"R2","critical":false,"exactSha":true},
+    {"id":"publication.portal","class":"R2","critical":true,"exactSha":true,"singleWriter":true},
+    {"id":"publication.blog_mirror","class":"R3","critical":true,"singleWriter":true,"dedupeRequired":true},
+    {"id":"release.production","class":"R3","critical":true,"exactSha":true,"singleWriter":true}
+  ]
+}
