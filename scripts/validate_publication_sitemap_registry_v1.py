@@ -18,7 +18,7 @@ SITEMAP_INDEX = PORTAL / "sitemap-index.xml"
 ORIGIN = "https://gnk-asg.hr"
 NS = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
 EDITORIAL_PREFIXES = (
-    "/objave/", "/komentari/", "/analize/", "/gnk-aktual/kolumne/",
+    "/objave/", "/komentari/", "/analize/", "/aktual/", "/gnk-aktual/kolumne/",
     "/en/publications/", "/en/commentary/", "/en/analyses/", "/en/objave/",
 )
 
@@ -47,11 +47,22 @@ def instant(value: object) -> datetime | None:
         return None
 
 
+def forced_publication_cutoff() -> datetime | None:
+    """Mirror scripts/lib/publication-gate-v2.mjs exactly for CI parity."""
+    raw = os.environ.get("FORCE_PUBLISH_THROUGH", "2026-10-01")
+    if not raw:
+        return None
+    return instant(f"{raw}T23:59:59.999999+02:00")
+
+
 def state(item: dict[str, object], now: datetime) -> str:
     explicit = str(item.get("status", "")).lower()
     if explicit in {"draft", "held", "hold", "blocked", "cancelled"}:
         return explicit
     stamp = instant(item.get("publishedAt") or item.get("datePublished"))
+    cutoff = forced_publication_cutoff()
+    if stamp and cutoff and stamp <= cutoff:
+        return "published"
     if stamp and stamp > now:
         return "scheduled"
     if explicit == "scheduled" and not stamp:
@@ -135,8 +146,12 @@ def main() -> int:
         errors.append(f"Sitemap-index editorial lastmod {index_lastmod!r} != corpus lastmod {corpus_date!r}")
 
     evidence = {
-        "version": "GNK_ASG_PUBLICATION_SITEMAP_REGISTRY_GATE_V3",
+        "version": "GNK_ASG_PUBLICATION_SITEMAP_REGISTRY_GATE_V4",
         "canonicalAuthority": "apps/portal/data/editorial-registry.json",
+        "publicationPolicy": {
+            "forcePublishThrough": os.environ.get("FORCE_PUBLISH_THROUGH", "2026-10-01"),
+            "mirrors": "scripts/lib/publication-gate-v2.mjs",
+        },
         "now": now.isoformat(),
         "registryItems": len(items),
         "publishedRoutes": len(published),
