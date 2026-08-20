@@ -1,5 +1,5 @@
 {
-  "version": "2026-08-20.operator-os.06",
+  "version": "2026-08-20.operator-os.07",
   "status": "controlled-review",
   "safetyGates": {
     "massEmailSending": "disabled-until-explicit-approval",
@@ -28,7 +28,6 @@
     "plannedEntityCount": 43
   },
   "monitoredModules": [
-    {"id":"enterprise-hub","label":"Enterprise Review Hub","route":"/enterprise/","risk":"low","approvalRequired":false},
     {"id":"design-review","label":"Design Review Console","route":"/design-review/","risk":"low","approvalRequired":true},
     {"id":"group-profile","label":"About the Group / O grupi","route":"/about-the-group/","risk":"medium","approvalRequired":true},
     {"id":"strategy-performance","label":"Strategy / Performance Monitor","route":"/strategy-performance/","risk":"high","approvalRequired":true},
