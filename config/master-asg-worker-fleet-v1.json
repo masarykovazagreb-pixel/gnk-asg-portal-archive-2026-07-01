@@ -1,5 +1,5 @@
 {
-  "version": "MASTER_ASG_WORKER_FLEET_V1",
+  "version": "MASTER_ASG_WORKER_FLEET_V1.1",
   "architect": "Nermin Sefic",
   "mode": "controlled-autonomy",
   "designSources": [
@@ -12,7 +12,9 @@
     "failClosedOnUnknownState": true,
     "provenanceRequired": true,
     "noImplicitExternalAuthority": true,
-    "providerSelection": "quality*freshness*reliability*latency*cost"
+    "providerSelection": "quality*freshness*reliability*latency*cost",
+    "assessmentRequiresIndependentCorroboration": true,
+    "contradictionSearchRequired": true
   },
   "riskClasses": {"R0":"read-only","R1":"analysis-only","R2":"controlled-write","R3":"deploy-or-external-side-effect"},
   "workers": [
@@ -22,6 +24,9 @@
     {"id":"health-sentinel","role":"health-and-self-heal","risk":"R1","capabilities":["heartbeat","freshness-check","provider-health","stale-detection","incident-open"],"fallback":"alert-only"},
     {"id":"provider-scout","role":"api-provider-discovery","risk":"R1","capabilities":["discover-provider","score-provider","license-check","latency-benchmark","reliability-benchmark","mcp-discovery"],"fallback":"no-change"},
     {"id":"world-intel-worker","role":"osint-intelligence","risk":"R1","capabilities":["incident-ingest","source-fusion","conflict-detection","military-activity-osint","sanctions","outages","protests","weather-risk","economic-risk","confidence-score"],"constraints":["public-or-authorized-sources-only","no-secret-service-claim-without-auth"],"fallback":"public-osint-only"},
+    {"id":"intel-correlation-worker","role":"cross-source-correlation","risk":"R1","capabilities":["entity-resolution","temporal-correlation","geospatial-correlation","duplicate-collapse","common-origin-detection","event-linking"],"requires":["provenance-preserved","no-duplicate-vote-inflation"],"fallback":"uncorrelated-evidence-bundle"},
+    {"id":"intel-assessor-worker","role":"intelligence-assessment","risk":"R1","capabilities":["primary-hypothesis","alternative-scenarios","confidence-calibration","indicator-watchlist","change-trigger-definition","forecast-window"],"requires":["minimum-two-independent-sources-or-explicit-low-confidence","freshness-score","source-quality-score"],"fallback":"insufficient-evidence"},
+    {"id":"intel-red-team-worker","role":"adversarial-intelligence-review","risk":"R1","capabilities":["disconfirming-evidence-search","alternative-explanation","source-dependence-check","confirmation-bias-check","confidence-challenge"],"requires":["independent-review-path"],"fallback":"review-required"},
     {"id":"aktual-worker","role":"news-and-aktual","risk":"R2","capabilities":["news-ingest","cluster","rank","summarize","publish-draft"],"requires":["source-provenance","freshness-threshold"],"fallback":"draft-only"},
     {"id":"market-worker","role":"market-data","risk":"R1","capabilities":["market-ingest","fx","digital-assets","staleness-check","provider-failover"],"fallback":"last-known-good-with-stale-flag"},
     {"id":"publication-worker","role":"publication-distribution","risk":"R2","capabilities":["portal-publish","distribution-parity","canonical-check","sitemap-sync","indexability-check"],"requires":["single-writer-lock","exact-sha-before-write"],"fallback":"queue-only"},
@@ -30,6 +35,16 @@
     {"id":"release-guardian","role":"release-control","risk":"R3","capabilities":["exact-sha-check","single-writer-lock","smoke","rollback-readiness","deploy-gate"],"requires":["all-core-gates-green","head-sha-match"],"fallback":"block-release"},
     {"id":"security-guardian","role":"access-and-security","risk":"R2","capabilities":["auth-state","permission-check","webauthn-state","secret-leak-check","service-access-matrix"],"fallback":"deny-access"}
   ],
+  "assessmentContract": {
+    "requiredFields":["assessmentId","generatedAt","topic","primaryAssessment","confidence","confidenceRationale","sourceRefs","independentSourceCount","contradictions","alternativeScenarios","watchIndicators","whatWouldChangeAssessment","freshness","provenanceDigest"],
+    "confidenceBands":{"low":"0-49","moderate":"50-69","high":"70-84","veryHigh":"85-100"},
+    "rules":[
+      "syndicated copies sharing one upstream origin count as one independent source",
+      "single-source assessments cannot exceed moderate confidence unless source is primary and directly authoritative",
+      "material contradictions reduce confidence until resolved or explicitly bounded",
+      "forecast statements must include a time window and observable change triggers"
+    ]
+  },
   "runtime": {
     "taskStates":["queued","running","review","blocked","done","degraded"],
     "healthStates":["healthy","degraded","stale","down","quarantined"],
