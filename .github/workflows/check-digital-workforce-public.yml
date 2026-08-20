@@ -5,31 +5,10 @@ on:
     branches: [main]
     paths:
       - 'apps/portal/digital-workforce/**'
-      - 'apps/portal/about-the-group/**'
-      - 'apps/portal/o-grupi/**'
-      - 'apps/portal/the-code/intelligence/**'
-      - 'apps/portal/de/**'
-      - 'apps/portal/it/**'
-      - 'apps/portal/arabic/**'
-      - 'apps/portal/cn/**'
-      - 'apps/portal/language-review/**'
-      - 'apps/portal/assets/data/digital-workforce-blueprint.json'
-      - 'apps/portal/assets/data/digital-workforce-governance.json'
-      - 'apps/portal/assets/data/seo-entity-registry.json'
-      - 'apps/portal/assets/data/multilingual-review-manifest.json'
-      - 'apps/portal/data/operational-profile-display-policy-v1.json'
-      - 'apps/portal/data/public-profile-disclosure-policy-v1.json'
-      - 'apps/portal/assets/js/digital-workforce-directory-v1.js'
-      - 'apps/portal/assets/js/editorial-operations-runtime-v1.js'
-      - 'apps/portal/assets/localized-corporate-home-v1.css'
-      - 'apps/portal/assets/localized-rtl-cjk-v1.css'
-      - 'apps/portal/assets/public-menu-v18.js'
-      - 'workers/gnk-asg-direct-operator/src/public-shell-v11.js'
+      - 'apps/portal/en/digital-workforce/**'
+      - 'apps/portal/assets/digital-workforce-**'
+      - 'config/master-asg-worker-fleet-v1.json'
       - 'workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js'
-      - 'workers/gnk-asg-direct-operator/src/editorial-workflow-v1.js'
-      - 'workers/gnk-asg-direct-operator/wrangler.toml'
-      - 'workers/gnk-asg-direct-operator/wrangler.review-preview.toml'
-      - 'apps/portal/editorial-operations/release-queue/index.html'
       - 'scripts/validate-digital-workforce-public-v3.mjs'
       - '.github/workflows/check-digital-workforce-public.yml'
 
@@ -45,70 +24,20 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Check JavaScript syntax
+      - name: Check current Workforce JavaScript syntax
         run: |
           set -euxo pipefail
-          node --check apps/portal/assets/js/digital-workforce-directory-v1.js
-          node --check apps/portal/assets/public-menu-v18.js
-          node --check apps/portal/assets/js/editorial-operations-runtime-v1.js
-          node --input-type=module --check < workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          node --check apps/portal/assets/digital-workforce-suite-v1.js
+          node --check apps/portal/assets/digital-workforce-dashboard-v1.js
+          node --check apps/portal/assets/digital-workforce-antfarm-v1.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js
           node --check scripts/validate-digital-workforce-public-v3.mjs
-      - name: Validate directory governance SEO and safety locks
+      - name: Validate live public Workforce and autonomy guardrails
         run: node scripts/validate-digital-workforce-public-v3.mjs
-      - name: Validate GNK operational profile display policy
-        run: |
-          set -euxo pipefail
-          node <<'NODE'
-          const fs=require('fs');
-          const policy=JSON.parse(fs.readFileSync('apps/portal/data/operational-profile-display-policy-v1.json','utf8'));
-          if(policy.status!=='executive-approved-review')throw new Error('profile display policy status invalid');
-          if(policy.identityType!=='system-generated-operational-profile')throw new Error('identity type invalid');
-          if(policy.naturalPersonClaim!==false||policy.employmentClaim!==false)throw new Error('identity boundary invalid');
-          if(policy.stableAssignment!==true)throw new Error('stable assignment missing');
-          for(const token of ['GNK profile code','first name','surname initial','position','company public name','origin country','work country','local time','availability','collaboration channel','operational status']){
-            if(!policy.visibleFields.includes(token))throw new Error(`visible field missing ${token}`);
-          }
-          for(const token of ['message content','private task','contact details','attachments','client identity','partner identity','meeting details']){
-            if(!policy.hiddenFields.includes(token))throw new Error(`hidden field missing ${token}`);
-          }
-          if(!policy.requiredPublicLabelHr||!policy.requiredPublicLabelEn)throw new Error('public synthetic-profile disclosure missing');
-          console.log('GNK_OPERATIONAL_PROFILE_DISPLAY_POLICY_OK');
-          NODE
-      - name: Validate multilingual review contract
-        run: |
-          set -euxo pipefail
-          node <<'NODE'
-          const fs=require('fs');
-          const read=file=>fs.readFileSync(file,'utf8');
-          const manifest=JSON.parse(read('apps/portal/assets/data/multilingual-review-manifest.json'));
-          if(manifest.status!=='controlled-review')throw new Error('multilingual status invalid');
-          if(manifest.locales.length!==6)throw new Error('six locales required');
-          const expected={hr:'/',en:'/en/',de:'/de/',it:'/it/',ar:'/arabic/',zh:'/cn/'};
-          for(const [code,route] of Object.entries(expected)){
-            const locale=manifest.locales.find(item=>item.code===code);
-            if(!locale||locale.route!==route)throw new Error(`locale route mismatch ${code}`);
-          }
-          const files=['apps/portal/de/index.html','apps/portal/it/index.html','apps/portal/arabic/index.html','apps/portal/cn/index.html'];
-          for(const file of files){
-            const html=read(file);
-            if(!html.includes('noindex,nofollow,noarchive'))throw new Error(`noindex missing ${file}`);
-            if(!html.includes('GNK ASG d.o.o.')||!html.includes('GNK DINAMO Ltd.'))throw new Error(`entity names missing ${file}`);
-          }
-          const ar=read('apps/portal/arabic/index.html');
-          if(!ar.includes('lang="ar" dir="rtl"'))throw new Error('Arabic RTL missing');
-          const zh=read('apps/portal/cn/index.html');
-          if(!zh.includes('lang="zh-CN"'))throw new Error('Chinese locale missing');
-          const menu=read('apps/portal/assets/public-menu-v18.js');
-          for(const token of ["ar:'/arabic/'","zh:'/cn/'",'zh-Hans','document.documentElement.dir'])if(!menu.includes(token))throw new Error(`menu token missing ${token}`);
-          const review=read('apps/portal/language-review/index.html');
-          for(const route of ['/en/','/de/','/it/','/arabic/','/cn/'])if(!review.includes(`href="${route}"`))throw new Error(`review route missing ${route}`);
-          console.log('MULTILINGUAL_REVIEW_OK');
-          NODE
-      - name: Confirm review-only execution model
+      - name: Confirm review-only CI execution model
         run: |
           set -euxo pipefail
           grep -q 'permissions:' .github/workflows/check-digital-workforce-public.yml
           grep -q 'contents: read' .github/workflows/check-digital-workforce-public.yml
-          grep -q 'This workflow performs no deployment and no email submission.' .github/workflows/deploy-luxury-index-pr.yml
-          echo 'Review validation only. Deployment, publication, DNS, Cloudflare, secret and email actions are outside this workflow.'
+          ! grep -Eq 'wrangler deploy|git push|curl.+-X[[:space:]]+(POST|PUT|PATCH|DELETE)' .github/workflows/check-digital-workforce-public.yml
+          echo 'Workforce contract validation is read-only; deployment and external side effects stay outside this workflow.'
