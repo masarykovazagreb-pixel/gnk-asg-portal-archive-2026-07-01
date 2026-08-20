@@ -1,6 +1,6 @@
 {
   "version": "MASTER_ASG_CAPABILITY_REGISTRY_V1",
-  "updatedAt": "2026-08-19T21:58:00+02:00",
+  "updatedAt": "2026-08-20T14:03:00+02:00",
   "policy": {
     "singleWriter": true,
     "exactShaRequired": true,
@@ -13,6 +13,10 @@
     {"id":"workforce.projects","class":"R0","critical":true,"provider":"/api/public/digital-workforce/projects"},
     {"id":"workforce.tasks","class":"R0","critical":true,"provider":"/api/public/digital-workforce/tasks"},
     {"id":"workforce.comms","class":"R0","critical":false,"provider":"/api/public/digital-workforce/comms"},
+    {"id":"world_intel.status","class":"R0","critical":true,"provider":"/api/world-intel/status","adminAuth":true},
+    {"id":"world_intel.incidents","class":"R0","critical":true,"provider":"/api/world-intel/incidents","adminAuth":true,"secondaryGate":true,"fallback":true},
+    {"id":"world_intel.services","class":"R0","critical":true,"provider":"/api/world-intel/services","adminAuth":true,"secondaryGate":true,"honestStateRequired":true},
+    {"id":"world_intel.analyse","class":"R1","critical":false,"sources":["World Monitor","USGS","NASA FIRMS"],"noFalseAgencyConnectivity":true},
     {"id":"news.ingest","class":"R0","critical":true,"fallback":true},
     {"id":"market.read","class":"R0","critical":true,"fallback":true},
     {"id":"weather.read","class":"R0","critical":false,"fallback":true},
