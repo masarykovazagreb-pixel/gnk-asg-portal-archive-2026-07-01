@@ -1,0 +1,39 @@
+{
+  "version": "MASTER_ASG_WORKER_FLEET_V1",
+  "architect": "Nermin Sefic",
+  "mode": "controlled-autonomy",
+  "designSources": [
+    "cporter202/agentic-ai-starters: multi-agent-ops and MCP toolchain patterns",
+    "cporter202/agentic-ai-apis: provider/API/MCP discovery catalog"
+  ],
+  "principles": {
+    "singleWriter": true,
+    "exactShaRequiredForWrites": true,
+    "failClosedOnUnknownState": true,
+    "provenanceRequired": true,
+    "noImplicitExternalAuthority": true,
+    "providerSelection": "quality*freshness*reliability*latency*cost"
+  },
+  "riskClasses": {"R0":"read-only","R1":"analysis-only","R2":"controlled-write","R3":"deploy-or-external-side-effect"},
+  "workers": [
+    {"id":"master-orchestrator","role":"orchestration","risk":"R2","capabilities":["dispatch","prioritize","dedupe","route","aggregate-health"],"requires":["exact-sha-before-write"],"fallback":"read-only-degraded"},
+    {"id":"planner-worker","role":"planning","risk":"R1","capabilities":["decompose-task","dependency-map","priority-score","budget-plan"],"fallback":"manual-plan"},
+    {"id":"reviewer-worker","role":"review","risk":"R1","capabilities":["verify-output","contradiction-check","policy-check","quality-score"],"fallback":"block-unverified"},
+    {"id":"health-sentinel","role":"health-and-self-heal","risk":"R1","capabilities":["heartbeat","freshness-check","provider-health","stale-detection","incident-open"],"fallback":"alert-only"},
+    {"id":"provider-scout","role":"api-provider-discovery","risk":"R1","capabilities":["discover-provider","score-provider","license-check","latency-benchmark","reliability-benchmark","mcp-discovery"],"fallback":"no-change"},
+    {"id":"world-intel-worker","role":"osint-intelligence","risk":"R1","capabilities":["incident-ingest","source-fusion","conflict-detection","military-activity-osint","sanctions","outages","protests","weather-risk","economic-risk","confidence-score"],"constraints":["public-or-authorized-sources-only","no-secret-service-claim-without-auth"],"fallback":"public-osint-only"},
+    {"id":"aktual-worker","role":"news-and-aktual","risk":"R2","capabilities":["news-ingest","cluster","rank","summarize","publish-draft"],"requires":["source-provenance","freshness-threshold"],"fallback":"draft-only"},
+    {"id":"market-worker","role":"market-data","risk":"R1","capabilities":["market-ingest","fx","digital-assets","staleness-check","provider-failover"],"fallback":"last-known-good-with-stale-flag"},
+    {"id":"publication-worker","role":"publication-distribution","risk":"R2","capabilities":["portal-publish","distribution-parity","canonical-check","sitemap-sync","indexability-check"],"requires":["single-writer-lock","exact-sha-before-write"],"fallback":"queue-only"},
+    {"id":"seo-entity-worker","role":"seo-aeo-geo","risk":"R2","capabilities":["meta","schema","canonical","hreflang","internal-links","entity-signals","image-seo"],"requires":["no-keyword-stuffing","truthful-attribution"],"fallback":"analysis-only"},
+    {"id":"qa-worker","role":"quality-assurance","risk":"R1","capabilities":["broken-links","hr-en-parity","mobile","accessibility","performance","contract-check"],"fallback":"report-only"},
+    {"id":"release-guardian","role":"release-control","risk":"R3","capabilities":["exact-sha-check","single-writer-lock","smoke","rollback-readiness","deploy-gate"],"requires":["all-core-gates-green","head-sha-match"],"fallback":"block-release"},
+    {"id":"security-guardian","role":"access-and-security","risk":"R2","capabilities":["auth-state","permission-check","webauthn-state","secret-leak-check","service-access-matrix"],"fallback":"deny-access"}
+  ],
+  "runtime": {
+    "taskStates":["queued","running","review","blocked","done","degraded"],
+    "healthStates":["healthy","degraded","stale","down","quarantined"],
+    "requiredTelemetry":["workerId","taskId","startedAt","finishedAt","sourceRefs","confidence","health","resultDigest","inputSha","outputSha"],
+    "retryPolicy":{"maxAutomaticRetries":2,"backoff":"exponential","afterExhaustion":"quarantine-or-human-review"}
+  }
+}
