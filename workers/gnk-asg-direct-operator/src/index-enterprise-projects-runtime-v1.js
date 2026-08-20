@@ -3,7 +3,8 @@ import {isEnterpriseProjectApi,handleEnterpriseProjectApi,runEnterpriseProjectCy
 import {isCompanyOperationsApi,handleCompanyOperationsApi} from './enterprise-company-operations-v1.js';
 import {isNewsMarketIntelligenceApi,handleNewsMarketIntelligenceApi,runNewsMarketIntelligence} from './news-market-intelligence-v1.js';
 const pathOf=request=>new URL(request.url).pathname.replace(/\/+$/,'')||'/';
-const protectedNoindex=path=>path==='/enterprise'||path.startsWith('/enterprise/')||path==='/editorial-operations'||path.startsWith('/editorial-operations/')||path==='/strategy-performance'||path.startsWith('/strategy-performance/');
+const protectedPrefixes=['/enterprise','/editorial-operations','/strategy-performance','/digital-headquarters','/admin-center','/operator-dashboard','/worker-ops','/campaign-mailer','/mail-studio','/email-status','/media-registration-admin','/editor-desk','/intelligence-desk','/knowledge-center','/projects','/reports'];
+const protectedNoindex=path=>protectedPrefixes.some(prefix=>path===prefix||path.startsWith(`${prefix}/`));
 const reviewEnvironment=env=>/review|preview|isolated/i.test(String(env?.PUBLIC_ENVIRONMENT||''));
 function noindex(response){const headers=new Headers(response.headers);headers.set('x-robots-tag','noindex, nofollow, noarchive');headers.set('cache-control','no-store');return new Response(response.body,{status:response.status,statusText:response.statusText,headers});}
 function reviewRobots(response){const headers=new Headers(response.headers);headers.set('x-robots-tag','noindex, nofollow, noarchive');headers.set('x-gnk-review-indexing','disabled');return new Response(response.body,{status:response.status,statusText:response.statusText,headers});}
