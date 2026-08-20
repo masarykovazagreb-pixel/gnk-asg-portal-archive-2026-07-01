@@ -40,9 +40,12 @@ jobs:
           python-version: '3.12'
       - name: Reproduce canonical editorial sitemap
         run: |
+          mkdir -p artifacts/publication-sitemap-registry
           cp apps/portal/editorial-sitemap.xml "$RUNNER_TEMP/editorial-sitemap.xml"
           cp apps/portal/sitemap-index.xml "$RUNNER_TEMP/sitemap-index.xml"
           node scripts/generate-editorial-sitemap-v2.mjs
+          cp apps/portal/editorial-sitemap.xml artifacts/publication-sitemap-registry/generated-editorial-sitemap.xml
+          cp apps/portal/sitemap-index.xml artifacts/publication-sitemap-registry/generated-sitemap-index.xml
           diff -u "$RUNNER_TEMP/editorial-sitemap.xml" apps/portal/editorial-sitemap.xml
           diff -u "$RUNNER_TEMP/sitemap-index.xml" apps/portal/sitemap-index.xml
       - name: Validate published routes, lastmod and canonical registry
@@ -56,6 +59,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: publication-sitemap-registry-${{ github.sha }}
-          path: artifacts/publication-sitemap-registry/report.json
+          path: |
+            artifacts/publication-sitemap-registry/generated-editorial-sitemap.xml
+            artifacts/publication-sitemap-registry/generated-sitemap-index.xml
+            artifacts/publication-sitemap-registry/report.json
           if-no-files-found: error
           retention-days: 1
