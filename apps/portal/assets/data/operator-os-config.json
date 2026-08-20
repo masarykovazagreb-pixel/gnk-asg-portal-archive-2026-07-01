@@ -1,0 +1,113 @@
+{
+  "version": "2026-08-20.operator-os.06",
+  "status": "controlled-review",
+  "safetyGates": {
+    "massEmailSending": "disabled-until-explicit-approval",
+    "productionDeploy": "disabled-until-explicit-approval",
+    "dnsChanges": "forbidden-in-build-window",
+    "cloudflareRouteChanges": "forbidden-in-build-window",
+    "secretsChanges": "forbidden-in-build-window",
+    "mergeToProduction": "disabled-until-explicit-approval"
+  },
+  "group": {
+    "publicName": "GNK DINAMO Ltd. Group / GNK ASG Enterprise Digital Platform",
+    "headquarters": {
+      "company": "GNK DINAMO Ltd.",
+      "city": "Boulder",
+      "region": "Colorado",
+      "country": "United States",
+      "registry": "Colorado Entity ID 20238180649"
+    },
+    "regionalCompany": {
+      "company": "GNK ASG d.o.o.",
+      "city": "Zagreb",
+      "country": "Croatia",
+      "role": "regional connected company and operating portal entity"
+    },
+    "strategicProject": "THE CODE",
+    "plannedEntityCount": 43
+  },
+  "monitoredModules": [
+    {"id":"enterprise-hub","label":"Enterprise Review Hub","route":"/enterprise/","risk":"low","approvalRequired":false},
+    {"id":"design-review","label":"Design Review Console","route":"/design-review/","risk":"low","approvalRequired":true},
+    {"id":"group-profile","label":"About the Group / O grupi","route":"/about-the-group/","risk":"medium","approvalRequired":true},
+    {"id":"strategy-performance","label":"Strategy / Performance Monitor","route":"/strategy-performance/","risk":"high","approvalRequired":true},
+    {"id":"digital-workforce","label":"Digital Workforce","route":"/digital-workforce/","risk":"medium","approvalRequired":true},
+    {"id":"campaign-mailer","label":"Campaign Mailer","route":"/campaign-mailer/","risk":"high","approvalRequired":true,"sendCap":"manual-only"},
+    {"id":"mail-studio","label":"Mail Studio","route":"/mail-studio/","risk":"high","approvalRequired":true,"sendCap":"manual-only"},
+    {"id":"email-status","label":"Email Status","route":"/email-status/","risk":"medium","approvalRequired":false,"delivery":"worker-dynamic-authenticated"},
+    {"id":"media-command-center","label":"Media Command Center","route":"/media-command-center/","risk":"high","approvalRequired":true},
+    {"id":"news","label":"News Workflow","route":"/vijesti/","risk":"medium","approvalRequired":true},
+    {"id":"publishing","label":"Publications Workflow","route":"/objave/","risk":"medium","approvalRequired":true},
+    {"id":"operator-dashboard","label":"Operator Dashboard","route":"/operator-dashboard/","risk":"medium","approvalRequired":true},
+    {"id":"deployment-recovery","label":"Deployment / Recovery Status","route":"/deployment/","risk":"critical","approvalRequired":true},
+    {"id":"registry-center","label":"Registry Center","route":"/registry-center/","risk":"high","approvalRequired":true},
+    {"id":"mobile-admin","label":"Mobile Admin Approval Queue","route":"/mobile-admin/","risk":"high","approvalRequired":true},
+    {"id":"seo-engine","label":"SEO / Publishing Engine","route":"/seo/","risk":"medium","approvalRequired":true},
+    {"id":"admin-center","label":"Admin Center","route":"/admin-center/","risk":"high","approvalRequired":true},
+    {"id":"media-registration-admin","label":"Media Registration Admin","route":"/media-registration-admin/","risk":"high","approvalRequired":true}
+  ],
+  "missionControl": {
+    "operatorRoles": [
+      "Executive Office",
+      "AI Director",
+      "AI Manager",
+      "Department Manager",
+      "Digital Operations Worker",
+      "Quality Gate Reviewer",
+      "Mobile Approval Officer"
+    ],
+    "statusModel": ["active","busy","scheduled","idle","escalated","approval-required","blocked"],
+    "dashboardCards": [
+      "system-readiness",
+      "module-health",
+      "approval-queue",
+      "registry-deadlines",
+      "publishing-status",
+      "seo-status",
+      "strategy-performance",
+      "design-review",
+      "deployment-locks",
+      "worker-load"
+    ]
+  },
+  "digitalOperations": {
+    "description": "Global Operations Center / Digital Operations Team profiles are operational identities for workflow coordination and dashboard accountability; they are not presented as confirmed physical employees.",
+    "namingFormat": "FirstName Initial. + Worker ID",
+    "exampleProfiles": [
+      {"name":"Sofia P.","workerId":"REG-017","country":"Germany","timezone":"CET","languages":["German","English"],"department":"Registry Operations","status":"active"},
+      {"name":"Daniel K.","workerId":"SEO-008","country":"Canada","timezone":"EST","languages":["English","French"],"department":"SEO Operations","status":"active"},
+      {"name":"Emma R.","workerId":"MED-031","country":"Australia","timezone":"AEST","languages":["English"],"department":"Media Operations","status":"busy"},
+      {"name":"Maya S.","workerId":"AI-044","country":"India","timezone":"IST","languages":["English","Hindi"],"department":"AI Research","status":"scheduled"},
+      {"name":"Hana B.","workerId":"PUB-012","country":"Croatia","timezone":"CET","languages":["Croatian","English"],"department":"Publishing Operations","status":"active"}
+    ],
+    "targetScale": {
+      "phaseOneVisibleProfiles": 250,
+      "fullGeneratedProfiles": 3000,
+      "maxArchitectureCapacity": 10000
+    }
+  },
+  "registryCenter": {
+    "trackedRegistries": [
+      {"id":"dziv","label":"DZIV","jurisdiction":"Croatia","deadlineTracking":true},
+      {"id":"euipo","label":"EUIPO","jurisdiction":"European Union","deadlineTracking":true},
+      {"id":"wipo","label":"WIPO","jurisdiction":"International","deadlineTracking":true},
+      {"id":"colorado","label":"Colorado Secretary of State","jurisdiction":"United States / Colorado","deadlineTracking":true},
+      {"id":"court-register","label":"Sudski registar","jurisdiction":"Croatia","deadlineTracking":true},
+      {"id":"fina","label":"FINA","jurisdiction":"Croatia","deadlineTracking":true}
+    ],
+    "requiredFields": ["matter","registry","jurisdiction","deadline","owner","status","documentLink","nextAction","riskLevel"]
+  },
+  "approvalQueue": {
+    "requiredFor": ["mass-email", "media-publication", "legal-publication", "registry-submission", "seo-indexing-change", "strategic-kpi-publication", "design-approval", "deployment", "dns-or-cloudflare-change"],
+    "mobileStates": ["draft", "ready-for-review", "approved", "rejected", "scheduled", "locked"]
+  },
+  "seoPublishing": {
+    "requiredChecks": ["title", "metaDescription", "canonical", "hreflang", "openGraph", "twitterCard", "schemaOrg", "sitemap", "imageAlt", "imageMetadata", "internalLinks", "robots"],
+    "reviewCadence": "every-two-hours-during-final-build-window"
+  },
+  "premiumRedesign": {
+    "principle": "high-production enterprise UI without breaking existing routes or current mail/admin functions",
+    "components": ["command-center-header", "glassmorphism-status-cards", "registry-deadline-board", "approval-queue-table", "strategy-performance-panel", "responsive-design-console", "worker-grid", "global-map-panel", "printable-group-profile", "seo-health-panel"]
+  }
+}
