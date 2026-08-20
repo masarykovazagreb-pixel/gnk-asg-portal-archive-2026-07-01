@@ -7,7 +7,6 @@ on:
       - 'workers/gnk-asg-direct-operator/src/enterprise-company-operations-v1.js'
       - 'workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js'
       - 'workers/gnk-asg-direct-operator/test/enterprise-company-operations.test.mjs'
-      - 'apps/portal/assets/js/digital-workforce-company-layer-v1.js'
       - 'apps/portal/data/group_network.json'
       - '.github/workflows/check-company-operations-v1.yml'
   workflow_dispatch:
@@ -30,7 +29,6 @@ jobs:
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/enterprise-company-operations-v1.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js
           node --check workers/gnk-asg-direct-operator/test/enterprise-company-operations.test.mjs
-          node --check apps/portal/assets/js/digital-workforce-company-layer-v1.js
           grep -Fq "from './enterprise-company-operations-v1.js'" workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js
           grep -Fq 'isCompanyOperationsApi(path)' workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js
           grep -Fq "export const API_PREFIX='/api/company-operations'" workers/gnk-asg-direct-operator/src/enterprise-company-operations-v1.js
