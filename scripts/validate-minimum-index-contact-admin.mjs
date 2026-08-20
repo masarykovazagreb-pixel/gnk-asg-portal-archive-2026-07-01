@@ -4,7 +4,7 @@ import {readFile} from 'node:fs/promises';
 const read=path=>readFile(new URL(`../${path}`,import.meta.url),'utf8');
 const [
   indexHr,indexEn,contactHr,contactEn,adminCenter,publicShell,
-  activeAuth,gatewayCompat,gatewayRuntime,campaignShell,wranglerReview,wranglerRuntime
+  activeEntry,activeAuth,authFoundation,gatewayCompat,gatewayRuntime,campaignShell,wranglerReview,wranglerRuntime
 ]=await Promise.all([
   read('apps/portal/index.html'),
   read('apps/portal/en/index.html'),
@@ -12,6 +12,8 @@ const [
   read('apps/portal/en/contact/index.html'),
   read('apps/portal/admin-center/index.html'),
   read('workers/gnk-asg-direct-operator/src/public-shell-v11.js'),
+  read('workers/gnk-asg-direct-operator/src/index-digital-workforce-v1.js'),
+  read('workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js'),
   read('workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js'),
   read('workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js'),
   read('workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js'),
@@ -26,9 +28,8 @@ for(const [name,html] of [['HR index',indexHr],['EN index',indexEn]]){
 }
 
 for(const [name,html] of [['HR kontakt',contactHr],['EN kontakt',contactEn]]){
-  // The contact page has evolved beyond the original hard-coded /api/contact-submit
-  // endpoint. Keep this gate fail-closed on an API-backed JS submission contract,
-  // but do not couple release readiness to one retired route literal.
+  // Keep this fail-closed on a real API-backed submission contract without
+  // coupling readiness to one retired endpoint literal.
   assert.ok(html.includes('id="contactForm"'),`${name} mora zadržati canonical contact form.`);
   assert.ok(/fetch\s*\(/.test(html)&&/\/api\//.test(html),`${name} mora koristiti API-backed kontakt handler.`);
   assert.ok(html.includes('name="consent"'),`${name} mora zadržati privolu.`);
@@ -39,10 +40,15 @@ assert.ok(publicShell.includes("'/campaign-mailer'"),'Campaign Mailer mora biti 
 assert.ok(publicShell.includes("'/media-application'"),'Media Application mora biti izoliran od javnog redizajna.');
 assert.ok(publicShell.includes('if(isPrivatePath(normalized))return html;'),'Privatne rute moraju se vratiti nepromijenjene.');
 
-assert.ok(activeAuth.includes("from './index-portal-final-v13.js'"),'Review Worker mora zadržati unified-auth iznad stabilnog portal runtimea.');
-assert.ok(activeAuth.includes('handleEnterpriseProjectApi'),'Unified auth mora štititi Enterprise Project API.');
-assert.ok(activeAuth.includes('runEnterpriseProjectCycle'),'Unified auth mora pokretati kontrolirani workforce ciklus.');
-assert.ok(activeAuth.includes('automaticPublication:false'),'Review runtime mora zadržati automatsku objavu isključenom.');
+// Validate the deployed review chain, then independently preserve the audited
+// auth foundation rather than pretending v14 is still the Wrangler entrypoint.
+assert.ok(activeEntry.includes("from './index-unified-auth-v23.js'"),'Digital Workforce entrypoint mora ostati iznad aktivnog unified-auth v23 sloja.');
+assert.ok(activeAuth.includes("from './index-unified-auth-v22.js'"),'Aktivni unified-auth v23 mora ostati kompatibilan s prethodnim auth slojem.');
+assert.ok(activeAuth.includes('handleResilientContact'),'Aktivni unified-auth mora zadržati resilient contact handler.');
+assert.ok(authFoundation.includes("from './index-portal-final-v13.js'"),'Auth foundation mora zadržati stabilni portal runtime.');
+assert.ok(authFoundation.includes('handleEnterpriseProjectApi'),'Auth foundation mora štititi Enterprise Project API.');
+assert.ok(authFoundation.includes('runEnterpriseProjectCycle'),'Auth foundation mora pokretati kontrolirani workforce ciklus.');
+assert.ok(authFoundation.includes('automaticPublication:false'),'Review auth foundation mora zadržati automatsku objavu isključenom.');
 assert.ok(
   gatewayCompat.includes("export { VERSION } from './index-final-admin-gateway-v2.js';")&&
   gatewayCompat.includes("export { default } from './index-final-admin-gateway-v2.js';"),
@@ -51,10 +57,10 @@ assert.ok(
 assert.ok(gatewayRuntime.includes('campaign-mailer-shell-v2.js'),'Canonical gateway v2 mora zadržati Campaign Mailer shell.');
 assert.ok(gatewayRuntime.includes('campaign-mailer-v2.js'),'Canonical gateway v2 mora zadržati Campaign Mailer sigurnosni kontroler.');
 assert.ok(campaignShell.includes("path==='/campaign-mailer'"),'Campaign Mailer ruta mora ostati registrirana.');
-assert.ok(wranglerReview.includes('main = "src/index-unified-auth-v14.js"'),'Review Wrangler mora koristiti unified-auth v14 kao vanjski sigurnosni sloj.');
+assert.ok(wranglerReview.includes('main = "src/index-digital-workforce-v1.js"'),'Review Wrangler mora koristiti aktivni Digital Workforce entrypoint.');
 assert.ok(wranglerReview.includes('PUBLIC_ENVIRONMENT = "review-direct-operator"'),'Review Wrangler mora ostati u izoliranom review okruženju.');
 assert.ok(wranglerReview.includes('MAIL_MANUAL_LIVE = "false"'),'Stvarno ručno slanje mora ostati isključeno u reviewu.');
 assert.ok(wranglerReview.includes('MEDIA_OUTREACH_LIVE = "false"'),'Media outreach mora ostati isključen u reviewu.');
 assert.ok(wranglerRuntime.includes('main = "src/index-final-admin-gateway-v2.js"'),'Produkcijski runtime manifest mora i dalje pokazivati na canonical gateway v2.');
 
-console.log('CURRENT INDEX + CONTACT + ADMIN + UNIFIED REVIEW AUTH + CANONICAL V2 COMPATIBILITY: PASS');
+console.log('CURRENT INDEX + CONTACT + ADMIN + ACTIVE WORKER CHAIN + CANONICAL V2 COMPATIBILITY: PASS');
