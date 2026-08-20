@@ -14,12 +14,12 @@ on:
       - 'apps/portal/assets/media-applications-review-v1.css'
       - 'apps/portal/assets/media-applications-review-v1.js'
       - 'apps/portal/assets/media-applications-decision-guard-v1.js'
-      - 'apps/portal/assets/admin-media-applications-entry-v1.js'
       - 'workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js'
       - 'workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js'
       - 'workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js'
       - 'workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js'
       - 'workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js'
+      - 'workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js'
       - 'workers/gnk-asg-direct-operator/test/unified-auth-enterprise-scope.test.mjs'
       - '.github/workflows/check-media-applications-review.yml'
 
@@ -40,12 +40,12 @@ jobs:
           set -euxo pipefail
           node --check apps/portal/assets/media-applications-review-v1.js
           node --check apps/portal/assets/media-applications-decision-guard-v1.js
-          node --check apps/portal/assets/admin-media-applications-entry-v1.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
       - name: Test public and protected route separation
         run: node workers/gnk-asg-direct-operator/test/unified-auth-enterprise-scope.test.mjs
       - name: Verify public registration is preserved
@@ -93,9 +93,8 @@ jobs:
       - name: Verify navigation and responsive review coverage
         run: |
           set -euxo pipefail
-          grep -q 'admin-media-applications-entry-v1.js' apps/portal/admin-center/index.html
-          grep -q 'Pregled media prijava' apps/portal/assets/admin-media-applications-entry-v1.js
-          grep -q 'Javna media prijavnica' apps/portal/assets/admin-media-applications-entry-v1.js
+          grep -q 'href="/media-registration-admin/"' apps/portal/admin-center/index.html
+          grep -q 'Media Registration Admin' apps/portal/admin-center/index.html
           grep -q 'Media Applications Review' apps/portal/enterprise/index.html
           grep -q 'Public Media Application' apps/portal/enterprise/index.html
           grep -q "\['Media Applications Review','/media-registration-admin/'\]" apps/portal/design-review/index.html
