@@ -1,5 +1,5 @@
 {
-  "version": "2026-08-20.operator-os.07",
+  "version": "2026-08-20.operator-os.08",
   "status": "controlled-review",
   "safetyGates": {
     "massEmailSending": "disabled-until-explicit-approval",
@@ -32,6 +32,7 @@
     {"id":"group-profile","label":"About the Group / O grupi","route":"/about-the-group/","risk":"medium","approvalRequired":true},
     {"id":"strategy-performance","label":"Strategy / Performance Monitor","route":"/strategy-performance/","risk":"high","approvalRequired":true},
     {"id":"digital-workforce","label":"Digital Workforce","route":"/digital-workforce/","risk":"medium","approvalRequired":true},
+    {"id":"entity-intelligence","label":"ASG Entity Intelligence","route":"/entity-intelligence/","risk":"medium","approvalRequired":true},
     {"id":"campaign-mailer","label":"Campaign Mailer","route":"/campaign-mailer/","risk":"high","approvalRequired":true,"sendCap":"manual-only"},
     {"id":"mail-studio","label":"Mail Studio","route":"/mail-studio/","risk":"high","approvalRequired":true,"sendCap":"manual-only"},
     {"id":"email-status","label":"Email Status","route":"/email-status/","risk":"medium","approvalRequired":false,"delivery":"worker-dynamic-authenticated"},
