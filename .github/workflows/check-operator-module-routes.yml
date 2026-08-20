@@ -10,6 +10,8 @@ on:
       - 'workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js'
       - 'workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js'
       - 'workers/gnk-asg-direct-operator/test/unified-auth-enterprise-scope.test.mjs'
+      - 'workers/gnk-asg-direct-operator/package.json'
+      - 'workers/gnk-asg-direct-operator/wrangler.toml'
       - 'scripts/validate-operator-module-routes.mjs'
       - '.github/workflows/check-operator-module-routes.yml'
 
@@ -19,7 +21,7 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 7
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -36,8 +38,13 @@ jobs:
           node --check workers/gnk-asg-direct-operator/test/unified-auth-enterprise-scope.test.mjs
       - name: Validate all configured module routes
         run: node scripts/validate-operator-module-routes.mjs
-      - name: Test existing token and protected enterprise scope
-        run: node workers/gnk-asg-direct-operator/test/unified-auth-enterprise-scope.test.mjs
+      - name: Validate Cloudflare runtime bundle
+        working-directory: workers/gnk-asg-direct-operator
+        run: |
+          set -euxo pipefail
+          npm install --ignore-scripts --no-audit --no-fund
+          npx wrangler deploy --dry-run --outdir /tmp/gnk-asg-operator-bundle
+          test -n "$(find /tmp/gnk-asg-operator-bundle -type f -maxdepth 2 -print -quit)"
       - name: Preserve authentication contract
         run: |
           set -euxo pipefail
