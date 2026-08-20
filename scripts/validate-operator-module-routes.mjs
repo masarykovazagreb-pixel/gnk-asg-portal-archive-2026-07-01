@@ -13,6 +13,12 @@ assert.ok(modules.length>=18,'Operator OS mora pratiti najmanje 18 odobrenih mod
 assert.equal(new Set(modules.map(item=>item.id)).size,modules.length,'Module IDs moraju biti jedinstveni.');
 assert.equal(new Set(modules.map(item=>item.route)).size,modules.length,'Module routes moraju biti jedinstvene.');
 
+const allowedRisk=new Set(['low','medium','high','critical']);
+for(const module of modules){
+  assert.ok(allowedRisk.has(module.risk),`Neispravan risk za ${module.id}: ${module.risk}`);
+  assert.equal(typeof module.approvalRequired,'boolean',`approvalRequired mora biti boolean za ${module.id}`);
+}
+
 const gateway=read('workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js');
 const mailFacade=read('workers/gnk-asg-direct-operator/src/mail-studio-extension-v4.js');
 const authLayer=read('workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js');
@@ -42,10 +48,25 @@ for(const module of modules){
   assert.ok(read(file).length>120,`${file} nema dovoljan sadržaj.`);
 }
 
-const hub=read('apps/portal/enterprise/index.html');
-const navigation=`${hub}\n${runtime}`;
-for(const requiredRoute of ['/mission-control/','/design-review/','/strategy-performance/','/registry-center/','/deployment/','/mail-studio/'])assert.ok(navigation.includes(requiredRoute),`Enterprise runtime nema ključnu rutu ${requiredRoute}`);
-for(const requiredRoute of ['/enterprise/project-center/','/editorial-operations/'])assert.ok(navigation.includes(requiredRoute),`Enterprise runtime nema novu operativnu rutu ${requiredRoute}`);
+const headquarters=read('apps/portal/digital-headquarters/index.html');
+assert.ok(headquarters.includes('noindex,nofollow,noarchive'),'Digital Headquarters mora ostati noindex/nofollow/noarchive.');
+const navigation=`${headquarters}\n${runtime}`;
+const criticalRoutes=[
+  '/admin-center/',
+  '/operator-dashboard/',
+  '/worker-ops/',
+  '/digital-workforce/',
+  '/mail-studio/',
+  '/media-registration-admin/',
+  '/email-status/'
+];
+for(const requiredRoute of criticalRoutes){
+  assert.ok(navigation.includes(requiredRoute),`Aktivni Digital Headquarters nema ključnu rutu ${requiredRoute}`);
+  assert.ok(modules.some(module=>routeUrl(module.route).pathname===requiredRoute),`Operator OS registry ne prati ključnu rutu ${requiredRoute}`);
+}
+for(const nestedRoute of ['/admin-center/workers/','/admin-center/news-publication/','/admin-center/contacts/','/admin-center/pdf/']){
+  assert.ok(headquarters.includes(nestedRoute),`Digital Headquarters nema zaštićeni ulaz ${nestedRoute}`);
+}
 assert.ok(runtime.includes('x-robots-tag'),'Protected runtime mora postaviti noindex header.');
 
 console.log(`OPERATOR_MODULE_ROUTE_CONTRACT_OK modules=${modules.length} dynamic=${dynamicCount} static=${modules.length-dynamicCount}`);
