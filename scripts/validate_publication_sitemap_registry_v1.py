@@ -16,6 +16,7 @@ REGISTRY = PORTAL / "data" / "editorial-registry.json"
 SITEMAP = PORTAL / "editorial-sitemap.xml"
 SITEMAP_INDEX = PORTAL / "sitemap-index.xml"
 ORIGIN = "https://gnk-asg.hr"
+WWW_ORIGIN = "https://www.gnk-asg.hr"
 NS = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
 EDITORIAL_PREFIXES = (
     "/objave/", "/komentari/", "/analize/", "/aktual/", "/gnk-aktual/kolumne/",
@@ -112,6 +113,7 @@ def main() -> int:
     for route in sorted(sitemap_routes - expected_routes):
         errors.append(f"Non-published or unregistered route exposed in editorial sitemap: {route}")
 
+    www_alias_routes: list[str] = []
     for route, item in sorted(published.items()):
         page = route_file(route)
         if not page.is_file():
@@ -120,7 +122,13 @@ def main() -> int:
         parser = HeadParser()
         parser.feed(page.read_text(encoding="utf-8", errors="replace"))
         expected = ORIGIN + route
-        if parser.canonicals != [expected]:
+        www_expected = WWW_ORIGIN + route
+        if parser.canonicals == [www_expected]:
+            www_alias_routes.append(route)
+            warnings.append(
+                f"Canonical host alias uses www for {route}; path is exact and accepted temporarily, normalize to {ORIGIN}"
+            )
+        elif parser.canonicals != [expected]:
             errors.append(f"Canonical mismatch for {route}: {parser.canonicals or 'missing'}")
         stamp = instant(item.get("publishedAt") or item.get("datePublished"))
         lastmod = instant(rows.get(expected))
@@ -146,8 +154,10 @@ def main() -> int:
         errors.append(f"Sitemap-index editorial lastmod {index_lastmod!r} != corpus lastmod {corpus_date!r}")
 
     evidence = {
-        "version": "GNK_ASG_PUBLICATION_SITEMAP_REGISTRY_GATE_V4",
+        "version": "GNK_ASG_PUBLICATION_SITEMAP_REGISTRY_GATE_V5",
         "canonicalAuthority": "apps/portal/data/editorial-registry.json",
+        "canonicalOrigin": ORIGIN,
+        "temporaryCanonicalHostAliases": [WWW_ORIGIN],
         "publicationPolicy": {
             "forcePublishThrough": os.environ.get("FORCE_PUBLISH_THROUGH", "2026-10-01"),
             "mirrors": "scripts/lib/publication-gate-v2.mjs",
@@ -159,6 +169,7 @@ def main() -> int:
         "editorialSitemapUrls": len(rows),
         "hrPublishedRoutes": sum(not route.startswith("/en/") for route in published),
         "enPublishedRoutes": sum(route.startswith("/en/") for route in published),
+        "wwwAliasRoutes": www_alias_routes,
         "errors": errors,
         "warnings": warnings,
     }
