@@ -15,12 +15,20 @@ def source(name: str) -> str:
     return (WORKFLOWS / name).read_text(encoding="utf-8", errors="replace")
 
 
+def _is_direct_git_push(line: str) -> bool:
+    """Match executable git push commands, not comments/grep/echo assertions containing the text."""
+    stripped = line.lstrip()
+    if not stripped or stripped.startswith("#"):
+        return False
+    return bool(re.match(r"^git(?:\s+-\S+(?:=\S+)?)?\s+push\b", stripped))
+
+
 def automatic_main_writers() -> list[str]:
     writers: list[str] = []
     for path in sorted((*WORKFLOWS.glob("*.yml"), *WORKFLOWS.glob("*.yaml"))):
         text = path.read_text(encoding="utf-8", errors="replace")
         automatic = re.search(r"(?m)^  (push|pull_request|schedule):", text)
-        push_lines = [line for line in text.splitlines() if "git push" in line]
+        push_lines = [line for line in text.splitlines() if _is_direct_git_push(line)]
         non_main_targets = ("automation/", "HEAD:agent/", "github.head_ref")
         pushes_main = any(not any(marker in line for marker in non_main_targets) for line in push_lines)
         if automatic and pushes_main:
