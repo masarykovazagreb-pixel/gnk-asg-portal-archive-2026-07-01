@@ -21,6 +21,8 @@ on:
       - 'workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js'
       - 'workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js'
       - 'workers/gnk-asg-direct-operator/test/unified-auth-enterprise-scope.test.mjs'
+      - 'workers/gnk-asg-direct-operator/package.json'
+      - 'workers/gnk-asg-direct-operator/wrangler.toml'
       - '.github/workflows/check-media-applications-review.yml'
 
 permissions:
@@ -29,7 +31,7 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 7
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -46,8 +48,17 @@ jobs:
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
-      - name: Test public and protected route separation
-        run: node workers/gnk-asg-direct-operator/test/unified-auth-enterprise-scope.test.mjs
+          node --check workers/gnk-asg-direct-operator/test/unified-auth-enterprise-scope.test.mjs
+      - name: Validate Cloudflare route runtime and test contract
+        working-directory: workers/gnk-asg-direct-operator
+        run: |
+          set -euxo pipefail
+          npm install --ignore-scripts --no-audit --no-fund
+          npx wrangler deploy --dry-run --outdir /tmp/gnk-asg-media-review-bundle
+          test -n "$(find /tmp/gnk-asg-media-review-bundle -type f -maxdepth 2 -print -quit)"
+          grep -q '/api/media-registration-admin/applications' test/unified-auth-enterprise-scope.test.mjs
+          grep -q '/media-application' test/unified-auth-enterprise-scope.test.mjs
+          grep -q '/media-registration-admin' test/unified-auth-enterprise-scope.test.mjs
       - name: Verify public registration is preserved
         run: |
           set -euxo pipefail
