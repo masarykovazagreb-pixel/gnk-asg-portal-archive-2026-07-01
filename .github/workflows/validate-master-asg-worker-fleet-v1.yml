@@ -1,0 +1,48 @@
+name: Validate MASTER ASG Worker Fleet V1
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'config/master-asg-worker-fleet-v1.json'
+      - 'scripts/validate-master-asg-worker-fleet-v1.mjs'
+      - '.github/workflows/validate-master-asg-worker-fleet-v1.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'config/master-asg-worker-fleet-v1.json'
+      - 'scripts/validate-master-asg-worker-fleet-v1.mjs'
+      - '.github/workflows/validate-master-asg-worker-fleet-v1.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: master-asg-worker-fleet-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Validate worker fleet contract
+        run: node scripts/validate-master-asg-worker-fleet-v1.mjs
+      - name: Guard against committed secrets in fleet configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -Eini '(api[_-]?key|secret|token|password)[[:space:]]*[:=][[:space:]]*["'"'][^"'"']+["'"']' config/master-asg-worker-fleet-v1.json
+      - name: Preserve fail-closed release contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q '"singleWriter": true' config/master-asg-worker-fleet-v1.json
+          grep -q '"exactShaRequiredForWrites": true' config/master-asg-worker-fleet-v1.json
+          grep -q '"failClosedOnUnknownState": true' config/master-asg-worker-fleet-v1.json
+          grep -q '"provenanceRequired": true' config/master-asg-worker-fleet-v1.json
+          grep -q '"contradictionSearchRequired": true' config/master-asg-worker-fleet-v1.json
