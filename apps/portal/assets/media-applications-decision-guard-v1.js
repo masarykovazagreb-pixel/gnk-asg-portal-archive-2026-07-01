@@ -40,7 +40,7 @@
       expected.name='expectedRevision';
       form.appendChild(expected);
     }
-    const expectedRevision=currentRevision=form.dataset.revision||revision;
+    const expectedRevision=revision;
     expected.value=expectedRevision;
   },true);
 })();
