@@ -66,8 +66,10 @@ jobs:
           grep -q "const REGISTRATION_URL='https://www.gnk-asg.hr/media-application/?lang=en'" workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js
           grep -q "'SELF_REGISTERED'" workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js
           grep -q "codePolicy:'ISSUED_AFTER_INITIAL_REGISTRATION'" workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js
-          grep -q 'First, register your newsroom' apps/portal/media-application/index.html
-          grep -q 'Create access or continue your application' apps/portal/media-application/index.html
+          grep -q 'id="loginForm"' apps/portal/media-application/index.html
+          grep -q 'id="registrationForm"' apps/portal/media-application/index.html
+          grep -q 'A new media user creates a dedicated username and password' apps/portal/media-application/index.html
+          grep -q 'does not grant admin access' apps/portal/media-application/index.html
           echo 'Public media application URL and self-registration contract preserved.'
       - name: Verify protected applications review center
         run: |
