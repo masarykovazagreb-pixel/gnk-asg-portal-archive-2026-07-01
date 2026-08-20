@@ -1,0 +1,67 @@
+{
+  "version": "MASTER_ASG_WORLD_INTEL_MATRIX_V1",
+  "updatedAt": "2026-08-20T13:26:00+02:00",
+  "policy": {
+    "mode": "OSINT_ONLY",
+    "noFalseAgencyConnectivity": true,
+    "serverSideSecretsOnly": true,
+    "requiredAccessSecretName": "WORLD_INTEL_ACCESS_CODE",
+    "accessCodeStorage": "NOT_IN_REPOSITORY",
+    "statuses": ["CONNECTED", "PUBLIC_OSINT", "READY_FOR_AUTH", "NOT_AUTHORIZED", "OFFLINE"]
+  },
+  "publicSources": [
+    {
+      "id": "worldmonitor",
+      "name": "World Monitor",
+      "status": "READY_FOR_AUTH",
+      "capabilities": ["conflicts", "military", "military_flights", "naval", "protests", "sanctions", "outages", "weather", "natural_disasters", "economic", "infrastructure"],
+      "dashboard": "https://www.worldmonitor.app/dashboard",
+      "apiBase": "https://api.worldmonitor.app",
+      "mcp": "https://worldmonitor.app/mcp",
+      "notes": "Public dashboard available; server-to-server API calls require World Monitor authorization/API key."
+    },
+    {
+      "id": "gdelt",
+      "name": "GDELT",
+      "status": "PUBLIC_OSINT",
+      "capabilities": ["geopolitical_events", "protests", "news_correlation"]
+    },
+    {
+      "id": "usgs",
+      "name": "USGS",
+      "status": "PUBLIC_OSINT",
+      "capabilities": ["earthquakes", "natural_disasters"]
+    },
+    {
+      "id": "nasa_firms",
+      "name": "NASA FIRMS",
+      "status": "PUBLIC_OSINT",
+      "capabilities": ["fires", "thermal_anomalies"]
+    }
+  ],
+  "services": [
+    {"country":"United States","service":"CIA","status":"NOT_AUTHORIZED","type":"foreign_intelligence"},
+    {"country":"United States","service":"FBI","status":"NOT_AUTHORIZED","type":"federal_law_enforcement_intelligence"},
+    {"country":"United States","service":"NSA","status":"NOT_AUTHORIZED","type":"signals_intelligence"},
+    {"country":"United States","service":"DIA","status":"NOT_AUTHORIZED","type":"defense_intelligence"},
+    {"country":"Germany","service":"BND","status":"NOT_AUTHORIZED","type":"foreign_intelligence"},
+    {"country":"Russia","service":"FSB","status":"NOT_AUTHORIZED","type":"security_intelligence"},
+    {"country":"Russia","service":"SVR","status":"NOT_AUTHORIZED","type":"foreign_intelligence"},
+    {"country":"Serbia","service":"BIA","status":"NOT_AUTHORIZED","type":"security_intelligence"},
+    {"country":"United Kingdom","service":"SIS/MI6","status":"NOT_AUTHORIZED","type":"foreign_intelligence"}
+  ],
+  "incidentClasses": [
+    "armed_conflict",
+    "attack",
+    "military_operation",
+    "military_flight",
+    "naval_activity",
+    "protest_or_unrest",
+    "sanctions",
+    "critical_infrastructure_outage",
+    "cyber_incident",
+    "nuclear_or_radiological",
+    "natural_disaster",
+    "economic_disruption"
+  ]
+}
