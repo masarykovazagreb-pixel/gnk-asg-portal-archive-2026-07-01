@@ -2,43 +2,43 @@
   "city": "Zagreb",
   "lat": 45.815,
   "lon": 15.9819,
-  "updated_at": "2026-08-19T20:38:50.038Z",
+  "updated_at": "2026-08-20T03:05:52.524Z",
   "source": "open-meteo.com",
   "state": "live",
   "current": {
-    "temperature_c": 27.8,
-    "feels_like_c": 28.4,
-    "humidity_pct": 46,
-    "wind_kmh": 7.7,
+    "temperature_c": 23.2,
+    "feels_like_c": 24.7,
+    "humidity_pct": 63,
+    "wind_kmh": 3.6,
     "is_day": false,
-    "weather_code": 1,
-    "condition_hr": "Pretežno vedro",
-    "condition_en": "Mainly clear"
+    "weather_code": 0,
+    "condition_hr": "Vedro",
+    "condition_en": "Clear sky"
   },
   "forecast": [
     {
-      "date": "2026-08-19",
-      "max_c": 34.1,
-      "min_c": 20.6,
-      "weather_code": 3,
-      "condition_hr": "Oblačno",
-      "condition_en": "Overcast"
-    },
-    {
       "date": "2026-08-20",
       "max_c": 36.2,
-      "min_c": 23.1,
-      "weather_code": 3,
-      "condition_hr": "Oblačno",
-      "condition_en": "Overcast"
+      "min_c": 22.8,
+      "weather_code": 80,
+      "condition_hr": "Slabi pljuskovi",
+      "condition_en": "Slight rain showers"
     },
     {
       "date": "2026-08-21",
-      "max_c": 33.3,
-      "min_c": 24.4,
-      "weather_code": 95,
-      "condition_hr": "Grmljavinsko nevrijeme",
-      "condition_en": "Thunderstorm"
+      "max_c": 34.7,
+      "min_c": 23.7,
+      "weather_code": 3,
+      "condition_hr": "Oblačno",
+      "condition_en": "Overcast"
+    },
+    {
+      "date": "2026-08-22",
+      "max_c": 25.6,
+      "min_c": 19.4,
+      "weather_code": 80,
+      "condition_hr": "Slabi pljuskovi",
+      "condition_en": "Slight rain showers"
     }
   ]
 }
