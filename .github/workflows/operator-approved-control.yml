@@ -16,6 +16,7 @@ concurrency:
 
 jobs:
   execute-approved-control:
+    if: ${{ vars.GNK_ASG_RELEASE_FENCE != 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
@@ -76,7 +77,6 @@ jobs:
               raise SystemExit(f'expected exactly 3 old social/schema image references, found {s.count(old_image)}')
           s=s.replace(old_image,req['image'])
           base='https://www.gnk-asg.hr/aktual/gnk-asg-504-milijuna-eura-prihoda'
-          # Only metadata/schema occurrences in <head>; never touch the approved article body.
           head, bodytail=s.split('<body',1)
           head=head.replace(f'href="{base}"',f'href="{req["canonical"]}"')
           head=head.replace(f'content="{base}"',f'content="{req["canonical"]}"')
