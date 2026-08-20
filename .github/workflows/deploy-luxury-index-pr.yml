@@ -33,10 +33,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # Validate the active unified public menu asset. public-menu-v18.js was retired;
-          # keeping this syntax gate pointed at a deleted legacy file created a false P0.
+          # Validate the currently active review chain instead of retired entrypoints.
           node --check apps/portal/assets/public-unified-menu-v6.js
           node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          node --check workers/gnk-asg-direct-operator/src/index-digital-workforce-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
@@ -44,7 +45,8 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/campaign-mailer-v2.js
           node scripts/validate-minimum-index-contact-admin.mjs
           node scripts/verify-public-redesign-contract.mjs
-          grep -q 'main = "src/index-unified-auth-v14.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'main = "src/index-digital-workforce-v1.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q "from './index-unified-auth-v23.js'" workers/gnk-asg-direct-operator/src/index-digital-workforce-v1.js
           grep -q 'main = "src/index-final-admin-gateway-v2.js"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
           grep -q "export { default } from './index-final-admin-gateway-v2.js';" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
 
@@ -54,4 +56,4 @@ jobs:
       - name: Confirm deployment ownership
         run: |
           echo 'Validation passed. This workflow performs no deployment and no email submission.'
-          echo 'Review configuration uses unified auth v14; canonical runtime validation remains gateway v2.'
+          echo 'Review configuration uses Digital Workforce v1 over unified auth v23; canonical runtime validation remains gateway v2.'
