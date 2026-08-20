@@ -2,3 +2,9 @@
 .dw-work-pulse{display:inline-block;width:7px;height:7px;border-radius:50%;background:#7ddc96;margin-right:6px;box-shadow:0 0 0 0 rgba(125,220,150,.6);animation:dwWorkPulse 1.8s ease-out infinite}
 @keyframes dwWorkPulse{0%{box-shadow:0 0 0 0 rgba(125,220,150,.55)}70%{box-shadow:0 0 0 6px rgba(125,220,150,0)}100%{box-shadow:0 0 0 0 rgba(125,220,150,0)}}
 @media(prefers-reduced-motion:reduce){.dw-work-pulse{animation:none}}
+/* Reserve the live hive footprint before deferred JS mounts it. The script removes
+   this intrinsic spacer in the same layout transaction in which it inserts the
+   real hive, preventing the large below-the-fold displacement measured by CLS. */
+body.dw-protected-preview:not(.dw-antfarm-mounted) .dw-hero::after{content:"";display:block;grid-column:1/-1;width:100%;height:488px;margin-top:18px}
+body.dw-protected-preview.dw-antfarm-mounted .dw-hero::after{content:none}
+@media(max-width:620px){body.dw-protected-preview:not(.dw-antfarm-mounted) .dw-hero::after{height:410px}}
