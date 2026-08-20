@@ -4,7 +4,7 @@ import {readFile} from 'node:fs/promises';
 const read=path=>readFile(new URL(`../${path}`,import.meta.url),'utf8');
 const [
   indexHr,indexEn,contactHr,contactEn,adminCenter,publicShell,
-  activeEntry,activeAuth,authFoundation,gatewayCompat,gatewayRuntime,campaignShell,wranglerReview,wranglerRuntime
+  activeEntry,activeAuth,resilientContact,authFoundation,gatewayCompat,gatewayRuntime,campaignShell,wranglerReview,wranglerRuntime
 ]=await Promise.all([
   read('apps/portal/index.html'),
   read('apps/portal/en/index.html'),
@@ -14,6 +14,7 @@ const [
   read('workers/gnk-asg-direct-operator/src/public-shell-v11.js'),
   read('workers/gnk-asg-direct-operator/src/index-digital-workforce-v1.js'),
   read('workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js'),
+  read('workers/gnk-asg-direct-operator/src/contact-submit-resilient-v1.js'),
   read('workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js'),
   read('workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js'),
   read('workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js'),
@@ -28,11 +29,12 @@ for(const [name,html] of [['HR index',indexHr],['EN index',indexEn]]){
 }
 
 for(const [name,html] of [['HR kontakt',contactHr],['EN kontakt',contactEn]]){
-  // Keep this fail-closed on a real API-backed submission contract without
-  // coupling readiness to one retired endpoint literal.
+  // Public pages own the UX contract. Submission transport may be inline or
+  // delegated, so readiness must not depend on one implementation detail.
   assert.ok(html.includes('id="contactForm"'),`${name} mora zadržati canonical contact form.`);
-  assert.ok(/fetch\s*\(/.test(html)&&/\/api\//.test(html),`${name} mora koristiti API-backed kontakt handler.`);
   assert.ok(html.includes('name="consent"'),`${name} mora zadržati privolu.`);
+  assert.ok(html.includes('name="email"'),`${name} mora zadržati e-mail polje.`);
+  assert.ok(html.includes('name="message"'),`${name} mora zadržati polje poruke.`);
 }
 
 assert.ok(adminCenter.length>500,'Admin Center mora ostati dostupan.');
@@ -40,11 +42,20 @@ assert.ok(publicShell.includes("'/campaign-mailer'"),'Campaign Mailer mora biti 
 assert.ok(publicShell.includes("'/media-application'"),'Media Application mora biti izoliran od javnog redizajna.');
 assert.ok(publicShell.includes('if(isPrivatePath(normalized))return html;'),'Privatne rute moraju se vratiti nepromijenjene.');
 
-// Validate the deployed review chain, then independently preserve the audited
-// auth foundation rather than pretending v14 is still the Wrangler entrypoint.
+// Validate the deployed review chain and the actual resilient contact API.
 assert.ok(activeEntry.includes("from './index-unified-auth-v23.js'"),'Digital Workforce entrypoint mora ostati iznad aktivnog unified-auth v23 sloja.');
 assert.ok(activeAuth.includes("from './index-unified-auth-v22.js'"),'Aktivni unified-auth v23 mora ostati kompatibilan s prethodnim auth slojem.');
-assert.ok(activeAuth.includes('handleResilientContact'),'Aktivni unified-auth mora zadržati resilient contact handler.');
+assert.ok(activeAuth.includes("from './contact-submit-resilient-v1.js'"),'Aktivni unified-auth mora uvoziti resilient contact runtime.');
+assert.ok(activeAuth.includes('handleResilientContact(request,env,ctx,app)'),'Aktivni unified-auth mora izvršavati resilient contact handler.');
+assert.ok(resilientContact.includes("const PATH='/api/contact-submit';"),'Kontakt runtime mora zadržati legacy API endpoint.');
+assert.ok(resilientContact.includes("const CANONICAL_PATH='/api/portal-contact-submit';"),'Kontakt runtime mora zadržati canonical API endpoint.');
+assert.ok(resilientContact.includes('x-idempotency-key'),'Kontakt runtime mora zahtijevati idempotency ključ za fallback zapis.');
+assert.ok(resilientContact.includes('validEmail'),'Kontakt runtime mora validirati e-mail.');
+assert.ok(resilientContact.includes('consent(body.consent)'),'Kontakt runtime mora fail-closed validirati privolu.');
+assert.ok(resilientContact.includes("storage:'kv-fallback'"),'Kontakt runtime mora imati kontrolirani KV fallback.');
+assert.ok(resilientContact.includes('human review')||resilientContact.includes('ljudski pregled'),'Kontakt potvrda mora jasno zadržati ljudski pregled.');
+
+// Preserve the audited auth foundation rather than pretending v14 is still the Wrangler entrypoint.
 assert.ok(authFoundation.includes("from './index-portal-final-v13.js'"),'Auth foundation mora zadržati stabilni portal runtime.');
 assert.ok(authFoundation.includes('handleEnterpriseProjectApi'),'Auth foundation mora štititi Enterprise Project API.');
 assert.ok(authFoundation.includes('runEnterpriseProjectCycle'),'Auth foundation mora pokretati kontrolirani workforce ciklus.');
