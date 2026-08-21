@@ -42,19 +42,26 @@ jobs:
           node workers/gnk-asg-direct-operator/test/mail-studio-centre-routing.test.mjs
           node workers/gnk-asg-direct-operator/test/enterprise-final-review.test.mjs
 
-      - name: Enterprise dashboard contract
+      - name: Enterprise protected runtime contract
         run: |
           set -euxo pipefail
-          page=apps/portal/enterprise/index.html
-          test -s "$page"
-          grep -qi 'noindex,nofollow' "$page"
-          grep -q 'Enterprise Command Dashboard' "$page"
-          grep -q 'Odobrenja i odluke' "$page"
-          grep -q 'Novi pojedinačni mail' "$page"
-          grep -q 'Status mailova' "$page"
-          grep -q '/public-operations/' "$page"
-          grep -q 'Production locked' "$page"
-          grep -q 'Mass email locked' "$page"
+          auth=workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          runtime=workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js
+          test -s "$auth"
+          test -s "$runtime"
+          grep -q "'/enterprise'" "$auth"
+          grep -q "'/mission-control'" "$auth"
+          grep -q "'/registry-center'" "$auth"
+          grep -q "'/deployment'" "$auth"
+          grep -q "'/mobile-admin'" "$auth"
+          grep -q "'/api/enterprise-projects'" "$auth"
+          grep -q 'reviewSafety' "$auth"
+          grep -q 'productionDeploy:false' "$auth"
+          grep -q 'bulkMail:false' "$auth"
+          grep -q 'automaticPublication:false' "$auth"
+          grep -q 'reviewEnvironment' "$runtime"
+          grep -q 'x-robots-tag' "$runtime"
+          grep -q 'noindex, nofollow, noarchive' "$runtime"
 
       - name: Protected route auth contract
         run: |
