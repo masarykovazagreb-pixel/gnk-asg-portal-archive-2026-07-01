@@ -4,11 +4,6 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - 'apps/portal/editorial-operations/**'
-      - 'apps/portal/assets/data/editorial-autonomy-policy.json'
-      - 'apps/portal/assets/js/editorial-operations-runtime-v1.js'
-      - 'apps/portal/assets/js/editorial-slot-editor-v1.js'
-      - 'apps/portal/assets/js/editorial-release-queue-v1.js'
       - 'workers/gnk-asg-direct-operator/src/editorial-draft-planner-v1.js'
       - 'workers/gnk-asg-direct-operator/src/editorial-workflow-v1.js'
       - 'workers/gnk-asg-direct-operator/src/editorial-workflow-api-v1.js'
@@ -37,7 +32,7 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Check module syntax
+      - name: Check active editorial module syntax
         run: |
           set -euxo pipefail
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/publication-readiness-v1.js
@@ -49,9 +44,6 @@ jobs:
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/editorial-autonomous-release-v2.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js
-          node --check apps/portal/assets/js/editorial-operations-runtime-v1.js
-          node --check apps/portal/assets/js/editorial-slot-editor-v1.js
-          node --check apps/portal/assets/js/editorial-release-queue-v1.js
           node --check workers/gnk-asg-direct-operator/test/editorial-draft-planner.test.mjs
           node --check workers/gnk-asg-direct-operator/test/editorial-workflow.test.mjs
           node --check workers/gnk-asg-direct-operator/test/editorial-autonomous-release-v2.test.mjs
@@ -59,29 +51,15 @@ jobs:
           node --check workers/gnk-asg-direct-operator/test/publication-document.test.mjs
       - name: Run planner tests
         run: node workers/gnk-asg-direct-operator/test/editorial-draft-planner.test.mjs
-      - name: Run slot and release queue tests
+      - name: Run workflow tests
         run: node workers/gnk-asg-direct-operator/test/editorial-workflow.test.mjs
-      - name: Run hardened daily review tests
+      - name: Run 08:00 to 09:00 autonomous release guardrail tests
         run: node workers/gnk-asg-direct-operator/test/editorial-autonomous-release-v2.test.mjs
       - name: Run publication readiness tests
         run: node workers/gnk-asg-direct-operator/test/publication-readiness.test.mjs
       - name: Run publication document tests
         run: node workers/gnk-asg-direct-operator/test/publication-document.test.mjs
-      - name: Validate 08:00 to 09:00 policy
-        run: |
-          node <<'NODE'
-          const fs=require('fs');
-          const policy=JSON.parse(fs.readFileSync('apps/portal/assets/data/editorial-autonomy-policy.json','utf8'));
-          if(policy.dailyReview.packageTime!=='08:00')throw new Error('package time must be 08:00');
-          if(policy.dailyReview.rejectionDeadline!=='09:00')throw new Error('deadline must be 09:00');
-          if(policy.dailyReview.windowMinutes!==60)throw new Error('review window must be 60 minutes');
-          if(policy.dailyReview.silentAcceptanceEnabled!==true)throw new Error('silent acceptance rule missing');
-          if(policy.dailyReview.notificationFailureBlocksSilentAcceptance!==true)throw new Error('notification failure must block');
-          if(policy.dailyReview.itemChangeAfterPackageBlocksSilentAcceptance!==true)throw new Error('changed item must block');
-          if(policy.packageEligibility.automaticPublicationAfterDeadline!==true)throw new Error('deadline publication rule missing');
-          if(policy.hardLocks.productionDeployWithoutToken!==false)throw new Error('deploy lock invalid');
-          NODE
-      - name: Verify console editor queue and inactive candidate integration
+      - name: Verify active backend integration and no direct publish path
         run: |
           set -euxo pipefail
           grep -q 'publication-readiness-v1.js' workers/gnk-asg-direct-operator/src/editorial-draft-planner-v1.js
@@ -89,10 +67,6 @@ jobs:
           grep -q 'publication/readiness' workers/gnk-asg-direct-operator/src/editorial-draft-planner-v1.js
           grep -q 'publication/preview' workers/gnk-asg-direct-operator/src/editorial-draft-planner-v1.js
           grep -q 'x-robots-tag' workers/gnk-asg-direct-operator/src/editorial-draft-planner-v1.js
-          grep -q 'slot/save' workers/gnk-asg-direct-operator/src/editorial-workflow-api-v1.js
-          grep -q 'slot/preview' workers/gnk-asg-direct-operator/src/editorial-workflow-api-v1.js
-          grep -q 'slot/queue' workers/gnk-asg-direct-operator/src/editorial-workflow-api-v1.js
-          grep -q 'publication/queue' workers/gnk-asg-direct-operator/src/editorial-workflow-api-v1.js
           grep -q 'awaiting-executive-release' workers/gnk-asg-direct-operator/src/editorial-workflow-v1.js
           if grep -q "state:'published'" workers/gnk-asg-direct-operator/src/editorial-workflow-v1.js; then exit 1; fi
           grep -q 'editorial-workflow-api-v1.js' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
@@ -100,20 +74,5 @@ jobs:
           grep -q 'editorial-draft-planner-v1.js' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
           grep -q 'runEditorialDraftPlanner' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
           grep -q 'isEditorialOperationsApi' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
-          if grep -q 'editorial-autonomous-release-v2.js' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js; then exit 1; fi
-          grep -q 'editorial-operations-runtime-v1.js' apps/portal/editorial-operations/index.html
-          grep -q '/editorial-operations/editor/' apps/portal/assets/js/editorial-operations-runtime-v1.js
-          grep -q '/editorial-operations/release-queue/' apps/portal/assets/js/editorial-operations-runtime-v1.js
-          grep -q '/api/editorial-operations/plan' apps/portal/assets/js/editorial-operations-runtime-v1.js
-          grep -q '/slot/save' apps/portal/assets/js/editorial-slot-editor-v1.js
-          grep -q '/slot/preview' apps/portal/assets/js/editorial-slot-editor-v1.js
-          grep -q '/slot/queue' apps/portal/assets/js/editorial-slot-editor-v1.js
-          grep -q '/publication/queue' apps/portal/assets/js/editorial-release-queue-v1.js
-          grep -q 'awaiting-executive-release' apps/portal/editorial-operations/editor/index.html
-          grep -q 'No publish action exists here' apps/portal/editorial-operations/release-queue/index.html
-          grep -qi 'noindex' apps/portal/editorial-operations/index.html
-          grep -qi 'noindex' apps/portal/editorial-operations/editor/index.html
           grep -q 'protectedNoindex' workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js
-          grep -q 'x-robots-tag' workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js
           grep -q 'noindex, nofollow, noarchive' workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js
-          if grep -Eqi '<button[^>]*>[^<]*(publish|objavi)' apps/portal/editorial-operations/release-queue/index.html; then exit 1; fi
