@@ -1,0 +1,117 @@
+{
+  "version": "MASTER_ASG_EXECUTIVE_ROUTING_V1",
+  "mode": "controlled-autonomy",
+  "authorityChain": [
+    "human-owner",
+    "ceo-agent",
+    "master-orchestrator",
+    "domain-leads",
+    "specialist-workers"
+  ],
+  "ceoAgent": {
+    "id": "ceo-agent",
+    "role": "executive-control",
+    "risk": "R2",
+    "responsibilities": [
+      "translate-owner-intent-into-objectives",
+      "portfolio-prioritization",
+      "cross-domain-conflict-resolution",
+      "budget-and-capacity-allocation",
+      "executive-risk-review",
+      "escalation-to-human-owner"
+    ],
+    "mustEscalate": [
+      "objective-change",
+      "material-cost-increase",
+      "legal-or-regulatory-risk",
+      "external-authorization-required",
+      "irreversible-external-side-effect",
+      "security-policy-exception"
+    ],
+    "cannotSelfApprove": [
+      "production-deploy",
+      "security-policy-exception",
+      "new-external-credential",
+      "social-publication-write"
+    ]
+  },
+  "domainLeads": [
+    {
+      "id": "cto-agent",
+      "reportsTo": "ceo-agent",
+      "domains": ["runtime", "api-gateway", "provider-failover", "self-heal", "release-engineering"],
+      "workers": ["master-orchestrator", "provider-scout", "health-sentinel", "qa-worker", "release-guardian"]
+    },
+    {
+      "id": "cio-intelligence-agent",
+      "reportsTo": "ceo-agent",
+      "domains": ["world-intelligence", "osint", "source-fusion", "assessment"],
+      "workers": ["world-intel-worker", "intel-correlation-worker", "intel-assessor-worker", "intel-red-team-worker"]
+    },
+    {
+      "id": "coo-agent",
+      "reportsTo": "ceo-agent",
+      "domains": ["publication", "news-operations", "market-operations", "content-distribution"],
+      "workers": ["aktual-worker", "market-worker", "publication-worker", "seo-entity-worker"]
+    },
+    {
+      "id": "ciso-agent",
+      "reportsTo": "ceo-agent",
+      "domains": ["access-control", "webauthn", "secret-hygiene", "service-access-truthfulness"],
+      "workers": ["security-guardian"]
+    }
+  ],
+  "providerOwnership": [
+    {
+      "capability": "weather",
+      "owner": "cto-agent",
+      "worker": "provider-scout",
+      "primaryPolicy": "highest-healthy-score",
+      "fallbackPolicy": "next-healthy-provider",
+      "stalePolicy": "last-known-good-with-stale-flag"
+    },
+    {
+      "capability": "market-data",
+      "owner": "coo-agent",
+      "worker": "market-worker",
+      "primaryPolicy": "highest-healthy-score",
+      "fallbackPolicy": "next-healthy-provider",
+      "stalePolicy": "last-known-good-with-stale-flag"
+    },
+    {
+      "capability": "world-monitor-osint",
+      "owner": "cio-intelligence-agent",
+      "worker": "world-intel-worker",
+      "primaryPolicy": "multi-source-public-or-authorized",
+      "fallbackPolicy": "public-osint-only",
+      "stalePolicy": "degrade-confidence-and-flag"
+    },
+    {
+      "capability": "publication",
+      "owner": "coo-agent",
+      "worker": "publication-worker",
+      "primaryPolicy": "single-writer-exact-sha",
+      "fallbackPolicy": "queue-only",
+      "stalePolicy": "block-write"
+    }
+  ],
+  "providerScore": {
+    "formula": "quality*freshness*reliability*latency*cost",
+    "requiredDimensions": ["quality", "freshness", "reliability", "latency", "cost"],
+    "healthStates": ["healthy", "degraded", "stale", "down", "quarantined"],
+    "selectionRules": [
+      "never-select-down-or-quarantined",
+      "prefer-independent-fallback-origin",
+      "preserve-provenance",
+      "do-not-count-syndicated-copies-as-independent"
+    ]
+  },
+  "writeControls": {
+    "singleWriter": true,
+    "exactShaRequired": true,
+    "reReadMainBeforeEveryWrite": true,
+    "socialNetworks": "HOLD",
+    "secretsInRepo": false,
+    "externalServiceClaims": "only-when-public-or-authorized-and-verifiable"
+  }
+}
