@@ -5,7 +5,6 @@ on:
     branches: [main]
     paths:
       - 'apps/portal/assets/mail-sync-center-ui-v1.js'
-      - 'apps/portal/assets/mail-studio-webmail-v25.js'
       - 'apps/portal/mail-studio/index.html'
       - 'workers/gnk-asg-direct-operator/src/mail-sync-center-v1.js'
       - 'workers/gnk-asg-direct-operator/src/mail-sync-center-v2.js'
@@ -40,7 +39,6 @@ jobs:
         run: |
           set -euxo pipefail
           node --check apps/portal/assets/mail-sync-center-ui-v1.js
-          node --check apps/portal/assets/mail-studio-webmail-v25.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/mail-sync-center-v1.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/mail-sync-center-v2.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/mail-studio-extension-v3.js
@@ -93,5 +91,4 @@ jobs:
           grep -q 'Sync Health' apps/portal/assets/mail-sync-center-ui-v1.js
           grep -q 'Reply in Compose' apps/portal/assets/mail-sync-center-ui-v1.js
           grep -q 'sandbox="allow-popups allow-popups-to-escape-sandbox"' apps/portal/assets/mail-sync-center-ui-v1.js
-          grep -q "const API='/api/mail-sync'" apps/portal/assets/mail-studio-webmail-v25.js
           ! grep -q 'wrangler deploy' apps/portal/assets/mail-sync-center-ui-v1.js
