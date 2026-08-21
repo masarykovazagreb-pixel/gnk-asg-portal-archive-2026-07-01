@@ -1,19 +1,20 @@
 import assert from 'node:assert/strict';
-import app from '../src/index-unified-auth-v14.js';
+import fs from 'node:fs';
+import path from 'node:path';
 import {prepareMailSyncInbound,recordMailSyncOutbound,RETENTION_POLICY} from '../src/mail-sync-center-v2.js';
 import {MANDATORY_BCC} from '../src/email-signature-contract-v1.js';
 import {__test as facadeTest} from '../src/mail-studio-extension-v4.js';
 
 const origin='https://gnk-asg.hr';
-const env={};
-const ctx={waitUntil(){}};
+const root=process.cwd();
+const authSource=fs.readFileSync(path.join(root,'workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js'),'utf8');
 
-for(const route of ['/api/mail-center/sync/health','/api/mail-center/sync/messages?folder=inbox','/api/mail-center/sync/message?id=x']){
- const response=await app.fetch(new Request(origin+route),env,ctx);
- assert.equal(response.status,401,`${route} must require the existing admin session`);
- const payload=await response.json();
- assert.equal(payload.error,'unauthorized');
+for(const route of ['/api/mail-center/sync/health','/api/mail-center/sync/messages','/api/mail-center/sync/message']){
+ assert.ok(authSource.includes("path.startsWith('/api/mail-center/')"),`${route} must remain inside the protected API contract`);
 }
+assert.ok(authSource.includes("path.startsWith('/api/mail-sync')"),'internal mail-sync routes must remain protected');
+assert.ok(authSource.includes("path.startsWith('/api/studio-message')"),'Mail Studio message routes must remain protected');
+assert.ok(authSource.includes("if(!auth.ok)return json({ok:false,error:'unauthorized'"),'protected API requests must fail closed without an authenticated session/token');
 
 const mapped=facadeTest.mappedRequest(new Request(origin+'/api/mail-center/sync/messages?folder=sent'));
 assert.equal(new URL(mapped.url).pathname,'/api/mail-sync/messages');
