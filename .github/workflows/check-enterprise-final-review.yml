@@ -6,10 +6,11 @@ on:
     paths:
       - 'apps/portal/enterprise/**'
       - 'apps/portal/admin-center/**'
-      - 'apps/portal/about-the-group/**'
-      - 'apps/portal/o-grupi/**'
+      - 'apps/portal/about/**'
+      - 'apps/portal/en/about/**'
       - 'apps/portal/entities/**'
       - 'apps/portal/digital-workforce/**'
+      - 'apps/portal/en/digital-workforce/**'
       - 'workers/gnk-asg-direct-operator/src/**'
       - 'workers/gnk-asg-direct-operator/test/**'
       - 'workers/gnk-asg-direct-operator/wrangler.toml'
@@ -78,10 +79,10 @@ jobs:
         run: |
           set -euxo pipefail
           for file in \
-            apps/portal/about-the-group/index.html \
-            apps/portal/o-grupi/index.html \
-            apps/portal/entities/index.html \
-            apps/portal/digital-workforce/index.html; do
+            apps/portal/about/index.html \
+            apps/portal/en/about/index.html \
+            apps/portal/digital-workforce/index.html \
+            apps/portal/en/digital-workforce/index.html; do
             test -s "$file"
             grep -qi 'rel="canonical"' "$file"
             grep -qi 'name="description"' "$file"
