@@ -6,6 +6,7 @@ on:
     paths:
       - 'config/master-asg-worker-fleet-v1.json'
       - 'config/master-asg-provider-registry-v1.json'
+      - 'scripts/master-asg-provider-router-v1.mjs'
       - 'scripts/validate-master-asg-worker-fleet-v1.mjs'
       - 'scripts/validate-master-asg-provider-registry-v1.mjs'
       - '.github/workflows/validate-master-asg-worker-fleet-v1.yml'
@@ -14,6 +15,7 @@ on:
     paths:
       - 'config/master-asg-worker-fleet-v1.json'
       - 'config/master-asg-provider-registry-v1.json'
+      - 'scripts/master-asg-provider-router-v1.mjs'
       - 'scripts/validate-master-asg-worker-fleet-v1.mjs'
       - 'scripts/validate-master-asg-provider-registry-v1.mjs'
       - '.github/workflows/validate-master-asg-worker-fleet-v1.yml'
@@ -38,6 +40,8 @@ jobs:
         run: node scripts/validate-master-asg-worker-fleet-v1.mjs
       - name: Validate provider scoring, mocks and failover contract
         run: node scripts/validate-master-asg-provider-registry-v1.mjs
+      - name: Exercise deterministic provider router and production fail-closed behavior
+        run: node scripts/master-asg-provider-router-v1.mjs
       - name: Guard against committed secrets in fleet/provider configuration
         shell: bash
         run: |
