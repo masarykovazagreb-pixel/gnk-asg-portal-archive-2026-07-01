@@ -86,9 +86,13 @@ jobs:
           for marker in INCOMPLETE_PROFILE NO_DOCUMENTS DUPLICATE_EMAIL DUPLICATE_OUTLET DOMAIN_MISMATCH STALE_APPLICATION DELIVERY_ERROR ACCESS_EXPIRED; do
             grep -q "$marker" workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js
           done
+          grep -q 'reviewFlags:flags' workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js
+          grep -q 'reviewPriority:flags.some' workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js
           grep -q 'hasAttention:flags.length>0' workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js
-          grep -q 'Ove oznake su informativne' apps/portal/assets/media-applications-review-v1.js
-          grep -q 'Ne odobravaju, ne odbijaju i ne mijenjaju status' apps/portal/assets/media-applications-review-v1.js
+          ! grep -q 'reviewFlags' workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
+          ! grep -q 'reviewPriority' workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
+          ! grep -q 'hasAttention' workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
+          echo 'Advisory flags are surfaced for reviewers but cannot drive approval/rejection decisions.'
 
       - name: Preserve review-only execution
         run: |
