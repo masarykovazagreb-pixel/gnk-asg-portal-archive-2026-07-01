@@ -1,0 +1,81 @@
+{
+  "version": "MASTER_ASG_INTELLIGENCE_LEARNING_V1",
+  "status": "controlled-review",
+  "sourceOfTruthBaseSha": "c557195993b724b9f13048da77efb76ab052cf2f",
+  "objective": "Increase individual worker competence while preserving collective reasoning, provenance, least privilege and controlled autonomy.",
+  "modes": {
+    "individual": {
+      "default": true,
+      "rule": "worker-attempts-first-within-capability-and-risk-boundary",
+      "cycle": ["detect-problem","form-hypothesis","research","execute-or-simulate","measure","record-outcome","extract-lesson"]
+    },
+    "peer": {
+      "trigger": ["capability-gap","low-confidence","contradictory-evidence","specialist-review-needed"],
+      "rule": "consult-targeted-peer-not-whole-fleet"
+    },
+    "collective": {
+      "trigger": ["cross-domain","material-risk","conflict-between-specialists","novel-problem","high-uncertainty"],
+      "rule": "independent-first-pass-before-deliberation",
+      "stages": ["independent-analysis","evidence-exchange","red-team","reviewer-synthesis","orchestrator-decision"]
+    }
+  },
+  "learningLedger": {
+    "required": true,
+    "fields": ["workerId","taskId","problemClass","inputRefs","decision","result","measuredOutcome","errorClass","lesson","confidenceBefore","confidenceAfter","createdAt"],
+    "promotionRule": "lesson-reused-successfully-on-two-independent-tasks-before-becoming-shared-pattern",
+    "antiPatternRule": "failed-patterns-are-retained-with-negative-score-not-deleted"
+  },
+  "externalKnowledge": {
+    "enabled": true,
+    "defaultPolicy": "internal-first-then-authorized-external-research",
+    "allowedClasses": ["official-documentation","public-web","public-github","scientific-and-technical-publications","authorized-api","authorized-mcp","authorized-ai-provider"],
+    "requiredChecks": ["source-provenance","freshness","license-or-terms","independent-corroboration-when-material","secret-scan-before-persistence"],
+    "prohibitions": ["claiming-nonexistent-service-access","embedding-secrets","bypassing-provider-authorization","treating-external-model-output-as-ground-truth"]
+  },
+  "workerFactory": {
+    "enabled": true,
+    "purpose": "Create or recruit specialized workers only when a durable capability gap exists.",
+    "decisionOrder": ["teach-existing-worker","reuse-shared-capability","temporary-specialist","persistent-specialist"],
+    "candidateManifestRequired": ["id","role","capabilities","riskClass","toolAllowlist","dataScope","owner","kpi","budgetCeiling","expiryOrReviewDate","fallback"],
+    "lifecycle": ["capability-gap","candidate","sandbox","probation","review","active","retrain-or-merge-or-retire"],
+    "autonomy": {
+      "R0_R1": "orchestrator-may-provision-with-reviewer-record",
+      "R2": "ceo-agent-approval-required",
+      "R3": "human-principal-approval-required"
+    },
+    "limits": {
+      "selfApproval": false,
+      "selfEscalationOfPrivileges": false,
+      "unboundedWorkerCreation": false
+    }
+  },
+  "newSpecialists": [
+    {
+      "id": "external-knowledge-scout",
+      "role": "external-research-and-capability-discovery",
+      "riskClass": "R1",
+      "capabilities": ["provider-discovery","github-pattern-discovery","documentation-research","mcp-discovery","source-scoring","capability-gap-research"],
+      "fallback": "internal-knowledge-only"
+    },
+    {
+      "id": "worker-factory-controller",
+      "role": "specialist-worker-provisioning-control",
+      "riskClass": "R1",
+      "capabilities": ["capability-gap-classification","candidate-manifest-build","probation-plan","kpi-definition","retirement-recommendation"],
+      "fallback": "recommendation-only"
+    }
+  ],
+  "safetyAndRelease": {
+    "singleWriter": true,
+    "exactShaBeforeRepositoryWrite": true,
+    "failClosedOnUnknownWriterState": true,
+    "productionDeployRequiresReleaseGuardian": true,
+    "socialWritesOnHold": true,
+    "noSecretsInRepoOrClient": true
+  },
+  "successMetrics": {
+    "individual": ["repeat-task-success-rate","mean-retries-to-success","confidence-calibration","independent-resolution-rate"],
+    "collective": ["disagreement-resolution-quality","red-team-catch-rate","decision-reversal-rate","evidence-diversity"],
+    "factory": ["capability-gap-resolution-time","specialist-survival-after-probation","duplicate-worker-rate","cost-per-resolved-gap"]
+  }
+}
