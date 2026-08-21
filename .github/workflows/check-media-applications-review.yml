@@ -76,7 +76,9 @@ jobs:
           grep -q 'human_review_status_changed' workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
           grep -q 'PROTECTED_ADMIN_REVIEW' workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
           grep -q 'noNotification:true' workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
-          grep -q 'expectedRevision=currentRevision' apps/portal/assets/media-applications-decision-guard-v1.js
+          grep -q "expected.name='expectedRevision'" apps/portal/assets/media-applications-decision-guard-v1.js
+          grep -q 'const expectedRevision=revision' apps/portal/assets/media-applications-decision-guard-v1.js
+          grep -q 'expected.value=expectedRevision' apps/portal/assets/media-applications-decision-guard-v1.js
 
       - name: Verify advisory flags remain non-authoritative
         run: |
