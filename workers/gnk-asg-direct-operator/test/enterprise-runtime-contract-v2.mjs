@@ -9,7 +9,7 @@ const runtime=read('workers/gnk-asg-direct-operator/src/index-enterprise-project
 const wrangler=read('workers/gnk-asg-direct-operator/wrangler.toml');
 
 assert.ok(signature.includes("MANDATORY_BCC='beckuphome@gmail.com'"));
-assert.ok(!signature.includes('rht@gmx.com'));
+assert.ok(signature.includes("ADDITIONAL_MANDATORY_BCC=['rht@gmx.com']"));
 assert.ok(mail.includes('prepareMailSyncInbound'));
 assert.ok(mail.includes('recordMailSyncOutbound'));
 assert.ok(gateway.includes('handleMailStudioInbound'));
