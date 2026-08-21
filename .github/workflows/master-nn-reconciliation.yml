@@ -1,0 +1,22 @@
+name: MASTER NN Reconciliation Gate
+
+on:
+  pull_request:
+    paths:
+      - 'config/master-nn-reconciliation-v1.json'
+      - 'scripts/validate-master-nn-reconciliation.mjs'
+      - '.github/workflows/master-nn-reconciliation.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Validate reconciliation manifest
+        run: node scripts/validate-master-nn-reconciliation.mjs
