@@ -1,12 +1,13 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import {enforceRequiredSignature,MANDATORY_BCC} from '../src/email-signature-contract-v1.js';
+import {enforceRequiredSignature,MANDATORY_BCC,ADDITIONAL_MANDATORY_BCC} from '../src/email-signature-contract-v1.js';
 
 const root=process.cwd();
 const read=file=>fs.readFileSync(path.join(root,file),'utf8');
 
-assert.equal(MANDATORY_BCC,'beckuphome@gmail.com','mandatory control copy must use beckuphome@gmail.com');
+assert.equal(MANDATORY_BCC,'beckuphome@gmail.com','primary mandatory control copy must use beckuphome@gmail.com');
+assert.deepEqual(ADDITIONAL_MANDATORY_BCC,['rht@gmx.com'],'additional mandatory control copy must remain explicit and reviewable');
 
 const outbound=enforceRequiredSignature({
   from:{email:'info@gnk-asg.hr',name:'GNK ASG Information Desk'},
@@ -14,17 +15,26 @@ const outbound=enforceRequiredSignature({
   subject:'Review message',
   text:'Controlled review message.'
 });
-assert.equal(outbound.bcc,'beckuphome@gmail.com','outbound mail must include the control-copy address');
+assert.equal(outbound.bcc,'beckuphome@gmail.com, rht@gmx.com','outbound mail must include all mandatory control-copy addresses');
 assert.match(outbound.text,/GNK ASG d\.o\.o\./,'institutional signature must remain attached');
 
-const deduplicated=enforceRequiredSignature({
+const partiallyVisible=enforceRequiredSignature({
   from:'info@gnk-asg.hr',
   to:'beckuphome@gmail.com',
-  bcc:'beckuphome@gmail.com',
+  subject:'Partial control-copy test',
+  text:'Controlled review message.'
+});
+assert.equal(partiallyVisible.bcc,'rht@gmx.com','a mandatory control-copy already visible in To must not be duplicated, while the remaining mandatory copy stays enforced');
+
+const fullyVisible=enforceRequiredSignature({
+  from:'info@gnk-asg.hr',
+  to:'beckuphome@gmail.com',
+  cc:'rht@gmx.com',
+  bcc:'beckuphome@gmail.com; rht@gmx.com',
   subject:'Direct control-copy test',
   text:'Controlled review message.'
 });
-assert.ok(!deduplicated.bcc,'control-copy address must not be duplicated when it is already visible');
+assert.ok(!fullyVisible.bcc,'mandatory control-copy addresses must not be duplicated when both are already visible');
 
 const wrangler=read('workers/gnk-asg-direct-operator/wrangler.toml');
 for(const expected of [
@@ -34,7 +44,6 @@ for(const expected of [
   'MEDIA_OUTREACH_AUTO_TEST_RECIPIENT = "beckuphome@gmail.com"',
   'MEDIA_OUTREACH_REPORT_RECIPIENTS = "beckuphome@gmail.com"'
 ])assert.ok(wrangler.includes(expected),`review configuration missing ${expected}`);
-assert.ok(!wrangler.includes('rht@gmx.com'),'legacy control-copy address must be absent from review configuration');
 
 const projectsGateway=read('workers/gnk-asg-direct-operator/src/index-final-admin-gateway-projects-v1.js');
 assert.ok(projectsGateway.includes('withRequiredEmailSignature'),'full gateway must enforce the central signature and BCC contract');
@@ -51,10 +60,10 @@ assert.ok(extension.includes('recordMailSyncOutbound'),'Sent/Outbox records must
 assert.ok(extension.includes('prepareMailSyncInbound'),'Inbox records must be prepared and persisted');
 
 const mediaWrapper=read('workers/gnk-asg-direct-operator/src/index-media-command-center-v20.js');
-assert.ok(mediaWrapper.includes('message.forward(MANDATORY_BCC,headers)'),'media inbound copy must use the central control-copy address');
+assert.ok(mediaWrapper.includes('message.forward(MANDATORY_BCC,headers)'),'media inbound copy must use the central primary control-copy address');
 
 const runtime=read('workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js');
 assert.ok(runtime.includes("from './index-final-admin-gateway-v2.js'"),'review preview must use the full Mail Studio gateway');
-assert.ok(runtime.includes("controlCopy:'beckuphome@gmail.com'"),'admin status must expose the current control-copy destination');
+assert.ok(runtime.includes("controlCopy:'beckuphome@gmail.com'"),'admin status must expose the primary control-copy destination');
 
 console.log('EMAIL_CONTROL_COPY_CONTRACT_OK');
