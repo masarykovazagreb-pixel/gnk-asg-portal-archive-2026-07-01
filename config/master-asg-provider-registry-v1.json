@@ -1,0 +1,109 @@
+{
+  "version": "MASTER_ASG_PROVIDER_REGISTRY_V1",
+  "mode": "controlled-autonomy",
+  "principles": {
+    "noImplicitExternalAuthority": true,
+    "publicOrAuthorizedOnly": true,
+    "noSecretsInRepository": true,
+    "mockProvidersNeverProduceExternalSideEffects": true,
+    "mockProvidersNeverSatisfyProductionFreshness": true,
+    "failClosedWhenAllProvidersUnhealthy": true,
+    "provenanceRequired": true,
+    "independentOriginDeduplication": true
+  },
+  "scoring": {
+    "formula": "quality*freshness*reliability*latency*cost",
+    "weights": {
+      "quality": 0.3,
+      "freshness": 0.25,
+      "reliability": 0.2,
+      "latency": 0.15,
+      "cost": 0.1
+    },
+    "minimumProductionScore": 0.62,
+    "minimumAssessmentSourceScore": 0.55
+  },
+  "healthPolicy": {
+    "healthy": {"maxConsecutiveFailures": 0, "maxAgeSeconds": 300},
+    "degraded": {"maxConsecutiveFailures": 2, "maxAgeSeconds": 1800},
+    "stale": {"maxAgeSeconds": 7200},
+    "quarantineAfterConsecutiveFailures": 3,
+    "recoverySuccessesRequired": 2,
+    "automaticRetries": 2,
+    "retryBackoff": "exponential"
+  },
+  "testProviders": [
+    {
+      "id": "mock-weather-primary",
+      "domain": "weather",
+      "kind": "deterministic-mock",
+      "mode": "test-only",
+      "capabilities": ["current", "forecast", "freshness-metadata"],
+      "sideEffects": false,
+      "fixture": {"status": "healthy", "ageSeconds": 30, "latencyMs": 25, "quality": 0.9, "reliability": 0.99, "cost": 1.0}
+    },
+    {
+      "id": "mock-weather-fallback",
+      "domain": "weather",
+      "kind": "deterministic-mock",
+      "mode": "test-only",
+      "capabilities": ["current", "forecast", "freshness-metadata"],
+      "sideEffects": false,
+      "fixture": {"status": "healthy", "ageSeconds": 90, "latencyMs": 45, "quality": 0.82, "reliability": 0.97, "cost": 1.0}
+    },
+    {
+      "id": "mock-market-primary",
+      "domain": "market",
+      "kind": "deterministic-mock",
+      "mode": "test-only",
+      "capabilities": ["snapshot", "fx", "digital-assets", "freshness-metadata"],
+      "sideEffects": false,
+      "fixture": {"status": "healthy", "ageSeconds": 20, "latencyMs": 35, "quality": 0.92, "reliability": 0.99, "cost": 0.9}
+    },
+    {
+      "id": "mock-intel-primary",
+      "domain": "intelligence",
+      "kind": "deterministic-mock",
+      "mode": "test-only",
+      "capabilities": ["event-ingest", "provenance", "independent-origin", "contradiction-fixture"],
+      "sideEffects": false,
+      "fixture": {"status": "healthy", "ageSeconds": 60, "latencyMs": 50, "quality": 0.88, "reliability": 0.98, "cost": 1.0}
+    },
+    {
+      "id": "mock-publication-sink",
+      "domain": "publication",
+      "kind": "deterministic-mock",
+      "mode": "test-only",
+      "capabilities": ["dry-run", "idempotency", "exact-sha-check", "rollback-simulation"],
+      "sideEffects": false,
+      "fixture": {"status": "healthy", "ageSeconds": 0, "latencyMs": 15, "quality": 1.0, "reliability": 1.0, "cost": 1.0}
+    }
+  ],
+  "routingContracts": [
+    {
+      "domain": "weather",
+      "strategy": "score-then-health",
+      "providers": ["mock-weather-primary", "mock-weather-fallback"],
+      "testExpectedPrimary": "mock-weather-primary",
+      "onAllUnavailable": "return-degraded-without-fabrication"
+    },
+    {
+      "domain": "market",
+      "strategy": "score-then-health",
+      "providers": ["mock-market-primary"],
+      "onAllUnavailable": "last-known-good-with-stale-flag"
+    },
+    {
+      "domain": "intelligence",
+      "strategy": "independent-source-fusion",
+      "providers": ["mock-intel-primary"],
+      "onAllUnavailable": "insufficient-evidence"
+    },
+    {
+      "domain": "publication",
+      "strategy": "single-writer-exact-sha",
+      "providers": ["mock-publication-sink"],
+      "onAllUnavailable": "queue-only"
+    }
+  ]
+}
