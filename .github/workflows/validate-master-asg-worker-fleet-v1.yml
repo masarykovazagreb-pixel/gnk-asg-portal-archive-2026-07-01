@@ -5,13 +5,17 @@ on:
     branches: [main]
     paths:
       - 'config/master-asg-worker-fleet-v1.json'
+      - 'config/master-asg-provider-registry-v1.json'
       - 'scripts/validate-master-asg-worker-fleet-v1.mjs'
+      - 'scripts/validate-master-asg-provider-registry-v1.mjs'
       - '.github/workflows/validate-master-asg-worker-fleet-v1.yml'
   push:
     branches: [main]
     paths:
       - 'config/master-asg-worker-fleet-v1.json'
+      - 'config/master-asg-provider-registry-v1.json'
       - 'scripts/validate-master-asg-worker-fleet-v1.mjs'
+      - 'scripts/validate-master-asg-provider-registry-v1.mjs'
       - '.github/workflows/validate-master-asg-worker-fleet-v1.yml'
 
 permissions:
@@ -32,12 +36,14 @@ jobs:
           node-version: '24'
       - name: Validate worker fleet contract
         run: node scripts/validate-master-asg-worker-fleet-v1.mjs
-      - name: Guard against committed secrets in fleet configuration
+      - name: Validate provider scoring, mocks and failover contract
+        run: node scripts/validate-master-asg-provider-registry-v1.mjs
+      - name: Guard against committed secrets in fleet/provider configuration
         shell: bash
         run: |
           set -euo pipefail
-          ! grep -Eini '(api[_-]?key|secret|token|password)[[:space:]]*[:=][[:space:]]*["'"'][^"'"']+["'"']' config/master-asg-worker-fleet-v1.json
-      - name: Preserve fail-closed release contract
+          ! grep -Eini '(api[_-]?key|secret|token|password)[[:space:]]*[:=][[:space:]]*["'"'][^"'"']+["'"']' config/master-asg-worker-fleet-v1.json config/master-asg-provider-registry-v1.json
+      - name: Preserve fail-closed autonomy contract
         shell: bash
         run: |
           set -euo pipefail
@@ -46,3 +52,7 @@ jobs:
           grep -q '"failClosedOnUnknownState": true' config/master-asg-worker-fleet-v1.json
           grep -q '"provenanceRequired": true' config/master-asg-worker-fleet-v1.json
           grep -q '"contradictionSearchRequired": true' config/master-asg-worker-fleet-v1.json
+          grep -q '"publicOrAuthorizedOnly": true' config/master-asg-provider-registry-v1.json
+          grep -q '"mockProvidersNeverProduceExternalSideEffects": true' config/master-asg-provider-registry-v1.json
+          grep -q '"mockProvidersNeverSatisfyProductionFreshness": true' config/master-asg-provider-registry-v1.json
+          grep -q '"failClosedWhenAllProvidersUnhealthy": true' config/master-asg-provider-registry-v1.json
