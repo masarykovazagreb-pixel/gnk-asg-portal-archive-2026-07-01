@@ -1,0 +1,25 @@
+{
+  "version": "MASTER_NN_RECONCILIATION_V1",
+  "createdFromMainSha": "e1e708da7b87426158769c074ea5914824fe5527",
+  "canonicalBranch": "feature/master-nn-consolidation-20260821-night",
+  "sourcePullRequests": [
+    {"number": 11, "headSha": "a74ac28bece5b6950013f61cf70a7f8a797f9f87", "scope": ["learning", "worker-factory", "legal"]},
+    {"number": 12, "headSha": "2cb03305d234725ea4a264f84209f2c81f68707a", "scope": ["nn-constitutional-memory", "validator-ci"]},
+    {"number": 13, "headSha": "5a0de2746390aa56d32097763f280c28b4ec3d48", "scope": ["provider-health-ledger", "validator-ci"]}
+  ],
+  "migrationOrder": [
+    "health-sentinel",
+    "nn-constitutional",
+    "learning-worker-factory",
+    "legal-department",
+    "runtime-wiring",
+    "integration-e2e"
+  ],
+  "rules": {
+    "singleWriter": true,
+    "exactShaCheck": true,
+    "serializedMigration": true,
+    "targetedCiRequired": true,
+    "reviewBeforeMerge": true
+  }
+}
