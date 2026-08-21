@@ -14,7 +14,7 @@ for(const route of ['/api/mail-center/sync/health','/api/mail-center/sync/messag
 }
 assert.ok(authSource.includes("path.startsWith('/api/mail-sync')"),'internal mail-sync routes must remain protected');
 assert.ok(authSource.includes("path.startsWith('/api/studio-message')"),'Mail Studio message routes must remain protected');
-assert.ok(authSource.includes("if(!auth.ok)return json({ok:false,error:'unauthorized'"),'protected API requests must fail closed without an authenticated session/token');
+assert.ok(authSource.includes("if(!state.ok)return json({ok:false,error:'unauthorized'"),'protected API requests must fail closed without an authenticated session/token');
 
 const mapped=facadeTest.mappedRequest(new Request(origin+'/api/mail-center/sync/messages?folder=sent'));
 assert.equal(new URL(mapped.url).pathname,'/api/mail-sync/messages');
