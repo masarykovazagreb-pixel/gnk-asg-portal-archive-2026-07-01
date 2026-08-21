@@ -5,13 +5,7 @@ on:
     branches: [main]
     paths:
       - 'apps/portal/admin-center/index.html'
-      - 'apps/portal/assets/admin-center-v2.css'
-      - 'apps/portal/assets/admin-center-v2.js'
-      - 'apps/portal/assets/admin-center-health-v1.js'
-      - 'apps/portal/assets/admin-media-applications-entry-v1.js'
-      - 'apps/portal/assets/admin-executive-portfolio-v1.js'
-      - 'apps/portal/assets/executive-project-portfolio-v1.css'
-      - 'apps/portal/assets/data/operator-os-config.json'
+      - 'apps/portal/assets/public-floating-menu-v2.js'
       - 'workers/gnk-asg-direct-operator/wrangler.toml'
       - '.github/workflows/check-admin-center-v2.yml'
 
@@ -30,46 +24,47 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Validate Admin Center assets
+      - name: Validate current static Admin Center contract
         run: |
           set -euxo pipefail
           html=apps/portal/admin-center/index.html
-          js=apps/portal/assets/admin-center-v2.js
-          css=apps/portal/assets/admin-center-v2.css
-          media=apps/portal/assets/admin-media-applications-entry-v1.js
-          portfolio=apps/portal/assets/admin-executive-portfolio-v1.js
-          node --check "$js"
-          node --check apps/portal/assets/admin-center-health-v1.js
-          node --check "$media"
-          node --check "$portfolio"
+          menu=apps/portal/assets/public-floating-menu-v2.js
           test -s "$html"
-          test -s "$css"
-          test -s apps/portal/assets/executive-project-portfolio-v1.css
-          grep -q '/assets/admin-center-v2.css' "$html"
-          grep -q '/assets/admin-center-v2.js' "$html"
-          grep -q '/assets/admin-center-health-v1.js' "$html"
-          grep -q '/assets/admin-media-applications-entry-v1.js' "$html"
-          grep -q 'admin-executive-portfolio-v1.js' apps/portal/assets/admin-center-health-v1.js
-          test "$(grep -c 'class="sidebar"' "$html")" -eq 1
-          test "$(grep -c 'id="moduleNav"' "$html")" -eq 1
-          grep -q 'id="moduleFrame"' "$html"
-          grep -q 'id="commandDialog"' "$html"
-          grep -q 'AbortController' "$js"
-          grep -q 'MutationObserver' "$js"
-          grep -q 'prefers-reduced-motion' "$css"
+          test -s "$menu"
+          node --check "$menu"
+          grep -q '<meta name="robots" content="noindex,nofollow,noarchive">' "$html"
+          grep -q 'Admin centar / Admin Center' "$html"
+          grep -q 'ZAŠTIĆENO / PROTECTED' "$html"
+          grep -q '/assets/public-floating-menu-v2.js' "$html"
+          grep -q 'Admin centar sam ne pokreće slanje, kampanju, automatsku objavu ni worker funkcije' "$html"
+          ! grep -Eq '<form|type="submit"|data-action="(send|publish|deploy|execute)' "$html"
 
-      - name: Validate canonical safe routes
+      - name: Validate canonical safe navigation surface
         run: |
           set -euxo pipefail
-          js=apps/portal/assets/admin-center-v2.js
-          media=apps/portal/assets/admin-media-applications-entry-v1.js
-          for route in /mail-studio/ /operator-dashboard/ /media-command-center/ /media-registration-admin/ /media-application/ /auto-editor/ /news-admin/ /pdf-publisher/; do
-            grep -Fq "'$route'" "$js"
+          html=apps/portal/admin-center/index.html
+          for route in \
+            /mail-studio/ \
+            /email-status/ \
+            /campaign-mailer/ \
+            /admin-center/mail-search/ \
+            /admin-center/contacts/ \
+            /admin-center/pdf/ \
+            /worker-ops/ \
+            /media-registration-admin/ \
+            /admin-center/news-publication/ \
+            /operator-dashboard/ \
+            /digital-headquarters/ \
+            /admin-center/workers/ \
+            /admin-center/editorial-approval/ \
+            /digital-workforce/ \
+            /workers/ \
+            /visual-index/ \
+            /objave/ \
+            /komentari/; do
+            grep -Fq "href=\"$route\"" "$html"
           done
-          grep -Fq '/media-application/?lang=en' apps/portal/assets/data/operator-os-config.json
-          grep -q 'Pregled media prijava' "$media"
-          grep -q 'Javna media prijavnica' "$media"
-          ! grep -E 'https?://' "$js" apps/portal/assets/admin-center-v2.css "$media"
+          test "$(grep -c 'class=\"card' "$html")" -ge 18
 
       - name: Confirm review isolation and production locks
         env:
@@ -79,9 +74,11 @@ jobs:
           set -euxo pipefail
           changed=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
           printf '%s\n' "$changed"
-          grep -q 'main = "src/index-unified-auth-v14.js"' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'PUBLIC_ENVIRONMENT = "review-direct-operator"' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'MAIL_MANUAL_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
-          grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.toml
-          ! grep -Eq '^[[:space:]]*routes[[:space:]]*=|^[[:space:]]*\[\[routes\]\]|^[[:space:]]*zone_name[[:space:]]*=' workers/gnk-asg-direct-operator/wrangler.toml
+          wrangler=workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'main = "src/index-digital-workforce-v1.js"' "$wrangler"
+          grep -q 'PUBLIC_ENVIRONMENT = "review-direct-operator"' "$wrangler"
+          grep -q 'MAIL_MANUAL_LIVE = "false"' "$wrangler"
+          grep -q 'MEDIA_OUTREACH_LIVE = "false"' "$wrangler"
+          grep -q 'NEWS_AUTO_PUBLICATION_SCHEDULED_LIVE = "false"' "$wrangler"
+          ! grep -Eq '^[[:space:]]*routes[[:space:]]*=|^[[:space:]]*\[\[routes\]\]|^[[:space:]]*zone_name[[:space:]]*=' "$wrangler"
           ! printf '%s\n' "$changed" | grep -E '(^|/)\.env($|\.)|secrets|cloudflare-production'
