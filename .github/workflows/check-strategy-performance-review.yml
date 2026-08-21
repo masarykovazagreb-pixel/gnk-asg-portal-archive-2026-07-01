@@ -4,16 +4,9 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - 'apps/portal/strategy-performance/**'
-      - 'apps/portal/assets/data/strategy-performance-review.json'
-      - 'apps/portal/assets/data/financial-planning-baseline.json'
-      - 'apps/portal/assets/data/financial-document-registry.json'
-      - 'apps/portal/assets/data/budget-planning-envelope.json'
-      - 'apps/portal/assets/js/financial-projection-engine-v1.js'
-      - 'apps/portal/assets/js/budget-planning-console-v1.js'
       - 'apps/portal/assets/data/operator-os-config.json'
-      - 'apps/portal/enterprise/**'
-      - 'apps/portal/seo/**'
+      - 'config/master-asg-worker-fleet-v1.json'
+      - 'apps/portal/data/master-asg-capability-registry-v1.json'
       - '.github/workflows/check-strategy-performance-review.yml'
 
 permissions:
@@ -22,138 +15,64 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 6
+    timeout-minutes: 4
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Validate JSON models
+
+      - name: Validate current strategy governance contract
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const operator = JSON.parse(fs.readFileSync('apps/portal/assets/data/operator-os-config.json','utf8'));
+          const fleet = JSON.parse(fs.readFileSync('config/master-asg-worker-fleet-v1.json','utf8'));
+          const capabilities = JSON.parse(fs.readFileSync('apps/portal/data/master-asg-capability-registry-v1.json','utf8'));
+
+          if (operator.status !== 'controlled-review') throw new Error('operator must remain controlled-review');
+
+          const gates = operator.safetyGates || {};
+          if (gates.productionDeploy !== 'disabled-until-explicit-approval') throw new Error('production deploy approval gate missing');
+          if (gates.mergeToProduction !== 'disabled-until-explicit-approval') throw new Error('merge approval gate missing');
+          if (gates.massEmailSending !== 'disabled-until-explicit-approval') throw new Error('mass-email approval gate missing');
+          if (gates.dnsChanges !== 'forbidden-in-build-window') throw new Error('DNS build-window lock missing');
+          if (gates.cloudflareRouteChanges !== 'forbidden-in-build-window') throw new Error('Cloudflare route build-window lock missing');
+          if (gates.secretsChanges !== 'forbidden-in-build-window') throw new Error('secrets build-window lock missing');
+
+          const requiredFor = operator.approvalQueue?.requiredFor || [];
+          for (const item of ['strategic-kpi-publication','deployment','dns-or-cloudflare-change']) {
+            if (!requiredFor.includes(item)) throw new Error(`approval queue missing ${item}`);
+          }
+
+          const cards = operator.missionControl?.dashboardCards || [];
+          if (!cards.includes('strategy-performance')) throw new Error('strategy-performance dashboard card missing');
+
+          const premium = operator.premiumRedesign?.components || [];
+          if (!premium.includes('strategy-performance-panel')) throw new Error('strategy-performance panel contract missing');
+
+          const modules = operator.monitoredModules || [];
+          const liveIds = new Set(modules.map(item => item.id));
+          for (const id of ['projects','reports','intelligence-desk','digital-workforce']) {
+            if (!liveIds.has(id)) throw new Error(`current strategic evidence module missing: ${id}`);
+          }
+          if (modules.some(item => item.route === '/strategy-performance/')) {
+            throw new Error('retired strategy-performance route must not be reintroduced as a phantom live module');
+          }
+
+          const serialized = JSON.stringify({fleet, capabilities});
+          for (const forbidden of ['spendingAuthority":true','contractAuthority":true','paymentAuthority":true']) {
+            if (serialized.includes(forbidden)) throw new Error(`autonomous authority escalation detected: ${forbidden}`);
+          }
+
+          console.log('STRATEGY_GOVERNANCE_CONTRACT=PASS');
+          NODE
+
+      - name: Preserve review-only autonomy boundary
         run: |
           set -euxo pipefail
-          for file in \
-            apps/portal/assets/data/operator-os-config.json \
-            apps/portal/assets/data/strategy-performance-review.json \
-            apps/portal/assets/data/financial-planning-baseline.json \
-            apps/portal/assets/data/financial-document-registry.json \
-            apps/portal/assets/data/budget-planning-envelope.json; do
-            echo "VALIDATING_JSON=$file"
-            node -e "JSON.parse(require('fs').readFileSync(process.argv[1],'utf8'))" "$file"
-          done
-      - name: Check projection engine syntax
-        run: node --check apps/portal/assets/js/financial-projection-engine-v1.js
-      - name: Check budget console syntax
-        run: node --check apps/portal/assets/js/budget-planning-console-v1.js
-      - name: Verify route and disclosure controls
-        run: |
-          set -euxo pipefail
-          test -s apps/portal/strategy-performance/index.html
-          grep -qi 'noindex,nofollow,noarchive' apps/portal/strategy-performance/index.html
-          grep -q 'INPUT REQUIRED' apps/portal/strategy-performance/index.html
-          grep -q 'financial-planning-baseline.json' apps/portal/strategy-performance/index.html
-          grep -q 'financial-projection-engine-v1.js' apps/portal/strategy-performance/index.html
-          grep -q 'budget-planning-console-v1.js' apps/portal/strategy-performance/index.html
-          grep -q 'ne stvaraju ovlast za trošenje' apps/portal/strategy-performance/index.html
-          grep -q '/strategy-performance/' apps/portal/enterprise/index.html
-          grep -q '/strategy-performance/' apps/portal/seo/index.html
-          grep -q 'strategy-performance' apps/portal/assets/data/operator-os-config.json
-      - name: Validate two financial bases and H1 ratio
-        run: |
-          node <<'NODE'
-          const fs=require('fs');
-          const model=JSON.parse(fs.readFileSync('apps/portal/assets/data/financial-planning-baseline.json','utf8'));
-          if(model.periods.interimToBaselineRatio!==0.98)throw new Error('interim ratio must be 0.98');
-          if(model.entities.length!==2)throw new Error('exactly two financial bases required');
-          const asg=model.entities.find(item=>item.id==='gnk-asg-standalone');
-          const group=model.entities.find(item=>item.id==='gnk-dinamo-group');
-          if(!asg||!group)throw new Error('financial scopes missing');
-          const expected={asg:{revenue:504000000,assets:46400000,capitalAndReserves:46210000,profit:16076.47},group:{revenue:4704600000,assets:3483000000,capitalAndReserves:3414000000,profit:982480000}};
-          for(const [key,value] of Object.entries(expected.asg)){
-            if(asg.baseline[key]!==value)throw new Error(`GNK ASG baseline mismatch ${key}`);
-            const calculated=Math.round(value*0.98*100)/100;
-            if(asg.interimManagementInput[key]!==calculated)throw new Error(`GNK ASG interim mismatch ${key}`);
-          }
-          for(const [key,value] of Object.entries(expected.group)){
-            if(group.baseline[key]!==value)throw new Error(`Group baseline mismatch ${key}`);
-            const calculated=Math.round(value*0.98*100)/100;
-            if(group.interimManagementInput[key]!==calculated)throw new Error(`Group interim mismatch ${key}`);
-          }
-          if(model.comparisonRules.blindSummationForbidden!==true)throw new Error('blind summation must be forbidden');
-          if(model.budgetGovernance.separateEntityBudgets!==true)throw new Error('separate budgets required');
-          if(model.budgetGovernance.spendingAuthorityCreatedByModel!==false)throw new Error('model cannot create spending authority');
-          NODE
-      - name: Validate projection engine scenarios
-        run: |
-          node <<'NODE'
-          const fs=require('fs');
-          const engine=require('./apps/portal/assets/js/financial-projection-engine-v1.js');
-          const model=JSON.parse(fs.readFileSync('apps/portal/assets/data/financial-planning-baseline.json','utf8'));
-          const projection=engine.buildProjection(model);
-          const asg=projection.entities.find(item=>item.id==='gnk-asg-standalone');
-          const group=projection.entities.find(item=>item.id==='gnk-dinamo-group');
-          const baseAsg=asg.scenarios.find(item=>item.id==='base');
-          const baseGroup=group.scenarios.find(item=>item.id==='base');
-          if(baseAsg.values.revenue!==987840000)throw new Error('GNK ASG base projection mismatch');
-          if(baseGroup.values.revenue!==9221016000)throw new Error('Group base projection mismatch');
-          if(baseGroup.values.profit!==1925660800)throw new Error('Group profit projection mismatch');
-          if(baseGroup.values.assets!==3413340000)throw new Error('stock metric must remain point-in-time');
-          const legacy=engine.budgetCapacity(projection,{Finance:0.01,Technology:0.02});
-          if(legacy.spendingAuthority!==false)throw new Error('budget reference cannot authorize spending');
-          NODE
-      - name: Validate 27-department separate budget envelopes
-        run: |
-          node <<'NODE'
-          const fs=require('fs');
-          const engine=require('./apps/portal/assets/js/financial-projection-engine-v1.js');
-          const financial=JSON.parse(fs.readFileSync('apps/portal/assets/data/financial-planning-baseline.json','utf8'));
-          const budget=JSON.parse(fs.readFileSync('apps/portal/assets/data/budget-planning-envelope.json','utf8'));
-          const projection=engine.buildProjection(financial);
-          if(budget.entityProfiles.length!==2)throw new Error('two entity budget profiles required');
-          if(budget.governance.separateEntityScopes!==true||budget.governance.blindSummationForbidden!==true)throw new Error('scope separation missing');
-          for(const profile of budget.entityProfiles){
-            if(Object.keys(profile.departmentWeights||{}).length!==27)throw new Error(`${profile.entityId} must contain 27 departments`);
-            const envelope=engine.budgetEnvelope(projection,budget,{entityId:profile.entityId,basisId:profile.defaultBasis});
-            if(envelope.departmentCount!==27)throw new Error('department count mismatch');
-            if(envelope.spendingAuthority!==false||envelope.contractAuthority!==false||envelope.paymentAuthority!==false)throw new Error('authority must remain false');
-            if(envelope.blindSummationForbidden!==true)throw new Error('blind summation lock missing');
-            const share=envelope.allocations.reduce((sum,item)=>sum+item.share,0);
-            if(Math.abs(share-1)>0.000001)throw new Error(`shares not normalized ${profile.entityId}`);
-            const entity=projection.entities.find(item=>item.id===profile.entityId);
-            if(envelope.referenceAmount!==entity.interim.revenue)throw new Error(`default basis mismatch ${profile.entityId}`);
-          }
-          const customMissing=engine.budgetEnvelope(projection,budget,{entityId:'gnk-asg-standalone',basisId:'custom-approved-ceiling'});
-          if(customMissing.referenceAmount!==null||customMissing.basisStatus!=='approved-input-required')throw new Error('custom ceiling must require input');
-          const custom=engine.budgetEnvelope(projection,budget,{entityId:'gnk-asg-standalone',basisId:'custom-approved-ceiling',customCeiling:1000000});
-          if(custom.referenceAmount!==1000000||custom.spendingAuthority!==false)throw new Error('custom ceiling contract invalid');
-          NODE
-      - name: Verify budget console remains client-side reference only
-        run: |
-          set -euxo pipefail
-          grep -q '27-department Budget Planning Envelope' apps/portal/assets/js/budget-planning-console-v1.js
-          grep -q 'Reference only' apps/portal/assets/js/budget-planning-console-v1.js
-          grep -q 'customApprovedCeilingStoredInSessionOnly' apps/portal/assets/data/budget-planning-envelope.json
-          ! grep -q 'localStorage' apps/portal/assets/js/budget-planning-console-v1.js
-          ! grep -E "method:['\"](POST|PUT|PATCH|DELETE)" apps/portal/assets/js/budget-planning-console-v1.js
-          ! grep -q 'EMAIL.send' apps/portal/assets/js/budget-planning-console-v1.js
-          ! grep -q 'wrangler deploy' apps/portal/assets/js/budget-planning-console-v1.js
-      - name: Validate official document source registry
-        run: |
-          node <<'NODE'
-          const fs=require('fs');
-          const registry=JSON.parse(fs.readFileSync('apps/portal/assets/data/financial-document-registry.json','utf8'));
-          if(registry.governance.officialRegistryIsPrimarySource!==true)throw new Error('official registry must be primary source');
-          const asg=registry.documents.find(item=>item.id==='gnk-asg-fy2025-audited');
-          const group=registry.documents.find(item=>item.id==='gnk-dinamo-group-fy2025-consolidated');
-          if(asg?.officialRegistryId!=='fina-rgfi')throw new Error('FINA source missing');
-          if(group?.officialRegistryId!=='colorado-secretary-of-state')throw new Error('Colorado source missing');
-          if(registry.governance.standaloneAndConsolidatedMustNotBeBlindlyAdded!==true)throw new Error('scope separation missing');
-          NODE
-      - name: Preserve empty strategic layer contract
-        run: |
-          node <<'NODE'
-          const fs=require('fs');
-          const model=JSON.parse(fs.readFileSync('apps/portal/assets/data/strategy-performance-review.json','utf8'));
-          const metrics=(model.layers||[]).flatMap(layer=>layer.metrics||[]);
-          if(metrics.some(metric=>metric.value!==null))throw new Error('strategic review metrics must remain empty until approved inputs exist');
-          if(!model.disclosure.includes('not statutory'))throw new Error('required disclosure missing');
-          NODE
+          grep -q 'controlled-review' apps/portal/assets/data/operator-os-config.json
+          grep -q 'strategic-kpi-publication' apps/portal/assets/data/operator-os-config.json
+          grep -q 'disabled-until-explicit-approval' apps/portal/assets/data/operator-os-config.json
+          ! grep -q '"productionDeploy"[[:space:]]*:[[:space:]]*"enabled"' apps/portal/assets/data/operator-os-config.json
+          ! grep -q '"mergeToProduction"[[:space:]]*:[[:space:]]*"enabled"' apps/portal/assets/data/operator-os-config.json
