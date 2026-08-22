@@ -1,0 +1,9 @@
+{
+  "version":"MASTER_ASG_LEGAL_DEPARTMENT_V1",
+  "reportsTo":"ceo-agent",
+  "mode":"controlled-autonomy",
+  "departmentLead":{"id":"clo-agent","title":"Chief Legal Officer Agent","riskCeiling":"R2"},
+  "workers":["corporate-commercial-lawyer","privacy-data-lawyer","ip-media-lawyer","employment-lawyer","regulatory-compliance-lawyer","disputes-litigation-lawyer","legal-research-worker","legal-reviewer"],
+  "matterFlow":["intake","scope-check","jurisdiction-detect","primary-source-research","specialist-analysis","independent-review","risk-and-options","escalate-or-close","learning-ledger"],
+  "requirements":{"primarySourcesPreferred":true,"jurisdictionRequired":true,"effectiveDateRequired":true,"provenanceRequired":true,"noFabricatedAuthority":true,"noSelfApproval":true,"externalBindingActionRequiresAuthorizedHumanApproval":true}
+}
