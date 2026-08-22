@@ -1,0 +1,72 @@
+{
+  "version": "MASTER_ASG_AUTONOMY_FUSION_V1",
+  "mode": "controlled-autonomy",
+  "designSources": [
+    {"source":"Apache Maka","pattern":"append-only runtime event log and replayable state"},
+    {"source":"Ruflo","pattern":"hierarchical swarm coordination, isolated execution, serialized integration"},
+    {"source":"ECC","pattern":"continuous learning, reusable skills, evidence-driven capability evolution"},
+    {"source":"Superpowers","pattern":"plan-test-implement-review-verify discipline and evidence-over-claims"},
+    {"source":"PostHog","pattern":"trace/span/event observability and outcome-linked evaluation"}
+  ],
+  "eventLedger": {
+    "appendOnly": true,
+    "replayable": true,
+    "persistent": true,
+    "requiredEventFields": ["eventId","timestamp","traceId","taskId","workerId","eventType","inputDigest","outputDigest","sourceRefs","confidence","riskClass"],
+    "eventTypes": ["task-created","task-routed","worker-started","provider-call","provider-result","decision","review","failover","retry","quarantine","skill-candidate","skill-promoted","task-completed","task-failed","rollback"]
+  },
+  "swarmExecution": {
+    "defaultTopology": "hierarchical",
+    "independentFirstPass": true,
+    "isolatedWorkerExecution": true,
+    "sharedTaskState": true,
+    "singleAuthoritativeIntegrator": true,
+    "maxParallelWritersToAuthoritativeState": 1,
+    "reviewBeforeIntegration": true
+  },
+  "learningEngine": {
+    "pipeline": ["experience","evidence","outcome-score","lesson","skill-candidate","validation","promotion-or-reject"],
+    "memoryIsPolicy": false,
+    "promotionRequiresEvidence": true,
+    "promotionRequiresIndependentReview": true,
+    "rejectedStrategyLedger": true,
+    "rollbackLearning": true,
+    "minimumSuccessfulOutcomesForPromotion": 3,
+    "failurePenaltyRequired": true
+  },
+  "observability": {
+    "traceEveryTask": true,
+    "requiredSpanTypes": ["worker","provider","tool","reviewer","integrator"],
+    "requiredMetrics": ["latencyMs","attempts","providerScore","confidence","reviewScore","outcomeScore","costEstimate","freshnessScore"],
+    "publicProjection": ["workerId","taskCategory","state","startedAt","finishedAt","health","publicResultSummary"],
+    "privateOnly": ["secrets","credentials","sensitivePrompts","internalSecurityDetails"]
+  },
+  "decisionPolicy": {
+    "individualFirst": true,
+    "peerEscalationOnLowConfidence": true,
+    "collectiveModeForHighComplexity": true,
+    "redTeamForMaterialDecisions": true,
+    "independentReviewerRequiredForR2R3": true,
+    "selfApprovalR2R3": false,
+    "selfPrivilegeEscalation": false
+  },
+  "automation": {
+    "proactiveProblemDiscovery": true,
+    "automaticR0R1TaskCreation": true,
+    "automaticProviderFailover": true,
+    "automaticBoundedRetry": true,
+    "automaticQuarantine": true,
+    "automaticSkillCandidateCreation": true,
+    "automaticSkillPromotion": false,
+    "automaticR2R3ExternalSideEffects": false
+  },
+  "releaseGuardrails": {
+    "singleWriter": true,
+    "exactShaBeforeWrite": true,
+    "failClosedOnUnknownState": true,
+    "provenanceRequired": true,
+    "noFakeGreen": true,
+    "noSecretsInRepo": true,
+    "socialWritesOnHold": true
+  }
+}
