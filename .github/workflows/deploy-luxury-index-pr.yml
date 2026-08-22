@@ -33,7 +33,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          node --check apps/portal/assets/public-menu-v18.js
+          node --check apps/portal/assets/public-unified-menu-v6.js
           node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
