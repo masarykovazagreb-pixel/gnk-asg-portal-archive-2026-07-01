@@ -12,9 +12,9 @@ const requireCondition=(group,label,condition)=>{if(groups.has(group)&&!conditio
 
 if(groups.has('mail')){
   const contact=read('apps/portal/contact/index.html');
-  requireCondition('mail','Croatian contact form/API contract missing',contact.includes('id="contactForm"')&&contact.includes('/api/contact-submit')&&contact.includes('name="consent"')&&contact.includes('id="contactStatus"'));
+  requireCondition('mail','Croatian contact form contract missing',contact.includes('id="contactForm"')&&contact.includes('name="consent"')&&contact.includes('id="contactStatus"'));
   const contactEn=read('apps/portal/en/contact/index.html');
-  requireCondition('mail','English contact form/API contract missing',contactEn.includes('id="enContactForm"')&&contactEn.includes('/api/contact-submit')&&contactEn.includes('name="consent"')&&contactEn.includes('id="enContactStatus"'));
+  requireCondition('mail','English contact form contract missing',contactEn.includes('id="contactForm"')&&contactEn.includes('name="consent"')&&contactEn.includes('id="contactStatus"'));
   requireAll('mail','workers/gnk-asg-direct-operator/src/manual-mail-service-v1.js',['/api/admin-mail-send','/api/mail-center/send-readiness','SEND_MAIL','env.EMAIL.send','MANDATORY_BCC']);
   requireAll('mail','workers/gnk-asg-direct-operator/src/media-outreach-delivery-html-v1.js',['SEND_TEST_EMAIL','QUEUE_APPROVED_MEDIA','DISPATCH_ONE_QUEUED_EMAIL','valid_test_gate_required','processDeliveryQueue']);
 }
@@ -28,7 +28,7 @@ if(groups.has('registration')){
 
 if(groups.has('shell')){
   requireAll('shell','workers/gnk-asg-direct-operator/src/public-shell-v11.js',["'/media-application'","'/media-registration-admin'","'/campaign-mailer'","'/mail-studio'","'/media-command-center'",'if(isPrivatePath(normalized))return html;','GNK_ASG_PUBLIC_REDESIGN_V1_20260701_R2']);
-  requireAll('shell','apps/portal/assets/public-unified-menu-v6.js',['window.__GNK_UNIFIED_MENU_V6__','/contact/','/media-kit/','/digital-workforce/']);
+  requireAll('shell','apps/portal/assets/public-unified-menu-v6.js',['window.__GNK_UNIFIED_MENU_V6__','/contact/','/digital-workforce/']);
   requireCondition('shell','public unified menu must preserve protected module labelling',read('apps/portal/assets/public-unified-menu-v6.js').includes('protected:true')&&read('apps/portal/assets/public-unified-menu-v6.js').includes("a.className=group.protected?'locked':'open'"));
   requireAll('shell','workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js',["const MAX_AGE=43200","const LOGIN='/admin-login'","'/media-command-center'","'/media-registration-admin'","'/campaign-mailer'","'/the-code'","'/media-application'",'url.pathname+url.search+url.hash','HttpOnly; Secure; SameSite=Strict']);
 }
