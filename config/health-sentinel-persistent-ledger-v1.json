@@ -1,0 +1,22 @@
+{
+  "version": "HEALTH_SENTINEL_PERSISTENT_LEDGER_V1",
+  "status": "controlled-review",
+  "sourceOfTruthBaseSha": "33a01db2d796e2d8b8119658cfd42fcead4d2b7a",
+  "storageModel": {
+    "fastCache": true,
+    "persistentLedgerRequired": true,
+    "appendOnlyEvents": true,
+    "providerKey": "providerId",
+    "requiredFields": ["providerId","capability","state","observedAt","latencyMs","freshnessAgeSeconds","errorRateRolling","failureStreak","successStreak","lastFailoverAt","quarantinedAt","recoveryAttempts","healthScore","provenanceRef"]
+  },
+  "states": ["HEALTHY","DEGRADED","STALE","DOWN","QUARANTINED","PROBATION"],
+  "transitionPolicy": {
+    "unknownStateFailsClosed": true,
+    "maxAutomaticRetries": 2,
+    "quarantineOnRepeatedFailure": true,
+    "recoveryHysteresis": {"requiredConsecutiveHealthyChecks": 3, "quarantinedToProbation": true, "probationToHealthyOnlyAfterThreshold": true}
+  },
+  "selection": {"formulaInputs": ["quality","freshness","reliability","latency","cost","healthHistoryPenalty"], "testOrMockProviderProductionReady": false},
+  "singleWriter": {"authoritativeStateWriterRequired": true, "eventProducersMayBeParallel": true, "stateToMainWritesSerialized": true, "exactShaImmediatelyBeforeWrite": true},
+  "audit": {"retainFailureHistory": true, "retainRecoveryHistory": true, "retainFailoverHistory": true, "retainScoreInputs": true, "provenanceRequired": true}
+}
