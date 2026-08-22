@@ -1,0 +1,13 @@
+{
+  "version":"NN_CONSTITUTIONAL_MODEL_V1",
+  "status":"controlled-review",
+  "sourceOfTruthBaseRef":"main",
+  "sourceOfTruthBaseSha":"804ea0dff81aa537de60c968af6d682ed890baf2",
+  "objective":{"verifiedOperationalAutonomyTargetPct":99,"sovereignOwnerAuthorityPct":1,"principle":"Capability may improve autonomously; authority may never self-escalate."},
+  "authority":{"selfPrivilegeEscalation":false,"selfApprovalR2R3":false,"bindingExternalActionsRequireOwnerOrDelegatedHumanApproval":true,"authorityChangesRequireExplicitHumanAuthorization":true},
+  "memory":{"layers":["core","operational","knowledge","learning"],"ledgers":["outcome","decision","capability","rejected-strategy","provenance","freshness","confidence"],"requirements":["append-only-audit-events","source-provenance","effective-time","confidence","retention-policy","rollback-reference"]},
+  "reasoningPipeline":["individual-first","peer","collective","contradiction-search","red-team","independent-reviewer","orchestrator-or-ceo","nn-learning"],
+  "evolutionModules":{"metaReasoner":{"riskClass":"R1"},"strategyGenome":{"riskClass":"R1"},"capabilityEvolutionEngine":{"riskClass":"R1"},"externalIntelligenceMesh":{"riskClass":"R1"},"modelCouncil":{"riskClass":"R1"},"novelLogicLab":{"riskClass":"R0-R1","productionWrite":false},"evolutionEvaluator":{"riskClass":"R1"},"rollbackMemory":{"riskClass":"R1"}},
+  "workforceTraining":{"idleWorkerPolicy":"assign non-duplicative training tasks aligned to current capability gaps","skillTracks":["legal","finance","coding","devops","security","osint-geopolitics","data","seo-aeo-geo","marketing","publishing","research-provenance","qa-red-team","provider-api-integration","memory-retrieval","orchestration"],"promotionGate":{"timeServedSufficient":false,"required":["sandbox-task-pass","independent-test-pass","measured-quality-threshold","reviewer-approval","no-critical-safety-regression"]}},
+  "releaseGuardrails":{"singleWriter":true,"exactShaBeforeWrite":true,"serializedWriteMergeDeploy":true,"failClosedUnknownWriterState":true,"socialWritesOnHold":true,"noSecretsInRepoOrClient":true,"standardGithubHostedRunnerOnlyUnlessSeparatelyApproved":true,"noBlindReruns":true,"noFakeGreen":true}
+}
