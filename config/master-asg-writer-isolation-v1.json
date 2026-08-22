@@ -1,0 +1,48 @@
+{
+  "version": "MASTER_ASG_WRITER_ISOLATION_V1",
+  "status": "controlled-review",
+  "objective": "Prevent generated-data refreshes from destabilizing code/config integration while preserving freshness and exact-SHA release discipline.",
+  "domains": {
+    "codeConfig": {
+      "authoritativeIntegrationBranch": "main",
+      "requiresPullRequest": true,
+      "requiresExactShaBeforeMergeOrDeploy": true,
+      "generatedDataWritesAllowed": false
+    },
+    "generatedData": {
+      "parallelProducersAllowed": true,
+      "authoritativeStateWriterCount": 1,
+      "noChangeNoCommit": true,
+      "mustNotModify": ["config/**", ".github/workflows/**", "scripts/**", "workers/**"],
+      "preferredPattern": "producer-event-or-artifact -> reconcile -> single authoritative state writer",
+      "commitMessageMustIdentifyProducer": true
+    }
+  },
+  "concurrency": {
+    "singleWriterPerAuthoritativeResource": true,
+    "cancelInProgressForFreshnessWriters": false,
+    "serializeStateToMain": true,
+    "reReadMainImmediatelyBeforeWrite": true,
+    "abortOnUnexpectedMainMovement": true
+  },
+  "reconciliation": {
+    "featureBranchesIgnoreGeneratedDataDrift": true,
+    "neverResolveCodeConfigConflictsByTakingGeneratedDataSide": true,
+    "generatedDataMustBeRebasedOrRegeneratedAfterCodeMerge": true,
+    "noBlindReruns": true
+  },
+  "freshness": {
+    "adaptiveCadence": true,
+    "workflowSuccessIsNotSourceHealth": true,
+    "staleDegradedDownSemanticsRequired": true,
+    "upstreamObservedAtRequired": true
+  },
+  "releaseGuardrails": {
+    "singleWriter": true,
+    "exactSha": true,
+    "failClosedOnUnknownOwnership": true,
+    "socialWritesOnHold": true,
+    "noSecretsInRepo": true,
+    "noFakeGreen": true
+  }
+}
