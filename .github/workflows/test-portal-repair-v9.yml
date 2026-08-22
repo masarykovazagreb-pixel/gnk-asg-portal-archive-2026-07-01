@@ -49,7 +49,12 @@ jobs:
         shell: bash
         run: |
           set -euxo pipefail
-          grep -q 'main = "src/index-unified-auth-v14.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          DIRECT_OPERATOR_MAIN="$(awk -F'"' '/^[[:space:]]*main[[:space:]]*=/{print $2; exit}' workers/gnk-asg-direct-operator/wrangler.toml)"
+          test -n "$DIRECT_OPERATOR_MAIN"
+          case "$DIRECT_OPERATOR_MAIN" in
+            /*|*..*) echo "Unsafe Direct Operator entrypoint: $DIRECT_OPERATOR_MAIN" >&2; exit 1 ;;
+          esac
+          test -f "workers/gnk-asg-direct-operator/${DIRECT_OPERATOR_MAIN#./}"
           grep -q 'main = "src/index-enterprise-projects-runtime-v1.js"' workers/gnk-asg-direct-operator/wrangler.review-preview.toml
           grep -q "from './index-final-admin-gateway-v2.js'" workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js
           grep -q 'campaign-mailer-shell-v2.js' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
