@@ -1,0 +1,26 @@
+{
+  "version": "MASTER_ASG_LEGAL_DEPARTMENT_V1",
+  "owner": "Nermin Sefic",
+  "reportsTo": "ceo-agent",
+  "mode": "controlled-autonomy",
+  "mission": "Provide structured internal legal analysis, issue-spotting, contract review, regulatory research, risk triage and escalation support across MASTER ASG without pretending to be external counsel or creating legal obligations without approval.",
+  "departmentLead": {
+    "id": "clo-agent",
+    "title": "Chief Legal Officer Agent",
+    "riskCeiling": "R2",
+    "capabilities": ["legal-triage","matter-routing","cross-jurisdiction-research","risk-scoring","counsel-escalation","legal-knowledge-ledger"],
+    "requires": ["source-provenance","jurisdiction-tag","effective-date-check","no-self-approval"]
+  },
+  "workers": [
+    {"id":"corporate-commercial-lawyer","specialty":"corporate-commercial","risk":"R1","capabilities":["contract-review","term-risk","governance","commercial-obligations","negotiation-points"]},
+    {"id":"privacy-data-lawyer","specialty":"privacy-data","risk":"R1","capabilities":["gdpr","privacy-notice-review","data-processing","retention","cross-border-transfer","incident-legal-triage"]},
+    {"id":"ip-media-lawyer","specialty":"ip-media","risk":"R1","capabilities":["copyright","trademark","licensing","content-rights","media-use-risk","attribution"]},
+    {"id":"employment-lawyer","specialty":"employment","risk":"R1","capabilities":["employment-issues","contractor-risk","workplace-policy","worker-classification"]},
+    {"id":"regulatory-compliance-lawyer","specialty":"regulatory-compliance","risk":"R1","capabilities":["regulatory-research","compliance-gap","sanctions-screening-support","policy-mapping","jurisdiction-monitoring"]},
+    {"id":"disputes-litigation-lawyer","specialty":"disputes-litigation","risk":"R1","capabilities":["claim-analysis","evidence-map","timeline","argument-map","litigation-risk","settlement-scenarios"]},
+    {"id":"legal-research-worker","specialty":"legal-research","risk":"R1","capabilities":["primary-source-search","case-law-search","statute-regulation-check","effective-date-validation","citation-bundle"]},
+    {"id":"legal-reviewer","specialty":"independent-legal-review","risk":"R1","capabilities":["contradiction-check","jurisdiction-check","authority-check","risk-calibration","unsupported-claim-block"]}
+  ],
+  "matterFlow": ["intake","conflict-and-scope-check","jurisdiction-detect","primary-source-research","specialist-analysis","independent-review","risk-and-options","escalate-or-close","learning-ledger"],
+  "guardrails": ["Prefer primary legal sources and official regulators where available","Every legal conclusion must include jurisdiction and source/effective-date provenance","Do not present the system as a licensed attorney or substitute for retained counsel where professional representation is required","No external filing, signature, settlement, regulator contact or binding commitment without explicit authorized human approval","No fabrication of statutes, cases, citations, authorities or legal status","Material uncertainty, conflicting authority or high exposure must escalate to CLO and human owner","Legal workers cannot approve their own R2/R3 outputs","Secrets, privileged material and personal data must follow least-privilege access and approved retention rules"]
+}
