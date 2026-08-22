@@ -1,0 +1,28 @@
+{
+  "version": "MASTER_NN_RECONCILIATION_V1",
+  "createdFromMainSha": "c1515680e684b48dc5906a91bcdf513be3026057",
+  "canonicalBranch": "feature/health-sentinel-current-main-20260822",
+  "canonicalPullRequest": 21,
+  "sourcePullRequests": [
+    {"number": 11, "headSha": "a74ac28bece5b6950013f61cf70a7f8a797f9f87", "scope": ["learning", "worker-factory", "legal"], "superseded": true},
+    {"number": 12, "headSha": "2cb03305d234725ea4a264f84209f2c81f68707a", "scope": ["nn-constitutional-memory", "validator-ci"], "superseded": true},
+    {"number": 13, "headSha": "5a0de2746390aa56d32097763f280c28b4ec3d48", "scope": ["provider-health-ledger", "validator-ci"], "superseded": true}
+  ],
+  "migrationOrder": [
+    "health-sentinel",
+    "nn-constitutional",
+    "learning-worker-factory",
+    "legal-department",
+    "runtime-wiring",
+    "integration-e2e"
+  ],
+  "rules": {
+    "singleWriter": true,
+    "exactShaCheck": true,
+    "serializedMigration": true,
+    "targetedCiRequired": true,
+    "reviewBeforeMerge": true,
+    "noBlindReruns": true,
+    "noFakeGreen": true
+  }
+}
