@@ -3,13 +3,14 @@ import {readFile} from 'node:fs/promises';
 
 const read=path=>readFile(new URL(`../${path}`,import.meta.url),'utf8');
 const [
-  indexHr,indexEn,contactHr,contactEn,adminCenter,publicShell,
+  indexHr,indexEn,contactHr,contactEn,contactClient,adminCenter,publicShell,
   activeAuth,gatewayCompat,gatewayRuntime,campaignShell,wranglerReview,wranglerRuntime
 ]=await Promise.all([
   read('apps/portal/index.html'),
   read('apps/portal/en/index.html'),
   read('apps/portal/contact/index.html'),
   read('apps/portal/en/contact/index.html'),
+  read('apps/portal/assets/contact-form-v2.js'),
   read('apps/portal/admin-center/index.html'),
   read('workers/gnk-asg-direct-operator/src/public-shell-v11.js'),
   read('workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js'),
@@ -26,10 +27,14 @@ for(const [name,html] of [['HR index',indexHr],['EN index',indexEn]]){
 }
 
 for(const [name,html] of [['HR kontakt',contactHr],['EN kontakt',contactEn]]){
-  assert.ok(html.includes('/api/contact-submit'),`${name} mora koristiti jedinstveni kontakt API.`);
-  assert.ok(html.includes('type="file"')&&html.includes('accept="application/pdf"'),`${name} mora zadržati PDF prilog.`);
+  assert.ok(html.includes('id="contactForm"'),`${name} mora zadržati canonical kontakt formu.`);
+  assert.ok(html.includes('contact-form-v2.js'),`${name} mora koristiti jedinstveni kontakt klijent.`);
   assert.ok(html.includes('name="consent"'),`${name} mora zadržati privolu.`);
+  assert.ok(html.includes('name="website"'),`${name} mora zadržati honeypot zaštitu.`);
 }
+assert.ok(contactClient.includes("fetch('/api/portal-contact-submit'"),'Kontakt klijent mora koristiti canonical portal contact API.');
+assert.ok(contactClient.includes("'content-type':'application/json'"),'Kontakt klijent mora slati strukturirani JSON payload.');
+assert.ok(contactClient.includes("credentials:'same-origin'"),'Kontakt API mora ostati same-origin.');
 
 assert.ok(adminCenter.length>500,'Admin Center mora ostati dostupan.');
 assert.ok(publicShell.includes("'/campaign-mailer'"),'Campaign Mailer mora biti izoliran od javnog redizajna.');
@@ -54,4 +59,4 @@ assert.ok(wranglerReview.includes('MAIL_MANUAL_LIVE = "false"'),'Stvarno ručno 
 assert.ok(wranglerReview.includes('MEDIA_OUTREACH_LIVE = "false"'),'Media outreach mora ostati isključen u reviewu.');
 assert.ok(wranglerRuntime.includes('main = "src/index-final-admin-gateway-v2.js"'),'Produkcijski runtime manifest mora i dalje pokazivati na canonical gateway v2.');
 
-console.log('CURRENT INDEX + CONTACT + ADMIN + UNIFIED REVIEW AUTH + CANONICAL V2 COMPATIBILITY: PASS');
+console.log('CURRENT INDEX + CONTACT CLIENT/API + ADMIN + UNIFIED REVIEW AUTH + CANONICAL V2 COMPATIBILITY: PASS');
