@@ -1,0 +1,69 @@
+{
+  "version": "NN_CONSTITUTIONAL_MODEL_V1",
+  "status": "controlled-review",
+  "sourceOfTruthBaseRef": "main",
+  "objective": {
+    "verifiedOperationalAutonomyTargetPct": 99,
+    "sovereignOwnerAuthorityPct": 1,
+    "principle": "Capability may improve autonomously; authority may never self-escalate."
+  },
+  "authority": {
+    "selfPrivilegeEscalation": false,
+    "selfApprovalR2R3": false,
+    "bindingExternalActionsRequireOwnerOrDelegatedHumanApproval": true,
+    "authorityChangesRequireExplicitHumanAuthorization": true
+  },
+  "memory": {
+    "layers": ["core", "operational", "knowledge", "learning"],
+    "ledgers": ["outcome", "decision", "capability", "rejected-strategy", "provenance", "freshness", "confidence"],
+    "requirements": ["append-only-audit-events", "source-provenance", "effective-time", "confidence", "retention-policy", "rollback-reference"]
+  },
+  "reasoningPipeline": ["individual-first","peer","collective","contradiction-search","red-team","independent-reviewer","orchestrator-or-ceo","nn-learning"],
+  "evolutionModules": {
+    "metaReasoner": {"riskClass": "R1", "purpose": "select reasoning mode, detect uncertainty and route contradictions"},
+    "strategyGenome": {"riskClass": "R1", "purpose": "version strategies with fitness, context and rejection history"},
+    "capabilityEvolutionEngine": {"riskClass": "R1", "purpose": "propose, train and test capability upgrades without authority expansion"},
+    "externalIntelligenceMesh": {"riskClass": "R1", "purpose": "federate authorized external knowledge/providers with provenance and independent verification"},
+    "modelCouncil": {"riskClass": "R1", "purpose": "independent model/worker first-pass analyses before synthesis"},
+    "novelLogicLab": {"riskClass": "R0-R1", "productionWrite": false, "purpose": "sandbox new heuristics and reasoning patterns"},
+    "evolutionEvaluator": {"riskClass": "R1", "purpose": "score upgrades on independent holdout tasks before promotion"},
+    "rollbackMemory": {"riskClass": "R1", "purpose": "retain rejected strategies, regression signatures and rollback references"}
+  },
+  "workforceTraining": {
+    "idleWorkerPolicy": "assign non-duplicative training tasks aligned to current capability gaps",
+    "skillTracks": ["legal","finance","coding","devops","security","osint-geopolitics","data","seo-aeo-geo","marketing","publishing","research-provenance","qa-red-team","provider-api-integration","memory-retrieval","orchestration"],
+    "promotionGate": {
+      "timeServedSufficient": false,
+      "required": ["sandbox-task-pass","independent-test-pass","measured-quality-threshold","reviewer-approval","no-critical-safety-regression"]
+    },
+    "skillLedgerFields": ["workerId","skill","levelBefore","trainingTask","evidenceRefs","testScore","levelAfter","reviewer","promoted","timestamp"]
+  },
+  "publicWorkerEntityLayer": {
+    "indexOnlyPublicIntendedProfiles": true,
+    "requiredWhenApplicable": ["unique-title","unique-meta-description","canonical","reciprocal-hreflang-hr-en-x-default","open-graph","twitter-card","breadcrumb-schema","semantically-correct-entity-schema","stable-slug","internal-links","controlled-image-alt-width-height","sitemap","image-sitemap","indexability-check"],
+    "hubRequirements": ["CollectionPage","ItemList","Organization","BreadcrumbList","aggregated-public-results","worker-categories","skills","internal-linking","aeo-geo-entity-structure"],
+    "truthfulStatusOnly": ["LIVE","STALE","DEGRADED"],
+    "prohibitions": ["doorway-pages","keyword-stuffing","duplicate-title-meta","indexing-sensitive-internal-probation-profiles","fabricated-activity"]
+  },
+  "reporting": {
+    "internal": ["full-structured-evidence","provenance","confidence","results","errors"],
+    "external": ["short-safe-summary","no-secrets","no-sensitive-data","no-confidential-legal-business-data","no-private-chain-of-thought"]
+  },
+  "releaseGuardrails": {
+    "singleWriter": true,
+    "exactShaBeforeWrite": true,
+    "serializedWriteMergeDeploy": true,
+    "failClosedUnknownWriterState": true,
+    "socialWritesOnHold": true,
+    "noSecretsInRepoOrClient": true,
+    "standardGithubHostedRunnerOnlyUnlessSeparatelyApproved": true,
+    "noBlindReruns": true,
+    "noFakeGreen": true
+  },
+  "successMetrics": {
+    "autonomy": ["independent-resolution-rate","human-escalation-rate-by-risk","rollback-success-rate","capability-improvement-without-authority-growth"],
+    "memory": ["retrieval-precision","stale-memory-detection-rate","rejected-strategy-reuse-prevention","provenance-coverage"],
+    "workforce": ["skill-progression-rate","holdout-test-pass-rate","promotion-regression-rate","duplicate-training-rate"],
+    "public": ["truthful-runtime-status-coverage","indexability-error-rate","duplicate-meta-rate","schema-validation-rate"]
+  }
+}
