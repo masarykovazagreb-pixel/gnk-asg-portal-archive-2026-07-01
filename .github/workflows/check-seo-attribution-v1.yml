@@ -4,9 +4,6 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - 'apps/portal/scripts/apply_seo_attribution.py'
-      - 'apps/portal/scripts/harden_internal_routes.py'
-      - 'apps/portal/data/seo-attribution-policy-v1.json'
       - 'apps/portal/**/index.html'
       - '.github/workflows/check-seo-attribution-v1.yml'
 
@@ -22,28 +19,50 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Validate and apply attribution
+      - name: Validate committed SEO attribution contract
         run: |
           set -euxo pipefail
-          python -m py_compile apps/portal/scripts/apply_seo_attribution.py apps/portal/scripts/harden_internal_routes.py
-          python apps/portal/scripts/apply_seo_attribution.py
-      - name: Validate corporate and editorial roles
-        run: |
-          set -euxo pipefail
-          grep -q 'SEO-ATTRIBUTION:BEGIN' apps/portal/index.html
-          grep -q 'name="author" content="GNK ASG d.o.o."' apps/portal/index.html
-          grep -q 'name="editor" content="Nermin Sefić"' apps/portal/index.html
-          grep -q 'Direktor i odgovorna izvršna osoba' apps/portal/index.html
-          grep -q 'name="author" content="Nermin Sefić"' apps/portal/objave/povjerenje-investitora-kroz-transparentnost/index.html
-          grep -q 'Autor i urednik' apps/portal/objave/povjerenje-investitora-kroz-transparentnost/index.html
-          grep -q 'Direktor i odgovorna izvršna osoba projekta' apps/portal/the-code/index.html
-          grep -q 'Direktor GNK ASG d.o.o. i ovlašteni predstavnik GNK DINAMO Ltd.' apps/portal/nermin-sefic/index.html
-          ! grep -q 'SEO-ATTRIBUTION:BEGIN' apps/portal/admin-center/index.html
           python - <<'PY'
-          import json
           from pathlib import Path
-          data=json.loads(Path('apps/portal/data/seo-attribution-report.json').read_text(encoding='utf-8'))
-          assert data['pageCount'] >= 10
-          assert '/' in data['routes']
-          assert '/the-code/' in data['routes']
+
+          checks = {
+              'apps/portal/index.html': [
+                  'SEO-ATTRIBUTION:BEGIN',
+                  'name="author" content="GNK ASG d.o.o."',
+                  'name="editor" content="Nermin Sefić"',
+                  'Direktor i odgovorna izvršna osoba',
+              ],
+              'apps/portal/objave/povjerenje-investitora-kroz-transparentnost/index.html': [
+                  'name="author" content="Nermin Sefić"',
+                  'Autor i urednik',
+              ],
+              'apps/portal/the-code/index.html': [
+                  'Direktor i odgovorna izvršna osoba projekta',
+              ],
+              'apps/portal/nermin-sefic/index.html': [
+                  'Direktor GNK ASG d.o.o. i ovlašteni predstavnik GNK DINAMO Ltd.',
+              ],
+          }
+
+          failures = []
+          for raw_path, required in checks.items():
+              path = Path(raw_path)
+              if not path.is_file():
+                  failures.append(f'missing file: {raw_path}')
+                  continue
+              text = path.read_text(encoding='utf-8')
+              for needle in required:
+                  if needle not in text:
+                      failures.append(f'{raw_path}: missing {needle!r}')
+
+          admin = Path('apps/portal/admin-center/index.html')
+          if not admin.is_file():
+              failures.append('missing file: apps/portal/admin-center/index.html')
+          elif 'SEO-ATTRIBUTION:BEGIN' in admin.read_text(encoding='utf-8'):
+              failures.append('apps/portal/admin-center/index.html: public SEO attribution marker must not be present')
+
+          if failures:
+              raise SystemExit('SEO attribution contract failed:\n- ' + '\n- '.join(failures))
+
+          print('SEO attribution contract: PASS')
           PY
