@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
+import { publishedItems } from './lib/publication-gate-v2.mjs';
 
 const editorial=fs.readFileSync('apps/portal/assets/index-editorial-order-v6.js','utf8');
 const newsroom=fs.readFileSync('apps/portal/assets/newsroom-live-v1.js','utf8');
@@ -26,11 +27,23 @@ for(const file of newFiles){const html=fs.readFileSync(file,'utf8');assert.match
 for(const marker of ['Source','Izvor','/api/public-news?limit=100','/api/public-news-feed','gnk-news-100','Objave, vijesti, analize i komentari'])assert.match(editorial,new RegExp(marker.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
 assert.match(newsroom,/__GNK_NEWSROOM_LIVE_V7__/);
 assert.match(newsroom,/limit=100/);
-for(const route of [
+
+const registry=JSON.parse(fs.readFileSync('apps/portal/data/editorial-registry.json','utf8'));
+const supplement=fs.existsSync('apps/portal/data/editorial-registry-supplement.json')?JSON.parse(fs.readFileSync('apps/portal/data/editorial-registry-supplement.json','utf8')):{items:[]};
+const merged=[...(registry.items||[])];
+const known=new Set(merged.map(item=>item?.path).filter(Boolean));
+for(const item of supplement.items||[]){if(item?.path&&!known.has(item.path)){merged.push(item);known.add(item.path)}}
+const published=new Set(publishedItems({...registry,items:merged},new Date(process.env.PUBLICATION_NOW||Date.now())).map(item=>item.path));
+const contractedRoutes=[
  '/objave/transparentno-upravljanje-kao-operativni-standard/','/analize/ai-infrastruktura-kapital-energija/','/objave/kiberneticka-otpornost-i-kontinuitet/','/komentari/trzista-traze-jasne-informacije/','/komentari/automatizacija-ne-ukida-odgovornost/',
  '/objave/tehnologija-kapital-i-odgovorno-upravljanje/','/analize/kapitalna-struktura-i-operativna-otpornost/','/komentari/inovacija-bez-povjerenja-nije-napredak/',
  '/en/publications/technology-capital-and-responsible-governance/','/en/analyses/capital-structure-and-operational-resilience/','/en/commentary/innovation-without-trust-is-not-progress/'
-])assert.match(sitemap,new RegExp(route.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
+];
+for(const route of contractedRoutes){
+ const pattern=new RegExp(route.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'));
+ if(published.has(route)) assert.match(sitemap,pattern,`published route missing from sitemap: ${route}`);
+ else assert.doesNotMatch(sitemap,pattern,`scheduled/held route leaked into sitemap: ${route}`);
+}
 function collectionContract(file,{minimum,prefix}){
  const html=fs.readFileSync(file,'utf8'),count=(html.match(/class="editorial-card"/g)||[]).length;
  assert.ok(count>=minimum,`${file} must show at least ${minimum} cards; actual=${count}`);
@@ -48,4 +61,4 @@ const en={
  analyses:collectionContract('apps/portal/en/analyses/index.html',{minimum:3,prefix:'/en/analyses/'}),
  commentary:collectionContract('apps/portal/en/commentary/index.html',{minimum:3,prefix:'/en/commentary/'})
 };
-console.log(JSON.stringify({ok:true,liveNewsSources:true,visibleNews:100,collections:{hr,en},newImageLedArticles:5,sitemap:true,growingCollections:true},null,2));
+console.log(JSON.stringify({ok:true,liveNewsSources:true,visibleNews:100,collections:{hr,en},newImageLedArticles:5,sitemap:true,growingCollections:true,publicationAwareSitemapContract:true},null,2));
