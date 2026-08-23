@@ -13,12 +13,13 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parents[1]
 PORTAL = ROOT / "apps" / "portal"
 REGISTRY = PORTAL / "data" / "editorial-registry.json"
+SUPPLEMENT = PORTAL / "data" / "editorial-registry-supplement.json"
 SITEMAP = PORTAL / "editorial-sitemap.xml"
 SITEMAP_INDEX = PORTAL / "sitemap-index.xml"
 ORIGIN = "https://gnk-asg.hr"
 NS = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
 EDITORIAL_PREFIXES = (
-    "/objave/", "/komentari/", "/analize/", "/gnk-aktual/kolumne/",
+    "/aktual/", "/objave/", "/komentari/", "/analize/", "/gnk-aktual/kolumne/",
     "/en/publications/", "/en/commentary/", "/en/analyses/", "/en/objave/",
 )
 
@@ -63,10 +64,25 @@ def route_file(route: str) -> Path:
     return PORTAL / route.strip("/") / "index.html"
 
 
+def merged_registry_items() -> tuple[list[dict[str, object]], int]:
+    registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
+    items = list(registry.get("items", []))
+    known = {str(item.get("path", "")) for item in items if item.get("path")}
+    supplemented = 0
+    if SUPPLEMENT.is_file():
+        supplement = json.loads(SUPPLEMENT.read_text(encoding="utf-8"))
+        for item in supplement.get("items", []):
+            route = str(item.get("path", ""))
+            if route and route not in known:
+                items.append(item)
+                known.add(route)
+                supplemented += 1
+    return items, supplemented
+
+
 def main() -> int:
     now = instant(os.environ.get("PUBLICATION_NOW")) or datetime.now(timezone.utc)
-    registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
-    items = registry.get("items", [])
+    items, supplemented = merged_registry_items()
     errors: list[str] = []
     warnings: list[str] = []
     published: dict[str, dict[str, object]] = {}
@@ -135,10 +151,14 @@ def main() -> int:
         errors.append(f"Sitemap-index editorial lastmod {index_lastmod!r} != corpus lastmod {corpus_date!r}")
 
     evidence = {
-        "version": "GNK_ASG_PUBLICATION_SITEMAP_REGISTRY_GATE_V3",
-        "canonicalAuthority": "apps/portal/data/editorial-registry.json",
+        "version": "GNK_ASG_PUBLICATION_SITEMAP_REGISTRY_GATE_V4",
+        "canonicalAuthority": [
+            "apps/portal/data/editorial-registry.json",
+            "apps/portal/data/editorial-registry-supplement.json",
+        ],
         "now": now.isoformat(),
         "registryItems": len(items),
+        "supplementedUniqueRoutes": supplemented,
         "publishedRoutes": len(published),
         "scheduledOrHeldRoutes": len(scheduled),
         "editorialSitemapUrls": len(rows),
