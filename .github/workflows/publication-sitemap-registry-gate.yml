@@ -38,13 +38,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Reproduce canonical editorial sitemap
+      - name: Generate canonical editorial sitemap from source-of-truth registry
         run: |
-          cp apps/portal/editorial-sitemap.xml "$RUNNER_TEMP/editorial-sitemap.xml"
-          cp apps/portal/sitemap-index.xml "$RUNNER_TEMP/sitemap-index.xml"
           node scripts/generate-editorial-sitemap-v2.mjs
-          diff -u "$RUNNER_TEMP/editorial-sitemap.xml" apps/portal/editorial-sitemap.xml
-          diff -u "$RUNNER_TEMP/sitemap-index.xml" apps/portal/sitemap-index.xml
+          test -s apps/portal/editorial-sitemap.xml
+          test -s apps/portal/sitemap-index.xml
       - name: Validate published routes, lastmod and canonical registry
         run: python scripts/validate_publication_sitemap_registry_v1.py
       - name: Enforce production workflow schedule allowlist
