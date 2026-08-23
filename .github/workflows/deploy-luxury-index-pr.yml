@@ -33,23 +33,24 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          node --check apps/portal/assets/public-menu-v18.js
-          node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
-          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          node --check apps/portal/assets/public-unified-menu-v6.js
+          node --check workers/gnk-asg-direct-operator/src/index-digital-workforce-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
           node --check workers/gnk-asg-direct-operator/src/campaign-mailer-shell-v2.js
           node --check workers/gnk-asg-direct-operator/src/campaign-mailer-v2.js
           node scripts/validate-minimum-index-contact-admin.mjs
           node scripts/verify-public-redesign-contract.mjs
-          grep -q 'main = "src/index-unified-auth-v14.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'main = "src/index-digital-workforce-v1.js"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'main = "src/index-final-admin-gateway-v2.js"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
+          grep -q "from './index-unified-auth-v23.js'" workers/gnk-asg-direct-operator/src/index-digital-workforce-v1.js
           grep -q "export { default } from './index-final-admin-gateway-v2.js';" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
 
       - name: Validate active Worker import graph
         run: node scripts/validate-worker-import-graph.mjs
 
-      - name: Confirm deployment ownership
+      - name: Confirm validation ownership
         run: |
           echo 'Validation passed. This workflow performs no deployment and no email submission.'
-          echo 'Review configuration uses unified auth v14; canonical runtime validation remains gateway v2.'
+          echo 'Review configuration validates the Digital Workforce wrapper over unified auth v23; canonical runtime validation remains gateway v2.'
