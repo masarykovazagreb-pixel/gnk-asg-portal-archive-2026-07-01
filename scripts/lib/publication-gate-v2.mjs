@@ -6,7 +6,7 @@ export function publicationInstant(item) {
 }
 
 function forcedPublicationCutoff() {
-  const raw = process.env.FORCE_PUBLISH_THROUGH || '2026-10-01';
+  const raw = String(process.env.FORCE_PUBLISH_THROUGH || '').trim();
   if (!raw) return null;
   const value = new Date(`${raw}T23:59:59.999+02:00`);
   return Number.isNaN(value.getTime()) ? null : value;
