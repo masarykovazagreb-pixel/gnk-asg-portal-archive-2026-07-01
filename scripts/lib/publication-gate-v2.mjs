@@ -6,7 +6,7 @@ export function publicationInstant(item) {
 }
 
 function forcedPublicationCutoff() {
-  const raw = process.env.FORCE_PUBLISH_THROUGH || '2026-10-01';
+  const raw = process.env.FORCE_PUBLISH_THROUGH || '';
   if (!raw) return null;
   const value = new Date(`${raw}T23:59:59.999+02:00`);
   return Number.isNaN(value.getTime()) ? null : value;
@@ -17,8 +17,14 @@ export function publicationState(item, now = new Date()) {
   if (['draft', 'held', 'hold', 'blocked', 'cancelled'].includes(explicit)) return explicit;
   const instant = publicationInstant(item);
   const cutoff = forcedPublicationCutoff();
-  if (instant && cutoff && instant.getTime() <= cutoff.getTime()) return 'published';
-  if (instant && instant.getTime() > now.getTime()) return 'scheduled';
+
+  // Future-dated content stays scheduled by default. A forced cutoff is an
+  // explicit operator-controlled exception, never an implicit production default.
+  if (instant && instant.getTime() > now.getTime()) {
+    if (cutoff && instant.getTime() <= cutoff.getTime()) return 'published';
+    return 'scheduled';
+  }
+
   if (explicit === 'scheduled') return instant && instant.getTime() <= now.getTime() ? 'published' : 'scheduled';
   return 'published';
 }
