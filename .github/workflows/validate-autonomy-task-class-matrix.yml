@@ -1,0 +1,24 @@
+name: Validate Autonomy Task-Class Matrix
+
+on:
+  pull_request:
+    paths:
+      - 'ops/autonomy/task-class-matrix-v1.json'
+      - 'scripts/validate-autonomy-task-class-matrix-v1.mjs'
+      - '.github/workflows/validate-autonomy-task-class-matrix.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate autonomy governance and 99/1 claim gate
+        run: node scripts/validate-autonomy-task-class-matrix-v1.mjs
