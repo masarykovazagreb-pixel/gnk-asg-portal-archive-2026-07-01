@@ -1,10 +1,20 @@
 import assert from 'node:assert/strict';
-import app from '../src/index-unified-auth-v14.js';
 
 const origin='https://gnk-asg.hr';
+const testBase=String(process.env.TEST_BASE_URL||'').trim();
+const app=testBase?null:(await import('../src/index-unified-auth-v14.js')).default;
 const token='review-test-token-not-a-secret';
 const env={OPERATOR_TOKEN:token};
 const ctx={waitUntil(){}};
+
+async function invoke(request){
+  if(!testBase)return app.fetch(request,env,ctx);
+  const sourceUrl=new URL(request.url);
+  const targetUrl=new URL(sourceUrl.pathname+sourceUrl.search,testBase);
+  const init={method:request.method,headers:new Headers(request.headers),redirect:'manual'};
+  if(request.method!=='GET'&&request.method!=='HEAD')init.body=await request.clone().arrayBuffer();
+  return fetch(targetUrl,init);
+}
 
 async function readJson(response){return JSON.parse(await response.text());}
 
@@ -13,7 +23,7 @@ for(const route of [
   '/deployment/','/mobile-admin/','/seo/','/design-review/','/language-review/',
   '/strategy-performance/','/entities/','/media-registration-admin/'
 ]){
-  const response=await app.fetch(new Request(`${origin}${route}`),env,ctx);
+  const response=await invoke(new Request(`${origin}${route}`));
   assert.equal(response.status,401,`${route} must require authentication`);
   assert.match(response.headers.get('cache-control')||'',/no-store/i);
   const body=await response.text();
@@ -27,20 +37,20 @@ for(const route of [
   '/api/entities/status','/api/mission-control/status','/api/media-registration-admin/applications',
   '/api/media-registration-admin/application?mailCode=GNK-MEDIA-20260704-XX-OPENABC-001'
 ]){
-  const response=await app.fetch(new Request(`${origin}${route}`),env,ctx);
+  const response=await invoke(new Request(`${origin}${route}`));
   assert.equal(response.status,401,`${route} must return API 401`);
   const payload=await readJson(response);
   assert.equal(payload.error,'unauthorized');
 }
 
-const publicApplication=await app.fetch(new Request(`${origin}/media-application/?lang=en`),env,ctx);
+const publicApplication=await invoke(new Request(`${origin}/media-application/?lang=en`));
 assert.notEqual(publicApplication.status,401,'public media application must not require admin authentication');
 
-const loginResponse=await app.fetch(new Request(`${origin}/api/operator-session/login`,{
+const loginResponse=await invoke(new Request(`${origin}/api/operator-session/login`,{
   method:'POST',
   headers:{'content-type':'application/json'},
   body:JSON.stringify({token})
-}),env,ctx);
+}));
 assert.equal(loginResponse.status,200);
 const loginPayload=await readJson(loginResponse.clone());
 assert.equal(loginPayload.authenticated,true);
@@ -53,31 +63,31 @@ assert.match(setCookie,/SameSite=Strict/i);
 assert.match(setCookie,/Max-Age=43200/i);
 
 const cookiePair=setCookie.split(';')[0];
-const sessionCheck=await app.fetch(new Request(`${origin}/api/operator-auth-check`,{
+const sessionCheck=await invoke(new Request(`${origin}/api/operator-auth-check`,{
   headers:{cookie:cookiePair}
-}),env,ctx);
+}));
 assert.equal(sessionCheck.status,200);
 const sessionPayload=await readJson(sessionCheck);
 assert.equal(sessionPayload.authenticated,true);
 assert.equal(sessionPayload.mode,'session');
 
-const bearerCheck=await app.fetch(new Request(`${origin}/api/operator-auth-check`,{
+const bearerCheck=await invoke(new Request(`${origin}/api/operator-auth-check`,{
   headers:{authorization:`Bearer ${token}`}
-}),env,ctx);
+}));
 assert.equal(bearerCheck.status,200);
 assert.match(bearerCheck.headers.get('set-cookie')||'',/gnk_asg_admin_session=/);
 
-const invalidCheck=await app.fetch(new Request(`${origin}/api/operator-auth-check`,{
+const invalidCheck=await invoke(new Request(`${origin}/api/operator-auth-check`,{
   headers:{authorization:'Bearer wrong-token'}
-}),env,ctx);
+}));
 assert.equal(invalidCheck.status,401);
 
-const redirectResponse=await app.fetch(new Request(`${origin}/admin-login/?next=${encodeURIComponent('//evil.example/')}`,{
+const redirectResponse=await invoke(new Request(`${origin}/admin-login/?next=${encodeURIComponent('//evil.example/')}`,{
   method:'POST',
   headers:{'content-type':'application/x-www-form-urlencoded'},
   body:new URLSearchParams({token})
-}),env,ctx);
+}));
 assert.equal(redirectResponse.status,303);
 assert.equal(redirectResponse.headers.get('location'),'/admin-center/');
 
-console.log('UNIFIED_AUTH_ENTERPRISE_SCOPE_OK');
+console.log(`UNIFIED_AUTH_ENTERPRISE_SCOPE_OK:${testBase?'workerd-http':'direct-module'}`);
