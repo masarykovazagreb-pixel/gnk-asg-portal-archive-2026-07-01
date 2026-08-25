@@ -35,6 +35,8 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
+          cache: npm
+          cache-dependency-path: workers/gnk-asg-direct-operator/package-lock.json
       - name: Check JavaScript syntax
         run: |
           set -euxo pipefail
@@ -46,8 +48,32 @@ jobs:
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
-      - name: Test public and protected route separation
-        run: node workers/gnk-asg-direct-operator/test/unified-auth-enterprise-scope.test.mjs
+      - name: Test public and protected route separation in workerd
+        run: |
+          set -euxo pipefail
+          cd workers/gnk-asg-direct-operator
+          npm ci --ignore-scripts
+          cat > wrangler.auth-test.toml <<'EOF'
+          name = "gnk-asg-auth-ci"
+          main = "src/index-unified-auth-v14.js"
+          compatibility_date = "2026-06-13"
+          [vars]
+          OPERATOR_TOKEN = "review-test-token-not-a-secret"
+          EOF
+          npx wrangler dev --config wrangler.auth-test.toml --port 8787 --local > /tmp/gnk-auth-workerd.log 2>&1 &
+          WORKER_PID=$!
+          trap 'kill "$WORKER_PID" 2>/dev/null || true; cat /tmp/gnk-auth-workerd.log || true' EXIT
+          ready=0
+          for attempt in $(seq 1 30); do
+            status=$(curl -sS -o /dev/null -w '%{http_code}' http://127.0.0.1:8787/enterprise/ || true)
+            if [ "$status" = "401" ]; then ready=1; break; fi
+            sleep 1
+          done
+          if [ "$ready" != "1" ]; then
+            echo 'workerd auth test runtime did not become ready' >&2
+            exit 1
+          fi
+          TEST_BASE_URL=http://127.0.0.1:8787 node test/unified-auth-enterprise-scope.test.mjs
       - name: Verify public registration is preserved
         run: |
           set -euxo pipefail
