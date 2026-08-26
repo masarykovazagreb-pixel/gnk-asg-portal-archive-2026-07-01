@@ -26,6 +26,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -37,6 +38,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          expected_base="$(git rev-parse HEAD)"
           git config user.name "gnk-weather-bot"
           git config user.email "actions@github.com"
           git add apps/portal/data/weather-zagreb.json apps/portal/data/freshness-status.json
@@ -45,13 +47,15 @@ jobs:
             exit 0
           fi
           git commit -m "Weather: refresh Zagreb data"
-          for attempt in 1 2 3 4 5; do
-            if git push origin HEAD:main; then
-              break
-            fi
-            echo "Push odbijen (pokusaj $attempt) - main se pomaknuo, radim fetch+rebase."
-            git fetch origin main
-            git rebase origin/main || { echo "Rebase konflikt."; exit 1; }
-            sleep $((attempt * 5))
-            if [ "$attempt" = "5" ]; then echo "Push nije uspio nakon 5 pokusaja."; exit 1; fi
-          done
+
+          # Exact-SHA writer fence: weather output belongs to the main snapshot
+          # it was generated from. Never rebase generated state onto newer main.
+          git fetch origin main
+          current_main="$(git rev-parse origin/main)"
+          if [ "$current_main" != "$expected_base" ]; then
+            echo "Main moved during weather refresh: expected $expected_base, found $current_main. Deferring without rebase/push."
+            exit 75
+          fi
+
+          # Normal non-force push is the final compare-and-swap guard.
+          git push origin HEAD:main
