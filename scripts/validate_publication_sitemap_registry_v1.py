@@ -21,6 +21,13 @@ EDITORIAL_PREFIXES = (
     "/objave/", "/komentari/", "/analize/", "/gnk-aktual/kolumne/",
     "/en/publications/", "/en/commentary/", "/en/analyses/", "/en/objave/",
 )
+# Deliberately narrow exception: the locked 504M master is a full canonical
+# editorial page historically published under /aktual/. Do not broaden this to
+# /aktual/ generally, because the rest of that namespace is not canonical
+# editorial inventory.
+EDITORIAL_EXACT_ROUTES = {
+    "/aktual/gnk-asg-504-milijuna-eura-prihoda/",
+}
 
 
 class HeadParser(HTMLParser):
@@ -63,6 +70,10 @@ def route_file(route: str) -> Path:
     return PORTAL / route.strip("/") / "index.html"
 
 
+def supported_editorial_route(route: str) -> bool:
+    return route.startswith(EDITORIAL_PREFIXES) or route in EDITORIAL_EXACT_ROUTES
+
+
 def main() -> int:
     now = instant(os.environ.get("PUBLICATION_NOW")) or datetime.now(timezone.utc)
     registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
@@ -74,7 +85,7 @@ def main() -> int:
 
     for item in items:
         route = str(item.get("path", ""))
-        if not route.startswith(EDITORIAL_PREFIXES):
+        if not supported_editorial_route(route):
             errors.append(f"Registry route is outside the supported HR/EN editorial routes: {route!r}")
             continue
         item_state = state(item, now)
