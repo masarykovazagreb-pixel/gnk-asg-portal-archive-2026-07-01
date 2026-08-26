@@ -1,7 +1,7 @@
 {
   "ok": true,
   "status": "refreshed",
-  "updated_at": "2026-08-26T16:02:58+02:00",
+  "updated_at": "2026-08-26T21:18:14+02:00",
   "engine": "single_publication_engine_v14_github_actions",
   "cadence": "six times daily at 01:12, 05:12, 09:12, 13:12, 17:12 and 21:12 UTC; watchdog recovery if stale",
   "timezone": "Europe/Zagreb",
@@ -43,7 +43,7 @@
     {
       "source": "MarketWatch",
       "ok": true,
-      "items": 10,
+      "items": 2,
       "error": null
     },
     {
@@ -61,7 +61,7 @@
     {
       "source": "The Independent Business",
       "ok": true,
-      "items": 12,
+      "items": 9,
       "error": null
     },
     {
@@ -103,19 +103,19 @@
     {
       "source": "Ars Technica",
       "ok": true,
-      "items": 11,
+      "items": 12,
       "error": null
     },
     {
       "source": "Engadget",
       "ok": true,
-      "items": 11,
+      "items": 10,
       "error": null
     },
     {
       "source": "BBC Technology",
       "ok": true,
-      "items": 15,
+      "items": 16,
       "error": null
     },
     {
@@ -151,14 +151,14 @@
     {
       "source": "Decrypt",
       "ok": true,
-      "items": 36,
+      "items": 37,
       "error": null
     },
     {
       "source": "The Block",
-      "ok": true,
-      "items": 19,
-      "error": null
+      "ok": false,
+      "items": 0,
+      "error": "This operation was aborted"
     },
     {
       "source": "Bitcoin Magazine",
@@ -211,7 +211,7 @@
     {
       "source": "Channel News Asia",
       "ok": true,
-      "items": 5,
+      "items": 3,
       "error": null
     },
     {
@@ -277,7 +277,7 @@
     {
       "source": "The New York Times World",
       "ok": true,
-      "items": 52,
+      "items": 49,
       "error": null
     },
     {
@@ -319,13 +319,13 @@
     {
       "source": "Poslovni dnevnik",
       "ok": true,
-      "items": 16,
+      "items": 17,
       "error": null
     },
     {
       "source": "tportal",
       "ok": true,
-      "items": 18,
+      "items": 19,
       "error": null
     },
     {
@@ -342,9 +342,9 @@
     },
     {
       "source": "Netokracija",
-      "ok": true,
-      "items": 10,
-      "error": null
+      "ok": false,
+      "items": 0,
+      "error": "fetch failed"
     },
     {
       "source": "NASA Breaking News",
@@ -403,13 +403,13 @@
     {
       "source": "The Guardian Culture",
       "ok": true,
-      "items": 26,
+      "items": 25,
       "error": null
     },
     {
       "source": "The New York Times Arts",
       "ok": true,
-      "items": 41,
+      "items": 42,
       "error": null
     },
     {
@@ -445,7 +445,7 @@
     {
       "source": "BBC Nature",
       "ok": true,
-      "items": 37,
+      "items": 35,
       "error": null
     },
     {
@@ -475,7 +475,7 @@
     {
       "source": "The Guardian Sport",
       "ok": true,
-      "items": 25,
+      "items": 23,
       "error": null
     },
     {
