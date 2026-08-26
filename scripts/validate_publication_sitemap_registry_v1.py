@@ -28,6 +28,12 @@ EDITORIAL_PREFIXES = (
 EDITORIAL_EXACT_ROUTES = {
     "/aktual/gnk-asg-504-milijuna-eura-prihoda/",
 }
+# The locked 504M master predates the no-www canonical normalization. Preserve
+# its body/design/approved page while validating its historical canonical host
+# explicitly; all standard editorial routes must use ORIGIN.
+CANONICAL_ROUTE_OVERRIDES = {
+    "/aktual/gnk-asg-504-milijuna-eura-prihoda/": "https://www.gnk-asg.hr/aktual/gnk-asg-504-milijuna-eura-prihoda/",
+}
 
 
 class HeadParser(HTMLParser):
@@ -72,6 +78,10 @@ def route_file(route: str) -> Path:
 
 def supported_editorial_route(route: str) -> bool:
     return route.startswith(EDITORIAL_PREFIXES) or route in EDITORIAL_EXACT_ROUTES
+
+
+def expected_canonical(route: str) -> str:
+    return CANONICAL_ROUTE_OVERRIDES.get(route, ORIGIN + route)
 
 
 def main() -> int:
@@ -119,15 +129,16 @@ def main() -> int:
             continue
         parser = HeadParser()
         parser.feed(page.read_text(encoding="utf-8", errors="replace"))
-        expected = ORIGIN + route
+        expected = expected_canonical(route)
         if parser.canonicals != [expected]:
             errors.append(f"Canonical mismatch for {route}: {parser.canonicals or 'missing'}")
         stamp = instant(item.get("publishedAt") or item.get("datePublished"))
-        lastmod = instant(rows.get(expected))
-        if not rows.get(expected):
+        sitemap_url = ORIGIN + route
+        lastmod = instant(rows.get(sitemap_url))
+        if not rows.get(sitemap_url):
             continue
         if not lastmod:
-            errors.append(f"Invalid editorial sitemap lastmod for {route}: {rows.get(expected)!r}")
+            errors.append(f"Invalid editorial sitemap lastmod for {route}: {rows.get(sitemap_url)!r}")
         elif stamp and lastmod.date() < stamp.date():
             errors.append(f"Stale editorial sitemap lastmod for {route}")
 
