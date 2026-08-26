@@ -26,6 +26,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -34,6 +35,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          echo "base_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           node scripts/content-queue-publish-v1.mjs | tee /tmp/queue-out.txt
           if grep -Eq '"changed": ?true' /tmp/queue-out.txt; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -44,23 +46,32 @@ jobs:
         if: steps.pub.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
+          EXPECTED_BASE_SHA: ${{ steps.pub.outputs.base_sha }}
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "gnk-content-queue-bot"
           git config user.email "actions@github.com"
           git add apps/portal
+          if git diff --cached --quiet; then
+            echo "Generator reported changed=true but there is no staged diff; nothing to publish."
+            exit 0
+          fi
           git commit -m "Content queue: publish scheduled calendar items"
-          for attempt in 1 2 3 4 5; do
-            if git push origin HEAD:main; then
-              break
-            fi
-            echo "Push odbijen (pokusaj $attempt) - main se pomaknuo, radim fetch+rebase."
-            git fetch origin main
-            git rebase origin/main || { echo "Rebase konflikt."; exit 1; }
-            sleep $((attempt * 5))
-            if [ "$attempt" = "5" ]; then echo "Push nije uspio nakon 5 pokusaja."; exit 1; fi
-          done
+
+          # Operational Single-Writer / Exact-SHA fence:
+          # never rebase a generated mutation onto a moving main. If another
+          # writer moved main after generation started, defer to the next run.
+          git fetch origin main
+          current_main="$(git rev-parse origin/main)"
+          if [ "$current_main" != "$EXPECTED_BASE_SHA" ]; then
+            echo "Main moved during this run: expected $EXPECTED_BASE_SHA, found $current_main. Deferring without rebase/push."
+            exit 75
+          fi
+
+          # Normal non-force push is the final compare-and-swap guard: if main
+          # moves after the check, Git rejects the non-fast-forward update.
+          git push origin HEAD:main
           sha="$(git rev-parse HEAD)"
           gh workflow run deploy-admin-auth-v6.yml \
             --repo "$GITHUB_REPOSITORY" \
