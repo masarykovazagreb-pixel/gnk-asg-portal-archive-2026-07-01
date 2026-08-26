@@ -25,6 +25,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -63,6 +64,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          expected_base="$(git rev-parse HEAD)"
           git config user.name "gnk-aeo-bot"
           git config user.email "actions@github.com"
           git add apps/portal
@@ -71,16 +73,19 @@ jobs:
             exit 0
           fi
           git commit -m "AEO+Entity: refresh visibility artefacts"
-          for attempt in 1 2 3 4 5; do
-            if git push origin HEAD:main; then
-              break
-            fi
-            echo "Push odbijen (pokusaj $attempt) - main se pomaknuo, radim fetch+rebase."
-            git fetch origin main
-            git rebase origin/main || { echo "Rebase konflikt."; exit 1; }
-            sleep $((attempt * 5))
-            if [ "$attempt" = "5" ]; then echo "Push nije uspio nakon 5 pokusaja."; exit 1; fi
-          done
+
+          # Exact-SHA writer fence: SEO/AEO output is generated from one main
+          # snapshot and must never be silently rebased onto a newer snapshot.
+          git fetch origin main
+          current_main="$(git rev-parse origin/main)"
+          if [ "$current_main" != "$expected_base" ]; then
+            echo "Main moved during AEO generation: expected $expected_base, found $current_main. Deferring without rebase/push/deploy."
+            exit 75
+          fi
+
+          # Final compare-and-swap guard. If main moves after the check, the
+          # ordinary non-force push is rejected by GitHub.
+          git push origin HEAD:main
           sha="$(git rev-parse HEAD)"
           gh workflow run deploy-admin-auth-v6.yml \
             --repo "${GITHUB_REPOSITORY}" \
