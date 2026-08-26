@@ -80,8 +80,8 @@ jobs:
           grep -q "const REGISTRATION_URL='https://www.gnk-asg.hr/media-application/?lang=en'" workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js
           grep -q "const PUBLIC_UI=" workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
           grep -q "'/media-application'" workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
-          grep -q 'First, register your newsroom' apps/portal/media-application/index.html
-          grep -q 'Create access or continue your application' apps/portal/media-application/index.html
+          grep -q 'Newsroom registration and secure access' apps/portal/media-application/index.html
+          grep -q 'SIGN IN AND CONTINUE' apps/portal/media-application/index.html
       - name: Verify protected review data model
         run: |
           set -euxo pipefail
