@@ -6,7 +6,10 @@ export function publicationInstant(item) {
 }
 
 function forcedPublicationCutoff() {
-  const raw = process.env.FORCE_PUBLISH_THROUGH || '2026-10-01';
+  // Force-publish is an explicit emergency/operator override only. Without an
+  // environment value, future-dated content must remain scheduled and must not
+  // leak into published registries, sitemaps or distribution feeds.
+  const raw = process.env.FORCE_PUBLISH_THROUGH || '';
   if (!raw) return null;
   const value = new Date(`${raw}T23:59:59.999+02:00`);
   return Number.isNaN(value.getTime()) ? null : value;

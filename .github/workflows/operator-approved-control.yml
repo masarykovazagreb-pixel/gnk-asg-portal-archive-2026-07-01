@@ -16,6 +16,7 @@ concurrency:
 
 jobs:
   execute-approved-control:
+    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
@@ -76,7 +77,6 @@ jobs:
               raise SystemExit(f'expected exactly 3 old social/schema image references, found {s.count(old_image)}')
           s=s.replace(old_image,req['image'])
           base='https://www.gnk-asg.hr/aktual/gnk-asg-504-milijuna-eura-prihoda'
-          # Only metadata/schema occurrences in <head>; never touch the approved article body.
           head, bodytail=s.split('<body',1)
           head=head.replace(f'href="{base}"',f'href="{req["canonical"]}"')
           head=head.replace(f'content="{base}"',f'content="{req["canonical"]}"')
@@ -99,11 +99,19 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          expected_base="$(git rev-parse HEAD)"
           git config user.name 'gnk-asg-operator'
           git config user.email 'operator@users.noreply.github.com'
           git add apps/portal/aktual/gnk-asg-504-milijuna-eura-prihoda/index.html
           git diff --cached --quiet && { echo 'No patch produced'; exit 1; }
           git commit -m 'fix(aktual): repair 504M social preview metadata'
+
+          git fetch origin main
+          current_main="$(git rev-parse origin/main)"
+          if [ "$current_main" != "$expected_base" ]; then
+            echo "Main moved during approved control: expected $expected_base, found $current_main. Deferring without rebase/push/deploy."
+            exit 75
+          fi
           git push origin HEAD:main
           sha=$(git rev-parse HEAD)
           echo "sha=$sha" >> "$GITHUB_OUTPUT"

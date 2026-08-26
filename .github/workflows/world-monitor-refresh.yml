@@ -21,6 +21,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -30,6 +31,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          expected_base="$(git rev-parse HEAD)"
           git config user.name "gnk-worldmonitor-bot"
           git config user.email "actions@github.com"
           git add apps/portal/data/world-monitor.json
@@ -38,12 +40,15 @@ jobs:
             exit 0
           fi
           git commit -m "World Monitor: refresh data (free sources)"
-          for attempt in 1 2 3 4 5; do
-            if git push origin HEAD:main; then
-              exit 0
-            fi
-            git fetch origin main
-            git rebase origin/main || { echo "Rebase konflikt."; exit 1; }
-            sleep $((attempt * 5))
-          done
-          exit 1
+
+          # Exact-SHA writer fence: never rebase generated intelligence state
+          # onto a main revision different from the snapshot used to compute it.
+          git fetch origin main
+          current_main="$(git rev-parse origin/main)"
+          if [ "$current_main" != "$expected_base" ]; then
+            echo "Main moved during World Monitor refresh: expected $expected_base, found $current_main. Deferring without rebase/push."
+            exit 75
+          fi
+
+          # Final compare-and-swap guard via ordinary non-force push.
+          git push origin HEAD:main

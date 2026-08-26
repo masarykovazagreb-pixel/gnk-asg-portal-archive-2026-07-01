@@ -15,6 +15,7 @@ concurrency:
 
 jobs:
   register:
+    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 6
     steps:
@@ -75,9 +76,17 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          expected_base="$(git rev-parse HEAD)"
           git config user.name 'gnk-asg-operator'
           git config user.email 'operator@users.noreply.github.com'
           git add apps/portal/data/editorial-registry.json
           git diff --cached --quiet && exit 0
           git commit -m 'content: register approved 504M satire for Monday distribution'
+
+          git fetch origin main
+          current_main="$(git rev-parse origin/main)"
+          if [ "$current_main" != "$expected_base" ]; then
+            echo "Main moved during 504M registration: expected $expected_base, found $current_main. Deferring without rebase/push."
+            exit 75
+          fi
           git push origin HEAD:main
