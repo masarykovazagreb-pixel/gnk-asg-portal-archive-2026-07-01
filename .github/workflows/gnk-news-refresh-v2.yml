@@ -28,6 +28,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -79,6 +82,7 @@ jobs:
         if: steps.control.outputs.should_run == 'true'
         run: |
           set -euo pipefail
+          expected_base="$(git rev-parse HEAD)"
           git config user.name "gnk-news-bot"
           git config user.email "actions@github.com"
           git add \
@@ -91,10 +95,18 @@ jobs:
             echo "No news data changes to commit."
           else
             git commit -m "Refresh GNK ASG news feed"
-            for i in 1 2 3; do
-              if git push; then break; fi
-              echo "Push rejected (main moved) - rebase retry $i"
-              git pull --rebase origin main
-              sleep $((i*5))
-            done
+
+            # Operational Single-Writer / Exact-SHA fence. Generated state is
+            # valid only against the main snapshot on which it was computed.
+            # If main moved, defer instead of rebasing generated output.
+            git fetch origin main
+            current_main="$(git rev-parse origin/main)"
+            if [ "$current_main" != "$expected_base" ]; then
+              echo "Main moved during news generation: expected $expected_base, found $current_main. Deferring without rebase/push."
+              exit 75
+            fi
+
+            # Final compare-and-swap guard: a normal non-force push is rejected
+            # if another writer moves main after the check above.
+            git push origin HEAD:main
           fi
