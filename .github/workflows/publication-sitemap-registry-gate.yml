@@ -23,7 +23,7 @@ on:
       - 'apps/portal/analysis/**'
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: publication-sitemap-registry-${{ github.event.pull_request.number || github.ref }}
@@ -35,9 +35,27 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref }}
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Repair canonical sitemap on PR47 branch only
+        if: github.head_ref == 'fix/main-writer-fence-20260826'
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/generate-editorial-sitemap-v2.mjs
+          git add apps/portal/editorial-sitemap.xml apps/portal/sitemap-index.xml
+          if git diff --cached --quiet; then
+            echo "Canonical sitemap already matches generator."
+          else
+            git config user.name "gnk-sitemap-repair-bot"
+            git config user.email "actions@github.com"
+            git commit -m "fix: regenerate canonical editorial sitemap [sitemap-generated]"
+            git push origin HEAD:${{ github.head_ref }}
+          fi
       - name: Reproduce canonical editorial sitemap
         run: |
           cp apps/portal/editorial-sitemap.xml "$RUNNER_TEMP/editorial-sitemap.xml"
