@@ -121,7 +121,7 @@ jobs:
           grep -q 'mediaPortal' apps/portal/assets/admin-media-applications-entry-v1.js
           grep -q 'mediaApplications' apps/portal/assets/admin-media-applications-entry-v1.js
           grep -q "'/media-registration-admin/'" workers/gnk-asg-direct-operator/test/unified-auth-enterprise-scope.test.mjs
-          grep -q "'/media-application/'" workers/gnk-asg-direct-operator/test/unified-auth-enterprise-scope.test.mjs
+          grep -q "origin}/media-application/?lang=en" workers/gnk-asg-direct-operator/test/unified-auth-enterprise-scope.test.mjs
       - name: Preserve review-only execution
         run: |
           set -euxo pipefail
