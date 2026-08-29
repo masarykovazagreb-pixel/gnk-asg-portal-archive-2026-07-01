@@ -24,7 +24,25 @@ assert.match(reviewMain,/^src\/[A-Za-z0-9._-]+\.js$/,'Review Wrangler mora dekla
 const reviewSource=await read(`workers/gnk-asg-direct-operator/${reviewMain}`);
 const baseAuthName=String(reviewSource.match(/from '\.\/(index-unified-auth-v\d+\.js)'/)?.[1]||'').trim();
 assert.ok(baseAuthName,'Aktivni review entrypoint mora omotavati versioned unified-auth runtime.');
-const activeAuth=await read(`workers/gnk-asg-direct-operator/src/${baseAuthName}`);
+
+async function loadUnifiedAuthChain(firstName){
+  const seen=new Set();
+  const chain=[];
+  let name=firstName;
+  for(let depth=0;name&&depth<64;depth++){
+    assert.ok(!seen.has(name),`Unified-auth import chain ne smije imati ciklus: ${name}`);
+    seen.add(name);
+    const source=await read(`workers/gnk-asg-direct-operator/src/${name}`);
+    chain.push({name,source});
+    name=String(source.match(/from '\.\/(index-unified-auth-v\d+\.js)'/)?.[1]||'').trim();
+  }
+  assert.ok(chain.length>0,'Unified-auth chain mora sadržavati barem jedan runtime.');
+  assert.ok(chain.length<64,'Unified-auth chain je neočekivano dubok; provjeri import graph.');
+  return chain;
+}
+
+const authChain=await loadUnifiedAuthChain(baseAuthName);
+const activeAuth=authChain.map(entry=>entry.source).join('\n');
 
 for(const [name,html] of [['HR index',indexHr],['EN index',indexEn]]){
   assert.ok(html.length>500,`${name} mora postojati i imati sadržaj.`);
@@ -43,10 +61,10 @@ assert.ok(publicShell.includes("'/media-application'"),'Media Application mora b
 assert.ok(publicShell.includes('if(isPrivatePath(normalized))return html;'),'Privatne rute moraju se vratiti nepromijenjene.');
 
 assert.ok(reviewSource.includes('x-gnk-active-entrypoint'),'Aktivni review wrapper mora dokazivo stampati svoj entrypoint.');
-assert.ok(activeAuth.includes("from './index-portal-final-v13.js'"),'Aktivni unified-auth mora zadržati stabilni portal runtime.');
-assert.ok(activeAuth.includes('handleEnterpriseProjectApi'),'Aktivni unified-auth mora štititi Enterprise Project API.');
-assert.ok(activeAuth.includes('runEnterpriseProjectCycle'),'Aktivni unified-auth mora pokretati kontrolirani workforce ciklus.');
-assert.ok(activeAuth.includes('automaticPublication:false'),'Review runtime mora zadržati automatsku objavu isključenom.');
+assert.ok(activeAuth.includes("from './index-portal-final-v13.js'"),'Unified-auth chain mora zadržati stabilni portal runtime.');
+assert.ok(activeAuth.includes('handleEnterpriseProjectApi'),'Unified-auth chain mora štititi Enterprise Project API.');
+assert.ok(activeAuth.includes('runEnterpriseProjectCycle'),'Unified-auth chain mora pokretati kontrolirani workforce ciklus.');
+assert.ok(activeAuth.includes('automaticPublication:false'),'Review runtime chain mora zadržati automatsku objavu isključenom.');
 assert.ok(
   gatewayCompat.includes("export { VERSION } from './index-final-admin-gateway-v2.js';")&&
   gatewayCompat.includes("export { default } from './index-final-admin-gateway-v2.js';"),
@@ -61,4 +79,4 @@ assert.ok(wranglerReview.includes('MAIL_MANUAL_LIVE = "false"'),'Stvarno ručno 
 assert.ok(wranglerReview.includes('MEDIA_OUTREACH_LIVE = "false"'),'Media outreach mora ostati isključen u reviewu.');
 assert.ok(wranglerRuntime.includes('main = "src/index-final-admin-gateway-v2.js"'),'Produkcijski runtime manifest mora i dalje pokazivati na canonical gateway v2.');
 
-console.log(`CURRENT INDEX + CONTACT + ADMIN + ACTIVE REVIEW ${reviewMain} -> ${baseAuthName} + CANONICAL V2 COMPATIBILITY: PASS`);
+console.log(`CURRENT INDEX + CONTACT + ADMIN + ACTIVE REVIEW ${reviewMain} -> ${authChain.map(entry=>entry.name).join(' -> ')} + CANONICAL V2 COMPATIBILITY: PASS`);
