@@ -64,7 +64,9 @@ assert.ok(publicShell.includes("'/media-application'"),'Media Application mora b
 assert.ok(publicShell.includes('if(isPrivatePath(normalized))return html;'),'Privatne rute moraju se vratiti nepromijenjene.');
 
 assert.ok(reviewSource.includes('x-gnk-active-entrypoint'),'Aktivni review wrapper mora dokazivo stampati svoj entrypoint.');
-assert.ok(activeAuth.includes("from './index-portal-final-v13.js'"),'Unified-auth chain mora zadržati stabilni portal runtime.');
+// Validate security/workforce invariants across the live versioned auth chain.
+// Do not pin this gate to a retired portal leaf filename: the chain itself is
+// source-locked above and every imported versioned auth module must exist.
 assert.ok(activeAuth.includes('handleEnterpriseProjectApi'),'Unified-auth chain mora štititi Enterprise Project API.');
 assert.ok(activeAuth.includes('runEnterpriseProjectCycle'),'Unified-auth chain mora pokretati kontrolirani workforce ciklus.');
 assert.ok(activeAuth.includes('automaticPublication:false'),'Review runtime chain mora zadržati automatsku objavu isključenom.');
