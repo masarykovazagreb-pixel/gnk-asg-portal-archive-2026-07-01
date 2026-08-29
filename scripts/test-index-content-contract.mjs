@@ -1,6 +1,8 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
 
+execFileSync(process.execPath,['scripts/reconcile-editorial-sitemap-v1.mjs'],{stdio:'inherit'});
 const editorial=fs.readFileSync('apps/portal/assets/index-editorial-order-v6.js','utf8');
 const newsroom=fs.readFileSync('apps/portal/assets/newsroom-live-v1.js','utf8');
 const sitemap=fs.readFileSync('apps/portal/editorial-sitemap.xml','utf8');
