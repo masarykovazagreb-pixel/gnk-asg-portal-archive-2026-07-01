@@ -4,7 +4,7 @@ import {readFile} from 'node:fs/promises';
 const read=path=>readFile(new URL(`../${path}`,import.meta.url),'utf8');
 const [
   indexHr,indexEn,contactHr,contactEn,adminCenter,publicShell,
-  activeAuth,gatewayCompat,gatewayRuntime,campaignShell,wranglerReview,wranglerRuntime
+  gatewayCompat,gatewayRuntime,campaignShell,wranglerReview,wranglerRuntime
 ]=await Promise.all([
   read('apps/portal/index.html'),
   read('apps/portal/en/index.html'),
@@ -12,13 +12,19 @@ const [
   read('apps/portal/en/contact/index.html'),
   read('apps/portal/admin-center/index.html'),
   read('workers/gnk-asg-direct-operator/src/public-shell-v11.js'),
-  read('workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js'),
   read('workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js'),
   read('workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js'),
   read('workers/gnk-asg-direct-operator/src/campaign-mailer-shell-v2.js'),
   read('workers/gnk-asg-direct-operator/wrangler.toml'),
   read('workers/gnk-asg-direct-operator/wrangler.runtime.toml')
 ]);
+
+const reviewMain=String(wranglerReview.match(/^main = "([^"]+)"/m)?.[1]||'').trim();
+assert.match(reviewMain,/^src\/[A-Za-z0-9._-]+\.js$/,'Review Wrangler mora deklarirati postojeći src/*.js entrypoint.');
+const reviewSource=await read(`workers/gnk-asg-direct-operator/${reviewMain}`);
+const baseAuthName=String(reviewSource.match(/from '\.\/(index-unified-auth-v\d+\.js)'/)?.[1]||'').trim();
+assert.ok(baseAuthName,'Aktivni review entrypoint mora omotavati versioned unified-auth runtime.');
+const activeAuth=await read(`workers/gnk-asg-direct-operator/src/${baseAuthName}`);
 
 for(const [name,html] of [['HR index',indexHr],['EN index',indexEn]]){
   assert.ok(html.length>500,`${name} mora postojati i imati sadržaj.`);
@@ -36,9 +42,10 @@ assert.ok(publicShell.includes("'/campaign-mailer'"),'Campaign Mailer mora biti 
 assert.ok(publicShell.includes("'/media-application'"),'Media Application mora biti izoliran od javnog redizajna.');
 assert.ok(publicShell.includes('if(isPrivatePath(normalized))return html;'),'Privatne rute moraju se vratiti nepromijenjene.');
 
-assert.ok(activeAuth.includes("from './index-portal-final-v13.js'"),'Review Worker mora zadržati unified-auth iznad stabilnog portal runtimea.');
-assert.ok(activeAuth.includes('handleEnterpriseProjectApi'),'Unified auth mora štititi Enterprise Project API.');
-assert.ok(activeAuth.includes('runEnterpriseProjectCycle'),'Unified auth mora pokretati kontrolirani workforce ciklus.');
+assert.ok(reviewSource.includes('x-gnk-active-entrypoint'),'Aktivni review wrapper mora dokazivo stampati svoj entrypoint.');
+assert.ok(activeAuth.includes("from './index-portal-final-v13.js'"),'Aktivni unified-auth mora zadržati stabilni portal runtime.');
+assert.ok(activeAuth.includes('handleEnterpriseProjectApi'),'Aktivni unified-auth mora štititi Enterprise Project API.');
+assert.ok(activeAuth.includes('runEnterpriseProjectCycle'),'Aktivni unified-auth mora pokretati kontrolirani workforce ciklus.');
 assert.ok(activeAuth.includes('automaticPublication:false'),'Review runtime mora zadržati automatsku objavu isključenom.');
 assert.ok(
   gatewayCompat.includes("export { VERSION } from './index-final-admin-gateway-v2.js';")&&
@@ -48,10 +55,10 @@ assert.ok(
 assert.ok(gatewayRuntime.includes('campaign-mailer-shell-v2.js'),'Canonical gateway v2 mora zadržati Campaign Mailer shell.');
 assert.ok(gatewayRuntime.includes('campaign-mailer-v2.js'),'Canonical gateway v2 mora zadržati Campaign Mailer sigurnosni kontroler.');
 assert.ok(campaignShell.includes("path==='/campaign-mailer'"),'Campaign Mailer ruta mora ostati registrirana.');
-assert.ok(wranglerReview.includes('main = "src/index-unified-auth-v14.js"'),'Review Wrangler mora koristiti unified-auth v14 kao vanjski sigurnosni sloj.');
+assert.ok(wranglerReview.includes(`main = "${reviewMain}"`),'Review Wrangler i izvedeni aktivni entrypoint moraju biti usklađeni.');
 assert.ok(wranglerReview.includes('PUBLIC_ENVIRONMENT = "review-direct-operator"'),'Review Wrangler mora ostati u izoliranom review okruženju.');
 assert.ok(wranglerReview.includes('MAIL_MANUAL_LIVE = "false"'),'Stvarno ručno slanje mora ostati isključeno u reviewu.');
 assert.ok(wranglerReview.includes('MEDIA_OUTREACH_LIVE = "false"'),'Media outreach mora ostati isključen u reviewu.');
 assert.ok(wranglerRuntime.includes('main = "src/index-final-admin-gateway-v2.js"'),'Produkcijski runtime manifest mora i dalje pokazivati na canonical gateway v2.');
 
-console.log('CURRENT INDEX + CONTACT + ADMIN + UNIFIED REVIEW AUTH + CANONICAL V2 COMPATIBILITY: PASS');
+console.log(`CURRENT INDEX + CONTACT + ADMIN + ACTIVE REVIEW ${reviewMain} -> ${baseAuthName} + CANONICAL V2 COMPATIBILITY: PASS`);
