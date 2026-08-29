@@ -29,11 +29,11 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Validate release source
+      - name: Resolve active review entrypoint
+        id: review_entrypoint
         shell: bash
         run: |
           set -euo pipefail
-          node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
           review_main="$(awk -F '"' '/^main = "/ { print $2; exit }' workers/gnk-asg-direct-operator/wrangler.toml)"
           test -n "$review_main"
           case "$review_main" in
@@ -41,13 +41,37 @@ jobs:
             *) echo "Invalid review Worker entrypoint: $review_main" >&2; exit 1 ;;
           esac
           test -f "workers/gnk-asg-direct-operator/$review_main"
-          node --check "workers/gnk-asg-direct-operator/$review_main"
-          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
-          node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
-          node --check workers/gnk-asg-direct-operator/src/campaign-mailer-shell-v2.js
-          node --check workers/gnk-asg-direct-operator/src/campaign-mailer-v2.js
-          node scripts/validate-minimum-index-contact-admin.mjs
-          node scripts/verify-public-redesign-contract.mjs
+          printf 'review_main=%s\n' "$review_main" >> "$GITHUB_OUTPUT"
+          echo "Resolved review entrypoint: $review_main"
+
+      - name: Syntax-check release sources
+        shell: bash
+        env:
+          REVIEW_MAIN: ${{ steps.review_entrypoint.outputs.review_main }}
+        run: |
+          set -euo pipefail
+          for source in \
+            workers/gnk-asg-direct-operator/src/public-shell-v11.js \
+            "workers/gnk-asg-direct-operator/$REVIEW_MAIN" \
+            workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js \
+            workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js \
+            workers/gnk-asg-direct-operator/src/campaign-mailer-shell-v2.js \
+            workers/gnk-asg-direct-operator/src/campaign-mailer-v2.js
+          do
+            echo "Syntax check: $source"
+            node --check "$source"
+          done
+
+      - name: Validate index contact admin contract
+        run: node scripts/validate-minimum-index-contact-admin.mjs
+
+      - name: Validate public redesign contract
+        run: node scripts/verify-public-redesign-contract.mjs
+
+      - name: Validate canonical runtime compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
           grep -q 'main = "src/index-final-admin-gateway-v2.js"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
           grep -q "export { default } from './index-final-admin-gateway-v2.js';" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
 
