@@ -49,8 +49,11 @@ for(const [name,html] of [['HR index',indexHr],['EN index',indexEn]]){
   assert.ok(/GNK ASG/i.test(html),`${name} mora zadržati GNK ASG identitet.`);
 }
 
+// The canonical public route has been /api/portal-contact-submit since the
+// resilient contact path was fixed. Validate the public contract only; do not
+// touch or exercise the protected production mailbox/mail transport here.
 for(const [name,html] of [['HR kontakt',contactHr],['EN kontakt',contactEn]]){
-  assert.ok(html.includes('/api/contact-submit'),`${name} mora koristiti jedinstveni kontakt API.`);
+  assert.ok(html.includes('/api/portal-contact-submit'),`${name} mora koristiti kanonski portal kontakt API.`);
   assert.ok(html.includes('type="file"')&&html.includes('accept="application/pdf"'),`${name} mora zadržati PDF prilog.`);
   assert.ok(html.includes('name="consent"'),`${name} mora zadržati privolu.`);
 }
