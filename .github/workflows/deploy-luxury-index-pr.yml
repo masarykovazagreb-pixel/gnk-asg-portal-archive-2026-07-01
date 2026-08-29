@@ -35,14 +35,20 @@ jobs:
           set -euo pipefail
           node --check apps/portal/assets/public-menu-v18.js
           node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
-          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          review_main="$(awk -F '"' '/^main = "/ { print $2; exit }' workers/gnk-asg-direct-operator/wrangler.toml)"
+          test -n "$review_main"
+          case "$review_main" in
+            src/*.js) ;;
+            *) echo "Invalid review Worker entrypoint: $review_main" >&2; exit 1 ;;
+          esac
+          test -f "workers/gnk-asg-direct-operator/$review_main"
+          node --check "workers/gnk-asg-direct-operator/$review_main"
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
           node --check workers/gnk-asg-direct-operator/src/campaign-mailer-shell-v2.js
           node --check workers/gnk-asg-direct-operator/src/campaign-mailer-v2.js
           node scripts/validate-minimum-index-contact-admin.mjs
           node scripts/verify-public-redesign-contract.mjs
-          grep -q 'main = "src/index-unified-auth-v14.js"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'main = "src/index-final-admin-gateway-v2.js"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
           grep -q "export { default } from './index-final-admin-gateway-v2.js';" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
 
@@ -52,4 +58,4 @@ jobs:
       - name: Confirm deployment ownership
         run: |
           echo 'Validation passed. This workflow performs no deployment and no email submission.'
-          echo 'Review configuration uses unified auth v14; canonical runtime validation remains gateway v2.'
+          echo 'Review entrypoint is derived from wrangler.toml; canonical runtime validation remains gateway v2.'
