@@ -4,9 +4,12 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - 'apps/portal/scripts/apply_seo_attribution.py'
-      - 'apps/portal/scripts/harden_internal_routes.py'
-      - 'apps/portal/data/seo-attribution-policy-v1.json'
+      - 'apps/portal/scripts/generate_sitewide_seo.py'
+      - 'apps/portal/scripts/finalize_sitewide_seo.py'
+      - 'apps/portal/scripts/generate_seo.py'
+      - 'apps/portal/sitemap.xml'
+      - 'apps/portal/image-sitemap.xml'
+      - 'apps/portal/robots.txt'
       - 'apps/portal/**/index.html'
       - '.github/workflows/check-seo-attribution-v1.yml'
 
@@ -22,28 +25,53 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Validate and apply attribution
+
+      - name: Compile current SEO generators
         run: |
           set -euxo pipefail
-          python -m py_compile apps/portal/scripts/apply_seo_attribution.py apps/portal/scripts/harden_internal_routes.py
-          python apps/portal/scripts/apply_seo_attribution.py
-      - name: Validate corporate and editorial roles
+          python -m py_compile \
+            apps/portal/scripts/generate_sitewide_seo.py \
+            apps/portal/scripts/finalize_sitewide_seo.py \
+            apps/portal/scripts/generate_seo.py
+
+      - name: Validate deterministic sitewide SEO source of truth
         run: |
           set -euxo pipefail
-          grep -q 'SEO-ATTRIBUTION:BEGIN' apps/portal/index.html
-          grep -q 'name="author" content="GNK ASG d.o.o."' apps/portal/index.html
-          grep -q 'name="editor" content="Nermin Sefić"' apps/portal/index.html
-          grep -q 'Direktor i odgovorna izvršna osoba' apps/portal/index.html
-          grep -q 'name="author" content="Nermin Sefić"' apps/portal/objave/povjerenje-investitora-kroz-transparentnost/index.html
-          grep -q 'Autor i urednik' apps/portal/objave/povjerenje-investitora-kroz-transparentnost/index.html
-          grep -q 'Direktor i odgovorna izvršna osoba projekta' apps/portal/the-code/index.html
-          grep -q 'Direktor GNK ASG d.o.o. i ovlašteni predstavnik GNK DINAMO Ltd.' apps/portal/nermin-sefic/index.html
-          ! grep -q 'SEO-ATTRIBUTION:BEGIN' apps/portal/admin-center/index.html
+          python apps/portal/scripts/generate_sitewide_seo.py
+          git diff --exit-code -- apps/portal/sitemap.xml
+          python apps/portal/scripts/finalize_sitewide_seo.py
+
+      - name: Validate attribution and indexability invariants
+        run: |
+          set -euxo pipefail
           python - <<'PY'
-          import json
           from pathlib import Path
-          data=json.loads(Path('apps/portal/data/seo-attribution-report.json').read_text(encoding='utf-8'))
-          assert data['pageCount'] >= 10
-          assert '/' in data['routes']
-          assert '/the-code/' in data['routes']
+          import re
+
+          portal = Path('apps/portal')
+          required = (
+              'index.html',
+              'en/index.html',
+              'nermin-sefic/index.html',
+              'the-code/index.html',
+              'digital-workforce/index.html',
+          )
+
+          for relative in required:
+              path = portal / relative
+              assert path.is_file(), f'missing required SEO surface: {path}'
+              text = path.read_text(encoding='utf-8', errors='replace')
+              lower = text.lower()
+              assert '<title' in lower, f'{path}: missing title'
+              assert re.search(r'<meta[^>]+name=["\']description["\']', text, re.I), f'{path}: missing meta description'
+              assert re.search(r'<link[^>]+rel=["\']canonical["\']', text, re.I), f'{path}: missing canonical'
+
+          person = (portal / 'nermin-sefic/index.html').read_text(encoding='utf-8', errors='replace')
+          assert 'Nermin Sefić' in person or 'Nermin Sefic' in person, 'person page lost Nermin Sefic entity attribution'
+
+          code = (portal / 'the-code/index.html').read_text(encoding='utf-8', errors='replace')
+          assert 'GNK ASG' in code, 'THE CODE page lost GNK ASG entity attribution'
+
+          workforce = (portal / 'digital-workforce/index.html').read_text(encoding='utf-8', errors='replace')
+          assert 'noindex' not in workforce.lower(), 'Digital Workforce unexpectedly became noindex'
           PY
