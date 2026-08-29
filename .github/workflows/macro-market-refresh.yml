@@ -1,7 +1,8 @@
 name: Macro Market Data Refresh
 on:
   schedule:
-    - cron: '25 6,14 * * *'
+    # Six refresh windows daily; GitHub cron is UTC.
+    - cron: '25 2,6,10,14,18,22 * * *'
   workflow_dispatch: {}
 permissions:
   contents: write
@@ -29,26 +30,24 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          expected_base="$(git rev-parse HEAD)"
           if git diff --quiet -- apps/portal/data/macro_market.json; then
             echo "No macro market change."
             echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+            echo "sha=$expected_base" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add apps/portal/data/macro_market.json
           git commit -m "Refresh macro market data (BTC/gold/Brent/USD-EUR)"
-          for attempt in 1 2 3 4 5; do
-            if git push origin HEAD:main; then
-              break
-            fi
-            echo "Push odbijen (pokusaj $attempt) - main se pomaknuo, radim fetch+rebase."
-            git fetch origin main
-            git rebase origin/main || { echo "Rebase konflikt."; exit 1; }
-            sleep $((attempt * 5))
-            if [ "$attempt" = "5" ]; then echo "Push nije uspio nakon 5 pokusaja."; exit 1; fi
-          done
+          git fetch origin main
+          current_main="$(git rev-parse origin/main)"
+          if [ "$current_main" != "$expected_base" ]; then
+            echo "Main moved during macro-market generation: expected $expected_base, found $current_main. Deferring without rebase/push."
+            exit 75
+          fi
+          git push origin HEAD:main
           echo "changed=true" >> "$GITHUB_OUTPUT"
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - name: Dispatch exact-SHA production deploy
