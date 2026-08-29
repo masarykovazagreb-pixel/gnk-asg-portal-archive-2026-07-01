@@ -6,7 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "apps/portal/data"
-CADENCE = "twice daily around 09:05 and 17:05 Europe/Zagreb"
+CADENCE = "six times daily, approximately every four hours"
 TARGETS = (
     DATA / "market.json",
     DATA / "market_indices.json",
