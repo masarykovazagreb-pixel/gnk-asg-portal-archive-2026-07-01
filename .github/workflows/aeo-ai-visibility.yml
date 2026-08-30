@@ -46,6 +46,8 @@ jobs:
         run: node scripts/rich-descriptions-v1.mjs
       - name: Site-wide SEO guardian (non-editorial pages)
         run: node scripts/site-seo-guardian-v1.mjs
+      - name: Semantic entity guard (truthful Person/author/image signals)
+        run: node scripts/site-seo-semantic-guard-v1.mjs
       - name: BreadcrumbList JSON-LD
         run: node scripts/add-breadcrumbs-v1.mjs
       - name: BreadcrumbList for key non-editorial pages
