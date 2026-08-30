@@ -11,6 +11,8 @@ const EXCEPTION_META = /<meta\s+name=["']editorial-policy-exception["']\s+conten
 const ARTICLE_TYPES = new Set(['Article', 'NewsArticle', 'OpinionNewsArticle', 'AnalysisNewsArticle', 'Report']);
 const LOCKED_AUTHORED_STATEMENTS = new Set([
   'apps/portal/objave/osvrt-na-2013-omega-factoring-nermin-sefic/index.html',
+  'apps/portal/objave/ai-radna-snaga-ai-workforce-u-tisku/index.html',
+  'apps/portal/objave/koncar-gnk-asg-504-milijuna-ai-radna-snaga-izvoz/index.html',
 ]);
 const segmenter = typeof Intl.Segmenter === 'function'
   ? new Intl.Segmenter('hr', { granularity: 'word' })
