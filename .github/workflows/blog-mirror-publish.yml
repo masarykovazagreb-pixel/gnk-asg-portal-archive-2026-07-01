@@ -120,6 +120,39 @@ jobs:
           fi
           printf 'Credential state: Blogger=%s Dev.to=%s Tumblr=%s\n' "$blogger" "$devto" "$tumblr"
 
+      - name: Build unified priority distribution registry overlay
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          const fs=require('fs');
+          const registryPath='apps/portal/data/editorial-registry.json';
+          const featuredPath='apps/portal/data/editorial-featured.json';
+          const read=(p,f)=>{try{return JSON.parse(fs.readFileSync(p,'utf8'))}catch{return f}};
+          const registry=read(registryPath,{items:[]});
+          const featured=read(featuredPath,{items:[]});
+          const priorityEpoch='1970-01-01T00:00:00.000Z';
+          const combined=[];
+          const seen=new Set();
+          for(const source of [featured.items||[],registry.items||[]]){
+            for(const raw of source){
+              if(!raw?.path||seen.has(raw.path)) continue;
+              seen.add(raw.path);
+              const item={...raw};
+              if(raw.priority===true){
+                item.distributionOriginalPublishedAt=raw.publishedAt||raw.datePublished||null;
+                item.publishedAt=priorityEpoch;
+              }
+              combined.push(item);
+            }
+          }
+          const overlay={...registry,version:String(registry.version||'GNK_ASG_EDITORIAL_REGISTRY')+'+FEATURED_DISTRIBUTION_OVERLAY',distributionOverlay:true,items:combined};
+          fs.writeFileSync(registryPath,JSON.stringify(overlay,null,2)+'\n');
+          console.log(`Unified distribution overlay: featured=${(featured.items||[]).length}, registry=${(registry.items||[]).length}, deduped=${combined.length}, priority=${combined.filter(x=>x.priority===true).length}`);
+          NODE
+          # Overlay je samo radni input ovog joba. Git state korak namjerno ne dodaje editorial-registry.json,
+          # pa se kanonski publishedAt i registry na mainu ne mijenjaju.
+
       - name: Blogger mirror - verification / small catch-up
         id: blogger_publish
         if: env.BLOGGER_CREDENTIAL_STATE == 'ok'
@@ -172,7 +205,7 @@ jobs:
           const telegraph=read('apps/portal/data/telegraph-content/published.json',{posted:{}});
           const countState=(v)=>Array.isArray(v)?v.length:(v&&v.posted?Object.keys(v.posted).length:(v&&v.items?Object.keys(v.items).length:Object.keys(v||{}).length));
           const health={
-            version:'GNK_ASG_FOUR_BLOG_PARITY_V5_PUBLICATION_GATED',
+            version:'GNK_ASG_FOUR_BLOG_PARITY_V6_FEATURED_OVERLAY',
             generatedAt:new Date().toISOString(),
             canonicalSource:'https://gnk-asg.hr',
             registryTotal:(registry.items||[]).length,
@@ -182,7 +215,7 @@ jobs:
               tumblr:{credentials:process.env.TUMBLR_CREDENTIAL_STATE||'unknown',published:countState(tumblr)},
               telegraph:{credentials:'self-bootstrap',published:countState(telegraph)}
             },
-            policy:{singleWriter:true,dedupeByPlatformState:true,canonicalBacklinkRequired:true,stateBranch:'automation/blog-mirror-state',mainWrites:false,stateSync:'validated-overlay-force-with-lease-and-union-retry'}
+            policy:{singleWriter:true,dedupeByPlatformState:true,featuredParity:true,priorityFirst:true,canonicalBacklinkRequired:true,stateBranch:'automation/blog-mirror-state',mainWrites:false,stateSync:'validated-overlay-force-with-lease-and-union-retry'}
           };
           const out='apps/portal/data/blog-content/parity.json';
           fs.mkdirSync(path.dirname(out),{recursive:true});
@@ -202,6 +235,7 @@ jobs:
           if [ -s apps/portal/data/blog-content/health.json ]; then
             node -e "const fs=require('fs'); try { const h=JSON.parse(fs.readFileSync('apps/portal/data/blog-content/health.json','utf8')); console.log('- Blogger pending after run: **'+h.pending+'**') } catch { console.log('- Blogger health JSON: **unavailable**') }" >> "$GITHUB_STEP_SUMMARY"
           fi
+          echo '- Featured priority overlay: **enabled for all four channels**' >> "$GITHUB_STEP_SUMMARY"
           echo '- Canonical source: **https://gnk-asg.hr**' >> "$GITHUB_STEP_SUMMARY"
           echo '- Durable state branch: **automation/blog-mirror-state**' >> "$GITHUB_STEP_SUMMARY"
           echo '- Direct writes to production main: **disabled**' >> "$GITHUB_STEP_SUMMARY"
