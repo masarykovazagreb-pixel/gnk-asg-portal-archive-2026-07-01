@@ -18,7 +18,7 @@ for(const [name,html] of [['HR index',indexHr],['EN index',indexEn]]){
   assert.ok(/GNK ASG/i.test(html),`${name} mora zadržati GNK ASG identitet.`);
 }
 for(const [name,html] of [['HR kontakt',contactHr],['EN kontakt',contactEn]]){
-  assert.ok(html.includes('/api/portal-contact-submit'),`${name} mora koristiti kanonski portal kontakt API.`);
+  assert.ok(html.includes('/api/contact-submit'),`${name} mora koristiti postojeći kanonski kontakt API.`);
   assert.ok(html.includes('type="file"')&&html.includes('accept="application/pdf"'),`${name} mora zadržati PDF prilog.`);
   assert.ok(html.includes('name="consent"'),`${name} mora zadržati privolu.`);
 }
