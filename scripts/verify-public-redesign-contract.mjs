@@ -23,7 +23,8 @@ if(groups.has('mail')){
 if(groups.has('registration')){
   requireAll('registration','apps/portal/media-application/index.html',['id="loginForm"','id="registrationForm"','id="mailCode"','id="pin"','id="documentFile"']);
   requireAll('registration','apps/portal/assets/media-registration-v1.js',['/api/media-registration','/login','/draft','/document','/submit','/logout']);
-  requireAll('registration','workers/gnk-asg-direct-operator/src/media-registration-v1.js',["PUBLIC_UI='/media-application'","PUBLIC_API='/api/media-registration'","COOKIE='gnk_asg_media_registration'",'HttpOnly; Secure; SameSite=Strict','media_registration_sessions','media_registration_drafts','media_registration_documents','processMediaInvitationQueue','handleMediaRegistrationPublic']);
+  requireAll('registration','workers/gnk-asg-direct-operator/src/media-registration-v1.js',["import * as legacy from './media-registration-legacy-v1.js'",'export const PUBLIC_UI=legacy.PUBLIC_UI;',"const PUBLIC_API='/api/media-registration'","const COOKIE='gnk_asg_media_registration'",'HttpOnly; Secure; SameSite=Strict','media_registration_sessions','media_registration_drafts','processMediaInvitationQueue','handleMediaRegistrationPublic']);
+  requireAll('registration','workers/gnk-asg-direct-operator/src/media-registration-legacy-v1.js',["export const PUBLIC_UI='/media-application'","const PUBLIC_API='/api/media-registration'",'media_registration_documents','MAX_DOCUMENT_BYTES','handleMediaRegistrationPublic']);
 }
 
 if(groups.has('shell')){
