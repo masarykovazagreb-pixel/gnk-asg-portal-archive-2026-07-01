@@ -263,3 +263,4 @@ if (errors.length) {
   process.exit(1);
 }
 console.log(JSON.stringify(summary, null, 2));
+console.log('DIRECT_STATIC_EDITORIAL_POLICY_OK');
