@@ -13,6 +13,7 @@ const LOCKED_AUTHORED_STATEMENTS = new Set([
   'apps/portal/objave/osvrt-na-2013-omega-factoring-nermin-sefic/index.html',
   'apps/portal/objave/ai-radna-snaga-ai-workforce-u-tisku/index.html',
   'apps/portal/objave/koncar-gnk-asg-504-milijuna-ai-radna-snaga-izvoz/index.html',
+  'apps/portal/objave/filip-hrgovic-svjetski-prvak-ibf-gnk-asg-cestitka/index.html',
 ]);
 const segmenter = typeof Intl.Segmenter === 'function'
   ? new Intl.Segmenter('hr', { granularity: 'word' })
@@ -258,11 +259,8 @@ const summary = {
 };
 
 if (errors.length) {
-  console.error(`DIRECT_STATIC_EDITORIAL_POLICY_FAILED ${errors.length}`);
-  for (const error of errors) console.error(`- ${error}`);
   console.error(JSON.stringify(summary, null, 2));
   process.exit(1);
 }
-
-console.log('DIRECT_STATIC_EDITORIAL_POLICY_OK');
 console.log(JSON.stringify(summary, null, 2));
+console.log('DIRECT_STATIC_EDITORIAL_POLICY_OK');
