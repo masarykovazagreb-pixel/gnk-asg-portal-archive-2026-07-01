@@ -1,0 +1,33 @@
+name: SEO authorship truth audit
+
+on:
+  pull_request:
+    paths:
+      - 'tools/seo/audit_entity_authorship.py'
+      - '.github/workflows/seo-authorship-truth-audit.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'tools/seo/audit_entity_authorship.py'
+      - '.github/workflows/seo-authorship-truth-audit.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: seo-authorship-truth-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Compile validator
+        run: python -m py_compile tools/seo/audit_entity_authorship.py
+      - name: Run truthful authorship audit
+        run: python tools/seo/audit_entity_authorship.py . --json
