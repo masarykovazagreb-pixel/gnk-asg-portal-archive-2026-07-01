@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Audit generated public HTML/JS for potentially false Person authorship signals.
 
-Read-only by design. The audit is intentionally conservative: it reports pages that
-emit a Nermin Sefic/Sefić Person author signal without an explicit authorship cue in
+Read-only by design. The audit reports pages that emit a Nermin Sefic/Sefić
+Person author signal without an independent, explicit authorship/profile cue in
 the same document, and scripts that contain both the entity name and schema-author
-construction. Use --strict in CI once the current baseline has been reviewed.
+construction.
 
 This does not infer INDEXED/LIVE status and does not modify public content.
 """
@@ -26,7 +26,7 @@ AUTHOR_META_RE = re.compile(
 )
 REL_AUTHOR_RE = re.compile(r'<a[^>]+rel=["\'][^"\']*author[^"\']*["\'][^>]*>', re.I)
 VISIBLE_AUTHOR_RE = re.compile(r'\b(?:autor|author)\s*:\s*(?:Nermin\s+Sefi(?:ć|c)|Sefi(?:ć|c)\s+Nermin)\b', re.I)
-PROFILE_TYPE_RE = re.compile(r'"@type"\s*:\s*"(?:ProfilePage|Person)"', re.I)
+PROFILE_PAGE_RE = re.compile(r'"@type"\s*:\s*"ProfilePage"', re.I)
 AUTHOR_SCHEMA_RE = re.compile(r'"author"\s*:\s*(?:\{|\[)', re.I)
 PERSON_SCHEMA_RE = re.compile(r'"@type"\s*:\s*"Person"', re.I)
 SCRIPT_AUTHOR_RE = re.compile(r'\bauthor\b|["\']author["\']', re.I)
@@ -44,7 +44,9 @@ def explicit_html_authorship(text: str) -> bool:
     for match in AUTHOR_META_RE.finditer(text):
         if any(name.casefold() in match.group(1).casefold() for name in NAMES):
             return True
-    return bool(REL_AUTHOR_RE.search(text) or VISIBLE_AUTHOR_RE.search(text) or PROFILE_TYPE_RE.search(text))
+    # A Person node alone is not evidence: it is the signal under audit.
+    # ProfilePage, rel=author, or a visible author label are independent cues.
+    return bool(REL_AUTHOR_RE.search(text) or VISIBLE_AUTHOR_RE.search(text) or PROFILE_PAGE_RE.search(text))
 
 
 def has_nermin(text: str) -> bool:
@@ -56,13 +58,13 @@ def audit_html(path: Path, text: str) -> list[dict]:
     findings = []
     if not has_nermin(text):
         return findings
-    has_person_author = AUTHOR_SCHEMA_RE.search(text) and PERSON_SCHEMA_RE.search(text)
+    has_person_author = bool(AUTHOR_SCHEMA_RE.search(text) and PERSON_SCHEMA_RE.search(text))
     if has_person_author and not explicit_html_authorship(text):
         findings.append({
             "severity": "error",
             "rule": "person-author-without-explicit-authorship",
             "path": str(path),
-            "detail": "Person author signal names Nermin Sefic/Sefić but no explicit author/profile cue was found in the document.",
+            "detail": "Person author signal names Nermin Sefic/Sefić but no independent author/profile cue was found in the document.",
         })
     return findings
 
