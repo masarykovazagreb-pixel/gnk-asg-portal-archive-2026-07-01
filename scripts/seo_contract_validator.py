@@ -72,6 +72,19 @@ def link_values(p: HeadParser, rel: str) -> list[dict[str, str]]:
     return [x for x in p.links if rel.lower() in x.get("rel", "").lower().split()]
 
 
+def _iter_jsonld_nodes(value):
+    if isinstance(value, dict):
+        yield value
+        graph = value.get("@graph")
+        if isinstance(graph, list):
+            for node in graph:
+                if isinstance(node, dict):
+                    yield node
+    elif isinstance(value, list):
+        for item in value:
+            yield from _iter_jsonld_nodes(item)
+
+
 def validate(path: Path) -> list[str]:
     text = path.read_text(encoding="utf-8", errors="strict")
     p = HeadParser()
@@ -105,12 +118,14 @@ def validate(path: Path) -> list[str]:
         if not img.get("width", "").isdigit() or not img.get("height", "").isdigit():
             errors.append(f"img#{i} missing numeric width/height")
 
-    # Structured data must parse as JSON; type/content truthfulness is reviewed separately.
+    # Structured data must parse as JSON. Collect parsed nodes for truth-consistency checks.
+    parsed_nodes: list[dict] = []
     if not p.jsonld:
         errors.append("missing JSON-LD")
     for i, block in enumerate(p.jsonld, start=1):
         try:
-            json.loads(block)
+            parsed = json.loads(block)
+            parsed_nodes.extend(_iter_jsonld_nodes(parsed))
         except json.JSONDecodeError as exc:
             errors.append(f"JSON-LD#{i} invalid JSON: {exc.msg}")
 
@@ -122,6 +137,29 @@ def validate(path: Path) -> list[str]:
         if not ({"hr", "en"} <= langs): errors.append("hreflang set must include reciprocal hr and en")
         for x in hreflang:
             if not x.get("href", "").strip(): errors.append("hreflang alternate has empty href")
+
+    # Truth gate: an organisation-signed editorial must not silently claim a person as author.
+    # A person may still be linked via about/mentions/related content when genuinely relevant.
+    org_signed = bool(re.search(r"(?:—|&mdash;|&#8212;)\s*GNK\s+ASG(?:\s+d\.o\.o\.)?", text, re.I))
+    meta_author = meta_value(p, name="author")
+    article_author = meta_value(p, prop="article:author")
+    person_jsonld_authors: list[str] = []
+    for node in parsed_nodes:
+        node_type = node.get("@type")
+        if node_type not in ("Article", "NewsArticle", "BlogPosting"):
+            continue
+        author = node.get("author")
+        authors = author if isinstance(author, list) else [author]
+        for item in authors:
+            if isinstance(item, dict) and item.get("@type") == "Person" and item.get("name"):
+                person_jsonld_authors.append(str(item["name"]).strip())
+    if org_signed:
+        if meta_author and not re.fullmatch(r"GNK\s+ASG(?:\s+d\.o\.o\.)?", meta_author, re.I):
+            errors.append("organisation-signed page has conflicting meta author")
+        if article_author and not re.fullmatch(r"GNK\s+ASG(?:\s+d\.o\.o\.)?", article_author, re.I):
+            errors.append("organisation-signed page has conflicting article:author")
+        if person_jsonld_authors:
+            errors.append("organisation-signed page has Person author in Article JSON-LD")
 
     # Guard against accidental entity/author stuffing by catching repeated exact keyword runs.
     stuffing = re.compile(r"(?:Nermin\s+Sefi[cć]|GNK\s+ASG|GNK\s+DINAMO\s+Ltd\.?)\s*(?:[,|/·-]\s*(?:Nermin\s+Sefi[cć]|GNK\s+ASG|GNK\s+DINAMO\s+Ltd\.?)){5,}", re.I)
