@@ -29,5 +29,5 @@ jobs:
           python-version: '3.13'
       - name: Compile validator
         run: python -m py_compile tools/seo/audit_entity_authorship.py
-      - name: Run truthful authorship audit
-        run: python tools/seo/audit_entity_authorship.py . --json
+      - name: Run truthful authorship audit (strict)
+        run: python tools/seo/audit_entity_authorship.py . --json --strict
