@@ -1,4 +1,4 @@
-export const VERSION='GNK_ASG_SITEWIDE_ENTITY_SEO_V1_20260830_EDITORIAL_DESIGN';
+export const VERSION='GNK_ASG_SITEWIDE_ENTITY_SEO_V1_20260831_TRUTH_CONDITIONAL';
 
 const MARKER='data-gnk-entity-seo="v1"';
 const ORIGIN='https://gnk-asg.hr';
@@ -19,24 +19,39 @@ function hasNoIndex(html){return /<meta[^>]+name=["']robots["'][^>]+content=["']
 function safeJson(value){return JSON.stringify(value).replace(/</g,'\\u003c');}
 function editorialClass(pathname){if(pathname===AI_EDITORIAL)return 'corporate-editorial corporate-editorial--ai';if(pathname===KONCAR_EDITORIAL)return 'corporate-editorial corporate-editorial--koncar';return '';}
 function injectBodyClass(html,classes){if(!classes)return html;return html.replace(/<body([^>]*)>/i,(full,attrs)=>{if(/\bclass=["']/i.test(attrs))return full.replace(/class=(["'])(.*?)\1/i,(m,q,value)=>`class=${q}${value} ${classes}${q}`);return `<body${attrs} class="${classes}">`;});}
+function stripScriptsAndStyles(html){return String(html).replace(/<script\b[\s\S]*?<\/script>/gi,' ').replace(/<style\b[\s\S]*?<\/style>/gi,' ');}
+function pageTruth(html){
+ const visible=stripScriptsAndStyles(html);
+ const person=/(?:Nermin\s+Sefi(?:ć|c)|Sefi(?:ć|c)\s+Nermin)/i.test(visible);
+ const group=/GNK\s+DINAMO\s+(?:Ltd\.?|LTD)/i.test(visible);
+ const explicitAuthor=/(?:\bautor\b|\bauthor\b)\s*:?\s*(?:<[^>]+>\s*)*(?:Nermin\s+Sefi(?:ć|c)|Sefi(?:ć|c)\s+Nermin)/i.test(visible)||/<meta[^>]+name=["']author["'][^>]+content=["'][^"']*(?:Nermin\s+Sefi(?:ć|c)|Sefi(?:ć|c)\s+Nermin)[^"']*["']/i.test(html)||/<a[^>]+rel=["'][^"']*author[^"']*["'][^>]*href=["'][^"']*nermin-sefic/i.test(html);
+ return {person,group,explicitAuthor};
+}
 
-function buildBlock({canonical,image,isEnglish,editorial}){
+function buildBlock({canonical,image,isEnglish,editorial,truth}){
  const markets=isEnglish?EN_MARKETS:HR_MARKETS;
  const person=isEnglish?PERSON_URL_EN:PERSON_URL;
  const group=isEnglish?GROUP_URL_EN:GROUP_URL;
- const imageAlt=isEnglish
-  ?'GNK ASG markets, projects and business information associated with Nermin Sefic and GNK DINAMO Ltd.'
-  :'GNK ASG tržišta, projekti i poslovne informacije povezane s Nerminom Sefićem i GNK DINAMO Ltd.';
  const graph=[
-  {'@type':'Person','@id':`${PERSON_URL}#person`,name:'Nermin Sefić',alternateName:['Nermin Sefic'],url:person},
   {'@type':'Organization','@id':`${ORIGIN}/#organization`,name:'GNK ASG',legalName:'GNK ASG d.o.o.',url:`${ORIGIN}/`},
-  {'@type':'Organization','@id':`${GROUP_URL}#gnk-dinamo-ltd`,name:'GNK DINAMO Ltd.',url:group},
-  {'@type':'WebSite','@id':`${ORIGIN}/#website`,url:`${ORIGIN}/`,name:'GNK ASG',publisher:{'@id':`${ORIGIN}/#organization`}},
-  {'@type':'WebPage','@id':`${canonical}#webpage`,url:canonical,isPartOf:{'@id':`${ORIGIN}/#website`},publisher:{'@id':`${ORIGIN}/#organization`},mentions:[{'@id':`${PERSON_URL}#person`},{'@id':`${ORIGIN}/#organization`},{'@id':`${GROUP_URL}#gnk-dinamo-ltd`}],relatedLink:[markets,person,group]}
+  {'@type':'WebSite','@id':`${ORIGIN}/#website`,url:`${ORIGIN}/`,name:'GNK ASG',publisher:{'@id':`${ORIGIN}/#organization`}}
  ];
- if(image){graph.push({'@type':'ImageObject','@id':`${canonical}#primaryimage`,contentUrl:image,url:image,caption:imageAlt,representativeOfPage:true,about:[{'@id':`${PERSON_URL}#person`},{'@id':`${ORIGIN}/#organization`},{'@id':`${GROUP_URL}#gnk-dinamo-ltd`}]});graph[4].primaryImageOfPage={'@id':`${canonical}#primaryimage`};}
+ const mentions=[{'@id':`${ORIGIN}/#organization`}];
+ const related=[markets];
+ if(truth.person){graph.push({'@type':'Person','@id':`${PERSON_URL}#person`,name:'Nermin Sefić',alternateName:['Nermin Sefic','Sefić Nermin','Sefic Nermin'],url:person});mentions.push({'@id':`${PERSON_URL}#person`});related.push(person);}
+ if(truth.group){graph.push({'@type':'Organization','@id':`${GROUP_URL}#gnk-dinamo-ltd`,name:'GNK DINAMO Ltd.',alternateName:['GNK DINAMO LTD'],url:group});mentions.push({'@id':`${GROUP_URL}#gnk-dinamo-ltd`});related.push(group);}
+ const webpage={'@type':'WebPage','@id':`${canonical}#webpage`,url:canonical,isPartOf:{'@id':`${ORIGIN}/#website`},publisher:{'@id':`${ORIGIN}/#organization`},mentions,relatedLink:related};
+ graph.push(webpage);
+ if(image){
+  const about=[{'@id':`${ORIGIN}/#organization`}];
+  if(truth.person)about.push({'@id':`${PERSON_URL}#person`});
+  if(truth.group)about.push({'@id':`${GROUP_URL}#gnk-dinamo-ltd`});
+  graph.push({'@type':'ImageObject','@id':`${canonical}#primaryimage`,contentUrl:image,url:image,representativeOfPage:true,about});
+  webpage.primaryImageOfPage={'@id':`${canonical}#primaryimage`};
+ }
  const design=editorial?`\n<link rel="stylesheet" href="${EDITORIAL_CSS}" data-gnk-corporate-editorial="v2">`:'';
- return `\n<!-- GNK ASG entity SEO -->\n<meta ${MARKER}>\n<meta name="author" content="Nermin Sefić">\n<meta name="publisher" content="GNK ASG d.o.o.">\n<meta name="keywords" content="Nermin Sefić, Nermin Sefic, GNK ASG, GNK ASG d.o.o., GNK DINAMO Ltd., tržišta, markets">\n<meta property="og:image:alt" content="${imageAlt}">\n<link rel="related" href="${markets}">\n<link rel="author" href="${person}">${design}\n<script type="application/ld+json" id="gnk-global-entity-graph">${safeJson({'@context':'https://schema.org','@graph':graph})}</script>\n`;
+ const authorMeta=truth.explicitAuthor?`\n<meta name="author" content="Nermin Sefić">\n<link rel="author" href="${person}">`:'';
+ return `\n<!-- GNK ASG entity SEO -->\n<meta ${MARKER}>\n<meta name="publisher" content="GNK ASG d.o.o.">\n<link rel="related" href="${markets}">${authorMeta}${design}\n<script type="application/ld+json" id="gnk-global-entity-graph">${safeJson({'@context':'https://schema.org','@graph':graph})}</script>\n`;
 }
 
 export async function enhancePublicEntitySeo(response,request){
@@ -49,7 +64,8 @@ export async function enhancePublicEntitySeo(response,request){
  const isEnglish=url.pathname==='/en'||url.pathname.startsWith('/en/');
  const canonical=canonicalFromHtml(html,`${ORIGIN}${url.pathname}`);
  const image=ogImageFromHtml(html);
- const enriched=html.replace(/<\/head>/i,`${buildBlock({canonical,image,isEnglish,editorial:Boolean(editorial)})}</head>`);
+ const truth=pageTruth(html);
+ const enriched=html.replace(/<\/head>/i,`${buildBlock({canonical,image,isEnglish,editorial:Boolean(editorial),truth})}</head>`);
  const headers=new Headers(response.headers);
  for(const name of ['content-length','content-encoding','etag','last-modified'])headers.delete(name);
  headers.set('content-type','text/html; charset=utf-8');
