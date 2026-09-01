@@ -116,7 +116,11 @@ jobs:
         run: node scripts/audit-seo-entity-integrity-v1.mjs
 
       - name: Static page integrity
-        run: node scripts/audit-all-pages-detailed-v1.mjs
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts
+          node scripts/audit-all-pages-detailed-v1.mjs 2>&1 | tee artifacts/static-page-integrity.log
 
       - name: Public portal audit
         run: node scripts/audit-public-portal-v1.mjs
@@ -138,5 +142,6 @@ jobs:
           path: |
             readiness-preflight/**
             artifacts/*.json
+            artifacts/*.log
           if-no-files-found: warn
           retention-days: 14
