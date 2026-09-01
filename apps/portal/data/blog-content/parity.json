@@ -1,21 +1,34 @@
 {
-  "version": "GNK_ASG_FOUR_BLOG_PARITY_V5_PUBLICATION_GATED",
-  "generatedAt": "2026-08-14T12:26:59.612Z",
+  "version": "GNK_ASG_FOUR_BLOG_PARITY_V6_FEATURED_OVERLAY",
+  "generatedAt": "2026-09-01T14:14:53.735Z",
   "canonicalSource": "https://gnk-asg.hr",
-  "registryTotal": 448,
-  "publishedRegistryTotal": 405,
-  "requiredParity": "4/4",
+  "registryTotal": 453,
   "channels": {
-    "blogger": { "credentials": "ok", "published": 361 },
-    "devto": { "credentials": "ok", "published": 184 },
-    "tumblr": { "credentials": "ok", "published": 184 },
-    "telegraph": { "credentials": "self-bootstrap", "published": 11 }
+    "blogger": {
+      "credentials": "ok",
+      "published": 453
+    },
+    "devto": {
+      "credentials": "ok",
+      "published": 259
+    },
+    "tumblr": {
+      "credentials": "ok",
+      "published": 453
+    },
+    "telegraph": {
+      "credentials": "self-bootstrap",
+      "published": 453
+    }
   },
   "policy": {
     "singleWriter": true,
-    "publicationGate": "scripts/lib/publication-gate-v2.mjs",
     "dedupeByPlatformState": true,
+    "featuredParity": true,
+    "priorityFirst": true,
     "canonicalBacklinkRequired": true,
-    "futureDatedContentExcluded": true
+    "stateBranch": "automation/blog-mirror-state",
+    "mainWrites": false,
+    "stateSync": "validated-overlay-force-with-lease-and-union-retry"
   }
 }
