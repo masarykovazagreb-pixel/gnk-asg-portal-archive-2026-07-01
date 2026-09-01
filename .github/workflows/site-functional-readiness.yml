@@ -116,7 +116,13 @@ jobs:
         run: node scripts/audit-seo-entity-integrity-v1.mjs
 
       - name: Static page integrity
-        run: node scripts/audit-all-pages-detailed-v1.mjs
+        id: static_integrity
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/readiness-logs
+          node scripts/audit-all-pages-detailed-v1.mjs 2>&1 | tee artifacts/readiness-logs/static-page-integrity.log
 
       - name: Public portal audit
         run: node scripts/audit-public-portal-v1.mjs
@@ -138,5 +144,12 @@ jobs:
           path: |
             readiness-preflight/**
             artifacts/*.json
+            artifacts/readiness-logs/**
           if-no-files-found: warn
           retention-days: 14
+
+      - name: Fail closed on static page integrity regression
+        if: steps.static_integrity.outcome == 'failure'
+        run: |
+          echo 'Static page integrity failed; downstream readiness lanes were allowed to run, evidence was preserved, and merge remains blocked.' >&2
+          exit 1
