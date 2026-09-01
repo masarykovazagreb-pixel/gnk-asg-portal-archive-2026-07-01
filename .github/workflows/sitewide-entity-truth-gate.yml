@@ -1,0 +1,35 @@
+name: Sitewide entity truth gate
+
+on:
+  pull_request:
+    paths:
+      - 'workers/gnk-asg-direct-operator/src/sitewide-entity-seo-v1.js'
+      - 'tools/seo/test_sitewide_entity_truth.py'
+      - '.github/workflows/sitewide-entity-truth-gate.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'workers/gnk-asg-direct-operator/src/sitewide-entity-seo-v1.js'
+      - 'tools/seo/test_sitewide_entity_truth.py'
+      - '.github/workflows/sitewide-entity-truth-gate.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sitewide-entity-truth-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  truth-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Compile regression gate
+        run: python -m py_compile tools/seo/test_sitewide_entity_truth.py
+      - name: Enforce page-truth conditional entity signals
+        run: python tools/seo/test_sitewide_entity_truth.py
