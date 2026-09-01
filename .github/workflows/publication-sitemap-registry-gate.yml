@@ -67,11 +67,14 @@ jobs:
           p=Path('artifacts/publication-sitemap-registry/drift.json')
           p.write_text(json.dumps({
             'sha': os.environ.get('GITHUB_SHA'),
+            'reproduceOutcome': os.environ.get('REPRODUCE_OUTCOME'),
+            'reproduceFailed': os.environ.get('REPRODUCE_OUTCOME') == 'failure',
             'editorialSitemapDrift': os.environ.get('EDITORIAL_DRIFT') == '1',
             'sitemapIndexDrift': os.environ.get('INDEX_DRIFT') == '1'
           }, indent=2) + '\n')
           PY
         env:
+          REPRODUCE_OUTCOME: ${{ steps.reproduce.outcome }}
           EDITORIAL_DRIFT: ${{ steps.reproduce.outputs.editorial_drift }}
           INDEX_DRIFT: ${{ steps.reproduce.outputs.index_drift }}
       - name: Upload validation evidence
@@ -82,8 +85,12 @@ jobs:
           path: artifacts/publication-sitemap-registry/
           if-no-files-found: error
           retention-days: 1
-      - name: Fail on generated sitemap drift
-        if: steps.reproduce.outputs.editorial_drift == '1' || steps.reproduce.outputs.index_drift == '1'
+      - name: Fail closed on reproduction failure or generated sitemap drift
+        if: steps.reproduce.outcome == 'failure' || steps.reproduce.outputs.editorial_drift == '1' || steps.reproduce.outputs.index_drift == '1'
         run: |
-          echo 'Committed sitemap artifacts differ from canonical generator output.' >&2
+          if [ "${{ steps.reproduce.outcome }}" = "failure" ]; then
+            echo 'Canonical sitemap reproduction failed; refusing fail-open completion.' >&2
+          else
+            echo 'Committed sitemap artifacts differ from canonical generator output.' >&2
+          fi
           exit 1
