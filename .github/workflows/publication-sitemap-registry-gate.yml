@@ -38,24 +38,52 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Reproduce canonical editorial sitemap
+      - name: Snapshot committed sitemap state
         run: |
           cp apps/portal/editorial-sitemap.xml "$RUNNER_TEMP/editorial-sitemap.xml"
           cp apps/portal/sitemap-index.xml "$RUNNER_TEMP/sitemap-index.xml"
+      - name: Reproduce canonical editorial sitemap
+        id: reproduce
+        continue-on-error: true
+        run: |
           node scripts/generate-editorial-sitemap-v2.mjs
-          diff -u "$RUNNER_TEMP/editorial-sitemap.xml" apps/portal/editorial-sitemap.xml
-          diff -u "$RUNNER_TEMP/sitemap-index.xml" apps/portal/sitemap-index.xml
+          diff -u "$RUNNER_TEMP/editorial-sitemap.xml" apps/portal/editorial-sitemap.xml > "$RUNNER_TEMP/editorial-sitemap.diff" || echo "editorial_drift=1" >> "$GITHUB_OUTPUT"
+          diff -u "$RUNNER_TEMP/sitemap-index.xml" apps/portal/sitemap-index.xml > "$RUNNER_TEMP/sitemap-index.diff" || echo "index_drift=1" >> "$GITHUB_OUTPUT"
       - name: Validate published routes, lastmod and canonical registry
         run: python scripts/validate_publication_sitemap_registry_v1.py
       - name: Enforce production workflow schedule allowlist
         run: python scripts/validate-workflow-schedule-allowlist-v2.py
       - name: Enforce exact-SHA release-race hygiene
         run: python scripts/validate-release-race-hygiene-v1.py
+      - name: Preserve sitemap drift evidence
+        if: always()
+        run: |
+          mkdir -p artifacts/publication-sitemap-registry
+          cp "$RUNNER_TEMP/editorial-sitemap.diff" artifacts/publication-sitemap-registry/editorial-sitemap.diff 2>/dev/null || true
+          cp "$RUNNER_TEMP/sitemap-index.diff" artifacts/publication-sitemap-registry/sitemap-index.diff 2>/dev/null || true
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          p=Path('artifacts/publication-sitemap-registry/drift.json')
+          p.write_text(json.dumps({
+            'sha': os.environ.get('GITHUB_SHA'),
+            'editorialSitemapDrift': os.environ.get('EDITORIAL_DRIFT') == '1',
+            'sitemapIndexDrift': os.environ.get('INDEX_DRIFT') == '1'
+          }, indent=2) + '\n')
+          PY
+        env:
+          EDITORIAL_DRIFT: ${{ steps.reproduce.outputs.editorial_drift }}
+          INDEX_DRIFT: ${{ steps.reproduce.outputs.index_drift }}
       - name: Upload validation evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: publication-sitemap-registry-${{ github.sha }}
-          path: artifacts/publication-sitemap-registry/report.json
+          path: artifacts/publication-sitemap-registry/
           if-no-files-found: error
           retention-days: 1
+      - name: Fail on generated sitemap drift
+        if: steps.reproduce.outputs.editorial_drift == '1' || steps.reproduce.outputs.index_drift == '1'
+        run: |
+          echo 'Committed sitemap artifacts differ from canonical generator output.' >&2
+          exit 1
