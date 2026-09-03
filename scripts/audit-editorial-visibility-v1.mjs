@@ -4,6 +4,7 @@ import path from 'node:path';
 const ROOT = process.cwd();
 const PORTAL = path.join(ROOT, 'apps', 'portal');
 const REGISTRY = path.join(PORTAL, 'data', 'editorial-registry.json');
+const SITEMAP = path.join(PORTAL, 'sitemap.xml');
 const ORIGIN = 'https://gnk-asg.hr';
 const failures = [];
 const warnings = [];
@@ -11,7 +12,11 @@ const stats = {
   registryItems: 0,
   checkedPages: 0,
   indexedPages: 0,
+  sitemapMembers: 0,
+  registryUrlMismatches: 0,
   pagesWithImages: 0,
+  sameOriginImagesChecked: 0,
+  missingSameOriginImages: 0,
   pagesWithArticleSchema: 0,
   advancedSocialGaps: 0,
   hreflangGaps: 0,
@@ -34,16 +39,32 @@ const absolute = (value, route) => {
   try { return new URL(value, `${ORIGIN}${route}`).href; }
   catch { return value; }
 };
+const sameOriginAssetFile = value => {
+  try {
+    const url = new URL(value, ORIGIN);
+    if (url.origin !== ORIGIN) return null;
+    return path.join(PORTAL, decodeURIComponent(url.pathname).replace(/^\/+/, ''));
+  } catch {
+    return null;
+  }
+};
 
 if (!fs.existsSync(REGISTRY)) {
   console.error(`Missing editorial registry: ${REGISTRY}`);
+  process.exit(1);
+}
+if (!fs.existsSync(SITEMAP)) {
+  console.error(`Missing canonical sitemap: ${SITEMAP}`);
   process.exit(1);
 }
 
 const registry = JSON.parse(fs.readFileSync(REGISTRY, 'utf8'));
 const items = Array.isArray(registry.items) ? registry.items : [];
 stats.registryItems = items.length;
+const sitemapXml = fs.readFileSync(SITEMAP, 'utf8');
+const sitemapUrls = new Set([...sitemapXml.matchAll(/<loc>([^<]+)<\/loc>/gi)].map(match => match[1].trim()));
 const seenTitles = new Map();
+const seenDescriptions = new Map();
 const seenCanonicals = new Map();
 
 for (const item of items) {
@@ -52,12 +73,17 @@ for (const item of items) {
     fail(`Registry item ${item.slug || '(unknown)'} has invalid route: ${route || '(missing)'}`);
     continue;
   }
+  const expectedUrl = `${ORIGIN}${route}`;
+  if (item.url && item.url !== expectedUrl) {
+    stats.registryUrlMismatches += 1;
+    fail(`${route}: registry url ${item.url} != ${expectedUrl}`);
+  }
+
   const file = routeFile(route);
   if (!fs.existsSync(file)) continue; // publication registry gate owns missing-route enforcement
 
   const html = fs.readFileSync(file, 'utf8');
   stats.checkedPages += 1;
-  const expectedUrl = `${ORIGIN}${route}`;
   const title = extract(html, /<title>([\s\S]*?)<\/title>/i);
   const description = meta(html, 'description');
   const robots = meta(html, 'robots');
@@ -67,6 +93,8 @@ for (const item of items) {
   if (!title) fail(`${route}: missing unique title candidate`);
   if (!description) fail(`${route}: missing meta description`);
   if (pageCanonical !== expectedUrl) fail(`${route}: canonical ${pageCanonical || '(missing)'} != ${expectedUrl}`);
+  if (!sitemapUrls.has(expectedUrl)) fail(`${route}: canonical URL missing from sitemap.xml`);
+  else stats.sitemapMembers += 1;
   if (!/\bindex\b/i.test(robots) || !/\bfollow\b/i.test(robots)) fail(`${route}: robots must include index,follow`);
   else stats.indexedPages += 1;
   if (!/max-image-preview:large/i.test(robots)) warn(`${route}: robots lacks max-image-preview:large`);
@@ -76,6 +104,11 @@ for (const item of items) {
     const key = title.toLowerCase().replace(/\s+/g, ' ').trim();
     if (seenTitles.has(key)) fail(`${route}: duplicate title with ${seenTitles.get(key)}`);
     else seenTitles.set(key, route);
+  }
+  if (description) {
+    const key = description.toLowerCase().replace(/\s+/g, ' ').trim();
+    if (seenDescriptions.has(key)) fail(`${route}: duplicate meta description with ${seenDescriptions.get(key)}`);
+    else seenDescriptions.set(key, route);
   }
   if (pageCanonical) {
     if (seenCanonicals.has(pageCanonical)) fail(`${route}: duplicate canonical with ${seenCanonicals.get(pageCanonical)}`);
@@ -116,8 +149,28 @@ for (const item of items) {
       stats.imageMetadataGaps += 1;
       warn(`${route}: image ${src} lacks explicit width/height`);
     }
+    if (src) {
+      const assetFile = sameOriginAssetFile(absolute(src, route));
+      if (assetFile) {
+        stats.sameOriginImagesChecked += 1;
+        if (!fs.existsSync(assetFile) || !fs.statSync(assetFile).isFile()) {
+          stats.missingSameOriginImages += 1;
+          fail(`${route}: same-origin image asset missing on disk: ${src}`);
+        }
+      }
+    }
   }
   const ogImage = property(html, 'og:image');
+  if (ogImage) {
+    const assetFile = sameOriginAssetFile(absolute(ogImage, route));
+    if (assetFile) {
+      stats.sameOriginImagesChecked += 1;
+      if (!fs.existsSync(assetFile) || !fs.statSync(assetFile).isFile()) {
+        stats.missingSameOriginImages += 1;
+        fail(`${route}: same-origin og:image asset missing on disk: ${ogImage}`);
+      }
+    }
+  }
   if (ogImage && images.length && !images.some(tag => absolute(attr(tag, 'src'), route) === absolute(ogImage, route))) {
     warn(`${route}: og:image is not represented by a page content image`);
   }
