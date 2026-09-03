@@ -51,6 +51,7 @@ jobs:
           node --check scripts/test-protected-operations-session-contract.mjs
           node --check scripts/test-digital-workforce-api-contract.mjs
           node --check scripts/test-news-publication-seo-contract.mjs
+          node --check scripts/audit-editorial-visibility-v1.mjs
           bash -n scripts/check-newsroom-route-readiness.sh
           bash -n scripts/verify-production-route.sh
 
@@ -115,6 +116,9 @@ jobs:
       - name: SEO integrity
         run: node scripts/audit-seo-entity-integrity-v1.mjs
 
+      - name: Editorial visibility integrity
+        run: node scripts/audit-editorial-visibility-v1.mjs
+
       - name: Static page integrity
         id: static_integrity
         continue-on-error: true
@@ -145,6 +149,7 @@ jobs:
             readiness-preflight/**
             artifacts/*.json
             artifacts/readiness-logs/**
+            artifacts/editorial-visibility/**
           if-no-files-found: warn
           retention-days: 14
 
