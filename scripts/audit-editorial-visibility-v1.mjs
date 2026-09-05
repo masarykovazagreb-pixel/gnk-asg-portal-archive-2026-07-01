@@ -8,7 +8,7 @@ const SITEMAP = path.join(PORTAL, 'sitemap.xml');
 const ORIGIN = 'https://gnk-asg.hr';
 const failures = [];
 const warnings = [];
-const stats = { registryItems: 0, checkedPages: 0, indexablePages: 0, sitemapMembers: 0, registryUrlMismatches: 0, pagesWithImages: 0, sameOriginImagesChecked: 0, missingSameOriginImages: 0, pagesWithArticleSchema: 0, advancedSocialGaps: 0, hreflangGaps: 0, imageMetadataGaps: 0, decorativeImages: 0 };
+const stats = { registryItems: 0, checkedPages: 0, indexablePages: 0, sitemapMembers: 0, registryUrlMismatches: 0, pagesWithImages: 0, sameOriginImagesChecked: 0, missingSameOriginImages: 0, pagesWithArticleSchema: 0, pagesWithStructuredImageSignal: 0, advancedSocialGaps: 0, hreflangGaps: 0, imageMetadataGaps: 0, structuredImageGaps: 0, responsiveImageGaps: 0, lazyLoadingGaps: 0, decorativeImages: 0 };
 const fail = message => failures.push(message);
 const warn = message => warnings.push(message);
 const extract = (html, regex) => html.match(regex)?.[1]?.trim() || '';
@@ -42,10 +42,30 @@ for (const item of items) {
   for(const name of ['twitter:title','twitter:description','twitter:image']) if(!meta(html,name)){stats.advancedSocialGaps++;warn(`${route}: missing ${name}`);}
   for(const name of ['og:image:alt','og:image:width','og:image:height','og:image:type','twitter:image:alt']){const value=name.startsWith('og:')?property(html,name):meta(html,name);if(!value){stats.imageMetadataGaps++;warn(`${route}: missing ${name}`);}}
   const images=[...html.matchAll(/<img\b[^>]*>/gi)].map(m=>m[0]); if(images.length) stats.pagesWithImages++;
-  for(const tag of images){const src=attr(tag,'src'); const altPresent=hasAttr(tag,'alt'); const alt=attr(tag,'alt'); if(src&&!altPresent) fail(`${route}: image ${src} is missing alt attribute`); else if(src&&altPresent&&alt==='') stats.decorativeImages++; if(src&&(!attr(tag,'width')||!attr(tag,'height'))){stats.imageMetadataGaps++;warn(`${route}: image ${src} lacks explicit width/height`);} if(src){const assetFile=sameOriginAssetFile(absolute(src,route));if(assetFile){stats.sameOriginImagesChecked++;if(!fs.existsSync(assetFile)||!fs.statSync(assetFile).isFile()){stats.missingSameOriginImages++;fail(`${route}: same-origin image asset missing on disk: ${src}`);}}}}
+  for(const tag of images){
+    const src=attr(tag,'src'); const altPresent=hasAttr(tag,'alt'); const alt=attr(tag,'alt');
+    if(src&&!altPresent) fail(`${route}: image ${src} is missing alt attribute`); else if(src&&altPresent&&alt==='') stats.decorativeImages++;
+    if(src&&(!attr(tag,'width')||!attr(tag,'height'))){stats.imageMetadataGaps++;warn(`${route}: image ${src} lacks explicit width/height`);}
+    const srcset=attr(tag,'srcset'), sizes=attr(tag,'sizes'), loading=attr(tag,'loading'), fetchpriority=attr(tag,'fetchpriority').toLowerCase();
+    if(srcset&&!sizes){stats.responsiveImageGaps++;warn(`${route}: image ${src} has srcset without sizes`);}
+    if(src&&!loading&&fetchpriority!=='high'){stats.lazyLoadingGaps++;warn(`${route}: image ${src} has neither loading policy nor high fetchpriority`);}
+    if(src){const assetFile=sameOriginAssetFile(absolute(src,route));if(assetFile){stats.sameOriginImagesChecked++;if(!fs.existsSync(assetFile)||!fs.statSync(assetFile).isFile()){stats.missingSameOriginImages++;fail(`${route}: same-origin image asset missing on disk: ${src}`);}}}
+  }
   const ogImage=property(html,'og:image'); if(ogImage){const assetFile=sameOriginAssetFile(absolute(ogImage,route));if(assetFile){stats.sameOriginImagesChecked++;if(!fs.existsSync(assetFile)||!fs.statSync(assetFile).isFile()){stats.missingSameOriginImages++;fail(`${route}: same-origin og:image asset missing on disk: ${ogImage}`);}}}
+  if(ogImage&&!/^https?:\/\//i.test(ogImage)){stats.imageMetadataGaps++;warn(`${route}: og:image should use an absolute crawlable URL`);}
+  const twitterImage=meta(html,'twitter:image'); if(twitterImage&&!/^https?:\/\//i.test(twitterImage)){stats.imageMetadataGaps++;warn(`${route}: twitter:image should use an absolute crawlable URL`);}
   if(ogImage&&images.length&&!images.some(tag=>absolute(attr(tag,'src'),route)===absolute(ogImage,route))) warn(`${route}: og:image is not represented by a page content image`);
-  const blocks=[...html.matchAll(/<script\s+type=["']application\/ld\+json["']>([\s\S]*?)<\/script>/gi)]; if(!blocks.length) fail(`${route}: missing JSON-LD`); let articleSchema=false; for(const [i,b] of blocks.entries()){try{const parsed=JSON.parse(b[1]);const nodes=Array.isArray(parsed?.['@graph'])?parsed['@graph']:[parsed];if(nodes.some(n=>['Article','NewsArticle','BlogPosting'].includes(n?.['@type']))) articleSchema=true;}catch(e){fail(`${route}: invalid JSON-LD block ${i+1}: ${e.message}`);}} if(!articleSchema) fail(`${route}: missing Article/NewsArticle/BlogPosting schema`); else stats.pagesWithArticleSchema++;
+  const blocks=[...html.matchAll(/<script\s+type=["']application\/ld\+json["']>([\s\S]*?)<\/script>/gi)]; if(!blocks.length) fail(`${route}: missing JSON-LD`); let articleSchema=false, structuredImageSignal=false;
+  for(const [i,b] of blocks.entries()){
+    try{
+      const parsed=JSON.parse(b[1]);
+      const nodes=Array.isArray(parsed?.['@graph'])?parsed['@graph']:[parsed];
+      if(nodes.some(n=>['Article','NewsArticle','BlogPosting'].includes(n?.['@type']))) articleSchema=true;
+      if(nodes.some(n=>n?.['@type']==='ImageObject'||n?.primaryImageOfPage||n?.image?.['@type']==='ImageObject')) structuredImageSignal=true;
+    }catch(e){fail(`${route}: invalid JSON-LD block ${i+1}: ${e.message}`);}
+  }
+  if(!articleSchema) fail(`${route}: missing Article/NewsArticle/BlogPosting schema`); else stats.pagesWithArticleSchema++;
+  if(images.length){if(structuredImageSignal) stats.pagesWithStructuredImageSignal++; else {stats.structuredImageGaps++;warn(`${route}: page has content images but no ImageObject/primaryImageOfPage structured image signal`);}}
   if(!property(html,'article:published_time')) warn(`${route}: missing article:published_time`); if(!property(html,'article:author')&&!meta(html,'author')) warn(`${route}: missing truthful author signal`);
   const lang=String(item.language||'').toLowerCase(); if((lang==='hr'||lang==='en')&&!/<link\s+[^>]*hreflang=/i.test(html)){stats.hreflangGaps++;warn(`${route}: no hreflang links; pair only when a real reciprocal translation exists`);}
 }
