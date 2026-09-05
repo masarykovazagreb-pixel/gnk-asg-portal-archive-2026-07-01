@@ -8,7 +8,7 @@ const SITEMAP = path.join(PORTAL, 'sitemap.xml');
 const ORIGIN = 'https://gnk-asg.hr';
 const failures = [];
 const warnings = [];
-const stats = { registryItems: 0, checkedPages: 0, indexablePages: 0, sitemapMembers: 0, registryUrlMismatches: 0, pagesWithImages: 0, sameOriginImagesChecked: 0, missingSameOriginImages: 0, pagesWithArticleSchema: 0, pagesWithStructuredImageSignal: 0, advancedSocialGaps: 0, hreflangGaps: 0, imageMetadataGaps: 0, structuredImageGaps: 0, responsiveImageGaps: 0, lazyLoadingGaps: 0, decorativeImages: 0 };
+const stats = { registryItems: 0, checkedPages: 0, indexablePages: 0, sitemapMembers: 0, registryUrlMismatches: 0, pagesWithImages: 0, sameOriginImagesChecked: 0, missingSameOriginImages: 0, pagesWithArticleSchema: 0, pagesWithStructuredImageSignal: 0, advancedSocialGaps: 0, hreflangGaps: 0, imageMetadataGaps: 0, structuredImageGaps: 0, responsiveImageGaps: 0, lazyLoadingGaps: 0, decorativeImages: 0, entityTruthConflicts: 0 };
 const fail = message => failures.push(message);
 const warn = message => warnings.push(message);
 const extract = (html, regex) => html.match(regex)?.[1]?.trim() || '';
@@ -32,6 +32,8 @@ for (const item of items) {
   const expectedUrl = `${ORIGIN}${route}`; if (item.url && item.url !== expectedUrl) { stats.registryUrlMismatches++; fail(`${route}: registry url mismatch`); }
   const file = routeFile(route); if (!fs.existsSync(file)) continue;
   const html = fs.readFileSync(file, 'utf8'); stats.checkedPages++;
+  const connectedCompanyCounts = new Set([...html.matchAll(/\b(\d{1,3})\s+povezanih\s+društava\b/gi)].map(m => Number(m[1])));
+  if (connectedCompanyCounts.size > 1) { stats.entityTruthConflicts++; fail(`${route}: conflicting connected-company counts on one page: ${[...connectedCompanyCounts].sort((a,b)=>a-b).join(', ')}`); }
   const title = extract(html, /<title>([\s\S]*?)<\/title>/i), description = meta(html,'description'), robots = meta(html,'robots'), pageCanonical = canonical(html), h1s=[...html.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/gi)];
   if(!title) fail(`${route}: missing title`); if(!description) fail(`${route}: missing meta description`); if(pageCanonical!==expectedUrl) fail(`${route}: canonical mismatch`); if(!sitemapUrls.has(expectedUrl)) fail(`${route}: canonical URL missing from sitemap.xml`); else stats.sitemapMembers++;
   if(!/\bindex\b/i.test(robots)||!/\bfollow\b/i.test(robots)) fail(`${route}: robots must include index,follow`); else stats.indexablePages++;
