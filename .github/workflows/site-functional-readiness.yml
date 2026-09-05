@@ -52,6 +52,7 @@ jobs:
           node --check scripts/test-digital-workforce-api-contract.mjs
           node --check scripts/test-news-publication-seo-contract.mjs
           node --check scripts/audit-editorial-visibility-v1.mjs
+          node --check scripts/audit-social-image-contract-v1.mjs
           bash -n scripts/check-newsroom-route-readiness.sh
           bash -n scripts/verify-production-route.sh
 
@@ -119,6 +120,9 @@ jobs:
       - name: Editorial visibility integrity
         run: node scripts/audit-editorial-visibility-v1.mjs
 
+      - name: Social image contract
+        run: node scripts/audit-social-image-contract-v1.mjs
+
       - name: Static page integrity
         id: static_integrity
         continue-on-error: true
@@ -150,6 +154,7 @@ jobs:
             artifacts/*.json
             artifacts/readiness-logs/**
             artifacts/editorial-visibility/**
+            artifacts/social-image-contract/**
           if-no-files-found: warn
           retention-days: 14
 
