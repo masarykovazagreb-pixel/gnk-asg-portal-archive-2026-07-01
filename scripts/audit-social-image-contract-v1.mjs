@@ -7,7 +7,7 @@ const REGISTRY = path.join(PORTAL, 'data', 'editorial-registry.json');
 const ORIGIN = 'https://gnk-asg.hr';
 const failures = [];
 const warnings = [];
-const stats = { checkedPages: 0, socialImagesChecked: 0, missingAssets: 0, metadataGaps: 0, invalidDimensions: 0 };
+const stats = { checkedPages: 0, socialImagesChecked: 0, missingAssets: 0, metadataGaps: 0, invalidDimensions: 0, mimeMismatches: 0 };
 
 const extract = (html, regex) => html.match(regex)?.[1]?.trim() || '';
 const meta = (html, name) => extract(html, new RegExp(`<meta\\s+[^>]*name=["']${name}["'][^>]*content=["']([^"']+)["'][^>]*>`, 'i')) || extract(html, new RegExp(`<meta\\s+[^>]*content=["']([^"']+)["'][^>]*name=["']${name}["'][^>]*>`, 'i'));
@@ -21,6 +21,18 @@ const localAsset = value => {
   } catch {
     return null;
   }
+};
+const mimeFromPath = value => {
+  try {
+    const pathname = new URL(value).pathname.toLowerCase();
+    if (/\\.jpe?g$/.test(pathname)) return 'image/jpeg';
+    if (/\\.png$/.test(pathname)) return 'image/png';
+    if (/\\.webp$/.test(pathname)) return 'image/webp';
+    if (/\\.gif$/.test(pathname)) return 'image/gif';
+  } catch {
+    return '';
+  }
+  return '';
 };
 const requireAbsoluteHttp = (route, label, value) => {
   if (!/^https?:\\/\\//i.test(value)) failures.push(`${route}: ${label} must be an absolute HTTP(S) URL`);
@@ -84,6 +96,12 @@ for (const item of items) {
   }
 
   if (ogType && !/^image\\/(jpeg|png|webp|gif)$/i.test(ogType)) warnings.push(`${route}: unusual og:image:type ${ogType}`);
+  const inferredMime = ogImage ? mimeFromPath(ogImage) : '';
+  if (ogImage && !inferredMime) warnings.push(`${route}: og:image extension does not map to a supported image MIME; runtime HTTP Content-Type verification required`);
+  if (ogType && inferredMime && ogType.toLowerCase() !== inferredMime) {
+    stats.mimeMismatches++;
+    failures.push(`${route}: og:image:type ${ogType} conflicts with image URL extension MIME ${inferredMime}`);
+  }
   if (ogImage && twitterImage && ogImage !== twitterImage) warnings.push(`${route}: og:image and twitter:image differ; verify this is intentional`);
 }
 
