@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'apps/portal/**'
+      - 'scripts/audit-editorial-visibility-v1.mjs'
       - 'scripts/audit-hreflang-contract-v1.mjs'
       - 'scripts/audit-search-discovery-state-v1.mjs'
       - 'scripts/audit-social-image-contract-v1.mjs'
@@ -13,6 +14,7 @@ on:
       - main
     paths:
       - 'apps/portal/**'
+      - 'scripts/audit-editorial-visibility-v1.mjs'
       - 'scripts/audit-hreflang-contract-v1.mjs'
       - 'scripts/audit-search-discovery-state-v1.mjs'
       - 'scripts/audit-social-image-contract-v1.mjs'
@@ -40,9 +42,13 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          node --check scripts/audit-editorial-visibility-v1.mjs
           node --check scripts/audit-hreflang-contract-v1.mjs
           node --check scripts/audit-search-discovery-state-v1.mjs
           node --check scripts/audit-social-image-contract-v1.mjs
+
+      - name: Editorial visibility contract
+        run: node scripts/audit-editorial-visibility-v1.mjs
 
       - name: Reciprocal hreflang contract
         run: node scripts/audit-hreflang-contract-v1.mjs
@@ -59,6 +65,7 @@ jobs:
         with:
           name: visibility-contract-gate-${{ github.sha }}
           path: |
+            artifacts/editorial-visibility/**
             artifacts/hreflang-contract/**
             artifacts/search-discovery-state/**
             artifacts/social-image-contract/**
