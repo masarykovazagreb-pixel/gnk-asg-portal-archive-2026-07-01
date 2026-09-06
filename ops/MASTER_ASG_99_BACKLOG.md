@@ -32,6 +32,9 @@ Target: verified 99%, not estimated 99%.
 22. Close only with evidence: current main SHA, successful Actions runs, fresh source timestamps, valid sitemaps and no P0/P1 failures.
 
 ## Current incident note
-- main HEAD observed at 5bdcfe53b5aa1f61775c5fdd9be598dec3c12137 (2026-09-01 Refresh GNK ASG news feed).
-- Latest observed successful Actions run was GNK ASG Automation SLA Watchdog on 2026-09-01.
-- 2026-09-06 Image Health Scan failed with no executed steps, consistent with an Actions runner/execution-layer incident rather than an application-script failure.
+- main HEAD advanced to 2831fd72969d9a1f25c2ffdcf998adb59e61a1da on 2026-09-06 with this operational backlog; no automation-generated content commit has advanced main since 2026-09-01.
+- freshness-status.json is still generatedAt 2026-09-01T19:55:37.235Z and overall=stale; weather was already stale at generation time.
+- news-automation-status.json is still updated_at 2026-09-01T21:55:37+02:00 despite a configured six-times-daily cadence, so AKTUAL/news freshness is not currently healthy.
+- 2026-09-06 Image Health Scan run 34020265439 was retried; attempt 2 failed immediately with zero executed steps.
+- Digital Workforce Newsroom run 33958603031 was retried again; the latest attempt also failed immediately with zero executed steps.
+- Two independent workflows failing before any step executes materially strengthens the diagnosis of a GitHub Actions execution/runner/account-level incident rather than an application-script defect. Do not modify generator application code until the execution layer is restored or GitHub provides a concrete job-level error.
