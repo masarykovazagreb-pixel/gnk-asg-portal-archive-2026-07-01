@@ -14,6 +14,8 @@ const stats = {
   metadataGaps: 0,
   invalidDimensions: 0,
   mimeMismatches: 0,
+  fileMimeMismatches: 0,
+  unknownFileMime: 0,
   insecureImageUrls: 0,
   genericAltText: 0,
   altMismatches: 0,
@@ -47,6 +49,21 @@ const mimeFromPath = value => {
   }
   return '';
 };
+const mimeFromFileSignature = file => {
+  try {
+    const buffer = fs.readFileSync(file);
+    if (buffer.length >= 3 && buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff) return 'image/jpeg';
+    if (buffer.length >= 8 && buffer.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))) return 'image/png';
+    if (buffer.length >= 12 && buffer.subarray(0, 4).toString('ascii') === 'RIFF' && buffer.subarray(8, 12).toString('ascii') === 'WEBP') return 'image/webp';
+    if (buffer.length >= 6) {
+      const signature = buffer.subarray(0, 6).toString('ascii');
+      if (signature === 'GIF87a' || signature === 'GIF89a') return 'image/gif';
+    }
+  } catch {
+    return '';
+  }
+  return '';
+};
 const requireAbsoluteHttps = (route, label, value) => {
   if (!/^https:\\/\\//i.test(value)) {
     stats.insecureImageUrls++;
@@ -55,12 +72,14 @@ const requireAbsoluteHttps = (route, label, value) => {
 };
 const requireAsset = (route, label, value) => {
   const file = localAsset(value);
-  if (!file) return;
+  if (!file) return null;
   stats.socialImagesChecked++;
   if (!fs.existsSync(file) || !fs.statSync(file).isFile()) {
     stats.missingAssets++;
     failures.push(`${route}: ${label} same-origin asset missing on disk: ${value}`);
+    return null;
   }
+  return file;
 };
 const positiveInt = value => /^\\d+$/.test(value) && Number(value) > 0;
 const normalizeAlt = value => String(value || '').trim().replace(/\\s+/g, ' ');
@@ -114,6 +133,7 @@ for (const item of items) {
   const ogWidth = property(html, 'og:image:width');
   const ogHeight = property(html, 'og:image:height');
   const ogType = property(html, 'og:image:type');
+  let ogAsset = null;
 
   for (const [label, value] of [['og:image', ogImage], ['twitter:image', twitterImage]]) {
     if (!value) {
@@ -122,7 +142,8 @@ for (const item of items) {
       continue;
     }
     requireAbsoluteHttps(route, label, value);
-    requireAsset(route, label, value);
+    const asset = requireAsset(route, label, value);
+    if (label === 'og:image') ogAsset = asset;
   }
 
   for (const [label, value] of [['og:image:alt', ogAlt], ['twitter:image:alt', twitterAlt], ['og:image:type', ogType]]) {
@@ -161,6 +182,24 @@ for (const item of items) {
     stats.mimeMismatches++;
     failures.push(`${route}: og:image:type ${ogType} conflicts with image URL extension MIME ${inferredMime}`);
   }
+
+  if (ogAsset) {
+    const fileMime = mimeFromFileSignature(ogAsset);
+    if (!fileMime) {
+      stats.unknownFileMime++;
+      failures.push(`${route}: og:image same-origin asset has an unrecognized file signature; cannot verify actual image MIME`);
+    } else {
+      if (inferredMime && inferredMime !== fileMime) {
+        stats.fileMimeMismatches++;
+        failures.push(`${route}: og:image URL extension MIME ${inferredMime} conflicts with actual file signature MIME ${fileMime}`);
+      }
+      if (ogType && ogType.toLowerCase() !== fileMime) {
+        stats.fileMimeMismatches++;
+        failures.push(`${route}: og:image:type ${ogType} conflicts with actual file signature MIME ${fileMime}`);
+      }
+    }
+  }
+
   if (ogImage && twitterImage && ogImage !== twitterImage) warnings.push(`${route}: og:image and twitter:image differ; verify this is intentional`);
 
   const imageObjects = jsonLdObjects(html).filter(obj => typeIncludes(obj, 'ImageObject'));
