@@ -38,7 +38,7 @@ for (const item of Array.isArray(registry.items) ? registry.items : []) {
   const canonicalSelf = canonicalUrl === expectedUrl;
   const sitemapRegistered = sitemapUrls.has(expectedUrl);
   const discoverable = materialized && canonicalSelf && indexFollow;
-  const crawlableLocal = discoverable; // local static evidence only; production HTTP reachability is a separate probe.
+  const crawlableLocalEvidence = discoverable;
 
   pages.push({
     route,
@@ -47,7 +47,8 @@ for (const item of Array.isArray(registry.items) ? registry.items : []) {
       DISCOVERABLE: discoverable,
       SITEMAP_REGISTERED: sitemapRegistered,
       SUBMITTED: null,
-      CRAWLABLE_LOCAL: crawlableLocal,
+      CRAWLABLE: null,
+      CRAWLABLE_LOCAL_EVIDENCE: crawlableLocalEvidence,
       INDEXED: null
     },
     evidence: {
@@ -58,6 +59,8 @@ for (const item of Array.isArray(registry.items) ? registry.items : []) {
       robotsDefaultPermissive: robotsTokens.length === 0,
       sitemapMembership: sitemapRegistered,
       submittedEvidence: 'UNAVAILABLE_NO_SEARCH_ENGINE_SUBMISSION_RECEIPT',
+      crawlableEvidence: 'UNAVAILABLE_NO_PRODUCTION_HTTP_AND_X_ROBOTS_EVIDENCE',
+      crawlableLocalEvidence,
       indexedEvidence: 'UNAVAILABLE_NO_SEARCH_ENGINE_INDEX_EVIDENCE'
     }
   });
@@ -73,7 +76,9 @@ const counts = {
   SITEMAP_REGISTERED: pages.filter(p => p.states.SITEMAP_REGISTERED).length,
   SUBMITTED_VERIFIED: pages.filter(p => p.states.SUBMITTED === true).length,
   SUBMITTED_UNKNOWN: pages.filter(p => p.states.SUBMITTED === null).length,
-  CRAWLABLE_LOCAL: pages.filter(p => p.states.CRAWLABLE_LOCAL).length,
+  CRAWLABLE_VERIFIED: pages.filter(p => p.states.CRAWLABLE === true).length,
+  CRAWLABLE_UNKNOWN: pages.filter(p => p.states.CRAWLABLE === null).length,
+  CRAWLABLE_LOCAL_EVIDENCE: pages.filter(p => p.states.CRAWLABLE_LOCAL_EVIDENCE).length,
   INDEXED_VERIFIED: pages.filter(p => p.states.INDEXED === true).length,
   INDEXED_UNKNOWN: pages.filter(p => p.states.INDEXED === null).length
 };
@@ -85,7 +90,8 @@ const report = {
     DISCOVERABLE: 'Materialized self-canonical page whose local HTML robots directive does not explicitly block indexing or following. Missing robots meta is treated as the permissive default, not as a failure.',
     SITEMAP_REGISTERED: 'Canonical URL is present in the committed sitemap.xml. This is discovery evidence, not proof of search-engine submission.',
     SUBMITTED: 'Never inferred from sitemap membership. Remains null unless authoritative search-engine submission receipt or equivalent evidence is supplied.',
-    CRAWLABLE_LOCAL: 'Local static evidence has no page-level HTML robots/canonical blocker. This does not prove production HTTP reachability or absence of an X-Robots-Tag header.',
+    CRAWLABLE: 'Never inferred from local files. Remains null unless production HTTP reachability and production robots/X-Robots evidence are supplied.',
+    CRAWLABLE_LOCAL_EVIDENCE: 'Local static evidence has no page-level HTML robots/canonical blocker. This is supporting evidence only and is not a CRAWLABLE claim.',
     INDEXED: 'Never inferred. Remains null unless authoritative search-engine index evidence is supplied.'
   },
   ok: failures.length === 0,
