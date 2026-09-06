@@ -13,8 +13,8 @@ Cilj: stvarno verificiranih 99%. Redoslijed: kvarovi/degradacije → automatizac
 8. [ ] Verificirati Digital Workforce runtime + newsroom generation + javne statičke rute.
 
 ## P1
-9. [ ] Izvršiti entity SEO audit za `Nermin Sefić`, `Nermin Sefic` i `GNK ASG` na HR i EN rutama.
-10. [ ] Provjeriti canonical/hreflang/robots/OG/JSON-LD konzistentnost na entity stranicama.
+9. [x] Izvršiti entity SEO audit za `Nermin Sefić`, `Nermin Sefic` i `GNK ASG` na HR i EN rutama.
+10. [x] Provjeriti canonical/hreflang/robots/OG/JSON-LD konzistentnost na entity stranicama.
 11. [ ] Provjeriti `sitemap.xml`, `sitemap-index.xml`, `editorial-sitemap.xml` i URL pokrivenost novih ruta.
 12. [ ] Provjeriti `image-sitemap.xml`, image loc/title/caption i dostupnost kanonskih slika.
 13. [ ] Provjeriti da SEO normalizer ne mijenja sadržaj izvan deklariranih entity ruta.
@@ -28,9 +28,12 @@ Cilj: stvarno verificiranih 99%. Redoslijed: kvarovi/degradacije → automatizac
 19. [ ] Audit missing alt teksta i image SEO signala na prioritetnim slikama.
 20. [ ] Audit internal-link strukture prema entity, newsroom i Digital Workforce hubovima.
 21. [ ] Provjeriti robots/indexability kontradikcije između HTML meta, sitemapova i javnih ruta.
-22. [ ] Održavati ovaj backlog: zatvarati samo verificirane stavke i svaki dan reprioritizirati prema novim P0/P1 kvarovima.
+22. [x] Održavati ovaj backlog: zatvarati samo verificirane stavke i svaki dan reprioritizirati prema novim P0/P1 kvarovima.
 
 ## Trenutno verificirano
-- `main`: `20fd8c55e5013ece90f69bc4e549cb4c133728f3` prije dodavanja ovog backloga.
-- Zadnji provjereni scheduled run `Generate Digital Workforce Newsroom Pages` (run 34025986217) završio je `failure`, job `generate` ima 0 dostupnih stepova; logs endpoint vraća 404 BlobNotFound. Ne postoji dovoljno dokaza da je kvar u generator skripti, pa se ne radi spekulativni code-fix.
-- Posljednji pronađeni uspješan Actions run u provjeri je `GNK ASG Automation SLA Watchdog` od 2026-09-01; zato je Actions infrastruktura P0 dok se ne potvrdi noviji uspješan run.
+- `main` na početku ovog ciklusa: `b0d50e4f689bfb5c6ade0ba0cdea70e4486d12f5`.
+- Novi scheduled kvar potvrđen je i na `Refresh GNKC Index` runu `34028796562` od 2026-09-06: job `refresh` završava `failure`, a log endpoint vraća 404 `BlobNotFound`. Budući da se isti obrazac pojavljuje na više različitih workflowa prije dostupnih stepova, nema dovoljno dokaza za spekulativnu izmjenu pojedinačne generator skripte; Actions/runner/permission sloj ostaje P0.
+- `refresh-gnkc-index.yml` na `main` ima standardni `ubuntu-latest`, `contents: write`, Node 22 i uredno definirane stepove; sam YAML ne objašnjava failure prije stepova.
+- HR i EN `nermin-sefic` stranice imaju verificirane canonical, hreflang HR/EN/x-default, `robots=index,follow`, OG/Twitter i JSON-LD Person/ProfilePage/Organization signale te varijante `Nermin Sefić` / `Nermin Sefic`.
+- Javni web indeks danas vraća `https://gnk-asg.hr/`, HR `https://gnk-asg.hr/nermin-sefic/` i EN `https://gnk-asg.hr/en/nermin-sefic/`, pa entity rute jesu javno dohvatljive i indeksabilne.
+- `sitemap.xml` sadrži HR `nermin-sefic` URL s HR/EN/x-default alternates, ali `lastmod` je još `2026-08-03`, stariji od aktualne entity SEO izmjene; sitemap freshness ostaje otvoreni P1 dok se ne provjere i preostali sitemapovi te napravi siguran sinkronizirani write.
