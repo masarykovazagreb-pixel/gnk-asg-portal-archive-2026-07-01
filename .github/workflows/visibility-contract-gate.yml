@@ -5,6 +5,7 @@ on:
     paths:
       - 'apps/portal/**'
       - 'scripts/audit-editorial-visibility-v1.mjs'
+      - 'scripts/audit-editorial-registry-schema-parity-v1.mjs'
       - 'scripts/audit-hreflang-contract-v1.mjs'
       - 'scripts/audit-search-discovery-state-v1.mjs'
       - 'scripts/audit-social-image-contract-v1.mjs'
@@ -23,6 +24,7 @@ on:
     paths:
       - 'apps/portal/**'
       - 'scripts/audit-editorial-visibility-v1.mjs'
+      - 'scripts/audit-editorial-registry-schema-parity-v1.mjs'
       - 'scripts/audit-hreflang-contract-v1.mjs'
       - 'scripts/audit-search-discovery-state-v1.mjs'
       - 'scripts/audit-social-image-contract-v1.mjs'
@@ -59,6 +61,7 @@ jobs:
         run: |
           set -euo pipefail
           node --check scripts/audit-editorial-visibility-v1.mjs
+          node --check scripts/audit-editorial-registry-schema-parity-v1.mjs
           node --check scripts/audit-hreflang-contract-v1.mjs
           node --check scripts/audit-search-discovery-state-v1.mjs
           node --check scripts/audit-social-image-contract-v1.mjs
@@ -73,6 +76,9 @@ jobs:
 
       - name: Editorial visibility contract
         run: node scripts/audit-editorial-visibility-v1.mjs
+
+      - name: Editorial registry structured-data parity contract
+        run: node scripts/audit-editorial-registry-schema-parity-v1.mjs
 
       - name: Reciprocal hreflang contract
         run: node scripts/audit-hreflang-contract-v1.mjs
@@ -114,6 +120,7 @@ jobs:
           name: visibility-contract-gate-${{ github.sha }}
           path: |
             artifacts/editorial-visibility/**
+            artifacts/editorial-registry-schema-parity/**
             artifacts/hreflang-contract/**
             artifacts/search-discovery-state/**
             artifacts/social-image-contract/**
