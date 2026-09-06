@@ -27,12 +27,12 @@ const stats = {
 const extract = (html, regex) => html.match(regex)?.[1]?.trim() || '';
 const meta = (html, name) => extract(html, new RegExp(`<meta\\s+[^>]*name=["']${name}["'][^>]*content=["']([^"']+)["'][^>]*>`, 'i')) || extract(html, new RegExp(`<meta\\s+[^>]*content=["']([^"']+)["'][^>]*name=["']${name}["'][^>]*>`, 'i'));
 const property = (html, name) => extract(html, new RegExp(`<meta\\s+[^>]*property=["']${name}["'][^>]*content=["']([^"']+)["'][^>]*>`, 'i')) || extract(html, new RegExp(`<meta\\s+[^>]*content=["']([^"']+)["'][^>]*property=["']${name}["'][^>]*>`, 'i'));
-const routeFile = route => path.join(PORTAL, route.replace(/^\\/+|\\/+$/g, ''), 'index.html');
+const routeFile = route => path.join(PORTAL, route.replace(/^\/+|\/+$/g, ''), 'index.html');
 const localAsset = value => {
   try {
     const url = new URL(value);
     if (url.origin !== ORIGIN) return null;
-    return path.join(PORTAL, decodeURIComponent(url.pathname).replace(/^\\/+/, ''));
+    return path.join(PORTAL, decodeURIComponent(url.pathname).replace(/^\/+/, ''));
   } catch {
     return null;
   }
@@ -40,10 +40,10 @@ const localAsset = value => {
 const mimeFromPath = value => {
   try {
     const pathname = new URL(value).pathname.toLowerCase();
-    if (/\\.jpe?g$/.test(pathname)) return 'image/jpeg';
-    if (/\\.png$/.test(pathname)) return 'image/png';
-    if (/\\.webp$/.test(pathname)) return 'image/webp';
-    if (/\\.gif$/.test(pathname)) return 'image/gif';
+    if (/\.jpe?g$/.test(pathname)) return 'image/jpeg';
+    if (/\.png$/.test(pathname)) return 'image/png';
+    if (/\.webp$/.test(pathname)) return 'image/webp';
+    if (/\.gif$/.test(pathname)) return 'image/gif';
   } catch {
     return '';
   }
@@ -65,7 +65,7 @@ const mimeFromFileSignature = file => {
   return '';
 };
 const requireAbsoluteHttps = (route, label, value) => {
-  if (!/^https:\\/\\//i.test(value)) {
+  if (!/^https:\/\//i.test(value)) {
     stats.insecureImageUrls++;
     failures.push(`${route}: ${label} must be an absolute HTTPS URL`);
   }
@@ -81,12 +81,31 @@ const requireAsset = (route, label, value) => {
   }
   return file;
 };
-const positiveInt = value => /^\\d+$/.test(value) && Number(value) > 0;
-const normalizeAlt = value => String(value || '').trim().replace(/\\s+/g, ' ');
+const verifyAssetSignature = (route, label, value, file, declaredType = '') => {
+  if (!file) return;
+  const inferredMime = mimeFromPath(value);
+  if (!inferredMime) warnings.push(`${route}: ${label} extension does not map to a supported image MIME; runtime HTTP Content-Type verification required`);
+  const fileMime = mimeFromFileSignature(file);
+  if (!fileMime) {
+    stats.unknownFileMime++;
+    failures.push(`${route}: ${label} same-origin asset has an unrecognized file signature; cannot verify actual image MIME`);
+    return;
+  }
+  if (inferredMime && inferredMime !== fileMime) {
+    stats.fileMimeMismatches++;
+    failures.push(`${route}: ${label} URL extension MIME ${inferredMime} conflicts with actual file signature MIME ${fileMime}`);
+  }
+  if (declaredType && declaredType.toLowerCase() !== fileMime) {
+    stats.fileMimeMismatches++;
+    failures.push(`${route}: ${label} declared MIME ${declaredType} conflicts with actual file signature MIME ${fileMime}`);
+  }
+};
+const positiveInt = value => /^\d+$/.test(value) && Number(value) > 0;
+const normalizeAlt = value => String(value || '').trim().replace(/\s+/g, ' ');
 const genericAlt = value => /^(image|photo|picture|slika|fotografija|logo|cover|thumbnail)$/i.test(normalizeAlt(value));
 const jsonLdObjects = html => {
   const out = [];
-  const regex = /<script\\s+[^>]*type=["']application\\/ld\\+json["'][^>]*>([\\s\\S]*?)<\\/script>/gi;
+  const regex = /<script\s+[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
   let match;
   while ((match = regex.exec(html))) {
     try {
@@ -134,6 +153,7 @@ for (const item of items) {
   const ogHeight = property(html, 'og:image:height');
   const ogType = property(html, 'og:image:type');
   let ogAsset = null;
+  let twitterAsset = null;
 
   for (const [label, value] of [['og:image', ogImage], ['twitter:image', twitterImage]]) {
     if (!value) {
@@ -144,6 +164,7 @@ for (const item of items) {
     requireAbsoluteHttps(route, label, value);
     const asset = requireAsset(route, label, value);
     if (label === 'og:image') ogAsset = asset;
+    if (label === 'twitter:image') twitterAsset = asset;
   }
 
   for (const [label, value] of [['og:image:alt', ogAlt], ['twitter:image:alt', twitterAlt], ['og:image:type', ogType]]) {
@@ -175,7 +196,7 @@ for (const item of items) {
     }
   }
 
-  if (ogType && !/^image\\/(jpeg|png|webp|gif)$/i.test(ogType)) warnings.push(`${route}: unusual og:image:type ${ogType}`);
+  if (ogType && !/^image\/(jpeg|png|webp|gif)$/i.test(ogType)) warnings.push(`${route}: unusual og:image:type ${ogType}`);
   const inferredMime = ogImage ? mimeFromPath(ogImage) : '';
   if (ogImage && !inferredMime) warnings.push(`${route}: og:image extension does not map to a supported image MIME; runtime HTTP Content-Type verification required`);
   if (ogType && inferredMime && ogType.toLowerCase() !== inferredMime) {
@@ -183,22 +204,8 @@ for (const item of items) {
     failures.push(`${route}: og:image:type ${ogType} conflicts with image URL extension MIME ${inferredMime}`);
   }
 
-  if (ogAsset) {
-    const fileMime = mimeFromFileSignature(ogAsset);
-    if (!fileMime) {
-      stats.unknownFileMime++;
-      failures.push(`${route}: og:image same-origin asset has an unrecognized file signature; cannot verify actual image MIME`);
-    } else {
-      if (inferredMime && inferredMime !== fileMime) {
-        stats.fileMimeMismatches++;
-        failures.push(`${route}: og:image URL extension MIME ${inferredMime} conflicts with actual file signature MIME ${fileMime}`);
-      }
-      if (ogType && ogType.toLowerCase() !== fileMime) {
-        stats.fileMimeMismatches++;
-        failures.push(`${route}: og:image:type ${ogType} conflicts with actual file signature MIME ${fileMime}`);
-      }
-    }
-  }
+  verifyAssetSignature(route, 'og:image', ogImage, ogAsset, ogType);
+  verifyAssetSignature(route, 'twitter:image', twitterImage, twitterAsset);
 
   if (ogImage && twitterImage && ogImage !== twitterImage) warnings.push(`${route}: og:image and twitter:image differ; verify this is intentional`);
 
@@ -221,6 +228,6 @@ for (const item of items) {
 const report = { version: 'GNK_ASG_SOCIAL_IMAGE_CONTRACT_V1', ok: failures.length === 0, stats, failures, warnings };
 const out = path.join(ROOT, 'artifacts', 'social-image-contract');
 fs.mkdirSync(out, { recursive: true });
-fs.writeFileSync(path.join(out, 'report.json'), `${JSON.stringify(report, null, 2)}\\n`);
+fs.writeFileSync(path.join(out, 'report.json'), `${JSON.stringify(report, null, 2)}\n`);
 console.log(JSON.stringify(report, null, 2));
 if (failures.length) process.exit(1);
