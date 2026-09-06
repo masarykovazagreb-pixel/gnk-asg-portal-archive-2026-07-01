@@ -7,6 +7,7 @@ const REGISTRY = path.join(PORTAL, 'data', 'editorial-registry.json');
 const SITEMAP = path.join(PORTAL, 'sitemap.xml');
 const EVIDENCE = path.join(PORTAL, 'data', 'search-discovery-evidence.json');
 const ORIGIN = 'https://gnk-asg.hr';
+const ORIGIN_HOST = new URL(ORIGIN).hostname;
 const outDir = path.join(ROOT, 'artifacts', 'search-discovery-state');
 const MAX_CLOCK_SKEW_MS = 5 * 60 * 1000;
 const MAX_EVIDENCE_AGE_MS = {
@@ -21,6 +22,11 @@ const meta = (html, name) => html.match(new RegExp(`<meta\\s+[^>]*name=["']${nam
 const canonical = html => html.match(/<link\s+[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["'][^>]*>/i)?.[1]?.trim() || html.match(/<link\s+[^>]*href=["']([^"']+)["'][^>]*rel=["']canonical["'][^>]*>/i)?.[1]?.trim() || '';
 const validIsoDate = value => typeof value === 'string' && !Number.isNaN(Date.parse(value));
 const allowedSourceTypes = new Set(['SEARCH_ENGINE_SUBMISSION_RECEIPT','PRODUCTION_HTTP_ROBOTS_EVIDENCE','SEARCH_ENGINE_INDEX_EVIDENCE']);
+
+function sourceUrl(value) {
+  try { return new URL(value); }
+  catch { return null; }
+}
 
 if (!fs.existsSync(REGISTRY)) failures.push('editorial registry missing');
 if (!fs.existsSync(SITEMAP)) failures.push('sitemap.xml missing');
@@ -43,6 +49,11 @@ function verifiedEvidence(route, state) {
   const requiredType = state === 'SUBMITTED' ? 'SEARCH_ENGINE_SUBMISSION_RECEIPT' : state === 'CRAWLABLE' ? 'PRODUCTION_HTTP_ROBOTS_EVIDENCE' : 'SEARCH_ENGINE_INDEX_EVIDENCE';
   if (entry.sourceType !== requiredType) { failures.push(`${route}: ${state} evidence requires sourceType ${requiredType}`); return { value: null, evidence: 'INVALID_EVIDENCE' }; }
   if (typeof entry.source !== 'string' || !entry.source.trim()) { failures.push(`${route}: ${state} evidence requires non-empty source`); return { value: null, evidence: 'INVALID_EVIDENCE' }; }
+  const parsedSource = sourceUrl(entry.source.trim());
+  if ((state === 'SUBMITTED' || state === 'INDEXED') && parsedSource && parsedSource.hostname.toLowerCase() === ORIGIN_HOST) {
+    failures.push(`${route}: ${state} evidence cannot use a self-origin ${ORIGIN_HOST} URL as search-engine proof`);
+    return { value: null, evidence: 'INVALID_SELF_ASSERTED_EVIDENCE' };
+  }
   if (!validIsoDate(entry.observedAt)) { failures.push(`${route}: ${state} evidence requires valid observedAt ISO date`); return { value: null, evidence: 'INVALID_EVIDENCE' }; }
   const observedAtMs = Date.parse(entry.observedAt);
   const nowMs = Date.now();
@@ -141,13 +152,17 @@ const report = {
   evidenceInput: fs.existsSync(EVIDENCE) ? 'apps/portal/data/search-discovery-evidence.json' : null,
   evidenceClockPolicy: { maxFutureSkewSeconds: MAX_CLOCK_SKEW_MS / 1000 },
   evidenceFreshnessPolicy: Object.fromEntries(Object.entries(MAX_EVIDENCE_AGE_MS).map(([state, maxAgeMs]) => [state, { maxAgeSeconds: maxAgeMs / 1000 }])),
+  evidenceTrustPolicy: {
+    selfOrigin: ORIGIN_HOST,
+    rule: 'SUBMITTED and INDEXED evidence may use opaque receipt/evidence identifiers, but when source is a URL it must not be hosted on the site being evaluated.'
+  },
   semantics: {
     DISCOVERABLE: 'Materialized self-canonical page whose local HTML robots directive does not explicitly block indexing or following. Missing robots meta is treated as the permissive default, not as a failure.',
     SITEMAP_REGISTERED: 'Canonical URL is present in the committed sitemap.xml. This is discovery evidence, not proof of search-engine submission.',
-    SUBMITTED: 'True/false only when backed by a typed search-engine submission receipt that is no older than the configured freshness window; otherwise null.',
+    SUBMITTED: 'True/false only when backed by a typed search-engine submission receipt that is no older than the configured freshness window; a self-origin URL cannot serve as search-engine proof; otherwise null.',
     CRAWLABLE: 'True/false only when backed by fresh production HTTP plus robots/X-Robots evidence in the optional evidence file; otherwise null.',
     CRAWLABLE_LOCAL_EVIDENCE: 'Local static evidence has no page-level HTML robots/canonical blocker. This is supporting evidence only and is not a CRAWLABLE claim.',
-    INDEXED: 'True/false only when backed by fresh typed authoritative search-engine index evidence; INDEXED=true also requires separately verified CRAWLABLE=true.'
+    INDEXED: 'True/false only when backed by fresh typed authoritative search-engine index evidence; a self-origin URL cannot serve as index proof; INDEXED=true also requires separately verified CRAWLABLE=true.'
   },
   ok: failures.length === 0,
   counts,
