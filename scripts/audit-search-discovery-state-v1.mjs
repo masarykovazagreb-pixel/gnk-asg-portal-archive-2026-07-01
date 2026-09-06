@@ -18,7 +18,7 @@ if (!fs.existsSync(SITEMAP)) failures.push('sitemap.xml missing');
 
 const registry = fs.existsSync(REGISTRY) ? JSON.parse(fs.readFileSync(REGISTRY, 'utf8')) : { items: [] };
 const sitemapXml = fs.existsSync(SITEMAP) ? fs.readFileSync(SITEMAP, 'utf8') : '';
-const submittedUrls = new Set([...sitemapXml.matchAll(/<loc>([^<]+)<\/loc>/gi)].map(m => m[1].trim()));
+const sitemapUrls = new Set([...sitemapXml.matchAll(/<loc>([^<]+)<\/loc>/gi)].map(m => m[1].trim()));
 
 for (const item of Array.isArray(registry.items) ? registry.items : []) {
   const route = String(item.path || '');
@@ -31,37 +31,41 @@ for (const item of Array.isArray(registry.items) ? registry.items : []) {
   const canonicalUrl = canonical(html);
   const indexFollow = /\bindex\b/i.test(robots) && /\bfollow\b/i.test(robots) && !/\bnoindex\b/i.test(robots);
   const canonicalSelf = canonicalUrl === expectedUrl;
-  const submitted = submittedUrls.has(expectedUrl);
+  const sitemapRegistered = sitemapUrls.has(expectedUrl);
   const discoverable = materialized && canonicalSelf && indexFollow;
-  const crawlable = discoverable; // local static evidence only; HTTP reachability is a separate production probe.
+  const crawlableLocal = discoverable; // local static evidence only; production HTTP reachability is a separate probe.
 
   pages.push({
     route,
     url: expectedUrl,
     states: {
       DISCOVERABLE: discoverable,
-      SUBMITTED: submitted,
-      CRAWLABLE_LOCAL: crawlable,
+      SITEMAP_REGISTERED: sitemapRegistered,
+      SUBMITTED: null,
+      CRAWLABLE_LOCAL: crawlableLocal,
       INDEXED: null
     },
     evidence: {
       materialized,
       canonicalSelf,
       robotsIndexFollow: indexFollow,
-      sitemapMembership: submitted,
+      sitemapMembership: sitemapRegistered,
+      submittedEvidence: 'UNAVAILABLE_NO_SEARCH_ENGINE_SUBMISSION_RECEIPT',
       indexedEvidence: 'UNAVAILABLE_NO_SEARCH_ENGINE_INDEX_EVIDENCE'
     }
   });
 
   if (materialized && !canonicalSelf) failures.push(`${route}: materialized page lacks self canonical`);
   if (materialized && !indexFollow) failures.push(`${route}: materialized page is not index,follow`);
-  if (discoverable && !submitted) failures.push(`${route}: discoverable page missing from sitemap.xml`);
+  if (discoverable && !sitemapRegistered) failures.push(`${route}: discoverable page missing from sitemap.xml`);
 }
 
 const counts = {
   registry: pages.length,
   DISCOVERABLE: pages.filter(p => p.states.DISCOVERABLE).length,
-  SUBMITTED: pages.filter(p => p.states.SUBMITTED).length,
+  SITEMAP_REGISTERED: pages.filter(p => p.states.SITEMAP_REGISTERED).length,
+  SUBMITTED_VERIFIED: pages.filter(p => p.states.SUBMITTED === true).length,
+  SUBMITTED_UNKNOWN: pages.filter(p => p.states.SUBMITTED === null).length,
   CRAWLABLE_LOCAL: pages.filter(p => p.states.CRAWLABLE_LOCAL).length,
   INDEXED_VERIFIED: pages.filter(p => p.states.INDEXED === true).length,
   INDEXED_UNKNOWN: pages.filter(p => p.states.INDEXED === null).length
@@ -72,7 +76,8 @@ const report = {
   generatedAt: new Date().toISOString(),
   semantics: {
     DISCOVERABLE: 'Materialized self-canonical page whose local robots directive permits index,follow.',
-    SUBMITTED: 'Canonical URL is present in the committed sitemap.xml. This does not prove search-engine submission receipt.',
+    SITEMAP_REGISTERED: 'Canonical URL is present in the committed sitemap.xml. This is discovery evidence, not proof of search-engine submission.',
+    SUBMITTED: 'Never inferred from sitemap membership. Remains null unless authoritative search-engine submission receipt or equivalent evidence is supplied.',
     CRAWLABLE_LOCAL: 'Local static evidence has no page-level robots/canonical blocker. This does not prove production HTTP reachability.',
     INDEXED: 'Never inferred. Remains null unless authoritative search-engine index evidence is supplied.'
   },
