@@ -1,6 +1,8 @@
 name: Actions Execution Probe
 
 on:
+  schedule:
+    - cron: '37 * * * *'
   workflow_dispatch:
   push:
     branches: [main]
