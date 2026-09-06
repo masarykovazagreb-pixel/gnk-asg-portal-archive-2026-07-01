@@ -9,6 +9,11 @@ const EVIDENCE = path.join(PORTAL, 'data', 'search-discovery-evidence.json');
 const ORIGIN = 'https://gnk-asg.hr';
 const outDir = path.join(ROOT, 'artifacts', 'search-discovery-state');
 const MAX_CLOCK_SKEW_MS = 5 * 60 * 1000;
+const MAX_EVIDENCE_AGE_MS = {
+  SUBMITTED: 30 * 24 * 60 * 60 * 1000,
+  CRAWLABLE: 24 * 60 * 60 * 1000,
+  INDEXED: 7 * 24 * 60 * 60 * 1000
+};
 
 const failures = [];
 const pages = [];
@@ -42,8 +47,23 @@ function verifiedEvidence(route, state) {
   const observedAtMs = Date.parse(entry.observedAt);
   const nowMs = Date.now();
   if (observedAtMs > nowMs + MAX_CLOCK_SKEW_MS) { failures.push(`${route}: ${state} evidence observedAt is future-dated beyond allowed clock skew`); return { value: null, evidence: 'INVALID_EVIDENCE' }; }
-  const ageSeconds = Math.max(0, Math.floor((nowMs - observedAtMs) / 1000));
-  return { value: entry.value, evidence: { sourceType: entry.sourceType, source: entry.source.trim(), observedAt: entry.observedAt, ageSeconds } };
+  const ageMs = Math.max(0, nowMs - observedAtMs);
+  const ageSeconds = Math.floor(ageMs / 1000);
+  const maxAgeMs = MAX_EVIDENCE_AGE_MS[state];
+  if (Number.isFinite(maxAgeMs) && ageMs > maxAgeMs) {
+    return {
+      value: null,
+      evidence: {
+        status: 'STALE_EVIDENCE',
+        sourceType: entry.sourceType,
+        source: entry.source.trim(),
+        observedAt: entry.observedAt,
+        ageSeconds,
+        maxAgeSeconds: Math.floor(maxAgeMs / 1000)
+      }
+    };
+  }
+  return { value: entry.value, evidence: { sourceType: entry.sourceType, source: entry.source.trim(), observedAt: entry.observedAt, ageSeconds, maxAgeSeconds: Math.floor(maxAgeMs / 1000) } };
 }
 
 for (const item of Array.isArray(registry.items) ? registry.items : []) {
@@ -120,13 +140,14 @@ const report = {
   generatedAt: new Date().toISOString(),
   evidenceInput: fs.existsSync(EVIDENCE) ? 'apps/portal/data/search-discovery-evidence.json' : null,
   evidenceClockPolicy: { maxFutureSkewSeconds: MAX_CLOCK_SKEW_MS / 1000 },
+  evidenceFreshnessPolicy: Object.fromEntries(Object.entries(MAX_EVIDENCE_AGE_MS).map(([state, maxAgeMs]) => [state, { maxAgeSeconds: maxAgeMs / 1000 }])),
   semantics: {
     DISCOVERABLE: 'Materialized self-canonical page whose local HTML robots directive does not explicitly block indexing or following. Missing robots meta is treated as the permissive default, not as a failure.',
     SITEMAP_REGISTERED: 'Canonical URL is present in the committed sitemap.xml. This is discovery evidence, not proof of search-engine submission.',
-    SUBMITTED: 'True/false only when backed by a typed search-engine submission receipt in the optional evidence file; otherwise null.',
-    CRAWLABLE: 'True/false only when backed by production HTTP plus robots/X-Robots evidence in the optional evidence file; otherwise null.',
+    SUBMITTED: 'True/false only when backed by a typed search-engine submission receipt that is no older than the configured freshness window; otherwise null.',
+    CRAWLABLE: 'True/false only when backed by fresh production HTTP plus robots/X-Robots evidence in the optional evidence file; otherwise null.',
     CRAWLABLE_LOCAL_EVIDENCE: 'Local static evidence has no page-level HTML robots/canonical blocker. This is supporting evidence only and is not a CRAWLABLE claim.',
-    INDEXED: 'True/false only when backed by typed authoritative search-engine index evidence; INDEXED=true also requires separately verified CRAWLABLE=true.'
+    INDEXED: 'True/false only when backed by fresh typed authoritative search-engine index evidence; INDEXED=true also requires separately verified CRAWLABLE=true.'
   },
   ok: failures.length === 0,
   counts,
