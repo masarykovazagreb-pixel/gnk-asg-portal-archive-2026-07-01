@@ -31,9 +31,10 @@ Cilj: stvarno verificiranih 99%. Redoslijed: kvarovi/degradacije → automatizac
 22. [x] Održavati ovaj backlog: zatvarati samo verificirane stavke i svaki dan reprioritizirati prema novim P0/P1 kvarovima.
 
 ## Trenutno verificirano
-- `main` na početku ovog ciklusa: `b0d50e4f689bfb5c6ade0ba0cdea70e4486d12f5`.
-- Novi scheduled kvar potvrđen je i na `Refresh GNKC Index` runu `34028796562` od 2026-09-06: job `refresh` završava `failure`, a log endpoint vraća 404 `BlobNotFound`. Budući da se isti obrazac pojavljuje na više različitih workflowa prije dostupnih stepova, nema dovoljno dokaza za spekulativnu izmjenu pojedinačne generator skripte; Actions/runner/permission sloj ostaje P0.
+- `main` na početku ovog ciklusa: `049f280ffd2f58ae55e9cc579b91982a4096a68b`.
+- Najnoviji provjereni scheduled kvar je `World Monitor Data Refresh (free sources)` run `34030932793` od 2026-09-06 na istom `main` SHA: završio je `failure`; job `101480166108` ima `steps: []`, a log endpoint vraća 404 `BlobNotFound`. To dodatno potvrđuje obrazac kvara prije izvršavanja deklariranih stepova i povećava prioritet Actions/runner/permission sloja kao P0.
+- Prethodno je isti obrazac potvrđen i na `Refresh GNKC Index` runu `34028796562`: job `refresh` završava `failure`, a log endpoint vraća 404 `BlobNotFound`. Nema dovoljno dokaza za spekulativnu izmjenu pojedinačne generator skripte.
 - `refresh-gnkc-index.yml` na `main` ima standardni `ubuntu-latest`, `contents: write`, Node 22 i uredno definirane stepove; sam YAML ne objašnjava failure prije stepova.
 - HR i EN `nermin-sefic` stranice imaju verificirane canonical, hreflang HR/EN/x-default, `robots=index,follow`, OG/Twitter i JSON-LD Person/ProfilePage/Organization signale te varijante `Nermin Sefić` / `Nermin Sefic`.
 - Javni web indeks danas vraća `https://gnk-asg.hr/`, HR `https://gnk-asg.hr/nermin-sefic/` i EN `https://gnk-asg.hr/en/nermin-sefic/`, pa entity rute jesu javno dohvatljive i indeksabilne.
-- `sitemap.xml` sadrži HR `nermin-sefic` URL s HR/EN/x-default alternates, ali `lastmod` je još `2026-08-03`, stariji od aktualne entity SEO izmjene; sitemap freshness ostaje otvoreni P1 dok se ne provjere i preostali sitemapovi te napravi siguran sinkronizirani write.
+- `apps/portal/sitemap.xml` sadrži HR i EN `nermin-sefic` URL-ove s HR/EN/x-default alternates, ali oba imaju `lastmod` `2026-08-03`, stariji od aktualne entity SEO izmjene; sitemap freshness ostaje otvoreni P1 dok se ne provjere i preostali sitemapovi te napravi siguran sinkronizirani write.
