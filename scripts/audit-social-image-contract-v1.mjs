@@ -16,7 +16,10 @@ const stats = {
   mimeMismatches: 0,
   insecureImageUrls: 0,
   genericAltText: 0,
-  altMismatches: 0
+  altMismatches: 0,
+  imageObjectPages: 0,
+  imageObjectMissing: 0,
+  imageObjectUrlMismatches: 0
 };
 
 const extract = (html, regex) => html.match(regex)?.[1]?.trim() || '';
@@ -62,6 +65,35 @@ const requireAsset = (route, label, value) => {
 const positiveInt = value => /^\\d+$/.test(value) && Number(value) > 0;
 const normalizeAlt = value => String(value || '').trim().replace(/\\s+/g, ' ');
 const genericAlt = value => /^(image|photo|picture|slika|fotografija|logo|cover|thumbnail)$/i.test(normalizeAlt(value));
+const jsonLdObjects = html => {
+  const out = [];
+  const regex = /<script\\s+[^>]*type=["']application\\/ld\\+json["'][^>]*>([\\s\\S]*?)<\\/script>/gi;
+  let match;
+  while ((match = regex.exec(html))) {
+    try {
+      const parsed = JSON.parse(match[1]);
+      const queue = Array.isArray(parsed) ? [...parsed] : [parsed];
+      while (queue.length) {
+        const value = queue.shift();
+        if (!value || typeof value !== 'object') continue;
+        out.push(value);
+        if (Array.isArray(value['@graph'])) queue.push(...value['@graph']);
+      }
+    } catch {
+      // Malformed JSON-LD is handled by the editorial visibility validator.
+    }
+  }
+  return out;
+};
+const typeIncludes = (obj, type) => {
+  const raw = obj?.['@type'];
+  return Array.isArray(raw) ? raw.includes(type) : raw === type;
+};
+const imageObjectUrl = obj => {
+  const candidate = obj?.contentUrl || obj?.url;
+  if (typeof candidate === 'string') return candidate;
+  return '';
+};
 
 if (!fs.existsSync(REGISTRY)) process.exit(1);
 const registry = JSON.parse(fs.readFileSync(REGISTRY, 'utf8'));
@@ -130,6 +162,21 @@ for (const item of items) {
     failures.push(`${route}: og:image:type ${ogType} conflicts with image URL extension MIME ${inferredMime}`);
   }
   if (ogImage && twitterImage && ogImage !== twitterImage) warnings.push(`${route}: og:image and twitter:image differ; verify this is intentional`);
+
+  const imageObjects = jsonLdObjects(html).filter(obj => typeIncludes(obj, 'ImageObject'));
+  if (imageObjects.length) {
+    stats.imageObjectPages++;
+    if (ogImage) {
+      const urls = imageObjects.map(imageObjectUrl).filter(Boolean);
+      if (urls.length && !urls.includes(ogImage)) {
+        stats.imageObjectUrlMismatches++;
+        warnings.push(`${route}: ImageObject URL does not match og:image; verify primary visual/entity linkage`);
+      }
+    }
+  } else {
+    stats.imageObjectMissing++;
+    warnings.push(`${route}: no ImageObject JSON-LD detected; structured image coverage is not yet evidenced`);
+  }
 }
 
 const report = { version: 'GNK_ASG_SOCIAL_IMAGE_CONTRACT_V1', ok: failures.length === 0, stats, failures, warnings };
