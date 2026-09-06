@@ -7,7 +7,17 @@ const REGISTRY = path.join(PORTAL, 'data', 'editorial-registry.json');
 const ORIGIN = 'https://gnk-asg.hr';
 const failures = [];
 const warnings = [];
-const stats = { checkedPages: 0, socialImagesChecked: 0, missingAssets: 0, metadataGaps: 0, invalidDimensions: 0, mimeMismatches: 0 };
+const stats = {
+  checkedPages: 0,
+  socialImagesChecked: 0,
+  missingAssets: 0,
+  metadataGaps: 0,
+  invalidDimensions: 0,
+  mimeMismatches: 0,
+  insecureImageUrls: 0,
+  genericAltText: 0,
+  altMismatches: 0
+};
 
 const extract = (html, regex) => html.match(regex)?.[1]?.trim() || '';
 const meta = (html, name) => extract(html, new RegExp(`<meta\\s+[^>]*name=["']${name}["'][^>]*content=["']([^"']+)["'][^>]*>`, 'i')) || extract(html, new RegExp(`<meta\\s+[^>]*content=["']([^"']+)["'][^>]*name=["']${name}["'][^>]*>`, 'i'));
@@ -34,8 +44,11 @@ const mimeFromPath = value => {
   }
   return '';
 };
-const requireAbsoluteHttp = (route, label, value) => {
-  if (!/^https?:\\/\\//i.test(value)) failures.push(`${route}: ${label} must be an absolute HTTP(S) URL`);
+const requireAbsoluteHttps = (route, label, value) => {
+  if (!/^https:\\/\\//i.test(value)) {
+    stats.insecureImageUrls++;
+    failures.push(`${route}: ${label} must be an absolute HTTPS URL`);
+  }
 };
 const requireAsset = (route, label, value) => {
   const file = localAsset(value);
@@ -47,6 +60,8 @@ const requireAsset = (route, label, value) => {
   }
 };
 const positiveInt = value => /^\\d+$/.test(value) && Number(value) > 0;
+const normalizeAlt = value => String(value || '').trim().replace(/\\s+/g, ' ');
+const genericAlt = value => /^(image|photo|picture|slika|fotografija|logo|cover|thumbnail)$/i.test(normalizeAlt(value));
 
 if (!fs.existsSync(REGISTRY)) process.exit(1);
 const registry = JSON.parse(fs.readFileSync(REGISTRY, 'utf8'));
@@ -74,7 +89,7 @@ for (const item of items) {
       failures.push(`${route}: missing ${label}`);
       continue;
     }
-    requireAbsoluteHttp(route, label, value);
+    requireAbsoluteHttps(route, label, value);
     requireAsset(route, label, value);
   }
 
@@ -83,6 +98,18 @@ for (const item of items) {
       stats.metadataGaps++;
       failures.push(`${route}: missing ${label}`);
     }
+  }
+
+  for (const [label, value] of [['og:image:alt', ogAlt], ['twitter:image:alt', twitterAlt]]) {
+    if (value && genericAlt(value)) {
+      stats.genericAltText++;
+      failures.push(`${route}: ${label} is generic; provide context-specific image text`);
+    }
+  }
+
+  if (ogAlt && twitterAlt && normalizeAlt(ogAlt) !== normalizeAlt(twitterAlt)) {
+    stats.altMismatches++;
+    warnings.push(`${route}: og:image:alt and twitter:image:alt differ; verify both accurately describe the same visual`);
   }
 
   for (const [label, value] of [['og:image:width', ogWidth], ['og:image:height', ogHeight]]) {
