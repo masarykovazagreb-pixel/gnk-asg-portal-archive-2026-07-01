@@ -1,0 +1,22 @@
+name: Actions Execution Probe
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/actions-execution-probe.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Confirm hosted runner reaches user code
+        run: |
+          echo "GNK_ASG_ACTIONS_EXECUTION_PROBE=RUNNER_REACHED"
+          echo "utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          uname -a
