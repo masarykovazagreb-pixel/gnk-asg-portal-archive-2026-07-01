@@ -3,7 +3,7 @@
 Cilj: stvarno verificiranih 99%. Redoslijed: kvarovi/degradacije → automatizacija/workforce → SEO/meta/indexacija → sadržaj. Svaka promjena mora imati regresijsku provjeru prije zatvaranja.
 
 ## P0
-1. [ ] Dijagnosticirati GitHub Actions kvar bez pokrenutih stepova na zadnjem `Generate Digital Workforce Newsroom Pages` schedule runu.
+1. [ ] Dijagnosticirati GitHub Actions kvar bez pokrenutih stepova na zadnjem scheduled runu; obrazac je potvrđen na više nepovezanih workflowa.
 2. [ ] Vratiti barem jedan uspješan scheduled Actions run na aktualnom `main` SHA i potvrditi runner/permissions stanje.
 3. [ ] Provjeriti sve mutation workflove koji koriste `gnk-asg-main-mutation` concurrency i ukloniti konflikt samo ako je reproduciran.
 4. [ ] Verificirati health/freshness kritičnih javnih ruta nakon Actions oporavka.
@@ -31,9 +31,9 @@ Cilj: stvarno verificiranih 99%. Redoslijed: kvarovi/degradacije → automatizac
 22. [x] Održavati ovaj backlog: zatvarati samo verificirane stavke i svaki dan reprioritizirati prema novim P0/P1 kvarovima.
 
 ## Trenutno verificirano
-- `main` na početku ovog ciklusa: `049f280ffd2f58ae55e9cc579b91982a4096a68b`.
-- Najnoviji provjereni scheduled kvar je `World Monitor Data Refresh (free sources)` run `34030932793` od 2026-09-06 na istom `main` SHA: završio je `failure`; job `101480166108` ima `steps: []`, a log endpoint vraća 404 `BlobNotFound`. To dodatno potvrđuje obrazac kvara prije izvršavanja deklariranih stepova i povećava prioritet Actions/runner/permission sloja kao P0.
-- Prethodno je isti obrazac potvrđen i na `Refresh GNKC Index` runu `34028796562`: job `refresh` završava `failure`, a log endpoint vraća 404 `BlobNotFound`. Nema dovoljno dokaza za spekulativnu izmjenu pojedinačne generator skripte.
+- `main` na početku ovog ciklusa: `fe84fc2a0f9707f124bd5f7c7beb867501054c86`.
+- Najnoviji provjereni scheduled kvar je `GNK News Refresh V2` run `34034373187` od 2026-09-06 na aktualnom `main` SHA: završio je `failure`; job `Refresh public news feed` (`101489641588`) nema dostupne stepove (`steps: null`). Time je obrazac failurea prije vidljivog izvršavanja stepova potvrđen i na trećem nepovezanom workflowu.
+- Prethodno je isti obrazac potvrđen na `World Monitor Data Refresh (free sources)` runu `34030932793` (`steps: []`, log 404 `BlobNotFound`) i `Refresh GNKC Index` runu `34028796562` (failure, log 404 `BlobNotFound`). Zbog ponavljanja na različitim workflowima nema dovoljno dokaza za spekulativnu izmjenu pojedinačnog generatora; Actions/runner/permission sloj ostaje P0.
 - `refresh-gnkc-index.yml` na `main` ima standardni `ubuntu-latest`, `contents: write`, Node 22 i uredno definirane stepove; sam YAML ne objašnjava failure prije stepova.
 - HR i EN `nermin-sefic` stranice imaju verificirane canonical, hreflang HR/EN/x-default, `robots=index,follow`, OG/Twitter i JSON-LD Person/ProfilePage/Organization signale te varijante `Nermin Sefić` / `Nermin Sefic`.
 - Javni web indeks danas vraća `https://gnk-asg.hr/`, HR `https://gnk-asg.hr/nermin-sefic/` i EN `https://gnk-asg.hr/en/nermin-sefic/`, pa entity rute jesu javno dohvatljive i indeksabilne.
