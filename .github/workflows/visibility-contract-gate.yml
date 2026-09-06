@@ -13,6 +13,8 @@ on:
       - 'scripts/audit-image-delivery-contract-v1.mjs'
       - 'scripts/audit-image-sitemap-integrity-v1.mjs'
       - 'scripts/audit-image-sitemap-url-stability-v1.mjs'
+      - 'scripts/audit-twitter-card-contract-v1.mjs'
+      - 'scripts/audit-imageobject-contract-v1.mjs'
       - 'scripts/audit-home-truth-consistency-v1.mjs'
       - '.github/workflows/visibility-contract-gate.yml'
   push:
@@ -29,6 +31,8 @@ on:
       - 'scripts/audit-image-delivery-contract-v1.mjs'
       - 'scripts/audit-image-sitemap-integrity-v1.mjs'
       - 'scripts/audit-image-sitemap-url-stability-v1.mjs'
+      - 'scripts/audit-twitter-card-contract-v1.mjs'
+      - 'scripts/audit-imageobject-contract-v1.mjs'
       - 'scripts/audit-home-truth-consistency-v1.mjs'
       - '.github/workflows/visibility-contract-gate.yml'
 
@@ -63,6 +67,8 @@ jobs:
           node --check scripts/audit-image-delivery-contract-v1.mjs
           node --check scripts/audit-image-sitemap-integrity-v1.mjs
           node --check scripts/audit-image-sitemap-url-stability-v1.mjs
+          node --check scripts/audit-twitter-card-contract-v1.mjs
+          node --check scripts/audit-imageobject-contract-v1.mjs
           node --check scripts/audit-home-truth-consistency-v1.mjs
 
       - name: Editorial visibility contract
@@ -92,6 +98,12 @@ jobs:
       - name: Image sitemap URL stability contract
         run: node scripts/audit-image-sitemap-url-stability-v1.mjs
 
+      - name: Twitter card contract
+        run: node scripts/audit-twitter-card-contract-v1.mjs
+
+      - name: ImageObject structured-data contract
+        run: node scripts/audit-imageobject-contract-v1.mjs
+
       - name: Homepage truth consistency contract
         run: node scripts/audit-home-truth-consistency-v1.mjs
 
@@ -110,6 +122,8 @@ jobs:
             artifacts/image-delivery-contract/**
             artifacts/image-sitemap-integrity/**
             artifacts/image-sitemap-url-stability/**
+            artifacts/twitter-card-contract/**
+            artifacts/imageobject-contract/**
             artifacts/home-truth-consistency/**
           if-no-files-found: warn
           retention-days: 14
