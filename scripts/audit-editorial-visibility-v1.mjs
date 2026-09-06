@@ -12,10 +12,10 @@ const stats = { registryItems: 0, checkedPages: 0, indexablePages: 0, sitemapMem
 const fail = message => failures.push(message);
 const warn = message => warnings.push(message);
 const extract = (html, regex) => html.match(regex)?.[1]?.trim() || '';
-const hasAttr = (tag, name) => new RegExp(`\\b${name}(?:\\s*=|\\s|>|/)`, 'i').test(tag);
-const attr = (tag, name) => extract(tag, new RegExp(`\\b${name}=["']([^"']*)["']`, 'i'));
-const meta = (html, name) => extract(html, new RegExp(`<meta\\s+[^>]*name=["']${name}["'][^>]*content=["']([^"']+)["'][^>]*>`, 'i')) || extract(html, new RegExp(`<meta\\s+[^>]*content=["']([^"']+)["'][^>]*name=["']${name}["'][^>]*>`, 'i'));
-const property = (html, name) => extract(html, new RegExp(`<meta\\s+[^>]*property=["']${name}["'][^>]*content=["']([^"']+)["'][^>]*>`, 'i')) || extract(html, new RegExp(`<meta\\s+[^>]*content=["']([^"']+)["'][^>]*property=["']${name}["'][^>]*>`, 'i'));
+const hasAttr = (tag, name) => new RegExp(`\b${name}(?:\s*=|\s|>|/)`, 'i').test(tag);
+const attr = (tag, name) => extract(tag, new RegExp(`\b${name}=["']([^"']*)["']`, 'i'));
+const meta = (html, name) => extract(html, new RegExp(`<meta\s+[^>]*name=["']${name}["'][^>]*content=["']([^"']+)["'][^>]*>`, 'i')) || extract(html, new RegExp(`<meta\s+[^>]*content=["']([^"']+)["'][^>]*name=["']${name}["'][^>]*>`, 'i'));
+const property = (html, name) => extract(html, new RegExp(`<meta\s+[^>]*property=["']${name}["'][^>]*content=["']([^"']+)["'][^>]*>`, 'i')) || extract(html, new RegExp(`<meta\s+[^>]*content=["']([^"']+)["'][^>]*property=["']${name}["'][^>]*>`, 'i'));
 const canonical = html => extract(html, /<link\s+[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["'][^>]*>/i) || extract(html, /<link\s+[^>]*href=["']([^"']+)["'][^>]*rel=["']canonical["'][^>]*>/i);
 const routeFile = route => path.join(PORTAL, route.replace(/^\/+|\/+$/g, ''), 'index.html');
 const absolute = (value, route) => { if (!value) return ''; try { return new URL(value, `${ORIGIN}${route}`).href; } catch { return value; } };
@@ -71,5 +71,27 @@ for (const item of items) {
   if(!property(html,'article:published_time')) warn(`${route}: missing article:published_time`); if(!property(html,'article:author')&&!meta(html,'author')) warn(`${route}: missing truthful author signal`);
   const lang=String(item.language||'').toLowerCase(); if((lang==='hr'||lang==='en')&&!/<link\s+[^>]*hreflang=/i.test(html)){stats.hreflangGaps++;warn(`${route}: no hreflang links; pair only when a real reciprocal translation exists`);}
 }
-const report={version:'GNK_ASG_EDITORIAL_VISIBILITY_AUDIT_V1',scope:'editorial registry routes with materialized HTML',terminology:{indexablePages:'Pages whose local robots directive permits index,follow. This is not evidence that a search engine has indexed the page.'},ok:failures.length===0,stats,failures,warnings};
+const evidenceStates = {
+  DISCOVERABLE: {
+    status: 'VERIFIED_LOCAL',
+    count: stats.sitemapMembers,
+    evidence: 'Canonical URL is present in the generated sitemap registry. This proves local discovery exposure, not search-engine processing.'
+  },
+  SUBMITTED: {
+    status: 'UNKNOWN',
+    count: null,
+    evidence: 'Requires explicit external submission evidence (for example Search Console/API receipt). Never inferred from sitemap membership.'
+  },
+  CRAWLABLE: {
+    status: 'VERIFIED_LOCAL',
+    count: stats.indexablePages,
+    evidence: 'Materialized local HTML has robots index,follow. This is a local crawlability candidate signal, not proof that a crawler fetched the production URL.'
+  },
+  INDEXED: {
+    status: 'UNKNOWN',
+    count: null,
+    evidence: 'Requires explicit external search-engine index evidence. Never inferred from robots, sitemap, canonical, HTTP availability, or search snippets.'
+  }
+};
+const report={version:'GNK_ASG_EDITORIAL_VISIBILITY_AUDIT_V1',scope:'editorial registry routes with materialized HTML',terminology:{indexablePages:'Pages whose local robots directive permits index,follow. This is not evidence that a search engine has indexed the page.',stateModel:'DISCOVERABLE, SUBMITTED, CRAWLABLE and INDEXED are separate evidence states; UNKNOWN is preserved when proof is absent.'},evidenceStates,ok:failures.length===0,stats,failures,warnings};
 const out=path.join(ROOT,'artifacts','editorial-visibility');fs.mkdirSync(out,{recursive:true});fs.writeFileSync(path.join(out,'report.json'),`${JSON.stringify(report,null,2)}\n`);console.log(JSON.stringify(report,null,2));if(failures.length) process.exit(1);
