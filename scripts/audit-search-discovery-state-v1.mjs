@@ -29,7 +29,12 @@ for (const item of Array.isArray(registry.items) ? registry.items : []) {
   const html = materialized ? fs.readFileSync(file, 'utf8') : '';
   const robots = meta(html, 'robots');
   const canonicalUrl = canonical(html);
-  const indexFollow = /\bindex\b/i.test(robots) && /\bfollow\b/i.test(robots) && !/\bnoindex\b/i.test(robots);
+  const robotsTokens = robots.toLowerCase().split(',').map(token => token.trim()).filter(Boolean);
+  const robotsBlocksIndex = robotsTokens.includes('noindex') || robotsTokens.includes('none');
+  const robotsBlocksFollow = robotsTokens.includes('nofollow') || robotsTokens.includes('none');
+  // HTML robots defaults are permissive: absence of an explicit robots meta directive means index/follow is locally allowed.
+  // This remains only static/local evidence; production X-Robots-Tag headers are outside this validator's evidence boundary.
+  const indexFollow = !robotsBlocksIndex && !robotsBlocksFollow;
   const canonicalSelf = canonicalUrl === expectedUrl;
   const sitemapRegistered = sitemapUrls.has(expectedUrl);
   const discoverable = materialized && canonicalSelf && indexFollow;
@@ -48,7 +53,9 @@ for (const item of Array.isArray(registry.items) ? registry.items : []) {
     evidence: {
       materialized,
       canonicalSelf,
+      robotsDirective: robots || null,
       robotsIndexFollow: indexFollow,
+      robotsDefaultPermissive: robotsTokens.length === 0,
       sitemapMembership: sitemapRegistered,
       submittedEvidence: 'UNAVAILABLE_NO_SEARCH_ENGINE_SUBMISSION_RECEIPT',
       indexedEvidence: 'UNAVAILABLE_NO_SEARCH_ENGINE_INDEX_EVIDENCE'
@@ -56,7 +63,7 @@ for (const item of Array.isArray(registry.items) ? registry.items : []) {
   });
 
   if (materialized && !canonicalSelf) failures.push(`${route}: materialized page lacks self canonical`);
-  if (materialized && !indexFollow) failures.push(`${route}: materialized page is not index,follow`);
+  if (materialized && !indexFollow) failures.push(`${route}: materialized page is blocked by robots noindex/nofollow/none directive`);
   if (discoverable && !sitemapRegistered) failures.push(`${route}: discoverable page missing from sitemap.xml`);
 }
 
@@ -75,10 +82,10 @@ const report = {
   version: 'GNK_ASG_SEARCH_DISCOVERY_STATE_V1',
   generatedAt: new Date().toISOString(),
   semantics: {
-    DISCOVERABLE: 'Materialized self-canonical page whose local robots directive permits index,follow.',
+    DISCOVERABLE: 'Materialized self-canonical page whose local HTML robots directive does not explicitly block indexing or following. Missing robots meta is treated as the permissive default, not as a failure.',
     SITEMAP_REGISTERED: 'Canonical URL is present in the committed sitemap.xml. This is discovery evidence, not proof of search-engine submission.',
     SUBMITTED: 'Never inferred from sitemap membership. Remains null unless authoritative search-engine submission receipt or equivalent evidence is supplied.',
-    CRAWLABLE_LOCAL: 'Local static evidence has no page-level robots/canonical blocker. This does not prove production HTTP reachability.',
+    CRAWLABLE_LOCAL: 'Local static evidence has no page-level HTML robots/canonical blocker. This does not prove production HTTP reachability or absence of an X-Robots-Tag header.',
     INDEXED: 'Never inferred. Remains null unless authoritative search-engine index evidence is supplied.'
   },
   ok: failures.length === 0,
