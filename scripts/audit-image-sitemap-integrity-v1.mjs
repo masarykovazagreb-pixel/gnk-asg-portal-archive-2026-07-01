@@ -17,6 +17,8 @@ const stats = {
   sitemapImagesChecked: 0,
   missingSameOriginAssets: 0,
   malformedImageUrls: 0,
+  duplicateRouteEntries: 0,
+  duplicateImageEntries: 0,
 };
 
 const decodeXml = value => String(value || '')
@@ -57,11 +59,24 @@ for (const blockMatch of urlBlocks) {
   const block = blockMatch[1];
   const loc = normalizeUrl(block.match(/<loc>([\s\S]*?)<\/loc>/i)?.[1]);
   if (!loc) continue;
-  const images = [...block.matchAll(/<image:loc>([\s\S]*?)<\/image:loc>/gi)]
+  if (routeImages.has(loc)) {
+    stats.duplicateRouteEntries++;
+    failures.push(`image-sitemap.xml contains duplicate page <loc> entry: ${loc}`);
+  }
+
+  const rawImages = [...block.matchAll(/<image:loc>([\s\S]*?)<\/image:loc>/gi)]
     .map(match => normalizeUrl(match[1]))
     .filter(Boolean);
-  routeImages.set(loc, new Set(images));
-  for (const image of images) allImages.add(image);
+  const images = new Set();
+  for (const image of rawImages) {
+    if (images.has(image)) {
+      stats.duplicateImageEntries++;
+      failures.push(`image-sitemap.xml repeats image under the same page ${loc}: ${image}`);
+    }
+    images.add(image);
+    allImages.add(image);
+  }
+  routeImages.set(loc, images);
 }
 
 const registry = JSON.parse(fs.readFileSync(REGISTRY, 'utf8'));
