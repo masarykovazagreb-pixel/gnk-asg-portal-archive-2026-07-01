@@ -8,9 +8,11 @@ on:
       - 'scripts/audit-hreflang-contract-v1.mjs'
       - 'scripts/audit-search-discovery-state-v1.mjs'
       - 'scripts/audit-social-image-contract-v1.mjs'
+      - 'scripts/audit-social-image-intrinsic-dimensions-v1.mjs'
       - 'scripts/audit-rendered-image-contract-v1.mjs'
       - 'scripts/audit-image-delivery-contract-v1.mjs'
       - 'scripts/audit-image-sitemap-integrity-v1.mjs'
+      - 'scripts/audit-image-sitemap-url-stability-v1.mjs'
       - 'scripts/audit-home-truth-consistency-v1.mjs'
       - '.github/workflows/visibility-contract-gate.yml'
   push:
@@ -22,9 +24,11 @@ on:
       - 'scripts/audit-hreflang-contract-v1.mjs'
       - 'scripts/audit-search-discovery-state-v1.mjs'
       - 'scripts/audit-social-image-contract-v1.mjs'
+      - 'scripts/audit-social-image-intrinsic-dimensions-v1.mjs'
       - 'scripts/audit-rendered-image-contract-v1.mjs'
       - 'scripts/audit-image-delivery-contract-v1.mjs'
       - 'scripts/audit-image-sitemap-integrity-v1.mjs'
+      - 'scripts/audit-image-sitemap-url-stability-v1.mjs'
       - 'scripts/audit-home-truth-consistency-v1.mjs'
       - '.github/workflows/visibility-contract-gate.yml'
 
@@ -54,9 +58,11 @@ jobs:
           node --check scripts/audit-hreflang-contract-v1.mjs
           node --check scripts/audit-search-discovery-state-v1.mjs
           node --check scripts/audit-social-image-contract-v1.mjs
+          node --check scripts/audit-social-image-intrinsic-dimensions-v1.mjs
           node --check scripts/audit-rendered-image-contract-v1.mjs
           node --check scripts/audit-image-delivery-contract-v1.mjs
           node --check scripts/audit-image-sitemap-integrity-v1.mjs
+          node --check scripts/audit-image-sitemap-url-stability-v1.mjs
           node --check scripts/audit-home-truth-consistency-v1.mjs
 
       - name: Editorial visibility contract
@@ -71,6 +77,9 @@ jobs:
       - name: Social and image metadata contract
         run: node scripts/audit-social-image-contract-v1.mjs
 
+      - name: Social image intrinsic dimensions contract
+        run: node scripts/audit-social-image-intrinsic-dimensions-v1.mjs
+
       - name: Rendered primary image contract
         run: node scripts/audit-rendered-image-contract-v1.mjs
 
@@ -79,6 +88,9 @@ jobs:
 
       - name: Image sitemap integrity contract
         run: node scripts/audit-image-sitemap-integrity-v1.mjs
+
+      - name: Image sitemap URL stability contract
+        run: node scripts/audit-image-sitemap-url-stability-v1.mjs
 
       - name: Homepage truth consistency contract
         run: node scripts/audit-home-truth-consistency-v1.mjs
@@ -93,9 +105,11 @@ jobs:
             artifacts/hreflang-contract/**
             artifacts/search-discovery-state/**
             artifacts/social-image-contract/**
+            artifacts/social-image-intrinsic-dimensions/**
             artifacts/rendered-image-contract/**
             artifacts/image-delivery-contract/**
             artifacts/image-sitemap-integrity/**
+            artifacts/image-sitemap-url-stability/**
             artifacts/home-truth-consistency/**
           if-no-files-found: warn
           retention-days: 14
