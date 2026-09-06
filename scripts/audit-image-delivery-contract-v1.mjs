@@ -10,9 +10,12 @@ const stats = {
   checkedPages: 0,
   imagesChecked: 0,
   partialResponsiveHints: 0,
+  missingDimensionPairs: 0,
+  invalidDimensions: 0,
   invalidLoading: 0,
   invalidFetchPriority: 0,
-  contradictoryPrioritySignals: 0
+  contradictoryPrioritySignals: 0,
+  decorativeHighPriorityImages: 0
 };
 
 const routeFile = route => path.join(PORTAL, route.replace(/^\/+|\/+$/g, ''), 'index.html');
@@ -22,6 +25,8 @@ const attr = (tag, name) => {
   const bare = tag.match(new RegExp(`\\s${name}=([^\\s>]+)`, 'i'));
   return bare?.[1]?.trim() || '';
 };
+const hasAttr = (tag, name) => new RegExp(`\\s${name}(?:=|\\s|>|/)`, 'i').test(tag);
+const isPositiveInteger = value => /^\d+$/.test(value) && Number(value) > 0;
 
 if (!fs.existsSync(REGISTRY)) {
   console.error(`Registry missing: ${REGISTRY}`);
@@ -44,13 +49,25 @@ for (const item of items) {
     const src = attr(tag, 'src') || '(missing-src)';
     const srcset = attr(tag, 'srcset');
     const sizes = attr(tag, 'sizes');
+    const width = attr(tag, 'width');
+    const height = attr(tag, 'height');
     const loading = attr(tag, 'loading').toLowerCase();
     const fetchPriority = attr(tag, 'fetchpriority').toLowerCase();
+    const altPresent = hasAttr(tag, 'alt');
+    const alt = attr(tag, 'alt');
     stats.imagesChecked++;
 
     if (Boolean(srcset) !== Boolean(sizes)) {
       stats.partialResponsiveHints++;
       failures.push(`${route}: image ${src} must declare srcset and sizes together`);
+    }
+
+    if (Boolean(width) !== Boolean(height)) {
+      stats.missingDimensionPairs++;
+      failures.push(`${route}: image ${src} must declare width and height together`);
+    } else if (width && height && (!isPositiveInteger(width) || !isPositiveInteger(height))) {
+      stats.invalidDimensions++;
+      failures.push(`${route}: image ${src} has invalid dimensions width=${width} height=${height}; expected positive integer HTML dimensions`);
     }
 
     if (loading && !/^(lazy|eager)$/.test(loading)) {
@@ -66,6 +83,11 @@ for (const item of items) {
     if (loading === 'lazy' && fetchPriority === 'high') {
       stats.contradictoryPrioritySignals++;
       warnings.push(`${route}: image ${src} combines loading=lazy with fetchpriority=high; verify this is intentional`);
+    }
+
+    if (altPresent && alt === '' && fetchPriority === 'high') {
+      stats.decorativeHighPriorityImages++;
+      failures.push(`${route}: decorative image ${src} uses fetchpriority=high; decorative images must not consume primary-image priority`);
     }
   }
 }
