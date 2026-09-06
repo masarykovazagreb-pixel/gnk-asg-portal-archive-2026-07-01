@@ -19,7 +19,12 @@ const stats = {
   invalidFetchPriority: 0,
   lazyPrimaryImages: 0,
   imageObjectsChecked: 0,
-  imageObjectMetadataGaps: 0
+  imageObjectMetadataGaps: 0,
+  articleSchemasChecked: 0,
+  missingArticleImage: 0,
+  articleImageMismatch: 0,
+  missingArticleDatePublished: 0,
+  missingArticleDateModified: 0
 };
 
 const routeFile = route => path.join(PORTAL, route.replace(/^\/+|\/+$/g, ''), 'index.html');
@@ -43,6 +48,20 @@ const normalizeUrl = (value, base = ORIGIN) => {
   } catch {
     return '';
   }
+};
+const schemaImageUrl = value => {
+  if (typeof value === 'string') return normalizeUrl(value);
+  if (Array.isArray(value)) {
+    for (const entry of value) {
+      const candidate = schemaImageUrl(entry);
+      if (candidate) return candidate;
+    }
+    return '';
+  }
+  if (value && typeof value === 'object') {
+    return normalizeUrl(value.contentUrl || value.url || value['@id'] || '');
+  }
+  return '';
 };
 const jsonLdObjects = html => {
   const out = [];
@@ -68,6 +87,7 @@ const typeIncludes = (obj, type) => {
   const raw = obj?.['@type'];
   return Array.isArray(raw) ? raw.includes(type) : raw === type;
 };
+const isArticleSchema = obj => ['Article', 'NewsArticle', 'OpinionNewsArticle'].some(type => typeIncludes(obj, type));
 
 if (!fs.existsSync(REGISTRY)) {
   console.error(`Registry missing: ${REGISTRY}`);
@@ -141,7 +161,8 @@ for (const item of items) {
     }
   }
 
-  const imageObjects = jsonLdObjects(html).filter(obj => typeIncludes(obj, 'ImageObject'));
+  const schemas = jsonLdObjects(html);
+  const imageObjects = schemas.filter(obj => typeIncludes(obj, 'ImageObject'));
   for (const obj of imageObjects) {
     stats.imageObjectsChecked++;
     const url = normalizeUrl(typeof obj.contentUrl === 'string' ? obj.contentUrl : typeof obj.url === 'string' ? obj.url : '');
@@ -153,6 +174,27 @@ for (const item of items) {
     if (!caption) {
       stats.imageObjectMetadataGaps++;
       warnings.push(`${route}: ImageObject has no caption/name; add one when it truthfully describes the visual`);
+    }
+  }
+
+  for (const article of schemas.filter(isArticleSchema)) {
+    stats.articleSchemasChecked++;
+    const articleImage = schemaImageUrl(article.image);
+    if (!articleImage) {
+      stats.missingArticleImage++;
+      failures.push(`${route}: Article/NewsArticle/OpinionNewsArticle schema must declare an image for an editorial page with a primary visual`);
+    } else if (primaryUrl && articleImage !== primaryUrl) {
+      stats.articleImageMismatch++;
+      failures.push(`${route}: article schema image must match og:image so social, structured-data and rendered primary-image signals stay consistent`);
+    }
+
+    if (!normalize(article.datePublished)) {
+      stats.missingArticleDatePublished++;
+      failures.push(`${route}: article schema must declare datePublished from truthful publication metadata`);
+    }
+    if (!normalize(article.dateModified)) {
+      stats.missingArticleDateModified++;
+      warnings.push(`${route}: article schema has no dateModified; add it when a truthful modification timestamp is available`);
     }
   }
 }
