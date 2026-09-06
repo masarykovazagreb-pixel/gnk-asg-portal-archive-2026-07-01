@@ -15,6 +15,8 @@ const stats = {
   genericAlt: 0,
   missingDimensions: 0,
   missingResponsiveHints: 0,
+  partialResponsiveHints: 0,
+  invalidFetchPriority: 0,
   lazyPrimaryImages: 0,
   imageObjectsChecked: 0,
   imageObjectMetadataGaps: 0
@@ -101,6 +103,7 @@ for (const item of items) {
       const srcset = attr(tag, 'srcset');
       const sizes = attr(tag, 'sizes');
       const loading = attr(tag, 'loading').toLowerCase();
+      const fetchPriority = attr(tag, 'fetchpriority').toLowerCase();
 
       if (!alt) {
         stats.missingAlt++;
@@ -115,14 +118,25 @@ for (const item of items) {
         failures.push(`${route}: rendered primary image matching og:image must declare positive width and height`);
       }
 
-      if (!srcset || !sizes) {
+      if (Boolean(srcset) !== Boolean(sizes)) {
+        stats.partialResponsiveHints++;
+        failures.push(`${route}: rendered primary image must declare srcset and sizes together; partial responsive hints are ambiguous`);
+      } else if (!srcset && !sizes) {
         stats.missingResponsiveHints++;
-        warnings.push(`${route}: rendered primary image lacks ${!srcset && !sizes ? 'srcset and sizes' : !srcset ? 'srcset' : 'sizes'}; add responsive hints where the asset pipeline supports them`);
+        warnings.push(`${route}: rendered primary image lacks srcset and sizes; add responsive hints where the asset pipeline supports them`);
+      }
+
+      if (fetchPriority && !/^(high|low|auto)$/.test(fetchPriority)) {
+        stats.invalidFetchPriority++;
+        failures.push(`${route}: rendered primary image has invalid fetchpriority=${fetchPriority}; expected high, low, auto, or omission`);
       }
 
       if (loading === 'lazy') {
         stats.lazyPrimaryImages++;
         warnings.push(`${route}: primary social/page image is lazy-loaded; verify it is not an above-the-fold/LCP image before keeping loading=lazy`);
+      }
+      if (loading === 'lazy' && fetchPriority === 'high') {
+        warnings.push(`${route}: primary image combines loading=lazy with fetchpriority=high; verify these competing fetch signals are intentional`);
       }
     }
   }
