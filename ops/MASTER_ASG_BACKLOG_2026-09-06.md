@@ -31,10 +31,10 @@ Cilj: stvarno verificiranih 99%. Redoslijed: kvarovi/degradacije → automatizac
 22. [x] Održavati ovaj backlog: zatvarati samo verificirane stavke i svaki dan reprioritizirati prema novim P0/P1 kvarovima.
 
 ## Trenutno verificirano
-- `main` na početku ovog ciklusa: `fe84fc2a0f9707f124bd5f7c7beb867501054c86`.
-- Najnoviji provjereni scheduled kvar je `GNK News Refresh V2` run `34034373187` od 2026-09-06 na aktualnom `main` SHA: završio je `failure`; job `Refresh public news feed` (`101489641588`) nema dostupne stepove (`steps: null`). Time je obrazac failurea prije vidljivog izvršavanja stepova potvrđen i na trećem nepovezanom workflowu.
-- Prethodno je isti obrazac potvrđen na `World Monitor Data Refresh (free sources)` runu `34030932793` (`steps: []`, log 404 `BlobNotFound`) i `Refresh GNKC Index` runu `34028796562` (failure, log 404 `BlobNotFound`). Zbog ponavljanja na različitim workflowima nema dovoljno dokaza za spekulativnu izmjenu pojedinačnog generatora; Actions/runner/permission sloj ostaje P0.
+- `main` na početku ovog ciklusa: `372a0bfda662bf5805c7c930d0cf59ef88bf428a`.
+- Najnoviji provjereni scheduled kvar je `Site Health Check (2x daily Zagreb)` run `34039231805` od 2026-09-06 na aktualnom `main` SHA: završio je `failure`; job `health-check` (`101502826315`) nema dostupne stepove (`steps: null`). Time isti failure-before-steps obrazac sada izravno zahvaća i health sloj.
+- Prethodno je isti obrazac potvrđen na `GNK News Refresh V2`, `World Monitor Data Refresh (free sources)` i `Refresh GNKC Index`; zbog ponavljanja na nepovezanim workflowima nema dovoljno dokaza za spekulativnu izmjenu pojedinačnog generatora. Actions/runner/permission sloj ostaje P0.
 - `refresh-gnkc-index.yml` na `main` ima standardni `ubuntu-latest`, `contents: write`, Node 22 i uredno definirane stepove; sam YAML ne objašnjava failure prije stepova.
 - HR i EN `nermin-sefic` stranice imaju verificirane canonical, hreflang HR/EN/x-default, `robots=index,follow`, OG/Twitter i JSON-LD Person/ProfilePage/Organization signale te varijante `Nermin Sefić` / `Nermin Sefic`.
-- Javni web indeks danas vraća `https://gnk-asg.hr/`, HR `https://gnk-asg.hr/nermin-sefic/` i EN `https://gnk-asg.hr/en/nermin-sefic/`, pa entity rute jesu javno dohvatljive i indeksabilne.
-- `apps/portal/sitemap.xml` sadrži HR i EN `nermin-sefic` URL-ove s HR/EN/x-default alternates, ali oba imaju `lastmod` `2026-08-03`, stariji od aktualne entity SEO izmjene; sitemap freshness ostaje otvoreni P1 dok se ne provjere i preostali sitemapovi te napravi siguran sinkronizirani write.
+- `apps/portal/sitemap.xml` sadrži HR i EN `nermin-sefic` URL-ove s HR/EN/x-default alternates, ali oba imaju `lastmod` `2026-08-03`, stariji od aktualne entity SEO izmjene; sitemap freshness ostaje otvoreni P1.
+- `apps/portal/sitemap-index.xml` uključuje glavni, editorial, corporate-editorials, visual, image i world-topics-image sitemap; deklarirani lastmod za glavni i image sitemap je `2026-08-26`, što nije sinkronizirano s novijom entity SEO izmjenom i traži kontrolirani refresh tek nakon potvrde sadržaja svih sitemapova.
