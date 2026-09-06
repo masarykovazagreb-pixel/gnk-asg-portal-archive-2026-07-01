@@ -8,6 +8,7 @@ const SITEMAP = path.join(PORTAL, 'sitemap.xml');
 const EVIDENCE = path.join(PORTAL, 'data', 'search-discovery-evidence.json');
 const ORIGIN = 'https://gnk-asg.hr';
 const outDir = path.join(ROOT, 'artifacts', 'search-discovery-state');
+const MAX_CLOCK_SKEW_MS = 5 * 60 * 1000;
 
 const failures = [];
 const pages = [];
@@ -38,7 +39,11 @@ function verifiedEvidence(route, state) {
   if (entry.sourceType !== requiredType) { failures.push(`${route}: ${state} evidence requires sourceType ${requiredType}`); return { value: null, evidence: 'INVALID_EVIDENCE' }; }
   if (typeof entry.source !== 'string' || !entry.source.trim()) { failures.push(`${route}: ${state} evidence requires non-empty source`); return { value: null, evidence: 'INVALID_EVIDENCE' }; }
   if (!validIsoDate(entry.observedAt)) { failures.push(`${route}: ${state} evidence requires valid observedAt ISO date`); return { value: null, evidence: 'INVALID_EVIDENCE' }; }
-  return { value: entry.value, evidence: { sourceType: entry.sourceType, source: entry.source.trim(), observedAt: entry.observedAt } };
+  const observedAtMs = Date.parse(entry.observedAt);
+  const nowMs = Date.now();
+  if (observedAtMs > nowMs + MAX_CLOCK_SKEW_MS) { failures.push(`${route}: ${state} evidence observedAt is future-dated beyond allowed clock skew`); return { value: null, evidence: 'INVALID_EVIDENCE' }; }
+  const ageSeconds = Math.max(0, Math.floor((nowMs - observedAtMs) / 1000));
+  return { value: entry.value, evidence: { sourceType: entry.sourceType, source: entry.source.trim(), observedAt: entry.observedAt, ageSeconds } };
 }
 
 for (const item of Array.isArray(registry.items) ? registry.items : []) {
@@ -114,6 +119,7 @@ const report = {
   version: 'GNK_ASG_SEARCH_DISCOVERY_STATE_V1',
   generatedAt: new Date().toISOString(),
   evidenceInput: fs.existsSync(EVIDENCE) ? 'apps/portal/data/search-discovery-evidence.json' : null,
+  evidenceClockPolicy: { maxFutureSkewSeconds: MAX_CLOCK_SKEW_MS / 1000 },
   semantics: {
     DISCOVERABLE: 'Materialized self-canonical page whose local HTML robots directive does not explicitly block indexing or following. Missing robots meta is treated as the permissive default, not as a failure.',
     SITEMAP_REGISTERED: 'Canonical URL is present in the committed sitemap.xml. This is discovery evidence, not proof of search-engine submission.',
