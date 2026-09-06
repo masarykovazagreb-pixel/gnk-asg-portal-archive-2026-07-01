@@ -9,6 +9,7 @@ on:
       - 'scripts/audit-search-discovery-state-v1.mjs'
       - 'scripts/audit-social-image-contract-v1.mjs'
       - 'scripts/audit-rendered-image-contract-v1.mjs'
+      - 'scripts/audit-image-delivery-contract-v1.mjs'
       - 'scripts/audit-home-truth-consistency-v1.mjs'
       - '.github/workflows/visibility-contract-gate.yml'
   push:
@@ -21,6 +22,7 @@ on:
       - 'scripts/audit-search-discovery-state-v1.mjs'
       - 'scripts/audit-social-image-contract-v1.mjs'
       - 'scripts/audit-rendered-image-contract-v1.mjs'
+      - 'scripts/audit-image-delivery-contract-v1.mjs'
       - 'scripts/audit-home-truth-consistency-v1.mjs'
       - '.github/workflows/visibility-contract-gate.yml'
 
@@ -51,6 +53,7 @@ jobs:
           node --check scripts/audit-search-discovery-state-v1.mjs
           node --check scripts/audit-social-image-contract-v1.mjs
           node --check scripts/audit-rendered-image-contract-v1.mjs
+          node --check scripts/audit-image-delivery-contract-v1.mjs
           node --check scripts/audit-home-truth-consistency-v1.mjs
 
       - name: Editorial visibility contract
@@ -68,6 +71,9 @@ jobs:
       - name: Rendered primary image contract
         run: node scripts/audit-rendered-image-contract-v1.mjs
 
+      - name: Sitewide image delivery contract
+        run: node scripts/audit-image-delivery-contract-v1.mjs
+
       - name: Homepage truth consistency contract
         run: node scripts/audit-home-truth-consistency-v1.mjs
 
@@ -82,6 +88,7 @@ jobs:
             artifacts/search-discovery-state/**
             artifacts/social-image-contract/**
             artifacts/rendered-image-contract/**
+            artifacts/image-delivery-contract/**
             artifacts/home-truth-consistency/**
           if-no-files-found: warn
           retention-days: 14
