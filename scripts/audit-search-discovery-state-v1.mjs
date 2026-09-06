@@ -5,6 +5,7 @@ const ROOT = process.cwd();
 const PORTAL = path.join(ROOT, 'apps', 'portal');
 const REGISTRY = path.join(PORTAL, 'data', 'editorial-registry.json');
 const SITEMAP = path.join(PORTAL, 'sitemap.xml');
+const EVIDENCE = path.join(PORTAL, 'data', 'search-discovery-evidence.json');
 const ORIGIN = 'https://gnk-asg.hr';
 const outDir = path.join(ROOT, 'artifacts', 'search-discovery-state');
 
@@ -12,6 +13,8 @@ const failures = [];
 const pages = [];
 const meta = (html, name) => html.match(new RegExp(`<meta\\s+[^>]*name=["']${name}["'][^>]*content=["']([^"']*)["'][^>]*>`, 'i'))?.[1]?.trim() || html.match(new RegExp(`<meta\\s+[^>]*content=["']([^"']*)["'][^>]*name=["']${name}["'][^>]*>`, 'i'))?.[1]?.trim() || '';
 const canonical = html => html.match(/<link\s+[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["'][^>]*>/i)?.[1]?.trim() || html.match(/<link\s+[^>]*href=["']([^"']+)["'][^>]*rel=["']canonical["'][^>]*>/i)?.[1]?.trim() || '';
+const validIsoDate = value => typeof value === 'string' && !Number.isNaN(Date.parse(value));
+const allowedSourceTypes = new Set(['SEARCH_ENGINE_SUBMISSION_RECEIPT','PRODUCTION_HTTP_ROBOTS_EVIDENCE','SEARCH_ENGINE_INDEX_EVIDENCE']);
 
 if (!fs.existsSync(REGISTRY)) failures.push('editorial registry missing');
 if (!fs.existsSync(SITEMAP)) failures.push('sitemap.xml missing');
@@ -19,6 +22,24 @@ if (!fs.existsSync(SITEMAP)) failures.push('sitemap.xml missing');
 const registry = fs.existsSync(REGISTRY) ? JSON.parse(fs.readFileSync(REGISTRY, 'utf8')) : { items: [] };
 const sitemapXml = fs.existsSync(SITEMAP) ? fs.readFileSync(SITEMAP, 'utf8') : '';
 const sitemapUrls = new Set([...sitemapXml.matchAll(/<loc>([^<]+)<\/loc>/gi)].map(m => m[1].trim()));
+let externalEvidence = { pages: {} };
+if (fs.existsSync(EVIDENCE)) {
+  try { externalEvidence = JSON.parse(fs.readFileSync(EVIDENCE, 'utf8')); }
+  catch (error) { failures.push(`invalid search-discovery evidence JSON: ${error.message}`); }
+}
+const evidencePages = externalEvidence && typeof externalEvidence.pages === 'object' && externalEvidence.pages ? externalEvidence.pages : {};
+
+function verifiedEvidence(route, state) {
+  const entry = evidencePages?.[route]?.[state];
+  if (!entry) return { value: null, evidence: `UNAVAILABLE_NO_${state}_EVIDENCE` };
+  if (entry.value !== true && entry.value !== false) { failures.push(`${route}: ${state} evidence value must be boolean`); return { value: null, evidence: 'INVALID_EVIDENCE' }; }
+  if (!allowedSourceTypes.has(entry.sourceType)) { failures.push(`${route}: ${state} evidence has unsupported sourceType`); return { value: null, evidence: 'INVALID_EVIDENCE' }; }
+  const requiredType = state === 'SUBMITTED' ? 'SEARCH_ENGINE_SUBMISSION_RECEIPT' : state === 'CRAWLABLE' ? 'PRODUCTION_HTTP_ROBOTS_EVIDENCE' : 'SEARCH_ENGINE_INDEX_EVIDENCE';
+  if (entry.sourceType !== requiredType) { failures.push(`${route}: ${state} evidence requires sourceType ${requiredType}`); return { value: null, evidence: 'INVALID_EVIDENCE' }; }
+  if (typeof entry.source !== 'string' || !entry.source.trim()) { failures.push(`${route}: ${state} evidence requires non-empty source`); return { value: null, evidence: 'INVALID_EVIDENCE' }; }
+  if (!validIsoDate(entry.observedAt)) { failures.push(`${route}: ${state} evidence requires valid observedAt ISO date`); return { value: null, evidence: 'INVALID_EVIDENCE' }; }
+  return { value: entry.value, evidence: { sourceType: entry.sourceType, source: entry.source.trim(), observedAt: entry.observedAt } };
+}
 
 for (const item of Array.isArray(registry.items) ? registry.items : []) {
   const route = String(item.path || '');
@@ -32,13 +53,14 @@ for (const item of Array.isArray(registry.items) ? registry.items : []) {
   const robotsTokens = robots.toLowerCase().split(',').map(token => token.trim()).filter(Boolean);
   const robotsBlocksIndex = robotsTokens.includes('noindex') || robotsTokens.includes('none');
   const robotsBlocksFollow = robotsTokens.includes('nofollow') || robotsTokens.includes('none');
-  // HTML robots defaults are permissive: absence of an explicit robots meta directive means index/follow is locally allowed.
-  // This remains only static/local evidence; production X-Robots-Tag headers are outside this validator's evidence boundary.
   const indexFollow = !robotsBlocksIndex && !robotsBlocksFollow;
   const canonicalSelf = canonicalUrl === expectedUrl;
   const sitemapRegistered = sitemapUrls.has(expectedUrl);
   const discoverable = materialized && canonicalSelf && indexFollow;
   const crawlableLocalEvidence = discoverable;
+  const submitted = verifiedEvidence(route, 'SUBMITTED');
+  const crawlable = verifiedEvidence(route, 'CRAWLABLE');
+  const indexed = verifiedEvidence(route, 'INDEXED');
 
   pages.push({
     route,
@@ -46,10 +68,10 @@ for (const item of Array.isArray(registry.items) ? registry.items : []) {
     states: {
       DISCOVERABLE: discoverable,
       SITEMAP_REGISTERED: sitemapRegistered,
-      SUBMITTED: null,
-      CRAWLABLE: null,
+      SUBMITTED: submitted.value,
+      CRAWLABLE: crawlable.value,
       CRAWLABLE_LOCAL_EVIDENCE: crawlableLocalEvidence,
-      INDEXED: null
+      INDEXED: indexed.value
     },
     evidence: {
       materialized,
@@ -58,16 +80,21 @@ for (const item of Array.isArray(registry.items) ? registry.items : []) {
       robotsIndexFollow: indexFollow,
       robotsDefaultPermissive: robotsTokens.length === 0,
       sitemapMembership: sitemapRegistered,
-      submittedEvidence: 'UNAVAILABLE_NO_SEARCH_ENGINE_SUBMISSION_RECEIPT',
-      crawlableEvidence: 'UNAVAILABLE_NO_PRODUCTION_HTTP_AND_X_ROBOTS_EVIDENCE',
+      submittedEvidence: submitted.evidence,
+      crawlableEvidence: crawlable.evidence,
       crawlableLocalEvidence,
-      indexedEvidence: 'UNAVAILABLE_NO_SEARCH_ENGINE_INDEX_EVIDENCE'
+      indexedEvidence: indexed.evidence
     }
   });
 
   if (materialized && !canonicalSelf) failures.push(`${route}: materialized page lacks self canonical`);
   if (materialized && !indexFollow) failures.push(`${route}: materialized page is blocked by robots noindex/nofollow/none directive`);
   if (discoverable && !sitemapRegistered) failures.push(`${route}: discoverable page missing from sitemap.xml`);
+  if (indexed.value === true && crawlable.value !== true) failures.push(`${route}: INDEXED=true requires separately verified CRAWLABLE=true evidence`);
+}
+
+for (const route of Object.keys(evidencePages)) {
+  if (!(Array.isArray(registry.items) ? registry.items : []).some(item => String(item.path || '') === route)) failures.push(`${route}: search-discovery evidence references route absent from editorial registry`);
 }
 
 const counts = {
@@ -86,13 +113,14 @@ const counts = {
 const report = {
   version: 'GNK_ASG_SEARCH_DISCOVERY_STATE_V1',
   generatedAt: new Date().toISOString(),
+  evidenceInput: fs.existsSync(EVIDENCE) ? 'apps/portal/data/search-discovery-evidence.json' : null,
   semantics: {
     DISCOVERABLE: 'Materialized self-canonical page whose local HTML robots directive does not explicitly block indexing or following. Missing robots meta is treated as the permissive default, not as a failure.',
     SITEMAP_REGISTERED: 'Canonical URL is present in the committed sitemap.xml. This is discovery evidence, not proof of search-engine submission.',
-    SUBMITTED: 'Never inferred from sitemap membership. Remains null unless authoritative search-engine submission receipt or equivalent evidence is supplied.',
-    CRAWLABLE: 'Never inferred from local files. Remains null unless production HTTP reachability and production robots/X-Robots evidence are supplied.',
+    SUBMITTED: 'True/false only when backed by a typed search-engine submission receipt in the optional evidence file; otherwise null.',
+    CRAWLABLE: 'True/false only when backed by production HTTP plus robots/X-Robots evidence in the optional evidence file; otherwise null.',
     CRAWLABLE_LOCAL_EVIDENCE: 'Local static evidence has no page-level HTML robots/canonical blocker. This is supporting evidence only and is not a CRAWLABLE claim.',
-    INDEXED: 'Never inferred. Remains null unless authoritative search-engine index evidence is supplied.'
+    INDEXED: 'True/false only when backed by typed authoritative search-engine index evidence; INDEXED=true also requires separately verified CRAWLABLE=true.'
   },
   ok: failures.length === 0,
   counts,
