@@ -1,0 +1,66 @@
+name: Visibility Contract Gate
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'scripts/audit-hreflang-contract-v1.mjs'
+      - 'scripts/audit-search-discovery-state-v1.mjs'
+      - 'scripts/audit-social-image-contract-v1.mjs'
+      - '.github/workflows/visibility-contract-gate.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/portal/**'
+      - 'scripts/audit-hreflang-contract-v1.mjs'
+      - 'scripts/audit-search-discovery-state-v1.mjs'
+      - 'scripts/audit-social-image-contract-v1.mjs'
+      - '.github/workflows/visibility-contract-gate.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: visibility-contract-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  visibility-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Syntax checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check scripts/audit-hreflang-contract-v1.mjs
+          node --check scripts/audit-search-discovery-state-v1.mjs
+          node --check scripts/audit-social-image-contract-v1.mjs
+
+      - name: Reciprocal hreflang contract
+        run: node scripts/audit-hreflang-contract-v1.mjs
+
+      - name: Search discovery state contract
+        run: node scripts/audit-search-discovery-state-v1.mjs
+
+      - name: Social and image metadata contract
+        run: node scripts/audit-social-image-contract-v1.mjs
+
+      - name: Upload visibility evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visibility-contract-gate-${{ github.sha }}
+          path: |
+            artifacts/hreflang-contract/**
+            artifacts/search-discovery-state/**
+            artifacts/social-image-contract/**
+          if-no-files-found: warn
+          retention-days: 14
