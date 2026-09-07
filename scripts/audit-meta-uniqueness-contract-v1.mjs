@@ -9,8 +9,10 @@ const warnings = [];
 const stats = {
   registryItems: 0,
   checkedPages: 0,
+  duplicateRoutes: 0,
   duplicateTitles: 0,
   duplicateDescriptions: 0,
+  duplicateH1: 0,
   missingTitles: 0,
   missingDescriptions: 0,
   missingH1: 0,
@@ -22,7 +24,6 @@ const stats = {
   descriptionControlChars: 0
 };
 const normalize = value => String(value || '').replace(/&amp;/gi, '&').replace(/&#39;/g, "'").replace(/&quot;/gi, '"').replace(/\s+/g, ' ').trim();
-const extract = (html, regex) => normalize(html.match(regex)?.[1] || '');
 const routeFile = route => path.join(PORTAL, route.replace(/^\/+|\/+$/g, ''), 'index.html');
 const records = [];
 const controlChars = value => /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/.test(String(value || ''));
@@ -35,8 +36,22 @@ const registry = JSON.parse(fs.readFileSync(REGISTRY, 'utf8'));
 const items = Array.isArray(registry.items) ? registry.items : [];
 stats.registryItems = items.length;
 
+const routeGroups = new Map();
 for (const item of items) {
-  const route = String(item.path || '');
+  const route = String(item.path || '').trim();
+  if (!route.startsWith('/')) continue;
+  const routes = routeGroups.get(route) || [];
+  routes.push(item);
+  routeGroups.set(route, routes);
+}
+for (const [route, entries] of routeGroups) {
+  if (entries.length < 2) continue;
+  stats.duplicateRoutes += entries.length;
+  failures.push(`duplicate editorial registry route ${route}: ${entries.length} entries`);
+}
+
+for (const item of items) {
+  const route = String(item.path || '').trim();
   if (!route.startsWith('/')) continue;
   const file = routeFile(route);
   if (!fs.existsSync(file)) continue;
@@ -64,7 +79,7 @@ for (const item of items) {
   records.push({ route, title, description, h1 });
 }
 
-for (const [field, statKey] of [['title', 'duplicateTitles'], ['description', 'duplicateDescriptions']]) {
+for (const [field, statKey] of [['title', 'duplicateTitles'], ['description', 'duplicateDescriptions'], ['h1', 'duplicateH1']]) {
   const groups = new Map();
   for (const row of records) {
     const value = normalize(row[field]).toLocaleLowerCase('hr');
