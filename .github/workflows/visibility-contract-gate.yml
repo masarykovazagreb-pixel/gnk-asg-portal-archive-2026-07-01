@@ -19,6 +19,7 @@ on:
       - 'scripts/audit-home-truth-consistency-v1.mjs'
       - 'scripts/audit-breadcrumb-contract-v1.mjs'
       - 'scripts/audit-article-entity-parity-v1.mjs'
+      - 'scripts/audit-entity-sameas-contract-v1.mjs'
       - '.github/workflows/visibility-contract-gate.yml'
   push:
     branches:
@@ -40,6 +41,7 @@ on:
       - 'scripts/audit-home-truth-consistency-v1.mjs'
       - 'scripts/audit-breadcrumb-contract-v1.mjs'
       - 'scripts/audit-article-entity-parity-v1.mjs'
+      - 'scripts/audit-entity-sameas-contract-v1.mjs'
       - '.github/workflows/visibility-contract-gate.yml'
 
 permissions:
@@ -79,6 +81,7 @@ jobs:
           node --check scripts/audit-home-truth-consistency-v1.mjs
           node --check scripts/audit-breadcrumb-contract-v1.mjs
           node --check scripts/audit-article-entity-parity-v1.mjs
+          node --check scripts/audit-entity-sameas-contract-v1.mjs
 
       - name: Editorial visibility contract
         run: node scripts/audit-editorial-visibility-v1.mjs
@@ -125,6 +128,9 @@ jobs:
       - name: Article canonical and entity parity contract
         run: node scripts/audit-article-entity-parity-v1.mjs
 
+      - name: Entity sameAs integrity contract
+        run: node scripts/audit-entity-sameas-contract-v1.mjs
+
       - name: Upload visibility evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -146,5 +152,6 @@ jobs:
             artifacts/home-truth-consistency/**
             artifacts/breadcrumb-contract/**
             artifacts/article-entity-parity/**
+            artifacts/entity-sameas-contract/**
           if-no-files-found: warn
           retention-days: 14
