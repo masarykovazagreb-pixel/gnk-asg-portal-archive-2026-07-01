@@ -8,7 +8,16 @@ const SITEMAP = path.join(PORTAL, 'image-sitemap.xml');
 const ORIGIN = 'https://gnk-asg.hr';
 const failures = [];
 const warnings = [];
-const stats = { imageUrlsChecked: 0, insecureUrls: 0, unstableUrls: 0, malformedUrls: 0, unsupportedExtensions: 0, sameOriginAssetsChecked: 0, missingAssets: 0 };
+const stats = {
+  imageUrlsChecked: 0,
+  insecureUrls: 0,
+  unstableUrls: 0,
+  malformedUrls: 0,
+  unsupportedExtensions: 0,
+  sameOriginAssetsChecked: 0,
+  missingAssets: 0,
+  duplicateImageUrls: 0
+};
 
 const decodeXml = value => String(value || '')
   .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
@@ -21,6 +30,7 @@ if (!fs.existsSync(SITEMAP)) {
 }
 const xml = fs.readFileSync(SITEMAP, 'utf8');
 const imageLocs = [...xml.matchAll(/<image:loc>([\s\S]*?)<\/image:loc>/gi)].map(m => decodeXml(m[1]));
+const seen = new Map();
 for (const raw of imageLocs) {
   stats.imageUrlsChecked++;
   let url;
@@ -29,6 +39,13 @@ for (const raw of imageLocs) {
     stats.malformedUrls++;
     failures.push(`Malformed image sitemap URL: ${raw}`);
     continue;
+  }
+  const canonicalHref = url.href;
+  const priorCount = seen.get(canonicalHref) || 0;
+  seen.set(canonicalHref, priorCount + 1);
+  if (priorCount > 0) {
+    stats.duplicateImageUrls++;
+    failures.push(`Duplicate image sitemap URL is wasting discovery/crawl signals: ${canonicalHref}`);
   }
   if (url.protocol !== 'https:') {
     stats.insecureUrls++;
