@@ -19,7 +19,9 @@ on:
       - 'scripts/audit-imageobject-contract-v1.mjs'
       - 'scripts/audit-home-truth-consistency-v1.mjs'
       - 'scripts/audit-breadcrumb-contract-v1.mjs'
+      - 'scripts/audit-visible-breadcrumb-parity-v1.mjs'
       - 'scripts/audit-article-entity-parity-v1.mjs'
+      - 'scripts/audit-article-entity-url-parity-v1.mjs'
       - 'scripts/audit-entity-sameas-contract-v1.mjs'
       - 'scripts/audit-internal-link-integrity-v1.mjs'
       - 'scripts/audit-robots-indexability-parity-v1.mjs'
@@ -44,7 +46,9 @@ on:
       - 'scripts/audit-imageobject-contract-v1.mjs'
       - 'scripts/audit-home-truth-consistency-v1.mjs'
       - 'scripts/audit-breadcrumb-contract-v1.mjs'
+      - 'scripts/audit-visible-breadcrumb-parity-v1.mjs'
       - 'scripts/audit-article-entity-parity-v1.mjs'
+      - 'scripts/audit-article-entity-url-parity-v1.mjs'
       - 'scripts/audit-entity-sameas-contract-v1.mjs'
       - 'scripts/audit-internal-link-integrity-v1.mjs'
       - 'scripts/audit-robots-indexability-parity-v1.mjs'
@@ -87,7 +91,9 @@ jobs:
           node --check scripts/audit-imageobject-contract-v1.mjs
           node --check scripts/audit-home-truth-consistency-v1.mjs
           node --check scripts/audit-breadcrumb-contract-v1.mjs
+          node --check scripts/audit-visible-breadcrumb-parity-v1.mjs
           node --check scripts/audit-article-entity-parity-v1.mjs
+          node --check scripts/audit-article-entity-url-parity-v1.mjs
           node --check scripts/audit-entity-sameas-contract-v1.mjs
           node --check scripts/audit-internal-link-integrity-v1.mjs
           node --check scripts/audit-robots-indexability-parity-v1.mjs
@@ -137,8 +143,14 @@ jobs:
       - name: Breadcrumb canonical integrity contract
         run: node scripts/audit-breadcrumb-contract-v1.mjs
 
+      - name: Visible breadcrumb parity contract
+        run: node scripts/audit-visible-breadcrumb-parity-v1.mjs
+
       - name: Article canonical and entity parity contract
         run: node scripts/audit-article-entity-parity-v1.mjs
+
+      - name: Article known-entity URL parity contract
+        run: node scripts/audit-article-entity-url-parity-v1.mjs
 
       - name: Entity sameAs integrity contract
         run: node scripts/audit-entity-sameas-contract-v1.mjs
@@ -170,7 +182,9 @@ jobs:
             artifacts/imageobject-contract/**
             artifacts/home-truth-consistency/**
             artifacts/breadcrumb-contract/**
+            artifacts/visible-breadcrumb-parity/**
             artifacts/article-entity-parity/**
+            artifacts/article-entity-url-parity/**
             artifacts/entity-sameas-contract/**
             artifacts/internal-link-integrity/**
             artifacts/robots-indexability-parity/**
