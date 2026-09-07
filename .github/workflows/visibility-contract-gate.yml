@@ -1,0 +1,157 @@
+name: Visibility Contract Gate
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'scripts/audit-editorial-visibility-v1.mjs'
+      - 'scripts/audit-editorial-registry-schema-parity-v1.mjs'
+      - 'scripts/audit-hreflang-contract-v1.mjs'
+      - 'scripts/audit-search-discovery-state-v1.mjs'
+      - 'scripts/audit-social-image-contract-v1.mjs'
+      - 'scripts/audit-social-image-intrinsic-dimensions-v1.mjs'
+      - 'scripts/audit-rendered-image-contract-v1.mjs'
+      - 'scripts/audit-image-delivery-contract-v1.mjs'
+      - 'scripts/audit-image-sitemap-integrity-v1.mjs'
+      - 'scripts/audit-image-sitemap-url-stability-v1.mjs'
+      - 'scripts/audit-twitter-card-contract-v1.mjs'
+      - 'scripts/audit-imageobject-contract-v1.mjs'
+      - 'scripts/audit-home-truth-consistency-v1.mjs'
+      - 'scripts/audit-breadcrumb-contract-v1.mjs'
+      - 'scripts/audit-article-entity-parity-v1.mjs'
+      - 'scripts/audit-entity-sameas-contract-v1.mjs'
+      - '.github/workflows/visibility-contract-gate.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/portal/**'
+      - 'scripts/audit-editorial-visibility-v1.mjs'
+      - 'scripts/audit-editorial-registry-schema-parity-v1.mjs'
+      - 'scripts/audit-hreflang-contract-v1.mjs'
+      - 'scripts/audit-search-discovery-state-v1.mjs'
+      - 'scripts/audit-social-image-contract-v1.mjs'
+      - 'scripts/audit-social-image-intrinsic-dimensions-v1.mjs'
+      - 'scripts/audit-rendered-image-contract-v1.mjs'
+      - 'scripts/audit-image-delivery-contract-v1.mjs'
+      - 'scripts/audit-image-sitemap-integrity-v1.mjs'
+      - 'scripts/audit-image-sitemap-url-stability-v1.mjs'
+      - 'scripts/audit-twitter-card-contract-v1.mjs'
+      - 'scripts/audit-imageobject-contract-v1.mjs'
+      - 'scripts/audit-home-truth-consistency-v1.mjs'
+      - 'scripts/audit-breadcrumb-contract-v1.mjs'
+      - 'scripts/audit-article-entity-parity-v1.mjs'
+      - 'scripts/audit-entity-sameas-contract-v1.mjs'
+      - '.github/workflows/visibility-contract-gate.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: visibility-contract-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  visibility-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Syntax checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check scripts/audit-editorial-visibility-v1.mjs
+          node --check scripts/audit-editorial-registry-schema-parity-v1.mjs
+          node --check scripts/audit-hreflang-contract-v1.mjs
+          node --check scripts/audit-search-discovery-state-v1.mjs
+          node --check scripts/audit-social-image-contract-v1.mjs
+          node --check scripts/audit-social-image-intrinsic-dimensions-v1.mjs
+          node --check scripts/audit-rendered-image-contract-v1.mjs
+          node --check scripts/audit-image-delivery-contract-v1.mjs
+          node --check scripts/audit-image-sitemap-integrity-v1.mjs
+          node --check scripts/audit-image-sitemap-url-stability-v1.mjs
+          node --check scripts/audit-twitter-card-contract-v1.mjs
+          node --check scripts/audit-imageobject-contract-v1.mjs
+          node --check scripts/audit-home-truth-consistency-v1.mjs
+          node --check scripts/audit-breadcrumb-contract-v1.mjs
+          node --check scripts/audit-article-entity-parity-v1.mjs
+          node --check scripts/audit-entity-sameas-contract-v1.mjs
+
+      - name: Editorial visibility contract
+        run: node scripts/audit-editorial-visibility-v1.mjs
+
+      - name: Editorial registry structured-data parity contract
+        run: node scripts/audit-editorial-registry-schema-parity-v1.mjs
+
+      - name: Reciprocal hreflang contract
+        run: node scripts/audit-hreflang-contract-v1.mjs
+
+      - name: Search discovery state contract
+        run: node scripts/audit-search-discovery-state-v1.mjs
+
+      - name: Social and image metadata contract
+        run: node scripts/audit-social-image-contract-v1.mjs
+
+      - name: Social image intrinsic dimensions contract
+        run: node scripts/audit-social-image-intrinsic-dimensions-v1.mjs
+
+      - name: Rendered primary image contract
+        run: node scripts/audit-rendered-image-contract-v1.mjs
+
+      - name: Sitewide image delivery contract
+        run: node scripts/audit-image-delivery-contract-v1.mjs
+
+      - name: Image sitemap integrity contract
+        run: node scripts/audit-image-sitemap-integrity-v1.mjs
+
+      - name: Image sitemap URL stability contract
+        run: node scripts/audit-image-sitemap-url-stability-v1.mjs
+
+      - name: Twitter card contract
+        run: node scripts/audit-twitter-card-contract-v1.mjs
+
+      - name: ImageObject structured-data contract
+        run: node scripts/audit-imageobject-contract-v1.mjs
+
+      - name: Homepage truth consistency contract
+        run: node scripts/audit-home-truth-consistency-v1.mjs
+
+      - name: Breadcrumb canonical integrity contract
+        run: node scripts/audit-breadcrumb-contract-v1.mjs
+
+      - name: Article canonical and entity parity contract
+        run: node scripts/audit-article-entity-parity-v1.mjs
+
+      - name: Entity sameAs integrity contract
+        run: node scripts/audit-entity-sameas-contract-v1.mjs
+
+      - name: Upload visibility evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visibility-contract-gate-${{ github.sha }}
+          path: |
+            artifacts/editorial-visibility/**
+            artifacts/editorial-registry-schema-parity/**
+            artifacts/hreflang-contract/**
+            artifacts/search-discovery-state/**
+            artifacts/social-image-contract/**
+            artifacts/social-image-intrinsic-dimensions/**
+            artifacts/rendered-image-contract/**
+            artifacts/image-delivery-contract/**
+            artifacts/image-sitemap-integrity/**
+            artifacts/image-sitemap-url-stability/**
+            artifacts/twitter-card-contract/**
+            artifacts/imageobject-contract/**
+            artifacts/home-truth-consistency/**
+            artifacts/breadcrumb-contract/**
+            artifacts/article-entity-parity/**
+            artifacts/entity-sameas-contract/**
+          if-no-files-found: warn
+          retention-days: 14
