@@ -7,7 +7,22 @@ const REGISTRY = path.join(PORTAL, 'data', 'editorial-registry.json');
 const ORIGIN = 'https://gnk-asg.hr';
 const failures = [];
 const warnings = [];
-const stats = { registryItems: 0, checkedPages: 0, breadcrumbPages: 0, missingBreadcrumbs: 0, canonicalMismatches: 0, positionErrors: 0, foreignItems: 0, duplicateItems: 0, finalNameMismatches: 0 };
+const stats = {
+  registryItems: 0,
+  checkedPages: 0,
+  breadcrumbPages: 0,
+  missingBreadcrumbs: 0,
+  visibleBreadcrumbs: 0,
+  missingVisibleBreadcrumbs: 0,
+  canonicalMismatches: 0,
+  positionErrors: 0,
+  foreignItems: 0,
+  duplicateItems: 0,
+  finalNameMismatches: 0,
+  credentialErrors: 0,
+  insecureUrlErrors: 0,
+  queryFragmentErrors: 0
+};
 const fail = m => failures.push(m);
 const warn = m => warnings.push(m);
 const extract = (html, regex) => html.match(regex)?.[1]?.trim() || '';
@@ -16,6 +31,8 @@ const routeFile = route => path.join(PORTAL, route.replace(/^\/+|\/+$/g, ''), 'i
 const nodesFrom = value => Array.isArray(value?.['@graph']) ? value['@graph'] : [value];
 const normalizeText = value => String(value || '').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/gi, ' ').replace(/&amp;/gi, '&').replace(/\s+/g, ' ').trim();
 const h1Text = html => normalizeText(extract(html, /<h1\b[^>]*>([\s\S]*?)<\/h1>/i));
+const hasVisibleBreadcrumb = html => /<nav\b[^>]*(?:aria-label=["'][^"']*breadcrumb[^"']*["']|class=["'][^"']*breadcrumb[^"']*["'])[^>]*>[\s\S]*?<\/nav>/i.test(html)
+  || /<(?:ol|ul|div)\b[^>]*class=["'][^"']*breadcrumb[^"']*["'][^>]*>[\s\S]*?<\/(?:ol|ul|div)>/i.test(html);
 
 if (!fs.existsSync(REGISTRY)) process.exit(1);
 const registry = JSON.parse(fs.readFileSync(REGISTRY, 'utf8'));
@@ -31,6 +48,11 @@ for (const item of items) {
   stats.checkedPages++;
   const pageCanonical = canonical(html) || `${ORIGIN}${route}`;
   const pageH1 = h1Text(html);
+  if (hasVisibleBreadcrumb(html)) stats.visibleBreadcrumbs++;
+  else {
+    stats.missingVisibleBreadcrumbs++;
+    fail(`${route}: missing visible breadcrumb navigation for users`);
+  }
   const blocks = [...html.matchAll(/<script\s+type=["']application\/ld\+json["']>([\s\S]*?)<\/script>/gi)];
   const breadcrumbNodes = [];
   for (const [i, block] of blocks.entries()) {
@@ -66,15 +88,28 @@ for (const item of items) {
     else {
       try {
         const u = new URL(target, ORIGIN);
+        if (u.protocol !== 'https:') {
+          stats.insecureUrlErrors++;
+          fail(`${route}: breadcrumb entry ${i + 1} must use HTTPS: ${target}`);
+        }
+        if (u.username || u.password) {
+          stats.credentialErrors++;
+          fail(`${route}: breadcrumb entry ${i + 1} must not contain URL credentials: ${target}`);
+        }
+        if (u.search || u.hash) {
+          stats.queryFragmentErrors++;
+          fail(`${route}: breadcrumb entry ${i + 1} must not contain query or fragment: ${target}`);
+        }
         if (u.origin !== ORIGIN) {
           stats.foreignItems++;
           fail(`${route}: breadcrumb entry ${i + 1} points outside GNK ASG origin: ${target}`);
         }
-        if (seenTargets.has(u.href)) {
+        const normalizedTarget = `${u.origin}${u.pathname}`;
+        if (seenTargets.has(normalizedTarget)) {
           stats.duplicateItems++;
-          fail(`${route}: breadcrumb entry ${i + 1} duplicates an earlier item URL: ${u.href}`);
+          fail(`${route}: breadcrumb entry ${i + 1} duplicates an earlier item URL: ${normalizedTarget}`);
         }
-        seenTargets.add(u.href);
+        seenTargets.add(normalizedTarget);
       } catch {
         fail(`${route}: breadcrumb entry ${i + 1} has invalid URL: ${target}`);
       }
@@ -88,9 +123,11 @@ for (const item of items) {
   const last = list[list.length - 1] || {};
   const lastTarget = typeof last.item === 'string' ? last.item : last.item?.['@id'] || last.item?.url || '';
   try {
-    if (new URL(lastTarget, ORIGIN).href !== new URL(pageCanonical, ORIGIN).href) {
+    const finalUrl = new URL(lastTarget, ORIGIN);
+    const canonicalUrl = new URL(pageCanonical, ORIGIN);
+    if (finalUrl.search || finalUrl.hash || canonicalUrl.search || canonicalUrl.hash || finalUrl.href !== canonicalUrl.href) {
       stats.canonicalMismatches++;
-      fail(`${route}: final breadcrumb item must equal canonical URL`);
+      fail(`${route}: final breadcrumb item must equal clean canonical URL`);
     }
   } catch {
     stats.canonicalMismatches++;
