@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "sourceOfTruthSha": "e40a435326385a57474e8434e16c03aff5fc03b9",
+  "integrationWriter": {
+    "mode": "single-writer",
+    "mergePolicy": "exact-sha-cas",
+    "blindMergeAllowed": false
+  },
+  "projects": [
+    {"id":1,"name":"Actions runner/permissions recovery","priority":"P0","risk":"R1","writeClass":"integration-writer-only"},
+    {"id":2,"name":"Scheduled Actions successful-run restoration","priority":"P0","risk":"R1","writeClass":"integration-writer-only"},
+    {"id":3,"name":"Mutation concurrency collision audit","priority":"P0","risk":"R1","writeClass":"integration-writer-only"},
+    {"id":4,"name":"Critical route health/freshness","priority":"P0","risk":"R0","writeClass":"read-test-first"},
+    {"id":5,"name":"AKTUAL/news freshness","priority":"P0","risk":"R1","writeClass":"integration-writer-only"},
+    {"id":6,"name":"Weather pipeline freshness","priority":"P0","risk":"R1","writeClass":"integration-writer-only"},
+    {"id":7,"name":"Market/digital-assets freshness and fallback","priority":"P0","risk":"R1","writeClass":"integration-writer-only"},
+    {"id":8,"name":"Digital Workforce runtime/newsroom/static routes","priority":"P0","risk":"R1","writeClass":"integration-writer-only"},
+    {"id":9,"name":"Nermin/GNK ASG entity SEO","priority":"P1","risk":"R0","writeClass":"integration-writer-only"},
+    {"id":10,"name":"Canonical/hreflang/robots/OG/JSON-LD parity","priority":"P1","risk":"R0","writeClass":"integration-writer-only"},
+    {"id":11,"name":"Sitemap coverage and freshness","priority":"P1","risk":"R1","writeClass":"integration-writer-only"},
+    {"id":12,"name":"Image sitemap and canonical image integrity","priority":"P1","risk":"R1","writeClass":"integration-writer-only"},
+    {"id":13,"name":"SEO normalizer scope safety","priority":"P1","risk":"R0","writeClass":"read-test-first"},
+    {"id":14,"name":"SEO regression verification","priority":"P1","risk":"R0","writeClass":"read-test-first"},
+    {"id":15,"name":"Publication/freshness workflow health","priority":"P1","risk":"R1","writeClass":"integration-writer-only"},
+    {"id":16,"name":"Worker SLA/watchdog/recovery","priority":"P1","risk":"R1","writeClass":"integration-writer-only"},
+    {"id":17,"name":"Release fence/kill-switch validation","priority":"P1","risk":"R1","writeClass":"read-test-first"},
+    {"id":18,"name":"Meta title/description uniqueness","priority":"P2","risk":"R0","writeClass":"integration-writer-only"},
+    {"id":19,"name":"ALT and image SEO audit","priority":"P2","risk":"R0","writeClass":"integration-writer-only"},
+    {"id":20,"name":"Internal-link architecture","priority":"P2","risk":"R0","writeClass":"integration-writer-only"},
+    {"id":21,"name":"Robots/indexability consistency","priority":"P2","risk":"R0","writeClass":"read-test-first"},
+    {"id":22,"name":"Operational backlog/evidence maintenance","priority":"P2","risk":"R0","writeClass":"integration-writer-only"},
+    {"id":23,"name":"Security/Intelligence Integration Readiness","priority":"P1","risk":"R1","writeClass":"prep-only-owner-connect-gated"}
+  ],
+  "globalRules": {
+    "collisionRateTarget": 0,
+    "projectStarvationTarget": 0,
+    "knowledgeTransfer": "evaluator-gated",
+    "securityIntelligenceConnectAllowed": false,
+    "indexedRequiresEvidence": true,
+    "noTouch": ["production-mailboxes","mail-backend","dns-mx-spf-dkim-dmarc","secrets","social-live","linkedin-live"]
+  }
+}
