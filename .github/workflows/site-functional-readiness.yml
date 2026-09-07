@@ -53,6 +53,7 @@ jobs:
           node --check scripts/test-news-publication-seo-contract.mjs
           node --check scripts/audit-editorial-visibility-v1.mjs
           node --check scripts/audit-social-image-contract-v1.mjs
+          node --check scripts/audit-entity-sameas-contract-v1.mjs
           bash -n scripts/check-newsroom-route-readiness.sh
           bash -n scripts/verify-production-route.sh
 
@@ -123,6 +124,9 @@ jobs:
       - name: Social image contract
         run: node scripts/audit-social-image-contract-v1.mjs
 
+      - name: Entity sameAs integrity
+        run: node scripts/audit-entity-sameas-contract-v1.mjs
+
       - name: Static page integrity
         id: static_integrity
         continue-on-error: true
@@ -155,6 +159,7 @@ jobs:
             artifacts/readiness-logs/**
             artifacts/editorial-visibility/**
             artifacts/social-image-contract/**
+            artifacts/entity-sameas-contract/**
           if-no-files-found: warn
           retention-days: 14
 
