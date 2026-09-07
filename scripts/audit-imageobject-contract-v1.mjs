@@ -13,8 +13,10 @@ const stats = {
   insecureUrl: 0,
   missingLocalAsset: 0,
   invalidRepresentativeOfPage: 0,
+  representativeOgMismatches: 0,
   conflictingUrls: 0,
   invalidDimensions: 0,
+  incompleteDimensionPairs: 0,
   emptyCaptions: 0
 };
 const routeFile = route => path.join(PORTAL, route.replace(/^\/+|\/+$/g, ''), 'index.html');
@@ -46,6 +48,12 @@ const validDimension = value => {
   if (typeof value === 'string') return /^[1-9]\d*$/.test(value.trim());
   return false;
 };
+const metaProperty = (html, name) => {
+  const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const direct = html.match(new RegExp(`<meta\\s+[^>]*property=["']${escaped}["'][^>]*content=["']([^"']+)["'][^>]*>`, 'i'))?.[1];
+  const reversed = html.match(new RegExp(`<meta\\s+[^>]*content=["']([^"']+)["'][^>]*property=["']${escaped}["'][^>]*>`, 'i'))?.[1];
+  return normalizedUrl(direct || reversed || '');
+};
 if (!fs.existsSync(REGISTRY)) process.exit(1);
 const registry = JSON.parse(fs.readFileSync(REGISTRY, 'utf8'));
 for (const item of Array.isArray(registry.items) ? registry.items : []) {
@@ -55,6 +63,7 @@ for (const item of Array.isArray(registry.items) ? registry.items : []) {
   if (!fs.existsSync(file)) continue;
   const html = fs.readFileSync(file, 'utf8');
   stats.checkedPages++;
+  const pageOgImage = metaProperty(html, 'og:image');
   const imageObjects = jsonLdObjects(html).filter(obj => typeIncludes(obj, 'ImageObject'));
   for (const obj of imageObjects) {
     stats.imageObjects++;
@@ -90,6 +99,16 @@ for (const item of Array.isArray(registry.items) ? registry.items : []) {
     if ('representativeOfPage' in obj && typeof obj.representativeOfPage !== 'boolean') {
       stats.invalidRepresentativeOfPage++;
       failures.push(`${route}: ImageObject representativeOfPage must be boolean when present`);
+    }
+    if (obj.representativeOfPage === true && pageOgImage && pageOgImage !== imageUrl) {
+      stats.representativeOgMismatches++;
+      failures.push(`${route}: representative ImageObject must match og:image (${imageUrl} != ${pageOgImage})`);
+    }
+    const hasWidth = Object.prototype.hasOwnProperty.call(obj, 'width');
+    const hasHeight = Object.prototype.hasOwnProperty.call(obj, 'height');
+    if (hasWidth !== hasHeight) {
+      stats.incompleteDimensionPairs++;
+      failures.push(`${route}: ImageObject width and height must be supplied together when either is present`);
     }
     for (const field of ['width', 'height']) {
       if (field in obj && !validDimension(obj[field])) {
