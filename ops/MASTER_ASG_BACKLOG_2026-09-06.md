@@ -30,10 +30,17 @@ Cilj: stvarno verificiranih 99%. Redoslijed: kvarovi/degradacije → automatizac
 21. [ ] Provjeriti robots/indexability kontradikcije između HTML meta, sitemapova i javnih ruta.
 22. [x] Održavati ovaj backlog: zatvarati samo verificirane stavke i svaki dan reprioritizirati prema novim P0/P1 kvarovima.
 
+## 23-projektni paralelni checkpoint
+- Registar za svih 22 postojećih laneova + 23. `Security/Intelligence Integration Readiness` nalazi se u `ops/master-nn/23-project-registry.json`.
+- Shared Intelligence knowledge object contract nalazi se u `ops/master-nn/knowledge-object.schema.json`.
+- Security/intelligence source registry je strogo `READINESS_ONLY`; `connected=false`, a stvarni connect ostaje owner-gated: `ops/master-nn/security-intelligence-source-registry.json`.
+- Ovaj rad je izoliran na svježoj grani iz aktualnog `main`; postojeći PR #79 nije mergean, rerunan niti modificiran, pa nema blind-write kolizije.
+
 ## Trenutno verificirano
-- `main` na početku ovog ciklusa: `372a0bfda662bf5805c7c930d0cf59ef88bf428a`.
-- Najnoviji provjereni scheduled kvar je `Site Health Check (2x daily Zagreb)` run `34039231805` od 2026-09-06 na aktualnom `main` SHA: završio je `failure`; job `health-check` (`101502826315`) nema dostupne stepove (`steps: null`). Time isti failure-before-steps obrazac sada izravno zahvaća i health sloj.
-- Prethodno je isti obrazac potvrđen na `GNK News Refresh V2`, `World Monitor Data Refresh (free sources)` i `Refresh GNKC Index`; zbog ponavljanja na nepovezanim workflowima nema dovoljno dokaza za spekulativnu izmjenu pojedinačnog generatora. Actions/runner/permission sloj ostaje P0.
+- `main` na početku ovog ciklusa: `e40a435326385a57474e8434e16c03aff5fc03b9`.
+- Najnoviji provjereni scheduled kvar na tom SHA je `GNK ASG Automation SLA Watchdog` run `34160679475` od 2026-09-07: završio je `failure`; job `Verify automation SLAs and dispatch canonical recovery` (`101861728185`) vraća `steps: null`.
+- Pokušaj čitanja loga za job `101861728185` vraća GitHub/Azure `404 BlobNotFound`, što dodatno potvrđuje failure-before-visible-steps obrazac i na aktualnom automation watchdogu. Zbog istog obrasca na više nepovezanih workflowa i dalje nema osnove za spekulativni popravak pojedinačnog generatora ili blind rerun.
+- Prethodno je isti obrazac potvrđen na `Site Health Check (2x daily Zagreb)`, `GNK News Refresh V2`, `World Monitor Data Refresh (free sources)` i `Refresh GNKC Index`; Actions/runner/job-evidence sloj ostaje P0.
 - `refresh-gnkc-index.yml` na `main` ima standardni `ubuntu-latest`, `contents: write`, Node 22 i uredno definirane stepove; sam YAML ne objašnjava failure prije stepova.
 - HR i EN `nermin-sefic` stranice imaju verificirane canonical, hreflang HR/EN/x-default, `robots=index,follow`, OG/Twitter i JSON-LD Person/ProfilePage/Organization signale te varijante `Nermin Sefić` / `Nermin Sefic`.
 - `apps/portal/sitemap.xml` sadrži HR i EN `nermin-sefic` URL-ove s HR/EN/x-default alternates, ali oba imaju `lastmod` `2026-08-03`, stariji od aktualne entity SEO izmjene; sitemap freshness ostaje otvoreni P1.
