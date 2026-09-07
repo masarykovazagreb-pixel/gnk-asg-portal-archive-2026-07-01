@@ -18,7 +18,23 @@ const ENTITY_NAMES = new Map([
 ]);
 const failures = [];
 const warnings = [];
-const stats = { registryItems: 0, checkedPages: 0, articleNodes: 0, canonicalMainEntityMatches: 0, mainEntityMismatches: 0, authorParityMismatches: 0, publisherMismatches: 0, missingAuthorSignals: 0, missingPublisherSignals: 0, invalidAuthorTypes: 0, entitySignalsChecked: 0, malformedEntitySignals: 0 };
+const stats = {
+  registryItems: 0,
+  checkedPages: 0,
+  articleNodes: 0,
+  canonicalMainEntityMatches: 0,
+  mainEntityMismatches: 0,
+  authorParityMismatches: 0,
+  publisherMismatches: 0,
+  missingAuthorSignals: 0,
+  missingPublisherSignals: 0,
+  invalidAuthorTypes: 0,
+  invalidAuthorEntries: 0,
+  multiAuthorArticles: 0,
+  duplicateAuthors: 0,
+  entitySignalsChecked: 0,
+  malformedEntitySignals: 0
+};
 const fail = m => failures.push(m);
 const warn = m => warnings.push(m);
 const extract = (html, regex) => html.match(regex)?.[1]?.trim() || '';
@@ -67,20 +83,38 @@ for (const item of items) {
       fail(`${route}: Article mainEntityOfPage must resolve exactly to canonical URL`);
     } else stats.canonicalMainEntityMatches++;
 
-    const schemaAuthor = nodeName(article.author);
-    if (!schemaAuthor && !metaAuthor) {
+    const authors = listify(article.author);
+    const authorNames = [];
+    const seenAuthors = new Set();
+    if (authors.length > 1) stats.multiAuthorArticles++;
+    for (const [authorIndex, author] of authors.entries()) {
+      const name = nodeName(author);
+      if (!name) {
+        stats.invalidAuthorEntries++;
+        fail(`${route}: Article author entry ${authorIndex + 1} must have a non-empty name`);
+        continue;
+      }
+      const normalizedName = name.toLowerCase();
+      if (seenAuthors.has(normalizedName)) {
+        stats.duplicateAuthors++;
+        fail(`${route}: Article author list repeats ${name}`);
+      }
+      seenAuthors.add(normalizedName);
+      authorNames.push(name);
+      if (author && typeof author === 'object' && !Array.isArray(author)) {
+        const authorType = author['@type'];
+        if (authorType && !['Person','Organization'].includes(authorType)) {
+          stats.invalidAuthorTypes++;
+          fail(`${route}: Article author ${name} @type must be Person or Organization; found ${authorType}`);
+        }
+      }
+    }
+    if (!authorNames.length && !metaAuthor) {
       stats.missingAuthorSignals++;
       warn(`${route}: no truthful author signal available in Article schema or meta author`);
-    } else if (schemaAuthor && metaAuthor && schemaAuthor !== metaAuthor) {
+    } else if (metaAuthor && authorNames.length && !authorNames.includes(metaAuthor)) {
       stats.authorParityMismatches++;
-      fail(`${route}: Article author (${schemaAuthor}) disagrees with page author metadata (${metaAuthor})`);
-    }
-    if (article.author && typeof article.author === 'object' && !Array.isArray(article.author)) {
-      const authorType = article.author['@type'];
-      if (authorType && !['Person','Organization'].includes(authorType)) {
-        stats.invalidAuthorTypes++;
-        fail(`${route}: Article author @type must be Person or Organization when explicitly typed; found ${authorType}`);
-      }
+      fail(`${route}: page author metadata (${metaAuthor}) must match one Article author (${authorNames.join(', ')})`);
     }
 
     const publisherName = nodeName(article.publisher);
@@ -125,7 +159,7 @@ for (const item of items) {
   }
 }
 
-const report = { version: 'GNK_ASG_ARTICLE_ENTITY_PARITY_V1', scope: 'Article-family JSON-LD on materialized editorial registry pages', ok: failures.length === 0, stats, failures, warnings };
+const report = { version: 'GNK_ASG_ARTICLE_ENTITY_PARITY_V2', scope: 'Article-family JSON-LD on materialized editorial registry pages, including multi-author integrity', ok: failures.length === 0, stats, failures, warnings };
 const out = path.join(ROOT, 'artifacts', 'article-entity-parity');
 fs.mkdirSync(out, { recursive: true });
 fs.writeFileSync(path.join(out, 'report.json'), `${JSON.stringify(report, null, 2)}\n`);
