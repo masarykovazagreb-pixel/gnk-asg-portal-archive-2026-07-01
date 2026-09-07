@@ -17,6 +17,8 @@ on:
       - 'scripts/audit-twitter-card-contract-v1.mjs'
       - 'scripts/audit-imageobject-contract-v1.mjs'
       - 'scripts/audit-home-truth-consistency-v1.mjs'
+      - 'scripts/audit-breadcrumb-contract-v1.mjs'
+      - 'scripts/audit-article-entity-parity-v1.mjs'
       - '.github/workflows/visibility-contract-gate.yml'
   push:
     branches:
@@ -36,6 +38,8 @@ on:
       - 'scripts/audit-twitter-card-contract-v1.mjs'
       - 'scripts/audit-imageobject-contract-v1.mjs'
       - 'scripts/audit-home-truth-consistency-v1.mjs'
+      - 'scripts/audit-breadcrumb-contract-v1.mjs'
+      - 'scripts/audit-article-entity-parity-v1.mjs'
       - '.github/workflows/visibility-contract-gate.yml'
 
 permissions:
@@ -73,6 +77,8 @@ jobs:
           node --check scripts/audit-twitter-card-contract-v1.mjs
           node --check scripts/audit-imageobject-contract-v1.mjs
           node --check scripts/audit-home-truth-consistency-v1.mjs
+          node --check scripts/audit-breadcrumb-contract-v1.mjs
+          node --check scripts/audit-article-entity-parity-v1.mjs
 
       - name: Editorial visibility contract
         run: node scripts/audit-editorial-visibility-v1.mjs
@@ -113,6 +119,12 @@ jobs:
       - name: Homepage truth consistency contract
         run: node scripts/audit-home-truth-consistency-v1.mjs
 
+      - name: Breadcrumb canonical integrity contract
+        run: node scripts/audit-breadcrumb-contract-v1.mjs
+
+      - name: Article canonical and entity parity contract
+        run: node scripts/audit-article-entity-parity-v1.mjs
+
       - name: Upload visibility evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -132,5 +144,7 @@ jobs:
             artifacts/twitter-card-contract/**
             artifacts/imageobject-contract/**
             artifacts/home-truth-consistency/**
+            artifacts/breadcrumb-contract/**
+            artifacts/article-entity-parity/**
           if-no-files-found: warn
           retention-days: 14
