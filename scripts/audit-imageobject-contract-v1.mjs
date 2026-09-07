@@ -6,11 +6,21 @@ const PORTAL = path.join(ROOT, 'apps', 'portal');
 const REGISTRY = path.join(PORTAL, 'data', 'editorial-registry.json');
 const ORIGIN = 'https://gnk-asg.hr';
 const failures = [];
-const stats = { checkedPages: 0, imageObjects: 0, missingUrl: 0, insecureUrl: 0, missingLocalAsset: 0, invalidRepresentativeOfPage: 0 };
-const routeFile = route => path.join(PORTAL, route.replace(/^\\/+|\\/+$/g, ''), 'index.html');
+const stats = {
+  checkedPages: 0,
+  imageObjects: 0,
+  missingUrl: 0,
+  insecureUrl: 0,
+  missingLocalAsset: 0,
+  invalidRepresentativeOfPage: 0,
+  conflictingUrls: 0,
+  invalidDimensions: 0,
+  emptyCaptions: 0
+};
+const routeFile = route => path.join(PORTAL, route.replace(/^\/+|\/+$/g, ''), 'index.html');
 const jsonLdObjects = html => {
   const out = [];
-  const regex = /<script\\s+[^>]*type=["']application\\/ld\\+json["'][^>]*>([\\s\\S]*?)<\\/script>/gi;
+  const regex = /<script\s+[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
   let match;
   while ((match = regex.exec(html))) {
     try {
@@ -27,6 +37,15 @@ const jsonLdObjects = html => {
   return out;
 };
 const typeIncludes = (obj, type) => Array.isArray(obj?.['@type']) ? obj['@type'].includes(type) : obj?.['@type'] === type;
+const normalizedUrl = value => {
+  if (typeof value !== 'string' || !value.trim()) return '';
+  try { return new URL(value).href; } catch { return ''; }
+};
+const validDimension = value => {
+  if (typeof value === 'number') return Number.isInteger(value) && value > 0;
+  if (typeof value === 'string') return /^[1-9]\d*$/.test(value.trim());
+  return false;
+};
 if (!fs.existsSync(REGISTRY)) process.exit(1);
 const registry = JSON.parse(fs.readFileSync(REGISTRY, 'utf8'));
 for (const item of Array.isArray(registry.items) ? registry.items : []) {
@@ -39,13 +58,27 @@ for (const item of Array.isArray(registry.items) ? registry.items : []) {
   const imageObjects = jsonLdObjects(html).filter(obj => typeIncludes(obj, 'ImageObject'));
   for (const obj of imageObjects) {
     stats.imageObjects++;
-    const imageUrl = typeof obj.contentUrl === 'string' ? obj.contentUrl : (typeof obj.url === 'string' ? obj.url : '');
-    if (!imageUrl) { stats.missingUrl++; failures.push(`${route}: ImageObject missing contentUrl/url`); continue; }
-    if (!/^https:\/\//i.test(imageUrl)) { stats.insecureUrl++; failures.push(`${route}: ImageObject URL must be absolute HTTPS: ${imageUrl}`); continue; }
+    const contentUrl = normalizedUrl(obj.contentUrl);
+    const url = normalizedUrl(obj.url);
+    const imageUrl = contentUrl || url;
+    if (!imageUrl) {
+      stats.missingUrl++;
+      failures.push(`${route}: ImageObject missing valid contentUrl/url`);
+      continue;
+    }
+    if (contentUrl && url && contentUrl !== url) {
+      stats.conflictingUrls++;
+      failures.push(`${route}: ImageObject contentUrl and url disagree (${contentUrl} != ${url})`);
+    }
+    if (!/^https:\/\//i.test(imageUrl)) {
+      stats.insecureUrl++;
+      failures.push(`${route}: ImageObject URL must be absolute HTTPS: ${imageUrl}`);
+      continue;
+    }
     try {
       const parsed = new URL(imageUrl);
       if (parsed.origin === ORIGIN) {
-        const asset = path.join(PORTAL, decodeURIComponent(parsed.pathname).replace(/^\\/+/, ''));
+        const asset = path.join(PORTAL, decodeURIComponent(parsed.pathname).replace(/^\/+/, ''));
         if (!fs.existsSync(asset) || !fs.statSync(asset).isFile()) {
           stats.missingLocalAsset++;
           failures.push(`${route}: ImageObject same-origin asset missing: ${imageUrl}`);
@@ -57,6 +90,16 @@ for (const item of Array.isArray(registry.items) ? registry.items : []) {
     if ('representativeOfPage' in obj && typeof obj.representativeOfPage !== 'boolean') {
       stats.invalidRepresentativeOfPage++;
       failures.push(`${route}: ImageObject representativeOfPage must be boolean when present`);
+    }
+    for (const field of ['width', 'height']) {
+      if (field in obj && !validDimension(obj[field])) {
+        stats.invalidDimensions++;
+        failures.push(`${route}: ImageObject ${field} must be a positive integer when present`);
+      }
+    }
+    if ('caption' in obj && (typeof obj.caption !== 'string' || !obj.caption.trim())) {
+      stats.emptyCaptions++;
+      failures.push(`${route}: ImageObject caption must be non-empty text when present`);
     }
   }
 }
