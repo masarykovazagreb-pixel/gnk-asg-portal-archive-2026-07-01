@@ -14,6 +14,8 @@ const stats = {
   missingLocalAsset: 0,
   invalidRepresentativeOfPage: 0,
   representativeOgMismatches: 0,
+  representativeWithoutOgImage: 0,
+  multipleRepresentativeImages: 0,
   conflictingUrls: 0,
   invalidDimensions: 0,
   incompleteDimensionPairs: 0,
@@ -65,6 +67,15 @@ for (const item of Array.isArray(registry.items) ? registry.items : []) {
   stats.checkedPages++;
   const pageOgImage = metaProperty(html, 'og:image');
   const imageObjects = jsonLdObjects(html).filter(obj => typeIncludes(obj, 'ImageObject'));
+  const representativeObjects = imageObjects.filter(obj => obj.representativeOfPage === true);
+  if (representativeObjects.length > 1) {
+    stats.multipleRepresentativeImages++;
+    failures.push(`${route}: multiple ImageObject nodes claim representativeOfPage=true; exactly one representative image is permitted`);
+  }
+  if (representativeObjects.length && !pageOgImage) {
+    stats.representativeWithoutOgImage++;
+    failures.push(`${route}: representative ImageObject requires an og:image so social and structured primary-image signals can be reconciled`);
+  }
   for (const obj of imageObjects) {
     stats.imageObjects++;
     const contentUrl = normalizedUrl(obj.contentUrl);
