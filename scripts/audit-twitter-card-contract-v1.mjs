@@ -6,9 +6,24 @@ const PORTAL = path.join(ROOT, 'apps', 'portal');
 const REGISTRY = path.join(PORTAL, 'data', 'editorial-registry.json');
 const ORIGIN = 'https://gnk-asg.hr';
 const failures = [];
-const stats = { checkedPages: 0, missingCard: 0, invalidCard: 0, missingImage: 0, invalidImageUrl: 0, imageCredentialLeak: 0, unstableImageUrl: 0, missingAlt: 0, missingTitle: 0, missingDescription: 0 };
+const stats = { checkedPages: 0, missingCard: 0, invalidCard: 0, missingImage: 0, invalidImageUrl: 0, imageCredentialLeak: 0, unstableImageUrl: 0, missingAlt: 0, missingTitle: 0, missingDescription: 0, duplicateTags: 0, titleParityFailures: 0, descriptionParityFailures: 0 };
 const extract = (html, regex) => html.match(regex)?.[1]?.trim() || '';
 const meta = (html, name) => extract(html, new RegExp(`<meta\\s+[^>]*name=["']${name}["'][^>]*content=["']([^"']+)["'][^>]*>`, 'i')) || extract(html, new RegExp(`<meta\\s+[^>]*content=["']([^"']+)["'][^>]*name=["']${name}["'][^>]*>`, 'i'));
+const property = (html, name) => extract(html, new RegExp(`<meta\\s+[^>]*property=["']${name}["'][^>]*content=["']([^"']+)["'][^>]*>`, 'i')) || extract(html, new RegExp(`<meta\\s+[^>]*content=["']([^"']+)["'][^>]*property=["']${name}["'][^>]*>`, 'i'));
+const allMetaValues = (html, attr, name) => {
+  const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const values = [];
+  const patterns = [
+    new RegExp(`<meta\\s+[^>]*${attr}=["']${escaped}["'][^>]*content=["']([^"']+)["'][^>]*>`, 'gi'),
+    new RegExp(`<meta\\s+[^>]*content=["']([^"']+)["'][^>]*${attr}=["']${escaped}["'][^>]*>`, 'gi')
+  ];
+  for (const pattern of patterns) {
+    let match;
+    while ((match = pattern.exec(html))) values.push(match[1].trim());
+  }
+  return [...new Set(values.filter(Boolean))];
+};
+const normalizeText = value => String(value || '').trim().replace(/\s+/g, ' ');
 const routeFile = route => path.join(PORTAL, route.replace(/^\\/+|\\/+$/g, ''), 'index.html');
 const validateImageUrl = (route, image) => {
   let parsed;
@@ -51,6 +66,19 @@ for (const item of Array.isArray(registry.items) ? registry.items : []) {
   const alt = meta(html, 'twitter:image:alt');
   const title = meta(html, 'twitter:title');
   const description = meta(html, 'twitter:description');
+  const ogTitle = property(html, 'og:title');
+  const ogDescription = property(html, 'og:description');
+  const htmlTitle = extract(html, /<title[^>]*>([\s\S]*?)<\/title>/i);
+  const metaDescription = meta(html, 'description');
+
+  for (const tag of ['twitter:card', 'twitter:image', 'twitter:image:alt', 'twitter:title', 'twitter:description']) {
+    const values = allMetaValues(html, 'name', tag);
+    if (values.length > 1) {
+      stats.duplicateTags++;
+      failures.push(`${route}: conflicting duplicate ${tag} values detected (${values.join(' | ')})`);
+    }
+  }
+
   if (!card) { stats.missingCard++; failures.push(`${route}: missing twitter:card`); }
   else if (!['summary','summary_large_image'].includes(card.toLowerCase())) { stats.invalidCard++; failures.push(`${route}: unsupported twitter:card ${card}`); }
   if (!image) { stats.missingImage++; failures.push(`${route}: missing twitter:image`); }
@@ -58,6 +86,17 @@ for (const item of Array.isArray(registry.items) ? registry.items : []) {
   if (!alt) { stats.missingAlt++; failures.push(`${route}: missing twitter:image:alt`); }
   if (!title) { stats.missingTitle++; failures.push(`${route}: missing twitter:title`); }
   if (!description) { stats.missingDescription++; failures.push(`${route}: missing twitter:description`); }
+
+  const expectedTitle = normalizeText(ogTitle || htmlTitle);
+  if (title && expectedTitle && normalizeText(title) !== expectedTitle) {
+    stats.titleParityFailures++;
+    failures.push(`${route}: twitter:title must match the page/OG title signal`);
+  }
+  const expectedDescription = normalizeText(ogDescription || metaDescription);
+  if (description && expectedDescription && normalizeText(description) !== expectedDescription) {
+    stats.descriptionParityFailures++;
+    failures.push(`${route}: twitter:description must match the page/OG description signal`);
+  }
 }
 const report = { version: 'GNK_ASG_TWITTER_CARD_CONTRACT_V1', ok: failures.length === 0, stats, failures };
 const out = path.join(ROOT, 'artifacts', 'twitter-card-contract');
