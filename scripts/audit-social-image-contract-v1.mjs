@@ -19,6 +19,7 @@ const stats = {
   insecureImageUrls: 0,
   genericAltText: 0,
   altMismatches: 0,
+  duplicateSocialImageTags: 0,
   imageObjectPages: 0,
   imageObjectMissing: 0,
   imageObjectUrlMismatches: 0
@@ -27,6 +28,19 @@ const stats = {
 const extract = (html, regex) => html.match(regex)?.[1]?.trim() || '';
 const meta = (html, name) => extract(html, new RegExp(`<meta\\s+[^>]*name=["']${name}["'][^>]*content=["']([^"']+)["'][^>]*>`, 'i')) || extract(html, new RegExp(`<meta\\s+[^>]*content=["']([^"']+)["'][^>]*name=["']${name}["'][^>]*>`, 'i'));
 const property = (html, name) => extract(html, new RegExp(`<meta\\s+[^>]*property=["']${name}["'][^>]*content=["']([^"']+)["'][^>]*>`, 'i')) || extract(html, new RegExp(`<meta\\s+[^>]*content=["']([^"']+)["'][^>]*property=["']${name}["'][^>]*>`, 'i'));
+const allMetaValues = (html, attr, name) => {
+  const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const values = [];
+  const patterns = [
+    new RegExp(`<meta\\s+[^>]*${attr}=["']${escaped}["'][^>]*content=["']([^"']+)["'][^>]*>`, 'gi'),
+    new RegExp(`<meta\\s+[^>]*content=["']([^"']+)["'][^>]*${attr}=["']${escaped}["'][^>]*>`, 'gi')
+  ];
+  for (const pattern of patterns) {
+    let match;
+    while ((match = pattern.exec(html))) values.push(match[1].trim());
+  }
+  return [...new Set(values.filter(Boolean))];
+};
 const routeFile = route => path.join(PORTAL, route.replace(/^\/+|\/+$/g, ''), 'index.html');
 const localAsset = value => {
   try {
@@ -144,6 +158,17 @@ for (const item of items) {
   if (!fs.existsSync(file)) continue;
   const html = fs.readFileSync(file, 'utf8');
   stats.checkedPages++;
+
+  const ogImages = allMetaValues(html, 'property', 'og:image');
+  const twitterImages = allMetaValues(html, 'name', 'twitter:image');
+  if (ogImages.length > 1) {
+    stats.duplicateSocialImageTags++;
+    failures.push(`${route}: conflicting duplicate og:image values detected (${ogImages.join(' | ')})`);
+  }
+  if (twitterImages.length > 1) {
+    stats.duplicateSocialImageTags++;
+    failures.push(`${route}: conflicting duplicate twitter:image values detected (${twitterImages.join(' | ')})`);
+  }
 
   const ogImage = property(html, 'og:image');
   const twitterImage = meta(html, 'twitter:image');
