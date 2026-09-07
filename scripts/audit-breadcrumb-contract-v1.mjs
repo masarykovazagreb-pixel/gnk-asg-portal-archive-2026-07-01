@@ -7,13 +7,15 @@ const REGISTRY = path.join(PORTAL, 'data', 'editorial-registry.json');
 const ORIGIN = 'https://gnk-asg.hr';
 const failures = [];
 const warnings = [];
-const stats = { registryItems: 0, checkedPages: 0, breadcrumbPages: 0, missingBreadcrumbs: 0, canonicalMismatches: 0, positionErrors: 0, foreignItems: 0 };
+const stats = { registryItems: 0, checkedPages: 0, breadcrumbPages: 0, missingBreadcrumbs: 0, canonicalMismatches: 0, positionErrors: 0, foreignItems: 0, duplicateItems: 0, finalNameMismatches: 0 };
 const fail = m => failures.push(m);
 const warn = m => warnings.push(m);
 const extract = (html, regex) => html.match(regex)?.[1]?.trim() || '';
 const canonical = html => extract(html, /<link\s+[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["'][^>]*>/i) || extract(html, /<link\s+[^>]*href=["']([^"']+)["'][^>]*rel=["']canonical["'][^>]*>/i);
 const routeFile = route => path.join(PORTAL, route.replace(/^\/+|\/+$/g, ''), 'index.html');
 const nodesFrom = value => Array.isArray(value?.['@graph']) ? value['@graph'] : [value];
+const normalizeText = value => String(value || '').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/gi, ' ').replace(/&amp;/gi, '&').replace(/\s+/g, ' ').trim();
+const h1Text = html => normalizeText(extract(html, /<h1\b[^>]*>([\s\S]*?)<\/h1>/i));
 
 if (!fs.existsSync(REGISTRY)) process.exit(1);
 const registry = JSON.parse(fs.readFileSync(REGISTRY, 'utf8'));
@@ -28,6 +30,7 @@ for (const item of items) {
   const html = fs.readFileSync(file, 'utf8');
   stats.checkedPages++;
   const pageCanonical = canonical(html) || `${ORIGIN}${route}`;
+  const pageH1 = h1Text(html);
   const blocks = [...html.matchAll(/<script\s+type=["']application\/ld\+json["']>([\s\S]*?)<\/script>/gi)];
   const breadcrumbNodes = [];
   for (const [i, block] of blocks.entries()) {
@@ -50,6 +53,7 @@ for (const item of items) {
     fail(`${route}: BreadcrumbList must contain at least two ListItem entries`);
     continue;
   }
+  const seenTargets = new Set();
   for (let i = 0; i < list.length; i++) {
     const entry = list[i] || {};
     if (entry['@type'] !== 'ListItem') fail(`${route}: breadcrumb entry ${i + 1} is not ListItem`);
@@ -66,6 +70,11 @@ for (const item of items) {
           stats.foreignItems++;
           fail(`${route}: breadcrumb entry ${i + 1} points outside GNK ASG origin: ${target}`);
         }
+        if (seenTargets.has(u.href)) {
+          stats.duplicateItems++;
+          fail(`${route}: breadcrumb entry ${i + 1} duplicates an earlier item URL: ${u.href}`);
+        }
+        seenTargets.add(u.href);
       } catch {
         fail(`${route}: breadcrumb entry ${i + 1} has invalid URL: ${target}`);
       }
@@ -86,6 +95,11 @@ for (const item of items) {
   } catch {
     stats.canonicalMismatches++;
     fail(`${route}: cannot compare final breadcrumb item with canonical URL`);
+  }
+  const finalName = normalizeText(last.name);
+  if (pageH1 && finalName && finalName !== pageH1) {
+    stats.finalNameMismatches++;
+    fail(`${route}: final breadcrumb name must match visible H1 (${finalName} != ${pageH1})`);
   }
 }
 
