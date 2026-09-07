@@ -17,6 +17,8 @@ const stats = {
   invalidRepresentativeOfPage: 0,
   representativeOgMismatches: 0,
   representativeWithoutOgImage: 0,
+  representativeMissingDimensions: 0,
+  representativeMissingCaption: 0,
   multipleRepresentativeImages: 0,
   conflictingUrls: 0,
   invalidDimensions: 0,
@@ -144,6 +146,16 @@ for (const item of Array.isArray(registry.items) ? registry.items : []) {
     if ('caption' in obj && (typeof obj.caption !== 'string' || !obj.caption.trim())) {
       stats.emptyCaptions++;
       failures.push(`${route}: ImageObject caption must be non-empty text when present`);
+    }
+    if (obj.representativeOfPage === true) {
+      if (!hasWidth || !hasHeight || !validDimension(obj.width) || !validDimension(obj.height)) {
+        stats.representativeMissingDimensions++;
+        failures.push(`${route}: representative ImageObject must provide valid width and height`);
+      }
+      if (typeof obj.caption !== 'string' || !obj.caption.trim()) {
+        stats.representativeMissingCaption++;
+        failures.push(`${route}: representative ImageObject must provide a non-empty context caption`);
+      }
     }
   }
 }
