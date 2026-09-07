@@ -11,6 +11,8 @@ const stats = {
   imageObjects: 0,
   missingUrl: 0,
   insecureUrl: 0,
+  credentialedUrl: 0,
+  unstableUrl: 0,
   missingLocalAsset: 0,
   invalidRepresentativeOfPage: 0,
   representativeOgMismatches: 0,
@@ -56,6 +58,26 @@ const metaProperty = (html, name) => {
   const reversed = html.match(new RegExp(`<meta\\s+[^>]*content=["']([^"']+)["'][^>]*property=["']${escaped}["'][^>]*>`, 'i'))?.[1];
   return normalizedUrl(direct || reversed || '');
 };
+const validateStableUrl = (route, imageUrl) => {
+  let parsed;
+  try { parsed = new URL(imageUrl); } catch {
+    failures.push(`${route}: invalid ImageObject URL ${imageUrl}`);
+    return null;
+  }
+  if (parsed.protocol !== 'https:') {
+    stats.insecureUrl++;
+    failures.push(`${route}: ImageObject URL must use HTTPS: ${imageUrl}`);
+  }
+  if (parsed.username || parsed.password) {
+    stats.credentialedUrl++;
+    failures.push(`${route}: ImageObject URL must not contain credentials: ${imageUrl}`);
+  }
+  if (parsed.search || parsed.hash) {
+    stats.unstableUrl++;
+    failures.push(`${route}: ImageObject URL must be stable and omit query/fragment: ${imageUrl}`);
+  }
+  return parsed;
+};
 if (!fs.existsSync(REGISTRY)) process.exit(1);
 const registry = JSON.parse(fs.readFileSync(REGISTRY, 'utf8'));
 for (const item of Array.isArray(registry.items) ? registry.items : []) {
@@ -90,22 +112,14 @@ for (const item of Array.isArray(registry.items) ? registry.items : []) {
       stats.conflictingUrls++;
       failures.push(`${route}: ImageObject contentUrl and url disagree (${contentUrl} != ${url})`);
     }
-    if (!/^https:\/\//i.test(imageUrl)) {
-      stats.insecureUrl++;
-      failures.push(`${route}: ImageObject URL must be absolute HTTPS: ${imageUrl}`);
-      continue;
-    }
-    try {
-      const parsed = new URL(imageUrl);
-      if (parsed.origin === ORIGIN) {
-        const asset = path.join(PORTAL, decodeURIComponent(parsed.pathname).replace(/^\/+/, ''));
-        if (!fs.existsSync(asset) || !fs.statSync(asset).isFile()) {
-          stats.missingLocalAsset++;
-          failures.push(`${route}: ImageObject same-origin asset missing: ${imageUrl}`);
-        }
+    const parsed = validateStableUrl(route, imageUrl);
+    if (!parsed) continue;
+    if (parsed.origin === ORIGIN) {
+      const asset = path.join(PORTAL, decodeURIComponent(parsed.pathname).replace(/^\/+/, ''));
+      if (!fs.existsSync(asset) || !fs.statSync(asset).isFile()) {
+        stats.missingLocalAsset++;
+        failures.push(`${route}: ImageObject same-origin asset missing: ${imageUrl}`);
       }
-    } catch {
-      failures.push(`${route}: invalid ImageObject URL ${imageUrl}`);
     }
     if ('representativeOfPage' in obj && typeof obj.representativeOfPage !== 'boolean') {
       stats.invalidRepresentativeOfPage++;
