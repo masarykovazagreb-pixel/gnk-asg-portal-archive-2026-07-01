@@ -8,7 +8,7 @@ const ORIGIN = 'https://gnk-asg.hr';
 const ORIGIN_URL = new URL(ORIGIN);
 const failures = [];
 const warnings = [];
-const stats = { registryItems: 0, checkedPages: 0, checkedLinks: 0, brokenLinks: 0, malformedLinks: 0, duplicateLinks: 0, insecureSameHostLinks: 0, credentialLinks: 0 };
+const stats = { registryItems: 0, checkedPages: 0, checkedLinks: 0, brokenLinks: 0, malformedLinks: 0, duplicateLinks: 0, insecureSameHostLinks: 0, credentialLinks: 0, queryInternalLinks: 0, fragmentInternalLinks: 0, normalizedPathDrift: 0 };
 
 const normalizeRoute = value => {
   try {
@@ -71,6 +71,20 @@ for (const item of items) {
       continue;
     }
     if (parsed.origin !== ORIGIN) continue;
+    if (parsed.search) {
+      stats.queryInternalLinks++;
+      failures.push(`${route}: indexable internal navigation must not use query-bearing target ${href}`);
+      continue;
+    }
+    if (parsed.hash) {
+      stats.fragmentInternalLinks++;
+      warnings.push(`${route}: internal navigation contains fragment ${href}`);
+    }
+    if (/\/{2,}/.test(parsed.pathname)) {
+      stats.normalizedPathDrift++;
+      failures.push(`${route}: internal path contains duplicate slash normalization drift ${href}`);
+      continue;
+    }
 
     const target = normalizeRoute(href);
     if (target === undefined) {
@@ -80,7 +94,7 @@ for (const item of items) {
     }
     if (target === null) continue;
     stats.checkedLinks++;
-    const key = `${target}${parsed.search}${parsed.hash}`;
+    const key = `${target}${parsed.hash}`;
     seen.set(key, (seen.get(key) || 0) + 1);
     if (/\/en\/en(?:\/|$)/i.test(target)) {
       stats.brokenLinks++;
@@ -103,7 +117,7 @@ for (const item of items) {
 const report = {
   version: 'GNK_ASG_INTERNAL_LINK_INTEGRITY_V1',
   scope: 'materialized editorial registry pages',
-  semantics: 'Validates materialized internal routes and fails closed on malformed, duplicated-locale, insecure same-host and credential-bearing internal links.',
+  semantics: 'Validates materialized internal routes and fails closed on malformed, duplicated-locale, insecure same-host, credential-bearing, query-bearing and duplicate-slash internal navigation; fragment navigation is surfaced as evidence.',
   ok: failures.length === 0,
   stats,
   failures,
