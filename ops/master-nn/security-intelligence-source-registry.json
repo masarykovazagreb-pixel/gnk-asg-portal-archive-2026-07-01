@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "mode": "READINESS_ONLY",
+  "connected": false,
+  "ownerApprovalRequiredForConnect": true,
+  "policy": {
+    "allowedSourceClasses": ["public","open","explicitly-authorized"],
+    "forbiddenSourceClasses": ["secret","classified","stolen","leaked-nonpublic","credentialed-without-authorization","private-network-without-authorization"],
+    "externalInputTrust": "untrusted-until-evaluated",
+    "returnPath": "quarantine-sandbox-evaluator-promote-or-reject"
+  },
+  "requiredConnectionManifestFields": [
+    "sourceName","category","accessStatus","feedType","authModel","schemaMapping","ingestModel","rateLimit","retentionClass","allowedUse","prohibitedUse","ownerGated","sandboxPlan","rollbackKillSwitch","acceptanceCriteria","evidenceRequirement"
+  ],
+  "sources": [
+    {"sourceName":"SOA Croatia","category":"national-security-publications","accessStatus":"PUBLIC_ONLY","connectionState":"NOT_CONNECTED"},
+    {"sourceName":"VSOA Croatia","category":"military-security-publications","accessStatus":"PUBLIC_ONLY","connectionState":"NOT_CONNECTED"},
+    {"sourceName":"MUP / Ravnateljstvo policije","category":"law-enforcement-publications","accessStatus":"PUBLIC_ONLY","connectionState":"NOT_CONNECTED"},
+    {"sourceName":"CERT.hr / CARNET","category":"cyber-security","accessStatus":"PUBLIC_ONLY","connectionState":"NOT_CONNECTED"},
+    {"sourceName":"Europol","category":"law-enforcement-intelligence-publications","accessStatus":"PUBLIC_ONLY","connectionState":"NOT_CONNECTED"},
+    {"sourceName":"Eurojust","category":"judicial-cooperation-publications","accessStatus":"PUBLIC_ONLY","connectionState":"NOT_CONNECTED"},
+    {"sourceName":"Frontex","category":"border-security-publications","accessStatus":"PUBLIC_ONLY","connectionState":"NOT_CONNECTED"},
+    {"sourceName":"ENISA","category":"cyber-security","accessStatus":"PUBLIC_ONLY","connectionState":"NOT_CONNECTED"},
+    {"sourceName":"NATO public sources","category":"defence-security-publications","accessStatus":"PUBLIC_ONLY","connectionState":"NOT_CONNECTED"},
+    {"sourceName":"EU INTCEN public publications","category":"eu-intelligence-publications","accessStatus":"PUBLIC_IF_AVAILABLE","connectionState":"NOT_CONNECTED"},
+    {"sourceName":"US CISA","category":"cyber-security","accessStatus":"PUBLIC_ONLY","connectionState":"NOT_CONNECTED"},
+    {"sourceName":"FBI public releases","category":"law-enforcement-publications","accessStatus":"PUBLIC_ONLY","connectionState":"NOT_CONNECTED"},
+    {"sourceName":"US DHS public alerts","category":"homeland-security-publications","accessStatus":"PUBLIC_ONLY","connectionState":"NOT_CONNECTED"},
+    {"sourceName":"NCSC-UK / GCHQ public cyber sources","category":"cyber-security","accessStatus":"PUBLIC_ONLY","connectionState":"NOT_CONNECTED"},
+    {"sourceName":"MI5 public releases","category":"security-publications","accessStatus":"PUBLIC_ONLY","connectionState":"NOT_CONNECTED"},
+    {"sourceName":"SIS/MI6 public releases","category":"foreign-intelligence-publications","accessStatus":"PUBLIC_ONLY","connectionState":"NOT_CONNECTED"},
+    {"sourceName":"BKA public releases","category":"law-enforcement-publications","accessStatus":"PUBLIC_ONLY","connectionState":"NOT_CONNECTED"},
+    {"sourceName":"BfV public releases","category":"domestic-security-publications","accessStatus":"PUBLIC_ONLY","connectionState":"NOT_CONNECTED"},
+    {"sourceName":"Interpol","category":"international-law-enforcement-publications","accessStatus":"PUBLIC_ONLY","connectionState":"NOT_CONNECTED"},
+    {"sourceName":"OSCE","category":"security-cooperation-publications","accessStatus":"PUBLIC_ONLY","connectionState":"NOT_CONNECTED"},
+    {"sourceName":"UN Security Council / CTED","category":"counter-terrorism-publications","accessStatus":"PUBLIC_ONLY","connectionState":"NOT_CONNECTED"}
+  ],
+  "readinessAcceptance": {
+    "adapterInterfaceDefined": false,
+    "schemaNormalizationDefined": false,
+    "provenanceModelDefined": true,
+    "rateLimitBackoffDefined": false,
+    "legalAuthorizationGateDefined": true,
+    "redactionPolicyDefined": false,
+    "deduplicationDefined": false,
+    "freshnessRulesDefined": false,
+    "conflictResolutionDefined": false,
+    "sourceScoringDefined": false,
+    "observabilityDefined": false,
+    "auditLogDefined": false,
+    "killSwitchDefined": true,
+    "sandboxShadowDefined": true
+  }
+}
