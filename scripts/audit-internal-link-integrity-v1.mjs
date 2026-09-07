@@ -5,9 +5,10 @@ const ROOT = process.cwd();
 const PORTAL = path.join(ROOT, 'apps', 'portal');
 const REGISTRY = path.join(PORTAL, 'data', 'editorial-registry.json');
 const ORIGIN = 'https://gnk-asg.hr';
+const ORIGIN_URL = new URL(ORIGIN);
 const failures = [];
 const warnings = [];
-const stats = { registryItems: 0, checkedPages: 0, checkedLinks: 0, brokenLinks: 0, malformedLinks: 0, duplicateLinks: 0 };
+const stats = { registryItems: 0, checkedPages: 0, checkedLinks: 0, brokenLinks: 0, malformedLinks: 0, duplicateLinks: 0, insecureSameHostLinks: 0, credentialLinks: 0 };
 
 const normalizeRoute = value => {
   try {
@@ -58,7 +59,19 @@ for (const item of items) {
       failures.push(`${route}: malformed href ${href}`);
       continue;
     }
+
+    if (parsed.hostname === ORIGIN_URL.hostname && parsed.protocol !== 'https:') {
+      stats.insecureSameHostLinks++;
+      failures.push(`${route}: same-host link must use HTTPS ${href}`);
+      continue;
+    }
+    if (parsed.hostname === ORIGIN_URL.hostname && (parsed.username || parsed.password)) {
+      stats.credentialLinks++;
+      failures.push(`${route}: internal link must not contain URL credentials ${href}`);
+      continue;
+    }
     if (parsed.origin !== ORIGIN) continue;
+
     const target = normalizeRoute(href);
     if (target === undefined) {
       stats.malformedLinks++;
@@ -90,6 +103,7 @@ for (const item of items) {
 const report = {
   version: 'GNK_ASG_INTERNAL_LINK_INTEGRITY_V1',
   scope: 'materialized editorial registry pages',
+  semantics: 'Validates materialized internal routes and fails closed on malformed, duplicated-locale, insecure same-host and credential-bearing internal links.',
   ok: failures.length === 0,
   stats,
   failures,
