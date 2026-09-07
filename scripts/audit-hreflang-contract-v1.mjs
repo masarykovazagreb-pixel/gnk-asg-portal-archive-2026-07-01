@@ -5,6 +5,8 @@ const ROOT = process.cwd();
 const PORTAL = path.join(ROOT, 'apps', 'portal');
 const REGISTRY = path.join(PORTAL, 'data', 'editorial-registry.json');
 const ORIGIN = 'https://gnk-asg.hr';
+const ORIGIN_URL = new URL(ORIGIN);
+const ALLOWED_LANGS = new Set(['hr', 'en', 'x-default']);
 const failures = [];
 const warnings = [];
 const stats = {
@@ -13,7 +15,10 @@ const stats = {
   reciprocalLinksChecked: 0,
   reciprocalFailures: 0,
   duplicateLanguageEntries: 0,
+  invalidLanguageEntries: 0,
   invalidTargets: 0,
+  targetQueryOrFragment: 0,
+  insecureOrCredentialTargets: 0,
   missingSelfLanguage: 0,
   missingXDefault: 0
 };
@@ -73,6 +78,10 @@ for (const [pageUrl, page] of pages) {
 
   const seen = new Set();
   for (const link of links) {
+    if (!ALLOWED_LANGS.has(link.lang)) {
+      stats.invalidLanguageEntries++;
+      failures.push(`${page.route}: unsupported hreflang value ${link.lang}; allowed contract values are hr, en and x-default`);
+    }
     if (seen.has(link.lang)) {
       stats.duplicateLanguageEntries++;
       failures.push(`${page.route}: duplicate hreflang entry for ${link.lang}`);
@@ -90,12 +99,31 @@ for (const [pageUrl, page] of pages) {
   }
 
   for (const link of links) {
-    const targetUrl = normalizeUrl(link.href, page.route);
-    if (!targetUrl || !targetUrl.startsWith(ORIGIN)) {
+    let rawTarget;
+    try {
+      rawTarget = new URL(link.href, `${ORIGIN}${page.route}`);
+    } catch {
       stats.invalidTargets++;
-      failures.push(`${page.route}: hreflang ${link.lang} must resolve to an absolute same-origin canonical URL`);
+      failures.push(`${page.route}: hreflang ${link.lang} has malformed target ${link.href}`);
       continue;
     }
+    if (rawTarget.protocol !== 'https:' || rawTarget.username || rawTarget.password) {
+      stats.insecureOrCredentialTargets++;
+      failures.push(`${page.route}: hreflang ${link.lang} must use credential-free HTTPS`);
+      continue;
+    }
+    if (rawTarget.origin !== ORIGIN_URL.origin) {
+      stats.invalidTargets++;
+      failures.push(`${page.route}: hreflang ${link.lang} must resolve to same-origin canonical URL`);
+      continue;
+    }
+    if (rawTarget.search || rawTarget.hash) {
+      stats.targetQueryOrFragment++;
+      failures.push(`${page.route}: hreflang ${link.lang} target must not contain query or fragment: ${link.href}`);
+      continue;
+    }
+
+    const targetUrl = normalizeUrl(rawTarget.href, page.route);
     const target = pages.get(targetUrl);
     if (!target) {
       stats.invalidTargets++;
@@ -123,7 +151,7 @@ for (const [pageUrl, page] of pages) {
 const report = {
   version: 'GNK_ASG_HREFLANG_CONTRACT_V1',
   scope: 'materialized editorial registry pages',
-  semantics: 'Validates declared hreflang targets and reciprocity only; absence is not treated as a failure unless a hreflang set is already declared.',
+  semantics: 'Validates declared hreflang language values, HTTPS same-origin canonical targets, query/fragment cleanliness and reciprocity; absence is not treated as a failure unless a hreflang set is already declared.',
   ok: failures.length === 0,
   stats,
   failures,
