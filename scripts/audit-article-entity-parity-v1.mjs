@@ -6,9 +6,19 @@ const PORTAL = path.join(ROOT, 'apps', 'portal');
 const REGISTRY = path.join(PORTAL, 'data', 'editorial-registry.json');
 const ORIGIN = 'https://gnk-asg.hr';
 const ARTICLE_TYPES = new Set(['Article','NewsArticle','BlogPosting','OpinionNewsArticle']);
+const ENTITY_NAMES = new Map([
+  ['nermin sefić', 'Nermin Sefić'],
+  ['nermin sefic', 'Nermin Sefić'],
+  ['sefić nermin', 'Nermin Sefić'],
+  ['sefic nermin', 'Nermin Sefić'],
+  ['gnk asg', 'GNK ASG'],
+  ['gnk asg d.o.o.', 'GNK ASG'],
+  ['gnk dinamo ltd.', 'GNK DINAMO Ltd.'],
+  ['gnk dinamo ltd', 'GNK DINAMO Ltd.']
+]);
 const failures = [];
 const warnings = [];
-const stats = { registryItems: 0, checkedPages: 0, articleNodes: 0, canonicalMainEntityMatches: 0, mainEntityMismatches: 0, authorParityMismatches: 0, publisherMismatches: 0, missingAuthorSignals: 0, missingPublisherSignals: 0 };
+const stats = { registryItems: 0, checkedPages: 0, articleNodes: 0, canonicalMainEntityMatches: 0, mainEntityMismatches: 0, authorParityMismatches: 0, publisherMismatches: 0, missingAuthorSignals: 0, missingPublisherSignals: 0, invalidAuthorTypes: 0, entitySignalsChecked: 0, malformedEntitySignals: 0 };
 const fail = m => failures.push(m);
 const warn = m => warnings.push(m);
 const extract = (html, regex) => html.match(regex)?.[1]?.trim() || '';
@@ -21,6 +31,8 @@ const normText = v => String(v || '').replace(/\s+/g, ' ').trim();
 const normUrl = v => { try { return new URL(v, ORIGIN).href; } catch { return ''; } };
 const nodeName = v => typeof v === 'string' ? normText(v) : normText(v?.name);
 const nodeUrl = v => typeof v === 'string' ? normUrl(v) : normUrl(v?.['@id'] || v?.url);
+const listify = v => Array.isArray(v) ? v : (v == null ? [] : [v]);
+const canonicalEntityName = v => ENTITY_NAMES.get(normText(v).toLowerCase()) || '';
 
 if (!fs.existsSync(REGISTRY)) process.exit(1);
 const registry = JSON.parse(fs.readFileSync(REGISTRY, 'utf8'));
@@ -63,6 +75,13 @@ for (const item of items) {
       stats.authorParityMismatches++;
       fail(`${route}: Article author (${schemaAuthor}) disagrees with page author metadata (${metaAuthor})`);
     }
+    if (article.author && typeof article.author === 'object' && !Array.isArray(article.author)) {
+      const authorType = article.author['@type'];
+      if (authorType && !['Person','Organization'].includes(authorType)) {
+        stats.invalidAuthorTypes++;
+        fail(`${route}: Article author @type must be Person or Organization when explicitly typed; found ${authorType}`);
+      }
+    }
 
     const publisherName = nodeName(article.publisher);
     if (!publisherName) {
@@ -76,6 +95,32 @@ for (const item of items) {
     if (article.publisher && typeof article.publisher === 'object' && article.publisher['@type'] && article.publisher['@type'] !== 'Organization') {
       stats.publisherMismatches++;
       fail(`${route}: Article publisher @type must be Organization`);
+    }
+
+    for (const field of ['about', 'mentions']) {
+      for (const entity of listify(article[field])) {
+        const name = nodeName(entity);
+        if (!name) {
+          stats.malformedEntitySignals++;
+          fail(`${route}: Article ${field} entry must include a non-empty entity name`);
+          continue;
+        }
+        const canonicalName = canonicalEntityName(name);
+        if (!canonicalName) continue;
+        stats.entitySignalsChecked++;
+        if (entity && typeof entity === 'object' && entity['@type'] && !['Person','Organization','Thing','SportsOrganization'].includes(entity['@type'])) {
+          stats.malformedEntitySignals++;
+          fail(`${route}: ${field} entity ${name} uses unsupported @type ${entity['@type']}`);
+        }
+        if (/^gnk asg(?: d\.o\.o\.)?$/i.test(name) && entity && typeof entity === 'object' && entity['@type'] && entity['@type'] !== 'Organization') {
+          stats.malformedEntitySignals++;
+          fail(`${route}: ${field} entity ${name} must be typed Organization`);
+        }
+        if (/^(?:nermin|sefi[cć])/i.test(name) && entity && typeof entity === 'object' && entity['@type'] && entity['@type'] !== 'Person') {
+          stats.malformedEntitySignals++;
+          fail(`${route}: ${field} entity ${name} must be typed Person`);
+        }
+      }
     }
   }
 }
