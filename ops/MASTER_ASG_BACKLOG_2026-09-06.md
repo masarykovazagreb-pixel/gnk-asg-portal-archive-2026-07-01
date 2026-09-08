@@ -31,9 +31,9 @@ Cilj: stvarno verificiranih 99%. Redoslijed: kvarovi/degradacije → automatizac
 22. [x] Održavati ovaj backlog: zatvarati samo verificirane stavke i svaki dan reprioritizirati prema novim P0/P1 kvarovima.
 
 ## Trenutno verificirano
-- `main` prije ovog writea 2026-09-08 09:11 Europe/Zagreb: `8981ccc70371c99678c0b1a9747d8c3989426ecc`.
-- Najnoviji provjereni scheduled run je `Weather Refresh (Zagreb)` run `34198111568`, pokrenut 2026-09-08T07:11:27Z na exact SHA `8981ccc70371c99678c0b1a9747d8c3989426ecc`: završio je `failure`; jedini job `refresh` (`101970335402`) ima `steps: []`, `runner_id: 0` i prazan `runner_name`. To je aktualni dokaz runner-allocation/execution P0, ne code-step failure.
-- Prethodni Execution Probe run `34170993438` i Site Health Check run `34177082529` pokazali su isti failure-before-steps obrazac; blind rerun nije opravdan.
+- `main` neposredno prije ovog writea 2026-09-08 14:08 Europe/Zagreb: `cd71d62177347f94bac1ac11cc74ad5ad5751ff7`.
+- Najnoviji provjereni scheduled run je `Refresh index live data` run `34224178326`, pokrenut 2026-09-08T12:05:49Z na exact SHA `cd71d62177347f94bac1ac11cc74ad5ad5751ff7`: završio je `failure`; job `refresh-main` (`102054140987`) ima `steps: []`, dok je `validate-pr` preskočen. Nema dokaza da je runner preuzeo i izvršio ijedan step, pa je ovo aktualni runner-allocation/execution P0, ne code-step failure.
+- Prethodni Weather Refresh run `34198111568`, Execution Probe run `34170993438` i Site Health Check run `34177082529` pokazali su isti failure-before-steps obrazac; blind rerun nije opravdan.
 - Isti obrazac ranije je potvrđen na `GNK News Refresh V2`, `World Monitor Data Refresh (free sources)` i `Refresh GNKC Index`; zbog ponavljanja na nepovezanim workflowima nema dovoljno dokaza za spekulativnu izmjenu pojedinačnog generatora. Actions/runner/permission sloj ostaje izolirani P0.
 - Dok runner P0 traje, runner-independent R0/R1 rad na ostalim MASTER laneovima ostaje dopušten i ne smije biti blokiran ovim incidentom.
 - Runner-independent sitemap audit potvrđuje da `apps/portal/sitemap-index.xml` registrira glavni, editorial, corporate-editorials, visual, image i world-topics-image sitemap. Glavni i image sitemap u indeksu imaju `lastmod=2026-08-26`, dok corporate-editorials ima `2026-08-30`; freshness parity nije zatvorena.
