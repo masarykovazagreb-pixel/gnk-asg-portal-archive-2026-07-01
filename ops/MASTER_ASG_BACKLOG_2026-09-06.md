@@ -31,12 +31,13 @@ Cilj: stvarno verificiranih 99%. Redoslijed: kvarovi/degradacije → automatizac
 22. [x] Održavati ovaj backlog: zatvarati samo verificirane stavke i svaki dan reprioritizirati prema novim P0/P1 kvarovima.
 
 ## Trenutno verificirano
-- `main` na početku ciklusa 2026-09-08: `e40a435326385a57474e8434e16c03aff5fc03b9`.
-- Najnoviji provjereni scheduled kvar je `Site Health Check (2x daily Zagreb)` run `34177082529`, pokrenut 2026-09-08T01:34:05Z na exact `main` SHA `e40a435326385a57474e8434e16c03aff5fc03b9`: završio je `failure`; jedini job `health-check` (`101908521203`) ima `steps: null`. Nema dokaza da je izvršen ijedan workflow step, pa se kvar i dalje klasificira kao runner-allocation/execution P0, ne kao code-step failure.
-- Prethodni Execution Probe run `34170993438` pokazao je isti failure-before-steps obrazac; blind rerun nije opravdan.
-- Prethodno je isti obrazac potvrđen i na `GNK News Refresh V2`, `World Monitor Data Refresh (free sources)` i `Refresh GNKC Index`; zbog ponavljanja na nepovezanim workflowima nema dovoljno dokaza za spekulativnu izmjenu pojedinačnog generatora. Actions/runner/permission sloj ostaje izolirani P0.
+- `main` prije ovog writea 2026-09-08 09:11 Europe/Zagreb: `8981ccc70371c99678c0b1a9747d8c3989426ecc`.
+- Najnoviji provjereni scheduled run je `Weather Refresh (Zagreb)` run `34198111568`, pokrenut 2026-09-08T07:11:27Z na exact SHA `8981ccc70371c99678c0b1a9747d8c3989426ecc`: završio je `failure`; jedini job `refresh` (`101970335402`) ima `steps: []`, `runner_id: 0` i prazan `runner_name`. To je aktualni dokaz runner-allocation/execution P0, ne code-step failure.
+- Prethodni Execution Probe run `34170993438` i Site Health Check run `34177082529` pokazali su isti failure-before-steps obrazac; blind rerun nije opravdan.
+- Isti obrazac ranije je potvrđen na `GNK News Refresh V2`, `World Monitor Data Refresh (free sources)` i `Refresh GNKC Index`; zbog ponavljanja na nepovezanim workflowima nema dovoljno dokaza za spekulativnu izmjenu pojedinačnog generatora. Actions/runner/permission sloj ostaje izolirani P0.
 - Dok runner P0 traje, runner-independent R0/R1 rad na ostalim MASTER laneovima ostaje dopušten i ne smije biti blokiran ovim incidentom.
+- Runner-independent sitemap audit potvrđuje da `apps/portal/sitemap-index.xml` registrira glavni, editorial, corporate-editorials, visual, image i world-topics-image sitemap. Glavni i image sitemap u indeksu imaju `lastmod=2026-08-26`, dok corporate-editorials ima `2026-08-30`; freshness parity nije zatvorena.
+- `apps/portal/sitemap.xml` sadrži HR/EN/x-default alternates na većem broju ključnih ruta, ali audit još nije dovoljan za zatvaranje P1 #11 bez potpune URL coverage i editorial-sitemap provjere.
 - `refresh-gnkc-index.yml` na `main` ima standardni `ubuntu-latest`, `contents: write`, Node 22 i uredno definirane stepove; sam YAML ne objašnjava failure prije stepova.
 - HR i EN `nermin-sefic` stranice imaju verificirane canonical, hreflang HR/EN/x-default, `robots=index,follow`, OG/Twitter i JSON-LD Person/ProfilePage/Organization signale te varijante `Nermin Sefić` / `Nermin Sefic`.
 - `apps/portal/sitemap.xml` sadrži HR i EN `nermin-sefic` URL-ove s HR/EN/x-default alternates, ali oba imaju `lastmod` `2026-08-03`, stariji od aktualne entity SEO izmjene; sitemap freshness ostaje otvoreni P1.
-- `apps/portal/sitemap-index.xml` uključuje glavni, editorial, corporate-editorials, visual, image i world-topics-image sitemap; deklarirani lastmod za glavni i image sitemap je `2026-08-26`, što nije sinkronizirano s novijom entity SEO izmjenom i traži kontrolirani refresh tek nakon potvrde sadržaja svih sitemapova.
