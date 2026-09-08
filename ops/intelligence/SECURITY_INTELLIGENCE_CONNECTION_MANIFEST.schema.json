@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gnk-asg.hr/schemas/security-intelligence-connection-manifest.schema.json",
+  "title": "Security Intelligence Connection Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "generated_at", "policy", "sources"],
+  "properties": {
+    "version": {"type": "string"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "connect_requires_owner_approval", "allowed_source_classes", "denied_source_classes", "default_state"],
+      "properties": {
+        "mode": {"const": "PREP_ONLY"},
+        "connect_requires_owner_approval": {"const": true},
+        "allowed_source_classes": {
+          "type": "array",
+          "items": {"enum": ["PUBLIC", "OPEN_DATA", "EXPLICITLY_AUTHORIZED"]},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "denied_source_classes": {
+          "type": "array",
+          "items": {"enum": ["SECRET", "CLASSIFIED", "LEAKED", "STOLEN", "UNAUTHORIZED", "UNKNOWN_AUTH"]},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "default_state": {"const": "NOT_CONNECTED"}
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_id", "name", "category", "access_status", "endpoint_type", "auth_model", "schema_mapping", "ingestion_model", "rate_limit_policy", "retention_class", "allowed_use", "prohibited_use", "owner_gated", "sandbox_plan", "kill_switch", "acceptance_criteria", "evidence_required", "state"],
+        "properties": {
+          "source_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{2,79}$"},
+          "name": {"type": "string", "minLength": 2},
+          "category": {"type": "string"},
+          "access_status": {"enum": ["PUBLIC", "OPEN_DATA", "EXPLICITLY_AUTHORIZED", "UNKNOWN_AUTH"]},
+          "endpoint_type": {"enum": ["RSS", "ATOM", "JSON_API", "REST_API", "GRAPHQL", "CSV", "HTML_PUBLICATION", "WEBHOOK", "FILE_FEED", "OTHER"]},
+          "endpoint_reference": {"type": "string", "description": "Non-secret public identifier or documentation reference only."},
+          "auth_model": {"enum": ["NONE_PUBLIC", "API_KEY_OWNER_PROVIDED", "OAUTH_OWNER_AUTHORIZED", "MTLS_OWNER_AUTHORIZED", "OTHER_OWNER_AUTHORIZED", "UNKNOWN"]},
+          "schema_mapping": {"type": "string"},
+          "ingestion_model": {"enum": ["POLL", "WEBHOOK", "MANUAL_IMPORT", "HYBRID"]},
+          "rate_limit_policy": {"type": "string"},
+          "retention_class": {"enum": ["EPHEMERAL", "SHORT", "STANDARD", "ARCHIVAL_ALLOWED"]},
+          "allowed_use": {"type": "array", "items": {"type": "string"}},
+          "prohibited_use": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+          "owner_gated": {"const": true},
+          "sandbox_plan": {"type": "string"},
+          "kill_switch": {"type": "string"},
+          "acceptance_criteria": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+          "evidence_required": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+          "state": {"enum": ["NOT_CONNECTED", "READINESS_IN_PROGRESS", "READY_TO_CONNECT", "BLOCKED_AUTH", "BLOCKED_LEGAL", "REJECTED"]}
+        }
+      }
+    }
+  }
+}
