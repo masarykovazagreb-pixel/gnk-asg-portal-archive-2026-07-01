@@ -1,0 +1,156 @@
+version: 1
+status: PREP_ONLY
+owner_gate_required_for_connect: true
+last_reviewed: 2026-09-08
+principles:
+  - public_or_explicitly_authorized_sources_only
+  - no_secrets_in_repo
+  - no_private_network_access
+  - no_claim_of_connected_without_live_evidence
+  - sandbox_shadow_before_promotion
+  - provenance_and_audit_required
+  - kill_switch_required
+trust_tiers:
+  T0: official_primary_public_or_explicitly_authorized
+  T1: official_secondary_public
+  T2: reputable_partner_or_research_public
+  T3: open_web_unverified_quarantine_only
+source_classes:
+  - id: hr_soa_public
+    name: SOA Croatia public publications
+    category: intelligence_agency_public
+    status: READY_FOR_DISCOVERY
+    auth_model: public
+    ingestion: pull
+    retention: derived_metadata_and_citations_only
+    allowed_use: public_analysis_and_alerting
+    prohibited_use: private_or_classified_material
+    owner_gated_connect: true
+  - id: hr_vsoa_public
+    name: VSOA Croatia public publications
+    category: military_intelligence_public
+    status: READY_FOR_DISCOVERY
+    auth_model: public
+    ingestion: pull
+    retention: derived_metadata_and_citations_only
+    allowed_use: public_analysis_and_alerting
+    prohibited_use: private_or_classified_material
+    owner_gated_connect: true
+  - id: hr_mup_public
+    name: MUP and Ravnateljstvo policije public notices
+    category: law_enforcement_public
+    status: READY_FOR_DISCOVERY
+    auth_model: public
+    ingestion: pull
+    retention: derived_metadata_and_citations_only
+    allowed_use: public_safety_analysis
+    prohibited_use: restricted_case_or_personal_data
+    owner_gated_connect: true
+  - id: cert_hr_public
+    name: CERT.hr public advisories
+    category: cyber_public
+    status: READY_FOR_DISCOVERY
+    auth_model: public
+    ingestion: pull
+    retention: normalized_advisories
+    allowed_use: defensive_cyber_awareness
+    prohibited_use: offensive_or_unauthorized_access
+    owner_gated_connect: true
+  - id: eu_enisa_public
+    name: ENISA public advisories and reports
+    category: cyber_public
+    status: READY_FOR_DISCOVERY
+    auth_model: public
+    ingestion: pull
+    retention: normalized_advisories
+    allowed_use: defensive_cyber_awareness
+    prohibited_use: offensive_or_unauthorized_access
+    owner_gated_connect: true
+  - id: eu_europol_public
+    name: Europol public publications
+    category: law_enforcement_public
+    status: READY_FOR_DISCOVERY
+    auth_model: public
+    ingestion: pull
+    retention: derived_metadata_and_citations_only
+    allowed_use: public_threat_context
+    prohibited_use: restricted_operational_data
+    owner_gated_connect: true
+  - id: interpol_public
+    name: Interpol public notices and publications
+    category: law_enforcement_public
+    status: READY_FOR_DISCOVERY
+    auth_model: public
+    ingestion: pull
+    retention: derived_metadata_and_citations_only
+    allowed_use: public_threat_context
+    prohibited_use: restricted_operational_data
+    owner_gated_connect: true
+  - id: us_cisa_public
+    name: CISA public advisories
+    category: cyber_public
+    status: READY_FOR_DISCOVERY
+    auth_model: public
+    ingestion: pull
+    retention: normalized_advisories
+    allowed_use: defensive_cyber_awareness
+    prohibited_use: offensive_or_unauthorized_access
+    owner_gated_connect: true
+  - id: uk_ncsc_public
+    name: NCSC UK public advisories
+    category: cyber_public
+    status: READY_FOR_DISCOVERY
+    auth_model: public
+    ingestion: pull
+    retention: normalized_advisories
+    allowed_use: defensive_cyber_awareness
+    prohibited_use: offensive_or_unauthorized_access
+    owner_gated_connect: true
+connection_contract:
+  required_fields:
+    - source_id
+    - endpoint_or_feed_type
+    - public_or_authorized_status
+    - expected_auth_model
+    - schema_mapping_version
+    - polling_or_webhook_mode
+    - rate_limit_policy
+    - retention_class
+    - allowed_use
+    - prohibited_use
+    - owner_gated_flag
+    - sandbox_plan
+    - rollback_or_kill_switch
+    - acceptance_criteria
+    - evidence_requirement
+pipeline:
+  - discover
+  - legal_auth_gate
+  - fetch_to_quarantine
+  - normalize
+  - provenance_score
+  - deduplicate
+  - redact
+  - contradiction_check
+  - sandbox_validate
+  - shadow_compare
+  - evaluator_gate
+  - promote_or_reject
+acceptance_criteria:
+  ready_to_connect:
+    - source_identity_verified
+    - public_or_explicit_authorization_verified
+    - schema_contract_defined
+    - rate_limit_and_backoff_defined
+    - redaction_and_retention_defined
+    - sandbox_test_plan_defined
+    - observability_defined
+    - kill_switch_defined
+    - owner_approval_pending_or_granted
+  connected:
+    - owner_approval_granted
+    - live_endpoint_verified
+    - auth_gate_verified_if_required
+    - first_ingest_evidence_recorded
+    - health_and_freshness_evidence_recorded
+    - rollback_tested
