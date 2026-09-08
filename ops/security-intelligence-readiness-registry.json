@@ -1,0 +1,85 @@
+{
+  "version": "1.0.0",
+  "mode": "PREP_ONLY",
+  "connected_sources": 0,
+  "policy": {
+    "allowed": ["public", "open", "explicitly_authorized"],
+    "forbidden": ["secret", "classified", "leaked", "stolen", "credential-bypassed", "private_without_authorization"],
+    "owner_gate_required_for_connect": true,
+    "external_input_trust": "untrusted_by_default",
+    "production_write_from_external_input": false
+  },
+  "required_connection_manifest_fields": [
+    "source_name",
+    "category",
+    "access_status",
+    "endpoint_type",
+    "auth_model",
+    "schema_mapping",
+    "polling_or_webhook",
+    "rate_limit",
+    "retention_class",
+    "allowed_use",
+    "prohibited_use",
+    "owner_gated",
+    "sandbox_plan",
+    "kill_switch",
+    "acceptance_criteria",
+    "evidence_requirement"
+  ],
+  "pipeline": [
+    "ingest_sandbox",
+    "normalize",
+    "provenance_capture",
+    "trust_score",
+    "redaction",
+    "deduplicate",
+    "freshness_check",
+    "contradiction_check",
+    "prompt_injection_and_poisoning_screen",
+    "shadow_evaluation",
+    "human_owner_gate_if_connection_or_high_risk",
+    "promote_or_quarantine"
+  ],
+  "source_classes": [
+    {"source_name":"SOA Croatia","category":"national_security_publications","access_status":"PUBLIC_ONLY","state":"READINESS_NOT_CONNECTED"},
+    {"source_name":"VSOA Croatia","category":"defence_security_publications","access_status":"PUBLIC_ONLY","state":"READINESS_NOT_CONNECTED"},
+    {"source_name":"MUP / Ravnateljstvo policije","category":"law_enforcement_publications","access_status":"PUBLIC_ONLY","state":"READINESS_NOT_CONNECTED"},
+    {"source_name":"CERT.hr / CARNET","category":"cyber_security","access_status":"PUBLIC_ONLY","state":"READINESS_NOT_CONNECTED"},
+    {"source_name":"Europol","category":"law_enforcement_intelligence_publications","access_status":"PUBLIC_ONLY","state":"READINESS_NOT_CONNECTED"},
+    {"source_name":"Eurojust","category":"judicial_cooperation_publications","access_status":"PUBLIC_ONLY","state":"READINESS_NOT_CONNECTED"},
+    {"source_name":"Frontex","category":"border_security_publications","access_status":"PUBLIC_ONLY","state":"READINESS_NOT_CONNECTED"},
+    {"source_name":"ENISA","category":"cyber_security","access_status":"PUBLIC_ONLY","state":"READINESS_NOT_CONNECTED"},
+    {"source_name":"NATO","category":"security_publications","access_status":"PUBLIC_ONLY","state":"READINESS_NOT_CONNECTED"},
+    {"source_name":"EU INTCEN","category":"eu_intelligence_publications","access_status":"PUBLIC_MATERIAL_ONLY","state":"READINESS_NOT_CONNECTED"},
+    {"source_name":"CISA","category":"cyber_security_alerts","access_status":"PUBLIC_ONLY","state":"READINESS_NOT_CONNECTED"},
+    {"source_name":"FBI","category":"law_enforcement_publications","access_status":"PUBLIC_ONLY","state":"READINESS_NOT_CONNECTED"},
+    {"source_name":"DHS","category":"homeland_security_publications","access_status":"PUBLIC_ONLY","state":"READINESS_NOT_CONNECTED"},
+    {"source_name":"NCSC-UK / GCHQ","category":"cyber_security_publications","access_status":"PUBLIC_ONLY","state":"READINESS_NOT_CONNECTED"},
+    {"source_name":"MI5 / MI6","category":"security_publications","access_status":"PUBLIC_ONLY","state":"READINESS_NOT_CONNECTED"},
+    {"source_name":"BKA / BfV","category":"law_enforcement_security_publications","access_status":"PUBLIC_ONLY","state":"READINESS_NOT_CONNECTED"},
+    {"source_name":"Interpol","category":"international_law_enforcement_publications","access_status":"PUBLIC_ONLY","state":"READINESS_NOT_CONNECTED"},
+    {"source_name":"OSCE","category":"security_cooperation_publications","access_status":"PUBLIC_ONLY","state":"READINESS_NOT_CONNECTED"},
+    {"source_name":"UN Security Council / CTED","category":"counterterrorism_publications","access_status":"PUBLIC_ONLY","state":"READINESS_NOT_CONNECTED"}
+  ],
+  "acceptance": {
+    "ready_to_connect_requires": [
+      "documented_public_or_authorized_access",
+      "schema_mapping",
+      "rate_limit_policy",
+      "retention_and_redaction_policy",
+      "sandbox_test",
+      "prompt_injection_and_poisoning_screen",
+      "observability",
+      "kill_switch",
+      "rollback_plan",
+      "owner_approval_pending_marker"
+    ],
+    "connected_requires": [
+      "explicit_owner_approval",
+      "verified_legal_auth_gate",
+      "endpoint_verification",
+      "successful_sandbox_or_shadow_evidence"
+    ]
+  }
+}
