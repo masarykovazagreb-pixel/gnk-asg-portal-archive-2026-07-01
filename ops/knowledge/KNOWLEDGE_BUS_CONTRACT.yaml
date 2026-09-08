@@ -1,0 +1,108 @@
+version: 1
+status: CANDIDATE
+last_reviewed: 2026-09-08
+architecture:
+  hierarchy:
+    - GLOBAL_VERIFIED_KNOWLEDGE
+    - DOMAIN_KNOWLEDGE
+    - PROJECT_KNOWLEDGE
+    - WORKER_SPECIALTY_MEMORY
+    - TASK_CONTEXT
+  return_path:
+    - WORKER_RESULT
+    - EVIDENCE
+    - EVALUATOR
+    - DOMAIN_LEARNING
+    - GLOBAL_LEARNING
+promotion_lifecycle:
+  - OBSERVED
+  - CANDIDATE
+  - SANDBOX_VERIFIED
+  - SHADOW_VERIFIED
+  - DOMAIN_VERIFIED
+  - GLOBAL_VERIFIED
+terminal_states:
+  - QUARANTINED
+  - REJECTED
+knowledge_object_required_fields:
+  - id
+  - version
+  - source
+  - provenance
+  - observed_at
+  - trust_score
+  - confidence
+  - domain
+  - project_scope
+  - applicable_task_classes
+  - risk_class
+  - evaluator_result
+  - reuse_evidence
+  - ttl
+  - contradiction_state
+  - rollback_target
+  - allowed_consumer_classes
+events:
+  KNOWLEDGE_PROMOTED:
+    delivery: relevant_subscribers_only
+    payload_minimization: true
+    requires_evaluator_pass: true
+  KNOWLEDGE_QUARANTINED:
+    action: stop_new_consumption_and_calculate_blast_radius
+  KNOWLEDGE_DEPRECATED:
+    action: rollback_consumers_to_previous_verified_version
+consumer_contract:
+  pre_task:
+    - resolve_task_class
+    - resolve_project_and_domain_scope
+    - fetch_minimal_relevant_verified_subset
+    - pin_knowledge_versions
+  post_task:
+    - record_used_knowledge_ids
+    - record_outcome
+    - record_success_or_failure_evidence
+    - emit_failure_lesson_when_applicable
+    - submit_candidate_learning
+cross_project_transfer:
+  default: denied_until_context_fit
+  transfer_score_components:
+    - relevance
+    - confidence
+    - recency
+    - success_history
+    - negative_risk_penalty
+  requirements:
+    - context_fit_pass
+    - evaluator_pass
+    - provenance_preserved
+    - no_project_specific_assumption_leakage
+safety:
+  forbidden_shared_content:
+    - secrets
+    - credentials
+    - protected_mailbox_data
+    - unnecessary_personal_data
+    - owner_gated_private_content
+  controls:
+    - provenance_chain
+    - confidence_threshold
+    - contradiction_detection
+    - stale_data_ttl
+    - poisoning_anomaly_detection
+    - quarantine
+    - rollback
+    - consumer_usage_ledger
+metrics:
+  - verified_knowledge_objects
+  - promoted_objects
+  - rejected_objects
+  - quarantined_objects
+  - reuse_success_rate
+  - regression_rate
+  - cross_project_transfer_pass_rate
+  - knowledge_coverage_growth
+  - stale_object_rate
+acceptance:
+  target_knowledge_coverage_growth: "3-4% per evaluation period when supported by evidence"
+  no_fake_growth: true
+  global_promotion_requires_repeated_reuse_evidence: true
