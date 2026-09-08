@@ -31,9 +31,11 @@ Cilj: stvarno verificiranih 99%. Redoslijed: kvarovi/degradacije → automatizac
 22. [x] Održavati ovaj backlog: zatvarati samo verificirane stavke i svaki dan reprioritizirati prema novim P0/P1 kvarovima.
 
 ## Trenutno verificirano
-- `main` na početku ovog ciklusa: `372a0bfda662bf5805c7c930d0cf59ef88bf428a`.
-- Najnoviji provjereni scheduled kvar je `Site Health Check (2x daily Zagreb)` run `34039231805` od 2026-09-06 na aktualnom `main` SHA: završio je `failure`; job `health-check` (`101502826315`) nema dostupne stepove (`steps: null`). Time isti failure-before-steps obrazac sada izravno zahvaća i health sloj.
-- Prethodno je isti obrazac potvrđen na `GNK News Refresh V2`, `World Monitor Data Refresh (free sources)` i `Refresh GNKC Index`; zbog ponavljanja na nepovezanim workflowima nema dovoljno dokaza za spekulativnu izmjenu pojedinačnog generatora. Actions/runner/permission sloj ostaje P0.
+- `main` na početku ciklusa 2026-09-08: `e40a435326385a57474e8434e16c03aff5fc03b9`.
+- Najnoviji provjereni scheduled kvar je `Site Health Check (2x daily Zagreb)` run `34177082529`, pokrenut 2026-09-08T01:34:05Z na exact `main` SHA `e40a435326385a57474e8434e16c03aff5fc03b9`: završio je `failure`; jedini job `health-check` (`101908521203`) ima `steps: null`. Nema dokaza da je izvršen ijedan workflow step, pa se kvar i dalje klasificira kao runner-allocation/execution P0, ne kao code-step failure.
+- Prethodni Execution Probe run `34170993438` pokazao je isti failure-before-steps obrazac; blind rerun nije opravdan.
+- Prethodno je isti obrazac potvrđen i na `GNK News Refresh V2`, `World Monitor Data Refresh (free sources)` i `Refresh GNKC Index`; zbog ponavljanja na nepovezanim workflowima nema dovoljno dokaza za spekulativnu izmjenu pojedinačnog generatora. Actions/runner/permission sloj ostaje izolirani P0.
+- Dok runner P0 traje, runner-independent R0/R1 rad na ostalim MASTER laneovima ostaje dopušten i ne smije biti blokiran ovim incidentom.
 - `refresh-gnkc-index.yml` na `main` ima standardni `ubuntu-latest`, `contents: write`, Node 22 i uredno definirane stepove; sam YAML ne objašnjava failure prije stepova.
 - HR i EN `nermin-sefic` stranice imaju verificirane canonical, hreflang HR/EN/x-default, `robots=index,follow`, OG/Twitter i JSON-LD Person/ProfilePage/Organization signale te varijante `Nermin Sefić` / `Nermin Sefic`.
 - `apps/portal/sitemap.xml` sadrži HR i EN `nermin-sefic` URL-ove s HR/EN/x-default alternates, ali oba imaju `lastmod` `2026-08-03`, stariji od aktualne entity SEO izmjene; sitemap freshness ostaje otvoreni P1.
