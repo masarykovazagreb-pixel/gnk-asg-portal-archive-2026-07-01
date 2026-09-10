@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 ROOT = Path(__file__).resolve().parents[1]
 LEDGER = ROOT / "ops" / "workforce-capability-evidence-v1.json"
 SCHEMA = ROOT / "ops" / "workforce-capability-evidence-schema-v1.json"
+TASK_CLASSES = ROOT / "ops" / "workforce-critical-task-classes-v1.json"
 
 
 def fail(msg: str) -> None:
@@ -35,7 +36,15 @@ def main() -> None:
         fail("missing canonical evidence ledger")
     data = load(LEDGER)
     schema = load(SCHEMA)
+    task_contract = load(TASK_CLASSES)
     required = set(schema.get("recordRequired") or [])
+    declared_items = task_contract.get("taskClasses")
+    if not isinstance(declared_items, list) or not declared_items:
+        fail("critical task-class contract is empty")
+    declared = {item.get("id") for item in declared_items if isinstance(item, dict) and item.get("id")}
+    if len(declared) != len(declared_items):
+        fail("critical task-class contract contains invalid or duplicate ids")
+
     records = data.get("records")
     if not isinstance(records, list):
         fail("records must be an array")
@@ -51,6 +60,8 @@ def main() -> None:
         task_class = record.get("taskClassId")
         if not isinstance(task_class, str) or not task_class.strip():
             fail(f"record[{idx}] invalid taskClassId")
+        if task_class not in declared:
+            fail(f"runtime evidence references undeclared task class: {task_class}")
         if task_class in seen:
             fail(f"duplicate taskClassId: {task_class}")
         seen.add(task_class)
@@ -80,14 +91,19 @@ def main() -> None:
                 fail(f"healthy evidence predates sample window: {task_class}")
             healthy += 1
 
-    total = len(records)
-    coverage = 0.0 if total == 0 else (healthy / total) * 100.0
+    missing_records = sorted(declared - seen)
+    total = len(declared)
+    coverage = (healthy / total) * 100.0
     print("WORKFORCE_CAPABILITY_EVIDENCE_OK")
     print(f"task_classes_total={total}")
+    print(f"task_classes_with_runtime_records={len(seen)}")
+    print(f"task_classes_missing_runtime_records={len(missing_records)}")
     print(f"task_classes_healthy={healthy}")
     print(f"healthy_capability_coverage={coverage:.2f}%")
-    if total == 0:
-        print("coverage_state=UNVERIFIED_NO_RUNTIME_RECORDS")
+    if missing_records:
+        print("missing_runtime_task_classes=" + ",".join(missing_records))
+    if healthy == 0:
+        print("coverage_state=UNVERIFIED_NO_HEALTHY_RUNTIME_EVIDENCE")
 
 
 if __name__ == "__main__":
