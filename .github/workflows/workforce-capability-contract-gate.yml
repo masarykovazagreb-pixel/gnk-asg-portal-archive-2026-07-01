@@ -1,0 +1,35 @@
+name: Workforce Capability Contract Gate
+
+on:
+  pull_request:
+    paths:
+      - 'ops/workforce-capability-contract-v1.json'
+      - 'scripts/validate-workforce-capability-contract-v1.py'
+      - '.github/workflows/workforce-capability-contract-gate.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'ops/workforce-capability-contract-v1.json'
+      - 'scripts/validate-workforce-capability-contract-v1.py'
+      - '.github/workflows/workforce-capability-contract-gate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: workforce-capability-contract-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate fail-closed workforce capability contract
+        run: python scripts/validate-workforce-capability-contract-v1.py
