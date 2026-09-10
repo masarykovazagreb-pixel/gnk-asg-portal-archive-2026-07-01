@@ -6,7 +6,11 @@
     {"id":"sitemap-index-integrity","primaryCapability":"sitemap-index-validator","fallbackPool":["route-sitemap-parity-validator","repair-validator"]},
     {"id":"canonical-meta-uniqueness","primaryCapability":"canonical-meta-validator","fallbackPool":["seo-validator","repair-validator"]},
     {"id":"breadcrumb-visibility-parity","primaryCapability":"breadcrumb-parity-validator","fallbackPool":["internal-link-orphan-validator","repair-validator"]},
-    {"id":"search-discovery-truth-state","primaryCapability":"search-discovery-state-validator","fallbackPool":["submission-state-auditor","chief-engineer-review"]}
+    {"id":"search-discovery-truth-state","primaryCapability":"search-discovery-state-validator","fallbackPool":["submission-state-auditor","chief-engineer-review"]},
+    {"id":"primary-image-schema-parity","primaryCapability":"primary-image-schema-validator","fallbackPool":["image-seo-validator","structured-data-auditor"]},
+    {"id":"social-image-contract","primaryCapability":"social-image-validator","fallbackPool":["image-inventory-auditor","repair-validator"]},
+    {"id":"image-sitemap-stability","primaryCapability":"image-sitemap-stability-validator","fallbackPool":["image-inventory-auditor","sitemap-auditor"]},
+    {"id":"editorial-entity-url-parity","primaryCapability":"entity-url-parity-validator","fallbackPool":["entity-schema-validator","repair-validator"]}
   ],
   "requiredEvidence":["heartbeat","taskOwnership","queueState","latencyMs","successCount","failureCount","evaluatorVerdict","fallbackCoverage","rollbackCapability","telemetryRef"]
 }
