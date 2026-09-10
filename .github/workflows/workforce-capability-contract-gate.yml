@@ -6,7 +6,9 @@ on:
       - 'ops/workforce-capability-contract-v1.json'
       - 'ops/workforce-capability-evidence-schema-v1.json'
       - 'ops/workforce-capability-evidence-v1.json'
+      - 'ops/workforce-critical-task-classes-v1.json'
       - 'scripts/validate-workforce-capability-contract-v1.py'
+      - 'scripts/validate-workforce-critical-task-classes-v1.py'
       - 'scripts/audit-workforce-capability-evidence-v1.py'
       - '.github/workflows/workforce-capability-contract-gate.yml'
   push:
@@ -16,7 +18,9 @@ on:
       - 'ops/workforce-capability-contract-v1.json'
       - 'ops/workforce-capability-evidence-schema-v1.json'
       - 'ops/workforce-capability-evidence-v1.json'
+      - 'ops/workforce-critical-task-classes-v1.json'
       - 'scripts/validate-workforce-capability-contract-v1.py'
+      - 'scripts/validate-workforce-critical-task-classes-v1.py'
       - 'scripts/audit-workforce-capability-evidence-v1.py'
       - '.github/workflows/workforce-capability-contract-gate.yml'
   workflow_dispatch:
@@ -39,5 +43,7 @@ jobs:
           python-version: '3.12'
       - name: Validate fail-closed workforce capability contract
         run: python scripts/validate-workforce-capability-contract-v1.py
+      - name: Validate critical task-class fallback coverage
+        run: python scripts/validate-workforce-critical-task-classes-v1.py
       - name: Audit runtime workforce capability evidence
         run: python scripts/audit-workforce-capability-evidence-v1.py
