@@ -1,0 +1,12 @@
+{
+  "version": "GNK_ASG_VISIBILITY_CAPABILITY_EXTENSION_V1",
+  "authorityScope": "R0_R1_ONLY",
+  "healthyRequiresRuntimeEvidence": true,
+  "taskClasses": [
+    {"id":"sitemap-index-integrity","primaryCapability":"sitemap-index-validator","fallbackPool":["route-sitemap-parity-validator","repair-validator"]},
+    {"id":"canonical-meta-uniqueness","primaryCapability":"canonical-meta-validator","fallbackPool":["seo-validator","repair-validator"]},
+    {"id":"breadcrumb-visibility-parity","primaryCapability":"breadcrumb-parity-validator","fallbackPool":["internal-link-orphan-validator","repair-validator"]},
+    {"id":"search-discovery-truth-state","primaryCapability":"search-discovery-state-validator","fallbackPool":["submission-state-auditor","chief-engineer-review"]}
+  ],
+  "requiredEvidence":["heartbeat","taskOwnership","queueState","latencyMs","successCount","failureCount","evaluatorVerdict","fallbackCoverage","rollbackCapability","telemetryRef"]
+}
