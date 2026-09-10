@@ -22,6 +22,11 @@ required_task_classes = {
     "publication-distribution-parity",
     "knowledge-bus-promotion",
     "security-readiness-validation",
+    "primary-image-schema-parity",
+    "social-image-contract",
+    "meta-uniqueness-control",
+    "breadcrumb-navigation-parity",
+    "editorial-entity-url-parity",
 }
 errors = []
 
@@ -32,6 +37,7 @@ except Exception as exc:
 
 classes = data.get("taskClasses")
 seen = set()
+primary_capabilities = set()
 if not isinstance(classes, list) or not classes:
     errors.append("taskClasses must be a non-empty list")
 else:
@@ -42,11 +48,16 @@ else:
         seen.add(ident)
         if item.get("critical") is not True:
             errors.append(f"{ident}: critical must be true")
-        if not item.get("primaryCapability"):
+        primary = item.get("primaryCapability")
+        if not primary:
             errors.append(f"{ident}: primaryCapability missing")
+        else:
+            primary_capabilities.add(primary)
         fallback = item.get("fallbackPool")
         if not isinstance(fallback, list) or not fallback:
             errors.append(f"{ident}: fallbackPool must be non-empty")
+        elif primary in fallback:
+            errors.append(f"{ident}: fallbackPool must not repeat primaryCapability")
         evidence = set(item.get("requiredEvidence") or [])
         missing = required_evidence - evidence
         if missing:
@@ -65,6 +76,8 @@ if policy.get("fallbackRequiredForCritical") is not True:
     errors.append("fallbackRequiredForCritical must be true")
 if policy.get("unknownFailsClosed") is not True:
     errors.append("unknownFailsClosed must be true")
+if policy.get("promotionLifecycle") != ["candidate","sandbox","shadow","evaluator","probation","healthy"]:
+    errors.append("promotionLifecycle must preserve candidate→sandbox→shadow→evaluator→probation→healthy")
 
 if errors:
     print("WORKFORCE CRITICAL TASK-CLASS CONTRACT: FAIL")
