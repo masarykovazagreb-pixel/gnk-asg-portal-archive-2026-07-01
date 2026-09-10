@@ -9,6 +9,8 @@ const failures = [];
 const stats = {
   checkedPages: 0,
   imageObjects: 0,
+  missingImageObject: 0,
+  missingRepresentativeImage: 0,
   missingUrl: 0,
   insecureUrl: 0,
   credentialedUrl: 0,
@@ -92,6 +94,18 @@ for (const item of Array.isArray(registry.items) ? registry.items : []) {
   const pageOgImage = metaProperty(html, 'og:image');
   const imageObjects = jsonLdObjects(html).filter(obj => typeIncludes(obj, 'ImageObject'));
   const representativeObjects = imageObjects.filter(obj => obj.representativeOfPage === true);
+
+  // Editorial registry pages that expose an og:image are declaring a primary
+  // visual publicly. Make the structured-image linkage fail closed rather than
+  // treating ImageObject coverage as optional evidence.
+  if (pageOgImage && imageObjects.length === 0) {
+    stats.missingImageObject++;
+    failures.push(`${route}: og:image is present but no ImageObject JSON-LD exists; public primary-image metadata must be structurally linked`);
+  }
+  if (pageOgImage && representativeObjects.length === 0) {
+    stats.missingRepresentativeImage++;
+    failures.push(`${route}: og:image is present but no ImageObject has representativeOfPage=true; exactly one primary visual must be identified`);
+  }
   if (representativeObjects.length > 1) {
     stats.multipleRepresentativeImages++;
     failures.push(`${route}: multiple ImageObject nodes claim representativeOfPage=true; exactly one representative image is permitted`);
