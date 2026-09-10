@@ -5,6 +5,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "ops" / "workforce-capability-contract-v1.json"
+EVIDENCE_SCHEMA = ROOT / "ops" / "workforce-capability-evidence-schema-v1.json"
 
 REQUIRED_EVIDENCE = {
     "heartbeat",
@@ -19,6 +20,25 @@ REQUIRED_EVIDENCE = {
     "telemetryRef",
 }
 REQUIRED_LIFECYCLE = ["candidate", "sandbox", "shadow", "evaluator", "probation", "healthy"]
+REQUIRED_EVIDENCE_RECORD_FIELDS = {
+    "taskClassId",
+    "primaryWorkerId",
+    "fallbackWorkerIds",
+    "lifecycleState",
+    "heartbeatAt",
+    "ownershipLeaseId",
+    "queueObservedAt",
+    "latencyMs",
+    "successCount",
+    "failureCount",
+    "sampleWindowStart",
+    "sampleWindowEnd",
+    "evaluatorVerdict",
+    "evaluatorEvidenceRef",
+    "fallbackEvidenceRef",
+    "rollbackEvidenceRef",
+    "telemetryRef",
+}
 
 
 def fail(message: str) -> None:
@@ -26,14 +46,18 @@ def fail(message: str) -> None:
     raise SystemExit(1)
 
 
-def main() -> None:
-    if not CONTRACT.is_file():
-        fail(f"missing contract: {CONTRACT.relative_to(ROOT)}")
-
+def load_json(path: Path, label: str):
+    if not path.is_file():
+        fail(f"missing {label}: {path.relative_to(ROOT)}")
     try:
-        data = json.loads(CONTRACT.read_text(encoding="utf-8"))
+        return json.loads(path.read_text(encoding="utf-8"))
     except Exception as exc:
-        fail(f"invalid JSON: {exc}")
+        fail(f"invalid {label} JSON: {exc}")
+
+
+def main() -> None:
+    data = load_json(CONTRACT, "contract")
+    schema = load_json(EVIDENCE_SCHEMA, "evidence schema")
 
     policy = data.get("policy") or {}
     evidence = set(data.get("healthyEvidenceRequired") or [])
@@ -78,8 +102,47 @@ def main() -> None:
         if metrics.get(key) != 0:
             fail(f"metric target must remain zero: {key}")
 
+    if schema.get("failClosed") is not True:
+        fail("evidence schema must fail closed")
+    record_fields = set(schema.get("recordRequired") or [])
+    missing_record_fields = sorted(REQUIRED_EVIDENCE_RECORD_FIELDS - record_fields)
+    if missing_record_fields:
+        fail("missing evidence record fields: " + ", ".join(missing_record_fields))
+
+    healthy_rules = schema.get("healthyRules") or {}
+    for key in (
+        "heartbeatMustBeFresh",
+        "ownershipLeaseMustBeExclusive",
+        "queueEvidenceMustBeFresh",
+        "executionSampleRequired",
+        "successAndFailureCountersRequired",
+        "fallbackMustBeIndependentlyVerified",
+        "rollbackMustBeDemonstrated",
+        "telemetryMustBeResolvable",
+        "unknownOrMissingEvidenceFailsHealthy",
+    ):
+        if healthy_rules.get(key) is not True:
+            fail(f"healthy evidence rule must be true: {key}")
+    if healthy_rules.get("lifecycleStateMustEqual") != "healthy":
+        fail("healthy evidence lifecycleState must equal healthy")
+    if healthy_rules.get("evaluatorVerdictMustEqual") != "pass":
+        fail("healthy evidence evaluator verdict must equal pass")
+
+    coverage = schema.get("coverageRules") or {}
+    if coverage.get("countUnit") != "taskClass":
+        fail("coverage must be measured by taskClass")
+    for key in (
+        "countOnlyHealthy",
+        "primaryAndFallbackRequiredForCriticalTaskClass",
+        "nominalProfileCountExcluded",
+        "syntheticGreenForbidden",
+    ):
+        if coverage.get(key) is not True:
+            fail(f"coverage rule must be true: {key}")
+
     print("WORKFORCE_CAPABILITY_CONTRACT_OK")
     print("healthy evidence fields:", len(REQUIRED_EVIDENCE))
+    print("evidence record fields:", len(REQUIRED_EVIDENCE_RECORD_FIELDS))
     print("lifecycle:", " -> ".join(REQUIRED_LIFECYCLE))
 
 
