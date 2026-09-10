@@ -8,7 +8,12 @@ required_evidence = {"heartbeat","taskOwnership","queueState","latencyMs","succe
 required_task_classes = {
     "seo-contract-validation",
     "image-seo-validation",
+    "public-image-inventory",
     "indexability-validation",
+    "route-sitemap-parity",
+    "robots-noindex-parity",
+    "orphan-internal-link-control",
+    "submission-state-evidence",
     "publication-freshness-validation",
     "release-race-hygiene",
     "health-self-heal",
