@@ -21,11 +21,14 @@ const stats = {
   representativeWithoutOgImage: 0,
   representativeMissingDimensions: 0,
   representativeMissingCaption: 0,
+  representativeMissingEncodingFormat: 0,
   multipleRepresentativeImages: 0,
   conflictingUrls: 0,
   invalidDimensions: 0,
   incompleteDimensionPairs: 0,
-  emptyCaptions: 0
+  emptyCaptions: 0,
+  invalidEncodingFormat: 0,
+  encodingFormatMismatches: 0
 };
 const routeFile = route => path.join(PORTAL, route.replace(/^\/+|\/+$/g, ''), 'index.html');
 const jsonLdObjects = html => {
@@ -62,6 +65,15 @@ const metaProperty = (html, name) => {
   const reversed = html.match(new RegExp(`<meta\\s+[^>]*content=["']([^"']+)["'][^>]*property=["']${escaped}["'][^>]*>`, 'i'))?.[1];
   return normalizedUrl(direct || reversed || '');
 };
+const MIME_BY_EXT = new Map([
+  ['.avif', 'image/avif'],
+  ['.gif', 'image/gif'],
+  ['.jpeg', 'image/jpeg'],
+  ['.jpg', 'image/jpeg'],
+  ['.png', 'image/png'],
+  ['.svg', 'image/svg+xml'],
+  ['.webp', 'image/webp']
+]);
 const validateStableUrl = (route, imageUrl) => {
   let parsed;
   try { parsed = new URL(imageUrl); } catch {
@@ -161,6 +173,16 @@ for (const item of Array.isArray(registry.items) ? registry.items : []) {
       stats.emptyCaptions++;
       failures.push(`${route}: ImageObject caption must be non-empty text when present`);
     }
+    const encodingFormat = typeof obj.encodingFormat === 'string' ? obj.encodingFormat.trim().toLowerCase() : '';
+    if ('encodingFormat' in obj && !/^image\/[a-z0-9.+-]+$/.test(encodingFormat)) {
+      stats.invalidEncodingFormat++;
+      failures.push(`${route}: ImageObject encodingFormat must be a valid image MIME type when present`);
+    }
+    const expectedMime = MIME_BY_EXT.get(path.extname(parsed.pathname).toLowerCase());
+    if (encodingFormat && expectedMime && encodingFormat !== expectedMime) {
+      stats.encodingFormatMismatches++;
+      failures.push(`${route}: ImageObject encodingFormat ${encodingFormat} disagrees with URL extension MIME ${expectedMime}`);
+    }
     if (obj.representativeOfPage === true) {
       if (!hasWidth || !hasHeight || !validDimension(obj.width) || !validDimension(obj.height)) {
         stats.representativeMissingDimensions++;
@@ -169,6 +191,10 @@ for (const item of Array.isArray(registry.items) ? registry.items : []) {
       if (typeof obj.caption !== 'string' || !obj.caption.trim()) {
         stats.representativeMissingCaption++;
         failures.push(`${route}: representative ImageObject must provide a non-empty context caption`);
+      }
+      if (!encodingFormat) {
+        stats.representativeMissingEncodingFormat++;
+        failures.push(`${route}: representative ImageObject must provide encodingFormat so structured image MIME is explicit`);
       }
     }
   }
