@@ -4,14 +4,20 @@ on:
   pull_request:
     paths:
       - 'ops/workforce-capability-contract-v1.json'
+      - 'ops/workforce-capability-evidence-schema-v1.json'
+      - 'ops/workforce-capability-evidence-v1.json'
       - 'scripts/validate-workforce-capability-contract-v1.py'
+      - 'scripts/audit-workforce-capability-evidence-v1.py'
       - '.github/workflows/workforce-capability-contract-gate.yml'
   push:
     branches:
       - main
     paths:
       - 'ops/workforce-capability-contract-v1.json'
+      - 'ops/workforce-capability-evidence-schema-v1.json'
+      - 'ops/workforce-capability-evidence-v1.json'
       - 'scripts/validate-workforce-capability-contract-v1.py'
+      - 'scripts/audit-workforce-capability-evidence-v1.py'
       - '.github/workflows/workforce-capability-contract-gate.yml'
   workflow_dispatch:
 
@@ -33,3 +39,5 @@ jobs:
           python-version: '3.12'
       - name: Validate fail-closed workforce capability contract
         run: python scripts/validate-workforce-capability-contract-v1.py
+      - name: Audit runtime workforce capability evidence
+        run: python scripts/audit-workforce-capability-evidence-v1.py
