@@ -9,7 +9,9 @@ const warnings = [];
 const stats = {
   checkedPages: 0,
   imagesChecked: 0,
+  missingAltAttributes: 0,
   partialResponsiveHints: 0,
+  missingDimensions: 0,
   missingDimensionPairs: 0,
   invalidDimensions: 0,
   invalidLoading: 0,
@@ -57,15 +59,30 @@ for (const item of items) {
     const alt = attr(tag, 'alt');
     stats.imagesChecked++;
 
+    // Every rendered image must make its accessibility/SEO intent explicit.
+    // Informative images carry descriptive alt text; decorative images opt out
+    // explicitly with alt="". A missing alt attribute is never accepted.
+    if (!altPresent) {
+      stats.missingAltAttributes++;
+      failures.push(`${route}: image ${src} is missing alt; use truthful context-specific alt text or alt="" only for decorative images`);
+    }
+
     if (Boolean(srcset) !== Boolean(sizes)) {
       stats.partialResponsiveHints++;
       failures.push(`${route}: image ${src} must declare srcset and sizes together`);
     }
 
-    if (Boolean(width) !== Boolean(height)) {
+    // Intrinsic dimensions are a sitewide delivery contract, not an optional
+    // hint: they prevent avoidable layout shift and give crawlers stable image
+    // geometry. SVG/raster assets are both expected to expose rendered width
+    // and height on the img element.
+    if (!width && !height) {
+      stats.missingDimensions++;
+      failures.push(`${route}: image ${src} must declare intrinsic width and height`);
+    } else if (Boolean(width) !== Boolean(height)) {
       stats.missingDimensionPairs++;
       failures.push(`${route}: image ${src} must declare width and height together`);
-    } else if (width && height && (!isPositiveInteger(width) || !isPositiveInteger(height))) {
+    } else if (!isPositiveInteger(width) || !isPositiveInteger(height)) {
       stats.invalidDimensions++;
       failures.push(`${route}: image ${src} has invalid dimensions width=${width} height=${height}; expected positive integer HTML dimensions`);
     }
