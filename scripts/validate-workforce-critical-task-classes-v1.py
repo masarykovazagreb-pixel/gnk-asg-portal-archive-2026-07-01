@@ -5,6 +5,19 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 path = ROOT / "ops" / "workforce-critical-task-classes-v1.json"
 required_evidence = {"heartbeat","taskOwnership","queueState","latencyMs","successCount","failureCount","evaluatorVerdict","fallbackCoverage","rollbackCapability","telemetryRef"}
+required_task_classes = {
+    "seo-contract-validation",
+    "image-seo-validation",
+    "indexability-validation",
+    "publication-freshness-validation",
+    "release-race-hygiene",
+    "health-self-heal",
+    "hreflang-route-parity",
+    "structured-data-entity-consistency",
+    "publication-distribution-parity",
+    "knowledge-bus-promotion",
+    "security-readiness-validation",
+}
 errors = []
 
 try:
@@ -13,10 +26,10 @@ except Exception as exc:
     raise SystemExit(f"FAIL: cannot read {path}: {exc}")
 
 classes = data.get("taskClasses")
+seen = set()
 if not isinstance(classes, list) or not classes:
     errors.append("taskClasses must be a non-empty list")
 else:
-    seen = set()
     for item in classes:
         ident = item.get("id")
         if not ident or ident in seen:
@@ -34,11 +47,17 @@ else:
         if missing:
             errors.append(f"{ident}: missing required evidence {sorted(missing)}")
 
+missing_classes = required_task_classes - seen
+if missing_classes:
+    errors.append(f"missing required critical task classes: {sorted(missing_classes)}")
+
 policy = data.get("policy") or {}
 if policy.get("authorityScope") != "R0_R1_ONLY":
     errors.append("authorityScope must remain R0_R1_ONLY")
 if policy.get("healthyRequiresRuntimeEvidence") is not True:
     errors.append("healthyRequiresRuntimeEvidence must be true")
+if policy.get("fallbackRequiredForCritical") is not True:
+    errors.append("fallbackRequiredForCritical must be true")
 if policy.get("unknownFailsClosed") is not True:
     errors.append("unknownFailsClosed must be true")
 
