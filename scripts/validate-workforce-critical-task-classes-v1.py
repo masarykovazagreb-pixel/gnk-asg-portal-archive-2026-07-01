@@ -27,6 +27,10 @@ required_task_classes = {
     "meta-uniqueness-control",
     "breadcrumb-navigation-parity",
     "editorial-entity-url-parity",
+    "sitemap-index-integrity",
+    "image-metadata-repair",
+    "publication-registry-repair",
+    "workforce-evidence-ledger-maintenance",
 }
 errors = []
 
@@ -49,15 +53,20 @@ else:
         if item.get("critical") is not True:
             errors.append(f"{ident}: critical must be true")
         primary = item.get("primaryCapability")
-        if not primary:
+        if not isinstance(primary, str) or not primary.strip():
             errors.append(f"{ident}: primaryCapability missing")
         else:
             primary_capabilities.add(primary)
         fallback = item.get("fallbackPool")
-        if not isinstance(fallback, list) or not fallback:
-            errors.append(f"{ident}: fallbackPool must be non-empty")
-        elif primary in fallback:
-            errors.append(f"{ident}: fallbackPool must not repeat primaryCapability")
+        if not isinstance(fallback, list) or len(fallback) < 2:
+            errors.append(f"{ident}: fallbackPool must contain at least two independent capabilities")
+        else:
+            if any(not isinstance(x, str) or not x.strip() for x in fallback):
+                errors.append(f"{ident}: fallbackPool contains blank/invalid capability")
+            if len(set(fallback)) != len(fallback):
+                errors.append(f"{ident}: fallbackPool contains duplicate capabilities")
+            if primary in fallback:
+                errors.append(f"{ident}: fallbackPool must not repeat primaryCapability")
         evidence = set(item.get("requiredEvidence") or [])
         missing = required_evidence - evidence
         if missing:
@@ -85,4 +94,4 @@ if errors:
         print(f"- {error}")
     raise SystemExit(1)
 
-print(f"WORKFORCE CRITICAL TASK-CLASS CONTRACT: PASS ({len(classes)} critical classes declared; runtime health still requires evidence ledger)")
+print(f"WORKFORCE CRITICAL TASK-CLASS CONTRACT: PASS ({len(classes)} critical classes declared; >=2 independent fallbacks each; runtime health still requires evidence ledger)")
