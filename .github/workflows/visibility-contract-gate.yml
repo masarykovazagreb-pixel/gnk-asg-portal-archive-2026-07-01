@@ -12,9 +12,12 @@ on:
       - 'scripts/audit-social-image-intrinsic-dimensions-v1.mjs'
       - 'scripts/audit-rendered-image-contract-v1.mjs'
       - 'scripts/audit-image-delivery-contract-v1.mjs'
+      - 'scripts/audit-public-image-inventory-v1.mjs'
       - 'scripts/audit-image-sitemap-integrity-v1.mjs'
       - 'scripts/audit-image-sitemap-url-stability-v1.mjs'
       - 'scripts/audit-image-sitemap-discovery-v1.mjs'
+      - 'scripts/audit-route-sitemap-parity-v1.mjs'
+      - 'scripts/audit-crawl-depth-contract-v1.mjs'
       - 'scripts/audit-twitter-card-contract-v1.mjs'
       - 'scripts/audit-imageobject-contract-v1.mjs'
       - 'scripts/audit-home-truth-consistency-v1.mjs'
@@ -39,9 +42,12 @@ on:
       - 'scripts/audit-social-image-intrinsic-dimensions-v1.mjs'
       - 'scripts/audit-rendered-image-contract-v1.mjs'
       - 'scripts/audit-image-delivery-contract-v1.mjs'
+      - 'scripts/audit-public-image-inventory-v1.mjs'
       - 'scripts/audit-image-sitemap-integrity-v1.mjs'
       - 'scripts/audit-image-sitemap-url-stability-v1.mjs'
       - 'scripts/audit-image-sitemap-discovery-v1.mjs'
+      - 'scripts/audit-route-sitemap-parity-v1.mjs'
+      - 'scripts/audit-crawl-depth-contract-v1.mjs'
       - 'scripts/audit-twitter-card-contract-v1.mjs'
       - 'scripts/audit-imageobject-contract-v1.mjs'
       - 'scripts/audit-home-truth-consistency-v1.mjs'
@@ -84,9 +90,12 @@ jobs:
           node --check scripts/audit-social-image-intrinsic-dimensions-v1.mjs
           node --check scripts/audit-rendered-image-contract-v1.mjs
           node --check scripts/audit-image-delivery-contract-v1.mjs
+          node --check scripts/audit-public-image-inventory-v1.mjs
           node --check scripts/audit-image-sitemap-integrity-v1.mjs
           node --check scripts/audit-image-sitemap-url-stability-v1.mjs
           node --check scripts/audit-image-sitemap-discovery-v1.mjs
+          node --check scripts/audit-route-sitemap-parity-v1.mjs
+          node --check scripts/audit-crawl-depth-contract-v1.mjs
           node --check scripts/audit-twitter-card-contract-v1.mjs
           node --check scripts/audit-imageobject-contract-v1.mjs
           node --check scripts/audit-home-truth-consistency-v1.mjs
@@ -122,6 +131,9 @@ jobs:
       - name: Sitewide image delivery contract
         run: node scripts/audit-image-delivery-contract-v1.mjs
 
+      - name: Public image inventory contract
+        run: node scripts/audit-public-image-inventory-v1.mjs
+
       - name: Image sitemap integrity contract
         run: node scripts/audit-image-sitemap-integrity-v1.mjs
 
@@ -130,6 +142,12 @@ jobs:
 
       - name: Image sitemap discovery contract
         run: node scripts/audit-image-sitemap-discovery-v1.mjs
+
+      - name: Route to sitemap parity contract
+        run: node scripts/audit-route-sitemap-parity-v1.mjs
+
+      - name: Crawl depth and orphan route contract
+        run: node scripts/audit-crawl-depth-contract-v1.mjs
 
       - name: Twitter card contract
         run: node scripts/audit-twitter-card-contract-v1.mjs
@@ -175,9 +193,12 @@ jobs:
             artifacts/social-image-intrinsic-dimensions/**
             artifacts/rendered-image-contract/**
             artifacts/image-delivery-contract/**
+            artifacts/public-image-inventory/**
             artifacts/image-sitemap-integrity/**
             artifacts/image-sitemap-url-stability/**
             artifacts/image-sitemap-discovery/**
+            artifacts/route-sitemap-parity/**
+            artifacts/crawl-depth-contract/**
             artifacts/twitter-card-contract/**
             artifacts/imageobject-contract/**
             artifacts/home-truth-consistency/**
