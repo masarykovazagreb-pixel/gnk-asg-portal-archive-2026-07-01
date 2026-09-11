@@ -9,9 +9,12 @@ on:
       - 'scripts/audit-public-image-alt-quality-v1.mjs'
       - 'scripts/audit-social-image-intrinsic-dimensions-v1.mjs'
       - 'scripts/audit-image-sitemap-discovery-v1.mjs'
+      - 'scripts/audit-primary-image-schema-parity-v1.mjs'
       - 'scripts/audit-route-sitemap-parity-v1.mjs'
       - 'scripts/audit-robots-indexability-parity-v1.mjs'
       - 'scripts/audit-indexation-evidence-chain-v1.mjs'
+      - 'scripts/audit-breadcrumb-navigation-parity-v1.mjs'
+      - 'scripts/audit-sitemap-lastmod-truth-v1.mjs'
       - 'scripts/audit-workforce-fallback-coverage-v1.py'
       - '.github/workflows/high-throughput-visibility-workforce-gate.yml'
   push:
@@ -23,9 +26,12 @@ on:
       - 'scripts/audit-public-image-alt-quality-v1.mjs'
       - 'scripts/audit-social-image-intrinsic-dimensions-v1.mjs'
       - 'scripts/audit-image-sitemap-discovery-v1.mjs'
+      - 'scripts/audit-primary-image-schema-parity-v1.mjs'
       - 'scripts/audit-route-sitemap-parity-v1.mjs'
       - 'scripts/audit-robots-indexability-parity-v1.mjs'
       - 'scripts/audit-indexation-evidence-chain-v1.mjs'
+      - 'scripts/audit-breadcrumb-navigation-parity-v1.mjs'
+      - 'scripts/audit-sitemap-lastmod-truth-v1.mjs'
       - 'scripts/audit-workforce-fallback-coverage-v1.py'
       - '.github/workflows/high-throughput-visibility-workforce-gate.yml'
 
@@ -56,9 +62,12 @@ jobs:
           node --check scripts/audit-public-image-alt-quality-v1.mjs
           node --check scripts/audit-social-image-intrinsic-dimensions-v1.mjs
           node --check scripts/audit-image-sitemap-discovery-v1.mjs
+          node --check scripts/audit-primary-image-schema-parity-v1.mjs
           node --check scripts/audit-route-sitemap-parity-v1.mjs
           node --check scripts/audit-robots-indexability-parity-v1.mjs
           node --check scripts/audit-indexation-evidence-chain-v1.mjs
+          node --check scripts/audit-breadcrumb-navigation-parity-v1.mjs
+          node --check scripts/audit-sitemap-lastmod-truth-v1.mjs
           python -m py_compile scripts/audit-workforce-fallback-coverage-v1.py
       - name: Public image inventory contract
         run: node scripts/audit-public-image-inventory-v1.mjs
@@ -68,12 +77,18 @@ jobs:
         run: node scripts/audit-social-image-intrinsic-dimensions-v1.mjs
       - name: Image sitemap discovery contract
         run: node scripts/audit-image-sitemap-discovery-v1.mjs
+      - name: Primary image schema parity contract
+        run: node scripts/audit-primary-image-schema-parity-v1.mjs
       - name: Route to sitemap parity contract
         run: node scripts/audit-route-sitemap-parity-v1.mjs
       - name: Robots and indexability parity contract
         run: node scripts/audit-robots-indexability-parity-v1.mjs
       - name: Indexation evidence dependency contract
         run: node scripts/audit-indexation-evidence-chain-v1.mjs
+      - name: Breadcrumb navigation parity contract
+        run: node scripts/audit-breadcrumb-navigation-parity-v1.mjs
+      - name: Sitemap lastmod truth contract
+        run: node scripts/audit-sitemap-lastmod-truth-v1.mjs
       - name: Workforce fallback coverage contract
         run: python scripts/audit-workforce-fallback-coverage-v1.py
       - name: Upload contract evidence
@@ -86,9 +101,12 @@ jobs:
             artifacts/public-image-alt-quality/**
             artifacts/social-image-intrinsic-dimensions/**
             artifacts/image-sitemap-discovery/**
+            artifacts/primary-image-schema-parity/**
             artifacts/route-sitemap-parity/**
             artifacts/robots-indexability-parity/**
             artifacts/indexation-evidence-chain/**
+            artifacts/breadcrumb-navigation-parity/**
+            artifacts/sitemap-lastmod-truth/**
             artifacts/workforce-fallback-coverage/**
           if-no-files-found: warn
           retention-days: 14
