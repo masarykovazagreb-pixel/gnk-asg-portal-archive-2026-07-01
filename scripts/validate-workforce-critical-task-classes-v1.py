@@ -11,6 +11,7 @@ required_task_classes = {
     "public-image-inventory",
     "indexability-validation",
     "route-sitemap-parity",
+    "crawl-depth-orphan-control",
     "robots-noindex-parity",
     "orphan-internal-link-control",
     "submission-state-evidence",
@@ -41,7 +42,6 @@ except Exception as exc:
 
 classes = data.get("taskClasses")
 seen = set()
-primary_capabilities = set()
 if not isinstance(classes, list) or not classes:
     errors.append("taskClasses must be a non-empty list")
 else:
@@ -55,8 +55,6 @@ else:
         primary = item.get("primaryCapability")
         if not isinstance(primary, str) or not primary.strip():
             errors.append(f"{ident}: primaryCapability missing")
-        else:
-            primary_capabilities.add(primary)
         fallback = item.get("fallbackPool")
         if not isinstance(fallback, list) or len(fallback) < 2:
             errors.append(f"{ident}: fallbackPool must contain at least two independent capabilities")
