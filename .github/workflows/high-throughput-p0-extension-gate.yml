@@ -19,6 +19,7 @@ on:
       - 'scripts/audit-imageobject-contract-v1.mjs'
       - 'scripts/audit-social-image-metadata-completeness-v1.mjs'
       - 'scripts/audit-hreflang-reciprocity-v1.mjs'
+      - 'scripts/audit-canonical-indexability-coherence-v1.mjs'
       - 'scripts/validate-high-throughput-capability-gaps-v1.py'
       - '.github/workflows/high-throughput-p0-extension-gate.yml'
   push:
@@ -40,6 +41,7 @@ on:
       - 'scripts/audit-imageobject-contract-v1.mjs'
       - 'scripts/audit-social-image-metadata-completeness-v1.mjs'
       - 'scripts/audit-hreflang-reciprocity-v1.mjs'
+      - 'scripts/audit-canonical-indexability-coherence-v1.mjs'
       - 'scripts/validate-high-throughput-capability-gaps-v1.py'
       - '.github/workflows/high-throughput-p0-extension-gate.yml'
 
@@ -80,6 +82,7 @@ jobs:
           node --check scripts/audit-imageobject-contract-v1.mjs
           node --check scripts/audit-social-image-metadata-completeness-v1.mjs
           node --check scripts/audit-hreflang-reciprocity-v1.mjs
+          node --check scripts/audit-canonical-indexability-coherence-v1.mjs
           python -m py_compile scripts/validate-high-throughput-capability-gaps-v1.py
       - name: Image sitemap title quality
         run: node scripts/audit-image-sitemap-title-quality-v1.mjs
@@ -109,6 +112,8 @@ jobs:
         run: node scripts/audit-social-image-metadata-completeness-v1.mjs
       - name: Hreflang reciprocity
         run: node scripts/audit-hreflang-reciprocity-v1.mjs
+      - name: Canonical and indexability coherence
+        run: node scripts/audit-canonical-indexability-coherence-v1.mjs
       - name: Workforce capability gap topology
         run: python scripts/validate-high-throughput-capability-gaps-v1.py
       - name: Upload P0 extension evidence
@@ -131,6 +136,7 @@ jobs:
             artifacts/imageobject-contract/**
             artifacts/social-image-metadata-completeness/**
             artifacts/hreflang-reciprocity/**
+            artifacts/canonical-indexability-coherence/**
             artifacts/high-throughput-capability-gaps/**
           if-no-files-found: warn
           retention-days: 14
