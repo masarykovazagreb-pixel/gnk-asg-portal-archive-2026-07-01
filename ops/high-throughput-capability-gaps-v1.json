@@ -66,6 +66,13 @@
       "fallbackPool": ["structured-data-validator", "image-seo-validator"],
       "staticContract": "scripts/audit-editorial-social-schema-parity-v1.mjs",
       "runtimeStatus": "UNVERIFIED"
+    },
+    {
+      "taskClass": "responsive-image-candidate-integrity",
+      "primaryCapability": "responsive-image-srcset-validator",
+      "fallbackPool": ["image-delivery-validator", "asset-integrity-validator"],
+      "staticContract": "scripts/audit-responsive-image-candidate-integrity-v1.mjs",
+      "runtimeStatus": "UNVERIFIED"
     }
   ],
   "requiredRuntimeEvidence": [
