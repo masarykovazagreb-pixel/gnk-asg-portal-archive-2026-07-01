@@ -45,6 +45,27 @@
       "fallbackPool": ["social-image-validator", "accessibility-validator"],
       "staticContract": "scripts/audit-public-image-reference-coherence-v1.mjs",
       "runtimeStatus": "UNVERIFIED"
+    },
+    {
+      "taskClass": "editorial-social-image-parity",
+      "primaryCapability": "editorial-social-image-parity-validator",
+      "fallbackPool": ["social-image-validator", "publication-validator"],
+      "staticContract": "scripts/audit-editorial-social-schema-parity-v1.mjs",
+      "runtimeStatus": "UNVERIFIED"
+    },
+    {
+      "taskClass": "editorial-article-date-parity",
+      "primaryCapability": "editorial-article-date-parity-validator",
+      "fallbackPool": ["structured-data-validator", "publication-validator"],
+      "staticContract": "scripts/audit-editorial-social-schema-parity-v1.mjs",
+      "runtimeStatus": "UNVERIFIED"
+    },
+    {
+      "taskClass": "editorial-imageobject-parity",
+      "primaryCapability": "editorial-imageobject-parity-validator",
+      "fallbackPool": ["structured-data-validator", "image-seo-validator"],
+      "staticContract": "scripts/audit-editorial-social-schema-parity-v1.mjs",
+      "runtimeStatus": "UNVERIFIED"
     }
   ],
   "requiredRuntimeEvidence": [
