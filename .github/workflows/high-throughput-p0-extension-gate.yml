@@ -13,6 +13,7 @@ on:
       - 'scripts/audit-responsive-image-candidate-integrity-v1.mjs'
       - 'scripts/audit-public-image-dimension-integrity-v1.mjs'
       - 'scripts/audit-decorative-image-seo-exclusion-v1.mjs'
+      - 'scripts/audit-image-delivery-contract-v1.mjs'
       - 'scripts/validate-high-throughput-capability-gaps-v1.py'
       - '.github/workflows/high-throughput-p0-extension-gate.yml'
   push:
@@ -28,6 +29,7 @@ on:
       - 'scripts/audit-responsive-image-candidate-integrity-v1.mjs'
       - 'scripts/audit-public-image-dimension-integrity-v1.mjs'
       - 'scripts/audit-decorative-image-seo-exclusion-v1.mjs'
+      - 'scripts/audit-image-delivery-contract-v1.mjs'
       - 'scripts/validate-high-throughput-capability-gaps-v1.py'
       - '.github/workflows/high-throughput-p0-extension-gate.yml'
 
@@ -62,6 +64,7 @@ jobs:
           node --check scripts/audit-responsive-image-candidate-integrity-v1.mjs
           node --check scripts/audit-public-image-dimension-integrity-v1.mjs
           node --check scripts/audit-decorative-image-seo-exclusion-v1.mjs
+          node --check scripts/audit-image-delivery-contract-v1.mjs
           python -m py_compile scripts/validate-high-throughput-capability-gaps-v1.py
       - name: Image sitemap title quality
         run: node scripts/audit-image-sitemap-title-quality-v1.mjs
@@ -79,6 +82,8 @@ jobs:
         run: node scripts/audit-public-image-dimension-integrity-v1.mjs
       - name: Decorative image SEO exclusion
         run: node scripts/audit-decorative-image-seo-exclusion-v1.mjs
+      - name: Image delivery priority coherence
+        run: node scripts/audit-image-delivery-contract-v1.mjs
       - name: Workforce capability gap topology
         run: python scripts/validate-high-throughput-capability-gaps-v1.py
       - name: Upload P0 extension evidence
@@ -95,6 +100,7 @@ jobs:
             artifacts/responsive-image-candidate-integrity/**
             artifacts/public-image-dimension-integrity/**
             artifacts/decorative-image-seo-exclusion/**
+            artifacts/image-delivery-contract/**
             artifacts/high-throughput-capability-gaps/**
           if-no-files-found: warn
           retention-days: 14
