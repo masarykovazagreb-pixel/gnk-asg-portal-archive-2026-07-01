@@ -4,20 +4,41 @@ import path from 'node:path';
 
 const ROOT = process.cwd();
 const PORTAL = path.join(ROOT, 'apps', 'portal');
-const REGISTRY = path.join(PORTAL, 'data', 'editorial-registry.json');
 const ORIGIN = 'https://gnk-asg.hr';
 const failures = [];
 const warnings = [];
-const stats = { pagesChecked: 0, imagesChecked: 0, dimensionsVerified: 0, dimensionMismatches: 0, unsupportedFormats: 0, missingAssets: 0 };
+const pages = [];
+const stats = { publicPagesChecked: 0, imagesChecked: 0, dimensionsVerified: 0, dimensionMismatches: 0, unsupportedFormats: 0, missingAssets: 0 };
 
 const extract = (html, regex) => html.match(regex)?.[1]?.trim() || '';
 const property = (html, name) => extract(html, new RegExp(`<meta\\s+[^>]*property=["']${name}["'][^>]*content=["']([^"']+)["'][^>]*>`, 'i')) || extract(html, new RegExp(`<meta\\s+[^>]*content=["']([^"']+)["'][^>]*property=["']${name}["'][^>]*>`, 'i'));
-const routeFile = route => path.join(PORTAL, route.replace(/^\\/+|\\/+$/g, ''), 'index.html');
+const routeFromFile = file => {
+  const rel = path.relative(PORTAL, path.dirname(file)).split(path.sep).join('/');
+  return rel ? `/${rel}/` : '/';
+};
+const isPublicIndexableHtml = html => {
+  const robots = html.match(/<meta[^>]+name=["']robots["'][^>]+content=["']([^"']+)["']/i)?.[1] || '';
+  return !/(?:^|[,\s])noindex(?:$|[,\s])/i.test(robots);
+};
+const walkPublicIndexPages = dir => {
+  for (const entry of fs.readdirSync(dir, {withFileTypes: true})) {
+    if (entry.name.startsWith('.') || ['data', 'assets', '_headers'].includes(entry.name)) continue;
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      walkPublicIndexPages(full);
+      continue;
+    }
+    if (!entry.isFile() || entry.name !== 'index.html') continue;
+    const html = fs.readFileSync(full, 'utf8');
+    if (!isPublicIndexableHtml(html)) continue;
+    pages.push({route: routeFromFile(full), html});
+  }
+};
 const localAsset = value => {
   try {
-    const url = new URL(value);
+    const url = new URL(value, ORIGIN);
     if (url.origin !== ORIGIN) return null;
-    return path.join(PORTAL, decodeURIComponent(url.pathname).replace(/^\\/+/, ''));
+    return path.join(PORTAL, decodeURIComponent(url.pathname).replace(/^\/+/, ''));
   } catch { return null; }
 };
 const jpegSize = buffer => {
@@ -44,15 +65,12 @@ const imageSize = file => {
   return null;
 };
 
-if (!fs.existsSync(REGISTRY)) process.exit(1);
-const registry = JSON.parse(fs.readFileSync(REGISTRY, 'utf8'));
-for (const item of Array.isArray(registry.items) ? registry.items : []) {
-  const route = String(item.path || '');
-  if (!route.startsWith('/')) continue;
-  const file = routeFile(route);
-  if (!fs.existsSync(file)) continue;
-  stats.pagesChecked++;
-  const html = fs.readFileSync(file, 'utf8');
+if (!fs.existsSync(PORTAL)) process.exit(1);
+walkPublicIndexPages(PORTAL);
+stats.publicPagesChecked = pages.length;
+
+for (const page of pages) {
+  const {route, html} = page;
   const image = property(html, 'og:image');
   const width = Number(property(html, 'og:image:width'));
   const height = Number(property(html, 'og:image:height'));
@@ -78,7 +96,14 @@ for (const item of Array.isArray(registry.items) ? registry.items : []) {
   }
 }
 
-const report = { version: 'GNK_ASG_SOCIAL_IMAGE_INTRINSIC_DIMENSIONS_V1', ok: failures.length === 0, stats, failures, warnings };
+const report = {
+  version: 'GNK_ASG_SOCIAL_IMAGE_INTRINSIC_DIMENSIONS_V2',
+  scope: 'ALL_LOCAL_PUBLIC_INDEXABLE_INDEX_HTML_PAGES',
+  ok: failures.length === 0,
+  stats,
+  failures,
+  warnings
+};
 const out = path.join(ROOT, 'artifacts', 'social-image-intrinsic-dimensions');
 fs.mkdirSync(out, { recursive: true });
 fs.writeFileSync(path.join(out, 'report.json'), `${JSON.stringify(report, null, 2)}\n`);
