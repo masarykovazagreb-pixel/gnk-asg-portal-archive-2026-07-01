@@ -9,6 +9,7 @@ on:
       - 'scripts/audit-editorial-route-discovery-parity-v1.mjs'
       - 'scripts/audit-editorial-image-discovery-parity-v1.mjs'
       - 'scripts/audit-public-image-reference-coherence-v1.mjs'
+      - 'scripts/audit-editorial-social-schema-parity-v1.mjs'
       - 'scripts/validate-high-throughput-capability-gaps-v1.py'
       - '.github/workflows/high-throughput-p0-extension-gate.yml'
   push:
@@ -20,6 +21,7 @@ on:
       - 'scripts/audit-editorial-route-discovery-parity-v1.mjs'
       - 'scripts/audit-editorial-image-discovery-parity-v1.mjs'
       - 'scripts/audit-public-image-reference-coherence-v1.mjs'
+      - 'scripts/audit-editorial-social-schema-parity-v1.mjs'
       - 'scripts/validate-high-throughput-capability-gaps-v1.py'
       - '.github/workflows/high-throughput-p0-extension-gate.yml'
 
@@ -50,6 +52,7 @@ jobs:
           node --check scripts/audit-editorial-route-discovery-parity-v1.mjs
           node --check scripts/audit-editorial-image-discovery-parity-v1.mjs
           node --check scripts/audit-public-image-reference-coherence-v1.mjs
+          node --check scripts/audit-editorial-social-schema-parity-v1.mjs
           python -m py_compile scripts/validate-high-throughput-capability-gaps-v1.py
       - name: Image sitemap title quality
         run: node scripts/audit-image-sitemap-title-quality-v1.mjs
@@ -59,6 +62,8 @@ jobs:
         run: node scripts/audit-editorial-image-discovery-parity-v1.mjs
       - name: Public image reference coherence
         run: node scripts/audit-public-image-reference-coherence-v1.mjs
+      - name: Editorial social and Article schema parity
+        run: node scripts/audit-editorial-social-schema-parity-v1.mjs
       - name: Workforce capability gap topology
         run: python scripts/validate-high-throughput-capability-gaps-v1.py
       - name: Upload P0 extension evidence
@@ -71,6 +76,7 @@ jobs:
             artifacts/editorial-route-discovery-parity/**
             artifacts/editorial-image-discovery-parity/**
             artifacts/public-image-reference-coherence/**
+            artifacts/editorial-social-schema-parity/**
             artifacts/high-throughput-capability-gaps/**
           if-no-files-found: warn
           retention-days: 14
