@@ -20,6 +20,9 @@ on:
       - 'scripts/audit-social-image-metadata-completeness-v1.mjs'
       - 'scripts/audit-hreflang-reciprocity-v1.mjs'
       - 'scripts/audit-canonical-indexability-coherence-v1.mjs'
+      - 'scripts/audit-crawl-depth-contract-v1.mjs'
+      - 'scripts/audit-internal-link-integrity-v1.mjs'
+      - 'scripts/audit-meta-uniqueness-contract-v1.mjs'
       - 'scripts/validate-high-throughput-capability-gaps-v1.py'
       - '.github/workflows/high-throughput-p0-extension-gate.yml'
   push:
@@ -42,6 +45,9 @@ on:
       - 'scripts/audit-social-image-metadata-completeness-v1.mjs'
       - 'scripts/audit-hreflang-reciprocity-v1.mjs'
       - 'scripts/audit-canonical-indexability-coherence-v1.mjs'
+      - 'scripts/audit-crawl-depth-contract-v1.mjs'
+      - 'scripts/audit-internal-link-integrity-v1.mjs'
+      - 'scripts/audit-meta-uniqueness-contract-v1.mjs'
       - 'scripts/validate-high-throughput-capability-gaps-v1.py'
       - '.github/workflows/high-throughput-p0-extension-gate.yml'
 
@@ -83,6 +89,9 @@ jobs:
           node --check scripts/audit-social-image-metadata-completeness-v1.mjs
           node --check scripts/audit-hreflang-reciprocity-v1.mjs
           node --check scripts/audit-canonical-indexability-coherence-v1.mjs
+          node --check scripts/audit-crawl-depth-contract-v1.mjs
+          node --check scripts/audit-internal-link-integrity-v1.mjs
+          node --check scripts/audit-meta-uniqueness-contract-v1.mjs
           python -m py_compile scripts/validate-high-throughput-capability-gaps-v1.py
       - name: Image sitemap title quality
         run: node scripts/audit-image-sitemap-title-quality-v1.mjs
@@ -114,6 +123,12 @@ jobs:
         run: node scripts/audit-hreflang-reciprocity-v1.mjs
       - name: Canonical and indexability coherence
         run: node scripts/audit-canonical-indexability-coherence-v1.mjs
+      - name: Crawl depth and orphan-route contract
+        run: node scripts/audit-crawl-depth-contract-v1.mjs
+      - name: Internal link integrity
+        run: node scripts/audit-internal-link-integrity-v1.mjs
+      - name: Meta uniqueness contract
+        run: node scripts/audit-meta-uniqueness-contract-v1.mjs
       - name: Workforce capability gap topology
         run: python scripts/validate-high-throughput-capability-gaps-v1.py
       - name: Upload P0 extension evidence
@@ -137,6 +152,9 @@ jobs:
             artifacts/social-image-metadata-completeness/**
             artifacts/hreflang-reciprocity/**
             artifacts/canonical-indexability-coherence/**
+            artifacts/crawl-depth-contract/**
+            artifacts/internal-link-integrity/**
+            artifacts/meta-uniqueness-contract/**
             artifacts/high-throughput-capability-gaps/**
           if-no-files-found: warn
           retention-days: 14
