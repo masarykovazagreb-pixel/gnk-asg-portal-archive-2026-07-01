@@ -87,6 +87,13 @@
       "fallbackPool": ["image-seo-validator", "structured-data-validator"],
       "staticContract": "scripts/audit-decorative-image-seo-exclusion-v1.mjs",
       "runtimeStatus": "UNVERIFIED"
+    },
+    {
+      "taskClass": "image-priority-signal-coherence",
+      "primaryCapability": "image-delivery-priority-validator",
+      "fallbackPool": ["image-delivery-validator", "repair-validator"],
+      "staticContract": "scripts/audit-image-delivery-contract-v1.mjs",
+      "runtimeStatus": "UNVERIFIED"
     }
   ],
   "requiredRuntimeEvidence": [
