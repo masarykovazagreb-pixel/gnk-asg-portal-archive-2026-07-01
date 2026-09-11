@@ -7,6 +7,8 @@ on:
       - 'ops/workforce-critical-task-classes-v1.json'
       - 'scripts/audit-public-image-inventory-v1.mjs'
       - 'scripts/audit-public-image-alt-quality-v1.mjs'
+      - 'scripts/audit-public-image-filename-contract-v1.mjs'
+      - 'scripts/audit-public-image-entity-context-v1.mjs'
       - 'scripts/audit-social-image-intrinsic-dimensions-v1.mjs'
       - 'scripts/audit-image-sitemap-discovery-v1.mjs'
       - 'scripts/audit-primary-image-schema-parity-v1.mjs'
@@ -16,6 +18,7 @@ on:
       - 'scripts/audit-breadcrumb-navigation-parity-v1.mjs'
       - 'scripts/audit-sitemap-lastmod-truth-v1.mjs'
       - 'scripts/audit-workforce-fallback-coverage-v1.py'
+      - 'scripts/audit-workforce-promotion-lifecycle-v1.py'
       - '.github/workflows/high-throughput-visibility-workforce-gate.yml'
   push:
     branches: [main]
@@ -24,6 +27,8 @@ on:
       - 'ops/workforce-critical-task-classes-v1.json'
       - 'scripts/audit-public-image-inventory-v1.mjs'
       - 'scripts/audit-public-image-alt-quality-v1.mjs'
+      - 'scripts/audit-public-image-filename-contract-v1.mjs'
+      - 'scripts/audit-public-image-entity-context-v1.mjs'
       - 'scripts/audit-social-image-intrinsic-dimensions-v1.mjs'
       - 'scripts/audit-image-sitemap-discovery-v1.mjs'
       - 'scripts/audit-primary-image-schema-parity-v1.mjs'
@@ -33,6 +38,7 @@ on:
       - 'scripts/audit-breadcrumb-navigation-parity-v1.mjs'
       - 'scripts/audit-sitemap-lastmod-truth-v1.mjs'
       - 'scripts/audit-workforce-fallback-coverage-v1.py'
+      - 'scripts/audit-workforce-promotion-lifecycle-v1.py'
       - '.github/workflows/high-throughput-visibility-workforce-gate.yml'
 
 permissions:
@@ -60,6 +66,8 @@ jobs:
           set -euo pipefail
           node --check scripts/audit-public-image-inventory-v1.mjs
           node --check scripts/audit-public-image-alt-quality-v1.mjs
+          node --check scripts/audit-public-image-filename-contract-v1.mjs
+          node --check scripts/audit-public-image-entity-context-v1.mjs
           node --check scripts/audit-social-image-intrinsic-dimensions-v1.mjs
           node --check scripts/audit-image-sitemap-discovery-v1.mjs
           node --check scripts/audit-primary-image-schema-parity-v1.mjs
@@ -69,10 +77,15 @@ jobs:
           node --check scripts/audit-breadcrumb-navigation-parity-v1.mjs
           node --check scripts/audit-sitemap-lastmod-truth-v1.mjs
           python -m py_compile scripts/audit-workforce-fallback-coverage-v1.py
+          python -m py_compile scripts/audit-workforce-promotion-lifecycle-v1.py
       - name: Public image inventory contract
         run: node scripts/audit-public-image-inventory-v1.mjs
       - name: Public image alt quality contract
         run: node scripts/audit-public-image-alt-quality-v1.mjs
+      - name: Public image filename contract
+        run: node scripts/audit-public-image-filename-contract-v1.mjs
+      - name: Public image entity context contract
+        run: node scripts/audit-public-image-entity-context-v1.mjs
       - name: Social image intrinsic-dimension contract
         run: node scripts/audit-social-image-intrinsic-dimensions-v1.mjs
       - name: Image sitemap discovery contract
@@ -91,6 +104,8 @@ jobs:
         run: node scripts/audit-sitemap-lastmod-truth-v1.mjs
       - name: Workforce fallback coverage contract
         run: python scripts/audit-workforce-fallback-coverage-v1.py
+      - name: Workforce promotion lifecycle contract
+        run: python scripts/audit-workforce-promotion-lifecycle-v1.py
       - name: Upload contract evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -99,6 +114,8 @@ jobs:
           path: |
             artifacts/public-image-inventory/**
             artifacts/public-image-alt-quality/**
+            artifacts/public-image-filename-contract/**
+            artifacts/public-image-entity-context/**
             artifacts/social-image-intrinsic-dimensions/**
             artifacts/image-sitemap-discovery/**
             artifacts/primary-image-schema-parity/**
@@ -108,5 +125,6 @@ jobs:
             artifacts/breadcrumb-navigation-parity/**
             artifacts/sitemap-lastmod-truth/**
             artifacts/workforce-fallback-coverage/**
+            artifacts/workforce-promotion-lifecycle/**
           if-no-files-found: warn
           retention-days: 14
