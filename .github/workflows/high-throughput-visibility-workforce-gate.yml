@@ -7,6 +7,7 @@ on:
       - 'ops/workforce-critical-task-classes-v1.json'
       - 'scripts/audit-public-image-inventory-v1.mjs'
       - 'scripts/audit-public-image-alt-quality-v1.mjs'
+      - 'scripts/audit-social-image-intrinsic-dimensions-v1.mjs'
       - 'scripts/audit-image-sitemap-discovery-v1.mjs'
       - 'scripts/audit-route-sitemap-parity-v1.mjs'
       - 'scripts/audit-robots-indexability-parity-v1.mjs'
@@ -20,6 +21,7 @@ on:
       - 'ops/workforce-critical-task-classes-v1.json'
       - 'scripts/audit-public-image-inventory-v1.mjs'
       - 'scripts/audit-public-image-alt-quality-v1.mjs'
+      - 'scripts/audit-social-image-intrinsic-dimensions-v1.mjs'
       - 'scripts/audit-image-sitemap-discovery-v1.mjs'
       - 'scripts/audit-route-sitemap-parity-v1.mjs'
       - 'scripts/audit-robots-indexability-parity-v1.mjs'
@@ -52,6 +54,7 @@ jobs:
           set -euo pipefail
           node --check scripts/audit-public-image-inventory-v1.mjs
           node --check scripts/audit-public-image-alt-quality-v1.mjs
+          node --check scripts/audit-social-image-intrinsic-dimensions-v1.mjs
           node --check scripts/audit-image-sitemap-discovery-v1.mjs
           node --check scripts/audit-route-sitemap-parity-v1.mjs
           node --check scripts/audit-robots-indexability-parity-v1.mjs
@@ -61,6 +64,8 @@ jobs:
         run: node scripts/audit-public-image-inventory-v1.mjs
       - name: Public image alt quality contract
         run: node scripts/audit-public-image-alt-quality-v1.mjs
+      - name: Social image intrinsic-dimension contract
+        run: node scripts/audit-social-image-intrinsic-dimensions-v1.mjs
       - name: Image sitemap discovery contract
         run: node scripts/audit-image-sitemap-discovery-v1.mjs
       - name: Route to sitemap parity contract
@@ -79,6 +84,7 @@ jobs:
           path: |
             artifacts/public-image-inventory/**
             artifacts/public-image-alt-quality/**
+            artifacts/social-image-intrinsic-dimensions/**
             artifacts/image-sitemap-discovery/**
             artifacts/route-sitemap-parity/**
             artifacts/robots-indexability-parity/**
