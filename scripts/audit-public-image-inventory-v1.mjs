@@ -3,18 +3,17 @@ import path from 'node:path';
 
 const ROOT = process.cwd();
 const PORTAL = path.join(ROOT, 'apps', 'portal');
-const REGISTRY = path.join(PORTAL, 'data', 'editorial-registry.json');
 const IMAGE_SITEMAP = path.join(PORTAL, 'image-sitemap.xml');
 const failures = [];
 const warnings = [];
 const inventory = [];
+const pages = [];
 
 const attr = (tag, name) => {
   const m = tag.match(new RegExp(`\\s${name}=["']([^"']*)["']`, 'i'));
   return m?.[1]?.trim() || '';
 };
 const hasAttr = (tag, name) => new RegExp(`\\s${name}(?:=|\\s|>|/)`, 'i').test(tag);
-const routeFile = route => path.join(PORTAL, route.replace(/^\\/+|\\/+$/g, ''), 'index.html');
 const localAssetPath = src => {
   if (!src || /^https?:\/\//i.test(src) || /^data:/i.test(src)) return null;
   const clean = src.split(/[?#]/)[0];
@@ -33,21 +32,38 @@ const filenameLooksSemantic = src => {
 const srcsetHasCandidates = value => String(value || '').split(',').some(x => /\S+\s+(?:\d+w|\d+(?:\.\d+)?x)\s*$/.test(x.trim()));
 const validLoading = value => !value || ['lazy', 'eager'].includes(value.toLowerCase());
 const validFetchPriority = value => !value || ['high', 'low', 'auto'].includes(value.toLowerCase());
+const routeFromFile = file => {
+  const rel = path.relative(PORTAL, path.dirname(file)).split(path.sep).join('/');
+  return rel ? `/${rel}/` : '/';
+};
+const isPublicIndexableHtml = html => {
+  const robots = html.match(/<meta[^>]+name=["']robots["'][^>]+content=["']([^"']+)["']/i)?.[1] || '';
+  return !/(?:^|[,\s])noindex(?:$|[,\s])/i.test(robots);
+};
+const walkPublicIndexPages = dir => {
+  for (const entry of fs.readdirSync(dir, {withFileTypes: true})) {
+    if (entry.name.startsWith('.') || ['data', 'assets', '_headers'].includes(entry.name)) continue;
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      walkPublicIndexPages(full);
+      continue;
+    }
+    if (!entry.isFile() || entry.name !== 'index.html') continue;
+    const html = fs.readFileSync(full, 'utf8');
+    if (!isPublicIndexableHtml(html)) continue;
+    pages.push({route: routeFromFile(full), file: full, html});
+  }
+};
 
-if (!fs.existsSync(REGISTRY)) {
-  console.error(`Registry missing: ${REGISTRY}`);
+if (!fs.existsSync(PORTAL)) {
+  console.error(`Portal missing: ${PORTAL}`);
   process.exit(1);
 }
-const registry = JSON.parse(fs.readFileSync(REGISTRY, 'utf8'));
+walkPublicIndexPages(PORTAL);
 const sitemap = fs.existsSync(IMAGE_SITEMAP) ? fs.readFileSync(IMAGE_SITEMAP, 'utf8') : '';
-const items = Array.isArray(registry.items) ? registry.items : [];
 
-for (const item of items) {
-  const route = String(item.path || '');
-  if (!route.startsWith('/')) continue;
-  const file = routeFile(route);
-  if (!fs.existsSync(file)) continue;
-  const html = fs.readFileSync(file, 'utf8');
+for (const page of pages) {
+  const {route, html} = page;
   const ogImage = html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i)?.[1] || '';
   const twitterImage = html.match(/<meta[^>]+name=["']twitter:image["'][^>]+content=["']([^"']+)["']/i)?.[1] || '';
 
@@ -112,7 +128,8 @@ for (const item of items) {
 
 const informative = inventory.filter(x => !x.decorative);
 const report = {
-  version: 'GNK_ASG_PUBLIC_IMAGE_INVENTORY_V2',
+  version: 'GNK_ASG_PUBLIC_IMAGE_INVENTORY_V3',
+  scope: 'ALL_LOCAL_PUBLIC_INDEXABLE_INDEX_HTML_PAGES',
   evidenceSemantics: {
     localAssetExists: 'STATIC_FILE_EVIDENCE_ONLY',
     localMimeShapeOk: 'EXTENSION_SHAPE_ONLY_NOT_HTTP_MIME',
@@ -121,7 +138,8 @@ const report = {
   },
   ok: failures.length === 0,
   stats: {
-    pagesChecked: new Set(inventory.map(x => x.route)).size,
+    publicPagesChecked: pages.length,
+    pagesWithImages: new Set(inventory.map(x => x.route)).size,
     images: inventory.length,
     informative: informative.length,
     decorative: inventory.length - informative.length,
