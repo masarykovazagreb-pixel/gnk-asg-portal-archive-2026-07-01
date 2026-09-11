@@ -1,0 +1,70 @@
+name: High Throughput P0 Extension Gate
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-gaps-v1.json'
+      - 'scripts/audit-image-sitemap-title-quality-v1.mjs'
+      - 'scripts/audit-editorial-route-discovery-parity-v1.mjs'
+      - 'scripts/audit-editorial-image-discovery-parity-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-gaps-v1.py'
+      - '.github/workflows/high-throughput-p0-extension-gate.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-gaps-v1.json'
+      - 'scripts/audit-image-sitemap-title-quality-v1.mjs'
+      - 'scripts/audit-editorial-route-discovery-parity-v1.mjs'
+      - 'scripts/audit-editorial-image-discovery-parity-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-gaps-v1.py'
+      - '.github/workflows/high-throughput-p0-extension-gate.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: high-throughput-p0-extension-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  p0-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check scripts/audit-image-sitemap-title-quality-v1.mjs
+          node --check scripts/audit-editorial-route-discovery-parity-v1.mjs
+          node --check scripts/audit-editorial-image-discovery-parity-v1.mjs
+          python -m py_compile scripts/validate-high-throughput-capability-gaps-v1.py
+      - name: Image sitemap title quality
+        run: node scripts/audit-image-sitemap-title-quality-v1.mjs
+      - name: Editorial route discovery parity
+        run: node scripts/audit-editorial-route-discovery-parity-v1.mjs
+      - name: Editorial image discovery parity
+        run: node scripts/audit-editorial-image-discovery-parity-v1.mjs
+      - name: Workforce capability gap topology
+        run: python scripts/validate-high-throughput-capability-gaps-v1.py
+      - name: Upload P0 extension evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: high-throughput-p0-extension-${{ github.sha }}
+          path: |
+            artifacts/image-sitemap-title-quality/**
+            artifacts/editorial-route-discovery-parity/**
+            artifacts/editorial-image-discovery-parity/**
+            artifacts/high-throughput-capability-gaps/**
+          if-no-files-found: warn
+          retention-days: 14
