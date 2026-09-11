@@ -4,129 +4,23 @@
   "healthyRequiresRuntimeEvidence": true,
   "promotionLifecycle": ["candidate", "sandbox", "shadow", "evaluator", "probation", "healthy"],
   "capabilities": [
-    {
-      "taskClass": "image-sitemap-title-quality",
-      "primaryCapability": "image-sitemap-title-validator",
-      "fallbackPool": ["image-seo-validator", "repair-validator"],
-      "staticContract": "scripts/audit-image-sitemap-title-quality-v1.mjs",
-      "runtimeStatus": "UNVERIFIED"
-    },
-    {
-      "taskClass": "editorial-route-discovery-parity",
-      "primaryCapability": "editorial-route-discovery-validator",
-      "fallbackPool": ["route-sitemap-parity-validator", "publication-validator"],
-      "staticContract": "scripts/audit-editorial-route-discovery-parity-v1.mjs",
-      "runtimeStatus": "UNVERIFIED"
-    },
-    {
-      "taskClass": "editorial-image-discovery-parity",
-      "primaryCapability": "editorial-image-discovery-validator",
-      "fallbackPool": ["image-sitemap-validator", "publication-validator"],
-      "staticContract": "scripts/audit-editorial-image-discovery-parity-v1.mjs",
-      "runtimeStatus": "UNVERIFIED"
-    },
-    {
-      "taskClass": "public-image-url-scheme-safety",
-      "primaryCapability": "public-image-url-scheme-validator",
-      "fallbackPool": ["image-seo-validator", "indexability-validator"],
-      "staticContract": "scripts/audit-public-image-reference-coherence-v1.mjs",
-      "runtimeStatus": "UNVERIFIED"
-    },
-    {
-      "taskClass": "public-image-local-materialization",
-      "primaryCapability": "public-image-materialization-validator",
-      "fallbackPool": ["asset-integrity-validator", "repair-validator"],
-      "staticContract": "scripts/audit-public-image-reference-coherence-v1.mjs",
-      "runtimeStatus": "UNVERIFIED"
-    },
-    {
-      "taskClass": "social-image-alt-parity",
-      "primaryCapability": "social-image-alt-parity-validator",
-      "fallbackPool": ["social-image-validator", "accessibility-validator"],
-      "staticContract": "scripts/audit-public-image-reference-coherence-v1.mjs",
-      "runtimeStatus": "UNVERIFIED"
-    },
-    {
-      "taskClass": "editorial-social-image-parity",
-      "primaryCapability": "editorial-social-image-parity-validator",
-      "fallbackPool": ["social-image-validator", "publication-validator"],
-      "staticContract": "scripts/audit-editorial-social-schema-parity-v1.mjs",
-      "runtimeStatus": "UNVERIFIED"
-    },
-    {
-      "taskClass": "editorial-article-date-parity",
-      "primaryCapability": "editorial-article-date-parity-validator",
-      "fallbackPool": ["structured-data-validator", "publication-validator"],
-      "staticContract": "scripts/audit-editorial-social-schema-parity-v1.mjs",
-      "runtimeStatus": "UNVERIFIED"
-    },
-    {
-      "taskClass": "editorial-imageobject-parity",
-      "primaryCapability": "editorial-imageobject-parity-validator",
-      "fallbackPool": ["structured-data-validator", "image-seo-validator"],
-      "staticContract": "scripts/audit-editorial-social-schema-parity-v1.mjs",
-      "runtimeStatus": "UNVERIFIED"
-    },
-    {
-      "taskClass": "responsive-image-candidate-integrity",
-      "primaryCapability": "responsive-image-srcset-validator",
-      "fallbackPool": ["image-delivery-validator", "asset-integrity-validator"],
-      "staticContract": "scripts/audit-responsive-image-candidate-integrity-v1.mjs",
-      "runtimeStatus": "UNVERIFIED"
-    },
-    {
-      "taskClass": "public-image-dimension-integrity",
-      "primaryCapability": "public-image-dimension-validator",
-      "fallbackPool": ["image-delivery-validator", "image-seo-validator"],
-      "staticContract": "scripts/audit-public-image-dimension-integrity-v1.mjs",
-      "runtimeStatus": "UNVERIFIED"
-    },
-    {
-      "taskClass": "decorative-image-seo-exclusion",
-      "primaryCapability": "decorative-image-seo-exclusion-validator",
-      "fallbackPool": ["image-seo-validator", "structured-data-validator"],
-      "staticContract": "scripts/audit-decorative-image-seo-exclusion-v1.mjs",
-      "runtimeStatus": "UNVERIFIED"
-    },
-    {
-      "taskClass": "image-priority-signal-coherence",
-      "primaryCapability": "image-delivery-priority-validator",
-      "fallbackPool": ["image-delivery-validator", "repair-validator"],
-      "staticContract": "scripts/audit-image-delivery-contract-v1.mjs",
-      "runtimeStatus": "UNVERIFIED"
-    },
-    {
-      "taskClass": "social-image-intrinsic-dimension-parity",
-      "primaryCapability": "social-image-intrinsic-dimension-validator",
-      "fallbackPool": ["image-delivery-validator", "social-image-validator"],
-      "staticContract": "scripts/audit-social-image-intrinsic-dimensions-v1.mjs",
-      "runtimeStatus": "UNVERIFIED"
-    },
-    {
-      "taskClass": "primary-image-schema-parity",
-      "primaryCapability": "primary-image-schema-validator",
-      "fallbackPool": ["structured-data-validator", "image-seo-validator"],
-      "staticContract": "scripts/audit-primary-image-schema-parity-v1.mjs",
-      "runtimeStatus": "UNVERIFIED"
-    },
-    {
-      "taskClass": "imageobject-contract-integrity",
-      "primaryCapability": "imageobject-contract-validator",
-      "fallbackPool": ["structured-data-validator", "asset-integrity-validator"],
-      "staticContract": "scripts/audit-imageobject-contract-v1.mjs",
-      "runtimeStatus": "UNVERIFIED"
-    }
+    {"taskClass":"image-sitemap-title-quality","primaryCapability":"image-sitemap-title-validator","fallbackPool":["image-seo-validator","repair-validator"],"staticContract":"scripts/audit-image-sitemap-title-quality-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"editorial-route-discovery-parity","primaryCapability":"editorial-route-discovery-validator","fallbackPool":["route-sitemap-parity-validator","publication-validator"],"staticContract":"scripts/audit-editorial-route-discovery-parity-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"editorial-image-discovery-parity","primaryCapability":"editorial-image-discovery-validator","fallbackPool":["image-sitemap-validator","publication-validator"],"staticContract":"scripts/audit-editorial-image-discovery-parity-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"public-image-url-scheme-safety","primaryCapability":"public-image-url-scheme-validator","fallbackPool":["image-seo-validator","indexability-validator"],"staticContract":"scripts/audit-public-image-reference-coherence-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"public-image-local-materialization","primaryCapability":"public-image-materialization-validator","fallbackPool":["asset-integrity-validator","repair-validator"],"staticContract":"scripts/audit-public-image-reference-coherence-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"social-image-alt-parity","primaryCapability":"social-image-alt-parity-validator","fallbackPool":["social-image-validator","accessibility-validator"],"staticContract":"scripts/audit-public-image-reference-coherence-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"editorial-social-image-parity","primaryCapability":"editorial-social-image-parity-validator","fallbackPool":["social-image-validator","publication-validator"],"staticContract":"scripts/audit-editorial-social-schema-parity-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"editorial-article-date-parity","primaryCapability":"editorial-article-date-parity-validator","fallbackPool":["structured-data-validator","publication-validator"],"staticContract":"scripts/audit-editorial-social-schema-parity-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"editorial-imageobject-parity","primaryCapability":"editorial-imageobject-parity-validator","fallbackPool":["structured-data-validator","image-seo-validator"],"staticContract":"scripts/audit-editorial-social-schema-parity-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"responsive-image-candidate-integrity","primaryCapability":"responsive-image-srcset-validator","fallbackPool":["image-delivery-validator","asset-integrity-validator"],"staticContract":"scripts/audit-responsive-image-candidate-integrity-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"public-image-dimension-integrity","primaryCapability":"public-image-dimension-validator","fallbackPool":["image-delivery-validator","image-seo-validator"],"staticContract":"scripts/audit-public-image-dimension-integrity-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"decorative-image-seo-exclusion","primaryCapability":"decorative-image-seo-exclusion-validator","fallbackPool":["image-seo-validator","structured-data-validator"],"staticContract":"scripts/audit-decorative-image-seo-exclusion-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"image-priority-signal-coherence","primaryCapability":"image-delivery-priority-validator","fallbackPool":["image-delivery-validator","repair-validator"],"staticContract":"scripts/audit-image-delivery-contract-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"social-image-intrinsic-dimension-parity","primaryCapability":"social-image-intrinsic-dimension-validator","fallbackPool":["image-delivery-validator","social-image-validator"],"staticContract":"scripts/audit-social-image-intrinsic-dimensions-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"primary-image-schema-parity","primaryCapability":"primary-image-schema-validator","fallbackPool":["structured-data-validator","image-seo-validator"],"staticContract":"scripts/audit-primary-image-schema-parity-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"imageobject-contract-integrity","primaryCapability":"imageobject-contract-validator","fallbackPool":["structured-data-validator","asset-integrity-validator"],"staticContract":"scripts/audit-imageobject-contract-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"social-image-metadata-completeness","primaryCapability":"social-image-metadata-completeness-validator","fallbackPool":["social-image-validator","image-seo-validator"],"staticContract":"scripts/audit-social-image-metadata-completeness-v1.mjs","runtimeStatus":"UNVERIFIED"}
   ],
-  "requiredRuntimeEvidence": [
-    "heartbeat",
-    "taskOwnership",
-    "queueState",
-    "latencyMs",
-    "successCount",
-    "failureCount",
-    "evaluatorVerdict",
-    "fallbackCoverage",
-    "rollbackCapability",
-    "telemetryRef"
-  ]
+  "requiredRuntimeEvidence": ["heartbeat","taskOwnership","queueState","latencyMs","successCount","failureCount","evaluatorVerdict","fallbackCoverage","rollbackCapability","telemetryRef"]
 }
