@@ -1,0 +1,41 @@
+{
+  "version": "GNK_ASG_HIGH_THROUGHPUT_CAPABILITY_GAPS_V1",
+  "authorityScope": "R0_R1_ONLY",
+  "healthyRequiresRuntimeEvidence": true,
+  "promotionLifecycle": ["candidate", "sandbox", "shadow", "evaluator", "probation", "healthy"],
+  "capabilities": [
+    {
+      "taskClass": "image-sitemap-title-quality",
+      "primaryCapability": "image-sitemap-title-validator",
+      "fallbackPool": ["image-seo-validator", "repair-validator"],
+      "staticContract": "scripts/audit-image-sitemap-title-quality-v1.mjs",
+      "runtimeStatus": "UNVERIFIED"
+    },
+    {
+      "taskClass": "editorial-route-discovery-parity",
+      "primaryCapability": "editorial-route-discovery-validator",
+      "fallbackPool": ["route-sitemap-parity-validator", "publication-validator"],
+      "staticContract": "scripts/audit-editorial-route-discovery-parity-v1.mjs",
+      "runtimeStatus": "UNVERIFIED"
+    },
+    {
+      "taskClass": "editorial-image-discovery-parity",
+      "primaryCapability": "editorial-image-discovery-validator",
+      "fallbackPool": ["image-sitemap-validator", "publication-validator"],
+      "staticContract": "scripts/audit-editorial-image-discovery-parity-v1.mjs",
+      "runtimeStatus": "UNVERIFIED"
+    }
+  ],
+  "requiredRuntimeEvidence": [
+    "heartbeat",
+    "taskOwnership",
+    "queueState",
+    "latencyMs",
+    "successCount",
+    "failureCount",
+    "evaluatorVerdict",
+    "fallbackCoverage",
+    "rollbackCapability",
+    "telemetryRef"
+  ]
+}
