@@ -73,6 +73,20 @@
       "fallbackPool": ["image-delivery-validator", "asset-integrity-validator"],
       "staticContract": "scripts/audit-responsive-image-candidate-integrity-v1.mjs",
       "runtimeStatus": "UNVERIFIED"
+    },
+    {
+      "taskClass": "public-image-dimension-integrity",
+      "primaryCapability": "public-image-dimension-validator",
+      "fallbackPool": ["image-delivery-validator", "image-seo-validator"],
+      "staticContract": "scripts/audit-public-image-dimension-integrity-v1.mjs",
+      "runtimeStatus": "UNVERIFIED"
+    },
+    {
+      "taskClass": "decorative-image-seo-exclusion",
+      "primaryCapability": "decorative-image-seo-exclusion-validator",
+      "fallbackPool": ["image-seo-validator", "structured-data-validator"],
+      "staticContract": "scripts/audit-decorative-image-seo-exclusion-v1.mjs",
+      "runtimeStatus": "UNVERIFIED"
     }
   ],
   "requiredRuntimeEvidence": [
