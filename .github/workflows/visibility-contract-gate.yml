@@ -28,6 +28,7 @@ on:
       - 'scripts/audit-entity-sameas-contract-v1.mjs'
       - 'scripts/audit-internal-link-integrity-v1.mjs'
       - 'scripts/audit-robots-indexability-parity-v1.mjs'
+      - 'scripts/audit-sitemap-freshness-materialization-v1.mjs'
       - '.github/workflows/visibility-contract-gate.yml'
   push:
     branches:
@@ -58,6 +59,7 @@ on:
       - 'scripts/audit-entity-sameas-contract-v1.mjs'
       - 'scripts/audit-internal-link-integrity-v1.mjs'
       - 'scripts/audit-robots-indexability-parity-v1.mjs'
+      - 'scripts/audit-sitemap-freshness-materialization-v1.mjs'
       - '.github/workflows/visibility-contract-gate.yml'
 
 permissions:
@@ -106,6 +108,7 @@ jobs:
           node --check scripts/audit-entity-sameas-contract-v1.mjs
           node --check scripts/audit-internal-link-integrity-v1.mjs
           node --check scripts/audit-robots-indexability-parity-v1.mjs
+          node --check scripts/audit-sitemap-freshness-materialization-v1.mjs
 
       - name: Editorial visibility contract
         run: node scripts/audit-editorial-visibility-v1.mjs
@@ -179,6 +182,9 @@ jobs:
       - name: Robots and indexability parity contract
         run: node scripts/audit-robots-indexability-parity-v1.mjs
 
+      - name: Sitemap freshness and static route materialization contract
+        run: node scripts/audit-sitemap-freshness-materialization-v1.mjs
+
       - name: Upload visibility evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -209,5 +215,6 @@ jobs:
             artifacts/entity-sameas-contract/**
             artifacts/internal-link-integrity/**
             artifacts/robots-indexability-parity/**
+            artifacts/sitemap-freshness-materialization/**
           if-no-files-found: warn
           retention-days: 14
