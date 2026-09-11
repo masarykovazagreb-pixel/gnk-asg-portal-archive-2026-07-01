@@ -5,7 +5,11 @@ on:
     paths:
       - 'apps/portal/**'
       - 'ops/workforce-critical-task-classes-v1.json'
+      - 'scripts/audit-public-image-inventory-v1.mjs'
       - 'scripts/audit-public-image-alt-quality-v1.mjs'
+      - 'scripts/audit-image-sitemap-discovery-v1.mjs'
+      - 'scripts/audit-route-sitemap-parity-v1.mjs'
+      - 'scripts/audit-robots-indexability-parity-v1.mjs'
       - 'scripts/audit-indexation-evidence-chain-v1.mjs'
       - 'scripts/audit-workforce-fallback-coverage-v1.py'
       - '.github/workflows/high-throughput-visibility-workforce-gate.yml'
@@ -14,7 +18,11 @@ on:
     paths:
       - 'apps/portal/**'
       - 'ops/workforce-critical-task-classes-v1.json'
+      - 'scripts/audit-public-image-inventory-v1.mjs'
       - 'scripts/audit-public-image-alt-quality-v1.mjs'
+      - 'scripts/audit-image-sitemap-discovery-v1.mjs'
+      - 'scripts/audit-route-sitemap-parity-v1.mjs'
+      - 'scripts/audit-robots-indexability-parity-v1.mjs'
       - 'scripts/audit-indexation-evidence-chain-v1.mjs'
       - 'scripts/audit-workforce-fallback-coverage-v1.py'
       - '.github/workflows/high-throughput-visibility-workforce-gate.yml'
@@ -42,11 +50,23 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          node --check scripts/audit-public-image-inventory-v1.mjs
           node --check scripts/audit-public-image-alt-quality-v1.mjs
+          node --check scripts/audit-image-sitemap-discovery-v1.mjs
+          node --check scripts/audit-route-sitemap-parity-v1.mjs
+          node --check scripts/audit-robots-indexability-parity-v1.mjs
           node --check scripts/audit-indexation-evidence-chain-v1.mjs
           python -m py_compile scripts/audit-workforce-fallback-coverage-v1.py
+      - name: Public image inventory contract
+        run: node scripts/audit-public-image-inventory-v1.mjs
       - name: Public image alt quality contract
         run: node scripts/audit-public-image-alt-quality-v1.mjs
+      - name: Image sitemap discovery contract
+        run: node scripts/audit-image-sitemap-discovery-v1.mjs
+      - name: Route to sitemap parity contract
+        run: node scripts/audit-route-sitemap-parity-v1.mjs
+      - name: Robots and indexability parity contract
+        run: node scripts/audit-robots-indexability-parity-v1.mjs
       - name: Indexation evidence dependency contract
         run: node scripts/audit-indexation-evidence-chain-v1.mjs
       - name: Workforce fallback coverage contract
@@ -57,7 +77,11 @@ jobs:
         with:
           name: high-throughput-visibility-workforce-${{ github.sha }}
           path: |
+            artifacts/public-image-inventory/**
             artifacts/public-image-alt-quality/**
+            artifacts/image-sitemap-discovery/**
+            artifacts/route-sitemap-parity/**
+            artifacts/robots-indexability-parity/**
             artifacts/indexation-evidence-chain/**
             artifacts/workforce-fallback-coverage/**
           if-no-files-found: warn
