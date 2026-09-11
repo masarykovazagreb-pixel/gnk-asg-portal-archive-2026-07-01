@@ -20,7 +20,8 @@
     {"taskClass":"social-image-intrinsic-dimension-parity","primaryCapability":"social-image-intrinsic-dimension-validator","fallbackPool":["image-delivery-validator","social-image-validator"],"staticContract":"scripts/audit-social-image-intrinsic-dimensions-v1.mjs","runtimeStatus":"UNVERIFIED"},
     {"taskClass":"primary-image-schema-parity","primaryCapability":"primary-image-schema-validator","fallbackPool":["structured-data-validator","image-seo-validator"],"staticContract":"scripts/audit-primary-image-schema-parity-v1.mjs","runtimeStatus":"UNVERIFIED"},
     {"taskClass":"imageobject-contract-integrity","primaryCapability":"imageobject-contract-validator","fallbackPool":["structured-data-validator","asset-integrity-validator"],"staticContract":"scripts/audit-imageobject-contract-v1.mjs","runtimeStatus":"UNVERIFIED"},
-    {"taskClass":"social-image-metadata-completeness","primaryCapability":"social-image-metadata-completeness-validator","fallbackPool":["social-image-validator","image-seo-validator"],"staticContract":"scripts/audit-social-image-metadata-completeness-v1.mjs","runtimeStatus":"UNVERIFIED"}
+    {"taskClass":"social-image-metadata-completeness","primaryCapability":"social-image-metadata-completeness-validator","fallbackPool":["social-image-validator","image-seo-validator"],"staticContract":"scripts/audit-social-image-metadata-completeness-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"hreflang-reciprocity","primaryCapability":"hreflang-reciprocity-validator","fallbackPool":["indexability-validator","structured-data-validator"],"staticContract":"scripts/audit-hreflang-reciprocity-v1.mjs","runtimeStatus":"UNVERIFIED"}
   ],
   "requiredRuntimeEvidence": ["heartbeat","taskOwnership","queueState","latencyMs","successCount","failureCount","evaluatorVerdict","fallbackCoverage","rollbackCapability","telemetryRef"]
 }
