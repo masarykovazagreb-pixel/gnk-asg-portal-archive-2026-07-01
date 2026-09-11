@@ -56,7 +56,7 @@ for (const item of items) {
     if (!altPresent) failures.push(`${route}: image ${src || '(missing-src)'} is missing explicit alt intent`);
     if (asset && !exists) failures.push(`${route}: local image asset does not exist: ${src}`);
     if (!decorative && (!width || !height)) failures.push(`${route}: informative image ${src} is missing width/height`);
-    if (!decorative && !sitemapRegistered) warnings.push(`${route}: informative image ${src} is not found in image-sitemap.xml`);
+    if (!decorative && !sitemapRegistered) failures.push(`${route}: informative image ${src} is not registered in image-sitemap.xml`);
   }
 }
 
