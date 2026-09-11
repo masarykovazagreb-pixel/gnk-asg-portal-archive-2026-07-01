@@ -97,9 +97,13 @@ for (const item of items) {
       failures.push(`${route}: image ${src} has invalid fetchpriority=${fetchPriority}; expected high, low, auto, or omission`);
     }
 
+    // loading=lazy asks the browser to defer the image while fetchpriority=high
+    // asks it to prioritize the same request. Treat this as a fail-closed
+    // contract violation instead of a warning so LCP/priority semantics cannot
+    // silently regress across templates or backfills.
     if (loading === 'lazy' && fetchPriority === 'high') {
       stats.contradictoryPrioritySignals++;
-      warnings.push(`${route}: image ${src} combines loading=lazy with fetchpriority=high; verify this is intentional`);
+      failures.push(`${route}: image ${src} combines loading=lazy with fetchpriority=high; choose a coherent delivery strategy`);
     }
 
     if (altPresent && alt === '' && fetchPriority === 'high') {
