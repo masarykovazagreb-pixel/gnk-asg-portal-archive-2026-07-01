@@ -1,0 +1,64 @@
+name: High Throughput Visibility Workforce Gate
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'ops/workforce-critical-task-classes-v1.json'
+      - 'scripts/audit-public-image-alt-quality-v1.mjs'
+      - 'scripts/audit-indexation-evidence-chain-v1.mjs'
+      - 'scripts/audit-workforce-fallback-coverage-v1.py'
+      - '.github/workflows/high-throughput-visibility-workforce-gate.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'ops/workforce-critical-task-classes-v1.json'
+      - 'scripts/audit-public-image-alt-quality-v1.mjs'
+      - 'scripts/audit-indexation-evidence-chain-v1.mjs'
+      - 'scripts/audit-workforce-fallback-coverage-v1.py'
+      - '.github/workflows/high-throughput-visibility-workforce-gate.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: high-throughput-visibility-workforce-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check scripts/audit-public-image-alt-quality-v1.mjs
+          node --check scripts/audit-indexation-evidence-chain-v1.mjs
+          python -m py_compile scripts/audit-workforce-fallback-coverage-v1.py
+      - name: Public image alt quality contract
+        run: node scripts/audit-public-image-alt-quality-v1.mjs
+      - name: Indexation evidence dependency contract
+        run: node scripts/audit-indexation-evidence-chain-v1.mjs
+      - name: Workforce fallback coverage contract
+        run: python scripts/audit-workforce-fallback-coverage-v1.py
+      - name: Upload contract evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: high-throughput-visibility-workforce-${{ github.sha }}
+          path: |
+            artifacts/public-image-alt-quality/**
+            artifacts/indexation-evidence-chain/**
+            artifacts/workforce-fallback-coverage/**
+          if-no-files-found: warn
+          retention-days: 14
