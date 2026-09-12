@@ -4,7 +4,16 @@ import path from 'node:path';
 const ROOT = process.cwd();
 const PORTAL = path.join(ROOT, 'apps', 'portal');
 const failures = [];
-const stats = { htmlFiles: 0, images: 0, responsiveImages: 0, invalidCandidates: 0, duplicateCandidates: 0, missingSizes: 0 };
+const stats = {
+  htmlFiles: 0,
+  images: 0,
+  responsiveImages: 0,
+  invalidCandidates: 0,
+  duplicateCandidates: 0,
+  missingSizes: 0,
+  mixedDescriptorFamilies: 0,
+  invalidSizesUsage: 0,
+};
 
 const walk = dir => fs.readdirSync(dir, { withFileTypes: true }).flatMap(entry => {
   const p = path.join(dir, entry.name);
@@ -16,6 +25,7 @@ const attr = (tag, name) => {
   const bare = tag.match(new RegExp(`\\s${name}=([^\\s>]+)`, 'i'));
   return bare?.[1]?.trim() || '';
 };
+const hasAttr = (tag, name) => new RegExp(`\\s${name}(?:\\s*=|\\s|>)`, 'i').test(`${tag}>`);
 const localExists = raw => {
   if (!raw || /^(https?:|data:|blob:|\/\/)/i.test(raw)) return true;
   const clean = raw.split(/[?#]/)[0];
@@ -33,13 +43,13 @@ for (const file of walk(PORTAL).filter(f => f.endsWith('.html'))) {
     const srcset = attr(tag, 'srcset');
     if (!srcset) continue;
     stats.responsiveImages++;
+
+    const sizesPresent = hasAttr(tag, 'sizes');
     const sizes = attr(tag, 'sizes');
-    if (!sizes) {
-      stats.missingSizes++;
-      failures.push(`${rel}: responsive image with srcset must declare sizes`);
-    }
     const seenUrls = new Set();
     const seenDescriptors = new Set();
+    const descriptorFamilies = new Set();
+
     for (const rawCandidate of srcset.split(',')) {
       const candidate = rawCandidate.trim();
       if (!candidate) continue;
@@ -50,10 +60,16 @@ for (const file of walk(PORTAL).filter(f => f.endsWith('.html'))) {
         continue;
       }
       const [url, descriptor = ''] = parts;
-      const validDescriptor = descriptor === '' || /^\d+w$/.test(descriptor) || /^(?:\d+(?:\.\d+)?|\.\d+)x$/.test(descriptor);
+      const widthDescriptor = /^\d+w$/.test(descriptor);
+      const densityDescriptor = /^(?:\d+(?:\.\d+)?|\.\d+)x$/.test(descriptor);
+      const validDescriptor = descriptor === '' || widthDescriptor || densityDescriptor;
       if (!validDescriptor) {
         stats.invalidCandidates++;
         failures.push(`${rel}: invalid srcset descriptor "${descriptor}" for ${url}`);
+      } else if (widthDescriptor) {
+        descriptorFamilies.add('w');
+      } else {
+        descriptorFamilies.add('x');
       }
       if (!localExists(url)) {
         stats.invalidCandidates++;
@@ -66,10 +82,25 @@ for (const file of walk(PORTAL).filter(f => f.endsWith('.html'))) {
       seenUrls.add(url);
       if (descriptor) seenDescriptors.add(descriptor);
     }
+
+    if (descriptorFamilies.size > 1) {
+      stats.mixedDescriptorFamilies++;
+      failures.push(`${rel}: srcset must not mix width (w) and density/default (x/1x) descriptor families`);
+    }
+
+    if (descriptorFamilies.has('w')) {
+      if (!sizesPresent || !sizes) {
+        stats.missingSizes++;
+        failures.push(`${rel}: width-descriptor srcset must declare a non-empty sizes attribute`);
+      }
+    } else if (sizesPresent) {
+      stats.invalidSizesUsage++;
+      failures.push(`${rel}: sizes is only coherent with width-descriptor srcset candidates`);
+    }
   }
 }
 
-const report = { version: 'GNK_ASG_RESPONSIVE_IMAGE_CANDIDATE_INTEGRITY_V1', ok: failures.length === 0, stats, failures };
+const report = { version: 'GNK_ASG_RESPONSIVE_IMAGE_CANDIDATE_INTEGRITY_V2', ok: failures.length === 0, stats, failures };
 const out = path.join(ROOT, 'artifacts', 'responsive-image-candidate-integrity');
 fs.mkdirSync(out, { recursive: true });
 fs.writeFileSync(path.join(out, 'report.json'), `${JSON.stringify(report, null, 2)}\n`);
