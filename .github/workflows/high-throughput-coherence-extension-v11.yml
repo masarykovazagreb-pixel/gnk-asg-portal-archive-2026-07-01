@@ -1,0 +1,67 @@
+name: High Throughput Coherence Extension V11
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v11.json'
+      - 'scripts/audit-image-preload-rendered-parity-v1.mjs'
+      - 'scripts/audit-sitemap-canonical-target-parity-v1.mjs'
+      - 'scripts/audit-hreflang-target-indexability-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v11.py'
+      - '.github/workflows/high-throughput-coherence-extension-v11.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v11.json'
+      - 'scripts/audit-image-preload-rendered-parity-v1.mjs'
+      - 'scripts/audit-sitemap-canonical-target-parity-v1.mjs'
+      - 'scripts/audit-hreflang-target-indexability-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v11.py'
+      - '.github/workflows/high-throughput-coherence-extension-v11.yml'
+
+permissions:
+  contents: read
+concurrency:
+  group: high-throughput-coherence-v11-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax checks
+        run: |
+          set -euo pipefail
+          node --check scripts/audit-image-preload-rendered-parity-v1.mjs
+          node --check scripts/audit-sitemap-canonical-target-parity-v1.mjs
+          node --check scripts/audit-hreflang-target-indexability-v1.mjs
+          python -m py_compile scripts/validate-high-throughput-capability-extension-v11.py
+      - name: Image preload rendered parity
+        run: node scripts/audit-image-preload-rendered-parity-v1.mjs
+      - name: Sitemap canonical target parity
+        run: node scripts/audit-sitemap-canonical-target-parity-v1.mjs
+      - name: Hreflang target indexability
+        run: node scripts/audit-hreflang-target-indexability-v1.mjs
+      - name: Workforce capability extension topology
+        run: python scripts/validate-high-throughput-capability-extension-v11.py
+      - name: Upload V11 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: high-throughput-coherence-v11-${{ github.sha }}
+          path: |
+            artifacts/image-preload-rendered-parity/**
+            artifacts/sitemap-canonical-target-parity/**
+            artifacts/hreflang-target-indexability/**
+            artifacts/high-throughput-capability-extension-v11/**
+          if-no-files-found: warn
+          retention-days: 14
