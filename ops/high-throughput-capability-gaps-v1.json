@@ -2,14 +2,7 @@
   "version": "GNK_ASG_HIGH_THROUGHPUT_CAPABILITY_GAPS_V1",
   "authorityScope": "R0_R1_ONLY",
   "healthyRequiresRuntimeEvidence": true,
-  "promotionLifecycle": [
-    "candidate",
-    "sandbox",
-    "shadow",
-    "evaluator",
-    "probation",
-    "healthy"
-  ],
+  "promotionLifecycle": ["candidate", "sandbox", "shadow", "evaluator", "probation", "healthy"],
   "capabilities": [
     {"taskClass":"image-sitemap-title-quality","primaryCapability":"image-sitemap-title-validator","fallbackPool":["image-seo-validator","repair-validator"],"staticContract":"scripts/audit-image-sitemap-title-quality-v1.mjs","runtimeStatus":"UNVERIFIED"},
     {"taskClass":"editorial-route-discovery-parity","primaryCapability":"editorial-route-discovery-validator","fallbackPool":["route-sitemap-parity-validator","publication-validator"],"staticContract":"scripts/audit-editorial-route-discovery-parity-v1.mjs","runtimeStatus":"UNVERIFIED"},
@@ -37,18 +30,12 @@
     {"taskClass":"sitemap-lastmod-truth","primaryCapability":"sitemap-lastmod-truth-validator","fallbackPool":["publication-validator","indexability-validator"],"staticContract":"scripts/audit-sitemap-lastmod-truth-v1.mjs","runtimeStatus":"UNVERIFIED"},
     {"taskClass":"crawl-depth-orphan-coverage","primaryCapability":"crawl-depth-orphan-validator","fallbackPool":["indexability-validator","internal-link-validator"],"staticContract":"scripts/audit-crawl-depth-contract-v1.mjs","runtimeStatus":"UNVERIFIED"},
     {"taskClass":"internal-link-integrity","primaryCapability":"internal-link-integrity-validator","fallbackPool":["indexability-validator","repair-validator"],"staticContract":"scripts/audit-internal-link-integrity-v1.mjs","runtimeStatus":"UNVERIFIED"},
-    {"taskClass":"meta-uniqueness-integrity","primaryCapability":"meta-uniqueness-validator","fallbackPool":["seo-meta-validator","repair-validator"],"staticContract":"scripts/audit-meta-uniqueness-contract-v1.mjs","runtimeStatus":"UNVERIFIED"}
+    {"taskClass":"meta-uniqueness-integrity","primaryCapability":"meta-uniqueness-validator","fallbackPool":["seo-meta-validator","repair-validator"],"staticContract":"scripts/audit-meta-uniqueness-contract-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"redirect-sitemap-exclusion","primaryCapability":"redirect-sitemap-exclusion-validator","fallbackPool":["indexability-validator","repair-validator"],"staticContract":"scripts/audit-redirect-sitemap-exclusion-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"sitemap-noindex-exclusion","primaryCapability":"sitemap-noindex-exclusion-validator","fallbackPool":["indexability-validator","robots-validator"],"staticContract":"scripts/audit-sitemap-noindex-exclusion-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"sitemap-hreflang-target-integrity","primaryCapability":"sitemap-hreflang-target-validator","fallbackPool":["hreflang-reciprocity-validator","indexability-validator"],"staticContract":"scripts/audit-sitemap-hreflang-target-integrity-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"social-url-canonical-parity","primaryCapability":"social-url-canonical-validator","fallbackPool":["seo-meta-validator","indexability-validator"],"staticContract":"scripts/audit-social-url-canonical-parity-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"structured-data-url-identity","primaryCapability":"structured-data-url-identity-validator","fallbackPool":["structured-data-validator","canonical-indexability-validator"],"staticContract":"scripts/audit-structured-data-url-identity-v1.mjs","runtimeStatus":"UNVERIFIED"}
   ],
-  "requiredRuntimeEvidence": [
-    "heartbeat",
-    "taskOwnership",
-    "queueState",
-    "latencyMs",
-    "successCount",
-    "failureCount",
-    "evaluatorVerdict",
-    "fallbackCoverage",
-    "rollbackCapability",
-    "telemetryRef"
-  ]
+  "requiredRuntimeEvidence": ["heartbeat", "taskOwnership", "queueState", "latencyMs", "successCount", "failureCount", "evaluatorVerdict", "fallbackCoverage", "rollbackCapability", "telemetryRef"]
 }
