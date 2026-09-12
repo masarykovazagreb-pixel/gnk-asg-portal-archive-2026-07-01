@@ -1,0 +1,30 @@
+{
+  "version": "GNK_ASG_HIGH_THROUGHPUT_CAPABILITY_EXTENSION_V4",
+  "authorityScope": "R0_R1_ONLY",
+  "healthyRequiresRuntimeEvidence": true,
+  "promotionLifecycle": ["candidate", "sandbox", "shadow", "evaluator", "probation", "healthy"],
+  "capabilities": [
+    {
+      "taskClass": "raster-intrinsic-dimension-parity",
+      "primaryCapability": "raster-dimension-parity-validator",
+      "fallbackPool": ["image-delivery-validator", "asset-integrity-validator"],
+      "staticContract": "scripts/audit-raster-intrinsic-dimension-parity-v1.mjs",
+      "runtimeStatus": "UNVERIFIED"
+    },
+    {
+      "taskClass": "image-sitemap-title-alt-parity",
+      "primaryCapability": "image-sitemap-context-parity-validator",
+      "fallbackPool": ["image-seo-validator", "content-semantic-validator"],
+      "staticContract": "scripts/audit-image-sitemap-title-alt-parity-v1.mjs",
+      "runtimeStatus": "UNVERIFIED"
+    },
+    {
+      "taskClass": "social-image-discovery-parity",
+      "primaryCapability": "social-image-discovery-validator",
+      "fallbackPool": ["image-sitemap-validator", "social-metadata-validator"],
+      "staticContract": "scripts/audit-social-image-discovery-parity-v1.mjs",
+      "runtimeStatus": "UNVERIFIED"
+    }
+  ],
+  "requiredRuntimeEvidence": ["heartbeat","taskOwnership","queueState","latencyMs","successCount","failureCount","evaluatorVerdict","fallbackCoverage","rollbackCapability","telemetryRef"]
+}
