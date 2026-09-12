@@ -1,0 +1,70 @@
+name: High Throughput Image Integrity Extension V3
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v3.json'
+      - 'scripts/audit-image-sitemap-integrity-v1.mjs'
+      - 'scripts/audit-image-sitemap-url-stability-v1.mjs'
+      - 'scripts/audit-rendered-image-contract-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v3.py'
+      - '.github/workflows/high-throughput-image-integrity-extension-v3.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v3.json'
+      - 'scripts/audit-image-sitemap-integrity-v1.mjs'
+      - 'scripts/audit-image-sitemap-url-stability-v1.mjs'
+      - 'scripts/audit-rendered-image-contract-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v3.py'
+      - '.github/workflows/high-throughput-image-integrity-extension-v3.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: high-throughput-image-integrity-v3-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check scripts/audit-image-sitemap-integrity-v1.mjs
+          node --check scripts/audit-image-sitemap-url-stability-v1.mjs
+          node --check scripts/audit-rendered-image-contract-v1.mjs
+          python -m py_compile scripts/validate-high-throughput-capability-extension-v3.py
+      - name: Image sitemap integrity
+        run: node scripts/audit-image-sitemap-integrity-v1.mjs
+      - name: Image sitemap URL stability
+        run: node scripts/audit-image-sitemap-url-stability-v1.mjs
+      - name: Rendered primary image contract
+        run: node scripts/audit-rendered-image-contract-v1.mjs
+      - name: Workforce capability extension topology
+        run: python scripts/validate-high-throughput-capability-extension-v3.py
+      - name: Upload extension evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: high-throughput-image-integrity-v3-${{ github.sha }}
+          path: |
+            artifacts/image-sitemap-integrity/**
+            artifacts/image-sitemap-url-stability/**
+            artifacts/rendered-image-contract/**
+            artifacts/high-throughput-capability-extension-v3/**
+          if-no-files-found: warn
+          retention-days: 14
