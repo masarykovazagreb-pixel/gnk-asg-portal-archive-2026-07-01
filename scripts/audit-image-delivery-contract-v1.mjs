@@ -10,12 +10,13 @@ const stats = {
   checkedPages: 0,
   imagesChecked: 0,
   missingAltAttributes: 0,
-  partialResponsiveHints: 0,
+  invalidResponsiveHints: 0,
   missingDimensions: 0,
   missingDimensionPairs: 0,
   invalidDimensions: 0,
   invalidLoading: 0,
   invalidFetchPriority: 0,
+  invalidDecoding: 0,
   contradictoryPrioritySignals: 0,
   decorativeHighPriorityImages: 0
 };
@@ -29,6 +30,17 @@ const attr = (tag, name) => {
 };
 const hasAttr = (tag, name) => new RegExp(`\\s${name}(?:=|\\s|>|/)`, 'i').test(tag);
 const isPositiveInteger = value => /^\d+$/.test(value) && Number(value) > 0;
+const srcsetFamilies = srcset => {
+  const families = new Set();
+  for (const rawCandidate of String(srcset || '').split(',')) {
+    const candidate = rawCandidate.trim();
+    if (!candidate) continue;
+    const descriptor = candidate.split(/\s+/)[1] || '';
+    if (/^\d+w$/.test(descriptor)) families.add('w');
+    else families.add('x');
+  }
+  return families;
+};
 
 if (!fs.existsSync(REGISTRY)) {
   console.error(`Registry missing: ${REGISTRY}`);
@@ -50,32 +62,37 @@ for (const item of items) {
     const tag = match[0];
     const src = attr(tag, 'src') || '(missing-src)';
     const srcset = attr(tag, 'srcset');
+    const sizesPresent = hasAttr(tag, 'sizes');
     const sizes = attr(tag, 'sizes');
     const width = attr(tag, 'width');
     const height = attr(tag, 'height');
     const loading = attr(tag, 'loading').toLowerCase();
     const fetchPriority = attr(tag, 'fetchpriority').toLowerCase();
+    const decoding = attr(tag, 'decoding').toLowerCase();
     const altPresent = hasAttr(tag, 'alt');
     const alt = attr(tag, 'alt');
     stats.imagesChecked++;
 
-    // Every rendered image must make its accessibility/SEO intent explicit.
-    // Informative images carry descriptive alt text; decorative images opt out
-    // explicitly with alt="". A missing alt attribute is never accepted.
     if (!altPresent) {
       stats.missingAltAttributes++;
       failures.push(`${route}: image ${src} is missing alt; use truthful context-specific alt text or alt="" only for decorative images`);
     }
 
-    if (Boolean(srcset) !== Boolean(sizes)) {
-      stats.partialResponsiveHints++;
-      failures.push(`${route}: image ${src} must declare srcset and sizes together`);
+    if (srcset) {
+      const families = srcsetFamilies(srcset);
+      if (families.has('w') && (!sizesPresent || !sizes)) {
+        stats.invalidResponsiveHints++;
+        failures.push(`${route}: image ${src} uses width-descriptor srcset and must declare non-empty sizes`);
+      }
+      if (!families.has('w') && sizesPresent) {
+        stats.invalidResponsiveHints++;
+        failures.push(`${route}: image ${src} uses density/default srcset; sizes must not be declared`);
+      }
+    } else if (sizesPresent) {
+      stats.invalidResponsiveHints++;
+      failures.push(`${route}: image ${src} declares sizes without srcset`);
     }
 
-    // Intrinsic dimensions are a sitewide delivery contract, not an optional
-    // hint: they prevent avoidable layout shift and give crawlers stable image
-    // geometry. SVG/raster assets are both expected to expose rendered width
-    // and height on the img element.
     if (!width && !height) {
       stats.missingDimensions++;
       failures.push(`${route}: image ${src} must declare intrinsic width and height`);
@@ -97,10 +114,11 @@ for (const item of items) {
       failures.push(`${route}: image ${src} has invalid fetchpriority=${fetchPriority}; expected high, low, auto, or omission`);
     }
 
-    // loading=lazy asks the browser to defer the image while fetchpriority=high
-    // asks it to prioritize the same request. Treat this as a fail-closed
-    // contract violation instead of a warning so LCP/priority semantics cannot
-    // silently regress across templates or backfills.
+    if (decoding && !/^(sync|async|auto)$/.test(decoding)) {
+      stats.invalidDecoding++;
+      failures.push(`${route}: image ${src} has invalid decoding=${decoding}; expected sync, async, auto, or omission`);
+    }
+
     if (loading === 'lazy' && fetchPriority === 'high') {
       stats.contradictoryPrioritySignals++;
       failures.push(`${route}: image ${src} combines loading=lazy with fetchpriority=high; choose a coherent delivery strategy`);
@@ -114,7 +132,7 @@ for (const item of items) {
 }
 
 const report = {
-  version: 'GNK_ASG_IMAGE_DELIVERY_CONTRACT_V1',
+  version: 'GNK_ASG_IMAGE_DELIVERY_CONTRACT_V2',
   ok: failures.length === 0,
   stats,
   failures,
