@@ -23,6 +23,11 @@ on:
       - 'scripts/audit-crawl-depth-contract-v1.mjs'
       - 'scripts/audit-internal-link-integrity-v1.mjs'
       - 'scripts/audit-meta-uniqueness-contract-v1.mjs'
+      - 'scripts/audit-redirect-sitemap-exclusion-v1.mjs'
+      - 'scripts/audit-sitemap-noindex-exclusion-v1.mjs'
+      - 'scripts/audit-sitemap-hreflang-target-integrity-v1.mjs'
+      - 'scripts/audit-social-url-canonical-parity-v1.mjs'
+      - 'scripts/audit-structured-data-url-identity-v1.mjs'
       - 'scripts/validate-high-throughput-capability-gaps-v1.py'
       - '.github/workflows/high-throughput-p0-extension-gate.yml'
   push:
@@ -48,6 +53,11 @@ on:
       - 'scripts/audit-crawl-depth-contract-v1.mjs'
       - 'scripts/audit-internal-link-integrity-v1.mjs'
       - 'scripts/audit-meta-uniqueness-contract-v1.mjs'
+      - 'scripts/audit-redirect-sitemap-exclusion-v1.mjs'
+      - 'scripts/audit-sitemap-noindex-exclusion-v1.mjs'
+      - 'scripts/audit-sitemap-hreflang-target-integrity-v1.mjs'
+      - 'scripts/audit-social-url-canonical-parity-v1.mjs'
+      - 'scripts/audit-structured-data-url-identity-v1.mjs'
       - 'scripts/validate-high-throughput-capability-gaps-v1.py'
       - '.github/workflows/high-throughput-p0-extension-gate.yml'
 
@@ -92,6 +102,11 @@ jobs:
           node --check scripts/audit-crawl-depth-contract-v1.mjs
           node --check scripts/audit-internal-link-integrity-v1.mjs
           node --check scripts/audit-meta-uniqueness-contract-v1.mjs
+          node --check scripts/audit-redirect-sitemap-exclusion-v1.mjs
+          node --check scripts/audit-sitemap-noindex-exclusion-v1.mjs
+          node --check scripts/audit-sitemap-hreflang-target-integrity-v1.mjs
+          node --check scripts/audit-social-url-canonical-parity-v1.mjs
+          node --check scripts/audit-structured-data-url-identity-v1.mjs
           python -m py_compile scripts/validate-high-throughput-capability-gaps-v1.py
       - name: Image sitemap title quality
         run: node scripts/audit-image-sitemap-title-quality-v1.mjs
@@ -129,6 +144,16 @@ jobs:
         run: node scripts/audit-internal-link-integrity-v1.mjs
       - name: Meta uniqueness contract
         run: node scripts/audit-meta-uniqueness-contract-v1.mjs
+      - name: Redirect and sitemap exclusion
+        run: node scripts/audit-redirect-sitemap-exclusion-v1.mjs
+      - name: Sitemap noindex exclusion
+        run: node scripts/audit-sitemap-noindex-exclusion-v1.mjs
+      - name: Sitemap hreflang target integrity
+        run: node scripts/audit-sitemap-hreflang-target-integrity-v1.mjs
+      - name: Social URL canonical parity
+        run: node scripts/audit-social-url-canonical-parity-v1.mjs
+      - name: Structured data URL identity
+        run: node scripts/audit-structured-data-url-identity-v1.mjs
       - name: Workforce capability gap topology
         run: python scripts/validate-high-throughput-capability-gaps-v1.py
       - name: Upload P0 extension evidence
@@ -155,6 +180,11 @@ jobs:
             artifacts/crawl-depth-contract/**
             artifacts/internal-link-integrity/**
             artifacts/meta-uniqueness-contract/**
+            artifacts/redirect-sitemap-exclusion/**
+            artifacts/sitemap-noindex-exclusion/**
+            artifacts/sitemap-hreflang-target-integrity/**
+            artifacts/social-url-canonical-parity/**
+            artifacts/structured-data-url-identity/**
             artifacts/high-throughput-capability-gaps/**
           if-no-files-found: warn
           retention-days: 14
