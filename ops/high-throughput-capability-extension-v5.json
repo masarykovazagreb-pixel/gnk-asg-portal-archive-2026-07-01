@@ -1,0 +1,30 @@
+{
+  "version": "GNK_ASG_HIGH_THROUGHPUT_CAPABILITY_EXTENSION_V5",
+  "authorityScope": "R0_R1_ONLY",
+  "healthyRequiresRuntimeEvidence": true,
+  "promotionLifecycle": ["candidate", "sandbox", "shadow", "evaluator", "probation", "healthy"],
+  "capabilities": [
+    {
+      "taskClass": "image-sitemap-source-canonical-parity",
+      "primaryCapability": "image-sitemap-source-canonical-validator",
+      "fallbackPool": ["canonical-parity-validator", "image-sitemap-validator"],
+      "staticContract": "scripts/audit-image-sitemap-source-canonical-parity-v1.mjs",
+      "runtimeStatus": "UNVERIFIED"
+    },
+    {
+      "taskClass": "social-image-canonical-host-parity",
+      "primaryCapability": "social-image-canonical-host-validator",
+      "fallbackPool": ["social-metadata-validator", "asset-integrity-validator"],
+      "staticContract": "scripts/audit-social-image-canonical-host-parity-v1.mjs",
+      "runtimeStatus": "UNVERIFIED"
+    },
+    {
+      "taskClass": "image-url-canonicalization",
+      "primaryCapability": "image-url-canonicalization-validator",
+      "fallbackPool": ["image-sitemap-validator", "url-hygiene-validator"],
+      "staticContract": "scripts/audit-image-url-canonicalization-v1.mjs",
+      "runtimeStatus": "UNVERIFIED"
+    }
+  ],
+  "requiredRuntimeEvidence": ["heartbeat","taskOwnership","queueState","latencyMs","successCount","failureCount","evaluatorVerdict","fallbackCoverage","rollbackCapability","telemetryRef"]
+}
