@@ -1,0 +1,69 @@
+name: High Throughput URL Hygiene Extension V25
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v25.json'
+      - 'scripts/audit-image-url-normalization-v1.mjs'
+      - 'scripts/audit-canonical-clean-url-v1.mjs'
+      - 'scripts/audit-jsonld-url-hygiene-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v25.py'
+      - '.github/workflows/high-throughput-url-hygiene-extension-v25.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v25.json'
+      - 'scripts/audit-image-url-normalization-v1.mjs'
+      - 'scripts/audit-canonical-clean-url-v1.mjs'
+      - 'scripts/audit-jsonld-url-hygiene-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v25.py'
+      - '.github/workflows/high-throughput-url-hygiene-extension-v25.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: high-throughput-url-hygiene-v25-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax checks
+        run: |
+          set -euo pipefail
+          node --check scripts/audit-image-url-normalization-v1.mjs
+          node --check scripts/audit-canonical-clean-url-v1.mjs
+          node --check scripts/audit-jsonld-url-hygiene-v1.mjs
+          python -m py_compile scripts/validate-high-throughput-capability-extension-v25.py
+      - name: Image URL normalization
+        run: node scripts/audit-image-url-normalization-v1.mjs
+      - name: Canonical clean URL
+        run: node scripts/audit-canonical-clean-url-v1.mjs
+      - name: JSON-LD URL hygiene
+        run: node scripts/audit-jsonld-url-hygiene-v1.mjs
+      - name: Workforce capability extension topology
+        run: python scripts/validate-high-throughput-capability-extension-v25.py
+      - name: Upload V25 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: high-throughput-url-hygiene-v25-${{ github.sha }}
+          path: |
+            artifacts/image-url-normalization/**
+            artifacts/canonical-clean-url/**
+            artifacts/jsonld-url-hygiene/**
+            artifacts/high-throughput-capability-extension-v25/**
+          if-no-files-found: warn
+          retention-days: 14
