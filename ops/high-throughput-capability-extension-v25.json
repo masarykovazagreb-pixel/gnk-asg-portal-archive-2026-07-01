@@ -1,0 +1,9 @@
+{
+  "version": "GNK_ASG_HIGH_THROUGHPUT_CAPABILITY_EXTENSION_V25",
+  "runtimeStatus": "UNVERIFIED",
+  "taskClasses": [
+    {"id":"image.url-normalization","primary":"image_seo_auditor","fallbacks":["seo_meta_auditor","release_quality_auditor"],"requiredEvidence":["heartbeat","ownership","queue","latency","success_failure","evaluator","fallback","rollback","telemetry"]},
+    {"id":"seo.canonical-clean-url","primary":"seo_meta_auditor","fallbacks":["indexability_auditor","release_quality_auditor"],"requiredEvidence":["heartbeat","ownership","queue","latency","success_failure","evaluator","fallback","rollback","telemetry"]},
+    {"id":"aeo.jsonld-url-hygiene","primary":"structured_data_auditor","fallbacks":["seo_meta_auditor","release_quality_auditor"],"requiredEvidence":["heartbeat","ownership","queue","latency","success_failure","evaluator","fallback","rollback","telemetry"]}
+  ]
+}
