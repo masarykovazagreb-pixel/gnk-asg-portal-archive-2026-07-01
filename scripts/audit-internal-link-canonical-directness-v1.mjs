@@ -1,0 +1,11 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const ROOT=process.cwd(),PORTAL=path.join(ROOT,'apps','portal'),failures=[];const stats={htmlFiles:0,indexableTargets:0,internalLinks:0,nonCanonicalLinks:0};
+const walk=d=>fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>{const p=path.join(d,e.name);return e.isDirectory()?walk(p):[p]});
+const attr=(t,n)=>t.match(new RegExp(`\\s${n}=["']([^"']*)["']`,'i'))?.[1]?.trim()||'';
+const canonical=html=>{const tags=[...html.matchAll(/<link\b[^>]*>/gi)].map(m=>m[0]);for(const t of tags){if(/\brel=["'][^"']*canonical[^"']*["']/i.test(t))return attr(t,'href')}return''};
+const noindex=html=>[...html.matchAll(/<meta\b[^>]*>/gi)].some(m=>{const t=m[0],n=attr(t,'name').toLowerCase(),c=attr(t,'content').toLowerCase();return n==='robots'&&/(^|,)\s*noindex\b/.test(c)});
+const pages=[];for(const file of walk(PORTAL).filter(f=>f.endsWith('.html'))){stats.htmlFiles++;const html=fs.readFileSync(file,'utf8'),can=canonical(html);if(!can||noindex(html))continue;try{const u=new URL(can);pages.push({file,html,origin:u.origin,canonicalPath:u.pathname});}catch{}}
+const targetByPath=new Map(pages.map(p=>[p.canonicalPath,p]));stats.indexableTargets=targetByPath.size;
+for(const p of pages){for(const m of p.html.matchAll(/<a\b[^>]*\shref=["']([^"']+)["'][^>]*>/gi)){const href=m[1].trim();if(!href||/^(?:#|mailto:|tel:|javascript:)/i.test(href))continue;let u;try{u=new URL(href,p.origin+p.canonicalPath)}catch{continue}if(u.origin!==p.origin)continue;stats.internalLinks++;const target=targetByPath.get(u.pathname);if(!target)continue;if(u.pathname!==target.canonicalPath||u.search){stats.nonCanonicalLinks++;failures.push(`${path.relative(PORTAL,p.file)}: internal link ${href} does not point directly to canonical target ${target.canonicalPath}`);}}}
+const report={version:'GNK_ASG_INTERNAL_LINK_CANONICAL_DIRECTNESS_V1',ok:failures.length===0,stats,failures};const out=path.join(ROOT,'artifacts','internal-link-canonical-directness');fs.mkdirSync(out,{recursive:true});fs.writeFileSync(path.join(out,'report.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report,null,2));if(failures.length)process.exit(1);
