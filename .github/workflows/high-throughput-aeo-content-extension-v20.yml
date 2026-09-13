@@ -1,0 +1,67 @@
+name: High Throughput AEO Content Extension V20
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v20.json'
+      - 'scripts/audit-indexable-heading-contract-v1.mjs'
+      - 'scripts/audit-article-headline-h1-parity-v1.mjs'
+      - 'scripts/audit-social-title-parity-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v20.py'
+      - '.github/workflows/high-throughput-aeo-content-extension-v20.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v20.json'
+      - 'scripts/audit-indexable-heading-contract-v1.mjs'
+      - 'scripts/audit-article-headline-h1-parity-v1.mjs'
+      - 'scripts/audit-social-title-parity-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v20.py'
+      - '.github/workflows/high-throughput-aeo-content-extension-v20.yml'
+
+permissions:
+  contents: read
+concurrency:
+  group: high-throughput-aeo-content-v20-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax checks
+        run: |
+          set -euo pipefail
+          node --check scripts/audit-indexable-heading-contract-v1.mjs
+          node --check scripts/audit-article-headline-h1-parity-v1.mjs
+          node --check scripts/audit-social-title-parity-v1.mjs
+          python -m py_compile scripts/validate-high-throughput-capability-extension-v20.py
+      - name: Indexable heading contract
+        run: node scripts/audit-indexable-heading-contract-v1.mjs
+      - name: Article headline H1 parity
+        run: node scripts/audit-article-headline-h1-parity-v1.mjs
+      - name: Social title parity
+        run: node scripts/audit-social-title-parity-v1.mjs
+      - name: Workforce capability extension topology
+        run: python scripts/validate-high-throughput-capability-extension-v20.py
+      - name: Upload V20 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: high-throughput-aeo-content-v20-${{ github.sha }}
+          path: |
+            artifacts/indexable-heading-contract/**
+            artifacts/article-headline-h1-parity/**
+            artifacts/social-title-parity/**
+            artifacts/high-throughput-capability-extension-v20/**
+          if-no-files-found: warn
+          retention-days: 14
