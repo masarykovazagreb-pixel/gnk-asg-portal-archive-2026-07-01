@@ -1,0 +1,12 @@
+{
+  "version": "GNK_ASG_HIGH_THROUGHPUT_CAPABILITY_EXTENSION_V7",
+  "authorityScope": "R0_R1_ONLY",
+  "healthyRequiresRuntimeEvidence": true,
+  "promotionLifecycle": ["candidate", "sandbox", "shadow", "evaluator", "probation", "healthy"],
+  "capabilities": [
+    {"taskClass":"responsive-srcset-descriptor-coherence","primaryCapability":"responsive-srcset-coherence-validator","fallbackPool":["responsive-image-validator","asset-integrity-validator"],"staticContract":"scripts/audit-responsive-image-candidate-integrity-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"image-delivery-decoding-contract","primaryCapability":"image-delivery-decoding-validator","fallbackPool":["image-delivery-validator","public-image-inventory-validator"],"staticContract":"scripts/audit-image-delivery-contract-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"picture-source-descriptor-coherence","primaryCapability":"picture-source-coherence-validator","fallbackPool":["picture-source-contract-validator","responsive-image-validator"],"staticContract":"scripts/audit-picture-source-contract-v1.mjs","runtimeStatus":"UNVERIFIED"}
+  ],
+  "requiredRuntimeEvidence": ["heartbeat","taskOwnership","queueState","latencyMs","successCount","failureCount","evaluatorVerdict","fallbackCoverage","rollbackCapability","telemetryRef"]
+}

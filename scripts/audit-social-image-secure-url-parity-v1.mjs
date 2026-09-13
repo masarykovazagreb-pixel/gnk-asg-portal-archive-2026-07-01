@@ -1,0 +1,7 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const ROOT=process.cwd(),PORTAL=path.join(ROOT,'apps','portal'),failures=[];const stats={htmlFiles:0,pagesWithSecureUrl:0,violations:0};
+const walk=d=>fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>{const p=path.join(d,e.name);return e.isDirectory()?walk(p):[p]});
+const attr=(t,n)=>t.match(new RegExp(`\\s${n}=["']([^"']*)["']`,'i'))?.[1]?.trim()||'';
+for(const file of walk(PORTAL).filter(f=>f.endsWith('.html'))){stats.htmlFiles++;const rel='/'+path.relative(PORTAL,file).replaceAll(path.sep,'/');const html=fs.readFileSync(file,'utf8');let image='',secure='';for(const m of html.matchAll(/<meta\b[^>]*>/gi)){const t=m[0],k=(attr(t,'property')||attr(t,'name')).toLowerCase(),v=attr(t,'content');if(k==='og:image')image=v;if(k==='og:image:secure_url')secure=v;}if(!secure)continue;stats.pagesWithSecureUrl++;if(!image||secure!==image||!secure.startsWith('https://')){stats.violations++;failures.push(`${rel}: og:image:secure_url must be HTTPS and equal og:image (image=${image||'missing'} secure=${secure})`);}}
+const report={version:'GNK_ASG_SOCIAL_IMAGE_SECURE_URL_PARITY_V1',ok:failures.length===0,stats,failures};const out=path.join(ROOT,'artifacts','social-image-secure-url-parity');fs.mkdirSync(out,{recursive:true});fs.writeFileSync(path.join(out,'report.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report,null,2));if(failures.length)process.exit(1);

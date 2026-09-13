@@ -1,0 +1,66 @@
+name: High Throughput Image Canonical Extension V5
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v5.json'
+      - 'scripts/audit-image-sitemap-source-canonical-parity-v1.mjs'
+      - 'scripts/audit-social-image-canonical-host-parity-v1.mjs'
+      - 'scripts/audit-image-url-canonicalization-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v5.py'
+      - '.github/workflows/high-throughput-image-canonical-extension-v5.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v5.json'
+      - 'scripts/audit-image-sitemap-source-canonical-parity-v1.mjs'
+      - 'scripts/audit-social-image-canonical-host-parity-v1.mjs'
+      - 'scripts/audit-image-url-canonicalization-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v5.py'
+      - '.github/workflows/high-throughput-image-canonical-extension-v5.yml'
+permissions:
+  contents: read
+concurrency:
+  group: high-throughput-image-canonical-v5-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax checks
+        run: |
+          set -euo pipefail
+          node --check scripts/audit-image-sitemap-source-canonical-parity-v1.mjs
+          node --check scripts/audit-social-image-canonical-host-parity-v1.mjs
+          node --check scripts/audit-image-url-canonicalization-v1.mjs
+          python -m py_compile scripts/validate-high-throughput-capability-extension-v5.py
+      - name: Image sitemap source canonical parity
+        run: node scripts/audit-image-sitemap-source-canonical-parity-v1.mjs
+      - name: Social image canonical host parity
+        run: node scripts/audit-social-image-canonical-host-parity-v1.mjs
+      - name: Image URL canonicalization
+        run: node scripts/audit-image-url-canonicalization-v1.mjs
+      - name: Workforce capability extension topology
+        run: python scripts/validate-high-throughput-capability-extension-v5.py
+      - name: Upload extension evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: high-throughput-image-canonical-v5-${{ github.sha }}
+          path: |
+            artifacts/image-sitemap-source-canonical-parity/**
+            artifacts/social-image-canonical-host-parity/**
+            artifacts/image-url-canonicalization/**
+            artifacts/high-throughput-capability-extension-v5/**
+          if-no-files-found: warn
+          retention-days: 14

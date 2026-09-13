@@ -1,0 +1,9 @@
+{
+  "version": "GNK_ASG_HIGH_THROUGHPUT_CAPABILITY_EXTENSION_V24",
+  "runtimeStatus": "UNVERIFIED",
+  "taskClasses": [
+    {"id":"image.social-metadata-completeness","primary":"image_seo_auditor","fallbacks":["seo_meta_auditor","release_quality_auditor"],"requiredEvidence":["heartbeat","ownership","queue","latency","success_failure","evaluator","fallback","rollback","telemetry"]},
+    {"id":"seo.twitter-card-contract","primary":"seo_meta_auditor","fallbacks":["image_seo_auditor","release_quality_auditor"],"requiredEvidence":["heartbeat","ownership","queue","latency","success_failure","evaluator","fallback","rollback","telemetry"]},
+    {"id":"aeo.entity-sameas-contract","primary":"structured_data_auditor","fallbacks":["seo_meta_auditor","release_quality_auditor"],"requiredEvidence":["heartbeat","ownership","queue","latency","success_failure","evaluator","fallback","rollback","telemetry"]}
+  ]
+}

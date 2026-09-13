@@ -1,0 +1,69 @@
+name: High Throughput Crawl Surface Extension V19
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v19.json'
+      - 'scripts/audit-meta-refresh-indexability-v1.mjs'
+      - 'scripts/audit-base-href-canonical-coherence-v1.mjs'
+      - 'scripts/audit-internal-absolute-url-host-scheme-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v19.py'
+      - '.github/workflows/high-throughput-crawl-surface-extension-v19.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v19.json'
+      - 'scripts/audit-meta-refresh-indexability-v1.mjs'
+      - 'scripts/audit-base-href-canonical-coherence-v1.mjs'
+      - 'scripts/audit-internal-absolute-url-host-scheme-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v19.py'
+      - '.github/workflows/high-throughput-crawl-surface-extension-v19.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: high-throughput-crawl-surface-v19-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax checks
+        run: |
+          set -euo pipefail
+          node --check scripts/audit-meta-refresh-indexability-v1.mjs
+          node --check scripts/audit-base-href-canonical-coherence-v1.mjs
+          node --check scripts/audit-internal-absolute-url-host-scheme-v1.mjs
+          python -m py_compile scripts/validate-high-throughput-capability-extension-v19.py
+      - name: Meta refresh indexability
+        run: node scripts/audit-meta-refresh-indexability-v1.mjs
+      - name: Base href canonical coherence
+        run: node scripts/audit-base-href-canonical-coherence-v1.mjs
+      - name: Internal absolute URL host and scheme
+        run: node scripts/audit-internal-absolute-url-host-scheme-v1.mjs
+      - name: Workforce capability extension topology
+        run: python scripts/validate-high-throughput-capability-extension-v19.py
+      - name: Upload V19 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: high-throughput-crawl-surface-v19-${{ github.sha }}
+          path: |
+            artifacts/meta-refresh-indexability/**
+            artifacts/base-href-canonical-coherence/**
+            artifacts/internal-absolute-url-host-scheme/**
+            artifacts/high-throughput-capability-extension-v19/**
+          if-no-files-found: warn
+          retention-days: 14

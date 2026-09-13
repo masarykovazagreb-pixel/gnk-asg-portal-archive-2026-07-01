@@ -1,0 +1,12 @@
+{
+  "version": "GNK_ASG_HIGH_THROUGHPUT_CAPABILITY_EXTENSION_V13",
+  "authorityScope": "R0_R1_ONLY",
+  "healthyRequiresRuntimeEvidence": true,
+  "promotionLifecycle": ["candidate", "sandbox", "shadow", "evaluator", "probation", "healthy"],
+  "capabilities": [
+    {"taskClass":"robots-sitemap-declaration-integrity","primaryCapability":"robots-sitemap-validator","fallbackPool":["sitemap-index-validator","indexability-surface-validator"],"staticContract":"scripts/audit-robots-sitemap-declaration-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"indexable-route-self-canonical","primaryCapability":"canonical-self-reference-validator","fallbackPool":["seo-meta-canonical-validator","route-sitemap-validator"],"staticContract":"scripts/audit-indexable-route-self-canonical-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"hreflang-reciprocity","primaryCapability":"hreflang-reciprocity-validator","fallbackPool":["hreflang-indexability-validator","canonical-locale-validator"],"staticContract":"scripts/audit-hreflang-reciprocity-v1.mjs","runtimeStatus":"UNVERIFIED"}
+  ],
+  "requiredRuntimeEvidence": ["heartbeat","taskOwnership","queueState","latencyMs","successCount","failureCount","evaluatorVerdict","fallbackCoverage","rollbackCapability","telemetryRef"]
+}

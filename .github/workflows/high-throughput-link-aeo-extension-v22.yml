@@ -1,0 +1,67 @@
+name: High Throughput Link AEO Extension V22
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v22.json'
+      - 'scripts/audit-internal-link-canonical-directness-v1.mjs'
+      - 'scripts/audit-indexable-orphan-surface-v1.mjs'
+      - 'scripts/audit-faq-visible-schema-parity-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v22.py'
+      - '.github/workflows/high-throughput-link-aeo-extension-v22.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v22.json'
+      - 'scripts/audit-internal-link-canonical-directness-v1.mjs'
+      - 'scripts/audit-indexable-orphan-surface-v1.mjs'
+      - 'scripts/audit-faq-visible-schema-parity-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v22.py'
+      - '.github/workflows/high-throughput-link-aeo-extension-v22.yml'
+
+permissions:
+  contents: read
+concurrency:
+  group: high-throughput-link-aeo-v22-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax checks
+        run: |
+          set -euo pipefail
+          node --check scripts/audit-internal-link-canonical-directness-v1.mjs
+          node --check scripts/audit-indexable-orphan-surface-v1.mjs
+          node --check scripts/audit-faq-visible-schema-parity-v1.mjs
+          python -m py_compile scripts/validate-high-throughput-capability-extension-v22.py
+      - name: Internal link canonical directness
+        run: node scripts/audit-internal-link-canonical-directness-v1.mjs
+      - name: Indexable orphan surface
+        run: node scripts/audit-indexable-orphan-surface-v1.mjs
+      - name: FAQ visible schema parity
+        run: node scripts/audit-faq-visible-schema-parity-v1.mjs
+      - name: Workforce capability extension topology
+        run: python scripts/validate-high-throughput-capability-extension-v22.py
+      - name: Upload V22 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: high-throughput-link-aeo-v22-${{ github.sha }}
+          path: |
+            artifacts/internal-link-canonical-directness/**
+            artifacts/indexable-orphan-surface/**
+            artifacts/faq-visible-schema-parity/**
+            artifacts/high-throughput-capability-extension-v22/**
+          if-no-files-found: warn
+          retention-days: 14

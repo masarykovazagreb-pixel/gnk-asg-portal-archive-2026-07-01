@@ -1,0 +1,8 @@
+#!/usr/bin/env node
+import fs from 'node:fs';
+import path from 'node:path';
+const ROOT=process.cwd(),PORTAL=path.join(ROOT,'apps','portal'),SITEMAP=path.join(PORTAL,'image-sitemap.xml');
+const failures=[];const stats={images:0,malformed:0,http:0,wrongHost:0,fragment:0,userinfo:0,duplicates:0};
+if(!fs.existsSync(SITEMAP)){console.error('image-sitemap.xml is missing');process.exit(1);}const xml=fs.readFileSync(SITEMAP,'utf8');const seen=new Set();
+for(const m of xml.matchAll(/<image:loc>([\s\S]*?)<\/image:loc>/gi)){stats.images++;const raw=m[1].replace(/&amp;/g,'&').trim();let u;try{u=new URL(raw);}catch{stats.malformed++;failures.push(`Malformed image:loc ${raw}`);continue;}if(u.protocol!=='https:'){stats.http++;failures.push(`image:loc must use https: ${u.href}`);}if(u.hostname!=='gnk-asg.hr'){stats.wrongHost++;failures.push(`image:loc must use canonical host gnk-asg.hr: ${u.href}`);}if(u.username||u.password){stats.userinfo++;failures.push(`image:loc must not contain userinfo: ${u.href}`);}if(u.hash){stats.fragment++;failures.push(`image:loc must not contain fragment: ${u.href}`);}u.hash='';const key=u.href;if(seen.has(key)){stats.duplicates++;failures.push(`Duplicate image:loc after normalization: ${key}`);}seen.add(key);}
+const report={version:'GNK_ASG_IMAGE_URL_CANONICALIZATION_V1',semantics:'CRAWLABLE_URL_SHAPE_NOT_INDEXED_PROOF',ok:failures.length===0,stats,failures};const out=path.join(ROOT,'artifacts','image-url-canonicalization');fs.mkdirSync(out,{recursive:true});fs.writeFileSync(path.join(out,'report.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report,null,2));if(failures.length)process.exit(1);

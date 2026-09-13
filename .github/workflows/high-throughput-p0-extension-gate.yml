@@ -1,0 +1,190 @@
+name: High Throughput P0 Extension Gate
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-gaps-v1.json'
+      - 'scripts/audit-image-sitemap-title-quality-v1.mjs'
+      - 'scripts/audit-editorial-route-discovery-parity-v1.mjs'
+      - 'scripts/audit-editorial-image-discovery-parity-v1.mjs'
+      - 'scripts/audit-public-image-reference-coherence-v1.mjs'
+      - 'scripts/audit-editorial-social-schema-parity-v1.mjs'
+      - 'scripts/audit-responsive-image-candidate-integrity-v1.mjs'
+      - 'scripts/audit-public-image-dimension-integrity-v1.mjs'
+      - 'scripts/audit-decorative-image-seo-exclusion-v1.mjs'
+      - 'scripts/audit-image-delivery-contract-v1.mjs'
+      - 'scripts/audit-social-image-intrinsic-dimensions-v1.mjs'
+      - 'scripts/audit-primary-image-schema-parity-v1.mjs'
+      - 'scripts/audit-imageobject-contract-v1.mjs'
+      - 'scripts/audit-social-image-metadata-completeness-v1.mjs'
+      - 'scripts/audit-hreflang-reciprocity-v1.mjs'
+      - 'scripts/audit-canonical-indexability-coherence-v1.mjs'
+      - 'scripts/audit-crawl-depth-contract-v1.mjs'
+      - 'scripts/audit-internal-link-integrity-v1.mjs'
+      - 'scripts/audit-meta-uniqueness-contract-v1.mjs'
+      - 'scripts/audit-redirect-sitemap-exclusion-v1.mjs'
+      - 'scripts/audit-sitemap-noindex-exclusion-v1.mjs'
+      - 'scripts/audit-sitemap-hreflang-target-integrity-v1.mjs'
+      - 'scripts/audit-social-url-canonical-parity-v1.mjs'
+      - 'scripts/audit-structured-data-url-identity-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-gaps-v1.py'
+      - '.github/workflows/high-throughput-p0-extension-gate.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-gaps-v1.json'
+      - 'scripts/audit-image-sitemap-title-quality-v1.mjs'
+      - 'scripts/audit-editorial-route-discovery-parity-v1.mjs'
+      - 'scripts/audit-editorial-image-discovery-parity-v1.mjs'
+      - 'scripts/audit-public-image-reference-coherence-v1.mjs'
+      - 'scripts/audit-editorial-social-schema-parity-v1.mjs'
+      - 'scripts/audit-responsive-image-candidate-integrity-v1.mjs'
+      - 'scripts/audit-public-image-dimension-integrity-v1.mjs'
+      - 'scripts/audit-decorative-image-seo-exclusion-v1.mjs'
+      - 'scripts/audit-image-delivery-contract-v1.mjs'
+      - 'scripts/audit-social-image-intrinsic-dimensions-v1.mjs'
+      - 'scripts/audit-primary-image-schema-parity-v1.mjs'
+      - 'scripts/audit-imageobject-contract-v1.mjs'
+      - 'scripts/audit-social-image-metadata-completeness-v1.mjs'
+      - 'scripts/audit-hreflang-reciprocity-v1.mjs'
+      - 'scripts/audit-canonical-indexability-coherence-v1.mjs'
+      - 'scripts/audit-crawl-depth-contract-v1.mjs'
+      - 'scripts/audit-internal-link-integrity-v1.mjs'
+      - 'scripts/audit-meta-uniqueness-contract-v1.mjs'
+      - 'scripts/audit-redirect-sitemap-exclusion-v1.mjs'
+      - 'scripts/audit-sitemap-noindex-exclusion-v1.mjs'
+      - 'scripts/audit-sitemap-hreflang-target-integrity-v1.mjs'
+      - 'scripts/audit-social-url-canonical-parity-v1.mjs'
+      - 'scripts/audit-structured-data-url-identity-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-gaps-v1.py'
+      - '.github/workflows/high-throughput-p0-extension-gate.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: high-throughput-p0-extension-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  p0-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check scripts/audit-image-sitemap-title-quality-v1.mjs
+          node --check scripts/audit-editorial-route-discovery-parity-v1.mjs
+          node --check scripts/audit-editorial-image-discovery-parity-v1.mjs
+          node --check scripts/audit-public-image-reference-coherence-v1.mjs
+          node --check scripts/audit-editorial-social-schema-parity-v1.mjs
+          node --check scripts/audit-responsive-image-candidate-integrity-v1.mjs
+          node --check scripts/audit-public-image-dimension-integrity-v1.mjs
+          node --check scripts/audit-decorative-image-seo-exclusion-v1.mjs
+          node --check scripts/audit-image-delivery-contract-v1.mjs
+          node --check scripts/audit-social-image-intrinsic-dimensions-v1.mjs
+          node --check scripts/audit-primary-image-schema-parity-v1.mjs
+          node --check scripts/audit-imageobject-contract-v1.mjs
+          node --check scripts/audit-social-image-metadata-completeness-v1.mjs
+          node --check scripts/audit-hreflang-reciprocity-v1.mjs
+          node --check scripts/audit-canonical-indexability-coherence-v1.mjs
+          node --check scripts/audit-crawl-depth-contract-v1.mjs
+          node --check scripts/audit-internal-link-integrity-v1.mjs
+          node --check scripts/audit-meta-uniqueness-contract-v1.mjs
+          node --check scripts/audit-redirect-sitemap-exclusion-v1.mjs
+          node --check scripts/audit-sitemap-noindex-exclusion-v1.mjs
+          node --check scripts/audit-sitemap-hreflang-target-integrity-v1.mjs
+          node --check scripts/audit-social-url-canonical-parity-v1.mjs
+          node --check scripts/audit-structured-data-url-identity-v1.mjs
+          python -m py_compile scripts/validate-high-throughput-capability-gaps-v1.py
+      - name: Image sitemap title quality
+        run: node scripts/audit-image-sitemap-title-quality-v1.mjs
+      - name: Editorial route discovery parity
+        run: node scripts/audit-editorial-route-discovery-parity-v1.mjs
+      - name: Editorial image discovery parity
+        run: node scripts/audit-editorial-image-discovery-parity-v1.mjs
+      - name: Public image reference coherence
+        run: node scripts/audit-public-image-reference-coherence-v1.mjs
+      - name: Editorial social and Article schema parity
+        run: node scripts/audit-editorial-social-schema-parity-v1.mjs
+      - name: Responsive image candidate integrity
+        run: node scripts/audit-responsive-image-candidate-integrity-v1.mjs
+      - name: Public image dimension integrity
+        run: node scripts/audit-public-image-dimension-integrity-v1.mjs
+      - name: Decorative image SEO exclusion
+        run: node scripts/audit-decorative-image-seo-exclusion-v1.mjs
+      - name: Image delivery priority coherence
+        run: node scripts/audit-image-delivery-contract-v1.mjs
+      - name: Social image intrinsic dimensions
+        run: node scripts/audit-social-image-intrinsic-dimensions-v1.mjs
+      - name: Primary image schema parity
+        run: node scripts/audit-primary-image-schema-parity-v1.mjs
+      - name: ImageObject contract
+        run: node scripts/audit-imageobject-contract-v1.mjs
+      - name: Social image metadata completeness
+        run: node scripts/audit-social-image-metadata-completeness-v1.mjs
+      - name: Hreflang reciprocity
+        run: node scripts/audit-hreflang-reciprocity-v1.mjs
+      - name: Canonical and indexability coherence
+        run: node scripts/audit-canonical-indexability-coherence-v1.mjs
+      - name: Crawl depth and orphan-route contract
+        run: node scripts/audit-crawl-depth-contract-v1.mjs
+      - name: Internal link integrity
+        run: node scripts/audit-internal-link-integrity-v1.mjs
+      - name: Meta uniqueness contract
+        run: node scripts/audit-meta-uniqueness-contract-v1.mjs
+      - name: Redirect and sitemap exclusion
+        run: node scripts/audit-redirect-sitemap-exclusion-v1.mjs
+      - name: Sitemap noindex exclusion
+        run: node scripts/audit-sitemap-noindex-exclusion-v1.mjs
+      - name: Sitemap hreflang target integrity
+        run: node scripts/audit-sitemap-hreflang-target-integrity-v1.mjs
+      - name: Social URL canonical parity
+        run: node scripts/audit-social-url-canonical-parity-v1.mjs
+      - name: Structured data URL identity
+        run: node scripts/audit-structured-data-url-identity-v1.mjs
+      - name: Workforce capability gap topology
+        run: python scripts/validate-high-throughput-capability-gaps-v1.py
+      - name: Upload P0 extension evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: high-throughput-p0-extension-${{ github.sha }}
+          path: |
+            artifacts/image-sitemap-title-quality/**
+            artifacts/editorial-route-discovery-parity/**
+            artifacts/editorial-image-discovery-parity/**
+            artifacts/public-image-reference-coherence/**
+            artifacts/editorial-social-schema-parity/**
+            artifacts/responsive-image-candidate-integrity/**
+            artifacts/public-image-dimension-integrity/**
+            artifacts/decorative-image-seo-exclusion/**
+            artifacts/image-delivery-contract/**
+            artifacts/social-image-intrinsic-dimensions/**
+            artifacts/primary-image-schema-parity/**
+            artifacts/imageobject-contract/**
+            artifacts/social-image-metadata-completeness/**
+            artifacts/hreflang-reciprocity/**
+            artifacts/canonical-indexability-coherence/**
+            artifacts/crawl-depth-contract/**
+            artifacts/internal-link-integrity/**
+            artifacts/meta-uniqueness-contract/**
+            artifacts/redirect-sitemap-exclusion/**
+            artifacts/sitemap-noindex-exclusion/**
+            artifacts/sitemap-hreflang-target-integrity/**
+            artifacts/social-url-canonical-parity/**
+            artifacts/structured-data-url-identity/**
+            artifacts/high-throughput-capability-gaps/**
+          if-no-files-found: warn
+          retention-days: 14

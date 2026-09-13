@@ -1,0 +1,41 @@
+name: Sitemap Index Contract Gate
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/sitemap-index.xml'
+      - 'apps/portal/*sitemap*.xml'
+      - 'scripts/audit-sitemap-index-contract-v1.mjs'
+      - '.github/workflows/sitemap-index-contract-gate.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/sitemap-index.xml'
+      - 'apps/portal/*sitemap*.xml'
+      - 'scripts/audit-sitemap-index-contract-v1.mjs'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sitemap-index-contract-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sitemap-index-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --check scripts/audit-sitemap-index-contract-v1.mjs
+      - run: node scripts/audit-sitemap-index-contract-v1.mjs
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sitemap-index-contract-${{ github.sha }}
+          path: artifacts/sitemap-index-contract/**
+          if-no-files-found: warn
+          retention-days: 14

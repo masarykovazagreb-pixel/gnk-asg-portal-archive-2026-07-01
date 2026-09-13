@@ -1,0 +1,7 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const ROOT=process.cwd(),PORTAL=path.join(ROOT,'apps','portal'),failures=[];
+const walk=d=>fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>{const p=path.join(d,e.name);return e.isDirectory()&&!['assets','data'].includes(e.name)?walk(p):e.isFile()&&e.name==='index.html'?[p]:[]});
+let checked=0;
+for(const file of walk(PORTAL)){const html=fs.readFileSync(file,'utf8');const rel='/'+path.relative(PORTAL,file).split(path.sep).join('/');const tags=[...html.matchAll(/<link\b[^>]*rel=["'][^"']*canonical[^"']*["'][^>]*>/gi)];if(tags.length!==1)continue;const href=tags[0][0].match(/\shref=["']([^"']+)["']/i)?.[1]||'';let u;try{u=new URL(href);}catch{continue;}checked++;if(u.search)failures.push(`${rel}: canonical contains query string (${href})`);if(u.hash)failures.push(`${rel}: canonical contains fragment (${href})`);if(u.username||u.password)failures.push(`${rel}: canonical contains userinfo (${href})`);if(u.pathname.includes('//'))failures.push(`${rel}: canonical contains duplicate path slash (${href})`);}
+const report={version:'GNK_ASG_CANONICAL_CLEAN_URL_V1',ok:failures.length===0,stats:{canonicalsChecked:checked,failures:failures.length},failures};const out=path.join(ROOT,'artifacts','canonical-clean-url');fs.mkdirSync(out,{recursive:true});fs.writeFileSync(path.join(out,'report.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report,null,2));if(failures.length)process.exit(1);

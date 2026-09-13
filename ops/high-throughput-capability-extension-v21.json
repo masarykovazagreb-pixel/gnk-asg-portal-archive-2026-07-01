@@ -1,0 +1,12 @@
+{
+  "version": "GNK_ASG_HIGH_THROUGHPUT_CAPABILITY_EXTENSION_V21",
+  "authorityScope": "R0_R1_ONLY",
+  "healthyRequiresRuntimeEvidence": true,
+  "promotionLifecycle": ["candidate", "sandbox", "shadow", "evaluator", "probation", "healthy"],
+  "capabilities": [
+    {"taskClass":"meta-description-quality","primaryCapability":"meta-description-validator","fallbackPool":["seo-meta-canonical-validator","content-integrity-validator"],"staticContract":"scripts/audit-meta-description-quality-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"social-description-parity","primaryCapability":"social-description-validator","fallbackPool":["social-metadata-validator","content-integrity-validator"],"staticContract":"scripts/audit-social-description-parity-v1.mjs","runtimeStatus":"UNVERIFIED"},
+    {"taskClass":"article-description-parity","primaryCapability":"article-description-parity-validator","fallbackPool":["editorial-schema-validator","meta-description-validator"],"staticContract":"scripts/audit-article-description-parity-v1.mjs","runtimeStatus":"UNVERIFIED"}
+  ],
+  "requiredRuntimeEvidence": ["heartbeat","taskOwnership","queueState","latencyMs","successCount","failureCount","evaluatorVerdict","fallbackCoverage","rollbackCapability","telemetryRef"]
+}

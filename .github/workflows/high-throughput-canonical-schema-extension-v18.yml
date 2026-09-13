@@ -1,0 +1,69 @@
+name: High Throughput Canonical Schema Extension V18
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v18.json'
+      - 'scripts/audit-canonical-host-scheme-contract-v1.mjs'
+      - 'scripts/audit-mainentity-canonical-parity-v1.mjs'
+      - 'scripts/audit-social-image-secure-url-parity-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v18.py'
+      - '.github/workflows/high-throughput-canonical-schema-extension-v18.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v18.json'
+      - 'scripts/audit-canonical-host-scheme-contract-v1.mjs'
+      - 'scripts/audit-mainentity-canonical-parity-v1.mjs'
+      - 'scripts/audit-social-image-secure-url-parity-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v18.py'
+      - '.github/workflows/high-throughput-canonical-schema-extension-v18.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: high-throughput-canonical-schema-v18-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax checks
+        run: |
+          set -euo pipefail
+          node --check scripts/audit-canonical-host-scheme-contract-v1.mjs
+          node --check scripts/audit-mainentity-canonical-parity-v1.mjs
+          node --check scripts/audit-social-image-secure-url-parity-v1.mjs
+          python -m py_compile scripts/validate-high-throughput-capability-extension-v18.py
+      - name: Canonical host and scheme contract
+        run: node scripts/audit-canonical-host-scheme-contract-v1.mjs
+      - name: mainEntityOfPage canonical parity
+        run: node scripts/audit-mainentity-canonical-parity-v1.mjs
+      - name: Social image secure URL parity
+        run: node scripts/audit-social-image-secure-url-parity-v1.mjs
+      - name: Workforce capability extension topology
+        run: python scripts/validate-high-throughput-capability-extension-v18.py
+      - name: Upload V18 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: high-throughput-canonical-schema-v18-${{ github.sha }}
+          path: |
+            artifacts/canonical-host-scheme-contract/**
+            artifacts/mainentity-canonical-parity/**
+            artifacts/social-image-secure-url-parity/**
+            artifacts/high-throughput-capability-extension-v18/**
+          if-no-files-found: warn
+          retention-days: 14

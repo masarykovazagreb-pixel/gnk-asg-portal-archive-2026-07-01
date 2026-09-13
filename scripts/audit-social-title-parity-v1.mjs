@@ -1,0 +1,7 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const ROOT=process.cwd(),PORTAL=path.join(ROOT,'apps','portal'),failures=[];const stats={pages:0,pagesWithBoth:0,violations:0};
+const walk=d=>fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>{const p=path.join(d,e.name);return e.isDirectory()&&!['assets','data'].includes(e.name)?walk(p):e.isFile()&&e.name==='index.html'?[p]:[]});
+const attr=(t,n)=>t.match(new RegExp(`\\s${n}=["']([^"']*)["']`,'i'))?.[1]?.trim()||'';const norm=s=>String(s||'').replace(/\s+/g,' ').trim();
+for(const file of walk(PORTAL)){stats.pages++;const html=fs.readFileSync(file,'utf8');const rel='/'+path.relative(PORTAL,file).replaceAll(path.sep,'/');let og='',tw='';for(const m of html.matchAll(/<meta\b[^>]*>/gi)){const t=m[0],k=(attr(t,'property')||attr(t,'name')).toLowerCase(),v=norm(attr(t,'content'));if(k==='og:title')og=v;if(k==='twitter:title')tw=v;}if(!og||!tw)continue;stats.pagesWithBoth++;if(og!==tw){stats.violations++;failures.push(`${rel}: og:title and twitter:title must match when both are present (og=${og}; twitter=${tw})`);}}
+const report={version:'GNK_ASG_SOCIAL_TITLE_PARITY_V1',ok:failures.length===0,stats,failures};const out=path.join(ROOT,'artifacts','social-title-parity');fs.mkdirSync(out,{recursive:true});fs.writeFileSync(path.join(out,'report.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report,null,2));if(failures.length)process.exit(1);
