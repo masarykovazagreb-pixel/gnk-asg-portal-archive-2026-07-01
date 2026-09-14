@@ -6,6 +6,7 @@ claims INDEXED. It validates committed static sources only.
 """
 from __future__ import annotations
 
+from collections import Counter
 from html import unescape
 from pathlib import Path
 import re
@@ -70,7 +71,7 @@ def physical_pages() -> list[Path]:
     return sorted(path for path in PORTAL.rglob("index.html") if not is_excluded(path))
 
 
-def sitemap_urls() -> set[str]:
+def sitemap_locations() -> tuple[list[str], list[str]]:
     path = PORTAL / "sitemap.xml"
     if not path.is_file():
         raise RuntimeError("missing apps/portal/sitemap.xml")
@@ -78,13 +79,39 @@ def sitemap_urls() -> set[str]:
         root = ET.parse(path).getroot()
     except ET.ParseError as exc:
         raise RuntimeError(f"invalid sitemap.xml: {exc}") from exc
+
     ns = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
-    return {(node.text or "").strip() for node in root.findall("s:url/s:loc", ns) if (node.text or "").strip()}
+    nodes = root.findall("s:url/s:loc", ns)
+    locations = [(node.text or "").strip() for node in nodes]
+    errors: list[str] = []
+
+    if not nodes:
+        errors.append("sitemap.xml contains no url/loc entries")
+
+    empty_count = sum(1 for value in locations if not value)
+    if empty_count:
+        errors.append(f"sitemap.xml contains empty loc entries: {empty_count}")
+
+    nonempty = [value for value in locations if value]
+    duplicates = sorted(url for url, count in Counter(nonempty).items() if count > 1)
+    for url in duplicates:
+        errors.append(f"duplicate sitemap URL: {url}")
+
+    for url in nonempty:
+        parsed = urlparse(url)
+        if parsed.scheme != "https" or parsed.netloc != "gnk-asg.hr":
+            errors.append(f"sitemap URL is not canonical first-party HTTPS: {url}")
+        if parsed.query or parsed.fragment:
+            errors.append(f"sitemap URL contains query or fragment: {url}")
+
+    return nonempty, errors
 
 
 def local_path_for_url(url: str) -> Path | None:
     parsed = urlparse(url)
     if parsed.scheme != "https" or parsed.netloc != "gnk-asg.hr":
+        return None
+    if parsed.query or parsed.fragment:
         return None
     route = parsed.path or "/"
     if not route.startswith("/"):
@@ -99,10 +126,13 @@ def local_path_for_url(url: str) -> Path | None:
 def main() -> int:
     errors: list[str] = []
     try:
-        sitemap = sitemap_urls()
+        sitemap_locations_list, sitemap_errors = sitemap_locations()
     except RuntimeError as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1
+
+    errors.extend(sitemap_errors)
+    sitemap = set(sitemap_locations_list)
 
     pages = physical_pages()
     if not pages:
@@ -119,7 +149,8 @@ def main() -> int:
         expected = url_for(path)
         found = canonical(text)
         robots = robots_meta(text)
-        noindex = "noindex" in {token.strip() for token in re.split(r"[,;]", robots) if token.strip()}
+        robots_tokens = {token.strip() for token in re.split(r"[,;]", robots) if token.strip()}
+        noindex = "noindex" in robots_tokens or "none" in robots_tokens
 
         if noindex:
             noindex_urls.add(expected)
@@ -141,7 +172,13 @@ def main() -> int:
             else:
                 canonical_owner[found] = rel
 
-    same_origin_sitemap = {url for url in sitemap if url.startswith(ORIGIN + "/") or url == ORIGIN}
+    same_origin_sitemap = {
+        url for url in sitemap
+        if urlparse(url).scheme == "https"
+        and urlparse(url).netloc == "gnk-asg.hr"
+        and not urlparse(url).query
+        and not urlparse(url).fragment
+    }
     for url in sorted(same_origin_sitemap):
         local = local_path_for_url(url)
         if local is None:
