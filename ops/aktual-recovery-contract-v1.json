@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "producer_id": "aktual-media",
+  "priority": "P0",
+  "cadence_minutes": 120,
+  "stale_after_minutes": 120,
+  "root_cause_after_minutes": 240,
+  "source_of_truth": "apps/portal/data/news.json",
+  "archive_surface": null,
+  "archive_surface_status": "UNRESOLVED_DISCOVER_BEFORE_USE",
+  "public_surfaces": [
+    "/gnk-aktual/",
+    "/en/gnk-aktual/"
+  ],
+  "required_parity": [
+    "feed",
+    "archive-if-materialized",
+    "featured",
+    "hr_en",
+    "published_timestamp",
+    "source_url",
+    "image_reference"
+  ],
+  "recovery_sequence": [
+    "observe static output and fingerprint it",
+    "discover actual archive materialization path before any archive claim",
+    "verify upstream/provider reachability without mutating production",
+    "validate candidate items and reject malformed or unverifiable entries",
+    "acquire single-writer ownership lease",
+    "re-read main Exact-SHA immediately before write",
+    "write candidate output only if base SHA is unchanged",
+    "re-read written output and require a new content fingerprint",
+    "verify public HR and EN surfaces before FRESH promotion"
+  ],
+  "fallback_order": [
+    "primary configured RSS/provider set",
+    "secondary configured public providers already authorized by repository policy",
+    "preserve last known good output and mark DEGRADED if no verified source is available"
+  ],
+  "forbidden": [
+    "timestamp-only refresh",
+    "blind rerun after first failure",
+    "rebase of generated producer state after base SHA drift",
+    "verified=true without runtime article/image evidence",
+    "FRESH or HEALTHY claim without observed newer output",
+    "INDEXED claim without external search-engine evidence",
+    "invented archive path or archive parity claim"
+  ],
+  "fresh_promotion_requires": [
+    "newer observed_output_at",
+    "different output_fingerprint",
+    "successful validation",
+    "Exact-SHA/CAS write evidence",
+    "public-surface observation"
+  ]
+}

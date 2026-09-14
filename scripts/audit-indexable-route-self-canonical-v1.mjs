@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+import fs from 'node:fs';
+import path from 'node:path';
+const ROOT=process.cwd();const PORTAL=path.join(ROOT,'apps','portal');const ORIGIN='https://gnk-asg.hr';const failures=[];let checked=0;
+const walk=d=>fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>{const p=path.join(d,e.name);return e.isDirectory()?walk(p):[p]});
+const route=file=>{const rel=path.relative(PORTAL,file).replaceAll(path.sep,'/');if(rel==='index.html')return '/';return '/'+rel.replace(/index\.html$/,'');};
+const attr=(tag,name)=>tag.match(new RegExp(`\\b${name}=["']([^"']+)["']`,'i'))?.[1]?.trim()||'';
+for(const file of walk(PORTAL).filter(f=>f.endsWith('index.html'))){const html=fs.readFileSync(file,'utf8');const robots=(html.match(/<meta\b[^>]*name=["']robots["'][^>]*>/i)||[])[0]||'';if(/(?:^|[,\s])noindex(?:$|[,\s])/i.test(attr(robots,'content')))continue;checked++;const tags=(html.match(/<link\b[^>]*>/gi)||[]).filter(t=>/\brel=["'][^"']*canonical[^"']*["']/i.test(t));const r=route(file);if(tags.length!==1){failures.push(`${r}: expected exactly one canonical, found ${tags.length}`);continue;}const href=attr(tags[0],'href');let u;try{u=new URL(href,ORIGIN);}catch{failures.push(`${r}: invalid canonical ${href}`);continue;}if(u.origin!==ORIGIN)failures.push(`${r}: canonical origin mismatch ${u.origin}`);if(u.search||u.hash)failures.push(`${r}: canonical contains query/hash ${href}`);const expected=new URL(r,ORIGIN);if(u.pathname!==expected.pathname)failures.push(`${r}: canonical path ${u.pathname} does not self-reference ${expected.pathname}`);}
+const report={version:'GNK_ASG_INDEXABLE_ROUTE_SELF_CANONICAL_V1',ok:failures.length===0,checked,failures};const out=path.join(ROOT,'artifacts','indexable-route-self-canonical');fs.mkdirSync(out,{recursive:true});fs.writeFileSync(path.join(out,'report.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report,null,2));if(failures.length)process.exit(1);

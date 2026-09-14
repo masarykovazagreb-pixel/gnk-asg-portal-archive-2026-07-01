@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "producer_id": "aktual-media",
+  "evaluated_at": "2026-09-14T11:12:09Z",
+  "source": {
+    "repository": "masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01",
+    "main_sha": "2c9df80ae2379641b6528a2a56d8b07cf50050e0",
+    "path": "apps/portal/data/news.json",
+    "blob_sha": "56c2882a5b2dd3ca7af8b692f1a3ce67cf26522a"
+  },
+  "cadence_minutes": 120,
+  "observed_output_at": "2026-09-01T19:50:05Z",
+  "age_minutes": 18202.07,
+  "missed_cycles": 151.68,
+  "state": "DEGRADED",
+  "severity": "P0",
+  "reason": "Newest observed AKTUAL item is more than 2x cadence old; root-cause/self-heal escalation is mandatory.",
+  "last_success_at": null,
+  "last_success_evidence": "UNAVAILABLE",
+  "runner_state": "DEGRADED_BLOCKED_BEFORE_STEPS",
+  "truth_guards": {
+    "timestamp_bump_is_refresh": false,
+    "fresh_claim_allowed": false,
+    "indexed_claim_allowed": false,
+    "blind_rerun_allowed": false
+  },
+  "next_safe_actions": [
+    "collect upstream/provider reachability evidence outside Actions",
+    "validate current feed output before any write",
+    "repair producer/scheduler path with Exact-SHA/CAS and single-writer ownership",
+    "verify a genuinely newer output fingerprint before marking FRESH"
+  ]
+}

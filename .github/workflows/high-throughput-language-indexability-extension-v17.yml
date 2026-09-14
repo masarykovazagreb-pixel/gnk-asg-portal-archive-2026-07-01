@@ -1,0 +1,69 @@
+name: High Throughput Language Indexability Extension V17
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v17.json'
+      - 'scripts/audit-image-sitemap-loc-hygiene-v1.mjs'
+      - 'scripts/audit-structured-data-language-parity-v1.mjs'
+      - 'scripts/audit-hreflang-url-hygiene-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v17.py'
+      - '.github/workflows/high-throughput-language-indexability-extension-v17.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v17.json'
+      - 'scripts/audit-image-sitemap-loc-hygiene-v1.mjs'
+      - 'scripts/audit-structured-data-language-parity-v1.mjs'
+      - 'scripts/audit-hreflang-url-hygiene-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v17.py'
+      - '.github/workflows/high-throughput-language-indexability-extension-v17.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: high-throughput-language-indexability-v17-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax checks
+        run: |
+          set -euo pipefail
+          node --check scripts/audit-image-sitemap-loc-hygiene-v1.mjs
+          node --check scripts/audit-structured-data-language-parity-v1.mjs
+          node --check scripts/audit-hreflang-url-hygiene-v1.mjs
+          python -m py_compile scripts/validate-high-throughput-capability-extension-v17.py
+      - name: Image sitemap URL hygiene
+        run: node scripts/audit-image-sitemap-loc-hygiene-v1.mjs
+      - name: Structured data language parity
+        run: node scripts/audit-structured-data-language-parity-v1.mjs
+      - name: Hreflang URL hygiene
+        run: node scripts/audit-hreflang-url-hygiene-v1.mjs
+      - name: Workforce capability extension topology
+        run: python scripts/validate-high-throughput-capability-extension-v17.py
+      - name: Upload V17 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: high-throughput-language-indexability-v17-${{ github.sha }}
+          path: |
+            artifacts/image-sitemap-loc-hygiene/**
+            artifacts/structured-data-language-parity/**
+            artifacts/hreflang-url-hygiene/**
+            artifacts/high-throughput-capability-extension-v17/**
+          if-no-files-found: warn
+          retention-days: 14

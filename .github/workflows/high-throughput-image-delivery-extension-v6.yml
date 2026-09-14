@@ -1,0 +1,66 @@
+name: High Throughput Image Delivery Extension V6
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v6.json'
+      - 'scripts/audit-picture-source-contract-v1.mjs'
+      - 'scripts/audit-image-sitemap-caption-quality-v1.mjs'
+      - 'scripts/audit-css-image-reference-integrity-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v6.py'
+      - '.github/workflows/high-throughput-image-delivery-extension-v6.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v6.json'
+      - 'scripts/audit-picture-source-contract-v1.mjs'
+      - 'scripts/audit-image-sitemap-caption-quality-v1.mjs'
+      - 'scripts/audit-css-image-reference-integrity-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v6.py'
+      - '.github/workflows/high-throughput-image-delivery-extension-v6.yml'
+permissions:
+  contents: read
+concurrency:
+  group: high-throughput-image-delivery-v6-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax checks
+        run: |
+          set -euo pipefail
+          node --check scripts/audit-picture-source-contract-v1.mjs
+          node --check scripts/audit-image-sitemap-caption-quality-v1.mjs
+          node --check scripts/audit-css-image-reference-integrity-v1.mjs
+          python -m py_compile scripts/validate-high-throughput-capability-extension-v6.py
+      - name: Picture source integrity
+        run: node scripts/audit-picture-source-contract-v1.mjs
+      - name: Image sitemap caption quality
+        run: node scripts/audit-image-sitemap-caption-quality-v1.mjs
+      - name: CSS image reference integrity
+        run: node scripts/audit-css-image-reference-integrity-v1.mjs
+      - name: Workforce capability extension topology
+        run: python scripts/validate-high-throughput-capability-extension-v6.py
+      - name: Upload extension evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: high-throughput-image-delivery-v6-${{ github.sha }}
+          path: |
+            artifacts/picture-source-contract/**
+            artifacts/image-sitemap-caption-quality/**
+            artifacts/css-image-reference-integrity/**
+            artifacts/high-throughput-capability-extension-v6/**
+          if-no-files-found: warn
+          retention-days: 14

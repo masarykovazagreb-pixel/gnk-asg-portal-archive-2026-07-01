@@ -1,0 +1,67 @@
+name: High Throughput Coherence Extension V12
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v12.json'
+      - 'scripts/audit-social-image-alt-metadata-v1.mjs'
+      - 'scripts/audit-image-sitemap-source-indexability-v1.mjs'
+      - 'scripts/audit-social-canonical-url-parity-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v12.py'
+      - '.github/workflows/high-throughput-coherence-extension-v12.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v12.json'
+      - 'scripts/audit-social-image-alt-metadata-v1.mjs'
+      - 'scripts/audit-image-sitemap-source-indexability-v1.mjs'
+      - 'scripts/audit-social-canonical-url-parity-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v12.py'
+      - '.github/workflows/high-throughput-coherence-extension-v12.yml'
+
+permissions:
+  contents: read
+concurrency:
+  group: high-throughput-coherence-v12-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax checks
+        run: |
+          set -euo pipefail
+          node --check scripts/audit-social-image-alt-metadata-v1.mjs
+          node --check scripts/audit-image-sitemap-source-indexability-v1.mjs
+          node --check scripts/audit-social-canonical-url-parity-v1.mjs
+          python -m py_compile scripts/validate-high-throughput-capability-extension-v12.py
+      - name: Social image ALT metadata
+        run: node scripts/audit-social-image-alt-metadata-v1.mjs
+      - name: Image sitemap source indexability
+        run: node scripts/audit-image-sitemap-source-indexability-v1.mjs
+      - name: Social canonical URL parity
+        run: node scripts/audit-social-canonical-url-parity-v1.mjs
+      - name: Workforce capability extension topology
+        run: python scripts/validate-high-throughput-capability-extension-v12.py
+      - name: Upload V12 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: high-throughput-coherence-v12-${{ github.sha }}
+          path: |
+            artifacts/social-image-alt-metadata/**
+            artifacts/image-sitemap-source-indexability/**
+            artifacts/social-canonical-url-parity/**
+            artifacts/high-throughput-capability-extension-v12/**
+          if-no-files-found: warn
+          retention-days: 14

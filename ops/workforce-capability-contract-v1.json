@@ -1,0 +1,52 @@
+{
+  "version": "GNK_ASG_WORKFORCE_CAPABILITY_CONTRACT_V1",
+  "policy": {
+    "nominalProfilesAreHealthy": false,
+    "healthyRequiresCompleteEvidence": true,
+    "ownerGatedAuthorityEscalationForbidden": true,
+    "singleWriteOwnerLease": true,
+    "requiredLifecycle": [
+      "candidate",
+      "sandbox",
+      "shadow",
+      "evaluator",
+      "probation",
+      "healthy"
+    ]
+  },
+  "healthyEvidenceRequired": [
+    "heartbeat",
+    "taskOwnership",
+    "queueState",
+    "latencyMs",
+    "successCount",
+    "failureCount",
+    "evaluatorVerdict",
+    "fallbackCoverage",
+    "rollbackCapability",
+    "telemetryRef"
+  ],
+  "criticalTaskClassRequirements": {
+    "primaryWorkerRequired": true,
+    "fallbackPoolRequired": true,
+    "evidenceLedgerRequired": true,
+    "sloRequired": true,
+    "killSwitchRequired": true,
+    "staleHeartbeatFailsHealthy": true,
+    "unknownEvidenceFailsHealthy": true
+  },
+  "promotionRules": {
+    "sandboxToShadow": "sandbox evidence must pass evaluator",
+    "shadowToProbation": "shadow evidence must pass evaluator and rollback must be demonstrated",
+    "probationToHealthy": "heartbeat, ownership, queue, latency, success/failure, evaluator, fallback, rollback and telemetry evidence must all be present",
+    "healthyToDegraded": "any required evidence becomes stale, missing or failed",
+    "degradedToHealthy": "full evidence must be re-established; no synthetic green"
+  },
+  "metrics": {
+    "countOnlyHealthyCapabilityCoverage": true,
+    "collisionRateTarget": 0,
+    "staleTaskTarget": 0,
+    "orphanTaskTarget": 0,
+    "projectStarvationTarget": 0
+  }
+}

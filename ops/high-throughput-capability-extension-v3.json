@@ -1,0 +1,41 @@
+{
+  "version": "GNK_ASG_HIGH_THROUGHPUT_CAPABILITY_EXTENSION_V3",
+  "authorityScope": "R0_R1_ONLY",
+  "healthyRequiresRuntimeEvidence": true,
+  "promotionLifecycle": ["candidate", "sandbox", "shadow", "evaluator", "probation", "healthy"],
+  "capabilities": [
+    {
+      "taskClass": "image-sitemap-integrity",
+      "primaryCapability": "image-sitemap-integrity-validator",
+      "fallbackPool": ["image-seo-validator", "asset-integrity-validator"],
+      "staticContract": "scripts/audit-image-sitemap-integrity-v1.mjs",
+      "runtimeStatus": "UNVERIFIED"
+    },
+    {
+      "taskClass": "image-sitemap-url-stability",
+      "primaryCapability": "image-sitemap-url-stability-validator",
+      "fallbackPool": ["image-sitemap-validator", "indexability-validator"],
+      "staticContract": "scripts/audit-image-sitemap-url-stability-v1.mjs",
+      "runtimeStatus": "UNVERIFIED"
+    },
+    {
+      "taskClass": "rendered-primary-image-contract",
+      "primaryCapability": "rendered-primary-image-validator",
+      "fallbackPool": ["image-delivery-validator", "structured-data-validator"],
+      "staticContract": "scripts/audit-rendered-image-contract-v1.mjs",
+      "runtimeStatus": "UNVERIFIED"
+    }
+  ],
+  "requiredRuntimeEvidence": [
+    "heartbeat",
+    "taskOwnership",
+    "queueState",
+    "latencyMs",
+    "successCount",
+    "failureCount",
+    "evaluatorVerdict",
+    "fallbackCoverage",
+    "rollbackCapability",
+    "telemetryRef"
+  ]
+}

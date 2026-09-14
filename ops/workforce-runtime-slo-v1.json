@@ -1,0 +1,19 @@
+{
+  "version": "GNK_ASG_WORKFORCE_RUNTIME_SLO_V1",
+  "authorityScope": "R0_R1_ONLY",
+  "appliesTo": "ALL_CRITICAL_TASK_CLASSES",
+  "thresholds": {
+    "maxHeartbeatAgeSeconds": 300,
+    "maxQueueAgeSeconds": 900,
+    "maxLatencyMs": 30000,
+    "minObservedTasks": 20,
+    "minSuccessRate": 0.95,
+    "maxConsecutiveFailures": 2,
+    "fallbackRuntimeEvidenceRequired": true,
+    "rollbackEvidenceRequired": true,
+    "evaluatorPassRequired": true,
+    "telemetryReferenceRequired": true
+  },
+  "unknownState": "FAIL_CLOSED",
+  "promotionBlockedWithoutEvidence": true
+}

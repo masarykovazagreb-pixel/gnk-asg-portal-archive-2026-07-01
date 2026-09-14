@@ -1,0 +1,7 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const ROOT=process.cwd(),PORTAL=path.join(ROOT,'apps','portal'),failures=[];const stats={htmlFiles:0,pagesWithCanonical:0,violations:0};
+const walk=d=>fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>{const p=path.join(d,e.name);return e.isDirectory()?walk(p):[p]});
+const attr=(t,n)=>t.match(new RegExp(`\\s${n}=["']([^"']*)["']`,'i'))?.[1]?.trim()||'';
+for(const file of walk(PORTAL).filter(f=>f.endsWith('.html'))){stats.htmlFiles++;const rel='/'+path.relative(PORTAL,file).replaceAll(path.sep,'/');const html=fs.readFileSync(file,'utf8');let canonical='';for(const m of html.matchAll(/<link\b[^>]*>/gi)){const t=m[0];if(/\brel=["'][^"']*canonical[^"']*["']/i.test(t)){canonical=attr(t,'href');break}}if(!canonical)continue;stats.pagesWithCanonical++;try{const u=new URL(canonical);if(u.protocol!=='https:'||u.hostname!=='gnk-asg.hr'||u.username||u.password||u.search||u.hash){stats.violations++;failures.push(`${rel}: canonical must be clean https://gnk-asg.hr URL (${canonical})`);}}catch{stats.violations++;failures.push(`${rel}: canonical is not absolute URL (${canonical})`);}}
+const report={version:'GNK_ASG_CANONICAL_HOST_SCHEME_CONTRACT_V1',ok:failures.length===0,stats,failures};const out=path.join(ROOT,'artifacts','canonical-host-scheme-contract');fs.mkdirSync(out,{recursive:true});fs.writeFileSync(path.join(out,'report.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report,null,2));if(failures.length)process.exit(1);

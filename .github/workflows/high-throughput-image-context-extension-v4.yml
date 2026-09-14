@@ -1,0 +1,66 @@
+name: High Throughput Image Context Extension V4
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v4.json'
+      - 'scripts/audit-raster-intrinsic-dimension-parity-v1.mjs'
+      - 'scripts/audit-image-sitemap-title-alt-parity-v1.mjs'
+      - 'scripts/audit-social-image-discovery-parity-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v4.py'
+      - '.github/workflows/high-throughput-image-context-extension-v4.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v4.json'
+      - 'scripts/audit-raster-intrinsic-dimension-parity-v1.mjs'
+      - 'scripts/audit-image-sitemap-title-alt-parity-v1.mjs'
+      - 'scripts/audit-social-image-discovery-parity-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v4.py'
+      - '.github/workflows/high-throughput-image-context-extension-v4.yml'
+permissions:
+  contents: read
+concurrency:
+  group: high-throughput-image-context-v4-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax checks
+        run: |
+          set -euo pipefail
+          node --check scripts/audit-raster-intrinsic-dimension-parity-v1.mjs
+          node --check scripts/audit-image-sitemap-title-alt-parity-v1.mjs
+          node --check scripts/audit-social-image-discovery-parity-v1.mjs
+          python -m py_compile scripts/validate-high-throughput-capability-extension-v4.py
+      - name: Raster intrinsic dimension parity
+        run: node scripts/audit-raster-intrinsic-dimension-parity-v1.mjs
+      - name: Image sitemap title ALT parity
+        run: node scripts/audit-image-sitemap-title-alt-parity-v1.mjs
+      - name: Social image discovery parity
+        run: node scripts/audit-social-image-discovery-parity-v1.mjs
+      - name: Workforce capability extension topology
+        run: python scripts/validate-high-throughput-capability-extension-v4.py
+      - name: Upload extension evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: high-throughput-image-context-v4-${{ github.sha }}
+          path: |
+            artifacts/raster-intrinsic-dimension-parity/**
+            artifacts/image-sitemap-title-alt-parity/**
+            artifacts/social-image-discovery-parity/**
+            artifacts/high-throughput-capability-extension-v4/**
+          if-no-files-found: warn
+          retention-days: 14

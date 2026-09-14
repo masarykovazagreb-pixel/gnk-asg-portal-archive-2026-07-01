@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "policy": {
+    "truthStandard": "Evidence/Truth",
+    "timestampBumpDoesNotCountAsRefresh": true,
+    "healthyRequiresObservedOutput": true,
+    "staleAfterCadenceMultiplier": 1.0,
+    "rootCauseEscalationAfterCadenceMultiplier": 2.0,
+    "rootCauseEscalationAfterMissedCycles": 2,
+    "allowedStates": ["FRESH", "STALE", "DEGRADED", "BLOCKED", "UNKNOWN"],
+    "indexedRequiresExternalEvidence": true,
+    "blindRerunAllowed": false
+  },
+  "producerClasses": [
+    {
+      "id": "aktual-media",
+      "surface": "Aktual Media/news/archive/featured/HR-EN parity",
+      "cadenceMinutes": 120,
+      "requiredEvidence": ["last_success_at", "observed_output_at", "output_fingerprint"]
+    },
+    {
+      "id": "markets-pulse-digital-assets",
+      "surface": "Markets/Pulse/Digital Assets live-data producers",
+      "cadenceMinutes": 60,
+      "requiredEvidence": ["last_success_at", "observed_output_at", "output_fingerprint"]
+    },
+    {
+      "id": "weather",
+      "surface": "Weather producer",
+      "cadenceMinutes": 60,
+      "requiredEvidence": ["last_success_at", "observed_output_at", "output_fingerprint"]
+    },
+    {
+      "id": "world-monitor",
+      "surface": "World Monitor/public intelligence feeds",
+      "cadenceMinutes": 60,
+      "requiredEvidence": ["last_success_at", "observed_output_at", "output_fingerprint"]
+    },
+    {
+      "id": "scheduled-content",
+      "surface": "Cibona and scheduled content/data modules",
+      "cadenceMinutes": 120,
+      "requiredEvidence": ["last_success_at", "observed_output_at", "output_fingerprint"]
+    },
+    {
+      "id": "publication-registry",
+      "surface": "Publication registries/editorial queues/external publication parity",
+      "cadenceMinutes": 60,
+      "requiredEvidence": ["last_success_at", "observed_output_at", "output_fingerprint"]
+    },
+    {
+      "id": "search-discovery",
+      "surface": "sitemaps/robots/IndexNow/submission readiness/route parity",
+      "cadenceMinutes": 120,
+      "requiredEvidence": ["last_success_at", "observed_output_at", "output_fingerprint"]
+    },
+    {
+      "id": "digital-workforce-runtime",
+      "surface": "Digital Workforce heartbeat/queue/fallback/evaluator evidence",
+      "cadenceMinutes": 60,
+      "requiredEvidence": ["last_success_at", "heartbeat_at", "queue_observed_at", "evaluator_observed_at"]
+    },
+    {
+      "id": "site-publication-health",
+      "surface": "routes/HTTP/canonical/hreflang/schema/meta/image SEO health",
+      "cadenceMinutes": 60,
+      "requiredEvidence": ["last_success_at", "observed_output_at", "output_fingerprint"]
+    },
+    {
+      "id": "actions-schedulers-writer",
+      "surface": "Actions/schedulers/writer ownership/queue/drift/exact-SHA parity",
+      "cadenceMinutes": 60,
+      "requiredEvidence": ["last_success_at", "observed_output_at", "exact_sha"]
+    }
+  ]
+}

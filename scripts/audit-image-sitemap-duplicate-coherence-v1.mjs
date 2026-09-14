@@ -1,0 +1,7 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const ROOT=process.cwd(),FILE=path.join(ROOT,'apps','portal','image-sitemap.xml'),failures=[];const stats={pages:0,imageEntries:0,duplicateEntries:0,conflicts:0};
+if(!fs.existsSync(FILE)){console.error('image-sitemap.xml missing');process.exit(1)}
+const xml=fs.readFileSync(FILE,'utf8');
+for(const block of xml.matchAll(/<url>([\s\S]*?)<\/url>/gi)){stats.pages++;const body=block[1],seen=new Map();for(const im of body.matchAll(/<image:image>([\s\S]*?)<\/image:image>/gi)){stats.imageEntries++;const b=im[1];const val=t=>(b.match(new RegExp(`<image:${t}>([\\s\\S]*?)<\\/image:${t}>`,'i'))?.[1]||'').trim();const loc=val('loc');if(!loc){failures.push('image:image without image:loc');continue;}const sig=JSON.stringify({title:val('title'),caption:val('caption'),license:val('license')});if(seen.has(loc)){stats.duplicateEntries++;if(seen.get(loc)!==sig){stats.conflicts++;failures.push(`conflicting duplicate image metadata: ${loc}`);}}else seen.set(loc,sig);}}
+const report={version:'GNK_ASG_IMAGE_SITEMAP_DUPLICATE_COHERENCE_V1',ok:failures.length===0,stats,failures,evidenceSemantics:{discoverable:'STATIC_SITEMAP_EVIDENCE',indexed:'NOT_INFERRED'}};const out=path.join(ROOT,'artifacts','image-sitemap-duplicate-coherence');fs.mkdirSync(out,{recursive:true});fs.writeFileSync(path.join(out,'report.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report,null,2));if(failures.length)process.exit(1);

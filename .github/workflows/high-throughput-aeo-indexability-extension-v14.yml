@@ -1,0 +1,69 @@
+name: High Throughput AEO Indexability Extension V14
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v14.json'
+      - 'scripts/audit-jsonld-graph-identity-v1.mjs'
+      - 'scripts/audit-meta-robots-directive-coherence-v1.mjs'
+      - 'scripts/audit-article-temporal-schema-coherence-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v14.py'
+      - '.github/workflows/high-throughput-aeo-indexability-extension-v14.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v14.json'
+      - 'scripts/audit-jsonld-graph-identity-v1.mjs'
+      - 'scripts/audit-meta-robots-directive-coherence-v1.mjs'
+      - 'scripts/audit-article-temporal-schema-coherence-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v14.py'
+      - '.github/workflows/high-throughput-aeo-indexability-extension-v14.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: high-throughput-aeo-indexability-v14-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax checks
+        run: |
+          set -euo pipefail
+          node --check scripts/audit-jsonld-graph-identity-v1.mjs
+          node --check scripts/audit-meta-robots-directive-coherence-v1.mjs
+          node --check scripts/audit-article-temporal-schema-coherence-v1.mjs
+          python -m py_compile scripts/validate-high-throughput-capability-extension-v14.py
+      - name: JSON-LD graph identity
+        run: node scripts/audit-jsonld-graph-identity-v1.mjs
+      - name: Meta robots directive coherence
+        run: node scripts/audit-meta-robots-directive-coherence-v1.mjs
+      - name: Article temporal schema coherence
+        run: node scripts/audit-article-temporal-schema-coherence-v1.mjs
+      - name: Workforce capability extension topology
+        run: python scripts/validate-high-throughput-capability-extension-v14.py
+      - name: Upload V14 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: high-throughput-aeo-indexability-v14-${{ github.sha }}
+          path: |
+            artifacts/jsonld-graph-identity/**
+            artifacts/meta-robots-directive-coherence/**
+            artifacts/article-temporal-schema-coherence/**
+            artifacts/high-throughput-capability-extension-v14/**
+          if-no-files-found: warn
+          retention-days: 14

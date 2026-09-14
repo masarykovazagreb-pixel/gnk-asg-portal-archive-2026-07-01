@@ -1,0 +1,52 @@
+name: Indexation Surface Contract Gate
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/robots.txt'
+      - 'apps/portal/sitemap-index.xml'
+      - 'apps/portal/*sitemap*.xml'
+      - 'scripts/audit-indexation-surface-contract-v1.mjs'
+      - '.github/workflows/indexation-surface-contract-gate.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/portal/robots.txt'
+      - 'apps/portal/sitemap-index.xml'
+      - 'apps/portal/*sitemap*.xml'
+      - 'scripts/audit-indexation-surface-contract-v1.mjs'
+      - '.github/workflows/indexation-surface-contract-gate.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: indexation-surface-contract-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  indexation-surface-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Syntax check
+        run: node --check scripts/audit-indexation-surface-contract-v1.mjs
+
+      - name: Validate sitemap and robots indexation surface
+        run: node scripts/audit-indexation-surface-contract-v1.mjs
+
+      - name: Upload indexation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: indexation-surface-contract-${{ github.sha }}
+          path: artifacts/indexation-surface-contract/**
+          if-no-files-found: warn
+          retention-days: 14

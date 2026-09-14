@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+import fs from 'node:fs';
+import path from 'node:path';
+
+const ROOT=process.cwd(),PORTAL=path.join(ROOT,'apps','portal'),SITEMAP=path.join(PORTAL,'image-sitemap.xml');
+const failures=[],warnings=[];const stats={pages:0,images:0,matched:0,titleAltMismatches:0,missingSourceAlt:0};
+const norm=s=>String(s||'').replace(/&amp;/g,'&').replace(/&quot;/g,'"').replace(/&#39;|&apos;/g,"'").replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim().toLowerCase();
+const attr=(tag,n)=>tag.match(new RegExp(`\\s${n}=["']([^"']*)["']`,'i'))?.[1]?.trim()??null;
+if(!fs.existsSync(SITEMAP)){console.error('image-sitemap.xml is missing');process.exit(1);}const xml=fs.readFileSync(SITEMAP,'utf8');
+for(const block of xml.matchAll(/<url>([\s\S]*?)<\/url>/gi)){stats.pages++;const body=block[1];const pageLoc=body.match(/<loc>([\s\S]*?)<\/loc>/i)?.[1]?.trim();if(!pageLoc)continue;let pageUrl;try{pageUrl=new URL(pageLoc);}catch{continue;}if(pageUrl.origin!=='https://gnk-asg.hr')continue;const pageFile=path.join(PORTAL,decodeURIComponent(pageUrl.pathname).replace(/^\//,'')||'index.html');const htmlFile=fs.existsSync(pageFile)&&fs.statSync(pageFile).isFile()?pageFile:(fs.existsSync(path.join(pageFile,'index.html'))?path.join(pageFile,'index.html'):null);if(!htmlFile){warnings.push(`No local source page for ${pageLoc}`);continue;}const html=fs.readFileSync(htmlFile,'utf8');const tags=[...html.matchAll(/<img\b[^>]*>/gi)].map(m=>m[0]);
+ for(const imgBlock of body.matchAll(/<image:image>([\s\S]*?)<\/image:image>/gi)){stats.images++;const ib=imgBlock[1];const loc=ib.match(/<image:loc>([\s\S]*?)<\/image:loc>/i)?.[1]?.trim();const title=ib.match(/<image:title>([\s\S]*?)<\/image:title>/i)?.[1]?.trim();if(!loc||!title)continue;let pathname;try{pathname=new URL(loc).pathname;}catch{continue;}const tag=tags.find(t=>{const s=attr(t,'src');if(!s)return false;try{return new URL(s,pageLoc).pathname===pathname;}catch{return false;}});if(!tag)continue;stats.matched++;const alt=attr(tag,'alt');if(!alt){stats.missingSourceAlt++;failures.push(`${pageLoc}: sitemap image ${loc} has title but matching informative source image lacks ALT`);continue;}if(norm(title)!==norm(alt)){stats.titleAltMismatches++;failures.push(`${pageLoc}: image sitemap title/ALT mismatch for ${loc}: title=${JSON.stringify(title)} alt=${JSON.stringify(alt)}`);}}
+}
+const report={version:'GNK_ASG_IMAGE_SITEMAP_TITLE_ALT_PARITY_V1',ok:failures.length===0,stats,failures,warnings};const out=path.join(ROOT,'artifacts','image-sitemap-title-alt-parity');fs.mkdirSync(out,{recursive:true});fs.writeFileSync(path.join(out,'report.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report,null,2));if(failures.length)process.exit(1);

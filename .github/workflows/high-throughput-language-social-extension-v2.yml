@@ -1,0 +1,70 @@
+name: High Throughput Language Social Extension V2
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v2.json'
+      - 'scripts/audit-social-image-type-parity-v1.mjs'
+      - 'scripts/audit-hreflang-xdefault-coherence-v1.mjs'
+      - 'scripts/audit-document-language-hreflang-self-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v2.py'
+      - '.github/workflows/high-throughput-language-social-extension-v2.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v2.json'
+      - 'scripts/audit-social-image-type-parity-v1.mjs'
+      - 'scripts/audit-hreflang-xdefault-coherence-v1.mjs'
+      - 'scripts/audit-document-language-hreflang-self-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v2.py'
+      - '.github/workflows/high-throughput-language-social-extension-v2.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: high-throughput-language-social-v2-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check scripts/audit-social-image-type-parity-v1.mjs
+          node --check scripts/audit-hreflang-xdefault-coherence-v1.mjs
+          node --check scripts/audit-document-language-hreflang-self-v1.mjs
+          python -m py_compile scripts/validate-high-throughput-capability-extension-v2.py
+      - name: Social image MIME type parity
+        run: node scripts/audit-social-image-type-parity-v1.mjs
+      - name: Hreflang x-default coherence
+        run: node scripts/audit-hreflang-xdefault-coherence-v1.mjs
+      - name: Document language and self hreflang parity
+        run: node scripts/audit-document-language-hreflang-self-v1.mjs
+      - name: Workforce capability extension topology
+        run: python scripts/validate-high-throughput-capability-extension-v2.py
+      - name: Upload extension evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: high-throughput-language-social-v2-${{ github.sha }}
+          path: |
+            artifacts/social-image-type-parity/**
+            artifacts/hreflang-xdefault-coherence/**
+            artifacts/document-language-hreflang-self/**
+            artifacts/high-throughput-capability-extension-v2/**
+          if-no-files-found: warn
+          retention-days: 14

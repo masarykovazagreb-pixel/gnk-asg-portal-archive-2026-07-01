@@ -74,6 +74,9 @@ Allow: /
 
 # Zaštićeni operativni moduli nisu namijenjeni indeksiranju.
 # Robots pravila nisu sigurnosna kontrola; pristup ostaje iza auth/session sloja.
+# Start a fresh generic group so these Disallow rules are not accidentally scoped
+# only to the immediately preceding named crawler group.
+User-agent: *
 Disallow: /admin/
 Disallow: /admin-center/
 Disallow: /control/

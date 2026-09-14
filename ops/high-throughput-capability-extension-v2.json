@@ -1,0 +1,41 @@
+{
+  "version": "GNK_ASG_HIGH_THROUGHPUT_CAPABILITY_EXTENSION_V2",
+  "authorityScope": "R0_R1_ONLY",
+  "healthyRequiresRuntimeEvidence": true,
+  "promotionLifecycle": ["candidate", "sandbox", "shadow", "evaluator", "probation", "healthy"],
+  "capabilities": [
+    {
+      "taskClass": "social-image-mime-type-parity",
+      "primaryCapability": "social-image-mime-validator",
+      "fallbackPool": ["image-seo-validator", "asset-integrity-validator"],
+      "staticContract": "scripts/audit-social-image-type-parity-v1.mjs",
+      "runtimeStatus": "UNVERIFIED"
+    },
+    {
+      "taskClass": "hreflang-xdefault-coherence",
+      "primaryCapability": "hreflang-xdefault-validator",
+      "fallbackPool": ["hreflang-reciprocity-validator", "indexability-validator"],
+      "staticContract": "scripts/audit-hreflang-xdefault-coherence-v1.mjs",
+      "runtimeStatus": "UNVERIFIED"
+    },
+    {
+      "taskClass": "document-language-hreflang-self-parity",
+      "primaryCapability": "document-language-hreflang-validator",
+      "fallbackPool": ["hreflang-reciprocity-validator", "seo-meta-validator"],
+      "staticContract": "scripts/audit-document-language-hreflang-self-v1.mjs",
+      "runtimeStatus": "UNVERIFIED"
+    }
+  ],
+  "requiredRuntimeEvidence": [
+    "heartbeat",
+    "taskOwnership",
+    "queueState",
+    "latencyMs",
+    "successCount",
+    "failureCount",
+    "evaluatorVerdict",
+    "fallbackCoverage",
+    "rollbackCapability",
+    "telemetryRef"
+  ]
+}
