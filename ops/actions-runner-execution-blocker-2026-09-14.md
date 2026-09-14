@@ -3,16 +3,18 @@
 Status: **OPEN / RELEASE-BLOCKING**
 
 Scope: PR #79, branch `master-nn/sitemap-failclosed-converge-20260901`.
-Current exact PR head verified before this write: `472962f5081e142c782016ca8c19eaba831d95b3`.
+Current exact PR head verified before this write: `8d82b02de1fb7876624cfb17b6a68d38a9f22923`.
 Current `main` verified before this write: `2c9df80ae2379641b6528a2a56d8b07cf50050e0`.
 
 ## Verified evidence
 
 On exact PR heads, many independent workflow families complete with conclusion `failure`, including IMAGE SEO, indexability, sitemap, SEO metadata, Workforce capability, release validation and functional-readiness gates.
 
-The V25 run `34751131992` (`High Throughput URL Hygiene Extension V25`) is one representative failure from the blocked execution pattern. Prior inspection of failed jobs showed no executed step list / no usable runner execution evidence. This means the current evidence does **not** prove that the underlying SEO, IMAGE, Workforce or release acceptance scripts themselves failed.
+The current exact-head V25 run `34792527605` (`High Throughput URL Hygiene Extension V25`) is a representative failure from the blocked execution pattern. Its only job, `contracts` (`103819315247`), was created and completed within approximately two seconds with `steps: []`, `runner_id: 0`, empty `runner_name`, `runner_group_id: 0`, and label `ubuntu-latest`. The run log endpoint returns no log content. This is direct evidence that the current workflow failure occurs before attributable runner-backed acceptance steps execute.
 
-PR #79 has continued to advance through runner-independent Integration Writer commits while the release fence remains closed. A newer head SHA does not invalidate the blocker and does not constitute runner evidence by itself.
+A broad exact-head sample at `8d82b02de1fb7876624cfb17b6a68d38a9f22923` shows the same workflow-level failure across IMAGE SEO extensions, indexability, sitemap, SEO metadata, Workforce capability, release validation and functional-readiness families. Therefore, the present evidence does **not** prove that those underlying acceptance scripts themselves failed; it proves that their GitHub Actions execution is not currently producing runner/step evidence.
+
+PR #79 may continue to advance through runner-independent Integration Writer commits while the release fence remains closed. A newer head SHA does not invalidate this blocker and does not constitute runner evidence by itself.
 
 ## Truth boundary
 
