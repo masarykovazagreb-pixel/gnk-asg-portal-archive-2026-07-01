@@ -7,7 +7,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: aktual-world-topic-daily-promotion
+  group: gnk-asg-main-mutation
   cancel-in-progress: false
 
 jobs:
@@ -32,8 +32,14 @@ jobs:
           const now=new Date();
           const parts=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Zagreb',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(now).reduce((a,p)=>(a[p.type]=p.value,a),{});
           const today=`${parts.year}-${parts.month}-${parts.day}`;
-          const promo=(schedule.schedule||[]).find(x=>x.date===today);
-          if(!promo){console.log('No World Topic scheduled for',today);process.exit(0)}
+          const entries=Array.isArray(schedule.schedule)?schedule.schedule:[];
+          if(!entries.length) throw new Error('AKTUAL World Topic schedule is empty or invalid');
+          const latestDate=entries.map(x=>x.date).filter(Boolean).sort().at(-1);
+          const promo=entries.find(x=>x.date===today);
+          if(!promo) throw new Error(`No World Topic scheduled for ${today}; latest configured date is ${latestDate||'unknown'}. Refusing false-success promotion.`);
+          const required=['id','title_hr','title_en','url_hr','url_en','summary_hr','summary_en','image','imageAlt_hr','imageAlt_en'];
+          const missing=required.filter(k=>!promo[k]);
+          if(missing.length) throw new Error(`AKTUAL World Topic ${promo.id||today} missing required fields: ${missing.join(', ')}`);
           let news=[];try{news=JSON.parse(fs.readFileSync(newsPath,'utf8'))}catch{}
           if(!Array.isArray(news)) news=Array.isArray(news.items)?news.items:[];
           news=news.filter(x=>!String(x?.id||'').startsWith('gnk-world-topic-'));
@@ -50,39 +56,40 @@ jobs:
             imageAlt:promo.imageAlt_hr,
             imageAlt_en:promo.imageAlt_en,
             imageCredit:'GNK ASG / Nermin Sefić',
-            source:'GNK ASG / Nermin Sefić',
+            source:promo.source||'GNK ASG / Nermin Sefić',
             region:'GNK ASG',
-            group:'international',
-            category:'analysis',
+            group:promo.group||'international',
+            category:promo.category||'analysis',
             published_at:stamp,
             publishedAt:stamp,
-            verified:true,
-            verification:{article:{ok:true},image:{ok:true,fallback:false}},
+            verified:false,
+            verification:{article:{ok:false},image:{ok:false,fallback:false},reason:'manual-promotion-requires-runtime-verification'},
             share_url:promo.url_hr,
             internalEditorial:true
           };
           fs.writeFileSync(newsPath,JSON.stringify([item,...news].slice(0,100),null,2)+'\n');
-          console.log('Promoted',promo.id,promo.title_hr);
+          console.log('Prepared',promo.id,promo.title_hr,'without unverifiable verified=true claim');
           NODE
       - name: Commit AKTUAL promotion
         shell: bash
         run: |
           set -euo pipefail
+          expected_base="$(git rev-parse HEAD)"
           git config user.name "gnk-aktual-editorial-bot"
           git config user.email "actions@github.com"
           git add apps/portal/data/news.json
           if git diff --cached --quiet; then
             echo 'No AKTUAL promotion change.'
-          else
-            git commit -m "Promote scheduled World Topic on AKTUAL"
-            for attempt in 1 2 3 4 5; do
-              if git push origin HEAD:main; then
-                break
-              fi
-              echo "Push odbijen (pokusaj $attempt) - main se pomaknuo, radim fetch+rebase."
-              git fetch origin main
-              git rebase origin/main || { echo "Rebase konflikt."; exit 1; }
-              sleep $((attempt * 5))
-              if [ "$attempt" = "5" ]; then echo "Push nije uspio nakon 5 pokusaja."; exit 1; fi
-            done
+            exit 0
           fi
+          git commit -m "Promote scheduled World Topic on AKTUAL"
+
+          # Exact-SHA/CAS fence: generated output is valid only for the main
+          # snapshot on which it was computed. Never rebase generated state.
+          git fetch origin main
+          current_main="$(git rev-parse origin/main)"
+          if [ "$current_main" != "$expected_base" ]; then
+            echo "Main moved during AKTUAL promotion: expected $expected_base, found $current_main. Deferring without rebase/push."
+            exit 75
+          fi
+          git push origin HEAD:main
