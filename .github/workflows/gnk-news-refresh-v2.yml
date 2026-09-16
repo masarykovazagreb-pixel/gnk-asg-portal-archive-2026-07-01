@@ -110,3 +110,5 @@ jobs:
             # if another writer moves main after the check above.
             git push origin HEAD:main
           fi
+
+# P0 2026-09-16: retrigger canonical producer after stale-output incident; no parallel fallback writer.
