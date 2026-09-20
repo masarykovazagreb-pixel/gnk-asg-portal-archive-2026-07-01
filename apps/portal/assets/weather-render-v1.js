@@ -127,7 +127,7 @@ function fromSource(data) {
     var weatherCode = Number(daily.weather_code && daily.weather_code[index]);
     var max = Number(daily.temperature_2m_max && daily.temperature_2m_max[index]);
     var min = Number(daily.temperature_2m_min && daily.temperature_2m_min[index]);
-    if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(localDate) || !Number.isFinite(max) ||
+    if (!Number.isFinite(max) ||
         !Number.isFinite(min) || !Number.isFinite(weatherCode)) throw new Error('invalid-upstream-forecast');
     return {date:localDate, max_c:max, min_c:min, weather_code:weatherCode};
   });
