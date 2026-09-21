@@ -426,6 +426,21 @@
     </style>
     <!-- Fonts & Libraries -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
+    <script>
+        // Installed before third-party libraries: their failure must not suppress fallback status.
+        // A static network graphic remains visible if a CDN or WebGL is unavailable.
+        window.addEventListener('load', () => {
+            if (document.getElementById('synapse-fallback').hidden) return;
+            document.getElementById('system-status').textContent = 'STATIC OVERVIEW · 3D UNAVAILABLE';
+            document.getElementById('synapse-fallback-label').textContent = 'Static network overview · Interactive 3D is unavailable in this browser.';
+            document.querySelectorAll('.agent-card[onclick], input[oninput]').forEach(element => {
+                element.removeAttribute('onclick');
+                element.removeAttribute('oninput');
+                element.setAttribute('aria-disabled', 'true');
+                element.title = '3D simulation controls are unavailable';
+            });
+        });
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -602,18 +617,6 @@
 
     <script>
         // --- THREE.JS SCENE SETUP ---
-        // A static network graphic remains visible if a CDN or WebGL is unavailable.
-        window.addEventListener('load', () => {
-            if (document.getElementById('synapse-fallback').hidden) return;
-            document.getElementById('system-status').textContent = 'STATIC OVERVIEW · 3D UNAVAILABLE';
-            document.getElementById('synapse-fallback-label').textContent = 'Static network overview · Interactive 3D is unavailable in this browser.';
-            document.querySelectorAll('.agent-card[onclick], input[oninput]').forEach(element => {
-                element.removeAttribute('onclick');
-                element.removeAttribute('oninput');
-                element.setAttribute('aria-disabled', 'true');
-                element.title = '3D simulation controls are unavailable';
-            });
-        });
         const container = document.getElementById('webgl-container');
         const tooltip = document.getElementById('node-tooltip');
 
