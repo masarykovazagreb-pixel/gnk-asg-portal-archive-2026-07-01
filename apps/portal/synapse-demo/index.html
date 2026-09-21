@@ -59,6 +59,29 @@
             z-index: 1;
         }
 
+        #synapse-fallback {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            pointer-events: none;
+            background: radial-gradient(ellipse at center, #09213a 0%, #030712 70%);
+        }
+        #synapse-fallback[hidden] { display: none; }
+        #synapse-fallback svg { width: 100%; height: 100%; max-width: 1100px; opacity: .8; }
+        #synapse-fallback-label {
+            position: absolute;
+            bottom: 18%;
+            left: 50%;
+            transform: translateX(-50%);
+            font: 12px Arial,sans-serif;
+            letter-spacing: .04em;
+            color: #e2e8f0;
+            text-align: center;
+            width: 90%;
+        }
+        #webgl-container canvas { position: absolute; inset: 0; z-index: 2; }
+
         /* HUD Overlay */
         .hud-layer {
             position: absolute;
@@ -412,7 +435,25 @@
 </style><link rel="alternate" type="application/rss+xml" title="GNK ASG RSS" href="/en/feed.xml"><link rel="alternate" type="application/atom+xml" title="GNK ASG Atom" href="/en/atom.xml"></head>
 <body><img id="gnk-gold-watermark" src="/assets/logo-gnk-asg-canonical.svg" width="117" height="120" alt="GNK ASG d.o.o. — GNK DINAMO Ltd. Group" aria-hidden="true">
 
-    <div id="webgl-container"></div>
+    <div id="webgl-container">
+        <div id="synapse-fallback" role="img" aria-label="Static SYNAPSE network overview; interactive 3D visualization loads when available">
+            <svg viewBox="0 0 900 650" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+                <g fill="none" stroke="#00f0ff" stroke-width="2" opacity=".55">
+                    <path d="M450 310 L180 115 M450 310 L720 115 M450 310 L175 520 M450 310 L725 520"/>
+                    <path d="M180 115 L720 115 L725 520 L175 520 Z" opacity=".22"/>
+                </g>
+                <g fill="#00f0ff"><circle cx="450" cy="310" r="39" opacity=".16"/><circle cx="450" cy="310" r="16"/></g>
+                <g font-family="Arial,sans-serif" font-size="19" text-anchor="middle" fill="#dceaf8">
+                    <text x="450" y="375">SYNAPSE</text>
+                    <text x="180" y="95">ECON</text><text x="720" y="95">INFRA</text>
+                    <text x="175" y="561">TRADE</text><text x="725" y="561">MEDIA</text>
+                </g>
+                <circle cx="180" cy="115" r="13" fill="#ff9900"/><circle cx="720" cy="115" r="13" fill="#00f0ff"/>
+                <circle cx="175" cy="520" r="13" fill="#00ffaa"/><circle cx="725" cy="520" r="13" fill="#ff007f"/>
+            </svg>
+            <p id="synapse-fallback-label">Static network overview · Initializing 3D visualization…</p>
+        </div>
+    </div>
 
     <div class="hud-layer">
         <!-- Top Header -->
@@ -426,7 +467,7 @@
             </div>
             <div class="status-badge">
                 <div class="status-dot"></div>
-                <span id="system-status">EMERGENT ECOSYSTEM ACTIVE</span>
+                <span id="system-status">INITIALIZING 3D VISUALIZATION</span>
             </div>
         </header>
 
@@ -561,6 +602,18 @@
 
     <script>
         // --- THREE.JS SCENE SETUP ---
+        // A static network graphic remains visible if a CDN or WebGL is unavailable.
+        window.addEventListener('load', () => {
+            if (document.getElementById('synapse-fallback').hidden) return;
+            document.getElementById('system-status').textContent = 'STATIC OVERVIEW · 3D UNAVAILABLE';
+            document.getElementById('synapse-fallback-label').textContent = 'Static network overview · Interactive 3D is unavailable in this browser.';
+            document.querySelectorAll('.agent-card[onclick], input[oninput]').forEach(element => {
+                element.removeAttribute('onclick');
+                element.removeAttribute('oninput');
+                element.setAttribute('aria-disabled', 'true');
+                element.title = '3D simulation controls are unavailable';
+            });
+        });
         const container = document.getElementById('webgl-container');
         const tooltip = document.getElementById('node-tooltip');
 
@@ -969,6 +1022,10 @@
 
             controls.update();
             renderer.render(scene, camera);
+            if (!document.getElementById('synapse-fallback').hidden) {
+                document.getElementById('synapse-fallback').hidden = true;
+                document.getElementById('system-status').textContent = 'EMERGENT ECOSYSTEM ACTIVE';
+            }
         }
 
         // --- RESIZE EVENT ---
