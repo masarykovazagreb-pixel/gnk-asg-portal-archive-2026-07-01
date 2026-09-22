@@ -32,12 +32,18 @@ function normalizeLinkedIn(html) {
 function requiredSignals(target) {
   const { lang, canonical, alternate } = target;
   return [
-    { name: 'canonical', value: `<link rel="canonical" href="${canonical}"` },
-    { name: `${lang}-hreflang`, value: `hreflang="${lang}" href="${canonical}"` },
-    { name: `${lang === 'hr' ? 'en' : 'hr'}-hreflang`, value: `hreflang="${lang === 'hr' ? 'en' : 'hr'}" href="${alternate}"` },
-    { name: 'person-name', value: '"name":"Nermin Sefić"' },
-    { name: 'alternate-name', value: '"alternateName":"Nermin Sefic"' },
-    { name: 'linkedin-sameAs', value: LINKEDIN_CANONICAL },
+    { name: 'canonical', values: [`<link rel="canonical" href="${canonical}"`] },
+    { name: `${lang}-hreflang`, values: [`hreflang="${lang}" href="${canonical}"`] },
+    { name: `${lang === 'hr' ? 'en' : 'hr'}-hreflang`, values: [`hreflang="${lang === 'hr' ? 'en' : 'hr'}" href="${alternate}"`] },
+    { name: 'person-name', values: ['"name":"Nermin Sefić"'] },
+    {
+      name: 'alternate-name',
+      values: [
+        '"alternateName":"Nermin Sefic"',
+        '"alternateName":["Nermin Sefic"',
+      ],
+    },
+    { name: 'linkedin-sameAs', values: [LINKEDIN_CANONICAL] },
   ];
 }
 
@@ -68,7 +74,7 @@ for (const target of targets) {
 
   const effective = WRITE ? normalized : original;
   for (const signal of requiredSignals(target)) {
-    if (!effective.includes(signal.value)) {
+    if (!signal.values.some((value) => effective.includes(value))) {
       console.error(`FAIL ${target.file}: missing ${signal.name}`);
       failures++;
     }
