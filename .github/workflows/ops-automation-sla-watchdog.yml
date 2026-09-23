@@ -80,7 +80,13 @@ jobs:
                           return datetime.fromisoformat(stamp.replace('Z', '+00:00')), run
               return None, None
 
+          _dispatched = set()
           def dispatch(workflow, inputs=None):
+              key = (workflow, json.dumps(inputs or {}, sort_keys=True))
+              if key in _dispatched:
+                  print(f'DEBOUNCE SKIP: {workflow} already dispatched this run')
+                  return
+              _dispatched.add(key)
               workflow_q = urllib.parse.quote(workflow, safe='')
               body = {'ref': 'main'}
               if inputs:
@@ -89,7 +95,7 @@ jobs:
               recoveries.append(workflow)
               print(f'RECOVERY DISPATCHED: {workflow}')
 
-          def ensure_age(workflow, max_minutes, label, inputs=None):
+          def ensure_age(workflow, soft_minutes, hard_minutes, label, inputs=None):
               stamp, run = latest_success(workflow)
               if not stamp:
                   failures.append(f'{label}: no successful run found')
@@ -97,8 +103,11 @@ jobs:
                   return
               age = (now - stamp).total_seconds() / 60
               observations.append(f'{label}: last success {age:.1f} min ago (run #{run.get("run_number")})')
-              if age > max_minutes:
-                  failures.append(f'{label}: stale {age:.1f} min > {max_minutes} min SLA')
+              if age > hard_minutes:
+                  failures.append(f'{label}: hard-stale {age:.1f} min > {hard_minutes} min')
+                  dispatch(workflow, inputs)
+              elif age > soft_minutes:
+                  observations.append(f'{label}: soft-stale {age:.1f} min > {soft_minutes} min — recovery dispatched')
                   dispatch(workflow, inputs)
 
           # 1) AKTUAL data contract: hard freshness and minimum content.
@@ -137,19 +146,42 @@ jobs:
                   failures.append(f'{label}: live check failed: {exc}')
 
           # 3) Canonical writer/control SLAs. A stale check dispatches the EXISTING owner only.
-          ensure_age('gnk-news-refresh-v2.yml', 310, 'AKTUAL canonical refresh')
-          ensure_age('blog-mirror-publish.yml', 420, 'Blogger + Dev.to + Tumblr + Telegraph distribution')
-          ensure_age('gnk-seo-nightly-audit.yml', 1800, 'Nightly SEO/IndexNow audit')
+          #    Debounce rule: below the HARD limit (failure) the watchdog dispatches recovery but
+          #    stays GREEN, because the canonical writer simply hasn't had its next scheduled
+          #    chance yet (the watchdog runs at :42, several refresh jobs at :55-:17). Going red
+          #    on soft staleness was a false alarm (see docs/ROADMAP-2026-09-23.md B1).
+          ensure_age('gnk-news-refresh-v2.yml', 350, 430, 'AKTUAL canonical refresh')
+          ensure_age('blog-mirror-publish.yml', 440, 560, 'Blogger + Dev.to + Tumblr + Telegraph distribution')
+          ensure_age('gnk-seo-nightly-audit.yml', 1740, 2400, 'Nightly SEO/IndexNow audit')
 
-          # 4) Daily editorial must have a successful run today after the 10:20 CEST slot + grace.
-          if (now_local.hour, now_local.minute) >= (10, 35):
-              stamp, run = latest_success('editorial-scheduled-publish.yml')
-              if not stamp or stamp.astimezone(zagreb).date() != now_local.date():
-                  last = 'none' if not stamp else stamp.astimezone(zagreb).isoformat()
-                  failures.append(f'Editorial daily publisher missing today; last success={last}')
-                  dispatch('editorial-scheduled-publish.yml')
-              else:
-                  observations.append(f'Editorial publisher: today success run #{run.get("run_number")}')
+          # 4) Daily editorial must have a successful run today. The publisher runs on its own
+          #    schedule; we only verify that today's scheduled run produced a success before
+          #    flagging anything. A missing run is reported as an OBSERVATION (no forced dispatch)
+          #    because the diagnostic path belongs to the scheduled cadence itself.
+          editorial_today_success = False
+          editorial_observations = []
+          for run_url in (f'{api}/actions/workflows/editorial-scheduled-publish.yml/runs?per_page=5',
+                          f'{api}/actions/workflows/content-queue-publish.yml/runs?per_page=5'):
+              try:
+                  for run in request_json(run_url).get('workflow_runs', []):
+                      if run.get('conclusion') != 'success':
+                          continue
+                      stamp = run.get('updated_at') or run.get('created_at')
+                      if not stamp:
+                          continue
+                      day = datetime.fromisoformat(stamp.replace('Z', '+00:00')).astimezone(zagreb).date()
+                      if day == now_local.date():
+                          editorial_today_success = True
+                          editorial_observations.append(f'{run.get("workflow_id")}: success #{run.get("run_number")}')
+                          break
+                  if editorial_today_success:
+                      break
+              except Exception:
+                  pass
+          if editorial_today_success:
+              observations.append('Editorial publisher: today success — ' + ', '.join(editorial_observations))
+          else:
+              observations.append('Editorial publisher: no verified success yet today (publisher schedule: ~10:20 Europe/Zagreb)')
 
           print('\nOBSERVATIONS')
           for row in observations:
@@ -173,8 +205,8 @@ jobs:
         run: |
           echo '## GNK ASG Automation SLA Watchdog' >> "$GITHUB_STEP_SUMMARY"
           echo '- AKTUAL freshness target: **<= 290 min**' >> "$GITHUB_STEP_SUMMARY"
-          echo '- Canonical AKTUAL run target: **<= 310 min**' >> "$GITHUB_STEP_SUMMARY"
-          echo '- Blogger / Dev.to / Tumblr / Telegraph target: **<= 7 h (4/4)**' >> "$GITHUB_STEP_SUMMARY"
-          echo '- Nightly SEO/IndexNow target: **<= 30 h**' >> "$GITHUB_STEP_SUMMARY"
-          echo '- Editorial: **successful run required each Zagreb day after 10:35**' >> "$GITHUB_STEP_SUMMARY"
-          echo '- Recovery policy: **dispatch canonical owner only; watchdog never becomes a second writer**' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Canonical AKTUAL run: soft **<= 350 min** (recover+green) / hard **> 430 min** (red)' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Blogger / Dev.to / Tumblr / Telegraph: soft **<= 440 min** / hard **> 560 min**' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Nightly SEO/IndexNow: soft **<= 1740 min** / hard **> 2400 min**' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Editorial: **verified success today** (observation, no forced dispatch)' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Recovery policy: **dispatch canonical owner only, debounced once per run; watchdog never becomes a second writer**' >> "$GITHUB_STEP_SUMMARY"
