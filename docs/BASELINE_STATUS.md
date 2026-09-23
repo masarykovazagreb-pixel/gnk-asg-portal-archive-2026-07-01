@@ -1,4 +1,4 @@
-﻿# Baseline status
+# Baseline status
 
 Datum: 20.06.2026. 13:46:37
 

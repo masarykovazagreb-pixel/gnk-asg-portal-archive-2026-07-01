@@ -1,4 +1,4 @@
-﻿# Pravila kompatibilnosti backenda
+# Pravila kompatibilnosti backenda
 
 ## Osnovno pravilo
 

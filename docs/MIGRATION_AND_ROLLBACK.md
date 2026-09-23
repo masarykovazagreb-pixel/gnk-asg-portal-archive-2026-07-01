@@ -1,4 +1,4 @@
-﻿# Migracija i rollback
+# Migracija i rollback
 
 ## Faza 1
 
