@@ -30,6 +30,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - name: Test Content Factory editorial gate
+        run: node tests/test-content-queue-preflight-v1.mjs
+      - name: Fail closed on unapproved or duplicate publications
+        run: node scripts/content-queue-preflight-v1.mjs
       - name: Publish due calendar items
         id: pub
         shell: bash
