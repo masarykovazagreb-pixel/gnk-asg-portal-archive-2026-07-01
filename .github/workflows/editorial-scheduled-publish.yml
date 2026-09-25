@@ -87,3 +87,11 @@ jobs:
             --ref main \
             -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
             -f approved_sha="$APPROVED_SHA"
+
+      - name: Dispatch immediate AEO SEO image and hashtag enrichment
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh workflow run aeo-ai-visibility.yml --repo "$GITHUB_REPOSITORY" --ref main
