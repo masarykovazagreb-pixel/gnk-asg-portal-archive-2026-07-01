@@ -1,0 +1,17 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const source=fs.readFileSync('workers/gnk-asg-mail-center-worker/src/index.js','utf8');
+assert.match(source,/['"]info-ee@internet\.ru['"]/i,'incident sender must be statically blocked');
+assert.match(source,/configuredBlockedSenders\(env\)/,'runtime denylist must be supported');
+assert.match(source,/financial_subject_manual_review/,'financial subjects must require manual review');
+assert.match(source,/auto_reply_suppressed_security/,'security rejects must be recorded');
+assert.match(source,/sender_rate_limited/,'sender rate limiting must exist');
+assert.match(source,/SENDER_AUTOREPLY_MAX\s*=\s*2/,'rate limit must be two replies per window');
+assert.match(source,/SENDER_AUTOREPLY_WINDOW_SECONDS\s*=\s*6\s*\*\s*60\s*\*\s*60/,'rate window must be six hours');
+assert.match(source,/adminApiAuthorized\(request, env\)/,'mail-center admin API must require authentication');
+assert.match(source,/admin_api_locked_missing_secret/,'admin API must fail closed when secret is missing');
+assert.match(source,/constantTimeEqual/,'admin token comparison must be constant-time style');
+const securityBlock=source.slice(source.indexOf("const securityReason = securityRejectReason"),source.indexOf("if (!(await claimMessage"));
+assert.doesNotMatch(securityBlock,/EMAIL\.send|message\.reply|sendBrandedEmail/,'blocked senders must receive no response');
+assert.match(securityBlock,/return;/,'blocked sender branch must terminate before reply path');
+console.log(JSON.stringify({ok:true,incidentSender:'info-ee@internet.ru',blockedReplyMode:'silent',financialSubjects:'manual-review-no-autoreply',senderWindowHours:6,senderReplyMax:2},null,2));

@@ -18,6 +18,27 @@ const mandatoryBcc = env => ['beckuphome@gmail.com', internalRecipient(env)];
 const MEDIA_EMAILS = new Set(['media@gnk-asg.hr', 'press@gnk-asg.hr']);
 const DEFAULT_FROM = 'assistant@gnk-asg.hr';
 const MAX_LOG_ITEMS = 250;
+const ADMIN_API_PREFIX = '/api/mail-center/';
+const ADMIN_SEND_PATH = '/api/admin-mail-send';
+function adminToken(request) {
+  const auth = String(request?.headers?.get?.('authorization') || '');
+  return String(request?.headers?.get?.('x-gnk-asg-token') || request?.headers?.get?.('x-admin-token') || auth.replace(/^Bearer\s+/i, '') || '').trim();
+}
+function expectedAdminToken(env) {
+  return String(env?.MAIL_CENTER_ADMIN_TOKEN || env?.GNK_ASG_OPERATOR_TOKEN || env?.OPERATOR_TOKEN || '').trim();
+}
+function constantTimeEqual(left, right) {
+  const a = new TextEncoder().encode(String(left || ''));
+  const b = new TextEncoder().encode(String(right || ''));
+  if (!a.length || a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i += 1) diff |= a[i] ^ b[i];
+  return diff === 0;
+}
+function adminApiAuthorized(request, env) {
+  const expected = expectedAdminToken(env);
+  return Boolean(expected && constantTimeEqual(adminToken(request), expected));
+}
 
 function withBrandedMimeTransport(env) {
   const binding = env?.EMAIL;
@@ -188,17 +209,41 @@ const BLOCKED_SENDER_DOMAINS = new Set([
 ]);
 const BLOCKED_SENDER_ADDRESSES = new Set([
   'ana@talaria.hr',
-  'nikolina.pisek@gmail.com'
+  'nikolina.pisek@gmail.com',
+  'info-ee@internet.ru'
 ]);
-function isSecurityRejected(sender, subject) {
+const SECURITY_FINANCIAL_SUBJECT = /\b(pla[cć]anje|payment|wire transfer|bank transfer|bankovni ra[cč]un|bank account|iban|swift|remittance|međunarodno pla[cć]anje|international payment)\b/i;
+const SECURITY_SCAM_SUBJECT = /\b(you (have )?won|claim your prize|lottery winner|inheritance fund|urgent business proposal|crypto(currency)? investment opportunity)\b/i;
+const SENDER_AUTOREPLY_WINDOW_SECONDS = 6 * 60 * 60;
+const SENDER_AUTOREPLY_MAX = 2;
+function configuredBlockedSenders(env) {
+  return new Set(String(env?.MAIL_SECURITY_BLOCKED_SENDERS || '').toLowerCase().split(/[\s,;]+/).map(v => v.trim()).filter(Boolean));
+}
+function securityRejectReason(sender, subject, env) {
   const address = String(sender || '').toLowerCase();
   const domain = address.split('@')[1] || '';
-  if (DISPOSABLE_EMAIL_DOMAINS.has(domain)) return true;
-  if (BLOCKED_SENDER_DOMAINS.has(domain)) return true;
-  if (BLOCKED_SENDER_ADDRESSES.has(address)) return true;
-  const s = String(subject || '').toLowerCase();
-  if (/\b(you (have )?won|claim your prize|lottery winner|inheritance fund|urgent business proposal|crypto(currency)? investment opportunity)\b/.test(s)) return true;
-  return false;
+  if (DISPOSABLE_EMAIL_DOMAINS.has(domain)) return 'disposable_sender_domain';
+  if (BLOCKED_SENDER_DOMAINS.has(domain)) return 'blocked_sender_domain';
+  if (BLOCKED_SENDER_ADDRESSES.has(address) || configuredBlockedSenders(env).has(address)) return 'blocked_sender_address';
+  const value = String(subject || '');
+  if (SECURITY_SCAM_SUBJECT.test(value)) return 'scam_subject';
+  if (SECURITY_FINANCIAL_SUBJECT.test(value)) return 'financial_subject_manual_review';
+  return '';
+}
+async function reserveSenderAutoReplySlot(env, sender) {
+  if (!env?.GNK_ASG_KV) return { ok: false, reason: 'sender_rate_store_unavailable' };
+  const normalized = String(sender || '').trim().toLowerCase();
+  if (!normalized) return { ok: false, reason: 'sender_rate_missing_sender' };
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(normalized));
+  const hash = [...new Uint8Array(digest)].map(v => v.toString(16).padStart(2, '0')).join('').slice(0, 32);
+  const key = `mail:autoreply:sender-rate:${hash}`;
+  let current = null;
+  try { current = JSON.parse(await env.GNK_ASG_KV.get(key) || 'null'); } catch { current = null; }
+  const count = Number(current?.count || 0);
+  if (count >= SENDER_AUTOREPLY_MAX) return { ok: false, reason: 'sender_rate_limited', count };
+  const next = { count: count + 1, updatedAt: new Date().toISOString() };
+  await env.GNK_ASG_KV.put(key, JSON.stringify(next), { expirationTtl: SENDER_AUTOREPLY_WINDOW_SECONDS });
+  return { ok: true, reason: null, count: next.count };
 }
 
 function isAutomatedInbound(message, sender) {
@@ -346,28 +391,18 @@ async function handleInbound(message, env) {
     await prependLog(env, 'mail:sent', { ...base, status: 'auto_reply_skipped' });
     return;
   }
-  if (isSecurityRejected(sender, subject)) {
-    await prependLog(env, 'mail:sent', { ...base, status: 'rejected_security' });
-    if (env.EMAIL?.send) {
-      try {
-        const rejectLanguage = detectLanguage(subject, toAddress, message);
-        const rejectText = rejectLanguage === 'en'
-          ? 'Your message could not be delivered. The server rejected it for security reasons.'
-          : 'Vaša poruka nije mogla biti dostavljena. Server ju je odbio iz sigurnosnih razloga.';
-        await env.EMAIL.send({
-          to: sender,
-          from: { email: DEFAULT_FROM, name: 'GNK ASG Mail Security' },
-          subject: /^re:/i.test(subject) ? subject : `Re: ${subject}`,
-          text: rejectText,
-          html: `<p style="margin:0;font-family:Arial,Helvetica,sans-serif;color:#111827">${escapeHtml(rejectText)}</p>`,
-          headers: { 'Auto-Submitted': 'auto-replied', 'X-GNK-ASG-Mail-Center': VERSION, 'X-GNK-ASG-Security-Rejection': '1' }
-        });
-      } catch {}
-    }
+  const securityReason = securityRejectReason(sender, subject, env);
+  if (securityReason) {
+    await prependLog(env, 'mail:sent', { ...base, status: 'auto_reply_suppressed_security', securityReason });
     return;
   }
   if (!(await claimMessage(env, messageId, `${sender}|${toAddress}|${subject}`))) {
     await prependLog(env, 'mail:sent', { ...base, status: 'auto_reply_skipped_duplicate' });
+    return;
+  }
+  const senderSlot = await reserveSenderAutoReplySlot(env, sender);
+  if (!senderSlot.ok) {
+    await prependLog(env, 'mail:sent', { ...base, status: 'auto_reply_suppressed_rate_limit', securityReason: senderSlot.reason });
     return;
   }
   if (!env.EMAIL?.send) {
@@ -446,6 +481,11 @@ export default {
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: JSON_HEADERS });
     const url = new URL(request.url);
     const path = url.pathname.replace(/\/+$/, '') || '/';
+    const protectedAdminApi = path === ADMIN_SEND_PATH || path.startsWith(ADMIN_API_PREFIX);
+    if (protectedAdminApi && !adminApiAuthorized(request, env)) {
+      const configured = Boolean(expectedAdminToken(env));
+      return json({ ok: false, error: configured ? 'unauthorized' : 'admin_api_locked_missing_secret' }, configured ? 401 : 503);
+    }
     if (path === '/api/admin-mail-send' && request.method === 'POST') return sendMail(request, env);
     if (path === '/api/admin-mail-send') return json({ ok: true, version: VERSION, endpoint: '/api/admin-mail-send', method: 'POST', pdfAttachments: true, emailBinding: Boolean(env.EMAIL) });
     if (path === '/api/mail-center/status') return json({ ok: true, version: VERSION, service: 'GNK ASG Mail Center', emailBinding: Boolean(env.EMAIL), aiBinding: Boolean(env.AI), autoReply: true, mediaProfile: true, mediaDefaultLanguage: 'en', languages: ['hr', 'en', 'de', 'it'], mandatoryBcc: internalCopy(env), inboxKey: 'mail:inbox', sentKey: 'mail:sent', outboxKey: 'mail:outbox', time: new Date().toISOString() });
