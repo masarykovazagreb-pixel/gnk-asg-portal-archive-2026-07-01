@@ -1,10 +1,10 @@
 {
-  "version": "GNK_ASG_EDITORIAL_PUBLICATION_PLAN_V4_20260721_NEW_SERIES",
-  "generatedAt": "2026-07-29T08:43:10+00:00",
+  "version": "GNK_ASG_EDITORIAL_PUBLICATION_PLAN_V5_20260925_ROLLING_DAILY",
+  "generatedAt": "2026-09-25T08:00:00+02:00",
   "editor": {
     "name": "Nermin Sefić",
     "role": "glavni urednik",
-    "approval": "Pripremljeno u draft PR-u; objava i deploy nisu odobreni."
+    "approval": "Četiri ranije pripremljena evergreen paketa ponovno pregledana i raspoređena za 26.–29.09.2026.; objava ide kroz postojeći kontrolirani publisher i production deploy gate."
   },
   "packages": [
     {
@@ -533,40 +533,72 @@
       ]
     },
     {
-      "id": "EDITORIAL-20260805-WEDNESDAY-SLOT1",
-      "publishAt": "2026-08-05T08:00:00+02:00",
+      "id": "EDITORIAL-20260926-SATURDAY-SLOT1",
+      "publishAt": "2026-09-26T08:00:00+02:00",
       "deployApproved": true,
       "status": "scheduled",
       "files": [
         "20260805-wednesday-slot1.json"
-      ]
+      ],
+      "rescheduledFrom": {
+        "id": "EDITORIAL-20260805-WEDNESDAY-SLOT1",
+        "publishAt": "2026-08-05T08:00:00+02:00"
+      },
+      "target": {
+        "publications": 1,
+        "commentaries": 3
+      }
     },
     {
-      "id": "EDITORIAL-20260806-THURSDAY-SLOT1",
-      "publishAt": "2026-08-06T08:00:00+02:00",
+      "id": "EDITORIAL-20260927-SUNDAY-SLOT1",
+      "publishAt": "2026-09-27T08:00:00+02:00",
       "deployApproved": true,
       "status": "scheduled",
       "files": [
         "20260806-thursday-slot1.json"
-      ]
+      ],
+      "rescheduledFrom": {
+        "id": "EDITORIAL-20260806-THURSDAY-SLOT1",
+        "publishAt": "2026-08-06T08:00:00+02:00"
+      },
+      "target": {
+        "publications": 1,
+        "commentaries": 3
+      }
     },
     {
-      "id": "EDITORIAL-20260807-FRIDAY-SLOT1",
-      "publishAt": "2026-08-07T08:00:00+02:00",
+      "id": "EDITORIAL-20260928-MONDAY-SLOT1",
+      "publishAt": "2026-09-28T08:00:00+02:00",
       "deployApproved": true,
       "status": "scheduled",
       "files": [
         "20260807-friday-slot1.json"
-      ]
+      ],
+      "rescheduledFrom": {
+        "id": "EDITORIAL-20260807-FRIDAY-SLOT1",
+        "publishAt": "2026-08-07T08:00:00+02:00"
+      },
+      "target": {
+        "publications": 1,
+        "commentaries": 3
+      }
     },
     {
-      "id": "EDITORIAL-20260808-SATURDAY-SLOT1",
-      "publishAt": "2026-08-08T08:00:00+02:00",
+      "id": "EDITORIAL-20260929-TUESDAY-SLOT1",
+      "publishAt": "2026-09-29T08:00:00+02:00",
       "deployApproved": true,
       "status": "scheduled",
       "files": [
         "20260808-saturday-slot1.json"
-      ]
+      ],
+      "rescheduledFrom": {
+        "id": "EDITORIAL-20260808-SATURDAY-SLOT1",
+        "publishAt": "2026-08-08T08:00:00+02:00"
+      },
+      "target": {
+        "publications": 1,
+        "commentaries": 3
+      }
     }
   ]
 }

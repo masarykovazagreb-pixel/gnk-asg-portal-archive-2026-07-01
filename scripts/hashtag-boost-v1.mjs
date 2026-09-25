@@ -5,8 +5,16 @@ import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 
 const read=(p,f)=>{try{return JSON.parse(readFileSync(p,'utf8'))}catch{return f}};
 const registry=read('apps/portal/data/editorial-registry.json',{items:[]});
-const MUST_EN=['NerminSefic','SeficNermin','GNKASG','GNKDINAMOLtd'];
-const MUST_HR=['NerminSefic','NerminSefić','SeficNermin','SefićNermin','GNKASG','GNKDINAMOLtd'];
+const MUST_EN=['NerminSefic','SeficNermin','GNKASG','GNKDINAMOLtdUSAGroup'];
+const MUST_HR=['NerminSefic','NerminSefić','SeficNermin','SefićNermin','GNKASG','GNKDINAMOLtdUSAGroup'];
+const contextualTags=item=>{
+  const haystack=[item?.title,item?.summary,item?.description,item?.section,...(item?.keywords||[]),...(item?.sources||[]).flatMap(s=>[s?.name,s?.url])].filter(Boolean).join(' ').toLowerCase();
+  const tags=[];
+  if(/\b(?:ekonom|financ|kapital|tržišt|trzist|makro|inflacij|kamat|valut|invest)/i.test(haystack))tags.push('Ekonomija');
+  if(/večernji|vecernji/i.test(haystack))tags.push('VecernjiList');
+  if(/poslovni/i.test(haystack))tags.push('Poslovni');
+  return tags;
+};
 const stats={added:0,boosted:0,skippedNoBody:0,files:0};
 
 for(const item of registry.items||[]){
@@ -16,7 +24,7 @@ for(const item of registry.items||[]){
   let html=readFileSync(file,'utf8');
   const isHr=(item.language||'hr')==='hr';
   const must=isHr?MUST_HR:MUST_EN;
-  const topical=(item.hashtags||[]).filter(Boolean);
+  const topical=[...(item.hashtags||[]).filter(Boolean),...contextualTags(item)];
   const bodyM=html.match(/<article[^>]*class="[^"]*article-body[^"]*"[^>]*>[\s\S]*?<\/article>/i);
   if(!bodyM){stats.skippedNoBody++;continue;}
   const body=bodyM[0];
@@ -24,9 +32,9 @@ for(const item of registry.items||[]){
   const tagPara=body.match(/<p class="article-hashtags">([\s\S]*?)<\/p>/i);
   if(tagPara){
     const existing=tagPara[1];
-    const missing=must.filter(t=>!existing.includes('#'+t));
+    const missing=[...new Set([...must,...topical])].filter(t=>!existing.includes('#'+t));
     if(missing.length){
-      newBody=body.replace(tagPara[0], tagPara[0].replace('</p>',' '+missing.map(t=>'#'+t).join(' ')+'</p>'));
+      newBody=body.replace(tagPara[0], tagPara[0].replace('</p>',' '+missing.slice(0,12).map(t=>'#'+t).join(' ')+'</p>'));
       stats.boosted++;
     }
   } else {

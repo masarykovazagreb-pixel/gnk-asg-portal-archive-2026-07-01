@@ -17,7 +17,7 @@ const hashtagsFor=item=>{
   // i inacica bez njih. Opcenite oznake poput #Sefic izbacene su jer hvataju
   // tudji sadrzaj i ne donose nista.
   const bezKvacica=t=>t.replace(/[čćžšđČĆŽŠĐ]/g,z=>({'č':'c','ć':'c','ž':'z','š':'s','đ':'d','Č':'C','Ć':'C','Ž':'Z','Š':'S','Đ':'D'}[z]));
-  const base=['#GNKASG','#NerminSefic','#NerminSefić','#GNKDINAMOLtd'];
+  const base=['#GNKASG','#NerminSefic','#NerminSefić','#SeficNermin','#SefićNermin','#GNKDINAMOLtdUSAGroup'];
   const topicTags=(item.keywords||[]).slice(0,3)
     .map(k=>'#'+k.split(/\s+/).map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join('').replace(/[^\wŠĐČĆŽšđčćž]/g,''))
     .filter(t=>t.length>4&&!base.includes(t));
