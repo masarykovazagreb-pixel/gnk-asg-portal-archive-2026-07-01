@@ -2,6 +2,14 @@ name: Workforce Supervisor Agent
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/workforce-supervisor-agent.yml'
+      - 'scripts/workforce-supervisor-agent-v1.mjs'
+      - 'workers/gnk-asg-direct-operator/src/digital-workforce-public-read-v1.js'
+      - 'apps/portal/data/editorial-plan/manifest.json'
+      - 'apps/portal/data/editorial-plan/publication-holds.json'
   schedule:
     - cron: '50 2,8,14,20 * * *'
 
