@@ -9,8 +9,11 @@ const WEB='https://gnk-asg.hr';
 const MESSAGE_ID_TTL=60*60*24*30;
 
 const PROFILES={
+  'info@gnk-asg.hr':{key:'info',prefix:'GNK-INFO-IN',address:'info@gnk-asg.hr',fromName:'GNK ASG Info Desk',role:'Information Desk',language:'bilingual',legal:false},
+  'contact@gnk-asg.hr':{key:'contact',prefix:'GNK-CONTACT-IN',address:'contact@gnk-asg.hr',fromName:'GNK ASG Contact Desk',role:'Contact Desk',language:'bilingual',legal:false},
   'office@gnk-asg.hr':{key:'office',prefix:'GNK-OFFICE-IN',address:'office@gnk-asg.hr',fromName:'GNK ASG Office',role:'Office',language:'bilingual',legal:false},
   'legal@gnk-asg.hr':{key:'legal',prefix:'GNK-LEGAL-IN',address:'legal@gnk-asg.hr',fromName:'GNK ASG Legal & Compliance',role:'Legal & Compliance',language:'bilingual',legal:true},
+  'privacy@gnk-asg.hr':{key:'privacy',prefix:'GNK-PRIVACY-IN',address:'privacy@gnk-asg.hr',fromName:'GNK ASG Privacy Desk',role:'Privacy & Data Protection',language:'bilingual',legal:true},
   'media@gnk-asg.hr':{key:'media',prefix:'GNK-MEDIA-IN',address:'media@gnk-asg.hr',fromName:'GNK ASG Media Desk',role:'Media Relations & Accreditation Center',language:'english',media:true},
   'press@gnk-asg.hr':{key:'press',prefix:'GNK-PRESS-IN',address:'press@gnk-asg.hr',fromName:'GNK ASG Press Desk',role:'Press Desk',language:'english',media:true},
   'it@gnk-asg.hr':{key:'it',prefix:'GNK-IT-IN',address:'it@gnk-asg.hr',fromName:'GNK ASG IT',role:'Technical Support',language:'bilingual'},
