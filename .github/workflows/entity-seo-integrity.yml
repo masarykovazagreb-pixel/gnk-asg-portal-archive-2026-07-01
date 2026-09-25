@@ -1,8 +1,6 @@
 name: Entity SEO Integrity
 
 on:
-  schedule:
-    - cron: '17 11 * * *'
   workflow_dispatch:
   push:
     branches: [main]
@@ -23,6 +21,7 @@ concurrency:
 
 jobs:
   entity-seo:
+    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
