@@ -15,8 +15,11 @@ const MAX_TOTAL_ATTACHMENT_BYTES=3400000;
 const DEDUPE_SECONDS=90;
 
 export const PROFILES={
+  info:{id:'info',name:'GNK ASG Info Desk',email:'info@gnk-asg.hr',unit:'Information Desk'},
+  contact:{id:'contact',name:'GNK ASG Contact Desk',email:'contact@gnk-asg.hr',unit:'Contact Desk'},
   office:{id:'office',name:'GNK ASG Office',email:'office@gnk-asg.hr',unit:'Office'},
   legal:{id:'legal',name:'GNK ASG Legal & Compliance',email:'legal@gnk-asg.hr',unit:'Legal & Compliance'},
+  privacy:{id:'privacy',name:'GNK ASG Privacy Desk',email:'privacy@gnk-asg.hr',unit:'Privacy & Data Protection'},
   media:{id:'media',name:'GNK DINAMO Ltd. Group | Media Relations & Accreditation Center',email:'media@gnk-asg.hr',unit:'Media Relations & Accreditation Center'},
   press:{id:'press',name:'GNK DINAMO Ltd. Group | Press Office',email:'press@gnk-asg.hr',unit:'Press Office'},
   it:{id:'it',name:'GNK ASG IT | Digital Assistant',email:'it@gnk-asg.hr',unit:'IT & Digital Support'},
