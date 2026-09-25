@@ -4,7 +4,7 @@ import {createCatchAllProfile,extractGnkAddresses,VERSION as PROFILE_FACTORY_VER
 import {LOGO_URL,renderBrandSignatureHtml,VERSION as SIGNATURE_VERSION} from '../workers/gnk-asg-direct-operator/src/email-brand-signature-v1.js';
 
 const known=[
- ['office@gnk-asg.hr','GNK-OFFICE-IN'],['legal@gnk-asg.hr','GNK-LEGAL-IN'],['media@gnk-asg.hr','GNK-MEDIA-IN'],
+ ['info@gnk-asg.hr','GNK-INFO-IN'],['contact@gnk-asg.hr','GNK-CONTACT-IN'],['office@gnk-asg.hr','GNK-OFFICE-IN'],['legal@gnk-asg.hr','GNK-LEGAL-IN'],['privacy@gnk-asg.hr','GNK-PRIVACY-IN'],['media@gnk-asg.hr','GNK-MEDIA-IN'],
  ['press@gnk-asg.hr','GNK-PRESS-IN'],['it@gnk-asg.hr','GNK-IT-IN'],['assistant@gnk-asg.hr','GNK-ASSISTANT-IN'],
  ['nermin.sefic@gnk-asg.hr','GNK-SEFIC-IN'],['sefic@gnk-asg.hr','GNK-SEFIC-IN'],['ubo@gnk-asg.hr','GNK-UBO-IN']
 ];

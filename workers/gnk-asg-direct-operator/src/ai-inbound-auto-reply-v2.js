@@ -297,7 +297,10 @@ function unitName(message, payload) {
     'media@gnk-asg.hr': 'Media Relations & Accreditation Center',
     'press@gnk-asg.hr': 'Press Office',
     'legal@gnk-asg.hr': 'Legal & Compliance',
+    'privacy@gnk-asg.hr': 'Privacy & Data Protection',
     'it@gnk-asg.hr': 'IT & Digital Support',
+    'info@gnk-asg.hr': 'Information Desk',
+    'contact@gnk-asg.hr': 'Contact Desk',
     'office@gnk-asg.hr': 'Office',
     'assistant@gnk-asg.hr': 'Executive Assistant',
     'nermin.sefic@gnk-asg.hr': 'Managing Director',
@@ -333,9 +336,15 @@ function parseModelOutput(value) {
   }
 }
 
+function sensitiveBusinessRequest(value) {
+  const text=String(value||'').toLowerCase();
+  return /(?:\b(?:pay|payment|paid|invoice|iban|swift|wire|bank account|bank details|price|pricing|quote|offer|contract|settlement|refund|credit note|debit note|purchase order|po number|tax|vat|withholding)\b|\b(?:platiti|plaćanje|placanje|uplata|uplatiti|isplata|račun|racun|faktura|iban|swift|bankovni račun|bankovni racun|cijena|ponuda|ugovor|nagodba|povrat|odobrenje|odobriti|porez|pdv)\b)/i.test(text);
+}
+
 function deterministicReply({ subject, body, name, language, unit }) {
   const topic = `${subject}\n${body}`;
   const mailStudio = /media cent(?:ar|er)|mail studio|inbox|sent|dolazn|poslan|kartic/i.test(topic);
+  const sensitiveBusiness = sensitiveBusinessRequest(topic);
   const named = name ? ` ${name}` : '';
 
   if (language === 'hr' || language === 'sr') {
@@ -343,7 +352,9 @@ function deterministicReply({ subject, body, name, language, unit }) {
       language: 'hr',
       body: `Poštovani${named},\n\n${mailStudio
         ? 'Za pregled kartica Inbox i Sent potrebno je otvoriti zaštićeni GNK ASG Mail Studio i prijaviti se ovlaštenom operatorskom sesijom. Sam pristup Cloudflare računu ne omogućuje pregled sadržaja Gmail poruka. Ako kartice nakon prijave nisu vidljive, potrebno je provjeriti operatorsku ovlast i ponovno učitati Mail Studio.'
-        : `Vaš je upit obrađen prema predmetu i sadržaju poruke te povezan s nadležnom jedinicom ${unit}. Ako je za precizan odgovor potreban dodatni podatak, zatražit ćemo samo taj podatak.`}\n\nSrdačan pozdrav`
+        : sensitiveBusiness
+          ? `Vaš upit je evidentiran i proslijeđen nadležnoj osobi u jedinici ${unit} na provjeru. Automatizirani sustav ne odobrava plaćanja, iznose, račune, ponude, ugovore niti druge poslovne ili financijske obveze. Nakon ljudske provjere bit će dostavljen odgovarajući odgovor ako je potreban.`
+          : `Vaš je upit obrađen prema predmetu i sadržaju poruke te povezan s nadležnom jedinicom ${unit}. Ako je za precizan odgovor potreban dodatni podatak, zatražit ćemo samo taj podatak.`}\n\nSrdačan pozdrav`
     };
   }
 
@@ -352,7 +363,9 @@ function deterministicReply({ subject, body, name, language, unit }) {
       language: 'de',
       body: `Guten Tag${named},\n\n${mailStudio
         ? 'Für die Ansichten Inbox und Sent muss das geschützte GNK ASG Mail Studio mit einer autorisierten Operator-Sitzung geöffnet werden. Eine Cloudflare-Mitgliedschaft allein gewährt keinen Zugriff auf Gmail-Nachrichteninhalte.'
-        : `Ihre Anfrage wurde anhand von Betreff und Nachricht geprüft und der zuständigen Stelle ${unit} zugeordnet.`}\n\nMit freundlichen Grüßen`
+        : sensitiveBusiness
+          ? `Ihre Anfrage wurde erfasst und der zuständigen Stelle ${unit} zur menschlichen Prüfung weitergeleitet. Das automatisierte System genehmigt keine Zahlungen, Beträge, Rechnungen, Angebote, Verträge oder sonstigen geschäftlichen bzw. finanziellen Verpflichtungen.`
+          : `Ihre Anfrage wurde anhand von Betreff und Nachricht geprüft und der zuständigen Stelle ${unit} zugeordnet.`}\n\nMit freundlichen Grüßen`
     };
   }
 
@@ -360,12 +373,21 @@ function deterministicReply({ subject, body, name, language, unit }) {
     language: 'en',
     body: `Dear${named},\n\n${mailStudio
       ? 'To view Inbox and Sent, open the protected GNK ASG Mail Studio and sign in with an authorized operator session. Cloudflare account membership alone does not provide access to Gmail message bodies. If the cards remain unavailable after sign-in, the operator permission or session must be checked and Mail Studio reloaded.'
-      : `Your inquiry was reviewed using its subject and message content and routed to ${unit}. We will ask only if an essential detail is missing.`}\n\nKind regards`
+      : sensitiveBusiness
+        ? `Your inquiry has been recorded and routed to the responsible person in ${unit} for human review. The automated system does not approve payments, amounts, invoices, offers, contracts or other business or financial commitments.`
+        : `Your inquiry was reviewed using its subject and message content and routed to ${unit}. We will ask only if an essential detail is missing.`}\n\nKind regards`
   };
+}
+
+function violatesBusinessAuthority(reply) {
+  const text=clean(reply?.body);
+  if(!text)return false;
+  return /(?:\b(?:you may pay|you can pay|payment is approved|approved for payment|we approve payment|invoice is approved|please pay|pay exactly|transfer exactly|use this iban|change the iban|our new bank account|binding price|we accept your offer)\b|\b(?:možete platiti|mozete platiti|može se platiti|moze se platiti|plaćanje je odobreno|placanje je odobreno|račun je odobren|racun je odobren|uplatite točno|uplatite tocno|koristite ovaj iban|promijenite iban|prihvaćamo ponudu|prihvacamo ponudu)\b)/i.test(text);
 }
 
 function validPersonalizedReply(reply, language, name) {
   if (!reply?.body) return false;
+  if (violatesBusinessAuthority(reply)) return false;
   if (/Dear Sir or Madam/i.test(reply.body)) return false;
   if (name && !reply.body.includes(name)) return false;
   if ((language === 'hr' || language === 'sr') && !/\b(Poštovani|Poštovana|Pozdrav|Hvala|Vaš|Vaša|molimo|potrebno)\b/i.test(reply.body)) return false;
@@ -381,7 +403,7 @@ async function askModel(env, model, prompt) {
       messages: [
         {
           role: 'system',
-          content: 'Write a useful personalized preliminary email reply for GNK ASG. Use only the dominant language of the incoming message, or the explicitly requested reply language. Use the actual subject and body and answer the concrete question; never return only a generic receipt. If a reliable sender name is supplied, greet that person by the exact name and never use Dear Sir or Madam. Do not invent facts. Ask at most two precise questions only if essential information is missing. Preserve exact reference codes. Do not approve accreditation, accept an offer, create a contract, give legal advice, confirm payment, reveal confidential information, promise a deadline or make a final decision. Return JSON only with language and body. Include a greeting and courteous closing, but no institutional signature.'
+          content: 'Write a useful personalized preliminary email reply for GNK ASG. Use only the dominant language of the incoming message, or the explicitly requested reply language. Use the actual subject and body and answer the concrete question; never return only a generic receipt. If a reliable sender name is supplied, greet that person by the exact name and never use Dear Sir or Madam. Do not invent facts. Ask at most two precise questions only if essential information is missing. Preserve exact reference codes. Do not approve accreditation, accept an offer, create a contract, give legal advice, confirm or authorize payment, confirm a payable amount, approve an invoice, provide or change bank details, quote a binding price, reveal confidential information, promise a deadline or make a final decision. For any financial, invoicing, banking, tax, contractual or commercial-commitment question, state that it has been recorded and routed to an authorized person for human review. Never answer that an amount can or should be paid. Return JSON only with language and body. Include a greeting and courteous closing, but no institutional signature.'
         },
         { role: 'user', content: prompt }
       ],
@@ -403,7 +425,9 @@ async function publicKnowledge(env) {
     'Media application: https://www.gnk-asg.hr/media-application/?lang=en',
     'THE CODE: https://www.gnk-asg.hr/the-code/',
     'GNK ASG Mail Studio is a protected operator interface. Inbox and Sent require an authenticated operator session. Cloudflare account membership by itself does not provide access to Gmail message bodies.',
-    'Automatic replies are preliminary and cannot approve accreditation, accept offers, create contracts, give legal advice, confirm payments, disclose confidential information, promise deadlines or make final decisions.'
+    'Automatic replies are preliminary and cannot approve accreditation, accept offers, create contracts, give legal advice, confirm or authorize payments, confirm payable amounts, approve invoices, provide or change bank details, quote binding prices, disclose confidential information, promise deadlines or make final decisions.',
+    'GNK ASG automated mail handling is operationally separated from direct business decision-making. Financial, invoice, banking, tax, contractual and commercial commitment questions must be routed to an authorized person for human review.',
+    'Approved corporate mailboxes in Mail Studio: info@gnk-asg.hr, contact@gnk-asg.hr, office@gnk-asg.hr, legal@gnk-asg.hr, privacy@gnk-asg.hr, media@gnk-asg.hr, press@gnk-asg.hr, it@gnk-asg.hr, assistant@gnk-asg.hr, nermin.sefic@gnk-asg.hr, sefic@gnk-asg.hr, ubo@gnk-asg.hr.'
   ];
   const configured = clean(env?.AI_AUTO_REPLY_KNOWLEDGE);
   if (configured) parts.push(configured);
@@ -525,5 +549,7 @@ export const __test = {
   incomingBody,
   signatureName,
   detectLanguage,
-  isAutomaticReply
+  isAutomaticReply,
+  sensitiveBusinessRequest,
+  violatesBusinessAuthority
 };

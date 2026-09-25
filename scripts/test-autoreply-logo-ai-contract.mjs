@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 const autoreply=fs.readFileSync('workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js','utf8');
+const personalized=fs.readFileSync('workers/gnk-asg-direct-operator/src/ai-inbound-auto-reply-v2.js','utf8');
 const mime=fs.readFileSync('workers/gnk-asg-direct-operator/src/email-autoreply-mime-v1.js','utf8');
 
 for(const marker of [
@@ -18,6 +19,18 @@ for(const marker of [
   "Never promise an outcome, deadline, response time, payment, approval, attendance, publication or contractual action",
   "MAIL_AUTO_REPLY_LIVE"
 ]) assert.ok(autoreply.includes(marker),`autoreply contract marker missing: ${marker}`);
+
+for(const marker of [
+  "Never answer that an amount can or should be paid",
+  "operationally separated from direct business decision-making",
+  "approve invoices",
+  "provide or change bank details",
+  "sensitiveBusinessRequest",
+  "violatesBusinessAuthority",
+  "info@gnk-asg.hr",
+  "contact@gnk-asg.hr",
+  "privacy@gnk-asg.hr"
+]) assert.ok(personalized.includes(marker),`personalized AI contract marker missing: ${marker}`);
 
 for(const marker of [
   "loadEmailLogo",

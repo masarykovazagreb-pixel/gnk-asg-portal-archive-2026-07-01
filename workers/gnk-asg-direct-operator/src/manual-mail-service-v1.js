@@ -43,11 +43,18 @@ const ALLOWED_ATTACHMENT_TYPES=new Map([
 const BLOCKED_ATTACHMENT_EXTENSIONS=new Set(['exe','dll','js','mjs','cjs','html','htm','xhtml','svg','bat','cmd','scr','ps1','vbs','jar','com','msi','apk','app','sh','php','py','rb','pl']);
 
 const PROFILES=new Map([
+  ['info',{id:'info',name:'GNK ASG Info Desk',email:'info@gnk-asg.hr'}],
+  ['contact',{id:'contact',name:'GNK ASG Contact Desk',email:'contact@gnk-asg.hr'}],
   ['office',{id:'office',name:'GNK ASG Office',email:'office@gnk-asg.hr'}],
   ['legal',{id:'legal',name:'GNK ASG Legal & Compliance',email:'legal@gnk-asg.hr'}],
+  ['privacy',{id:'privacy',name:'GNK ASG Privacy Desk',email:'privacy@gnk-asg.hr'}],
   ['media',{id:'media',name:'GNK ASG Media Desk',email:'media@gnk-asg.hr'}],
+  ['press',{id:'press',name:'GNK ASG Press Desk',email:'press@gnk-asg.hr'}],
   ['it',{id:'it',name:'IT – Osobni digitalni asistent',email:'it@gnk-asg.hr'}],
-  ['director',{id:'director',name:'Nermin Sefić / Direktor',email:'nermin.sefic@gnk-asg.hr'}]
+  ['assistant',{id:'assistant',name:'GNK ASG | Executive Assistant',email:'assistant@gnk-asg.hr'}],
+  ['director',{id:'director',name:'Nermin Sefić / Direktor',email:'nermin.sefic@gnk-asg.hr'}],
+  ['sefic',{id:'sefic',name:'Nermin Sefić | Executive Office',email:'sefic@gnk-asg.hr'}],
+  ['ubo',{id:'ubo',name:'GNK ASG UBO Office',email:'ubo@gnk-asg.hr'}]
 ]);
 
 const clean=value=>String(value??'').trim();
