@@ -5,6 +5,10 @@ name: AEO / AI Visibility Boost
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/aeo-ai-visibility.yml'
   schedule:
     - cron: '20 2,8,14,20 * * *'   # 4x dnevno UTC; budget-aware staggered cadence
 
@@ -92,3 +96,11 @@ jobs:
             --ref main \
             -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
             -f approved_sha="$sha"
+
+      - name: Dispatch unified four-channel blog mirror
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh workflow run blog-mirror-publish.yml --repo "$GITHUB_REPOSITORY" --ref main
