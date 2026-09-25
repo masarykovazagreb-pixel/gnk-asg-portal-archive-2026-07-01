@@ -8,11 +8,18 @@ const isMailApi=path=>path==='/api/admin-mail-send'||path.startsWith('/api/studi
 const isMailboxApi=path=>path==='/api/studio-message/inbox'||path==='/api/mail-center/inbox'||path==='/api/studio-message/sent'||path==='/api/mail-center/sent'||path==='/api/studio-message/outbox'||path==='/api/mail-center/outbox';
 const CROATIAN=/\b(poštovani|postovani|poštovana|postovana|predmet|prijava|redakcija|mediji|akreditacija|poziv|odgovor|potvrda|upit|poruka|poruke|slanje|vijesti|direktor|osobni|urednički|urednicki|hvala|molimo|zaprimili|zaprimljena|primitak|vezano|vašu|vasu|najkraćem|najkracem|srdačan|srdacan|pozdrav|poštovanjem|postovanjem|obavijestite|pošiljatelja|posiljatelja)\b/i;
 const SENDER_NAMES=new Map([
+  ['info@gnk-asg.hr','GNK ASG Info Desk'],
+  ['contact@gnk-asg.hr','GNK ASG Contact Desk'],
   ['office@gnk-asg.hr','GNK ASG Office'],
   ['legal@gnk-asg.hr','GNK ASG Legal & Compliance'],
+  ['privacy@gnk-asg.hr','GNK ASG Privacy Desk'],
   ['media@gnk-asg.hr','GNK DINAMO Ltd. Group | Media Relations & Accreditation Center'],
+  ['press@gnk-asg.hr','GNK DINAMO Ltd. Group | Press Office'],
   ['it@gnk-asg.hr','GNK ASG IT | Digital Assistant'],
+  ['assistant@gnk-asg.hr','GNK ASG | Executive Assistant'],
   ['nermin.sefic@gnk-asg.hr','Nermin Sefić | Managing Director'],
+  ['sefic@gnk-asg.hr','Nermin Sefić | Executive Office'],
+  ['ubo@gnk-asg.hr','GNK DINAMO Ltd. Group | UBO Office'],
   ['info@gnk-asg.hr','GNK ASG Information Desk']
 ]);
 const RESPONSE_REPLACEMENTS=[
