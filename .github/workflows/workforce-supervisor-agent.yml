@@ -1,0 +1,71 @@
+name: Workforce Supervisor Agent
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '50 2,8,14,20 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: workforce-supervisor-agent
+  cancel-in-progress: true
+
+jobs:
+  supervise:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build supervisor report
+        run: node scripts/workforce-supervisor-agent-v1.mjs
+      - name: Verify production Workforce and public editorial surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          tmp="$(mktemp -d)"
+          trap 'rm -rf "$tmp"' EXIT
+          base='https://gnk-asg.hr/api/public/digital-workforce'
+          for view in health state tasks projects; do
+            code=$(curl --retry 3 --retry-delay 3 --connect-timeout 10 --max-time 30 -sS -o "$tmp/$view.json" -w '%{http_code}' "$base/$view")
+            echo "$view -> HTTP $code"
+            test "$code" = 200
+          done
+          article='https://gnk-asg.hr/komentari/'
+          code=$(curl --retry 3 --retry-delay 3 --connect-timeout 10 --max-time 30 -sS -o "$tmp/comments.html" -w '%{http_code}' "$article")
+          echo "comments -> HTTP $code"
+          test "$code" = 200
+          grep -q 'Nermin Sefić' "$tmp/comments.html"
+          node - "$tmp" <<'NODE'
+          const fs=require('fs'),dir=process.argv[2];
+          const read=n=>JSON.parse(fs.readFileSync(dir+'/'+n+'.json','utf8'));
+          const health=read('health'),state=read('state');
+          if(health.ok!==true)throw new Error('runtime health not ok');
+          if(state.ok!==true)throw new Error('workforce state not ok');
+          if(Number(state.workers)!==1573)throw new Error('worker profile parity mismatch');
+          console.log(JSON.stringify({ok:true,health:health.status,state:state.status,workers:state.workers,supervisorAgent:state.supervisorAgent||null},null,2));
+          NODE
+      - name: Publish run summary
+        shell: bash
+        run: |
+          node - <<'NODE' >> "$GITHUB_STEP_SUMMARY"
+          const fs=require('fs');
+          const r=JSON.parse(fs.readFileSync('artifacts/workforce-supervisor/report.json','utf8'));
+          console.log('## GNK ASG Workforce Supervisor');
+          console.log('- Agent: **'+r.agent.id+'**');
+          console.log('- Modeled profiles assigned: **'+r.modeledWorkforce.assignments+'/'+r.modeledWorkforce.profiles+'**');
+          console.log('- Editorial future packages: **'+r.editorial.futurePackages+'**');
+          console.log('- Daily coverage days: **'+r.editorial.dailyCoverageDays+'**');
+          console.log('- Coverage through: **'+(r.editorial.coverageThrough||'none')+'**');
+          console.log('- Active quality holds: **'+r.editorial.activeHolds+'**');
+          console.log('- Publication registry items: **'+r.publication.registryItems+'**');
+          NODE
+      - uses: actions/upload-artifact@v4
+        with:
+          name: workforce-supervisor-${{ github.run_id }}
+          path: artifacts/workforce-supervisor/report.json
+          retention-days: 7
