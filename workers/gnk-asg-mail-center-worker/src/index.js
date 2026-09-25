@@ -18,6 +18,27 @@ const mandatoryBcc = env => ['beckuphome@gmail.com', internalRecipient(env)];
 const MEDIA_EMAILS = new Set(['media@gnk-asg.hr', 'press@gnk-asg.hr']);
 const DEFAULT_FROM = 'assistant@gnk-asg.hr';
 const MAX_LOG_ITEMS = 250;
+const ADMIN_API_PREFIX = '/api/mail-center/';
+const ADMIN_SEND_PATH = '/api/admin-mail-send';
+function adminToken(request) {
+  const auth = String(request?.headers?.get?.('authorization') || '');
+  return String(request?.headers?.get?.('x-gnk-asg-token') || request?.headers?.get?.('x-admin-token') || auth.replace(/^Bearer\s+/i, '') || '').trim();
+}
+function expectedAdminToken(env) {
+  return String(env?.MAIL_CENTER_ADMIN_TOKEN || env?.GNK_ASG_OPERATOR_TOKEN || env?.OPERATOR_TOKEN || '').trim();
+}
+function constantTimeEqual(left, right) {
+  const a = new TextEncoder().encode(String(left || ''));
+  const b = new TextEncoder().encode(String(right || ''));
+  if (!a.length || a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i += 1) diff |= a[i] ^ b[i];
+  return diff === 0;
+}
+function adminApiAuthorized(request, env) {
+  const expected = expectedAdminToken(env);
+  return Boolean(expected && constantTimeEqual(adminToken(request), expected));
+}
 
 function withBrandedMimeTransport(env) {
   const binding = env?.EMAIL;
@@ -460,6 +481,11 @@ export default {
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: JSON_HEADERS });
     const url = new URL(request.url);
     const path = url.pathname.replace(/\/+$/, '') || '/';
+    const protectedAdminApi = path === ADMIN_SEND_PATH || path.startsWith(ADMIN_API_PREFIX);
+    if (protectedAdminApi && !adminApiAuthorized(request, env)) {
+      const configured = Boolean(expectedAdminToken(env));
+      return json({ ok: false, error: configured ? 'unauthorized' : 'admin_api_locked_missing_secret' }, configured ? 401 : 503);
+    }
     if (path === '/api/admin-mail-send' && request.method === 'POST') return sendMail(request, env);
     if (path === '/api/admin-mail-send') return json({ ok: true, version: VERSION, endpoint: '/api/admin-mail-send', method: 'POST', pdfAttachments: true, emailBinding: Boolean(env.EMAIL) });
     if (path === '/api/mail-center/status') return json({ ok: true, version: VERSION, service: 'GNK ASG Mail Center', emailBinding: Boolean(env.EMAIL), aiBinding: Boolean(env.AI), autoReply: true, mediaProfile: true, mediaDefaultLanguage: 'en', languages: ['hr', 'en', 'de', 'it'], mandatoryBcc: internalCopy(env), inboxKey: 'mail:inbox', sentKey: 'mail:sent', outboxKey: 'mail:outbox', time: new Date().toISOString() });
