@@ -12,11 +12,18 @@ const MAX_ATTACHMENT_BYTES=3200000;
 const EXT=['pdf','doc','docx','xls','xlsx','ppt','pptx','zip','csv','txt','png','jpg','jpeg','webp'];
 const MIME={pdf:'application/pdf',doc:'application/msword',docx:'application/vnd.openxmlformats-officedocument.wordprocessingml.document',xls:'application/vnd.ms-excel',xlsx:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',ppt:'application/vnd.ms-powerpoint',pptx:'application/vnd.openxmlformats-officedocument.presentationml.presentation',zip:'application/zip',csv:'text/csv',txt:'text/plain',png:'image/png',jpg:'image/jpeg',jpeg:'image/jpeg',webp:'image/webp'};
 const DEFAULT_PROFILES={
+  info:{email:'info@gnk-asg.hr',name:'GNK ASG Info Desk',role:'Information desk'},
+  contact:{email:'contact@gnk-asg.hr',name:'GNK ASG Contact Desk',role:'Contact desk'},
   office:{email:'office@gnk-asg.hr',name:'GNK ASG Office',role:'General office'},
   legal:{email:'legal@gnk-asg.hr',name:'GNK ASG Legal & Compliance',role:'Legal / compliance'},
+  privacy:{email:'privacy@gnk-asg.hr',name:'GNK ASG Privacy Desk',role:'Privacy / data protection'},
   media:{email:'media@gnk-asg.hr',name:'GNK ASG Media Desk',role:'Media relations'},
+  press:{email:'press@gnk-asg.hr',name:'GNK ASG Press Desk',role:'Press office'},
   it:{email:'it@gnk-asg.hr',name:'IT – Osobni digitalni asistent',role:'IT / worker alerts'},
-  director:{email:'nermin.sefic@gnk-asg.hr',name:'Nermin Sefić / Direktor',role:'Director'}
+  assistant:{email:'assistant@gnk-asg.hr',name:'GNK ASG | Executive Assistant',role:'Executive assistant'},
+  director:{email:'nermin.sefic@gnk-asg.hr',name:'Nermin Sefić / Direktor',role:'Director'},
+  sefic:{email:'sefic@gnk-asg.hr',name:'Nermin Sefić | Executive Office',role:'Executive office'},
+  ubo:{email:'ubo@gnk-asg.hr',name:'GNK ASG UBO Office',role:'UBO office'}
 };
 const TEMPLATES={
   hr:{short:'Poštovani,\n\nzahvaljujemo na poruci. Potvrđujemo primitak i odgovorit ćemo u razumnom roku.\n\nSrdačan pozdrav,',reply:'Poštovani,\n\nzahvaljujemo na poruci. Potvrđujemo da je uredno zaprimljena.\n\nSrdačan pozdrav,',legal:'Poštovani,\n\npotvrđujemo primitak Vaše poruke. Navodi će biti razmotreni prema dostupnoj dokumentaciji i u okviru ovlasti društva GNK ASG d.o.o.\n\nSva prava i pravni interesi društva GNK ASG d.o.o. ostaju pridržani.\n\nSrdačan pozdrav,',media:'Poštovani,\n\nzahvaljujemo na medijskom upitu. Molimo da dodatna pitanja i rokove dostavite pisanim putem kako bismo pripremili cjelovit odgovor.\n\nSrdačan pozdrav,',forward:'Poštovani,\n\nprosljeđujemo poruku u nastavku.\n\nSrdačan pozdrav,'},
