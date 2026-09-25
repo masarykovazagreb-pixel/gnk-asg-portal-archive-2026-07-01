@@ -1,0 +1,67 @@
+name: High Throughput Description Extension V21
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v21.json'
+      - 'scripts/audit-meta-description-quality-v1.mjs'
+      - 'scripts/audit-social-description-parity-v1.mjs'
+      - 'scripts/audit-article-description-parity-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v21.py'
+      - '.github/workflows/high-throughput-description-extension-v21.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v21.json'
+      - 'scripts/audit-meta-description-quality-v1.mjs'
+      - 'scripts/audit-social-description-parity-v1.mjs'
+      - 'scripts/audit-article-description-parity-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v21.py'
+      - '.github/workflows/high-throughput-description-extension-v21.yml'
+
+permissions:
+  contents: read
+concurrency:
+  group: high-throughput-description-v21-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax checks
+        run: |
+          set -euo pipefail
+          node --check scripts/audit-meta-description-quality-v1.mjs
+          node --check scripts/audit-social-description-parity-v1.mjs
+          node --check scripts/audit-article-description-parity-v1.mjs
+          python -m py_compile scripts/validate-high-throughput-capability-extension-v21.py
+      - name: Meta description quality
+        run: node scripts/audit-meta-description-quality-v1.mjs
+      - name: Social description parity
+        run: node scripts/audit-social-description-parity-v1.mjs
+      - name: Article description parity
+        run: node scripts/audit-article-description-parity-v1.mjs
+      - name: Workforce capability extension topology
+        run: python scripts/validate-high-throughput-capability-extension-v21.py
+      - name: Upload V21 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: high-throughput-description-v21-${{ github.sha }}
+          path: |
+            artifacts/meta-description-quality/**
+            artifacts/social-description-parity/**
+            artifacts/article-description-parity/**
+            artifacts/high-throughput-capability-extension-v21/**
+          if-no-files-found: warn
+          retention-days: 14

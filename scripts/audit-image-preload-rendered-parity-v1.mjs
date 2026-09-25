@@ -1,0 +1,9 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const ROOT=process.cwd(),PORTAL=path.join(ROOT,'apps','portal'),failures=[];const stats={htmlFiles:0,imagePreloads:0,orphanPreloads:0};
+const walk=d=>fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>{const p=path.join(d,e.name);return e.isDirectory()?walk(p):[p]});
+const attr=(t,n)=>t.match(new RegExp(`\\s${n}=["']([^"']*)["']`,'i'))?.[1]?.trim()||'';
+const clean=u=>(u||'').split(/[?#]/)[0].trim();
+for(const file of walk(PORTAL).filter(f=>f.endsWith('.html'))){stats.htmlFiles++;const rel='/'+path.relative(PORTAL,file).replaceAll(path.sep,'/');const html=fs.readFileSync(file,'utf8');const rendered=new Set();for(const m of html.matchAll(/<(?:img|source)\\b[^>]*>/gi)){const t=m[0];for(const n of ['src','srcset']){const v=attr(t,n);if(!v)continue;if(n==='src')rendered.add(clean(v));else for(const c of v.split(',').map(x=>x.trim()).filter(Boolean))rendered.add(clean(c.split(/\\s+/)[0]));}}
+for(const m of html.matchAll(/<link\\b[^>]*>/gi)){const t=m[0];if(!/\\brel=["'][^"']*preload[^"']*["']/i.test(t)||!/^image$/i.test(attr(t,'as')))continue;stats.imagePreloads++;const candidates=[];const href=attr(t,'href'),srcset=attr(t,'imagesrcset');if(href)candidates.push(clean(href));if(srcset)for(const c of srcset.split(',').map(x=>x.trim()).filter(Boolean))candidates.push(clean(c.split(/\\s+/)[0]));if(candidates.length&&!candidates.some(u=>rendered.has(u))){stats.orphanPreloads++;failures.push(`${rel}: image preload has no matching rendered img/source candidate: ${candidates.join(', ')}`);}}}
+const report={version:'GNK_ASG_IMAGE_PRELOAD_RENDERED_PARITY_V1',ok:failures.length===0,stats,failures};const out=path.join(ROOT,'artifacts','image-preload-rendered-parity');fs.mkdirSync(out,{recursive:true});fs.writeFileSync(path.join(out,'report.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report,null,2));if(failures.length)process.exit(1);

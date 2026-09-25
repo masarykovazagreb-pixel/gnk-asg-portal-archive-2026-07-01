@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 WORKFLOWS = ROOT / ".github" / "workflows"
 FENCE = "vars.GNK_ASG_RELEASE_FENCE != 'true'"
 SERIAL_GROUP = "group: gnk-asg-main-mutation"
+UNSAFE_REBASE_PUSH = re.compile(r"git\s+pull\s+--rebase\s+origin\s+main", re.IGNORECASE)
 
 
 def source(name: str) -> str:
@@ -32,8 +33,16 @@ def main() -> int:
     errors: list[str] = []
     writers = automatic_main_writers()
     for name in writers:
-        if FENCE not in source(name):
+        text = source(name)
+        if FENCE not in text:
             errors.append(f"Automatic main writer lacks release fence: {name}")
+        if SERIAL_GROUP not in text and "'gnk-asg-main-mutation'" not in text:
+            errors.append(f"Automatic main writer lacks shared serialization: {name}")
+        if UNSAFE_REBASE_PUSH.search(text):
+            errors.append(
+                f"Automatic main writer rebases after validation before push; "
+                f"this invalidates exact-SHA evidence and must be replaced by fail-closed CAS/retry: {name}"
+            )
 
     for name in [
         "deploy-admin-auth-v6.yml",
@@ -62,7 +71,14 @@ def main() -> int:
         if not re.search(r"(?m)^  workflow_dispatch:", text):
             errors.append(f"{name} must retain workflow_dispatch")
 
-    print({"version":"GNK_ASG_RELEASE_RACE_HYGIENE_V1","automaticMainWriters":writers,"releaseFenceVariable":"GNK_ASG_RELEASE_FENCE","sharedConcurrencyGroup":"gnk-asg-main-mutation","errors":errors})
+    print({
+        "version":"GNK_ASG_RELEASE_RACE_HYGIENE_V1",
+        "automaticMainWriters":writers,
+        "releaseFenceVariable":"GNK_ASG_RELEASE_FENCE",
+        "sharedConcurrencyGroup":"gnk-asg-main-mutation",
+        "forbiddenAutomaticWriterPattern":"git pull --rebase origin main before push",
+        "errors":errors
+    })
     return 1 if errors else 0
 
 

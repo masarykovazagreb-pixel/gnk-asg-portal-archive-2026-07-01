@@ -1,0 +1,43 @@
+{
+  "version": "GNK_ASG_WORKFORCE_CAPABILITY_EVIDENCE_SCHEMA_V1",
+  "failClosed": true,
+  "recordRequired": [
+    "taskClassId",
+    "primaryWorkerId",
+    "fallbackWorkerIds",
+    "lifecycleState",
+    "heartbeatAt",
+    "ownershipLeaseId",
+    "queueObservedAt",
+    "latencyMs",
+    "successCount",
+    "failureCount",
+    "sampleWindowStart",
+    "sampleWindowEnd",
+    "evaluatorVerdict",
+    "evaluatorEvidenceRef",
+    "fallbackEvidenceRef",
+    "rollbackEvidenceRef",
+    "telemetryRef"
+  ],
+  "healthyRules": {
+    "lifecycleStateMustEqual": "healthy",
+    "heartbeatMustBeFresh": true,
+    "ownershipLeaseMustBeExclusive": true,
+    "queueEvidenceMustBeFresh": true,
+    "executionSampleRequired": true,
+    "successAndFailureCountersRequired": true,
+    "evaluatorVerdictMustEqual": "pass",
+    "fallbackMustBeIndependentlyVerified": true,
+    "rollbackMustBeDemonstrated": true,
+    "telemetryMustBeResolvable": true,
+    "unknownOrMissingEvidenceFailsHealthy": true
+  },
+  "coverageRules": {
+    "countUnit": "taskClass",
+    "countOnlyHealthy": true,
+    "primaryAndFallbackRequiredForCriticalTaskClass": true,
+    "nominalProfileCountExcluded": true,
+    "syntheticGreenForbidden": true
+  }
+}

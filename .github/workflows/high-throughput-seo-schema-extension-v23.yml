@@ -1,0 +1,69 @@
+name: High Throughput SEO Schema Extension V23
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v23.json'
+      - 'scripts/audit-title-tag-quality-v1.mjs'
+      - 'scripts/audit-jsonld-parseability-v1.mjs'
+      - 'scripts/audit-canonical-target-uniqueness-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v23.py'
+      - '.github/workflows/high-throughput-seo-schema-extension-v23.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v23.json'
+      - 'scripts/audit-title-tag-quality-v1.mjs'
+      - 'scripts/audit-jsonld-parseability-v1.mjs'
+      - 'scripts/audit-canonical-target-uniqueness-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v23.py'
+      - '.github/workflows/high-throughput-seo-schema-extension-v23.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: high-throughput-seo-schema-v23-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax checks
+        run: |
+          set -euo pipefail
+          node --check scripts/audit-title-tag-quality-v1.mjs
+          node --check scripts/audit-jsonld-parseability-v1.mjs
+          node --check scripts/audit-canonical-target-uniqueness-v1.mjs
+          python -m py_compile scripts/validate-high-throughput-capability-extension-v23.py
+      - name: Title tag quality
+        run: node scripts/audit-title-tag-quality-v1.mjs
+      - name: JSON-LD parseability
+        run: node scripts/audit-jsonld-parseability-v1.mjs
+      - name: Canonical target uniqueness
+        run: node scripts/audit-canonical-target-uniqueness-v1.mjs
+      - name: Workforce capability extension topology
+        run: python scripts/validate-high-throughput-capability-extension-v23.py
+      - name: Upload V23 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: high-throughput-seo-schema-v23-${{ github.sha }}
+          path: |
+            artifacts/title-tag-quality/**
+            artifacts/jsonld-parseability/**
+            artifacts/canonical-target-uniqueness/**
+            artifacts/high-throughput-capability-extension-v23/**
+          if-no-files-found: warn
+          retention-days: 14

@@ -1,0 +1,70 @@
+name: High Throughput Social Entity Extension V24
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v24.json'
+      - 'scripts/audit-social-image-metadata-completeness-v1.mjs'
+      - 'scripts/audit-twitter-card-contract-v1.mjs'
+      - 'scripts/audit-entity-sameas-contract-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v24.py'
+      - '.github/workflows/high-throughput-social-entity-extension-v24.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v24.json'
+      - 'scripts/audit-social-image-metadata-completeness-v1.mjs'
+      - 'scripts/audit-twitter-card-contract-v1.mjs'
+      - 'scripts/audit-entity-sameas-contract-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v24.py'
+      - '.github/workflows/high-throughput-social-entity-extension-v24.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: high-throughput-social-entity-v24-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check scripts/audit-social-image-metadata-completeness-v1.mjs
+          node --check scripts/audit-twitter-card-contract-v1.mjs
+          node --check scripts/audit-entity-sameas-contract-v1.mjs
+          python -m py_compile scripts/validate-high-throughput-capability-extension-v24.py
+      - name: Social image metadata completeness
+        run: node scripts/audit-social-image-metadata-completeness-v1.mjs
+      - name: Twitter card contract
+        run: node scripts/audit-twitter-card-contract-v1.mjs
+      - name: Entity sameAs contract
+        run: node scripts/audit-entity-sameas-contract-v1.mjs
+      - name: Workforce capability extension topology
+        run: python scripts/validate-high-throughput-capability-extension-v24.py
+      - name: Upload V24 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: high-throughput-social-entity-v24-${{ github.sha }}
+          path: |
+            artifacts/social-image-metadata-completeness/**
+            artifacts/twitter-card-contract/**
+            artifacts/entity-sameas-contract/**
+            artifacts/high-throughput-capability-extension-v24/**
+          if-no-files-found: warn
+          retention-days: 14

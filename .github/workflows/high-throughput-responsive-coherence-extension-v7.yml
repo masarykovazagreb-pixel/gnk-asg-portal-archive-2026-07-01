@@ -1,0 +1,70 @@
+name: High Throughput Responsive Coherence Extension V7
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v7.json'
+      - 'scripts/audit-responsive-image-candidate-integrity-v1.mjs'
+      - 'scripts/audit-image-delivery-contract-v1.mjs'
+      - 'scripts/audit-picture-source-contract-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v7.py'
+      - '.github/workflows/high-throughput-responsive-coherence-extension-v7.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v7.json'
+      - 'scripts/audit-responsive-image-candidate-integrity-v1.mjs'
+      - 'scripts/audit-image-delivery-contract-v1.mjs'
+      - 'scripts/audit-picture-source-contract-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v7.py'
+      - '.github/workflows/high-throughput-responsive-coherence-extension-v7.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: high-throughput-responsive-coherence-v7-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check scripts/audit-responsive-image-candidate-integrity-v1.mjs
+          node --check scripts/audit-image-delivery-contract-v1.mjs
+          node --check scripts/audit-picture-source-contract-v1.mjs
+          python -m py_compile scripts/validate-high-throughput-capability-extension-v7.py
+      - name: Responsive srcset descriptor coherence
+        run: node scripts/audit-responsive-image-candidate-integrity-v1.mjs
+      - name: Image delivery semantic coherence
+        run: node scripts/audit-image-delivery-contract-v1.mjs
+      - name: Picture source descriptor coherence
+        run: node scripts/audit-picture-source-contract-v1.mjs
+      - name: Workforce capability extension topology
+        run: python scripts/validate-high-throughput-capability-extension-v7.py
+      - name: Upload extension evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: high-throughput-responsive-coherence-v7-${{ github.sha }}
+          path: |
+            artifacts/responsive-image-candidate-integrity/**
+            artifacts/image-delivery-contract/**
+            artifacts/picture-source-contract/**
+            artifacts/high-throughput-capability-extension-v7/**
+          if-no-files-found: warn
+          retention-days: 14

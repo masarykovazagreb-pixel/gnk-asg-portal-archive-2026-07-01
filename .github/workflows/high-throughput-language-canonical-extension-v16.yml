@@ -1,0 +1,69 @@
+name: High Throughput Language Canonical Extension V16
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v16.json'
+      - 'scripts/audit-html-lang-hreflang-self-parity-v1.mjs'
+      - 'scripts/audit-og-locale-html-lang-parity-v1.mjs'
+      - 'scripts/audit-canonical-query-fragment-hygiene-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v16.py'
+      - '.github/workflows/high-throughput-language-canonical-extension-v16.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v16.json'
+      - 'scripts/audit-html-lang-hreflang-self-parity-v1.mjs'
+      - 'scripts/audit-og-locale-html-lang-parity-v1.mjs'
+      - 'scripts/audit-canonical-query-fragment-hygiene-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v16.py'
+      - '.github/workflows/high-throughput-language-canonical-extension-v16.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: high-throughput-language-canonical-v16-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax checks
+        run: |
+          set -euo pipefail
+          node --check scripts/audit-html-lang-hreflang-self-parity-v1.mjs
+          node --check scripts/audit-og-locale-html-lang-parity-v1.mjs
+          node --check scripts/audit-canonical-query-fragment-hygiene-v1.mjs
+          python -m py_compile scripts/validate-high-throughput-capability-extension-v16.py
+      - name: HTML lang hreflang self parity
+        run: node scripts/audit-html-lang-hreflang-self-parity-v1.mjs
+      - name: OG locale HTML lang parity
+        run: node scripts/audit-og-locale-html-lang-parity-v1.mjs
+      - name: Canonical query fragment hygiene
+        run: node scripts/audit-canonical-query-fragment-hygiene-v1.mjs
+      - name: Workforce capability extension topology
+        run: python scripts/validate-high-throughput-capability-extension-v16.py
+      - name: Upload V16 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: high-throughput-language-canonical-v16-${{ github.sha }}
+          path: |
+            artifacts/html-lang-hreflang-self-parity/**
+            artifacts/og-locale-html-lang-parity/**
+            artifacts/canonical-query-fragment-hygiene/**
+            artifacts/high-throughput-capability-extension-v16/**
+          if-no-files-found: warn
+          retention-days: 14

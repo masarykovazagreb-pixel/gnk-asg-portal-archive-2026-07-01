@@ -1,0 +1,57 @@
+name: SEO Meta Canonical Contract Gate
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'scripts/audit-meta-uniqueness-contract-v1.mjs'
+      - 'scripts/audit-canonical-indexability-contract-v1.mjs'
+      - '.github/workflows/seo-meta-canonical-contract-gate.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/portal/**'
+      - 'scripts/audit-meta-uniqueness-contract-v1.mjs'
+      - 'scripts/audit-canonical-indexability-contract-v1.mjs'
+      - '.github/workflows/seo-meta-canonical-contract-gate.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: seo-meta-canonical-contract-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  seo-meta-canonical-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Syntax checks
+        run: |
+          node --check scripts/audit-meta-uniqueness-contract-v1.mjs
+          node --check scripts/audit-canonical-indexability-contract-v1.mjs
+
+      - name: Unique editorial title and meta-description contract
+        run: node scripts/audit-meta-uniqueness-contract-v1.mjs
+
+      - name: Canonical and indexability contract
+        run: node scripts/audit-canonical-indexability-contract-v1.mjs
+
+      - name: Upload SEO contract evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-meta-canonical-contract-${{ github.sha }}
+          path: |
+            artifacts/meta-uniqueness-contract/**
+            artifacts/canonical-indexability-contract/**
+          if-no-files-found: warn
+          retention-days: 14

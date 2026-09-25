@@ -1,0 +1,69 @@
+name: High Throughput Content Integrity Extension V15
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v15.json'
+      - 'scripts/audit-indexable-exact-body-duplicate-v1.mjs'
+      - 'scripts/audit-internal-fragment-integrity-v1.mjs'
+      - 'scripts/audit-canonical-clean-url-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v15.py'
+      - '.github/workflows/high-throughput-content-integrity-extension-v15.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/**'
+      - 'ops/high-throughput-capability-extension-v15.json'
+      - 'scripts/audit-indexable-exact-body-duplicate-v1.mjs'
+      - 'scripts/audit-internal-fragment-integrity-v1.mjs'
+      - 'scripts/audit-canonical-clean-url-v1.mjs'
+      - 'scripts/validate-high-throughput-capability-extension-v15.py'
+      - '.github/workflows/high-throughput-content-integrity-extension-v15.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: high-throughput-content-integrity-v15-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax checks
+        run: |
+          set -euo pipefail
+          node --check scripts/audit-indexable-exact-body-duplicate-v1.mjs
+          node --check scripts/audit-internal-fragment-integrity-v1.mjs
+          node --check scripts/audit-canonical-clean-url-v1.mjs
+          python -m py_compile scripts/validate-high-throughput-capability-extension-v15.py
+      - name: Exact duplicate visible body
+        run: node scripts/audit-indexable-exact-body-duplicate-v1.mjs
+      - name: Internal fragment integrity
+        run: node scripts/audit-internal-fragment-integrity-v1.mjs
+      - name: Canonical clean URL
+        run: node scripts/audit-canonical-clean-url-v1.mjs
+      - name: Workforce capability extension topology
+        run: python scripts/validate-high-throughput-capability-extension-v15.py
+      - name: Upload V15 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: high-throughput-content-integrity-v15-${{ github.sha }}
+          path: |
+            artifacts/indexable-exact-body-duplicate/**
+            artifacts/internal-fragment-integrity/**
+            artifacts/canonical-clean-url/**
+            artifacts/high-throughput-capability-extension-v15/**
+          if-no-files-found: warn
+          retention-days: 14
