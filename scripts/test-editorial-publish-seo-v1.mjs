@@ -31,7 +31,7 @@ const publisher=fs.readFileSync('scripts/editorial-publish-scheduled-v1.mjs','ut
 for(const marker of ['GNK_ASG_EDITORIAL_SCHEDULED_PUBLISH_V3_20260714','OpinionNewsArticle','application/ld+json','rel="canonical"','property="og:title"','name="twitter:card"','Urednička odgovornost','EDITORIAL_NOW','deployApproved','writeIfChanged','summary.publicChanged||summary.stateChanged','publication-holds.json','publicationHeld','summary.held'])assert.ok(publisher.includes(marker),marker);
 for(const file of ['apps/portal/data/editorial-plan/publication-holds.json','scripts/seo-visibility-cycle-v1.mjs','scripts/refresh-public-news-v4.mjs','scripts/validate-editorial-content-policy-v1.mjs','scripts/test-editorial-content-policy-v1.mjs','.github/workflows/editorial-scheduled-publish.yml','.github/workflows/seo-news-cycle.yml','.github/workflows/gnk-seo-nightly-audit.yml','.github/workflows/editorial-content-deploy.yml'])assert.ok(fs.existsSync(file)&&fs.statSync(file).size,file);
 const holds=JSON.parse(fs.readFileSync('apps/portal/data/editorial-plan/publication-holds.json','utf8'));
-assert.match(holds.version,/GNK_ASG_EDITORIAL_PUBLICATION_HOLDS_V1_20260805/);
+assert.match(holds.version,/GNK_ASG_EDITORIAL_PUBLICATION_HOLDS_V(?:1_20260805|2_20260925_RESCHEDULED|3_20260925_DAILY)/);
 assert.ok(Array.isArray(holds.holds)&&holds.holds.length>=1,'expected active editorial publication holds');
 for(const hold of holds.holds){
   assert.ok(hold.packageId&&hold.active===true&&String(hold.reason||'').length>=20,`invalid publication hold: ${JSON.stringify(hold)}`);
