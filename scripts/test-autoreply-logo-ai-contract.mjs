@@ -16,6 +16,10 @@ for(const marker of [
   "UNTRUSTED_DATA_BEGIN",
   "Original subject JSON: ",
   "Never promise an outcome, deadline, response time, payment, approval, attendance, publication or contractual action",
+  "Never answer that an amount can or should be paid",
+  "operationally separated from direct business decision-making",
+  "approve invoices",
+  "provide or change bank details",
   "MAIL_AUTO_REPLY_LIVE"
 ]) assert.ok(autoreply.includes(marker),`autoreply contract marker missing: ${marker}`);
 
