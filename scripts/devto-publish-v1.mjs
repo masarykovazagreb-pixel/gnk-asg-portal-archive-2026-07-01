@@ -18,7 +18,7 @@ const PER_RUN = Number(process.env.DEVTO_PER_RUN || 6);
 const PAUSE_MS = Number(process.env.DEVTO_PAUSE_MS || 35000);
 const LIVE = process.argv.includes('--live');
 const API_KEY = process.env.DEVTO_API_KEY;
-const BASE_TAGS = ['business', 'croatia', 'nerminsefic'];
+const BASE_TAGS = ['nerminsefic', 'seficnermin', 'gnkasg', 'gnkdinamoltdusagroup'];
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const readJson = (p, fallback) => { try { return JSON.parse(readFileSync(p, 'utf8')); } catch { return fallback; } };
