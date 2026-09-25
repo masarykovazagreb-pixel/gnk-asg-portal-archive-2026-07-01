@@ -8,7 +8,7 @@ assert.match(source,/auto_reply_suppressed_security/,'security rejects must be r
 assert.match(source,/sender_rate_limited/,'sender rate limiting must exist');
 assert.match(source,/SENDER_AUTOREPLY_MAX\s*=\s*2/,'rate limit must be two replies per window');
 assert.match(source,/SENDER_AUTOREPLY_WINDOW_SECONDS\s*=\s*6\s*\*\s*60\s*\*\s*60/,'rate window must be six hours');
-assert.match(source,/adminApiAuthorized\\(request, env\\)/,'mail-center admin API must require authentication');
+assert.match(source,/adminApiAuthorized\(request, env\)/,'mail-center admin API must require authentication');
 assert.match(source,/admin_api_locked_missing_secret/,'admin API must fail closed when secret is missing');
 assert.match(source,/constantTimeEqual/,'admin token comparison must be constant-time style');
 const securityBlock=source.slice(source.indexOf("const securityReason = securityRejectReason"),source.indexOf("if (!(await claimMessage"));
