@@ -1,0 +1,16 @@
+{
+  "service": "AKTUAL",
+  "contract": "runner-independent-public-feed-v2",
+  "status": "candidate",
+  "source": "/data/news.json",
+  "fallback": "/data/news.json",
+  "requirements": {
+    "http": 200,
+    "content_type": "application/json",
+    "max_age_hours": 4,
+    "minimum_items": 1,
+    "fail_closed_on_stale": true
+  },
+  "production_verified": false,
+  "note": "P0 rebuild candidate. Do not mark healthy until exact-SHA canonical deployment and public endpoint freshness are verified."
+}
