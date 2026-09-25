@@ -5,7 +5,8 @@ const plan=JSON.parse(fs.readFileSync('apps/portal/data/editorial-plan/manifest.
 for(const pack of plan.packages)pack.items=(pack.files||[]).flatMap(file=>JSON.parse(fs.readFileSync(`apps/portal/data/editorial-plan/${file}`,'utf8')));
 assert.ok(plan.packages.length>=2,`expected at least 2 packages, found ${plan.packages.length}`);
 for(const pack of plan.packages){
-  assert.ok(pack.items.filter(x=>x.type==='objava').length>=1,`${pack.id} needs at least 1 objava`);
+  assert.ok(pack.items.length>=1,`${pack.id} needs at least 1 daily editorial item`);
+  assert.ok(pack.items.every(x=>x.type==='objava'||x.type==='komentar'),`${pack.id} contains unsupported editorial item type`);
   assert.ok(pack.deployApproved,true);
   const strictParagraphs=!pack.publishedAt;
   for(const item of pack.items){
