@@ -14,10 +14,14 @@ assert.match(source,/auto_response_suppressed/);
 assert.match(source,/null_return_path/);
 assert.match(source,/bulk_or_list/);
 assert.match(source,/invalid_autoreply_target/);
+assert.match(source,/info-ee@internet\\.ru/);
+assert.match(source,/blocked_sender_denylist/);
+assert.match(source,/MAIL_AUTOREPLY_DENYLIST/);
+assert.match(source,/EMERGENCY_DENYLIST/);
 assert.match(source,/isGnk\(safeTo\)/);
 assert.match(combined,/Precedence: bulk/);
 assert.match(combined,/X-Auto-Response-Suppress: All/);
 assert.match(combined,/safeHeader\(inReplyTo\)/);
 assert.doesNotMatch(source,/typeof EmailMessage==='undefined'/);
 
-console.log(JSON.stringify({ok:true,mailSent:false,guards:['internal-domain','bounce','list','auto-submitted','suppress','null-return-path','message-id-dedupe'],mimeBuilder:'email-autoreply-mime-v1'},null,2));
+console.log(JSON.stringify({ok:true,mailSent:false,guards:['internal-domain','bounce','list','auto-submitted','suppress','null-return-path','message-id-dedupe','incident-sender-denylist','configurable-denylist'],mimeBuilder:'email-autoreply-mime-v1'},null,2));
