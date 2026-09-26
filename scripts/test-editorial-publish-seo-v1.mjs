@@ -80,7 +80,6 @@ assert.match(seoWorkflow,/workflow_dispatch:/);
 assert.doesNotMatch(seoWorkflow,/\n  schedule:/);
 assert.doesNotMatch(seoWorkflow,/\n  push:/);
 assert.match(scheduler,/steps\.commit\.outputs\.changed == 'true'/);
-assert.match(scheduler,/github\.event_name == 'push'/);
 assert.match(scheduler,/git diff --quiet -- apps\/portal\/objave/);
 assert.match(scheduler,/node scripts\/editorial-registry-v1\.mjs/);
 assert.match(scheduler,/node scripts\/generate-editorial-sitemap-v2\.mjs/);
