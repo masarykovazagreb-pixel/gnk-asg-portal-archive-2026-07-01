@@ -17,7 +17,7 @@ on:
       - 'scripts/lib/publication-gate-v2.mjs'
       - '.github/workflows/blog-mirror-publish.yml'
   schedule:
-    - cron: '30 9 * * *'
+    - cron: '30 3,9,15,21 * * *'
 
 permissions:
   contents: write
