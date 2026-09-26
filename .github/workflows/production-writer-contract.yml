@@ -29,6 +29,7 @@ jobs:
           set -euo pipefail
           BEFORE="${{ github.event.before }}"
           AFTER="${{ github.sha }}"
+
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
             BEFORE="${{ github.event.pull_request.base.sha }}"
             AFTER="${{ github.event.pull_request.head.sha }}"
@@ -40,15 +41,13 @@ jobs:
           echo "Changed paths:"
           cat /tmp/changed.txt
 
-          # Mail is intentionally outside this contract. Never authorize or validate
-          # mail, SMTP/IMAP, Mail Studio, DNS/MX, mail workers or mail transport here.
+          # Mail/DNS transport is deliberately outside this contract.
           if grep -Eqi '(^|/)(mail|mailbox|mail-studio|smtp|imap)(/|$)|(^|/)(dns|mx)(/|$)|mail[-_].*(workflow|worker|transport)|contact.*(mail|transport)' /tmp/changed.txt; then
             echo "::error::Mail/DNS transport path detected: OUT OF SCOPE for MASTER ASG."
             exit 1
           fi
 
-          # Direct pushes to main are data-only. Code, workflows, editorial,
-          # deployment and control-plane changes must use PRs.
+          # Direct pushes to main are strictly data-only.
           if [[ "${{ github.event_name }}" == "push" ]]; then
             bad=0
             while IFS= read -r path; do
@@ -59,18 +58,12 @@ jobs:
               esac
             done < /tmp/changed.txt
             [[ "$bad" -eq 0 ]] || exit 1
-          fi
 
-          # Prevent executable/config payloads from being disguised as data.
-          if [[ "${{ github.event_name }}" == "push" ]] && grep -Ei '\.(ya?ml|js|mjs|cjs|ts|tsx|jsx|sh|py|rb|php|go|rs|java|class|jar|exe|dll)
-            echo "::error::Executable/config file detected in data-only writer path."
-            exit 1
-          fi
-
-          echo "Production writer contract: PASS"
- /tmp/changed.txt; then
-            echo "::error::Executable/config file detected in data-only writer path."
-            exit 1
+            # Prevent executable/config payloads from being disguised as data.
+            if grep -Eqi '\.(ya?ml|js|mjs|cjs|ts|tsx|jsx|sh|py|rb|php|go|rs|java|class|jar|exe|dll)$' /tmp/changed.txt; then
+              echo "::error::Executable/config file detected in data-only writer path."
+              exit 1
+            fi
           fi
 
           echo "Production writer contract: PASS"
