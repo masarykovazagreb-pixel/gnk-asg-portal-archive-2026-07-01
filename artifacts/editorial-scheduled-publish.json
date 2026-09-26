@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "GNK_ASG_EDITORIAL_SCHEDULED_PUBLISH_V3_20260714",
-  "now": "2026-09-25T10:14:27.446Z",
+  "now": "2026-09-26T13:13:09.923Z",
   "publicationHoldsVersion": "GNK_ASG_EDITORIAL_PUBLICATION_HOLDS_V3_20260925_DAILY",
   "packages": [
     {
@@ -250,11 +250,13 @@
     {
       "id": "EDITORIAL-20260926-SATURDAY-SLOT1",
       "publishAt": "2026-09-26T08:00:00+02:00",
-      "due": false,
+      "due": true,
       "alreadyPublished": false,
-      "publicationHeld": true,
-      "holdReason": "Daily author slot is staged but remains blocked until the final article satisfies the editorial quality contract: substantive long-form depth where applicable, at least five meaningful internal links, Nermin Sefić author image and entity metadata, SEO/meta/schema validation, and verified AKTUAL plus four-blog distribution readiness.",
-      "published": []
+      "publicationHeld": false,
+      "holdReason": null,
+      "published": [
+        "/objave/podatkovna-suverenost-postaje-poslovni-a-ne-samo-pravni-zahtjev/"
+      ]
     },
     {
       "id": "EDITORIAL-20260927-SUNDAY-SLOT1",
@@ -383,9 +385,10 @@
       "published": []
     }
   ],
-  "published": [],
+  "published": [
+    "/objave/podatkovna-suverenost-postaje-poslovni-a-ne-samo-pravni-zahtjev/"
+  ],
   "held": [
-    "EDITORIAL-20260926-SATURDAY-SLOT1",
     "EDITORIAL-20260927-SUNDAY-SLOT1",
     "EDITORIAL-20260928-MONDAY-SLOT1",
     "EDITORIAL-20260929-TUESDAY-SLOT1",
@@ -401,6 +404,6 @@
     "EDITORIAL-20261009-FRIDAY-SLOT1",
     "EDITORIAL-20261010-SATURDAY-SLOT1"
   ],
-  "publicChanged": false,
+  "publicChanged": true,
   "stateChanged": true
 }
