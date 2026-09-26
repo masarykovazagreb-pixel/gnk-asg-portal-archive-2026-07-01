@@ -40,6 +40,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
+      - name: Capture exact generation base SHA
+        id: base
+        shell: bash
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - name: Test editorial policy gate
         run: node scripts/test-editorial-content-policy-v1.mjs
       - name: Enforce editorial policy before materialization
@@ -67,16 +71,19 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add apps/portal/objave apps/portal/komentari apps/portal/gnk-aktual apps/portal/editorial-sitemap.xml apps/portal/sitemap-index.xml apps/portal/data/editorial-registry.json apps/portal/data/editorial-plan artifacts/editorial-scheduled-publish.json
           git commit -m "Publish scheduled editorial package"
-          for attempt in 1 2 3 4 5; do
-            if git push origin HEAD:main; then
-              break
-            fi
-            echo "Push odbijen (pokusaj $attempt) - main se pomaknuo, radim fetch+rebase."
-            git fetch origin main
-            git rebase origin/main || { echo "Rebase konflikt."; exit 1; }
-            sleep $((attempt * 5))
-            if [ "$attempt" = "5" ]; then echo "Push nije uspio nakon 5 pokusaja."; exit 1; fi
-          done
+
+          # Exact-SHA / single-writer fence: output was generated from one main
+          # snapshot and must never be rebased onto a moving main.
+          git fetch origin main
+          expected_base="${{ steps.base.outputs.sha }}"
+          current_main="$(git rev-parse origin/main)"
+          if [ "$current_main" != "$expected_base" ]; then
+            echo "Main moved during editorial generation: expected $expected_base, found $current_main. Deferring without rebase/push."
+            exit 75
+          fi
+
+          # Ordinary non-force push is the final compare-and-swap guard.
+          git push origin HEAD:main
           echo "changed=true" >> "$GITHUB_OUTPUT"
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - name: Dispatch exact-SHA production deploy
