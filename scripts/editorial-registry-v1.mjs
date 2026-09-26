@@ -105,9 +105,8 @@ items.sort((a, b) => String(b.publishedAt || '').localeCompare(String(a.publishe
 const outsidePlan = items.filter((i) => !i.inPlan);
 const incomplete = items.filter((i) => !i.seoComplete);
 
-const registry = {
+const registryCore = {
   version: 'GNK_ASG_EDITORIAL_REGISTRY_V1',
-  generatedAt: new Date().toISOString(),
   site: SITE,
   total: items.length,
   byType: items.reduce((acc, i) => ((acc[i.type] = (acc[i.type] || 0) + 1), acc), {}),
@@ -118,10 +117,44 @@ const registry = {
   items,
 };
 
-mkdirSync(dirname(OUT), { recursive: true });
-writeFileSync(OUT, JSON.stringify(registry, null, 2) + '\n', 'utf8');
+let previousRaw = '';
+let previous = null;
+if (existsSync(OUT)) {
+  previousRaw = readFileSync(OUT, 'utf8');
+  try { previous = JSON.parse(previousRaw); } catch { previous = null; }
+}
+const withoutGeneratedAt = (value) => {
+  if (!value || typeof value !== 'object') return value;
+  const { generatedAt: _generatedAt, ...rest } = value;
+  return rest;
+};
+const substantiveUnchanged = previous
+  ? JSON.stringify(withoutGeneratedAt(previous)) === JSON.stringify(registryCore)
+  : false;
+const generatedAt = substantiveUnchanged && previous?.generatedAt
+  ? previous.generatedAt
+  : new Date().toISOString();
+const registry = {
+  version: registryCore.version,
+  generatedAt,
+  site: registryCore.site,
+  total: registryCore.total,
+  byType: registryCore.byType,
+  inPlan: registryCore.inPlan,
+  outsidePlan: registryCore.outsidePlan,
+  seoIncomplete: registryCore.seoIncomplete,
+  note: registryCore.note,
+  items: registryCore.items,
+};
 
-console.log('zapisano:', OUT);
+mkdirSync(dirname(OUT), { recursive: true });
+const nextRaw = JSON.stringify(registry, null, 2) + '\n';
+if (nextRaw !== previousRaw) {
+  writeFileSync(OUT, nextRaw, 'utf8');
+  console.log('zapisano:', OUT);
+} else {
+  console.log('bez promjene:', OUT);
+}
 console.log('  ukupno tekstova: ', registry.total, JSON.stringify(registry.byType));
 console.log('  u rasporedu:     ', registry.inPlan);
 console.log('  izvan rasporeda: ', registry.outsidePlan);
