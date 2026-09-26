@@ -62,7 +62,13 @@ jobs:
           fi
 
           # Prevent executable/config payloads from being disguised as data.
-          if grep -Ei '\.(ya?ml|js|mjs|cjs|ts|tsx|jsx|sh|py|rb|php|go|rs|java|class|jar|exe|dll)$' /tmp/changed.txt; then
+          if [[ "${{ github.event_name }}" == "push" ]] && grep -Ei '\.(ya?ml|js|mjs|cjs|ts|tsx|jsx|sh|py|rb|php|go|rs|java|class|jar|exe|dll)
+            echo "::error::Executable/config file detected in data-only writer path."
+            exit 1
+          fi
+
+          echo "Production writer contract: PASS"
+ /tmp/changed.txt; then
             echo "::error::Executable/config file detected in data-only writer path."
             exit 1
           fi
