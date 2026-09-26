@@ -119,6 +119,18 @@ for(const pack of plan.packages||[]){
     continue;
   }
   let publishedNow=false;
+  // Self-heal: a package may already be marked published while its canonical HTML
+  // is missing (for example after an incomplete historical materialization). In
+  // that case rebuild only the missing public page from the locked package data.
+  if(due&&already){
+    for(const item of items){
+      const target=fileFor(item),route=routeFor(item);
+      if(!fs.existsSync(target)){
+        if(writeIfChanged(target,articleHtml(item,pack.publishAt)))summary.publicChanged=true;
+        itemSummary.published.push(route);summary.published.push(route);
+      }
+    }
+  }
   if(due&&!already){
     if(!pack.deployApproved)throw new Error(`Package ${pack.id} lacks deploy approval`);
     const allRoutes=[];
