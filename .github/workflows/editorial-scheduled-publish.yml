@@ -46,6 +46,8 @@ jobs:
         run: node scripts/validate-editorial-content-policy-v1.mjs
       - name: Materialize due editorial pages
         run: node scripts/editorial-publish-scheduled-v1.mjs
+      - name: Regenerate editorial registry from materialized pages
+        run: node scripts/editorial-registry-v1.mjs
       - name: Validate generated editorial package
         run: node scripts/test-editorial-publish-seo-v1.mjs
       - name: Commit due content
@@ -53,7 +55,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if git diff --quiet -- apps/portal/objave apps/portal/komentari apps/portal/editorial-sitemap.xml apps/portal/data/editorial-plan artifacts/editorial-scheduled-publish.json; then
+          if git diff --quiet -- apps/portal/objave apps/portal/komentari apps/portal/gnk-aktual apps/portal/editorial-sitemap.xml apps/portal/data/editorial-registry.json apps/portal/data/editorial-plan artifacts/editorial-scheduled-publish.json; then
             echo "No scheduled public or state change is due."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
@@ -61,7 +63,7 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add apps/portal/objave apps/portal/komentari apps/portal/editorial-sitemap.xml apps/portal/data/editorial-plan artifacts/editorial-scheduled-publish.json
+          git add apps/portal/objave apps/portal/komentari apps/portal/gnk-aktual apps/portal/editorial-sitemap.xml apps/portal/data/editorial-registry.json apps/portal/data/editorial-plan artifacts/editorial-scheduled-publish.json
           git commit -m "Publish scheduled editorial package"
           for attempt in 1 2 3 4 5; do
             if git push origin HEAD:main; then
