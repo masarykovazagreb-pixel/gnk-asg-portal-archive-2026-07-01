@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-26T11:33:56.611Z",
+  "updated_at": "2026-09-26T17:48:10.900Z",
   "title": "BTC, zlato, Brent nafta i USD/EUR - statistička usporedba",
   "period": "posljednjih 30 dostupnih dnevnih tržišnih vrijednosti",
   "disclaimer": "Indikativni javni tržišni podatci; prikaz nije usluga trgovanja niti investicijski savjet.",
@@ -12,9 +12,9 @@
       "unit": "USD / BTC",
       "invert": false,
       "source": "Yahoo Finance public chart",
-      "current": 84160.671875,
-      "change_7d_percent": 3.6,
-      "change_30d_percent": 6.5,
+      "current": 84113.5703125,
+      "change_7d_percent": 3.55,
+      "change_30d_percent": 6.44,
       "low_30d": 75612.5078125,
       "high_30d": 86602.9140625,
       "indexed_points": [
@@ -144,7 +144,7 @@
         ],
         [
           1790380800000,
-          106.5
+          106.44
         ]
       ],
       "points": [
@@ -274,7 +274,7 @@
         ],
         [
           1790380800000,
-          84160.671875
+          84113.5703125
         ]
       ]
     },
@@ -491,9 +491,9 @@
       "unit": "EUR / USD",
       "invert": true,
       "source": "Yahoo Finance public chart, inverted EURUSD",
-      "current": 0.8771999648225226,
-      "change_7d_percent": 0.61,
-      "change_30d_percent": 2.35,
+      "current": 0.8770999914575732,
+      "change_7d_percent": 0.6,
+      "change_30d_percent": 2.34,
       "low_30d": 0.8565500139225238,
       "high_30d": 0.8791400059988468,
       "indexed_points": [
@@ -594,21 +594,21 @@
           102.58
         ],
         [
-          1790406547000,
-          102.35
+          1790430777000,
+          102.34
         ]
       ]
     }
   },
   "correlations": {
-    "btc_gold": 0.296,
-    "btc_oil": -0.104,
-    "btc_usd": -0.031
+    "btc_gold": 0.295,
+    "btc_oil": -0.102,
+    "btc_usd": -0.03
   },
   "status": "ok",
   "successful_assets": 4,
   "configured_assets": 4,
   "skipped_assets_private": [],
   "failed_assets": [],
-  "runtime_seconds": 0.12
+  "runtime_seconds": 0.18
 }
