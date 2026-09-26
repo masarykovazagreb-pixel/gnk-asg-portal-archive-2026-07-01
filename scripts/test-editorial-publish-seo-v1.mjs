@@ -87,7 +87,7 @@ assert.match(scheduler,/apps\/portal\/sitemap-index\.xml/);
 assert.match(scheduler,/apps\/portal\/gnk-aktual/);
 assert.match(scheduler,/apps\/portal\/data\/editorial-registry\.json/);
 assert.doesNotMatch(scheduler,/github\.event_name == 'push'/);
-const registryGenerator=readFileSync(join(ROOT,'scripts','editorial-registry-v1.mjs'),'utf8');
+const registryGenerator=fs.readFileSync('scripts/editorial-registry-v1.mjs','utf8');
 assert.match(registryGenerator,/substantiveUnchanged/);
 assert.match(registryGenerator,/bez promjene:/);
 assert.match(publisher,/Editorial grid markers not found/);
