@@ -51,7 +51,10 @@ function appendCard(indexPath,item){
   let html=fs.readFileSync(indexPath,'utf8'),route=routeFor(item);
   if(html.includes(`href="${route}"`))return false;
   const card=`<article class="editorial-card"><img src="${AUTHOR_IMAGE}" alt="Nermin Sefić — ${esc(item.title)}"><p class="eyebrow">${esc(item.section)}</p><h2>${esc(item.title)}</h2><p>${esc(item.summary)}</p><a href="${route}">Otvori ${item.type==='objava'?'objavu':'komentar'} →</a></article>`;
-  html=html.replace('</section></main>',`${card}</section></main>`);
+  const gridStart=html.indexOf('<section class="editorial-grid">');
+  const gridEnd=gridStart>=0?html.indexOf('</section>',gridStart):-1;
+  if(gridStart<0||gridEnd<0)throw new Error(`Editorial grid markers not found: ${indexPath}`);
+  html=html.slice(0,gridEnd)+card+html.slice(gridEnd);
   return writeIfChanged(indexPath,html);
 }
 function appendAktualCard(item,dateIso){
@@ -115,20 +118,29 @@ for(const pack of plan.packages||[]){
     summary.packages.push(itemSummary);
     continue;
   }
+  let publishedNow=false;
   if(due&&!already){
     if(!pack.deployApproved)throw new Error(`Package ${pack.id} lacks deploy approval`);
     const allRoutes=[];
     for(const item of items){
       const target=fileFor(item),route=routeFor(item);allRoutes.push(route);
       if(writeIfChanged(target,articleHtml(item,pack.publishAt)))summary.publicChanged=true;
+      itemSummary.published.push(route);summary.published.push(route);
+    }
+    pack.publishedAt=now.toISOString();pack.status='published';pack.publishedRoutes=allRoutes;
+    publishedNow=true;
+    summary.stateChanged=true;
+  }
+  const dailyDistributionContract=pack.author===AUTHOR_NAME&&Array.isArray(pack.distribution)&&pack.distribution.includes('AKTUAL MEDIA / Komentari');
+  if(due&&(publishedNow||dailyDistributionContract)){
+    for(const item of items){
+      const target=fileFor(item);
+      if(!fs.existsSync(target))throw new Error(`Published editorial route missing: ${routeFor(item)}`);
       if(item.type==='objava'&&appendCard(path.join(ROOT,'objave','index.html'),item))summary.publicChanged=true;
       if(appendCard(path.join(ROOT,'komentari','index.html'),item))summary.publicChanged=true;
       if(appendAktualCard(item,pack.publishAt))summary.publicChanged=true;
       if(appendSitemap(item,pack.publishAt.slice(0,10)))summary.publicChanged=true;
-      itemSummary.published.push(route);summary.published.push(route);
     }
-    pack.publishedAt=now.toISOString();pack.status='published';pack.publishedRoutes=allRoutes;
-    summary.stateChanged=true;
   }
   summary.packages.push(itemSummary);
 }
