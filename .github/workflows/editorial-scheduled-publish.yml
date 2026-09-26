@@ -80,7 +80,7 @@ jobs:
           echo "changed=true" >> "$GITHUB_OUTPUT"
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - name: Dispatch exact-SHA production deploy
-        if: steps.commit.outputs.changed == 'true' || github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.force_deploy == true)
+        if: steps.commit.outputs.changed == 'true' || (github.event_name == 'workflow_dispatch' && inputs.force_deploy == true)
         env:
           GH_TOKEN: ${{ github.token }}
           APPROVED_SHA: ${{ steps.commit.outputs.sha }}
