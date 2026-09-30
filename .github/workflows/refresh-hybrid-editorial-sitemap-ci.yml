@@ -1,0 +1,44 @@
+name: Refresh Hybrid Editorial Sitemap - Repair Branch
+
+on:
+  push:
+    branches:
+      - fix/ci-seo-integrity-20260930
+    paths:
+      - '.github/workflows/refresh-hybrid-editorial-sitemap-ci.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: fix/ci-seo-integrity-20260930
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Generate and validate hybrid editorial sitemap
+        run: |
+          set -euxo pipefail
+          node scripts/generate-editorial-sitemap-v2.mjs
+          python3 scripts/validate_publication_sitemap_registry_v1.py
+      - name: Commit deterministic sitemap output to repair branch
+        run: |
+          set -euxo pipefail
+          git config user.name "gnk-asg-bot"
+          git config user.email "it@gnk-asg.hr"
+          git add apps/portal/editorial-sitemap.xml apps/portal/sitemap-index.xml
+          if git diff --cached --quiet; then
+            echo "No sitemap changes."
+            exit 0
+          fi
+          git commit -m "chore(seo): regenerate hybrid editorial sitemap"
+          git push origin HEAD:fix/ci-seo-integrity-20260930
