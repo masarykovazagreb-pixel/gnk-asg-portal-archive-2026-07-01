@@ -10,13 +10,12 @@ from xml.sax.saxutils import escape
 ROOT = Path(__file__).resolve().parents[1]
 SITE = 'https://gnk-asg.hr/'
 DEFAULT_IMAGE = SITE + 'assets/gnk-asg-social-card.png'
-PUBLIC_TOOLS = '<script src="/assets/public-tools.js?v=20260527-asg-bpp-share-unique03" defer></script>'
+PUBLIC_TOOLS = '<script src="/assets/public-tools.js?v=20260930-seo-truth-v1" defer></script>'
 TODAY = datetime.now(timezone.utc).date().isoformat()
 ORG_ID = SITE + '#gnk-asg'
 GROUP_ID = SITE + '#gnk-dinamo-ltd'
 PERSON_ID = SITE + '#nermin-sefic'
 WEBSITE_ID = SITE + '#website'
-BPP_ID = SITE + '#bitcoin-payment-processor'
 PROFILE_HR = SITE + 'nermin-sefic/'
 PROFILE_EN = SITE + 'en/nermin-sefic/'
 
@@ -35,8 +34,8 @@ SOCIAL_IMAGES = {
 }
 
 PAGE_TERMS = {
-    '': 'korporativni portal, korporativni profil, Zagreb, Hrvatska, Boulder Colorado, GNK DINAMO Ltd. Group, 33 povezana društva, 12 planiranih lokacija, globalna mreža društava, FY 2025, financijski pokazatelji, Bitcoin Payment Processor, bpp.is, softversko rješenje, digitalna imovina, poslovne vijesti',
-    'en/': 'corporate portal, corporate profile, Zagreb Croatia, Boulder Colorado, GNK DINAMO Ltd. Group, 33 group companies, 12 planned locations, global group network, FY 2025, financial indicators, Bitcoin Payment Processor, bpp.is, software solution, digital assets, business news',
+    '': 'korporativni portal, korporativni profil, Zagreb, Hrvatska, Boulder Colorado, GNK DINAMO Ltd. Group, 33 povezana društva, 12 planiranih lokacija širenja, globalna mreža društava, FY 2025, financijski pokazatelji, softversko rješenje, digitalna imovina, poslovne vijesti',
+    'en/': 'corporate portal, corporate profile, Zagreb Croatia, Boulder Colorado, GNK DINAMO Ltd. Group, 33 group companies, 12 planned expansion locations, global group network, FY 2025, financial indicators, software solution, digital assets, business news',
     'nermin-sefic/': 'Nermin Sefić GNK ASG, Nermin Sefic GNK ASG, Sefić Nermin GNK ASG, Sefic Nermin GNK ASG, Nermin Sefić GNK DINAMO Ltd., direktor, javni profil, financije, javni registri, tehnologija, tržišta, javni dokumenti',
     'en/nermin-sefic/': 'Nermin Sefić GNK ASG, Nermin Sefic GNK ASG, Sefić Nermin GNK ASG, Sefic Nermin GNK ASG, Nermin Sefić GNK DINAMO Ltd., director, public profile, finance, public registries, technology, markets, public documents',
     'sadrzaj/': 'sadržaj portala, korporativni podatci, financije, tehnologija, tržišta, Intelligence Desk, tematski monitoring, poslovne vijesti, javni dokumenti',
@@ -55,8 +54,8 @@ PAGE_TERMS = {
 }
 
 PAGES = [
-    {'path':'','file':'index.html','lang':'hr','locale':'hr_HR','changefreq':'daily','priority':'1.0','alt':('','en/'),'title':'GNK ASG d.o.o. | GNK DINAMO Ltd. grupa | Nermin Sefić','description':'Službeni korporativni portal GNK ASG d.o.o. i GNK DINAMO Ltd. grupe: FY 2025 pokazatelji, globalna mreža, tržišta, vijesti i javni prikaz softverskog rješenja Bitcoin Payment Processor razvijenog za grupu.','type':'WebPage','name':'GNK ASG d.o.o. — Korporativni portal GNK DINAMO Ltd. grupe','crumb':'Početna'},
-    {'path':'en/','file':'en/index.html','lang':'en','locale':'en_US','changefreq':'weekly','priority':'0.9','alt':('','en/'),'title':'GNK ASG d.o.o. | GNK DINAMO Ltd. Group | Nermin Sefić','description':'Official corporate portal for GNK ASG d.o.o. and the GNK DINAMO Ltd. group: FY 2025 indicators, global network, markets, news and a public overview of the Bitcoin Payment Processor software solution developed for the group.','type':'WebPage','name':'GNK ASG d.o.o. — GNK DINAMO Ltd. Group Corporate Portal','crumb':'Home'},
+    {'path':'','file':'index.html','lang':'hr','locale':'hr_HR','changefreq':'daily','priority':'1.0','alt':('','en/'),'title':'GNK ASG d.o.o. | GNK DINAMO Ltd. grupa | Nermin Sefić','description':'Službeni korporativni portal GNK ASG d.o.o. i GNK DINAMO Ltd. grupe: FY 2025 pokazatelji, globalna mreža, tržišta, vijesti i javni pregled tehnoloških rješenja.','type':'WebPage','name':'GNK ASG d.o.o. — Korporativni portal GNK DINAMO Ltd. grupe','crumb':'Početna'},
+    {'path':'en/','file':'en/index.html','lang':'en','locale':'en_US','changefreq':'weekly','priority':'0.9','alt':('','en/'),'title':'GNK ASG d.o.o. | GNK DINAMO Ltd. Group | Nermin Sefić','description':'Official corporate portal for GNK ASG d.o.o. and the GNK DINAMO Ltd. group: FY 2025 indicators, global network, markets, news and a public overview of technology solutions.','type':'WebPage','name':'GNK ASG d.o.o. — GNK DINAMO Ltd. Group Corporate Portal','crumb':'Home'},
     {'path':'nermin-sefic/','file':'nermin-sefic/index.html','lang':'hr','locale':'hr_HR','changefreq':'weekly','priority':'0.9','alt':('nermin-sefic/','en/nermin-sefic/'),'title':'Nermin Sefić — Biografija | GNK ASG d.o.o.','description':'Tko je Nermin Sefić? Biografija, javni korporativni profil i uloga direktora GNK ASG d.o.o. i ovlaštenog predstavnika GNK DINAMO Ltd., u kontekstu financija, tehnologije i tržišta.','type':'ProfilePage','name':'Nermin Sefić — javni korporativni profil','crumb':'Nermin Sefić'},
     {'path':'en/nermin-sefic/','file':'en/nermin-sefic/index.html','lang':'en','locale':'en_US','changefreq':'weekly','priority':'0.9','alt':('nermin-sefic/','en/nermin-sefic/'),'title':'Nermin Sefić — Biography | GNK ASG d.o.o.','description':'Who is Nermin Sefić? Biography, public corporate profile and role as director of GNK ASG d.o.o. and authorized representative of GNK DINAMO Ltd., in the context of finance, technology and markets.','type':'ProfilePage','name':'Nermin Sefić — public corporate profile','crumb':'Nermin Sefić'},
     {'path':'trzista/','file':'trzista/index.html','lang':'hr','locale':'hr_HR','changefreq':'daily','priority':'0.9','alt':('trzista/','en/markets/'),'title':'Market Intelligence | GNK ASG d.o.o. i GNK DINAMO Ltd. | Nermin Sefić','description':'Market Intelligence portal za GNK ASG d.o.o., GNK DINAMO Ltd. i Nermina Sefića: Bitcoin, digitalna imovina, stablecoini, kripto burze, globalni indeksi i dnevni tržišni osvrt.','type':'CollectionPage','name':'Market Intelligence — GNK ASG d.o.o. i GNK DINAMO Ltd.','crumb':'Tržišta'},
@@ -95,10 +94,6 @@ def entities():
     ]
 
 
-def bpp_entity(lang):
-    return {'@type':'SoftwareApplication','@id':BPP_ID,'name':'Bitcoin Payment Processor','alternateName':'BPP.IS','url':'https://bpp.is/','applicationCategory':'BusinessApplication','description':('Bitcoin Payment Processor software solution developed by GNK ASG d.o.o. for the GNK DINAMO Ltd. group framework. GNK ASG d.o.o. does not operate the system or provide payment processor services through it.' if lang == 'en' else 'Programsko rješenje Bitcoin Payment Processor koje je GNK ASG d.o.o. razvio za poslovni okvir GNK DINAMO Ltd. grupe. GNK ASG d.o.o. ne upravlja sustavom niti putem njega pruža uslugu payment procesora.'),'creator':{'@id':ORG_ID},'about':{'@id':GROUP_ID},'image':SITE+'assets/share-bpp.png'}
-
-
 def schema(page):
     u = url(page)
     keys = keywords(page)
@@ -107,9 +102,6 @@ def schema(page):
     if page['type'] == 'ProfilePage':
         item['mainEntity'] = {'@id':PERSON_ID}
     graph = [{'@type':'WebSite','@id':WEBSITE_ID,'url':SITE,'name':'GNK ASG d.o.o. | GNK DINAMO Ltd. | Nermin Sefić','publisher':{'@id':ORG_ID},'about':[{'@id':ORG_ID},{'@id':GROUP_ID},{'@id':PERSON_ID}],'keywords':keywords(PAGES[0]),'inLanguage':['hr','en']}] + entities() + [item]
-    if page['path'] in ('','en/'):
-        graph.append(bpp_entity(page['lang']))
-        item['mentions'].append({'@id':BPP_ID})
     if page['path'] not in ('','en/'):
         item['breadcrumb']={'@id':u+'#breadcrumb'}
         graph.append({'@type':'BreadcrumbList','@id':u+'#breadcrumb','itemListElement':[{'@type':'ListItem','position':1,'name':'GNK ASG d.o.o.','item':SITE},{'@type':'ListItem','position':2,'name':page['crumb'],'item':u}]})
