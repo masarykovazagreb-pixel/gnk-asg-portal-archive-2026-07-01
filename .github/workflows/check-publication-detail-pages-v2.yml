@@ -5,7 +5,13 @@ on:
     branches: [main]
     paths:
       - 'apps/portal/objave/**'
-      - 'apps/portal/publications/**'
+      - 'apps/portal/analize/**'
+      - 'apps/portal/komentari/**'
+      - 'apps/portal/en/publications/**'
+      - 'apps/portal/en/analyses/**'
+      - 'apps/portal/en/commentary/**'
+      - 'apps/portal/editorial-sitemap.xml'
+      - 'scripts/test-index-content-contract.mjs'
       - '.github/workflows/check-publication-detail-pages-v2.yml'
   workflow_dispatch:
 
@@ -18,25 +24,8 @@ jobs:
     timeout-minutes: 6
     steps:
       - uses: actions/checkout@v5
-      - name: Verify linked HR detail pages
-        shell: bash
-        run: |
-          set -euxo pipefail
-          for slug in \
-            ai-shrinks-security-window-apple-accelerates-patches \
-            how-a-structured-pdf-centre-improves-public-verifiability \
-            why-legal-information-belongs-in-primary-navigation \
-            bilingual-corporate-communication-as-an-operating-standard \
-            artificial-intelligence-with-mandatory-human-review \
-            market-data-is-information-not-investment-advice \
-            structured-media-applications-reduce-organisational-risk \
-            why-every-business-publication-should-carry-sources
-          do
-            file="apps/portal/objave/$slug/index.html"
-            test -s "$file"
-            grep -Fq '<title>' "$file"
-            grep -Fq 'name="description"' "$file"
-            grep -Fq 'rel="canonical"' "$file"
-            grep -Fq "/objave/$slug/" apps/portal/objave/index.html
-          done
-          echo PUBLICATION_DETAIL_PAGES_OK
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Verify current editorial detail contract
+        run: node scripts/test-index-content-contract.mjs
