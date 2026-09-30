@@ -15,7 +15,7 @@ const evaluate = (name, path, stampKeys, maxAgeMinutes, sourceStateKeys = []) =>
   return {name,state:sourceError?'error':ageMinutes>maxAgeMinutes?'stale':'fresh',path,observedAt:stamp.toISOString(),ageMinutes:Math.round(ageMinutes),maxAgeMinutes,sourceState:sourceState ?? null};
 };
 const resources = {
-  weather:evaluate('Weather','apps/portal/data/weather-zagreb.json',['updated_at','checked_at'],360,['state','status']),
+  weather:evaluate('Weather','apps/portal/data/weather-zagreb.json',['updated_at','checked_at'],420,['state','status']),
   aktual:evaluate('News/AKTUAL','apps/portal/data/news-automation-status.json',['updated_at'],290,['ok','status']),
   digitalAssets:evaluate('Digital Assets','apps/portal/data/fast_market_status.json',['timestamp_utc','updated_at','checked_at'],1080,['status']),
 };
