@@ -96,17 +96,30 @@ jobs:
           echo "Mirror state branch: $(git rev-parse --abbrev-ref HEAD)"
           echo "Release main remains: $(git rev-parse origin/main)"
 
-      - name: Check distribution credentials without exposing values
+      - name: Validate distribution credentials without exposing values
         shell: bash
         run: |
           set -euo pipefail
           blogger=ok
-          devto=ok
+          devto=missing
           tumblr=ok
           for v in BLOGGER_BLOG_ID BLOGGER_CLIENT_ID BLOGGER_CLIENT_SECRET BLOGGER_REFRESH_TOKEN; do
             [ -n "${!v:-}" ] || blogger=missing
           done
-          [ -n "${DEVTO_API_KEY:-}" ] || devto=missing
+          if [ -n "${DEVTO_API_KEY:-}" ]; then
+            devto_http=000
+            if code="$(curl --silent --show-error --max-time 20 --output /tmp/devto-auth.json --write-out '%{http_code}' -H "api-key: ${DEVTO_API_KEY}" 'https://dev.to/api/articles/me/all?per_page=1&page=1')"; then
+              devto_http="$code"
+            fi
+            case "$devto_http" in
+              200) devto=ok ;;
+              401|403) devto=rejected ;;
+              429) devto=rate-limited ;;
+              000) devto=unreachable ;;
+              *) devto="http-${devto_http}" ;;
+            esac
+            rm -f /tmp/devto-auth.json
+          fi
           for v in TUMBLR_CONSUMER_KEY TUMBLR_CONSUMER_SECRET TUMBLR_TOKEN TUMBLR_TOKEN_SECRET; do
             [ -n "${!v:-}" ] || tumblr=missing
           done
@@ -304,7 +317,7 @@ jobs:
         shell: bash
         run: |
           if [ "${PARITY_BLOCKED:-1}" = 1 ]; then
-            echo "Distribucija nije potpuno automatizirana: najmanje jedan credentialed kanal nema trajne GitHub Actions credentials."
+            echo "Distribucija nije potpuno automatizirana: najmanje jedan kanal nema valjanu/potvrdjenu autentifikaciju; pogledaj Credential state iz preflight koraka."
             exit 1
           fi
           failed=0
