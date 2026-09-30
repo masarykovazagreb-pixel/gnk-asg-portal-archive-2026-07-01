@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Validate the canonical editorial registry against the editorial sitemap."""
+"""Validate HR distribution registry + EN SEO-only editorial inventory against sitemap."""
 from __future__ import annotations
 
 import json
 import os
+import re
 from datetime import datetime, timezone
 from html.parser import HTMLParser
 from pathlib import Path
@@ -21,22 +22,24 @@ EDITORIAL_PREFIXES = (
     "/objave/", "/komentari/", "/analize/", "/gnk-aktual/kolumne/",
     "/en/publications/", "/en/commentary/", "/en/analyses/", "/en/objave/",
 )
-EDITORIAL_EXACT_ROUTES = {
-    "/aktual/gnk-asg-504-milijuna-eura-prihoda/",
-}
+EDITORIAL_EXACT_ROUTES = {"/aktual/gnk-asg-504-milijuna-eura-prihoda/"}
+EN_SECTIONS = ("publications", "analyses", "commentary")
+NOINDEX_RE = re.compile(r'<meta\b[^>]*\bname=["\']robots["\'][^>]*\bcontent=["\'][^"\']*\bnoindex\b', re.I)
+DATE_PUBLISHED_RE = re.compile(r'"datePublished"\s*:\s*"([^"]+)"', re.I)
 
 
 class HeadParser(HTMLParser):
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
         self.canonicals: list[str] = []
+        self.article_published: list[str] = []
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
-        if tag.lower() != "link":
-            return
         values = {key.lower(): (value or "") for key, value in attrs}
-        if "canonical" in values.get("rel", "").lower().split() and values.get("href"):
+        if tag.lower() == "link" and "canonical" in values.get("rel", "").lower().split() and values.get("href"):
             self.canonicals.append(values["href"].strip())
+        if tag.lower() == "meta" and values.get("property", "").lower() == "article:published_time" and values.get("content"):
+            self.article_published.append(values["content"].strip())
 
 
 def instant(value: object) -> datetime | None:
@@ -89,6 +92,33 @@ def effective_instant(item: dict[str, object], registry_generated: datetime | No
     return instant(item.get("publishedAt") or item.get("datePublished")) or registry_generated or now
 
 
+def en_inventory(registry_generated: datetime | None, now: datetime, errors: list[str]) -> dict[str, datetime]:
+    rows: dict[str, datetime] = {}
+    for section in EN_SECTIONS:
+        base = PORTAL / "en" / section
+        if not base.is_dir():
+            continue
+        for page in sorted(base.glob("*/index.html")):
+            html = page.read_text(encoding="utf-8", errors="replace")
+            if NOINDEX_RE.search(html):
+                continue
+            slug = page.parent.name
+            expected = f"{ORIGIN}/en/{section}/{slug}/"
+            parser = HeadParser()
+            parser.feed(html)
+            if parser.canonicals != [expected]:
+                errors.append(f"EN canonical mismatch for {page.relative_to(PORTAL)}: {parser.canonicals or 'missing'}; expected {expected}")
+                continue
+            target = canonical_file(expected)
+            if target is None or not target.is_file():
+                errors.append(f"EN canonical target missing: {expected}")
+                continue
+            ld = DATE_PUBLISHED_RE.search(html)
+            stamp = instant(parser.article_published[0] if parser.article_published else (ld.group(1) if ld else None))
+            rows[expected] = stamp or registry_generated or now
+    return rows
+
+
 def main() -> int:
     now = instant(os.environ.get("PUBLICATION_NOW")) or datetime.now(timezone.utc)
     registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
@@ -102,7 +132,7 @@ def main() -> int:
     for item in items:
         route = str(item.get("path", ""))
         if not supported_editorial_route(route):
-            errors.append(f"Registry route is outside the supported HR/EN editorial routes: {route!r}")
+            errors.append(f"Registry route is outside supported editorial routes: {route!r}")
             continue
         item_state = state(item, now)
         if item_state == "published":
@@ -127,30 +157,33 @@ def main() -> int:
         if not page.is_file():
             errors.append(f"Published registry route has no portal file: {route}")
             continue
-
         parser = HeadParser()
         parser.feed(page.read_text(encoding="utf-8", errors="replace"))
         expected = registry_canonical(item, route)
         if parser.canonicals != [expected]:
             errors.append(f"Canonical mismatch for {route}: {parser.canonicals or 'missing'}; expected {expected}")
-
         target = canonical_file(expected)
         if target is None:
             errors.append(f"Canonical target must stay on the GNK ASG HTTPS host: {route} -> {expected}")
         elif not target.is_file():
             errors.append(f"Canonical target has no portal file: {route} -> {expected}")
-
         stamp = effective_instant(item, registry_generated, now)
         previous = expected_rows.get(expected)
         if previous is None or stamp > previous:
             expected_rows[expected] = stamp
+
+    en_rows = en_inventory(registry_generated, now, errors)
+    for url, stamp in en_rows.items():
+        previous = expected_rows.get(url)
+        if previous is None or stamp > previous:
+            expected_rows[url] = stamp
 
     expected_urls = set(expected_rows)
     sitemap_urls = set(rows)
     for url in sorted(expected_urls - sitemap_urls):
         errors.append(f"Published canonical URL missing from editorial sitemap: {url}")
     for url in sorted(sitemap_urls - expected_urls):
-        errors.append(f"Non-canonical or unregistered URL exposed in editorial sitemap: {url}")
+        errors.append(f"Unregistered/non-inventory URL exposed in editorial sitemap: {url}")
 
     for url, stamp in sorted(expected_rows.items()):
         raw_lastmod = rows.get(url)
@@ -162,7 +195,7 @@ def main() -> int:
         elif lastmod.date() != stamp.date():
             errors.append(
                 f"Editorial sitemap lastmod for {url} is {lastmod.date().isoformat()} "
-                f"but registry canonical state requires {stamp.date().isoformat()}"
+                f"but source inventory requires {stamp.date().isoformat()}"
             )
 
     index_root = ET.parse(SITEMAP_INDEX).getroot()
@@ -176,17 +209,17 @@ def main() -> int:
         errors.append(f"Sitemap-index editorial lastmod {index_lastmod!r} != corpus lastmod {corpus_date!r}")
 
     evidence = {
-        "version": "GNK_ASG_PUBLICATION_SITEMAP_REGISTRY_GATE_V4_CANONICAL_DEDUPE",
-        "canonicalAuthority": "apps/portal/data/editorial-registry.json",
+        "version": "GNK_ASG_PUBLICATION_SITEMAP_REGISTRY_GATE_V5_HYBRID_SEO_INVENTORY",
+        "distributionAuthority": "apps/portal/data/editorial-registry.json",
+        "enSeoAuthority": "apps/portal/en/{publications,analyses,commentary}/*/index.html",
         "now": now.isoformat(),
         "registryItems": len(items),
-        "publishedRoutes": len(published),
-        "scheduledOrHeldRoutes": len(scheduled),
+        "publishedRegistryRoutes": len(published),
+        "scheduledOrHeldRegistryRoutes": len(scheduled),
+        "enSeoOnlyRoutes": len(en_rows),
         "canonicalSitemapUrls": len(expected_rows),
         "editorialSitemapUrls": len(rows),
-        "dedupedAliasRoutes": len(published) - len(expected_rows),
-        "hrPublishedRoutes": sum(not route.startswith("/en/") for route in published),
-        "enPublishedRoutes": sum(route.startswith("/en/") for route in published),
+        "dedupedRegistryAliasRoutes": len(published) - len({registry_canonical(item, route) for route, item in published.items()}),
         "errors": errors,
         "warnings": warnings,
     }
