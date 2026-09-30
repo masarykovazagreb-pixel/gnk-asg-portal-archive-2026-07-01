@@ -1,14 +1,14 @@
 {
   "version": "GNK_ASG_FRESHNESS_V2",
-  "generatedAt": "2026-09-30T06:39:57.945Z",
+  "generatedAt": "2026-09-30T08:21:45.048Z",
   "overall": "stale",
   "resources": {
     "weather": {
       "name": "Weather",
-      "state": "stale",
+      "state": "fresh",
       "path": "apps/portal/data/weather-zagreb.json",
-      "observedAt": "2026-09-29T23:38:21.953Z",
-      "ageMinutes": 422,
+      "observedAt": "2026-09-30T08:21:45.014Z",
+      "ageMinutes": 0,
       "maxAgeMinutes": 360,
       "sourceState": "live"
     },
@@ -17,7 +17,7 @@
       "state": "fresh",
       "path": "apps/portal/data/news-automation-status.json",
       "observedAt": "2026-09-30T06:39:57.000Z",
-      "ageMinutes": 0,
+      "ageMinutes": 102,
       "maxAgeMinutes": 290,
       "sourceState": true
     },
@@ -26,7 +26,7 @@
       "state": "stale",
       "path": "apps/portal/data/fast_market_status.json",
       "observedAt": "2026-09-28T15:17:00.246Z",
-      "ageMinutes": 2363,
+      "ageMinutes": 2465,
       "maxAgeMinutes": 1080,
       "sourceState": "ok"
     }
