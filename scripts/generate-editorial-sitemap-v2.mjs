@@ -47,7 +47,7 @@ for (const section of enRoots) {
     const canonical = canonicalFromHtml(html);
     if (!canonical) throw new Error(`EN editorial page has no canonical: ${file}`);
     if (canonical !== expected) throw new Error(`EN editorial canonical mismatch: ${file} -> ${canonical}; expected ${expected}`);
-    enSeoItems.push({ url: canonical, lastmod: publishedDateFromHtml(html) });
+    enSeoItems.push({ url: canonical, lastmod: fallbackDate });
   }
 }
 
