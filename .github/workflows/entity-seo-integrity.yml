@@ -1,8 +1,6 @@
 name: Entity SEO Integrity
 
 on:
-  schedule:
-    - cron: '17 11 * * *'
   workflow_dispatch:
   push:
     branches: [main]
@@ -15,43 +13,34 @@ on:
       - '.github/workflows/entity-seo-integrity.yml'
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: gnk-asg-main-mutation
-  cancel-in-progress: false
+  group: entity-seo-integrity-readonly
+  cancel-in-progress: true
 
 jobs:
   entity-seo:
-    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
 
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
 
-      - name: Normalize Nermin entity signals
-        run: node scripts/normalize-nermin-entity-seo-v1.mjs --write
-
-      - name: Audit GNK ASG and Nermin entity SEO
-        run: node scripts/audit-core-entity-seo-v1.mjs
-
-      - name: Commit normalization if required
+      - name: Verify Nermin entity normalization is clean
         shell: bash
         run: |
           set -euo pipefail
-          if git diff --quiet -- apps/portal/nermin-sefic/index.html apps/portal/en/nermin-sefic/index.html; then
-            echo 'Entity SEO already normalized.'
-            exit 0
+          node scripts/normalize-nermin-entity-seo-v1.mjs --write
+          if ! git diff --exit-code -- apps/portal/nermin-sefic/index.html apps/portal/en/nermin-sefic/index.html; then
+            echo 'Entity SEO normalization drift detected. Apply normalization on an isolated branch and merge through PR.'
+            exit 1
           fi
-          git config user.name 'gnk-seo-bot'
-          git config user.email 'actions@github.com'
-          git add apps/portal/nermin-sefic/index.html apps/portal/en/nermin-sefic/index.html
-          git commit -m 'Normalize Nermin entity SEO identity signals'
-          git pull --rebase origin main
-          git push origin HEAD:main
+
+      - name: Audit GNK ASG and Nermin entity SEO
+        run: node scripts/audit-core-entity-seo-v1.mjs
