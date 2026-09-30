@@ -21,18 +21,8 @@ EDITORIAL_PREFIXES = (
     "/objave/", "/komentari/", "/analize/", "/gnk-aktual/kolumne/",
     "/en/publications/", "/en/commentary/", "/en/analyses/", "/en/objave/",
 )
-# Deliberately narrow exception: the locked 504M master is a full canonical
-# editorial page historically published under /aktual/. Do not broaden this to
-# /aktual/ generally, because the rest of that namespace is not canonical
-# editorial inventory.
 EDITORIAL_EXACT_ROUTES = {
     "/aktual/gnk-asg-504-milijuna-eura-prihoda/",
-}
-# The locked 504M master predates the no-www canonical normalization. Preserve
-# its body/design/approved page while validating its historical canonical host
-# explicitly; all standard editorial routes must use ORIGIN.
-CANONICAL_ROUTE_OVERRIDES = {
-    "/aktual/gnk-asg-504-milijuna-eura-prihoda/": "https://www.gnk-asg.hr/aktual/gnk-asg-504-milijuna-eura-prihoda/",
 }
 
 
@@ -76,18 +66,34 @@ def route_file(route: str) -> Path:
     return PORTAL / route.strip("/") / "index.html"
 
 
+def canonical_file(url: str) -> Path | None:
+    parsed = urlparse(url)
+    if parsed.scheme != "https" or parsed.netloc not in {"gnk-asg.hr", "www.gnk-asg.hr"}:
+        return None
+    rel = parsed.path.lstrip("/")
+    if rel.endswith(".html"):
+        return PORTAL / rel
+    return PORTAL / rel / "index.html"
+
+
 def supported_editorial_route(route: str) -> bool:
     return route.startswith(EDITORIAL_PREFIXES) or route in EDITORIAL_EXACT_ROUTES
 
 
-def expected_canonical(route: str) -> str:
-    return CANONICAL_ROUTE_OVERRIDES.get(route, ORIGIN + route)
+def registry_canonical(item: dict[str, object], route: str) -> str:
+    explicit = str(item.get("canonicalUrl") or "").strip()
+    return explicit or ORIGIN + route
+
+
+def effective_instant(item: dict[str, object], registry_generated: datetime | None, now: datetime) -> datetime:
+    return instant(item.get("publishedAt") or item.get("datePublished")) or registry_generated or now
 
 
 def main() -> int:
     now = instant(os.environ.get("PUBLICATION_NOW")) or datetime.now(timezone.utc)
     registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
     items = registry.get("items", [])
+    registry_generated = instant(registry.get("generatedAt"))
     errors: list[str] = []
     warnings: list[str] = []
     published: dict[str, dict[str, object]] = {}
@@ -115,55 +121,70 @@ def main() -> int:
             errors.append(f"Duplicate editorial sitemap URL: {loc}")
         rows[loc] = lastmod
 
-    sitemap_routes = {urlparse(loc).path for loc in rows if loc.startswith(ORIGIN + "/")}
-    expected_routes = set(published)
-    for route in sorted(expected_routes - sitemap_routes):
-        errors.append(f"Published registry route missing from editorial sitemap: {route}")
-    for route in sorted(sitemap_routes - expected_routes):
-        errors.append(f"Non-published or unregistered route exposed in editorial sitemap: {route}")
-
-    for route, item in sorted(published.items()):
+    expected_rows: dict[str, datetime] = {}
+    for route, item in published.items():
         page = route_file(route)
         if not page.is_file():
             errors.append(f"Published registry route has no portal file: {route}")
             continue
+
         parser = HeadParser()
         parser.feed(page.read_text(encoding="utf-8", errors="replace"))
-        expected = expected_canonical(route)
+        expected = registry_canonical(item, route)
         if parser.canonicals != [expected]:
-            errors.append(f"Canonical mismatch for {route}: {parser.canonicals or 'missing'}")
-        stamp = instant(item.get("publishedAt") or item.get("datePublished"))
-        sitemap_url = ORIGIN + route
-        lastmod = instant(rows.get(sitemap_url))
-        if not rows.get(sitemap_url):
-            continue
-        if not lastmod:
-            errors.append(f"Invalid editorial sitemap lastmod for {route}: {rows.get(sitemap_url)!r}")
-        elif stamp and lastmod.date() < stamp.date():
-            errors.append(f"Stale editorial sitemap lastmod for {route}")
+            errors.append(f"Canonical mismatch for {route}: {parser.canonicals or 'missing'}; expected {expected}")
 
-    for route in scheduled:
-        if route in sitemap_routes:
-            errors.append(f"Scheduled route exposed before publication time: {route}")
+        target = canonical_file(expected)
+        if target is None:
+            errors.append(f"Canonical target must stay on the GNK ASG HTTPS host: {route} -> {expected}")
+        elif not target.is_file():
+            errors.append(f"Canonical target has no portal file: {route} -> {expected}")
+
+        stamp = effective_instant(item, registry_generated, now)
+        previous = expected_rows.get(expected)
+        if previous is None or stamp > previous:
+            expected_rows[expected] = stamp
+
+    expected_urls = set(expected_rows)
+    sitemap_urls = set(rows)
+    for url in sorted(expected_urls - sitemap_urls):
+        errors.append(f"Published canonical URL missing from editorial sitemap: {url}")
+    for url in sorted(sitemap_urls - expected_urls):
+        errors.append(f"Non-canonical or unregistered URL exposed in editorial sitemap: {url}")
+
+    for url, stamp in sorted(expected_rows.items()):
+        raw_lastmod = rows.get(url)
+        if not raw_lastmod:
+            continue
+        lastmod = instant(raw_lastmod)
+        if not lastmod:
+            errors.append(f"Invalid editorial sitemap lastmod for {url}: {raw_lastmod!r}")
+        elif lastmod.date() != stamp.date():
+            errors.append(
+                f"Editorial sitemap lastmod for {url} is {lastmod.date().isoformat()} "
+                f"but registry canonical state requires {stamp.date().isoformat()}"
+            )
 
     index_root = ET.parse(SITEMAP_INDEX).getroot()
     index_lastmod = None
     for node in index_root.findall("sm:sitemap", NS):
         if node.findtext("sm:loc", "", NS) == ORIGIN + "/editorial-sitemap.xml":
             index_lastmod = node.findtext("sm:lastmod", "", NS)
-    dated = [instant(item.get("publishedAt") or item.get("datePublished")) for item in published.values()]
-    corpus_date = max((stamp.date().isoformat() for stamp in dated if stamp), default=None)
+
+    corpus_date = max((stamp.date().isoformat() for stamp in expected_rows.values()), default=None)
     if corpus_date and index_lastmod != corpus_date:
         errors.append(f"Sitemap-index editorial lastmod {index_lastmod!r} != corpus lastmod {corpus_date!r}")
 
     evidence = {
-        "version": "GNK_ASG_PUBLICATION_SITEMAP_REGISTRY_GATE_V3",
+        "version": "GNK_ASG_PUBLICATION_SITEMAP_REGISTRY_GATE_V4_CANONICAL_DEDUPE",
         "canonicalAuthority": "apps/portal/data/editorial-registry.json",
         "now": now.isoformat(),
         "registryItems": len(items),
         "publishedRoutes": len(published),
         "scheduledOrHeldRoutes": len(scheduled),
+        "canonicalSitemapUrls": len(expected_rows),
         "editorialSitemapUrls": len(rows),
+        "dedupedAliasRoutes": len(published) - len(expected_rows),
         "hrPublishedRoutes": sum(not route.startswith("/en/") for route in published),
         "enPublishedRoutes": sum(route.startswith("/en/") for route in published),
         "errors": errors,
