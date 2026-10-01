@@ -2,6 +2,15 @@ name: Entity SEO Integrity
 
 on:
   workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/portal/nermin-sefic/**'
+      - 'apps/portal/en/nermin-sefic/**'
+      - 'apps/portal/sitemap.xml'
+      - 'scripts/normalize-nermin-entity-seo-v1.mjs'
+      - 'scripts/audit-core-entity-seo-v1.mjs'
+      - '.github/workflows/entity-seo-integrity.yml'
   push:
     branches: [main]
     paths:
