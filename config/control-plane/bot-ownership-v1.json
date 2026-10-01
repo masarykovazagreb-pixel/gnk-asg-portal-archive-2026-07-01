@@ -18,24 +18,69 @@
       "legal",
       "social"
     ],
-    "legacyDirectMainAllowlist": [
-      "gnk-news-refresh-v2.yml",
-      "weather-refresh.yml",
-      "world-monitor-refresh.yml",
-      "market-pulse-refresh.yml",
-      "macro-market-refresh.yml",
-      "refresh-index-live-data.yml",
-      "refresh-gnkc-index.yml",
-      "aeo-ai-visibility.yml",
-      "content-queue-publish.yml",
-      "editorial-scheduled-publish.yml"
-    ],
     "sharedPathMigrationExceptions": {
       "apps/portal/data/freshness-status.json": {
         "reason": "Current cross-domain status aggregation is written by multiple legacy refresh workflows; migrate to STABILITY-owned aggregation.",
         "targetOwner": "STABILITY"
       }
-    }
+    },
+    "knownDirectMainBaseline": [
+      "aeo-ai-visibility.yml",
+      "aktual-world-topic-promo.yml",
+      "cleanup-campaign-mailer-remaining.yml",
+      "content-queue-backfill.yml",
+      "content-queue-publish.yml",
+      "deploy-public-shell-v15.yml",
+      "devto-mirror-publish.yml",
+      "diagnose-media-projects-v1.yml",
+      "editorial-scheduled-publish.yml",
+      "entity-seo-integrity.yml",
+      "export-campaign-continuation-readonly.yml",
+      "fix-image-dimensions.yml",
+      "gnk-news-refresh-v2.yml",
+      "image-entity-seo.yml",
+      "image-health-scan.yml",
+      "linkedin-daily-rotation.yml",
+      "macro-market-refresh.yml",
+      "market-pulse-refresh.yml",
+      "objavi-15-dnevno.yml",
+      "objavi-telegraph-sada.yml",
+      "obnovi-devto-evidenciju.yml",
+      "one-time-autoreply-ai-v1.yml",
+      "one-time-diagnose-validate-release-v1.yml",
+      "one-time-fix-editorial-route-ownership-v35.yml",
+      "one-time-fix-news-cache-and-contact-readiness-v1.yml",
+      "one-time-fix-todays-news-order-v1.yml",
+      "one-time-full-validate-and-deploy-v2.yml",
+      "one-time-public-content-repair-v1.yml",
+      "one-time-revalidate-urgent-package-v3.yml",
+      "one-time-verify-final-urgent-v1.yml",
+      "one-time-verify-production-v4.yml",
+      "operator-approved-control.yml",
+      "operator-register-504m.yml",
+      "p1-dw-audit.yml",
+      "p2-lighthouse.yml",
+      "provjera-aplikacije.yml",
+      "provjera-workera.yml",
+      "refresh-index-live-data.yml",
+      "regeneriraj-image-sitemap.yml",
+      "regeneriraj-sitemapove.yml",
+      "siroki-smoke.yml",
+      "site-health-audit.yml",
+      "social-distribution.yml",
+      "verify-email-status-production.yml",
+      "verify-production-v12.yml",
+      "weather-refresh.yml",
+      "world-monitor-refresh.yml",
+      "world-topics-materialize.yml"
+    ],
+    "knownDirectMainBaselineSemantics": "Detection inventory only; presence is migration debt, not approval. New direct-main writers fail CI. NO-TOUCH workflows are inventoried but not modified.",
+    "noTouchWorkflowPatterns": [
+      "mail",
+      "email",
+      "social",
+      "linkedin"
+    ]
   },
   "domains": [
     {
@@ -103,20 +148,29 @@
     {
       "workflow": "entity-seo-integrity.yml",
       "domain": "SEO_AEO",
-      "role": "auditor",
-      "cadence": "PR/push/manual after PR #125",
+      "role": "legacy-writer-migration-debt",
+      "cadence": "daily/manual on current main",
       "read": [
         "apps/portal/nermin-sefic/**",
         "apps/portal/en/nermin-sefic/**",
         "apps/portal/sitemap.xml"
       ],
-      "write": [],
-      "gate": "Entity SEO semantic integrity",
-      "handoff": "SEO_AEO owner via PR",
+      "write": [
+        "apps/portal/nermin-sefic/**",
+        "apps/portal/en/nermin-sefic/**"
+      ],
+      "gate": "Entity SEO integrity",
+      "handoff": "PR #125 migrates this workflow to read-only auditor",
       "prohibitions": [
-        "direct main push",
-        "scheduled self-mutation"
-      ]
+        "new mutation scope",
+        "new direct-main behavior"
+      ],
+      "plannedState": {
+        "pr": 125,
+        "role": "auditor",
+        "permissions": "contents: read",
+        "scheduledSelfMutation": false
+      }
     },
     {
       "workflow": "seo-news-cycle.yml",
