@@ -44,7 +44,7 @@ jobs:
           set -euxo pipefail
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/public-shell-v11.js
-          node --check apps/portal/the-code/assets/the-code.js
+          # Current /the-code/ page is self-contained and does not load the removed legacy scene engine.
           node --check apps/portal/assets/gallery-brand-safety.js
           node --check apps/portal/assets/the-code-new-york-countdown-v1.js
           test -s apps/portal/assets/the-code-index-slot.css
