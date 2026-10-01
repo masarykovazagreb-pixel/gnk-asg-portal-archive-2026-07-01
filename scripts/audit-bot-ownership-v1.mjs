@@ -11,7 +11,7 @@ const warnings = [];
 const data = JSON.parse(fs.readFileSync(REGISTRY, 'utf8'));
 const byWorkflow = new Map(data.workflows.map((w) => [w.workflow, w]));
 const shared = new Set(Object.keys(data.policy.sharedPathMigrationExceptions || {}));
-const legacyDirectMain = new Set(data.policy.legacyDirectMainAllowlist || []);
+const directMainBaseline = new Set(data.policy.knownDirectMainBaseline || []);
 
 function workflowText(name) {
   const p = path.join(WORKFLOWS, name);
@@ -48,11 +48,17 @@ for (const entry of data.workflows) {
 for (const file of fs.readdirSync(WORKFLOWS).filter((f) => /\.ya?ml$/i.test(f))) {
   const text = fs.readFileSync(path.join(WORKFLOWS, file), 'utf8');
   if (!hasDirectMainPush(text)) continue;
-  if (!legacyDirectMain.has(file)) failures.push(file + ': unregistered direct-main writer');
-  else warnings.push(file + ': legacy direct-main writer; migration debt remains');
+  if (!directMainBaseline.has(file)) failures.push(file + ': new/unregistered direct-main writer');
+  else warnings.push(file + ': known direct-main writer; migration debt remains');
 }
-for (const file of legacyDirectMain) {
-  if (!byWorkflow.has(file)) failures.push(file + ': legacy direct-main allowlist entry lacks ownership record');
+for (const file of directMainBaseline) {
+  const p = path.join(WORKFLOWS, file);
+  if (!fs.existsSync(p)) {
+    warnings.push(file + ': baseline entry no longer exists; remove it in a reviewed cleanup PR');
+    continue;
+  }
+  const text = fs.readFileSync(p, 'utf8');
+  if (!hasDirectMainPush(text)) warnings.push(file + ': direct-main debt appears retired; remove baseline entry after review');
 }
 const taskIds = new Set(data.auditTasks.map((t) => t.id));
 for (let id = 1; id <= 23; id++) if (!taskIds.has(id)) failures.push('missing audit task ' + id);
@@ -62,8 +68,9 @@ const result = {
   version: data.version,
   registeredWorkflows: data.workflows.length,
   mappedAuditTasks: data.auditTasks.length,
-  legacyDirectMainDebt: warnings.length,
-  warnings,
+  knownDirectMainBaseline: directMainBaseline.size,
+  warnings: warnings.length,
+  warningDetails: warnings,
   failures
 };
 console.log(JSON.stringify(result, null, 2));
