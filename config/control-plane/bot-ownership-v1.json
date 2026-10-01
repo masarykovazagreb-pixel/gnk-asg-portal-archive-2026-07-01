@@ -1,0 +1,605 @@
+{
+  "version": "GNK_ASG_BOT_OWNERSHIP_V1",
+  "generatedFromMainSha": "4bae30ae68c5a08739f9db24772c117ed07eb52e",
+  "policy": {
+    "principle": "one-path-one-canonical-writer",
+    "prFirst": true,
+    "mergeIsLive": false,
+    "exactShaRequiredForLive": true,
+    "supervisorReadOnly": true,
+    "noTouchDomains": [
+      "mail",
+      "smtp",
+      "imap",
+      "dns",
+      "mx",
+      "secrets",
+      "payments",
+      "legal",
+      "social"
+    ],
+    "legacyDirectMainAllowlist": [
+      "gnk-news-refresh-v2.yml",
+      "weather-refresh.yml",
+      "world-monitor-refresh.yml",
+      "market-pulse-refresh.yml",
+      "macro-market-refresh.yml",
+      "refresh-index-live-data.yml",
+      "refresh-gnkc-index.yml",
+      "aeo-ai-visibility.yml",
+      "content-queue-publish.yml",
+      "editorial-scheduled-publish.yml"
+    ],
+    "sharedPathMigrationExceptions": {
+      "apps/portal/data/freshness-status.json": {
+        "reason": "Current cross-domain status aggregation is written by multiple legacy refresh workflows; migrate to STABILITY-owned aggregation.",
+        "targetOwner": "STABILITY"
+      }
+    }
+  },
+  "domains": [
+    {
+      "id": "SECURITY_CONTROL",
+      "responsibility": "Read-only security and control-plane audit",
+      "canonicalWriter": null
+    },
+    {
+      "id": "STABILITY",
+      "responsibility": "Health, freshness, retry, dedupe, idempotency and rollback truth",
+      "canonicalWriter": null
+    },
+    {
+      "id": "AKTUAL_NEWS",
+      "responsibility": "Canonical AKTUAL/GNK News data",
+      "canonicalWriter": "gnk-news-refresh-v2.yml"
+    },
+    {
+      "id": "WORLD_MONITOR",
+      "responsibility": "World Monitor data only",
+      "canonicalWriter": "world-monitor-refresh.yml"
+    },
+    {
+      "id": "MARKET",
+      "responsibility": "Market Pulse, macro and index data under coordinated ownership",
+      "canonicalWriter": null
+    },
+    {
+      "id": "GNKC",
+      "responsibility": "GNKC internal stable-index data",
+      "canonicalWriter": "refresh-gnkc-index.yml"
+    },
+    {
+      "id": "WEATHER",
+      "responsibility": "Weather data",
+      "canonicalWriter": "weather-refresh.yml"
+    },
+    {
+      "id": "EDITORIAL",
+      "responsibility": "Held editorial preparation and quality contract",
+      "canonicalWriter": null
+    },
+    {
+      "id": "SEO_AEO",
+      "responsibility": "Canonical/meta/schema/Person/image/sitemap validation; config changes PR-only",
+      "canonicalWriter": null
+    },
+    {
+      "id": "PUBLISH",
+      "responsibility": "Quality PASS to canonical publication and exact-SHA release handoff",
+      "canonicalWriter": null
+    },
+    {
+      "id": "BLOG_MIRROR",
+      "responsibility": "External mirrors only after exact-SHA LIVE proof",
+      "canonicalWriter": null
+    },
+    {
+      "id": "WORKFORCE_SUPERVISION",
+      "responsibility": "Read-only Digital Workforce supervision",
+      "canonicalWriter": null
+    }
+  ],
+  "workflows": [
+    {
+      "workflow": "entity-seo-integrity.yml",
+      "domain": "SEO_AEO",
+      "role": "auditor",
+      "cadence": "PR/push/manual after PR #125",
+      "read": [
+        "apps/portal/nermin-sefic/**",
+        "apps/portal/en/nermin-sefic/**",
+        "apps/portal/sitemap.xml"
+      ],
+      "write": [],
+      "gate": "Entity SEO semantic integrity",
+      "handoff": "SEO_AEO owner via PR",
+      "prohibitions": [
+        "direct main push",
+        "scheduled self-mutation"
+      ]
+    },
+    {
+      "workflow": "seo-news-cycle.yml",
+      "domain": "SEO_AEO",
+      "role": "auditor",
+      "cadence": "manual",
+      "read": [
+        "editorial/SEO artefacts"
+      ],
+      "write": [],
+      "gate": "SEO visibility audit",
+      "handoff": "SEO_AEO owner",
+      "prohibitions": [
+        "repository writes"
+      ]
+    },
+    {
+      "workflow": "gnk-news-refresh-v2.yml",
+      "domain": "AKTUAL_NEWS",
+      "role": "canonical-writer-legacy-direct-main",
+      "cadence": "6x/day",
+      "read": [
+        "news source inputs"
+      ],
+      "write": [
+        "apps/portal/data/news.json",
+        "apps/portal/data/news_archive.json",
+        "apps/portal/data/news-automation-status.json",
+        "apps/portal/data/freshness-status.json"
+      ],
+      "gate": "news contract + freshness",
+      "handoff": "PUBLISH/STABILITY",
+      "prohibitions": [
+        "write outside AKTUAL_NEWS paths"
+      ]
+    },
+    {
+      "workflow": "news-refresh.yml",
+      "domain": "AKTUAL_NEWS",
+      "role": "auditor-recovery",
+      "cadence": "manual",
+      "read": [
+        "news data"
+      ],
+      "write": [],
+      "gate": "news recovery/read validation",
+      "handoff": "gnk-news-refresh-v2.yml",
+      "prohibitions": [
+        "canonical writes",
+        "direct main push"
+      ]
+    },
+    {
+      "workflow": "weather-refresh.yml",
+      "domain": "WEATHER",
+      "role": "canonical-writer-legacy-direct-main",
+      "cadence": "4x/day",
+      "read": [
+        "Open-Meteo"
+      ],
+      "write": [
+        "apps/portal/data/weather-zagreb.json",
+        "apps/portal/data/freshness-status.json"
+      ],
+      "gate": "weather freshness",
+      "handoff": "STABILITY",
+      "prohibitions": [
+        "write outside WEATHER/status paths"
+      ]
+    },
+    {
+      "workflow": "world-monitor-refresh.yml",
+      "domain": "WORLD_MONITOR",
+      "role": "canonical-writer-legacy-direct-main",
+      "cadence": "4x/day",
+      "read": [
+        "free World Monitor sources"
+      ],
+      "write": [
+        "apps/portal/data/world-monitor.json"
+      ],
+      "gate": "World Monitor data contract",
+      "handoff": "STABILITY",
+      "prohibitions": [
+        "write outside World Monitor path"
+      ]
+    },
+    {
+      "workflow": "market-pulse-refresh.yml",
+      "domain": "MARKET",
+      "role": "domain-writer-legacy-direct-main",
+      "cadence": "2x/day",
+      "read": [
+        "market sources"
+      ],
+      "write": [
+        "apps/portal/data/market-pulse.json"
+      ],
+      "gate": "Market Pulse contract",
+      "handoff": "STABILITY",
+      "prohibitions": [
+        "write outside assigned market path"
+      ]
+    },
+    {
+      "workflow": "macro-market-refresh.yml",
+      "domain": "MARKET",
+      "role": "domain-writer-legacy-direct-main",
+      "cadence": "2x/day",
+      "read": [
+        "market sources"
+      ],
+      "write": [
+        "apps/portal/data/macro_market.json"
+      ],
+      "gate": "macro market contract",
+      "handoff": "STABILITY",
+      "prohibitions": [
+        "write outside assigned market path"
+      ]
+    },
+    {
+      "workflow": "refresh-index-live-data.yml",
+      "domain": "MARKET",
+      "role": "domain-writer-legacy-direct-main",
+      "cadence": "2x/day",
+      "read": [
+        "index/crypto public sources"
+      ],
+      "write": [
+        "apps/portal/data/market.json",
+        "apps/portal/data/market_indices.json",
+        "apps/portal/data/fast_market_status.json",
+        "apps/portal/data/freshness-status.json"
+      ],
+      "gate": "public market contract",
+      "handoff": "STABILITY",
+      "prohibitions": [
+        "write outside assigned market/status paths"
+      ]
+    },
+    {
+      "workflow": "refresh-gnkc-index.yml",
+      "domain": "GNKC",
+      "role": "canonical-writer-legacy-direct-main",
+      "cadence": "2x/day",
+      "read": [
+        "BTC/ETH/USDC/USDT/DAI public prices"
+      ],
+      "write": [
+        "apps/portal/data/gnkc-index.json"
+      ],
+      "gate": "GNKC index contract",
+      "handoff": "STABILITY",
+      "prohibitions": [
+        "represent GNKC as a public cryptocurrency",
+        "write outside GNKC path"
+      ]
+    },
+    {
+      "workflow": "content-queue-publish.yml",
+      "domain": "PUBLISH",
+      "role": "publisher-legacy-direct-main",
+      "cadence": "3x/day",
+      "read": [
+        "content queue"
+      ],
+      "write": [
+        "scheduled content outputs"
+      ],
+      "gate": "content queue validation",
+      "handoff": "exact-SHA release",
+      "prohibitions": [
+        "unapproved production deploy",
+        "mail workflow execution"
+      ]
+    },
+    {
+      "workflow": "editorial-scheduled-publish.yml",
+      "domain": "PUBLISH",
+      "role": "publisher-legacy-direct-main",
+      "cadence": "daily",
+      "read": [
+        "apps/portal/data/editorial-plan/**"
+      ],
+      "write": [
+        "apps/portal/objave/**",
+        "apps/portal/komentari/**",
+        "apps/portal/gnk-aktual/**",
+        "apps/portal/editorial-sitemap.xml",
+        "apps/portal/sitemap-index.xml",
+        "apps/portal/data/editorial-registry.json",
+        "apps/portal/data/editorial-plan/**"
+      ],
+      "gate": "editorial quality + sitemap",
+      "handoff": "exact-SHA release",
+      "prohibitions": [
+        "unapproved production deploy",
+        "mail workflow execution"
+      ]
+    },
+    {
+      "workflow": "aeo-ai-visibility.yml",
+      "domain": "SEO_AEO",
+      "role": "legacy-writer-migration-debt",
+      "cadence": "4x/day",
+      "read": [
+        "entity/SEO source artefacts"
+      ],
+      "write": [
+        "AEO visibility artefacts"
+      ],
+      "gate": "AEO/entity validation",
+      "handoff": "SEO_AEO PR",
+      "prohibitions": [
+        "new direct-main mutation",
+        "unapproved production deploy"
+      ]
+    },
+    {
+      "workflow": "workforce-supervisor-agent.yml",
+      "domain": "WORKFORCE_SUPERVISION",
+      "role": "supervisor",
+      "cadence": "4x/day + scoped push/manual",
+      "read": [
+        "Digital Workforce/editorial plan truth"
+      ],
+      "write": [],
+      "gate": "runtime evidence truth",
+      "handoff": "domain owner",
+      "prohibitions": [
+        "repository writes",
+        "production writes",
+        "claim runtime PASS without evidence"
+      ]
+    },
+    {
+      "workflow": "workforce-runtime-health-truth.yml",
+      "domain": "WORKFORCE_SUPERVISION",
+      "role": "auditor",
+      "cadence": "PR",
+      "read": [
+        "workforce runtime truth"
+      ],
+      "write": [],
+      "gate": "runtime health truth",
+      "handoff": "domain owner",
+      "prohibitions": [
+        "repository writes"
+      ]
+    },
+    {
+      "workflow": "digital-assets-single-writer-guard.yml",
+      "domain": "SECURITY_CONTROL",
+      "role": "auditor",
+      "cadence": "PR",
+      "read": [
+        "digital asset writer topology"
+      ],
+      "write": [],
+      "gate": "single-writer contract",
+      "handoff": "MARKET/GNKC owner",
+      "prohibitions": [
+        "repository writes"
+      ]
+    },
+    {
+      "workflow": "content-source-governance.yml",
+      "domain": "SECURITY_CONTROL",
+      "role": "auditor",
+      "cadence": "PR/manual",
+      "read": [
+        "content source topology"
+      ],
+      "write": [],
+      "gate": "content governance",
+      "handoff": "EDITORIAL/PUBLISH owner",
+      "prohibitions": [
+        "repository writes"
+      ]
+    },
+    {
+      "workflow": "publication-sitemap-registry-gate.yml",
+      "domain": "SEO_AEO",
+      "role": "auditor",
+      "cadence": "PR/manual",
+      "read": [
+        "apps/portal/data/editorial-registry.json",
+        "apps/portal/editorial-sitemap.xml",
+        "apps/portal/sitemap-index.xml"
+      ],
+      "write": [],
+      "gate": "canonical + lastmod + registry",
+      "handoff": "EDITORIAL/SEO_AEO owner",
+      "prohibitions": [
+        "repository writes"
+      ]
+    },
+    {
+      "workflow": "public-market-contract.yml",
+      "domain": "MARKET",
+      "role": "auditor",
+      "cadence": "PR/manual",
+      "read": [
+        "apps/portal/data/market.json"
+      ],
+      "write": [],
+      "gate": "public market contract",
+      "handoff": "MARKET owner",
+      "prohibitions": [
+        "repository writes"
+      ]
+    },
+    {
+      "workflow": "production-live-sync.yml",
+      "domain": "PUBLISH",
+      "role": "archived-wrapper",
+      "cadence": "manual",
+      "read": [],
+      "write": [],
+      "gate": "archived",
+      "handoff": "approved exact-SHA deploy workflow",
+      "prohibitions": [
+        "production deployment",
+        "repository writes"
+      ]
+    },
+    {
+      "workflow": "scheduled-production-deploy.yml",
+      "domain": "PUBLISH",
+      "role": "manual-release-wrapper",
+      "cadence": "manual",
+      "read": [
+        "main SHA",
+        "last successful deploy SHA"
+      ],
+      "write": [],
+      "gate": "exact-SHA release",
+      "handoff": "deploy-admin-auth-v6.yml only with explicit operator approval",
+      "prohibitions": [
+        "automatic scheduling",
+        "execution under current NO-TOUCH mail boundary"
+      ]
+    }
+  ],
+  "auditTasks": [
+    {
+      "id": 1,
+      "priority": "P0",
+      "owner": "SECURITY_CONTROL",
+      "name": "Validate Current Portal Contract"
+    },
+    {
+      "id": 2,
+      "priority": "P0",
+      "owner": "SECURITY_CONTROL",
+      "name": "Check Operator Module Routes"
+    },
+    {
+      "id": 3,
+      "priority": "P0",
+      "owner": "SECURITY_CONTROL",
+      "name": "Check Index Code Showcase V1"
+    },
+    {
+      "id": 4,
+      "priority": "P0",
+      "owner": "SEO_AEO",
+      "name": "Canonical comment 504m EUR"
+    },
+    {
+      "id": 5,
+      "priority": "P0",
+      "owner": "SEO_AEO",
+      "name": "Canonical Croatian software"
+    },
+    {
+      "id": 6,
+      "priority": "P0",
+      "owner": "SEO_AEO",
+      "name": "Canonical publication 504m EUR"
+    },
+    {
+      "id": 7,
+      "priority": "P0",
+      "owner": "SEO_AEO",
+      "name": "Canonical publication Croatian software"
+    },
+    {
+      "id": 8,
+      "priority": "P0",
+      "owner": "SEO_AEO",
+      "name": "Editorial sitemap lastmod drift"
+    },
+    {
+      "id": 9,
+      "priority": "P0",
+      "owner": "STABILITY",
+      "name": "Kill-switch checkpoint branch mismatch"
+    },
+    {
+      "id": 10,
+      "priority": "P0",
+      "owner": "STABILITY",
+      "name": "Kill-switch checkpoint SHA mismatch"
+    },
+    {
+      "id": 11,
+      "priority": "P1",
+      "owner": "SECURITY_CONTROL",
+      "name": "Duplicate Worker routes"
+    },
+    {
+      "id": 12,
+      "priority": "P1",
+      "owner": "SECURITY_CONTROL",
+      "name": "unmanagedKnownWorker"
+    },
+    {
+      "id": 13,
+      "priority": "P1",
+      "owner": "SECURITY_CONTROL",
+      "name": "directOperatorAllConfigsRouteLess=false"
+    },
+    {
+      "id": 14,
+      "priority": "P1",
+      "owner": "EDITORIAL",
+      "name": "EN Knowledge Center parity"
+    },
+    {
+      "id": 15,
+      "priority": "P1",
+      "owner": "STABILITY",
+      "name": "Remove hardcoded automation/cadence figures"
+    },
+    {
+      "id": 16,
+      "priority": "P1",
+      "owner": "STABILITY",
+      "name": "Knowledge Center routing"
+    },
+    {
+      "id": 17,
+      "priority": "P1",
+      "owner": "MARKET",
+      "name": "Six orphan market files"
+    },
+    {
+      "id": 18,
+      "priority": "P1",
+      "owner": "AKTUAL_NEWS",
+      "name": "News single-writer consolidation"
+    },
+    {
+      "id": 19,
+      "priority": "P1",
+      "owner": "PUBLISH",
+      "name": "Two publishers over same content space"
+    },
+    {
+      "id": 20,
+      "priority": "P1",
+      "owner": "STABILITY",
+      "name": "Public freshness/cadence claims"
+    },
+    {
+      "id": 21,
+      "priority": "P2",
+      "owner": "SECURITY_CONTROL",
+      "name": "Nested workflow classification"
+    },
+    {
+      "id": 22,
+      "priority": "P2",
+      "owner": "SECURITY_CONTROL",
+      "name": "Root workflow forest classification"
+    },
+    {
+      "id": 23,
+      "priority": "P2",
+      "owner": "PUBLISH",
+      "name": "Exact-SHA release package"
+    }
+  ]
+}
