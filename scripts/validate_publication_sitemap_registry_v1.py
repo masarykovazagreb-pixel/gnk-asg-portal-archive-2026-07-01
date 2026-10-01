@@ -192,10 +192,10 @@ def main() -> int:
         lastmod = instant(raw_lastmod)
         if not lastmod:
             errors.append(f"Invalid editorial sitemap lastmod for {url}: {raw_lastmod!r}")
-        elif lastmod.date() != stamp.date():
+        elif lastmod.date() < stamp.date():
             errors.append(
                 f"Editorial sitemap lastmod for {url} is {lastmod.date().isoformat()} "
-                f"but source inventory requires {stamp.date().isoformat()}"
+                f"but cannot predate source inventory date {stamp.date().isoformat()}"
             )
 
     index_root = ET.parse(SITEMAP_INDEX).getroot()
@@ -204,9 +204,13 @@ def main() -> int:
         if node.findtext("sm:loc", "", NS) == ORIGIN + "/editorial-sitemap.xml":
             index_lastmod = node.findtext("sm:lastmod", "", NS)
 
-    corpus_date = max((stamp.date().isoformat() for stamp in expected_rows.values()), default=None)
+    # Sitemap lastmod represents the latest modification, not the original publication
+    # date. A page may therefore legitimately have a later lastmod than its source
+    # inventory date. The sitemap index must track the newest valid child lastmod.
+    valid_row_dates = [instant(value) for value in rows.values() if value]
+    corpus_date = max((stamp.date().isoformat() for stamp in valid_row_dates if stamp), default=None)
     if corpus_date and index_lastmod != corpus_date:
-        errors.append(f"Sitemap-index editorial lastmod {index_lastmod!r} != corpus lastmod {corpus_date!r}")
+        errors.append(f"Sitemap-index editorial lastmod {index_lastmod!r} != sitemap corpus lastmod {corpus_date!r}")
 
     evidence = {
         "version": "GNK_ASG_PUBLICATION_SITEMAP_REGISTRY_GATE_V5_HYBRID_SEO_INVENTORY",
