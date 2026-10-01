@@ -29,6 +29,48 @@ function normalizeLinkedIn(html) {
   );
 }
 
+
+function collectJsonLdObjects(value, out = []) {
+  if (Array.isArray(value)) {
+    for (const item of value) collectJsonLdObjects(item, out);
+    return out;
+  }
+  if (!value || typeof value !== 'object') return out;
+  out.push(value);
+  for (const child of Object.values(value)) collectJsonLdObjects(child, out);
+  return out;
+}
+
+function jsonLdObjects(html) {
+  const out = [];
+  const pattern = /<script\b[^>]*type=(["'])application\/ld\+json\1[^>]*>([\s\S]*?)<\/script>/gi;
+  for (const match of html.matchAll(pattern)) {
+    const raw = match[2].trim();
+    if (!raw) continue;
+    try {
+      collectJsonLdObjects(JSON.parse(raw), out);
+    } catch {
+      // Other validators own generic JSON-LD syntax failures.
+    }
+  }
+  return out;
+}
+
+function hasJsonLdType(node, expectedType) {
+  const types = Array.isArray(node?.['@type']) ? node['@type'] : [node?.['@type']];
+  return types.includes(expectedType);
+}
+
+function personHasAlternateName(html, expectedName) {
+  return jsonLdObjects(html).some((node) => {
+    if (!hasJsonLdType(node, 'Person')) return false;
+    const alternateNames = Array.isArray(node.alternateName)
+      ? node.alternateName
+      : [node.alternateName];
+    return alternateNames.includes(expectedName);
+  });
+}
+
 function requiredSignals(target) {
   const { lang, canonical, alternate } = target;
   return [
@@ -36,7 +78,6 @@ function requiredSignals(target) {
     { name: `${lang}-hreflang`, value: `hreflang="${lang}" href="${canonical}"` },
     { name: `${lang === 'hr' ? 'en' : 'hr'}-hreflang`, value: `hreflang="${lang === 'hr' ? 'en' : 'hr'}" href="${alternate}"` },
     { name: 'person-name', value: '"name":"Nermin Sefić"' },
-    { name: 'alternate-name', value: '"alternateName":"Nermin Sefic"' },
     { name: 'linkedin-sameAs', value: LINKEDIN_CANONICAL },
   ];
 }
@@ -74,6 +115,11 @@ for (const target of targets) {
     }
   }
 }
+
+  if (!personHasAlternateName(effective, 'Nermin Sefic')) {
+    console.error(`FAIL ${target.file}: missing alternate-name`);
+    failures++;
+  }
 
 const legacy = path.join(ROOT, 'apps/portal/hr/nermin-sefic/index.html');
 if (fs.existsSync(legacy)) {
