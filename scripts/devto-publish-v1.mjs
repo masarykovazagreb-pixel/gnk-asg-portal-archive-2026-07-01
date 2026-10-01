@@ -234,7 +234,7 @@ async function main() {
   writeJson(RESULT, { kad: new Date().toISOString(), ...rezultat });
   console.log('\nSazetak:', JSON.stringify(rezultat, null, 2));
   const meaningfulProgress = rezultat.poslano > 0 || rezultat.reconciled > 0;
-  if (rezultat.greske.length && !meaningfulProgress && !rezultat.rateLimited && pending.length > 0) process.exitCode = 1;
+  if (rezultat.authRejected || (rezultat.greske.length && !meaningfulProgress && !rezultat.rateLimited && pending.length > 0)) process.exitCode = 1;
 }
 
 main().catch((e) => {
