@@ -21,6 +21,9 @@ on:
       - 'apps/portal/publications/**'
       - 'apps/portal/comments/**'
       - 'apps/portal/analysis/**'
+      - 'apps/portal/en/publications/**'
+      - 'apps/portal/en/analyses/**'
+      - 'apps/portal/en/commentary/**'
 
 permissions:
   contents: read

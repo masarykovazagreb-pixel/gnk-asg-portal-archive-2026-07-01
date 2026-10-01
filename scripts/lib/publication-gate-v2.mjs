@@ -35,5 +35,6 @@ export function publishedItems(registry, now = new Date()) {
 }
 
 export function canonicalUrl(item, origin = 'https://gnk-asg.hr') {
-  return `${origin}${item.path}`;
+  const explicit = String(item?.canonicalUrl || '').trim();
+  return explicit || `${origin}${item.path}`;
 }
