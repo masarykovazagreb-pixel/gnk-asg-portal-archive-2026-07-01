@@ -62,11 +62,27 @@ try {
   const data = await fetchWeather();
   const cur = data.current;
   const daily = data.daily;
+  // Open-Meteo returns ISO local time for Europe/Zagreb; convert with its reported UTC offset.
+  // A successful HTTP response is NOT proof that its observation is fresh.
+  const observedMs = Date.parse(String(cur?.time || '') + 'Z') -
+    Number(data.utc_offset_seconds) * 1000;
+  const sourceAgeMs = Date.now() - observedMs;
+  const validCurrent = cur &&
+    ['temperature_2m','apparent_temperature','relative_humidity_2m','wind_speed_10m','weather_code']
+      .every((key) => Number.isFinite(cur[key]));
+  const validDaily = daily && Array.isArray(daily.time) && daily.time.length >= 3 &&
+    ['temperature_2m_max','temperature_2m_min','weather_code'].every((key) =>
+      Array.isArray(daily[key]) && daily[key].slice(0, 3).every(Number.isFinite));
+  if (!validCurrent || !validDaily || !Number.isFinite(sourceAgeMs) ||
+      sourceAgeMs < -300000 || sourceAgeMs > 90 * 60000) {
+    throw new Error('open-meteo-invalid-or-stale-observation');
+  }
   const desc = describe(cur.weather_code);
   const payload = {
     city: 'Zagreb',
     lat: LAT, lon: LON,
     updated_at: new Date().toISOString(),
+    source_observed_at: new Date(observedMs).toISOString(),
     source: 'open-meteo.com',
     state: 'live',
     current: {
