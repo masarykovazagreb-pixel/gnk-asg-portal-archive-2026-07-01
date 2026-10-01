@@ -114,12 +114,12 @@ for (const target of targets) {
       failures++;
     }
   }
-}
 
   if (!personHasAlternateName(effective, 'Nermin Sefic')) {
     console.error(`FAIL ${target.file}: missing alternate-name`);
     failures++;
   }
+}
 
 const legacy = path.join(ROOT, 'apps/portal/hr/nermin-sefic/index.html');
 if (fs.existsSync(legacy)) {
