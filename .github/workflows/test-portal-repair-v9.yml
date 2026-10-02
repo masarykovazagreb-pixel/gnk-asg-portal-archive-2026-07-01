@@ -49,8 +49,9 @@ jobs:
         shell: bash
         run: |
           set -euxo pipefail
-          grep -q 'main = "src/index-unified-auth-v14.js"' workers/gnk-asg-direct-operator/wrangler.toml
+          grep -q 'main = "src/index-digital-workforce-v1.js"' workers/gnk-asg-direct-operator/wrangler.toml
           grep -q 'main = "src/index-enterprise-projects-runtime-v1.js"' workers/gnk-asg-direct-operator/wrangler.review-preview.toml
+          grep -q "from './index-unified-auth-v23.js'" workers/gnk-asg-direct-operator/src/index-digital-workforce-v1.js
           grep -q "from './index-final-admin-gateway-v2.js'" workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js
           grep -q 'campaign-mailer-shell-v2.js' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
           grep -q 'campaign-mailer-v2.js' workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
