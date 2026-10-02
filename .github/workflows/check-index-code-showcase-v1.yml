@@ -6,20 +6,15 @@ on:
     paths:
       - 'apps/portal/index.html'
       - 'apps/portal/en/index.html'
-      - 'apps/portal/assets/index-redesign-production.js'
-      - 'apps/portal/assets/index-redesign-production.css'
-      - 'apps/portal/assets/index-corporate-newsroom-v1.css'
+      - 'apps/portal/assets/release-completion-v1.js'
+      - 'apps/portal/assets/the-code-countdown-v1.js'
+      - 'apps/portal/assets/the-code-experience-loop-v1.html'
+      - 'apps/portal/assets/the-code-logo-v1.svg'
+      - 'apps/portal/the-code/**'
+      - 'apps/portal/en/the-code/**'
       - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js'
       - 'workers/gnk-asg-direct-operator/src/public-shell-v11.js'
-      - 'apps/portal/assets/the-code-index-slot.css'
-      - 'apps/portal/assets/the-code-visual-01.b64'
-      - 'apps/portal/assets/the-code-visual-02.b64'
-      - 'apps/portal/assets/gallery-brand-safety.js'
-      - 'apps/portal/assets/the-code-linkedin-preview.svg'
-      - 'apps/portal/assets/the-code-new-york-countdown-v1.css'
-      - 'apps/portal/assets/the-code-new-york-countdown-v1.js'
-      - 'apps/portal/the-code/**'
-      - 'scripts/verify-the-code-public-launch.mjs'
+      - 'scripts/test-the-code-index-contract.mjs'
       - 'scripts/verify-public-redesign-contract.mjs'
       - '.github/workflows/check-index-code-showcase-v1.yml'
   workflow_dispatch:
@@ -38,52 +33,33 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
+
       - name: Validate current THE CODE package
         shell: bash
         run: |
           set -euxo pipefail
           node --check workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/public-shell-v11.js
-          node --check apps/portal/assets/gallery-brand-safety.js
-          node --check apps/portal/assets/the-code-new-york-countdown-v1.js
-          test -s apps/portal/assets/the-code-index-slot.css
-          test -s apps/portal/assets/the-code-visual-01.b64
-          test -s apps/portal/assets/the-code-visual-02.b64
-          test -s apps/portal/assets/the-code-linkedin-preview.svg
-          test -s apps/portal/assets/the-code-new-york-countdown-v1.css
+          node --check apps/portal/assets/the-code-countdown-v1.js
+
+          test -s apps/portal/assets/release-completion-v1.js
+          test -s apps/portal/assets/the-code-experience-loop-v1.html
+          test -s apps/portal/assets/the-code-logo-v1.svg
           test -s apps/portal/the-code/index.html
-          test -s apps/portal/the-code/media-invitation/index.html
-          test -s apps/portal/the-code/media-invitation/content-01.part
-          test -s apps/portal/the-code/media-invitation/content-02.part
-          test -s apps/portal/the-code/media-invitation/content-03.part
-          grep -q 'gnkCodeVisualOne 20s' apps/portal/assets/the-code-index-slot.css
-          grep -q 'gnkCodeVisualTwo 20s' apps/portal/assets/the-code-index-slot.css
-          grep -q 'grid-template-columns:minmax(0,1fr)' apps/portal/assets/the-code-index-slot.css
-          grep -q 'aspect-ratio:9/16' apps/portal/assets/the-code-index-slot.css
+          test -s apps/portal/en/the-code/index.html
+          test -s apps/portal/the-code/media-memorandum/index.html
+
+          grep -q '/assets/the-code-experience-loop-v1.html' apps/portal/the-code/index.html
+          grep -q '/assets/the-code-experience-loop-v1.html' apps/portal/en/the-code/index.html
+          grep -q '/the-code/media-memorandum/' apps/portal/the-code/index.html
+          grep -q '2026-10-07T11:30:00-04:00' apps/portal/assets/the-code-countdown-v1.js
+          grep -q '2026-10-07T11:30:00-04:00' apps/portal/assets/the-code-experience-loop-v1.html
+
           grep -q 'data-gnk-existing-field="visuals"' workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
           grep -q 'data-gnk-existing-field="the-code"' workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
-          grep -q 'data:image/webp;base64' workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
-          grep -q 'index-existing-media-slots-v2.css' workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
-          grep -q 'sandbox="allow-scripts"' workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js
-          grep -q 'GNK_THE_CODE_HOME_FEATURE_20260702' apps/portal/assets/gallery-brand-safety.js
-          grep -q '/the-code/media-invitation/' apps/portal/assets/gallery-brand-safety.js
-          grep -q '2026-10-07T11:30:00-04:00' apps/portal/assets/the-code-new-york-countdown-v1.js
-          grep -q '/assets/the-code-new-york-countdown-v1.js' workers/gnk-asg-direct-operator/src/public-shell-v11.js
-          grep -q '/assets/the-code-new-york-countdown-v1.css' workers/gnk-asg-direct-operator/src/public-shell-v11.js
-          node scripts/verify-the-code-public-launch.mjs
-      - name: Confirm both encoded files are WebP
-        shell: bash
-        run: |
-          set -euxo pipefail
-          python - <<'PY'
-          import base64
-          from pathlib import Path
-          for name in ('the-code-visual-01.b64','the-code-visual-02.b64'):
-              raw=base64.b64decode(Path('apps/portal/assets',name).read_text().strip(),validate=True)
-              assert raw[:4]==b'RIFF' and raw[8:12]==b'WEBP', (name,raw[:12])
-              assert len(raw)>1000, (name,len(raw))
-              print(name,len(raw),'WEBP_OK')
-          PY
+
+          node scripts/test-the-code-index-contract.mjs
+
       - name: Validate approved canonical index changes
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
@@ -103,6 +79,7 @@ jobs:
             node --check apps/portal/assets/index-redesign-production.js
             node scripts/verify-public-redesign-contract.mjs
           fi
+
       - name: Preserve public shell safety contract
         run: |
           set -euxo pipefail
@@ -113,5 +90,6 @@ jobs:
           grep -q "'/editorial-operations'" workers/gnk-asg-direct-operator/src/public-shell-v11.js
           grep -q "'/mobile-admin'" workers/gnk-asg-direct-operator/src/public-shell-v11.js
           grep -q "'/design-review'" workers/gnk-asg-direct-operator/src/public-shell-v11.js
+
       - name: Confirm canonical Worker validation ownership
         run: echo 'Worker syntax, import graph and dry run are validated by Validate GNK ASG Portal Release.'
