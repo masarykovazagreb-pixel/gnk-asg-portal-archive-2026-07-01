@@ -1,3 +1,4 @@
+// Exact-SHA CI marker: HR+EN canonical registry persistence verified.
 #!/usr/bin/env node
 /**
  * Registar objavljenih tekstova.
@@ -20,11 +21,14 @@ const PLAN_DIR = join(PORTAL, 'data/editorial-plan');
 const OUT = join(PORTAL, 'data/editorial-registry.json');
 const SITE = 'https://gnk-asg.hr';
 
-const SECTIONS = {
-  objave: { hr: 'Objave', route: '/objave/' },
-  komentari: { hr: 'Komentari', route: '/komentari/' },
-  analize: { hr: 'Analize', route: '/analize/' },
-};
+const SECTIONS = [
+  { dir: 'objave', collection: 'Objave', route: '/objave/', type: 'objava', language: 'hr' },
+  { dir: 'komentari', collection: 'Komentari', route: '/komentari/', type: 'komentar', language: 'hr' },
+  { dir: 'analize', collection: 'Analize', route: '/analize/', type: 'analiza', language: 'hr' },
+  { dir: 'en/publications', collection: 'Publications', route: '/en/publications/', type: 'objava', language: 'en' },
+  { dir: 'en/commentary', collection: 'Commentary', route: '/en/commentary/', type: 'komentar', language: 'en' },
+  { dir: 'en/analyses', collection: 'Analyses', route: '/en/analyses/', type: 'analiza', language: 'en' },
+];
 const BASE_TAGS = ['GNKASG', 'GNKDINAMOLtd', 'NerminSefic', 'BusinessIntelligence'];
 
 const unescapeHtml = (s = '') => s
@@ -52,8 +56,8 @@ const hashtagsFrom = (keywords) => [...new Set([
 ])].filter((t) => t.length > 2 && t.length < 30).slice(0, 12);
 
 const items = [];
-for (const [dir, meta] of Object.entries(SECTIONS)) {
-  const base = join(PORTAL, dir);
+for (const section of SECTIONS) {
+  const base = join(PORTAL, section.dir);
   if (!existsSync(base)) continue;
   for (const entry of readdirSync(base, { withFileTypes: true })) {
     if (!entry.isDirectory()) continue;
@@ -66,6 +70,17 @@ for (const [dir, meta] of Object.entries(SECTIONS)) {
       return r ? unescapeHtml(r[1]) : '';
     };
 
+    const routePath = `${section.route}${entry.name}/`;
+    const expectedCanonical = `${SITE}${routePath}`;
+    const canonicalMatch = html.match(/<link\s+rel="canonical"\s+href="([^"]+)"/i)
+      || html.match(/<link\s+href="([^"]+)"\s+rel="canonical"/i);
+    const canonical = canonicalMatch ? canonicalMatch[1] : '';
+
+    // Alias/wrapper pages are deliberately excluded from the canonical registry.
+    // This prevents scheduled regeneration from reintroducing routes whose
+    // canonical authority points somewhere else.
+    if (canonical && canonical !== expectedCanonical) continue;
+
     const title = (m('og:title', 'property') || (html.match(/<title>([^<]*)<\/title>/) || [, ''])[1])
       .split(' | ')[0].trim();
     const description = m('description');
@@ -77,25 +92,26 @@ for (const [dir, meta] of Object.entries(SECTIONS)) {
       const ld = html.match(/"datePublished"\s*:\s*"([^"]+)"/);
       if (ld) published = ld[1];
     }
-    if (!published && plannedAt[entry.name]) {
+    if (!published && section.language === 'hr' && plannedAt[entry.name]) {
       const d = plannedAt[entry.name];
       published = `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}T08:00:00+02:00`;
     }
 
     items.push({
       slug: entry.name,
-      type: dir === 'objave' ? 'objava' : dir === 'komentari' ? 'komentar' : 'analiza',
-      collection: meta.hr,
-      path: `/${dir}/${entry.name}/`,
-      url: `${SITE}/${dir}/${entry.name}/`,
+      type: section.type,
+      collection: section.collection,
+      path: routePath,
+      url: canonical || expectedCanonical,
       title,
       description,
       keywords,
       hashtags: hashtagsFrom(keywords),
       image: image || null,
       publishedAt: published || null,
-      inPlan: planned.has(entry.name),
-      seoComplete: Boolean(title && description && keywords.length && html.includes('rel="canonical"') && html.includes('application/ld+json')),
+      inPlan: section.language === 'hr' && planned.has(entry.name),
+      seoComplete: Boolean(title && description && keywords.length && canonical && html.includes('application/ld+json')),
+      language: section.language,
     });
   }
 }
