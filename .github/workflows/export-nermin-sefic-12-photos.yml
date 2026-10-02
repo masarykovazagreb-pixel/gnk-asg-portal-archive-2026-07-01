@@ -1,0 +1,38 @@
+name: Export Nermin Sefic 12 Photos
+on:
+  push:
+    branches: [export/nermin-sefic-12-photos-20261002]
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Collect selected photographs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p export
+          cp apps/portal/assets/people/nermin-sefic/nermin-sefic-01-official-desk-portrait.webp export/
+          cp apps/portal/assets/people/nermin-sefic/nermin-sefic-02-panel-discussion.webp export/
+          cp apps/portal/assets/people/nermin-sefic/nermin-sefic-03-event-notebook-portrait.webp export/
+          cp apps/portal/assets/people/nermin-sefic/nermin-sefic-04-strategy-boardroom.webp export/
+          cp apps/portal/assets/people/nermin-sefic/nermin-sefic-05-cafe-interview-portrait.webp export/
+          cp apps/portal/assets/people/nermin-sefic/nermin-sefic-06-formal-reception.webp export/
+          cp apps/portal/assets/people/nermin-sefic/nermin-sefic-09-conference-book.webp export/
+          cp apps/portal/assets/people/nermin-sefic/nermin-sefic-10-networking-black-shirt.webp export/
+          cp apps/portal/assets/people/nermin-sefic/nermin-sefic-20-official-standing-portrait.webp export/
+          cp apps/portal/assets/people/nermin-sefic/nermin-sefic-22-boardroom-presentation.webp export/
+          cp apps/portal/assets/people/nermin-sefic/nermin-sefic-23-keynote-speech.webp export/
+          cp apps/portal/assets/people/nermin-sefic/nermin-sefic-26-outdoor-business-conversation.webp export/
+      - name: Upload photo bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: Nermin_Sefic_12_fotografija
+          path: export/*.webp
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 3
