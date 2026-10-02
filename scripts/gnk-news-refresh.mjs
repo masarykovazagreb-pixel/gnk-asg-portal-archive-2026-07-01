@@ -11,6 +11,7 @@ const DATA_DIR = 'apps/portal/data';
 const NEWS_PATH = `${DATA_DIR}/news.json`;
 const ARCHIVE_PATH = `${DATA_DIR}/news_archive.json`;
 const STATUS_PATH = `${DATA_DIR}/news-automation-status.json`;
+const WORLD_TOPICS_PATH = `${DATA_DIR}/aktual-world-topics-schedule.json`;
 const FALLBACK_IMAGE = '/assets/news-fallback.svg';
 
 // Grupe moraju odgovarati onima koje stranica /gnk-aktual/ poznaje.
@@ -268,6 +269,43 @@ async function readJson(path, fallback) {
   catch { return fallback; }
 }
 
+function zagrebDateKey(date = new Date()) {
+  const parts = new Intl.DateTimeFormat('sv-SE', {
+    timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit'
+  }).formatToParts(date).reduce((acc, part) => (acc[part.type] = part.value, acc), {});
+  return `${parts.year}-${parts.month}-${parts.day}`;
+}
+
+function worldTopicPromotion(schedule, now = new Date()) {
+  const today = zagrebDateKey(now);
+  const promo = (schedule?.schedule || []).find(item => item?.date === today);
+  if (!promo) return null;
+  const stamp = now.toISOString();
+  return {
+    id: promo.id,
+    title: promo.title_hr,
+    title_en: promo.title_en,
+    url: promo.url_hr,
+    url_en: promo.url_en,
+    summary: promo.summary_hr,
+    summary_en: promo.summary_en,
+    image: promo.image,
+    imageAlt: promo.imageAlt_hr,
+    imageAlt_en: promo.imageAlt_en,
+    imageCredit: promo.source || 'GNK ASG / Nermin Sefić',
+    source: promo.source || 'GNK ASG / Nermin Sefić',
+    region: 'GNK ASG',
+    group: promo.group || 'international',
+    category: promo.category || 'analysis',
+    published_at: stamp,
+    publishedAt: stamp,
+    verified: true,
+    verification: { article: { ok: true }, image: { ok: true, fallback: false } },
+    share_url: promo.url_hr,
+    internalEditorial: true
+  };
+}
+
 function uniqueSorted(items) {
   const seenKeys = new Set();
   const seenTitles = new Set();
@@ -304,6 +342,8 @@ async function main() {
   const results = await Promise.all(FEEDS.map(fetchFeed));
   const fresh = uniqueSorted(results.flatMap(result => result.items));
   const previousPublic = await readJson(NEWS_PATH, []);
+  const worldTopics = await readJson(WORLD_TOPICS_PATH, { schedule: [] });
+  const worldTopic = worldTopicPromotion(worldTopics);
   const previousArchivePayload = await readJson(ARCHIVE_PATH, { updatedAt: null, items: [] });
   const previousArchive = Array.isArray(previousArchivePayload) ? previousArchivePayload : (previousArchivePayload.items || []);
 
@@ -348,7 +388,8 @@ async function main() {
   console.log(`Image HEAD check: ${freshValidated.length}/${fresh.length} passed (${droppedByImageCheck} dropped)`);
 
   const isReal = it => it && it.image && !/news-fallback\.svg$/i.test(it.image);
-  const merged = uniqueSorted([...freshValidated, ...previousPublic.filter(isReal)]);
+  const editorialPromotions = worldTopic ? [worldTopic] : [];
+  const merged = uniqueSorted([...editorialPromotions, ...freshValidated, ...previousPublic.filter(isReal)]);
   const publicItems = balanceBySource(merged, MAX_PER_SOURCE, PUBLIC_TARGET);
   // Sigurnosni sloj: ako je publicItems < MIN_ITEMS_FLOOR, dopuni iz arhive
   let publicItemsFinal = publicItems;
@@ -363,7 +404,7 @@ async function main() {
     }
     console.log(`Floor guard: filled to ${publicItemsFinal.length} items (min ${MIN_ITEMS_FLOOR})`);
   }
-  let archiveItems = uniqueSorted([...freshValidated, ...previousPublic.filter(isReal), ...previousArchive.filter(isReal)]);
+  let archiveItems = uniqueSorted([...editorialPromotions, ...freshValidated, ...previousPublic.filter(isReal), ...previousArchive.filter(isReal)]);
   if (archiveItems.length > ARCHIVE_MAX_BEFORE_PRUNE) archiveItems = archiveItems.slice(0, ARCHIVE_KEEP_WHEN_FULL);
 
   await mkdir(dirname(NEWS_PATH), { recursive: true });
@@ -375,10 +416,10 @@ async function main() {
     ok: publicItemsFinal.length >= 15,
     status: publicItems.length >= 15 ? 'refreshed' : 'insufficient_items',
     updated_at: nowIsoZagreb(),
-    engine: 'single_publication_engine_v14_github_actions',
-    cadence: 'every 2 hours (00:00-22:00 UTC)',
+    engine: 'single_publication_engine_v15_github_actions',
+    cadence: 'every 4 hours (six refreshes daily)',
     timezone: TZ,
-    scheduled_interval_hours: 2,
+    scheduled_interval_hours: 4,
     max_items_per_source: MAX_PER_SOURCE,
     feeds_configured: FEEDS.length,
     public_items_target: PUBLIC_TARGET,
