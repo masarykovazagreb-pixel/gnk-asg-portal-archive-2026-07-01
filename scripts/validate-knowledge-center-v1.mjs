@@ -11,7 +11,10 @@ const hr=read('apps/portal/knowledge-center/index.html');
 const operator=read('workers/gnk-asg-operator-center/src/index.js');
 
 const detailCount=(en.match(/<details\s+data-kc-item/g)||[]).length;
+const sourceLinkCount=(en.match(/class="kc-page-link"/g)||[]).length;
 if(detailCount!==enQuestions.length) throw new Error(`EN detail count ${detailCount} != source ${enQuestions.length}`);
+if(sourceLinkCount!==enQuestions.length) throw new Error(`EN source-link count ${sourceLinkCount} != source ${enQuestions.length}`);
+if(en.includes('Stranica:')) throw new Error('Croatian source-page label remains in EN Knowledge Center');
 if(enQuestions.length<100) throw new Error('EN knowledge coverage unexpectedly small');
 if(!en.includes('<link rel="canonical" href="https://gnk-asg.hr/en/knowledge-center/">')) throw new Error('EN canonical missing');
 if(!hr.includes('<link rel="canonical" href="https://gnk-asg.hr/knowledge-center/">')) throw new Error('HR canonical missing');
@@ -23,6 +26,7 @@ console.log(JSON.stringify({
   totalQuestions:kb.ukupnoPitanja,
   englishQuestions:enQuestions.length,
   enRenderedQuestions:detailCount,
+  enSourceLinks:sourceLinkCount,
   publicHrRoute:'/knowledge-center/',
   publicEnRoute:'/en/knowledge-center/',
   operatorKnowledgeRouteOwned:false
