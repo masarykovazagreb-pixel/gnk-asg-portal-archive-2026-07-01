@@ -81,6 +81,7 @@
 
     initEvents() {
       this.audio.addEventListener('play', () => {
+        if (this.synthPlaying) this.stopProceduralAudio();
         this.isPlaying = true;
         this.updateUI();
         this.startVisualizer();
@@ -109,6 +110,7 @@
     }
 
     play() {
+      if (this.synthPlaying) this.stopProceduralAudio();
       const station = this.currentStation;
       if (!this.audio.src || this.audio.src !== station.streamUrl) {
         this.audio.src = station.streamUrl;
@@ -151,6 +153,7 @@
     }
 
     changeStation(index) {
+      if (this.synthPlaying) this.stopProceduralAudio();
       this.currentStationIndex = index % STATIONS.length;
       if (this.isPlaying) {
         this.play();
@@ -195,6 +198,7 @@
     }
 
     startProceduralAudio() {
+      if (this.synthPlaying) return;
       try {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         if (!AudioContext) return;
@@ -260,7 +264,9 @@
       const en = isEn();
 
       if (playBtn) {
-        playBtn.innerHTML = this.isPlaying ? '❚❚ PAUZA' : '▶ POKRENI RADIO';
+        playBtn.innerHTML = this.isPlaying
+          ? (en ? '❚❚ PAUSE' : '❚❚ PAUZA')
+          : (en ? '▶ START RADIO' : '▶ POKRENI RADIO');
         playBtn.classList.toggle('is-playing', this.isPlaying);
       }
 
