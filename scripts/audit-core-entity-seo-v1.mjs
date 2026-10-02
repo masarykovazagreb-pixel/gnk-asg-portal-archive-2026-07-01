@@ -1,3 +1,4 @@
+// Aktual package exact-SHA audit trigger; no audit logic change.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
