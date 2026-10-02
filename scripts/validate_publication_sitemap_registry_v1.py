@@ -151,8 +151,11 @@ def main() -> int:
     for node in index_root.findall("sm:sitemap", NS):
         if node.findtext("sm:loc", "", NS) == ORIGIN + "/editorial-sitemap.xml":
             index_lastmod = node.findtext("sm:lastmod", "", NS)
-    dated = [instant(item.get("publishedAt") or item.get("datePublished")) for item in published.values()]
-    corpus_date = max((stamp.date().isoformat() for stamp in dated if stamp), default=None)
+    dated = [
+        instant(item.get("publishedAt") or item.get("datePublished") or registry.get("generatedAt")) or now
+        for item in published.values()
+    ]
+    corpus_date = max((stamp.date().isoformat() for stamp in dated), default=None)
     if corpus_date and index_lastmod != corpus_date:
         errors.append(f"Sitemap-index editorial lastmod {index_lastmod!r} != corpus lastmod {corpus_date!r}")
 

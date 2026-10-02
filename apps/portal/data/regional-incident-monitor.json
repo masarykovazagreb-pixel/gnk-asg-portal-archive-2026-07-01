@@ -1,0 +1,223 @@
+{
+  "updatedAt": "2026-10-02T07:04:36.662Z",
+  "service": "GNK ASG Regional & World Monitor Desk",
+  "mode": "source-backed-only",
+  "sourceOfTruth": "/data/world-monitor.json",
+  "modeledWorkerProfiles": 1573,
+  "semantics": "1,573 modeled profiles; not independent runtime processes",
+  "categoriesCount": 2,
+  "categories": [
+    {
+      "id": "world-seismology",
+      "nameHr": "Seizmologija — izvorni World Monitor podaci",
+      "nameEn": "Seismology — source-backed World Monitor data",
+      "icon": "⚡",
+      "source": "USGS Earthquake Hazards Program",
+      "sourceUrl": "https://earthquake.usgs.gov/",
+      "items": [
+        {
+          "id": "SEIS-0",
+          "titleHr": "M 4.8 - 192 km WNW of Tobelo, Indonesia",
+          "titleEn": "M 4.8 - 192 km WNW of Tobelo, Indonesia",
+          "location": "192 km WNW of Tobelo, Indonesia",
+          "severity": "LOW",
+          "status": "SOURCE-BACKED",
+          "timestamp": "2026-10-02T05:38:55.084Z",
+          "summaryHr": "Magnituda 4.8.",
+          "summaryEn": "Magnitude 4.8.",
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000tyzt"
+        },
+        {
+          "id": "SEIS-1",
+          "titleHr": "M 5.1 - 159 km SE of Gizo, Solomon Islands",
+          "titleEn": "M 5.1 - 159 km SE of Gizo, Solomon Islands",
+          "location": "159 km SE of Gizo, Solomon Islands",
+          "severity": "MEDIUM",
+          "status": "SOURCE-BACKED",
+          "timestamp": "2026-10-02T04:44:53.423Z",
+          "summaryHr": "Magnituda 5.1.",
+          "summaryEn": "Magnitude 5.1.",
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000tyzl"
+        },
+        {
+          "id": "SEIS-2",
+          "titleHr": "M 5.0 - south of the Fiji Islands",
+          "titleEn": "M 5.0 - south of the Fiji Islands",
+          "location": "south of the Fiji Islands",
+          "severity": "MEDIUM",
+          "status": "SOURCE-BACKED",
+          "timestamp": "2026-10-02T04:27:05.754Z",
+          "summaryHr": "Magnituda 5.",
+          "summaryEn": "Magnitude 5.",
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000tyzi"
+        },
+        {
+          "id": "SEIS-3",
+          "titleHr": "M 4.9 - 97 km S of Panguna, Papua New Guinea",
+          "titleEn": "M 4.9 - 97 km S of Panguna, Papua New Guinea",
+          "location": "97 km S of Panguna, Papua New Guinea",
+          "severity": "LOW",
+          "status": "SOURCE-BACKED",
+          "timestamp": "2026-10-02T04:10:58.487Z",
+          "summaryHr": "Magnituda 4.9.",
+          "summaryEn": "Magnitude 4.9.",
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000tyzg"
+        },
+        {
+          "id": "SEIS-4",
+          "titleHr": "M 4.5 - 2 km NE of Satte, Japan",
+          "titleEn": "M 4.5 - 2 km NE of Satte, Japan",
+          "location": "2 km NE of Satte, Japan",
+          "severity": "LOW",
+          "status": "SOURCE-BACKED",
+          "timestamp": "2026-10-01T21:01:41.707Z",
+          "summaryHr": "Magnituda 4.5.",
+          "summaryEn": "Magnitude 4.5.",
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000tyxk"
+        },
+        {
+          "id": "SEIS-5",
+          "titleHr": "M 5.1 - 176 km SE of Lata, Solomon Islands",
+          "titleEn": "M 5.1 - 176 km SE of Lata, Solomon Islands",
+          "location": "176 km SE of Lata, Solomon Islands",
+          "severity": "MEDIUM",
+          "status": "SOURCE-BACKED",
+          "timestamp": "2026-10-01T20:00:34.322Z",
+          "summaryHr": "Magnituda 5.1.",
+          "summaryEn": "Magnitude 5.1.",
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000tyx0"
+        },
+        {
+          "id": "SEIS-6",
+          "titleHr": "M 5.1 - 171 km SE of Lata, Solomon Islands",
+          "titleEn": "M 5.1 - 171 km SE of Lata, Solomon Islands",
+          "location": "171 km SE of Lata, Solomon Islands",
+          "severity": "MEDIUM",
+          "status": "SOURCE-BACKED",
+          "timestamp": "2026-10-01T19:38:01.795Z",
+          "summaryHr": "Magnituda 5.1.",
+          "summaryEn": "Magnitude 5.1.",
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000tywu"
+        },
+        {
+          "id": "SEIS-7",
+          "titleHr": "M 4.6 - 83 km NE of Ruteng, Indonesia",
+          "titleEn": "M 4.6 - 83 km NE of Ruteng, Indonesia",
+          "location": "83 km NE of Ruteng, Indonesia",
+          "severity": "LOW",
+          "status": "SOURCE-BACKED",
+          "timestamp": "2026-10-01T17:37:11.734Z",
+          "summaryHr": "Magnituda 4.6.",
+          "summaryEn": "Magnitude 4.6.",
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000tyw9"
+        }
+      ]
+    },
+    {
+      "id": "world-natural-events",
+      "nameHr": "Prirodni događaji — izvorni World Monitor podaci",
+      "nameEn": "Natural events — source-backed World Monitor data",
+      "icon": "🌍",
+      "source": "NASA EONET",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/",
+      "items": [
+        {
+          "id": "EVENT-0",
+          "titleHr": "Tropical Storm Choi-wan",
+          "titleEn": "Tropical Storm Choi-wan",
+          "location": "Severe Storms",
+          "severity": "MEDIUM",
+          "status": "SOURCE-BACKED",
+          "timestamp": "2026-10-02T00:00:00Z",
+          "summaryHr": "Severe Storms",
+          "summaryEn": "Severe Storms",
+          "url": "https://www.metoc.navy.mil/jtwc/products/wp2626.tcw"
+        },
+        {
+          "id": "EVENT-1",
+          "titleHr": "Wildfire SAN FRANCISCO 2, Starr, Texas",
+          "titleEn": "Wildfire SAN FRANCISCO 2, Starr, Texas",
+          "location": "Wildfires",
+          "severity": "MEDIUM",
+          "status": "SOURCE-BACKED",
+          "timestamp": "2026-09-30T08:56:00Z",
+          "summaryHr": "Wildfires",
+          "summaryEn": "Wildfires",
+          "url": "https://irwin.doi.gov/observer/incidents/2026-TXRGR-000402"
+        },
+        {
+          "id": "EVENT-2",
+          "titleHr": "Wildfire Hatch Grade, Walla Walla, Washington",
+          "titleEn": "Wildfire Hatch Grade, Walla Walla, Washington",
+          "location": "Wildfires",
+          "severity": "MEDIUM",
+          "status": "SOURCE-BACKED",
+          "timestamp": "2026-09-29T19:50:00Z",
+          "summaryHr": "Wildfires",
+          "summaryEn": "Wildfires",
+          "url": "https://irwin.doi.gov/observer/incidents/2026-WAWFS-000664"
+        },
+        {
+          "id": "EVENT-3",
+          "titleHr": "Wildfire 3 ALPHA SIERRA, Broward, Florida",
+          "titleEn": "Wildfire 3 ALPHA SIERRA, Broward, Florida",
+          "location": "Wildfires",
+          "severity": "MEDIUM",
+          "status": "SOURCE-BACKED",
+          "timestamp": "2026-09-28T21:53:00Z",
+          "summaryHr": "Wildfires",
+          "summaryEn": "Wildfires",
+          "url": "https://irwin.doi.gov/observer/incidents/2026-FLFLS-1800153"
+        },
+        {
+          "id": "EVENT-4",
+          "titleHr": "Tropical Storm Hanna",
+          "titleEn": "Tropical Storm Hanna",
+          "location": "Severe Storms",
+          "severity": "MEDIUM",
+          "status": "SOURCE-BACKED",
+          "timestamp": "2026-09-28T15:00:00Z",
+          "summaryHr": "Severe Storms",
+          "summaryEn": "Severe Storms",
+          "url": "https://www.nhc.noaa.gov/archive/2026/HANNA.shtml"
+        },
+        {
+          "id": "EVENT-5",
+          "titleHr": "Hurricane Rachel",
+          "titleEn": "Hurricane Rachel",
+          "location": "Severe Storms",
+          "severity": "MEDIUM",
+          "status": "SOURCE-BACKED",
+          "timestamp": "2026-10-02T00:00:00Z",
+          "summaryHr": "Severe Storms",
+          "summaryEn": "Severe Storms",
+          "url": "https://www.metoc.navy.mil/jtwc/products/ep1826.tcw"
+        },
+        {
+          "id": "EVENT-6",
+          "titleHr": "Wildfire Rafter 4B, Schleicher, Texas",
+          "titleEn": "Wildfire Rafter 4B, Schleicher, Texas",
+          "location": "Wildfires",
+          "severity": "MEDIUM",
+          "status": "SOURCE-BACKED",
+          "timestamp": "2026-09-26T15:18:00Z",
+          "summaryHr": "Wildfires",
+          "summaryEn": "Wildfires",
+          "url": "https://irwin.doi.gov/observer/incidents/2026-TXTXS-268989"
+        },
+        {
+          "id": "EVENT-7",
+          "titleHr": "Wildfire SECOND STREET, Benton, Washington",
+          "titleEn": "Wildfire SECOND STREET, Benton, Washington",
+          "location": "Wildfires",
+          "severity": "MEDIUM",
+          "status": "SOURCE-BACKED",
+          "timestamp": "2026-09-25T18:57:00Z",
+          "summaryHr": "Wildfires",
+          "summaryEn": "Wildfires",
+          "url": "https://irwin.doi.gov/observer/incidents/2026-WAWFS-260847"
+        }
+      ]
+    }
+  ]
+}
