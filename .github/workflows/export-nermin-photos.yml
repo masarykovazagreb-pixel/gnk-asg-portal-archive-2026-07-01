@@ -1,0 +1,36 @@
+name: Export Nermin Sefic photos
+on:
+  push:
+    branches: [utility/export-nermin-photos-20261002]
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare photo package
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p export/nermin-sefic-fotografije
+          find apps/portal/assets/people/nermin-sefic -maxdepth 1 -type f -name '*.webp' -print0             | sort -z             | xargs -0 -I{} cp "{}" export/nermin-sefic-fotografije/
+          count="$(find export/nermin-sefic-fotografije -type f -name '*.webp' | wc -l)"
+          test "$count" -eq 27
+          {
+            echo "Nermin Sefic — fotografije iz kanonskog GNK ASG repozitorija"
+            echo "Izvor: apps/portal/assets/people/nermin-sefic/"
+            echo "Broj WEBP fotografija: $count"
+            echo
+            find export/nermin-sefic-fotografije -type f -name '*.webp' -printf '%f\n' | sort
+          } > export/nermin-sefic-fotografije/POPIS.txt
+      - name: Upload ZIP artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Nermin_Sefic_fotografije_WEBP_2026-10-02
+          path: export/nermin-sefic-fotografije/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
