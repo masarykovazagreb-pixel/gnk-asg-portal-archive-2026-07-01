@@ -1,10 +1,10 @@
 {
-  "checked_at": "2026-06-01T00:17:00+00:00",
-  "updated_at": "2026-06-01T00:17:00+00:00",
+  "checked_at": "2026-10-02T19:51:46+00:00",
+  "updated_at": "2026-10-02T19:51:46+00:00",
   "status": "ok",
-  "refresh_frequency": "Automated reference check on the five-minute market cycle",
-  "refresh_frequency_hr": "Automatska provjera u petominutnom tržišnom ciklusu",
-  "refresh_frequency_en": "Automated check in the five-minute market cycle",
+  "refresh_frequency": "Twice-daily automated reference check via the canonical market writer",
+  "refresh_frequency_hr": "Automatska provjera dvaput dnevno kroz kanonski tržišni writer",
+  "refresh_frequency_en": "Automated check twice daily through the canonical market writer",
   "disclaimer_hr": "Informativni burzovni prikaz. Podatci mogu biti vremenski odgođeni; prije financijske odluke provjerite službeni izvor burze.",
   "disclaimer_en": "Informational stock-market display. Data may be delayed; verify the exchange official source before any financial decision.",
   "markets": [
@@ -22,7 +22,7 @@
       "value": null,
       "change_percent": null,
       "points": [],
-      "checked_at": "2026-06-01T00:17:00+00:00"
+      "checked_at": "2026-10-02T19:51:46+00:00"
     },
     {
       "id": "crobex10",
@@ -38,7 +38,7 @@
       "value": null,
       "change_percent": null,
       "points": [],
-      "checked_at": "2026-06-01T00:17:00+00:00"
+      "checked_at": "2026-10-02T19:51:46+00:00"
     },
     {
       "id": "nyse",
@@ -51,98 +51,102 @@
       "delay_hr": "Javni informativni indeksni podatak; vrijednost može biti odgođena",
       "delay_en": "Public informational index data; value may be delayed",
       "official_url": "https://www.nyse.com/quote/index/NYA",
-      "checked_at": "2026-06-01T00:17:00+00:00",
-      "value": 23292.17,
-      "change_percent": 0.64,
+      "checked_at": "2026-10-02T19:51:46+00:00",
+      "value": 23684.19,
+      "change_percent": -3.31,
       "points": [
         [
-          1777555800000,
-          23144.640625
+          1788355800000,
+          24495.55078125
         ],
         [
-          1777642200000,
-          23041.15039062
+          1788442200000,
+          24720.15039062
         ],
         [
-          1777901400000,
-          22893.4609375
+          1788528600000,
+          24639.25
         ],
         [
-          1777987800000,
-          23008.66992188
+          1788874200000,
+          24473.06054688
         ],
         [
-          1778074200000,
-          23284.390625
+          1788960600000,
+          24311.15039062
         ],
         [
-          1778160600000,
-          23011.31054688
+          1789047000000,
+          24140.640625
         ],
         [
-          1778247000000,
-          22942.15039062
+          1789133400000,
+          24331.56054688
         ],
         [
-          1778506200000,
-          22970.76953125
+          1789392600000,
+          24205.390625
         ],
         [
-          1778592600000,
-          23015.33984375
+          1789479000000,
+          24128.4609375
         ],
         [
-          1778679000000,
-          22973.55078125
+          1789565400000,
+          23934.140625
         ],
         [
-          1778765400000,
-          23101.84960938
+          1789651800000,
+          24089.55078125
         ],
         [
-          1778851800000,
-          22799.4296875
+          1789738200000,
+          23998.75976562
         ],
         [
-          1779111000000,
-          22900.5703125
+          1789997400000,
+          24086.66015625
         ],
         [
-          1779197400000,
-          22797.66992188
+          1790083800000,
+          24029.06054688
         ],
         [
-          1779283800000,
-          23021.74023438
+          1790170200000,
+          23848.25
         ],
         [
-          1779370200000,
-          23127.68945312
+          1790256600000,
+          23816.49023438
         ],
         [
-          1779456600000,
-          23225.75
+          1790343000000,
+          23912.58984375
         ],
         [
-          1779802200000,
-          23295.5
+          1790602200000,
+          23757.31054688
         ],
         [
-          1779888600000,
-          23267.0703125
+          1790688600000,
+          23709.59960938
         ],
         [
-          1779975000000,
-          23302.25976562
+          1790775000000,
+          23490.80078125
         ],
         [
-          1780061400000,
-          23292.16992188
+          1790861400000,
+          23526.83984375
+        ],
+        [
+          1790947800000,
+          23684.18945312
         ]
       ],
       "currency": "USD",
-      "source_timestamp": "2026-05-29T13:30:00+00:00",
-      "last_successful_refresh_at": "2026-06-01T00:17:00+00:00"
+      "source_timestamp": "2026-10-02T13:30:00+00:00",
+      "last_successful_refresh_at": "2026-10-02T19:51:46+00:00"
     },
     {
       "id": "nasdaq",
@@ -155,98 +159,102 @@
       "delay_hr": "Javni informativni indeksni podatak; vrijednost može biti odgođena",
       "delay_en": "Public informational index data; value may be delayed",
       "official_url": "https://www.nasdaq.com/market-activity/index/comp",
-      "checked_at": "2026-06-01T00:17:00+00:00",
-      "value": 26972.62,
-      "change_percent": 8.36,
+      "checked_at": "2026-10-02T19:51:46+00:00",
+      "value": 27198.53,
+      "change_percent": 3.74,
       "points": [
         [
-          1777555800000,
-          24892.31054688
+          1788355800000,
+          26217.83007812
         ],
         [
-          1777642200000,
-          25114.43945312
+          1788442200000,
+          26584.06054688
         ],
         [
-          1777901400000,
-          25067.80078125
+          1788528600000,
+          26506.99023438
         ],
         [
-          1777987800000,
-          25326.13085938
+          1788874200000,
+          26421.41015625
         ],
         [
-          1778074200000,
-          25838.93945312
+          1788960600000,
+          26253.33984375
         ],
         [
-          1778160600000,
-          25806.19921875
+          1789047000000,
+          26081.72070312
         ],
         [
-          1778247000000,
-          26247.08007812
+          1789133400000,
+          26333.0390625
         ],
         [
-          1778506200000,
-          26274.13085938
+          1789392600000,
+          26186.41015625
         ],
         [
-          1778592600000,
-          26088.19921875
+          1789479000000,
+          25981.5703125
         ],
         [
-          1778679000000,
-          26402.33984375
+          1789565400000,
+          25978.4296875
         ],
         [
-          1778765400000,
-          26635.22070312
+          1789651800000,
+          26418.30078125
         ],
         [
-          1778851800000,
-          26225.140625
+          1789738200000,
+          26522.5390625
         ],
         [
-          1779111000000,
-          26090.73046875
+          1789997400000,
+          27122.08984375
         ],
         [
-          1779197400000,
-          25870.7109375
+          1790083800000,
+          27244.27929688
         ],
         [
-          1779283800000,
-          26270.359375
+          1790170200000,
+          26936.0390625
         ],
         [
-          1779370200000,
-          26293.09960938
+          1790256600000,
+          26939.36914062
         ],
         [
-          1779456600000,
-          26343.97070312
+          1790343000000,
+          27068.72070312
         ],
         [
-          1779802200000,
-          26656.1796875
+          1790602200000,
+          26820.38085938
         ],
         [
-          1779888600000,
-          26674.73046875
+          1790688600000,
+          26797.5390625
         ],
         [
-          1779975000000,
-          26917.47070312
+          1790775000000,
+          26861.06054688
         ],
         [
-          1780061400000,
-          26972.61914062
+          1790861400000,
+          26871.59960938
+        ],
+        [
+          1790947800000,
+          27198.52734375
         ]
       ],
       "currency": "USD",
-      "source_timestamp": "2026-05-29T13:30:00+00:00",
-      "last_successful_refresh_at": "2026-06-01T00:17:00+00:00"
+      "source_timestamp": "2026-10-02T13:30:00+00:00",
+      "last_successful_refresh_at": "2026-10-02T19:51:46+00:00"
     }
   ],
   "errors": [],
@@ -255,10 +263,5 @@
     "nasdaq": "Public market chart feed; verify at Nasdaq official source",
     "crobex": "Official ZSE link only",
     "crobex10": "Official ZSE link only"
-  },
-  "last_attempt_at": "2026-06-01T00:17:00+00:00",
-  "heartbeat_policy": "timestamp_updates_on_every_automation_run",
-  "stale_safe": true,
-  "last_successful_refresh_at": "2026-06-01T00:17:00+00:00",
-  "data_status": "fresh_or_reference_checked"
+  }
 }
