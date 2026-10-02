@@ -3,7 +3,7 @@
 if(window.__GNK_MEDIA_APPLICATIONS_REVIEW_V1__)return;
 window.__GNK_MEDIA_APPLICATIONS_REVIEW_V1__=true;
 const API='/api/media-registration-admin';
-const state={query:'',status:'',country:'',page:1,pageSize:50,pages:1,total:0,items:[],current:null,loading:false};
+const state={query:'',status:'',country:'',page:1,pageSize:50,pages:1,total:0,items:[],current:null,loading:false,pendingRefresh:false};
 const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[char]));
 const text=value=>String(value??'').trim();
 const formatDate=value=>{if(!value)return'—';try{return new Intl.DateTimeFormat('hr-HR',{dateStyle:'medium',timeStyle:'short',timeZone:'Europe/Zagreb'}).format(new Date(value));}catch{return value;}};
@@ -51,12 +51,16 @@ function renderList(data){
  body.querySelectorAll('[data-open-code]').forEach(button=>button.addEventListener('click',()=>openDetail(button.dataset.openCode)));
 }
 async function refresh(){
- if(state.loading)return;state.loading=true;
+ if(state.loading){state.pendingRefresh=true;return;}
+ state.loading=true;
  const params=new URLSearchParams({page:String(state.page),pageSize:String(state.pageSize)});
  if(state.query)params.set('query',state.query);if(state.status)params.set('status',state.status);if(state.country)params.set('country',state.country);
  try{renderList(await api(`/applications?${params}`));}
  catch(error){document.getElementById('mediaReviewBody').innerHTML=`<tr><td colspan="10" class="media-review-empty">${esc(error.message)}</td></tr>`;}
- finally{state.loading=false;}
+ finally{
+  state.loading=false;
+  if(state.pendingRefresh){state.pendingRefresh=false;void refresh();}
+ }
 }
 function dataCells(object={},exclude=[]){
  return Object.entries(object||{}).filter(([key,value])=>!exclude.includes(key)&&value!==''&&value!==null&&value!==undefined&&typeof value!=='object').map(([key,value])=>`<div class="media-review-data"><small>${esc(label(key))}</small><span>${esc(typeof value==='boolean'?(value?'Da':'Ne'):value)}</span></div>`).join('')||'<p class="media-review-empty">Nema podataka.</p>';
@@ -87,7 +91,7 @@ async function saveDecision(mailCode){
  if(!statusValue){alert('Odaberite status.');return;}
  if(!confirm(`Postaviti ${mailCode} na ${statusValue}?`))return;
  const button=document.getElementById('mediaReviewSaveDecision');button.disabled=true;
- try{await api('/decision',{method:'POST',body:JSON.stringify({mailCode,status:statusValue,reason})});await openDetail(mailCode);await refresh();}
+ try{const expectedRevision=Number(state.current?.revision||0);await api('/decision',{method:'POST',body:JSON.stringify({mailCode,status:statusValue,reason,expectedRevision})});await openDetail(mailCode);await refresh();}
  catch(error){alert(error.message);}finally{button.disabled=false;}
 }
 function csv(){
