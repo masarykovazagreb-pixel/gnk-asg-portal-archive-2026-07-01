@@ -1,0 +1,44 @@
+name: Materialize Worker Route Ownership V4
+
+on:
+  push:
+    branches: [fix/p1-worker-topology-20261002]
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: ${{ !contains(github.event.head_commit.message, '[worker-topology-materialized]') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Generate current topology report
+        run: node scripts/audit-worker-route-ownership.mjs
+      - name: Validate active production topology
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const r=JSON.parse(fs.readFileSync('artifacts/worker-route-ownership.json','utf8'));
+          const s=r.summary||{};
+          if(s.activeDuplicateRoutes!==0) throw new Error('activeDuplicateRoutes='+s.activeDuplicateRoutes);
+          if(s.unmanagedKnownWorkers!==0) throw new Error('unmanagedKnownWorkers='+s.unmanagedKnownWorkers);
+          if(s.directOperatorApprovedConfigsRouteLess!==true) throw new Error('approved direct operator configs are not route-less');
+          if(s.directDeployConfigRouteLess!==true) throw new Error('direct deploy config is not route-less');
+          console.log(JSON.stringify(s,null,2));
+          NODE
+      - name: Commit generated report and retire temporary workflow
+        run: |
+          set -euo pipefail
+          git config user.name 'worker-topology-materializer'
+          git config user.email 'actions@github.com'
+          git rm .github/workflows/worker-route-topology-materialize.yml
+          git add artifacts/worker-route-ownership.json
+          git commit -m 'P1: materialize current Worker topology [worker-topology-materialized]'
+          git push origin HEAD:${GITHUB_REF_NAME}
