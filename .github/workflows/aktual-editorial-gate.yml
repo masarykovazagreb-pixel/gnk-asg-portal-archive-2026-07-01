@@ -1,0 +1,24 @@
+name: AKTUAL editorial gate regression
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/content-queue-preflight-v1.mjs'
+      - 'tests/test-content-queue-preflight-v1.mjs'
+      - '.github/workflows/content-queue-publish.yml'
+      - '.github/workflows/aktual-editorial-gate.yml'
+permissions:
+  contents: read
+jobs:
+  editorial-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Verify editorial gate regression
+        run: node tests/test-content-queue-preflight-v1.mjs
+      - name: Confirm current published queue is a safe no-op
+        run: node scripts/content-queue-preflight-v1.mjs

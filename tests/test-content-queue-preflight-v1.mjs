@@ -1,0 +1,42 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import {spawnSync} from 'node:child_process';
+const script=path.resolve('scripts/content-queue-preflight-v1.mjs');
+assert.ok(fs.existsSync(script),'missing editorial gate');
+const root=fs.mkdtempSync(path.join(os.tmpdir(),'asg-aktual-gate-'));
+const write=(p,x)=>{const target=path.join(root,p);fs.mkdirSync(path.dirname(target),{recursive:true});fs.writeFileSync(target,typeof x==='string'?x:JSON.stringify(x));};
+const url='https://gnk-asg.hr/komentari/test-odobrenje/';
+const html='<html><head><link rel="canonical" href="'+url+'"></head><body>Test</body></html>';
+const hash=crypto.createHash('sha256').update(html).digest('hex');
+const approval={approvals:[{id:'T-1',approved:true,editor:'Nermin Sefić',approvedAt:'2026-09-24T09:00:00+02:00',canonical:url,sourceSha256:hash}]};
+const run=()=>spawnSync(process.execPath,[script,root],{encoding:'utf8',env:{...process.env,ASG_EDITORIAL_NOW:'2026-09-24T10:00:00+02:00'}});
+let passed=0;
+function check(label,status,pattern){const r=run();assert.equal(r.status,status,label+': '+r.stdout+' '+r.stderr);assert.match(r.stdout+r.stderr,pattern,label);console.log('PASS '+label);passed++;}
+try{
+ write('content/factory-queue/queue.json',{items:[{id:'T-1',date:'2026-09-24',time:'08:00',category:'komentari',slug:'test-odobrenje'}],skipped:[]});
+ write('apps/portal/data/content-queue-state.json',{published:{}});
+ write('apps/portal/data/editorial-registry.json',{items:[]});
+ write('content/factory-queue/komentari/test-odobrenje.html',html);
+ check('unapproved source blocked',1,/Missing explicit approvals/);
+ write('content/factory-queue/publication-approvals.json',approval);
+ check('approved source accepted',0,/"ok": true/);
+ write('content/factory-queue/komentari/test-odobrenje.html',html+'changed');
+ check('mutated source blocked',1,/outdated approval/);
+ write('content/factory-queue/komentari/test-odobrenje.html',html);
+ write('apps/portal/data/editorial-registry.json',{items:[{path:'/komentari/test-odobrenje/'}]});
+ check('duplicate route blocked',1,/duplicate public route/);
+ write('apps/portal/data/editorial-registry.json',{items:[]});
+ write('apps/portal/data/content-queue-state.json','{broken json');
+ const corrupt=run();assert.equal(corrupt.status,1);assert.match(corrupt.stderr,/SyntaxError/);console.log('PASS corrupt state blocked');passed++;
+ write('apps/portal/data/content-queue-state.json',{published:{'T-1':{path:'/komentari/test-odobrenje/'}}});
+ check('published entry skipped',0,/NO_DUE_ITEMS/);
+ write('apps/portal/data/content-queue-state.json',{published:{}});
+ write('apps/portal/data/editorial-plan/manifest.json',{packages:[{id:'HOLD-1',files:['held.json']}]});
+ write('apps/portal/data/editorial-plan/publication-holds.json',{holds:[{packageId:'HOLD-1',active:true}]});
+ write('apps/portal/data/editorial-plan/held.json',[{slug:'test-odobrenje'}]);
+ check('active editorial hold blocked',1,/active editorial hold/);
+ console.log('TOTAL_PASS '+passed);
+}finally{fs.rmSync(root,{recursive:true,force:true});}

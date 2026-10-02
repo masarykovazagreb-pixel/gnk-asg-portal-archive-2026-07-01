@@ -4,7 +4,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 
 const SITE='https://gnk-asg.hr';
-const read=(p,f)=>{try{return JSON.parse(readFileSync(p,'utf8'))}catch{return f}};
+const read=(p)=>{if(!existsSync(p))throw new Error('Missing required publication source: '+p);return JSON.parse(readFileSync(p,'utf8'));};
 const write=(p,s)=>{mkdirSync(dirname(p),{recursive:true});writeFileSync(p,s)};
 const nowZg=()=>{
   const d=new Date();
@@ -38,7 +38,12 @@ for(const it of due){
   const canonical=(html.match(/<link rel="canonical" href="([^"]+)"/i)||[])[1];
   if(!canonical||!canonical.startsWith(SITE)){console.log('BAD CANONICAL',src);continue;}
   const path=canonical.slice(SITE.length);
-  const publishedAt=`${it.date}T${it.time}:00+02:00`;
+  // Derive the actual Zagreb offset for the publication date; avoid hardcoded summer time.
+  const zone=new Intl.DateTimeFormat('en-US',{timeZone:'Europe/Zagreb',timeZoneName:'shortOffset'}).formatToParts(new Date(it.date+'T12:00:00Z')).find(p=>p.type==='timeZoneName')?.value;
+  const parts=/^GMT([+-])(\d{1,2})(?::(\d{2}))?$/.exec(zone||'');
+  if(!parts)throw new Error('Cannot determine Zagreb offset for '+it.date);
+  const offset=parts[1]+parts[2].padStart(2,'0')+':'+(parts[3]||'00');
+  const publishedAt=it.date+'T'+it.time+':00'+offset;
   const title=(html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)||[,''])[1].replace(/<[^>]+>/g,'').trim();
   const description=meta(html,'description');
   const image=meta(html,'og:image')||`${SITE}/assets/gnk-asg-social-card.png`;
