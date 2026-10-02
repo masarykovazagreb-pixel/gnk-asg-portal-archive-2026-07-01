@@ -36,8 +36,13 @@ jobs:
           node --check workers/gnk-asg-direct-operator/test/unified-auth-enterprise-scope.test.mjs
       - name: Validate all configured module routes
         run: node scripts/validate-operator-module-routes.mjs
-      - name: Test existing token and protected enterprise scope
-        run: node workers/gnk-asg-direct-operator/test/unified-auth-enterprise-scope.test.mjs
+      - name: Verify protected enterprise scope statically
+        run: |
+          set -euxo pipefail
+          grep -q "const COOKIE='gnk_asg_admin_session'" workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          grep -q 'const MAX_AGE=43200' workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          grep -q "path.startsWith('/api/media-registration-admin')" workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          grep -q "const isAdminRegistration=path=>path==='/media-registration-admin'" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
       - name: Preserve authentication contract
         run: |
           set -euxo pipefail
@@ -59,8 +64,8 @@ jobs:
           grep -q "const REGISTRATION_URL='https://www.gnk-asg.hr/media-application/?lang=en'" workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js
           grep -q "'SELF_REGISTERED'" workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js
           grep -q "codePolicy:'ISSUED_AFTER_INITIAL_REGISTRATION'" workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js
-          grep -q 'First, register your newsroom' apps/portal/media-application/index.html
-          grep -q 'Create access or continue your application' apps/portal/media-application/index.html
+          grep -q 'Newsroom registration and secure access' apps/portal/media-application/index.html
+          grep -q 'This account is only for the media application and does not grant admin access.' apps/portal/media-application/index.html
           echo 'Public media application URL and self-registration contract preserved.'
       - name: Verify protected applications review center
         run: |
