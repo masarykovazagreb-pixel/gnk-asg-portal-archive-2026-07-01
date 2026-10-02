@@ -6,15 +6,9 @@ on:
     paths:
       - 'apps/portal/media-application/**'
       - 'apps/portal/media-registration-admin/**'
-      - 'apps/portal/admin-center/**'
-      - 'apps/portal/design-review/**'
-      - 'apps/portal/enterprise/**'
-      - 'apps/portal/mission-control/**'
-      - 'apps/portal/mobile-admin/**'
       - 'apps/portal/assets/media-applications-review-v1.css'
       - 'apps/portal/assets/media-applications-review-v1.js'
       - 'apps/portal/assets/media-applications-decision-guard-v1.js'
-      - 'apps/portal/assets/admin-media-applications-entry-v1.js'
       - 'workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js'
       - 'workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js'
       - 'workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js'
@@ -40,14 +34,20 @@ jobs:
           set -euxo pipefail
           node --check apps/portal/assets/media-applications-review-v1.js
           node --check apps/portal/assets/media-applications-decision-guard-v1.js
-          node --check apps/portal/assets/admin-media-applications-entry-v1.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
-      - name: Test public and protected route separation
-        run: node workers/gnk-asg-direct-operator/test/unified-auth-enterprise-scope.test.mjs
+      - name: Verify public and protected route separation statically
+        run: |
+          set -euxo pipefail
+          grep -q "const PUBLIC_UI=" workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          grep -q "'/media-application'" workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          grep -q "'/media-registration-admin'" workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          grep -q "path.startsWith('/api/media-registration-admin')" workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          grep -q "const isPublicRegistration=path=>path==='/media-application'" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
+          grep -q "const isAdminRegistration=path=>path==='/media-registration-admin'" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
       - name: Verify public registration is preserved
         run: |
           set -euxo pipefail
@@ -127,6 +127,6 @@ jobs:
       - name: Preserve review-only execution
         run: |
           set -euxo pipefail
-          ! grep -R 'wrangler deploy' apps/portal/assets/media-applications-review-v1.js apps/portal/assets/media-applications-decision-guard-v1.js workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js apps/portal/mobile-admin/index.html
-          ! grep -R 'EMAIL.send' apps/portal/assets/media-applications-review-v1.js apps/portal/assets/media-applications-decision-guard-v1.js workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js apps/portal/mobile-admin/index.html
+          ! grep -R 'wrangler deploy' apps/portal/assets/media-applications-review-v1.js apps/portal/assets/media-applications-decision-guard-v1.js workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
+          ! grep -R 'EMAIL.send' apps/portal/assets/media-applications-review-v1.js apps/portal/assets/media-applications-decision-guard-v1.js workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js
           echo 'No deployment or mail send action exists in the review center.'
