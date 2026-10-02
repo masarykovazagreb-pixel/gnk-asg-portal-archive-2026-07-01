@@ -1,0 +1,34 @@
+name: Materialize EN Knowledge Center
+
+on:
+  push:
+    branches: [fix/p1-knowledge-center-parity-20261002]
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: ${{ !contains(github.event.head_commit.message, '[knowledge-materialized]') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Generate EN Knowledge Center
+        run: node scripts/generate-en-knowledge-center-v1.mjs
+      - name: Validate Knowledge Center contract
+        run: node scripts/validate-knowledge-center-v1.mjs
+      - name: Commit generated EN page and retire temporary workflow
+        run: |
+          set -euo pipefail
+          git config user.name 'knowledge-center-materializer'
+          git config user.email 'actions@github.com'
+          git rm .github/workflows/knowledge-center-materialize.yml
+          git add apps/portal/en/knowledge-center/index.html
+          git commit -m 'P1: materialize EN Knowledge Center [knowledge-materialized]'
+          git push origin HEAD:${GITHUB_REF_NAME}
