@@ -9,6 +9,10 @@
     "beckuphomeMode": "read-only-archive",
     "releaseChain": ["content-or-sync", "PR-CI", "merge-main", "exact-SHA-deploy", "production-smoke", "IndexNow", "distribution-monitoring"]
   },
+  "recoveryCheckpoint": {
+    "branch": "checkpoint/recovery-20260729-1617-zagreb",
+    "sha": "c38578c057655af8439aa23197cd141f90433850"
+  },
   "actionsBudget": {
     "accountLimitMinutesPerMonth": 2000,
     "operatingHardLimitMinutesPerMonth": 1000,
