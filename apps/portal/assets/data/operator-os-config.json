@@ -1,0 +1,133 @@
+{
+  "version": "2026-10-02.operator-module-registry.1",
+  "status": "validation-registry",
+  "semantics": "Route validation inventory only. No workforce counts, business claims, runtime health, deployment state or approval state are encoded here.",
+  "monitoredModules": [
+    {
+      "id": "enterprise-hub",
+      "label": "Enterprise Review Hub",
+      "route": "/enterprise/",
+      "delivery": "static"
+    },
+    {
+      "id": "design-review",
+      "label": "Design Review Console",
+      "route": "/design-review/",
+      "delivery": "static"
+    },
+    {
+      "id": "group-profile",
+      "label": "About the Group / O grupi",
+      "route": "/about-the-group/",
+      "delivery": "static"
+    },
+    {
+      "id": "strategy-performance",
+      "label": "Strategy / Performance Monitor",
+      "route": "/strategy-performance/",
+      "delivery": "static"
+    },
+    {
+      "id": "the-code-intelligence",
+      "label": "THE CODE Intelligence",
+      "route": "/the-code/intelligence/",
+      "delivery": "static"
+    },
+    {
+      "id": "editorial-operations",
+      "label": "International Editorial Operations",
+      "route": "/editorial-operations/",
+      "delivery": "static"
+    },
+    {
+      "id": "digital-workforce",
+      "label": "Digital Workforce",
+      "route": "/digital-workforce/",
+      "delivery": "static"
+    },
+    {
+      "id": "campaign-mailer",
+      "label": "Campaign Mailer",
+      "route": "/campaign-mailer/",
+      "delivery": "static"
+    },
+    {
+      "id": "mail-studio",
+      "label": "Mail Studio",
+      "route": "/mail-studio/",
+      "delivery": "worker-native-authenticated"
+    },
+    {
+      "id": "email-status",
+      "label": "Email Status",
+      "route": "/email-status/",
+      "delivery": "worker-dynamic-authenticated"
+    },
+    {
+      "id": "media-command-center",
+      "label": "Media Command Center",
+      "route": "/media-command-center/",
+      "delivery": "static"
+    },
+    {
+      "id": "public-media-application",
+      "label": "Public Media Application",
+      "route": "/media-application/?lang=en",
+      "delivery": "static"
+    },
+    {
+      "id": "media-applications-review",
+      "label": "Media Applications Review Center",
+      "route": "/media-registration-admin/",
+      "delivery": "static"
+    },
+    {
+      "id": "news",
+      "label": "News Workflow",
+      "route": "/vijesti/",
+      "delivery": "static"
+    },
+    {
+      "id": "publishing",
+      "label": "Publications Workflow",
+      "route": "/objave/",
+      "delivery": "static"
+    },
+    {
+      "id": "operator-dashboard",
+      "label": "Operator Dashboard",
+      "route": "/operator-dashboard/",
+      "delivery": "static"
+    },
+    {
+      "id": "deployment-recovery",
+      "label": "Deployment / Recovery Status",
+      "route": "/deployment/",
+      "delivery": "static"
+    },
+    {
+      "id": "registry-center",
+      "label": "Registry Center",
+      "route": "/registry-center/",
+      "delivery": "static"
+    },
+    {
+      "id": "mobile-admin",
+      "label": "Mobile Admin Approval Queue",
+      "route": "/mobile-admin/",
+      "delivery": "static"
+    },
+    {
+      "id": "seo-engine",
+      "label": "SEO / Publishing Engine",
+      "route": "/seo/",
+      "delivery": "static"
+    },
+    {
+      "id": "mission-control",
+      "label": "Mission Control",
+      "route": "/mission-control/",
+      "delivery": "static"
+    }
+  ]
+}
