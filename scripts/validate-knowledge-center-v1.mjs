@@ -1,3 +1,4 @@
+// Final reviewed EN link contract; no validation logic change.
 #!/usr/bin/env node
 import fs from 'node:fs';
 
