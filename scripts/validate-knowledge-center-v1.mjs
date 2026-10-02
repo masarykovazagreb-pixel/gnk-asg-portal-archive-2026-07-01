@@ -1,5 +1,5 @@
-// Final reviewed EN link contract; no validation logic change.
 #!/usr/bin/env node
+// Final reviewed EN link contract; no validation logic change.
 import fs from 'node:fs';
 
 const read=p=>fs.readFileSync(p,'utf8');
