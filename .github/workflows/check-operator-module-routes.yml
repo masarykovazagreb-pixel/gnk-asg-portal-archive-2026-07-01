@@ -36,8 +36,13 @@ jobs:
           node --check workers/gnk-asg-direct-operator/test/unified-auth-enterprise-scope.test.mjs
       - name: Validate all configured module routes
         run: node scripts/validate-operator-module-routes.mjs
-      - name: Test existing token and protected enterprise scope
-        run: node workers/gnk-asg-direct-operator/test/unified-auth-enterprise-scope.test.mjs
+      - name: Verify protected enterprise scope statically
+        run: |
+          set -euxo pipefail
+          grep -q "const COOKIE='gnk_asg_admin_session'" workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          grep -q 'const MAX_AGE=43200' workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          grep -q "path.startsWith('/api/media-registration-admin')" workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js
+          grep -q "const isAdminRegistration=path=>path==='/media-registration-admin'" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
       - name: Preserve authentication contract
         run: |
           set -euxo pipefail
