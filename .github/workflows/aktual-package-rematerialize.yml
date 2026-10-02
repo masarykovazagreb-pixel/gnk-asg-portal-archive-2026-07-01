@@ -1,0 +1,69 @@
+name: Rematerialize sanitized Aktual Media package
+on:
+  push:
+    branches: [feat/aktual-radio-incident-evolution-20261002]
+
+permissions:
+  contents: write
+
+jobs:
+  rematerialize:
+    if: ${{ !contains(github.event.head_commit.message, '[rematerialized]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Regenerate gallery routes after review fixes
+        run: |
+          set -euo pipefail
+          python scripts/build_gallery_standalone_pages.py
+          python scripts/sync_gallery_links.py
+
+      - name: Validate review fixes and package truth
+        run: |
+          set -euo pipefail
+          node --check apps/portal/assets/aktual-radio-player-v1.js
+          node --check apps/portal/assets/regional-incident-desk-v1.js
+          node --check apps/portal/assets/worker-live-desk-v1.js
+          node --check apps/portal/assets/workforce-evolution-desk-v1.js
+          python -m py_compile scripts/build_gallery_standalone_pages.py scripts/sync_gallery_links.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          vg=json.loads(Path('apps/portal/data/visual_gallery.json').read_text())
+          items=vg.get('items',[])
+          ids={str(x.get('id')) for x in items}
+          assert len(items)==80, len(items)
+          assert 'nermin-sefic-33-kk-cibona-zagreb-stratesko-partnerstvo' not in ids
+          assert 'aktualRadioDeck' in Path('apps/portal/gnk-aktual/index.html').read_text()
+          assert 'aktualRadioDeck' in Path('apps/portal/en/gnk-aktual/index.html').read_text()
+          radio=Path('apps/portal/assets/aktual-radio-player-v1.js').read_text()
+          assert "en ? '❚❚ PAUSE' : '❚❚ PAUZA'" in radio
+          assert "if (this.synthPlaying) return;" in radio
+          incident=Path('apps/portal/assets/regional-incident-desk-v1.js').read_text()
+          assert incident.find('/data/world-monitor.json') < incident.find('/data/regional-incident-monitor.json')
+          for p in Path('apps/portal/galerija').rglob('index.html'):
+              assert '/en/galerija/' not in p.read_text(), p
+          PY
+          test -z "$(git diff --name-only | grep -E '^apps/portal/(en/)?index\.html$' || true)"
+          test -z "$(git diff --name-only | grep -iE 'mail|smtp|imap|deploy-admin-auth' || true)"
+          ! grep -RniE 'Cibona.{0,100}(partner|partnerstvo)|partner.{0,100}Cibona'             apps/portal/galerija apps/portal/visual-index apps/portal/en/visual-index apps/portal/data/visual_gallery.json
+          ! grep -RniE '(^|[^[:alnum:]_])bot(ovi|s)?([^[:alnum:]_]|$)'             apps/portal/gnk-aktual apps/portal/en/gnk-aktual apps/portal/radio apps/portal/en/radio             apps/portal/assets/worker-live-desk-v1.js apps/portal/assets/workforce-evolution-desk-v1.js             apps/portal/data/worker-live-reports.json
+
+      - name: Commit regenerated branch artifacts
+        run: |
+          set -euo pipefail
+          git config user.name 'aktual-package-materializer'
+          git config user.email 'actions@github.com'
+          git rm .github/workflows/aktual-package-rematerialize.yml
+          git add apps/portal scripts
+          git commit -m 'Aktual Media: apply Codex review fixes [rematerialized]'
+          git push origin HEAD:${GITHUB_REF_NAME}
