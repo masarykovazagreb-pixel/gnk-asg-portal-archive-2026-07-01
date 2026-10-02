@@ -7,15 +7,11 @@
     "sourceOfTruthBranch": "main",
     "mirrorEnabled": false,
     "beckuphomeMode": "read-only-archive",
-    "releaseChain": [
-      "content-or-sync",
-      "PR-CI",
-      "merge-main",
-      "exact-SHA-deploy",
-      "production-smoke",
-      "IndexNow",
-      "distribution-monitoring"
-    ]
+    "releaseChain": ["content-or-sync", "PR-CI", "merge-main", "exact-SHA-deploy", "production-smoke", "IndexNow", "distribution-monitoring"]
+  },
+  "recoveryCheckpoint": {
+    "branch": "checkpoint/recovery-20260729-1617-zagreb",
+    "sha": "c38578c057655af8439aa23197cd141f90433850"
   },
   "actionsBudget": {
     "accountLimitMinutesPerMonth": 2000,
@@ -56,23 +52,14 @@
   },
   "distribution": {
     "canonicalFirst": true,
-    "blogChannels": [
-      "blogger",
-      "devto",
-      "tumblr",
-      "telegraph"
-    ],
+    "blogChannels": ["blogger", "devto", "tumblr", "telegraph"],
     "requiredBlogParity": "4/4",
     "socialComposeEnabled": true,
     "socialLiveEnabled": false,
     "socialLiveActivation": "explicit-user-approval-required"
   },
   "freshnessModel": {
-    "states": [
-      "fresh",
-      "stale",
-      "error"
-    ],
+    "states": ["fresh", "stale", "error"],
     "staleMustNotReportOk": true,
     "weatherRunsPerDay": 4,
     "worldMonitorRunsPerDay": 4,
@@ -96,81 +83,27 @@
     "HR and EN discovery paths validated where language pair exists"
   ],
   "knownCurrentSchedules": [
-    {
-      "job": "Weather Refresh Zagreb",
-      "frequency": "4/day"
-    },
-    {
-      "job": "World Monitor Data Refresh",
-      "frequency": "4/day"
-    },
-    {
-      "job": "AEO / SEO light guard",
-      "frequency": "4/day"
-    },
-    {
-      "job": "Full SEO nightly audit",
-      "frequency": "daily"
-    },
-    {
-      "job": "Blog Distribution",
-      "frequency": "daily-plus-incremental",
-      "channels": 4
-    },
-    {
-      "job": "Digital Workforce",
-      "frequency": "2/day-plus-heartbeat"
-    },
-    {
-      "job": "Safe Self Heal",
-      "frequency": "2/day-plus-failure"
-    },
-    {
-      "job": "Image Health",
-      "frequency": "weekly"
-    },
-    {
-      "job": "Public Portal Audit",
-      "frequency": "manual-major-release-only"
-    }
+    {"job": "Weather Refresh Zagreb", "frequency": "4/day"},
+    {"job": "World Monitor Data Refresh", "frequency": "4/day"},
+    {"job": "AEO / SEO light guard", "frequency": "4/day"},
+    {"job": "Full SEO nightly audit", "frequency": "daily"},
+    {"job": "Blog Distribution", "frequency": "daily-plus-incremental", "channels": 4},
+    {"job": "Digital Workforce", "frequency": "2/day-plus-heartbeat"},
+    {"job": "Safe Self Heal", "frequency": "2/day-plus-failure"},
+    {"job": "Image Health", "frequency": "weekly"},
+    {"job": "Public Portal Audit", "frequency": "manual-major-release-only"}
   ],
   "resourceOwnership": {
-    "news.json": {
-      "status": "single-writer-required",
-      "targetWriterCount": 1
-    },
-    "blogPublishState": {
-      "status": "single-writer-required",
-      "targetWriterCount": 1
-    },
-    "editorialRegistry": {
-      "status": "canonical-publishing-registry",
-      "targetWriterCount": 1
-    },
-    "editorialSchedule": {
-      "status": "single-writer-required",
-      "targetWriterCount": 1
-    },
-    "marketData": {
-      "status": "split-by-explicit-resource",
-      "targetWriterCountPerResource": 1
-    }
+    "news.json": {"status": "single-writer-required", "targetWriterCount": 1},
+    "blogPublishState": {"status": "single-writer-required", "targetWriterCount": 1},
+    "editorialRegistry": {"status": "canonical-publishing-registry", "targetWriterCount": 1},
+    "editorialSchedule": {"status": "single-writer-required", "targetWriterCount": 1},
+    "marketData": {"status": "split-by-explicit-resource", "targetWriterCountPerResource": 1}
   },
   "emergencyControls": {
     "globalPublishKillSwitchRequired": true,
-    "channelKillSwitchesRequired": [
-      "portal",
-      "blogger",
-      "devto",
-      "tumblr",
-      "telegraph",
-      "social"
-    ],
+    "channelKillSwitchesRequired": ["portal", "blogger", "devto", "tumblr", "telegraph", "social"],
     "socialKillSwitchDefault": "off",
     "automaticSuspendAfterConsecutiveFailures": 3
-  },
-  "recoveryCheckpoint": {
-    "branch": "checkpoint/recovery-20260729-1617-zagreb",
-    "sha": "c38578c057655af8439aa23197cd141f90433850"
   }
 }
