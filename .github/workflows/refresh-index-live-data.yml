@@ -15,6 +15,11 @@ on:
       - 'scripts/validate_index_live_data.py'
       - 'scripts/normalize_index_live_data_cadence.py'
       - 'scripts/test_index_live_data_cadence_v1.py'
+      - 'scripts/validate-market-satellite-contract-v1.py'
+      - 'apps/portal/scripts/refresh_market_satellites.py'
+      - 'apps/portal/scripts/update_reference_assets.py'
+      - 'ops/digital-assets-single-writer-guard-v1.json'
+      - 'scripts/test-digital-assets-single-writer-guard-v1.mjs'
       - 'apps/portal/assets/market.js'
       - 'apps/portal/data/market.json'
       - 'apps/portal/data/market_indices.json'
@@ -43,12 +48,17 @@ jobs:
         run: |
           python scripts/refresh_index_live_data.py
           python scripts/refresh_world_market_indices.py
+          python apps/portal/scripts/refresh_market_satellites.py
+          python apps/portal/scripts/update_reference_assets.py
       - name: Normalize public cadence metadata
         run: python scripts/normalize_index_live_data_cadence.py
       - name: Confirm cadence contract
         run: python scripts/test_index_live_data_cadence_v1.py
       - name: Confirm freshness contract
-        run: python scripts/validate_index_live_data.py
+        run: |
+          python scripts/validate_index_live_data.py
+          python scripts/validate-market-satellite-contract-v1.py
+          node scripts/test-digital-assets-single-writer-guard-v1.mjs
       - name: Upload refreshed market-data evidence
         uses: actions/upload-artifact@v4
         with:
@@ -57,6 +67,12 @@ jobs:
             apps/portal/data/market.json
             apps/portal/data/market_indices.json
             apps/portal/data/fast_market_status.json
+            apps/portal/data/stablecoins.json
+            apps/portal/data/btc_chart.json
+            apps/portal/data/exchange_compare.json
+            apps/portal/data/stock_exchanges.json
+            apps/portal/data/asg_gold_asset.json
+            apps/portal/data/reference_assets_status.json
           if-no-files-found: error
           retention-days: 3
 
@@ -77,24 +93,43 @@ jobs:
         run: |
           python scripts/refresh_index_live_data.py
           python scripts/refresh_world_market_indices.py
+          python apps/portal/scripts/refresh_market_satellites.py
+          python apps/portal/scripts/update_reference_assets.py
           python scripts/normalize_index_live_data_cadence.py
           python scripts/test_index_live_data_cadence_v1.py
           python scripts/validate_index_live_data.py
+          python scripts/validate-market-satellite-contract-v1.py
+          node scripts/test-digital-assets-single-writer-guard-v1.mjs
           node scripts/freshness-status-v2.mjs
       - name: Commit refreshed public market data
         run: |
+          set -euo pipefail
+          expected_base="$(git rev-parse HEAD)"
           git config user.name 'gnk-asg-live-data-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add apps/portal/data/market.json apps/portal/data/market_indices.json apps/portal/data/fast_market_status.json apps/portal/data/freshness-status.json
+          git add \
+            apps/portal/data/market.json \
+            apps/portal/data/market_indices.json \
+            apps/portal/data/fast_market_status.json \
+            apps/portal/data/freshness-status.json \
+            apps/portal/data/stablecoins.json \
+            apps/portal/data/btc_chart.json \
+            apps/portal/data/exchange_compare.json \
+            apps/portal/data/stock_exchanges.json \
+            apps/portal/data/asg_gold_asset.json \
+            apps/portal/data/reference_assets_status.json
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'Refresh index market data [skip ci]'
-          for attempt in 1 2 3 4 5; do
-            if git push origin HEAD:main; then
-              break
-            fi
-            echo "Push odbijen (pokusaj $attempt) - main se pomaknuo, radim fetch+rebase."
-            git fetch origin main
-            git rebase origin/main || { echo "Rebase konflikt."; exit 1; }
-            sleep $((attempt * 5))
-            if [ "$attempt" = "5" ]; then echo "Push nije uspio nakon 5 pokusaja."; exit 1; fi
-          done
+          git commit -m 'Refresh canonical market datasets [skip ci]'
+
+          # Generated state belongs to one exact main snapshot. Never rebase
+          # generated market output onto a newer main.
+          git fetch origin main
+          current_main="$(git rev-parse origin/main)"
+          if [ "$current_main" != "$expected_base" ]; then
+            echo "Main moved during market generation: expected $expected_base, found $current_main. Deferring without rebase/push."
+            exit 75
+          fi
+
+          # Final compare-and-swap guard: ordinary non-force push must fail if
+          # another writer moves main after the check above.
+          git push origin HEAD:main

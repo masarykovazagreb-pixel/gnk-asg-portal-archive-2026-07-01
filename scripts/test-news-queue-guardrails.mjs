@@ -48,8 +48,20 @@ assert.doesNotMatch(indexRefreshPolicy,/news-status\.json/);
 assert.doesNotMatch(indexRefreshPolicy,/PUBLIC_LIMIT =/);
 assert.doesNotMatch(indexRefreshPolicy,/ARCHIVE_TRIGGER =/);
 assert.doesNotMatch(indexRefreshPolicy,/ARCHIVE_DELETE_OLDEST =/);
-assert.doesNotMatch(indexRefreshWorkflow,/git add[^\n]*news(?:_archive)?\.json/);
-assert.match(indexRefreshWorkflow,/git add[^\n]*market\.json[^\n]*market_indices\.json[^\n]*fast_market_status\.json/);
+assert.doesNotMatch(indexRefreshWorkflow,/git add[\s\S]{0,800}news(?:_archive|-automation-status)?\.json/);
+for(const marketOutput of [
+  'apps/portal/data/market.json',
+  'apps/portal/data/market_indices.json',
+  'apps/portal/data/fast_market_status.json',
+  'apps/portal/data/stablecoins.json',
+  'apps/portal/data/btc_chart.json',
+  'apps/portal/data/exchange_compare.json',
+  'apps/portal/data/stock_exchanges.json',
+  'apps/portal/data/asg_gold_asset.json',
+  'apps/portal/data/reference_assets_status.json'
+])assert.ok(indexRefreshWorkflow.includes(marketOutput),`Canonical market workflow missing output: ${marketOutput}`);
+assert.doesNotMatch(indexRefreshWorkflow,/git rebase/);
+assert.match(indexRefreshWorkflow,/Main moved during market generation/);
 
 assert.match(source,/publicCors=false/);
 assert.match(source,/if\(publicCors\)headers\['access-control-allow-origin'\]='\*'/);
