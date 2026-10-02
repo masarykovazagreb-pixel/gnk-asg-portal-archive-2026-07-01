@@ -1,0 +1,22 @@
+{
+  "version": "GNK_ASG_EXTERNAL_WORKERS_V1",
+  "policy": {
+    "purpose": "Explicit inventory for known production Workers whose deployment source is not managed by an approved repository deploy config.",
+    "noImplicitApproval": true,
+    "noRouteMutation": true,
+    "noDeployFromRegistry": true
+  },
+  "workers": [
+    {
+      "name": "gnk-asg-news-backend",
+      "managed": true,
+      "managementMode": "external-inventory-only",
+      "repositoryDeployConfig": null,
+      "ownerDomain": "AKTUAL_NEWS",
+      "routeMutationAllowed": false,
+      "deploymentAllowedFromThisRegistry": false,
+      "evidence": "Known production Worker from worker-route ownership audit; exact production routing remains external and must be separately verified before any change.",
+      "handoff": "Migrate only through a dedicated reviewed source-of-truth PR with exact-SHA production evidence."
+    }
+  ]
+}

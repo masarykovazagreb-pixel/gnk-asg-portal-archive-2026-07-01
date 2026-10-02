@@ -1,0 +1,43 @@
+name: Worker Route Ownership Contract
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'workers/**/wrangler*.toml'
+      - 'config/control-plane/external-workers-v1.json'
+      - 'scripts/audit-worker-route-ownership.mjs'
+      - '.github/workflows/worker-route-ownership-contract.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Audit active vs dormant Worker route ownership
+        run: node scripts/audit-worker-route-ownership.mjs
+      - name: Enforce fail-closed production topology
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const r=JSON.parse(fs.readFileSync('artifacts/worker-route-ownership.json','utf8'));
+          const s=r.summary||{};
+          if(s.activeDuplicateRoutes!==0) throw new Error('Active duplicate Worker routes must be zero');
+          if(s.unmanagedKnownWorkers!==0) throw new Error('Known external Workers must be explicitly managed');
+          if(s.directOperatorApprovedConfigsRouteLess!==true) throw new Error('Approved direct-operator configs must remain route-less');
+          if(s.directDeployConfigRouteLess!==true) throw new Error('Direct production deploy config must remain route-less');
+          console.log(JSON.stringify({
+            activeDuplicateRoutes:s.activeDuplicateRoutes,
+            dormantDuplicateRoutes:s.dormantDuplicateRoutes,
+            unmanagedKnownWorkers:s.unmanagedKnownWorkers,
+            directOperatorApprovedConfigsRouteLess:s.directOperatorApprovedConfigsRouteLess,
+            directDeployConfigRouteLess:s.directDeployConfigRouteLess
+          },null,2));
+          NODE
