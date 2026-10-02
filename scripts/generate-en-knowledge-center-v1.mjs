@@ -9,11 +9,21 @@ const kb=JSON.parse(fs.readFileSync(kbPath,'utf8'));
 const group=(kb.skupine||[]).find(g=>String(g.naslov||'').trim()==='English pages');
 if(!group||!Array.isArray(group.pitanja)||group.pitanja.length===0) throw new Error('English pages group missing from knowledge-base.json');
 
-const qa=group.pitanja.map((x,i)=>({
-  q:String(x.p||'').trim(),
-  a:String(x.o||'').trim(),
-  i
-})).filter(x=>x.q&&x.a);
+const splitPageReference=value=>{
+  const raw=String(value||'').trim();
+  const match=raw.match(/\s*Stranica:\s*((?:https?:\/\/)?(?:www\.)?gnk-asg\.hr)?(\/[^\s<]+)\s*$/i);
+  if(!match)return{answer:raw,pagePath:null};
+  return{answer:raw.slice(0,match.index).trim(),pagePath:match[2]};
+};
+const qa=group.pitanja.map((x,i)=>{
+  const source=splitPageReference(x.o);
+  return{
+    q:String(x.p||'').trim(),
+    a:source.answer,
+    pagePath:source.pagePath,
+    i
+  };
+}).filter(x=>x.q&&x.a);
 
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const jsonLd=JSON.stringify({
@@ -26,7 +36,10 @@ const jsonLd=JSON.stringify({
   }))
 }).replace(/</g,'\\u003c');
 
-const details=qa.map((x,i)=>`<details data-kc-item data-search="${esc((x.q+' '+x.a).toLowerCase())}"><summary>${esc(x.q)}</summary><p>${esc(x.a)}</p></details>`).join('');
+const details=qa.map(x=>{
+  const page=x.pagePath?` <a class="kc-page-link" href="${esc(x.pagePath)}">Page: ${esc('gnk-asg.hr'+x.pagePath)}</a>`:'';
+  return `<details data-kc-item data-search="${esc((x.q+' '+x.a+' '+(x.pagePath||'')).toLowerCase())}"><summary>${esc(x.q)}</summary><p>${esc(x.a)}${page}</p></details>`;
+}).join('');
 const html=`<!doctype html>
 <html lang="en" class="gnk-unified-shell">
 <head>
@@ -60,7 +73,7 @@ const html=`<!doctype html>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="author" content="Nermin Sefić">
 <style>
-.faq-search{margin:0 0 18px}.faq-search label{display:block;margin:0 0 6px;color:#b88a2f;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase}.faq-search input{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(184,138,47,.35);background:rgba(11,18,32,.7);color:#f7f1e5;font-size:.95rem}.faq-search input:focus{outline:none;border-color:#d5ad54}.faq-results{margin:8px 0 0;color:#8d8577;font-size:.82rem;min-height:1em}.faq{display:grid;gap:12px;margin:24px 0}.faq details{border:1px solid #3b3120;border-radius:16px;background:#11100d;padding:0 18px}.faq summary{cursor:pointer;font-weight:800;padding:18px 0;color:#e8cf91}.faq details p{margin:0 0 18px;color:#c9c2b5;line-height:1.65}.faq details[hidden]{display:none}.notice{border-left:4px solid #d8b66a;padding:14px 18px;background:#15120d;border-radius:12px}.kc-meta{color:#8d8577;font-size:.9rem}
+.faq-search{margin:0 0 18px}.faq-search label{display:block;margin:0 0 6px;color:#b88a2f;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase}.faq-search input{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(184,138,47,.35);background:rgba(11,18,32,.7);color:#f7f1e5;font-size:.95rem}.faq-search input:focus{outline:none;border-color:#d5ad54}.faq-results{margin:8px 0 0;color:#8d8577;font-size:.82rem;min-height:1em}.faq{display:grid;gap:12px;margin:24px 0}.faq details{border:1px solid #3b3120;border-radius:16px;background:#11100d;padding:0 18px}.faq summary{cursor:pointer;font-weight:800;padding:18px 0;color:#e8cf91}.faq details p{margin:0 0 18px;color:#c9c2b5;line-height:1.65}.kc-page-link{display:inline-block;margin-left:.35em;color:#d8b66a;text-decoration:underline;text-underline-offset:3px}.faq details[hidden]{display:none}.notice{border-left:4px solid #d8b66a;padding:14px 18px;background:#15120d;border-radius:12px}.kc-meta{color:#8d8577;font-size:.9rem}
 </style>
 </head>
 <body>
