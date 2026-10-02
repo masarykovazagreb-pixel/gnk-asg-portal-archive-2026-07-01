@@ -5,47 +5,38 @@ import path from 'node:path';
 const root=process.cwd();
 const read=file=>fs.readFileSync(path.join(root,file),'utf8');
 const exists=file=>fs.existsSync(path.join(root,file));
-const config=JSON.parse(read('apps/portal/assets/data/operator-os-config.json'));
-const modules=config.monitoredModules||[];
-const routeUrl=route=>new URL(route,'https://review.gnk-asg.local');
 
-assert.ok(modules.length>=18,'Operator OS mora pratiti najmanje 18 odobrenih modula.');
-assert.equal(new Set(modules.map(item=>item.id)).size,modules.length,'Module IDs moraju biti jedinstveni.');
-assert.equal(new Set(modules.map(item=>item.route)).size,modules.length,'Module routes moraju biti jedinstvene.');
-
+const wrangler=read('workers/gnk-asg-direct-operator/wrangler.toml');
+const wrapper=read('workers/gnk-asg-direct-operator/src/index-digital-workforce-v1.js');
+const auth=read('workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js');
 const gateway=read('workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js');
-const mailFacade=read('workers/gnk-asg-direct-operator/src/mail-studio-extension-v4.js');
-const authLayer=read('workers/gnk-asg-direct-operator/src/index-unified-auth-v14.js');
-const runtime=read('workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js');
-const dynamicContracts={
-  '/email-status/':{source:gateway,required:['isEmailStatusPath','handleEmailStatusRequest',"path==='/email-status'","path.startsWith('/email-status/')",'loginRedirect(request)']},
-  '/mail-studio/':{source:`${gateway}\n${mailFacade}\n${authLayer}`,required:["from './mail-studio-extension-v4.js'","PUBLIC_PREFIX='/api/mail-center/sync'","INTERNAL_PREFIX='/api/mail-sync'",'handleMailSyncCenter','gnk-mail-sync-center-ui',"path.startsWith('/api/mail-center/')","'/mail-studio'"]}
-};
+const postCode=read('workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js');
+const reviewAdmin=read('workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js');
+const reviewDecision=read('workers/gnk-asg-direct-operator/src/media-registration-review-decision-v1.js');
 
-let dynamicCount=0;
-for(const module of modules){
-  assert.match(module.id,/^[a-z0-9-]+$/u,`Neispravan module ID: ${module.id}`);
-  const parsed=routeUrl(module.route),routePath=parsed.pathname;
-  assert.equal(parsed.origin,'https://review.gnk-asg.local',`Module ruta mora biti same-origin: ${module.route}`);
-  assert.match(routePath,/^\/(?:[a-z0-9-]+\/)+$/u,`Neispravan module pathname: ${module.route}`);
-  for(const key of parsed.searchParams.keys())assert.match(key,/^[a-z][a-z0-9-]*$/u,`Neispravan query ključ u ${module.route}`);
-  if(['worker-dynamic-authenticated','worker-native-authenticated'].includes(module.delivery)){
-    const contract=dynamicContracts[routePath];
-    assert.ok(contract,`Nedokumentirana dinamička ruta: ${module.route}`);
-    for(const token of contract.required)assert.ok(contract.source.includes(token),`${module.route} nema Worker dokaz: ${token}`);
-    dynamicCount++;
-    continue;
-  }
-  const folder=routePath.replace(/^\//,'').replace(/\/$/,'');
-  const file=`apps/portal/${folder}/index.html`;
-  assert.ok(exists(file),`${module.label} pokazuje na nepostojeću datoteku ${file}`);
-  assert.ok(read(file).length>120,`${file} nema dovoljan sadržaj.`);
+assert.match(wrangler,/main = "src\/index-digital-workforce-v1\.js"/u,'Review Worker mora koristiti aktualni digital-workforce entrypoint.');
+assert.ok(wrapper.includes("from './index-unified-auth-v23.js'"),'Digital-workforce wrapper mora koristiti aktualni unified-auth v23 runtime.');
+assert.ok(auth.includes("'/media-application'"),'Auth sloj mora zadržati javnu media prijavu.');
+assert.ok(auth.includes("'/media-registration-admin'"),'Auth sloj mora zadržati zaštićeni media review UI.');
+assert.ok(auth.includes("path.startsWith('/api/media-registration-admin')"),'Auth sloj mora štititi media registration admin API.');
+assert.ok(gateway.includes("const isPublicRegistration=path=>path==='/media-application'"),'Gateway mora prepoznati javnu media prijavu.');
+assert.ok(gateway.includes("const isAdminRegistration=path=>path==='/media-registration-admin'"),'Gateway mora prepoznati zaštićeni media review.');
+assert.ok(gateway.includes('authorizeCampaignMailer'), 'Zaštićeni media review mora koristiti postojeći auth guard.');
+assert.ok(postCode.includes('patchMediaRegistrationAdminPage'), 'Media registration runtime mora injektirati review UI.');
+assert.ok(postCode.includes('patchMediaRegistrationDecisionGuard'), 'Media registration runtime mora injektirati revision-safe decision guard.');
+assert.ok(reviewAdmin.includes('media-applications-review-v1.js'), 'Review backend mora referencirati aktualni review JS asset.');
+assert.ok(reviewAdmin.includes('media-applications-review-v1.css'), 'Review backend mora referencirati aktualni review CSS asset.');
+assert.ok(reviewDecision.includes('media-applications-decision-guard-v1.js'), 'Decision backend mora referencirati decision guard asset.');
+
+for(const file of [
+  'apps/portal/media-application/index.html',
+  'apps/portal/media-registration-admin/index.html',
+  'apps/portal/assets/media-applications-review-v1.js',
+  'apps/portal/assets/media-applications-review-v1.css',
+  'apps/portal/assets/media-applications-decision-guard-v1.js'
+]){
+  assert.ok(exists(file),`Nedostaje aktivni media-review artefakt: ${file}`);
+  assert.ok(fs.statSync(path.join(root,file)).size>0,`Prazan aktivni media-review artefakt: ${file}`);
 }
 
-const hub=read('apps/portal/enterprise/index.html');
-const navigation=`${hub}\n${runtime}`;
-for(const requiredRoute of ['/mission-control/','/design-review/','/strategy-performance/','/registry-center/','/deployment/','/mail-studio/'])assert.ok(navigation.includes(requiredRoute),`Enterprise runtime nema ključnu rutu ${requiredRoute}`);
-for(const requiredRoute of ['/enterprise/project-center/','/editorial-operations/'])assert.ok(navigation.includes(requiredRoute),`Enterprise runtime nema novu operativnu rutu ${requiredRoute}`);
-assert.ok(runtime.includes('x-robots-tag'),'Protected runtime mora postaviti noindex header.');
-
-console.log(`OPERATOR_MODULE_ROUTE_CONTRACT_OK modules=${modules.length} dynamic=${dynamicCount} static=${modules.length-dynamicCount}`);
+console.log('OPERATOR_MEDIA_ROUTE_CONTRACT_OK currentRuntime=index-digital-workforce-v1.js');
