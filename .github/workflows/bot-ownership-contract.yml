@@ -1,0 +1,29 @@
+name: Bot Ownership Contract
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'config/control-plane/bot-ownership-v1.json'
+      - 'scripts/audit-bot-ownership-v1.mjs'
+      - '.github/workflows/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bot-ownership-contract-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Audit bot ownership and direct-main writer baseline
+        run: node scripts/audit-bot-ownership-v1.mjs
