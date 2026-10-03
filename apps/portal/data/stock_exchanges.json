@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-10-02T19:51:46+00:00",
-  "updated_at": "2026-10-02T19:51:46+00:00",
+  "checked_at": "2026-10-03T12:25:50+00:00",
+  "updated_at": "2026-10-03T12:25:50+00:00",
   "status": "ok",
   "refresh_frequency": "Twice-daily automated reference check via the canonical market writer",
   "refresh_frequency_hr": "Automatska provjera dvaput dnevno kroz kanonski tržišni writer",
@@ -22,7 +22,7 @@
       "value": null,
       "change_percent": null,
       "points": [],
-      "checked_at": "2026-10-02T19:51:46+00:00"
+      "checked_at": "2026-10-03T12:25:50+00:00"
     },
     {
       "id": "crobex10",
@@ -38,7 +38,7 @@
       "value": null,
       "change_percent": null,
       "points": [],
-      "checked_at": "2026-10-02T19:51:46+00:00"
+      "checked_at": "2026-10-03T12:25:50+00:00"
     },
     {
       "id": "nyse",
@@ -51,14 +51,10 @@
       "delay_hr": "Javni informativni indeksni podatak; vrijednost može biti odgođena",
       "delay_en": "Public informational index data; value may be delayed",
       "official_url": "https://www.nyse.com/quote/index/NYA",
-      "checked_at": "2026-10-02T19:51:46+00:00",
-      "value": 23684.19,
-      "change_percent": -3.31,
+      "checked_at": "2026-10-03T12:25:50+00:00",
+      "value": 23654.31,
+      "change_percent": -4.31,
       "points": [
-        [
-          1788355800000,
-          24495.55078125
-        ],
         [
           1788442200000,
           24720.15039062
@@ -141,12 +137,12 @@
         ],
         [
           1790947800000,
-          23684.18945312
+          23654.31054688
         ]
       ],
       "currency": "USD",
       "source_timestamp": "2026-10-02T13:30:00+00:00",
-      "last_successful_refresh_at": "2026-10-02T19:51:46+00:00"
+      "last_successful_refresh_at": "2026-10-03T12:25:50+00:00"
     },
     {
       "id": "nasdaq",
@@ -159,14 +155,10 @@
       "delay_hr": "Javni informativni indeksni podatak; vrijednost može biti odgođena",
       "delay_en": "Public informational index data; value may be delayed",
       "official_url": "https://www.nasdaq.com/market-activity/index/comp",
-      "checked_at": "2026-10-02T19:51:46+00:00",
-      "value": 27198.53,
-      "change_percent": 3.74,
+      "checked_at": "2026-10-03T12:25:50+00:00",
+      "value": 27190.86,
+      "change_percent": 2.28,
       "points": [
-        [
-          1788355800000,
-          26217.83007812
-        ],
         [
           1788442200000,
           26584.06054688
@@ -249,12 +241,12 @@
         ],
         [
           1790947800000,
-          27198.52734375
+          27190.859375
         ]
       ],
       "currency": "USD",
       "source_timestamp": "2026-10-02T13:30:00+00:00",
-      "last_successful_refresh_at": "2026-10-02T19:51:46+00:00"
+      "last_successful_refresh_at": "2026-10-03T12:25:50+00:00"
     }
   ],
   "errors": [],
