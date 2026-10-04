@@ -1,0 +1,1551 @@
+{
+  "version": "GNK_ASG_ENTITY_VISIBILITY_REPORTING_V1_20261004",
+  "generatedAt": "2026-10-04T18:30:00.380Z",
+  "semantics": "daily editorial oversight register; planned gates do not claim completed work or autonomous publication",
+  "editorialLeadId": "EDITOR-NERMIN-SEFIC-001",
+  "orchestration": {
+    "version": "GNK_ASG_ENTITY_VISIBILITY_ORCHESTRATION_V1_20261004",
+    "semantics": "declared editorial workflow model; Worker support is non-autonomous and not runtime evidence",
+    "humanApprovalRequired": true,
+    "leadId": "EDITOR-NERMIN-SEFIC-001",
+    "dailyQualityCadence": {
+      "requiredSignalsPerDay": 10,
+      "semantics": "ten distinct quality and discoverability checks per daily brief; never ten duplicate posts or autonomous full publications",
+      "actions": [
+        "source-and-date-context",
+        "claim-boundary-review",
+        "author-and-editor-attribution",
+        "canonical-url",
+        "title-and-meta-description",
+        "structured-data",
+        "internal-linking",
+        "image-alt-and-credit",
+        "accessibility-and-contrast",
+        "distribution-readiness"
+      ]
+    },
+    "mediaAnalysis": {
+      "desks": [
+        {
+          "id": "MEDIA-JUTARNJI",
+          "publisher": "Jutarnji list",
+          "homepage": "https://www.jutarnji.hr/",
+          "hashtag": "JutarnjiList",
+          "modeledWorkerCohort": "DWF-0001–DWF-0262",
+          "scope": "source-linked editorial analysis intake on GNK ASG only",
+          "sourceClass": "external-publisher-link",
+          "reviewState": "source-url-and-human-review-required",
+          "externalActions": "forbidden-without-account-owner-authorization",
+          "fullTextStorage": false,
+          "modeledSupport": "link, metadata, attribution and accessibility review only; not autonomous analysis or publication"
+        },
+        {
+          "id": "MEDIA-VECERNJI",
+          "publisher": "Večernji list",
+          "homepage": "https://www.vecernji.hr/",
+          "hashtag": "VecernjiList",
+          "modeledWorkerCohort": "DWF-0263–DWF-0524",
+          "scope": "source-linked editorial analysis intake on GNK ASG only",
+          "sourceClass": "external-publisher-link",
+          "reviewState": "source-url-and-human-review-required",
+          "externalActions": "forbidden-without-account-owner-authorization",
+          "fullTextStorage": false,
+          "modeledSupport": "link, metadata, attribution and accessibility review only; not autonomous analysis or publication"
+        },
+        {
+          "id": "MEDIA-POSLOVNI",
+          "publisher": "Poslovni dnevnik",
+          "homepage": "https://www.poslovni.hr/",
+          "hashtag": "PoslovniDnevnik",
+          "modeledWorkerCohort": "DWF-0525–DWF-0786",
+          "scope": "source-linked editorial analysis intake on GNK ASG only",
+          "sourceClass": "external-publisher-link",
+          "reviewState": "source-url-and-human-review-required",
+          "externalActions": "forbidden-without-account-owner-authorization",
+          "fullTextStorage": false,
+          "modeledSupport": "link, metadata, attribution and accessibility review only; not autonomous analysis or publication"
+        },
+        {
+          "id": "MEDIA-INDEX",
+          "publisher": "Index",
+          "homepage": "https://www.index.hr/",
+          "hashtag": "Index",
+          "modeledWorkerCohort": "DWF-0787–DWF-1048",
+          "scope": "source-linked editorial analysis intake on GNK ASG only",
+          "sourceClass": "external-publisher-link",
+          "reviewState": "source-url-and-human-review-required",
+          "externalActions": "forbidden-without-account-owner-authorization",
+          "fullTextStorage": false,
+          "modeledSupport": "link, metadata, attribution and accessibility review only; not autonomous analysis or publication"
+        },
+        {
+          "id": "MEDIA-LIDER",
+          "publisher": "Lider",
+          "homepage": "https://lidermedia.hr/",
+          "hashtag": "Lider",
+          "modeledWorkerCohort": "DWF-1049–DWF-1310",
+          "scope": "source-linked editorial analysis intake on GNK ASG only",
+          "sourceClass": "external-publisher-link",
+          "reviewState": "source-url-and-human-review-required",
+          "externalActions": "forbidden-without-account-owner-authorization",
+          "fullTextStorage": false,
+          "modeledSupport": "link, metadata, attribution and accessibility review only; not autonomous analysis or publication"
+        },
+        {
+          "id": "MEDIA-NOVOSTI",
+          "publisher": "Novosti",
+          "homepage": "https://www.portalnovosti.com/",
+          "hashtag": "Novosti",
+          "modeledWorkerCohort": "DWF-1311–DWF-1573",
+          "scope": "source-linked editorial analysis intake on GNK ASG only",
+          "sourceClass": "external-publisher-link",
+          "reviewState": "source-url-and-human-review-required",
+          "externalActions": "forbidden-without-account-owner-authorization",
+          "fullTextStorage": false,
+          "modeledSupport": "link, metadata, attribution and accessibility review only; not autonomous analysis or publication"
+        }
+      ],
+      "checklist": [
+        "publisher-url",
+        "publication-date",
+        "context-and-scope",
+        "fact-versus-commentary",
+        "minimal-quotation",
+        "original-link-and-attribution",
+        "claim-boundary",
+        "internal-context-link",
+        "meta-and-schema",
+        "human-editorial-approval"
+      ],
+      "semantics": "external publishers are reviewed through source links only; no external comments, accounts, full-text copying or automatic publication"
+    },
+    "lanes": [
+      {
+        "id": "source-ledger",
+        "labelHr": "Izvori i kontekst",
+        "owner": "Nermin Sefić",
+        "mode": "human-review-required",
+        "output": "provjerljiv izvor, datum, opseg i kontekst"
+      },
+      {
+        "id": "editorial-quality",
+        "labelHr": "Autorstvo i urednička kvaliteta",
+        "owner": "Nermin Sefić",
+        "mode": "human-approval-required",
+        "output": "jedinstven nacrt, atribucija i odluka o objavi"
+      },
+      {
+        "id": "metadata-discovery",
+        "labelHr": "SEO, schema i discoverability",
+        "owner": "Digitalna radna snaga · modelirana podrška",
+        "mode": "read-only-model-support",
+        "output": "canonical, metapodaci, strukturirani podaci i interni linkovi"
+      },
+      {
+        "id": "visual-accessibility",
+        "labelHr": "Slika i pristupačnost",
+        "owner": "Digitalna radna snaga · modelirana podrška",
+        "mode": "read-only-model-support",
+        "output": "atribuirani vizual, smisleni alt tekst i kontrast"
+      },
+      {
+        "id": "canonical-distribution",
+        "labelHr": "Kanonska distribucija",
+        "owner": "Nermin Sefić + urednička provjera",
+        "mode": "human-release-gate",
+        "output": "javni kanonski URL prije kontrolirane distribucije"
+      }
+    ]
+  },
+  "summary": {
+    "scheduledDailyBriefs": 30,
+    "publishedFoundation": 1,
+    "editorialBriefsAwaitingHumanSourceReview": 29,
+    "autonomousFullPublications": 0,
+    "requiredQualitySignals": 300,
+    "mediaAnalysisSourceDesks": 6,
+    "externalPublisherPostsOrComments": 0
+  },
+  "dailyReports": [
+    {
+      "day": 1,
+      "date": "2026-10-04",
+      "title": "Javni podaci, autorski rad i odgovorno upravljanje",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "foundation-source-linked",
+        "sourceCount": 3,
+        "humanVerified": true
+      },
+      "publicationControl": {
+        "state": "published-foundation",
+        "canonicalUrl": "https://gnk-asg.hr/objave/javni-podaci-autorski-rad-odgovorno-upravljanje/",
+        "humanApproved": true
+      },
+      "metadataGate": "canonical-and-schema-present",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "foundation-quality-evidence-present",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 2,
+      "date": "2026-10-05",
+      "title": "Kako čitati javni poslovni profil bez pogrešnih usporedbi",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 3,
+      "date": "2026-10-06",
+      "title": "Nermin Sefić: autorski rad u financijama i poduzetništvu",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 4,
+      "date": "2026-10-07",
+      "title": "Korporativna transparentnost kao svakodnevna praksa",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 5,
+      "date": "2026-10-08",
+      "title": "Aktual Media: izvorne poveznice i odgovorno praćenje vijesti",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 6,
+      "date": "2026-10-09",
+      "title": "Radio Aktual: pristupačnost sadržaja kroz audio format",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 7,
+      "date": "2026-10-10",
+      "title": "Digitalna radna snaga: razlika između modela i runtime dokaza",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 8,
+      "date": "2026-10-11",
+      "title": "AI i upravljanje: odluke moraju imati trag",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 9,
+      "date": "2026-10-12",
+      "title": "Od podataka do konteksta: kako nastaje korisna tržišna analiza",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 10,
+      "date": "2026-10-13",
+      "title": "Jasna struktura grupe i jasna odgovornost društava",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 11,
+      "date": "2026-10-14",
+      "title": "Tehnologija koja olakšava provjeru, a ne stvara buku",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 12,
+      "date": "2026-10-15",
+      "title": "Financijska pismenost kao javna vrijednost",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 13,
+      "date": "2026-10-16",
+      "title": "Sportska analitika: uredničko praćenje bez pogrešnih atribucija",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 14,
+      "date": "2026-10-17",
+      "title": "Lokalni rad, međunarodni okvir i provjerljivi izvori",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 15,
+      "date": "2026-10-18",
+      "title": "Dobra reputacija počinje dosljednim odgovorima",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 16,
+      "date": "2026-10-19",
+      "title": "Zašto metapodaci pomažu ljudima, ne samo tražilicama",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 17,
+      "date": "2026-10-20",
+      "title": "Odgovorna inovacija: ambicija uz mjerljivu provedbu",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 18,
+      "date": "2026-10-21",
+      "title": "Kvaliteta sadržaja važnija je od količine objava",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 19,
+      "date": "2026-10-22",
+      "title": "Povratna informacija kao sastavni dio upravljanja",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 20,
+      "date": "2026-10-23",
+      "title": "Dugoročna vidljivost: sustav sadržaja, a ne jednodnevna kampanja",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 21,
+      "date": "2026-10-24",
+      "title": "Fina Info.BIZ: poslovni podatak uvijek se čita uz datum i obuhvat",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 22,
+      "date": "2026-10-25",
+      "title": "Revizorsko izvješće: što dokument potvrđuje, a što ne potvrđuje",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 23,
+      "date": "2026-10-26",
+      "title": "Kako odgovorno citirati Poslovni dnevnik, Jutarnji list, Večernji list, Index i Novosti",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 24,
+      "date": "2026-10-27",
+      "title": "NK Sesvete u sportskom izvještavanju: činjenice bez privida partnerstva",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 25,
+      "date": "2026-10-28",
+      "title": "Nermin Sefić kao urednički voditelj: ljudska odgovornost u Digitalnoj radnoj snazi",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 26,
+      "date": "2026-10-29",
+      "title": "Fotografija, opis i kontekst: odgovorno korištenje javnog portretnog materijala",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 27,
+      "date": "2026-10-30",
+      "title": "AEO bez prečaca: kako pomoći pretraživačima i AI asistentima provjerljivim izvorima",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 28,
+      "date": "2026-10-31",
+      "title": "Javni ispravak i urednička bilješka: vidljiv trag kvalitete",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 29,
+      "date": "2026-11-01",
+      "title": "Korporativni sadržaj i tržišna analiza: razlika između informacije i preporuke",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 30,
+      "date": "2026-11-02",
+      "title": "Trideset dana provjerljive vidljivosti: što se održava nakon kampanje",
+      "publicDesk": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "metadataGate": "required-before-full-publication",
+      "imageGate": "attributed-image-metadata-required",
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    }
+  ]
+}

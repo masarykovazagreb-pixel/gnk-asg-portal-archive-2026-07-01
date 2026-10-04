@@ -1,0 +1,2391 @@
+{
+  "version": "GNK_ASG_ENTITY_VISIBILITY_CAMPAIGN_V3_30_DAY_ORCHESTRATED_EDITORIAL_LED",
+  "generatedAt": "2026-10-04T18:30:00.381Z",
+  "campaign": "30-day factual public-record and entity-visibility programme",
+  "durationDays": 30,
+  "canonicalSource": "https://gnk-asg.hr/",
+  "editorialLead": {
+    "name": "Nermin Sefić",
+    "role": "Ljudski urednički voditelj / Human editorial lead",
+    "personUrl": "https://gnk-asg.hr/nermin-sefic/",
+    "workforceRoleId": "EDITOR-NERMIN-SEFIC-001",
+    "syntheticWorker": false
+  },
+  "dailyPublicDesk": {
+    "name": "AKTUAL MEDIA · Dnevni urednički desk",
+    "route": "https://gnk-asg.hr/gnk-aktual/",
+    "semantics": "A public daily editorial brief is visible each day; full articles remain source-led and require editorial approval before publication.",
+    "radioFirst": true
+  },
+  "imageMetadataManifest": "apps/portal/data/nermin-sefic-campaign-images.json",
+  "reportingManifest": "apps/portal/data/entity-visibility-campaign-reporting.json",
+  "orchestration": {
+    "version": "GNK_ASG_ENTITY_VISIBILITY_ORCHESTRATION_V1_20261004",
+    "semantics": "declared editorial workflow model; Worker support is non-autonomous and not runtime evidence",
+    "humanApprovalRequired": true,
+    "leadId": "EDITOR-NERMIN-SEFIC-001",
+    "dailyQualityCadence": {
+      "requiredSignalsPerDay": 10,
+      "semantics": "ten distinct quality and discoverability checks per daily brief; never ten duplicate posts or autonomous full publications",
+      "actions": [
+        "source-and-date-context",
+        "claim-boundary-review",
+        "author-and-editor-attribution",
+        "canonical-url",
+        "title-and-meta-description",
+        "structured-data",
+        "internal-linking",
+        "image-alt-and-credit",
+        "accessibility-and-contrast",
+        "distribution-readiness"
+      ]
+    },
+    "mediaAnalysis": {
+      "desks": [
+        {
+          "id": "MEDIA-JUTARNJI",
+          "publisher": "Jutarnji list",
+          "homepage": "https://www.jutarnji.hr/",
+          "hashtag": "JutarnjiList",
+          "modeledWorkerCohort": "DWF-0001–DWF-0262",
+          "scope": "source-linked editorial analysis intake on GNK ASG only",
+          "sourceClass": "external-publisher-link",
+          "reviewState": "source-url-and-human-review-required",
+          "externalActions": "forbidden-without-account-owner-authorization",
+          "fullTextStorage": false,
+          "modeledSupport": "link, metadata, attribution and accessibility review only; not autonomous analysis or publication"
+        },
+        {
+          "id": "MEDIA-VECERNJI",
+          "publisher": "Večernji list",
+          "homepage": "https://www.vecernji.hr/",
+          "hashtag": "VecernjiList",
+          "modeledWorkerCohort": "DWF-0263–DWF-0524",
+          "scope": "source-linked editorial analysis intake on GNK ASG only",
+          "sourceClass": "external-publisher-link",
+          "reviewState": "source-url-and-human-review-required",
+          "externalActions": "forbidden-without-account-owner-authorization",
+          "fullTextStorage": false,
+          "modeledSupport": "link, metadata, attribution and accessibility review only; not autonomous analysis or publication"
+        },
+        {
+          "id": "MEDIA-POSLOVNI",
+          "publisher": "Poslovni dnevnik",
+          "homepage": "https://www.poslovni.hr/",
+          "hashtag": "PoslovniDnevnik",
+          "modeledWorkerCohort": "DWF-0525–DWF-0786",
+          "scope": "source-linked editorial analysis intake on GNK ASG only",
+          "sourceClass": "external-publisher-link",
+          "reviewState": "source-url-and-human-review-required",
+          "externalActions": "forbidden-without-account-owner-authorization",
+          "fullTextStorage": false,
+          "modeledSupport": "link, metadata, attribution and accessibility review only; not autonomous analysis or publication"
+        },
+        {
+          "id": "MEDIA-INDEX",
+          "publisher": "Index",
+          "homepage": "https://www.index.hr/",
+          "hashtag": "Index",
+          "modeledWorkerCohort": "DWF-0787–DWF-1048",
+          "scope": "source-linked editorial analysis intake on GNK ASG only",
+          "sourceClass": "external-publisher-link",
+          "reviewState": "source-url-and-human-review-required",
+          "externalActions": "forbidden-without-account-owner-authorization",
+          "fullTextStorage": false,
+          "modeledSupport": "link, metadata, attribution and accessibility review only; not autonomous analysis or publication"
+        },
+        {
+          "id": "MEDIA-LIDER",
+          "publisher": "Lider",
+          "homepage": "https://lidermedia.hr/",
+          "hashtag": "Lider",
+          "modeledWorkerCohort": "DWF-1049–DWF-1310",
+          "scope": "source-linked editorial analysis intake on GNK ASG only",
+          "sourceClass": "external-publisher-link",
+          "reviewState": "source-url-and-human-review-required",
+          "externalActions": "forbidden-without-account-owner-authorization",
+          "fullTextStorage": false,
+          "modeledSupport": "link, metadata, attribution and accessibility review only; not autonomous analysis or publication"
+        },
+        {
+          "id": "MEDIA-NOVOSTI",
+          "publisher": "Novosti",
+          "homepage": "https://www.portalnovosti.com/",
+          "hashtag": "Novosti",
+          "modeledWorkerCohort": "DWF-1311–DWF-1573",
+          "scope": "source-linked editorial analysis intake on GNK ASG only",
+          "sourceClass": "external-publisher-link",
+          "reviewState": "source-url-and-human-review-required",
+          "externalActions": "forbidden-without-account-owner-authorization",
+          "fullTextStorage": false,
+          "modeledSupport": "link, metadata, attribution and accessibility review only; not autonomous analysis or publication"
+        }
+      ],
+      "checklist": [
+        "publisher-url",
+        "publication-date",
+        "context-and-scope",
+        "fact-versus-commentary",
+        "minimal-quotation",
+        "original-link-and-attribution",
+        "claim-boundary",
+        "internal-context-link",
+        "meta-and-schema",
+        "human-editorial-approval"
+      ],
+      "semantics": "external publishers are reviewed through source links only; no external comments, accounts, full-text copying or automatic publication"
+    },
+    "lanes": [
+      {
+        "id": "source-ledger",
+        "labelHr": "Izvori i kontekst",
+        "owner": "Nermin Sefić",
+        "mode": "human-review-required",
+        "output": "provjerljiv izvor, datum, opseg i kontekst"
+      },
+      {
+        "id": "editorial-quality",
+        "labelHr": "Autorstvo i urednička kvaliteta",
+        "owner": "Nermin Sefić",
+        "mode": "human-approval-required",
+        "output": "jedinstven nacrt, atribucija i odluka o objavi"
+      },
+      {
+        "id": "metadata-discovery",
+        "labelHr": "SEO, schema i discoverability",
+        "owner": "Digitalna radna snaga · modelirana podrška",
+        "mode": "read-only-model-support",
+        "output": "canonical, metapodaci, strukturirani podaci i interni linkovi"
+      },
+      {
+        "id": "visual-accessibility",
+        "labelHr": "Slika i pristupačnost",
+        "owner": "Digitalna radna snaga · modelirana podrška",
+        "mode": "read-only-model-support",
+        "output": "atribuirani vizual, smisleni alt tekst i kontrast"
+      },
+      {
+        "id": "canonical-distribution",
+        "labelHr": "Kanonska distribucija",
+        "owner": "Nermin Sefić + urednička provjera",
+        "mode": "human-release-gate",
+        "output": "javni kanonski URL prije kontrolirane distribucije"
+      }
+    ]
+  },
+  "distribution": [
+    "GNK ASG portal",
+    "AKTUAL MEDIA",
+    "Blogger",
+    "Dev.to",
+    "Tumblr",
+    "Telegraph"
+  ],
+  "policy": {
+    "sourceLed": true,
+    "noAutomatedLowQualityPublication": true,
+    "noLegalCaseCommentary": true,
+    "noUnsupportedPersonalWealthClaims": true,
+    "noImpliedThirdPartyPartnerships": true,
+    "positiveButVerifiable": true
+  },
+  "days": [
+    {
+      "day": 1,
+      "date": "2026-10-04",
+      "title": "Javni podaci, autorski rad i odgovorno upravljanje",
+      "brief": "Objavljena temeljna, izvorno povezana publikacija.",
+      "status": "published-foundation",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-01-official-desk-portrait.webp",
+      "imageAlt": "Nermin Sefić — Javni podaci, autorski rad i odgovorno upravljanje",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "ProvjerljiviIzvori",
+        "UrednickiStandard"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "foundation-source-linked",
+        "sourceCount": 3,
+        "humanVerified": true
+      },
+      "publicationControl": {
+        "state": "published-foundation",
+        "canonicalUrl": "https://gnk-asg.hr/objave/javni-podaci-autorski-rad-odgovorno-upravljanje/",
+        "humanApproved": true
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "foundation-quality-evidence-present",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 2,
+      "date": "2026-10-05",
+      "title": "Kako čitati javni poslovni profil bez pogrešnih usporedbi",
+      "brief": "Urednički nacrt: registri, datum izvještaja i obuhvat podataka.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-02-panel-discussion.webp",
+      "imageAlt": "Nermin Sefić — Kako čitati javni poslovni profil bez pogrešnih usporedbi",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "ProvjerljiviIzvori",
+        "UrednickiStandard"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 3,
+      "date": "2026-10-06",
+      "title": "Nermin Sefić: autorski rad u financijama i poduzetništvu",
+      "brief": "Urednički nacrt: bibliografija, knjige i javno dostupna predavanja.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-03-event-notebook-portrait.webp",
+      "imageAlt": "Nermin Sefić — Nermin Sefić: autorski rad u financijama i poduzetništvu",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "ProvjerljiviIzvori",
+        "UrednickiStandard"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 4,
+      "date": "2026-10-07",
+      "title": "Korporativna transparentnost kao svakodnevna praksa",
+      "brief": "Urednički nacrt: izvor, metodologija i kontekst poslovnih informacija.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-04-strategy-boardroom.webp",
+      "imageAlt": "Nermin Sefić — Korporativna transparentnost kao svakodnevna praksa",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "ProvjerljiviIzvori",
+        "UrednickiStandard"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 5,
+      "date": "2026-10-08",
+      "title": "Aktual Media: izvorne poveznice i odgovorno praćenje vijesti",
+      "brief": "Urednički nacrt: izvorno novinarstvo, sažeci i atribucija.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-05-cafe-interview-portrait.webp",
+      "imageAlt": "Nermin Sefić — Aktual Media: izvorne poveznice i odgovorno praćenje vijesti",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "ProvjerljiviIzvori",
+        "UrednickiStandard"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 6,
+      "date": "2026-10-09",
+      "title": "Radio Aktual: pristupačnost sadržaja kroz audio format",
+      "brief": "Urednički nacrt: dostupnost na telefonu i računalu.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-06-formal-reception.webp",
+      "imageAlt": "Nermin Sefić — Radio Aktual: pristupačnost sadržaja kroz audio format",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "ProvjerljiviIzvori",
+        "UrednickiStandard"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 7,
+      "date": "2026-10-10",
+      "title": "Digitalna radna snaga: razlika između modela i runtime dokaza",
+      "brief": "Urednički nacrt: precizna terminologija i tehnička odgovornost.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-07-gala-dinner.webp",
+      "imageAlt": "Nermin Sefić — Digitalna radna snaga: razlika između modela i runtime dokaza",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "ProvjerljiviIzvori",
+        "UrednickiStandard"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 8,
+      "date": "2026-10-11",
+      "title": "AI i upravljanje: odluke moraju imati trag",
+      "brief": "Urednički nacrt: ljudska odgovornost, audit trail i izvori.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-08-coastal-business-lunch.webp",
+      "imageAlt": "Nermin Sefić — AI i upravljanje: odluke moraju imati trag",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "ProvjerljiviIzvori",
+        "UrednickiStandard"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 9,
+      "date": "2026-10-12",
+      "title": "Od podataka do konteksta: kako nastaje korisna tržišna analiza",
+      "brief": "Urednički nacrt: oznake izvora i granice interpretacije.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-09-conference-book.webp",
+      "imageAlt": "Nermin Sefić — Od podataka do konteksta: kako nastaje korisna tržišna analiza",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "ProvjerljiviIzvori",
+        "UrednickiStandard"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 10,
+      "date": "2026-10-13",
+      "title": "Jasna struktura grupe i jasna odgovornost društava",
+      "brief": "Urednički nacrt: razlikovanje pravnih osoba i funkcija.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-10-networking-black-shirt.webp",
+      "imageAlt": "Nermin Sefić — Jasna struktura grupe i jasna odgovornost društava",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "ProvjerljiviIzvori",
+        "UrednickiStandard"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 11,
+      "date": "2026-10-14",
+      "title": "Tehnologija koja olakšava provjeru, a ne stvara buku",
+      "brief": "Urednički nacrt: pristupačnost, kanonske poveznice i struktura.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-11-reception-brown-jacket.webp",
+      "imageAlt": "Nermin Sefić — Tehnologija koja olakšava provjeru, a ne stvara buku",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "ProvjerljiviIzvori",
+        "UrednickiStandard"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 12,
+      "date": "2026-10-15",
+      "title": "Financijska pismenost kao javna vrijednost",
+      "brief": "Urednički nacrt: čitanje izvještaja i temeljnih pokazatelja.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-12-gnk-asg-reception.webp",
+      "imageAlt": "Nermin Sefić — Financijska pismenost kao javna vrijednost",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "ProvjerljiviIzvori",
+        "UrednickiStandard"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 13,
+      "date": "2026-10-16",
+      "title": "Sportska analitika: uredničko praćenje bez pogrešnih atribucija",
+      "brief": "Urednički nacrt: jasno označavanje izvještavanja i odnosa.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-13-urban-team-walk.webp",
+      "imageAlt": "Nermin Sefić — Sportska analitika: uredničko praćenje bez pogrešnih atribucija",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "ProvjerljiviIzvori",
+        "UrednickiStandard"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 14,
+      "date": "2026-10-17",
+      "title": "Lokalni rad, međunarodni okvir i provjerljivi izvori",
+      "brief": "Urednički nacrt: Zagreb, Boulder i javni dokumenti.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-14-executive-table-discussion.webp",
+      "imageAlt": "Nermin Sefić — Lokalni rad, međunarodni okvir i provjerljivi izvori",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "ProvjerljiviIzvori",
+        "UrednickiStandard"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 15,
+      "date": "2026-10-18",
+      "title": "Dobra reputacija počinje dosljednim odgovorima",
+      "brief": "Urednički nacrt: identitet, autorstvo i korekcije.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-15-city-evening-networking.webp",
+      "imageAlt": "Nermin Sefić — Dobra reputacija počinje dosljednim odgovorima",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "ProvjerljiviIzvori",
+        "UrednickiStandard"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 16,
+      "date": "2026-10-19",
+      "title": "Zašto metapodaci pomažu ljudima, ne samo tražilicama",
+      "brief": "Urednički nacrt: opis, slika, datum, autor i poveznica.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-16-garden-reception.webp",
+      "imageAlt": "Nermin Sefić — Zašto metapodaci pomažu ljudima, ne samo tražilicama",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "ProvjerljiviIzvori",
+        "UrednickiStandard"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 17,
+      "date": "2026-10-20",
+      "title": "Odgovorna inovacija: ambicija uz mjerljivu provedbu",
+      "brief": "Urednički nacrt: plan, dokaz i retrospektiva.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-17-restaurant-roundtable.webp",
+      "imageAlt": "Nermin Sefić — Odgovorna inovacija: ambicija uz mjerljivu provedbu",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "ProvjerljiviIzvori",
+        "UrednickiStandard"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 18,
+      "date": "2026-10-21",
+      "title": "Kvaliteta sadržaja važnija je od količine objava",
+      "brief": "Urednički nacrt: originalnost, izvori i urednička kontrola.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-18-business-lunch-blue-suit.webp",
+      "imageAlt": "Nermin Sefić — Kvaliteta sadržaja važnija je od količine objava",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "ProvjerljiviIzvori",
+        "UrednickiStandard"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 19,
+      "date": "2026-10-22",
+      "title": "Povratna informacija kao sastavni dio upravljanja",
+      "brief": "Urednički nacrt: kontakt, ispravci i javni dijalog.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-19-conference-standing.webp",
+      "imageAlt": "Nermin Sefić — Povratna informacija kao sastavni dio upravljanja",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "ProvjerljiviIzvori",
+        "UrednickiStandard"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 20,
+      "date": "2026-10-23",
+      "title": "Dugoročna vidljivost: sustav sadržaja, a ne jednodnevna kampanja",
+      "brief": "Urednički nacrt: zaključak prvih 20 dana i sljedeći provjerljivi koraci.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-20-official-standing-portrait.webp",
+      "imageAlt": "Nermin Sefić — Dugoročna vidljivost: sustav sadržaja, a ne jednodnevna kampanja",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "ProvjerljiviIzvori",
+        "UrednickiStandard"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 21,
+      "date": "2026-10-24",
+      "title": "Fina Info.BIZ: poslovni podatak uvijek se čita uz datum i obuhvat",
+      "brief": "Urednički nacrt: razlikovanje registriranog podatka, izvještajnog razdoblja i interpretacije.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-21-atrium-networking.webp",
+      "imageAlt": "Nermin Sefić — Fina Info.BIZ: poslovni podatak uvijek se čita uz datum i obuhvat",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "FinaInfoBIZ",
+        "JavniPodaci"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 22,
+      "date": "2026-10-25",
+      "title": "Revizorsko izvješće: što dokument potvrđuje, a što ne potvrđuje",
+      "brief": "Urednički nacrt: opseg, razdoblje, mišljenje i granice zaključka.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-22-boardroom-presentation.webp",
+      "imageAlt": "Nermin Sefić — Revizorsko izvješće: što dokument potvrđuje, a što ne potvrđuje",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "RevizorskoIzvjesce",
+        "KorporativnaTransparentnost"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 23,
+      "date": "2026-10-26",
+      "title": "Kako odgovorno citirati Poslovni dnevnik, Jutarnji list, Večernji list, Index i Novosti",
+      "brief": "Urednički nacrt: izvorna poveznica, datum, kontekst, citat i jasna atribucija bez preuzimanja tuđeg teksta.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-23-keynote-speech.webp",
+      "imageAlt": "Nermin Sefić — Kako odgovorno citirati Poslovni dnevnik, Jutarnji list, Večernji list, Index i Novosti",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "PoslovniDnevnik",
+        "JutarnjiList",
+        "VecernjiList",
+        "Index",
+        "Novosti",
+        "Atribucija"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 24,
+      "date": "2026-10-27",
+      "title": "NK Sesvete u sportskom izvještavanju: činjenice bez privida partnerstva",
+      "brief": "Urednički nacrt: uredničko sportsko praćenje nije poslovno ni strateško partnerstvo.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-24-executive-meeting-speech.webp",
+      "imageAlt": "Nermin Sefić — NK Sesvete u sportskom izvještavanju: činjenice bez privida partnerstva",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "NKSesvete",
+        "SportskoIzvjestavanje",
+        "UrednickaNeovisnost"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 25,
+      "date": "2026-10-28",
+      "title": "Nermin Sefić kao urednički voditelj: ljudska odgovornost u Digitalnoj radnoj snazi",
+      "brief": "Urednički nacrt: provjera izvora, autorstvo, odobrenje i ispravak — bez predstavljanja osobe kao sintetičkog Workera.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-25-evening-reception-sunglasses.webp",
+      "imageAlt": "Nermin Sefić — Nermin Sefić kao urednički voditelj: ljudska odgovornost u Digitalnoj radnoj snazi",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "DigitalnaRadnaSnaga",
+        "UrednickoVodstvo"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 26,
+      "date": "2026-10-29",
+      "title": "Fotografija, opis i kontekst: odgovorno korištenje javnog portretnog materijala",
+      "brief": "Urednički nacrt: alt tekst, atribucija, Open Graph slika i kanonski članak čuvaju smisao vizuala.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-26-outdoor-business-conversation.webp",
+      "imageAlt": "Nermin Sefić — Fotografija, opis i kontekst: odgovorno korištenje javnog portretnog materijala",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "ImageSEO",
+        "Pristupacnost",
+        "OpenGraph"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 27,
+      "date": "2026-10-30",
+      "title": "AEO bez prečaca: kako pomoći pretraživačima i AI asistentima provjerljivim izvorima",
+      "brief": "Urednički nacrt: schema, canonical, datum, autor i citabilni izvor povećavaju kvalitetu — ne kontroliraju odgovore drugih sustava.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-26-outdoor-business-conversation.webp",
+      "imageAlt": "Nermin Sefić — AEO bez prečaca: kako pomoći pretraživačima i AI asistentima provjerljivim izvorima",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "AEO",
+        "GEO",
+        "StructuredData"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 28,
+      "date": "2026-10-31",
+      "title": "Javni ispravak i urednička bilješka: vidljiv trag kvalitete",
+      "brief": "Urednički nacrt: datum izmjene, opis korekcije i poveznica na izvornu dokumentaciju.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-26-outdoor-business-conversation.webp",
+      "imageAlt": "Nermin Sefić — Javni ispravak i urednička bilješka: vidljiv trag kvalitete",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "Ispravci",
+        "JavniZapis"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 29,
+      "date": "2026-11-01",
+      "title": "Korporativni sadržaj i tržišna analiza: razlika između informacije i preporuke",
+      "brief": "Urednički nacrt: vremenska oznaka, metodologija i ograda od investicijskog savjeta.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-26-outdoor-business-conversation.webp",
+      "imageAlt": "Nermin Sefić — Korporativni sadržaj i tržišna analiza: razlika između informacije i preporuke",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "TrzisnaAnaliza",
+        "NijeInvesticijskiSavjet"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    },
+    {
+      "day": 30,
+      "date": "2026-11-02",
+      "title": "Trideset dana provjerljive vidljivosti: što se održava nakon kampanje",
+      "brief": "Urednički nacrt: dnevni ritam, urednički ownership, otvoreni izvori i sljedeći ciklus kvalitete.",
+      "status": "editorial-brief-ready",
+      "image": "/assets/people/nermin-sefic/nermin-sefic-26-outdoor-business-conversation.webp",
+      "imageAlt": "Nermin Sefić — Trideset dana provjerljive vidljivosti: što se održava nakon kampanje",
+      "hashtags": [
+        "GNKASG",
+        "GNKASGdoo",
+        "GNKDINAMOLtd",
+        "NerminSefic",
+        "NerminSefić",
+        "SeficNermin",
+        "SefićNermin",
+        "EditorialCalendar",
+        "ProvjerljivaVidljivost"
+      ],
+      "distribution": [
+        "GNK ASG campaign desk",
+        "AKTUAL MEDIA daily editorial brief"
+      ],
+      "sourceRequirement": "Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.",
+      "requiredQuality": [
+        "unique source-led draft",
+        "minimum 3000 words",
+        "five or more relevant internal links",
+        "editorial approval",
+        "canonical URL and schema",
+        "attributed image metadata",
+        "distribution gate"
+      ],
+      "publicBrief": {
+        "visible": true,
+        "route": "https://gnk-asg.hr/gnk-aktual/",
+        "semantics": "visible daily editorial brief; not a claim that a full article is published"
+      },
+      "sourceLedger": {
+        "state": "human-source-verification-required",
+        "sourceCount": 0,
+        "humanVerified": false
+      },
+      "publicationControl": {
+        "state": "full-publication-not-approved",
+        "canonicalUrl": null,
+        "humanApproved": false
+      },
+      "orchestrationLaneIds": [
+        "source-ledger",
+        "editorial-quality",
+        "metadata-discovery",
+        "visual-accessibility",
+        "canonical-distribution"
+      ],
+      "dailyQualityCadence": {
+        "requiredSignals": 10,
+        "actionIds": [
+          "source-and-date-context",
+          "claim-boundary-review",
+          "author-and-editor-attribution",
+          "canonical-url",
+          "title-and-meta-description",
+          "structured-data",
+          "internal-linking",
+          "image-alt-and-credit",
+          "accessibility-and-contrast",
+          "distribution-readiness"
+        ],
+        "status": "required-before-full-publication",
+        "autonomousPosting": false
+      }
+    }
+  ]
+}

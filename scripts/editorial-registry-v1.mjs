@@ -1,5 +1,5 @@
-// Exact-SHA CI marker: HR+EN canonical registry persistence verified.
 #!/usr/bin/env node
+// Exact-SHA CI marker: HR+EN canonical registry persistence verified.
 /**
  * Registar objavljenih tekstova.
  *

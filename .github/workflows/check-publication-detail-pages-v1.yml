@@ -23,14 +23,14 @@ jobs:
         run: |
           set -euxo pipefail
           pages=(
-            ai-shrinks-security-window-apple-accelerates-patches
-            how-a-structured-pdf-centre-improves-public-verifiability
-            why-legal-information-belongs-in-primary-navigation
-            bilingual-corporate-communication-as-an-operating-standard
-            artificial-intelligence-with-mandatory-human-review
-            market-data-is-information-not-investment-advice
-            structured-media-applications-reduce-organisational-risk
-            why-every-business-publication-should-carry-sources
+            likvidnosni-jaz-i-upravljanje-obrtnim-kapitalom
+            revizijski-odbor-i-neovisnost-nadzora
+            dobavljacki-rizik-koncentracije-jednog-partnera
+            cijena-kapitala-i-investicijske-odluke
+            whistleblowing-politika-i-interna-kontrola
+            prekogranicno-oporezivanje-transferne-cijene
+            digitalizacija-nabave-i-transparentnost-dobavljaca
+            javni-podaci-autorski-rad-odgovorno-upravljanje
           )
           for slug in "${pages[@]}"; do
             file="apps/portal/objave/$slug/index.html"
@@ -40,7 +40,7 @@ jobs:
             grep -qi 'rel="canonical"' "$file"
             grep -Fq "/objave/$slug/" apps/portal/objave/index.html
           done
-          count=$(grep -o '<article class="card"' apps/portal/objave/index.html | wc -l | tr -d ' ')
+          count=$(grep -o '<article class="editorial-card"' apps/portal/objave/index.html | wc -l | tr -d ' ')
           echo "PUBLICATION_CARD_COUNT=$count"
           test "$count" -ge 8
           echo PUBLICATION_DETAIL_PAGES_OK

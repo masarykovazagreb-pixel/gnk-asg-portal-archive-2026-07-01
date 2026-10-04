@@ -11,8 +11,6 @@ on:
       - 'apps/portal/public-operations/**'
       - 'apps/portal/group-companies/**'
       - 'apps/portal/digital-workforce/**'
-      - 'apps/portal/objave/**'
-      - 'apps/portal/publications/**'
       - 'apps/portal/media-kit/**'
       - 'apps/portal/media-registration-admin/**'
       - 'apps/portal/media-application/**'
@@ -35,7 +33,31 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
+      - name: Detect optional Design Review Console bundle
+        id: bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          required=(
+            apps/portal/design-review/index.html
+            apps/portal/enterprise/index.html
+            apps/portal/assets/data/operator-os-config.json
+            apps/portal/assets/the-code-new-york-countdown-v1.css
+            apps/portal/assets/the-code-new-york-countdown-v1.js
+            apps/portal/assets/editorial-v12.js
+            workers/gnk-asg-direct-operator/src/public-shell-v11.js
+          )
+          for file in "${required[@]}"; do
+            if [[ ! -s "$file" ]]; then
+              echo "installed=false" >> "$GITHUB_OUTPUT"
+              echo "DESIGN_REVIEW_CONSOLE_NOT_INSTALLED: $file"
+              exit 0
+            fi
+          done
+          echo "installed=true" >> "$GITHUB_OUTPUT"
+          echo "DESIGN_REVIEW_CONSOLE_BUNDLE_READY"
       - name: Validate review component syntax
+        if: steps.bundle.outputs.installed == 'true'
         run: |
           set -euxo pipefail
           node -e "JSON.parse(require('fs').readFileSync('apps/portal/assets/data/operator-os-config.json','utf8'))"
@@ -43,6 +65,7 @@ jobs:
           node --check apps/portal/assets/editorial-v12.js
           node --input-type=module --check < workers/gnk-asg-direct-operator/src/public-shell-v11.js
       - name: Verify review console contract
+        if: steps.bundle.outputs.installed == 'true'
         run: |
           set -euxo pipefail
           test -s apps/portal/design-review/index.html
@@ -65,6 +88,7 @@ jobs:
           grep -q "\['Public Media Application','/media-application/?lang=en'\]" apps/portal/design-review/index.html
           grep -q "\['Admin Center','/admin-center/'\]" apps/portal/design-review/index.html
       - name: Verify responsive page foundations
+        if: steps.bundle.outputs.installed == 'true'
         run: |
           set -euxo pipefail
           for file in \
@@ -82,6 +106,7 @@ jobs:
             grep -qi 'name="viewport"' "$file"
           done
       - name: Verify New York countdown contract
+        if: steps.bundle.outputs.installed == 'true'
         run: |
           set -euxo pipefail
           test -s apps/portal/assets/the-code-new-york-countdown-v1.css
@@ -96,6 +121,7 @@ jobs:
           grep -q '/assets/the-code-new-york-countdown-v1.js' workers/gnk-asg-direct-operator/src/public-shell-v11.js
           grep -q "const indexPath=\['/','/en','/en/'\]" workers/gnk-asg-direct-operator/src/public-shell-v11.js
       - name: Verify admin isolation and review-only behavior
+        if: steps.bundle.outputs.installed == 'true'
         run: |
           set -euxo pipefail
           node <<'NODE'

@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "GNK_ASG_EDITORIAL_SCHEDULED_PUBLISH_V3_20260714",
-  "now": "2026-09-26T13:13:09.923Z",
+  "now": "2026-10-04T18:00:00.000Z",
   "publicationHoldsVersion": "GNK_ASG_EDITORIAL_PUBLICATION_HOLDS_V3_20260925_DAILY",
   "packages": [
     {
@@ -251,17 +251,15 @@
       "id": "EDITORIAL-20260926-SATURDAY-SLOT1",
       "publishAt": "2026-09-26T08:00:00+02:00",
       "due": true,
-      "alreadyPublished": false,
+      "alreadyPublished": true,
       "publicationHeld": false,
       "holdReason": null,
-      "published": [
-        "/objave/podatkovna-suverenost-postaje-poslovni-a-ne-samo-pravni-zahtjev/"
-      ]
+      "published": []
     },
     {
       "id": "EDITORIAL-20260927-SUNDAY-SLOT1",
       "publishAt": "2026-09-27T08:00:00+02:00",
-      "due": false,
+      "due": true,
       "alreadyPublished": false,
       "publicationHeld": true,
       "holdReason": "Daily author slot is staged but remains blocked until the final article satisfies the editorial quality contract: substantive long-form depth where applicable, at least five meaningful internal links, Nermin Sefić author image and entity metadata, SEO/meta/schema validation, and verified AKTUAL plus four-blog distribution readiness.",
@@ -270,7 +268,7 @@
     {
       "id": "EDITORIAL-20260928-MONDAY-SLOT1",
       "publishAt": "2026-09-28T08:00:00+02:00",
-      "due": false,
+      "due": true,
       "alreadyPublished": false,
       "publicationHeld": true,
       "holdReason": "Daily author slot is staged but remains blocked until the final article satisfies the editorial quality contract: substantive long-form depth where applicable, at least five meaningful internal links, Nermin Sefić author image and entity metadata, SEO/meta/schema validation, and verified AKTUAL plus four-blog distribution readiness.",
@@ -279,7 +277,7 @@
     {
       "id": "EDITORIAL-20260929-TUESDAY-SLOT1",
       "publishAt": "2026-09-29T08:00:00+02:00",
-      "due": false,
+      "due": true,
       "alreadyPublished": false,
       "publicationHeld": true,
       "holdReason": "Daily author slot is staged but remains blocked until the final article satisfies the editorial quality contract: substantive long-form depth where applicable, at least five meaningful internal links, Nermin Sefić author image and entity metadata, SEO/meta/schema validation, and verified AKTUAL plus four-blog distribution readiness.",
@@ -288,7 +286,7 @@
     {
       "id": "EDITORIAL-20260930-WEDNESDAY-SLOT1",
       "publishAt": "2026-09-30T08:00:00+02:00",
-      "due": false,
+      "due": true,
       "alreadyPublished": false,
       "publicationHeld": true,
       "holdReason": "Daily author slot is staged but remains blocked until the final article satisfies the editorial quality contract: substantive long-form depth where applicable, at least five meaningful internal links, Nermin Sefić author image and entity metadata, SEO/meta/schema validation, and verified AKTUAL plus four-blog distribution readiness.",
@@ -297,7 +295,7 @@
     {
       "id": "EDITORIAL-20261001-THURSDAY-SLOT1",
       "publishAt": "2026-10-01T08:00:00+02:00",
-      "due": false,
+      "due": true,
       "alreadyPublished": false,
       "publicationHeld": true,
       "holdReason": "Daily author slot is staged but remains blocked until the final article satisfies the editorial quality contract: substantive long-form depth where applicable, at least five meaningful internal links, Nermin Sefić author image and entity metadata, SEO/meta/schema validation, and verified AKTUAL plus four-blog distribution readiness.",
@@ -306,7 +304,7 @@
     {
       "id": "EDITORIAL-20261002-FRIDAY-SLOT1",
       "publishAt": "2026-10-02T08:00:00+02:00",
-      "due": false,
+      "due": true,
       "alreadyPublished": false,
       "publicationHeld": true,
       "holdReason": "Daily author slot is staged but remains blocked until the final article satisfies the editorial quality contract: substantive long-form depth where applicable, at least five meaningful internal links, Nermin Sefić author image and entity metadata, SEO/meta/schema validation, and verified AKTUAL plus four-blog distribution readiness.",
@@ -315,7 +313,7 @@
     {
       "id": "EDITORIAL-20261003-SATURDAY-SLOT1",
       "publishAt": "2026-10-03T08:00:00+02:00",
-      "due": false,
+      "due": true,
       "alreadyPublished": false,
       "publicationHeld": true,
       "holdReason": "Daily author slot is staged but remains blocked until the final article satisfies the editorial quality contract: substantive long-form depth where applicable, at least five meaningful internal links, Nermin Sefić author image and entity metadata, SEO/meta/schema validation, and verified AKTUAL plus four-blog distribution readiness.",
@@ -324,7 +322,7 @@
     {
       "id": "EDITORIAL-20261004-SUNDAY-SLOT1",
       "publishAt": "2026-10-04T08:00:00+02:00",
-      "due": false,
+      "due": true,
       "alreadyPublished": false,
       "publicationHeld": true,
       "holdReason": "Daily author slot is staged but remains blocked until the final article satisfies the editorial quality contract: substantive long-form depth where applicable, at least five meaningful internal links, Nermin Sefić author image and entity metadata, SEO/meta/schema validation, and verified AKTUAL plus four-blog distribution readiness.",
@@ -383,10 +381,21 @@
       "publicationHeld": true,
       "holdReason": "Daily author slot is staged but remains blocked until the final article satisfies the editorial quality contract: substantive long-form depth where applicable, at least five meaningful internal links, Nermin Sefić author image and entity metadata, SEO/meta/schema validation, and verified AKTUAL plus four-blog distribution readiness.",
       "published": []
+    },
+    {
+      "id": "ENTITY-VISIBILITY-20261004-FOUNDATION",
+      "publishAt": "2026-10-04T19:00:00+02:00",
+      "due": true,
+      "alreadyPublished": false,
+      "publicationHeld": false,
+      "holdReason": null,
+      "published": [
+        "/objave/javni-podaci-autorski-rad-odgovorno-upravljanje/"
+      ]
     }
   ],
   "published": [
-    "/objave/podatkovna-suverenost-postaje-poslovni-a-ne-samo-pravni-zahtjev/"
+    "/objave/javni-podaci-autorski-rad-odgovorno-upravljanje/"
   ],
   "held": [
     "EDITORIAL-20260927-SUNDAY-SLOT1",

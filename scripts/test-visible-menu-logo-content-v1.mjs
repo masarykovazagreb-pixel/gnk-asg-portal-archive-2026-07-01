@@ -37,17 +37,26 @@ for(const source of [adminCenter,headquarters]){
 assert.match(adminCenter,/href="\/workers\/"/);
 assert.match(adminCenter,/Upravljanje radnom snagom/);
 assert.match(headquarters,/Javni portal odluka, rada, rezultata, objava, novinara i statusa projekata bez internih podataka/);
-for(const tab of ['plan','bulletins','projects','risks','opinions','dependencies','tasks','credits','newsroom','workers','log'])assert.match(digitalWorkforce,new RegExp(`data-dw-tab="${tab}"`));
+for(const tab of ['plan','bulletins','projects','risks','opinions','ideas','dependencies','tasks','credits','newsroom','workers','log'])assert.match(digitalWorkforce,new RegExp(`data-dw-tab="${tab}"`));
 assert.match(digitalWorkforce,/1\.573 workera/);
 assert.match(digitalWorkforce,/digital-workforce-suite-v1\.css/);
 assert.match(digitalWorkforce,/digital-workforce-suite-v1\.js/);
 assert.doesNotMatch(digitalWorkforce,/sintetički su operativni podaci/i);
-for(const route of ['plan','bulletins','projects','risks','opinions','dependencies','tasks','credits','newsroom','workers','activity-log']){
+for(const route of ['plan','bulletins','projects','risks','opinions','ideas','dependencies','tasks','credits','newsroom','workers','activity-log']){
  assert.ok(fs.existsSync(`apps/portal/digital-workforce/${route}/index.html`),`missing workforce subpage ${route}`);
 }
 assert.match(workforceUi,/\/api\/public\/digital-workforce\//);
 assert.match(workforceUi,/data-dw-tab/);
-assert.match(workforceApi,/GNK_ASG_DIGITAL_WORKFORCE_SUITE_V3_20260719_FIRST_PARTY_PROVENANCE/);
+assert.match(workforceApi,/GNK_ASG_DIGITAL_WORKFORCE_SUITE_V7_20261004_IDEA_LAB_ALLOCATION/);
+assert.match(workforceApi,/EDITOR-NERMIN-SEFIC-001/);
+assert.match(workforceApi,/human-editorial-governance-not-synthetic-worker/);
+assert.match(workforceApi,/CAMPAIGN_ORCHESTRATION/);
+assert.match(workforceApi,/requiredSignalsPerDay:10/);
+assert.match(workforceApi,/MEDIA_ANALYSIS_DESKS/);
+assert.match(workforceApi,/Jutarnji list/);
+assert.match(workforceApi,/WORKER_PROJECT_ASSIGNMENTS/);
+assert.match(workforceApi,/IDEA_LAB/);
+assert.match(workforceApi,/reviewLead:'Nermin Sefić'/);
 assert.match(workforceApi,/1573/);
 // 2026-07-26: newsroom/log dates used to be permanently fixed
 // (Date.UTC(2026,0,1+...)) regardless of the actual current date --
