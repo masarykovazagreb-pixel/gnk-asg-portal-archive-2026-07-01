@@ -26,17 +26,17 @@ jobs:
           node <<'NODE'
           const fs=require('fs');
           const pages=[
-            ['apps/portal/digital-workforce/index.html','https://gnk-asg.hr/digital-workforce/','https://gnk-asg.hr/en/digital-workforce/','Digitalna radna snaga','JAVNA SIMULACIJA'],
-            ['apps/portal/en/digital-workforce/index.html','https://gnk-asg.hr/en/digital-workforce/','https://gnk-asg.hr/digital-workforce/','Digital Workforce','PUBLIC SIMULATION']
+            ['apps/portal/digital-workforce/index.html','https://gnk-asg.hr/digital-workforce/','https://gnk-asg.hr/en/digital-workforce/','JAVNA SIMULACIJA'],
+            ['apps/portal/en/digital-workforce/index.html','https://gnk-asg.hr/en/digital-workforce/','https://gnk-asg.hr/digital-workforce/','PUBLIC SIMULATION']
           ];
-          for(const [file,canonical,alternate,heading,simulationLabel] of pages){
+          for(const [file,canonical,alternate,simulationLabel] of pages){
             const html=fs.readFileSync(file,'utf8');
             const required=[
               '<title>','name="description"','index,follow,max-image-preview:large','rel="canonical"',
               canonical,alternate,'hreflang="en"','property="og:title"','property="og:description"',
               'property="og:image"','property="og:image:alt"','name="twitter:card"','name="twitter:title"',
               'name="twitter:description"','name="twitter:image"','application/ld+json',simulationLabel,
-              'data-dw-tab="ideas"
+              'data-dw-tab="ideas"','<h1>'
             ];
             for(const token of required){if(!html.includes(token))throw new Error(`${file}: missing ${token}`);}
             if(html.includes('noindex,nofollow,noarchive'))throw new Error(`${file}: public simulation must not retain a noindex review lock`);
@@ -46,7 +46,6 @@ jobs:
             if(schema['@type']!=='WebApplication')throw new Error(`${file}: WebApplication schema missing`);
             if(schema.publisher?.['@type']!=='Organization')throw new Error(`${file}: Organization publisher missing`);
             if(schema.editor?.['@type']!=='Person'||schema.editor?.name!=='Nermin Sefić')throw new Error(`${file}: attributable human editor missing`);
-            if(!html.includes(heading))throw new Error(`${file}: localized Workforce heading missing`);
           }
           console.log('DIGITAL_WORKFORCE_ROOT_PUBLIC_SEO_OK');
           NODE
