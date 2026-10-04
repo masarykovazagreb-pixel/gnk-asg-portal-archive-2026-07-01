@@ -15,6 +15,7 @@ const manifest = readJson('apps/portal/data/editorial-plan/manifest.json');
 const registry = readJson('apps/portal/data/editorial-registry.json');
 const featured = readJson('apps/portal/data/editorial-featured.json');
 const campaignImages = readJson('apps/portal/data/nermin-sefic-campaign-images.json');
+const reporting = readJson('apps/portal/data/entity-visibility-campaign-reporting.json');
 const llms = fs.readFileSync(path.join(root, 'apps/portal/llms.txt'), 'utf8');
 const slug = 'javni-podaci-autorski-rad-odgovorno-upravljanje';
 const packageId = 'ENTITY-VISIBILITY-20261004-FOUNDATION';
@@ -32,8 +33,30 @@ check('daily public desk', calendar.dailyPublicDesk?.route === 'https://gnk-asg.
 const imageItems = Array.isArray(campaignImages.items) ? campaignImages.items : [];
 const imageManifestOk = imageItems.length === 26 && imageItems.every(item => item.src && item.alt && item.credit && item.provenance && item.usageBoundary && exists(`apps/portal${item.src}`));
 check('attributed campaign images', imageManifestOk, `${imageItems.length} contextual assets have local files, alt text, credit and use boundaries`);
-const dailyContentOk = days.every(item => item.image && item.imageAlt && Array.isArray(item.hashtags) && item.hashtags.length >= 6 && item.sourceRequirement && Array.isArray(item.requiredQuality) && item.requiredQuality.includes('attributed image metadata'));
-check('daily source-and-image brief contract', dailyContentOk, 'each daily brief has a contextual image, hashtags, source requirement and image metadata gate');
+const dailyContentOk = days.every(item => item.image && item.imageAlt && Array.isArray(item.hashtags) && item.hashtags.length >= 6 && item.sourceRequirement && Array.isArray(item.requiredQuality) && item.requiredQuality.includes('attributed image metadata') && item.publicBrief?.visible === true && item.sourceLedger?.state && item.publicationControl?.state && Array.isArray(item.orchestrationLaneIds));
+check('daily source-and-image brief contract', dailyContentOk, 'each daily brief has a contextual image, hashtags, source requirement, transparent source/publication state and image metadata gate');
+const lanes = Array.isArray(calendar.orchestration?.lanes) ? calendar.orchestration.lanes : [];
+const expectedLaneIds = ['source-ledger', 'editorial-quality', 'metadata-discovery', 'visual-accessibility', 'canonical-distribution'];
+const cadence = calendar.orchestration?.dailyQualityCadence;
+const expectedQualitySignals = ['source-and-date-context', 'claim-boundary-review', 'author-and-editor-attribution', 'canonical-url', 'title-and-meta-description', 'structured-data', 'internal-linking', 'image-alt-and-credit', 'accessibility-and-contrast', 'distribution-readiness'];
+const orchestrationOk = calendar.orchestration?.humanApprovalRequired === true
+  && calendar.orchestration?.leadId === 'EDITOR-NERMIN-SEFIC-001'
+  && calendar.orchestration?.semantics?.includes('not runtime evidence')
+  && cadence?.requiredSignalsPerDay === 10
+  && expectedQualitySignals.every(signal => cadence?.actions?.includes(signal))
+  && expectedLaneIds.every(id => lanes.some(lane => lane.id === id))
+  && days.every(item => expectedLaneIds.every(id => item.orchestrationLaneIds?.includes(id)) && item.dailyQualityCadence?.requiredSignals === 10 && item.dailyQualityCadence?.autonomousPosting === false && expectedQualitySignals.every(signal => item.dailyQualityCadence?.actionIds?.includes(signal)));
+check('orchestrated human-led workflow', orchestrationOk, `${lanes.length} declared lanes and ten daily quality signals retain human approval and label modeled support as non-runtime evidence`);
+const dailyReports = Array.isArray(reporting.dailyReports) ? reporting.dailyReports : [];
+const reportingOk = reporting.editorialLeadId === 'EDITOR-NERMIN-SEFIC-001'
+  && reporting.summary?.scheduledDailyBriefs === 30
+  && reporting.summary?.publishedFoundation === 1
+  && reporting.summary?.editorialBriefsAwaitingHumanSourceReview === 29
+  && reporting.summary?.autonomousFullPublications === 0
+  && reporting.summary?.requiredQualitySignals === 300
+  && dailyReports.length === days.length
+  && dailyReports.every((report, index) => report.date === days[index]?.date && report.publicDesk?.visible === true && report.sourceLedger?.state && report.publicationControl?.state && report.dailyQualityCadence?.requiredSignals === 10 && report.dailyQualityCadence?.autonomousPosting === false);
+check('daily oversight reports', reportingOk, `${dailyReports.length} planned oversight records distinguish the published foundation from briefs awaiting human source review`);
 check('foundation package', (manifest.packages || []).some(item => item.id === packageId && item.publishedAt), 'foundation package is materialized');
 check('foundation HTML', exists(`apps/portal/objave/${slug}/index.html`), `/objave/${slug}/`);
 check('editorial registry', (registry.items || []).some(item => item.slug === slug && item.seoComplete), 'SEO-complete campaign entry is registered');
@@ -41,7 +64,18 @@ check('LLM corpus', llms.includes(`/objave/${slug}/`) && exists('apps/portal/llm
 check('free-network workflow', exists('.github/workflows/blog-mirror-publish.yml'), 'Blogger, Dev.to, Tumblr and Telegraph canonical mirror workflow is present');
 check('mirror priority queue', (featured.items || []).some(item => item.slug === slug && item.priority === true && item.sourceLed === true), 'campaign is queued for controlled canonical mirrors');
 check('AKTUAL module', exists('apps/portal/gnk-aktual/index.html') && fs.readFileSync(path.join(root, 'apps/portal/gnk-aktual/index.html'), 'utf8').includes(`/objave/${slug}/`), 'campaign is featured in AKTUAL MEDIA');
-check('AKTUAL daily desk', exists('apps/portal/assets/entity-visibility-campaign-desk-v1.js') && fs.readFileSync(path.join(root, 'apps/portal/gnk-aktual/index.html'), 'utf8').includes('entityVisibilityCampaignDesk') && fs.readFileSync(path.join(root, 'apps/portal/en/gnk-aktual/index.html'), 'utf8').includes('entityVisibilityCampaignDesk'), 'daily campaign desk is present in HR and EN AKTUAL Media');
+const aktualHr = fs.readFileSync(path.join(root, 'apps/portal/gnk-aktual/index.html'), 'utf8');
+const aktualEn = fs.readFileSync(path.join(root, 'apps/portal/en/gnk-aktual/index.html'), 'utf8');
+check('AKTUAL daily desk', exists('apps/portal/assets/entity-visibility-campaign-desk-v1.js') && aktualHr.includes('entityVisibilityCampaignDesk') && aktualEn.includes('entityVisibilityCampaignDesk') && aktualHr.includes('data-campaign-governance') && aktualEn.includes('data-campaign-governance'), 'daily campaign desk and human-led governance status are present in HR and EN AKTUAL Media');
+const aktualSeoOk = ['Nermin Sefić', 'GNK ASG', 'GNK DINAMO Ltd.', 'Fina Info.BIZ', 'revizorsko izvješće', 'Poslovni dnevnik', 'Jutarnji list', 'Večernji list', 'Index', 'Novosti', 'NK Sesvete'].every(term => aktualHr.includes(term))
+  && aktualHr.includes('Cibona — uredničko sportsko izvještavanje')
+  && aktualEn.includes('Cibona — editorial sports reporting')
+  && !aktualHr.includes('Cibona kutak')
+  && !aktualEn.includes('the Cibona corner');
+check('AKTUAL entity SEO and editorial boundary', aktualSeoOk, 'HR/EN metadata cover requested discoverability entities while sports coverage is labelled editorial reporting only');
+const workforcePublic = fs.readFileSync(path.join(root, 'workers/gnk-asg-direct-operator/src/digital-workforce-public-read-v1.js'), 'utf8');
+const workforceSuite = fs.readFileSync(path.join(root, 'workers/gnk-asg-direct-operator/src/digital-workforce-suite-v1.js'), 'utf8');
+check('workforce orchestration contract', workforcePublic.includes('CAMPAIGN_ORCHESTRATION') && workforceSuite.includes('CAMPAIGN_ORCHESTRATION'), 'public Workforce read and suite surfaces expose the same human-led campaign workflow model');
 
 const now = new Date(process.env.CAMPAIGN_NOW || Date.now());
 const start = new Date(`${days[0]?.date || '2099-01-01'}T00:00:00Z`);
@@ -50,12 +84,14 @@ const phase = now < start ? 'scheduled' : now > end ? 'completed' : 'active';
 const zagrebDay = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Zagreb', year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
 const activeDailyBrief = days.find(item => item.date === zagrebDay) || days.find(item => item.date > zagrebDay) || days.at(-1) || null;
 const report = {
-  version: 'GNK_ASG_ENTITY_VISIBILITY_CAMPAIGN_STATUS_V2_30_DAY_EDITORIAL_LED',
+  version: 'GNK_ASG_ENTITY_VISIBILITY_CAMPAIGN_STATUS_V3_30_DAY_ORCHESTRATED_EDITORIAL_LED',
   generatedAt: now.toISOString(),
   phase,
   campaignDays: days.length,
   activeDailyBrief: activeDailyBrief ? { day: activeDailyBrief.day, date: activeDailyBrief.date, title: activeDailyBrief.title, status: activeDailyBrief.status, fullPublicationRequiresEditorialApproval: activeDailyBrief.status !== 'published-foundation' } : null,
   completedFoundation: true,
+  orchestration: { lanes: lanes.map(lane => ({ id: lane.id, mode: lane.mode, owner: lane.owner })), humanApprovalRequired: calendar.orchestration?.humanApprovalRequired === true, runtimeEvidence: false },
+  reporting: reporting.summary,
   distributionModel: 'canonical portal first; controlled mirror workflow after live HTTP 200',
   checks,
   summary: {

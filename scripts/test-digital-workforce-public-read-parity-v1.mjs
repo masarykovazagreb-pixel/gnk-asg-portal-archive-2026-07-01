@@ -32,6 +32,12 @@ assert.equal(state.status,'model-ready');
 assert.equal(state.editorialGovernance?.lead?.name,'Nermin Sefić');
 assert.equal(state.editorialGovernance?.lead?.workerProfile,false);
 assert.equal(state.editorialGovernance?.lead?.semantics,'human-editorial-governance-not-synthetic-worker');
+assert.equal(state.campaignOrchestration?.humanApprovalRequired,true);
+assert.equal(state.campaignOrchestration?.leadId,'EDITOR-NERMIN-SEFIC-001');
+assert.equal(state.campaignOrchestration?.lanes?.length,5);
+assert.equal(state.campaignOrchestration?.dailyQualityCadence?.requiredSignalsPerDay,10);
+assert.equal(state.campaignOrchestration?.dailyQualityCadence?.actions?.length,10);
+assert.ok(state.campaignOrchestration?.semantics?.includes('not runtime evidence'));
 
 const workers=await handleDigitalWorkforcePublicRead(new Request('https://gnk-asg.hr/api/public/digital-workforce/workers')).json();
 assert.equal(workers.total,1573);
@@ -39,6 +45,7 @@ assert.equal(workers.items.length,1573);
 assert.ok(workers.items.every(x=>x.status==='profile-only'&&x.runtimeEvidence===false));
 assert.equal(new Set(workers.items.map(x=>x.id)).size,1573);
 assert.equal(workers.editorialGovernance?.lead?.id,'EDITOR-NERMIN-SEFIC-001');
+assert.equal(workers.campaignOrchestration?.lanes?.length,5);
 
 const filtered=await handleDigitalWorkforcePublicRead(new Request('https://gnk-asg.hr/api/public/digital-workforce/workers?q=DWF-0001')).json();
 assert.equal(filtered.items.length,1);

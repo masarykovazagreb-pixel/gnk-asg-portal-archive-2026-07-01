@@ -1,4 +1,4 @@
-export const VERSION='GNK_ASG_DIGITAL_WORKFORCE_PUBLIC_READ_V4_20261004_EDITORIAL_LEAD';
+export const VERSION='GNK_ASG_DIGITAL_WORKFORCE_PUBLIC_READ_V5_20261004_CAMPAIGN_ORCHESTRATION';
 
 const PREFIX='/api/public/digital-workforce/';
 // Truthful compatibility layer is deliberately narrow. Operational views such as
@@ -10,6 +10,7 @@ const TOTAL_WORKER_PROFILES=1573;
 const SUITE_PROJECT_IDS=Array.from({length:9},(_,i)=>`PRJ-${String(i+1).padStart(3,'0')}`);
 const SUPERVISOR_AGENT={id:'AGENT-PORTAL-SUPERVISOR-001',name:'GNK ASG Portal Supervisor',role:'Read-only orchestration, health, editorial buffer, SEO/meta/image and distribution control',workflow:'.github/workflows/workforce-supervisor-agent.yml',status:'configured',runtimeEvidence:'workflow-runs-and-production-health-only'};
 const EDITORIAL_LEAD={id:'EDITOR-NERMIN-SEFIC-001',identityType:'human-editorial-lead',name:'Nermin Sefić',roleHr:'Ljudski urednički voditelj Digitalne radne snage',roleEn:'Human editorial lead for the Digital Workforce',personUrl:'https://gnk-asg.hr/nermin-sefic/',image:'https://gnk-asg.hr/assets/people/nermin-sefic/og/nermin-sefic-01-official-desk-portrait.jpg',scope:['source-review','editorial-approval','author-attribution','corrections'],workerProfile:false,semantics:'human-editorial-governance-not-synthetic-worker'};
+const CAMPAIGN_ORCHESTRATION={version:'GNK_ASG_ENTITY_VISIBILITY_ORCHESTRATION_V1_20261004',semantics:'declared editorial workflow model; Worker support is non-autonomous and not runtime evidence',humanApprovalRequired:true,leadId:EDITORIAL_LEAD.id,dailyQualityCadence:{requiredSignalsPerDay:10,semantics:'ten distinct quality and discoverability checks per daily brief; never ten duplicate posts or autonomous full publications',actions:['source-and-date-context','claim-boundary-review','author-and-editor-attribution','canonical-url','title-and-meta-description','structured-data','internal-linking','image-alt-and-credit','accessibility-and-contrast','distribution-readiness']},lanes:[{id:'source-ledger',labelHr:'Izvori i kontekst',labelEn:'Sources and context',owner:'Nermin Sefić',mode:'human-review-required'},{id:'editorial-quality',labelHr:'Autorstvo i urednička kvaliteta',labelEn:'Authorship and editorial quality',owner:'Nermin Sefić',mode:'human-approval-required'},{id:'metadata-discovery',labelHr:'SEO, schema i discoverability',labelEn:'SEO, schema and discoverability',owner:'Digitalna radna snaga · modelirana podrška',mode:'read-only-model-support'},{id:'visual-accessibility',labelHr:'Slika i pristupačnost',labelEn:'Image and accessibility',owner:'Digitalna radna snaga · modelirana podrška',mode:'read-only-model-support'},{id:'canonical-distribution',labelHr:'Kanonska distribucija',labelEn:'Canonical distribution',owner:'Nermin Sefić + urednička provjera',mode:'human-release-gate'}]};
 const ASSIGNMENT_DOMAINS=['Editorial writing','Editorial quality','SEO and metadata','Image SEO','AKTUAL visibility','Blog distribution','News freshness','Market data','Digital assets','Sitemaps and discovery','Runtime health','Evidence and reporting'];
 const now=()=>new Date().toISOString();
 const json=(payload,status=200)=>new Response(JSON.stringify(payload,null,2),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','access-control-allow-origin':'*','x-gnk-workforce-data-semantics':'operational-model-not-runtime-evidence','x-gnk-workforce-public-read':VERSION}});
@@ -33,8 +34,8 @@ function workerProfiles(url){
 
 function payload(view,url){
   const common=meta();
-  if(view==='state')return {...common,editorialGovernance:{lead:EDITORIAL_LEAD},status:'model-ready',simDay:0,workers:TOTAL_WORKER_PROFILES,projects:SUITE_PROJECT_IDS.length,phase:'operational-model',runtimeHealthEndpoint:'/api/public/digital-workforce/health',supervisorAgent:SUPERVISOR_AGENT,assignmentCoverage:{profiles:TOTAL_WORKER_PROFILES,assigned:TOTAL_WORKER_PROFILES,unassigned:0,domains:ASSIGNMENT_DOMAINS.length,semantics:'modeled-assignments-not-1573-independent-runtime-processes'}};
-  if(view==='workers')return {...common,editorialGovernance:{lead:EDITORIAL_LEAD},...workerProfiles(url)};
+  if(view==='state')return {...common,editorialGovernance:{lead:EDITORIAL_LEAD},campaignOrchestration:CAMPAIGN_ORCHESTRATION,status:'model-ready',simDay:0,workers:TOTAL_WORKER_PROFILES,projects:SUITE_PROJECT_IDS.length,phase:'operational-model',runtimeHealthEndpoint:'/api/public/digital-workforce/health',supervisorAgent:SUPERVISOR_AGENT,assignmentCoverage:{profiles:TOTAL_WORKER_PROFILES,assigned:TOTAL_WORKER_PROFILES,unassigned:0,domains:ASSIGNMENT_DOMAINS.length,semantics:'modeled-assignments-not-1573-independent-runtime-processes'}};
+  if(view==='workers')return {...common,editorialGovernance:{lead:EDITORIAL_LEAD},campaignOrchestration:CAMPAIGN_ORCHESTRATION,...workerProfiles(url)};
   return null;
 }
 

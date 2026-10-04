@@ -14,9 +14,35 @@ const PORTAL = path.join(ROOT, 'apps/portal');
 const PLAN_DIR = path.join(PORTAL, 'data/editorial-plan');
 const MANIFEST = path.join(PLAN_DIR, 'manifest.json');
 const CALENDAR = path.join(PORTAL, 'data/entity-visibility-campaign.json');
+const REPORTS = path.join(PORTAL, 'data/entity-visibility-campaign-reporting.json');
 const FOUNDATION_FILE = '20261004-entity-visibility-foundation.json';
 const PACKAGE_ID = 'ENTITY-VISIBILITY-20261004-FOUNDATION';
 const PUBLISH_AT = '2026-10-04T19:00:00+02:00';
+
+// This is a declared review workflow, not a claim that modeled Worker profiles
+// independently perform real-world tasks. Publication always remains human-led.
+const CAMPAIGN_ORCHESTRATION = {
+  version: 'GNK_ASG_ENTITY_VISIBILITY_ORCHESTRATION_V1_20261004',
+  semantics: 'declared editorial workflow model; Worker support is non-autonomous and not runtime evidence',
+  humanApprovalRequired: true,
+  leadId: 'EDITOR-NERMIN-SEFIC-001',
+  dailyQualityCadence: {
+    requiredSignalsPerDay: 10,
+    semantics: 'ten distinct quality and discoverability checks per daily brief; never ten duplicate posts or autonomous full publications',
+    actions: [
+      'source-and-date-context', 'claim-boundary-review', 'author-and-editor-attribution', 'canonical-url',
+      'title-and-meta-description', 'structured-data', 'internal-linking', 'image-alt-and-credit',
+      'accessibility-and-contrast', 'distribution-readiness'
+    ]
+  },
+  lanes: [
+    { id: 'source-ledger', labelHr: 'Izvori i kontekst', owner: 'Nermin Sefić', mode: 'human-review-required', output: 'provjerljiv izvor, datum, opseg i kontekst' },
+    { id: 'editorial-quality', labelHr: 'Autorstvo i urednička kvaliteta', owner: 'Nermin Sefić', mode: 'human-approval-required', output: 'jedinstven nacrt, atribucija i odluka o objavi' },
+    { id: 'metadata-discovery', labelHr: 'SEO, schema i discoverability', owner: 'Digitalna radna snaga · modelirana podrška', mode: 'read-only-model-support', output: 'canonical, metapodaci, strukturirani podaci i interni linkovi' },
+    { id: 'visual-accessibility', labelHr: 'Slika i pristupačnost', owner: 'Digitalna radna snaga · modelirana podrška', mode: 'read-only-model-support', output: 'atribuirani vizual, smisleni alt tekst i kontrast' },
+    { id: 'canonical-distribution', labelHr: 'Kanonska distribucija', owner: 'Nermin Sefić + urednička provjera', mode: 'human-release-gate', output: 'javni kanonski URL prije kontrolirane distribucije' }
+  ]
+};
 
 const writeIfChanged = (file, value) => {
   const next = typeof value === 'string' ? value : `${JSON.stringify(value, null, 2)}\n`;
@@ -152,9 +178,50 @@ const dailyTopics = [
     hashtags: [...new Set([...baseHashtags,...topicHashtags])],
     distribution: ['GNK ASG campaign desk', 'AKTUAL MEDIA daily editorial brief'],
     sourceRequirement: 'Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.',
-    requiredQuality: ['unique source-led draft', 'minimum 3000 words', 'five or more relevant internal links', 'editorial approval', 'canonical URL and schema', 'attributed image metadata', 'distribution gate']
+    requiredQuality: ['unique source-led draft', 'minimum 3000 words', 'five or more relevant internal links', 'editorial approval', 'canonical URL and schema', 'attributed image metadata', 'distribution gate'],
+    publicBrief: { visible: true, route: 'https://gnk-asg.hr/gnk-aktual/', semantics: 'visible daily editorial brief; not a claim that a full article is published' },
+    sourceLedger: index === 0
+      ? { state: 'foundation-source-linked', sourceCount: foundation.sources.length, humanVerified: true }
+      : { state: 'human-source-verification-required', sourceCount: 0, humanVerified: false },
+    publicationControl: index === 0
+      ? { state: 'published-foundation', canonicalUrl: 'https://gnk-asg.hr/objave/javni-podaci-autorski-rad-odgovorno-upravljanje/', humanApproved: true }
+      : { state: 'full-publication-not-approved', canonicalUrl: null, humanApproved: false },
+    orchestrationLaneIds: CAMPAIGN_ORCHESTRATION.lanes.map(lane => lane.id),
+    dailyQualityCadence: {
+      requiredSignals: CAMPAIGN_ORCHESTRATION.dailyQualityCadence.requiredSignalsPerDay,
+      actionIds: CAMPAIGN_ORCHESTRATION.dailyQualityCadence.actions,
+      status: index === 0 ? 'foundation-quality-evidence-present' : 'required-before-full-publication',
+      autonomousPosting: false
+    }
   };
 });
+
+const reporting = {
+  version: 'GNK_ASG_ENTITY_VISIBILITY_REPORTING_V1_20261004',
+  generatedAt: new Date().toISOString(),
+  semantics: 'daily editorial oversight register; planned gates do not claim completed work or autonomous publication',
+  editorialLeadId: CAMPAIGN_ORCHESTRATION.leadId,
+  orchestration: CAMPAIGN_ORCHESTRATION,
+  summary: {
+    scheduledDailyBriefs: dailyTopics.length,
+    publishedFoundation: dailyTopics.filter(item => item.status === 'published-foundation').length,
+    editorialBriefsAwaitingHumanSourceReview: dailyTopics.filter(item => item.status === 'editorial-brief-ready').length,
+    autonomousFullPublications: 0,
+    requiredQualitySignals: dailyTopics.length * CAMPAIGN_ORCHESTRATION.dailyQualityCadence.requiredSignalsPerDay
+  },
+  dailyReports: dailyTopics.map(item => ({
+    day: item.day,
+    date: item.date,
+    title: item.title,
+    publicDesk: item.publicBrief,
+    sourceLedger: item.sourceLedger,
+    publicationControl: item.publicationControl,
+    metadataGate: item.status === 'published-foundation' ? 'canonical-and-schema-present' : 'required-before-full-publication',
+    imageGate: 'attributed-image-metadata-required',
+    orchestrationLaneIds: item.orchestrationLaneIds,
+    dailyQualityCadence: item.dailyQualityCadence
+  }))
+};
 
 const manifest = JSON.parse(fs.readFileSync(MANIFEST, 'utf8'));
 if (!Array.isArray(manifest.packages)) throw new Error('Editorial manifest has no packages array');
@@ -180,7 +247,7 @@ if (!manifest.packages.some(item => item.id === PACKAGE_ID)) {
 const changes = [];
 changes.push(['foundation plan', writeIfChanged(path.join(PLAN_DIR, FOUNDATION_FILE), [foundation])]);
 changes.push(['campaign calendar', writeIfChanged(CALENDAR, {
-  version: 'GNK_ASG_ENTITY_VISIBILITY_CAMPAIGN_V2_30_DAY_EDITORIAL_LED',
+  version: 'GNK_ASG_ENTITY_VISIBILITY_CAMPAIGN_V3_30_DAY_ORCHESTRATED_EDITORIAL_LED',
   generatedAt: new Date().toISOString(),
   campaign: '30-day factual public-record and entity-visibility programme',
   durationDays: dailyTopics.length,
@@ -199,6 +266,8 @@ changes.push(['campaign calendar', writeIfChanged(CALENDAR, {
     radioFirst: true
   },
   imageMetadataManifest: 'apps/portal/data/nermin-sefic-campaign-images.json',
+  reportingManifest: 'apps/portal/data/entity-visibility-campaign-reporting.json',
+  orchestration: CAMPAIGN_ORCHESTRATION,
   distribution: ['GNK ASG portal', 'AKTUAL MEDIA', 'Blogger', 'Dev.to', 'Tumblr', 'Telegraph'],
   policy: {
     sourceLed: true,
@@ -210,6 +279,7 @@ changes.push(['campaign calendar', writeIfChanged(CALENDAR, {
   },
   days: dailyTopics
 })]);
+changes.push(['campaign reporting', writeIfChanged(REPORTS, reporting)]);
 changes.push(['editorial manifest', writeIfChanged(MANIFEST, manifest)]);
 
 console.log(JSON.stringify({
