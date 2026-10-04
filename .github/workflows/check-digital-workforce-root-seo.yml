@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'apps/portal/digital-workforce/index.html'
+      - 'apps/portal/en/digital-workforce/index.html'
       - '.github/workflows/check-digital-workforce-root-seo.yml'
 
 permissions:
@@ -18,28 +19,34 @@ jobs:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
-          node-version: '24'
-      - name: Validate root metadata and schema
+          node-version: '22'
+      - name: Validate public simulation metadata and schema
         run: |
           set -euxo pipefail
           node <<'NODE'
           const fs=require('fs');
-          const html=fs.readFileSync('apps/portal/digital-workforce/index.html','utf8');
-          const required=[
-            '<title>','name="description"','noindex,nofollow,noarchive','rel="canonical"',
-            'hreflang="en"','property="og:title"','property="og:description"','property="og:image"',
-            'property="og:image:alt"','name="twitter:card"','name="twitter:title"',
-            'name="twitter:description"','name="twitter:image"','/digital-workforce/directory/',
-            '/digital-workforce/protocols/','/about-the-group/','/the-code/intelligence/'
+          const pages=[
+            ['apps/portal/digital-workforce/index.html','https://gnk-asg.hr/digital-workforce/','https://gnk-asg.hr/en/digital-workforce/','Digitalna radna snaga','JAVNA SIMULACIJA'],
+            ['apps/portal/en/digital-workforce/index.html','https://gnk-asg.hr/en/digital-workforce/','https://gnk-asg.hr/digital-workforce/','Digital Workforce','PUBLIC SIMULATION']
           ];
-          for(const token of required){if(!html.includes(token))throw new Error(`missing ${token}`);}
-          const match=html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
-          if(!match)throw new Error('schema.org JSON-LD missing');
-          const schema=JSON.parse(match[1]);
-          const graph=schema['@graph']||[];
-          for(const type of ['Organization','WebSite','WebPage','BreadcrumbList']){
-            if(!graph.some(item=>item['@type']===type))throw new Error(`schema type missing ${type}`);
+          for(const [file,canonical,alternate,heading,simulationLabel] of pages){
+            const html=fs.readFileSync(file,'utf8');
+            const required=[
+              '<title>','name="description"','index,follow,max-image-preview:large','rel="canonical"',
+              canonical,alternate,'hreflang="en"','property="og:title"','property="og:description"',
+              'property="og:image"','property="og:image:alt"','name="twitter:card"','name="twitter:title"',
+              'name="twitter:description"','name="twitter:image"','application/ld+json',simulationLabel,
+              'data-dw-tab="ideas"
+            ];
+            for(const token of required){if(!html.includes(token))throw new Error(`${file}: missing ${token}`);}
+            if(html.includes('noindex,nofollow,noarchive'))throw new Error(`${file}: public simulation must not retain a noindex review lock`);
+            const match=html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+            if(!match)throw new Error(`${file}: schema.org JSON-LD missing`);
+            const schema=JSON.parse(match[1]);
+            if(schema['@type']!=='WebApplication')throw new Error(`${file}: WebApplication schema missing`);
+            if(schema.publisher?.['@type']!=='Organization')throw new Error(`${file}: Organization publisher missing`);
+            if(schema.editor?.['@type']!=='Person'||schema.editor?.name!=='Nermin Sefić')throw new Error(`${file}: attributable human editor missing`);
+            if(!html.includes(heading))throw new Error(`${file}: localized Workforce heading missing`);
           }
-          if(graph.some(item=>item['@type']==='Person'))throw new Error('Person schema is not relevant on Digital Workforce root');
-          console.log('DIGITAL_WORKFORCE_ROOT_SEO_OK');
+          console.log('DIGITAL_WORKFORCE_ROOT_PUBLIC_SEO_OK');
           NODE
