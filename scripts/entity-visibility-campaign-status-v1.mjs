@@ -66,10 +66,13 @@ const mediaAnalysisOk = mediaAnalysisQueue.editorialLead?.id === 'EDITOR-NERMIN-
   && mediaAnalysisQueue.policy?.fullTextStorage === false
   && mediaAnalysisQueue.policy?.autonomousPublication === false
   && mediaAnalysisQueue.policy?.externalCommentsOrPosting === 'prohibited-without-account-owner-authorization'
+  && mediaAnalysisQueue.policy?.sourceHashtagHandling?.includes('never infer')
+  && ['NerminSefic', 'NerminSefić', 'SeficNermin', 'SefićNermin', 'GNKASG', 'GNKASGdoo', 'GNKDINAMOLtd'].every(tag => mediaAnalysisQueue.policy?.gnkEntityHashtagVariants?.includes(tag))
+  && mediaAnalysisQueue.queueEntryContract?.requiredBeforeDraft?.includes('sourceHashtags')
   && mediaAnalysisQueue.modeledWorkforce?.totalProfilesAssignedAcrossDesks === 1573
   && mediaAnalysisQueue.queue?.length === 0
   && mediaSourceDesks.length === expectedPublishers.length
-  && expectedPublishers.every((publisher, index) => mediaSourceDesks[index]?.publisher === publisher && mediaSourceDesks[index]?.modeledWorkerCohort && mediaSourceDesks[index]?.externalActions === 'forbidden-without-account-owner-authorization');
+  && expectedPublishers.every((publisher, index) => mediaSourceDesks[index]?.publisher === publisher && mediaSourceDesks[index]?.modeledWorkerCohort && mediaSourceDesks[index]?.publisherReferenceTag && !('hashtag' in mediaSourceDesks[index]) && mediaSourceDesks[index]?.externalActions === 'forbidden-without-account-owner-authorization');
 check('external media analysis desks', mediaAnalysisOk, `${mediaSourceDesks.length} source-linked review desks cover the requested publishers without external comments, copying, or autonomous publication`);
 check('foundation package', (manifest.packages || []).some(item => item.id === packageId && item.publishedAt), 'foundation package is materialized');
 check('foundation HTML', exists(`apps/portal/objave/${slug}/index.html`), `/objave/${slug}/`);

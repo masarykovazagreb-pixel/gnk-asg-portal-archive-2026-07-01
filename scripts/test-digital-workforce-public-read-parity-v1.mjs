@@ -39,6 +39,8 @@ assert.equal(state.campaignOrchestration?.dailyQualityCadence?.requiredSignalsPe
 assert.equal(state.campaignOrchestration?.dailyQualityCadence?.actions?.length,10);
 assert.equal(state.campaignOrchestration?.mediaAnalysis?.desks?.length,6);
 assert.equal(state.campaignOrchestration?.mediaAnalysis?.desks?.[0]?.publisher,'Jutarnji list');
+assert.equal(state.campaignOrchestration?.mediaAnalysis?.desks?.[0]?.publisherReferenceTag,'JutarnjiList');
+assert.equal('hashtag' in state.campaignOrchestration?.mediaAnalysis?.desks?.[0],false);
 assert.equal(state.campaignOrchestration?.ideaLab?.ideas,9);
 assert.equal(state.assignmentCoverage?.projects?.length,9);
 assert.equal(state.assignmentCoverage?.projects?.reduce((sum,item)=>sum+item.modeledProfiles,0),1573);
