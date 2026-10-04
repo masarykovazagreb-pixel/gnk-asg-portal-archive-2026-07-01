@@ -1,6 +1,6 @@
 {
   "version": "GNK_ASG_ENTITY_VISIBILITY_REPORTING_V1_20261004",
-  "generatedAt": "2026-10-04T18:19:38.032Z",
+  "generatedAt": "2026-10-04T18:30:00.380Z",
   "semantics": "daily editorial oversight register; planned gates do not claim completed work or autonomous publication",
   "editorialLeadId": "EDITOR-NERMIN-SEFIC-001",
   "orchestration": {
@@ -23,6 +23,101 @@
         "accessibility-and-contrast",
         "distribution-readiness"
       ]
+    },
+    "mediaAnalysis": {
+      "desks": [
+        {
+          "id": "MEDIA-JUTARNJI",
+          "publisher": "Jutarnji list",
+          "homepage": "https://www.jutarnji.hr/",
+          "hashtag": "JutarnjiList",
+          "modeledWorkerCohort": "DWF-0001–DWF-0262",
+          "scope": "source-linked editorial analysis intake on GNK ASG only",
+          "sourceClass": "external-publisher-link",
+          "reviewState": "source-url-and-human-review-required",
+          "externalActions": "forbidden-without-account-owner-authorization",
+          "fullTextStorage": false,
+          "modeledSupport": "link, metadata, attribution and accessibility review only; not autonomous analysis or publication"
+        },
+        {
+          "id": "MEDIA-VECERNJI",
+          "publisher": "Večernji list",
+          "homepage": "https://www.vecernji.hr/",
+          "hashtag": "VecernjiList",
+          "modeledWorkerCohort": "DWF-0263–DWF-0524",
+          "scope": "source-linked editorial analysis intake on GNK ASG only",
+          "sourceClass": "external-publisher-link",
+          "reviewState": "source-url-and-human-review-required",
+          "externalActions": "forbidden-without-account-owner-authorization",
+          "fullTextStorage": false,
+          "modeledSupport": "link, metadata, attribution and accessibility review only; not autonomous analysis or publication"
+        },
+        {
+          "id": "MEDIA-POSLOVNI",
+          "publisher": "Poslovni dnevnik",
+          "homepage": "https://www.poslovni.hr/",
+          "hashtag": "PoslovniDnevnik",
+          "modeledWorkerCohort": "DWF-0525–DWF-0786",
+          "scope": "source-linked editorial analysis intake on GNK ASG only",
+          "sourceClass": "external-publisher-link",
+          "reviewState": "source-url-and-human-review-required",
+          "externalActions": "forbidden-without-account-owner-authorization",
+          "fullTextStorage": false,
+          "modeledSupport": "link, metadata, attribution and accessibility review only; not autonomous analysis or publication"
+        },
+        {
+          "id": "MEDIA-INDEX",
+          "publisher": "Index",
+          "homepage": "https://www.index.hr/",
+          "hashtag": "Index",
+          "modeledWorkerCohort": "DWF-0787–DWF-1048",
+          "scope": "source-linked editorial analysis intake on GNK ASG only",
+          "sourceClass": "external-publisher-link",
+          "reviewState": "source-url-and-human-review-required",
+          "externalActions": "forbidden-without-account-owner-authorization",
+          "fullTextStorage": false,
+          "modeledSupport": "link, metadata, attribution and accessibility review only; not autonomous analysis or publication"
+        },
+        {
+          "id": "MEDIA-LIDER",
+          "publisher": "Lider",
+          "homepage": "https://lidermedia.hr/",
+          "hashtag": "Lider",
+          "modeledWorkerCohort": "DWF-1049–DWF-1310",
+          "scope": "source-linked editorial analysis intake on GNK ASG only",
+          "sourceClass": "external-publisher-link",
+          "reviewState": "source-url-and-human-review-required",
+          "externalActions": "forbidden-without-account-owner-authorization",
+          "fullTextStorage": false,
+          "modeledSupport": "link, metadata, attribution and accessibility review only; not autonomous analysis or publication"
+        },
+        {
+          "id": "MEDIA-NOVOSTI",
+          "publisher": "Novosti",
+          "homepage": "https://www.portalnovosti.com/",
+          "hashtag": "Novosti",
+          "modeledWorkerCohort": "DWF-1311–DWF-1573",
+          "scope": "source-linked editorial analysis intake on GNK ASG only",
+          "sourceClass": "external-publisher-link",
+          "reviewState": "source-url-and-human-review-required",
+          "externalActions": "forbidden-without-account-owner-authorization",
+          "fullTextStorage": false,
+          "modeledSupport": "link, metadata, attribution and accessibility review only; not autonomous analysis or publication"
+        }
+      ],
+      "checklist": [
+        "publisher-url",
+        "publication-date",
+        "context-and-scope",
+        "fact-versus-commentary",
+        "minimal-quotation",
+        "original-link-and-attribution",
+        "claim-boundary",
+        "internal-context-link",
+        "meta-and-schema",
+        "human-editorial-approval"
+      ],
+      "semantics": "external publishers are reviewed through source links only; no external comments, accounts, full-text copying or automatic publication"
     },
     "lanes": [
       {
@@ -67,7 +162,9 @@
     "publishedFoundation": 1,
     "editorialBriefsAwaitingHumanSourceReview": 29,
     "autonomousFullPublications": 0,
-    "requiredQualitySignals": 300
+    "requiredQualitySignals": 300,
+    "mediaAnalysisSourceDesks": 6,
+    "externalPublisherPostsOrComments": 0
   },
   "dailyReports": [
     {

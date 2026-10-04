@@ -15,12 +15,31 @@ const PLAN_DIR = path.join(PORTAL, 'data/editorial-plan');
 const MANIFEST = path.join(PLAN_DIR, 'manifest.json');
 const CALENDAR = path.join(PORTAL, 'data/entity-visibility-campaign.json');
 const REPORTS = path.join(PORTAL, 'data/entity-visibility-campaign-reporting.json');
+const MEDIA_ANALYSIS_QUEUE = path.join(PORTAL, 'data/media-analysis-review-queue.json');
 const FOUNDATION_FILE = '20261004-entity-visibility-foundation.json';
 const PACKAGE_ID = 'ENTITY-VISIBILITY-20261004-FOUNDATION';
 const PUBLISH_AT = '2026-10-04T19:00:00+02:00';
 
 // This is a declared review workflow, not a claim that modeled Worker profiles
 // independently perform real-world tasks. Publication always remains human-led.
+const MEDIA_ANALYSIS_DESKS = [
+  ['MEDIA-JUTARNJI','Jutarnji list','https://www.jutarnji.hr/','JutarnjiList','DWF-0001–DWF-0262'],
+  ['MEDIA-VECERNJI','Večernji list','https://www.vecernji.hr/','VecernjiList','DWF-0263–DWF-0524'],
+  ['MEDIA-POSLOVNI','Poslovni dnevnik','https://www.poslovni.hr/','PoslovniDnevnik','DWF-0525–DWF-0786'],
+  ['MEDIA-INDEX','Index','https://www.index.hr/','Index','DWF-0787–DWF-1048'],
+  ['MEDIA-LIDER','Lider','https://lidermedia.hr/','Lider','DWF-1049–DWF-1310'],
+  ['MEDIA-NOVOSTI','Novosti','https://www.portalnovosti.com/','Novosti','DWF-1311–DWF-1573']
+].map(([id,publisher,homepage,hashtag,modeledWorkerCohort]) => ({
+  id, publisher, homepage, hashtag, modeledWorkerCohort,
+  scope: 'source-linked editorial analysis intake on GNK ASG only',
+  sourceClass: 'external-publisher-link',
+  reviewState: 'source-url-and-human-review-required',
+  externalActions: 'forbidden-without-account-owner-authorization',
+  fullTextStorage: false,
+  modeledSupport: 'link, metadata, attribution and accessibility review only; not autonomous analysis or publication'
+}));
+const MEDIA_ANALYSIS_CHECKLIST = ['publisher-url', 'publication-date', 'context-and-scope', 'fact-versus-commentary', 'minimal-quotation', 'original-link-and-attribution', 'claim-boundary', 'internal-context-link', 'meta-and-schema', 'human-editorial-approval'];
+
 const CAMPAIGN_ORCHESTRATION = {
   version: 'GNK_ASG_ENTITY_VISIBILITY_ORCHESTRATION_V1_20261004',
   semantics: 'declared editorial workflow model; Worker support is non-autonomous and not runtime evidence',
@@ -34,6 +53,11 @@ const CAMPAIGN_ORCHESTRATION = {
       'title-and-meta-description', 'structured-data', 'internal-linking', 'image-alt-and-credit',
       'accessibility-and-contrast', 'distribution-readiness'
     ]
+  },
+  mediaAnalysis: {
+    desks: MEDIA_ANALYSIS_DESKS,
+    checklist: MEDIA_ANALYSIS_CHECKLIST,
+    semantics: 'external publishers are reviewed through source links only; no external comments, accounts, full-text copying or automatic publication'
   },
   lanes: [
     { id: 'source-ledger', labelHr: 'Izvori i kontekst', owner: 'Nermin Sefić', mode: 'human-review-required', output: 'provjerljiv izvor, datum, opseg i kontekst' },
@@ -196,6 +220,31 @@ const dailyTopics = [
   };
 });
 
+const mediaAnalysisQueue = {
+  version: 'GNK_ASG_MEDIA_ANALYSIS_REVIEW_QUEUE_V1_20261004',
+  generatedAt: new Date().toISOString(),
+  semantics: 'source-link review register; it does not scrape full text, publish comments on third-party sites, or claim approval for any external article',
+  editorialLead: { id: 'EDITOR-NERMIN-SEFIC-001', name: 'Nermin Sefić', role: 'human-editorial-lead' },
+  policy: {
+    sourceUrlRequired: true,
+    sourceDateAndContextRequired: true,
+    humanApprovalRequired: true,
+    sourceAttributionRequired: true,
+    originalLinkRequired: true,
+    fullTextStorage: false,
+    externalCommentsOrPosting: 'prohibited-without-account-owner-authorization',
+    autonomousPublication: false,
+    unsupportedClaims: 'prohibited'
+  },
+  modeledWorkforce: {
+    totalProfilesAssignedAcrossDesks: 1573,
+    semantics: 'modeled assignment coverage, not 1573 independent live processes or autonomous agents'
+  },
+  reviewChecklist: MEDIA_ANALYSIS_CHECKLIST,
+  sourceDesks: MEDIA_ANALYSIS_DESKS,
+  queue: []
+};
+
 const reporting = {
   version: 'GNK_ASG_ENTITY_VISIBILITY_REPORTING_V1_20261004',
   generatedAt: new Date().toISOString(),
@@ -207,7 +256,9 @@ const reporting = {
     publishedFoundation: dailyTopics.filter(item => item.status === 'published-foundation').length,
     editorialBriefsAwaitingHumanSourceReview: dailyTopics.filter(item => item.status === 'editorial-brief-ready').length,
     autonomousFullPublications: 0,
-    requiredQualitySignals: dailyTopics.length * CAMPAIGN_ORCHESTRATION.dailyQualityCadence.requiredSignalsPerDay
+    requiredQualitySignals: dailyTopics.length * CAMPAIGN_ORCHESTRATION.dailyQualityCadence.requiredSignalsPerDay,
+    mediaAnalysisSourceDesks: MEDIA_ANALYSIS_DESKS.length,
+    externalPublisherPostsOrComments: 0
   },
   dailyReports: dailyTopics.map(item => ({
     day: item.day,
@@ -280,6 +331,7 @@ changes.push(['campaign calendar', writeIfChanged(CALENDAR, {
   days: dailyTopics
 })]);
 changes.push(['campaign reporting', writeIfChanged(REPORTS, reporting)]);
+changes.push(['media-analysis review queue', writeIfChanged(MEDIA_ANALYSIS_QUEUE, mediaAnalysisQueue)]);
 changes.push(['editorial manifest', writeIfChanged(MANIFEST, manifest)]);
 
 console.log(JSON.stringify({

@@ -16,6 +16,7 @@ const registry = readJson('apps/portal/data/editorial-registry.json');
 const featured = readJson('apps/portal/data/editorial-featured.json');
 const campaignImages = readJson('apps/portal/data/nermin-sefic-campaign-images.json');
 const reporting = readJson('apps/portal/data/entity-visibility-campaign-reporting.json');
+const mediaAnalysisQueue = readJson('apps/portal/data/media-analysis-review-queue.json');
 const llms = fs.readFileSync(path.join(root, 'apps/portal/llms.txt'), 'utf8');
 const slug = 'javni-podaci-autorski-rad-odgovorno-upravljanje';
 const packageId = 'ENTITY-VISIBILITY-20261004-FOUNDATION';
@@ -57,6 +58,19 @@ const reportingOk = reporting.editorialLeadId === 'EDITOR-NERMIN-SEFIC-001'
   && dailyReports.length === days.length
   && dailyReports.every((report, index) => report.date === days[index]?.date && report.publicDesk?.visible === true && report.sourceLedger?.state && report.publicationControl?.state && report.dailyQualityCadence?.requiredSignals === 10 && report.dailyQualityCadence?.autonomousPosting === false);
 check('daily oversight reports', reportingOk, `${dailyReports.length} planned oversight records distinguish the published foundation from briefs awaiting human source review`);
+const mediaSourceDesks = Array.isArray(mediaAnalysisQueue.sourceDesks) ? mediaAnalysisQueue.sourceDesks : [];
+const expectedPublishers = ['Jutarnji list', 'Večernji list', 'Poslovni dnevnik', 'Index', 'Lider', 'Novosti'];
+const mediaAnalysisOk = mediaAnalysisQueue.editorialLead?.id === 'EDITOR-NERMIN-SEFIC-001'
+  && mediaAnalysisQueue.policy?.sourceUrlRequired === true
+  && mediaAnalysisQueue.policy?.humanApprovalRequired === true
+  && mediaAnalysisQueue.policy?.fullTextStorage === false
+  && mediaAnalysisQueue.policy?.autonomousPublication === false
+  && mediaAnalysisQueue.policy?.externalCommentsOrPosting === 'prohibited-without-account-owner-authorization'
+  && mediaAnalysisQueue.modeledWorkforce?.totalProfilesAssignedAcrossDesks === 1573
+  && mediaAnalysisQueue.queue?.length === 0
+  && mediaSourceDesks.length === expectedPublishers.length
+  && expectedPublishers.every((publisher, index) => mediaSourceDesks[index]?.publisher === publisher && mediaSourceDesks[index]?.modeledWorkerCohort && mediaSourceDesks[index]?.externalActions === 'forbidden-without-account-owner-authorization');
+check('external media analysis desks', mediaAnalysisOk, `${mediaSourceDesks.length} source-linked review desks cover the requested publishers without external comments, copying, or autonomous publication`);
 check('foundation package', (manifest.packages || []).some(item => item.id === packageId && item.publishedAt), 'foundation package is materialized');
 check('foundation HTML', exists(`apps/portal/objave/${slug}/index.html`), `/objave/${slug}/`);
 check('editorial registry', (registry.items || []).some(item => item.slug === slug && item.seoComplete), 'SEO-complete campaign entry is registered');
@@ -67,6 +81,7 @@ check('AKTUAL module', exists('apps/portal/gnk-aktual/index.html') && fs.readFil
 const aktualHr = fs.readFileSync(path.join(root, 'apps/portal/gnk-aktual/index.html'), 'utf8');
 const aktualEn = fs.readFileSync(path.join(root, 'apps/portal/en/gnk-aktual/index.html'), 'utf8');
 check('AKTUAL daily desk', exists('apps/portal/assets/entity-visibility-campaign-desk-v1.js') && aktualHr.includes('entityVisibilityCampaignDesk') && aktualEn.includes('entityVisibilityCampaignDesk') && aktualHr.includes('data-campaign-governance') && aktualEn.includes('data-campaign-governance'), 'daily campaign desk and human-led governance status are present in HR and EN AKTUAL Media');
+check('AKTUAL external-media desk', exists('apps/portal/assets/media-analysis-desk-v1.js') && aktualHr.includes('mediaAnalysisDesk') && aktualEn.includes('mediaAnalysisDesk') && aktualHr.includes('Nema automatskih komentara na tuđim stranicama') && aktualEn.includes('no automated comments on publisher sites'), 'AKTUAL exposes source-linked media-analysis intake with an explicit no-external-comments boundary');
 const aktualSeoOk = ['Nermin Sefić', 'GNK ASG', 'GNK DINAMO Ltd.', 'Fina Info.BIZ', 'revizorsko izvješće', 'Poslovni dnevnik', 'Jutarnji list', 'Večernji list', 'Index', 'Novosti', 'NK Sesvete'].every(term => aktualHr.includes(term))
   && aktualHr.includes('Cibona — uredničko sportsko izvještavanje')
   && aktualEn.includes('Cibona — editorial sports reporting')

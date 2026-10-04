@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {handleDigitalWorkforcePublicRead,VERSION} from '../workers/gnk-asg-direct-operator/src/digital-workforce-public-read-v1.js';
 
-const operational=['plan','projects','risks','opinions','dependencies','tasks','credits','newsroom','activity-log','bulletins'];
+const operational=['plan','projects','risks','opinions','ideas','dependencies','tasks','credits','newsroom','activity-log','bulletins'];
 const compatibility=['state','workers'];
 const frontend=fs.readFileSync('apps/portal/assets/digital-workforce-suite-v1.js','utf8');
 for(const view of [...compatibility,...operational])assert.ok(frontend.includes(view),`frontend does not reference ${view}`);
@@ -37,6 +37,11 @@ assert.equal(state.campaignOrchestration?.leadId,'EDITOR-NERMIN-SEFIC-001');
 assert.equal(state.campaignOrchestration?.lanes?.length,5);
 assert.equal(state.campaignOrchestration?.dailyQualityCadence?.requiredSignalsPerDay,10);
 assert.equal(state.campaignOrchestration?.dailyQualityCadence?.actions?.length,10);
+assert.equal(state.campaignOrchestration?.mediaAnalysis?.desks?.length,6);
+assert.equal(state.campaignOrchestration?.mediaAnalysis?.desks?.[0]?.publisher,'Jutarnji list');
+assert.equal(state.campaignOrchestration?.ideaLab?.ideas,9);
+assert.equal(state.assignmentCoverage?.projects?.length,9);
+assert.equal(state.assignmentCoverage?.projects?.reduce((sum,item)=>sum+item.modeledProfiles,0),1573);
 assert.ok(state.campaignOrchestration?.semantics?.includes('not runtime evidence'));
 
 const workers=await handleDigitalWorkforcePublicRead(new Request('https://gnk-asg.hr/api/public/digital-workforce/workers')).json();
