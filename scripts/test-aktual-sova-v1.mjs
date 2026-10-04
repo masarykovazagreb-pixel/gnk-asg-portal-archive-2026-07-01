@@ -21,8 +21,10 @@ for (const [name, html] of [['HR',hr],['EN',en]]) {
   if (!html.includes('aria-live="polite"')) fail(`${name}: accessible status region missing`);
   if (!html.includes('/assets/aktual-sova-v1.js')) fail(`${name}: module script missing`);
 }
-if (!hr.includes('modelirani digitalni vodič') || !hr.includes('modelirani strateški foresight vodič')) fail('HR transparent classification missing');
-if (!en.includes('modelled digital guide') || !en.includes('modelled strategic foresight guide')) fail('EN transparent classification missing');
+const hrLower = hr.toLocaleLowerCase('hr');
+const enLower = en.toLowerCase();
+if (!hrLower.includes('modelirani digitalni vodič') || !hrLower.includes('modelirani strateški foresight vodič')) fail('HR transparent classification missing');
+if (!enLower.includes('modelled digital guide') || !enLower.includes('modelled strategic foresight guide')) fail('EN transparent classification missing');
 
 if (data.schema !== 'gnk-asg/aktual-sova/v1') fail('unexpected data schema');
 if (!data.identity?.fictional || data.identity?.autonomous_agent !== false || data.identity?.superintelligence !== false) fail('identity guardrails invalid');
