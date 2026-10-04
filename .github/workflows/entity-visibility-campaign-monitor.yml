@@ -1,0 +1,39 @@
+name: Entity Visibility Campaign Monitor
+
+# Read-only daily quality monitor for the 20-day factual public-record campaign.
+# Publishing stays in the established editorial scheduler; free-network delivery
+# stays in the canonical mirror workflow and never bypasses its live-URL gate.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 7 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: entity-visibility-campaign-monitor
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Verify campaign wiring and quality gates
+        run: node scripts/entity-visibility-campaign-status-v1.mjs
+      - name: Publish monitoring evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: entity-visibility-campaign-${{ github.sha }}
+          path: artifacts/entity-visibility-campaign-status.json
+          if-no-files-found: error
+          retention-days: 20

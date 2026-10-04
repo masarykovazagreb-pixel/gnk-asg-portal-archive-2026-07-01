@@ -94,6 +94,18 @@ export function runWorkforceEvolution() {
       actionableStep: 'Proširiti image sitemap i llms-full tek nakon reproducibilne validacije.',
       suggestedColumnSlot: 'Global Syndication Engine',
       impactScore: 97.6
+    },
+    {
+      id: 'IDEA-EVO-05',
+      titleHr: 'Vidljivost kroz provjerljive izvore: 20-dnevni entitetski ciklus',
+      titleEn: 'Visibility Through Verifiable Sources: a 20-Day Entity Cycle',
+      category: 'Javni profil, AEO & urednička kvaliteta',
+      urgency: 'IMMEDIATE',
+      descriptionHr: 'Modelirani ciklus povezuje javni profil, strukturirane podatke, dnevni kvalitetni pregled, kanonske poveznice i kontroliranu distribuciju na otvorene kanale.',
+      descriptionEn: 'A modeled cycle connecting the public profile, structured data, daily quality checks, canonical links and controlled distribution to open channels.',
+      actionableStep: 'Pokrenuti dnevni read-only monitor i objavljivati samo izvornike koji prolaze urednički prag kvalitete.',
+      suggestedColumnSlot: 'Entity Visibility Campaign Monitor',
+      impactScore: 98.8
     }
   ];
   const evolutionaryHealth = {
