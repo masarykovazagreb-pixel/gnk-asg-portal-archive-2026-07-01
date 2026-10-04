@@ -47,7 +47,9 @@ for(const route of ['plan','bulletins','projects','risks','opinions','dependenci
 }
 assert.match(workforceUi,/\/api\/public\/digital-workforce\//);
 assert.match(workforceUi,/data-dw-tab/);
-assert.match(workforceApi,/GNK_ASG_DIGITAL_WORKFORCE_SUITE_V3_20260719_FIRST_PARTY_PROVENANCE/);
+assert.match(workforceApi,/GNK_ASG_DIGITAL_WORKFORCE_SUITE_V4_20261004_EDITORIAL_LEAD/);
+assert.match(workforceApi,/EDITOR-NERMIN-SEFIC-001/);
+assert.match(workforceApi,/human-editorial-governance-not-synthetic-worker/);
 assert.match(workforceApi,/1573/);
 // 2026-07-26: newsroom/log dates used to be permanently fixed
 // (Date.UTC(2026,0,1+...)) regardless of the actual current date --
