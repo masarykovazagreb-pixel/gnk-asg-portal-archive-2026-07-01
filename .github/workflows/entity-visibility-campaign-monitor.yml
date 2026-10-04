@@ -1,13 +1,15 @@
 name: Entity Visibility Campaign Monitor
 
-# Read-only daily quality monitor for the 30-day factual public-record campaign.
+# Read-only ten-times-daily quality monitor for the 30-day factual public-record campaign.
 # Publishing stays in the established editorial scheduler; free-network delivery
 # stays in the canonical mirror workflow and never bypasses its live-URL gate.
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '15 7 * * *'
+    # Ten read-only checkpoints per UTC day. They create evidence only; they do
+    # not publish text, send to third-party platforms, or bypass human approval.
+    - cron: '15 6,7,8,9,10,11,12,13,14,15 * * *'
 
 permissions:
   contents: read
