@@ -17,7 +17,7 @@ def radio_block(en=False):
     meta='Track metadata unavailable' if en else 'Podaci o pjesmi nisu dostupni'
     play='START RADIO' if en else 'POKRENI RADIO'
     select='Select stream' if en else 'Odaberi stream'
-    return f'''<section class="ak-v1" id="aktualRadioDeck"><div class="ak-v1-panel"><div class="ak-v1-grid"><div><div><span class="radio-status" id="radioStatusLabel">○ {status}</span></div><h2>📻 RADIO AKTUAL · USA &amp; WORLD</h2><p id="radioStationTag">{stream}</p><div class="radio-now-playing"><div><strong id="radioTrackName">{track}</strong><br><span id="radioTrackArtist">{meta}</span></div><div class="equalizer-visualizer" id="radioVisualizer">{bars}</div></div><div id="radioAnnounceBanner"></div></div><div class="radio-controls-panel"><label for="radioStationSelect">{select}</label><select id="radioStationSelect" class="radio-select"><option value="0">AKTUAL USA Top Hits &amp; Rock</option><option value="1">AKTUAL Lo-Fi Chill &amp; Business Lounge</option><option value="2">AKTUAL Synthwave &amp; Retro Tech</option></select><button type="button" id="radioPlayBtn" class="btn-radio-play">▶ {play}</button><button type="button" id="radioNextBtn" class="btn-radio-next">⏭ Info / promo</button><div><button id="radioVolDown" type="button" class="btn-vol-adj">−</button><input id="radioVolSlider" type="range" min="0" max="1" step=".05" value=".8" aria-label="Volume"><button id="radioVolUp" type="button" class="btn-vol-adj">+</button></div></div></div></div></section>'''
+    return f'''<section class="ak-v1" id="aktualRadioDeck"><div class="ak-v1-panel"><div class="ak-v1-grid"><div><div><span class="radio-status" id="radioStatusLabel">○ {status}</span></div><h2>📻 RADIO AKTUAL · USA &amp; WORLD</h2><p id="radioStationTag">{stream}</p><div class="radio-now-playing"><div><strong id="radioTrackName">{track}</strong><br><span id="radioTrackArtist">{meta}</span></div><div class="equalizer-visualizer" id="radioVisualizer">{bars}</div></div><div id="radioAnnounceBanner"></div></div><div class="radio-controls-panel"><label for="radioStationSelect">{select}</label><select id="radioStationSelect" class="radio-select"><option value="0">AKTUAL USA Top Hits &amp; Rock</option><option value="1">AKTUAL Lo-Fi Chill &amp; Business Lounge</option><option value="2">AKTUAL Synthwave &amp; Retro Tech</option><option value="3">AKTUAL Radio USA · Country &amp; Americana</option><option value="4">AKTUAL Radio USA · Jazz &amp; Soul Lounge</option></select><button type="button" id="radioPlayBtn" class="btn-radio-play">▶ {play}</button><button type="button" id="radioNextBtn" class="btn-radio-next">⏭ Info / promo</button><div><button id="radioVolDown" type="button" class="btn-vol-adj">−</button><input id="radioVolSlider" type="range" min="0" max="1" step=".05" value=".8" aria-label="Volume"><button id="radioVolUp" type="button" class="btn-vol-adj">+</button></div></div></div></div></section>'''
 
 def blocks(en=False):
     title='Workforce control status' if en else 'Status digitalne radne snage'
@@ -39,12 +39,27 @@ def patch(path,en=False):
 patch(ROOT/'gnk-aktual/index.html',False)
 patch(ROOT/'en/gnk-aktual/index.html',True)
 
+
+def weekly_channels_block(en=False):
+    h2='🗞️ Weekly editorial channels' if en else '🗞️ Tjedni urednički kanali'
+    note=(('A modeled announcement schedule of Radio Aktual editorial themes — one theme per day. '
+           'These are not separate live streams; announcements run through the Radio Aktual promo rotation. '
+           'Related guides: <a href="/gnk-navigator/" style="color:#e0bd69">GNK Navigator</a> and '
+           '<a href="/aktual-sova/" style="color:#e0bd69">Aktual Sova</a>.') if en else
+          ('Modelirani raspored najava uredničkih tema Radija Aktual — svaki dan jedna tema. '
+           'Kanali nisu zasebni live streamovi; najave se emitiraju kroz promo rotaciju Radija Aktual. '
+           'Povezani vodiči: <a href="/gnk-navigator/" style="color:#e0bd69">GNK Navigator</a> i '
+           '<a href="/aktual-sova/" style="color:#e0bd69">Aktual Sova</a>.'))
+    return ('<section class="ak-v1" id="aktualWeeklyChannels"><div class="ak-v1-panel"><h2>'+h2+'</h2>'
+            '<p>'+note+'</p>'
+            '<div class="tabloid-wire-stream" id="radioWeeklyChannels"></div></div></section>')
+
 def radio_page(en=False):
     lang='en' if en else 'hr'
     canonical='https://gnk-asg.hr/en/radio/' if en else 'https://gnk-asg.hr/radio/'
     desc='Radio Aktual internet audio streams with explicit user playback controls.' if en else 'Radio Aktual internetski audio streamovi s korisničkim kontrolama reprodukcije.'
     back='/en/gnk-aktual/' if en else '/gnk-aktual/'
-    return f'''<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Radio Aktual | GNK ASG</title><meta name="description" content="{desc}"><link rel="canonical" href="{canonical}">{CSS}</head><body style="margin:0;background:#071426;color:#e8edf3;font-family:Arial,sans-serif"><main style="max-width:1180px;margin:auto;padding:40px 20px"><p><a href="{back}" style="color:#e0bd69">← AKTUAL MEDIA</a></p><h1>Radio Aktual</h1><p>{desc}</p>{radio_block(en)}</main><script src="/assets/aktual-radio-player-v1.js" defer></script></body></html>'''
+    return f'''<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Radio Aktual | GNK ASG</title><meta name="description" content="{desc}"><link rel="canonical" href="{canonical}">{CSS}</head><body style="margin:0;background:#071426;color:#e8edf3;font-family:Arial,sans-serif"><main style="max-width:1180px;margin:auto;padding:40px 20px"><p><a href="{back}" style="color:#e0bd69">← AKTUAL MEDIA</a></p><h1>Radio Aktual</h1><p>{desc}</p>{radio_block(en)}{weekly_channels_block(en)}</main><script src="/assets/aktual-radio-player-v1.js" defer></script></body></html>'''
 
 for rel,en in [('radio/index.html',False),('en/radio/index.html',True)]:
     p=ROOT/rel

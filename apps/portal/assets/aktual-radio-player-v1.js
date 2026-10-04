@@ -43,7 +43,42 @@
       fallbackStream: 'https://ice2.somafm.com/lush-128-mp3',
       genre: 'Synthwave / Retrowave / Cyberpunk',
       metadataMode: 'stream-no-track-feed'
+    },
+    {
+      id: 'usa-country-roots',
+      nameHr: 'AKTUAL Radio USA · Country & Americana',
+      nameEn: 'AKTUAL Radio USA · Country & Americana',
+      taglineHr: 'Američki country, roots i americana zvuk',
+      taglineEn: 'American country, roots, and americana sound',
+      streamUrl: 'https://ice1.somafm.com/bootliquor-128-mp3',
+      fallbackStream: 'https://ice1.somafm.com/folkfwd-128-mp3',
+      genre: 'USA Country / Americana / Roots',
+      metadataMode: 'stream-no-track-feed'
+    },
+    {
+      id: 'usa-jazz-soul',
+      nameHr: 'AKTUAL Radio USA · Jazz & Soul Lounge',
+      nameEn: 'AKTUAL Radio USA · Jazz & Soul Lounge',
+      taglineHr: 'Američki jazz, soul i lounge klasici',
+      taglineEn: 'American jazz, soul, and lounge classics',
+      streamUrl: 'https://ice1.somafm.com/sonicuniverse-128-mp3',
+      fallbackStream: 'https://ice1.somafm.com/7soul-128-mp3',
+      genre: 'USA Jazz / Soul / Lounge',
+      metadataMode: 'stream-no-track-feed'
     }];
+
+  // Weekly editorial channels — modeled editorial announcement schedule.
+  // These are not separate live streams; announcements run through the
+  // Radio Aktual promo rotation and the cards below are informational.
+  const WEEKLY_CHANNELS = [
+    { dayHr: 'Ponedjeljak', dayEn: 'Monday', nameHr: 'AKTUAL Tjedna tržišta', nameEn: 'AKTUAL Weekly Markets', descHr: 'Otvaranje tjednog ciklusa: pregled tržišnih tema s poveznicama na sekciju Tržišta.', descEn: 'Opening the weekly cycle: market topics with links to the Markets section.' },
+    { dayHr: 'Utorak', dayEn: 'Tuesday', nameHr: 'AKTUAL Tehnologija i AI', nameEn: 'AKTUAL Tech & AI', descHr: 'Tjedni tehnološki blok: javno dostupne teme iz tehnologije i umjetne inteligencije.', descEn: 'Weekly technology block: public technology and AI topics.' },
+    { dayHr: 'Srijeda', dayEn: 'Wednesday', nameHr: 'AKTUAL Grupa i projekti', nameEn: 'AKTUAL Group & Projects', descHr: 'Pregled grupne mreže i modeliranih projekata GNK ASG i GNK DINAMO Ltd. grupe.', descEn: 'Overview of the group network and modeled projects of GNK ASG and the GNK DINAMO Ltd. group.' },
+    { dayHr: 'Četvrtak', dayEn: 'Thursday', nameHr: 'AKTUAL Digitalna radna snaga', nameEn: 'AKTUAL Digital Workforce', descHr: 'Operativni blok o modeliranoj digitalnoj radnoj snazi i Worker formatima.', descEn: 'Operational block on the modeled digital workforce and Worker formats.' },
+    { dayHr: 'Petak', dayEn: 'Friday', nameHr: 'AKTUAL Analize tjedna', nameEn: 'AKTUAL Weekly Analyses', descHr: 'Najave i sažetci objavljenih analiza, objava i komentara.', descEn: 'Announcements and recaps of published analyses, publications, and commentary.' },
+    { dayHr: 'Subota', dayEn: 'Saturday', nameHr: 'AKTUAL Sportski desk', nameEn: 'AKTUAL Sports Desk', descHr: 'Sportske teme isključivo kao uredničko izvještavanje, bez partnerskih tvrdnji.', descEn: 'Sports topics strictly as editorial reporting, with no partnership claims.' },
+    { dayHr: 'Nedjelja', dayEn: 'Sunday', nameHr: 'AKTUAL Sova — tjedni sažetak', nameEn: 'AKTUAL Sova — Weekly Recap', descHr: 'Zatvaranje ciklusa: tjedni sažetak deska prema vodiču Aktual Sova.', descEn: 'Closing the cycle: the weekly desk recap following the Aktual Sova guide.' }
+  ];
 
   const PROMOS = [
     {
@@ -57,6 +92,10 @@
     {
       hr: 'World Monitor & Regional Incident Desk — pregled javno dostupnih, izvorno označenih podataka o događajima.',
       en: 'World Monitor & Regional Incident Desk — a view of source-labelled public event data.'
+    },
+    {
+      hr: 'Tjedni urednički kanali Radija Aktual — od Tjednih tržišta do Sovinog tjednog sažetka. Modelirani raspored najava, svaki dan jedna tema.',
+      en: 'Radio Aktual weekly editorial channels — from Weekly Markets to the Sova weekly recap. A modeled announcement schedule, one theme per day.'
     }
   ];
 
@@ -295,6 +334,21 @@
     }
   }
 
+  // Weekly editorial channels — informational cards (no separate live stream).
+  function renderWeeklyChannels() {
+    const wrap = document.getElementById('radioWeeklyChannels');
+    if (!wrap) return;
+    const en = isEn();
+    wrap.innerHTML = WEEKLY_CHANNELS.map(ch => (
+      `<div class="tabloid-wire-card weekly-channel-card">` +
+      `<div class="idea-top"><span class="wire-badge">${en ? ch.dayEn : ch.dayHr}</span>` +
+      `<span>${en ? 'MODELED SCHEDULE' : 'MODELIRANI RASPORED'}</span></div>` +
+      `<strong>${en ? ch.nameEn : ch.nameHr}</strong>` +
+      `<p style="margin:6px 0 0;color:#cbd5e1;font-size:.85rem;line-height:1.5">${en ? ch.descEn : ch.descHr}</p>` +
+      `</div>`
+    )).join('');
+  }
+
   // Global instance
   window.__aktualRadio = new RadioEngine();
 
@@ -319,6 +373,7 @@
 
     radio.updateUI();
     radio.updateVolumeUI();
+    renderWeeklyChannels();
   }
 
   document.readyState === 'loading'
