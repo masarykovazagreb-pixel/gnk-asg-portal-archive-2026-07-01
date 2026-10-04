@@ -29,8 +29,9 @@ const MEDIA_ANALYSIS_DESKS = [
   ['MEDIA-INDEX','Index','https://www.index.hr/','Index','DWF-0787–DWF-1048'],
   ['MEDIA-LIDER','Lider','https://lidermedia.hr/','Lider','DWF-1049–DWF-1310'],
   ['MEDIA-NOVOSTI','Novosti','https://www.portalnovosti.com/','Novosti','DWF-1311–DWF-1573']
-].map(([id,publisher,homepage,hashtag,modeledWorkerCohort]) => ({
-  id, publisher, homepage, hashtag, modeledWorkerCohort,
+].map(([id,publisher,homepage,publisherReferenceTag,modeledWorkerCohort]) => ({
+  id, publisher, homepage, publisherReferenceTag,
+  publisherTagEvidence: 'publisher identity reference only; not a claimed hashtag from any source article', modeledWorkerCohort,
   scope: 'source-linked editorial analysis intake on GNK ASG only',
   sourceClass: 'external-publisher-link',
   reviewState: 'source-url-and-human-review-required',
@@ -234,7 +235,14 @@ const mediaAnalysisQueue = {
     fullTextStorage: false,
     externalCommentsOrPosting: 'prohibited-without-account-owner-authorization',
     autonomousPublication: false,
-    unsupportedClaims: 'prohibited'
+    unsupportedClaims: 'prohibited',
+    sourceHashtagHandling: 'include source hashtags only when they are manually recorded from the specific supplied article; never infer a publisher hashtag from its name',
+    gnkEntityHashtagVariants: ['NerminSefic', 'NerminSefić', 'SeficNermin', 'SefićNermin', 'GNKASG', 'GNKASGdoo', 'GNKDINAMOLtd']
+  },
+  queueEntryContract: {
+    requiredBeforeDraft: ['deskId', 'sourceUrl', 'sourceTitle', 'publishedAt', 'context', 'attribution', 'originalLink', 'verifiedFacts', 'sourceHashtags', 'editorialApproval'],
+    sourceHashtags: 'array copied from visible metadata supplied for the specific source article; empty array when none are evidenced',
+    distributionPack: 'internal draft only; no third-party post or comment is produced by this register'
   },
   modeledWorkforce: {
     totalProfilesAssignedAcrossDesks: 1573,

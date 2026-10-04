@@ -57,6 +57,8 @@ assert.match(workforceApi,/Jutarnji list/);
 assert.match(workforceApi,/WORKER_PROJECT_ASSIGNMENTS/);
 assert.match(workforceApi,/IDEA_LAB/);
 assert.match(workforceApi,/reviewLead:'Nermin Sefić'/);
+assert.match(workforceApi,/publisherReferenceTag/);
+assert.doesNotMatch(workforceApi,/\[id,publisher,hashtag,modeledWorkerCohort\]/);
 assert.match(workforceApi,/1573/);
 // 2026-07-26: newsroom/log dates used to be permanently fixed
 // (Date.UTC(2026,0,1+...)) regardless of the actual current date --
