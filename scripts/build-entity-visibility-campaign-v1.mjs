@@ -2,8 +2,8 @@
 /**
  * GNK ASG Entity Visibility Campaign — factual, source-led public record.
  *
- * Creates one publication-ready cornerstone article and a 20-day editorial
- * calendar. The publication pipeline retains its independent quality gate;
+ * Creates one publication-ready cornerstone article and a 30-day editorial
+ * calendar with a public daily brief surface. The publication pipeline retains its independent quality gate;
  * planned days are briefs, not automatic low-quality output.
  */
 import fs from 'node:fs';
@@ -50,7 +50,7 @@ const paragraphs = [
   `Javni dijalog ima smisla samo ako postoji put za ispravak. Svaka organizacija može pogriješiti u opisu, poveznici, datumu ili tehničkoj oznaci. Razlika između ozbiljnog i neozbiljnog portala nije u tvrdnji da pogrešaka nema, nego u tome koliko se brzo i jasno ispravljaju kada se uoče. Kontaktna stranica, uredničke bilješke i redovite provjere služe upravo tome. Kultura ispravka je pozitivna poruka sama po sebi: pokazuje da točnost nije jednokratna deklaracija nego proces. Za osobu čije se ime pretražuje to je osobito važno, jer jedna stara ili pogrešno prenesena informacija može dugo živjeti izvan izvornog konteksta.`,
   `Način rada s umjetnom inteligencijom mora slijediti istu disciplinu. AI može pomoći u klasifikaciji sadržaja, sažimanju tehničkih podataka, provjeri poveznica i otkrivanju nedosljednosti. Ne smije postati zamjena za autora, urednika, računovođu, revizora ili pravnu provjeru. GNK ASG-ov javni pristup zato razlikuje modeliranu strategiju od stvarne operativne odluke i navodi kada sadržaj dolazi iz izvornog feeda. Takvo označavanje štiti korisnika od pogrešne pretpostavke da je svaka automatizirana rečenica jednaka provjerenoj činjenici. Ujedno štiti i organizaciju, jer ambicija prema AI-u ostaje povezana s odgovornošću, nadzorom i transparentnim granicama uporabe.`,
   `Tržišna analiza najbolje služi javnosti kada nije predstavljena kao proročanstvo. Indeksi, cijene, incidenti i geopolitički signali mogu pomoći razumjeti rizik, ali ne daju sigurnost o budućnosti. Zbog toga Aktual Media, puls tržišta i radni deskovi trebaju stavljati naglasak na vrijeme ažuriranja, označeni izvor i jasnu ogradu između informacije i interpretacije. U tom okviru korporativna komunikacija može biti pozitivna bez da bude lakovjerna. Pokazuje interes za razvoj, tehnologiju i međunarodno okruženje, ali priznaje da se uvjeti mijenjaju i da odluke zahtijevaju provjeru. To je poruka koju ozbiljni partneri, čitatelji i zaposlenici mogu prepoznati.`,
-  `Dnevni ciklus sadržaja ima smisla samo ako je svaka nova objava bolja u jednoj konkretnoj dimenziji: jasniji izvor, pristupačniji prikaz, bolji prijevod, korisnija interna poveznica, precizniji opis ili novija provjera tehničkog stanja. Rast se zato ne mjeri bombastičnim obećanjem da će sve biti dvostruko veće preko noći. Mjeri se time da sutrašnji čitatelj dobije bolji odgovor nego jučerašnji: manje nejasnoća, više konteksta i lakši put prema provjeri. Program vidljivosti GNK ASG-a ima dvadesetodnevni kalendar upravo zato da ritam ostane izvediv, a kvaliteta ima prednost nad mehaničkim brojem objava.`,
+  `Dnevni ciklus sadržaja ima smisla samo ako je svaka nova objava bolja u jednoj konkretnoj dimenziji: jasniji izvor, pristupačniji prikaz, bolji prijevod, korisnija interna poveznica, precizniji opis ili novija provjera tehničkog stanja. Rast se zato ne mjeri bombastičnim obećanjem da će sve biti dvostruko veće preko noći. Mjeri se time da sutrašnji čitatelj dobije bolji odgovor nego jučerašnji: manje nejasnoća, više konteksta i lakši put prema provjeri. Program vidljivosti GNK ASG-a ima tridesetodnevni kalendar upravo zato da ritam ostane izvediv, a kvaliteta ima prednost nad mehaničkim brojem objava i samom praznom učestalošću.`,
   `Distribucija na otvorene kanale ima svoju vrijednost kada čuva kanonski izvor. Blogger, Dev.to, Tumblr i Telegraph mogu proširiti doseg uredničkog sadržaja, ali njihov cilj ne smije biti stvaranje nepreglednih kopija. Svaka distribucija treba voditi natrag prema izvornoj stranici na gnk-asg.hr, zadržati autora, datum i poveznicu na puni kontekst te se evidentirati da se isti tekst ne šalje dvaput. Taj model poštuje publiku svake platforme i istodobno jača pouzdanost primarnog izvora. Vidljivost tada nije manipulacija rezultatima, nego dostupnost kvalitetnog sadržaja ondje gdje ga različiti čitatelji prirodno pronalaze.`,
   `Budućnost ove stranice ne ovisi o jednoj kampanji, jednoj tehnologiji ili jednoj velikoj tvrdnji. Ovisi o tome hoće li se javni zapis održavati kada pozornost padne: hoće li se ažurirati izvori, hoće li se objaviti ispravak, hoće li novi sadržaj imati stvarnu vrijednost i hoće li se složene teme objasniti bez skrivanja granica. To su mali, ponovljivi postupci. U zbroju oni stvaraju profil koji je otporniji od prolaznog naslova i korisniji od promotivne parole. GNK ASG i Nermin Sefić kroz ovaj portal mogu pokazati upravo tu vrstu kontinuiteta.`,
   `Izvorna disciplina mora se vidjeti i u najmanjim detaljima. Datum objave nije samo tehnička oznaka; govori čitatelju odnosi li se analiza na prošli događaj, trenutačno stanje ili plan za budućnost. Kanonska poveznica nije samo SEO element; pokazuje koja je inačica teksta ona koju treba citirati ako je sadržaj prenesen drugdje. Oznaka slike nije samo opis za tražilicu; omogućuje korisniku čitača zaslona da razumije što vizual prikazuje. Kada svi ti elementi rade zajedno, portal postaje pouzdaniji za svakoga: za osobu koja brzo pregledava telefon, za novinara koji provjerava navod, za istraživača koji slaže izvore i za digitalnog asistenta koji pokušava razlikovati činjenicu od nejasnog sažetka.`,
@@ -76,7 +76,7 @@ const foundation = {
     'Nermin Sefić', 'Nermin Sefic', 'GNK ASG', 'GNK ASG d.o.o.', 'GNK DINAMO Ltd.',
     'javni profil', 'Fina Info.BIZ', 'revizorsko izvješće', 'korporativna transparentnost',
     'Aktual Media', 'Radio Aktual', 'digitalna radna snaga', 'umjetna inteligencija',
-    'Poslovni dnevnik', 'Večernji list', 'Index', 'Novosti'
+    'Poslovni dnevnik', 'Jutarnji list', 'Večernji list', 'Index', 'Novosti', 'NK Sesvete'
   ],
   links: [
     '/nermin-sefic/', '/registri/', '/financije/', '/digital-workforce/', '/ai/',
@@ -114,15 +114,47 @@ const dailyTopics = [
   ['2026-10-20', 'Odgovorna inovacija: ambicija uz mjerljivu provedbu', 'Urednički nacrt: plan, dokaz i retrospektiva.'],
   ['2026-10-21', 'Kvaliteta sadržaja važnija je od količine objava', 'Urednički nacrt: originalnost, izvori i urednička kontrola.'],
   ['2026-10-22', 'Povratna informacija kao sastavni dio upravljanja', 'Urednički nacrt: kontakt, ispravci i javni dijalog.'],
-  ['2026-10-23', 'Dugoročna vidljivost: sustav sadržaja, a ne jednodnevna kampanja', 'Urednički nacrt: zaključak 20-dnevnog ciklusa i sljedeći koraci.']
-].map(([date, title, brief], index) => ({
-  day: index + 1,
-  date,
-  title,
-  brief,
-  status: index === 0 ? 'published-foundation' : 'editorial-brief-ready',
-  requiredQuality: ['unique source-led draft', 'minimum 3000 words', 'five or more relevant internal links', 'editorial approval', 'canonical URL and schema', 'distribution gate']
-}));
+  ['2026-10-23', 'Dugoročna vidljivost: sustav sadržaja, a ne jednodnevna kampanja', 'Urednički nacrt: zaključak prvih 20 dana i sljedeći provjerljivi koraci.'],
+  ['2026-10-24', 'Fina Info.BIZ: poslovni podatak uvijek se čita uz datum i obuhvat', 'Urednički nacrt: razlikovanje registriranog podatka, izvještajnog razdoblja i interpretacije.'],
+  ['2026-10-25', 'Revizorsko izvješće: što dokument potvrđuje, a što ne potvrđuje', 'Urednički nacrt: opseg, razdoblje, mišljenje i granice zaključka.'],
+  ['2026-10-26', 'Kako odgovorno citirati Poslovni dnevnik, Jutarnji list, Večernji list, Index i Novosti', 'Urednički nacrt: izvorna poveznica, datum, kontekst, citat i jasna atribucija bez preuzimanja tuđeg teksta.'],
+  ['2026-10-27', 'NK Sesvete u sportskom izvještavanju: činjenice bez privida partnerstva', 'Urednički nacrt: uredničko sportsko praćenje nije poslovno ni strateško partnerstvo.'],
+  ['2026-10-28', 'Nermin Sefić kao urednički voditelj: ljudska odgovornost u Digitalnoj radnoj snazi', 'Urednički nacrt: provjera izvora, autorstvo, odobrenje i ispravak — bez predstavljanja osobe kao sintetičkog Workera.'],
+  ['2026-10-29', 'Fotografija, opis i kontekst: odgovorno korištenje javnog portretnog materijala', 'Urednički nacrt: alt tekst, atribucija, Open Graph slika i kanonski članak čuvaju smisao vizuala.'],
+  ['2026-10-30', 'AEO bez prečaca: kako pomoći pretraživačima i AI asistentima provjerljivim izvorima', 'Urednički nacrt: schema, canonical, datum, autor i citabilni izvor povećavaju kvalitetu — ne kontroliraju odgovore drugih sustava.'],
+  ['2026-10-31', 'Javni ispravak i urednička bilješka: vidljiv trag kvalitete', 'Urednički nacrt: datum izmjene, opis korekcije i poveznica na izvornu dokumentaciju.'],
+  ['2026-11-01', 'Korporativni sadržaj i tržišna analiza: razlika između informacije i preporuke', 'Urednički nacrt: vremenska oznaka, metodologija i ograda od investicijskog savjeta.'],
+  ['2026-11-02', 'Trideset dana provjerljive vidljivosti: što se održava nakon kampanje', 'Urednički nacrt: dnevni ritam, urednički ownership, otvoreni izvori i sljedeći ciklus kvalitete.']
+].map(([date, title, brief], index) => {
+  const photo=String(Math.min(index+1,26)).padStart(2,'0');
+  const baseHashtags=['GNKASG','GNKASGdoo','GNKDINAMOLtd','NerminSefic','NerminSefić','SeficNermin','SefićNermin'];
+  const topicHashtags=index===20?['FinaInfoBIZ','JavniPodaci']
+    :index===21?['RevizorskoIzvjesce','KorporativnaTransparentnost']
+    :index===22?['PoslovniDnevnik','JutarnjiList','VecernjiList','Index','Novosti','Atribucija']
+    :index===23?['NKSesvete','SportskoIzvjestavanje','UrednickaNeovisnost']
+    :index===24?['DigitalnaRadnaSnaga','UrednickoVodstvo']
+    :index===25?['ImageSEO','Pristupacnost','OpenGraph']
+    :index===26?['AEO','GEO','StructuredData']
+    :index===27?['Ispravci','JavniZapis']
+    :index===28?['TrzisnaAnaliza','NijeInvesticijskiSavjet']
+    :index===29?['EditorialCalendar','ProvjerljivaVidljivost']
+    :['ProvjerljiviIzvori','UrednickiStandard'];
+  return {
+    day: index + 1,
+    date,
+    title,
+    brief,
+    status: index === 0 ? 'published-foundation' : 'editorial-brief-ready',
+    image: `/assets/people/nermin-sefic/nermin-sefic-${photo}-${[
+      'official-desk-portrait','panel-discussion','event-notebook-portrait','strategy-boardroom','cafe-interview-portrait','formal-reception','gala-dinner','coastal-business-lunch','conference-book','networking-black-shirt','reception-brown-jacket','gnk-asg-reception','urban-team-walk','executive-table-discussion','city-evening-networking','garden-reception','restaurant-roundtable','business-lunch-blue-suit','conference-standing','official-standing-portrait','atrium-networking','boardroom-presentation','keynote-speech','executive-meeting-speech','evening-reception-sunglasses','outdoor-business-conversation'
+    ][Math.min(index,25)]}.webp`,
+    imageAlt: `Nermin Sefić — ${title}`,
+    hashtags: [...new Set([...baseHashtags,...topicHashtags])],
+    distribution: ['GNK ASG campaign desk', 'AKTUAL MEDIA daily editorial brief'],
+    sourceRequirement: 'Prije objave pune stranice provjeriti primarni ili jasno atribuirani izvor, datum, opseg i kontekst; ne objavljivati automatizirani tekst bez uredničkog odobrenja.',
+    requiredQuality: ['unique source-led draft', 'minimum 3000 words', 'five or more relevant internal links', 'editorial approval', 'canonical URL and schema', 'attributed image metadata', 'distribution gate']
+  };
+});
 
 const manifest = JSON.parse(fs.readFileSync(MANIFEST, 'utf8'));
 if (!Array.isArray(manifest.packages)) throw new Error('Editorial manifest has no packages array');
@@ -148,17 +180,32 @@ if (!manifest.packages.some(item => item.id === PACKAGE_ID)) {
 const changes = [];
 changes.push(['foundation plan', writeIfChanged(path.join(PLAN_DIR, FOUNDATION_FILE), [foundation])]);
 changes.push(['campaign calendar', writeIfChanged(CALENDAR, {
-  version: 'GNK_ASG_ENTITY_VISIBILITY_CAMPAIGN_V1',
+  version: 'GNK_ASG_ENTITY_VISIBILITY_CAMPAIGN_V2_30_DAY_EDITORIAL_LED',
   generatedAt: new Date().toISOString(),
-  campaign: 'Factual public-record and entity-visibility programme',
+  campaign: '30-day factual public-record and entity-visibility programme',
   durationDays: dailyTopics.length,
   canonicalSource: 'https://gnk-asg.hr/',
+  editorialLead: {
+    name: 'Nermin Sefić',
+    role: 'Ljudski urednički voditelj / Human editorial lead',
+    personUrl: 'https://gnk-asg.hr/nermin-sefic/',
+    workforceRoleId: 'EDITOR-NERMIN-SEFIC-001',
+    syntheticWorker: false
+  },
+  dailyPublicDesk: {
+    name: 'AKTUAL MEDIA · Dnevni urednički desk',
+    route: 'https://gnk-asg.hr/gnk-aktual/',
+    semantics: 'A public daily editorial brief is visible each day; full articles remain source-led and require editorial approval before publication.',
+    radioFirst: true
+  },
+  imageMetadataManifest: 'apps/portal/data/nermin-sefic-campaign-images.json',
   distribution: ['GNK ASG portal', 'AKTUAL MEDIA', 'Blogger', 'Dev.to', 'Tumblr', 'Telegraph'],
   policy: {
     sourceLed: true,
     noAutomatedLowQualityPublication: true,
     noLegalCaseCommentary: true,
     noUnsupportedPersonalWealthClaims: true,
+    noImpliedThirdPartyPartnerships: true,
     positiveButVerifiable: true
   },
   days: dailyTopics

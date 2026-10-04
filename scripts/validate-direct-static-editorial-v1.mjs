@@ -76,8 +76,11 @@ function linkHref(html, relValue, hreflang = null) {
 }
 
 function extractArticleHtml(html) {
-  return firstMatch(html, /<article\b[^>]*>([\s\S]*?)<\/article>/iu)
-    || firstMatch(html, /<main\b[^>]*>([\s\S]*?)<\/main>/iu)
+  // Published editorial pages use <main> as the outer semantic article and may
+  // contain an inner .article-body region. Prefer the outer main so the H1,
+  // cover image and visible body are assessed together, as the policy states.
+  return firstMatch(html, /<main\b[^>]*>([\s\S]*?)<\/main>/iu)
+    || firstMatch(html, /<article\b[^>]*>([\s\S]*?)<\/article>/iu)
     || html;
 }
 

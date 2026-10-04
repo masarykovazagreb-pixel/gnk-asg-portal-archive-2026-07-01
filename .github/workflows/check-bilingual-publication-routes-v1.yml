@@ -23,14 +23,14 @@ jobs:
         run: |
           set -euxo pipefail
           for slug in \
-            ai-shrinks-security-window-apple-accelerates-patches \
-            how-a-structured-pdf-centre-improves-public-verifiability \
-            why-legal-information-belongs-in-primary-navigation \
-            bilingual-corporate-communication-as-an-operating-standard \
-            artificial-intelligence-with-mandatory-human-review \
-            market-data-is-information-not-investment-advice \
-            structured-media-applications-reduce-organisational-risk \
-            why-every-business-publication-should-carry-sources
+            likvidnosni-jaz-i-upravljanje-obrtnim-kapitalom \
+            revizijski-odbor-i-neovisnost-nadzora \
+            dobavljacki-rizik-koncentracije-jednog-partnera \
+            cijena-kapitala-i-investicijske-odluke \
+            whistleblowing-politika-i-interna-kontrola \
+            prekogranicno-oporezivanje-transferne-cijene \
+            digitalizacija-nabave-i-transparentnost-dobavljaca \
+            javni-podaci-autorski-rad-odgovorno-upravljanje
           do
             file="apps/portal/objave/$slug/index.html"
             test -s "$file"
@@ -44,20 +44,20 @@ jobs:
         run: |
           set -euxo pipefail
           for slug in \
-            ai-shrinks-security-window-apple-accelerates-patches \
-            how-a-structured-pdf-centre-improves-public-verifiability \
-            bilingual-corporate-communication-as-an-operating-standard \
-            artificial-intelligence-with-mandatory-human-review \
-            structured-media-applications-reduce-organisational-risk \
-            why-every-business-publication-should-carry-sources \
-            global-networks-and-business-continuity \
-            managing-documents-versions-and-the-public-record
+            technology-capital-and-responsible-governance \
+            ai-governance-race-us-eu-china \
+            critical-minerals-energy-transition-geopolitics \
+            global-debt-two-decades-cheap-money \
+            demographic-reshuffling-global-economy \
+            end-cheap-globalization-supply-chains \
+            global-water-scarcity-next-crisis \
+            antimicrobial-resistance-silent-pandemic
           do
-            file="apps/portal/publications/$slug/index.html"
+            file="apps/portal/en/publications/$slug/index.html"
             test -s "$file"
             grep -Fq '<title>' "$file"
             grep -Fq 'name="description"' "$file"
             grep -Fq 'rel="canonical"' "$file"
-            grep -Fq "/publications/$slug/" apps/portal/publications/index.html
+            grep -Fq "/en/publications/$slug/" apps/portal/en/publications/index.html
           done
           echo BILINGUAL_PUBLICATION_ROUTES_OK
