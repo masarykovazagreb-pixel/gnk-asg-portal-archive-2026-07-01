@@ -4,7 +4,17 @@ import { execFileSync } from 'node:child_process';
 
 const ROOT = process.cwd();
 const MIN_WORDS = Number(process.env.DIRECT_EDITORIAL_MIN_WORDS || 3000);
+const MIN_WORDS_COMMENTARY = Number(process.env.DIRECT_EDITORIAL_MIN_WORDS_COMMENTARY || 300);
+const MIN_WORDS_PUBLICATION = Number(process.env.DIRECT_EDITORIAL_MIN_WORDS_PUBLICATION || 500);
+const MIN_WORDS_ANALYSIS = Number(process.env.DIRECT_EDITORIAL_MIN_WORDS_ANALYSIS || 1500);
 const MIN_INTERNAL_LINKS = Number(process.env.DIRECT_EDITORIAL_MIN_INTERNAL_LINKS || 5);
+
+function minimumWordsForFile(file) {
+  if (/^apps\/portal\/(komentari|comments)\//u.test(file)) return MIN_WORDS_COMMENTARY;
+  if (/^apps\/portal\/(objave|publications)\//u.test(file)) return MIN_WORDS_PUBLICATION;
+  if (/^apps\/portal\/(analize|analysis)\//u.test(file)) return MIN_WORDS_ANALYSIS;
+  return MIN_WORDS;
+}
 const SITE_ORIGIN = 'https://gnk-asg.hr';
 const TARGET = /^apps\/portal\/(objave|publications|komentari|comments|analize|analysis)\/.+\/index\.html$/;
 const EXCEPTION_META = /<meta\s+name=["']editorial-policy-exception["']\s+content=["']digital-workforce-worker["']\s*\/?\s*>/iu;
@@ -19,7 +29,14 @@ const segmenter = typeof Intl.Segmenter === 'function'
   ? new Intl.Segmenter('hr', { granularity: 'word' })
   : null;
 
-if (!Number.isInteger(MIN_WORDS) || MIN_WORDS < 1) throw new Error('Invalid DIRECT_EDITORIAL_MIN_WORDS');
+for (const [label, value] of [
+  ['DIRECT_EDITORIAL_MIN_WORDS', MIN_WORDS],
+  ['DIRECT_EDITORIAL_MIN_WORDS_COMMENTARY', MIN_WORDS_COMMENTARY],
+  ['DIRECT_EDITORIAL_MIN_WORDS_PUBLICATION', MIN_WORDS_PUBLICATION],
+  ['DIRECT_EDITORIAL_MIN_WORDS_ANALYSIS', MIN_WORDS_ANALYSIS],
+]) {
+  if (!Number.isInteger(value) || value < 1) throw new Error('Invalid ' + label);
+}
 if (!Number.isInteger(MIN_INTERNAL_LINKS) || MIN_INTERNAL_LINKS < 1) throw new Error('Invalid DIRECT_EDITORIAL_MIN_INTERNAL_LINKS');
 
 function decodeEntities(value) {
@@ -168,6 +185,7 @@ function validate(file) {
 
   const articleHtml = extractArticleHtml(html);
   const wordCount = countWords(articleHtml);
+  const minimumWords = minimumWordsForFile(file);
   const title = stripMarkup(firstMatch(html, /<title\b[^>]*>([\s\S]*?)<\/title>/iu));
   const description = metaContent(html, 'description');
   const canonical = linkHref(html, 'canonical');
@@ -195,7 +213,7 @@ function validate(file) {
   if (description.length < 80 || description.length > 200) errors.push(`meta description length is ${description.length}; expected 80-200 characters`);
   if (canonical !== expected) errors.push(`canonical must be ${expected}; found ${canonical || 'missing'}`);
   if (h1Count !== 1) errors.push(`expected exactly one H1 inside article/main; found ${h1Count}`);
-  if (wordCount < MIN_WORDS) errors.push(`visible article body has ${wordCount} words; minimum is ${MIN_WORDS}`);
+  if (wordCount < minimumWords) errors.push(`visible article body has ${wordCount} words; minimum is ${minimumWords}`);
   if (internalLinks.size < MIN_INTERNAL_LINKS) errors.push(`article has ${internalLinks.size} unique internal links; minimum is ${MIN_INTERNAL_LINKS}`);
   if (!localImages.length) errors.push('article has no local image');
 
@@ -235,6 +253,7 @@ function validate(file) {
     file,
     skipped: false,
     wordCount,
+    minimumWords,
     internalLinks: internalLinks.size,
     localImages: localImages.length,
     canonical,
@@ -253,6 +272,11 @@ const summary = {
   ok: errors.length === 0,
   version: 'GNK_ASG_DIRECT_STATIC_EDITORIAL_POLICY_V1_20260806',
   minimumWords: MIN_WORDS,
+  minimumWordsByType: {
+    commentary: MIN_WORDS_COMMENTARY,
+    publication: MIN_WORDS_PUBLICATION,
+    analysis: MIN_WORDS_ANALYSIS,
+  },
   minimumInternalLinks: MIN_INTERNAL_LINKS,
   candidateCount: candidates.length,
   checkedCount: results.filter(result => !result.skipped).length,
