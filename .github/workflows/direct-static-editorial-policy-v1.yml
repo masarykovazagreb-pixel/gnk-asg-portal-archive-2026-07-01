@@ -44,6 +44,9 @@ jobs:
           GITHUB_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
           GITHUB_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
           DIRECT_EDITORIAL_MIN_WORDS: '3000'
+          DIRECT_EDITORIAL_MIN_WORDS_COMMENTARY: '300'
+          DIRECT_EDITORIAL_MIN_WORDS_PUBLICATION: '500'
+          DIRECT_EDITORIAL_MIN_WORDS_ANALYSIS: '1500'
           DIRECT_EDITORIAL_MIN_INTERNAL_LINKS: '5'
         run: |
           if [ -z "$GITHUB_BASE_SHA" ] || [ "$GITHUB_BASE_SHA" = "0000000000000000000000000000000000000000" ]; then
