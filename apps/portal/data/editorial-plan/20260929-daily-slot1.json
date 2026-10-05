@@ -10,7 +10,16 @@
       "Potrošnja energije računalne infrastrukture dugo je bila pozadinski trošak koji se pojavljivao na računu, ali ne i u raspravi o arhitekturi rješenja.",
       "Rastom modela, količine podataka i stalno uključenih usluga ta se stavka pomaknula na mjesto gdje o njoj netko mora odlučiti. Izbor između dvije tehnički jednakovrijedne izvedbe sve češće se svodi na razliku u potrošnji.",
       "To ne znači da je najjeftinija izvedba uvijek prava. Znači da razlika mora biti poznata prije odluke, a ne otkrivena kroz račun nakon godine dana rada.",
-      "GNK ASG d.o.o. energetski trošak digitalnih rješenja unutar grupe promatra kao dio odluke o arhitekturi, ne kao posljedicu koja se naknadno mjeri."
+      "GNK ASG d.o.o. energetski trošak digitalnih rješenja unutar grupe promatra kao dio odluke o arhitekturi, ne kao posljedicu koja se naknadno mjeri.",
+      "Upravljanje tim troškom počinje mjerenjem na dovoljno granularnoj razini. Ukupni račun pokazuje iznos, ali ne pokazuje koja usluga, model ili proces ga stvara. Kada se trošak poveže s konkretnim radnim opterećenjem, postaje moguće razlikovati nužan kapacitet od resursa koji ostaju uključeni zato što ih nitko više aktivno ne preispituje.",
+      "Važan je i odnos između učinkovitosti i otpornosti. Rezervni kapaciteti, sigurnosne kopije i redundantni sustavi troše energiju čak i kada nisu u punom radu, ali predstavljaju cijenu kontinuiteta. Cilj zato nije svesti potrošnju na minimum, nego razumjeti zašto svaki veći resurs postoji i odgovara li njegova cijena riziku koji pokriva.",
+      "Kod cloud usluga tehnička i financijska odluka sve su više ista odluka. Model naplate po potrošnji može biti povoljan pri malom volumenu, a znatno skuplji kada sustav naraste. Arhitektura koja ne uzima u obzir takvu promjenu može tehnički raditi savršeno, a financijski postati neodrživa.",
+      "Umjetna inteligencija dodatno pojačava potrebu za disciplinom. Nije svaki zadatak potrebno obrađivati najvećim raspoloživim modelom niti svaku radnju izvoditi u stvarnom vremenu. Pametno raspoređivanje, predračunavanje, cache i izbor modela prema složenosti zadatka često daju veću uštedu od kasnijeg pokušaja optimizacije infrastrukture.",
+      "Za upravu je korisno imati nekoliko scenarija koji pokazuju kako se trošak mijenja s rastom broja korisnika, količine podataka i zahtjeva za dostupnošću. Takav model ne mora biti savršen. Dovoljno je da prije ulaganja pokaže gdje se nalaze pragovi nakon kojih postojeća arhitektura više nije optimalna.",
+      "Energetski trošak digitalnih sustava zato pripada istoj tablici odluke kao performanse, sigurnost, kontinuitet i mogućnost izlaska iz rješenja. Kada se promatra tek nakon implementacije, organizacija može samo objašnjavati račun. Kada se uključi prije odluke, može birati arhitekturu čiji su trošak i ograničenja razumljivi.",
+      "Za područje Energija i tehnologija korisno je svaku važnu odluku pretvoriti u četiri vidljiva elementa: vlasnika, mjerljivi prag, rok provjere i dokaz na kojem se odluka temelji. Time tema prestaje biti opća preporuka i postaje upravljiva obveza. Kada se kasnije okolnosti promijene, moguće je provjeriti je li pretpostavka još valjana umjesto ponovno otvarati cijelu raspravu od početka.",
+      "Najbolja provjera nije deklaracija da je sustav uređen, nego mogućnost da druga osoba iz dokumentacije i podataka rekonstruira zašto je odluka donesena i što bi je promijenilo. Takav revizijski trag ne usporava upravljanje; on skraćuje buduće rasprave i omogućuje da se proces poboljšava na temelju stvarnog iskustva, a ne sjećanja pojedinaca.",
+      "Jednom godišnje vrijedi usporediti planirani i stvarni trošak ključnih digitalnih opterećenja. Odstupanje samo po sebi nije problem; problem je kada nitko ne može objasniti njegov uzrok. Redovita usporedba pomaže razlikovati rast koji prati poslovnu vrijednost od potrošnje koja je ostala bez jasnog vlasnika ili svrhe."
     ],
     "seoTitle": "Energetski trošak digitalnih sustava postaje stavka o kojoj se odlučuje | GNK ASG",
     "summary": "Potrošnja računalne infrastrukture dugo je bila pozadinski trošak; rastom modela i podataka postaje stavka koja ulazi u odluku o arhitekturi.",
@@ -25,7 +34,10 @@
     "links": [
       "/objave/",
       "/tehnologija/",
-      "/analize/"
+      "/analize/",
+      "/gnk-aktual/",
+      "/nermin-sefic/",
+      "/projekti/"
     ],
     "author": "Nermin Sefić",
     "authorImage": "/assets/people/nermin-sefic/nermin-sefic-01-official-desk-portrait.webp",
