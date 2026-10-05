@@ -57,16 +57,16 @@ function runCase(name, { item, packageOverrides = {}, holds = null, expectedStat
   fs.rmSync(dir, { recursive: true, force: true });
 }
 
-runCase('pass-publication-650', {
-  item: baseItem({ paragraphs: [words(650)] }),
+runCase('pass-publication-500', {
+  item: baseItem({ paragraphs: [words(500)] }),
   expectedStatus: 0,
   expectedMarker: /EDITORIAL_CONTENT_POLICY_OK/,
 });
 
-runCase('fail-publication-649', {
-  item: baseItem({ paragraphs: [words(649)] }),
+runCase('fail-publication-499', {
+  item: baseItem({ paragraphs: [words(499)] }),
   expectedStatus: 1,
-  expectedMarker: /body has 649 words; minimum is 650/,
+  expectedMarker: /body has 499 words; minimum is 500/,
 });
 
 runCase('pass-commentary-300', {
