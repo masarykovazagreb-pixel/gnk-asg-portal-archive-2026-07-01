@@ -5,7 +5,9 @@ on:
   push:
     paths:
       - '.github/workflows/gnk-news-refresh-v2.yml'
+      - 'scripts/gnk-news-refresh.mjs'
       - 'scripts/normalize-aktual-hourly-contract.mjs'
+      - 'scripts/freshness-status-v2.mjs'
       - 'ops/automation-kill-switches.json'
   schedule:
     # Canonical AKTUAL owner: refresh six times daily, every four hours.
@@ -112,3 +114,4 @@ jobs:
           fi
 
 # P0 2026-09-16: retrigger canonical producer after stale-output incident; no parallel fallback writer.
+# 2026-10-05: canonical input-path retrigger also provides safe post-race recovery on current main.
