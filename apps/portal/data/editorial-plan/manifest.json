@@ -837,5 +837,13 @@
         "/objave/javni-podaci-autorski-rad-odgovorno-upravljanje/"
       ]
     }
+  ],
+  "reviewQueues": [
+    {
+      "schema": "gnk-asg-source-gated-editorial-queue/v1",
+      "file": "20261005-20261103-source-gated-300.json",
+      "consumer": "/admin-center/editorial-approval/",
+      "publicationMode": "review-only"
+    }
   ]
 }
