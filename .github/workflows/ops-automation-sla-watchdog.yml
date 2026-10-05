@@ -173,18 +173,15 @@ jobs:
                   failures.append(f'{label}: live check failed: {exc}')
 
           # 3) Canonical writer/control SLAs. A stale check dispatches the EXISTING owner only.
-          #    Debounce rule: below the HARD limit (failure) the watchdog dispatches recovery but
-          #    stays GREEN, because the canonical writer simply hasn't had its next scheduled
-          #    chance yet (the watchdog runs at :42, several refresh jobs at :55-:17). Going red
-          #    on soft staleness was a false alarm (see docs/ROADMAP-2026-09-23.md B1).
+          #    First recovery dispatch stays GREEN when the prior known state was valid.
+          #    RED is reserved for invalid live/data state or evidence that the latest
+          #    canonical recovery already failed after the last success.
           ensure_age('gnk-news-refresh-v2.yml', 350, 430, 'AKTUAL canonical refresh')
           ensure_age('weather-refresh.yml', 390, 480, 'Zagreb weather refresh')
           ensure_age('gnk-seo-nightly-audit.yml', 1740, 2400, 'Nightly SEO/IndexNow audit')
 
-          # 4) Daily editorial must have a successful run today. The publisher runs on its own
-          #    schedule; we only verify that today's scheduled run produced a success before
-          #    flagging anything. A missing run is reported as an OBSERVATION (no forced dispatch)
-          #    because the diagnostic path belongs to the scheduled cadence itself.
+          # 4) Daily editorial must have a successful run today. After 11:00 Europe/Zagreb,
+          #    a missing verified success dispatches the existing canonical publisher once.
           editorial_today_success = False
           editorial_observations = []
           for run_url in (f'{api}/actions/workflows/editorial-scheduled-publish.yml/runs?per_page=5',
@@ -239,5 +236,5 @@ jobs:
           echo '- Zagreb weather: soft **<= 390 min**; stale dispatches recovery; red only after failed recovery/invalid state' >> "$GITHUB_STEP_SUMMARY"
           echo '- External distribution: **not dispatched by watchdog**' >> "$GITHUB_STEP_SUMMARY"
           echo '- Nightly SEO/IndexNow: soft **<= 1740 min** / hard **> 2400 min**' >> "$GITHUB_STEP_SUMMARY"
-          echo '- Editorial: **verified success today** (observation, no forced dispatch)' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Editorial: **verified success today**; after 11:00 a missing success dispatches the canonical publisher' >> "$GITHUB_STEP_SUMMARY"
           echo '- Recovery policy: **dispatch canonical owner only, debounced once per run; watchdog never becomes a second writer**' >> "$GITHUB_STEP_SUMMARY"
