@@ -13,6 +13,7 @@ on:
       - 'scripts/seo-visibility-cycle-v1.mjs'
       - 'scripts/refresh-public-news-v4.mjs'
       - 'scripts/test-editorial-publish-seo-v1.mjs'
+      - 'scripts/validate-source-gated-editorial-queue-v1.mjs'
       - '.github/workflows/editorial-*.yml'
       - '.github/workflows/seo-news-cycle.yml'
 permissions:
@@ -34,10 +35,13 @@ jobs:
           node --check scripts/seo-visibility-cycle-v1.mjs
           node --check scripts/refresh-public-news-v4.mjs
           node --check scripts/test-editorial-publish-seo-v1.mjs
+          node --check scripts/validate-source-gated-editorial-queue-v1.mjs
       - name: Test editorial policy gate
         run: node scripts/test-editorial-content-policy-v1.mjs
       - name: Enforce editorial policy before materialization
         run: node scripts/validate-editorial-content-policy-v1.mjs
+      - name: Validate source-gated 30-day editorial queue
+        run: node scripts/validate-source-gated-editorial-queue-v1.mjs
       - name: Materialize immediate package in CI workspace
         env:
           EDITORIAL_NOW: '2026-07-14T20:53:00+02:00'
