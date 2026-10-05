@@ -12,7 +12,7 @@ const HOLDS_PATH = process.env.EDITORIAL_HOLDS_PATH
 const POLICY_CUTOFF = new Date(process.env.EDITORIAL_POLICY_CUTOFF || '2026-08-05T00:00:00+02:00');
 const MIN_WORDS = Number(process.env.EDITORIAL_MIN_WORDS || 3000);
 const MIN_WORDS_COMMENTARY = Number(process.env.EDITORIAL_MIN_WORDS_COMMENTARY || 300);
-const MIN_WORDS_PUBLICATION = Number(process.env.EDITORIAL_MIN_WORDS_PUBLICATION || 650);
+const MIN_WORDS_PUBLICATION = Number(process.env.EDITORIAL_MIN_WORDS_PUBLICATION || 500);
 const MIN_WORDS_ANALYSIS = Number(process.env.EDITORIAL_MIN_WORDS_ANALYSIS || 1500);
 const MIN_INTERNAL_LINKS = Number(process.env.EDITORIAL_MIN_INTERNAL_LINKS || 5);
 const minimumWordsForType = type => ({
