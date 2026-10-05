@@ -11,10 +11,28 @@ const HOLDS_PATH = process.env.EDITORIAL_HOLDS_PATH
   : path.join(PLAN_DIR, 'publication-holds.json');
 const POLICY_CUTOFF = new Date(process.env.EDITORIAL_POLICY_CUTOFF || '2026-08-05T00:00:00+02:00');
 const MIN_WORDS = Number(process.env.EDITORIAL_MIN_WORDS || 3000);
+const MIN_WORDS_COMMENTARY = Number(process.env.EDITORIAL_MIN_WORDS_COMMENTARY || 300);
+const MIN_WORDS_PUBLICATION = Number(process.env.EDITORIAL_MIN_WORDS_PUBLICATION || 650);
+const MIN_WORDS_ANALYSIS = Number(process.env.EDITORIAL_MIN_WORDS_ANALYSIS || 1500);
 const MIN_INTERNAL_LINKS = Number(process.env.EDITORIAL_MIN_INTERNAL_LINKS || 5);
+const minimumWordsForType = type => ({
+  komentar: MIN_WORDS_COMMENTARY,
+  commentary: MIN_WORDS_COMMENTARY,
+  objava: MIN_WORDS_PUBLICATION,
+  publication: MIN_WORDS_PUBLICATION,
+  analiza: MIN_WORDS_ANALYSIS,
+  analysis: MIN_WORDS_ANALYSIS,
+}[type] || MIN_WORDS);
 
 if (!Number.isFinite(POLICY_CUTOFF.getTime())) throw new Error('Invalid EDITORIAL_POLICY_CUTOFF');
-if (!Number.isInteger(MIN_WORDS) || MIN_WORDS < 1) throw new Error('Invalid EDITORIAL_MIN_WORDS');
+for (const [label, value] of [
+  ['EDITORIAL_MIN_WORDS', MIN_WORDS],
+  ['EDITORIAL_MIN_WORDS_COMMENTARY', MIN_WORDS_COMMENTARY],
+  ['EDITORIAL_MIN_WORDS_PUBLICATION', MIN_WORDS_PUBLICATION],
+  ['EDITORIAL_MIN_WORDS_ANALYSIS', MIN_WORDS_ANALYSIS],
+]) {
+  if (!Number.isInteger(value) || value < 1) throw new Error('Invalid ' + label);
+}
 if (!Number.isInteger(MIN_INTERNAL_LINKS) || MIN_INTERNAL_LINKS < 1) throw new Error('Invalid EDITORIAL_MIN_INTERNAL_LINKS');
 if (!fs.existsSync(PLAN_PATH)) throw new Error(`Missing editorial plan: ${PLAN_PATH}`);
 
@@ -154,7 +172,8 @@ for (const pack of plan.packages || []) {
       if (!item.description || !String(item.description).trim()) addError(pack.id, item, 'missing meta description');
       if (!item.summary || !String(item.summary).trim()) addError(pack.id, item, 'missing summary');
       if (!item.image || !String(item.image).startsWith('/')) addError(pack.id, item, 'missing local image path');
-      if (wordCount < MIN_WORDS) addError(pack.id, item, `body has ${wordCount} words; minimum is ${MIN_WORDS}`);
+      const minimumWords = minimumWordsForType(type);
+      if (wordCount < minimumWords) addError(pack.id, item, `body has ${wordCount} words; minimum is ${minimumWords}`);
       if (internalLinks.length < MIN_INTERNAL_LINKS) addError(pack.id, item, `has ${internalLinks.length} unique internal links; minimum is ${MIN_INTERNAL_LINKS}`);
       if (duplicates.length) addError(pack.id, item, 'contains duplicated body paragraphs');
 
@@ -175,6 +194,11 @@ const summary = {
   version: 'GNK_ASG_EDITORIAL_CONTENT_POLICY_V1_20260805',
   policyCutoff: POLICY_CUTOFF.toISOString(),
   minimumWords: MIN_WORDS,
+  minimumWordsByType: {
+    commentary: MIN_WORDS_COMMENTARY,
+    publication: MIN_WORDS_PUBLICATION,
+    analysis: MIN_WORDS_ANALYSIS,
+  },
   minimumInternalLinks: MIN_INTERNAL_LINKS,
   publicationHoldsVersion: publicationHolds.version,
   activePublicationHolds: [...publicationHolds.active.keys()],
