@@ -119,7 +119,7 @@ runCase('generic-operational-is-not-exempt', {
     links: [],
   }),
   expectedStatus: 1,
-  expectedMarker: /body has 3 words; minimum is 3000/,
+  expectedMarker: /body has 3 words; minimum is 500/,
 });
 
 runCase('publication-hold', {
