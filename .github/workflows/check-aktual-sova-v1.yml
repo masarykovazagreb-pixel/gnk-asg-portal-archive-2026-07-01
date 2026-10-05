@@ -8,6 +8,12 @@ on:
       - 'apps/portal/assets/aktual-sova-v1.js'
       - 'apps/portal/data/aktual-sova.json'
       - 'scripts/test-aktual-sova-v1.mjs'
+      - 'apps/portal/data/editorial-plan/manifest.json'
+      - 'apps/portal/data/editorial-plan/*source-gated*.json'
+      - 'apps/portal/assets/editorial-source-queue-v1.js'
+      - 'apps/portal/assets/editorial-approval-v1.js'
+      - 'apps/portal/admin-center/editorial-approval/index.html'
+      - 'scripts/test-source-gated-editorial-queue-v1.mjs'
       - '.github/workflows/check-aktual-sova-v1.yml'
   workflow_dispatch:
 
@@ -25,3 +31,5 @@ jobs:
           node-version: '24'
       - name: Validate AKTUAL Sova visibility and safety contract
         run: node scripts/test-aktual-sova-v1.mjs
+      - name: Validate source-gated queue review and approval
+        run: node scripts/test-source-gated-editorial-queue-v1.mjs
