@@ -7,6 +7,13 @@ name: Weather Refresh (Zagreb)
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/weather-refresh.yml'
+      - 'scripts/weather-refresh-v1.mjs'
+      - 'scripts/freshness-status-v2.mjs'
+      - 'ops/automation-kill-switches.json'
   schedule:
     - cron: '5 2,8,14,20 * * *'   # four times daily; Control Plane V2
 

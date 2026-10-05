@@ -10,7 +10,7 @@ const relative = 'apps/portal/objave/testna-objava/index.html';
 const absolute = path.join(temp, relative);
 fs.mkdirSync(path.dirname(absolute), { recursive: true });
 
-function html({ words = 3000, omitTwitterImage = false, exception = false } = {}) {
+function html({ words = 500, omitTwitterImage = false, exception = false } = {}) {
   const body = Array.from({ length: words }, (_, index) => `riječ${index + 1}`).join(' ');
   const links = ['/objave/', '/komentari/', '/nermin-sefic/', '/about/', '/contact/']
     .map(href => `<a href="${href}">Poveznica</a>`).join('');
@@ -51,12 +51,11 @@ let result = run(html());
 assert.equal(result.status, 0, result.stderr || result.stdout);
 assert.match(result.stdout, /DIRECT_STATIC_EDITORIAL_POLICY_OK/u);
 
-// The validator counts every visible word inside article/main, including the
-// H1, byline and link labels. Use a fixture safely below the threshold so the
-// negative test is deterministic instead of relying on body words alone.
-result = run(html({ words: 2500 }));
+// Publication pages use the 500-word format floor. The validator counts
+// visible H1/byline/link labels too, so keep the negative fixture safely below it.
+result = run(html({ words: 400 }));
 assert.notEqual(result.status, 0);
-assert.match(result.stderr, /minimum is 3000/u);
+assert.match(result.stderr, /minimum is 500/u);
 
 result = run(html({ omitTwitterImage: true }));
 assert.notEqual(result.status, 0);
@@ -67,7 +66,7 @@ assert.equal(result.status, 0, result.stderr || result.stdout);
 assert.match(result.stdout, /digital-workforce-worker-exception/u);
 
 // A specifically enumerated, previously published authored statement may remain
-// text-locked even when it predates the later 3,000-word direct-static rule.
+// text-locked even when it predates the later format-specific direct-static rule.
 // This test prevents the narrow exception from being lost in future refactors.
 const lockedRelative = 'apps/portal/objave/osvrt-na-2013-omega-factoring-nermin-sefic/index.html';
 const lockedAbsolute = path.join(temp, lockedRelative);
