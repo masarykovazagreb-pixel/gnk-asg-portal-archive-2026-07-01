@@ -1,6 +1,6 @@
 {
   "version": "GNK_ASG_BOT_OWNERSHIP_V1",
-  "generatedFromMainSha": "4bae30ae68c5a08739f9db24772c117ed07eb52e",
+  "generatedFromMainSha": "31bae74a6e53e5c3d7d18912f7709aa46e93ae26",
   "policy": {
     "principle": "one-path-one-canonical-writer",
     "prFirst": true,
@@ -513,6 +513,26 @@
       "prohibitions": [
         "automatic scheduling",
         "execution under current NO-TOUCH mail boundary"
+      ]
+    },
+    {
+      "workflow": "aktual-news-single-writer-guard.yml",
+      "domain": "SECURITY_CONTROL",
+      "role": "auditor",
+      "cadence": "PR/manual",
+      "read": [
+        ".github/workflows/**",
+        "scripts/**",
+        "apps/portal/data/news.json",
+        "apps/portal/data/news_archive.json",
+        "apps/portal/data/news-automation-status.json"
+      ],
+      "write": [],
+      "gate": "AKTUAL news single-writer contract",
+      "handoff": "AKTUAL_NEWS owner",
+      "prohibitions": [
+        "repository writes",
+        "parallel canonical news writer"
       ]
     }
   ],
