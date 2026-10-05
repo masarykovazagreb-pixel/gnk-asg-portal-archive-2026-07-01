@@ -28,6 +28,9 @@ concurrency:
 
 jobs:
   publish:
+    # Fail closed: third-party publishing requires a separate explicit repository-level opt-in.
+    # Undefined/false keeps all external posting disabled while GNK ASG own-site publishing remains active.
+    if: vars.GNK_ASG_EXTERNAL_DISTRIBUTION == 'true'
     name: Distribute published articles to Blogger, Dev.to, Tumblr and Telegraph
     runs-on: ubuntu-latest
     timeout-minutes: 45
