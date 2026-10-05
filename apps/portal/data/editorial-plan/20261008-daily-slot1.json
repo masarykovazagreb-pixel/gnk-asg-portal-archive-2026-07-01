@@ -9,7 +9,13 @@
     "paragraphs": [
       "Podatak bez naznake kada je nastao i tko ga je pripremio ne može se ni potvrditi ni osporiti. Može se samo vjerovati mu ili ne.",
       "U unutarnjem radu to prolazi dok se ne pojavi neslaganje. Tada se gubi vrijeme na utvrđivanje osnovnih stvari umjesto na samu raspravu.",
-      "Datum i autor nisu formalnost nego najjeftiniji dio provjerljivosti. Dodaju se u trenutku nastanka ili se ne dodaju nikad."
+      "Datum i autor nisu formalnost nego najjeftiniji dio provjerljivosti. Dodaju se u trenutku nastanka ili se ne dodaju nikad.",
+      "Datum i autor stvaraju osnovni kontekst. Autor ne mora značiti osobnu odgovornost za svaku brojku, ali pokazuje gdje počinje trag provjere. Datum govori koja su pravila, izvori i okolnosti tada vrijedili. Bez toga je teško razlikovati pogrešku od promjene koja se dogodila poslije.",
+      "Jednako je važna verzija. Dokument koji se šalje u više kopija može imati autora i datum, a ipak ostati nejasan jer nitko ne zna koja je kopija konačna. Jedno kanonsko mjesto i evidencija promjena jednostavniji su od naknadnog uspoređivanja datoteka nazvanih final, final2 i stvarno-final.",
+      "Za automatizirane dokumente trag je još važniji. Ako izvještaj generira sustav ili Worker, treba biti poznato iz kojeg izvora uzima podatke, kada je generiran i koja je verzija pravila korištena. Automatizacija smanjuje ručni rad, ali ne ukida potrebu za odgovornošću.",
+      "Dobra praksa je minimalni identitet dokumenta: naslov, vlasnik, datum, status, izvor ključnih podataka i mjesto kanonske verzije. To je mali trošak u trenutku nastanka, a velika ušteda kada kasnije treba potvrditi što je zapravo bilo važeće.",
+      "U području Podaci i izvještavanje korisno je ovo načelo pretvoriti u kratku operativnu kontrolu: odrediti vlasnika, signal koji traži reakciju i mjesto na kojem se odluka bilježi. Time dobra formulacija postaje dio rada koji je moguće provjeriti, usporediti kroz vrijeme i popraviti kada praksa pokaže da pravilo više ne odgovara stvarnosti.",
+      "Najbolji test je može li druga osoba, bez dodatnog usmenog objašnjenja, razumjeti što je napravljeno, zašto i koji bi događaj promijenio odluku. Kada odgovor glasi da, proces ima trag i odgovornost. Kada glasi ne, problem nije nedostatak još jednog pravilnika, nego to što postojeće načelo nije prevedeno u stvaran način rada."
     ],
     "seoTitle": "Dokument bez datuma i autora teško je provjeriti | GNK ASG",
     "summary": "Podatak bez naznake kada je nastao i tko ga je pripremio ne može se ni potvrditi ni osporiti.",
@@ -24,7 +30,11 @@
     "links": [
       "/komentari/",
       "/registri/",
-      "/objave/"
+      "/objave/",
+      "/gnk-aktual/",
+      "/nermin-sefic/",
+      "/analize/",
+      "/projekti/"
     ],
     "author": "Nermin Sefić",
     "authorImage": "/assets/people/nermin-sefic/nermin-sefic-01-official-desk-portrait.webp",
