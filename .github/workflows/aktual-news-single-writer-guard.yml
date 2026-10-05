@@ -1,0 +1,32 @@
+name: AKTUAL News Single Writer Guard
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/**'
+      - 'scripts/**'
+      - 'config/control-plane/bot-ownership-v1.json'
+      - 'apps/portal/data/news.json'
+      - 'apps/portal/data/news_archive.json'
+      - 'apps/portal/data/news-automation-status.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aktual-news-single-writer-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Enforce canonical AKTUAL news writer
+        run: node scripts/test-aktual-news-single-writer-v1.mjs
