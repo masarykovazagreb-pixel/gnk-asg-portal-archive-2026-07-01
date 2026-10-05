@@ -1,7 +1,7 @@
 (function(){
 'use strict';
 // GNK ASG — Weather widget renderer (Zagreb) za AKTUAL MEDIA.
-// Čita /data/weather-zagreb.json (osvježava se svaki sat preko
+// Čita /data/weather-zagreb.json (kanonski producer radi četiri puta dnevno preko
 // scripts/weather-refresh-v1.mjs). Poštena stanja: live / stale / unavailable
 // — nikad ne prikazuje "LIVE" oznaku ako podatak nije stvarno svjež.
 // Rad na HR i EN stranicama; jezik se određuje iz <html lang> ili putanje.
