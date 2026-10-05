@@ -1,0 +1,80 @@
+{
+  "schema": "gnk-asg/aktual-sova/v1",
+  "updated_at": "2026-10-04T21:20:00+02:00",
+  "identity": {
+    "id": "WORKER-INTERFACE-AKTUAL-SOVA",
+    "name_hr": "AKTUAL Sova",
+    "name_en": "AKTUAL Owl",
+    "classification_hr": "Modelirani digitalni vodič / Worker interface",
+    "classification_en": "Modelled digital guide / Worker interface",
+    "foresight_label_hr": "Modelirani strateški foresight vodič",
+    "foresight_label_en": "Modelled strategic foresight guide",
+    "fictional": true,
+    "autonomous_agent": false,
+    "superintelligence": false,
+    "human_editorial_gate": "Nermin Sefić"
+  },
+  "boundaries": {
+    "external_accounts": false,
+    "messaging": false,
+    "third_party_publishing": false,
+    "scraping": false,
+    "business_decisions": false,
+    "sensitive_data": false,
+    "unverified_data": false,
+    "partnership_claims_without_evidence": false
+  },
+  "source_context": {
+    "required_fields": [
+      "publisher",
+      "original_url",
+      "source_date",
+      "attribution",
+      "fact_comment_boundary"
+    ],
+    "hr": "Prije komentara prikazati izdavača, originalni link, datum i atribuciju te jasno odvojiti provjerljivu činjenicu od uredničkog komentara.",
+    "en": "Before commentary, show publisher, original link, date and attribution, and clearly separate verifiable fact from editorial commentary."
+  },
+  "weekly": {
+    "scope": "local-own-site-editorial-queue",
+    "external_activity_claim": false,
+    "own_records": 300,
+    "planned_briefs": 30,
+    "quality_checks": 300,
+    "media_desks": 120,
+    "note_hr": "Brojke opisuju lokalni 30-dnevni urednički plan GNK ASG-a; ne dokazuju vanjsku objavu ili aktivnost trećih strana.",
+    "note_en": "Figures describe GNK ASG's local 30-day editorial plan; they do not prove external publication or third-party activity."
+  },
+  "foresight_examples": [
+    {
+      "id": "SOVA-FS-001",
+      "title_hr": "AI agenti u korporativnom upravljanju",
+      "title_en": "AI agents in corporate governance",
+      "status": "scenario",
+      "assumptions_hr": [
+        "Organizacije uvode kontrolirane AI pomoćnike uz ljudski approval gate."
+      ],
+      "assumptions_en": [
+        "Organisations introduce controlled AI assistants with a human approval gate."
+      ],
+      "evidence_basis_hr": [
+        "Potrebni su provjerljivi podaci o usvajanju, regulativi i stvarnim workflowima."
+      ],
+      "evidence_basis_en": [
+        "Requires verifiable adoption, regulatory and real-workflow evidence."
+      ],
+      "risks_hr": [
+        "Pogrešna automatizacija, nejasna odgovornost, loša kvaliteta podataka."
+      ],
+      "risks_en": [
+        "Faulty automation, unclear accountability and poor data quality."
+      ],
+      "falsification_hr": [
+        "Scenarij slabi ako regulativa ili operativni dokazi pokažu da se takva uporaba ne širi."
+      ],
+      "falsification_en": [
+        "The scenario weakens if regulation or operational evidence shows that such use is not expanding."
+      ]
+    }
+  ]
+}
