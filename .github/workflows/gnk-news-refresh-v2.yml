@@ -16,6 +16,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: gnk-asg-main-mutation
@@ -81,6 +82,7 @@ jobs:
           NODE
 
       - name: Commit refreshed news data
+        id: commit
         if: steps.control.outputs.should_run == 'true'
         run: |
           set -euo pipefail
@@ -95,6 +97,8 @@ jobs:
             apps/portal/gnk-aktual/index.html
           if git diff --cached --quiet; then
             echo "No news data changes to commit."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           else
             git commit -m "Refresh GNK ASG news feed"
 
@@ -111,7 +115,22 @@ jobs:
             # Final compare-and-swap guard: a normal non-force push is rejected
             # if another writer moves main after the check above.
             git push origin HEAD:main
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Dispatch exact-SHA production deploy
+        if: steps.control.outputs.should_run == 'true' && steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          APPROVED_SHA: ${{ steps.commit.outputs.sha }}
+        run: |
+          set -euo pipefail
+          gh workflow run deploy-admin-auth-v6.yml \
+            --repo "$GITHUB_REPOSITORY" \
+            --ref main \
+            -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
+            -f approved_sha="$APPROVED_SHA"
 
 # P0 2026-09-16: retrigger canonical producer after stale-output incident; no parallel fallback writer.
 # 2026-10-05: canonical input-path retrigger also provides safe post-race recovery on current main.
