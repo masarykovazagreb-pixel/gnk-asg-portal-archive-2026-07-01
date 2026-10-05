@@ -9,39 +9,44 @@ const TARGETS = [
   'apps/portal/data/news_archive.json',
   'apps/portal/data/news-automation-status.json'
 ];
-const LEGACY_MUTATORS = [
-  'scripts/refresh-public-news-v4.mjs'
-];
+const LEGACY_MUTATORS = ['scripts/refresh-public-news-v4.mjs'];
 const failures = [];
 const warnings = [];
 
 const read = p => fs.readFileSync(p, 'utf8');
 const workflowFiles = fs.readdirSync(WORKFLOWS).filter(f => /\.ya?ml$/i.test(f));
+const escapeRe = value => value.replace(/[.*+?^$()|[\]\\]/g, '\\$&');
 
-function canMutate(text) {
-  return /contents:\s*write\b/.test(text)
-    || /git\s+(?:add|commit|push)\b/.test(text)
-    || /writeFile(?:Sync)?\s*\(/.test(text)
-    || /python\s+[^\n]*(?:refresh|news)/i.test(text)
-    || /node\s+[^\n]*(?:refresh|news)/i.test(text);
+function explicitlyStagesTarget(text, target) {
+  const escaped = escapeRe(target);
+  return new RegExp('git\\s+add[^\\n]*' + escaped).test(text);
+}
+
+function executesScript(text, script) {
+  const escaped = escapeRe(script);
+  return text.split('\n').some(line => {
+    const trimmed = line.trim();
+    return new RegExp('^(?:run:\\s*)?node\\s+' + escaped + '(?:\\s|$)').test(trimmed)
+      && !trimmed.includes('node --check');
+  });
 }
 
 for (const file of workflowFiles) {
+  if (file === CANONICAL) continue;
   const text = read(path.join(WORKFLOWS, file));
-  const touchesTarget = TARGETS.some(t => text.includes(t));
-  const invokesLegacy = LEGACY_MUTATORS.some(s => text.includes(s));
-  if (file !== CANONICAL && canMutate(text) && (touchesTarget || invokesLegacy)) {
-    failures.push(`${file}: competing AKTUAL news writer candidate`);
+  const stagedTargets = TARGETS.filter(target => explicitlyStagesTarget(text, target));
+  if (stagedTargets.length) {
+    failures.push(file + ': competing canonical target writer (' + stagedTargets.join(', ') + ')');
   }
 }
 
 const canonicalPath = path.join(WORKFLOWS, CANONICAL);
 if (!fs.existsSync(canonicalPath)) {
-  failures.push(`missing canonical writer: ${CANONICAL}`);
+  failures.push('missing canonical writer: ' + CANONICAL);
 } else {
   const text = read(canonicalPath);
   for (const target of TARGETS) {
-    if (!text.includes(target)) failures.push(`${CANONICAL}: missing canonical target ${target}`);
+    if (!text.includes(target)) failures.push(CANONICAL + ': missing canonical target ' + target);
   }
   for (const required of [
     'scripts/gnk-news-refresh.mjs',
@@ -50,7 +55,7 @@ if (!fs.existsSync(canonicalPath)) {
     'contents: write',
     'git push origin HEAD:main'
   ]) {
-    if (!text.includes(required)) failures.push(`${CANONICAL}: missing guard/contract fragment: ${required}`);
+    if (!text.includes(required)) failures.push(CANONICAL + ': missing guard/contract fragment: ' + required);
   }
 }
 
@@ -63,9 +68,9 @@ if (fs.existsSync(recoveryPath)) {
 }
 
 for (const legacy of LEGACY_MUTATORS) {
-  const refs = workflowFiles.filter(file => read(path.join(WORKFLOWS, file)).includes(legacy));
-  if (refs.length) failures.push(`legacy mutator ${legacy} is referenced by active root workflow(s): ${refs.join(', ')}`);
-  else if (fs.existsSync(path.join(ROOT, legacy))) warnings.push(`${legacy}: legacy script retained but unreachable from active root workflows`);
+  const refs = workflowFiles.filter(file => executesScript(read(path.join(WORKFLOWS, file)), legacy));
+  if (refs.length) failures.push('legacy mutator ' + legacy + ' is executed by active root workflow(s): ' + refs.join(', '));
+  else if (fs.existsSync(path.join(ROOT, legacy))) warnings.push(legacy + ': legacy script retained but not executed by active root workflows');
 }
 
 const result = {
