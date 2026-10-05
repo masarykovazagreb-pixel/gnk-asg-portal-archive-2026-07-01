@@ -54,46 +54,72 @@
       "date": "2026-10-05",
       "slot": 1,
       "type": "source-linked-media-commentary",
-      "working_topic": "Komentar na verificirani izvorni članak: monetarna politika i cijena kapitala",
+      "working_topic": "Komentar na Reuters: francuski fiskalni rizik, euro i cijena kapitala",
       "status": "source-review",
       "source_gate": {
         "source_packet_required": true,
-        "source_url": null,
-        "publisher": null,
-        "source_title": null,
-        "source_date": null,
-        "attribution": null,
-        "original_link": null,
-        "verified_facts": [],
-        "source_hashtags": null,
-        "hashtag_policy": "Hashtagovi se evidentiraju samo iz stvarnog source packeta; ne izvode se iz imena izdavača."
+        "source_url": "https://www.reuters.com/world/asia-pacific/dollar-holds-firm-french-fiscal-woes-keep-euro-back-foot-2026-10-05/",
+        "publisher": "Reuters",
+        "source_title": "Euro sinks to 17-month low as French fiscal woes spur contagion fears",
+        "source_date": "2026-10-05",
+        "attribution": "Reuters, 5. listopada 2026.; GNK ASG koristi samo atribuirane činjenice i originalni komentar.",
+        "original_link": "https://www.reuters.com/world/asia-pacific/dollar-holds-firm-french-fiscal-woes-keep-euro-back-foot-2026-10-05/",
+        "verified_facts": [
+          "Reuters izvještava da je euro u azijskom trgovanju pao do 1,1161 USD, na najnižu razinu u 17 mjeseci.",
+          "Reuters povezuje pritisak na euro s francuskim fiskalnim i političkim rizikom te širenjem prinosa francuskih obveznica prema njemačkima.",
+          "Tvrdnje o mogućoj zarazi eurozone i eventualnoj reakciji ECB-a tretiraju se kao tržišne procjene/scenariji, ne kao utvrđene činjenice."
+        ],
+        "source_hashtags": [],
+        "hashtag_policy": "U dostupnom Reuters source packetu nisu evidentirani hashtagovi; ne pripisivati ih publisheru."
       },
       "editorial_gate": "Nermin Sefić",
       "publication_rule": "Ne objavljivati bez stvarnog URL-a/source packeta, provjere činjenica, atribucije i ljudskog odobrenja.",
-      "full_text_copy_prohibited": true
+      "full_text_copy_prohibited": true,
+      "fact_comment_separation": {
+        "facts": "Tečaj, kretanje obvezničkog spread-a i Reutersom atribuirani tržišni podaci.",
+        "commentary": "GNK ASG može analizirati kako fiskalna fragmentacija mijenja cijenu kapitala i premiju rizika; ne predstavljati scenarij zaraze kao činjenicu."
+      },
+      "editorial_hashtags": [
+        "#GNKASG",
+        "#GNKASGdoo",
+        "#AKTUALMedia"
+      ]
     },
     {
       "id": "AK30-002",
       "date": "2026-10-05",
       "slot": 2,
       "type": "source-linked-media-commentary",
-      "working_topic": "Komentar na verificirani izvorni članak: AI infrastruktura i produktivnost",
+      "working_topic": "Komentar na Reuters: AI investicijski ciklus, produktivnost i financijski uvjeti",
       "status": "source-review",
       "source_gate": {
         "source_packet_required": true,
-        "source_url": null,
-        "publisher": null,
-        "source_title": null,
-        "source_date": null,
-        "attribution": null,
-        "original_link": null,
-        "verified_facts": [],
-        "source_hashtags": null,
-        "hashtag_policy": "Hashtagovi se evidentiraju samo iz stvarnog source packeta; ne izvode se iz imena izdavača."
+        "source_url": "https://www.reuters.com/technology/boj-says-ai-boom-may-have-eased-financial-conditions-warns-market-risks-2026-10-05/",
+        "publisher": "Reuters",
+        "source_title": "BOJ says AI boom may have eased financial conditions, warns of market risks",
+        "source_date": "2026-10-05",
+        "attribution": "Reuters, 5. listopada 2026.; izjava zamjenika guvernera Bank of Japan Shinichija Uchide atribuirana je govorniku.",
+        "original_link": "https://www.reuters.com/technology/boj-says-ai-boom-may-have-eased-financial-conditions-warns-market-risks-2026-10-05/",
+        "verified_facts": [
+          "Reuters prenosi Uchidinu ocjenu da je globalni AI boom kroz potražnju i rast cijena imovine mogao privremeno olabaviti financijske uvjete.",
+          "Uchida je upozorio na rizik tržišne korekcije ako očekivani profiti od AI ulaganja ne budu ostvareni.",
+          "Veza između AI ulaganja, produktivnosti, prirodne kamatne stope i buduće monetarne politike ostaje analitičko pitanje, a ne siguran ishod."
+        ],
+        "source_hashtags": [],
+        "hashtag_policy": "U dostupnom Reuters source packetu nisu evidentirani hashtagovi; ne pripisivati ih publisheru."
       },
       "editorial_gate": "Nermin Sefić",
       "publication_rule": "Ne objavljivati bez stvarnog URL-a/source packeta, provjere činjenica, atribucije i ljudskog odobrenja.",
-      "full_text_copy_prohibited": true
+      "full_text_copy_prohibited": true,
+      "fact_comment_separation": {
+        "facts": "Reutersom atribuirane Uchidine izjave i opis tržišnog mehanizma.",
+        "commentary": "GNK ASG može argumentirati da AI capex treba mjeriti realiziranom produktivnošću i novčanim tokom, uz jasno označavanje procjena."
+      },
+      "editorial_hashtags": [
+        "#GNKASG",
+        "#AKTUALMedia",
+        "#DigitalnaRadnaSnaga"
+      ]
     },
     {
       "id": "AK30-003",
@@ -5239,5 +5265,21 @@
       "terminology": "Worker / Workeri / Digitalna radna snaga; ne botovi.",
       "editorial_gate": "Nermin Sefić"
     }
-  ]
+  ],
+  "last_source_review": {
+    "reviewed_at": "2026-10-05T07:37:00+02:00",
+    "reviewed_items": [
+      "AK30-001",
+      "AK30-002"
+    ],
+    "reviewer_roles": [
+      "SOURCE SCOUT",
+      "SOURCE VERIFIER",
+      "FACT CHECKER",
+      "DOMAIN ANALYST",
+      "SAFETY/LEGAL REVIEW"
+    ],
+    "human_editorial_gate": "Nermin Sefić",
+    "note": "Modelirane Worker uloge; nema autonomnih vanjskih računa. Status ostaje source-review do ljudskog uredničkog odobrenja."
+  }
 }
