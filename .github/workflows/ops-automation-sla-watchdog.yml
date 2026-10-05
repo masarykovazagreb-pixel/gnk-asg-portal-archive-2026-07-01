@@ -1,6 +1,6 @@
 name: GNK ASG Automation SLA Watchdog
 
-# Read/verify twice daily, then dispatch ONLY the existing canonical writer when stale.
+# Read/verify hourly, then dispatch ONLY the existing canonical writer when stale.
 # This workflow never writes news, editorial content, blog state or mirror state itself.
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ on:
     paths:
       - '.github/workflows/ops-automation-sla-watchdog.yml'
   schedule:
-    - cron: '42 5,17 * * *'  # twice daily; Control Plane V2
+    - cron: '42 * * * *'  # hourly self-heal; canonical owners remain the only writers
 
 permissions:
   contents: read
@@ -183,6 +183,9 @@ jobs:
               observations.append('Editorial publisher: today success — ' + ', '.join(editorial_observations))
           else:
               observations.append('Editorial publisher: no verified success yet today (publisher schedule: ~10:20 Europe/Zagreb)')
+              if now_local.hour >= 11:
+                  observations.append('Editorial publisher: recovery dispatch after missed daily success')
+                  dispatch('editorial-scheduled-publish.yml')
 
           print('\nOBSERVATIONS')
           for row in observations:
