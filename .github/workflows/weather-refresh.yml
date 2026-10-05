@@ -19,6 +19,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: gnk-asg-main-mutation
@@ -42,6 +43,7 @@ jobs:
           node scripts/weather-refresh-v1.mjs
           node scripts/freshness-status-v2.mjs
       - name: Commit if changed
+        id: commit
         shell: bash
         run: |
           set -euo pipefail
@@ -51,6 +53,8 @@ jobs:
           git add apps/portal/data/weather-zagreb.json apps/portal/data/freshness-status.json
           if git diff --cached --quiet; then
             echo "Nema promjena."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           git commit -m "Weather: refresh Zagreb data"
@@ -66,3 +70,18 @@ jobs:
 
           # Normal non-force push is the final compare-and-swap guard.
           git push origin HEAD:main
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Dispatch exact-SHA production deploy
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          APPROVED_SHA: ${{ steps.commit.outputs.sha }}
+        run: |
+          set -euo pipefail
+          gh workflow run deploy-admin-auth-v6.yml \
+            --repo "$GITHUB_REPOSITORY" \
+            --ref main \
+            -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
+            -f approved_sha="$APPROVED_SHA"
