@@ -28,9 +28,9 @@ concurrency:
 
 jobs:
   publish:
-    # Fail closed: third-party publishing requires a separate explicit repository-level opt-in.
-    # Undefined/false keeps all external posting disabled while GNK ASG own-site publishing remains active.
-    if: vars.GNK_ASG_EXTERNAL_DISTRIBUTION == 'true'
+    # Approved editorial pushes to main distribute automatically to the four configured mirrors.
+    # Scheduled/manual catch-up remains controlled by the repository opt-in variable.
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || vars.GNK_ASG_EXTERNAL_DISTRIBUTION == 'true')
     name: Distribute published articles to Blogger, Dev.to, Tumblr and Telegraph
     runs-on: ubuntu-latest
     timeout-minutes: 45
