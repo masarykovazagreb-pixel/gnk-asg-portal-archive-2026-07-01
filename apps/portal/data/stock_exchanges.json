@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-10-06T20:08:38+00:00",
-  "updated_at": "2026-10-06T20:08:38+00:00",
+  "checked_at": "2026-10-07T14:24:20+00:00",
+  "updated_at": "2026-10-07T14:24:20+00:00",
   "status": "ok",
   "refresh_frequency": "Twice-daily automated reference check via the canonical market writer",
   "refresh_frequency_hr": "Automatska provjera dvaput dnevno kroz kanonski tržišni writer",
@@ -22,7 +22,7 @@
       "value": null,
       "change_percent": null,
       "points": [],
-      "checked_at": "2026-10-06T20:08:38+00:00"
+      "checked_at": "2026-10-07T14:24:20+00:00"
     },
     {
       "id": "crobex10",
@@ -38,7 +38,7 @@
       "value": null,
       "change_percent": null,
       "points": [],
-      "checked_at": "2026-10-06T20:08:38+00:00"
+      "checked_at": "2026-10-07T14:24:20+00:00"
     },
     {
       "id": "nyse",
@@ -51,9 +51,9 @@
       "delay_hr": "Javni informativni indeksni podatak; vrijednost može biti odgođena",
       "delay_en": "Public informational index data; value may be delayed",
       "official_url": "https://www.nyse.com/quote/index/NYA",
-      "checked_at": "2026-10-06T20:08:38+00:00",
-      "value": 23919.48,
-      "change_percent": -2.26,
+      "checked_at": "2026-10-07T14:24:20+00:00",
+      "value": 23687.36,
+      "change_percent": -3.21,
       "points": [
         [
           1788874200000,
@@ -137,12 +137,16 @@
         ],
         [
           1791293400000,
-          23919.47851562
+          23921.66992188
+        ],
+        [
+          1791379800000,
+          23687.36132812
         ]
       ],
       "currency": "USD",
-      "source_timestamp": "2026-10-06T13:30:00+00:00",
-      "last_successful_refresh_at": "2026-10-06T20:08:38+00:00"
+      "source_timestamp": "2026-10-07T13:30:00+00:00",
+      "last_successful_refresh_at": "2026-10-07T14:24:20+00:00"
     },
     {
       "id": "nasdaq",
@@ -155,9 +159,9 @@
       "delay_hr": "Javni informativni indeksni podatak; vrijednost može biti odgođena",
       "delay_en": "Public informational index data; value may be delayed",
       "official_url": "https://www.nasdaq.com/market-activity/index/comp",
-      "checked_at": "2026-10-06T20:08:38+00:00",
-      "value": 27599.79,
-      "change_percent": 4.46,
+      "checked_at": "2026-10-07T14:24:20+00:00",
+      "value": 27410.51,
+      "change_percent": 3.74,
       "points": [
         [
           1788874200000,
@@ -241,12 +245,16 @@
         ],
         [
           1791293400000,
-          27599.79101562
+          27599.7890625
+        ],
+        [
+          1791379800000,
+          27410.51171875
         ]
       ],
       "currency": "USD",
-      "source_timestamp": "2026-10-06T13:30:00+00:00",
-      "last_successful_refresh_at": "2026-10-06T20:08:38+00:00"
+      "source_timestamp": "2026-10-07T13:30:00+00:00",
+      "last_successful_refresh_at": "2026-10-07T14:24:20+00:00"
     }
   ],
   "errors": [],
