@@ -167,14 +167,16 @@ jobs:
           BLOG_BACKOFF_MS: '60000'
         run: node scripts/blog-publish-resilient-v1.mjs
 
-      - name: Dev.to mirror - accelerated English catch-up
+      - name: Dev.to mirror - resilient catch-up
         id: devto_publish
         if: env.DEVTO_CREDENTIAL_STATE == 'ok'
         continue-on-error: true
         env:
-          DEVTO_PER_RUN: '120'
-          DEVTO_PAUSE_MS: '10000'
-        run: node scripts/devto-publish-v1.mjs --live
+          DEVTO_PER_RUN: '6'
+          DEVTO_PAUSE_MS: '15000'
+          DEVTO_MAX_ATTEMPTS: '2'
+          DEVTO_BACKOFF_MS: '60000'
+        run: node scripts/devto-publish-resilient-v1.mjs --live
 
       - name: Tumblr mirror - verification / small catch-up
         id: tumblr_publish
