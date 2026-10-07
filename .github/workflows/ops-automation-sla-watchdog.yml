@@ -71,15 +71,28 @@ jobs:
                   raw = res.read()
                   return json.loads(raw) if raw else {}
 
-          def latest_success(workflow):
+          def completed_runs(workflow):
               workflow_q = urllib.parse.quote(workflow, safe='')
               payload = request_json(f'{api}/actions/workflows/{workflow_q}/runs?status=completed&per_page=20')
-              for run in payload.get('workflow_runs', []):
+              return payload.get('workflow_runs', [])
+
+          def run_stamp(run):
+              if not run:
+                  return None
+              stamp = run.get('updated_at') or run.get('created_at')
+              return datetime.fromisoformat(stamp.replace('Z', '+00:00')) if stamp else None
+
+          def latest_success(workflow):
+              for run in completed_runs(workflow):
                   if run.get('conclusion') == 'success':
-                      stamp = run.get('updated_at') or run.get('created_at')
+                      stamp = run_stamp(run)
                       if stamp:
-                          return datetime.fromisoformat(stamp.replace('Z', '+00:00')), run
+                          return stamp, run
               return None, None
+
+          def latest_completed(workflow):
+              runs = completed_runs(workflow)
+              return runs[0] if runs else None
 
           _dispatched = set()
           def dispatch(workflow, inputs=None):
@@ -98,15 +111,23 @@ jobs:
 
           def ensure_age(workflow, soft_minutes, hard_minutes, label, inputs=None):
               stamp, run = latest_success(workflow)
+              latest = latest_completed(workflow)
               if not stamp:
-                  failures.append(f'{label}: no successful run found')
                   dispatch(workflow, inputs)
+                  if latest and latest.get('conclusion') not in (None, 'success'):
+                      failures.append(f'{label}: no successful run; latest completed run is {latest.get("conclusion")}')
+                  else:
+                      observations.append(f'{label}: no successful run yet — recovery dispatched')
                   return
               age = (now - stamp).total_seconds() / 60
               observations.append(f'{label}: last success {age:.1f} min ago (run #{run.get("run_number")})')
               if age > hard_minutes:
-                  failures.append(f'{label}: hard-stale {age:.1f} min > {hard_minutes} min')
                   dispatch(workflow, inputs)
+                  latest_stamp = run_stamp(latest)
+                  if latest and latest.get('conclusion') not in (None, 'success') and latest_stamp and latest_stamp > stamp:
+                      failures.append(f'{label}: hard-stale {age:.1f} min and latest recovery is {latest.get("conclusion")}')
+                  else:
+                      observations.append(f'{label}: hard-stale {age:.1f} min > {hard_minutes} min — recovery dispatched; next run proves recovery')
               elif age > soft_minutes:
                   observations.append(f'{label}: soft-stale {age:.1f} min > {soft_minutes} min — recovery dispatched')
                   dispatch(workflow, inputs)
@@ -125,8 +146,13 @@ jobs:
               if int(status.get('public_items_written') or 0) < 50:
                   failures.append(f'AKTUAL public feed too small: {status.get("public_items_written")}')
               if age > 290:
-                  failures.append(f'AKTUAL data stale {age:.1f} min > 290 min SLA')
+                  latest = latest_completed('gnk-news-refresh-v2.yml')
+                  latest_stamp = run_stamp(latest)
                   dispatch('gnk-news-refresh-v2.yml')
+                  if latest and latest.get('conclusion') not in (None, 'success') and latest_stamp and latest_stamp > stamp.astimezone(timezone.utc):
+                      failures.append(f'AKTUAL data stale {age:.1f} min and latest canonical run is {latest.get("conclusion")}')
+                  else:
+                      observations.append(f'AKTUAL data stale {age:.1f} min > 290 min SLA — canonical recovery dispatched')
           except Exception as exc:
               failures.append(f'AKTUAL status unreadable: {exc}')
               dispatch('gnk-news-refresh-v2.yml')
@@ -147,18 +173,15 @@ jobs:
                   failures.append(f'{label}: live check failed: {exc}')
 
           # 3) Canonical writer/control SLAs. A stale check dispatches the EXISTING owner only.
-          #    Debounce rule: below the HARD limit (failure) the watchdog dispatches recovery but
-          #    stays GREEN, because the canonical writer simply hasn't had its next scheduled
-          #    chance yet (the watchdog runs at :42, several refresh jobs at :55-:17). Going red
-          #    on soft staleness was a false alarm (see docs/ROADMAP-2026-09-23.md B1).
+          #    First recovery dispatch stays GREEN when the prior known state was valid.
+          #    RED is reserved for invalid live/data state or evidence that the latest
+          #    canonical recovery already failed after the last success.
           ensure_age('gnk-news-refresh-v2.yml', 350, 430, 'AKTUAL canonical refresh')
           ensure_age('weather-refresh.yml', 390, 480, 'Zagreb weather refresh')
           ensure_age('gnk-seo-nightly-audit.yml', 1740, 2400, 'Nightly SEO/IndexNow audit')
 
-          # 4) Daily editorial must have a successful run today. The publisher runs on its own
-          #    schedule; we only verify that today's scheduled run produced a success before
-          #    flagging anything. A missing run is reported as an OBSERVATION (no forced dispatch)
-          #    because the diagnostic path belongs to the scheduled cadence itself.
+          # 4) Daily editorial must have a successful run today. After 11:00 Europe/Zagreb,
+          #    a missing verified success dispatches the existing canonical publisher once.
           editorial_today_success = False
           editorial_observations = []
           for run_url in (f'{api}/actions/workflows/editorial-scheduled-publish.yml/runs?per_page=5',
@@ -198,7 +221,7 @@ jobs:
               print('\nSLA FAILURES')
               for row in failures:
                   print('-', row)
-              print('\nCanonical recovery was dispatched where applicable. This run remains RED by design; the next watchdog must prove recovery.')
+              print('\nWatchdog is RED only for invalid live/data state or a canonical owner whose latest recovery already failed.')
               sys.exit(1)
 
           print('\nALL AUTOMATION SLA CHECKS PASS')
@@ -209,9 +232,9 @@ jobs:
         run: |
           echo '## GNK ASG Automation SLA Watchdog' >> "$GITHUB_STEP_SUMMARY"
           echo '- AKTUAL freshness target: **<= 290 min**' >> "$GITHUB_STEP_SUMMARY"
-          echo '- Canonical AKTUAL run: soft **<= 350 min** (recover+green) / hard **> 430 min** (red)' >> "$GITHUB_STEP_SUMMARY"
-          echo '- Zagreb weather: soft **<= 390 min** (recover+green) / hard **> 480 min** (red)' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Canonical AKTUAL run: soft **<= 350 min**; stale dispatches recovery; red only after failed recovery/invalid state' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Zagreb weather: soft **<= 390 min**; stale dispatches recovery; red only after failed recovery/invalid state' >> "$GITHUB_STEP_SUMMARY"
           echo '- External distribution: **not dispatched by watchdog**' >> "$GITHUB_STEP_SUMMARY"
           echo '- Nightly SEO/IndexNow: soft **<= 1740 min** / hard **> 2400 min**' >> "$GITHUB_STEP_SUMMARY"
-          echo '- Editorial: **verified success today** (observation, no forced dispatch)' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Editorial: **verified success today**; after 11:00 a missing success dispatches the canonical publisher' >> "$GITHUB_STEP_SUMMARY"
           echo '- Recovery policy: **dispatch canonical owner only, debounced once per run; watchdog never becomes a second writer**' >> "$GITHUB_STEP_SUMMARY"
