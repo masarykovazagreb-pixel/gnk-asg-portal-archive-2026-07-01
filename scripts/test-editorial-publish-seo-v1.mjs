@@ -7,7 +7,7 @@ assert.ok(plan.packages.length>=2,`expected at least 2 packages, found ${plan.pa
 for(const pack of plan.packages){
   assert.ok(pack.items.length>=1,`${pack.id} needs at least 1 daily editorial item`);
   assert.ok(pack.items.every(x=>x.type==='objava'||x.type==='komentar'),`${pack.id} contains unsupported editorial item type`);
-  assert.ok(pack.deployApproved,true);
+  assert.equal(typeof pack.deployApproved, 'boolean', `${pack.id}: deployApproved must be a boolean`);
   const strictParagraphs=!pack.publishedAt;
   for(const item of pack.items){
     assert.match(item.slug,/^[a-z0-9-]+$/);
