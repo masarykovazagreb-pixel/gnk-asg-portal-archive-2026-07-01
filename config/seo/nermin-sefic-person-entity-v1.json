@@ -1,0 +1,18 @@
+{
+  "version": "GNK_ASG_PERSON_ENTITY_SEO_V1",
+  "canonicalName": "Nermin Sefić",
+  "asciiName": "Nermin Sefic",
+  "preferredHashtag": "#NerminSefic",
+  "variants": ["#NerminSefic", "#nerminsefic", "#NerminSefić", "#Nermin_Sefic"],
+  "policy": {
+    "appliesTo": ["historical editorial archive", "new editorial content", "author profile"],
+    "preserveExistingTopicTags": true,
+    "deduplicateTags": true,
+    "doNotInventAuthorship": true,
+    "authorSchemaOnlyIfVerified": true,
+    "publisherSchemaOnlyIfVerified": true,
+    "doNotInsertIrrelevantHashtagsIntoBody": true,
+    "maxPersonHashtagsPerArticle": 2,
+    "noFalseIndexationClaims": true
+  }
+}
