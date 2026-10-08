@@ -19,7 +19,7 @@ function baseItem(overrides = {}) {
     seoTitle: 'Testna objava | GNK ASG',
     description: 'Testni meta opis uredničkog sadržaja.',
     summary: 'Testni sažetak uredničkog sadržaja.',
-    image: '/assets/nermin-sefic/testna-fotografija.webp',
+    image: '/assets/logo-gnk-asg-canonical.svg',
     paragraphs: [words(3000)],
     links: ['/objave/', '/komentari/', '/analize/', '/nermin-sefic/', '/projekti/'],
     ...overrides,
@@ -61,6 +61,18 @@ runCase('pass-publication-500', {
   item: baseItem({ paragraphs: [words(500)] }),
   expectedStatus: 0,
   expectedMarker: /EDITORIAL_CONTENT_POLICY_OK/,
+});
+
+runCase('fail-missing-hero-image', {
+  item: baseItem({ paragraphs: [words(500)], image: '/assets/gallery/does-not-exist-editorial.webp' }),
+  expectedStatus: 1,
+  expectedMarker: /hero image asset missing or unsafe/,
+});
+
+runCase('fail-unsafe-hero-image', {
+  item: baseItem({ paragraphs: [words(500)], image: '/../package.json' }),
+  expectedStatus: 1,
+  expectedMarker: /hero image asset missing or unsafe/,
 });
 
 runCase('fail-publication-499', {
