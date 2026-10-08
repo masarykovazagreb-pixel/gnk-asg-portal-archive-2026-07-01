@@ -171,7 +171,20 @@ for (const pack of plan.packages || []) {
       if (!item.seoTitle || !String(item.seoTitle).trim()) addError(pack.id, item, 'missing SEO title');
       if (!item.description || !String(item.description).trim()) addError(pack.id, item, 'missing meta description');
       if (!item.summary || !String(item.summary).trim()) addError(pack.id, item, 'missing summary');
-      if (!item.image || !String(item.image).startsWith('/')) addError(pack.id, item, 'missing local image path');
+      if (!item.image || !String(item.image).startsWith('/')) {
+        addError(pack.id, item, 'missing local image path');
+      } else {
+        // A syntactically valid URL is not evidence that the hero image exists.
+        // Fail closed before publishing rather than shipping a broken card/OG image.
+        const imagePath = String(item.image);
+        const portalRoot = path.resolve(ROOT, 'apps/portal');
+        const assetPath = path.resolve(portalRoot, '.' + imagePath);
+        if (imagePath.includes('?') || imagePath.includes('#')
+          || !assetPath.startsWith(portalRoot + path.sep)
+          || !fs.existsSync(assetPath) || !fs.statSync(assetPath).isFile()) {
+          addError(pack.id, item, 'hero image asset missing or unsafe: ' + imagePath);
+        }
+      }
       const minimumWords = minimumWordsForType(type);
       if (wordCount < minimumWords) addError(pack.id, item, `body has ${wordCount} words; minimum is ${minimumWords}`);
       if (internalLinks.length < MIN_INTERNAL_LINKS) addError(pack.id, item, `has ${internalLinks.length} unique internal links; minimum is ${MIN_INTERNAL_LINKS}`);
