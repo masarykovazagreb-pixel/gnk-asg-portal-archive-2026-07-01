@@ -1,0 +1,24 @@
+name: MASTER ASG Autonomous Agent Guard
+
+on:
+  pull_request:
+    paths:
+      - 'config/control-plane/**'
+      - 'scripts/master-asg-agent-preflight-v1.mjs'
+      - '.github/workflows/master-asg-autonomous-agent-v1.yml'
+      - 'apps/portal/data/freshness-status.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Validate autonomous-agent guardrails
+        run: node scripts/master-asg-agent-preflight-v1.mjs
