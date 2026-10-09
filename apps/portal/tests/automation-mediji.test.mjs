@@ -79,11 +79,13 @@ test('media: errors or non-ok status become error, missing data becomes unknown'
   assert.equal(M.monitorState({ status: 'ok', updated_at: '2026-05-31T19:00:00Z', errors_count: 0 }, Date.parse('2026-06-10T00:00:00Z')).state, 'fresh');
 });
 
-test('media: query summary counts the real configuration and approved list is empty', () => {
+test('media: query summary counts the real configuration; approvals are recorded', () => {
   const q = M.queriesSummary(mediaQueries);
   assert.equal(q.subjectCount, 3);
   assert.equal(q.queryCount, 8);
-  assert.equal(M.approvedCount(approved), 0, 'nothing is publicly shown without manual approval');
+  // Owner approved all author-box articles on 2026-10-09 (see approved_mentions.json).
+  assert.equal(M.approvedCount(approved), approved.approved_urls.length);
+  assert.ok(approved.approved_by && approved.approved_on, 'approval must name approver and date');
 });
 
 test('pages: strict CSP and no inline executable script on both pages', () => {

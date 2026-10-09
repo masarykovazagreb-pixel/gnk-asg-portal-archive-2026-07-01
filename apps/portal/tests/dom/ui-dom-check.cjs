@@ -151,7 +151,7 @@ const text = (dom, id) => $(dom, id).textContent;
   ok(/Stanje: (Zastarjelo|Ažurno)/.test(text(md, 'overall')), 'MED: state rendered', text(md, 'overall'));
   ok(/Subjekata \/ upita/.test(text(md, 'stats')) && /3 \/ 8/.test(text(md, 'stats')), 'MED: 3 subjects, 8 queries');
   ok(md.window.document.querySelectorAll('#subjects li').length === 3, 'MED: subjects listed');
-  ok(/Odobrenih objava na javnom popisu: 0/.test(text(md, 'approved')), 'MED: zero public approvals stated');
+  ok(/Odobrenih objava na javnom popisu: 433/.test(text(md, 'approved')), 'MED: approvals count matches approved_mentions.json');
   md.window.close();
 
   // ---------- Automatizacija
