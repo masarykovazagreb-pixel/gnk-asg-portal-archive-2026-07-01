@@ -123,7 +123,7 @@ test('ratchet: duplicate title groups and long titles do not grow', () => {
   const dupGroups = [...groups.values()].filter((n) => n > 1).length;
   const longTitles = indexable.filter((p) => p.title && p.title.length > 60).length;
   assert.ok(dupGroups <= 6, `duplicate title groups grew to ${dupGroups} (max 6)`);
-  assert.ok(longTitles <= 417, `titles over 60 chars grew to ${longTitles} (max 417)`);
+  assert.ok(longTitles <= 110, `titles over 60 chars grew to ${longTitles} (max 110)`);
 });
 
 test('sadrzaj hub links only to existing section pages', () => {
