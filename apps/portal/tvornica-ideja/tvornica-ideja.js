@@ -7,7 +7,7 @@
   'use strict';
 
   const AREAS = ['Podaci', 'Sadržaj', 'Provjera', 'Pristupačnost', 'SEO', 'Sigurnost', 'Razvoj'];
-  const STATUSES = ['nacrt', 'predloženo', 'odobreno', 'odbijeno'];
+  const STATUSES = ['otvoreno', 'gotovo', 'nacrt', 'predloženo', 'odobreno', 'odbijeno'];
   const TITLE_MIN = 5;
   const TITLE_MAX = 120;
   const ROUTE_RE = /^\/[a-z0-9_\/-]*\/$/;
@@ -65,7 +65,12 @@
         byArea[i.area] = (byArea[i.area] || 0) + 1;
       }
     }
-    return { total: list.length, valid, invalid: list.length - valid, byArea };
+    const byStatus = {};
+    for (const i of list) {
+      const v = validate(i);
+      if (v.ok) byStatus[i.status || 'bez-statusa'] = (byStatus[i.status || 'bez-statusa'] || 0) + 1;
+    }
+    return { total: list.length, valid, invalid: list.length - valid, byArea, byStatus };
   }
 
   return { AREAS, STATUSES, validate, score, rank, summarize };
