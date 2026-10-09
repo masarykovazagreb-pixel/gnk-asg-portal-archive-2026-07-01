@@ -36,6 +36,19 @@ const jsonLd=JSON.stringify({
   }))
 }).replace(/</g,'\\u003c');
 
+const webPageLd=JSON.stringify({
+  '@context':'https://schema.org',
+  '@type':'WebPage',
+  '@id':'https://gnk-asg.hr/en/knowledge-center/',
+  url:'https://gnk-asg.hr/en/knowledge-center/',
+  name:'FAQ and AI Knowledge Center | GNK ASG',
+  description:'Public and verifiable information',
+  inLanguage:'en',
+  isPartOf:{'@id':'https://gnk-asg.hr/#website'},
+  about:{'@id':'https://gnk-asg.hr/nermin-sefic/#person'},
+  publisher:{'@id':'https://gnk-asg.hr/#organization'}
+}).replace(/</g,'\\u003c');
+
 const details=qa.map(x=>{
   const page=x.pagePath?` <a class="kc-page-link" href="${esc(x.pagePath)}">Page: ${esc('gnk-asg.hr'+x.pagePath)}</a>`:'';
   return `<details data-kc-item data-search="${esc((x.q+' '+x.a+' '+(x.pagePath||'')).toLowerCase())}"><summary>${esc(x.q)}</summary><p>${esc(x.a)}${page}</p></details>`;
@@ -75,6 +88,9 @@ const html=`<!doctype html>
 <style>
 .faq-search{margin:0 0 18px}.faq-search label{display:block;margin:0 0 6px;color:#b88a2f;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase}.faq-search input{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(184,138,47,.35);background:rgba(11,18,32,.7);color:#f7f1e5;font-size:.95rem}.faq-search input:focus{outline:none;border-color:#d5ad54}.faq-results{margin:8px 0 0;color:#8d8577;font-size:.82rem;min-height:1em}.faq{display:grid;gap:12px;margin:24px 0}.faq details{border:1px solid #3b3120;border-radius:16px;background:#11100d;padding:0 18px}.faq summary{cursor:pointer;font-weight:800;padding:18px 0;color:#e8cf91}.faq details p{margin:0 0 18px;color:#c9c2b5;line-height:1.65}.kc-page-link{display:inline-block;margin-left:.35em;color:#d8b66a;text-decoration:underline;text-underline-offset:3px}.faq details[hidden]{display:none}.notice{border-left:4px solid #d8b66a;padding:14px 18px;background:#15120d;border-radius:12px}.kc-meta{color:#8d8577;font-size:.9rem}
 </style>
+<script type="application/ld+json">${webPageLd}</script>
+<link rel="alternate" type="application/rss+xml" title="GNK ASG RSS" href="/en/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="GNK ASG Atom" href="/en/atom.xml">
 </head>
 <body>
 <header id="gnk-unified-header" data-gnk-unified-shell="v6-static"><div class="inner"><a class="brand" href="/en/" aria-label="GNK ASG"><img src="/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64" alt="GNK ASG" width="110" height="68" data-gnk-canonical-logo="1"></a><div id="gnk-unified-menu"><div class="actions"><div class="lang"><a href="/knowledge-center/" aria-label="Hrvatski">HR</a><a href="/en/knowledge-center/" aria-label="English" aria-current="page">EN</a></div><button class="toggle" type="button" aria-expanded="false" aria-controls="gnk-unified-nav">MENU</button></div><nav id="gnk-unified-nav"></nav></div></div></header>
