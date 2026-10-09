@@ -21,16 +21,22 @@ const writeIfChanged=(file,content)=>{const before=fs.existsSync(file)?fs.readFi
 // da cron ne padne zbog starih paketa). Autorski okvir prikazuje se samo za
 // stavke navedene u data/approved_mentions.json.
 const BRAND_TAG='#GNKASG';
-const AUTHOR_TAG='#NerminSefić';
+const AUTHOR_TAGS=['#NerminSefić','#NerminSefic'];
 const foldText=t=>String(t).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 const isNameToken=t=>/nermin|sefic|dinamo/.test(foldText(t).replace(/[^a-z]/g,''));
 const APPROVED_MENTIONS_FILE=path.join(ROOT,'data/approved_mentions.json');
-const APPROVED_MENTIONS=(()=>{
-  if(!fs.existsSync(APPROVED_MENTIONS_FILE))return new Set();
+const APPROVED_MENTIONS_DATA=(()=>{
+  if(!fs.existsSync(APPROVED_MENTIONS_FILE))return {scope:null,keys:new Set()};
   const source=JSON.parse(fs.readFileSync(APPROVED_MENTIONS_FILE,'utf8'));
-  return new Set((source.approved_items||[]).map(x=>typeof x==='string'?x:(x.slug||x.route||x.id||'')).filter(Boolean));
+  const keys=new Set();
+  for(const x of [...(source.approved_items||[]),...(source.approved_urls||[])]){
+    const v=typeof x==='string'?x:(x.slug||x.route||x.url||x.id||'');
+    if(v)keys.add(v.replace(/^https?:\/\/gnk-asg\.hr/,'').replace(/^\/en\//,'/'));
+  }
+  return {scope:source.approved_scope||null,keys};
 })();
-const isApprovedMention=item=>APPROVED_MENTIONS.has(item.slug)||APPROVED_MENTIONS.has(routeFor(item));
+// Vlasnik je odobrio autorski okvir za sve članke (approved_scope); pojedinačni popis je dodatni način.
+const isApprovedMention=item=>APPROVED_MENTIONS_DATA.scope==='all_articles_with_author_box'||APPROVED_MENTIONS_DATA.keys.has(item.slug)||APPROVED_MENTIONS_DATA.keys.has(routeFor(item));
 const hashtagsFor=item=>{
   const source=Array.isArray(item.hashtags)&&item.hashtags.length?item.hashtags:[...(item.keywords||[]),item.section].filter(Boolean);
   const seen=new Set([foldText(BRAND_TAG)]);
@@ -46,7 +52,7 @@ const hashtagsFor=item=>{
     if(topics.length===9)break;
   }
   // Jedna kanonska oznaka autora, samo za stavke odobrene u approved_mentions.json.
-  const head=isApprovedMention(item)?[BRAND_TAG,AUTHOR_TAG]:[BRAND_TAG];
+  const head=isApprovedMention(item)?[BRAND_TAG,...AUTHOR_TAGS]:[BRAND_TAG];
   return [...head,...topics].join(' ');
 };
 const AUTHOR_BOX_HTML=item=>`<aside class="article-author"><img src="${AUTHOR_IMAGE}" alt="Nermin Sefić — autor teksta ${esc(item.title)}" width="320" height="320" loading="eager"><div><span>Autor</span><strong>Nermin Sefić</strong><a href="/nermin-sefic/">Profil autora</a><small>GNK ASG · GNK DINAMO Ltd. USA Group</small></div></aside>`;
