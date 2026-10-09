@@ -7,6 +7,7 @@ on:
     paths:
       - '.github/workflows/publication-sitemap-registry-gate.yml'
       - 'scripts/validate_publication_sitemap_registry_v1.py'
+      - 'scripts/editorial-registry-v1.mjs'
       - 'scripts/generate-editorial-sitemap-v2.mjs'
       - 'scripts/lib/publication-gate-v2.mjs'
       - 'scripts/validate-workflow-schedule-allowlist-v2.py'
@@ -21,6 +22,9 @@ on:
       - 'apps/portal/publications/**'
       - 'apps/portal/comments/**'
       - 'apps/portal/analysis/**'
+      - 'apps/portal/en/publications/**'
+      - 'apps/portal/en/commentary/**'
+      - 'apps/portal/en/analyses/**'
 
 permissions:
   contents: read
@@ -38,10 +42,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Reproduce canonical editorial sitemap
+      - name: Reproduce canonical editorial registry and sitemap
         run: |
+          cp apps/portal/data/editorial-registry.json "$RUNNER_TEMP/editorial-registry.json"
           cp apps/portal/editorial-sitemap.xml "$RUNNER_TEMP/editorial-sitemap.xml"
           cp apps/portal/sitemap-index.xml "$RUNNER_TEMP/sitemap-index.xml"
+          node scripts/editorial-registry-v1.mjs
+          diff -u "$RUNNER_TEMP/editorial-registry.json" apps/portal/data/editorial-registry.json
           node scripts/generate-editorial-sitemap-v2.mjs
           diff -u "$RUNNER_TEMP/editorial-sitemap.xml" apps/portal/editorial-sitemap.xml
           diff -u "$RUNNER_TEMP/sitemap-index.xml" apps/portal/sitemap-index.xml
