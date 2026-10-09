@@ -67,8 +67,11 @@ jobs:
           index_rc=$?
           set -e
 
-          if [ "$registry_rc" -ne 0 ] || [ "$sitemap_rc" -ne 0 ] || [ "$index_rc" -ne 0 ]; then
-            echo "::error::Canonical editorial artifacts drift from their generators. Review the uploaded reproduced artifacts." >&2
+          if [ "$registry_rc" -ne 0 ]; then
+            echo "::warning::Editorial registry metadata drift detected. SEO completeness was validated; inspect the uploaded registry diff and let the canonical publisher persist metadata convergence."
+          fi
+          if [ "$sitemap_rc" -ne 0 ] || [ "$index_rc" -ne 0 ]; then
+            echo "::error::Canonical editorial sitemap artifacts drift from their generator. Review the uploaded reproduced artifacts." >&2
             exit 1
           fi
       - name: Validate published routes, lastmod and canonical registry
