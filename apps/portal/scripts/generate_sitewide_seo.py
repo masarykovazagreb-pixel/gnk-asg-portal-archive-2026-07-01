@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import re
 
 ROOT = Path(__file__).resolve().parents[3]
 REQUIRED_FILES = (
@@ -16,17 +17,25 @@ SITEMAP_ENTRIES = (
     ("https://gnk-asg.hr/editor-desk/", "2026-07-15", "daily", "0.8"),
 )
 FORBIDDEN_SITEMAP_URLS = (
-    # Digital Workforce was intentionally made public/indexable
-    # (noindex gate removed, canonical + hreflang set) earlier this
-    # session -- it belongs in the sitemap now. Kept this tuple (empty)
-    # rather than removing the whole mechanism, so any future
-    # legitimately-forbidden route can still be added here.
+    "https://gnk-asg.hr/control/",
+    "https://gnk-asg.hr/automation-status/",
+    "https://gnk-asg.hr/admin/",
+    "https://gnk-asg.hr/operator-dashboard/",
+    "https://gnk-asg.hr/operator-mobile/",
+    "https://gnk-asg.hr/mail-studio/",
+    "https://gnk-asg.hr/webmail/",
+    "https://gnk-asg.hr/campaign-mailer/",
 )
 
 
 def ensure_sitemap_entries() -> None:
     sitemap_path = ROOT / "apps/portal/sitemap.xml"
     text = sitemap_path.read_text(encoding="utf-8")
+    removed = 0
+    for url in FORBIDDEN_SITEMAP_URLS:
+        pattern = re.compile(r'\s*<url>\s*<loc>' + re.escape(url) + r'</loc>[\s\S]*?</url>\s*')
+        text, count = pattern.subn("\n", text)
+        removed += count
     additions = []
     for url, lastmod, changefreq, priority in SITEMAP_ENTRIES:
         if url not in text:
@@ -37,7 +46,12 @@ def ensure_sitemap_entries() -> None:
     if additions:
         if "</urlset>" not in text:
             raise SystemExit("Site-wide SEO generation failed: sitemap.xml has no closing urlset tag.")
-        sitemap_path.write_text(text.replace("</urlset>", "\n".join(additions) + "\n</urlset>"), encoding="utf-8")
+        text = text.replace("</urlset>", "\n".join(additions) + "\n</urlset>")
+    if removed or additions:
+        sitemap_path.write_text(text, encoding="utf-8")
+    if removed:
+        print(f"Removed {removed} forbidden internal sitemap entries.")
+    if additions:
         print(f"Added {len(additions)} missing sitemap entries.")
 
 

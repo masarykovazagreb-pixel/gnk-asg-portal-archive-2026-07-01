@@ -89,7 +89,8 @@ function articleHtml(item,dateIso){
 function appendCard(indexPath,item){
   let html=fs.readFileSync(indexPath,'utf8'),route=routeFor(item);
   if(html.includes(`href="${route}"`))return false;
-  const card=`<article class="editorial-card"><img src="${AUTHOR_IMAGE}" alt="Nermin Sefić — ${esc(item.title)}"><p class="eyebrow">${esc(item.section)}</p><h2>${esc(item.title)}</h2><p>${esc(item.summary)}</p><a href="${route}">Otvori ${item.type==='objava'?'objavu':'komentar'} →</a></article>`;
+  const cardImage=item.image||AUTHOR_IMAGE;
+  const card=`<article class="editorial-card"><img src="${esc(cardImage)}" alt="${esc(item.title)} — naslovna ilustracija" title="${esc(item.title)}"><p class="eyebrow">${esc(item.section)}</p><h2>${esc(item.title)}</h2><p>${esc(item.summary)}</p><a href="${route}">Otvori ${item.type==='objava'?'objavu':'komentar'} →</a></article>`;
   const gridStart=html.indexOf('<section class="editorial-grid">');
   const gridEnd=gridStart>=0?html.indexOf('</section>',gridStart):-1;
   if(gridStart<0||gridEnd<0)throw new Error(`Editorial grid markers not found: ${indexPath}`);
@@ -108,7 +109,8 @@ function appendAktualCard(item,dateIso){
   const oldSegment=html.slice(a,b);
   const oldAnchor=(oldSegment.match(/<a class="ak-komentar-istaknuti"[\s\S]*?<\/a>/)||[])[0]||'';
   const oldCard=oldAnchor?oldAnchor.replace('class="ak-komentar-istaknuti"','class="ak-komentar-kartica"'):'';
-  const featured=`${start}<a class="ak-komentar-istaknuti" href="${route}"><img src="${AUTHOR_IMAGE}" alt="Nermin Sefić — ${esc(item.title)}" width="640" height="640"><div class="tijelo"><span class="oznaka">Novi autorski tekst · ${dateLabel(new Date(dateIso))}</span><h3>${esc(item.title)}</h3><p>${esc(item.summary||item.description)}</p></div></a></div>\n`;
+  const featuredImage=item.image||AUTHOR_IMAGE;
+  const featured=`${start}<a class="ak-komentar-istaknuti" href="${route}"><img src="${esc(featuredImage)}" alt="${esc(item.title)} — naslovna ilustracija" title="${esc(item.title)}"><div class="tijelo"><span class="oznaka">Novi autorski tekst · ${dateLabel(new Date(dateIso))}</span><h3>${esc(item.title)}</h3><p>${esc(item.summary||item.description)}</p></div></a></div>\n`;
   html=html.slice(0,a)+featured+html.slice(b);
   if(oldCard&&!html.includes(oldCard.replace('class="ak-komentar-kartica"','class="ak-komentar-kartica"'))){
     const open=grid;
