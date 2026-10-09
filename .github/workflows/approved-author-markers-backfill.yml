@@ -1,51 +1,54 @@
-name: Approved author marker backfill
+name: Approved author marker policy check
 
 on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/enforce-approved-author-markers-v1.mjs'
+      - 'scripts/editorial-publish-scheduled-v1.mjs'
+      - 'apps/portal/data/approved_mentions.json'
+      - 'apps/portal/objave/**'
+      - 'apps/portal/komentari/**'
+      - 'apps/portal/analize/**'
+      - 'apps/portal/en/publications/**'
+      - 'apps/portal/en/commentary/**'
+      - 'apps/portal/en/analyses/**'
+      - '.github/workflows/approved-author-markers-backfill.yml'
   push:
     branches: [main]
     paths:
       - 'scripts/enforce-approved-author-markers-v1.mjs'
       - 'scripts/editorial-publish-scheduled-v1.mjs'
       - 'apps/portal/data/approved_mentions.json'
+      - 'apps/portal/objave/**'
+      - 'apps/portal/komentari/**'
+      - 'apps/portal/analize/**'
+      - 'apps/portal/en/publications/**'
+      - 'apps/portal/en/commentary/**'
+      - 'apps/portal/en/analyses/**'
       - '.github/workflows/approved-author-markers-backfill.yml'
   workflow_dispatch:
 
 permissions:
-  contents: write
-
-concurrency:
-  group: gnk-asg-main-mutation
-  cancel-in-progress: false
+  contents: read
 
 jobs:
-  backfill:
+  validate:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: main
-          fetch-depth: 2
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Enforce active-portal author marker policy
+      - name: Reproduce approved author marker policy
         run: node scripts/enforce-approved-author-markers-v1.mjs
-      - name: Commit metadata and hashtag backfill
+      - name: Require reviewed portal output
         shell: bash
         run: |
           set -euo pipefail
-          if git diff --quiet -- apps/portal; then
-            echo "No author-marker backfill changes are required."
-            exit 0
+          if ! git diff --exit-code -- apps/portal; then
+            echo "::error::Approved author marker policy would change portal files. Commit those reviewed changes through this PR instead of mutating main." >&2
+            exit 1
           fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add apps/portal
-          git commit -m "Backfill approved author markers and remove author names from meta keywords"
-          git fetch origin main
-          if [ "$(git rev-parse HEAD^)" != "$(git rev-parse origin/main)" ]; then
-            echo "main moved before push; refusing to overwrite a newer snapshot"
-            exit 75
-          fi
-          git push origin HEAD:main
+          echo "Approved author marker policy is already satisfied."
