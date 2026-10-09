@@ -78,7 +78,9 @@ function articleHtml(item,dateIso){
   const ld={"@context":"https://schema.org","@type":item.type==='komentar'?'OpinionNewsArticle':'Article',headline:item.title,description:item.description,datePublished:dateIso,dateModified:dateIso,mainEntityOfPage:{"@type":"WebPage","@id":canonical},author:{"@type":"Person",name:author.name,url:author.url,image:author.image},publisher:{"@type":"Organization",name:"GNK ASG d.o.o.",url:"https://gnk-asg.hr/",logo:{"@type":"ImageObject",url:"https://gnk-asg.hr/assets/logo-gnk-asg-canonical.svg"}},image:[`https://gnk-asg.hr${topicImage}`,author.image],articleSection:item.section,keywords:normalizedKeywords,about:[{"@type":"Person","name":AUTHOR_NAME,"url":AUTHOR_URL},{"@type":"Organization","name":"GNK ASG d.o.o.","url":"https://gnk-asg.hr/"},{"@type":"Organization","name":GROUP_ENTITY}]};
   const headings=['Operativni kontekst','Ključna upravljačka odluka','Praktična primjena','Zaključak'];
   // item.headings (opcionalno): naslov za svaki odjeljak nakon prvog odlomka; prazan string = bez naslova.
-  const headingFor=i=>Array.isArray(item.headings)?(item.headings[i-1]||''):headings[Math.min(i-1,headings.length-1)];
+  // Zadani naslovi namjerno se ne ponavljaju nakon četvrte sekcije: dugi tekst bez
+  // uredničkih headinga smije ostati bez H2, ali ne smije generirati niz "Zaključak" naslova.
+  const headingFor=i=>Array.isArray(item.headings)?(item.headings[i-1]||''):(headings[i-1]||'');
   const body=(item.paragraphs||[]).map((p,i)=>`${i&&headingFor(i)?`<h2>${esc(headingFor(i))}</h2>`:''}<p>${esc(p)}</p>`).join('');
   const links=(item.links||[]).map(link=>`<li><a href="${esc(link)}">${esc(link)}</a></li>`).join('');
   const sources=(item.sources||[]).length?`<section class="article-sources"><h2>Referentni izvori</h2><ul>${item.sources.map(source=>`<li><a href="${esc(source.url)}" rel="nofollow noopener" target="_blank">${esc(source.name)}</a></li>`).join('')}</ul><p>Objava je originalna analiza; navedeni izvori služe kao referentna dokumentacija.</p></section>`:'';
