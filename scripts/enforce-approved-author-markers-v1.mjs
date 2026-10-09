@@ -5,7 +5,7 @@ const ROOT=path.resolve('apps/portal');
 const APPROVAL_FILE=path.join(ROOT,'data/approved_mentions.json');
 const CANONICAL_AUTHOR_TAGS=['#NerminSefić','#NerminSefic'];
 const fold=value=>String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
-const authorToken=value=>/\bnermin\b|\bsefic\b/.test(fold(value).replace(/[_-]+/g,' '));
+const authorToken=value=>/nermin|sefic/.test(fold(value).replace(/[^a-z]/g,''));
 const normalizePath=value=>{
   const raw=String(value||'').trim();
   if(!raw)return '';
