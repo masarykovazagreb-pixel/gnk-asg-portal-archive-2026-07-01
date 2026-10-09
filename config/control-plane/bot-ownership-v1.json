@@ -1,6 +1,6 @@
 {
   "version": "GNK_ASG_BOT_OWNERSHIP_V1",
-  "generatedFromMainSha": "31bae74a6e53e5c3d7d18912f7709aa46e93ae26",
+  "generatedFromMainSha": "bcdbea1f6ed63d16fc31f974ef6818be93bd54b4",
   "policy": {
     "principle": "one-path-one-canonical-writer",
     "prFirst": true,
@@ -26,7 +26,6 @@
     },
     "knownDirectMainBaseline": [
       "aeo-ai-visibility.yml",
-      "aktual-world-topic-promo.yml",
       "cleanup-campaign-mailer-remaining.yml",
       "content-queue-backfill.yml",
       "content-queue-publish.yml",
@@ -34,7 +33,6 @@
       "devto-mirror-publish.yml",
       "diagnose-media-projects-v1.yml",
       "editorial-scheduled-publish.yml",
-      "entity-seo-integrity.yml",
       "export-campaign-continuation-readonly.yml",
       "fix-image-dimensions.yml",
       "gnk-news-refresh-v2.yml",
@@ -533,6 +531,23 @@
       "prohibitions": [
         "repository writes",
         "parallel canonical news writer"
+      ]
+    },
+    {
+      "workflow": "approved-author-markers-backfill.yml",
+      "domain": "SEO_AEO",
+      "role": "auditor",
+      "cadence": "PR/main/manual validation",
+      "read": [
+        "apps/portal/data/approved_mentions.json",
+        "active editorial pages"
+      ],
+      "write": [],
+      "gate": "Approved author marker policy",
+      "handoff": "PR-first editorial or SEO change",
+      "prohibitions": [
+        "direct main push",
+        "repository mutation"
       ]
     }
   ],
