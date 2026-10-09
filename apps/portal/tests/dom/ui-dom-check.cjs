@@ -1,4 +1,4 @@
-const { JSDOM } = require('jsdom');
+const { JSDOM, VirtualConsole } = require('jsdom');
 const fs = require('fs');
 const path = require('path');
 const ROOT = path.resolve(__dirname, '..', '..');
@@ -7,9 +7,13 @@ function ok(cond, name, extra='') { if (cond) { pass++; console.log('PASS', name
 
 function load(rel, fetchMap = {}) {
   const file = path.join(ROOT, rel);
+  const vc = new VirtualConsole(); const errs = [];
+  vc.on('jsdomError', (e) => errs.push(String(e && e.message || e)));
   return JSDOM.fromFile(file, {
-    runScripts: 'dangerously', resources: 'usable', pretendToBeVisual: true,
+    runScripts: 'dangerously', resources: 'usable', pretendToBeVisual: true, virtualConsole: vc,
     beforeParse(window) {
+      // jsdom ne izlaže TextEncoder/TextDecoder u prozoru; preglednik ih ima
+      window.TextEncoder = TextEncoder; window.TextDecoder = TextDecoder;
       window.fetch = (url) => {
         const key = Object.keys(fetchMap).find(k => url.endsWith(k));
         if (!key) return Promise.resolve({ ok: false, status: 404, json: async () => ({}) });
@@ -17,7 +21,7 @@ function load(rel, fetchMap = {}) {
       };
     }
   }).then(dom => new Promise(res => {
-    const w = dom.window;
+    const w = dom.window; dom.__errs = errs;
     const done = () => setTimeout(() => res(dom), 150);
     if (w.document.readyState === 'complete') done(); else w.addEventListener('load', done);
   }));
@@ -117,6 +121,76 @@ const text = (dom, id) => $(dom, id).textContent;
   ok($(ti, 'ideas').textContent.includes('Nova ideja iz testa') && /Ocjena 6/.test($(ti, 'ideas').textContent), 'TI: user idea scored and shown');
   ok($(ti, 'ideas').querySelectorAll('a[href]').length >= 1, 'TI: linked routes rendered as anchors');
   ti.window.close();
+
+  // ---------- Laboratorij
+  let lab = await load('laboratorij/index.html');
+  ok(lab.window.document.querySelectorAll('section.lab-tool').length === 20, 'LAB: 20 tools rendered');
+  ok(lab.__errs.length === 0, 'LAB: no script errors', lab.__errs.join(' | '));
+  const labForm = lab.window.document.querySelector('#pdv-dodaj form');
+  labForm.querySelector('[name="neto"]').value = '100';
+  labForm.dispatchEvent(new lab.window.Event('submit', { cancelable: true, bubbles: true }));
+  ok(text(lab, 'pdv-dodaj--out') === 'Bruto: 125,00 EUR', 'LAB: PDV tool computes 125,00 EUR', text(lab, 'pdv-dodaj--out'));
+  const b64 = lab.window.document.querySelector('#base64-utf8 form');
+  b64.querySelector('[name="nacin"]').value = 'decode'; b64.querySelector('[name="tekst"]').value = 'Zm9v';
+  b64.dispatchEvent(new lab.window.Event('submit', { cancelable: true, bubbles: true }));
+  ok(text(lab, 'base64-utf8--out') === 'foo', 'LAB: base64 decode works', text(lab, 'base64-utf8--out'));
+  const hx = lab.window.document.querySelector('#hex-rgb form');
+  hx.querySelector('[name="hex"]').value = '#zzz';
+  hx.dispatchEvent(new lab.window.Event('submit', { cancelable: true, bubbles: true }));
+  ok(/^Greška: /.test(text(lab, 'hex-rgb--out')), 'LAB: invalid input shows reason', text(lab, 'hex-rgb--out'));
+  ok(lab.window.document.querySelectorAll('#alati h2').length === 6, 'LAB: 6 groups as headings', lab.window.document.querySelectorAll('#alati h2').length);
+  lab.window.close();
+
+  // ---------- Mediji
+  let md = await load('mediji/index.html', {
+    '../data/media_monitor_status.json': 'data/media_monitor_status.json',
+    '../data/media_queries.json': 'data/media_queries.json',
+    '../data/approved_mentions.json': 'data/approved_mentions.json' });
+  await new Promise(r => setTimeout(r, 300));
+  ok(md.__errs.length === 0, 'MED: no script errors', md.__errs.join(' | '));
+  ok(/Stanje: (Zastarjelo|Ažurno)/.test(text(md, 'overall')), 'MED: state rendered', text(md, 'overall'));
+  ok(/Subjekata \/ upita/.test(text(md, 'stats')) && /3 \/ 8/.test(text(md, 'stats')), 'MED: 3 subjects, 8 queries');
+  ok(md.window.document.querySelectorAll('#subjects li').length === 3, 'MED: subjects listed');
+  ok(/Odobrenih objava na javnom popisu: 0/.test(text(md, 'approved')), 'MED: zero public approvals stated');
+  md.window.close();
+
+  // ---------- Automatizacija
+  let au = await load('automation-status/index.html', {
+    '../data/news-automation-status.json': 'data/news-automation-status.json',
+    '../data/freshness-status.json': 'data/freshness-status.json' });
+  await new Promise(r => setTimeout(r, 300));
+  ok(au.__errs.length === 0, 'AUTO: no script errors', au.__errs.join(' | '));
+  ok(/Ukupno: /.test(text(au, 'overall')), 'AUTO: overall rendered', text(au, 'overall'));
+  ok(au.window.document.querySelectorAll('#rows tr').length === Object.keys(JSON.parse(fs.readFileSync(path.join(ROOT,'data/freshness-status.json'),'utf8')).resources).length, 'AUTO: one row per resource');
+  ok(/Motor/.test(text(au, 'news')) && /Europe\/Zagreb/.test(text(au, 'news')), 'AUTO: news facts rendered');
+  ok(!/Svježe \(|ok/.test(text(au, 'overall')) || !/stale|Zastarjelo/.test(text(au,'rows')), 'AUTO: no false OK');
+  au.window.close();
+
+  // ---------- Nermin Sefić: meta i strukturirani podaci
+  const nhtml = fs.readFileSync(path.join(ROOT, 'nermin-sefic/index.html'), 'utf8');
+  const nd = (nhtml.match(/name="description" content="([^"]*)"/) || [])[1] || '';
+  ok(nd.length > 0 && nd.length <= 160, 'NS: description length within 160', nd.length);
+  ok(!/#\S/.test(nd), 'NS: no hashtag in description');
+  ok(!/name="keywords"/.test(nhtml), 'NS: no keyword meta (stuffing removed)');
+  ok(!/"NN"/.test(nhtml), 'NS: placeholder alias removed');
+  const blocks = [...nhtml.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(m => m[1]);
+  let parsed = 0; for (const b of blocks) { JSON.parse(b); parsed++; }
+  ok(parsed === blocks.length && parsed > 0, 'NS: all JSON-LD blocks parse', parsed + '/' + blocks.length);
+  ok(/"dateModified":"2026-10-09"/.test(nhtml), 'NS: ProfilePage dateModified set');
+
+  // ---------- Sve stranice: nema neuhvaćenih grešaka skripti
+  for (const [page, data] of [
+    ['developer-tools/index.html', {}],
+    ['data-clinic/index.html', {}],
+    ['metodologije/index.html', { '../data/methodology_catalog.json': 'data/methodology_catalog.json' }],
+    ['status/index.html', { '../data/public_service_status.json': 'data/public_service_status.json' }],
+    ['tvornica-ideja/index.html', { '../data/idea_factory.json': 'data/idea_factory.json' }],
+  ]) {
+    const d = await load(page, data);
+    await new Promise(r => setTimeout(r, 200));
+    ok(d.__errs.length === 0, 'ALL: no script errors on ' + page, d.__errs.join(' | '));
+    d.window.close();
+  }
 
   console.log(`\nDOM checks: ${pass} passed, ${fail} failed`);
   process.exit(fail ? 1 : 0);

@@ -99,3 +99,17 @@ button.dt-secondary { background: #fff; color: var(--dt-accent); border: 1px sol
 input[type="file"] { margin: 6px 0; }
 input[type="search"] { width: 100%; font: inherit; border: 1px solid #aab4c3; border-radius: 6px; padding: 9px 11px; background: #fff; }
 .dt-table caption { text-align: left; padding-bottom: 6px; }
+
+/* Laboratorij, Mediji i Automatizacija */
+.dt-field { display: grid; gap: 6px; margin: 10px 0; }
+.dt-output { margin: 12px 0 0; padding: 10px 12px; border-left: 3px solid var(--gold, #d5b15f); background: rgba(255,255,255,.04); font-weight: 600; overflow-wrap: anywhere; }
+.dt-output.dt-error { border-left-color: #e5484d; color: #ffb4b6; font-weight: 500; }
+.dt-facts { display: grid; grid-template-columns: minmax(180px, max-content) 1fr; gap: 6px 16px; margin: 12px 0 0; }
+.dt-facts dt { font-weight: 700; opacity: .9; }
+.dt-facts dd { margin: 0; overflow-wrap: anywhere; }
+.dt-table-wrap { overflow-x: auto; }
+.lab-tool { scroll-margin-top: 90px; }
+[data-state="stale"] { color: #ffb4b6; }
+[data-state="fresh"] { color: #9fe3b2; }
+[data-state="error"] { color: #ffb4b6; }
+[data-state="unknown"] { opacity: .85; }
