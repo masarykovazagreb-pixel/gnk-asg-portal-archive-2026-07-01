@@ -25,10 +25,14 @@ REQUIRED_URLS = (
     "https://gnk-asg.hr/editor-desk/",
 )
 FORBIDDEN_SITEMAP_URLS = (
-    # Digital Workforce was intentionally made public/indexable
-    # earlier this session -- see the matching note in
-    # generate_sitewide_seo.py. Kept the (now empty) tuple so any
-    # future legitimately-forbidden route can still be added here.
+    "https://gnk-asg.hr/control/",
+    "https://gnk-asg.hr/automation-status/",
+    "https://gnk-asg.hr/admin/",
+    "https://gnk-asg.hr/operator-dashboard/",
+    "https://gnk-asg.hr/operator-mobile/",
+    "https://gnk-asg.hr/mail-studio/",
+    "https://gnk-asg.hr/webmail/",
+    "https://gnk-asg.hr/campaign-mailer/",
 )
 
 
