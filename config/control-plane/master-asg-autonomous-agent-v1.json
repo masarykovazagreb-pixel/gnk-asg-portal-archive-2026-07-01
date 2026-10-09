@@ -1,0 +1,30 @@
+{
+  "version": "MASTER_ASG_AUTONOMOUS_AGENT_V1",
+  "mode": "supervised-autonomy",
+  "mission": [
+    "stabilize canonical repository and runtime evidence",
+    "prioritize P0/P1/P2 operational risks",
+    "improve SEO, AEO, metadata, schema, entity, sitemap and attribution quality",
+    "monitor freshness and canonical writer ownership",
+    "prepare source-grounded editorial improvements through PR-first workflow"
+  ],
+  "guardrails": {
+    "prFirst": true,
+    "directMainWrites": false,
+    "mergeIsLive": false,
+    "exactShaRequiredForLive": true,
+    "humanEditorialGate": "Nermin Sefić",
+    "maySelfApproveEditorial": false,
+    "mayBypassSourceGate": false,
+    "mayBypassLegalGate": false,
+    "mayBypassCi": false,
+    "supervisorWritesProduction": false
+  },
+  "priorities": {
+    "P0": ["broken public critical route", "invalid production evidence", "security or data-integrity regression"],
+    "P1": ["duplicate canonical writer", "stale critical feed", "publisher ownership conflict", "incomplete source evidence for approved content"],
+    "P2": ["SEO/AEO quality debt", "accessibility evidence gaps", "telemetry and observability gaps"]
+  },
+  "evidenceChain": ["source", "human-approval", "commit-sha", "ci", "deploy-sha", "public-url"],
+  "publicationStates": ["draft", "source-review", "approved-for-own-site", "published"]
+}

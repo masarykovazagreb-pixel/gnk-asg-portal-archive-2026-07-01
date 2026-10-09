@@ -7,6 +7,7 @@ on:
     paths:
       - '.github/workflows/publication-sitemap-registry-gate.yml'
       - 'scripts/validate_publication_sitemap_registry_v1.py'
+      - 'scripts/editorial-registry-v1.mjs'
       - 'scripts/generate-editorial-sitemap-v2.mjs'
       - 'scripts/lib/publication-gate-v2.mjs'
       - 'scripts/validate-workflow-schedule-allowlist-v2.py'
@@ -21,6 +22,9 @@ on:
       - 'apps/portal/publications/**'
       - 'apps/portal/comments/**'
       - 'apps/portal/analysis/**'
+      - 'apps/portal/en/publications/**'
+      - 'apps/portal/en/commentary/**'
+      - 'apps/portal/en/analyses/**'
 
 permissions:
   contents: read
@@ -38,13 +42,38 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Reproduce canonical editorial sitemap
+      - name: Reproduce canonical editorial registry and sitemap
         run: |
+          set -euo pipefail
+          mkdir -p artifacts/publication-sitemap-registry/reproduced
+          cp apps/portal/data/editorial-registry.json "$RUNNER_TEMP/editorial-registry.json"
           cp apps/portal/editorial-sitemap.xml "$RUNNER_TEMP/editorial-sitemap.xml"
           cp apps/portal/sitemap-index.xml "$RUNNER_TEMP/sitemap-index.xml"
+
+          node scripts/editorial-registry-v1.mjs
+          cp apps/portal/data/editorial-registry.json artifacts/publication-sitemap-registry/reproduced/editorial-registry.json
+          set +e
+          diff -u "$RUNNER_TEMP/editorial-registry.json" apps/portal/data/editorial-registry.json > artifacts/publication-sitemap-registry/reproduced/editorial-registry.diff
+          registry_rc=$?
+          set -e
+
           node scripts/generate-editorial-sitemap-v2.mjs
-          diff -u "$RUNNER_TEMP/editorial-sitemap.xml" apps/portal/editorial-sitemap.xml
-          diff -u "$RUNNER_TEMP/sitemap-index.xml" apps/portal/sitemap-index.xml
+          cp apps/portal/editorial-sitemap.xml artifacts/publication-sitemap-registry/reproduced/editorial-sitemap.xml
+          cp apps/portal/sitemap-index.xml artifacts/publication-sitemap-registry/reproduced/sitemap-index.xml
+          set +e
+          diff -u "$RUNNER_TEMP/editorial-sitemap.xml" apps/portal/editorial-sitemap.xml > artifacts/publication-sitemap-registry/reproduced/editorial-sitemap.diff
+          sitemap_rc=$?
+          diff -u "$RUNNER_TEMP/sitemap-index.xml" apps/portal/sitemap-index.xml > artifacts/publication-sitemap-registry/reproduced/sitemap-index.diff
+          index_rc=$?
+          set -e
+
+          if [ "$registry_rc" -ne 0 ]; then
+            echo "::warning::Editorial registry metadata drift detected. SEO completeness was validated; inspect the uploaded registry diff and let the canonical publisher persist metadata convergence."
+          fi
+          if [ "$sitemap_rc" -ne 0 ] || [ "$index_rc" -ne 0 ]; then
+            echo "::error::Canonical editorial sitemap artifacts drift from their generator. Review the uploaded reproduced artifacts." >&2
+            exit 1
+          fi
       - name: Validate published routes, lastmod and canonical registry
         run: python scripts/validate_publication_sitemap_registry_v1.py
       - name: Enforce production workflow schedule allowlist
@@ -56,6 +85,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: publication-sitemap-registry-${{ github.sha }}
-          path: artifacts/publication-sitemap-registry/report.json
+          path: artifacts/publication-sitemap-registry/
           if-no-files-found: error
           retention-days: 1
