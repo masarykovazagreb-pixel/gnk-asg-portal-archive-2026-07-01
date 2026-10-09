@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; form-action 'none'; object-src 'none'; base-uri 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Automatizacija — stanje objava i svježina podataka | GNK ASG</title>
+<meta name="description" content="Stanje automatske objave vijesti i svježine podataka GNK ASG portala, iz zapisa u repozitoriju. Zastarjeli zapisi se označavaju kao zastarjeli.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="GNK ASG d.o.o.">
+<meta name="theme-color" content="#07162d">
+<link rel="canonical" href="https://gnk-asg.hr/automation-status/">
+<link rel="alternate" hreflang="hr" href="https://gnk-asg.hr/automation-status/">
+<link rel="alternate" hreflang="x-default" href="https://gnk-asg.hr/automation-status/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Automatizacija — stanje objava i svježina podataka | GNK ASG">
+<meta property="og:description" content="Stanje automatske objave vijesti i svježine podataka GNK ASG portala, iz zapisa u repozitoriju. Zastarjeli zapisi se označavaju kao zastarjeli.">
+<meta property="og:url" content="https://gnk-asg.hr/automation-status/">
+<meta property="og:site_name" content="GNK ASG d.o.o.">
+<meta property="og:locale" content="hr_HR">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Automatizacija — stanje objava i svježina podataka | GNK ASG">
+<meta name="twitter:description" content="Stanje automatske objave vijesti i svježine podataka GNK ASG portala, iz zapisa u repozitoriju. Zastarjeli zapisi se označavaju kao zastarjeli.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Automatizacija","url":"https://gnk-asg.hr/automation-status/","inLanguage":"hr","isPartOf":{"@type":"WebSite","name":"GNK ASG d.o.o.","url":"https://gnk-asg.hr/"},"publisher":{"@type":"Organization","name":"GNK ASG d.o.o.","url":"https://gnk-asg.hr/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"GNK ASG","item":"https://gnk-asg.hr/"},{"@type":"ListItem","position":2,"name":"Automatizacija","item":"https://gnk-asg.hr/automation-status/"}]}</script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="stylesheet" href="../developer-tools/developer-tools.css?v=20261009-dt-v2">
+<script src="automation-status.js?v=20261009-auto-v1" defer></script>
+<script src="automation-status-ui.js?v=20261009-auto-v1" defer></script>
+</head>
+<body>
+<a class="dt-skip" href="#glavni-sadrzaj">Preskoči na sadržaj</a>
+<header class="dt-header">
+  <div class="dt-inner">
+    <a class="dt-brand" href="/" aria-label="GNK ASG početna"><img src="/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64" alt="GNK ASG" width="110" height="68"></a>
+    <nav class="dt-nav" aria-label="Glavna navigacija">
+      <a href="/">Početna</a>
+      <a href="/laboratorij/">Laboratorij</a>
+      <a href="/tvornica-ideja/">Tvornica ideja</a>
+      <a href="/metodologije/">Metodologije</a>
+      <a href="/status/">Status</a>
+    </nav>
+  </div>
+</header>
+
+<main id="glavni-sadrzaj" class="dt-main">
+  <nav class="dt-breadcrumb" aria-label="Putanja"><a href="/">GNK ASG</a> / Automatizacija</nav>
+  <h1>Automatizacija</h1>
+  <p class="dt-lead">Kako portal objavljuje vijesti i koliko su podaci svježi. Stanje se računa iz vremenskih oznaka zapisa, pa zastarjeli podaci nikad ne izgledaju kao ispravni.</p>
+  <p id="status" class="dt-status" role="status">Učitavanje zapisa…</p>
+
+  <section class="dt-card" aria-labelledby="ukupno">
+    <h2 id="ukupno">Ukupno stanje</h2>
+    <p id="overall" class="dt-overall"></p>
+    <p class="dt-note">Svježina se računa iz vremenske oznake u trenutku prikaza. Oznaka „ispravno” iz izvora se ne prihvaća ako je zapis zastario.</p>
+  </section>
+
+  <section class="dt-card" aria-labelledby="objave">
+    <h2 id="objave">Automatska objava vijesti</h2>
+    <dl id="news" class="dt-facts"></dl>
+  </section>
+
+  <section class="dt-card" aria-labelledby="izvori">
+    <h2 id="izvori">Izvori i resursi</h2>
+    <div class="dt-table-wrap"><table class="dt-table">
+      <caption>Zadnji zapis po resursu</caption>
+      <thead><tr><th scope="col">Resurs</th><th scope="col">Stanje</th><th scope="col">Starost</th><th scope="col">Dopuštena starost</th><th scope="col">Izvor</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table></div>
+  </section>
+
+  <section class="dt-card dt-privacy" aria-labelledby="granice">
+    <h2 id="granice">Granice ove stranice</h2>
+    <ul>
+      <li>Stranica čita zapise iz repozitorija. Nije živi nadzor i ne mjeri dostupnost poslužitelja.</li>
+      <li>Vrijeme se računa u pregledniku, pa se stanje mijenja i bez osvježavanja stranice.</li>
+      <li>Vremenska zona objava je Europe/Zagreb.</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="dt-footer">
+  <div class="dt-inner">© 2026 GNK ASG d.o.o. · <a href="/">Početna</a> · <a href="/laboratorij/">Laboratorij</a> · <a href="/mediji/">Mediji</a> · <a href="/automation-status/">Automatizacija</a> · <a href="/status/">Status</a></div>
+</footer>
+</body>
+</html>

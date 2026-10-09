@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; form-action 'none'; object-src 'none'; base-uri 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Javna knjižnica metodologija</title>
+<meta name="description" content="Šesnaest dokumentiranih formula s jedinicama, ograničenjima i verzijama: rast prihoda, ROI, marža, runway, WCAG kontrast i uzorak.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="GNK ASG d.o.o.">
+<meta name="theme-color" content="#07162d">
+<link rel="canonical" href="https://gnk-asg.hr/metodologije/">
+<link rel="alternate" hreflang="hr" href="https://gnk-asg.hr/metodologije/">
+<link rel="alternate" hreflang="x-default" href="https://gnk-asg.hr/metodologije/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Javna knjižnica metodologija | GNK ASG">
+<meta property="og:description" content="Formule, ulazne jedinice, ograničenja i verzije za brojke koje portal koristi.">
+<meta property="og:url" content="https://gnk-asg.hr/metodologije/">
+<meta property="og:site_name" content="GNK ASG d.o.o.">
+<meta property="og:locale" content="hr_HR">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Javna knjižnica metodologija | GNK ASG">
+<meta name="twitter:description" content="Svaka brojka s formulom, jedinicama i ograničenjima.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Javna knjižnica metodologija","url":"https://gnk-asg.hr/metodologije/","inLanguage":"hr","isPartOf":{"@type":"WebSite","name":"GNK ASG d.o.o.","url":"https://gnk-asg.hr/"},"description":"Dokumentirane formule, jedinice, ograničenja i verzije metodologija GNK ASG portala.","about":{"@type":"Thing","name":"Metodologije izračuna"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"GNK ASG","item":"https://gnk-asg.hr/"},{"@type":"ListItem","position":2,"name":"Metodologije","item":"https://gnk-asg.hr/metodologije/"}]}</script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="stylesheet" href="../developer-tools/developer-tools.css?v=20261009-dt-v1">
+<script src="methodology.js?v=20261009-mt-v1" defer></script>
+<script src="methodology-ui.js?v=20261009-mt-v1" defer></script>
+</head>
+<body>
+<a class="dt-skip" href="#glavni-sadrzaj">Preskoči na sadržaj</a>
+<header class="dt-header">
+  <div class="dt-inner">
+    <a class="dt-brand" href="/" aria-label="GNK ASG početna"><img src="/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64" alt="GNK ASG" width="110" height="68"></a>
+    <nav class="dt-nav" aria-label="Glavna navigacija">
+      <a href="/">Početna</a>
+      <a href="/developer-tools/">Developer Tools</a>
+      <a href="/data-clinic/">Data Clinic</a>
+      <a href="/status/">Status</a>
+    </nav>
+  </div>
+</header>
+
+<main id="glavni-sadrzaj" class="dt-main">
+  <nav class="dt-breadcrumb" aria-label="Putanja"><a href="/">GNK ASG</a> / Metodologije</nav>
+  <h1>Javna knjižnica metodologija</h1>
+  <p class="dt-lead">Svaka brojka koju portal koristi ima naziv, formulu, ulazne jedinice, ograničenje, verziju i vlasnika metodologije. Strojno čitljiva verzija: <a href="/data/methodology_catalog.json">methodology_catalog.json</a>.</p>
+  <p id="status" class="dt-status" role="status">Učitavanje kataloga…</p>
+
+  <section class="dt-card" aria-labelledby="filtri">
+    <h2 id="filtri">Pretraga i filtri</h2>
+    <label for="search">Pretraži formule, pojmove ili jedinice</label>
+    <input id="search" type="search" autocomplete="off" spellcheck="false" placeholder="npr. marža, WCAG, uzorak">
+    <label for="area">Poslovno područje</label>
+    <select id="area" class="dt-select">
+      <option value="">Sva područja</option>
+    </select>
+    <p id="count" class="dt-note" aria-live="polite"></p>
+  </section>
+
+  <div id="methods"></div>
+
+  <section class="dt-card dt-privacy" aria-labelledby="pravila">
+    <h2 id="pravila">Pravila korištenja</h2>
+    <ul>
+      <li>Metode su informativne. Nisu financijski, pravni ni investicijski savjet.</li>
+      <li>Kalkulator radi u pregledniku i ne sprema unesene vrijednosti.</li>
+      <li>Promjena formule mijenja verziju metode i zahtijeva novi datum pregleda.</li>
+      <li>Vlasnik metodologija je GNK ASG Intelligence Desk, potvrđen 9. 10. 2026. Promjene vlasnika objavljuju se na ovoj stranici.</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="dt-footer">
+  <div class="dt-inner">© 2026 GNK ASG d.o.o. · <a href="/">Početna</a> · <a href="/data/methodology_catalog.json">JSON katalog</a></div>
+</footer>
+</body>
+</html>

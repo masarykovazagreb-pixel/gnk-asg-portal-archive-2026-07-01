@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; form-action 'none'; object-src 'none'; base-uri 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Status centar GNK ASG portala — javni snimak stanja</title>
+<meta name="description" content="Javni snimak stanja GNK ASG portala i njegovih alata, iz zapisa u repozitoriju. Nije živi nadzor; svaka stavka nosi datum zapisa.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="GNK ASG d.o.o.">
+<meta name="theme-color" content="#07162d">
+<link rel="canonical" href="https://gnk-asg.hr/status/">
+<link rel="alternate" hreflang="hr" href="https://gnk-asg.hr/status/">
+<link rel="alternate" hreflang="x-default" href="https://gnk-asg.hr/status/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Status centar GNK ASG portala">
+<meta property="og:description" content="Javni snimak stanja usluga, kvalitete i svježine. Bez tehničkih detalja infrastrukture.">
+<meta property="og:url" content="https://gnk-asg.hr/status/">
+<meta property="og:site_name" content="GNK ASG d.o.o.">
+<meta property="og:locale" content="hr_HR">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Status centar GNK ASG portala">
+<meta name="twitter:description" content="Javni snimak stanja usluga i kvalitete portala.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Status centar GNK ASG portala","url":"https://gnk-asg.hr/status/","inLanguage":"hr","isPartOf":{"@type":"WebSite","name":"GNK ASG d.o.o.","url":"https://gnk-asg.hr/"},"description":"Javni snimak stanja usluga, kvalitete i svježine GNK ASG portala, generiran iz repozitorija."}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"GNK ASG","item":"https://gnk-asg.hr/"},{"@type":"ListItem","position":2,"name":"Status","item":"https://gnk-asg.hr/status/"}]}</script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="stylesheet" href="../developer-tools/developer-tools.css?v=20261009-dt-v1">
+<script src="status.js?v=20261009-st-v1" defer></script>
+</head>
+<body>
+<a class="dt-skip" href="#glavni-sadrzaj">Preskoči na sadržaj</a>
+<header class="dt-header">
+  <div class="dt-inner">
+    <a class="dt-brand" href="/" aria-label="GNK ASG početna"><img src="/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64" alt="GNK ASG" width="110" height="68"></a>
+    <nav class="dt-nav" aria-label="Glavna navigacija">
+      <a href="/">Početna</a>
+      <a href="/developer-tools/">Developer Tools</a>
+      <a href="/data-clinic/">Data Clinic</a>
+      <a href="/metodologije/">Metodologije</a>
+    </nav>
+  </div>
+</header>
+
+<main id="glavni-sadrzaj" class="dt-main">
+  <nav class="dt-breadcrumb" aria-label="Putanja"><a href="/">GNK ASG</a> / Status</nav>
+  <h1>Status centar</h1>
+  <p class="dt-lead">Javni snimak stanja usluga, kvalitete i svježine. Ovo je <strong>snimak iz repozitorija</strong>, a ne uživo praćenje dostupnosti niti vanjski uptime.</p>
+  <p id="status" class="dt-status" role="status">Učitavanje snimka…</p>
+
+  <section class="dt-card" aria-labelledby="ukupno">
+    <h2 id="ukupno">Ukupno stanje</h2>
+    <p id="overall" class="dt-overall"></p>
+    <p id="generated" class="dt-note"></p>
+  </section>
+
+  <section class="dt-card" aria-labelledby="usluge">
+    <h2 id="usluge">Usluge</h2>
+    <table class="dt-table">
+      <caption class="dt-note">Stanje je "operational" kad su datoteke usluge prisutne, valjane i označene canonicalom.</caption>
+      <thead><tr><th scope="col">Usluga</th><th scope="col">Stanje</th></tr></thead>
+      <tbody id="services"></tbody>
+    </table>
+  </section>
+
+  <section class="dt-card" aria-labelledby="kvaliteta">
+    <h2 id="kvaliteta">Kontrole kvalitete</h2>
+    <table class="dt-table">
+      <thead><tr><th scope="col">Kontrola</th><th scope="col">Rezultat</th></tr></thead>
+      <tbody id="quality"></tbody>
+    </table>
+  </section>
+
+  <section class="dt-card" aria-labelledby="svjezina">
+    <h2 id="svjezina">Svježina podataka</h2>
+    <table class="dt-table">
+      <thead><tr><th scope="col">Izvor</th><th scope="col">Stanje</th><th scope="col">Zadnje ažuriranje</th></tr></thead>
+      <tbody id="freshness"></tbody>
+    </table>
+  </section>
+
+  <section class="dt-card" aria-labelledby="nepraceno">
+    <h2 id="nepraceno">Što nije praćeno</h2>
+    <ul id="not-monitored" class="dt-findings"></ul>
+  </section>
+
+  <section class="dt-card" aria-labelledby="ogranicenja">
+    <h2 id="ogranicenja">Poznata ograničenja</h2>
+    <ul id="limitations" class="dt-findings"></ul>
+  </section>
+
+  <section class="dt-card" aria-labelledby="povijest">
+    <h2 id="povijest">Povijest statusa</h2>
+    <table class="dt-table">
+      <thead><tr><th scope="col">Vrijeme snimka</th><th scope="col">Ukupno stanje</th></tr></thead>
+      <tbody id="history"></tbody>
+    </table>
+  </section>
+
+  <section class="dt-card dt-privacy" aria-labelledby="granice">
+    <h2 id="granice">Što snimak ne objavljuje</h2>
+    <ul>
+      <li>Podatke korisnika, e-mail adrese i IP adrese.</li>
+      <li>Tokene, tajne, payment podatke ni provider reference.</li>
+      <li>Hostnameove, interne mrežne adrese i detalje infrastrukture.</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="dt-footer">
+  <div class="dt-inner">© 2026 GNK ASG d.o.o. · <a href="/">Početna</a> · <a href="/data/public_service_status.json">JSON snimak</a> · <a href="/automation-status/">Automatizacija</a> · <a href="/mediji/">Mediji</a> · <a href="/laboratorij/">Laboratorij</a></div>
+</footer>
+</body>
+</html>

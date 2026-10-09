@@ -1,0 +1,115 @@
+/* GNK ASG Developer Tools — stilovi (vanjska datoteka zbog CSP-a: style-src 'self'). */
+:root {
+  --dt-bg: #f5f7fa;
+  --dt-ink: #0d1b2a;
+  --dt-muted: #4a5568;
+  --dt-card: #ffffff;
+  --dt-line: #d7dde6;
+  --dt-accent: #07162d;
+  --dt-gold: #b8860b;
+  --dt-focus: #0b57d0;
+  --dt-critical: #8b0000;
+  --dt-high: #b03a2e;
+  --dt-medium: #9a6700;
+  --dt-low: #3d5a80;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--dt-bg);
+  color: var(--dt-ink);
+  line-height: 1.55;
+}
+a { color: var(--dt-accent); }
+:focus-visible { outline: 3px solid var(--dt-focus); outline-offset: 2px; }
+.dt-skip {
+  position: absolute; left: -9999px; top: 0; background: var(--dt-accent); color: #fff; padding: 8px 14px; z-index: 10;
+}
+.dt-skip:focus { left: 8px; top: 8px; }
+.dt-header { background: var(--dt-accent); color: #fff; }
+.dt-inner {
+  max-width: 1040px; margin: 0 auto; padding: 14px 20px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+}
+.dt-brand img { display: block; height: 52px; width: auto; background: transparent; }
+.dt-nav a { color: #fff; margin-left: 14px; text-decoration: none; }
+.dt-nav a:hover { text-decoration: underline; }
+.dt-main { max-width: 1040px; margin: 0 auto; padding: 24px 20px 48px; }
+.dt-breadcrumb { font-size: 0.9rem; color: var(--dt-muted); margin-bottom: 8px; }
+h1 { font-family: Georgia, "Times New Roman", serif; font-weight: 500; font-size: clamp(2rem, 4vw, 2.8rem); margin: 6px 0 10px; }
+h2 { font-size: 1.25rem; margin: 0 0 8px; color: var(--dt-accent); }
+.dt-lead { font-size: 1.05rem; color: var(--dt-muted); max-width: 70ch; }
+.dt-status { font-size: 0.92rem; color: var(--dt-muted); border-left: 4px solid var(--dt-gold); padding: 6px 12px; background: #fff; }
+.dt-card {
+  background: var(--dt-card); border: 1px solid var(--dt-line); border-radius: 10px;
+  padding: 20px 22px; margin: 18px 0;
+}
+.dt-card p { margin: 6px 0 12px; color: var(--dt-muted); }
+label { display: block; font-weight: 600; margin: 8px 0 4px; }
+input[type="text"], textarea {
+  width: 100%; font: 0.95rem/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  border: 1px solid #aab4c3; border-radius: 6px; padding: 9px 11px; background: #fff; color: var(--dt-ink);
+}
+textarea { resize: vertical; }
+.dt-two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 720px) { .dt-two { grid-template-columns: 1fr; } }
+.dt-options { border: 1px solid var(--dt-line); border-radius: 8px; padding: 10px 14px; margin: 10px 0; }
+.dt-options label { font-weight: 400; display: inline-block; margin: 4px 16px 4px 0; }
+.dt-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+button {
+  font: inherit; font-weight: 600; cursor: pointer; border-radius: 8px; border: 0;
+  background: var(--dt-accent); color: #fff; padding: 10px 18px; min-height: 44px;
+}
+button:hover { filter: brightness(1.15); }
+button.dt-secondary { background: #fff; color: var(--dt-accent); border: 1px solid var(--dt-accent); }
+.dt-output { margin-top: 14px; }
+.dt-output:empty { display: none; }
+.dt-findings { padding-left: 20px; }
+.dt-findings li { margin: 6px 0; }
+.dt-sev-critical strong { color: var(--dt-critical); }
+.dt-sev-high strong { color: var(--dt-high); }
+.dt-sev-medium strong { color: var(--dt-medium); }
+.dt-sev-low strong { color: var(--dt-low); }
+.dt-ok { color: #1e6b3a; font-weight: 600; }
+.dt-note { font-size: 0.92rem; color: var(--dt-muted); font-style: italic; }
+.dt-code {
+  background: #0d1b2a; color: #e6edf5; padding: 12px 14px; border-radius: 8px; overflow-x: auto;
+  white-space: pre-wrap; word-break: break-word; font-size: 0.88rem;
+}
+.dt-table { border-collapse: collapse; width: 100%; max-width: 620px; margin-top: 8px; }
+.dt-table th, .dt-table td { border-bottom: 1px solid var(--dt-line); text-align: left; padding: 8px 10px; }
+.dt-table th { color: var(--dt-accent); }
+.dt-privacy { border-left: 5px solid var(--dt-gold); }
+.dt-privacy ul { padding-left: 20px; color: var(--dt-muted); }
+.dt-footer { background: var(--dt-accent); color: #cfd8e3; font-size: 0.9rem; }
+.dt-footer a { color: #fff; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+/* Data Clinic / Metodologije / Status: dodatni elementi */
+.dt-select { font: inherit; padding: 9px 11px; border: 1px solid #aab4c3; border-radius: 6px; background: #fff; color: var(--dt-ink); min-width: 260px; }
+.dt-method h3 { font-size: 1rem; margin: 14px 0 4px; color: var(--dt-accent); }
+.dt-calc { margin-top: 14px; padding-top: 10px; border-top: 1px dashed var(--dt-line); }
+.dt-calc-form label { font-weight: 600; font-size: 0.9rem; }
+.dt-calc-form input { margin-bottom: 6px; }
+.dt-calc-form button { margin-top: 8px; }
+.dt-overall { font-size: 1.3rem; font-weight: 700; }
+.dt-overall[data-state="operational"] { color: #1e6b3a; }
+.dt-overall[data-state="degraded"] { color: var(--dt-medium); }
+input[type="file"] { margin: 6px 0; }
+input[type="search"] { width: 100%; font: inherit; border: 1px solid #aab4c3; border-radius: 6px; padding: 9px 11px; background: #fff; }
+.dt-table caption { text-align: left; padding-bottom: 6px; }
+
+/* Laboratorij, Mediji i Automatizacija */
+.dt-field { display: grid; gap: 6px; margin: 10px 0; }
+.dt-output { margin: 12px 0 0; padding: 10px 12px; border-left: 3px solid var(--gold, #d5b15f); background: rgba(255,255,255,.04); font-weight: 600; overflow-wrap: anywhere; }
+.dt-output.dt-error { border-left-color: #e5484d; color: #ffb4b6; font-weight: 500; }
+.dt-facts { display: grid; grid-template-columns: minmax(180px, max-content) 1fr; gap: 6px 16px; margin: 12px 0 0; }
+.dt-facts dt { font-weight: 700; opacity: .9; }
+.dt-facts dd { margin: 0; overflow-wrap: anywhere; }
+.dt-table-wrap { overflow-x: auto; }
+.lab-tool { scroll-margin-top: 90px; }
+[data-state="stale"] { color: #ffb4b6; }
+[data-state="fresh"] { color: #9fe3b2; }
+[data-state="error"] { color: #ffb4b6; }
+[data-state="unknown"] { opacity: .85; }

@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'none'; form-action 'none'; object-src 'none'; base-uri 'none'">
+<meta name="referrer" content="no-referrer">
+<title>GNK ASG Developer Tools — sigurnosni i web alati | GNK ASG</title>
+<meta name="description" content="Lokalni alati za provjeru URL-ova, sigurnosnih HTTP zaglavlja, Content Security Policy i JSON-a. Sve se računa u pregledniku.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="GNK ASG d.o.o.">
+<meta name="theme-color" content="#07162d">
+<link rel="canonical" href="https://gnk-asg.hr/developer-tools/">
+<link rel="alternate" hreflang="hr" href="https://gnk-asg.hr/developer-tools/">
+<link rel="alternate" hreflang="x-default" href="https://gnk-asg.hr/developer-tools/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="GNK ASG Developer Tools — sigurnosni i web alati">
+<meta property="og:description" content="Pet lokalnih alata za sigurnosne provjere web razvoja. Unosi ostaju u pregledniku.">
+<meta property="og:url" content="https://gnk-asg.hr/developer-tools/">
+<meta property="og:site_name" content="GNK ASG d.o.o.">
+<meta property="og:locale" content="hr_HR">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GNK ASG Developer Tools">
+<meta name="twitter:description" content="Lokalni sigurnosni i web alati. Bez slanja i spremanja unesenih podataka.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"GNK ASG Developer Tools","url":"https://gnk-asg.hr/developer-tools/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (web browser)","inLanguage":"hr","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"publisher":{"@type":"Organization","name":"GNK ASG d.o.o.","url":"https://gnk-asg.hr/"},"description":"Pet lokalnih sigurnosnih i web alata: URL Safety Inspector, Security Header Studio, CSP Policy Builder, Log Privacy Scanner i JSON Schema Drift Detector."}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"GNK ASG","item":"https://gnk-asg.hr/"},{"@type":"ListItem","position":2,"name":"Developer Tools","item":"https://gnk-asg.hr/developer-tools/"}]}</script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="stylesheet" href="developer-tools.css?v=20261009-dt-v1">
+<script src="developer-tools.js?v=20261009-dt-v1" defer></script>
+<script src="developer-tools-ui.js?v=20261009-dt-v1" defer></script>
+</head>
+<body>
+<a class="dt-skip" href="#glavni-sadrzaj">Preskoči na sadržaj</a>
+<header class="dt-header">
+  <div class="dt-inner">
+    <a class="dt-brand" href="/" aria-label="GNK ASG početna"><img src="/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64" alt="GNK ASG" width="110" height="68"></a>
+    <nav class="dt-nav" aria-label="Glavna navigacija">
+      <a href="/">Početna</a>
+    </nav>
+  </div>
+</header>
+
+<main id="glavni-sadrzaj" class="dt-main">
+  <nav class="dt-breadcrumb" aria-label="Putanja"><a href="/">GNK ASG</a> / Developer Tools</nav>
+  <h1>GNK ASG Developer Tools</h1>
+  <p class="dt-lead">Pet lokalnih alata za sigurnosne i web provjere. Alati rade u vašem pregledniku: ne šalju unesene podatke, ne spremaju ih u local ili session storage i ne otvaraju analizirane URL-ove.</p>
+  <p id="status" class="dt-status" role="status"></p>
+
+  <section class="dt-card" aria-labelledby="t1">
+    <h2 id="t1">1. URL Safety Inspector</h2>
+    <p>Formalna provjera oblika poveznice: HTTPS, vjerodajnice u linku, IP adresa, Punycode, poddomene i izvršne datoteke.</p>
+    <label for="in-url">URL za provjeru</label>
+    <input id="in-url" type="text" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://primjer.hr/putanja">
+    <div class="dt-actions">
+      <button id="btn-url" type="button">Provjeri URL</button>
+      <button id="clear-url" type="button" class="dt-secondary">Očisti</button>
+    </div>
+    <div id="out-url" class="dt-output" aria-live="polite"></div>
+  </section>
+
+  <section class="dt-card" aria-labelledby="t2">
+    <h2 id="t2">2. Security Header Studio</h2>
+    <p>Zalijepite HTTP zaglavlja odgovora, po jedno u retku (npr. <code>Content-Security-Policy: default-src 'self'</code>).</p>
+    <label for="in-headers">HTTP zaglavlja</label>
+    <textarea id="in-headers" rows="7" autocomplete="off" spellcheck="false" placeholder="Strict-Transport-Security: max-age=31536000; includeSubDomains&#10;X-Content-Type-Options: nosniff"></textarea>
+    <div class="dt-actions">
+      <button id="btn-headers" type="button">Analiziraj zaglavlja</button>
+      <button id="clear-headers" type="button" class="dt-secondary">Očisti</button>
+    </div>
+    <div id="out-headers" class="dt-output" aria-live="polite"></div>
+  </section>
+
+  <section class="dt-card" aria-labelledby="t3">
+    <h2 id="t3">3. CSP Policy Builder</h2>
+    <p>Početna politika blokira objekte, frameove, vanjske konekcije, promjenu base URL-a i slanje formi. Opcije uključujete samo ako ih trebate. <code>unsafe-eval</code> se nikad ne generira.</p>
+    <fieldset class="dt-options">
+      <legend>Dopuštenja</legend>
+      <label><input id="opt-inline" type="checkbox"> Inline skripte (manje sigurno)</label>
+      <label><input id="opt-images" type="checkbox"> Vanjske HTTPS slike</label>
+      <label><input id="opt-frames" type="checkbox"> Lokalni frameovi</label>
+    </fieldset>
+    <div class="dt-actions">
+      <button id="btn-csp" type="button">Generiraj politiku</button>
+    </div>
+    <div id="out-csp" class="dt-output" aria-live="polite"></div>
+  </section>
+
+  <section class="dt-card" aria-labelledby="t4">
+    <h2 id="t4">4. Log Privacy Scanner</h2>
+    <p>Lokalno broji obrasce koji mogu nalikovati na e-mail, IBAN, broj kartice, tajne i IPv4 adrese. Prikazuje se samo broj nalaza, nikad sama vrijednost.</p>
+    <label for="in-log">Tekst loga</label>
+    <textarea id="in-log" rows="7" autocomplete="off" spellcheck="false" placeholder="Zalijepite odsječak loga za provjeru"></textarea>
+    <div class="dt-actions">
+      <button id="btn-log" type="button">Skeniraj log</button>
+      <button id="clear-log" type="button" class="dt-secondary">Očisti</button>
+    </div>
+    <div id="out-log" class="dt-output" aria-live="polite"></div>
+  </section>
+
+  <section class="dt-card" aria-labelledby="t5">
+    <h2 id="t5">5. JSON Schema Drift Detector</h2>
+    <p>Uspoređuje strukturu dva JSON objekta: dodana i uklonjena polja, promjene tipova i prijelaze između broja i teksta, objekta i liste te null vrijednosti. Ne donosi odluke o kompatibilnosti.</p>
+    <div class="dt-two">
+      <div>
+        <label for="in-json-a">JSON A (prije)</label>
+        <textarea id="in-json-a" rows="8" autocomplete="off" spellcheck="false" placeholder='{"id": 1, "cijena": 10}'></textarea>
+      </div>
+      <div>
+        <label for="in-json-b">JSON B (poslije)</label>
+        <textarea id="in-json-b" rows="8" autocomplete="off" spellcheck="false" placeholder='{"id": "1", "cijena": 10, "valuta": "EUR"}'></textarea>
+      </div>
+    </div>
+    <div class="dt-actions">
+      <button id="btn-json" type="button">Usporedi strukturu</button>
+      <button id="clear-json" type="button" class="dt-secondary">Očisti</button>
+    </div>
+    <div id="out-json" class="dt-output" aria-live="polite"></div>
+  </section>
+
+  <section class="dt-card dt-privacy" aria-labelledby="priv">
+    <h2 id="priv">Sigurnosna granica</h2>
+    <ul>
+      <li>Nema slanja unesenog sadržaja na poslužitelj ni na vanjske API-je.</li>
+      <li>Nema spremanja unosa u local storage, session storage ni kolačiće.</li>
+      <li>Nema vanjskih JavaScript biblioteka.</li>
+      <li>Politika stranice: <code>connect-src 'none'</code>, <code>form-action 'none'</code>, <code>object-src 'none'</code>.</li>
+      <li>Rezultati su orijentacijski i ne zamjenjuju stručnu sigurnosnu reviziju.</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="dt-footer">
+  <div class="dt-inner">© 2026 GNK ASG d.o.o. · <a href="/">Početna</a> · <a href="/data-clinic/">Data Clinic</a> · <a href="/metodologije/">Metodologije</a> · <a href="/status/">Status</a> · <a href="/tvornica-ideja/">Tvornica ideja</a> · <a href="/laboratorij/">Laboratorij</a> · <a href="/automation-status/">Automatizacija</a></div>
+</footer>
+</body>
+</html>
