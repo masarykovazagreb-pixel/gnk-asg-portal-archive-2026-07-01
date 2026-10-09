@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; form-action 'none'; object-src 'none'; base-uri 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Tvornica ideja — nacrti, ocjene i pregled | GNK ASG d.o.o.</title>
+<meta name="description" content="Pregled nacrta ideja za portal, ocjenjivanje po utjecaju, pouzdanosti i trudu te veza na postojeće stranice. Nacrti nisu odobreni.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="GNK ASG d.o.o.">
+<meta name="theme-color" content="#07162d">
+<link rel="canonical" href="https://gnk-asg.hr/tvornica-ideja/">
+<link rel="alternate" hreflang="hr" href="https://gnk-asg.hr/tvornica-ideja/">
+<link rel="alternate" hreflang="x-default" href="https://gnk-asg.hr/tvornica-ideja/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tvornica ideja | GNK ASG">
+<meta property="og:description" content="Nacrti ideja za portal s ocjenama i poveznicama na stranice.">
+<meta property="og:url" content="https://gnk-asg.hr/tvornica-ideja/">
+<meta property="og:site_name" content="GNK ASG d.o.o.">
+<meta property="og:locale" content="hr_HR">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Tvornica ideja | GNK ASG">
+<meta name="twitter:description" content="Nacrti ideja s ocjenama i poveznicama na stranice.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Tvornica ideja","url":"https://gnk-asg.hr/tvornica-ideja/","inLanguage":"hr","isPartOf":{"@type":"WebSite","name":"GNK ASG d.o.o.","url":"https://gnk-asg.hr/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"GNK ASG","item":"https://gnk-asg.hr/"},{"@type":"ListItem","position":2,"name":"Tvornica ideja","item":"https://gnk-asg.hr/tvornica-ideja/"}]}</script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="stylesheet" href="../developer-tools/developer-tools.css?v=20261009-dt-v1">
+<script src="tvornica-ideja.js?v=20261009-ti-v1" defer></script>
+<script src="tvornica-ideja-ui.js?v=20261009-ti-v1" defer></script>
+</head>
+<body>
+<a class="dt-skip" href="#glavni-sadrzaj">Preskoči na sadržaj</a>
+<header class="dt-header">
+  <div class="dt-inner">
+    <a class="dt-brand" href="/" aria-label="GNK ASG početna"><img src="/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64" alt="GNK ASG" width="110" height="68"></a>
+    <nav class="dt-nav" aria-label="Glavna navigacija">
+      <a href="/">Početna</a>
+      <a href="/metodologije/">Metodologije</a>
+      <a href="/data-clinic/">Data Clinic</a>
+      <a href="/status/">Status</a>
+    </nav>
+  </div>
+</header>
+
+<main id="glavni-sadrzaj" class="dt-main">
+  <nav class="dt-breadcrumb" aria-label="Putanja"><a href="/">GNK ASG</a> / Tvornica ideja</nav>
+  <h1>Tvornica ideja</h1>
+  <p class="dt-lead">Nacrti poboljšanja za portal. Svaka ideja ima problem, područje, povezanu stranicu i ocjenu koja se računa iz tri ocjene od 1 do 5: utjecaj, pouzdanost i trud. Ocjena je pomoćna i ne znači odobrenje.</p>
+  <p id="status" class="dt-status" role="status">Učitavanje nacrta…</p>
+
+  <section class="dt-card" aria-labelledby="filtri">
+    <h2 id="filtri">Pretraga i filtri</h2>
+    <label for="search">Pretraži naslov, problem ili područje</label>
+    <input id="search" type="search" autocomplete="off" spellcheck="false" placeholder="npr. SEO, Status, metodologija">
+    <label for="area">Područje</label>
+    <select id="area" class="dt-select">
+      <option value="">Sva područja</option>
+    </select>
+    <p id="count" class="dt-note" aria-live="polite"></p>
+  </section>
+
+  <ol id="ideas" class="dt-list" aria-label="Popis ideja"></ol>
+
+  <section class="dt-card" aria-labelledby="nova">
+    <h2 id="nova">Dodaj ideju</h2>
+    <p class="dt-note">Unos ostaje samo u ovoj kartici preglednika. Ideja se ne šalje i ne sprema na poslužitelj.</p>
+    <form id="new-idea" novalidate>
+      <label for="f-title">Naslov (5 do 120 znakova)</label>
+      <input id="f-title" name="title" type="text" maxlength="120" required>
+      <label for="f-problem">Problem koji ideja rješava</label>
+      <textarea id="f-problem" name="problem" rows="3" maxlength="400"></textarea>
+      <label for="f-area">Područje</label>
+      <select id="f-area" name="area" class="dt-select" required>
+        <option value="">Odaberite područje</option>
+        <option value="Podaci">Podaci</option>
+        <option value="Sadržaj">Sadržaj</option>
+        <option value="Provjera">Provjera</option>
+        <option value="Pristupačnost">Pristupačnost</option>
+        <option value="SEO">SEO</option>
+        <option value="Sigurnost">Sigurnost</option>
+        <option value="Razvoj">Razvoj</option>
+      </select>
+      <label for="f-impact">Utjecaj (1 do 5)</label>
+      <input id="f-impact" name="impact" type="number" min="1" max="5" step="1" required>
+      <label for="f-confidence">Pouzdanost (1 do 5)</label>
+      <input id="f-confidence" name="confidence" type="number" min="1" max="5" step="1" required>
+      <label for="f-effort">Trud (1 do 5, gdje je 5 najveći)</label>
+      <input id="f-effort" name="effort" type="number" min="1" max="5" step="1" required>
+      <button type="submit">Dodaj ideju</button>
+    </form>
+    <div id="form-errors" role="alert"></div>
+  </section>
+
+  <section class="dt-card dt-privacy" aria-labelledby="pravila">
+    <h2 id="pravila">Pravila</h2>
+    <ul>
+      <li>Nacrti nisu odobreni. Odluku donosi tim pri pregledu, a vlasnik se dodjeljuje tada.</li>
+      <li>Ocjena je zbroj procjena, a ne mjerenje. Ne koristi se kao financijska ni poslovna prognoza.</li>
+      <li>Ideje ne sadrže osobne podatke. Ne unosite imena ni kontakte u naslov ili problem.</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="dt-footer">
+  <div class="dt-inner">© 2026 GNK ASG d.o.o. · <a href="/">Početna</a> · <a href="/data/idea_factory.json">JSON nacrti</a></div>
+</footer>
+</body>
+</html>

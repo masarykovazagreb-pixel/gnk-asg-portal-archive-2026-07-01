@@ -93,6 +93,31 @@ const text = (dom, id) => $(dom, id).textContent;
   ok($(st, 'not-monitored').querySelectorAll('li').length >= 3, 'ST: not-monitored list shown');
   st.window.close();
 
+  // ---------- Tvornica ideja
+  let ti = await load('tvornica-ideja/index.html', { '../data/idea_factory.json': 'data/idea_factory.json' });
+  await new Promise(r => setTimeout(r, 300));
+  const tiItems = () => $(ti, 'ideas').querySelectorAll('li.dt-method').length;
+  ok(tiItems() === 30, 'TI: 30 draft ideas rendered', tiItems());
+  ok(/Nijedna nije odobrena/.test(text(ti, 'status')), 'TI: status states nothing is approved');
+  $(ti, 'search').value = 'metodolog'; $(ti, 'search').dispatchEvent(new ti.window.Event('input'));
+  ok(tiItems() > 0 && tiItems() < 30, 'TI: search narrows list', tiItems());
+  $(ti, 'search').value = ''; $(ti, 'search').dispatchEvent(new ti.window.Event('input'));
+  $(ti, 'area').value = 'SEO'; $(ti, 'area').dispatchEvent(new ti.window.Event('change'));
+  ok(tiItems() === 7, 'TI: area filter SEO -> 7', tiItems());
+  $(ti, 'area').value = ''; $(ti, 'area').dispatchEvent(new ti.window.Event('change'));
+  const tiForm = $(ti, 'new-idea');
+  $(ti, 'f-title').value = 'ok'; $(ti, 'f-area').value = 'SEO';
+  $(ti, 'f-impact').value = '9'; $(ti, 'f-confidence').value = '3'; $(ti, 'f-effort').value = '2';
+  tiForm.dispatchEvent(new ti.window.Event('submit', { cancelable: true, bubbles: true }));
+  ok(/Naslov mora imati/.test(text(ti, 'form-errors')) && /impact/.test(text(ti, 'form-errors')), 'TI: invalid entry shows field errors');
+  ok(tiItems() === 30, 'TI: invalid entry not added');
+  $(ti, 'f-title').value = 'Nova ideja iz testa'; $(ti, 'f-impact').value = '4';
+  tiForm.dispatchEvent(new ti.window.Event('submit', { cancelable: true, bubbles: true }));
+  ok(tiItems() === 31, 'TI: valid entry added to list', tiItems());
+  ok($(ti, 'ideas').textContent.includes('Nova ideja iz testa') && /Ocjena 6/.test($(ti, 'ideas').textContent), 'TI: user idea scored and shown');
+  ok($(ti, 'ideas').querySelectorAll('a[href]').length >= 1, 'TI: linked routes rendered as anchors');
+  ti.window.close();
+
   console.log(`\nDOM checks: ${pass} passed, ${fail} failed`);
   process.exit(fail ? 1 : 0);
 })().catch(e => { console.error('ERROR', e); process.exit(2); });
