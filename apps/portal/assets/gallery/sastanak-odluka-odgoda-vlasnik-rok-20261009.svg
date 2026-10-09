@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Sastanak s jasnim ishodom — odluka, odgoda, odgovorna osoba i rok</title>
+  <desc id="desc">Urednička ilustracija sastanka: sudionici oko stola, zapisnik i dvije moguće završne odluke, uz jasno naznačenog vlasnika zadatka i rok.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1731"/><stop offset=".55" stop-color="#123a54"/><stop offset="1" stop-color="#1c5664"/>
+    </linearGradient>
+    <linearGradient id="table" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#244b65"/><stop offset="1" stop-color="#142c48"/>
+    </linearGradient>
+    <filter id="shadow" x="-25%" y="-25%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#061124" flood-opacity=".35"/>
+    </filter>
+  </defs>
+  <rect width="1600" height="900" fill="url(#background)"/>
+  <circle cx="1320" cy="160" r="260" fill="#4cc4bb" opacity=".08"/>
+  <circle cx="210" cy="820" r="310" fill="#e9c37a" opacity=".07"/>
+  <path d="M80 140H1520M80 760H1520" stroke="#b7d6e2" opacity=".15" stroke-width="2"/>
+  <text x="100" y="102" font-family="Arial,Helvetica,sans-serif" font-size="25" font-weight="700" letter-spacing="5" fill="#8ddbd1">GNK ASG / ORGANIZACIJA</text>
+  <text x="100" y="200" font-family="Arial,Helvetica,sans-serif" font-size="60" font-weight="700" fill="#f2f8fb">SASTANAK S JASNIM ISHODOM</text>
+  <text x="102" y="252" font-family="Arial,Helvetica,sans-serif" font-size="29" fill="#c1d7e2">Odluka ili svjesna odgoda — ali nikada bez sljedećeg koraka</text>
+  <g filter="url(#shadow)">
+    <rect x="96" y="315" width="710" height="394" rx="36" fill="#112b44" stroke="#598294" stroke-width="2"/>
+    <ellipse cx="450" cy="549" rx="270" ry="98" fill="url(#table)" stroke="#87b6c1" stroke-width="5"/>
+    <ellipse cx="450" cy="549" rx="205" ry="58" fill="#1e4b62" opacity=".65"/>
+    <g fill="#e4eef3">
+      <circle cx="305" cy="408" r="39"/><path d="M239 487q66-90 132 0v24H239z"/>
+      <circle cx="597" cy="408" r="39"/><path d="M531 487q66-90 132 0v24H531z"/>
+      <circle cx="451" cy="658" r="38"/><path d="M384 727q67-94 134 0H384z"/>
+    </g>
+    <g fill="#57c6bc"><circle cx="305" cy="408" r="11"/><circle cx="597" cy="408" r="11"/><circle cx="451" cy="658" r="11"/></g>
+    <rect x="372" y="510" width="157" height="89" rx="10" fill="#e8f1f4" transform="rotate(-6 450 555)"/>
+    <path d="M393 536h106m-106 19h106m-106 19h75" stroke="#2d5c74" stroke-width="7" stroke-linecap="round" transform="rotate(-6 450 555)"/>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="862" y="315" width="635" height="394" rx="32" fill="#f1f6f7"/>
+    <text x="913" y="374" font-family="Arial,Helvetica,sans-serif" font-size="27" font-weight="700" fill="#19374e">ISHOD SASTANKA</text>
+    <rect x="911" y="403" width="251" height="76" rx="14" fill="#daf4e9" stroke="#4fae8c" stroke-width="2"/>
+    <circle cx="948" cy="441" r="17" fill="#2c9873"/>
+    <path d="M939 440l7 7 12-15" fill="none" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="979" y="451" font-family="Arial,Helvetica,sans-serif" font-size="25" font-weight="700" fill="#17684e">ODLUKA</text>
+    <rect x="1180" y="403" width="270" height="76" rx="14" fill="#fff0d6" stroke="#d9a65d" stroke-width="2"/>
+    <circle cx="1219" cy="441" r="17" fill="#bb853b"/>
+    <path d="M1219 431v11l8 5" fill="none" stroke="white" stroke-width="4" stroke-linecap="round"/>
+    <text x="1250" y="451" font-family="Arial,Helvetica,sans-serif" font-size="25" font-weight="700" fill="#80551d">ODGODA</text>
+    <path d="M1176 492v27" stroke="#6b8793" stroke-width="4"/>
+    <path d="M1168 510l8 11 8-11" fill="none" stroke="#6b8793" stroke-width="4"/>
+    <rect x="911" y="537" width="539" height="121" rx="16" fill="#dceaf0"/>
+    <text x="940" y="583" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="700" fill="#183a51">SLJEDEĆI KORAK</text>
+    <text x="940" y="624" font-family="Arial,Helvetica,sans-serif" font-size="24" fill="#2b5165">Vlasnik zadatka  ·  Razlog  ·  Rok</text>
+  </g>
+  <text x="100" y="811" font-family="Arial,Helvetica,sans-serif" font-size="24" fill="#c2d7e0">Informiranje ≠ rasprava ≠ donošenje odluke</text>
+  <text x="1498" y="811" text-anchor="end" font-family="Arial,Helvetica,sans-serif" font-size="23" fill="#8ddbd1">UREDNIČKI VIZUAL · 2026</text>
+</svg>
