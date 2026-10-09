@@ -21,6 +21,8 @@ test('validate: accepts a well-formed idea and rejects bad fields with messages'
   assert.equal(F.validate({ ...base, effort: 2.5 }).ok, false);
   assert.equal(F.validate({ ...base, effort: '3' }).ok, false, 'string numbers are rejected');
   assert.equal(F.validate({ ...base, status: 'objavljeno' }).ok, false);
+  assert.equal(F.validate({ ...base, status: 'otvoreno' }).ok, true);
+  assert.equal(F.validate({ ...base, status: 'gotovo' }).ok, true);
   assert.equal(F.validate({ ...base, route: 'https://evil.example/' }).ok, false, 'external route rejected');
   assert.equal(F.validate({ ...base, route: '/status/' }).ok, true);
   assert.equal(F.validate(null).ok, false);
@@ -54,15 +56,18 @@ test('summarize: counts valid and invalid ideas per area', () => {
   assert.equal(s.byArea.Podaci, 1);
 });
 
-test('data: 30 draft ideas, all valid, unique, unapproved, linked to existing routes', async () => {
+test('data: 30 ideas, 10 done and 20 open, all valid, unique and linked to existing routes', async () => {
   assert.equal(doc.ideas.length, 30);
   assert.equal(F.summarize(doc.ideas).invalid, 0);
   const ids = doc.ideas.map((i) => i.id);
   assert.equal(new Set(ids).size, ids.length, 'ids must be unique');
   const titles = doc.ideas.map((i) => i.title.toLowerCase());
   assert.equal(new Set(titles).size, titles.length, 'titles must be unique');
+  const done = new Set(['idea-07','idea-08','idea-10','idea-12','idea-13','idea-20','idea-21','idea-22','idea-24','idea-25']);
+  assert.equal(doc.ideas.filter((i) => i.status === 'gotovo').length, 10);
+  assert.equal(doc.ideas.filter((i) => i.status === 'otvoreno').length, 20);
   for (const i of doc.ideas) {
-    assert.equal(i.status, 'nacrt', `${i.id}: draft status only, nothing is approved`);
+    assert.equal(i.status, done.has(i.id) ? 'gotovo' : 'otvoreno', `${i.id}: owner status mismatch`);
     assert.ok(i.source && i.source.length > 5, `${i.id}: needs a repository source`);
     assert.ok(i.problem && i.problem.length > 10, `${i.id}: needs a problem statement`);
     const dir = new URL('..' + i.route, import.meta.url);
