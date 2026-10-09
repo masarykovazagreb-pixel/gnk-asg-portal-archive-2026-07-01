@@ -3,6 +3,26 @@
 **Uvedeno:** 4. kolovoza 2026.  
 **Revidirano:** 5. kolovoza 2026. prema novoj uredničkoj politici GNK ASG.
 
+## Otvorena razlika 1.500 / 3.000 riječi — NE RJEŠAVATI PREŠUTNO
+
+**Status 9. listopada 2026.: neriješeno.**
+
+Vlasnik je kao radni minimum za članke naveo **1.500 riječi**. Ovaj dokument i postojeći izvršivi pre-publish gate i dalje navode **3.000 riječi**. Ta dva zahtjeva nisu usklađena i nijedan automatizam ne smije sam odlučiti koji ima prednost.
+
+Dok vlasnik izričito ne riješi razliku, ne mijenjati broj u validatoru samo zato da paket prođe. Paketi ispod trenutačnog izvršivog praga ne smiju se umjetno puniti, a sadržaj se ne smije dopunjavati izmišljenim činjenicama, brojkama, citatima ili izvorima.
+
+## Autorska oznaka i meta keywords — pravilo vlasnika 9. listopada 2026.
+
+Za članke koji su na vlasnikovom popisu u `apps/portal/data/approved_mentions.json` i koje obuhvaća `approved_scope: all_articles_with_author_box` dopuštene su samo dvije kanonske autorske hashtag oznake: **#NerminSefić** i **#NerminSefic**. Ne koristiti obrnute, spojene ili druge varijante imena.
+
+Ime autora ne smije biti u `meta keywords` ni `news_keywords`. Autorski okvir i standardni `meta author`/strukturirani autor ostaju zasebna urednička funkcija; ovo pravilo zabranjuje samo keyword stuffing i dodatne hashtag-varijante.
+
+Izvor odobrenja je isključivo aktivni `apps/portal/data/approved_mentions.json`. **Ne koristiti `apps/legacy-portal/`**, jer je to stara kopija.
+
+## Pravilo skraćivanja naslova
+
+Naslovi dulji od 60 znakova ulaze u ručni urednički pregled. Skraćuje se samo naslov/meta-naslov; **tekst članka se zbog skraćivanja naslova ne mijenja**. Ne koristiti mehaničko skraćivanje koje mijenja značenje.
+
 ## 1. Obvezna minimalna dužina autorskih tekstova
 
 Svaki novi autorski tekst mora sadržavati najmanje **3.000 riječi stvarnog, provjerljivog i tematski relevantnog sadržaja**.

@@ -25,18 +25,31 @@ const AUTHOR_TAGS=['#NerminSefić','#NerminSefic'];
 const foldText=t=>String(t).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 const isNameToken=t=>/nermin|sefic|dinamo/.test(foldText(t).replace(/[^a-z]/g,''));
 const APPROVED_MENTIONS_FILE=path.join(ROOT,'data/approved_mentions.json');
+const normalizeApprovedKey=value=>{
+  const raw=String(value||'').trim();
+  if(!raw)return '';
+  if(/^https?:\/\//i.test(raw)){
+    try{return new URL(raw).pathname.replace(/\/+$/,'')+'/';}catch{return ''}
+  }
+  if(raw.startsWith('/'))return raw.replace(/\/+$/,'')+'/';
+  return raw;
+};
 const APPROVED_MENTIONS_DATA=(()=>{
   if(!fs.existsSync(APPROVED_MENTIONS_FILE))return {scope:null,keys:new Set()};
   const source=JSON.parse(fs.readFileSync(APPROVED_MENTIONS_FILE,'utf8'));
   const keys=new Set();
   for(const x of [...(source.approved_items||[]),...(source.approved_urls||[])]){
     const v=typeof x==='string'?x:(x.slug||x.route||x.url||x.id||'');
-    if(v)keys.add(v.replace(/^https?:\/\/gnk-asg\.hr/,'').replace(/^\/en\//,'/'));
+    const key=normalizeApprovedKey(v);
+    if(key)keys.add(key);
   }
   return {scope:source.approved_scope||null,keys};
 })();
-// Vlasnik je odobrio autorski okvir za sve članke (approved_scope); pojedinačni popis je dodatni način.
-const isApprovedMention=item=>APPROVED_MENTIONS_DATA.scope==='all_articles_with_author_box'||APPROVED_MENTIONS_DATA.keys.has(item.slug)||APPROVED_MENTIONS_DATA.keys.has(routeFor(item));
+// approved_scope dopušta autorski okvir, ali konkretna stranica mora biti na vlasnikovom popisu.
+const isApprovedMention=item=>{
+  if(APPROVED_MENTIONS_DATA.scope!=='all_articles_with_author_box')return false;
+  return APPROVED_MENTIONS_DATA.keys.has(item.slug)||APPROVED_MENTIONS_DATA.keys.has(normalizeApprovedKey(routeFor(item)));
+};
 const hashtagsFor=item=>{
   const source=Array.isArray(item.hashtags)&&item.hashtags.length?item.hashtags:[...(item.keywords||[]),item.section].filter(Boolean);
   const seen=new Set([foldText(BRAND_TAG)]);
