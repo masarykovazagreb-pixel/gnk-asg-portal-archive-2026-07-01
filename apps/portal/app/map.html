@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous"></script>
 <style>
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
   html,body{margin:0;height:100%;background:#11151c;font-family:"Archivo",system-ui,sans-serif}
   #map{position:absolute;inset:0}
   .leaflet-container{background:#11151c}
@@ -26,8 +27,19 @@
   .leaflet-bar a{background:#11151c;color:#f2f3f5;border-bottom-color:#252c38}
   .leaflet-bar a:hover{background:#171c25;color:#fff}
 </style>
+<meta property="og:type" content="website">
+<meta property="og:title" content="GNK DINAMO Ltd. Group — mreža lokacija">
+<meta property="og:description" content="Karta mreže lokacija GNK DINAMO Ltd. grupe s pregledom povezanih društava i planiranih lokacija.">
+<meta property="og:url" content="https://gnk-asg.hr/app/map.html">
+<meta property="og:site_name" content="GNK ASG d.o.o.">
+<meta property="og:image" content="https://gnk-asg.hr/assets/gnk-asg-social-card.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GNK DINAMO Ltd. Group — mreža lokacija">
+<meta name="twitter:description" content="Karta mreže lokacija GNK DINAMO Ltd. grupe s pregledom povezanih društava i planiranih lokacija.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"GNK DINAMO Ltd. Group — mreža lokacija","description":"Karta mreže lokacija GNK DINAMO Ltd. grupe s pregledom povezanih društava i planiranih lokacija.","url":"https://gnk-asg.hr/app/map.html","inLanguage":"hr","publisher":{"@type":"Organization","name":"GNK ASG d.o.o.","url":"https://gnk-asg.hr/"}}</script>
 </head>
 <body>
+<h1 class="sr-only">GNK DINAMO Ltd. Group — mreža lokacija</h1>
 <div id="map"></div>
 <script>
   // Potvrđene lokacije Grupe iz javnih podataka portala.
