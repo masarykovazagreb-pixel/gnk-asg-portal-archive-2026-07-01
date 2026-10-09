@@ -62,7 +62,7 @@
       impact: Number($('f-impact').value),
       confidence: Number($('f-confidence').value),
       effort: Number($('f-effort').value),
-      status: 'nacrt'
+      status: 'otvoreno'
     };
     var v = F.validate(candidate);
     if (!v.ok) {
@@ -93,7 +93,7 @@
       .then(function (doc) {
         ideas = doc.ideas || [];
         var s = F.summarize(ideas);
-        $('status').textContent = 'Učitano ' + s.valid + ' nacrta ideja. Nijedna nije odobrena. Nacrte je izveo tim iz stanja repozitorija.';
+        $('status').textContent = 'Učitano ' + s.valid + ' ideja: ' + (s.byStatus.gotovo || 0) + ' gotovo, ' + (s.byStatus.otvoreno || 0) + ' otvoreno. Statusi su radna evidencija provedbe.';
         render();
       })
       .catch(function () { fail('Popis ideja nije učitan. Pokušajte ponovno kasnije.'); render(); });
