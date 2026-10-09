@@ -15,8 +15,8 @@
 
   var SEVERITY_LABEL = { critical: 'Kritično', high: 'Visoko', medium: 'Srednje', low: 'Nisko' };
 
+  // Dodaje nalaze u kontejner bez brisanja postojećeg sadržaja (pozivatelj čisti kontejner prije izvođenja).
   function renderFindings(container, findings) {
-    container.textContent = '';
     if (!findings || findings.length === 0) {
       container.appendChild(el('p', { class: 'dt-ok' }, 'Nema nalaza u ovoj provjeri.'));
       return;
