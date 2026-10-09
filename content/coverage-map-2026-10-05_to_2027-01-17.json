@@ -1,0 +1,878 @@
+{
+ "version": "GNK_ASG_COVERAGE_MAP_2026-10-09",
+ "generatedAt": "2026-10-09",
+ "timezone": "Europe/Zagreb",
+ "purpose": "Stvarna pokrivenost dana iz repozitorija. Zamjenjuje raniji plan-100-days-2026-10-10.json, koji je pogrešno označavao dane kao slobodne.",
+ "sources": [
+  "apps/portal/data/editorial-plan/manifest.json",
+  "apps/portal/data/editorial-plan/20261005-20261103-source-gated-300.json"
+ ],
+ "rules": [
+  "Paketi s objavljenim statusom su javni; zakazani nisu.",
+  "Stavke iz source-gated reda nisu tekstovi: nemaju tijelo, traže izvorni URL, provjeru činjenica, atribuciju i ljudsko odobrenje (governance.human_editorial_gate).",
+  "Dani bez ičega moraju dobiti planirane teme i tekstove prije objave."
+ ],
+ "counts": {
+  "published": 4,
+  "scheduled": 2,
+  "source-gated-topics": 24,
+  "none": 75
+ },
+ "days": [
+  {
+   "date": "2026-10-05",
+   "coverage": "published",
+   "packages": [
+    {
+     "id": "EDITORIAL-20261005-MONDAY-SLOT1",
+     "status": "published"
+    }
+   ],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-10-06",
+   "coverage": "published",
+   "packages": [
+    {
+     "id": "EDITORIAL-20261006-TUESDAY-SLOT1",
+     "status": "published"
+    }
+   ],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-10-07",
+   "coverage": "published",
+   "packages": [
+    {
+     "id": "EDITORIAL-20261007-WEDNESDAY-SLOT1",
+     "status": "published"
+    }
+   ],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-10-08",
+   "coverage": "published",
+   "packages": [
+    {
+     "id": "EDITORIAL-20261008-THURSDAY-SLOT1",
+     "status": "published"
+    }
+   ],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-10-09",
+   "coverage": "scheduled",
+   "packages": [
+    {
+     "id": "EDITORIAL-20261009-FRIDAY-SLOT1",
+     "status": "scheduled"
+    }
+   ],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-10-10",
+   "coverage": "scheduled",
+   "packages": [
+    {
+     "id": "EDITORIAL-20261010-SATURDAY-SLOT1",
+     "status": "scheduled"
+    }
+   ],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-10-11",
+   "coverage": "source-gated-topics",
+   "packages": [],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-10-12",
+   "coverage": "source-gated-topics",
+   "packages": [],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-10-13",
+   "coverage": "source-gated-topics",
+   "packages": [],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-10-14",
+   "coverage": "source-gated-topics",
+   "packages": [],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-10-15",
+   "coverage": "source-gated-topics",
+   "packages": [],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-10-16",
+   "coverage": "source-gated-topics",
+   "packages": [],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-10-17",
+   "coverage": "source-gated-topics",
+   "packages": [],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-10-18",
+   "coverage": "source-gated-topics",
+   "packages": [],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-10-19",
+   "coverage": "source-gated-topics",
+   "packages": [],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-10-20",
+   "coverage": "source-gated-topics",
+   "packages": [],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-10-21",
+   "coverage": "source-gated-topics",
+   "packages": [],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-10-22",
+   "coverage": "source-gated-topics",
+   "packages": [],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-10-23",
+   "coverage": "source-gated-topics",
+   "packages": [],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-10-24",
+   "coverage": "source-gated-topics",
+   "packages": [],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-10-25",
+   "coverage": "source-gated-topics",
+   "packages": [],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-10-26",
+   "coverage": "source-gated-topics",
+   "packages": [],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-10-27",
+   "coverage": "source-gated-topics",
+   "packages": [],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-10-28",
+   "coverage": "source-gated-topics",
+   "packages": [],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-10-29",
+   "coverage": "source-gated-topics",
+   "packages": [],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-10-30",
+   "coverage": "source-gated-topics",
+   "packages": [],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-10-31",
+   "coverage": "source-gated-topics",
+   "packages": [],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-11-01",
+   "coverage": "source-gated-topics",
+   "packages": [],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-11-02",
+   "coverage": "source-gated-topics",
+   "packages": [],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-11-03",
+   "coverage": "source-gated-topics",
+   "packages": [],
+   "queueItems": 10,
+   "queueStatus": {
+    "source-review": 4,
+    "draft": 6
+   }
+  },
+  {
+   "date": "2026-11-04",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-11-05",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-11-06",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-11-07",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-11-08",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-11-09",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-11-10",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-11-11",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-11-12",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-11-13",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-11-14",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-11-15",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-11-16",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-11-17",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-11-18",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-11-19",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-11-20",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-11-21",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-11-22",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-11-23",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-11-24",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-11-25",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-11-26",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-11-27",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-11-28",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-11-29",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-11-30",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-01",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-02",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-03",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-04",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-05",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-06",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-07",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-08",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-09",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-10",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-11",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-12",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-13",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-14",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-15",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-16",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-17",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-18",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-19",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-20",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-21",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-22",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-23",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-24",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-25",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-26",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-27",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-28",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-29",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-30",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2026-12-31",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2027-01-01",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2027-01-02",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2027-01-03",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2027-01-04",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2027-01-05",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2027-01-06",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2027-01-07",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2027-01-08",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2027-01-09",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2027-01-10",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2027-01-11",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2027-01-12",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2027-01-13",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2027-01-14",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2027-01-15",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2027-01-16",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  },
+  {
+   "date": "2027-01-17",
+   "coverage": "none",
+   "packages": [],
+   "queueItems": 0,
+   "queueStatus": {}
+  }
+ ]
+}
