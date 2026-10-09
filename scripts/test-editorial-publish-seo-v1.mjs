@@ -28,8 +28,17 @@ if(immediate.publishedAt){
     for(const marker of ['rel="canonical"','property="og:title"','name="twitter:card"','application/ld+json','<h1>','Urednička odgovornost'])assert.ok(html.includes(marker),`${file}: ${marker}`);
   }
 }
+const oct9=plan.packages.flatMap(pack=>pack.items).find(item=>item.slug==='sastanak-bez-odluke-nije-neuspjeh-ali-mora-biti-svjestan');
+assert.ok(oct9,'Oct 9 commentary must remain in editorial plan');
+assert.equal(oct9.image,'/assets/gallery/sastanak-bez-odluke-20261009.svg','Oct 9 commentary must keep its dedicated topic image');
+assert.equal(oct9.headings?.length,8,'Oct 9 commentary must keep explicit editorial section headings');
+assert.equal(new Set(oct9.headings).size,oct9.headings.length,'Oct 9 editorial section headings must be unique');
+const oct9Html=fs.readFileSync('apps/portal/komentari/sastanak-bez-odluke-nije-neuspjeh-ali-mora-biti-svjestan/index.html','utf8');
+assert.ok(oct9Html.includes('/assets/gallery/sastanak-bez-odluke-20261009.svg'),'published Oct 9 page must use dedicated topic image');
+assert.ok((oct9Html.match(/<h2>Zaključak<\/h2>/g)||[]).length<=1,'published Oct 9 page must not repeat Zaključak headings');
+
 const publisher=fs.readFileSync('scripts/editorial-publish-scheduled-v1.mjs','utf8');
-for(const marker of ['GNK_ASG_EDITORIAL_SCHEDULED_PUBLISH_V3_20260714','OpinionNewsArticle','application/ld+json','rel="canonical"','property="og:title"','name="twitter:card"','Urednička odgovornost','EDITORIAL_NOW','deployApproved','writeIfChanged','summary.publicChanged||summary.stateChanged','publication-holds.json','publicationHeld','summary.held','const cardImage=item.image||AUTHOR_IMAGE','const featuredImage=item.image||AUTHOR_IMAGE'])assert.ok(publisher.includes(marker),marker);
+for(const marker of ['GNK_ASG_EDITORIAL_SCHEDULED_PUBLISH_V3_20260714','OpinionNewsArticle','application/ld+json','rel="canonical"','property="og:title"','name="twitter:card"','Urednička odgovornost','EDITORIAL_NOW','deployApproved','writeIfChanged','summary.publicChanged||summary.stateChanged','publication-holds.json','publicationHeld','summary.held','const cardImage=item.image||AUTHOR_IMAGE','const featuredImage=item.image||AUTHOR_IMAGE','(headings[i-1]||\'\')'])assert.ok(publisher.includes(marker),marker);
 for(const file of ['apps/portal/data/editorial-plan/publication-holds.json','scripts/seo-visibility-cycle-v1.mjs','scripts/refresh-public-news-v4.mjs','scripts/validate-editorial-content-policy-v1.mjs','scripts/test-editorial-content-policy-v1.mjs','.github/workflows/editorial-scheduled-publish.yml','.github/workflows/seo-news-cycle.yml','.github/workflows/gnk-seo-nightly-audit.yml','.github/workflows/editorial-content-deploy.yml'])assert.ok(fs.existsSync(file)&&fs.statSync(file).size,file);
 const holds=JSON.parse(fs.readFileSync('apps/portal/data/editorial-plan/publication-holds.json','utf8'));
 assert.match(holds.version,/GNK_ASG_EDITORIAL_PUBLICATION_HOLDS_V(?:1_20260805|2_20260925_RESCHEDULED|3_20260925_DAILY|4_20261005_CLEARED)/);
