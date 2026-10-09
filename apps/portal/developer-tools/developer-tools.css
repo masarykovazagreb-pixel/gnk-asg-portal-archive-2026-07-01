@@ -85,3 +85,17 @@ button.dt-secondary { background: #fff; color: var(--dt-accent); border: 1px sol
 .dt-footer { background: var(--dt-accent); color: #cfd8e3; font-size: 0.9rem; }
 .dt-footer a { color: #fff; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+/* Data Clinic / Metodologije / Status: dodatni elementi */
+.dt-select { font: inherit; padding: 9px 11px; border: 1px solid #aab4c3; border-radius: 6px; background: #fff; color: var(--dt-ink); min-width: 260px; }
+.dt-method h3 { font-size: 1rem; margin: 14px 0 4px; color: var(--dt-accent); }
+.dt-calc { margin-top: 14px; padding-top: 10px; border-top: 1px dashed var(--dt-line); }
+.dt-calc-form label { font-weight: 600; font-size: 0.9rem; }
+.dt-calc-form input { margin-bottom: 6px; }
+.dt-calc-form button { margin-top: 8px; }
+.dt-overall { font-size: 1.3rem; font-weight: 700; }
+.dt-overall[data-state="operational"] { color: #1e6b3a; }
+.dt-overall[data-state="degraded"] { color: var(--dt-medium); }
+input[type="file"] { margin: 6px 0; }
+input[type="search"] { width: 100%; font: inherit; border: 1px solid #aab4c3; border-radius: 6px; padding: 9px 11px; background: #fff; }
+.dt-table caption { text-align: left; padding-bottom: 6px; }

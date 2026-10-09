@@ -1,0 +1,588 @@
+{
+  "catalogVersion": "1.0.0",
+  "publisher": "GNK ASG d.o.o.",
+  "language": "hr",
+  "nextReview": "2027-01-07",
+  "note": "Vlasnik metodologija je zajednički do potvrde imenovane odgovorne osobe. Metode su informativne i ne predstavljaju financijski, pravni ni investicijski savjet.",
+  "methodCount": 16,
+  "methods": [
+    {
+      "id": "revenue-growth",
+      "name": "Rast prihoda",
+      "area": "Financije",
+      "purpose": "Mjeri promjenu prihoda između dva usporediva razdoblja.",
+      "formula": "((prihod_novi / prihod_stari) - 1) × 100",
+      "inputs": [
+        {
+          "name": "prihod_novi",
+          "unit": "EUR",
+          "description": "Prihod novijeg razdoblja"
+        },
+        {
+          "name": "prihod_stari",
+          "unit": "EUR",
+          "description": "Prihod ranijeg razdoblja (različit od 0)"
+        }
+      ],
+      "output": {
+        "unit": "%"
+      },
+      "limitation": "Zahtijeva usporediva razdoblja (ista duljina) i istu računovodstvenu osnovu.",
+      "example": {
+        "inputs": {
+          "prihod_novi": 1200,
+          "prihod_stari": 1000
+        },
+        "result": 20
+      },
+      "version": "1.0.0",
+      "owner": "GNK ASG Intelligence Desk",
+      "ownerStatus": "potvrditi prije javne objave",
+      "reviewDue": "2027-01-07",
+      "permalink": "/metodologije/#revenue-growth"
+    },
+    {
+      "id": "roi",
+      "name": "Povrat na ulaganje (ROI)",
+      "area": "Financije",
+      "purpose": "Omjer dobiti od ulaganja i iznosa ulaganja.",
+      "formula": "((prihod_od_ulaganja - iznos_ulaganja) / iznos_ulaganja) × 100",
+      "inputs": [
+        {
+          "name": "prihod_od_ulaganja",
+          "unit": "EUR",
+          "description": "Ukupni prihod koji se pripisuje ulaganju"
+        },
+        {
+          "name": "iznos_ulaganja",
+          "unit": "EUR",
+          "description": "Ukupni iznos ulaganja (različit od 0)"
+        }
+      ],
+      "output": {
+        "unit": "%"
+      },
+      "limitation": "Ne uključuje vremensku vrijednost novca. Za duga ulaganja koristiti zasebnu metodu.",
+      "example": {
+        "inputs": {
+          "prihod_od_ulaganja": 150000,
+          "iznos_ulaganja": 100000
+        },
+        "result": 50
+      },
+      "version": "1.0.0",
+      "owner": "GNK ASG Intelligence Desk",
+      "ownerStatus": "potvrditi prije javne objave",
+      "reviewDue": "2027-01-07",
+      "permalink": "/metodologije/#roi"
+    },
+    {
+      "id": "profit-margin",
+      "name": "Profitna marža",
+      "area": "Financije",
+      "purpose": "Udio dobiti u prihodu.",
+      "formula": "((prihod - trosak) / prihod) × 100",
+      "inputs": [
+        {
+          "name": "prihod",
+          "unit": "EUR",
+          "description": "Ukupni prihod (različit od 0)"
+        },
+        {
+          "name": "trosak",
+          "unit": "EUR",
+          "description": "Ukupni trošak u istom razdoblju"
+        }
+      ],
+      "output": {
+        "unit": "%"
+      },
+      "limitation": "Ovisi o tome koji su troškovi uključeni; navesti obuhvat troškova uz rezultat.",
+      "example": {
+        "inputs": {
+          "prihod": 1000,
+          "trosak": 800
+        },
+        "result": 20
+      },
+      "version": "1.0.0",
+      "owner": "GNK ASG Intelligence Desk",
+      "ownerStatus": "potvrditi prije javne objave",
+      "reviewDue": "2027-01-07",
+      "permalink": "/metodologije/#profit-margin"
+    },
+    {
+      "id": "break-even",
+      "name": "Točka pokrića",
+      "area": "Financije",
+      "purpose": "Broj jedinica pri kojem su ukupni prihodi jednaki ukupnim troškovima.",
+      "formula": "fiksni_troskovi / (cijena_po_jedinici - varijabilni_trosak_po_jedinici)",
+      "inputs": [
+        {
+          "name": "fiksni_troskovi",
+          "unit": "EUR",
+          "description": "Fiksni troškovi u razdoblju"
+        },
+        {
+          "name": "cijena_po_jedinici",
+          "unit": "EUR",
+          "description": "Prodajna cijena jedinice"
+        },
+        {
+          "name": "varijabilni_trosak_po_jedinici",
+          "unit": "EUR",
+          "description": "Varijabilni trošak jedinice"
+        }
+      ],
+      "output": {
+        "unit": "jedinice"
+      },
+      "limitation": "Pretpostavlja stalnu cijenu i linearne troškove. Nije valjana ako je cijena manja od varijabilnog troška.",
+      "example": {
+        "inputs": {
+          "fiksni_troskovi": 50000,
+          "cijena_po_jedinici": 25,
+          "varijabilni_trosak_po_jedinici": 15
+        },
+        "result": 5000
+      },
+      "version": "1.0.0",
+      "owner": "GNK ASG Intelligence Desk",
+      "ownerStatus": "potvrditi prije javne objave",
+      "reviewDue": "2027-01-07",
+      "permalink": "/metodologije/#break-even"
+    },
+    {
+      "id": "cash-runway",
+      "name": "Novčani runway",
+      "area": "Financije",
+      "purpose": "Koliko mjeseci tvrtka može pokrivati odljeve s postojećim novcem.",
+      "formula": "novac / mjesecni_odljev",
+      "inputs": [
+        {
+          "name": "novac",
+          "unit": "EUR",
+          "description": "Raspoloživi novac"
+        },
+        {
+          "name": "mjesecni_odljev",
+          "unit": "EUR/mjesec",
+          "description": "Prosječni neto mjesečni odljev (različit od 0)"
+        }
+      ],
+      "output": {
+        "unit": "mjeseci"
+      },
+      "limitation": "Pretpostavlja stalan odljev. Ne uzima u obzir planirane prilive ni kreditne linije.",
+      "example": {
+        "inputs": {
+          "novac": 120000,
+          "mjesecni_odljev": 15000
+        },
+        "result": 8
+      },
+      "version": "1.0.0",
+      "owner": "GNK ASG Intelligence Desk",
+      "ownerStatus": "potvrditi prije javne objave",
+      "reviewDue": "2027-01-07",
+      "permalink": "/metodologije/#cash-runway"
+    },
+    {
+      "id": "capacity-utilisation",
+      "name": "Iskorištenost kapaciteta",
+      "area": "Operacije i sigurnost",
+      "purpose": "Udio iskorištenog u raspoloživom kapacitetu.",
+      "formula": "(iskoristeni_kapacitet / raspolozivi_kapacitet) × 100",
+      "inputs": [
+        {
+          "name": "iskoristeni_kapacitet",
+          "unit": "sati",
+          "description": "Iskorišteni kapacitet"
+        },
+        {
+          "name": "raspolozivi_kapacitet",
+          "unit": "sati",
+          "description": "Raspoloživi kapacitet (različit od 0)"
+        }
+      ],
+      "output": {
+        "unit": "%"
+      },
+      "limitation": "Vrijednost iznad 100 % znači prekoračenje kapaciteta; provjeriti jedinice obiju vrijednosti.",
+      "example": {
+        "inputs": {
+          "iskoristeni_kapacitet": 720,
+          "raspolozivi_kapacitet": 900
+        },
+        "result": 80
+      },
+      "version": "1.0.0",
+      "owner": "GNK ASG Intelligence Desk",
+      "ownerStatus": "potvrditi prije javne objave",
+      "reviewDue": "2027-01-07",
+      "permalink": "/metodologije/#capacity-utilisation"
+    },
+    {
+      "id": "availability",
+      "name": "Dostupnost usluge",
+      "area": "Operacije i sigurnost",
+      "purpose": "Udio vremena u kojem je usluga bila dostupna.",
+      "formula": "((ukupno_minuta - prekid_minuta) / ukupno_minuta) × 100",
+      "inputs": [
+        {
+          "name": "ukupno_minuta",
+          "unit": "min",
+          "description": "Ukupno promatrano vrijeme"
+        },
+        {
+          "name": "prekid_minuta",
+          "unit": "min",
+          "description": "Ukupno trajanje prekida (0 do ukupnog vremena)"
+        }
+      ],
+      "output": {
+        "unit": "%"
+      },
+      "limitation": "Ovisi o definiciji prekida. Planirano održavanje navesti zasebno ili isključiti prema pravilu organizacije.",
+      "example": {
+        "inputs": {
+          "ukupno_minuta": 43200,
+          "prekid_minuta": 43
+        },
+        "result": 99.9005
+      },
+      "version": "1.0.0",
+      "owner": "GNK ASG Intelligence Desk",
+      "ownerStatus": "potvrditi prije javne objave",
+      "reviewDue": "2027-01-07",
+      "permalink": "/metodologije/#availability"
+    },
+    {
+      "id": "incident-rate",
+      "name": "Stopa incidenata",
+      "area": "Operacije i sigurnost",
+      "purpose": "Broj incidenata na 1.000 radnih sati.",
+      "formula": "(incidenti / radni_sati) × 1000",
+      "inputs": [
+        {
+          "name": "incidenti",
+          "unit": "broj",
+          "description": "Broj zabilježenih incidenata"
+        },
+        {
+          "name": "radni_sati",
+          "unit": "sati",
+          "description": "Ukupni radni sati (različit od 0)"
+        }
+      ],
+      "output": {
+        "unit": "incidenti / 1.000 h"
+      },
+      "limitation": "Uspoređivati samo jednake definicije incidenta i jednake razine prijavljivanja.",
+      "example": {
+        "inputs": {
+          "incidenti": 4,
+          "radni_sati": 2000
+        },
+        "result": 2
+      },
+      "version": "1.0.0",
+      "owner": "GNK ASG Intelligence Desk",
+      "ownerStatus": "potvrditi prije javne objave",
+      "reviewDue": "2027-01-07",
+      "permalink": "/metodologije/#incident-rate"
+    },
+    {
+      "id": "risk-matrix-score",
+      "name": "Matrica rizika",
+      "area": "Operacije i sigurnost",
+      "purpose": "Procjena rizika kao umnožak vjerojatnosti i utjecaja.",
+      "formula": "vjerojatnost × utjecaj (obje skale 1–5)",
+      "inputs": [
+        {
+          "name": "vjerojatnost",
+          "unit": "1–5",
+          "description": "Procjena vjerojatnosti"
+        },
+        {
+          "name": "utjecaj",
+          "unit": "1–5",
+          "description": "Procjena utjecaja"
+        }
+      ],
+      "output": {
+        "unit": "bodovi 1–25"
+      },
+      "limitation": "Subjektivna procjena; isti rizik može dobiti različite bodove među timovima bez zajedničkih kriterija.",
+      "example": {
+        "inputs": {
+          "vjerojatnost": 4,
+          "utjecaj": 5
+        },
+        "result": 20
+      },
+      "version": "1.0.0",
+      "owner": "GNK ASG Intelligence Desk",
+      "ownerStatus": "potvrditi prije javne objave",
+      "reviewDue": "2027-01-07",
+      "permalink": "/metodologije/#risk-matrix-score"
+    },
+    {
+      "id": "recovery-gap",
+      "name": "Recovery gap",
+      "area": "Operacije i sigurnost",
+      "purpose": "Koliko je stvarni oporavak premašio ciljno vrijeme oporavka (RTO).",
+      "formula": "max(0, stvarno_vrijeme_oporavka - rto)",
+      "inputs": [
+        {
+          "name": "rto_minute",
+          "unit": "min",
+          "description": "Ciljno vrijeme oporavka"
+        },
+        {
+          "name": "stvarno_vrijeme_oporavka_minute",
+          "unit": "min",
+          "description": "Izmjereno vrijeme oporavka"
+        }
+      ],
+      "output": {
+        "unit": "min"
+      },
+      "limitation": "Vrijednost 0 znači da je cilj ispunjen, ne da je oporavak bio savršen. Ne mjeri gubitak podataka (RPO).",
+      "example": {
+        "inputs": {
+          "rto_minute": 60,
+          "stvarno_vrijeme_oporavka_minute": 90
+        },
+        "result": 30
+      },
+      "version": "1.0.0",
+      "owner": "GNK ASG Intelligence Desk",
+      "ownerStatus": "potvrditi prije javne objave",
+      "reviewDue": "2027-01-07",
+      "permalink": "/metodologije/#recovery-gap"
+    },
+    {
+      "id": "energy-cost",
+      "name": "Trošak energije",
+      "area": "Održivost i dostupnost",
+      "purpose": "Trošak potrošene električne energije.",
+      "formula": "kwh × cijena_po_kwh",
+      "inputs": [
+        {
+          "name": "kwh",
+          "unit": "kWh",
+          "description": "Potrošnja energije"
+        },
+        {
+          "name": "cijena_po_kwh_eur",
+          "unit": "EUR/kWh",
+          "description": "Cijena po kWh bez/uz poreze (navesti koja)"
+        }
+      ],
+      "output": {
+        "unit": "EUR"
+      },
+      "limitation": "Ne uključuje mrežne naknade i poreze osim ako su uključeni u unesenu cijenu.",
+      "example": {
+        "inputs": {
+          "kwh": 1200,
+          "cijena_po_kwh_eur": 0.15
+        },
+        "result": 180
+      },
+      "version": "1.0.0",
+      "owner": "GNK ASG Intelligence Desk",
+      "ownerStatus": "potvrditi prije javne objave",
+      "reviewDue": "2027-01-07",
+      "permalink": "/metodologije/#energy-cost"
+    },
+    {
+      "id": "energy-emissions",
+      "name": "Procjena emisija iz energije",
+      "area": "Održivost i dostupnost",
+      "purpose": "Procjena emisija stakleničkih plinova iz potrošnje energije.",
+      "formula": "kwh × faktor_kgco2e_po_kwh / 1000 (rezultat u tCO2e)",
+      "inputs": [
+        {
+          "name": "kwh",
+          "unit": "kWh",
+          "description": "Potrošnja energije"
+        },
+        {
+          "name": "faktor_kgco2e_po_kwh",
+          "unit": "kgCO2e/kWh",
+          "description": "Emisijski faktor iz navedenog javnog izvora"
+        }
+      ],
+      "output": {
+        "unit": "tCO2e"
+      },
+      "limitation": "Rezultat je samo onoliko dobar koliko i emisijski faktor. Faktor mora imati naveden izvor i godinu; metoda ne bira faktor sama.",
+      "example": {
+        "inputs": {
+          "kwh": 1200,
+          "faktor_kgco2e_po_kwh": 0.25
+        },
+        "result": 0.3
+      },
+      "version": "1.0.0",
+      "owner": "GNK ASG Intelligence Desk",
+      "ownerStatus": "potvrditi prije javne objave",
+      "reviewDue": "2027-01-07",
+      "permalink": "/metodologije/#energy-emissions"
+    },
+    {
+      "id": "wcag-contrast",
+      "name": "WCAG omjer kontrasta",
+      "area": "Održivost i dostupnost",
+      "purpose": "Omjer kontrasta između teksta i pozadine prema WCAG 2.x.",
+      "formula": "(L_svjetlija + 0,05) / (L_tamnija + 0,05), L = relativna luminancija",
+      "inputs": [
+        {
+          "name": "boja_teksta_hex",
+          "unit": "#RRGGBB",
+          "description": "Boja teksta"
+        },
+        {
+          "name": "boja_pozadine_hex",
+          "unit": "#RRGGBB",
+          "description": "Boja pozadine"
+        }
+      ],
+      "output": {
+        "unit": "omjer X:1"
+      },
+      "limitation": "Ne vrijedi za tekst u slikama ni za grafičke elemente bez zasebnih pravila. Prag: 4,5:1 za normalni tekst (WCAG AA).",
+      "example": {
+        "inputs": {
+          "boja_teksta_hex": "#000000",
+          "boja_pozadine_hex": "#ffffff"
+        },
+        "result": 21
+      },
+      "version": "1.0.0",
+      "owner": "GNK ASG Intelligence Desk",
+      "ownerStatus": "potvrditi prije javne objave",
+      "reviewDue": "2027-01-07",
+      "permalink": "/metodologije/#wcag-contrast"
+    },
+    {
+      "id": "sample-size",
+      "name": "Veličina statističkog uzorka",
+      "area": "Analitika i upravljanje",
+      "purpose": "Minimalni uzorak za procjenu udjela uz zadanu pogrešku i razinu pouzdanosti.",
+      "formula": "n = ceil(z² × p × (1 − p) / e²)",
+      "inputs": [
+        {
+          "name": "z",
+          "unit": "—",
+          "description": "Z-vrijednost (1,96 za 95 %)"
+        },
+        {
+          "name": "p",
+          "unit": "0–1",
+          "description": "Očekivani udio (0,5 za najkonzervativniju procjenu)"
+        },
+        {
+          "name": "e",
+          "unit": "0–1",
+          "description": "Dopuštena pogreška (npr. 0,05)"
+        }
+      ],
+      "output": {
+        "unit": "broj ispitanika"
+      },
+      "limitation": "Pretpostavlja slučajan uzorak. Ne uzima u obzir stopu odgovora ni korekciju za konačnu populaciju.",
+      "example": {
+        "inputs": {
+          "z": 1.96,
+          "p": 0.5,
+          "e": 0.05
+        },
+        "result": 385
+      },
+      "version": "1.0.0",
+      "owner": "GNK ASG Intelligence Desk",
+      "ownerStatus": "potvrditi prije javne objave",
+      "reviewDue": "2027-01-07",
+      "permalink": "/metodologije/#sample-size"
+    },
+    {
+      "id": "conversion-rate",
+      "name": "Stopa konverzije",
+      "area": "Analitika i upravljanje",
+      "purpose": "Udio posjeta koje su završile željenom radnjom.",
+      "formula": "(konverzije / posjeti) × 100",
+      "inputs": [
+        {
+          "name": "konverzije",
+          "unit": "broj",
+          "description": "Broj završenih radnji"
+        },
+        {
+          "name": "posjeti",
+          "unit": "broj",
+          "description": "Broj posjeta (različit od 0)"
+        }
+      ],
+      "output": {
+        "unit": "%"
+      },
+      "limitation": "Posjeti i konverzije moraju biti iz istog razdoblja i iste definicije. Jedan korisnik može imati više posjeta.",
+      "example": {
+        "inputs": {
+          "konverzije": 45,
+          "posjeti": 1500
+        },
+        "result": 3
+      },
+      "version": "1.0.0",
+      "owner": "GNK ASG Intelligence Desk",
+      "ownerStatus": "potvrditi prije javne objave",
+      "reviewDue": "2027-01-07",
+      "permalink": "/metodologije/#conversion-rate"
+    },
+    {
+      "id": "priority-score",
+      "name": "Prioritet projektne ideje",
+      "area": "Analitika i upravljanje",
+      "purpose": "Jednostavan rang ideja prema utjecaju, pouzdanosti i naporu.",
+      "formula": "(utjecaj × pouzdanost) / napor",
+      "inputs": [
+        {
+          "name": "utjecaj",
+          "unit": "1–10",
+          "description": "Procijenjeni utjecaj"
+        },
+        {
+          "name": "pouzdanost",
+          "unit": "0–1",
+          "description": "Pouzdanost procjene utjecaja"
+        },
+        {
+          "name": "napor",
+          "unit": "tjedni ili bodovi",
+          "description": "Procijenjeni napor (različit od 0)"
+        }
+      ],
+      "output": {
+        "unit": "indeks"
+      },
+      "limitation": "Služi za redoslijed razmatranja, ne za konačnu odluku. Subjektivne ulazne vrijednosti treba navesti uz rezultat.",
+      "example": {
+        "inputs": {
+          "utjecaj": 8,
+          "pouzdanost": 0.7,
+          "napor": 4
+        },
+        "result": 1.4
+      },
+      "version": "1.0.0",
+      "owner": "GNK ASG Intelligence Desk",
+      "ownerStatus": "potvrditi prije javne objave",
+      "reviewDue": "2027-01-07",
+      "permalink": "/metodologije/#priority-score"
+    }
+  ]
+}

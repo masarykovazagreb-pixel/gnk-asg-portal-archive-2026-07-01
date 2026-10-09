@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "1.0",
+  "generatedAt": "2026-10-09T10:58:09.454Z",
+  "snapshotType": "repository-snapshot",
+  "overallStatus": "degraded",
+  "notice": "Repository snapshot, not a live uptime guarantee. Generated from committed files.",
+  "services": [
+    {
+      "id": "portal",
+      "name": "GNK ASG portal",
+      "status": "operational",
+      "checkedAt": "2026-10-09T10:58:09.454Z"
+    },
+    {
+      "id": "developer-tools",
+      "name": "Developer Tools",
+      "status": "operational",
+      "checkedAt": "2026-10-09T10:58:09.454Z"
+    },
+    {
+      "id": "data-clinic",
+      "name": "Data Clinic",
+      "status": "operational",
+      "checkedAt": "2026-10-09T10:58:09.454Z"
+    },
+    {
+      "id": "methodology-library",
+      "name": "Javna knjižnica metodologija",
+      "status": "operational",
+      "checkedAt": "2026-10-09T10:58:09.454Z"
+    },
+    {
+      "id": "public-status",
+      "name": "Status centar",
+      "status": "operational",
+      "checkedAt": "2026-10-09T10:58:09.454Z"
+    }
+  ],
+  "quality": {
+    "sitemapEntries": 137,
+    "sitemapMissingLocalFiles": 0,
+    "pagesChecked": 1881,
+    "jsonLdInvalidPages": 0
+  },
+  "freshness": {
+    "mediaIntelligence": {
+      "status": "stale",
+      "lastUpdateAt": "2026-05-31T19:02:10.000Z",
+      "ageDays": 130
+    },
+    "siteResources": [
+      {
+        "id": "weather",
+        "name": "Weather",
+        "status": "fresh"
+      },
+      {
+        "id": "aktual",
+        "name": "News/AKTUAL",
+        "status": "fresh"
+      },
+      {
+        "id": "digitalAssets",
+        "name": "Digital Assets",
+        "status": "fresh"
+      }
+    ]
+  },
+  "notMonitored": [
+    {
+      "id": "adria-pay",
+      "name": "Adria Pay sandbox",
+      "reason": "Nije dio ovog repozitorija; nije praćen ovim snimkom."
+    },
+    {
+      "id": "organism-heartbeat",
+      "name": "Heartbeat organizma",
+      "reason": "Nema izvora heartbeata u repozitoriju; ne prikazuje se."
+    },
+    {
+      "id": "live-uptime",
+      "name": "Vanjski uptime",
+      "reason": "Snimak se generira iz repozitorija, a ne iz živih provjera dostupnosti."
+    }
+  ],
+  "knownLimitations": [
+    "Snimak se generira iz repozitorija, ne iz živih provjera dostupnosti.",
+    "Status \"operational\" znači da su datoteke prisutne, parsirane i u sitemapu, a ne da je ruta dostupna na mreži.",
+    "Media Intelligence monitor prikazuje zadnje vrijeme ažuriranja iz izvorne datoteke.",
+    "Razina dostupnosti i sigurnosni ugovori Adria Pay sandboxa nisu dio ovog snimka."
+  ],
+  "history": [
+    {
+      "generatedAt": "2026-10-09T10:58:09.454Z",
+      "overallStatus": "degraded"
+    },
+    {
+      "generatedAt": "2026-10-09T10:57:26.784Z",
+      "overallStatus": "degraded"
+    },
+    {
+      "generatedAt": "2026-10-09T10:57:06.262Z",
+      "overallStatus": "degraded"
+    }
+  ]
+}
