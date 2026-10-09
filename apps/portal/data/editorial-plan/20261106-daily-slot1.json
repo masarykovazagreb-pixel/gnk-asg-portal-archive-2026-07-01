@@ -1,0 +1,87 @@
+[
+  {
+    "type": "objava",
+    "slug": "sigurnosni-zapisi-koje-nitko-ne-cita",
+    "title": "Sigurnosni zapisi koje nitko ne čita",
+    "section": "Kibernetička sigurnost",
+    "description": "Zapisi o prijavama, promjenama i pristupima vrijede tek kad ih netko pregleda. Kako ih učiniti korisnima, a ne samo obaveznima za arhivu.",
+    "image": "/assets/gallery/cyber-resilience-organic-v3.svg",
+    "summary": "Sigurnosni zapisi su jedan od najjeftinijih izvora upozorenja, ali se u praksi često spremaju i zaboravljaju. Rješenje je u pravilima pregleda i odgovornosti.",
+    "seoTitle": "Sigurnosni zapisi koje nitko ne čita | GNK ASG",
+    "keywords": [
+      "sigurnosni zapisi",
+      "revizijski trag",
+      "kibernetička sigurnost",
+      "praćenje pristupa",
+      "upravljanje incidentima",
+      "sigurnost podataka"
+    ],
+    "hashtags": [
+      "#KibernetickaSigurnost",
+      "#SigurnosniZapisi",
+      "#RevizijskiTrag",
+      "#Incidenti",
+      "#SigurnostPodataka",
+      "#Odgovornost"
+    ],
+    "headings": [
+      "Što zapis treba sadržavati",
+      "Pregled umjesto arhive",
+      "Uzbuna koja se ignorira",
+      "Odgovornost za pregled",
+      "Kako započeti bez velikog ulaganja",
+      "Zadržavanje i vlasništvo zapisa",
+      "Brzina prijave i trenje",
+      "Uzorci koji otkrivaju napad",
+      "Zadržavanje i zaštita zapisa",
+      "Kada zapis postane dokaz",
+      "Zaštita zapisa od izmjene",
+      "Pregled kao vježba",
+      "Privatnost i pristup zapisima",
+      "Kada je zapis incident",
+      "Dodatna provjera",
+      "Pregled prije incidenta",
+      "Razlika između upozorenja i incidenta",
+      "Zapisi i odgovornost tima",
+      "Zaključak"
+    ],
+    "paragraphs": [
+      "Gotovo svaka organizacija danas bilježi tko se prijavio u sustav, kada je promijenjena lozinka, koji je korisnik pristupio kojoj datoteci i koja je usluga prestala raditi. Ti zapisi postoje u gotovo svakom alatu, poslužitelju i poslovnoj aplikaciji. Ipak, u većini slučajeva ostaju nepročitani sve dok neki incident ne zahtijeva da se u njih pogleda. Tada se pokazuje da su podaci bili tu cijelo vrijeme, ali nitko nije imao vremena, alata ni jasnog zadatka da ih poveže i prepozna obrazac. Zapis koji se ne pregledava nije sigurnosna mjera. On je samo trošak pohrane i dokaz da je nešto bilo moguće zabilježiti.",
+      "Korisni sigurnosni zapis odgovara na nekoliko pitanja: tko je napravio radnju, što je točno promijenjeno, odakle je radnja došla, kada se dogodila i je li bila u skladu s postupkom. Ako zapis ne sadrži barem ove elemente, njegova vrijednost u incidentu je ograničena. Dobro je provjeriti i koliko je zapis čitljiv osobi koja nije stručnjak za taj sustav. Ako za tumačenje treba posebno znanje koje ima samo jedan čovjek, sigurnosna kontrola ovisi o dostupnosti te jedne osobe, što je rizik sam po sebi.",
+      "Pregled zapisa često se pretvara u ritual arhiviranja. Logovi se prebacuju u pohranu, a zatim se čekaju pravila zadržavanja, bez stvarnog čitanja. Umjesto toga, zapise treba pregledavati prema unaprijed definiranim pitanjima. Primjerice: je li se netko prijavio izvan uobičajenog radnog vremena, jesu li se administratorske ovlasti dodjeljivale bez zahtjeva, jesu li se masovno preuzimali dokumenti iz osjetljivih mapa? Takva pitanja nisu složena, ali zahtijevaju redovitost. Pregled jednom mjesečno ima manju vrijednost od kratke, ali stalne provjere prema zadanom popisu.",
+      "Sigurnosni sustavi generiraju upozorenja, a upozorenja su često previše brojna da bi se sva pregledala. Rezultat je da se ona ignoriraju po navici, osobito ona koja se pojavljuju svakodnevno. Ta pojava poznata je u mnogim područjima i često vodi do propuštenih znakova, koji su kasnije prepoznati kao rani pokazatelji incidenta. Rješenje nije u isključivanju upozorenja, nego u njihovom uređivanju. Potrebno je odrediti koja upozorenja zahtijevaju trenutnu reakciju, koja pregled u radni dan i koja se samo bilježe radi statistike. Bez takve podjele, sustav koji je trebao štititi postaje izvor buke.",
+      "Ključno pitanje je tko je odgovoran za pregled. U mnogim organizacijama odgovornost pripada IT odjelu, ali on često nema ovlasti ni kontekst da procijeni poslovne posljedice radnji. Zato je korisno odrediti par: tehničku osobu koja provjerava signale i poslovnu osobu koja odlučuje je li radnja bila opravdana. Takva podjela ne troši puno vremena, ali sprječava situaciju u kojoj se sumnjiva radnja odobrava samo zato što nitko nije siguran čija je to odluka. Dokumentirati tko je pregledao zapis i koja je odluka donesena također je dio revizijskog traga.",
+      "Ulaganje ne mora biti veliko da bi pregled zapisa postao realan. Dovoljno je započeti s malim skupom najvažnijih izvora: prijave administratora, promjene prava pristupa, pristupi osjetljivim podacima i neuspjeli pokušaji prijave. Za te izvore može se napraviti jednostavan tjedni pregled, s popisom od nekoliko pitanja i zapisom o rezultatu. Nakon nekoliko mjeseci lako se vidi koja pitanja donose vrijednost i koja se mogu ukloniti. Važno je da se pregled ne mjeri brojem pročitanih stranica, nego brojem pronađenih odstupanja i vremenom do reakcije.",
+      "Svaki sigurnosni zapis treba imati i svog vlasnika, koji odlučuje koliko dugo se čuva, tko mu može pristupiti i kako se štiti od izmjene. Zapis koji se može naknadno mijenjati ne služi kao dokaz, a zapis koji je previše dostupan može sam postati izvor curenja podataka. To je osobito važno kad se zapisi čuvaju kod vanjskih dobavljača. Ugovori i tehnička konfiguracija trebaju jasno odrediti tko je vlasnik, koliko dugo se zapisi čuvaju i kako se do njih dolazi kada je potrebno.",
+      "Sigurnosni zapisi često se promatraju kao nešto što se događa u pozadini, ali obrasci u njima mogu pokazati i kako ljudi zaista rade. Ako se velik broj korisnika u kratkom razdoblju prijavljuje s neuobičajenih mjesta ili uređaja, to može biti znak napada. Ali isto tako može biti znak da je postupak prijave toliko zamoran da korisnici traže zaobilazna rješenja. Razlikovati ta dva scenarija važno je za odluku što dalje. Dobar pregled uz svaki takav obrazac pita ne samo što se dogodilo, nego i zašto je ljudima bilo lakše učiniti to nego slijediti pravilo.",
+      "Pojedinačni događaj u zapisu rijetko je dovoljan za zaključak. Uzorak je ono što vrijedi pratiti: niz neuspjelih pokušaja prijave koji se nastavi nakon što je jedan račun zaključan, pristup osjetljivoj mapi iz nove lokacije neposredno nakon promjene prava ili izvoz velikog broja dokumenata izvan radnog vremena. Svaki takav uzorak zahtijeva kontekst. Nije svaki neuobičajen pristup napad, ali je svaki neobjašnjen pristup vrijedan provjere.",
+      "Zapisi imaju i vlastiti životni ciklus. Moraju se čuvati dovoljno dugo da se mogu koristiti u istrazi, ali ne toliko dugo da postanu nepotrebna zbirka osobnih podataka. Razdoblje čuvanja treba odrediti prema svrsi zapisa, a ne prema tome što tehnički sustav dopušta. Jednako je važno da zapisi budu zaštićeni od izmjene i da se pristup njima bilježi. Ako netko može obrisati ili mijenjati zapis o vlastitoj radnji, zapis gubi vrijednost dokaza.",
+      "Zapis postaje koristan dokaz tek kad se može pokazati da je vjerodostojan: da je nastao automatski, da nije naknadno mijenjan i da se može povezati s konkretnim događajem. To je razlog zašto se u mnogim organizacijama zapisi ne tretiraju kao običan izvještaj, nego kao sastavni dio procesa upravljanja incidentima. Kad incident nastane, prvo pitanje je što je zabilježeno i može li se to dokazati.",
+      "Zaštita zapisa od izmjene često se zanemaruje kad se zapisi sele između sustava ili čuvaju kod vanjskih pružatelja. Tada je važno znati tko može pristupiti kopiji, je li prijenos šifriran i postoji li evidencija svakog pristupa. Ako organizacija ne može odgovoriti na ta tri pitanja, njezin zapis je dostupan, ali nije dokazan. Razlika je velika kad se o incidentu mora odlučivati na temelju činjenica.",
+      "Pregled zapisa treba biti i proba za stvarni incident. Organizacija može jednom u nekoliko mjeseci simulirati scenarij: sumnjiv pristup administratorskom računu i pitanje što se može utvrditi iz zapisa u roku od sat vremena. Rezultat vježbe često pokazuje rupe koje se u redovnom radu ne vide, poput zapisa koji nisu uključeni, vremenskih oznaka u različitim zonama ili pravila koja nitko ne zna pronaći. Vježba koja otkrije takav problem vrijedi više od mnogo ispravnih, ali nikad testiranih dokumenata.",
+      "Svaka organizacija treba razmisliti i o tome tko smije vidjeti sadržaj zapisa. Zapis o prijavama često sadrži podatke o zaposlenicima, lokacijama i navikama rada, pa njegov pristup mora biti ograničen na osobe kojima je stvarno potreban. Istodobno, pregled ne smije postati alat za kontrolu svakog pojedinog poteza. Pravilo može biti jednostavno: sadržaj se pregledava u okviru definirane svrhe, a svaki pristup zapisima također se bilježi. Tako se zaštita sigurnosti i zaštita privatnosti podupiru, a ne međusobno isključuju.",
+      "Dobro je i unaprijed odrediti što se smatra incidentom, a što rutinskim događajem. Bez toga svaki neobičan zapis postaje hitnost, a timovi se brzo naviknu na lažne uzbune. Jasan kriterij, zapisan u jednoj stranici, pomaže da se reakcija prilagodi ozbiljnosti. Lakši slučajevi rješavaju se u redovnom pregledu, a ozbiljniji odmah se prijavljuju osobi koja je odgovorna za odluke o incidentu. Ta podjela štiti i vrijeme tima i povjerenje u sustav upozorenja.",
+      "Kada se sve složi, sigurnosni zapisi postaju dio svakodnevne kulture rada, a ne samo tehnički dodatak. Tim zna koje podatke vodi, tko ih pregledava i kako se reagira kad se pojavi neobičnost. Takva kultura ne nastaje jednom odlukom, nego kontinuiranim pregledom, kratkim vježbama i jasnim odgovornostima. Kada se zapis pročita, objasni i iz njega nešto nauči, on prestaje biti teret za pohranu i postaje sredstvo koje štiti organizaciju, njezine zaposlenike i njezine korisnike.",
+      "Najbolje vrijeme za pregled zapisa nije tek kad se nešto dogodi, nego unaprijed, kad nema pritiska. Tada se mogu postaviti pitanja koja se inače ne stignu postaviti: koje je zapise teško interpretirati, koji zapisi nedostaju za pojedine usluge, tko ima pristup a ne bi trebao. Pregled prije incidenta pretvara zapise iz pasivnog arhiva u aktivno sredstvo, a njegovi nalazi često vode do jednostavnih poboljšanja, poput uključivanja zapisa ili pojašnjenja uloga.",
+      "Upozorenje je signal da nešto treba pogledati, a incident je potvrđen događaj koji zahtijeva reakciju. Jasno razlikovanje ta dva pojma sprječava da se svako upozorenje tretira kao kriza, ali i da se stvarna kriza ne prepozna jer je zakopana među stotinama signala. Svaka organizacija trebala bi zapisati kriterij prijelaza iz jednog u drugi, s imenom osobe koja odlučuje.",
+      "Sigurnosni zapisi imaju smisla samo ako tim zna tko je odgovoran za odgovor na njihove nalaze. Zapis koji otkrije odstupanje mora imati vlasnika koji ga potvrđuje, procjenjuje i zatvara, uz kratku bilješku o ishodu. Bez te discipline, isti nalaz se ponavlja iz mjeseca u mjesec, a organizacija ima dojam da je pokrivena jer postoje podaci, iako se ti podaci nikad ne koriste za odluku.",
+      "Sigurnosni zapisi nisu zanimljiv dio sigurnosne strategije, ali su često najpouzdaniji način da se razumije što se stvarno dogodilo. Njihova vrijednost ovisi o tri stvari: sadržaju koji omogućuje odgovor na ključna pitanja, redovitom pregledu prema jasnom popisu i jasno određenoj odgovornosti. Organizacija koja ih zadovoljava ne mora biti savršeno zaštićena, ali zna što se događa u svojim sustavima i može reagirati na vrijeme. Upravo to razlikuje zaštitu koja postoji na papiru od one koja radi svaki dan."
+    ],
+    "links": [
+      "/objave/",
+      "/komentari/",
+      "/tehnologija/",
+      "/analize/",
+      "/gnk-aktual/",
+      "/registri/",
+      "/metodologije/"
+    ],
+    "author": "Nermin Sefić",
+    "authorImage": "/assets/people/nermin-sefic/nermin-sefic-01-official-desk-portrait.webp",
+    "featureInAktual": false,
+    "featureInComments": false,
+    "distribution": [
+      "GNK ASG"
+    ]
+  }
+]

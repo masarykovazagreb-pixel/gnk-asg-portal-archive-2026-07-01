@@ -16,36 +16,56 @@ const AUTHOR_URL='https://gnk-asg.hr/nermin-sefic/';
 const AUTHOR_IMAGE='/assets/people/nermin-sefic/nermin-sefic-01-official-desk-portrait.webp';
 const GROUP_ENTITY='GNK DINAMO Ltd. USA Group';
 const writeIfChanged=(file,content)=>{const before=fs.existsSync(file)?fs.readFileSync(file,'utf8'):null;if(before===content)return false;fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,content);return true;};
+// Pravila: meta oznake i hashtagovi ne smiju sadrzavati ime autora ni naziv grupe.
+// Takva imena se uklanjaju iz kljucnih rijeci i hashtagova (ne baca se greska,
+// da cron ne padne zbog starih paketa). Autorski okvir prikazuje se samo za
+// stavke navedene u data/approved_mentions.json.
+const BRAND_TAG='#GNKASG';
+const AUTHOR_TAG='#NerminSefić';
+const foldText=t=>String(t).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+const isNameToken=t=>/nermin|sefic|dinamo/.test(foldText(t).replace(/[^a-z]/g,''));
+const APPROVED_MENTIONS_FILE=path.join(ROOT,'data/approved_mentions.json');
+const APPROVED_MENTIONS=(()=>{
+  if(!fs.existsSync(APPROVED_MENTIONS_FILE))return new Set();
+  const source=JSON.parse(fs.readFileSync(APPROVED_MENTIONS_FILE,'utf8'));
+  return new Set((source.approved_items||[]).map(x=>typeof x==='string'?x:(x.slug||x.route||x.id||'')).filter(Boolean));
+})();
+const isApprovedMention=item=>APPROVED_MENTIONS.has(item.slug)||APPROVED_MENTIONS.has(routeFor(item));
 const hashtagsFor=item=>{
-  // Oznake s kvacicama ne rade pouzdano na drustvenim mrezama, pa uz svaku ide
-  // i inacica bez njih. Opcenite oznake poput #Sefic izbacene su jer hvataju
-  // tudji sadrzaj i ne donose nista.
-  const bezKvacica=t=>t.replace(/[čćžšđČĆŽŠĐ]/g,z=>({'č':'c','ć':'c','ž':'z','š':'s','đ':'d','Č':'C','Ć':'C','Ž':'Z','Š':'S','Đ':'D'}[z]));
-  const base=['#GNKASG','#NerminSefic','#NerminSefić','#SeficNermin','#SefićNermin','#GNKDINAMOLtdUSAGroup'];
-  const topicTags=(item.keywords||[]).slice(0,3)
-    .map(k=>'#'+k.split(/\s+/).map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join('').replace(/[^\wŠĐČĆŽšđčćž]/g,''))
-    .filter(t=>t.length>4&&!base.includes(t));
-  const sve=[];
-  for(const t of [...topicTags,...base]){
-    if(!sve.includes(t)) sve.push(t);
-    const b=bezKvacica(t);
-    if(b!==t&&!sve.includes(b)) sve.push(b);
+  const source=Array.isArray(item.hashtags)&&item.hashtags.length?item.hashtags:[...(item.keywords||[]),item.section].filter(Boolean);
+  const seen=new Set([foldText(BRAND_TAG)]);
+  const topics=[];
+  for(const raw of source){
+    if(isNameToken(raw))continue;
+    const text=String(raw);
+    const tag=(text.startsWith('#')?text:'#'+text.split(/\s+/).map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join('')).replace(/[^\p{L}\p{N}#]/gu,'');
+    if(tag.length<5||isNameToken(tag))continue;
+    const key=foldText(tag);
+    if(seen.has(key))continue;
+    seen.add(key);topics.push(tag);
+    if(topics.length===9)break;
   }
-  return sve.join(' ');
+  // Jedna kanonska oznaka autora, samo za stavke odobrene u approved_mentions.json.
+  const head=isApprovedMention(item)?[BRAND_TAG,AUTHOR_TAG]:[BRAND_TAG];
+  return [...head,...topics].join(' ');
 };
+const AUTHOR_BOX_HTML=item=>`<aside class="article-author"><img src="${AUTHOR_IMAGE}" alt="Nermin Sefić — autor teksta ${esc(item.title)}" width="320" height="320" loading="eager"><div><span>Autor</span><strong>Nermin Sefić</strong><a href="/nermin-sefic/">Profil autora</a><small>GNK ASG · GNK DINAMO Ltd. USA Group</small></div></aside>`;
 function articleHtml(item,dateIso){
   const route=routeFor(item),canonical=`https://gnk-asg.hr${route}`;
-  const normalizedKeywords=[...new Set([...(item.keywords||[]),AUTHOR_NAME,'Sefić Nermin','Nermin Sefic','Sefic Nermin','GNK ASG',GROUP_ENTITY])];
+  const normalizedKeywords=[...new Set([...(item.keywords||[]).filter(k=>!isNameToken(k)),'GNK ASG'])];
+  const authorBox=isApprovedMention(item)?AUTHOR_BOX_HTML(item):'';
   const keywords=normalizedKeywords.join(', '),topicImage=item.image||AUTHOR_IMAGE;
   const author={type:'Person',name:AUTHOR_NAME,url:AUTHOR_URL,image:`https://gnk-asg.hr${AUTHOR_IMAGE}`};
   const ld={"@context":"https://schema.org","@type":item.type==='komentar'?'OpinionNewsArticle':'Article',headline:item.title,description:item.description,datePublished:dateIso,dateModified:dateIso,mainEntityOfPage:{"@type":"WebPage","@id":canonical},author:{"@type":"Person",name:author.name,url:author.url,image:author.image},publisher:{"@type":"Organization",name:"GNK ASG d.o.o.",url:"https://gnk-asg.hr/",logo:{"@type":"ImageObject",url:"https://gnk-asg.hr/assets/logo-gnk-asg-canonical.svg"}},image:[`https://gnk-asg.hr${topicImage}`,author.image],articleSection:item.section,keywords:normalizedKeywords,about:[{"@type":"Person","name":AUTHOR_NAME,"url":AUTHOR_URL},{"@type":"Organization","name":"GNK ASG d.o.o.","url":"https://gnk-asg.hr/"},{"@type":"Organization","name":GROUP_ENTITY}]};
   const headings=['Operativni kontekst','Ključna upravljačka odluka','Praktična primjena','Zaključak'];
-  const body=(item.paragraphs||[]).map((p,i)=>`${i?`<h2>${esc(headings[Math.min(i-1,headings.length-1)])}</h2>`:''}<p>${esc(p)}</p>`).join('');
+  // item.headings (opcionalno): naslov za svaki odjeljak nakon prvog odlomka; prazan string = bez naslova.
+  const headingFor=i=>Array.isArray(item.headings)?(item.headings[i-1]||''):headings[Math.min(i-1,headings.length-1)];
+  const body=(item.paragraphs||[]).map((p,i)=>`${i&&headingFor(i)?`<h2>${esc(headingFor(i))}</h2>`:''}<p>${esc(p)}</p>`).join('');
   const links=(item.links||[]).map(link=>`<li><a href="${esc(link)}">${esc(link)}</a></li>`).join('');
   const sources=(item.sources||[]).length?`<section class="article-sources"><h2>Referentni izvori</h2><ul>${item.sources.map(source=>`<li><a href="${esc(source.url)}" rel="nofollow noopener" target="_blank">${esc(source.name)}</a></li>`).join('')}</ul><p>Objava je originalna analiza; navedeni izvori služe kao referentna dokumentacija.</p></section>`:'';
   const authorMeta=`<meta name="author" content="${AUTHOR_NAME}"><meta property="article:author" content="${AUTHOR_URL}"><meta name="author-image" content="https://gnk-asg.hr${AUTHOR_IMAGE}">`;
   const back=item.type==='objava'?'/objave/':'/komentari/';
-  return `<!doctype html><html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>${esc(item.seoTitle)}</title><meta name="description" content="${esc(item.description)}"><meta name="keywords" content="${esc(keywords)}">${authorMeta}<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"><link rel="canonical" href="${canonical}"><meta property="og:type" content="article"><meta property="og:locale" content="hr_HR"><meta property="og:site_name" content="GNK ASG"><meta property="og:title" content="${esc(item.seoTitle)}"><meta property="og:description" content="${esc(item.description)}"><meta property="og:url" content="${canonical}"><meta property="og:image" content="https://gnk-asg.hr${esc(topicImage)}"><meta property="og:image:alt" content="${esc(item.title)} — Nermin Sefić"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${esc(item.seoTitle)}"><meta name="twitter:description" content="${esc(item.description)}"><meta name="twitter:image" content="https://gnk-asg.hr${esc(topicImage)}"><script type="application/ld+json">${JSON.stringify(ld)}</script><link rel="stylesheet" href="/assets/editorial-content-v2.css?v=20260714-seo-v3"><link rel="stylesheet" href="/assets/public-unified-menu-v6.css?v=20260721-header-fulltransparent-v1"></head><body><header id="gnk-unified-header" data-gnk-unified-shell="v6-static"><div class="inner"><a class="brand" href="/" aria-label="GNK ASG"><img src="/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64" alt="GNK ASG" width="110" height="68" data-gnk-canonical-logo="1"></a><div id="gnk-unified-menu"><div class="actions"><div class="lang"><a href="/" aria-label="Hrvatski" aria-current="page">HR</a><a href="/en/" aria-label="English">EN</a></div><button class="toggle" type="button" aria-expanded="false" aria-controls="gnk-unified-nav">IZBORNIK</button></div><nav id="gnk-unified-nav"></nav></div></div></header><main class="editorial-wrap article"><img class="editorial-logo" src="/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64" alt="GNK ASG"><header class="article-header"><p class="eyebrow">${esc(labelFor(item))} · ${esc(item.section)} · ${dateLabel(new Date(dateIso))}</p><h1>${esc(item.title)}</h1><p class="lead">${esc(item.summary)}</p></header><aside class="article-author"><img src="${AUTHOR_IMAGE}" alt="Nermin Sefić — autor teksta ${esc(item.title)}" width="320" height="320" loading="eager"><div><span>Autor</span><strong>Nermin Sefić</strong><a href="/nermin-sefic/">Profil autora</a><small>GNK ASG · GNK DINAMO Ltd. USA Group</small></div></aside><img class="article-cover" src="${esc(topicImage)}" alt="${esc(item.title)} — autorski tekst Nermina Sefića"><article class="article-body">${body}<h2>Povezane teme</h2><ul>${links}</ul>${sources}<p class="editorial-approval"><strong>Urednička odgovornost:</strong> objavu je prije objave odobrio glavni urednik Nermin Sefić.</p><p class="article-hashtags">${esc(hashtagsFor(item))}</p></article><a class="article-back" href="${back}">← Povratak</a></main><script src="/assets/app.js?v=20260721-hero-rounded-v1" defer></script></body></html>`;
+  return `<!doctype html><html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>${esc(item.seoTitle)}</title><meta name="description" content="${esc(item.description)}"><meta name="keywords" content="${esc(keywords)}">${authorMeta}<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"><link rel="canonical" href="${canonical}"><meta property="og:type" content="article"><meta property="og:locale" content="hr_HR"><meta property="og:site_name" content="GNK ASG"><meta property="og:title" content="${esc(item.seoTitle)}"><meta property="og:description" content="${esc(item.description)}"><meta property="og:url" content="${canonical}"><meta property="og:image" content="https://gnk-asg.hr${esc(topicImage)}"><meta property="og:image:alt" content="${esc(item.title)} — Nermin Sefić"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${esc(item.seoTitle)}"><meta name="twitter:description" content="${esc(item.description)}"><meta name="twitter:image" content="https://gnk-asg.hr${esc(topicImage)}"><script type="application/ld+json">${JSON.stringify(ld)}</script><link rel="stylesheet" href="/assets/editorial-content-v2.css?v=20260714-seo-v3"><link rel="stylesheet" href="/assets/public-unified-menu-v6.css?v=20260721-header-fulltransparent-v1"></head><body><header id="gnk-unified-header" data-gnk-unified-shell="v6-static"><div class="inner"><a class="brand" href="/" aria-label="GNK ASG"><img src="/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64" alt="GNK ASG" width="110" height="68" data-gnk-canonical-logo="1"></a><div id="gnk-unified-menu"><div class="actions"><div class="lang"><a href="/" aria-label="Hrvatski" aria-current="page">HR</a><a href="/en/" aria-label="English">EN</a></div><button class="toggle" type="button" aria-expanded="false" aria-controls="gnk-unified-nav">IZBORNIK</button></div><nav id="gnk-unified-nav"></nav></div></div></header><main class="editorial-wrap article"><img class="editorial-logo" src="/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64" alt="GNK ASG"><header class="article-header"><p class="eyebrow">${esc(labelFor(item))} · ${esc(item.section)} · ${dateLabel(new Date(dateIso))}</p><h1>${esc(item.title)}</h1><p class="lead">${esc(item.summary)}</p></header>${authorBox}<img class="article-cover" src="${esc(topicImage)}" alt="${esc(item.title)} — autorski tekst Nermina Sefića"><article class="article-body">${body}<h2>Povezane teme</h2><ul>${links}</ul>${sources}<p class="editorial-approval"><strong>Urednička odgovornost:</strong> objavu je prije objave odobrio glavni urednik Nermin Sefić.</p><p class="article-hashtags">${esc(hashtagsFor(item))}</p></article><a class="article-back" href="${back}">← Povratak</a></main><script src="/assets/app.js?v=20260721-hero-rounded-v1" defer></script></body></html>`;
 }
 function appendCard(indexPath,item){
   let html=fs.readFileSync(indexPath,'utf8'),route=routeFor(item);
