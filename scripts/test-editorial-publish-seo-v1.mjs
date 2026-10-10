@@ -41,7 +41,11 @@ const publisher=fs.readFileSync('scripts/editorial-publish-scheduled-v1.mjs','ut
 for(const marker of ['GNK_ASG_EDITORIAL_SCHEDULED_PUBLISH_V3_20260714','OpinionNewsArticle','application/ld+json','rel="canonical"','property="og:title"','name="twitter:card"','Urednička odgovornost','EDITORIAL_NOW','deployApproved','writeIfChanged','summary.publicChanged||summary.stateChanged','publication-holds.json','publicationHeld','summary.held','const cardImage=item.image||AUTHOR_IMAGE','const featuredImage=item.image||AUTHOR_IMAGE','(headings[i-1]||\'\')'])assert.ok(publisher.includes(marker),marker);
 for(const file of ['apps/portal/data/editorial-plan/publication-holds.json','scripts/seo-visibility-cycle-v1.mjs','scripts/refresh-public-news-v4.mjs','scripts/validate-editorial-content-policy-v1.mjs','scripts/test-editorial-content-policy-v1.mjs','.github/workflows/editorial-scheduled-publish.yml','.github/workflows/seo-news-cycle.yml','.github/workflows/gnk-seo-nightly-audit.yml','.github/workflows/editorial-content-deploy.yml'])assert.ok(fs.existsSync(file)&&fs.statSync(file).size,file);
 const holds=JSON.parse(fs.readFileSync('apps/portal/data/editorial-plan/publication-holds.json','utf8'));
-assert.match(holds.version,/GNK_ASG_EDITORIAL_PUBLICATION_HOLDS_V(?:1_20260805|2_20260925_RESCHEDULED|3_20260925_DAILY|4_20261005_CLEARED)/);
+assert.match(holds.version,/GNK_ASG_EDITORIAL_PUBLICATION_HOLDS_V(?:1_20260805|2_20260925_RESCHEDULED|3_20260925_DAILY|4_20261005_CLEARED|5_20261010_3000_WORDS_PENDING_POLICY_DECISION)/);
+if(holds.version==='GNK_ASG_EDITORIAL_PUBLICATION_HOLDS_V5_20261010_3000_WORDS_PENDING_POLICY_DECISION'){
+  const required=['EDITORIAL-20261010-SATURDAY-SLOT1','EDITORIAL-20261104-WEDNESDAY-SLOT1','EDITORIAL-20261105-THURSDAY-SLOT1','EDITORIAL-20261106-FRIDAY-SLOT1','EDITORIAL-20261107-SATURDAY-SLOT1','EDITORIAL-20261108-SUNDAY-SLOT1'];
+  for(const id of required)assert.ok(holds.holds.some(h=>h.packageId===id&&h.active===true),`required 3000-word quality hold missing: ${id}`);
+}
 assert.ok(Array.isArray(holds.holds),'publication holds must be an array');
 for(const hold of holds.holds){
   assert.ok(hold.packageId&&hold.active===true&&String(hold.reason||'').length>=20,`invalid publication hold: ${JSON.stringify(hold)}`);
