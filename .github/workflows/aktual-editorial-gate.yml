@@ -1,0 +1,32 @@
+name: AKTUAL Content Factory safety gate
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'content/factory-queue/**'
+      - 'apps/portal/data/content-queue-state.json'
+      - 'apps/portal/data/editorial-registry.json'
+      - 'apps/portal/data/editorial-plan/**'
+      - 'scripts/content-queue-preflight-v1.mjs'
+      - 'scripts/content-queue-publish-v1.mjs'
+      - 'tests/test-content-queue-preflight-v1.mjs'
+      - '.github/workflows/content-queue-publish.yml'
+      - '.github/workflows/aktual-editorial-gate.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  editorial-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Verify Content Factory gate regression suite
+        run: node tests/test-content-queue-preflight-v1.mjs
+      - name: Confirm current queue is safe
+        run: node scripts/content-queue-preflight-v1.mjs
