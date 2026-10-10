@@ -77,7 +77,7 @@ async function fetchAllMyArticles() {
   const all = [];
   for (let page = 1; page <= 20; page++) {
     const url = `https://dev.to/api/articles/me/all?per_page=1000&page=${page}`;
-    const r = await fetch(url, { headers: { 'api-key': API_KEY } });
+    const r = await fetch(url, { headers: { 'api-key': API_KEY, 'User-Agent': 'GNK-ASG-Blog-Mirror/1.0' } });
     if (!r.ok) throw new Error(`Dev.to reconciliation ${r.status}: ${await r.text()}`);
     const batch = await r.json();
     if (!Array.isArray(batch)) throw new Error('Dev.to reconciliation returned non-array payload');
@@ -126,7 +126,7 @@ async function publishArticle(clanak, item) {
   if (clanak.image) article.cover_image = clanak.image;
   const r = await fetch('https://dev.to/api/articles', {
     method: 'POST',
-    headers: { 'api-key': API_KEY, 'Content-Type': 'application/json' },
+    headers: { 'api-key': API_KEY, 'Content-Type': 'application/json', 'User-Agent': 'GNK-ASG-Blog-Mirror/1.0' },
     body: JSON.stringify({ article }),
   });
   const text = await r.text();
@@ -156,10 +156,20 @@ function isRateLimitError(value) {
   return msg.includes('dev.to 429') || msg.includes('rate limit');
 }
 
+function isAuthError(value) {
+  const msg = String(value || '').toLowerCase();
+  return msg.includes('dev.to reconciliation 401') ||
+    msg.includes('dev.to reconciliation 403') ||
+    msg.includes('dev.to 401') ||
+    msg.includes('dev.to 403') ||
+    msg.includes('unauthorized') ||
+    msg.includes('forbidden');
+}
+
 async function main() {
   const registry = readJson(REGISTRY, { items: [] });
   const state = readJson(STATE, { posted: {} });
-  const rezultat = { poslano: 0, reconciled: 0, remote: 0, preskoceno_bez_en: 0, rateLimited: false, greske: [] };
+  const rezultat = { poslano: 0, reconciled: 0, remote: 0, preskoceno_bez_en: 0, rateLimited: false, authRejected: false, greske: [] };
 
   if (LIVE && !API_KEY) throw new Error('DEVTO_API_KEY nije postavljen.');
   try {
@@ -167,6 +177,7 @@ async function main() {
     rezultat.reconciled += rec.reconciled;
     rezultat.remote = rec.remote;
   } catch (e) {
+    if (isAuthError(e)) rezultat.authRejected = true;
     rezultat.greske.push({ stage: 'reconciliation', error: String(e).slice(0, 300) });
     writeJson(RESULT, { kad: new Date().toISOString(), ...rezultat });
     throw e;
@@ -205,6 +216,11 @@ async function main() {
       }
       rezultat.greske.push({ path: item.path, error: msg.slice(0, 300) });
       console.error(`Greska za ${item.path}:`, e.message || e);
+      if (isAuthError(msg)) {
+        rezultat.authRejected = true;
+        console.log('Dev.to authentication was rejected; stopping this batch immediately to avoid repeated unauthorized requests.');
+        break;
+      }
       if (isRateLimitError(msg)) {
         rezultat.rateLimited = true;
         console.log('Dev.to rate limit reached; stopping this batch cleanly so the next scheduled run can continue.');
@@ -218,7 +234,7 @@ async function main() {
   writeJson(RESULT, { kad: new Date().toISOString(), ...rezultat });
   console.log('\nSazetak:', JSON.stringify(rezultat, null, 2));
   const meaningfulProgress = rezultat.poslano > 0 || rezultat.reconciled > 0;
-  if (rezultat.greske.length && !meaningfulProgress && !rezultat.rateLimited && pending.length > 0) process.exitCode = 1;
+  if (rezultat.authRejected || (rezultat.greske.length && !meaningfulProgress && !rezultat.rateLimited && pending.length > 0)) process.exitCode = 1;
 }
 
 main().catch((e) => {
