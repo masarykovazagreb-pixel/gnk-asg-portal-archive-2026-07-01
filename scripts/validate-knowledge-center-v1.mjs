@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Final reviewed EN link contract; no validation logic change.
+// Knowledge Center parity, canonical-route and operator-boundary contract.
 import fs from 'node:fs';
 
 const read=p=>fs.readFileSync(p,'utf8');
@@ -21,7 +21,10 @@ if(!en.includes('<link rel="canonical" href="https://gnk-asg.hr/en/knowledge-cen
 if(!hr.includes('<link rel="canonical" href="https://gnk-asg.hr/knowledge-center/">')) throw new Error('HR canonical missing');
 if(/Aktivno je 37 poslova|15 na rasporedu/.test(JSON.stringify(kb))) throw new Error('Hardcoded automation counts remain in shared knowledge source');
 if(/Aktivno je 37 poslova|15 na rasporedu/.test(hr)) throw new Error('Hardcoded automation counts remain in HR Knowledge Center');
-if(operator.includes('knowledge-center')) throw new Error('Operator Center must not claim Knowledge Center route ownership');
+const hrRedirect="Response.redirect('https://gnk-asg.hr/knowledge-center/',308)";
+const enRedirect="Response.redirect('https://gnk-asg.hr/en/knowledge-center/',308)";
+if(!operator.includes(hrRedirect)||!operator.includes(enRedirect)) throw new Error('Operator Center must permanently redirect Knowledge Center aliases to the canonical public host');
+if(/knowledge-center[^\n]{0,180}(ASSETS\.fetch|injectSessionPatch)/i.test(operator)) throw new Error('Operator Center must not serve Knowledge Center content');
 if(!operator.includes("if (path !== '/operator-dashboard')")) throw new Error('Operator Center route boundary changed unexpectedly');
 console.log(JSON.stringify({
   totalQuestions:kb.ukupnoPitanja,
@@ -30,5 +33,6 @@ console.log(JSON.stringify({
   enSourceLinks:sourceLinkCount,
   publicHrRoute:'/knowledge-center/',
   publicEnRoute:'/en/knowledge-center/',
-  operatorKnowledgeRouteOwned:false
+  operatorKnowledgeRouteOwned:false,
+  operatorKnowledgeAliasMode:'308-canonical-redirect'
 },null,2));
