@@ -1,6 +1,37 @@
 {
-  "version": "GNK_ASG_EDITORIAL_PUBLICATION_HOLDS_V4_20261005_CLEARED",
-  "generatedAt": "2026-10-05T19:55:00+02:00",
-  "rationale": "Cleared after format-specific editorial depth contract, five-link minimum, SEO/meta/schema checks and explicit owner instruction to activate scheduled GNK ASG publication. External third-party posting remains governed separately.",
-  "holds": []
+  "version": "GNK_ASG_EDITORIAL_PUBLICATION_HOLDS_V5_20261010_3000_WORDS_PENDING_POLICY_DECISION",
+  "generatedAt": "2026-10-10T14:43:54+02:00",
+  "rationale": "Temporary fail-closed editorial safety holds pending explicit owner resolution of the 1500-vs-3000-word policy conflict and independent release-ready review. No changes to published content. Holds must not be removed merely to meet a daily quota.",
+  "holds": [
+    {
+      "packageId": "EDITORIAL-20261010-SATURDAY-SLOT1",
+      "active": true,
+      "reason": "Pending editorial quality gate: komentar has 326 verified body words (Intl.Segmenter hr), below temporary 3000-word authorial minimum. Require original substantive expansion, source/fact/legal/SEO review and explicit policy reconciliation before release."
+    },
+    {
+      "packageId": "EDITORIAL-20261104-WEDNESDAY-SLOT1",
+      "active": true,
+      "reason": "Pending editorial quality gate: objava has 1502 verified body words (Intl.Segmenter hr), below temporary 3000-word authorial minimum. Require original substantive expansion, source/fact/legal/SEO review and explicit policy reconciliation before release."
+    },
+    {
+      "packageId": "EDITORIAL-20261105-THURSDAY-SLOT1",
+      "active": true,
+      "reason": "Pending editorial quality gate: objava has 1548 verified body words (Intl.Segmenter hr), below temporary 3000-word authorial minimum. Require original substantive expansion, source/fact/legal/SEO review and explicit policy reconciliation before release."
+    },
+    {
+      "packageId": "EDITORIAL-20261106-FRIDAY-SLOT1",
+      "active": true,
+      "reason": "Pending editorial quality gate: objava has 1524 verified body words (Intl.Segmenter hr), below temporary 3000-word authorial minimum. Require original substantive expansion, source/fact/legal/SEO review and explicit policy reconciliation before release."
+    },
+    {
+      "packageId": "EDITORIAL-20261107-SATURDAY-SLOT1",
+      "active": true,
+      "reason": "Pending editorial quality gate: objava has 1503 verified body words (Intl.Segmenter hr), below temporary 3000-word authorial minimum. Require original substantive expansion, source/fact/legal/SEO review and explicit policy reconciliation before release."
+    },
+    {
+      "packageId": "EDITORIAL-20261108-SUNDAY-SLOT1",
+      "active": true,
+      "reason": "Pending editorial quality gate: objava has 1542 verified body words (Intl.Segmenter hr), below temporary 3000-word authorial minimum. Require original substantive expansion, source/fact/legal/SEO review and explicit policy reconciliation before release."
+    }
+  ]
 }
