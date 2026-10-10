@@ -9,11 +9,23 @@ const sitemapPath = `${portal}/editorial-sitemap.xml`;
 const indexPath = `${portal}/sitemap-index.xml`;
 const now = new Date(process.env.PUBLICATION_NOW || Date.now());
 const registry = JSON.parse(readFileSync(registryPath, 'utf8'));
+const existingSitemap = readFileSync(sitemapPath, 'utf8');
 const items = publishedItems(registry, now).sort((a, b) => a.path.localeCompare(b.path));
 const esc = (v) => String(v).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+const existingLastmodByUrl = new Map(
+  [...existingSitemap.matchAll(/<url>\s*<loc>([^<]+)<\/loc>\s*<lastmod>([^<]+)<\/lastmod>/g)]
+    .map((match) => [match[1], match[2]])
+);
 const date = (item) => {
-  const parsed = new Date(item.publishedAt || item.datePublished || registry.generatedAt || now);
-  return Number.isNaN(parsed.getTime()) ? now.toISOString().slice(0, 10) : parsed.toISOString().slice(0, 10);
+  const explicit = item.publishedAt || item.datePublished || item.modifiedAt || item.dateModified || null;
+  if (explicit) {
+    const parsed = new Date(explicit);
+    if (!Number.isNaN(parsed.getTime())) return parsed.toISOString().slice(0, 10);
+  }
+  const stableExisting = existingLastmodByUrl.get(esc(canonicalUrl(item)));
+  if (/^\d{4}-\d{2}-\d{2}$/.test(stableExisting || '')) return stableExisting;
+  const seeded = new Date(registry.generatedAt || now);
+  return Number.isNaN(seeded.getTime()) ? now.toISOString().slice(0, 10) : seeded.toISOString().slice(0, 10);
 };
 const rows = items.map((item) => `  <url><loc>${esc(canonicalUrl(item))}</loc><lastmod>${date(item)}</lastmod><changefreq>monthly</changefreq><priority>0.65</priority></url>`);
 const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${rows.join('\n')}\n</urlset>\n`;
