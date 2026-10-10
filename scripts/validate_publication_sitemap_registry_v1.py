@@ -132,7 +132,7 @@ def main() -> int:
         expected = expected_canonical(route)
         if parser.canonicals != [expected]:
             errors.append(f"Canonical mismatch for {route}: {parser.canonicals or 'missing'}")
-        stamp = instant(item.get("publishedAt") or item.get("datePublished"))
+        stamp = instant(item.get("modifiedAt") or item.get("dateModified") or item.get("publishedAt") or item.get("datePublished"))
         sitemap_url = ORIGIN + route
         lastmod = instant(rows.get(sitemap_url))
         if not rows.get(sitemap_url):
@@ -151,10 +151,17 @@ def main() -> int:
     for node in index_root.findall("sm:sitemap", NS):
         if node.findtext("sm:loc", "", NS) == ORIGIN + "/editorial-sitemap.xml":
             index_lastmod = node.findtext("sm:lastmod", "", NS)
-    dated = [
-        instant(item.get("publishedAt") or item.get("datePublished") or registry.get("generatedAt")) or now
-        for item in published.values()
-    ]
+    dated: list[datetime] = []
+    for route, item in published.items():
+        explicit = instant(item.get("modifiedAt") or item.get("dateModified") or item.get("publishedAt") or item.get("datePublished"))
+        if explicit:
+            dated.append(explicit)
+            continue
+        stable = instant(rows.get(ORIGIN + route))
+        if stable:
+            dated.append(stable)
+        else:
+            errors.append(f"Published undated route has no stable sitemap lastmod: {route}")
     corpus_date = max((stamp.date().isoformat() for stamp in dated), default=None)
     if corpus_date and index_lastmod != corpus_date:
         errors.append(f"Sitemap-index editorial lastmod {index_lastmod!r} != corpus lastmod {corpus_date!r}")
