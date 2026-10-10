@@ -17,7 +17,7 @@ const existingLastmodByUrl = new Map(
     .map((match) => [match[1], match[2]])
 );
 const date = (item) => {
-  const explicit = item.publishedAt || item.datePublished || item.modifiedAt || item.dateModified || null;
+  const explicit = item.modifiedAt || item.dateModified || item.publishedAt || item.datePublished || null;
   if (explicit) {
     const parsed = new Date(explicit);
     if (!Number.isNaN(parsed.getTime())) return parsed.toISOString().slice(0, 10);
