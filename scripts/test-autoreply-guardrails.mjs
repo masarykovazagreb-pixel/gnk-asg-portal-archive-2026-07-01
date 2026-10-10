@@ -14,7 +14,7 @@ assert.match(source,/auto_response_suppressed/);
 assert.match(source,/null_return_path/);
 assert.match(source,/bulk_or_list/);
 assert.match(source,/invalid_autoreply_target/);
-assert.match(source,/info-ee@internet\\.ru/);
+assert.match(source,/info-ee@internet\.ru/);
 assert.match(source,/blocked_sender_denylist/);
 assert.match(source,/MAIL_AUTOREPLY_DENYLIST/);
 assert.match(source,/EMERGENCY_DENYLIST/);
