@@ -56,16 +56,16 @@ test('summarize: counts valid and invalid ideas per area', () => {
   assert.equal(s.byArea.Podaci, 1);
 });
 
-test('data: 30 ideas, 10 done and 20 open, all valid, unique and linked to existing routes', async () => {
+test('data: 30 ideas, 16 done and 14 open, all valid, unique and linked to existing routes', async () => {
   assert.equal(doc.ideas.length, 30);
   assert.equal(F.summarize(doc.ideas).invalid, 0);
   const ids = doc.ideas.map((i) => i.id);
   assert.equal(new Set(ids).size, ids.length, 'ids must be unique');
   const titles = doc.ideas.map((i) => i.title.toLowerCase());
   assert.equal(new Set(titles).size, titles.length, 'titles must be unique');
-  const done = new Set(['idea-07','idea-08','idea-10','idea-12','idea-13','idea-20','idea-21','idea-22','idea-24','idea-25']);
-  assert.equal(doc.ideas.filter((i) => i.status === 'gotovo').length, 10);
-  assert.equal(doc.ideas.filter((i) => i.status === 'otvoreno').length, 20);
+  const done = new Set(['idea-04','idea-05','idea-07','idea-08','idea-10','idea-12','idea-13','idea-14','idea-16','idea-17','idea-19','idea-20','idea-21','idea-22','idea-24','idea-25']);
+  assert.equal(doc.ideas.filter((i) => i.status === 'gotovo').length, 16);
+  assert.equal(doc.ideas.filter((i) => i.status === 'otvoreno').length, 14);
   for (const i of doc.ideas) {
     assert.equal(i.status, done.has(i.id) ? 'gotovo' : 'otvoreno', `${i.id}: owner status mismatch`);
     assert.ok(i.source && i.source.length > 5, `${i.id}: needs a repository source`);
