@@ -113,3 +113,7 @@ input[type="search"] { width: 100%; font: inherit; border: 1px solid #aab4c3; bo
 [data-state="fresh"] { color: #9fe3b2; }
 [data-state="error"] { color: #ffb4b6; }
 [data-state="unknown"] { opacity: .85; }
+
+.dt-calc-presets { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 10px 0 4px; padding: 10px; border: 1px solid var(--dt-line); border-radius: 8px; background: #f8fafc; }
+.dt-calc-presets .dt-note { flex-basis: 100%; margin: 0 0 2px; }
+.dt-calc-presets .dt-calc-example { margin-top: 0; min-height: 38px; padding: 7px 10px; font-size: 0.82rem; }
