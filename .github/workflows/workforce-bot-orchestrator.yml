@@ -2,6 +2,12 @@ name: Workforce Bot Orchestrator
 
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - 'workers/**'
+      - 'config/control-plane/workforce-bot-registry-v1.json'
+      - 'scripts/workforce-bot-orchestrator-v1.mjs'
+      - '.github/workflows/workforce-bot-orchestrator.yml'
   push:
     branches: [main]
     paths:
