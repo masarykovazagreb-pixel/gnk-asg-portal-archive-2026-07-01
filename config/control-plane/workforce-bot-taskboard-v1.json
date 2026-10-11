@@ -1,6 +1,6 @@
 {
   "version": "GNK_ASG_WORKFORCE_BOT_TASKBOARD_V1",
-  "updatedAt": "2026-10-11T20:46:00+02:00",
+  "updatedAt": "2026-10-11T20:58:00+02:00",
   "rules": {
     "sourceOfTruth": "current main + owner instructions",
     "priorityOrder": [
@@ -188,12 +188,13 @@
       "priority": "P2",
       "ownerBot": "BOT-NEWS-LIVE",
       "title": "Create AKTUAL Source Transparency directory",
-      "status": "idea",
+      "status": "done",
       "acceptance": [
         "list only sources actually present in current or archived feed evidence",
         "show source counts and last-seen timestamps without endorsement scores",
         "link source names to original article evidence rather than invented publisher profiles"
-      ]
+      ],
+      "note": "Implemented as bilingual AKTUAL Source Transparency directory using only canonical news.json evidence: source counts, current feed share, section presence, last-seen recency and latest linked story."
     },
     {
       "id": "BOT-TASK-015",
@@ -230,6 +231,19 @@
         "never convert source concentration into a quality, bias, sentiment or popularity score",
         "keep HR/EN Radar route parity and sitemap discovery intact",
         "flag empty or structurally invalid feed states instead of fabricating fallback metrics"
+      ]
+    },
+    {
+      "id": "BOT-TASK-018",
+      "priority": "P2",
+      "ownerBot": "BOT-NEWS-LIVE",
+      "title": "Maintain AKTUAL source transparency integrity",
+      "status": "active",
+      "acceptance": [
+        "derive source listings, counts, shares, section presence and recency only from canonical feed evidence",
+        "never add publisher quality, trust, bias, sentiment, popularity or endorsement scores",
+        "preserve HR/EN source-directory route parity and sitemap discovery",
+        "fail visibly on empty or invalid feed states rather than fabricating source records"
       ]
     }
   ]
