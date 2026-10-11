@@ -1,6 +1,6 @@
 {
   "version": "GNK_ASG_WORKFORCE_BOT_TASKBOARD_V1",
-  "updatedAt": "2026-10-11T20:58:00+02:00",
+  "updatedAt": "2026-10-11T21:12:00+02:00",
   "rules": {
     "sourceOfTruth": "current main + owner instructions",
     "priorityOrder": [
@@ -201,12 +201,13 @@
       "priority": "P3",
       "ownerBot": "BOT-NAVIGATION",
       "title": "Prototype regional AKTUAL desks from real feed groups",
-      "status": "idea",
+      "status": "done",
       "acceptance": [
         "create regional landing pages only when feed volume justifies them",
         "avoid empty or fake regional desks",
         "keep canonical URLs and HR/EN navigation coherent"
-      ]
+      ],
+      "note": "Implemented from current canonical news.json evidence: 300 total feed items, 36 in group regije, with 18 India and 18 Asia items at implementation time. Desk remains feed-driven and does not claim physical bureaus."
     },
     {
       "id": "BOT-TASK-016",
@@ -244,6 +245,19 @@
         "never add publisher quality, trust, bias, sentiment, popularity or endorsement scores",
         "preserve HR/EN source-directory route parity and sitemap discovery",
         "fail visibly on empty or invalid feed states rather than fabricating source records"
+      ]
+    },
+    {
+      "id": "BOT-TASK-019",
+      "priority": "P3",
+      "ownerBot": "BOT-NAVIGATION",
+      "title": "Maintain evidence threshold for AKTUAL regional desks",
+      "status": "active",
+      "acceptance": [
+        "keep regional desk content derived only from canonical feed items classified into regional groups",
+        "do not create or retain promoted empty geographic desks by inventing fallback stories",
+        "flag sustained empty or materially low-volume regional groups for editorial review",
+        "preserve HR/EN route parity, source links and sitemap discovery"
       ]
     }
   ]
