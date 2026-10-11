@@ -1,5 +1,5 @@
 {
-  "version": "GNK_ASG_PRODUCTION_WORKFLOW_ALLOWLIST_V2_5",
+  "version": "GNK_ASG_PRODUCTION_WORKFLOW_ALLOWLIST_V2_6",
   "repository": "masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01",
   "policy": "Every workflow containing an Actions schedule trigger must appear here with the exact cron expression. All other workflows are manual, event-scoped validation, or retired.",
   "scheduledProductionOwners": {
@@ -53,6 +53,9 @@
     ],
     "weather-refresh.yml": [
       "5 2,8,14,20 * * *"
+    ],
+    "workforce-bot-orchestrator.yml": [
+      "17 */4 * * *"
     ],
     "workforce-supervisor-agent.yml": [
       "50 2,8,14,20 * * *"
