@@ -1,8 +1,8 @@
 {
   "ok": true,
   "version": "GNK_ASG_EDITORIAL_SCHEDULED_PUBLISH_V3_20260714",
-  "now": "2026-10-10T14:31:30.418Z",
-  "publicationHoldsVersion": "GNK_ASG_EDITORIAL_PUBLICATION_HOLDS_V4_20261005_CLEARED",
+  "now": "2026-10-11T06:21:05.699Z",
+  "publicationHoldsVersion": "GNK_ASG_EDITORIAL_PUBLICATION_HOLDS_V5_20261010_3000_WORDS_PENDING_POLICY_DECISION",
   "packages": [
     {
       "id": "EDITORIAL-20260714-NOW",
@@ -377,12 +377,10 @@
       "id": "EDITORIAL-20261010-SATURDAY-SLOT1",
       "publishAt": "2026-10-10T08:00:00+02:00",
       "due": true,
-      "alreadyPublished": false,
+      "alreadyPublished": true,
       "publicationHeld": false,
       "holdReason": null,
-      "published": [
-        "/komentari/sigurnost-koja-smeta-radu-zaobici-ce-se/"
-      ]
+      "published": []
     },
     {
       "id": "ENTITY-VISIBILITY-20261004-FOUNDATION",
@@ -398,8 +396,8 @@
       "publishAt": "2026-11-04T08:00:00+01:00",
       "due": false,
       "alreadyPublished": false,
-      "publicationHeld": false,
-      "holdReason": null,
+      "publicationHeld": true,
+      "holdReason": "Pending editorial quality gate: objava has 1502 verified body words (Intl.Segmenter hr), below temporary 3000-word authorial minimum. Require original substantive expansion, source/fact/legal/SEO review and explicit policy reconciliation before release.",
       "published": []
     },
     {
@@ -407,8 +405,8 @@
       "publishAt": "2026-11-05T08:00:00+01:00",
       "due": false,
       "alreadyPublished": false,
-      "publicationHeld": false,
-      "holdReason": null,
+      "publicationHeld": true,
+      "holdReason": "Pending editorial quality gate: objava has 1548 verified body words (Intl.Segmenter hr), below temporary 3000-word authorial minimum. Require original substantive expansion, source/fact/legal/SEO review and explicit policy reconciliation before release.",
       "published": []
     },
     {
@@ -416,8 +414,8 @@
       "publishAt": "2026-11-06T08:00:00+01:00",
       "due": false,
       "alreadyPublished": false,
-      "publicationHeld": false,
-      "holdReason": null,
+      "publicationHeld": true,
+      "holdReason": "Pending editorial quality gate: objava has 1524 verified body words (Intl.Segmenter hr), below temporary 3000-word authorial minimum. Require original substantive expansion, source/fact/legal/SEO review and explicit policy reconciliation before release.",
       "published": []
     },
     {
@@ -425,8 +423,8 @@
       "publishAt": "2026-11-07T08:00:00+01:00",
       "due": false,
       "alreadyPublished": false,
-      "publicationHeld": false,
-      "holdReason": null,
+      "publicationHeld": true,
+      "holdReason": "Pending editorial quality gate: objava has 1503 verified body words (Intl.Segmenter hr), below temporary 3000-word authorial minimum. Require original substantive expansion, source/fact/legal/SEO review and explicit policy reconciliation before release.",
       "published": []
     },
     {
@@ -434,15 +432,19 @@
       "publishAt": "2026-11-08T08:00:00+01:00",
       "due": false,
       "alreadyPublished": false,
-      "publicationHeld": false,
-      "holdReason": null,
+      "publicationHeld": true,
+      "holdReason": "Pending editorial quality gate: objava has 1542 verified body words (Intl.Segmenter hr), below temporary 3000-word authorial minimum. Require original substantive expansion, source/fact/legal/SEO review and explicit policy reconciliation before release.",
       "published": []
     }
   ],
-  "published": [
-    "/komentari/sigurnost-koja-smeta-radu-zaobici-ce-se/"
+  "published": [],
+  "held": [
+    "EDITORIAL-20261104-WEDNESDAY-SLOT1",
+    "EDITORIAL-20261105-THURSDAY-SLOT1",
+    "EDITORIAL-20261106-FRIDAY-SLOT1",
+    "EDITORIAL-20261107-SATURDAY-SLOT1",
+    "EDITORIAL-20261108-SUNDAY-SLOT1"
   ],
-  "held": [],
   "publicChanged": true,
-  "stateChanged": true
+  "stateChanged": false
 }
