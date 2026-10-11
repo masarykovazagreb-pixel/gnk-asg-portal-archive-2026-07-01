@@ -6,6 +6,7 @@ on:
     paths:
       - 'workers/**'
       - 'config/control-plane/workforce-bot-registry-v1.json'
+      - 'config/control-plane/workforce-bot-taskboard-v1.json'
       - 'scripts/workforce-bot-orchestrator-v1.mjs'
       - '.github/workflows/workforce-bot-orchestrator.yml'
   push:
@@ -13,6 +14,7 @@ on:
     paths:
       - 'workers/**'
       - 'config/control-plane/workforce-bot-registry-v1.json'
+      - 'config/control-plane/workforce-bot-taskboard-v1.json'
       - 'scripts/workforce-bot-orchestrator-v1.mjs'
       - '.github/workflows/workforce-bot-orchestrator.yml'
   schedule:
