@@ -10,10 +10,13 @@ const HOLDS_PATH = process.env.EDITORIAL_HOLDS_PATH
   ? path.resolve(process.env.EDITORIAL_HOLDS_PATH)
   : path.join(PLAN_DIR, 'publication-holds.json');
 const POLICY_CUTOFF = new Date(process.env.EDITORIAL_POLICY_CUTOFF || '2026-08-05T00:00:00+02:00');
-const MIN_WORDS = Number(process.env.EDITORIAL_MIN_WORDS || 3000);
-const MIN_WORDS_COMMENTARY = Number(process.env.EDITORIAL_MIN_WORDS_COMMENTARY || 300);
-const MIN_WORDS_PUBLICATION = Number(process.env.EDITORIAL_MIN_WORDS_PUBLICATION || 500);
-const MIN_WORDS_ANALYSIS = Number(process.env.EDITORIAL_MIN_WORDS_ANALYSIS || 1500);
+// Temporary fail-closed authorial floor until the owner resolves 1500 vs 3000.
+// Environment overrides may strengthen, never weaken, this release gate.
+const TEMPORARY_AUTHORIAL_FLOOR = 3000;
+const MIN_WORDS = Math.max(TEMPORARY_AUTHORIAL_FLOOR, Number(process.env.EDITORIAL_MIN_WORDS || 3000));
+const MIN_WORDS_COMMENTARY = Math.max(MIN_WORDS, Number(process.env.EDITORIAL_MIN_WORDS_COMMENTARY || 300));
+const MIN_WORDS_PUBLICATION = Math.max(MIN_WORDS, Number(process.env.EDITORIAL_MIN_WORDS_PUBLICATION || 500));
+const MIN_WORDS_ANALYSIS = Math.max(MIN_WORDS, Number(process.env.EDITORIAL_MIN_WORDS_ANALYSIS || 1500));
 const MIN_INTERNAL_LINKS = Number(process.env.EDITORIAL_MIN_INTERNAL_LINKS || 5);
 const minimumWordsForType = type => ({
   komentar: MIN_WORDS_COMMENTARY,
