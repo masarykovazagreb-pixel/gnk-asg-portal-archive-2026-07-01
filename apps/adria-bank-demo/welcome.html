@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="hr" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'self'">
+  <meta name="theme-color" content="#0b1826">
+  <meta name="description" content="Adria Bank Demo Desktop — siguran, lokalni demo ulaz za zaposlenike i klijente.">
+  <title>Adria Bank Demo Desktop · Dobro došli</title>
+  <link rel="icon" href="./assets/adria-mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./src/styles.css">
+</head>
+<body class="welcome-body">
+  <main class="welcome-shell">
+    <header class="welcome-topbar">
+      <a class="welcome-brand" href="./welcome.html" aria-label="Adria Bank Demo početna">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 4 43 15v18L24 44 5 33V15L24 4Z"/><path d="M14 31 24 12l10 19M18 25h12"/></svg></span>
+        <span><strong>adria<span>bank</span></strong><small>DEMO DESKTOP</small></span>
+      </a>
+      <label class="welcome-language-label" for="welcomeLanguage"><span data-welcome-key="languageLabel">Jezik</span>
+        <select id="welcomeLanguage" aria-label="Jezik sučelja"></select>
+      </label>
+    </header>
+
+    <section class="welcome-hero" aria-labelledby="welcomeTitle">
+      <div class="welcome-copy">
+        <div class="welcome-eyebrow"><span class="welcome-live-dot"></span><span data-welcome-key="eyebrow">LOKALNO · SINTETIČKI PODACI · DEMO</span></div>
+        <h1 id="welcomeTitle" data-welcome-key="title">Vježbajte bankarstvo.<br><em>Bez stvarnog novca.</em></h1>
+        <p class="welcome-lead" data-welcome-key="lead">Adria Bank je interaktivni desktop sandbox za interne vježbe bankarskih i digitalno-imovinskih postupaka. Odaberite demo okruženje za zaposlenike ili klijente.</p>
+        <div class="welcome-badges">
+          <span><b>01</b><span data-welcome-key="badgeLocal">Podaci ostaju lokalni</span></span>
+          <span><b>02</b><span data-welcome-key="badgeFake">Računi i plaćanja su izmišljeni</span></span>
+          <span><b>03</b><span data-welcome-key="badgeNoLogin">Bez stvarne prijave ili povezivanja</span></span>
+        </div>
+      </div>
+      <aside class="welcome-visual" aria-label="Pregled demo okruženja">
+        <div class="welcome-visual-top"><span class="mini-brand-mark">A</span><span><strong>ADRIA BANK</strong><small data-welcome-key="desktopSim">DESKTOP SIMULATOR</small></span><span class="welcome-status-pill"><i></i><span data-welcome-key="statusLocal">LOKALNI DEMO</span></span></div>
+        <div class="welcome-visual-balance"><small data-welcome-key="practiceBalance">SINTETIČKI SCENARIJ</small><strong>€ 2.840.650,00</strong><span><i></i><span data-welcome-key="fictionalValue">Ilustrativni podaci · nije stvarno stanje</span></span></div>
+        <div class="welcome-visual-chart" aria-hidden="true"><svg viewBox="0 0 540 148" preserveAspectRatio="none"><defs><linearGradient id="welcomeArea" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#62ceb3" stop-opacity=".32"/><stop offset="1" stop-color="#62ceb3" stop-opacity="0"/></linearGradient></defs><path d="M0 120 C35 111 39 90 74 99 S120 118 151 89 S207 84 237 92 S285 53 318 66 S359 82 389 49 S441 61 470 34 S510 25 540 12 V148 H0Z" fill="url(#welcomeArea)"/><path d="M0 120 C35 111 39 90 74 99 S120 118 151 89 S207 84 237 92 S285 53 318 66 S359 82 389 49 S441 61 470 34 S510 25 540 12" fill="none" stroke="#62ceb3" stroke-width="3" vector-effect="non-scaling-stroke"/></svg></div>
+        <div class="welcome-visual-foot"><span><i class="visual-token token-teal">€</i><span><b>EUR</b><small data-welcome-key="dailyReference">Dnevna referenca · nije ponuda</small></span></span><span><i class="visual-token token-gold">◈</i><span><b>CRYPTO</b><small data-welcome-key="offlineAssets">Izmišljena offline imovina</small></span></span></div>
+      </aside>
+    </section>
+
+    <section class="welcome-entry-section" aria-labelledby="entryTitle">
+      <div class="welcome-section-heading"><div><span class="welcome-section-kicker" data-welcome-key="chooseEnvironment">ODABERITE OKRUŽENJE</span><h2 id="entryTitle" data-welcome-key="entryTitle">Kamo želite ući?</h2></div><span class="welcome-session-note"><i></i><span data-welcome-key="noPassword">Demo ulaz · bez lozinke</span></span></div>
+      <div class="welcome-entry-grid">
+        <a class="welcome-entry-card staff-entry" id="staffEntry" data-entry="staff" href="./index.html?lang=hr">
+          <span class="entry-icon entry-icon-staff"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V6.7L12 3l8 3.7V20M2 20h20M8 10h.01M12 10h.01M16 10h.01M9 20v-5h6v5"/></svg></span>
+          <span class="entry-copy"><span class="entry-label" data-welcome-key="staffLabel">ZAPOSLENICI</span><strong data-welcome-key="staffTitle">Operativni desktop</strong><small data-welcome-key="staffDescription">Klijenti, računi, plaćanja, rizici, blagajne i kontrola s dvije uloge.</small></span>
+          <span class="entry-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="welcome-entry-card customer-entry" id="customerEntry" data-entry="customer" href="./client.html?lang=hr">
+          <span class="entry-icon entry-icon-customer"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4 21a8 8 0 0 1 16 0m-8-6v6m-4-3h8"/></svg></span>
+          <span class="entry-copy"><span class="entry-label" data-welcome-key="customerLabel">KLIJENTI</span><strong data-welcome-key="customerTitle">Korisnički portal</strong><small data-welcome-key="customerDescription">Osobni i poslovni demo profili, kartice, štednja i samoposlužne vježbe.</small></span>
+          <span class="entry-arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+      <p class="welcome-access-disclaimer"><span class="info-mark">i</span><span data-welcome-key="personaNotice">Ovo nisu računi za prijavu. Odabir samo otvara lokalni demo; promjena profila nije autentikacija ni kontrola pristupa.</span></p>
+    </section>
+
+    <section class="welcome-capabilities" aria-label="Sadržaj sandboxa">
+      <article><span class="capability-icon">⇄</span><strong data-welcome-key="capPayments">Plaćanja i konverzije</strong><small data-welcome-key="capPaymentsSub">Slanje, primitak, otkazivanje i knjigovodstveni trag — lokalno.</small></article>
+      <article><span class="capability-icon">◈</span><strong data-welcome-key="capCrypto">Digitalna imovina</strong><small data-welcome-key="capCryptoSub">Novčanici i lokalna odobrenja — bez blockchaina ili skrbništva.</small></article>
+      <article><span class="capability-icon">⌕</span><strong data-welcome-key="capChecks">Provjere formata</strong><small data-welcome-key="capChecksSub">Duljina i kontrolne znamenke nisu dokaz računa ili kartice.</small></article>
+      <article><span class="capability-icon">⌁</span><strong data-welcome-key="capCases">Rizik i podrška</strong><small data-welcome-key="capCasesSub">KYC/AML i pritužbe kao vježbovni postupci.</small></article>
+    </section>
+
+    <footer class="welcome-footer"><span>DEMO DESKTOP ADRIA BANK · <span data-welcome-key="footerText">Samo interno testiranje · nema stvarne bankovne ili burzovne povezanosti.</span></span><a href="./README.md" data-welcome-key="readGuide">Upute i sigurnosne napomene</a></footer>
+  </main>
+  <div class="screen-watermark" id="screenWatermark" aria-label="DEMO DESKTOP ADRIA BANK">DEMO DESKTOP ADRIA BANK</div>
+  <script type="module" src="./src/welcome.mjs"></script>
+</body>
+</html>
