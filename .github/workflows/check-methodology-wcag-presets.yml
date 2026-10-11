@@ -1,0 +1,39 @@
+name: Check Methodology WCAG Presets
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/metodologije/**'
+      - 'apps/portal/developer-tools/developer-tools.css'
+      - 'apps/portal/data/idea_factory.json'
+      - 'apps/portal/tests/methodology-library.test.mjs'
+      - 'apps/portal/tests/methodology-wcag-presets.test.mjs'
+      - 'apps/portal/tests/tvornica-ideja.test.mjs'
+      - 'config/control-plane/workforce-bot-taskboard-v1.json'
+      - '.github/workflows/check-methodology-wcag-presets.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/metodologije/**'
+      - 'apps/portal/developer-tools/developer-tools.css'
+      - 'apps/portal/data/idea_factory.json'
+      - 'apps/portal/tests/methodology-library.test.mjs'
+      - 'apps/portal/tests/methodology-wcag-presets.test.mjs'
+      - 'apps/portal/tests/tvornica-ideja.test.mjs'
+      - 'config/control-plane/workforce-bot-taskboard-v1.json'
+      - '.github/workflows/check-methodology-wcag-presets.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run methodology and Idea Factory truth tests
+        run: node --test apps/portal/tests/methodology-wcag-presets.test.mjs apps/portal/tests/methodology-library.test.mjs apps/portal/tests/tvornica-ideja.test.mjs
