@@ -58,6 +58,7 @@
     "workflow": ".github/workflows/workforce-bot-orchestrator.yml",
     "coverage": "all worker directories must map to exactly one governed bot identity",
     "cadence": "4h default; 6h for lower-volatility/protected services",
-    "operatingRule": "bots choose highest-priority safe task, produce evidence, and use PR-first mutation"
+    "operatingRule": "bots choose highest-priority safe task, produce evidence, and use PR-first mutation",
+    "taskboard": "config/control-plane/workforce-bot-taskboard-v1.json"
   }
 }
