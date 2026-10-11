@@ -12,7 +12,7 @@
       justIn:'Upravo stiglo',source:'Izvor',openSource:'Otvori izvor',sections:'Rubrike',
       currentFeed:'Trenutačni feed',sources:'Izvori u trenutačnom feedu',search:'Pretraži feed',
       searchPh:'naslov, tema ili izvor',noResults:'Nema rezultata.',topics:'AKTUAL teme',topicsSub:'Pregled stvarnih rubrika i izvora u trenutačnom news feedu.',
-      verified:'provjereni feed',stories:'objava',updated:'zadnja objava',all:'Sve'
+      verified:'provjereni feed',stories:'stavki',updated:'zadnja objava',all:'Sve'
     },
     en:{
       latest:'Latest',croatia:'Croatia',world:'World',business:'Business',tech:'Technology',
@@ -47,6 +47,8 @@
 
   const normGroup=item => {
     const raw=String(item.group||item.category||'other').toLowerCase();
+    const aliases={world:'international',business:'economy',tech:'technology',sports:'sport',science:'znanost',culture:'lifestyle',showbiz:'lifestyle',digital:'digital-assets'};
+    if(aliases[raw]) return aliases[raw];
     if(groupMeta[raw]) return raw;
     if(/sport/.test(raw)) return 'sport';
     if(/tech|ai|software/.test(raw)) return 'technology';
