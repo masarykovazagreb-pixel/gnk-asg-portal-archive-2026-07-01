@@ -25,3 +25,9 @@ scripts/__pycache__/
 # lokalne vrijednosti tajni — nikad u repozitorij
 ops/repo-switch/secrets.local.env
 *.local.env
+
+# SPT — Sports Performance Tracking
+spt/spt.db
+spt/__pycache__/
+spt/nohup.out
+spt/static/img/*.png
