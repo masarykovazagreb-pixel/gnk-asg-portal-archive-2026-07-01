@@ -1,6 +1,6 @@
 {
   "version": "GNK_ASG_WORKFORCE_BOT_TASKBOARD_V1",
-  "updatedAt": "2026-10-11T20:34:00+02:00",
+  "updatedAt": "2026-10-11T20:46:00+02:00",
   "rules": {
     "sourceOfTruth": "current main + owner instructions",
     "priorityOrder": [
@@ -162,13 +162,14 @@
       "priority": "P2",
       "ownerBot": "BOT-NEWS-LIVE",
       "title": "Build AKTUAL RADAR source/freshness control room",
-      "status": "active",
+      "status": "done",
       "acceptance": [
         "derive all metrics from current repository/public feed evidence",
         "show item count, source count, section distribution and recency",
         "flag source concentration without inferring bias or popularity",
         "provide HR/EN parity and link back to source-led newsroom"
-      ]
+      ],
+      "note": "Implemented in AKTUAL RADAR HR/EN control-room package: feed items, distinct sources, section distribution, recency and source concentration, all derived from canonical news.json."
     },
     {
       "id": "BOT-TASK-013",
@@ -216,6 +217,19 @@
         "explain only claims supported by approved sources or project records",
         "separate facts, interpretation and unresolved questions",
         "do not auto-publish explainers without the existing editorial gate"
+      ]
+    },
+    {
+      "id": "BOT-TASK-017",
+      "priority": "P2",
+      "ownerBot": "BOT-NEWS-LIVE",
+      "title": "Maintain AKTUAL RADAR metric integrity",
+      "status": "active",
+      "acceptance": [
+        "derive all public metrics from canonical feed evidence on every render",
+        "never convert source concentration into a quality, bias, sentiment or popularity score",
+        "keep HR/EN Radar route parity and sitemap discovery intact",
+        "flag empty or structurally invalid feed states instead of fabricating fallback metrics"
       ]
     }
   ]
