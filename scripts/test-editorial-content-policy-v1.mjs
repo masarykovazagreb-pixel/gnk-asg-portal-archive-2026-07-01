@@ -57,32 +57,32 @@ function runCase(name, { item, packageOverrides = {}, holds = null, expectedStat
   fs.rmSync(dir, { recursive: true, force: true });
 }
 
-runCase('pass-publication-500', {
-  item: baseItem({ paragraphs: [words(500)] }),
+runCase('pass-publication-3000', {
+  item: baseItem({ paragraphs: [words(3000)] }),
   expectedStatus: 0,
   expectedMarker: /EDITORIAL_CONTENT_POLICY_OK/,
 });
 
-runCase('fail-publication-499', {
-  item: baseItem({ paragraphs: [words(499)] }),
+runCase('fail-publication-2999', {
+  item: baseItem({ paragraphs: [words(2999)] }),
   expectedStatus: 1,
-  expectedMarker: /body has 499 words; minimum is 500/,
+  expectedMarker: /body has 2999 words; minimum is 3000/,
 });
 
-runCase('pass-commentary-300', {
-  item: baseItem({ type: 'komentar', paragraphs: [words(300)] }),
+runCase('pass-commentary-3000', {
+  item: baseItem({ type: 'komentar', paragraphs: [words(3000)] }),
   expectedStatus: 0,
   expectedMarker: /EDITORIAL_CONTENT_POLICY_OK/,
 });
 
-runCase('fail-commentary-299', {
-  item: baseItem({ type: 'komentar', paragraphs: [words(299)] }),
+runCase('fail-commentary-2999', {
+  item: baseItem({ type: 'komentar', paragraphs: [words(2999)] }),
   expectedStatus: 1,
-  expectedMarker: /body has 299 words; minimum is 300/,
+  expectedMarker: /body has 2999 words; minimum is 3000/,
 });
 
-runCase('pass-analysis-1500', {
-  item: baseItem({ type: 'analiza', paragraphs: [words(1500)] }),
+runCase('pass-analysis-3000', {
+  item: baseItem({ type: 'analiza', paragraphs: [words(3000)] }),
   expectedStatus: 0,
   expectedMarker: /EDITORIAL_CONTENT_POLICY_OK/,
 });
@@ -119,7 +119,7 @@ runCase('generic-operational-is-not-exempt', {
     links: [],
   }),
   expectedStatus: 1,
-  expectedMarker: /body has 3 words; minimum is 500/,
+  expectedMarker: /body has 3 words; minimum is 3000/,
 });
 
 runCase('publication-hold', {
