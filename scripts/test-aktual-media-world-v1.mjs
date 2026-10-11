@@ -24,9 +24,14 @@ for(const [name,html] of [['hr',hr],['en',en]]){
   }
   if(!html.includes('/assets/aktual-media-world-v1.css')) failures.push(name+': missing world CSS');
   if(!html.includes('/assets/aktual-media-world-v1.js')) failures.push(name+': missing world JS');
+  if(!html.includes('id="aktualSova"')) failures.push(name+': missing AKTUAL Sova desk');
+  if(!html.includes('/assets/aktual-sova-v1.js')) failures.push(name+': missing AKTUAL Sova module');
+  for(const tab of ['source','foresight','weekly','explain']) if(!html.includes('data-sova-tab="'+tab+'"')) failures.push(name+': missing Sova '+tab+' tab');
   const keywordTags=[...html.matchAll(/<meta\s+name=["']keywords["'][^>]*>/gi)].map(m=>m[0]);
   if(keywordTags.some(x=>/Nermin\s+Sefi[cć]/i.test(x))) failures.push(name+': author name present in meta keywords');
 }
+if(!hr.toLocaleLowerCase('hr').includes('modelirani digitalni vodič')||!hr.toLocaleLowerCase('hr').includes('modelirani strateški foresight vodič')) failures.push('hr: Sova transparent classification missing');
+if(!en.toLowerCase().includes('modelled digital guide')||!en.toLowerCase().includes('modelled strategic foresight guide')) failures.push('en: Sova transparent classification missing');
 for(const [name,html] of [['topicsHr',topicsHr],['topicsEn',topicsEn]]){
   if(!html.includes('data-aktual-view="topics"')) failures.push(name+': wrong view mode');
   if(!html.includes('id="amTopicGrid"')) failures.push(name+': missing topic grid');
