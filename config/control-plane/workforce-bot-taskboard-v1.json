@@ -1,0 +1,147 @@
+{
+  "version": "GNK_ASG_WORKFORCE_BOT_TASKBOARD_V1",
+  "updatedAt": "2026-10-11T19:08:00+02:00",
+  "rules": {
+    "sourceOfTruth": "current main + owner instructions",
+    "priorityOrder": [
+      "P0",
+      "P1",
+      "P2",
+      "P3"
+    ],
+    "prFirst": true,
+    "directMainWrites": false,
+    "doNotWeakenTests": true,
+    "doNotInventFacts": true,
+    "titleRule": "shorten title/meta-title only; do not alter article body",
+    "authorMarkerRule": "only #NerminSefić and #NerminSefic on approved author-box articles; never in meta keywords",
+    "editorialDepthConflict": "1500 owner working minimum vs 3000 executable policy remains unresolved; do not silently change validator"
+  },
+  "tasks": [
+    {
+      "id": "BOT-TASK-001",
+      "priority": "P0",
+      "ownerBot": "BOT-AUTO-EDITOR",
+      "title": "Enforce approved author-marker scope",
+      "status": "active",
+      "acceptance": [
+        "read only apps/portal/data/approved_mentions.json as approval source",
+        "do not use apps/legacy-portal",
+        "allow only #NerminSefić and #NerminSefic",
+        "remove author-name variants from meta/news keywords without changing article meaning"
+      ]
+    },
+    {
+      "id": "BOT-TASK-002",
+      "priority": "P1",
+      "ownerBot": "BOT-NEWSROOM",
+      "title": "Prepare editorial coverage after 2026-11-09",
+      "status": "active",
+      "acceptance": [
+        "inspect manifest for gap after 2026-11-09",
+        "prepare source-gated packages only",
+        "respect unresolved 1500/3000 policy conflict",
+        "no invented sources, numbers or claims"
+      ]
+    },
+    {
+      "id": "BOT-TASK-003",
+      "priority": "P1",
+      "ownerBot": "BOT-PUBLIC-CLEAN",
+      "title": "Finish manual >60 character title review",
+      "status": "done",
+      "acceptance": [
+        "manual semantic shortening only",
+        "do not alter H1/body unless title field itself is H1 by design",
+        "preserve meaning",
+        "drive seo-title-review queue to zero with evidence"
+      ],
+      "note": "Verified on main 2026-10-11: apps/portal/data/seo-title-review.json count=0; prior 105-item manual queue completed."
+    },
+    {
+      "id": "BOT-TASK-004",
+      "priority": "P1",
+      "ownerBot": "BOT-OPERATOR",
+      "title": "Close 15 remaining Idea Factory items",
+      "status": "active",
+      "acceptance": [
+        "keep 07,08,10,12,13,20,21,22,24,25 as done",
+        "work only the 15 remaining open items",
+        "each completion must point to repository evidence and an existing route"
+      ],
+      "note": "Verified on main 2026-10-11: 30 total, 15 done, 15 open. Additional done items beyond original owner list: 05, 14, 16, 17, 19."
+    },
+    {
+      "id": "BOT-TASK-005",
+      "priority": "P1",
+      "ownerBot": "BOT-APP-API",
+      "title": "Investigate 12 legacy failing tests without weakening them",
+      "status": "active",
+      "acceptance": [
+        "classify root cause per failure",
+        "fix implementation or fixture truth, not assertions merely to pass",
+        "record unresolved environmental failures separately"
+      ]
+    },
+    {
+      "id": "BOT-TASK-006",
+      "priority": "P1",
+      "ownerBot": "BOT-OPERATOR-CENTER",
+      "title": "Specify and implement /adria-pay/",
+      "status": "blocked-spec",
+      "acceptance": [
+        "derive requirements from existing project context and code before implementation",
+        "do not publish financial claims or payment capability without verified backend support",
+        "PR-first"
+      ]
+    },
+    {
+      "id": "BOT-TASK-007",
+      "priority": "P1",
+      "ownerBot": "BOT-NAVIGATION",
+      "title": "Complete /tvornica-ideja/ integration",
+      "status": "active",
+      "acceptance": [
+        "link from appropriate portal surfaces",
+        "preserve CSP/no-network integrity tests",
+        "keep idea counts/status consistent with idea_factory.json"
+      ]
+    },
+    {
+      "id": "BOT-TASK-008",
+      "priority": "P2",
+      "ownerBot": "BOT-IMAGE-PROXY",
+      "title": "Continuously audit image integrity and accessibility",
+      "status": "active",
+      "acceptance": [
+        "no broken public image paths",
+        "meaningful alt/width/height on editorial surfaces",
+        "do not replace approved author imagery with synthetic identity images"
+      ]
+    },
+    {
+      "id": "BOT-TASK-009",
+      "priority": "P2",
+      "ownerBot": "BOT-NEWS-LIVE",
+      "title": "Maintain freshness and single-writer news integrity",
+      "status": "active",
+      "acceptance": [
+        "detect stale feeds",
+        "never introduce second canonical writer",
+        "separate source failure from renderer failure"
+      ]
+    },
+    {
+      "id": "BOT-TASK-010",
+      "priority": "P2",
+      "ownerBot": "BOT-PUBLISH",
+      "title": "Exact-SHA publication readiness",
+      "status": "active",
+      "acceptance": [
+        "quality gate PASS before publish",
+        "holds respected",
+        "merge is never reported as LIVE without deploy SHA and public verification"
+      ]
+    }
+  ]
+}
