@@ -15,14 +15,14 @@ const MIN_WORDS_COMMENTARY = Number(process.env.EDITORIAL_MIN_WORDS_COMMENTARY |
 const MIN_WORDS_PUBLICATION = Number(process.env.EDITORIAL_MIN_WORDS_PUBLICATION || 500);
 const MIN_WORDS_ANALYSIS = Number(process.env.EDITORIAL_MIN_WORDS_ANALYSIS || 1500);
 const MIN_INTERNAL_LINKS = Number(process.env.EDITORIAL_MIN_INTERNAL_LINKS || 5);
-const minimumWordsForType = type => ({
+const minimumWordsForType = type => Math.max(MIN_WORDS, ({
   komentar: MIN_WORDS_COMMENTARY,
   commentary: MIN_WORDS_COMMENTARY,
   objava: MIN_WORDS_PUBLICATION,
   publication: MIN_WORDS_PUBLICATION,
   analiza: MIN_WORDS_ANALYSIS,
   analysis: MIN_WORDS_ANALYSIS,
-}[type] || MIN_WORDS);
+}[type] || MIN_WORDS));
 
 if (!Number.isFinite(POLICY_CUTOFF.getTime())) throw new Error('Invalid EDITORIAL_POLICY_CUTOFF');
 for (const [label, value] of [
