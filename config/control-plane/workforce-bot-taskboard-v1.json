@@ -1,6 +1,6 @@
 {
   "version": "GNK_ASG_WORKFORCE_BOT_TASKBOARD_V1",
-  "updatedAt": "2026-10-11T19:08:00+02:00",
+  "updatedAt": "2026-10-11T20:34:00+02:00",
   "rules": {
     "sourceOfTruth": "current main + owner instructions",
     "priorityOrder": [
@@ -141,6 +141,81 @@
         "quality gate PASS before publish",
         "holds respected",
         "merge is never reported as LIVE without deploy SHA and public verification"
+      ]
+    },
+    {
+      "id": "BOT-TASK-011",
+      "priority": "P2",
+      "ownerBot": "BOT-NEWS-LIVE",
+      "title": "Maintain AKTUAL MEDIA world-edition newsroom quality",
+      "status": "active",
+      "acceptance": [
+        "keep external news source-linked and clearly separated from AKTUAL originals",
+        "detect stale or empty newsroom sections before they become visually dominant",
+        "preserve canonical group normalization and HR/EN parity",
+        "do not label recency as popularity or invent engagement metrics",
+        "surface source concentration when one publisher dominates the current feed"
+      ]
+    },
+    {
+      "id": "BOT-TASK-012",
+      "priority": "P2",
+      "ownerBot": "BOT-NEWS-LIVE",
+      "title": "Build AKTUAL RADAR source/freshness control room",
+      "status": "active",
+      "acceptance": [
+        "derive all metrics from current repository/public feed evidence",
+        "show item count, source count, section distribution and recency",
+        "flag source concentration without inferring bias or popularity",
+        "provide HR/EN parity and link back to source-led newsroom"
+      ]
+    },
+    {
+      "id": "BOT-TASK-013",
+      "priority": "P3",
+      "ownerBot": "BOT-PUBLIC-CLEAN",
+      "title": "Design AKTUAL Morning and Evening Edition modes",
+      "status": "idea",
+      "acceptance": [
+        "presentation-layer change only unless editorial data explicitly supports a content difference",
+        "morning/evening labels must follow local display time and never fabricate an edition timestamp",
+        "preserve accessibility, reduced-motion and mobile behavior"
+      ]
+    },
+    {
+      "id": "BOT-TASK-014",
+      "priority": "P2",
+      "ownerBot": "BOT-NEWS-LIVE",
+      "title": "Create AKTUAL Source Transparency directory",
+      "status": "idea",
+      "acceptance": [
+        "list only sources actually present in current or archived feed evidence",
+        "show source counts and last-seen timestamps without endorsement scores",
+        "link source names to original article evidence rather than invented publisher profiles"
+      ]
+    },
+    {
+      "id": "BOT-TASK-015",
+      "priority": "P3",
+      "ownerBot": "BOT-NAVIGATION",
+      "title": "Prototype regional AKTUAL desks from real feed groups",
+      "status": "idea",
+      "acceptance": [
+        "create regional landing pages only when feed volume justifies them",
+        "avoid empty or fake regional desks",
+        "keep canonical URLs and HR/EN navigation coherent"
+      ]
+    },
+    {
+      "id": "BOT-TASK-016",
+      "priority": "P2",
+      "ownerBot": "BOT-NEWSROOM",
+      "title": "Prepare source-gated AKTUAL Explainer format",
+      "status": "idea",
+      "acceptance": [
+        "explain only claims supported by approved sources or project records",
+        "separate facts, interpretation and unresolved questions",
+        "do not auto-publish explainers without the existing editorial gate"
       ]
     }
   ]
