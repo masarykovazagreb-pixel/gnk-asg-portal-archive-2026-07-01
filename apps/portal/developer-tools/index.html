@@ -117,6 +117,26 @@
     <div id="out-json" class="dt-output" aria-live="polite"></div>
   </section>
 
+  <section class="dt-card" aria-labelledby="csp-vodic">
+    <h2 id="csp-vodic">Kako čitati CSP zaglavlje</h2>
+    <p><code>default-src</code> postavlja zadani izvor za vrste resursa koje nemaju vlastitu direktivu. Specifične direktive zatim sužavaju ili zamjenjuju to pravilo za određenu vrstu resursa.</p>
+    <ul>
+      <li><code>script-src</code> određuje odakle se smiju učitavati i izvršavati skripte.</li>
+      <li><code>connect-src</code> određuje kamo stranica smije uspostavljati mrežne veze iz preglednika, primjerice kroz fetch ili WebSocket.</li>
+      <li><code>frame-ancestors</code> određuje tko smije ugraditi stranicu u frame; vrijednost <code>'none'</code> zabranjuje ugradnju.</li>
+      <li><code>'unsafe-inline'</code> i <code>'unsafe-eval'</code> slabe restrikcije za skripte i zato ih treba posebno preispitati prije uporabe.</li>
+    </ul>
+    <p class="dt-note">Vodič objašnjava semantiku direktiva; ne tvrdi da je jedna politika dovoljna za svaku aplikaciju.</p>
+  </section>
+
+  <section class="dt-card" aria-labelledby="promjene">
+    <h2 id="promjene">Dnevnik promjena</h2>
+    <ul>
+      <li><strong>11.10.2026.</strong> Dodani vodič za čitanje CSP-a i javni dnevnik promjena.</li>
+      <li><strong>20261009-dt-v1</strong> Trenutačni tehnički identifikator aktivnog skupa Developer Tools resursa na ovoj stranici.</li>
+    </ul>
+  </section>
+
   <section class="dt-card dt-privacy" aria-labelledby="priv">
     <h2 id="priv">Sigurnosna granica</h2>
     <ul>
