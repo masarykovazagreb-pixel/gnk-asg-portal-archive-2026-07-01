@@ -15,7 +15,7 @@ const MIN_WORDS_COMMENTARY = Number(process.env.EDITORIAL_MIN_WORDS_COMMENTARY |
 const MIN_WORDS_PUBLICATION = Number(process.env.EDITORIAL_MIN_WORDS_PUBLICATION || 500);
 const MIN_WORDS_ANALYSIS = Number(process.env.EDITORIAL_MIN_WORDS_ANALYSIS || 1500);
 const MIN_INTERNAL_LINKS = Number(process.env.EDITORIAL_MIN_INTERNAL_LINKS || 5);
-const minimumWordsForType = type => Math.max(MIN_WORDS, ({
+const minimumWordsForType = type => Math.max(3000, MIN_WORDS, ({
   komentar: MIN_WORDS_COMMENTARY,
   commentary: MIN_WORDS_COMMENTARY,
   objava: MIN_WORDS_PUBLICATION,
@@ -193,11 +193,11 @@ const summary = {
   ok: errors.length === 0,
   version: 'GNK_ASG_EDITORIAL_CONTENT_POLICY_V1_20260805',
   policyCutoff: POLICY_CUTOFF.toISOString(),
-  minimumWords: MIN_WORDS,
+  minimumWords: Math.max(3000, MIN_WORDS),
   minimumWordsByType: {
-    commentary: MIN_WORDS_COMMENTARY,
-    publication: MIN_WORDS_PUBLICATION,
-    analysis: MIN_WORDS_ANALYSIS,
+    commentary: minimumWordsForType('commentary'),
+    publication: minimumWordsForType('publication'),
+    analysis: minimumWordsForType('analysis'),
   },
   minimumInternalLinks: MIN_INTERNAL_LINKS,
   publicationHoldsVersion: publicationHolds.version,
