@@ -11,6 +11,12 @@
   var countEl = document.getElementById('count');
   var statusEl = document.getElementById('status');
 
+  var WCAG_PRESETS = [
+    { label: 'Crno na bijelom — 21:1', text: '#000000', background: '#ffffff' },
+    { label: 'Tamnosivo #767676 na bijelom — oko 4,54:1', text: '#767676', background: '#ffffff' },
+    { label: 'Bijelo na crnom — 21:1', text: '#ffffff', background: '#000000' }
+  ];
+
   function el(tag, attrs, text) {
     var n = document.createElement(tag);
     if (attrs) Object.keys(attrs).forEach(function (k) { n.setAttribute(k, attrs[k]); });
@@ -39,6 +45,20 @@
       form.appendChild(label);
       form.appendChild(input);
     });
+    if (m.id === 'wcag-contrast') {
+      var presets = el('div', { class: 'dt-calc-presets', 'aria-label': 'Primjeri parova boja' });
+      presets.appendChild(el('p', { class: 'dt-note' }, 'Brzi primjeri — klik učitava par i odmah računa omjer.'));
+      WCAG_PRESETS.forEach(function (preset) {
+        var exampleButton = el('button', { type: 'button', class: 'dt-secondary dt-calc-example' }, preset.label);
+        exampleButton.addEventListener('click', function () {
+          fields.boja_teksta_hex.value = preset.text;
+          fields.boja_pozadine_hex.value = preset.background;
+          form.requestSubmit();
+        });
+        presets.appendChild(exampleButton);
+      });
+      form.appendChild(presets);
+    }
     var btn = el('button', { type: 'submit' }, 'Izračunaj');
     form.appendChild(btn);
     var out = el('p', { class: 'dt-note', 'aria-live': 'polite' });
