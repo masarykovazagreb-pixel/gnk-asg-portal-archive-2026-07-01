@@ -73,18 +73,21 @@ function render(data){
     (en ? 'Source: ' : 'Izvor: ') + '<a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo.com</a></span>');
 }
 
-fetch('/data/weather-zagreb.json?v=' + Date.now(), { cache: 'no-store' })
-  .then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-  .then(render)
-  .catch(function(){
-    var root = document.getElementById('akWeather');
-    var body = document.getElementById('akWeatherBody');
-    var updatedEl = document.getElementById('akWeatherUpdated');
-    if (!root || !body || !updatedEl) return;
-    root.classList.add('state-unavailable');
-    updatedEl.textContent = en ? 'Unavailable' : 'Nedostupno';
-    body.innerHTML = '<span>' + (en
-      ? 'Weather data is temporarily unavailable. Please check back later.'
-      : 'Vremenski podaci trenutno nisu dostupni. Pokušajte kasnije.') + '</span>';
-  });
+function effectiveWeather(data, freshness){
+  var resource = freshness && freshness.resources && freshness.resources.weather;
+  var maxAge = Number(resource && resource.maxAgeMinutes);
+  var observed = Date.parse((resource && resource.observedAt) || (data && data.updated_at) || '');
+  var ageMinutes = (Date.now() - observed) / 60000;
+  var fresh = data && data.state === 'live' && Number.isFinite(observed) && ageMinutes >= -5 &&
+    Number.isFinite(maxAge) && ageMinutes <= maxAge && (!resource || resource.state !== 'error');
+  if (fresh) return data;
+  if (data && data.current) return {...data,state:'stale',stale_since:data.stale_since||data.updated_at};
+  return {state:'unavailable'};
+}
+Promise.all([
+  fetch('/data/weather-zagreb.json?v=' + Date.now(), {cache:'no-store'}).then(function(r){if(!r.ok)throw new Error('weather-http-'+r.status);return r.json();}),
+  fetch('/data/freshness-status.json?v=' + Date.now(), {cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;})
+])
+  .then(function(values){ render(effectiveWeather(values[0],values[1])); })
+  .catch(function(){ render({state:'unavailable'}); });
 })();
