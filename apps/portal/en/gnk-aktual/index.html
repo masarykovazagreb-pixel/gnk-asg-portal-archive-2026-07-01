@@ -94,7 +94,22 @@
 
   <section class="am-groups" id="amGroups" aria-live="polite"></section>
 
-  <section class="am-editorial">
+  <section class="am-sova" id="aktualSova">
+  <div class="am-sova-head">
+    <div><span class="am-label gold">AKTUAL SOVA</span><h2>Modelled digital guide</h2><p>AKTUAL Sova is a modelled strategic foresight guide. It separates source context, scenarios, weekly planning and plain-language explanation; it is not an autonomous publisher.</p></div>
+    <span class="am-sova-status" data-sova-status aria-live="polite">Local model · human editorial gate</span>
+  </div>
+  <div class="am-sova-tabs" role="tablist" aria-label="AKTUAL Sova views">
+    <button type="button" role="tab" aria-selected="true" data-sova-tab="source">Source & context</button>
+    <button type="button" role="tab" aria-selected="false" data-sova-tab="foresight">Foresight</button>
+    <button type="button" role="tab" aria-selected="false" data-sova-tab="weekly">Weekly</button>
+    <button type="button" role="tab" aria-selected="false" data-sova-tab="explain">Accessible explanation</button>
+  </div>
+  <div class="am-sova-panel" data-sova-panel="source"><h3>Source first</h3><p>The guide works from local, explicitly classified project data and keeps scenarios separate from verified facts.</p><p data-sova-gate></p></div>
+  <div class="am-sova-panel" data-sova-panel="foresight" hidden><div data-sova-foresight><p>Scenario view loads from the local contract.</p></div></div>
+  <div class="am-sova-panel" data-sova-panel="weekly" hidden><div data-sova-weekly><p>Weekly model metrics load from the local contract.</p></div></div>
+  <div class="am-sova-panel" data-sova-panel="explain" hidden><h3>What this is</h3><p>A transparent modelled editorial guide. It does not claim external accounts, autonomous publishing, partnerships or unverified operational activity.</p></div>
+ </section>\n\n  <section class="am-editorial">
     <div>
       <span class="am-label gold">AKTUAL ORIGINALS</span>
       <h2>Analysis, columns and documented context</h2>
@@ -116,6 +131,6 @@
   <p class="am-footer-note">AKTUAL MEDIA links to original publishers for external news. Headline order reflects feed recency and section grouping, not an undisclosed popularity score.</p>
 </main>
 <script src="/assets/public-unified-menu-v6.js?v=20260728-restaurants-contrast" defer></script>
-<script src="/assets/aktual-media-world-v1.js?v=20261011-world" defer></script>
+<script src="/assets/aktual-media-world-v1.js?v=20261011-world" defer></script>\n<script src="/assets/aktual-sova-v1.js?v=20261011-world" defer></script>
 </body>
 </html>
