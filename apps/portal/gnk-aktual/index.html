@@ -94,7 +94,22 @@
 
   <section class="am-groups" id="amGroups" aria-live="polite"></section>
 
-  <section class="am-editorial">
+  <section class="am-sova" id="aktualSova">
+  <div class="am-sova-head">
+    <div><span class="am-label gold">AKTUAL SOVA</span><h2>Modelirani digitalni vodič</h2><p>AKTUAL Sova je modelirani strateški foresight vodič. Odvaja izvorni kontekst, scenarije, tjedno planiranje i pristupačno objašnjenje; nije autonomni izdavač.</p></div>
+    <span class="am-sova-status" data-sova-status aria-live="polite">Lokalni model · ljudski urednički gate</span>
+  </div>
+  <div class="am-sova-tabs" role="tablist" aria-label="AKTUAL Sova prikazi">
+    <button type="button" role="tab" aria-selected="true" data-sova-tab="source">Izvor i kontekst</button>
+    <button type="button" role="tab" aria-selected="false" data-sova-tab="foresight">Foresight</button>
+    <button type="button" role="tab" aria-selected="false" data-sova-tab="weekly">Tjednik</button>
+    <button type="button" role="tab" aria-selected="false" data-sova-tab="explain">Pristupačno objašnjenje</button>
+  </div>
+  <div class="am-sova-panel" data-sova-panel="source"><h3>Prvo izvor</h3><p>Vodič radi iz lokalnih, jasno klasificiranih projektnih podataka i odvaja scenarije od provjerenih činjenica.</p><p data-sova-gate></p></div>
+  <div class="am-sova-panel" data-sova-panel="foresight" hidden><div data-sova-foresight><p>Scenarijski prikaz učitava se iz lokalnog contracta.</p></div></div>
+  <div class="am-sova-panel" data-sova-panel="weekly" hidden><div data-sova-weekly><p>Tjedni modelirani pokazatelji učitavaju se iz lokalnog contracta.</p></div></div>
+  <div class="am-sova-panel" data-sova-panel="explain" hidden><h3>Što je ovo</h3><p>Transparentni modelirani urednički vodič. Ne tvrdi da ima vanjske račune, autonomno objavljivanje, partnerstva ni neprovjerenu operativnu aktivnost.</p></div>
+ </section>\n\n  <section class="am-editorial">
     <div>
       <span class="am-label gold">AKTUAL ORIGINALI</span>
       <h2>Analize, kolumne i dokumentirani kontekst</h2>
@@ -116,6 +131,6 @@
   <p class="am-footer-note">AKTUAL MEDIA za vanjske vijesti povezuje na izvorne izdavače. Redoslijed naslova temelji se na svježini feeda i grupiranju rubrika, a ne na skrivenom bodovanju popularnosti.</p>
 </main>
 <script src="/assets/public-unified-menu-v6.js?v=20260728-restaurants-contrast" defer></script>
-<script src="/assets/aktual-media-world-v1.js?v=20261011-world" defer></script>
+<script src="/assets/aktual-media-world-v1.js?v=20261011-world" defer></script>\n<script src="/assets/aktual-sova-v1.js?v=20261011-world" defer></script>
 </body>
 </html>
