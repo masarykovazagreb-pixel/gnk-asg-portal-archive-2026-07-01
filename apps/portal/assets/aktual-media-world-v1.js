@@ -131,6 +131,7 @@
       ...order.map(g=>'<a href="#rubrika-'+esc(metaFor(g).slug)+'">'+esc(metaFor(g).label)+'</a>'),
       '<a href="'+(lang==='hr'?'/gnk-aktual/kolumne/':'/en/gnk-aktual/columns/')+'">'+(lang==='hr'?'Kolumne':'Columns')+'</a>',
       '<a href="'+(lang==='hr'?'/radio/':'/en/radio/')+'">Radio</a>',
+      '<a href="'+(lang==='hr'?'/gnk-aktual/radar/':'/en/gnk-aktual/radar/')+'">RADAR</a>',
       '<a href="'+(lang==='hr'?'/gnk-aktual/teme/':'/en/gnk-aktual/topics/')+'">'+esc(labels.sections)+'</a>'
     ];
     nav.innerHTML=fixed.join('');
