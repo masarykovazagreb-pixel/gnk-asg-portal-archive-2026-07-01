@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SPT — Sports Performance Tracking</title>
+<link rel="icon" href="/static/img/icon-512.png">
+<link rel="apple-touch-icon" href="/static/img/icon-512.png">
+<link rel="manifest" href="/static/manifest.webmanifest">
+<meta name="theme-color" content="#0a1420">
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<div id="app">
+  <aside id="sidebar">
+    <div class="brand">
+      <div class="brand-logo">📡</div>
+      <div>
+        <div class="brand-name">SPT</div>
+        <div class="brand-sub">Sports Performance<br>Tracking</div>
+      </div>
+    </div>
+    <nav id="nav">
+      <a href="#dashboard" data-view="dashboard"><span class="ico">📊</span> Nadzorna ploča</a>
+      <a href="#live" data-view="live"><span class="ico">🔴</span> Praćenje uživo<span class="live-dot" id="navLiveDot"></span></a>
+      <a href="#soba" data-view="soba"><span class="ico">🛰️</span> Kontrolna soba</a>
+      <a href="#replay" data-view="replay"><span class="ico">🎬</span> Reprodukcija 2D/3D</a>
+      <a href="#analysis" data-view="analysis"><span class="ico">📈</span> Analize i usporedbe</a>
+      <a href="#analitika" data-view="analitika"><span class="ico">🧠</span> Napredna analitika</a>
+      <a href="#athletes" data-view="athletes"><span class="ico">🏃</span> Sportaši</a>
+      <a href="#clubs" data-view="clubs"><span class="ico">🏢</span> Klubovi <small>(šifre)</small></a>
+      <a href="#team" data-view="team"><span class="ico">🛡️</span> Pregled kluba</a>
+      <a href="#sports" data-view="sports"><span class="ico">⚽</span> Sportovi i mjerenja</a>
+      <a href="#devices" data-view="devices"><span class="ico">🛰️</span> Uređaji</a>
+      <a href="#hardware" data-view="hardware"><span class="ico">🎽</span> SPT hardver</a>
+      <a href="#import" data-view="import"><span class="ico">📥</span> Uvoz podataka</a>
+      <a href="#nutrition" data-view="nutrition"><span class="ico">🥗</span> Prehrana</a>
+      <a href="#injuries" data-view="injuries"><span class="ico">🏥</span> Ozljede</a>
+      <a href="#simulate" data-view="simulate"><span class="ico">🔮</span> Simulacije</a>
+      <a href="#scouting" data-view="scouting"><span class="ico">🔭</span> Scouting</a>
+      <a href="#izvjestaji" data-view="izvjestaji"><span class="ico">🧾</span> Izvještaji</a>
+      <a href="#biosensor" data-view="biosensor"><span class="ico">🎙️</span> BioSenzor</a>
+      <a href="#ai" data-view="ai"><span class="ico">🤖</span> SPT AI asistent</a>
+      <a href="#info" data-view="info"><span class="ico">ℹ️</span> O sustavu</a>
+      <a href="#postavke" data-view="postavke"><span class="ico">⚙️</span> Postavke</a>
+    </nav>
+    <div class="sidebar-foot">
+      <div id="netTicker" class="net-ticker">🌍 <b class="mono">70 000+</b> sportaša u mreži…</div>
+      <div id="connBadge" class="conn-badge"><span class="live-dot"></span> SUSTAV AKTIVAN</div>
+      <div class="ver">SPT v2.2 · Windows 11 · gnk-asg.hr</div>
+      <div class="ver" style="opacity:.55">produced by <b>GNK ASG</b></div>
+    </div>
+  </aside>
+  <main id="main">
+    <header id="topbar">
+      <div>
+        <h1 id="pageTitle">Nadzorna ploča</h1>
+        <p id="pageSub"></p>
+      </div>
+      <div id="topRight"></div>
+    </header>
+    <div id="view"></div>
+  </main>
+</div>
+<div id="toasts"></div>
+<script src="/static/js/util.js"></script>
+<script src="/static/js/charts.js"></script>
+<script src="/static/js/pitch.js"></script>
+<script src="/static/js/views/dashboard.js"></script>
+<script src="/static/js/views/live.js"></script>
+<script src="/static/js/views/replay.js"></script>
+<script src="/static/js/views/analysis.js"></script>
+<script src="/static/js/views/athletes.js"></script>
+<script src="/static/js/views/clubs.js"></script>
+<script src="/static/js/views/sports.js"></script>
+<script src="/static/js/views/devices.js"></script>
+<script src="/static/js/views/simulate.js"></script>
+<script src="/static/js/views/info.js"></script>
+<script src="/static/js/views/karton.js"></script>
+<script src="/static/js/views/nutrition.js"></script>
+<script src="/static/js/views/injuries.js"></script>
+<script src="/static/js/views/hardware.js"></script>
+<script src="/static/js/views/import.js"></script>
+<script src="/static/js/views/team.js"></script>
+<script src="/static/js/views/biosensor.js"></script>
+<script src="/static/js/views/ai.js"></script>
+<script src="/static/js/views/izvjestaji.js"></script>
+<script src="/static/js/views/soba.js"></script>
+<script src="/static/js/views/postavke.js"></script>
+<script src="/static/js/views/analitika.js"></script>
+<script src="/static/js/views/scouting.js"></script>
+<script src="/static/js/app.js"></script>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/static/sw.js").catch(() => {});
+}
+</script>
+</body>
+</html>

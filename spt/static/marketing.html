@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SPT — Sports Performance Tracking | gnk-asg.hr</title>
+<meta name="description" content="SPT — Sports Performance Tracking: najpotpuniji sustav za praćenje sportskih performansi. GPS + UWB grudnjak, pametni sat, vaga, BioSenzor, AI predikcija ozljeda. Produced by GNK ASG — autor: Nermin Sefić.">
+<meta name="keywords" content="SPT, sports performance tracking, GPS tracking sportaša, UWB, opterećenje, prevencija ozljeda, ACWR, GNK ASG, Nermin Sefić, sportska analitika, football GPS, sport telemetrija">
+<meta name="author" content="Nermin Sefić — GNK ASG">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="SPT — Sports Performance Tracking | GNK ASG">
+<meta property="og:description" content="Svaki metar. Svaki otkucaj srca. Svaki sportaš. GPS + UWB + AI — produced by GNK ASG (Nermin Sefić).">
+<meta property="og:image" content="/static/img/icon-512.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SPT — Sports Performance Tracking">
+<meta name="twitter:description" content="Svaki metar. Svaki otkucaj srca. Svaki sportaš. #SPT #GNKASG">
+<link rel="canonical" href="https://gnk-asg.hr/">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>📡</text></svg>">
+<style>
+:root{--bg:#060a11;--panel:#0d141f;--border:#1c2940;--text:#e8eef8;--dim:#8ea0b8;--faint:#5b6c85;
+--accent:#38d6f5;--accent2:#a3e635;--red:#ff5a5f;--blue:#4f8cff;--amber:#fbbf24}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:"Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;font-size:15px;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+/* nav */
+.top{position:fixed;top:0;left:0;right:0;z-index:50;background:#070b12ee;backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+.logo{display:flex;gap:10px;align-items:center;font-weight:900;font-size:19px;letter-spacing:1px}
+.logo .em{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#0e3a52,#123b2a);display:flex;align-items:center;justify-content:center;border:1px solid #27395a}
+.langs{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;max-width:560px}
+.langs a{font-size:10.5px;font-weight:700;padding:3px 7px;border-radius:6px;color:var(--dim);border:1px solid transparent}
+.langs a.on,.langs a:hover{color:#c9f2ff;border-color:#1e4258;background:#0f2e3f}
+.cta{background:linear-gradient(90deg,#0f3550,#123243);border:1px solid #1e4258;color:#d9f4ff;font-weight:800;padding:9px 18px;border-radius:10px;font-size:13px}
+.cta:hover{filter:brightness(1.25)}
+/* hero */
+.hero{padding:130px 0 70px;text-align:center;position:relative;
+background:radial-gradient(900px 500px at 50% -10%, #0e2238 0%, transparent 60%),radial-gradient(600px 400px at 85% 30%, #0e302022 0%, transparent 60%)}
+.hero h1{font-size:52px;font-weight:900;letter-spacing:-1px;line-height:1.08}
+.hero h1 .grad{background:linear-gradient(90deg,#38d6f5,#a3e635);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{color:var(--dim);font-size:18px;max-width:760px;margin:18px auto 0;line-height:1.6}
+.stats{display:flex;gap:44px;justify-content:center;margin-top:44px;flex-wrap:wrap}
+.stats .st b{font-size:34px;font-weight:900;font-variant-numeric:tabular-nums;display:block}
+.stats .st span{font-size:12px;color:var(--faint);letter-spacing:1px}
+.btnrow{margin-top:38px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-block;padding:14px 30px;border-radius:12px;font-weight:800;font-size:15px}
+.btn.p{background:linear-gradient(90deg,#0e7490,#0f3550);border:1px solid #1e4258;color:#fff}
+.btn.s{border:1px solid var(--border);color:var(--dim)}
+/* sekcije */
+section{padding:70px 0}
+h2{font-size:32px;font-weight:900;text-align:center;letter-spacing:-.5px}
+.sub{color:var(--dim);text-align:center;max-width:700px;margin:12px auto 44px;line-height:1.6}
+.grid{display:grid;gap:16px}
+.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}.g2{grid-template-columns:1fr 1fr}
+@media(max-width:900px){.g3,.g4,.g2{grid-template-columns:1fr}.hero h1{font-size:34px}}
+.card{background:linear-gradient(180deg,#0f1723,#0c1320);border:1px solid var(--border);border-radius:16px;padding:24px;transition:.2s}
+.card:hover{border-color:#2a5a8a;transform:translateY(-3px)}
+.card h3{font-size:17px;margin-bottom:10px}
+.card p{color:var(--dim);font-size:13.5px;line-height:1.65}
+.ico{font-size:28px;margin-bottom:12px;display:block}
+/* proizvodi */
+.prod img{width:100%;border-radius:12px;aspect-ratio:4/3;object-fit:cover;border:1px solid var(--border)}
+.prod .nm{font-weight:900;font-size:16px;margin-top:12px}
+.prod .tg{color:var(--faint);font-size:12px;margin-top:2px}
+/* karton demo */
+.demo{background:#0a0f19;border:1px solid var(--border);border-radius:18px;padding:26px}
+.badge{display:inline-block;padding:3px 11px;border-radius:99px;font-size:11px;font-weight:800}
+.b-cyan{background:#0e2f3f;color:#7fe3f7}.b-red{background:#3d1518;color:#ff8d90}.b-gr{background:#153018;color:#9fe6a0}.b-amber{background:#3a2c0d;color:#ffd97a}
+.rowline{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #14203355;font-size:13.5px}
+.rowline b{font-variant-numeric:tabular-nums}
+.meter{height:7px;background:#0a1322;border-radius:99px;overflow:hidden;margin:6px 0 12px}
+.meter i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#38d6f5,#a3e635)}
+/* timeline matchday */
+.tl{display:flex;gap:0;margin-top:18px;flex-wrap:wrap}
+.tl .ph{flex:1;min-width:130px;padding:14px;border:1px solid var(--border);border-radius:12px;margin:4px;background:#0c1421}
+.tl .ph b{display:block;font-size:13px;margin-bottom:6px}
+.tl .ph span{font-size:11.5px;color:var(--dim);line-height:1.5;display:block}
+/* footer */
+footer{border-top:1px solid var(--border);padding:44px 0;color:var(--faint);font-size:13px}
+.fcols{display:flex;gap:40px;flex-wrap:wrap;justify-content:space-between}
+.kicker{color:var(--accent);font-weight:800;letter-spacing:2px;font-size:12px;text-transform:uppercase;text-align:center}
+.tags{font-size:10.5px;color:var(--faint);line-height:1.8;letter-spacing:.3px;max-width:340px}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap">
+  <div class="logo"><div class="em">📡</div>SPT</div>
+  <div style="font-size:10px;color:var(--faint);letter-spacing:1px;margin-right:8px">produced by <b style="color:var(--dim)">GNK ASG</b> · <b style="color:var(--dim)">Nermin Sefić</b></div>
+  <div class="langs" id="langs"></div>
+  <a class="cta" href="#demo">▶ Probaj demo</a>
+</div></div>
+
+<!-- HERO -->
+<div class="hero"><div class="wrap">
+  <div class="kicker" style="margin-bottom:14px">GNK-ASG · SPORTS PERFORMANCE TRACKING</div>
+  <h1>Svaki metar. Svaki otkucaj srca.<br><span class="grad">Svaki sportaš.</span></h1>
+  <p class="lead" data-i18n="hero_lead">Jedinstveni sustav za praćenje sportskih performansi: grudnjak sa SPT čipom (GPS vani, UWB/M2M mreža u dvorani), pametni sat, pametna vaga i BioSenzor — sve u jednom kartonu, s AI asistentom koji poznaje svaki broj.</p>
+  <div class="stats">
+    <div class="st"><b>75+</b><span data-i18n="st_sports">SPORTOVA</span></div>
+    <div class="st"><b>340+</b><span data-i18n="st_metrics">MJERENJA</span></div>
+    <div class="st"><b>70 000+</b><span data-i18n="st_network">SPORTAŠA U MREŽI</span></div>
+    <div class="st"><b>10</b><span data-i18n="st_langs">JEZIKA</span></div>
+  </div>
+  <div class="btnrow">
+    <a class="btn p" href="#demo" data-i18n="btn_demo">▶ Pogledaj karton nogometaša</a>
+    <a class="btn s" href="#hardware" data-i18n="btn_hw">🎽 SPT uređaji</a>
+  </div>
+</div></div>
+
+<!-- ŠTO PRATIMO -->
+<section id="what"><div class="wrap">
+  <div class="kicker" data-i18n="k_what">ŠTO SPT PRATI</div>
+  <h2 data-i18n="h_what">Sve što se može izmjeriti — u realnom vremenu</h2>
+  <p class="sub" data-i18n="sub_what">Od pretjeljenih kilometara do mliječne kiseline. Podaci teku s čipa na grudnjaku, sata, pojasa, vage i mikrofona — ravno u server, gdje se analiziraju, uspoređuju i simuliraju.</p>
+  <div class="grid g4">
+    <div class="card"><span class="ico">🏃</span><h3 data-i18n="c_loco">Kretanje</h3><p data-i18n="c_loco_t">Kilometri po zonama intenziteta, maksimalna brzina, sprintevi, ubrzanja, promjene smjera, dužina koraka i vrijeme kontakta stopala s podlogom (lijevo/desno).</p></div>
+    <div class="card"><span class="ico">❤️</span><h3 data-i18n="c_cardio">Srce i pluća</h3><p data-i18n="c_cardio_t">Puls u zonama, HRV, oporavak pulsa, VO₂max procjena, disanje u mirovanju i pod opterećenjem, potrošnja kalorija.</p></div>
+    <div class="card"><span class="ico">⚖️</span><h3 data-i18n="c_body">Tijelo</h3><p data-i18n="c_body_t">Pametna vaga svako jutro: težina, masnoće, mišići, voda, visceralna mast — automatski u karton. Trendovi kroz cijelu sezonu.</p></div>
+    <div class="card"><span class="ico">🩸</span><h3 data-i18n="c_meta">Metabolizam</h3><p data-i18n="c_meta_t">Mliječna kiselina (laktat) tijekom intervalnih treninga, znojenje, hidratacija, kalorijski manjak/višak uz plan prehrane.</p></div>
+    <div class="card"><span class="ico">🦵</span><h3 data-i18n="c_neuro">Mišići i skokovi</h3><p data-i18n="c_neuro_t">Visina skoka, sila doskoka, asimetrija lijevo/desno, RSI, broj skokova po treningu — alarm za umor i rizik.</p></div>
+    <div class="card"><span class="ico">⚽</span><h3 data-i18n="c_tech">Tehnika</h3><p data-i18n="c_tech_t">Dodavanja, udarci, golovi, sprintevi s loptom, brzina lopte (radar) — po sportu, iz čipa i pametne lopte.</p></div>
+    <div class="card"><span class="ico">🎙️</span><h3 data-i18n="c_bio">BioSenzor</h3><p data-i18n="c_bio_t">Glas otkriva stres i umor, analiza disanja ritam, a RR intervali zdravlje srca. Anomalije se ističu crveno — odmah.</p></div>
+    <div class="card"><span class="ico">🤖</span><h3 data-i18n="c_ai">SPT AI</h3><p data-i18n="c_ai_t">Asistent koji poznaje cijelu bazu: pitaš "tko je najbrži?", "koliki je rizik ozljede?" — odgovara s brojkama i preporukama.</p></div>
+  </div>
+</div></section>
+
+<!-- KARTON NOGOMETAŠA -->
+<section id="demo" style="background:linear-gradient(180deg,#080d16,#0a111c)"><div class="wrap">
+  <div class="kicker" data-i18n="k_demo">PRIMJER — NOGOMETAŠ</div>
+  <h2 data-i18n="h_demo">Karton nogometaša: cijeli dan, cijela karijera</h2>
+  <p class="sub" data-i18n="sub_demo">Kako izgleda jedan dan s SPT-om — od jutarnjeg vaganja do noćnog sna. Isto vrijedi za sve sportove: od skijanja do odbojke, od atletike do veslanja.</p>
+  <div class="grid g2">
+    <div class="demo">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <b style="font-size:17px">🧑‍🎓 Luka H. — U17, napadač</b>
+        <span class="badge b-cyan">KLB-7XK2</span>
+      </div>
+      <div style="margin-top:14px">
+        <div class="rowline"><span>⚖️ Jutarnje vaganje</span><b>72,4 kg · masnoća 9,8% ▼</b></div>
+        <div class="rowline"><span>😴 San (SPT Watch)</span><b>7 h 42 min · ocjena 88</b></div>
+        <div class="rowline"><span>💚 Spremnost</span><b style="color:#9fe6a0">84 / 100</b></div>
+        <div class="meter"><i style="width:84%"></i></div>
+        <div class="rowline"><span>🎙️ BioSenzor (glas)</span><b>stres 22/100 — nizak</b></div>
+        <div class="rowline"><span>🏃 Trening — udaljenost</span><b>6,8 km (2,1 km sprint zona)</b></div>
+        <div class="meter"><i style="width:62%"></i></div>
+        <div class="rowline"><span>⚡ Maks. brzina</span><b>33,8 km/h (norma U17: 27–34)</b></div>
+        <div class="rowline"><span>👣 Kontakt stopala L/D</span><b>178 / 186 ms (asimetrija 4,4%)</b></div>
+        <div class="rowline"><span>🩸 Laktat nakon intervala</span><b>4,8 mmol/L</b></div>
+        <div class="rowline"><span>⚽ Tehnika</span><b>42 dodavanja (88% uspješno) · 6 udaraca</b></div>
+        <div class="rowline"><span>🥗 Prehrana</span><b>manjak ugljikohidrata −80 g</b></div>
+        <div class="rowline"><span>🚩 Anomalije</span><b style="color:#ff8d90">HRV niži 2,6σ — preporuka: regeneracijski trening</b></div>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <h3 data-i18n="h_matchday">Dan utakmice — što se mjeri i kada</h3>
+        <div class="tl">
+          <div class="ph"><b>🌅 Prije</b><span data-i18n="ph_pre">vaga · san · HRV · spremnost · glas (stres) · ACT/NB test</span></div>
+          <div class="ph"><b>🔥 Zagrijavanje</b><span data-i18n="ph_warm">aktivacija (RPE) · mobilnost · reakcije</span></div>
+          <div class="ph"><b>⚽ Utakmica</b><span data-i18n="ph_match">pozicije 20 Hz · km · sprintevi · puls · udarci · brzina lopte · xG događaji</span></div>
+          <div class="ph"><b>🧊 Odmah poslije</b><span data-i18n="ph_post">laktat · oporavak pulsa 60 s · glas (umor) · RPE</span></div>
+          <div class="ph"><b>🌙 Dan poslije</b><span data-i18n="ph_next">bolnost · spremnost · san · preporuka opterećenja</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3 data-i18n="h_who">Za koga?</h3>
+        <p data-i18n="h_who_t" style="margin-bottom:10px">• <b>Treneri</b> — semafor uživo, rotacije po spremnosti, planovi treninga<br>
+        • <b>Kondicijski treneri</b> — opterećenje, ACWR, testovi, prevencija ozljeda<br>
+        • <b>Sportaši</b> — vlastiti karton na satu i mobitelu, prehrana, oporavak<br>
+        • <b>Fizioterapeuti</b> — povratak nakon ozljede korak po korak (RTP)</p>
+        <p style="color:var(--faint);font-size:12px" data-i18n="h_who_s">Ulooge i prava pristupa: admin → trener (samo svoj klub) → kondicijski → skaut (samo čitanje) → sportaš (samo svoj karton).</p>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- HARDVER -->
+<section id="hardware"><div class="wrap">
+  <div class="kicker" data-i18n="k_hw">SPT OBITELJ UREĐAJA</div>
+  <h2 data-i18n="h_hw">Dizajnirano kao jedan organizam</h2>
+  <p class="sub" data-i18n="sub_hw">Na svakom uređaju stoji SPT. Kompresijski grudnjak (muški i ženski kroj), čip, sat, UWB sidra, stroj za obradu, vaga i pojas za puls.</p>
+  <div class="grid g4">
+    <div class="card prod"><img src="/static/img/vest_front.png" alt="SPT Vest M1"><div class="nm">SPT Vest M1</div><div class="tg" data-i18n="p_vest_m">Grudnjak — muški · GPS + UWB</div></div>
+    <div class="card prod"><img src="/static/img/vest_back.png" alt="SPT Vest W1"><div class="nm">SPT Vest W1</div><div class="tg" data-i18n="p_vest_w">Grudnjak — ženski · anatomski kroj</div></div>
+    <div class="card prod"><img src="/static/img/chip_pod.png" alt="SPT Pod S1"><div class="nm">SPT Pod S1</div><div class="tg" data-i18n="p_pod">Čip: GNSS + IMU 1000 Hz + UWB · IP67</div></div>
+    <div class="card prod"><img src="/static/img/watch.png" alt="SPT Watch A1"><div class="nm">SPT Watch A1</div><div class="tg" data-i18n="p_watch">Sat: puls, san, GNSS, SPT Mesh</div></div>
+    <div class="card prod"><img src="/static/img/uwb_anchor.png" alt="SPT Anchor A8"><div class="nm">SPT Anchor A8</div><div class="tg" data-i18n="p_anchor">UWB sidro · ±10 cm · 20 Hz</div></div>
+    <div class="card prod"><img src="/static/img/edge_server.png" alt="SPT Edge One"><div class="nm">SPT Edge One</div><div class="tg" data-i18n="p_edge">Stroj za obradu · radi i bez interneta</div></div>
+    <div class="card prod"><img src="/static/img/smart_scale.png" alt="SPT Scale B1"><div class="nm">SPT Scale B1</div><div class="tg" data-i18n="p_scale">Pametna vaga · automatski u karton</div></div>
+    <div class="card prod"><img src="/static/img/strap_hr.png" alt="SPT Strap H2"><div class="nm">SPT Strap H2</div><div class="tg" data-i18n="p_strap">Pojas za puls · ECG točnost + HRV</div></div>
+  </div>
+</div></section>
+
+<!-- ANALITIKA -->
+<section style="background:#080d16"><div class="wrap">
+  <div class="kicker" data-i18n="k_an">ANALIZE I ALATI</div>
+  <h2 data-i18n="h_an">Brojevi koji nešto znače</h2>
+  <div class="grid g3">
+    <div class="card"><span class="ico">🎬</span><h3 data-i18n="a_rep">Reprodukcija 2D/3D</h3><p data-i18n="a_rep_t">Svaka utakmica se može odgledati ponovno — svaka sekunda, svaki igrač, točkice u boji momčadi, heatmap, brzine. Unatrag i unaprijed.</p></div>
+    <div class="card"><span class="ico">⚖️</span><h3 data-i18n="a_cmp">Usporedbe</h3><p data-i18n="a_cmp_t">Bilo koja sportašica ili sportaš protiv bilo kojeg — percentile unutar pozicije i sporta, s jasnim odstupanjima više/manje.</p></div>
+    <div class="card"><span class="ico">🔮</span><h3 data-i18n="a_sim">Simulacije</h3><p data-i18n="a_sim_t">Rekonstrukcija unatrag i projekcija unaprijed: što ako smanjimo obujam 15%? Rizik ozljede i indeks forme kroz 4 tjedna.</p></div>
+    <div class="card"><span class="ico">🚩</span><h3 data-i18n="a_anom">Detekcija anomalija</h3><p data-i18n="a_anom_t">Sustav sam traži odstupanja od tvog prosjeka — nagli pad HRV-a, skok težine, pretjerano opterećenje — i ističe crveno.</p></div>
+    <div class="card"><span class="ico">🥗</span><h3 data-i18n="a_nut">Prehrana</h3><p data-i18n="a_nut_t">Potrebe izračunate iz tvog kartona (BMR/TDEE, makronutrijenti, hidratacija) vs stvarni unos — višak ili manjak, svaki dan.</p></div>
+    <div class="card"><span class="ico">🏥</span><h3 data-i18n="a_inj">Ozljede i RTP</h3><p data-i18n="a_inj_t">Evidencija ozljeda s uzrocima, trajanjem i protokolom povratka. Matrica po dijelovima tijela otkriva obrasce.</p></div>
+  </div>
+</div></section>
+
+<!-- CTA -->
+<section><div class="wrap" style="text-align:center">
+  <h2 data-i18n="h_cta">Spremni za sljedeću razinu?</h2>
+  <p class="sub" data-i18n="sub_cta">SPT radi kao Windows 11 desktop aplikacija i kao web stranica — isti podaci, isti karton, bilo gdje.</p>
+  <div class="btnrow">
+    <a class="btn p" href="/#dashboard" data-i18n="btn_open">▶ Otvori SPT aplikaciju</a>
+    <a class="btn s" href="#demo" data-i18n="btn_again">↺ Još jednom karton</a>
+  </div>
+</div></section>
+
+<footer><div class="wrap"><div class="fcols">
+  <div><b style="color:var(--text)">SPT</b><br>Sports Performance Tracking<br>gnk-asg.hr</div>
+  <div data-i18n="f_note">Svi podaci u demo verziji su sintetski. Klubovi su anonimizirani šiframa; identiteti ne odgovaraju stvarnim osobama.</div>
+  <div>© 2026 SPT · produced by <b>GNK ASG</b> · autor: <b>Nermin Sefić</b><br>
+      <span class="tags">#SPT #GNKASG #SportsPerformanceTracking #SportskaAnalitika #GPStracking #UWB #PrevencijaOzljeda #PerformanceData #FootballTech #SportsScience #LoadManagement #ACWR #Zagreb #Hrvatska #NerminSefić</span></div>
+</div></div></footer>
+
+<script>
+// ============ 20+ JEZIKA ============
+const LANGS = ["hr","en","de","it","es","fr","pt","nl","pl","sl","cs","sk","hu","ro","bg","el","tr","ru","uk","sr","fi","sv","da","no"];
+const NAMES = {hr:"HRV",en:"ENG",de:"DEU",it:"ITA",es:"ESP",fr:"FRA",pt:"POR",nl:"NLD",pl:"POL",sl:"SLV",cs:"ČEŠ",sk:"SVK",hu:"MAD",ro:"RUM",bg:"BUL",el:"GRČ",tr:"TUR",ru:"RUS",uk:"UKR",sr:"SRP",fi:"FIN",sv:"SVE",da:"DAN",no:"NOR"};
+
+// HR je puni izvor; ostali jezici prevode ključne blokove (fallback = HR tekst u HTML-u)
+const T = {
+ en:{hero_lead:"A unique sports performance tracking system: the SPT vest with a chip (GPS outdoors, UWB/M2M mesh indoors), smartwatch, smart scale and BioSensor — all in one record, with an AI assistant that knows every number.",
+  st_sports:"SPORTS",st_metrics:"METRICS",st_network:"ATHLETES ON THE NETWORK",st_langs:"LANGUAGES",
+  btn_demo:"▶ See a footballer's record",btn_hw:"🎽 SPT devices",
+  k_what:"WHAT SPT TRACKS",h_what:"Everything measurable — in real time",
+  sub_what:"From kilometres covered to blood lactate. Data flows from the vest chip, watch, strap, scale and microphone — straight to the server where it is analysed, compared and simulated.",
+  c_loco:"Movement",c_loco_t:"Kilometres by intensity zone, top speed, sprints, accelerations, changes of direction, stride length and ground contact time (left/right).",
+  c_cardio:"Heart & lungs",c_cardio_t:"Heart rate zones, HRV, heart-rate recovery, VO₂max estimate, resting and loaded breathing, calorie burn.",
+  c_body:"Body",c_body_t:"Smart scale every morning: weight, fat, muscle, water, visceral fat — automatically into the record. Season-long trends.",
+  c_meta:"Metabolism",c_meta_t:"Blood lactate during intervals, sweat rate, hydration, calorie surplus/deficit with a nutrition plan.",
+  c_neuro:"Muscles & jumps",c_neuro_t:"Jump height, landing forces, left/right asymmetry, RSI, jumps per session — an alarm for fatigue and risk.",
+  c_tech:"Technique",c_tech_t:"Passes, shots, goals, sprints with the ball, ball speed (radar) — per sport, from the chip and smart ball.",
+  c_bio:"BioSensor",c_bio_t:"Voice reveals stress and fatigue, breathing analysis rhythm, RR intervals heart health. Anomalies flagged red — instantly.",
+  c_ai:"SPT AI",c_ai_t:"An assistant that knows the whole database: ask \"who is fastest?\", \"what's the injury risk?\" — it answers with numbers and recommendations.",
+  k_demo:"EXAMPLE — A FOOTBALLER",h_demo:"A footballer's record: one day, an entire career",
+  sub_demo:"What a day with SPT looks like — from the morning weigh-in to night sleep. The same applies to every sport: from skiing to volleyball, athletics to rowing.",
+  h_matchday:"Match day — what is measured and when",
+  ph_pre:"scale · sleep · HRV · readiness · voice (stress) · Functional Movement Screen",
+  ph_warm:"activation (RPE) · mobility · reaction tests",
+  ph_match:"20 Hz positions · km · sprints · heart rate · shots · ball speed · xG events",
+  ph_post:"lactate · 60-s heart-rate recovery · voice (fatigue) · RPE",
+  ph_next:"soreness · readiness · sleep · next-load recommendation",
+  h_who:"Who is it for?",h_who_t:"• <b>Coaches</b> — live scoreboard, rotation by readiness, training plans<br>• <b>S&C coaches</b> — load, ACWR, testing, injury prevention<br>• <b>Athletes</b> — own record on watch and phone, nutrition, recovery<br>• <b>Physios</b> — return-to-play step by step",
+  h_who_s:"Roles and permissions: admin → coach (own club only) → S&C → scout (read-only) → athlete (own record only).",
+  k_hw:"THE SPT DEVICE FAMILY",h_hw:"Designed as one organism",
+  sub_hw:"Every device says SPT. Compression vest (men's and women's cut), pod, watch, UWB anchors, edge server, scale and heart-rate strap.",
+  p_vest_m:"Vest — men's · GPS + UWB",p_vest_w:"Vest — women's · anatomical cut",
+  p_pod:"Pod: GNSS + 1000 Hz IMU + UWB · IP67",p_watch:"Watch: HR, sleep, GNSS, SPT Mesh",
+  p_anchor:"UWB anchor · ±10 cm · 20 Hz",p_edge:"Edge server · works offline",
+  p_scale:"Smart scale · auto-syncs to the record",p_strap:"Chest strap · ECG accuracy + HRV",
+  k_an:"ANALYTICS & TOOLS",h_an:"Numbers that mean something",
+  a_rep:"2D/3D replay",a_rep_t:"Every match can be watched again — every second, every player, team-coloured dots, heatmaps, speeds. Backwards and forwards.",
+  a_cmp:"Comparisons",a_cmp_t:"Any athlete against any other — percentiles within position and sport, with clear above/below deviations.",
+  a_sim:"Simulations",a_sim_t:"Backward reconstruction and forward projection: what if we cut volume 15%? Injury risk and form index over 4 weeks.",
+  a_anom:"Anomaly detection",a_anom_t:"The system looks for deviations from your own average — sudden HRV drop, weight jump, overload — and flags them red.",
+  a_nut:"Nutrition",a_nut_t:"Needs computed from your record (BMR/TDEE, macros, hydration) vs actual intake — surplus or deficit, every day.",
+  a_inj:"Injuries & RTP",a_inj_t:"Injury records with causes, duration and return-to-play protocol. A body-part matrix reveals patterns.",
+  h_cta:"Ready for the next level?",sub_cta:"SPT runs as a Windows 11 desktop app and as a website — same data, same record, anywhere.",
+  btn_open:"▶ Open the SPT app",btn_again:"↺ The record, once more",
+  f_note:"All data in the demo is synthetic. Clubs are anonymised codes; identities do not correspond to real persons.",
+  f_made:"built with ⚡ in Zagreb"},
+ de:{hero_lead:"Ein einzigartiges System zur Leistungsverfolgung: SPT-Westen mit Chip (GPS draußen, UWB/M2M-Netz in der Halle), Smartwatch, Waage und BioSensor — alles in einer Akte, mit KI-Assistent, der jede Zahl kennt.",
+  st_sports:"SPORTARTEN",st_metrics:"MESSWERTE",st_network:"SPORTLER IM NETZ",st_langs:"SPRACHEN",
+  btn_demo:"▶ Spielerakte eines Fußballers",btn_hw:"🎽 SPT-Geräte",
+  k_what:"WAS SPT MISST",h_what:"Alles Messbare — in Echtzeit",
+  sub_what:"Von gelaufenen Kilometern bis zum Laktat. Daten fließen von Chip, Uhr, Gurt, Waage und Mikrofon direkt auf den Server — analysiert, verglichen, simuliert.",
+  c_loco:"Bewegung",c_loco_t:"Kilometer nach Intensitätszone, Höchstgeschwindigkeit, Sprints, Beschleunigungen, Richtungswechsel, Schrittlänge und Bodenkontaktzeit (links/rechts).",
+  c_cardio:"Herz & Lunge",c_cardio_t:"Herzfrequenz-Zonen, HRV, Erholung, VO₂max-Schätzung, Atemfrequenz, Kalorienverbrauch.",
+  c_body:"Körper",c_body_t:"Smart-Waage jeden Morgen: Gewicht, Fett, Muskeln, Wasser, viszerales Fett — automatisch in der Akte. Trends über die ganze Saison.",
+  c_meta:"Stoffwechsel",c_meta_t:"Laktat bei Intervallen, Schweißrate, Flüssigkeit, Kalorienüberschuss/-defizit mit Ernährungsplan.",
+  c_neuro:"Muskeln & Sprünge",c_neuro_t:"Sprunghöhe, Landekräfte, Links-Rechts-Asymmetrie, RSI — Alarm bei Ermüdung und Risiko.",
+  c_tech:"Technik",c_tech_t:"Pässe, Schüsse, Tore, Sprints mit Ball, Ballgeschwindigkeit (Radar) — je Sportart, vom Chip und Smartball.",
+  c_bio:"BioSensor",c_bio_t:"Die Stimme verrät Stress und Ermüdung, Atemanalyse den Rhythmus, RR-Intervalle die Herzgesundheit. Anomalien werden rot markiert.",
+  c_ai:"SPT KI",c_ai_t:"Ein Assistent, der die ganze Datenbank kennt: „Wer ist am schnellsten?“, „Wie hoch ist das Verletzungsrisiko?“ — Antwort mit Zahlen.",
+  k_demo:"BEISPIEL — FUSSBALLER",h_demo:"Die Akte eines Fußballers: ein Tag, eine ganze Karriere",
+  sub_demo:"So sieht ein Tag mit SPT aus — vom Morgen-Wiegen bis zum Schlaf. Dasselbe gilt für jeden Sport: vom Skifahren bis Volleyball, von Leichtathletik bis Rudern.",
+  h_matchday:"Spieltag — was wann gemessen wird",
+  ph_pre:"Waage · Schlaf · HRV · Bereitschaft · Stimme (Stress) · Funktionstest",
+  ph_warm:"Aktivierung (RPE) · Mobilität · Reaktion",
+  ph_match:"Positionen 20 Hz · km · Sprints · Puls · Schüsse · Ballgeschwindigkeit · xG",
+  ph_post:"Laktat · 60-s-Erholung · Stimme (Ermüdung) · RPE",
+  ph_next:"Muskelkater · Bereitschaft · Schlaf · Belastungsempfehlung",
+  h_who:"Für wen?",h_who_t:"• <b>Trainer</b> — Live-Anzeige, Rotation nach Bereitschaft, Trainingspläne<br>• <b>Athletiktrainer</b> — Belastung, ACWR, Tests, Prävention<br>• <b>Sportler</b> — eigene Akte auf Uhr und Handy<br>• <b>Physios</b> — Rückkehr nach Verletzung Schritt für Schritt",
+  h_who_s:"Rollen: Admin → Trainer (nur eigener Verein) → Athletik → Scout (nur Lesen) → Sportler (nur eigene Akte).",
+  k_hw:"DIE SPT-GERÄTEFAMILIE",h_hw:"Als ein Organismus entwickelt",
+  sub_hw:"Auf jedem Gerät steht SPT. Kompressionsweste (Herren- und Damenschnitt), Pod, Uhr, UWB-Anker, Edge-Server, Waage und Brustgurt.",
+  p_vest_m:"Weste — Herren · GPS + UWB",p_vest_w:"Weste — Damen · anatomischer Schnitt",
+  p_pod:"Pod: GNSS + 1000-Hz-IMU + UWB · IP67",p_watch:"Uhr: Puls, Schlaf, GNSS, SPT Mesh",
+  p_anchor:"UWB-Anker · ±10 cm · 20 Hz",p_edge:"Edge-Server · offlinefähig",
+  p_scale:"Smart-Waage · automatisch in die Akte",p_strap:"Brustgurt · ECG-Genauigkeit + HRV",
+  k_an:"ANALYSEN & TOOLS",h_an:"Zahlen, die etwas bedeuten",
+  a_rep:"2D/3D-Wiederholung",a_rep_t:"Jedes Spiel erneut ansehen — jede Sekunde, jeder Spieler, heatmaps, Geschwindigkeiten. Vor und zurück.",
+  a_cmp:"Vergleiche",a_cmp_t:"Jeder Athlet gegen jeden — Perzentile innerhalb Position und Sport, mit klaren Abweichungen.",
+  a_sim:"Simulationen",a_sim_t:"Rückrechnung und Prognose: Was, wenn wir 15% reduzieren? Verletzungsrisiko und Formindex über 4 Wochen.",
+  a_anom:"Anomalie-Erkennung",a_anom_t:"Das System sucht Abweichungen von deinem Durchschnitt — HRV-Abfall, Gewichtssprung, Überlastung — und markiert rot.",
+  a_nut:"Ernährung",a_nut_t:"Bedarf aus deiner Akte (BMR/TDEE, Makros, Hydration) vs. tatsächliche Zufuhr — Überschuss oder Defizit, täglich.",
+  a_inj:"Verletzungen & RTP",a_inj_t:"Verletzungsdokumentation mit Ursachen, Dauer und Rückkehrprotokoll. Eine Körper-Matrix zeigt Muster.",
+  h_cta:"Bereit für die nächste Stufe?",sub_cta:"SPT läuft als Windows-11-Desktop-App und als Website — dieselben Daten, dieselbe Akte.",
+  btn_open:"▶ SPT-App öffnen",btn_again:"↺ Die Akte nochmal",
+  f_note:"Alle Demo-Daten sind synthetisch. Vereine sind anonymisierte Codes.",
+  f_made:"gebaut mit ⚡ in Zagreb"},
+ it:{hero_lead:"Un sistema unico di tracciamento delle prestazioni sportive: pettorina SPT con chip (GPS all'esterno, rete UWB/M2M al coperto), smartwatch, bilancia e BioSensor — tutto in una scheda, con un assistente AI che conosce ogni numero.",
+  st_sports:"SPORT",st_metrics:"MISURAZIONI",st_network:"ATLETI IN RETE",st_langs:"LINGUE",
+  btn_demo:"▶ Vedi la scheda di un calciatore",btn_hw:"🎽 Dispositivi SPT",
+  k_what:"COSA MISURA SPT",h_what:"Tutto ciò che è misurabile — in tempo reale",
+  c_loco:"Movimento",c_loco_t:"Chilometri per zona di intensità, velocità massima, sprint, accelerazioni, cambi di direzione, lunghezza del passo e tempo di contatto (sinistra/destra).",
+  c_cardio:"Cuore e polmoni",c_cardio_t:"Zone cardiache, HRV, recupero, VO₂max, respirazione, calorie.",
+  c_body:"Corpo",c_body_t:"Bilancia intelligente ogni mattina: peso, grasso, muscoli, acqua, grasso viscerale — automaticamente nella scheda.",
+  c_meta:"Metabolismo",c_meta_t:"Lattato negli intervalli, sudorazione, idratazione, surplus/deficit calorico con piano nutrizionale.",
+  c_neuro:"Muscoli e salti",c_neuro_t:"Altezza del salto, forze d'atterraggio, asimmetrie, RSI — allarme affaticamento e rischio.",
+  c_tech:"Tecnica",c_tech_t:"Passaggi, tiri, gol, sprint con palla, velocità della palla (radar) — per sport.",
+  c_bio:"BioSensor",c_bio_t:"La voce rivela stress e fatica, l'analisi del respiro il ritmo, gli intervalli RR la salute del cuore. Anomalie in rosso.",
+  c_ai:"SPT AI",c_ai_t:"Un assistente che conosce l'intero database: \"chi è il più veloce?\", \"quale rischio di infortunio?\" — risponde con numeri.",
+  k_demo:"ESEMPIO — CALCIATORE",h_demo:"La scheda di un calciatore: un giorno, un'intera carriera",
+  h_matchday:"Giornata di gara — cosa si misura e quando",
+  h_who:"Per chi?",h_who_t:"• <b>Allenatori</b> — scoreboard live, rotazioni, piani<br>• <b>Preparatori</b> — carico, ACWR, test, prevenzione<br>• <b>Atleti</b> — scheda personale<br>• <b>Fisioterapisti</b> — rientro passo dopo passo",
+  k_hw:"LA FAMIGLIA SPT",h_hw:"Progettato come un organismo",
+  k_an:"ANALISI E STRUMENTI",h_an:"Numeri che significano qualcosa",
+  a_rep:"Replay 2D/3D",a_cmp:"Confronti",a_sim:"Simulazioni",a_anom:"Rilevamento anomalie",a_nut:"Nutrizione",a_inj:"Infortuni e RTP",
+  h_cta:"Pronti per il livello successivo?",sub_cta:"SPT funziona come app desktop Windows 11 e come sito web — stessi dati, stessa scheda.",
+  btn_open:"▶ Apri l'app SPT",f_note:"Tutti i dati demo sono sintetici.",f_made:"creato con ⚡ a Zagabria"},
+ es:{hero_lead:"Un sistema único de seguimiento del rendimiento deportivo: camiseta SPT con chip (GPS fuera, red UWB/M2M en pista), reloj, báscula y BioSensor — todo en una ficha, con asistente de IA que conoce cada número.",
+  st_sports:"DEPORTES",st_metrics:"MEDICIONES",st_network:"ATLETAS EN LA RED",st_langs:"IDIOMAS",
+  btn_demo:"▶ Ver la ficha de un futbolista",btn_hw:"🎽 Dispositivos SPT",
+  k_what:"QUÉ MIDE SPT",h_what:"Todo lo medible — en tiempo real",
+  c_loco:"Movimiento",c_loco_t:"Kilómetros por zona de intensidad, velocidad máxima, esprines, aceleraciones, cambios de dirección, longitud de zancada y contacto del pie (izq/der).",
+  c_cardio:"Corazón y pulmones",c_cardio_t:"Zonas cardíacas, HRV, recuperación, VO₂max, respiración, calorías.",
+  c_body:"Cuerpo",c_body_t:"Báscula inteligente cada mañana: peso, grasa, músculo, agua, grasa visceral — automáticamente en la ficha.",
+  c_meta:"Metabolismo",c_meta_t:"Lactato en intervalos, sudoración, hidratación, superávit/déficit calórico con plan nutricional.",
+  c_neuro:"Músculos y saltos",c_neuro_t:"Altura de salto, fuerzas de aterrizaje, asimetrías, RSI — alarma de fatiga y riesgo.",
+  c_tech:"Técnica",c_tech_t:"Pases, tiros, goles, esprines con balón, velocidad del balón (radar) — por deporte.",
+  c_bio:"BioSensor",c_bio_t:"La voz revela estrés y fatiga, el análisis del aliento el ritmo, los intervalos RR la salud del corazón. Anomalías en rojo.",
+  c_ai:"SPT AI",c_ai_t:"Un asistente que conoce toda la base: «¿quién es el más rápido?», «¿qué riesgo de lesión?» — responde con números.",
+  k_demo:"EJEMPLO — FUTBOLISTA",h_demo:"La ficha de un futbolista: un día, toda una carrera",
+  h_matchday:"Día de partido — qué se mide y cuándo",
+  h_who:"¿Para quién?",h_who_t:"• <b>Entrenadores</b> — marcador en vivo, rotaciones, planes<br>• <b>Preparadores físicos</b> — carga, ACWR, tests, prevención<br>• <b>Deportistas</b> — ficha propia<br>• <b>Fisioterapeutas</b> — vuelta paso a paso",
+  k_hw:"LA FAMILIA SPT",h_hw:"Diseñado como un organismo",
+  k_an:"ANÁLISIS Y HERRAMIENTAS",h_an:"Números que significan algo",
+  a_rep:"Repetición 2D/3D",a_cmp:"Comparaciones",a_sim:"Simulaciones",a_anom:"Detección de anomalías",a_nut:"Nutrición",a_inj:"Lesiones y RTP",
+  h_cta:"¿Listo para el siguiente nivel?",sub_cta:"SPT funciona como app de escritorio Windows 11 y como web — mismos datos, misma ficha.",
+  btn_open:"▶ Abrir la app SPT",f_note:"Todos los datos de la demo son sintéticos.",f_made:"hecho con ⚡ en Zagreb"},
+ fr:{hero_lead:"Un système unique de suivi de la performance sportive : maillot SPT à puce (GPS dehors, réseau UWB/M2M en salle), montre, balance et BioSensor — tout dans un dossier, avec un assistant IA qui connaît chaque chiffre.",
+  st_sports:"SPORTS",st_metrics:"MESURES",st_network:"ATHLÈTES SUR LE RÉSEAU",st_langs:"LANGUES",
+  btn_demo:"▶ Voir le dossier d'un footballeur",btn_hw:"🎽 Appareils SPT",
+  k_what:"CE QUE SPT MESURE",h_what:"Tout ce qui est mesurable — en temps réel",
+  c_loco:"Mouvement",c_loco_t:"Kilomètres par zone d'intensité, vitesse max, sprints, accélérations, changements de direction, longueur de foulée et contact au sol (gauche/droite).",
+  c_cardio:"Cœur et poumons",c_cardio_t:"Zones cardiaques, VFC, récupération, VO₂max, respiration, calories.",
+  c_body:"Corps",c_body_t:"Balance connectée chaque matin : poids, graisse, muscles, eau, graisse viscérale — automatiquement dans le dossier.",
+  c_meta:"Métabolisme",c_meta_t:"Lactate lors des intervalles, transpiration, hydratation, excès/déficit calorique avec plan nutritionnel.",
+  c_neuro:"Muscles et sauts",c_neuro_t:"Hauteur de saut, forces d'atterrissage, asymétries, RSI — alerte fatigue et risque.",
+  c_tech:"Technique",c_tech_t:"Passes, tirs, buts, sprints avec ballon, vitesse du ballon (radar) — par sport.",
+  c_bio:"BioCapteur",c_bio_t:"La voix révèle stress et fatigue, l'analyse de la respiration le rythme, les intervalles RR la santé du cœur. Anomalies en rouge.",
+  c_ai:"SPT IA",c_ai_t:"Un assistant qui connaît toute la base : « qui est le plus rapide ? », « quel risque de blessure ? » — répond avec des chiffres.",
+  k_demo:"EXEMPLE — FOOTBALLEUR",h_demo:"Le dossier d'un footballeur : une journée, toute une carrière",
+  h_matchday:"Jour de match — ce qui est mesuré et quand",
+  h_who:"Pour qui ?",h_who_t:"• <b>Entraîneurs</b> — tableau live, rotations, plans<br>• <b>Préparateurs</b> — charge, ACWR, tests, prévention<br>• <b>Athlètes</b> — dossier personnel<br>• <b>Kinés</b> — retour pas à pas",
+  k_hw:"LA FAMILLE SPT",h_hw:"Conçu comme un organisme",
+  k_an:"ANALYSES ET OUTILS",h_an:"Des chiffres qui veulent dire quelque chose",
+  a_rep:"Replay 2D/3D",a_cmp:"Comparaisons",a_sim:"Simulations",a_anom:"Détection d'anomalies",a_nut:"Nutrition",a_inj:"Blessures et RTP",
+  h_cta:"Prêt pour le niveau suivant ?",sub_cta:"SPT fonctionne comme application Windows 11 et comme site web — mêmes données, même dossier.",
+  btn_open:"▶ Ouvrir l'app SPT",f_note:"Toutes les données de la démo sont synthétiques.",f_made:"conçu avec ⚡ à Zagreb"}
+};
+// kraći prijevodi za preostale jezike (naslovi + CTA)
+const SHORT = {
+ pt:{btn_demo:"▶ Ver a ficha de um futebolista",h_what:"Tudo o que é mensurável — em tempo real",h_demo:"A ficha de um futebolista: um dia, uma carreira",h_hw:"Desenhado como um organismo",h_an:"Números que significam algo",h_cta:"Pronto para o próximo nível?",btn_open:"▶ Abrir a app SPT"},
+ nl:{btn_demo:"▶ Bekijk het dossier van een voetballer",h_what:"Alles wat meetbaar is — in realtime",h_demo:"Het dossier van een voetballer: één dag, een hele carrière",h_hw:"Ontworpen als één organisme",h_an:"Cijfers die iets betekenen",h_cta:"Klaar voor het volgende niveau?",btn_open:"▶ Open de SPT-app"},
+ pl:{btn_demo:"▶ Zobacz kartę piłkarza",h_what:"Wszystko, co mierzalne — w czasie rzeczywistym",h_demo:"Karta piłkarza: jeden dzień, cała kariera",h_hw:"Zaprojektowane jako jeden organizm",h_an:"Liczby, które coś znaczą",h_cta:"Gotowy na kolejny poziom?",btn_open:"▶ Otwórz aplikację SPT"},
+ sl:{btn_demo:"▶ Poglej karton nogometaša",h_what:"Vse kar je izmerljivo — v realnem času",h_demo:"Karton nogometaša: en dan, cela kariera",h_hw:"Oblikovano kot en organizem",h_an:"Številke, ki nekaj pomenijo",h_cta:"Pripravljeni na naslednjo raven?",btn_open:"▶ Odpri aplikacijo SPT"},
+ cs:{btn_demo:"▶ Podívej se na kartu fotbalisty",h_what:"Vše měřitelné — v reálném čase",h_demo:"Karta fotbalisty: jeden den, celá kariéra",h_hw:"Navrženo jako jeden organismus",h_an:"Čísla, která něco znamenají",h_cta:"Připraveni na další úroveň?",btn_open:"▶ Otevřít aplikaci SPT"},
+ sk:{btn_demo:"▶ Pozri kartu futbalistu",h_what:"Všetko merateľné — v reálnom čase",h_demo:"Karta futbalistu: jeden deň, celá kariéra",h_hw:"Navrhnuté ako jeden organizmus",h_an:"Čísla, ktoré niečo znamenajú",h_cta:"Pripravení na ďalšiu úroveň?",btn_open:"▶ Otvoriť aplikáciu SPT"},
+ hu:{btn_demo:"▶ Nézd meg egy labdarúgó kártyáját",h_what:"Minden mérhető — valós időben",h_demo:"Egy labdarúgó kártyája: egy nap, egy egész karrier",h_hw:"Egy szervezetként tervezve",h_an:"Számok, amelyek jelentenek valamit",h_cta:"Készen a következő szintre?",btn_open:"▶ SPT alkalmazás megnyitása"},
+ ro:{btn_demo:"▶ Vezi dosarul unui fotbalist",h_what:"Tot ce se poate măsura — în timp real",h_demo:"Dosarul unui fotbalist: o zi, o întreagă carieră",h_hw:"Proiectat ca un organism",h_an:"Numere care înseamnă ceva",h_cta:"Gata pentru nivelul următor?",btn_open:"▶ Deschide aplicația SPT"},
+ bg:{btn_demo:"▶ Виж картата на футболист",h_what:"Всичко измеримо — в реално време",h_demo:"Картата на футболист: един ден, цяла кариера",h_hw:"Създадено като един организъм",h_an:"Числа, които означават нещо",h_cta:"Готови за следващото ниво?",btn_open:"▶ Отвори приложението SPT"},
+ el:{btn_demo:"▶ Δες τον φάκελο ενός ποδοσφαιριστή",h_what:"Όλα τα μετρήσιμα — σε πραγματικό χρόνο",h_demo:"Ο φάκελος ενός ποδοσφαιριστή: μια μέρα, μια ολόκληρη καριέρα",h_hw:"Σχεδιασμένο ως ένας οργανισμός",h_an:"Αριθμοί που σημαίνουν κάτι",h_cta:"Έτοιμοι για το επόμενο επίπεδο;",btn_open:"▶ Άνοιγμα εφαρμογής SPT"},
+ tr:{btn_demo:"▶ Bir futbolcunun dosyasını gör",h_what:"Ölçülebilir her şey — gerçek zamanlı",h_demo:"Bir futbolcunun dosyası: bir gün, tüm kariyer",h_hw:"Tek bir organizma olarak tasarlandı",h_an:"Anlam ifade eden sayılar",h_cta:"Sonraki seviyeye hazır mısın?",btn_open:"▶ SPT uygulamasını aç"},
+ ru:{btn_demo:"▶ Посмотрите карту футболиста",h_what:"Всё измеримое — в реальном времени",h_demo:"Карта футболиста: один день, целая карьера",h_hw:"Создано как единый организм",h_an:"Цифры, которые что-то значат",h_cta:"Готовы к следующему уровню?",btn_open:"▶ Открыть приложение SPT"},
+ uk:{btn_demo:"▶ Подивіться картку футболіста",h_what:"Усе вимірюване — у реальному часі",h_demo:"Картка футболіста: один день, уся кар'єра",h_hw:"Створено як єдиний організм",h_an:"Цифри, які щось означають",h_cta:"Готові до наступного рівня?",btn_open:"▶ Відкрити застосунок SPT"},
+ sr:{btn_demo:"▶ Погледај картон фудбалера",h_what:"Све што се може измерити — у реалном времену",h_demo:"Картон фудбалера: један дан, цела каријера",h_hw:"Дизајнирано као један организам",h_an:"Бројеви који нешто значе",h_cta:"Спремни за следећи ниво?",btn_open:"▶ Отвори SPT апликацију"},
+ fi:{btn_demo:"▶ Katso jalkapalloilajan kortti",h_what:"Kaikki mitattavissa oleva — reaaliajassa",h_demo:"Jalkapalloilajan kortti: yksi päivä, koko ura",h_hw:"Suunniteltu yhdeksi organismiksi",h_an:"Lukuja, jotka merkitsevät jotain",h_cta:"Valmis seuraavalle tasolle?",btn_open:"▶ Avaa SPT-sovellus"},
+ sv:{btn_demo:"▶ Se en fotbollsspelares akt",h_what:"Allt som går att mäta — i realtid",h_demo:"En fotbollsspelares akt: en dag, en hel karriär",h_hw:"Designat som en organism",h_an:"Siffror som betyder något",h_cta:"Redo för nästa nivå?",btn_open:"▶ Öppna SPT-appen"},
+ da:{btn_demo:"▶ Se en fodboldspillers mappe",h_what:"Alt måleligt — i realtid",h_demo:"En fodboldspillers mappe: en dag, en hel karriere",h_hw:"Designet som én organisme",h_an:"Tal der betyder noget",h_cta:"Klar til næste niveau?",btn_open:"▶ Åbn SPT-appen"},
+ no:{btn_demo:"▶ Se en fotballspillers mappe",h_what:"Alt som kan måles — i sanntid",h_demo:"En fotballspillers mappe: en dag, en hel karriere",h_hw:"Designet som én organisme",h_an:"Tall som betyr noe",h_cta:"Klar for neste nivå?",btn_open:"▶ Åpne SPT-appen"}
+};
+
+function applyLang(l){
+  document.querySelectorAll("[data-i18n]").forEach(elx=>{
+    const k = elx.dataset.i18n;
+    const dict = T[l] || SHORT[l];
+    if (dict && dict[k] !== undefined) elx.innerHTML = dict[k];
+  });
+  document.documentElement.lang = l;
+  document.querySelectorAll(".langs a").forEach(a=>a.classList.toggle("on", a.dataset.lang===l));
+  localStorage.setItem("spt_lang", l);
+}
+(function(){
+  const box = document.getElementById("langs");
+  for (const l of LANGS){
+    const a = document.createElement("a");
+    a.href = "#" + l; a.dataset.lang = l; a.textContent = NAMES[l];
+    a.onclick = e=>{ e.preventDefault(); applyLang(l); };
+    box.append(a);
+  }
+  const saved = localStorage.getItem("spt_lang");
+  if (saved && LANGS.includes(saved)) applyLang(saved);
+})();
+</script>
+</body>
+</html>
