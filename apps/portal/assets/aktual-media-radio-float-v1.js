@@ -20,12 +20,14 @@
   let channel=null;
   let state={playing:false,stationName:text.defaultStation,stationTag:text.standby,connected:false};
   let playerWindow=null;
+  let pendingAutoPlay=false;
 
   try{channel=new BroadcastChannel('aktual-media-radio-v1')}catch(_){}
 
   function post(type,payload){try{channel?.postMessage({type,payload,source:'portal-controller'})}catch(_){}}
 
   function openPlayer(autoPlay=false){
+    pendingAutoPlay=!!autoPlay;
     const url=(en?'/radio/player/?lang=en':'/radio/player/');
     try{
       playerWindow=window.open(url,'aktual-media-radio-player','popup=yes,width=430,height=690,resizable=yes,scrollbars=yes');
@@ -76,7 +78,9 @@
         state={...state,...msg.payload,connected:true};render();
       }
       if(msg.type==='PLAYER_READY'){
-        state.connected=true;render();post('COMMAND',{action:'SYNC'});
+        state.connected=true;render();
+        if(pendingAutoPlay){post('COMMAND',{action:'PLAY'});pendingAutoPlay=false}
+        else post('COMMAND',{action:'SYNC'});
       }
       if(msg.type==='PLAYER_CLOSED'){
         state.connected=false;state.playing=false;render();
