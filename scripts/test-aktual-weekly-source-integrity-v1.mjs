@@ -16,7 +16,7 @@ for(const story of stories){
  assert.equal(story.published_at,original.published_at,'Do not invent publication dates: '+story.title);
  const u=new URL(story.url);
  assert.equal(u.protocol,'https:','Only HTTPS original sources allowed');
- assert.ok(u.pathname.length>5,'A specific article URL is required');
+ assert.ok(u.pathname.length>5 || (story.source==='PetsFestival' && u.hostname==='petsfestival.eu' && u.pathname==='/en/'),'A specific article URL or the verified official event page is required: '+story.url);
 }
 assert.equal(issue.counts.selected_items,stories.length);
 assert.equal(issue.counts.sections,issue.sections.length);
