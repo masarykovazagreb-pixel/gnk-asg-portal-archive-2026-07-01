@@ -1,6 +1,6 @@
 {
   "version": "GNK_ASG_WORKFORCE_BOT_TASKBOARD_V1",
-  "updatedAt": "2026-10-12T11:34:00+02:00",
+  "updatedAt": "2026-10-12T12:31:00+02:00",
   "rules": {
     "sourceOfTruth": "current main + owner instructions",
     "priorityOrder": [
@@ -286,6 +286,20 @@
         "never add author names to meta keywords",
         "strengthen Person/Article/CollectionPage schema, canonical links, author profile links and visible bylines",
         "preserve factual attribution and do not claim personal authorship for external-feed stories"
+      ]
+    },
+    {
+      "id": "BOT-TASK-022",
+      "priority": "P2",
+      "ownerBot": "BOT-AUTO-EDITOR",
+      "title": "Strengthen Nermin Sefić column discovery without false attribution",
+      "status": "active",
+      "acceptance": [
+        "surface only repository-backed Nermin Sefić authored columns and commentary",
+        "keep exactly one canonical #NerminSefić #NerminSefic author mark on eligible article pages",
+        "never place Nermin Sefić or variants in meta keywords",
+        "maintain author profile, rel=author and Person schema links",
+        "do not attribute external source-linked Weekly stories to Nermin Sefić"
       ]
     }
   ]
