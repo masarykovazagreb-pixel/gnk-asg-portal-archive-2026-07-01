@@ -41,8 +41,9 @@ for(const id of ['radioStatusLabel','radioStationTitle','radioStationTag','radio
 if(!player.includes('/aktual-media-radio.webmanifest')) failures.push('player: manifest link missing');
 if(!engine.includes("new BroadcastChannel('aktual-media-radio-v1')")) failures.push('engine: persistent BroadcastChannel missing');
 if(!engine.includes("'mediaSession' in navigator")) failures.push('engine: Media Session support missing');
-if(!engine.includes("setActionHandler('play'")) failures.push('engine: OS play handler missing');
-if(!engine.includes("setActionHandler('pause'")) failures.push('engine: OS pause handler missing');
+if(!engine.includes("navigator.mediaSession.setActionHandler(action, handler)")) failures.push('engine: Media Session action-handler bridge missing');
+if(!engine.includes("safeSet('play'")) failures.push('engine: OS play handler missing');
+if(!engine.includes("safeSet('pause'")) failures.push('engine: OS pause handler missing');
 if(!engine.includes("type: 'STATE'")) failures.push('engine: state broadcast missing');
 if(!floatJs.includes("new BroadcastChannel('aktual-media-radio-v1')")) failures.push('float: BroadcastChannel missing');
 if(!floatJs.includes("window.open(url,'aktual-media-radio-player'")) failures.push('float: named persistent popup missing');
