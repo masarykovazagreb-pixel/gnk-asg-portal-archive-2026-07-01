@@ -1,13 +1,16 @@
 {
   "policy_name": "GNK ASG Autonomous Publishing Safety Policy",
-  "version": "2026-05-30-02",
+  "version": "2026-10-12-lifestyle-v1",
   "language": "en",
   "default_publisher": "GNK ASG d.o.o.",
   "public_content_framework": "GNK DINAMO Ltd.",
   "safe_default_byline": "Prepared by GNK ASG Intelligence Desk",
   "editorial_responsibility": "Nermin Sefic",
   "minimum_words": 300,
-  "recommended_words": {"min": 450, "max": 750},
+  "recommended_words": {
+    "min": 450,
+    "max": 750
+  },
   "autonomous_allowed_topics": [
     "official press releases and public corporate announcements",
     "corporate transparency",
@@ -24,7 +27,14 @@
     "international business visibility",
     "public corporate communication",
     "functional improvements of the GNK ASG portal",
-    "third-party understanding of public corporate data"
+    "third-party understanding of public corporate data",
+    "source-linked lifestyle and culture",
+    "travel and destinations",
+    "fashion and personal style",
+    "pets and companion animals as non-medical lifestyle content",
+    "automotive design, ownership and mobility",
+    "food, gastronomy and hospitality",
+    "sports reporting and culture without unsupported partnership claims"
   ],
   "autonomous_blocked_topics": [
     "legal disputes",
@@ -45,7 +55,8 @@
     "standard": "This publication is an informational GNK ASG Intelligence Desk brief based on public business, technology and market topics. It does not constitute legal, tax, financial or investment advice.",
     "markets": "Market data is informational and may be delayed. Nothing in this publication constitutes investment advice, a recommendation to trade or a regulated financial service.",
     "press": "This is a structured public-information brief and not a regulatory filing, prospectus or legally binding corporate announcement.",
-    "ai_visuals": "Visual materials may include AI-assisted or programmatically generated design elements. They are editorial illustrations, not documentary photographs."
+    "ai_visuals": "Visual materials may include AI-assisted or programmatically generated design elements. They are editorial illustrations, not documentary photographs.",
+    "lifestyle": "Lifestyle, travel, automotive, food, culture and pet coverage is informational editorial content. External facts and images must remain source-attributed; health, safety and financial claims require their applicable specialist gates."
   },
   "nermin_sefic_profile_rule": "Autonomous publications may mention Nermin Sefic as editorial responsibility and public corporate profile context, but may not present a text as a personal author statement by Nermin Sefic unless explicitly approved.",
   "social_publication_rule": "Social posts must link back to the canonical publication page on gnk-asg.hr and must not be the only public source of the content.",
@@ -58,6 +69,8 @@
     "must_have_clear_byline": true,
     "must_have_disclosure": true,
     "must_pass_blocked_topic_scan": true,
-    "must_not_copy_external_articles": true
+    "must_not_copy_external_articles": true,
+    "must_have_source_attribution_for_external_facts": true,
+    "must_not_imply_personal_authorship_without_approval": true
   }
 }
