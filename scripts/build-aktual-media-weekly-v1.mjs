@@ -27,6 +27,9 @@ if(fs.existsSync(CURATION)){
     if(c&&c.issue_week===issueWeek&&Array.isArray(c.items)) curated=c.items;
   }catch(_){}
 }
+if(curated.length<8){
+  throw new Error('AKTUAL MEDIA weekly issue requires a current curated seed with at least 8 source-verified lifestyle items for '+issueWeek);
+}
 if(process.env.AKTUAL_WEEKLY_FORCE!=='1'&&fs.existsSync(OUT)){
   try{
     const prev=JSON.parse(fs.readFileSync(OUT,'utf8'));
@@ -150,10 +153,8 @@ function slim(x){
 
 const sections=[];
 for(const def of defs){
-  const curatedItems=(curatedBySection.get(def.id)||[]).slice(0,6);
-  curatedItems.forEach(x=>used.add(x.url));
-  const needed=Math.max(0,6-curatedItems.length);
-  const picked=[...curatedItems,...take(def,needed).map(slim)];
+  const picked=(curatedBySection.get(def.id)||[]).slice(0,6);
+  picked.forEach(x=>used.add(x.url));
   if(picked.length)sections.push({id:def.id,label_hr:def.hr,label_en:def.en,items:picked});
 }
 
@@ -168,7 +169,7 @@ const out={
   issue_week:issueWeek,
   issue_date:issueDate,
   window:{from:from.toISOString(),to:maxDate.toISOString()},
-  editorial_rule:'Positive/lifestyle weekly selection from canonical source-linked news feed plus a week-scoped hand-curated source seed; serious negative topics excluded by policy.',
+  editorial_rule:'Week-scoped hand-curated source-linked lifestyle issue; publication fails closed when a current curated seed is missing or too small.',
   cover,
   counts:{source_items:source.length,recent_items:recent.length,selected_items:sections.reduce((n,s)=>n+s.items.length,0),sources:sourceCount,sections:sections.length},
   sections
