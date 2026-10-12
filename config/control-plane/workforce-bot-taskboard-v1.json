@@ -1,6 +1,6 @@
 {
   "version": "GNK_ASG_WORKFORCE_BOT_TASKBOARD_V1",
-  "updatedAt": "2026-10-11T21:12:00+02:00",
+  "updatedAt": "2026-10-12T11:34:00+02:00",
   "rules": {
     "sourceOfTruth": "current main + owner instructions",
     "priorityOrder": [
@@ -258,6 +258,34 @@
         "do not create or retain promoted empty geographic desks by inventing fallback stories",
         "flag sustained empty or materially low-volume regional groups for editorial review",
         "preserve HR/EN route parity, source links and sitemap discovery"
+      ]
+    },
+    {
+      "id": "BOT-TASK-020",
+      "priority": "P1",
+      "ownerBot": "BOT-NEWSROOM",
+      "title": "Maintain AKTUAL MEDIA Weekly lifestyle issue",
+      "status": "active",
+      "acceptance": [
+        "build one source-linked issue per issue week from canonical news.json",
+        "keep heavy topics such as war, violent crime, death, serious illness and accidents out of the lighter weekly magazine",
+        "preserve source URLs and source images; never copy full external articles",
+        "keep sections for style, fashion, pets, cars, travel, sport, food, culture and good stories when feed evidence exists",
+        "do not attribute external stories as personal columns by Nermin Sefić"
+      ]
+    },
+    {
+      "id": "BOT-TASK-021",
+      "priority": "P1",
+      "ownerBot": "BOT-AUTO-EDITOR",
+      "title": "Strengthen Nermin Sefić author SEO without keyword stuffing",
+      "status": "active",
+      "acceptance": [
+        "use only approved author-box scope from apps/portal/data/approved_mentions.json",
+        "allow only #NerminSefić and #NerminSefic as author hashtags where the author box is approved",
+        "never add author names to meta keywords",
+        "strengthen Person/Article/CollectionPage schema, canonical links, author profile links and visible bylines",
+        "preserve factual attribution and do not claim personal authorship for external-feed stories"
       ]
     }
   ]
