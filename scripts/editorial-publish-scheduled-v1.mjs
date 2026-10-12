@@ -102,26 +102,17 @@ function appendCard(indexPath,item){
 function appendAktualCard(item,dateIso){
   const file=path.join(ROOT,'gnk-aktual','index.html');
   if(!fs.existsSync(file))return false;
-  let html=fs.readFileSync(file,'utf8'),route=routeFor(item);
+  const html=fs.readFileSync(file,'utf8'),route=routeFor(item);
   if(html.includes(`href="${route}"`))return false;
-  const start='    <div id="akKomentarIstaknuti">';
-  const grid='    <div class="ak-komentari-grid" id="akKomentariGrid">';
-  const a=html.indexOf(start),b=html.indexOf(grid);
-  if(a<0||b<a)throw new Error('AKTUAL commentary markers not found');
-  const oldSegment=html.slice(a,b);
-  const oldAnchor=(oldSegment.match(/<a class="ak-komentar-istaknuti"[\s\S]*?<\/a>/)||[])[0]||'';
-  const oldCard=oldAnchor?oldAnchor.replace('class="ak-komentar-istaknuti"','class="ak-komentar-kartica"'):'';
-  const featuredImage=item.image||AUTHOR_IMAGE;
-  const featured=`${start}<a class="ak-komentar-istaknuti" href="${route}"><img src="${esc(featuredImage)}" alt="${esc(item.title)} — naslovna ilustracija" title="${esc(item.title)}"><div class="tijelo"><span class="oznaka">Novi autorski tekst · ${dateLabel(new Date(dateIso))}</span><h3>${esc(item.title)}</h3><p>${esc(item.summary||item.description)}</p></div></a></div>\n`;
-  html=html.slice(0,a)+featured+html.slice(b);
-  if(oldCard&&!html.includes(oldCard.replace('class="ak-komentar-kartica"','class="ak-komentar-kartica"'))){
-    const open=grid;
-    html=html.replace(open,open+oldCard);
-  }else if(oldCard){
-    const gridPos=html.indexOf(grid)+grid.length;
-    if(!html.slice(gridPos,gridPos+Math.max(1000,oldCard.length+100)).includes(oldCard))html=html.slice(0,gridPos)+oldCard+html.slice(gridPos);
-  }
-  return writeIfChanged(file,html);
+  // The current AKTUAL template uses the canonical editorial links container,
+  // not the removed akKomentarIstaknuti / akKomentariGrid markup.
+  const marker='<div class="am-editorial-links" id="amEditorialLinks">';
+  const start=html.indexOf(marker);
+  if(start<0)throw new Error('AKTUAL editorial links container not found');
+  const close=html.indexOf('</div>',start+marker.length);
+  if(close<0)throw new Error('AKTUAL editorial links container is not closed');
+  const link=`<a href="${esc(route)}">${esc(item.title)}</a>`;
+  return writeIfChanged(file,html.slice(0,start+marker.length)+link+'\n        '+html.slice(start+marker.length));
 }
 function appendSitemap(item,date){
   const file=path.join(ROOT,'editorial-sitemap.xml');let xml=fs.readFileSync(file,'utf8'),url=`https://gnk-asg.hr${routeFor(item)}`;
