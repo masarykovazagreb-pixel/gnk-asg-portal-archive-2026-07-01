@@ -25,6 +25,8 @@
     detach:en?'Open persistent player':'Otvori stalni player',
     app:en?'Install / desktop app':'Instaliraj / desktop aplikacija',
     hide:en?'Hide':'Sakrij',
+    close:en?'Close radio (music keeps playing)':'Zatvori radio (glazba svira dalje)',
+    open:en?'Open AKTUAL MEDIA RADIO':'Otvori AKTUAL MEDIA RADIO',
     volDown:en?'Volume down':'Tiše',
     volUp:en?'Volume up':'Glasnije',
     volume:en?'Volume':'Glasnoća',
@@ -41,6 +43,11 @@
   let pendingVolume=null;
   let movedByUser=false;
   let posApplied=false;
+  // The only stored setting: whether the mini radio is closed (no tracking, no cookies).
+  const UI_KEY='amr-float-ui-v1';
+  let suppressLaunchClick=false;   // the click that ends a drag of the round button must not open the radio
+  function loadClosed(){try{return JSON.parse(localStorage.getItem(UI_KEY)||'{}').closed===true}catch(_){return false}}
+  function saveClosed(closed){try{if(closed)localStorage.setItem(UI_KEY,JSON.stringify({closed:true}));else localStorage.removeItem(UI_KEY)}catch(_){}}
 
   try{channel=new BroadcastChannel('aktual-media-radio-v1')}catch(_){}
 
@@ -78,6 +85,7 @@
     const vol=pendingVolume!=null&&!state.connected?pendingVolume:state.volume;
     const level=root.querySelector('[data-amr-level]');if(level)level.textContent=Math.round((vol??0.8)*100)+'%';
     const bar=root.querySelector('[data-amr-bar]');if(bar)bar.style.width=Math.round((vol??0.8)*100)+'%';
+    const launch=root.querySelector('[data-amr-launch]');if(launch){const label=text.open+(state.playing?(en?' — playing':' — svira'):'');launch.setAttribute('aria-label',label);launch.title=label;launch.querySelector('.amr-dot')?.classList.toggle('live',!!state.playing)}
   }
 
   // ---------- drag to move (memory only; shared with the open player window) ----------
@@ -137,13 +145,50 @@
     window.addEventListener('resize',()=>reclamp(root),{passive:true});
   }
 
+  // ---------- close / open (the music keeps playing in the persistent player) ----------
+  function setClosed(closed,opts={}){
+    const root=document.getElementById('aktualMediaRadioFloat');if(!root)return;
+    if(opts.save!==false)saveClosed(closed);
+    if(root.classList.contains('amr-closed')===closed)return;
+    const before=root.getBoundingClientRect();
+    root.classList.toggle('amr-closed',closed);
+    // A moved radio keeps its corner: the round button appears where the × was, and vice versa.
+    if(root.classList.contains('amr-moved')){const after=root.getBoundingClientRect();placeAt(root,before.right-after.width,before.top)}
+    render();
+    if(opts.focus)(closed?root.querySelector('[data-amr-launch]'):root.querySelector('[data-amr-close]'))?.focus({preventScroll:true});
+  }
+  function enableLauncherDrag(root,btn){
+    let d=null;
+    btn.addEventListener('pointerdown',e=>{
+      if(e.button!==0)return;
+      const r=root.getBoundingClientRect();
+      d={id:e.pointerId,dx:e.clientX-r.left,dy:e.clientY-r.top,x0:e.clientX,y0:e.clientY,moved:false};
+      try{btn.setPointerCapture(e.pointerId)}catch(_){}
+    });
+    btn.addEventListener('pointermove',e=>{
+      if(!d||e.pointerId!==d.id)return;
+      if(!d.moved&&Math.hypot(e.clientX-d.x0,e.clientY-d.y0)<5)return;
+      if(!d.moved){d.moved=true;root.classList.add('amr-dragging')}
+      placeAt(root,e.clientX-d.dx,e.clientY-d.dy);
+    });
+    const end=e=>{
+      if(!d||e.pointerId!==d.id)return;
+      const moved=d.moved;d=null;root.classList.remove('amr-dragging');
+      try{btn.releasePointerCapture(e.pointerId)}catch(_){}
+      if(moved){suppressLaunchClick=true;setTimeout(()=>{suppressLaunchClick=false},0);movedByUser=true;sharePos(root)}
+    };
+    btn.addEventListener('pointerup',end);
+    btn.addEventListener('pointercancel',end);
+  }
+
   function build(){
     if(document.getElementById('aktualMediaRadioFloat'))return;
     const root=document.createElement('aside');
     root.id='aktualMediaRadioFloat';
     root.setAttribute('aria-label',text.title);
     const chips=STATIONS.map(s=>'<button type="button" class="amr-chip" data-amr-chip="'+s.id+'" aria-pressed="false">'+s.label.replace('&','&amp;')+'</button>').join('');
-    root.innerHTML='<div class="amr-float"><div class="amr-head" data-amr-drag tabindex="0" title="'+text.drag+'" aria-label="'+text.drag+'"><div class="amr-brand"><span class="amr-dot"></span><div><div class="amr-title">AKTUAL MEDIA RADIO</div><div class="amr-state" data-amr-state></div></div></div><span class="amr-grip" aria-hidden="true">⠿</span><button class="amr-close" type="button" data-amr-collapse aria-label="'+(en?'Collapse radio':'Sažmi radio')+'">−</button></div><div class="amr-body"><div class="amr-station"><strong data-amr-station>AKTUAL MEDIA RADIO</strong><span data-amr-tag>'+text.standby+'</span></div><div class="amr-chips" role="group" aria-label="'+text.stations+'">'+chips+'</div><div class="amr-actions"><button class="amr-btn amr-vol" type="button" data-amr-voldown aria-label="'+text.volDown+'" title="'+text.volDown+'">−</button><button class="amr-btn primary" type="button" data-amr-play>'+text.play+'</button><button class="amr-btn amr-vol" type="button" data-amr-volup aria-label="'+text.volUp+'" title="'+text.volUp+'">+</button><span class="amr-level" aria-label="'+text.volume+'"><span class="amr-level-track"><span class="amr-level-bar" data-amr-bar></span></span><span data-amr-level>80%</span></span><button class="amr-btn" type="button" data-amr-open>↗ PLAYER</button></div></div><div class="amr-foot"><button type="button" data-amr-install>'+text.app+'</button><a href="'+(en?'/en/radio/':'/radio/')+'">'+(en?'Radio page':'Radio stranica')+'</a></div></div>';
+    root.innerHTML='<div class="amr-float"><div class="amr-head" data-amr-drag tabindex="0" title="'+text.drag+'" aria-label="'+text.drag+'"><div class="amr-brand"><span class="amr-dot"></span><div><div class="amr-title">AKTUAL MEDIA RADIO</div><div class="amr-state" data-amr-state></div></div></div><span class="amr-grip" aria-hidden="true">⠿</span><button class="amr-close" type="button" data-amr-close aria-label="'+text.close+'" title="'+text.close+'">×</button></div><div class="amr-body"><div class="amr-station"><strong data-amr-station>AKTUAL MEDIA RADIO</strong><span data-amr-tag>'+text.standby+'</span></div><div class="amr-chips" role="group" aria-label="'+text.stations+'">'+chips+'</div><div class="amr-actions"><button class="amr-btn amr-vol" type="button" data-amr-voldown aria-label="'+text.volDown+'" title="'+text.volDown+'">−</button><button class="amr-btn primary" type="button" data-amr-play>'+text.play+'</button><button class="amr-btn amr-vol" type="button" data-amr-volup aria-label="'+text.volUp+'" title="'+text.volUp+'">+</button><span class="amr-level" aria-label="'+text.volume+'"><span class="amr-level-track"><span class="amr-level-bar" data-amr-bar></span></span><span data-amr-level>80%</span></span><button class="amr-btn amr-pop" type="button" data-amr-open aria-label="'+text.detach+'" title="'+text.detach+'">↗</button></div></div><div class="amr-foot"><button type="button" data-amr-install>'+text.app+'</button><a href="'+(en?'/en/radio/':'/radio/')+'">'+(en?'Radio page':'Radio stranica')+'</a></div></div><button class="amr-launch" type="button" data-amr-launch aria-label="'+text.open+'" title="'+text.open+'"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M6 8.5 17.5 4" stroke="#d4af37" stroke-width="1.6" stroke-linecap="round" fill="none"/><rect x="3" y="8.5" width="18" height="11.5" rx="2.5" fill="none" stroke="#f7fafc" stroke-width="1.6"/><circle cx="9" cy="14.25" r="3" fill="none" stroke="#d4af37" stroke-width="1.6"/><path d="M14.5 12.5h4M14.5 15.5h4" stroke="#f7fafc" stroke-width="1.6" stroke-linecap="round"/></svg><span class="amr-dot"></span></button>';
+    if(loadClosed())root.classList.add('amr-closed');   // remembered across all portal pages
     document.body.appendChild(root);
     root.querySelector('[data-amr-play]')?.addEventListener('click',()=>{
       if(!state.connected){openPlayer(true,state.stationId!==STATIONS[0].id?state.stationId:null);return}
@@ -164,11 +209,11 @@
     root.querySelector('[data-amr-volup]')?.addEventListener('click',()=>stepVolume(0.1));
     root.querySelector('[data-amr-open]')?.addEventListener('click',()=>openPlayer(false));
     root.querySelector('[data-amr-install]')?.addEventListener('click',()=>openPlayer(false));
-    root.querySelector('[data-amr-collapse]')?.addEventListener('click',e=>{
-      root.classList.toggle('amr-collapsed');
-      e.currentTarget.textContent=root.classList.contains('amr-collapsed')?'+':'−';
-      reclamp(root);
-    });
+    root.querySelector('[data-amr-close]')?.addEventListener('click',()=>setClosed(true,{focus:true}));
+    const launch=root.querySelector('[data-amr-launch]');
+    launch?.addEventListener('click',()=>{if(suppressLaunchClick){suppressLaunchClick=false;return}setClosed(false,{focus:true})});
+    if(launch)enableLauncherDrag(root,launch);
+    window.addEventListener('storage',e=>{if(e.key===UI_KEY||e.key===null)setClosed(loadClosed(),{save:false})});
     enableDrag(root);
     render();
     post('PING',{});
