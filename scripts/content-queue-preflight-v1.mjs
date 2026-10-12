@@ -30,6 +30,19 @@ function canonicalFrom(html){
     ||html.match(/<link\b[^>]*\bhref=["']([^"']+)["'][^>]*\brel=["'][^"']*canonical[^"']*["'][^>]*>/i)
     ||[])[1]||'';
 }
+// Count only rendered article-body text: metadata, navigation and JSON-LD must not satisfy depth.
+function articleBodyWordCount(html){
+  const article=html.match(/<article\\b[^>]*>([\\s\\S]*?)<\\/article>/i);
+  if(!article)return null;
+  const text=article[1]
+    .replace(/<!--[\\s\\S]*?-->/g,' ')
+    .replace(/<(script|style|template)\\b[^>]*>[\\s\\S]*?<\\/\\1>/gi,' ')
+    .replace(/<[^>]*>/g,' ')
+    .replace(/&(?:nbsp|amp|lt|gt|quot|apos|#\\d+|#x[\\da-f]+);/gi,' ');
+  return [...new Intl.Segmenter('hr',{granularity:'word'}).segment(text)]
+    .filter(segment=>segment.isWordLike).length;
+}
+
 function heldSlugs(root){
   const manifest=readJson(root,'apps/portal/data/editorial-plan/manifest.json',{optional:true});
   const holds=readJson(root,'apps/portal/data/editorial-plan/publication-holds.json',{optional:true});
@@ -106,6 +119,10 @@ export function preflightContentQueue({root=process.cwd(),now=new Date(process.e
     }
     dueRoutes.add(route);
     if(held.has(item.slug))errors.push(item.id+': active editorial hold');
+    const bodyWords=articleBodyWordCount(html);
+    if(bodyWords===null)errors.push(item.id+': missing article body');
+    else if(bodyWords<3000)errors.push(item.id+': article body has '+bodyWords+' words; minimum is 3000');
+
     checked.push({
       id:item.id,
       source,
@@ -117,7 +134,7 @@ export function preflightContentQueue({root=process.cwd(),now=new Date(process.e
 
   return {
     ok:errors.length===0,
-    version:'GNK_ASG_CONTENT_QUEUE_PREFLIGHT_V2_20261010',
+    version:'GNK_ASG_CONTENT_QUEUE_PREFLIGHT_V3_20261012_3000_WORDS',
     now:now.toISOString(),
     zagreb:{date,time},
     due:due.length,
