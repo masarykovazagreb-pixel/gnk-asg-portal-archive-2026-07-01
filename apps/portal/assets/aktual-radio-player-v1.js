@@ -86,22 +86,20 @@
       metadataMode: 'stream-no-track-feed'
     }];
 
-  // Natural-voice station idents ("Vi slušate AKTUAL RADIO"), played over the music
-  // on every channel roughly every three songs and on station changes.
-  const JINGLES = [
-    '/radio/jingles/aktual-radio-jingle-1.mp3',
-    '/radio/jingles/aktual-radio-jingle-2.mp3',
-    '/radio/jingles/aktual-radio-jingle-3.mp3',
-    '/radio/jingles/aktual-radio-jingle-4.mp3'
-  ];
-  // Spremni, ali na javnom radiju ISKLJUČENI dok ih vlasnik ne odobri (JINGLES_APPROVED = true).
-  // Pregled uživo bez uključivanja za sve: /radio/?jingles=1 ili /radio/player/?jingles=1
-  const JINGLES_APPROVED = false;
-  const JINGLES_ON = JINGLES_APPROVED || new URLSearchParams(location.search).get('jingles') === '1';
-  const JINGLE_FIRST_MS = 30 * 1000;            // first ident shortly after tuning in
-  const JINGLE_EVERY_MS = [10.5 * 60 * 1000, 12 * 60 * 1000]; // ≈ every 3 songs (streams expose no track boundaries)
-  const JINGLE_MIN_GAP_MS = 60 * 1000;
-  const DUCK_LEVEL = 0.28;                      // music level under the voice (share of the listener volume)
+  // Station ident (owner-approved 2026-10-12): ONE natural voice, ~4 s —
+  // „Vi slušate AKTUAL MEDIA RADIO. Ostanite s nama!” — over the music on every station.
+  // Every listener gets an independent random rhythm: first ident 45–200 s after tuning in,
+  // then every 5 min ± 30 s, so idents are never in sync across listeners or stations.
+  // The rhythm keeps running across station changes. Test switch: ?jingles=0 turns idents off.
+  const JINGLES = ['/radio/jingles/aktual-radio-jingle-3.mp3?v=20261012-ident4s'];
+  const JINGLES_ON = new URLSearchParams(location.search).get('jingles') !== '0';
+  const JINGLE_FIRST_MS = [45 * 1000, 200 * 1000];
+  const JINGLE_EVERY_MS = [4.5 * 60 * 1000, 5.5 * 60 * 1000];
+  const DUCK_LEVEL = 0.3;                       // music level under the voice (share of the listener volume)
+  // iOS/iPadOS: media volume is read-only (no ducking) and a second <audio> can interrupt the
+  // stream, so idents are skipped there to keep the music uninterrupted.
+  const VOLUME_LOCKED = (() => { try { const a = new Audio(); a.volume = 0.5; return a.volume === 1; } catch (_) { return false; } })();
+  const between = ([a, b]) => a + Math.random() * (b - a);
 
   // Weekly editorial channels — modeled editorial announcement schedule.
   // These are not separate live streams; announcements run through the
@@ -159,7 +157,10 @@
       this.jingleIndex = Math.floor(Math.random() * JINGLES.length);
       this.jingleTimer = null;
       this.jingleDueAt = 0;
-      this.jingleRemaining = JINGLE_FIRST_MS;
+      this.jingleRemaining = between(JINGLE_FIRST_MS);
+      this.stallTimer = null;
+      this.reconnects = 0;
+      this.connectedAt = 0;
       this.lastJingleAt = 0;
       this.duckFactor = 1;
       this.duckTimer = null;
@@ -192,6 +193,31 @@
         this.updateMediaSession();
         this.broadcastState();
       });
+
+      // Self-healing stream. A live stream should never stop by itself: if it hangs for 12 s
+      // (network drop) or the server closes the connection ('ended'), reconnect to the same
+      // station; after repeated quick failures move on to the next station.
+      const reconnect = () => {
+        if (!this.audio.getAttribute('src')) return;
+        if (Date.now() - this.connectedAt > 60000) this.reconnects = 0; // long healthy run: start counting again
+        this.reconnects += 1;
+        if (this.reconnects > 2) { this.reconnects = 0; this.handleStationFailure(); return; }
+        this.startStream(this.audio.src);
+      };
+      const clearStall = () => { clearTimeout(this.stallTimer); this.stallTimer = null; };
+      const armStall = () => {
+        if (!this.isPlaying || this.stallTimer) return;
+        this.stallTimer = setTimeout(() => {
+          this.stallTimer = null;
+          if (this.isPlaying && !this.audio.paused) reconnect();
+        }, 12000);
+      };
+      this.audio.addEventListener('waiting', armStall);
+      this.audio.addEventListener('stalled', armStall);
+      this.audio.addEventListener('timeupdate', clearStall);
+      this.audio.addEventListener('playing', () => { clearStall(); this.connectedAt = Date.now(); });
+      this.audio.addEventListener('pause', clearStall);
+      this.audio.addEventListener('ended', reconnect);
 
       this.audio.addEventListener('error', () => {
         if (!this.audio.getAttribute('src')) return;
@@ -396,9 +422,9 @@
       if (!changed && this.isPlaying) { this.updateUI(); this.broadcastState(); return; }
       this.currentStationIndex = next;
       this.failedInRow = 0;
+      this.reconnects = 0;
       if (this.isPlaying || opts.autoplay) {
-        this.startStream(this.currentStation.streamUrl);
-        if (changed) this.queueTransitionJingle();
+        this.startStream(this.currentStation.streamUrl);  // ident rhythm continues across stations
         this.updateUI();        // odmah označi novu stanicu (ne čekaj spajanje streama)
         this.broadcastState();
       } else {
@@ -434,13 +460,12 @@
       const en = isEn();
       const promo = PROMOS[Math.floor(Math.random() * PROMOS.length)];
       this.setBanner(`📢 <strong>[RADIO AKTUAL PROMO]:</strong> ${esc(en ? promo.en : promo.hr)}`, false);
-      // Natural recorded voice instead of synthetic speech
-      if (this.isPlaying) this.playJingle();
     }
 
     // ---------- jingles ----------
     scheduleJingle(delay) {
-      if (!JINGLES_ON || !this.isPlaying || this.jingle) return;
+      if (!JINGLES_ON || VOLUME_LOCKED || !this.isPlaying || this.jingle) return;
+      if (this.jingleTimer && typeof delay !== 'number') return; // already counting down — keep the rhythm
       clearTimeout(this.jingleTimer);
       const ms = typeof delay === 'number' ? delay : this.jingleRemaining;
       this.jingleDueAt = Date.now() + ms;
@@ -456,14 +481,7 @@
     }
 
     nextJingleGap() {
-      const [a, b] = JINGLE_EVERY_MS;
-      return a + Math.random() * (b - a);
-    }
-
-    queueTransitionJingle() {
-      if (Date.now() - this.lastJingleAt < JINGLE_MIN_GAP_MS) return;
-      this.jingleRemaining = 1800; // a short ident right after the station change
-      if (this.isPlaying) this.scheduleJingle(1800);
+      return between(JINGLE_EVERY_MS);
     }
 
     duckTo(target, ms) {
@@ -473,7 +491,7 @@
       let i = 0;
       this.duckTimer = setInterval(() => {
         i += 1;
-        this.duckFactor = start + (target - start) * (i / steps);
+        this.duckFactor = start + (target - start) * (0.5 - 0.5 * Math.cos(Math.PI * i / steps)); // ease in/out
         this.applyMusicVolume();
         if (i >= steps) { clearInterval(this.duckTimer); this.duckTimer = null; }
       }, 30);
@@ -482,28 +500,37 @@
     playJingle() {
       clearTimeout(this.jingleTimer);
       this.jingleTimer = null;
-      if (!JINGLES_ON || !this.isPlaying || this.jingle || !JINGLES.length) return;
+      if (!JINGLES_ON || VOLUME_LOCKED || !this.isPlaying || this.jingle || !JINGLES.length) return;
       const src = JINGLES[this.jingleIndex % JINGLES.length];
       this.jingleIndex += 1;
-      const j = new Audio(src);
+      const j = new Audio();
       j.preload = 'auto';
       this.jingle = j;
-      this.applyMusicVolume();
+      let started = false;
+      let loadGuard = null;
       const finish = () => {
         if (this.jingle !== j) return;
+        clearTimeout(loadGuard);
         this.jingle = null;
-        this.duckTo(1, 900);
+        if (started) this.duckTo(1, 1100);
         this.lastJingleAt = Date.now();
         this.jingleRemaining = this.nextJingleGap();
         this.scheduleJingle();
       };
+      const start = () => {
+        if (this.jingle !== j || started) return;
+        started = true;
+        clearTimeout(loadGuard);
+        this.applyMusicVolume();
+        this.duckTo(DUCK_LEVEL, 450);          // music dips first, the voice comes in on the dip
+        setTimeout(() => { if (this.jingle === j) j.play().catch(finish); }, 300);
+      };
+      loadGuard = setTimeout(finish, 8000);    // could not load in time: skip, try again next round
+      j.addEventListener('canplaythrough', start, { once: true });
       j.addEventListener('ended', finish, { once: true });
       j.addEventListener('error', finish, { once: true });
-      this.duckTo(DUCK_LEVEL, 350);
-      setTimeout(() => {
-        if (this.jingle !== j) return;
-        j.play().catch(finish);
-      }, 250);
+      j.src = src;
+      j.load();
     }
 
     stopJingle() {

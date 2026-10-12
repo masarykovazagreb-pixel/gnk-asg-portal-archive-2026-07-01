@@ -4,6 +4,8 @@
 Run:  python tools/radio-jingles/build_jingles.py   (needs numpy, scipy, imageio-ffmpeg)
 Outputs (in apps/portal/radio/jingles, preview in ./preview — not committed):
   aktual-radio-jingle-1..4.mp3   final jingles, loudness-normalised (~-16 LUFS, -1.5 dBTP)
+                                 ON AIR (owner-approved 2026-10-12): only no. 3 „Vi slušate AKTUAL MEDIA RADIO.
+                                 Ostanite s nama!” as a tight ~4 s ident (short sting, shorter pause, +8 % tempo)
   demo-jingle-preko-pjesme.mp3   preview: synthwave bed, music ducks under a jingle, then returns
 No noise swooshes are used (the sting is purely tonal).
 """
@@ -45,6 +47,31 @@ def trim(x, thr=0.01, pad=0.04):
     a = max(0, idx[0] - int(pad * SR)); b = min(len(x), idx[-1] + int(pad * SR))
     y = x[a:b].copy()
     f = int(0.01 * SR); y[:f] *= np.linspace(0, 1, f); y[-f:] *= np.linspace(1, 0, f)
+    return y
+
+
+def tighten(x, max_gap=0.2, thr_db=-38):
+    """Shorten pauses inside speech to max_gap seconds (10 ms crossfades) — keeps the voice natural."""
+    hop = int(0.01 * SR); n = len(x) // hop
+    rms = np.array([np.sqrt(np.mean(x[i * hop:(i + 1) * hop] ** 2)) for i in range(n)])
+    db = 20 * np.log10(rms + 1e-9); on = db > db.max() + thr_db
+    keep = np.ones(len(x), bool); i = 0
+    while i < n:
+        if not on[i]:
+            j = i
+            while j < n and not on[j]: j += 1
+            if 0 < i and j < n and (j - i) * 0.01 > max_gap:          # internal pause only
+                cut = int(((j - i) * 0.01 - max_gap) * SR); mid = (i + j) * hop // 2
+                keep[mid - cut // 2: mid - cut // 2 + cut] = False
+            i = j
+        else:
+            i += 1
+    y = x[keep].copy()
+    edges = np.where(np.diff(keep.astype(int)) == 1)[0]              # splice points in the kept signal
+    f = int(0.01 * SR)
+    for e in np.searchsorted(np.where(keep)[0], edges):
+        if f < e < len(y) - f:
+            y[e - f:e] *= np.linspace(1, 0.6, f); y[e:e + f] *= np.linspace(0.6, 1, f)
     return y
 
 
@@ -150,12 +177,14 @@ def loudnorm(inp, outp, I=-16, TP=-1.5, LRA=7, br='160k'):
     return float(m['input_i'])
 
 
-def build_jingle(name, idx):
+def build_jingle(name, idx, lead=0.42, tail=0.55, tempo=1.0, max_gap=None):
     wavp = os.path.join(TMP, name + '.wav')
-    subprocess.run([FF, '-hide_banner', '-loglevel', 'error', '-y', '-i', os.path.join(HERE, 'voice', name + '.mp3'), '-ac', '1', '-ar', str(SR), wavp], check=True)
-    v = voice_polish(trim(load_wav(wavp)))
+    af = ['-af', f'atempo={tempo}'] if tempo != 1.0 else []
+    subprocess.run([FF, '-hide_banner', '-loglevel', 'error', '-y', '-i', os.path.join(HERE, 'voice', name + '.mp3'), *af, '-ac', '1', '-ar', str(SR), wavp], check=True)
+    v = trim(load_wav(wavp))
+    if max_gap: v = tighten(v, max_gap)
+    v = voice_polish(v)
     v /= np.abs(v).max() + 1e-9; v *= 0.8
-    lead = 0.42; tail = 0.55
     total = lead + len(v) / SR + tail
     sting = make_sting(total)
     mix = np.zeros(int(total * SR)); place(mix, sting * 0.55, 0); place(mix, v, lead)
@@ -218,7 +247,9 @@ def demo_bed(seconds):
 
 
 if __name__ == '__main__':
-    built = [build_jingle(n, i + 1) for i, n in enumerate(VOICES)]
+    # no. 3 = the on-air ident: sting starts with the voice, short tail, tighter pause, +8 % tempo → ~4 s
+    COMPACT = {'j3': dict(lead=0.08, tail=0.28, tempo=1.08, max_gap=0.18)}
+    built = [build_jingle(n, i + 1, **COMPACT.get(n, {})) for i, n in enumerate(VOICES)]
     # preview: 20 s bed, jingle 3 at 6.0 s, music ducked to ~30% and restored
     bed = demo_bed(20.0); L = len(bed)
     _, jmix, jdur = built[2]
