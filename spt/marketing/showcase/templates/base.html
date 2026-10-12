@@ -47,14 +47,15 @@
 <link rel="apple-touch-icon" href="/spt/img/spt-icon-192.png">
 <link rel="preload" href="/spt/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 {% if page.preload %}<link rel="preload" as="image" href="{{ page.preload }}" fetchpriority="high">
-{% endif %}<link rel="stylesheet" href="/spt/spt.css?v={{ V }}">
+{% endif %}<meta name="gnk-lang-switch" content="hreflang">
+<link rel="stylesheet" href="/spt/spt.css?v={{ V }}">
 <script src="/spt/spt-l10n.js?v={{ V }}" defer></script>
 <script src="/spt/spt.js?v={{ V }}" defer></script>
 <script type="application/ld+json">{{ page.jsonld|safe }}</script>
 </head>
 <body class="p-{{ page.kind }}" data-lang="{{ lang }}">
 <a class="skip" href="#main">{{ L.ui.skip }}</a>
-<header class="hd" id="top">
+<div class="hd" id="top">
  <div class="hd-in">
   <a class="brand" href="{{ U.main }}" aria-label="SPT — Sports Performance Tracking">
    <img src="/spt/img/spt-icon.webp" width="38" height="38" alt="">
@@ -82,7 +83,7 @@
    <button class="burger" type="button" aria-controls="nav" aria-expanded="false" aria-label="{{ L.ui.menu|plain }}"><span></span></button>
   </div>
  </div>
-</header>
+</div>
 <div class="lsug" id="lsug" hidden></div>
 <main id="main">
 {% block main %}{% endblock %}

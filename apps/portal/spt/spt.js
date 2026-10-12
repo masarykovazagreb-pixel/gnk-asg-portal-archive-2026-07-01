@@ -13,9 +13,10 @@
     burger.addEventListener('click', function () {
       var o = hd.classList.toggle('open');
       burger.setAttribute('aria-expanded', o ? 'true' : 'false');
+      root.classList.toggle('spt-menu-open', o);
     });
     $$('.nav a').forEach(function (a) {
-      a.addEventListener('click', function () { hd.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); });
+      a.addEventListener('click', function () { hd.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); root.classList.remove('spt-menu-open'); });
     });
   }
   /* ---------- kompaktni izbornik kad navigacija ne stane (duži prijevodi) ---------- */
@@ -24,7 +25,7 @@
     if (!hd || !hdIn) return;
     hd.classList.remove('cmp');
     if (hdIn.scrollWidth > hdIn.clientWidth + 1) hd.classList.add('cmp');
-    else if (burger && window.getComputedStyle(burger).display === 'none') { hd.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); }
+    else if (burger && window.getComputedStyle(burger).display === 'none') { hd.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); root.classList.remove('spt-menu-open'); }
   }
   if (hd && hdIn) {
     fitNav();
@@ -32,11 +33,52 @@
     window.addEventListener('resize', function () { clearTimeout(fnT); fnT = setTimeout(fitNav, 120); });
     if (d.fonts && d.fonts.ready) d.fonts.ready.then(fitNav);
   }
+  /* ---------- suživot s globalnim zaglavljem portala (worker ubacuje public-unified-menu-v6.js) ----------
+     - SPT traka ide ispod portalnog headera (visina se mjeri)
+     - portalni HR/EN vodi na istu SPT stranicu na tom jeziku (hreflang), ne na naslovnicu
+     - Dinamo znak se spušta ispod SPT trake; radio widget se na SPT stranicama otvara smanjen */
+  (function shell() {
+    function alt(code) { var l = $('link[rel="alternate"][hreflang="' + code + '"]'); return l ? l.getAttribute('href') : null; }
+    var radioDone = false;
+    function sync() {
+      var h = d.getElementById('gnk-unified-header'), hh = 0;
+      if (h) {
+        hh = Math.round(h.getBoundingClientRect().height) || 84;
+        root.style.setProperty('--gnk-header-h', hh + 'px');
+        var hr = $('.lang a[aria-label="Hrvatski"]', h), en = $('.lang a[aria-label="English"]', h), ah = alt('hr'), ae = alt('en');
+        if (hr && ah) hr.setAttribute('href', ah);
+        if (en && ae) en.setAttribute('href', ae);
+        var pl = String(root.lang || '').toLowerCase();
+        if (hr && en && pl.indexOf('hr') !== 0 && pl.indexOf('en') !== 0) { hr.removeAttribute('aria-current'); en.removeAttribute('aria-current'); }
+      }
+      var wm = d.getElementById('gnk-dinamo-watermark');
+      if (wm && hd) wm.style.setProperty('top', (hh + hd.offsetHeight + 10) + 'px', 'important');
+      var radio = d.getElementById('aktualMediaRadioFloat');
+      if (radio && !radioDone) {
+        radioDone = true;
+        if (!radio.classList.contains('amr-collapsed')) { var c = $('[data-amr-collapse]', radio); if (c) c.click(); }
+        var amr = function () { root.style.setProperty('--amr-h', (radio.offsetHeight ? radio.offsetHeight + 10 : 0) + 'px'); };
+        amr();
+        if ('ResizeObserver' in window) new ResizeObserver(amr).observe(radio);
+      }
+      fitNav();
+    }
+    sync();
+    if ('MutationObserver' in window && d.body) {
+      var mo = new MutationObserver(function (list) {
+        for (var k = 0; k < list.length; k++) { if (list[k].addedNodes.length) { sync(); return; } }
+      });
+      mo.observe(d.body, { childList: true });
+      setTimeout(function () { mo.disconnect(); }, 20000);
+    }
+    var shT;
+    window.addEventListener('resize', function () { clearTimeout(shT); shT = setTimeout(sync, 150); });
+  })();
   /* ---------- jezični izbornik: zatvori klikom van / Esc ---------- */
   var lng = $('.lng');
   if (lng) {
     d.addEventListener('click', function (e) { if (lng.open && !lng.contains(e.target)) lng.open = false; });
-    d.addEventListener('keydown', function (e) { if (e.key === 'Escape') { lng.open = false; if (hd) hd.classList.remove('open'); } });
+    d.addEventListener('keydown', function (e) { if (e.key === 'Escape') { lng.open = false; if (hd) hd.classList.remove('open'); root.classList.remove('spt-menu-open'); } });
   }
 
   /* ---------- prijedlog jezika (bez automatskog preusmjeravanja) ---------- */

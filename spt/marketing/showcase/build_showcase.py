@@ -33,7 +33,7 @@ SRC_PNG = Path("/home/user/spt-src")
 SITE = "https://gnk-asg.hr"
 PUBLISHED = "2026-10-12T10:00:00+02:00"
 LASTMOD = "2026-10-12"
-V = "20261012a"
+V = "20261012b"
 ARTICLE_SLUG = "spt-sports-performance-tracking-gnk-asg"
 
 LANGS = [
@@ -71,7 +71,7 @@ IMAGES = [
     ("indoor_volleyball_uwb", "scenes", "who"),
     ("oem_cloud", "scenes", "oem"),
 ]
-FILM = {"src": "/spt/film/spt-film.mp4", "poster": "/spt/film/spt-film-poster.webp"}
+FILM = {"src": "/spt/film/spt-film.mp4?v=2", "poster": "/spt/film/spt-film-poster.webp"}
 CHAPTERS = [(0, 4, "@intro"), (4, 8, "hero_stadium_usa"), (8, 11.5, "vest_front"), (11.5, 14.5, "vest_back"),
             (14.5, 18, "chip_pod"), (18, 21, "watch"), (21, 24, "uwb_anchor"), (24, 27, "edge_server"),
             (27, 39, "dashboard_laptop"), (39, 42.5, "coach_tablet"), (42.5, 46, "analytics_screen"),

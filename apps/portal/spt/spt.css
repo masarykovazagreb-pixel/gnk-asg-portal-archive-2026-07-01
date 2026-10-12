@@ -387,3 +387,17 @@ p{margin:0 0 1em}
 .js .rv.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.js .rv{opacity:1;transform:none;transition:none}.dot,.demo-goal,.demo-alert{animation:none}.scard:hover,.scard:hover .scard-img img,.hcard:hover .hcard-img img{transform:none}}
 @media print{.hd,.lsug,.hero-hud,.demo,.share,.ft-langs,.burger{display:none!important}body{background:#fff;color:#000}.sec{padding:24px 0}.card,.fcard,.deep,.wcard,.hcard,.scard{border-color:#ccc;background:none}.sub,.card p,.hcard p,.wcard p,.deep p,.fcard li{color:#222}}
+
+/* ===== suživot s globalnim zaglavljem portala gnk-asg.hr =====
+   Worker na svaku stranicu ubacuje public-unified-menu-v6.js (fiksni header 84 px, Dinamo znak, radio).
+   SPT traka tada postaje lokalna navigacija odmah ispod njega (kao Apple globalna + lokalna navigacija). */
+html.gnk-unified-shell .hd{top:var(--gnk-header-h,84px)}
+html.gnk-unified-shell .hd-gnk{display:none}
+html.gnk-unified-shell{scroll-padding-top:calc(var(--gnk-header-h,84px) + var(--hd) + 12px)}
+html.gnk-unified-shell .hero{min-height:min(calc(92vh - var(--gnk-header-h,84px)),880px)}
+html.gnk-unified-shell .hd.cmp .nav{max-height:calc(100vh - var(--hd) - var(--gnk-header-h,84px))}
+@media (max-width:1180px){html.gnk-unified-shell .hd .nav{max-height:calc(100vh - var(--hd) - var(--gnk-header-h,84px))}}
+@media (max-width:600px){html.gnk-unified-shell{--hd:56px}html.gnk-unified-shell .brand-t small{display:none}}
+html.gnk-unified-shell .lsug{bottom:calc(16px + var(--amr-h,0px))}
+html.spt-menu-open #gnk-dinamo-watermark,html.spt-menu-open #aktualMediaRadioFloat,html.spt-menu-open .lsug{visibility:hidden!important}
+.hd.open .nav{background:#080d16}
