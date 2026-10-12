@@ -36,7 +36,7 @@
   /* ---------- suživot s globalnim zaglavljem portala (worker ubacuje public-unified-menu-v6.js) ----------
      - SPT traka ide ispod portalnog headera (visina se mjeri)
      - portalni HR/EN vodi na istu SPT stranicu na tom jeziku (hreflang), ne na naslovnicu
-     - Dinamo znak se spušta ispod SPT trake; radio widget se na SPT stranicama otvara smanjen */
+     - Dinamo znak se na SPT stranicama ne prikazuje (meta gnk-watermark=off); radio se otvara smanjen */
   (function shell() {
     function alt(code) { var l = $('link[rel="alternate"][hreflang="' + code + '"]'); return l ? l.getAttribute('href') : null; }
     var radioDone = false;
@@ -51,8 +51,6 @@
         var pl = String(root.lang || '').toLowerCase();
         if (hr && en && pl.indexOf('hr') !== 0 && pl.indexOf('en') !== 0) { hr.removeAttribute('aria-current'); en.removeAttribute('aria-current'); }
       }
-      var wm = d.getElementById('gnk-dinamo-watermark');
-      if (wm && hd) wm.style.setProperty('top', (hh + hd.offsetHeight + 10) + 'px', 'important');
       var radio = d.getElementById('aktualMediaRadioFloat');
       if (radio && !radioDone) {
         radioDone = true;

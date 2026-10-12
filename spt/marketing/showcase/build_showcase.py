@@ -153,8 +153,21 @@ def merge(en, xx, path):
     return xx
 
 
-def load_lang(code, en):
+def read_raw(code):
+    """i18n/<jezik>.json + (opcionalno) i18n/params/<jezik>.json — katalog mjerenih parametara i oznaka u izborniku."""
     raw = json.loads((HERE / "i18n" / f"{code}.json").read_text("utf-8"))
+    pf = HERE / "i18n" / "params" / f"{code}.json"
+    if pf.exists():
+        extra = json.loads(pf.read_text("utf-8"))
+        if extra.get("nav"):
+            raw.setdefault("nav", {})["params"] = extra["nav"]
+        if extra.get("params"):
+            raw["params"] = extra["params"]
+    return raw
+
+
+def load_lang(code, en):
+    raw = read_raw(code)
     if code == "en":
         return raw, set()
     fbsec = {k for k in en if k not in raw and k not in ("lang", "locale", "name")}
@@ -318,7 +331,7 @@ def minify(html):
 
 
 def build():
-    en = json.loads((HERE / "i18n" / "en.json").read_text("utf-8"))
+    en = read_raw("en")
     active = [l for l in LANGS if (HERE / "i18n" / f"{l[0]}.json").exists()]
     codes = [l[0] for l in active]
     env = Environment(loader=FileSystemLoader(str(HERE / "templates")), autoescape=select_autoescape(["html"]),
