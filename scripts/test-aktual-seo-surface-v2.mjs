@@ -17,7 +17,7 @@ function walk(dir){
 }
 roots.forEach(walk);
 
-const isAuthorArticle=file=>//(?:kolumne|columns)/[^/]+/index\.html$/.test(file);
+const isAuthorArticle=file=>{const parts=file.split('/');const i=Math.max(parts.indexOf('kolumne'),parts.indexOf('columns'));return i>=0&&parts.length>i+2&&parts.at(-1)==='index.html'};
 const get=(html,re)=>html.match(re)?.[1]||'';
 
 for(const file of files){
@@ -39,7 +39,7 @@ for(const file of files){
   if(twitter!=='summary_large_image') failures.push(file+': twitter large-card metadata missing');
   if(/<meta\s+name=["']keywords["']/i.test(html)) failures.push(file+': meta keywords prohibited');
   if(!/<meta\s+name=["']description["']\s+content=["'][^"']{80,}["']/i.test(html)) warnings.push(file+': meta description is short or missing');
-  if(!/hreflang=["'](?:hr|en|x-default)["']/i.test(html)&&!//(?:radio|aktual-sova)//.test(file)) warnings.push(file+': hreflang not detected');
+  if(!/hreflang=["'](?:hr|en|x-default)["']/i.test(html)) warnings.push(file+': hreflang not detected');
 }
 
 console.log(JSON.stringify({
