@@ -9,6 +9,7 @@ execFileSync(process.execPath,['scripts/build-aktual-media-weekly-v1.mjs'],{
   env:{...process.env,AKTUAL_WEEKLY_FORCE:'1'},
   stdio:'inherit'
 });
+execFileSync(process.execPath,['scripts/enforce-nermin-author-seo-v1.mjs'],{stdio:'inherit'});
 
 const files={
   data:'apps/portal/data/aktual-weekly.json',
@@ -60,6 +61,9 @@ for(const [name,html] of [['hr',hr],['en',en]]){
   if(!html.includes('/assets/aktual-media-weekly-v1.js')) failures.push(name+': weekly JS missing');
   if(/<meta\s+name=["']keywords["']/i.test(html)) failures.push(name+': meta keywords are not allowed');
   if(!html.includes('"editor":{"@type":"Person","name":"Nermin Sefić"')) failures.push(name+': editor schema missing');
+  if(!html.includes('rel="author" href="https://gnk-asg.hr/nermin-sefic/"')) failures.push(name+': rel=author missing');
+  if(!html.includes('id="twColumnGrid"')) failures.push(name+': Nermin Sefić columns spotlight missing');
+  if(!html.includes('AKTUAL MEDIA')) failures.push(name+': full AKTUAL MEDIA brand missing');
 }
 if(!read(files.newsroomHr).includes('/gnk-aktual/tjedni/')) failures.push('HR newsroom: weekly link missing');
 if(!read(files.newsroomEn).includes('/en/gnk-aktual/weekly/')) failures.push('EN newsroom: weekly link missing');
@@ -69,6 +73,8 @@ for(const url of ['https://gnk-asg.hr/gnk-aktual/tjedni/','https://gnk-asg.hr/en
 const wf=read(files.workflow);
 if(!wf.includes('build-aktual-media-weekly-v1.mjs')) failures.push('workflow: weekly builder not integrated');
 if(!wf.includes('apps/portal/data/aktual-weekly.json')) failures.push('workflow: weekly data not staged by single writer');
+if(!wf.includes('apps/portal/data/aktual-weekly-curation.json')) failures.push('workflow: curated weekly seed not watched');
+if(!wf.includes('scripts/enforce-nermin-author-seo-v1.mjs')) failures.push('workflow: author SEO maintenance missing');
 
 console.log(JSON.stringify({version:'AKTUAL_MEDIA_WEEKLY_CONTRACT_V1',issue_week:d.issue_week,counts:d.counts,failures},null,2));
 if(failures.length) process.exit(1);
