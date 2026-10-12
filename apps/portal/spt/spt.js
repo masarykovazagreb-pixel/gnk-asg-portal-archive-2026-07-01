@@ -114,7 +114,7 @@
     var io = new IntersectionObserver(function (es) {
       es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
     }, { rootMargin: '0px 0px -8% 0px' });
-    $$('.sec .sh, .week li, .card, .scard, .hcard, .fcard, .deep, .wcard, .tl li, .film-box, .demo, .duo figure, .wide-fig, .oem-top, .flow, .spec, .ggrid li, .qa').forEach(function (el) {
+    $$('.sec .sh, .week li, .card, .scard, .hcard, .fcard, .deep, .wcard, .tl li, .film-box, .demo, .duo figure, .wide-fig, .oem-top, .flow, .spec, .ggrid li, .qa, .pcard, .ancard').forEach(function (el) {
       el.classList.add('rv'); io.observe(el);
     });
   }

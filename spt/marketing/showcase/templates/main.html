@@ -121,6 +121,31 @@
  </div>
 </section>
 
+<section class="sec params" id="params" aria-labelledby="t-params"{{ fb('params') }}>
+ <div class="wrap">
+  {{ fbnote('params') }}
+  {{ head(L.params, 't-params') }}
+  {% set ns = namespace(i=0) %}
+  <div class="pgrid">
+   {% for g in L.params['groups'] %}
+   <article class="pcard">
+    <header class="pc-h"><span class="pc-ic">{{ icon(g.ic) }}</span><div><h3>{{ g.t }}</h3><p class="pc-src">{{ g.src }}</p></div><span class="pc-n">{{ g['items']|length }}</span></header>
+    <dl class="plist">
+     {% for p in g['items'] %}{% set ns.i = ns.i + 1 %}<div class="pi"><dt><span class="pnum">{{ ns.i }}</span><span class="pname">{{ p.n }}</span> <small>{{ p.u }}</small></dt><dd>{{ p.w }}</dd></div>
+     {% endfor %}
+    </dl>
+   </article>
+   {% endfor %}
+  </div>
+  <h3 class="an-t">{{ L.params.an_title }}</h3>
+  <div class="angrid">
+   {% for a in L.params.an %}<div class="ancard"><h4>{{ a.t }}</h4><p>{{ a.d }}</p></div>
+   {% endfor %}
+  </div>
+  <p class="pnote">{{ L.params.note }}</p>
+ </div>
+</section>
+
 <section class="sec sci" id="science" aria-labelledby="t-sci"{{ fb('sci') }}>
  <div class="wrap">
   {{ fbnote('sci') }}
