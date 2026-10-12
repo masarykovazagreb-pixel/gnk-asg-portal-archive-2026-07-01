@@ -16,6 +16,15 @@ const items=source
 if(!items.length) throw new Error('news.json has no valid source-linked items');
 
 const maxDate=new Date(items[0]._published);
+const issueMonday=new Date(Date.UTC(maxDate.getUTCFullYear(),maxDate.getUTCMonth(),maxDate.getUTCDate()));
+const day=issueMonday.getUTCDay()||7; issueMonday.setUTCDate(issueMonday.getUTCDate()-day+1);
+const issueWeek=issueMonday.toISOString().slice(0,10);
+if(fs.existsSync(OUT)){
+  try{
+    const prev=JSON.parse(fs.readFileSync(OUT,'utf8'));
+    if(prev.issue_week===issueWeek){console.log(JSON.stringify({changed:false,issue_week:issueWeek}));process.exit(0)}
+  }catch(_){}
+}
 const from=new Date(maxDate); from.setUTCDate(from.getUTCDate()-13);
 const recent=items.filter(x=>new Date(x._published)>=from);
 
@@ -76,6 +85,7 @@ const issueId='aktual-media-tjedni-'+issueDate;
 const out={
   version:'AKTUAL_MEDIA_WEEKLY_V1',
   issue_id:issueId,
+  issue_week:issueWeek,
   issue_date:issueDate,
   window:{from:from.toISOString(),to:maxDate.toISOString()},
   editorial_rule:'Positive/lifestyle weekly selection from canonical source-linked news feed; serious negative topics excluded by policy.',
@@ -86,4 +96,4 @@ const out={
 
 fs.mkdirSync(path.dirname(OUT),{recursive:true});
 fs.writeFileSync(OUT,JSON.stringify(out,null,2)+'\n');
-console.log(JSON.stringify(out.counts,null,2));
+console.log(JSON.stringify({changed:true,issue_week:issueWeek,...out.counts},null,2));
