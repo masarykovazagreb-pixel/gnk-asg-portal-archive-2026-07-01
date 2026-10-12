@@ -1,6 +1,12 @@
 (() => {
   'use strict';
   const en=new URLSearchParams(location.search).get('lang')==='en'||(document.documentElement.lang||'').startsWith('en');
+  if(en){
+    // Static player labels in English (?lang=en); dynamic texts come from the player engine.
+    document.documentElement.lang='en';
+    document.querySelectorAll('[data-en]').forEach(el=>{el.textContent=el.dataset.en});
+    document.querySelectorAll('[data-en-aria]').forEach(el=>{el.setAttribute('aria-label',el.dataset.enAria);if(el.title)el.title=el.dataset.enAria});
+  }
   let installPrompt=null;
   const button=document.getElementById('radioInstallBtn');
   const help=document.getElementById('radioInstallHelp');

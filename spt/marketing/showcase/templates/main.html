@@ -143,6 +143,9 @@
    {% endfor %}
   </div>
   <p class="pnote">{{ L.params.note }}</p>
+  {% if lang == 'hr' %}<p class="pnote"><a class="btn btn-p" href="/objave/spt-64-parametra-i-analize/">Cijeli članak: 64 parametra, šest analiza i sve funkcije →</a></p>
+  {% else %}<p class="pnote"><a class="btn btn-p" href="/en/publications/spt-64-parameters-and-analyses/"{% if lang != 'en' %} lang="en" hreflang="en"{% endif %}>Full article: all 64 parameters, six analyses and every feature →</a></p>
+  {% endif %}
  </div>
 </section>
 
