@@ -13,6 +13,7 @@ from __future__ import annotations
 import html
 import json
 import re
+import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -30,7 +31,7 @@ OG = SITE + "/spt/img/og/hero-stadium-usa.jpg"
 HR = dict(
     title="GNK ASG predstavlja SPT: praćenje sportaša GPS-om, UWB-om i umjetnom inteligencijom",
     seo="SPT: praćenje sportaša GPS-om, UWB-om i umjetnom inteligencijom | GNK ASG",
-    desc="SPT spaja GPS 20 Hz, UWB ±10 cm, senzor 1000 Hz i umjetnu inteligenciju u sustav koji prati opterećenje, spremnost i rizik od ozljede — za klubove, trenere i rekreativce.",
+    desc="SPT spaja GPS 20 Hz, UWB ±10 cm, senzor 1000 Hz i umjetnu inteligenciju u sustav koji prati opterećenje, spremnost i rizik od ozljede sportaša.",
     summary="GPS 20 Hz, UWB ±10 cm i umjetna inteligencija za opterećenje, spremnost i rizik od ozljede — softver koji ugrađuju i drugi proizvođači.",
     lead="SPT (Sports Performance Tracking) povezuje nosivi senzor, sat, prsni pojas i pametnu vagu s platformom koja u stvarnom vremenu računa opterećenje, spremnost i rizik od ozljede. Softver već kupuju i ugrađuju i drugi proizvođači sličnih sustava — ponekad pod svojim brendom, ali uvijek s našim alatima, softverom i serverima.",
     alt="Dan utakmice u SAD-u: igrači praćeni sustavom SPT — ilustracija",
@@ -40,7 +41,7 @@ HR = dict(
 EN = dict(
     title="GNK ASG unveils SPT: athlete tracking with GPS, UWB and artificial intelligence",
     seo="SPT: athlete tracking with GPS, UWB and AI | GNK ASG",
-    desc="SPT combines 20 Hz GPS, ±10 cm UWB, a 1000 Hz sensor and artificial intelligence to track load, readiness and injury risk — for clubs, coaches and amateur athletes.",
+    desc="SPT combines 20 Hz GPS, ±10 cm UWB, a 1000 Hz sensor and AI to track load, readiness and injury risk — for clubs, coaches and amateur athletes.",
     summary="20 Hz GPS, ±10 cm UWB and AI for load, readiness and injury risk — software that other manufacturers build into their products.",
     lead="SPT (Sports Performance Tracking) connects a wearable sensor, watch, chest strap and smart scale with a platform that calculates load, readiness and injury risk in real time. Its software is already bought and built in by other manufacturers of similar systems — sometimes under their brand, but always with our tools, software and servers.",
     alt="Match day in the USA: players tracked by SPT — illustration",
@@ -107,16 +108,30 @@ def registry() -> None:
     write(path, json.dumps(r, ensure_ascii=False, indent=2) + "\n")
 
 
-def editorial_sitemap() -> None:
-    path = P / "editorial-sitemap.xml"
-    s = path.read_text(encoding="utf-8")
-    add = ""
-    for route in (HR_PATH, EN_PATH):
-        url = SITE + route
-        if f"<loc>{url}</loc>" not in s:
-            add += f"  <url><loc>{url}</loc><lastmod>{DAY}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>\n"
-    if add:
-        write(path, s.replace("</urlset>", add + "</urlset>", 1))
+def run_node(script: str) -> None:
+    """Kanonski generatori repozitorija (CI: publication-sitemap-registry-gate ih reproducira i uspoređuje)."""
+    subprocess.run(["node", script], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
+
+
+def canonical_registry_and_sitemap() -> None:
+    before = {f: (P / f).read_text(encoding="utf-8") for f in ("data/editorial-registry.json", "editorial-sitemap.xml")}
+    run_node("scripts/editorial-registry-v1.mjs")
+    run_node("scripts/generate-editorial-sitemap-v2.mjs")
+    for f, old in before.items():
+        if (P / f).read_text(encoding="utf-8") != old:
+            changed.append(f"apps/portal/{f} (kanonski generator)")
+
+
+def approved_mentions() -> None:
+    """Odobrenje vlasnika: članci s autorskim boksom moraju biti na popisu (data/approved_mentions.json)."""
+    path = P / "data" / "approved_mentions.json"
+    d = json.loads(path.read_text(encoding="utf-8"))
+    urls = set(d.get("approved_urls", []))
+    new = {SITE + HR_PATH, SITE + EN_PATH} - urls
+    if not new:
+        return
+    d["approved_urls"] = sorted(urls | new)
+    write(path, json.dumps(d, ensure_ascii=False, indent=2) + "\n")
 
 
 def sitemap_index() -> None:
@@ -181,12 +196,13 @@ def main() -> None:
     prepend_card("objave/index.html", "hr")
     prepend_card("en/publications/index.html", "en")
     registry()
-    editorial_sitemap()
+    approved_mentions()
     sitemap_index()
     robots()
     kolumne()
     aktual_fallback("gnk-aktual/index.html", "hr")
     aktual_fallback("en/gnk-aktual/index.html", "en")
+    canonical_registry_and_sitemap()
     print("promijenjeno:", *changed, sep="\n  ") if changed else print("bez promjena (već integrirano)")
 
 

@@ -115,6 +115,21 @@ def wrap(node):
 WARN = []
 
 
+
+def _author_token(x):
+    """Pravilo vlasnika (scripts/enforce-approved-author-markers-v1.mjs): ime autora ne ide u meta keywords."""
+    import unicodedata
+    f = "".join(ch for ch in unicodedata.normalize("NFD", x) if unicodedata.category(ch) != "Mn").lower()
+    return bool(re.search(r"nermin|sefic", re.sub(r"[^a-z]", "", f))) or bool(re.search(r"нермин|сефи[чћ]", x.lower()))
+
+
+def noauthor(s):
+    return ", ".join(t.strip() for t in str(s).split(",") if t.strip() and not _author_token(t))
+
+
+TITLES: dict = {}
+
+
 def merge(en, xx, path):
     if xx is None:
         return wrap(en)
@@ -235,7 +250,7 @@ def image_records(L, code):
     return recs
 
 
-def trim(s, n=300):
+def trim(s, n=160):  # meta description ≤ 160 znakova (apps/portal/tests/seo-quality)
     s = re.sub(r"\s+", " ", P(s)).strip()
     return s if len(s) <= n else s[: n - 1].rsplit(" ", 1)[0] + "…"
 
@@ -309,6 +324,7 @@ def build():
     env = Environment(loader=FileSystemLoader(str(HERE / "templates")), autoescape=select_autoescape(["html"]),
                       trim_blocks=True, lstrip_blocks=True)
     env.filters["plain"] = P
+    env.filters["noauthor"] = noauthor
 
     for f in OUT.rglob("index.html"):
         f.unlink()
@@ -344,12 +360,15 @@ def build():
                         contact_url=X["contact"], author_url=X["author"], article_url=X["article"],
                         images=imgs, IMG=IMG)
         tags = ["SPT", "GNK ASG", "Nermin Sefić", "Sports Performance Tracking"]
+        _parts = P(L["meta"]["title"]).split(" | ")
+        seg = _parts[1] if len(_parts) > 2 else "Sports Performance Tracking"
         nodes = common_nodes(L)
 
         def emit(url, tpl, page, extra, sm_images, sm_video=None, kind="main", slug=None):
             nonlocal written, total_bytes
             alts = alts_for(kind, slug)
             page.update({"url": url, "xdefault": xdef(alts), "tags": tags})
+            TITLES.setdefault(page["title"], []).append(url)
             html = env.get_template(tpl).render(**base_ctx, page=page, alts=alts, **extra)
             html = minify(html)
             dst = PORTAL / url.lstrip("/") / "index.html"
@@ -386,7 +405,7 @@ def build():
             nm = "SPT" if k == "@intro" else ("gnk-asg.hr/spt · produced by GNK ASG" if k == "@outro" else IMG[k]["title"])
             chapters.append({"s": int(s), "e": int(math.ceil(e)), "ts": f"{int(s)//60}:{int(s)%60:02d}", "name": nm})
         film_url = U["film"]
-        ftitle = f"{P(L['film']['title'])} — SPT | GNK ASG · Nermin Sefić"
+        ftitle = f"{P(L['film']['title'])} · {seg} | GNK ASG · Nermin Sefić"
         graph = [{"@type": "WebPage", "@id": SITE + film_url + "#webpage", "url": SITE + film_url, "name": ftitle,
                   "inLanguage": code, "about": {"@id": BRAND_ID}, "author": {"@id": PERSON_ID},
                   "publisher": {"@id": ORG_ID}, "datePublished": PUBLISHED,
@@ -407,7 +426,7 @@ def build():
         for gk in ("screens", "hw", "scenes"):
             groups.append({"key": gk, "label": imgs[[r["group"] for r in imgs].index(gk)]["group_label"],
                            "images": [r for r in imgs if r["group"] == gk]})
-        gtitle = f"{P(L['ui']['gallery'])} — SPT Sports Performance Tracking | GNK ASG · Nermin Sefić"
+        gtitle = f"{P(L['ui']['gallery'])} — SPT · {seg} | GNK ASG · Nermin Sefić"
         graph = [{"@type": "CollectionPage", "@id": SITE + gal_url + "#webpage", "url": SITE + gal_url, "name": gtitle,
                   "inLanguage": code, "about": {"@id": BRAND_ID}, "author": {"@id": PERSON_ID},
                   "publisher": {"@id": ORG_ID},
@@ -426,7 +445,7 @@ def build():
         for i, r in enumerate(imgs):
             prev, nxt = imgs[i - 1], imgs[(i + 1) % len(imgs)]
             d = P(r["desc"]) + ((" " + P(L["hw"]["why"]) + ": " + P(r["why"])) if r["why"] else "")
-            ititle = f"{P(r['title'])} — SPT Sports Performance Tracking | GNK ASG"
+            ititle = f"{P(r['title'])} — SPT · {seg} | GNK ASG"
             graph = [{"@type": "WebPage", "@id": SITE + r["url"] + "#webpage", "url": SITE + r["url"], "name": ititle,
                       "description": trim(d), "inLanguage": code, "isPartOf": {"@id": SITE + gal_url + "#webpage"},
                       "about": {"@id": BRAND_ID}, "author": {"@id": PERSON_ID}, "publisher": {"@id": ORG_ID},
@@ -478,6 +497,10 @@ def build():
 
     print(f"jezici: {len(active)} ({', '.join(codes)})")
     print(f"stranica: {written}, HTML ukupno {total_bytes/1024/1024:.2f} MB, sitemap URL-ova: {len(sitemap)}")
+    dups = {t: u for t, u in TITLES.items() if len(u) > 1}
+    print(f"naslovi: {len(TITLES)} jedinstvenih" + (f" — UPOZORENJE duplikati: {len(dups)}" if dups else ""))
+    for t, u in list(dups.items())[:10]:
+        print("  DUP", t, u[:3])
     if WARN:
         print("UPOZORENJA strukture prijevoda:")
         for w in sorted(set(WARN))[:60]:
