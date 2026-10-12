@@ -16,15 +16,17 @@ import sys
 import threading
 import time
 import webbrowser
+
+import reportgen
 from bisect import bisect_left
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse, parse_qs
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "spt.db")
 STATIC_DIR = os.path.join(BASE_DIR, "static")
-VERSION = "1.0.0"
+VERSION = "2.2.0"
 
 # ---------------------------------------------------------------------------
 # BAZA
@@ -1490,6 +1492,348 @@ def api_meta2(m, qs):
             "benchmarks": q1("SELECT COUNT(*) c FROM benchmarks")["c"]}
 
 
+
+
+# ------------------------------ 2.1: IZVJEŠTAJI -----------------------------
+@route("GET", r"/api/report/kinds")
+def api_report_kinds(m, qs):
+    return {"kinds": reportgen.KINDS_META}
+
+@route("GET", r"/api/reports")
+def api_reports_list(m, qs):
+    cond, args = "1=1", []
+    if qs.get("status"):
+        cond += " AND status=?"; args.append(qs["status"])
+    if qs.get("kind"):
+        cond += " AND kind=?"; args.append(qs["kind"])
+    rows = q(f"""SELECT id, kind, title, club, athlete, status, created_by, created_at,
+                 decided_by, decided_at, note FROM reports WHERE {cond}
+                 ORDER BY id DESC LIMIT 120""", tuple(args))
+    return {"items": [dict(r) for r in rows]}
+
+@route("GET", r"/api/reports/(?P<rid>\d+)")
+def api_report_get(m, qs):
+    r = q1("SELECT * FROM reports WHERE id=?", (int(m["rid"]),))
+    if not r:
+        return {"error": "nema izvještaja"}
+    d = dict(r)
+    try:
+        d["payload"] = json.loads(d["payload"])
+    except Exception:
+        pass
+    return d
+
+@route("POST", r"/api/reports")
+def api_reports_create(m, qs, body=None):
+    body = body or {}
+    u, err = require_role(3)
+    if err:
+        return err
+    kind = body.get("kind")
+    if kind not in reportgen.BUILDERS:
+        return {"error": "nepoznata vrsta izvještaja"}
+    params = body.get("params") or {}
+    payload = reportgen.BUILDERS[kind](params)
+    if payload.get("error"):
+        return payload
+    con = db()
+    cur = con.execute("""INSERT INTO reports (kind, title, club, athlete, params, payload,
+        status, created_by, created_at) VALUES (?,?,?,?,?,?, 'skica', ?, ?)""",
+        (kind, payload["title"], params.get("club", ""), params.get("athlete"),
+         json.dumps(params, ensure_ascii=False), json.dumps(payload, ensure_ascii=False),
+         u["username"], datetime.now().isoformat(timespec="seconds")))
+    rid = cur.lastrowid
+    con.commit(); con.close()
+    return {"ok": True, "id": rid, "payload": payload}
+
+@route("POST", r"/api/reports/status")
+def api_reports_status(m, qs, body=None):
+    body = body or {}
+    u, err = require_role(3)
+    if err:
+        return err
+    if u["role"] not in ("trener", "admin"):
+        return {"error": "samo trener ili admin odobrava izvještaje", "code": 403}
+    new = body.get("status")
+    if new not in ("odobren", "odbijen", "skica"):
+        return {"error": "nedozvoljen status"}
+    con = db()
+    con.execute("UPDATE reports SET status=?, decided_by=?, decided_at=?, note=? WHERE id=?",
+                (new, u["username"], datetime.now().isoformat(timespec="seconds"),
+                 body.get("note", ""), int(body.get("id", 0))))
+    con.commit(); con.close()
+    return {"ok": True}
+
+@route("POST", r"/api/reports/delete")
+def api_reports_delete(m, qs, body=None):
+    body = body or {}
+    u, err = require_role(3)
+    if err:
+        return err
+    con = db()
+    con.execute("DELETE FROM reports WHERE id=?", (int(body.get("id", 0)),))
+    con.commit(); con.close()
+    return {"ok": True}
+
+# ------------------------------ 2.1: WELLNESS --------------------------------
+@route("GET", r"/api/wellness")
+def api_wellness(m, qs):
+    if qs.get("athlete"):
+        rows = q("SELECT * FROM wellness_log WHERE athlete=? ORDER BY wdate DESC LIMIT 30",
+                 (int(qs["athlete"]),))
+        return {"items": [dict(r) for r in rows]}
+    if qs.get("club"):
+        rows = q("""SELECT w.*, a.name, a.position FROM wellness_log w JOIN athletes a ON a.id=w.athlete
+                    WHERE a.club=? AND w.wdate>=? ORDER BY w.wdate DESC LIMIT 200""",
+                 (qs["club"], (date.today() - timedelta(days=2)).isoformat()))
+        seen = {}
+        for r in rows:
+            seen.setdefault(r["athlete"], dict(r))
+        return {"items": list(seen.values())}
+    return {"items": []}
+
+@route("POST", r"/api/wellness")
+def api_wellness_post(m, qs, body=None):
+    body = body or {}
+    u, err = require_role(1)
+    if err:
+        return err
+    aid = int(body.get("athlete", 0))
+    if not aid:
+        return {"error": "nedostaje athlete"}
+    if u["role"] == "sportas" and u.get("athlete") != aid:
+        return {"error": "sportaš upisuje samo svoje zapise", "code": 403}
+    d = body.get("wdate") or date.today().isoformat()
+    con = db()
+    con.execute("""INSERT INTO wellness_log (athlete, wdate, sleep_h, sleep_q, soreness,
+        mood, stress, energy, notes) VALUES (?,?,?,?,?,?,?,?,?)""",
+        (aid, d, body.get("sleep_h"), body.get("sleep_q"), body.get("soreness"),
+         body.get("mood"), body.get("stress"), body.get("energy"), body.get("notes", "")))
+    con.commit(); con.close()
+    return {"ok": True}
+
+# ------------------------------ 2.1: ANALIZE ---------------------------------
+@route("GET", r"/api/analysis/correlations")
+def api_corr(m, qs):
+    sport = qs.get("sport", "nogomet")
+    rows = q("""SELECT AVG(json_extract(metrics,'$.dist_total')) dist,
+                       AVG(json_extract(metrics,'$.srpe')) srpe,
+                       AVG(json_extract(metrics,'$.hr_avg')) hr,
+                       AVG(json_extract(metrics,'$.readiness')) rd,
+                       AVG(json_extract(metrics,'$.sprints')) spr
+                FROM sessions s JOIN athletes a ON a.id=s.athlete
+                WHERE a.sport=? GROUP BY s.athlete""", (sport,))
+    data = [tuple(r) for r in rows if all(v is not None for v in tuple(r))]
+    names = ["km/sesiji", "opterećenje", "puls", "spremnost", "sprintevi"]
+
+    def pearson(xs, ys):
+        n = len(xs)
+        mx = sum(xs) / n; my = sum(ys) / n
+        a = sum((x - mx) * (y - my) for x, y in zip(xs, ys))
+        b = sum((x - mx) ** 2 for x in xs)
+        c = sum((y - my) ** 2 for y in ys)
+        return a / math.sqrt(b * c) if b > 0 and c > 0 else 0.0
+
+    matrix = [[round(pearson([d[i] for d in data], [d[j] for d in data]), 2)
+               for j in range(5)] for i in range(5)]
+    return {"names": names, "matrix": matrix, "n": len(data), "sport": sport}
+
+@route("GET", r"/api/analysis/calendar")
+def api_cal(m, qs):
+    aid = int(qs.get("athlete", 1))
+    since = (date.today() - timedelta(days=182)).isoformat()
+    out = {}
+    for r in q("""SELECT sdate, stype, json_extract(metrics,'$.dist_total') km,
+                         json_extract(metrics,'$.srpe') au FROM sessions
+                  WHERE athlete=? AND sdate>=?""", (aid, since)):
+        d = out.setdefault(r["sdate"], {"km": 0.0, "au": 0.0, "types": set()})
+        d["km"] += r["km"] or 0
+        d["au"] += r["au"] or 0
+        d["types"].add(r["stype"])
+    return {"athlete": aid, "days": {d: {"km": round(v["km"], 2), "au": round(v["au"]),
+            "t": ",".join(sorted(v["types"]))} for d, v in out.items()}}
+
+# ------------------------------ 2.1: LIVE ALARMI -----------------------------
+@route("GET", r"/api/live/alerts")
+def api_live_alerts(m, qs):
+    live_tick()
+    with _live_lock:
+        mid = LIVE["match"]
+        fr = MATCHES.get(mid)
+        if not fr:
+            return {"alerts": []}
+        t = min(LIVE["t"], fr["meta"]["duration"] - 1.001)
+        i = max(0, int(t))
+        cum = LIVE_CUM[mid]
+        alerts = []
+        for pi, p in enumerate(fr["players"]):
+            cd, ct, cs, sp = cum[pi]
+            spd = sp[min(i, len(sp) - 1)] * 3.6
+            target = (82 + spd * 12) if p["role"] != "GK" else (78 + spd * 9)
+            hr = max(LIVE["hr"].get((mid, pi), 0), min(201, target + math.sin(t / 60 + pi) * 3))
+            batt = max(35, 100 - (t / fr["meta"]["duration"]) * 26 - (p["aid"] % 7))
+            if hr > 194:
+                alerts.append({"sev": "red", "txt": f"{p['name']} — puls {int(hr)} bpm (zona 5 — provjeriti!)"})
+            elif hr > 185 and int(t) % 3 == 0:
+                alerts.append({"sev": "amber", "txt": f"{p['name']} — puls {int(hr)} bpm (zona 4)"})
+            if ct[i] and ct[i] > 31:
+                alerts.append({"sev": "amber", "txt": f"{p['name']} — max brzina {ct[i]:.0f} km/h"})
+            if cs[i] >= 9:
+                alerts.append({"sev": "amber", "txt": f"{p['name']} — {cs[i]} sprinteva (umorski rizik)"})
+            if batt < 40:
+                alerts.append({"sev": "amber", "txt": f"{p['name']} — baterija čipa {batt:.0f}%"})
+        alerts.sort(key=lambda a: 0 if a["sev"] == "red" else 1)
+        return {"t": round(t, 1), "alerts": alerts[:18]}
+
+# ------------------------------ 2.1: OBAVIJESTI ------------------------------
+@route("GET", r"/api/notifications")
+def api_notifications(m, qs):
+    since = (date.today() - timedelta(days=3)).isoformat()
+    items = []
+    for r in q("""SELECT an.*, a.name FROM anomalies an JOIN athletes a ON a.id=an.athlete
+                  WHERE an.adate>=? ORDER BY an.adate DESC LIMIT 10""", (since,)):
+        items.append({"id": f"anom-{r['id']}",
+                      "sev": "red" if r["severity"] == "kritično" else "amber",
+                      "txt": f"{r['name']}: {r['category']}", "date": r["adate"],
+                      "link": f"karton/{r['athlete']}"})
+    for r in q("SELECT * FROM injuries WHERE status='aktivna' ORDER BY idate DESC LIMIT 5"):
+        a = q1("SELECT name, id FROM athletes WHERE id=?", (r["athlete"],))
+        if a:
+            items.append({"id": f"inj-{r['id']}", "sev": "red",
+                          "txt": f"{a['name']}: {r['itype']} ({r['body_part']})",
+                          "date": r["idate"], "link": "injuries"})
+    u = current_user()
+    if u and u["role"] in ("trener", "admin"):
+        for r in q("SELECT * FROM reports WHERE status='skica' ORDER BY created_at DESC LIMIT 6"):
+            items.append({"id": f"rep-{r['id']}", "sev": "blue",
+                          "txt": f"Izvještaj čeka odobrenje: {r['title']}",
+                          "date": (r["created_at"] or "")[:10], "link": "izvjestaji"})
+    return {"items": items[:18], "n": len(items)}
+
+
+
+# ------------------------------ 2.2: ACHIEVEMENTI / ADMIN --------------------
+@route("GET", r"/api/athletes/(?P<aid>\d+)/achievements")
+def api_achievements(m, qs):
+    aid = int(m["aid"])
+    a = q1("SELECT * FROM athletes WHERE id=?", (aid,))
+    if not a:
+        return {"error": "nema"}
+    out = []
+    r = q1("""SELECT sdate d, json_extract(metrics,'$.top_speed') v FROM sessions
+              WHERE athlete=? AND json_extract(metrics,'$.top_speed') IS NOT NULL
+              ORDER BY v DESC LIMIT 1""", (aid,))
+    if r and r["v"]:
+        out.append({"ico": "⚡", "t": "Najbrži izmjereni sprint", "v": f"{r['v']:.1f} km/h", "d": r["d"]})
+    r = q1("""SELECT sdate d, json_extract(metrics,'$.dist_total') v FROM sessions
+              WHERE athlete=? AND json_extract(metrics,'$.dist_total') IS NOT NULL
+              ORDER BY v DESC LIMIT 1""", (aid,))
+    if r and r["v"]:
+        out.append({"ico": "🏃", "t": "Najduža sesija", "v": f"{r['v']:.1f} km", "d": r["d"]})
+    r = q1("""SELECT tdate d, results FROM perf_tests WHERE athlete=? AND ttype='cmj'
+              ORDER BY json_extract(results,'$.value') DESC LIMIT 1""", (aid,))
+    if r and r["results"]:
+        try:
+            v = json.loads(r["results"]).get("value")
+            out.append({"ico": "🦘", "t": "Najbolji CMJ skok", "v": f"{v:.0f} cm", "d": r["d"]})
+        except Exception:
+            pass
+    tot = q1("SELECT SUM(json_extract(metrics,'$.dist_total')) v FROM sessions WHERE athlete=?", (aid,))["v"] or 0
+    for milestone, lbl in [(100, "100 km"), (500, "500 km"), (1000, "1000 km"), (2000, "2000 km")]:
+        if tot >= milestone:
+            out.append({"ico": "🏅", "t": f"Kilometarska medalja — {lbl}", "v": f"ukupno {tot:.0f} km", "d": "karijera"})
+    dates = [r["sdate"] for r in q("SELECT DISTINCT sdate FROM sessions WHERE athlete=? ORDER BY sdate DESC LIMIT 60", (aid,))]
+    streak = 0
+    if dates:
+        from datetime import date as _d
+        cur = _d.today()
+        for s in dates:
+            dd = _d.fromisoformat(s)
+            if (cur - dd).days <= 1:
+                streak += 1
+                cur = dd
+            else:
+                break
+    if streak >= 3:
+        out.append({"ico": "🔥", "t": "Niz uzastopnih dana", "v": f"{streak} dana za redom", "d": "aktualno"})
+    n_match = q1("SELECT COUNT(*) c FROM sessions WHERE athlete=? AND stype='match'", (aid,))["c"]
+    if n_match:
+        out.append({"ico": "⚽", "t": "Odigranih utakmica s SPT čipom", "v": str(n_match), "d": "karijera"})
+    return {"items": out}
+
+@route("GET", r"/api/admin/backup")
+def api_admin_backup(m, qs):
+    u, err = require_role(5)
+    if err:
+        return err
+    con = sqlite3.connect(DB_PATH)
+    try:
+        data = con.serialize()
+    finally:
+        con.close()
+    return ("application/x-sqlite3", bytes(data), f"spt_backup_{date.today().isoformat()}.db")
+
+@route("POST", r"/api/admin/reseed")
+def api_admin_reseed(m, qs, body=None):
+    u, err = require_role(5)
+    if err:
+        return err
+    for suf in ("", "-wal", "-shm"):
+        try:
+            os.remove(DB_PATH + suf)
+        except FileNotFoundError:
+            pass
+    import seed
+    seed.main()
+    migrate_21()
+    global SPORT_COUNT
+    SPORT_COUNT = {}
+    for r in q("SELECT sport, COUNT(*) n FROM athletes GROUP BY sport"):
+        SPORT_COUNT[r["sport"]] = r["n"]
+    load_matches()
+    build_index()
+    return {"ok": True, "athletes": SPORT_COUNT and sum(SPORT_COUNT.values())}
+
+# ---------------------------------------------------------------------------
+# MIGRACIJA 2.1 — izvještaji + wellness
+# ---------------------------------------------------------------------------
+def migrate_21():
+    con = db()
+    try:
+        con.execute("""CREATE TABLE IF NOT EXISTS reports (
+            id INTEGER PRIMARY KEY, kind TEXT, title TEXT, club TEXT, athlete INTEGER,
+            params TEXT, payload TEXT, status TEXT DEFAULT 'skica',
+            created_by TEXT, created_at TEXT, decided_by TEXT, decided_at TEXT, note TEXT)""")
+        con.execute("""CREATE TABLE IF NOT EXISTS wellness_log (
+            id INTEGER PRIMARY KEY, athlete INTEGER, wdate TEXT, sleep_h REAL,
+            sleep_q INTEGER, soreness INTEGER, mood INTEGER, stress INTEGER,
+            energy INTEGER, notes TEXT)""")
+        con.commit()
+        n = con.execute("SELECT COUNT(*) FROM wellness_log").fetchone()[0]
+        if n == 0:
+            rng = random.Random(4242)
+            ath = con.execute("SELECT id FROM athletes").fetchall()
+            today = date.today()
+            rows = []
+            for a in ath:
+                rd0 = rng.uniform(52, 93)
+                for i in range(20, -1, -1):
+                    d = (today - timedelta(days=i)).isoformat()
+                    rd = max(30, min(100, rd0 + rng.uniform(-9, 9)))
+                    sleep_h = round(max(4.5, min(10.5, 7.6 + (rd - 70) / 18 + rng.uniform(-1.1, 1.1))), 1)
+                    sleep_q = int(max(1, min(5, 1 + (rd - 30) / 18 + rng.uniform(-0.8, 0.8))))
+                    soreness = int(max(1, min(5, 4.2 - (rd - 30) / 22 + rng.uniform(-0.9, 0.9))))
+                    mood = int(max(1, min(5, 1 + (rd - 30) / 20 + rng.uniform(-0.8, 0.8))))
+                    stress = int(max(1, min(5, 4.0 - (rd - 30) / 22 + rng.uniform(-0.9, 0.9))))
+                    energy = int(max(1, min(5, 1 + (rd - 30) / 19 + rng.uniform(-0.8, 0.8))))
+                    rows.append((a["id"], d, sleep_h, sleep_q, soreness, mood, stress, energy, ""))
+            con.executemany("""INSERT INTO wellness_log (athlete, wdate, sleep_h, sleep_q,
+                soreness, mood, stress, energy, notes) VALUES (?,?,?,?,?,?,?,?,?)""", rows)
+            con.commit()
+            print(f"[SPT] Wellness backfill: {len(rows)} jutarnjih zapisa")
+    finally:
+        con.close()
+
 # ---------------------------------------------------------------------------
 # HTTP POSTRUŽITELJ
 # ---------------------------------------------------------------------------
@@ -1626,6 +1970,7 @@ class Handler(BaseHTTPRequestHandler):
 
 def main():
     ensure_db()
+    migrate_21()
     for r in q("SELECT sport, COUNT(*) n FROM athletes GROUP BY sport"):
         SPORT_COUNT[r["sport"]] = r["n"]
     print("[SPT] Učitavam utakmice i analitički indeks...")

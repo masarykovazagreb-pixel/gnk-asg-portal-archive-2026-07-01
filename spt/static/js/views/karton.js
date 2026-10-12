@@ -98,6 +98,23 @@ VIEWS.karton = {
     row1.append(bcCard);
     cont.append(row1);
 
+    // ============ ACHIEVEMENTI (medalje) ============
+    try {
+      const ach = await API.get(`/api/athletes/${sub}/achievements`);
+      if (ach.items && ach.items.length) {
+        const aCard = el("div", "card");
+        aCard.style.marginTop = "14px";
+        aCard.innerHTML = `<h3>🏅 Medalje i rekordi</h3>`;
+        const arow = el("div", "pill-row");
+        for (const a of ach.items) {
+          arow.append(el("div", "chip ach-chip",
+            `<span style="font-size:17px">${a.ico}</span> <b>${esc(a.v)}</b> <span class="faint">${esc(a.t)}</span>`));
+        }
+        aCard.append(arow);
+        cont.append(aCard);
+      }
+    } catch (e) {}
+
     // ============ RED 2: kronologija + tjedno opterećenje ============
     const row2 = el("div", "grid g2"); row2.style.marginTop = "14px";
 
@@ -120,6 +137,59 @@ VIEWS.karton = {
     if (!events.length) tl.append(el("div", "muted", "Prazna kronologija."));
     tlCard.append(tl);
     row2.append(tlCard);
+
+    // --- WELLNESS (jutarnji upitnik + trend) ---
+    const wlCard = el("div", "card");
+    wlCard.innerHTML = `<h3>🧘 Wellness — jutarnji upitnik (21 dan)</h3>`;
+    try {
+      const wl = await API.get(`/api/wellness?athlete=${sub}`);
+      const items = wl.items || [];
+      if (items.length) {
+        const wlBox = el("div", "chartbox"); const wlCv = el("canvas", "chart"); wlBox.append(wlCv);
+        wlCard.append(wlBox);
+        const chrono = [...items].reverse();
+        requestAnimationFrame(() => lineChart(wlCv, {
+          labels: chrono.map(x => x.wdate.slice(5)),
+          series: [
+            { name: "kvaliteta sna", color: "#4f8cff", values: chrono.map(x => x.sleep_q) },
+            { name: "raspoloženje", color: "#a3e635", values: chrono.map(x => x.mood) },
+            { name: "energija", color: "#38d6f5", values: chrono.map(x => x.energy) },
+            { name: "bolnost (niže=bolje)", color: "#ff5a5f", values: chrono.map(x => x.soreness) }
+          ]
+        }));
+        const last = items[0];
+        wlCard.append(el("div", "mini-stat", `<span>Zadnje jutro (${fmtD(last.wdate)})</span>
+          <b>san ${fmtN(last.sleep_h)} h · kvaliteta ${last.sleep_q}/5 · bolnost ${last.soreness}/5 · energija ${last.energy}/5</b>`));
+      } else {
+        wlCard.append(el("div", "muted", "Nema wellness zapisa."));
+      }
+    } catch (e) { wlCard.append(el("div", "muted", "Wellness nedostupan.")); }
+    // forma za upis
+    const wlForm = el("details");
+    wlForm.innerHTML = `<summary style="cursor:pointer;font-size:12.5px;color:var(--accent)">➕ Upiši današnji jutarnji upitnik</summary>`;
+    const fw = el("div", "ctrl-row"); fw.style.cssText = "flex-wrap:wrap;gap:10px;margin-top:10px";
+    const fields = [["sleep_h", "San (h)", "number", 7.5, 0.5], ["sleep_q", "Kvaliteta sna (1-5)", "number", 4, 1],
+      ["soreness", "Bolnost mišića (1-5)", "number", 2, 1], ["mood", "Raspoloženje (1-5)", "number", 4, 1],
+      ["stress", "Stres (1-5)", "number", 2, 1], ["energy", "Energija (1-5)", "number", 4, 1]];
+    const inputs = {};
+    for (const [k2, l2, tp, dv, st] of fields) {
+      const la = el("label", "fld", l2); la.style.minWidth = "120px";
+      const inp = el("input"); inp.type = tp; inp.value = dv; inp.step = st; inp.min = 0; inp.max = 5;
+      la.append(inp); fw.append(la); inputs[k2] = inp;
+    }
+    const wlBtn = el("div", "btn sm", "💾 Spremi zapis");
+    wlBtn.onclick = async () => {
+      const body = { athlete: +sub };
+      for (const k2 in inputs) body[k2] = +inputs[k2].value;
+      const r = await API.post("/api/wellness", body);
+      if (r.error) { toast(r.error); return; }
+      toast("Wellness zapis spremljen ✓");
+      VIEWS.karton.render(cont, sub);
+    };
+    fw.append(wlBtn);
+    wlForm.append(fw);
+    wlCard.append(wlForm);
+    row2.append(wlCard);
 
     // --- tjedno opterećenje + kalendar ---
     const loadCard = el("div", "card");

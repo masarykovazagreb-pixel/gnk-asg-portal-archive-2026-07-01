@@ -1,5 +1,7 @@
 # 📡 SPT — Sports Performance Tracking
 
+> **produced by GNK ASG** · gnk-asg.hr
+
 **Vrhunski sustav za praćenje sportskih performansi za Windows 11** — praćenje uživo (GPS / UWB-M2M / BLE),
 reprodukcija utakmica u **2D i 3D** (točkice po terenu, obje momčadi, svaki igrač), analize i usporedbe
 **1 423 sportaša iz cijelog svijeta**, simulacije **unatrag i unaprijed**, katalog **75 sportova**,
@@ -165,3 +167,74 @@ Slobodno se dodaje na javni domen — ne dira aplikaciju.
 Na svakom uređaju stoji **SPT**: grudnjak M1 (muški) i W1 (ženski), Pod S1 (GNSS + IMU 1000 Hz + UWB, IP67),
 Watch A1 (AMOLED, BYOD), Anchor A8 (UWB ±10 cm, 20 Hz, PoE), Edge One (rubni server 18k poruka/s),
 Scale B1 (BIA vaga, 8 elektroda) i Strap H2 (ECG pojas s HRV-om).
+
+---
+
+## 🛰️ SPT 2.2 — Kontrolna soba + 50 mogućnosti
+
+### Kontrolna soba (`#soba`)
+Do **9 live ploča na jednom ekranu** (2×2 / 3×2 / 3×3) — svaka ploča je samostalan live prikaz koji biraš iz padajućeg izbornika:
+
+tereni (sve / domaći / gosti), praćenje igrača s tragom i strelicom smjera, **heatmap uživo**, **usporedba dva igrača**
+(svaki na svojoj polovini ekrana + live statistika s osvajačem), puls zone, najbrži sada, alarmi, događaji, semafor.
+Zvuk na crvene alarmi, fullscreen, raspored se pamti.
+
+### 50 mogućnosti (✅ = implementirano)
+
+| # | Mogućnost | |
+|---|---|---|
+| 1 | Multi-panel live grid do 9 ploča | ✅ |
+| 2 | Biranje sadržaja svake ploče | ✅ |
+| 3 | Split-screen usporedba 2 igrača | ✅ |
+| 4 | Live trag kretanja (trail) igrača | ✅ |
+| 5 | Strelica smjera i brzine iznad igrača | ✅ |
+| 6 | Live heatmap terena | ✅ |
+| 7 | Info-box s metrikama praćenog igrača | ✅ |
+| 8 | Prikaz samo jedne momčadi | ✅ |
+| 9 | Zvučni alarm na crvene događaje | ✅ |
+| 10 | Fullscreen / TV način | ✅ |
+| 11 | Spremanje rasporeda ploča | ✅ |
+| 12 | Live puls zone momčadi | ✅ |
+| 13 | Ljestvica "najbrži sada" uživo | ✅ |
+| 14 | Alarmi uživo (puls zona 5, sprintevi, baterija) | ✅ |
+| 15 | Live semafor + sat | ✅ |
+| 16 | Feed događaja uživo (golovi…) | ✅ |
+| 17 | Komandna paleta Ctrl+K (sportaši/klubovi/ekrani) | ✅ |
+| 18 | Zvono s obavijestima (anomalije/ozljede/izvještaji) | ✅ |
+| 19 | Wellness jutarnji upitnik (san/bolnost/raspoloženje/energija/stres) | ✅ |
+| 20 | Wellness trend graf u kartonu | ✅ |
+| 21 | 7 vrsta izvještaja (sportaš/klub/spremnost/ozljede/testovi/utakmica/sastav) | ✅ |
+| 22 | Tijek odobravanja izvještaja (skica → odobren/odbijen) | ✅ |
+| 23 | Ispis izvještaja / spremanje kao PDF | ✅ |
+| 24 | Matrica korelacija metrika (Pearson) | ✅ |
+| 25 | Kalendar aktivnosti (GitHub-style, 26 tjedana) | ✅ |
+| 26 | Achievementi/medalje u kartonu (sprint, km medalje, streak) | ✅ |
+| 27 | Svijetla tema | ✅ |
+| 28 | TV način (veliki prikaz za ekrane u svlačionici) | ✅ |
+| 29 | Tipkovničke kratice + pomoć na "?" | ✅ |
+| 30 | Sigurnosna kopija baze (admin, .db download) | ✅ |
+| 31 | Reset/regeneracija baze (admin) | ✅ |
+| 32 | Auto-restart servera u start_windows.bat | ✅ |
+| 33 | Prečica na radnoj površini (SPT-prečica.bat) | ✅ |
+| 34 | ACWR (akutno/kronično opterećenje) u izvještajima | ✅ |
+| 35 | Rang-lista rizika ozljede po klubu | ✅ |
+| 36 | Preporuke u svakom izvještaju (na temelju podataka) | ✅ |
+| 37 | SPT AI asistent s cijelom bazom | ✅ |
+| 38 | BioSenzor (glas/disanje/HRV) | ✅ |
+| 39 | Uvoz GPX/TCX/CSV/KINEXON + vaga + satovi | ✅ |
+| 40 | Automatski uvoz s vage (scale_inbox) | ✅ |
+| 41 | Most za satove UDP :1520 | ✅ |
+| 42 | 10 jezika sučelja + marketing na 24 jezika | ✅ |
+| 43 | Live mreža ~70 000 sportaša s feedom | ✅ |
+| 44 | Uloge i prava (admin/trener/kondicijski/skaut/sportaš) | ✅ |
+| 45 | Karton s normama, kronologijom, testovima | ✅ |
+| 46 | Reprodukcija utakmica 2D/3D unatrag/unaprijed | ✅ |
+| 47 | Simulacije (rekonstrukcija + projekcija + WHAT-IF) | ✅ |
+| 48 | Rasporedi na više ploča 2×2/3×2/3×3 | ✅ |
+| 49 | Potpuno offline — čisti Python stdlib, nula ovisnosti | ✅ |
+| 50 | Marketinška stranica za gnk-asg.hr | ✅ |
+
+### Windows 11
+- `start_windows.bat` — pokreće SPT i **sam se resetira** ako padne
+- `SPT-prečica.bat` — stvara prečicu na radnoj površini
+- Radi offline; preglednik se sam otvara na `http://localhost:8000`

@@ -67,7 +67,10 @@ VIEWS.live = {
     cv.style.height = "auto";
     cv.style.aspectRatio = "105 / 78";
     pitchCard.append(cv);
-    left.append(sbCard, pitchCard);
+    const zoneCard = el("div", "card");
+    zoneCard.innerHTML = `<h3>❤️ Zone pulsa momčadi</h3><div id="lvZones" class="zone-wrap"></div>
+      <hr class="sep"><h3>⚡ Najbrži sada</h3><div id="lvFast"></div>`;
+    left.append(sbCard, pitchCard, zoneCard);
 
     // signal panel
     const sigCard = el("div", "card");
@@ -77,7 +80,10 @@ VIEWS.live = {
     // feed događaja
     const evCard = el("div", "card");
     evCard.innerHTML = `<h3>⚡ Događaji</h3><div class="event-feed" id="lvEvents"></div>`;
-    right.append(sigCard, evCard);
+    const alertCard = el("div", "card");
+    alertCard.innerHTML = `<h3>🚨 Alarmi uživo <span class="live-dot" style="margin-left:6px"></span></h3>
+      <div id="lvAlerts" class="alert-feed"></div>`;
+    right.append(alertCard, sigCard, evCard);
 
     // tablica statistike
     const statsCard = el("div", "card");
@@ -180,6 +186,24 @@ VIEWS.live = {
       // tablica
       const rows2 = [...fr.players];
       rows2.sort((a, b) => (a[self.sortKey] ?? 0) < (b[self.sortKey] ?? 0) ? self.sortDir : -self.sortDir);
+      // zone pulsa + najbrži
+      const zones = [0, 0, 0, 0, 0];
+      for (const p of fr.players) zones[p.hr >= 180 ? 4 : p.hr >= 160 ? 3 : p.hr >= 140 ? 2 : p.hr >= 120 ? 1 : 0]++;
+      const zc = ["#3aa0ff", "#38d6f5", "#a3e635", "#fbbf24", "#ff5a5f"];
+      const zEl = document.getElementById("lvZones");
+      if (zEl) zEl.innerHTML = zones.map((n, i) => `
+        <div class="zone-bar"><span class="zlbl">Z${i + 1}</span>
+          <div class="zb"><i style="width:${Math.round(100 * n / Math.max(1, fr.players.length))}%;background:${zc[i]}"></i></div>
+          <b>${n}</b></div>`).join("");
+      const fEl = document.getElementById("lvFast");
+      if (fEl) {
+        const top = [...fr.players].sort((a, b) => b.speed - a.speed).slice(0, 5);
+        const mx = Math.max(1, top[0] ? top[0].speed : 1);
+        fEl.innerHTML = top.map(p => `
+          <div class="zone-bar"><span class="zlbl" style="width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(p.name)}</span>
+            <div class="zb"><i style="width:${Math.round(100 * p.speed / mx)}%;background:var(--accent2)"></i></div>
+            <b>${fmtN(p.speed)}</b></div>`).join("");
+      }
       tb.innerHTML = rows2.map(p => `
         <tr>
           <td class="muted mono">${p.num}</td>
@@ -195,9 +219,20 @@ VIEWS.live = {
         </tr>`).join("");
     }
 
+    async function pollAlerts() {
+      let a;
+      try { a = await API.get("/api/live/alerts"); } catch (e) { return; }
+      const elx = document.getElementById("lvAlerts");
+      if (!elx) return;
+      elx.innerHTML = (a.alerts || []).length
+        ? a.alerts.map(x => `<div class="alert-item ${x.sev}"><span class="ai">${x.sev === "red" ? "🔴" : "🟡"}</span> ${esc(x.txt)}</div>`).join("")
+        : '<div class="muted" style="font-size:12px">Nema aktivnih alarma — sve uredno ✓</div>';
+    }
+
     init();
     this.timers.push(setInterval(poll, 500));
-    poll();
+    this.timers.push(setInterval(pollAlerts, 1500));
+    poll(); pollAlerts();
   },
   destroy() {
     this.timers.forEach(clearInterval);

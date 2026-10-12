@@ -234,3 +234,143 @@ hr.sep{border:none; border-top:1px solid var(--border); margin:14px 0}
   display:flex;gap:22px;align-items:center;flex-wrap:wrap;justify-content:space-between}
 .hero-net .big{font-size:26px;font-weight:900;font-variant-numeric:tabular-nums}
 .hero-net .lbl{font-size:11px;color:var(--dim);letter-spacing:.5px}
+
+/* ================= SPT 2.1 — alarmi, zone, izvještaji, paleta, wellness ================= */
+.alert-feed{display:flex;flex-direction:column;gap:6px;max-height:260px;overflow-y:auto}
+.alert-item{font-size:12px;padding:7px 10px;border-radius:9px;background:#141d2c;border-left:3px solid var(--amber);animation:fadeIn .25s}
+.alert-item.red{border-left-color:var(--red);background:#241318}
+.alert-item .ai{margin-right:4px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1}}
+.zone-wrap{display:flex;flex-direction:column;gap:5px}
+.zone-bar{display:flex;align-items:center;gap:8px;font-size:11.5px}
+.zone-bar .zlbl{width:26px;color:var(--dim);font-weight:700;text-align:right;flex-shrink:0}
+.zone-bar .zb{flex:1;height:9px;background:#0a1322;border-radius:99px;overflow:hidden}
+.zone-bar .zb i{display:block;height:100%;border-radius:99px;transition:width .5s}
+.zone-bar b{width:22px;text-align:right;flex-shrink:0}
+
+/* zvono s obavijestima */
+.notif-bell{position:relative;cursor:pointer;font-size:16px;line-height:1;padding:6px 8px;border-radius:10px;border:1px solid #27395a;background:#15202f;margin-right:2px;user-select:none}
+.notif-bell:hover{border-color:var(--accent)}
+.notif-bell .ndot{position:absolute;top:-4px;right:-4px;background:var(--red);color:#fff;font-size:9px;font-weight:800;min-width:15px;height:15px;border-radius:99px;display:flex;align-items:center;justify-content:center;padding:0 3px}
+.notif-it{display:flex;gap:9px;align-items:flex-start;padding:8px 6px;border-bottom:1px solid #14203344;cursor:pointer;border-radius:8px}
+.notif-it:hover{background:#141f30}
+.notif-it.unread{background:#10233a55}
+.ni-dot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.ni-dot.red{background:var(--red)}.ni-dot.amber{background:var(--amber)}.ni-dot.blue{background:var(--blue)}
+
+/* komandna paleta (Ctrl+K) */
+.palette{position:fixed;inset:0;background:#04070ccc;z-index:100;display:flex;justify-content:center;padding-top:12vh;backdrop-filter:blur(3px)}
+.pal-box{width:min(640px,92vw);background:#0d1522;border:1px solid #27395a;border-radius:16px;overflow:hidden;height:fit-content;box-shadow:0 20px 60px #000a}
+.pal-head{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid #1c2940;font-size:16px}
+.pal-head input{flex:1;background:none;border:none;outline:none;color:var(--text);font-size:15px}
+.pal-res{max-height:50vh;overflow-y:auto;padding:6px}
+.pal-it{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:10px;cursor:pointer;font-size:13.5px}
+.pal-it:hover{background:#16233a}
+.pal-it .meta{color:var(--faint);font-size:11.5px;margin-left:auto}
+.pal-hint{padding:12px;color:var(--faint);font-size:12.5px}
+
+/* kalendar aktivnosti */
+.cal-grid{display:grid;grid-template-rows:repeat(7,13px);grid-auto-flow:column;gap:3px;overflow-x:auto;padding:4px 0}
+.cal-cell{width:13px;height:13px;border-radius:3px;background:#0d141f;border:1px solid #1a2536}
+.cal-legend{display:flex;gap:14px;align-items:center;margin-top:10px;font-size:11px;color:var(--dim);flex-wrap:wrap}
+.cal-legend .cal-cell{display:inline-block;vertical-align:middle}
+
+/* izvještaji — modal + ispis */
+.modal-bg{position:fixed;inset:0;background:#04070ce0;z-index:85;overflow-y:auto;padding:30px 16px;display:flex;flex-direction:column;align-items:center}
+.print-area{width:min(860px,100%);background:#fff;color:#111826;border-radius:14px;padding:38px 44px;font-size:13.5px;box-shadow:0 24px 80px #000c}
+.print-area h1{font-size:24px;margin:6px 0 2px;letter-spacing:-.5px}
+.print-area h3{font-size:15px;margin:0 0 10px;color:#0b3a53;border-bottom:2px solid #e1e8f0;padding-bottom:5px}
+.rep-brand{font-size:11px;font-weight:800;letter-spacing:2px;color:#0e7490;text-transform:uppercase}
+.rep-sub{color:#4b5a70;font-size:13px;margin-top:2px}
+.rep-gen{color:#8a97a8;font-size:11px;margin:6px 0 18px}
+.rep-kpis{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+.rep-kpi{flex:1;min-width:120px;background:#f2f6fa;border:1px solid #e1e8f0;border-radius:10px;padding:10px 12px}
+.rep-kpi .v{font-size:18px;font-weight:900;color:#0b3a53}
+.rep-kpi .l{font-size:10.5px;color:#66788e;margin-top:2px;letter-spacing:.4px;text-transform:uppercase}
+.rep-sec{margin-bottom:20px}
+.rep-sec .chartbox{height:190px;background:#fff;border:1px solid #e1e8f0}
+.rep-sec .chart{width:100%;height:100%}
+.rep-tbl{width:100%;border-collapse:collapse;font-size:12px}
+.rep-tbl th{background:#eef3f8;color:#33455c;text-align:left;padding:6px 9px;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+.rep-tbl td{padding:6px 9px;border-bottom:1px solid #e8edf3;color:#222d3d}
+.rep-rec{padding:7px 12px;background:#f0faf1;border:1px solid #d3ecd6;border-radius:9px;margin-bottom:7px;font-size:12.5px}
+.rep-foot{margin-top:24px;text-align:center;color:#9aa7b8;font-size:10.5px;border-top:1px solid #e5eaf0;padding-top:12px}
+.rep-btns{display:flex;gap:10px;margin-top:14px;width:min(860px,100%);flex-wrap:wrap}
+.no-print{display:flex}
+.corr-tbl td,.corr-tbl th{text-align:center;font-size:12px}
+.corr-tbl th:first-child,.corr-tbl td:first-child{text-align:left}
+
+@media print{
+  body{background:#fff}
+  body *{visibility:hidden}
+  .modal-bg{position:static;background:none;padding:0;overflow:visible}
+  .print-area,.print-area *{visibility:visible}
+  .print-area{width:100%;border-radius:0;padding:0;box-shadow:none}
+  .no-print{display:none !important}
+  .rep-sec{page-break-inside:avoid}
+}
+
+/* ================= SPT 2.2 — kontrolna soba, split usporedba, light tema, TV ================= */
+.soba-grid{display:grid;gap:12px;margin-top:12px}
+.soba-grid.g4{grid-template-columns:1fr 1fr}
+.soba-grid.g6{grid-template-columns:repeat(3,1fr)}
+.soba-grid.g9{grid-template-columns:repeat(3,1fr)}
+@media(max-width:1100px){.soba-grid.g6,.soba-grid.g9{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.soba-grid{grid-template-columns:1fr !important}}
+.soba-tile{display:flex;flex-direction:column;gap:8px;padding:12px;min-height:300px}
+.soba-head{display:flex;gap:8px;align-items:center}
+.soba-head select{flex:1;background:var(--panel3);border:1px solid var(--border);color:var(--text);border-radius:9px;padding:5px 8px;font-size:12px}
+.soba-x{cursor:pointer;color:var(--faint);padding:3px 8px;border-radius:8px;font-weight:900}
+.soba-x:hover{color:var(--red);background:#241318}
+.soba-body{flex:1;display:flex;flex-direction:column;gap:8px;min-height:0}
+.soba-pick{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:12px}
+.soba-pick select{background:var(--panel3);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:4px 6px;font-size:11.5px;max-width:150px}
+.soba-cvwrap{display:grid;grid-template-columns:1fr 1fr;gap:6px;flex:1;min-height:170px}
+.soba-tile:not(:has(.soba-cvwrap)) .soba-cvwrap{display:none}
+.soba-cv{width:100%;height:100%;min-height:170px;background:#0a111c;border-radius:8px;border:1px solid var(--border)}
+.soba-note{font-size:11px}
+.soba-score{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;flex:1}
+.sc-big{display:flex;align-items:center;gap:14px}
+.sc-num{font-size:44px;font-weight:900;font-variant-numeric:tabular-nums}
+.sc-team{font-size:11px;font-weight:800;letter-spacing:1px}
+.sc-clock{font-size:26px;font-weight:800;color:var(--accent)}
+.sc-sport{font-size:11px}
+.soba-cmp{display:flex;flex-direction:column;gap:5px}
+.cmp-row{display:flex;align-items:center;gap:8px;font-size:12px}
+.cmp-row>b{width:44px;text-align:center;font-variant-numeric:tabular-nums;color:var(--dim)}
+.cmp-row>b.win{color:var(--good);text-shadow:0 0 8px #34d39955}
+.cmp-mid{flex:1}
+.cmp-lbl{font-size:10.5px;color:var(--faint);margin-bottom:2px;text-align:center}
+.cmp-bars{display:flex;flex-direction:column;gap:2px}
+.cmp-bar{height:6px;background:#0a1322;border-radius:99px;overflow:hidden}
+.cmp-bar.a i{display:block;height:100%;background:var(--accent2);border-radius:99px}
+.cmp-bar.b{direction:rtl}
+.cmp-bar.b i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.cmp-names{display:flex;justify-content:space-between;font-size:11px;margin-top:3px}
+
+/* svijetla tema */
+body.light{
+  --bg:#eef2f8; --panel:#ffffff; --panel2:#f4f7fb; --panel3:#e9eef6;
+  --border:#d5deea; --border2:#b9c8da;
+  --text:#16202e; --dim:#4c5d72; --faint:#7a8aa0;
+  background:radial-gradient(1200px 700px at 80% -10%, #dde8f5 0%, var(--bg) 55%) fixed;
+}
+body.light .card{background:var(--panel);box-shadow:0 2px 10px #0b203014}
+body.light .soba-cv{background:#f4f7fb}
+body.light .chip{background:var(--panel2);color:var(--dim)}
+body.light .chip.on{background:#0e3a52;color:#d9f4ff}
+body.light .tbl th{background:var(--panel2)}
+body.light .tbl tr:hover td{background:var(--panel2)}
+body.light input,body.light select{background:#fff;color:var(--text);border-color:var(--border)}
+body.light .alert-item{background:var(--panel2)}
+body.light .btn{background:#0e7490;color:#fff}
+body.light .btn.ghost{background:var(--panel2);color:var(--dim)}
+body.light .chat-msg.bot{background:var(--panel2);color:var(--text)}
+
+/* TV način */
+body.tv{font-size:17px}
+body.tv .soba-tile{min-height:380px}
+body.tv .sc-num{font-size:64px}
+body.tv .zone-bar{font-size:14px}
+body.tv .alert-item{font-size:15px}
+.ach-chip{display:inline-flex;align-items:center;gap:6px;font-size:12.5px}

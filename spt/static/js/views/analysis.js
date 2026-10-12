@@ -12,7 +12,9 @@ VIEWS.analysis = {
     const t1 = el("div", "chip on", "⚖️ Usporedba sportaša");
     const t2 = el("div", "chip", "🏆 Ljestvice");
     const t3 = el("div", "chip", "📊 Distribucije");
-    tabs.append(t1, t2, t3);
+    const t4 = el("div", "chip", "🔗 Korelacije");
+    const t5 = el("div", "chip", "🗓 Kalendar");
+    tabs.append(t1, t2, t3, t4, t5);
     cont.append(tabs);
 
     const body = el("div");
@@ -21,12 +23,16 @@ VIEWS.analysis = {
     t1.onclick = () => setTab(1);
     t2.onclick = () => setTab(2);
     t3.onclick = () => setTab(3);
+    t4.onclick = () => setTab(4);
+    t5.onclick = () => setTab(5);
     function setTab(n) {
       [t1, t2, t3].forEach((t, i) => t.classList.toggle("on", i === n - 1));
       body.innerHTML = "";
       if (n === 1) tabCompare(body);
       if (n === 2) tabLeaderboard(body);
       if (n === 3) tabHistogram(body);
+      if (n === 4) tabCorr(body);
+      if (n === 5) tabCal(body);
     }
 
     // ---------------- TAB 1: usporedba ----------------
@@ -208,6 +214,107 @@ VIEWS.analysis = {
       mSel.onchange = run;
       await loadMetrics();
       run();
+    }
+
+    // ---------------- TAB 4: korelacije ----------------
+    async function tabCorr(body) {
+      const card = el("div", "card");
+      card.innerHTML = `<h3>🔗 Korelacije metrika <span class="faint" style="font-weight:400">(Pearson r, po sportašu unutar sporta)</span></h3>
+        <p class="muted" style="font-size:12.5px;line-height:1.6">npr. r = 0,8 između kilometara i opterećenja znači da kilometri glavni pokretač opterećenja.
+        Negativan r između opterećenja i spremnosti signalizira kumulativni umor.</p>`;
+      const row = el("div", "ctrl-row");
+      const spSel = el("select");
+      for (const [sid, nm] of Object.entries(SPORT_NAMES)) {
+        const o = el("option"); o.value = sid; o.textContent = nm;
+        spSel.append(o);
+      }
+      spSel.value = "nogomet";
+      row.append(spSel);
+      card.append(row);
+      const box = el("div"); card.append(box);
+      body.append(card);
+      async function load() {
+        box.innerHTML = ""; box.append(spinner());
+        const d = await API.get(`/api/analysis/correlations?sport=${spSel.value}`);
+        box.innerHTML = "";
+        const t = el("table", "tbl corr-tbl");
+        const head = "<tr><th></th>" + d.names.map(n => `<th>${esc(n)}</th>`).join("") + "</tr>";
+        t.innerHTML = `<thead>${head}</thead>`;
+        const tb = el("tbody");
+        for (let i = 0; i < d.names.length; i++) {
+          let r = `<td><b>${esc(d.names[i])}</b></td>`;
+          for (let j = 0; j < d.names.length; j++) {
+            const v = d.matrix[i][j];
+            const a = Math.abs(v);
+            const col = i === j ? "transparent" : v > 0 ? `rgba(56,214,245,${(a * 0.75).toFixed(2)})` : `rgba(255,90,95,${(a * 0.75).toFixed(2)})`;
+            r += `<td class="num" style="background:${col}">${v.toFixed(2)}</td>`;
+          }
+          tb.append(el("tr", "", r));
+        }
+        t.append(tb);
+        box.append(t);
+        box.append(el("div", "muted", `n = ${d.n} sportaša · izračunato nad prosjecima sesija`));
+      }
+      spSel.onchange = load;
+      load();
+    }
+
+    // ---------------- TAB 5: kalendar aktivnosti ----------------
+    async function tabCal(body) {
+      const card = el("div", "card");
+      card.innerHTML = `<h3>🗓 Kalendar aktivnosti (26 tjedana)</h3>
+        <p class="muted" style="font-size:12.5px">Svaka kućica je jedan dan — intenzitet boje = kilometri. Plavo = utakmica, žuto = teretana, zeleno = trening.</p>`;
+      card.append(athletePicker(async a => {
+        const d = await API.get(`/api/analysis/calendar?athlete=${a.id}`);
+        renderCal(d, a);
+      }));
+      const box = el("div"); box.style.marginTop = "14px";
+      card.append(box);
+      body.append(card);
+      function renderCal(d, a) {
+        box.innerHTML = `<div class="muted" style="margin-bottom:8px"><b>${esc(a.name)}</b> · ${esc(sportName(a.sport))}</div>`;
+        const grid = el("div", "cal-grid");
+        const days = d.days || {};
+        const mx = Math.max(1, ...Object.values(days).map(x => x.km));
+        const today = new Date();
+        const start = new Date(today); start.setDate(start.getDate() - 181);
+        start.setDate(start.getDate() - ((start.getDay() + 6) % 7));
+        const cells = [[], [], [], [], [], [], []];
+        const cur = new Date(start);
+        while (cur <= today) {
+          const key = cur.toISOString().slice(0, 10);
+          const day = days[key];
+          const inten = day ? Math.min(1, day.km / mx) : 0;
+          let bg = "#0d141f";
+          if (day) {
+            const tset = (day.t || "").split(",");
+            bg = tset.includes("match") ? `rgba(79,140,255,${(0.25 + inten * 0.75).toFixed(2)})`
+              : tset.includes("gym") ? `rgba(251,191,36,${(0.25 + inten * 0.75).toFixed(2)})`
+              : `rgba(163,230,53,${(0.2 + inten * 0.8).toFixed(2)})`;
+          }
+          cells[(cur.getDay() + 6) % 7].push({ key, bg, day });
+          cur.setDate(cur.getDate() + 1);
+        }
+        const weeks = Math.max(...cells.map(c => c.length));
+        for (let w = 0; w < weeks; w++) {
+          for (let wd = 0; wd < 7; wd++) {
+            const c = cells[wd][w];
+            const cell = el("div", "cal-cell");
+            if (c) {
+              cell.style.background = c.bg;
+              if (c.day) cell.title = `${c.key}: ${fmtN(c.day.km, 1)} km · ${c.day.au} AU · ${c.day.t}`;
+            }
+            grid.append(cell);
+          }
+        }
+        box.append(grid);
+        const leg = el("div", "cal-legend");
+        leg.innerHTML = `<span class="cal-cell" style="background:#4f8cff"></span> utakmica
+          <span class="cal-cell" style="background:#fbbf24"></span> teretana
+          <span class="cal-cell" style="background:rgba(163,230,53,.9)"></span> trening (jače = više km)
+          <span class="cal-cell"></span> odmor`;
+        box.append(leg);
+      }
     }
 
     setTab(1);

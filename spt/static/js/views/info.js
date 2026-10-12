@@ -75,5 +75,6 @@ VIEWS.info = {
         </ul>
       </div>
     </div>`;
+    cont.append(el("div", "muted", '<div style="text-align:center;font-size:10.5px;padding:14px 0;opacity:.7">SPT · produced by <b>GNK ASG</b> · gnk-asg.hr</div>'));
   }
 };

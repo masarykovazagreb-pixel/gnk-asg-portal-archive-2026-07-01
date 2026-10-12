@@ -63,7 +63,7 @@ VIEWS.ai = {
     send.onclick = submit;
     input.addEventListener("keydown", e => { if (e.key === "Enter") submit(); });
 
-    addMsg("Zdravo! Ja sam **SPT AI** 🤖 — mogu pretraživati cijelu bazu, uspoređivati sportaše, tumačiti metrike i procjenjivati rizik ozljede.\nUpiši **pomoć** za popis mogućnosti ili klikni prijedlog ispod.", "bot");
+    addMsg("Zdravo! Ja sam **SPT AI** 🤖 — mogu pretraživati cijelu bazu, uspoređivati sportaše, tumačiti metrike i procjenjivati rizik ozljede.\nUpiši **pomoć** za popis mogućnosti ili klikni prijedlog ispod.\n— · · · —\n*SPT · produced by GNK ASG*", "bot");
     input.focus();
   }
 };
