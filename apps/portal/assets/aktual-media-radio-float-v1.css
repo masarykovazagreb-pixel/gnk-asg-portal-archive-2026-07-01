@@ -1,0 +1,14 @@
+:root{--amr-bg:#071426;--amr-panel:#0d2038;--amr-gold:#d4af37;--amr-text:#f7fafc;--amr-muted:#b8c3d1}
+#aktualMediaRadioFloat{position:fixed;right:18px;bottom:18px;z-index:2147483638;width:min(420px,calc(100vw - 28px));font-family:Arial,Helvetica,sans-serif;color:var(--amr-text);filter:drop-shadow(0 18px 34px rgba(0,0,0,.38))}
+.amr-float{background:linear-gradient(135deg,#071426,#102238);border:1px solid rgba(212,175,55,.65);border-radius:16px;overflow:hidden}
+.amr-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.08)}
+.amr-brand{display:flex;align-items:center;gap:8px;min-width:0}.amr-dot{width:9px;height:9px;border-radius:50%;background:#7c8797}.amr-dot.live{background:#ef4444;box-shadow:0 0 0 4px rgba(239,68,68,.14)}
+.amr-title{font-weight:950;font-size:.78rem;letter-spacing:.06em;white-space:nowrap}.amr-state{font-size:.66rem;color:var(--amr-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.amr-close{border:0;background:transparent;color:#dce5ef;font-size:1rem;cursor:pointer;padding:4px 6px}
+.amr-body{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:11px 12px;align-items:center}
+.amr-station{min-width:0}.amr-station strong{display:block;font-size:.86rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.amr-station span{display:block;margin-top:2px;font-size:.68rem;color:var(--amr-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.amr-actions{display:flex;align-items:center;gap:7px}.amr-btn{border:1px solid rgba(255,255,255,.18);background:#13263e;color:#fff;border-radius:9px;padding:8px 10px;font-weight:850;font-size:.7rem;cursor:pointer}.amr-btn.primary{background:var(--amr-gold);color:#111;border-color:var(--amr-gold)}.amr-btn:hover{filter:brightness(1.1)}
+.amr-foot{display:flex;justify-content:space-between;gap:10px;padding:0 12px 10px;align-items:center}.amr-foot a,.amr-foot button{font-size:.64rem;color:#d8c078;background:none;border:0;padding:0;text-decoration:none;cursor:pointer}.amr-foot a:hover,.amr-foot button:hover{text-decoration:underline}
+#aktualMediaRadioFloat.amr-collapsed .amr-body,#aktualMediaRadioFloat.amr-collapsed .amr-foot{display:none}
+@media(max-width:600px){#aktualMediaRadioFloat{right:8px;bottom:8px;width:calc(100vw - 16px)}.amr-body{grid-template-columns:1fr}.amr-actions{justify-content:flex-start}.amr-foot{align-items:flex-start;flex-direction:column}}
+@media(prefers-reduced-motion:reduce){#aktualMediaRadioFloat *{transition:none!important;animation:none!important}}
