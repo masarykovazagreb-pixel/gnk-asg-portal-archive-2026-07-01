@@ -21,12 +21,12 @@ const recent=items.filter(x=>new Date(x._published)>=from);
 
 const text=x=>String(x||'').toLowerCase();
 const hay=x=>[x.title,x.summary,x.category,x.group,x.source].map(text).join(' ');
-const negative=/\b(war|ukraine|russia|attack|attacker|killed|dies|death|dead|rape|sexual assault|assault|murder|crime|criminal|cancer|disease|poison|poisoned|crisis|accident|injury|injured|hospital|funeral|ceasefire|shooting|bomb|flood|wildfire|mosquito|haze|risk|threat|lawsuit|trial|court|police)\b/i;
+const negative=/\b(war|ukraine|russia|attack|attacker|killed|dies|death|dead|rape|sexual assault|assault|murder|crime|criminal|cancer|disease|poison|poisoned|crisis|accident|injury|injured|hospital|funeral|ceasefire|shooting|bomb|flood|wildfire|mosquito|haze|risk|threat|lawsuit|trial|court|police|gambling|casino|prediction market|betting)\b/i;
 const positive=/\b(best|beautiful|beauty|style|fashion|travel|holiday|spa|food|recipe|restaurant|cycling|hiking|lake|alps|pet|pets|dog|dogs|cat|cats|wildlife|garden|design|luxury|car|cars|automobil|auto|music|culture|film|show|sport|champion|win|wins|success|good news|festival|art|nature|released back|planting|record|discover|discovery)\b/i;
 
 const defs=[
-  {id:'zene-stil',hr:'Žene & stil',en:'Women & style',test:x=>/\b(woman|women|female|actress|singer|model|fashion|beauty|style|designer|dress|makeup|skincare|jewelry|shoe|wardrobe)\b/i.test(hay(x))},
-  {id:'moda',hr:'Moda',en:'Fashion',test:x=>/\b(fashion|designer|dress|clothing|style|runway|collection|jewelry|shoe|wardrobe)\b/i.test(hay(x))},
+  {id:'zene-stil',hr:'Žene & stil',en:'Women & style',test:x=>['culture','family','hrvatska','travel','business'].includes(String(x.category||'').toLowerCase())&&/\b(woman|women|female|actress|singer|model|fashion|beauty|designer|dress|makeup|skincare|jewelry|shoe|wardrobe|salon)\b/i.test(hay(x))},
+  {id:'moda',hr:'Moda',en:'Fashion',test:x=>['culture','family','hrvatska','travel','business'].includes(String(x.category||'').toLowerCase())&&/\b(fashion|designer|dress|clothing|runway|collection|jewelry|shoe|wardrobe)\b/i.test(hay(x))},
   {id:'ljubimci',hr:'Ljubimci',en:'Pets',test:x=>String(x.category||'').toLowerCase()==='pets'||/\b(pet|pets|dog|dogs|cat|cats|puppy|kitten)\b/i.test(hay(x))},
   {id:'auto',hr:'Auto',en:'Cars',test:x=>/\b(car|cars|automobil|auto|vehicle|vehicles|bmw|mercedes|audi|ferrari|porsche|tesla|ev\b|motoring)\b/i.test(hay(x))},
   {id:'putovanja',hr:'Putovanja',en:'Travel',test:x=>String(x.category||'').toLowerCase()==='travel'||/\b(travel|holiday|spa|hotel|lake|hiking|cycling|alps|island|city break|destination)\b/i.test(hay(x))},
