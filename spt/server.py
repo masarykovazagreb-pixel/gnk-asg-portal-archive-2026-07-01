@@ -26,7 +26,7 @@ from urllib.parse import urlparse, parse_qs
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "spt.db")
 STATIC_DIR = os.path.join(BASE_DIR, "static")
-VERSION = "2.3.0"
+VERSION = "2.4.0"
 
 # ---------------------------------------------------------------------------
 # BAZA
@@ -1922,6 +1922,249 @@ def api_inv_status(m, qs, body=None):
                 ((body or {}).get("status", "aktivno"), (body or {}).get("battery", 100), int((body or {}).get("id", 0))))
     con.commit(); con.close()
     return {"ok": True}
+
+
+# ------------------------------ 2.4: NAPREDNA ANALITIKA ----------------------
+def _pearson(pairs):
+    n = len(pairs)
+    if n < 3:
+        return 0.0
+    mx = sum(p[0] for p in pairs) / n
+    my = sum(p[1] for p in pairs) / n
+    a = sum((x - mx) * (y - my) for x, y in pairs)
+    b = sum((x - mx) ** 2 for x, y in pairs)
+    c = sum((y - my) ** 2 for x, y in pairs)
+    return a / math.sqrt(b * c) if b > 0 and c > 0 else 0.0
+
+
+@route("GET", r"/api/analysis/trend")
+def api_an_trend(m, qs):
+    aid = int(qs.get("athlete", "1"))
+    metric = qs.get("metric", "dist_total")
+    rows = q("""SELECT sdate d, json_extract(metrics,'$.%s') v FROM sessions
+                WHERE athlete=? AND json_extract(metrics,'$.%s') IS NOT NULL ORDER BY sdate""" % (metric, metric), (aid,))
+    if len(rows) < 3:
+        return {"points": [], "error": "nema dovoljno podataka"}
+    pts = [(r["d"], r["v"]) for r in rows]
+    d0 = date.fromisoformat(pts[0][0])
+    xs = [(date.fromisoformat(p[0]) - d0).days for p in pts]
+    ys = [p[1] for p in pts]
+    n = len(xs)
+    mx = sum(xs) / n
+    my = sum(ys) / n
+    num = sum((x - mx) * (y - my) for x, y in zip(xs, ys))
+    den = sum((x - mx) ** 2 for x in xs)
+    slope = num / den if den else 0.0
+    a3 = sum(ys[:3]) / min(3, len(ys))
+    b3 = sum(ys[-3:]) / min(3, len(ys))
+    change = (b3 - a3) / a3 * 100 if a3 else 0.0
+    hb = norms_data.HIGHER_BETTER.get(metric, True)
+    verdict = ("modra" if ((change > 2 and hb) or (change < -2 and not hb))
+               else "crvena" if ((change < -2 and hb) or (change > 2 and not hb)) else "ravna")
+    return {"points": pts, "slope_per_week": round(slope * 7, 3), "change_pct": round(change, 1),
+            "n": n, "metric": metric, "verdict": verdict}
+
+
+@route("GET", r"/api/analysis/positions")
+def api_an_positions(m, qs):
+    sport = qs.get("sport", "nogomet")
+    metric = qs.get("metric", "dist_total")
+    bypos = {}
+    for aid, s in SUMMARY.items():
+        if s["sport"] != sport:
+            continue
+        v = s["metrics"].get(metric)
+        if v is not None:
+            bypos.setdefault(s.get("position") or "?", []).append(v)
+    out = []
+    for pos, vals in bypos.items():
+        if len(vals) < 4:
+            continue
+        vals.sort()
+        def P(p):
+            return vals[min(len(vals) - 1, int(p * len(vals)))]
+        out.append({"pos": pos, "n": len(vals), "p10": round(P(0.10), 2), "p25": round(P(0.25), 2),
+                    "p50": round(P(0.50), 2), "p75": round(P(0.75), 2), "p90": round(P(0.90), 2)})
+    out.sort(key=lambda x: -x["p50"])
+    return {"sport": sport, "metric": metric,
+            "name": METRIC_NAMES.get(metric, {}).get("hr", metric),
+            "unit": METRIC_NAMES.get(metric, {}).get("unit", ""), "items": out}
+
+
+@route("GET", r"/api/analysis/ages")
+def api_an_ages(m, qs):
+    sport = qs.get("sport", "nogomet")
+    metric = qs.get("metric", "dist_total")
+    ages = {r["id"]: r["age"] for r in q("SELECT id, age FROM athletes")}
+    BUCKETS = [("12-15", 12, 15), ("16-18", 16, 18), ("19-21", 19, 21),
+               ("22-25", 22, 25), ("26-29", 26, 29), ("30+", 30, 99)]
+    acc = {b[0]: [] for b in BUCKETS}
+    for aid, s in SUMMARY.items():
+        if s["sport"] != sport:
+            continue
+        v = s["metrics"].get(metric)
+        age = ages.get(aid)
+        if v is None or age is None:
+            continue
+        for lbl, lo, hi in BUCKETS:
+            if lo <= age <= hi:
+                acc[lbl].append(v)
+                break
+    items = [{"label": lbl, "avg": round(sum(v) / len(v), 2), "n": len(v)}
+             for lbl, v in acc.items() if len(v) >= 3]
+    peak = max(items, key=lambda x: x["avg"]) if items else None
+    return {"sport": sport, "metric": metric, "items": items, "peak": peak,
+            "name": METRIC_NAMES.get(metric, {}).get("hr", metric),
+            "unit": METRIC_NAMES.get(metric, {}).get("unit", "")}
+
+
+@route("GET", r"/api/analysis/scatter")
+def api_an_scatter(m, qs):
+    sport = qs.get("sport", "nogomet")
+    x = qs.get("x", "dist_total")
+    y = qs.get("y", "top_speed")
+    info = {r["id"]: r for r in q("SELECT id, name, sex, age, position, club FROM athletes")}
+    pts = []
+    for aid, s in SUMMARY.items():
+        if s["sport"] != sport:
+            continue
+        xv = s["metrics"].get(x)
+        yv = s["metrics"].get(y)
+        a = info.get(aid)
+        if xv is None or yv is None or not a:
+            continue
+        pts.append({"id": aid, "name": a["name"], "sex": a["sex"], "age": a["age"],
+                    "pos": a["position"], "x": round(xv, 2), "y": round(yv, 2)})
+    r = _pearson([(p["x"], p["y"]) for p in pts])
+    return {"sport": sport, "x": x, "y": y, "r": round(r, 2), "n": len(pts),
+            "xname": METRIC_NAMES.get(x, {}).get("hr", x), "yname": METRIC_NAMES.get(y, {}).get("hr", y),
+            "xunit": METRIC_NAMES.get(x, {}).get("unit", ""), "yunit": METRIC_NAMES.get(y, {}).get("unit", ""),
+            "points": pts[:600]}
+
+
+@route("GET", r"/api/analysis/consistency")
+def api_an_consistency(m, qs):
+    sport = qs.get("sport", "nogomet")
+    metric = qs.get("metric", "dist_total")
+    min_n = 8
+    acc = {}
+    for r in q("""SELECT athlete, json_extract(metrics,'$.%s') v FROM sessions
+                  WHERE json_extract(metrics,'$.%s') IS NOT NULL""" % (metric, metric)):
+        acc.setdefault(r["athlete"], []).append(r["v"])
+    info = {r["id"]: r for r in q("SELECT id, name, sport, club FROM athletes")}
+    rows = []
+    for aid, vals in acc.items():
+        a = info.get(aid)
+        if not a or a["sport"] != sport or len(vals) < min_n:
+            continue
+        mean = sum(vals) / len(vals)
+        if not mean:
+            continue
+        std = math.sqrt(sum((v - mean) ** 2 for v in vals) / len(vals))
+        rows.append({"id": aid, "name": a["name"], "club": a["club"], "n": len(vals),
+                     "mean": round(mean, 2), "cv": round(std / mean * 100, 1)})
+    rows.sort(key=lambda r: r["cv"])
+    return {"sport": sport, "metric": metric,
+            "name": METRIC_NAMES.get(metric, {}).get("hr", metric),
+            "unit": METRIC_NAMES.get(metric, {}).get("unit", ""),
+            "most_consistent": rows[:12], "most_variable": rows[-12:][::-1]}
+
+
+@route("GET", r"/api/analysis/loadbalance")
+def api_an_loadbalance(m, qs):
+    since = (date.today() - timedelta(days=28)).isoformat()
+    per = {}
+    for r in q("""SELECT s.athlete aid, a.club club, SUM(json_extract(s.metrics,'$.srpe')) au
+                  FROM sessions s JOIN athletes a ON a.id=s.athlete
+                  WHERE s.sdate>=? AND a.club IS NOT NULL GROUP BY s.athlete""", (since,)):
+        if r["au"]:
+            per.setdefault(r["club"], []).append(r["aid"])
+    loads = {}
+    for r in q("""SELECT s.athlete aid, SUM(json_extract(s.metrics,'$.srpe')) au FROM sessions s
+                  WHERE s.sdate>=? GROUP BY s.athlete""", (since,)):
+        loads[r["aid"]] = r["au"] or 0
+
+    def gini(xs):
+        xs = sorted(xs)
+        n = len(xs)
+        tot = sum(xs)
+        if n < 3 or tot == 0:
+            return 0.0
+        cum = sum((i + 1) * x for i, x in enumerate(xs))
+        return max(0.0, min(1.0, (2 * cum) / (n * tot) - (n + 1) / n))
+
+    clubs_info = {r["code"]: dict(r) for r in q("SELECT code, country, sport FROM clubs")}
+    items = []
+    for club, aids in per.items():
+        if len(aids) < 6:
+            continue
+        vals = [loads.get(a, 0) for a in aids]
+        vals.sort()
+        top3 = sum(vals[-3:]) / max(1, sum(vals)) * 100
+        items.append({"club": club, "sport": clubs_info.get(club, {}).get("sport", ""),
+                      "country": clubs_info.get(club, {}).get("country", ""),
+                      "n": len(aids), "gini": round(gini(vals), 3), "top3_share": round(top3)})
+    items.sort(key=lambda x: -x["gini"])
+    return {"items": items[:25]}
+
+
+@route("GET", r"/api/analysis/wellnessperf")
+def api_an_wellnessperf(m, qs):
+    since = (date.today() - timedelta(days=30)).isoformat()
+    sq = {r["aid"]: r["sq"] for r in q(
+        "SELECT athlete aid, AVG(sleep_q) sq FROM wellness_log WHERE wdate>=? GROUP BY athlete", (since,))}
+    en = {r["aid"]: r["en"] for r in q(
+        "SELECT athlete aid, AVG(energy) en FROM wellness_log WHERE wdate>=? GROUP BY athlete", (since,))}
+    rd = {r["aid"]: r["v"] for r in q(
+        """SELECT athlete aid, AVG(json_extract(metrics,'$.readiness')) v FROM sessions
+           WHERE sdate>=? GROUP BY athlete""", (since,))}
+    info = {r["id"]: r for r in q("SELECT id, name, sport, club FROM athletes")}
+    pts = []
+    for aid, s in sq.items():
+        if aid in rd and rd[aid] is not None and aid in info:
+            pts.append({"id": aid, "name": info[aid]["name"], "sport": info[aid]["sport"],
+                        "sleep": round(s, 2), "energy": round(en.get(aid, 0), 2),
+                        "readiness": round(rd[aid], 1)})
+    r = _pearson([(p["sleep"], p["readiness"]) for p in pts])
+    return {"n": len(pts), "r": round(r, 2), "points": pts[:500]}
+
+
+@route("GET", r"/api/analysis/injuryburden")
+def api_an_injuryburden(m, qs):
+    since = (date.today() - timedelta(days=365)).isoformat()
+    inj = {}
+    for r in q("SELECT athlete, days_out FROM injuries WHERE idate>=?", (since,)):
+        d = inj.setdefault(r["athlete"], {"n": 0, "days": 0})
+        d["n"] += 1
+        d["days"] += (r["days_out"] or 0)
+    loads = {}
+    for r in q("""SELECT athlete, SUM(json_extract(metrics,'$.srpe')) au FROM sessions
+                  WHERE sdate>=? GROUP BY athlete""", (since,)):
+        loads[r["athlete"]] = r["au"] or 0
+    info = {r["id"]: r for r in q("SELECT id, club, sport FROM athletes")}
+    clubs = {}
+    for aid, d in inj.items():
+        a = info.get(aid)
+        if not a or not a["club"]:
+            continue
+        c = clubs.setdefault(a["club"], {"n": 0, "days": 0, "au": 0, "ath": set()})
+        c["n"] += d["n"]
+        c["days"] += d["days"]
+        c["ath"].add(aid)
+    for aid, au in loads.items():
+        a = info.get(aid)
+        if a and a["club"] and a["club"] in clubs:
+            clubs[a["club"]]["au"] += au
+    items = []
+    for club, c in clubs.items():
+        if len(c["ath"]) < 4 or c["au"] < 1000:
+            continue
+        burden = round(c["days"] / c["au"] * 1000, 2)
+        items.append({"club": club, "sport": info[list(c["ath"])[0]]["sport"],
+                      "injuries": c["n"], "days_lost": c["days"],
+                      "load_au": round(c["au"]), "burden": burden})
+    items.sort(key=lambda x: -x["burden"])
+    return {"items": items[:25]}
 
 # ---------------------------------------------------------------------------
 # MIGRACIJA 2.3 — bilješke trenera + inventar opreme

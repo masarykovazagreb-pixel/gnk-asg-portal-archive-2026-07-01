@@ -415,3 +415,15 @@ body.cb .ni-dot.red{background:#ff8b3d}
 /* postavke: redak chips */
 #view .ctrl-row .chip{cursor:pointer;user-select:none}
 [data-font] .fld input{font-size:inherit}
+
+/* ================= SPT 2.4 — napredna analitika ================= */
+.box-row{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid #14203344}
+.box-row .bl{width:78px;font-weight:800;font-size:12.5px;flex-shrink:0}
+.box-row .bt{flex:1;height:18px;background:#0a1322;border-radius:9px;position:relative;cursor:help}
+.box-row .bw{position:absolute;top:4px;height:10px;background:#38d6f544;border-radius:99px}
+.box-row .bq{position:absolute;top:3px;height:12px;background:#38d6f5aa;border-radius:3px}
+.box-row .bm{position:absolute;top:0;height:18px;width:3px;background:#e8eef8;border-radius:2px}
+.box-row .bv{width:92px;text-align:right;font-size:12px;flex-shrink:0}
+.scatter-wrap{position:relative;margin-top:6px}
+.scatter-cv{width:100%;background:#0a111c;border-radius:10px;border:1px solid var(--border);display:block}
+.scatter-tip{display:none;position:absolute;background:#0d1522ee;border:1px solid var(--border2);border-radius:9px;padding:7px 10px;font-size:11.5px;pointer-events:none;z-index:5;box-shadow:0 8px 24px #0009}

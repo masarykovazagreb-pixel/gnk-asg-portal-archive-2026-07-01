@@ -273,3 +273,40 @@ zaseban prozor bez trake, ikona u Start meniju, **radi offline** (sučelja ostaj
 - **Monotonija** = prosjek/std dev dnevnog opterećenja (rizik > 2,0)
 - **Strain** = tjedno opterećenje × monotonija
 - **EWMA** = eksponencijalno ugladena opterećenja (half-life 7 dana)
+
+---
+
+## 🧠 SPT 2.4 — Napredna analitika (8 novih analiza)
+
+Pregled **Napredna analitika** (🧠 u navigaciji):
+
+| Analiza | Što otkriva |
+|---|---|
+| **📈 Trend** | regresija metrike kroz vrijeme — napredak/pad/stabilno + % promjene + trend po tjednu |
+| **📦 Po pozicijama** | box-plot P10–P90 po pozicijama — gdje je «širok» prosjek, gdje gušći |
+| **🎂 Dobne krivulje** | prosjek metrike po dobnim skupinama (12–15 … 30+) + vršna dob |
+| **⚬ Raspršenje** | bilo koja metrika vs bilo koja (npr. km vs max brzina, r = korelacija), hover = ime, klik = karton |
+| **🎯 Konzistentnost** | CV (varijabilnost) — najstabilniji vs «boom-or-bust» igrači |
+| **⚖️ Balans opterećenja** | Gini koeficijent po klubovima (28 dana) + koliko nose top-3 igrača → rizik preopterećenja |
+| **🧘 Wellness vs forma** | kvaliteta sna vs spremnost — korelacija + outlayeri |
+| **🚑 Teret ozljeda** | burden = izgubljeni dani / 1000 AU opterećenja po klubu → prioritet prevencije |
+
+## 🗺 Ideje za nastavak (roadmap)
+
+> Prijedlozi sljedećih faza — reci koje ti se sviđaju i radimo ih:
+
+1. **AI predikcija ozljeda** — logistička regresija na ACWR + wellness + asimetriji → vjerojatnost ozljede po igraču (kao Zone7)
+2. **Automatski tjedni izvještaj** — PDF na e-poštu svakog ponedjeljka (sažetak kluba + crvene zastavice)
+3. **Raspored treninga (kalendar)** — drag & drop jedinica po danima, auto-računanje opterećenja tjedna
+4. **Scouting soba** — usporedba kandidata vs percentil pozicije + "shortlist" liste
+5. **Video sinkronizacija** — replay 2D usklađen s video snimkom utakmice
+6. **Zdravstveni dosje** — alergije, pregledi, vakcine, dozvole roditelja (mlađi od 18)
+7. **Rehab protokoli** — checkpoint sustav povratka (kriteriji + potpisi fizioterapeuta)
+8. **Ljestvice liga** — anonimizirana benchmark usporedba klubova (gdje je moj klub jači/slabiji)
+9. **Sleep tracking** — uvoz sata (san/HRV noću) → jutarnja spremnost automatski
+10. **Menstrualni ciklus** — monitoring za ženske sportašice (opterećenje prilagođeno fazi)
+11. **Prehrana+** — planeri obroka s receptima i auto-kalorije iz treninga
+12. **Push alarmi na sat/trener** — kritični događaji u stvarnom vremenu
+13. **Open API** — JSON export za istraživače/reklame
+14. **3D biomehanika** — silinski pladnjevi + asymetrija lijevo/desno kroz vrijeme
+15. **Cloud sinkronizacija** — više klubova, jedna baza, kontrola pristupa po šifri
