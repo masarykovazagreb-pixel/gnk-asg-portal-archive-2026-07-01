@@ -1,5 +1,5 @@
 /**
- * AKTUAL RADIO — Live Internet Audio Player Engine
+ * AKTUAL MEDIA RADIO — Live Internet Audio Player Engine
  * GNK ASG & Nermin Sefić Digital Media Network
  * Supports multiple USA & English music streams, station/stream announcements,
  * commercials/promos, audio equalizer visualization, and procedural chill audio fallback.
@@ -13,8 +13,8 @@
   const STATIONS = [
     {
       id: 'usa-hits',
-      nameHr: 'AKTUAL USA Top Hits & Rock',
-      nameEn: 'AKTUAL USA Top Hits & Rock',
+      nameHr: 'AKTUAL MEDIA USA Top Hits & Rock',
+      nameEn: 'AKTUAL MEDIA USA Top Hits & Rock',
       taglineHr: 'Američki rock, pop i moderni groove hitovi',
       taglineEn: 'American rock, pop, and modern groove hits',
       streamUrl: 'https://stream.zeno.fm/f3wvbbqmdg8uv', // Free public icecast MP3 stream
@@ -24,8 +24,8 @@
     },
     {
       id: 'lofi-lounge',
-      nameHr: 'AKTUAL Lo-Fi Chill & Business Lounge',
-      nameEn: 'AKTUAL Lo-Fi Chill & Business Lounge',
+      nameHr: 'AKTUAL MEDIA Lo-Fi Chill & Business Lounge',
+      nameEn: 'AKTUAL MEDIA Lo-Fi Chill & Business Lounge',
       taglineHr: 'Opuštajući ritmovi za fokus, rad i analitiku',
       taglineEn: 'Relaxing lo-fi beats for focus, trading and work',
       streamUrl: 'https://ice2.somafm.com/defcon-128-mp3',
@@ -35,8 +35,8 @@
     },
     {
       id: 'synthwave-energy',
-      nameHr: 'AKTUAL Synthwave & Retro Tech',
-      nameEn: 'AKTUAL Synthwave & Retro Tech',
+      nameHr: 'AKTUAL MEDIA Synthwave & Retro Tech',
+      nameEn: 'AKTUAL MEDIA Synthwave & Retro Tech',
       taglineHr: 'Elektronski retro synth i dinamični cyber ritmovi',
       taglineEn: 'Electronic retro synth and dynamic cyber beats',
       streamUrl: 'https://ice1.somafm.com/beatblender-128-mp3',
@@ -46,8 +46,8 @@
     },
     {
       id: 'usa-country-roots',
-      nameHr: 'AKTUAL Radio USA · Country & Americana',
-      nameEn: 'AKTUAL Radio USA · Country & Americana',
+      nameHr: 'AKTUAL MEDIA RADIO USA · Country & Americana',
+      nameEn: 'AKTUAL MEDIA RADIO USA · Country & Americana',
       taglineHr: 'Američki country, roots i americana zvuk',
       taglineEn: 'American country, roots, and americana sound',
       streamUrl: 'https://ice1.somafm.com/bootliquor-128-mp3',
@@ -57,8 +57,8 @@
     },
     {
       id: 'usa-jazz-soul',
-      nameHr: 'AKTUAL Radio USA · Jazz & Soul Lounge',
-      nameEn: 'AKTUAL Radio USA · Jazz & Soul Lounge',
+      nameHr: 'AKTUAL MEDIA RADIO USA · Jazz & Soul Lounge',
+      nameEn: 'AKTUAL MEDIA RADIO USA · Jazz & Soul Lounge',
       taglineHr: 'Američki jazz, soul i lounge klasici',
       taglineEn: 'American jazz, soul, and lounge classics',
       streamUrl: 'https://ice1.somafm.com/sonicuniverse-128-mp3',
@@ -69,7 +69,7 @@
 
   // Weekly editorial channels — modeled editorial announcement schedule.
   // These are not separate live streams; announcements run through the
-  // Radio Aktual promo rotation and the cards below are informational.
+  // AKTUAL MEDIA RADIO promo rotation and the cards below are informational.
   const WEEKLY_CHANNELS = [
     { dayHr: 'Ponedjeljak', dayEn: 'Monday', nameHr: 'AKTUAL Tjedna tržišta', nameEn: 'AKTUAL Weekly Markets', descHr: 'Otvaranje tjednog ciklusa: pregled tržišnih tema s poveznicama na sekciju Tržišta.', descEn: 'Opening the weekly cycle: market topics with links to the Markets section.' },
     { dayHr: 'Utorak', dayEn: 'Tuesday', nameHr: 'AKTUAL Tehnologija i AI', nameEn: 'AKTUAL Tech & AI', descHr: 'Tjedni tehnološki blok: javno dostupne teme iz tehnologije i umjetne inteligencije.', descEn: 'Weekly technology block: public technology and AI topics.' },
@@ -82,8 +82,8 @@
 
   const PROMOS = [
     {
-      hr: 'Slušate Radio Aktual — glas globalnih vijesti, tehnologije i glazbe pod vodstvom Nermina Sefića i GNK ASG.',
-      en: 'You are listening to Radio Aktual — the voice of global news, technology, and music powered by Nermin Sefic and GNK ASG.'
+      hr: 'Slušate AKTUAL MEDIA RADIO — glas globalnih vijesti, tehnologije i glazbe pod vodstvom Nermina Sefića i GNK ASG.',
+      en: 'You are listening to AKTUAL MEDIA RADIO — the voice of global news, technology, and music powered by Nermin Sefic and GNK ASG.'
     },
     {
       hr: 'GNK ASG d.o.o. i GNK DINAMO Ltd. Group — 1.573 modelirana profila digitalne radne snage, 9 modeliranih projekata i dvosatni puls tržišta.',
@@ -94,8 +94,8 @@
       en: 'World Monitor & Regional Incident Desk — a view of source-labelled public event data.'
     },
     {
-      hr: 'Tjedni urednički kanali Radija Aktual — od Tjednih tržišta do Sovinog tjednog sažetka. Modelirani raspored najava, svaki dan jedna tema.',
-      en: 'Radio Aktual weekly editorial channels — from Weekly Markets to the Sova weekly recap. A modeled announcement schedule, one theme per day.'
+      hr: 'Tjedni urednički kanali AKTUAL MEDIA RADIO — od Tjednih tržišta do Sovinog tjednog sažetka. Modelirani raspored najava, svaki dan jedna tema.',
+      en: 'AKTUAL MEDIA RADIO weekly editorial channels — from Weekly Markets to the Sova weekly recap. A modeled announcement schedule, one theme per day.'
     }
   ];
 
@@ -114,8 +114,11 @@
       // Web Audio API Synthesis fallback for 100% reliability
       this.audioCtx = null;
       this.synthPlaying = false;
-
+      this.channel = null;
+      try { this.channel = new BroadcastChannel('aktual-media-radio-v1'); } catch (_) {}
       this.initEvents();
+      this.initPersistentBridge();
+      this.initMediaSession();
     }
 
     initEvents() {
@@ -124,12 +127,16 @@
         this.isPlaying = true;
         this.updateUI();
         this.startVisualizer();
+        this.updateMediaSession();
+        this.broadcastState();
       });
 
       this.audio.addEventListener('pause', () => {
         this.isPlaying = false;
         this.updateUI();
         this.stopVisualizer();
+        this.updateMediaSession();
+        this.broadcastState();
       });
 
       this.audio.addEventListener('error', () => {
@@ -148,6 +155,74 @@
       return STATIONS[this.currentStationIndex];
     }
 
+    initPersistentBridge() {
+      if (!this.channel) return;
+      this.channel.addEventListener('message', (event) => {
+        const msg = event.data || {};
+        if (msg.type === 'PING') {
+          this.channel.postMessage({ type: 'PLAYER_READY', source: 'radio-player' });
+          this.broadcastState();
+          return;
+        }
+        if (msg.type !== 'COMMAND' || !msg.payload) return;
+        const action = msg.payload.action;
+        if (action === 'PLAY') this.play();
+        else if (action === 'PAUSE') this.pause();
+        else if (action === 'NEXT') this.nextTrack();
+        else if (action === 'SYNC') this.broadcastState();
+      });
+      this.channel.postMessage({ type: 'PLAYER_READY', source: 'radio-player' });
+      window.addEventListener('beforeunload', () => {
+        try { this.channel.postMessage({ type: 'PLAYER_CLOSED', source: 'radio-player' }); } catch (_) {}
+      });
+    }
+
+    broadcastState() {
+      if (!this.channel) return;
+      const st = this.currentStation;
+      try {
+        this.channel.postMessage({
+          type: 'STATE',
+          source: 'radio-player',
+          payload: {
+            playing: !!this.isPlaying,
+            stationIndex: this.currentStationIndex,
+            stationName: isEn() ? st.nameEn : st.nameHr,
+            stationTag: isEn() ? st.taglineEn : st.taglineHr
+          }
+        });
+      } catch (_) {}
+    }
+
+    initMediaSession() {
+      if (!('mediaSession' in navigator)) return;
+      const safeSet = (action, handler) => {
+        try { navigator.mediaSession.setActionHandler(action, handler); } catch (_) {}
+      };
+      safeSet('play', () => this.play());
+      safeSet('pause', () => this.pause());
+      safeSet('nexttrack', () => this.changeStation((this.currentStationIndex + 1) % STATIONS.length));
+      safeSet('previoustrack', () => this.changeStation((this.currentStationIndex - 1 + STATIONS.length) % STATIONS.length));
+      this.updateMediaSession();
+    }
+
+    updateMediaSession() {
+      if (!('mediaSession' in navigator) || typeof MediaMetadata === 'undefined') return;
+      const st = this.currentStation;
+      try {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: isEn() ? st.nameEn : st.nameHr,
+          artist: 'AKTUAL MEDIA RADIO',
+          album: st.genre,
+          artwork: [
+            { src: '/assets/app-icon-192.svg', sizes: '192x192', type: 'image/svg+xml' },
+            { src: '/assets/app-icon-512.svg', sizes: '512x512', type: 'image/svg+xml' }
+          ]
+        });
+        navigator.mediaSession.playbackState = this.isPlaying ? 'playing' : 'paused';
+      } catch (_) {}
+    }
+
     play() {
       if (this.synthPlaying) this.stopProceduralAudio();
       const station = this.currentStation;
@@ -162,6 +237,8 @@
           this.isPlaying = true;
           this.announceTrack();
           this.updateUI();
+          this.updateMediaSession();
+          this.broadcastState();
         }).catch(() => {
           // Fallback to web audio synth
           this.startProceduralAudio();
@@ -174,6 +251,8 @@
       if (this.synthPlaying) this.stopProceduralAudio();
       this.isPlaying = false;
       this.updateUI();
+      this.updateMediaSession();
+      this.broadcastState();
     }
 
     toggle() {
@@ -189,6 +268,7 @@
       if (this.audio) this.audio.volume = this.volume;
       if (this.gainNode) this.gainNode.gain.setValueAtTime(this.volume * 0.15, this.audioCtx.currentTime);
       this.updateVolumeUI();
+      this.broadcastState();
     }
 
     changeStation(index) {
@@ -198,6 +278,8 @@
         this.play();
       } else {
         this.updateUI();
+        this.updateMediaSession();
+        this.broadcastState();
       }
     }
     nextTrack() {
