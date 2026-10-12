@@ -63,8 +63,16 @@ for(const [name,html] of [['hr',hr],['en',en]]){
   if(!html.includes('"editor":{"@type":"Person","name":"Nermin Sefić"')) failures.push(name+': editor schema missing');
   if(!html.includes('rel="author" href="https://gnk-asg.hr/nermin-sefic/"')) failures.push(name+': rel=author missing');
   if(!html.includes('id="twColumnGrid"')) failures.push(name+': Nermin Sefić columns spotlight missing');
+  if(!html.includes('id="twIssueSchema"')) failures.push(name+': dynamic issue ItemList schema hook missing');
+  if(!html.includes('og:image:alt')) failures.push(name+': og:image:alt missing');
+  if(!html.includes('twitter:image:alt')) failures.push(name+': twitter:image:alt missing');
+  const title=html.match(/<title>([^<]+)<\\/title>/i)?.[1]||'';
+  if(title.length>60) failures.push(name+': title exceeds 60 characters');
   if(!html.includes('AKTUAL MEDIA')) failures.push(name+': full AKTUAL MEDIA brand missing');
 }
+const weeklyJs=read(files.js);
+if(!weeklyJs.includes('arr.slice(0,6)')) failures.push('weekly JS: six-column spotlight missing');
+if(!weeklyJs.includes('numberOfItems:allStories.length')) failures.push('weekly JS: dynamic ItemList schema generation missing');
 if(!read(files.newsroomHr).includes('/gnk-aktual/tjedni/')) failures.push('HR newsroom: weekly link missing');
 if(!read(files.newsroomEn).includes('/en/gnk-aktual/weekly/')) failures.push('EN newsroom: weekly link missing');
 if(!read(files.worldJs).includes("'/gnk-aktual/tjedni/'")) failures.push('world nav: weekly route missing');
