@@ -137,8 +137,8 @@ def content(lang: str) -> dict:
 <li><strong>White-label aplikacija</strong> — logotip, boje i domena partnera; naš kod i naša ažuriranja.</li>
 <li><strong>Analitički motor i umjetna inteligencija kao API</strong> — ACWR, spremnost, rizik od ozljede, biomehanika i izvještaji.</li>
 <li><strong>Otvoreni API i izvoz</strong> — JSON i CSV prema video analizi, medicinskim sustavima i klupskom ERP-u.</li></ul>"""
-        video = f"""<div class="spt-video"><video controls preload="none" playsinline poster="/spt/film/spt-film-poster.webp" width="1280" height="720" aria-label="Film SPT u 60 sekundi"><source src="/spt/film/spt-film.mp4" type="video/mp4"></video></div>
-<p class="spt-vcap">Film „SPT u 60 sekundi”: bez naratora, samo zvukovi sporta — publika, sudačka zviždaljka, udarac lopte i otkucaji srca. <a href="{film}">Stranica filma s poglavljima →</a></p>"""
+        video = f"""<div class="spt-video"><video controls preload="none" playsinline poster="/spt/film/spt-film-poster.webp" width="1280" height="720" aria-label="Film SPT u 60 sekundi"><source src="/spt/film/spt-film.mp4?v=3" type="video/mp4"></video></div>
+<p class="spt-vcap">Film „SPT u 60 sekundi”: bez naratora — vedra glazba i zvukovi raznih sportova: publika, sudačka zviždaljka, nogomet, tenis, košarka, plivanje, atletika i otkucaji srca. <a href="{film}">Stranica filma s poglavljima →</a></p>"""
         body = [
             "<p>U modernom sportu rezultat se sve češće odlučuje prije utakmice: u tome tko je u ponedjeljak trenirao previše, tko je u četvrtak imao lošu noć i čiji su sprintevi u drugom poluvremenu postali sporiji nego inače. <strong>SPT — Sports Performance Tracking</strong> sustav je koji te signale hvata dok se događaju i pretvara ih u odluke koje stručni stožer može donijeti na vrijeme: prije ozljede, a ne nakon nje.</p>",
             facts,
@@ -229,8 +229,8 @@ def content(lang: str) -> dict:
 <li><strong>White-label app</strong> — the partner's logo, colours and domain; our code and our updates.</li>
 <li><strong>Analytics engine and AI as an API</strong> — ACWR, readiness, injury risk, biomechanics and reports.</li>
 <li><strong>Open API and export</strong> — JSON and CSV to video analysis, medical systems and the club ERP.</li></ul>"""
-    video = f"""<div class="spt-video"><video controls preload="none" playsinline poster="/spt/film/spt-film-poster.webp" width="1280" height="720" aria-label="Film: SPT in 60 seconds"><source src="/spt/film/spt-film.mp4" type="video/mp4"></video></div>
-<p class="spt-vcap">The film “SPT in 60 seconds”: no narrator, only the sounds of sport — the crowd, the referee's whistle, the strike of the ball and a heartbeat. <a href="{film}">Film page with chapters →</a></p>"""
+    video = f"""<div class="spt-video"><video controls preload="none" playsinline poster="/spt/film/spt-film-poster.webp" width="1280" height="720" aria-label="Film: SPT in 60 seconds"><source src="/spt/film/spt-film.mp4?v=3" type="video/mp4"></video></div>
+<p class="spt-vcap">The film “SPT in 60 seconds”: no narrator — upbeat music and the sounds of many sports: the crowd, the referee's whistle, football, tennis, basketball, swimming, athletics and a heartbeat. <a href="{film}">Film page with chapters →</a></p>"""
     body = [
         "<p>In modern sport, results are increasingly decided before kick-off: by who trained too hard on Monday, who had a bad night on Thursday and whose sprints became slower than usual in the second half. <strong>SPT — Sports Performance Tracking</strong> is a system that captures these signals as they happen and turns them into decisions the staff can make in time: before the injury, not after it.</p>",
         facts,

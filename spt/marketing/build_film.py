@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 SPT — promotivni film (1280x720 · 30 fps · ~61 s)
-Bez glasova — samo zvukovi sporta (publika, sudačka zviždaljka, udarci lopte,
-otkucaji srca, zvukovi sučelja). Zvuk: film_audio.py (v2). Slike proizvoda + renderirana LIVE nadzorna ploča.
+Bez glasova — vedra glazba i zvukovi raznih sportova (publika, sudačka zviždaljka, udarci lopte,
+otkucaji srca, tenis, košarka, plivanje...). Zvuk: film_audio.py (v3). Slike proizvoda + renderirana LIVE nadzorna ploča.
 
 produced by GNK ASG · Nermin Sefić
 
