@@ -19,7 +19,8 @@ const write=(rel,value)=>{
 };
 const item={id:'T-1',date:'2026-10-10',time:'07:00',category:'komentari',slug:'test-odobrenje'};
 const canonical='https://gnk-asg.hr/komentari/test-odobrenje/';
-const html='<html lang="hr"><head><link rel="canonical" href="'+canonical+'"></head><body><h1>Test</h1></body></html>';
+const body=Array.from({length:3000},(_,i)=>`riječ${i+1}`).join(' ');
+const html='<html lang="hr"><head><link rel="canonical" href="'+canonical+'"></head><body><h1>Test</h1><article class="article-body"><p>'+body+'</p></article></body></html>';
 const run=(now='2026-10-10T08:00:00+02:00')=>spawnSync(process.execPath,[script,root],{
   encoding:'utf8',
   env:{...process.env,ASG_EDITORIAL_NOW:now}
@@ -39,6 +40,12 @@ try{
   write('content/factory-queue/komentari/test-odobrenje.html',html);
 
   check('safe due item accepted',0,/"ok": true/);
+  write('content/factory-queue/komentari/test-odobrenje.html',html.replace('riječ3000',''));
+  check('2999-word article blocked',1,/article body has 2999 words; minimum is 3000/);
+  write('content/factory-queue/komentari/test-odobrenje.html',html.replace(/<article\\b[^>]*>[\\s\\S]*?<\\/article>/i,''));
+  check('missing article body blocked',1,/missing article body/);
+  write('content/factory-queue/komentari/test-odobrenje.html',html);
+
 
   write('apps/portal/data/editorial-registry.json',{items:[{path:'/komentari/test-odobrenje/'}]});
   check('duplicate route blocked',1,/duplicate public route/);
