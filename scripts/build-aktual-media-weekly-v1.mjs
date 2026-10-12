@@ -19,7 +19,7 @@ const maxDate=new Date(items[0]._published);
 const issueMonday=new Date(Date.UTC(maxDate.getUTCFullYear(),maxDate.getUTCMonth(),maxDate.getUTCDate()));
 const day=issueMonday.getUTCDay()||7; issueMonday.setUTCDate(issueMonday.getUTCDate()-day+1);
 const issueWeek=issueMonday.toISOString().slice(0,10);
-if(fs.existsSync(OUT)){
+if(process.env.AKTUAL_WEEKLY_FORCE!=='1'&&fs.existsSync(OUT)){
   try{
     const prev=JSON.parse(fs.readFileSync(OUT,'utf8'));
     if(prev.issue_week===issueWeek){console.log(JSON.stringify({changed:false,issue_week:issueWeek}));process.exit(0)}
