@@ -1,0 +1,36 @@
+name: Check AKTUAL Meta Matrix
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/gnk-aktual/**'
+      - 'apps/portal/en/gnk-aktual/**'
+      - 'scripts/audit-aktual-meta-matrix-v1.mjs'
+      - '.github/workflows/check-aktual-meta-matrix-v1.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/gnk-aktual/**'
+      - 'apps/portal/en/gnk-aktual/**'
+      - 'scripts/audit-aktual-meta-matrix-v1.mjs'
+      - '.github/workflows/check-aktual-meta-matrix-v1.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Audit AKTUAL public metadata matrix
+        run: node scripts/audit-aktual-meta-matrix-v1.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: aktual-meta-matrix-${{ github.run_id }}
+          path: artifacts/seo/aktual-meta-matrix.json
+          retention-days: 14
