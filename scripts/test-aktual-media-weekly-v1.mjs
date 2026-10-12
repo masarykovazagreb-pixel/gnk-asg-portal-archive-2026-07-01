@@ -66,7 +66,10 @@ for(const [name,html] of [['hr',hr],['en',en]]){
   if(!html.includes('id="twIssueSchema"')) failures.push(name+': dynamic issue ItemList schema hook missing');
   if(!html.includes('og:image:alt')) failures.push(name+': og:image:alt missing');
   if(!html.includes('twitter:image:alt')) failures.push(name+': twitter:image:alt missing');
-  const title=html.match(/<title>([^<]+)<\\/title>/i)?.[1]||'';
+  const lowerHtml=html.toLowerCase();
+  const titleStart=lowerHtml.indexOf('<title>');
+  const titleEnd=lowerHtml.indexOf('</title>');
+  const title=(titleStart>=0&&titleEnd>titleStart)?html.slice(titleStart+7,titleEnd).trim():'';
   if(title.length>60) failures.push(name+': title exceeds 60 characters');
   if(!html.includes('AKTUAL MEDIA')) failures.push(name+': full AKTUAL MEDIA brand missing');
 }
