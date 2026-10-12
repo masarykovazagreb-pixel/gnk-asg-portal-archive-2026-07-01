@@ -1,5 +1,8 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
+import os from 'node:os';
+import path from 'node:path';
+import vm from 'node:vm';
 
 const plan=JSON.parse(fs.readFileSync('apps/portal/data/editorial-plan/manifest.json','utf8'));
 for(const pack of plan.packages)pack.items=(pack.files||[]).flatMap(file=>JSON.parse(fs.readFileSync(`apps/portal/data/editorial-plan/${file}`,'utf8')));
@@ -38,7 +41,44 @@ assert.ok(oct9Html.includes('/assets/gallery/sastanak-bez-odluke-20261009.svg'),
 assert.ok((oct9Html.match(/<h2>Zaključak<\/h2>/g)||[]).length<=1,'published Oct 9 page must not repeat Zaključak headings');
 
 const publisher=fs.readFileSync('scripts/editorial-publish-scheduled-v1.mjs','utf8');
-for(const marker of ['GNK_ASG_EDITORIAL_SCHEDULED_PUBLISH_V3_20260714','OpinionNewsArticle','application/ld+json','rel="canonical"','property="og:title"','name="twitter:card"','Urednička odgovornost','EDITORIAL_NOW','deployApproved','writeIfChanged','summary.publicChanged||summary.stateChanged','publication-holds.json','publicationHeld','summary.held','const cardImage=item.image||AUTHOR_IMAGE','const featuredImage=item.image||AUTHOR_IMAGE','(headings[i-1]||\'\')'])assert.ok(publisher.includes(marker),marker);
+for(const marker of ['GNK_ASG_EDITORIAL_SCHEDULED_PUBLISH_V3_20260714','OpinionNewsArticle','application/ld+json','rel="canonical"','property="og:title"','name="twitter:card"','Urednička odgovornost','EDITORIAL_NOW','deployApproved','writeIfChanged','summary.publicChanged||summary.stateChanged','publication-holds.json','publicationHeld','summary.held','const cardImage=item.image||AUTHOR_IMAGE','(headings[i-1]||\'\')'])assert.ok(publisher.includes(marker),marker);
+// Behavioral regression for the current AKTUAL editorial container. A static
+// marker assertion alone cannot catch duplicate links or malformed HTML.
+const aktualFixture=fs.readFileSync('apps/portal/gnk-aktual/index.html','utf8');
+assert.match(aktualFixture,/<div class="am-editorial-links" id="amEditorialLinks">/);
+const aktualFnStart=publisher.indexOf('function appendAktualCard(');
+const aktualFnEnd=publisher.indexOf('\nfunction appendSitemap(',aktualFnStart);
+assert.ok(aktualFnStart>=0&&aktualFnEnd>aktualFnStart,'publisher must expose AKTUAL integration');
+const aktualFnSource=publisher.slice(aktualFnStart,aktualFnEnd);
+assert.ok(!aktualFnSource.includes('akKomentarIstaknuti')||aktualFnSource.includes('removed akKomentarIstaknuti'),'publisher must not depend on retired AKTUAL markup');
+const aktualTmp=fs.mkdtempSync(path.join(os.tmpdir(),'gnk-aktual-publish-test-'));
+try{
+  const aktualFile=path.join(aktualTmp,'gnk-aktual','index.html');
+  fs.mkdirSync(path.dirname(aktualFile),{recursive:true});
+  fs.writeFileSync(aktualFile,aktualFixture);
+  const routeForTest=item=>`/${item.type==='objava'?'objave':'komentari'}/${item.slug}/`;
+  const escapeTest=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  const writeIfChangedTest=(file,content)=>{
+    if(fs.existsSync(file)&&fs.readFileSync(file,'utf8')===content)return false;
+    fs.writeFileSync(file,content);return true;
+  };
+  const appendAktual=vm.runInNewContext('('+aktualFnSource+')',{
+    fs,path,ROOT:aktualTmp,routeFor:routeForTest,esc:escapeTest,writeIfChanged:writeIfChangedTest,
+  });
+  const sample={type:'komentar',slug:'test-integracija-aktual',title:'Analiza & <provjera>'};
+  assert.equal(appendAktual(sample,'2026-10-12T08:00:00+02:00'),true,'first append must modify AKTUAL');
+  const first=fs.readFileSync(aktualFile,'utf8');
+  assert.ok(first.includes('<a href="/komentari/test-integracija-aktual/">Analiza &amp; &lt;provjera&gt;</a>'),'link must be escaped and correctly routed');
+  assert.equal((first.match(/href="\/komentari\/test-integracija-aktual\/"/g)||[]).length,1,'new link must occur exactly once');
+  assert.equal(appendAktual(sample,'2026-10-12T08:00:00+02:00'),false,'repeat append must be a no-op');
+  assert.equal(fs.readFileSync(aktualFile,'utf8'),first,'idempotent call must not rewrite HTML');
+  fs.writeFileSync(aktualFile,'<main>No editorial links container</main>');
+  assert.throws(()=>appendAktual(sample,'2026-10-12T08:00:00+02:00'),/AKTUAL editorial links container not found/,'missing container must fail closed');
+  assert.equal(fs.readFileSync(aktualFile,'utf8'),'<main>No editorial links container</main>','failed append must not alter the page');
+}finally{
+  fs.rmSync(aktualTmp,{recursive:true,force:true});
+}
+
 for(const file of ['apps/portal/data/editorial-plan/publication-holds.json','scripts/seo-visibility-cycle-v1.mjs','scripts/refresh-public-news-v4.mjs','scripts/validate-editorial-content-policy-v1.mjs','scripts/test-editorial-content-policy-v1.mjs','.github/workflows/editorial-scheduled-publish.yml','.github/workflows/seo-news-cycle.yml','.github/workflows/gnk-seo-nightly-audit.yml','.github/workflows/editorial-content-deploy.yml'])assert.ok(fs.existsSync(file)&&fs.statSync(file).size,file);
 const holds=JSON.parse(fs.readFileSync('apps/portal/data/editorial-plan/publication-holds.json','utf8'));
 assert.match(holds.version,/GNK_ASG_EDITORIAL_PUBLICATION_HOLDS_V(?:1_20260805|2_20260925_RESCHEDULED|3_20260925_DAILY|4_20261005_CLEARED|5_20261010_3000_WORDS_PENDING_POLICY_DECISION)/);
