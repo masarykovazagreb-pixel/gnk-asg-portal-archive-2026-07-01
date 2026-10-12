@@ -32,7 +32,7 @@ A system can be built in parallel with regulatory work—but a demo is not an au
 
 The stated 14-month objective for a potential first market entry outside Croatia is conditional, not a promised launch date. The market cards are research concepts, not confirmed branches.
 
-**Project page:** https://gnk-asg.hr/adria-bank-project/
+**Project page:** https://gnk-asg.hr/bank/
 
 **Source update:** https://gnk-asg.hr/aktual/adria-bank-project-update/
 
