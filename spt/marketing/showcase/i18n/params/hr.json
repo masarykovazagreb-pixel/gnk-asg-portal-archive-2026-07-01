@@ -1,0 +1,107 @@
+{
+  "nav": "Parametri",
+  "params": {
+    "kicker": "Parametri i analize",
+    "title": "64 parametra koje SPT mjeri — i što pokazuju",
+    "sub": "Od metra trčanja do grama proteina: SPT mjeri kretanje, mehaničko opterećenje, srce, san, tijelo, prehranu, hidraciju, okolinu, testove, wellness i taktiku. Svaki broj ima svrhu — uz svaki piše što pokazuje i zašto je važan.",
+    "count": "parametara",
+    "groups": [
+      {"ic": 8, "t": "Kretanje i brzina", "src": "SPT Pod · GNSS 20 Hz / UWB", "items": [
+        {"n": "Ukupna udaljenost", "u": "m", "w": "Volumen treninga ili utakmice; uspoređuje se s ciljem za taj dan mikrociklusa i s prosjekom pozicije."},
+        {"n": "Udaljenost po zonama brzine", "u": "m · Z1–Z5", "w": "Struktura intenziteta: koliko je trening bio dug, a koliko brz — isti kilometri mogu biti lagani ili iscrpljujući."},
+        {"n": "Trčanje velikom brzinom (HSR)", "u": "m · > 19,8 km/h", "w": "Izloženost visokom intenzitetu; nagli skokovi HSR-a povezani su s ozljedama stražnje lože."},
+        {"n": "Sprintevi", "u": "broj · m > 25 km/h", "w": "Ponovljivost sprinta; manje sprinteva u drugom poluvremenu jasan je znak umora."},
+        {"n": "Maksimalna brzina", "u": "km/h · % osobnog maksimuma", "w": "Ako sportaš tjednima ne dosegne oko 90 % svog maksimuma, gubi „cjepivo” protiv ozljede pri sprintu."},
+        {"n": "Metri u minuti", "u": "m/min", "w": "Relativni intenzitet, usporediv između utakmica i treninga različite duljine te igrača s različitom minutažom."}
+      ]},
+      {"ic": 9, "t": "Mehaničko opterećenje", "src": "SPT Pod · IMU 1000 Hz", "items": [
+        {"n": "Ubrzanja", "u": "broj · > 3 m/s²", "w": "Eksplozivni zahtjevi na mišiće natkoljenice i lista; sam GPS ih ne vidi dovoljno precizno."},
+        {"n": "Kočenja (deceleracije)", "u": "broj · < −3 m/s²", "w": "Ekscentrično opterećenje — mehanički najzahtjevniji dio igre za tetive i zglobove."},
+        {"n": "Promjene smjera", "u": "broj · kut", "w": "Opterećenje koljena, prepona i gležnja; ključno u nogometu, košarci, rukometu i tenisu."},
+        {"n": "Opterećenje iz akcelerometra", "u": "AU", "w": "Zbroj svih pokreta tijela — mjeri opterećenje i tamo gdje GPS ne vidi: u dvorani, u duelu, u teretani."},
+        {"n": "Udarci i sudari", "u": "broj · g", "w": "Kontakti, padovi i udarci iznad zadanog praga; u kontaktnim sportovima signal da se igrača provjeri."},
+        {"n": "Skokovi i doskoci", "u": "broj · cm · g", "w": "Volumen skokova i tvrdoća doskoka; u odbojci i košarci glavni uzrok preopterećenja patelarne tetive."}
+      ]},
+      {"ic": 5, "t": "Srce i krvožilni odgovor", "src": "prsni pojas · SPT sat", "items": [
+        {"n": "Puls uživo i % HRmax", "u": "bpm · %", "w": "Unutarnji intenzitet u stvarnom vremenu; stožer vidi tko je u crvenoj zoni dok traje igra."},
+        {"n": "Vrijeme u zonama pulsa", "u": "min · Z1–Z5", "w": "Je li trening postigao željeni podražaj: aerobni temelj, prag ili visoki intenzitet."},
+        {"n": "TRIMP (opterećenje iz pulsa)", "u": "AU", "w": "Kako je tijelo doživjelo trening — isti vanjski rad lagan je za odmornog, a težak za umornog sportaša."},
+        {"n": "Oporavak pulsa (HRR)", "u": "bpm u 60 s", "w": "Brzina pada pulsa nakon napora; sporiji oporavak upozorava na umor ili početak bolesti."},
+        {"n": "Puls u mirovanju", "u": "bpm", "w": "Jutarnji porast od 5 i više otkucaja često prethodi bolesti, pretreniranosti ili lošem snu."},
+        {"n": "HRV (RMSSD)", "u": "ms", "w": "Ravnoteža autonomnog živčanog sustava — najosjetljiviji neinvazivni pokazatelj spremnosti; gleda se odstupanje od osobne norme."}
+      ]},
+      {"ic": 10, "t": "San i oporavak", "src": "SPT sat", "items": [
+        {"n": "Trajanje sna", "u": "h", "w": "Manje od 7 sati sna povezano je s većim rizikom ozljede i sporijim reakcijama."},
+        {"n": "Faze sna", "u": "duboki · REM · lagani", "w": "Duboki san nosi fizički oporavak, a REM učenje i koncentraciju; kasne utakmice pomiču faze."},
+        {"n": "Efikasnost sna i buđenja", "u": "% · broj", "w": "Kvaliteta, ne samo količina: isprekidan san smanjuje oporavak i nakon 8 sati u krevetu."},
+        {"n": "Disanje u snu", "u": "udisaja/min", "w": "Porast frekvencije disanja jedan je od najranijih znakova infekcije."},
+        {"n": "Temperatura kože", "u": "odstupanje °C", "w": "Odstupanje od osobne norme upozorava na upalu ili bolest; kod sportašica prati fazu ciklusa."},
+        {"n": "Indeks spremnosti", "u": "0–100", "w": "Jutarnji zbirni rezultat (HRV, puls u mirovanju, san, upitnik): zeleni trenira punim intenzitetom, crveni dobiva plan oporavka."}
+      ]},
+      {"ic": 11, "t": "Tijelo i kompozicija", "src": "SPT vaga · bioimpedancija", "items": [
+        {"n": "Tjelesna masa", "u": "kg", "w": "Dnevni trend; nagli pad upozorava na dehidraciju ili premali energetski unos."},
+        {"n": "Postotak masnog tkiva", "u": "%", "w": "Kompozicija u odnosu na cilj pozicije i faze sezone; važan je trend, a ne pojedinačni dan."},
+        {"n": "Mišićna masa", "u": "kg", "w": "Gubitak mišića tijekom ozljede ili prekida — temelj plana prehrane i snage za povratak."},
+        {"n": "Ukupna tjelesna voda", "u": "%", "w": "Hidracija i oporavak; uz jutarnju masu daje pouzdaniju sliku od same težine."},
+        {"n": "Visceralna mast", "u": "razina", "w": "Zdravstveni pokazatelj — posebno važan za rekreativce i veteranske kategorije."},
+        {"n": "Bazalni metabolizam", "u": "kcal/dan", "w": "Temelj za izračun dnevnih energetskih potreba i plana prehrane."}
+      ]},
+      {"ic": 12, "t": "Prehrana i energija", "src": "aplikacija · vaga · senzori", "items": [
+        {"n": "Energetski unos", "u": "kcal", "w": "Što je sportaš pojeo — fotografija obroka, baza namirnica ili plan nutricionista."},
+        {"n": "Potrošnja energije", "u": "kcal", "w": "Izračun iz pulsa, akcelerometra i bazalnog metabolizma: koliko je stvarno potrošeno na treningu i kroz dan."},
+        {"n": "Energetska dostupnost", "u": "kcal/kg nemasne mase", "w": "Ispod oko 30 kcal po kg nemasne mase raste rizik RED-S-a: hormonski poremećaji, slabije kosti, češće ozljede."},
+        {"n": "Proteini", "u": "g/kg", "w": "Za oporavak mišića obično 1,6–2,2 g po kg tjelesne mase, raspoređeno u 4–5 obroka."},
+        {"n": "Ugljikohidrati", "u": "g/kg", "w": "Gorivo za intenzitet; unos se periodizira prema opterećenju — više dan prije utakmice, manje u danima oporavka."},
+        {"n": "Vrijeme obroka", "u": "min nakon napora", "w": "Proteini i ugljikohidrati unutar oko 60 minuta nakon napora ubrzavaju oporavak; aplikacija šalje podsjetnik."}
+      ]},
+      {"ic": 13, "t": "Hidracija, dodaci i okolina", "src": "vaga · aplikacija · vremenski podaci", "items": [
+        {"n": "Gubitak tekućine znojenjem", "u": "L/h", "w": "Razlika mase prije i poslije treninga; plan nadoknade je oko 150 % izgubljene tekućine."},
+        {"n": "Status hidracije", "u": "% · boja urina", "w": "Već 2 % dehidracije mjerljivo smanjuje izdržljivost, brzinu i koncentraciju."},
+        {"n": "Mikronutrijenti i dodaci", "u": "ručni unos · laboratorij", "w": "Željezo, feritin, vitamin D i dodaci prehrani — uz liječnika objašnjavaju umor, imunitet i zdravlje kostiju."},
+        {"n": "Kofein i alkohol", "u": "ručni unos", "w": "Vidljiv utjecaj na san, HRV i jutarnju spremnost — sportaš vidi uzrok i posljedicu."},
+        {"n": "Toplinski stres (WBGT)", "u": "°C", "w": "Temperatura, vlaga i sunce zajedno; iznad praga sustav predlaže pauze za hidraciju i manje opterećenje."},
+        {"n": "Nadmorska visina i SpO₂", "u": "m · %", "w": "Prilagodba na visinu (pripreme, gostovanja); niža zasićenost kisikom usporava oporavak."}
+      ]},
+      {"ic": 14, "t": "Opterećenje i rizik ozljede", "src": "SPT analitika · AI", "items": [
+        {"n": "ACWR (akutno : kronično)", "u": "omjer · EWMA", "w": "Opterećenje zadnjih 7 dana prema prosjeku 28 dana; oko 0,8–1,3 je uravnoteženo, iznad 1,5 rizično."},
+        {"n": "Monotonija i strain", "u": "indeks", "w": "Koliko su dani u tjednu slični i koliki je ukupni stres — jednoličan težak tjedan prethodi bolesti i pretreniranosti."},
+        {"n": "sRPE (subjektivni napor)", "u": "AU", "w": "Ocjena napora × minute; unutarnje opterećenje i bez senzora — za mlađe kategorije i rekreativce."},
+        {"n": "Asimetrija koraka L/D", "u": "%", "w": "Razlika lijeve i desne noge iznad oko 10 % upozorava na kompenzaciju, ranu ozljedu ili nepotpun oporavak."},
+        {"n": "AI procjena rizika ozljede", "u": "% · razlozi", "w": "Model spaja opterećenje, spremnost, asimetriju i povijest ozljeda te daje vjerojatnost, razlog i preporuku; odluka ostaje stožeru."},
+        {"n": "Indeks povratka (RTP)", "u": "% osobne norme", "w": "Nakon ozljede uspoređuje brzinu, ubrzanja i opterećenje s vrijednostima prije ozljede — objektivan kriterij za povratak."}
+      ]},
+      {"ic": 15, "t": "Testovi i neuromuskularni status", "src": "SPT Pod · sat · testovi na terenu", "items": [
+        {"n": "Skok s pripremom (CMJ)", "u": "cm · RSI", "w": "Pad visine ili reaktivnosti za 5–8 % ukazuje na neuromuskularni umor — dan za manji intenzitet."},
+        {"n": "Sprint 10/30 m", "u": "s", "w": "Ubrzanje i maksimalna brzina u uvjetima testa; napredak se vidi iz tjedna u tjedan."},
+        {"n": "Intermitentni test (Yo-Yo IR, 30-15 IFT)", "u": "razina · km/h", "w": "Kondicijska razina i individualne zone za intervalni trening."},
+        {"n": "Procijenjeni VO₂max", "u": "ml/kg/min", "w": "Aerobni kapacitet; trend kroz sezonu pokazuje je li temelj izgrađen."},
+        {"n": "Aerobna efikasnost", "u": "brzina/puls", "w": "Ista brzina uz niži puls znači bolju formu — najjednostavniji pokazatelj napretka za rekreativce."},
+        {"n": "Kadenca i kontakt s tlom", "u": "koraci/min · ms", "w": "Ekonomičnost trčanja i reaktivna snaga; produljenje kontakta s tlom prati umor."}
+      ]},
+      {"ic": 16, "t": "Wellness", "src": "jutarnji upitnik u aplikaciji", "items": [
+        {"n": "Umor", "u": "1–5", "w": "Subjektivni osjećaj umora — često reagira prije objektivnih pokazatelja."},
+        {"n": "Bol u mišićima", "u": "1–5 · karta tijela", "w": "Gdje i koliko boli; ponavljana bol na istom mjestu razlog je za razgovor s fizioterapeutom."},
+        {"n": "Subjektivna kvaliteta sna", "u": "1–5", "w": "Dopuna podacima sa sata — kako se sportaš osjeća nakon sna."},
+        {"n": "Stres", "u": "1–5", "w": "Ispiti, putovanja, privatni život — stres povećava rizik ozljede jednako kao fizičko opterećenje."},
+        {"n": "Raspoloženje i motivacija", "u": "1–5", "w": "Rani znak pretreniranosti i sagorijevanja, posebno kod mladih sportaša."},
+        {"n": "Menstrualni ciklus (opcionalno, privatno)", "u": "faza", "w": "Prilagodba opterećenja, prehrane i oporavka po fazama; podaci su vidljivi samo sportašici i ovlaštenom stožeru."}
+      ]},
+      {"ic": 17, "t": "Taktika i tehnika", "src": "SPT Pod · UWB · analitika momčadi", "items": [
+        {"n": "Toplinska karta i prosječna pozicija", "u": "karta", "w": "Gdje se igrač kretao i drži li zadanu ulogu u sustavu igre."},
+        {"n": "Kompaktnost momčadi", "u": "m · širina · dubina", "w": "Udaljenost između linija i igrača u obrani i napadu — mjera organizacije igre."},
+        {"n": "Visina obrambene linije", "u": "m od gola", "w": "Koliko visoko momčad brani i kako se linija pomiče kroz utakmicu i s umorom."},
+        {"n": "Udarci lopte i tehničke akcije", "u": "broj · noga", "w": "Uz opcionalni senzor na kopački: udarci, dodavanja i šutevi te omjer lijeve i desne noge — tehničko opterećenje i asimetrija."}
+      ]}
+    ],
+    "an_title": "Što analize pokazuju",
+    "an": [
+      {"t": "Jutarnja spremnost", "d": "Tko danas može punim intenzitetom, a tko treba prilagođen trening: semafor zeleno/žuto/crveno za cijelu momčad prije prvog treninga."},
+      {"t": "Izvještaj treninga", "d": "Je li trening postigao cilj: planirano prema ostvarenom opterećenju po igraču i poziciji, s istaknutim odstupanjima."},
+      {"t": "Tjedni rizik", "d": "Tko ulazi u zonu rizika: ACWR, monotonija, asimetrija i AI procjena s razlozima i preporukom za sljedeći tjedan."},
+      {"t": "Prehrana prema opterećenju", "d": "Je li unos pratio potrošnju: energetska dostupnost, proteini i ugljikohidrati po danu mikrociklusa, uz plan obroka i hidracije."},
+      {"t": "Usporedba i razvoj", "d": "Kako igrač stoji prema svojoj normi, poziciji i profilu lige; trend sezone za skautiranje i razvoj mladih."},
+      {"t": "Povratak nakon ozljede", "d": "Kada je povratak siguran: indeks RTP uspoređuje sadašnje vrijednosti s onima prije ozljede, korak po korak."}
+    ],
+    "note": "Pragovi (npr. HSR > 19,8 km/h, ACWR 0,8–1,3) okvirne su vrijednosti iz sportske znanosti; u SPT-u se podešavaju po klubu, sportu, dobi i sportašu. SPT daje pokazatelje izvedbe i dobrobiti, a ne medicinsku dijagnozu."
+  }
+}

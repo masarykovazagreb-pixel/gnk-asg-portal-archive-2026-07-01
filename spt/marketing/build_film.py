@@ -3,7 +3,7 @@
 """
 SPT — promotivni film (1280x720 · 30 fps · ~61 s)
 Bez glasova — samo zvukovi sporta (publika, sudačka zviždaljka, udarci lopte,
-otkucaji srca, zvukovi sučelja). Slike proizvoda + renderirana LIVE nadzorna ploča.
+otkucaji srca, zvukovi sučelja). Zvuk: film_audio.py (v2). Slike proizvoda + renderirana LIVE nadzorna ploča.
 
 produced by GNK ASG · Nermin Sefić
 
@@ -611,146 +611,9 @@ def frame_at(T):
 
 
 # ------------------------------------------------------------------ zvuk
-def build_audio(path):
-    N = int(TOTAL * SR)
-    tt = np.arange(N) / SR
-    rng = np.random.default_rng(42)
-    nfft = 1 << int(math.ceil(math.log2(N)))
-
-    def shaped(lo, hi, tilt=0.0, seed=0):
-        r = np.random.default_rng(seed)
-        X = np.fft.rfft(r.standard_normal(nfft))
-        f = np.fft.rfftfreq(nfft, 1 / SR)
-        f[0] = 1e-3
-        X *= ((f / lo) ** 4 / (1 + (f / lo) ** 4)) * (1 / (1 + (f / hi) ** 4)) * (f / 1000.0) ** tilt
-        x = np.fft.irfft(X, nfft)[:N]
-        return x / (np.max(np.abs(x)) + 1e-9)
-
-    def env_db(points):
-        ts = [p[0] for p in points]
-        ds = [p[1] for p in points]
-        return 10 ** (np.interp(tt, ts, ds) / 20)
-
-    babL = 1 + 0.38 * shaped(1.5, 9, 0, 3)
-    babR = 1 + 0.38 * shaped(1.5, 9, 0, 4)
-    crowdL = shaped(260, 3400, -0.45, 1) * babL
-    crowdR = shaped(260, 3400, -0.45, 2) * babR
-    rumble = shaped(40, 220, -0.5, 5)
-    cheerL = shaped(480, 2600, 0, 6) * (1 + 0.55 * shaped(3, 12, 0, 7))
-    cheerR = shaped(480, 2600, 0, 8) * (1 + 0.55 * shaped(3, 12, 0, 9))
-    for a in (crowdL, crowdR, cheerL, cheerR):
-        a /= (np.sqrt(np.mean(a ** 2)) + 1e-9)
-    rumble /= (np.sqrt(np.mean(rumble ** 2)) + 1e-9)
-    GT = 27.0 + SHOT_T1
-    ce = env_db([(0, -70), (1.6, -36), (3.9, -32), (4.3, -16), (7.7, -16), (8.3, -28), (26.6, -28), (27.2, -19),
-                 (GT - 0.6, -15), (GT + 0.15, -7), (GT + 1.6, -10), (39.2, -17), (39.6, -24), (55.0, -24),
-                 (55.8, -15), (57.2, -10), (59.5, -13), (61.0, -70)])
-    he = env_db([(0, -90), (GT - 0.1, -90), (GT + 0.25, -9), (GT + 2.0, -15), (GT + 3.6, -40), (GT + 4.2, -90),
-                 (56.0, -90), (57.0, -15), (59.6, -21), (61.0, -90)])
-    mix = np.zeros((N, 2))
-    mix[:, 0] += 0.22 * (crowdL * ce + 0.35 * rumble * ce) + 0.20 * cheerL * he
-    mix[:, 1] += 0.22 * (crowdR * ce + 0.35 * rumble * ce) + 0.20 * cheerR * he
-
-    def add(sig, T, gain=1.0, pan=0.0):
-        i = int(T * SR)
-        if i >= N:
-            return
-        j = min(N, i + len(sig))
-        l = math.cos((pan + 1) * math.pi / 4) * 1.414
-        r = math.sin((pan + 1) * math.pi / 4) * 1.414
-        mix[i:j, 0] += sig[:j - i] * gain * l
-        mix[i:j, 1] += sig[:j - i] * gain * r
-
-    def envelope(n, att, rel):
-        e = np.ones(n)
-        a = max(1, int(att * SR))
-        r_ = max(1, int(rel * SR))
-        e[:a] = np.linspace(0, 1, a)
-        e[-r_:] *= np.linspace(1, 0, r_)
-        return e
-
-    def whistle(dur, f0=3150):
-        n = int(dur * SR)
-        t = np.arange(n) / SR
-        f = f0 + 115 * np.sin(2 * np.pi * 34 * t)
-        ph = 2 * np.pi * np.cumsum(f) / SR
-        s = np.sin(ph) + 0.22 * np.sin(2 * ph) + 0.06 * np.sin(3 * ph)
-        am = 0.78 + 0.22 * np.sin(2 * np.pi * 34 * t + 1.0)
-        br = rng.standard_normal(n) * 0.12
-        return (s * am + br) * envelope(n, 0.018, 0.07) * 0.5
-
-    def kick(strength=1.0):
-        n = int(0.2 * SR)
-        t = np.arange(n) / SR
-        f = 135 * np.exp(-t * 20) + 52
-        body = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 26)
-        click = np.diff(rng.standard_normal(n + 1)) * np.exp(-t * 420) * 0.35
-        return (body + click) * strength * 0.6
-
-    def thump(f0, dur, dec):
-        n = int(dur * SR)
-        t = np.arange(n) / SR
-        return np.sin(2 * np.pi * f0 * t) * np.exp(-t * dec) * envelope(n, 0.006, 0.02)
-
-    def heartbeat(start, end, bpm=74):
-        T = start
-        while T < end:
-            add(thump(52, 0.16, 30) * 0.9, T, 0.55)
-            add(thump(62, 0.13, 34) * 0.7, T + 0.27, 0.5)
-            T += 60.0 / bpm
-
-    def boom(T, g=1.0):
-        n = int(2.2 * SR)
-        t = np.arange(n) / SR
-        s = (np.sin(2 * np.pi * 38 * t) + 0.35 * np.sin(2 * np.pi * 76 * t)) * np.exp(-t * 1.9) * envelope(n, 0.02, 0.3)
-        add(s * 0.75, T, g)
-
-    def whoosh(T, g=0.16):
-        n = int(0.65 * SR)
-        x = np.diff(rng.standard_normal(n + 1))
-        x = np.convolve(x, np.ones(6) / 6, mode="same")
-        e = np.sin(np.linspace(0, np.pi, n)) ** 2
-        add(x * e, T - 0.32, g, pan=-0.3)
-        add(x[::-1] * e, T - 0.32, g * 0.6, pan=0.3)
-
-    def ping(T, g=0.12):
-        n = int(0.09 * SR)
-        t = np.arange(n) / SR
-        s1 = np.sin(2 * np.pi * 1320 * t) * envelope(n, 0.004, 0.06)
-        add(s1, T, g)
-        add(s1 * 0 + np.sin(2 * np.pi * 1760 * t) * envelope(n, 0.004, 0.06), T + 0.1, g)
-
-    boom(0.25, 1.0)
-    add(whistle(0.5), 4.15, 0.55, pan=0.15)
-    heartbeat(18.05, 20.9)
-    for (s_, e_, _) in SCENES[1:]:
-        whoosh(s_)
-    L0 = 27.0
-    for (t0, t1, a_, b_) in PASSES:
-        bxp = feet(a_, t0)[0] * 2 - 1
-        add(kick(0.75), L0 + t0, 0.9, pan=bxp * 0.6)
-        add(kick(0.35), L0 + t1, 0.6, pan=(feet(b_, t1)[0] * 2 - 1) * 0.6)
-    add(kick(1.35), L0 + SHOT_T0, 1.0, pan=0.6)
-    net = np.convolve(rng.standard_normal(int(0.45 * SR)), np.ones(30) / 30, mode="same") * envelope(int(0.45 * SR), 0.01, 0.3)
-    add(net * 0.9, L0 + SHOT_T1, 0.8, pan=0.8)
-    ping(L0 + 4.2, 0.14)
-    boom(55.6, 0.6)
-    O = 55.5
-    add(whistle(0.26), O + 1.6, 0.6)
-    add(whistle(0.26), O + 2.05, 0.6)
-    add(whistle(1.05), O + 2.5, 0.6)
-    fade = np.ones(N)
-    fade[:int(0.25 * SR)] = np.linspace(0, 1, int(0.25 * SR))
-    fade[-int(1.3 * SR):] *= np.linspace(1, 0, int(1.3 * SR))
-    mix *= fade[:, None]
-    mix = np.tanh(1.5 * mix) / np.tanh(1.5)
-    mix *= 0.89 / (np.max(np.abs(mix)) + 1e-9)
-    pcm = (mix * 32767).astype(np.int16)
-    with wave.open(path, "wb") as wf:
-        wf.setnchannels(2)
-        wf.setsampwidth(2)
-        wf.setframerate(SR)
-        wf.writeframes(pcm.tobytes())
+# v2: zvučni zapis je u film_audio.py (bez šumnih prijelaza; publika, srce, lopta, zviždaljka)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from film_audio import build_audio  # noqa: E402
 
 
 def main():

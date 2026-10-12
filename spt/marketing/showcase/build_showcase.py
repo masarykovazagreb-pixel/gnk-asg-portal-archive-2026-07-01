@@ -33,7 +33,7 @@ SRC_PNG = Path("/home/user/spt-src")
 SITE = "https://gnk-asg.hr"
 PUBLISHED = "2026-10-12T10:00:00+02:00"
 LASTMOD = "2026-10-12"
-V = "20261012a"
+V = "20261012b"
 ARTICLE_SLUG = "spt-sports-performance-tracking-gnk-asg"
 
 LANGS = [
@@ -71,7 +71,7 @@ IMAGES = [
     ("indoor_volleyball_uwb", "scenes", "who"),
     ("oem_cloud", "scenes", "oem"),
 ]
-FILM = {"src": "/spt/film/spt-film.mp4", "poster": "/spt/film/spt-film-poster.webp"}
+FILM = {"src": "/spt/film/spt-film.mp4?v=2", "poster": "/spt/film/spt-film-poster.webp"}
 CHAPTERS = [(0, 4, "@intro"), (4, 8, "hero_stadium_usa"), (8, 11.5, "vest_front"), (11.5, 14.5, "vest_back"),
             (14.5, 18, "chip_pod"), (18, 21, "watch"), (21, 24, "uwb_anchor"), (24, 27, "edge_server"),
             (27, 39, "dashboard_laptop"), (39, 42.5, "coach_tablet"), (42.5, 46, "analytics_screen"),
@@ -153,8 +153,21 @@ def merge(en, xx, path):
     return xx
 
 
-def load_lang(code, en):
+def read_raw(code):
+    """i18n/<jezik>.json + (opcionalno) i18n/params/<jezik>.json — katalog mjerenih parametara i oznaka u izborniku."""
     raw = json.loads((HERE / "i18n" / f"{code}.json").read_text("utf-8"))
+    pf = HERE / "i18n" / "params" / f"{code}.json"
+    if pf.exists():
+        extra = json.loads(pf.read_text("utf-8"))
+        if extra.get("nav"):
+            raw.setdefault("nav", {})["params"] = extra["nav"]
+        if extra.get("params"):
+            raw["params"] = extra["params"]
+    return raw
+
+
+def load_lang(code, en):
+    raw = read_raw(code)
     if code == "en":
         return raw, set()
     fbsec = {k for k in en if k not in raw and k not in ("lang", "locale", "name")}
@@ -318,7 +331,7 @@ def minify(html):
 
 
 def build():
-    en = json.loads((HERE / "i18n" / "en.json").read_text("utf-8"))
+    en = read_raw("en")
     active = [l for l in LANGS if (HERE / "i18n" / f"{l[0]}.json").exists()]
     codes = [l[0] for l in active]
     env = Environment(loader=FileSystemLoader(str(HERE / "templates")), autoescape=select_autoescape(["html"]),
