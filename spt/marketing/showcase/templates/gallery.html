@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="wrap gpage">
+ <nav class="crumbs" aria-label="Breadcrumb"><a href="/">GNK ASG</a><span>›</span><a href="{{ U.main }}">SPT</a><span>›</span><span aria-current="page">{{ L.ui.gallery }}</span></nav>
+ <header class="sh">
+  <p class="kick">SPT · Sports Performance Tracking</p>
+  <h1>{{ L.ui.gallery }} — SPT</h1>
+  <p class="sub">{{ L.meta.og_desc }}</p>
+ </header>
+ {% for grp in groups %}
+ <section class="gsec" aria-labelledby="g-{{ grp.key }}">
+  <h2 id="g-{{ grp.key }}">{{ grp.label }}</h2>
+  <ul class="glist">
+   {% for im in grp.images %}<li><a href="{{ im.url }}"><img src="{{ im.thumb }}" width="{{ im.tw }}" height="{{ im.th }}" alt="{{ im.alt }}" loading="lazy" decoding="async"></a><div><h3><a href="{{ im.url }}">{{ im.title }}</a></h3><p>{{ im.desc }}</p></div></li>
+   {% endfor %}
+  </ul>
+ </section>
+ {% endfor %}
+ <section class="cta cta-s" aria-labelledby="t-cta">
+  <div class="cta-in">
+   <h2 id="t-cta">{{ L.cta.title }}</h2>
+   <div class="ctas"><a class="btn btn-p" href="{{ contact_url }}">{{ L.cta.b1 }}</a><a class="btn" href="{{ U.main }}">SPT →</a><a class="btn btn-g" href="{{ U.film }}">{{ L.cta.b3 }}</a></div>
+  </div>
+ </section>
+</div>
+{% endblock %}
