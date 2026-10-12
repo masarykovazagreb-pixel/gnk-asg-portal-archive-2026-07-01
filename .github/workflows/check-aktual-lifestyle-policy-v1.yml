@@ -1,0 +1,31 @@
+name: Check AKTUAL Lifestyle Publishing Policy
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/data/publishing_policy.json'
+      - 'apps/portal/data/publishing_topics.json'
+      - 'scripts/test-aktual-lifestyle-policy-v1.mjs'
+      - '.github/workflows/check-aktual-lifestyle-policy-v1.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/data/publishing_policy.json'
+      - 'apps/portal/data/publishing_topics.json'
+      - 'scripts/test-aktual-lifestyle-policy-v1.mjs'
+      - '.github/workflows/check-aktual-lifestyle-policy-v1.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate AKTUAL lifestyle publishing boundary
+        run: node scripts/test-aktual-lifestyle-policy-v1.mjs
