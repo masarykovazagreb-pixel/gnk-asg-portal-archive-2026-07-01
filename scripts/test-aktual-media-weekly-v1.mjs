@@ -21,7 +21,8 @@ const files={
   worldJs:'apps/portal/assets/aktual-media-world-v1.js',
   menu:'apps/portal/assets/public-unified-menu-v6.js',
   sitemap:'apps/portal/sitemap.xml',
-  workflow:'.github/workflows/editorial-scheduled-publish.yml'
+  workflow:'.github/workflows/editorial-scheduled-publish.yml',
+  curation:'apps/portal/data/aktual-weekly-curation.json'
 };
 for(const [name,p] of Object.entries(files)) if(!fs.existsSync(p)) failures.push(name+': missing '+p);
 if(failures.length){console.error(failures.join('\n'));process.exit(1)}
@@ -33,15 +34,24 @@ if((d.counts?.selected_items||0)<12) failures.push('data: too few selected lifes
 if((d.counts?.sources||0)<4) failures.push('data: source diversity too low');
 if((d.sections||[]).length<5) failures.push('data: too few weekly sections');
 
-const forbidden=/\b(war|ukraine|russia|attack|attacker|killed|dies|death|dead|rape|sexual assault|assault|murder|crime|criminal|cancer|disease|poison|poisoned|crisis|accident|injury|injured|hospital|funeral|ceasefire|shooting|bomb|flood|wildfire|mosquito|haze|lawsuit|trial|court|police|gambling|casino|prediction market|betting)\b/i;
+const forbidden=/\b(war|ukraine|russia|attack|attacker|killed|dies|death|dead|rape|sexual assault|assault|murder|crime|criminal|cancer|disease|poison|poisoned|crisis|accident|injury|injured|hospital|funeral|ceasefire|shooting|bomb|flood|wildfire|mosquito|haze|lawsuit|trial|court|police|gambling|casino|prediction market|betting|poplava|poginuo|poginula|stravičn|nesreć|rat|ubojstvo|bolnica|ozlijeđen|ozlijeđena)\b/i;
 for(const sec of d.sections||[]){
   if(!sec.id||!sec.label_hr||!sec.label_en) failures.push('data: malformed section');
   for(const item of sec.items||[]){
     const hay=[item.title,item.summary,item.category,item.group].join(' ');
     if(forbidden.test(hay)) failures.push('data: heavy/non-lifestyle item leaked into '+sec.id+': '+item.title);
     if(!item.url||!/^https?:\/\//.test(item.url)) failures.push('data: non-source-linked URL in '+sec.id);
-    if(!item.image||!/^https?:\/\//.test(item.image)) failures.push('data: missing source image in '+sec.id);
+    if(!item.image||!(/^(?:https?:\/\/|\/assets\/)/.test(item.image))) failures.push('data: missing approved source/local image in '+sec.id);
   }
+}
+
+const curation=JSON.parse(read(files.curation));
+if(curation.version!=='AKTUAL_MEDIA_WEEKLY_CURATION_V1') failures.push('curation: version mismatch');
+if(curation.issue_week!==d.issue_week) failures.push('curation issue_week mismatch');
+if(!Array.isArray(curation.items)||curation.items.length<8) failures.push('curation: too few hand-curated items');
+for(const item of curation.items||[]){
+  if(!item.section||!item.title||!item.url||!item.source) failures.push('curation: malformed item');
+  if(!/^https?:\/\//.test(item.url||'')) failures.push('curation: external source URL required');
 }
 
 const hr=read(files.hr),en=read(files.en);
