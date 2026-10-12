@@ -1,0 +1,64 @@
+{
+  "id": "/radio/player/",
+  "name": "AKTUAL MEDIA RADIO",
+  "short_name": "AKTUAL RADIO",
+  "description": "AKTUAL MEDIA RADIO — persistent internet radio player.",
+  "lang": "hr-HR",
+  "start_url": "/radio/player/?source=pwa",
+  "scope": "/radio/",
+  "display": "standalone",
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui"
+  ],
+  "orientation": "any",
+  "background_color": "#071426",
+  "theme_color": "#071426",
+  "categories": [
+    "music",
+    "news",
+    "entertainment"
+  ],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/assets/app-icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/app-icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Open radio",
+      "short_name": "Radio",
+      "url": "/radio/player/",
+      "icons": [
+        {
+          "src": "/assets/app-icon-192.svg",
+          "sizes": "192x192",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "AKTUAL MEDIA",
+      "short_name": "News",
+      "url": "/gnk-aktual/",
+      "icons": [
+        {
+          "src": "/assets/app-icon-192.svg",
+          "sizes": "192x192",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ]
+}
