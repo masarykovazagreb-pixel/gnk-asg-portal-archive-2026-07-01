@@ -1,0 +1,31 @@
+name: Check AKTUAL SEO Surface V2
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/gnk-aktual/**'
+      - 'apps/portal/en/gnk-aktual/**'
+      - 'scripts/test-aktual-seo-surface-v2.mjs'
+      - '.github/workflows/check-aktual-seo-surface-v2.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/gnk-aktual/**'
+      - 'apps/portal/en/gnk-aktual/**'
+      - 'scripts/test-aktual-seo-surface-v2.mjs'
+      - '.github/workflows/check-aktual-seo-surface-v2.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  seo-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate AKTUAL MEDIA landing-page SEO surface
+        run: node scripts/test-aktual-seo-surface-v2.mjs
