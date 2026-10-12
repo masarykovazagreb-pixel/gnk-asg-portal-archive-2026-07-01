@@ -1,0 +1,21 @@
+ADRIA BANK DEMO 1.1.0 — WINDOWS IZVORNI PAKET ZA RADNU POVRŠINU
+
+VAŽNO: ZIP sadrži izvorni kod, ikonu i instalacijsku skriptu; ne sadrži samostalni ni potpisani .exe instalacijski program niti Windows Electron runtime. Za prvi pokret potrebni su Windows 10/11 x64, Node.js 22.12 ili noviji (64-bit), npm i internetska veza za preuzimanje Electron runtimea i paketa. TLS provjera certifikata mora ostati uključena.
+
+1. Raspakirajte ZIP u mapu koju možete pisati.
+2. Instalirajte Node.js 22.12+ (64-bit), zatim dvaput kliknite START-ADRIA-BANK-DEMO.bat.
+3. Pokretač poziva Install-Windows.ps1, instalira aplikaciju u %LOCALAPPDATA%\Programs\Adria Bank Demo, instalira pakete te izrađuje prečace na radnoj površini i u izborniku Start s Adria Bank ikonom. Aplikacija se nakon uspješne instalacije pokreće automatski.
+4. Za ručno pokretanje otvorite PowerShell u raspakiranoj mapi i pokrenite:
+   powershell -NoProfile -ExecutionPolicy Bypass -File .\Install-Windows.ps1
+5. U aplikaciji otvorite Postavke → Pozadinski simulator vježbi. Simulacija je uključena prema zadanim postavkama. Za nastavak nakon zatvaranja prozora uključite rad u programskoj traci; po želji zasebno uključite pokretanje uz Windows. Izlaz iz izbornika ikone zaustavlja aplikaciju.
+
+PRVO POSTAVLJANJE I SIGURNOST
+Skripta koristi npm ci s uobičajenom TLS provjerom. Ako preuzimanje ne uspije zbog mreže ili certifikata, nemojte isključiti provjeru certifikata; zatražite od administratora da postavi pouzdani certifikat/proxy lanac. Paket nije izvršavan na Windowsu u ovom radnom okruženju; prije distribucije testirajte ga na čistom Windows 10/11 x64 računalu. Windows SmartScreen može upozoriti jer nije potpisan certifikatom izdavača.
+
+POZADINSKI RAD
+Svakih 1, 5, 15 ili 60 minuta (zadano 5) simulator napravi mali, sintetički interni EUR prijenos između dva niskorizična demo profila i provjeri lokalni dnevnik. Mijenjaju se samo izmišljena lokalna stanja. Povijest je ograničena. Aplikacija ne radi kada je računalo ugašeno/u stanju mirovanja ili kada se proces zaustavi; nije oblačna usluga i ne mijenja vlastiti izvorni kod.
+
+ONLINE GRANICE
+Aplikacija može dohvatiti samo javne dnevne referentne podatke ECB-a i CBK-a te prikazuje poveznice na regulatorne izvore. Tečajevi su informativni, nisu živi ili izvršivi. Zakoni se ne preuzimaju ni tumače automatski. Nema bankovnih, SWIFT, SEPA, kartičnih ni drugih platnih veza, provjere identiteta ni stvarnog kretanja novca. Ne unosite stvarne osobne, bankovne, kartične ili poslovne podatke.
+
+Aplikacija je demo za učenje i testiranje, a ne banka, pravni/regulatorni savjet ni financijska usluga.

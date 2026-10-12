@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="hr" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'self'">
+  <meta name="theme-color" content="#0b1826">
+  <meta name="description" content="Adria Bank Client Portal — synthetic, local-only customer banking demo.">
+  <title>Adria Bank · Client Portal Demo</title>
+  <link rel="icon" href="./assets/adria-mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./src/styles.css">
+</head>
+<body data-start-view="portal" data-surface="client">
+  <div class="app-shell" id="appShell">
+    <aside class="sidebar" id="sidebar" aria-label="Glavna navigacija">
+      <a class="brand" href="./welcome.html" aria-label="Welcome and demo entry">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 4 43 15v18L24 44 5 33V15L24 4Z"/><path d="M14 31 24 12l10 19M18 25h12"/></svg></span>
+        <span class="brand-copy"><strong>adria<span>bank</span></strong><small>CLIENT · SIMULATION</small></span>
+      </a>
+
+      <div class="environment-pill"><i></i><span data-i18n="localSandbox">LOKALNI SANDBOX</span><b>DEMO</b></div>
+      <div class="nav-caption" data-i18n="workspace">RADNI PROSTOR</div>
+      <nav class="primary-nav" id="primaryNav"></nav>
+      <div class="sidebar-bottom">
+        <div class="side-control-card">
+          <span class="side-control-icon">◈</span>
+          <div><strong>Client demo profile</strong><small>Customer channel · synthetic data</small></div>
+          <span class="control-led"></span>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main-area">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-button menu-toggle" data-action="toggle-sidebar" aria-label="Otvori navigaciju"><span>☰</span></button>
+          <div class="breadcrumbs"><span data-i18n="customerPortal">Klijentski portal</span><b>/</b><strong id="crumbTitle">Pregled</strong></div>
+          <span class="topbar-divider"></span>
+          <span class="topbar-context"><span class="pulse-dot"></span><span data-i18n="localSimulation">Lokalna simulacija</span><span class="context-sep">·</span><span id="todayStamp">Zagreb</span><span id="backgroundLoopIndicator" class="background-loop-indicator" role="status" aria-live="polite"></span></span>
+        </div>
+        <div class="topbar-actions">
+          <span class="badge warning">SYNTHETIC CLIENT VIEW</span>
+          <select id="languageSelect" class="language-select" aria-label="Interface language">
+            <option value="hr">HR Hrvatski</option><option value="en">EN English</option><option value="de">DE Deutsch</option><option value="fr">FR Français</option><option value="es">ES Español</option><option value="ar">AR العربية</option><option value="sw">SW Kiswahili</option><option value="ja">JA 日本語</option><option value="zh">ZH 中文</option>
+          </select>
+        </div>
+      </header>
+
+      <main id="mainContent" class="main-content" tabindex="-1"></main>
+      <footer class="app-footer">
+        <span><b class="footer-lock">▣</b><span data-i18n="localOnly">Samo lokalni podaci · ništa se ne šalje</span></span>
+        <span>DEMO DESKTOP ADRIA BANK · ADR/DEMO · v1.1.0 <span class="footer-sep">·</span> <span data-i18n="syntheticData">100% sintetički podaci</span></span>
+      </footer>
+    </div>
+  </div>
+
+  <div class="screen-watermark" id="screenWatermark" aria-label="DEMO DESKTOP ADRIA BANK">DEMO DESKTOP ADRIA BANK</div>
+  <div id="printRoot" aria-hidden="true"></div>
+  <div id="modalRoot"></div>
+  <div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+  <script type="module" src="./src/app.mjs"></script>
+</body>
+</html>
