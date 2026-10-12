@@ -64,8 +64,13 @@ if(!['standalone','minimal-ui'].includes(manifest.display)) failures.push('manif
 const sizes=new Set((manifest.icons||[]).map(x=>x.sizes));
 if(!sizes.has('192x192')||!sizes.has('512x512')) failures.push('manifest: install icons incomplete');
 
-for(const src of [floatJs,install]){
-  if(/localStorage|sessionStorage|document\.cookie/.test(src)) failures.push('radio controller/install: persistent user tracking storage is not allowed');
+// The mini radio may remember exactly one UI preference — open/closed (owner request 2026-10-12).
+// Anything else (other keys, sessionStorage, cookies) stays forbidden: no tracking storage.
+if(!floatJs.includes("const UI_KEY='amr-float-ui-v1'")) failures.push('float: open/closed preference key missing');
+if(!floatJs.includes('data-amr-close')||!floatJs.includes('data-amr-launch')) failures.push('float: close button or reopen launcher missing');
+const floatScrubbed=floatJs.replace(/localStorage\.(?:getItem|setItem|removeItem)\(UI_KEY[,)]/g,'');
+for(const src of [floatScrubbed,install]){
+  if(/localStorage|sessionStorage|document\.cookie/.test(src)) failures.push('radio controller/install: only the single open/closed UI preference may be stored (no tracking storage)');
 }
 if(!read(files.floatCss).includes('#aktualMediaRadioFloat')) failures.push('float CSS: root selector missing');
 if(!read(files.playerCss).includes('.rp-shell')) failures.push('player CSS: shell missing');
