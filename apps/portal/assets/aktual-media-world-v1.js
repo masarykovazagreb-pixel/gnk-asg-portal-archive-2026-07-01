@@ -134,6 +134,7 @@
       '<a href="'+(lang==='hr'?'/gnk-aktual/radar/':'/en/gnk-aktual/radar/')+'">RADAR</a>',
       '<a href="'+(lang==='hr'?'/gnk-aktual/izvori/':'/en/gnk-aktual/sources/')+'">'+(lang==='hr'?'Izvori':'Sources')+'</a>',
       '<a href="'+(lang==='hr'?'/gnk-aktual/regije/':'/en/gnk-aktual/regions/')+'">'+(lang==='hr'?'Regije':'Regions')+'</a>',
+      '<a href="'+(lang==='hr'?'/gnk-aktual/tjedni/':'/en/gnk-aktual/weekly/')+'">'+(lang==='hr'?'Tjedni':'Weekly')+'</a>',
       '<a href="'+(lang==='hr'?'/gnk-aktual/teme/':'/en/gnk-aktual/topics/')+'">'+esc(labels.sections)+'</a>'
     ];
     nav.innerHTML=fixed.join('');
