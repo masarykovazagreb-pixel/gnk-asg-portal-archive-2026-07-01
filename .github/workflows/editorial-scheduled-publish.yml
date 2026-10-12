@@ -15,8 +15,10 @@ on:
       - 'apps/portal/data/editorial-plan/**'
       - 'scripts/editorial-publish-scheduled-v1.mjs'
       - 'scripts/build-aktual-media-weekly-v1.mjs'
+      - 'scripts/enforce-nermin-author-seo-v1.mjs'
       - 'apps/portal/data/news.json'
       - 'apps/portal/data/aktual-weekly.json'
+      - 'apps/portal/data/aktual-weekly-curation.json'
       - 'scripts/validate-editorial-content-policy-v1.mjs'
       - 'scripts/test-editorial-content-policy-v1.mjs'
       - 'scripts/test-editorial-publish-seo-v1.mjs'
@@ -53,6 +55,8 @@ jobs:
         run: node scripts/validate-editorial-content-policy-v1.mjs
       - name: Refresh weekly AKTUAL MEDIA magazine when issue week changes
         run: node scripts/build-aktual-media-weekly-v1.mjs
+      - name: Normalize Nermin Sefić author SEO on approved column pages
+        run: node scripts/enforce-nermin-author-seo-v1.mjs --write
       - name: Materialize due editorial pages
         run: node scripts/editorial-publish-scheduled-v1.mjs
       - name: Regenerate editorial registry and canonical sitemap from materialized pages
