@@ -77,9 +77,10 @@ class WatchListener(threading.Thread):
         {"watch":"MI-BAND-8","athlete":123,"t":0,"hr":132,"steps":1053,"acc":[0.1,0.2,9.8]}
         {"watch":"AMAZFIT-GTS","athlete":123,"hr":141,"rr":[812,826]}
     """
-    def __init__(self, port=1520, on_packet=None):
+    def __init__(self, port=1520, on_packet=None, host="0.0.0.0"):
         super().__init__(daemon=True)
         self.port = port
+        self.host = host
         self.buffer = {}
         self.latest = {}
         self.running = True
@@ -88,7 +89,7 @@ class WatchListener(threading.Thread):
     def run(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.settimeout(1.0)
-        s.bind(("0.0.0.0", self.port))
+        s.bind((self.host, self.port))
         while self.running:
             try:
                 data, addr = s.recvfrom(4096)

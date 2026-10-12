@@ -11,6 +11,14 @@ reprodukcija utakmica u **2D i 3D** (točkice po terenu, obje momčadi, svaki ig
 
 ## ⚡ Brzi start (Windows 11)
 
+**Najlakše — instalacija:** preuzmi
+**[SPT-Setup-2.5.0.exe](https://github.com/masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01/raw/main/spt/windows/release/SPT-Setup-2.5.0.exe)**,
+pokreni ga i klikni *Instaliraj*. Nisu potrebna administratorska prava, a Python se instalira automatski.
+SPT dobiva prečace u izborniku Start i na radnoj površini te se otvara u vlastitom prozoru.
+Detalji su u [`windows/README.md`](windows/README.md).
+
+**Ručno (s vlastitim Pythonom):**
+
 1. Instaliraj **Python 3.10+** (https://www.python.org/downloads/) — obavezno *“Add to PATH”*
 2. Dvoklik **`start_windows.bat`**
 3. Aplikacija se otvara u pregledniku na `http://localhost:8000`
@@ -20,6 +28,7 @@ reprodukcija utakmica u **2D i 3D** (točkice po terenu, obje momčadi, svaki ig
 > Radi potpuno **offline**.
 
 Linux/macOS: `python3 server.py` · Port: `SPT_PORT=8080 python server.py` · Bez preglednika: `SPT_NO_BROWSER=1`
+· Adresa: `SPT_HOST=127.0.0.1` (samo ovo računalo; zadano `0.0.0.0` = i uređaji u LAN-u)
 
 Baza se sama stvara pri prvom pokretanju (determinističko sjeme `42` — svaka instalacija ima identičnu bazu).
 
@@ -118,6 +127,7 @@ spt/
 ├── data_catalog.py      # katalog: 75 sportova, 334 mjerenja, 35 uređaja, imena zemalja
 ├── hardware_bridge.py   # producijsko sučelje za stvarni hardver (UDP/CsvImporter)
 ├── start_windows.bat    # pokretač za Windows 11
+├── windows/             # Windows instalacija: SPT-Setup-2.5.0.exe (release/), izvori i build skripta
 ├── spt.db               # SQLite baza (nastaje automatski; ~17 MB)
 └── static/              # frontend (bez ikakvih CDN-a — radi offline)
     ├── index.html
@@ -235,6 +245,7 @@ Zvuk na crvene alarmi, fullscreen, raspored se pamti.
 | 50 | Marketinška stranica za gnk-asg.hr | ✅ |
 
 ### Windows 11
+- **`windows/release/SPT-Setup-2.5.0.exe`** — instalacija (bez admina, s ugrađenim Pythonom, prečaci, deinstalacija)
 - `start_windows.bat` — pokreće SPT i **sam se resetira** ako padne
 - `SPT-prečica.bat` — stvara prečicu na radnoj površini
 - Radi offline; preglednik se sam otvara na `http://localhost:8000`

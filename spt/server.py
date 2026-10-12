@@ -2774,16 +2774,20 @@ def main():
         print("[SPT] Vaga: nadzirem mapu scale_inbox/ (automatski uvoz u kartone)")
     except Exception as e:
         print(f"[SPT] Vaga watcher nije pokrenut: {e}")
+    # SPT_HOST: adresa na kojoj SPT sluša (zadano 0.0.0.0 = i uređaji u LAN-u).
+    # Windows instalacija pokreće SPT s 127.0.0.1 (samo ovo računalo, bez upita
+    # vatrozida); prečac "SPT 2.5 (mrežni način)" koristi 0.0.0.0.
+    host = os.environ.get("SPT_HOST", "").strip() or "0.0.0.0"
     global WATCH_LISTENER
     try:
-        WATCH_LISTENER = watch_bridge.WatchListener(port=1520)
+        WATCH_LISTENER = watch_bridge.WatchListener(port=1520, host=host)
         WATCH_LISTENER.start()
         print("[SPT] Satovi: UDP :1520 aktivan (Xiaomi/Amazfit/Huawei most)")
     except Exception as e:
         print(f"[SPT] Watch listener nije pokrenut: {e}")
     print(f"[SPT] Indeks: {len(SUMMARY)} sportaša, {len(MATCHES)} utakmica u memoriji")
     port = int(os.environ.get("SPT_PORT", "8000"))
-    httpd = ThreadingHTTPServer(("0.0.0.0", port), Handler)
+    httpd = ThreadingHTTPServer((host, port), Handler)
     url = f"http://localhost:{port}"
     print(f"[SPT] SPT — Sports Performance Tracking v{VERSION}")
     print(f"[SPT] Poslužitelj radi na {url}  (Ctrl+C za kraj)")
