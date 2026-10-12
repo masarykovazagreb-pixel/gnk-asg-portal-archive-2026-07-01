@@ -1,0 +1,27 @@
+name: Check AKTUAL Weekly Source Integrity
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/data/aktual-weekly.json'
+      - 'apps/portal/data/aktual-weekly-curation.json'
+      - 'scripts/test-aktual-weekly-source-integrity-v1.mjs'
+      - '.github/workflows/check-aktual-weekly-source-integrity-v1.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/data/aktual-weekly.json'
+      - 'apps/portal/data/aktual-weekly-curation.json'
+      - 'scripts/test-aktual-weekly-source-integrity-v1.mjs'
+      - '.github/workflows/check-aktual-weekly-source-integrity-v1.yml'
+permissions:
+  contents: read
+jobs:
+  integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: node scripts/test-aktual-weekly-source-integrity-v1.mjs
