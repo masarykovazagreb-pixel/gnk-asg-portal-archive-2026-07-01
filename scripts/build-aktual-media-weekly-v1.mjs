@@ -4,6 +4,7 @@ import path from 'node:path';
 
 const NEWS='apps/portal/data/news.json';
 const OUT='apps/portal/data/aktual-weekly.json';
+const CURATION='apps/portal/data/aktual-weekly-curation.json';
 
 const raw=JSON.parse(fs.readFileSync(NEWS,'utf8'));
 const source=Array.isArray(raw)?raw:(raw.items||[]);
@@ -19,6 +20,13 @@ const maxDate=new Date(items[0]._published);
 const issueMonday=new Date(Date.UTC(maxDate.getUTCFullYear(),maxDate.getUTCMonth(),maxDate.getUTCDate()));
 const day=issueMonday.getUTCDay()||7; issueMonday.setUTCDate(issueMonday.getUTCDate()-day+1);
 const issueWeek=issueMonday.toISOString().slice(0,10);
+let curated=[];
+if(fs.existsSync(CURATION)){
+  try{
+    const c=JSON.parse(fs.readFileSync(CURATION,'utf8'));
+    if(c&&c.issue_week===issueWeek&&Array.isArray(c.items)) curated=c.items;
+  }catch(_){}
+}
 if(process.env.AKTUAL_WEEKLY_FORCE!=='1'&&fs.existsSync(OUT)){
   try{
     const prev=JSON.parse(fs.readFileSync(OUT,'utf8'));
@@ -98,6 +106,24 @@ const defs=[
 }));
 const clean=recent.filter(x=>!heavy.test(hay(x)));
 const used=new Set();
+const curatedBySection=new Map();
+for(const item of curated){
+  if(!item||!item.section||!item.title||!item.url||!item.source) continue;
+  const list=curatedBySection.get(item.section)||[];
+  list.push({
+    title:item.title,
+    summary:item.summary||'',
+    url:item.url,
+    image:item.image||'/assets/editorial/aktual-media-800.webp',
+    imageAlt:item.imageAlt||item.title,
+    source:item.source,
+    category:item.category||item.section,
+    group:item.group||'weekly-curated',
+    published_at:item.published_at||maxDate.toISOString(),
+    curated:true
+  });
+  curatedBySection.set(item.section,list);
+}
 
 function score(x,section){
   let s=0;
@@ -124,7 +150,10 @@ function slim(x){
 
 const sections=[];
 for(const def of defs){
-  const picked=take(def,6).map(slim);
+  const curatedItems=(curatedBySection.get(def.id)||[]).slice(0,6);
+  curatedItems.forEach(x=>used.add(x.url));
+  const needed=Math.max(0,6-curatedItems.length);
+  const picked=[...curatedItems,...take(def,needed).map(slim)];
   if(picked.length)sections.push({id:def.id,label_hr:def.hr,label_en:def.en,items:picked});
 }
 
@@ -139,7 +168,7 @@ const out={
   issue_week:issueWeek,
   issue_date:issueDate,
   window:{from:from.toISOString(),to:maxDate.toISOString()},
-  editorial_rule:'Positive/lifestyle weekly selection from canonical source-linked news feed; serious negative topics excluded by policy.',
+  editorial_rule:'Positive/lifestyle weekly selection from canonical source-linked news feed plus a week-scoped hand-curated source seed; serious negative topics excluded by policy.',
   cover,
   counts:{source_items:source.length,recent_items:recent.length,selected_items:sections.reduce((n,s)=>n+s.items.length,0),sources:sourceCount,sections:sections.length},
   sections
