@@ -7,7 +7,7 @@
 (() => {
   'use strict';
 
-  const isEn = () => (document.documentElement.lang || '').toLowerCase().startsWith('en') || /\/en\//.test(location.pathname);
+  const isEn = () => (document.documentElement.lang || '').toLowerCase().startsWith('en') || /\/en\//.test(location.pathname) || new URLSearchParams(location.search).get('lang') === 'en';
 
   // Third-party public audio streams; track metadata is not asserted unless supplied by the stream.
   const STATIONS = [
