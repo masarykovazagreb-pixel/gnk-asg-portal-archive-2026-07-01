@@ -94,6 +94,10 @@
     '/radio/jingles/aktual-radio-jingle-3.mp3',
     '/radio/jingles/aktual-radio-jingle-4.mp3'
   ];
+  // Spremni, ali na javnom radiju ISKLJUČENI dok ih vlasnik ne odobri (JINGLES_APPROVED = true).
+  // Pregled uživo bez uključivanja za sve: /radio/?jingles=1 ili /radio/player/?jingles=1
+  const JINGLES_APPROVED = false;
+  const JINGLES_ON = JINGLES_APPROVED || new URLSearchParams(location.search).get('jingles') === '1';
   const JINGLE_FIRST_MS = 30 * 1000;            // first ident shortly after tuning in
   const JINGLE_EVERY_MS = [10.5 * 60 * 1000, 12 * 60 * 1000]; // ≈ every 3 songs (streams expose no track boundaries)
   const JINGLE_MIN_GAP_MS = 60 * 1000;
@@ -395,6 +399,8 @@
       if (this.isPlaying || opts.autoplay) {
         this.startStream(this.currentStation.streamUrl);
         if (changed) this.queueTransitionJingle();
+        this.updateUI();        // odmah označi novu stanicu (ne čekaj spajanje streama)
+        this.broadcastState();
       } else {
         this.updateUI();
         this.updateMediaSession();
@@ -434,7 +440,7 @@
 
     // ---------- jingles ----------
     scheduleJingle(delay) {
-      if (!this.isPlaying || this.jingle) return;
+      if (!JINGLES_ON || !this.isPlaying || this.jingle) return;
       clearTimeout(this.jingleTimer);
       const ms = typeof delay === 'number' ? delay : this.jingleRemaining;
       this.jingleDueAt = Date.now() + ms;
@@ -476,7 +482,7 @@
     playJingle() {
       clearTimeout(this.jingleTimer);
       this.jingleTimer = null;
-      if (!this.isPlaying || this.jingle || !JINGLES.length) return;
+      if (!JINGLES_ON || !this.isPlaying || this.jingle || !JINGLES.length) return;
       const src = JINGLES[this.jingleIndex % JINGLES.length];
       this.jingleIndex += 1;
       const j = new Audio(src);
