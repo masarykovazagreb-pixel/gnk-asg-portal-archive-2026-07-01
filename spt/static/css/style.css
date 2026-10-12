@@ -374,3 +374,44 @@ body.tv .sc-num{font-size:64px}
 body.tv .zone-bar{font-size:14px}
 body.tv .alert-item{font-size:15px}
 .ach-chip{display:inline-flex;align-items:center;gap:6px;font-size:12.5px}
+
+/* ================= SPT 2.3 — opcije sučelja ================= */
+/* veličina teksta */
+body[data-font="S"]{font-size:13px}
+body[data-font="M"]{font-size:15px}
+body[data-font="L"]{font-size:17px}
+body[data-font="XL"]{font-size:19.5px}
+/* gustoća tablica */
+body[data-density="compact"] .tbl td{padding:5px 8px}
+body[data-density="compact"] .tbl th{padding:5px 8px;font-size:10px}
+body[data-density="compact"] .card{padding:12px}
+body[data-density="compact"] .soba-tile{min-height:240px}
+/* slijepima za boje: plavo/narančasto umjesto crveno/zeleno */
+body.cb{--red:#ff8b3d;--good:#4f8cff;--accent2:#7c8cff}
+body.cb .ni-dot.red{background:#ff8b3d}
+
+/* skeletoni */
+.skel-wrap{display:flex;flex-direction:column;gap:8px;padding:6px 0}
+.skel{height:16px;border-radius:8px;background:linear-gradient(90deg,#101a29 25%,#1a2942 50%,#101a29 75%);background-size:200% 100%;animation:skel 1.3s infinite}
+@keyframes skel{from{background-position:200% 0}to{background-position:-200% 0}}
+
+/* toastovi */
+.toast{animation:toastIn .25s}
+.toast.t-ok{border-left:3px solid var(--good)}
+.toast.t-err{border-left:3px solid var(--red)}
+.toast.out{opacity:0;transition:opacity .4s}
+@keyframes toastIn{from{opacity:0;transform:translateY(8px)}to{opacity:1}}
+
+/* tranzicija pogleda */
+.view-in{animation:viewIn .28s ease-out}
+@keyframes viewIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* bilješke u kartonu */
+.note-item{padding:9px 12px;border-left:3px solid var(--accent);background:var(--panel2);border-radius:0 10px 10px 0;margin-bottom:8px}
+
+/* drag & drop u sobi */
+.soba-tile.dragging{opacity:.4;border-style:dashed;border-color:var(--accent)}
+
+/* postavke: redak chips */
+#view .ctrl-row .chip{cursor:pointer;user-select:none}
+[data-font] .fld input{font-size:inherit}

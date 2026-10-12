@@ -23,6 +23,40 @@ VIEWS.athletes = {
     ctrl.append(search, spSel, cSel, sexSel);
     cont.append(ctrl);
 
+    // favoriti + nedavno (SPT 2.3)
+    const favs = favList(), rec = recentList().filter(r => !favs.includes(r.id));
+    if (favs.length || rec.length) {
+      const fr = el("div", "pill-row");
+      fr.style.marginTop = "10px";
+      if (favs.length) {
+        const wrapF = el("span", "");
+        wrapF.innerHTML = `<span class="faint" style="font-size:11px;margin-right:4px">★ favoriti:</span> `;
+        fr.append(wrapF);
+        for (const id of favs) {
+          API.get(`/api/athletes/${id}`).then(a => {
+            if (a && a.name) {
+              const c = el("div", "chip on", `★ ${esc(a.name)}`);
+              c.style.cursor = "pointer";
+              c.onclick = () => nav("karton", id);
+              wrapF.append(c);
+            }
+          }).catch(() => {});
+        }
+      }
+      if (rec.length) {
+        const wrapR = el("span", "");
+        wrapR.innerHTML = `<span class="faint" style="font-size:11px;margin-right:4px">🕑 nedavno:</span> `;
+        fr.append(wrapR);
+        for (const r of rec.slice(0, 5)) {
+          const c = el("div", "chip", esc(r.name));
+          c.style.cursor = "pointer";
+          c.onclick = () => nav("karton", r.id);
+          wrapR.append(c);
+        }
+      }
+      cont.append(fr);
+    }
+
     const card = el("div", "card");
     cont.append(card);
     const self = this;

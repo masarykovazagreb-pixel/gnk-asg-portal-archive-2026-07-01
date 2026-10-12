@@ -238,3 +238,38 @@ Zvuk na crvene alarmi, fullscreen, raspored se pamti.
 - `start_windows.bat` — pokreće SPT i **sam se resetira** ako padne
 - `SPT-prečica.bat` — stvara prečicu na radnoj površini
 - Radi offline; preglednik se sam otvara na `http://localhost:8000`
+
+---
+
+## ⚡ SPT 2.3 — 10× više opcija sučelja
+
+### Postavke (⚙ u navigaciji) — središte svih opcija
+| Opcija | Opis |
+|---|---|
+| **Tema** | auto ( prati sustav) / tamna / svijetla |
+| **Veličina teksta** | S / M / L / XL — cijelo sučelje se prilagođava |
+| **Gustoća tablica** | normalno / kompaktno (više redaka na ekran) |
+| **Paleta** | standardna / za slijepe za boje (plavo-narančasta) |
+| **Jedinice** | metričke (km · kg) / imperijalne (mi · lb · mph) |
+| **Jezik** | 10 jezika |
+| **TV način** | veliki prikaz za ekrane u svlačionici |
+
+### Instalacija kao Windows aplikacija (PWA)
+`manifest.webmanifest` + service worker → **Instaliraj SPT** u Postavkama ili ⊕ u adresnoj traci:
+zaseban prozor bez trake, ikona u Start meniju, **radi offline** (sučelja ostaju u kešu).
+
+### Nove mogućnosti u pregledima
+- **Karton**: ⭐ favoriti · 🖨 **kartica igrača** za ispis (one-pager PDF) · **potpunost kartona %** ·
+  tablica svih sesija (klik = detalji s ispisom) · **bilješke trenera** · monotonija/strain/EWMA
+- **Ljestvice**: filter perioda (30/90/365 dana ili cijela povijest) + **izvoz CSV**
+- **Nadzorna ploča**: ⚙ prilagodba — uključi/isključi svaku karticu, animirani brojači
+- **Kontrolna soba**: **preseti** (Trener/Kondicijski/Fizioterapeut/Analitičar) + **povuci-i-ispusti** preslagivanje ploča
+- **SPT hardver**: **inventar opreme** — dodjela uređaja sportašima, baterija, firmver, statusi
+- **Sportaši**: redak ★ favorita i 🕑 nedavno gledanih
+- Upravljanje **korisnicima i ulogama** (admin, u Postavkama)
+- Toastovi s tipovima, skeletoni učitavanja, animacije prijelaza, tipkovnica (Ctrl+K, ?, F11, Ctrl+P)
+
+### Znanost opterećenja (u kartonu i izvještajima)
+- **Monotonija** = prosjek/std dev dnevnog opterećenja (rizik > 2,0)
+- **Strain** = tjedno opterećenje × monotonija
+- **EWMA** = eksponencijalno ugladena opterećenja (half-life 7 dana)

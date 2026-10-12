@@ -115,10 +115,35 @@ function netTicker() {
   }).catch(() => {});
 }
 
-// ------- tema / TV način -------
+// ------- tema / TV način / postavke -------
 function applyTheme(t) {
+  if (t === "auto") t = (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
   document.body.classList.toggle("light", t === "light");
   localStorage.setItem("spt_theme", t);
+}
+function applyPrefs() {
+  const p = PREFS;
+  document.body.dataset.font = p.font || "M";
+  document.body.dataset.density = p.density || "normal";
+  document.body.classList.toggle("cb", p.colorblind === true);
+  applyTheme(localStorage.getItem("spt_theme") || "dark");
+}
+function savePref(k, v) {
+  PREFS[k] = v;
+  localStorage.setItem("spt_prefs", JSON.stringify(PREFS));
+  applyPrefs();
+  route();
+}
+
+// ------- PWA instalacija -------
+let SPT_INSTALL = null;
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); SPT_INSTALL = e; });
+async function installApp() {
+  if (!SPT_INSTALL) { toast("Aplikacija je već instalirana ili preglednik ne nudi instalaciju."); return; }
+  SPT_INSTALL.prompt();
+  const r = await SPT_INSTALL.userChoice;
+  if (r && r.outcome === "accepted") toast("SPT instaliran kao aplikaciju 🎉", "ok");
+  SPT_INSTALL = null;
 }
 
 // ------- pomoć (tipka ?) -------
@@ -289,7 +314,7 @@ function togglePalette() {
   netTicker();
   setInterval(pollNotifs, 30000);
   pollNotifs();
-  applyTheme(localStorage.getItem("spt_theme") || "dark");
+  applyPrefs();
   if (localStorage.getItem("spt_tv")) document.body.classList.add("tv");
   document.addEventListener("keydown", e => {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); togglePalette(); }

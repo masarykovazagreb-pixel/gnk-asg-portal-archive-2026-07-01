@@ -36,6 +36,29 @@ VIEWS.soba = {
       };
       layWrap.append(c);
     }
+    // preseti
+    const preWrap = el("div");
+    preWrap.style.display = "flex"; preWrap.style.gap = "6px"; preWrap.style.flexWrap = "wrap";
+    const PRESETS = {
+      "🧢 Trener": [{ type: "pitch" }, { type: "score" }, { type: "events" }, { type: "zones" }],
+      "💪 Kondicijski": [{ type: "compare" }, { type: "zones" }, { type: "alerts" }, { type: "heat" }],
+      "🩹 Fizioterapeut": [{ type: "follow" }, { type: "alerts" }, { type: "zones" }, { type: "events" }],
+      "📊 Analitičar": [{ type: "heat" }, { type: "fast" }, { type: "team0" }, { type: "team1" }, { type: "zones" }, { type: "score" }]
+    };
+    for (const [nm, tiles] of Object.entries(PRESETS)) {
+      const c = el("div", "chip", nm);
+      c.title = tiles.length + " ploča";
+      c.onclick = () => {
+        cfg.layout = tiles.length > 4 ? "g6" : "g4";
+        cfg.tiles = tiles.map(t => ({ ...t }));
+        save();
+        layWrap.querySelectorAll(".chip").forEach(x => x.classList.toggle("on", x.textContent.endsWith(cfg.layout === "g4" ? "2 × 2 (4 ploče)" : "3 × 2 (6 ploča)")));
+        grid.className = "soba-grid " + cfg.layout;
+        buildGrid();
+        toast("Preset: " + nm, "ok");
+      };
+      preWrap.append(c);
+    }
     const addBtn = el("div", "btn sm", "➕ Dodaj ploču");
     const maxTiles = { g4: 4, g6: 6, g9: 9 }[cfg.layout];
     addBtn.onclick = () => {
@@ -47,7 +70,7 @@ VIEWS.soba = {
     sndBtn.onclick = () => { cfg.snd = !cfg.snd; save(); sndBtn.textContent = cfg.snd ? "🔊 Zvuk: ON" : "🔇 Zvuk: OFF"; };
     const fsBtn = el("div", "btn ghost sm", "⛶ Cijeli ekran");
     fsBtn.onclick = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
-    bar.append(layWrap, addBtn, sndBtn, fsBtn);
+    bar.append(layWrap, preWrap, addBtn, sndBtn, fsBtn);
     cont.append(bar);
 
     const grid = el("div", "soba-grid " + cfg.layout);
@@ -169,6 +192,19 @@ VIEWS.soba = {
 
       buildBody();
       tile._update = (fr, alerts) => updateTile(t, fr, alerts);
+      // drag & drop preslagivanje
+      tile.draggable = true;
+      tile.addEventListener("dragstart", e => { tile.classList.add("dragging"); e.dataTransfer.setData("text/plain", String(i)); });
+      tile.addEventListener("dragend", () => tile.classList.remove("dragging"));
+      tile.addEventListener("dragover", e => e.preventDefault());
+      tile.addEventListener("drop", e => {
+        e.preventDefault();
+        const from = +e.dataTransfer.getData("text/plain");
+        if (isNaN(from) || from === i) return;
+        const [mv] = cfg.tiles.splice(from, 1);
+        cfg.tiles.splice(i, 0, mv);
+        save(); buildGrid();
+      });
       return tile;
     }
 

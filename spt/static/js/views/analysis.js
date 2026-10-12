@@ -134,7 +134,20 @@ VIEWS.analysis = {
       const limSel = el("select");
       [10, 15, 25, 30].forEach(n => { const o = el("option"); o.value = n; o.textContent = "top " + n; limSel.append(o); });
       limSel.value = 15;
-      ctrl.append(spSel, mSel, countrySel, limSel);
+      const perSel = el("select");
+      [[0, "☰ cijela povijest"], [30, "🕐 zadnjih 30 dana"], [90, "🕒 zadnjih 90 dana"], [365, "📆 zadnjih godinu dana"]].forEach(([v, l]) => {
+        const o = el("option"); o.value = v; o.textContent = l; perSel.append(o);
+      });
+      const csvBtn = el("div", "btn ghost sm", "⬇ CSV");
+      csvBtn.title = "Izvezi ljestvicu u CSV";
+      let LAST_LB = null;
+      csvBtn.onclick = () => {
+        if (!LAST_LB) return;
+        exportCSV([["#", "Sportaš", "Zemlja", "Klub", "Pozicija", (LAST_LB.name || "vrijednost"), "Percentil"],
+          ...LAST_LB.items.map((it, i) => [i + 1, it.name, cname(it.country), it.club, it.position, it.value, "P" + Math.round(it.pct)])],
+          `spt_ljestvica_${LAST_LB.sport}_${LAST_LB.metric}.csv`);
+      };
+      ctrl.append(spSel, mSel, countrySel, limSel, perSel, csvBtn);
       body.append(ctrl);
       const out = el("div", "card");
       body.append(out);
@@ -151,8 +164,10 @@ VIEWS.analysis = {
       async function run() {
         out.innerHTML = "";
         out.append(spinner());
-        const d = await API.get(`/api/leaderboard?sport=${spSel.value}&metric=${mSel.value}&limit=${limSel.value}&country=${countrySel.value}`);
-        out.innerHTML = `<h3>🏆 ${esc(d.name || mSel.value)} — top ${d.items.length}</h3>`;
+        const d = await API.get(`/api/leaderboard?sport=${spSel.value}&metric=${mSel.value}&limit=${limSel.value}&country=${countrySel.value}&days=${perSel.value}`);
+        LAST_LB = d;
+        const perLbl = perSel.value === "0" ? "cijela povijest" : "zadnjih " + perSel.value + " dana";
+        out.innerHTML = `<h3>🏆 ${esc(d.name || mSel.value)} — top ${d.items.length} <span class="faint" style="font-weight:400;font-size:12px">· ${perLbl}</span></h3>`;
         if (!d.items.length) { out.append(el("div", "muted", "Nema podataka.")); return; }
         const t = el("table", "tbl");
         t.innerHTML = `<thead><tr><th>#</th><th>Sportaš</th><th>Zemlja</th><th>Klub</th><th>Pozicija</th><th style="width:30%">Vrijednost</th><th class="num">Percentil</th></tr></thead>`;
@@ -165,14 +180,14 @@ VIEWS.analysis = {
             <td class="muted mono">${esc(it.club)}</td><td class="muted">${esc(it.position)}</td>
             <td><div class="progress"><i style="width:${Math.max(4, it.value / mx * 100)}%"></i></div></td>
             <td class="num"><b>${fmtN(it.value)}</b> <span class="faint" style="font-size:10.5px">${esc(d.unit || "")}</span><div class="faint" style="font-size:10.5px">P${Math.round(it.pct)}</div></td>`;
-          tr.onclick = () => nav("athlete", it.id);
+          tr.onclick = () => nav("karton", it.id);
           tb.append(tr);
         });
         t.append(tb);
         out.append(t);
       }
       spSel.onchange = async () => { await loadMetrics(); run(); };
-      mSel.onchange = run; countrySel.onchange = run; limSel.onchange = run;
+      mSel.onchange = run; countrySel.onchange = run; limSel.onchange = run; perSel.onchange = run;
       await loadMetrics();
       run();
     }

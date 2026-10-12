@@ -26,7 +26,7 @@ from urllib.parse import urlparse, parse_qs
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "spt.db")
 STATIC_DIR = os.path.join(BASE_DIR, "static")
-VERSION = "2.2.0"
+VERSION = "2.3.0"
 
 # ---------------------------------------------------------------------------
 # BAZA
@@ -473,16 +473,26 @@ def api_leaderboard(m, qs):
     limit = min(30, int(qs.get("limit", 15)))
     country = qs.get("country")
     sex = qs.get("sex")
+    days = int(qs.get("days", "0") or 0)  # 0 = sve vrijeme
     arr_map = SPORT_IDX.get(sport, {})
     if metric not in arr_map:
         return {"items": [], "metric": metric, "sport": sport}
     vals = {}
-    for aid, s in SUMMARY.items():
-        if s["sport"] != sport:
-            continue
-        v = s["metrics"].get(metric)
-        if v is not None:
-            vals[aid] = v
+    if days > 0:
+        # prosjek unutar perioda — izravno iz sesija
+        since = (date.today() - timedelta(days=days)).isoformat()
+        for r in q("""SELECT s.athlete aid, AVG(json_extract(s.metrics,'$.%s')) v FROM sessions s
+                      JOIN athletes a ON a.id=s.athlete WHERE a.sport=? AND s.sdate>=?
+                      AND json_extract(s.metrics,'$.%s') IS NOT NULL GROUP BY s.athlete""" % (metric, metric),
+                  (sport, since)):
+            vals[r["aid"]] = r["v"]
+    else:
+        for aid, s in SUMMARY.items():
+            if s["sport"] != sport:
+                continue
+            v = s["metrics"].get(metric)
+            if v is not None:
+                vals[aid] = v
     info = {r["id"]: r for r in q("SELECT * FROM athletes")}
     items = []
     for aid, v in sorted(vals.items(), key=lambda kv: -kv[1])[:120]:
@@ -1143,9 +1153,52 @@ def api_karton(m, qs):
     voice = [dict(r) for r in q("SELECT * FROM voice_logs WHERE athlete=? ORDER BY vdate DESC LIMIT 10", (aid,))]
     n_sess = q1("SELECT COUNT(*) c FROM sessions WHERE athlete=?", (aid,))["c"]
     dist = q1("SELECT SUM(json_extract(metrics,'$.dist_total')) d FROM sessions WHERE athlete=?", (aid,))["d"]
+    # SPT 2.3: zadnje sesije s punim metrikama
+    sessions = []
+    for r in q("SELECT id, sdate, stype, duration, sport, metrics FROM sessions WHERE athlete=? ORDER BY sdate DESC LIMIT 25", (aid,)):
+        try:
+            sm = json.loads(r["metrics"])
+        except Exception:
+            sm = {}
+        sessions.append({"id": r["id"], "sdate": r["sdate"], "stype": r["stype"], "duration": r["duration"],
+                         "sport": r["sport"], **{k: sm.get(k) for k in ("dist_total", "top_speed", "hr_avg",
+                          "hr_max", "sprints", "srpe", "readiness", "lactate", "stride_len", "ball_speed_max")}})
+    # SPT 2.3: dnevna opterećenja → monotony / strain / EWMA (28 dana)
+    daily = {}
+    for s in q("SELECT sdate, json_extract(metrics,'$.srpe') v FROM sessions WHERE athlete=? AND sdate>=?",
+               (aid, (date.today() - timedelta(days=28)).isoformat())):
+        daily[s["sdate"]] = daily.get(s["sdate"], 0) + (s["v"] or 0)
+    vals = list(daily.values())
+    load_science = {}
+    if vals:
+        mean = sum(vals) / len(vals)
+        var = sum((x - mean) ** 2 for x in vals) / len(vals)
+        std = math.sqrt(var)
+        monotony = round(mean / std, 2) if std > 0 else None
+        strain = round(sum(vals) * (mean / std), 0) if std > 0 else None
+        # EWMA (half-life 7 dana)
+        lam = math.log(2) / 7.0
+        ewma, wS, t0 = 0.0, 0.0, date.today() - timedelta(days=27)
+        for i in range(28):
+            d = (t0 + timedelta(days=i)).isoformat()
+            w = math.exp(-lam * (27 - i))
+            wS += w
+            ewma += w * daily.get(d, 0)
+        load_science = {"monotony": monotony, "strain": strain, "ewma": round(ewma / wS),
+                        "daily_mean": round(mean), "daily_std": round(std)}
+    # SPT 2.3: bilješke trenera
+    notes = [dict(r) for r in q("SELECT * FROM notes WHERE athlete=? ORDER BY ndate DESC, id DESC LIMIT 20", (aid,))]
+    # SPT 2.3: potpunost kartona
+    checks = [n_sess > 0, len(bc) > 0, len(tests) > 0, len(anom) >= 0 and n_sess > 0,
+              q1("SELECT COUNT(*) c FROM wellness_log WHERE athlete=?", (aid,))["c"] > 0,
+              q1("SELECT COUNT(*) c FROM nutrition_log WHERE athlete=?", (aid,))["c"] > 0,
+              len(voice) > 0, len(matches) > 0]
+    completeness = round(100 * sum(1 for c in checks if c) / len(checks))
     return {**dict(a), "body_comp": bc, "injuries": inj, "tests": tests, "anomalies": anom,
             "weeks": weeks, "matches": matches, "voice": voice, "stypes": stypes,
             "n_sessions": n_sess, "total_km": round(dist or 0, 1),
+            "sessions": sessions, "load_science": load_science, "notes": notes,
+            "completeness": completeness,
             "norms": norms, "norm_deviations": devs,
             "nutrition": {"needs": nut["needs"], "avg_intake": nut["avg_intake"],
                           "week_load": nut["week_load"], "recommendations": nut["recommendations"]} if nut else None}
@@ -1794,6 +1847,111 @@ def api_admin_reseed(m, qs, body=None):
     build_index()
     return {"ok": True, "athletes": SPORT_COUNT and sum(SPORT_COUNT.values())}
 
+
+
+# ------------------------------ 2.3: BILJEŠKE + INVENTAR ---------------------
+@route("GET", r"/api/notes")
+def api_notes(m, qs):
+    if not qs.get("athlete"):
+        return {"items": []}
+    rows = q("SELECT * FROM notes WHERE athlete=? ORDER BY ndate DESC, id DESC LIMIT 50", (int(qs["athlete"]),))
+    return {"items": [dict(r) for r in rows]}
+
+@route("POST", r"/api/notes")
+def api_notes_post(m, qs, body=None):
+    body = body or {}
+    u, err = require_role(3)
+    if err:
+        return err
+    if not body.get("athlete") or not (body.get("text") or "").strip():
+        return {"error": "nedostaju podaci"}
+    con = db()
+    con.execute("INSERT INTO notes (athlete, ndate, author, text) VALUES (?,?,?,?)",
+                (int(body["athlete"]), date.today().isoformat(), u["username"], body["text"].strip()[:600]))
+    con.commit(); con.close()
+    return {"ok": True}
+
+@route("GET", r"/api/inventory")
+def api_inventory(m, qs):
+    club = qs.get("club")
+    if club:
+        rows = q("""SELECT i.*, a.name aname, a.club FROM inventory i
+                    LEFT JOIN athletes a ON a.id=i.athlete WHERE a.club=? OR i.athlete IS NULL
+                    ORDER BY i.status, i.typ""", (club,))
+    else:
+        rows = q("""SELECT i.*, a.name aname, a.club FROM inventory i
+                    LEFT JOIN athletes a ON a.id=i.athlete ORDER BY i.status, i.typ""")
+    return {"items": [dict(r) for r in rows]}
+
+@route("POST", r"/api/inventory/assign")
+def api_inv_assign(m, qs, body=None):
+    u, err = require_role(3)
+    if err:
+        return err
+    con = db()
+    con.execute("UPDATE inventory SET athlete=? WHERE id=?", (int((body or {}).get("athlete") or 0) or None, int((body or {}).get("id", 0))))
+    con.commit(); con.close()
+    return {"ok": True}
+
+@route("POST", r"/api/inventory/add")
+def api_inv_add(m, qs, body=None):
+    u, err = require_role(3)
+    if err:
+        return err
+    body = body or {}
+    if not body.get("typ") or not body.get("serial"):
+        return {"error": "nedostaju podaci"}
+    con = db()
+    try:
+        con.execute("INSERT INTO inventory (typ, serial, athlete, status) VALUES (?,?,?,?)",
+                    (body["typ"], body["serial"], int(body.get("athlete") or 0) or None, body.get("status", "aktivno")))
+        con.commit()
+    except Exception:
+        return {"error": "serijski broj postoji"}
+    finally:
+        con.close()
+    return {"ok": True}
+
+@route("POST", r"/api/inventory/status")
+def api_inv_status(m, qs, body=None):
+    u, err = require_role(3)
+    if err:
+        return err
+    con = db()
+    con.execute("UPDATE inventory SET status=?, battery=? WHERE id=?",
+                ((body or {}).get("status", "aktivno"), (body or {}).get("battery", 100), int((body or {}).get("id", 0))))
+    con.commit(); con.close()
+    return {"ok": True}
+
+# ---------------------------------------------------------------------------
+# MIGRACIJA 2.3 — bilješke trenera + inventar opreme
+# ---------------------------------------------------------------------------
+def migrate_23():
+    con = db()
+    try:
+        con.execute("""CREATE TABLE IF NOT EXISTS notes (
+            id INTEGER PRIMARY KEY, athlete INTEGER, ndate TEXT, author TEXT, text TEXT)""")
+        con.execute("""CREATE TABLE IF NOT EXISTS inventory (
+            id INTEGER PRIMARY KEY, typ TEXT, serial TEXT UNIQUE, athlete INTEGER,
+            status TEXT DEFAULT 'aktivno', battery REAL DEFAULT 100, firmware TEXT DEFAULT 'v2.3.0')""")
+        con.commit()
+        n = con.execute("SELECT COUNT(*) FROM inventory").fetchone()[0]
+        if n == 0:
+            rng = random.Random(2345)
+            ath = con.execute("SELECT id, club FROM athletes WHERE tag='featured' ORDER BY id LIMIT 40").fetchall()
+            types = [("SPT Pod S1", "POD"), ("SPT Watch A1", "WAT"), ("SPT Strap H2", "STR"), ("SPT Vest M1", "VES")]
+            rows = []
+            for i, a in enumerate(ath):
+                typ, pref = types[i % 4]
+                rows.append((typ, f"{pref}-{4100 + i}", a["id"],
+                             rng.choice(["aktivno", "aktivno", "aktivno", "punjenje", "servis"]),
+                             round(rng.uniform(42, 100)), rng.choice(["v2.3.0", "v2.2.1", "v2.3.0"])))
+            con.executemany("INSERT OR IGNORE INTO inventory (typ, serial, athlete, status, battery, firmware) VALUES (?,?,?,?,?,?)", rows)
+            con.commit()
+            print(f"[SPT] Inventar: {len(rows)} uređaja dodijeljeno")
+    finally:
+        con.close()
+
 # ---------------------------------------------------------------------------
 # MIGRACIJA 2.1 — izvještaji + wellness
 # ---------------------------------------------------------------------------
@@ -1840,7 +1998,7 @@ def migrate_21():
 EXT_TYPES = {".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8",
              ".js": "application/javascript; charset=utf-8", ".json": "application/json",
              ".svg": "image/svg+xml", ".png": "image/png", ".ico": "image/x-icon",
-             ".woff2": "font/woff2", ".png": "image/png", ".jpg": "image/jpeg", ".webp": "image/webp", ".svg": "image/svg+xml"}
+             ".woff2": "font/woff2", ".webmanifest": "application/manifest+json", ".png": "image/png", ".jpg": "image/jpeg", ".webp": "image/webp", ".svg": "image/svg+xml"}
 
 class Handler(BaseHTTPRequestHandler):
     protocol_version = "HTTP/1.1"
@@ -1971,6 +2129,7 @@ class Handler(BaseHTTPRequestHandler):
 def main():
     ensure_db()
     migrate_21()
+    migrate_23()
     for r in q("SELECT sport, COUNT(*) n FROM athletes GROUP BY sport"):
         SPORT_COUNT[r["sport"]] = r["n"]
     print("[SPT] Učitavam utakmice i analitički indeks...")

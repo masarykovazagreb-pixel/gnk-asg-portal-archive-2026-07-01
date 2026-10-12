@@ -89,5 +89,73 @@ VIEWS.hardware = {
       <b>SPT Edge One</b> obrađuje i prikazuje uživo na tabletu trenera → sinkronizacija u <b>SPT Cloud</b> gdje se kartoni,
       analize, usporedbe i SPT AI pokreću. Sportaš kod kuće doda <b>SPT Watch A1</b> i <b>SPT Scale B1</b> — sve završava u istom kartonu.</p>`;
     cont.append(flow);
+
+    // ============ INVENTAR (SPT 2.3) ============
+    const invCard = el("div", "card"); invCard.style.marginTop = "14px";
+    invCard.innerHTML = `<h3>🎒 Inventar opreme <span class="faint" style="font-weight:400;float:right">tko ima koji uređaj · baterija · firmver</span></h3>`;
+    cont.append(invCard);
+    try {
+      const inv = await API.get("/api/inventory");
+      const staff = AUTH.user && ["trener", "kondicijski", "admin"].includes(AUTH.user.role);
+      const t = el("table", "tbl");
+      t.innerHTML = `<thead><tr><th>Uređaj</th><th>Serijski</th><th>Dodijeljeno</th><th>Status</th><th class="num">Baterija</th><th>Firmver</th>${staff ? "<th></th>" : ""}</tr></thead>`;
+      const tb = el("tbody");
+      for (const d of inv.items) {
+        const tr = el("tr");
+        const stCol = d.status === "aktivno" ? "b-gr" : d.status === "servis" ? "b-red" : "b-amber";
+        tr.innerHTML = `<td><b>${esc(d.typ)}</b></td><td class="mono muted">${esc(d.serial)}</td>
+          <td>${d.aname ? `<span class="link" data-aid="${d.athlete}">${esc(d.aname)}</span> <span class="faint">(${esc(d.club || "")})</span>` : '<span class="faint">— neraspoređeno —</span>'}</td>
+          <td><span class="badge ${stCol}">${esc(d.status)}</span></td>
+          <td class="num" style="color:${d.battery < 50 ? "var(--amber)" : "var(--good)"}">${Math.round(d.battery)}%</td>
+          <td class="mono muted">${esc(d.firmware || "")}</td>`;
+        if (staff) {
+          const act = el("td");
+          const bA = el("div", "btn ghost sm", "🔁");
+          bA.title = "Dodijeli sportašu";
+          bA.onclick = () => {
+            const m = el("div");
+            m.style.cssText = "position:fixed;inset:0;background:#04070ccc;z-index:70;display:flex;align-items:center;justify-content:center;padding:20px";
+            const c = el("div", "card"); c.style.cssText = "max-width:440px;width:100%;background:#0d1522";
+            c.innerHTML = `<h3>Dodijeli ${esc(d.serial)}</h3>`;
+            c.append(athletePicker(async a => {
+              const r = await API.post("/api/inventory/assign", { id: d.id, athlete: a.id });
+              if (r.ok) { toast(`${d.serial} → ${a.name}`, "ok"); m.remove(); VIEWS.hardware.render(cont); }
+            }));
+            const cl = el("div", "btn ghost sm", "Odustani"); cl.style.cssText = "margin-top:10px;width:100%";
+            cl.onclick = () => m.remove();
+            c.append(cl); m.append(c);
+            m.onclick = e => { if (e.target === m) m.remove(); };
+            document.body.append(m);
+          };
+          act.append(bA);
+          tr.append(act);
+        }
+        tb.append(tr);
+      }
+      t.append(tb);
+      invCard.append(t);
+      // dodaj uređaj (samo admin/trener)
+      if (staff) {
+        const dForm = el("details"); dForm.style.marginTop = "12px";
+        dForm.innerHTML = `<summary style="cursor:pointer;font-size:13px;color:var(--accent)">➕ Novi uređaj u inventar</summary>`;
+        const fr = el("div", "ctrl-row"); fr.style.cssText = "flex-wrap:wrap;gap:10px;margin-top:10px";
+        const sTyp = el("select");
+        for (const x of ["SPT Pod S1", "SPT Watch A1", "SPT Strap H2", "SPT Vest M1", "SPT Vest W1", "SPT Scale B1", "SPT Anchor A8", "SPT Edge One"]) {
+          const o = el("option"); o.value = x; o.textContent = x; sTyp.append(o);
+        }
+        const iSer = el("input"); iSer.placeholder = "serijski broj";
+        const add = el("div", "btn sm", "💾 Dodaj");
+        add.onclick = async () => {
+          const r = await API.post("/api/inventory/add", { typ: sTyp.value, serial: iSer.value.trim() });
+          if (r.ok) { toast("Uređaj dodan", "ok"); VIEWS.hardware.render(cont); }
+          else toast(r.error || "Greška", "err");
+        };
+        fr.append(sTyp, iSer, add);
+        dForm.append(fr);
+        invCard.append(dForm);
+      }
+    } catch (e) {
+      invCard.append(el("div", "muted", "Inventar nedostupan."));
+    }
   }
 };

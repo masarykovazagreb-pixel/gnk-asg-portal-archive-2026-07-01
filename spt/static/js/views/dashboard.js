@@ -10,6 +10,31 @@ VIEWS.dashboard = {
     ]);
     cont.innerHTML = "";
 
+    // vidljivost kartica (persist)
+    let cards;
+    try { cards = JSON.parse(localStorage.getItem("spt_dash_cards") || "null"); } catch (e) { cards = null; }
+    if (!cards) cards = { kpis: true, feed: true, readiness: true, sports: true, matches: true, recent: true };
+    const cfgBtn = el("div", "btn ghost sm", "⚙ Prilagodi");
+    cfgBtn.style.marginTop = "12px";
+    cfgBtn.onclick = () => {
+      const m = el("div");
+      m.style.cssText = "position:fixed;inset:0;background:#04070ccc;z-index:70;display:flex;align-items:center;justify-content:center;padding:20px";
+      const c = el("div", "card"); c.style.cssText = "max-width:380px;width:100%;background:#0d1522";
+      c.innerHTML = "<h3>Prikaži / sakrij kartice</h3>";
+      const LBL = { kpis: "📊 KPI kartice", feed: "⚡ Mrežni feed", readiness: "💚 Prosječna spremnost", sports: "⚽ Sportovi", matches: "🎬 Utakmice", recent: "🕑 Zadnje aktivnosti" };
+      for (const [k2, l2] of Object.entries(LBL)) {
+        const la = el("label", "", `<input type="checkbox" ${cards[k2] ? "checked" : ""}> ${l2}`);
+        la.style.cssText = "display:flex;gap:9px;align-items:center;font-size:13px;padding:5px 0;cursor:pointer";
+        la.querySelector("input").onchange = e => { cards[k2] = e.target.checked; localStorage.setItem("spt_dash_cards", JSON.stringify(cards)); };
+        c.append(la);
+      }
+      const ok = el("div", "btn", "Spremi i osvježi"); ok.style.cssText = "margin-top:12px;width:100%";
+      ok.onclick = () => { m.remove(); VIEWS.dashboard.render(cont); };
+      c.append(ok); m.append(c);
+      m.onclick = e => { if (e.target === m) m.remove(); };
+      document.body.append(m);
+    };
+
     // hero mreža
     const hero = el("div", "hero-net");
     hero.innerHTML = `
@@ -20,10 +45,25 @@ VIEWS.dashboard = {
         <div><div class="big" style="color:var(--red)">${net.active_right_now.toLocaleString("hr-HR")}</div><div class="lbl">${I18N.t.active_now || "aktivnih treninga"}</div></div>
         <div><div class="big" style="color:var(--accent2)">${net.sessions_today.toLocaleString("hr-HR")}</div><div class="lbl">${I18N.t.sessions_today || "sesija danas"}</div></div>
       </div>`;
+    hero.append(cfgBtn);
     cont.append(hero);
+    // animirani brojači
+    hero.querySelectorAll(".big").forEach(b => {
+      const target = parseInt(b.textContent.replace(/\D/g, ""), 10);
+      if (!target) return;
+      const t0 = performance.now(), dur = 900;
+      const step = now => {
+        const p = Math.min(1, (now - t0) / dur);
+        b.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))).toLocaleString("hr-HR");
+        if (p < 1) requestAnimationFrame(step);
+      };
+      b.textContent = "0";
+      requestAnimationFrame(step);
+    });
 
     // KPI kartice
     const kpis = el("div", "grid g5"); kpis.style.marginTop = "14px";
+    if (!cards.kpis) kpis.style.display = "none";
     const kpiData = [
       [meta.athletes.toLocaleString("hr-HR"), "Sportaša u lokalnoj bazi", `+${meta2.youth} mladih kategorija (12–17)`],
       [meta.sports, "Sportova", "od skijanja i atletike do auto-moto"],
@@ -39,6 +79,7 @@ VIEWS.dashboard = {
     // drugi red: live feed + spremnost + sportovi
     const row = el("div", "grid g3"); row.style.marginTop = "14px";
     const feedCard = el("div", "card");
+    if (!cards.feed) feedCard.style.display = "none";
     feedCard.innerHTML = `<h3>⚡ Mrežni feed <span class="live-dot" style="margin-left:6px"></span></h3>`;
     const feed = el("div", "event-feed");
     function renderFeed(items) {
@@ -59,6 +100,7 @@ VIEWS.dashboard = {
 
     // spremnost
     const rdCard = el("div", "card kpi");
+    if (!cards.readiness) rdCard.style.display = "none";
     const rd = dash.avg_readiness || 0;
     rdCard.innerHTML = `<h3>Prosječna spremnost baze</h3>
       <div class="v" style="color:${rd > 78 ? "var(--good)" : rd > 65 ? "var(--amber)" : "var(--red)"}">${fmtN(rd, 1)}<span class="u">/100</span></div>
@@ -68,6 +110,7 @@ VIEWS.dashboard = {
 
     // sportovi distribucija
     const spCard = el("div", "card");
+    if (!cards.sports) spCard.style.display = "none";
     spCard.innerHTML = `<h3>Sportaši po sportovima (top 12)</h3>`;
     const cv = el("canvas", "chart"); cv.style.height = "260px";
     spCard.append(cv);
@@ -80,6 +123,7 @@ VIEWS.dashboard = {
     // utakmice + zadnje aktivnosti
     const row2 = el("div", "grid g2"); row2.style.marginTop = "14px";
     const mCard = el("div", "card");
+    if (!cards.matches) mCard.style.display = "none";
     mCard.innerHTML = `<h3>🎬 Snimljene utakmice — spremne za reprodukciju</h3>`;
     for (const m of dash.matches) {
       const it = el("div", "card", `
@@ -95,6 +139,7 @@ VIEWS.dashboard = {
     row2.append(mCard);
 
     const sCard = el("div", "card");
+    if (!cards.recent) sCard.style.display = "none";
     sCard.innerHTML = `<h3>Posljednje zabilježene aktivnosti</h3>`;
     const t = el("table", "tbl");
     t.innerHTML = `<thead><tr><th>Sportaš</th><th>Sport</th><th>Vrsta</th><th class="num">km</th><th class="num">max km/h</th><th class="num">Opterećenje</th></tr></thead>`;

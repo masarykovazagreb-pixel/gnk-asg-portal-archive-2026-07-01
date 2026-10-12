@@ -61,14 +61,76 @@ function matchMinute(t, sport) {
   return `${half}. pol. ${m}'`;
 }
 function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
-function toast(msg) {
-  const t = el("div", "toast", esc(msg));
-  document.getElementById("toasts").appendChild(t);
-  setTimeout(() => t.remove(), 3200);
+function toast(msg, type = "info") {
+  const box = document.getElementById("toasts") || document.body;
+  const t = el("div", "toast t-" + type, (type === "ok" ? "✅ " : type === "err" ? "⚠️ " : "") + esc(msg));
+  box.appendChild(t);
+  setTimeout(() => t.classList.add("out"), 2900);
+  setTimeout(() => t.remove(), 3300);
 }
 function debounce(fn, ms) { let h; return (...a) => { clearTimeout(h); h = setTimeout(() => fn(...a), ms); }; }
 
 function spinner() { return el("div", "spinner"); }
+function skeleton(n = 3) {
+  const w = el("div", "skel-wrap");
+  for (let i = 0; i < n; i++) w.append(el("div", "skel"));
+  return w;
+}
+
+// ------- jedinice (metričke / imperijalne) -------
+const PREFS = (() => {
+  try { return JSON.parse(localStorage.getItem("spt_prefs") || "{}"); } catch (e) { return {}; }
+})();
+const IMPERIAL = () => PREFS.units === "imp";
+function fmtKm(v, d = 1) {
+  if (v == null) return "—";
+  return IMPERIAL() ? (v * 0.621371).toLocaleString("hr-HR", { maximumFractionDigits: d }) + " mi"
+                    : v.toLocaleString("hr-HR", { maximumFractionDigits: d }) + " km";
+}
+function fmtKg(v, d = 1) {
+  if (v == null) return "—";
+  return IMPERIAL() ? (v * 2.20462).toLocaleString("hr-HR", { maximumFractionDigits: d }) + " lb"
+                    : v.toLocaleString("hr-HR", { maximumFractionDigits: d }) + " kg";
+}
+function fmtSpd(v, d = 1) {
+  if (v == null) return "—";
+  return IMPERIAL() ? (v * 0.621371).toLocaleString("hr-HR", { maximumFractionDigits: d }) + " mph"
+                    : v.toLocaleString("hr-HR", { maximumFractionDigits: d }) + " km/h";
+}
+const kmUnit = () => IMPERIAL() ? "mi" : "km";
+const spdUnit = () => IMPERIAL() ? "mph" : "km/h";
+
+// ------- CSV izvoz (bilo koja tablica) -------
+function exportCSV(rows, name) {
+  const csv = "\uFEFF" + rows.map(r => r.map(c => {
+    const s = String(c == null ? "" : c);
+    return /[",;\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }).join(";")).join("\n");
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+  a.download = name;
+  a.click();
+  toast("CSV preuzet: " + name, "ok");
+}
+
+// ------- favoriti + nedavno gledani -------
+function favList() { try { return JSON.parse(localStorage.getItem("spt_favs") || "[]"); } catch (e) { return []; } }
+function isFav(aid) { return favList().includes(+aid); }
+function favToggle(aid) {
+  const f = favList();
+  const i = f.indexOf(+aid);
+  if (i > -1) f.splice(i, 1); else f.push(+aid);
+  localStorage.setItem("spt_favs", JSON.stringify(f));
+  return i === -1;
+}
+function recentAdd(aid, name) {
+  let r = [];
+  try { r = JSON.parse(localStorage.getItem("spt_recent") || "[]"); } catch (e) {}
+  r = r.filter(x => x.id !== +aid);
+  r.unshift({ id: +aid, name });
+  localStorage.setItem("spt_recent", JSON.stringify(r.slice(0, 8)));
+}
+function recentList() { try { return JSON.parse(localStorage.getItem("spt_recent") || "[]"); } catch (e) { return []; } }
 
 // ------- pretraživač sportaša (komponenta) -------
 function athletePicker(onPick, opts = {}) {
@@ -113,6 +175,12 @@ function route() {
   if (CURRENT && CURRENT.destroy) { try { CURRENT.destroy(); } catch (e) {} }
   const cont = document.getElementById("view");
   cont.innerHTML = "";
+  cont.classList.remove("view-in");
+  void cont.offsetWidth;
+  cont.classList.add("view-in");
+  if (vid === "karton" && sub) {
+    API.get(`/api/athletes/${sub}`).then(a => { if (a && a.name) recentAdd(sub, a.name); }).catch(() => {});
+  }
   window.scrollTo(0, 0);
   document.getElementById("view").scrollTop = 0;
   document.getElementById("pageTitle").textContent = view.title;
