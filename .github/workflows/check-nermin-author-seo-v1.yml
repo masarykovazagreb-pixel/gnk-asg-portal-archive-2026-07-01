@@ -1,0 +1,41 @@
+name: Check Nermin Author SEO V1
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/gnk-aktual/kolumne/index.html'
+      - 'apps/portal/en/gnk-aktual/columns/index.html'
+      - 'apps/portal/autorske-objave/index.html'
+      - 'apps/portal/en/autorske-objave/index.html'
+      - 'apps/portal/nermin-sefic/index.html'
+      - 'apps/portal/en/nermin-sefic/index.html'
+      - 'apps/portal/data/approved_mentions.json'
+      - 'scripts/test-nermin-author-seo-v1.mjs'
+      - '.github/workflows/check-nermin-author-seo-v1.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/gnk-aktual/kolumne/index.html'
+      - 'apps/portal/en/gnk-aktual/columns/index.html'
+      - 'apps/portal/autorske-objave/index.html'
+      - 'apps/portal/en/autorske-objave/index.html'
+      - 'apps/portal/nermin-sefic/index.html'
+      - 'apps/portal/en/nermin-sefic/index.html'
+      - 'apps/portal/data/approved_mentions.json'
+      - 'scripts/test-nermin-author-seo-v1.mjs'
+      - '.github/workflows/check-nermin-author-seo-v1.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate Nermin Sefić entity and author SEO contract
+        run: node scripts/test-nermin-author-seo-v1.mjs
