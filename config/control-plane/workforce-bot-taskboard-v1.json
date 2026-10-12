@@ -1,0 +1,264 @@
+{
+  "version": "GNK_ASG_WORKFORCE_BOT_TASKBOARD_V1",
+  "updatedAt": "2026-10-11T21:12:00+02:00",
+  "rules": {
+    "sourceOfTruth": "current main + owner instructions",
+    "priorityOrder": [
+      "P0",
+      "P1",
+      "P2",
+      "P3"
+    ],
+    "prFirst": true,
+    "directMainWrites": false,
+    "doNotWeakenTests": true,
+    "doNotInventFacts": true,
+    "titleRule": "shorten title/meta-title only; do not alter article body",
+    "authorMarkerRule": "only #NerminSefić and #NerminSefic on approved author-box articles; never in meta keywords",
+    "editorialDepthConflict": "1500 owner working minimum vs 3000 executable policy remains unresolved; do not silently change validator"
+  },
+  "tasks": [
+    {
+      "id": "BOT-TASK-001",
+      "priority": "P0",
+      "ownerBot": "BOT-AUTO-EDITOR",
+      "title": "Enforce approved author-marker scope",
+      "status": "active",
+      "acceptance": [
+        "read only apps/portal/data/approved_mentions.json as approval source",
+        "do not use apps/legacy-portal",
+        "allow only #NerminSefić and #NerminSefic",
+        "remove author-name variants from meta/news keywords without changing article meaning"
+      ]
+    },
+    {
+      "id": "BOT-TASK-002",
+      "priority": "P1",
+      "ownerBot": "BOT-NEWSROOM",
+      "title": "Prepare editorial coverage after 2026-11-09",
+      "status": "active",
+      "acceptance": [
+        "inspect manifest for gap after 2026-11-09",
+        "prepare source-gated packages only",
+        "respect unresolved 1500/3000 policy conflict",
+        "no invented sources, numbers or claims"
+      ]
+    },
+    {
+      "id": "BOT-TASK-003",
+      "priority": "P1",
+      "ownerBot": "BOT-PUBLIC-CLEAN",
+      "title": "Finish manual >60 character title review",
+      "status": "done",
+      "acceptance": [
+        "manual semantic shortening only",
+        "do not alter H1/body unless title field itself is H1 by design",
+        "preserve meaning",
+        "drive seo-title-review queue to zero with evidence"
+      ],
+      "note": "Verified on main 2026-10-11: apps/portal/data/seo-title-review.json count=0; prior 105-item manual queue completed."
+    },
+    {
+      "id": "BOT-TASK-004",
+      "priority": "P1",
+      "ownerBot": "BOT-OPERATOR",
+      "title": "Close 15 remaining Idea Factory items",
+      "status": "active",
+      "acceptance": [
+        "keep 07,08,10,12,13,20,21,22,24,25 as done",
+        "work only the 15 remaining open items",
+        "each completion must point to repository evidence and an existing route"
+      ],
+      "note": "Verified on main 2026-10-11: 30 total, 15 done, 15 open. Additional done items beyond original owner list: 05, 14, 16, 17, 19."
+    },
+    {
+      "id": "BOT-TASK-005",
+      "priority": "P1",
+      "ownerBot": "BOT-APP-API",
+      "title": "Investigate 12 legacy failing tests without weakening them",
+      "status": "active",
+      "acceptance": [
+        "classify root cause per failure",
+        "fix implementation or fixture truth, not assertions merely to pass",
+        "record unresolved environmental failures separately"
+      ]
+    },
+    {
+      "id": "BOT-TASK-006",
+      "priority": "P1",
+      "ownerBot": "BOT-OPERATOR-CENTER",
+      "title": "Specify and implement /adria-pay/",
+      "status": "blocked-spec",
+      "acceptance": [
+        "derive requirements from existing project context and code before implementation",
+        "do not publish financial claims or payment capability without verified backend support",
+        "PR-first"
+      ]
+    },
+    {
+      "id": "BOT-TASK-007",
+      "priority": "P1",
+      "ownerBot": "BOT-NAVIGATION",
+      "title": "Complete /tvornica-ideja/ integration",
+      "status": "active",
+      "acceptance": [
+        "link from appropriate portal surfaces",
+        "preserve CSP/no-network integrity tests",
+        "keep idea counts/status consistent with idea_factory.json"
+      ]
+    },
+    {
+      "id": "BOT-TASK-008",
+      "priority": "P2",
+      "ownerBot": "BOT-IMAGE-PROXY",
+      "title": "Continuously audit image integrity and accessibility",
+      "status": "active",
+      "acceptance": [
+        "no broken public image paths",
+        "meaningful alt/width/height on editorial surfaces",
+        "do not replace approved author imagery with synthetic identity images"
+      ]
+    },
+    {
+      "id": "BOT-TASK-009",
+      "priority": "P2",
+      "ownerBot": "BOT-NEWS-LIVE",
+      "title": "Maintain freshness and single-writer news integrity",
+      "status": "active",
+      "acceptance": [
+        "detect stale feeds",
+        "never introduce second canonical writer",
+        "separate source failure from renderer failure"
+      ]
+    },
+    {
+      "id": "BOT-TASK-010",
+      "priority": "P2",
+      "ownerBot": "BOT-PUBLISH",
+      "title": "Exact-SHA publication readiness",
+      "status": "active",
+      "acceptance": [
+        "quality gate PASS before publish",
+        "holds respected",
+        "merge is never reported as LIVE without deploy SHA and public verification"
+      ]
+    },
+    {
+      "id": "BOT-TASK-011",
+      "priority": "P2",
+      "ownerBot": "BOT-NEWS-LIVE",
+      "title": "Maintain AKTUAL MEDIA world-edition newsroom quality",
+      "status": "active",
+      "acceptance": [
+        "keep external news source-linked and clearly separated from AKTUAL originals",
+        "detect stale or empty newsroom sections before they become visually dominant",
+        "preserve canonical group normalization and HR/EN parity",
+        "do not label recency as popularity or invent engagement metrics",
+        "surface source concentration when one publisher dominates the current feed"
+      ]
+    },
+    {
+      "id": "BOT-TASK-012",
+      "priority": "P2",
+      "ownerBot": "BOT-NEWS-LIVE",
+      "title": "Build AKTUAL RADAR source/freshness control room",
+      "status": "done",
+      "acceptance": [
+        "derive all metrics from current repository/public feed evidence",
+        "show item count, source count, section distribution and recency",
+        "flag source concentration without inferring bias or popularity",
+        "provide HR/EN parity and link back to source-led newsroom"
+      ],
+      "note": "Implemented in AKTUAL RADAR HR/EN control-room package: feed items, distinct sources, section distribution, recency and source concentration, all derived from canonical news.json."
+    },
+    {
+      "id": "BOT-TASK-013",
+      "priority": "P3",
+      "ownerBot": "BOT-PUBLIC-CLEAN",
+      "title": "Design AKTUAL Morning and Evening Edition modes",
+      "status": "idea",
+      "acceptance": [
+        "presentation-layer change only unless editorial data explicitly supports a content difference",
+        "morning/evening labels must follow local display time and never fabricate an edition timestamp",
+        "preserve accessibility, reduced-motion and mobile behavior"
+      ]
+    },
+    {
+      "id": "BOT-TASK-014",
+      "priority": "P2",
+      "ownerBot": "BOT-NEWS-LIVE",
+      "title": "Create AKTUAL Source Transparency directory",
+      "status": "done",
+      "acceptance": [
+        "list only sources actually present in current or archived feed evidence",
+        "show source counts and last-seen timestamps without endorsement scores",
+        "link source names to original article evidence rather than invented publisher profiles"
+      ],
+      "note": "Implemented as bilingual AKTUAL Source Transparency directory using only canonical news.json evidence: source counts, current feed share, section presence, last-seen recency and latest linked story."
+    },
+    {
+      "id": "BOT-TASK-015",
+      "priority": "P3",
+      "ownerBot": "BOT-NAVIGATION",
+      "title": "Prototype regional AKTUAL desks from real feed groups",
+      "status": "done",
+      "acceptance": [
+        "create regional landing pages only when feed volume justifies them",
+        "avoid empty or fake regional desks",
+        "keep canonical URLs and HR/EN navigation coherent"
+      ],
+      "note": "Implemented from current canonical news.json evidence: 300 total feed items, 36 in group regije, with 18 India and 18 Asia items at implementation time. Desk remains feed-driven and does not claim physical bureaus."
+    },
+    {
+      "id": "BOT-TASK-016",
+      "priority": "P2",
+      "ownerBot": "BOT-NEWSROOM",
+      "title": "Prepare source-gated AKTUAL Explainer format",
+      "status": "idea",
+      "acceptance": [
+        "explain only claims supported by approved sources or project records",
+        "separate facts, interpretation and unresolved questions",
+        "do not auto-publish explainers without the existing editorial gate"
+      ]
+    },
+    {
+      "id": "BOT-TASK-017",
+      "priority": "P2",
+      "ownerBot": "BOT-NEWS-LIVE",
+      "title": "Maintain AKTUAL RADAR metric integrity",
+      "status": "active",
+      "acceptance": [
+        "derive all public metrics from canonical feed evidence on every render",
+        "never convert source concentration into a quality, bias, sentiment or popularity score",
+        "keep HR/EN Radar route parity and sitemap discovery intact",
+        "flag empty or structurally invalid feed states instead of fabricating fallback metrics"
+      ]
+    },
+    {
+      "id": "BOT-TASK-018",
+      "priority": "P2",
+      "ownerBot": "BOT-NEWS-LIVE",
+      "title": "Maintain AKTUAL source transparency integrity",
+      "status": "active",
+      "acceptance": [
+        "derive source listings, counts, shares, section presence and recency only from canonical feed evidence",
+        "never add publisher quality, trust, bias, sentiment, popularity or endorsement scores",
+        "preserve HR/EN source-directory route parity and sitemap discovery",
+        "fail visibly on empty or invalid feed states rather than fabricating source records"
+      ]
+    },
+    {
+      "id": "BOT-TASK-019",
+      "priority": "P3",
+      "ownerBot": "BOT-NAVIGATION",
+      "title": "Maintain evidence threshold for AKTUAL regional desks",
+      "status": "active",
+      "acceptance": [
+        "keep regional desk content derived only from canonical feed items classified into regional groups",
+        "do not create or retain promoted empty geographic desks by inventing fallback stories",
+        "flag sustained empty or materially low-volume regional groups for editorial review",
+        "preserve HR/EN route parity, source links and sitemap discovery"
+      ]
+    }
+  ]
+}

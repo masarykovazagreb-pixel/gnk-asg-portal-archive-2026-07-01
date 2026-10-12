@@ -17,7 +17,7 @@
   function installSeo() {
     document.title = 'AKTUAL MEDIA — Vijesti, GNK ASG d.o.o., Nermin Sefić i GNK DINAMO Ltd.';
     ensureMeta('description', 'AKTUAL MEDIA donosi rotirajući slikovni pregled vijesti i tekstualne poveznice. Izdavački i entitetski kontekst: GNK ASG d.o.o., Nermin Sefić i GNK DINAMO Ltd.');
-    ensureMeta('keywords', 'AKTUAL MEDIA, Nermin Sefić, GNK ASG d.o.o., GNK DINAMO Ltd., vijesti, gospodarstvo, tehnologija, digitalna imovina');
+    ensureMeta('keywords', 'AKTUAL MEDIA, GNK ASG d.o.o., GNK DINAMO Ltd., vijesti, gospodarstvo, tehnologija, digitalna imovina');
     ensureMeta('author', 'Nermin Sefić, GNK ASG d.o.o., GNK DINAMO Ltd.');
     ensureMeta('robots', 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1');
     ensureMeta('og:site_name', BRAND, true);

@@ -1,0 +1,47 @@
+name: Check AKTUAL Regions V1
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/gnk-aktual/regije/**'
+      - 'apps/portal/en/gnk-aktual/regions/**'
+      - 'apps/portal/gnk-aktual/index.html'
+      - 'apps/portal/en/gnk-aktual/index.html'
+      - 'apps/portal/assets/aktual-regions-v1.css'
+      - 'apps/portal/assets/aktual-regions-v1.js'
+      - 'apps/portal/assets/aktual-media-world-v1.js'
+      - 'apps/portal/data/news.json'
+      - 'apps/portal/sitemap.xml'
+      - 'config/control-plane/workforce-bot-taskboard-v1.json'
+      - 'scripts/test-aktual-regions-v1.mjs'
+      - '.github/workflows/check-aktual-regions-v1.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/gnk-aktual/regije/**'
+      - 'apps/portal/en/gnk-aktual/regions/**'
+      - 'apps/portal/gnk-aktual/index.html'
+      - 'apps/portal/en/gnk-aktual/index.html'
+      - 'apps/portal/assets/aktual-regions-v1.css'
+      - 'apps/portal/assets/aktual-regions-v1.js'
+      - 'apps/portal/assets/aktual-media-world-v1.js'
+      - 'apps/portal/data/news.json'
+      - 'apps/portal/sitemap.xml'
+      - 'config/control-plane/workforce-bot-taskboard-v1.json'
+      - 'scripts/test-aktual-regions-v1.mjs'
+      - '.github/workflows/check-aktual-regions-v1.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate AKTUAL regional-desk evidence contract
+        run: node scripts/test-aktual-regions-v1.mjs

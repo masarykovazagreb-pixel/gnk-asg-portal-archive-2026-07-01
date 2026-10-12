@@ -1,0 +1,227 @@
+{
+  "version": "GNK_ASG_WORKFORCE_BOT_REGISTRY_V1",
+  "generatedAt": "2026-10-11T18:56:00+02:00",
+  "policy": {
+    "everyWorkerMustHaveBotIdentity": true,
+    "prFirst": true,
+    "directMainWrites": false,
+    "mergeIsLive": false,
+    "exactShaRequiredForLive": true,
+    "noFabricatedFacts": true,
+    "doNotWeakenTests": true,
+    "sourceGateRequiredForEditorial": true,
+    "legalGateRequiredWhereApplicable": true,
+    "protectedDomains": [
+      "mail",
+      "smtp",
+      "imap",
+      "dns",
+      "mx",
+      "secrets",
+      "payments",
+      "legal",
+      "social"
+    ],
+    "protectedDomainMode": "observe-and-propose",
+    "defaultCadence": "4h",
+    "taskSelection": "highest-priority-safe-action-first",
+    "idleBehavior": "health-audit-then-improvement-proposal"
+  },
+  "bots": [
+    {
+      "worker": "gnk-asg-ai-assist-worker",
+      "botId": "BOT-AI-ASSIST",
+      "domain": "WORKFORCE_SUPERVISION",
+      "mode": "active",
+      "mission": "Improve assistant quality, routing and evidence-grounded answers.",
+      "cadence": "4h",
+      "tasks": [
+        "audit assistant route health",
+        "find stale capability mappings",
+        "propose one measurable UX improvement"
+      ]
+    },
+    {
+      "worker": "gnk-asg-ai-newsroom-writer",
+      "botId": "BOT-NEWSROOM",
+      "domain": "EDITORIAL",
+      "mode": "source-gated",
+      "mission": "Prepare source-grounded newsroom drafts without inventing facts.",
+      "cadence": "4h",
+      "tasks": [
+        "inspect editorial queue",
+        "flag unsupported claims",
+        "prepare next source-complete draft candidate"
+      ]
+    },
+    {
+      "worker": "gnk-asg-app-api",
+      "botId": "BOT-APP-API",
+      "domain": "STABILITY",
+      "mode": "active",
+      "mission": "Protect API contracts, latency and failure handling.",
+      "cadence": "4h",
+      "tasks": [
+        "check public API contracts",
+        "identify stale or inconsistent payloads",
+        "propose backward-compatible repair"
+      ]
+    },
+    {
+      "worker": "gnk-asg-auto-editor-public-clean-worker",
+      "botId": "BOT-PUBLIC-CLEAN",
+      "domain": "SEO_AEO",
+      "mode": "pr-first",
+      "mission": "Improve public HTML hygiene without changing article meaning.",
+      "cadence": "6h",
+      "tasks": [
+        "scan metadata hygiene",
+        "find duplicate or malformed public markup",
+        "prepare minimal safe cleanup"
+      ]
+    },
+    {
+      "worker": "gnk-asg-auto-editor-worker",
+      "botId": "BOT-AUTO-EDITOR",
+      "domain": "EDITORIAL",
+      "mode": "source-gated",
+      "mission": "Raise editorial quality while preserving source and approval gates.",
+      "cadence": "4h",
+      "tasks": [
+        "check depth/structure contract",
+        "check author-marker policy",
+        "prepare improvements without keyword stuffing"
+      ]
+    },
+    {
+      "worker": "gnk-asg-contact-api-worker",
+      "botId": "BOT-CONTACT",
+      "domain": "SECURITY_CONTROL",
+      "mode": "observe-and-propose",
+      "mission": "Audit contact-path availability and abuse resistance.",
+      "cadence": "6h",
+      "tasks": [
+        "check contact route contract",
+        "check rate-limit/auth assumptions",
+        "propose safe fixes without touching mail secrets"
+      ]
+    },
+    {
+      "worker": "gnk-asg-direct-operator",
+      "botId": "BOT-OPERATOR",
+      "domain": "WORKFORCE_SUPERVISION",
+      "mode": "pr-first",
+      "mission": "Coordinate safe operational work and evidence handoffs.",
+      "cadence": "4h",
+      "tasks": [
+        "prioritize P0/P1 backlog",
+        "detect duplicate writers",
+        "prepare exact-SHA-ready change plans"
+      ]
+    },
+    {
+      "worker": "gnk-asg-emergency-entry-redirect",
+      "botId": "BOT-EMERGENCY-ROUTER",
+      "domain": "STABILITY",
+      "mode": "active",
+      "mission": "Keep emergency entry routing deterministic and fail-safe.",
+      "cadence": "6h",
+      "tasks": [
+        "verify redirect contract",
+        "check loop/fallback risks",
+        "propose fail-closed correction"
+      ]
+    },
+    {
+      "worker": "gnk-asg-image-proxy",
+      "botId": "BOT-IMAGE-PROXY",
+      "domain": "STABILITY",
+      "mode": "active",
+      "mission": "Keep image delivery reliable, cache-safe and accessible.",
+      "cadence": "6h",
+      "tasks": [
+        "check broken image paths",
+        "check fallback/cache behavior",
+        "surface accessibility metadata gaps"
+      ]
+    },
+    {
+      "worker": "gnk-asg-mail-center-worker",
+      "botId": "BOT-MAIL-CENTER",
+      "domain": "SECURITY_CONTROL",
+      "mode": "observe-and-propose",
+      "mission": "Observe mail-center health without mutating mail, DNS or secrets.",
+      "cadence": "6h",
+      "tasks": [
+        "read health evidence",
+        "classify delivery failures",
+        "prepare remediation plan only"
+      ]
+    },
+    {
+      "worker": "gnk-asg-news-pages-live",
+      "botId": "BOT-NEWS-LIVE",
+      "domain": "AKTUAL_NEWS",
+      "mode": "single-writer-aware",
+      "mission": "Keep public news pages fresh while respecting canonical writer ownership.",
+      "cadence": "4h",
+      "tasks": [
+        "check freshness evidence",
+        "detect duplicate canonical writers",
+        "prepare minimal repair proposal"
+      ]
+    },
+    {
+      "worker": "gnk-asg-operator-center",
+      "botId": "BOT-OPERATOR-CENTER",
+      "domain": "WORKFORCE_SUPERVISION",
+      "mode": "active",
+      "mission": "Improve operator observability, queue clarity and auditability.",
+      "cadence": "4h",
+      "tasks": [
+        "check control-center health",
+        "surface stuck tasks",
+        "propose dashboard evidence improvements"
+      ]
+    },
+    {
+      "worker": "gnk-asg-public-menu-fix",
+      "botId": "BOT-NAVIGATION",
+      "domain": "STABILITY",
+      "mode": "pr-first",
+      "mission": "Continuously verify navigation parity and broken public links.",
+      "cadence": "6h",
+      "tasks": [
+        "scan navigation targets",
+        "check HR/EN parity",
+        "prepare minimal route/link fixes"
+      ]
+    },
+    {
+      "worker": "gnk-asg-publish-operator",
+      "botId": "BOT-PUBLISH",
+      "domain": "PUBLISH",
+      "mode": "gate-enforced",
+      "mission": "Prepare publish handoffs only after quality gates and exact-SHA evidence.",
+      "cadence": "4h",
+      "tasks": [
+        "inspect publish queue",
+        "verify holds and approval state",
+        "prepare release candidate without bypassing gates"
+      ]
+    },
+    {
+      "worker": "gnk-asg-scheduled-mail-sender",
+      "botId": "BOT-SCHEDULED-MAIL",
+      "domain": "SECURITY_CONTROL",
+      "mode": "observe-and-propose",
+      "mission": "Observe scheduled-mail readiness without sending or changing protected mail configuration.",
+      "cadence": "6h",
+      "tasks": [
+        "check scheduler evidence",
+        "detect duplicate/stuck jobs",
+        "prepare remediation plan only"
+      ]
+    }
+  ]
+}
