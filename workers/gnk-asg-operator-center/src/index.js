@@ -49,6 +49,13 @@ export default {
       return new Response('Method Not Allowed',{status:405,headers:{allow:'GET, HEAD'}});
     }
 
+    if (path === '/knowledge-center') {
+      return Response.redirect('https://gnk-asg.hr/knowledge-center/',308);
+    }
+    if (path === '/en/knowledge-center') {
+      return Response.redirect('https://gnk-asg.hr/en/knowledge-center/',308);
+    }
+
     if (path !== '/operator-dashboard') {
       return new Response('Not Found',{status:404});
     }

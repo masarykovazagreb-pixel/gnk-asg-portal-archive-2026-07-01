@@ -1,0 +1,107 @@
+{
+  "nav": "Parameters",
+  "params": {
+    "kicker": "Parameters and analyses",
+    "title": "64 parameters SPT measures — and what they show",
+    "sub": "From a metre of running to a gram of protein: SPT measures movement, mechanical load, heart, sleep, body, nutrition, hydration, environment, tests, wellness and tactics. Every number has a purpose — each one comes with what it shows and why it matters.",
+    "count": "parameters",
+    "groups": [
+      {"ic": 8, "t": "Movement and speed", "src": "SPT Pod · 20 Hz GNSS / UWB", "items": [
+        {"n": "Total distance", "u": "m", "w": "The volume of a session or match, compared with the target for that day of the microcycle and the positional average."},
+        {"n": "Distance by speed zone", "u": "m · Z1–Z5", "w": "The intensity profile: how long versus how fast the session was — the same kilometres can be easy or exhausting."},
+        {"n": "High-speed running (HSR)", "u": "m · > 19.8 km/h", "w": "Exposure to high intensity; sudden HSR spikes are associated with hamstring injuries."},
+        {"n": "Sprints", "u": "count · m > 25 km/h", "w": "Repeated-sprint ability; fewer sprints in the second half is a clear sign of fatigue."},
+        {"n": "Peak speed", "u": "km/h · % of personal best", "w": "If an athlete does not reach about 90% of their maximum for weeks, they lose the “vaccine” against sprint injuries."},
+        {"n": "Metres per minute", "u": "m/min", "w": "Relative intensity, comparable across matches and sessions of different length and players with different minutes."}
+      ]},
+      {"ic": 9, "t": "Mechanical load", "src": "SPT Pod · 1000 Hz IMU", "items": [
+        {"n": "Accelerations", "u": "count · > 3 m/s²", "w": "Explosive demands on the thigh and calf muscles; GPS alone does not see them precisely enough."},
+        {"n": "Decelerations", "u": "count · < −3 m/s²", "w": "Eccentric load — the most mechanically demanding part of play for tendons and joints."},
+        {"n": "Changes of direction", "u": "count · angle", "w": "Load on the knees, groin and ankles; key in football, basketball, handball and tennis."},
+        {"n": "Accelerometer load", "u": "AU", "w": "The sum of all body movement — it measures load even where GPS cannot see: indoors, in duels, in the gym."},
+        {"n": "Impacts and collisions", "u": "count · g", "w": "Contacts, falls and impacts above a set threshold; in contact sports a signal to check on the player."},
+        {"n": "Jumps and landings", "u": "count · cm · g", "w": "Jump volume and landing hardness; in volleyball and basketball the main driver of patellar-tendon overload."}
+      ]},
+      {"ic": 5, "t": "Heart and cardiovascular response", "src": "chest strap · SPT watch", "items": [
+        {"n": "Live heart rate and % HRmax", "u": "bpm · %", "w": "Internal intensity in real time; the staff sees who is in the red zone while play is on."},
+        {"n": "Time in heart-rate zones", "u": "min · Z1–Z5", "w": "Whether the session hit the intended stimulus: aerobic base, threshold or high intensity."},
+        {"n": "TRIMP (heart-rate load)", "u": "AU", "w": "How the body experienced the session — the same external work is easy for a rested athlete and hard for a tired one."},
+        {"n": "Heart-rate recovery (HRR)", "u": "bpm in 60 s", "w": "How fast heart rate drops after effort; slower recovery warns of fatigue or the onset of illness."},
+        {"n": "Resting heart rate", "u": "bpm", "w": "A morning rise of 5 or more beats often precedes illness, overreaching or poor sleep."},
+        {"n": "HRV (RMSSD)", "u": "ms", "w": "Autonomic nervous system balance — the most sensitive non-invasive readiness marker; what matters is deviation from the personal norm."}
+      ]},
+      {"ic": 10, "t": "Sleep and recovery", "src": "SPT watch", "items": [
+        {"n": "Sleep duration", "u": "h", "w": "Less than 7 hours of sleep is associated with higher injury risk and slower reactions."},
+        {"n": "Sleep stages", "u": "deep · REM · light", "w": "Deep sleep drives physical recovery, REM learning and concentration; late matches shift the stages."},
+        {"n": "Sleep efficiency and awakenings", "u": "% · count", "w": "Quality, not just quantity: fragmented sleep reduces recovery even after 8 hours in bed."},
+        {"n": "Breathing rate in sleep", "u": "breaths/min", "w": "A rise in breathing rate is one of the earliest signs of infection."},
+        {"n": "Skin temperature", "u": "deviation °C", "w": "Deviation from the personal norm flags inflammation or illness; for female athletes it also tracks cycle phase."},
+        {"n": "Readiness index", "u": "0–100", "w": "The morning composite (HRV, resting heart rate, sleep, questionnaire): green trains at full intensity, red gets a recovery plan."}
+      ]},
+      {"ic": 11, "t": "Body composition", "src": "SPT scale · bioimpedance", "items": [
+        {"n": "Body mass", "u": "kg", "w": "The daily trend; a sudden drop warns of dehydration or insufficient energy intake."},
+        {"n": "Body fat percentage", "u": "%", "w": "Composition against the target for the position and season phase; the trend matters, not a single day."},
+        {"n": "Muscle mass", "u": "kg", "w": "Muscle loss during injury or a break — the basis of the nutrition and strength plan for the return."},
+        {"n": "Total body water", "u": "%", "w": "Hydration and recovery; together with morning mass it gives a more reliable picture than weight alone."},
+        {"n": "Visceral fat", "u": "level", "w": "A health marker — especially relevant for recreational athletes and veterans."},
+        {"n": "Basal metabolic rate", "u": "kcal/day", "w": "The basis for calculating daily energy needs and the nutrition plan."}
+      ]},
+      {"ic": 12, "t": "Nutrition and energy", "src": "app · scale · sensors", "items": [
+        {"n": "Energy intake", "u": "kcal", "w": "What the athlete ate — a meal photo, the food database or the nutritionist's plan."},
+        {"n": "Energy expenditure", "u": "kcal", "w": "Calculated from heart rate, accelerometer and basal metabolic rate: how much was actually used in training and across the day."},
+        {"n": "Energy availability", "u": "kcal/kg fat-free mass", "w": "Below about 30 kcal per kg of fat-free mass the risk of RED-S rises: hormonal disruption, weaker bones, more injuries."},
+        {"n": "Protein", "u": "g/kg", "w": "For muscle recovery typically 1.6–2.2 g per kg of body mass, spread across 4–5 meals."},
+        {"n": "Carbohydrates", "u": "g/kg", "w": "Fuel for intensity; intake is periodised to load — more the day before a match, less on recovery days."},
+        {"n": "Meal timing", "u": "min after effort", "w": "Protein and carbohydrate within about 60 minutes of effort speed up recovery; the app sends a reminder."}
+      ]},
+      {"ic": 13, "t": "Hydration, supplements and environment", "src": "scale · app · weather data", "items": [
+        {"n": "Sweat loss", "u": "L/h", "w": "The difference in mass before and after training; the replacement plan is about 150% of the fluid lost."},
+        {"n": "Hydration status", "u": "% · urine colour", "w": "Just 2% dehydration measurably reduces endurance, speed and concentration."},
+        {"n": "Micronutrients and supplements", "u": "manual entry · lab", "w": "Iron, ferritin, vitamin D and supplements — together with the doctor they explain fatigue, immunity and bone health."},
+        {"n": "Caffeine and alcohol", "u": "manual entry", "w": "A visible effect on sleep, HRV and morning readiness — the athlete sees cause and effect."},
+        {"n": "Heat stress (WBGT)", "u": "°C", "w": "Temperature, humidity and sun combined; above the threshold the system suggests hydration breaks and lower load."},
+        {"n": "Altitude and SpO₂", "u": "m · %", "w": "Altitude adaptation (training camps, away games); lower oxygen saturation slows recovery."}
+      ]},
+      {"ic": 14, "t": "Load and injury risk", "src": "SPT analytics · AI", "items": [
+        {"n": "ACWR (acute : chronic)", "u": "ratio · EWMA", "w": "The load of the last 7 days against the 28-day average; about 0.8–1.3 is balanced, above 1.5 risky."},
+        {"n": "Monotony and strain", "u": "index", "w": "How similar the days of the week are and how large the total stress is — a uniformly heavy week precedes illness and overtraining."},
+        {"n": "sRPE (session RPE)", "u": "AU", "w": "Effort rating × minutes; internal load even without sensors — for youth and recreational athletes."},
+        {"n": "Stride asymmetry L/R", "u": "%", "w": "A left–right difference above about 10% warns of compensation, an early injury or incomplete recovery."},
+        {"n": "AI injury-risk estimate", "u": "% · reasons", "w": "The model combines load, readiness, asymmetry and injury history and returns a probability, the reason and a recommendation; the decision stays with the staff."},
+        {"n": "Return-to-play index (RTP)", "u": "% of personal norm", "w": "After injury it compares speed, accelerations and load with pre-injury values — an objective return criterion."}
+      ]},
+      {"ic": 15, "t": "Tests and neuromuscular status", "src": "SPT Pod · watch · field tests", "items": [
+        {"n": "Countermovement jump (CMJ)", "u": "cm · RSI", "w": "A 5–8% drop in height or reactivity points to neuromuscular fatigue — a day for lower intensity."},
+        {"n": "10/30 m sprint", "u": "s", "w": "Acceleration and top speed under test conditions; progress is visible week to week."},
+        {"n": "Intermittent test (Yo-Yo IR, 30-15 IFT)", "u": "level · km/h", "w": "Fitness level and individual zones for interval training."},
+        {"n": "Estimated VO₂max", "u": "ml/kg/min", "w": "Aerobic capacity; the season trend shows whether the base has been built."},
+        {"n": "Aerobic efficiency", "u": "speed/heart rate", "w": "The same speed at a lower heart rate means better fitness — the simplest progress marker for recreational athletes."},
+        {"n": "Cadence and ground contact", "u": "steps/min · ms", "w": "Running economy and reactive strength; longer ground contact tracks fatigue."}
+      ]},
+      {"ic": 16, "t": "Wellness", "src": "morning questionnaire in the app", "items": [
+        {"n": "Fatigue", "u": "1–5", "w": "Subjective tiredness — it often reacts before the objective markers."},
+        {"n": "Muscle soreness", "u": "1–5 · body map", "w": "Where and how much it hurts; repeated soreness in the same spot is a reason to talk to the physio."},
+        {"n": "Perceived sleep quality", "u": "1–5", "w": "Complements the watch data — how the athlete feels after sleep."},
+        {"n": "Stress", "u": "1–5", "w": "Exams, travel, private life — stress raises injury risk just like physical load."},
+        {"n": "Mood and motivation", "u": "1–5", "w": "An early sign of overtraining and burnout, especially in young athletes."},
+        {"n": "Menstrual cycle (optional, private)", "u": "phase", "w": "Load, nutrition and recovery adjusted by phase; the data is visible only to the athlete and authorised staff."}
+      ]},
+      {"ic": 17, "t": "Tactics and technique", "src": "SPT Pod · UWB · team analytics", "items": [
+        {"n": "Heatmap and average position", "u": "map", "w": "Where the player moved and whether they hold their role in the system of play."},
+        {"n": "Team compactness", "u": "m · width · depth", "w": "The distance between lines and players in defence and attack — a measure of organisation."},
+        {"n": "Defensive line height", "u": "m from goal", "w": "How high the team defends and how the line shifts during the match and with fatigue."},
+        {"n": "Ball strikes and technical actions", "u": "count · foot", "w": "With the optional boot sensor: kicks, passes and shots and the left–right foot ratio — technical load and asymmetry."}
+      ]}
+    ],
+    "an_title": "What the analyses show",
+    "an": [
+      {"t": "Morning readiness", "d": "Who can go full intensity today and who needs an adjusted session: a green/amber/red traffic light for the whole squad before the first session."},
+      {"t": "Session report", "d": "Whether the session hit its goal: planned versus delivered load per player and position, with deviations highlighted."},
+      {"t": "Weekly risk", "d": "Who is entering the risk zone: ACWR, monotony, asymmetry and the AI estimate, with reasons and a recommendation for next week."},
+      {"t": "Nutrition versus load", "d": "Whether intake matched expenditure: energy availability, protein and carbohydrate by microcycle day, with a meal and hydration plan."},
+      {"t": "Benchmarking and development", "d": "How a player compares with their own norm, position and league profile; the season trend for scouting and youth development."},
+      {"t": "Return after injury", "d": "When a return is safe: the RTP index compares current values with pre-injury values, step by step."}
+    ],
+    "note": "Thresholds (e.g. HSR > 19.8 km/h, ACWR 0.8–1.3) are reference values from sports science; in SPT they are tuned per club, sport, age and athlete. SPT provides performance and wellbeing indicators, not a medical diagnosis."
+  }
+}

@@ -10,6 +10,8 @@ on:
       - 'workers/gnk-asg-direct-operator/src/media-registration-post-code-v2.js'
       - 'workers/gnk-asg-direct-operator/src/media-registration-review-admin-v1.js'
       - 'workers/gnk-asg-direct-operator/test/unified-auth-enterprise-scope.test.mjs'
+      - 'workers/gnk-asg-operator-center/src/index.js'
+      - 'scripts/test-operator-knowledge-center-route-v1.mjs'
       - 'scripts/validate-operator-module-routes.mjs'
       - '.github/workflows/check-operator-module-routes.yml'
 
@@ -36,6 +38,8 @@ jobs:
           node --check workers/gnk-asg-direct-operator/test/unified-auth-enterprise-scope.test.mjs
       - name: Validate all configured module routes
         run: node scripts/validate-operator-module-routes.mjs
+      - name: Verify operator Knowledge Center route truth
+        run: node scripts/test-operator-knowledge-center-route-v1.mjs
       - name: Verify protected enterprise scope statically
         run: |
           set -euxo pipefail

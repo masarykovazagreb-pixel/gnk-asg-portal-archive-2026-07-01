@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+{% from "macros.html" import pic, fb, fbnote, head, gallery_grid, icon %}
+{% block main %}
+{% set hero = IMG['hero_stadium_usa'] %}
+<section class="hero" aria-labelledby="h1">
+ <div class="hero-bg">
+  <img src="{{ hero.src }}" srcset="{{ hero.thumb }} 720w, {{ hero.src }} {{ hero.w }}w" sizes="100vw" width="{{ hero.w }}" height="{{ hero.h }}" alt="{{ hero.alt }}" fetchpriority="high">
+ </div>
+ <div class="wrap hero-in">
+  <p class="kick">{{ L.hero.kicker }}</p>
+  <h1 id="h1">{% for line in L.hero.h1 %}<span class="h1l{% if loop.last %} acc{% endif %}">{{ line }}</span>{% endfor %}</h1>
+  <p class="lead">{{ L.hero.lead }}</p>
+  <div class="ctas">
+   <a class="btn btn-p" href="#film">{{ L.hero.cta_film }}</a>
+   <a class="btn" href="#showcase">{{ L.hero.cta_show }}</a>
+   <a class="btn btn-g" href="#oem">{{ L.hero.cta_oem }}</a>
+  </div>
+  <ul class="trust">{% for t in L.hero.trust %}<li>{{ t }}</li>{% endfor %}</ul>
+  <p class="hero-sig">{{ L.hero.sig }}</p>
+ </div>
+ <aside class="hero-hud" aria-hidden="true">
+  <div class="hud-top"><span class="dot"></span>{{ L.hero.live }}</div>
+  <div class="hud-row"><span>#9</span><b data-hud="spd">31.4</b><i>km/h</i></div>
+  <div class="hud-row"><span>♥</span><b data-hud="hr">176</b><i>bpm</i></div>
+  <div class="hud-row"><span>Σ</span><b data-hud="dst">8.42</b><i>km</i></div>
+  <div class="hud-bar"><i data-hud="load"></i></div>
+ </aside>
+</section>
+
+<section class="stats" aria-label="SPT">
+ <ul class="wrap stats-in">{% for s in L.stats %}<li><b>{{ s.v }}</b><span>{{ s.l }}</span></li>{% endfor %}</ul>
+</section>
+
+<section class="sec film" id="film" aria-labelledby="t-film"{{ fb('film') }}>
+ <div class="wrap">
+  {{ fbnote('film') }}
+  {{ head(L.film, 't-film') }}
+  <figure class="film-box">
+   <video controls playsinline preload="none" poster="{{ FILM.poster }}" width="1280" height="720">
+    <source src="{{ FILM.src }}" type="video/mp4">
+   </video>
+   <figcaption>{{ L.film.note }} · <a href="{{ U.film }}">{{ L.ui.film_page }} →</a></figcaption>
+  </figure>
+ </div>
+</section>
+
+<section class="sec show" id="showcase" aria-labelledby="t-show"{{ fb('show') }}>
+ <div class="wrap">
+  {{ fbnote('show') }}
+  {{ head(L.show, 't-show') }}
+  <ol class="week">
+   {% for d in L.show.days %}<li><span class="day">{{ d.d }}</span><h3>{{ d.t }}</h3><p>{{ d.x }}</p></li>{% endfor %}
+  </ol>
+  <div class="demo" id="demo">
+   <div class="demo-pitch">
+    <div class="demo-hd"><span class="dot"></span><b>{{ L.show.demo_title }}</b><span class="score" data-demo="score">2 : 1</span><span class="clock" data-demo="clock">67:12</span></div>
+    <canvas id="pitch" width="960" height="600" aria-label="{{ L.show.demo_title|plain }}" role="img"></canvas>
+    <div class="demo-goal" data-demo="goal" hidden>{{ L.show.demo.goal }}</div>
+    <p class="demo-sim">{{ L.show.demo.sim }}</p>
+   </div>
+   <div class="demo-side">
+    <p class="demo-player">{{ L.show.demo.player }}</p>
+    <dl class="demo-kpi">
+     <div><dt>{{ L.show.demo.speed }}</dt><dd><b data-demo="spd">0.0</b> km/h</dd></div>
+     <div><dt>{{ L.show.demo.hr }}</dt><dd><b data-demo="hr">0</b> bpm</dd></div>
+     <div><dt>{{ L.show.demo.dist }}</dt><dd><b data-demo="dst">0.00</b> km</dd></div>
+     <div><dt>{{ L.show.demo.spr }}</dt><dd><b data-demo="spr">0</b></dd></div>
+     <div><dt>{{ L.show.demo.load }}</dt><dd><b data-demo="load">0</b> AU</dd></div>
+     <div><dt>{{ L.show.demo.top }}</dt><dd><b data-demo="top">0.0</b> km/h</dd></div>
+    </dl>
+    <div class="demo-alert" data-demo="alert" hidden>⚠ {{ L.show.demo.alert }}</div>
+   </div>
+  </div>
+  <h3 class="h3c">{{ L.show.gains_title }}</h3>
+  <div class="gains">{% for g in L.show.gains %}<div class="card"><h4>{{ g.t }}</h4><p>{{ g.x }}</p></div>{% endfor %}</div>
+  {% set tv = IMG['training_vests'] %}
+  <figure class="wide-fig"><a href="{{ tv.url }}">{{ pic(tv, '(max-width: 1100px) 100vw, 1100px') }}</a><figcaption><b>{{ tv.title }}</b> — {{ tv.desc }}</figcaption></figure>
+  <p class="note">{{ L.show.note }}</p>
+ </div>
+</section>
+
+<section class="sec screens" id="screens" aria-labelledby="t-screens"{{ fb('screens') }}>
+ <div class="wrap">
+  {{ fbnote('screens') }}
+  {{ head(L.screens, 't-screens') }}
+  <div class="sgrid">
+   {% for it in L.screens['items'] %}{% set im = IMG[it.img] %}
+   <article class="scard{% if loop.index <= 2 %} big{% endif %}">
+    <a class="scard-img" href="{{ im.url }}">{{ pic(im, '(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 560px') }}</a>
+    <div class="scard-t"><h3><a href="{{ im.url }}">{{ it.t }}</a></h3><p>{{ it.x }}</p></div>
+   </article>
+   {% endfor %}
+  </div>
+ </div>
+</section>
+
+<section class="sec hw" id="hw" aria-labelledby="t-hw"{{ fb('hw') }}>
+ <div class="wrap">
+  {{ fbnote('hw') }}
+  {{ head(L.hw, 't-hw') }}
+  <div class="hgrid">
+   {% for it in L.hw['items'] %}{% set im = IMG[it.img] %}
+   <article class="hcard">
+    <a class="hcard-img" href="{{ im.url }}">{{ pic(im, '(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 360px') }}</a>
+    <h3><a href="{{ im.url }}">{{ it.t }}</a></h3>
+    <p>{{ it.x }}</p>
+    <p class="why"><b>{{ L.hw.why }}:</b> {{ it.w }}</p>
+   </article>
+   {% endfor %}
+  </div>
+ </div>
+</section>
+
+<section class="sec sw" id="sw" aria-labelledby="t-sw"{{ fb('sw') }}>
+ <div class="wrap">
+  {{ fbnote('sw') }}
+  {{ head(L.sw, 't-sw') }}
+  <div class="fgrid">
+   {% for g in L.sw.groups %}<div class="fcard"><h3><span class="fnum">{{ '%02d'|format(loop.index) }}</span>{{ g.t }}</h3><ul>{% for i in g.i %}<li>{{ i }}</li>{% endfor %}</ul></div>{% endfor %}
+  </div>
+ </div>
+</section>
+
+<section class="sec params" id="params" aria-labelledby="t-params"{{ fb('params') }}>
+ <div class="wrap">
+  {{ fbnote('params') }}
+  {{ head(L.params, 't-params') }}
+  {% set ns = namespace(i=0) %}
+  <div class="pgrid">
+   {% for g in L.params['groups'] %}
+   <article class="pcard">
+    <header class="pc-h"><span class="pc-ic">{{ icon(g.ic) }}</span><div><h3>{{ g.t }}</h3><p class="pc-src">{{ g.src }}</p></div><span class="pc-n">{{ g['items']|length }}</span></header>
+    <dl class="plist">
+     {% for p in g['items'] %}{% set ns.i = ns.i + 1 %}<div class="pi"><dt><span class="pnum">{{ ns.i }}</span><span class="pname">{{ p.n }}</span> <small>{{ p.u }}</small></dt><dd>{{ p.w }}</dd></div>
+     {% endfor %}
+    </dl>
+   </article>
+   {% endfor %}
+  </div>
+  <h3 class="an-t">{{ L.params.an_title }}</h3>
+  <div class="angrid">
+   {% for a in L.params.an %}<div class="ancard"><h4>{{ a.t }}</h4><p>{{ a.d }}</p></div>
+   {% endfor %}
+  </div>
+  <p class="pnote">{{ L.params.note }}</p>
+  {% if lang == 'hr' %}<p class="pnote"><a class="btn btn-p" href="/objave/spt-64-parametra-i-analize/">Cijeli članak: 64 parametra, šest analiza i sve funkcije →</a></p>
+  {% else %}<p class="pnote"><a class="btn btn-p" href="/en/publications/spt-64-parameters-and-analyses/"{% if lang != 'en' %} lang="en" hreflang="en"{% endif %}>Full article: all 64 parameters, six analyses and every feature →</a></p>
+  {% endif %}
+ </div>
+</section>
+
+<section class="sec sci" id="science" aria-labelledby="t-sci"{{ fb('sci') }}>
+ <div class="wrap">
+  {{ fbnote('sci') }}
+  {{ head(L.sci, 't-sci') }}
+  <div class="dgrid">
+   {% for it in L.sci['items'] %}
+   <article class="deep">
+    <span class="tag">{{ it.tag }}</span>
+    <h3>{{ it.t }}</h3>
+    <div class="deep-c">
+     <div><h4>{{ L.sci.what }}</h4><p>{{ it.what }}</p></div>
+     <div><h4>{{ L.sci.why }}</h4><p>{{ it.why }}</p></div>
+    </div>
+   </article>
+   {% endfor %}
+  </div>
+  <p class="note">{{ L.sci.disclaimer }}</p>
+ </div>
+</section>
+
+<section class="sec who" id="who" aria-labelledby="t-who"{{ fb('who') }}>
+ <div class="wrap">
+  {{ fbnote('who') }}
+  {{ head(L.who, 't-who') }}
+  <div class="wgrid">
+   {% for it in L.who['items'] %}<div class="wcard">{{ icon(loop.index0) }}<h3>{{ it.t }}</h3><p>{{ it.x }}</p></div>{% endfor %}
+  </div>
+  <div class="duo">
+   {% for k in ['recreational_runner', 'indoor_volleyball_uwb'] %}{% set im = IMG[k] %}
+   <figure><a href="{{ im.url }}">{{ pic(im, '(max-width: 760px) 100vw, 50vw') }}</a><figcaption><b>{{ im.title }}</b> — {{ im.desc }}</figcaption></figure>
+   {% endfor %}
+  </div>
+ </div>
+</section>
+
+<section class="sec oem" id="oem" aria-labelledby="t-oem"{{ fb('oem') }}>
+ <div class="wrap">
+  {{ fbnote('oem') }}
+  <header class="sh"><p class="kick">{{ L.oem.kicker }}</p><h2 id="t-oem">{{ L.oem.title }}</h2></header>
+  <div class="oem-top">
+   <p class="oem-lead">{{ L.oem.lead }}</p>
+   {% set oc = IMG['oem_cloud'] %}
+   <figure class="oem-fig"><a href="{{ oc.url }}">{{ pic(oc, '(max-width: 900px) 100vw, 520px') }}</a></figure>
+  </div>
+  <div class="flow" aria-hidden="true">
+   <span>{{ L.oem.diagram.sensors }}</span><i></i><span>{{ L.oem.diagram.edge }}</span><i></i><span class="acc">{{ L.oem.diagram.cloud }}</span><i></i><span>{{ L.oem.diagram.apps }}</span><span class="flow-api">{{ L.oem.diagram.api }}</span>
+  </div>
+  <div class="ogrid">{% for p in L.oem.points %}<div class="card"><h3>{{ p.t }}</h3><p>{{ p.x }}</p></div>{% endfor %}</div>
+  <div class="oem-cta"><a class="btn btn-p" href="{{ contact_url }}">{{ L.oem.cta }}</a><p>{{ L.oem.nda }}</p></div>
+ </div>
+</section>
+
+<section class="sec dev" id="dev" aria-labelledby="t-dev"{{ fb('dev') }}>
+ <div class="wrap">
+  {{ fbnote('dev') }}
+  {{ head(L.dev, 't-dev') }}
+  <ol class="tl">{% for it in L.dev['items'] %}<li{% if loop.last %} class="next"{% endif %}><b>SPT {{ it.v }}</b>{% if loop.last %}<em>{{ L.dev.next }}</em>{% endif %}<p>{{ it.x }}</p></li>{% endfor %}</ol>
+ </div>
+</section>
+
+<section class="sec sports" id="sports" aria-labelledby="t-sports"{{ fb('sports') }}>
+ <div class="wrap">
+  {{ fbnote('sports') }}
+  {{ head(L.sports, 't-sports') }}
+  <ul class="chips">{% for s in L.sports.list %}<li{% if loop.first %} class="acc"{% endif %}>{{ s }}</li>{% endfor %}<li class="more">{{ L.sports.more }}</li></ul>
+ </div>
+</section>
+
+<section class="sec specs" id="specs" aria-labelledby="t-specs"{{ fb('specs') }}>
+ <div class="wrap">
+  {{ fbnote('specs') }}
+  <header class="sh"><p class="kick">{{ L.specs.kicker }}</p><h2 id="t-specs">{{ L.specs.title }}</h2></header>
+  <table class="spec"><tbody>{% for r in L.specs.rows %}<tr><th scope="row">{{ r[0] }}</th><td>{{ r[1] }}</td></tr>{% endfor %}</tbody></table>
+ </div>
+</section>
+
+<section class="sec gal" id="galerija" aria-labelledby="t-gal">
+ <div class="wrap">
+  <header class="sh"><p class="kick">SPT · {{ L.ui.gallery }}</p><h2 id="t-gal">{{ L.ui.all_images }}</h2></header>
+  {{ gallery_grid(images) }}
+ </div>
+</section>
+
+<section class="sec faq" id="faq" aria-labelledby="t-faq"{{ fb('faq') }}>
+ <div class="wrap narrow">
+  {{ fbnote('faq') }}
+  <header class="sh"><p class="kick">{{ L.faq.kicker }}</p><h2 id="t-faq">{{ L.faq.title }}</h2></header>
+  {% for it in L.faq['items'] %}<details class="qa"><summary>{{ it.q }}</summary><p>{{ it.a }}</p></details>{% endfor %}
+ </div>
+</section>
+
+<section class="cta" id="cta" aria-labelledby="t-cta">
+ <div class="wrap cta-in">
+  <h2 id="t-cta">{{ L.cta.title }}</h2>
+  <p>{{ L.cta.sub }}</p>
+  <div class="ctas">
+   <a class="btn btn-p" href="{{ contact_url }}">{{ L.cta.b1 }}</a>
+   <a class="btn" href="{{ article_url }}">{{ L.cta.b2 }}</a>
+   <a class="btn btn-g" href="{{ U.film }}">{{ L.cta.b3 }}</a>
+  </div>
+  <p class="cta-sig">SPT · produced by GNK ASG · Nermin Sefić</p>
+ </div>
+</section>
+{% endblock %}

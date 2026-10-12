@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% from "macros.html" import share, gallery_grid %}
+{% block main %}
+<div class="wrap ipage">
+ <nav class="crumbs" aria-label="Breadcrumb"><a href="/">GNK ASG</a><span>›</span><a href="{{ U.main }}">SPT</a><span>›</span><a href="{{ U.gallery }}">{{ L.ui.gallery }}</a><span>›</span><span aria-current="page">{{ im.title }}</span></nav>
+ <article class="iart"{% if im.fb %} lang="en"{% endif %}>
+  <figure class="ifig">
+   <a href="{{ im.src }}" title="{{ L.ui.img_open|plain }}"><img src="{{ im.src }}" width="{{ im.w }}" height="{{ im.h }}" alt="{{ im.alt }}" fetchpriority="high"></a>
+   <figcaption>{{ L.ui.credit }} · Nermin Sefić</figcaption>
+  </figure>
+  <div class="itext">
+   {% if im.fb %}<p class="fbnote" lang="{{ lang }}">{{ L.ui.fallback }}</p>{% endif %}
+   <p class="kick">SPT · {{ im.group_label }}</p>
+   <h1>{{ im.title }}</h1>
+   <p class="lead">{{ im.desc }}</p>
+   {% if im.why %}<p class="why"><b>{{ L.hw.why }}:</b> {{ im.why }}</p>{% endif %}
+   <p class="ictx"><a class="btn btn-s" href="{{ U.main }}#{{ im.anchor }}">{{ L.ui.back_spt }} →</a> <a class="btn btn-s btn-g" href="{{ U.film }}">{{ L.nav.film }} ▶</a> <a class="btn btn-s btn-g" href="{{ im.src }}">{{ L.ui.img_open }}</a></p>
+   {{ share(SITE ~ page.url, im.share_text, L) }}
+   <p class="itags">{{ L.foot.tags }}</p>
+  </div>
+ </article>
+ <nav class="pn" aria-label="{{ L.ui.gallery|plain }}">
+  <a class="pn-p" href="{{ prev.url }}" rel="prev"><small>← {{ L.ui.prev }}</small><span>{{ prev.title }}</span></a>
+  <a class="pn-n" href="{{ next.url }}" rel="next"><small>{{ L.ui.next }} →</small><span>{{ next.title }}</span></a>
+ </nav>
+ <section class="sec-s" aria-labelledby="t-all">
+  <h2 id="t-all">{{ L.ui.all_images }}</h2>
+  {{ gallery_grid(images, im.slug) }}
+ </section>
+ <section class="cta cta-s" aria-labelledby="t-cta">
+  <div class="cta-in">
+   <h2 id="t-cta">{{ L.cta.title }}</h2>
+   <div class="ctas"><a class="btn btn-p" href="{{ contact_url }}">{{ L.cta.b1 }}</a><a class="btn" href="{{ U.main }}">SPT →</a><a class="btn btn-g" href="{{ article_url }}">{{ L.cta.b2 }}</a></div>
+  </div>
+ </section>
+</div>
+{% endblock %}

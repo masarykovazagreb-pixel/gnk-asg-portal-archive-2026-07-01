@@ -1,0 +1,219 @@
+{
+  "lang": "en", "locale": "en_US", "name": "English",
+  "meta": {
+    "title": "SPT — Sports Performance Tracking | GPS + UWB athlete tracking | GNK ASG · Nermin Sefić",
+    "description": "SPT is a sports performance tracking system: GPS 20 Hz + UWB vest, 1000 Hz sensor, watch, smart scale, AI injury-risk prediction and a live control room. For clubs, coaches, players and amateurs. Produced by GNK ASG — Nermin Sefić.",
+    "keywords": "SPT, Sports Performance Tracking, athlete GPS tracking, GPS vest, UWB, player tracking, football analytics, injury prevention, ACWR, training load, sports science, white-label sports software, OEM telemetry, GNK ASG, Nermin Sefić",
+    "og_title": "SPT — Every metre. Every heartbeat. Every athlete.",
+    "og_desc": "GPS + UWB sensors, AI injury-risk prediction, a live control room and analytics for 75 sports. Produced by GNK ASG · Nermin Sefić.",
+    "img_alt": "SPT — Sports Performance Tracking, produced by GNK ASG"
+  },
+  "ui": {
+    "skip": "Skip to content", "lang_label": "Language", "menu": "Menu", "back_home": "GNK ASG portal",
+    "suggest": "This page is also available in:", "suggest_go": "Open", "close": "Close",
+    "play": "Play film", "fallback": "Part of the expert text is currently in English.",
+    "img_open": "Open image", "share": "Share", "copy": "Copy link", "copied": "Copied ✓",
+    "gallery": "Gallery", "prev": "Previous", "next": "Next", "back_spt": "Back to SPT", "all_images": "All images",
+    "credit": "Image: SPT · produced by GNK ASG", "film_page": "Film — page"
+  },
+  "nav": {"film": "Film", "showcase": "Showcase", "screens": "Software", "hw": "Devices", "sw": "Features", "science": "Science", "who": "Who it's for", "oem": "For manufacturers", "faq": "FAQ", "cta": "Request a demo"},
+  "hero": {
+    "kicker": "SPT · SPORTS PERFORMANCE TRACKING",
+    "h1": ["Every metre.", "Every heartbeat.", "Every athlete."],
+    "lead": "SPT connects a wearable sensor (GPS 20 Hz outdoors, UWB indoors), smartwatch, chest strap and smart scale to a platform that calculates load, readiness and injury risk in real time — for a whole squad or a single amateur athlete.",
+    "cta_film": "▶ Watch the film", "cta_show": "Showcase: football, USA", "cta_oem": "For manufacturers (OEM)",
+    "trust": ["GPS 20 Hz + UWB ±10 cm", "1000 Hz IMU · IP67", "AI injury-risk prediction", "75 sports · app in 10 languages"],
+    "live": "LIVE · match simulation", "sig": "produced by GNK ASG · author: Nermin Sefić"
+  },
+  "stats": [
+    {"v": "20 Hz", "l": "GNSS position outdoors"},
+    {"v": "±10 cm", "l": "UWB accuracy indoors"},
+    {"v": "1000 Hz", "l": "inertial sensor (IMU)"},
+    {"v": "< 1 s", "l": "from sensor to bench"},
+    {"v": "75", "l": "sports in the database"},
+    {"v": "10", "l": "app languages"}
+  ],
+  "film": {
+    "kicker": "FILM · 60 SECONDS",
+    "title": "SPT in 60 seconds",
+    "sub": "No narrator — upbeat music and the sounds of many sports: the crowd, the referee's whistle, football, tennis, basketball, swimming, a heartbeat. Devices, the live dashboard and analytics exactly as the coaching staff sees them.",
+    "note": "Footage: renders of SPT devices and a simulated demo match. produced by GNK ASG · Nermin Sefić"
+  },
+  "show": {
+    "kicker": "SHOWCASE · FOOTBALL · USA",
+    "title": "Coastline United SC: one match week with SPT",
+    "sub": "An illustrative scenario of a professional club in California: how a staff of around thirty people works from Monday to match day with a single source of truth.",
+    "days": [
+      {"d": "MON", "t": "Recovery", "x": "The morning wellness questionnaire (sleep, fatigue, muscle soreness, mood) and HRV from the watch arrive before breakfast. Every player gets a readiness score of 0–100; those in the red get an individual recovery plan."},
+      {"d": "TUE–THU", "t": "Training", "x": "The vest measures distance by speed zone, sprints, accelerations and PlayerLoad. The strength & conditioning coach sees live who is below and who is above the target dose for that day of the microcycle."},
+      {"d": "FRI", "t": "Decision", "x": "The AI model combines ACWR, readiness, stride asymmetry and injury history. Player #6 shows an ACWR of 1.52 and a 38 % load spike — the staff reduces his minutes before an injury happens."},
+      {"d": "SAT", "t": "Match day", "x": "The edge server at the stadium receives 22 sensors in real time. The bench sees speeds, heart rate, sprints and alerts; the analyst in the control room compares two players on a half-pitch view."},
+      {"d": "SUN", "t": "Report", "x": "Automatic match and weekly reports: top 5 by load, new flags, recovery recommendations. Print or PDF for the coach, a mobile summary for the player."}
+    ],
+    "demo_title": "Live demo — Coastline United vs Bay City",
+    "demo": {"speed": "Speed", "dist": "Distance", "hr": "Heart rate", "spr": "Sprints", "load": "Load", "top": "Top speed this match", "alert": "#6 · ACWR 1.52 · high risk — consider a substitution", "goal": "GOAL!", "sim": "simulated data", "player": "#9 · striker"},
+    "gains_title": "What the staff gains",
+    "gains": [
+      {"t": "One source of truth", "x": "Coach, S&C coach, doctor and scout look at the same numbers — in the same athlete record."},
+      {"t": "Decisions before injury", "x": "Early warning of overload instead of analysis after the injury has happened."},
+      {"t": "Less paperwork, more training", "x": "Reports build themselves; the staff spends time on players, not spreadsheets."}
+    ],
+    "note": "Coastline United SC and Bay City are fictional demo clubs; the data is simulated and serves to demonstrate the features."
+  },
+  "screens": {
+    "kicker": "SOFTWARE IN ACTION",
+    "title": "Dashboards, analytics and reports",
+    "sub": "What the staff sees on a laptop, a big screen, a sideline tablet and a phone — and why every view matters.",
+    "items": [
+      {"img": "dashboard_laptop", "t": "Live dashboard", "x": "Positions of every player 20 times per second, score, speeds and load — for the bench and the analyst, with no delay."},
+      {"img": "analytics_screen", "t": "AI analytics", "x": "Profile radar, weekly load with flags, an ACWR gauge and a heatmap: risk becomes visible before the injury."},
+      {"img": "control_room", "t": "Control room", "x": "Up to 12 live tiles; each shows what you choose — the map, heart rate, speeds, alerts or a two-player comparison."},
+      {"img": "coach_tablet", "t": "Sideline tablet", "x": "The coach on the touchline has the same data as the analyst: who is dropping in intensity, who is in the red heart-rate zone."},
+      {"img": "mobile_app", "t": "Athlete app", "x": "Readiness every morning, sleep, resting heart rate and weekly load — the athlete understands their day."},
+      {"img": "live_hud_alert", "t": "Live risk alert", "x": "When ACWR crosses the threshold, the dashboard raises a red alert with the reason and a substitution recommendation."},
+      {"img": "live_hud_sprint", "t": "A sprint in real time", "x": "Speed, heart rate, zone and movement trail of the selected player; the top-speed leaderboard updates live."},
+      {"img": "live_hud_goal", "t": "The match in numbers", "x": "Team distance, high-speed running, sprints and average heart rate — every second recorded for the report."}
+    ]
+  },
+  "hw": {
+    "kicker": "DEVICE ECOSYSTEM",
+    "title": "Hardware that measures what matters",
+    "sub": "Every device carries the SPT mark and sends data into the same athlete record — no manual copying.",
+    "why": "Why",
+    "items": [
+      {"img": "vest_front", "t": "SPT vest", "x": "A body-fitted compression vest; the sensor stays still against the back, so the GPS trace and accelerations are clean. Washable, breathable, sizes from youth categories upwards.", "w": "A poorly fixed sensor means noise in acceleration data and false sprints."},
+      {"img": "vest_back", "t": "Pocket between the shoulder blades", "x": "The sensor sits between the shoulder blades — the steadiest point of the body while running, with the best view of the sky for satellite signal.", "w": "Sensor placement directly determines the accuracy of speed and load."},
+      {"img": "chip_pod", "t": "SPT Pod sensor", "x": "GNSS 20 Hz (GPS, Galileo, GLONASS, BeiDou), 9-axis IMU up to 1000 Hz, UWB and BLE in an IP67 housing. It switches from GPS to UWB automatically when play moves indoors.", "w": "Impacts, landings and changes of direction last milliseconds — 1000 Hz captures them."},
+      {"img": "watch", "t": "SPT watch", "x": "Heart rate, HRV, sleep and daily recovery; a vibration alerts the athlete when they leave the target zone. For amateurs, the watch alone is the whole SPT.", "w": "HRV is the most sensitive non-invasive indicator of fatigue and recovery."},
+      {"img": "strap_hr", "t": "Chest strap", "x": "Beat-by-beat heart rate for interval training, water polo and rowing — where an optical wrist sensor gets it wrong.", "w": "TRIMP and heart-rate zones require an exact R-R interval."},
+      {"img": "smart_scale", "t": "SPT scale", "x": "Bioimpedance: weight, muscle, fat, water, visceral fat and basal metabolic rate — straight into the athlete record and the meal planner.", "w": "Losing 2 % of body mass to dehydration measurably reduces performance."},
+      {"img": "uwb_anchor", "t": "UWB anchors", "x": "Anchors on the arena ceiling deliver position with roughly ±10 cm accuracy where GPS cannot work: volleyball, basketball, handball, futsal, hockey.", "w": "UWB measures the time of flight of radio pulses in nanoseconds and is robust against signal reflections."},
+      {"img": "edge_server", "t": "SPT Edge One", "x": "A stadium server receives every sensor, calculates metrics locally and sends them to the bench in under a second — even when the internet fails.", "w": "A substitution decision must not wait for the cloud."}
+    ]
+  },
+  "scenes": {
+    "hero_stadium_usa": {"t": "Match day in the USA", "x": "Showcase scenario: professional football in California, every player tracked in real time."},
+    "training_vests": {"t": "Training with SPT vests", "x": "Sprint drills with speed, acceleration and load measured for every player."},
+    "recreational_runner": {"t": "Amateur athletes", "x": "Watch and app: heart rate, sleep and readiness for anyone who trains — from a morning run to a marathon."},
+    "indoor_volleyball_uwb": {"t": "Indoor sports with UWB", "x": "UWB anchors on the ceiling deliver centimetre-level positions where GPS cannot work."},
+    "oem_cloud": {"t": "SPT Cloud for partners", "x": "The servers, tools and software that also power other manufacturers' devices."}
+  },
+  "sw": {
+    "kicker": "PLATFORM",
+    "title": "Every feature in one place",
+    "sub": "From the first training session to the return after injury — more than 50 modules sharing the same athlete record.",
+    "groups": [
+      {"t": "Live tracking", "i": ["Live pitch map (GPS/UWB, 20 Hz)", "Control room with up to 12 tiles", "Two-player half-pitch comparison", "Live alerts: heart rate, speed, load", "Heatmaps and movement trails", "M2M/UWB, GPS, BLE and AUTO connectivity", "Measured in training and in matches"]},
+      {"t": "Load & science", "i": ["ACWR (acute : chronic)", "PlayerLoad and sRPE (AU)", "Monotony and strain (Foster)", "Speed and heart-rate zones", "Sprints, accelerations, decelerations", "Periodisation and dose planning"]},
+      {"t": "Health & medicine", "i": ["Medical record: allergies, check-ups, vaccinations", "Parental consent for under-18s", "Injuries (manual entry) and RTP protocol", "Wellness and readiness 0–100", "HRV and sleep", "Menstrual cycle tracking for female athletes", "Body composition from the scale"]},
+      {"t": "AI & analytics", "i": ["AI injury-risk prediction", "Anomaly detection", "Trends and deviations from the norm", "Age curves and positional profiles", "Consistency and load balance", "League benchmark (percentiles)", "Biomechanics: GCT asymmetry and CMJ", "AI assistant that knows every number"]},
+      {"t": "Nutrition & recovery", "i": ["TDEE and macronutrients", "Meal planner and meal library", "Hydration", "Recovery recommendations"]},
+      {"t": "Team & organisation", "i": ["Roles: coach, S&C coach, athlete, scout, admin", "Scouting shortlists with ratings", "Equipment and sensor inventory", "Staff notes", "Youth categories from age 12", "Clubs stored under codes (privacy)"]},
+      {"t": "Reports & data", "i": ["8 report types", "Weekly club overview", "Print and PDF", "CSV and JSON export", "Open API", "Match and load simulations"]},
+      {"t": "Platform", "i": ["Windows desktop — one-click install", "PWA for phone and tablet", "Works offline", "Edge and cloud servers", "White-label: logo, colours, domain", "Multi-tenant for manufacturers", "App in 10 languages"]}
+    ]
+  },
+  "sci": {
+    "kicker": "SCIENCE",
+    "title": "Key features — what they do and why they matter",
+    "sub": "Behind every number in SPT is a method from sports science. These are the most important ones.",
+    "what": "What it does", "why": "Why it matters",
+    "items": [
+      {"tag": "ACWR", "t": "Load that builds, not breaks", "what": "For every athlete SPT calculates the ratio of acute (7-day) to chronic (28-day) load from GPS metrics and perceived exertion (sRPE × minutes).", "why": "Sudden load spikes are associated with a higher risk of soft-tissue injuries. A zone of roughly 0.8–1.3 is considered the 'sweet spot', while values above ~1.5 call for caution (Gabbett, British Journal of Sports Medicine, 2016). SPT colours every player green, amber or red — before training, not after an injury."},
+      {"tag": "AI", "t": "AI injury-risk prediction", "what": "The model combines ACWR, daily readiness, wellness, stride asymmetry, injury history and age into a single risk score from 0 to 100 and lists the main contributing factors.", "why": "An injury is rarely caused by one number. Combining signals gives an early warning with an explanation — the staff decides, the model assists. SPT is a decision-support tool, not a medical diagnosis."},
+      {"tag": "GPS + UWB", "t": "Hybrid positioning: GPS outdoors, UWB indoors", "what": "Outdoors the sensor uses multiple satellite systems at 20 Hz; indoors UWB anchors measure the time of flight of radio pulses and deliver positions with roughly ±10 cm accuracy. AUTO mode picks the source by itself.", "why": "Indoor sports make up half of the sporting world, and GPS does not work under a roof. The same metric outdoors and indoors means comparable data across the whole season."},
+      {"tag": "BIOMECH", "t": "Asymmetry that signals a problem", "what": "The IMU measures the ground contact time of the left and right foot (GCT) and countermovement jump (CMJ) height over time.", "why": "Rising left–right asymmetry and a drop in CMJ often precede overload. SPT raises a flag when asymmetry exceeds 6 % — time for the physiotherapist, not another sprint."},
+      {"tag": "RTP", "t": "Return to play in 6 steps", "what": "Every injury gets a protocol: pain control → range of motion → strength → running → sport-specific work → full training. Each step has a criterion and a physiotherapist's sign-off.", "why": "Returning too early is a common cause of re-injury. Criteria instead of the calendar — and the whole staff sees the same status."},
+      {"tag": "READY", "t": "Readiness 0–100 every morning", "what": "Sleep, HRV, resting heart rate, muscle soreness, stress and mood combine into one number with a traffic light.", "why": "The same session for a tired and a rested player is not the same session. Readiness sets the dose of the day."},
+      {"tag": "CYCLE", "t": "Training adapted to the cycle", "what": "Female athletes log their cycle phase and SPT gives phase-specific recommendations: volume, intensity, recovery and nutrition.", "why": "Hormonal changes affect thermoregulation, recovery and perceived exertion. Individualisation instead of averages."}
+    ],
+    "disclaimer": "SPT is a performance-tracking and decision-support system; it does not replace a medical examination or diagnosis."
+  },
+  "who": {
+    "kicker": "WHO IT'S FOR",
+    "title": "One system — from a professional club to a morning run",
+    "sub": "The same data, different roles: everyone sees what they need — and nothing they shouldn't.",
+    "items": [
+      {"ico": "🏟️", "t": "Clubs", "x": "One source of truth for the first team, youth categories and the medical department. League comparison, board reports and data that stays at the club when people leave."},
+      {"ico": "📋", "t": "Coaches", "x": "A live picture of the pitch, minutes managed by risk, player comparison and a post-match report — without spreadsheets."},
+      {"ico": "⚡", "t": "S&C coaches", "x": "ACWR, monotony, zones, sprints and the dose for each day of the microcycle. Plan, measure, adapt."},
+      {"ico": "⚽", "t": "Players", "x": "A personal record, readiness every morning, goals and progress. Your data, your career."},
+      {"ico": "🔭", "t": "Scouts", "x": "Objective physical metrics alongside video: shortlists with ratings, percentiles by position and age."},
+      {"ico": "🏃", "t": "Amateur athletes", "x": "Watch and app: heart rate, sleep, recovery and a training plan that adapts to your day."},
+      {"ico": "🎓", "t": "Academies & youth 12+", "x": "Age curves, growth and load monitoring, parental consent and protection of minors' data."},
+      {"ico": "🏭", "t": "Manufacturers (OEM)", "x": "License SPT software, tools and servers for your own hardware — under your brand or ours."}
+    ]
+  },
+  "oem": {
+    "kicker": "FOR MANUFACTURERS · OEM · WHITE-LABEL",
+    "title": "SPT also powers other companies' devices",
+    "lead": "SPT software is bought and integrated by other manufacturers of similar athlete-tracking systems. It is implemented in their products — sometimes under their brand, but always with our tools, our software and our servers. And we keep developing it every day.",
+    "points": [
+      {"t": "Firmware SDK and protocol", "x": "A ready-made software stack for sensors: GNSS/IMU fusion, UWB ranging, BLE synchronisation and OTA updates."},
+      {"t": "Cloud and edge servers", "x": "Real-time ingestion, processing and storage on SPT infrastructure — or on yours."},
+      {"t": "White-label app", "x": "Your logo, colours, domain and app-store listings; our code and our updates."},
+      {"t": "Analytics engine and AI", "x": "ACWR, readiness, injury risk, biomechanics and reports — as an API or as embedded modules."},
+      {"t": "Open API and export", "x": "JSON/CSV export and an API for connecting video analysis, medical systems and club ERP."},
+      {"t": "Continuous development", "x": "Partners receive every new version: what we build for SPT reaches their users too."}
+    ],
+    "diagram": {"sensors": "Partner sensors", "edge": "SPT Edge", "cloud": "SPT Cloud", "apps": "App under your brand", "api": "Open API"},
+    "cta": "Become a partner", "nda": "On request we sign an NDA and work under your brand."
+  },
+  "dev": {
+    "kicker": "CONTINUOUS DEVELOPMENT",
+    "title": "A new version every few weeks",
+    "sub": "SPT is not a finished product but a platform that grows with clubs and partners.",
+    "items": [
+      {"v": "2.0", "x": "Foundation: athlete record, GPS/UWB, watch, scale, AI assistant, 10 languages"},
+      {"v": "2.2", "x": "Control room: multiple live tiles and a two-player half-pitch comparison"},
+      {"v": "2.3", "x": "PWA install, interface customisation, inventory and staff notes"},
+      {"v": "2.4", "x": "Advanced analytics: trends, positions, age curves, consistency, load balance"},
+      {"v": "2.5", "x": "AI injury risk, scouting, medical record, RTP, league benchmark, biomechanics, meals, cycle, Open API"},
+      {"v": "3.0", "x": "In development: video synchronisation, extended AI models and new device integrations"}
+    ],
+    "next": "in development"
+  },
+  "sports": {
+    "kicker": "ALL SPORTS",
+    "title": "Football is the showcase — SPT works across 75 sports",
+    "sub": "From pitch and court to water, snow and track: every sport has its own positions, metrics and norms.",
+    "list": ["Football", "Futsal", "Basketball", "Handball", "Volleyball", "Water polo", "Rowing", "Athletics", "Swimming", "Cycling", "Tennis", "Padel", "Rugby", "American football", "Ice hockey", "Field hockey", "Baseball", "Cricket", "Alpine skiing", "Triathlon", "Canoe & kayak", "Sailing", "Combat sports", "Motorsport: car racing, motorcycling, karting"],
+    "more": "+ 51 more sports in the database"
+  },
+  "specs": {
+    "kicker": "SPECIFICATIONS",
+    "title": "Technical data",
+    "rows": [
+      ["Outdoor positioning", "GNSS 20 Hz (GPS, Galileo, GLONASS, BeiDou)"],
+      ["Indoor positioning", "UWB, accuracy about ±10 cm; BLE fallback; AUTO mode"],
+      ["Inertial sensor", "9-axis IMU (accelerometer, gyroscope, magnetometer) up to 1000 Hz"],
+      ["Physiology", "Heart rate and HRV (watch, chest strap), sleep, daily recovery"],
+      ["Body composition", "BIA scale: weight, muscle, fat, water, visceral fat, BMR"],
+      ["Sensor housing", "IP67, USB-C charging"],
+      ["Latency", "under 1 s from sensor to bench (edge server)"],
+      ["Application", "Windows 10/11 desktop, web, PWA for Android and iOS, 10 languages"],
+      ["Data", "CSV/JSON export, Open API, print and PDF reports"],
+      ["Roles & privacy", "5 roles, clubs stored under codes, parental consent for under-18s"]
+    ]
+  },
+  "faq": {
+    "kicker": "FAQ",
+    "title": "Frequently asked questions",
+    "items": [
+      {"q": "Is SPT only for professional clubs?", "a": "No. The same system works for a professional club, an academy and an amateur athlete. An amateur needs only the watch and the app; a club adds vests, UWB anchors and an edge server."},
+      {"q": "Does SPT work indoors?", "a": "Yes. Indoors it uses UWB anchors with roughly ±10 cm accuracy, outdoors GPS at 20 Hz. AUTO mode switches the position source by itself."},
+      {"q": "Is the AI injury prediction a medical diagnosis?", "a": "No. It is an early-warning and decision-support system that shows risk factors. The decision is always made by the professional staff."},
+      {"q": "Who owns the data?", "a": "The club and the athlete. Clubs are stored under codes, access is defined by roles, and data can be exported at any time (CSV, JSON, API)."},
+      {"q": "Can manufacturers use SPT under their own brand?", "a": "Yes. SPT is licensed as white-label: your brand, our tools, software and servers. SPT already runs inside other manufacturers' devices."},
+      {"q": "How is SPT installed?", "a": "On Windows with one click (a desktop shortcut), on phones and tablets as a PWA from the browser, and on the web with no installation."},
+      {"q": "Which languages does SPT support?", "a": "The app is available in 10 languages, and this page in 24."}
+    ]
+  },
+  "cta": {"title": "Ready to see your athletes in numbers?", "sub": "A demo for clubs, partnership for manufacturers, a trial package for academies and amateurs.", "b1": "Request a demo", "b2": "Read the article", "b3": "Watch the film"},
+  "foot": {
+    "rights": "© 2026 SPT · produced by GNK ASG",
+    "author": "Author: Nermin Sefić",
+    "links": {"home": "GNK ASG portal", "author": "Nermin Sefić", "contact": "Contact", "article": "Article about SPT", "gallery": "Image gallery", "film": "Film"},
+    "tags": "#SPT #GNKASG #NerminSefić #SportsPerformanceTracking #SportsAnalytics #GPStracking #UWB #InjuryPrevention #ACWR #FootballTech #SportsScience #LoadManagement #WhiteLabel #MadeInCroatia #Zagreb"
+  }
+}

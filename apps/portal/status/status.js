@@ -23,7 +23,13 @@
     var overall = $('overall');
     overall.textContent = 'Ukupno stanje: ' + label(data.overallStatus);
     overall.setAttribute('data-state', data.overallStatus);
-    $('generated').textContent = 'Snimak generiran: ' + new Date(data.generatedAt).toLocaleString('hr-HR', { timeZone: 'Europe/Zagreb' });
+    var generatedAt = Date.parse(data.generatedAt);
+    var snapshotAgeDays = Number.isNaN(generatedAt) ? null : Math.max(0, Math.floor((Date.now() - generatedAt) / 86400000));
+    $('generated').textContent = 'Snimak generiran: ' + new Date(data.generatedAt).toLocaleString('hr-HR', { timeZone: 'Europe/Zagreb' })
+      + (snapshotAgeDays === null ? '' : ' · starost: ' + snapshotAgeDays + ' dana');
+    if (snapshotAgeDays !== null && snapshotAgeDays > 30) {
+      $('status').textContent += ' Upozorenje: ovaj repository snapshot stariji je od 30 dana.';
+    }
 
     var services = $('services');
     services.textContent = '';

@@ -1,33 +1,45 @@
 // GNK ASG — Content Factory queue: objavljuje READY stranice po kalendaru (Europe/Zagreb),
 // upisuje ih u editorial-registry + editorial-sitemap, stanje u apps/portal/data/content-queue-state.json.
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
+import { dirname } from 'node:path';
+import { preflightContentQueue } from './content-queue-preflight-v1.mjs';
 
 const SITE='https://gnk-asg.hr';
-const read=(p,f)=>{try{return JSON.parse(readFileSync(p,'utf8'))}catch{return f}};
+const read=(p)=>{if(!existsSync(p))throw new Error('Missing required publication source: '+p);return JSON.parse(readFileSync(p,'utf8'));};
 const write=(p,s)=>{mkdirSync(dirname(p),{recursive:true});writeFileSync(p,s)};
+const CURRENT_NOW=new Date(process.env.ASG_EDITORIAL_NOW||Date.now());
+if(!Number.isFinite(CURRENT_NOW.getTime()))throw new Error('Invalid ASG_EDITORIAL_NOW');
 const nowZg=()=>{
-  const d=new Date();
-  const date=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Zagreb'}).format(d);
-  const time=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Zagreb',hour:'2-digit',minute:'2-digit',hour12:false}).format(d);
+  const date=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Zagreb'}).format(CURRENT_NOW);
+  const time=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Zagreb',hour:'2-digit',minute:'2-digit',hour12:false}).format(CURRENT_NOW);
   return {date,time};
+};
+const zagrebOffsetFor=date=>{
+  const zone=new Intl.DateTimeFormat('en-US',{timeZone:'Europe/Zagreb',timeZoneName:'shortOffset'})
+    .formatToParts(new Date(date+'T12:00:00Z')).find(p=>p.type==='timeZoneName')?.value;
+  const parts=/^GMT([+-])(\d{1,2})(?::(\d{2}))?$/.exec(zone||'');
+  if(!parts)throw new Error('Cannot determine Zagreb offset for '+date);
+  return parts[1]+parts[2].padStart(2,'0')+':'+(parts[3]||'00');
 };
 const TYPE={kolumne:'kolumna',komentari:'komentar',analize:'analiza',objave:'objava',tematske:'objava'};
 const COLL={kolumna:'Kolumne',komentar:'Komentari',analiza:'Analize',objava:'Objave'};
 const meta=(html,name)=>{const m=html.match(new RegExp(`<meta[^>]+(?:name|property)="${name}"[^>]+content="([^"]*)"`,'i'))||html.match(new RegExp(`<meta[^>]+content="([^"]*)"[^>]+(?:name|property)="${name}"`,'i'));return m?m[1]:''};
 const camel=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9 ]/g,' ').trim().split(/\s+/).map(w=>w[0]?w[0].toUpperCase()+w.slice(1):'').join('');
 
-const queue=read('content/factory-queue/queue.json',{items:[],skipped:[]});
-const skipped=new Set(Array.isArray(queue.skipped)?queue.skipped:[]);
+const preflight=preflightContentQueue({root:process.cwd(),now:CURRENT_NOW});
+if(!preflight.ok)throw new Error('Content queue preflight failed: '+preflight.errors.join('; '));
+const queue=read('content/factory-queue/queue.json');
+const skipped=new Set(queue.skipped);
 const statePath='apps/portal/data/content-queue-state.json';
-const state=read(statePath,{version:'GNK_ASG_CONTENT_QUEUE_V1',published:{}});
+const state=read(statePath);
 const {date,time}=nowZg();
-const due=queue.items.filter(x=>!skipped.has(x.id)&&!state.published[x.id]&&(x.date<date||(x.date===date&&x.time<=time)));
+const dueIds=new Set(preflight.checked.map(x=>x.id));
+const due=queue.items.filter(x=>dueIds.has(x.id));
 console.log(`Zagreb now: ${date} ${time} | due & unpublished: ${due.length} | skipped: ${skipped.size}`);
-if(!due.length){console.log(JSON.stringify({changed:false}));process.exit(0);}
+if(!due.length){console.log(JSON.stringify({changed:false,preflight:preflight.version}));process.exit(0);}
 
 const registryPath='apps/portal/data/editorial-registry.json';
-const registry=read(registryPath,{version:'GNK_ASG_EDITORIAL_REGISTRY_V1',site:SITE,items:[]});
+const registry=read(registryPath);
 const map=new Map((registry.items||[]).filter(x=>x&&x.path).map(x=>[x.path,x]));
 const published=[];
 
@@ -38,7 +50,7 @@ for(const it of due){
   const canonical=(html.match(/<link rel="canonical" href="([^"]+)"/i)||[])[1];
   if(!canonical||!canonical.startsWith(SITE)){console.log('BAD CANONICAL',src);continue;}
   const path=canonical.slice(SITE.length);
-  const publishedAt=`${it.date}T${it.time}:00+02:00`;
+  const publishedAt=`${it.date}T${it.time}:00${zagrebOffsetFor(it.date)}`;
   const title=(html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)||[,''])[1].replace(/<[^>]+>/g,'').trim();
   const description=meta(html,'description');
   const image=meta(html,'og:image')||`${SITE}/assets/gnk-asg-social-card.png`;

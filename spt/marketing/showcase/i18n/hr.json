@@ -1,0 +1,219 @@
+{
+  "lang": "hr", "locale": "hr_HR", "name": "Hrvatski",
+  "meta": {
+    "title": "SPT — Sports Performance Tracking | GPS + UWB praćenje sportaša | GNK ASG · Nermin Sefić",
+    "description": "SPT je sustav za praćenje sportskih performansi: GPS 20 Hz + UWB prsluk, senzor 1000 Hz, sat, vaga, AI predikcija ozljeda i live kontrolna soba. Za klubove, trenere, igrače i rekreativce. Produced by GNK ASG — Nermin Sefić.",
+    "keywords": "SPT, Sports Performance Tracking, GPS praćenje sportaša, GPS prsluk, UWB, praćenje igrača, nogometna analitika, prevencija ozljeda, ACWR, opterećenje sportaša, sportska znanost, white-label sportski softver, OEM telemetrija, GNK ASG, Nermin Sefić",
+    "og_title": "SPT — Svaki metar. Svaki otkucaj. Svaki sportaš.",
+    "og_desc": "GPS + UWB senzori, AI predikcija ozljeda, live kontrolna soba i analitika za 75 sportova. Produced by GNK ASG · Nermin Sefić.",
+    "img_alt": "SPT — Sports Performance Tracking, produced by GNK ASG"
+  },
+  "ui": {
+    "skip": "Preskoči na sadržaj", "lang_label": "Jezik", "menu": "Izbornik", "back_home": "Portal GNK ASG",
+    "suggest": "Ova stranica dostupna je i na jeziku:", "suggest_go": "Otvori", "close": "Zatvori",
+    "play": "Pokreni film", "fallback": "Dio stručnog teksta trenutačno je na engleskom jeziku.",
+    "img_open": "Otvori sliku", "share": "Podijeli", "copy": "Kopiraj link", "copied": "Kopirano ✓",
+    "gallery": "Galerija", "prev": "Prethodna", "next": "Sljedeća", "back_spt": "Natrag na SPT", "all_images": "Sve slike",
+    "credit": "Slika: SPT · produced by GNK ASG", "film_page": "Film — stranica"
+  },
+  "nav": {"film": "Film", "showcase": "Showcase", "screens": "Softver", "hw": "Uređaji", "sw": "Funkcije", "science": "Znanost", "who": "Za koga", "oem": "Za proizvođače", "faq": "FAQ", "cta": "Zatraži demo"},
+  "hero": {
+    "kicker": "SPT · SPORTS PERFORMANCE TRACKING",
+    "h1": ["Svaki metar.", "Svaki otkucaj.", "Svaki sportaš."],
+    "lead": "SPT spaja nosivi senzor (GPS 20 Hz vani, UWB u dvorani), pametni sat, prsni pojas i vagu s platformom koja u stvarnom vremenu računa opterećenje, spremnost i rizik ozljede — za cijelu momčad ili jednog rekreativca.",
+    "cta_film": "▶ Pogledaj film", "cta_show": "Showcase: nogomet, USA", "cta_oem": "Za proizvođače (OEM)",
+    "trust": ["GPS 20 Hz + UWB ±10 cm", "IMU 1000 Hz · IP67", "AI predikcija ozljeda", "75 sportova · 10 jezika aplikacije"],
+    "live": "LIVE · simulacija utakmice", "sig": "produced by GNK ASG · autor: Nermin Sefić"
+  },
+  "stats": [
+    {"v": "20 Hz", "l": "GNSS pozicija na otvorenom"},
+    {"v": "±10 cm", "l": "UWB preciznost u dvorani"},
+    {"v": "1000 Hz", "l": "inercijski senzor (IMU)"},
+    {"v": "< 1 s", "l": "od senzora do klupe"},
+    {"v": "75", "l": "sportova u bazi"},
+    {"v": "10", "l": "jezika aplikacije"}
+  ],
+  "film": {
+    "kicker": "FILM · 60 SEKUNDI",
+    "title": "SPT u 60 sekundi",
+    "sub": "Bez naratora — vedra glazba i zvukovi raznih sportova: publika, sudačka zviždaljka, nogomet, tenis, košarka, plivanje, otkucaji srca. Uređaji, live nadzorna ploča i analitika onako kako ih vidi stručni stožer.",
+    "note": "Kadrovi: renderi SPT uređaja i simulirana demo utakmica. produced by GNK ASG · Nermin Sefić"
+  },
+  "show": {
+    "kicker": "SHOWCASE · NOGOMET · USA",
+    "title": "Coastline United SC: jedan utakmični tjedan sa SPT-om",
+    "sub": "Ilustrativni scenarij profesionalnog kluba iz Kalifornije: kako stožer od tridesetak ljudi od ponedjeljka do utakmice radi s jednim izvorom istine.",
+    "days": [
+      {"d": "PON", "t": "Oporavak", "x": "Jutarnji wellness upitnik (san, umor, bol u mišićima, raspoloženje) i HRV sa sata stižu prije doručka. Svaki igrač dobiva spremnost 0–100; crveni dobivaju individualni plan oporavka."},
+      {"d": "UTO–ČET", "t": "Trening", "x": "Prsluk mjeri udaljenost po zonama brzine, sprinteve, ubrzanja i PlayerLoad. Kondicijski trener uživo vidi tko je ispod, a tko iznad ciljane doze za taj dan mikrociklusa."},
+      {"d": "PET", "t": "Odluka", "x": "AI model spaja ACWR, spremnost, asimetriju koraka i povijest ozljeda. Igrač #6 ima ACWR 1,52 i skok opterećenja od 38 % — stožer smanjuje minutažu prije nego što ozljeda nastane."},
+      {"d": "SUB", "t": "Utakmica", "x": "Edge server na stadionu prima 22 senzora u stvarnom vremenu. Klupa vidi brzine, puls, sprinteve i alarme; analitičar u kontrolnoj sobi uspoređuje dva igrača na pola terena."},
+      {"d": "NED", "t": "Izvještaj", "x": "Automatski utakmični i tjedni izvještaj: top 5 po opterećenju, nove zastavice, preporuke za oporavak. Ispis ili PDF za trenera, sažetak na mobitelu za igrača."}
+    ],
+    "demo_title": "Live demo — Coastline United : Bay City",
+    "demo": {"speed": "Brzina", "dist": "Udaljenost", "hr": "Puls", "spr": "Sprintevi", "load": "Opterećenje", "top": "Najveća brzina utakmice", "alert": "#6 · ACWR 1,52 · visok rizik — razmotri izmjenu", "goal": "GOL!", "sim": "simulirani podaci", "player": "#9 · napadač"},
+    "gains_title": "Što stožer dobiva",
+    "gains": [
+      {"t": "Jedan izvor istine", "x": "Trener, kondicijski, liječnik i skaut gledaju iste brojke — u istom kartonu sportaša."},
+      {"t": "Odluke prije ozljede", "x": "Rano upozorenje na preopterećenje umjesto analize nakon što se ozljeda dogodi."},
+      {"t": "Manje papira, više treninga", "x": "Izvještaji se rade sami; stožer vrijeme troši na igrače, a ne na tablice."}
+    ],
+    "note": "Coastline United SC i Bay City su fiktivni demo klubovi; podaci su simulirani i služe prikazu funkcija."
+  },
+  "screens": {
+    "kicker": "SOFTVER U AKCIJI",
+    "title": "Nadzorne ploče, analize i izvještaji",
+    "sub": "Što stožer vidi na laptopu, velikom ekranu, tabletu uz aut-liniju i mobitelu — i zašto je svaki prikaz važan.",
+    "items": [
+      {"img": "dashboard_laptop", "t": "Live nadzorna ploča", "x": "Pozicije svih igrača 20 puta u sekundi, rezultat, brzine i opterećenje — za klupu i analitičara, bez kašnjenja."},
+      {"img": "analytics_screen", "t": "AI analitika", "x": "Radar profila, tjedno opterećenje sa zastavicama, ACWR mjerač i toplinska karta: rizik se vidi prije ozljede."},
+      {"img": "control_room", "t": "Kontrolna soba", "x": "Do 12 live pločica; svaka prikazuje ono što odaberete — kartu, puls, brzine, alarme ili usporedbu dvaju igrača."},
+      {"img": "coach_tablet", "t": "Tablet uz aut-liniju", "x": "Trener na terenu ima iste podatke kao analitičar: tko pada u intenzitetu, tko je u crvenoj zoni pulsa."},
+      {"img": "mobile_app", "t": "Aplikacija za sportaša", "x": "Spremnost svako jutro, san, puls u mirovanju i opterećenje tjedna — sportaš razumije svoj dan."},
+      {"img": "live_hud_alert", "t": "Alarm rizika uživo", "x": "Kad ACWR prijeđe prag, ploča diže crveno upozorenje s razlogom i preporukom za izmjenu."},
+      {"img": "live_hud_sprint", "t": "Sprint u stvarnom vremenu", "x": "Brzina, puls, zona i trag kretanja odabranog igrača; ljestvica najbržih ažurira se uživo."},
+      {"img": "live_hud_goal", "t": "Utakmica u brojkama", "x": "Udaljenost momčadi, trčanje velikom brzinom, sprintevi i prosječni puls — svaka sekunda zapisana za izvještaj."}
+    ]
+  },
+  "hw": {
+    "kicker": "EKOSUSTAV UREĐAJA",
+    "title": "Hardver koji mjeri ono što je važno",
+    "sub": "Svaki uređaj nosi SPT oznaku i šalje podatke u isti karton sportaša — bez ručnog prepisivanja.",
+    "why": "Zašto",
+    "items": [
+      {"img": "vest_front", "t": "SPT prsluk", "x": "Kompresijski prsluk prilagođen tijelu; senzor miruje uz leđa pa su GPS trag i ubrzanja čisti. Perivo, prozračno, veličine od mlađih kategorija naviše.", "w": "Loše fiksiran senzor znači šum u podacima o ubrzanjima i lažne sprinteve."},
+      {"img": "vest_back", "t": "Džep između lopatica", "x": "Senzor sjedi između lopatica — najmirnija točka tijela pri trčanju, s najboljim pogledom na nebo za satelitski signal.", "w": "Položaj senzora izravno određuje točnost brzine i opterećenja."},
+      {"img": "chip_pod", "t": "SPT Pod senzor", "x": "GNSS 20 Hz (GPS, Galileo, GLONASS, BeiDou), 9-osni IMU do 1000 Hz, UWB i BLE u kućištu IP67. Sam prelazi s GPS-a na UWB kad igra uđe u dvoranu.", "w": "Udarci, doskoci i promjene smjera traju milisekunde — 1000 Hz ih hvata."},
+      {"img": "watch", "t": "SPT sat", "x": "Puls, HRV, san i dnevni oporavak; vibracija upozorava sportaša kad izađe iz zadane zone. Rekreativcu je sat sam po sebi cijeli SPT.", "w": "HRV je najosjetljiviji neinvazivni pokazatelj umora i oporavka."},
+      {"img": "strap_hr", "t": "Prsni pojas", "x": "Puls otkucaj po otkucaj za intervalne treninge, vaterpolo i veslanje — ondje gdje optički senzor na zapešću griješi.", "w": "TRIMP i zone pulsa traže točan R-R interval."},
+      {"img": "smart_scale", "t": "SPT vaga", "x": "Bioimpedancija: masa, mišići, masnoća, voda, visceralna mast i bazalni metabolizam — izravno u karton i planer prehrane.", "w": "Gubitak od 2 % tjelesne mase zbog dehidracije mjerljivo smanjuje izvedbu."},
+      {"img": "uwb_anchor", "t": "UWB sidra", "x": "Sidra na stropu dvorane daju poziciju s preciznošću oko ±10 cm ondje gdje GPS ne radi: odbojka, košarka, rukomet, futsal, hokej.", "w": "UWB mjeri vrijeme leta radio-impulsa u nanosekundama i otporan je na odbijanje signala."},
+      {"img": "edge_server", "t": "SPT Edge One", "x": "Stadionski server prima sve senzore, računa metrike lokalno i šalje ih na klupu za manje od sekunde — i kad internet zakaže.", "w": "Odluka o izmjeni ne smije čekati oblak."}
+    ]
+  },
+  "scenes": {
+    "hero_stadium_usa": {"t": "Utakmični dan u SAD-u", "x": "Showcase scenarij: profesionalni nogomet u Kaliforniji, svaki igrač praćen u stvarnom vremenu."},
+    "training_vests": {"t": "Trening s SPT prslucima", "x": "Sprint-vježbe uz mjerenje brzine, ubrzanja i opterećenja svakog igrača."},
+    "recreational_runner": {"t": "Rekreativci", "x": "Sat i aplikacija: puls, san i spremnost za svakoga tko trenira — od jutarnjeg trčanja do maratona."},
+    "indoor_volleyball_uwb": {"t": "Dvoranski sportovi s UWB-om", "x": "UWB sidra na stropu daju centimetarsku poziciju ondje gdje GPS ne radi."},
+    "oem_cloud": {"t": "SPT Cloud za partnere", "x": "Serveri, alati i softver na kojima rade i uređaji drugih proizvođača."}
+  },
+  "sw": {
+    "kicker": "PLATFORMA",
+    "title": "Sve funkcije na jednom mjestu",
+    "sub": "Od prvog treninga do povratka nakon ozljede — više od 50 modula koji dijele isti karton sportaša.",
+    "groups": [
+      {"t": "Live praćenje", "i": ["Live karta terena (GPS/UWB, 20 Hz)", "Kontrolna soba do 12 pločica", "Usporedba dvaju igrača na pola terena", "Alarmi uživo: puls, brzina, opterećenje", "Toplinske karte i trag kretanja", "Povezivanje M2M/UWB, GPS, BLE i AUTO", "Mjerenje i na treninzima i na utakmicama"]},
+      {"t": "Opterećenje i znanost", "i": ["ACWR (akutno : kronično)", "PlayerLoad i sRPE (AU)", "Monotonija i strain (Foster)", "Zone brzine i pulsa", "Sprintevi, ubrzanja, usporavanja", "Periodizacija i planiranje doze"]},
+      {"t": "Zdravlje i medicina", "i": ["Medicinski dosje: alergije, pregledi, cijepljenja", "Dozvole roditelja za mlađe od 18", "Ozljede (ručni unos) i RTP protokol", "Wellness i spremnost 0–100", "HRV i san", "Praćenje ciklusa za sportašice", "Tjelesni sastav s vage"]},
+      {"t": "AI i analitika", "i": ["AI predikcija rizika ozljede", "Detekcija anomalija", "Trendovi i odstupanja od norme", "Dobne krivulje i pozicijski profili", "Konzistentnost i balans opterećenja", "Liga benchmark (percentili)", "Biomehanika: asimetrija GCT i CMJ", "AI asistent koji zna svaki broj"]},
+      {"t": "Prehrana i oporavak", "i": ["TDEE i makronutrijenti", "Planer obroka i biblioteka obroka", "Hidracija", "Preporuke za oporavak"]},
+      {"t": "Momčad i organizacija", "i": ["Uloge: trener, kondicijski, sportaš, skaut, admin", "Scouting liste s ocjenama", "Inventar opreme i senzora", "Bilješke stožera", "Mlađe kategorije od 12 godina", "Klubovi pod šiframa (privatnost)"]},
+      {"t": "Izvještaji i podaci", "i": ["8 vrsta izvještaja", "Tjedni pregled kluba", "Ispis i PDF", "CSV i JSON izvoz", "Open API", "Simulacije utakmica i opterećenja"]},
+      {"t": "Platforma", "i": ["Windows desktop — instalacija jednim klikom", "PWA za mobitel i tablet", "Rad bez interneta", "Edge i cloud serveri", "White-label: logo, boje, domena", "Više klijenata (multi-tenant) za proizvođače", "10 jezika aplikacije"]}
+    ]
+  },
+  "sci": {
+    "kicker": "ZNANOST",
+    "title": "Ključne funkcije — što rade i zašto su važne",
+    "sub": "Iza svakog broja u SPT-u stoji metoda iz sportske znanosti. Ovo su najvažnije.",
+    "what": "Što radi", "why": "Zašto je važno",
+    "items": [
+      {"tag": "ACWR", "t": "Opterećenje koje gradi, a ne lomi", "what": "SPT za svakog sportaša računa omjer akutnog (7 dana) i kroničnog (28 dana) opterećenja iz GPS metrika i subjektivnog napora (sRPE × minute).", "why": "Nagli skokovi opterećenja povezani su s većim rizikom ozljeda mekih tkiva. Zona otprilike 0,8–1,3 smatra se „slatkom točkom”, a vrijednosti iznad ~1,5 traže oprez (Gabbett, British Journal of Sports Medicine, 2016). SPT boji svakog igrača zeleno, žuto ili crveno — prije treninga, a ne nakon ozljede."},
+      {"tag": "AI", "t": "AI predikcija rizika ozljede", "what": "Model spaja ACWR, dnevnu spremnost, wellness, asimetriju koraka, povijest ozljeda i dob u jedan rizik od 0 do 100 i ispisuje glavne čimbenike.", "why": "Ozljeda je rijetko posljedica jednog broja. Kombinacija signala daje rano upozorenje s objašnjenjem — stožer odlučuje, model pomaže. SPT je alat za podršku odlukama, a ne medicinska dijagnoza."},
+      {"tag": "GPS + UWB", "t": "Hibridno pozicioniranje: GPS vani, UWB unutra", "what": "Na otvorenom senzor koristi više satelitskih sustava na 20 Hz; u dvorani UWB sidra mjere vrijeme leta radio-impulsa i daju poziciju s preciznošću oko ±10 cm. Način AUTO sam bira izvor.", "why": "Dvoranski sportovi čine pola sportskog svijeta, a GPS pod krovom ne radi. Ista metrika vani i unutra znači usporedive podatke kroz cijelu sezonu."},
+      {"tag": "BIOMEH", "t": "Asimetrija koja najavljuje problem", "what": "IMU mjeri vrijeme kontakta lijeve i desne noge s podlogom (GCT) i visinu CMJ skoka kroz vrijeme.", "why": "Rastuća asimetrija lijevo–desno i pad CMJ-a često prethode preopterećenju. SPT diže zastavicu kad asimetrija prijeđe 6 % — vrijeme je za fizioterapeuta, a ne za još jedan sprint."},
+      {"tag": "RTP", "t": "Povratak nakon ozljede u 6 koraka", "what": "Svaka ozljeda dobiva protokol: kontrola boli → opseg pokreta → snaga → trčanje → specifičan rad za sport → puni trening. Svaki korak ima kriterij i potpis fizioterapeuta.", "why": "Prerani povratak čest je uzrok ponovne ozljede. Kriteriji umjesto kalendara — i cijeli stožer vidi isti status."},
+      {"tag": "READY", "t": "Spremnost 0–100 svako jutro", "what": "San, HRV, puls u mirovanju, bol u mišićima, stres i raspoloženje spajaju se u jedan broj sa semaforom.", "why": "Isti trening za umornog i odmornog igrača nije isti trening. Spremnost određuje dozu dana."},
+      {"tag": "CIKLUS", "t": "Trening prilagođen ciklusu", "what": "Sportašice bilježe fazu ciklusa, a SPT daje preporuke po fazi: opseg, intenzitet, oporavak i prehrana.", "why": "Hormonalne promjene utječu na termoregulaciju, oporavak i doživljaj napora. Individualizacija umjesto prosjeka."}
+    ],
+    "disclaimer": "SPT je sustav za praćenje performansi i podršku odlukama; ne zamjenjuje liječnički pregled ni dijagnozu."
+  },
+  "who": {
+    "kicker": "ZA KOGA",
+    "title": "Jedan sustav — od profesionalnog kluba do jutarnjeg trčanja",
+    "sub": "Isti podaci, različite uloge: svatko vidi ono što mu treba — i ništa što ne smije.",
+    "items": [
+      {"ico": "🏟️", "t": "Klubovi", "x": "Jedan izvor istine za prvu momčad, mlađe kategorije i medicinu. Usporedba s ligom, izvještaji za upravu i podaci koji ostaju u klubu kad ljudi odu."},
+      {"ico": "📋", "t": "Treneri", "x": "Live slika terena, minutaža prema riziku, usporedba igrača i izvještaj nakon utakmice — bez Excel tablica."},
+      {"ico": "⚡", "t": "Kondicijski treneri", "x": "ACWR, monotonija, zone, sprintevi i doza po danu mikrociklusa. Planiraj, izmjeri, prilagodi."},
+      {"ico": "⚽", "t": "Igrači", "x": "Osobni karton, spremnost svako jutro, ciljevi i napredak. Tvoji podaci, tvoja karijera."},
+      {"ico": "🔭", "t": "Skauti", "x": "Objektivne fizičke metrike uz video: shortliste s ocjenama, percentili po poziciji i dobi."},
+      {"ico": "🏃", "t": "Rekreativci", "x": "Sat i aplikacija: puls, san, oporavak i plan treninga koji se prilagođava tvom danu."},
+      {"ico": "🎓", "t": "Akademije i mladi 12+", "x": "Dobne krivulje, praćenje rasta i opterećenja, dozvole roditelja i zaštita podataka maloljetnika."},
+      {"ico": "🏭", "t": "Proizvođači (OEM)", "x": "Licencirajte SPT softver, alate i servere za vlastiti hardver — pod svojim ili našim brendom."}
+    ]
+  },
+  "oem": {
+    "kicker": "ZA PROIZVOĐAČE · OEM · WHITE-LABEL",
+    "title": "SPT pokreće i tuđe uređaje",
+    "lead": "SPT softver kupuju i ugrađuju i drugi proizvođači sličnih sustava za praćenje sportaša. Implementiran je u njihove proizvode — ponekad pod njihovim brendom, ali uvijek s našim alatima, našim softverom i našim serverima. I svaki dan ga dalje razvijamo.",
+    "points": [
+      {"t": "Firmware SDK i protokol", "x": "Gotov programski stog za senzore: fuzija GNSS/IMU, UWB mjerenje udaljenosti, BLE sinkronizacija i OTA nadogradnje."},
+      {"t": "Cloud i edge serveri", "x": "Prijem podataka u stvarnom vremenu, obrada i pohrana na infrastrukturi SPT-a — ili na vašoj."},
+      {"t": "White-label aplikacija", "x": "Vaš logo, boje, domena i trgovine aplikacija; naš kod i naše nadogradnje."},
+      {"t": "Analitički motor i AI", "x": "ACWR, spremnost, rizik ozljede, biomehanika i izvještaji — kao API ili kao ugrađeni moduli."},
+      {"t": "Open API i izvoz", "x": "JSON/CSV izvoz i API za povezivanje s video analizom, medicinskim sustavima i klupskim ERP-om."},
+      {"t": "Stalni razvoj", "x": "Partneri dobivaju svaku novu verziju: ono što razvijemo za SPT, stiže i njihovim korisnicima."}
+    ],
+    "diagram": {"sensors": "Senzori partnera", "edge": "SPT Edge", "cloud": "SPT Cloud", "apps": "Aplikacija pod vašim brendom", "api": "Open API"},
+    "cta": "Postanite partner", "nda": "Na zahtjev potpisujemo NDA i radimo pod vašim brendom."
+  },
+  "dev": {
+    "kicker": "STALNI RAZVOJ",
+    "title": "Nova verzija svakih nekoliko tjedana",
+    "sub": "SPT nije gotov proizvod nego platforma koja raste s klubovima i partnerima.",
+    "items": [
+      {"v": "2.0", "x": "Temelj: karton sportaša, GPS/UWB, sat, vaga, AI asistent, 10 jezika"},
+      {"v": "2.2", "x": "Kontrolna soba: više live pločica i usporedba dvaju igrača na pola terena"},
+      {"v": "2.3", "x": "PWA instalacija, prilagodba sučelja, inventar i bilješke stožera"},
+      {"v": "2.4", "x": "Napredna analitika: trendovi, pozicije, dobne krivulje, konzistentnost, balans"},
+      {"v": "2.5", "x": "AI rizik ozljede, scouting, medicinski dosje, RTP, liga benchmark, biomehanika, obroci, ciklus, Open API"},
+      {"v": "3.0", "x": "U razvoju: sinkronizacija s videom, prošireni AI modeli i nove integracije uređaja"}
+    ],
+    "next": "u razvoju"
+  },
+  "sports": {
+    "kicker": "SVI SPORTOVI",
+    "title": "Nogomet je showcase — SPT radi u 75 sportova",
+    "sub": "Od terena i dvorane do vode, snijega i staze: svaki sport ima svoje pozicije, metrike i norme.",
+    "list": ["Nogomet", "Futsal", "Košarka", "Rukomet", "Odbojka", "Vaterpolo", "Veslanje", "Atletika", "Plivanje", "Biciklizam", "Tenis", "Padel", "Ragbi", "Američki nogomet", "Hokej na ledu", "Hokej na travi", "Bejzbol", "Kriket", "Alpsko skijanje", "Triatlon", "Kajak i kanu", "Jedrenje", "Borilački sportovi", "Auto-moto sport: automobilizam, motociklizam, karting"],
+    "more": "+ još 51 sport u bazi"
+  },
+  "specs": {
+    "kicker": "SPECIFIKACIJE",
+    "title": "Tehnički podaci",
+    "rows": [
+      ["Pozicioniranje vani", "GNSS 20 Hz (GPS, Galileo, GLONASS, BeiDou)"],
+      ["Pozicioniranje unutra", "UWB, preciznost oko ±10 cm; BLE rezerva; način AUTO"],
+      ["Inercijski senzor", "9-osni IMU (akcelerometar, žiroskop, magnetometar) do 1000 Hz"],
+      ["Fiziologija", "Puls i HRV (sat, prsni pojas), san, dnevni oporavak"],
+      ["Tjelesni sastav", "BIA vaga: masa, mišići, masnoća, voda, visceralna mast, BMR"],
+      ["Kućište senzora", "IP67, punjenje USB-C"],
+      ["Latencija", "manje od 1 s od senzora do klupe (edge server)"],
+      ["Aplikacija", "Windows 10/11 desktop, web, PWA za Android i iOS, 10 jezika"],
+      ["Podaci", "CSV/JSON izvoz, Open API, ispis i PDF izvještaji"],
+      ["Uloge i privatnost", "5 uloga, klubovi pod šiframa, dozvole roditelja za mlađe od 18"]
+    ]
+  },
+  "faq": {
+    "kicker": "FAQ",
+    "title": "Česta pitanja",
+    "items": [
+      {"q": "Je li SPT samo za profesionalne klubove?", "a": "Ne. Isti sustav radi za profesionalni klub, akademiju i rekreativca. Rekreativcu su dovoljni sat i aplikacija; klub dodaje prsluke, UWB sidra i edge server."},
+      {"q": "Radi li SPT u dvorani?", "a": "Da. U dvorani se koriste UWB sidra s preciznošću oko ±10 cm, a vani GPS na 20 Hz. Način AUTO sam prebacuje izvor pozicije."},
+      {"q": "Je li AI predikcija ozljeda medicinska dijagnoza?", "a": "Nije. To je sustav ranog upozorenja i podrške odlukama koji pokazuje čimbenike rizika. Odluku uvijek donosi stručni stožer."},
+      {"q": "Tko je vlasnik podataka?", "a": "Klub, odnosno sportaš. Klubovi su u sustavu pod šiframa, pristup je određen ulogama, a podaci se mogu izvesti u svakom trenutku (CSV, JSON, API)."},
+      {"q": "Mogu li proizvođači koristiti SPT pod svojim brendom?", "a": "Da. SPT se licencira kao white-label: vaš brend, naši alati, softver i serveri. SPT već radi u uređajima drugih proizvođača."},
+      {"q": "Kako se SPT instalira?", "a": "Na Windowsu jednim klikom (prečica na radnoj površini), na mobitelu i tabletu kao PWA iz preglednika, a na webu bez instalacije."},
+      {"q": "Na kojim je jezicima SPT?", "a": "Aplikacija je na 10 jezika, a ova stranica na 24 jezika."}
+    ]
+  },
+  "cta": {"title": "Spremni vidjeti svoje sportaše u brojkama?", "sub": "Demo za klubove, partnerstvo za proizvođače, probni paket za akademije i rekreativce.", "b1": "Zatraži demo", "b2": "Pročitaj članak", "b3": "Pogledaj film"},
+  "foot": {
+    "rights": "© 2026 SPT · produced by GNK ASG",
+    "author": "Autor: Nermin Sefić",
+    "links": {"home": "GNK ASG portal", "author": "Nermin Sefić", "contact": "Kontakt", "article": "Članak o SPT-u", "gallery": "Galerija slika", "film": "Film"},
+    "tags": "#SPT #GNKASG #NerminSefić #SportsPerformanceTracking #SportskaAnalitika #GPStracking #UWB #PrevencijaOzljeda #ACWR #FootballTech #SportsScience #LoadManagement #WhiteLabel #MadeInCroatia #Zagreb"
+  }
+}

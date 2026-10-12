@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% from "macros.html" import share, gallery_grid %}
+{% block main %}
+<div class="wrap fpage">
+ <nav class="crumbs" aria-label="Breadcrumb"><a href="/">GNK ASG</a><span>›</span><a href="{{ U.main }}">SPT</a><span>›</span><span aria-current="page">{{ L.nav.film }}</span></nav>
+ <header class="sh"{% if 'film' in FB %} lang="en"{% endif %}>
+  <p class="kick">{{ L.film.kicker }}</p>
+  <h1>{{ L.film.title }}</h1>
+  <p class="sub">{{ L.film.sub }}</p>
+ </header>
+ <figure class="film-box film-xl">
+  <video id="spt-film" controls playsinline preload="metadata" poster="{{ FILM.poster }}" width="1280" height="720">
+   <source src="{{ FILM.src }}" type="video/mp4">
+  </video>
+  <figcaption>{{ L.film.note }}</figcaption>
+ </figure>
+ <div class="fcols">
+  <section aria-labelledby="t-ch">
+   <h2 id="t-ch">0:00 – 1:01</h2>
+   <ol class="chap">{% for c in chapters %}<li><a href="#t={{ c.s }}" data-t="{{ c.s }}"><time>{{ c.ts }}</time><span>{{ c.name }}</span></a></li>{% endfor %}</ol>
+  </section>
+  <section aria-labelledby="t-st">
+   <h2 id="t-st">{{ L.screens.title }}</h2>
+   <div class="stills">{% for k in ['live_hud_sprint', 'live_hud_alert', 'live_hud_goal'] %}{% set s = IMG[k] %}<a href="{{ s.url }}"><img src="{{ s.thumb }}" width="{{ s.tw }}" height="{{ s.th }}" alt="{{ s.alt }}" loading="lazy" decoding="async"><span>{{ s.title }}</span></a>{% endfor %}</div>
+   {{ share(SITE ~ page.url, page.og_title, L) }}
+  </section>
+ </div>
+ <section class="sec-s" aria-labelledby="t-all">
+  <h2 id="t-all">{{ L.ui.all_images }}</h2>
+  {{ gallery_grid(images) }}
+ </section>
+ <section class="cta cta-s" aria-labelledby="t-cta">
+  <div class="cta-in">
+   <h2 id="t-cta">{{ L.cta.title }}</h2>
+   <div class="ctas"><a class="btn btn-p" href="{{ contact_url }}">{{ L.cta.b1 }}</a><a class="btn" href="{{ U.main }}">SPT →</a><a class="btn btn-g" href="{{ article_url }}">{{ L.cta.b2 }}</a></div>
+  </div>
+ </section>
+</div>
+{% endblock %}

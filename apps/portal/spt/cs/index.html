@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="cs" dir="ltr" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>SPT — Sports Performance Tracking | Sledování sportovců GPS + UWB | GNK ASG · Nermin Sefić</title>
+<meta name="description" content="SPT je systém pro sledování sportovního výkonu: vesta GPS 20 Hz + UWB, senzor 1000 Hz, hodinky, chytrá váha, predikce rizika zranění pomocí AI a živá řídicí…">
+<meta name="keywords" content="SPT, Sports Performance Tracking, GPS sledování sportovců, GPS vesta, UWB, sledování hráčů, fotbalová analytika, prevence zranění, ACWR, tréninková zátěž, sportovní věda, white-label sportovní software, OEM telemetrie, GNK ASG">
+<meta name="author" content="Nermin Sefić">
+<meta name="publisher" content="GNK ASG">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<meta name="theme-color" content="#060a12">
+<meta name="color-scheme" content="dark">
+<link rel="canonical" href="https://gnk-asg.hr/spt/cs/">
+<link rel="alternate" hreflang="hr" href="https://gnk-asg.hr/spt/">
+<link rel="alternate" hreflang="en" href="https://gnk-asg.hr/spt/en/">
+<link rel="alternate" hreflang="de" href="https://gnk-asg.hr/spt/de/">
+<link rel="alternate" hreflang="it" href="https://gnk-asg.hr/spt/it/">
+<link rel="alternate" hreflang="es" href="https://gnk-asg.hr/spt/es/">
+<link rel="alternate" hreflang="fr" href="https://gnk-asg.hr/spt/fr/">
+<link rel="alternate" hreflang="pt" href="https://gnk-asg.hr/spt/pt/">
+<link rel="alternate" hreflang="nl" href="https://gnk-asg.hr/spt/nl/">
+<link rel="alternate" hreflang="pl" href="https://gnk-asg.hr/spt/pl/">
+<link rel="alternate" hreflang="sl" href="https://gnk-asg.hr/spt/sl/">
+<link rel="alternate" hreflang="cs" href="https://gnk-asg.hr/spt/cs/">
+<link rel="alternate" hreflang="sk" href="https://gnk-asg.hr/spt/sk/">
+<link rel="alternate" hreflang="hu" href="https://gnk-asg.hr/spt/hu/">
+<link rel="alternate" hreflang="ro" href="https://gnk-asg.hr/spt/ro/">
+<link rel="alternate" hreflang="bg" href="https://gnk-asg.hr/spt/bg/">
+<link rel="alternate" hreflang="el" href="https://gnk-asg.hr/spt/el/">
+<link rel="alternate" hreflang="tr" href="https://gnk-asg.hr/spt/tr/">
+<link rel="alternate" hreflang="ru" href="https://gnk-asg.hr/spt/ru/">
+<link rel="alternate" hreflang="uk" href="https://gnk-asg.hr/spt/uk/">
+<link rel="alternate" hreflang="sr" href="https://gnk-asg.hr/spt/sr/">
+<link rel="alternate" hreflang="fi" href="https://gnk-asg.hr/spt/fi/">
+<link rel="alternate" hreflang="sv" href="https://gnk-asg.hr/spt/sv/">
+<link rel="alternate" hreflang="da" href="https://gnk-asg.hr/spt/da/">
+<link rel="alternate" hreflang="no" href="https://gnk-asg.hr/spt/no/">
+<link rel="alternate" hreflang="x-default" href="https://gnk-asg.hr/spt/en/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GNK ASG · SPT">
+<meta property="og:locale" content="cs_CZ">
+<meta property="og:locale:alternate" content="hr_HR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="de_DE">
+<meta property="og:locale:alternate" content="it_IT">
+<meta property="og:locale:alternate" content="es_ES">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:locale:alternate" content="pt_PT">
+<meta property="og:locale:alternate" content="nl_NL">
+<meta property="og:locale:alternate" content="pl_PL">
+<meta property="og:locale:alternate" content="sl_SI">
+<meta property="og:locale:alternate" content="sk_SK">
+<meta property="og:locale:alternate" content="hu_HU">
+<meta property="og:locale:alternate" content="ro_RO">
+<meta property="og:locale:alternate" content="bg_BG">
+<meta property="og:locale:alternate" content="el_GR">
+<meta property="og:locale:alternate" content="tr_TR">
+<meta property="og:locale:alternate" content="ru_RU">
+<meta property="og:locale:alternate" content="uk_UA">
+<meta property="og:locale:alternate" content="sr_RS">
+<meta property="og:locale:alternate" content="fi_FI">
+<meta property="og:locale:alternate" content="sv_SE">
+<meta property="og:locale:alternate" content="da_DK">
+<meta property="og:locale:alternate" content="nb_NO">
+<meta property="og:title" content="SPT — Každý metr. Každý úder srdce. Každý sportovec.">
+<meta property="og:description" content="Senzory GPS + UWB, predikce rizika zranění pomocí AI, živá řídicí místnost a analytika pro 75 sportů. Produced by GNK ASG · Nermin Sefić.">
+<meta property="og:url" content="https://gnk-asg.hr/spt/cs/">
+<meta property="og:image" content="https://gnk-asg.hr/spt/img/og-spt.jpg">
+<meta property="og:image:secure_url" content="https://gnk-asg.hr/spt/img/og-spt.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SPT — Sports Performance Tracking, produced by GNK ASG">
+<meta property="og:video" content="https://gnk-asg.hr/spt/film/spt-film.mp4?v=3">
+<meta property="og:video:secure_url" content="https://gnk-asg.hr/spt/film/spt-film.mp4?v=3">
+<meta property="og:video:type" content="video/mp4">
+<meta property="og:video:width" content="1280">
+<meta property="og:video:height" content="720">
+<meta property="article:author" content="https://gnk-asg.hr/en/nermin-sefic/">
+<meta property="article:publisher" content="https://gnk-asg.hr/">
+<meta property="article:published_time" content="2026-10-12T10:00:00+02:00">
+<meta property="article:tag" content="SPT">
+<meta property="article:tag" content="GNK ASG">
+<meta property="article:tag" content="Nermin Sefić">
+<meta property="article:tag" content="Sports Performance Tracking">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SPT — Každý metr. Každý úder srdce. Každý sportovec.">
+<meta name="twitter:description" content="Senzory GPS + UWB, predikce rizika zranění pomocí AI, živá řídicí místnost a analytika pro 75 sportů. Produced by GNK ASG · Nermin Sefić.">
+<meta name="twitter:image" content="https://gnk-asg.hr/spt/img/og-spt.jpg">
+<meta name="twitter:image:alt" content="SPT — Sports Performance Tracking, produced by GNK ASG">
+<meta name="twitter:label1" content="Produced by">
+<meta name="twitter:data1" content="GNK ASG · Nermin Sefić">
+<link rel="icon" type="image/png" sizes="192x192" href="/spt/img/spt-icon-192.png">
+<link rel="apple-touch-icon" href="/spt/img/spt-icon-192.png">
+<link rel="preload" href="/spt/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<meta name="gnk-lang-switch" content="hreflang">
+<meta name="gnk-watermark" content="off">
+<link rel="stylesheet" href="/spt/spt.css?v=20261012b">
+<script src="/spt/spt-l10n.js?v=20261012b" defer></script>
+<script src="/spt/spt.js?v=20261012b" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://gnk-asg.hr/spt/cs/#webpage","url":"https://gnk-asg.hr/spt/cs/","name":"SPT — Sports Performance Tracking | Sledování sportovců GPS + UWB | GNK ASG · Nermin Sefić","description":"SPT je systém pro sledování sportovního výkonu: vesta GPS 20 Hz + UWB, senzor 1000 Hz, hodinky, chytrá váha, predikce rizika zranění pomocí AI a živá řídicí místnost. Pro kluby, trenéry, hráče i rekreační sportovce. Produced by GNK ASG — Nermin Sefić.","inLanguage":"cs","isPartOf":{"@type":"WebSite","@id":"https://gnk-asg.hr/#website","name":"GNK ASG","url":"https://gnk-asg.hr/"},"about":{"@id":"https://gnk-asg.hr/spt/#brand"},"author":{"@id":"https://gnk-asg.hr/nermin-sefic/#person"},"publisher":{"@id":"https://gnk-asg.hr/#organization"},"datePublished":"2026-10-12T10:00:00+02:00","dateModified":"2026-10-12T10:00:00+02:00","primaryImageOfPage":{"@type":"ImageObject","url":"https://gnk-asg.hr/spt/img/og-spt.jpg","width":1200,"height":630},"image":["https://gnk-asg.hr/spt/img/hero_stadium_usa.webp","https://gnk-asg.hr/spt/img/dashboard_laptop.webp","https://gnk-asg.hr/spt/img/analytics_screen.webp","https://gnk-asg.hr/spt/img/control_room.webp","https://gnk-asg.hr/spt/img/coach_tablet.webp","https://gnk-asg.hr/spt/img/mobile_app.webp","https://gnk-asg.hr/spt/film/live-hud-sprint.webp","https://gnk-asg.hr/spt/film/live-hud-alert.webp"],"video":{"@id":"https://gnk-asg.hr/spt/cs/#video"}},{"@type":"VideoObject","@id":"https://gnk-asg.hr/spt/cs/#video","name":"SPT za 60 sekund — SPT","description":"Bez komentáře — veselá hudba a zvuky mnoha sportů: publikum, píšťalka rozhodčího, fotbal, tenis, basketbal, plavání, tlukot srdce. Zařízení, živý dashboard a analýzy přesně tak, jak je vidí realizační tým.","thumbnailUrl":["https://gnk-asg.hr/spt/img/og/film.jpg","https://gnk-asg.hr/spt/film/spt-film-poster.webp"],"uploadDate":"2026-10-12T10:00:00+02:00","duration":"PT1M1S","contentUrl":"https://gnk-asg.hr/spt/film/spt-film.mp4?v=3","width":1280,"height":720,"publisher":{"@id":"https://gnk-asg.hr/#organization"},"creator":{"@id":"https://gnk-asg.hr/nermin-sefic/#person"},"isFamilyFriendly":true,"keywords":"SPT, GNK ASG, Nermin Sefić, sports performance tracking"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"GNK ASG","item":"https://gnk-asg.hr/"},{"@type":"ListItem","position":2,"name":"SPT","item":"https://gnk-asg.hr/spt/cs/"}]},{"@type":"Organization","@id":"https://gnk-asg.hr/#organization","name":"GNK ASG","url":"https://gnk-asg.hr/","logo":"https://gnk-asg.hr/assets/logo-gnk-asg-canonical.svg"},{"@type":"Person","@id":"https://gnk-asg.hr/nermin-sefic/#person","name":"Nermin Sefić","url":"https://gnk-asg.hr/nermin-sefic/","image":"https://gnk-asg.hr/assets/people/nermin-sefic/nermin-sefic-01-official-desk-portrait.webp","worksFor":{"@id":"https://gnk-asg.hr/#organization"}},{"@type":"Brand","@id":"https://gnk-asg.hr/spt/#brand","name":"SPT — Sports Performance Tracking","alternateName":"SPT","logo":"https://gnk-asg.hr/spt/img/spt-icon-192.png","description":"Senzory GPS + UWB, predikce rizika zranění pomocí AI, živá řídicí místnost a analytika pro 75 sportů. Produced by GNK ASG · Nermin Sefić."}]}</script>
+</head>
+<body class="p-main" data-lang="cs">
+<a class="skip" href="#main">Přejít na obsah</a>
+<div class="hd" id="top">
+<div class="hd-in">
+<a class="brand" href="/spt/cs/" aria-label="SPT — Sports Performance Tracking">
+<img src="/spt/img/spt-icon.webp" width="38" height="38" alt="">
+<span class="brand-t"><b>SPT</b><small>Sports Performance Tracking</small></span>
+</a>
+<nav class="nav" id="nav" aria-label="Menu">
+<a href="#film">Film</a>
+<a href="#showcase">Showcase</a>
+<a href="#screens">Software</a>
+<a href="#hw">Zařízení</a>
+<a href="#sw">Funkce</a>
+<a href="#params">Parametry</a>
+<a href="#science">Věda</a>
+<a href="#who">Pro koho</a>
+<a href="#oem">Pro výrobce</a>
+<a href="/spt/cs/galerija/">Galerie</a>
+<a class="nav-cta" href="/en/contact/">Vyžádat demo</a>
+</nav>
+<div class="hd-r">
+<details class="lng">
+<summary aria-label="Jazyk: Čeština"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm6.9 6h-3a15.7 15.7 0 0 0-1.4-3.6A8 8 0 0 1 18.9 8ZM12 4c.8 1.2 1.5 2.5 1.9 4h-3.8c.4-1.5 1.1-2.8 1.9-4ZM4.3 14a8.2 8.2 0 0 1 0-4h3.4a16.5 16.5 0 0 0 0 4H4.3Zm.8 2h3c.3 1.3.8 2.5 1.4 3.6A8 8 0 0 1 5.1 16Zm3-8h-3a8 8 0 0 1 4.4-3.6C8.9 5.5 8.4 6.7 8.1 8ZM12 20c-.8-1.2-1.5-2.5-1.9-4h3.8c-.4 1.5-1.1 2.8-1.9 4Zm2.3-6H9.7a14.7 14.7 0 0 1 0-4h4.6a14.7 14.7 0 0 1 0 4Zm.3 5.6c.6-1.1 1.1-2.3 1.4-3.6h3a8 8 0 0 1-4.4 3.6Zm1.7-5.6a16.5 16.5 0 0 0 0-4h3.4a8.2 8.2 0 0 1 0 4h-3.4Z"/></svg><span>CS</span></summary>
+<ul><li><a href="/spt/" hreflang="hr" lang="hr"><span>HR</span>Hrvatski</a></li><li><a href="/spt/en/" hreflang="en" lang="en"><span>EN</span>English</a></li><li><a href="/spt/de/" hreflang="de" lang="de"><span>DE</span>Deutsch</a></li><li><a href="/spt/it/" hreflang="it" lang="it"><span>IT</span>Italiano</a></li><li><a href="/spt/es/" hreflang="es" lang="es"><span>ES</span>Español</a></li><li><a href="/spt/fr/" hreflang="fr" lang="fr"><span>FR</span>Français</a></li><li><a href="/spt/pt/" hreflang="pt" lang="pt"><span>PT</span>Português</a></li><li><a href="/spt/nl/" hreflang="nl" lang="nl"><span>NL</span>Nederlands</a></li><li><a href="/spt/pl/" hreflang="pl" lang="pl"><span>PL</span>Polski</a></li><li><a href="/spt/sl/" hreflang="sl" lang="sl"><span>SL</span>Slovenščina</a></li><li><a href="/spt/cs/" hreflang="cs" lang="cs" aria-current="true"><span>CS</span>Čeština</a></li><li><a href="/spt/sk/" hreflang="sk" lang="sk"><span>SK</span>Slovenčina</a></li><li><a href="/spt/hu/" hreflang="hu" lang="hu"><span>HU</span>Magyar</a></li><li><a href="/spt/ro/" hreflang="ro" lang="ro"><span>RO</span>Română</a></li><li><a href="/spt/bg/" hreflang="bg" lang="bg"><span>BG</span>Български</a></li><li><a href="/spt/el/" hreflang="el" lang="el"><span>EL</span>Ελληνικά</a></li><li><a href="/spt/tr/" hreflang="tr" lang="tr"><span>TR</span>Türkçe</a></li><li><a href="/spt/ru/" hreflang="ru" lang="ru"><span>RU</span>Русский</a></li><li><a href="/spt/uk/" hreflang="uk" lang="uk"><span>UK</span>Українська</a></li><li><a href="/spt/sr/" hreflang="sr" lang="sr"><span>SR</span>Српски</a></li><li><a href="/spt/fi/" hreflang="fi" lang="fi"><span>FI</span>Suomi</a></li><li><a href="/spt/sv/" hreflang="sv" lang="sv"><span>SV</span>Svenska</a></li><li><a href="/spt/da/" hreflang="da" lang="da"><span>DA</span>Dansk</a></li><li><a href="/spt/no/" hreflang="no" lang="no"><span>NO</span>Norsk</a></li></ul>
+</details>
+<a class="hd-gnk" href="/" title="GNK ASG"><img src="/assets/logo-gnk-asg-canonical.svg" width="30" height="31" alt="GNK ASG"></a>
+<button class="burger" type="button" aria-controls="nav" aria-expanded="false" aria-label="Menu"><span></span></button>
+</div>
+</div>
+</div>
+<div class="lsug" id="lsug" hidden></div>
+<main id="main">
+<section class="hero" aria-labelledby="h1">
+<div class="hero-bg">
+<img src="/spt/img/hero_stadium_usa.webp" srcset="/spt/img/hero_stadium_usa-720.webp 720w, /spt/img/hero_stadium_usa.webp 1376w" sizes="100vw" width="1376" height="768" alt="Zápasový den v USA — SPT Sports Performance Tracking · GNK ASG" fetchpriority="high">
+</div>
+<div class="wrap hero-in">
+<p class="kick">SPT · SPORTS PERFORMANCE TRACKING</p>
+<h1 id="h1"><span class="h1l">Každý metr.</span><span class="h1l">Každý úder srdce.</span><span class="h1l acc">Každý sportovec.</span></h1>
+<p class="lead">SPT propojuje nositelný senzor (GPS 20 Hz venku, UWB v hale), chytré hodinky, hrudní pás a váhu s platformou, která v reálném čase počítá zátěž, připravenost a riziko zranění — pro celý tým i jednoho rekreačního sportovce.</p>
+<div class="ctas">
+<a class="btn btn-p" href="#film">▶ Pustit film</a>
+<a class="btn" href="#showcase">Showcase: fotbal, USA</a>
+<a class="btn btn-g" href="#oem">Pro výrobce (OEM)</a>
+</div>
+<ul class="trust"><li>GPS 20 Hz + UWB ±10 cm</li><li>IMU 1000 Hz · IP67</li><li>Predikce zranění pomocí AI</li><li>75 sportů · aplikace v 10 jazycích</li></ul>
+<p class="hero-sig">produced by GNK ASG · autor: Nermin Sefić</p>
+</div>
+<aside class="hero-hud" aria-hidden="true">
+<div class="hud-top"><span class="dot"></span>ŽIVĚ · simulace zápasu</div>
+<div class="hud-row"><span>#9</span><b data-hud="spd">31.4</b><i>km/h</i></div>
+<div class="hud-row"><span>♥</span><b data-hud="hr">176</b><i>bpm</i></div>
+<div class="hud-row"><span>Σ</span><b data-hud="dst">8.42</b><i>km</i></div>
+<div class="hud-bar"><i data-hud="load"></i></div>
+</aside>
+</section>
+<section class="stats" aria-label="SPT">
+<ul class="wrap stats-in"><li><b>20 Hz</b><span>poloha GNSS venku</span></li><li><b>±10 cm</b><span>přesnost UWB v hale</span></li><li><b>1000 Hz</b><span>inerciální senzor (IMU)</span></li><li><b>&lt; 1 s</b><span>od senzoru na lavičku</span></li><li><b>75</b><span>sportů v databázi</span></li><li><b>10</b><span>jazyků aplikace</span></li></ul>
+</section>
+<section class="sec film" id="film" aria-labelledby="t-film">
+<div class="wrap">
+<header class="sh">
+<p class="kick">FILM · 60 SEKUND</p>
+<h2 id="t-film">SPT za 60 sekund</h2>
+<p class="sub">Bez komentáře — veselá hudba a zvuky mnoha sportů: publikum, píšťalka rozhodčího, fotbal, tenis, basketbal, plavání, tlukot srdce. Zařízení, živý dashboard a analýzy přesně tak, jak je vidí realizační tým.</p></header>
+<figure class="film-box">
+<video controls playsinline preload="none" poster="/spt/film/spt-film-poster.webp" width="1280" height="720">
+<source src="/spt/film/spt-film.mp4?v=3" type="video/mp4">
+</video>
+<figcaption>Záběry: rendery zařízení SPT a simulovaný ukázkový zápas. produced by GNK ASG · Nermin Sefić · <a href="/spt/cs/film/">Film — stránka →</a></figcaption>
+</figure>
+</div>
+</section>
+<section class="sec show" id="showcase" aria-labelledby="t-show">
+<div class="wrap">
+<header class="sh">
+<p class="kick">SHOWCASE · FOTBAL · USA</p>
+<h2 id="t-show">Coastline United SC: jeden zápasový týden se SPT</h2>
+<p class="sub">Ilustrativní scénář profesionálního klubu z Kalifornie: jak zhruba třicetičlenný realizační tým pracuje od pondělí do zápasu s jedním zdrojem pravdy.</p></header>
+<ol class="week">
+<li><span class="day"><span lang="en">MON</span></span><h3><span lang="en">Recovery</span></h3><p><span lang="en">The morning wellness questionnaire (sleep, fatigue, muscle soreness, mood) and HRV from the watch arrive before breakfast. Every player gets a readiness score of 0–100; those in the red get an individual recovery plan.</span></p></li><li><span class="day"><span lang="en">TUE–THU</span></span><h3><span lang="en">Training</span></h3><p><span lang="en">The vest measures distance by speed zone, sprints, accelerations and PlayerLoad. The strength &amp; conditioning coach sees live who is below and who is above the target dose for that day of the microcycle.</span></p></li><li><span class="day"><span lang="en">FRI</span></span><h3><span lang="en">Decision</span></h3><p><span lang="en">The AI model combines ACWR, readiness, stride asymmetry and injury history. Player #6 shows an ACWR of 1.52 and a 38 % load spike — the staff reduces his minutes before an injury happens.</span></p></li><li><span class="day"><span lang="en">SAT</span></span><h3><span lang="en">Match day</span></h3><p><span lang="en">The edge server at the stadium receives 22 sensors in real time. The bench sees speeds, heart rate, sprints and alerts; the analyst in the control room compares two players on a half-pitch view.</span></p></li><li><span class="day"><span lang="en">SUN</span></span><h3><span lang="en">Report</span></h3><p><span lang="en">Automatic match and weekly reports: top 5 by load, new flags, recovery recommendations. Print or PDF for the coach, a mobile summary for the player.</span></p></li>  </ol>
+<div class="demo" id="demo">
+<div class="demo-pitch">
+<div class="demo-hd"><span class="dot"></span><b>Živé demo — Coastline United : Bay City</b><span class="score" data-demo="score">2 : 1</span><span class="clock" data-demo="clock">67:12</span></div>
+<canvas id="pitch" width="960" height="600" aria-label="Živé demo — Coastline United : Bay City" role="img"></canvas>
+<div class="demo-goal" data-demo="goal" hidden>GÓL!</div>
+<p class="demo-sim">simulovaná data</p>
+</div>
+<div class="demo-side">
+<p class="demo-player">#9 · útočník</p>
+<dl class="demo-kpi">
+<div><dt>Rychlost</dt><dd><b data-demo="spd">0.0</b> km/h</dd></div>
+<div><dt>Tep</dt><dd><b data-demo="hr">0</b> bpm</dd></div>
+<div><dt>Vzdálenost</dt><dd><b data-demo="dst">0.00</b> km</dd></div>
+<div><dt>Sprinty</dt><dd><b data-demo="spr">0</b></dd></div>
+<div><dt>Zátěž</dt><dd><b data-demo="load">0</b> AU</dd></div>
+<div><dt>Nejvyšší rychlost zápasu</dt><dd><b data-demo="top">0.0</b> km/h</dd></div>
+</dl>
+<div class="demo-alert" data-demo="alert" hidden>⚠ #6 · ACWR 1,52 · vysoké riziko — zvažte střídání</div>
+</div>
+</div>
+<h3 class="h3c">Co získá realizační tým</h3>
+<div class="gains"><div class="card"><h4>Jeden zdroj pravdy</h4><p>Trenér, kondiční trenér, lékař i skaut vidí stejná čísla — ve stejné kartě sportovce.</p></div><div class="card"><h4>Rozhodnutí před zraněním</h4><p>Včasné varování před přetížením místo analýzy, až se zranění stane.</p></div><div class="card"><h4>Méně papírování, víc tréninku</h4><p>Reporty vznikají samy; tým věnuje čas hráčům, ne tabulkám.</p></div></div>
+<figure class="wide-fig"><a href="/spt/cs/galerija/training-vests/"><img src="/spt/img/training_vests-720.webp" srcset="/spt/img/training_vests-720.webp 720w, /spt/img/training_vests.webp 1376w" sizes="(max-width: 1100px) 100vw, 1100px" width="1376" height="768" alt="Trénink ve vestách SPT — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"></a><figcaption><b>Trénink ve vestách SPT</b> — Sprinterská cvičení s měřením rychlosti, zrychlení a zátěže každého hráče.</figcaption></figure>
+<p class="note">Coastline United SC a Bay City jsou smyšlené ukázkové kluby; data jsou simulovaná a slouží k předvedení funkcí.</p>
+</div>
+</section>
+<section class="sec screens" id="screens" aria-labelledby="t-screens">
+<div class="wrap">
+<header class="sh">
+<p class="kick">SOFTWARE V AKCI</p>
+<h2 id="t-screens">Dashboardy, analýzy a reporty</h2>
+<p class="sub">Co realizační tým vidí na notebooku, velké obrazovce, tabletu u lavičky a v telefonu — a proč je každé zobrazení důležité.</p></header>
+<div class="sgrid">
+<article class="scard big">
+<a class="scard-img" href="/spt/cs/galerija/dashboard-laptop/"><img src="/spt/img/dashboard_laptop-720.webp" srcset="/spt/img/dashboard_laptop-720.webp 720w, /spt/img/dashboard_laptop.webp 1408w" sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 560px" width="1408" height="768" alt="Živý dashboard — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"></a>
+<div class="scard-t"><h3><a href="/spt/cs/galerija/dashboard-laptop/">Živý dashboard</a></h3><p>Pozice všech hráčů 20× za sekundu, skóre, rychlosti a zátěž — pro lavičku i analytika, bez zpoždění.</p></div>
+</article>
+<article class="scard big">
+<a class="scard-img" href="/spt/cs/galerija/analytics-screen/"><img src="/spt/img/analytics_screen-720.webp" srcset="/spt/img/analytics_screen-720.webp 720w, /spt/img/analytics_screen.webp 1408w" sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 560px" width="1408" height="768" alt="AI analytika — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"></a>
+<div class="scard-t"><h3><a href="/spt/cs/galerija/analytics-screen/">AI analytika</a></h3><p>Radar profilu, týdenní zátěž s upozorněními, ukazatel ACWR a heatmapa: riziko je vidět dřív než zranění.</p></div>
+</article>
+<article class="scard">
+<a class="scard-img" href="/spt/cs/galerija/control-room/"><img src="/spt/img/control_room-720.webp" srcset="/spt/img/control_room-720.webp 720w, /spt/img/control_room.webp 1408w" sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 560px" width="1408" height="768" alt="Řídicí místnost — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"></a>
+<div class="scard-t"><h3><a href="/spt/cs/galerija/control-room/">Řídicí místnost</a></h3><p>Až 12 živých dlaždic; každá ukazuje, co si vyberete — mapu, tep, rychlosti, alarmy nebo srovnání dvou hráčů.</p></div>
+</article>
+<article class="scard">
+<a class="scard-img" href="/spt/cs/galerija/coach-tablet/"><img src="/spt/img/coach_tablet-720.webp" srcset="/spt/img/coach_tablet-720.webp 720w, /spt/img/coach_tablet.webp 1408w" sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 560px" width="1408" height="768" alt="Tablet u lavičky — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"></a>
+<div class="scard-t"><h3><a href="/spt/cs/galerija/coach-tablet/">Tablet u lavičky</a></h3><p>Trenér u hřiště má stejná data jako analytik: komu klesá intenzita, kdo je v červené tepové zóně.</p></div>
+</article>
+<article class="scard">
+<a class="scard-img" href="/spt/cs/galerija/mobile-app/"><img src="/spt/img/mobile_app-720.webp" srcset="/spt/img/mobile_app-720.webp 720w, /spt/img/mobile_app.webp 1408w" sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 560px" width="1408" height="768" alt="Aplikace pro sportovce — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"></a>
+<div class="scard-t"><h3><a href="/spt/cs/galerija/mobile-app/">Aplikace pro sportovce</a></h3><p>Každé ráno připravenost, spánek, klidový tep a týdenní zátěž — sportovec rozumí svému dni.</p></div>
+</article>
+<article class="scard">
+<a class="scard-img" href="/spt/cs/galerija/live-hud-alert/"><img src="/spt/img/live-hud-alert-720.webp" srcset="/spt/img/live-hud-alert-720.webp 720w, /spt/film/live-hud-alert.webp 1280w" sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 560px" width="1280" height="720" alt="Živý alarm rizika — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"></a>
+<div class="scard-t"><h3><a href="/spt/cs/galerija/live-hud-alert/">Živý alarm rizika</a></h3><p>Když ACWR překročí práh, dashboard zobrazí červené varování s důvodem a doporučením ke střídání.</p></div>
+</article>
+<article class="scard">
+<a class="scard-img" href="/spt/cs/galerija/live-hud-sprint/"><img src="/spt/img/live-hud-sprint-720.webp" srcset="/spt/img/live-hud-sprint-720.webp 720w, /spt/film/live-hud-sprint.webp 1280w" sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 560px" width="1280" height="720" alt="Sprint v reálném čase — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"></a>
+<div class="scard-t"><h3><a href="/spt/cs/galerija/live-hud-sprint/">Sprint v reálném čase</a></h3><p>Rychlost, tep, zóna a stopa pohybu vybraného hráče; žebříček nejrychlejších se aktualizuje živě.</p></div>
+</article>
+<article class="scard">
+<a class="scard-img" href="/spt/cs/galerija/live-hud-goal/"><img src="/spt/img/live-hud-goal-720.webp" srcset="/spt/img/live-hud-goal-720.webp 720w, /spt/film/live-hud-goal.webp 1280w" sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 560px" width="1280" height="720" alt="Zápas v číslech — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"></a>
+<div class="scard-t"><h3><a href="/spt/cs/galerija/live-hud-goal/">Zápas v číslech</a></h3><p>Vzdálenost týmu, běh vysokou rychlostí, sprinty a průměrný tep — každá sekunda zaznamenaná pro report.</p></div>
+</article>
+</div>
+</div>
+</section>
+<section class="sec hw" id="hw" aria-labelledby="t-hw">
+<div class="wrap">
+<header class="sh">
+<p class="kick">EKOSYSTÉM ZAŘÍZENÍ</p>
+<h2 id="t-hw">Hardware, který měří to podstatné</h2>
+<p class="sub">Každé zařízení nese značku SPT a posílá data do stejné karty sportovce — bez ručního přepisování.</p></header>
+<div class="hgrid">
+<article class="hcard">
+<a class="hcard-img" href="/spt/cs/galerija/vest-front/"><img src="/spt/img/vest_front-720.webp" srcset="/spt/img/vest_front-720.webp 720w, /spt/img/vest_front.webp 1408w" sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 360px" width="1408" height="768" alt="Vesta SPT — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"></a>
+<h3><a href="/spt/cs/galerija/vest-front/">Vesta SPT</a></h3>
+<p>Přiléhavá kompresní vesta; senzor leží klidně na zádech, takže stopa GPS i zrychlení jsou čisté. Pratelná, prodyšná, velikosti od mládežnických kategorií.</p>
+<p class="why"><b>Proč:</b> <span lang="en">A poorly fixed sensor means noise in acceleration data and false sprints.</span></p>
+</article>
+<article class="hcard">
+<a class="hcard-img" href="/spt/cs/galerija/vest-back/"><img src="/spt/img/vest_back-720.webp" srcset="/spt/img/vest_back-720.webp 720w, /spt/img/vest_back.webp 1408w" sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 360px" width="1408" height="768" alt="Kapsa mezi lopatkami — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"></a>
+<h3><a href="/spt/cs/galerija/vest-back/">Kapsa mezi lopatkami</a></h3>
+<p>Senzor je mezi lopatkami — v nejstabilnějším bodě těla při běhu, s nejlepším výhledem na oblohu pro satelitní signál.</p>
+<p class="why"><b>Proč:</b> <span lang="en">Sensor placement directly determines the accuracy of speed and load.</span></p>
+</article>
+<article class="hcard">
+<a class="hcard-img" href="/spt/cs/galerija/chip-pod/"><img src="/spt/img/chip_pod-720.webp" srcset="/spt/img/chip_pod-720.webp 720w, /spt/img/chip_pod.webp 1408w" sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 360px" width="1408" height="768" alt="Senzor SPT Pod — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"></a>
+<h3><a href="/spt/cs/galerija/chip-pod/">Senzor SPT Pod</a></h3>
+<p>GNSS 20 Hz (GPS, Galileo, GLONASS, BeiDou), 9osá IMU až 1000 Hz, UWB a BLE v pouzdře IP67. Sám přepne z GPS na UWB, když se hra přesune do haly.</p>
+<p class="why"><b>Proč:</b> <span lang="en">Impacts, landings and changes of direction last milliseconds — 1000 Hz captures them.</span></p>
+</article>
+<article class="hcard">
+<a class="hcard-img" href="/spt/cs/galerija/watch/"><img src="/spt/img/watch-720.webp" srcset="/spt/img/watch-720.webp 720w, /spt/img/watch.webp 1408w" sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 360px" width="1408" height="768" alt="Hodinky SPT — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"></a>
+<h3><a href="/spt/cs/galerija/watch/">Hodinky SPT</a></h3>
+<p>Tep, HRV, spánek a denní regenerace; vibrace upozorní, když sportovec opustí cílovou zónu. Pro rekreačního sportovce jsou samotné hodinky celé SPT.</p>
+<p class="why"><b>Proč:</b> <span lang="en">HRV is the most sensitive non-invasive indicator of fatigue and recovery.</span></p>
+</article>
+<article class="hcard">
+<a class="hcard-img" href="/spt/cs/galerija/strap-hr/"><img src="/spt/img/strap_hr-720.webp" srcset="/spt/img/strap_hr-720.webp 720w, /spt/img/strap_hr.webp 1408w" sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 360px" width="1408" height="768" alt="Hrudní pás — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"></a>
+<h3><a href="/spt/cs/galerija/strap-hr/">Hrudní pás</a></h3>
+<p>Tep úder po úderu pro intervalový trénink, vodní pólo a veslování — tam, kde se optický senzor na zápěstí plete.</p>
+<p class="why"><b>Proč:</b> <span lang="en">TRIMP and heart-rate zones require an exact R-R interval.</span></p>
+</article>
+<article class="hcard">
+<a class="hcard-img" href="/spt/cs/galerija/smart-scale/"><img src="/spt/img/smart_scale-720.webp" srcset="/spt/img/smart_scale-720.webp 720w, /spt/img/smart_scale.webp 1408w" sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 360px" width="1408" height="768" alt="Váha SPT — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"></a>
+<h3><a href="/spt/cs/galerija/smart-scale/">Váha SPT</a></h3>
+<p>Bioimpedance: hmotnost, svaly, tuk, voda, viscerální tuk a bazální metabolismus — přímo do karty a plánovače jídel.</p>
+<p class="why"><b>Proč:</b> <span lang="en">Losing 2 % of body mass to dehydration measurably reduces performance.</span></p>
+</article>
+<article class="hcard">
+<a class="hcard-img" href="/spt/cs/galerija/uwb-anchor/"><img src="/spt/img/uwb_anchor-720.webp" srcset="/spt/img/uwb_anchor-720.webp 720w, /spt/img/uwb_anchor.webp 1408w" sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 360px" width="1408" height="768" alt="UWB kotvy — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"></a>
+<h3><a href="/spt/cs/galerija/uwb-anchor/">UWB kotvy</a></h3>
+<p>Kotvy pod stropem haly určí polohu s přesností asi ±10 cm tam, kde GPS nefunguje: volejbal, basketbal, házená, futsal, hokej.</p>
+<p class="why"><b>Proč:</b> <span lang="en">UWB measures the time of flight of radio pulses in nanoseconds and is robust against signal reflections.</span></p>
+</article>
+<article class="hcard">
+<a class="hcard-img" href="/spt/cs/galerija/edge-server/"><img src="/spt/img/edge_server-720.webp" srcset="/spt/img/edge_server-720.webp 720w, /spt/img/edge_server.webp 1408w" sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 360px" width="1408" height="768" alt="SPT Edge One — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"></a>
+<h3><a href="/spt/cs/galerija/edge-server/">SPT Edge One</a></h3>
+<p>Stadionový server přijímá všechny senzory, počítá metriky lokálně a posílá je na lavičku za méně než sekundu — i když vypadne internet.</p>
+<p class="why"><b>Proč:</b> <span lang="en">A substitution decision must not wait for the cloud.</span></p>
+</article>
+</div>
+</div>
+</section>
+<section class="sec sw" id="sw" aria-labelledby="t-sw">
+<div class="wrap">
+<header class="sh">
+<p class="kick"><span lang="en">PLATFORM</span></p>
+<h2 id="t-sw"><span lang="en">Every feature in one place</span></h2>
+<p class="sub"><span lang="en">From the first training session to the return after injury — more than 50 modules sharing the same athlete record.</span></p></header>
+<div class="fgrid">
+<div class="fcard"><h3><span class="fnum">01</span><span lang="en">Live tracking</span></h3><ul><li><span lang="en">Live pitch map (GPS/UWB, 20 Hz)</span></li><li><span lang="en">Control room with up to 12 tiles</span></li><li><span lang="en">Two-player half-pitch comparison</span></li><li><span lang="en">Live alerts: heart rate, speed, load</span></li><li><span lang="en">Heatmaps and movement trails</span></li><li><span lang="en">M2M/UWB, GPS, BLE and AUTO connectivity</span></li><li><span lang="en">Measured in training and in matches</span></li></ul></div><div class="fcard"><h3><span class="fnum">02</span><span lang="en">Load &amp; science</span></h3><ul><li><span lang="en">ACWR (acute : chronic)</span></li><li><span lang="en">PlayerLoad and sRPE (AU)</span></li><li><span lang="en">Monotony and strain (Foster)</span></li><li><span lang="en">Speed and heart-rate zones</span></li><li><span lang="en">Sprints, accelerations, decelerations</span></li><li><span lang="en">Periodisation and dose planning</span></li></ul></div><div class="fcard"><h3><span class="fnum">03</span><span lang="en">Health &amp; medicine</span></h3><ul><li><span lang="en">Medical record: allergies, check-ups, vaccinations</span></li><li><span lang="en">Parental consent for under-18s</span></li><li><span lang="en">Injuries (manual entry) and RTP protocol</span></li><li><span lang="en">Wellness and readiness 0–100</span></li><li><span lang="en">HRV and sleep</span></li><li><span lang="en">Menstrual cycle tracking for female athletes</span></li><li><span lang="en">Body composition from the scale</span></li></ul></div><div class="fcard"><h3><span class="fnum">04</span><span lang="en">AI &amp; analytics</span></h3><ul><li><span lang="en">AI injury-risk prediction</span></li><li><span lang="en">Anomaly detection</span></li><li><span lang="en">Trends and deviations from the norm</span></li><li><span lang="en">Age curves and positional profiles</span></li><li><span lang="en">Consistency and load balance</span></li><li><span lang="en">League benchmark (percentiles)</span></li><li><span lang="en">Biomechanics: GCT asymmetry and CMJ</span></li><li><span lang="en">AI assistant that knows every number</span></li></ul></div><div class="fcard"><h3><span class="fnum">05</span><span lang="en">Nutrition &amp; recovery</span></h3><ul><li><span lang="en">TDEE and macronutrients</span></li><li><span lang="en">Meal planner and meal library</span></li><li><span lang="en">Hydration</span></li><li><span lang="en">Recovery recommendations</span></li></ul></div><div class="fcard"><h3><span class="fnum">06</span><span lang="en">Team &amp; organisation</span></h3><ul><li><span lang="en">Roles: coach, S&amp;C coach, athlete, scout, admin</span></li><li><span lang="en">Scouting shortlists with ratings</span></li><li><span lang="en">Equipment and sensor inventory</span></li><li><span lang="en">Staff notes</span></li><li><span lang="en">Youth categories from age 12</span></li><li><span lang="en">Clubs stored under codes (privacy)</span></li></ul></div><div class="fcard"><h3><span class="fnum">07</span><span lang="en">Reports &amp; data</span></h3><ul><li><span lang="en">8 report types</span></li><li><span lang="en">Weekly club overview</span></li><li><span lang="en">Print and PDF</span></li><li><span lang="en">CSV and JSON export</span></li><li><span lang="en">Open API</span></li><li><span lang="en">Match and load simulations</span></li></ul></div><div class="fcard"><h3><span class="fnum">08</span><span lang="en">Platform</span></h3><ul><li><span lang="en">Windows desktop — one-click install</span></li><li><span lang="en">PWA for phone and tablet</span></li><li><span lang="en">Works offline</span></li><li><span lang="en">Edge and cloud servers</span></li><li><span lang="en">White-label: logo, colours, domain</span></li><li><span lang="en">Multi-tenant for manufacturers</span></li><li><span lang="en">App in 10 languages</span></li></ul></div>  </div>
+</div>
+</section>
+<section class="sec params" id="params" aria-labelledby="t-params">
+<div class="wrap">
+<header class="sh">
+<p class="kick"><span lang="en">Parameters and analyses</span></p>
+<h2 id="t-params"><span lang="en">64 parameters SPT measures — and what they show</span></h2>
+<p class="sub"><span lang="en">From a metre of running to a gram of protein: SPT measures movement, mechanical load, heart, sleep, body, nutrition, hydration, environment, tests, wellness and tactics. Every number has a purpose — each one comes with what it shows and why it matters.</span></p></header>
+<div class="pgrid">
+<article class="pcard">
+<header class="pc-h"><span class="pc-ic"><svg class="wico" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17a9 9 0 0 1 18 0"/><path d="m12 17 5-6"/><circle cx="12" cy="17" r="1.4"/></svg></span><div><h3><span lang="en">Movement and speed</span></h3><p class="pc-src"><span lang="en">SPT Pod · 20 Hz GNSS / UWB</span></p></div><span class="pc-n">6</span></header>
+<dl class="plist">
+<div class="pi"><dt><span class="pnum">1</span><span class="pname"><span lang="en">Total distance</span></span> <small><span lang="en">m</span></small></dt><dd><span lang="en">The volume of a session or match, compared with the target for that day of the microcycle and the positional average.</span></dd></div>
+<div class="pi"><dt><span class="pnum">2</span><span class="pname"><span lang="en">Distance by speed zone</span></span> <small><span lang="en">m · Z1–Z5</span></small></dt><dd><span lang="en">The intensity profile: how long versus how fast the session was — the same kilometres can be easy or exhausting.</span></dd></div>
+<div class="pi"><dt><span class="pnum">3</span><span class="pname"><span lang="en">High-speed running (HSR)</span></span> <small><span lang="en">m · &gt; 19.8 km/h</span></small></dt><dd><span lang="en">Exposure to high intensity; sudden HSR spikes are associated with hamstring injuries.</span></dd></div>
+<div class="pi"><dt><span class="pnum">4</span><span class="pname"><span lang="en">Sprints</span></span> <small><span lang="en">count · m &gt; 25 km/h</span></small></dt><dd><span lang="en">Repeated-sprint ability; fewer sprints in the second half is a clear sign of fatigue.</span></dd></div>
+<div class="pi"><dt><span class="pnum">5</span><span class="pname"><span lang="en">Peak speed</span></span> <small><span lang="en">km/h · % of personal best</span></small></dt><dd><span lang="en">If an athlete does not reach about 90% of their maximum for weeks, they lose the “vaccine” against sprint injuries.</span></dd></div>
+<div class="pi"><dt><span class="pnum">6</span><span class="pname"><span lang="en">Metres per minute</span></span> <small><span lang="en">m/min</span></small></dt><dd><span lang="en">Relative intensity, comparable across matches and sessions of different length and players with different minutes.</span></dd></div>
+</dl>
+</article>
+<article class="pcard">
+<header class="pc-h"><span class="pc-ic"><svg class="wico" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h3l2-6 4 12 3-9 2 3h6"/></svg></span><div><h3><span lang="en">Mechanical load</span></h3><p class="pc-src"><span lang="en">SPT Pod · 1000 Hz IMU</span></p></div><span class="pc-n">6</span></header>
+<dl class="plist">
+<div class="pi"><dt><span class="pnum">7</span><span class="pname"><span lang="en">Accelerations</span></span> <small><span lang="en">count · &gt; 3 m/s²</span></small></dt><dd><span lang="en">Explosive demands on the thigh and calf muscles; GPS alone does not see them precisely enough.</span></dd></div>
+<div class="pi"><dt><span class="pnum">8</span><span class="pname"><span lang="en">Decelerations</span></span> <small><span lang="en">count · &lt; −3 m/s²</span></small></dt><dd><span lang="en">Eccentric load — the most mechanically demanding part of play for tendons and joints.</span></dd></div>
+<div class="pi"><dt><span class="pnum">9</span><span class="pname"><span lang="en">Changes of direction</span></span> <small><span lang="en">count · angle</span></small></dt><dd><span lang="en">Load on the knees, groin and ankles; key in football, basketball, handball and tennis.</span></dd></div>
+<div class="pi"><dt><span class="pnum">10</span><span class="pname"><span lang="en">Accelerometer load</span></span> <small><span lang="en">AU</span></small></dt><dd><span lang="en">The sum of all body movement — it measures load even where GPS cannot see: indoors, in duels, in the gym.</span></dd></div>
+<div class="pi"><dt><span class="pnum">11</span><span class="pname"><span lang="en">Impacts and collisions</span></span> <small><span lang="en">count · g</span></small></dt><dd><span lang="en">Contacts, falls and impacts above a set threshold; in contact sports a signal to check on the player.</span></dd></div>
+<div class="pi"><dt><span class="pnum">12</span><span class="pname"><span lang="en">Jumps and landings</span></span> <small><span lang="en">count · cm · g</span></small></dt><dd><span lang="en">Jump volume and landing hardness; in volleyball and basketball the main driver of patellar-tendon overload.</span></dd></div>
+</dl>
+</article>
+<article class="pcard">
+<header class="pc-h"><span class="pc-ic"><svg class="wico" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 8.6a5 5 0 0 0-8.8-3.2 5 5 0 0 0-8.8 3.2c0 5.4 8.8 11.4 8.8 11.4s8.8-6 8.8-11.4Z"/><path d="M3.5 12h4l2-3 3 6 2-3h6"/></svg></span><div><h3><span lang="en">Heart and cardiovascular response</span></h3><p class="pc-src"><span lang="en">chest strap · SPT watch</span></p></div><span class="pc-n">6</span></header>
+<dl class="plist">
+<div class="pi"><dt><span class="pnum">13</span><span class="pname"><span lang="en">Live heart rate and % HRmax</span></span> <small><span lang="en">bpm · %</span></small></dt><dd><span lang="en">Internal intensity in real time; the staff sees who is in the red zone while play is on.</span></dd></div>
+<div class="pi"><dt><span class="pnum">14</span><span class="pname"><span lang="en">Time in heart-rate zones</span></span> <small><span lang="en">min · Z1–Z5</span></small></dt><dd><span lang="en">Whether the session hit the intended stimulus: aerobic base, threshold or high intensity.</span></dd></div>
+<div class="pi"><dt><span class="pnum">15</span><span class="pname"><span lang="en">TRIMP (heart-rate load)</span></span> <small><span lang="en">AU</span></small></dt><dd><span lang="en">How the body experienced the session — the same external work is easy for a rested athlete and hard for a tired one.</span></dd></div>
+<div class="pi"><dt><span class="pnum">16</span><span class="pname"><span lang="en">Heart-rate recovery (HRR)</span></span> <small><span lang="en">bpm in 60 s</span></small></dt><dd><span lang="en">How fast heart rate drops after effort; slower recovery warns of fatigue or the onset of illness.</span></dd></div>
+<div class="pi"><dt><span class="pnum">17</span><span class="pname"><span lang="en">Resting heart rate</span></span> <small><span lang="en">bpm</span></small></dt><dd><span lang="en">A morning rise of 5 or more beats often precedes illness, overreaching or poor sleep.</span></dd></div>
+<div class="pi"><dt><span class="pnum">18</span><span class="pname"><span lang="en">HRV (RMSSD)</span></span> <small><span lang="en">ms</span></small></dt><dd><span lang="en">Autonomic nervous system balance — the most sensitive non-invasive readiness marker; what matters is deviation from the personal norm.</span></dd></div>
+</dl>
+</article>
+<article class="pcard">
+<header class="pc-h"><span class="pc-ic"><svg class="wico" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg></span><div><h3><span lang="en">Sleep and recovery</span></h3><p class="pc-src"><span lang="en">SPT watch</span></p></div><span class="pc-n">6</span></header>
+<dl class="plist">
+<div class="pi"><dt><span class="pnum">19</span><span class="pname"><span lang="en">Sleep duration</span></span> <small><span lang="en">h</span></small></dt><dd><span lang="en">Less than 7 hours of sleep is associated with higher injury risk and slower reactions.</span></dd></div>
+<div class="pi"><dt><span class="pnum">20</span><span class="pname"><span lang="en">Sleep stages</span></span> <small><span lang="en">deep · REM · light</span></small></dt><dd><span lang="en">Deep sleep drives physical recovery, REM learning and concentration; late matches shift the stages.</span></dd></div>
+<div class="pi"><dt><span class="pnum">21</span><span class="pname"><span lang="en">Sleep efficiency and awakenings</span></span> <small><span lang="en">% · count</span></small></dt><dd><span lang="en">Quality, not just quantity: fragmented sleep reduces recovery even after 8 hours in bed.</span></dd></div>
+<div class="pi"><dt><span class="pnum">22</span><span class="pname"><span lang="en">Breathing rate in sleep</span></span> <small><span lang="en">breaths/min</span></small></dt><dd><span lang="en">A rise in breathing rate is one of the earliest signs of infection.</span></dd></div>
+<div class="pi"><dt><span class="pnum">23</span><span class="pname"><span lang="en">Skin temperature</span></span> <small><span lang="en">deviation °C</span></small></dt><dd><span lang="en">Deviation from the personal norm flags inflammation or illness; for female athletes it also tracks cycle phase.</span></dd></div>
+<div class="pi"><dt><span class="pnum">24</span><span class="pname"><span lang="en">Readiness index</span></span> <small><span lang="en">0–100</span></small></dt><dd><span lang="en">The morning composite (HRV, resting heart rate, sleep, questionnaire): green trains at full intensity, red gets a recovery plan.</span></dd></div>
+</dl>
+</article>
+<article class="pcard">
+<header class="pc-h"><span class="pc-ic"><svg class="wico" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M8 10a4 4 0 0 1 8 0"/><path d="m12 10 1.6-2.2"/></svg></span><div><h3><span lang="en">Body composition</span></h3><p class="pc-src"><span lang="en">SPT scale · bioimpedance</span></p></div><span class="pc-n">6</span></header>
+<dl class="plist">
+<div class="pi"><dt><span class="pnum">25</span><span class="pname"><span lang="en">Body mass</span></span> <small><span lang="en">kg</span></small></dt><dd><span lang="en">The daily trend; a sudden drop warns of dehydration or insufficient energy intake.</span></dd></div>
+<div class="pi"><dt><span class="pnum">26</span><span class="pname"><span lang="en">Body fat percentage</span></span> <small><span lang="en">%</span></small></dt><dd><span lang="en">Composition against the target for the position and season phase; the trend matters, not a single day.</span></dd></div>
+<div class="pi"><dt><span class="pnum">27</span><span class="pname"><span lang="en">Muscle mass</span></span> <small><span lang="en">kg</span></small></dt><dd><span lang="en">Muscle loss during injury or a break — the basis of the nutrition and strength plan for the return.</span></dd></div>
+<div class="pi"><dt><span class="pnum">28</span><span class="pname"><span lang="en">Total body water</span></span> <small><span lang="en">%</span></small></dt><dd><span lang="en">Hydration and recovery; together with morning mass it gives a more reliable picture than weight alone.</span></dd></div>
+<div class="pi"><dt><span class="pnum">29</span><span class="pname"><span lang="en">Visceral fat</span></span> <small><span lang="en">level</span></small></dt><dd><span lang="en">A health marker — especially relevant for recreational athletes and veterans.</span></dd></div>
+<div class="pi"><dt><span class="pnum">30</span><span class="pname"><span lang="en">Basal metabolic rate</span></span> <small><span lang="en">kcal/day</span></small></dt><dd><span lang="en">The basis for calculating daily energy needs and the nutrition plan.</span></dd></div>
+</dl>
+</article>
+<article class="pcard">
+<header class="pc-h"><span class="pc-ic"><svg class="wico" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7.5c-2-2-6-1.5-7 2s.5 8 3 10c1.4 1 2.6.6 4 0 1.4.6 2.6 1 4 0 2.5-2 4-6.5 3-10s-5-4-7-2Z"/><path d="M12 7.5c0-2 1-3.5 3-4.5"/></svg></span><div><h3><span lang="en">Nutrition and energy</span></h3><p class="pc-src"><span lang="en">app · scale · sensors</span></p></div><span class="pc-n">6</span></header>
+<dl class="plist">
+<div class="pi"><dt><span class="pnum">31</span><span class="pname"><span lang="en">Energy intake</span></span> <small><span lang="en">kcal</span></small></dt><dd><span lang="en">What the athlete ate — a meal photo, the food database or the nutritionist&#39;s plan.</span></dd></div>
+<div class="pi"><dt><span class="pnum">32</span><span class="pname"><span lang="en">Energy expenditure</span></span> <small><span lang="en">kcal</span></small></dt><dd><span lang="en">Calculated from heart rate, accelerometer and basal metabolic rate: how much was actually used in training and across the day.</span></dd></div>
+<div class="pi"><dt><span class="pnum">33</span><span class="pname"><span lang="en">Energy availability</span></span> <small><span lang="en">kcal/kg fat-free mass</span></small></dt><dd><span lang="en">Below about 30 kcal per kg of fat-free mass the risk of RED-S rises: hormonal disruption, weaker bones, more injuries.</span></dd></div>
+<div class="pi"><dt><span class="pnum">34</span><span class="pname"><span lang="en">Protein</span></span> <small><span lang="en">g/kg</span></small></dt><dd><span lang="en">For muscle recovery typically 1.6–2.2 g per kg of body mass, spread across 4–5 meals.</span></dd></div>
+<div class="pi"><dt><span class="pnum">35</span><span class="pname"><span lang="en">Carbohydrates</span></span> <small><span lang="en">g/kg</span></small></dt><dd><span lang="en">Fuel for intensity; intake is periodised to load — more the day before a match, less on recovery days.</span></dd></div>
+<div class="pi"><dt><span class="pnum">36</span><span class="pname"><span lang="en">Meal timing</span></span> <small><span lang="en">min after effort</span></small></dt><dd><span lang="en">Protein and carbohydrate within about 60 minutes of effort speed up recovery; the app sends a reminder.</span></dd></div>
+</dl>
+</article>
+<article class="pcard">
+<header class="pc-h"><span class="pc-ic"><svg class="wico" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11Z"/><path d="M9.5 14.5a2.5 2.5 0 0 0 2.5 2.5"/></svg></span><div><h3><span lang="en">Hydration, supplements and environment</span></h3><p class="pc-src"><span lang="en">scale · app · weather data</span></p></div><span class="pc-n">6</span></header>
+<dl class="plist">
+<div class="pi"><dt><span class="pnum">37</span><span class="pname"><span lang="en">Sweat loss</span></span> <small><span lang="en">L/h</span></small></dt><dd><span lang="en">The difference in mass before and after training; the replacement plan is about 150% of the fluid lost.</span></dd></div>
+<div class="pi"><dt><span class="pnum">38</span><span class="pname"><span lang="en">Hydration status</span></span> <small><span lang="en">% · urine colour</span></small></dt><dd><span lang="en">Just 2% dehydration measurably reduces endurance, speed and concentration.</span></dd></div>
+<div class="pi"><dt><span class="pnum">39</span><span class="pname"><span lang="en">Micronutrients and supplements</span></span> <small><span lang="en">manual entry · lab</span></small></dt><dd><span lang="en">Iron, ferritin, vitamin D and supplements — together with the doctor they explain fatigue, immunity and bone health.</span></dd></div>
+<div class="pi"><dt><span class="pnum">40</span><span class="pname"><span lang="en">Caffeine and alcohol</span></span> <small><span lang="en">manual entry</span></small></dt><dd><span lang="en">A visible effect on sleep, HRV and morning readiness — the athlete sees cause and effect.</span></dd></div>
+<div class="pi"><dt><span class="pnum">41</span><span class="pname"><span lang="en">Heat stress (WBGT)</span></span> <small><span lang="en">°C</span></small></dt><dd><span lang="en">Temperature, humidity and sun combined; above the threshold the system suggests hydration breaks and lower load.</span></dd></div>
+<div class="pi"><dt><span class="pnum">42</span><span class="pname"><span lang="en">Altitude and SpO₂</span></span> <small><span lang="en">m · %</span></small></dt><dd><span lang="en">Altitude adaptation (training camps, away games); lower oxygen saturation slows recovery.</span></dd></div>
+</dl>
+</article>
+<article class="pcard">
+<header class="pc-h"><span class="pc-ic"><svg class="wico" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6z"/><path d="M12 8v5M12 16h.01"/></svg></span><div><h3><span lang="en">Load and injury risk</span></h3><p class="pc-src"><span lang="en">SPT analytics · AI</span></p></div><span class="pc-n">6</span></header>
+<dl class="plist">
+<div class="pi"><dt><span class="pnum">43</span><span class="pname"><span lang="en">ACWR (acute : chronic)</span></span> <small><span lang="en">ratio · EWMA</span></small></dt><dd><span lang="en">The load of the last 7 days against the 28-day average; about 0.8–1.3 is balanced, above 1.5 risky.</span></dd></div>
+<div class="pi"><dt><span class="pnum">44</span><span class="pname"><span lang="en">Monotony and strain</span></span> <small><span lang="en">index</span></small></dt><dd><span lang="en">How similar the days of the week are and how large the total stress is — a uniformly heavy week precedes illness and overtraining.</span></dd></div>
+<div class="pi"><dt><span class="pnum">45</span><span class="pname"><span lang="en">sRPE (session RPE)</span></span> <small><span lang="en">AU</span></small></dt><dd><span lang="en">Effort rating × minutes; internal load even without sensors — for youth and recreational athletes.</span></dd></div>
+<div class="pi"><dt><span class="pnum">46</span><span class="pname"><span lang="en">Stride asymmetry L/R</span></span> <small><span lang="en">%</span></small></dt><dd><span lang="en">A left–right difference above about 10% warns of compensation, an early injury or incomplete recovery.</span></dd></div>
+<div class="pi"><dt><span class="pnum">47</span><span class="pname"><span lang="en">AI injury-risk estimate</span></span> <small><span lang="en">% · reasons</span></small></dt><dd><span lang="en">The model combines load, readiness, asymmetry and injury history and returns a probability, the reason and a recommendation; the decision stays with the staff.</span></dd></div>
+<div class="pi"><dt><span class="pnum">48</span><span class="pname"><span lang="en">Return-to-play index (RTP)</span></span> <small><span lang="en">% of personal norm</span></small></dt><dd><span lang="en">After injury it compares speed, accelerations and load with pre-injury values — an objective return criterion.</span></dd></div>
+</dl>
+</article>
+<article class="pcard">
+<header class="pc-h"><span class="pc-ic"><svg class="wico" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14" r="7"/><path d="M12 14v-4M10 3h4M12 3v4M18.5 7.5 20 6"/></svg></span><div><h3><span lang="en">Tests and neuromuscular status</span></h3><p class="pc-src"><span lang="en">SPT Pod · watch · field tests</span></p></div><span class="pc-n">6</span></header>
+<dl class="plist">
+<div class="pi"><dt><span class="pnum">49</span><span class="pname"><span lang="en">Countermovement jump (CMJ)</span></span> <small><span lang="en">cm · RSI</span></small></dt><dd><span lang="en">A 5–8% drop in height or reactivity points to neuromuscular fatigue — a day for lower intensity.</span></dd></div>
+<div class="pi"><dt><span class="pnum">50</span><span class="pname"><span lang="en">10/30 m sprint</span></span> <small><span lang="en">s</span></small></dt><dd><span lang="en">Acceleration and top speed under test conditions; progress is visible week to week.</span></dd></div>
+<div class="pi"><dt><span class="pnum">51</span><span class="pname"><span lang="en">Intermittent test (Yo-Yo IR, 30-15 IFT)</span></span> <small><span lang="en">level · km/h</span></small></dt><dd><span lang="en">Fitness level and individual zones for interval training.</span></dd></div>
+<div class="pi"><dt><span class="pnum">52</span><span class="pname"><span lang="en">Estimated VO₂max</span></span> <small><span lang="en">ml/kg/min</span></small></dt><dd><span lang="en">Aerobic capacity; the season trend shows whether the base has been built.</span></dd></div>
+<div class="pi"><dt><span class="pnum">53</span><span class="pname"><span lang="en">Aerobic efficiency</span></span> <small><span lang="en">speed/heart rate</span></small></dt><dd><span lang="en">The same speed at a lower heart rate means better fitness — the simplest progress marker for recreational athletes.</span></dd></div>
+<div class="pi"><dt><span class="pnum">54</span><span class="pname"><span lang="en">Cadence and ground contact</span></span> <small><span lang="en">steps/min · ms</span></small></dt><dd><span lang="en">Running economy and reactive strength; longer ground contact tracks fatigue.</span></dd></div>
+</dl>
+</article>
+<article class="pcard">
+<header class="pc-h"><span class="pc-ic"><svg class="wico" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5c1.8 2 5.2 2 7 0M9 9.5h.01M15 9.5h.01"/></svg></span><div><h3><span lang="en">Wellness</span></h3><p class="pc-src"><span lang="en">morning questionnaire in the app</span></p></div><span class="pc-n">6</span></header>
+<dl class="plist">
+<div class="pi"><dt><span class="pnum">55</span><span class="pname"><span lang="en">Fatigue</span></span> <small><span lang="en">1–5</span></small></dt><dd><span lang="en">Subjective tiredness — it often reacts before the objective markers.</span></dd></div>
+<div class="pi"><dt><span class="pnum">56</span><span class="pname"><span lang="en">Muscle soreness</span></span> <small><span lang="en">1–5 · body map</span></small></dt><dd><span lang="en">Where and how much it hurts; repeated soreness in the same spot is a reason to talk to the physio.</span></dd></div>
+<div class="pi"><dt><span class="pnum">57</span><span class="pname"><span lang="en">Perceived sleep quality</span></span> <small><span lang="en">1–5</span></small></dt><dd><span lang="en">Complements the watch data — how the athlete feels after sleep.</span></dd></div>
+<div class="pi"><dt><span class="pnum">58</span><span class="pname"><span lang="en">Stress</span></span> <small><span lang="en">1–5</span></small></dt><dd><span lang="en">Exams, travel, private life — stress raises injury risk just like physical load.</span></dd></div>
+<div class="pi"><dt><span class="pnum">59</span><span class="pname"><span lang="en">Mood and motivation</span></span> <small><span lang="en">1–5</span></small></dt><dd><span lang="en">An early sign of overtraining and burnout, especially in young athletes.</span></dd></div>
+<div class="pi"><dt><span class="pnum">60</span><span class="pname"><span lang="en">Menstrual cycle (optional, private)</span></span> <small><span lang="en">phase</span></small></dt><dd><span lang="en">Load, nutrition and recovery adjusted by phase; the data is visible only to the athlete and authorised staff.</span></dd></div>
+</dl>
+</article>
+<article class="pcard">
+<header class="pc-h"><span class="pc-ic"><svg class="wico" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16M3 10h3v4H3M21 10h-3v4h3"/><circle cx="12" cy="12" r="2.4"/></svg></span><div><h3><span lang="en">Tactics and technique</span></h3><p class="pc-src"><span lang="en">SPT Pod · UWB · team analytics</span></p></div><span class="pc-n">4</span></header>
+<dl class="plist">
+<div class="pi"><dt><span class="pnum">61</span><span class="pname"><span lang="en">Heatmap and average position</span></span> <small><span lang="en">map</span></small></dt><dd><span lang="en">Where the player moved and whether they hold their role in the system of play.</span></dd></div>
+<div class="pi"><dt><span class="pnum">62</span><span class="pname"><span lang="en">Team compactness</span></span> <small><span lang="en">m · width · depth</span></small></dt><dd><span lang="en">The distance between lines and players in defence and attack — a measure of organisation.</span></dd></div>
+<div class="pi"><dt><span class="pnum">63</span><span class="pname"><span lang="en">Defensive line height</span></span> <small><span lang="en">m from goal</span></small></dt><dd><span lang="en">How high the team defends and how the line shifts during the match and with fatigue.</span></dd></div>
+<div class="pi"><dt><span class="pnum">64</span><span class="pname"><span lang="en">Ball strikes and technical actions</span></span> <small><span lang="en">count · foot</span></small></dt><dd><span lang="en">With the optional boot sensor: kicks, passes and shots and the left–right foot ratio — technical load and asymmetry.</span></dd></div>
+</dl>
+</article>
+</div>
+<h3 class="an-t"><span lang="en">What the analyses show</span></h3>
+<div class="angrid">
+<div class="ancard"><h4><span lang="en">Morning readiness</span></h4><p><span lang="en">Who can go full intensity today and who needs an adjusted session: a green/amber/red traffic light for the whole squad before the first session.</span></p></div>
+<div class="ancard"><h4><span lang="en">Session report</span></h4><p><span lang="en">Whether the session hit its goal: planned versus delivered load per player and position, with deviations highlighted.</span></p></div>
+<div class="ancard"><h4><span lang="en">Weekly risk</span></h4><p><span lang="en">Who is entering the risk zone: ACWR, monotony, asymmetry and the AI estimate, with reasons and a recommendation for next week.</span></p></div>
+<div class="ancard"><h4><span lang="en">Nutrition versus load</span></h4><p><span lang="en">Whether intake matched expenditure: energy availability, protein and carbohydrate by microcycle day, with a meal and hydration plan.</span></p></div>
+<div class="ancard"><h4><span lang="en">Benchmarking and development</span></h4><p><span lang="en">How a player compares with their own norm, position and league profile; the season trend for scouting and youth development.</span></p></div>
+<div class="ancard"><h4><span lang="en">Return after injury</span></h4><p><span lang="en">When a return is safe: the RTP index compares current values with pre-injury values, step by step.</span></p></div>
+</div>
+<p class="pnote"><span lang="en">Thresholds (e.g. HSR &gt; 19.8 km/h, ACWR 0.8–1.3) are reference values from sports science; in SPT they are tuned per club, sport, age and athlete. SPT provides performance and wellbeing indicators, not a medical diagnosis.</span></p>
+<p class="pnote"><a class="btn btn-p" href="/en/publications/spt-64-parameters-and-analyses/" lang="en" hreflang="en">Full article: all 64 parameters, six analyses and every feature →</a></p>
+</div>
+</section>
+<section class="sec sci" id="science" aria-labelledby="t-sci">
+<div class="wrap">
+<header class="sh">
+<p class="kick"><span lang="en">SCIENCE</span></p>
+<h2 id="t-sci"><span lang="en">Key features — what they do and why they matter</span></h2>
+<p class="sub"><span lang="en">Behind every number in SPT is a method from sports science. These are the most important ones.</span></p></header>
+<div class="dgrid">
+<article class="deep">
+<span class="tag"><span lang="en">ACWR</span></span>
+<h3><span lang="en">Load that builds, not breaks</span></h3>
+<div class="deep-c">
+<div><h4><span lang="en">What it does</span></h4><p><span lang="en">For every athlete SPT calculates the ratio of acute (7-day) to chronic (28-day) load from GPS metrics and perceived exertion (sRPE × minutes).</span></p></div>
+<div><h4><span lang="en">Why it matters</span></h4><p><span lang="en">Sudden load spikes are associated with a higher risk of soft-tissue injuries. A zone of roughly 0.8–1.3 is considered the &#39;sweet spot&#39;, while values above ~1.5 call for caution (Gabbett, British Journal of Sports Medicine, 2016). SPT colours every player green, amber or red — before training, not after an injury.</span></p></div>
+</div>
+</article>
+<article class="deep">
+<span class="tag"><span lang="en">AI</span></span>
+<h3><span lang="en">AI injury-risk prediction</span></h3>
+<div class="deep-c">
+<div><h4><span lang="en">What it does</span></h4><p><span lang="en">The model combines ACWR, daily readiness, wellness, stride asymmetry, injury history and age into a single risk score from 0 to 100 and lists the main contributing factors.</span></p></div>
+<div><h4><span lang="en">Why it matters</span></h4><p><span lang="en">An injury is rarely caused by one number. Combining signals gives an early warning with an explanation — the staff decides, the model assists. SPT is a decision-support tool, not a medical diagnosis.</span></p></div>
+</div>
+</article>
+<article class="deep">
+<span class="tag"><span lang="en">GPS + UWB</span></span>
+<h3><span lang="en">Hybrid positioning: GPS outdoors, UWB indoors</span></h3>
+<div class="deep-c">
+<div><h4><span lang="en">What it does</span></h4><p><span lang="en">Outdoors the sensor uses multiple satellite systems at 20 Hz; indoors UWB anchors measure the time of flight of radio pulses and deliver positions with roughly ±10 cm accuracy. AUTO mode picks the source by itself.</span></p></div>
+<div><h4><span lang="en">Why it matters</span></h4><p><span lang="en">Indoor sports make up half of the sporting world, and GPS does not work under a roof. The same metric outdoors and indoors means comparable data across the whole season.</span></p></div>
+</div>
+</article>
+<article class="deep">
+<span class="tag"><span lang="en">BIOMECH</span></span>
+<h3><span lang="en">Asymmetry that signals a problem</span></h3>
+<div class="deep-c">
+<div><h4><span lang="en">What it does</span></h4><p><span lang="en">The IMU measures the ground contact time of the left and right foot (GCT) and countermovement jump (CMJ) height over time.</span></p></div>
+<div><h4><span lang="en">Why it matters</span></h4><p><span lang="en">Rising left–right asymmetry and a drop in CMJ often precede overload. SPT raises a flag when asymmetry exceeds 6 % — time for the physiotherapist, not another sprint.</span></p></div>
+</div>
+</article>
+<article class="deep">
+<span class="tag"><span lang="en">RTP</span></span>
+<h3><span lang="en">Return to play in 6 steps</span></h3>
+<div class="deep-c">
+<div><h4><span lang="en">What it does</span></h4><p><span lang="en">Every injury gets a protocol: pain control → range of motion → strength → running → sport-specific work → full training. Each step has a criterion and a physiotherapist&#39;s sign-off.</span></p></div>
+<div><h4><span lang="en">Why it matters</span></h4><p><span lang="en">Returning too early is a common cause of re-injury. Criteria instead of the calendar — and the whole staff sees the same status.</span></p></div>
+</div>
+</article>
+<article class="deep">
+<span class="tag"><span lang="en">READY</span></span>
+<h3><span lang="en">Readiness 0–100 every morning</span></h3>
+<div class="deep-c">
+<div><h4><span lang="en">What it does</span></h4><p><span lang="en">Sleep, HRV, resting heart rate, muscle soreness, stress and mood combine into one number with a traffic light.</span></p></div>
+<div><h4><span lang="en">Why it matters</span></h4><p><span lang="en">The same session for a tired and a rested player is not the same session. Readiness sets the dose of the day.</span></p></div>
+</div>
+</article>
+<article class="deep">
+<span class="tag"><span lang="en">CYCLE</span></span>
+<h3><span lang="en">Training adapted to the cycle</span></h3>
+<div class="deep-c">
+<div><h4><span lang="en">What it does</span></h4><p><span lang="en">Female athletes log their cycle phase and SPT gives phase-specific recommendations: volume, intensity, recovery and nutrition.</span></p></div>
+<div><h4><span lang="en">Why it matters</span></h4><p><span lang="en">Hormonal changes affect thermoregulation, recovery and perceived exertion. Individualisation instead of averages.</span></p></div>
+</div>
+</article>
+</div>
+<p class="note"><span lang="en">SPT is a performance-tracking and decision-support system; it does not replace a medical examination or diagnosis.</span></p>
+</div>
+</section>
+<section class="sec who" id="who" aria-labelledby="t-who">
+<div class="wrap">
+<header class="sh">
+<p class="kick">PRO KOHO</p>
+<h2 id="t-who">Jeden systém — od profesionálního klubu po ranní běh</h2>
+<p class="sub">Stejná data, různé role: každý vidí, co potřebuje — a nic, co nemá.</p></header>
+<div class="wgrid">
+<div class="wcard"><svg class="wico" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18M5 20V9l7-5 7 5v11M9 20v-6h6v6"/></svg><h3>Kluby</h3><p>Jeden zdroj pravdy pro A-tým, mládež i zdravotníky. Srovnání s ligou, reporty pro vedení a data, která zůstanou v klubu, i když lidé odejdou.</p></div><div class="wcard"><svg class="wico" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3h6v3H9zM8 11h8M8 15h5"/></svg><h3>Trenéři</h3><p>Živý obraz hřiště, minutáž podle rizika, srovnání hráčů a pozápasový report — bez Excelu.</p></div><div class="wcard"><svg class="wico" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg><h3>Kondiční trenéři</h3><p>ACWR, monotonie, zóny, sprinty a dávka pro každý den mikrocyklu. Plánuj, měř, upravuj.</p></div><div class="wcard"><svg class="wico" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m12 7 4 3-1.5 4.5h-5L8 10z"/></svg><h3>Hráči</h3><p>Osobní karta, připravenost každé ráno, cíle a pokrok. Tvoje data, tvoje kariéra.</p></div><div class="wcard"><svg class="wico" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="15" r="4"/><circle cx="17" cy="15" r="4"/><path d="M7 11V6h3l1 5M17 11V6h-3l-1 5M11 15h2"/></svg><h3>Skauti</h3><p>Objektivní fyzické metriky vedle videa: užší výběry s hodnocením, percentily podle pozice a věku.</p></div><div class="wcard"><svg class="wico" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 8.6a5 5 0 0 0-8.8-3.2 5 5 0 0 0-8.8 3.2c0 5.4 8.8 11.4 8.8 11.4s8.8-6 8.8-11.4Z"/><path d="M3.5 12h4l2-3 3 6 2-3h6"/></svg><h3>Rekreační sportovci</h3><p>Hodinky a aplikace: tep, spánek, regenerace a tréninkový plán, který se přizpůsobí tvému dni.</p></div><div class="wcard"><svg class="wico" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m2 9 10-5 10 5-10 5z"/><path d="M6 11v5c3 2.5 9 2.5 12 0v-5M22 9v6"/></svg><h3>Akademie a mládež 12+</h3><p>Věkové křivky, sledování růstu a zátěže, souhlasy rodičů a ochrana údajů nezletilých.</p></div><div class="wcard"><svg class="wico" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 9h6v6H9zM9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg><h3>Výrobci (OEM)</h3><p>Licencujte software, nástroje a servery SPT pro vlastní hardware — pod svou značkou nebo naší.</p></div>  </div>
+<div class="duo">
+<figure><a href="/spt/cs/galerija/recreational-runner/"><img src="/spt/img/recreational_runner-720.webp" srcset="/spt/img/recreational_runner-720.webp 720w, /spt/img/recreational_runner.webp 1408w" sizes="(max-width: 760px) 100vw, 50vw" width="1408" height="768" alt="Rekreační sportovci — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"></a><figcaption><b>Rekreační sportovci</b> — Hodinky a aplikace: tep, spánek a připravenost pro každého, kdo trénuje — od ranního běhu po maraton.</figcaption></figure>
+<figure><a href="/spt/cs/galerija/indoor-volleyball-uwb/"><img src="/spt/img/indoor_volleyball_uwb-720.webp" srcset="/spt/img/indoor_volleyball_uwb-720.webp 720w, /spt/img/indoor_volleyball_uwb.webp 1408w" sizes="(max-width: 760px) 100vw, 50vw" width="1408" height="768" alt="Halové sporty s UWB — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"></a><figcaption><b>Halové sporty s UWB</b> — UWB kotvy pod stropem dávají polohu s centimetrovou přesností tam, kde GPS nefunguje.</figcaption></figure>
+</div>
+</div>
+</section>
+<section class="sec oem" id="oem" aria-labelledby="t-oem">
+<div class="wrap">
+<header class="sh"><p class="kick">PRO VÝROBCE · OEM · WHITE-LABEL</p><h2 id="t-oem">SPT pohání i zařízení jiných</h2></header>
+<div class="oem-top">
+<p class="oem-lead">Software SPT kupují a implementují i jiní výrobci podobných systémů pro sledování sportovců. Je zabudovaný v jejich produktech — někdy pod jejich značkou, ale vždy s našimi nástroji, naším softwarem a našimi servery. A každý den ho dál vyvíjíme.</p>
+<figure class="oem-fig"><a href="/spt/cs/galerija/oem-cloud/"><img src="/spt/img/oem_cloud-720.webp" srcset="/spt/img/oem_cloud-720.webp 720w, /spt/img/oem_cloud.webp 1408w" sizes="(max-width: 900px) 100vw, 520px" width="1408" height="768" alt="SPT Cloud pro partnery — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"></a></figure>
+</div>
+<div class="flow" aria-hidden="true">
+<span>Senzory partnera</span><i></i><span>SPT Edge</span><i></i><span class="acc">SPT Cloud</span><i></i><span>Aplikace pod vaší značkou</span><span class="flow-api">Open API</span>
+</div>
+<div class="ogrid"><div class="card"><h3>Firmware SDK a protokol</h3><p>Hotový softwarový stack pro senzory: fúze GNSS/IMU, měření vzdálenosti UWB, synchronizace BLE a OTA aktualizace.</p></div><div class="card"><h3>Cloudové a edge servery</h3><p>Příjem dat v reálném čase, zpracování a ukládání na infrastruktuře SPT — nebo na vaší.</p></div><div class="card"><h3>White-label aplikace</h3><p>Vaše logo, barvy, doména a záznamy v obchodech s aplikacemi; náš kód a naše aktualizace.</p></div><div class="card"><h3>Analytický engine a AI</h3><p>ACWR, připravenost, riziko zranění, biomechanika a reporty — jako API nebo vestavěné moduly.</p></div><div class="card"><h3>Open API a export</h3><p>Export JSON/CSV a API pro propojení s videoanalýzou, zdravotnickými systémy a klubovým ERP.</p></div><div class="card"><h3>Neustálý vývoj</h3><p>Partneři dostávají každou novou verzi: co vyvineme pro SPT, dostane se i k jejich uživatelům.</p></div></div>
+<div class="oem-cta"><a class="btn btn-p" href="/en/contact/">Staňte se partnerem</a><p>Na požádání podepíšeme NDA a pracujeme pod vaší značkou.</p></div>
+</div>
+</section>
+<section class="sec dev" id="dev" aria-labelledby="t-dev">
+<div class="wrap">
+<header class="sh">
+<p class="kick">NEUSTÁLÝ VÝVOJ</p>
+<h2 id="t-dev">Nová verze každých pár týdnů</h2>
+<p class="sub">SPT není hotový produkt, ale platforma, která roste s kluby a partnery.</p></header>
+<ol class="tl"><li><b>SPT <span lang="en">2.0</span></b><p><span lang="en">Foundation: athlete record, GPS/UWB, watch, scale, AI assistant, 10 languages</span></p></li><li><b>SPT <span lang="en">2.2</span></b><p><span lang="en">Control room: multiple live tiles and a two-player half-pitch comparison</span></p></li><li><b>SPT <span lang="en">2.3</span></b><p><span lang="en">PWA install, interface customisation, inventory and staff notes</span></p></li><li><b>SPT <span lang="en">2.4</span></b><p><span lang="en">Advanced analytics: trends, positions, age curves, consistency, load balance</span></p></li><li><b>SPT <span lang="en">2.5</span></b><p><span lang="en">AI injury risk, scouting, medical record, RTP, league benchmark, biomechanics, meals, cycle, Open API</span></p></li><li class="next"><b>SPT <span lang="en">3.0</span></b><em>ve vývoji</em><p><span lang="en">In development: video synchronisation, extended AI models and new device integrations</span></p></li></ol>
+</div>
+</section>
+<section class="sec sports" id="sports" aria-labelledby="t-sports">
+<div class="wrap">
+<header class="sh">
+<p class="kick">VŠECHNY SPORTY</p>
+<h2 id="t-sports">Fotbal je showcase — SPT funguje v 75 sportech</h2>
+<p class="sub">Od hřiště a haly po vodu, sníh a trať: každý sport má vlastní pozice, metriky a normy.</p></header>
+<ul class="chips"><li class="acc">Fotbal</li><li>Futsal</li><li>Basketbal</li><li>Házená</li><li>Volejbal</li><li>Vodní pólo</li><li>Veslování</li><li>Atletika</li><li>Plavání</li><li>Cyklistika</li><li>Tenis</li><li>Padel</li><li>Ragby</li><li>Americký fotbal</li><li>Lední hokej</li><li>Pozemní hokej</li><li>Baseball</li><li>Kriket</li><li>Sjezdové lyžování</li><li>Triatlon</li><li>Kanoistika</li><li>Jachting</li><li>Bojové sporty</li><li>Motorsport: automobilový sport, motocyklový sport, motokáry</li><li class="more">+ dalších 51 sportů v databázi</li></ul>
+</div>
+</section>
+<section class="sec specs" id="specs" aria-labelledby="t-specs">
+<div class="wrap">
+<header class="sh"><p class="kick"><span lang="en">SPECIFICATIONS</span></p><h2 id="t-specs"><span lang="en">Technical data</span></h2></header>
+<table class="spec"><tbody><tr><th scope="row"><span lang="en">Outdoor positioning</span></th><td><span lang="en">GNSS 20 Hz (GPS, Galileo, GLONASS, BeiDou)</span></td></tr><tr><th scope="row"><span lang="en">Indoor positioning</span></th><td><span lang="en">UWB, accuracy about ±10 cm; BLE fallback; AUTO mode</span></td></tr><tr><th scope="row"><span lang="en">Inertial sensor</span></th><td><span lang="en">9-axis IMU (accelerometer, gyroscope, magnetometer) up to 1000 Hz</span></td></tr><tr><th scope="row"><span lang="en">Physiology</span></th><td><span lang="en">Heart rate and HRV (watch, chest strap), sleep, daily recovery</span></td></tr><tr><th scope="row"><span lang="en">Body composition</span></th><td><span lang="en">BIA scale: weight, muscle, fat, water, visceral fat, BMR</span></td></tr><tr><th scope="row"><span lang="en">Sensor housing</span></th><td><span lang="en">IP67, USB-C charging</span></td></tr><tr><th scope="row"><span lang="en">Latency</span></th><td><span lang="en">under 1 s from sensor to bench (edge server)</span></td></tr><tr><th scope="row"><span lang="en">Application</span></th><td><span lang="en">Windows 10/11 desktop, web, PWA for Android and iOS, 10 languages</span></td></tr><tr><th scope="row"><span lang="en">Data</span></th><td><span lang="en">CSV/JSON export, Open API, print and PDF reports</span></td></tr><tr><th scope="row"><span lang="en">Roles &amp; privacy</span></th><td><span lang="en">5 roles, clubs stored under codes, parental consent for under-18s</span></td></tr></tbody></table>
+</div>
+</section>
+<section class="sec gal" id="galerija" aria-labelledby="t-gal">
+<div class="wrap">
+<header class="sh"><p class="kick">SPT · Galerie</p><h2 id="t-gal">Všechny obrázky</h2></header>
+<ul class="ggrid">
+<li><a href="/spt/cs/galerija/hero-stadium-usa/"><img src="/spt/img/hero_stadium_usa-720.webp" width="720" height="402" alt="Zápasový den v USA — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"><span>Zápasový den v USA</span></a></li>
+<li><a href="/spt/cs/galerija/dashboard-laptop/"><img src="/spt/img/dashboard_laptop-720.webp" width="720" height="393" alt="Živý dashboard — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"><span>Živý dashboard</span></a></li>
+<li><a href="/spt/cs/galerija/analytics-screen/"><img src="/spt/img/analytics_screen-720.webp" width="720" height="393" alt="AI analytika — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"><span>AI analytika</span></a></li>
+<li><a href="/spt/cs/galerija/control-room/"><img src="/spt/img/control_room-720.webp" width="720" height="393" alt="Řídicí místnost — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"><span>Řídicí místnost</span></a></li>
+<li><a href="/spt/cs/galerija/coach-tablet/"><img src="/spt/img/coach_tablet-720.webp" width="720" height="393" alt="Tablet u lavičky — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"><span>Tablet u lavičky</span></a></li>
+<li><a href="/spt/cs/galerija/mobile-app/"><img src="/spt/img/mobile_app-720.webp" width="720" height="393" alt="Aplikace pro sportovce — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"><span>Aplikace pro sportovce</span></a></li>
+<li><a href="/spt/cs/galerija/live-hud-sprint/"><img src="/spt/img/live-hud-sprint-720.webp" width="720" height="405" alt="Sprint v reálném čase — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"><span>Sprint v reálném čase</span></a></li>
+<li><a href="/spt/cs/galerija/live-hud-alert/"><img src="/spt/img/live-hud-alert-720.webp" width="720" height="405" alt="Živý alarm rizika — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"><span>Živý alarm rizika</span></a></li>
+<li><a href="/spt/cs/galerija/live-hud-goal/"><img src="/spt/img/live-hud-goal-720.webp" width="720" height="405" alt="Zápas v číslech — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"><span>Zápas v číslech</span></a></li>
+<li><a href="/spt/cs/galerija/vest-front/"><img src="/spt/img/vest_front-720.webp" width="720" height="393" alt="Vesta SPT — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"><span>Vesta SPT</span></a></li>
+<li><a href="/spt/cs/galerija/vest-back/"><img src="/spt/img/vest_back-720.webp" width="720" height="393" alt="Kapsa mezi lopatkami — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"><span>Kapsa mezi lopatkami</span></a></li>
+<li><a href="/spt/cs/galerija/chip-pod/"><img src="/spt/img/chip_pod-720.webp" width="720" height="393" alt="Senzor SPT Pod — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"><span>Senzor SPT Pod</span></a></li>
+<li><a href="/spt/cs/galerija/watch/"><img src="/spt/img/watch-720.webp" width="720" height="393" alt="Hodinky SPT — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"><span>Hodinky SPT</span></a></li>
+<li><a href="/spt/cs/galerija/strap-hr/"><img src="/spt/img/strap_hr-720.webp" width="720" height="393" alt="Hrudní pás — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"><span>Hrudní pás</span></a></li>
+<li><a href="/spt/cs/galerija/smart-scale/"><img src="/spt/img/smart_scale-720.webp" width="720" height="393" alt="Váha SPT — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"><span>Váha SPT</span></a></li>
+<li><a href="/spt/cs/galerija/uwb-anchor/"><img src="/spt/img/uwb_anchor-720.webp" width="720" height="393" alt="UWB kotvy — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"><span>UWB kotvy</span></a></li>
+<li><a href="/spt/cs/galerija/edge-server/"><img src="/spt/img/edge_server-720.webp" width="720" height="393" alt="SPT Edge One — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"><span>SPT Edge One</span></a></li>
+<li><a href="/spt/cs/galerija/training-vests/"><img src="/spt/img/training_vests-720.webp" width="720" height="402" alt="Trénink ve vestách SPT — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"><span>Trénink ve vestách SPT</span></a></li>
+<li><a href="/spt/cs/galerija/recreational-runner/"><img src="/spt/img/recreational_runner-720.webp" width="720" height="393" alt="Rekreační sportovci — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"><span>Rekreační sportovci</span></a></li>
+<li><a href="/spt/cs/galerija/indoor-volleyball-uwb/"><img src="/spt/img/indoor_volleyball_uwb-720.webp" width="720" height="393" alt="Halové sporty s UWB — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"><span>Halové sporty s UWB</span></a></li>
+<li><a href="/spt/cs/galerija/oem-cloud/"><img src="/spt/img/oem_cloud-720.webp" width="720" height="393" alt="SPT Cloud pro partnery — SPT Sports Performance Tracking · GNK ASG" loading="lazy" decoding="async"><span>SPT Cloud pro partnery</span></a></li>
+</ul>
+</div>
+</section>
+<section class="sec faq" id="faq" aria-labelledby="t-faq">
+<div class="wrap narrow">
+<header class="sh"><p class="kick"><span lang="en">FAQ</span></p><h2 id="t-faq"><span lang="en">Frequently asked questions</span></h2></header>
+<details class="qa"><summary><span lang="en">Is SPT only for professional clubs?</span></summary><p><span lang="en">No. The same system works for a professional club, an academy and an amateur athlete. An amateur needs only the watch and the app; a club adds vests, UWB anchors and an edge server.</span></p></details><details class="qa"><summary><span lang="en">Does SPT work indoors?</span></summary><p><span lang="en">Yes. Indoors it uses UWB anchors with roughly ±10 cm accuracy, outdoors GPS at 20 Hz. AUTO mode switches the position source by itself.</span></p></details><details class="qa"><summary><span lang="en">Is the AI injury prediction a medical diagnosis?</span></summary><p><span lang="en">No. It is an early-warning and decision-support system that shows risk factors. The decision is always made by the professional staff.</span></p></details><details class="qa"><summary><span lang="en">Who owns the data?</span></summary><p><span lang="en">The club and the athlete. Clubs are stored under codes, access is defined by roles, and data can be exported at any time (CSV, JSON, API).</span></p></details><details class="qa"><summary><span lang="en">Can manufacturers use SPT under their own brand?</span></summary><p><span lang="en">Yes. SPT is licensed as white-label: your brand, our tools, software and servers. SPT already runs inside other manufacturers&#39; devices.</span></p></details><details class="qa"><summary><span lang="en">How is SPT installed?</span></summary><p><span lang="en">On Windows with one click (a desktop shortcut), on phones and tablets as a PWA from the browser, and on the web with no installation.</span></p></details><details class="qa"><summary><span lang="en">Which languages does SPT support?</span></summary><p><span lang="en">The app is available in 10 languages, and this page in 24.</span></p></details> </div>
+</section>
+<section class="cta" id="cta" aria-labelledby="t-cta">
+<div class="wrap cta-in">
+<h2 id="t-cta">Chcete vidět své sportovce v číslech?</h2>
+<p>Demo pro kluby, partnerství pro výrobce, zkušební balíček pro akademie a rekreační sportovce.</p>
+<div class="ctas">
+<a class="btn btn-p" href="/en/contact/">Vyžádat demo</a>
+<a class="btn" href="/en/publications/spt-sports-performance-tracking-gnk-asg/">Přečíst článek</a>
+<a class="btn btn-g" href="/spt/cs/film/">Pustit film</a>
+</div>
+<p class="cta-sig">SPT · produced by GNK ASG · Nermin Sefić</p>
+</div>
+</section>
+</main>
+<footer class="ft">
+<div class="wrap ft-in">
+<div class="ft-brand">
+<a class="ft-logo" href="/"><img src="/assets/logo-gnk-asg-canonical.svg" width="58" height="60" alt="GNK ASG" loading="lazy"></a>
+<div>
+<p class="ft-spt"><b>SPT</b> · Sports Performance Tracking</p>
+<p>© 2026 SPT · produced by GNK ASG</p>
+<p>Autor: Nermin Sefić · <a href="/en/nermin-sefic/" rel="author">Nermin Sefić</a></p>
+</div>
+</div>
+<nav class="ft-links" aria-label="SPT">
+<a href="/">Portál GNK ASG</a>
+<a href="/en/nermin-sefic/">Nermin Sefić</a>
+<a href="/en/contact/">Kontakt</a>
+<a href="/en/publications/spt-sports-performance-tracking-gnk-asg/">Článek o SPT</a>
+<a href="/spt/cs/galerija/">Galerie obrázků</a>
+<a href="/spt/cs/film/">Film</a>
+</nav>
+<p class="ft-tags">#SPT #GNKASG #NerminSefić #SportsPerformanceTracking #SportovníAnalytika #GPStracking #UWB #PrevenceZranění #ACWR #FootballTech #SportsScience #LoadManagement #WhiteLabel #MadeInCroatia #Zagreb</p>
+<nav class="ft-langs" aria-label="Jazyk"><a href="/spt/" hreflang="hr" lang="hr">Hrvatski</a><a href="/spt/en/" hreflang="en" lang="en">English</a><a href="/spt/de/" hreflang="de" lang="de">Deutsch</a><a href="/spt/it/" hreflang="it" lang="it">Italiano</a><a href="/spt/es/" hreflang="es" lang="es">Español</a><a href="/spt/fr/" hreflang="fr" lang="fr">Français</a><a href="/spt/pt/" hreflang="pt" lang="pt">Português</a><a href="/spt/nl/" hreflang="nl" lang="nl">Nederlands</a><a href="/spt/pl/" hreflang="pl" lang="pl">Polski</a><a href="/spt/sl/" hreflang="sl" lang="sl">Slovenščina</a><a href="/spt/cs/" hreflang="cs" lang="cs" aria-current="true">Čeština</a><a href="/spt/sk/" hreflang="sk" lang="sk">Slovenčina</a><a href="/spt/hu/" hreflang="hu" lang="hu">Magyar</a><a href="/spt/ro/" hreflang="ro" lang="ro">Română</a><a href="/spt/bg/" hreflang="bg" lang="bg">Български</a><a href="/spt/el/" hreflang="el" lang="el">Ελληνικά</a><a href="/spt/tr/" hreflang="tr" lang="tr">Türkçe</a><a href="/spt/ru/" hreflang="ru" lang="ru">Русский</a><a href="/spt/uk/" hreflang="uk" lang="uk">Українська</a><a href="/spt/sr/" hreflang="sr" lang="sr">Српски</a><a href="/spt/fi/" hreflang="fi" lang="fi">Suomi</a><a href="/spt/sv/" hreflang="sv" lang="sv">Svenska</a><a href="/spt/da/" hreflang="da" lang="da">Dansk</a><a href="/spt/no/" hreflang="no" lang="no">Norsk</a></nav>
+<p class="sig">produced by GNK ASG · Nermin Sefić</p>
+</div>
+</footer>
+</body>
+</html>

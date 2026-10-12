@@ -1,0 +1,31 @@
+{
+  "name": "SPT — Sports Performance Tracking",
+  "short_name": "SPT",
+  "description": "SPT — sustav za praćenje sportskih performansi. produced by GNK ASG.",
+  "start_url": "/#dashboard",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#070b12",
+  "theme_color": "#0a1420",
+  "lang": "hr",
+  "icons": [
+    {
+      "src": "/static/img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/static/img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    { "name": "Kontrolna soba", "url": "/#soba" },
+    { "name": "Praćenje uživo", "url": "/#live" },
+    { "name": "Izvještaji", "url": "/#izvjestaji" },
+    { "name": "SPT AI", "url": "/#ai" }
+  ]
+}

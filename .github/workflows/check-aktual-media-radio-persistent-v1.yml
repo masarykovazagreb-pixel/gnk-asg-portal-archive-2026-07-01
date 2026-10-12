@@ -1,0 +1,43 @@
+name: Check AKTUAL MEDIA Radio Persistent V1
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/gnk-aktual/**'
+      - 'apps/portal/en/gnk-aktual/**'
+      - 'apps/portal/radio/**'
+      - 'apps/portal/en/radio/**'
+      - 'apps/portal/assets/aktual-radio-player-v1.js'
+      - 'apps/portal/assets/aktual-media-radio-*'
+      - 'apps/portal/assets/public-unified-menu-v6.js'
+      - 'apps/portal/aktual-media-radio.webmanifest'
+      - 'scripts/test-aktual-media-radio-persistent-v1.mjs'
+      - '.github/workflows/check-aktual-media-radio-persistent-v1.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/gnk-aktual/**'
+      - 'apps/portal/en/gnk-aktual/**'
+      - 'apps/portal/radio/**'
+      - 'apps/portal/en/radio/**'
+      - 'apps/portal/assets/aktual-radio-player-v1.js'
+      - 'apps/portal/assets/aktual-media-radio-*'
+      - 'apps/portal/assets/public-unified-menu-v6.js'
+      - 'apps/portal/aktual-media-radio.webmanifest'
+      - 'scripts/test-aktual-media-radio-persistent-v1.mjs'
+      - '.github/workflows/check-aktual-media-radio-persistent-v1.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate AKTUAL MEDIA radio persistence and install contract
+        run: node scripts/test-aktual-media-radio-persistent-v1.mjs
