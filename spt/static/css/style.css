@@ -427,3 +427,12 @@ body.cb .ni-dot.red{background:#ff8b3d}
 .scatter-wrap{position:relative;margin-top:6px}
 .scatter-cv{width:100%;background:#0a111c;border-radius:10px;border:1px solid var(--border);display:block}
 .scatter-tip{display:none;position:absolute;background:#0d1522ee;border:1px solid var(--border2);border-radius:9px;padding:7px 10px;font-size:11.5px;pointer-events:none;z-index:5;box-shadow:0 8px 24px #0009}
+
+/* ================= SPT 2.5 — rehab, obroci, liga ================= */
+.rehab-step{display:flex;gap:12px;align-items:flex-start;padding:11px 12px;border:1px solid var(--border);border-radius:11px;margin-top:8px;background:var(--panel2)}
+.rehab-step input[type=checkbox]{width:18px;height:18px;margin-top:2px;cursor:pointer;flex-shrink:0}
+.rehab-step.done{opacity:.55;border-color:#1f4d2e}
+.rehab-step.done b{text-decoration:line-through}
+.meal-it{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border);border-radius:10px;margin-top:7px;background:var(--panel2)}
+.meal-it .btn{margin-left:auto;flex-shrink:0}
+.tbl tr.hl td{background:#0f2e3f}

@@ -59,6 +59,16 @@ VIEWS.karton = {
       cp.innerHTML = `<span>Potpunost kartona</span><b style="color:${k.completeness >= 75 ? "var(--good)" : k.completeness >= 50 ? "var(--amber)" : "var(--red)"}">${k.completeness}% ${k.completeness >= 75 ? "· odlično" : k.completeness >= 50 ? "· dopuni preostale kategorije" : "· kritično malo podataka"}</b>`;
       hero.append(cp);
     }
+    // AI rizik (2.5)
+    try {
+      const rk = await API.get(`/api/analysis/risk?athlete=${sub}`);
+      const r0 = rk.items && rk.items[0];
+      if (r0) {
+        const col = r0.level === "visok" ? "var(--red)" : r0.level === "umjeren" ? "var(--amber)" : "var(--good)";
+        hero.append(el("div", "mini-stat", `<span>🤖 AI rizik ozljede</span>
+          <b style="color:${col}">${r0.risk}/100 — ${esc(r0.level)}${r0.factors.length ? " · " + esc(r0.factors[0]) : ""}</b>`));
+      }
+    } catch (e) {}
     cont.append(hero);
 
     // ============ RED 1: norme/odstupanja + tjelesni sastav ============
@@ -227,6 +237,93 @@ VIEWS.karton = {
     loadCard.append(mix);
     row2.append(loadCard);
     cont.append(row2);
+
+    // ============ MEDICINSKI DOSJE (2.5) ============
+    const medCard = el("div", "card");
+    medCard.style.marginTop = "14px";
+    medCard.innerHTML = `<h3>🩺 Medicinski dosje</h3>`;
+    const med = await API.get(`/api/medical?athlete=${sub}`);
+    if (med.items.length) {
+      const mt = el("table", "tbl");
+      mt.innerHTML = `<thead><tr><th>Vrsta</th><th>Datum</th><th>Detalji</th><th>Bilješka</th></tr></thead>`;
+      const mtb = el("tbody");
+      for (const r of med.items) {
+        const badge = r.mtype === "alergija" ? '<span class="badge b-red">ALERGIJA</span>'
+          : r.mtype === "pregled" ? '<span class="badge b-blue">PREGLED</span>'
+          : r.mtype === "vakcina" ? '<span class="badge b-gr">VAKCINA</span>'
+          : r.mtype === "dozvola" ? '<span class="badge b-amber">DOZVOLA RODITELJA</span>'
+          : '<span class="badge b-dim">' + esc(r.mtype) + "</span>";
+        mtb.append(el("tr", "", `<td>${badge}</td><td class="mono">${fmtD(r.mdate)}</td>
+          <td>${esc(r.details || "")}</td><td class="muted">${esc(r.notes || "")}</td>`));
+      }
+      mt.append(mtb);
+      medCard.append(mt);
+    } else {
+      medCard.append(el("div", "muted", "Nema medicinskih zapisa."));
+    }
+    if (AUTH.user && ["trener", "kondicijski", "admin"].includes(AUTH.user.role)) {
+      const mf = el("details");
+      mf.innerHTML = `<summary style="cursor:pointer;font-size:12.5px;color:var(--accent)">➕ Novi medicinski zapis</summary>`;
+      const fr = el("div", "ctrl-row"); fr.style.cssText = "flex-wrap:wrap;gap:8px;margin-top:10px";
+      const sT = el("select");
+      for (const [v, l] of [["alergija", "alergija"], ["pregled", "pregled"], ["vakcina", "vakcina"], ["dozvola", "dozvola roditelja"], ["operacija", "operacija"]]) {
+        const o = el("option"); o.value = v; o.textContent = l; sT.append(o);
+      }
+      const iDet = el("input"); iDet.placeholder = "detalji (npr. peludna alergija...)";
+      const iNote = el("input"); iNote.placeholder = "bilješka";
+      const add = el("div", "btn sm", "💾 Spremi");
+      add.onclick = async () => {
+        const r = await API.post("/api/medical", { athlete: +sub, mtype: sT.value, details: iDet.value, notes: iNote.value });
+        if (r.ok) { toast("Zapis spremljen", "ok"); VIEWS.karton.render(cont, sub); }
+        else toast(r.error || "Greška", "err");
+      };
+      fr.append(sT, iDet, iNote, add);
+      mf.append(fr);
+      medCard.append(mf);
+    }
+    cont.append(medCard);
+
+    // ============ CIKLUS (2.5, samo žene) ============
+    if (k.sex === "F") {
+      const cyCard = el("div", "card");
+      cyCard.style.marginTop = "14px";
+      cyCard.innerHTML = `<h3>🌸 Monitoring ciklusa <span class="faint" style="font-weight:400;font-size:11px">performansa prilagođena fazi</span></h3>`;
+      const cy = await API.get(`/api/cycle?athlete=${sub}`);
+      const last = cy.items[0];
+      if (last) {
+        cyCard.append(el("div", "pill-row", `<span class="chip on">trenutna faza: <b style="margin-left:4px">${esc(last.phase)}</b> (od ${fmtD(last.cdate)})</span>`));
+        const recs = { "menstruacija": "Smanjiti obujam po potrebi · unos željeza · niski intenziteti ako ima grčeva",
+          "folikularna": "Rastući estrogen — idealno za progresiju snage i intenzitet",
+          "ovulacija": "Vršna snaga — testiranja; pazi stabilizaciju koljena",
+          "lutealna": "Viša temperatura i zadržavanje vode — produži regeneraciju, nadoknadi natrij" };
+        cyCard.append(el("div", "rep-rec", "💡 " + (recs[last.phase] || "")));
+        if (cy.items.length > 1) {
+          const hist = el("div", "faint");
+          hist.style.cssText = "font-size:11px;margin-top:6px";
+          hist.textContent = "povijest: " + cy.items.slice(0, 6).map(x => x.cdate.slice(5) + " " + x.phase).join(" · ");
+          cyCard.append(hist);
+        }
+      } else {
+        cyCard.append(el("div", "muted", "Nema zapisa o fazi."));
+      }
+      const cf = el("details");
+      cf.innerHTML = `<summary style="cursor:pointer;font-size:12.5px;color:var(--accent)">➕ Zabilježi fazu</summary>`;
+      const fr2 = el("div", "ctrl-row"); fr2.style.cssText = "flex-wrap:wrap;gap:8px;margin-top:10px";
+      const sP = el("select");
+      for (const p of ["menstruacija", "folikularna", "ovulacija", "lutealna"]) {
+        const o = el("option"); o.value = p; o.textContent = p; sP.append(o);
+      }
+      const add2 = el("div", "btn sm", "💾 Spremi fazu");
+      add2.onclick = async () => {
+        const r = await API.post("/api/cycle", { athlete: +sub, phase: sP.value });
+        if (r.ok) { toast("Faza zabilježena", "ok"); VIEWS.karton.render(cont, sub); }
+        else toast(r.error || "Greška", "err");
+      };
+      fr2.append(sP, add2);
+      cf.append(fr2);
+      cyCard.append(cf);
+      cont.append(cyCard);
+    }
 
     // ============ SESIJE (zadnjih 25, klik = detalji) ============
     if (k.sessions && k.sessions.length) {

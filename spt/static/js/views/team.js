@@ -65,6 +65,29 @@ VIEWS.team = {
       row.append(anomCard);
       out.append(row);
 
+      // AI rizik ozljede (SPT 2.5)
+      try {
+        const risk = await API.get(`/api/analysis/risk?club=${clubSel.value}`);
+        if (risk.items.length) {
+          const rCard = el("div", "card"); rCard.style.marginTop = "14px";
+          rCard.innerHTML = `<h3>🤖 AI procjena rizika ozljede <span class="badge b-red">${risk.high} visok</span> <span class="badge b-amber">${risk.moderate} umjeren</span>
+            <span class="faint" style="font-weight:400;font-size:11px;float:right">model: ACWR + spremnost + wellness + asimetrija + povijest</span></h3>`;
+          const rt = el("table", "tbl");
+          rt.innerHTML = `<thead><tr><th>Igrač</th><th style="width:30%">Rizik</th><th class="num">score</th><th>Čimbenici</th></tr></thead>`;
+          const rtb = el("tbody");
+          for (const r of risk.items.slice(0, 12)) {
+            const col = r.level === "visok" ? "var(--red)" : r.level === "umjeren" ? "var(--amber)" : "var(--good)";
+            rtb.append(el("tr", "click", `<td><b>${esc(r.name)}</b> <span class="faint">${esc(r.pos || "")}</span></td>
+              <td><div class="progress"><i style="width:${r.risk}%;background:${col}"></i></div></td>
+              <td class="num" style="color:${col}"><b>${r.risk}</b></td>
+              <td class="muted" style="font-size:11.5px">${r.factors.map(esc).join(" · ") || "—"}</td>`));
+          }
+          rt.append(rtb);
+          rCard.append(rt);
+          out.append(rCard);
+        }
+      } catch (e) {}
+
       // roster tablica
       const rosterCard = el("div", "card"); rosterCard.style.marginTop = "14px";
       rosterCard.innerHTML = `<h3>👥 Roster — spremnost i status</h3>`;

@@ -55,6 +55,10 @@ VIEWS.injuries = {
           <td></td>`;
         tr.onclick = () => nav("karton", i.athlete);
         if (i.status !== "oporavljeno") {
+          const rehabBtn = el("div", "btn ghost sm", "🩹");
+          rehabBtn.title = "RTP protokol";
+          rehabBtn.onclick = e => { e.stopPropagation(); showRehab(i); };
+          tr.lastElementChild.append(rehabBtn);
           const doneBtn = el("div", "btn ghost sm", "✓");
           doneBtn.title = "Označi oporavljenim";
           doneBtn.onclick = async e => {
@@ -120,3 +124,49 @@ VIEWS.injuries = {
     load();
   }
 };
+
+// ---- RTP rehab protokol (SPT 2.5) ----
+async function showRehab(inj) {
+  const modal = el("div");
+  modal.style.cssText = "position:fixed;inset:0;background:#04070ccc;z-index:70;display:flex;align-items:center;justify-content:center;padding:20px";
+  const card = el("div", "card");
+  card.style.cssText = "max-width:560px;width:100%;max-height:86vh;overflow-y:auto;background:#0d1522";
+  card.innerHTML = '<h3>🩹 RTP protokol — ' + esc(inj.itype) + ' (' + esc(inj.body_part) + ')</h3>' +
+    '<div class="muted" style="font-size:12px">' + esc(inj.name) + ' · od ' + fmtD(inj.idate) + ' · ' + inj.days_out + ' dana procjena</div>';
+  card.append(spinner());
+  modal.append(card);
+  modal.onclick = e => { if (e.target === modal) modal.remove(); };
+  document.body.append(modal);
+  const d = await API.get("/api/rehab?injury=" + inj.id);
+  const sp = card.querySelector(".spinner");
+  if (sp) sp.remove();
+  if (!d.steps.length) {
+    card.append(el("div", "muted", "Nema definiranih koraka za ovu ozljedu."));
+  }
+  for (const s of d.steps) {
+    const row = el("div", "rehab-step" + (s.done ? " done" : ""));
+    const cb = el("input"); cb.type = "checkbox"; cb.checked = !!s.done;
+    cb.onchange = async () => {
+      const r = await API.post("/api/rehab/step", { id: s.id, done: cb.checked });
+      if (r.error) { cb.checked = !cb.checked; toast(r.error, "err"); return; }
+      row.classList.toggle("done", cb.checked);
+      toast(cb.checked ? "Korak završen ✓" : "Korak vraćen na čekanje");
+    };
+    const body = el("div");
+    body.innerHTML = '<b style="font-size:13px">' + esc(s.title) + '</b>' +
+      '<div class="muted" style="font-size:11.5px;margin-top:2px">kriterij: ' + esc(s.criteria || "") +
+      (s.done ? ' · ✔ ' + esc(s.therapist || "") + ' ' + fmtD(s.done_date || "") : "") + "</div>";
+    row.append(cb, body);
+    card.append(row);
+  }
+  const done = d.steps.filter(s => s.done).length;
+  const pct = d.steps.length ? Math.round(100 * done / d.steps.length) : 0;
+  const bar = el("div", "progress");
+  bar.style.marginTop = "10px";
+  bar.innerHTML = '<i style="width:' + pct + '%"></i>';
+  card.append(bar, el("div", "muted", "napredak: " + done + "/" + d.steps.length + " koraka (" + pct + "%)"));
+  const cl = el("div", "btn ghost sm", "Zatvori");
+  cl.style.cssText = "margin-top:12px;width:100%";
+  cl.onclick = () => modal.remove();
+  card.append(cl);
+}

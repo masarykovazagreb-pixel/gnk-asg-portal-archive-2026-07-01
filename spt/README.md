@@ -310,3 +310,29 @@ Pregled **Napredna analitika** (🧠 u navigaciji):
 13. **Open API** — JSON export za istraživače/reklame
 14. **3D biomehanika** — silinski pladnjevi + asymetrija lijevo/desno kroz vrijeme
 15. **Cloud sinkronizacija** — više klubova, jedna baza, kontrola pristupa po šifri
+
+---
+
+## 🏁 SPT 2.5 — sve roadmap stavke implementirane
+
+| Stavka | Status |
+|---|---|
+| 🤖 AI predikcija rizika ozljede (ACWR + wellness + asimetrija + povijest) | ✅ klub + karton |
+| 📅 Tjedni pregled kluba (izvještaj za ispis) | ✅ 8. vrsta izvještaja |
+| 🔭 Scouting (shortliste, ocjene ★, bilješke) | ✅ nova stranica |
+| 🩺 Medicinski dosje (alergije, pregledi, vakcine, dozvole roditelja) | ✅ u kartonu |
+| 🩹 Rehab/RTP protokoli (6 koraka s kriterijima + potpis fizioterapeuta) | ✅ u ozljedama |
+| 🏆 Liga benchmark (percentili klubova unutar sporta) | ✅ analitika |
+| 🦵 Biomehanika (GCT asimetrija lijevo/desno + CMJ serija) | ✅ analitika |
+| 🍽 Planer obroka (biblioteka 22 obroka + dnevni plan vs TDEE) | ✅ prehrana |
+| 🌸 Monitoring ciklusa (faze + preporuke za trening) | ✅ karton (žene) |
+| 🔓 Open API (JSON export cijele baze) | ✅ postavke (admin) |
+| 🖥 Instalacija na desktop | ✅ PWA + INSTALACIJA-WINDOWS.bat |
+
+**Instalacija na Windows 11 (3 načina):**
+1. **INSTALACIJA-WINDOWS.bat** — sve jednim klikom (provjera + prečica + start)
+2. **PWA** — Postavke → "Instaliraj SPT" (prozor bez trake, offline, ikona u Startu)
+3. **SPT-prečica.bat** — samo prečica na radnoj površini
+
+*Sljedeća faza: javna stranica gnk-asg.hr — world-class marketing s punim SEO
+(meta, OG, Twitter kartice, hashtags), autor: Nermin Sefić.*

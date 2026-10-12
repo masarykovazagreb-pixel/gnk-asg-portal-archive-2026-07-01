@@ -472,6 +472,64 @@ def bodycomp_report(club=None, days=180):
     }
 
 
+
+
+# ---------------------------------------------------------------------------
+# 8) TJEDNI PREGLED KLUBA (SPT 2.5)
+# ---------------------------------------------------------------------------
+def weekly_report(club):
+    today = date.today()
+    since = (today - timedelta(days=7)).isoformat()
+    c = q1("SELECT * FROM clubs WHERE code=?", (club,))
+    roster = q("SELECT id, name, position FROM athletes WHERE club=?", (club,))
+    sess = q("""SELECT s.athlete aid, s.sdate, s.stype, json_extract(s.metrics,'$.srpe') au,
+                json_extract(s.metrics,'$.dist_total') km, json_extract(s.metrics,'$.readiness') rd
+                FROM sessions s JOIN athletes a ON a.id=s.athlete WHERE a.club=? AND s.sdate>=?""", (club, since))
+    n = len(sess)
+    tot_au = sum(s["au"] or 0 for s in sess)
+    tot_km = sum(s["km"] or 0 for s in sess)
+    per = {}
+    for s in sess:
+        d = per.setdefault(s["aid"], {"km": 0, "au": 0, "n": 0, "rd": []})
+        d["km"] += s["km"] or 0
+        d["au"] += s["au"] or 0
+        d["n"] += 1
+        if s["rd"]:
+            d["rd"].append(s["rd"])
+    names = {r["id"]: r["name"] for r in roster}
+    top_load = sorted(per.items(), key=lambda kv: -kv[1]["au"])[:5]
+    flags = []
+    for r in q("""SELECT an.*, a.name FROM anomalies an JOIN athletes a ON a.id=an.athlete
+                  WHERE a.club=? AND an.adate>=? ORDER BY an.adate DESC LIMIT 8""", (club, since)):
+        flags.append(f"{r['name']}: {r['category']} ({r['severity']})")
+    new_inj = q("""SELECT i.*, a.name FROM injuries i JOIN athletes a ON a.id=i.athlete
+                   WHERE a.club=? AND i.idate>=?""", (club, since))
+    for r in new_inj:
+        flags.append(f"🚑 {r['name']}: {r['itype']} ({r['body_part']})")
+    wk_plan = q1("SELECT COUNT(*) c FROM training_plans WHERE club=? AND pdate>=? AND pdate<=?",
+                 (club, since, today.isoformat()))["c"]
+    avg_rd = round(sum(s["rd"] or 0 for s in sess) / max(1, n), 1)
+    return {
+        "kind": "weekly", "title": f"Tjedni pregled — {club}",
+        "subtitle": f"{_hr_sport(c['sport']) if c else ''} · {since} → {today.isoformat()} · {len(roster)} sportaša",
+        "kpis": [["Sesija", str(n)], ["Ukupno km", _fmt(tot_km, 0) + " km"],
+                 ["Ukupno opterećenje", _fmt(tot_au, 0) + " AU"], ["Prosj. spremnost", str(avg_rd) + "/100"],
+                 ["Crvene zastavice", str(len(flags))]],
+        "sections": [
+            {"h": "Top 5 po opterećenju ovaj tjedan", "table": {
+                "cols": ["Sportaš", "Sesija", "km", "AU"],
+                "rows": [[names.get(aid, "?"), str(d["n"]), _fmt(d["km"], 1), _fmt(d["au"], 0)] for aid, d in top_load]}},
+            {"h": f"Zastavice i nove ozljede ({len(flags)})", "table": {
+                "cols": ["Događaj"], "rows": [[f] for f in flags] if flags else [["— bez zastavica, čist tjedan —"]]}}],
+        "recommendations": [
+            (f"Sljedeći tjedan: zadržati obujam ±10% od {round(tot_au / max(1, len(per)))} AU/sportašu."
+             if per else "Nema sesija u periodu — provjeriti unos podataka."),
+            "Sportaše s niskom spremnošću (<70) rasteretiti na početku tjedna.",
+            "Provjeriti rehab protokole za sve aktivne ozljede prije planiranja intenziteta.",
+        ],
+        "footer": "SPT · Sports Performance Tracking · produced by GNK ASG · sintetski demo-podaci",
+    }
+
 BUILDERS = {
     "athlete": lambda p: athlete_report(int(p.get("athlete", 1)), int(p.get("days", 90))),
     "club": lambda p: club_report(p.get("club", ""), int(p.get("days", 90))),
@@ -480,6 +538,7 @@ BUILDERS = {
     "readiness": lambda p: readiness_report(p.get("club", "")),
     "match": lambda p: match_report(p.get("match", "M-001")),
     "bodycomp": lambda p: bodycomp_report(p.get("club") or None, int(p.get("days", 180))),
+    "weekly": lambda p: weekly_report(p.get("club", "")),
 }
 
 KINDS_META = [
@@ -490,4 +549,5 @@ KINDS_META = [
     {"id": "tests", "hr": "Testna baterija", "desc": "CMJ, sprint, yo-yo, laktat — najbolji rezultati", "params": ["club"]},
     {"id": "match", "hr": "Analiza utakmice", "desc": "Kilometraža igrača, brzine, događaji", "params": ["match"]},
     {"id": "bodycomp", "hr": "Sastav tijela", "desc": "Trendovi težine i masnoće po sportašima", "params": ["club", "days"]},
+    {"id": "weekly", "hr": "Tjedni pregled kluba", "desc": "Sažetak tjedna: obujam, top liste, zastavice, preporuke", "params": ["club"]},
 ]

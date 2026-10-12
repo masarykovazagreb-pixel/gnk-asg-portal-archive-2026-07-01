@@ -234,6 +234,18 @@ T = {
         "pl": "Powtórka 2D/3D",
         "sl": "Predvajanje 2D/3D",
     },
+    "nav_scouting": {
+        "hr": "Scouting",
+        "en": "Scouting",
+        "de": "Scouting",
+        "it": "Scouting",
+        "es": "Scouting",
+        "fr": "Scouting",
+        "pt": "Scouting",
+        "nl": "Scouting",
+        "pl": "Scouting",
+        "sl": "Scouting",
+    },
     "nav_simulate": {
         "hr": "Simulacije",
         "en": "Simulations",

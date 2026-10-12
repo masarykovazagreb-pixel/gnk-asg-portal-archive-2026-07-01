@@ -29,7 +29,8 @@ VIEWS.analitika = {
     const tabs = el("div", "tabs");
     const TABS = [["📈 Trend", tabTrend], ["📦 Pozicije", tabPositions], ["🎂 Dobne krivulje", tabAges],
       ["⚬ Raspršenje", tabScatter], ["🎯 Konzistentnost", tabConsistency], ["⚖️ Balans", tabBalance],
-      ["🧘 Wellness vs forma", tabWellness], ["🚑 Teret ozljeda", tabBurden]];
+      ["🧘 Wellness vs forma", tabWellness], ["🚑 Teret ozljeda", tabBurden],
+      ["🏆 Liga benchmark", tabLeague], ["🦵 Biomehanika", tabBiomech]];
     const chips = TABS.map(([lbl]) => el("div", "chip", lbl));
     chips[0].classList.add("on");
     TABS.forEach(([, fn], i) => chips[i].onclick = () => {
@@ -265,6 +266,102 @@ VIEWS.analitika = {
         <span class="chip">r = <b style="color:${rCol};margin-left:4px">${d.r}</b></span>
         <span class="chip">X: kvaliteta sna (1–5) · Y: spremnost (0–100)</span>`));
       out.append(scatterChart({ points: d.points.map(p => ({ ...p, x: p.sleep, y: p.readiness, sex: "M" })), xname: "kvaliteta sna", yname: "spremnost" }));
+    }
+
+    // ============ 9) LIGA BENCHMARK ============
+    async function tabLeague(body) {
+      const card = el("div", "card");
+      card.append(el("h3", "", "🏆 Liga benchmark — gdje je moj klub?"));
+      card.append(el("p", "muted", "Anonimizirana usporedba klubova unutar sporta (percentili). overall = prosjek percentila za obujam, kilometre, brzinu, spremnost i ozljede."));
+      const row = el("div", "ctrl-row");
+      const sp = await sportSelAsync("nogomet");
+      const cs = el("select");
+      row.append(sp, cs);
+      card.append(row);
+      body.append(card);
+      const out = el("div"); out.style.marginTop = "12px";
+      card.append(out);
+      API.get("/api/clubs").then(cl => {
+        cs.innerHTML = "";
+        const oAny = el("option"); oAny.value = ""; oAny.textContent = "— moj klub (za referencu) —"; cs.append(oAny);
+        const pool = cl.filter(c => c.featured).length ? cl.filter(c => c.featured) : cl.slice(0, 40);
+        for (const c of pool) {
+          const o = el("option"); o.value = c.code;
+          o.textContent = c.code + " · " + sportName(c.sport);
+          cs.append(o);
+        }
+      });
+      async function load() {
+        out.innerHTML = ""; out.append(spinner());
+        const d = await API.get(`/api/analysis/league?sport=${sp.value}&club=${cs.value}`);
+        out.innerHTML = "";
+        if (!d.n_clubs) { out.append(el("div", "muted", "Nema dovoljno klubova za usporedbu.")); return; }
+        if (d.me) {
+          out.append(el("div", "pill-row", `<span class="chip on">📍 ${esc(d.me.club)}: overall <b style="margin-left:4px">${d.me.overall}. percentil</b></span>
+            <span class="chip">obujam P${d.me.pct_au}</span><span class="chip">km P${d.me.pct_km}</span>
+            <span class="chip">brzina P${d.me.pct_top}</span><span class="chip">spremnost P${d.me.pct_rd}</span>
+            <span class="chip">ozljede P${d.me.pct_inj} (više = bolje)</span>`));
+        }
+        const t = el("table", "tbl");
+        t.innerHTML = `<thead><tr><th>#</th><th>Klub</th><th class="num">sportaša</th><th class="num">AU</th><th class="num">km</th>
+          <th class="num">max km/h</th><th class="num">sprem.</th><th class="num">ozlj/sport.</th><th class="num">overall</th></tr></thead>`;
+        const tb = el("tbody");
+        d.clubs.forEach((c, i) => {
+          tb.append(el("tr", (d.me && c.club === d.me.club) ? "hl" : "", `<td class="mono muted">${i + 1}</td>
+            <td><b class="mono">${esc(c.club)}</b>${d.me && c.club === d.me.club ? ' <span class="badge b-cyan">TI</span>' : ""}</td>
+            <td class="num">${c.n}</td><td class="num">${c.au.toLocaleString("hr-HR")}</td>
+            <td class="num">${c.km.toLocaleString("hr-HR")}</td><td class="num">${fmtN(c.top)}</td>
+            <td class="num">${fmtN(c.rd)}</td><td class="num">${fmtN(c.inj_per, 2)}</td>
+            <td class="num"><b>P${c.overall}</b></td>`));
+        });
+        t.append(tb);
+        out.append(t);
+      }
+      sp.onchange = load; cs.onchange = load;
+      load();
+    }
+
+    // ============ 10) BIOMEHANIKA ============
+    async function tabBiomech(body) {
+      const card = el("div", "card");
+      card.append(el("h3", "", "🦵 Biomehanika — asimetrija hoda i skokovi"));
+      card.append(el("p", "muted", "Vrijeme kontakta stopala lijevo vs desno (GCT) iz čipa — asimetrija > 6% je crvena zastavica za nekontakt ozljede. Plus CMJ serija."));
+      card.append(athletePicker(async a => load(a.id)));
+      const out = el("div"); out.style.marginTop = "12px";
+      card.append(out);
+      body.append(card);
+      async function load(aid) {
+        out.innerHTML = ""; out.append(spinner());
+        const d = await API.get(`/api/analysis/biomech?athlete=${aid}`);
+        out.innerHTML = "";
+        if (d.error || !d.series.length) { out.append(el("div", "muted", "Nema biomehaničkih podataka (GCT) za ovog sportaša.")); return; }
+        const flag = d.asym_flag;
+        out.append(el("div", "pill-row", `
+          <span class="chip on">posljednja asimetrija: <b style="margin-left:4px;color:${flag ? "var(--red)" : "var(--good)"}">${fmtN(d.last_asym)}%</b></span>
+          <span class="chip">${flag ? "🚩 iznad 6% — provjeri!" : "✅ unutar okvira"}</span>
+          <span class="chip">${d.series.length} sesija s GCT podacima</span>`));
+        const box = el("div", "chartbox");
+        const cv = el("canvas", "chart"); box.append(cv);
+        out.append(box);
+        requestAnimationFrame(() => lineChart(cv, {
+          labels: d.series.map(s => s.d.slice(5)),
+          series: [
+            { name: "GCT lijevo (ms)", color: "#4f8cff", values: d.series.map(s => s.l) },
+            { name: "GCT desno (ms)", color: "#38d6f5", values: d.series.map(s => s.r) },
+            { name: "asimetrija %", color: flag ? "#ff5a5f" : "#a3e635", values: d.series.map(s => s.asym) }
+          ],
+          xEvery: Math.max(1, Math.floor(d.series.length / 10))
+        }));
+        if (d.cmj.length >= 2) {
+          const box2 = el("div", "chartbox"); box2.style.marginTop = "10px";
+          const cv2 = el("canvas", "chart"); box2.append(cv2);
+          out.append(box2, el("div", "muted", "CMJ skok (cm) kroz vrijeme"));
+          requestAnimationFrame(() => lineChart(cv2, {
+            labels: d.cmj.map(c => c.d.slice(5)),
+            series: [{ name: "CMJ (cm)", color: "#fbbf24", values: d.cmj.map(c => c.v) }]
+          }));
+        }
+      }
     }
 
     // ============ 8) TERET OZLJEDA ============

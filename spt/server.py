@@ -26,7 +26,7 @@ from urllib.parse import urlparse, parse_qs
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "spt.db")
 STATIC_DIR = os.path.join(BASE_DIR, "static")
-VERSION = "2.4.0"
+VERSION = "2.5.0"
 
 # ---------------------------------------------------------------------------
 # BAZA
@@ -2166,6 +2166,395 @@ def api_an_injuryburden(m, qs):
     items.sort(key=lambda x: -x["burden"])
     return {"items": items[:25]}
 
+
+
+# ------------------------------ 2.5: MEDICINA / REHAB / SCOUTING -------------
+@route("GET", r"/api/medical")
+def api_medical(m, qs):
+    if not qs.get("athlete"):
+        return {"items": []}
+    rows = q("SELECT * FROM medical WHERE athlete=? ORDER BY mdate DESC", (int(qs["athlete"]),))
+    return {"items": [dict(r) for r in rows]}
+
+@route("POST", r"/api/medical")
+def api_medical_post(m, qs, body=None):
+    body = body or {}
+    u, err = require_role(3)
+    if err:
+        return err
+    if not body.get("athlete") or not body.get("mtype"):
+        return {"error": "nedostaju podaci"}
+    con = db()
+    con.execute("INSERT INTO medical (athlete, mtype, mdate, details, notes) VALUES (?,?,?,?,?)",
+                (int(body["athlete"]), body["mtype"], body.get("mdate") or date.today().isoformat(),
+                 body.get("details", ""), body.get("notes", "")))
+    con.commit(); con.close()
+    return {"ok": True}
+
+@route("GET", r"/api/rehab")
+def api_rehab(m, qs):
+    inj_id = int(qs.get("injury", "0") or 0)
+    steps = [dict(r) for r in q("SELECT * FROM rehab_steps WHERE injury=? ORDER BY step_no", (inj_id,))]
+    return {"steps": steps}
+
+@route("POST", r"/api/rehab/step")
+def api_rehab_step(m, qs, body=None):
+    body = body or {}
+    u, err = require_role(3)
+    if err:
+        return err
+    con = db()
+    con.execute("UPDATE rehab_steps SET done=?, done_date=?, therapist=? WHERE id=?",
+                (1 if body.get("done") else 0,
+                 date.today().isoformat() if body.get("done") else None,
+                 u["username"] if body.get("done") else None,
+                 int(body.get("id", 0))))
+    con.commit(); con.close()
+    return {"ok": True}
+
+@route("GET", r"/api/shortlists")
+def api_shortlists(m, qs):
+    lists = [dict(r) for r in q("SELECT * FROM shortlists ORDER BY id DESC")]
+    for L in lists:
+        L["items"] = [dict(r) for r in q("""SELECT si.*, a.name, a.sport, a.club, a.position, a.age, a.country
+                                            FROM shortlist_items si JOIN athletes a ON a.id=si.athlete
+                                            WHERE si.lid=? ORDER BY si.id DESC""", (L["id"],))]
+    return {"items": lists}
+
+@route("POST", r"/api/shortlists")
+def api_shortlists_post(m, qs, body=None):
+    body = body or {}
+    u, err = require_role(2)
+    if err:
+        return err
+    if not (body.get("name") or "").strip():
+        return {"error": "nedostaje ime"}
+    con = db()
+    cur = con.execute("INSERT INTO shortlists (name, author, created) VALUES (?,?,?)",
+                      (body["name"].strip()[:80], u["username"], date.today().isoformat()))
+    con.commit(); con.close()
+    return {"ok": True, "id": cur.lastrowid}
+
+@route("POST", r"/api/shortlists/add")
+def api_shortlists_add(m, qs, body=None):
+    body = body or {}
+    u, err = require_role(2)
+    if err:
+        return err
+    if not body.get("lid") or not body.get("athlete"):
+        return {"error": "nedostaju podaci"}
+    con = db()
+    con.execute("INSERT INTO shortlist_items (lid, athlete, rating, note, added) VALUES (?,?,?,?,?)",
+                (int(body["lid"]), int(body["athlete"]), int(body.get("rating", 3)),
+                 body.get("note", ""), date.today().isoformat()))
+    con.commit(); con.close()
+    return {"ok": True}
+
+@route("POST", r"/api/shortlists/remove")
+def api_shortlists_remove(m, qs, body=None):
+    u, err = require_role(2)
+    if err:
+        return err
+    con = db()
+    con.execute("DELETE FROM shortlist_items WHERE id=?", (int((body or {}).get("id", 0)),))
+    con.commit(); con.close()
+    return {"ok": True}
+
+@route("POST", r"/api/shortlists/delete")
+def api_shortlists_delete(m, qs, body=None):
+    u, err = require_role(2)
+    if err:
+        return err
+    con = db()
+    lid = int((body or {}).get("id", 0))
+    con.execute("DELETE FROM shortlist_items WHERE lid=?", (lid,))
+    con.execute("DELETE FROM shortlists WHERE id=?", (lid,))
+    con.commit(); con.close()
+    return {"ok": True}
+
+# ------------------------------ 2.5: OBROCI / CIKLUS -------------------------
+@route("GET", r"/api/meals")
+def api_meals(m, qs):
+    typ = qs.get("type")
+    if typ:
+        rows = q("SELECT * FROM meals WHERE mtype=? ORDER BY name", (typ,))
+    else:
+        rows = q("SELECT * FROM meals ORDER BY mtype, name")
+    return {"items": [dict(r) for r in rows]}
+
+@route("GET", r"/api/mealplan")
+def api_mealplan(m, qs):
+    aid = int(qs.get("athlete", "0") or 0)
+    d = qs.get("date") or date.today().isoformat()
+    rows = q("""SELECT mp.*, me.name, me.kcal, me.protein, me.carbs, me.fat, me.mtype mt
+                FROM meal_plan mp JOIN meals me ON me.id=mp.meal_id
+                WHERE mp.athlete=? AND mp.pdate=? ORDER BY mp.id""", (aid, d))
+    return {"date": d, "items": [dict(r) for r in rows]}
+
+@route("POST", r"/api/mealplan")
+def api_mealplan_post(m, qs, body=None):
+    body = body or {}
+    u, err = require_role(1)
+    if err:
+        return err
+    aid = int(body.get("athlete", "0") or 0)
+    if not aid or not body.get("meal_id"):
+        return {"error": "nedostaju podaci"}
+    if u["role"] == "sportas" and u.get("athlete") != aid:
+        return {"error": "samo vlastiti plan", "code": 403}
+    con = db()
+    con.execute("INSERT INTO meal_plan (athlete, pdate, mtype, meal_id) VALUES (?,?,?,?)",
+                (aid, body.get("pdate") or date.today().isoformat(), body.get("mtype", "meduobrok"), int(body["meal_id"])))
+    con.commit(); con.close()
+    return {"ok": True}
+
+@route("POST", r"/api/mealplan/delete")
+def api_mealplan_delete(m, qs, body=None):
+    u, err = require_role(1)
+    if err:
+        return err
+    con = db()
+    con.execute("DELETE FROM meal_plan WHERE id=?", (int((body or {}).get("id", 0)),))
+    con.commit(); con.close()
+    return {"ok": True}
+
+@route("GET", r"/api/cycle")
+def api_cycle(m, qs):
+    if not qs.get("athlete"):
+        return {"items": []}
+    rows = q("SELECT * FROM cycle_log WHERE athlete=? ORDER BY cdate DESC LIMIT 40", (int(qs["athlete"]),))
+    return {"items": [dict(r) for r in rows]}
+
+@route("POST", r"/api/cycle")
+def api_cycle_post(m, qs, body=None):
+    body = body or {}
+    u, err = require_role(1)
+    if err:
+        return err
+    if not body.get("athlete") or not body.get("phase"):
+        return {"error": "nedostaju podaci"}
+    con = db()
+    con.execute("INSERT INTO cycle_log (athlete, cdate, phase, notes) VALUES (?,?,?,?)",
+                (int(body["athlete"]), body.get("cdate") or date.today().isoformat(), body["phase"], body.get("notes", "")))
+    con.commit(); con.close()
+    return {"ok": True}
+
+CYCLE_REC = {
+    "menstruacija": "Faza niskog energetskog raspoloženja — smanjiti obujam po potrebi, paziti na unos željeza, niske intenzitete ako postoje grčevi.",
+    "folikularna": "Rastući estrogen — dobar period za progresiju snage i intenzivne jedinice.",
+    "ovulacija": "Vršna snaga i raspoloženje — idealno za testiranja; paziti na stabilizaciju koljena (ligamentna labavost).",
+    "lutealna": "Povećana tjelesna temperatura i zadržavanje tekućine — produžiti regeneraciju, nadoknaditi natrij, pratiti spavanje.",
+}
+
+# ------------------------------ 2.5: AI RIZIK OZLJEDA ------------------------
+@route("GET", r"/api/analysis/risk")
+def api_an_risk(m, qs):
+    club = qs.get("club", "")
+    if club:
+        roster = q("SELECT * FROM athletes WHERE club=?", (club,))
+    else:
+        aid = qs.get("athlete")
+        roster = q("SELECT * FROM athletes WHERE id=?", (int(aid or 1),))
+    out = []
+    for a in roster:
+        factors = []
+        score = 0
+        ac = reportgen.acwr(a["id"])
+        if ac:
+            if ac["ratio"] > 1.5:
+                score += 30; factors.append(f"ACWR {ac['ratio']} — nagli skok opterećenja")
+            elif ac["ratio"] > 1.3:
+                score += 15; factors.append(f"ACWR {ac['ratio']} — granično visok")
+            elif ac["ratio"] < 0.8:
+                score += 8; factors.append(f"ACWR {ac['ratio']} — podzopterećen")
+        rd = q1("SELECT AVG(json_extract(metrics,'$.readiness')) v FROM sessions WHERE athlete=?", (a["id"],))["v"]
+        if rd is not None:
+            if rd < 65:
+                score += 20; factors.append(f"Spremnost {rd:.0f}/100 — niska")
+            elif rd < 75:
+                score += 10; factors.append(f"Spremnost {rd:.0f}/100 — granična")
+        wl = q1("""SELECT AVG(sleep_q) sq, AVG(soreness) so, AVG(stress) st FROM wellness_log
+                   WHERE athlete=? AND wdate>=?""", (a["id"], (date.today() - timedelta(days=14)).isoformat()))
+        if wl:
+            if wl["sq"] is not None and wl["sq"] < 2.5:
+                score += 10; factors.append("Kvaliteta sna < 2,5/5")
+            if wl["so"] is not None and wl["so"] > 3:
+                score += 10; factors.append("Bolnost mišića > 3/5")
+            if wl["st"] is not None and wl["st"] > 3:
+                score += 5; factors.append("Stres > 3/5")
+        asym = q1("""SELECT AVG(ABS(json_extract(metrics,'$.gct_l') - json_extract(metrics,'$.gct_r'))
+                      * 2.0 / (json_extract(metrics,'$.gct_l') + json_extract(metrics,'$.gct_r')) * 100) v
+                      FROM sessions WHERE athlete=?""", (a["id"],))["v"]
+        if asym and asym > 6:
+            score += 10; factors.append(f"Asimetrija koraka {asym:.1f}%")
+        hist = q("SELECT body_part FROM injuries WHERE athlete=?", (a["id"],))
+        parts = [r["body_part"] for r in hist]
+        if len(parts) >= 2 and len(set(parts)) < len(parts):
+            score += 15; factors.append("Ponovljena ozljeda istog dijela tijela")
+        if a["age"] and a["age"] >= 32:
+            score += 5; factors.append("Dob 32+ (stariji sportaš)")
+        elif a["age"] and a["age"] <= 17:
+            score += 5; factors.append("Mlađi od 18 (razvojna dob)")
+        out.append({"id": a["id"], "name": a["name"], "pos": a["position"], "age": a["age"],
+                    "risk": min(95, score), "factors": factors,
+                    "level": "visok" if score > 50 else ("umjeren" if score > 25 else "nizak")})
+    out.sort(key=lambda r: -r["risk"])
+    return {"items": out, "high": sum(1 for r in out if r["risk"] > 50),
+            "moderate": sum(1 for r in out if 25 < r["risk"] <= 50)}
+
+# ------------------------------ 2.5: LIGA BENCHMARK --------------------------
+@route("GET", r"/api/analysis/league")
+def api_an_league(m, qs):
+    sport = qs.get("sport", "nogomet")
+    my = qs.get("club", "")
+    rows = q("""SELECT a.club club, COUNT(DISTINCT a.id) n,
+                SUM(json_extract(s.metrics,'$.srpe')) au, SUM(json_extract(s.metrics,'$.dist_total')) km,
+                AVG(json_extract(s.metrics,'$.top_speed')) top, AVG(json_extract(s.metrics,'$.readiness')) rd
+                FROM sessions s JOIN athletes a ON a.id=s.athlete
+                WHERE a.sport=? AND a.club IS NOT NULL GROUP BY a.club""", (sport,))
+    inj = {}
+    for r in q("""SELECT a.club club, COUNT(*) c FROM injuries i JOIN athletes a ON a.id=i.athlete
+                  JOIN clubs cl ON cl.code=a.club WHERE cl.sport=? AND i.idate>=? GROUP BY a.club""",
+               (sport, (date.today() - timedelta(days=365)).isoformat())):
+        inj[r["club"]] = r["c"]
+    clubs = []
+    for r in rows:
+        if not r["club"] or r["n"] < 5:
+            continue
+        clubs.append({"club": r["club"], "n": r["n"], "au": round(r["au"] or 0), "km": round(r["km"] or 0),
+                      "top": round(r["top"] or 0, 1), "rd": round(r["rd"] or 0, 1),
+                      "inj": inj.get(r["club"], 0), "inj_per": round(inj.get(r["club"], 0) / r["n"], 2)})
+
+    def pct_rank(items, key, val, reverse=True):
+        if not items:
+            return 50
+        better = sum(1 for i in items if ((i[key] > val) if reverse else (i[key] < val)))
+        return round(100 * better / len(items))
+
+    for c in clubs:
+        c["pct_au"] = pct_rank(clubs, "au", c["au"])
+        c["pct_km"] = pct_rank(clubs, "km", c["km"])
+        c["pct_top"] = pct_rank(clubs, "top", c["top"])
+        c["pct_rd"] = pct_rank(clubs, "rd", c["rd"])
+        c["pct_inj"] = pct_rank(clubs, "inj_per", c["inj_per"], reverse=False)
+        c["overall"] = round((c["pct_au"] + c["pct_km"] + c["pct_top"] + c["pct_rd"] + c["pct_inj"]) / 5)
+    clubs.sort(key=lambda c: -c["overall"])
+    me = next((c for c in clubs if c["club"] == my), None)
+    return {"sport": sport, "clubs": clubs, "me": me, "n_clubs": len(clubs)}
+
+# ------------------------------ 2.5: BIOMEHANIKA -----------------------------
+@route("GET", r"/api/analysis/biomech")
+def api_an_biomech(m, qs):
+    aid = int(qs.get("athlete", "1"))
+    rows = q("""SELECT sdate, json_extract(metrics,'$.gct_l') gl, json_extract(metrics,'$.gct_r') gr,
+                json_extract(metrics,'$.stride_len') sl FROM sessions
+                WHERE athlete=? AND json_extract(metrics,'$.gct_l') IS NOT NULL ORDER BY sdate""", (aid,))
+    if len(rows) < 3:
+        return {"series": [], "cmj": [], "error": "nema biomehaničkih podataka"}
+    a = q1("SELECT name, sport FROM athletes WHERE id=?", (aid,))
+    cmj = []
+    for r in q("SELECT tdate, results FROM perf_tests WHERE athlete=? AND ttype='cmj' ORDER BY tdate", (aid,)):
+        try:
+            cmj.append({"d": r["tdate"], "v": json.loads(r["results"]).get("value")})
+        except Exception:
+            pass
+    series = [{"d": r["sdate"], "l": r["gl"], "r": r["gr"],
+               "asym": round(abs(r["gl"] - r["gr"]) * 2 / (r["gl"] + r["gr"]) * 100, 1),
+               "stride": r["sl"]} for r in rows if r["gl"] and r["gr"]]
+    last_asym = series[-1]["asym"] if series else None
+    return {"name": a["name"] if a else "?", "sport": a["sport"] if a else "", "series": series, "cmj": cmj,
+            "last_asym": last_asym, "asym_flag": (last_asym or 0) > 6}
+
+# ------------------------------ 2.5: OPEN API -------------------------------
+@route("GET", r"/api/export/full")
+def api_export_full(m, qs):
+    u, err = require_role(5)
+    if err:
+        return err
+    return {"meta": {"app": "SPT", "version": VERSION, "produced_by": "GNK ASG",
+                     "exported": datetime.now().isoformat()},
+            "athletes": [dict(r) for r in q("SELECT id, name, sex, country, age, sport, position, club, squad, tag FROM athletes")],
+            "sessions": [dict(r) for r in q("SELECT id, athlete, sdate, stype, duration, sport, metrics FROM sessions LIMIT 40000")],
+            "injuries": [dict(r) for r in q("SELECT * FROM injuries")],
+            "tests": [dict(r) for r in q("SELECT * FROM perf_tests")],
+            "body_comp": [dict(r) for r in q("SELECT * FROM body_comp")]}
+
+# ---------------------------------------------------------------------------
+# MIGRACIJA 2.5 — medicinski dosje, rehab, scouting, obroci, ciklus
+# ---------------------------------------------------------------------------
+REHAB_TEMPLATE = [
+    ("1/6 Zaštita i kontrola boli", "bez oteklina u mirovanju, bol < 2/10"),
+    ("2/6 Pasivno kretanje", "pun ROM, bez boli pri 50% opterećenja"),
+    ("3/6 Aktivacija mišića", "simetrija > 70% u testovima sile"),
+    ("4/6 Specifično trčanje", "trčanje pravocrtno bez boli, 80% max brzine"),
+    ("5/6 Promjene smjera i sprint", "test 5-10-5 > 90% nezdrave noge"),
+    ("6/6 Povratak u trening", "2 puna treninga bez reakcije + potpis liječnika"),
+]
+
+MEALS_SEED = [
+    ("Zobena kaša s bananom i orasima", 520, 18, 72, 14, "dorucak", "zob 80g, mlijeko 250ml, banana, orasi 20g"),
+    ("Omlet od 3 jaja sa špinatom", 380, 26, 6, 28, "dorucak", "jaja 3, špinat, maslinovo ulje, toast integralni"),
+    ("Grčki jogurt s voćem i medom", 340, 20, 46, 8, "dorucak", "jogurt 300g, borovnice, med 15g"),
+    ("Kruh s avokadom i jajima", 460, 22, 40, 24, "dorucak", "integralni kruh 2 kriške, avokado 1/2, jaja 2"),
+    ("Piletina, riža i povrće", 720, 52, 88, 14, "rucak", "pileća prsa 200g, riža 100g, mix povrća"),
+    ("Losos, krumpir i brokula", 680, 44, 56, 28, "rucak", "losos 180g, krumpir 250g, brokula 150g"),
+    ("Tjestenina bolognese (puretina)", 780, 48, 96, 18, "rucak", "tijesto 120g, pureća mljevena 150g, umis od rajčice"),
+    ("Grah s puretinom i kukuruzom", 640, 38, 82, 12, "rucak", "grah 200g, puretina 100g, kukuruz, salata"),
+    ("Riža s tunom i povrćem", 590, 40, 74, 10, "rucak", "riža 100g, tuna 120g, mrkva, grašak"),
+    ("Wrapi s piletinom i hummusom", 560, 36, 58, 18, "rucak", "tortilje 2, piletina 120g, hummus, salata"),
+    ("Protein shake s bananom", 330, 30, 38, 4, "meduobrok", "whey 30g, banana, voda 300ml"),
+    ("Bademi i jabuka", 280, 8, 28, 16, "meduobrok", "bademi 30g, jabuka 1"),
+    ("Skrutinirana posna skuta s voćem", 260, 28, 22, 2, "meduobrok", "skuta 250g, jagode, cimet"),
+    ("Rižin kolačić s maslacem od kikirikija", 240, 8, 26, 11, "meduobrok", "rižin kolačić 2, PB 20g"),
+    ("Goveđi odrezak, batat i salata", 760, 54, 58, 26, "vecera", "junetina 200g, batat 250g, zelena salata"),
+    ("Pasta s tunom i rajčicom", 620, 40, 84, 10, "vecera", "tijesto 100g, tuna 120g, pelati, češnjak"),
+    ("Pirjana piletina s heljdom", 580, 46, 62, 12, "vecera", "piletina 180g, heljda 80g, tikvice"),
+    ("Varivo od leće", 520, 28, 68, 8, "vecera", "leća 120g, mrkva, luk, začini"),
+    ("Losos na žaru s kvinojom", 660, 42, 56, 26, "vecera", "losos 160g, kvinoja 80g, limun"),
+    ("Omlet sa sirom i šunkom", 420, 28, 8, 30, "vecera", "jaja 3, sir 40g, šunka 50g"),
+    ("Recovery shake (cherry + whey)", 300, 26, 40, 3, "meduobrok", "whey 25g, sok višnje 200ml, banana"),
+    ("Kuha jaja i pecivo", 340, 18, 34, 14, "meduobrok", "jaja 2, integralno pecivo"),
+]
+
+def migrate_25():
+    con = db()
+    try:
+        con.execute("""CREATE TABLE IF NOT EXISTS medical (
+            id INTEGER PRIMARY KEY, athlete INTEGER, mtype TEXT, mdate TEXT, details TEXT, notes TEXT)""")
+        con.execute("""CREATE TABLE IF NOT EXISTS rehab_steps (
+            id INTEGER PRIMARY KEY, injury INTEGER, step_no INTEGER, title TEXT,
+            criteria TEXT, done INTEGER DEFAULT 0, done_date TEXT, therapist TEXT)""")
+        con.execute("""CREATE TABLE IF NOT EXISTS shortlists (
+            id INTEGER PRIMARY KEY, name TEXT, author TEXT, created TEXT)""")
+        con.execute("""CREATE TABLE IF NOT EXISTS shortlist_items (
+            id INTEGER PRIMARY KEY, lid INTEGER, athlete INTEGER, rating INTEGER DEFAULT 3,
+            note TEXT, added TEXT)""")
+        con.execute("""CREATE TABLE IF NOT EXISTS meals (
+            id INTEGER PRIMARY KEY, name TEXT, kcal INTEGER, protein INTEGER,
+            carbs INTEGER, fat INTEGER, mtype TEXT, ingr TEXT)""")
+        con.execute("""CREATE TABLE IF NOT EXISTS meal_plan (
+            id INTEGER PRIMARY KEY, athlete INTEGER, pdate TEXT, mtype TEXT, meal_id INTEGER)""")
+        con.execute("""CREATE TABLE IF NOT EXISTS cycle_log (
+            id INTEGER PRIMARY KEY, athlete INTEGER, cdate TEXT, phase TEXT, notes TEXT)""")
+        con.commit()
+        # seed obroka
+        n = con.execute("SELECT COUNT(*) FROM meals").fetchone()[0]
+        if n == 0:
+            con.executemany("INSERT INTO meals (name, kcal, protein, carbs, fat, mtype, ingr) VALUES (?,?,?,?,?,?,?)", MEALS_SEED)
+            con.commit()
+        # rehab protokoli za aktivne ozljede koje ga nemaju
+        need = con.execute("""SELECT i.id FROM injuries i WHERE i.status='aktivna' AND i.id NOT IN
+                              (SELECT DISTINCT injury FROM rehab_steps)""").fetchall()
+        for r in need:
+            for no, (title, crit) in enumerate(REHAB_TEMPLATE, 1):
+                con.execute("INSERT INTO rehab_steps (injury, step_no, title, criteria) VALUES (?,?,?,?)",
+                            (r["id"], no, title, crit))
+        con.commit()
+        if need:
+            print(f"[SPT] Rehab protokoli: {len(need)} aktivnih ozljeda opremljeno")
+    finally:
+        con.close()
+
 # ---------------------------------------------------------------------------
 # MIGRACIJA 2.3 — bilješke trenera + inventar opreme
 # ---------------------------------------------------------------------------
@@ -2373,6 +2762,7 @@ def main():
     ensure_db()
     migrate_21()
     migrate_23()
+    migrate_25()
     for r in q("SELECT sport, COUNT(*) n FROM athletes GROUP BY sport"):
         SPORT_COUNT[r["sport"]] = r["n"]
     print("[SPT] Učitavam utakmice i analitički indeks...")

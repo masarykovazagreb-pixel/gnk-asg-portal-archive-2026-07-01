@@ -184,6 +184,21 @@ VIEWS.postavke = {
       rowBtns.style.cssText = "display:flex;gap:10px;flex-wrap:wrap";
       rowBtns.append(b1, b2);
       adm.append(rowBtns);
+      // open API export (2.5)
+      const b3 = el("div", "btn ghost", "🔓 Open API — izvezi cijelu bazu (JSON)");
+      b3.style.marginTop = "10px";
+      b3.onclick = () => {
+        fetch("/api/export/full").then(r => r.json()).then(d => {
+          if (d.error) { toast(d.error, "err"); return; }
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(new Blob([JSON.stringify(d, null, 1)], { type: "application/json" }));
+          a.download = "spt_export_full.json";
+          a.click();
+          toast("JSON export preuzet", "ok");
+        });
+      };
+      adm.append(b3);
+      adm.append(el("div", "muted", 'Open API: GET /api/export/full (admin) · dokumentacija u README-u.'));
       cont.append(adm);
     }
 

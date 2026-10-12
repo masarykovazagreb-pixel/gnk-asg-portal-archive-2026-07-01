@@ -102,5 +102,63 @@ VIEWS.nutrition = {
         xEvery: 1
       });
     });
+    // ============ PLANER OBROKA (SPT 2.5) ============
+    const mealCard = el("div", "card"); mealCard.style.marginTop = "14px";
+    mealCard.innerHTML = `<h3>🍽 Planer obroka — biblioteka + dnevni plan</h3>`;
+    cont.append(mealCard);
+    (async () => {
+      const meals = await API.get("/api/meals");
+      const plan = await API.get(`/api/mealplan?athlete=${sub}`);
+      const need = needs ? needs.tdee : 2500;
+      const grid = el("div", "grid g3");
+      const TYPES = [["dorucak", "🌅 Doručak"], ["rucak", "🌞 Ručak"], ["vecera", "🌙 Večera"], ["meduobrok", "🥤 Međuobrok / recovery"]];
+      for (const [tid, tlbl] of TYPES) {
+        const col = el("div", "card");
+        col.style.margin = "0";
+        col.innerHTML = `<h3 style="font-size:13.5px">${tlbl}</h3>`;
+        for (const mm of meals.items.filter(x => x.mtype === tid)) {
+          const it = el("div", "meal-it");
+          it.innerHTML = `<div style="font-size:12.5px"><b>${esc(mm.name)}</b></div>
+            <div class="faint" style="font-size:10.5px">${mm.kcal} kcal · P ${mm.protein}g · U ${mm.carbs}g · M ${mm.fat}g</div>`;
+          const plus = el("div", "btn ghost sm", "＋");
+          plus.title = "Dodaj u dnevni plan";
+          plus.onclick = async () => {
+            const r = await API.post("/api/mealplan", { athlete: +sub, meal_id: mm.id, mtype: mm.mtype });
+            if (r.ok) { toast(mm.name + " dodan u plan", "ok"); VIEWS.nutrition.render(cont, sub); }
+            else toast(r.error || "Greška", "err");
+          };
+          it.append(plus);
+          col.append(it);
+        }
+        grid.append(col);
+      }
+      mealCard.append(grid);
+      // dnevni plan
+      const todayBox = el("div", "card"); todayBox.style.marginTop = "12px";
+      const tot = plan.items.reduce((a, b) => a + b.kcal, 0);
+      const totP = plan.items.reduce((a, b) => a + b.protein, 0);
+      const balance = tot - need;
+      todayBox.innerHTML = `<h3>📅 Današnji plan (${plan.date}) — ${plan.items.length} obroka</h3>
+        <div class="pill-row">
+          <span class="chip on">${tot} kcal od ${need} (TDEE)</span>
+          <span class="chip ${balance > 300 ? "b-red" : balance < -300 ? "b-amber" : ""}">${balance > 0 ? "+" : ""}${balance} kcal ${balance > 300 ? "višak" : balance < -300 ? "manjak" : "— u ravnoteži"}</span>
+          <span class="chip">protein ukupno ${totP} g</span>
+        </div>`;
+      for (const p of plan.items) {
+        const row = el("div", "meal-it");
+        row.innerHTML = `<div style="flex:1;font-size:12.5px"><b>${esc(p.name)}</b> <span class="faint">(${p.mt})</span>
+          <div class="faint" style="font-size:10.5px">${p.kcal} kcal · P ${p.protein}g · U ${p.carbs}g · M ${p.fat}g</div></div>`;
+        const del = el("div", "btn ghost sm", "✕");
+        del.onclick = async () => {
+          await API.post("/api/mealplan/delete", { id: p.id });
+          toast("Obrok maknut"); VIEWS.nutrition.render(cont, sub);
+        };
+        row.append(del);
+        todayBox.append(row);
+      }
+      if (!plan.items.length) todayBox.append(el("div", "muted", "Prazan plan — dodaj obroke iz biblioteke gore."));
+      mealCard.append(todayBox);
+    })();
+
   }
 };
