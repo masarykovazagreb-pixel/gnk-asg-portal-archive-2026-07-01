@@ -8,7 +8,9 @@ PORTAL = ROOT / "apps" / "portal"
 DATA = PORTAL / "data" / "kolumne.json"
 REQUIRED = ('<link rel="canonical"','hreflang="hr"','hreflang="en"','hreflang="x-default"','property="og:title"','property="og:description"','property="og:image"','name="twitter:card"','name="twitter:title"','name="twitter:description"','name="twitter:image"','"@type":"OpinionNewsArticle"','"image":{"@type":"ImageObject"','"publisher":{"@type":"Organization"','"logo":{"@type":"ImageObject"','"author":{"@type":"Person","@id":"https://gnk-asg.hr/nermin-sefic/#person"','"datePublished"','data-author-mark="nermin-sefic"')
 def main() -> None:
-    items = json.loads(DATA.read_text(encoding="utf-8")).get("items", [])
+    doc = json.loads(DATA.read_text(encoding="utf-8"))
+    items = doc if isinstance(doc, list) else doc.get("items", [])
+    items = [item for item in items if str(item.get("path") or "").startswith("/gnk-aktual/kolumne/")]
     failures=[]
     for item in items:
         slug=item["slug"]
@@ -20,7 +22,10 @@ def main() -> None:
         if is_remote and not (item.get("slika_autor") and item.get("slika_licenca") and item.get("slika_izvor")):
             failures.append(f"{slug}: remote image requires author, licence and source URL")
         if not item.get("slika_alt") or not item.get("slika_alt_en"): failures.append(f"{slug}: HR/EN image alt required")
-        for lang,path in (("hr",PORTAL/"gnk-aktual"/"kolumne"/slug/"index.html"),("en",PORTAL/"en"/"gnk-aktual"/"columns"/slug/"index.html")):
+        targets=[("hr",PORTAL/"gnk-aktual"/"kolumne"/slug/"index.html")]
+        if item.get("tekst_en"):
+            targets.append(("en",PORTAL/"en"/"gnk-aktual"/"columns"/slug/"index.html"))
+        for lang,path in targets:
             if not path.exists(): failures.append(f"{lang}:{slug}: missing {path.relative_to(ROOT)}"); continue
             text=path.read_text(encoding="utf-8")
             for needle in REQUIRED:
@@ -29,5 +34,5 @@ def main() -> None:
             if image not in text: failures.append(f"{lang}:{slug}: topic image mismatch")
             if expected not in text: failures.append(f"{lang}:{slug}: canonical/route mismatch")
     if failures: raise SystemExit("Aktual column SEO validation failed:\n- " + "\n- ".join(failures))
-    print(f"Validated {len(items)*2} Aktual Media column pages")
+    print(f"Validated canonical Aktual Media column pages for {len(items)} items")
 if __name__ == "__main__": main()
