@@ -12,9 +12,9 @@ on:
         required: true
         type: string
       notify_search_engines:
-        description: "Send IndexNow and Google/Bing sitemap notifications after successful deployment (separate approval required)"
+        description: "Send IndexNow and Google/Bing sitemap notifications after successful deployment; false suppresses them"
         required: false
-        default: false
+        default: true
         type: boolean
 
 permissions:

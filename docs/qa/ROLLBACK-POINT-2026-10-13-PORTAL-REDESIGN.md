@@ -20,7 +20,7 @@ Za objavu postaviti GitHub Actions varijablu `GNK_ASG_RELEASE_FENCE=true` prije 
 
 1. Zabilježiti prijavljenu grešku i trenutni `x-gnk-deploy-revision`; ne mijenjati DNS, rute, secrets ni produkcijske podatke.
 2. Na `main` napraviti **revert PR** promjena iz neispravne objave (ne koristiti `reset --hard` ni force-push na `main`). Revert treba vratiti kod na poznato dobro stanje iz gornjeg SHA-a, uz očuvanje kasnijih nezavisnih promjena.
-3. Nakon što je revert mergean, uzeti puni SHA aktualnog `main` commita i ručno pokrenuti **Deploy Admin Auth V6** s `confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6`, `approved_sha=<taj puni SHA>` i `notify_search_engines=false`. Workflow odbija deploy ako odobreni SHA nije točno aktualni `main`; IndexNow i Google/Bing obavijesti zahtijevaju zaseban, eksplicitan opt-in.
+3. Nakon što je revert mergean, uzeti puni SHA aktualnog `main` commita i ručno pokrenuti **Deploy Admin Auth V6** s `confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6`, `approved_sha=<taj puni SHA>` i `notify_search_engines=false`. Workflow odbija deploy ako odobreni SHA nije točno aktualni `main`; `notify_search_engines=false` ih u ovom povratu eksplicitno isključuje (zadana vrijednost inače čuva postojeće ponašanje).
 4. Pričekati uspješnu produkcijsku provjeru koja uspoređuje aktivni release i revision headere. Uključen je i provjerljiv test bankovne stavke javnog menija.
 
 Neuspjeh smoke provjere znači da se objava ne smatra uspješnom; povrat se provodi kroz isti odobreni, exact-SHA deploy postupak, a ne neprovjerenom promjenom ruta ili konfiguracije.
