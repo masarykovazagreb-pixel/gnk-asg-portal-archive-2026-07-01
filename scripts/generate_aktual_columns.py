@@ -11,7 +11,7 @@ PORTAL = ROOT / "apps" / "portal"
 DATA = PORTAL / "data" / "kolumne.json"
 BASE = "https://gnk-asg.hr"
 PUBLISHER_LOGO = f"{BASE}/assets/gnk-asg-social-card.png"
-AUTHOR_ID = f"{BASE}/#nermin-sefic"
+AUTHOR_ID = f"{BASE}/nermin-sefic/#person"
 AUTHOR_PROFILE = f"{BASE}/nermin-sefic/"
 
 STYLE = """body{margin:0;background:#F0E6C4;color:#241C0E;font-family:Georgia,serif;max-width:720px;margin:0 auto;padding:40px 20px}h1{font-family:'Arial Black',Impact,sans-serif;font-size:2rem;line-height:1.1}p{font-size:1.05rem;line-height:1.65;margin:0 0 16px}a.natrag,a.alt-jezik{font-family:Arial,sans-serif;font-size:.8rem;font-weight:800;text-transform:uppercase;color:#C81E1E;text-decoration:none;display:inline-block;margin-bottom:6px}.oznaka{font-family:Arial,sans-serif;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#C81E1E;display:block;margin-bottom:10px}"""
@@ -30,10 +30,18 @@ def render(item: dict, lang: str) -> str:
     description = item.get("meta_opis_en" if is_en else "meta_opis") or title
     text = item.get("tekst_en" if is_en else "tekst") or item["tekst"]
     image_path = item.get("slika")
-    if not image_path or not image_path.startswith("/assets/people/nermin-sefic/"):
-        raise ValueError(f"{slug}: approved Nermin Sefić author image is required")
+    if not image_path:
+        raise ValueError(f"{slug}: image is required")
+    is_remote = image_path.startswith("http://") or image_path.startswith("https://")
+    is_local = image_path.startswith("/assets/") or image_path.startswith("/spt/")
+    if not (is_remote or is_local):
+        raise ValueError(f"{slug}: image must be an approved local asset or absolute URL")
+    if is_remote and not (item.get("slika_autor") and item.get("slika_licenca") and item.get("slika_izvor")):
+        raise ValueError(f"{slug}: remote image requires author, licence and source URL")
     image_alt = item.get("slika_alt_en" if is_en else "slika_alt") or f"Nermin Sefić — {title}"
-    image_url = image_path if image_path.startswith("http") else f"{BASE}{image_path}"
+    image_url = image_path if is_remote else f"{BASE}{image_path}"
+    credit = " · ".join(str(x) for x in [item.get("slika_autor"), item.get("slika_licenca")] if x)
+    source_link = item.get("slika_izvor")
     hr_path = f"/gnk-aktual/kolumne/{slug}/"
     en_path = f"/en/gnk-aktual/columns/{slug}/"
     canonical_path = en_path if is_en else hr_path
@@ -54,8 +62,9 @@ def render(item: dict, lang: str) -> str:
 <link rel="canonical" href="{esc(canonical)}"><link rel="alternate" hreflang="hr" href="{BASE}{hr_path}"><link rel="alternate" hreflang="en" href="{BASE}{en_path}"><link rel="alternate" hreflang="x-default" href="{BASE}{hr_path}">
 <meta property="og:type" content="article"><meta property="og:locale" content="{locale}"><meta property="og:site_name" content="AKTUAL MEDIA | GNK ASG"><meta property="og:title" content="{esc(seo_title)}"><meta property="og:description" content="{esc(description)}"><meta property="og:url" content="{esc(canonical)}"><meta property="og:image" content="{esc(image_url)}"><meta property="article:author" content="Nermin Sefić"><meta property="article:published_time" content="{esc(published)}">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{esc(seo_title)}"><meta name="twitter:description" content="{esc(description)}"><meta name="twitter:image" content="{esc(image_url)}"><script type="application/ld+json">{schema_json}</script><style>{STYLE}</style></head><body>
-<a class="natrag" href="{back}">{back_text}</a><br><a class="alt-jezik" href="{alternate}">{alternate_text}</a><article><span class="oznaka">{label}</span><h1>{esc(title)}</h1><img src="{esc(image_path)}" alt="{esc(image_alt)}" width="1200" height="1500" loading="eager" fetchpriority="high" style="max-width:100%;height:auto;border:3px solid #241C0E;margin-bottom:20px">
+<a class="natrag" href="{back}">{back_text}</a><br><a class="alt-jezik" href="{alternate}">{alternate_text}</a><article><span class="oznaka">{label}</span><h1>{esc(title)}</h1><figure><img src="{esc(image_path)}" alt="{esc(image_alt)}" width="1600" height="900" loading="eager" fetchpriority="high" style="max-width:100%;height:auto;border:3px solid #241C0E;margin-bottom:8px"><figcaption>{esc(credit)}{(' · ' + '<a href="' + esc(source_link) + '" rel="nofollow noopener">source</a>') if source_link else ''}</figcaption></figure>
 {paragraphs(text)}
+<p class="article-author-mark" data-author-mark="nermin-sefic">#NerminSefić #NerminSefic</p>
 </article></body></html>'''
 
 def main() -> None:
