@@ -171,7 +171,7 @@ async function glavna() {
   // Regenerira kanonske statičke HR/EN stranice iz kolumne.json - bez njih nastaje 404 na izravnoj poveznici
   // i blog-publish-v1.mjs nikad ne pronađe sadržaj za slanje na Blogger.
   const { execSync } = await import('node:child_process');
-  execSync('python3 scripts/generate_aktual_columns.py', { stdio: 'inherit' });
+  execSync(`python3 scripts/generate_aktual_columns.py --slug ${k.slug}`, { stdio: 'inherit' });
 
   console.log('Blog objava ide sama, na sljedecem satnom pokretanju blog-mirror-publish.yml.');
 }
