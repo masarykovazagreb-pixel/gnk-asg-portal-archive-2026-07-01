@@ -16,10 +16,10 @@
       root.innerHTML=arr.slice(0,3).map(x=>{
         const title=en?(x.naslov_en||x.naslov):x.naslov;
         const summary=en?(x.meta_opis_en||x.tekst_en||x.meta_opis||x.tekst||''):(x.meta_opis||x.tekst||'');
-        const img=x.slika||'/assets/people/nermin-sefic/nermin-sefic-17-restaurant-roundtable.webp';
+        const pool=['/assets/gallery/transparentno-upravljanje-violet-innovation-04-v2.svg','/assets/gallery/inovacija-i-ai-teal-stability-06-v2.svg','/assets/gallery/operativna-otpornost-violet-innovation-14-v2.svg','/assets/gallery/financijska-stabilnost-bronze-heritage-09-v2.svg','/assets/gallery/kiberneticka-sigurnost-steel-infrastructure-08-v2.svg','/assets/gallery/strateski-projekti-emerald-growth-12-v2.svg'];const seed=[...String(title||'')].reduce((a,c)=>a+c.charCodeAt(0),0);const img=x.slika||pool[seed%pool.length];
         return '<article class="tw-card tw-column-card"><a href="'+esc(en?(x.url_en||x.url):x.url)+'"><img src="'+esc(img)+'" alt="'+esc(title)+' — Nermin Sefić" loading="lazy"></a><div class="tw-card-body"><span class="label">AKTUAL MEDIA · NERMIN SEFIĆ</span><h3><a href="'+esc(en?(x.url_en||x.url):x.url)+'">'+esc(title)+'</a></h3><p>'+esc(text(summary).slice(0,165))+(text(summary).length>165?'…':'')+'</p><small>'+esc(fmt(x.objavljeno))+'</small></div></article>';
       }).join('');
-    }catch(_){root.innerHTML='';}
+    }catch(_){/* keep server-rendered/static fallback */}
   }
 
   async function boot(){
