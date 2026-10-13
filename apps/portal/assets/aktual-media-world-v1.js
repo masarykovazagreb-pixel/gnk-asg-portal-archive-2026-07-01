@@ -12,7 +12,7 @@
       justIn:'Upravo stiglo',source:'Izvor',openSource:'Otvori izvor',sections:'Rubrike',
       currentFeed:'Trenutačni feed',sources:'Izvori u trenutačnom feedu',search:'Pretraži feed',
       searchPh:'naslov, tema ili izvor',noResults:'Nema rezultata.',topics:'AKTUAL teme',topicsSub:'Pregled stvarnih rubrika i izvora u trenutačnom news feedu.',
-      verified:'provjereni feed',stories:'stavki',updated:'zadnja objava',all:'Sve'
+      verified:'provjereni feed',stories:'stavki',updated:'zadnja objava',all:'Sve',commentary:'Komentar redakcije'
     },
     en:{
       latest:'Latest',croatia:'Croatia',world:'World',business:'Business',tech:'Technology',
@@ -20,7 +20,7 @@
       justIn:'Just in',source:'Source',openSource:'Open source',sections:'Sections',
       currentFeed:'Current feed',sources:'Sources in current feed',search:'Search feed',
       searchPh:'headline, topic or source',noResults:'No results.',topics:'AKTUAL topics',topicsSub:'A live overview of real sections and sources in the current news feed.',
-      verified:'verified feed',stories:'stories',updated:'latest item',all:'All'
+      verified:'verified feed',stories:'stories',updated:'latest item',all:'All',commentary:'Editorial comment'
     }
   }[lang];
 
@@ -76,6 +76,31 @@
   const storyLink = item => '<a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+esc(item.title)+'</a>';
   const image = (item,eager=false) => '<img src="'+esc(item.image)+'" alt="'+esc(item.imageAlt||item.title)+'" loading="'+(eager?'eager':'lazy')+'">';
   const meta = item => '<div class="am-meta"><span>'+esc(item.source||labels.source)+'</span><span>·</span><span>'+esc(timeAgo(item._published))+'</span></div>';
+  const commentary = item => item._commentary
+    ? '<aside class="am-commentary" aria-label="'+esc(labels.commentary)+'"><strong>'+esc(labels.commentary)+'</strong><p>'+esc(item._commentary)+'</p></aside>'
+    : '';
+
+  async function attachEditorialComments(items){
+    try{
+      const response=await fetch('/data/aktual-editorial-comments.json?v='+Date.now(),{cache:'no-store'});
+      if(!response.ok) return items;
+      const data=await response.json();
+      const notes=Array.isArray(data)?data:(data.items||[]);
+      const byId=new Map(notes.filter(x=>x&&x.news_id).map(x=>[String(x.news_id),x]));
+      const now=Date.now();
+      return items.map(item=>{
+        const note=byId.get(String(item.id||''));
+        if(!note) return item;
+        if(note.source_url!==item.url||note.source_name!==item.source||note.source_published_at!==item._published) return item;
+        const expires=Date.parse(note.expires_at||'');
+        if(Number.isFinite(expires)&&expires<=now) return item;
+        const body=txt(lang==='hr'?note.commentary_hr:note.commentary_en);
+        return body?{...item,_commentary:body.slice(0,500)}:item;
+      });
+    }catch{
+      return items;
+    }
+  }
 
   function setEdition(items){
     const date=document.getElementById('amEditionDate');
@@ -192,7 +217,7 @@
     try{
       const r=await fetch('/data/news.json?v='+Date.now(),{cache:'no-store'});
       if(!r.ok) throw new Error('HTTP '+r.status);
-      const items=safeItems(await r.json());
+      const items=await attachEditorialComments(safeItems(await r.json()));
       setEdition(items);
       if(view==='topics'){renderTopics(items);return}
       renderBreaking(items);renderLead(items);renderLatest(items);renderGroups(items);renderSources(items);setupSearch(items);renderEditorial();
