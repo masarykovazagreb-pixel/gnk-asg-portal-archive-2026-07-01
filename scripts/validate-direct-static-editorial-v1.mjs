@@ -137,6 +137,34 @@ function expectedCanonical(file) {
   return `${SITE_ORIGIN}${relative}`;
 }
 
+function maskNonSubstantiveTagBlocks(html) {
+  return String(html || '').replace(
+    /<p\s+class=["']([^"']*\b(?:article-hashtags|article-tags)\b[^"']*)["']>([\s\S]*?)<\/p>/giu,
+    '<p class="$1">__EDITORIAL_TAG_BLOCK__</p>',
+  );
+}
+
+function baseFileContent(file) {
+  const base = process.env.GITHUB_BASE_SHA || process.env.DIRECT_EDITORIAL_BASE_SHA;
+  if (!base) return null;
+  try {
+    return execFileSync('git', ['show', `${base}:${file}`], {
+      cwd: ROOT,
+      encoding: 'utf8',
+      maxBuffer: 25 * 1024 * 1024,
+      stdio: ['ignore', 'pipe', 'ignore'],
+    });
+  } catch {
+    return null;
+  }
+}
+
+function isTagOnlyChange(file, currentHtml) {
+  const before = baseFileContent(file);
+  if (before === null || before === currentHtml) return false;
+  return maskNonSubstantiveTagBlocks(before) === maskNonSubstantiveTagBlocks(currentHtml);
+}
+
 function changedFiles() {
   const explicit = process.argv.slice(2).filter(Boolean);
   if (explicit.length) return explicit;
@@ -174,6 +202,10 @@ function validate(file) {
   const absolute = path.join(ROOT, file);
   if (!fs.existsSync(absolute)) return { file, skipped: true, reason: 'missing-after-diff', errors };
   const html = fs.readFileSync(absolute, 'utf8');
+
+  if (isTagOnlyChange(file, html)) {
+    return { file, skipped: true, reason: 'non-substantive-tag-normalization', errors };
+  }
 
   if (EXCEPTION_META.test(html)) {
     return { file, skipped: true, reason: 'digital-workforce-worker-exception', errors };
