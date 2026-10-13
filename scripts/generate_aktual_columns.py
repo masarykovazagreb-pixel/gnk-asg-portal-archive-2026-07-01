@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import html
 import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -42,7 +43,9 @@ def render(item: dict, lang: str) -> str:
     image_url = image_path if is_remote else f"{BASE}{image_path}"
     credit = " · ".join(str(x) for x in [item.get("slika_autor"), item.get("slika_licenca")] if x)
     source_link = item.get("slika_izvor")
-    hr_path = f"/gnk-aktual/kolumne/{slug}/"
+    hr_path = item.get("path") or f"/gnk-aktual/kolumne/{slug}/"
+    if not hr_path.startswith("/gnk-aktual/kolumne/"):
+        raise ValueError(f"{slug}: generator only materializes canonical AKTUAL column routes")
     en_path = f"/en/gnk-aktual/columns/{slug}/"
     canonical_path = en_path if is_en else hr_path
     canonical = f"{BASE}{canonical_path}"
@@ -68,16 +71,30 @@ def render(item: dict, lang: str) -> str:
 </article></body></html>'''
 
 def main() -> None:
-    items = json.loads(DATA.read_text(encoding="utf-8")).get("items", [])
+    doc = json.loads(DATA.read_text(encoding="utf-8"))
+    items = doc if isinstance(doc, list) else doc.get("items", [])
+    wanted = None
+    if "--slug" in sys.argv:
+        i = sys.argv.index("--slug")
+        if i + 1 >= len(sys.argv):
+            raise SystemExit("--slug requires a value")
+        wanted = sys.argv[i + 1]
+    items = [item for item in items if str(item.get("path") or "").startswith("/gnk-aktual/kolumne/")]
+    if wanted:
+        items = [item for item in items if item.get("slug") == wanted]
     if not items:
-        raise SystemExit("No column items found")
+        raise SystemExit("No canonical AKTUAL column items found")
+    generated = 0
     for item in items:
         slug = item["slug"]
-        targets = {PORTAL / "gnk-aktual" / "kolumne" / slug / "index.html": render(item, "hr"), PORTAL / "en" / "gnk-aktual" / "columns" / slug / "index.html": render(item, "en")}
+        targets = {PORTAL / "gnk-aktual" / "kolumne" / slug / "index.html": render(item, "hr")}
+        if item.get("tekst_en"):
+            targets[PORTAL / "en" / "gnk-aktual" / "columns" / slug / "index.html"] = render(item, "en")
         for path, content in targets.items():
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(content, encoding="utf-8")
-    print(f"Generated {len(items) * 2} column pages from {DATA.relative_to(ROOT)}")
+            generated += 1
+    print(f"Generated {generated} canonical AKTUAL column pages from {DATA.relative_to(ROOT)}")
 
 if __name__ == "__main__":
     main()
