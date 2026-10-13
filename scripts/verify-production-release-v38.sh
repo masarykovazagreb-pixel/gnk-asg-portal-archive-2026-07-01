@@ -52,6 +52,11 @@ verify_release_marker news-runtime "${base}/assets/index-editorial-order-v6.js" 
 verify_release_marker objave "${base}/objave/" 'Kapitalna disciplina u razdoblju geopolitičkih i energetskih šokova'
 verify_release_marker komentari "${base}/komentari/" 'AI ne smije pisati konačnu odluku'
 verify_release_marker contact-page "${base}/contact/" 'id="contactForm"'
+verify_release_marker home-bank-nav-version "${base}/" 'public-unified-menu-v6.js?v=20261012-radio-panel-polish-v2-bank-nav-v1'
+verify_release_marker menu-bank "${base}/assets/public-unified-menu-v6.js?v=20261012-radio-panel-polish-v2-bank-nav-v1" "['Banka / Adria Bank','Bank / Adria Bank','/bank/','/en/bank/']"
+bank_entry_count=$(grep -oF -- "['Banka / Adria Bank','Bank / Adria Bank','/bank/','/en/bank/']" "$out/menu-bank.body" | wc -l | tr -d '[:space:]' || true)
+echo "ASSERT public menu contains exactly one HR/EN bank entry; actual=${bank_entry_count:-0}"
+[[ "$bank_entry_count" = "1" ]]
 verify_release_marker mail-studio "${base}/assets/mail-studio-ui-v28.js" 'min-height:520px'
 verify_release_marker mail-logo "${base}/assets/logo-gnk-asg-email.png" 'x-gnk-canonical-logo: same-as-portal'
 

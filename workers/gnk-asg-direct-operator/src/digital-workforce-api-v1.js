@@ -1,4 +1,4 @@
-export const VERSION='GNK_ASG_DIGITAL_WORKFORCE_API_V3_20260717';
+export const VERSION='GNK_ASG_DIGITAL_WORKFORCE_API_V4_20261012_D1_RUNTIME_HEALTH';
 
 const PUBLIC_PACKAGE={
   publicationLane:[
@@ -97,10 +97,19 @@ export async function handleDigitalWorkforce(request,env,ctx,app){
 
   if(path==='/api/public/digital-workforce/health'){
     if(!PUBLIC_METHODS.has(request.method))return methodNotAllowed(request,['GET','HEAD']);
-    const d1=Boolean(env.GNK_ASG_D1);
-    let stored=false;
-    if(d1){try{stored=Boolean(await latest(env));}catch{}}
-    return json(request,{ok:true,status:d1?'ready':'degraded',checks:{worker:true,assets:Boolean(env.ASSETS),d1,storedPackage:stored},version:VERSION,updatedAt:PUBLIC_PACKAGE.updatedAt},d1?200:503);
+    const d1Configured=Boolean(env.GNK_ASG_D1);
+    let d1=false,editorDeskStore=false,stored=false;
+    if(d1Configured){
+      try{
+        const probe=await env.GNK_ASG_D1.prepare('SELECT 1 AS ok').first();
+        d1=Number(probe?.ok)===1;
+        if(d1){
+          try{stored=Boolean(await latest(env));editorDeskStore=true;}catch{}
+        }
+      }catch{}
+    }
+    const ready=d1&&editorDeskStore;
+    return json(request,{ok:ready,status:ready?'ready':'degraded',checks:{worker:true,assets:Boolean(env.ASSETS),d1Configured,d1,editorDeskStore,storedPackage:stored},version:VERSION,updatedAt:PUBLIC_PACKAGE.updatedAt},ready?200:503);
   }
 
   if(path==='/api/public/editor-desk'){

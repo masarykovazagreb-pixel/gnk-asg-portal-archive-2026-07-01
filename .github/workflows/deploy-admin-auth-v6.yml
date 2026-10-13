@@ -11,6 +11,11 @@ on:
         description: "Full 40-character main commit SHA approved for production"
         required: true
         type: string
+      notify_search_engines:
+        description: "Send IndexNow and Google/Bing sitemap notifications after successful deployment; false suppresses them"
+        required: false
+        default: true
+        type: boolean
 
 permissions:
   contents: read
@@ -335,6 +340,7 @@ jobs:
   indexnow-notify:
     name: Obavijesti IndexNow (Bing/Yandex) o novom deployu
     needs: deploy-production
+    if: ${{ needs.deploy-production.result == 'success' && inputs.notify_search_engines == true }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:

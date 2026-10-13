@@ -27,6 +27,9 @@ assert.match(menu,/Worker Operations/);
 assert.match(menu,/Digitalna radna snaga','Digital workforce','\/digital-workforce\/'/);
 assert.match(menu,/Workeri','Workers','\/workers\/'/);
 assert.match(menu,/Upravljanje radnom snagom','Workforce management','\/admin-center\/workers\/'/);
+assert.match(menu,/\['Banka \/ Adria Bank','Bank \/ Adria Bank','\/bank\/','\/en\/bank\/'\]/);
+assert.equal((menu.match(/\['Banka \/ Adria Bank'/g)||[]).length,1,'the public menu should contain one clearly named bank link');
+assert.doesNotMatch(menu,/Projekt Adria Bank|Project Adria Bank/);
 assert.doesNotMatch(menu,/Worker Directory Admin','Worker Directory Admin','\/admin-center\/workers\/'/);
 assert.doesNotMatch(menu,/Direct Operator','Direct Operator','\/admin-center\/workers\/'/);
 
@@ -74,7 +77,7 @@ assert.doesNotMatch(workforceApi,/2026,0,1/);
 assert.doesNotMatch(workforceApi,/1969|1970/);
 assert.match(workforceApi,/2026,6,18/);
 assert.match(workforceApi,/digital_workforce_identity_collision/);
-assert.match(workforceDirectory,/GNK_ASG_WORKERS_DIRECTORY_V3_20260717_ALIGNED_IDENTITIES/);
+assert.match(workforceDirectory,/GNK_ASG_WORKERS_DIRECTORY_V4_20261012_BILINGUAL_FILTER_LABELS/);
 assert.match(workforceDirectory,/worker_directory_integrity_failed/);
 assert.match(workforceDirectory,/firstNames\.size!==EXPECTED_TOTAL/);
 assert.match(workforceDirectory,/lastNames\.size!==EXPECTED_TOTAL/);

@@ -32,6 +32,6 @@ assert.match(page,/data-worker-count>1\.573/);
 assert.match(page,/1\.536 temeljnih profila/);
 assert.match(page,/37 specijalističkih profila/);
 assert.match(page,/1\.573 jedinstvena identiteta/);
-assert.match(page,/workers-directory-v1\.js\?v=20260717-aligned-identities/);
+assert.match(page,/workers-directory-v1\.js\?v=20261012-bilingual-filters-v4/);
 assert.doesNotMatch(page,/1\.536 digitalnih workflow funkcija/);
 console.log(JSON.stringify({ok:true,total:data.length,base:meta.base,specialists:meta.specialists,uniqueCodes:meta.uniqueCodes,uniqueFirstNames:meta.uniqueFirstNames,uniqueLastNames:meta.uniqueLastNames,uniqueNames:meta.uniqueNames,first:data[0].code,last:data.at(-1).code},null,2));

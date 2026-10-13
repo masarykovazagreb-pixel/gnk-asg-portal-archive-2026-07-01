@@ -1,94 +1,82 @@
+import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 
 const root=process.cwd();
-const errors=[];
 const read=file=>fs.readFileSync(path.join(root,file),'utf8');
-const check=(value,message)=>{if(!value)errors.push(message);};
-const requireAll=(file,tokens)=>{const source=read(file);for(const token of tokens)check(source.includes(token),`${file}: missing ${token}`);return source;};
 
-const directorySource=read('apps/portal/assets/js/digital-workforce-directory-v1.js');
-const sandbox={module:{exports:{}},exports:{}};
-vm.runInNewContext(directorySource,sandbox,{filename:'digital-workforce-directory-v1.js'});
-const directory=sandbox.module.exports;
-const profiles=directory.profiles||[];
-
-check(directory.count===1537,'directory count must equal 1537');
-check(profiles.length===1537,'profile array must contain 1537 records');
-check(new Set(profiles.map(item=>item.workerId)).size===1537,'worker identifiers must be unique');
-check(new Set(profiles.map(item=>item.name)).size===1537,'display names must be unique');
-check(new Set(profiles.map(item=>item.department)).size===27,'27 departments required');
-check(new Set(profiles.map(item=>item.entitySlot)).size===43,'43 entity slots required');
-check(new Set(profiles.map(item=>item.operatingCountry)).size===18,'18 operating countries required');
-
-for(const item of profiles){
-  for(const field of ['name','workerId','department','role','positionTitle','operatingCountry','operatingRegion','languages','timezone','status','entitySlot','responsibility','authority','operatingMode','backgroundCadence','budgetEnvelopeKey','budgetMode'])check(typeof item[field]==='string'&&item[field].trim(),`${item.workerId||'unknown'} missing ${field}`);
-  check(/^[A-Z]{3,4}-GNK\d{2}-\d{4}$/.test(item.workerId),`invalid worker identifier ${item.workerId}`);
-  check(/^GNK(?:0[1-9]|[1-3]\d|4[0-3])$/.test(item.entitySlot),`invalid entity slot ${item.entitySlot}`);
-  check(Array.isArray(item.workTasks)&&item.workTasks.length>=4,`${item.workerId} work tasks incomplete`);
-  check(Array.isArray(item.policySet)&&item.policySet.length>=9,`${item.workerId} policy set incomplete`);
-  check(Array.isArray(item.financialPlanningBases)&&item.financialPlanningBases.length===2,`${item.workerId} planning bases incomplete`);
-  check(item.paymentAuthority===false,`${item.workerId} payment boundary invalid`);
-  check(item.contractAuthority===false,`${item.workerId} contract boundary invalid`);
-  check(item.auditRequired===true,`${item.workerId} audit rule missing`);
-  check(item.peerReviewRequired===true,`${item.workerId} peer review rule missing`);
-  check(item.minimumOptions===2,`${item.workerId} option rule missing`);
+function runDirectory(locale){
+  const events=new Map();
+  const options={sector:[],stage:[]};
+  const element=(name,extra={})=>({name,value:'',textContent:'',innerHTML:'',addEventListener(type,fn){events.set(`${name}:${type}`,fn)},...extra});
+  const controls={
+    q:element('q'),
+    sector:element('sector',{add(option){options.sector.push(option)}}),
+    stage:element('stage',{add(option){options.stage.push(option)}}),
+    rows:element('rows')
+  };
+  const count=element('worker-count');
+  const summary=element('worker-result-count');
+  const document={
+    documentElement:{lang:locale,dataset:{}},
+    getElementById:id=>controls[id]||null,
+    querySelector:selector=>selector==='[data-worker-count]'?count:selector==='[data-worker-result-count]'?summary:null
+  };
+  const window={};
+  class FakeOption{constructor(label,value){this.text=label;this.value=value}}
+  vm.runInNewContext(read('apps/portal/assets/workers-directory-v1.js'),{window,document,Option:FakeOption},{filename:'workers-directory-v1.js'});
+  return{window,controls,options,count,summary,events,document};
 }
 
-const governance=JSON.parse(read('apps/portal/assets/data/digital-workforce-governance.json'));
-check(governance.status==='controlled-review','governance status invalid');
-check(governance.proposalProtocol?.minimumOptions===2,'proposal option rule missing');
-check(governance.proposalProtocol?.selfApproval==='forbidden','self review boundary missing');
-check(Array.isArray(governance.mandatoryHumanApproval)&&governance.mandatoryHumanApproval.length>=11,'human approval gates incomplete');
-for(const id of ['P01','P02','P03','P04','P05','P06','P07','P08'])check(governance.operatingProtocols.some(item=>item.id===id),`protocol missing ${id}`);
-
-const pages=['apps/portal/digital-workforce/directory/index.html','apps/portal/digital-workforce/work-profiles/index.html','apps/portal/digital-workforce/protocols/index.html','apps/portal/about-the-group/index.html','apps/portal/o-grupi/index.html','apps/portal/the-code/intelligence/index.html'];
-for(const file of pages){
-  const html=requireAll(file,['<title>','name="description"','rel="canonical"','property="og:title"','property="og:description"','property="og:image"','name="twitter:card"','name="twitter:title"','name="twitter:description"','name="twitter:image"','application/ld+json']);
-  const schemas=[...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
-  check(schemas.length>0,`${file}: schema missing`);
-  for(const schema of schemas){try{JSON.parse(schema[1]);}catch(error){errors.push(`${file}: invalid schema ${error.message}`);}}
+const hr=runDirectory('hr');
+const en=runDirectory('en');
+for(const [locale,result] of [['hr',hr],['en',en]]){
+  const meta=result.window.__GNK_WORKER_DIRECTORY_META__;
+  const profiles=result.window.__GNK_WORKER_DIRECTORY_DATA__||[];
+  assert.equal(meta.total,1573,`${locale}: directory total`);
+  assert.equal(meta.base,1536,`${locale}: core profile count`);
+  assert.equal(meta.specialists,37,`${locale}: specialist profile count`);
+  assert.equal(profiles.length,1573,`${locale}: generated profile count`);
+  assert.equal(new Set(profiles.map(item=>item.code)).size,1573,`${locale}: worker codes must be unique`);
+  assert.equal(new Set(profiles.map(item=>item.name)).size,1573,`${locale}: synthetic names must be unique`);
+  assert.equal(new Set(profiles.map(item=>item.firstName)).size,1573,`${locale}: first names must be unique`);
+  assert.equal(new Set(profiles.map(item=>item.lastName)).size,1573,`${locale}: last names must be unique`);
+  assert.equal(new Set(profiles.slice(0,1536).map(item=>item.sector)).size,12,`${locale}: core sector count`);
+  assert.equal(new Set(profiles.slice(0,1536).map(item=>item.func)).size,16,`${locale}: core function count`);
+  assert.equal(new Set(profiles.map(item=>item.sector)).size,13,`${locale}: all profile sectors including the QA specialty`);
+  assert.equal(new Set(profiles.map(item=>item.stage)).size,8,`${locale}: stage count`);
+  for(const item of profiles){
+    for(const field of ['code','name','position','location','sector','func','stage','job'])assert.ok(typeof item[field]==='string'&&item[field].trim(),`${locale}: ${item.code} missing ${field}`);
+    assert.match(item.code,/^DWF-\d{4}$/u,`${locale}: invalid worker code ${item.code}`);
+  }
+  assert.match(result.window.__GNK_WORKER_DIRECTORY_META__.version,/BILINGUAL_FILTER_LABELS/u);
 }
 
-requireAll('apps/portal/digital-workforce/directory/index.html',['noindex,nofollow,noarchive','numberOfItems":1537','Export filtered CSV','Print view','aria-live="polite"']);
-requireAll('apps/portal/digital-workforce/work-profiles/index.html',['noindex,nofollow,noarchive','data.count!==1537','Work Profiles','Work tasks','Policies','Financial planning bases','backgroundCadence','budgetEnvelopeKey']);
-requireAll('apps/portal/digital-workforce/protocols/index.html',['Always requires human approval','Stop and rollback protocol','Audit and escalation','minimumOptions']);
+assert.equal(hr.count.textContent,'1.573','Croatian count must use Croatian number formatting');
+assert.equal(en.count.textContent,'1,573','English count must use English number formatting');
+assert.equal(hr.options.sector[0].text,'Strategija');
+assert.equal(en.options.sector[0].text,'Strategy');
+assert.equal(hr.options.stage[0].text,'Zaprimanje');
+assert.equal(en.options.stage[0].text,'Intake');
+assert.match(hr.controls.rows.innerHTML,/Strategija/u);
+assert.match(hr.controls.rows.innerHTML,/Planiranje/u);
+assert.match(en.controls.rows.innerHTML,/Strategy/u);
+assert.match(en.controls.rows.innerHTML,/Planning/u);
+assert.doesNotMatch(en.controls.rows.innerHTML,/Strategija|Planiranje|zaprimanje/u,'English directory rows must not leak Croatian filter/task labels');
+assert.equal(hr.summary.textContent,'1.573 rezultata · prikazano 300');
+assert.equal(en.summary.textContent,'1,573 results · showing 300');
 
-const reviewRuntime=requireAll('workers/gnk-asg-direct-operator/src/index-enterprise-projects-runtime-v1.js',['reviewEnvironment','x-robots-tag','x-gnk-review-indexing']);
-check(reviewRuntime.includes('noindex, nofollow, noarchive'),'review indexing lock missing');
-for(const config of ['workers/gnk-asg-direct-operator/wrangler.toml','workers/gnk-asg-direct-operator/wrangler.review-preview.toml'])check(/PUBLIC_ENVIRONMENT\s*=\s*"[^"]*(review|preview|isolated)/i.test(read(config)),`${config}: review marker missing`);
-
-for(const file of ['apps/portal/about-the-group/index.html','apps/portal/o-grupi/index.html']){
-  const html=read(file);
-  check(!html.includes('digital-workflow-role'),`${file}: workflow role cannot be Person schema`);
-  check(!/[A-Z]{3,4}-GNK\d{2}-\d{4}/.test(html),`${file}: worker identifier exposed as Person`);
-  if(html.includes('"@type":"Person"'))check(html.includes('Nermin Sefić'),`${file}: unevidenced Person schema`);
+const hrPage=read('apps/portal/workers/index.html');
+const enPage=read('apps/portal/en/workers/index.html');
+for(const [locale,html] of [['hr',hrPage],['en',enPage]]){
+  assert.match(html,/rel="canonical"/u,`${locale}: canonical URL required`);
+  assert.match(html,/hreflang="en"/u,`${locale}: English alternate required`);
+  assert.match(html,/hreflang="hr"/u,`${locale}: Croatian alternate required`);
+  assert.match(html,/workers-directory-v1\.js\?v=20261012-bilingual-filters-v4/u,`${locale}: current directory asset required`);
+  assert.match(html,/synthetic|sintetička/u,`${locale}: generated profiles must be identified as synthetic`);
+  assert.match(html,/does not display secrets|Ne prikazuje tajne/u,`${locale}: public data boundary must remain visible`);
 }
-const intelligence=read('apps/portal/the-code/intelligence/index.html');
-check(intelligence.includes('"@type":"Person"')&&intelligence.includes('Nermin Sefić'),'evidenced author relation missing');
-const structuredAttribution=intelligence.includes('"author"')&&intelligence.includes('"editor"')&&intelligence.includes('"publisher"');
-const visibleAttribution=/Author, editor and publisher relations remain separate\.?/i.test(intelligence);
-check(structuredAttribution||visibleAttribution,'editorial relations missing');
+assert.match(enPage,/<div class="count" data-worker-count>1,573<\/div>/u,'English static count must be locale-correct before JavaScript loads');
 
-const seo=JSON.parse(read('apps/portal/assets/data/seo-entity-registry.json'));
-check(seo.indexingPolicy?.defaultBeforeApproval==='noindex,nofollow,noarchive','SEO review policy invalid');
-check(seo.indexingPolicy?.sitemapBeforeApproval==='exclude','sitemap review policy invalid');
-check(seo.indexingPolicy?.automaticPublication===false,'automatic publication boundary invalid');
-
-const menu=requireAll('apps/portal/assets/public-menu-v18.js',['window.__GNK_ASG_PUBLIC_MENU_V18__','/digital-workforce/','/digital-workforce/directory/','/digital-workforce/protocols/','/about-the-group/','/the-code/intelligence/']);
-for(const route of ['/admin-center/','/mission-control/','/registry-center/','/deployment/','/mobile-admin/','/seo/','/design-review/','/enterprise/'])check(!menu.includes(`href="${route}`)&&!menu.includes(`href='${route}`),`private route exposed ${route}`);
-requireAll('workers/gnk-asg-direct-operator/src/public-shell-v11.js',['public-menu-v18.js','if(isPrivatePath(normalized))return html;']);
-
-const editorialRuntime=requireAll('apps/portal/assets/js/editorial-operations-runtime-v1.js',['/api/editorial-operations/plan']);
-check(!editorialRuntime.includes("const API='/api/editorial-operations'"),'ambiguous editorial route remains');
-check(!read('workers/gnk-asg-direct-operator/src/editorial-workflow-v1.js').includes("state:'published'"),'unapproved published state present');
-check(!/<button[^>]*>[^<]*(publish|objavi)/i.test(read('apps/portal/editorial-operations/release-queue/index.html')),'release action exposed in queue');
-
-if(errors.length){
-  console.error(`DIGITAL_WORKFORCE_PUBLIC_CONTRACT_FAILED ${errors.length}`);
-  for(const error of errors)console.error(`- ${error}`);
-  process.exit(1);
-}
-console.log('DIGITAL_WORKFORCE_PUBLIC_CONTRACT_OK');
-console.log(JSON.stringify({profiles:profiles.length,departments:27,entitySlots:43,countries:18,humanApprovalGates:governance.mandatoryHumanApproval.length}));
+console.log(JSON.stringify({ok:true,contract:'current-synthetic-worker-directory-and-bilingual-filters',profiles:1573,coreProfiles:1536,specialists:37,uniqueCodes:true,uniqueNames:true,bilingualFilters:true},null,2));

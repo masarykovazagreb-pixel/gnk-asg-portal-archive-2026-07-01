@@ -72,7 +72,12 @@ const floatScrubbed=floatJs.replace(/localStorage\.(?:getItem|setItem|removeItem
 for(const src of [floatScrubbed,install]){
   if(/localStorage|sessionStorage|document\.cookie/.test(src)) failures.push('radio controller/install: only the single open/closed UI preference may be stored (no tracking storage)');
 }
-if(!read(files.floatCss).includes('#aktualMediaRadioFloat')) failures.push('float CSS: root selector missing');
+const floatCss=read(files.floatCss);
+if(!floatCss.includes('#aktualMediaRadioFloat')) failures.push('float CSS: root selector missing');
+if(!floatCss.includes('grid-template-columns:repeat(3,minmax(0,1fr))')) failures.push('float CSS: responsive three-column station grid missing');
+if(!floatCss.includes('grid-template-areas:"down play up pop" "meter meter meter meter"')) failures.push('float CSS: balanced transport and volume-control layout missing');
+if(!floatCss.includes('@media(max-width:480px)')||!floatCss.includes('prefers-reduced-motion')) failures.push('float CSS: compact viewport or reduced-motion support missing');
+if(!menu.includes('20261012-radio-v5-balanced-panel')) failures.push('menu: floating radio assets need the current balanced-panel cache version');
 if(!read(files.playerCss).includes('.rp-shell')) failures.push('player CSS: shell missing');
 
 console.log(JSON.stringify({version:'AKTUAL_MEDIA_RADIO_PERSISTENT_V1',files:Object.keys(files).length,failures},null,2));

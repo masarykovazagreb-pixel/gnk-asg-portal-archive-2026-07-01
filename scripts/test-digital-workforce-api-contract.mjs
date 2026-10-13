@@ -8,7 +8,7 @@ const rejectedApp={fetch:async()=>jsonResponse({authenticated:false},401)};
 const call=(path,{method='GET',headers={},body,env={},app=authenticatedApp}={})=>handleDigitalWorkforce(new Request(origin+path,{method,headers,body}),env,{},app);
 const body=async response=>response.json();
 
-assert.match(VERSION,/DIGITAL_WORKFORCE_API_V3_20260717/);
+assert.match(VERSION,/DIGITAL_WORKFORCE_API_V4_20261012_D1_RUNTIME_HEALTH/);
 
 {
   const response=await call('/api/public/digital-workforce/health',{method:'POST'});
@@ -29,11 +29,41 @@ assert.match(VERSION,/DIGITAL_WORKFORCE_API_V3_20260717/);
   let runCalls=0;
   const env={GNK_ASG_D1:{prepare(sql){
     assert.doesNotMatch(sql,/CREATE\s+TABLE/i,'public health must not create schema');
-    return{first:async()=>null,run:async()=>{runCalls+=1;}};
+    return{first:async()=>sql==='SELECT 1 AS ok'?{ok:1}:null,run:async()=>{runCalls+=1;}};
   }}};
   const response=await call('/api/public/digital-workforce/health',{env});
   assert.equal(response.status,200);
+  const health=await body(response);
+  assert.equal(health.ok,true);
+  assert.equal(health.status,'ready');
+  assert.equal(health.checks.d1Configured,true);
+  assert.equal(health.checks.d1,true);
+  assert.equal(health.checks.editorDeskStore,true);
   assert.equal(runCalls,0);
+}
+{
+  const response=await call('/api/public/digital-workforce/health');
+  assert.equal(response.status,503,'missing D1 binding must report degraded health');
+  const health=await body(response);
+  assert.equal(health.ok,false);
+  assert.equal(health.status,'degraded');
+  assert.equal(health.checks.d1Configured,false);
+  assert.equal(health.checks.d1,false);
+  assert.equal(health.checks.editorDeskStore,false);
+}
+{
+  const env={GNK_ASG_D1:{prepare(){return{first:async()=>{throw new Error('D1 unavailable')}};}}};
+  const response=await call('/api/public/digital-workforce/health',{env});
+  assert.equal(response.status,503,'D1 probe errors must report degraded health');
+  assert.equal((await body(response)).checks.d1,false);
+}
+{
+  const env={GNK_ASG_D1:{prepare(sql){return{first:async()=>sql==='SELECT 1 AS ok'?{ok:1}:Promise.reject(new Error('table missing'))};}}};
+  const response=await call('/api/public/digital-workforce/health',{env});
+  assert.equal(response.status,503,'missing Editor Desk storage schema must report degraded health');
+  const health=await body(response);
+  assert.equal(health.checks.d1,true);
+  assert.equal(health.checks.editorDeskStore,false);
 }
 {
   let runCalls=0;

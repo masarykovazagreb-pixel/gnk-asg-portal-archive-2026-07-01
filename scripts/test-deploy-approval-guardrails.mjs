@@ -18,6 +18,7 @@ requireText('workflow approval contract',workflow,[
  'require_eq "$GITHUB_SHA" "$APPROVED_SHA"','require_eq "$(git rev-parse origin/main)" "$APPROVED_SHA"',
  "inputs.confirm_production_deploy == 'DEPLOY_ADMIN_AUTH_V6'",'group: gnk-asg-main-mutation',
  'cancel-in-progress: false','production-verification-${{ inputs.approved_sha }}',
+ 'notify_search_engines:','default: true',"if: ${{ needs.deploy-production.result == 'success' && inputs.notify_search_engines == true }}",
  'deploy-preflight-${{ inputs.approved_sha }}','bash scripts/verify-production-release-v38.sh deploy-verification',
  'bash ../../scripts/deploy-direct-operator-with-retry-v1.sh','deploy-wrangler-logs-${{ inputs.approved_sha }}'
 ]);
@@ -61,7 +62,7 @@ assert.deepEqual(violations,[],'Only deploy-admin-auth-v6.yml may contain produc
 
 requireText('preflight',preflight,['gnk-asg-news-backend','/newsroom/','/en/newsroom/','No production changes were made']);
 assert.doesNotMatch(preflight,/\bwrangler\b|api\.cloudflare\.com|cloudflare_api_token|cloudflare_account_id/i);
-requireText('production verifier',verifier,['x-gnk-deploy-revision','x-gnk-active-release','x-gnk-active-entrypoint','contact readiness HTTP 200']);
+requireText('production verifier',verifier,['x-gnk-deploy-revision','x-gnk-active-release','x-gnk-active-entrypoint','contact readiness HTTP 200','home-bank-nav-version','menu-bank','Banka / Adria Bank','20261012-radio-panel-polish-v2-bank-nav-v1']);
 forbidText('production verifier',verifier,['wrangler deploy','cloudflare_api_token=']);
 
 console.log(JSON.stringify({
@@ -70,5 +71,6 @@ console.log(JSON.stringify({
  boundedCloudflareRetry:true,
  retryOnlyForAssetsSession10013:true,
  diagnosticsArtifact:true,
+ searchNotifications:'per-run-opt-out-preserves-existing-default',
  alternateProductionDeploys:false
 },null,2));
