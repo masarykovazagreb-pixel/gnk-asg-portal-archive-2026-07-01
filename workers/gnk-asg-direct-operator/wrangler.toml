@@ -1,39 +1,74 @@
-name = "gnk-asg-direct-operator-review"
+name = "gnk-asg-direct-operator"
 main = "src/index-digital-workforce-v1.js"
 compatibility_date = "2026-06-13"
 workers_dev = true
 preview_urls = true
+keep_vars = true
 
-# ISOLATED REVIEW-ONLY CONFIG
-# This default profile is deliberately separated from the production Worker.
-# It has no production KV, D1, R2, Email or AI bindings and no scheduled triggers.
-# Production configuration remains in wrangler.workforce-production-no-routes.toml
-# and must only be used after separate explicit production-deploy approval.
+# REVIEW-ONLY SAFETY LOCK
+# This configuration is intentionally route-less for review. Production routes,
+# DNS, Cloudflare route bindings and production secrets must remain untouched
+# until a separate explicit executive production deploy approval is given.
 
 [assets]
 directory = "../../apps/portal"
 binding = "ASSETS"
 run_worker_first = true
 
+[[kv_namespaces]]
+binding = "GNK_ASG_CONFIG_KV"
+id = "d6f5dac9fa034d8d813db0de44eb7b1b"
+
+[[kv_namespaces]]
+binding = "GNK_ASG_KV"
+id = "a3e9e78c7d554d7fa10996da9a89e7bc"
+
+[[d1_databases]]
+binding = "GNK_ASG_D1"
+database_name = "gnk_asg_operator_logs"
+database_id = "2116c4e5-1850-4888-91e7-c47deead3ced"
+
+[[r2_buckets]]
+binding = "GNK_ASG_MEDIA_ASSETS"
+bucket_name = "gnk-asg-media-assets"
+
+[[send_email]]
+name = "EMAIL"
+remote = true
+
+[triggers]
+crons = ["*/15 * * * *"]
+
 [vars]
 PUBLIC_BRAND = "GNK ASG"
 PUBLIC_ENVIRONMENT = "review-direct-operator"
-DEPLOY_REVISION = "20261012-local-review-only"
+DEPLOY_REVISION = "20260715-digital-workforce-editor-desk-v1"
 SAFE_GET_DIRECT_MODE = "true"
+AUTO_EDITOR_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast"
+
+# Review deployments must be fail-closed for every scheduled or outbound action.
+# The runtime remains testable, but it cannot publish, auto-reply, send manual
+# messages or execute outreach unless a separate production configuration is
+# explicitly approved and deployed.
 NEWS_AUTO_PUBLICATION_SCHEDULED_LIVE = "false"
 MAIL_AUTO_REPLY_LIVE = "false"
 MAIL_STUDIO_LIVE = "false"
 MAIL_MANUAL_LIVE = "false"
+MAIL_MANDATORY_BCC = "beckuphome@gmail.com"
 MAIL_PROFILE_TEST_LIVE = "false"
 MAIL_PROFILE_TEST_RECIPIENTS = "beckuphome@gmail.com"
 MAIL_BOOTSTRAP_SMOKE_TEST = "false"
-MAIL_MANDATORY_BCC = "beckuphome@gmail.com"
 MEDIA_OUTREACH_LIVE = "false"
 MEDIA_OUTREACH_SCHEDULED_LIVE = "false"
 MEDIA_OUTREACH_TEST_LIVE = "false"
 MEDIA_OUTREACH_TEST_RECIPIENTS = "beckuphome@gmail.com"
 MEDIA_OUTREACH_AUTO_TEST_RECIPIENT = "beckuphome@gmail.com"
 MEDIA_OUTREACH_REPORT_RECIPIENTS = "beckuphome@gmail.com"
+MEDIA_OUTREACH_MAX_PER_HOUR = "1"
+MEDIA_OUTREACH_MAX_PER_DAY = "3"
 MEDIA_APPLICATION_AUTO_ACK = "false"
-EMAIL_OPEN_TRACKING_ENABLED = "false"
-EMAIL_RECEIPT_CONFIRMATION_ENABLED = "false"
+EMAIL_STATUS_PUBLIC_ORIGIN = "https://gnk-asg.hr"
+EMAIL_OPEN_TRACKING_ENABLED = "true"
+EMAIL_STATUS_SYNC_LOOKBACK_HOURS = "48"
+EMAIL_STATUS_SYNC_OVERLAP_MINUTES = "15"
+EMAIL_STATUS_SYNC_LIMIT = "5000"

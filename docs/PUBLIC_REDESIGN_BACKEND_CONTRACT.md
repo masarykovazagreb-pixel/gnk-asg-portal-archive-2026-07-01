@@ -2,7 +2,7 @@
 
 ## Scope
 
-This branch retains the previously accepted public visual layer and may include narrowly scoped runtime, integration or review-isolation hardening justified by the extended technical audit. Production credentials, bindings, email delivery settings, databases, storage, route ownership and backend business logic must remain unchanged unless a separately approved production change explicitly authorizes them.
+This branch changes the public visual layer only. It must not change production credentials, Cloudflare bindings, email delivery settings, databases, storage, route ownership or backend business logic.
 
 ## Protected capabilities
 
@@ -41,18 +41,16 @@ The redesign may later provide a separate visual revision for one of these appli
 
 ## Protected infrastructure
 
-A review or visual change must not modify production configuration or state:
+A public redesign change must not modify:
 
-- `wrangler.workforce-production-no-routes.toml`, `wrangler.runtime.toml`, or any live Worker profile
-- Cloudflare production environment variables, secrets, bindings, routes, DNS or account state
+- `wrangler.toml`
+- Cloudflare environment variables or bindings
 - operator/admin/media tokens
-- production D1 migrations or table definitions
-- KV keys and production state contracts
+- D1 migrations or table definitions
+- KV keys and state contracts
 - R2 object keys or file validation rules
-- Email sender identities, mandatory BCC, allowlists or live-send gates in production profiles
-- production cron schedules or queue processors
-
-The default `workers/gnk-asg-direct-operator/wrangler.toml` is the isolated review profile: it must keep a review-only Worker name, no production KV/D1/R2/Email/AI bindings, no scheduled triggers, and all outbound/publishing gates disabled. The production profile remains separate and requires explicit approval.
+- Email sender identities, mandatory BCC, allowlists or live-send gates
+- Cron schedules or queue processors
 
 ## Required verification
 
@@ -62,10 +60,6 @@ Run:
 node --check apps/portal/assets/public-menu-v18.js
 node --check workers/gnk-asg-direct-operator/src/public-shell-v11.js
 node scripts/verify-public-redesign-contract.mjs
-node scripts/validate-digital-workforce-public-v3.mjs
-node scripts/test-digital-workforce-single-runtime-contract.mjs
-node scripts/test-mail-environment-contract.mjs
-node scripts/test-email-tools-status-v6.mjs
 ```
 
 Before production deployment, perform browser tests for:

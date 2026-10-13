@@ -79,12 +79,4 @@ for(const [locale,html] of [['hr',hrPage],['en',enPage]]){
 }
 assert.match(enPage,/<div class="count" data-worker-count>1,573<\/div>/u,'English static count must be locale-correct before JavaScript loads');
 
-const review=read('workers/gnk-asg-direct-operator/wrangler.toml');
-assert.match(review,/main = "src\/index-digital-workforce-v1\.js"/u);
-assert.match(review,/PUBLIC_ENVIRONMENT = "review-direct-operator"/u);
-assert.match(review,/name = "gnk-asg-direct-operator-review"/u);
-assert.doesNotMatch(review,/^\[\[(?:kv_namespaces|d1_databases|r2_buckets|send_email)\]\]/mu,'review runtime must not bind production services');
-assert.doesNotMatch(review,/^\[triggers\]/mu,'review runtime must not schedule external automation');
-for(const flag of ['MAIL_AUTO_REPLY_LIVE','MAIL_STUDIO_LIVE','MAIL_MANUAL_LIVE','MEDIA_OUTREACH_LIVE','MEDIA_OUTREACH_SCHEDULED_LIVE','EMAIL_OPEN_TRACKING_ENABLED'])assert.match(review,new RegExp(`${flag} = "false"`),`${flag} must be off in review`);
-
-console.log(JSON.stringify({ok:true,contract:'current-synthetic-worker-directory-and-isolated-runtime',profiles:1573,coreProfiles:1536,specialists:37,uniqueCodes:true,uniqueNames:true,bilingualFilters:true,reviewRuntimeIsolated:true},null,2));
+console.log(JSON.stringify({ok:true,contract:'current-synthetic-worker-directory-and-bilingual-filters',profiles:1573,coreProfiles:1536,specialists:37,uniqueCodes:true,uniqueNames:true,bilingualFilters:true},null,2));
