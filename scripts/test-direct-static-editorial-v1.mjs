@@ -79,5 +79,61 @@ result = spawnSync(process.execPath, [validator, lockedRelative], {
 assert.equal(result.status, 0, result.stderr || result.stdout);
 assert.match(result.stdout, /locked-authored-statement-exception/u);
 
+// Existing legacy pages may receive a policy-only hashtag normalization without
+// being forced through a retroactive content rewrite. Any substantive HTML change
+// must still trigger the full current direct-static standard.
+const gitTemp = fs.mkdtempSync(path.join(os.tmpdir(), 'gnk-direct-editorial-git-'));
+const gitRelative = 'apps/portal/objave/legacy-tag-only/index.html';
+const gitAbsolute = path.join(gitTemp, gitRelative);
+fs.mkdirSync(path.dirname(gitAbsolute), { recursive: true });
+const legacyBase = html({ words: 400, omitTwitterImage: true })
+  .replace('</article>', '<p class="article-hashtags">#GNKASG #LegacyTag</p></article>');
+fs.writeFileSync(gitAbsolute, legacyBase);
+const git = (...args) => spawnSync('git', args, { cwd: gitTemp, encoding: 'utf8' });
+assert.equal(git('init').status, 0);
+assert.equal(git('config','user.name','Policy Test').status, 0);
+assert.equal(git('config','user.email','policy@example.invalid').status, 0);
+assert.equal(git('add','.').status, 0);
+assert.equal(git('commit','-m','legacy baseline').status, 0);
+const baseSha = git('rev-parse','HEAD').stdout.trim();
+
+fs.writeFileSync(gitAbsolute, legacyBase.replace('#GNKASG #LegacyTag','#GNKASG #NerminSefić #NerminSefic'));
+assert.equal(git('add','.').status, 0);
+assert.equal(git('commit','-m','normalize tags').status, 0);
+let headSha = git('rev-parse','HEAD').stdout.trim();
+result = spawnSync(process.execPath, [validator], {
+  cwd: gitTemp,
+  encoding: 'utf8',
+  env: {
+    ...process.env,
+    GITHUB_BASE_SHA: baseSha,
+    GITHUB_SHA: headSha,
+    DIRECT_EDITORIAL_MIN_WORDS: '3000',
+    DIRECT_EDITORIAL_MIN_INTERNAL_LINKS: '5',
+  },
+});
+assert.equal(result.status, 0, result.stderr || result.stdout);
+assert.match(result.stdout, /non-substantive-tag-normalization/u);
+
+const tagOnlyHead = headSha;
+fs.writeFileSync(gitAbsolute, fs.readFileSync(gitAbsolute,'utf8').replace('<h1>Testna autorska objava</h1>','<h1>Testna autorska objava</h1><p>Stvarna promjena sadržaja.</p>'));
+assert.equal(git('add','.').status, 0);
+assert.equal(git('commit','-m','change article body').status, 0);
+headSha = git('rev-parse','HEAD').stdout.trim();
+result = spawnSync(process.execPath, [validator], {
+  cwd: gitTemp,
+  encoding: 'utf8',
+  env: {
+    ...process.env,
+    GITHUB_BASE_SHA: tagOnlyHead,
+    GITHUB_SHA: headSha,
+    DIRECT_EDITORIAL_MIN_WORDS: '3000',
+    DIRECT_EDITORIAL_MIN_INTERNAL_LINKS: '5',
+  },
+});
+assert.notEqual(result.status, 0,'substantive change must not inherit tag-only exception');
+assert.match(result.stderr, /minimum is 500|missing twitter:image/u);
+fs.rmSync(gitTemp, { recursive: true, force: true });
+
 fs.rmSync(temp, { recursive: true, force: true });
 console.log('DIRECT_STATIC_EDITORIAL_POLICY_TESTS_OK');
