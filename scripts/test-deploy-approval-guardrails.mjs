@@ -18,6 +18,7 @@ requireText('workflow approval contract',workflow,[
  'require_eq "$GITHUB_SHA" "$APPROVED_SHA"','require_eq "$(git rev-parse origin/main)" "$APPROVED_SHA"',
  "inputs.confirm_production_deploy == 'DEPLOY_ADMIN_AUTH_V6'",'group: gnk-asg-main-mutation',
  'cancel-in-progress: false','production-verification-${{ inputs.approved_sha }}',
+ 'notify_search_engines:','default: false',"if: ${{ needs.deploy-production.result == 'success' && inputs.notify_search_engines == true }}",
  'deploy-preflight-${{ inputs.approved_sha }}','bash scripts/verify-production-release-v38.sh deploy-verification',
  'bash ../../scripts/deploy-direct-operator-with-retry-v1.sh','deploy-wrangler-logs-${{ inputs.approved_sha }}'
 ]);
@@ -70,5 +71,6 @@ console.log(JSON.stringify({
  boundedCloudflareRetry:true,
  retryOnlyForAssetsSession10013:true,
  diagnosticsArtifact:true,
+ searchNotifications:'explicit-per-run-opt-in-default-off',
  alternateProductionDeploys:false
 },null,2));
