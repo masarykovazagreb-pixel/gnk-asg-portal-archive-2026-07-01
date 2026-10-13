@@ -1,0 +1,57 @@
+name: One-time approved author marker backfill 2026-10-13
+
+on:
+  push:
+    branches:
+      - maintenance/approved-author-marker-backfill-20261013
+
+permissions:
+  contents: write
+
+jobs:
+  backfill:
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: maintenance/approved-author-marker-backfill-20261013
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Apply existing approved-author policy
+        run: node scripts/enforce-approved-author-markers-v1.mjs
+      - name: Verify hashtag-only semantic changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          const fs=require('fs');
+          const cp=require('child_process');
+          const files=cp.execSync('git diff --name-only -- apps/portal',{encoding:'utf8'}).trim().split(/\n+/).filter(Boolean);
+          if(!files.length) throw new Error('Expected policy drift but no portal files changed');
+          if(files.length>500) throw new Error('Unexpectedly broad backfill: '+files.length+' files');
+          const mask=s=>s.replace(/<p\s+class=["']([^"']*\b(?:article-hashtags|article-tags)\b[^"']*)["']>([\s\S]*?)<\/p>/gi,'<p class="$1">__AUTHOR_TAG_BLOCK__</p>');
+          let verified=0;
+          for(const file of files){
+            if(!/^apps\/portal\/.+\.html$/.test(file)) throw new Error('Unexpected changed path: '+file);
+            const before=cp.execSync('git show HEAD:'+file,{encoding:'utf8',maxBuffer:25*1024*1024});
+            const after=fs.readFileSync(file,'utf8');
+            if(mask(before)!==mask(after)) throw new Error('Non-hashtag change detected: '+file);
+            if(before===after) throw new Error('Listed file has no content change: '+file);
+            verified++;
+          }
+          console.log(JSON.stringify({ok:true,verifiedFiles:verified},null,2));
+          NODE
+      - name: Commit reviewed generated backfill and remove one-time workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "gnk-asg-policy-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add apps/portal
+          git rm .github/workflows/one-time-approved-author-backfill-20261013.yml
+          git commit -m "chore(editorial): reconcile approved author hashtag policy [skip ci]"
+          git push origin HEAD:maintenance/approved-author-marker-backfill-20261013
