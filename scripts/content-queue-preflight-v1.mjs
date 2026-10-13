@@ -30,6 +30,20 @@ function canonicalFrom(html){
     ||html.match(/<link\b[^>]*\bhref=["']([^"']+)["'][^>]*\brel=["'][^"']*canonical[^"']*["'][^>]*>/i)
     ||[])[1]||'';
 }
+// Count only the authored article body. Navigation, metadata, schema and footer
+// text must never be allowed to inflate the editorial word count.
+function authorialBodyWords(html){
+  const article=html.match(/<article\b[^>]*\bclass=["'][^"']*\barticle-body\b[^"']*["'][^>]*>([\s\S]*?)<\/article>/i);
+  if(!article)return null;
+  const text=article[1]
+    .replace(/<!--[^]*?-->/g,' ')
+    .replace(/<(?:script|style)\b[^>]*>[\s\S]*?<\/(?:script|style)>/gi,' ')
+    .replace(/<[^>]+>/g,' ')
+    .replace(/&(?:#x[0-9a-f]+|#\d+|[a-z]+);/gi,' ')
+    .replace(/\s+/g,' ').trim();
+  return [...new Intl.Segmenter('hr',{granularity:'word'}).segment(text)]
+    .filter(part=>part.isWordLike).length;
+}
 function heldSlugs(root){
   const manifest=readJson(root,'apps/portal/data/editorial-plan/manifest.json',{optional:true});
   const holds=readJson(root,'apps/portal/data/editorial-plan/publication-holds.json',{optional:true});
@@ -96,6 +110,15 @@ export function preflightContentQueue({root=process.cwd(),now=new Date(process.e
     const bytes=fs.readFileSync(sourcePath);
     const html=bytes.toString('utf8');
     const canonical=canonicalFrom(html);
+    const bodyWords=authorialBodyWords(html);
+    if(bodyWords===null){
+      errors.push(item.id+': missing article-body container');
+      continue;
+    }
+    if(bodyWords<3000){
+      errors.push(item.id+': body has '+bodyWords+' words; minimum is 3000');
+      continue;
+    }
     if(!canonical||!/^https:\/\/gnk-asg\.hr\/(?:[a-z0-9-]+\/)+$/.test(canonical)){
       errors.push(item.id+': invalid canonical');
       continue;
@@ -111,6 +134,7 @@ export function preflightContentQueue({root=process.cwd(),now=new Date(process.e
       source,
       canonical,
       route,
+      bodyWords,
       sourceSha256:crypto.createHash('sha256').update(bytes).digest('hex')
     });
   }
