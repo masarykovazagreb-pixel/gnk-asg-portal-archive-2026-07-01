@@ -1,0 +1,35 @@
+name: Check AKTUAL Editorial Comments V1
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/data/aktual-editorial-comments.json'
+      - 'apps/portal/assets/aktual-media-world-v1.js'
+      - 'apps/portal/assets/aktual-media-world-v1.css'
+      - 'scripts/test-aktual-editorial-comments-v1.mjs'
+      - 'scripts/test-aktual-media-world-v1.mjs'
+      - '.github/workflows/check-aktual-editorial-comments-v1.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/data/aktual-editorial-comments.json'
+      - 'apps/portal/assets/aktual-media-world-v1.js'
+      - 'apps/portal/assets/aktual-media-world-v1.css'
+      - 'scripts/test-aktual-editorial-comments-v1.mjs'
+      - 'scripts/test-aktual-media-world-v1.mjs'
+      - '.github/workflows/check-aktual-editorial-comments-v1.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: node scripts/test-aktual-editorial-comments-v1.mjs
+      - run: node scripts/test-aktual-media-world-v1.mjs
