@@ -1,0 +1,182 @@
+/* Isolated visual refresh for the editorial review/publication surfaces only. */
+html[data-gnk-publishing-design="v1"] {
+  --navy: #17264c;
+  --navy2: #243d83;
+  --gold: #f3b641;
+  --gold-dark: #9c5d16;
+  --paper: #f3f6fc;
+  --white: #fff;
+  --ink: #1b2945;
+  --muted: #5d6d85;
+  --line: #dce4f0;
+  --ok: #16835b;
+  --warn: #a86108;
+  --bad: #c13d59;
+  --bg: #101b36;
+  --panel: #19284b;
+  --text: #f5f8ff;
+  color-scheme: light;
+}
+
+html[data-gnk-publishing-design="v1"] body {
+  background:
+    radial-gradient(ellipse at 6% 0%, rgba(67, 101, 220, .17), transparent 28rem),
+    radial-gradient(ellipse at 98% 12%, rgba(4, 160, 148, .14), transparent 30rem),
+    #f3f6fc;
+  color: #1b2945;
+}
+
+html[data-gnk-publishing-design="v1"] :focus-visible {
+  outline: 3px solid #f3b641;
+  outline-offset: 3px;
+}
+
+html[data-gnk-publishing-design="v1"] #gnk-unified-header {
+  background: linear-gradient(100deg, rgba(18, 34, 74, .97), rgba(35, 62, 139, .96) 58%, rgba(9, 109, 111, .96)) !important;
+  border-bottom-color: rgba(255, 255, 255, .18) !important;
+  box-shadow: 0 12px 32px rgba(20, 38, 84, .22) !important;
+}
+
+/* Editorial approval: keep the existing review tabs, decision controls and forms. */
+html[data-gnk-publishing-design="v1"] .approval-shell {
+  padding-top: 34px;
+}
+
+html[data-gnk-publishing-design="v1"] .approval-hero {
+  border-color: #d6def1;
+  border-top: 4px solid #365de8;
+  background: linear-gradient(120deg, #fff, #edf3ff 65%, #e8f8f5);
+  box-shadow: 0 18px 42px rgba(29, 51, 105, .10);
+}
+
+html[data-gnk-publishing-design="v1"] .approval-hero h1,
+html[data-gnk-publishing-design="v1"] .approval-hero .eyebrow {
+  color: #203a82;
+}
+
+html[data-gnk-publishing-design="v1"] .window-card {
+  background: linear-gradient(140deg, #17264c, #3159c9 70%, #087f83);
+}
+
+html[data-gnk-publishing-design="v1"] .window-card strong {
+  color: #ffe08a;
+}
+
+html[data-gnk-publishing-design="v1"] .stats article,
+html[data-gnk-publishing-design="v1"] .project-card,
+html[data-gnk-publishing-design="v1"] .policy-card,
+html[data-gnk-publishing-design="v1"] .editorial-item {
+  border-color: #dce4f0;
+  box-shadow: 0 10px 28px rgba(29, 51, 105, .065);
+}
+
+html[data-gnk-publishing-design="v1"] .stats article:nth-child(4n + 1) { border-top: 3px solid #365de8; }
+html[data-gnk-publishing-design="v1"] .stats article:nth-child(4n + 2) { border-top: 3px solid #08a093; }
+html[data-gnk-publishing-design="v1"] .stats article:nth-child(4n + 3) { border-top: 3px solid #ed6d61; }
+html[data-gnk-publishing-design="v1"] .stats article:nth-child(4n + 4) { border-top: 3px solid #7655d7; }
+
+html[data-gnk-publishing-design="v1"] .tabs button.active {
+  border-color: #3159c9;
+  background: linear-gradient(125deg, #365de8, #087f83);
+  color: #fff;
+}
+
+html[data-gnk-publishing-design="v1"] .toolbar {
+  border-color: #d8e0ef;
+  box-shadow: 0 10px 28px rgba(29, 51, 105, .09);
+}
+
+html[data-gnk-publishing-design="v1"] .toolbar button:hover,
+html[data-gnk-publishing-design="v1"] .tabs button:not(.active):hover {
+  border-color: #365de8;
+  color: #2749b1;
+}
+
+html[data-gnk-publishing-design="v1"] .editorial-item[data-status="approved"] { border-left-color: #16835b; }
+html[data-gnk-publishing-design="v1"] .editorial-item[data-status="revision"] { border-left-color: #d88727; }
+html[data-gnk-publishing-design="v1"] .editorial-item[data-status="rejected"] { border-left-color: #d94a60; }
+
+/* News Auto Publication: visual-only re-skin; refresh and GET request are unchanged. */
+html[data-gnk-publishing-design="v1"] body:has(> #gnk-unified-header) .wrap {
+  max-width: 1220px;
+}
+
+html[data-gnk-publishing-design="v1"] body:has(> #gnk-unified-header) .top .brand {
+  color: #ffd36e;
+}
+
+html[data-gnk-publishing-design="v1"] body:has(> #gnk-unified-header) .wrap > h1 {
+  color: #18294f;
+  letter-spacing: -.04em;
+}
+
+html[data-gnk-publishing-design="v1"] body:has(> #gnk-unified-header) .wrap > .lead {
+  color: #596a82;
+}
+
+html[data-gnk-publishing-design="v1"] body:has(> #gnk-unified-header) .notice {
+  border-left: 4px solid #f3b641;
+  border-radius: 12px;
+  background: linear-gradient(110deg, #fff8e7, #fff 82%);
+  color: #4d422a;
+}
+
+html[data-gnk-publishing-design="v1"] body:has(> #gnk-unified-header) .btn {
+  border-color: transparent;
+  background: linear-gradient(120deg, #365de8, #087f83);
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(49, 86, 207, .18);
+}
+
+html[data-gnk-publishing-design="v1"] body:has(> #gnk-unified-header) .grid .card {
+  border-color: #dce4f0;
+  border-top: 3px solid #365de8;
+  border-radius: 18px;
+  background: linear-gradient(150deg, #fff, #f6f8fd);
+  box-shadow: 0 14px 32px rgba(29, 51, 105, .08);
+  color: #1b2945;
+}
+
+html[data-gnk-publishing-design="v1"] body:has(> #gnk-unified-header) .grid .card:nth-child(4n + 2) { border-top-color: #08a093; }
+html[data-gnk-publishing-design="v1"] body:has(> #gnk-unified-header) .grid .card:nth-child(4n + 3) { border-top-color: #ed6d61; }
+html[data-gnk-publishing-design="v1"] body:has(> #gnk-unified-header) .grid .card:nth-child(4n + 4) { border-top-color: #7655d7; }
+
+html[data-gnk-publishing-design="v1"] body:has(> #gnk-unified-header) .grid .card :is(h2, h3) {
+  color: #192742;
+  font-family: Inter, "Segoe UI", system-ui, sans-serif;
+  font-size: 1.18rem;
+}
+
+html[data-gnk-publishing-design="v1"] body:has(> #gnk-unified-header) .meta .pill {
+  border-color: #d6deeb;
+  background: #eef3fb;
+  color: #3d4c68;
+}
+
+html[data-gnk-publishing-design="v1"] body:has(> #gnk-unified-header) .meta .pill.queued,
+html[data-gnk-publishing-design="v1"] body:has(> #gnk-unified-header) .meta .pill.published {
+  border-color: #a7dec4;
+  background: #e8f8f0;
+  color: #176f4c;
+}
+
+html[data-gnk-publishing-design="v1"] body:has(> #gnk-unified-header) .meta .pill.manual_review {
+  border-color: #efd098;
+  background: #fff5df;
+  color: #89560e;
+}
+
+html[data-gnk-publishing-design="v1"] body:has(> #gnk-unified-header) .empty {
+  border-color: #cdd8eb;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, .84);
+  color: #5e6b82;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-gnk-publishing-design="v1"] *,
+  html[data-gnk-publishing-design="v1"] *::before,
+  html[data-gnk-publishing-design="v1"] *::after {
+    transition-duration: .01ms !important;
+  }
+}

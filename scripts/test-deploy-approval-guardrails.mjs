@@ -61,7 +61,7 @@ assert.deepEqual(violations,[],'Only deploy-admin-auth-v6.yml may contain produc
 
 requireText('preflight',preflight,['gnk-asg-news-backend','/newsroom/','/en/newsroom/','No production changes were made']);
 assert.doesNotMatch(preflight,/\bwrangler\b|api\.cloudflare\.com|cloudflare_api_token|cloudflare_account_id/i);
-requireText('production verifier',verifier,['x-gnk-deploy-revision','x-gnk-active-release','x-gnk-active-entrypoint','contact readiness HTTP 200']);
+requireText('production verifier',verifier,['x-gnk-deploy-revision','x-gnk-active-release','x-gnk-active-entrypoint','contact readiness HTTP 200','home-bank-nav-version','menu-bank','Banka / Adria Bank','20261012-radio-panel-polish-v2-bank-nav-v1']);
 forbidText('production verifier',verifier,['wrangler deploy','cloudflare_api_token=']);
 
 console.log(JSON.stringify({
