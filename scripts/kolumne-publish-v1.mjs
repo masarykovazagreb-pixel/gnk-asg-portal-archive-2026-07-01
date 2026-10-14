@@ -173,7 +173,7 @@ async function glavna() {
   const { execSync } = await import('node:child_process');
   execSync(`node scripts/generate-kolumna-page.mjs --slug ${k.slug}`, { stdio: 'inherit' });
 
-  console.log('Blog objava ide sama, na sljedecem satnom pokretanju blog-mirror-publish.yml.');
+  console.log('Vanjska objava nije pokrenuta. Za distribuciju su potrebni zasebno odobrenje, repo opt-in i ručni dispatch blog-mirror-publish.yml.');
 }
 
 glavna();

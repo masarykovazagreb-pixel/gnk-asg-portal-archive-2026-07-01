@@ -1,23 +1,18 @@
 name: Blog Mirror Publish
 
-# GNK ASG je kanonski izvor. Blogger, Dev.to, Tumblr i Telegraph su kontrolirani distribucijski kanali.
-# Jedan workflow upravlja sva cetiri izlaza kako bi se izbjegli paralelni writeri,
-# duplikati i razlicita stanja evidencije. Svaka platforma zadrzava vlastiti
-# published.json i skripta nikad ponovno ne salje vec evidentiranu rutu.
-# Durable publish state zivi na automation/blog-mirror-state grani kako bot
-# state commitovi ne bi pomicali produkcijski main i rusili exact-SHA deploy prozor.
+# GNK ASG je kanonski izvor. Blogger, Dev.to, Tumblr i Telegraph su vanjski distribucijski kanali.
+# Ovaj workflow je namjerno manual-only: push, raspored ili deploy ne znače odobrenje
+# za vanjsku objavu. Svaki run zahtijeva izričit opt-in za taj konkretan run.
+# Jedan workflow upravlja sva četiri izlaza; dedupe state ostaje na automation/blog-mirror-state.
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'apps/portal/data/editorial-featured.json'
-      - 'apps/portal/data/editorial-registry.json'
-      - 'scripts/lib/publication-gate-v2.mjs'
-      - '.github/workflows/blog-mirror-publish.yml'
-  schedule:
-    - cron: '30 9 * * *'
+    inputs:
+      confirm_external_distribution:
+        description: 'Confirm owner approval to publish externally to Blogger, Dev.to, Tumblr and Telegraph for this run'
+        required: true
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -28,9 +23,8 @@ concurrency:
 
 jobs:
   publish:
-    # Approved editorial pushes to main distribute automatically to the four configured mirrors.
-    # Scheduled/manual catch-up remains controlled by the repository opt-in variable.
-    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || vars.GNK_ASG_EXTERNAL_DISTRIBUTION == 'true')
+    # Fail closed unless this exact manual run has owner confirmation and the repository kill switch is enabled.
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.confirm_external_distribution == true && vars.GNK_ASG_EXTERNAL_DISTRIBUTION == 'true'
     name: Distribute published articles to Blogger, Dev.to, Tumblr and Telegraph
     runs-on: ubuntu-latest
     timeout-minutes: 45

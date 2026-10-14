@@ -18,8 +18,9 @@ SITEMAP_INDEX = PORTAL / "sitemap-index.xml"
 ORIGIN = "https://gnk-asg.hr"
 NS = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
 EDITORIAL_PREFIXES = (
-    "/objave/", "/komentari/", "/analize/", "/gnk-aktual/kolumne/",
+    "/objave/", "/komentari/", "/analize/", "/gnk-aktual/kolumne/", "/gnk-aktual/tjedni/",
     "/en/publications/", "/en/commentary/", "/en/analyses/", "/en/objave/",
+    "/en/gnk-aktual/columns/", "/en/gnk-aktual/weekly/",
 )
 # Deliberately narrow exception: the locked 504M master is a full canonical
 # editorial page historically published under /aktual/. Do not broaden this to

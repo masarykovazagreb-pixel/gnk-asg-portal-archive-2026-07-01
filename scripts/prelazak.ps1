@@ -120,24 +120,8 @@ node scripts/repo-switch-execute.mjs --apply
 if ($LASTEXITCODE -ne 0) { Pad "zamjena nije prosla u cijelosti - provjeri rucno"; exit 1 }
 
 # --------------------------- 4. POTVRDA ------------------------------
-Korak "4/4  Potvrda - prvi prolaz bloga"
-$r = GhApi $TargetToken "POST" `
-     "/repos/$TargetRepo/actions/workflows/blog-mirror-publish.yml/dispatches" `
-     '{"ref":"main"}'
-if ($r.StatusCode -ne 204) {
-  Upoz "ne mogu pokrenuti blog - pokreni ga rucno i provjeri"
-} else {
-  Ok "blog pokrenut, cekam ishod"
-  Start-Sleep -Seconds 90
-  $runs = GhApi $TargetToken "GET" `
-          "/repos/$TargetRepo/actions/workflows/blog-mirror-publish.yml/runs?per_page=1" $null
-  $ishod = ($runs.Content | ConvertFrom-Json).workflow_runs[0].conclusion
-  switch ($ishod) {
-    "success" { Ok "blog radi iz pricuvnog repozitorija" }
-    $null     { Upoz "jos se izvodi - provjeri za koju minutu" }
-    default   { Pad "blog je javio: $ishod - provjeri queue.json" }
-  }
-}
+Korak "4/4  Vanjska distribucija"
+Upoz "Vanjska objava nije pokrenuta. Za distribuciju je potrebno zasebno odobrenje, repo opt-in i ručni dispatch."
 
 Write-Host "`nPrelazak dovrsen." -ForegroundColor Green
 Write-Host "Automatizacije rade u: $TargetRepo"

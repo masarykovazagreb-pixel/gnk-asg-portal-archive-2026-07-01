@@ -4,6 +4,10 @@ Datum početne evidencije: 31.07.2026.
 Grana: `agent/stabilize-automation-clean-main-20260731`
 Status: kontrolni dokument; bez produkcijskog deploya i bez mergea.
 
+## Addendum 14.10.2026 — current external-distribution guard
+
+Vanjske objave više nisu zakazane niti pokrenute na promjenu sadržaja. Aktivni live kanali traže `confirm_external_distribution=true` za konkretan run i repo varijablu `GNK_ASG_EXTERNAL_DISTRIBUTION=true`; društvena distribucija uz to traži `SOCIAL_LIVE=1`. API credentials ostaju GitHub repository secrets, ne workflow inputs. Deploy ne pokreće vanjsku objavu. Povijesni ritmovi u tablici ispod opisuju opažanja na dan 31.07.2026., ne trenutačno stanje.
+
 ## Pravila upravljanja
 
 - Jedini dopušteni produkcijski deploy put je `.github/workflows/deploy-admin-auth-v6.yml` uz izričitu potvrdu.

@@ -37,7 +37,10 @@ assert.equal(oct9.image,'/assets/gallery/sastanak-bez-odluke-20261009.svg','Oct 
 assert.equal(oct9.headings?.length,8,'Oct 9 commentary must keep explicit editorial section headings');
 assert.equal(new Set(oct9.headings).size,oct9.headings.length,'Oct 9 editorial section headings must be unique');
 const oct9Html=fs.readFileSync('apps/portal/komentari/sastanak-bez-odluke-nije-neuspjeh-ali-mora-biti-svjestan/index.html','utf8');
-assert.ok(oct9Html.includes('/assets/gallery/sastanak-bez-odluke-20261009.svg'),'published Oct 9 page must use dedicated topic image');
+const oct9Cover=oct9Html.match(/<img class="article-cover" src="([^"]+)"[^>]*>/)?.[1]||'';
+assert.match(oct9Cover,/^\/assets\/editorial\/generated\/komentari-sastanak-bez-odluke-nije-neuspjeh-ali-mora-biti-svjestan-[a-f0-9]+\.webp$/,'published Oct 9 page must use its dedicated original topic illustration');
+assert.ok(fs.existsSync(`apps/portal${oct9Cover}`),'published Oct 9 original illustration asset must exist');
+assert.match(oct9Html,/alt="Urednička ilustracija za tekst: Sastanak bez odluke nije neuspjeh, ali mora biti svjestan izbor"/,'published Oct 9 illustration must have descriptive alt text');
 assert.ok((oct9Html.match(/<h2>Zaključak<\/h2>/g)||[]).length<=1,'published Oct 9 page must not repeat Zaključak headings');
 
 const publisher=fs.readFileSync('scripts/editorial-publish-scheduled-v1.mjs','utf8');
@@ -120,7 +123,9 @@ for(const source of [seoWorkflow,nightlySeoWorkflow]){
 assert.doesNotMatch(nightlySeoWorkflow,/blog-publish-resilient-v1\.mjs/);
 assert.doesNotMatch(nightlySeoWorkflow,/BLOGGER_CLIENT_SECRET/);
 assert.match(nightlySeoWorkflow,/Spremi SEO izvještaj kao artifact/);
-assert.match(nightlySeoWorkflow,/IndexNow \(notification-only\)/);
+assert.match(nightlySeoWorkflow,/notify_search_engines:\s*\n\s*description:[^\n]*\n\s*required: true\n\s*type: boolean\n\s*default: false/);
+assert.match(nightlySeoWorkflow,/if: github\.event_name == 'workflow_dispatch' && inputs\.notify_search_engines == true/);
+assert.match(nightlySeoWorkflow,/name: Manually submit URLs to IndexNow after explicit approval/);
 
 assert.match(scheduler,/actions: write/);
 assert.match(scheduler,/gh workflow run deploy-admin-auth-v6\.yml/);

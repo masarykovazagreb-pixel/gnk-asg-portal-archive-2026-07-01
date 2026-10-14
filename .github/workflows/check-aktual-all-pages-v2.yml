@@ -1,0 +1,41 @@
+name: Check AKTUAL All Pages Meta Matrix V2
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/gnk-aktual/**'
+      - 'apps/portal/en/gnk-aktual/**'
+      - 'scripts/audit-aktual-all-pages-v2.mjs'
+      - 'scripts/optimize-aktual-seo-titles-v1.mjs'
+      - '.github/workflows/check-aktual-all-pages-v2.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/gnk-aktual/**'
+      - 'apps/portal/en/gnk-aktual/**'
+      - 'scripts/audit-aktual-all-pages-v2.mjs'
+      - 'scripts/optimize-aktual-seo-titles-v1.mjs'
+      - '.github/workflows/check-aktual-all-pages-v2.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Enforce managed SEO titles
+        run: node scripts/optimize-aktual-seo-titles-v1.mjs --check
+      - name: Audit every public AKTUAL HTML page
+        run: node scripts/audit-aktual-all-pages-v2.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aktual-all-pages-meta-matrix-v2
+          path: artifacts/seo/aktual-all-pages-matrix-v2.json
+          retention-days: 14

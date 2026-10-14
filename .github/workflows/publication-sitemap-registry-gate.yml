@@ -9,6 +9,19 @@ on:
       - 'scripts/validate_publication_sitemap_registry_v1.py'
       - 'scripts/editorial-registry-v1.mjs'
       - 'scripts/generate-editorial-sitemap-v2.mjs'
+      - 'scripts/audit-editorial-publication-completeness-v1.mjs'
+      - 'scripts/apply-editorial-publication-completeness-v1.mjs'
+      - 'scripts/build-editorial-archive-listings-v1.mjs'
+      - 'scripts/build-aktual-columns-index-v1.mjs'
+      - 'scripts/build-aktual-media-weekly-archive-v1.mjs'
+      - 'scripts/build-aktual-media-weekly-v1.mjs'
+      - 'scripts/generate-editorial-cover-assets-v1.mjs'
+      - 'scripts/generate-aktual-weekly-cover-assets-v1.mjs'
+      - 'scripts/generate_aktual_columns.py'
+      - 'scripts/generate-kolumna-page.mjs'
+      - 'scripts/kolumne-publish-v1.mjs'
+      - 'scripts/lib/editorial-cover-art-v1.mjs'
+      - 'scripts/validate_aktual_columns.py'
       - 'scripts/lib/publication-gate-v2.mjs'
       - 'scripts/validate-workflow-schedule-allowlist-v2.py'
       - 'ops/production-workflow-allowlist-v2.json'
@@ -16,6 +29,18 @@ on:
       - 'apps/portal/editorial-sitemap.xml'
       - 'apps/portal/sitemap-index.xml'
       - 'apps/portal/data/editorial-registry.json'
+      - 'apps/portal/data/editorial-image-manifest.json'
+      - 'apps/portal/data/kolumne.json'
+      - 'apps/portal/data/news.json'
+      - 'apps/portal/data/aktual-weekly-curation.json'
+      - 'apps/portal/data/aktual-weekly.json'
+      - 'apps/portal/data/aktual-weekly-archives/**'
+      - 'apps/portal/data/aktual-weekly-image-manifest.json'
+      - 'apps/portal/assets/aktual-media-*'
+      - 'apps/portal/assets/editorial-content-v2.css'
+      - 'apps/portal/assets/editorial/generated/**'
+      - 'apps/portal/gnk-aktual/**'
+      - 'apps/portal/en/gnk-aktual/**'
       - 'apps/portal/objave/**'
       - 'apps/portal/komentari/**'
       - 'apps/portal/analize/**'
@@ -57,7 +82,6 @@ jobs:
           registry_rc=$?
           set -e
 
-          node scripts/generate-editorial-sitemap-v2.mjs
           cp apps/portal/editorial-sitemap.xml artifacts/publication-sitemap-registry/reproduced/editorial-sitemap.xml
           cp apps/portal/sitemap-index.xml artifacts/publication-sitemap-registry/reproduced/sitemap-index.xml
           set +e
@@ -76,6 +100,12 @@ jobs:
           fi
       - name: Validate published routes, lastmod and canonical registry
         run: python scripts/validate_publication_sitemap_registry_v1.py
+      - name: Verify weekly curation digest is materialized
+        run: node scripts/build-aktual-media-weekly-v1.mjs --check
+      - name: Enforce editorial publication completeness
+        run: node scripts/audit-editorial-publication-completeness-v1.mjs
+      - name: Validate AKTUAL column archives and editorial feed links
+        run: python scripts/validate_aktual_columns.py
       - name: Enforce production workflow schedule allowlist
         run: python scripts/validate-workflow-schedule-allowlist-v2.py
       - name: Enforce exact-SHA release-race hygiene

@@ -15,6 +15,10 @@ on:
       - 'apps/portal/data/editorial-plan/**'
       - 'scripts/editorial-publish-scheduled-v1.mjs'
       - 'scripts/build-aktual-media-weekly-v1.mjs'
+      - 'scripts/build-aktual-media-weekly-archive-v1.mjs'
+      - 'apps/portal/data/aktual-weekly-archives/**'
+      - 'apps/portal/en/gnk-aktual/index.html'
+      - 'apps/portal/en/gnk-aktual/weekly/**'
       - 'scripts/enforce-nermin-author-seo-v1.mjs'
       - 'apps/portal/data/news.json'
       - 'apps/portal/data/aktual-weekly.json'
@@ -55,7 +59,9 @@ jobs:
         run: node scripts/validate-editorial-content-policy-v1.mjs
       - name: Refresh weekly AKTUAL MEDIA magazine when issue week changes
         run: node scripts/build-aktual-media-weekly-v1.mjs
-      - name: Normalize Nermin Sefić author SEO on approved column pages
+      - name: Materialize bilingual weekly issue and archive pages
+        run: node scripts/build-aktual-media-weekly-archive-v1.mjs --refresh
+      - name: Normalize Nermin Sefić author SEO on registry-verified column pages
         run: node scripts/enforce-nermin-author-seo-v1.mjs --write
       - name: Materialize due editorial pages
         run: node scripts/editorial-publish-scheduled-v1.mjs
@@ -70,7 +76,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if git diff --quiet -- apps/portal/objave apps/portal/komentari apps/portal/gnk-aktual apps/portal/data/aktual-weekly.json apps/portal/editorial-sitemap.xml apps/portal/sitemap-index.xml apps/portal/data/editorial-registry.json apps/portal/data/editorial-plan artifacts/editorial-scheduled-publish.json; then
+          if git diff --quiet -- apps/portal/objave apps/portal/komentari apps/portal/gnk-aktual apps/portal/en/gnk-aktual/index.html apps/portal/en/gnk-aktual/weekly apps/portal/data/aktual-weekly.json apps/portal/data/aktual-weekly-archives apps/portal/editorial-sitemap.xml apps/portal/sitemap-index.xml apps/portal/data/editorial-registry.json apps/portal/data/editorial-plan artifacts/editorial-scheduled-publish.json; then
             echo "No scheduled public or state change is due."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
@@ -78,7 +84,7 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add apps/portal/objave apps/portal/komentari apps/portal/gnk-aktual apps/portal/data/aktual-weekly.json apps/portal/editorial-sitemap.xml apps/portal/sitemap-index.xml apps/portal/data/editorial-registry.json apps/portal/data/editorial-plan artifacts/editorial-scheduled-publish.json
+          git add apps/portal/objave apps/portal/komentari apps/portal/gnk-aktual apps/portal/en/gnk-aktual/index.html apps/portal/en/gnk-aktual/weekly apps/portal/data/aktual-weekly.json apps/portal/data/aktual-weekly-archives apps/portal/editorial-sitemap.xml apps/portal/sitemap-index.xml apps/portal/data/editorial-registry.json apps/portal/data/editorial-plan artifacts/editorial-scheduled-publish.json
           git commit -m "Publish scheduled editorial package"
 
           # Exact-SHA / single-writer fence: output was generated from one main
@@ -106,4 +112,5 @@ jobs:
             --repo "$GITHUB_REPOSITORY" \
             --ref main \
             -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
-            -f approved_sha="$APPROVED_SHA"
+            -f approved_sha="$APPROVED_SHA" \
+            -f notify_search_engines=false

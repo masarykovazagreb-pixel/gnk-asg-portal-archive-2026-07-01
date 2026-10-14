@@ -41,7 +41,7 @@ je commit ručni.
 | **07:20, 11:20, 15:20** | `content-queue-publish` | Objavljuje READY stavke iz `content/factory-queue/` po `queue.json` kalendaru; commit + exact-SHA deploy |
 | **02:15** | `nightly-seo-audit` | Puni pregled meta/H1/canonical/alt na svim stranicama; report u `data/seo-audit/nightly-report.json` |
 | **05:30** | `aeo-ai-visibility` | Regenerira `/llms.txt`, `/llms-full.txt`, `entity.jsonld`, `/ai/`; pojačava alt/title na slikama; osvježava hashtag blokove; regenerira image sitemap; deploy |
-| **09:30 + na promjenu registryja** | `blog-mirror-publish` | Gura nove editorial stavke na Blogger, Dev.to, Tumblr, Telegraph |
+| **Samo ručni dispatch nakon zasebnog odobrenja** | `blog-mirror-publish` | Vanjska objava traži `confirm_external_distribution=true` i repo varijablu `GNK_ASG_EXTERNAL_DISTRIBUTION=true`; nema rasporeda ni push okidača |
 | **na promjenu registryja** | `mirror-sync-masarykova` | Sinkronizira Masarykova mirror |
 | **kontinuirano** | `news-refresh` | Osvježava news feed (svjetske vijesti u AKTUAL-u) |
 | **kontinuirano** | `market-pulse-refresh` | Osvježava BTC/gold/Brent/USD-EUR podatke |

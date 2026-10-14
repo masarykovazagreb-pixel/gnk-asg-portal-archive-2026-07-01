@@ -3,10 +3,11 @@ name: Objavi na Dev.to sada (jednokratno)
 on:
   workflow_dispatch:
     inputs:
-      devto_key:
-        description: "Dev.to API kljuc - koristi se samo u ovom pokretanju, nigdje se ne sprema kao secret"
+      confirm_external_distribution:
+        description: 'Potvrđujem odobrenu vanjsku objavu na Dev.to za ovo pokretanje'
         required: true
-        type: string
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -17,6 +18,7 @@ concurrency:
 
 jobs:
   objavi:
+    if: ${{ github.ref == 'refs/heads/main' && inputs.confirm_external_distribution == true && vars.GNK_ASG_EXTERNAL_DISTRIBUTION == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -47,16 +49,16 @@ jobs:
           else
             rm -f "$tmp"
           fi
-      - name: Maskiraj kljuc u logovima
-        run: echo "::add-mask::${{ inputs.devto_key }}"
+      - name: Maskiraj repo tajnu u logovima
+        run: echo "::add-mask::${{ secrets.DEVTO_API_KEY }}"
       - name: Prvo azuriraj stare objave bez slike
         env:
-          DEVTO_API_KEY: ${{ inputs.devto_key }}
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
           DEVTO_PAUSE_MS: '10000'
         run: node scripts/devto-publish-v1.mjs --azuriraj-stare --live
       - name: Zatim objavi sve preostalo spremno
         env:
-          DEVTO_API_KEY: ${{ inputs.devto_key }}
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
           DEVTO_PER_RUN: '16'
           DEVTO_PAUSE_MS: '10000'
         run: node scripts/devto-publish-v1.mjs --live

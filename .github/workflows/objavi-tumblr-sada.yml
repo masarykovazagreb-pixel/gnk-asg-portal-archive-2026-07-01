@@ -3,11 +3,16 @@ name: Objavi na Tumblr sada (jednokratno)
 on:
   workflow_dispatch:
     inputs:
-      consumer_key: { required: true, type: string }
-      consumer_secret: { required: true, type: string }
-      token: { required: true, type: string }
-      token_secret: { required: true, type: string }
-      per_run: { required: false, type: string, default: '2' }
+      confirm_external_distribution:
+        description: 'Potvrđujem odobrenu vanjsku objavu na Tumblr za ovo pokretanje'
+        required: true
+        type: boolean
+        default: false
+      per_run:
+        description: 'Maximum number of Tumblr posts for this approved run'
+        required: false
+        type: string
+        default: '2'
 
 permissions:
   contents: write
@@ -18,6 +23,7 @@ concurrency:
 
 jobs:
   objavi:
+    if: ${{ github.ref == 'refs/heads/main' && inputs.confirm_external_distribution == true && vars.GNK_ASG_EXTERNAL_DISTRIBUTION == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -48,18 +54,18 @@ jobs:
           else
             rm -f "$tmp"
           fi
-      - name: Maskiraj
+      - name: Maskiraj repo tajne
         run: |
-          echo "::add-mask::${{ inputs.consumer_key }}"
-          echo "::add-mask::${{ inputs.consumer_secret }}"
-          echo "::add-mask::${{ inputs.token }}"
-          echo "::add-mask::${{ inputs.token_secret }}"
+          echo "::add-mask::${{ secrets.TUMBLR_CONSUMER_KEY }}"
+          echo "::add-mask::${{ secrets.TUMBLR_CONSUMER_SECRET }}"
+          echo "::add-mask::${{ secrets.TUMBLR_TOKEN }}"
+          echo "::add-mask::${{ secrets.TUMBLR_TOKEN_SECRET }}"
       - name: Objavi
         env:
-          TUMBLR_CONSUMER_KEY: ${{ inputs.consumer_key }}
-          TUMBLR_CONSUMER_SECRET: ${{ inputs.consumer_secret }}
-          TUMBLR_TOKEN: ${{ inputs.token }}
-          TUMBLR_TOKEN_SECRET: ${{ inputs.token_secret }}
+          TUMBLR_CONSUMER_KEY: ${{ secrets.TUMBLR_CONSUMER_KEY }}
+          TUMBLR_CONSUMER_SECRET: ${{ secrets.TUMBLR_CONSUMER_SECRET }}
+          TUMBLR_TOKEN: ${{ secrets.TUMBLR_TOKEN }}
+          TUMBLR_TOKEN_SECRET: ${{ secrets.TUMBLR_TOKEN_SECRET }}
           TUMBLR_PER_RUN: ${{ inputs.per_run }}
         run: node scripts/tumblr-publish-v1.mjs --live
       - name: Spremi Tumblr evidenciju na durable state granu

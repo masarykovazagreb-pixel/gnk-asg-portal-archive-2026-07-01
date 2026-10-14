@@ -124,4 +124,4 @@ if (failed) {
   process.exit(1);
 }
 console.log(`${C.g}Zamjena gotova.${C.x} Automatizacije sada rade u ${TARGET}.`);
-console.log(`${C.d}Provjeri prvi prolaz blog-mirror-publish prije nego se udaljis.${C.x}\n`);
+console.log(`${C.d}Vanjska distribucija nije pokrenuta; zasebno odobrenje, repo opt-in i ručni dispatch su potrebni.${C.x}\n`);

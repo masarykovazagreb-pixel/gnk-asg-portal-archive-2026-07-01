@@ -8,7 +8,7 @@
   const labels = {
     hr:{
       latest:'Najnovije',croatia:'Hrvatska',world:'Svijet',business:'Biznis',tech:'Tehnologija',
-      sport:'Sport',science:'Znanost',lifestyle:'Lifestyle',digital:'Digitalna imovina',regions:'Regije',other:'Ostalo',
+      sport:'Sport',science:'Znanost',lifestyle:'Lifestyle',culture:'Kultura',digital:'Digitalna imovina',regions:'Regije',other:'Ostalo',
       justIn:'Upravo stiglo',source:'Izvor',openSource:'Otvori izvor',sections:'Rubrike',
       currentFeed:'Trenutačni feed',sources:'Izvori u trenutačnom feedu',search:'Pretraži feed',
       searchPh:'naslov, tema ili izvor',noResults:'Nema rezultata.',topics:'AKTUAL teme',topicsSub:'Pregled stvarnih rubrika i izvora u trenutačnom news feedu.',
@@ -16,7 +16,7 @@
     },
     en:{
       latest:'Latest',croatia:'Croatia',world:'World',business:'Business',tech:'Technology',
-      sport:'Sport',science:'Science',lifestyle:'Lifestyle',digital:'Digital assets',regions:'Regions',other:'More',
+      sport:'Sport',science:'Science',lifestyle:'Lifestyle',culture:'Culture',digital:'Digital assets',regions:'Regions',other:'More',
       justIn:'Just in',source:'Source',openSource:'Open source',sections:'Sections',
       currentFeed:'Current feed',sources:'Sources in current feed',search:'Search feed',
       searchPh:'headline, topic or source',noResults:'No results.',topics:'AKTUAL topics',topicsSub:'A live overview of real sections and sources in the current news feed.',
@@ -38,16 +38,17 @@
     znanost:{label:labels.science,slug:'znanost'},
     science:{label:labels.science,slug:'znanost'},
     lifestyle:{label:labels.lifestyle,slug:'lifestyle'},
-    culture:{label:labels.lifestyle,slug:'lifestyle'},
+    culture:{label:labels.culture,slug:'kultura'},
     showbiz:{label:labels.lifestyle,slug:'lifestyle'},
     'digital-assets':{label:labels.digital,slug:'digitalna-imovina'},
     digital:{label:labels.digital,slug:'digitalna-imovina'}
   };
-  const canonicalOrder=['hrvatska','international','economy','technology','sport','znanost','lifestyle','digital-assets','regije'];
+  const canonicalOrder=['hrvatska','international','economy','technology','sport','znanost','lifestyle','culture','digital-assets','regije'];
+  const requiredGroups=['hrvatska','international','economy','technology','sport','culture'];
 
   const normGroup=item => {
     const raw=String(item.group||item.category||'other').toLowerCase();
-    const aliases={world:'international',business:'economy',tech:'technology',sports:'sport',science:'znanost',culture:'lifestyle',showbiz:'lifestyle',digital:'digital-assets'};
+    const aliases={world:'international',business:'economy',tech:'technology',sports:'sport',science:'znanost',showbiz:'lifestyle',digital:'digital-assets'};
     if(aliases[raw]) return aliases[raw];
     if(groupMeta[raw]) return raw;
     if(/sport/.test(raw)) return 'sport';
@@ -116,25 +117,33 @@
     const host=document.getElementById('amGroups'); if(!host) return;
     const by=grouped(items);
     const rest=Object.keys(by).filter(x=>!canonicalOrder.includes(x)).sort();
-    const order=[...canonicalOrder,...rest].filter(x=>by[x]?.length);
+    const extras=canonicalOrder.filter(x=>!requiredGroups.includes(x)&&by[x]?.length);
+    const order=[...requiredGroups,...extras,...rest];
     host.innerHTML=order.map(group=>{
-      const m=metaFor(group), stories=by[group].slice(0,8);
-      return '<section class="am-group" id="rubrika-'+esc(m.slug)+'"><div class="am-group-title"><h2>'+esc(m.label)+'</h2><span>'+stories.length+' / '+by[group].length+' '+esc(labels.stories)+'</span></div><div class="am-cardgrid">'+stories.map(item=>'<article class="am-card"><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+image(item)+'</a><div class="am-card-body"><span class="am-kicker">'+esc(item.source||m.label)+'</span><h3>'+storyLink(item)+'</h3><p>'+esc(txt(item.summary).slice(0,145))+(txt(item.summary).length>145?'…':'')+'</p><div class="am-cardmeta">'+esc(timeAgo(item._published))+'</div></div></article>').join('')+'</div></section>';
+      const m=metaFor(group), all=by[group]||[], stories=all.slice(0,8);
+      const body=stories.length?'<div class="am-cardgrid">'+stories.map(item=>'<article class="am-card"><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+image(item)+'</a><div class="am-card-body"><span class="am-kicker">'+esc(item.source||m.label)+'</span><h3>'+storyLink(item)+'</h3><p>'+esc(txt(item.summary).slice(0,145))+(txt(item.summary).length>145?'…':'')+'</p><div class="am-cardmeta">'+esc(timeAgo(item._published))+'</div></div></article>').join('')+'</div>':'<p class="am-empty-group">'+(lang==='hr'?'Trenutačno nema stavki iz provjerenog feeda u ovoj rubrici.':'No current verified-feed stories in this section.')+'</p>';
+      return '<section class="am-group" id="rubrika-'+esc(m.slug)+'"><div class="am-group-title"><h2>'+esc(m.label)+'</h2><span>'+stories.length+' / '+all.length+' '+esc(labels.stories)+'</span></div>'+body+'</section>';
     }).join('');
     renderSectionNav(order,by);
   }
 
   function renderSectionNav(order,by){
     const nav=document.getElementById('amSectionNav'); if(!nav) return;
+    const required=[...requiredGroups.map(g=>'<a href="#rubrika-'+esc(metaFor(g).slug)+'">'+esc(metaFor(g).label)+'</a>')];
+    const extras=order.filter(g=>!requiredGroups.includes(g)).map(g=>'<a href="#rubrika-'+esc(metaFor(g).slug)+'">'+esc(metaFor(g).label)+'</a>');
     const fixed=[
       '<a href="#amLead">'+esc(labels.latest)+'</a>',
-      ...order.map(g=>'<a href="#rubrika-'+esc(metaFor(g).slug)+'">'+esc(metaFor(g).label)+'</a>'),
+      ...required,
+      ...extras,
+      '<a href="'+(lang==='hr'?'/gnk-aktual/tjedni/':'/en/gnk-aktual/weekly/')+'">'+(lang==='hr'?'Tjednik':'Weekly')+'</a>',
+      '<a href="'+(lang==='hr'?'/komentari/':'/en/commentary/')+'">'+(lang==='hr'?'Komentari':'Commentary')+'</a>',
       '<a href="'+(lang==='hr'?'/gnk-aktual/kolumne/':'/en/gnk-aktual/columns/')+'">'+(lang==='hr'?'Kolumne':'Columns')+'</a>',
+      '<a href="'+(lang==='hr'?'/objave/':'/en/publications/')+'">'+(lang==='hr'?'Sve vijesti':'All news')+'</a>',
+      '<a href="'+(lang==='hr'?'/analize/':'/en/analyses/')+'">'+(lang==='hr'?'Sve analize':'All analyses')+'</a>',
       '<a href="'+(lang==='hr'?'/radio/':'/en/radio/')+'">Radio</a>',
       '<a href="'+(lang==='hr'?'/gnk-aktual/radar/':'/en/gnk-aktual/radar/')+'">RADAR</a>',
       '<a href="'+(lang==='hr'?'/gnk-aktual/izvori/':'/en/gnk-aktual/sources/')+'">'+(lang==='hr'?'Izvori':'Sources')+'</a>',
       '<a href="'+(lang==='hr'?'/gnk-aktual/regije/':'/en/gnk-aktual/regions/')+'">'+(lang==='hr'?'Regije':'Regions')+'</a>',
-      '<a href="'+(lang==='hr'?'/gnk-aktual/tjedni/':'/en/gnk-aktual/weekly/')+'">'+(lang==='hr'?'Tjedni':'Weekly')+'</a>',
       '<a href="'+(lang==='hr'?'/gnk-aktual/teme/':'/en/gnk-aktual/topics/')+'">'+esc(labels.sections)+'</a>'
     ];
     nav.innerHTML=fixed.join('');

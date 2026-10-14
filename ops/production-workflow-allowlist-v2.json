@@ -1,13 +1,10 @@
 {
-  "version": "GNK_ASG_PRODUCTION_WORKFLOW_ALLOWLIST_V2_6",
+  "version": "GNK_ASG_PRODUCTION_WORKFLOW_ALLOWLIST_V2_7",
   "repository": "masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01",
   "policy": "Every workflow containing an Actions schedule trigger must appear here with the exact cron expression. All other workflows are manual, event-scoped validation, or retired.",
   "scheduledProductionOwners": {
     "aeo-ai-visibility.yml": [
       "20 2,8,14,20 * * *"
-    ],
-    "blog-mirror-publish.yml": [
-      "30 9 * * *"
     ],
     "content-queue-publish.yml": [
       "20 7,11,15 * * *"
@@ -68,10 +65,13 @@
     "deploy-admin-auth-v6.yml"
   ],
   "manualOnlyCompatibility": [
+    "blog-mirror-publish.yml",
+    "devto-mirror-publish.yml",
+    "linkedin-daily-rotation.yml",
+    "objavi-devto-sada.yml",
+    "objavi-tumblr-sada.yml",
     "scheduled-production-deploy.yml",
     "social-distribution.yml",
-    "linkedin-daily-rotation.yml",
-    "devto-mirror-publish.yml",
     "telegraph-mirror-publish.yml"
   ],
   "explicitlyRetiredScheduledExecutionClasses": [
@@ -84,5 +84,18 @@
     "free-image external mirror"
   ],
   "socialLive": false,
-  "publicPortalAudit": "manual-major-release-only"
+  "publicPortalAudit": "manual-major-release-only",
+  "externalDistributionApproval": {
+    "repositoryOptInVariable": "GNK_ASG_EXTERNAL_DISTRIBUTION",
+    "perRunInput": "confirm_external_distribution",
+    "livePublishingWorkflows": [
+      "blog-mirror-publish.yml",
+      "devto-mirror-publish.yml",
+      "objavi-devto-sada.yml",
+      "objavi-tumblr-sada.yml",
+      "social-distribution.yml"
+    ],
+    "socialLiveVariable": "SOCIAL_LIVE",
+    "automaticTriggersAllowed": false
+  }
 }

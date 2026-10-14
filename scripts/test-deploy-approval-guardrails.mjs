@@ -6,6 +6,9 @@ const workflow=read('.github/workflows/deploy-admin-auth-v6.yml');
 const retryHelper=read('scripts/deploy-direct-operator-with-retry-v1.sh');
 const validationWorkflow=read('.github/workflows/deploy-mail-studio-multilingual.yml');
 const publicAssetsValidation=read('.github/workflows/deploy-public-portal-assets-safe.yml');
+const blogMirrorWorkflow=read('.github/workflows/blog-mirror-publish.yml');
+const editorialDeployWorkflow=read('.github/workflows/editorial-content-deploy.yml');
+const nightlySeoWorkflow=read('.github/workflows/gnk-seo-nightly-audit.yml');
 const preflight=read('scripts/check-newsroom-route-readiness.sh');
 const verifier=read('scripts/verify-production-release-v38.sh');
 
@@ -18,9 +21,48 @@ requireText('workflow approval contract',workflow,[
  'require_eq "$GITHUB_SHA" "$APPROVED_SHA"','require_eq "$(git rev-parse origin/main)" "$APPROVED_SHA"',
  "inputs.confirm_production_deploy == 'DEPLOY_ADMIN_AUTH_V6'",'group: gnk-asg-main-mutation',
  'cancel-in-progress: false','production-verification-${{ inputs.approved_sha }}',
- 'notify_search_engines:','default: true',"if: ${{ needs.deploy-production.result == 'success' && inputs.notify_search_engines == true }}",
+ 'notify_search_engines:','default: false',"if: ${{ needs.deploy-production.result == 'success' && inputs.notify_search_engines == true }}",
  'deploy-preflight-${{ inputs.approved_sha }}','bash scripts/verify-production-release-v38.sh deploy-verification',
  'bash ../../scripts/deploy-direct-operator-with-retry-v1.sh','deploy-wrangler-logs-${{ inputs.approved_sha }}'
+]);
+
+const externalDistributionWorkflows=[
+ ['blog-mirror-publish.yml',blogMirrorWorkflow],
+ ['devto-mirror-publish.yml',read('.github/workflows/devto-mirror-publish.yml')],
+ ['objavi-devto-sada.yml',read('.github/workflows/objavi-devto-sada.yml')],
+ ['objavi-tumblr-sada.yml',read('.github/workflows/objavi-tumblr-sada.yml')],
+ ['social-distribution.yml',read('.github/workflows/social-distribution.yml')]
+];
+for(const [name,source] of externalDistributionWorkflows){
+ const triggers=source.match(/^on:\s*\n([\s\S]*?)^(?:permissions|concurrency|jobs):/m)?.[1]||'';
+ requireText(`external distribution opt-in (${name})`,source,[
+  'confirm_external_distribution:','default: false',"inputs.confirm_external_distribution == true",
+  "vars.GNK_ASG_EXTERNAL_DISTRIBUTION == 'true'","github.ref == 'refs/heads/main'"
+ ]);
+ assert.match(triggers,/^\s{2}workflow_dispatch:/m,`${name} must be manually dispatched`);
+ assert.doesNotMatch(triggers,/^\s{2}(?:push|schedule):/m,`${name} must never be triggered automatically`);
+}
+const socialWorkflow=externalDistributionWorkflows.find(([name])=>name==='social-distribution.yml')[1];
+requireText('social live approval gate',socialWorkflow,["vars.SOCIAL_LIVE != '1'","inputs.confirm_external_distribution == true"]);
+const devtoOneShot=externalDistributionWorkflows.find(([name])=>name==='objavi-devto-sada.yml')[1];
+const tumblrOneShot=externalDistributionWorkflows.find(([name])=>name==='objavi-tumblr-sada.yml')[1];
+forbidText('Dev.to credential inputs',devtoOneShot,['devto_key:','inputs.devto_key']);
+requireText('Dev.to repository credential',devtoOneShot,['secrets.DEVTO_API_KEY']);
+forbidText('Tumblr credential inputs',tumblrOneShot,['consumer_key:','consumer_secret:','token_secret:','inputs.consumer_key','inputs.consumer_secret']);
+requireText('Tumblr repository credentials',tumblrOneShot,['secrets.TUMBLR_CONSUMER_KEY','secrets.TUMBLR_CONSUMER_SECRET','secrets.TUMBLR_TOKEN','secrets.TUMBLR_TOKEN_SECRET']);
+const schedulePolicy=JSON.parse(read('ops/production-workflow-allowlist-v2.json'));
+assert.ok(!schedulePolicy.scheduledProductionOwners['blog-mirror-publish.yml'],'external distribution must not be scheduled');
+assert.equal(schedulePolicy.externalDistributionApproval.repositoryOptInVariable,'GNK_ASG_EXTERNAL_DISTRIBUTION');
+assert.equal(schedulePolicy.externalDistributionApproval.perRunInput,'confirm_external_distribution');
+assert.equal(schedulePolicy.externalDistributionApproval.automaticTriggersAllowed,false);
+assert.deepEqual(
+ [...schedulePolicy.externalDistributionApproval.livePublishingWorkflows].sort(),
+ externalDistributionWorkflows.map(([name])=>name).sort()
+);
+requireText('editorial deploy notification suppression',editorialDeployWorkflow,['notify_search_engines=false']);
+requireText('nightly search notification gate',nightlySeoWorkflow,[
+ 'notify_search_engines:','default: false',"github.event_name == 'workflow_dispatch' && inputs.notify_search_engines == true",
+ 'Manually submit URLs to IndexNow after explicit approval'
 ]);
 
 requireText('bounded retry helper',retryHelper,[
@@ -71,6 +113,7 @@ console.log(JSON.stringify({
  boundedCloudflareRetry:true,
  retryOnlyForAssetsSession10013:true,
  diagnosticsArtifact:true,
- searchNotifications:'per-run-opt-out-preserves-existing-default',
+ searchNotifications:'default-off-explicit-opt-in-required',
+ externalDistribution:'manual-per-run-owner-opt-in-required',
  alternateProductionDeploys:false
 },null,2));

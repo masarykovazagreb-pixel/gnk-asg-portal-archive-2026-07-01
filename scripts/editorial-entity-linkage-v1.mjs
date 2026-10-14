@@ -50,7 +50,7 @@ for(const it of registry.items||[]){
       isPartOf:{'@id':`${SITE}/#website`},
       image:[it.image||OG_ABS],
       datePublished:it.publishedAt||undefined,
-      dateModified:it.publishedAt||undefined,
+      dateModified:it.modifiedAt||undefined,
       url:it.url,
       keywords:(it.keywords||[]).join(', '),
       about:it.hashtags||[]

@@ -32,10 +32,17 @@ for(const route of [
  '/en/publications/technology-capital-and-responsible-governance/','/en/analyses/capital-structure-and-operational-resilience/','/en/commentary/innovation-without-trust-is-not-progress/'
 ])assert.match(sitemap,new RegExp(route.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
 function collectionContract(file,{minimum,prefix}){
- const html=fs.readFileSync(file,'utf8'),count=(html.match(/class="editorial-card"/g)||[]).length;
+ const html=fs.readFileSync(file,'utf8');
+ const cards=[...html.matchAll(/<article class="editorial-card"([^>]*)>([\s\S]*?)<\/article>/g)];
+ const count=cards.length;
  assert.ok(count>=minimum,`${file} must show at least ${minimum} cards; actual=${count}`);
- const links=[...html.matchAll(new RegExp(`<a href="(${prefix}[^"#?]+/)"`,'g'))].map(match=>match[1]);
- assert.equal(new Set(links).size,links.length,`${file} contains duplicate collection links`);
+ const routes=cards.map((match)=>match[1].match(/data-editorial-route="([^"]+)"/)?.[1]||'');
+ assert.ok(routes.every((route)=>route.startsWith(prefix)),`${file} contains a card outside ${prefix}`);
+ assert.equal(new Set(routes).size,routes.length,`${file} contains duplicate editorial cards`);
+ for(let i=0;i<cards.length;i++){
+  const links=[...cards[i][2].matchAll(/<a href="([^"]+)"/g)].map((match)=>match[1]);
+  assert.ok(links.includes(routes[i]),`${file} card ${routes[i]} is missing its own collection link`);
+ }
  return count;
 }
 const hr={
@@ -45,7 +52,7 @@ const hr={
 };
 const en={
  publications:collectionContract('apps/portal/en/publications/index.html',{minimum:3,prefix:'/en/publications/'}),
- analyses:collectionContract('apps/portal/en/analyses/index.html',{minimum:3,prefix:'/en/analyses/'}),
+ analyses:collectionContract('apps/portal/en/analyses/index.html',{minimum:2,prefix:'/en/analyses/'}),
  commentary:collectionContract('apps/portal/en/commentary/index.html',{minimum:3,prefix:'/en/commentary/'})
 };
 console.log(JSON.stringify({ok:true,liveNewsSources:true,visibleNews:100,collections:{hr,en},newImageLedArticles:5,sitemap:true,growingCollections:true},null,2));

@@ -204,7 +204,7 @@ if (LIVE && haveCreds) {
         const msg = String(e.message || e);
         summary.failed.push({ route, error: msg.slice(0, 200) });
         if (msg.includes('blogger_429')) {
-          summary.stoppedEarly = 'Blogger je odbio daljnje objave u ovom prolazu (kvota). Ostatak ide u sljedecem satu.';
+          summary.stoppedEarly = 'Blogger je odbio daljnje objave u ovom prolazu (kvota). Novi pokušaj nije automatski zakazan; treba ručni dispatch s odobrenjem.';
           break;
         }
       }
