@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
+import { isProtectedEditorialRoute as protectedPath } from './lib/editorial-route-protection-v1.mjs';
 
 const PORTAL = 'apps/portal';
 const REGISTRY_PATH = `${PORTAL}/data/editorial-registry.json`;
 const MANIFEST_PATH = `${PORTAL}/data/editorial-image-manifest.json`;
 const SITE = 'https://gnk-asg.hr';
 const WRITE = process.argv.includes('--write');
-const protectedPath = (route) => /(?:^|\/)spt(?:[-/]|$)|\b(?:bank|banks|banking)(?:[-/]|$)|\badria-?bank(?:[-/]|$)/i.test(route);
 const PAGES = [
   { file: `${PORTAL}/objave/index.html`, type: 'objava', language: 'hr', prefix: '/objave/', title: 'Sve objavljene objave' },
   { file: `${PORTAL}/komentari/index.html`, type: 'komentar', language: 'hr', prefix: '/komentari/', title: 'Svi objavljeni komentari' },

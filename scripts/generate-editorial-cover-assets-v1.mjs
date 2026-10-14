@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { writeCoverWebp } from './lib/editorial-cover-art-v1.mjs';
+import { isProtectedEditorialRoute as protectedPath } from './lib/editorial-route-protection-v1.mjs';
 
 const PORTAL = 'apps/portal';
 const REGISTRY_PATH = `${PORTAL}/data/editorial-registry.json`;
@@ -11,7 +12,6 @@ const OUTPUT_DIR = `${PORTAL}/assets/editorial/generated`;
 const SITE = 'https://gnk-asg.hr';
 const ART_VERSION = '2026-10-14-clean-cover-v2';
 const FORCE = process.argv.includes('--force');
-const protectedPath = (route) => /(?:^|\/)spt(?:[-/]|$)|\b(?:bank|banks|banking)(?:[-/]|$)|\badria-?bank(?:[-/]|$)/i.test(route);
 const routeId = (route) => `${route.normalize('NFD').replace(/\p{Diacritic}/gu, '').replace(/[đĐ]/g, (char) => char === 'Đ' ? 'D' : 'd').replace(/^\/+|\/+$/g, '').replace(/[^A-Za-z0-9-]+/g, '-').replace(/-+/g, '-').toLowerCase()}-${createHash('sha1').update(route).digest('hex').slice(0, 8)}`;
 const typeLabel = (type, language) => ({
   objava: language === 'en' ? 'Publication' : 'Objava',

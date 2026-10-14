@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
+import { isProtectedEditorialRoute as protectedPath } from './lib/editorial-route-protection-v1.mjs';
 
 const PORTAL = 'apps/portal';
 const REGISTRY_PATH = `${PORTAL}/data/editorial-registry.json`;
@@ -8,7 +9,6 @@ const IMAGE_MANIFEST_PATH = `${PORTAL}/data/editorial-image-manifest.json`;
 const SITE = 'https://gnk-asg.hr';
 const WRITE = process.argv.includes('--write');
 const FORCE_SHARE = process.argv.includes('--refresh-share');
-const protectedPath = (route) => /(?:^|\/)spt(?:[-/]|$)|\b(?:bank|banks|banking)(?:[-/]|$)|\badria-?bank(?:[-/]|$)/i.test(route);
 const AUTHOR_URL = `${SITE}/nermin-sefic/`;
 const AUTHOR_ID = `${AUTHOR_URL}#person`;
 const ORG = { '@type': 'Organization', '@id': `${SITE}/#organization`, name: 'GNK ASG d.o.o.', url: `${SITE}/`, logo: { '@type': 'ImageObject', url: `${SITE}/assets/logo-gnk-asg-canonical.svg` } };

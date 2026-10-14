@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
+import { isProtectedEditorialRoute as protectedPath } from './lib/editorial-route-protection-v1.mjs';
 
 const PORTAL = 'apps/portal';
 const SITE = 'https://gnk-asg.hr';
@@ -10,7 +11,6 @@ const IMAGE_MANIFEST_PATH = `${PORTAL}/data/editorial-image-manifest.json`;
 const SITEMAP_PATH = `${PORTAL}/editorial-sitemap.xml`;
 const failures = [];
 const warnings = [];
-const protectedPath = (route) => /(?:^|\/)spt(?:[-/]|$)|\b(?:bank|banks|banking)(?:[-/]|$)|\badria-?bank(?:[-/]|$)/i.test(route);
 const articleTypes = new Set(['Article', 'NewsArticle', 'OpinionNewsArticle', 'BlogPosting']);
 const decodeEntities = (value = '') => String(value)
   .replace(/&nbsp;|&#160;/gi, ' ')
