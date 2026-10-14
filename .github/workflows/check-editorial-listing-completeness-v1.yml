@@ -1,0 +1,40 @@
+name: Check Editorial Listing Completeness
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/komentari/**'
+      - 'apps/portal/objave/**'
+      - 'apps/portal/gnk-aktual/kolumne/**'
+      - 'apps/portal/gnk-aktual/tjedni/**'
+      - 'apps/portal/data/editorial-registry.json'
+      - 'apps/portal/data/kolumne.json'
+      - 'apps/portal/data/aktual-weekly.json'
+      - 'scripts/test-editorial-listing-completeness-v1.mjs'
+      - '.github/workflows/check-editorial-listing-completeness-v1.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/komentari/**'
+      - 'apps/portal/objave/**'
+      - 'apps/portal/gnk-aktual/kolumne/**'
+      - 'apps/portal/gnk-aktual/tjedni/**'
+      - 'apps/portal/data/editorial-registry.json'
+      - 'apps/portal/data/kolumne.json'
+      - 'apps/portal/data/aktual-weekly.json'
+      - 'scripts/test-editorial-listing-completeness-v1.mjs'
+      - '.github/workflows/check-editorial-listing-completeness-v1.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  completeness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: node scripts/test-editorial-listing-completeness-v1.mjs
