@@ -114,6 +114,7 @@ def priority_and_freq(url, cat):
         "", "/en", "/objave", "/en/publications", "/komentari", "/en/commentary",
         "/analize", "/en/analyses", "/visual-index", "/en/visual-index",
         "/autorske-objave", "/en/autorske-objave",
+        "/gnk-aktual/originali", "/en/gnk-aktual/originals",
     )
     if path in ("/", "/en"):
         return "1.0", "daily"
