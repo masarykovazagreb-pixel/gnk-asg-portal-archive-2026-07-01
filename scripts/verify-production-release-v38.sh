@@ -49,8 +49,8 @@ verify_release_marker() {
 verify_release_marker home "${base}/" 'index-editorial-order-v6.js?v=20260715-source-links-v2' 18
 verify_release_marker home-en "${base}/en/" 'index-editorial-order-v6.js?v=20260715-source-links-v2'
 verify_release_marker news-runtime "${base}/assets/index-editorial-order-v6.js" 'item.sourceUrl||item.url||item.href||item.share_url'
-verify_release_marker objave "${base}/objave/" 'Kapitalna disciplina u razdoblju geopolitičkih i energetskih šokova'
-verify_release_marker komentari "${base}/komentari/" 'AI ne smije pisati konačnu odluku'
+verify_release_marker objave "${base}/objave/" 'href="/objave/kapitalna-disciplina-geopoliticki-energetski-sokovi/"'
+verify_release_marker komentari "${base}/komentari/" 'href="/komentari/ai-ne-smije-pisati-konacnu-odluku/"'
 verify_release_marker contact-page "${base}/contact/" 'id="contactForm"'
 verify_release_marker home-bank-nav-version "${base}/" 'public-unified-menu-v6.js?v=20261012-radio-panel-polish-v2-bank-nav-v1'
 verify_release_marker menu-bank "${base}/assets/public-unified-menu-v6.js?v=20261012-radio-panel-polish-v2-bank-nav-v1" "['Banka / Adria Bank','Bank / Adria Bank','/bank/','/en/bank/']"

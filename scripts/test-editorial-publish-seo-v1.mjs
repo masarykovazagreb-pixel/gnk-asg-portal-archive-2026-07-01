@@ -50,6 +50,66 @@ assert.ok((oct9Html.match(/<h2>Zaključak<\/h2>/g)||[]).length<=1,'published Oct
 const publisher=fs.readFileSync('scripts/editorial-publish-scheduled-v1.mjs','utf8');
 
 for(const marker of ['GNK_ASG_EDITORIAL_SCHEDULED_PUBLISH_V3_20260714','OpinionNewsArticle','application/ld+json','rel="canonical"','property="og:title"','name="twitter:card"','Urednička odgovornost','EDITORIAL_NOW','deployApproved','writeIfChanged','summary.publicChanged||summary.stateChanged','publication-holds.json','publicationHeld','summary.held','const cardImage=item.image||AUTHOR_IMAGE','(headings[i-1]||\'\')'])assert.ok(publisher.includes(marker),marker);
+
+// Scheduled publication must append cards to both legacy and generated static listings.
+const appendCardStart=publisher.indexOf('function appendCard(');
+const appendCardEnd=publisher.indexOf(String.fromCharCode(10)+'function appendEditorialListingCard(',appendCardStart);
+assert.ok(appendCardStart>=0&&appendCardEnd>appendCardStart,'publisher must expose collection-card integration');
+const routeForCardTest=item=>`/${item.type==='objava'?'objave':'komentari'}/${item.slug}/`;
+const authorImageForCardTest=publisher.match(/const AUTHOR_IMAGE='([^']+)'/)?.[1];
+assert.ok(authorImageForCardTest,'publisher must keep its canonical fallback author image');
+const escapeCardTest=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+const writeCardIfChangedTest=(file,content)=>{
+  if(fs.existsSync(file)&&fs.readFileSync(file,'utf8')===content)return false;
+  fs.writeFileSync(file,content);return true;
+};
+const appendCard=vm.runInNewContext(`(${publisher.slice(appendCardStart,appendCardEnd)})`,{
+  fs,AUTHOR_IMAGE:authorImageForCardTest,routeFor:routeForCardTest,esc:escapeCardTest,writeIfChanged:writeCardIfChangedTest,
+});
+const listingTmp=fs.mkdtempSync(path.join(os.tmpdir(),'gnk-scheduled-grid-test-'));
+try{
+  const generatedListing=fs.readFileSync('apps/portal/objave/index.html','utf8');
+  assert.ok(generatedListing.includes('data-static-editorial-listing="v1"'),'fixture must use generated static-listing markup');
+  const generatedFile=path.join(listingTmp,'generated.html');
+  fs.writeFileSync(generatedFile,generatedListing);
+  const sample={type:'objava',slug:'scheduled-grid-regression',title:'Scheduled & <test>',section:'Publication scheduling',summary:'A safe <summary>.',image:'/assets/editorial/test.svg'};
+  assert.equal(appendCard(generatedFile,sample),true,'generated listing with attributes must accept a scheduled card');
+  const generatedAfter=fs.readFileSync(generatedFile,'utf8');
+  assert.ok(generatedAfter.includes('<h2>Scheduled &amp; &lt;test&gt;</h2>'),'scheduled title must be escaped');
+  assert.ok(generatedAfter.includes('<p>A safe &lt;summary&gt;.</p>'),'scheduled summary must be escaped');
+  assert.equal(generatedAfter.split('href="/objave/scheduled-grid-regression/"').length-1,1,'scheduled route must be linked exactly once');
+  assert.equal(appendCard(generatedFile,sample),false,'repeat append must be a no-op');
+  assert.equal(fs.readFileSync(generatedFile,'utf8'),generatedAfter,'idempotent append must not rewrite the listing');
+
+  const legacyFile=path.join(listingTmp,'legacy.html');
+  fs.writeFileSync(legacyFile,'<main><section class="editorial-grid"><article>Existing</article></section></main>');
+  const legacyItem={type:'komentar',slug:'legacy-grid-regression',title:'Legacy card',section:'Testing',summary:'Compatibility check.'};
+  assert.equal(appendCard(legacyFile,legacyItem),true,'legacy exact-class listing must remain supported');
+  assert.ok(fs.readFileSync(legacyFile,'utf8').includes('href="/komentari/legacy-grid-regression/"'));
+
+  const missingGridFile=path.join(listingTmp,'missing-grid.html');
+  fs.writeFileSync(missingGridFile,'<main>No listing section</main>');
+  assert.throws(()=>appendCard(missingGridFile,legacyItem),/Editorial grid markers not found/,'missing listing must fail closed');
+  assert.equal(fs.readFileSync(missingGridFile,'utf8'),'<main>No listing section</main>','failed append must not alter the page');
+
+  const routeFnStart=publisher.indexOf('function appendEditorialListingCard(');
+  const routeFnEnd=publisher.indexOf(String.fromCharCode(10)+'function appendAktualCard(',routeFnStart);
+  assert.ok(routeFnStart>=0&&routeFnEnd>routeFnStart,'publisher must route new cards by editorial type');
+  const routedCards=[];
+  const routeEditorialCard=vm.runInNewContext(`(${publisher.slice(routeFnStart,routeFnEnd)})`,{
+    path,ROOT:listingTmp,appendCard:(file,item)=>{routedCards.push({file,item});return true;},
+  });
+  assert.equal(routeEditorialCard({type:'objava',slug:'post-route'}),true);
+  assert.equal(routedCards.at(-1).file,path.join(listingTmp,'objave','index.html'),'publications belong only in /objave/');
+  assert.equal(routeEditorialCard({type:'komentar',slug:'comment-route'}),true);
+  assert.equal(routedCards.at(-1).file,path.join(listingTmp,'komentari','index.html'),'commentary belongs in /komentari/');
+  const routedCount=routedCards.length;
+  assert.equal(routeEditorialCard({type:'analiza',slug:'unsupported-route'}),false,'unsupported editorial types must not enter either listing');
+  assert.equal(routedCards.length,routedCount,'unsupported routes must not alter collection lists');
+}finally{
+  fs.rmSync(listingTmp,{recursive:true,force:true});
+}
+
 // Behavioral regression for the current AKTUAL editorial container.
 const aktualFixture=fs.readFileSync('apps/portal/gnk-aktual/index.html','utf8');
 assert.match(aktualFixture,/<div class="am-editorial-links" id="amEditorialLinks">/);

@@ -8,6 +8,7 @@ const validationWorkflow=read('.github/workflows/deploy-mail-studio-multilingual
 const publicAssetsValidation=read('.github/workflows/deploy-public-portal-assets-safe.yml');
 const blogMirrorWorkflow=read('.github/workflows/blog-mirror-publish.yml');
 const editorialDeployWorkflow=read('.github/workflows/editorial-content-deploy.yml');
+const worldTopicsDeployWorkflow=read('.github/workflows/world-topics-materialize.yml');
 const nightlySeoWorkflow=read('.github/workflows/gnk-seo-nightly-audit.yml');
 const preflight=read('scripts/check-newsroom-route-readiness.sh');
 const verifier=read('scripts/verify-production-release-v38.sh');
@@ -67,6 +68,9 @@ assert.deepEqual(
  externalDistributionWorkflows.map(([name])=>name).sort()
 );
 requireText('editorial deploy notification suppression',editorialDeployWorkflow,['notify_search_engines=false']);
+requireText('world topics deploy notification suppression',worldTopicsDeployWorkflow,[
+ 'gh workflow run deploy-admin-auth-v6.yml','-f approved_sha="$APPROVED_SHA"','-f notify_search_engines=false'
+]);
 requireText('nightly search notification gate',nightlySeoWorkflow,[
  'notify_search_engines:','default: false',"github.event_name == 'workflow_dispatch' && inputs.notify_search_engines == true",
  'Manually submit URLs to IndexNow after explicit approval'
@@ -111,7 +115,7 @@ assert.deepEqual(violations,[],'Only deploy-admin-auth-v6.yml may contain produc
 
 requireText('preflight',preflight,['gnk-asg-news-backend','/newsroom/','/en/newsroom/','No production changes were made']);
 assert.doesNotMatch(preflight,/\bwrangler\b|api\.cloudflare\.com|cloudflare_api_token|cloudflare_account_id/i);
-requireText('production verifier',verifier,['x-gnk-deploy-revision','x-gnk-active-release','x-gnk-active-entrypoint','contact readiness HTTP 200','home-bank-nav-version','menu-bank','Banka / Adria Bank','20261012-radio-panel-polish-v2-bank-nav-v1']);
+requireText('production verifier',verifier,['x-gnk-deploy-revision','x-gnk-active-release','x-gnk-active-entrypoint','contact readiness HTTP 200','home-bank-nav-version','menu-bank','Banka / Adria Bank','20261012-radio-panel-polish-v2-bank-nav-v1','href="/objave/kapitalna-disciplina-geopoliticki-energetski-sokovi/"','href="/komentari/ai-ne-smije-pisati-konacnu-odluku/"']);
 forbidText('production verifier',verifier,['wrangler deploy','cloudflare_api_token=']);
 
 console.log(JSON.stringify({
