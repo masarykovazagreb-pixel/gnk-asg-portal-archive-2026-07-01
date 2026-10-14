@@ -8,6 +8,7 @@
  */
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
+import { limitSeoDescription } from './lib/seo-description-v1.mjs';
 
 const PORTAL = 'apps/portal';
 const PLAN_DIR = join(PORTAL, 'data/editorial-plan');
@@ -45,8 +46,8 @@ const unescapeHtml = (input = '') => {
 };
 const escapeRegex = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const attrValue = (tag, name) => {
-  const match = tag.match(new RegExp(`\\b${escapeRegex(name)}\\s*=\\s*["']([^"']*)["']`, 'i'));
-  return match ? unescapeHtml(match[1]) : '';
+  const match = tag.match(new RegExp(`\\b${escapeRegex(name)}\\s*=\\s*(["'])([\\s\\S]*?)\\1`, 'i'));
+  return match ? unescapeHtml(match[2]) : '';
 };
 const visibleNerminByline = (html) => [...html.matchAll(/<(?:div|p|span|aside)\b[^>]*class=["'][^"']*\b(?:article-meta|meta-row|meta|byline|author-box|author-box-name|author-name|article-author|oznaka)\b[^"']*["'][^>]*>[\s\S]*?<\/(?:div|p|span|aside)>/gi)]
   .some((match) => !/\bclass=["'][^"']*\beditorial-author-inline\b/i.test(match[0])
@@ -181,7 +182,7 @@ for (const section of SECTIONS) {
     const truncatedByHeading = h1Title && titleCandidate && h1Title.length > titleCandidate.length * 1.25
       && h1Title.toLowerCase().startsWith(titleCandidate.toLowerCase());
     const title = schemaHeadline || ((titleCandidate.length < 10 || truncatedByHeading) ? (h1Title || titleCandidate) : titleCandidate);
-    const description = metaValue(html, 'description') || metaValue(html, 'og:description', 'property');
+    const description = limitSeoDescription(metaValue(html, 'description') || metaValue(html, 'og:description', 'property'));
     const keywords = metaValue(html, 'keywords').split(',').map((keyword) => keyword.trim())
       .filter(Boolean).filter((keyword) => !/(?:nermin|sefi[cć])/i.test(keyword));
     const rawImage = metaValue(html, 'og:image', 'property');

@@ -29,8 +29,12 @@ for (const file of [
   'scripts/audit-editorial-publication-completeness-v1.mjs',
   'scripts/generate-editorial-cover-assets-v1.mjs',
   'scripts/build-editorial-archive-listings-v1.mjs',
+  'scripts/enforce-approved-author-markers-v1.mjs',
 ]) {
   const source = fs.readFileSync(file, 'utf8');
   assert.ok(source.includes("isProtectedEditorialRoute as protectedPath"), `${file} must use the shared protected-route policy`);
+  if (file === 'scripts/enforce-approved-author-markers-v1.mjs') {
+    assert.ok(source.includes('if(protectedPath(route))'), 'author markers must not mutate protected routes');
+  }
 }
-console.log(JSON.stringify({ ok: true, protectedRouteCases: protectedRoutes.length, allowedRouteCases: allowedRoutes.length, consumers: 4 }, null, 2));
+console.log(JSON.stringify({ ok: true, protectedRouteCases: protectedRoutes.length, allowedRouteCases: allowedRoutes.length, consumers: 5 }, null, 2));

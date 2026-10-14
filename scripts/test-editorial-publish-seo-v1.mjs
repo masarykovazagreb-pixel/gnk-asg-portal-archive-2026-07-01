@@ -7,6 +7,10 @@ import vm from 'node:vm';
 const plan=JSON.parse(fs.readFileSync('apps/portal/data/editorial-plan/manifest.json','utf8'));
 for(const pack of plan.packages)pack.items=(pack.files||[]).flatMap(file=>JSON.parse(fs.readFileSync(`apps/portal/data/editorial-plan/${file}`,'utf8')));
 assert.ok(plan.packages.length>=2,`expected at least 2 packages, found ${plan.packages.length}`);
+const registry=JSON.parse(fs.readFileSync('apps/portal/data/editorial-registry.json','utf8'));
+const quoteDescription=registry.items.find(item=>item.path==='/komentari/rutina-koja-postane-nevidljiva/')?.description||'';
+assert.ok(quoteDescription.length>=80&&quoteDescription.length<=200,'SEO description parser must preserve quoted text and keep the description within 80-200 characters');
+assert.ok(quoteDescription.includes('tako radimo'),'apostrophes inside a quoted meta attribute must not truncate the registry description');
 for(const pack of plan.packages){
   assert.ok(pack.items.length>=1,`${pack.id} needs at least 1 daily editorial item`);
   assert.ok(pack.items.every(x=>x.type==='objava'||x.type==='komentar'),`${pack.id} contains unsupported editorial item type`);

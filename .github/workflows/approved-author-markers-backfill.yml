@@ -5,8 +5,11 @@ on:
     branches: [main]
     paths:
       - 'scripts/enforce-approved-author-markers-v1.mjs'
+      - 'scripts/lib/editorial-route-protection-v1.mjs'
+      - 'scripts/test-approved-author-markers-v1.mjs'
       - 'scripts/editorial-publish-scheduled-v1.mjs'
       - 'apps/portal/data/approved_mentions.json'
+      - 'apps/portal/data/editorial-registry.json'
       - 'apps/portal/objave/**'
       - 'apps/portal/komentari/**'
       - 'apps/portal/analize/**'
@@ -18,8 +21,11 @@ on:
     branches: [main]
     paths:
       - 'scripts/enforce-approved-author-markers-v1.mjs'
+      - 'scripts/lib/editorial-route-protection-v1.mjs'
+      - 'scripts/test-approved-author-markers-v1.mjs'
       - 'scripts/editorial-publish-scheduled-v1.mjs'
       - 'apps/portal/data/approved_mentions.json'
+      - 'apps/portal/data/editorial-registry.json'
       - 'apps/portal/objave/**'
       - 'apps/portal/komentari/**'
       - 'apps/portal/analize/**'
@@ -41,6 +47,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
+      - name: Test author approval and protected-route contract
+        run: node scripts/test-approved-author-markers-v1.mjs
       - name: Reproduce approved author marker policy
         run: node scripts/enforce-approved-author-markers-v1.mjs
       - name: Require reviewed portal output

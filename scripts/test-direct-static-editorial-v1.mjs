@@ -10,14 +10,14 @@ const relative = 'apps/portal/objave/testna-objava/index.html';
 const absolute = path.join(temp, relative);
 fs.mkdirSync(path.dirname(absolute), { recursive: true });
 
-function html({ words = 500, omitTwitterImage = false, exception = false } = {}) {
+function html({ words = 500, omitTwitterImage = false, exception = false, omitAuthor = false } = {}) {
   const body = Array.from({ length: words }, (_, index) => `riječ${index + 1}`).join(' ');
   const links = ['/objave/', '/komentari/', '/nermin-sefic/', '/about/', '/contact/']
     .map(href => `<a href="${href}">Poveznica</a>`).join('');
   return `<!doctype html><html lang="hr"><head>
 <title>Testna autorska objava za izravni urednički validator</title>
-<meta name="description" content="Ovo je dovoljno dug i jedinstven meta opis testne autorske objave koji provjerava urednički ugovor, indeksabilnost i tehničku SEO cjelovitost stranice.">
-<meta name="author" content="Nermin Sefić">
+<meta name="description" content="Ovaj opis provjerava urednički ugovor i SEO cjelovitost; izraz 'bez iznimke' mora ostati cijeli, uz dovoljno konteksta za pretraživanje.">
+${omitAuthor ? '' : '<meta name="author" content="Nermin Sefić">'}
 ${exception ? '<meta name="editorial-policy-exception" content="digital-workforce-worker">' : ''}
 <link rel="canonical" href="https://gnk-asg.hr/objave/testna-objava/">
 <meta property="og:title" content="Testna autorska objava">
@@ -33,9 +33,9 @@ ${omitTwitterImage ? '' : '<meta name="twitter:image" content="https://gnk-asg.h
     '@type': 'Article',
     headline: 'Testna autorska objava',
     mainEntityOfPage: 'https://gnk-asg.hr/objave/testna-objava/',
-    author: { '@type': 'Person', name: 'Nermin Sefić' },
+    ...(omitAuthor ? {} : { author: { '@type': 'Person', name: 'Nermin Sefić' } }),
     publisher: { '@type': 'Organization', name: 'GNK ASG d.o.o.' },
-  })}</script></head><body><main><article><h1>Testna autorska objava</h1><p>Autor: Nermin Sefić</p><img src="/assets/test.svg" alt="Test">${links}<p>${body}</p></article></main></body></html>`;
+  })}</script></head><body><main><article><h1>Testna autorska objava</h1>${omitAuthor ? '' : '<p>Autor: Nermin Sefić</p>'}<img src="/assets/test.svg" alt="Test">${links}<p>${body}</p></article></main></body></html>`;
 }
 
 function run(source) {
@@ -134,6 +134,65 @@ result = spawnSync(process.execPath, [validator], {
 assert.notEqual(result.status, 0,'substantive change must not inherit tag-only exception');
 assert.match(result.stderr, /minimum is 500|missing twitter:image/u);
 fs.rmSync(gitTemp, { recursive: true, force: true });
+
+// A presentation-only publication refresh may add a cover, breadcrumbs,
+// crosslinks and share controls without forcing a retroactive copy rewrite or
+// inventing an author for an unchanged legacy page. SEO/technical checks still run.
+const presentationTemp = fs.mkdtempSync(path.join(os.tmpdir(), 'gnk-direct-editorial-presentation-'));
+const presentationRelative = 'apps/portal/objave/presentation-only/index.html';
+const presentationAbsolute = path.join(presentationTemp, presentationRelative);
+fs.mkdirSync(path.dirname(presentationAbsolute), { recursive: true });
+const presentationBase = html({ words: 400, omitAuthor: true }).replaceAll('testna-objava', 'presentation-only');
+fs.writeFileSync(presentationAbsolute, presentationBase);
+const presentationGit = (...args) => spawnSync('git', args, { cwd: presentationTemp, encoding: 'utf8' });
+assert.equal(presentationGit('init').status, 0);
+assert.equal(presentationGit('config','user.name','Policy Test').status, 0);
+assert.equal(presentationGit('config','user.email','policy@example.invalid').status, 0);
+assert.equal(presentationGit('add','.').status, 0);
+assert.equal(presentationGit('commit','-m','legacy presentation baseline').status, 0);
+const presentationBaseSha = presentationGit('rev-parse','HEAD').stdout.trim();
+const presentationRefresh = presentationBase
+  .replace('<img src="/assets/test.svg" alt="Test">', '<figure class="editorial-cover-figure"><img src="/assets/test.svg" alt="Test"></figure>')
+  .replace('</article>', '<nav class="editorial-breadcrumb"><a href="/">Naslovnica</a></nav><nav data-editorial-crosslinks><a href="/objave/">Objave</a></nav><aside data-editorial-share>Share</aside></article>');
+fs.writeFileSync(presentationAbsolute, presentationRefresh);
+assert.equal(presentationGit('add','.').status, 0);
+assert.equal(presentationGit('commit','-m','add publication presentation metadata').status, 0);
+let presentationHeadSha = presentationGit('rev-parse','HEAD').stdout.trim();
+result = spawnSync(process.execPath, [validator], {
+  cwd: presentationTemp,
+  encoding: 'utf8',
+  env: {
+    ...process.env,
+    GITHUB_BASE_SHA: presentationBaseSha,
+    GITHUB_SHA: presentationHeadSha,
+    DIRECT_EDITORIAL_MIN_WORDS: '3000',
+    DIRECT_EDITORIAL_MIN_WORDS_PUBLICATION: '500',
+    DIRECT_EDITORIAL_MIN_INTERNAL_LINKS: '5',
+  },
+});
+assert.equal(result.status, 0, result.stderr || result.stdout);
+assert.match(result.stdout, /"editorialCopyUnchanged": true/u);
+assert.match(result.stdout, /unchanged-copy-legacy-floor-not-reapplied/u);
+
+fs.writeFileSync(presentationAbsolute, fs.readFileSync(presentationAbsolute, 'utf8').replace('</article>', '<p>Stvarna urednička promjena teksta.</p></article>'));
+assert.equal(presentationGit('add','.').status, 0);
+assert.equal(presentationGit('commit','-m','edit publication copy').status, 0);
+presentationHeadSha = presentationGit('rev-parse','HEAD').stdout.trim();
+result = spawnSync(process.execPath, [validator], {
+  cwd: presentationTemp,
+  encoding: 'utf8',
+  env: {
+    ...process.env,
+    GITHUB_BASE_SHA: presentationBaseSha,
+    GITHUB_SHA: presentationHeadSha,
+    DIRECT_EDITORIAL_MIN_WORDS: '3000',
+    DIRECT_EDITORIAL_MIN_WORDS_PUBLICATION: '500',
+    DIRECT_EDITORIAL_MIN_INTERNAL_LINKS: '5',
+  },
+});
+assert.notEqual(result.status, 0, 'an editorial copy change must trigger the full content floor');
+assert.match(result.stderr, /minimum is 500/u);
+fs.rmSync(presentationTemp, { recursive: true, force: true });
 
 fs.rmSync(temp, { recursive: true, force: true });
 console.log('DIRECT_STATIC_EDITORIAL_POLICY_TESTS_OK');

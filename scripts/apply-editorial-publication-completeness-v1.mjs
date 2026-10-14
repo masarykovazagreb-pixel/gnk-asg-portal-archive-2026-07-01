@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { isProtectedEditorialRoute as protectedPath } from './lib/editorial-route-protection-v1.mjs';
+import { limitSeoDescription } from './lib/seo-description-v1.mjs';
 
 const PORTAL = 'apps/portal';
 const REGISTRY_PATH = `${PORTAL}/data/editorial-registry.json`;
@@ -26,7 +27,7 @@ const unescapeHtml = (input = '') => {
   return value;
 };
 const escapeRegex = (value) => String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-const attrValue = (tag, name) => unescapeHtml(tag.match(new RegExp(`\\b${escapeRegex(name)}\\s*=\\s*["']([^"']*)["']`, 'i'))?.[1] || '');
+const attrValue = (tag, name) => unescapeHtml(tag.match(new RegExp(`\\b${escapeRegex(name)}\\s*=\\s*(["'])([\\s\\S]*?)\\1`, 'i'))?.[2] || '');
 const setAttr = (tag, name, value) => {
   const pattern = new RegExp(`\\b${escapeRegex(name)}\\s*=\\s*(["'])(.*?)\\1`, 'i');
   const safe = esc(value);
@@ -209,7 +210,7 @@ const patchJsonLd = (html, image, item, canonical, nermin) => {
       articleCount++;
       if (item.type === 'komentar' || item.type === 'kolumna') object['@type'] = 'OpinionNewsArticle';
       object.headline = item.title || object.headline;
-      object.description = item.description || object.description || '';
+      object.description = limitSeoDescription(item.description || object.description || '');
       object.mainEntityOfPage = { '@type': 'WebPage', '@id': canonical };
       object.image = { '@type': 'ImageObject', url: `${SITE}${image.image}`, width: 1200, height: 630, caption: item.title };
       if (datePublished) object.datePublished = datePublished;
@@ -238,7 +239,7 @@ const patchJsonLd = (html, image, item, canonical, nermin) => {
   if (!articleCount) {
     const schema = {
       '@context': 'https://schema.org', '@type': articleType, headline: item.title,
-      description: item.description || '', url: canonical, mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+      description: limitSeoDescription(item.description || ''), url: canonical, mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
       image: { '@type': 'ImageObject', url: `${SITE}${image.image}`, width: 1200, height: 630, caption: item.title },
       publisher: ORG, inLanguage: item.language === 'en' ? 'en' : 'hr', isAccessibleForFree: true,
     };
@@ -255,10 +256,11 @@ const patchHead = (html, item, image) => {
   const canonical = `${SITE}${item.path}`;
   const contentTitle = item.title || pageH1(html) || 'GNK ASG';
   const title = item.seoTitle || contentTitle;
-  const description = item.description || metaValue(html, 'og:description', 'property') || contentTitle;
+  const description = limitSeoDescription(item.description || metaValue(html, 'og:description', 'property') || contentTitle);
   let out = html;
   out = out.replace(/<title\b[^>]*>[\s\S]*?<\/title>/i, `<title>${esc(title)}</title>`);
   out = upsertMeta(out, 'name', 'robots', 'index,follow,max-image-preview:large,max-snippet:-1');
+  out = upsertMeta(out, 'name', 'description', description);
   out = upsertLink(out, 'canonical', canonical);
   out = upsertMeta(out, 'property', 'og:type', 'article');
   out = upsertMeta(out, 'property', 'og:title', title);

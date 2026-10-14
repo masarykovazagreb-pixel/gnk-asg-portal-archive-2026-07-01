@@ -1,5 +1,5 @@
 {
-  "version": "GNK_ASG_PRODUCTION_WORKFLOW_ALLOWLIST_V2_7",
+  "version": "GNK_ASG_PRODUCTION_WORKFLOW_ALLOWLIST_V2_8",
   "repository": "masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01",
   "policy": "Every workflow containing an Actions schedule trigger must appear here with the exact cron expression. All other workflows are manual, event-scoped validation, or retired.",
   "scheduledProductionOwners": {
@@ -8,6 +8,9 @@
     ],
     "content-queue-publish.yml": [
       "20 7,11,15 * * *"
+    ],
+    "devto-mirror-publish.yml": [
+      "45 * * * *"
     ],
     "editorial-scheduled-publish.yml": [
       "20 8 * * *"
@@ -66,7 +69,6 @@
   ],
   "manualOnlyCompatibility": [
     "blog-mirror-publish.yml",
-    "devto-mirror-publish.yml",
     "linkedin-daily-rotation.yml",
     "objavi-devto-sada.yml",
     "objavi-tumblr-sada.yml",
@@ -90,7 +92,6 @@
     "perRunInput": "confirm_external_distribution",
     "livePublishingWorkflows": [
       "blog-mirror-publish.yml",
-      "devto-mirror-publish.yml",
       "objavi-devto-sada.yml",
       "objavi-tumblr-sada.yml",
       "social-distribution.yml"

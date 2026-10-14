@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { isProtectedEditorialRoute as protectedPath } from './lib/editorial-route-protection-v1.mjs';
 
 const ROOT=path.resolve('apps/portal');
 const APPROVAL_FILE=path.join(ROOT,'data/approved_mentions.json');
@@ -22,6 +23,11 @@ for(const item of approval.approved_items||[]){
   const value=typeof item==='string'?item:(item?.url||item?.route||'');
   const key=normalizePath(value); if(key)approved.add(key);
 }
+const registry=JSON.parse(fs.readFileSync(path.join(ROOT,'data/editorial-registry.json'),'utf8'));
+const verifiedNermin=new Set((registry.items||[])
+  .filter(item=>item.author==='Nermin Sefić'&&item.authorSchemaVerified===true
+    &&item.authorAttributionBasis==='visible-editorial-byline-and-person-schema')
+  .map(item=>normalizePath(item.path)).filter(Boolean));
 
 function walk(dir,out=[]){
   for(const entry of fs.readdirSync(dir,{withFileTypes:true})){
@@ -60,12 +66,14 @@ function normalizeHashtagBlock(inner,isApproved){
   }
   return topical.join(' ');
 }
-let filesChanged=0,keywordTagsChanged=0,hashtagBlocksChanged=0,approvedTouched=0;
+let filesChanged=0,keywordTagsChanged=0,hashtagBlocksChanged=0,approvedTouched=0,protectedSkipped=0,approvedVerified=0;
 for(const file of walk(ROOT)){
   let html=fs.readFileSync(file,'utf8');
   const before=html;
   const route=canonicalPath(html);
-  const isApproved=approved.has(route);
+  if(protectedPath(route)){protectedSkipped++;continue;}
+  const isApproved=approved.has(route)&&verifiedNermin.has(route);
+  if(isApproved)approvedVerified++;
   const metaBefore=html;
   html=cleanKeywordMeta(html);
   if(html!==metaBefore)keywordTagsChanged++;
@@ -78,4 +86,4 @@ for(const file of walk(ROOT)){
   if(isApproved&&html!==before)approvedTouched++;
   if(html!==before){fs.writeFileSync(file,html);filesChanged++;}
 }
-console.log(JSON.stringify({approved_scope:approval.approved_scope,approved_urls:approved.size,filesChanged,keywordTagsChanged,hashtagBlocksChanged,approvedTouched,legacyTouched:false},null,2));
+console.log(JSON.stringify({approved_scope:approval.approved_scope,approved_urls:approved.size,registry_verified_nermin_urls:verifiedNermin.size,approved_and_verified_nermin_urls:approvedVerified,protected_routes_skipped:protectedSkipped,filesChanged,keywordTagsChanged,hashtagBlocksChanged,approvedTouched,legacyTouched:false},null,2));

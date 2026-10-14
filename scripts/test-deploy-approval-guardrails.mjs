@@ -26,9 +26,15 @@ requireText('workflow approval contract',workflow,[
  'bash ../../scripts/deploy-direct-operator-with-retry-v1.sh','deploy-wrangler-logs-${{ inputs.approved_sha }}'
 ]);
 
+const devtoPreviewWorkflow=read('.github/workflows/devto-mirror-publish.yml');
+requireText('read-only Dev.to mirror preview',devtoPreviewWorkflow,[
+ "cron: '45 * * * *'",'permissions:\n  contents: read',"node-version: '24'",
+ 'Preview queue without secrets','node scripts/devto-publish-resilient-v1.mjs','actions/upload-artifact@v4'
+]);
+forbidText('read-only Dev.to mirror preview',devtoPreviewWorkflow,['contents: write','DEVTO_API_KEY','--live','git push','continue-on-error: true']);
+
 const externalDistributionWorkflows=[
  ['blog-mirror-publish.yml',blogMirrorWorkflow],
- ['devto-mirror-publish.yml',read('.github/workflows/devto-mirror-publish.yml')],
  ['objavi-devto-sada.yml',read('.github/workflows/objavi-devto-sada.yml')],
  ['objavi-tumblr-sada.yml',read('.github/workflows/objavi-tumblr-sada.yml')],
  ['social-distribution.yml',read('.github/workflows/social-distribution.yml')]
@@ -52,6 +58,7 @@ forbidText('Tumblr credential inputs',tumblrOneShot,['consumer_key:','consumer_s
 requireText('Tumblr repository credentials',tumblrOneShot,['secrets.TUMBLR_CONSUMER_KEY','secrets.TUMBLR_CONSUMER_SECRET','secrets.TUMBLR_TOKEN','secrets.TUMBLR_TOKEN_SECRET']);
 const schedulePolicy=JSON.parse(read('ops/production-workflow-allowlist-v2.json'));
 assert.ok(!schedulePolicy.scheduledProductionOwners['blog-mirror-publish.yml'],'external distribution must not be scheduled');
+assert.deepEqual(schedulePolicy.scheduledProductionOwners['devto-mirror-publish.yml'],["45 * * * *"],'Dev.to mirror schedule must remain read-only preview only');
 assert.equal(schedulePolicy.externalDistributionApproval.repositoryOptInVariable,'GNK_ASG_EXTERNAL_DISTRIBUTION');
 assert.equal(schedulePolicy.externalDistributionApproval.perRunInput,'confirm_external_distribution');
 assert.equal(schedulePolicy.externalDistributionApproval.automaticTriggersAllowed,false);
