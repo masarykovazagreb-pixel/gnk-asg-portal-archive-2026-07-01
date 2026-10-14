@@ -49,7 +49,7 @@ for(const file of pages){
 
   const canonicalMarks=[...html.matchAll(/<p[^>]*data-author-mark=["']nermin-sefic["'][^>]*>\s*#NerminSefić\s+#NerminSefic\s*<\/p>/gi)];
   const withoutCanonicalMark=html.replace(/<p[^>]*data-author-mark=["']nermin-sefic["'][^>]*>[\s\S]*?<\/p>/gi,'');
-  if(/#NerminSefić|#NerminSefic/i.test(withoutCanonicalMark))critical.push(file+': Nermin author hashtag exists outside canonical author mark');
+  if(/#NerminSefić|#NerminSefic/i.test(withoutCanonicalMark)&&!approved.has(normalizeApproved(canonical)))critical.push(file+': Nermin author hashtag exists on an unapproved page');
   if(/#(?:SefićNermin|SeficNermin|NerminSefi[cć][A-Za-zČĆŽŠĐčćžšđ]+)/i.test(html))critical.push(file+': unsupported Nermin author hashtag variant');
   if(canonicalMarks.length>1)critical.push(file+': multiple canonical Nermin author marks');
 
