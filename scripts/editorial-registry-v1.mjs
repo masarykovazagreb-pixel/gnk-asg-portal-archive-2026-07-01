@@ -29,7 +29,7 @@ const SECTIONS = [
   { dir: 'en/commentary', collection: 'Commentary', route: '/en/commentary/', type: 'komentar', language: 'en' },
   { dir: 'en/analyses', collection: 'Analyses', route: '/en/analyses/', type: 'analiza', language: 'en' },
 ];
-const BASE_TAGS = ['GNKASG', 'GNKDINAMOLtd', 'NerminSefic', 'BusinessIntelligence'];
+const BASE_TAGS = ['GNKASG', 'GNKDINAMOLtd', 'NerminSefić', 'NerminSefic', 'BusinessIntelligence'];
 
 const unescapeHtml = (s = '') => s
   .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
