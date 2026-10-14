@@ -1,0 +1,35 @@
+name: Check AKTUAL Columns Visibility V1
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/data/kolumne.json'
+      - 'apps/portal/gnk-aktual/kolumne/**'
+      - 'apps/portal/en/gnk-aktual/columns/**'
+      - 'apps/portal/gnk-aktual/tjedni/index.html'
+      - 'apps/portal/en/gnk-aktual/weekly/index.html'
+      - 'apps/portal/assets/aktual-media-weekly-v1.js'
+      - 'scripts/build-aktual-columns-index-v1.mjs'
+      - 'scripts/generate_aktual_columns.py'
+      - 'scripts/validate_aktual_columns.py'
+      - 'scripts/test-aktual-columns-visibility-v1.mjs'
+      - '.github/workflows/check-aktual-columns-visibility-v1.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/data/kolumne.json'
+      - 'apps/portal/gnk-aktual/kolumne/**'
+      - 'apps/portal/en/gnk-aktual/columns/**'
+      - 'scripts/test-aktual-columns-visibility-v1.mjs'
+      - '.github/workflows/check-aktual-columns-visibility-v1.yml'
+permissions:
+  contents: read
+jobs:
+  visibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: node scripts/test-aktual-columns-visibility-v1.mjs
