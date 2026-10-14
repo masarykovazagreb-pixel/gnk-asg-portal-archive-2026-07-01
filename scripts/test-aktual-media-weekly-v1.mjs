@@ -28,7 +28,8 @@ const files={
   columnsEn:'apps/portal/en/gnk-aktual/columns/index.html',
   originalsHr:'apps/portal/gnk-aktual/originali/index.html',
   originalsEn:'apps/portal/en/gnk-aktual/originals/index.html',
-  registry:'apps/portal/data/editorial-registry.json'
+  registry:'apps/portal/data/editorial-registry.json',
+  columnsData:'apps/portal/data/kolumne.json'
 };
 for(const [name,p] of Object.entries(files)) if(!fs.existsSync(p)) failures.push(name+': missing '+p);
 if(failures.length){console.error(failures.join('\n'));process.exit(1)}
@@ -82,11 +83,30 @@ for(const [name,html] of [['hr',hr],['en',en]]){
 }
 const weeklyJs=read(files.js);
 if(!weeklyJs.includes('image_credit')) failures.push('weekly JS: image credit support missing');
+const columnsSource=JSON.parse(read(files.columnsData));
+const columnsData=Array.isArray(columnsSource)?columnsSource:(columnsSource.items||[]);
+for(const item of columnsData){
+  const canonicalPath=String(item.path||'');
+  if(!canonicalPath.startsWith('/gnk-aktual/kolumne/')) continue;
+  const hrFile='apps/portal'+canonicalPath+'index.html';
+  if(!fs.existsSync(hrFile)) failures.push('column-route: missing HR HTML '+canonicalPath);
+  const enPath=item.url_en&&item.url_en.startsWith('https://gnk-asg.hr')
+    ? item.url_en.slice('https://gnk-asg.hr'.length)
+    : '/en/gnk-aktual/columns/'+item.slug+'/';
+  const enFile='apps/portal'+enPath+'index.html';
+  if(!fs.existsSync(enFile)) failures.push('column-route: missing EN HTML '+enPath);
+}
 const columnsHr=read(files.columnsHr),columnsEn=read(files.columnsEn);
 const hrColumnsSection=(columnsHr.match(/<section id="columns"[^>]*>([\s\S]*?)<\/section>/i)||[])[1]||'';
 const enColumnsSection=(columnsEn.match(/<section id="columns"[^>]*>([\s\S]*?)<\/section>/i)||[])[1]||'';
 if(!/class="card"/.test(hrColumnsSection)||!(/class="card"/.test(enColumnsSection))) failures.push('columns hubs must contain pre-rendered cards');
 if(/<p class="empty">/.test(hrColumnsSection)||/<p class="empty">/.test(enColumnsSection)) failures.push('columns hubs must not render loader placeholders in the canonical HTML section');
+for(const item of columnsData){
+  if(!String(item.path||'').startsWith('/gnk-aktual/kolumne/')) continue;
+  if(!columnsHr.includes('href="'+item.path+'"')) failures.push('column-route: HR hub missing '+item.path);
+  const enPath=item.url_en&&item.url_en.startsWith('https://gnk-asg.hr')?item.url_en.slice('https://gnk-asg.hr'.length):'/en/gnk-aktual/columns/'+item.slug+'/';
+  if(!columnsEn.includes('href="'+enPath+'"')) failures.push('column-route: EN hub missing '+enPath);
+}
 const registry=JSON.parse(read(files.registry));
 const allRegistry=registry.items||[];
 for(const item of allRegistry){
