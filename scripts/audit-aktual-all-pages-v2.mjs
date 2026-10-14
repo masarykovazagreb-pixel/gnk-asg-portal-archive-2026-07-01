@@ -17,6 +17,16 @@ function walk(dir,out=[]){
 }
 const pages=[...new Set(roots.flatMap(r=>walk(r)))].sort();
 const critical=[],review=[],rows=[],canonicalOwners=new Map();
+const approvals=JSON.parse(fs.readFileSync(path.join(ROOT,'data','approved_mentions.json'),'utf8'));
+const normalizeApproved=value=>{
+  try{
+    const raw=String(value||'').trim();
+    const pathname=/^https?:\/\//i.test(raw)?new URL(raw).pathname:raw;
+    return pathname.replace(/\/+$/,'')+'/';
+  }catch{return '';}
+};
+const approved=new Set([...(approvals.approved_urls||[]),...(approvals.approved_items||[])]
+  .map(x=>normalizeApproved(typeof x==='string'?x:(x?.url||x?.route||''))).filter(Boolean));
 const extract=(html,rx)=>(html.match(rx)||[])[1]||'';
 const has=(html,rx)=>rx.test(html);
 const norm=s=>String(s||'').replace(/&amp;/g,'&').replace(/&#x27;|&#39;/g,"'").replace(/&quot;/g,'"').trim();
@@ -49,7 +59,7 @@ for(const file of pages){
 
   const canonicalMarks=[...html.matchAll(/<p[^>]*data-author-mark=["']nermin-sefic["'][^>]*>\s*#NerminSefić\s+#NerminSefic\s*<\/p>/gi)];
   const withoutCanonicalMark=html.replace(/<p[^>]*data-author-mark=["']nermin-sefic["'][^>]*>[\s\S]*?<\/p>/gi,'');
-  if(/#NerminSefić|#NerminSefic/i.test(withoutCanonicalMark))critical.push(file+': Nermin author hashtag exists outside canonical author mark');
+  if(/#NerminSefić|#NerminSefic/i.test(withoutCanonicalMark)&&!approved.has(normalizeApproved(canonical)))critical.push(file+': Nermin author hashtag exists on an unapproved page');
   if(/#(?:SefićNermin|SeficNermin|NerminSefi[cć][A-Za-zČĆŽŠĐčćžšđ]+)/i.test(html))critical.push(file+': unsupported Nermin author hashtag variant');
   if(canonicalMarks.length>1)critical.push(file+': multiple canonical Nermin author marks');
 
