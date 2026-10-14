@@ -81,6 +81,12 @@ img{max-width:100%}
 .am-card h3 a{text-decoration:none}
 .am-card p{font-size:.75rem;line-height:1.45;color:var(--am-muted);margin:0 0 10px}
 .am-card .am-cardmeta{font-size:.64rem;color:var(--am-muted);padding:0 0 10px}
+.am-commentary{margin:11px 0 12px;padding:10px 12px;border-left:3px solid var(--am-gold);background:rgba(217,170,69,.10);color:inherit}
+.am-commentary strong{display:block;margin-bottom:5px;font-size:.61rem;line-height:1.2;text-transform:uppercase;letter-spacing:.08em;color:var(--am-gold)}
+.am-commentary p{margin:0!important;max-width:none!important;font-family:Arial,Helvetica,sans-serif!important;font-size:.76rem!important;line-height:1.45!important;color:inherit!important}
+.am-lead .am-commentary{background:rgba(14,23,38,.72);border-left-color:var(--am-gold);color:#fff}
+.am-lead .am-commentary strong{color:#f2c96d}
+.am-rail-card .am-commentary{margin-top:10px}
 .am-editorial{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(250px,.6fr);gap:22px;background:#101010;color:white;margin:46px 0;padding:26px}
 .am-editorial h2{font-family:Impact,"Arial Black",sans-serif;text-transform:uppercase;font-size:2.3rem;margin:0 0 9px}
 .am-editorial p{color:#cbc7bd;line-height:1.55;margin:0 0 14px}
