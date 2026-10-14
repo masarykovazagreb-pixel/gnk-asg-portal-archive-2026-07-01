@@ -119,6 +119,7 @@ for(const item of curated){
     url:item.url,
     image:item.image||'/assets/editorial/aktual-media-800.webp',
     imageAlt:item.imageAlt||item.title,
+    image_credit:item.image_credit||'',
     source:item.source,
     category:item.category||item.section,
     group:item.group||'weekly-curated',

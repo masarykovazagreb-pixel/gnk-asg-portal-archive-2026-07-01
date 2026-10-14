@@ -4,7 +4,7 @@
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const text=v=>String(v??'').replace(/\s+/g,' ').trim();
   const fmt=d=>{try{return new Intl.DateTimeFormat(en?'en-GB':'hr-HR',{day:'2-digit',month:'2-digit',year:'numeric'}).format(new Date(d))}catch(_){return d||''}};
-  const card=(x,label)=>'<article class="tw-card"><a href="'+esc(x.url)+'" target="_blank" rel="noopener noreferrer nofollow"><img src="'+esc(x.image)+'" alt="'+esc(x.imageAlt||x.title)+'" loading="lazy"></a><div class="tw-card-body"><span class="label">'+esc(label)+' · '+esc(x.source||'')+'</span><h3><a href="'+esc(x.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+esc(x.title)+'</a></h3><p>'+esc(text(x.summary).slice(0,165))+(text(x.summary).length>165?'…':'')+'</p><small>'+esc(fmt(x.published_at))+'</small></div></article>';
+  const card=(x,label)=>'<article class="tw-card"><a href="'+esc(x.url)+'" target="_blank" rel="noopener noreferrer nofollow"><img src="'+esc(x.image)+'" alt="'+esc(x.imageAlt||x.title)+'" loading="lazy"></a><div class="tw-card-body"><span class="label">'+esc(label)+' · '+esc(x.source||'')+'</span><h3><a href="'+esc(x.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+esc(x.title)+'</a></h3><p>'+esc(text(x.summary).slice(0,165))+(text(x.summary).length>165?'…':'')+'</p><small>'+esc(fmt(x.published_at))+'</small>'+(x.image_credit?'<small class="tw-image-credit">'+esc(x.image_credit)+'</small>':'')+'</div></article>';
   async function renderColumns(){
     const root=document.getElementById('twColumnGrid'); if(!root)return;
     try{
@@ -29,7 +29,7 @@
     const issue=document.getElementById('twIssueDate');if(issue)issue.textContent=(en?'Issue ':'Izdanje ')+fmt(d.issue_date);
     const status=document.getElementById('twIssueStatus');if(status)status.textContent=(d.counts?.selected_items||0)+' '+(en?'stories':'priča')+' · '+(d.counts?.sources||0)+' '+(en?'sources':'izvora');
     const cover=document.getElementById('twCover');
-    if(cover&&d.cover)cover.innerHTML='<img src="'+esc(d.cover.image)+'" alt="'+esc(d.cover.imageAlt||d.cover.title)+'"><div class="tw-cover-copy"><span class="tw-kicker">'+(en?'THIS WEEK':'OVAJ TJEDAN')+'</span><h2><a href="'+esc(d.cover.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+esc(d.cover.title)+'</a></h2><p>'+esc(text(d.cover.summary).slice(0,280))+'</p><small>'+esc(d.cover.source||'')+' · '+esc(fmt(d.cover.published_at))+'</small></div>';
+    if(cover&&d.cover)cover.innerHTML='<img src="'+esc(d.cover.image)+'" alt="'+esc(d.cover.imageAlt||d.cover.title)+'"><div class="tw-cover-copy"><span class="tw-kicker">'+(en?'THIS WEEK':'OVAJ TJEDAN')+'</span><h2><a href="'+esc(d.cover.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+esc(d.cover.title)+'</a></h2><p>'+esc(text(d.cover.summary).slice(0,280))+'</p><small>'+esc(d.cover.source||'')+' · '+esc(fmt(d.cover.published_at))+'</small>'+(d.cover.image_credit?'<small class="tw-image-credit">'+esc(d.cover.image_credit)+'</small>':'')+'</div>';
     const s1=document.getElementById('twStoryCount'),s2=document.getElementById('twSourceCount');if(s1)s1.textContent=d.counts?.selected_items||0;if(s2)s2.textContent=d.counts?.sources||0;
     const nav=document.getElementById('twDeck'),root=document.getElementById('twSections');
     const sections=d.sections||[];

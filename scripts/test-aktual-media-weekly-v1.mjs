@@ -23,7 +23,13 @@ const files={
   menu:'apps/portal/assets/public-unified-menu-v6.js',
   sitemap:'apps/portal/sitemap.xml',
   workflow:'.github/workflows/editorial-scheduled-publish.yml',
-  curation:'apps/portal/data/aktual-weekly-curation.json'
+  curation:'apps/portal/data/aktual-weekly-curation.json',
+  columnsHr:'apps/portal/gnk-aktual/kolumne/index.html',
+  columnsEn:'apps/portal/en/gnk-aktual/columns/index.html',
+  originalsHr:'apps/portal/gnk-aktual/originali/index.html',
+  originalsEn:'apps/portal/en/gnk-aktual/originals/index.html',
+  registry:'apps/portal/data/editorial-registry.json',
+  columnsData:'apps/portal/data/kolumne.json'
 };
 for(const [name,p] of Object.entries(files)) if(!fs.existsSync(p)) failures.push(name+': missing '+p);
 if(failures.length){console.error(failures.join('\n'));process.exit(1)}
@@ -36,6 +42,9 @@ if((d.counts?.sources||0)<4) failures.push('data: source diversity too low');
 if((d.sections||[]).length<5) failures.push('data: too few weekly sections');
 
 const forbidden=/\b(war|ukraine|russia|attack|attacker|killed|dies|death|dead|rape|sexual assault|assault|murder|crime|criminal|cancer|disease|poison|poisoned|crisis|accident|injury|injured|hospital|funeral|ceasefire|shooting|bomb|flood|wildfire|mosquito|haze|lawsuit|trial|court|police|gambling|casino|prediction market|betting|poplava|poginuo|poginula|stravičn|nesreć|rat|ubojstvo|bolnica|ozlijeđen|ozlijeđena)\b/i;
+const selected=(d.sections||[]).flatMap(sec=>sec.items||[]);
+const weeklyImages=selected.map(item=>item.image).filter(Boolean);
+if(new Set(weeklyImages).size!==weeklyImages.length) failures.push('data: every weekly story must have a unique topic image');
 for(const sec of d.sections||[]){
   if(!sec.id||!sec.label_hr||!sec.label_en) failures.push('data: malformed section');
   for(const item of sec.items||[]){
@@ -43,6 +52,7 @@ for(const sec of d.sections||[]){
     if(forbidden.test(hay)) failures.push('data: heavy/non-lifestyle item leaked into '+sec.id+': '+item.title);
     if(!item.url||!/^https?:\/\//.test(item.url)) failures.push('data: non-source-linked URL in '+sec.id);
     if(!item.image||!(/^(?:https?:\/\/|\/assets\/)/.test(item.image))) failures.push('data: missing approved source/local image in '+sec.id);
+    if(!item.image_credit) failures.push('data: image credit/provenance missing in '+sec.id+': '+item.title);
   }
 }
 
@@ -53,7 +63,9 @@ if(!Array.isArray(curation.items)||curation.items.length<8) failures.push('curat
 for(const item of curation.items||[]){
   if(!item.section||!item.title||!item.url||!item.source) failures.push('curation: malformed item');
   if(!/^https?:\/\//.test(item.url||'')) failures.push('curation: external source URL required');
+  if(!item.image||!item.image_credit) failures.push('curation: unique image + image credit required for '+item.title);
 }
+if(new Set((curation.items||[]).map(x=>x.image)).size!==(curation.items||[]).length) failures.push('curation: duplicate story images are not allowed');
 
 const hr=read(files.hr),en=read(files.en);
 for(const [name,html] of [['hr',hr],['en',en]]){
@@ -64,7 +76,51 @@ for(const [name,html] of [['hr',hr],['en',en]]){
   if(!html.includes('rel="author" href="https://gnk-asg.hr/nermin-sefic/"')) failures.push(name+': rel=author missing');
   if(!html.includes('id="twColumnGrid"')) failures.push(name+': Nermin Sefić columns spotlight missing');
   if(!html.includes('AKTUAL MEDIA')) failures.push(name+': full AKTUAL MEDIA brand missing');
+  if(/Učitavanje tjednog izbora|Loading weekly selection/.test(html)) failures.push(name+': weekly page must be pre-rendered, not loader-only');
+  for(const item of selected){
+    if(!html.includes(item.image)) failures.push(name+': pre-rendered weekly image missing: '+item.image);
+  }
 }
+const weeklyJs=read(files.js);
+if(!weeklyJs.includes('image_credit')) failures.push('weekly JS: image credit support missing');
+const columnsSource=JSON.parse(read(files.columnsData));
+const columnsData=Array.isArray(columnsSource)?columnsSource:(columnsSource.items||[]);
+for(const item of columnsData){
+  const canonicalPath=String(item.path||'');
+  if(!canonicalPath.startsWith('/gnk-aktual/kolumne/')) continue;
+  const hrFile='apps/portal'+canonicalPath+'index.html';
+  if(!fs.existsSync(hrFile)) failures.push('column-route: missing HR HTML '+canonicalPath);
+  const enPath=item.url_en&&item.url_en.startsWith('https://gnk-asg.hr')
+    ? item.url_en.slice('https://gnk-asg.hr'.length)
+    : '/en/gnk-aktual/columns/'+item.slug+'/';
+  const enFile='apps/portal'+enPath+'index.html';
+  if(!fs.existsSync(enFile)) failures.push('column-route: missing EN HTML '+enPath);
+}
+const columnsHr=read(files.columnsHr),columnsEn=read(files.columnsEn);
+const hrColumnsSection=(columnsHr.match(/<section id="columns"[^>]*>([\s\S]*?)<\/section>/i)||[])[1]||'';
+const enColumnsSection=(columnsEn.match(/<section id="columns"[^>]*>([\s\S]*?)<\/section>/i)||[])[1]||'';
+if(!/class="card"/.test(hrColumnsSection)||!(/class="card"/.test(enColumnsSection))) failures.push('columns hubs must contain pre-rendered cards');
+if(/<p class="empty">/.test(hrColumnsSection)||/<p class="empty">/.test(enColumnsSection)) failures.push('columns hubs must not render loader placeholders in the canonical HTML section');
+for(const item of columnsData){
+  if(!String(item.path||'').startsWith('/gnk-aktual/kolumne/')) continue;
+  if(!columnsHr.includes('href="'+item.path+'"')) failures.push('column-route: HR hub missing '+item.path);
+  const enPath=item.url_en&&item.url_en.startsWith('https://gnk-asg.hr')?item.url_en.slice('https://gnk-asg.hr'.length):'/en/gnk-aktual/columns/'+item.slug+'/';
+  if(!columnsEn.includes('href="'+enPath+'"')) failures.push('column-route: EN hub missing '+enPath);
+}
+const registry=JSON.parse(read(files.registry));
+const allRegistry=registry.items||[];
+for(const item of allRegistry){
+  if(!item.seoComplete) failures.push('registry: SEO incomplete '+item.path);
+  if(!item.image) failures.push('registry: image missing '+item.path);
+  if(!Array.isArray(item.hashtags)||!item.hashtags.includes('NerminSefić')||!item.hashtags.includes('NerminSefic')) failures.push('registry: canonical Nermin hashtags missing '+item.path);
+  const local='apps/portal'+String(item.path||'')+'index.html';
+  if(!item.path||!fs.existsSync(local)) failures.push('registry: published HTML missing '+String(item.path||item.slug||'unknown'));
+}
+const hrRegistry=allRegistry.filter(x=>x.language==='hr'&&x.path);
+const enRegistry=allRegistry.filter(x=>x.language==='en'&&x.path);
+const originalsHr=read(files.originalsHr),originalsEn=read(files.originalsEn);
+for(const item of hrRegistry) if(!originalsHr.includes('href="'+item.path+'"')) failures.push('HR originals archive missing '+item.path);
+for(const item of enRegistry) if(!originalsEn.includes('href="'+item.path+'"')) failures.push('EN originals archive missing '+item.path);
 if(!read(files.newsroomHr).includes('/gnk-aktual/tjedni/')) failures.push('HR newsroom: weekly link missing');
 if(!read(files.newsroomEn).includes('/en/gnk-aktual/weekly/')) failures.push('EN newsroom: weekly link missing');
 if(!read(files.worldJs).includes("'/gnk-aktual/tjedni/'")) failures.push('world nav: weekly route missing');
