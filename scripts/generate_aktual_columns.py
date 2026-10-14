@@ -64,7 +64,8 @@ def render(item: dict, lang: str) -> str:
 <p class="image-credit">{esc(image_credit)}</p>\n{paragraphs(text)}\n<p class="article-author-mark" data-author-mark="nermin-sefic">#NerminSefić #NerminSefic</p>\n</article></body></html>'''
 
 def main() -> None:
-    items = json.loads(DATA.read_text(encoding="utf-8")).get("items", [])
+    source = json.loads(DATA.read_text(encoding="utf-8"))
+    items = source if isinstance(source, list) else source.get("items", [])
     if not items:
         raise SystemExit("No column items found")
     generated = 0
