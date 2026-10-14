@@ -17,6 +17,16 @@ function walk(dir,out=[]){
 }
 const pages=[...new Set(roots.flatMap(r=>walk(r)))].sort();
 const critical=[],review=[],rows=[],canonicalOwners=new Map();
+const approvals=JSON.parse(fs.readFileSync(path.join(ROOT,'data','approved_mentions.json'),'utf8'));
+const normalizeApproved=value=>{
+  try{
+    const raw=String(value||'').trim();
+    const pathname=/^https?:\/\//i.test(raw)?new URL(raw).pathname:raw;
+    return pathname.replace(/\/+$/,'')+'/';
+  }catch{return '';}
+};
+const approved=new Set([...(approvals.approved_urls||[]),...(approvals.approved_items||[])]
+  .map(x=>normalizeApproved(typeof x==='string'?x:(x?.url||x?.route||''))).filter(Boolean));
 const extract=(html,rx)=>(html.match(rx)||[])[1]||'';
 const has=(html,rx)=>rx.test(html);
 const norm=s=>String(s||'').replace(/&amp;/g,'&').replace(/&#x27;|&#39;/g,"'").replace(/&quot;/g,'"').trim();
