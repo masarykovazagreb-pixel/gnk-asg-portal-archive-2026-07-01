@@ -44,9 +44,15 @@ for(const file of pages){
   const twCard=norm(extract(html,/<meta\s+name=["']twitter:card["'][^>]+content=["']([^"']*)["']/i));
   const keywords=norm(extract(html,/<meta\s+name=["']keywords["'][^>]+content=["']([^"']*)["']/i));
   const isIndexable=!/\bnoindex\b/.test(robots);
-  const looksArticle=/<article\b/i.test(html)||/"@type":"(?:Article|NewsArticle|OpinionNewsArticle)"/.test(html);
-  const hasArticleSchema=/"@type":"(?:Article|NewsArticle|OpinionNewsArticle)"/.test(html);
-  const hasCollectionSchema=/"@type":"(?:CollectionPage|WebPage)"/.test(html);
+  const relative=path.relative(ROOT,file).replace(/\\/g,'/').replace(/index\.html$/,'');
+  const route=`/${relative}`;
+  const selfCanonical=canonical===`https://gnk-asg.hr${route}`;
+  const hasArticleSchema=/"@type"\s*:\s*"(?:Article|NewsArticle|OpinionNewsArticle)"/.test(html);
+  const hasCollectionSchema=/"@type"\s*:\s*"(?:CollectionPage|WebPage)"/.test(html);
+  // Listing cards commonly use <article> for semantic markup. Treat a page as
+  // article-like only when it has Article schema, or when no page/collection
+  // schema exists to describe its actual role.
+  const looksArticle=hasArticleSchema||(!hasCollectionSchema&&/<article\b/i.test(html));
   const hasHr=/<link\s+rel=["']alternate["'][^>]+hreflang=["']hr["']/i.test(html);
   const hasEn=/<link\s+rel=["']alternate["'][^>]+hreflang=["']en["']/i.test(html);
   const hasX=/<link\s+rel=["']alternate["'][^>]+hreflang=["']x-default["']/i.test(html);
@@ -76,7 +82,7 @@ for(const file of pages){
     }
     if(looksArticle&&!hasArticleSchema)review.push({file,type:'schema',issue:'article-like page lacks Article/NewsArticle schema'});
     if(!looksArticle&&!hasCollectionSchema)review.push({file,type:'schema',issue:'hub/non-article page lacks CollectionPage/WebPage schema'});
-    if(!(hasHr&&hasEn&&hasX))review.push({file,type:'hreflang',issue:'indexable page lacks complete hr/en/x-default hreflang set'});
+    if(selfCanonical&&!(hasHr&&hasEn&&hasX))review.push({file,type:'hreflang',issue:'self-canonical indexable page lacks complete hr/en/x-default hreflang set'});
   }else if(!/\bfollow\b/.test(robots)){
     review.push({file,type:'robots',issue:'noindex page is not explicitly follow'});
   }
@@ -87,7 +93,7 @@ for(const file of pages){
   if(isIndexable&&!/AKTUAL MEDIA/i.test(title+' '+html.slice(0,14000)))review.push({file,type:'brand',issue:'weak AKTUAL MEDIA brand signal'});
   if(isIndexable&&ogUrl&&canonical&&ogUrl!==canonical)review.push({file,type:'og_url',issue:'og:url differs from canonical',canonical,ogUrl});
 
-  rows.push({file,indexable:isIndexable,title_length:title.length,description_length:desc.length,canonical,article_like:looksArticle,article_schema:hasArticleSchema,hreflang_complete:hasHr&&hasEn&&hasX,og_complete:!!(ogTitle&&ogDesc&&ogUrl&&ogImage),twitter_card:!!twCard});
+  rows.push({file,indexable:isIndexable,title_length:title.length,description_length:desc.length,canonical,self_canonical:selfCanonical,article_like:looksArticle,article_schema:hasArticleSchema,hreflang_required:selfCanonical,hreflang_complete:hasHr&&hasEn&&hasX,og_complete:!!(ogTitle&&ogDesc&&ogUrl&&ogImage),twitter_card:!!twCard});
 }
 for(const [canonical,owners] of canonicalOwners){
   if(owners.length>1)critical.push('duplicate indexable canonical '+canonical+': '+owners.join(', '));

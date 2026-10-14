@@ -128,24 +128,8 @@ if ! SOURCE_REPO="$SOURCE_REPO" TARGET_REPO="$TARGET_REPO" \
 fi
 
 # ───────────────────────────── 4. POTVRDA ────────────────────────────────
-korak "4/4  Potvrda — prvi prolaz bloga u pričuvnom repozitoriju"
-kod=$(gh_api "$TARGET_TOKEN" POST \
-  "/repos/${TARGET_REPO}/actions/workflows/blog-mirror-publish.yml/dispatches" \
-  '{"ref":"main"}' | zadnji_red)
-if [[ "$kod" != "204" ]]; then
-  upoz "ne mogu pokrenuti blog (odgovor $kod) — pokreni ga ručno i provjeri"
-else
-  ok "blog pokrenut, čekam ishod"
-  sleep 90
-  ishod=$(curl -sS -m 30 -H "authorization: Bearer $TARGET_TOKEN" \
-    "https://api.github.com/repos/${TARGET_REPO}/actions/workflows/blog-mirror-publish.yml/runs?per_page=1" \
-    | grep -o '"conclusion":"[^"]*"' | head -1 | cut -d'"' -f4)
-  case "$ishod" in
-    success) ok "blog radi iz pričuvnog repozitorija" ;;
-    "")      upoz "još se izvodi — provjeri za koju minutu" ;;
-    *)       pad "blog je javio: $ishod — provjeri queue.json" ;;
-  esac
-fi
+korak "4/4  Vanjska distribucija"
+upoz "Vanjska objava nije pokrenuta. Za distribuciju je potrebno zasebno odobrenje, repo opt-in i ručni dispatch."
 
 echo
 echo -e "${G}${B}Prelazak dovršen.${X}"

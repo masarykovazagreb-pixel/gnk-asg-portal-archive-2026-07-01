@@ -1,79 +1,34 @@
-name: Dev.to Mirror Publish
-
-# Automatska, planirana objava na Dev.to (scripts/devto-publish-resilient-v1.mjs).
-# Skripta ima ugradenu reconciliation logiku (cross-referencira Dev.to API prije
-# svakog pokusaja objave, pa retry nikad ne stvara duplikat) i self-heal nakon
-# 422 "canonical url already taken" gresaka.
-#
-# Control Plane V2 keeps this legacy channel-specific writer manual-only.
-# Scheduled Dev.to delivery belongs to the unified 4/4 blog writer.
+name: Dev.to Mirror Preview
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '45 * * * *'
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: devto-mirror-publish
   cancel-in-progress: false
 
 jobs:
-  publish:
-    name: Objavi na Dev.to (live)
+  preview:
+    name: Preview Dev.to mirror queue
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-    env:
-      DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
-      DEVTO_PER_RUN: '10'
-      DEVTO_PAUSE_MS: '20000'
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: main
-
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-
-      - name: Objavi (live)
-        run: node scripts/devto-publish-resilient-v1.mjs --live
-
-      - name: Publish health summary
-        if: always()
-        run: |
-          if [ -s apps/portal/data/devto-content/health.json ]; then
-            node -e "const h=require('./apps/portal/data/devto-content/health.json'); console.log('## Dev.to mirror publish\n\n- Status: **'+h.conclusion+'**\n- Nacin: **'+h.mode+'**\n- Preostali red: **'+(h.pending ?? 0)+'**\n- Obradeno: **'+(h.processed ?? 0)+'**\n- Generirano: **'+h.generatedAt+'**\n')" >> "$GITHUB_STEP_SUMMARY"
-          fi
-
-      - name: Commit evidencije objavljenog
-        if: always()
-        run: |
-          git config user.name "gnk-asg-bot"
-          git config user.email "it@gnk-asg.hr"
-          git add apps/portal/data/devto-content/
-          if git diff --cached --quiet; then
-            echo "Nema promjena za commit."
-            exit 0
-          fi
-          git commit -m "Dev.to: evidencija objavljenog (automatski)"
-          for attempt in 1 2 3 4 5; do
-            if git push origin HEAD:main; then
-              echo "Push uspio (pokusaj $attempt)."
-              exit 0
-            fi
-            echo "Push odbijen, radim fetch+rebase i pokusavam ponovno."
-            git fetch origin main
-            git rebase origin/main || { echo "Rebase konflikt."; exit 1; }
-            sleep $((attempt * 5))
-          done
-          exit 1
-
-      - name: Upload health evidence
+      - name: Preview queue without secrets
+        run: node scripts/devto-publish-resilient-v1.mjs
+      - name: Upload preview health evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: devto-publish-health-${{ github.run_id }}
+          name: devto-mirror-preview-${{ github.run_id }}
           path: apps/portal/data/devto-content/health.json
           if-no-files-found: warn
           retention-days: 14

@@ -72,21 +72,29 @@ function firstMatch(html, expression) {
   return match ? decodeEntities(match[1]).trim() : '';
 }
 
+function attributeValue(tag, name) {
+  const escaped = name.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&');
+  const match = tag.match(new RegExp(`\\b${escaped}\\s*=\\s*(["'])([\\s\\S]*?)\\1`, 'iu'));
+  return match ? decodeEntities(match[2]).trim() : '';
+}
+
 function metaContent(html, key, attribute = 'name') {
-  const escaped = key.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&');
-  const forward = new RegExp(`<meta\\s+[^>]*${attribute}=["']${escaped}["'][^>]*content=["']([^"']+)["'][^>]*>`, 'iu');
-  const reverse = new RegExp(`<meta\\s+[^>]*content=["']([^"']+)["'][^>]*${attribute}=["']${escaped}["'][^>]*>`, 'iu');
-  return firstMatch(html, forward) || firstMatch(html, reverse);
+  for (const match of html.matchAll(/<meta\b[^>]*>/giu)) {
+    if (attributeValue(match[0], attribute).toLowerCase() === key.toLowerCase()) {
+      return attributeValue(match[0], 'content');
+    }
+  }
+  return '';
 }
 
 function linkHref(html, relValue, hreflang = null) {
   const tags = html.match(/<link\b[^>]*>/giu) || [];
   for (const tag of tags) {
-    const rel = firstMatch(tag, /\brel=["']([^"']+)["']/iu).toLowerCase().split(/\s+/u);
-    const lang = firstMatch(tag, /\bhreflang=["']([^"']+)["']/iu).toLowerCase();
+    const rel = attributeValue(tag, 'rel').toLowerCase().split(/\s+/u);
+    const lang = attributeValue(tag, 'hreflang').toLowerCase();
     if (!rel.includes(relValue.toLowerCase())) continue;
     if (hreflang && lang !== hreflang.toLowerCase()) continue;
-    const href = firstMatch(tag, /\bhref=["']([^"']+)["']/iu);
+    const href = attributeValue(tag, 'href');
     if (href) return href;
   }
   return '';
@@ -144,6 +152,17 @@ function maskNonSubstantiveTagBlocks(html) {
   );
 }
 
+function editorialCopyText(html) {
+  const content = extractArticleHtml(html)
+    .replace(/<nav\b[^>]*class=["'][^"']*\beditorial-breadcrumb\b[^"']*["'][^>]*>[\s\S]*?<\/nav>/giu, ' ')
+    .replace(/<nav\b[^>]*data-editorial-crosslinks[^>]*>[\s\S]*?<\/nav>/giu, ' ')
+    .replace(/<aside\b[^>]*data-editorial-share[^>]*>[\s\S]*?<\/aside>/giu, ' ')
+    .replace(/<(aside|div|p)\b[^>]*class=["'][^"']*\b(?:author-box|article-author|editorial-author-inline|article-meta|meta-row|meta|byline|article-hashtags|article-tags|article-author-mark)\b[^"']*["'][^>]*>[\s\S]*?<\/\1>/giu, ' ')
+    .replace(/<picture\b[\s\S]*?<\/picture>/giu, ' ')
+    .replace(/<img\b[^>]*>/giu, ' ');
+  return stripMarkup(content);
+}
+
 function baseFileContent(file) {
   const base = process.env.GITHUB_BASE_SHA || process.env.DIRECT_EDITORIAL_BASE_SHA;
   if (!base) return null;
@@ -159,10 +178,15 @@ function baseFileContent(file) {
   }
 }
 
-function isTagOnlyChange(file, currentHtml) {
-  const before = baseFileContent(file);
+function isTagOnlyChange(before, currentHtml) {
   if (before === null || before === currentHtml) return false;
   return maskNonSubstantiveTagBlocks(before) === maskNonSubstantiveTagBlocks(currentHtml);
+}
+
+function editorialCopyUnchanged(before, currentHtml) {
+  if (before === null) return false;
+  const previousCopy = editorialCopyText(before);
+  return previousCopy.length > 0 && previousCopy === editorialCopyText(currentHtml);
 }
 
 function changedFiles() {
@@ -202,8 +226,9 @@ function validate(file) {
   const absolute = path.join(ROOT, file);
   if (!fs.existsSync(absolute)) return { file, skipped: true, reason: 'missing-after-diff', errors };
   const html = fs.readFileSync(absolute, 'utf8');
+  const before = baseFileContent(file);
 
-  if (isTagOnlyChange(file, html)) {
+  if (isTagOnlyChange(before, html)) {
     return { file, skipped: true, reason: 'non-substantive-tag-normalization', errors };
   }
 
@@ -215,6 +240,7 @@ function validate(file) {
     return { file, skipped: true, reason: 'locked-authored-statement-exception', errors };
   }
 
+  const copyUnchanged = editorialCopyUnchanged(before, html);
   const articleHtml = extractArticleHtml(html);
   const wordCount = countWords(articleHtml);
   const minimumWords = minimumWordsForFile(file);
@@ -245,7 +271,9 @@ function validate(file) {
   if (description.length < 80 || description.length > 200) errors.push(`meta description length is ${description.length}; expected 80-200 characters`);
   if (canonical !== expected) errors.push(`canonical must be ${expected}; found ${canonical || 'missing'}`);
   if (h1Count !== 1) errors.push(`expected exactly one H1 inside article/main; found ${h1Count}`);
-  if (wordCount < minimumWords) errors.push(`visible article body has ${wordCount} words; minimum is ${minimumWords}`);
+  // A technical publication refresh must not force an artificial rewrite of an
+  // unchanged legacy article. New or text-edited copy still has to meet the floor.
+  if (!copyUnchanged && wordCount < minimumWords) errors.push(`visible article body has ${wordCount} words; minimum is ${minimumWords}`);
   if (internalLinks.size < MIN_INTERNAL_LINKS) errors.push(`article has ${internalLinks.size} unique internal links; minimum is ${MIN_INTERNAL_LINKS}`);
   if (!localImages.length) errors.push('article has no local image');
 
@@ -271,7 +299,7 @@ function validate(file) {
   if (!schemas.length) errors.push('missing JSON-LD');
   if (schemas.some(schema => schema.__parseError)) errors.push('contains invalid JSON-LD');
   if (!articleNode) errors.push('missing Article/NewsArticle/OpinionNewsArticle/AnalysisNewsArticle schema');
-  if (articleNode && !authorName) errors.push('article schema is missing author name');
+  if (!copyUnchanged && articleNode && !authorName) errors.push('article schema is missing author name');
   if (articleNode && !publisherName) errors.push('article schema is missing publisher name');
   if (articleNode && articleNode.mainEntityOfPage && typeof articleNode.mainEntityOfPage === 'string' && articleNode.mainEntityOfPage !== expected) {
     errors.push('article schema mainEntityOfPage does not match canonical');
@@ -279,11 +307,13 @@ function validate(file) {
 
   const visibleAuthor = /\b(?:autor|author|piše|by)\b[^<]{0,80}/iu.test(stripMarkup(articleHtml));
   const metaAuthor = metaContent(html, 'author');
-  if (!visibleAuthor && !metaAuthor && !authorName) errors.push('missing visible, meta or schema author attribution');
+  if (!copyUnchanged && !visibleAuthor && !metaAuthor && !authorName) errors.push('missing visible, meta or schema author attribution');
 
   return {
     file,
     skipped: false,
+    editorialCopyUnchanged: copyUnchanged,
+    editorialQualityCheck: copyUnchanged ? 'unchanged-copy-legacy-floor-not-reapplied' : 'full-content-policy',
     wordCount,
     minimumWords,
     internalLinks: internalLinks.size,
@@ -302,7 +332,7 @@ const results = candidates.map(validate);
 const errors = results.flatMap(result => result.errors.map(error => `${result.file}: ${error}`));
 const summary = {
   ok: errors.length === 0,
-  version: 'GNK_ASG_DIRECT_STATIC_EDITORIAL_POLICY_V1_20260806',
+  version: 'GNK_ASG_DIRECT_STATIC_EDITORIAL_POLICY_V2_20261014',
   minimumWords: MIN_WORDS,
   minimumWordsByType: {
     commentary: MIN_WORDS_COMMENTARY,

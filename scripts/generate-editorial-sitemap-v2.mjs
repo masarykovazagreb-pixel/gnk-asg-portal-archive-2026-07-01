@@ -18,17 +18,22 @@ const existingLastmodByUrl = new Map(
 );
 const date = (item) => {
   const explicit = item.modifiedAt || item.dateModified || item.publishedAt || item.datePublished || null;
-  if (explicit) {
-    const parsed = new Date(explicit);
-    if (!Number.isNaN(parsed.getTime())) return parsed.toISOString().slice(0, 10);
-  }
+  const parsed = explicit ? new Date(explicit) : null;
+  const explicitDate = parsed && !Number.isNaN(parsed.getTime()) ? parsed.toISOString().slice(0, 10) : '';
   const stableExisting = existingLastmodByUrl.get(esc(canonicalUrl(item)));
-  if (/^\d{4}-\d{2}-\d{2}$/.test(stableExisting || '')) return stableExisting;
+  const existingDate = /^\d{4}-\d{2}-\d{2}$/.test(stableExisting || '') ? stableExisting : '';
+  // A recovered publication date must not regress an already newer lastmod value.
+  if (explicitDate && existingDate) return explicitDate > existingDate ? explicitDate : existingDate;
+  if (explicitDate) return explicitDate;
+  if (existingDate) return existingDate;
   const seeded = new Date(registry.generatedAt || now);
   return Number.isNaN(seeded.getTime()) ? now.toISOString().slice(0, 10) : seeded.toISOString().slice(0, 10);
 };
-const rows = items.map((item) => `  <url><loc>${esc(canonicalUrl(item))}</loc><lastmod>${date(item)}</lastmod><changefreq>monthly</changefreq><priority>0.65</priority></url>`);
-const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${rows.join('\n')}\n</urlset>\n`;
+const rows = items.map((item) => {
+  const image = item.image ? `<image:image><image:loc>${esc(item.image)}</image:loc><image:title>${esc(item.title || '')}</image:title></image:image>` : '';
+  return `  <url><loc>${esc(canonicalUrl(item))}</loc><lastmod>${date(item)}</lastmod><changefreq>monthly</changefreq><priority>0.65</priority>${image}</url>`;
+});
+const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${rows.join('\n')}\n</urlset>\n`;
 writeFileSync(sitemapPath, xml, 'utf8');
 const corpusLastmod = items.reduce((latest, item) => date(item) > latest ? date(item) : latest, '1970-01-01');
 let index = readFileSync(indexPath, 'utf8');

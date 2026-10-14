@@ -10,7 +10,9 @@
       "canonicalWriter": "gnk-news-refresh-v2.yml",
       "script": "scripts/gnk-news-refresh.mjs",
       "cadence": "svakih 4h (12 1,5,9,13,17,21 * * * UTC)",
-      "coWriters": ["nema — ostali stari refresh varijanti su arhivirani (gnk-news-refresh, gnk-news-v14-refresh, news-v13-lifecycle)"],
+      "coWriters": [
+        "nema — ostali stari refresh varijanti su arhivirani (gnk-news-refresh, gnk-news-v14-refresh, news-v13-lifecycle)"
+      ],
       "note": "AKTUAL/javni news feed. watchdog (ops-automation-sla-watchdog) ga SAMO redispatcha."
     },
     {
@@ -18,7 +20,11 @@
       "canonicalWriter": "zajednički izlaz tri pisca (news-refresh-v2, weather-refresh, refresh-index-live-data)",
       "script": "scripts/freshness-status-v2.mjs",
       "cadence": "uz svakog od tri pisca",
-      "coWriters": ["gnk-news-refresh-v2.yml", "weather-refresh.yml", "refresh-index-live-data.yml"],
+      "coWriters": [
+        "gnk-news-refresh-v2.yml",
+        "weather-refresh.yml",
+        "refresh-index-live-data.yml"
+      ],
       "note": "Namjerno agregira stanje, ne podatke. NIJE data-writer u klasičnom smislu."
     },
     {
@@ -26,7 +32,9 @@
       "canonicalWriter": "refresh-index-live-data.yml",
       "script": "scripts/refresh_index_live_data.py + scripts/refresh_world_market_indices.py",
       "cadence": "2x dnevno (5 7,15 * * * UTC = ~09:05 i ~17:05 Europe/Zagreb ljeti)",
-      "coWriters": ["nema"],
+      "coWriters": [
+        "nema"
+      ],
       "note": "fast_market_status.json ovdje je 'indices-only' pogled. Zadnji ovjereni uspjeh: 2026-09-22 18:44 UTC."
     },
     {
@@ -88,14 +96,16 @@
       "resource": "apps/portal/objave|komentari|analize (+editorial-sitemap.xml; EN parovi)",
       "canonicalWriter": "editorial-scheduled-publish.yml",
       "cadence": "1x dnevno (20 8 * * * UTC)",
-      "coWriters": ["content-queue-publish.yml (3x dnevno)"],
+      "coWriters": [
+        "content-queue-publish.yml (3x dnevno)"
+      ],
       "note": "Dvije putanje objave uredničkog sadržaja (raspored + tvornički red). Backup objave: content-queue-publish."
     },
     {
       "resource": "blog/devto/tumblr/telegraph published.json evidencija",
       "canonicalWriter": "blog-mirror-publish.yml",
-      "cadence": "1x dnevno (30 9 * * * UTC)",
-      "note": "Ispravlja i published.json; blog je PRESLIKA sajta, nikad izvor."
+      "cadence": "manual-only; per-run owner confirmation + GNK_ASG_EXTERNAL_DISTRIBUTION=true",
+      "note": "Nema push ili schedule okidača. Vanjska objava traži zaseban run-level opt-in; objava se ne pokreće deployem."
     },
     {
       "resource": "entity/SEO (nermin-sefic HR/EN, sitemap.xml)",
@@ -116,7 +126,14 @@
   ],
   "retiredOrphans": [
     {
-      "files": ["apps/portal/data/btc_chart.json", "apps/portal/data/stablecoins.json", "apps/portal/data/exchange_compare.json", "apps/portal/data/stock_exchanges.json", "apps/portal/data/asg_gold_asset.json", "apps/portal/data/reference_assets_status.json"],
+      "files": [
+        "apps/portal/data/btc_chart.json",
+        "apps/portal/data/stablecoins.json",
+        "apps/portal/data/exchange_compare.json",
+        "apps/portal/data/stock_exchanges.json",
+        "apps/portal/data/asg_gold_asset.json",
+        "apps/portal/data/reference_assets_status.json"
+      ],
       "frozenAt": "2026-06-01T00:17:00+00:00",
       "formerWriter": "apps/portal/.github/workflows/fast-market-update.yml (nested, ukinut; nested .github NIJE registriran GitHubom)",
       "status": "siročad zamrznuta; nema aktivnog pisca; publika: tržišna kartica koristi coin daily chart s CoinGecko-ja (market.js)"

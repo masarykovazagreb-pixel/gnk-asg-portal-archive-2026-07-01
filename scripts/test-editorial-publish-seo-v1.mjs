@@ -7,6 +7,10 @@ import vm from 'node:vm';
 const plan=JSON.parse(fs.readFileSync('apps/portal/data/editorial-plan/manifest.json','utf8'));
 for(const pack of plan.packages)pack.items=(pack.files||[]).flatMap(file=>JSON.parse(fs.readFileSync(`apps/portal/data/editorial-plan/${file}`,'utf8')));
 assert.ok(plan.packages.length>=2,`expected at least 2 packages, found ${plan.packages.length}`);
+const registry=JSON.parse(fs.readFileSync('apps/portal/data/editorial-registry.json','utf8'));
+const quoteDescription=registry.items.find(item=>item.path==='/komentari/rutina-koja-postane-nevidljiva/')?.description||'';
+assert.ok(quoteDescription.length>=80&&quoteDescription.length<=200,'SEO description parser must preserve quoted text and keep the description within 80-200 characters');
+assert.ok(quoteDescription.includes('tako radimo'),'apostrophes inside a quoted meta attribute must not truncate the registry description');
 for(const pack of plan.packages){
   assert.ok(pack.items.length>=1,`${pack.id} needs at least 1 daily editorial item`);
   assert.ok(pack.items.every(x=>x.type==='objava'||x.type==='komentar'),`${pack.id} contains unsupported editorial item type`);
@@ -37,7 +41,10 @@ assert.equal(oct9.image,'/assets/gallery/sastanak-bez-odluke-20261009.svg','Oct 
 assert.equal(oct9.headings?.length,8,'Oct 9 commentary must keep explicit editorial section headings');
 assert.equal(new Set(oct9.headings).size,oct9.headings.length,'Oct 9 editorial section headings must be unique');
 const oct9Html=fs.readFileSync('apps/portal/komentari/sastanak-bez-odluke-nije-neuspjeh-ali-mora-biti-svjestan/index.html','utf8');
-assert.ok(oct9Html.includes('/assets/gallery/sastanak-bez-odluke-20261009.svg'),'published Oct 9 page must use dedicated topic image');
+const oct9Cover=oct9Html.match(/<img class="article-cover" src="([^"]+)"[^>]*>/)?.[1]||'';
+assert.match(oct9Cover,/^\/assets\/editorial\/generated\/komentari-sastanak-bez-odluke-nije-neuspjeh-ali-mora-biti-svjestan-[a-f0-9]+\.webp$/,'published Oct 9 page must use its dedicated original topic illustration');
+assert.ok(fs.existsSync(`apps/portal${oct9Cover}`),'published Oct 9 original illustration asset must exist');
+assert.match(oct9Html,/alt="Urednička ilustracija za tekst: Sastanak bez odluke nije neuspjeh, ali mora biti svjestan izbor"/,'published Oct 9 illustration must have descriptive alt text');
 assert.ok((oct9Html.match(/<h2>Zaključak<\/h2>/g)||[]).length<=1,'published Oct 9 page must not repeat Zaključak headings');
 
 const publisher=fs.readFileSync('scripts/editorial-publish-scheduled-v1.mjs','utf8');
@@ -120,7 +127,9 @@ for(const source of [seoWorkflow,nightlySeoWorkflow]){
 assert.doesNotMatch(nightlySeoWorkflow,/blog-publish-resilient-v1\.mjs/);
 assert.doesNotMatch(nightlySeoWorkflow,/BLOGGER_CLIENT_SECRET/);
 assert.match(nightlySeoWorkflow,/Spremi SEO izvještaj kao artifact/);
-assert.match(nightlySeoWorkflow,/IndexNow \(notification-only\)/);
+assert.match(nightlySeoWorkflow,/notify_search_engines:\s*\n\s*description:[^\n]*\n\s*required: true\n\s*type: boolean\n\s*default: false/);
+assert.match(nightlySeoWorkflow,/if: github\.event_name == 'workflow_dispatch' && inputs\.notify_search_engines == true/);
+assert.match(nightlySeoWorkflow,/name: Manually submit URLs to IndexNow after explicit approval/);
 
 assert.match(scheduler,/actions: write/);
 assert.match(scheduler,/gh workflow run deploy-admin-auth-v6\.yml/);

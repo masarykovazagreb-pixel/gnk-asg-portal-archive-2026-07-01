@@ -20,8 +20,8 @@
       "reason": "stabilization and quota control"
     },
     "devtoPublish": {
-      "enabled": true,
-      "reason": "Reviewed 2026-08-12: git-push race condition in state persistence identified and fixed (fetch+rebase+retry before push, matching the pattern already used elsewhere in this repo). Script's own reconcileState()/reconcileOneAfter422() cross-references the live Dev.to API before every publish attempt, so retries cannot create duplicates even if a push still failed. Enabled by explicit owner request (Nermin Sefic) to clear a 149-item backlog."
+      "enabled": false,
+      "reason": "External Dev.to publishing remains disabled until separate per-run owner approval; scheduled workflow is read-only preview only."
     },
     "linkedinPublish": {
       "enabled": false,

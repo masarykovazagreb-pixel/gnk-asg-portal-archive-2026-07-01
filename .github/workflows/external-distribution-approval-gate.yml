@@ -1,0 +1,32 @@
+name: External Distribution Approval Gate
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/blog-mirror-publish.yml'
+      - '.github/workflows/deploy-admin-auth-v6.yml'
+      - '.github/workflows/editorial-content-deploy.yml'
+      - '.github/workflows/editorial-scheduled-publish.yml'
+      - '.github/workflows/gnk-seo-nightly-audit.yml'
+      - '.github/workflows/devto-mirror-publish.yml'
+      - '.github/workflows/objavi-devto-sada.yml'
+      - '.github/workflows/objavi-tumblr-sada.yml'
+      - '.github/workflows/social-distribution.yml'
+      - '.github/workflows/external-distribution-approval-gate.yml'
+      - 'ops/production-workflow-allowlist-v2.json'
+      - 'scripts/test-deploy-approval-guardrails.mjs'
+
+permissions:
+  contents: read
+
+jobs:
+  approval-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Verify deployment and outbound-distribution guardrails
+        run: node scripts/test-deploy-approval-guardrails.mjs

@@ -153,3 +153,5 @@ img{max-width:100%}
 .sova-scenario-label{font-size:.68rem;font-weight:900;color:#fbbf24;text-transform:uppercase}
 .sova-dl{display:grid;grid-template-columns:180px 1fr;gap:8px 14px}.sova-dl dt{font-weight:900;color:#fbbf24}.sova-dl dd{margin:0}
 @media(max-width:700px){.sova-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.sova-dl{grid-template-columns:1fr}.am-sova{padding:18px}}
+
+.am-empty-group{margin:0;padding:16px 18px;border:1px dashed var(--am-line);border-radius:10px;color:var(--am-muted);font-size:.86rem;line-height:1.5}

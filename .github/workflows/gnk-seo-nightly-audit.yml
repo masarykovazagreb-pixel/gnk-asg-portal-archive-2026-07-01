@@ -1,11 +1,16 @@
 name: GNK ASG Nightly SEO, Meta, Backlink and IndexNow Audit
 
 # Nightly SEO/meta audit is read-only toward production main.
-# Blogger, Dev.to and Tumblr publishing belongs to the canonical blog-mirror writer.
-# IndexNow submission is notification-only and does not mutate repository state.
+# External mirrors and search-engine notifications require separate per-run approval.
 
 on:
   workflow_dispatch:
+    inputs:
+      notify_search_engines:
+        description: 'Explicitly submit the current URL set to IndexNow for this run'
+        required: true
+        type: boolean
+        default: false
   schedule:
     - cron: '15 1 * * *'
 
@@ -15,9 +20,6 @@ permissions:
 concurrency:
   group: gnk-seo-nightly-audit
   cancel-in-progress: true
-
-env:
-  INDEXNOW_KEY: '2396905717b36885586139576d11142f'
 
 jobs:
   seo-audit:
@@ -71,10 +73,13 @@ jobs:
           echo "Nightly SEO audit is read-only; report remains runner-local and is uploaded as evidence."
 
   indexnow-submit:
-    name: Pošalji sve URL-ove na IndexNow (notification-only)
+    name: Manually submit URLs to IndexNow after explicit approval
+    if: github.event_name == 'workflow_dispatch' && inputs.notify_search_engines == true
     needs: seo-audit
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      INDEXNOW_KEY: '2396905717b36885586139576d11142f'
     steps:
       - uses: actions/checkout@v4
         with:

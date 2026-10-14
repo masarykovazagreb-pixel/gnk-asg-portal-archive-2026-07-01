@@ -142,10 +142,16 @@ const images=[
 for(const file of [...newPages,...images])assert.ok(fs.existsSync(file)&&fs.statSync(file).size>100,`missing ${file}`);
 for(const page of newPages){const html=read(page);assert.match(html,/class="article-cover"/);assert.match(html,/editorial-content-v2\.css/);assert.match(html,/logo-gnk-asg-canonical\.svg/)}
 function cards(html,label,minimum){
- const count=(html.match(/class="editorial-card"/g)||[]).length;
+ const cards=[...html.matchAll(/<article class="editorial-card"([^>]*)>([\s\S]*?)<\/article>/g)];
+ const count=cards.length;
  assert.ok(count>=minimum,`${label} must contain at least ${minimum} cards; actual=${count}`);
- const links=[...html.matchAll(/<a href="(\/(?:objave|komentari|analize)\/[^"#?]+\/)"/g)].map(match=>match[1]);
- assert.equal(new Set(links).size,links.length,`${label} contains duplicate editorial links`);
+ const routes=cards.map((match)=>match[1].match(/data-editorial-route="(\/(?:objave|komentari|analize)\/[^"#?]+\/)"/)?.[1]||'');
+ assert.ok(routes.every(Boolean),`${label} contains a card without a canonical editorial route`);
+ assert.equal(new Set(routes).size,routes.length,`${label} contains duplicate editorial cards`);
+ for(let i=0;i<cards.length;i++){
+  const links=[...cards[i][2].matchAll(/<a href="(\/(?:objave|komentari|analize)\/[^"#?]+\/)"/g)].map((match)=>match[1]);
+  assert.ok(links.includes(routes[i]),`${label} card ${routes[i]} is missing its own editorial link`);
+ }
  return count;
 }
 const publicationCount=cards(publications,'publications',5);

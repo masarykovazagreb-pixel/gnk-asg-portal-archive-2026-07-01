@@ -7,7 +7,7 @@ const mime=readFileSync('workers/gnk-asg-direct-operator/src/email-autoreply-mim
 
 assert.match(workflow,/jobs:\s*\n\s*authorize-production:/);
 assert.match(workflow,/inputs\.confirm_production_deploy == 'DEPLOY_ADMIN_AUTH_V6'/);
-assert.match(workflow,/notify_search_engines:\s*\n\s*description:[^\n]*\n\s*required: false\n\s*default: true\n\s*type: boolean/);
+assert.match(workflow,/notify_search_engines:\s*\n\s*description:[^\n]*\n\s*required: false\n\s*default: false\n\s*type: boolean/);
 assert.match(workflow,/if: \$\{\{ needs\.deploy-production\.result == 'success' && inputs\.notify_search_engines == true \}\}/);
 assert.ok(workflow.indexOf('notify_search_engines:') < workflow.indexOf('indexnow-notify:'));
 assert.match(workflow,/name: Pošalji sve URL-ove na IndexNow/);

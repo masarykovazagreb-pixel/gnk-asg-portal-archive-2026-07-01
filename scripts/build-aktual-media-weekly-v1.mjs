@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
+import { createHash } from 'node:crypto';
 
 const NEWS='apps/portal/data/news.json';
 const OUT='apps/portal/data/aktual-weekly.json';
 const CURATION='apps/portal/data/aktual-weekly-curation.json';
+const CHECK=process.argv.includes('--check');
 
 const raw=JSON.parse(fs.readFileSync(NEWS,'utf8'));
 const source=Array.isArray(raw)?raw:(raw.items||[]);
@@ -20,21 +22,31 @@ const maxDate=new Date(items[0]._published);
 const issueMonday=new Date(Date.UTC(maxDate.getUTCFullYear(),maxDate.getUTCMonth(),maxDate.getUTCDate()));
 const day=issueMonday.getUTCDay()||7; issueMonday.setUTCDate(issueMonday.getUTCDate()-day+1);
 const issueWeek=issueMonday.toISOString().slice(0,10);
+let curationDocument=null;
 let curated=[];
 if(fs.existsSync(CURATION)){
   try{
     const c=JSON.parse(fs.readFileSync(CURATION,'utf8'));
-    if(c&&c.issue_week===issueWeek&&Array.isArray(c.items)) curated=c.items;
+    if(c&&c.issue_week===issueWeek&&Array.isArray(c.items)){curationDocument=c;curated=c.items;}
   }catch(_){}
 }
 if(curated.length<8){
   throw new Error('AKTUAL MEDIA weekly issue requires a current curated seed with at least 8 source-verified lifestyle items for '+issueWeek);
 }
-if(process.env.AKTUAL_WEEKLY_FORCE!=='1'&&fs.existsSync(OUT)){
-  try{
-    const prev=JSON.parse(fs.readFileSync(OUT,'utf8'));
-    if(prev.issue_week===issueWeek){console.log(JSON.stringify({changed:false,issue_week:issueWeek}));process.exit(0)}
-  }catch(_){}
+const curationDigest=createHash('sha256').update(JSON.stringify(curationDocument||{})).digest('hex');
+let previous=null;
+if(fs.existsSync(OUT)){
+  try{previous=JSON.parse(fs.readFileSync(OUT,'utf8'));}catch(_){}
+}
+const currentSnapshot=Boolean(previous&&previous.issue_week===issueWeek&&previous.curation_digest===curationDigest);
+if(CHECK){
+  console.log(JSON.stringify({changed:!currentSnapshot,check:true,issue_week:issueWeek,curation_digest:curationDigest}));
+  if(!currentSnapshot)process.exitCode=1;
+  process.exit();
+}
+if(process.env.AKTUAL_WEEKLY_FORCE!=='1'&&currentSnapshot){
+  console.log(JSON.stringify({changed:false,issue_week:issueWeek,curation_digest:curationDigest}));
+  process.exit(0);
 }
 const from=new Date(maxDate); from.setUTCDate(from.getUTCDate()-13);
 const recent=items.filter(x=>new Date(x._published)>=from);
@@ -115,10 +127,16 @@ for(const item of curated){
   const list=curatedBySection.get(item.section)||[];
   list.push({
     title:item.title,
+    title_en:item.title_en||item.title,
     summary:item.summary||'',
+    summary_en:item.summary_en||item.summary||'',
     url:item.url,
-    image:item.image||'/assets/editorial/aktual-media-800.webp',
+    image:item.image,
     imageAlt:item.imageAlt||item.title,
+    image_policy:item.imagePolicy||'unverified',
+    image_credit:item.imageCredit||item.source,
+    image_rights:item.imageRights||'',
+    editorial_note:item.editorial_note||'',
     source:item.source,
     category:item.category||item.section,
     group:item.group||'weekly-curated',
@@ -160,16 +178,31 @@ for(const def of defs){
 
 let cover=sections.flatMap(s=>s.items).sort((a,b)=>new Date(b.published_at)-new Date(a.published_at))[0]||slim(clean[0]);
 const sourceCount=new Set(sections.flatMap(s=>s.items).map(x=>x.source).filter(Boolean)).size;
-const issueDate=maxDate.toISOString().slice(0,10);
-const issueId='aktual-media-tjedni-'+issueDate;
+const issueDate=issueWeek;
+const issueId='aktual-media-tjedni-'+issueWeek;
+const weekEnd=new Date(issueMonday);weekEnd.setUTCDate(weekEnd.getUTCDate()+6);
+const editorialIntro=String(curationDocument?.editorial_intro||'').trim();
+const editorialNote=String(curationDocument?.editorial_note||'').trim();
 
 const out={
-  version:'AKTUAL_MEDIA_WEEKLY_V1',
+  version:'AKTUAL_MEDIA_WEEKLY_V2',
   issue_id:issueId,
   issue_week:issueWeek,
   issue_date:issueDate,
+  curation_digest:curationDigest,
+  issue_range:{from:issueWeek,to:weekEnd.toISOString().slice(0,10)},
+  updated_at:maxDate.toISOString(),
+  editorial_intro:editorialIntro,
+  editorial_intro_en:String(curationDocument?.editorial_intro_en||'').trim(),
+  editorial_note:editorialNote,
+  editorial_note_en:String(curationDocument?.editorial_note_en||'').trim(),
+  image_policy:String(curationDocument?.image_policy||'Generated illustration unless a documented source-image license and credit are present.'),
+  cover_image_hr:curationDocument?.cover_image_hr||'',
+  cover_alt_hr:curationDocument?.cover_alt_hr||'',
+  cover_image_en:curationDocument?.cover_image_en||'',
+  cover_alt_en:curationDocument?.cover_alt_en||'',
   window:{from:from.toISOString(),to:maxDate.toISOString()},
-  editorial_rule:'Week-scoped hand-curated source-linked lifestyle issue; publication fails closed when a current curated seed is missing or too small.',
+  editorial_rule:'Week-scoped hand-curated source-linked lifestyle issue; only short editorial summaries are republished. Full source text and original photos remain with the publisher unless documented reuse rights are approved.',
   cover,
   counts:{source_items:source.length,recent_items:recent.length,selected_items:sections.reduce((n,s)=>n+s.items.length,0),sources:sourceCount,sections:sections.length},
   sections
