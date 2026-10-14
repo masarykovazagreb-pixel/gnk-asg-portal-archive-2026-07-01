@@ -67,13 +67,17 @@ def main() -> None:
     items = json.loads(DATA.read_text(encoding="utf-8")).get("items", [])
     if not items:
         raise SystemExit("No column items found")
+    generated = 0
     for item in items:
+        if not str(item.get("path") or "").startswith("/gnk-aktual/kolumne/"):
+            continue
         slug = item["slug"]
         targets = {PORTAL / "gnk-aktual" / "kolumne" / slug / "index.html": render(item, "hr"), PORTAL / "en" / "gnk-aktual" / "columns" / slug / "index.html": render(item, "en")}
         for path, content in targets.items():
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(content, encoding="utf-8")
-    print(f"Generated {len(items) * 2} column pages from {DATA.relative_to(ROOT)}")
+            generated += 1
+    print(f"Generated {generated} column pages from {DATA.relative_to(ROOT)}")
 
 if __name__ == "__main__":
     main()
