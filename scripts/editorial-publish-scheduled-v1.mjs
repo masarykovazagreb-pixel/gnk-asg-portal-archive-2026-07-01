@@ -93,11 +93,17 @@ function appendCard(indexPath,item){
   if(html.includes(`href="${route}"`))return false;
   const cardImage=item.image||AUTHOR_IMAGE;
   const card=`<article class="editorial-card"><img src="${esc(cardImage)}" alt="${esc(item.title)} — naslovna ilustracija" title="${esc(item.title)}"><p class="eyebrow">${esc(item.section)}</p><h2>${esc(item.title)}</h2><p>${esc(item.summary)}</p><a href="${route}">Otvori ${item.type==='objava'?'objavu':'komentar'} →</a></article>`;
-  const gridStart=html.indexOf('<section class="editorial-grid">');
-  const gridEnd=gridStart>=0?html.indexOf('</section>',gridStart):-1;
-  if(gridStart<0||gridEnd<0)throw new Error(`Editorial grid markers not found: ${indexPath}`);
+  const gridOpen=/<section\b(?=[^>]*\bclass\s*=\s*["'][^"']*\beditorial-grid\b[^"']*["'])[^>]*>/i.exec(html);
+  const gridContentStart=gridOpen?gridOpen.index+gridOpen[0].length:-1;
+  const gridEnd=gridContentStart>=0?html.indexOf('</section>',gridContentStart):-1;
+  if(!gridOpen||gridEnd<0)throw new Error(`Editorial grid markers not found: ${indexPath}`);
   html=html.slice(0,gridEnd)+card+html.slice(gridEnd);
   return writeIfChanged(indexPath,html);
+}
+function appendEditorialListingCard(item){
+  const collection=item.type==='objava'?'objave':item.type==='komentar'?'komentari':null;
+  if(!collection)return false;
+  return appendCard(path.join(ROOT,collection,'index.html'),item);
 }
 function appendAktualCard(item,dateIso){
   const file=path.join(ROOT,'gnk-aktual','index.html');
@@ -182,8 +188,7 @@ for(const pack of plan.packages||[]){
     for(const item of items){
       const target=fileFor(item);
       if(!fs.existsSync(target))throw new Error(`Published editorial route missing: ${routeFor(item)}`);
-      if(item.type==='objava'&&appendCard(path.join(ROOT,'objave','index.html'),item))summary.publicChanged=true;
-      if(appendCard(path.join(ROOT,'komentari','index.html'),item))summary.publicChanged=true;
+      if(appendEditorialListingCard(item))summary.publicChanged=true;
       if(appendAktualCard(item,pack.publishAt))summary.publicChanged=true;
       if(appendSitemap(item,pack.publishAt.slice(0,10)))summary.publicChanged=true;
     }

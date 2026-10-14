@@ -10,6 +10,19 @@ const IMAGE_MANIFEST_PATH = `${PORTAL}/data/editorial-image-manifest.json`;
 const SITE = 'https://gnk-asg.hr';
 const WRITE = process.argv.includes('--write');
 const FORCE_SHARE = process.argv.includes('--refresh-share');
+const routesFileIndex = process.argv.indexOf('--routes-file');
+let routeFilter = null;
+if (routesFileIndex >= 0) {
+  const routesFile = process.argv[routesFileIndex + 1];
+  if (!routesFile || routesFile.startsWith('--')) throw new Error('--routes-file requires a JSON file path.');
+  const routeSource = JSON.parse(fs.readFileSync(path.resolve(routesFile), 'utf8'));
+  const routeItems = Array.isArray(routeSource) ? routeSource : routeSource.items;
+  if (!Array.isArray(routeItems) || !routeItems.length) throw new Error(`${routesFile}: expected a non-empty route list or an object with an items array.`);
+  const routes = routeItems.map((item) => typeof item === 'string' ? item : item?.path);
+  if (routes.some((route) => typeof route !== 'string' || !/^\/[^\s]*\/$/.test(route))) throw new Error(`${routesFile}: every selected route must be a slash-delimited absolute site path.`);
+  routeFilter = new Set(routes);
+  if (routeFilter.size !== routes.length) throw new Error(`${routesFile}: duplicate routes are not allowed.`);
+}
 const AUTHOR_URL = `${SITE}/nermin-sefic/`;
 const AUTHOR_ID = `${AUTHOR_URL}#person`;
 const ORG = { '@type': 'Organization', '@id': `${SITE}/#organization`, name: 'GNK ASG d.o.o.', url: `${SITE}/`, logo: { '@type': 'ImageObject', url: `${SITE}/assets/logo-gnk-asg-canonical.svg` } };
@@ -112,7 +125,8 @@ const normalizeAuthorMark = (html) => {
 const stripNerminAuthorAttribution = (html) => {
   let out = stripAuthorHashtags(html);
   out = out.replace(/<p\b[^>]*data-author-mark=["']nermin-sefic["'][^>]*>[\s\S]*?<\/p>/gi, '');
-  out = out.replace(/<aside\b[^>]*class=["'][^"']*\b(?:article-author|author-box)\b[^"']*["'][^>]*>[\s\S]*?<\/aside>/gi, (block) => /nermin\s+sefi[cć]/i.test(block) ? '' : block);
+  out = out.replace(/<(aside|section|div)\b[^>]*class=["'][^"']*\b(?:article-author|author-box|author-card)\b[^"']*["'][^>]*>[\s\S]*?<\/\1>/gi, (block) => /nermin\s+sefi[cć]/i.test(pageText(block)) ? '' : block);
+  out = out.replace(/<p\b[^>]*class=["'][^"']*\beditorial-approval\b[^"']*["'][^>]*>[\s\S]*?<\/p>/gi, (block) => /nermin\s+sefi[cć]/i.test(pageText(block)) ? '' : block);
   out = out.replace(/<p\b[^>]*class=["'][^"']*editorial-author-inline[^"']*["'][^>]*>[\s\S]*?<\/p>/gi, (block) => /nermin\s+sefi[cć]/i.test(block) ? '' : block);
   out = out.replace(/(<(?:div|p)\b[^>]*class=["'][^"']*\b(?:article-meta|meta-row|byline|author-meta|article-author)\b[^"']*["'][^>]*>)([\s\S]*?)(<\/(?:div|p)>)/gi, (block, open, body, close) => {
     if (!/nermin\s+sefi[cć]/i.test(pageText(body))) return block;
@@ -229,8 +243,19 @@ const patchJsonLd = (html, image, item, canonical, nermin) => {
       }
       if (nermin) object.author = { '@type': 'Person', '@id': AUTHOR_ID, name: 'Nermin Sefić', url: AUTHOR_URL };
       else {
-        const existingAuthor = Array.isArray(object.author) ? object.author[0] : object.author;
-        if (existingAuthor && typesOf(existingAuthor).includes('Person') && /nermin\s+sefi[cć]/i.test(existingAuthor.name || '')) delete object.author;
+        const removeNerminPerson = (value) => {
+          if (Array.isArray(value)) return value.map(removeNerminPerson).filter((entry) => entry !== null);
+          if (typeof value === 'string') return /nermin\s+sefi[cć]/i.test(value) ? null : value;
+          if (!value || typeof value !== 'object') return value;
+          const types = typesOf(value);
+          return /nermin\s+sefi[cć]/i.test(value.name || '') && (!types.length || types.includes('Person')) ? null : value;
+        };
+        for (const key of ['author', 'editor', 'contributor']) {
+          if (!(key in object)) continue;
+          const cleaned = removeNerminPerson(object[key]);
+          if (cleaned === null || (Array.isArray(cleaned) && !cleaned.length)) delete object[key];
+          else object[key] = cleaned;
+        }
         if (item.author && item.author !== 'Nermin Sefić' && /GNK ASG Intelligence Desk/i.test(item.author)) object.author = { '@type': 'Organization', '@id': `${SITE}/#intelligence-desk`, name: item.author, url: `${SITE}/gnk-aktual/` };
       }
     });
@@ -266,7 +291,8 @@ const patchHead = (html, item, image) => {
   out = upsertMeta(out, 'property', 'og:title', title);
   out = upsertMeta(out, 'property', 'og:description', description);
   out = upsertMeta(out, 'property', 'og:url', canonical);
-  out = upsertMeta(out, 'property', 'og:image', `${SITE}${image.image}`);
+  const imageUrl = image.url || `${SITE}${image.image}`;
+  out = upsertMeta(out, 'property', 'og:image', imageUrl);
   out = upsertMeta(out, 'property', 'og:image:alt', image.alt);
   out = upsertMeta(out, 'property', 'og:image:width', '1200');
   out = upsertMeta(out, 'property', 'og:image:height', '630');
@@ -274,7 +300,7 @@ const patchHead = (html, item, image) => {
   out = upsertMeta(out, 'name', 'twitter:card', 'summary_large_image');
   out = upsertMeta(out, 'name', 'twitter:title', metaValue(out, 'og:title', 'property') || title);
   out = upsertMeta(out, 'name', 'twitter:description', description);
-  out = upsertMeta(out, 'name', 'twitter:image', `${SITE}${image.image}`);
+  out = upsertMeta(out, 'name', 'twitter:image', imageUrl);
   out = upsertMeta(out, 'name', 'twitter:image:alt', image.alt);
   out = out.replace(/<link\b[^>]*>/gi, (tag) => attrValue(tag, 'href').startsWith('/assets/editorial-content-v2.css') ? setAttr(tag, 'href', '/assets/editorial-content-v2.css?v=20261013-editorial-completeness') : tag);
   if (isNermin(item)) {
@@ -312,17 +338,27 @@ const patchBody = (html, item, image) => {
   const tags = [...out.matchAll(/<img\b[^>]*>/gi)];
   const oldOg = metaValue(out, 'og:image', 'property').replace(SITE, '');
   const title = item.title.toLowerCase();
-  const suitable = tags.find((match) => /\barticle-cover\b/i.test(attrValue(match[0], 'class')))
-    || tags.find((match) => attrValue(match[0], 'src') === oldOg || attrValue(match[0], 'src') === `${SITE}${oldOg}`)
-    || tags.find((match) => attrValue(match[0], 'alt').toLowerCase().includes(title.slice(0, Math.min(title.length, 32))))
-    || tags.find((match) => /editorial\//i.test(attrValue(match[0], 'src')) && !/logo|favicon|icon/i.test(attrValue(match[0], 'src')))
-    || tags.find((match) => !/logo|favicon|icon/i.test(`${attrValue(match[0], 'src')} ${attrValue(match[0], 'class')}`));
+  const outsideWorldChart = (match) => {
+    const before = out.slice(0, match.index);
+    const openIndex = before.lastIndexOf('<figure');
+    const closeIndex = before.lastIndexOf('</figure>');
+    if (openIndex < 0 || openIndex < closeIndex) return true;
+    const openTag = before.slice(openIndex).match(/^<figure\b[^>]*>/i)?.[0] || '';
+    return !/\bworld-chart\b/i.test(attrValue(openTag, 'class'));
+  };
+  const contentImages = tags.filter(outsideWorldChart);
+  const suitable = contentImages.find((match) => /\barticle-cover\b/i.test(attrValue(match[0], 'class')))
+    || contentImages.find((match) => attrValue(match[0], 'src') === oldOg || attrValue(match[0], 'src') === `${SITE}${oldOg}`)
+    || contentImages.find((match) => attrValue(match[0], 'alt').toLowerCase().includes(title.slice(0, Math.min(title.length, 32))))
+    || contentImages.find((match) => /editorial\//i.test(attrValue(match[0], 'src')) && !/logo|favicon|icon/i.test(attrValue(match[0], 'src')));
   if (suitable) {
     const start = suitable.index;
     out = out.slice(0, start) + replaceImageTag(suitable[0], image) + out.slice(start + suitable[0].length);
   } else {
+    const articleHeader = out.match(/<header\b[^>]*class=["'][^"']*\barticle-header\b[^"']*["'][^>]*>[\s\S]*?<\/header>/i);
     const h1 = out.match(/<h1\b[^>]*>[\s\S]*?<\/h1>/i);
-    if (h1) out = out.replace(h1[0], `${h1[0]}${imageMarkup(image)}`);
+    if (articleHeader) out = out.replace(articleHeader[0], `${articleHeader[0]}${imageMarkup(image)}`);
+    else if (h1) out = out.replace(h1[0], `${h1[0]}${imageMarkup(image)}`);
   }
   if (!/aria-label=["'](?:Breadcrumb|Krušne mrvice)["']|class=["'][^"']*editorial-breadcrumb/i.test(out)) {
     const h1 = out.match(/<h1\b[^>]*>[\s\S]*?<\/h1>/i);
@@ -393,13 +429,28 @@ const patchListingCards = (file, byPath) => {
 if (!fs.existsSync(REGISTRY_PATH) || !fs.existsSync(IMAGE_MANIFEST_PATH)) throw new Error('Editorial registry and image manifest must be generated first.');
 const registry = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf8'));
 const manifest = JSON.parse(fs.readFileSync(IMAGE_MANIFEST_PATH, 'utf8'));
-const byPath = new Map((manifest.items || []).map((image) => [image.path, image]));
+const supportedTypes = new Set(['objava', 'komentar', 'analiza', 'kolumna']);
+const eligibleRoutes = new Set((registry.items || [])
+  .filter((item) => !protectedPath(item.path) && supportedTypes.has(item.type) && item.status === 'published'
+    && (!routeFilter || routeFilter.has(item.path)))
+  .map((item) => item.path));
+const byPath = new Map((manifest.items || [])
+  .filter((image) => eligibleRoutes.has(image.path))
+  .map((image) => [image.path, image]));
 let scanned = 0;
 let changed = 0;
+let protectedRoutesSkipped = 0;
 const changedRoutes = [];
 const failures = [];
+const registryRoutesMatched = new Set();
 for (const item of registry.items || []) {
-  if (!['objava', 'komentar', 'analiza', 'kolumna'].includes(item.type) || item.status !== 'published' || protectedPath(item.path)) continue;
+  if (routeFilter && !routeFilter.has(item.path)) continue;
+  registryRoutesMatched.add(item.path);
+  if (protectedPath(item.path)) { protectedRoutesSkipped++; continue; }
+  if (!supportedTypes.has(item.type) || item.status !== 'published') {
+    if (routeFilter) failures.push(`${item.path}: requested route is not a supported published editorial item`);
+    continue;
+  }
   const image = byPath.get(item.path);
   if (!image) { failures.push(`${item.path}: missing generated image manifest record`); continue; }
   const file = path.join(PORTAL, item.path.replace(/^\/+|\/+$/g, ''), 'index.html');
@@ -434,6 +485,9 @@ const listingFiles = [
 ].map((file) => path.join(PORTAL, file));
 let listingChanges = 0;
 for (const file of listingFiles) if (patchListingCards(file, byPath)) listingChanges++;
-const result = { version: 'EDITORIAL_PUBLICATION_COMPLETENESS_MATERIALIZER_V1', write: WRITE, scanned, changed, changedRoutes, listingFilesChanged: listingChanges, protectedRoutesSkipped: (registry.items || []).filter((item) => protectedPath(item.path)).length, failures };
+if (routeFilter) {
+  for (const route of routeFilter) if (!registryRoutesMatched.has(route)) failures.push(`${route}: requested route is missing from the canonical editorial registry`);
+}
+const result = { version: 'EDITORIAL_PUBLICATION_COMPLETENESS_MATERIALIZER_V1', write: WRITE, routeFilter: routeFilter ? [...routeFilter].sort() : null, scanned, changed, changedRoutes, listingFilesChanged: listingChanges, protectedRoutesSkipped, failures };
 console.log(JSON.stringify(result, null, 2));
 if (failures.length) process.exitCode = 1;

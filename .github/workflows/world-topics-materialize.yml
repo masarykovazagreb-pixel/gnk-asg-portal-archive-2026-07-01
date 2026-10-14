@@ -7,6 +7,12 @@ on:
     paths:
       - 'content/world-topics/**'
       - 'scripts/world-topics-materialize-v1.mjs'
+      - 'scripts/editorial-registry-v1.mjs'
+      - 'scripts/apply-editorial-publication-completeness-v1.mjs'
+      - 'scripts/enforce-approved-author-markers-v1.mjs'
+      - 'scripts/audit-editorial-publication-completeness-v1.mjs'
+      - 'scripts/lib/editorial-route-protection-v1.mjs'
+      - 'apps/portal/data/editorial-image-manifest.json'
       - '.github/workflows/world-topics-materialize.yml'
 
 permissions:
@@ -32,6 +38,16 @@ jobs:
           node-version: '24'
       - name: Materialize pages, charts, registry, sitemaps and collection links
         run: node scripts/world-topics-materialize-v1.mjs
+      - name: Rebuild the canonical publication registry
+        run: node scripts/editorial-registry-v1.mjs
+      - name: Normalize completeness for World Topics only
+        run: node scripts/apply-editorial-publication-completeness-v1.mjs --write --routes-file apps/portal/data/world-topics-registry.json
+      - name: Enforce approved author markers
+        run: node scripts/enforce-approved-author-markers-v1.mjs
+      - name: Rebuild canonical metadata after page normalization
+        run: node scripts/editorial-registry-v1.mjs
+      - name: Verify complete publication release before commit or deploy
+        run: node scripts/audit-editorial-publication-completeness-v1.mjs
       - name: Commit generated public release
         id: commit
         shell: bash
@@ -76,4 +92,5 @@ jobs:
             --repo "$GITHUB_REPOSITORY" \
             --ref main \
             -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
-            -f approved_sha="$APPROVED_SHA"
+            -f approved_sha="$APPROVED_SHA" \
+            -f notify_search_engines=false

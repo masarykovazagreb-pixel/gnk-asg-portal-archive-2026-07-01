@@ -137,8 +137,8 @@ jobs:
           grep -Fq '20260715-source-links-v2' workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js
           grep -Fq 'item.sourceUrl||item.url||item.href||item.share_url' apps/portal/assets/index-editorial-order-v6.js
           grep -Fq 'index-editorial-order-v1.js?v=20260715-editorial-v6-latest-first' workers/gnk-asg-direct-operator/src/index-unified-auth-v19.js
-          grep -Fq 'Kapitalna disciplina u razdoblju geopolitičkih i energetskih šokova' apps/portal/objave/index.html
-          grep -Fq 'AI ne smije pisati konačnu odluku' apps/portal/komentari/index.html
+          grep -Fq 'href="/objave/kapitalna-disciplina-geopoliticki-energetski-sokovi/"' apps/portal/objave/index.html
+          grep -Fq 'href="/komentari/ai-ne-smije-pisati-konacnu-odluku/"' apps/portal/komentari/index.html
           grep -Fq 'GNK_ASG_MAIL_IDENTITY_AUTOREPLY_V10_20260718_PRE_SEND_DEDUPE' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           grep -Fq 'aiMessageText' workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           grep -Fq "import {EMAIL_LOGO_CID,loadEmailLogo,VERSION as BRAND_MIME_VERSION} from './email-brand-mime-v1.js'" workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js

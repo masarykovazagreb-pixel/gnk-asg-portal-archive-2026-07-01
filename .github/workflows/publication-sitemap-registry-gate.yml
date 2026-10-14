@@ -28,6 +28,7 @@ on:
       - 'scripts/lib/editorial-cover-art-v1.mjs'
       - 'scripts/lib/editorial-route-protection-v1.mjs'
       - 'scripts/test-editorial-route-protection-v1.mjs'
+      - 'scripts/test-editorial-publication-completeness-v1.mjs'
       - 'scripts/validate_aktual_columns.py'
       - 'scripts/lib/publication-gate-v2.mjs'
       - 'scripts/validate-workflow-schedule-allowlist-v2.py'
@@ -109,6 +110,8 @@ jobs:
         run: python scripts/validate_publication_sitemap_registry_v1.py
       - name: Verify weekly curation digest is materialized
         run: node scripts/build-aktual-media-weekly-v1.mjs --check
+      - name: Test route-scoped completeness and protected-route safety
+        run: node scripts/test-editorial-publication-completeness-v1.mjs
       - name: Enforce editorial publication completeness
         run: node scripts/audit-editorial-publication-completeness-v1.mjs
       - name: Validate AKTUAL column archives and editorial feed links
