@@ -88,8 +88,16 @@ const enColumnsSection=(columnsEn.match(/<section id="columns"[^>]*>([\s\S]*?)<\
 if(!/class="card"/.test(hrColumnsSection)||!(/class="card"/.test(enColumnsSection))) failures.push('columns hubs must contain pre-rendered cards');
 if(/<p class="empty">/.test(hrColumnsSection)||/<p class="empty">/.test(enColumnsSection)) failures.push('columns hubs must not render loader placeholders in the canonical HTML section');
 const registry=JSON.parse(read(files.registry));
-const hrRegistry=(registry.items||[]).filter(x=>x.language==='hr'&&x.path);
-const enRegistry=(registry.items||[]).filter(x=>x.language==='en'&&x.path);
+const allRegistry=registry.items||[];
+for(const item of allRegistry){
+  if(!item.seoComplete) failures.push('registry: SEO incomplete '+item.path);
+  if(!item.image) failures.push('registry: image missing '+item.path);
+  if(!Array.isArray(item.hashtags)||!item.hashtags.includes('NerminSefić')||!item.hashtags.includes('NerminSefic')) failures.push('registry: canonical Nermin hashtags missing '+item.path);
+  const local='apps/portal'+String(item.path||'')+'index.html';
+  if(!item.path||!fs.existsSync(local)) failures.push('registry: published HTML missing '+String(item.path||item.slug||'unknown'));
+}
+const hrRegistry=allRegistry.filter(x=>x.language==='hr'&&x.path);
+const enRegistry=allRegistry.filter(x=>x.language==='en'&&x.path);
 const originalsHr=read(files.originalsHr),originalsEn=read(files.originalsEn);
 for(const item of hrRegistry) if(!originalsHr.includes('href="'+item.path+'"')) failures.push('HR originals archive missing '+item.path);
 for(const item of enRegistry) if(!originalsEn.includes('href="'+item.path+'"')) failures.push('EN originals archive missing '+item.path);
