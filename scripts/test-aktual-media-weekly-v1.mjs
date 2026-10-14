@@ -83,7 +83,10 @@ for(const [name,html] of [['hr',hr],['en',en]]){
 const weeklyJs=read(files.js);
 if(!weeklyJs.includes('image_credit')) failures.push('weekly JS: image credit support missing');
 const columnsHr=read(files.columnsHr),columnsEn=read(files.columnsEn);
-if(/Učitavanje kolumni/.test(columnsHr)||/Loading columns/.test(columnsEn)) failures.push('columns hubs must contain pre-rendered cards');
+const hrColumnsSection=(columnsHr.match(/<section id="columns"[^>]*>([\s\S]*?)<\/section>/i)||[])[1]||'';
+const enColumnsSection=(columnsEn.match(/<section id="columns"[^>]*>([\s\S]*?)<\/section>/i)||[])[1]||'';
+if(!/class="card"/.test(hrColumnsSection)||!(/class="card"/.test(enColumnsSection))) failures.push('columns hubs must contain pre-rendered cards');
+if(/<p class="empty">/.test(hrColumnsSection)||/<p class="empty">/.test(enColumnsSection)) failures.push('columns hubs must not render loader placeholders in the canonical HTML section');
 const registry=JSON.parse(read(files.registry));
 const hrRegistry=(registry.items||[]).filter(x=>x.language==='hr'&&x.path);
 const enRegistry=(registry.items||[]).filter(x=>x.language==='en'&&x.path);
