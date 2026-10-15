@@ -8,7 +8,8 @@
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 
 const SITE='https://gnk-asg.hr';
-const OG_FALLBACK='/assets/people/nermin-sefic/og/nermin-sefic-01-official-desk-portrait.jpg';
+const OG_FALLBACK='/assets/gnk-asg-social-card.png';
+const CREDITED_BYLINE=/<div class="article-meta">[\s\S]*?<a\b[^>]*href="\/(?:en\/)?nermin-sefic\/"[^>]*>\s*Nermin Sefić\s*<\/a>[\s\S]*?<\/div>/i;
 const OG_ABS=SITE+OG_FALLBACK;
 const read=(p,f)=>{try{return JSON.parse(readFileSync(p,'utf8'))}catch{return f}};
 const registry=read('apps/portal/data/editorial-registry.json',{items:[]});
@@ -19,13 +20,14 @@ for(const it of registry.items||[]){
   if(!existsSync(file)) continue;
   let html=readFileSync(file,'utf8');
   const orig=html;
+  const credited=CREDITED_BYLINE.test(html);
   // A) fix generic og:image within editorial pages
   const isEditorial=/^\/(en\/)?(publications|analyses|kolumne|komentari|analize|objave)\//.test(it.path)||/^\/(en\/)?tematske\//.test(it.path);
   // Body <img> references to /assets/editorial/*.svg (broken 404) → replace with author portrait
   if(isEditorial){
     const bodyRe=/<img\b([^>]*?)src="([^"]*\/assets\/editorial\/[a-z-]+\.svg[^"]*)"/gi;
     if(bodyRe.test(html)){
-      html=html.replace(bodyRe, `<img$1src="${SITE}/assets/people/nermin-sefic/nermin-sefic-01-official-desk-portrait.webp"`);
+      html=html.replace(bodyRe, `<img$1src="${SITE}/assets/gnk-asg-social-card.png"`);
       stats.bodyImgFixed=(stats.bodyImgFixed||0)+1;
     }
   }
@@ -35,7 +37,7 @@ for(const it of registry.items||[]){
     stats.ogFixed++;
   }
   // B) add Article JSON-LD linked to canonical Person + Organization if none present
-  const hasArticle=/"@type"\s*:\s*"(Article|NewsArticle|BlogPosting)"/i.test(html);
+  const hasArticle=/"@type"\s*:\s*"(Article|NewsArticle|OpinionNewsArticle|AnalysisNewsArticle|ReportageNewsArticle|BlogPosting)"/i.test(html);
   if(!hasArticle){
     const isEn=(it.language||'hr')==='en';
     const ld={
@@ -45,15 +47,15 @@ for(const it of registry.items||[]){
       headline:String(it.title||'').slice(0,110),
       description:it.description||'',
       inLanguage:isEn?'en':'hr',
-      author:{'@id':`${SITE}/nermin-sefic/#person`},
-      publisher:{'@id':`${SITE}/#organization`},
+      author:credited?{'@id':`${SITE}/#nermin-sefic`}:undefined,
+      publisher:{'@id':`${SITE}/#gnk-asg`},
       isPartOf:{'@id':`${SITE}/#website`},
       image:[it.image||OG_ABS],
       datePublished:it.publishedAt||undefined,
       dateModified:it.modifiedAt||undefined,
       url:it.url,
       keywords:(it.keywords||[]).join(', '),
-      about:it.hashtags||[]
+      about:(it.hashtags||[]).filter(tag=>credited || !/^(?:NerminSefic|NerminSefić|SeficNermin|SefićNermin)$/.test(tag))
     };
     Object.keys(ld).forEach(k=>ld[k]===undefined&&delete ld[k]);
     const tag=`<script type="application/ld+json">${JSON.stringify(ld)}</script>`;
@@ -61,11 +63,11 @@ for(const it of registry.items||[]){
     stats.articleLdAdded++;
   }
   // C) meta author (if missing)
-  if(!/<meta\s+name="author"/i.test(html)){
+  if(credited&&!/<meta\s+name="author"/i.test(html)){
     html=html.replace('</head>','<meta name="author" content="Nermin Sefić"></head>');
     stats.authorMetaAdded++;
   }
-  if(!/article:author/i.test(html)){
+  if(credited&&!/article:author/i.test(html)){
     html=html.replace('</head>','<meta property="article:author" content="Nermin Sefić"></head>');
   }
   if(html!==orig){ writeFileSync(file,html); stats.files++; }
