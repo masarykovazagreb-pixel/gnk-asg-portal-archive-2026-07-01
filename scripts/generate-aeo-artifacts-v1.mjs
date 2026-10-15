@@ -1,4 +1,6 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+// Use the existing fenced AEO schedule to refresh the read-only, source-linked AI facts endpoints.
+import './generate-ai-visibility-v1.mjs';
 const SITE='https://gnk-asg.hr';
 const read=(p,f)=>{try{return JSON.parse(readFileSync(p,'utf8'))}catch{return f}};
 const write=(p,s)=>{const d=p.substring(0,p.lastIndexOf('/'));if(d)mkdirSync(d,{recursive:true});writeFileSync(p,s)};
