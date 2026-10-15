@@ -8,6 +8,10 @@ on:
       - 'scripts/aeo-entity-source.jsonld'
       - 'scripts/generate-aeo-artifacts-v1.mjs'
       - 'scripts/check-aeo-entity-source-v1.mjs'
+      - 'scripts/image-entity-seo-v1.mjs'
+      - 'scripts/site-seo-guardian-v1.mjs'
+      - 'scripts/editorial-entity-linkage-v1.mjs'
+      - 'scripts/hashtag-boost-v1.mjs'
       - 'apps/portal/nermin-sefic/entity.jsonld'
       - 'apps/portal/data/entity-graph.jsonld'
       - 'apps/portal/ai/index.html'
@@ -20,6 +24,10 @@ on:
       - 'scripts/aeo-entity-source.jsonld'
       - 'scripts/generate-aeo-artifacts-v1.mjs'
       - 'scripts/check-aeo-entity-source-v1.mjs'
+      - 'scripts/image-entity-seo-v1.mjs'
+      - 'scripts/site-seo-guardian-v1.mjs'
+      - 'scripts/editorial-entity-linkage-v1.mjs'
+      - 'scripts/hashtag-boost-v1.mjs'
       - 'apps/portal/nermin-sefic/entity.jsonld'
       - 'apps/portal/data/entity-graph.jsonld'
       - 'apps/portal/ai/index.html'
@@ -39,7 +47,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: Check source generator syntax
-        run: node --check scripts/generate-aeo-artifacts-v1.mjs
+      - name: Check source and editorial SEO generator syntax
+        run: |
+          node --check scripts/generate-aeo-artifacts-v1.mjs
+          node --check scripts/hashtag-boost-v1.mjs
+          node --check scripts/editorial-entity-linkage-v1.mjs
+          node --check scripts/site-seo-guardian-v1.mjs
+          node --check scripts/image-entity-seo-v1.mjs
       - name: Check entity output and attribution consistency
         run: node scripts/check-aeo-entity-source-v1.mjs
