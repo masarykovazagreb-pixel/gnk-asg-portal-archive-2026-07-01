@@ -1,8 +1,25 @@
 {
-  "generatedAt": "2026-10-15T07:34:19.403Z",
+  "generatedAt": "2026-10-15T18:26:15.256Z",
   "checked": 46,
-  "passing": 46,
-  "failing": 0,
+  "passing": 44,
+  "failing": 2,
   "avgScore": 100,
-  "failingDetail": []
+  "failingDetail": [
+    {
+      "urlPath": "/en/gnk-aktual/weekly/2026-10-12/",
+      "ok": false,
+      "missing": [
+        "author"
+      ],
+      "score": 90
+    },
+    {
+      "urlPath": "/gnk-aktual/tjedni/2026-10-12/",
+      "ok": false,
+      "missing": [
+        "author"
+      ],
+      "score": 90
+    }
+  ]
 }
