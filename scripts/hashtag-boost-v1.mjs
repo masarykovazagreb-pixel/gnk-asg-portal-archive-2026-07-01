@@ -9,7 +9,7 @@ const MUST_EN=['GNKASG','GNKDINAMOLtd'];
 const PERSON_EN=['NerminSefic','SeficNermin'];
 const MUST_HR=['GNKASG','GNKDINAMOLtd'];
 const PERSON_HR=['NerminSefic','NerminSefić','SeficNermin','SefićNermin'];
-const CREDITED_BYLINE=/<div class="article-meta">[\s\S]*?<a\b[^>]*href="\/(?:en\/)?nermin-sefic\/"[^>]*>\s*Nermin Sefić\s*<\/a>[\s\S]*?<\/div>/i;
+const CREDITED_BYLINE=/<div class="article-meta">(?:(?!<\/div>)[\s\S])*?<a\b[^>]*href="\/(?:en\/)?nermin-sefic\/"[^>]*>\s*Nermin Sefić\s*<\/a>(?:(?!<\/div>)[\s\S])*?<\/div>/i;
 const stats={added:0,boosted:0,skippedNoBody:0,files:0};
 
 for(const item of registry.items||[]){
