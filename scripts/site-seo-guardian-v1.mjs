@@ -78,7 +78,7 @@ for(const file of pages){
   if(!has(/property="og:title"/i)){
     const ogT=pageTitle.split(' | ')[0];
     const ogImg=`${SITE}/assets/gnk-asg-social-card.png`;
-    insertHead(`<meta property="og:type" content="website"><meta property="og:title" content="${attrEsc(ogT)}"><meta property="og:description" content="${attrEsc(desc.slice(0,300))}"><meta property="og:url" content="${SITE}${routePath}"><meta property="og:image" content="${ogImg}"><meta property="og:image:type" content="image/jpeg"><meta property="og:image:width" content="1200"><meta property="og:site_name" content="GNK ASG">`);
+    insertHead(`<meta property="og:type" content="website"><meta property="og:title" content="${attrEsc(ogT)}"><meta property="og:description" content="${attrEsc(desc.slice(0,300))}"><meta property="og:url" content="${SITE}${routePath}"><meta property="og:image" content="${ogImg}"><meta property="og:image:type" content="image/png"><meta property="og:image:width" content="1200"><meta property="og:site_name" content="GNK ASG">`);
     stats.ogAdded++;
   }
   if(!has(/name="twitter:card"/i)){
