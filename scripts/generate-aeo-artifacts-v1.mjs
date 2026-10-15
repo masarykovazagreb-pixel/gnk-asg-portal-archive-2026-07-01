@@ -1,4 +1,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+// Use the existing fenced AEO schedule to refresh the read-only, source-linked AI facts endpoints.
+import './generate-ai-visibility-v1.mjs';
 const SITE='https://gnk-asg.hr';
 const read=(p,f)=>{try{return JSON.parse(readFileSync(p,'utf8'))}catch{return f}};
 const write=(p,s)=>{const d=p.substring(0,p.lastIndexOf('/'));if(d)mkdirSync(d,{recursive:true});writeFileSync(p,s)};
@@ -118,4 +121,6 @@ const ai=`<!doctype html>
 `;
 write('apps/portal/ai/index.html', ai);
 
+// Refuse automated public updates if the reviewed facts or their API exports drift.
+execFileSync(process.execPath,['scripts/test-ai-visibility-v1.mjs'],{stdio:'inherit'});
 console.log(JSON.stringify({wrote:['/llms.txt','/llms-full.txt','/nermin-sefic/entity.jsonld','/data/entity-graph.jsonld','/ai/index.html'], items:items.length}));
