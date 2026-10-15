@@ -1,0 +1,45 @@
+name: AEO Canonical Entity Contract
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/aeo-entity-source.jsonld'
+      - 'scripts/generate-aeo-artifacts-v1.mjs'
+      - 'scripts/check-aeo-entity-source-v1.mjs'
+      - 'apps/portal/nermin-sefic/entity.jsonld'
+      - 'apps/portal/data/entity-graph.jsonld'
+      - 'apps/portal/ai/index.html'
+      - 'apps/portal/llms.txt'
+      - 'apps/portal/llms-full.txt'
+      - '.github/workflows/aeo-canonical-entity-contract.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/aeo-entity-source.jsonld'
+      - 'scripts/generate-aeo-artifacts-v1.mjs'
+      - 'scripts/check-aeo-entity-source-v1.mjs'
+      - 'apps/portal/nermin-sefic/entity.jsonld'
+      - 'apps/portal/data/entity-graph.jsonld'
+      - 'apps/portal/ai/index.html'
+      - 'apps/portal/llms.txt'
+      - 'apps/portal/llms-full.txt'
+      - '.github/workflows/aeo-canonical-entity-contract.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  canonical-entity-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Check source generator syntax
+        run: node --check scripts/generate-aeo-artifacts-v1.mjs
+      - name: Check entity output and attribution consistency
+        run: node scripts/check-aeo-entity-source-v1.mjs
