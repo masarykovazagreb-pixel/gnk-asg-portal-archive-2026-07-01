@@ -39,7 +39,7 @@ for(const file of pages){
     const personAlt=isEn?'Nermin Sefić — Director, GNK ASG d.o.o. | GNK DINAMO Ltd.':'Nermin Sefić — direktor GNK ASG d.o.o. | GNK DINAMO Ltd.';
     const logoAlt='GNK ASG d.o.o. — GNK DINAMO Ltd. Group';
     if(alt===null||alt.trim()===''){
-      const val=isPerson?personAlt:(isLogo?logoAlt:(isEn?'Data chart · Nermin Sefić / GNK ASG':'Grafički prikaz · Nermin Sefić / GNK ASG'));
+      const val=isPerson?personAlt:(isLogo?logoAlt:(isEn?'Data chart · GNK ASG':'Grafički prikaz · GNK ASG'));
       t = alt===null ? t.replace(/<img\b/i,`<img alt="${val}"`) : t.replace(/alt="[^"]*"/i,`alt="${val}"`);
       stats.altAdded++; changed=true;
     } else if(isPerson&&!/sefi[ćc]/i.test(alt)){
@@ -51,7 +51,7 @@ for(const file of pages){
       t=t.replace(/alt="([^"]*)"/i,(m,a)=>`alt="${a} — GNK ASG"`);
       stats.altEnriched++; changed=true;
     } else if(isChart&&!/sefi[ćc]|gnk/i.test(alt)){
-      t=t.replace(/alt="([^"]*)"/i,(m,a)=>`alt="${a} · Nermin Sefić / GNK ASG"`);
+      t=t.replace(/alt="([^"]*)"/i,(m,a)=>`alt="${a} · GNK ASG"`);
       stats.altEnriched++; changed=true;
     }
     if(isPerson&&!/title="/i.test(t)){
