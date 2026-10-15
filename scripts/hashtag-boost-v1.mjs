@@ -5,8 +5,11 @@ import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 
 const read=(p,f)=>{try{return JSON.parse(readFileSync(p,'utf8'))}catch{return f}};
 const registry=read('apps/portal/data/editorial-registry.json',{items:[]});
-const MUST_EN=['NerminSefic','SeficNermin','GNKASG','GNKDINAMOLtd'];
-const MUST_HR=['NerminSefic','NerminSefić','SeficNermin','SefićNermin','GNKASG','GNKDINAMOLtd'];
+const MUST_EN=['GNKASG','GNKDINAMOLtd'];
+const PERSON_EN=['NerminSefic','SeficNermin'];
+const MUST_HR=['GNKASG','GNKDINAMOLtd'];
+const PERSON_HR=['NerminSefic','NerminSefić','SeficNermin','SefićNermin'];
+const CREDITED_BYLINE=/<div class="article-meta">(?:(?!<\/div>)[\s\S])*?<a\b[^>]*href="\/(?:en\/)?nermin-sefic\/"[^>]*>\s*Nermin Sefić\s*<\/a>(?:(?!<\/div>)[\s\S])*?<\/div>/i;
 const stats={added:0,boosted:0,skippedNoBody:0,files:0};
 
 for(const item of registry.items||[]){
@@ -15,8 +18,11 @@ for(const item of registry.items||[]){
   if(!existsSync(file)) continue;
   let html=readFileSync(file,'utf8');
   const isHr=(item.language||'hr')==='hr';
-  const must=isHr?MUST_HR:MUST_EN;
-  const topical=(item.hashtags||[]).filter(Boolean);
+  // Person-tags require a visible named byline; publisher tags do not.
+  const credited=CREDITED_BYLINE.test(html);
+  const must=[...(isHr?MUST_HR:MUST_EN),...(credited?(isHr?PERSON_HR:PERSON_EN):[])];
+  const personSet=new Set([...PERSON_EN,...PERSON_HR]);
+  const topical=(item.hashtags||[]).filter(t=>t && (credited || !personSet.has(t)));
   const bodyM=html.match(/<article[^>]*class="[^"]*article-body[^"]*"[^>]*>[\s\S]*?<\/article>/i);
   if(!bodyM){stats.skippedNoBody++;continue;}
   const body=bodyM[0];
