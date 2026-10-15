@@ -10,29 +10,9 @@ const HOLDS_PATH = process.env.EDITORIAL_HOLDS_PATH
   ? path.resolve(process.env.EDITORIAL_HOLDS_PATH)
   : path.join(PLAN_DIR, 'publication-holds.json');
 const POLICY_CUTOFF = new Date(process.env.EDITORIAL_POLICY_CUTOFF || '2026-08-05T00:00:00+02:00');
-const MIN_WORDS = Number(process.env.EDITORIAL_MIN_WORDS || 3000);
-const MIN_WORDS_COMMENTARY = Number(process.env.EDITORIAL_MIN_WORDS_COMMENTARY || 300);
-const MIN_WORDS_PUBLICATION = Number(process.env.EDITORIAL_MIN_WORDS_PUBLICATION || 500);
-const MIN_WORDS_ANALYSIS = Number(process.env.EDITORIAL_MIN_WORDS_ANALYSIS || 1500);
 const MIN_INTERNAL_LINKS = Number(process.env.EDITORIAL_MIN_INTERNAL_LINKS || 5);
-const minimumWordsForType = type => ({
-  komentar: MIN_WORDS_COMMENTARY,
-  commentary: MIN_WORDS_COMMENTARY,
-  objava: MIN_WORDS_PUBLICATION,
-  publication: MIN_WORDS_PUBLICATION,
-  analiza: MIN_WORDS_ANALYSIS,
-  analysis: MIN_WORDS_ANALYSIS,
-}[type] || MIN_WORDS);
 
 if (!Number.isFinite(POLICY_CUTOFF.getTime())) throw new Error('Invalid EDITORIAL_POLICY_CUTOFF');
-for (const [label, value] of [
-  ['EDITORIAL_MIN_WORDS', MIN_WORDS],
-  ['EDITORIAL_MIN_WORDS_COMMENTARY', MIN_WORDS_COMMENTARY],
-  ['EDITORIAL_MIN_WORDS_PUBLICATION', MIN_WORDS_PUBLICATION],
-  ['EDITORIAL_MIN_WORDS_ANALYSIS', MIN_WORDS_ANALYSIS],
-]) {
-  if (!Number.isInteger(value) || value < 1) throw new Error('Invalid ' + label);
-}
 if (!Number.isInteger(MIN_INTERNAL_LINKS) || MIN_INTERNAL_LINKS < 1) throw new Error('Invalid EDITORIAL_MIN_INTERNAL_LINKS');
 if (!fs.existsSync(PLAN_PATH)) throw new Error(`Missing editorial plan: ${PLAN_PATH}`);
 
@@ -42,17 +22,6 @@ const checked = [];
 const skipped = [];
 const authorialTypes = new Set(['objava', 'komentar', 'analiza', 'publication', 'commentary', 'analysis']);
 const digitalWorkforceExceptionPattern = /(?:digital[\s-]*workforce|worker(?:i|s)?)/iu;
-const segmenter = typeof Intl.Segmenter === 'function'
-  ? new Intl.Segmenter('hr', { granularity: 'word' })
-  : null;
-
-function countWords(value) {
-  const text = String(value || '').trim();
-  if (!text) return 0;
-  if (segmenter) return [...segmenter.segment(text)].filter(segment => segment.isWordLike).length;
-  return (text.match(/[\p{L}\p{N}]+(?:[’'\-][\p{L}\p{N}]+)*/gu) || []).length;
-}
-
 function normalizeParagraph(value) {
   return String(value || '')
     .normalize('NFKC')
@@ -159,8 +128,10 @@ for (const pack of plan.packages || []) {
 
       const paragraphs = Array.isArray(item.paragraphs) ? item.paragraphs : [];
       const normalizedParagraphs = paragraphs.map(normalizeParagraph).filter(Boolean);
-      const body = paragraphs.join('\n\n');
-      const wordCount = countWords(body);
+      // Owner decision 2026-10-14: no numeric word floor. Reject empty/placeholder copy instead.
+      const substantiveParagraphs = normalizedParagraphs.filter(text => /[\p{L}\p{N}]/u.test(text));
+      const placeholderOnly = substantiveParagraphs.length > 0 && substantiveParagraphs.every(text =>
+        /^(?:\[?todo\]?|tbd|lorem ipsum(?: dolor sit amet)?|tekst u pripremi|uskoro)$/iu.test(text));
       const internalLinks = [...new Set((Array.isArray(item.links) ? item.links : [])
         .map(link => String(link || '').trim())
         .filter(link => link.startsWith('/') && !link.startsWith('//')))];
@@ -172,8 +143,8 @@ for (const pack of plan.packages || []) {
       if (!item.description || !String(item.description).trim()) addError(pack.id, item, 'missing meta description');
       if (!item.summary || !String(item.summary).trim()) addError(pack.id, item, 'missing summary');
       if (!item.image || !String(item.image).startsWith('/')) addError(pack.id, item, 'missing local image path');
-      const minimumWords = minimumWordsForType(type);
-      if (wordCount < minimumWords) addError(pack.id, item, `body has ${wordCount} words; minimum is ${minimumWords}`);
+      if (!substantiveParagraphs.length) addError(pack.id, item, 'body is empty or has no substantive text');
+      if (placeholderOnly) addError(pack.id, item, 'body consists only of placeholder text');
       if (internalLinks.length < MIN_INTERNAL_LINKS) addError(pack.id, item, `has ${internalLinks.length} unique internal links; minimum is ${MIN_INTERNAL_LINKS}`);
       if (duplicates.length) addError(pack.id, item, 'contains duplicated body paragraphs');
 
@@ -182,7 +153,7 @@ for (const pack of plan.packages || []) {
         sourceFile,
         slug: item.slug,
         type,
-        wordCount,
+        substantiveParagraphs: substantiveParagraphs.length,
         internalLinks: internalLinks.length,
       });
     }
@@ -191,14 +162,9 @@ for (const pack of plan.packages || []) {
 
 const summary = {
   ok: errors.length === 0,
-  version: 'GNK_ASG_EDITORIAL_CONTENT_POLICY_V1_20260805',
+  version: 'GNK_ASG_EDITORIAL_CONTENT_POLICY_V2_20261014_OWNER_NO_WORD_FLOOR',
   policyCutoff: POLICY_CUTOFF.toISOString(),
-  minimumWords: MIN_WORDS,
-  minimumWordsByType: {
-    commentary: MIN_WORDS_COMMENTARY,
-    publication: MIN_WORDS_PUBLICATION,
-    analysis: MIN_WORDS_ANALYSIS,
-  },
+  wordCountMinimum: null,
   minimumInternalLinks: MIN_INTERNAL_LINKS,
   publicationHoldsVersion: publicationHolds.version,
   activePublicationHolds: [...publicationHolds.active.keys()],
