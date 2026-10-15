@@ -9,7 +9,7 @@ import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 
 const SITE='https://gnk-asg.hr';
 const OG_FALLBACK='/assets/gnk-asg-social-card.png';
-const CREDITED_BYLINE=/<div class="article-meta">[\s\S]*?<a\b[^>]*href="\/(?:en\/)?nermin-sefic\/"[^>]*>\s*Nermin Sefić\s*<\/a>[\s\S]*?<\/div>/i;
+const CREDITED_BYLINE=/<div class="article-meta">(?:(?!<\/div>)[\s\S])*?<a\b[^>]*href="\/(?:en\/)?nermin-sefic\/"[^>]*>\s*Nermin Sefić\s*<\/a>(?:(?!<\/div>)[\s\S])*?<\/div>/i;
 const OG_ABS=SITE+OG_FALLBACK;
 const read=(p,f)=>{try{return JSON.parse(readFileSync(p,'utf8'))}catch{return f}};
 const registry=read('apps/portal/data/editorial-registry.json',{items:[]});
