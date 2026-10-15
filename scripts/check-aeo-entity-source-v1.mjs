@@ -36,4 +36,11 @@ for (const path of ['apps/portal/llms.txt', 'apps/portal/llms-full.txt']) {
   assert(!/Any content on https:\/\/gnk-asg\.hr is written and published by Nermin/i.test(content),
     'Do not infer universal individual authorship: ' + path);
 }
+const editorial = read('scripts/editorial-entity-linkage-v1.mjs');
+const hashtag = read('scripts/hashtag-boost-v1.mjs');
+const guardian = read('scripts/site-seo-guardian-v1.mjs');
+assert(editorial.includes('OpinionNewsArticle'), 'Existing commentary schema must not be duplicated');
+assert(editorial.includes('const credited=CREDITED_BYLINE.test(html)'), 'Author insertion must require a verified byline');
+assert(hashtag.includes('const credited=CREDITED_BYLINE.test(html)'), 'Person hashtags must require a visible byline');
+assert(guardian.includes("GNK ASG d.o.o."), 'Corporate pages must not inherit personal attribution by default');
 console.log('AEO entity source / public JSON-LD / AI page / attribution contract: PASS');
