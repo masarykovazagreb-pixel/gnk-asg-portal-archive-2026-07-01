@@ -3,24 +3,19 @@
   "@graph": [
     {
       "@type": "Person",
-      "@id": "https://gnk-asg.hr/nermin-sefic/#person",
+      "@id": "https://gnk-asg.hr/#nermin-sefic",
       "name": "Nermin Sefić",
       "alternateName": [
         "Nermin Sefic",
         "Sefić Nermin",
-        "Sefic Nermin",
-        "NN"
+        "Sefic Nermin"
       ],
-      "jobTitle": "Director",
+      "jobTitle": "Direktor GNK ASG d.o.o. i ovlašteni predstavnik GNK DINAMO Ltd.",
       "worksFor": {
-        "@id": "https://gnk-asg.hr/#organization"
+        "@id": "https://gnk-asg.hr/#gnk-asg"
       },
       "url": "https://gnk-asg.hr/nermin-sefic/",
-      "image": "https://gnk-asg.hr/assets/people/nermin-sefic/nermin-sefic-01-official-desk-portrait.webp",
-      "nationality": {
-        "@type": "Country",
-        "name": "Bosnia and Herzegovina"
-      },
+      "image": "https://gnk-asg.hr/assets/people/nermin-sefic/og/nermin-sefic-01-official-desk-portrait.jpg",
       "knowsAbout": [
         "Corporate governance",
         "AI regulation",
@@ -34,70 +29,53 @@
         "International business strategy"
       ],
       "sameAs": [
-        "https://gnk-asg.hr/nermin-sefic/",
-        "https://gnk-asg.hr/en/nermin-sefic/",
-        "https://www.linkedin.com/in/nermin-sefic"
+        "https://www.linkedin.com/in/nermin-sefic-18573196",
+        "https://dev.to/nermin-sefic",
+        "https://nermin-sefic.tumblr.com",
+        "https://nermin-sefic.blogspot.com"
       ]
     },
     {
       "@type": "Organization",
-      "@id": "https://gnk-asg.hr/#organization",
+      "@id": "https://gnk-asg.hr/#gnk-asg",
       "name": "GNK ASG d.o.o.",
       "alternateName": [
         "GNK ASG",
         "GNK ASG doo"
       ],
       "legalName": "GNK ASG d.o.o.",
-      "url": "https://gnk-asg.hr",
+      "url": "https://gnk-asg.hr/",
       "logo": "https://gnk-asg.hr/assets/logo-gnk-asg-canonical.svg",
-      "founder": {
-        "@id": "https://gnk-asg.hr/nermin-sefic/#person"
-      },
-      "employee": {
-        "@id": "https://gnk-asg.hr/nermin-sefic/#person"
-      },
       "parentOrganization": {
+        "@id": "https://gnk-asg.hr/#gnk-dinamo-ltd",
         "@type": "Organization",
-        "@id": "https://gnk-asg.hr/#group",
-        "name": "GNK DINAMO Ltd. Group",
-        "description": "International corporate group with subsidiaries in Croatia (GNK ASG d.o.o., Zagreb) and the United States (Boulder, Colorado).",
-        "areaServed": [
-          "HR",
-          "US",
-          "EU"
-        ],
-        "knowsAbout": [
-          "AI",
-          "FinTech",
-          "Digital assets",
-          "Sports technology",
-          "Cybersecurity",
-          "Energy",
-          "Healthcare",
-          "Education"
-        ]
+        "name": "GNK DINAMO Ltd."
       },
       "address": {
         "@type": "PostalAddress",
-        "addressCountry": "HR",
-        "addressLocality": "Zagreb"
+        "streetAddress": "Zagrebačka cesta 130",
+        "postalCode": "10090",
+        "addressLocality": "Zagreb",
+        "addressCountry": "HR"
       },
       "sameAs": [
-        "https://gnk-asg.hr"
-      ]
+        "https://infobiz.fina.hr/tvrtka/gnk-asg-d-o-o/OIB-75227917632"
+      ],
+      "taxID": "75227917632"
     },
     {
       "@type": "WebSite",
       "@id": "https://gnk-asg.hr/#website",
-      "url": "https://gnk-asg.hr",
-      "name": "GNK ASG",
+      "url": "https://gnk-asg.hr/",
+      "name": "GNK ASG d.o.o.",
       "publisher": {
-        "@id": "https://gnk-asg.hr/#organization"
+        "@id": "https://gnk-asg.hr/#gnk-asg"
       },
       "inLanguage": [
         "hr",
         "en"
-      ]
+      ],
+      "alternateName": "GNK ASG"
     }
   ]
 }
