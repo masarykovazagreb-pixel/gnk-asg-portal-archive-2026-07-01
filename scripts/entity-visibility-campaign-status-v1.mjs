@@ -21,7 +21,10 @@ const llms = fs.readFileSync(path.join(root, 'apps/portal/llms.txt'), 'utf8');
 const slug = 'javni-podaci-autorski-rad-odgovorno-upravljanje';
 const packageId = 'ENTITY-VISIBILITY-20261004-FOUNDATION';
 const checks = [];
-const check = (label, pass, detail) => checks.push({ label, status: pass ? 'OK' : 'FAIL', detail });
+const check = (label, pass, detail) => {
+  checks.push({ label, status: pass ? 'OK' : 'FAIL', detail });
+  if (!pass) console.error(`[ENTITY MONITOR FAIL] ${label}: ${detail}`);
+};
 
 const days = Array.isArray(calendar.days) ? calendar.days : [];
 const uniqueDates = new Set(days.map(item => item.date));
@@ -122,4 +125,7 @@ const out = path.join(root, 'artifacts/entity-visibility-campaign-status.json');
 fs.mkdirSync(path.dirname(out), { recursive: true });
 fs.writeFileSync(out, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
 console.log(JSON.stringify(report, null, 2));
-if (!report.summary.ok) process.exitCode = 1;
+if (!report.summary.ok) {
+  console.error(`[ENTITY MONITOR] ${report.summary.failed} failed check(s): ${checks.filter(item => item.status === 'FAIL').map(item => item.label).join('; ')}`);
+  process.exitCode = 1;
+}
