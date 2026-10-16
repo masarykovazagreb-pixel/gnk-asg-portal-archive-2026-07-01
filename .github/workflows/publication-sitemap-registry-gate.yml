@@ -25,6 +25,12 @@ on:
       - 'scripts/generate_aktual_columns.py'
       - 'scripts/generate-kolumna-page.mjs'
       - 'scripts/kolumne-publish-v1.mjs'
+      - 'scripts/audit-aktual-columns-lifecycle-v1.mjs'
+      - 'scripts/test-aktual-columns-lifecycle-v1.mjs'
+      - 'scripts/content-queue-publish-v1.mjs'
+      - 'content/factory-queue/queue.json'
+      - 'content/factory-queue/kolumne/**'
+      - 'apps/portal/data/content-queue-state.json'
       - 'scripts/lib/editorial-cover-art-v1.mjs'
       - 'scripts/lib/editorial-route-protection-v1.mjs'
       - 'scripts/test-editorial-route-protection-v1.mjs'
@@ -39,6 +45,7 @@ on:
       - 'apps/portal/data/editorial-registry.json'
       - 'apps/portal/data/editorial-image-manifest.json'
       - 'apps/portal/data/kolumne.json'
+      - 'apps/portal/data/kolumne-red/**'
       - 'apps/portal/data/news.json'
       - 'apps/portal/data/aktual-weekly-curation.json'
       - 'apps/portal/data/aktual-weekly.json'
@@ -116,6 +123,11 @@ jobs:
         run: node scripts/audit-editorial-publication-completeness-v1.mjs
       - name: Validate AKTUAL column archives and editorial feed links
         run: python scripts/validate_aktual_columns.py
+      - name: Verify column archive lifecycle, approved schedule and index freshness
+        run: |
+          node scripts/test-aktual-columns-lifecycle-v1.mjs
+          node scripts/build-aktual-columns-index-v1.mjs --check
+          node scripts/audit-aktual-columns-lifecycle-v1.mjs
       - name: Enforce production workflow schedule allowlist
         run: python scripts/validate-workflow-schedule-allowlist-v2.py
       - name: Enforce exact-SHA release-race hygiene

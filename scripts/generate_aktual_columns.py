@@ -10,6 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PORTAL = ROOT / "apps" / "portal"
 DATA = PORTAL / "data" / "kolumne.json"
+REGISTRY = PORTAL / "data" / "editorial-registry.json"
 BASE = "https://gnk-asg.hr"
 PUBLISHER_LOGO = f"{BASE}/assets/gnk-asg-social-card.png"
 AUTHOR_PROFILE = f"{BASE}/nermin-sefic/"
@@ -82,12 +83,23 @@ def render(item: dict, lang: str) -> str:
 
 def main() -> None:
     source = json.loads(DATA.read_text(encoding="utf-8"))
+    registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
     candidates = source if isinstance(source, list) else source.get("items", [])
-    # This shared feed also contains SPT articles and commentary routes. Only
-    # material whose canonical owner is the AKTUAL columns collection belongs here.
-    items = [item for item in candidates if str(item.get("url", "")).startswith(f"{BASE}/gnk-aktual/kolumne/")]
+    published_routes = {
+        item.get("path")
+        for item in registry.get("items", [])
+        if item.get("type") == "kolumna" and item.get("status") == "published"
+    }
+    # This shared feed also contains SPT articles, commentary and possible
+    # future records. Only routes already published in the canonical registry
+    # are eligible for static page generation.
+    items = [
+        item for item in candidates
+        if str(item.get("url", "")).startswith(f"{BASE}/gnk-aktual/kolumne/")
+        and str(item.get("url", ""))[len(BASE):] in published_routes
+    ]
     if not items:
-        raise SystemExit("No canonical AKTUAL column items found")
+        raise SystemExit("No already-published AKTUAL column items found")
     for item in items:
         slug = item["slug"]
         targets = {PORTAL / "gnk-aktual" / "kolumne" / slug / "index.html": render(item, "hr"), PORTAL / "en" / "gnk-aktual" / "columns" / slug / "index.html": render(item, "en")}

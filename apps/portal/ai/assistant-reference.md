@@ -45,9 +45,11 @@ Version: GNK_ASG_AI_REFERENCE_SOURCE_V1 · Last reviewed: 2026-10-15
 - [Editorial registry and page-specific attribution](https://gnk-asg.hr/data/editorial-registry.json)
 - [Machine-readable entity graph](https://gnk-asg.hr/nermin-sefic/entity.jsonld)
 - [LLM and citation guidance](https://gnk-asg.hr/llms.txt)
+- [Public AI-reference source review history](https://gnk-asg.hr/ai-visibility/source-history.json)
 
 ## Use with ChatGPT or another compatible tool
 
 - Upload this Markdown file and `assistant-system-prompt.txt` to a user-owned custom assistant, or import `assistant-reference-openapi.json` as a read-only Action/API definition.
 - The OpenAPI spec exposes only public GET endpoints. No sign-in, credentials, publishing, or write operation is included.
+- The public source-review history contains dated fact snapshots and SHA-256 revision fingerprints; it records supplied review metadata and is not live source verification.
 - A third-party model may ignore this pack; it cannot change model training, policy, ranking, or guarantee a positive answer.

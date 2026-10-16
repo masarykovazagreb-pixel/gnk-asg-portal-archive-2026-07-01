@@ -5,6 +5,7 @@ const read = path => readFileSync(path,'utf8');
 const source=JSON.parse(read('data/ai-visibility/verified-facts.json'));
 const publicFacts=JSON.parse(read('apps/portal/ai-visibility/facts.json'));
 const spec=JSON.parse(read('apps/portal/ai-visibility/openapi.json'));
+const publicHistory=JSON.parse(read('apps/portal/ai-visibility/source-history.json'));
 assert.equal(source.schemaVersion,'1.0');
 assert.equal(publicFacts.reviewedAt,source.reviewedAt);
 assert.deepEqual(publicFacts.facts,source.facts);
@@ -17,10 +18,18 @@ for(const f of source.facts){
 }
 assert.equal(spec.servers[0].url,'https://gnk-asg.hr');
 assert(spec.paths['/ai-visibility/facts.json'].get.operationId);
+assert(spec.paths['/ai-visibility/source-history.json'].get.operationId);
+assert.match(spec.paths['/ai-visibility/source-history.json'].get.description,/not.*live verification/i);
+assert.deepEqual(Object.keys(spec.paths['/ai-visibility/source-history.json']),['get']);
+assert.equal(publicHistory.records.at(-1).reviewedAt,source.reviewedAt);
 const html=read('apps/portal/ai-visibility/index.html');
+const template=read('data/ai-visibility/page-template.html');
 assert(html.includes('rel="canonical" href="https://gnk-asg.hr/ai-visibility/"'));
 assert(html.includes('href="facts.json"'));
 assert(html.includes('href="brief.txt"'));
+assert(html.includes('href="source-history.json"'));
+assert(template.includes('href="source-history.json"'));
+assert(template.includes('source-history.json" title="Povijest pregleda izvora"'));
 assert(!html.includes('Provjera izvora: 2026-10-15'),'Human landing page must not claim a permanently current check date');
 assert(html.includes('href="facts.json"'));
 const check=spawnSync(process.execPath,['scripts/generate-ai-visibility-v1.mjs','--check'],{encoding:'utf8'});

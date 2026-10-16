@@ -50,6 +50,26 @@
         }
       }
     },
+    "/ai-visibility/source-history.json": {
+      "get": {
+        "operationId": "getAiReferenceSourceReviewHistory",
+        "summary": "Get dated public fact snapshots and source-review revision fingerprints",
+        "description": "Returns first-party recorded review history for the AI-reference facts. Dates and hashes are an audit trail, not live verification of source records.",
+        "responses": {
+          "200": {
+            "description": "Public read-only source review history",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/nermin-sefic/entity.jsonld": {
       "get": {
         "operationId": "getGnkAsgEntityGraph",

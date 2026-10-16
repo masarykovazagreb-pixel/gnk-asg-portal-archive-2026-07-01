@@ -30,6 +30,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       - name: Test Content Factory safety gate
         run: node tests/test-content-queue-preflight-v1.mjs
       - name: Fail closed on duplicate, held or invalid publications
@@ -46,6 +49,13 @@ jobs:
           else
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
+      - name: Verify bilingual columns archive, lifecycle and SEO contract
+        run: |
+          set -euo pipefail
+          node scripts/test-aktual-columns-lifecycle-v1.mjs
+          node scripts/build-aktual-columns-index-v1.mjs --check
+          python3 scripts/validate_aktual_columns.py
+          node scripts/audit-aktual-columns-lifecycle-v1.mjs
       - name: Commit and dispatch exact-SHA production deploy
         if: steps.pub.outputs.changed == 'true'
         env:
