@@ -23,6 +23,29 @@ function schemasOf(html) {
 function canonicalOf(html) {
   return html.match(/<link\b[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["']/i)?.[1] || '';
 }
+function metaContent(html, key, attr = 'name') {
+  const matches = [...html.matchAll(/<meta\\b[^>]*>/gi)].map(found => found[0])
+    .filter(tag => new RegExp(`\\b${attr}=["']${key}["']`, 'i').test(tag));
+  if (matches.length !== 1) return '';
+  return matches[0].match(/\\bcontent=["']([^"']*)["']/i)?.[1] || '';
+}
+// Social previews are public editorial artifacts: the precise image, description,
+// alt text and dimensions must match the canonical materialized weekly cover.
+function verifySocialPreview(html, label, canonical, expectedImage) {
+  const coverUrl = `https://gnk-asg.hr${expectedImage}`;
+  for (const [key, attr] of [['og:image', 'property'], ['twitter:image', 'name']]) {
+    if (metaContent(html, key, attr) !== coverUrl) fail(`${label}: ${key} does not match current weekly cover`);
+  }
+  if (metaContent(html, 'og:url', 'property') !== canonical) fail(`${label}: Open Graph URL differs from canonical`);
+  if (metaContent(html, 'twitter:card') !== 'summary_large_image') fail(`${label}: missing large-image X/Twitter card`);
+  const ogAlt = metaContent(html, 'og:image:alt', 'property');
+  const twitterAlt = metaContent(html, 'twitter:image:alt');
+  if (!ogAlt || ogAlt !== twitterAlt) fail(`${label}: missing or mismatched OG/Twitter image alt text`);
+  if (metaContent(html, 'og:image:width', 'property') !== '1200' ||
+      metaContent(html, 'og:image:height', 'property') !== '630') fail(`${label}: incorrect OG image dimensions`);
+  if (metaContent(html, 'og:description', 'property') !== metaContent(html, 'description') ||
+      metaContent(html, 'twitter:description') !== metaContent(html, 'description')) fail(`${label}: inconsistent preview and canonical descriptions`);
+}
 function verifyHreflang(html, hr, en, label) {
   const alternates = new Map([...html.matchAll(/<link\b[^>]*rel=["']alternate["'][^>]*hreflang=["']([^"']+)["'][^>]*href=["']([^"']+)["'][^>]*>/gi)]
     .map((match) => [match[1].toLowerCase(), match[2]]));
@@ -46,6 +69,7 @@ function verifyArchivePage({ html, file, canonical, hr, en, expectedItems, expec
   verifyHreflang(html, hr, en, label);
   if (!html.includes(`content="https://gnk-asg.hr${expectedImage}"`)) fail(`${label}: social cover does not match the materialized issue`);
   if (!exists(path.join('apps/portal', expectedImage.replace(/^\//, '')))) fail(`${label}: cover file is missing (${expectedImage})`);
+  verifySocialPreview(html, label, canonical, expectedImage);
   const schemas = schemasOf(html);
   const nodes = schemaNodes(schemas);
   const collections = nodes.filter((node) => typesOf(node).includes('CollectionPage'));
