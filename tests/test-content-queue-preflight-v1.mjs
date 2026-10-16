@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import '../scripts/test-content-queue-visibility-v1.mjs';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
