@@ -30,6 +30,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       - name: Test Content Factory safety gate
         run: node tests/test-content-queue-preflight-v1.mjs
       - name: Fail closed on duplicate, held or invalid publications
@@ -41,7 +44,19 @@ jobs:
           set -euo pipefail
           echo "base_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           node scripts/content-queue-publish-v1.mjs | tee /tmp/queue-out.txt
-          if grep -Eq '"changed": ?true' /tmp/queue-out.txt; then
+          # Reuse this allowlisted direct-main writer; never introduce a second cron.
+          node --check scripts/kolumne-publish-v1.mjs
+          node --check scripts/generate-kolumna-page.mjs
+          node scripts/kolumne-publish-v1.mjs --sve --uzivo
+          if ! git diff --quiet -- apps/portal/data/kolumne.json; then
+            node scripts/editorial-registry-v1.mjs
+            node scripts/generate-editorial-cover-assets-v1.mjs
+            node scripts/build-aktual-columns-index-v1.mjs --write
+            node scripts/generate-editorial-sitemap-v2.mjs
+            python3 scripts/validate_aktual_columns.py
+            node scripts/test-editorial-publish-seo-v1.mjs
+          fi
+          if grep -Eq '"changed": ?true' /tmp/queue-out.txt || ! git diff --quiet -- apps/portal/data/kolumne.json; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "changed=false" >> "$GITHUB_OUTPUT"
