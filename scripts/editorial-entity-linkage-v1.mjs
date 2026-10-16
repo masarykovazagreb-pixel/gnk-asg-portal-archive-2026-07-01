@@ -93,22 +93,36 @@ function isArticleType(value) {
   return types.some((type) => ['Article', 'NewsArticle', 'OpinionNewsArticle', 'BlogPosting'].includes(type));
 }
 
+const CORE_SOCIAL_TOKENS = ['GNKASG', 'GNKDINAMOLtd', 'BusinessIntelligence'];
+const normalizedSocialToken = (value) => String(value || '').replace(/^#+/, '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\p{L}\p{N}]/gu, '').toLowerCase();
+const socialTokenSetFor = (item) => new Set([...CORE_SOCIAL_TOKENS, ...(Array.isArray(item?.hashtags) ? item.hashtags : [])].map(normalizedSocialToken));
+
 function stripNerminFromAbout(value, item) {
   if (/nermin\s+sefi[cć]/i.test(`${item.title || ''} ${item.description || ''}`)) return value;
   const wasArray = Array.isArray(value);
   const values = wasArray ? value : [value];
-  const kept = values.filter((entry) => !isNerminPersonReference(entry));
+  const socialTokens = socialTokenSetFor(item);
+  const kept = values.filter((entry) => {
+    if (isNerminPersonReference(entry)) return false;
+    const name = typeof entry === 'string' ? entry : entry?.name;
+    return !name || (!String(name).trim().startsWith('#') && !socialTokens.has(normalizedSocialToken(name)));
+  });
   if (!kept.length) return undefined;
   return wasArray ? kept : kept[0];
 }
 
-function cleanKeywords(value) {
+function cleanKeywords(value, item) {
+  const socialTokens = socialTokenSetFor(item);
+  const keep = (entry) => {
+    const text = String(entry || '').trim();
+    return text && !text.startsWith('#') && !/nermin\s+sefi[cć]/i.test(text) && !socialTokens.has(normalizedSocialToken(text));
+  };
   if (Array.isArray(value)) {
-    const kept = value.filter((entry) => !/nermin\s+sefi[cć]/i.test(String(entry)));
+    const kept = value.filter(keep);
     return kept.length ? kept : undefined;
   }
   if (typeof value === 'string') {
-    const kept = value.split(',').map((entry) => entry.trim()).filter((entry) => entry && !/nermin\s+sefi[cć]/i.test(entry));
+    const kept = value.split(',').map((entry) => entry.trim()).filter(keep);
     return kept.length ? kept.join(', ') : undefined;
   }
   return value;
@@ -136,7 +150,7 @@ function updateArticleNode(node, item, imageUrl) {
     else node.about = about;
   }
   if ('keywords' in node) {
-    const keywords = cleanKeywords(node.keywords);
+    const keywords = cleanKeywords(node.keywords, item);
     if (keywords === undefined) delete node.keywords;
     else node.keywords = keywords;
   }
@@ -259,11 +273,6 @@ for (const item of registry.items || []) {
     stats.protectedSkipped++;
     continue;
   }
-  // AKTUAL MEDIA weekly issues are aggregated editions, not personal articles.
-  if (item.type === 'tjednik') {
-    stats.weeklySkipped++;
-    continue;
-  }
   const relativePath = String(item.path || '').replace(/^\/+|\/+$/g, '');
   if (!relativePath) {
     stats.missingFiles++;
@@ -272,6 +281,19 @@ for (const item of registry.items || []) {
   const file = path.join(PORTAL, relativePath, 'index.html');
   if (!fs.existsSync(file)) {
     stats.missingFiles++;
+    continue;
+  }
+  // Weekly editions are aggregated, not personal articles: normalize only their
+  // Article JSON-LD so social hashtags stay out of `about` and `keywords`.
+  if (item.type === 'tjednik') {
+    stats.weeklySkipped++;
+    const original = fs.readFileSync(file, 'utf8');
+    const normalized = updateJsonLd(original, item, '').html;
+    if (normalized !== original) {
+      stats.changed++;
+      changedPages.push(item.path);
+      if (WRITE) fs.writeFileSync(file, normalized, 'utf8');
+    }
     continue;
   }
 

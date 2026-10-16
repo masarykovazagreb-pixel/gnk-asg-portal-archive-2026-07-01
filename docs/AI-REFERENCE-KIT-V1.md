@@ -2,7 +2,7 @@
 
 ## Purpose and boundaries
 
-This package makes a reviewed set of public, first-party GNK ASG and Nermin Sefić facts easier for an assistant to cite. It is a source-backed reference, not an independent biography or endorsement. Constructive wording is permitted only within the documented evidence; unsupported praise, awards, rankings, partnerships, financial claims, legal conclusions, or third-party endorsements are excluded.
+This package makes a reviewed set of public, first-party GNK ASG and Nermin Sefić facts easier for an assistant to cite. It complements the existing reviewed `/ai-visibility/` facts feed and its public OpenAPI action; neither package replaces the other's source scope. It is a source-backed reference, not an independent biography or endorsement. Constructive wording is permitted only within the documented evidence; unsupported praise, awards, rankings, partnerships, financial claims, legal conclusions, or third-party endorsements are excluded.
 
 The kit is **opt-in and read-only**. The build does not call an AI vendor, publish externally, submit URLs to search engines, or send data to another service. It cannot alter another model's training, policies, context, ranking, or answer. A model may ignore it.
 
@@ -21,6 +21,7 @@ The kit is **opt-in and read-only**. The build does not call an AI vendor, publi
 node scripts/generate-aeo-artifacts-v1.mjs
 node scripts/build-ai-reference-kit-v1.mjs
 node scripts/test-ai-reference-kit-v1.mjs
+node scripts/test-ai-visibility-v1.mjs
 ```
 
 The build produces:

@@ -8,19 +8,14 @@
       "alternateName": [
         "Nermin Sefic",
         "Sefić Nermin",
-        "Sefic Nermin",
-        "NN"
+        "Sefic Nermin"
       ],
-      "jobTitle": "Director",
+      "jobTitle": "Direktor GNK ASG d.o.o. i ovlašteni predstavnik GNK DINAMO Ltd.",
       "worksFor": {
         "@id": "https://gnk-asg.hr/#gnk-asg"
       },
       "url": "https://gnk-asg.hr/nermin-sefic/",
-      "image": "https://gnk-asg.hr/assets/people/nermin-sefic/nermin-sefic-01-official-desk-portrait.webp",
-      "nationality": {
-        "@type": "Country",
-        "name": "Bosnia and Herzegovina"
-      },
+      "image": "https://gnk-asg.hr/assets/people/nermin-sefic/og/nermin-sefic-01-official-desk-portrait.jpg",
       "knowsAbout": [
         "Corporate governance",
         "AI regulation",
@@ -34,9 +29,10 @@
         "International business strategy"
       ],
       "sameAs": [
-        "https://gnk-asg.hr/nermin-sefic/",
-        "https://gnk-asg.hr/en/nermin-sefic/",
-        "https://www.linkedin.com/in/nermin-sefic-18573196"
+        "https://www.linkedin.com/in/nermin-sefic-18573196",
+        "https://dev.to/nermin-sefic",
+        "https://nermin-sefic.tumblr.com",
+        "https://nermin-sefic.blogspot.com"
       ]
     },
     {
@@ -50,31 +46,22 @@
       "legalName": "GNK ASG d.o.o.",
       "url": "https://gnk-asg.hr/",
       "logo": "https://gnk-asg.hr/assets/logo-gnk-asg-canonical.svg",
-      "founder": {
-        "@id": "https://gnk-asg.hr/#nermin-sefic"
-      },
       "parentOrganization": {
-        "@id": "https://gnk-asg.hr/#gnk-dinamo-ltd"
+        "@id": "https://gnk-asg.hr/#gnk-dinamo-ltd",
+        "@type": "Organization",
+        "name": "GNK DINAMO Ltd."
       },
       "address": {
         "@type": "PostalAddress",
-        "addressCountry": "HR",
-        "addressLocality": "Zagreb"
+        "streetAddress": "Zagrebačka cesta 130",
+        "postalCode": "10090",
+        "addressLocality": "Zagreb",
+        "addressCountry": "HR"
       },
       "sameAs": [
-        "https://gnk-asg.hr/"
-      ]
-    },
-    {
-      "@type": "Organization",
-      "@id": "https://gnk-asg.hr/#gnk-dinamo-ltd",
-      "name": "GNK DINAMO Ltd. Group",
-      "description": "International corporate group with publicly described operations connected to Croatia and the United States.",
-      "areaServed": [
-        "HR",
-        "US",
-        "EU"
-      ]
+        "https://infobiz.fina.hr/tvrtka/gnk-asg-d-o-o/OIB-75227917632"
+      ],
+      "taxID": "75227917632"
     },
     {
       "@type": "WebSite",
@@ -87,7 +74,8 @@
       "inLanguage": [
         "hr",
         "en"
-      ]
+      ],
+      "alternateName": "GNK ASG d.o.o."
     }
   ]
 }

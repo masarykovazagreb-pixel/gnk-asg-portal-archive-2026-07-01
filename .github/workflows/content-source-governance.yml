@@ -13,6 +13,11 @@ on:
       - 'scripts/build-ai-reference-kit-v1.mjs'
       - 'scripts/test-ai-reference-kit-v1.mjs'
       - 'scripts/generate-aeo-artifacts-v1.mjs'
+      - 'scripts/generate-ai-visibility-v1.mjs'
+      - 'scripts/test-ai-visibility-v1.mjs'
+      - 'scripts/aeo-entity-source.jsonld'
+      - 'data/ai-visibility/verified-facts.json'
+      - 'apps/portal/ai-visibility/**'
       - 'scripts/lib/editorial-attribution-v1.mjs'
       - 'scripts/lib/editorial-route-protection-v1.mjs'
       - 'apps/portal/data/entity-graph.jsonld'
@@ -65,3 +70,4 @@ jobs:
           node scripts/generate-aeo-artifacts-v1.mjs
           node scripts/build-ai-reference-kit-v1.mjs
           node scripts/test-ai-reference-kit-v1.mjs
+          node scripts/test-ai-visibility-v1.mjs

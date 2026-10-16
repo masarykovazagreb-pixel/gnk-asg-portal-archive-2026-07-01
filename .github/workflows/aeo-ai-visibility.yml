@@ -56,10 +56,6 @@ jobs:
         run: node scripts/rich-descriptions-v1.mjs
       - name: Site-wide SEO guardian (public metadata; protected routes excluded)
         run: node scripts/site-seo-guardian-v1.mjs --write
-      - name: Ensure concise WebSite JSON-LD on public HTML pages
-        run: node scripts/ensure-website-jsonld-v1.mjs --write
-      - name: Verify WebSite JSON-LD coverage and entity separation
-        run: node scripts/test-website-jsonld-v1.mjs
       - name: BreadcrumbList JSON-LD
         run: node scripts/add-breadcrumbs-v1.mjs
       - name: BreadcrumbList for key non-editorial pages
@@ -68,12 +64,18 @@ jobs:
         run: node scripts/generate-feeds-v1.mjs
       - name: Feed discovery link tags
         run: node scripts/add-feed-discovery-v1.mjs
+      - name: Ensure concise WebSite JSON-LD on public HTML pages
+        run: node scripts/ensure-website-jsonld-v1.mjs --write
+      - name: Verify WebSite JSON-LD coverage and entity separation
+        run: node scripts/test-website-jsonld-v1.mjs
       - name: Regenerate image sitemap
         run: python3 scripts/generate-image-sitemap.py
       - name: Verify generated attribution across HTML, RSS, Atom, and AEO files
         run: node scripts/test-editorial-attribution-artifacts-v1.mjs
       - name: Verify AI reference links, citations, and read-only integrations
         run: node scripts/test-ai-reference-kit-v1.mjs
+      - name: Verify reviewed AI Visibility exports and OpenAPI
+        run: node scripts/test-ai-visibility-v1.mjs
       - name: Social Meta Guard (audit OG/meta strength on social-source pages)
         run: node scripts/social-meta-guard-v1.mjs
       - name: Commit + dispatch exact-SHA production deploy on Masarykova

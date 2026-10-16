@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import './generate-ai-visibility-v1.mjs';
 import {
   SITE,
   PERSON_URL,
@@ -31,60 +32,19 @@ const generatedAt = items.reduce((latest, item) => {
   return Number.isFinite(date.getTime()) && date.getTime() > latest ? date.getTime() : latest;
 }, Date.parse('2026-01-01T00:00:00Z'));
 
-const group = {
-  '@type': 'Organization',
-  '@id': `${SITE}/#gnk-dinamo-ltd`,
-  name: 'GNK DINAMO Ltd. Group',
-  description: 'International corporate group with publicly described operations connected to Croatia and the United States.',
-  areaServed: ['HR', 'US', 'EU'],
-};
-const person = {
-  '@type': 'Person',
-  '@id': PERSON_ID,
-  name: 'Nermin Sefić',
-  alternateName: ['Nermin Sefic', 'Sefić Nermin', 'Sefic Nermin', 'NN'],
-  jobTitle: 'Director',
-  worksFor: { '@id': ORGANIZATION_ID },
-  url: PERSON_URL,
-  image: `${SITE}/assets/people/nermin-sefic/nermin-sefic-01-official-desk-portrait.webp`,
-  nationality: { '@type': 'Country', name: 'Bosnia and Herzegovina' },
-  knowsAbout: [
-    'Corporate governance', 'AI regulation', 'Fintech', 'Digital assets',
-    'Sports technology', 'Cybersecurity', 'Energy transition',
-    'Financial markets', 'Trademark law', 'International business strategy',
-  ],
-  sameAs: [
-    `${SITE}/nermin-sefic/`,
-    `${SITE}/en/nermin-sefic/`,
-    LINKEDIN_CANONICAL,
-  ],
-};
-const organization = {
-  '@type': 'Organization',
-  '@id': ORGANIZATION_ID,
-  name: 'GNK ASG d.o.o.',
-  alternateName: ['GNK ASG', 'GNK ASG doo'],
-  legalName: 'GNK ASG d.o.o.',
-  url: `${SITE}/`,
-  logo: `${SITE}/assets/logo-gnk-asg-canonical.svg`,
-  founder: { '@id': PERSON_ID },
-  parentOrganization: { '@id': group['@id'] },
-  address: {
-    '@type': 'PostalAddress',
-    addressCountry: 'HR',
-    addressLocality: 'Zagreb',
-  },
-  sameAs: [`${SITE}/`],
-};
-const website = {
-  '@type': 'WebSite',
-  '@id': WEBSITE_ID,
-  url: `${SITE}/`,
-  name: 'GNK ASG',
-  publisher: { '@id': ORGANIZATION_ID },
-  inLanguage: ['hr', 'en'],
-};
-const entityGraph = { '@context': 'https://schema.org', '@graph': [person, organization, group, website] };
+const entityGraph = read('scripts/aeo-entity-source.jsonld', null);
+const graphNodes = Array.isArray(entityGraph) ? entityGraph : (entityGraph?.['@graph'] || []);
+const graphById = new Map(graphNodes.filter((node) => node?.['@id']).map((node) => [node['@id'], node]));
+if (entityGraph?.['@context'] !== 'https://schema.org' ||
+    !graphById.has(PERSON_ID) || !graphById.has(ORGANIZATION_ID) || !graphById.has(WEBSITE_ID)) {
+  throw new Error('AEO entity source is missing or has invalid canonical IDs');
+}
+const person = graphById.get(PERSON_ID);
+const organization = graphById.get(ORGANIZATION_ID);
+const website = graphById.get(WEBSITE_ID);
+if (person.name !== 'Nermin Sefić' || organization.name !== 'GNK ASG d.o.o.' || website.name !== 'GNK ASG') {
+  throw new Error('AEO entity source names do not match the reviewed canonical entities');
+}
 
 write('apps/portal/nermin-sefic/entity.jsonld', `${JSON.stringify(entityGraph, null, 2)}\n`);
 write('apps/portal/data/entity-graph.jsonld', `${JSON.stringify(entityGraph, null, 2)}\n`);
@@ -121,6 +81,9 @@ const llms = `# GNK ASG — corporate and editorial reference
 - Publications (EN): ${SITE}/en/publications/
 - Editorial registry: ${SITE}/data/editorial-registry.json
 - AI and editorial reference: ${SITE}/ai/
+- Reviewed AI visibility facts (JSON): ${SITE}/ai-visibility/facts.json
+- AI visibility text brief: ${SITE}/ai-visibility/brief.txt
+- Read-only AI visibility OpenAPI spec: ${SITE}/ai-visibility/openapi.json
 - Public AI knowledge pack (JSON): ${SITE}/data/assistant-knowledge.json
 - Uploadable assistant reference (Markdown): ${SITE}/ai/assistant-reference.md
 - Transparent assistant writing guidance: ${SITE}/ai/assistant-system-prompt.txt
@@ -170,10 +133,7 @@ const socialImage = `${SITE}/assets/gnk-asg-social-card.png`;
 const aiPage = {
   '@context': 'https://schema.org',
   '@graph': [
-    person,
-    organization,
-    group,
-    website,
+    ...graphNodes,
     {
       '@type': 'WebPage',
       '@id': `${SITE}/ai/#webpage`,
@@ -200,6 +160,8 @@ const ai = `<!doctype html>
 <link rel="alternate" type="text/plain" href="${SITE}/llms-full.txt" title="GNK ASG publication index">
 <link rel="alternate" type="application/ld+json" href="${SITE}/nermin-sefic/entity.jsonld" title="GNK ASG entity graph">
 <link rel="alternate" type="application/json" href="${SITE}/data/assistant-knowledge.json" title="GNK ASG public AI reference">
+<link rel="alternate" type="application/json" href="${SITE}/ai-visibility/facts.json" title="Reviewed public AI facts">
+<link rel="alternate" type="application/json" href="${SITE}/ai-visibility/openapi.json" title="Read-only AI visibility OpenAPI">
 <link rel="alternate" type="application/json" href="${SITE}/ai/assistant-reference-openapi.json" title="Read-only AI reference API">
 <meta name="editor" content="Nermin Sefić">
 <meta property="og:type" content="website">
@@ -231,6 +193,9 @@ const ai = `<!doctype html>
 <li><a href="${SITE}/ai/assistant-reference.md">Assistant reference to upload (Markdown)</a></li>
 <li><a href="${SITE}/ai/assistant-system-prompt.txt">Transparent writing guidance (text)</a></li>
 <li><a href="${SITE}/ai/assistant-reference-openapi.json">Read-only OpenAPI spec for ChatGPT Actions and compatible tools</a></li>
+<li><a href="${SITE}/ai-visibility/facts.json">Reviewed public facts with registry/byline sources (JSON)</a></li>
+<li><a href="${SITE}/ai-visibility/brief.txt">AI facts brief with source links (text)</a></li>
+<li><a href="${SITE}/ai-visibility/openapi.json">Read-only AI Visibility OpenAPI Action</a></li>
 </ul>
 <h2>Public references</h2>
 <ul>
@@ -249,7 +214,7 @@ const ai = `<!doctype html>
 write('apps/portal/ai/index.html', ai);
 
 console.log(JSON.stringify({
-  wrote: ['/llms.txt', '/llms-full.txt', '/nermin-sefic/entity.jsonld', '/data/entity-graph.jsonld', '/ai/index.html'],
+  wrote: ['/llms.txt', '/llms-full.txt', '/nermin-sefic/entity.jsonld', '/data/entity-graph.jsonld', '/ai/index.html', '/ai-visibility/facts.json', '/ai-visibility/brief.txt'],
   items: items.length,
   authorshipPolicy: 'verified-registry-byline-only; editor-is-not-author',
   linkedin: LINKEDIN_CANONICAL,

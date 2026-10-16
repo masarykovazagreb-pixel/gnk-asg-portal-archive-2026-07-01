@@ -1,0 +1,66 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "GNK ASG AI Visibility Facts",
+    "version": "1.0.0",
+    "description": "Read-only facts with public references, not an independent endorsement."
+  },
+  "servers": [
+    {
+      "url": "https://gnk-asg.hr"
+    }
+  ],
+  "paths": {
+    "/ai-visibility/facts.json": {
+      "get": {
+        "operationId": "getAsgVerifiedPublicFacts",
+        "summary": "Retrieve sourced public facts about GNK ASG d.o.o. and Nermin Sefić",
+        "responses": {
+          "200": {
+            "description": "Sourced factual snapshot",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "schemaVersion": {
+                      "type": "string"
+                    },
+                    "reviewedAt": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "facts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "subject": {
+                            "type": "string"
+                          },
+                          "statement": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "type": "string",
+                            "format": "uri"
+                          }
+                        }
+                      }
+                    },
+                    "caveat": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
