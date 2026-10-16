@@ -5,11 +5,10 @@ const EXPECTED_SCHEMA = 'gnk-asg-source-gated-editorial-queue/v1';
 const HUMAN_GATE = 'Nermin Sefić';
 const ALLOWED = new Set(['draft','source-review','approved-for-own-site','published']);
 const SOURCE_REQUIRED = ['source_url','publisher','source_title','source_date','attribution','original_link'];
-const TYPE_MIN_WORDS = { komentar: 300, objava: 500, analiza: 1500 };
+// Owner 2026-10-14: no minimum word counts; preserve substantive publication gates.
 const errors = [];
 
 const nonEmpty = value => typeof value === 'string' && value.trim().length > 0;
-const words = value => (String(value || '').match(/\p{L}[\p{L}\p{N}’'\-]*/gu) || []).length;
 const validDate = value => nonEmpty(value) && !Number.isNaN(new Date(value).getTime());
 const validHttps = value => {
   try { return new URL(value).protocol === 'https:'; } catch { return false; }
@@ -48,10 +47,16 @@ function validatePublication(item) {
   if (!['komentar','objava','analiza'].includes(pub.type)) { errors.push(item.id + ': publication.type invalid'); ok = false; }
   if (pub.author !== HUMAN_GATE) { errors.push(item.id + ': publication.author must be ' + HUMAN_GATE); ok = false; }
   if (!validDate(pub.publishAt)) { errors.push(item.id + ': publication.publishAt invalid'); ok = false; }
-  if (!Array.isArray(pub.paragraphs) || pub.paragraphs.length < 3) { errors.push(item.id + ': publication.paragraphs must contain at least 3 paragraphs'); ok = false; }
-  const count = words((pub.paragraphs || []).join(' '));
-  const min = TYPE_MIN_WORDS[pub.type] || 3000;
-  if (count < min) { errors.push(item.id + ': publication body has ' + count + ' words; minimum ' + min); ok = false; }
+  const paragraphs = Array.isArray(pub.paragraphs) ? pub.paragraphs : [];
+  const normalized = paragraphs.map(value => typeof value === 'string'
+    ? value.normalize('NFKC').toLocaleLowerCase('hr').replace(/\s+/g, ' ').trim()
+    : '');
+  if (!normalized.length || normalized.some(value => !value)) {
+    errors.push(item.id + ': publication.paragraphs requires non-empty original text'); ok = false;
+  }
+  if (normalized.length !== new Set(normalized).size) {
+    errors.push(item.id + ': publication contains duplicate paragraphs'); ok = false;
+  }
   const links = [...new Set(Array.isArray(pub.links) ? pub.links : [])];
   if (links.length < 5 || links.some(link => typeof link !== 'string' || !link.startsWith('/'))) {
     errors.push(item.id + ': publication requires at least 5 unique internal links');
