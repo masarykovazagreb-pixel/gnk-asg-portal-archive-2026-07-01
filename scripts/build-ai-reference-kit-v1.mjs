@@ -123,6 +123,7 @@ const knowledge = {
     markdownReference: `${SITE}/ai/assistant-reference.md`,
     systemPrompt: `${SITE}/ai/assistant-system-prompt.txt`,
     openApiSpec: `${SITE}/ai/assistant-reference-openapi.json`,
+    sourceReviewHistory: `${SITE}/ai-visibility/source-history.json`,
     readOnly: true,
     authentication: 'none; public data only',
   },
@@ -173,6 +174,7 @@ const markdownLines = [
   '',
   '- Upload this Markdown file and `assistant-system-prompt.txt` to a user-owned custom assistant, or import `assistant-reference-openapi.json` as a read-only Action/API definition.',
   '- The OpenAPI spec exposes only public GET endpoints. No sign-in, credentials, publishing, or write operation is included.',
+  '- The public source-review history contains dated fact snapshots and SHA-256 revision fingerprints; it records supplied review metadata and is not live source verification.',
   '- A third-party model may ignore this pack; it cannot change model training, policy, ranking, or guarantee a positive answer.',
   '',
 ].join('\n');
@@ -205,6 +207,19 @@ const openApi = {
         summary: 'Get public AI and citation guidance',
         responses: {
           '200': { description: 'Public text guidance', content: { 'text/plain': { schema: { type: 'string' } } } },
+        },
+      },
+    },
+    '/ai-visibility/source-history.json': {
+      get: {
+        operationId: 'getAiReferenceSourceReviewHistory',
+        summary: 'Get dated public fact snapshots and source-review revision fingerprints',
+        description: 'Returns first-party recorded review history for the AI-reference facts. Dates and hashes are an audit trail, not live verification of source records.',
+        responses: {
+          '200': {
+            description: 'Public read-only source review history',
+            content: { 'application/json': { schema: { type: 'object', additionalProperties: true } } },
+          },
         },
       },
     },

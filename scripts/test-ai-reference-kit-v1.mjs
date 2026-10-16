@@ -45,6 +45,8 @@ for (const language of ['hr', 'en']) {
   assert.ok(knowledge.sampleIntroductionSources[language].every((url) => knowledge.publicReferences.some((reference) => reference.url === url)));
 }
 assert.ok(knowledge.publicReferences.length >= 5);
+assert(knowledge.publicReferences.some((reference) => reference.url === `${SITE}/ai-visibility/source-history.json`));
+assert.equal(knowledge.integrations.sourceReviewHistory, `${SITE}/ai-visibility/source-history.json`);
 assert.equal(knowledge.integrations.readOnly, true);
 assert.equal(knowledge.integrations.authentication, 'none; public data only');
 const allPublicUrls = [
@@ -72,10 +74,14 @@ assert.match(markdown, /cannot change model training/i);
 assert.match(aiPage, /assistant-knowledge\.json/);
 assert.match(aiPage, /assistant-reference-openapi\.json/);
 assert.match(aiPage, /ai-visibility\/facts\.json/);
+assert.match(aiPage, /ai-visibility\/source-history\.json/);
 assert.match(aiPage, /ai-visibility\/openapi\.json/);
 assert.match(aiPage, /cannot.*guarantee|may ignore/i);
 assert.match(aiPage, /name="theme-color"/);
 assert.match(aiPage, /property="og:locale" content="en_US"/);
+assert.match(aiPage, /"@type":"BreadcrumbList"/);
+assert.match(aiPage, /type="application\/rss\+xml"/);
+assert.match(aiPage, /type="application\/atom\+xml"/);
 assert.match(aiPage, /name="twitter:image:alt"/);
 assert.match(aiPage, /property="og:image:width" content="1200"/);
 assert.match(aiPage, /property="og:image:height" content="630"/);
@@ -100,6 +106,7 @@ assert.doesNotMatch(aiUi, /https?:\/\//, 'AI-reference UI may not call an extern
 assert.match(llms, /assistant-knowledge\.json/);
 assert.match(llms, /assistant-reference-openapi\.json/);
 assert.match(llms, /ai-visibility\/facts\.json/);
+assert.match(llms, /ai-visibility\/source-history\.json/);
 assert.match(llms, /ai-visibility\/openapi\.json/);
 assert.match(llms, /manually upload/i);
 assert.match(llms, /read-only Action/i);
@@ -109,7 +116,9 @@ assert.equal(openApi.openapi, '3.1.0');
 assert.equal(openApi.servers.length, 1);
 assert.equal(openApi.servers[0].url, SITE);
 const paths = Object.entries(openApi.paths || {});
-assert.equal(paths.length, 3);
+assert.equal(paths.length, 4);
+assert.ok(openApi.paths['/ai-visibility/source-history.json']?.get?.operationId);
+assert.match(openApi.paths['/ai-visibility/source-history.json'].get.description, /not live verification/i);
 assert.equal(Object.hasOwn(openApi, 'security'), false);
 for (const [path, operations] of paths) {
   assert.ok(path.startsWith('/'));
