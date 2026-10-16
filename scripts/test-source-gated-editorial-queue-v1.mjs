@@ -19,10 +19,12 @@ assert(rows.every(x=>adapter.blockers(x).length>0));
 assert.throws(()=>adapter.adapt({...queue,schema:'unknown'},entry.file));
 assert.throws(()=>adapter.adapt({...queue,items:[queue.items[0],queue.items[0]]},entry.file));
 const ready={...rows[0],slug:'test-source-review',title:'Test',seoTitle:'Test SEO',summary:'Summary',metaDescription:'Description',
-  body:['word '.repeat(3000)],image:'/assets/test.webp',internalLinks:['/a/','/b/','/c/','/d/','/e/'],
+  body:['Izvor je provjeren i činjenice su odvojene od uredničkog komentara.'],image:'/assets/test.webp',internalLinks:['/a/','/b/','/c/','/d/','/e/'],
   sourceGate:{source_url:'https://example.org/source',original_link:'https://example.org/source',publisher:'Example',source_title:'Source',
     source_date:'2026-10-04',attribution:'Example publisher',verified_by:'Human reviewer',verified_at:'2026-10-05T04:00:00Z',verified_facts:['A checked fact'],source_hashtags:[]}};
-assert.equal(adapter.blockers(ready).length,0);
+assert.equal(adapter.blockers(ready).length,0,'short original commentary can pass all independent gates');
+assert(adapter.blockers({...ready,body:[]}).some(message=>message.includes('neprazan')),'empty article must remain blocked');
+assert(adapter.blockers({...ready,body:['Ista tvrdnja.',' ISTA  tvrdnja. ']}).some(message=>message.includes('duplicirane')),'repeated paragraphs must remain blocked');
 assert(adapter.blockers({...ready,sourceGate:{...ready.sourceGate,source_url:'javascript:alert(1)'}}).length>0);
 assert(adapter.blockers({...ready,queueStatus:'published'}).length>0);
 assert(adapter.blockers({...ready,type:'foresight-scenario',scenario:{}}).length>0);
