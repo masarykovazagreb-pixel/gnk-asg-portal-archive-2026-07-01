@@ -12,6 +12,7 @@ on:
       - 'scripts/enforce-approved-author-markers-v1.mjs'
       - 'scripts/audit-editorial-publication-completeness-v1.mjs'
       - 'scripts/lib/editorial-route-protection-v1.mjs'
+      - 'scripts/lib/editorial-attribution-v1.mjs'
       - 'apps/portal/data/editorial-image-manifest.json'
       - '.github/workflows/world-topics-materialize.yml'
 
@@ -43,7 +44,7 @@ jobs:
       - name: Normalize completeness for World Topics only
         run: node scripts/apply-editorial-publication-completeness-v1.mjs --write --routes-file apps/portal/data/world-topics-registry.json
       - name: Enforce approved author markers
-        run: node scripts/enforce-approved-author-markers-v1.mjs
+        run: node scripts/enforce-approved-author-markers-v1.mjs --write
       - name: Rebuild canonical metadata after page normalization
         run: node scripts/editorial-registry-v1.mjs
       - name: Verify complete publication release before commit or deploy

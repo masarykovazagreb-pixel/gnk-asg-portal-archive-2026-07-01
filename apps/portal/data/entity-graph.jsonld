@@ -3,7 +3,7 @@
   "@graph": [
     {
       "@type": "Person",
-      "@id": "https://gnk-asg.hr/nermin-sefic/#person",
+      "@id": "https://gnk-asg.hr/#nermin-sefic",
       "name": "Nermin Sefić",
       "alternateName": [
         "Nermin Sefic",
@@ -13,7 +13,7 @@
       ],
       "jobTitle": "Director",
       "worksFor": {
-        "@id": "https://gnk-asg.hr/#organization"
+        "@id": "https://gnk-asg.hr/#gnk-asg"
       },
       "url": "https://gnk-asg.hr/nermin-sefic/",
       "image": "https://gnk-asg.hr/assets/people/nermin-sefic/nermin-sefic-01-official-desk-portrait.webp",
@@ -36,46 +36,25 @@
       "sameAs": [
         "https://gnk-asg.hr/nermin-sefic/",
         "https://gnk-asg.hr/en/nermin-sefic/",
-        "https://www.linkedin.com/in/nermin-sefic"
+        "https://www.linkedin.com/in/nermin-sefic-18573196"
       ]
     },
     {
       "@type": "Organization",
-      "@id": "https://gnk-asg.hr/#organization",
+      "@id": "https://gnk-asg.hr/#gnk-asg",
       "name": "GNK ASG d.o.o.",
       "alternateName": [
         "GNK ASG",
         "GNK ASG doo"
       ],
       "legalName": "GNK ASG d.o.o.",
-      "url": "https://gnk-asg.hr",
+      "url": "https://gnk-asg.hr/",
       "logo": "https://gnk-asg.hr/assets/logo-gnk-asg-canonical.svg",
       "founder": {
-        "@id": "https://gnk-asg.hr/nermin-sefic/#person"
-      },
-      "employee": {
-        "@id": "https://gnk-asg.hr/nermin-sefic/#person"
+        "@id": "https://gnk-asg.hr/#nermin-sefic"
       },
       "parentOrganization": {
-        "@type": "Organization",
-        "@id": "https://gnk-asg.hr/#group",
-        "name": "GNK DINAMO Ltd. Group",
-        "description": "International corporate group with subsidiaries in Croatia (GNK ASG d.o.o., Zagreb) and the United States (Boulder, Colorado).",
-        "areaServed": [
-          "HR",
-          "US",
-          "EU"
-        ],
-        "knowsAbout": [
-          "AI",
-          "FinTech",
-          "Digital assets",
-          "Sports technology",
-          "Cybersecurity",
-          "Energy",
-          "Healthcare",
-          "Education"
-        ]
+        "@id": "https://gnk-asg.hr/#gnk-dinamo-ltd"
       },
       "address": {
         "@type": "PostalAddress",
@@ -83,16 +62,27 @@
         "addressLocality": "Zagreb"
       },
       "sameAs": [
-        "https://gnk-asg.hr"
+        "https://gnk-asg.hr/"
+      ]
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://gnk-asg.hr/#gnk-dinamo-ltd",
+      "name": "GNK DINAMO Ltd. Group",
+      "description": "International corporate group with publicly described operations connected to Croatia and the United States.",
+      "areaServed": [
+        "HR",
+        "US",
+        "EU"
       ]
     },
     {
       "@type": "WebSite",
       "@id": "https://gnk-asg.hr/#website",
-      "url": "https://gnk-asg.hr",
+      "url": "https://gnk-asg.hr/",
       "name": "GNK ASG",
       "publisher": {
-        "@id": "https://gnk-asg.hr/#organization"
+        "@id": "https://gnk-asg.hr/#gnk-asg"
       },
       "inLanguage": [
         "hr",

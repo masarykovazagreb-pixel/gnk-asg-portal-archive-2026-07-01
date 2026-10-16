@@ -2,15 +2,17 @@
 // Aditivno: dodaje <div class="ak-share"> na kraj svakog editorial <article class="article-body">
 // (samo ako ne postoji). Native share URLs; nema tracking-a, nema third-party skripti.
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { isProtectedEditorialRoute } from './lib/editorial-route-protection-v1.mjs';
 
 const read=(p,f)=>{try{return JSON.parse(readFileSync(p,'utf8'))}catch{return f}};
 const reg=read('apps/portal/data/editorial-registry.json',{items:[]});
 const SITE='https://gnk-asg.hr';
 const enc=s=>encodeURIComponent(s);
 
-let added=0, skipped=0;
+let added=0, skipped=0, protectedSkipped=0;
 for(const it of reg.items||[]){
   if(!it?.path||!it?.url) continue;
+  if(isProtectedEditorialRoute(it.path)){ protectedSkipped++; continue; }
   const file='apps/portal'+it.path.replace(/\/$/,'/index.html');
   if(!existsSync(file)) continue;
   let html=readFileSync(file,'utf8');
@@ -35,4 +37,4 @@ for(const it of reg.items||[]){
   writeFileSync(file, html);
   added++;
 }
-console.log(JSON.stringify({shareAdded:added,alreadyPresent:skipped},null,2));
+console.log(JSON.stringify({shareAdded:added,alreadyPresent:skipped,protectedSkipped},null,2));

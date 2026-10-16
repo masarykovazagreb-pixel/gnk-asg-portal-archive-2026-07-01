@@ -1,69 +1,112 @@
-// GNK ASG — Image entity SEO: obogaćuje alt/title atribute entitetima
-// (Nermin Sefić, GNK ASG, GNK DINAMO Ltd.) na sigurni način:
-//  - samo DODAJE alt/title gdje nedostaje ili nadopunjuje gdje entitet fali
-//  - nikad ne uklanja/mijenja postojeći smisleni sadržaj
-//  - preskače <script> blokove (JS predlošci) i zaštićene admin rute
-import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
-import { join } from 'node:path';
+// Accessibility-first image metadata normalization.
+// Only real Nermin portraits receive his name in alt text; logos and charts are
+// described by their actual contents. Protected SPT/bank routes are skipped.
+// Read-only by default. Pass --write from a reviewed workflow to apply changes.
+import fs from 'node:fs';
+import path from 'node:path';
+import { isProtectedEditorialRoute } from './lib/editorial-route-protection-v1.mjs';
 
-const ROOT='apps/portal';
-const SKIP=new Set(['admin','admin-center','control','automation-status','webmail','mail-studio','campaign-mailer','email-status','worker-ops','operator-dashboard','digital-headquarters','media-registration-admin','podijeli','api','assets','data']);
-const pages=[];
-(function walk(dir){
-  for(const n of readdirSync(dir)){
-    const p=join(dir,n);
-    const st=statSync(p);
-    if(st.isDirectory()){ if(dir===ROOT&&SKIP.has(n))continue; walk(p); }
-    else if(n==='index.html') pages.push(p);
+const ROOT = 'apps/portal';
+const WRITE = process.argv.includes('--write');
+const SKIP_ROOTS = new Set([
+  'admin', 'admin-center', 'admin-login', 'control', 'automation-status',
+  'webmail', 'mail-studio', 'campaign-mailer', 'email-status', 'worker-ops',
+  'operator-dashboard', 'digital-headquarters', 'media-registration-admin',
+  'podijeli', 'api', 'assets', 'data', '__preview', 'bank', 'spt',
+]);
+const files = [];
+(function walk(dir) {
+  for (const name of fs.readdirSync(dir)) {
+    const file = path.join(dir, name);
+    let stat;
+    try { stat = fs.statSync(file); } catch { continue; }
+    if (stat.isDirectory()) {
+      const relative = path.relative(ROOT, file).split(path.sep).join('/');
+      const segments = relative.split('/');
+      if ((segments[0] && SKIP_ROOTS.has(segments[0])) || (segments[0] === 'en' && segments[1] && SKIP_ROOTS.has(segments[1]))) continue;
+      walk(file);
+    } else if (name === 'index.html') files.push(file);
   }
 })(ROOT);
-console.log('pages:',pages.length);
 
-const stats={filesChanged:0,altAdded:0,altEnriched:0,titleAdded:0};
-for(const file of pages){
-  let html=readFileSync(file,'utf8');
-  const isEn=/<html[^>]+lang="en"/i.test(html);
-  // mask script blocks
-  const scripts=[];
-  let masked=html.replace(/<script[\s\S]*?<\/script>/gi,m=>{scripts.push(m);return `\u0000S${scripts.length-1}\u0000`;});
-  let changed=false;
-  masked=masked.replace(/<img\b[^>]*>/gi,(tag)=>{
-    const src=(tag.match(/src="([^"]*)"/i)||[])[1]||'';
-    const isPerson=/\/assets\/people\/nermin-sefic\//.test(src);
-    const isLogo=/logo-gnk-asg/.test(src);
-    const isChart=/\/assets\/editorial\/world-topics\//.test(src);
-    if(!isPerson&&!isLogo&&!isChart) return tag;
-    let t=tag;
-    const altM=t.match(/alt="([^"]*)"/i);
-    const alt=altM?altM[1]:null;
-    const personAlt=isEn?'Nermin Sefić — Director, GNK ASG d.o.o. | GNK DINAMO Ltd.':'Nermin Sefić — direktor GNK ASG d.o.o. | GNK DINAMO Ltd.';
-    const logoAlt='GNK ASG d.o.o. — GNK DINAMO Ltd. Group';
-    if(alt===null||alt.trim()===''){
-      const val=isPerson?personAlt:(isLogo?logoAlt:(isEn?'Data chart · Nermin Sefić / GNK ASG':'Grafički prikaz · Nermin Sefić / GNK ASG'));
-      t = alt===null ? t.replace(/<img\b/i,`<img alt="${val}"`) : t.replace(/alt="[^"]*"/i,`alt="${val}"`);
-      stats.altAdded++; changed=true;
-    } else if(isPerson&&!/sefi[ćc]/i.test(alt)){
-      // "Nermin" -> "Nermin Sefić"; sve ostalo dobiva prefiks pune imenske kombinacije
-      const enriched=/\bnermin\b/i.test(alt) ? alt.replace(/\bnermin\b/i,'Nermin Sefić') : `${alt} — Nermin Sefić (Sefic Nermin), GNK ASG`;
-      t=t.replace(/alt="([^"]*)"/i,`alt="${enriched}"`);
-      stats.altEnriched++; changed=true;
-    } else if(isLogo&&!/gnk/i.test(alt)){
-      t=t.replace(/alt="([^"]*)"/i,(m,a)=>`alt="${a} — GNK ASG"`);
-      stats.altEnriched++; changed=true;
-    } else if(isChart&&!/sefi[ćc]|gnk/i.test(alt)){
-      t=t.replace(/alt="([^"]*)"/i,(m,a)=>`alt="${a} · Nermin Sefić / GNK ASG"`);
-      stats.altEnriched++; changed=true;
-    }
-    if(isPerson&&!/title="/i.test(t)){
-      t=t.replace(/<img\b/i,'<img title="Nermin Sefić (Sefic Nermin) — GNK ASG · GNK DINAMO Ltd."');
-      stats.titleAdded++; changed=true;
-    }
-    return t;
+const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+}[char]));
+const attr = (tag, name) => tag.match(new RegExp(`\\b${name}\\s*=\\s*(["'])([\\s\\S]*?)\\1`, 'i'))?.[2] || '';
+const setAttr = (tag, name, value) => {
+  const safe = esc(value);
+  const pattern = new RegExp(`\\b${name}\\s*=\\s*(["'])([\\s\\S]*?)\\1`, 'i');
+  return pattern.test(tag)
+    ? tag.replace(pattern, `${name}="${safe}"`)
+    : tag.replace(/\s*\/?>$/, (end) => ` ${name}="${safe}"${end}`);
+};
+const removeAttr = (tag, name) => tag.replace(new RegExp(`\\s+${name}\\s*=\\s*(["'])([\\s\\S]*?)\\1`, 'i'), '');
+
+const stats = {
+  mode: WRITE ? 'write' : 'check',
+  scanned: files.length,
+  protectedSkipped: 0,
+  changed: 0,
+  portraitsDescribed: 0,
+  logosDescribed: 0,
+  chartsDescribed: 0,
+};
+const changedPages = [];
+
+for (const file of files) {
+  const relative = path.relative(ROOT, file).split(path.sep).join('/');
+  const route = `/${relative.replace(/index\.html$/i, '')}`;
+  if (isProtectedEditorialRoute(route)) {
+    stats.protectedSkipped++;
+    continue;
+  }
+  let html = fs.readFileSync(file, 'utf8');
+  const original = html;
+  const title = html.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i)?.[1]?.replace(/<[^>]+>/g, '').trim() || 'GNK ASG';
+  const isEn = /<html\b[^>]*\blang=["']en(?:-[^"']*)?["']/i.test(html);
+
+  const scriptBlocks = [];
+  const masked = html.replace(/<script[\s\S]*?<\/script>/gi, (block) => {
+    scriptBlocks.push(block);
+    return `\u0000SCRIPT${scriptBlocks.length - 1}\u0000`;
   });
-  if(changed){
-    const out=masked.replace(/\u0000S(\d+)\u0000/g,(m,i)=>scripts[+i]);
-    writeFileSync(file,out);
-    stats.filesChanged++;
+  let updated = masked.replace(/<img\b[^>]*>/gi, (originalTag) => {
+    const src = attr(originalTag, 'src');
+    const isPortrait = /\/assets\/people\/nermin-sefic\//i.test(src);
+    const isLogo = /logo-gnk-asg/i.test(src);
+    const isChart = /\/assets\/editorial\/world-topics\//i.test(src);
+    if (!isPortrait && !isLogo && !isChart) return originalTag;
+
+    let tag = originalTag;
+    const currentAlt = attr(tag, 'alt');
+    const genericAlt = /^(?:image|photo|picture|portrait|headshot|chart|logo)?\s*$/i.test(currentAlt);
+    if (!currentAlt || genericAlt) {
+      const value = isPortrait
+        ? (isEn ? 'Nermin Sefić — GNK ASG director' : 'Nermin Sefić — direktor GNK ASG')
+        : isLogo
+          ? (isEn ? 'GNK ASG d.o.o. logo' : 'Logotip GNK ASG d.o.o.')
+          : (isEn ? `Editorial data chart: ${title}` : `Urednički podatkovni grafikon: ${title}`);
+      tag = setAttr(tag, 'alt', value);
+      if (isPortrait) stats.portraitsDescribed++;
+      else if (isLogo) stats.logosDescribed++;
+      else stats.chartsDescribed++;
+    } else if (isChart && /\s*[·—-]\s*Nermin Sefić\s*\/\s*GNK ASG\s*$/i.test(currentAlt)) {
+      tag = setAttr(tag, 'alt', currentAlt.replace(/\s*[·—-]\s*Nermin Sefić\s*\/\s*GNK ASG\s*$/i, '').trim());
+      stats.chartsDescribed++;
+    }
+
+    // Decorative titles add noise to assistive technology; leave existing accurate titles alone.
+    const existingTitle = attr(tag, 'title');
+    if (isChart && /nermin\s+sefi[cć]/i.test(existingTitle)) tag = removeAttr(tag, 'title');
+    return tag;
+  });
+  html = updated.replace(/\u0000SCRIPT(\d+)\u0000/g, (_match, index) => scriptBlocks[Number(index)]);
+
+  if (html !== original) {
+    stats.changed++;
+    changedPages.push(route);
+    if (WRITE) fs.writeFileSync(file, html, 'utf8');
   }
 }
-console.log(JSON.stringify(stats,null,2));
+
+console.log(JSON.stringify({ ...stats, changedPages: WRITE ? changedPages : changedPages.slice(0, 40) }, null, 2));

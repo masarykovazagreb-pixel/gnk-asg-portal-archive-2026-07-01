@@ -20,6 +20,8 @@ on:
       - 'apps/portal/en/gnk-aktual/index.html'
       - 'apps/portal/en/gnk-aktual/weekly/**'
       - 'scripts/enforce-nermin-author-seo-v1.mjs'
+      - 'scripts/lib/editorial-attribution-v1.mjs'
+      - 'scripts/lib/editorial-route-protection-v1.mjs'
       - 'apps/portal/data/news.json'
       - 'apps/portal/data/aktual-weekly.json'
       - 'apps/portal/data/aktual-weekly-curation.json'
@@ -61,7 +63,7 @@ jobs:
         run: node scripts/build-aktual-media-weekly-v1.mjs
       - name: Materialize bilingual weekly issue and archive pages
         run: node scripts/build-aktual-media-weekly-archive-v1.mjs --refresh
-      - name: Normalize Nermin Sefić author SEO on registry-verified column pages
+      - name: Keep verified author and neutral editor roles separate on columns
         run: node scripts/enforce-nermin-author-seo-v1.mjs --write
       - name: Materialize due editorial pages
         run: node scripts/editorial-publish-scheduled-v1.mjs

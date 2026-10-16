@@ -8,6 +8,27 @@ on:
       - 'workers/gnk-asg-direct-operator/src/digital-workforce-suite-v1.js'
       - 'workers/gnk-asg-ai-newsroom-writer/src/index.js'
       - 'scripts/test-content-source-governance-v1.mjs'
+      - 'scripts/build-aktual-weekly-candidate-options-v1.mjs'
+      - 'scripts/test-aktual-weekly-candidate-options-v1.mjs'
+      - 'scripts/build-ai-reference-kit-v1.mjs'
+      - 'scripts/test-ai-reference-kit-v1.mjs'
+      - 'scripts/generate-aeo-artifacts-v1.mjs'
+      - 'scripts/lib/editorial-attribution-v1.mjs'
+      - 'scripts/lib/editorial-route-protection-v1.mjs'
+      - 'apps/portal/data/entity-graph.jsonld'
+      - 'apps/portal/data/assistant-knowledge.json'
+      - 'apps/portal/ai/index.html'
+      - 'apps/portal/ai/assistant-reference.md'
+      - 'apps/portal/ai/assistant-system-prompt.txt'
+      - 'apps/portal/ai/assistant-reference-openapi.json'
+      - 'apps/portal/llms.txt'
+      - 'docs/AI-REFERENCE-KIT-V1.md'
+      - 'config/ai-reference-source-v1.json'
+      - 'apps/portal/data/news.json'
+      - 'apps/portal/data/aktual-weekly-curation.json'
+      - 'apps/portal/data/aktual-weekly.json'
+      - 'reports/aktual-weekly-candidate-options.json'
+      - 'reports/aktual-weekly-candidate-options-*.md'
       - '.github/workflows/content-source-governance.yml'
   workflow_dispatch:
 
@@ -33,3 +54,14 @@ jobs:
           node --check scripts/test-content-source-governance-v1.mjs
       - name: Source provenance and publication safety contract
         run: node scripts/test-content-source-governance-v1.mjs
+      - name: Build and validate internal AKTUAL weekly candidate options
+        run: |
+          set -euo pipefail
+          node scripts/build-aktual-weekly-candidate-options-v1.mjs
+          node scripts/test-aktual-weekly-candidate-options-v1.mjs
+      - name: Build and validate opt-in public AI reference kit
+        run: |
+          set -euo pipefail
+          node scripts/generate-aeo-artifacts-v1.mjs
+          node scripts/build-ai-reference-kit-v1.mjs
+          node scripts/test-ai-reference-kit-v1.mjs

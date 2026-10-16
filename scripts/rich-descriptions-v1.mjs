@@ -6,6 +6,7 @@
 // Ne dira registry (registry description ostaje kratak, za listing kartice).
 // Ne dira stranice gdje je meta description ručno napisan i već >=155 znakova.
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { isProtectedEditorialRoute } from './lib/editorial-route-protection-v1.mjs';
 
 const read=(p,f)=>{try{return JSON.parse(readFileSync(p,'utf8'))}catch{return f}};
 const stripHtml=s=>s.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<[^>]+>/g,' ');
@@ -26,9 +27,10 @@ function trim(str, limit){
 }
 
 const registry=read('apps/portal/data/editorial-registry.json',{items:[]});
-const stats={filesChanged:0,metaImproved:0,ogImproved:0,twImproved:0,skippedNoBody:0,skippedAlreadyRich:0};
+const stats={filesChanged:0,metaImproved:0,ogImproved:0,twImproved:0,skippedNoBody:0,skippedAlreadyRich:0,protectedSkipped:0};
 for(const it of registry.items||[]){
   if(!it?.path) continue;
+  if(isProtectedEditorialRoute(it.path)){stats.protectedSkipped++;continue;}
   const file='apps/portal'+it.path.replace(/\/$/,'/index.html');
   if(!existsSync(file)) continue;
   let html=readFileSync(file,'utf8');

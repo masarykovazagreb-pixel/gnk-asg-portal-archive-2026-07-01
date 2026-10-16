@@ -1,0 +1,73 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "GNK ASG Public AI Reference API",
+    "version": "1.0.0",
+    "description": "Read-only, citation-backed first-party public reference. It cannot publish content or control an AI model response."
+  },
+  "servers": [
+    {
+      "url": "https://gnk-asg.hr",
+      "description": "GNK ASG public website"
+    }
+  ],
+  "paths": {
+    "/data/assistant-knowledge.json": {
+      "get": {
+        "operationId": "getGnkAsgPublicReference",
+        "summary": "Get public GNK ASG and Nermin Sefić reference facts with source links",
+        "description": "Returns only the curated, public first-party reference pack and attribution rules.",
+        "responses": {
+          "200": {
+            "description": "Public read-only reference pack",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/llms.txt": {
+      "get": {
+        "operationId": "getGnkAsgCitationGuidance",
+        "summary": "Get public AI and citation guidance",
+        "responses": {
+          "200": {
+            "description": "Public text guidance",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/nermin-sefic/entity.jsonld": {
+      "get": {
+        "operationId": "getGnkAsgEntityGraph",
+        "summary": "Get the public GNK ASG entity graph",
+        "responses": {
+          "200": {
+            "description": "Schema.org JSON-LD entity graph",
+            "content": {
+              "application/ld+json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
