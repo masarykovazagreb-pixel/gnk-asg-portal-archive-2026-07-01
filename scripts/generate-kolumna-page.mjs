@@ -45,7 +45,7 @@ function stranicaHtml(k, jezik) {
     .map((p) => `<p>${escH(p)}</p>`)
     .join('\n      ');
 
-  const routeName = putanja.replace(/^\\/+|\\/+$/g, '').replace(/[^a-zA-Z0-9-]+/g, '-').replace(/-+/g, '-').toLowerCase();
+  const routeName = putanja.split('/').filter(Boolean).join('-').replace(/[^a-zA-Z0-9-]+/g, '-').replace(/-+/g, '-').toLowerCase();
   const imagePath = `/assets/editorial/generated/${routeName}-${createHash('sha1').update(putanja).digest('hex').slice(0,8)}.webp`;
   const slikaTag = `<img class="article-cover" src="${imagePath}" alt="${escH(naslov)}" width="1200" height="630" style="max-width:100%;height:auto;border:3px solid #241C0E;margin-bottom:20px">`;
 
