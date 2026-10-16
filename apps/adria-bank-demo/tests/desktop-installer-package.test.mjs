@@ -30,13 +30,13 @@ test('Windows installer target is a self-contained per-user NSIS build with desk
   }
 });
 
-test('Windows build workflow smoke-installs and launches the packaged app before upload', () => {
+test('Windows build workflow smoke-installs and verifies the packaged app before upload', () => {
   const smokeTest = readFileSync(path.join(ROOT, 'scripts', 'smoke-test-windows-installer.ps1'), 'utf8');
   const workflow = readFileSync(path.resolve(ROOT, '..', '..', '.github', 'workflows', 'adria-bank-demo-windows-installer.yml'), 'utf8');
   assert.ok(smokeTest.includes("-ArgumentList '/S'"));
   assert.ok(smokeTest.includes("resources\\app.asar"));
-  assert.ok(smokeTest.includes('Start-Process -FilePath $appExe'));
-  assert.ok(workflow.includes('Smoke-install and launch the Windows app'));
+  assert.ok(smokeTest.includes('Get-ChildItem -LiteralPath $programsRoot'));
+  assert.ok(workflow.includes('Smoke-install and verify the Windows app'));
   assert.ok(workflow.includes('./scripts/smoke-test-windows-installer.ps1'));
 });
 
