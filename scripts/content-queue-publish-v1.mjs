@@ -3,6 +3,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { preflightContentQueue } from './content-queue-preflight-v1.mjs';
+import { addCommentListing, addAktualLink } from './lib/editorial-visibility-links-v1.mjs';
 import { articleAuthorFor, isVerifiedNerminAuthor } from './lib/editorial-attribution-v1.mjs';
 import { normalizeEditorialAttributionHtml, extractSocialHashtags } from './lib/editorial-html-attribution-v1.mjs';
 
@@ -75,6 +76,19 @@ for(const it of due){
   const hashtags=extractedHashtags;
   if(!html.includes('article:published_time')) html=html.replace('</head>',`<meta property="article:published_time" content="${publishedAt}"></head>`);
   write('apps/portal'+path.replace(/\/$/,'/index.html'),html);
+  // Materialize the same verified canonical post in /komentari/ and AKTUAL.
+  // This executes only as part of the existing serialized Content Queue publisher.
+  // A missing template marker is a release blocker, never a silent skip.
+  const visibilityArticle={route:path,type,title,description,image};
+  for (const [target, updater] of [
+    ['apps/portal/komentari/index.html',addCommentListing],
+    ['apps/portal/gnk-aktual/index.html',addAktualLink]
+  ]) {
+    if(!existsSync(target))throw new Error('Missing static editorial destination: '+target);
+    const current=readFileSync(target,'utf8');
+    const next=updater(current,visibilityArticle);
+    if(next.changed)write(target,next.html);
+  }
   const author=articleAuthorFor(attributionItem);
   const authorSchemaVerified=isVerifiedNerminAuthor(attributionItem);
   map.set(path,{slug:it.slug,type,collection:COLL[type],path,url:canonical,title,description,keywords,hashtags,image,publishedAt,inPlan:true,seoComplete:true,language:lang,author:author?.name||null,authorUrl:authorSchemaVerified?`${SITE}/nermin-sefic/`:null,authorSchemaVerified,authorAttributionBasis:authorSchemaVerified?'visible-editorial-byline-and-person-schema':null});
