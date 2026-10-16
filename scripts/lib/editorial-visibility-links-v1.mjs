@@ -7,12 +7,11 @@ const enforceRoute = route => {
   if (!allowedRoute(route)) throw new Error('Noncanonical editorial visibility route: '+route);
   return route;
 };
-const escapeRe = value => value.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 
 export function addCommentListing(html, article) {
   const route=enforceRoute(article.route);
   const escaped=escapeHtml(route);
-  if (html.includes('href="'+escaped+'"')) return {html, changed:false};
+  if (html.includes('data-editorial-route="'+escaped+'"')) return {html, changed:false};
   const open=/<section\b(?=[^>]*\bclass\s*=\s*["'][^"']*\beditorial-grid\b[^"']*["'])[^>]*>/gi;
   const matches=[...html.matchAll(open)];
   if (matches.length!==1) throw new Error('Content queue: unique comments editorial-grid is required');
