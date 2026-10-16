@@ -74,6 +74,18 @@
 <script>
 (function(){
   function esc(s){ return String(s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  // Keep media-source links, but never request third-party article images
+  // from readers' browsers. They can set tracking cookies and violate licenses.
+  function previewVisual(item) {
+    var raw=String(item.image||'').trim();
+    var local=/^\/assets\/[a-z0-9/_-]+\.(?:svg|webp|png|jpe?g)$/i.test(raw) && raw.indexOf('..')===-1;
+    if (local) return {src:raw,alt:String(item.imageAlt||item.title||'Urednička ilustracija')};
+    var isDigital=item.group==='digital-assets';
+    return {
+      src:isDigital?'/assets/gallery/digitalna-imovina-gold-navy-11-v2.svg':'/assets/gallery/kapitalna-disciplina-amber-energy-05-v2.svg',
+      alt:'Tematska ilustracija GNK ASG uz vijest: '+String(item.title||'')
+    };
+  }
   fetch('/data/news.json?v='+Date.now(), { cache:'no-store' })
     .then(function(r){ return r.json(); })
     .then(function(data){
@@ -84,7 +96,7 @@
       if (!picked.length){ grid.innerHTML = '<p class="ap-loading">Vijesti trenutno nisu dostupne.</p>'; return; }
       grid.innerHTML = picked.map(function(item){
         return '<a class="ap-card" href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+
-          '<img src="'+esc(item.image||'/assets/news-fallback.svg')+'" alt="" loading="lazy" onerror="this.src=\'/assets/news-fallback.svg\'">'+
+          '<img src="'+esc(previewVisual(item).src)+'" alt="'+esc(previewVisual(item).alt)+'" width="1200" height="675" loading="lazy" decoding="async">'+
           '<div class="ap-card-body"><h3>'+esc(item.title)+'</h3><span>'+esc(item.source||'')+'</span></div></a>';
       }).join('');
     })
