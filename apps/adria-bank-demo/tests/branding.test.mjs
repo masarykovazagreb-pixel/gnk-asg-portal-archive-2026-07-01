@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { DEMO_BRAND } from '../src/core.mjs';
-import { supportedLanguages } from '../src/i18n.mjs';
+import { supportedLanguages, translate } from '../src/i18n.mjs';
 
 const read = path => readFileSync(new URL(path, import.meta.url), 'utf8');
 
@@ -53,4 +53,19 @@ test('welcome front door displays the exact brand and offers every supported lan
   assert.ok(html.includes('data-entry="staff"'));
   assert.ok(html.includes('data-entry="customer"'));
   assert.ok(html.includes('DEMO DESKTOP ADRIA BANK'));
+});
+
+test('every desktop entry point shows the small-print demo-only disclaimer in every supported language', () => {
+  for (const page of ['../index.html', '../client.html', '../exchange.html']) {
+    assert.ok(read(page).includes('data-i18n="desktopDemoDisclaimer"'), `${page} needs the localized disclaimer`);
+  }
+  const welcome = read('../welcome.html');
+  const welcomeScript = read('../src/welcome.mjs');
+  assert.ok(welcome.includes('data-welcome-key="desktopDemoDisclaimer"'));
+  assert.ok(welcomeScript.includes('COPY[language].desktopDemoDisclaimer = disclaimer'));
+  for (const language of supportedLanguages) {
+    const notice = translate(language.code, 'desktopDemoDisclaimer');
+    assert.notEqual(notice, 'desktopDemoDisclaimer', `${language.code} needs a translated disclaimer`);
+    assert.match(notice, /bank|banka|banque|banco|خدمة|銀行|银行|benki/i, `${language.code} disclaimer must say it is not a real bank/service`);
+  }
 });

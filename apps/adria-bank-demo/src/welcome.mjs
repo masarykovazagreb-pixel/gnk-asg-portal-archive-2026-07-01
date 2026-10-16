@@ -45,6 +45,21 @@ const COPY = {
   }
 };
 
+const desktopDemoDisclaimer = {
+  hr: 'Desktop demo verzija · nije stvarna banka ni financijska usluga',
+  en: 'Desktop demo version · not a real bank or financial service',
+  de: 'Desktop-Demoversion · keine echte Bank oder Finanzdienstleistung',
+  fr: 'Version démo de bureau · ni banque ni service financier réel',
+  es: 'Versión demo de escritorio · no es un banco ni un servicio financiero real',
+  ar: 'نسخة تجريبية لسطح المكتب · ليست بنكاً أو خدمة مالية حقيقية',
+  sw: 'Toleo la demo la kompyuta · si benki wala huduma halisi ya kifedha',
+  ja: 'デスクトップ・デモ版 · 実在の銀行・金融サービスではありません',
+  zh: '桌面演示版 · 并非真实银行或金融服务'
+};
+for (const [language, disclaimer] of Object.entries(desktopDemoDisclaimer)) {
+  COPY[language].desktopDemoDisclaimer = disclaimer;
+}
+
 export const welcomeTranslations = COPY;
 
 const languageSelect = document.querySelector('#welcomeLanguage');

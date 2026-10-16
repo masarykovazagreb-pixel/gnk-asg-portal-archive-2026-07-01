@@ -20,9 +20,13 @@ Open the local server on port `4173`:
 - `http://localhost:4173/exchange.html` — standalone FX / digital-asset rehearsal desk
 - `http://localhost:4173/index.html#interop` — staff-only multi-bank / crypto-exchange interop lab
 
-### Open as a Windows desktop demo
+### Install the Windows 11 desktop demo (recommended)
 
-After extracting the source ZIP, install Node.js 22.12 or newer (64-bit), keep standard TLS verification enabled and double-click `START-ADRIA-BANK-DEMO.bat`. It invokes the included PowerShell installer, installs into the current user's LocalAppData folder, creates Desktop/Start-menu shortcuts and launches the Electron app. The first setup requires an internet connection to download npm packages and the Windows Electron runtime. No administrator access should be required. Read `START-HERE.txt` first. This is **not** a self-contained or signed `.exe` installer; if network or certificate setup fails, resolve the trusted TLS chain rather than disabling verification.
+Use the **Windows standalone installer ZIP** linked from [`DOWNLOADS.md`](./DOWNLOADS.md) or the [Windows installer workflow](https://github.com/masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01/actions/workflows/adria-bank-demo-windows-installer.yml). Extract it, verify the SHA-256 in `SHA256SUMS.txt` if desired, and run `Adria-Banka-Demo-Setup-1.2.0-x64.exe`. It includes the Electron runtime, installs per-user, creates Desktop/Start-menu shortcuts, and launches the app. **The end user does not need Node.js, npm, administrator rights, or internet access for installation and the core demo.** Internet is used only for optional public reference feeds; clearly labelled bundled synthetic sample data is available offline. TLS certificate verification remains enabled.
+
+The installer is unsigned, so Windows SmartScreen may show a publisher warning. Verify the download source and checksum; do not disable Defender, SmartScreen, or certificate checks. Local demo data is retained if the app is uninstalled.
+
+The older `Adria-Bank-Demo-Desktop-2026-10-11.zip` is a **source/developer bundle, not an installer**. Its `START-ADRIA-BANK-DEMO.bat` path requires Windows 10/11 x64, Node.js 22.12+ (64-bit), npm and an internet connection for the first Electron/dependency download. Use the standalone installer ZIP for an easy desktop installation.
 
 Most data and workflows run in the browser and are saved in local storage. The local Node server has **two read-only proxy routes** for public ECB and Central Bank of Kenya (CBK) daily reference sources (`/api/fx/ecb` and `/api/fx/cbk`); they do not accept banking instructions or customer data. The restricted Electron preload uses separate IPC calls for the same reference feeds. Feed access can fail; the UI then labels its bundled dated samples as fallback data. The selected public rates are informational/daily, not real-time, executable, guaranteed or bank-specific quotes. AED is derived from the ECB EUR/USD reference and the stated USD/AED peg assumption. No pricing provider or payment network is connected. The app retries these public read-only reference sources every six hours while its process is running; this does not monitor or update laws, licences, bank connectivity or payment-rail status.
 
@@ -65,17 +69,22 @@ The company-location planning card uses the public GNK DINAMO Ltd. / FINA listin
 
 The demo has no real onboarding, identity verification, beneficial-owner registry check, PEP/sanctions/adverse-media screening, payment settlement, card processing, bank connectivity, SWIFT registration, liquidity provider, crypto custody, authentication, server-enforced authorization, immutable audit, production monitoring, disaster recovery or regulator integration. SEPA/SWIFT labels describe only local rehearsals.
 
-## Windows 11 build
+## Windows 11 build and installer verification
 
-Electron packaging is configured for 64-bit Windows. Recreate the extractable source bundle with `npm run package:desktop-zip` (Python 3.9+); the script excludes Git metadata, dependency folders and existing ZIPs, verifies the archive CRC and writes `Adria-Bank-Demo-Desktop-2026-10-11.zip`. On a Windows 11 build machine (or a suitably provisioned CI runner), build the actual binary installer with:
+The end-user package is an x64 NSIS installer, built on a Windows runner so it embeds the Electron runtime and avoids requiring Node.js on the target PC. The installer is per-user, does not request elevation, creates Desktop and Start-menu shortcuts, opens the app after setup, and keeps local demo data on uninstall. It is unsigned; SmartScreen may therefore show a warning.
+
+On a trusted Windows 11 x64 machine or CI runner, build and package it with:
 
 ```powershell
 npm ci
 npm test
 npm run dist:win
+npm run package:windows-installer-zip
 ```
 
-The NSIS installer and optional portable target (`npm run dist:win:portable`) write to `release/`. The branded executable would be unsigned, so Windows SmartScreen may warn until a publisher signing certificate is applied. **No standalone Windows `.exe` is currently present or verified in this workspace.** The supplied `Adria-Bank-Demo-Desktop-2026-10-11.zip` is a tested, extractable **source bundle** with a one-click Windows launcher, not a binary desktop installer. After extraction, `START-ADRIA-BANK-DEMO.bat` runs `Install-Windows.ps1`, installs into the current user’s LocalAppData folder, runs `npm ci`, creates Desktop/Start-menu shortcuts and opens Electron. This requires Windows 10/11 x64, Node.js 22.12+ and an internet connection for the first dependency/Electron download. The Electron binary is not embedded. The Linux cross-build attempt on 10 October 2026 stopped at TLS certificate verification while fetching Windows packaging tools; certificate checks were not disabled. Build on a properly provisioned Windows machine (or trusted runner), then verify, malware-scan and test the actual installer before distribution.
+This creates `release/Adria-Banka-Demo-Setup-1.2.0-x64.exe` and `release/Adria-Bank-Demo-Windows-Setup-1.2.0-x64.zip`. The ZIP contains the Windows installer, Croatian installation instructions and `SHA256SUMS.txt`; its packager verifies the PE signature, archive CRC and embedded installer checksum. The GitHub Actions workflow builds this package on Windows and uploads it as the `Adria-Bank-Demo-Windows-Setup` artifact.
+
+The checked-in `Adria-Bank-Demo-Desktop-2026-10-11.zip` remains a legacy source/developer bundle, not a binary installer; it requires Node.js 22.12+ and network access on first setup. It must not be presented as the end-user installer. The separate `npm run package:desktop-zip` command creates that source bundle. No TLS verification is disabled during package installation or builds.
 
 ## Product, legal and operational boundaries
 
