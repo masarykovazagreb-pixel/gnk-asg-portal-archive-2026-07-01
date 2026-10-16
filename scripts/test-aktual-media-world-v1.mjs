@@ -41,8 +41,42 @@ if(!js.includes("fetch('/data/news.json")) failures.push('js: must consume canon
 if(!js.includes("fetch('/data/kolumne.json")) failures.push('js: must consume canonical columns feed');
 if(!js.includes("world:'international'")) failures.push('js: world alias normalization missing');
 if(!js.includes("business:'economy'")) failures.push('js: business alias normalization missing');
+const imageGuard=js.slice(js.indexOf('const localEditorialVisuals ='),js.indexOf('  const meta = item =>'));
+if(!imageGuard.includes('localEditorialVisuals')||!imageGuard.includes('selectImage')) failures.push('js: local preview protection missing');
+else {
+  // Browser-free contract test against the actual image renderer.
+  const renderImage=new Function('esc','lang','metaFor',`${imageGuard};return image;`)(
+    value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char])),
+    'hr',group=>({label:String(group||'Ostalo')})
+  );
+  const external=renderImage({title:'Izvorna vijest',image:'https://img.decrypt.co/photo.jpg',_group:'technology'},true);
+  if(external.includes('img.decrypt.co') || external.includes('src="http') || external.includes('src="//')) failures.push('js: external images must never load as reader subresources');
+  if(!external.includes('src="/assets/gallery/')||!external.includes('Tematska ilustracija')) failures.push('js: external images must use attributed local topical illustrations');
+  if(!external.includes('width="1200" height="675"')||!external.includes('loading="eager"')) failures.push('js: lead image dimensions/priority missing');
+  const original=renderImage({title:'Verificirana lokalna ilustracija',image:'/assets/gallery/agentic-ai-orchestration-organic-v3.svg',imageAlt:'Tema o AI-u',_group:'technology'});
+  if(!original.includes('src="/assets/gallery/agentic-ai-orchestration-organic-v3.svg"')) failures.push('js: preserve approved local images');
+}
 if(/innerHTML\s*=\s*[^;]*item\.title/.test(js)) failures.push('js: unescaped direct title injection detected');
 if(!css.includes('.am-leadgrid')||!css.includes('.am-cardgrid')||!css.includes('@media')) failures.push('css: required responsive newsroom layout missing');
+
+// Tržišta shares the canonical AKTUAL news feed. Its previews must never
+// reintroduce third-party image cookies or portray an illustration as a photo.
+const marketsHtml=read('apps/portal/trzista/index.html');
+const visualStart=marketsHtml.indexOf('function previewVisual(item)');
+const visualEnd=marketsHtml.indexOf('\n  fetch(',visualStart);
+if(visualStart<0||visualEnd<=visualStart) failures.push('markets: missing approved preview image handler');
+else {
+  const previewVisual=Function(`${marketsHtml.slice(visualStart,visualEnd)};return previewVisual;`)();
+  const remoteEconomy=previewVisual({image:'https://img.decrypt.co/news.jpg',group:'economy',title:'Poslovna vijest'});
+  if(remoteEconomy.src!=='/assets/gallery/kapitalna-disciplina-amber-energy-05-v2.svg') failures.push('markets: economy remote images must use local fallback');
+  if(!remoteEconomy.alt.startsWith('Tematska ilustracija GNK ASG')) failures.push('markets: local illustration must be labelled honestly');
+  const remoteDigital=previewVisual({image:'//remote.example/test.jpg',group:'digital-assets',title:'Digitalna imovina'});
+  if(remoteDigital.src!=='/assets/gallery/digitalna-imovina-gold-navy-11-v2.svg') failures.push('markets: protocol-relative image must use local fallback');
+  const local=previewVisual({image:'/assets/gallery/agentic-ai-orchestration-organic-v3.svg',imageAlt:'Urednička ilustracija AI',group:'technology'});
+  if(local.src!=='/assets/gallery/agentic-ai-orchestration-organic-v3.svg') failures.push('markets: preserve existing approved local artwork');
+  if(marketsHtml.includes("esc(item.image||")||!marketsHtml.includes('width="1200" height="675"')) failures.push('markets: uncensored image rendering or missing fixed dimensions');
+}
+
 for(const url of ['https://gnk-asg.hr/gnk-aktual/teme/','https://gnk-asg.hr/en/gnk-aktual/topics/']){
   if(!sitemap.includes('<loc>'+url+'</loc>')) failures.push('sitemap missing '+url);
 }

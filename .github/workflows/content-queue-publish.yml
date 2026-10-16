@@ -1,8 +1,8 @@
 name: Content Queue Publish
 
-# GNK ASG Content Factory — objavljuje READY stavke po kalendaru (3 slota dnevno, Europe/Zagreb).
-# Nakon objave: commit na main -> exact-SHA production deploy (verifikacija + IndexNow),
-# a promjena editorial-registry.json automatski okida Blog Mirror Publish (Blogger/Dev.to/Tumblr/Telegraph).
+# GNK ASG Content Factory — publishes guarded READY items from the calendar (Europe/Zagreb).
+# Site release uses the exact-SHA production fence with search notifications disabled.
+# External mirrors remain separate manual opt-in workflows; a registry change is not approval to distribute.
 
 on:
   workflow_dispatch:
