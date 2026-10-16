@@ -47,6 +47,10 @@ jobs:
       - name: Build the per-user x64 NSIS installer
         run: npm run dist:win
 
+      - name: Smoke-install and launch the Windows app
+        shell: pwsh
+        run: ./scripts/smoke-test-windows-installer.ps1
+
       - name: Package and verify the installer ZIP
         run: npm run package:windows-installer-zip
 

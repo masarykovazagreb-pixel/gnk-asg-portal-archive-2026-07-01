@@ -4,7 +4,7 @@ These are synthetic, local-only demo materials. They do not connect to real bank
 
 ## Recommended: Windows 11 desktop installer
 
-- Open the [Windows installer workflow](https://github.com/masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01/actions/workflows/adria-bank-demo-windows-installer.yml), choose its latest successful run, then download the `Adria-Bank-Demo-Windows-Setup` artifact. The ZIP contains `Adria-Banka-Demo-Setup-1.2.0-x64.exe`, Croatian installation instructions, and `SHA256SUMS.txt`. The installer embeds Electron, installs per-user, creates Desktop/Start-menu shortcuts, and does **not** require Node.js, npm, or internet access for installation and core use. Optional public daily reference feeds may need internet. The installer is unsigned, so Windows SmartScreen may show a warning; verify the source and checksum before running it.
+- Open the [Windows installer workflow](https://github.com/masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01/actions/workflows/adria-bank-demo-windows-installer.yml), choose its latest successful run, then download the `Adria-Bank-Demo-Windows-Setup` artifact. The ZIP contains `Adria-Banka-Demo-Setup-1.2.0-x64.exe`, Croatian installation instructions, and `SHA256SUMS.txt`. The Windows workflow smoke-installs and launches the app before uploading. The installer embeds Electron, installs per-user, creates Desktop/Start-menu shortcuts, and does **not** require Node.js, npm, or internet access for installation and core use. Optional public daily reference feeds may need internet. The installer is unsigned, so Windows SmartScreen may show a warning; verify the source and checksum before running it.
 
 ## Source/developer archives
 

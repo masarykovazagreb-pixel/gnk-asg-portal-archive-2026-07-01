@@ -82,7 +82,7 @@ npm run dist:win
 npm run package:windows-installer-zip
 ```
 
-This creates `release/Adria-Banka-Demo-Setup-1.2.0-x64.exe` and `release/Adria-Bank-Demo-Windows-Setup-1.2.0-x64.zip`. The ZIP contains the Windows installer, Croatian installation instructions and `SHA256SUMS.txt`; its packager verifies the PE signature, archive CRC and embedded installer checksum. The GitHub Actions workflow builds this package on Windows and uploads it as the `Adria-Bank-Demo-Windows-Setup` artifact.
+This creates `release/Adria-Banka-Demo-Setup-1.2.0-x64.exe` and `release/Adria-Bank-Demo-Windows-Setup-1.2.0-x64.zip`. The ZIP contains the Windows installer, Croatian installation instructions and `SHA256SUMS.txt`; its packager verifies the PE signature, archive CRC and embedded installer checksum. The GitHub Actions workflow builds the installer on Windows, silently installs it per-user, launches the installed app for a smoke test, verifies and packages the ZIP, then uploads it as the `Adria-Bank-Demo-Windows-Setup` artifact.
 
 The checked-in `Adria-Bank-Demo-Desktop-2026-10-11.zip` remains a legacy source/developer bundle, not a binary installer; it requires Node.js 22.12+ and network access on first setup. It must not be presented as the end-user installer. The separate `npm run package:desktop-zip` command creates that source bundle. No TLS verification is disabled during package installation or builds.
 
