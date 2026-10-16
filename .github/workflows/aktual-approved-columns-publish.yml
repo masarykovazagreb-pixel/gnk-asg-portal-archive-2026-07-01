@@ -39,6 +39,12 @@ jobs:
       - name: Capture exact main revision
         id: baseline
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Verify column generators and preview ready backlog
+        run: |
+          set -euo pipefail
+          node --check scripts/kolumne-publish-v1.mjs
+          node --check scripts/generate-kolumna-page.mjs
+          node scripts/kolumne-publish-v1.mjs --sve
       - name: Process approved source manuscripts and skip duplicates
         run: node scripts/kolumne-publish-v1.mjs --sve --uzivo
       - name: Detect newly materialized columns
