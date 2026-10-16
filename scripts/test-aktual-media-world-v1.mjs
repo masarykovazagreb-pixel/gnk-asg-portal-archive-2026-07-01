@@ -50,7 +50,7 @@ else {
     'hr',group=>({label:String(group||'Ostalo')})
   );
   const external=renderImage({title:'Izvorna vijest',image:'https://img.decrypt.co/photo.jpg',_group:'technology'},true);
-  if(/img\\.decrypt\\.co|src="https?:|src="\\/\\//.test(external)) failures.push('js: external images must never load as reader subresources');
+  if(external.includes('img.decrypt.co') || external.includes('src="http') || external.includes('src="//')) failures.push('js: external images must never load as reader subresources');
   if(!external.includes('src="/assets/gallery/')||!external.includes('Tematska ilustracija')) failures.push('js: external images must use attributed local topical illustrations');
   if(!external.includes('width="1200" height="675"')||!external.includes('loading="eager"')) failures.push('js: lead image dimensions/priority missing');
   const original=renderImage({title:'Verificirana lokalna ilustracija',image:'/assets/gallery/agentic-ai-orchestration-organic-v3.svg',imageAlt:'Tema o AI-u',_group:'technology'});
