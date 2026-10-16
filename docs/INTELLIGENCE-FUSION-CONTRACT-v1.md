@@ -95,3 +95,26 @@ Only legally public sources and explicitly authorized connected sources may be i
 6. `severity` can be high while `confidence` is low.
 7. Public output contains no unsupported `confirmed` state.
 8. Every retrospective failure can be transformed into a worker learning task.
+
+## Legal integration-readiness gates (no agency connection implied)
+
+This section is a preparation checklist, not legal advice and not evidence of an agency relationship. No intelligence-service affiliation, private-server connection, or classified-data access is established by this contract.
+
+A new source may enter a live connector only after all applicable gates are recorded:
+
+1. **Authority and purpose:** named data owner, documented business purpose, jurisdiction, data classes, and written authorization from the source owner. Publicly accessible does not automatically mean unrestricted reuse.
+2. **Legal review:** counsel confirms the lawful basis, source terms/license, permitted retention and onward use, privacy impact, and any applicable Croatian/EU obligations. Execute required agreements (for example, an API/data-use agreement or DPA) before integration.
+3. **Official endpoint:** use a documented public API/feed or a specifically authorized endpoint. No credential bypass, private-account scraping, leaked data, classified network access, or scanning of third-party servers.
+4. **Security boundary:** read-only by default; allowlisted HTTPS hosts; bounded redirects, payload size and request rate; SSRF/private-address protections; isolated staging; least-privilege service identity; secrets stored only in approved GitHub/Cloudflare secret stores, never in Git or chat.
+5. **Data governance:** preserve source URL, retrieved/published times, license, attribution, fingerprints and confidence; minimize personal data; set retention/deletion rules; keep contradictions and corrections; separate internal evidence from public summaries.
+6. **Publication control:** no automatic external posting. A human editor approves every public item, image rights/credit and uncertainty language. Editorial approval is separate from technical ingestion.
+7. **Operational readiness:** security review, dependency/license review, audit logging, incident contact, rollback/disable switch, monitoring, and documented owner sign-off before production.
+
+### GitHub Free / open-source intake
+- Only public repositories with a clear, compatible license and an identified maintainer/source are candidates.
+- Pin dependencies and actions to reviewed immutable versions/SHAs; review provenance, permissions and transitive dependencies; run vulnerability/license checks and create an SBOM where appropriate.
+- Start in a read-only sandbox. Do not add a third-party repo as a production writer or grant broad `contents: write`/secret access without a separate approval and threat review.
+
+### Server and agency onboarding
+- Start with existing public feeds/APIs and the public-source registry. For a non-public or partner endpoint, require the official service name, owner, endpoint documentation, written authority/agreement, allowed data scope, retention rules and a security contact. Do not send credentials in chat; provision them through the approved secret-management channel after review.
+- Any proposed intelligence-service integration remains **blocked** until the agency itself provides formal authorization and the company completes counsel, security and data-protection review. This contract does not request, imply or enable access to classified systems.

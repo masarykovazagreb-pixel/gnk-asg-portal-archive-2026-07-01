@@ -10,6 +10,14 @@ assert.ok(fs.existsSync(script),'missing content queue preflight');
 assert.match(publisher,/preflightContentQueue/);
 assert.match(publisher,/zagrebOffsetFor/);
 assert.doesNotMatch(publisher,/publishedAt=.*\+02:00/);
+assert.match(publisher,/normalizeEditorialAttributionHtml/);
+assert.match(publisher,/extractSocialHashtags/);
+assert.doesNotMatch(publisher,/article:author[^`]*Nermin Sefić/,'content queue must not hard-code Nermin as author');
+assert.doesNotMatch(publisher,/NerminSefic/,'unverified queue entries must not receive a personal-name social hashtag');
+const backfill=fs.readFileSync('scripts/content-queue-backfill-v1.mjs','utf8');
+assert.match(backfill,/normalizeEditorialAttributionHtml/);
+assert.match(backfill,/extractSocialHashtags/);
+assert.doesNotMatch(backfill,/NerminSefic/,'backfill must not keyword-stuff or personally tag unverified posts');
 
 const root=fs.mkdtempSync(path.join(os.tmpdir(),'asg-content-queue-gate-'));
 const write=(rel,value)=>{

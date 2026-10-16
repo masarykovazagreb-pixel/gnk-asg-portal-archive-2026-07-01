@@ -3,11 +3,23 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { isProtectedEditorialRoute as protectedPath } from './lib/editorial-route-protection-v1.mjs';
 import { limitSeoDescription } from './lib/seo-description-v1.mjs';
+import {
+  SITE as CANONICAL_SITE,
+  PERSON_URL,
+  PERSON_ID,
+  ORGANIZATION_ID,
+  WEBSITE_ID,
+  NERMIN_EDITOR,
+  GNK_ASG_PUBLISHER,
+  articleAuthorFor,
+  isNerminPersonReference,
+  isVerifiedNerminAuthor,
+} from './lib/editorial-attribution-v1.mjs';
 
 const PORTAL = 'apps/portal';
 const REGISTRY_PATH = `${PORTAL}/data/editorial-registry.json`;
 const IMAGE_MANIFEST_PATH = `${PORTAL}/data/editorial-image-manifest.json`;
-const SITE = 'https://gnk-asg.hr';
+const SITE = CANONICAL_SITE;
 const WRITE = process.argv.includes('--write');
 const FORCE_SHARE = process.argv.includes('--refresh-share');
 const routesFileIndex = process.argv.indexOf('--routes-file');
@@ -23,9 +35,9 @@ if (routesFileIndex >= 0) {
   routeFilter = new Set(routes);
   if (routeFilter.size !== routes.length) throw new Error(`${routesFile}: duplicate routes are not allowed.`);
 }
-const AUTHOR_URL = `${SITE}/nermin-sefic/`;
-const AUTHOR_ID = `${AUTHOR_URL}#person`;
-const ORG = { '@type': 'Organization', '@id': `${SITE}/#organization`, name: 'GNK ASG d.o.o.', url: `${SITE}/`, logo: { '@type': 'ImageObject', url: `${SITE}/assets/logo-gnk-asg-canonical.svg` } };
+const AUTHOR_URL = PERSON_URL;
+const AUTHOR_ID = PERSON_ID;
+const ORG = { ...GNK_ASG_PUBLISHER, logo: { '@type': 'ImageObject', url: `${SITE}/assets/logo-gnk-asg-canonical.svg` } };
 
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
 const unescapeHtml = (input = '') => {
@@ -110,37 +122,27 @@ const collectionFor = (item) => {
   const base = item.path.replace(/[^/]+\/$/, '');
   return { path: base.endsWith('/') ? base : `${base}/`, label: labelFor(item.type, item.language) };
 };
-const authorMark = '<p class="article-author-mark" data-author-mark="nermin-sefic">#NerminSefić #NerminSefic</p>';
-const stripAuthorHashtags = (html) => html.replace(/(<p\b[^>]*class=["'][^"']*(?:article-hashtags|article-tags|hashtag-list)[^"']*["'][^>]*>)([\s\S]*?)(<\/p>)/gi, (_all, start, body, end) => {
-  const kept = body.replace(/#(?:NerminSefić|NerminSefic|SefićNermin|SeficNermin)(?=[\s.,;:!?)}\]]|$)/giu, '').replace(/\s{2,}/g, ' ').trim();
-  return kept ? `${start}${kept}${end}` : '';
-});
-const normalizeAuthorMark = (html) => {
-  html = stripAuthorHashtags(html);
-  html = html.replace(/<p\b[^>]*data-author-mark=["']nermin-sefic["'][^>]*>[\s\S]*?<\/p>/gi, '');
-  if (html.includes('</article>')) return html.replace('</article>', `${authorMark}</article>`);
-  if (html.includes('</main>')) return html.replace('</main>', `${authorMark}</main>`);
-  return html + authorMark;
-};
+const stripPageHashtags = (html) => html
+  .replace(/<p\b[^>]*class=["'][^"']*\b(?:article-hashtags|article-tags|hashtag-list|article-author-mark)\b[^"']*["'][^>]*>[\s\S]*?<\/p>/gi, '')
+  .replace(/<p\b[^>]*data-author-mark=["']nermin-sefic["'][^>]*>[\s\S]*?<\/p>/gi, '');
 const stripNerminAuthorAttribution = (html) => {
-  let out = stripAuthorHashtags(html);
-  out = out.replace(/<p\b[^>]*data-author-mark=["']nermin-sefic["'][^>]*>[\s\S]*?<\/p>/gi, '');
+  let out = stripPageHashtags(html);
   out = out.replace(/<(aside|section|div)\b[^>]*class=["'][^"']*\b(?:article-author|author-box|author-card)\b[^"']*["'][^>]*>[\s\S]*?<\/\1>/gi, (block) => /nermin\s+sefi[cć]/i.test(pageText(block)) ? '' : block);
-  out = out.replace(/<p\b[^>]*class=["'][^"']*\beditorial-approval\b[^"']*["'][^>]*>[\s\S]*?<\/p>/gi, (block) => /nermin\s+sefi[cć]/i.test(pageText(block)) ? '' : block);
-  out = out.replace(/<p\b[^>]*class=["'][^"']*editorial-author-inline[^"']*["'][^>]*>[\s\S]*?<\/p>/gi, (block) => /nermin\s+sefi[cć]/i.test(block) ? '' : block);
-  out = out.replace(/(<(?:div|p)\b[^>]*class=["'][^"']*\b(?:article-meta|meta-row|byline|author-meta|article-author)\b[^"']*["'][^>]*>)([\s\S]*?)(<\/(?:div|p)>)/gi, (block, open, body, close) => {
-    if (!/nermin\s+sefi[cć]/i.test(pageText(body))) return block;
-    let clean = body.replace(/<(span|a)\b[^>]*>[\s\S]*?<\/\1>/gi, (node) => {
+  out = out.replace(/<p\b[^>]*class=["'][^"']*editorial-author-inline[^"']*["'][^>]*>[\s\S]*?<\/p>/gi, (block) => {
+    const text = pageText(block);
+    const explicitPersonalByline = /(?:author|autor)\s*:/i.test(text) && /nermin\s+sefi[cć]/i.test(text);
+    return explicitPersonalByline ? '' : block;
+  });
+  out = out.replace(/<(div|p)\b[^>]*class=["'][^"']*\b(?:article-meta|meta-row|byline|author-meta)\b[^"']*["'][^>]*>[\s\S]*?<\/\1>/gi, (block) => {
+    const text = pageText(block);
+    if (!/(?:author|autor)\s*:\s*nermin\s+sefi[cć]/i.test(text)) return block;
+    let clean = block.replace(/<(span|a)\b[^>]*>[\s\S]*?<\/\1>/gi, (node) => {
       const text = pageText(node);
-      if (/^(?:(?:author|autor)\s*:\s*)?nermin\s+sefi[cć](?:\s*\/\s*gnk\s+asg\s+d\.o\.o\.)?$/i.test(text)) return '';
-      return node;
+      return /^(?:(?:author|autor)\s*:\s*)?nermin\s+sefi[cć](?:\s*\/\s*gnk\s+asg\s+d\.o\.o\.)?$/i.test(text) ? '' : node;
     });
     clean = clean.replace(/(?:author|autor)\s*:\s*nermin\s+sefi[cć](?:\s*\/\s*gnk\s+asg\s+d\.o\.o\.)?\s*(?:[·|,]\s*)?/gi, '');
-    clean = clean.replace(/nermin\s+sefi[cć](?:\s*\/\s*gnk\s+asg\s+d\.o\.o\.)?/gi, '');
-    clean = clean.replace(/(?:&nbsp;|\s)*(?:·|[|,–—])(?:&nbsp;|\s)*(?=(?:·|[|,–—]))/g, ' ');
-    clean = clean.replace(/^(?:&nbsp;|\s|[·|,–—])+|(?:&nbsp;|\s|[·|,–—])+$/g, '');
     clean = clean.replace(/<(?:span|a)\b[^>]*>\s*<\/(?:span|a)>/gi, '');
-    return pageText(clean) ? `${open}${clean}${close}` : '';
+    return pageText(clean) ? clean : '';
   });
   return out;
 };
@@ -163,7 +165,7 @@ const relatedLinksBlock = (item) => {
     : [['/gnk-aktual/','AKTUAL MEDIA'],['/objave/','Objave'],['/komentari/','Komentari'],['/analize/','Analize'],['/gnk-aktual/kolumne/','Kolumne'],['/gnk-aktual/tjedni/','Tjednik']];
   return `<nav class="editorial-crosslinks" data-editorial-crosslinks aria-label="${en ? 'Related AKTUAL MEDIA sections' : 'Povezane rubrike AKTUAL MEDIA'}" style="display:flex;gap:.65rem;flex-wrap:wrap;align-items:center;border-top:1px solid rgba(127,127,127,.32);padding:1rem 0;margin:1.25rem 0"><strong>AKTUAL MEDIA</strong>${links.map(([href,label]) => `<a href="${href}">${label}</a>`).join('')}</nav>`;
 };
-const isNermin = (item) => item.author === 'Nermin Sefić' && item.authorSchemaVerified === true && ['komentar', 'kolumna', 'analiza'].includes(item.type);
+const isNermin = (item) => isVerifiedNerminAuthor(item);
 const imageMarkup = (entry) => `<figure class="editorial-cover-figure"><img class="article-cover" src="${esc(entry.image)}" alt="${esc(entry.alt)}" title="${esc(entry.title)} — ${entry.language === 'en' ? 'editorial illustration' : 'urednička ilustracija'}" width="1200" height="630" loading="eager" decoding="async" fetchpriority="high"></figure>`;
 const replaceImageTag = (tag, entry) => {
   let next = removeAttr(tag, 'srcset');
@@ -197,6 +199,8 @@ const patchJsonLd = (html, image, item, canonical, nermin) => {
   const datePublished = formatDate(item.publishedAt || item.published_at);
   const dateModified = formatDate(item.modifiedAt);
   const articleType = item.type === 'komentar' || item.type === 'kolumna' ? 'OpinionNewsArticle' : 'Article';
+  const registryAuthor = articleAuthorFor(item);
+  const editor = { ...NERMIN_EDITOR };
   let out = html.replace(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi, (block, raw) => {
     let schema;
     try { schema = JSON.parse(raw); } catch { return block; }
@@ -231,6 +235,8 @@ const patchJsonLd = (html, image, item, canonical, nermin) => {
       if (dateModified) object.dateModified = dateModified;
       else delete object.dateModified;
       object.publisher = ORG;
+      object.editor = editor;
+      object.isPartOf ||= { '@id': WEBSITE_ID };
       object.inLanguage = object.inLanguage || (item.language === 'en' ? 'en' : 'hr');
       object.isAccessibleForFree = object.isAccessibleForFree ?? true;
       if (Array.isArray(object.keywords)) object.keywords = object.keywords.filter((word) => !/(?:nermin|sefi[cć])/i.test(String(word)));
@@ -241,23 +247,8 @@ const patchJsonLd = (html, image, item, canonical, nermin) => {
         if (remaining.length) object.about = Array.isArray(object.about) ? remaining : remaining[0];
         else delete object.about;
       }
-      if (nermin) object.author = { '@type': 'Person', '@id': AUTHOR_ID, name: 'Nermin Sefić', url: AUTHOR_URL };
-      else {
-        const removeNerminPerson = (value) => {
-          if (Array.isArray(value)) return value.map(removeNerminPerson).filter((entry) => entry !== null);
-          if (typeof value === 'string') return /nermin\s+sefi[cć]/i.test(value) ? null : value;
-          if (!value || typeof value !== 'object') return value;
-          const types = typesOf(value);
-          return /nermin\s+sefi[cć]/i.test(value.name || '') && (!types.length || types.includes('Person')) ? null : value;
-        };
-        for (const key of ['author', 'editor', 'contributor']) {
-          if (!(key in object)) continue;
-          const cleaned = removeNerminPerson(object[key]);
-          if (cleaned === null || (Array.isArray(cleaned) && !cleaned.length)) delete object[key];
-          else object[key] = cleaned;
-        }
-        if (item.author && item.author !== 'Nermin Sefić' && /GNK ASG Intelligence Desk/i.test(item.author)) object.author = { '@type': 'Organization', '@id': `${SITE}/#intelligence-desk`, name: item.author, url: `${SITE}/gnk-aktual/` };
-      }
+      if (registryAuthor) object.author = registryAuthor;
+      else if (isNerminPersonReference(object.author)) delete object.author;
     });
     return `<script type="application/ld+json">${jsonForScript(schema)}</script>`;
   });
@@ -266,12 +257,12 @@ const patchJsonLd = (html, image, item, canonical, nermin) => {
       '@context': 'https://schema.org', '@type': articleType, headline: item.title,
       description: limitSeoDescription(item.description || ''), url: canonical, mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
       image: { '@type': 'ImageObject', url: `${SITE}${image.image}`, width: 1200, height: 630, caption: item.title },
-      publisher: ORG, inLanguage: item.language === 'en' ? 'en' : 'hr', isAccessibleForFree: true,
+      publisher: ORG, editor, isPartOf: { '@id': WEBSITE_ID },
+      inLanguage: item.language === 'en' ? 'en' : 'hr', isAccessibleForFree: true,
     };
     if (datePublished) schema.datePublished = datePublished;
     if (dateModified) schema.dateModified = dateModified;
-    if (nermin) schema.author = { '@type': 'Person', '@id': AUTHOR_ID, name: 'Nermin Sefić', url: AUTHOR_URL };
-    else if (item.author && item.author !== 'Nermin Sefić' && /GNK ASG Intelligence Desk/i.test(item.author)) schema.author = { '@type': 'Organization', '@id': `${SITE}/#intelligence-desk`, name: item.author, url: `${SITE}/gnk-aktual/` };
+    if (registryAuthor) schema.author = registryAuthor;
     out = insertIntoHead(out, `<script type="application/ld+json">${jsonForScript(schema)}</script>`);
   }
   if (!hasBreadcrumb) out = insertIntoHead(out, `<script type="application/ld+json">${jsonForScript(breadcrumbSchema(item, canonical))}</script>`);
@@ -282,10 +273,12 @@ const patchHead = (html, item, image) => {
   const contentTitle = item.title || pageH1(html) || 'GNK ASG';
   const title = item.seoTitle || contentTitle;
   const description = limitSeoDescription(item.description || metaValue(html, 'og:description', 'property') || contentTitle);
+  const registryAuthor = articleAuthorFor(item);
   let out = html;
   out = out.replace(/<title\b[^>]*>[\s\S]*?<\/title>/i, `<title>${esc(title)}</title>`);
   out = upsertMeta(out, 'name', 'robots', 'index,follow,max-image-preview:large,max-snippet:-1');
   out = upsertMeta(out, 'name', 'description', description);
+  out = upsertMeta(out, 'name', 'editor', 'Nermin Sefić');
   out = upsertLink(out, 'canonical', canonical);
   out = upsertMeta(out, 'property', 'og:type', 'article');
   out = upsertMeta(out, 'property', 'og:title', title);
@@ -296,31 +289,30 @@ const patchHead = (html, item, image) => {
   out = upsertMeta(out, 'property', 'og:image:alt', image.alt);
   out = upsertMeta(out, 'property', 'og:image:width', '1200');
   out = upsertMeta(out, 'property', 'og:image:height', '630');
-  out = upsertMeta(out, 'property', 'og:image:type', 'image/webp');
+  const extension = String(image.image || '').split(/[?#]/)[0].split('.').pop().toLowerCase();
+  const imageType = ({ webp: 'image/webp', png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', avif: 'image/avif' })[extension] || 'image/webp';
+  out = upsertMeta(out, 'property', 'og:image:type', imageType);
   out = upsertMeta(out, 'name', 'twitter:card', 'summary_large_image');
   out = upsertMeta(out, 'name', 'twitter:title', metaValue(out, 'og:title', 'property') || title);
   out = upsertMeta(out, 'name', 'twitter:description', description);
   out = upsertMeta(out, 'name', 'twitter:image', imageUrl);
   out = upsertMeta(out, 'name', 'twitter:image:alt', image.alt);
   out = out.replace(/<link\b[^>]*>/gi, (tag) => attrValue(tag, 'href').startsWith('/assets/editorial-content-v2.css') ? setAttr(tag, 'href', '/assets/editorial-content-v2.css?v=20261013-editorial-completeness') : tag);
-  if (isNermin(item)) {
-    out = upsertMeta(out, 'name', 'author', 'Nermin Sefić');
-    out = upsertMeta(out, 'property', 'article:author', 'Nermin Sefić');
-    out = upsertLink(out, 'author', AUTHOR_URL);
+
+  if (registryAuthor) out = upsertMeta(out, 'name', 'author', registryAuthor.name);
+  else out = out.replace(/<meta\b[^>]*name=["']author["'][^>]*>/gi, (tag) => /nermin\s+sefi[cć]/i.test(attrValue(tag, 'content')) ? '' : tag);
+  if (isVerifiedNerminAuthor(item)) {
+    out = upsertMeta(out, 'property', 'article:author', PERSON_URL);
+    out = upsertLink(out, 'author', PERSON_URL);
   } else {
-    const oldAuthor = metaValue(out, 'author') || metaValue(out, 'article:author', 'property');
-    if (/nermin\s+sefi[cć]/i.test(oldAuthor)) {
-      if (item.author && item.author !== 'Nermin Sefić') out = upsertMeta(out, 'name', 'author', item.author);
-      else out = out.replace(/<meta\b[^>]*name=["']author["'][^>]*>/gi, '');
-    }
-    if (/nermin\s+sefi[cć]/i.test(metaValue(out, 'article:author', 'property'))) out = out.replace(/<meta\b[^>]*property=["']article:author["'][^>]*>/gi, '');
+    out = out.replace(/<meta\b[^>]*property=["']article:author["'][^>]*>/gi, (tag) => /nermin\s+sefi[cć]|nermin-sefic/i.test(attrValue(tag, 'content')) ? '' : tag);
     out = out.replace(/<link\b[^>]*>/gi, (tag) => {
       const rel = attrValue(tag, 'rel').toLowerCase().split(/\s+/);
       const href = attrValue(tag, 'href');
-      return rel.includes('author') && /^(?:https:\/\/gnk-asg\.hr)?\/nermin-sefic\/?(?:#person)?$/i.test(href) ? '' : tag;
+      return rel.includes('author') && /^(?:https:\/\/gnk-asg\.hr)?\/nermin-sefic\/?(?:#person|#nermin-sefic)?$/i.test(href) ? '' : tag;
     });
-    out = out.replace(/<meta\b[^>]*name=["']author-image["'][^>]*>/gi, (tag) => /nermin|sefi[cć]/i.test(tag) ? '' : tag);
   }
+  out = out.replace(/<meta\b[^>]*name=["']author-image["'][^>]*>/gi, (tag) => /nermin|sefi[cć]/i.test(tag) ? '' : tag);
   const publishedAt = item.publishedAt || item.published_at;
   const modifiedAt = item.modifiedAt;
   if (publishedAt) out = upsertMeta(out, 'property', 'article:published_time', publishedAt);
@@ -328,7 +320,7 @@ const patchHead = (html, item, image) => {
   else out = out.replace(/<meta\b[^>]*property=["']article:modified_time["'][^>]*>/gi, '');
   out = out.replace(/<meta\b[^>]*name=["']keywords["'][^>]*>/gi, (tag) => {
     const content = attrValue(tag, 'content');
-    const cleaned = content.split(',').map((word) => word.trim()).filter((word) => word && !/(?:nermin|sefi[cć])/i.test(word));
+    const cleaned = content.split(',').map((word) => word.trim()).filter((word) => word && !/(?:nermin|sefi[cć])/i.test(word) && !word.startsWith('#'));
     return cleaned.length ? setAttr(tag, 'content', cleaned.join(', ')) : '';
   });
   return out;
@@ -367,7 +359,6 @@ const patchBody = (html, item, image) => {
   const body = out.split(/<body\b[^>]*>/i)[1] || out;
   const hasByline = /class=["'][^"']*(?:author-box|article-author|editorial-author-inline|byline)[^"']*["']/i.test(body);
   if (isNermin(item)) {
-    out = normalizeAuthorMark(out);
     if (!hasByline) {
       const byline = `<p class="editorial-author-inline"><strong>${item.language === 'en' ? 'Author' : 'Autor'}:</strong> <a href="${AUTHOR_URL}" rel="author">Nermin Sefić</a></p>`;
       if (out.includes('</article>')) out = out.replace('</article>', `${byline}</article>`);
@@ -377,12 +368,14 @@ const patchBody = (html, item, image) => {
     out = stripNerminAuthorAttribution(out);
     const cleanedBody = out.split(/<body\b[^>]*>/i)[1] || out;
     const hasOtherByline = /class=["'][^"']*(?:author-box|article-author|editorial-author-inline|byline)[^"']*["']/i.test(cleanedBody);
-    if (item.author && !hasOtherByline) {
-      const byline = `<p class="editorial-author-inline"><strong>${item.language === 'en' ? 'Editorial team' : 'Uredništvo'}:</strong> ${esc(item.author)}</p>`;
+    const registryAuthor = articleAuthorFor(item);
+    if (registryAuthor && !hasOtherByline) {
+      const byline = `<p class="editorial-author-inline"><strong>${item.language === 'en' ? 'Author' : 'Autor'}:</strong> ${esc(registryAuthor.name)}</p>`;
       if (out.includes('</article>')) out = out.replace('</article>', `${byline}</article>`);
       else if (out.includes('</main>')) out = out.replace('</main>', `${byline}</main>`);
     }
   }
+  out = stripPageHashtags(out);
   if (!/data-editorial-crosslinks/i.test(out)) {
     if (out.includes('</article>')) out = out.replace('</article>', `${relatedLinksBlock(item)}</article>`);
     else if (out.includes('</main>')) out = out.replace('</main>', `${relatedLinksBlock(item)}</main>`);

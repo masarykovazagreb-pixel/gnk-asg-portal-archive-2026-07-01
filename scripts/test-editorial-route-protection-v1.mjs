@@ -32,9 +32,11 @@ for (const file of [
   'scripts/enforce-approved-author-markers-v1.mjs',
 ]) {
   const source = fs.readFileSync(file, 'utf8');
-  assert.ok(source.includes("isProtectedEditorialRoute as protectedPath"), `${file} must use the shared protected-route policy`);
   if (file === 'scripts/enforce-approved-author-markers-v1.mjs') {
-    assert.ok(source.includes('if(protectedPath(route))'), 'author markers must not mutate protected routes');
+    assert.ok(source.includes("import { isProtectedEditorialRoute } from './lib/editorial-route-protection-v1.mjs'")
+      && source.includes('if (isProtectedEditorialRoute(route))'), 'author markers must use the shared guard before mutating protected routes');
+  } else {
+    assert.ok(source.includes("isProtectedEditorialRoute as protectedPath"), `${file} must use the shared protected-route policy`);
   }
 }
 console.log(JSON.stringify({ ok: true, protectedRouteCases: protectedRoutes.length, allowedRouteCases: allowedRoutes.length, consumers: 5 }, null, 2));

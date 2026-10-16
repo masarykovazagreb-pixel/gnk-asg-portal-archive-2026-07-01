@@ -27,6 +27,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { publishedItems } from './lib/publication-gate-v2.mjs';
+import { socialHashtagsFor } from './lib/social-hashtags-v1.mjs';
 
 const SITE = 'https://gnk-asg.hr';
 const DATA_DIR = 'apps/portal/data/social-distribution';
@@ -162,7 +163,7 @@ function pickDigestItem(worldMonitor, cibonaNews, weather, market, state) {
     title: `AKTUAL dnevni pregled — ${today}`,
     description,
     image: null,
-    hashtags: ['NerminSefic', 'GNKASG', 'GNKDINAMOLtd', 'AKTUALMedia'],
+    hashtags: ['GNKASG', 'GNKDINAMOLtd', 'AKTUALMedia'],
     language: 'hr',
     kind: 'digest',
     id: digestId,
@@ -180,7 +181,7 @@ function pickAfternoonItem(newsItems, worldTopicsSchedule, state) {
       title: wt.title_hr,
       description: wt.summary_hr,
       image: wt.image,
-      hashtags: ['NerminSefic', 'GNKASG', 'GNKDINAMOLtd', 'SvjetskeTeme'],
+      hashtags: ['GNKASG', 'GNKDINAMOLtd', 'SvjetskeTeme'],
       language: 'hr',
       kind: 'world-topics',
     };
@@ -197,7 +198,7 @@ function pickAfternoonItem(newsItems, worldTopicsSchedule, state) {
     title: top.title,
     description: top.summary,
     image: top.image,
-    hashtags: ['NerminSefic', 'GNKASG', 'GNKDINAMOLtd', 'AKTUALMedia'],
+    hashtags: ['GNKASG', 'GNKDINAMOLtd', 'AKTUALMedia'],
     language: 'hr',
     kind: 'aktual-news',
     id: top.id,
@@ -226,7 +227,7 @@ function composePost(item, platformKey) {
   const title = stripHtml(item.title || '');
   const desc = stripHtml(item.description || '');
   const link = item.url || `${SITE}${item.path || ''}`;
-  const hashtagsLine = buildHashtags(item.hashtags || ['NerminSefic', 'GNKASG'], cfg.hashtagCount);
+  const hashtagsLine = buildHashtags(socialHashtagsFor(item, item.hashtags || [], ['GNKASG']), cfg.hashtagCount);
 
   let bodyParts;
   if (platformKey === 'x') {

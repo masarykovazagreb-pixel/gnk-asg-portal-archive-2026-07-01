@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
+import { WEBSITE_ID, ORGANIZATION_ID, PERSON_ID } from './lib/editorial-attribution-v1.mjs';
 
 const failures = [];
 const fail = (message) => failures.push(message);
@@ -49,6 +50,11 @@ function verifyArchivePage({ html, file, canonical, hr, en, expectedItems, expec
   const nodes = schemaNodes(schemas);
   const collections = nodes.filter((node) => typesOf(node).includes('CollectionPage'));
   const lists = nodes.filter((node) => typesOf(node).includes('ItemList'));
+  const websites = nodes.filter((node) => typesOf(node).includes('WebSite'));
+  if (websites.length !== 1) fail(`${label}: expected one shared WebSite node; found ${websites.length}`);
+  if (websites.length && websites[0]['@id'] !== WEBSITE_ID) fail(`${label}: WebSite ID does not use the canonical shared entity`);
+  if (websites.length && websites[0].url !== 'https://gnk-asg.hr/') fail(`${label}: WebSite URL must be the GNK ASG root`);
+  if (websites.length && websites[0].publisher?.['@id'] !== ORGANIZATION_ID) fail(`${label}: WebSite publisher must be GNK ASG d.o.o.`);
   const articles = nodes.filter((node) => typesOf(node).some((type) => ['Article', 'NewsArticle', 'OpinionNewsArticle', 'BlogPosting'].includes(type)));
   if (collections.length !== 1) fail(`${label}: expected one CollectionPage schema; found ${collections.length}`);
   if (lists.length !== 1) fail(`${label}: expected one ItemList schema; found ${lists.length}`);
@@ -60,6 +66,10 @@ function verifyArchivePage({ html, file, canonical, hr, en, expectedItems, expec
   }
   if (expectedDate && collections.length && collections[0].datePublished !== expectedDate) fail(`${label}: CollectionPage datePublished does not match issue_week`);
   if (collections.length && collections[0].url !== canonical) fail(`${label}: CollectionPage URL does not match canonical`);
+  if (collections.length && collections[0].editor?.['@id'] !== PERSON_ID) fail(`${label}: Nermin must be an editor, not an inferred article author`);
+  if (collections.length && collections[0].author !== undefined) fail(`${label}: weekly selection must not claim an individual article author`);
+  if (collections.length && collections[0].publisher?.['@id'] !== ORGANIZATION_ID) fail(`${label}: CollectionPage publisher must be GNK ASG d.o.o.`);
+  if (archiveIndex && collections.length && collections[0].isPartOf?.['@id'] !== WEBSITE_ID) fail(`${label}: archive index must reference the shared WebSite entity`);
   if (!archiveIndex) {
     if (!html.includes('Source:') && !html.includes('Izvor:')) fail(`${label}: source attribution labels are missing`);
     if (!html.includes('AKTUAL MEDIA Editorial Desk') && !html.includes('Uredništvo: AKTUAL MEDIA')) fail(`${label}: editorial publisher attribution is missing`);
@@ -68,8 +78,10 @@ function verifyArchivePage({ html, file, canonical, hr, en, expectedItems, expec
         || /data-author-mark=["']nermin-sefic["']|#NerminSefic|#NerminSefić/i.test(html)) {
       fail(`${label}: syndicated weekly page contains personal Nermin authorship metadata`);
     }
-  } else if (!html.includes('PERMANENT ARCHIVE') && !html.includes('TRAJNA ARHIVA')) {
-    fail(`${label}: permanent archive label is missing`);
+  } else {
+    if (!html.includes('PERMANENT ARCHIVE') && !html.includes('TRAJNA ARHIVA')) fail(`${label}: permanent archive label is missing`);
+    if (!/<meta\s+name=["']editor["']\s+content=["']Nermin Sefić["']/i.test(html)) fail(`${label}: editor metadata must be explicit and distinct from authorship`);
+    if (!/<meta\s+property=["']og:site_name["']\s+content=["']GNK ASG["']/i.test(html)) fail(`${label}: Open Graph site name must match the shared GNK ASG entity`);
   }
   if (!exists(file)) fail(`${label}: static HTML output is missing`);
 }

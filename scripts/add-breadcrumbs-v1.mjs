@@ -2,6 +2,7 @@
 // Aditivno: dodaje BreadcrumbList schema (Home → Kategorija → Članak) u <head>
 // samo ako još ne postoji na stranici. Sekcijski labeli lokalizirani HR/EN.
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { isProtectedEditorialRoute } from './lib/editorial-route-protection-v1.mjs';
 const SITE='https://gnk-asg.hr';
 const read=(p,f)=>{try{return JSON.parse(readFileSync(p,'utf8'))}catch{return f}};
 const reg=read('apps/portal/data/editorial-registry.json',{items:[]});
@@ -11,9 +12,10 @@ const LABELS={
  en:{home:'Home', analyses:'Analyses', publications:'Publications', kolumne:'Kolumne', komentari:'Komentari', tematske:'Themes'}
 };
 
-let updated=0, skipped=0;
+let updated=0, skipped=0, protectedSkipped=0;
 for(const it of reg.items||[]){
   if(!it?.path||!it?.url) continue;
+  if(isProtectedEditorialRoute(it.path)){ protectedSkipped++; continue; }
   const file='apps/portal'+it.path.replace(/\/$/,'/index.html');
   if(!existsSync(file)) continue;
   let html=readFileSync(file,'utf8');
@@ -38,4 +40,4 @@ for(const it of reg.items||[]){
   html=html.replace('</head>',`<script type="application/ld+json">${JSON.stringify(bl)}</script></head>`);
   writeFileSync(file,html); updated++;
 }
-console.log(JSON.stringify({breadcrumbAdded:updated,alreadyPresent:skipped},null,2));
+console.log(JSON.stringify({breadcrumbAdded:updated,alreadyPresent:skipped,protectedSkipped},null,2));

@@ -49,22 +49,23 @@ assert.ok((oct9Html.match(/<h2>Zaključak<\/h2>/g)||[]).length<=1,'published Oct
 
 const publisher=fs.readFileSync('scripts/editorial-publish-scheduled-v1.mjs','utf8');
 
-for(const marker of ['GNK_ASG_EDITORIAL_SCHEDULED_PUBLISH_V3_20260714','OpinionNewsArticle','application/ld+json','rel="canonical"','property="og:title"','name="twitter:card"','Urednička odgovornost','EDITORIAL_NOW','deployApproved','writeIfChanged','summary.publicChanged||summary.stateChanged','publication-holds.json','publicationHeld','summary.held','const cardImage=item.image||AUTHOR_IMAGE','(headings[i-1]||\'\')'])assert.ok(publisher.includes(marker),marker);
+for(const marker of ['GNK_ASG_EDITORIAL_SCHEDULED_PUBLISH_V4_ATTRIBUTION','OpinionNewsArticle','application/ld+json','rel="canonical"','property="og:title"','name="twitter:card"','name="editor"','Urednička odgovornost','EDITORIAL_NOW','deployApproved','writeIfChanged','summary.publicChanged || summary.stateChanged','publication-holds.json','publicationHeld','summary.held','articleAuthorFor(item)','isProtectedEditorialRoute(route)','isVerifiedNerminAuthor(item)','const cardImage = articleImage(item).path','headings[index - 1]'])assert.ok(publisher.includes(marker),marker);
+assert.doesNotMatch(publisher,/hashtagsFor|article-hashtags|AUTHOR_TAGS|GROUP_ENTITY/,'scheduled articles must not inject social hashtags or author/group keywords');
 
 // Scheduled publication must append cards to both legacy and generated static listings.
 const appendCardStart=publisher.indexOf('function appendCard(');
 const appendCardEnd=publisher.indexOf(String.fromCharCode(10)+'function appendEditorialListingCard(',appendCardStart);
 assert.ok(appendCardStart>=0&&appendCardEnd>appendCardStart,'publisher must expose collection-card integration');
 const routeForCardTest=item=>`/${item.type==='objava'?'objave':'komentari'}/${item.slug}/`;
-const authorImageForCardTest=publisher.match(/const AUTHOR_IMAGE='([^']+)'/)?.[1];
-assert.ok(authorImageForCardTest,'publisher must keep its canonical fallback author image');
+const authorImageForCardTest=publisher.match(/const AUTHOR_IMAGE\s*=\s*'([^']+)'/)?.[1];
+assert.ok(authorImageForCardTest,'publisher must keep a canonical portrait for verified personal bylines only');
 const escapeCardTest=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const writeCardIfChangedTest=(file,content)=>{
   if(fs.existsSync(file)&&fs.readFileSync(file,'utf8')===content)return false;
   fs.writeFileSync(file,content);return true;
 };
 const appendCard=vm.runInNewContext(`(${publisher.slice(appendCardStart,appendCardEnd)})`,{
-  fs,AUTHOR_IMAGE:authorImageForCardTest,routeFor:routeForCardTest,esc:escapeCardTest,writeIfChanged:writeCardIfChangedTest,
+  fs,articleImage:item=>({path:item.image||'/assets/gnk-asg-social-card.png'}),routeFor:routeForCardTest,esc:escapeCardTest,writeIfChanged:writeCardIfChangedTest,
 });
 const listingTmp=fs.mkdtempSync(path.join(os.tmpdir(),'gnk-scheduled-grid-test-'));
 try{
@@ -135,7 +136,7 @@ try{
   const sample={type:'komentar',slug:'test-integracija-aktual',title:'Analiza & <provjera>'};
   assert.equal(appendAktual(sample,'2026-10-13T12:00:00+02:00'),true,'first append must modify AKTUAL');
   const first=fs.readFileSync(aktualFile,'utf8');
-  assert.ok(first.includes('<a href="/komentari/test-integracija-aktual/">Analiza &amp; &lt;provjera&gt;</a>'),'link must be escaped and correctly routed');
+  assert.ok(first.includes('<a href="/komentari/test-integracija-aktual/" data-published="2026-10-13T12:00:00+02:00">Analiza &amp; &lt;provjera&gt;</a>'),'link must be escaped, correctly routed, and time-stamped');
   assert.equal((first.match(/href="\/komentari\/test-integracija-aktual\//g)||[]).length,1,'new link must occur exactly once');
   assert.equal(appendAktual(sample,'2026-10-13T12:00:00+02:00'),false,'repeat append must be a no-op');
   assert.equal(fs.readFileSync(aktualFile,'utf8'),first,'idempotent call must not rewrite HTML');
@@ -213,7 +214,8 @@ const registryGenerator=fs.readFileSync('scripts/editorial-registry-v1.mjs','utf
 assert.match(registryGenerator,/substantiveUnchanged/);
 assert.match(registryGenerator,/bez promjene:/);
 assert.match(publisher,/Editorial grid markers not found/);
-assert.match(publisher,/dailyDistributionContract/);
+assert.match(publisher,/distributionContract/);
+assert.doesNotMatch(publisher,/pack\.author===|authorBox\(item\)|hashtagsFor/,'future scheduled content must not infer personal authorship or inject hashtags');
 const regressionIndex=scheduler.indexOf('node scripts/test-editorial-content-policy-v1.mjs');
 const policyIndex=scheduler.indexOf('node scripts/validate-editorial-content-policy-v1.mjs');
 const materializeIndex=scheduler.indexOf('node scripts/editorial-publish-scheduled-v1.mjs');

@@ -33,7 +33,15 @@ const jsonLd=JSON.stringify({
     '@type':'Question',
     name:x.q,
     acceptedAnswer:{'@type':'Answer',text:x.a}
-  }))
+  })),
+  editor:{'@type':'Person','@id':'https://gnk-asg.hr/#nermin-sefic',name:'Nermin Sefić',url:'https://gnk-asg.hr/nermin-sefic/'},
+  publisher:{'@type':'Organization','@id':'https://gnk-asg.hr/#gnk-asg',name:'GNK ASG d.o.o.',url:'https://gnk-asg.hr/'},
+  isPartOf:{'@id':'https://gnk-asg.hr/#website'},
+  url:'https://gnk-asg.hr/en/knowledge-center/',
+  '@id':'https://gnk-asg.hr/en/knowledge-center/#webpage',
+  name:'FAQ and AI Knowledge Center | GNK ASG',
+  description:'GNK ASG public English knowledge center generated from the shared public knowledge base.',
+  inLanguage:'en'
 }).replace(/</g,'\\u003c');
 
 const webPageLd=JSON.stringify({
@@ -42,11 +50,21 @@ const webPageLd=JSON.stringify({
   '@id':'https://gnk-asg.hr/en/knowledge-center/',
   url:'https://gnk-asg.hr/en/knowledge-center/',
   name:'FAQ and AI Knowledge Center | GNK ASG',
-  description:'Public and verifiable information',
+  description:'GNK ASG public English knowledge center generated from the shared public knowledge base.',
   inLanguage:'en',
   isPartOf:{'@id':'https://gnk-asg.hr/#website'},
-  about:{'@id':'https://gnk-asg.hr/nermin-sefic/#person'},
-  publisher:{'@id':'https://gnk-asg.hr/#organization'}
+  editor:{'@type':'Person','@id':'https://gnk-asg.hr/#nermin-sefic',name:'Nermin Sefić',url:'https://gnk-asg.hr/nermin-sefic/'},
+  publisher:{'@id':'https://gnk-asg.hr/#gnk-asg'}
+}).replace(/</g,'\\u003c');
+
+const websiteLd=JSON.stringify({
+  '@context':'https://schema.org',
+  '@type':'WebSite',
+  '@id':'https://gnk-asg.hr/#website',
+  url:'https://gnk-asg.hr/',
+  name:'GNK ASG',
+  inLanguage:['hr','en'],
+  publisher:{'@type':'Organization','@id':'https://gnk-asg.hr/#gnk-asg',name:'GNK ASG d.o.o.',url:'https://gnk-asg.hr/'}
 }).replace(/</g,'\\u003c');
 
 const details=qa.map(x=>{
@@ -72,25 +90,27 @@ const html=`<!doctype html>
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="GNK ASG">
 <meta property="og:title" content="FAQ and AI Knowledge Center | GNK ASG">
-<meta property="og:description" content="Public English answers generated from the shared GNK ASG knowledge base.">
+<meta property="og:description" content="GNK ASG public English knowledge center generated from the shared public knowledge base.">
 <meta property="og:url" content="https://gnk-asg.hr/en/knowledge-center/">
 <meta property="og:image" content="https://gnk-asg.hr/assets/gnk-asg-social-card.png">
+<meta property="og:image:alt" content="GNK ASG d.o.o. corporate editorial card">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="FAQ and AI Knowledge Center | GNK ASG">
-<meta name="twitter:description" content="Public English answers generated from the shared GNK ASG knowledge base.">
+<meta name="twitter:description" content="GNK ASG public English knowledge center generated from the shared public knowledge base.">
 <meta name="twitter:image" content="https://gnk-asg.hr/assets/gnk-asg-social-card.png">
 <script type="application/ld+json">${jsonLd}</script>
 <link rel="stylesheet" href="/assets/style.css?v=20260723-dark-gold-theme-v1">
 <link rel="stylesheet" href="/assets/public-sections-v1.css?v=20260721-header-fulltransparent-v1">
 <link rel="stylesheet" href="/assets/public-unified-menu-v6.css?v=20260723-header-transparent-v3">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<meta name="author" content="Nermin Sefić">
+<meta name="editor" content="Nermin Sefić">
 <style>
 .faq-search{margin:0 0 18px}.faq-search label{display:block;margin:0 0 6px;color:#b88a2f;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase}.faq-search input{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(184,138,47,.35);background:rgba(11,18,32,.7);color:#f7f1e5;font-size:.95rem}.faq-search input:focus{outline:none;border-color:#d5ad54}.faq-results{margin:8px 0 0;color:#8d8577;font-size:.82rem;min-height:1em}.faq{display:grid;gap:12px;margin:24px 0}.faq details{border:1px solid #3b3120;border-radius:16px;background:#11100d;padding:0 18px}.faq summary{cursor:pointer;font-weight:800;padding:18px 0;color:#e8cf91}.faq details p{margin:0 0 18px;color:#c9c2b5;line-height:1.65}.kc-page-link{display:inline-block;margin-left:.35em;color:#d8b66a;text-decoration:underline;text-underline-offset:3px}.faq details[hidden]{display:none}.notice{border-left:4px solid #d8b66a;padding:14px 18px;background:#15120d;border-radius:12px}.kc-meta{color:#8d8577;font-size:.9rem}
 </style>
 <script type="application/ld+json">${webPageLd}</script>
 <link rel="alternate" type="application/rss+xml" title="GNK ASG RSS" href="/en/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="GNK ASG Atom" href="/en/atom.xml">
+<script type="application/ld+json">${websiteLd}</script>
 </head>
 <body>
 <header id="gnk-unified-header" data-gnk-unified-shell="v6-static"><div class="inner"><a class="brand" href="/en/" aria-label="GNK ASG"><img src="/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64" alt="GNK ASG" width="110" height="68" data-gnk-canonical-logo="1"></a><div id="gnk-unified-menu"><div class="actions"><div class="lang"><a href="/knowledge-center/" aria-label="Hrvatski">HR</a><a href="/en/knowledge-center/" aria-label="English" aria-current="page">EN</a></div><button class="toggle" type="button" aria-expanded="false" aria-controls="gnk-unified-nav">MENU</button></div><nav id="gnk-unified-nav"></nav></div></div></header>

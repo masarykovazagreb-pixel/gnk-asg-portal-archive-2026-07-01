@@ -57,7 +57,8 @@ jobs:
             --repo "$GITHUB_REPOSITORY" \
             --ref main \
             -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
-            -f approved_sha="$sha"
+            -f approved_sha="$sha" \
+            -f notify_search_engines=false
       - name: Summary
         if: always()
         run: |

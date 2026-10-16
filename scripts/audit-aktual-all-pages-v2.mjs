@@ -29,20 +29,38 @@ const approved=new Set([...(approvals.approved_urls||[]),...(approvals.approved_
   .map(x=>normalizeApproved(typeof x==='string'?x:(x?.url||x?.route||''))).filter(Boolean));
 const extract=(html,rx)=>(html.match(rx)||[])[1]||'';
 const has=(html,rx)=>rx.test(html);
-const norm=s=>String(s||'').replace(/&amp;/g,'&').replace(/&#x27;|&#39;/g,"'").replace(/&quot;/g,'"').trim();
+const norm=s=>String(s||'').replace(/&amp;/g,'&').replace(/&#x27;|&#39;|&apos;/g,"'").replace(/&quot;/g,'"').replace(/&nbsp;|&#160;/g,' ').trim();
+const attrValue=(tag,name)=>{
+  const escaped=name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  const match=tag.match(new RegExp(`\\b${escaped}\\s*=\\s*(["'])([\\s\\S]*?)\\1`,'i'));
+  return match?norm(match[2]):'';
+};
+const metaValue=(html,keyAttribute,key)=>{
+  for(const match of html.matchAll(/<meta\b[^>]*>/gi)){
+    if(attrValue(match[0],keyAttribute).toLowerCase()===key.toLowerCase())return attrValue(match[0],'content');
+  }
+  return '';
+};
+const linkValue=(html,rel,key)=>{
+  for(const match of html.matchAll(/<link\b[^>]*>/gi)){
+    const rels=attrValue(match[0],'rel').toLowerCase().split(/\s+/);
+    if(rels.includes(rel.toLowerCase()))return attrValue(match[0],key);
+  }
+  return '';
+};
 
 for(const file of pages){
   const html=fs.readFileSync(file,'utf8');
   const title=norm(extract(html,/<title>([^<]+)<\/title>/i));
-  const desc=norm(extract(html,/<meta\s+name=["']description["'][^>]+content=["']([^"']*)["']/i));
-  const robots=norm(extract(html,/<meta\s+name=["']robots["'][^>]+content=["']([^"']*)["']/i)).toLowerCase();
-  const canonical=norm(extract(html,/<link\s+rel=["']canonical["'][^>]+href=["']([^"']+)["']/i));
-  const ogTitle=norm(extract(html,/<meta\s+property=["']og:title["'][^>]+content=["']([^"']*)["']/i));
-  const ogDesc=norm(extract(html,/<meta\s+property=["']og:description["'][^>]+content=["']([^"']*)["']/i));
-  const ogUrl=norm(extract(html,/<meta\s+property=["']og:url["'][^>]+content=["']([^"']*)["']/i));
-  const ogImage=norm(extract(html,/<meta\s+property=["']og:image["'][^>]+content=["']([^"']*)["']/i));
-  const twCard=norm(extract(html,/<meta\s+name=["']twitter:card["'][^>]+content=["']([^"']*)["']/i));
-  const keywords=norm(extract(html,/<meta\s+name=["']keywords["'][^>]+content=["']([^"']*)["']/i));
+  const desc=metaValue(html,'name','description');
+  const robots=metaValue(html,'name','robots').toLowerCase();
+  const canonical=linkValue(html,'canonical','href');
+  const ogTitle=metaValue(html,'property','og:title');
+  const ogDesc=metaValue(html,'property','og:description');
+  const ogUrl=metaValue(html,'property','og:url');
+  const ogImage=metaValue(html,'property','og:image');
+  const twCard=metaValue(html,'name','twitter:card');
+  const keywords=metaValue(html,'name','keywords');
   const isIndexable=!/\bnoindex\b/.test(robots);
   const relative=path.relative(ROOT,file).replace(/\\/g,'/').replace(/index\.html$/,'');
   const route=`/${relative}`;

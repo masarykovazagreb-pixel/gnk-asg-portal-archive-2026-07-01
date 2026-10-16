@@ -7,6 +7,8 @@ import { spawnSync } from 'node:child_process';
 const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'gnk-editorial-completeness-'));
 const site = 'https://gnk-asg.hr';
 const targetRoute = '/objave/world-topic-test/';
+const verifiedRoute = '/objave/verified-author-test/';
+const deskRoute = '/objave/intelligence-desk-test/';
 const sptRoute = '/objave/spt-protected/';
 const bankRoute = '/objave/bank-account-protected/';
 const otherRoute = '/objave/unrelated-item/';
@@ -48,7 +50,7 @@ const page = (route, title) => `<!doctype html><html lang="hr"><head>
 <p class="editorial-approval"><strong>Editorial responsibility: Nermin Sefić.</strong></p>
 <figure class="world-chart"><img src="/assets/editorial/world-topics/chart.webp" alt="Chart showing the topic" width="1120" height="700"></figure>
 <article class="article-body"><p>Editorial content.</p><p class="article-hashtags">#GlobalTopic #NerminSefić</p></article></main></body></html>`;
-const registryItem = (route, title) => ({
+const registryItem = (route, title, author = null, authorSchemaVerified = false) => ({
   path: route,
   url: `${site}${route}`,
   title,
@@ -61,8 +63,8 @@ const registryItem = (route, title) => ({
   type: 'objava',
   status: 'published',
   language: 'hr',
-  author: null,
-  authorSchemaVerified: false,
+  author,
+  authorSchemaVerified,
 });
 const manifestItem = (route, title, slug) => ({
   path: route,
@@ -81,6 +83,7 @@ try {
   for (const relative of [
     'scripts/apply-editorial-publication-completeness-v1.mjs',
     'scripts/lib/editorial-route-protection-v1.mjs',
+    'scripts/lib/editorial-attribution-v1.mjs',
     'scripts/lib/seo-description-v1.mjs',
   ]) {
     write(relative, fs.readFileSync(relative, 'utf8'));
@@ -88,6 +91,8 @@ try {
 
   const titles = new Map([
     [targetRoute, 'World Topic Example'],
+    [verifiedRoute, 'Verified Personal Author Example'],
+    [deskRoute, 'Organizational Author Example'],
     [sptRoute, 'Protected SPT Example'],
     [bankRoute, 'Protected Bank Example'],
     [otherRoute, 'Unrelated Example'],
@@ -103,12 +108,21 @@ try {
   write('apps/portal/objave/index.html', listing);
   write(routeFile, JSON.stringify({ items: [
     { path: targetRoute },
+    { path: verifiedRoute },
+    { path: deskRoute },
     { path: sptRoute },
     { path: bankRoute },
   ] }, null, 2));
-  write('apps/portal/data/editorial-registry.json', JSON.stringify({ items: [...titles].map(([route, title]) => registryItem(route, title)) }, null, 2));
+  write('apps/portal/data/editorial-registry.json', JSON.stringify({ items: [...titles].map(([route, title]) => registryItem(
+    route,
+    title,
+    route === verifiedRoute ? 'Nermin Sefić' : route === deskRoute ? 'GNK ASG Intelligence Desk' : null,
+    route === verifiedRoute,
+  )) }, null, 2));
   write('apps/portal/data/editorial-image-manifest.json', JSON.stringify({ items: [
     manifestItem(targetRoute, titles.get(targetRoute), 'target-cover'),
+    manifestItem(verifiedRoute, titles.get(verifiedRoute), 'verified-cover'),
+    manifestItem(deskRoute, titles.get(deskRoute), 'desk-cover'),
     manifestItem(sptRoute, titles.get(sptRoute), 'spt-cover'),
     manifestItem(bankRoute, titles.get(bankRoute), 'bank-cover'),
     manifestItem(otherRoute, titles.get(otherRoute), 'other-cover'),
@@ -128,8 +142,8 @@ try {
   assert.equal(dryRun.status, 0, dryRun.stderr || dryRun.stdout);
   const drySummary = JSON.parse(dryRun.stdout);
   assert.equal(drySummary.write, false);
-  assert.equal(drySummary.scanned, 1, 'only the non-protected requested article should be processed');
-  assert.equal(drySummary.changed, 1);
+  assert.equal(drySummary.scanned, 3, 'only the three requested non-protected editorial examples should be processed');
+  assert.equal(drySummary.changed, 3);
   assert.equal(drySummary.protectedRoutesSkipped, 2);
   assert.deepEqual(drySummary.failures, []);
   assert.equal(fs.readFileSync(path.join(temp, pageFile(targetRoute)), 'utf8'), targetBefore, 'dry-run must not write article HTML');
@@ -138,8 +152,8 @@ try {
   const writeRun = run(['--write']);
   assert.equal(writeRun.status, 0, writeRun.stderr || writeRun.stdout);
   const writeSummary = JSON.parse(writeRun.stdout);
-  assert.equal(writeSummary.scanned, 1);
-  assert.equal(writeSummary.changed, 1);
+  assert.equal(writeSummary.scanned, 3);
+  assert.equal(writeSummary.changed, 3);
   assert.equal(writeSummary.protectedRoutesSkipped, 2);
 
   const target = fs.readFileSync(path.join(temp, pageFile(targetRoute)), 'utf8');
@@ -148,10 +162,12 @@ try {
   assert.match(target, /src="\/assets\/editorial\/world-topics\/chart\.webp"/, 'content chart must be preserved when adding the cover');
   assert.match(target, /aria-label="Krušne mrvice"/);
   assert.match(target, /data-editorial-crosslinks/);
-  assert.doesNotMatch(target, /Nermin Sefić|NerminSefic|#Nermin/i, 'unverified author attribution and name tags must be removed');
-  assert.doesNotMatch(target, /class="author-card"|class="editorial-approval"/);
+  assert.doesNotMatch(target, /#(?:NerminSefic|NerminSefić|SeficNermin|SefićNermin)/i, 'hashtag author tags must not be inserted into article content');
+  assert.doesNotMatch(target, /class="author-card"|class="editorial-author-inline"[^>]*>\s*<strong>Author:\s*<\/strong>\s*Nermin Sefić/i, 'unverified personal byline must be removed');
+  assert.match(target, /class="editorial-approval"/, 'neutral editorial approval must remain');
+  assert.match(target, /name="editor" content="Nermin Sefić"/, 'editorial responsibility must remain separate from author metadata');
   assert.match(target, new RegExp(`property="og:image" content="${imageUrl('target-cover').replace(/[.*+?^${}()|[\\]\\\\]/g, '\\$&')}"`));
-  assert.doesNotMatch(target, /<meta name="author"|property="article:author"/);
+  assert.doesNotMatch(target, /<meta name="author"[^>]*content="Nermin Sefić"|property="article:author"/, 'unverified personal author metadata must be removed');
   assert.doesNotMatch(target, /name="keywords" content="[^"]*Nermin/i);
 
   const articleSchema = [...target.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi)]
@@ -159,8 +175,33 @@ try {
     .find((schema) => schema['@type'] === 'Article');
   assert.ok(articleSchema, 'article schema must remain valid');
   assert.equal(articleSchema.author, undefined);
-  assert.equal(articleSchema.editor, undefined);
+  assert.equal(articleSchema.editor?.name, 'Nermin Sefić', 'JSON-LD must retain the neutral editor role');
   assert.ok(!articleSchema.about?.some((entity) => entity['@type'] === 'Person' && /nermin/i.test(entity.name || '')));
+
+  const verified = fs.readFileSync(path.join(temp, pageFile(verifiedRoute)), 'utf8');
+  assert.match(verified, /<meta name="author" content="Nermin Sefić">/);
+  assert.match(verified, new RegExp(`property="article:author" content="${site.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\$&')}\\/nermin-sefic\\/"`));
+  assert.match(verified, /name="editor" content="Nermin Sefić"/);
+  assert.match(verified, /class="author-card"/, 'verified personal byline may be shown');
+  const verifiedSchema = [...verified.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi)]
+    .map((match) => JSON.parse(match[1]))
+    .find((schema) => schema['@type'] === 'Article');
+  assert.equal(verifiedSchema.author?.['@type'], 'Person');
+  assert.equal(verifiedSchema.author?.['@id'], `${site}/#nermin-sefic`);
+  assert.equal(verifiedSchema.editor?.['@id'], `${site}/#nermin-sefic`, 'verified authorship and editorial responsibility use distinct schema properties');
+
+  const desk = fs.readFileSync(path.join(temp, pageFile(deskRoute)), 'utf8');
+  assert.match(desk, /<meta name="author" content="GNK ASG Intelligence Desk">/);
+  assert.doesNotMatch(desk, /property="article:author"/);
+  assert.match(desk, /name="editor" content="Nermin Sefić"/);
+  assert.match(desk, /GNK ASG Intelligence Desk/, 'organizational authorship should remain visible');
+  assert.doesNotMatch(desk, /class="author-card"/, 'stale personal byline must be removed from an organizationally authored page');
+  const deskSchema = [...desk.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi)]
+    .map((match) => JSON.parse(match[1]))
+    .find((schema) => schema['@type'] === 'Article');
+  assert.equal(deskSchema.author?.['@type'], 'Organization');
+  assert.equal(deskSchema.author?.name, 'GNK ASG Intelligence Desk');
+  assert.equal(deskSchema.editor?.name, 'Nermin Sefić');
 
   const updatedListing = fs.readFileSync(path.join(temp, 'apps/portal/objave/index.html'), 'utf8');
   assert.match(updatedListing, /src="\/assets\/editorial\/generated\/target-cover\.webp"/);

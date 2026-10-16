@@ -1,8 +1,7 @@
 name: Image Entity SEO Boost
 
-# Obogaćuje alt/title atribute entitetima (Nermin Sefić, GNK ASG, GNK DINAMO Ltd.)
-# na siguran, aditivan način, zatim regenerira image-sitemap.xml iz stranica
-# i dispatcha exact-SHA production deploy (verifikacija + IndexNow).
+# Normalizes image alt text for the actual image subject; author and editor roles
+# stay separate. Hashtags remain social-only. Any production dispatch suppresses search-engine notifications.
 
 on:
   workflow_dispatch:
@@ -29,9 +28,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Test author/editor separation and protected-route contract
+        run: node scripts/test-approved-author-markers-v1.mjs
+      - name: Test protected-route write guards
+        run: node scripts/test-protected-route-write-guards-v1.mjs
       - name: Enrich image alt/title with entities
-        run: node scripts/image-entity-seo-v1.mjs
-      - name: Boost hashtags in article bodies
+        run: node scripts/image-entity-seo-v1.mjs --write
+      - name: Confirm hashtags remain social-only
         run: node scripts/hashtag-boost-v1.mjs
       - name: Regenerate image sitemap from pages
         run: python3 scripts/generate-image-sitemap.py
@@ -48,7 +51,7 @@ jobs:
             echo "Nema promjena."
             exit 0
           fi
-          git commit -m "Entity SEO: full-name alt/title (Nermin Sefic) + body hashtags (#NerminSefic #GNKASG #GNKDINAMOLtd) + image sitemap regen"
+          git commit -m "SEO: normalize image alt text and regenerate image sitemap"
           for attempt in 1 2 3 4 5; do
             if git push origin HEAD:main; then
               break
@@ -64,4 +67,5 @@ jobs:
             --repo "$GITHUB_REPOSITORY" \
             --ref main \
             -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
-            -f approved_sha="$sha"
+            -f approved_sha="$sha" \
+            -f notify_search_engines=false

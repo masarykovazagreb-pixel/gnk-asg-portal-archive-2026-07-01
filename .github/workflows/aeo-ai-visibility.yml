@@ -32,20 +32,30 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Test author/editor separation and protected-route contract
+        run: node scripts/test-approved-author-markers-v1.mjs
+      - name: Test scheduled publication SEO and registry-gated authorship
+        run: node scripts/test-editorial-publish-seo-v1.mjs
+      - name: Test content-queue attribution and hashtag safeguards
+        run: node tests/test-content-queue-preflight-v1.mjs
+      - name: Test protected-route write guards
+        run: node scripts/test-protected-route-write-guards-v1.mjs
       - name: Generate AEO artefacts
         run: node scripts/generate-aeo-artifacts-v1.mjs
-      - name: Enrich image alt/title with entities (full name)
-        run: node scripts/image-entity-seo-v1.mjs
-      - name: Boost hashtags in article bodies
+      - name: Build opt-in public AI reference kit
+        run: node scripts/build-ai-reference-kit-v1.mjs
+      - name: Describe image subjects without author keyword injection
+        run: node scripts/image-entity-seo-v1.mjs --write
+      - name: Keep hashtags social-only
         run: node scripts/hashtag-boost-v1.mjs
-      - name: Editorial entity linkage (JSON-LD Article + og:image fallback)
-        run: node scripts/editorial-entity-linkage-v1.mjs
+      - name: Link verified authors, publisher, and neutral editor roles
+        run: node scripts/editorial-entity-linkage-v1.mjs --write
       - name: Share buttons on editorial pages
         run: node scripts/add-share-buttons-v1.mjs
       - name: Rich meta-descriptions from real article body
         run: node scripts/rich-descriptions-v1.mjs
-      - name: Site-wide SEO guardian (non-editorial pages)
-        run: node scripts/site-seo-guardian-v1.mjs
+      - name: Site-wide SEO guardian (public metadata; protected routes excluded)
+        run: node scripts/site-seo-guardian-v1.mjs --write
       - name: BreadcrumbList JSON-LD
         run: node scripts/add-breadcrumbs-v1.mjs
       - name: BreadcrumbList for key non-editorial pages
@@ -54,8 +64,18 @@ jobs:
         run: node scripts/generate-feeds-v1.mjs
       - name: Feed discovery link tags
         run: node scripts/add-feed-discovery-v1.mjs
+      - name: Ensure concise WebSite JSON-LD on public HTML pages
+        run: node scripts/ensure-website-jsonld-v1.mjs --write
+      - name: Verify WebSite JSON-LD coverage and entity separation
+        run: node scripts/test-website-jsonld-v1.mjs
       - name: Regenerate image sitemap
         run: python3 scripts/generate-image-sitemap.py
+      - name: Verify generated attribution across HTML, RSS, Atom, and AEO files
+        run: node scripts/test-editorial-attribution-artifacts-v1.mjs
+      - name: Verify AI reference links, citations, and read-only integrations
+        run: node scripts/test-ai-reference-kit-v1.mjs
+      - name: Verify reviewed AI Visibility exports and OpenAPI
+        run: node scripts/test-ai-visibility-v1.mjs
       - name: Social Meta Guard (audit OG/meta strength on social-source pages)
         run: node scripts/social-meta-guard-v1.mjs
       - name: Commit + dispatch exact-SHA production deploy on Masarykova
@@ -72,7 +92,7 @@ jobs:
             echo "Nema promjena u AEO artefaktima; deploy se ne pokrece."
             exit 0
           fi
-          git commit -m "AEO+Entity: refresh visibility artefacts"
+          git commit -m "AEO: separate verified authorship from editorial roles"
 
           # Exact-SHA writer fence: SEO/AEO output is generated from one main
           # snapshot and must never be silently rebased onto a newer snapshot.
@@ -91,4 +111,5 @@ jobs:
             --repo "${GITHUB_REPOSITORY}" \
             --ref main \
             -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
-            -f approved_sha="$sha"
+            -f approved_sha="$sha" \
+            -f notify_search_engines=false

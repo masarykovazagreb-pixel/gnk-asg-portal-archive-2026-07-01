@@ -385,7 +385,9 @@ for (const item of published) {
       const authorMeta = `${metaValue(parsed, 'author')} ${metaValue(parsed, 'article:author', 'property')}`;
       const relAuthor = parsed.links.some((link) => String(link.rel || '').toLowerCase().split(/\s+/).includes('author') && normalUrl(link.href) === AUTHOR_URL);
       if (nerminAuthor) {
-        if (!/nermin\s+sefi[cć]/i.test(metaValue(parsed, 'author')) || !/nermin\s+sefi[cć]/i.test(metaValue(parsed, 'article:author', 'property'))) addError(`${item.path}: verified Nermin authorship requires consistent author metadata.`);
+        const articleAuthorMeta = metaValue(parsed, 'article:author', 'property');
+        if (!/nermin\s+sefi[cć]/i.test(metaValue(parsed, 'author'))
+            || (!/nermin\s+sefi[cć]/i.test(articleAuthorMeta) && normalUrl(articleAuthorMeta) !== AUTHOR_URL)) addError(`${item.path}: verified Nermin authorship requires consistent author metadata.`);
         if (!parsed.anchors.some((anchor) => anchor.href === '/nermin-sefic/' || anchor.href === AUTHOR_URL) && !relAuthor) addError(`${item.path}: visible author-profile link is missing.`);
       } else {
         if (/nermin\s+sefi[cć]/i.test(authorMeta) || relAuthor || /nermin|sefi[cć]/i.test(metaValue(parsed, 'author-image'))) addError(`${item.path}: legacy Nermin author metadata remains on non-Nermin content.`);
@@ -397,8 +399,7 @@ for (const item of published) {
         if (topicTagBlocks.some((block) => /#(?:NerminSefić|NerminSefic|SefićNermin|SeficNermin)(?=[\s.,;:!?)}\]]|$)/iu.test(block))) addError(`${item.path}: Nermin hashtag remains in an unverified topic-tag block.`);
       }
       const marks = parsed.tags.filter((tag) => tag.attrs['data-author-mark'] === 'nermin-sefic').length;
-      if (nerminAuthor && marks !== 1) addError(`${item.path}: expected exactly one canonical Nermin hashtag block, found ${marks}.`);
-      if (!nerminAuthor && marks) addError(`${item.path}: Nermin hashtag block appears on non-Nermin content.`);
+      if (marks) addError(`${item.path}: social hashtag markers must stay out of editorial HTML and remain distribution-only.`);
       if (!parsed.tags.some((tag) => tag.attrs['data-editorial-crosslinks'] !== undefined)) addError(`${item.path}: internal AKTUAL MEDIA cross-links are missing.`);
       const manifest = manifestByPath.get(item.path);
       if (!manifest) addError(`${item.path}: unique local image record is missing from editorial-image-manifest.json.`);

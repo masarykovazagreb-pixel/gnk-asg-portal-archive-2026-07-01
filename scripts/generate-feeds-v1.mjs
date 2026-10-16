@@ -1,46 +1,81 @@
-// GNK ASG — RSS 2.0 + Atom 1.0 feeds iz editorial-registryja.
-// Piše: /feed.xml (HR RSS), /en/feed.xml (EN RSS), /atom.xml (HR Atom),
-//       /en/atom.xml (EN Atom), plus /feed/index.html i /en/feed/index.html
-// kao ljudske indeks stranice s linkovima na feedove.
-// Feedovi sadrže 50 najnovijih stavki po jeziku, s punim titles/descriptions/authors.
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+// RSS 2.0 and Atom 1.0 feeds derived from the canonical editorial registry.
+// Per-item author attribution is registry-based; editor/publisher roles are not
+// copied into per-item author fields. Social hashtags are not feed keywords.
+import fs from 'node:fs';
+import path from 'node:path';
+import {
+  SITE,
+  PERSON_URL,
+  articleAuthorFor,
+} from './lib/editorial-attribution-v1.mjs';
 
-const SITE='https://gnk-asg.hr';
-const read=(p,f)=>{try{return JSON.parse(readFileSync(p,'utf8'))}catch{return f}};
-const write=(p,s)=>{const d=p.substring(0,p.lastIndexOf('/'));if(d)mkdirSync(d,{recursive:true});writeFileSync(p,s)};
-const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;');
-const cdata=s=>String(s||'').replace(/\]\]>/g,']]&gt;');
+const ROOT = 'apps/portal';
+const SOCIAL_CARD = `${SITE}/assets/gnk-asg-social-card.png`;
+const read = (file, fallback) => {
+  try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return fallback; }
+};
+const writeIfChanged = (file, content) => {
+  if (fs.existsSync(file) && fs.readFileSync(file, 'utf8') === content) return false;
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, content);
+  return true;
+};
+const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;',
+}[char]));
+const cdata = (value) => String(value ?? '').replace(/\]\]>/g, ']]&gt;');
+const readDate = (value) => {
+  const date = value ? new Date(value) : null;
+  return date && Number.isFinite(date.getTime()) ? date : null;
+};
 
-const reg=read('apps/portal/data/editorial-registry.json',{items:[]});
-const items=(reg.items||[]).filter(x=>x?.path&&x?.url).sort((a,b)=>new Date(b.publishedAt||0)-new Date(a.publishedAt||0));
-
-function detectLang(it){
-  if(it.language==='hr'||it.language==='en') return it.language;
-  return it.path?.startsWith('/en/')?'en':'hr';
+const registry = read(`${ROOT}/data/editorial-registry.json`, { items: [] });
+const items = (registry.items || []).filter((item) => item?.path && item?.url)
+  .sort((a, b) => (readDate(b.publishedAt)?.getTime() || 0) - (readDate(a.publishedAt)?.getTime() || 0));
+const byLanguage = { hr: [], en: [] };
+for (const item of items) {
+  const language = item.language === 'en' || String(item.path).startsWith('/en/') ? 'en' : 'hr';
+  byLanguage[language].push(item);
 }
-const byLang={hr:[],en:[]};
-for(const it of items){ byLang[detectLang(it)].push(it); }
+const latestTimestamp = items.reduce((latest, item) => {
+  const date = readDate(item.modifiedAt) || readDate(item.publishedAt);
+  return date && date.getTime() > latest ? date.getTime() : latest;
+}, Date.parse('2026-01-01T00:00:00Z'));
+const feedUpdated = new Date(latestTimestamp);
+const feedUpdatedRss = feedUpdated.toUTCString();
+const feedUpdatedAtom = feedUpdated.toISOString();
 
-function rss(lang, list){
-  const isHr=lang==='hr';
-  const title=isHr?'GNK ASG — najnovije objave':'GNK ASG — latest publications';
-  const desc=isHr?'Analize, kolumne i komentari · Nermin Sefić · GNK ASG (GNK DINAMO Ltd. Group)':'Analyses, columns and commentary · Nermin Sefić · GNK ASG (GNK DINAMO Ltd. Group)';
-  const link=isHr?`${SITE}/objave/`:`${SITE}/en/publications/`;
-  const selfHref=isHr?`${SITE}/feed.xml`:`${SITE}/en/feed.xml`;
-  const now=new Date().toUTCString();
-  const entries=list.slice(0,50).map(it=>{
-    const pub=it.publishedAt?new Date(it.publishedAt).toUTCString():now;
-    const img=it.image?`      <enclosure url="${esc(it.image)}" type="${it.image.endsWith('.jpg')?'image/jpeg':'image/webp'}" length="0"/>\n      <media:content url="${esc(it.image)}" medium="image"/>\n`:'';
-    const cats=(it.hashtags||[]).slice(0,8).map(t=>`      <category>${esc(t)}</category>`).join('\n');
+function authorFor(item) {
+  return articleAuthorFor(item);
+}
+
+function safeCategories(item) {
+  return [...new Set([item.collection, item.section].filter((value) => typeof value === 'string' && value.trim()))]
+    .slice(0, 2)
+    .map((value) => `      <category>${esc(value)}</category>`)
+    .join('\n');
+}
+
+function rss(language, list) {
+  const isHr = language === 'hr';
+  const title = isHr ? 'GNK ASG — najnovije objave' : 'GNK ASG — latest publications';
+  const description = isHr
+    ? 'Objave, analize, komentari i odabrani urednički sadržaji GNK ASG-a. Svaka stavka zadržava vlastitu atribuciju autora i izvora.'
+    : 'Publications, analyses, commentary and selected GNK ASG editorial items. Each entry retains its own author and source attribution.';
+  const link = isHr ? `${SITE}/objave/` : `${SITE}/en/publications/`;
+  const selfHref = isHr ? `${SITE}/feed.xml` : `${SITE}/en/feed.xml`;
+  const entries = list.slice(0, 50).map((item) => {
+    const author = authorFor(item);
+    const published = readDate(item.publishedAt);
+    const image = item.image ? `      <enclosure url="${esc(item.image)}" type="${/\.png(?:$|\?)/i.test(item.image) ? 'image/png' : /\.jpe?g(?:$|\?)/i.test(item.image) ? 'image/jpeg' : 'image/webp'}" length="0"/>\n      <media:content url="${esc(item.image)}" medium="image"/>\n` : '';
+    const authorElement = author ? `      <dc:creator>${esc(author.name)}</dc:creator>\n` : '';
+    const categories = safeCategories(item);
     return `    <item>
-      <title>${esc(it.title||it.slug)}</title>
-      <link>${esc(it.url)}</link>
-      <guid isPermaLink="true">${esc(it.url)}</guid>
-      <pubDate>${pub}</pubDate>
-      <dc:creator>Nermin Sefić</dc:creator>
-      <description><![CDATA[${cdata(it.description||'')}]]></description>
-${img}${cats}
-    </item>`;
+      <title>${esc(item.title || item.slug)}</title>
+      <link>${esc(item.url)}</link>
+      <guid isPermaLink="true">${esc(item.url)}</guid>
+${published ? `      <pubDate>${published.toUTCString()}</pubDate>\n` : ''}${authorElement}      <description><![CDATA[${cdata(item.description || '')}]]></description>
+${image}${categories ? `${categories}\n` : ''}    </item>`;
   }).join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0"
@@ -51,12 +86,12 @@ ${img}${cats}
   <channel>
     <title>${esc(title)}</title>
     <link>${esc(link)}</link>
-    <description>${esc(desc)}</description>
-    <language>${isHr?'hr-HR':'en'}</language>
-    <copyright>© GNK ASG d.o.o. / Nermin Sefić</copyright>
-    <managingEditor>it@gnk-asg.hr (Nermin Sefić)</managingEditor>
-    <webMaster>it@gnk-asg.hr (Nermin Sefić)</webMaster>
-    <lastBuildDate>${now}</lastBuildDate>
+    <description>${esc(description)}</description>
+    <language>${isHr ? 'hr-HR' : 'en'}</language>
+    <copyright>© GNK ASG d.o.o.</copyright>
+    <managingEditor>it@gnk-asg.hr (Nermin Sefić, Editor-in-Chief)</managingEditor>
+    <webMaster>it@gnk-asg.hr</webMaster>
+    <lastBuildDate>${feedUpdatedRss}</lastBuildDate>
     <generator>GNK ASG feeds v1</generator>
     <atom:link href="${esc(selfHref)}" rel="self" type="application/rss+xml"/>
     <image>
@@ -69,90 +104,145 @@ ${entries}
 </rss>
 `;
 }
-function atom(lang, list){
-  const isHr=lang==='hr';
-  const title=isHr?'GNK ASG — najnovije objave':'GNK ASG — latest publications';
-  const desc=isHr?'Analize, kolumne i komentari · Nermin Sefić · GNK ASG':'Analyses, columns and commentary · Nermin Sefić · GNK ASG';
-  const link=isHr?`${SITE}/objave/`:`${SITE}/en/publications/`;
-  const selfHref=isHr?`${SITE}/atom.xml`:`${SITE}/en/atom.xml`;
-  const now=new Date().toISOString();
-  const entries=list.slice(0,50).map(it=>{
-    const pub=it.publishedAt||now;
+
+function atom(language, list) {
+  const isHr = language === 'hr';
+  const title = isHr ? 'GNK ASG — najnovije objave' : 'GNK ASG — latest publications';
+  const description = isHr
+    ? 'Objave, analize i komentari GNK ASG-a; autor se navodi samo kada ga potvrđuje urednički registar.'
+    : 'GNK ASG publications, analyses and commentary; an author is named only when confirmed by the editorial registry.';
+  const link = isHr ? `${SITE}/objave/` : `${SITE}/en/publications/`;
+  const selfHref = isHr ? `${SITE}/atom.xml` : `${SITE}/en/atom.xml`;
+  const entries = list.slice(0, 50).map((item) => {
+    const author = authorFor(item);
+    const published = readDate(item.publishedAt);
+    const updated = readDate(item.modifiedAt) || published || feedUpdated;
+    const authorBlock = author
+      ? `<author><name>${esc(author.name)}</name>${author.url ? `<uri>${esc(author.url)}</uri>` : ''}</author>`
+      : '';
+    const categories = [item.collection, item.section]
+      .filter((value) => typeof value === 'string' && value.trim())
+      .slice(0, 2)
+      .map((value) => `<category term="${esc(value)}"/>`).join('');
     return `  <entry>
-    <title>${esc(it.title||it.slug)}</title>
-    <link href="${esc(it.url)}" rel="alternate"/>
-    <id>${esc(it.url)}</id>
-    <updated>${esc(pub)}</updated>
-    <published>${esc(pub)}</published>
-    <author><name>Nermin Sefić</name><uri>${SITE}/nermin-sefic/</uri></author>
-    <summary><![CDATA[${cdata(it.description||'')}]]></summary>
-    ${it.image?`<link rel="enclosure" href="${esc(it.image)}"/>`:''}
-    ${(it.hashtags||[]).slice(0,8).map(t=>`<category term="${esc(t)}"/>`).join('')}
+    <title>${esc(item.title || item.slug)}</title>
+    <link href="${esc(item.url)}" rel="alternate"/>
+    <id>${esc(item.url)}</id>
+    <updated>${esc(updated.toISOString())}</updated>
+${published ? `    <published>${esc(published.toISOString())}</published>\n` : ''}${authorBlock ? `    ${authorBlock}\n` : ''}    <summary><![CDATA[${cdata(item.description || '')}]]></summary>
+    ${item.image ? `<link rel="enclosure" href="${esc(item.image)}"/>` : ''}
+    ${categories}
   </entry>`;
   }).join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="${isHr?'hr':'en'}">
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="${isHr ? 'hr' : 'en'}">
   <title>${esc(title)}</title>
-  <subtitle>${esc(desc)}</subtitle>
+  <subtitle>${esc(description)}</subtitle>
   <link href="${esc(link)}" rel="alternate"/>
   <link href="${esc(selfHref)}" rel="self"/>
   <id>${esc(selfHref)}</id>
-  <updated>${now}</updated>
-  <rights>© GNK ASG d.o.o. / Nermin Sefić</rights>
+  <updated>${feedUpdatedAtom}</updated>
+  <author><name>GNK ASG d.o.o.</name><uri>${SITE}/</uri></author>
+  <rights>© GNK ASG d.o.o.</rights>
   <generator uri="${SITE}/">GNK ASG feeds v1</generator>
   <icon>${SITE}/assets/logo-gnk-asg-canonical.svg</icon>
 ${entries}
 </feed>
 `;
 }
-function feedIndex(lang){
-  const isHr=lang===' hr';
-  const t=lang==='hr'?'Feedovi · GNK ASG':'Feeds · GNK ASG';
-  const desc=lang==='hr'?'Pretplati se na najnovije analize, kolumne i komentare — Nermin Sefić / GNK ASG.':'Subscribe to the latest analyses, columns and commentary — Nermin Sefić / GNK ASG.';
-  const rss=lang==='hr'?'/feed.xml':'/en/feed.xml';
-  const at=lang==='hr'?'/atom.xml':'/en/atom.xml';
-  const canonical=lang==='hr'?`${SITE}/feed/`:`${SITE}/en/feed/`;
+
+function feedIndex(language) {
+  const isHr = language === 'hr';
+  const title = isHr ? 'RSS i Atom feedovi · GNK ASG' : 'RSS and Atom feeds · GNK ASG';
+  const description = isHr
+    ? 'RSS i Atom kanali GNK ASG-a s najnovijim objavama, komentarima i analizama; svaka stavka zadržava vlastitu atribuciju autora i izvora.'
+    : 'GNK ASG RSS and Atom feeds for publications, commentary and analyses; each entry retains its own author and source attribution.';
+  const rssPath = isHr ? '/feed.xml' : '/en/feed.xml';
+  const atomPath = isHr ? '/atom.xml' : '/en/atom.xml';
+  const canonical = isHr ? `${SITE}/feed/` : `${SITE}/en/feed/`;
+  const home = isHr ? `${SITE}/` : `${SITE}/en/`;
+  const pageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': `${canonical}#webpage`,
+    url: canonical,
+    name: title,
+    description,
+    inLanguage: language,
+    isPartOf: { '@id': `${SITE}/#website` },
+    editor: { '@id': `${SITE}/#nermin-sefic`, '@type': 'Person', name: 'Nermin Sefić', url: PERSON_URL },
+    publisher: { '@id': `${SITE}/#gnk-asg`, '@type': 'Organization', name: 'GNK ASG d.o.o.' },
+  };
+  const breadcrumb = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: isHr ? 'Naslovnica' : 'Home', item: home },
+      { '@type': 'ListItem', position: 2, name: isHr ? 'Feedovi' : 'Feeds', item: canonical },
+    ],
+  };
   return `<!doctype html>
-<html lang="${lang}">
+<html lang="${language}">
 <head>
 <meta charset="utf-8">
-<title>${esc(t)}</title>
-<meta name="description" content="${esc(desc)}">
-<meta name="author" content="Nermin Sefić">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${esc(title)}</title>
+<meta name="description" content="${esc(description)}">
+<meta name="editor" content="Nermin Sefić">
+<meta name="robots" content="index,follow,max-image-preview:large">
 <link rel="canonical" href="${canonical}">
-<link rel="alternate" type="application/rss+xml" title="RSS" href="${rss}">
-<link rel="alternate" type="application/atom+xml" title="Atom" href="${at}">
-<meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="index,follow">
+<link rel="alternate" hreflang="hr" href="${SITE}/feed/">
+<link rel="alternate" hreflang="en" href="${SITE}/en/feed/">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="${rssPath}">
+<link rel="alternate" type="application/atom+xml" title="Atom" href="${atomPath}">
 <meta property="og:type" content="website">
-<meta property="og:title" content="${esc(t)}">
-<meta property="og:description" content="${esc(desc)}">
-<meta property="og:url" content="${canonical}">
-<meta property="og:image" content="${SITE}/assets/people/nermin-sefic/og/nermin-sefic-01-official-desk-portrait.jpg">
 <meta property="og:site_name" content="GNK ASG">
+<meta property="og:title" content="${esc(title)}">
+<meta property="og:description" content="${esc(description)}">
+<meta property="og:url" content="${canonical}">
+<meta property="og:image" content="${SOCIAL_CARD}">
+<meta property="og:image:alt" content="GNK ASG d.o.o. corporate editorial card">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="${esc(t)}">
-<meta name="twitter:description" content="${esc(desc)}">
-<meta name="twitter:image" content="${SITE}/assets/people/nermin-sefic/og/nermin-sefic-01-official-desk-portrait.jpg">
-<script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:(lang==='hr'?'Naslovnica':'Home'),item:(lang==='hr'?SITE+'/':SITE+'/en/')},{'@type':'ListItem',position:2,name:(lang==='hr'?'Feedovi':'Feeds'),item:canonical}]})}</script>
+<meta name="twitter:title" content="${esc(title)}">
+<meta name="twitter:description" content="${esc(description)}">
+<meta name="twitter:image" content="${SOCIAL_CARD}">
+<script type="application/ld+json">${JSON.stringify(pageSchema)}</script>
+<script type="application/ld+json">${JSON.stringify(breadcrumb)}</script>
 <style>body{font:16px/1.55 system-ui,Segoe UI,Arial,sans-serif;max-width:720px;margin:2rem auto;padding:0 1rem;color:#eee;background:#0b0d10}a{color:#8bd}code{background:#151a20;padding:2px 6px;border-radius:4px}</style>
 </head>
 <body>
-<h1>${esc(t)}</h1>
-<p>${esc(desc)}</p>
-<h2>${lang==='hr'?'Kanali':'Channels'}</h2>
+<main>
+<h1>${esc(title)}</h1>
+<p>${esc(description)}</p>
+<h2>${isHr ? 'Kanali' : 'Channels'}</h2>
 <ul>
-<li><strong>RSS 2.0:</strong> <a href="${rss}"><code>${rss}</code></a></li>
-<li><strong>Atom 1.0:</strong> <a href="${at}"><code>${at}</code></a></li>
+<li><strong>RSS 2.0:</strong> <a href="${rssPath}"><code>${rssPath}</code></a></li>
+<li><strong>Atom 1.0:</strong> <a href="${atomPath}"><code>${atomPath}</code></a></li>
 </ul>
-<p>${lang==='hr'?'Feedovi se ažuriraju automatski nakon svake nove objave.':'Feeds refresh automatically after each new publication.'}</p>
-</body></html>`;
+<p>${isHr
+    ? 'Autor se prikazuje samo kada ga potvrđuje urednički registar; urednička odgovornost i izdavač nisu osobni autor.'
+    : 'An author is shown only when confirmed by the editorial registry; editorial responsibility and publisher are not personal authorship.'}</p>
+</main>
+</body>
+</html>`;
 }
 
-write('apps/portal/feed.xml', rss('hr', byLang.hr));
-write('apps/portal/en/feed.xml', rss('en', byLang.en));
-write('apps/portal/atom.xml', atom('hr', byLang.hr));
-write('apps/portal/en/atom.xml', atom('en', byLang.en));
-write('apps/portal/feed/index.html', feedIndex('hr'));
-write('apps/portal/en/feed/index.html', feedIndex('en'));
-
-console.log(JSON.stringify({rss_hr:byLang.hr.length,rss_en:byLang.en.length,items:items.length,wrote:['/feed.xml','/en/feed.xml','/atom.xml','/en/atom.xml','/feed/','/en/feed/']},null,2));
+const outputs = [
+  ['apps/portal/feed.xml', rss('hr', byLanguage.hr)],
+  ['apps/portal/en/feed.xml', rss('en', byLanguage.en)],
+  ['apps/portal/atom.xml', atom('hr', byLanguage.hr)],
+  ['apps/portal/en/atom.xml', atom('en', byLanguage.en)],
+  ['apps/portal/feed/index.html', feedIndex('hr')],
+  ['apps/portal/en/feed/index.html', feedIndex('en')],
+];
+let changed = 0;
+for (const [file, content] of outputs) if (writeIfChanged(file, content)) changed++;
+console.log(JSON.stringify({
+  version: 'GNK_ASG_FEEDS_ATTRIBUTION_V2',
+  items: items.length,
+  hrItems: byLanguage.hr.length,
+  enItems: byLanguage.en.length,
+  changed,
+  perItemAuthorship: 'verified-registry-only',
+  wrote: outputs.map(([file]) => `/${path.relative(ROOT, file).replace(/\\/g, '/')}`),
+}, null, 2));

@@ -1,137 +1,338 @@
-// GNK ASG — Site-wide SEO guardian.
-// Pokriva SVE stranice portala koje NISU u editorial-registryju
-// (naslovnica, /nermin-sefic/, /gnk-aktual/, tematske, kategorije,
-// tools stranice, itd.) i osigurava minimum:
-//   - <meta name="description">  (aditivno; ne prepisuje postojeći ako je >=110 znakova)
-//   - <meta name="author"> = Nermin Sefić (aditivno)
-//   - og:title / og:description / og:image / og:type = website  (aditivno)
-//   - twitter:card / twitter:title / twitter:description / twitter:image  (aditivno)
-//   - link canonical  (aditivno, iz same rute)
-//   - JSON-LD WebPage graf linkan na kanonski Person + Organization  (dodano samo ako nedostaje)
-//   - alt/title enrichment za portret/logo/chart slike (isti standardi kao editorial)
-// Aditivno u svakom koraku, nikad ne uklanja postojeće metapodatke.
-import './remove-bpp-public-v2.mjs';
-import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
-import { join, relative } from 'node:path';
+// Safe SEO metadata normalizer for public pages.
+// Read-only by default. Pass --write only from a reviewed workflow.
+// Protected SPT/bank routes are never modified; registry pages receive only
+// social/SEO keyword hygiene, while author/editor roles use the canonical registry.
+import fs from 'node:fs';
+import path from 'node:path';
+import {
+  SITE,
+  PERSON_URL,
+  PERSON_ID,
+  ORGANIZATION_ID,
+  WEBSITE_ID,
+  isNerminPersonReference,
+} from './lib/editorial-attribution-v1.mjs';
+import { isProtectedEditorialRoute } from './lib/editorial-route-protection-v1.mjs';
+import { cleanSocialAbout, cleanSocialKeywords } from './lib/editorial-html-attribution-v1.mjs';
+import { limitSeoDescription } from './lib/seo-description-v1.mjs';
 
-const SITE='https://gnk-asg.hr';
-const ROOT='apps/portal';
-const SKIP=new Set(['admin','admin-center','control','automation-status','webmail','mail-studio','campaign-mailer','email-status','worker-ops','operator-dashboard','digital-headquarters','media-registration-admin','podijeli','api','assets','data','__preview']);
-const read=(p,f)=>{try{return JSON.parse(readFileSync(p,'utf8'))}catch{return f}};
-const reg=read('apps/portal/data/editorial-registry.json',{items:[]});
-const editorialPaths=new Set((reg.items||[]).map(x=>x?.path).filter(Boolean));
+const ROOT = 'apps/portal';
+const REGISTRY = JSON.parse(fs.readFileSync(`${ROOT}/data/editorial-registry.json`, 'utf8'));
+// Canonical mirrors are intentionally omitted from the editorial registry and
+// sitemap to avoid duplicate publications, but remain editorial HTML routes.
+// Keep the site-wide normalizer from replacing their verified original URL with
+// the mirror route's self URL.
+const LEGACY_EDITORIAL_ALIAS_ROUTES = new Set([
+  '/komentari/hrvatski-softver-izvoz-nevidljivi-lider/',
+  '/objave/hrvatski-softver-izvoz-nevidljivi-lider/',
+  '/gnk-aktual/kolumne/hrvatski-softver-izvoz-nevidljivi-lider/',
+]);
+const EDITORIAL_PATHS = new Set([
+  ...(REGISTRY.items || []).map((item) => normalizeRoute(item?.path)).filter(Boolean),
+  ...LEGACY_EDITORIAL_ALIAS_ROUTES,
+]);
+const ITEM_BY_ROUTE = new Map((REGISTRY.items || []).map((item) => [normalizeRoute(item?.path), item]));
+const WRITE = process.argv.includes('--write');
+const SOCIAL_CARD = `${SITE}/assets/gnk-asg-social-card.png`;
+const SKIP_ROOTS = new Set([
+  'admin', 'admin-center', 'admin-login', 'control', 'automation-status',
+  'webmail', 'mail-studio', 'campaign-mailer', 'email-status', 'worker-ops',
+  'operator-dashboard', 'digital-headquarters', 'media-registration-admin',
+  'podijeli', 'api', 'assets', 'data', '__preview', 'bank', 'spt',
+]);
+const PAGE_TYPES = new Set([
+  'WebPage', 'AboutPage', 'CollectionPage', 'ContactPage', 'ProfilePage',
+  'FAQPage', 'SearchResultsPage', 'ItemPage',
+]);
 
-const stats={files:0,descAdded:0,ogAdded:0,twAdded:0,canonAdded:0,jsonldAdded:0,authorAdded:0,altAdded:0,altEnriched:0,scanned:0};
-const attrEsc=s=>String(s).replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-const strip=s=>s.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+function normalizeRoute(value) {
+  const route = String(value || '').trim().replace(/^\/+|\/+$/g, '');
+  return route ? `/${route}/` : '/';
+}
 
-const pages=[];
-(function walk(dir){
-  for(const n of readdirSync(dir)){
-    const p=join(dir,n); let st;
-    try{ st=statSync(p); }catch{continue;}
-    if(st.isDirectory()){
-      const rel=relative(ROOT,p);
-      const first=rel.split('/')[0];
-      if(first && SKIP.has(first)) continue;
-      // also skip /en/<skipped>/
-      const parts=rel.split('/');
-      if(parts[0]==='en' && parts[1] && SKIP.has(parts[1])) continue;
-      walk(p);
-    } else if(n==='index.html'){
-      pages.push(p);
+function esc(value) {
+  return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+  }[char]));
+}
+
+function decodeEntities(value) {
+  let decoded = String(value ?? '');
+  for (let pass = 0; pass < 5; pass++) {
+    const next = decoded
+      .replace(/&nbsp;|&#160;/gi, ' ')
+      .replace(/&amp;/gi, '&').replace(/&lt;/gi, '<').replace(/&gt;/gi, '>')
+      .replace(/&quot;/gi, '"').replace(/&apos;|&#39;/gi, "'")
+      .replace(/&#(\d+);/g, (entity, digits) => {
+        const point = Number(digits);
+        return Number.isSafeInteger(point) && point >= 0 && point <= 0x10ffff ? String.fromCodePoint(point) : entity;
+      })
+      .replace(/&#x([0-9a-f]+);/gi, (entity, hex) => {
+        const point = Number.parseInt(hex, 16);
+        return Number.isSafeInteger(point) && point >= 0 && point <= 0x10ffff ? String.fromCodePoint(point) : entity;
+      });
+    if (next === decoded) break;
+    decoded = next;
+  }
+  return decoded;
+}
+
+function attrValue(tag, name) {
+  const match = tag.match(new RegExp(`\\b${name}\\s*=\\s*(["'])([\\s\\S]*?)\\1`, 'i'));
+  return match ? decodeEntities(match[2]) : '';
+}
+
+function insertIntoHead(html, tag) {
+  return html.includes('</head>') ? html.replace('</head>', `${tag}</head>`) : `${tag}${html}`;
+}
+
+function upsertMeta(html, keyAttribute, key, value) {
+  let found = false;
+  const replacement = html.replace(/<meta\b[^>]*>/gi, (tag) => {
+    if (attrValue(tag, keyAttribute).toLowerCase() !== key.toLowerCase()) return tag;
+    if (found) return '';
+    found = true;
+    const content = /\bcontent\s*=\s*(["'])([\s\S]*?)\1/i;
+    return content.test(tag)
+      ? tag.replace(content, `content="${esc(value)}"`)
+      : tag.replace(/\s*\/?>$/, (end) => ` content="${esc(value)}"${end}`);
+  });
+  return found ? replacement : insertIntoHead(replacement, `<meta ${keyAttribute}="${esc(key)}" content="${esc(value)}">`);
+}
+
+function removeNerminAuthorMeta(html) {
+  return html.replace(/<meta\b[^>]*>/gi, (tag) => {
+    if (attrValue(tag, 'name').toLowerCase() !== 'author') return tag;
+    return /nermin\s+sefi[cć]/i.test(attrValue(tag, 'content')) ? '' : tag;
+  });
+}
+
+function pageText(html) {
+  return decodeEntities(String(html || '')
+    .replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim());
+}
+
+function pageSchemaNode(route, title, description, language) {
+  const canonical = `${SITE}${route}`;
+  return {
+    '@context': 'https://schema.org',
+    '@type': route === '/about/' || route === '/en/about/' ? 'AboutPage' : 'WebPage',
+    '@id': `${canonical}#webpage`,
+    url: canonical,
+    name: title,
+    description,
+    inLanguage: language,
+    isPartOf: { '@id': WEBSITE_ID },
+    editor: { '@type': 'Person', '@id': PERSON_ID, name: 'Nermin Sefić', url: PERSON_URL },
+    publisher: { '@type': 'Organization', '@id': ORGANIZATION_ID, name: 'GNK ASG d.o.o.', url: `${SITE}/` },
+  };
+}
+
+function schemaTypes(node) {
+  const types = Array.isArray(node?.['@type']) ? node['@type'] : [node?.['@type']];
+  return types.filter(Boolean);
+}
+
+function cleanKeywordMeta(html, item) {
+  return html.replace(/<meta\b[^>]*\bname=[\"'](?:keywords|news_keywords)[\"'][^>]*>/gi, (tag) => {
+    const keywords = cleanSocialKeywords(attrValue(tag, 'content'), item);
+    if (keywords === undefined) return '';
+    const content = /\bcontent\s*=\s*([\"'])([\s\S]*?)\1/i;
+    return content.test(tag) ? tag.replace(content, `content=\"${esc(keywords)}\"`) : tag;
+  });
+}
+
+function cleanSocialArticleTags(html) {
+  return html.replace(/<meta\b[^>]*property=["']article:tag["'][^>]*>/gi, (tag) => {
+    const content = attrValue(tag, 'content');
+    return /^#/u.test(content) || /nermin|sefi[cć]/i.test(content) ? '' : tag;
+  });
+}
+
+function cleanStructuredSeoKeywords(html, item) {
+  return html.replace(/<script\b[^>]*type=[\"']application\/ld\+json[\"'][^>]*>([\s\S]*?)<\/script>/gi, (block, raw) => {
+    let schema;
+    try { schema = JSON.parse(raw); } catch { return block; }
+    const visit = (value) => {
+      if (Array.isArray(value)) return value.map(visit);
+      if (!value || typeof value !== 'object') return value;
+      if (schemaTypes(value).includes('WebSite')) {
+        value.name = 'GNK ASG';
+        delete value.keywords;
+      } else if ('keywords' in value) {
+        const keywords = cleanSocialKeywords(value.keywords, item);
+        if (keywords === undefined) delete value.keywords;
+        else value.keywords = keywords;
+      }
+      if ('about' in value) {
+        const about = cleanSocialAbout(value.about, item);
+        if (about === undefined) delete value.about;
+        else value.about = about;
+      }
+      for (const [key, child] of Object.entries(value)) value[key] = visit(child);
+      return value;
+    };
+    schema = visit(schema);
+    return `<script type=\"application/ld+json\">${JSON.stringify(schema).replace(/</g, '\\u003c')}</script>`;
+  });
+}
+
+function updatePageJsonLd(html, route, title, description, language) {
+  let foundPage = false;
+  const updated = html.replace(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi, (block, raw) => {
+    let schema;
+    try { schema = JSON.parse(raw); } catch { return block; }
+    const visit = (value) => {
+      if (Array.isArray(value)) return value.map(visit);
+      if (!value || typeof value !== 'object') return value;
+      if (schemaTypes(value).some((type) => PAGE_TYPES.has(type))) {
+        foundPage = true;
+        value.editor = { '@type': 'Person', '@id': PERSON_ID, name: 'Nermin Sefić', url: PERSON_URL };
+        value.publisher ||= { '@type': 'Organization', '@id': ORGANIZATION_ID, name: 'GNK ASG d.o.o.', url: `${SITE}/` };
+        value.isPartOf ||= { '@id': WEBSITE_ID };
+        value.url ||= `${SITE}${route}`;
+        value['@id'] ||= `${SITE}${route}#webpage`;
+        value.name ||= title;
+        value.description ||= description;
+        value.inLanguage ||= language;
+        if (isNerminPersonReference(value.author)) delete value.author;
+        if (route !== '/nermin-sefic/' && route !== '/en/nermin-sefic/' && 'about' in value) {
+          const wasArray = Array.isArray(value.about);
+          const values = wasArray ? value.about : [value.about];
+          const kept = values.filter((entry) => !isNerminPersonReference(entry));
+          if (!kept.length) delete value.about;
+          else value.about = wasArray ? kept : kept[0];
+        }
+      }
+      for (const [key, child] of Object.entries(value)) value[key] = visit(child);
+      return value;
+    };
+    schema = visit(schema);
+    return `<script type="application/ld+json">${JSON.stringify(schema).replace(/</g, '\\u003c')}</script>`;
+  });
+  return foundPage ? updated : insertIntoHead(updated, `<script type="application/ld+json">${JSON.stringify(pageSchemaNode(route, title, description, language)).replace(/</g, '\\u003c')}</script>`);
+}
+
+function socialImage(html, route) {
+  const profilePage = route === '/nermin-sefic/' || route === '/en/nermin-sefic/';
+  const metas = [...html.matchAll(/<meta\b[^>]*>/gi)].map((match) => match[0]);
+  const ogTag = metas.find((tag) => attrValue(tag, 'property').toLowerCase() === 'og:image');
+  const oldOg = ogTag ? attrValue(ogTag, 'content') : '';
+  const fallbackNeeded = !oldOg || (!profilePage && /\/assets\/people\/nermin-sefic\//i.test(oldOg));
+  const nextOg = fallbackNeeded ? SOCIAL_CARD : oldOg;
+  html = upsertMeta(html, 'property', 'og:image', nextOg);
+  if (!metas.some((tag) => attrValue(tag, 'property').toLowerCase() === 'og:image:alt')) {
+    html = upsertMeta(html, 'property', 'og:image:alt', profilePage ? 'Nermin Sefić — public profile' : 'GNK ASG d.o.o. corporate editorial card');
+  }
+  const twitterTag = metas.find((tag) => attrValue(tag, 'name').toLowerCase() === 'twitter:image');
+  const oldTwitter = twitterTag ? attrValue(twitterTag, 'content') : '';
+  if (!oldTwitter || (!profilePage && /\/assets\/people\/nermin-sefic\//i.test(oldTwitter))) {
+    html = upsertMeta(html, 'name', 'twitter:image', nextOg);
+  }
+  return html;
+}
+
+const files = [];
+(function walk(directory) {
+  for (const name of fs.readdirSync(directory)) {
+    const file = path.join(directory, name);
+    let stat;
+    try { stat = fs.statSync(file); } catch { continue; }
+    if (stat.isDirectory()) {
+      const relative = path.relative(ROOT, file).split(path.sep).join('/');
+      const segments = relative.split('/');
+      if ((segments[0] && SKIP_ROOTS.has(segments[0])) || (segments[0] === 'en' && segments[1] && SKIP_ROOTS.has(segments[1]))) continue;
+      walk(file);
+    } else if (name === 'index.html') {
+      files.push(file);
     }
   }
 })(ROOT);
-console.log('scanning', pages.length, 'pages');
 
-for(const file of pages){
-  stats.scanned++;
-  const rel=relative(ROOT,file);
-  const routePath='/'+rel.replace(/index\.html$/,'');
-  if(editorialPaths.has(routePath)) continue;  // editorial covered by other scripts
+const stats = {
+  mode: WRITE ? 'write' : 'check',
+  scanned: files.length,
+  changed: 0,
+  protectedSkipped: 0,
+  editorialSkipped: 0,
+  noindexSkipped: 0,
+  authorConvertedToEditor: 0,
+  editorMetadataEnsured: 0,
+  schemaUpdated: 0,
+  keywordSignalsCleaned: 0,
+  changedPages: [],
+};
 
-  let html=readFileSync(file,'utf8');
-  const orig=html;
-  const isEn=/<html[^>]+lang="en"/i.test(html);
-  const titleM=html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
-  const pageTitle=titleM?strip(titleM[1]):'GNK ASG';
+for (const file of files) {
+  const relative = path.relative(ROOT, file).split(path.sep).join('/');
+  const route = normalizeRoute(relative.replace(/index\.html$/i, ''));
+  if (isProtectedEditorialRoute(route)) {
+    stats.protectedSkipped++;
+    continue;
+  }
 
-  const bodyM=html.match(/<main[^>]*>([\s\S]*?)<\/main>/i) || html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
-  const bodyText=bodyM?strip(bodyM[1]).slice(0,320):'';
-  const firstPara=(bodyM?.[1].match(/<p[^>]*>([\s\S]*?)<\/p>/i)||[])[1];
-  const desc=(firstPara?strip(firstPara).slice(0,240):'')||bodyText||(isEn?'GNK ASG d.o.o. — corporate portal for technology, finance, projects and public information.':'GNK ASG d.o.o. — korporativni portal za tehnologiju, financije, projekte i javne informacije.');
-
-  const has = re => re.test(html);
-  const insertHead = tag => { html = html.replace('</head>', tag+'</head>'); };
-
-  if(!has(/<meta\s+name="description"/i)){
-    insertHead(`<meta name="description" content="${attrEsc(desc)}">`); stats.descAdded++;
+  let html = fs.readFileSync(file, 'utf8');
+  if (/\bnoindex\b/i.test(html) || /http-equiv=["']refresh["']/i.test(html)) {
+    stats.noindexSkipped++;
+    continue;
   }
-  if(!has(/<meta\s+name="author"/i)){
-    const author = routePath === '/nermin-sefic/' || routePath === '/en/nermin-sefic/' ? 'Nermin Sefić' : 'GNK ASG d.o.o.';
-    insertHead(`<meta name="author" content="${author}">`); stats.authorAdded++;
-  }
-  if(!has(/<link\s+rel="canonical"/i)){
-    insertHead(`<link rel="canonical" href="${SITE}${routePath}">`); stats.canonAdded++;
-  }
-  if(!has(/property="og:title"/i)){
-    const ogT=pageTitle.split(' | ')[0];
-    const ogImg=`${SITE}/assets/gnk-asg-social-card.png`;
-    insertHead(`<meta property="og:type" content="website"><meta property="og:title" content="${attrEsc(ogT)}"><meta property="og:description" content="${attrEsc(desc.slice(0,300))}"><meta property="og:url" content="${SITE}${routePath}"><meta property="og:image" content="${ogImg}"><meta property="og:image:type" content="image/png"><meta property="og:image:width" content="1200"><meta property="og:site_name" content="GNK ASG">`);
-    stats.ogAdded++;
-  }
-  if(!has(/name="twitter:card"/i)){
-    const ogImg=`${SITE}/assets/gnk-asg-social-card.png`;
-    insertHead(`<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${attrEsc(pageTitle.split(' | ')[0])}"><meta name="twitter:description" content="${attrEsc(desc.slice(0,240))}"><meta name="twitter:image" content="${ogImg}">`);
-    stats.twAdded++;
-  }
-  // WebPage JSON-LD linked to canonical Person + Organization if no Person JSON-LD already exists
-  if(!/"@type"\s*:\s*"(Person|Organization|WebPage|WebSite|Article)"/i.test(html)){
-    const ld={
-      '@context':'https://schema.org',
-      '@type':'WebPage',
-      '@id':`${SITE}${routePath}`,
-      url:`${SITE}${routePath}`,
-      name:pageTitle,
-      description:desc.slice(0,300),
-      inLanguage:isEn?'en':'hr',
-      isPartOf:{'@id':`${SITE}/#website`},
-      about:{'@id':routePath.includes('nermin-sefic')?`${SITE}/#nermin-sefic`:`${SITE}/#gnk-asg`},
-      publisher:{'@id':`${SITE}/#gnk-asg`}
-    };
-    insertHead(`<script type="application/ld+json">${JSON.stringify(ld)}</script>`);
-    stats.jsonldAdded++;
-  }
-  // Alt/title enrichment (mask script blocks)
-  const scripts=[]; const masked=html.replace(/<script[\s\S]*?<\/script>/gi,m=>{scripts.push(m);return `\u0000S${scripts.length-1}\u0000`;});
-  let mask2=masked.replace(/<img\b[^>]*>/gi,(tag)=>{
-    const src=(tag.match(/src="([^"]*)"/i)||[])[1]||'';
-    const isPerson=/\/assets\/people\/nermin-sefic\//.test(src);
-    const isLogo=/logo-gnk-asg/.test(src);
-    const isChart=/\/assets\/editorial\/world-topics\//.test(src);
-    if(!isPerson&&!isLogo&&!isChart) return tag;
-    let t=tag;
-    const altM=t.match(/alt="([^"]*)"/i); const alt=altM?altM[1]:null;
-    const personAlt=isEn?'Nermin Sefić (Sefic Nermin) — Director, GNK ASG d.o.o. | GNK DINAMO Ltd.':'Nermin Sefić (Sefic Nermin) — direktor GNK ASG d.o.o. | GNK DINAMO Ltd.';
-    const logoAlt='GNK ASG d.o.o. — GNK DINAMO Ltd. Group';
-    if(alt===null||alt.trim()===''){
-      const val=isPerson?personAlt:(isLogo?logoAlt:(isEn?'Data chart · GNK ASG':'Grafički prikaz · GNK ASG'));
-      t = alt===null ? t.replace(/<img\b/i,`<img alt="${val}"`) : t.replace(/alt="[^"]*"/i,`alt="${val}"`);
-      stats.altAdded++;
-    } else if(isPerson&&!/sefi[ćc]/i.test(alt)){
-      const enriched=/\bnermin\b/i.test(alt) ? alt.replace(/\bnermin\b/i,'Nermin Sefić') : `${alt} — Nermin Sefić (Sefic Nermin), GNK ASG`;
-      t=t.replace(/alt="([^"]*)"/i,`alt="${enriched}"`); stats.altEnriched++;
-    } else if(isLogo&&!/gnk/i.test(alt)){
-      t=t.replace(/alt="([^"]*)"/i,(m,a)=>`alt="${a} — GNK ASG"`); stats.altEnriched++;
-    } else if(isChart&&!/sefi[ćc]|gnk/i.test(alt)){
-      t=t.replace(/alt="([^"]*)"/i,(m,a)=>`alt="${a} · GNK ASG"`); stats.altEnriched++;
+  const original = html;
+  const item = ITEM_BY_ROUTE.get(route) || null;
+  html = cleanKeywordMeta(html, item);
+  html = cleanSocialArticleTags(html);
+  html = cleanStructuredSeoKeywords(html, item);
+  if (html !== original) stats.keywordSignalsCleaned++;
+  if (EDITORIAL_PATHS.has(route)) {
+    stats.editorialSkipped++;
+    if (html !== original) {
+      stats.changed++;
+      stats.changedPages.push(route);
+      if (WRITE) fs.writeFileSync(file, html, 'utf8');
     }
-    if(isPerson&&!/title="/i.test(t)) t=t.replace(/<img\b/i,'<img title="Nermin Sefić (Sefic Nermin) — GNK ASG · GNK DINAMO Ltd."');
-    return t;
-  });
-  html=mask2.replace(/\u0000S(\d+)\u0000/g,(m,i)=>scripts[+i]);
+    continue;
+  }
+  const language = /<html\b[^>]*\blang=["']en(?:-[^"']*)?["']/i.test(html) ? 'en' : 'hr';
+  const titleMatch = html.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i);
+  const title = titleMatch ? pageText(titleMatch[1]) : 'GNK ASG';
+  const descriptionMatch = [...html.matchAll(/<meta\b[^>]*>/gi)].map((match) => match[0])
+    .find((tag) => attrValue(tag, 'name').toLowerCase() === 'description');
+  const firstParagraph = html.match(/<p\b[^>]*>([\s\S]*?)<\/p>/i)?.[1] || '';
+  const description = limitSeoDescription(descriptionMatch
+    ? attrValue(descriptionMatch, 'content')
+    : (pageText(firstParagraph) || pageText(html).slice(0, 220)));
+  const canonical = `${SITE}${route}`;
 
-  if(html!==orig){ writeFileSync(file,html); stats.files++; }
+  const hadNerminAuthor = [...html.matchAll(/<meta\b[^>]*>/gi)].some((match) =>
+    attrValue(match[0], 'name').toLowerCase() === 'author' && /nermin\s+sefi[cć]/i.test(attrValue(match[0], 'content')));
+  html = removeNerminAuthorMeta(html);
+  if (hadNerminAuthor) stats.authorConvertedToEditor++;
+  html = upsertMeta(html, 'name', 'editor', 'Nermin Sefić');
+  stats.editorMetadataEnsured++;
+
+  if (!/rel=["']canonical["']/i.test(html)) html = insertIntoHead(html, `<link rel="canonical" href="${canonical}">`);
+  if (!/name=["']description["']/i.test(html)) html = insertIntoHead(html, `<meta name="description" content="${esc(description)}">`);
+  if (!/name=["']robots["']/i.test(html)) html = insertIntoHead(html, '<meta name="robots" content="index,follow,max-image-preview:large">');
+  html = upsertMeta(html, 'property', 'og:type', 'website');
+  html = upsertMeta(html, 'property', 'og:site_name', 'GNK ASG');
+  html = upsertMeta(html, 'property', 'og:title', title);
+  html = upsertMeta(html, 'property', 'og:description', description);
+  html = upsertMeta(html, 'property', 'og:url', canonical);
+  html = socialImage(html, route);
+  html = upsertMeta(html, 'name', 'twitter:card', 'summary_large_image');
+  html = upsertMeta(html, 'name', 'twitter:title', title);
+  html = upsertMeta(html, 'name', 'twitter:description', description);
+  const beforeJsonLd = html;
+  html = updatePageJsonLd(html, route, title, description, language);
+  if (html !== beforeJsonLd) stats.schemaUpdated++;
+
+  if (html !== original) {
+    stats.changed++;
+    stats.changedPages.push(route);
+    if (WRITE) fs.writeFileSync(file, html, 'utf8');
+  }
 }
-console.log(JSON.stringify(stats,null,2));
+
+console.log(JSON.stringify({ ...stats, changedPages: WRITE ? stats.changedPages : stats.changedPages.slice(0, 40) }, null, 2));

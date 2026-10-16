@@ -1,4 +1,4 @@
-name: Approved author marker policy check
+name: Editorial author and editor attribution policy check
 
 on:
   pull_request:
@@ -6,9 +6,17 @@ on:
     paths:
       - 'scripts/enforce-approved-author-markers-v1.mjs'
       - 'scripts/lib/editorial-route-protection-v1.mjs'
+      - 'scripts/lib/editorial-attribution-v1.mjs'
+      - 'scripts/lib/editorial-html-attribution-v1.mjs'
+      - 'scripts/lib/social-hashtags-v1.mjs'
+      - 'scripts/social-distribution-v1.mjs'
       - 'scripts/test-approved-author-markers-v1.mjs'
+      - 'scripts/test-protected-route-write-guards-v1.mjs'
+      - 'scripts/add-share-buttons-v1.mjs'
+      - 'scripts/rich-descriptions-v1.mjs'
+      - 'scripts/add-breadcrumbs-v1.mjs'
+      - 'scripts/add-feed-discovery-v1.mjs'
       - 'scripts/editorial-publish-scheduled-v1.mjs'
-      - 'apps/portal/data/approved_mentions.json'
       - 'apps/portal/data/editorial-registry.json'
       - 'apps/portal/objave/**'
       - 'apps/portal/komentari/**'
@@ -22,9 +30,17 @@ on:
     paths:
       - 'scripts/enforce-approved-author-markers-v1.mjs'
       - 'scripts/lib/editorial-route-protection-v1.mjs'
+      - 'scripts/lib/editorial-attribution-v1.mjs'
+      - 'scripts/lib/editorial-html-attribution-v1.mjs'
+      - 'scripts/lib/social-hashtags-v1.mjs'
+      - 'scripts/social-distribution-v1.mjs'
       - 'scripts/test-approved-author-markers-v1.mjs'
+      - 'scripts/test-protected-route-write-guards-v1.mjs'
+      - 'scripts/add-share-buttons-v1.mjs'
+      - 'scripts/rich-descriptions-v1.mjs'
+      - 'scripts/add-breadcrumbs-v1.mjs'
+      - 'scripts/add-feed-discovery-v1.mjs'
       - 'scripts/editorial-publish-scheduled-v1.mjs'
-      - 'apps/portal/data/approved_mentions.json'
       - 'apps/portal/data/editorial-registry.json'
       - 'apps/portal/objave/**'
       - 'apps/portal/komentari/**'
@@ -47,16 +63,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Test author approval and protected-route contract
+      - name: Test author/editor separation and protected routes
         run: node scripts/test-approved-author-markers-v1.mjs
-      - name: Reproduce approved author marker policy
+      - name: Test protected-route write guards
+        run: node scripts/test-protected-route-write-guards-v1.mjs
+      - name: Check registry-based author attribution policy without writing
         run: node scripts/enforce-approved-author-markers-v1.mjs
       - name: Require reviewed portal output
         shell: bash
         run: |
           set -euo pipefail
           if ! git diff --exit-code -- apps/portal; then
-            echo "::error::Approved author marker policy would change portal files. Commit those reviewed changes through this PR instead of mutating main." >&2
+            echo "::error::Editorial attribution policy would change portal files. Commit reviewed output through this PR instead of mutating main." >&2
             exit 1
           fi
-          echo "Approved author marker policy is already satisfied."
+          echo "Editorial attribution policy check passed without writes."
