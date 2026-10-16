@@ -97,16 +97,25 @@ const CORE_SOCIAL_TOKENS = ['GNKASG', 'GNKDINAMOLtd', 'BusinessIntelligence'];
 const normalizedSocialToken = (value) => String(value || '').replace(/^#+/, '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\p{L}\p{N}]/gu, '').toLowerCase();
 const socialTokenSetFor = (item) => new Set([...CORE_SOCIAL_TOKENS, ...(Array.isArray(item?.hashtags) ? item.hashtags : [])].map(normalizedSocialToken));
 
-function stripNerminFromAbout(value, item) {
-  if (/nermin\s+sefi[cć]/i.test(`${item.title || ''} ${item.description || ''}`)) return value;
-  const wasArray = Array.isArray(value);
-  const values = wasArray ? value : [value];
+function stripSocialTagsFromAbout(value, item) {
   const socialTokens = socialTokenSetFor(item);
-  const kept = values.filter((entry) => {
-    if (isNerminPersonReference(entry)) return false;
+  const isSocialTag = (entry) => {
     const name = typeof entry === 'string' ? entry : entry?.name;
-    return !name || (!String(name).trim().startsWith('#') && !socialTokens.has(normalizedSocialToken(name)));
-  });
+    return Boolean(name) && (String(name).trim().startsWith('#') || socialTokens.has(normalizedSocialToken(name)));
+  };
+  if (Array.isArray(value)) {
+    const kept = value.filter((entry) => !isSocialTag(entry));
+    return kept.length ? kept : undefined;
+  }
+  return isSocialTag(value) ? undefined : value;
+}
+
+function stripNerminFromAbout(value, item) {
+  const socialCleaned = stripSocialTagsFromAbout(value, item);
+  if (socialCleaned === undefined || /nermin\s+sefi[cć]/i.test(`${item.title || ''} ${item.description || ''}`)) return socialCleaned;
+  const wasArray = Array.isArray(socialCleaned);
+  const values = wasArray ? socialCleaned : [socialCleaned];
+  const kept = values.filter((entry) => !isNerminPersonReference(entry));
   if (!kept.length) return undefined;
   return wasArray ? kept : kept[0];
 }
@@ -133,7 +142,8 @@ function updateArticleNode(node, item, imageUrl) {
   node.editor = { '@id': PERSON_ID, '@type': 'Person', name: 'Nermin Sefić', url: PERSON_URL };
   node.publisher = { '@id': ORGANIZATION_ID, '@type': 'Organization', name: 'GNK ASG d.o.o.', url: `${SITE}/` };
   node.isPartOf ||= { '@id': WEBSITE_ID };
-  node.url ||= item.url;
+  node.url = item.url;
+  node.mainEntityOfPage = { '@type': 'WebPage', '@id': item.url };
   node.headline ||= item.title;
   if (item.description) node.description = item.description;
   node.inLanguage ||= item.language === 'en' ? 'en' : 'hr';
@@ -158,27 +168,52 @@ function updateArticleNode(node, item, imageUrl) {
   return node;
 }
 
-function updateJsonLd(html, item, imageUrl) {
+function updateJsonLd(html, item, imageUrl, { removeArticles = false } = {}) {
   let foundArticle = false;
   let editorLinked = false;
+  const REMOVE = Symbol('remove-duplicate-or-forbidden-article');
   const updated = html.replace(/<script\b([^>]*)type=["']application\/ld\+json["']([^>]*)>([\s\S]*?)<\/script>/gi, (block, before, after, raw) => {
     let schema;
     try { schema = JSON.parse(raw); } catch { return block; }
     const visit = (value) => {
-      if (Array.isArray(value)) return value.map(visit);
+      if (Array.isArray(value)) {
+        const kept = [];
+        for (const entry of value) {
+          const next = visit(entry);
+          if (next !== REMOVE) kept.push(next);
+        }
+        return kept;
+      }
       if (!value || typeof value !== 'object') return value;
       if (isArticleType(value)) {
+        if (removeArticles || foundArticle) return REMOVE;
         foundArticle = true;
         updateArticleNode(value, item, imageUrl);
         editorLinked = true;
+      } else {
+        if ('about' in value) {
+          const about = stripSocialTagsFromAbout(value.about, item);
+          if (about === undefined) delete value.about;
+          else value.about = about;
+        }
+        if ('keywords' in value) {
+          const keywords = cleanKeywords(value.keywords, item);
+          if (keywords === undefined) delete value.keywords;
+          else value.keywords = keywords;
+        }
       }
-      for (const [key, child] of Object.entries(value)) value[key] = visit(child);
+      for (const [key, child] of Object.entries(value)) {
+        const next = visit(child);
+        if (next === REMOVE) delete value[key];
+        else value[key] = next;
+      }
       return value;
     };
     schema = visit(schema);
+    if (schema === REMOVE) return '';
     return `<script${before}type="application/ld+json"${after}>${JSON.stringify(schema).replace(/</g, '\\u003c')}</script>`;
   });
-  if (!foundArticle) {
+  if (!foundArticle && !removeArticles) {
     const author = articleAuthorFor(item);
     const article = {
       '@context': 'https://schema.org',
@@ -244,6 +279,23 @@ function localRegistryImage(item) {
   }
 }
 
+function normalizeCanonicalUrl(html, item) {
+  if (!item.url) return html;
+  let found = false;
+  html = html.replace(/<link\b[^>]*>/gi, (tag) => {
+    const rel = attrValue(tag, 'rel').toLowerCase().split(/\s+/);
+    if (!rel.includes('canonical')) return tag;
+    if (found) return '';
+    found = true;
+    if (/\bhref\s*=\s*(["'])/i.test(tag)) {
+      return tag.replace(/\bhref\s*=\s*(["'])[\s\S]*?\1/i, `href="${escapeAttr(item.url)}"`);
+    }
+    return tag.replace(/\s*\/?>$/, (end) => ` href="${escapeAttr(item.url)}"${end}`);
+  });
+  if (!found) html = insertIntoHead(html, `<link rel="canonical" href="${escapeAttr(item.url)}">`);
+  return upsertMeta(html, 'property', 'og:url', item.url);
+}
+
 function normalizeSocialImage(html, item) {
   const registryImage = localRegistryImage(item);
   const existing = currentOgImage(html);
@@ -288,7 +340,7 @@ for (const item of registry.items || []) {
   if (item.type === 'tjednik') {
     stats.weeklySkipped++;
     const original = fs.readFileSync(file, 'utf8');
-    const normalized = updateJsonLd(original, item, '').html;
+    const normalized = updateJsonLd(original, item, '', { removeArticles: true }).html;
     if (normalized !== original) {
       stats.changed++;
       changedPages.push(item.path);
@@ -300,6 +352,7 @@ for (const item of registry.items || []) {
   stats.eligible++;
   let html = fs.readFileSync(file, 'utf8');
   const original = html;
+  html = normalizeCanonicalUrl(html, item);
   const social = normalizeSocialImage(html, item);
   html = social.html;
   html = normalizeAuthorMeta(html, item);

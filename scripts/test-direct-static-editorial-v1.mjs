@@ -46,10 +46,46 @@ function run(source) {
     env: { ...process.env, DIRECT_EDITORIAL_MIN_WORDS: '3000', DIRECT_EDITORIAL_MIN_INTERNAL_LINKS: '5' },
   });
 }
+function runRelative(relativeFile, source) {
+  const file = path.join(temp, relativeFile);
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, source);
+  return spawnSync(process.execPath, [validator, relativeFile], {
+    cwd: temp,
+    encoding: 'utf8',
+    env: { ...process.env, DIRECT_EDITORIAL_MIN_WORDS: '3000', DIRECT_EDITORIAL_MIN_WORDS_COMMENTARY: '300', DIRECT_EDITORIAL_MIN_INTERNAL_LINKS: '5' },
+  });
+}
 
 let result = run(html());
 assert.equal(result.status, 0, result.stderr || result.stdout);
 assert.match(result.stdout, /DIRECT_STATIC_EDITORIAL_POLICY_OK/u);
+
+// Two narrowly enumerated legacy mirrors may use the original article's
+// canonical URL, but only while that same-host target exists and declares
+// itself canonical. Other direct-static pages must remain self-canonical.
+const aliasRelative = 'apps/portal/komentari/hrvatski-softver-izvoz-nevidljivi-lider/index.html';
+const aliasTargetRelative = 'apps/portal/autorske-objave/hrvatski-softver-izvoz-nevidljivi-lider.html';
+const testCanonical = 'https://gnk-asg.hr/objave/testna-objava/';
+const aliasLocal = 'https://gnk-asg.hr/komentari/hrvatski-softver-izvoz-nevidljivi-lider/';
+const aliasCanonical = 'https://gnk-asg.hr/autorske-objave/hrvatski-softver-izvoz-nevidljivi-lider.html';
+const aliasHtml = html().replaceAll(testCanonical, aliasLocal).replaceAll(aliasLocal, aliasCanonical);
+const aliasTargetAbsolute = path.join(temp, aliasTargetRelative);
+fs.mkdirSync(path.dirname(aliasTargetAbsolute), { recursive: true });
+fs.writeFileSync(aliasTargetAbsolute, `<!doctype html><html><head><link rel="canonical" href="${aliasCanonical}"></head><body>Original article</body></html>`);
+result = runRelative(aliasRelative, aliasHtml);
+assert.equal(result.status, 0, result.stderr || result.stdout);
+assert.match(result.stdout, /"canonicalAlias":\s*"https:\/\/gnk-asg\.hr\/autorske-objave\/hrvatski-softver-izvoz-nevidljivi-lider\.html"/u);
+
+fs.writeFileSync(aliasTargetAbsolute, '<!doctype html><html><head><link rel="canonical" href="https://gnk-asg.hr/autorske-objave/other.html"></head></html>');
+result = runRelative(aliasRelative, aliasHtml);
+assert.notEqual(result.status, 0);
+assert.match(result.stderr, /registered canonical alias target must declare/u);
+fs.writeFileSync(aliasTargetAbsolute, `<!doctype html><html><head><link rel="canonical" href="${aliasCanonical}"></head><body>Original article</body></html>`);
+
+result = run(html().replaceAll(testCanonical, aliasCanonical));
+assert.notEqual(result.status, 0, 'non-allowlisted routes must not inherit the legacy canonical alias exception');
+assert.match(result.stderr, /canonical must be https:\/\/gnk-asg\.hr\/objave\/testna-objava\//u);
 
 // Publication pages use the 500-word format floor. The validator counts
 // visible H1/byline/link labels too, so keep the negative fixture safely below it.

@@ -14,6 +14,19 @@ const PORTAL = 'apps/portal';
 const PLAN_DIR = join(PORTAL, 'data/editorial-plan');
 const OUT = join(PORTAL, 'data/editorial-registry.json');
 const SITE = 'https://gnk-asg.hr';
+const previousSocialTagsByPath = new Map();
+if (existsSync(OUT)) {
+  try {
+    const previous = JSON.parse(readFileSync(OUT, 'utf8'));
+    for (const item of Array.isArray(previous.items) ? previous.items : []) {
+      if (typeof item.path === 'string' && Array.isArray(item.hashtags)) {
+        previousSocialTagsByPath.set(item.path, item.hashtags.filter((tag) => typeof tag === 'string'));
+      }
+    }
+  } catch {
+    // A broken prior artifact must not prevent rebuilding the canonical registry.
+  }
+}
 
 const SECTIONS = [
   { dir: 'objave', collection: 'Objave', route: '/objave/', type: 'objava', language: 'hr' },
@@ -187,7 +200,15 @@ for (const section of SECTIONS) {
       .filter(Boolean).filter((keyword) => !/(?:nermin|sefi[cć])/i.test(keyword));
     const rawImage = metaValue(html, 'og:image', 'property');
     const image = rawImage ? (rawImage.startsWith('/') ? `${SITE}${rawImage}` : rawImage) : null;
-    const imageAlt = metaValue(html, 'og:image:alt', 'property') || metaValue(html, 'twitter:image:alt')
+    const normalizedImageUrl = (value) => {
+      try { return new URL(value, expectedCanonical).href; } catch { return String(value || ''); }
+    };
+    const heroImageTag = rawImage ? [...html.matchAll(/<img\b[^>]*>/gi)]
+      .map((match) => match[0])
+      .find((tag) => attrValue(tag, 'alt').trim()
+        && normalizedImageUrl(attrValue(tag, 'src')) === normalizedImageUrl(rawImage)) : '';
+    const imageAlt = (heroImageTag && attrValue(heroImageTag, 'alt'))
+      || metaValue(html, 'og:image:alt', 'property') || metaValue(html, 'twitter:image:alt')
       || [...html.matchAll(/<img\b[^>]*>/gi)].map((match) => attrValue(match[0], 'alt')).find(Boolean) || '';
     const authorText = metaValue(html, 'author') || metaValue(html, 'article:author', 'property');
     const sourceAuthor = /nermin\s+sefi[cć]/i.test(authorText) ? 'Nermin Sefić' : (authorText || null);
@@ -243,8 +264,16 @@ for (const section of SECTIONS) {
       && (protectedRoute || ['komentar', 'kolumna', 'analiza'].includes(section.type));
     const resolvedAuthor = author === 'Nermin Sefić' && !nerminAuthorshipVerified ? null : author;
     const baseTags = nerminAuthorshipVerified ? BASE_TAGS : BASE_TAGS.filter((tag) => tag !== 'NerminSefic');
-    const tags = [...new Set([...baseTags, ...keywords.map((keyword) => keyword.replace(/[^\p{L}\p{N}]/gu, ''))])]
-      .filter((tag) => tag.length > 2 && tag.length < 30).slice(0, 12);
+    // Keep social-distribution tags from the prior registry when SEO keyword metadata is cleaned.
+    // Hashtags remain a separate registry field and are never re-emitted as SEO keywords.
+    const priorSocialTags = previousSocialTagsByPath.get(routePath) || [];
+    const tags = [...new Set(priorSocialTags.length ? priorSocialTags : [
+      ...baseTags,
+      ...keywords.map((keyword) => keyword.replace(/[^\p{L}\p{N}]/gu, '')),
+    ])]
+      .filter((tag) => tag.length > 2 && tag.length < 30)
+      .filter((tag) => tag !== 'NerminSefic' || nerminAuthorshipVerified)
+      .slice(0, 12);
 
     items.push({
       slug: entry.name,

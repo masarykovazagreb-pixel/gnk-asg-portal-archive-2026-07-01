@@ -53,6 +53,11 @@ function metaValues(html, keyAttribute, key) {
 function normalizedTag(value) {
   return String(value || '').replace(/^#+/, '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\p{L}\p{N}]/gu, '').toLowerCase();
 }
+const socialMetadataRegression = entries.find((item) => item.path === '/komentari/sigurnost-koja-smeta-radu-zaobici-ce-se/');
+assert.ok(socialMetadataRegression, 'registry must retain the checked Croatian social-metadata example');
+assert.ok(socialMetadataRegression.hashtags.includes('Kibernetičkasigurnost'), 'topic hashtag must survive SEO keyword cleanup for social distribution');
+assert.ok((socialMetadataRegression.keywords || []).every((word) => normalizedTag(word) !== normalizedTag('Kibernetička sigurnost')), 'social-distribution hashtag must not be copied into SEO keywords');
+assert.match(socialMetadataRegression.imageAlt || '', /^Urednička ilustracija/u, 'registry image alt should use the matching Croatian hero-image alt, not a mismatched Open Graph fallback');
 const SKIP_PUBLIC_ROOTS = new Set([
   'admin', 'admin-center', 'admin-login', 'control', 'automation-status', 'webmail', 'mail-studio',
   'campaign-mailer', 'email-status', 'worker-ops', 'operator-dashboard', 'digital-headquarters',

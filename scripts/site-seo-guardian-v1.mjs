@@ -18,7 +18,19 @@ import { limitSeoDescription } from './lib/seo-description-v1.mjs';
 
 const ROOT = 'apps/portal';
 const REGISTRY = JSON.parse(fs.readFileSync(`${ROOT}/data/editorial-registry.json`, 'utf8'));
-const EDITORIAL_PATHS = new Set((REGISTRY.items || []).map((item) => normalizeRoute(item?.path)).filter(Boolean));
+// Canonical mirrors are intentionally omitted from the editorial registry and
+// sitemap to avoid duplicate publications, but remain editorial HTML routes.
+// Keep the site-wide normalizer from replacing their verified original URL with
+// the mirror route's self URL.
+const LEGACY_EDITORIAL_ALIAS_ROUTES = new Set([
+  '/komentari/hrvatski-softver-izvoz-nevidljivi-lider/',
+  '/objave/hrvatski-softver-izvoz-nevidljivi-lider/',
+  '/gnk-aktual/kolumne/hrvatski-softver-izvoz-nevidljivi-lider/',
+]);
+const EDITORIAL_PATHS = new Set([
+  ...(REGISTRY.items || []).map((item) => normalizeRoute(item?.path)).filter(Boolean),
+  ...LEGACY_EDITORIAL_ALIAS_ROUTES,
+]);
 const ITEM_BY_ROUTE = new Map((REGISTRY.items || []).map((item) => [normalizeRoute(item?.path), item]));
 const WRITE = process.argv.includes('--write');
 const SOCIAL_CARD = `${SITE}/assets/gnk-asg-social-card.png`;
@@ -44,9 +56,30 @@ function esc(value) {
   }[char]));
 }
 
+function decodeEntities(value) {
+  let decoded = String(value ?? '');
+  for (let pass = 0; pass < 5; pass++) {
+    const next = decoded
+      .replace(/&nbsp;|&#160;/gi, ' ')
+      .replace(/&amp;/gi, '&').replace(/&lt;/gi, '<').replace(/&gt;/gi, '>')
+      .replace(/&quot;/gi, '"').replace(/&apos;|&#39;/gi, "'")
+      .replace(/&#(\d+);/g, (entity, digits) => {
+        const point = Number(digits);
+        return Number.isSafeInteger(point) && point >= 0 && point <= 0x10ffff ? String.fromCodePoint(point) : entity;
+      })
+      .replace(/&#x([0-9a-f]+);/gi, (entity, hex) => {
+        const point = Number.parseInt(hex, 16);
+        return Number.isSafeInteger(point) && point >= 0 && point <= 0x10ffff ? String.fromCodePoint(point) : entity;
+      });
+    if (next === decoded) break;
+    decoded = next;
+  }
+  return decoded;
+}
+
 function attrValue(tag, name) {
   const match = tag.match(new RegExp(`\\b${name}\\s*=\\s*(["'])([\\s\\S]*?)\\1`, 'i'));
-  return match ? match[2].replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'") : '';
+  return match ? decodeEntities(match[2]) : '';
 }
 
 function insertIntoHead(html, tag) {
@@ -75,11 +108,11 @@ function removeNerminAuthorMeta(html) {
 }
 
 function pageText(html) {
-  return String(html || '')
+  return decodeEntities(String(html || '')
     .replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, ' ')
     .replace(/<[^>]+>/g, ' ')
     .replace(/\s+/g, ' ')
-    .trim();
+    .trim());
 }
 
 function pageSchemaNode(route, title, description, language) {

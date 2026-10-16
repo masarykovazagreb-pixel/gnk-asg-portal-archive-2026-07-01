@@ -6,6 +6,8 @@ on:
       - 'apps/portal/gnk-aktual/**'
       - 'apps/portal/en/gnk-aktual/**'
       - 'scripts/audit-aktual-all-pages-v2.mjs'
+      - 'scripts/test-audit-aktual-all-pages-v2.mjs'
+      - 'scripts/test-canonical-editorial-aliases-v1.mjs'
       - 'scripts/optimize-aktual-seo-titles-v1.mjs'
       - '.github/workflows/check-aktual-all-pages-v2.yml'
   push:
@@ -14,6 +16,8 @@ on:
       - 'apps/portal/gnk-aktual/**'
       - 'apps/portal/en/gnk-aktual/**'
       - 'scripts/audit-aktual-all-pages-v2.mjs'
+      - 'scripts/test-audit-aktual-all-pages-v2.mjs'
+      - 'scripts/test-canonical-editorial-aliases-v1.mjs'
       - 'scripts/optimize-aktual-seo-titles-v1.mjs'
       - '.github/workflows/check-aktual-all-pages-v2.yml'
 
@@ -31,6 +35,10 @@ jobs:
           node-version: '24'
       - name: Enforce managed SEO titles
         run: node scripts/optimize-aktual-seo-titles-v1.mjs --check
+      - name: Test quoted metadata parsing with apostrophes
+        run: node scripts/test-audit-aktual-all-pages-v2.mjs
+      - name: Verify canonical mirror metadata and registry exclusion
+        run: node scripts/test-canonical-editorial-aliases-v1.mjs
       - name: Audit every public AKTUAL HTML page
         run: node scripts/audit-aktual-all-pages-v2.mjs
       - uses: actions/upload-artifact@v4

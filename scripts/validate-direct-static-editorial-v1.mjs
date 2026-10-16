@@ -25,6 +25,20 @@ const LOCKED_AUTHORED_STATEMENTS = new Set([
   'apps/portal/objave/koncar-gnk-asg-504-milijuna-ai-radna-snaga-izvoz/index.html',
   'apps/portal/objave/filip-hrgovic-svjetski-prvak-ibf-gnk-asg-cestitka/index.html',
 ]);
+// These two public routes are deliberate mirrors of the existing, first-party
+// authored original. Keep their canonical target instead of registering three
+// copies of the same article as separate publications. The alias exception is
+// narrow, local, and validated against the canonical source file below.
+const CANONICAL_ALIAS_TARGETS = new Map([
+  ['apps/portal/komentari/hrvatski-softver-izvoz-nevidljivi-lider/index.html', {
+    canonical: 'https://gnk-asg.hr/autorske-objave/hrvatski-softver-izvoz-nevidljivi-lider.html',
+    targetFile: 'apps/portal/autorske-objave/hrvatski-softver-izvoz-nevidljivi-lider.html',
+  }],
+  ['apps/portal/objave/hrvatski-softver-izvoz-nevidljivi-lider/index.html', {
+    canonical: 'https://gnk-asg.hr/autorske-objave/hrvatski-softver-izvoz-nevidljivi-lider.html',
+    targetFile: 'apps/portal/autorske-objave/hrvatski-softver-izvoz-nevidljivi-lider.html',
+  }],
+]);
 const segmenter = typeof Intl.Segmenter === 'function'
   ? new Intl.Segmenter('hr', { granularity: 'word' })
   : null;
@@ -248,6 +262,8 @@ function validate(file) {
   const description = metaContent(html, 'description');
   const canonical = linkHref(html, 'canonical');
   const expected = expectedCanonical(file);
+  const canonicalAlias = CANONICAL_ALIAS_TARGETS.get(file) || null;
+  const expectedCanonicalUrl = canonicalAlias?.canonical || expected;
   const h1Count = (articleHtml.match(/<h1\b[^>]*>/giu) || []).length;
   const internalLinks = new Set();
   for (const match of articleHtml.matchAll(/<a\b[^>]*href=["']([^"']+)["'][^>]*>/giu)) {
@@ -260,16 +276,34 @@ function validate(file) {
   const schemas = extractJsonLd(html);
   const nodes = schemas.flatMap(schema => flattenSchema(schema));
   const articleNode = nodes.find(node => typeList(node['@type']).some(type => ARTICLE_TYPES.has(type)));
-  const authorName = articleNode && typeof articleNode.author === 'object'
-    ? String(articleNode.author.name || '').trim()
-    : '';
+  const authorEntries = articleNode
+    ? (Array.isArray(articleNode.author) ? articleNode.author : [articleNode.author])
+    : [];
+  const authorName = authorEntries
+    .map((entry) => typeof entry === 'string' ? entry.trim() : String(entry?.name || '').trim())
+    .filter(Boolean)
+    .join(', ');
   const publisherName = articleNode && typeof articleNode.publisher === 'object'
     ? String(articleNode.publisher.name || '').trim()
     : '';
 
   if (!/^.{20,120}$/u.test(title)) errors.push(`title length is ${title.length}; expected 20-120 characters`);
   if (description.length < 80 || description.length > 200) errors.push(`meta description length is ${description.length}; expected 80-200 characters`);
-  if (canonical !== expected) errors.push(`canonical must be ${expected}; found ${canonical || 'missing'}`);
+  if (canonical !== expectedCanonicalUrl) errors.push(`canonical must be ${expectedCanonicalUrl}; found ${canonical || 'missing'}`);
+  if (canonicalAlias) {
+    const targetFile = path.join(ROOT, canonicalAlias.targetFile);
+    if (!fs.existsSync(targetFile)) {
+      errors.push(`registered canonical alias target is missing: ${canonicalAlias.targetFile}`);
+    } else {
+      const targetHtml = fs.readFileSync(targetFile, 'utf8');
+      if (linkHref(targetHtml, 'canonical') !== canonicalAlias.canonical) {
+        errors.push(`registered canonical alias target must declare ${canonicalAlias.canonical}`);
+      }
+      if (/\bnoindex\b/iu.test(metaContent(targetHtml, 'robots'))) {
+        errors.push('registered canonical alias target must remain indexable');
+      }
+    }
+  }
   if (h1Count !== 1) errors.push(`expected exactly one H1 inside article/main; found ${h1Count}`);
   // A technical publication refresh must not force an artificial rewrite of an
   // unchanged legacy article. New or text-edited copy still has to meet the floor.
@@ -289,7 +323,7 @@ function validate(file) {
   ];
   for (const [name, value] of requiredMeta) if (!value) errors.push(`missing ${name}`);
   const ogUrl = metaContent(html, 'og:url', 'property');
-  if (ogUrl && ogUrl !== expected) errors.push(`og:url must match canonical ${expected}`);
+  if (ogUrl && ogUrl !== canonical) errors.push(`og:url must match canonical ${canonical}`);
   const ogImage = metaContent(html, 'og:image', 'property');
   const twitterImage = metaContent(html, 'twitter:image');
   for (const [name, value] of [['og:image', ogImage], ['twitter:image', twitterImage]]) {
@@ -301,7 +335,13 @@ function validate(file) {
   if (!articleNode) errors.push('missing Article/NewsArticle/OpinionNewsArticle/AnalysisNewsArticle schema');
   if (!copyUnchanged && articleNode && !authorName) errors.push('article schema is missing author name');
   if (articleNode && !publisherName) errors.push('article schema is missing publisher name');
-  if (articleNode && articleNode.mainEntityOfPage && typeof articleNode.mainEntityOfPage === 'string' && articleNode.mainEntityOfPage !== expected) {
+  const mainEntity = articleNode?.mainEntityOfPage;
+  const mainEntityUrl = typeof mainEntity === 'string'
+    ? mainEntity
+    : mainEntity && typeof mainEntity === 'object'
+      ? String(mainEntity['@id'] || mainEntity.url || '').trim()
+      : '';
+  if (mainEntityUrl && mainEntityUrl !== canonical) {
     errors.push('article schema mainEntityOfPage does not match canonical');
   }
 
@@ -319,6 +359,7 @@ function validate(file) {
     internalLinks: internalLinks.size,
     localImages: localImages.length,
     canonical,
+    canonicalAlias: canonicalAlias ? canonicalAlias.canonical : null,
     articleType: articleNode ? typeList(articleNode['@type']) : [],
     author: authorName || metaAuthor || null,
     errors,

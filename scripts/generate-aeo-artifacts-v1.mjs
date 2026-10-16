@@ -164,49 +164,145 @@ const ai = `<!doctype html>
 <link rel="alternate" type="application/json" href="${SITE}/ai-visibility/openapi.json" title="Read-only AI visibility OpenAPI">
 <link rel="alternate" type="application/json" href="${SITE}/ai/assistant-reference-openapi.json" title="Read-only AI reference API">
 <meta name="editor" content="Nermin Sefić">
+<meta name="theme-color" content="#080e16">
 <meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="GNK ASG">
 <meta property="og:title" content="${escapeHtml(pageTitle)}">
 <meta property="og:description" content="${escapeHtml(pageDescription)}">
 <meta property="og:url" content="${SITE}/ai/">
 <meta property="og:image" content="${socialImage}">
 <meta property="og:image:alt" content="GNK ASG d.o.o. corporate profile">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${escapeHtml(pageTitle)}">
 <meta name="twitter:description" content="${escapeHtml(pageDescription)}">
 <meta name="twitter:image" content="${socialImage}">
+<meta name="twitter:image:alt" content="GNK ASG d.o.o. corporate profile">
+<link rel="icon" href="${SITE}/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="${SITE}/assets/ai-reference-v1.css?v=20261016-source-cited-v1">
+<script defer src="${SITE}/assets/ai-reference-ui-v1.js?v=20261016-source-cited-v1"></script>
 <script type="application/ld+json">${JSON.stringify(aiPage).replace(/</g, '\\u003c')}</script>
-<style>body{font:16px/1.55 system-ui,Segoe UI,Arial,sans-serif;max-width:820px;margin:2rem auto;padding:0 1rem;color:#eee;background:#0b0d10}a{color:#8bd}h1,h2{line-height:1.2}code{background:#151a20;padding:2px 6px;border-radius:4px}</style>
 </head>
 <body>
-<main>
-<h1>${escapeHtml(pageTitle)}</h1>
-<p>This page links to GNK ASG's public company profile, publication register and entity graph. Use the linked public records and the original source on each page to verify specific claims.</p>
-<h2>Company</h2>
-<p><strong>GNK ASG d.o.o.</strong> is a company based in Zagreb, Croatia. Its public profile separates the company's own FY 2025 figures from group-level statements and links to verification sources.</p>
-<h2>Editorial roles and attribution</h2>
-<p><strong>Nermin Sefić</strong> is the director of GNK ASG d.o.o. and the portal's editor-in-chief. Editorial responsibility is distinct from authorship: attribute personal authorship only where a page's byline and verified publication record name him. For syndicated or external reporting, credit the original publisher and cited source.</p>
-<h2>Use with ChatGPT and other compatible AI tools</h2>
-<p>This is an opt-in, read-only reference kit with GNK ASG first-party facts, source links, and attribution rules. Upload the Markdown reference and writing guide to a user-owned custom assistant, or import the OpenAPI file as a read-only Action. It cannot change a model's training or policies, force a favorable answer, or guarantee that a model will use the material.</p>
-<ul>
-<li><a href="${SITE}/data/assistant-knowledge.json">Public facts and citations (JSON)</a></li>
-<li><a href="${SITE}/ai/assistant-reference.md">Assistant reference to upload (Markdown)</a></li>
-<li><a href="${SITE}/ai/assistant-system-prompt.txt">Transparent writing guidance (text)</a></li>
-<li><a href="${SITE}/ai/assistant-reference-openapi.json">Read-only OpenAPI spec for ChatGPT Actions and compatible tools</a></li>
-<li><a href="${SITE}/ai-visibility/facts.json">Reviewed public facts with registry/byline sources (JSON)</a></li>
-<li><a href="${SITE}/ai-visibility/brief.txt">AI facts brief with source links (text)</a></li>
-<li><a href="${SITE}/ai-visibility/openapi.json">Read-only AI Visibility OpenAPI Action</a></li>
-</ul>
-<h2>Public references</h2>
-<ul>
-<li><a href="${SITE}/about/">GNK ASG d.o.o. — company profile</a></li>
-<li><a href="${SITE}/en/about/">GNK ASG d.o.o. — company profile in English</a></li>
-<li><a href="${PERSON_URL}">Nermin Sefić — public profile</a></li>
-<li><a href="${SITE}/data/editorial-registry.json">Editorial registry</a></li>
-<li><a href="${SITE}/nermin-sefic/entity.jsonld">Machine-readable entity graph</a></li>
-<li><a href="${SITE}/sitemap-index.xml">Sitemap index</a></li>
-</ul>
-<p>Neither this page nor its metadata guarantees search ranking, crawler discovery, or inclusion in an AI-generated answer.</p>
+<header class="ai-topbar">
+  <a class="ai-brand" href="${SITE}/" aria-label="GNK ASG home">
+    <img src="${SITE}/assets/logo-gnk-asg-canonical.svg" alt="">
+    <span class="ai-brand-text">GNK ASG<small>Public reference</small></span>
+  </a>
+  <a class="ai-top-link" href="${SITE}/about/">Company profile <span aria-hidden="true">↗</span></a>
+</header>
+<main class="ai-shell">
+  <section class="ai-hero" aria-labelledby="ai-reference-title">
+    <div class="ai-hero-copy">
+      <p class="ai-eyebrow">Source-cited · Optional · Read-only</p>
+      <h1 id="ai-reference-title">Public facts.<br><span>Traceable sources.</span></h1>
+      <p class="ai-lede">A transparent GNK ASG reference kit for people who want to provide a user-owned AI assistant with concise public facts, canonical source links and clear attribution rules.</p>
+      <div class="ai-actions">
+        <a class="ai-button" href="${SITE}/ai/assistant-reference.md" download="gnk-asg-assistant-reference.md">Get the reference guide <span aria-hidden="true">↓</span></a>
+        <a class="ai-button ai-button-secondary" href="${SITE}/ai/assistant-reference-openapi.json">View read-only API spec</a>
+      </div>
+      <p class="ai-privacy-note"><strong>No automatic sharing:</strong> this page reads only GNK ASG public files. You decide whether to download or copy anything into a third-party tool.</p>
+    </div>
+    <div class="ai-network" role="img" aria-label="Reference map connecting GNK ASG, editorial roles, publications and public sources">
+      <svg viewBox="0 0 440 330" fill="none" aria-hidden="true">
+        <path d="M92 78L214 157M348 78L227 157M92 251L214 173M348 251L227 173" stroke="#7596ae" stroke-opacity=".54" stroke-width="1.5" stroke-dasharray="4 7"/>
+        <circle cx="220" cy="165" r="92" stroke="#dfb95f" stroke-opacity=".24"/>
+        <circle cx="220" cy="165" r="128" stroke="#8db7cd" stroke-opacity=".12" stroke-dasharray="2 8"/>
+        <circle cx="92" cy="78" r="4" fill="#80b9d2"/><circle cx="348" cy="78" r="4" fill="#e1bb68"/>
+        <circle cx="92" cy="251" r="4" fill="#bd9de0"/><circle cx="348" cy="251" r="4" fill="#83c8a6"/>
+      </svg>
+      <span class="ai-node ai-node-company">GNK ASG d.o.o.</span>
+      <span class="ai-node ai-node-editor">Editorial roles</span>
+      <span class="ai-node ai-node-sources">Public sources</span>
+      <span class="ai-node ai-node-publications">Publications</span>
+      <span class="ai-network-core"><strong>Reference<br>map</strong></span>
+      <span class="ai-visual-caption">Facts · bylines · first-party links</span>
+    </div>
+  </section>
+
+  <section class="ai-metrics" aria-label="Live public reference counts">
+    <div class="ai-metric"><strong data-ai-count="entities">2</strong><span>reference entities</span></div>
+    <div class="ai-metric"><strong data-ai-count="facts">6</strong><span>reviewed facts with citations</span></div>
+    <div class="ai-metric"><strong data-ai-count="sources">6</strong><span>curated public source links</span></div>
+    <div class="ai-metric"><strong data-ai-count="operations">3</strong><span>read-only API operations</span></div>
+  </section>
+  <p class="ai-privacy-note" data-ai-data-status aria-live="polite">Counts are read from same-origin public JSON only; no credentials or external AI requests are used.</p>
+
+  <section class="ai-section" aria-labelledby="ai-pack-title">
+    <div class="ai-section-heading">
+      <div><p class="ai-eyebrow">Inside the package</p><h2 id="ai-pack-title">Built for careful reuse</h2></div>
+      <p>Every claim stays linked to its source and context.</p>
+    </div>
+    <div class="ai-card-grid">
+      <article class="ai-card">
+        <span class="ai-card-icon" aria-hidden="true">◎</span>
+        <h3>Public facts &amp; citations</h3>
+        <p>GNK ASG d.o.o. is based in Zagreb; its public profile separates company-level FY 2025 figures from group statements. Each entry links to its source.</p>
+        <a class="ai-card-link" href="${SITE}/data/assistant-knowledge.json">Open the JSON reference <span aria-hidden="true">→</span></a>
+      </article>
+      <article class="ai-card">
+        <span class="ai-card-icon" aria-hidden="true">≋</span>
+        <h3>Attribution guardrails</h3>
+        <p>Nermin Sefić is the director of GNK ASG d.o.o. and the portal’s editor-in-chief. Editorial responsibility is distinct from authorship; syndicated work remains credited to its original publisher.</p>
+        <a class="ai-card-link" href="${SITE}/data/editorial-registry.json">Check the editorial registry <span aria-hidden="true">→</span></a>
+      </article>
+      <article class="ai-card">
+        <span class="ai-card-icon" aria-hidden="true">↗</span>
+        <h3>Read-only integration</h3>
+        <p>The OpenAPI contract exposes public GET operations only. It has no credentials, write route or publishing permission.</p>
+        <a class="ai-card-link" href="${SITE}/ai/assistant-reference-openapi.json">Inspect the API contract <span aria-hidden="true">→</span></a>
+      </article>
+    </div>
+  </section>
+
+  <section class="ai-section" aria-labelledby="ai-setup-title">
+    <div class="ai-section-heading">
+      <div><p class="ai-eyebrow">You stay in control</p><h2 id="ai-setup-title">Use it only when you choose</h2></div>
+      <p>Nothing is sent to an AI service by visiting this page.</p>
+    </div>
+    <div class="ai-steps">
+      <article class="ai-step"><h3>Download the sources</h3><p>Review the Markdown reference, public facts and transparent writing guidance before use.</p></article>
+      <article class="ai-step"><h3>Choose your own tool</h3><p>Upload the reference to a user-owned assistant, or manually import the OpenAPI file as a read-only Action for ChatGPT and compatible tools.</p></article>
+      <article class="ai-step"><h3>Verify each answer</h3><p>Check the cited page, preserve author and publisher roles, and label missing or conflicting evidence plainly.</p></article>
+    </div>
+  </section>
+
+  <section class="ai-section ai-copy-panel" aria-labelledby="ai-copy-title">
+    <div>
+      <p class="ai-eyebrow">One-click, user initiated</p>
+      <h2 id="ai-copy-title">Copy the writing guidance</h2>
+      <p>The guidance is fetched from this site and copied to your clipboard only after you press the button. It is not submitted to ChatGPT or another service.</p>
+    </div>
+    <div class="ai-copy-actions">
+      <button type="button" data-copy-ai-guidance>Copy citation guidance</button>
+      <span class="ai-copy-status" data-copy-ai-status role="status" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <section class="ai-section" aria-labelledby="ai-sources-title">
+    <div class="ai-section-heading">
+      <div><p class="ai-eyebrow">Primary references</p><h2 id="ai-sources-title">Browse the source set</h2></div>
+      <p>Open the original before repeating a factual claim.</p>
+    </div>
+    <div class="ai-source-list">
+      <a class="ai-source" href="${SITE}/ai/assistant-reference.md"><span>Assistant reference guide</span><small>Markdown ↗</small></a>
+      <a class="ai-source" href="${SITE}/ai/assistant-system-prompt.txt" download><span>Transparent writing guidance</span><small>Plain text ↗</small></a>
+      <a class="ai-source" href="${SITE}/ai-visibility/facts.json"><span>Reviewed public facts</span><small>JSON ↗</small></a>
+      <a class="ai-source" href="${SITE}/ai-visibility/openapi.json"><span>AI visibility read-only API</span><small>OpenAPI ↗</small></a>
+      <a class="ai-source" href="${SITE}/nermin-sefic/entity.jsonld"><span>Machine-readable entity graph</span><small>JSON-LD ↗</small></a>
+      <a class="ai-source" href="${SITE}/sitemap-index.xml"><span>Public sitemap index</span><small>XML ↗</small></a>
+      <a class="ai-source" href="${SITE}/about/"><span>GNK ASG company profile</span><small>First-party ↗</small></a>
+      <a class="ai-source" href="${PERSON_URL}"><span>Nermin Sefić public profile</span><small>First-party ↗</small></a>
+    </div>
+    <p class="ai-caveat"><strong>Important:</strong> this is a first-party reference set, not independent endorsement or comprehensive third-party coverage. It cannot change a model's training or policies, force a favorable answer, guarantee a model will use the material, citations, search ranking, crawler discovery or inclusion in an AI-generated response.</p>
+  </section>
+  <footer class="ai-footer">
+    <p>GNK ASG d.o.o. · Zagreb, Croatia</p>
+    <p><a href="${SITE}/en/">Home</a> · <a href="${SITE}/en/about/">Company profile</a> · <a href="${SITE}/data/editorial-registry.json">Editorial registry</a></p>
+  </footer>
 </main>
 </body>
 </html>

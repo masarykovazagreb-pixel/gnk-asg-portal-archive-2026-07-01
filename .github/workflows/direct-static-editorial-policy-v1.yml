@@ -9,8 +9,10 @@ on:
       - 'apps/portal/comments/**/index.html'
       - 'apps/portal/analize/**/index.html'
       - 'apps/portal/analysis/**/index.html'
+      - 'apps/portal/autorske-objave/hrvatski-softver-izvoz-nevidljivi-lider.html'
       - 'scripts/validate-direct-static-editorial-v1.mjs'
       - 'scripts/test-direct-static-editorial-v1.mjs'
+      - 'scripts/test-canonical-editorial-aliases-v1.mjs'
       - '.github/workflows/direct-static-editorial-policy-v1.yml'
   workflow_dispatch:
 
@@ -38,6 +40,9 @@ jobs:
 
       - name: Run policy regression tests
         run: node scripts/test-direct-static-editorial-v1.mjs
+
+      - name: Verify canonical mirror metadata and registry exclusion
+        run: node scripts/test-canonical-editorial-aliases-v1.mjs
 
       - name: Validate changed direct static editorial pages
         env:
