@@ -41,6 +41,7 @@ const SITE = 'https://gnk-asg.hr';
 const WORKER_SLIKE = process.env.WORKER_SLIKE_URL || 'https://gnk-asg.hr/api/slike';
 
 const LIVE = process.argv.includes('--uzivo');
+const ALL = process.argv.includes('--sve');
 const argSlug = (() => {
   const i = process.argv.indexOf('--slug');
   return i > -1 ? process.argv[i + 1] : null;
@@ -97,6 +98,16 @@ async function glavna() {
     return;
   }
   const datoteke = readdirSync(RED_MAPA).filter(f => f.endsWith('.md'));
+  if (ALL) {
+    const { spawnSync } = await import('node:child_process');
+    for (const name of datoteke.sort()) {
+      const args = ['scripts/kolumne-publish-v1.mjs', '--slug', name.slice(0,-3)];
+      if (LIVE) args.push('--uzivo');
+      const proc = spawnSync(process.execPath, args, { stdio: 'inherit' });
+      if (proc.status !== 0) throw new Error('Column batch stopped: '+name);
+    }
+    return;
+  }
   const odabrana = argSlug
     ? datoteke.find(f => f.includes(argSlug))
     : datoteke.sort()[0];   // bez --slug, uzima abecedno prvu - red se poštuje imenom datoteke
@@ -105,6 +116,22 @@ async function glavna() {
 
   const k = parsirajKolumnu(resolve(RED_MAPA, odabrana));
   console.log(`Obrađujem: ${k.slug} — ${k.naslov}`);
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(k.slug || '')) throw new Error('Nedozvoljeni slug kolumne');
+  const proposedPath = `/gnk-aktual/kolumne/${k.slug}/`;
+  const feedBefore = readJson(KOLUMNE, []);
+  if (!Array.isArray(feedBefore)) throw new Error('kolumne.json is a shared JSON array, not an items object');
+  const registryBefore = readJson(REGISTRY, { items: [] });
+  if (existsSync(resolve(PORTAL, 'gnk-aktual', 'kolumne', k.slug, 'index.html')) ||
+      feedBefore.some(item => item.path === proposedPath) ||
+      (registryBefore.items || []).some(item => item.path === proposedPath)) {
+    console.log(JSON.stringify({ slug: k.slug, status: 'already_published', action: 'skip_no_duplicate' }));
+    return;
+  }
+  if (k.status !== 'ready' || k.autor !== 'Nermin Sefić' || k.autorski_odobreno !== 'da') {
+    console.log(JSON.stringify({ slug: k.slug, status: 'held', reason: 'explicit author-approved READY source required' }));
+    return;
+  }
+  if (!k.tekst || k.tekst.split(/\s+/).length < 170 || !k.meta_opis || !k.naslov) throw new Error('Incomplete approved manuscript');
 
   const slika = await dohvatiSliku(k.slika_upit || k.naslov, k.slika_fallback);
   if (!slika) {
@@ -153,20 +180,14 @@ async function glavna() {
     return;
   }
 
-  const kolumneDoc = readJson(KOLUMNE, { items: [] });
-  kolumneDoc.items = kolumneDoc.items || [];
-  kolumneDoc.items.unshift(zapisKolumne);   // najnovija na vrh
+  const kolumneDoc = feedBefore;
+  kolumneDoc.unshift(zapisKolumne);   // najnovija na vrh: legacy JSON array
   writeJson(KOLUMNE, kolumneDoc);
 
-  const registryDoc = readJson(REGISTRY, { items: [], byType: {} });
-  registryDoc.items = registryDoc.items || [];
-  registryDoc.items.push(zapisRegistra);
-  registryDoc.total = registryDoc.items.length;
-  registryDoc.byType = registryDoc.byType || {};
-  registryDoc.byType.kolumna = (registryDoc.byType.kolumna || 0) + 1;
-  writeJson(REGISTRY, registryDoc);
+  // The canonical registry is derived from published HTML, never directly appended here.
+  // A separate source-gated generator and archive/cover validation must run before deployment.
 
-  console.log(`\nUpisano u ${KOLUMNE} i ${REGISTRY}.`);
+  console.log(`\nUpisano u ${KOLUMNE}; kanonski registar zahtijeva regeneraciju.`);
 
   // Generira i pravu statičku stranicu - bez nje 404 na izravnoj poveznici
   // i blog-publish-v1.mjs nikad ne pronađe sadržaj za slanje na Blogger.
