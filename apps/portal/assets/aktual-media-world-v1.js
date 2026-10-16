@@ -75,7 +75,41 @@
       .sort((a,b)=>new Date(b._published)-new Date(a._published));
   };
   const storyLink = item => '<a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+esc(item.title)+'</a>';
-  const image = (item,eager=false) => '<img src="'+esc(item.image)+'" alt="'+esc(item.imageAlt||item.title)+'" loading="'+(eager?'eager':'lazy')+'">';
+  // Privacy, licensing and Lighthouse: source image URLs remain metadata
+  // and source links, never third-party subresource requests by readers.
+  // Use topic-appropriate existing local illustrations only. No assertion
+  // that an illustrative image depicts the reported event or organisation.
+  const localEditorialVisuals = Object.freeze({
+    hrvatska:['/assets/gnk-asg-social-card.png'],
+    international:['/assets/gallery/globalna-mreza-emerald-growth-02-v2.svg'],
+    economy:['/assets/gallery/kapitalna-disciplina-amber-energy-05-v2.svg','/assets/gallery/investitorsko-povjerenje-azure-tech-13-v2.svg'],
+    technology:['/assets/gallery/agentic-ai-orchestration-organic-v3.svg','/assets/gallery/quantum-computing-organic-v3.svg','/assets/gallery/cyber-resilience-organic-v3.svg'],
+    sport:['/assets/gallery/sportska-tehnologija-rose-momentum-07-v2.svg','/assets/gallery/sportska-tehnologija--pregled-2-emerald-growth-22-v2.svg'],
+    znanost:['/assets/gallery/biotech-rd-platform-organic-v3.svg','/assets/gallery/quantum-computing-organic-v3.svg'],
+    lifestyle:['/assets/gnk-asg-social-card.png'],
+    culture:['/assets/gnk-asg-social-card.png'],
+    'digital-assets':['/assets/gallery/digitalna-imovina-gold-navy-11-v2.svg','/assets/gallery/digital-identity-organic-v3.svg'],
+    regije:['/assets/gnk-asg-social-card.png'],
+    other:['/assets/gnk-asg-social-card.png']
+  });
+  const selectImage = item => {
+    const original=String(item.image||'').trim();
+    // Local path allowlist protects against protocol-relative, data and javascript URLs.
+    if(/^\/assets\/[a-z0-9/_-]+\.(?:svg|webp|png|jpe?g)$/i.test(original)&&!original.includes('..')){
+      return {src:original,alt:item.imageAlt||item.title};
+    }
+    const options=localEditorialVisuals[item._group]||localEditorialVisuals.other;
+    const hash=[...String(item.title||'')].reduce((n,ch)=>(n*31+ch.charCodeAt(0))>>>0,0);
+    const category=metaFor(item._group).label;
+    const alt=lang==='hr'
+      ? 'Tematska ilustracija AKTUAL MEDIA za rubriku '+category+' uz vijest: '+String(item.title||'')
+      : 'AKTUAL MEDIA topical illustration for '+category+' story: '+String(item.title||'');
+    return {src:options[hash%options.length],alt};
+  };
+  const image = (item,eager=false) => {
+    const visual=selectImage(item);
+    return '<img src="'+esc(visual.src)+'" alt="'+esc(visual.alt)+'" width="1200" height="675" loading="'+(eager?'eager':'lazy')+'" decoding="async">';
+  };
   const meta = item => '<div class="am-meta"><span>'+esc(item.source||labels.source)+'</span><span>·</span><span>'+esc(timeAgo(item._published))+'</span></div>';
 
   function setEdition(items){
