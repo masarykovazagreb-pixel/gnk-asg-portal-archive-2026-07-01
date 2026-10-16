@@ -7,9 +7,7 @@ import { spawnSync } from 'node:child_process';
 const validator = path.resolve(process.env.EDITORIAL_POLICY_VALIDATOR || 'scripts/validate-editorial-content-policy-v1.mjs');
 assert.ok(fs.existsSync(validator), `missing validator: ${validator}`);
 
-function words(count) {
-  return Array.from({ length: count }, (_, index) => `riječ${index + 1}`).join(' ');
-}
+const meaningful = 'Novi komentar jasno razlikuje provjerenu činjenicu od autorskog zaključka.';
 
 function baseItem(overrides = {}) {
   return {
@@ -20,7 +18,7 @@ function baseItem(overrides = {}) {
     description: 'Testni meta opis uredničkog sadržaja.',
     summary: 'Testni sažetak uredničkog sadržaja.',
     image: '/assets/nermin-sefic/testna-fotografija.webp',
-    paragraphs: [words(3000)],
+    paragraphs: [meaningful],
     links: ['/objave/', '/komentari/', '/analize/', '/nermin-sefic/', '/projekti/'],
     ...overrides,
   };
@@ -57,34 +55,52 @@ function runCase(name, { item, packageOverrides = {}, holds = null, expectedStat
   fs.rmSync(dir, { recursive: true, force: true });
 }
 
-runCase('pass-publication-500', {
-  item: baseItem({ paragraphs: [words(500)] }),
+runCase('pass-short-publication', {
+  item: baseItem({ paragraphs: ['Poslovni trošak traži provjeru stvarnog ugovora.'] }),
   expectedStatus: 0,
   expectedMarker: /EDITORIAL_CONTENT_POLICY_OK/,
 });
 
-runCase('fail-publication-499', {
-  item: baseItem({ paragraphs: [words(499)] }),
+runCase('pass-short-commentary', {
+  item: baseItem({ type: 'komentar', paragraphs: ['Izvor prikazuje tvrdnju; naša analiza postavlja konkretno pitanje.'] }),
+  expectedStatus: 0,
+  expectedMarker: /EDITORIAL_CONTENT_POLICY_OK/,
+});
+
+runCase('pass-short-analysis', {
+  item: baseItem({ type: 'analiza', paragraphs: ['Zaključak vrijedi samo uz jasno navedene pretpostavke.'] }),
+  expectedStatus: 0,
+  expectedMarker: /EDITORIAL_CONTENT_POLICY_OK/,
+});
+
+runCase('fail-empty-body', {
+  item: baseItem({ paragraphs: [] }),
   expectedStatus: 1,
-  expectedMarker: /body has 499 words; minimum is 500/,
+  expectedMarker: /body requires non-empty text paragraphs/,
 });
 
-runCase('pass-commentary-300', {
-  item: baseItem({ type: 'komentar', paragraphs: [words(300)] }),
-  expectedStatus: 0,
-  expectedMarker: /EDITORIAL_CONTENT_POLICY_OK/,
-});
-
-runCase('fail-commentary-299', {
-  item: baseItem({ type: 'komentar', paragraphs: [words(299)] }),
+runCase('fail-whitespace-body', {
+  item: baseItem({ paragraphs: ['   ', '  '] }),
   expectedStatus: 1,
-  expectedMarker: /body has 299 words; minimum is 300/,
+  expectedMarker: /body requires non-empty text paragraphs/,
 });
 
-runCase('pass-analysis-1500', {
-  item: baseItem({ type: 'analiza', paragraphs: [words(1500)] }),
-  expectedStatus: 0,
-  expectedMarker: /EDITORIAL_CONTENT_POLICY_OK/,
+runCase('fail-duplicated-paragraphs', {
+  item: baseItem({ paragraphs: ['Ista izvorna tvrdnja.', ' ISTA  izvorna   tvrdnja. '] }),
+  expectedStatus: 1,
+  expectedMarker: /contains duplicated body paragraphs/,
+});
+
+runCase('fail-missing-meta', {
+  item: baseItem({ seoTitle: '' }),
+  expectedStatus: 1,
+  expectedMarker: /missing SEO title/,
+});
+
+runCase('fail-internal-links', {
+  item: baseItem({ links: ['/komentari/'] }),
+  expectedStatus: 1,
+  expectedMarker: /unique internal links/,
 });
 
 runCase('worker-type-exception', {
@@ -119,7 +135,7 @@ runCase('generic-operational-is-not-exempt', {
     links: [],
   }),
   expectedStatus: 1,
-  expectedMarker: /body has 3 words; minimum is 500/,
+  expectedMarker: /has 0 unique internal links/,
 });
 
 runCase('publication-hold', {

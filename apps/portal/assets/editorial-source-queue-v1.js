@@ -10,8 +10,10 @@ function blockers(item){
   if(!['draft','source-review','approved-for-own-site'].includes(item.queueStatus)) errors.push('Stavka nije nacrt za odobravanje.');
   if(!text(item.slug)||!/^[a-z0-9-]+$/.test(item.slug)) errors.push('Nedostaje valjan slug.');
   for(const key of ['title','seoTitle','metaDescription','summary']) if(!text(item[key])) errors.push(`Nedostaje ${key}.`);
-  const words=(item.body||[]).join(' ').match(/[\p{L}\p{N}]+(?:[’'\-][\p{L}\p{N}]+)*/gu)||[];
-  if(words.length<3000) errors.push('Nacrt nema najmanje 3000 riječi.');
+  const body=Array.isArray(item.body)?item.body:[];
+  const normalized=body.map(value=>typeof value==='string'?value.normalize('NFKC').toLocaleLowerCase('hr').replace(/\s+/g,' ').trim():'');
+  if(!normalized.length||normalized.some(value=>!value)) errors.push('Nacrt mora sadržavati stvaran, neprazan tekst.');
+  if(new Set(normalized).size!==normalized.length) errors.push('Nacrt sadrži duplicirane odlomke.');
   if(new Set((item.internalLinks||[]).filter(x=>typeof x==='string'&&x.startsWith('/')&&!x.startsWith('//'))).size<5) errors.push('Nedostaje pet internih poveznica.');
   if(!text(item.image)||!item.image.startsWith('/')||item.image.startsWith('//')) errors.push('Nedostaje lokalna slika.');
   const gate=item.sourceGate||{};

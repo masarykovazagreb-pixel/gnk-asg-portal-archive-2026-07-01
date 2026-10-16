@@ -148,11 +148,20 @@ try{
 }
 for(const file of ['apps/portal/data/editorial-plan/publication-holds.json','scripts/seo-visibility-cycle-v1.mjs','scripts/refresh-public-news-v4.mjs','scripts/validate-editorial-content-policy-v1.mjs','scripts/test-editorial-content-policy-v1.mjs','.github/workflows/editorial-scheduled-publish.yml','.github/workflows/seo-news-cycle.yml','.github/workflows/gnk-seo-nightly-audit.yml','.github/workflows/editorial-content-deploy.yml'])assert.ok(fs.existsSync(file)&&fs.statSync(file).size,file);
 const holds=JSON.parse(fs.readFileSync('apps/portal/data/editorial-plan/publication-holds.json','utf8'));
-assert.match(holds.version,/GNK_ASG_EDITORIAL_PUBLICATION_HOLDS_V(?:1_20260805|2_20260925_RESCHEDULED|3_20260925_DAILY|4_20261005_CLEARED|5_20261010_3000_WORDS_PENDING_POLICY_DECISION)/);
-if(holds.version==='GNK_ASG_EDITORIAL_PUBLICATION_HOLDS_V5_20261010_3000_WORDS_PENDING_POLICY_DECISION'){
+assert.match(holds.version,/GNK_ASG_EDITORIAL_PUBLICATION_HOLDS_V(?:1_20260805|2_20260925_RESCHEDULED|3_20260925_DAILY|4_20261005_CLEARED|5_20261010_3000_WORDS_PENDING_POLICY_DECISION|6_20261016_INDEPENDENT_RELEASE_REVIEW)/);
+if(holds.version==='GNK_ASG_EDITORIAL_PUBLICATION_HOLDS_V5_20261010_3000_WORDS_PENDING_POLICY_DECISION' ||
+  holds.version==='GNK_ASG_EDITORIAL_PUBLICATION_HOLDS_V6_20261016_INDEPENDENT_RELEASE_REVIEW'){
   const required=['EDITORIAL-20261104-WEDNESDAY-SLOT1','EDITORIAL-20261105-THURSDAY-SLOT1','EDITORIAL-20261106-FRIDAY-SLOT1','EDITORIAL-20261107-SATURDAY-SLOT1','EDITORIAL-20261108-SUNDAY-SLOT1'];
   for(const id of required)assert.ok(holds.holds.some(h=>h.packageId===id&&h.active===true),`required future quality hold missing: ${id}`);
   assert.ok(!holds.holds.some(h=>h.packageId==='EDITORIAL-20261010-SATURDAY-SLOT1'&&h.active===true),'published Oct 10 package must not be retroactively held');
+  if(holds.version==='GNK_ASG_EDITORIAL_PUBLICATION_HOLDS_V6_20261016_INDEPENDENT_RELEASE_REVIEW'){
+    for(const h of holds.holds.filter(h=>h.active)){
+      assert.equal(h.releaseAuthorized,false,'an independent review hold must not authorize release');
+      assert.ok(h.reviewRequired?.includes('source-fact-attribution'),'source/fact verification must remain active');
+      assert.ok(h.reviewRequired?.includes('image-provenance-license-alt-dimensions'),'image rights must remain active');
+      assert.ok(!/below temporary|minimum .?\d+.? words/i.test(h.reason),'word counts cannot independently block publishing');
+    }
+  }
 }
 assert.ok(Array.isArray(holds.holds),'publication holds must be an array');
 for(const hold of holds.holds){
@@ -160,7 +169,8 @@ for(const hold of holds.holds){
   assert.ok(plan.packages.some(pack=>pack.id===hold.packageId),`publication hold references unknown package: ${hold.packageId}`);
 }
 const policy=fs.readFileSync('scripts/validate-editorial-content-policy-v1.mjs','utf8');
-for(const marker of ['GNK_ASG_EDITORIAL_CONTENT_POLICY_V1_20260805','EDITORIAL_POLICY_CUTOFF','EDITORIAL_MIN_WORDS','EDITORIAL_MIN_INTERNAL_LINKS','digital-workforce-worker','EDITORIAL_HOLDS_PATH','activePublicationHolds'])assert.ok(policy.includes(marker),marker);
+for(const marker of ['GNK_ASG_EDITORIAL_CONTENT_POLICY_V2_20261016_NO_WORD_MINIMUM','EDITORIAL_POLICY_CUTOFF','EDITORIAL_MIN_INTERNAL_LINKS','digital-workforce-worker','EDITORIAL_HOLDS_PATH','activePublicationHolds','body requires non-empty text paragraphs','contains duplicated body paragraphs'])assert.ok(policy.includes(marker),marker);
+assert.doesNotMatch(policy,/EDITORIAL_MIN_WORDS|minimumWordsForType|body has .* words; minimum/,'the obsolete word-length gate must not return');
 const seo=fs.readFileSync('scripts/seo-visibility-cycle-v1.mjs','utf8');
 assert.match(seo,/GNK_ASG_SEO_VISIBILITY_CYCLE_V2_20260714/);
 assert.match(seo,/artificialTraffic:false/);
@@ -220,4 +230,4 @@ const regressionIndex=scheduler.indexOf('node scripts/test-editorial-content-pol
 const policyIndex=scheduler.indexOf('node scripts/validate-editorial-content-policy-v1.mjs');
 const materializeIndex=scheduler.indexOf('node scripts/editorial-publish-scheduled-v1.mjs');
 assert.ok(regressionIndex>=0&&policyIndex>regressionIndex&&materializeIndex>policyIndex,'policy test and gate must run before materialization');
-console.log(JSON.stringify({ok:true,packages:plan.packages.map(x=>({id:x.id,publications:x.items.filter(i=>i.type==='objava').length,commentaries:x.items.filter(i=>i.type==='komentar').length,publishAt:x.publishAt})),seo:{cycleHours:null,scheduleUtc:null,trigger:'manual-only',timeoutMinutes:10,artificialTraffic:false,idempotent:true,readOnly:true,nightlyReadOnly:true},editorialPolicy:{minimumWords:3000,minimumInternalLinks:5,preMaterialization:true,publicationHolds:holds.holds.length},deploy:{directExactShaDispatch:true,noOpScheduleDeploy:false,owner:'editorial-scheduled-publish'}},null,2));
+console.log(JSON.stringify({ok:true,packages:plan.packages.map(x=>({id:x.id,publications:x.items.filter(i=>i.type==='objava').length,commentaries:x.items.filter(i=>i.type==='komentar').length,publishAt:x.publishAt})),seo:{cycleHours:null,scheduleUtc:null,trigger:'manual-only',timeoutMinutes:10,artificialTraffic:false,idempotent:true,readOnly:true,nightlyReadOnly:true},editorialPolicy:{wordMinimumEnabled:false,minimumInternalLinks:5,preMaterialization:true,publicationHolds:holds.holds.length},deploy:{directExactShaDispatch:true,noOpScheduleDeploy:false,owner:'editorial-scheduled-publish'}},null,2));

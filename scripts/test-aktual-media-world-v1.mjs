@@ -58,6 +58,25 @@ else {
 }
 if(/innerHTML\s*=\s*[^;]*item\.title/.test(js)) failures.push('js: unescaped direct title injection detected');
 if(!css.includes('.am-leadgrid')||!css.includes('.am-cardgrid')||!css.includes('@media')) failures.push('css: required responsive newsroom layout missing');
+
+// Tržišta shares the canonical AKTUAL news feed. Its previews must never
+// reintroduce third-party image cookies or portray an illustration as a photo.
+const marketsHtml=read('apps/portal/trzista/index.html');
+const visualStart=marketsHtml.indexOf('function previewVisual(item)');
+const visualEnd=marketsHtml.indexOf('\n  fetch(',visualStart);
+if(visualStart<0||visualEnd<=visualStart) failures.push('markets: missing approved preview image handler');
+else {
+  const previewVisual=Function(`${marketsHtml.slice(visualStart,visualEnd)};return previewVisual;`)();
+  const remoteEconomy=previewVisual({image:'https://img.decrypt.co/news.jpg',group:'economy',title:'Poslovna vijest'});
+  if(remoteEconomy.src!=='/assets/gallery/kapitalna-disciplina-amber-energy-05-v2.svg') failures.push('markets: economy remote images must use local fallback');
+  if(!remoteEconomy.alt.startsWith('Tematska ilustracija GNK ASG')) failures.push('markets: local illustration must be labelled honestly');
+  const remoteDigital=previewVisual({image:'//remote.example/test.jpg',group:'digital-assets',title:'Digitalna imovina'});
+  if(remoteDigital.src!=='/assets/gallery/digitalna-imovina-gold-navy-11-v2.svg') failures.push('markets: protocol-relative image must use local fallback');
+  const local=previewVisual({image:'/assets/gallery/agentic-ai-orchestration-organic-v3.svg',imageAlt:'Urednička ilustracija AI',group:'technology'});
+  if(local.src!=='/assets/gallery/agentic-ai-orchestration-organic-v3.svg') failures.push('markets: preserve existing approved local artwork');
+  if(marketsHtml.includes("esc(item.image||")||!marketsHtml.includes('width="1200" height="675"')) failures.push('markets: uncensored image rendering or missing fixed dimensions');
+}
+
 for(const url of ['https://gnk-asg.hr/gnk-aktual/teme/','https://gnk-asg.hr/en/gnk-aktual/topics/']){
   if(!sitemap.includes('<loc>'+url+'</loc>')) failures.push('sitemap missing '+url);
 }
