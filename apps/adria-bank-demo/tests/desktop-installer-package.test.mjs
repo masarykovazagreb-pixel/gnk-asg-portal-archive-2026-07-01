@@ -38,6 +38,10 @@ test('Windows build workflow smoke-installs and verifies the packaged app before
   assert.ok(smokeTest.includes('Get-ChildItem -LiteralPath $programsRoot'));
   assert.ok(workflow.includes('Smoke-install and verify the Windows app'));
   assert.ok(workflow.includes('./scripts/smoke-test-windows-installer.ps1'));
+  assert.ok(workflow.includes('publish-windows-installer:'));
+  assert.ok(workflow.includes("if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/arena/6080dbca-gnk-asg-portal-archive-2026-07' }}"));
+  assert.ok(workflow.includes('contents: write'));
+  assert.ok(workflow.includes('gh release create "$release_tag" "$asset"'));
 });
 
 test('Windows installer ZIP packager validates PE input and embeds matching checksum and instructions', () => {
