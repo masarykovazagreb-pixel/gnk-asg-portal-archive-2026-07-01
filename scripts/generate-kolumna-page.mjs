@@ -35,6 +35,10 @@ function stranicaHtml(k, jezik) {
   const tekst = en ? (k.tekst_en || k.tekst) : k.tekst;
   const altPutanja = en ? `/gnk-aktual/kolumne/${k.slug}/` : `/en/gnk-aktual/columns/${k.slug}/`;
   const altOznaka = en ? 'Čitaj na hrvatskom' : 'Read in English';
+  const hasEnTranslation = Boolean(k.tekst_en && k.naslov_en && k.meta_opis_en);
+  const showAlternate = en || hasEnTranslation;
+  const hreflang = showAlternate ? `${hreflang}` : '';
+  const languageLink = showAlternate ? `${languageLink}` : '';
   const natragOznaka = en ? '← Back to AKTUAL MEDIA' : '← Natrag na AKTUAL MEDIA';
   const natragPutanja = en ? '/en/gnk-aktual/' : '/gnk-aktual/';
 
@@ -48,6 +52,8 @@ function stranicaHtml(k, jezik) {
   const routeName = putanja.split('/').filter(Boolean).join('-').replace(/[^a-zA-Z0-9-]+/g, '-').replace(/-+/g, '-').toLowerCase();
   const imagePath = `/assets/editorial/generated/${routeName}-${createHash('sha1').update(putanja).digest('hex').slice(0,8)}.webp`;
   const slikaTag = `<img class="article-cover" src="${imagePath}" alt="${escH(naslov)}" width="1200" height="630" style="max-width:100%;height:auto;border:3px solid #241C0E;margin-bottom:20px">`;
+  const tags = (Array.isArray(k.hashtagovi) ? k.hashtagovi : []).map(t => String(t).replace(/^#/, '').trim()).filter(Boolean);
+  const hashtagHtml = tags.length ? `<p class="article-hashtags">${tags.map(t => '#'+escH(t)).join(' ')}</p>` : '';
 
   return `<!doctype html><html lang="${en ? 'en' : 'hr'}"><head>
 <meta charset="utf-8">
@@ -89,6 +95,7 @@ a.natrag,a.alt-jezik{font-family:Arial,sans-serif;font-size:.8rem;font-weight:80
   <h1>${escH(naslov)}</h1>
   ${slikaTag}
   ${odlomci}
+  ${hashtagHtml}
 </article>
 </body></html>`;
 }
