@@ -24,10 +24,10 @@ function canonicalOf(html) {
   return html.match(/<link\b[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["']/i)?.[1] || '';
 }
 function metaContent(html, key, attr = 'name') {
-  const matches = [...html.matchAll(/<meta\\b[^>]*>/gi)].map(found => found[0])
+  const matches = [...html.matchAll(/<meta\b[^>]*>/gi)].map(found => found[0])
     .filter(tag => new RegExp(`\\b${attr}=["']${key}["']`, 'i').test(tag));
   if (matches.length !== 1) return '';
-  return matches[0].match(/\\bcontent=["']([^"']*)["']/i)?.[1] || '';
+  return matches[0].match(/\bcontent=["']([^"']*)["']/i)?.[1] || '';
 }
 // Social previews are public editorial artifacts: the precise image, description,
 // alt text and dimensions must match the canonical materialized weekly cover.
