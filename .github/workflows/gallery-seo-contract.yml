@@ -1,0 +1,31 @@
+name: Gallery SEO Contract (Read Only)
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/build_gallery_standalone_pages.py'
+      - 'scripts/test-gallery-standalone-seo-v1.mjs'
+      - 'apps/portal/data/visual_gallery.json'
+      - 'apps/portal/galerija/**'
+      - 'apps/portal/visual-index/**'
+      - 'apps/portal/en/visual-index/**'
+      - '.github/workflows/gallery-seo-contract.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gallery-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Validate gallery SEO, metadata and accessibility contracts in an isolated fixture
+        run: node scripts/test-gallery-standalone-seo-v1.mjs

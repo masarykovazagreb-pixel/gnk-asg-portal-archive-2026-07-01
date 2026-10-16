@@ -112,7 +112,7 @@ def priority_and_freq(url, cat):
     path = url.replace(BASE_URL, "")
     index_paths = (
         "", "/en", "/objave", "/en/publications", "/komentari", "/en/commentary",
-        "/analize", "/en/analyses", "/visual-index", "/en/visual-index",
+        "/analize", "/en/analyses", "/visual-index", "/en/visual-index", "/ai",
         "/autorske-objave", "/en/autorske-objave",
     )
     if path in ("/", "/en"):
@@ -133,6 +133,8 @@ def jezicni_par(url):
     hrvatska i engleska stranica natjecu se jedna s drugom za isti upit.
     """
     put = url.replace(BASE_URL, "")
+    if put in ("/ai/", "/ai/hr/"):
+        return BASE_URL + "/ai/hr/", BASE_URL + "/ai/"
     if put.startswith("/en/") or put == "/en":
         hr = "/" + put[len("/en/"):] if put != "/en" else "/"
         en = put
@@ -152,12 +154,13 @@ def render_urlset(items):
     for url, lastmod, cat in sorted(items):
         pr, freq = priority_and_freq(url, cat)
         hr_url, en_url = jezicni_par(url)
+        x_default_url = BASE_URL + "/ai/" if url.replace(BASE_URL, "") in ("/ai/", "/ai/hr/") else hr_url
         veze = ""
         if hr_url in sve_adrese and en_url in sve_adrese:
             veze = (
                 f'<xhtml:link rel="alternate" hreflang="hr" href="{hr_url}"/>'
                 f'<xhtml:link rel="alternate" hreflang="en" href="{en_url}"/>'
-                f'<xhtml:link rel="alternate" hreflang="x-default" href="{hr_url}"/>'
+                f'<xhtml:link rel="alternate" hreflang="x-default" href="{x_default_url}"/>'
             )
         lines.append(
             f"  <url><loc>{url}</loc><lastmod>{lastmod}</lastmod>"

@@ -1,9 +1,9 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "GNK ASG AI Visibility Facts",
-    "version": "1.0.0",
-    "description": "Read-only facts with public references, not an independent endorsement."
+    "title": "GNK ASG AI Visibility Facts and Review History",
+    "version": "1.1.0",
+    "description": "Read-only first-party facts and dated source-review history. Review dates and fingerprints are not live verification or independent endorsement."
   },
   "servers": [
     {
@@ -15,6 +15,7 @@
       "get": {
         "operationId": "getAsgVerifiedPublicFacts",
         "summary": "Retrieve sourced public facts about GNK ASG d.o.o. and Nermin Sefić",
+        "description": "Returns first-party fact statements, their cited public source URLs and the recorded review date. The date is not live registry verification.",
         "responses": {
           "200": {
             "description": "Sourced factual snapshot",
@@ -23,36 +24,56 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "schemaVersion": {
-                      "type": "string"
-                    },
-                    "reviewedAt": {
-                      "type": "string",
-                      "format": "date"
-                    },
+                    "schemaVersion": { "type": "string" },
+                    "reviewedAt": { "type": "string", "format": "date" },
                     "facts": {
                       "type": "array",
                       "items": {
                         "type": "object",
                         "properties": {
-                          "id": {
-                            "type": "string"
-                          },
-                          "subject": {
-                            "type": "string"
-                          },
-                          "statement": {
-                            "type": "string"
-                          },
-                          "source": {
-                            "type": "string",
-                            "format": "uri"
-                          }
+                          "id": { "type": "string" },
+                          "subject": { "type": "string" },
+                          "statement": { "type": "string" },
+                          "source": { "type": "string", "format": "uri" }
                         }
                       }
                     },
-                    "caveat": {
-                      "type": "string"
+                    "caveat": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ai-visibility/source-history.json": {
+      "get": {
+        "operationId": "getAsgFactReviewHistory",
+        "summary": "Retrieve the public history of recorded fact reviews and source-data revisions",
+        "description": "Returns append-only dated snapshots and SHA-256 fingerprints. The history documents recorded reviews, not live verification of source records or current status.",
+        "responses": {
+          "200": {
+            "description": "Read-only source-review audit trail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "schemaVersion": { "type": "string" },
+                    "records": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "revisionId": { "type": "string" },
+                          "recordedAt": { "type": "string", "format": "date" },
+                          "reviewedAt": { "type": "string", "format": "date" },
+                          "reviewer": { "type": "string" },
+                          "snapshotSha256": { "type": "string" },
+                          "sourceSnapshot": { "type": "object", "additionalProperties": true }
+                        }
+                      }
                     }
                   }
                 }

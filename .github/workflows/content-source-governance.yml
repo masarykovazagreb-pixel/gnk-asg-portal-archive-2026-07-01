@@ -15,9 +15,25 @@ on:
       - 'scripts/generate-aeo-artifacts-v1.mjs'
       - 'scripts/generate-ai-visibility-v1.mjs'
       - 'scripts/test-ai-visibility-v1.mjs'
+      - 'scripts/record-ai-reference-review-v1.mjs'
+      - 'scripts/test-ai-reference-source-history-v1.mjs'
+      - 'scripts/test-ai-reference-accessibility-v1.mjs'
+      - 'scripts/test-ai-reference-sitemap-pairing-v1.py'
+      - 'scripts/audit-world-topics-readiness-v1.mjs'
+      - 'scripts/test-world-topics-readiness-v1.mjs'
+      - 'scripts/check-editorial-prepublication-readiness-v1.mjs'
+      - 'scripts/test-editorial-prepublication-readiness-v1.mjs'
+      - 'scripts/test-approved-author-markers-v1.mjs'
       - 'scripts/aeo-entity-source.jsonld'
       - 'data/ai-visibility/verified-facts.json'
+      - 'data/ai-visibility/source-review-history.json'
       - 'apps/portal/ai-visibility/**'
+      - 'apps/portal/ai/hr/**'
+      - 'apps/portal/data/world-topics-registry.json'
+      - 'apps/portal/data/editorial-registry.json'
+      - 'apps/portal/data/editorial-image-manifest.json'
+      - 'apps/portal/sitemap.xml'
+      - 'scripts/generate-sitemaps.py'
       - 'scripts/lib/editorial-attribution-v1.mjs'
       - 'scripts/lib/editorial-route-protection-v1.mjs'
       - 'apps/portal/data/entity-graph.jsonld'
@@ -51,6 +67,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
       - name: Syntax checks
         run: |
           set -euo pipefail
@@ -59,6 +78,17 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/digital-workforce-suite-v1.js
           node --check workers/gnk-asg-ai-newsroom-writer/src/index.js
           node --check scripts/test-content-source-governance-v1.mjs
+          node --check scripts/record-ai-reference-review-v1.mjs
+          node --check scripts/generate-ai-visibility-v1.mjs
+          node --check scripts/audit-world-topics-readiness-v1.mjs
+          node --check scripts/test-world-topics-readiness-v1.mjs
+          node --check scripts/check-editorial-prepublication-readiness-v1.mjs
+          node --check scripts/test-editorial-prepublication-readiness-v1.mjs
+          node --check scripts/test-ai-reference-source-history-v1.mjs
+          node --check scripts/test-ai-reference-accessibility-v1.mjs
+          node --check scripts/test-approved-author-markers-v1.mjs
+          node --check apps/portal/assets/ai-reference-ui-v1.js
+          python3 -m py_compile scripts/generate-sitemaps.py scripts/test-ai-reference-sitemap-pairing-v1.py
       - name: Source provenance and publication safety contract
         run: node scripts/test-content-source-governance-v1.mjs
       - name: Build and validate internal AKTUAL weekly candidate options
@@ -66,10 +96,27 @@ jobs:
           set -euo pipefail
           node scripts/build-aktual-weekly-candidate-options-v1.mjs
           node scripts/test-aktual-weekly-candidate-options-v1.mjs
-      - name: Build and validate opt-in public AI reference kit
+      - name: Build and validate opt-in public AI reference kit and localized facts register
         run: |
           set -euo pipefail
           node scripts/generate-aeo-artifacts-v1.mjs
           node scripts/build-ai-reference-kit-v1.mjs
           node scripts/test-ai-reference-kit-v1.mjs
+          node scripts/generate-ai-visibility-v1.mjs --check
           node scripts/test-ai-visibility-v1.mjs
+          node scripts/test-ai-reference-source-history-v1.mjs
+          node scripts/test-ai-reference-accessibility-v1.mjs
+          python3 scripts/test-ai-reference-sitemap-pairing-v1.py
+          node scripts/test-approved-author-markers-v1.mjs
+          node scripts/test-editorial-prepublication-readiness-v1.mjs
+          node scripts/test-world-topics-readiness-v1.mjs
+      - name: Create read-only World Topics review report
+        run: node scripts/audit-world-topics-readiness-v1.mjs > "$RUNNER_TEMP/world-topics-review-readiness.json"
+      - name: Upload World Topics review report for human follow-up
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: world-topics-review-readiness-${{ github.sha }}
+          path: ${{ runner.temp }}/world-topics-review-readiness.json
+          if-no-files-found: warn
+          retention-days: 14

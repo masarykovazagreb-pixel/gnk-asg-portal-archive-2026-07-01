@@ -82,6 +82,7 @@ const llms = `# GNK ASG — corporate and editorial reference
 - Editorial registry: ${SITE}/data/editorial-registry.json
 - AI and editorial reference: ${SITE}/ai/
 - Reviewed AI visibility facts (JSON): ${SITE}/ai-visibility/facts.json
+- AI source-review history and dated revisions (JSON): ${SITE}/ai-visibility/source-history.json
 - AI visibility text brief: ${SITE}/ai-visibility/brief.txt
 - Read-only AI visibility OpenAPI spec: ${SITE}/ai-visibility/openapi.json
 - Public AI knowledge pack (JSON): ${SITE}/data/assistant-knowledge.json
@@ -156,6 +157,10 @@ const ai = `<!doctype html>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
 <link rel="canonical" href="${SITE}/ai/">
+<link rel="alternate" hreflang="en" href="${SITE}/ai/">
+<link rel="alternate" hreflang="hr" href="${SITE}/ai/hr/">
+<link rel="alternate" hreflang="x-default" href="${SITE}/ai/">
+<link rel="alternate" type="application/json" href="${SITE}/ai-visibility/source-history.json" title="Public source review history">
 <link rel="alternate" type="text/plain" href="${SITE}/llms.txt" title="GNK ASG corporate and editorial reference">
 <link rel="alternate" type="text/plain" href="${SITE}/llms-full.txt" title="GNK ASG publication index">
 <link rel="alternate" type="application/ld+json" href="${SITE}/nermin-sefic/entity.jsonld" title="GNK ASG entity graph">
@@ -181,10 +186,13 @@ const ai = `<!doctype html>
 <meta name="twitter:description" content="${escapeHtml(pageDescription)}">
 <meta name="twitter:image" content="${socialImage}">
 <meta name="twitter:image:alt" content="GNK ASG d.o.o. corporate profile">
-<link rel="icon" href="${SITE}/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="${SITE}/assets/ai-reference-v1.css?v=20261016-source-cited-v1">
-<script defer src="${SITE}/assets/ai-reference-ui-v1.js?v=20261016-source-cited-v1"></script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/ai-reference-v1.css?v=20261016-review-register-v2">
+<script defer src="/assets/ai-reference-ui-v1.js?v=20261016-review-register-v2"></script>
 <script type="application/ld+json">${JSON.stringify(aiPage).replace(/</g, '\\u003c')}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"${SITE}/"},{"@type":"ListItem","position":2,"name":"AI / LLM Endpoint","item":"${SITE}/ai/"}]}</script>
+<link rel="alternate" type="application/rss+xml" title="GNK ASG RSS" href="/en/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="GNK ASG Atom" href="/en/atom.xml">
 </head>
 <body>
 <header class="ai-topbar">
@@ -192,7 +200,10 @@ const ai = `<!doctype html>
     <img src="${SITE}/assets/logo-gnk-asg-canonical.svg" alt="">
     <span class="ai-brand-text">GNK ASG<small>Public reference</small></span>
   </a>
-  <a class="ai-top-link" href="${SITE}/about/">Company profile <span aria-hidden="true">↗</span></a>
+  <nav class="ai-language-nav" aria-label="Language and company navigation">
+    <a href="/ai/hr/" lang="hr" hreflang="hr">Hrvatski</a>
+    <a class="ai-top-link" href="/about/">Company profile <span aria-hidden="true">↗</span></a>
+  </nav>
 </header>
 <main class="ai-shell">
   <section class="ai-hero" aria-labelledby="ai-reference-title">
@@ -226,10 +237,29 @@ const ai = `<!doctype html>
   <section class="ai-metrics" aria-label="Live public reference counts">
     <div class="ai-metric"><strong data-ai-count="entities">2</strong><span>reference entities</span></div>
     <div class="ai-metric"><strong data-ai-count="facts">6</strong><span>reviewed facts with citations</span></div>
-    <div class="ai-metric"><strong data-ai-count="sources">6</strong><span>curated public source links</span></div>
-    <div class="ai-metric"><strong data-ai-count="operations">3</strong><span>read-only API operations</span></div>
+    <div class="ai-metric"><strong data-ai-count="sources">7</strong><span>curated public source links</span></div>
+    <div class="ai-metric"><strong data-ai-count="operations">4</strong><span>read-only API operations</span></div>
   </section>
   <p class="ai-privacy-note" data-ai-data-status aria-live="polite">Counts are read from same-origin public JSON only; no credentials or external AI requests are used.</p>
+
+  <section class="ai-section" aria-labelledby="ai-facts-title">
+    <div class="ai-section-heading">
+      <div><p class="ai-eyebrow">Public review register</p><h2 id="ai-facts-title">Facts with source and review date</h2></div>
+      <p>Copying is user-initiated and stays in this browser.</p>
+    </div>
+    <p class="ai-review-status" data-ai-review-status role="status" aria-live="polite">Recorded source review: 15 October 2026. Sources are not checked live by this page.</p>
+    <div class="ai-fact-list" data-ai-fact-list>
+      <p class="ai-empty-state">Loading the public fact register from this site…</p>
+    </div>
+    <p class="ai-fact-copy-status" data-ai-fact-copy-status role="status" aria-live="polite"></p>
+    <details class="ai-review-history">
+      <summary>Source review history and recorded revisions</summary>
+      <div class="ai-review-history-list" data-ai-review-history-list>
+        <p class="ai-empty-state">Loading the recorded source history…</p>
+      </div>
+      <a class="ai-review-json-link" href="/ai-visibility/source-history.json">Open the complete revision register (JSON)</a>
+    </details>
+  </section>
 
   <section class="ai-section" aria-labelledby="ai-pack-title">
     <div class="ai-section-heading">
@@ -290,7 +320,8 @@ const ai = `<!doctype html>
     <div class="ai-source-list">
       <a class="ai-source" href="${SITE}/ai/assistant-reference.md"><span>Assistant reference guide</span><small>Markdown ↗</small></a>
       <a class="ai-source" href="${SITE}/ai/assistant-system-prompt.txt" download><span>Transparent writing guidance</span><small>Plain text ↗</small></a>
-      <a class="ai-source" href="${SITE}/ai-visibility/facts.json"><span>Reviewed public facts</span><small>JSON ↗</small></a>
+      <a class="ai-source" href="/ai-visibility/facts.json"><span>Reviewed public facts</span><small>JSON ↗</small></a>
+      <a class="ai-source" href="/ai-visibility/source-history.json"><span>Source review history and revisions</span><small>JSON ↗</small></a>
       <a class="ai-source" href="${SITE}/ai-visibility/openapi.json"><span>AI visibility read-only API</span><small>OpenAPI ↗</small></a>
       <a class="ai-source" href="${SITE}/nermin-sefic/entity.jsonld"><span>Machine-readable entity graph</span><small>JSON-LD ↗</small></a>
       <a class="ai-source" href="${SITE}/sitemap-index.xml"><span>Public sitemap index</span><small>XML ↗</small></a>
@@ -310,7 +341,7 @@ const ai = `<!doctype html>
 write('apps/portal/ai/index.html', ai);
 
 console.log(JSON.stringify({
-  wrote: ['/llms.txt', '/llms-full.txt', '/nermin-sefic/entity.jsonld', '/data/entity-graph.jsonld', '/ai/index.html', '/ai-visibility/facts.json', '/ai-visibility/brief.txt'],
+  wrote: ['/llms.txt', '/llms-full.txt', '/nermin-sefic/entity.jsonld', '/data/entity-graph.jsonld', '/ai/index.html', '/ai-visibility/facts.json', '/ai-visibility/brief.txt', '/ai-visibility/source-history.json'],
   items: items.length,
   authorshipPolicy: 'verified-registry-byline-only; editor-is-not-author',
   linkedin: LINKEDIN_CANONICAL,

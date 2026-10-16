@@ -1,8 +1,8 @@
 name: Content Queue Publish
 
-# GNK ASG Content Factory — objavljuje READY stavke po kalendaru (3 slota dnevno, Europe/Zagreb).
-# Nakon objave: commit na main -> exact-SHA production deploy (verifikacija + IndexNow),
-# a promjena editorial-registry.json automatski okida Blog Mirror Publish (Blogger/Dev.to/Tumblr/Telegraph).
+# GNK ASG Content Factory — publishes guarded READY items from the calendar (Europe/Zagreb).
+# Site release uses the exact-SHA production fence with search notifications disabled.
+# External mirrors remain separate manual opt-in workflows; a registry change is not approval to distribute.
 
 on:
   workflow_dispatch:
@@ -44,23 +44,18 @@ jobs:
           set -euo pipefail
           echo "base_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           node scripts/content-queue-publish-v1.mjs | tee /tmp/queue-out.txt
-          # Reuse this allowlisted direct-main writer; never introduce a second cron.
-          node --check scripts/kolumne-publish-v1.mjs
-          node --check scripts/generate-kolumna-page.mjs
-          node scripts/kolumne-publish-v1.mjs --sve --uzivo
-          if ! git diff --quiet -- apps/portal/data/kolumne.json; then
-            node scripts/editorial-registry-v1.mjs
-            node scripts/generate-editorial-cover-assets-v1.mjs
-            node scripts/build-aktual-columns-index-v1.mjs --write
-            node scripts/generate-editorial-sitemap-v2.mjs
-            python3 scripts/validate_aktual_columns.py
-            node scripts/test-editorial-publish-seo-v1.mjs
-          fi
-          if grep -Eq '"changed": ?true' /tmp/queue-out.txt || ! git diff --quiet -- apps/portal/data/kolumne.json; then
+          if grep -Eq '"changed": ?true' /tmp/queue-out.txt; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
+      - name: Verify bilingual columns archive, lifecycle and SEO contract
+        run: |
+          set -euo pipefail
+          node scripts/test-aktual-columns-lifecycle-v1.mjs
+          node scripts/build-aktual-columns-index-v1.mjs --check
+          python3 scripts/validate_aktual_columns.py
+          node scripts/audit-aktual-columns-lifecycle-v1.mjs
       - name: Commit and dispatch exact-SHA production deploy
         if: steps.pub.outputs.changed == 'true'
         env:

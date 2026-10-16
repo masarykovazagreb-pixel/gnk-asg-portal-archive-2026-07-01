@@ -1,211 +1,53 @@
 #!/usr/bin/env node
 /**
- * scripts/kolumne-publish-v1.mjs
+ * Safe compatibility entrypoint for the retired one-off columns publisher.
  *
- * SVRHA: automatizira cijeli lanac za jednu kolumnu -
- *   1. uzima sljedeću kolumnu iz reda (apps/portal/data/kolumne-red/*.md)
- *   2. dohvaća sliku preko gnk-asg-image-proxy Workera (Pexels, sa serverske
- *      strane, ključ nikad u ovoj skripti ni u repozitoriju)
- *   3. upisuje zapis u apps/portal/data/kolumne.json (prikaz na AKTUAL-u)
- *   4. upisuje ISTI zapis u apps/portal/data/editorial-registry.json,
- *      u formatu koji blog-publish-v1.mjs već očekuje - taj se skript
- *      NE DIRA, kolumna se samo pojavi u njegovom redu za slanje
+ * Columns now use the Content Factory calendar (`content/factory-queue/queue.json`),
+ * its duplicate/hold preflight, the canonical published editorial registry, and
+ * the generated bilingual archive. This legacy command intentionally performs
+ * no image/network requests, no file writes, and no publication.
  *
- * NE PIŠE NIŠTA NA BLOG IZRAVNO. To radi postojeći blog-publish-v1.mjs,
- * sat vremena kasnije, kroz postojeći workflow. Ova skripta samo puni
- * dva registra na koje se ostatak sustava već oslanja.
+ * Read-only inspection:
+ *   node scripts/kolumne-publish-v1.mjs --slug <slug>
  *
- * OPSEG: ova skripta se NE POKREĆE automatski. workflow koji je poziva
- * (kolumne-tjedni-ciklus.yml) ima aktivaciju iskljucivo na workflow_dispatch,
- * cron je zakomentiran. Ukljucivanje cron-a je odluka koja treba izricito
- * odobrenje, odvojeno od pripreme ovog koda.
- *
- * Pokretanje (rucno, dok se ne odobri automatizacija):
- *   node scripts/kolumne-publish-v1.mjs --slug indija-digitalna-infrastruktura
- *   node scripts/kolumne-publish-v1.mjs --slug indija-digitalna-infrastruktura --uzivo
- *
- * Bez --uzivo, skripta ispisuje sto bi napravila i nista ne mijenja
- * (isti "priprema vs live" obrazac kao blog-publish-v1.mjs).
+ * Publication is handled only by the existing guarded Content Queue workflow;
+ * `--uzivo` is rejected so this old script cannot bypass its gates.
  */
-import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
-import { resolve } from 'node:path';
+import fs from 'node:fs';
 
-const PORTAL = resolve('apps/portal');
-const RED_MAPA = resolve(PORTAL, 'data/kolumne-red');           // ulazne .md datoteke, jedna po kolumni
-const KOLUMNE = resolve(PORTAL, 'data/kolumne.json');           // prikaz na AKTUAL-u
-const REGISTRY = resolve(PORTAL, 'data/editorial-registry.json'); // dijeli ga blog-publish-v1.mjs
-const SITE = 'https://gnk-asg.hr';
-
-// Adresa Workera - NE poziva se Pexels izravno odavde. Worker mora biti
-// deployan i secret postavljen prije nego ovo ima smisla pokretati s --uzivo.
-const WORKER_SLIKE = process.env.WORKER_SLIKE_URL || 'https://gnk-asg.hr/api/slike';
-
-const LIVE = process.argv.includes('--uzivo');
-const ALL = process.argv.includes('--sve');
-const argSlug = (() => {
-  const i = process.argv.indexOf('--slug');
-  return i > -1 ? process.argv[i + 1] : null;
-})();
-
-const readJson = (p, fallback) => {
-  try { return JSON.parse(readFileSync(p, 'utf8')); } catch { return fallback; }
-};
-const writeJson = (p, data) => writeFileSync(p, JSON.stringify(data, null, 2) + '\n', 'utf8');
-
-/** Parsira jednu .md datoteku iz reda kolumni. Očekivani oblik na vrhu datoteke:
- *  ---
- *  slug: indija-digitalna-infrastruktura
- *  naslov: ...
- *  seo_naslov: ...
- *  meta_opis: ...
- *  kljucne_rijeci: a, b, c
- *  hashtagovi: TagJedan, TagDva
- *  slika_upit: mobile payment street market
- *  ---
- *  (tekst kolumne ispod crte)
- */
-function parsirajKolumnu(putanja) {
-  const sirovo = readFileSync(putanja, 'utf8');
-  const dijelovi = sirovo.split(/^---\s*$/m);
-  if (dijelovi.length < 3) throw new Error(`${putanja}: nedostaje --- zaglavlje`);
-  const zaglavlje = {};
-  dijelovi[1].trim().split('\n').forEach(redak => {
-    const i = redak.indexOf(':');
-    if (i === -1) return;
-    zaglavlje[redak.slice(0, i).trim()] = redak.slice(i + 1).trim();
-  });
-  const tekst = dijelovi.slice(2).join('---').trim();
-  return { ...zaglavlje, tekst };
+const slugAt = process.argv.indexOf('--slug');
+const slug = slugAt >= 0 ? process.argv[slugAt + 1] : null;
+if (process.argv.includes('--uzivo') || process.argv.includes('--write')) {
+  console.error('Legacy direct publishing is disabled. Use the guarded Content Factory queue and its exact-SHA release process.');
+  process.exit(2);
+}
+if (slugAt >= 0 && (!slug || slug.startsWith('--') || !/^[a-z0-9-]+$/.test(slug))) {
+  console.error('--slug requires a lowercase URL-safe column slug.');
+  process.exit(2);
 }
 
-async function dohvatiSliku(upit, rezervna) {
-  try {
-    const r = await fetch(WORKER_SLIKE + '?upit=' + encodeURIComponent(upit));
-    if (r.ok) {
-      const d = await r.json();
-      const prva = d.rezultati?.[0];
-      if (prva) return prva;
-    }
-  } catch {}
-  // Nema prave fotografije - koristi rezervnu (npr. grb kluba) ako je zadana u .md zaglavlju.
-  if (rezervna) return { url: rezervna, autor: null, licenca: 'službeni grb/logo', izvor_poveznica: null };
-  return null;
-}
-
-async function glavna() {
-  if (!existsSync(RED_MAPA)) {
-    console.log(`Nema mape ${RED_MAPA} - jos nema pripremljenih kolumni u redu.`);
-    return;
-  }
-  const datoteke = readdirSync(RED_MAPA).filter(f => f.endsWith('.md'));
-  if (ALL) {
-    const { spawnSync } = await import('node:child_process');
-    for (const name of datoteke.sort()) {
-      const args = ['scripts/kolumne-publish-v1.mjs', '--slug', name.slice(0,-3)];
-      if (LIVE) args.push('--uzivo');
-      const proc = spawnSync(process.execPath, args, { stdio: 'inherit' });
-      if (proc.status !== 0) throw new Error('Column batch stopped: '+name);
-    }
-    return;
-  }
-  const odabrana = argSlug
-    ? datoteke.find(f => f.includes(argSlug))
-    : datoteke.sort()[0];   // bez --slug, uzima abecedno prvu - red se poštuje imenom datoteke
-
-  if (!odabrana) { console.log('Nema kolumne za obradu.'); return; }
-
-  const k = parsirajKolumnu(resolve(RED_MAPA, odabrana));
-  console.log(`Obrađujem: ${k.slug} — ${k.naslov}`);
-  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(k.slug || '')) throw new Error('Nedozvoljeni slug kolumne');
-  const proposedPath = `/gnk-aktual/kolumne/${k.slug}/`;
-  const feedBefore = readJson(KOLUMNE, []);
-  if (!Array.isArray(feedBefore)) throw new Error('kolumne.json is a shared JSON array, not an items object');
-  const registryBefore = readJson(REGISTRY, { items: [] });
-  if (existsSync(resolve(PORTAL, 'gnk-aktual', 'kolumne', k.slug, 'index.html')) ||
-      feedBefore.some(item => item.path === proposedPath) ||
-      (registryBefore.items || []).some(item => item.path === proposedPath)) {
-    console.log(JSON.stringify({ slug: k.slug, status: 'already_published', action: 'skip_no_duplicate' }));
-    return;
-  }
-  if (k.status !== 'ready' || k.autor !== 'Nermin Sefić' || k.autorski_odobreno !== 'da') {
-    console.log(JSON.stringify({ slug: k.slug, status: 'held', reason: 'explicit author-approved READY source required' }));
-    return;
-  }
-  if (!k.tekst || k.tekst.split(/\s+/).length < 170 || !k.meta_opis || !k.naslov) throw new Error('Incomplete approved manuscript');
-  if (k.tekst_en && (!k.naslov_en || !k.meta_opis_en || k.tekst_en.split(/\s+/).length < 170 || k.autorski_odobreno_en !== 'da')) {
-    throw new Error('Unverified or incomplete EN translation must not be auto-published');
-  }
-
-  // Local thematic cover is generated by the canonical editorial cover-art step.
-  // Avoid external image fetches or uncertain licensing in this batch writer.
-  const slika = null;
-  if (!slika) {
-    console.log('  upozorenje: slika nije dohvaćena (Worker možda nije deployan ili nema rezultata)');
-  } else {
-    console.log(`  slika: ${slika.url}  (${slika.autor}, ${slika.licenca})`);
-  }
-
-  const putanja = `/gnk-aktual/kolumne/${k.slug}/`;
-  const sada = new Date().toISOString();
-
-  const zapisKolumne = {
-    slug: k.slug,
-    naslov: k.naslov,
-    seo_naslov: k.seo_naslov,
-    meta_opis: k.meta_opis,
-    tekst: k.tekst,
-    kljucne_rijeci: (k.kljucne_rijeci || '').split(',').map(t => t.trim()).filter(Boolean),
-    hashtagovi: (k.hashtagovi || '').split(',').map(t => t.replace(/^#/, '').trim()).filter(Boolean),
-    naslov_en: k.naslov_en || undefined,
-    seo_naslov_en: k.seo_naslov_en || undefined,
-    meta_opis_en: k.meta_opis_en || undefined,
-    tekst_en: k.tekst_en || undefined,
-    slika: slika?.url || null,
-    slika_autor: slika?.autor || null,
-    slika_licenca: slika?.licenca || null,
-    slika_izvor: slika?.izvor_poveznica || null,
-    objavljeno: sada,
-    path: putanja,
-    url: SITE + putanja,
+const queue = JSON.parse(fs.readFileSync('content/factory-queue/queue.json', 'utf8'));
+const state = JSON.parse(fs.readFileSync('apps/portal/data/content-queue-state.json', 'utf8'));
+const registry = JSON.parse(fs.readFileSync('apps/portal/data/editorial-registry.json', 'utf8'));
+const items = (queue.items || []).filter((item) => item.category === 'kolumne' && (!slug || item.slug === slug));
+const result = items.map((item) => {
+  const publishedState = state.published?.[item.id] || null;
+  const canonical = (registry.items || []).find((entry) => entry.type === 'kolumna' && entry.slug === item.slug && entry.language === 'hr' && entry.status === 'published');
+  return {
+    id: item.id,
+    slug: item.slug,
+    status: publishedState && canonical ? 'published' : (queue.skipped || []).includes(item.id) ? 'skipped' : 'scheduled-or-pending',
+    scheduledFor: `${item.date} ${item.time} Europe/Zagreb`,
+    url: canonical?.url || null,
+    action: 'read-only; no publication, network call or file write',
   };
-
-  const zapisRegistra = {
-    slug: k.slug,
-    type: 'kolumna',
-    collection: 'Kolumne',
-    path: putanja,
-    url: SITE + putanja,
-    title: k.seo_naslov || k.naslov,
-    description: k.meta_opis,
-    keywords: (k.kljucne_rijeci || '').split(',').map(s => s.trim()).filter(Boolean),
-    hashtags: (k.hashtagovi || '').split(',').map(s => s.trim()).filter(Boolean),
-    image: slika?.url || null,
-    publishedAt: sada,
-    inPlan: true,
-    seoComplete: Boolean(k.seo_naslov && k.meta_opis),
-  };
-
-  if (!LIVE) {
-    console.log('\nPRIPREMA (bez --uzivo, nista nije upisano):');
-    console.log(JSON.stringify({ zapisKolumne, zapisRegistra }, null, 2));
-    return;
+});
+if (slug && !items.length) {
+  const canonical = (registry.items || []).find((entry) => entry.type === 'kolumna' && entry.slug === slug && entry.language === 'hr' && entry.status === 'published');
+  if (!canonical) {
+    console.error(`No column with slug "${slug}" exists in the published registry or Content Factory queue.`);
+    process.exit(1);
   }
-
-  const kolumneDoc = feedBefore;
-  kolumneDoc.unshift(zapisKolumne);   // najnovija na vrh: legacy JSON array
-  writeJson(KOLUMNE, kolumneDoc);
-
-  // The canonical registry is derived from published HTML, never directly appended here.
-  // A separate source-gated generator and archive/cover validation must run before deployment.
-
-  console.log(`\nUpisano u ${KOLUMNE}; kanonski registar zahtijeva regeneraciju.`);
-
-  // Generira i pravu statičku stranicu - bez nje 404 na izravnoj poveznici
-  // i blog-publish-v1.mjs nikad ne pronađe sadržaj za slanje na Blogger.
-  const { execSync } = await import('node:child_process');
-  execSync(`node scripts/generate-kolumna-page.mjs --slug ${k.slug}`, { stdio: 'inherit' });
-
-  console.log('Vanjska objava nije pokrenuta. Za distribuciju su potrebni zasebno odobrenje, repo opt-in i ručni dispatch blog-mirror-publish.yml.');
+  result.push({ id: null, slug, status: 'published', scheduledFor: null, url: canonical.url, action: 'read-only; no publication, network call or file write' });
 }
-
-glavna();
+console.log(JSON.stringify({ version: 'GNK_ASG_COLUMNS_PUBLISHER_COMPAT_V1', items: result, noSideEffects: true }, null, 2));
