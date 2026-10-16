@@ -37,8 +37,8 @@ function stranicaHtml(k, jezik) {
   const altOznaka = en ? 'Čitaj na hrvatskom' : 'Read in English';
   const hasEnTranslation = Boolean(k.tekst_en && k.naslov_en && k.meta_opis_en);
   const showAlternate = en || hasEnTranslation;
-  const hreflang = showAlternate ? `${hreflang}` : '';
-  const languageLink = showAlternate ? `${languageLink}` : '';
+  const hreflang = showAlternate ? '<link rel="alternate" hreflang="'+(en?'hr':'en')+'" href="'+SITE+altPutanja+'">' : '';
+  const languageLink = showAlternate ? '<a class="alt-jezik" href="'+altPutanja+'">'+altOznaka+' →</a>' : '';
   const natragOznaka = en ? '← Back to AKTUAL MEDIA' : '← Natrag na AKTUAL MEDIA';
   const natragPutanja = en ? '/en/gnk-aktual/' : '/gnk-aktual/';
 
@@ -64,7 +64,7 @@ function stranicaHtml(k, jezik) {
 <meta name="author" content="Nermin Sefić"><meta property="article:published_time" content="${escH(k.objavljeno)}">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <link rel="canonical" href="${SITE}${putanja}">
-<link rel="alternate" hreflang="${en ? 'hr' : 'en'}" href="${SITE}${altPutanja}">
+${hreflang}
 <meta property="og:type" content="article">
 <meta property="og:title" content="${escH(seoNaslov || naslov)}">
 <meta property="og:description" content="${escH(metaOpis || '')}">
@@ -89,7 +89,7 @@ a.natrag,a.alt-jezik{font-family:Arial,sans-serif;font-size:.8rem;font-weight:80
 </head>
 <body>
 <a class="natrag" href="${natragPutanja}">${natragOznaka}</a><br>
-<a class="alt-jezik" href="${altPutanja}">${altOznaka} →</a>
+${languageLink}
 <article>
   <span class="oznaka">${en ? 'Column' : 'Kolumna'} · Nermin Sefić</span>
   <h1>${escH(naslov)}</h1>
