@@ -41,6 +41,21 @@ if(!js.includes("fetch('/data/news.json")) failures.push('js: must consume canon
 if(!js.includes("fetch('/data/kolumne.json")) failures.push('js: must consume canonical columns feed');
 if(!js.includes("world:'international'")) failures.push('js: world alias normalization missing');
 if(!js.includes("business:'economy'")) failures.push('js: business alias normalization missing');
+const imageGuard=js.slice(js.indexOf('const localEditorialVisuals ='),js.indexOf('  const meta = item =>'));
+if(!imageGuard.includes('localEditorialVisuals')||!imageGuard.includes('selectImage')) failures.push('js: local preview protection missing');
+else {
+  // Browser-free contract test against the actual image renderer.
+  const renderImage=new Function('esc','lang','metaFor',`${imageGuard};return image;`)(
+    value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char])),
+    'hr',group=>({label:String(group||'Ostalo')})
+  );
+  const external=renderImage({title:'Izvorna vijest',image:'https://img.decrypt.co/photo.jpg',_group:'technology'},true);
+  if(external.includes('img.decrypt.co') || external.includes('src="http') || external.includes('src="//')) failures.push('js: external images must never load as reader subresources');
+  if(!external.includes('src="/assets/gallery/')||!external.includes('Tematska ilustracija')) failures.push('js: external images must use attributed local topical illustrations');
+  if(!external.includes('width="1200" height="675"')||!external.includes('loading="eager"')) failures.push('js: lead image dimensions/priority missing');
+  const original=renderImage({title:'Verificirana lokalna ilustracija',image:'/assets/gallery/agentic-ai-orchestration-organic-v3.svg',imageAlt:'Tema o AI-u',_group:'technology'});
+  if(!original.includes('src="/assets/gallery/agentic-ai-orchestration-organic-v3.svg"')) failures.push('js: preserve approved local images');
+}
 if(/innerHTML\s*=\s*[^;]*item\.title/.test(js)) failures.push('js: unescaped direct title injection detected');
 if(!css.includes('.am-leadgrid')||!css.includes('.am-cardgrid')||!css.includes('@media')) failures.push('css: required responsive newsroom layout missing');
 for(const url of ['https://gnk-asg.hr/gnk-aktual/teme/','https://gnk-asg.hr/en/gnk-aktual/topics/']){
