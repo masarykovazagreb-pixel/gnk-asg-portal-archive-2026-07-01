@@ -38,6 +38,12 @@ Primarni izvori i kontrolni datumi u [strojnom registru](../../config/eu-ai-act-
 {
   "aiGovernance": {
     "usedAI": true,
+    "role": "deployer",
+    "purpose": "Urednički nacrt objave",
+    "riskClassification": "not-high-risk",
+    "prohibitedUse": false,
+    "prohibitedUseScreenPassed": true,
+    "aiLiteracyMeasuresReviewed": true,
     "publicInterest": true,
     "generatesOrAltersText": true,
     "deepfake": false,
