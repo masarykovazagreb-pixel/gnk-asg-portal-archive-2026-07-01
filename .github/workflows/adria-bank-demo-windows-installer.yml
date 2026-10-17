@@ -1,0 +1,100 @@
+name: Build Adria Bank Demo Windows Installer
+
+on:
+  push:
+    paths:
+      - 'apps/adria-bank-demo/**'
+      - '.github/workflows/adria-bank-demo-windows-installer.yml'
+  pull_request:
+    paths:
+      - 'apps/adria-bank-demo/**'
+      - '.github/workflows/adria-bank-demo-windows-installer.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-installer:
+    name: Build and package Windows 11 x64 installer
+    runs-on: windows-2022
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: apps/adria-bank-demo
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.12.0'
+          cache: npm
+          cache-dependency-path: apps/adria-bank-demo/package-lock.json
+
+      - name: Set up Python for ZIP packaging
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install locked dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Run demo regression suite
+        run: npm test
+
+      - name: Build the per-user x64 NSIS installer
+        run: npm run dist:win
+
+      - name: Smoke-install and verify the Windows app
+        shell: pwsh
+        run: ./scripts/smoke-test-windows-installer.ps1
+
+      - name: Package and verify the installer ZIP
+        run: npm run package:windows-installer-zip
+
+      - name: Upload the Windows installer bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: Adria-Bank-Demo-Windows-Setup
+          path: apps/adria-bank-demo/release/Adria-Bank-Demo-Windows-Setup-*-x64.zip
+          if-no-files-found: error
+          retention-days: 90
+
+  publish-windows-installer:
+    name: Publish Windows x64 preview download
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/arena/6080dbca-gnk-asg-portal-archive-2026-07' }}
+    needs: windows-installer
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download the built installer ZIP
+        uses: actions/download-artifact@v4
+        with:
+          name: Adria-Bank-Demo-Windows-Setup
+          path: release-assets
+
+      - name: Publish the GitHub prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          asset="$(find release-assets -type f -name 'Adria-Bank-Demo-Windows-Setup-*-x64.zip' -print -quit)"
+          if [[ -z "$asset" ]]; then
+            echo 'Packaged Windows installer ZIP was not found.' >&2
+            exit 1
+          fi
+          release_tag="adria-bank-demo-v1.2.0-preview-${GITHUB_SHA:0:7}"
+          title="Adria Bank Demo 1.2.0 — Windows x64 preview (${GITHUB_SHA:0:7})"
+          if gh release view "$release_tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$release_tag" "$asset" --clobber --repo "$GITHUB_REPOSITORY"
+          else
+            gh release create "$release_tag" "$asset" \
+              --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" \
+              --title "$title" \
+              --notes 'Windows x64 prerelease. CI silently installs the package and verifies the installed executable and embedded Electron archive on windows-2022. Not manually tested on a Windows 11 client. Fictional, local-only desktop demo; unsigned installer may trigger SmartScreen.' \
+              --prerelease
+          fi

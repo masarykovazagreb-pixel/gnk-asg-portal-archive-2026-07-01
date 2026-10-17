@@ -1,0 +1,20 @@
+ADRIA BANK DEMO 1.2.0 — WINDOWS 11 x64
+
+PAKET
+Ovaj ZIP sadrži samostalni Windows instalacijski program `Adria-Banka-Demo-Setup-1.2.0-x64.exe`, ove upute i SHA-256 kontrolni zbroj. Instalacijski program uključuje Electron runtime.
+
+JEDNOSTAVNA INSTALACIJA
+1. Raspakirajte ZIP u mapu na računalu.
+2. Po želji provjerite instalacijsku datoteku prema SHA-256 vrijednosti u `SHA256SUMS.txt`.
+3. Dvaput kliknite `Adria-Banka-Demo-Setup-1.2.0-x64.exe` i pričekajte dovršetak instalacije.
+4. Aplikacija se instalira samo za trenutačnog korisnika, bez Node.js-a, npm-a ili administratorskih prava, zatim automatski pokreće. Prečaci se stvaraju na radnoj površini i u izborniku Start.
+
+Za instalaciju i prvi početak rada nisu potrebni Node.js, npm ni internetska veza. Internet može biti potreban samo za opcionalne javne dnevne referentne tečajeve; bez mreže aplikacija koristi jasno označene sintetičke uzorke. Provjera TLS certifikata ostaje uključena.
+
+WINDOWS SMARTSCREEN
+Instalacijski program nije potpisan izdavačkim certifikatom, pa Windows može prikazati upozorenje SmartScreen. Prije pokretanja provjerite izvor datoteke i kontrolni zbroj. Nemojte isključivati Defender, SmartScreen ni provjeru certifikata; ako upozorenje ne možete sigurno razriješiti, obratite se administratoru.
+
+OGRANIČENJA DEMO APLIKACIJE
+Adria Bank je izmišljeni lokalni demo. Nema stvarnih bankovnih računa, identifikacije klijenata, bankovnih/kartičnih veza, plaćanja, trgovanja, licenci ni odobrenja. Svi profili, stanja, identifikatori i transakcije su sintetički; nemojte unositi stvarne osobne, bankovne, kartične ili povjerljive podatke. Aplikacija nije financijska usluga.
+
+Desktop demo verzija — nije stvarna banka ni financijska usluga.
