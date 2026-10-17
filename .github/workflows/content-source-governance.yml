@@ -8,6 +8,11 @@ on:
       - 'workers/gnk-asg-direct-operator/src/digital-workforce-suite-v1.js'
       - 'workers/gnk-asg-ai-newsroom-writer/src/index.js'
       - 'scripts/test-content-source-governance-v1.mjs'
+      - 'AGENTS.md'
+      - 'config/eu-ai-act-governance-v1.json'
+      - 'docs/governance/EU-AI-ACT-2026-POLICY.md'
+      - 'scripts/check-ai-act-governance-v1.mjs'
+      - 'scripts/test-ai-act-governance-v1.mjs'
       - 'scripts/build-aktual-weekly-candidate-options-v1.mjs'
       - 'scripts/test-aktual-weekly-candidate-options-v1.mjs'
       - 'scripts/build-ai-reference-kit-v1.mjs'
@@ -78,6 +83,8 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/digital-workforce-suite-v1.js
           node --check workers/gnk-asg-ai-newsroom-writer/src/index.js
           node --check scripts/test-content-source-governance-v1.mjs
+          node --check scripts/check-ai-act-governance-v1.mjs
+          node --check scripts/test-ai-act-governance-v1.mjs
           node --check scripts/record-ai-reference-review-v1.mjs
           node --check scripts/generate-ai-visibility-v1.mjs
           node --check scripts/audit-world-topics-readiness-v1.mjs
@@ -89,6 +96,10 @@ jobs:
           node --check scripts/test-approved-author-markers-v1.mjs
           node --check apps/portal/assets/ai-reference-ui-v1.js
           python3 -m py_compile scripts/generate-sitemaps.py scripts/test-ai-reference-sitemap-pairing-v1.py
+      - name: Validate EU AI Act governance contract for future AI use and publication
+        run: |
+          set -euo pipefail
+          node scripts/test-ai-act-governance-v1.mjs
       - name: Source provenance and publication safety contract
         run: node scripts/test-content-source-governance-v1.mjs
       - name: Build and validate internal AKTUAL weekly candidate options

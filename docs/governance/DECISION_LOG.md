@@ -2,6 +2,7 @@
 
 | Datum | Odluka | Razlog |
 |---|---|---|
+| 2026-10-17 | Usvojena interna EU AI Act pravila za sve buduće AI agente i AI-potpomognute objave; `AGENTS.md`, politika, JSON registar i validacijski test | Jutarnji list 5.10.2026. kao polazište; usklađeno s konsolidiranim EU 2024/1689 i službenim Komisijinim tumačenjima, bez lažnih odobrenja ili obveze označavanja svakog teksta |
 | 2026-08-03 | Sadržajni cilj: komentari 450-700, objave 500-900, analize 600-1000 riječi | SEO audit pokazao 309/340 "thin content" upozorenja su vlastiti tekstovi ispod te dužine |
 | 2026-08-03 | Zabranjeno mehaničko punjenje istim zaključnim odlomkom na svim tekstovima | Rizik masovnog dupliciranog sadržaja, veći SEO problem od tankog teksta |
 | 2026-08-04 | Automatizacije svedene na 1-2x dnevno, ne više | Vlasnik zatražio smanjenje troška/opsega poziva na ~50/dan cilj |
