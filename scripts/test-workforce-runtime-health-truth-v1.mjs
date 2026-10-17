@@ -18,6 +18,18 @@ assert.match(src,/x-gnk-workforce-telemetry-mode/);
 assert.doesNotMatch(src,/runtimeHealth:\{verified:true/);
 assert.match(api,/SELECT 1 AS ok/,'health must execute a read-only D1 connectivity probe');
 assert.match(api,/editorDeskStore/,'health must distinguish the D1 binding from the required store query');
+
+// Prevent a green code-only build when the read-only health probe expects a
+// table that cannot be provisioned by the reviewed D1 migration.
+const editorDeskMigration=fs.readFileSync('workers/gnk-asg-direct-operator/migrations/0002_editor_desk_packages.sql','utf8');
+assert.match(editorDeskMigration,/CREATE TABLE IF NOT EXISTS editor_desk_packages\s*\(/i,'migration must provision the required Editor Desk store idempotently');
+for(const column of ['id','package_date','status','public_json','sensitive_json','updated_at']){
+  assert.match(editorDeskMigration,new RegExp('\\b'+column+'\\s+','i'),`migration missing runtime column: ${column}`);
+}
+assert.match(editorDeskMigration,/package_date\s+TEXT\s+NOT NULL\s+UNIQUE/i,'the package date must remain a unique key for the runtime upsert');
+assert.match(api,/SELECT \* FROM editor_desk_packages/,'health must query the migrated Editor Desk table');
+assert.doesNotMatch(editorDeskMigration,/\b(?:DROP|DELETE|TRUNCATE|ALTER)\b/i,'reviewed schema migration must not perform destructive operations');
+
 assert.match(client,/updateRuntimeStatus\(d\.runtimeHealth\)/,'the public UI must render runtime evidence from the Worker state response');
 assert.match(client,/runtime\?\.verified===true/,'only positive runtime evidence may select the healthy indicator');
 assert.match(client,/T\.modelStatusLabel/,'simulated model status must not be mislabeled as runtime health');
