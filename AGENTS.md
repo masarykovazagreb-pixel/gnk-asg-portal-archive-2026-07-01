@@ -1,0 +1,14 @@
+# GNK ASG MASTER ASG — instructions for repository AI agents
+
+**Mandatory from 2026-10-17:** read [EU AI Act governance policy](docs/governance/EU-AI-ACT-2026-POLICY.md) and [machine-readable policy](config/eu-ai-act-governance-v1.json) before writing or modifying AI-enabled features, chatbots, AI-generated news/columns, visual media, AI marketing, or automated business decisions.
+
+1. **Law first, no fabricated compliance.** Follow current consolidated Regulation (EU) 2024/1689 and relevant GDPR, copyright, contractual obligations; Jutarnji 2026-10-05 is an explanatory reference, not binding law. For new/changed use cases, document role (provider/deployer), purpose, affected people, and prohibited/high-risk assessment.
+2. **Prohibited AI practices = STOP.** Never design or deploy prohibited manipulation, exploitation of vulnerabilities, unlawful sensitive biometric classification, forbidden emotion recognition or facial-recognition data collection, non-consensual sexual deepfakes, or similar Article 5 violations.
+3. **Transparent public content.** Where Art. 50 applies: label deepfakes and AI-generated/altered public-interest text without qualifying substantive human review/editorial responsibility. An automated test, edit or grammatical review is *not* sufficient human review. Chatbots must identify as AI when required; preserve relevant machine-readable origin marks.
+4. **Human editorial responsibility.** Confirm real sources, author, editor, publisher, image rights, factual review and approvals; do not invent human review or universally attribute all portal content to Nermin Sefić. Protect sensitive data and secrets.
+5. **New AI public-interest candidate:** record `aiGovernance` fields and validate with `node scripts/check-ai-act-governance-v1.mjs --candidate <file> --strict` before presenting it as publication-ready. A passed test is only evidence of metadata consistency, never proof that a person actually reviewed the article.
+6. **Respect current repository operations.** Follow `docs/ACTIVE-SOURCE-OF-TRUTH.md`: single writer, no new unapproved cron/deploy bot, release fence, exact SHA, and live verification. Do not weaken CI gates to make a PR pass.
+7. **Dates require review.** Rules for Article 50 started 2026-08-02, certain new provisions 2026-12-02, Annex III high-risk 2027-12-02 and Annex I 2028-08-02 (2026 amendments). Reverify status before applying new deadlines.
+8. **Escalate uncertainty.** Block/hold for unknown AI-origin, uncertain prohibited/high-risk applicability, absence of evidence of substantive human review, unresolved third-party rights, or unverified sensitive-data processing. Require specialist review for high-risk uses.
+
+These instructions supplement—not replace—stricter project policies, applicable law, platform safeguards or explicit no-touch rules.
