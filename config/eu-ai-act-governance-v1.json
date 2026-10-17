@@ -1,0 +1,111 @@
+{
+  "schemaVersion": "ASG_EU_AI_ACT_GOVERNANCE_V1",
+  "adoptedOn": "2026-10-17",
+  "status": "internal_governance_policy_not_legal_certification",
+  "scope": [
+    "GNK ASG corporate operations",
+    "AKTUAL MEDIA editorial workflows",
+    "AI agents and chatbots",
+    "AEO and AI Visibility integrations",
+    "AI-assisted media generation",
+    "future AI use cases"
+  ],
+  "authority": {
+    "sourcePriority": [
+      "consolidated EU legislation and official EU Commission guidance",
+      "national implementing law and binding regulator decisions",
+      "verified editorial secondary reporting"
+    ],
+    "humanEditorialAccountability": true,
+    "externalLegalReviewForHighRisk": true
+  },
+  "sources": [
+    {
+      "type": "secondary_explainer",
+      "published": "2026-10-05",
+      "title": "Jutarnji list: Akt o umjetnoj inteligenciji – ovo su glavna pravila ponašanja za tvrtke",
+      "url": "https://www.jutarnji.hr/novac/platforma/akt-o-umjetnoj-inteligenciji-ovo-su-glavna-pravila-ponasanja-za-tvrtke-15752887"
+    },
+    {
+      "type": "binding_legal_text",
+      "asOf": "2026-07-27",
+      "title": "EU AI Act consolidated text — Regulation (EU) 2024/1689",
+      "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02024R1689-20260727"
+    },
+    {
+      "type": "official_guidance",
+      "title": "European Commission: Transparency obligations under Article 50",
+      "url": "https://digital-strategy.ec.europa.eu/en/faqs/transparency-obligations-under-article-50-ai-act"
+    },
+    {
+      "type": "official_guidance",
+      "title": "European Commission: AI Literacy questions and answers",
+      "url": "https://digital-strategy.ec.europa.eu/en/faqs/ai-literacy-questions-answers"
+    },
+    {
+      "type": "official_timeline",
+      "title": "EU AI Act Service Desk application timeline",
+      "url": "https://ai-act-service-desk.ec.europa.eu/en/ai-act/timeline/timeline-implementation-eu-ai-act"
+    }
+  ],
+  "milestones": [
+    {
+      "effective": "2025-02-02",
+      "subject": "AI literacy support measures and prohibited AI practices"
+    },
+    {
+      "effective": "2025-08-02",
+      "subject": "General-purpose AI model obligations (where applicable)"
+    },
+    {
+      "effective": "2026-08-02",
+      "subject": "Article 50 transparency obligations and applicable enforcement"
+    },
+    {
+      "effective": "2026-12-02",
+      "subject": "Additional prohibitions and transition for specified pre-August-2026 Article 50(2) providers"
+    },
+    {
+      "effective": "2027-12-02",
+      "subject": "Annex III high-risk system rules, as amended in 2026"
+    },
+    {
+      "effective": "2028-08-02",
+      "subject": "Annex I product-embedded high-risk system rules, as amended in 2026"
+    }
+  ],
+  "controls": {
+    "inventoryRequiredForNewSystems": true,
+    "assessRoleProviderVersusDeployer": true,
+    "classifyByIntendedUseNotModelSize": true,
+    "prohibitedUseMustBeRejected": true,
+    "roleBasedAiLiteracyMeasures": true,
+    "noUnverifiedPersonalAuthorship": true,
+    "sourceAndRightsVerification": true,
+    "noSensitiveInputsWithoutLegalBasisAndSafeguards": true,
+    "humanApprovalForMaterialPublication": true,
+    "logHumanEditorialReviewAndResponsibility": true,
+    "chatbotIdentificationUnlessObvious": true,
+    "discloseDeepfakes": true,
+    "publicInterestAiTextDisclosureUnlessQualifyingHumanReview": true,
+    "machineReadableMarkingAsApplicableToProviderRole": true,
+    "noFakeHumanReviewOrFakeComplianceClaims": true,
+    "retainReleaseFenceSingleWriterExactSha": true,
+    "highRiskUseRequiresSpecialistReview": true
+  },
+  "reviewPolicy": {
+    "recheckOnLegalAmendments": true,
+    "nextLegalStatusReview": "2026-12-02",
+    "reviewAlsoWhenNewUseCase": true
+  },
+  "disclosureSamples": {
+    "hr": "Sadržaj je generiran ili izmijenjen uz pomoć umjetne inteligencije.",
+    "en": "This content was generated or altered using artificial intelligence."
+  },
+  "limitations": [
+    "Not all AI-assisted texts require marking; assess Article 50 scope and actual editorial exemption.",
+    "Disclosure or technical metadata alone does not cure prohibited uses, unlawful processing or unverified facts.",
+    "AI-assisted public-interest content with superficial or merely automated checks is not treated as genuinely human-reviewed.",
+    "A written policy is not evidence of training, compliance, live deployment or regulatory approval."
+  ]
+}
