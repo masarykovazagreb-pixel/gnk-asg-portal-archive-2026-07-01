@@ -176,7 +176,7 @@ function appendSitemap(item, date) {
   return writeIfChanged(file, xml);
 }
 function loadPublicationHolds() {
-  if (!fs.existsSync(HOLDS)) return { version: null, active: new Map() };
+  if (!fs.existsSync(HOLDS)) throw new Error(`Missing publication holds file: ${HOLDS}`);
   const source = JSON.parse(fs.readFileSync(HOLDS, 'utf8'));
   if (!Array.isArray(source.holds)) throw new Error(`Invalid publication holds file: ${HOLDS}`);
   const active = new Map();
