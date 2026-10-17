@@ -21,6 +21,7 @@ Razvojna baza za GNK ASG portal (gnk-asg.hr) i povezane Cloudflare Workere.
 | `docs/ROADMAP-2026-09-23.md` | zadnja dijagnostika + prioritizirani prijedlozi promjena |
 | `ops/MASTER_ASG_BACKLOG.md` | jedan operativni backlog (izvori: GitHub issues + povijesni backlogovi) |
 | `docs/governance/` | stanje: KPI, rizici, odluke, arhitektura, changelog, health |
+| `docs/governance/EU-AI-ACT-2026-POLICY.md` | **obvezna AI Act pravila (od 17.10.2026.)**: transparentnost, AI pismenost, zaštita prava i ljudska urednička odgovornost |
 | `docs/TAJNE_ZA_DRUGI_REPO.md` | gdje naći svaku tajnu pri prelasku na drugi repo |
 | `docs/BLOG_I_TAJNE.md` | blog mirror + popis tajni (GitHub i Worker) + zamjena ključeva |
 | `docs/qa/ACCESS-LIMITATIONS-AND-VERIFICATION-LEVELS.md` | što se može provjeriti odavde (razine A–F), granice, **mail kutija pravila** |
