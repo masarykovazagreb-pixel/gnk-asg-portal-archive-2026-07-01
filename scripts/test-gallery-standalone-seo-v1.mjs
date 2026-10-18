@@ -51,8 +51,35 @@ try {
   const manifestPath = join(temp, 'apps', 'portal', 'data', 'visual_gallery.json');
   mkdirSync(join(temp, 'apps', 'portal', 'data'), { recursive: true });
   writeFileSync(manifestPath, `${JSON.stringify({ items }, null, 2)}\n`);
+  mkdirSync(join(temp,'apps/portal/assets/editorial/generated'),{recursive:true});
+  writeFileSync(join(temp,'apps/portal/assets/editorial/generated/topic.webp'),'fixture');
+  writeFileSync(join(temp,'apps/portal/data/editorial-registry.json'),JSON.stringify({items:[
+    {path:'/komentari/topic/',title:'Original topic',description:'Original topic cover',image:'https://gnk-asg.hr/assets/editorial/generated/topic.webp',imageAlt:'Topic cover'},
+    {path:'/komentari/external/',title:'External photo',image:'https://external.example/photo.jpg'}
+  ]}));
+  mkdirSync(join(temp,'apps/portal/galerija/legacy'),{recursive:true});
+  writeFileSync(join(temp,'apps/portal/galerija/legacy/index.html'),'<h1>Legacy</h1>');
+  for(const file of ['sitemap.xml','image-sitemap.xml'])writeFileSync(join(temp,'apps/portal',file),'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://gnk-asg.hr/keep-existing/</loc></url></urlset>');
   const result = spawnSync('python3', [generator], { cwd: temp, encoding: 'utf8' });
   assert.equal(result.status, 0, result.stderr || result.stdout);
+  const galleryIndex=read('galerija');
+  assert.match(galleryIndex,/Original topic/);
+  assert.match(galleryIndex,/\/galerija\/legacy\//,'keep established routes outside the manifest');
+  assert.doesNotMatch(galleryIndex,/External photo/,'do not import external images');
+  const generatedId=galleryIndex.match(/\/galerija\/(editorial-[a-f0-9]{16})\//)?.[1];
+  assert(generatedId);
+  const generated=read(`galerija/${generatedId}`);
+  assert.match(generated,/href="\/komentari\/topic\/"/);
+  assert.equal(meta(generated,'og:image:height'),'630');
+  for(const file of ['sitemap.xml','image-sitemap.xml']) {
+    const xml=readFileSync(join(temp,'apps/portal',file),'utf8');
+    assert.match(xml,/https:\/\/gnk-asg.hr\/keep-existing\//,'preserve other publishers URLs');
+    assert(xml.includes(`https://gnk-asg.hr/galerija/${generatedId}/`));
+  }
+  const again=spawnSync('python3',[generator],{cwd:temp,encoding:'utf8'});
+  assert.equal(again.status,0,again.stderr);
+  const sitemap=readFileSync(join(temp,'apps/portal/sitemap.xml'),'utf8');
+  assert.equal(sitemap.split(`https://gnk-asg.hr/galerija/${generatedId}/`).length-1,1,'idempotent gallery sitemap');
 
   for (const item of items) {
     for (const locale of ['hr', 'en']) {

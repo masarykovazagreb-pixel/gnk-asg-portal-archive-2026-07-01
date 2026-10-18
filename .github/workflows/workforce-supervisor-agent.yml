@@ -7,6 +7,10 @@ on:
     paths:
       - '.github/workflows/workforce-supervisor-agent.yml'
       - 'scripts/workforce-supervisor-agent-v1.mjs'
+      - 'scripts/editorial-coordinator-v1.mjs'
+      - 'tests/test-editorial-coordinator-v1.mjs'
+      - 'apps/portal/data/visual_gallery.json'
+      - 'apps/portal/data/editorial-registry.json'
       - 'workers/gnk-asg-direct-operator/src/digital-workforce-public-read-v1.js'
       - 'apps/portal/data/editorial-plan/manifest.json'
       - 'apps/portal/data/editorial-plan/publication-holds.json'
@@ -31,6 +35,10 @@ jobs:
           node-version: '22'
       - name: Build supervisor report
         run: node scripts/workforce-supervisor-agent-v1.mjs
+      - name: Coordinate editorial, imagery, gallery and release handoffs
+        run: |
+          node tests/test-editorial-coordinator-v1.mjs
+          node scripts/editorial-coordinator-v1.mjs
       - name: Verify production Workforce and public editorial surface
         shell: bash
         run: |
@@ -58,6 +66,7 @@ jobs:
           console.log(JSON.stringify({ok:true,health:health.status,state:state.status,workers:state.workers,supervisorAgent:state.supervisorAgent||null},null,2));
           NODE
       - name: Publish run summary
+        if: always()
         shell: bash
         run: |
           node - <<'NODE' >> "$GITHUB_STEP_SUMMARY"
@@ -71,9 +80,14 @@ jobs:
           console.log('- Coverage through: **'+(r.editorial.coverageThrough||'none')+'**');
           console.log('- Active quality holds: **'+r.editorial.activeHolds+'**');
           console.log('- Publication registry items: **'+r.publication.registryItems+'**');
+          const c=JSON.parse(fs.readFileSync('artifacts/workforce-supervisor/editorial-coordinator.json','utf8'));
+          console.log('- Editorial coordinator: **'+c.totals.articles+' articles / '+c.totals.articlesNeedingWork+' require work**');
+          console.log('- Image/SEO/editorial handoffs: **'+c.totals.tasks+'** (see artifact)');
+          console.log('- Production status requires independent verification; registry presence alone is not LIVE.');
           NODE
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: workforce-supervisor-${{ github.run_id }}
-          path: artifacts/workforce-supervisor/report.json
+          path: artifacts/workforce-supervisor/*.json
           retention-days: 7

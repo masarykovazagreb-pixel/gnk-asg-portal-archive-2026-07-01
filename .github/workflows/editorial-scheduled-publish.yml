@@ -71,6 +71,7 @@ jobs:
         run: |
           node scripts/editorial-registry-v1.mjs
           node scripts/generate-editorial-sitemap-v2.mjs
+          python3 scripts/build_gallery_standalone_pages.py
       - name: Validate generated editorial package
         run: node scripts/test-editorial-publish-seo-v1.mjs
       - name: Commit due content
@@ -78,7 +79,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if git diff --quiet -- apps/portal/objave apps/portal/komentari apps/portal/gnk-aktual apps/portal/en/gnk-aktual/index.html apps/portal/en/gnk-aktual/weekly apps/portal/data/aktual-weekly.json apps/portal/data/aktual-weekly-archives apps/portal/editorial-sitemap.xml apps/portal/sitemap-index.xml apps/portal/data/editorial-registry.json apps/portal/data/editorial-plan artifacts/editorial-scheduled-publish.json; then
+          if git diff --quiet -- apps/portal/objave apps/portal/komentari apps/portal/gnk-aktual apps/portal/en/gnk-aktual/index.html apps/portal/en/gnk-aktual/weekly apps/portal/data/aktual-weekly.json apps/portal/data/aktual-weekly-archives apps/portal/galerija apps/portal/sitemap.xml apps/portal/image-sitemap.xml apps/portal/editorial-sitemap.xml apps/portal/sitemap-index.xml apps/portal/data/editorial-registry.json apps/portal/data/editorial-plan artifacts/editorial-scheduled-publish.json; then
             echo "No scheduled public or state change is due."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
@@ -86,7 +87,7 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add apps/portal/objave apps/portal/komentari apps/portal/gnk-aktual apps/portal/en/gnk-aktual/index.html apps/portal/en/gnk-aktual/weekly apps/portal/data/aktual-weekly.json apps/portal/data/aktual-weekly-archives apps/portal/editorial-sitemap.xml apps/portal/sitemap-index.xml apps/portal/data/editorial-registry.json apps/portal/data/editorial-plan artifacts/editorial-scheduled-publish.json
+          git add apps/portal/objave apps/portal/komentari apps/portal/gnk-aktual apps/portal/en/gnk-aktual/index.html apps/portal/en/gnk-aktual/weekly apps/portal/data/aktual-weekly.json apps/portal/data/aktual-weekly-archives apps/portal/galerija apps/portal/sitemap.xml apps/portal/image-sitemap.xml apps/portal/editorial-sitemap.xml apps/portal/sitemap-index.xml apps/portal/data/editorial-registry.json apps/portal/data/editorial-plan artifacts/editorial-scheduled-publish.json
           git commit -m "Publish scheduled editorial package"
 
           # Exact-SHA / single-writer fence: output was generated from one main

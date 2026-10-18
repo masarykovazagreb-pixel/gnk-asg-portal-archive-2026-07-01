@@ -1,0 +1,35 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import {coordinate} from '../scripts/editorial-coordinator-v1.mjs';
+const root=fs.mkdtempSync(path.join(os.tmpdir(),'asg-editorial-coordinator-'));
+const write=(rel,data)=>{const p=path.join(root,rel);fs.mkdirSync(path.dirname(p),{recursive:true});fs.writeFileSync(p,typeof data==='string'?data:JSON.stringify(data));};
+try {
+  const item={path:'/komentari/test/',title:'Test',seoTitle:'Test',description:'Test description',seoComplete:true,image:'https://gnk-asg.hr/assets/topic.webp',imageAlt:'Topic illustration',language:'hr',type:'komentar'};
+  write('apps/portal/data/editorial-registry.json',{items:[item]});
+  write('apps/portal/data/visual_gallery.json',{items:[{id:'topic',src:'/assets/topic.webp'}]});
+  write('apps/portal/data/editorial-plan/manifest.json',{packages:[{id:'H',deployApproved:true},{id:'A',deployApproved:true}]});
+  write('apps/portal/data/editorial-plan/publication-holds.json',{holds:[{packageId:'H',active:true}]});
+  write('apps/portal/assets/topic.webp','fixture');
+  write('apps/portal/galerija/topic/index.html','fixture');
+  write('apps/portal/komentari/test/index.html','<meta name="twitter:card" content="summary_large_image"><script type="application/ld+json">{}</script>');
+  let r=coordinate(root);
+  assert.equal(r.totals.articlesNeedingWork,0);
+  assert.equal(r.articles[0].productionState,'not-verified');
+  assert.equal(r.packages[0].stage,'held');
+  assert.equal(r.packages[1].stage,'approved-awaiting-canonical-validation');
+  fs.unlinkSync(path.join(root,'apps/portal/galerija/topic/index.html'));
+  assert(coordinate(root).articles[0].blockers.includes('gallery-detail-required'));
+  write('apps/portal/data/editorial-registry.json',{items:[{...item,image:'https://unlicensed.example/a.jpg'}]});
+  r=coordinate(root);
+  assert(r.articles[0].blockers.includes('local-image-required'));
+  assert.equal(r.controls.dispatches,0);
+  assert.equal(r.controls.publicFilesWritten,0);
+  assert.equal(r.controls.productionVerified,false);
+  write('apps/portal/data/editorial-registry.json',{items:[{...item,image:'/assets/gnk-asg-social-card.png'}]});
+  assert(coordinate(root).articles[0].blockers.includes('topic-image-required'));
+  write('apps/portal/data/editorial-plan/publication-holds.json','{broken');
+  assert.throws(()=>coordinate(root));
+  console.log('Editorial coordinator: PASS (holds, image handoff, no false LIVE, no public mutations, corrupt input)');
+}finally{fs.rmSync(root,{recursive:true,force:true});}
