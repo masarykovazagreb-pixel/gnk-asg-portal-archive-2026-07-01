@@ -45,7 +45,11 @@ function validatePublication(item) {
     if (!nonEmpty(pub[key])) { errors.push(item.id + ': publication.' + key + ' missing'); ok = false; }
   }
   if (!['komentar','objava','analiza'].includes(pub.type)) { errors.push(item.id + ': publication.type invalid'); ok = false; }
-  if (pub.author !== HUMAN_GATE) { errors.push(item.id + ': publication.author must be ' + HUMAN_GATE); ok = false; }
+  const verifiedEditor = pub.editor === HUMAN_GATE && pub.author === 'GNK ASG Intelligence Desk';
+  if (pub.author !== HUMAN_GATE && !verifiedEditor) {
+    errors.push(item.id + ': publication requires either verified Nermin Sefić author or GNK ASG Intelligence Desk author with Nermin Sefić editor');
+    ok = false;
+  }
   if (!validDate(pub.publishAt)) { errors.push(item.id + ': publication.publishAt invalid'); ok = false; }
   const paragraphs = Array.isArray(pub.paragraphs) ? pub.paragraphs : [];
   const normalized = paragraphs.map(value => typeof value === 'string'
