@@ -33,7 +33,7 @@ function canonicalFrom(html){
 function heldSlugs(root){
   const manifest=readJson(root,'apps/portal/data/editorial-plan/manifest.json',{optional:true});
   const holds=readJson(root,'apps/portal/data/editorial-plan/publication-holds.json',{optional:true});
-  if(!manifest&&!holds)return new Set();
+  if(!manifest&&!holds)throw new Error('Missing required editorial manifest and publication holds');
   if(!manifest||!Array.isArray(manifest.packages))throw new Error('Invalid editorial manifest');
   if(!holds||!Array.isArray(holds.holds))throw new Error('Invalid publication holds');
   const active=new Set(holds.holds.filter(x=>x?.active===true).map(x=>x.packageId));
