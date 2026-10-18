@@ -2,15 +2,20 @@
   "schema": "gnk-asg-source-linked-commentary-review/v1",
   "id": "AKTUAL-REVIEW-20261018-MLINOTEST",
   "created_date": "2026-10-18",
-  "status": "source-review",
-  "ready_for_publication": false,
+  "status": "source-verified-owner-authorized",
+  "ready_for_publication": true,
   "editorial_gate": "Nermin Sefić",
-  "approval": null,
+  "approval": {
+    "approvedBy": "Nermin Sefić (user's explicit publication instruction)",
+    "date": "2026-10-18",
+    "scope": "original verified GNK ASG commentary only",
+    "requires": "existing CI and exact-SHA release gates"
+  },
   "source": {
     "publisher": "Poslovni dnevnik",
     "title": "Slovenski Mlinotest najavljuje investicije u Srbiji i Hrvatskoj",
     "author": "Siniša Malus",
-    "published_at": "2026-10-13T22:00:00+02:00",
+    "published_at": "2026-10-18T09:22:00+02:00",
     "url": "https://www.poslovni.hr/kompanije/slovenski-mlinotest-najavljuje-investicije-u-srbiji-i-hrvatskoj-4559226",
     "verified_facts": [
       "Poslovni dnevnik prenosi planove Mlinotesta za ulaganja u tehnološku opremu i infrastrukturu u Karlovcu.",
@@ -18,7 +23,7 @@
       "Izvršni direktor u članku navodi pritiske rasta troškova ambalaže, sirovina i usluga."
     ],
     "source_hashtags": [],
-    "attribution": "Izvor: Poslovni dnevnik, Siniša Malus, 13. listopada 2026.; navodi o planiranim ulaganjima nisu potvrda realizacije."
+    "attribution": "Izvor: Poslovni dnevnik, Siniša Malus, 18. listopada 2026.; planirani projekti ne znače da su završeni."
   },
   "draft": {
     "title": "Ulaganje u proizvodnju nije samo kupnja strojeva",
@@ -46,7 +51,7 @@
   "review_notes": [
     "Fact/comment distinction explicit.",
     "No direct quote or third-party image.",
-    "This review packet is not a publication, author approval, deploy instruction, or claim of live URL.",
-    "Do not merge or publish without valid editorial approval and existing canonical release checks."
+    "Source date corrected to actual source publication 18.10.2026.",
+    "Publish only through canonical scheduled generator after successful checks; source packet itself is not live."
   ]
 }
