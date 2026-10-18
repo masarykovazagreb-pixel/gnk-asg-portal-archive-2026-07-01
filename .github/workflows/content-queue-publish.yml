@@ -6,6 +6,12 @@ name: Content Queue Publish
 
 on:
   workflow_dispatch:
+  # Immediately process newly committed queue items through the same guarded publisher.
+  # Generated portal files are deliberately excluded to prevent publication loops.
+  push:
+    branches: [main]
+    paths:
+      - 'content/factory-queue/**'
   schedule:
     # Hourly daytime checks in UTC (08:20–20:20 CET / 09:20–21:20 CEST).
     # A run with no approved due items remains read-only; release fences and exact-SHA checks stay mandatory.
