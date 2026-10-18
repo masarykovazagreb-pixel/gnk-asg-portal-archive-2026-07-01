@@ -47,6 +47,10 @@ try{
   write('apps/portal/data/editorial-registry.json',{items:[]});
   write('content/factory-queue/komentari/test-odobrenje.html',html);
 
+  check('both editorial guard documents missing: fail closed',1,/Missing required editorial manifest and publication holds/);
+  write('apps/portal/data/editorial-plan/manifest.json',{packages:[]});
+  check('publication holds missing: fail closed',1,/Invalid publication holds/);
+  write('apps/portal/data/editorial-plan/publication-holds.json',{holds:[]});
   check('safe due item accepted',0,/"ok": true/);
 
   write('apps/portal/data/editorial-registry.json',{items:[{path:'/komentari/test-odobrenje/'}]});
