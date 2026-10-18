@@ -1,8 +1,8 @@
 {
   "ok": true,
-  "version": "GNK_ASG_EDITORIAL_SCHEDULED_PUBLISH_V3_20260714",
-  "now": "2026-10-13T14:48:36.035Z",
-  "publicationHoldsVersion": "GNK_ASG_EDITORIAL_PUBLICATION_HOLDS_V5_20261010_3000_WORDS_PENDING_POLICY_DECISION",
+  "version": "GNK_ASG_EDITORIAL_SCHEDULED_PUBLISH_V4_ATTRIBUTION",
+  "now": "2026-10-18T13:44:33.406Z",
+  "publicationHoldsVersion": "GNK_ASG_EDITORIAL_PUBLICATION_HOLDS_V6_20261016_INDEPENDENT_RELEASE_REVIEW",
   "packages": [
     {
       "id": "EDITORIAL-20260714-NOW",
@@ -397,7 +397,7 @@
       "due": false,
       "alreadyPublished": false,
       "publicationHeld": true,
-      "holdReason": "Pending editorial quality gate: objava has 1502 verified body words (Intl.Segmenter hr), below temporary 3000-word authorial minimum. Require original substantive expansion, source/fact/legal/SEO review and explicit policy reconciliation before release.",
+      "holdReason": "Independent pre-publication review pending: document factual/source support (including whether citations are required), legal/copyright clearance, permission to use local illustration, image alt and dimensions, unique SEO/schema/canonical metadata, accessible presentation and exact-SHA publication checks. Word count is not a criterion.",
       "published": []
     },
     {
@@ -406,7 +406,7 @@
       "due": false,
       "alreadyPublished": false,
       "publicationHeld": true,
-      "holdReason": "Pending editorial quality gate: objava has 1548 verified body words (Intl.Segmenter hr), below temporary 3000-word authorial minimum. Require original substantive expansion, source/fact/legal/SEO review and explicit policy reconciliation before release.",
+      "holdReason": "Independent pre-publication review pending: document factual/source support (including whether citations are required), legal/copyright clearance, permission to use local illustration, image alt and dimensions, unique SEO/schema/canonical metadata, accessible presentation and exact-SHA publication checks. Word count is not a criterion.",
       "published": []
     },
     {
@@ -415,7 +415,7 @@
       "due": false,
       "alreadyPublished": false,
       "publicationHeld": true,
-      "holdReason": "Pending editorial quality gate: objava has 1524 verified body words (Intl.Segmenter hr), below temporary 3000-word authorial minimum. Require original substantive expansion, source/fact/legal/SEO review and explicit policy reconciliation before release.",
+      "holdReason": "Independent pre-publication review pending: document factual/source support (including whether citations are required), legal/copyright clearance, permission to use local illustration, image alt and dimensions, unique SEO/schema/canonical metadata, accessible presentation and exact-SHA publication checks. Word count is not a criterion.",
       "published": []
     },
     {
@@ -424,7 +424,7 @@
       "due": false,
       "alreadyPublished": false,
       "publicationHeld": true,
-      "holdReason": "Pending editorial quality gate: objava has 1503 verified body words (Intl.Segmenter hr), below temporary 3000-word authorial minimum. Require original substantive expansion, source/fact/legal/SEO review and explicit policy reconciliation before release.",
+      "holdReason": "Independent pre-publication review pending: document factual/source support (including whether citations are required), legal/copyright clearance, permission to use local illustration, image alt and dimensions, unique SEO/schema/canonical metadata, accessible presentation and exact-SHA publication checks. Word count is not a criterion.",
       "published": []
     },
     {
@@ -433,11 +433,24 @@
       "due": false,
       "alreadyPublished": false,
       "publicationHeld": true,
-      "holdReason": "Pending editorial quality gate: objava has 1542 verified body words (Intl.Segmenter hr), below temporary 3000-word authorial minimum. Require original substantive expansion, source/fact/legal/SEO review and explicit policy reconciliation before release.",
+      "holdReason": "Independent pre-publication review pending: document factual/source support (including whether citations are required), legal/copyright clearance, permission to use local illustration, image alt and dimensions, unique SEO/schema/canonical metadata, accessible presentation and exact-SHA publication checks. Word count is not a criterion.",
       "published": []
+    },
+    {
+      "id": "EDITORIAL-20261018-MLINOTEST",
+      "publishAt": "2026-10-18T15:38:00+02:00",
+      "due": true,
+      "alreadyPublished": false,
+      "publicationHeld": false,
+      "holdReason": null,
+      "published": [
+        "/komentari/ulaganje-u-proizvodnju-nije-samo-kupnja-strojeva/"
+      ]
     }
   ],
-  "published": [],
+  "published": [
+    "/komentari/ulaganje-u-proizvodnju-nije-samo-kupnja-strojeva/"
+  ],
   "held": [
     "EDITORIAL-20261104-WEDNESDAY-SLOT1",
     "EDITORIAL-20261105-THURSDAY-SLOT1",
@@ -446,5 +459,6 @@
     "EDITORIAL-20261108-SUNDAY-SLOT1"
   ],
   "publicChanged": true,
-  "stateChanged": false
+  "stateChanged": true,
+  "attributionPolicy": "registry-gated-author; Nermin-is-editor-not-default-author"
 }
