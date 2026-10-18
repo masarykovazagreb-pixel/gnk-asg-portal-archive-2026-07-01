@@ -14,8 +14,14 @@ assert(!manifest.packages.some(x=>(x.files||[]).includes(entry.file)));
 const queue=JSON.parse(read(`apps/portal/data/editorial-plan/${entry.file}`));
 const rows=adapter.adapt(queue,entry.file);
 assert.equal(rows.length,300);
-assert.equal(rows.filter(x=>x.queueStatus==='source-review').length,120);
-assert(rows.every(x=>adapter.blockers(x).length>0));
+const sourceItems=queue.items.filter(x=>x.type==='source-linked-media-commentary');
+assert.equal(sourceItems.length,120,'30-day source-commentary inventory remains fixed');
+assert.equal(rows.filter(x=>x.queueStatus==='source-review').length,
+  sourceItems.filter(x=>x.status==='source-review').length,
+  'source-review count must track actual approved/published transitions');
+assert(rows.filter(x=>x.queueStatus==='source-review'||x.queueStatus==='draft')
+  .every(x=>adapter.blockers(x).length>0),
+  'pending and draft items must remain blocked; genuinely approved items may advance');
 assert.throws(()=>adapter.adapt({...queue,schema:'unknown'},entry.file));
 assert.throws(()=>adapter.adapt({...queue,items:[queue.items[0],queue.items[0]]},entry.file));
 const ready={...rows[0],slug:'test-source-review',title:'Test',seoTitle:'Test SEO',summary:'Summary',metaDescription:'Description',
