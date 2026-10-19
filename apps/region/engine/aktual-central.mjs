@@ -1,12 +1,18 @@
 #!/usr/bin/env node
 /**
- * AKTUAL MEDIA — središnji pregled.
+ * AKTUAL MEDIA — središnji pregled (pločice 3×3).
  *
  * Gradi veliki blok na /gnk-aktual/ koji na jednom mjestu pokazuje sve što
- * AKTUAL MEDIA ima: osam gradskih kanala, poslovni tjednik, sportske,
- * političke i sigurnosne tekstove, galeriju, radio, centar znanja i
- * digitalnu radnu snagu. Blok se ubacuje između markera i ne dira ostatak
- * stranice. Sve poveznice vode na stvarni izvor: kanal, tjednik ili arhivu.
+ * AKTUAL MEDIA ima. Pločice su prave naslovnice: naziv izdanja, zemlja, jezik
+ * i rečenica "što klikom dobijete" ispisani su u samoj slici (tiles.mjs), a
+ * isti tekst stoji u alt atributu i aria-labelu, pa je čitljiv i strojevima.
+ *
+ *  01  Izdanja po zemljama   — 3 × 3 (osam gradova + BUSINESS TJEDNIK)
+ *  02  Deskovi i platforme   — 3 × 3 (sport, politika, sigurnost, business,
+ *                                 tehnologija, moda, galerija, radio, znanje)
+ *  03  MRAVINJAK             — rijeka vijesti 3 × 19 iz svih kanala
+ *
+ * Blok se ubacuje između markera i ne dira ostatak stranice.
  */
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -23,17 +29,41 @@ const FILE = join(PORTAL, 'gnk-aktual', 'index.html');
 
 const START = '<!-- AKTUAL-CENTRAL:START -->';
 const END = '<!-- AKTUAL-CENTRAL:END -->';
+const IMG = '/assets/izdanja';
 
 const readJSON = (path, fallback) => {
   try { return JSON.parse(readFileSync(path, 'utf8')); } catch { return fallback; }
+};
+
+/* Alt tekstovi = ono što na pločici piše, riječima. */
+const CITY_ALT = {
+  zagreb: 'AKTUAL MEDIA KANAL ZAGREB — Hrvatska, hrvatski. Dnevni pregled domaćih medija i deset provjerljivih tekstova. Klik otvara izdanje.',
+  beograd: 'AKTUAL MEDIA KANAL BEOGRAD — Srbija, srpski. N1, Danas, Nova i Politika, osvrti s linkom na izvornik. Klik otvara izdanje.',
+  sarajevo: 'AKTUAL MEDIA KANAL SARAJEVO — Bosna i Hercegovina, bosanski. N1 BiH, Klix, Oslobođenje i Avaz, politika i sigurnost regije. Klik otvara izdanje.',
+  budimpesta: 'AKTUAL MEDIA KANAL BUDAPEST — Mađarska, mađarski. Telex, 444, HVG i Portfolio: proračun, inflacija, energetika. Klik otvara izdanje.',
+  ljubljana: 'AKTUAL MEDIA KANAL LJUBLJANA — Slovenija, slovenski. Delo, Večer, 24ur i Slovenske novice: gospodarstvo i politika. Klik otvara izdanje.',
+  rim: 'AKTUAL MEDIA KANAL ROMA — Italija, talijanski. ANSA, la Repubblica, Il Post e Il Sole 24 Ore: tržišta i EU. Klik otvara izdanje.',
+  sofija: 'AKTUAL MEDIA KANAL SOFIJA — Bugarska, bugarski. BTA, Capital, Mediapool i Dnevnik: energetika i fondovi. Klik otvara izdanje.',
+  bukurest: 'AKTUAL MEDIA KANAL BUCUREȘTI — Rumunjska, rumunjski. Agerpres, HotNews, Ziarul Financiar i Profit.ro: ekonomija. Klik otvara izdanje.'
+};
+
+const DESK_ALT = {
+  sport: 'Sport — desk AKTUAL MEDIA s rezultatima i osvrtima iz svih osam kanala. Klik otvara sportski desk.',
+  politika: 'Politika — desk AKTUAL MEDIA: ista odluka u osam zemalja ne izgleda jednako. Klik otvara politički desk.',
+  sigurnost: 'Sigurnost — desk AKTUAL MEDIA: obavještajne teme, kibernetika i preuzimanja. Klik otvara sigurnosni desk.',
+  biznis: 'Business — desk AKTUAL MEDIA: tržišta, bilance i kapital iz osam zemalja. Klik otvara business desk.',
+  tehnologija: 'Tehnologija — desk AKTUAL MEDIA: umjetna inteligencija, platforme i podatkovni centri. Klik otvara tehnološki desk.',
+  moda: 'Moda — desk AKTUAL MEDIA: kolekcije, brendovi i poslovni modeli iza njih. Klik otvara modni desk.'
 };
 
 const HASHTAGS = [
   '#NerminSefić', '#NerminSefic', '#AKTUALMEDIA', '#GNKASG', '#Našaizdanja',
   '#KanalZagreb', '#KanalBeograd', '#KanalSarajevo', '#KanalBudimpesta',
   '#KanalLjubljana', '#CanaleRoma', '#KanalSofija', '#CanalulBucuresti',
-  '#BusinessTjednik', '#RegionalneVijesti', '#Sport', '#Politika', '#Sigurnost'
+  '#BusinessTjednik', '#Moda', '#Sport', '#Politika', '#Sigurnost', '#Mravinjak'
 ];
+
+const MODA_RE = /moda|modn|dizajn|stil|kolekcij|revij|fashion|brend|tkanin|obuć|obuc|nakladn/i;
 
 function allItems() {
   const out = [];
@@ -49,33 +79,57 @@ function allItems() {
 
 const linkFor = (item) => `${item.channel.base}clanak/${item.slug}/`;
 
-function list(items, limit = 12) {
-  return items.slice(0, limit).map((item) => `<li>
-      <time datetime="${esc(item.date)}">${esc(shortDate(item.date.slice(0, 10)))}</time>
-      <a href="${esc(linkFor(item))}">${esc(truncate(item.title, 120))}</a>
-      <span class="amc-src">${esc(item.sourceName)} · ${esc(item.channel.title)}</span>
-    </li>`).join('');
+/* Pločica: cijela je link, tekst je u slici, alt i aria-label nose isto. */
+function tile({ href, img, alt, external = false, badge = '', small = false }) {
+  const rel = external ? ' rel="external noopener"' : '';
+  return `<li class="amc-tile${small ? ' amc-tile--small' : ''}">
+    <a class="amc-tile-link" href="${esc(href)}"${rel} aria-label="${esc(alt)}">
+      <img class="amc-tile-img" src="${IMG}/${esc(img)}" alt="${esc(alt)}" width="880" height="587" loading="lazy" decoding="async">
+      ${badge ? `<span class="amc-tile-badge">${esc(badge)}</span>` : ''}
+      <span class="amc-tile-go" aria-hidden="true">→</span>
+    </a>
+  </li>`;
 }
 
-function channelCards(cards) {
-  const wanted = ['zagreb', 'beograd', 'sarajevo', 'budimpesta', 'ljubljana', 'rim', 'sofija', 'bukurest'];
-  return wanted.map((id) => {
-    const card = cards.find((c) => c.id === id);
-    if (!card) return '';
-    return `<li class="amc-card">
-      <span class="amc-flag">${esc(card.country)} · ${esc(card.city)}</span>
-      <h4><a href="${esc(card.url)}" rel="external noopener">${esc(card.name)}</a></h4>
-      <p>${esc(card.count)} zapisa · jezik ${esc(card.lang)}</p>
-      <a class="amc-go" href="${esc(card.url)}" rel="external noopener">Otvori izdanje ↗</a>
-    </li>`;
+function cityTiles(cards) {
+  return CHANNELS.map((c) => {
+    const card = cards.find((x) => x.id === c.id) || {};
+    return tile({
+      href: c.base, img: `${c.id}-tile.webp`, alt: CITY_ALT[c.id] || `${c.title} — klik otvara izdanje.`,
+      external: true, badge: card.count ? `${card.count} tekstova` : ''
+    });
   }).join('');
 }
 
-function section(title, kicker, items, limit = 12) {
-  return `<section class="amc-block">
-    <header><span>${esc(kicker)}</span><h3>${esc(title)}</h3></header>
-    <ol class="amc-list">${list(items, limit) || '<li class="amc-empty">Nema zapisa u ovom ciklusu.</li>'}</ol>
-  </section>`;
+function deskTiles(items, gallery) {
+  const count = (id) => id === 'moda'
+    ? items.filter((i) => MODA_RE.test(`${i.title} ${i.summary}`)).length
+    : items.filter((i) => i.theme === ({ sport: 'sport', politika: 'politika', sigurnost: 'sigurnost', biznis: 'ekonomija', tehnologija: 'ai' }[id] || '')).length;
+  const desks = ['sport', 'politika', 'sigurnost', 'biznis', 'tehnologija', 'moda'].map((id) => tile({
+    href: `/izdanja/${id}/`, img: `${id}-tile.webp`, alt: DESK_ALT[id], badge: `${count(id)} tekstova`
+  })).join('');
+  const extra = [
+    { href: '/galerija/', img: 'galerija-tile.webp', alt: `Galerija Nermina Sefića — ${gallery.count || 63} stranica s portretima i vizualima. Klik otvara galeriju.`, badge: `${gallery.count || 63} stranica` },
+    { href: '/radio/', img: 'radio-tile.webp', alt: 'AKTUAL MEDIA RADIO — diskretni player i popis javnih radijskih kuća osam zemalja. Klik otvara radio.', badge: '8 zemalja' },
+    { href: '/knowledge-center/', img: 'znanje-tile.webp', alt: 'Centar znanja — odgovori o grupi, projektima i financijama s poveznicom na dokument. Klik otvara centar znanja.', badge: 'odgovori' }
+  ].map((x) => `<li class="amc-tile amc-tile--small">
+      <a class="amc-tile-link amc-tile-link--text" href="${esc(x.href)}" aria-label="${esc(x.alt)}">
+        <span class="amc-tile-kicker">AKTUAL MEDIA</span>
+        <span class="amc-tile-name">${esc(x.alt.split(' — ')[0])}</span>
+        <span class="amc-tile-text">${esc(x.alt.split(' — ')[1] || '')}</span>
+        <span class="amc-tile-badge">${esc(x.badge)}</span>
+        <span class="amc-tile-go" aria-hidden="true">→</span>
+      </a>
+    </li>`).join('');
+  return desks + extra;
+}
+
+function riverColumn(items) {
+  return `<ul class="amc-river-col">${items.map((item) => `<li>
+      <time datetime="${esc(item.date)}">${esc(shortDate(item.date.slice(0, 10)))}</time>
+      <a href="${esc(linkFor(item))}">${esc(truncate(item.title, 92))}</a>
+      <span class="amc-river-src">${esc(item.sourceName)} · ${esc(item.channel.title.replace(/^(KANAL|CANALE|CANALUL)\s+/, ''))}</span>
+    </li>`).join('')}</ul>`;
 }
 
 export function buildAktualCentral({ cards = [] } = {}) {
@@ -83,53 +137,21 @@ export function buildAktualCentral({ cards = [] } = {}) {
   let html = readFileSync(FILE, 'utf8');
 
   const items = allItems();
-  const channels = CHANNELS.length;
-  const sources = new Set(items.map((i) => i.sourceName)).size;
-  const gallery = readJSON(join(PORTAL, 'data', 'nermin-sefic-gallery.json'), { items: [] });
-  const tjednik = readJSON(join(ROOT, 'apps', 'tjednik', 'site', 'feed.json'), { items: [] });
+  const sources = new Set(items.map((i) => i.sourceName));
+  const gallery = readJSON(join(PORTAL, 'data', 'nermin-sefic-gallery.json'), { items: [], count: 0 });
+  const moda = items.filter((i) => MODA_RE.test(`${i.title} ${i.summary}`)).length;
+  const sport = items.filter((i) => i.theme === 'sport').length;
+  const politics = items.filter((i) => i.theme === 'politika').length;
+  const security = items.filter((i) => ['sigurnost', 'rat', 'potres'].includes(i.theme)).length;
 
-  const sport = items.filter((i) => i.theme === 'sport');
-  const politics = items.filter((i) => i.theme === 'politika');
-  const security = items.filter((i) => ['sigurnost', 'rat', 'potres'].includes(i.theme));
+  const river = items.slice(0, 57);
+  const third = Math.ceil(river.length / 3);
+  const columns = [river.slice(0, third), river.slice(third, third * 2), river.slice(third * 2)];
 
-  const galleryItems = (gallery.items || []).filter((g) => g.type === 'photo').slice(0, 4).map((g) => `<li>
-      <a href="${esc(g.url)}"><img src="${esc(g.src)}" alt="${esc(g.alt)}" width="220" height="220" loading="lazy" decoding="async"><span>${esc(g.title)}</span></a>
-    </li>`).join('');
-
-  const tjednikItems = (tjednik.items || []).slice(0, 6).map((i) => `<li>
-      <time datetime="${esc(i.date_published)}">${esc(shortDate(String(i.date_published).slice(0, 10)))}</time>
-      <a href="${esc(i.url)}" rel="external noopener">${esc(truncate(i.title.replace(/^Kritički osvrt:\s*/, ''), 110))}</a>
-      <span class="amc-src">BUSINESS TJEDNIK</span>
-    </li>`).join('');
-
-  const platforms = [
-    ['BUSINESS TJEDNIK', 'https://gnk-asg-tjednik.pages.dev/', 'Poslovni tjednik s kritičkim osvrtima na Lider, Jutarnji list, Poslovni dnevnik i Forbes.'],
-    ['GALERIJA NERMINA SEFIĆA', 'https://gnk-asg.hr/galerija/', `${gallery.count || 63} stranica: portreti, događanja i tematski vizuali.`],
-    ['AKTUAL MEDIA RADIO', 'https://gnk-asg.hr/radio/', 'Diskretni player i popis javnih radijskih kuća osam zemalja.'],
-    ['CENTAR ZNANJA', 'https://gnk-asg.hr/knowledge-center/', 'Odgovori o grupi, projektima, financijama i kontaktima.'],
-    ['DIGITALNA RADNA SNAGA', 'https://gnk-asg.hr/digital-workforce/', 'Javna simulacija s katalogom sintetičkih workera.'],
-    ['NAŠA IZDANJA', 'https://gnk-asg.hr/izdanja/', 'Sva izdanja s karticama od 5–6 rečenica i vlastitim linkovima.'],
-    ['OBJAVE', 'https://gnk-asg.hr/objave/', 'Arhiva objava, analiza i priopćenja s izvorima i datumima.'],
-    ['KOMENTARI', 'https://gnk-asg.hr/komentari/', 'Stavovi uredništva, jasno odvojeni od vijesti i osvrta.'],
-    ['AUTORSKE OBJAVE', 'https://gnk-asg.hr/autorske-objave/', 'Potpisani tekstovi i duži formati AKTUAL MEDIA.']
-  ].map(([name, url, desc]) => `<li class="amc-card">
-      <span class="amc-flag">Platforma</span>
-      <h4><a href="${esc(url)}" rel="external noopener">${esc(name)}</a></h4>
-      <p>${esc(desc)}</p>
-      <a class="amc-go" href="${esc(url)}" rel="external noopener">Otvori ↗</a>
-    </li>`).join('');
-
-  const sourceCloud = CHANNELS.map((channel) => {
-    const data = readJSON(join(DATA, `${channel.id}.json`), { items: [] });
-    const ids = new Set((data.items || []).map((i) => i.source));
-    const names = channel.sources.filter((src) => ids.has(src.id));
-    if (!names.length) return '';
-    return `<li><strong>${esc(channel.title)}</strong> ${names.map((src) => `<a href="${esc(channel.base)}izvor/${esc(src.id)}/" rel="external noopener">${esc(src.name)}</a>`).join(' · ')}</li>`;
-  }).join('');
-
-  const tabloids = [
-    ['Lider', 'lider'], ['Jutarnji list', 'jutarnji'], ['Poslovni dnevnik', 'poslovni'], ['Forbes', 'forbes']
-  ].map(([name, id]) => `<a href="https://gnk-asg-tjednik.pages.dev/izvori/${id}/" rel="external noopener">${esc(name)}</a>`).join(' · ');
+  const stripe = [
+    ['8', 'gradskih izdanja'], [String(items.length), 'tekstova u arhivi'], [String(sources.size), 'medijskih izvora'],
+    [String(gallery.count || 63), 'stranica galerije'], ['8', 'jezika'], ['9', 'deskova i platformi']
+  ].map(([n, l]) => `<li><b>${esc(n)}</b><span>${esc(l)}</span></li>`).join('');
 
   const jsonld = {
     '@context': 'https://schema.org',
@@ -137,103 +159,155 @@ export function buildAktualCentral({ cards = [] } = {}) {
     name: 'AKTUAL MEDIA — sve na jednom mjestu',
     url: 'https://gnk-asg.hr/gnk-aktual/',
     inLanguage: 'hr',
+    description: 'Osam gradskih izdanja, šest deskova, poslovni tjednik, galerija, radio i centar znanja na jednoj stranici.',
     about: { '@type': 'Organization', name: 'AKTUAL MEDIA d.o.o.', url: 'https://gnk-asg.hr/' },
     editor: { '@type': 'Person', name: 'Nermin Sefić', jobTitle: 'Urednik i direktor', url: 'https://gnk-asg.hr/nermin-sefic/' },
-    hasPart: CHANNELS.map((c) => ({ '@type': 'WebSite', name: c.title, url: c.base })),
-    isBasedOn: items.slice(0, 30).map((i) => i.url)
+    hasPart: CHANNELS.map((c) => ({ '@type': 'WebSite', name: c.title, url: c.base, inLanguage: c.lang })),
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: 15,
+      itemListElement: [
+        ...CHANNELS.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.title, url: c.base })),
+        ...['sport', 'politika', 'sigurnost', 'biznis', 'tehnologija', 'moda'].map((id, i) => ({ '@type': 'ListItem', position: 9 + i, name: id.toUpperCase(), url: `${HUB}${id}/` }))
+      ]
+    }
   };
 
   const block = `${START}
 <style id="amc-style">
-.am-central{--amc-ink:#eef3f8;--amc-muted:#a9b8cc;--amc-gold:#e0bd69;--amc-line:rgba(224,189,105,.28);background:#071426;color:var(--amc-ink);border:1px solid rgba(224,189,105,.24);border-radius:22px;padding:clamp(18px,3vw,34px);margin:28px 0;font-family:inherit}
+.am-central{--amc-ink:#f4f7fc;--amc-muted:#a9b8cc;--amc-gold:#e9c66c;--amc-line:rgba(233,198,108,.28);background:radial-gradient(1200px 600px at 12% -10%,rgba(233,198,108,.12),transparent 60%),#050d18;color:var(--amc-ink);border:1px solid rgba(233,198,108,.24);border-radius:26px;padding:clamp(16px,3.2vw,40px);margin:30px 0;font-family:inherit;overflow:hidden}
 .am-central *{box-sizing:border-box}
-.am-central h2{font:700 clamp(24px,3.4vw,38px)/1.12 Georgia,serif;letter-spacing:-.01em;margin:6px 0 10px}
-.am-central h3{font:700 clamp(18px,2vw,22px)/1.2 Georgia,serif;margin:0 0 10px}
-.am-central h4{font:700 16px/1.25 Inter,system-ui,sans-serif;margin:0 0 6px}
-.am-central a{color:inherit}
-.amc-kicker{font:700 11px/1.4 Inter,system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--amc-gold);margin:0}
-.amc-lead{color:var(--amc-muted);max-width:78ch;margin:0 0 16px}
-.amc-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;list-style:none;padding:0;margin:0 0 22px}
-.amc-stats li{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px 14px}
-.amc-stats b{display:block;font:700 26px/1 Georgia,serif;color:var(--amc-gold)}
-.amc-stats span{font-size:12px;color:var(--amc-muted)}
-.amc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;list-style:none;padding:0;margin:0 0 26px}
-.amc-card{background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.09);border-radius:16px;padding:14px}
-.amc-card p{color:var(--amc-muted);font-size:13px;margin:0 0 10px}
-.amc-flag{display:inline-block;font:600 10px/1.4 Inter,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--amc-gold);margin-bottom:8px}
-.amc-go{font:600 13px/1 Inter,system-ui,sans-serif;color:var(--amc-gold);text-decoration:none}
-.amc-block{border-top:1px solid var(--amc-line);padding-top:18px;margin-top:22px}
-.amc-block header span{font:600 10px/1.4 Inter,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--amc-gold)}
-.amc-block header h3{margin:4px 0 12px}
-.amc-list{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:4px 22px}
-.amc-list li{display:grid;grid-template-columns:64px 1fr;gap:2px 10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:14px;line-height:1.4}
-.amc-list time{color:var(--amc-gold);font-size:11px;padding-top:3px}
-.amc-list a{text-decoration:none}
-.amc-list a:hover{text-decoration:underline}
-.amc-src{grid-column:2;color:var(--amc-muted);font-size:11px}
-.amc-empty{color:var(--amc-muted);display:block!important}
-.amc-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;list-style:none;padding:0;margin:0}
-.amc-gallery img{width:100%;height:auto;border-radius:12px;display:block}
-.amc-gallery span{display:block;font-size:12px;color:var(--amc-muted);margin-top:6px}
-.amc-rubrike{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
-.amc-rubrike a{font:600 12px/1 Inter,system-ui,sans-serif;text-decoration:none;border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:7px 11px;color:var(--amc-ink)}
-.amc-rubrike a:hover{border-color:var(--amc-gold);color:var(--amc-gold)}
-.amc-sources{list-style:none;padding:0;margin:0;display:grid;gap:8px;font-size:13px}
-.amc-sources li{color:var(--amc-muted);border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:7px}
-.amc-sources strong{color:var(--amc-ink);margin-right:6px}
-.amc-sources a{color:var(--amc-gold);text-decoration:none}
-.amc-sources a:hover{text-decoration:underline}
-.amc-tags{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:10px 0 0}
-.amc-tags li{font:600 12px/1 Inter,system-ui,sans-serif;color:var(--amc-gold);border:1px solid var(--amc-line);border-radius:999px;padding:6px 10px}
-.am-central .amc-note{color:var(--amc-muted);font-size:12px;margin:18px 0 0}
-@media (max-width:640px){.amc-list{grid-template-columns:1fr}}
+.am-central a{color:inherit;text-decoration:none}
+.amc-eyebrow{font:800 11px/1.4 Inter,system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--amc-gold);margin:0}
+.am-central h2{font:700 clamp(28px,3.8vw,48px)/1.04 Georgia,serif;letter-spacing:-.02em;margin:10px 0 14px;max-width:24ch}
+.am-center{text-align:center}
+.amc-hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(16px,3vw,34px);align-items:center}
+.amc-hero-copy p.amc-lead{color:var(--amc-muted);line-height:1.6;margin:0 0 18px;max-width:56ch;font-size:15.5px}
+.amc-hero-art{position:relative;border-radius:20px;overflow:hidden;border:1px solid rgba(233,198,108,.34);box-shadow:0 30px 70px rgba(0,0,0,.55)}
+.amc-hero-art img{display:block;width:100%;height:auto}
+.amc-hero-art:hover img{transform:scale(1.02)}
+.amc-hero-art img{transition:transform .5s ease}
+.amc-hero-cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.amc-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:12px;font:800 13px/1 Inter,system-ui,sans-serif;letter-spacing:.02em;border:1px solid rgba(233,198,108,.5);color:var(--amc-gold);transition:background .2s ease,color .2s ease,transform .2s ease}
+.amc-btn:hover{background:var(--amc-gold);color:#06111f;transform:translateY(-1px)}
+.amc-btn--solid{background:var(--amc-gold);color:#06111f;border-color:var(--amc-gold)}
+.amc-btn--solid:hover{background:#fff0c4}
+.amc-stripe{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;list-style:none;padding:0;margin:26px 0 6px}
+.amc-stripe li{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:13px 13px 11px}
+.amc-stripe b{display:block;font:700 25px/1 Georgia,serif;color:var(--amc-gold)}
+.amc-stripe span{display:block;margin-top:6px;font-size:11.5px;color:var(--amc-muted);line-height:1.32}
+.amc-sec{margin-top:34px;padding-top:20px;border-top:1px solid var(--amc-line)}
+.amc-sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+.amc-sec-head h3{font:700 clamp(20px,2.2vw,27px)/1.12 Georgia,serif;margin:4px 0 0;letter-spacing:-.01em}
+.amc-sec-head .amc-dim{font:700 11px/1.4 Inter,system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--amc-muted)}
+.amc-sec-num{font:800 11px/1 Inter,system-ui,sans-serif;letter-spacing:.18em;color:var(--amc-gold);display:block;margin-bottom:6px}
+.amc-grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;list-style:none;padding:0;margin:0}
+.amc-tile{position:relative;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.12);background:#08131f;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
+.amc-tile:hover,.amc-tile:focus-within{transform:translateY(-3px);border-color:rgba(233,198,108,.75);box-shadow:0 24px 50px rgba(0,0,0,.5)}
+.amc-tile-link{display:block;position:relative}
+.amc-tile-img{display:block;width:100%;height:auto;aspect-ratio:880/587;object-fit:cover;transition:transform .5s ease;filter:saturate(1.03)}
+.amc-tile:hover .amc-tile-img{transform:scale(1.035)}
+.amc-tile-badge{position:absolute;left:12px;top:12px;background:rgba(5,13,24,.82);border:1px solid rgba(233,198,108,.45);color:var(--amc-gold);font:800 10.5px/1 Inter,system-ui,sans-serif;letter-spacing:.06em;border-radius:999px;padding:7px 10px;backdrop-filter:blur(6px)}
+.amc-tile-go{position:absolute;right:12px;bottom:12px;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:rgba(233,198,108,.92);color:#06111f;font:800 17px/1 Inter,system-ui,sans-serif;opacity:0;transform:translateX(-6px);transition:opacity .2s ease,transform .2s ease}
+.amc-tile:hover .amc-tile-go,.amc-tile:focus-within .amc-tile-go{opacity:1;transform:translateX(0)}
+.amc-tile-link--text{display:flex;flex-direction:column;gap:7px;min-height:100%;padding:18px 18px 20px;background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.015));aspect-ratio:880/587}
+.amc-tile--small .amc-tile-link--text{aspect-ratio:auto}
+.amc-tile-kicker{font:800 10px/1.4 Inter,system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--amc-gold)}
+.amc-tile-name{font:700 clamp(17px,1.6vw,21px)/1.15 Georgia,serif}
+.amc-tile-text{font-size:12.8px;line-height:1.45;color:#c9d5e6}
+.amc-tile--small .amc-tile-badge{position:static;align-self:flex-start;margin-top:auto}
+.amc-river{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:4px}
+.amc-river-col{list-style:none;margin:0;padding:0}
+.amc-river-col li{padding:9px 0;border-bottom:1px solid rgba(255,255,255,.075);display:grid;grid-template-columns:50px 1fr;gap:8px}
+.amc-river-col time{font:700 10.5px/1.5 Inter,system-ui,sans-serif;color:var(--amc-gold);padding-top:2px}
+.amc-river-col a{font-size:13.3px;line-height:1.35;grid-column:2}
+.amc-river-col a:hover{text-decoration:underline;color:#fff}
+.amc-river-src{grid-column:2;font-size:11px;color:var(--amc-muted)}
+.amc-note{color:var(--amc-muted);font-size:12px;line-height:1.55;margin:16px 0 0}
+.amc-note a{color:var(--amc-gold);text-decoration:underline}
+.amc-tags{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:14px 0 0}
+.amc-tags li{font:700 11.5px/1 Inter,system-ui,sans-serif;color:var(--amc-gold);border:1px solid var(--amc-line);border-radius:999px;padding:7px 10px}
+.amc-footlink{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;list-style:none;padding:0;margin:14px 0 0}
+.amc-footlink a{display:block;padding:10px 12px;border:1px solid rgba(255,255,255,.12);border-radius:10px;font:700 12px/1.2 Inter,system-ui,sans-serif;color:#dfe8f4}
+.amc-footlink a:hover{border-color:var(--amc-gold);color:var(--amc-gold)}
+@media (max-width:1040px){.amc-hero{grid-template-columns:1fr}.amc-stripe{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:860px){.amc-grid3{grid-template-columns:repeat(2,minmax(0,1fr))}.amc-river{grid-template-columns:1fr 1fr}}
+@media (max-width:600px){.amc-grid3{grid-template-columns:1fr}.amc-river{grid-template-columns:1fr}.amc-stripe{grid-template-columns:1fr 1fr}}
+@media (prefers-reduced-motion:reduce){.amc-tile,.amc-tile-img,.amc-tile-go,.amc-btn{transition:none}.amc-tile:hover{transform:none}.amc-tile:hover .amc-tile-img{transform:none}}
 </style>
 <section class="am-central" id="sve-aktual-media" aria-labelledby="amcTitle">
-  <p class="amc-kicker">AKTUAL MEDIA · sve na jednom mjestu</p>
-  <h2 id="amcTitle">Sve što smo napravili — izdanja, deskovi, tjednik, galerija i radio</h2>
-  <p class="amc-lead">Osam gradskih kanala na osam jezika, ${items.length} zapisa iz ${sources} medija, ${gallery.count || 63} stranica galerije i poslovni tjednik. Urednik i direktor izdanja je Nermin Sefić. Svaki zapis vodi na izvornik; tvrdnje izvora nisu tvrdnje redakcije, a automatski sastavljeni dijelovi nisu pojedinačno urednički pregledani.</p>
-  <ul class="amc-stats">
-    <li><b>${channels}</b><span>gradskih izdanja</span></li>
-    <li><b>${items.length}</b><span>zapisa u arhivi</span></li>
-    <li><b>${sources}</b><span>medijskih izvora</span></li>
-    <li><b>${(gallery.count || 63)}</b><span>stranica galerije</span></li>
-    <li><b>8</b><span>jezika</span></li>
-  </ul>
+  <div class="amc-hero">
+    <div class="amc-hero-copy">
+      <p class="amc-eyebrow">AKTUAL MEDIA · sve na jednom mjestu</p>
+      <h2 id="amcTitle">Osam zemalja, jedanaest izdanja, ${items.length} tekstova — na jednoj ploči</h2>
+      <p class="amc-lead">Svaka pločica je naslovnica izdanja: na njoj piše što se klikom dobije, a klik vodi na glavni link — AKTUAL MEDIA KANAL Zagreb, Beograd, Sarajevo, Budapest, Ljubljana, Roma, Sofija ili București. S tih stranica uvijek se vraćate ovamo, u središte gdje se sve spaja.</p>
+      <div class="amc-hero-cta">
+        <a class="amc-btn amc-btn--solid" href="#izdanja-po-zemljama">Izdanja 3 × 3 ↓</a>
+        <a class="amc-btn" href="#mravinjak">Mravinjak vijesti ↓</a>
+        <a class="amc-btn" href="/izdanja/">Sva izdanja →</a>
+      </div>
+    </div>
+    <a class="amc-hero-art" href="https://gnk-asg.hr/gnk-aktual/" aria-label="AKTUAL MEDIA — središnje mjesto sa svim izdanjima">
+      <img src="${IMG}/aktual-media-tile.webp" alt="AKTUAL MEDIA — sve što imamo: izdanja, deskovi, tjednik, galerija i radio. Središnje mjesto." width="880" height="587" loading="eager" decoding="async">
+    </a>
+  </div>
 
-  <ul class="amc-grid">${channelCards(cards)}${platforms}</ul>
-  <nav class="amc-rubrike" aria-label="Rubrike AKTUAL MEDIA">
-    <a href="/objave/">Objave</a><a href="/komentari/">Komentari</a><a href="/autorske-objave/">Autorske objave</a>
-    <a href="/izdanja/sport/">Sport</a><a href="/izdanja/politika/">Politika</a><a href="/izdanja/sigurnost/">Sigurnost</a>
-    <a href="/spt/">SPT</a><a href="/bank/">Adria Bank</a><a href="/digital-workforce/">Digitalna radna snaga</a>
-    <a href="/knowledge-center/">Centar znanja</a><a href="/galerija/">Galerija</a><a href="/radio/">Radio</a>
-  </nav>
+  <ul class="amc-stripe">${stripe}</ul>
 
-  ${section('Najnovije iz svih izdanja', 'Pregled · 30 najnovijih', items, 30)}
-
-  ${section('Sport', 'Desk · rezultati i osvrti', sport, 12)}
-  ${section('Politika', 'Desk · odluke i izbori', politics, 12)}
-  ${section('Sigurnost, kibernetika i preuzimanja', 'Desk · obavještajne teme, rat i potresi', security, 14)}
-
-  <section class="amc-block">
-    <header><span>BUSINESS TJEDNIK · kritički osvrti</span><h3>Poslovni tjednik na AKTUAL MEDIA</h3></header>
-    <ol class="amc-list">${tjednikItems || '<li class="amc-empty">Tjednik još nema zapisa u ovom ciklusu.</li>'}</ol>
-    <p class="amc-note">Prate se: ${tabloids} · <a href="https://gnk-asg-tjednik.pages.dev/" rel="external noopener">svi osvrti tjednika ↗</a></p>
+  <section class="amc-sec" id="izdanja-po-zemljama" aria-labelledby="amcSec1">
+    <div class="amc-sec-head">
+      <div><span class="amc-sec-num">01 · PLOČICE 3 × 3</span><h3 id="amcSec1">Izdanja po zemljama</h3></div>
+      <span class="amc-dim">8 gradova + business tjednik · klik vodi na izdanje</span>
+    </div>
+    <ul class="amc-grid3">${cityTiles(cards)}${tile({ href: 'https://gnk-asg-tjednik.pages.dev/', img: 'tjednik-tile.webp', alt: 'BUSINESS TJEDNIK — Lider, Jutarnji, Poslovni i Forbes kroz tjednu kritiku. Klik otvara tjednik.', external: true, badge: 'tjednik' })}</ul>
   </section>
 
-  <section class="amc-block">
-    <header><span>MEDIJI · ${sources} izvora</span><h3>Koje medije čitamo</h3></header>
-    <ul class="amc-sources">${sourceCloud}</ul>
+  <section class="amc-sec" id="deskovi" aria-labelledby="amcSec2">
+    <div class="amc-sec-head">
+      <div><span class="amc-sec-num">02 · PLOČICE 3 × 3</span><h3 id="amcSec2">Deskovi, tjednik mode i platforme</h3></div>
+      <span class="amc-dim">sport · politika · sigurnost · business · tehnologija · moda</span>
+    </div>
+    <ul class="amc-grid3">${deskTiles(items, gallery)}</ul>
   </section>
 
-  <section class="amc-block">
-    <header><span>GALERIJA · Nermin Sefić</span><h3>Vizuali s vlastitim stranicama</h3></header>
-    <ul class="amc-gallery">${galleryItems}</ul>
+  <section class="amc-sec" id="mravinjak" aria-labelledby="amcSec3">
+    <div class="amc-sec-head">
+      <div><span class="amc-sec-num">03 · MRAVINJAK · 3 × 19</span><h3 id="amcSec3">Vijesti koje vučemo k sebi</h3></div>
+      <span class="amc-dim">${items.length} tekstova iz ${sources.size} medija · 8 jezika</span>
+    </div>
+    <div class="amc-river">${columns.map(riverColumn).join('')}</div>
+    <p class="amc-note">Mravinjak je naš dnevni pogon: osam kanala čita javne feedove, sitemape i API-je svojih medija, sprema naslov, sažetak, datum i poveznicu na izvornik te iz toga gradi osvrt na način izvještavanja. Tekstovi se ne preuzimaju u cijelosti; svaki zapis vodi na izvornik, a tvrdnje izvora nisu tvrdnje redakcije. Sport ${sport} · Politika ${politics} · Sigurnost, rat i potresi ${security} · Moda i stil ${moda}.</p>
   </section>
 
-  <section class="amc-block">
-    <header><span>Oznake</span><h3>Hashtagovi izdanja</h3></header>
+  <section class="amc-sec" aria-labelledby="amcSec4">
+    <div class="amc-sec-head">
+      <div><span class="amc-sec-num">04 · DALJE</span><h3 id="amcSec4">Gdje još možete otići</h3></div>
+      <span class="amc-dim">tabloidi · arhiva · alati</span>
+    </div>
+    <ul class="amc-footlink">
+      <li><a href="/izdanja/">Naša izdanja</a></li>
+      <li><a href="/objave/">Objave</a></li>
+      <li><a href="/komentari/">Komentari</a></li>
+      <li><a href="/autorske-objave/">Autorske objave</a></li>
+      <li><a href="/galerija/">Galerija Nermina Sefića</a></li>
+      <li><a href="/radio/">AKTUAL MEDIA RADIO</a></li>
+      <li><a href="/knowledge-center/">Centar znanja</a></li>
+      <li><a href="/digital-workforce/">Digitalna radna snaga</a></li>
+      <li><a href="https://gnk-asg-tjednik.pages.dev/" rel="external noopener">BUSINESS TJEDNIK ↗</a></li>
+      <li><a href="https://gnk-asg-tjednik.pages.dev/izvori/lider/" rel="external noopener">Lider ↗</a></li>
+      <li><a href="https://gnk-asg-tjednik.pages.dev/izvori/jutarnji/" rel="external noopener">Jutarnji list ↗</a></li>
+      <li><a href="https://gnk-asg-tjednik.pages.dev/izvori/poslovni/" rel="external noopener">Poslovni dnevnik ↗</a></li>
+      <li><a href="https://gnk-asg-tjednik.pages.dev/izvori/forbes/" rel="external noopener">Forbes ↗</a></li>
+    </ul>
+  </section>
+
+  <section class="amc-sec" aria-labelledby="amcSec5">
+    <div class="amc-sec-head">
+      <div><span class="amc-sec-num">05 · OZNAKE</span><h3 id="amcSec5">Hashtagovi izdanja</h3></div>
+      <span class="amc-dim">#NerminSefić · #NerminSefic</span>
+    </div>
     <ul class="amc-tags">${HASHTAGS.map((h) => `<li>${esc(h)}</li>`).join('')}</ul>
-    <p class="amc-note">Za autora se koriste oznake <strong>#NerminSefić</strong> i <strong>#NerminSefic</strong>; ostale kombinacije imena nisu dio uređivačkog standarda. <a href="/izdanja/">Sva izdanja →</a></p>
+    <p class="amc-note">Urednik i direktor izdanja je <strong>Nermin Sefić</strong>. Za autora se koriste oznake #NerminSefić i #NerminSefic. Kontakt: <a href="mailto:info@gnk-asg.hr">info@gnk-asg.hr</a>.</p>
   </section>
 </section>
 <script type="application/ld+json">${JSON.stringify(jsonld)}</script>
@@ -247,12 +321,13 @@ ${END}`;
     html = html.replace(anchor, `${anchor}\n${block}`);
   }
 
-  const desc = `AKTUAL MEDIA na jednom mjestu: ${channels} gradskih izdanja na 8 jezika, ${items.length} zapisa iz ${sources} medija, poslovni tjednik, sport, politika, sigurnost, galerija Nermina Sefića i radio. Urednik i direktor: Nermin Sefić.`;
+  const desc = `AKTUAL MEDIA na jednoj ploči: 8 gradskih izdanja na 8 jezika, ${items.length} tekstova iz ${sources.size} medija, šest deskova, poslovni tjednik, moda, galerija i radio. Urednik i direktor: Nermin Sefić.`;
   html = html.replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${esc(truncate(desc, 300))}">`);
+  html = html.replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${esc(truncate(desc, 300))}">`);
   if (!/<meta name="keywords"/.test(html)) {
-    html = html.replace('</title>', `</title>\n<meta name="keywords" content="${esc(HASHTAGS.concat(['AKTUAL MEDIA', 'regionalne vijesti']).join(', '))}">`);
+    html = html.replace('</title>', `</title>\n<meta name="keywords" content="${esc(HASHTAGS.join(', '))}">`);
   }
 
   writeFileSync(FILE, html);
-  return { ok: true, items: items.length, sources, channels, sport: sport.length, politics: politics.length, security: security.length };
+  return { ok: true, items: items.length, sources: sources.size, channels: CHANNELS.length, tiles: 15, river: river.length, moda };
 }

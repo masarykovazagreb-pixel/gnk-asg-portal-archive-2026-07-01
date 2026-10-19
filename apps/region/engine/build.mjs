@@ -111,7 +111,7 @@ function header(channel, strings, active = '', root = '') {
     ['metodologija/', strings.methodology]
   ].map(([href, label]) => `<a href="${root}${href}"${href === active ? ' aria-current="page"' : ''}>${esc(label)}</a>`).join('');
   return `<header class="top">
-  <div class="topbar"><span>${esc(strings.editionOf)}</span><span>AKTUAL MEDIA</span></div>
+  <div class="topbar"><span>${esc(strings.editionOf)}</span><a class="topback" href="https://gnk-asg.hr/gnk-aktual/" rel="external noopener">← AKTUAL MEDIA · sve na jednom mjestu</a></div>
   <div class="masthead">
     <div class="brand">
       <span class="kicker">${esc(channel.country)} · ${esc(channel.city)}</span>
@@ -132,7 +132,18 @@ function footer(channel, strings, extra = '') {
   const others = CHANNELS.filter((c) => c.id !== channel.id);
   const links = others.map((c) => `<a href="${c.base}" rel="external noopener">${esc(c.title)}</a>`).join('');
   const tags = [...channel.hashtags, '#AktualMedia', '#NerminSefić'].map((x) => `<span class="tag">${esc(x)}</span>`).join(' ');
+  /* Pločice drugih izdanja: kamo god čitatelj ode, vidi i ostale stranice. */
+  const tiles = [...others, channel].map((c) => `<li class="xf-tile"><a href="${c.base}" rel="external noopener">
+      <img src="https://gnk-asg.hr/assets/izdanja/${c.id}-tile.webp" alt="${esc(c.title)} — ${esc(c.country)} — otvori izdanje" width="880" height="587" loading="lazy" decoding="async">
+    </a></li>`).join('');
+  const desks = [['sport', 'Sport'], ['politika', 'Politika'], ['sigurnost', 'Sigurnost'], ['biznis', 'Business'], ['tehnologija', 'Tehnologija'], ['moda', 'Moda']]
+    .map(([id, label]) => `<a href="https://gnk-asg.hr/izdanja/${id}/" rel="external noopener">${esc(label)}</a>`).join('');
   return `<footer class="foot">
+  <section class="xf" aria-label="Ostala izdanja AKTUAL MEDIA">
+    <div class="xf-head"><h2>Ostala izdanja — klik vodi na izdanje</h2><a href="${HUB}" rel="external">Sva izdanja →</a></div>
+    <ul class="xf-grid">${tiles}</ul>
+    <div class="xf-desks">${desks}<a href="https://gnk-asg-tjednik.pages.dev/" rel="external noopener">BUSINESS TJEDNIK ↗</a><a href="https://gnk-asg.hr/gnk-aktual/" rel="external noopener">AKTUAL MEDIA — sve na jednom mjestu ↗</a></div>
+  </section>
   <div class="footgrid">
     <div>
       <h2>${esc(strings.otherChannels)}</h2>
@@ -587,7 +598,22 @@ img{max-width:100%;height:auto}
 .skip{position:absolute;left:-9999px}
 .skip:focus{left:8px;top:8px;background:#fff;padding:8px;z-index:99}
 .top{background:var(--bg);color:var(--ink)}
-.topbar{display:flex;justify-content:space-between;gap:12px;font:600 11px/1.4 system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;padding:10px clamp(16px,4vw,48px);border-bottom:1px solid rgba(255,255,255,.14);color:var(--accent)}
+.xf{border-top:1px solid rgba(255,255,255,.16);padding:26px clamp(16px,4vw,48px) 8px;margin:0 auto;max-width:1400px}
+.xf-head{display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.xf-head h2{font:700 clamp(18px,2vw,24px)/1.2 Georgia,serif;margin:0;color:var(--ink)}
+.xf-head a{color:var(--accent);font:700 12px/1 system-ui,sans-serif;text-decoration:none}
+.xf-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;list-style:none;padding:0;margin:0 0 14px}
+.xf-tile{border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.14);transition:transform .2s ease,border-color .2s ease}
+.xf-tile:hover{transform:translateY(-2px);border-color:var(--accent)}
+.xf-tile img{display:block;width:100%;height:auto;aspect-ratio:880/587;object-fit:cover}
+.xf-desks{display:flex;flex-wrap:wrap;gap:8px}
+.xf-desks a{font:700 11.5px/1 system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:8px 12px;text-decoration:none}
+.xf-desks a:hover{border-color:var(--accent);color:var(--accent)}
+@media(max-width:900px){.xf-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){.xf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;font:600 11px/1.4 system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;padding:10px clamp(16px,4vw,48px);border-bottom:1px solid rgba(255,255,255,.14);color:var(--accent)}
+.topbar .topback{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(233,198,108,.5);padding-bottom:2px;letter-spacing:.1em}
+.topbar .topback:hover{color:#fff;border-bottom-color:#fff}
 .masthead{display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:flex-end;padding:clamp(20px,4vw,40px) clamp(16px,4vw,48px)}
 .kicker{display:block;font:600 12px/1.4 system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--accent2)}
 .logo{display:block;font:700 clamp(30px,5vw,54px)/1.02 Georgia,serif;letter-spacing:-.01em;margin:6px 0 8px;color:var(--ink)}

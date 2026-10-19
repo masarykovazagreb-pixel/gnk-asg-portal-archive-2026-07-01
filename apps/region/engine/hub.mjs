@@ -33,7 +33,7 @@ const channelData = (id) => readJSON(join(DATA, `${id}.json`), { items: [], upda
 
 export const EDITION_META = {
   zagreb: {
-    name: 'KANAL ZAGREB',
+    name: 'AKTUAL MEDIA KANAL ZAGREB',
     url: 'https://gnk-asg-kanal.pages.dev/',
     langLabel: 'hrvatski',
     kicker: 'Hrvatska · Zagreb',
@@ -41,7 +41,7 @@ export const EDITION_META = {
     hashtags: ['#KanalZagreb', '#Hrvatska', '#Zagreb', '#AIACT', '#GDPR', '#AktualMedia']
   },
   beograd: {
-    name: 'KANAL BEOGRAD',
+    name: 'AKTUAL MEDIA KANAL BEOGRAD',
     url: 'https://gnk-asg-kanal-beograd.pages.dev/',
     langLabel: 'srpski',
     kicker: 'Srbija · Beograd',
@@ -49,7 +49,7 @@ export const EDITION_META = {
     hashtags: ['#KanalBeograd', '#Srbija', '#Beograd', '#N1', '#Danas', '#AktualMedia']
   },
   sarajevo: {
-    name: 'KANAL SARAJEVO',
+    name: 'AKTUAL MEDIA KANAL SARAJEVO',
     url: 'https://gnk-asg-kanal-sarajevo.pages.dev/',
     langLabel: 'bosanski',
     kicker: 'Bosna i Hercegovina · Sarajevo',
@@ -57,7 +57,7 @@ export const EDITION_META = {
     hashtags: ['#KanalSarajevo', '#BiH', '#Sarajevo', '#N1BiH', '#Klix', '#AktualMedia']
   },
   budimpesta: {
-    name: 'KANAL BUDIMPEŠTA',
+    name: 'AKTUAL MEDIA KANAL BUDAPEST',
     url: 'https://gnk-asg-kanal-budimpesta.pages.dev/',
     langLabel: 'mađarski',
     kicker: 'Mađarska · Budimpešta',
@@ -65,7 +65,7 @@ export const EDITION_META = {
     hashtags: ['#KanalBudimpesta', '#Magyarorszag', '#Budapest', '#Telex', '#HVG', '#AktualMedia']
   },
   ljubljana: {
-    name: 'KANAL LJUBLJANA',
+    name: 'AKTUAL MEDIA KANAL LJUBLJANA',
     url: 'https://gnk-asg-kanal-ljubljana.pages.dev/',
     langLabel: 'slovenski',
     kicker: 'Slovenija · Ljubljana',
@@ -73,7 +73,7 @@ export const EDITION_META = {
     hashtags: ['#KanalLjubljana', '#Slovenija', '#Ljubljana', '#STA', '#Delo', '#AktualMedia']
   },
   rim: {
-    name: 'CANALE ROMA',
+    name: 'AKTUAL MEDIA KANAL ROMA',
     url: 'https://gnk-asg-kanal-rim.pages.dev/',
     langLabel: 'talijanski',
     kicker: 'Italija · Roma',
@@ -81,7 +81,7 @@ export const EDITION_META = {
     hashtags: ['#CanaleRoma', '#Italia', '#Roma', '#ANSA', '#IlPost', '#AktualMedia']
   },
   sofija: {
-    name: 'KANAL SOFIJA',
+    name: 'AKTUAL MEDIA KANAL SOFIJA',
     url: 'https://gnk-asg-kanal-sofija.pages.dev/',
     langLabel: 'bugarski',
     kicker: 'Bugarska · Sofija',
@@ -89,7 +89,7 @@ export const EDITION_META = {
     hashtags: ['#KanalSofija', '#Bulgaria', '#Sofia', '#BTA', '#Capital', '#AktualMedia']
   },
   bukurest: {
-    name: 'CANALUL BUCUREȘTI',
+    name: 'AKTUAL MEDIA KANAL BUCUREȘTI',
     url: 'https://gnk-asg-kanal-bukurest.pages.dev/',
     langLabel: 'rumunjski',
     kicker: 'România · București',
@@ -114,6 +114,31 @@ const DESKS = {
     theme: 'politika',
     description: 'Politički desk okuplja političke tekstove iz svih gradskih kanala i pokazuje kako su naslovljeni u pojedinim zemljama. Cilj je usporedba okvira: ista odluka u Zagrebu, Beogradu, Sarajevu, Budimpešti, Ljubljani, Rimu, Sofiji i Bukureštu ne izgleda jednako. Svaki zapis nosi izvor, datum i izravnu poveznicu, a osvrt se bavi načinom izvještavanja, ne političkim stavom redakcije. Stranica ne donosi preporuke ni ocjene stranaka; donosi pitanja koja treba postaviti prije zaključka. Ažurira se iz istih dnevnih podataka kao i gradski kanali.',
     hashtags: ['#Politika', '#Izbori', '#Regija', '#AktualMedia', '#GNKASG']
+  },
+  biznis: {
+    name: 'BUSINESS — AKTUAL MEDIA',
+    title: 'Business desk: tržišta, bilance i kapital regije',
+    lang: 'hr',
+    theme: 'ekonomija',
+    description: 'Business desk skuplja poslovne tekstove iz svih gradskih kanala AKTUAL MEDIA i pokazuje što je stvarno objavljeno, a što je najavljeno. Prate se tržišta, bilance, investicije, kamate i koncentracija kapitala u osam zemalja regije. Svaki zapis nosi izvor, datum i poveznicu na izvornik, a osvrt se bavi time kako je brojka iz naslova objašnjena u tijelu teksta. Stranica ne daje investicijske preporuke i ne ocjenjuje tvrtke; daje pitanja koja treba postaviti prije odluke. Ažurira se iz istih dnevnih podataka kao i gradski kanali.',
+    hashtags: ['#Business', '#Trzista', '#Bilance', '#AktualMedia', '#GNKASG']
+  },
+  tehnologija: {
+    name: 'TEHNOLOGIJA — AKTUAL MEDIA',
+    title: 'Tehnološki desk: AI, platforme i infrastruktura',
+    lang: 'hr',
+    theme: 'ai',
+    description: 'Tehnološki desk prati umjetnu inteligenciju, platforme, podatkovnu infrastrukturu i digitalizaciju javnog sektora u regiji. Osvrti razlikuju objavljeni proizvod od najave, pilot-projekt od primjene i brojku iz priopćenja od brojke iz izvješća. Uz svaki zapis stoji poveznica na izvornik i datum, pa se tvrdnja može provjeriti do izvora. Desk pokriva i teme koje utječu na poslovanje: regulaciju AI-ja, kibernetičku otpornost i nabavu infrastrukture. Stranica se osvježava iz dnevnih podataka svih gradskih kanala.',
+    hashtags: ['#Tehnologija', '#UmjetnaInteligencija', '#Platforme', '#AktualMedia', '#GNKASG']
+  },
+  moda: {
+    name: 'MODA — AKTUAL MEDIA',
+    title: 'Modni desk: stil, dizajn i brendovi regije',
+    lang: 'hr',
+    theme: 'drustvo',
+    filter: /moda|modn|dizajn|stil|kolekcij|revij|fashion|brend|tkanin|obuć|obuc|nakladn/i,
+    description: 'Modni desk okuplja tekstove o modi, dizajnu i stilu iz svih gradskih kanala AKTUAL MEDIA. Ne donosi ocjene ukusa i ne prenosi PR tekstove kao vijesti: prati što je objavljeno, tko potpisuje kolekciju i kakav je poslovni model iza brenda. Posebna pažnja ide lokalnim dizajnerima, tekstilnoj proizvodnji i tržištu luksuza u regiji. Svaki zapis nosi izvor, datum i izravnu poveznicu, a fotografije se ne preuzimaju bez prava. Desk je tjedni pregled, a ne katalog proizvoda.',
+    hashtags: ['#Moda', '#Dizajn', '#Stil', '#AktualMedia', '#GNKASG']
   },
   sigurnost: {
     name: 'SIGURNOST I KIBERNETIKA',
@@ -206,13 +231,13 @@ ${body}
 </html>`;
 }
 
-const portalHeader = (active, { h1 = true } = {}) => `<div class="iz-top"><div class="iz-wrap"><span>AKTUAL MEDIA d.o.o. · Izdanja</span><a href="/gnk-aktual/">← AKTUAL MEDIA</a></div></div>
+const portalHeader = (active, { h1 = true } = {}) => `<div class="iz-top"><div class="iz-wrap"><span>AKTUAL MEDIA d.o.o. · Naša izdanja</span><a href="/gnk-aktual/">← AKTUAL MEDIA · sve na jednom mjestu</a></div></div>
 <header class="iz-head"><div class="iz-wrap">
   <p class="k">GNK ASG · AKTUAL MEDIA · regionalna izdanja</p>
   ${h1 ? `<h1>Naša izdanja</h1>
   <p>Osam gradskih kanala, poslovni tjednik, sportski, politički i sigurnosni desk te galerija. Svako izdanje ima vlastiti link, svoj jezik, svoj feed i svoju metodologiju — a sve se vraća ovamo.</p>`
     : `<p class="iz-home-h1"><a href="/izdanja/">Naša izdanja</a> <span aria-hidden="true">·</span> desk</p>`}
-  <nav class="iz-nav" aria-label="Izdanja">${['', 'sport/', 'politika/', 'sigurnost/'].map((p, i) => `<a href="/izdanja/${p}"${active === p ? ' aria-current="page"' : ''}>${['Sva izdanja', 'Sport', 'Politika', 'Sigurnost'][i]}</a>`).join('')}<a href="/galerija/">Galerija</a><a href="/gnk-aktual/">AKTUAL MEDIA</a></nav>
+  <nav class="iz-nav" aria-label="Izdanja">${['', 'sport/', 'politika/', 'sigurnost/', 'biznis/', 'tehnologija/', 'moda/'].map((p, i) => `<a href="/izdanja/${p}"${active === p ? ' aria-current="page"' : ''}>${['Sva izdanja', 'Sport', 'Politika', 'Sigurnost', 'Business', 'Tehnologija', 'Moda'][i]}</a>`).join('')}<a href="/galerija/">Galerija</a><a href="/gnk-aktual/">AKTUAL MEDIA</a></nav>
 </div></header>`;
 
 const portalFooter = () => `<footer class="iz-foot"><div class="iz-wrap">
@@ -288,10 +313,10 @@ function hubPage() {
 ${portalFooter()}`;
 
   return portalShell({
-    title: 'Naša izdanja — AKTUAL MEDIA · osam gradskih kanala, tjednik i deskovi',
-    description: 'Sva izdanja AKTUAL MEDIA na jednom mjestu: KANAL ZAGREB, BEOGRAD, SARAJEVO, BUDIMPEŠTA, LJUBLJANA, CANALE ROMA, SOFIJA, BUCUREȘTI, BUSINESS TJEDNIK, sport, politika, sigurnost i galerija Nermina Sefića.',
+    title: 'Naša izdanja — AKTUAL MEDIA · osam gradskih kanala AKTUAL MEDIA KANAL, tjednik i deskovi',
+    description: 'Sva izdanja AKTUAL MEDIA na jednom mjestu: AKTUAL MEDIA KANAL ZAGREB, BEOGRAD, SARAJEVO, BUDAPEST, LJUBLJANA, ROMA, SOFIJA, BUCUREȘTI, BUSINESS TJEDNIK, šest deskova i galerija Nermina Sefića.',
     path: '',
-    keywords: ['AKTUAL MEDIA', 'izdanja', 'KANAL ZAGREB', 'KANAL BEOGRAD', 'KANAL SARAJEVO', 'KANAL BUDIMPEŠTA', 'KANAL LJUBLJANA', 'CANALE ROMA', 'KANAL SOFIJA', 'CANALUL BUCURESTI', 'BUSINESS TJEDNIK', 'GNK ASG'],
+    keywords: ['AKTUAL MEDIA', 'izdanja', 'AKTUAL MEDIA KANAL ZAGREB', 'AKTUAL MEDIA KANAL BEOGRAD', 'AKTUAL MEDIA KANAL SARAJEVO', 'AKTUAL MEDIA KANAL BUDAPEST', 'AKTUAL MEDIA KANAL LJUBLJANA', 'AKTUAL MEDIA KANAL ROMA', 'AKTUAL MEDIA KANAL SOFIJA', 'AKTUAL MEDIA KANAL BUCUREȘTI', 'BUSINESS TJEDNIK', 'GNK ASG'],
     jsonld: [
       { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Naša izdanja — AKTUAL MEDIA', url: HUB, inLanguage: 'hr', isPartOf: { '@type': 'WebSite', name: 'AKTUAL MEDIA', url: 'https://gnk-asg.hr/' } },
       { '@context': 'https://schema.org', '@type': 'ItemList', name: 'Izdanja AKTUAL MEDIA', numberOfItems: CHANNELS.length + 8, itemListElement: CHANNELS.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.title, url: c.base })) },
@@ -332,13 +357,14 @@ const PLATFORMS = [
 
 /* ---------- deskovi ---------- */
 
-function collect(theme) {
+function collect(theme, filter = null) {
   const out = [];
   for (const channel of CHANNELS) {
     const data = channelData(channel.id);
-    for (const item of data.items.slice(0, 60)) {
+    for (const item of data.items) {
       const itemTheme = themeFor(`${item.title} ${item.summary}`).id;
       if (itemTheme !== theme) continue;
+      if (filter && !filter.test(`${item.title} ${item.summary}`)) continue;
       out.push({ ...item, channel });
     }
   }
@@ -349,7 +375,7 @@ function collect(theme) {
 }
 
 function deskPage(id, desk) {
-  const items = collect(desk.theme);
+  const items = collect(desk.theme, desk.filter || null);
   const results = items.map((i) => ({ item: i, score: scoreFromTitle(i.title) })).filter((x) => x.score).slice(0, 12);
   const bySource = new Map();
   for (const item of items) {
@@ -457,7 +483,7 @@ ${entries.map((e) => `<url><loc>${e.loc}</loc><changefreq>daily</changefreq><pri
     console.log(`::warning::Središnji blok nije izgrađen: ${error.message}`);
   }
 
-  return { channels: CHANNELS.length, sport: collect('sport').length, politics: collect('politika').length, security: collect('sigurnost').length };
+  return { channels: CHANNELS.length, sport: collect('sport').length, politics: collect('politika').length, security: collect('sigurnost').length, biznis: collect('ekonomija').length, tehnologija: collect('ai').length, moda: collect('drustvo', DESKS.moda.filter).length };
 }
 
 /* ---------- blok na AKTUAL MEDIA ---------- */

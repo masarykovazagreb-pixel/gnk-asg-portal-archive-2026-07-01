@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-label="Apstraktni sportski motiv: stadionski lukovi i zlatna lopta na tamnoj podlozi">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#08131f"/><stop offset=".55" stop-color="#0b1d33"/><stop offset="1" stop-color="#06101c"/></linearGradient>
+<linearGradient id="gold" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#8f6a20"/><stop offset=".5" stop-color="#e9c66c"/><stop offset="1" stop-color="#fff0c4"/></linearGradient>
+<linearGradient id="glow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9c66c" stop-opacity=".22"/><stop offset="1" stop-color="#e9c66c" stop-opacity="0"/></linearGradient>
+<radialGradient id="vig" cx=".5" cy=".42" r=".75"><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></radialGradient>
+<filter id="soft"><feGaussianBlur stdDeviation="18"/></filter>
+</defs>
+<rect width="1200" height="800" fill="url(#bg)"/>
+<ellipse cx="640" cy="300" rx="420" ry="240" fill="url(#glow)" filter="url(#soft)"/>
+<g stroke="#7fd0e8" stroke-opacity=".10" stroke-width="1">
+<line x1="0" y1="0" x2="0" y2="800"/><line x1="60" y1="0" x2="60" y2="800"/><line x1="120" y1="0" x2="120" y2="800"/><line x1="180" y1="0" x2="180" y2="800"/><line x1="240" y1="0" x2="240" y2="800"/><line x1="300" y1="0" x2="300" y2="800"/><line x1="360" y1="0" x2="360" y2="800"/><line x1="420" y1="0" x2="420" y2="800"/><line x1="480" y1="0" x2="480" y2="800"/><line x1="540" y1="0" x2="540" y2="800"/><line x1="600" y1="0" x2="600" y2="800"/><line x1="660" y1="0" x2="660" y2="800"/><line x1="720" y1="0" x2="720" y2="800"/><line x1="780" y1="0" x2="780" y2="800"/><line x1="840" y1="0" x2="840" y2="800"/><line x1="900" y1="0" x2="900" y2="800"/><line x1="960" y1="0" x2="960" y2="800"/><line x1="1020" y1="0" x2="1020" y2="800"/><line x1="1080" y1="0" x2="1080" y2="800"/><line x1="1140" y1="0" x2="1140" y2="800"/><line x1="1200" y1="0" x2="1200" y2="800"/><line x1="0" y1="0" x2="1200" y2="0"/><line x1="0" y1="60" x2="1200" y2="60"/><line x1="0" y1="120" x2="1200" y2="120"/><line x1="0" y1="180" x2="1200" y2="180"/><line x1="0" y1="240" x2="1200" y2="240"/><line x1="0" y1="300" x2="1200" y2="300"/><line x1="0" y1="360" x2="1200" y2="360"/><line x1="0" y1="420" x2="1200" y2="420"/><line x1="0" y1="480" x2="1200" y2="480"/><line x1="0" y1="540" x2="1200" y2="540"/><line x1="0" y1="600" x2="1200" y2="600"/><line x1="0" y1="660" x2="1200" y2="660"/><line x1="0" y1="720" x2="1200" y2="720"/><line x1="0" y1="780" x2="1200" y2="780"/>
+<g stroke="url(#gold)" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="6" opacity=".95">
+  <ellipse cx="600" cy="470" rx="360" ry="150"/>
+  <ellipse cx="600" cy="470" rx="268" ry="104" stroke-opacity=".65"/>
+  <ellipse cx="600" cy="470" rx="180" ry="64" stroke-opacity=".45"/>
+  <path d="M240 470c0 96 161 174 360 174s360-78 360-174"/>
+  <path d="M300 262h600" stroke-opacity=".35"/>
+  <path d="M600 200v120" stroke-opacity=".35"/>
+</g>
+<circle cx="600" cy="470" r="46" fill="url(#gold)" opacity=".92"/>
+<path d="M600 424a46 46 0 0 1 0 92" fill="#0b1d33" opacity=".55"/>
+<g stroke="#7fd0e8" stroke-opacity=".25" stroke-width="3" fill="none">
+  <path d="M120 640h960"/><path d="M150 672h900"/><path d="M180 704h840"/>
+</g>
+</g>
+<rect width="1200" height="800" fill="url(#vig)"/>
+</svg>
