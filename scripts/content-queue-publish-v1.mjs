@@ -59,6 +59,37 @@ function materializeColumnCovers(routes,registry){
   }
 }
 
+// Repair newly published pages with missing thematic covers inside the existing
+// fenced single-writer workflow. Do not create a second publisher or bypass CI.
+function repairMissingEditorialCovers() {
+  const registry=read('apps/portal/data/editorial-registry.json');
+  const manifest=read('apps/portal/data/editorial-image-manifest.json');
+  const byPath=new Map((manifest.items||[]).map(entry=>[entry.path,entry]));
+  const missing=(registry.items||[]).filter(entry=>{
+    if(!entry.path||!['komentar','kolumna','analiza','objava'].includes(entry.type))return false;
+    if(entry.path.startsWith('/sports-performance-tracking/')||entry.path.startsWith('/banking/'))return false;
+    const record=byPath.get(entry.path);
+    return !record || !record.image || !existsSync('apps/portal'+record.image);
+  }).map(entry=>entry.path);
+  if(!missing.length)return {changed:false,repaired:[]};
+  console.log('Missing source-linked covers: '+missing.join(', '));
+  runNode('scripts/generate-editorial-cover-assets-v1.mjs');
+  const after=read('apps/portal/data/editorial-image-manifest.json');
+  const repairedByPath=new Map((after.items||[]).map(entry=>[entry.path,entry]));
+  for(const route of missing){
+    const img=repairedByPath.get(route)?.image;
+    if(!img||!existsSync('apps/portal'+img))throw new Error('Generated cover missing for '+route);
+  }
+  // Only touch newly repaired routes; historical authorship/content stays intact.
+  const temp=mkdtempSync(join(os.tmpdir(),'gnk-editorial-cover-repair-'));
+  try{
+    const routesFile=join(temp,'routes.json');
+    writeFileSync(routesFile,JSON.stringify(missing)+'\n');
+    runNode('scripts/apply-editorial-publication-completeness-v1.mjs',['--write','--routes-file',routesFile]);
+  }finally{rmSync(temp,{recursive:true,force:true});}
+  return {changed:true,repaired:missing};
+}
+
 const preflight=preflightContentQueue({root:process.cwd(),now:CURRENT_NOW});
 if(!preflight.ok)throw new Error('Content queue preflight failed: '+preflight.errors.join('; '));
 const queue=read('content/factory-queue/queue.json');
@@ -71,7 +102,8 @@ const due=queue.items.filter(x=>dueIds.has(x.id));
 console.log(`Zagreb now: ${date} ${time} | due & unpublished: ${due.length} | skipped: ${skipped.size}`);
 if(!due.length){
   const archive=refreshColumnArchive();
-  console.log(JSON.stringify({changed:archive.changed,archive,preflight:preflight.version},null,2));
+  const covers=repairMissingEditorialCovers();
+  console.log(JSON.stringify({changed:archive.changed||covers.changed,archive,covers,preflight:preflight.version},null,2));
   process.exit(0);
 }
 
@@ -157,4 +189,5 @@ if(newColumnRoutes.length){
   write(registryPath,JSON.stringify(registry,null,2)+'\n');
 }
 const archive=refreshColumnArchive();
-console.log(JSON.stringify({changed:published.length>0||archive.changed,published,columnArchive:archive},null,2));
+const covers=repairMissingEditorialCovers();
+console.log(JSON.stringify({changed:published.length>0||archive.changed||covers.changed,published,columnArchive:archive,covers},null,2));
