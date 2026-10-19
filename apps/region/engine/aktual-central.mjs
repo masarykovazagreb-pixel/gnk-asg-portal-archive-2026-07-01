@@ -102,7 +102,7 @@ function cityTiles(cards) {
     return tile({
       href: c.base, img: `${c.id}-tile.webp`, alt: CITY_ALT[c.id] || `${c.title} — klik otvara izdanje.`,
       external: true, badge: card.count ? `${card.count} tekstova` : '',
-      sub: { href: `${c.base}mravinjak/`, label: 'Mravinjak', cta: `svih ${card.count || ''} naslova`.trim() }
+      sub: { href: `${c.base}mravinjak/`, label: 'Mravinjak', cta: card.count ? `svih ${card.count} naslova` : 'svi naslovi' }
     });
   }).join('');
 }
