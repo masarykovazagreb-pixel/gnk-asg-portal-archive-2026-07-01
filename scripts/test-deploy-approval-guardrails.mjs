@@ -102,16 +102,37 @@ forbidText('legacy public-assets validation',publicAssetsValidation,['workflow_d
 assert.equal(/wrangler@4 deploy(?! --dry-run)/.test(publicAssetsValidation),false);
 
 const approved='.github/workflows/deploy-admin-auth-v6.yml';
+// Kanali se objavljuju na vlastite Cloudflare Pages projekte. To nije
+// produkcijski portal (gnk-asg.hr), pa je dopušten samo točno navedeni
+// projekt po workflowu; sve ostalo ostaje zabranjeno.
+const channelPagesProjects={
+ 'kanal-deploy.yml':'gnk-asg-kanal',
+ 'kanal-daily.yml':'gnk-asg-kanal',
+ 'tjednik-deploy.yml':'gnk-asg-tjednik',
+ 'tjednik-daily.yml':'gnk-asg-tjednik'
+};
+const channelDeployments=[];
 const violations=[];
 for(const file of fs.readdirSync('.github/workflows').filter(f=>/\.ya?ml$/i.test(f))){
  const path=`.github/workflows/${file}`;
  if(path===approved)continue;
  const source=read(path);
  const writeLine=source.split(/\r?\n/).find(line=>/^\s*(?:run:\s*)?(?:(?:npx|bunx)\s+(?:--yes\s+)?|(?:pnpm|yarn)\s+(?:dlx\s+)?)?wrangler(?:@\d+)?\s+(?:pages\s+)?deploy\b/i.test(line)&&!/--dry-run\b/i.test(line));
- if(writeLine)violations.push(`${file}: ${writeLine.trim()}`);
+ if(writeLine){
+  const project=(source.match(/--project-name=([a-z0-9-]+)/i)||[])[1]||'';
+  const expected=channelPagesProjects[file];
+  if(!expected)violations.push(`${file}: ${writeLine.trim()} (workflow not allowlisted for channel deploys)`);
+  else if(project!==expected)violations.push(`${file}: deploys ${project||'(no project)'} instead of ${expected}`);
+  else channelDeployments.push(`${file}:${project}`);
+ }
  if(/^\s*environment:\s*production\s*$/im.test(source))violations.push(`${file}: production environment`);
 }
 assert.deepEqual(violations,[],'Only deploy-admin-auth-v6.yml may contain production deployment capability');
+assert.deepEqual(
+ [...new Set(channelDeployments)].sort(),
+ Object.entries(channelPagesProjects).map(([file,project])=>`${file}:${project}`).sort(),
+ 'channel deploy allowlist must match exactly'
+);
 
 requireText('preflight',preflight,['gnk-asg-news-backend','/newsroom/','/en/newsroom/','No production changes were made']);
 assert.doesNotMatch(preflight,/\bwrangler\b|api\.cloudflare\.com|cloudflare_api_token|cloudflare_account_id/i);
@@ -126,5 +147,6 @@ console.log(JSON.stringify({
  diagnosticsArtifact:true,
  searchNotifications:'default-off-explicit-opt-in-required',
  externalDistribution:'manual-per-run-owner-opt-in-required',
- alternateProductionDeploys:false
+ alternateProductionDeploys:false,
+ channelPagesDeployments:channelDeployments.length
 },null,2));

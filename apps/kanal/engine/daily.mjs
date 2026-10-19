@@ -28,6 +28,17 @@ const KANAL = join(HERE, '..');
 const SRC = join(KANAL, 'src');
 const ARTICLES = join(SRC, 'articles');
 const STATE_PATH = join(HERE, 'state.json');
+// Poštuj kill-switch iz ops/automation-kill-switches.json. Isključen kanal ne
+// smije proizvesti ni commit ni deploy; workflow tada završi bez promjene.
+const ROOT = join(HERE, '..', '..', '..');
+const KILL_PATH = join(ROOT, 'ops', 'automation-kill-switches.json');
+if (existsSync(KILL_PATH)) {
+  const kill = JSON.parse(readFileSync(KILL_PATH, 'utf8'));
+  if (kill?.channels?.kanalPublish?.enabled !== true) {
+    console.log('kanalPublish je isključen u ops/automation-kill-switches.json — izdanje se ne gradi.');
+    process.exit(0);
+  }
+}
 
 const arg = (name, fallback) => {
   const i = process.argv.indexOf(name);

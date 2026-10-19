@@ -28,6 +28,16 @@ const SRC = join(APP, 'src');
 const CRITIQUES = join(SRC, 'critiques');
 const STATE_PATH = join(HERE, 'state.json');
 const RUN_PATH = join(HERE, 'last-run.json');
+// Poštuj kill-switch. Isključen tjednik ne piše nove osvrte i ne pokreće build.
+const ROOT = join(HERE, '..', '..', '..');
+const KILL_PATH = join(ROOT, 'ops', 'automation-kill-switches.json');
+if (existsSync(KILL_PATH)) {
+  const kill = JSON.parse(readFileSync(KILL_PATH, 'utf8'));
+  if (kill?.channels?.tjednikPublish?.enabled !== true) {
+    console.log('tjednikPublish je isključen u ops/automation-kill-switches.json — osvrti se ne grade.');
+    process.exit(0);
+  }
+}
 const SOURCES_PATH = join(HERE, 'sources.json');
 
 const arg = (name, fallback) => {
