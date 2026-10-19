@@ -578,7 +578,9 @@ function buildHome() {
   const latest = ARTICLES.slice(1, 6);
   const analysis = ARTICLES.filter((a) => a.section === 'analiza').slice(0, 3);
   const regulation = ARTICLES.filter((a) => ['regulacija', 'gospodarstvo'].includes(a.section)).slice(0, 3);
-  const explanation = ARTICLES.find((a) => a.section === 'pojasnjenje') || ARTICLES[1];
+  const explanation = ARTICLES.find((a) => a.section === 'pojasnjenje' && a.kind !== 'desk')
+    || ARTICLES.find((a) => a.kind !== 'desk')
+    || ARTICLES[1];
   const comments = ARTICLES.filter((a) => a.section === 'komentar').slice(0, 2);
 
   const content = `<div class="wrap">
@@ -614,10 +616,10 @@ function buildHome() {
     <div class="feature">
       <img src="${explanation.og || explanation.image}" alt="${esc(explanation.imageAlt || explanation.title)}" width="1200" height="630" loading="lazy">
       <div class="feature-body">
-        ${kicker(explanation.section, root)}
+        ${kicker(explanation.section, root, explanation.kind)}
         <h2><a href="${explanation.slug}/">${esc(explanation.title)}</a></h2>
         <p>${esc(explanation.dek)}</p>
-        <div class="byline"><b>Nermin Sefić</b><span class="sep">·</span><time datetime="${explanation.date}">${hrDate(explanation.date)}</time></div>
+        <div class="byline"><b>${esc(authorOf(explanation).name)}</b><span class="sep">·</span><time datetime="${explanation.date}">${hrDate(explanation.date)}</time></div>
       </div>
     </div>
   </section>
