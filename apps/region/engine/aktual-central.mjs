@@ -134,7 +134,7 @@ function riverColumn(items) {
   return `<ul class="amc-river-col">${items.map((item) => `<li>
       <time datetime="${esc(item.date)}">${esc(shortDate(item.date.slice(0, 10)))}</time>
       <a href="${esc(linkFor(item))}">${esc(truncate(item.title, 92))}</a>
-      <span class="amc-river-src">${esc(item.sourceName)} · ${esc(item.channel.title.replace(/^(KANAL|CANALE|CANALUL)\s+/, ''))}</span>
+      <span class="amc-river-src" title="${esc(item.channel.title)}">${esc(item.sourceName)} · ${esc(item.channel.city)}</span>
     </li>`).join('')}</ul>`;
 }
 
@@ -150,7 +150,18 @@ export function buildAktualCentral({ cards = [] } = {}) {
   const politics = items.filter((i) => i.theme === 'politika').length;
   const security = items.filter((i) => ['sigurnost', 'rat', 'potres'].includes(i.theme)).length;
 
-  const river = items.slice(0, 57);
+  /* Rijeka 3 × 19: kanali se izmjenjuju, pa svaki stupac nosi više izdanja. */
+  const byChannel = new Map(CHANNELS.map((c) => [c.id, []]));
+  for (const item of [...items].sort((a, b) => String(b.date).localeCompare(String(a.date)))) {
+    byChannel.get(item.channel.id)?.push(item);
+  }
+  const queues = [...byChannel.values()].filter((queue) => queue.length);
+  const river = [];
+  for (let round = 0; river.length < 57 && queues.some((queue) => queue.length > round); round += 1) {
+    for (const queue of queues) {
+      if (queue[round] && river.length < 57) river.push(queue[round]);
+    }
+  }
   const third = Math.ceil(river.length / 3);
   const columns = [river.slice(0, third), river.slice(third, third * 2), river.slice(third * 2)];
 
