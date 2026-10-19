@@ -43,6 +43,173 @@ const checksFor = (item, strings) => {
 
 const themeOf = (item) => themeFor(`${item.title} ${item.summary}`).id;
 
+/* ---------- MRAVINJAK: gusti klaster naslova unutar izdanja ---------- */
+
+const MRV = {
+  hr: {
+    nav: 'Mravinjak', title: 'Mravinjak',
+    lead: (n, m) => `Gusto, bez uvoda: ${n} naslova iz ${m} izvora u ovom izdanju. Naslov vodi na osvrt, osvrt na izvornik — ništa se ne tvrdi bez linka.`,
+    all: 'Cijeli mravinjak', cross: 'Mravinjak svih izdanja', source: 'izvor'
+  },
+  sr: {
+    nav: 'Mravinjak', title: 'Mravinjak',
+    lead: (n, m) => `Gusto, bez uvoda: ${n} naslova iz ${m} izvora u ovom izdanju. Naslov vodi na osvrt, osvrt na izvornik — ništa se ne tvrdi bez linka.`,
+    all: 'Ceo mravinjak', cross: 'Mravinjak svih izdanja', source: 'izvor'
+  },
+  bs: {
+    nav: 'Mravinjak', title: 'Mravinjak',
+    lead: (n, m) => `Gusto, bez uvoda: ${n} naslova iz ${m} izvora u ovom izdanju. Naslov vodi na osvrt, osvrt na izvornik — ništa se ne tvrdi bez linka.`,
+    all: 'Cijeli mravinjak', cross: 'Mravinjak svih izdanja', source: 'izvor'
+  },
+  hu: {
+    nav: 'Hangyaboly', title: 'Hangyaboly',
+    lead: (n, m) => `Sűrűn, bevezető nélkül: ${n} cím ${m} forrásból ebben a kiadásban. A cím az elemzéshez, az elemzés az eredetihez visz — link nélkül nincs állítás.`,
+    all: 'Teljes hangyaboly', cross: 'Az összes kiadás hangyabolya', source: 'forrás'
+  },
+  sl: {
+    nav: 'Mravljišče', title: 'Mravljišče',
+    lead: (n, m) => `Gosto, brez uvoda: ${n} naslovov iz ${m} virov v tej izdaji. Naslov vodi do osvrta, osvrt do izvirnika — brez povezave ni trditve.`,
+    all: 'Celo mravljišče', cross: 'Mravljišče vseh izdaj', source: 'vir'
+  },
+  it: {
+    nav: 'Formicaio', title: 'Formicaio',
+    lead: (n, m) => `Fitto, senza introduzione: ${n} titoli da ${m} fonti di questa edizione. Il titolo porta all'analisi, l'analisi alla fonte — nessuna affermazione senza link.`,
+    all: 'Tutto il formicaio', cross: 'Il formicaio di tutte le edizioni', source: 'fonte'
+  },
+  bg: {
+    nav: 'Мравуняк', title: 'Мравуняк',
+    lead: (n, m) => `Гъсто, без увод: ${n} заглавия от ${m} източника в това издание. Заглавието води към анализа, анализът — към източника; без връзка няма твърдение.`,
+    all: 'Целият мравуняк', cross: 'Мравунякът на всички издания', source: 'източник'
+  },
+  ro: {
+    nav: 'Furnicar', title: 'Furnicar',
+    lead: (n, m) => `Des, fără introducere: ${n} titluri din ${m} surse în această ediție. Titlul duce la analiză, analiza la sursă — fără link nu există afirmație.`,
+    all: 'Tot furnicarul', cross: 'Furnicarul tuturor edițiilor', source: 'sursă'
+  }
+};
+
+const mrvStrings = (lang) => MRV[lang] || MRV.hr;
+
+/* Izvori se izmjenjuju kružno da se u stupcima ne nakuplja jedan medij. */
+function anthill(items, limit = 64) {
+  const buckets = [];
+  const index = new Map();
+  for (const item of items) {
+    const key = item.source || item.sourceName || '';
+    if (!index.has(key)) { index.set(key, buckets.length); buckets.push([]); }
+    buckets[index.get(key)].push(item);
+  }
+  const out = [];
+  let round = 0;
+  while (out.length < Math.min(limit, items.length) && round < items.length + 1) {
+    let added = false;
+    for (const bucket of buckets) {
+      if (bucket.length && out.length < limit) { out.push(bucket.shift()); added = true; }
+    }
+    if (!added) break;
+    round += 1;
+  }
+  return out;
+}
+
+function anthillList(channel, strings, items, { root = '' } = {}) {
+  const labels = strings.themeNames;
+  return items.map((item) => {
+    const theme = themeOf(item);
+    return `<a class="mrv-i" href="${root}clanak/${item.slug}/" title="${esc(item.title)} — ${esc(item.sourceName)}">
+      <b>${esc(item.sourceName)} <em>· ${esc(labels[theme] || theme)} · ${esc(shortDate(item.date.slice(0, 10), channel.lang))}</em></b>
+      <span>${esc(item.title)}</span>
+    </a>`;
+  }).join('');
+}
+
+function mravinjakSection(channel, strings, data) {
+  if (!data.items.length) return '';
+  const m = mrvStrings(channel.lang);
+  const dense = anthill(data.items, 64);
+  const sources = new Set(data.items.map((i) => i.sourceName)).size;
+  return `<section class="band" id="mravinjak">
+    <div class="mrv">
+      <div class="mrv-head">
+        <h2>${esc(m.title)} <span>· ${esc(channel.city)}</span></h2>
+        <span class="mrv-count">${dense.length} / ${data.items.length}</span>
+      </div>
+      <p class="mrv-lead">${esc(m.lead(dense.length, sources))}</p>
+      <div class="mrv-cols">${anthillList(channel, strings, dense)}</div>
+      <div class="mrv-foot">
+        <a href="mravinjak/">${esc(m.all)} — ${data.items.length} →</a>
+        <a href="https://gnk-asg.hr/gnk-aktual/#mravinjak" rel="external noopener">${esc(m.cross)} ↗</a>
+      </div>
+    </div>
+  </section>`;
+}
+
+function mravinjakPage(channel, strings, data) {
+  const m = mrvStrings(channel.lang);
+  const items = data.items;
+  const sources = new Set(items.map((i) => i.sourceName)).size;
+  const themeCount = new Map();
+  for (const item of items) {
+    const id = themeOf(item);
+    themeCount.set(id, (themeCount.get(id) || 0) + 1);
+  }
+  const chips = [...themeCount.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .map(([id, n]) => `<span class="chip">${esc(strings.themeNames[id] || id)} <strong>${n}</strong></span>`).join('');
+
+  const body = `${header(channel, strings, 'mravinjak/', '../')}
+<main id="sadrzaj" class="page">
+  <p class="dateline">${esc(channel.title)} · ${esc(strings.editionOf)}</p>
+  <h1>${esc(m.title)} — ${esc(channel.city)}</h1>
+  <p class="lead">${esc(m.lead(items.length, sources))}</p>
+  <p class="chips">${chips}</p>
+  <section class="mrv mrv--page">
+    <div class="mrv-head"><h2>${esc(m.title)} <span>· ${items.length}</span></h2><span class="mrv-count">${esc(channel.country)} · ${esc(channel.lang)}</span></div>
+    <div class="mrv-cols">${anthillList(channel, strings, items, { root: '../' })}</div>
+    <div class="mrv-foot">
+      <a href="../">← ${esc(channel.title)}</a>
+      <a href="https://gnk-asg.hr/gnk-aktual/#mravinjak" rel="external noopener">${esc(m.cross)} ↗</a>
+    </div>
+  </section>
+  <p class="small">${esc(strings.autoNote)}</p>
+  <p><a href="../">← ${esc(strings.back)}</a></p>
+</main>
+${footer(channel, strings)}`;
+
+  const jsonld = [
+    {
+      '@context': 'https://schema.org', '@type': 'CollectionPage',
+      '@id': `${url(channel, 'mravinjak/')}#mravinjak`, url: url(channel, 'mravinjak/'),
+      name: `${m.title} — ${channel.title}`, description: m.lead(items.length, sources),
+      inLanguage: channel.lang, isPartOf: { '@type': 'WebSite', '@id': `${channel.base}#website`, url: channel.base, name: channel.title },
+      publisher: { '@type': 'NewsMediaOrganization', name: 'AKTUAL MEDIA d.o.o.', url: HUB, email: CONTACT, editor: { '@type': 'Person', name: 'Nermin Sefić', url: 'https://gnk-asg.hr/nermin-sefic/' } }
+    },
+    {
+      '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'AKTUAL MEDIA', item: HUB },
+        { '@type': 'ListItem', position: 2, name: channel.title, item: channel.base },
+        { '@type': 'ListItem', position: 3, name: m.title, item: url(channel, 'mravinjak/') }
+      ]
+    },
+    {
+      '@context': 'https://schema.org', '@type': 'ItemList',
+      name: `${m.title} — ${channel.title}`, numberOfItems: items.length,
+      itemListElement: items.slice(0, 60).map((i, index) => ({ '@type': 'ListItem', position: index + 1, url: url(channel, `clanak/${i.slug}/`), name: i.title }))
+    }
+  ];
+
+  return shell(channel, strings, {
+    title: `${m.title} — ${channel.title} · ${items.length}`,
+    description: m.lead(items.length, sources),
+    path: 'mravinjak/',
+    keywords: [...channel.hashtags, '#Mravinjak', '#SeficNermin', channel.city, channel.country, 'AKTUAL MEDIA'],
+    jsonld,
+    body,
+    root: '../'
+  });
+}
+
 export function loadChannel(channel) {
   const file = join(DATA, `${channel.id}.json`);
   if (!existsSync(file)) return { version: 1, channel: channel.id, updatedAt: '', items: [] };
@@ -105,8 +272,10 @@ ${body}
 }
 
 function header(channel, strings, active = '', root = '') {
+  const mrvLabel = mrvStrings(channel.lang).nav;
   const nav = [
     ['', strings.latest],
+    ['mravinjak/', mrvLabel],
     ['izvori/', strings.sources],
     ['metodologija/', strings.methodology]
   ].map(([href, label]) => `<a href="${root}${href}"${href === active ? ' aria-current="page"' : ''}>${esc(label)}</a>`).join('');
@@ -131,7 +300,7 @@ function header(channel, strings, active = '', root = '') {
 function footer(channel, strings, extra = '') {
   const others = CHANNELS.filter((c) => c.id !== channel.id);
   const links = others.map((c) => `<a href="${c.base}" rel="external noopener">${esc(c.title)}</a>`).join('');
-  const tags = [...channel.hashtags, '#AktualMedia', '#NerminSefić'].map((x) => `<span class="tag">${esc(x)}</span>`).join(' ');
+  const tags = [...channel.hashtags, '#AktualMedia', '#NerminSefić', '#SeficNermin'].map((x) => `<span class="tag">${esc(x)}</span>`).join(' ');
   /* Pločice drugih izdanja: kamo god čitatelj ode, vidi i ostale stranice. */
   const tiles = [...others, channel].map((c) => `<li class="xf-tile"><a href="${c.base}" rel="external noopener">
       <img src="https://gnk-asg.hr/assets/izdanja/${c.id}-tile.webp" alt="${esc(c.title)} — ${esc(c.country)} — otvori izdanje" width="880" height="587" loading="lazy" decoding="async">
@@ -216,6 +385,8 @@ function homePage(channel, strings, data) {
     <div class="bandhead"><h2>${esc(strings.allNews)}</h2></div>
     <ul class="list">${more.map((i) => `<li><time datetime="${esc(i.date)}">${esc(shortDate(i.date.slice(0, 10), channel.lang))}</time><a href="clanak/${i.slug}/">${esc(i.title)}</a><span class="src">${esc(i.sourceName)}</span></li>`).join('')}</ul>
   </section>` : ''}
+
+  ${mravinjakSection(channel, strings, data)}
 
   <section class="band">
     <div class="bandhead"><h2>${esc(strings.themes)}</h2></div>
@@ -474,6 +645,7 @@ ${i.tags.map((tg) => `<category>${esc(tg)}</category>`).join('\n')}
 function writeSitemap(channel, data) {
   const urls = [
     { loc: channel.base, priority: '1.0' },
+    { loc: url(channel, 'mravinjak/'), priority: '0.7' },
     { loc: url(channel, 'izvori/'), priority: '0.6' },
     { loc: url(channel, 'metodologija/'), priority: '0.5' },
     ...[...new Set(data.items.map(themeOf))].map((id) => ({ loc: url(channel, `tema/${id}/`), priority: '0.5' })),
@@ -539,6 +711,8 @@ export function buildChannel(channel) {
       lead: `${source.name} · ${list.length}`
     }));
   }
+
+  write('mravinjak/index.html', mravinjakPage(channel, strings, data));
 
   write('izvori/index.html', listPage(channel, strings, {
     title: `${strings.sources} — ${channel.title}`,
@@ -660,6 +834,24 @@ main{max-width:1180px;margin:0 auto;padding:clamp(20px,4vw,44px) clamp(16px,4vw,
 .about{display:grid;grid-template-columns:1fr 1fr;gap:36px}
 .about h2{font:700 15px/1.3 system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;margin:0 0 10px}
 .small{font:400 12px/1.6 system-ui,sans-serif;color:#6f7783}
+.mrv{background:#0c1015;color:#eae4d6;border-radius:3px;padding:26px clamp(16px,3vw,32px) 20px;margin:0 0 8px}
+.mrv--page{margin-top:26px}
+.mrv-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+.mrv-head h2{font:700 13px/1.3 system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;margin:0;color:#e9c66c}
+.mrv-head h2 span{color:rgba(234,228,214,.55);letter-spacing:.12em}
+.mrv-count{font:600 11px/1 system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(234,228,214,.45)}
+.mrv-lead{margin:0 0 18px;max-width:82ch;font:400 14px/1.55 system-ui,sans-serif;color:rgba(234,228,214,.74)}
+.mrv-cols{columns:4;column-gap:24px}
+.mrv-i{display:block;break-inside:avoid;padding:7px 0 8px;border-top:1px solid rgba(255,255,255,.1);font:400 14px/1.3 Georgia,serif;color:#f3eee1}
+.mrv-i:hover{text-decoration:none;color:#e9c66c}
+.mrv-i b{display:block;font:600 9.5px/1.5 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:rgba(233,198,108,.9);margin-bottom:3px}
+.mrv-i b em{font-style:normal;color:rgba(234,228,214,.42)}
+.mrv-foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:18px;padding-top:13px;border-top:1px solid rgba(255,255,255,.16);font:700 11px/1.4 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.mrv-foot a{color:#e9c66c}
+.mrv-foot a:hover{color:#fff;text-decoration:none}
+@media(max-width:1000px){.mrv-cols{columns:3}}
+@media(max-width:760px){.mrv-cols{columns:2}}
+@media(max-width:460px){.mrv-cols{columns:1}}
 .foot{background:var(--bg);color:rgba(255,255,255,.82);padding:40px clamp(16px,4vw,48px) 28px;margin-top:20px}
 .footgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:26px;max-width:1180px;margin:0 auto}
 .foot h2{font:600 11px/1.4 system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 10px}

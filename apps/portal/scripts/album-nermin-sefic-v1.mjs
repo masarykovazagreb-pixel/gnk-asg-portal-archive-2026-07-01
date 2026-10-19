@@ -199,7 +199,7 @@ small.note{display:block;color:#8296ad;font:400 12px/1.6 system-ui;margin-top:18
     <div><h2>Korištenje</h2><p>Objavljuje se uz atribuciju „Foto: GNK ASG / AKTUAL MEDIA“. Ne odvaja se od konteksta i ne koristi kao dokaz tvrdnje.</p></div>
     <div><h2>Kontakt</h2><p><a href="mailto:${CONTACT}">${CONTACT}</a> · za medijske upite i dopuštenja.</p></div>
   </div>
-  <p class="tags">${['#NerminSefić', '#NerminSefic', '#GNKASG', '#Galerija', '#AktualMedia', '#Fotografija'].map((t) => `<span>${esc(t)}</span>`).join('')}</p>
+  <p class="tags">${['#NerminSefić', '#NerminSefic', '#SeficNermin', '#GNKASG', '#Galerija', '#AktualMedia', '#Fotografija'].map((t) => `<span>${esc(t)}</span>`).join('')}</p>
   <small class="note">Stranica je dio galerije od ${entries.length} vizuala. Svaka fotografija ima vlastitu adresu, opis i podatke o korištenju. Vizuali nisu neovisni dokaz projekata, partnerstava ni statusa; činjenice se provjeravaju u objavljenim izvorima.</small>
   <nav class="nav"><a href="/galerija/${prev.slug}/">← ${esc(prev.title)}</a><a href="/galerija/${next.slug}/">${esc(next.title)} →</a></nav>
 </main>

@@ -307,7 +307,7 @@ function hubPage() {
   </section>
   <section class="iz-band">
     <h2>Oznake izdanja</h2>
-    <ul class="iz-tags">${['#NerminSefić', '#NerminSefic', '#AKTUALMEDIA', '#GNKASG', '#Našaizdanja', '#KanalZagreb', '#KanalBeograd', '#KanalSarajevo', '#KanalBudimpesta', '#KanalLjubljana', '#CanaleRoma', '#KanalSofija', '#CanalulBucuresti', '#BusinessTjednik', '#RegionalneVijesti', '#Sport', '#Politika', '#Sigurnost'].map((h) => `<li>${esc(h)}</li>`).join('')}</ul>
+    <ul class="iz-tags">${['#NerminSefić', '#NerminSefic', '#SeficNermin', '#SEFICNERMIN', '#AKTUALMEDIA', '#GNKASG', '#Našaizdanja', '#KanalZagreb', '#KanalBeograd', '#KanalSarajevo', '#KanalBudimpesta', '#KanalLjubljana', '#CanaleRoma', '#KanalSofija', '#CanalulBucuresti', '#BusinessTjednik', '#RegionalneVijesti', '#Sport', '#Politika', '#Sigurnost'].map((h) => `<li>${esc(h)}</li>`).join('')}</ul>
   </section>
 </main>
 ${portalFooter()}`;

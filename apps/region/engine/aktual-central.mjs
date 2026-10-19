@@ -57,7 +57,7 @@ const DESK_ALT = {
 };
 
 const HASHTAGS = [
-  '#NerminSefić', '#NerminSefic', '#AKTUALMEDIA', '#GNKASG', '#Našaizdanja',
+  '#NerminSefić', '#NerminSefic', '#SeficNermin', '#SEFICNERMIN', '#AKTUALMEDIA', '#GNKASG', '#Našaizdanja',
   '#KanalZagreb', '#KanalBeograd', '#KanalSarajevo', '#KanalBudimpesta',
   '#KanalLjubljana', '#CanaleRoma', '#KanalSofija', '#CanalulBucuresti',
   '#BusinessTjednik', '#Moda', '#Sport', '#Politika', '#Sigurnost', '#Mravinjak'
@@ -80,14 +80,18 @@ function allItems() {
 const linkFor = (item) => `${item.channel.base}clanak/${item.slug}/`;
 
 /* Pločica: cijela je link, tekst je u slici, alt i aria-label nose isto. */
-function tile({ href, img, alt, external = false, badge = '', small = false }) {
+function tile({ href, img, alt, external = false, badge = '', small = false, sub = null }) {
   const rel = external ? ' rel="external noopener"' : '';
+  const foot = sub
+    ? `<div class="amc-tile-foot"><span>${esc(sub.label)}</span><a href="${esc(sub.href)}"${rel}>${esc(sub.cta)} →</a></div>`
+    : '';
   return `<li class="amc-tile${small ? ' amc-tile--small' : ''}">
     <a class="amc-tile-link" href="${esc(href)}"${rel} aria-label="${esc(alt)}">
       <img class="amc-tile-img" src="${IMG}/${esc(img)}" alt="${esc(alt)}" width="880" height="587" loading="lazy" decoding="async">
       ${badge ? `<span class="amc-tile-badge">${esc(badge)}</span>` : ''}
       <span class="amc-tile-go" aria-hidden="true">→</span>
     </a>
+    ${foot}
   </li>`;
 }
 
@@ -96,7 +100,8 @@ function cityTiles(cards) {
     const card = cards.find((x) => x.id === c.id) || {};
     return tile({
       href: c.base, img: `${c.id}-tile.webp`, alt: CITY_ALT[c.id] || `${c.title} — klik otvara izdanje.`,
-      external: true, badge: card.count ? `${card.count} tekstova` : ''
+      external: true, badge: card.count ? `${card.count} tekstova` : '',
+      sub: { href: `${c.base}mravinjak/`, label: 'Mravinjak', cta: `svih ${card.count || ''} naslova`.trim() }
     });
   }).join('');
 }
@@ -208,6 +213,9 @@ export function buildAktualCentral({ cards = [] } = {}) {
 .amc-tile-img{display:block;width:100%;height:auto;aspect-ratio:880/587;object-fit:cover;transition:transform .5s ease;filter:saturate(1.03)}
 .amc-tile:hover .amc-tile-img{transform:scale(1.035)}
 .amc-tile-badge{position:absolute;left:12px;top:12px;background:rgba(5,13,24,.82);border:1px solid rgba(233,198,108,.45);color:var(--amc-gold);font:800 10.5px/1 Inter,system-ui,sans-serif;letter-spacing:.06em;border-radius:999px;padding:7px 10px;backdrop-filter:blur(6px)}
+.amc-tile-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 12px;border-top:1px solid rgba(255,255,255,.1);font:700 10.5px/1 Inter,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:rgba(233,240,247,.5)}
+.amc-tile-foot a{color:var(--amc-gold);text-decoration:none}
+.amc-tile-foot a:hover{color:#fff}
 .amc-tile-go{position:absolute;right:12px;bottom:12px;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:rgba(233,198,108,.92);color:#06111f;font:800 17px/1 Inter,system-ui,sans-serif;opacity:0;transform:translateX(-6px);transition:opacity .2s ease,transform .2s ease}
 .amc-tile:hover .amc-tile-go,.amc-tile:focus-within .amc-tile-go{opacity:1;transform:translateX(0)}
 .amc-tile-link--text{display:flex;flex-direction:column;gap:7px;min-height:100%;padding:18px 18px 20px;background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.015));aspect-ratio:880/587}
@@ -304,10 +312,10 @@ export function buildAktualCentral({ cards = [] } = {}) {
   <section class="amc-sec" aria-labelledby="amcSec5">
     <div class="amc-sec-head">
       <div><span class="amc-sec-num">05 · OZNAKE</span><h3 id="amcSec5">Hashtagovi izdanja</h3></div>
-      <span class="amc-dim">#NerminSefić · #NerminSefic</span>
+      <span class="amc-dim">#NerminSefić · #NerminSefic · #SeficNermin · #SEFICNERMIN</span>
     </div>
     <ul class="amc-tags">${HASHTAGS.map((h) => `<li>${esc(h)}</li>`).join('')}</ul>
-    <p class="amc-note">Urednik i direktor izdanja je <strong>Nermin Sefić</strong>. Za autora se koriste oznake #NerminSefić i #NerminSefic. Kontakt: <a href="mailto:info@gnk-asg.hr">info@gnk-asg.hr</a>.</p>
+    <p class="amc-note">Urednik i direktor izdanja je <strong>Nermin Sefić</strong>. Za autora se koriste oznake #NerminSefić, #NerminSefic, #SeficNermin i #SEFICNERMIN. Kontakt: <a href="mailto:info@gnk-asg.hr">info@gnk-asg.hr</a>.</p>
   </section>
 </section>
 <script type="application/ld+json">${JSON.stringify(jsonld)}</script>
