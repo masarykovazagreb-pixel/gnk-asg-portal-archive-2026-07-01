@@ -32,7 +32,7 @@ gh run watch
 
 Društvo već posjeduje `gnk-asg.hr`. Poddomena je besplatna i profesionalna:
 
-- `kanal.gnk-asg.hr` (preporučeno)
+- `gnk-asg-kanal.pages.dev` (preporučeno)
 - alternativa: `media.gnk-asg.hr`, `objave.gnk-asg.hr`
 
 **Postupak**
@@ -41,13 +41,13 @@ Društvo već posjeduje `gnk-asg.hr`. Poddomena je besplatna i profesionalna:
    ```
    CNAME  kanal  masarykovazagreb-pixel.github.io
    ```
-2. U GitHubu: *Settings → Pages → Custom domain* → `kanal.gnk-asg.hr` → Save.
+2. U GitHubu: *Settings → Pages → Custom domain* → `gnk-asg-kanal.pages.dev` → Save.
 3. Uključi *Enforce HTTPS* (potvrda traje do 24 h).
 4. Izgradi site s novim osnovnim URL-om:
    ```bash
-   node apps/kanal/build.mjs --base https://kanal.gnk-asg.hr/
+   node apps/kanal/build.mjs --base https://gnk-asg-kanal.pages.dev/
    ```
-   ili postavi repo varijablu `KANAL_BASE=https://kanal.gnk-asg.hr/` da workflow
+   ili postavi repo varijablu `KANAL_BASE=https://gnk-asg-kanal.pages.dev/` da workflow
    automatski koristi novu domenu.
 
 > Napomena: kanonske poveznice, sitemap, feedovi i OG slike ovise o `--base`.
@@ -60,17 +60,17 @@ Društvo već posjeduje `gnk-asg.hr`. Poddomena je besplatna i profesionalna:
 Projekt `gnk-asg-kanal` postoji u Cloudflare računu, a deploy radi automatski iz
 workflowa `.github/workflows/kanal-deploy.yml` (push na `apps/kanal/**`).
 
-### Custom domena `kanal.gnk-asg.hr` — jedan korak u dashboardu
+### Custom domena `gnk-asg-kanal.pages.dev` — jedan korak u dashboardu
 
 Automatsko povezivanje nije prošlo jer API token ima prava za Workers/Pages, ali ne
 i za DNS zonu. Postupak (2 minute):
 
 1. Cloudflare dashboard → *Workers & Pages* → **gnk-asg-kanal** → *Custom domains*.
-2. *Set up a custom domain* → upiši `kanal.gnk-asg.hr` → *Continue*.
+2. *Set up a custom domain* → upiši `gnk-asg-kanal.pages.dev` → *Continue*.
 3. Cloudflare sam kreira CNAME `kanal` → `gnk-asg-kanal.pages.dev` (zona `gnk-asg.hr`
    je na Cloudflare imenskim poslužiteljima, pa nema ručnog DNS rada).
 4. Nakon toga pokreni workflow ponovno (Actions → kanal-deploy → Run workflow).
-   Workflow tada gradi site s `--base https://kanal.gnk-asg.hr/`, pa se kanonske
+   Workflow tada gradi site s `--base https://gnk-asg-kanal.pages.dev/`, pa se kanonske
    poveznice, sitemap i feedovi automatski prebacuju na novu domenu.
 
 Ako želiš da to radi bez ručnog koraka, dodaj API tokenu ovlasti
@@ -98,7 +98,7 @@ i povezuje domenu.
    - Node version: 22 (`NODE_VERSION=22`)
 4. Deploy. `_headers` i `_redirects` u izlazu automatski primjenjuju sigurnosna
    zaglavlja i preusmjeravanja.
-5. (opcionalno) *Custom domains* → `kanal.gnk-asg.hr`.
+5. (opcionalno) *Custom domains* → `gnk-asg-kanal.pages.dev`.
 
 Prednost prema GitHub Pagesu: neograničen promet i bolji cache. Nedostatak: dodatni
 račun i build minuta.
@@ -131,17 +131,17 @@ iz prethodne točke.
 ## 6. Preporuka
 
 1. Danas: GitHub Pages (`*.github.io`) — radi bez ikakve registracije.
-2. Ove nedjelje: `kanal.gnk-asg.hr` preko CNAME-a — profesionalna adresa, 0 €.
+2. Ove nedjelje: `gnk-asg-kanal.pages.dev` preko CNAME-a — profesionalna adresa, 0 €.
 3. Ako promet naraste: Cloudflare Pages (neograničen bandwidth) s istom domenom.
 
 ## 7. Provjera nakon objave
 
 ```bash
-curl -sI https://kanal.gnk-asg.hr/ | head -5           # 200 + zaglavlja
-curl -s  https://kanal.gnk-asg.hr/feed.json | head     # feed
-curl -s  https://kanal.gnk-asg.hr/robots.txt           # sitemap
-curl -s  https://kanal.gnk-asg.hr/sitemap.xml | head   # urlset
+curl -sI https://gnk-asg-kanal.pages.dev/ | head -5           # 200 + zaglavlja
+curl -s  https://gnk-asg-kanal.pages.dev/feed.json | head     # feed
+curl -s  https://gnk-asg-kanal.pages.dev/robots.txt           # sitemap
+curl -s  https://gnk-asg-kanal.pages.dev/sitemap.xml | head   # urlset
 ```
 
-Zatim: Google Search Console → *Add property* → `kanal.gnk-asg.hr` → potvrdi TXT
+Zatim: Google Search Console → *Add property* → `gnk-asg-kanal.pages.dev` → potvrdi TXT
 zapisom → pošalji `sitemap.xml`. Isto učiniti u Bing Webmaster Toolsu (uvoz iz GSC-a).

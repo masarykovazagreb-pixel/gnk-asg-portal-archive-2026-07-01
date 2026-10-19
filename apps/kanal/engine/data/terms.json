@@ -1,0 +1,172 @@
+{
+  "terms": [
+    {
+      "id": "equity-ratio",
+      "term": "Equity ratio (pokrivenost aktive kapitalom)",
+      "short": "Koliki dio imovine tvrtke financira vlastiti kapital, a koliki dug.",
+      "body": "<p>Equity ratio je omjer kapitala i rezervi prema ukupnoj aktivi. Pokazuje koliko je imovine financirano vlastitim sredstvima, a koliko obvezama. Viši omjer znači da gubitak najprije apsorbira kapital, a ne vjerovnici.</p><p>Sam pokazatelj ne govori je li tvrtka dobra ili loša. Nizak omjer uobičajen je u kapitalno intenzivnim djelatnostima i u investicijskim fazama. Visok omjer u trgovini može značiti da tvrtka ne koristi financijsku polugu koju bi mogla.</p><p>Praktično pravilo: equity ratio čitajte zajedno s rokovima obveza i s obrtajem imovine. Tek zajedno opisuju strukturu rizika.</p>",
+      "tags": ["bilanca", "kapital", "pokazatelji"]
+    },
+    {
+      "id": "obrtaj-imovine",
+      "term": "Obrtaj imovine",
+      "short": "Koliko eura prihoda tvrtka ostvari na svaki euro imovine.",
+      "body": "<p>Obrtaj imovine je prihod podijeljen ukupnom aktivom. Pokazuje koliko je poslovni model „težak”: kapitalno intenzivna industrija obično ima nizak obrtaj, a uslužne i softverske djelatnosti visok.</p><p>Visok obrtaj znači da rast ne traži novu imovinu. Istodobno povećava osjetljivost na ugovore, potraživanja i naplatu, jer vrijednost dolazi iz prava i obveza, a ne iz strojeva.</p><p>Pokazatelj ima smisla samo unutar iste djelatnosti. Usporedba softverske tvrtke s proizvođačem opreme po ovom kriteriju nije usporedba, nego kategorijska pogreška.</p>",
+      "tags": ["bilanca", "prihod", "pokazatelji"]
+    },
+    {
+      "id": "neto-marza",
+      "term": "Neto marža",
+      "short": "Koliko od svakog eura prihoda ostaje kao neto dobit.",
+      "body": "<p>Neto marža je neto dobit podijeljena prihodom. Mjeri profitabilnost, ali ne i kvalitetu dobiti: tvrtka može imati visoku maržu i problema s naplatom, ili nisku maržu i stabilan novčani tok.</p><p>Niska marža u modelima licenciranja i intragrupnog poslovanja često je posljedica raspodjele vrijednosti unutar grupe, a ne neučinkovitosti. Zato je bez bilješki uz izvještaje tumačenje marže nagađanje.</p><p>Kada uspoređujete marže, navedite razdoblje, djelatnost i je li riječ o konsolidiranim ili pojedinačnim izvještajima.</p>",
+      "tags": ["dobit", "pokazatelji", "računovodstvo"]
+    },
+    {
+      "id": "ucece-kamate",
+      "term": "Pokriće kamata (interest coverage)",
+      "short": "Koliko puta poslovna dobit pokriva kamatne troškove.",
+      "body": "<p>Pokriće kamata je omjer poslovne dobiti (EBIT) i kamatnih troškova. Odgovara na pitanje koliko prostora tvrtka ima prije nego kamate počnu ugrožavati poslovanje.</p><p>Pokazatelj je koristan kod tvrtki s dugom, a manje kod onih koje ga gotovo nemaju. Tvrtka bez kamata nema što mjeriti — ali to ne znači da nema rizika; on je tada u prihodu i naplati.</p><p>U razdobljima rasta kamatnih stopa pokriće se mijenja brže od duga, jer se kamata resetira i na postojeće obveze s varijabilnom stopom.</p>",
+      "tags": ["dug", "kamate", "rizik"]
+    },
+    {
+      "id": "radni-kapital",
+      "term": "Radni kapital",
+      "short": "Razlika između kratkotrajne imovine i kratkoročnih obveza.",
+      "body": "<p>Radni kapital pokazuje koliko kratkotrajne imovine ostaje nakon podmirenja kratkoročnih obveza. Negativan radni kapital nije uvijek alarm — u trgovini s brzom naplatom i odgođenim plaćanjem dobavljačima može biti dio modela.</p><p>Opasnost nastaje kada negativan radni kapital nastane zbog kašnjenja naplate ili prekratkih rokova plaćanja dobavljačima. Tada je riječ o pritisku, a ne o strategiji.</p><p>Pratite ga zajedno s danima naplate potraživanja i danima plaćanja obveza. Tri brojke zajedno opisuju novčani ciklus.</p>",
+      "tags": ["likvidnost", "potraživanja", "pokazatelji"]
+    },
+    {
+      "id": "goodwill",
+      "term": "Goodwill",
+      "short": "Razlika između plaćene cijene i fer vrijednosti neto imovine pri akviziciji.",
+      "body": "<p>Goodwill nastaje kada tvrtka kupi drugu tvrtku po cijeni višoj od fer vrijednosti njezine neto imovine. Iskazuje se u aktivi i ne amortizira se, nego se godišnje testira na umanjenje.</p><p>Za analitičara je ključno pitanje što taj goodwill predstavlja: tržišni položaj, brend, očekivani rast ili preplaćenu cijenu. Odgovor je u bilješkama i u pretpostavkama testa umanjenja.</p><p>Visok goodwill smanjuje kvalitetu aktive: ako očekivanja izostanu, umanjenje ide izravno na teret rezultata.</p>",
+      "tags": ["akvizicije", "imovina", "računovodstvo"]
+    },
+    {
+      "id": "potrazivanja-dso",
+      "term": "Dani naplate potraživanja (DSO)",
+      "short": "Prosječno trajanje naplate od kupca do gotovine.",
+      "body": "<p>DSO se računa kao potraživanja podijeljena prihodom, pomnoženo s brojem dana u razdoblju. Pokazuje koliko dugo prihod „visi” u potraživanjima prije nego postane gotovina.</p><p>Rast DSO uz rast prihoda čest je znak da tvrtka prodaje brže nego što naplaćuje. To nije nužno problem ako je riječ o velikim kupcima s ugovorenim rokovima, ali je uvijek pitanje za analizu.</p><p>Kod sezonskih djelatnosti DSO treba gledati na godišnjoj razini, jer tromjesečni podaci mogu varirati i 50 %.</p>",
+      "tags": ["naplata", "likvidnost", "pokazatelji"]
+    },
+    {
+      "id": "transferne-cijene",
+      "term": "Transferne cijene",
+      "short": "Cijene po kojima povezana društva međusobno trguju.",
+      "body": "<p>Transferne cijene su cijene transakcija između povezanih društava: robe, usluga, licenci, zajmova. Moraju biti utvrđene prema načelu vanjske usporedivosti — kao da su društva neovisna.</p><p>Porezne uprave traže analizu funkcija, imovine i rizika: koje društvo razvija, financira, preuzima rizik i upravlja imovinom. Formalan ugovor bez stvarnih funkcija sve se češće odbacuje.</p><p>Dobra dokumentacija nije trošak usklađenosti, nego uvjet da model licenciranja bude održiv. Bez nje svaka promjena tretmana može promijeniti rezultat.</p>",
+      "tags": ["porezi", "licence", "grupa"]
+    },
+    {
+      "id": "supstanca",
+      "term": "Poslovna supstanca",
+      "short": "Stvarna funkcija društva: ljudi, odluke i rizik, ne samo adresa.",
+      "body": "<p>Supstanca znači da društvo koje prima prihod stvarno obavlja funkciju: ima ljude koji odlučuju, preuzima rizik i upravlja imovinom. To je kriterij koji porezne uprave sve češće provjeravaju.</p><p>Za grupu je to i prilika i obveza. Prilika zato što razvoj i upravljanje mogu realno biti u Hrvatskoj. Obveza zato što se to mora moći dokazati organizacijom, ugovorima i evidencijom.</p><p>Praktični test je jednostavan: ako svi ljudi odu, ostaje li ikakva funkcija osim poštanskog sandučića? Ako ne ostaje, supstanca nije dokumentirana.</p>",
+      "tags": ["porezi", "grupa", "upravljanje"]
+    },
+    {
+      "id": "nematerijalna-imovina",
+      "term": "Nematerijalna imovina",
+      "short": "Imovina bez fizičkog oblika: licence, softver, patenti, brendovi.",
+      "body": "<p>Nematerijalna imovina uključuje prava i znanje koje tvrtka iskazuje u bilanci: licence, softver, patente, žigove, kupovne odnose. Za razliku od strojeva, ne može se založiti na isti način i brže gubi vrijednost ako se ne razvija.</p><p>Revizor ne pita „koliko vrijedi algoritam”, nego po kojem je kriteriju vrijednost iskazana, je li pravo preneseno na društvo i je li vrijednost umanjena ako više ne stvara koristi.</p><p>Za analizu je važan udio nematerijalne imovine u aktivi. Kod softverskih modela može biti dvije trećine bilančne mase — što je logično, ali zahtijeva čvrst dokaz o pravima.</p>",
+      "tags": ["imovina", "licence", "bilanca"]
+    },
+    {
+      "id": "likvidnost-vs-solventnost",
+      "term": "Likvidnost i solventnost",
+      "short": "Može li tvrtka platiti račune danas i može li preživjeti dugoročno.",
+      "body": "<p>Likvidnost je sposobnost podmirenja obveza u roku dospijeća. Solventnost je sposobnost da ukupna imovina pokrije ukupne obveze. Tvrtka može biti solventna, a nelikvidna — i obrnuto, kratkoročno.</p><p>Solventna, ali nelikvidna tvrtka ima vrijednu imovinu koju ne može brzo pretvoriti u gotovinu. Nelikvidnost je češći uzrok stečaja od nesolventnosti, jer se pojavljuje brže.</p><p>Zato uz bilancu uvijek tražite novčani tok i raspoložive kreditne linije. Bilanca pokazuje stanje, a tok pokazuje može li tvrtka disati.</p>",
+      "tags": ["likvidnost", "rizik", "pokazatelji"]
+    },
+    {
+      "id": "revizijski-trag",
+      "term": "Revizijski trag",
+      "short": "Zapis o tome tko je što promijenio, kada i na temelju čega.",
+      "body": "<p>Revizijski trag je evidencija izmjena: tko je unio podatak, kada, iz kojeg izvora i po kojoj osnovi — uključujući automatske izmjene. Bez njega tvrtka ne može rekonstruirati vlastite odluke.</p><p>Kod umjetne inteligencije trag uključuje i verziju modela, ulazne podatke i osobu koja je prihvatila izlaz. To je ono što odgovornost čini provjerljivom, a ne deklarativnom.</p><p>Praktično: ako na pitanje „zašto se ovaj broj promijenio” odgovor počinje s „mislim da”, traga nema.</p>",
+      "tags": ["podaci", "revizija", "AI"]
+    },
+    {
+      "id": "ai-act-transparentnost",
+      "term": "Transparentnost prema članku 50. AI Acta",
+      "short": "Obveza da korisnik zna kada razgovara sa strojem i kada je sadržaj AI-generiran.",
+      "body": "<p>Članak 50. Uredbe (EU) 2024/1689 traži da korisnik bude obaviješten kada komunicira s AI sustavom te da AI-generirani sadržaj javnog interesa bude označen, osim kada je prošao stvarni ljudski urednički pregled.</p><p>Automatska provjera pravopisa ili uređivanje stila ne računaju se kao ljudski pregled. Potreban je čovjek koji provjerava činjenice i preuzima odgovornost.</p><p>Oznaka nije birokracija: ona je informacija koju čitatelj ima pravo znati, a izdavaču služi kao dokaz da razlikuje nacrt od objave.</p>",
+      "tags": ["AI Act", "regulacija", "transparentnost"]
+    },
+    {
+      "id": "visokorizicni-sustav",
+      "term": "Visokorizični AI sustav",
+      "short": "Sustav koji bitno utječe na prava ljudi — uz njega idu dodatne obveze.",
+      "body": "<p>AI Act razvrstava sustave po riziku. Visokorizični su oni koji se koriste u područjima poput zapošljavanja, kreditnog ocjenjivanja, obrazovanja, kritične infrastrukture ili pristupa javnim uslugama.</p><p>Za takve sustave traže se upravljanje rizicima, tehnička dokumentacija, ljudski nadzor, točnost i praćenje nakon stavljanja na tržište. Obveze ovise o ulozi: pružatelj ih ima više od korisnika.</p><p>Razlika je praktična: tvrtka koja koristi gotov alat za sažimanje sastanaka nije u istoj kategoriji kao banka koja algoritmom odlučuje o kreditu.</p>",
+      "tags": ["AI Act", "rizik", "regulacija"]
+    },
+    {
+      "id": "model-opce-namjene",
+      "term": "Model opće namjene (GPAI)",
+      "short": "Osnovni model koji se može koristiti za mnoge zadatke, ne samo jedan.",
+      "body": "<p>Model opće namjene je sustav osposobljen na širokom spektru podataka koji se može prilagoditi mnogim zadacima. AI Act za takve modele uvodi obveze dokumentacije, informiranja i, za najveće modele, dodatne procjene rizika.</p><p>Za tvrtku koja ga koristi kroz API to znači manje izravnih obveza, ali više pitanja dobavljaču: koja je verzija modela, kako se mijenja, gdje se obrađuju podaci i što se događa s izlazima.</p><p>Pitanje „koji je model najbolji” manje je važno od pitanja „što se mijenja kada dobavljač objavi novu verziju”.</p>",
+      "tags": ["AI Act", "modeli", "regulacija"]
+    },
+    {
+      "id": "duboka-krivotvorina",
+      "term": "Deepfake (duboka krivotvorina)",
+      "short": "Sintetički audio, slika ili video koji izgleda stvarno.",
+      "body": "<p>Deepfake je sadržaj generiran ili manipuliran tako da izgleda kao stvarna snimka osobe, događaja ili izjave. AI Act traži da takav sadržaj bude označen kao sintetički.</p><p>Iznimka postoji za očito umjetničke, satirične ili fikcijske sadržaje, ali se time ne dopušta krivotvorenje izjava stvarnih osoba u kontekstu koji nije očito fikcija.</p><p>Za tvrtke je praktično pravilo: ako vizual može zavarati razumnog čitatelja, mora nositi oznaku. Ako oznaka nije moguća, sadržaj se ne objavljuje.</p>",
+      "tags": ["AI Act", "mediji", "transparentnost"]
+    },
+    {
+      "id": "csrf",
+      "term": "CSRF (cross-site request forgery)",
+      "short": "Napad u kojem tuđa stranica izvrši radnju u ime prijavljenog korisnika.",
+      "body": "<p>CSRF je napad u kojem zlonamjerna stranica navede preglednik prijavljenog korisnika da pošalje zahtjev prema drugoj aplikaciji — na primjer da promijeni lozinku ili izvrši plaćanje.</p><p>Obrana se temelji na tokenima koji se vežu uz sesiju, provjeri porijekla zahtjeva i kolačićima koji se ne šalju iz drugih konteksta (SameSite).</p><p>Za javne statičke stranice rizik je manji, ali za svaki obrazac koji šalje podatke treba provjeriti tko može potaknuti zahtjev i što se dogodi ako se pošalje izvana.</p>",
+      "tags": ["sigurnost", "web", "rizik"]
+    },
+    {
+      "id": "csp",
+      "term": "Content Security Policy (CSP)",
+      "short": "Zaglavlje koje pregledniku govori odakle smije učitavati sadržaj.",
+      "body": "<p>CSP je sigurnosno zaglavlje koje ograničava izvore skripti, stilova, slika i okvira. Ako se pojavi ubrizgani kod s druge domene, preglednik ga neće izvršiti.</p><p>Dobra politika je usko postavljena: dopušta vlastite resurse i, ako je nužno, točno navedene vanjske. Svako „unsafe-inline” ili divlja zvjezdica smanjuje zaštitu.</p><p>CSP nije lijek za sve ranjivosti, ali je jedan od rijetkih mehanizama koji djeluje i kada je aplikacija već kompromitirana.</p>",
+      "tags": ["sigurnost", "web", "infrastruktura"]
+    },
+    {
+      "id": "eidas",
+      "term": "eIDAS i elektronički potpis",
+      "short": "EU okvir za elektronički identitet i potpise koji imaju pravni učinak.",
+      "body": "<p>eIDAS je uredba EU koja uređuje elektroničku identifikaciju i usluge povjerenja. Razlikuje obični, napredni i kvalificirani elektronički potpis; samo kvalificirani ima učinak jednak vlastoručnom potpisu.</p><p>Za ugovore i javnu upravu to je važno: potpis na PDF-u nije isto što i kvalificirani potpis s kvalificiranim certifikatom.</p><p>Praktično pitanje za tvrtku: koji dokumenti zahtijevaju kvalificirani potpis i tko unutar organizacije smije potpisivati. Odgovor na to pitanje je dio procesa, ne IT detalj.</p>",
+      "tags": ["regulacija", "EU", "dokumenti"]
+    },
+    {
+      "id": "kyc",
+      "term": "KYC (Know Your Customer)",
+      "short": "Provjera identiteta i rizika klijenta prije poslovnog odnosa.",
+      "body": "<p>KYC je skup postupaka kojima financijske i druge obveznice provjeravaju identitet klijenta, stvarnog vlasnika i rizik transakcije. Cilj je spriječiti pranje novca i financiranje terorizma.</p><p>Za tvrtku koja otvara račun ili sklapa ugovor to znači dokumentaciju o vlasničkoj strukturi i o izvoru sredstava. Neispunjena dokumentacija blokira transakciju bez obzira na poslovnu logiku.</p><p>KYC nije jednokratni obrazac: podaci se osvježavaju, a promjena vlasništva pokreće ponovnu provjeru.</p>",
+      "tags": ["regulacija", "banke", "usklađenost"]
+    },
+    {
+      "id": "aml",
+      "term": "AML (spriječavanje pranja novca)",
+      "short": "Obveze otkrivanja sumnjivih transakcija i izvještavanja nadležnih tijela.",
+      "body": "<p>AML propisi traže od obveznika da uspostave procedure procjene rizika, praćenja transakcija i prijave sumnjivih aktivnosti. Ne traže da tvrtka dokaže namjeru, nego da prepozna obrazac i prijavi ga.</p><p>Za upravu je najvažnija odluka tko je odgovorna osoba i koji su rokovi unutarnjeg postupanja. Bez toga procedura postoji samo na papiru.</p><p>Kazne su visoke, ali veća šteta nastaje kada banka zbog propusta zatvori račun ili prekine odnos s dobavljačem.</p>",
+      "tags": ["regulacija", "banke", "usklađenost"]
+    },
+    {
+      "id": "esg-csrd",
+      "term": "CSRD i ESG izvještavanje",
+      "short": "Obveza izvještavanja o održivosti za sve veći krug tvrtki.",
+      "body": "<p>CSRD je direktiva EU o korporativnom izvještavanju o održivosti. Uvodi obvezu da tvrtke objave podatke o okolišnim, socijalnim i upravljačkim aspektima prema zajedničkim standardima (ESRS).</p><p>Primjena se uvodi postupno i ovisi o veličini i statusu tvrtke. Rasprave o pojednostavljenju traju, pa je prije planiranja nužno provjeriti važeći tekst i nacionalnu implementaciju.</p><p>Praktični rizik nije samo izvještaj, nego lanac nabave: velike tvrtke traže podatke od dobavljača i prije nego što dobavljač sam postane obveznik.</p>",
+      "tags": ["ESG", "regulacija", "EU"]
+    },
+    {
+      "id": "dac7",
+      "term": "DAC7 i razmjena podataka o platformama",
+      "short": "Obveza platformi da prijave prihode prodavatelja poreznoj upravi.",
+      "body": "<p>DAC7 je izmjena EU pravila o administrativnoj suradnji koja obvezuje digitalne platforme da prijave poreznim tijelima podatke o prodavateljima i njihovim prihodima.</p><p>Za prodavatelje to znači da se podaci o prometu automatski razmjenjuju između država članica. Za platforme to znači procese provjere identiteta i izvještavanja.</p><p>Praktična posljedica: sve što se prodaje preko platforme postaje vidljivo poreznoj upravi bez ručne prijave. Usklađenost je stvar evidencije, ne dobre volje.</p>",
+      "tags": ["porezi", "platforme", "EU"]
+    },
+    {
+      "id": "obrtaj-vs-profit",
+      "term": "Prihod nije profit",
+      "short": "Zašto veliki promet ne znači zdravlje tvrtke.",
+      "body": "<p>Prihod mjeri vrijednost isporučenog, a dobit razliku nakon svih troškova. Tvrtka može imati stotine milijuna prihoda i tanku maržu, ili mali prihod i visoku maržu.</p><p>Zato se u analizi gledaju i novčani tok, struktura troškova i rokovi naplate. Prihod bez naplate je računovodstvena kategorija, a ne gotovina.</p><p>Najčešća pogreška u čitanju poslovnih vijesti je zaključak o zdravlju tvrtke iz jednog reda računa dobiti i gubitka.</p>",
+      "tags": ["analiza", "prihod", "dobit"]
+    }
+  ]
+}

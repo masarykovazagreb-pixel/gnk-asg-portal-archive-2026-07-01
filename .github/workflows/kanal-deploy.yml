@@ -1,7 +1,8 @@
 name: kanal-deploy
 
 # Objavljuje GNK ASG KANAL (apps/kanal).
-# Primarno: Cloudflare Pages (neograničen promet, domena kanal.gnk-asg.hr).
+# Primarno: Cloudflare Pages, kanonska adresa https://gnk-asg-kanal.pages.dev/
+# (odluka 2026-10-19: bez custom domene — kanal.gnk-asg.hr se ne koristi).
 # Rezervno: GitHub Pages (ako je uključen u Settings → Pages).
 # Ne dira portal gnk-asg.hr ni Cloudflare Workere.
 
@@ -33,7 +34,7 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Pripremi Cloudflare Pages projekt i domenu
+      - name: Provjeri Cloudflare pristup
         id: cf
         shell: bash
         run: |
@@ -43,7 +44,6 @@ jobs:
             echo "ready=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          echo "Provjera pristupa..."
           code=$(curl -s -o /tmp/proj.json -w '%{http_code}' \
             -H "Authorization: Bearer $CF_TOKEN" \
             "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/gnk-asg-kanal")
@@ -54,10 +54,10 @@ jobs:
               --data '{"name":"gnk-asg-kanal","production_branch":"main"}' \
               "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects")
             echo "Create HTTP $code"; head -c 400 /tmp/create.json || true; echo
+            code=$(curl -s -o /tmp/proj.json -w '%{http_code}' \
+              -H "Authorization: Bearer $CF_TOKEN" \
+              "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/gnk-asg-kanal")
           fi
-          code=$(curl -s -o /tmp/proj.json -w '%{http_code}' \
-            -H "Authorization: Bearer $CF_TOKEN" \
-            "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/gnk-asg-kanal")
           if [ "$code" != "200" ]; then
             echo "::warning::Cloudflare Pages nije dostupan (HTTP $code). Provjeri ovlasti tokena (Pages:Edit)."
             echo "ready=false" >> "$GITHUB_OUTPUT"
@@ -65,50 +65,11 @@ jobs:
           fi
           echo "ready=true" >> "$GITHUB_OUTPUT"
 
-          attach_domain() {
-            curl -s -o /tmp/dom.json -w '%{http_code}' -X POST \
-              -H "Authorization: Bearer $CF_TOKEN" -H "Content-Type: application/json" \
-              --data '{"name":"kanal.gnk-asg.hr"}' \
-              "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/gnk-asg-kanal/domains" > /tmp/dom.code
-          }
-
-          attach_domain
-          if grep -q '"success":true' /tmp/dom.json; then
-            echo "domain_ok=true" >> "$GITHUB_OUTPUT"
-            echo "Domena kanal.gnk-asg.hr povezana."
-          else
-            echo "Prvi pokušaj nije prošao (HTTP $(cat /tmp/dom.code)); tražim zone i DNS zapis..."
-            curl -s -o /tmp/zones.json -H "Authorization: Bearer $CF_TOKEN" \
-              "https://api.cloudflare.com/client/v4/zones?name=gnk-asg.hr"
-            ZONE_ID=$(python3 -c "import json;d=json.load(open('/tmp/zones.json'));r=d.get('result') or [];print(r[0]['id'] if r else '')" 2>/dev/null || true)
-            echo "zone_id=${ZONE_ID:-<nema>}"
-            if [ -n "${ZONE_ID:-}" ]; then
-              curl -s -o /tmp/dns.json -X POST \
-                -H "Authorization: Bearer $CF_TOKEN" -H "Content-Type: application/json" \
-                --data '{"type":"CNAME","name":"kanal","content":"gnk-asg-kanal.pages.dev","proxied":true}' \
-                "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/dns_records" || true
-              head -c 300 /tmp/dns.json || true; echo
-              attach_domain
-            fi
-            if grep -q '"success":true' /tmp/dom.json; then
-              echo "domain_ok=true" >> "$GITHUB_OUTPUT"
-              echo "Domena kanal.gnk-asg.hr povezana nakon DNS zapisa."
-            else
-              echo "domain_ok=false" >> "$GITHUB_OUTPUT"
-              echo "::warning::Domena nije povezana automatski — potreban je CNAME kanal -> gnk-asg-kanal.pages.dev ili ovlast Pages:Edit + Zone:DNS:Edit na tokenu."
-              head -c 300 /tmp/dom.json || true; echo
-            fi
-          fi
-
       - name: Gradnja (Cloudflare base)
         if: steps.cf.outputs.ready == 'true'
         shell: bash
         run: |
-          if [ "${{ steps.cf.outputs.domain_ok }}" = "true" ]; then
-            BASE="https://kanal.gnk-asg.hr/"
-          else
-            BASE="https://gnk-asg-kanal.pages.dev/"
-          fi
+          BASE="https://gnk-asg-kanal.pages.dev/"
           echo "KANAL_BASE=$BASE" >> "$GITHUB_ENV"
           node apps/kanal/build.mjs --base "$BASE"
 
@@ -140,9 +101,6 @@ jobs:
         run: |
           {
             echo "## KANAL objavljen"
-            if [ "${{ steps.cf.outputs.domain_ok }}" = "true" ]; then
-              echo "- https://kanal.gnk-asg.hr/"
-            fi
             echo "- https://gnk-asg-kanal.pages.dev/"
             echo "- feed: ${KANAL_BASE}feed.json"
             echo "- status: urednički pregledano 19. 10. 2026."

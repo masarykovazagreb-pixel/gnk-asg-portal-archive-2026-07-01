@@ -7,14 +7,13 @@ bez API ključa, bez ugovora po tekstu, bez ručnog kopiranja.
 
 | Format | URL | Namjena |
 |---|---|---|
-| JSON Feed 1.1 | `https://masarykovazagreb-pixel.github.io/gnk-asg-kanal/feed.json` | **preporučeno** za AKTUAL (strojno preuzimanje) |
-| RSS 2.0 | `https://masarykovazagreb-pixel.github.io/gnk-asg-kanal/feed.xml` | čitači, agregatori, newsletter alati |
-| Atom | `https://masarykovazagreb-pixel.github.io/gnk-asg-kanal/atom.xml` | alternativa |
-| Sitemap | `https://masarykovazagreb-pixel.github.io/gnk-asg-kanal/sitemap.xml` | indeksiranje |
-| llms.txt | `https://masarykovazagreb-pixel.github.io/gnk-asg-kanal/llms.txt` | AI tražilice i asistenti |
+| JSON Feed 1.1 | `https://gnk-asg-kanal.pages.dev/feed.json` | **preporučeno** za AKTUAL (strojno preuzimanje) |
+| RSS 2.0 | `https://gnk-asg-kanal.pages.dev/feed.xml` | čitači, agregatori, newsletter alati |
+| Atom | `https://gnk-asg-kanal.pages.dev/atom.xml` | alternativa |
+| Sitemap | `https://gnk-asg-kanal.pages.dev/sitemap.xml` | indeksiranje |
+| llms.txt | `https://gnk-asg-kanal.pages.dev/llms.txt` | AI tražilice i asistenti |
 
-Nakon uključivanja vlastite domene (vidi `docs/HOSTING-I-DOMENA.md`) isti putevi vrijede na
-`https://kanal.gnk-asg.hr/`.
+Kanonska adresa je `https://gnk-asg-kanal.pages.dev/`; custom domena se ne koristi.
 
 ## 2. Polja koja AKTUAL treba
 
@@ -30,6 +29,7 @@ Svaka stavka u `feed.json` ima standardna JSON Feed polja plus blok `_kanal`:
   "date_published": "2026-10-19T07:00:00.000Z",
   "date_modified": "2026-10-19T07:00:00.000Z",
   "authors": [{ "name": "Nermin Sefić", "url": "https://gnk-asg.hr/nermin-sefic/" }],
+  "_kanal": { "editorialStatus": "auto-assembled" },
   "tags": ["Analiza", "GNK ASG", "bilanca"],
   "image": "https://…/assets/og/bilanca-….png",
   "language": "hr-HR",
@@ -94,3 +94,21 @@ Primjer skripte: `apps/kanal/integrations/aktual-import.mjs`
 
 `beckuphome@gmail.com` — predmet: „AKTUAL integracija / KANAL feed".
 Odgovor u pravilu u roku 3 radna dana.
+
+
+## 6. Blok na AKTUAL MEDIA (ugrađeno 19. 10. 2026.)
+
+AKTUAL MEDIA ne čeka ručni unos: blok **„Iz GNK ASG KANALA"** nalazi se u
+`apps/portal/gnk-aktual/index.html` odmah nakon glavnih vijesti (prije SPT
+sekcije), između oznaka `<!-- KANAL-BAND:START -->` i `<!-- KANAL-BAND:END -->`.
+
+- Generira ga `apps/kanal/engine/portal-block.mjs` iz `site/feed.json`.
+- Svih šest linkova vode na kanal kao **vanjski linkovi** (`rel="external noopener"`).
+- Desk objave su u bloku označene kao „Dnevni desk · automatski sastavljeno".
+- Uz blok se zapisuje i `apps/portal/data/kanal-latest.json` (20 najnovijih
+  stavki, `external: true`) za strojne potrošače unutar portala.
+- Dnevni workflow osvježava blok i šalje exact-SHA production deploy, pa se
+  promjena vidi i na `https://gnk-asg.hr/gnk-aktual/`.
+
+CSP portala dopušta samo vlastite skripte i stilove (`connect-src 'none'`), zato
+je blok **statički HTML** — nema iframea ni fetch poziva prema kanalu.

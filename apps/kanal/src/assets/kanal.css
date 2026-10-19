@@ -476,3 +476,18 @@ footer li a:hover{color:var(--ink);text-decoration:underline;text-decoration-col
 @media(min-width:760px){.split{grid-template-columns:1.4fr 1fr}}
 .filter-wrap{margin:18px 0 6px}
 .filter-input{width:100%;max-width:420px;padding:10px 12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-size:14px;border-radius:2px}
+
+/* ---------- backlink blok ---------- */
+.backlink{display:grid;gap:14px;border:1px solid var(--line);border-left:3px solid var(--red);background:var(--card);padding:18px 20px;margin:30px 0 0;font-family:var(--sans)}
+@media(min-width:720px){.backlink{grid-template-columns:1fr auto;align-items:center}}
+.backlink-label{display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--red);font-weight:800;margin-bottom:6px}
+.backlink p{margin:0;font-size:13.4px;line-height:1.55;color:var(--ink-soft)}
+.backlink a{color:var(--ink);text-decoration-color:var(--gold)}
+.backlink-links{display:flex;flex-wrap:wrap;gap:8px}
+.foot-grid{grid-template-columns:1fr}
+@media(min-width:760px){.foot-grid{grid-template-columns:1.3fr 1fr 1fr 1fr 1fr}}
+@media(max-width:759px){.foot-grid{grid-template-columns:1fr 1fr}}
+
+/* Autorstvo: dnevni desk nije potpisan imenom glavnog urednika */
+.author-chip--desk .chip-mark{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid rgba(201,162,74,.55);color:var(--gold,#c9a24a);font-family:Georgia,serif;font-weight:700}
+.authorbox--desk{grid-template-columns:1fr}

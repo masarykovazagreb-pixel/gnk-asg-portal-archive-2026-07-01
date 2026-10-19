@@ -1,0 +1,127 @@
+{
+  "qa": [
+    {
+      "id": "zasto-504-nije-u-medijima",
+      "kind": "question",
+      "q": "Zašto 504 milijuna eura prihoda nije bilo šire medijski popraćeno?",
+      "body": "<p>Na to pitanje ne postoji provjerljiv odgovor koji bi uključivao namjeru. Ono što se može provjeriti jest mehanizam: redakcije pišu o onome što prepoznaju kao vijest, a to ovisi o priopćenjima, formatu podataka i kontekstu.</p><p>Ako podaci nisu poslani u obliku koji se može preuzeti, vjerojatnost objave pada — ne zbog zabrane, nego zbog troška obrade.</p>",
+      "source": "Kanal: Kada brojke rastu, a priča se stišava",
+      "tags": [
+        "mediji",
+        "transparentnost"
+      ]
+    },
+    {
+      "id": "je-li-gnk-asg-isto-dinamo",
+      "kind": "question",
+      "q": "Je li GNK ASG isto što i GNK DINAMO Ltd.?",
+      "body": "<p>Nije. GNK ASG d.o.o. je hrvatsko društvo sa sjedištem u Zagrebu, osnovano 2023. GNK DINAMO Ltd. je matično društvo sa sjedištem u Boulderu, Colorado.</p><p>Povezana su, ali su odvojena pravna lica s različitom odgovornošću i različitim propisima.</p>",
+      "source": "Pojašnjenje na kanalu",
+      "tags": [
+        "pojašnjenje",
+        "grupa"
+      ]
+    },
+    {
+      "id": "tko-odgovara-za-tekst",
+      "kind": "question",
+      "q": "Tko odgovara za tekstove objavljene na kanalu?",
+      "body": "<p>Glavni urednik Nermin Sefić potpisuje uredničku odgovornost: odabir tema, provjeru izvora, oznaku statusa i ispravke.</p><p>AI alati koriste se za pripremu nacrta, ali ne potpisuju, ne provjeravaju izvore i ne odlučuju o objavi.</p>",
+      "source": "Metodologija kanala",
+      "tags": [
+        "uređivanje",
+        "AI Act"
+      ]
+    },
+    {
+      "id": "mogu-li-preuzeti-tekst",
+      "kind": "question",
+      "q": "Može li redakcija preuzeti tekst bez traženja dopuštenja?",
+      "body": "<p>Može, uz atribuciju „Izvor: GNK ASG KANAL” i poveznicu na izvorni tekst. Nije potrebno tražiti dopuštenje za svaki pojedini slučaj.</p><p>Nije dopušteno mijenjati značenje, izvrtati citate ni objavljivati izmišljene izjave u ime kanala.</p>",
+      "source": "Pravila preuzimanja",
+      "tags": [
+        "preuzimanje",
+        "autorska prava"
+      ]
+    },
+    {
+      "id": "sto-je-razina-a",
+      "kind": "question",
+      "q": "Što znači oznaka „razina A” uz neku tvrdnju?",
+      "body": "<p>To znači da se tvrdnja temelji na primarnom dokumentu: financijskom izvještaju, ugovoru, registru ili presudi. Čitatelj može otići do izvornika i provjeriti je.</p><p>Razina B je službeni registar, razina C potvrđena izjava iz dva neovisna izvora, a razina D neprovjereni navod koji se objavljuje samo uz izričitu oznaku.</p>",
+      "source": "Metodologija kanala",
+      "tags": [
+        "provjera",
+        "izvori"
+      ]
+    },
+    {
+      "id": "zasto-mala-dobit",
+      "kind": "claim",
+      "q": "Tvrdnja: „Pola milijarde prihoda, a samo 16 tisuća dobiti — nešto je sumnjivo.”",
+      "body": "<p>Brojke su točne: prihod 504,0 milijuna eura, neto dobit 16.076,47 eura. Zaključak iz njih nije automatski.</p><p>Razlika između prihoda i dobiti nastaje iz troškova, ugovornih odnosa i raspodjele vrijednosti unutar grupe. Bez bilješki uz izvještaje svaka tvrdnja o uzroku je nagađanje.</p><p>Ono što se može provjeriti: kapital je narastao na 46,2 milijuna eura, a kratkoročne obveze pale su na 184,5 tisuća eura.</p>",
+      "source": "Objavljeni financijski izvještaji GNK ASG d.o.o. za 2025.",
+      "tags": [
+        "provjera",
+        "bilanca",
+        "GNK ASG"
+      ]
+    },
+    {
+      "id": "tocno-je-li-da-nema-medija",
+      "kind": "claim",
+      "q": "Tvrdnja: „O ovoj tvrtki mediji namjerno šute.”",
+      "body": "<p>Namjera se ne može dokazati javno dostupnim podacima. Ono što se može provjeriti je broj objava u pojedinim medijima — ali i to zahtijeva arhivsko pretraživanje, ne dojam.</p><p>Kanal zato opisuje mehanizme (priopćenja, format, kontekst), a ne iznosi tvrdnje o namjeri.</p>",
+      "source": "Komentar urednika",
+      "tags": [
+        "provjera",
+        "mediji"
+      ]
+    },
+    {
+      "id": "ai-act-primjena",
+      "kind": "claim",
+      "q": "Tvrdnja: „AI Act se primjenjuje od kolovoza 2024.”",
+      "body": "<p>Uredba je stupila na snagu 1. kolovoza 2024., ali se primjenjuje u fazama: zabranjene prakse od veljače 2025., obveze za modele opće namjene od kolovoza 2025., transparentnost od kolovoza 2026.</p><p>„Stupilo na snagu” i „primjenjuje se” nisu isto. Razlika je važna za planiranje usklađenosti.</p>",
+      "source": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
+      "tags": [
+        "AI Act",
+        "provjera",
+        "rokovi"
+      ]
+    },
+    {
+      "id": "sto-je-rss-u-ovom-kanalu",
+      "kind": "question",
+      "q": "Kako AKTUAL preuzima objave s kanala?",
+      "body": "<p>Kroz JSON feed na adresi /feed.json. Svaka stavka sadrži naslov, sažetak, autora, datum, rubriku, poveznicu na izvornik i status provjere.</p><p>Preuzimanje je dopušteno uz atribuciju. Ako je status „čeka potvrdu”, tekst se ne objavljuje kao potvrđena vijest.</p>",
+      "source": "Integracija za AKTUAL",
+      "tags": [
+        "feed",
+        "preuzimanje"
+      ]
+    },
+    {
+      "id": "zasto-bez-kolacica",
+      "kind": "question",
+      "q": "Zašto kanal ne koristi analitiku ni kolačiće?",
+      "body": "<p>Zato što se time ne dobiva ništa što opravdava praćenje čitatelja. Kanal je statičan, bez oglasa i bez profiliranja.</p><p>Jedini podatak koji se pamti u pregledniku je odabrana tema (svjetla ili tamna), i to lokalno.</p>",
+      "source": "Politika privatnosti",
+      "tags": [
+        "privatnost",
+        "GDPR"
+      ]
+    },
+    {
+      "id": "kako-prijaviti-gresku",
+      "kind": "question",
+      "q": "Kako prijaviti pogrešku u tekstu?",
+      "body": "<p>Pošaljite poveznicu, citat spornog dijela i izvor koji potvrđuje pogrešku na beckuphome@gmail.com.</p><p>Ispravak se objavljuje na istom mjestu, s datumom i opisom izmjene. Manje jezične izmjene ne objavljuju se kao ispravci.</p>",
+      "source": "Metodologija kanala",
+      "tags": [
+        "ispravci",
+        "kontakt"
+      ]
+    }
+  ]
+}

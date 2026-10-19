@@ -7,7 +7,7 @@
  *
  * Pokretanje:
  *   node apps/kanal/build.mjs
- *   node apps/kanal/build.mjs --base https://kanal.gnk-asg.hr/
+ *   node apps/kanal/build.mjs --base https://gnk-asg-kanal.pages.dev/
  */
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, rmSync, copyFileSync, existsSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
@@ -78,7 +78,7 @@ const org = {
   url: SITE.publisher.url,
   logo: { '@type': 'ImageObject', url: abs('assets/logo-gnk-asg-gold.svg'), width: 512, height: 512 },
   address: { '@type': 'PostalAddress', addressLocality: 'Zagreb', addressCountry: 'HR' },
-  sameAs: ['https://gnk-asg.hr/', SITE.author.linkedin]
+  sameAs: ['https://gnk-asg.hr/', 'https://gnk-asg.hr/gnk-aktual/', SITE.author.linkedin]
 };
 const person = {
   '@type': 'Person',
@@ -89,7 +89,7 @@ const person = {
   url: SITE.author.url,
   image: abs('assets/nermin-sefic-portrait.webp'),
   worksFor: { '@id': abs('#organizacija') },
-  sameAs: [SITE.author.url, SITE.author.linkedin, SITE.publisher.url],
+  sameAs: [SITE.author.url, SITE.author.linkedin, SITE.publisher.url, 'https://gnk-asg.hr/gnk-aktual/'],
   knowsAbout: ['financije', 'revizija', 'korporativno upravljanje', 'umjetna inteligencija', 'izvoz softvera', 'tržišna analiza']
 };
 const website = {
@@ -105,7 +105,7 @@ const website = {
 };
 
 /* ---------- HTML layout ---------- */
-function head({ title, description, canonical, root, og, ogAlt, type = 'website', published, modified, section, tags = [], faq, graphExtra = [], noindex = false }) {
+function head({ title, description, canonical, root, og, ogAlt, type = 'website', published, modified, section, tags = [], faq, graphExtra = [], noindex = false, authorName = 'Nermin Sefić', authorId = abs('#nermin-sefic') }) {
   const pageUrl = canonical === '' ? BASE : abs(canonical);
   const image = og ? abs(og) : abs('assets/og/naslovnica.png');
   const articleTags = tags.map((t) => `\n<meta property="article:tag" content="${esc(t)}">`).join('');
@@ -124,8 +124,8 @@ function head({ title, description, canonical, root, og, ogAlt, type = 'website'
       url: pageUrl,
       inLanguage: 'hr-HR',
       image: [{ '@type': 'ImageObject', url: image, width: 1200, height: 630 }],
-      author: { '@id': abs('#nermin-sefic') },
-      editor: { '@id': abs('#nermin-sefic') },
+      author: { '@id': authorId },
+      editor: { '@id': authorId },
       publisher: { '@id': abs('#organizacija') },
       ...(published ? { datePublished: isoDate(published), dateModified: isoDate(modified || published) } : {}),
       ...(section ? { articleSection: section } : {}),
@@ -142,7 +142,7 @@ function head({ title, description, canonical, root, og, ogAlt, type = 'website'
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
-<meta name="author" content="Nermin Sefić">
+<meta name="author" content="${esc(authorName)}">
 <meta name="robots" content="${noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'}">
 <meta name="theme-color" content="#101114">
 <link rel="canonical" href="${esc(pageUrl)}">
@@ -164,14 +164,14 @@ function head({ title, description, canonical, root, og, ogAlt, type = 'website'
 <meta property="og:image" content="${esc(image)}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="${esc(ogAlt || title)}">${published ? `\n<meta property="article:published_time" content="${isoDate(published)}">\n<meta property="article:modified_time" content="${isoDate(modified || published)}">\n<meta property="article:author" content="Nermin Sefić">` : ''}${section ? `\n<meta property="article:section" content="${esc(section)}">` : ''}${articleTags}
+<meta property="og:image:alt" content="${esc(ogAlt || title)}">${published ? `\n<meta property="article:published_time" content="${isoDate(published)}">\n<meta property="article:modified_time" content="${isoDate(modified || published)}">\n<meta property="article:author" content="${esc(authorName)}">` : ''}${section ? `\n<meta property="article:section" content="${esc(section)}">` : ''}${articleTags}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(description)}">
 <meta name="twitter:image" content="${esc(image)}">
 <meta name="twitter:image:alt" content="${esc(ogAlt || title)}">
 <meta name="twitter:label1" content="Autor">
-<meta name="twitter:data1" content="Nermin Sefić">
+<meta name="twitter:data1" content="${esc(authorName)}">
 ${published ? `<meta name="twitter:label2" content="Objavljeno">\n<meta name="twitter:data2" content="${hrDate(published)}">` : ''}
 <meta name="format-detection" content="telephone=no">
 <link rel="dns-prefetch" href="//gnk-asg.hr">
@@ -235,6 +235,9 @@ function footer(root) {
       <li><a href="${root}metodologija/">Metodologija i ispravci</a></li>
       <li><a href="${root}objave/">Sve objave</a></li>
     </ul></div>
+    <div><h3>Vanjski linkovi</h3><ul>
+      ${(SITE.partners || []).map((p) => `<li><a href="${esc(p.url)}" rel="external noopener">${esc(p.name)}</a> <span class="fine-print">— ${esc(p.role)}</span></li>`).join('')}
+    </ul></div>
     <div><h3>Kontakt i pravila</h3><ul>
       <li><a href="${root}kontakt/">Kontakt za medije</a></li>
       <li><a href="${root}komentari/">Pravila komentiranja</a></li>
@@ -251,9 +254,9 @@ function footer(root) {
 <script src="${root}assets/kanal.js" defer></script>`;
 }
 
-function page({ title, description, canonical, content, active = '', type = 'website', og, ogAlt, published, modified, section, tags, faq, graphExtra, noindex, bodyAttrs = '', rootOverride }) {
+function page({ title, description, canonical, content, active = '', type = 'website', og, ogAlt, published, modified, section, tags, faq, graphExtra, noindex, bodyAttrs = '', rootOverride, authorName, authorId }) {
   const root = rootOverride !== undefined ? rootOverride : rootFor(canonical);
-  return `${head({ title, description, canonical, root, og, ogAlt, type, published, modified, section, tags, faq, graphExtra, noindex })}
+  return `${head({ title, description, canonical, root, og, ogAlt, type, published, modified, section, tags, faq, graphExtra, noindex, authorName, authorId })}
 <body ${bodyAttrs}>
 ${header({ active, root })}
 ${disclosure(root)}
@@ -266,7 +269,16 @@ ${footer(root)}
 }
 
 /* ---------- dijelovi ---------- */
-const kicker = (section, root) => {
+const isDesk = (a) => a.kind === 'desk';
+const authorOf = (a) => isDesk(a)
+  ? { name: 'GNK ASG KANAL · Dnevni desk', url: abs('dnevnik/'), id: abs('#organizacija') }
+  : { name: 'Nermin Sefić', url: SITE.author.url, id: abs('#nermin-sefic') };
+const statusOf = (a) => isDesk(a)
+  ? { label: 'Automatski sastavljeno', full: 'Automatski sastavljeno iz strukturiranih podataka · nije pojedinačno urednički pregledano' }
+  : { label: SITE.editorial.statusLabel, full: SITE.editorial.statusLabel };
+
+const kicker = (section, root, kind) => {
+  if (kind === 'desk') return `<a class="kicker" href="${root}dnevnik/">Dnevni desk</a>`;
   const s = SECTIONS[section];
   return s ? `<a class="kicker" href="${root}tema/${section}/">${esc(s.label)}</a>` : '';
 };
@@ -276,7 +288,7 @@ function articleCard(a, root, opts = {}) {
   return `<article class="card" data-card="${esc([a.title, a.dek, SECTIONS[a.section]?.label, ...(a.tags || [])].join(' '))}">
   <a class="card-media" href="${root}${a.slug}/" tabindex="-1" aria-hidden="true"><img src="${root}${img}" alt="" width="1200" height="630" loading="lazy" decoding="async"></a>
   <div class="card-body">
-    ${kicker(a.section, root)}
+    ${kicker(a.section, root, a.kind)}
     <h3><a href="${root}${a.slug}/">${esc(a.title)}</a></h3>
     <p>${esc(a.dek)}</p>
     <div class="card-foot"><span>${hrDate(a.date)}</span><span>${a.readingTime} min</span></div>
@@ -289,10 +301,10 @@ function articleListRow(a, root) {
   return `<article data-card="${esc([a.title, a.dek, SECTIONS[a.section]?.label, ...(a.tags || [])].join(' '))}">
   <a href="${root}${a.slug}/" tabindex="-1" aria-hidden="true"><img src="${root}${img}" alt="" width="1200" height="630" loading="lazy"></a>
   <div>
-    ${kicker(a.section, root)}
+    ${kicker(a.section, root, a.kind)}
     <h2><a href="${root}${a.slug}/">${esc(a.title)}</a></h2>
     <p>${esc(a.dek)}</p>
-    <div class="byline"><b>Nermin Sefić</b><span class="sep">·</span><time datetime="${a.date}">${hrDate(a.date)}</time><span class="sep">·</span><span>${a.readingTime} min čitanja</span><span class="sep">·</span><span>${commentCounts[a.slug] || 0} komentara</span></div>
+    <div class="byline"><b>${esc(authorOf(a).name)}</b><span class="sep">·</span><time datetime="${a.date}">${hrDate(a.date)}</time><span class="sep">·</span><span>${a.readingTime} min čitanja</span><span class="sep">·</span><span>${commentCounts[a.slug] || 0} komentara</span></div>
   </div>
 </article>`;
 }
@@ -355,14 +367,19 @@ function buildArticle(a) {
   <div class="wrap">
     <header class="article-head">
       <nav class="crumbs" aria-label="Putanja"><a href="${root}">Naslovnica</a><span>/</span><a href="${root}tema/${a.section}/">${esc(sectionLabel)}</a><span>/</span><span aria-current="page">${esc(a.shortTitle || a.title).slice(0, 60)}</span></nav>
-      ${kicker(a.section, root)}
+      ${kicker(a.section, root, a.kind)}
       <h1 itemprop="headline">${esc(a.title)}</h1>
       <p class="dek" itemprop="description">${esc(a.dek)}</p>
       <div class="article-meta">
-        <a class="author-chip" href="${root}nermin-sefic/">
+        ${isDesk(a)
+          ? `<a class="author-chip author-chip--desk" href="${root}dnevnik/">
+          <span class="chip-mark" aria-hidden="true">K</span>
+          <span><b>GNK ASG KANAL</b><span>Dnevni desk · automatski sastavljeno</span></span>
+        </a>`
+          : `<a class="author-chip" href="${root}nermin-sefic/">
           <img src="${root}assets/nermin-sefic-portrait.webp" alt="Nermin Sefić" width="40" height="40">
           <span><b>Nermin Sefić</b><span>Glavni urednik · GNK ASG</span></span>
-        </a>
+        </a>`}
         <div class="byline">
           <time datetime="${isoDate(a.date)}">${hrDate(a.date)}</time>
           <span class="sep">·</span><span class="reading">${a.readingTime} min čitanja</span>
@@ -392,7 +409,16 @@ function buildArticle(a) {
           ${tags}
           ${faq}
         </div>
-        <div class="authorbox">
+        ${isDesk(a)
+          ? `<div class="authorbox authorbox--desk">
+          <div>
+            <h2>Dnevni desk</h2>
+            <div class="role">GNK ASG KANAL · automatski sastavljeno</div>
+            <p>Ovaj tekst sastavljen je iz strukturiranih podataka i objavljenih izvora. Nije pojedinačno urednički pregledan i ne prenosi odgovornost glavnog urednika na izvor podataka. Ispravci se objavljuju javno.</p>
+            <a href="${root}dnevnik/">Sve objave Dnevnog deska →</a>
+          </div>
+        </div>`
+          : `<div class="authorbox">
           <img src="${root}assets/nermin-sefic-portrait.webp" alt="Nermin Sefić" width="88" height="88" loading="lazy">
           <div>
             <h2>Nermin Sefić</h2>
@@ -400,7 +426,7 @@ function buildArticle(a) {
             <p>Autor je knjiga „Osnove revizije" (2003.) i „Financije za poduzetnike i menadžere nefinancijaše" (2003.) te priručnika „Poduzetnik" (2006.). Piše o financijama, izvozu softvera, korporativnom upravljanju i primjeni umjetne inteligencije u poslovanju.</p>
             <a href="${root}nermin-sefic/">Javni profil i svi tekstovi →</a>
           </div>
-        </div>
+        </div>`}
         <section class="comments" id="komentari" aria-labelledby="komentari-naslov">
           <div class="comments-head"><h2 id="komentari-naslov">Komentari</h2><span class="count" id="comment-count">${commentCounts[a.slug] || 0} komentara</span></div>
           <ul class="comment-list" id="comment-list"><li class="comment-empty">Još nema objavljenih komentara. Prvi komentar postaje dio javne rasprave — potpišite se imenom ili inicijalom.</li></ul>
@@ -415,6 +441,16 @@ function buildArticle(a) {
             <p class="fine">Obrazac otvara vaš e-mail program i šalje komentar na ${esc(SITE.contact.email)}. Ne pohranjujemo podatke na poslužitelju.</p>
           </form>
         </section>
+        <aside class="backlink" aria-label="Gdje se objava preuzima">
+          <div>
+            <span class="backlink-label">Vanjski linkovi</span>
+            <p>Ovaj tekst je dio kanala koji preuzima <a href="https://gnk-asg.hr/gnk-aktual/" rel="external noopener">AKTUAL MEDIA</a>. Izvorni korporativni kontekst dostupan je na <a href="https://gnk-asg.hr/" rel="external noopener">gnk-asg.hr</a>, a profil autora na <a href="https://gnk-asg.hr/nermin-sefic/" rel="external noopener">gnk-asg.hr/nermin-sefic</a>.</p>
+          </div>
+          <div class="backlink-links">
+            <a class="btn btn--sm btn--ghost" href="https://gnk-asg.hr/gnk-aktual/" rel="external noopener">AKTUAL MEDIA →</a>
+            <a class="btn btn--sm btn--ghost" href="${esc(abs( 'feed.json' ))}" rel="alternate">Feed za preuzimanje</a>
+          </div>
+        </aside>
         <nav class="pager" aria-label="Prethodni i sljedeći tekst">
           ${older ? `<a href="${root}${older.slug}/"><small>← Starije</small><b>${esc(older.title)}</b></a>` : '<span></span>'}
           ${newer ? `<a href="${root}${newer.slug}/"><small>Novije →</small><b>${esc(newer.title)}</b></a>` : '<span></span>'}
@@ -426,8 +462,10 @@ function buildArticle(a) {
         <div class="factbox">
           <dl>
             <dt>Izdavač</dt><dd>${esc(SITE.publisher.name)}</dd>
-            <dt>Glavni urednik</dt><dd>Nermin Sefić</dd>
-            <dt>Status provjere</dt><dd>${esc(SITE.editorial.statusLabel)}</dd>
+            ${isDesk(a)
+              ? `<dt>Priprema</dt><dd>GNK ASG KANAL · Dnevni desk</dd>`
+              : `<dt>Glavni urednik</dt><dd>Nermin Sefić</dd>`}
+            <dt>Status provjere</dt><dd>${esc(statusOf(a).full)}</dd>
             <dt>Ispravci</dt><dd><a href="${root}metodologija/">Pravila i kontakt</a></dd>
           </dl>
         </div>
@@ -470,6 +508,9 @@ function buildArticle(a) {
     tags: a.tags || [],
     faq: a.faq,
     graphExtra,
+    noindex: isDesk(a),
+    authorName: authorOf(a).name,
+    authorId: authorOf(a).id,
     bodyAttrs: `data-slug="${a.slug}" data-root="${root}" data-title="${esc(a.title)}"`
   });
 }
@@ -702,7 +743,7 @@ ${items.map((a) => `<item>
   <link>${abs(a.slug + '/')}</link>
   <guid isPermaLink="true">${abs(a.slug + '/')}</guid>
   <pubDate>${new Date(isoDate(a.date)).toUTCString()}</pubDate>
-  <dc:creator>Nermin Sefić</dc:creator>
+  <dc:creator>${esc(authorOf(a).name)}</dc:creator>
   <category>${esc(SECTIONS[a.section]?.label || '')}</category>
   <description>${esc(a.dek)}</description>
 </item>`).join('\n')}
@@ -717,7 +758,7 @@ ${items.map((a) => `<item>
 <link href="${abs('atom.xml')}" rel="self"/>
 <id>${BASE}</id>
 <updated>${new Date().toISOString()}</updated>
-<author><name>Nermin Sefić</name><uri>${SITE.author.url}</uri></author>
+<author><name>GNK ASG KANAL</name><uri>${BASE}</uri></author>
 ${items.map((a) => `<entry>
   <title>${esc(a.title)}</title>
   <link href="${abs(a.slug + '/')}"/>
@@ -725,6 +766,7 @@ ${items.map((a) => `<entry>
   <published>${isoDate(a.date)}</published>
   <updated>${isoDate(a.updated || a.date)}</updated>
   <summary>${esc(a.dek)}</summary>
+  <author><name>${esc(authorOf(a).name)}</name><uri>${esc(authorOf(a).url)}</uri></author>
   <category term="${esc(SECTIONS[a.section]?.label || '')}"/>
 </entry>`).join('\n')}
 </feed>`;
@@ -754,7 +796,7 @@ ${items.map((a) => `<entry>
       content_text: stripTags(a.body).slice(0, 5000),
       date_published: isoDate(a.date),
       date_modified: isoDate(a.updated || a.date),
-      authors: [{ name: 'Nermin Sefić', url: SITE.author.url }],
+      authors: [{ name: authorOf(a).name, url: authorOf(a).url }],
       tags: [SECTIONS[a.section]?.label, ...(a.tags || [])].filter(Boolean),
       image: abs(a.og || a.image),
       language: 'hr-HR',
@@ -765,7 +807,7 @@ ${items.map((a) => `<entry>
         words: a.words,
         sources: (a.sources || []).filter((s) => s.url).map((s) => s.url),
         sourcesNote: (a.sources || []).map((s) => s.label),
-        editorialStatus: SITE.editorial.status
+        editorialStatus: isDesk(a) ? 'auto-assembled' : SITE.editorial.status
       }
     }))
   };

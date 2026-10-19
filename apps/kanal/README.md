@@ -7,8 +7,7 @@ preuzeti uz atribuciju.
 - **JAVNO:** https://gnk-asg-kanal.pages.dev/ (Cloudflare Pages, objavljeno 19. 10. 2026.)
 - **Izlaz:** `apps/kanal/site/` (statički HTML, bez baze i bez servera)
 - **Hosting:** Cloudflare Pages (`gnk-asg-kanal`), workflow `.github/workflows/kanal-deploy.yml`
-- **Domena:** `kanal.gnk-asg.hr` — potrebno dodati custom domain u Cloudflare dashboardu
-  (vidi `docs/HOSTING-I-DOMENA.md`, odjeljak 3)
+- **Domena:** samo `gnk-asg-kanal.pages.dev` (odluka 19. 10. 2026: custom domena se ne koristi)
 - **Feed za AKTUAL:** `site/feed.json` (JSON Feed 1.1 + blok `_kanal`)
 - **Kontakt:** `beckuphome@gmail.com`
 
@@ -18,9 +17,33 @@ Deploy se pokreće automatski na svaki push koji dira `apps/kanal/**`
 (workflow `kanal-deploy.yml`). Ručno: Actions → kanal-deploy → Run workflow
 (dostupno kad je workflow na `main`).
 
+### Dnevni stroj — 10 objava svakoga dana
+
+```bash
+node apps/kanal/engine/daily.mjs                 # današnje izdanje (10 objava)
+node apps/kanal/engine/daily.mjs --date 2026-10-20
+node apps/kanal/engine/daily.mjs --date 2026-10-20 --force   # ponovno sastavi
+node apps/kanal/engine/portal-block.mjs --limit 6            # blok na AKTUAL
+```
+
+Sastav izdanja: 1 cjelovit tekst iz `engine/pool.json`, 2 roka, 3 brojke,
+2 pojma, 1 pitanje čitatelja i 1 provjera tvrdnje. Iste stavke se ne ponavljaju
+21 dan (`engine/state.json` → `lastUsed`), a izdanje je idempotentno: drugi
+pokret za isti datum ne piše ništa bez `--force`.
+
+Automatizacija: `.github/workflows/kanal-daily.yml` (svaki dan 05:00 UTC),
+registrirana u `ops/automation-control-v1.json` i `ops/automation-kill-switches.json`
+(kanal `kanalPublish`). Workflow također osvježava blok na AKTUAL MEDIA
+(`apps/portal/gnk-aktual/index.html`, oznake `KANAL-BAND:START/END`) i
+`apps/portal/data/kanal-latest.json`.
+
+Desk objave su `kind: "desk"` → `noindex`, kicker „Dnevni desk", autor
+„GNK ASG KANAL · Dnevni desk" i vidljiva oznaka da su automatski sastavljene,
+bez pripisivanja Nerminu Sefiću.
+
 ```bash
 node apps/kanal/build.mjs                      # lokalna gradnja
-node apps/kanal/build.mjs --base https://kanal.gnk-asg.hr/
+node apps/kanal/build.mjs --base https://gnk-asg-kanal.pages.dev/
 node apps/kanal/integrations/aktual-import.mjs --out ./aktual-import.json
 NODE_PATH=/home/user/.cache/ogtool/node_modules node apps/kanal/make-og.mjs  # OG slike
 ```
