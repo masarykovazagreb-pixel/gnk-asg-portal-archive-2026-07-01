@@ -11,7 +11,7 @@
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { esc, shortDate, truncate } from './lib.mjs';
+import { esc, shortDate, truncate, themeFor } from './lib.mjs';
 import { CHANNELS, HUB } from './build.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -41,7 +41,7 @@ function allItems() {
     const data = readJSON(join(DATA, `${channel.id}.json`), { items: [] });
     for (const item of data.items || []) {
       if (!item?.title || !item?.slug) continue;
-      out.push({ ...item, channel });
+      out.push({ ...item, channel, theme: themeFor(`${item.title} ${item.summary}`).id });
     }
   }
   return out.sort((a, b) => String(b.date).localeCompare(String(a.date)));

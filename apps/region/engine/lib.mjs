@@ -206,7 +206,7 @@ export const THEMES = [
   { id: 'potres', color: '#a9833f',
     words: ['potres', 'zemljotres', 'earthquake', 'seizm', 'richter', 'magnitud', 'epicentar', 'tsunami', 'poplav', 'požar', 'pozar', 'erupcij', 'oluj', 'nevrijeme', 'katastrof', 'vulkan', 'földrengés', 'foldrenges', 'potres', 'terremoto', 'земетресение', 'cutremur',] },
   { id: 'politika', color: '#5d7bd5',
-    words: ['vlad', 'parlament', 'izbor', 'izbori', 'predsednik', 'predsjednik', 'ministar', 'premijer', 'stranka', 'opozicij', 'koalicij', 'sabor', 'skupštin', 'skupstin', 'ue', 'eu', 'komisij', 'brisel', 'sanctions', 'sankcij', 'diplomat', 'ambasad', 'veleposlan', 'ustav', 'referendum', 'kormány', 'választás', 'miniszter', 'kormany', 'valasztas', 'parlament', 'miniszter', 'vlada', 'volitve', 'governo', 'elezioni', 'правителство', 'избори', 'парламент', 'guvern', 'alegeri',] },
+    words: ['vlad', 'parlament', 'izbor', 'izbori', 'predsednik', 'predsjednik', 'ministar', 'premijer', 'stranka', 'opozicij', 'koalicij', 'sabor', 'skupštin', 'skupstin', 'ue', 'komisij', 'brisel', 'sanctions', 'sankcij', 'diplomat', 'veleposlan', 'ustav', 'referendum', 'kormány', 'választás', 'miniszter', 'kormany', 'valasztas', 'parlament', 'miniszter', 'vlada', 'volitve', 'politik', 'governo', 'elezioni', 'правителство', 'избори', 'парламент', 'guvern', 'alegeri',] },
   { id: 'ekonomija', color: '#2f9e78',
     words: ['privred', 'gospodarstv', 'ekonomij', 'ekonomi', 'inflacij', 'kamata', 'kamatn', 'banka', 'bankar', 'berza', 'burz', 'tržišt', 'trzist', 'investic', 'kapital', 'dug', 'budžet', 'budzet', 'porez', 'plać', 'placa', 'nezaposlen', 'izvoz', 'uvoz', 'bdi', 'rast', 'recesij', 'kredit', 'gazdaság', 'infláció', 'jegybank', 'gazdasag', 'inflacio', 'jegybank', 'gospodarstvo', 'inflacija', 'economia', 'inflazione', 'mercato', 'икономика', 'инфлация', 'пазар', 'economie', 'inflatie', 'piata',] },
   { id: 'ai', color: '#7b61d1',
@@ -214,7 +214,7 @@ export const THEMES = [
   { id: 'energija', color: '#c58b2a',
     words: ['energij', 'struja', 'elektran', 'plin', 'gas', 'naft', 'benzin', 'goriv', 'cijen', 'cena', 'solarn', 'vjetro', 'vjetar', 'nuklearn', 'hidro', 'mreža', 'mreza', 'energet', 'energia', 'energija', 'energetika', 'elektromos', 'energia', 'energie', 'електроенергия', 'енергетика', 'energie', 'gaze naturale',] },
   { id: 'sport', color: '#2a8fbf',
-    words: ['utakmic', 'utakmica', 'fudbal', 'nogomet', 'košark', 'kosark', 'tenis', 'olimp', 'prvenstv', 'liga', 'klub', 'trener', 'gol', 'pobjed', 'pobed', 'poraz', 'final', 'derbi', 'sport', 'atlet', 'plivanj', 'rukomet', 'odbojk', 'formula 1', 'moto', 'merkozes', 'foci', 'kosarlabda', 'tekma', 'nogomet', 'partita', 'calcio', 'мач', 'футбол', 'meci', 'fotbal',] },
+    words: ['utakmic', 'utakmica', 'fudbal', 'nogomet', 'košark', 'kosark', 'tenis', 'olimp', 'prvenstv', 'liga', 'klub', 'trener', 'gol', 'pobjed', 'pobed', 'poraz', 'final', 'derbi', 'sport', 'atlet', 'plivanj', 'rukomet', 'odbojk', 'šport', 'košark', 'formula 1', 'moto', 'merkozes', 'foci', 'kosarlabda', 'tekma', 'nogomet', 'partita', 'calcio', 'мач', 'футбол', 'meci', 'fotbal',] },
   { id: 'drustvo', color: '#9a6fb0',
     words: ['zdravstv', 'bolnic', 'lijek', 'obrazovan', 'škol', 'skol', 'univerzitet', 'student', 'kulturu', 'kultura', 'film', 'muzik', 'koncert', 'medij', 'novinar', 'cenzur', 'prava', 'migracij', 'socijal', 'penzij', 'mirovin', 'stanov', 'nekretnin', 'grad', 'egeszseg', 'korhaz', 'oktatas', 'iskola', 'zdravstvo', 'bolnisnica', 'salute', 'scuola', 'здраве', 'училище', 'sanatate', 'scoala'] }
 ];
@@ -224,17 +224,22 @@ export function themeFor(text = '') {
   let best = { id: 'drustvo', score: 0 };
   for (const theme of THEMES) {
     let score = 0;
-    for (const word of theme.words) {
+    for (const word of new Set(theme.words)) {
       const needle = word.trim();
       if (!needle) continue;
       let index = haystack.indexOf(needle);
       while (index !== -1) {
-        score += 1;
+        // Riječ mora početi na granici riječi: "rat" ne smije pogoditi "obrat"
+        // ni "Katarina", a "grad" ne smije pogoditi "Beograd".
+        const before = haystack[index - 1] || ' ';
+        if (!/[a-zà-ž0-9]/.test(before)) score += 1;
         index = haystack.indexOf(needle, index + needle.length);
         if (score > 40) break;
       }
     }
-    if (score > best.score) best = { id: theme.id, score };
+    // Kod izjednačenja sport ima prednost: sportski tekstovi često spominju
+    // ambasadore, klubove i institucije koje bi inače povukle drugu temu.
+    if (score > best.score || (score === best.score && score > 0 && theme.id === 'sport' && best.id !== 'sport')) best = { id: theme.id, score };
   }
   return THEMES.find((t) => t.id === best.id) || THEMES[THEMES.length - 1];
 }

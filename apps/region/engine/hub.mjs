@@ -337,7 +337,7 @@ function collect(theme) {
   for (const channel of CHANNELS) {
     const data = channelData(channel.id);
     for (const item of data.items.slice(0, 60)) {
-      const itemTheme = item.theme || themeFor(`${item.title} ${item.summary}`).id;
+      const itemTheme = themeFor(`${item.title} ${item.summary}`).id;
       if (itemTheme !== theme) continue;
       out.push({ ...item, channel });
     }

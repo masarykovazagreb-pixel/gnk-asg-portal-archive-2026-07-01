@@ -41,7 +41,7 @@ const checksFor = (item, strings) => {
   return out.slice(0, 3);
 };
 
-const themeOf = (item) => item.theme || themeFor(`${item.title} ${item.summary}`).id;
+const themeOf = (item) => themeFor(`${item.title} ${item.summary}`).id;
 
 export function loadChannel(channel) {
   const file = join(DATA, `${channel.id}.json`);
