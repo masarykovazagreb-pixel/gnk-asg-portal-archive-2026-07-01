@@ -1,0 +1,31 @@
+name: AKTUAL Premium Original Image Quality Gate
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/data/editorial-premium-art.json'
+      - 'apps/portal/assets/editorial/**'
+      - 'scripts/lib/editorial-premium-art-v1.mjs'
+      - 'scripts/generate-editorial-cover-assets-v1.mjs'
+      - 'scripts/test-premium-editorial-art-v1.mjs'
+      - '.github/workflows/aktual-premium-image-quality.yml'
+permissions:
+  contents: read
+jobs:
+  render-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install image converter if absent
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! command -v convert >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y --no-install-recommends imagemagick fonts-dejavu-core
+          fi
+      - name: Render real curated asset and verify dimensions, quality and safety
+        run: node scripts/test-premium-editorial-art-v1.mjs
