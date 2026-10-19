@@ -1,11 +1,17 @@
 import assert from 'node:assert/strict';
 import {addCommentListing,addAktualLink} from './lib/editorial-visibility-links-v1.mjs';
 const article={route:'/komentari/originalna-analiza/',type:'komentar',title:'Poslovanje & AI <sigurno>',description:'Originalni komentar GNK ASG',image:'/assets/gallery/ai-observability-organic-v3.svg'};
-const comments='<main><p class="editorial-listing-count" data-static-editorial-count="1">1 objavljenih tekstova</p><section class="editorial-grid" aria-label="Komentari"><article data-editorial-route="/komentari/stari/"><a href="/komentari/stari/">Stari</a></article></section></main>';
+const seeded={'@context':'https://schema.org','@type':'ItemList','@id':'https://gnk-asg.hr/komentari/#items',numberOfItems:1,itemListElement:[{'@type':'ListItem',position:1,url:'https://gnk-asg.hr/komentari/stari/',name:'Stari',image:'https://gnk-asg.hr/assets/gnk-asg-social-card.png'}]};
+const comments='<head><script type="application/ld+json">'+JSON.stringify(seeded)+'</script></head><main><p class="editorial-listing-count" data-static-editorial-count="1">1 objavljenih tekstova</p><section class="editorial-grid" aria-label="Komentari"><article data-editorial-route="/komentari/stari/"><a href="/komentari/stari/">Stari</a></article></section></main>';
 const aktual='<main><div class="am-editorial-links" id="amEditorialLinks"><a href="/komentari/stari/">Stari</a></div></main>';
 const out=addCommentListing(comments,article);
 assert.equal(out.changed,true);assert.match(out.html,/data-static-editorial-count="2"/);assert.match(out.html,/&amp; AI &lt;sigurno&gt;/);
 assert.match(out.html,/href="\/komentari\/originalna-analiza\/"/);
+const schema=JSON.parse(out.html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
+assert.equal(schema.numberOfItems,2);
+assert.equal(schema.itemListElement[0].url,'https://gnk-asg.hr/komentari/originalna-analiza/');
+assert.equal(schema.itemListElement[0].position,1);
+assert.equal(schema.itemListElement[1].position,2);
 assert.equal(addCommentListing(out.html,article).changed,false);
 const link=addAktualLink(aktual,article);
 assert.equal(link.changed,true);assert.match(link.html,/href="\/komentari\/originalna-analiza\/"/);

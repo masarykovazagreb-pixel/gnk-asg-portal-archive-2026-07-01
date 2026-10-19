@@ -8,6 +8,30 @@ const enforceRoute = route => {
   return route;
 };
 
+
+function updateCommentItemList(html, article, localImage) {
+  const schemaPattern=/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  let found=0;
+  const result=html.replace(schemaPattern,(block,raw)=>{
+    let schema;
+    try { schema=JSON.parse(raw); } catch { return block; }
+    if(schema?.['@type']!=='ItemList'||schema?.['@id']!=='https://gnk-asg.hr/komentari/#items')return block;
+    found++;
+    if(found>1||!Array.isArray(schema.itemListElement))throw new Error('Content queue: invalid or repeated comments ItemList schema');
+    const url='https://gnk-asg.hr'+article.route;
+    const entries=schema.itemListElement;
+    if(!entries.some(x=>x?.url===url)){
+      entries.unshift({'@type':'ListItem',position:1,url,name:String(article.title),image:'https://gnk-asg.hr'+localImage});
+    }
+    schema.itemListElement=entries.map((item,i)=>({...item,position:i+1}));
+    schema.numberOfItems=entries.length;
+    return '<script type="application/ld+json">'+JSON.stringify(schema).replace(/</g,'\\u003c')+'</script>';
+  });
+  // Minimal HTML fixtures without an ItemList are supported; actual portal release
+  // gates independently require complete structured data on published archives.
+  return result;
+}
+
 export function addCommentListing(html, article) {
   const route=enforceRoute(article.route);
   const escaped=escapeHtml(route);
@@ -31,6 +55,7 @@ export function addCommentListing(html, article) {
   if (!countPattern.test(output)) throw new Error('Content queue: static editorial count marker missing');
   const count=[...output.matchAll(/data-editorial-route="[^"]+"/g)].length;
   output=output.replace(countPattern,(_,before,after)=>before+count+after+count+' objavljenih tekstova · sve poveznice dostupne su u statičkom HTML-u.');
+  output=updateCommentItemList(output,article,imgUrl);
   return {html:output,changed:true};
 }
 
