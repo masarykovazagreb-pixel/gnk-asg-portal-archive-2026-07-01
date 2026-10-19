@@ -341,6 +341,9 @@ function buildArticle(a) {
   const faq = (a.faq || []).length
     ? `<section class="faq"><h2>Česta pitanja</h2>${a.faq.map((f) => `<details><summary>${esc(f.q)}</summary><div class="answer"><p>${esc(f.a)}</p></div></details>`).join('')}</section>`
     : '';
+  const xdraft = (a.x || []).length
+    ? `<section class="xdraft"><h2>Predložak za X / Twitter</h2>${a.x.map((t) => `<div class="xdraft-row"><p>${esc(t)}</p><button type="button" data-copy="${esc(t)}" class="btn btn--sm btn--ghost">Kopiraj</button></div>`).join('')}<p class="fine">Objava je pripremljena za ručno objavljivanje na računu. Dodajte poveznicu: <a href="${esc(shareUrl)}">${esc(shareUrl)}</a></p></section>`
+    : '';
   const tags = (a.tags || []).length
     ? `<div class="tags">${a.tags.map((t) => `<a href="${root}objave/?tema=${encodeURIComponent(slugify(t))}" rel="tag">#${esc(t)}</a>`).join('')}</div>`
     : '';
@@ -384,6 +387,7 @@ function buildArticle(a) {
           ${keyfacts}
           ${bodyHtml}
           ${editorNote}
+          ${xdraft}
           ${sources}
           ${tags}
           ${faq}

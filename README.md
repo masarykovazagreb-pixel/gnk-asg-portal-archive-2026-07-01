@@ -35,6 +35,9 @@ Razvojna baza za GNK ASG portal (gnk-asg.hr) i povezane Cloudflare Workere.
 
 ```
 apps/portal/    aktivni HR/EN frontend (statičke stranice, sitemapovi, podaci)
+apps/kanal/     GNK ASG KANAL — zasebni statički urednički kanal + feed za AKTUAL MEDIA
+                (build: node apps/kanal/build.mjs; hosting: .github/workflows/kanal-pages.yml;
+                 domena/hosting upute: apps/kanal/docs/HOSTING-I-DOMENA.md)
 apps/legacy-portal/  prethodni frontend (drži se zbog povijesti; plan spajanja u ROADMAP C5.1)
 workers/        aktivni Cloudflare Workeri (bez secrets u repou)
   gnk-asg-direct-operator/   glavni Worker; aktivni ulaz = src/index-digital-workforce-v1.js
