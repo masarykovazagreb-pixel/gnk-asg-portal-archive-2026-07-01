@@ -28,6 +28,7 @@ const DATA = join(APP, 'data');
 const FILE = join(PORTAL, 'gnk-aktual', 'index.html');
 
 const START = '<!-- AKTUAL-CENTRAL:START -->';
+const SLOT = '<!-- AKTUAL-CENTRAL:SLOT -->';
 const END = '<!-- AKTUAL-CENTRAL:END -->';
 const IMG = '/assets/izdanja';
 
@@ -247,7 +248,7 @@ export function buildAktualCentral({ cards = [] } = {}) {
   <div class="amc-hero">
     <div class="amc-hero-copy">
       <p class="amc-eyebrow">AKTUAL MEDIA · sve na jednom mjestu</p>
-      <h2 id="amcTitle">Osam zemalja, jedanaest izdanja, ${items.length} tekstova — na jednoj ploči</h2>
+      <h2 id="amcTitle">Osam zemalja, sva izdanja, ${items.length} tekstova — na jednoj ploči</h2>
       <p class="amc-lead">Svaka pločica je naslovnica izdanja: na njoj piše što se klikom dobije, a klik vodi na glavni link — AKTUAL MEDIA KANAL Zagreb, Beograd, Sarajevo, Budapest, Ljubljana, Roma, Sofija ili București. S tih stranica uvijek se vraćate ovamo, u središte gdje se sve spaja.</p>
       <div class="amc-hero-cta">
         <a class="amc-btn amc-btn--solid" href="#izdanja-po-zemljama">Izdanja 3 × 3 ↓</a>
@@ -255,7 +256,7 @@ export function buildAktualCentral({ cards = [] } = {}) {
         <a class="amc-btn" href="/izdanja/">Sva izdanja →</a>
       </div>
     </div>
-    <a class="amc-hero-art" href="https://gnk-asg.hr/gnk-aktual/" aria-label="AKTUAL MEDIA — središnje mjesto sa svim izdanjima">
+    <a class="amc-hero-art" href="https://gnk-asg.hr/izdanja/" aria-label="AKTUAL MEDIA — sva izdanja na jednom mjestu">
       <img src="${IMG}/aktual-media-tile.webp" alt="AKTUAL MEDIA — sve što imamo: izdanja, deskovi, tjednik, galerija i radio. Središnje mjesto." width="880" height="587" loading="eager" decoding="async">
     </a>
   </div>
@@ -323,6 +324,8 @@ ${END}`;
 
   if (html.includes(START) && html.includes(END)) {
     html = html.replace(new RegExp(`${START}[\\s\\S]*?${END}`), () => block);
+  } else if (html.includes(SLOT)) {
+    html = html.replace(SLOT, block);
   } else {
     const anchor = '<!-- IZDANJA-BAND:END -->';
     if (!html.includes(anchor)) return { ok: false, reason: 'nema IZDANJA-BAND markera' };
@@ -332,9 +335,6 @@ ${END}`;
   const desc = `AKTUAL MEDIA na jednoj ploči: 8 gradskih izdanja na 8 jezika, ${items.length} tekstova iz ${sources.size} medija, šest deskova, poslovni tjednik, moda, galerija i radio. Urednik i direktor: Nermin Sefić.`;
   html = html.replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${esc(truncate(desc, 300))}">`);
   html = html.replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${esc(truncate(desc, 300))}">`);
-  if (!/<meta name="keywords"/.test(html)) {
-    html = html.replace('</title>', `</title>\n<meta name="keywords" content="${esc(HASHTAGS.join(', '))}">`);
-  }
 
   writeFileSync(FILE, html);
   return { ok: true, items: items.length, sources: sources.size, channels: CHANNELS.length, tiles: 15, river: river.length, moda };
