@@ -48,42 +48,42 @@ const themeOf = (item) => themeFor(`${item.title} ${item.summary}`).id;
 const MRV = {
   hr: {
     nav: 'Mravinjak', title: 'Mravinjak',
-    lead: (n, m) => `Gusto, bez uvoda: ${n} naslova iz ${m} izvora u ovom izdanju. Naslov vodi na osvrt, osvrt na izvornik — ništa se ne tvrdi bez linka.`,
+    lead: (n) => `Gusto, bez uvoda: ${n} naslova u ovom izdanju. Naslov vodi na osvrt, osvrt na izvornik — ništa se ne tvrdi bez linka.`,
     all: 'Cijeli mravinjak', cross: 'Mravinjak svih izdanja', source: 'izvor'
   },
   sr: {
     nav: 'Mravinjak', title: 'Mravinjak',
-    lead: (n, m) => `Gusto, bez uvoda: ${n} naslova iz ${m} izvora u ovom izdanju. Naslov vodi na osvrt, osvrt na izvornik — ništa se ne tvrdi bez linka.`,
+    lead: (n) => `Gusto, bez uvoda: ${n} naslova u ovom izdanju. Naslov vodi na osvrt, osvrt na izvornik — ništa se ne tvrdi bez linka.`,
     all: 'Ceo mravinjak', cross: 'Mravinjak svih izdanja', source: 'izvor'
   },
   bs: {
     nav: 'Mravinjak', title: 'Mravinjak',
-    lead: (n, m) => `Gusto, bez uvoda: ${n} naslova iz ${m} izvora u ovom izdanju. Naslov vodi na osvrt, osvrt na izvornik — ništa se ne tvrdi bez linka.`,
+    lead: (n) => `Gusto, bez uvoda: ${n} naslova u ovom izdanju. Naslov vodi na osvrt, osvrt na izvornik — ništa se ne tvrdi bez linka.`,
     all: 'Cijeli mravinjak', cross: 'Mravinjak svih izdanja', source: 'izvor'
   },
   hu: {
     nav: 'Hangyaboly', title: 'Hangyaboly',
-    lead: (n, m) => `Sűrűn, bevezető nélkül: ${n} cím ${m} forrásból ebben a kiadásban. A cím az elemzéshez, az elemzés az eredetihez visz — link nélkül nincs állítás.`,
+    lead: (n) => `Sűrűn, bevezető nélkül: ${n} cím ebben a kiadásban. A cím az elemzéshez, az elemzés az eredetihez visz — link nélkül nincs állítás.`,
     all: 'Teljes hangyaboly', cross: 'Az összes kiadás hangyabolya', source: 'forrás'
   },
   sl: {
     nav: 'Mravljišče', title: 'Mravljišče',
-    lead: (n, m) => `Gosto, brez uvoda: ${n} naslovov iz ${m} virov v tej izdaji. Naslov vodi do osvrta, osvrt do izvirnika — brez povezave ni trditve.`,
+    lead: (n) => `Gosto, brez uvoda: ${n} naslovov v tej izdaji. Naslov vodi do osvrta, osvrt do izvirnika — brez povezave ni trditve.`,
     all: 'Celo mravljišče', cross: 'Mravljišče vseh izdaj', source: 'vir'
   },
   it: {
     nav: 'Formicaio', title: 'Formicaio',
-    lead: (n, m) => `Fitto, senza introduzione: ${n} titoli da ${m} fonti di questa edizione. Il titolo porta all'analisi, l'analisi alla fonte — nessuna affermazione senza link.`,
+    lead: (n) => `Fitto, senza introduzione: ${n} titoli di questa edizione. Il titolo porta all'analisi, l'analisi alla fonte — nessuna affermazione senza link.`,
     all: 'Tutto il formicaio', cross: 'Il formicaio di tutte le edizioni', source: 'fonte'
   },
   bg: {
     nav: 'Мравуняк', title: 'Мравуняк',
-    lead: (n, m) => `Гъсто, без увод: ${n} заглавия от ${m} източника в това издание. Заглавието води към анализа, анализът — към източника; без връзка няма твърдение.`,
+    lead: (n) => `Гъсто, без увод: ${n} заглавия в това издание. Заглавието води към анализа, анализът — към източника; без връзка няма твърдение.`,
     all: 'Целият мравуняк', cross: 'Мравунякът на всички издания', source: 'източник'
   },
   ro: {
     nav: 'Furnicar', title: 'Furnicar',
-    lead: (n, m) => `Des, fără introducere: ${n} titluri din ${m} surse în această ediție. Titlul duce la analiză, analiza la sursă — fără link nu există afirmație.`,
+    lead: (n) => `Des, fără introducere: ${n} titluri în această ediție. Titlul duce la analiză, analiza la sursă — fără link nu există afirmație.`,
     all: 'Tot furnicarul', cross: 'Furnicarul tuturor edițiilor', source: 'sursă'
   }
 };
@@ -127,14 +127,13 @@ function mravinjakSection(channel, strings, data) {
   if (!data.items.length) return '';
   const m = mrvStrings(channel.lang);
   const dense = anthill(data.items, 64);
-  const sources = new Set(data.items.map((i) => i.sourceName)).size;
   return `<section class="band" id="mravinjak">
     <div class="mrv">
       <div class="mrv-head">
         <h2>${esc(m.title)} <span>· ${esc(channel.city)}</span></h2>
         <span class="mrv-count">${dense.length} / ${data.items.length}</span>
       </div>
-      <p class="mrv-lead">${esc(m.lead(dense.length, sources))}</p>
+      <p class="mrv-lead">${esc(m.lead(dense.length))}</p>
       <div class="mrv-cols">${anthillList(channel, strings, dense)}</div>
       <div class="mrv-foot">
         <a href="mravinjak/">${esc(m.all)} — ${data.items.length} →</a>
@@ -147,7 +146,6 @@ function mravinjakSection(channel, strings, data) {
 function mravinjakPage(channel, strings, data) {
   const m = mrvStrings(channel.lang);
   const items = data.items;
-  const sources = new Set(items.map((i) => i.sourceName)).size;
   const themeCount = new Map();
   for (const item of items) {
     const id = themeOf(item);
@@ -161,7 +159,7 @@ function mravinjakPage(channel, strings, data) {
 <main id="sadrzaj" class="page">
   <p class="dateline">${esc(channel.title)} · ${esc(strings.editionOf)}</p>
   <h1>${esc(m.title)} — ${esc(channel.city)}</h1>
-  <p class="lead">${esc(m.lead(items.length, sources))}</p>
+  <p class="lead">${esc(m.lead(items.length))}</p>
   <p class="chips">${chips}</p>
   <section class="mrv mrv--page">
     <div class="mrv-head"><h2>${esc(m.title)} <span>· ${items.length}</span></h2><span class="mrv-count">${esc(channel.country)} · ${esc(channel.lang)}</span></div>
@@ -180,7 +178,7 @@ ${footer(channel, strings)}`;
     {
       '@context': 'https://schema.org', '@type': 'CollectionPage',
       '@id': `${url(channel, 'mravinjak/')}#mravinjak`, url: url(channel, 'mravinjak/'),
-      name: `${m.title} — ${channel.title}`, description: m.lead(items.length, sources),
+      name: `${m.title} — ${channel.title}`, description: m.lead(items.length),
       inLanguage: channel.lang, isPartOf: { '@type': 'WebSite', '@id': `${channel.base}#website`, url: channel.base, name: channel.title },
       publisher: { '@type': 'NewsMediaOrganization', name: 'AKTUAL MEDIA d.o.o.', url: HUB, email: CONTACT, editor: { '@type': 'Person', name: 'Nermin Sefić', url: 'https://gnk-asg.hr/nermin-sefic/' } }
     },
@@ -201,7 +199,7 @@ ${footer(channel, strings)}`;
 
   return shell(channel, strings, {
     title: `${m.title} — ${channel.title} · ${items.length}`,
-    description: m.lead(items.length, sources),
+    description: m.lead(items.length),
     path: 'mravinjak/',
     keywords: [...channel.hashtags, '#Mravinjak', '#SeficNermin', channel.city, channel.country, 'AKTUAL MEDIA'],
     jsonld,
