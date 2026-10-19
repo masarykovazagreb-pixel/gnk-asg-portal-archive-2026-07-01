@@ -1,0 +1,111 @@
+name: REGION — punjenje arhive (ručno)
+
+# Jednokratno ili povremeno punjenje arhive osam gradskih izdanja AKTUAL MEDIA.
+# Čita javne feedove, njihove stranice, WordPress REST API i news sitemape;
+# sprema stvarne naslove, sažetke, datume i poveznice na izvornik, pa gradi
+# stranice i hub. Ništa se ne izmišlja — zapis bez naslova i URL-a se odbacuje.
+#
+# Pokreće se ručno: Actions → "REGION — punjenje arhive (ručno)" → Run workflow.
+# Može se pokrenuti i nad granom (push ide na granu iz koje je pokrenut).
+
+on:
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: 'Samo jedan kanal (prazno = svih osam)'
+        required: false
+        type: string
+      target:
+        description: 'Ciljani broj zapisa po kanalu'
+        required: false
+        type: string
+        default: '320'
+      pause:
+        description: 'Pauza između zahtjeva u ms'
+        required: false
+        type: string
+        default: '180'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gnk-asg-region-backfill
+  cancel-in-progress: false
+
+jobs:
+  fill:
+    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    env:
+      TZ: Europe/Zagreb
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Zapamti polazni SHA
+        id: base
+        shell: bash
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Puni arhivu
+        shell: bash
+        run: |-
+          set -uo pipefail
+          ARGS="--target ${{ inputs.target || '320' }} --pause ${{ inputs.pause || '180' }}"
+          if [ -n "${{ inputs.channel }}" ]; then ARGS="$ARGS --channel ${{ inputs.channel }}"; fi
+          node apps/region/engine/backfill.mjs $ARGS
+          node apps/region/engine/audit.mjs
+          node -e "const fs=require('fs');const ids=['zagreb','beograd','sarajevo','budimpesta','ljubljana','rim','sofija','bukurest'];for(const id of ids){const f='apps/region/data/'+id+'.json';if(!fs.existsSync(f))continue;const d=JSON.parse(fs.readFileSync(f,'utf8'));console.log(id,d.items.length)}"
+
+      - name: Zapiši arhivu
+        id: commit
+        shell: bash
+        run: |-
+          set -euo pipefail
+          git config user.name "AKTUAL MEDIA REGION"
+          git config user.email "info@gnk-asg.hr"
+          git add apps/region/data apps/region/site apps/portal/izdanja apps/portal/data/izdanja.json apps/portal/data/izdanja-sport.json apps/portal/data/nermin-sefic-gallery.json apps/portal/galerija
+          if git diff --cached --quiet; then
+            echo "Nema promjena."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git commit -m "REGION: punjenje arhive — stvarni zapisi iz javnih izvora" -m "Naslovi, sažeci, datumi i poveznice preuzeti su iz javnih feedova, WordPress REST API-ja i news sitemapa. Tekstovi nisu preuzeti; svaki zapis vodi na izvornik. Nije pojedinačno urednički pregledano."
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Push
+        if: steps.commit.outputs.changed == 'true'
+        shell: bash
+        run: |-
+          set -euo pipefail
+          expected="${{ steps.base.outputs.sha }}"
+          ref="${{ github.ref_name }}"
+          git fetch origin "$ref" --no-tags
+          current=$(git rev-parse "origin/$ref")
+          if [ "$current" != "$expected" ]; then
+            echo "::warning::Grana se pomaknula tijekom punjenja (očekivano $expected, stvarno $current). Arhiva ostaje za sljedeći ciklus."
+            exit 0
+          fi
+          git push origin "HEAD:$ref"
+
+      - name: Sažetak
+        if: always()
+        shell: bash
+        run: |-
+          {
+            echo "## REGION — punjenje arhive"
+            echo "- Grana: ${{ github.ref_name }}"
+            echo "- Cilj: ${{ inputs.target || '320' }} zapisa po kanalu"
+            echo "- Promjena: ${{ steps.commit.outputs.changed }}"
+            echo "- Hub: https://gnk-asg.hr/izdanja/"
+          } >> "$GITHUB_STEP_SUMMARY"

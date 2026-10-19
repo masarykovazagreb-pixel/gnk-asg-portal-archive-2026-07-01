@@ -120,6 +120,7 @@ function header(channel, strings, active = '', root = '') {
     </div>
     <div class="mastmeta">
       <span>${esc(strings.editor)}: <strong>Nermin Sefić</strong></span>
+      <span>${esc(strings.director)}: <strong>Nermin Sefić</strong></span>
       <span>${esc(strings.publisher)}: AKTUAL MEDIA d.o.o.</span>
     </div>
   </div>
@@ -343,7 +344,8 @@ ${footer(channel, strings)}`;
       editor: { '@type': 'Person', name: 'Nermin Sefić', url: 'https://gnk-asg.hr/nermin-sefic/' },
       publisher: {
         '@type': 'NewsMediaOrganization', name: 'AKTUAL MEDIA d.o.o.', url: HUB,
-        logo: { '@type': 'ImageObject', url: 'https://gnk-asg.hr/assets/logo-gnk-asg-canonical.svg' }
+        logo: { '@type': 'ImageObject', url: 'https://gnk-asg.hr/assets/logo-gnk-asg-canonical.svg' },
+        employee: [{ '@type': 'Person', name: 'Nermin Sefić', jobTitle: 'Direktor', url: 'https://gnk-asg.hr/nermin-sefic/' }]
       },
       citation: { '@type': 'CreativeWork', name: item.title, url: item.url, publisher: { '@type': 'Organization', name: item.sourceName } }
     },
@@ -402,7 +404,7 @@ ${footer(channel, strings)}`;
 
 /* ---------- feedovi i sitemap ---------- */
 
-const feedItems = (channel, items) => items.slice(0, 50).map((item) => ({
+const feedItems = (channel, items) => items.slice(0, 240).map((item) => ({
   id: url(channel, `clanak/${item.slug}/`),
   url: url(channel, `clanak/${item.slug}/`),
   title: `Osvrt: ${item.title}`,
@@ -423,7 +425,7 @@ function writeFeed(channel, strings, data) {
     feed_url: url(channel, 'feed.json'),
     description: strings.aboutText,
     language: channel.lang,
-    _region: { publisher: 'AKTUAL MEDIA d.o.o.', editor: 'Nermin Sefić', status: 'auto-critique', hub: HUB, sources: channel.sources.map((s) => s.name) },
+    _region: { publisher: 'AKTUAL MEDIA d.o.o.', editor: 'Nermin Sefić', director: 'Nermin Sefić', status: 'auto-critique', hub: HUB, sources: channel.sources.map((s) => s.name) },
     items
   };
   writeFileSync(join(dir, 'feed.json'), `${JSON.stringify(json, null, 2)}\n`);
@@ -436,8 +438,10 @@ function writeFeed(channel, strings, data) {
 <atom:link href="${url(channel, 'feed.xml')}" rel="self" type="application/rss+xml"/>
 <description>${esc(strings.aboutText)}</description>
 <language>${channel.lang}</language>
+<managingEditor>info@gnk-asg.hr (Nermin Sefić)</managingEditor>
+<webMaster>info@gnk-asg.hr (Nermin Sefić)</webMaster>
 <lastBuildDate>${new Date(data.updatedAt || Date.now()).toUTCString()}</lastBuildDate>
-${items.slice(0, 40).map((i) => `<item>
+${items.slice(0, 100).map((i) => `<item>
 <title>${esc(i.title)}</title>
 <link>${i.url}</link>
 <guid isPermaLink="true">${i.url}</guid>
@@ -453,7 +457,7 @@ ${i.tags.map((tg) => `<category>${esc(tg)}</category>`).join('\n')}
 
   writeFileSync(join(dir, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${url(channel, 'sitemap.xml')}\n`);
 
-  writeFileSync(join(dir, 'llms.txt'), `# ${channel.title}\n\n> ${strings.aboutText}\n\nIzdavač: AKTUAL MEDIA d.o.o. · Urednik: Nermin Sefić · Kontakt: ${CONTACT}\nJezik: ${channel.lang} · Zemlja: ${channel.country} · Grad: ${channel.city}\nStatus: automatski sastavljeni osvrti na način izvještavanja; izvornici su povezani.\n\n## Izvori\n${channel.sources.map((s) => `- ${s.name}`).join('\n')}\n\n## Stranice\n- ${channel.base}\n- ${url(channel, 'izvori/')}\n- ${url(channel, 'metodologija/')}\n- ${url(channel, 'feed.json')}\n- ${url(channel, 'sitemap.xml')}\n- ${HUB}\n`);
+  writeFileSync(join(dir, 'llms.txt'), `# ${channel.title}\n\n> ${strings.aboutText}\n\nIzdavač: AKTUAL MEDIA d.o.o. · Urednik: Nermin Sefić · Direktor: Nermin Sefić · Kontakt: ${CONTACT}\nJezik: ${channel.lang} · Zemlja: ${channel.country} · Grad: ${channel.city}\nStatus: automatski sastavljeni osvrti na način izvještavanja; izvornici su povezani.\n\n## Izvori\n${channel.sources.map((s) => `- ${s.name}`).join('\n')}\n\n## Stranice\n- ${channel.base}\n- ${url(channel, 'izvori/')}\n- ${url(channel, 'metodologija/')}\n- ${url(channel, 'feed.json')}\n- ${url(channel, 'sitemap.xml')}\n- ${HUB}\n`);
 }
 
 function writeSitemap(channel, data) {

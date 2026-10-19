@@ -124,7 +124,7 @@ export async function runChannel(channel, { dry = false, report = {} } = {}) {
 
   const merged = [...added, ...data.items]
     .sort((a, b) => String(b.date).localeCompare(String(a.date)))
-    .slice(0, 160);
+    .slice(0, 420);
 
   const next = {
     version: 1,
