@@ -81,7 +81,11 @@ jobs:
             sudo apt-get install -y --no-install-recommends imagemagick fonts-dejavu-core
           fi
           convert -version
-          convert -list format | grep -E '^[[:space:]]*WEBP[[:space:]]' | grep -q 'rw'
+          convert -size 8x8 xc:white "$RUNNER_TEMP/aktual-webp-functional-check.webp"
+          test -s "$RUNNER_TEMP/aktual-webp-functional-check.webp"
+          test "$(head -c 4 "$RUNNER_TEMP/aktual-webp-functional-check.webp")" = 'RIFF'
+          test "$(dd if="$RUNNER_TEMP/aktual-webp-functional-check.webp" bs=1 skip=8 count=4 status=none)" = 'WEBP'
+          identify "$RUNNER_TEMP/aktual-webp-functional-check.webp"
 
       - name: Generate and synchronize approved topical WebP cover for new commentary
         if: ${{ hashFiles('apps/portal/data/editorial-plan/20261019-roto-apfel-commentary.json') != '' }}
