@@ -99,35 +99,35 @@ export const prevWeekKey = (key) => {
 export const THEMES = {
   financije: {
     label: 'Financije',
-    words: ['banka', 'bankar', 'kamat', 'kredit', 'dug', 'obveznic', 'prinos', 'inflacij', 'likvid', 'kapital', 'porez', 'proračun', 'financij']
+    words: ['banka', 'bankar', 'bank', 'kamat', 'kredit', 'dug', 'obveznic', 'prinos', 'inflacij', 'inflation', 'likvid', 'kapital', 'porez', 'tax', 'proračun', 'budget', 'financij', 'financ']
   },
   trziste: {
     label: 'Tržišta',
-    words: ['tržišt', 'dionic', 'burz', 'nafta', 'energij', 'plin', 'struj', 'cijen', 'poskup', 'sirovin', 'izvoz', 'uvoz', 'trgovin']
+    words: ['tržišt', 'market', 'dionic', 'burz', 'nafta', 'oil', 'energij', 'energy', 'plin', 'gas', 'struj', 'cijen', 'price', 'poskup', 'sirovin', 'izvoz', 'export', 'uvoz', 'import', 'trgovin', 'retail', 'sales']
   },
   regulacija: {
     label: 'Regulacija',
-    words: ['zakon', 'uredb', 'direktiv', 'vlada', 'ministarstv', ' eu ', 'europsk', 'komisij', 'sud', 'regulator', 'hanfa', 'kazn', 'rok']
+    words: ['zakon', 'uredb', 'direktiv', 'vlada', 'government', 'ministarstv', ' eu ', 'europsk', 'komisij', 'sud', 'court', 'regulator', 'hanfa', 'kazn', 'rok', 'policy']
   },
   tehnologija: {
     label: 'Tehnologija i AI',
-    words: ['umjetna inteligencija', 'umjetn', 'ai-', ' ai ', 'softver', 'tehnolog', 'tech', 'digital', 'startup', 'cyber', 'internet', 'aplikacij', 'robot', 'model']
+    words: ['umjetna inteligencija', 'umjetn', 'ai-', ' ai ', 'softver', 'software', 'tehnolog', 'tech', 'digital', 'startup', 'cyber', 'internet', 'aplikacij', 'robot', 'model']
   },
   rad: {
     label: 'Rad i plaće',
-    words: ['zaposlen', 'radnik', 'otkaz', 'sindikat', 'plać', 'mirovin', 'tržište rada', 'posao', 'karijer', 'zapošljavan']
+    words: ['zaposlen', 'radnik', 'otkaz', 'sindikat', 'plać', 'wage', 'mirovin', 'pension', 'tržište rada', 'posao', 'job', 'karijer', 'zapošljavan']
   },
   tvrtke: {
     label: 'Tvrtke',
-    words: ['tvrtk', 'kompanij', 'preuzimanj', 'investicij', 'tvornic', 'poslovanj', 'uprav', 'direktor', 'brend', 'kupac', 'proizvod']
+    words: ['tvrtk', 'kompanij', 'company', 'preuzimanj', 'acquisition', 'investicij', 'investment', 'tvornic', 'factory', 'poslovanj', 'business', 'uprav', 'direktor', 'ceo', 'brend', 'brand', 'kupac', 'proizvod']
   },
   nekretnine: {
     label: 'Nekretnine i gradnja',
-    words: ['nekretnin', 'stan', 'gradnj', 'zemljišt', 'najam', 'građev', 'infrastruktur', 'projekt']
+    words: ['nekretnin', 'real estate', 'stan', 'gradnj', 'construction', 'zemljišt', 'najam', 'rent', 'građev', 'infrastruktur', 'infrastructure', 'projekt']
   },
   potrosnja: {
     label: 'Potrošnja',
-    words: ['potrošač', 'kupovn', 'maloprodaj', 'cjen', 'dućan', 'trgovac', 'turiz', 'putnik', 'hotel']
+    words: ['potrošač', 'consumer', 'kupovn', 'maloprodaj', 'dućan', 'trgovac', 'turiz', 'travel', 'putnik', 'hotel']
   }
 };
 
