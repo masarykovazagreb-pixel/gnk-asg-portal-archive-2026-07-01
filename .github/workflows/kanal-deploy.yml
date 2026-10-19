@@ -65,17 +65,39 @@ jobs:
           fi
           echo "ready=true" >> "$GITHUB_OUTPUT"
 
-          code=$(curl -s -o /tmp/dom.json -w '%{http_code}' -X POST \
-            -H "Authorization: Bearer $CF_TOKEN" -H "Content-Type: application/json" \
-            --data '{"name":"kanal.gnk-asg.hr"}' \
-            "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/gnk-asg-kanal/domains")
+          attach_domain() {
+            curl -s -o /tmp/dom.json -w '%{http_code}' -X POST \
+              -H "Authorization: Bearer $CF_TOKEN" -H "Content-Type: application/json" \
+              --data '{"name":"kanal.gnk-asg.hr"}' \
+              "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/gnk-asg-kanal/domains" > /tmp/dom.code
+          }
+
+          attach_domain
           if grep -q '"success":true' /tmp/dom.json; then
             echo "domain_ok=true" >> "$GITHUB_OUTPUT"
             echo "Domena kanal.gnk-asg.hr povezana."
           else
-            echo "domain_ok=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::Domena kanal.gnk-asg.hr nije povezana automatski (zone nije u istom računu ili DNS zapis postoji)."
-            head -c 300 /tmp/dom.json || true; echo
+            echo "Prvi pokušaj nije prošao (HTTP $(cat /tmp/dom.code)); tražim zone i DNS zapis..."
+            curl -s -o /tmp/zones.json -H "Authorization: Bearer $CF_TOKEN" \
+              "https://api.cloudflare.com/client/v4/zones?name=gnk-asg.hr"
+            ZONE_ID=$(python3 -c "import json;d=json.load(open('/tmp/zones.json'));r=d.get('result') or [];print(r[0]['id'] if r else '')" 2>/dev/null || true)
+            echo "zone_id=${ZONE_ID:-<nema>}"
+            if [ -n "${ZONE_ID:-}" ]; then
+              curl -s -o /tmp/dns.json -X POST \
+                -H "Authorization: Bearer $CF_TOKEN" -H "Content-Type: application/json" \
+                --data '{"type":"CNAME","name":"kanal","content":"gnk-asg-kanal.pages.dev","proxied":true}' \
+                "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/dns_records" || true
+              head -c 300 /tmp/dns.json || true; echo
+              attach_domain
+            fi
+            if grep -q '"success":true' /tmp/dom.json; then
+              echo "domain_ok=true" >> "$GITHUB_OUTPUT"
+              echo "Domena kanal.gnk-asg.hr povezana nakon DNS zapisa."
+            else
+              echo "domain_ok=false" >> "$GITHUB_OUTPUT"
+              echo "::warning::Domena nije povezana automatski — potreban je CNAME kanal -> gnk-asg-kanal.pages.dev ili ovlast Pages:Edit + Zone:DNS:Edit na tokenu."
+              head -c 300 /tmp/dom.json || true; echo
+            fi
           fi
 
       - name: Gradnja (Cloudflare base)
