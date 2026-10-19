@@ -119,6 +119,18 @@ export function buildAktualCentral({ cards = [] } = {}) {
       <a class="amc-go" href="${esc(url)}" rel="external noopener">Otvori ↗</a>
     </li>`).join('');
 
+  const sourceCloud = CHANNELS.map((channel) => {
+    const data = readJSON(join(DATA, `${channel.id}.json`), { items: [] });
+    const ids = new Set((data.items || []).map((i) => i.source));
+    const names = channel.sources.filter((src) => ids.has(src.id));
+    if (!names.length) return '';
+    return `<li><strong>${esc(channel.title)}</strong> ${names.map((src) => `<a href="${esc(channel.base)}izvor/${esc(src.id)}/" rel="external noopener">${esc(src.name)}</a>`).join(' · ')}</li>`;
+  }).join('');
+
+  const tabloids = [
+    ['Lider', 'lider'], ['Jutarnji list', 'jutarnji'], ['Poslovni dnevnik', 'poslovni'], ['Forbes', 'forbes']
+  ].map(([name, id]) => `<a href="https://gnk-asg-tjednik.pages.dev/izvori/${id}/" rel="external noopener">${esc(name)}</a>`).join(' · ');
+
   const jsonld = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
@@ -166,6 +178,11 @@ export function buildAktualCentral({ cards = [] } = {}) {
 .amc-rubrike{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
 .amc-rubrike a{font:600 12px/1 Inter,system-ui,sans-serif;text-decoration:none;border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:7px 11px;color:var(--amc-ink)}
 .amc-rubrike a:hover{border-color:var(--amc-gold);color:var(--amc-gold)}
+.amc-sources{list-style:none;padding:0;margin:0;display:grid;gap:8px;font-size:13px}
+.amc-sources li{color:var(--amc-muted);border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:7px}
+.amc-sources strong{color:var(--amc-ink);margin-right:6px}
+.amc-sources a{color:var(--amc-gold);text-decoration:none}
+.amc-sources a:hover{text-decoration:underline}
 .amc-tags{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:10px 0 0}
 .amc-tags li{font:600 12px/1 Inter,system-ui,sans-serif;color:var(--amc-gold);border:1px solid var(--amc-line);border-radius:999px;padding:6px 10px}
 .am-central .amc-note{color:var(--amc-muted);font-size:12px;margin:18px 0 0}
@@ -200,6 +217,12 @@ export function buildAktualCentral({ cards = [] } = {}) {
   <section class="amc-block">
     <header><span>BUSINESS TJEDNIK · kritički osvrti</span><h3>Poslovni tjednik na AKTUAL MEDIA</h3></header>
     <ol class="amc-list">${tjednikItems || '<li class="amc-empty">Tjednik još nema zapisa u ovom ciklusu.</li>'}</ol>
+    <p class="amc-note">Prate se: ${tabloids} · <a href="https://gnk-asg-tjednik.pages.dev/" rel="external noopener">svi osvrti tjednika ↗</a></p>
+  </section>
+
+  <section class="amc-block">
+    <header><span>MEDIJI · ${sources} izvora</span><h3>Koje medije čitamo</h3></header>
+    <ul class="amc-sources">${sourceCloud}</ul>
   </section>
 
   <section class="amc-block">
