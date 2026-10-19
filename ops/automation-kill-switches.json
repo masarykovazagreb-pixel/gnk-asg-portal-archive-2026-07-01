@@ -46,6 +46,14 @@
     "workerTelemetry": {
       "enabled": true,
       "reason": "observation only"
+    },
+    "kanalPublish": {
+      "enabled": true,
+      "reason": "GNK ASG KANAL dnevni stroj (10 objava/dan, noindex desk). Uključeno 2026-10-19 uz izričitu korisničku odluku da objave budu javno vidljive. Ne dira AKTUAL news.json."
+    },
+    "tjednikPublish": {
+      "enabled": true,
+      "reason": "GNK ASG BUSINESS TJEDNIK: dnevni kritički osvrti na poslovne tekstove (Lider, Jutarnji, Poslovni, Forbes) + tjedna promjena i dnevni dodaci. Objavljuje na zaseban Cloudflare Pages projekt. Uključeno 2026-10-19 uz korisničku odluku da se tjednik gradi i objavljuje automatski."
     }
   },
   "releaseRules": {

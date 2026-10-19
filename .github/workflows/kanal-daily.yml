@@ -1,0 +1,215 @@
+name: KANAL — dnevni stroj (10 objava)
+
+# Svakoga dana sastavlja točno 10 objava iz strukturiranih izvora, osvježava
+# blok "Iz GNK ASG KANALA" na AKTUAL MEDIA, objavljuje na Cloudflare Pages i
+# zapisuje stanje u repozitorij (da se iste stavke ne ponavljaju 21 dan).
+#
+# Registrirano u ops/automation-control-v1.json (knownCurrentSchedules) i
+# ops/automation-kill-switches.json (kanalPublish).
+# Ručno: Actions → "KANAL — dnevni stroj" → Run workflow (opcionalno datum).
+
+on:
+  schedule:
+    # 05:00 UTC = 07:00 ljeti / 06:00 zimi po Europe/Zagreb.
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Datum izdanja (YYYY-MM-DD). Prazno = danas u Europe/Zagreb.'
+        required: false
+        type: string
+      force:
+        description: 'Ponovno sastavi izdanje za taj datum'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: gnk-asg-main-mutation
+  cancel-in-progress: false
+
+jobs:
+  daily:
+    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      KANAL_BASE: https://gnk-asg-kanal.pages.dev/
+      TZ: Europe/Zagreb
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Odredi datum izdanja
+        id: izdanje
+        shell: bash
+        run: |
+          set -euo pipefail
+          DATE="${{ inputs.date }}"
+          if [ -z "$DATE" ]; then DATE=$(date +%F); fi
+          [[ "$DATE" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] || { echo "::error::Neispravan datum: $DATE"; exit 1; }
+          echo "date=$DATE" >> "$GITHUB_OUTPUT"
+          echo "base=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "Izdanje: $DATE"
+
+      - name: Sastavi 10 objava i izgradi kanal
+        shell: bash
+        run: |
+          set -euo pipefail
+          FORCE=""
+          if [ "${{ inputs.force }}" = "true" ]; then FORCE="--force"; fi
+          node apps/kanal/engine/daily.mjs --date "${{ steps.izdanje.outputs.date }}" --count 10 $FORCE
+
+      - name: Provjeri izdanje (10 objava, noindex, desk oznaka)
+        shell: bash
+        run: |
+          set -euo pipefail
+          DATE="${{ steps.izdanje.outputs.date }}"
+          COUNT=$(ls apps/kanal/src/articles/desk-dnevnik-"$DATE"-*.json 2>/dev/null | wc -l | tr -d ' ')
+          echo "Fajlova za $DATE: $COUNT"
+          [ "$COUNT" -eq 10 ] || { echo "::error::Očekivano 10 objava, nađeno $COUNT"; exit 1; }
+
+          node - "$DATE" <<'NODE'
+          const fs = require('node:fs');
+          const date = process.argv[2];
+          const feed = JSON.parse(fs.readFileSync('apps/kanal/site/feed.json', 'utf8'));
+          // Desk izdanje se filtrira po URL-u, jer istoga dana može biti i
+          // urednički pregledanih tekstova s istim datumom.
+          const items = feed.items.filter((i) => String(i.date_published).startsWith(date) && String(i.url).includes(`/dnevnik-${date}-`));
+          if (items.length !== 10) {
+            console.error(`::error::Feed ima ${items.length} objava za ${date}, očekivano 10`);
+            process.exit(1);
+          }
+          for (const i of items) {
+            if (i._kanal?.editorialStatus !== 'auto-assembled') {
+              console.error(`::error::${i.url} nema status auto-assembled`);
+              process.exit(1);
+            }
+            if (i.authors?.[0]?.name !== 'GNK ASG KANAL · Dnevni desk') {
+              console.error(`::error::${i.url} ima pogrešnog autora: ${i.authors?.[0]?.name}`);
+              process.exit(1);
+            }
+          }
+          const html = fs.readFileSync('apps/kanal/site/index.html', 'utf8');
+          if (!html.includes('application/ld+json')) { console.error('::error::Nema JSON-LD'); process.exit(1); }
+          console.log(`Feed i statusi u redu: ${items.length} objava za ${date}.`);
+          NODE
+
+      - name: Osvježi blok na AKTUAL MEDIA
+        shell: bash
+        run: node apps/kanal/engine/portal-block.mjs --limit 6
+
+      - name: Zapiši izdanje u repozitorij
+        id: commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "GNK ASG KANAL"
+          git config user.email "beckuphome@gmail.com"
+          git add apps/kanal apps/portal/gnk-aktual/index.html apps/portal/data/kanal-latest.json
+          if git diff --cached --quiet; then
+            echo "Nema promjena — izdanje je već zapisano."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git commit -m "KANAL: dnevno izdanje ${{ steps.izdanje.outputs.date }} (10 objava)" -m "Automatski sastavljeno iz strukturiranih izvora. Nije pojedinačno urednički pregledano. Blok na AKTUAL MEDIA osvježen istim izdanjem."
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Push na main (uz provjeru pomaka)
+        if: steps.commit.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="${{ steps.izdanje.outputs.base }}"
+          git fetch origin main --no-tags
+          current=$(git rev-parse origin/main)
+          if [ "$current" != "$expected" ]; then
+            echo "::warning::main se pomaknuo tijekom izrade izdanja (očekivano $expected, stvarno $current). Izdanje ostaje u radnom stablu za sljedeći ciklus; ne rebaseam naslijepo."
+            exit 0
+          fi
+          git push origin HEAD:main
+
+      - name: Objavi na Cloudflare Pages
+        if: steps.commit.outputs.changed == 'true'
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ] || [ -z "${CLOUDFLARE_ACCOUNT_ID:-}" ]; then
+            echo "::warning::Cloudflare secrets nisu dostupni — deploy preskočen."
+            exit 0
+          fi
+          npx --yes wrangler@4 pages deploy apps/kanal/site \
+            --project-name=gnk-asg-kanal \
+            --branch=main \
+            --commit-dirty=true
+
+      - name: Objavi AKTUAL MEDIA (točan SHA)
+        if: steps.commit.outputs.changed == 'true' && vars.KANAL_PORTAL_DEPLOY != 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          APPROVED_SHA: ${{ steps.commit.outputs.sha }}
+        run: |
+          set -euo pipefail
+          # Portal (apps/portal) je produkcijski gatean na točan SHA. Blok
+          # "Iz GNK ASG KANALA" mijenja se svakodnevno, pa se isti obrazac
+          # koristi kao u editorial-scheduled-publish.yml: dispatch + exact SHA.
+          gh workflow run deploy-admin-auth-v6.yml \
+            --repo "$GITHUB_REPOSITORY" \
+            --ref main \
+            -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
+            -f approved_sha="$APPROVED_SHA" \
+            -f notify_search_engines=false
+
+      - name: Smoke test objavljenog izdanja
+        if: steps.commit.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          DATE="${{ steps.izdanje.outputs.date }}"
+          for i in $(seq 1 12); do
+            if curl -fsS "https://gnk-asg-kanal.pages.dev/feed.json" -o /tmp/feed.json; then
+              if node -e '
+                const f=require("/tmp/feed.json");
+                const d=process.argv[1];
+                const n=f.items.filter(i=>String(i.date_published).startsWith(d)&&String(i.url).includes('/dnevnik-'+d+'-')).length;
+                process.exit(n===10?0:1);
+              ' "$DATE"; then
+                echo "Smoke test OK: 10 objava za $DATE je javno."
+                exit 0
+              fi
+            fi
+            echo "Čekam propagaciju ($i/12)..."
+            sleep 10
+          done
+          echo "::error::Javni feed ne potvrđuje 10 objava za $DATE."
+          exit 1
+
+      - name: Sažetak
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## KANAL dnevno izdanje"
+            echo "- Datum: ${{ steps.izdanje.outputs.date }}"
+            echo "- Promjena: ${{ steps.commit.outputs.changed }}"
+            echo "- Kanal: https://gnk-asg-kanal.pages.dev/"
+            echo "- Feed: https://gnk-asg-kanal.pages.dev/feed.json"
+            echo "- AKTUAL blok: apps/portal/gnk-aktual/index.html (KANAL-BAND)"
+            echo "- Status: automatski sastavljeno, nije pojedinačno urednički pregledano"
+          } >> "$GITHUB_STEP_SUMMARY"

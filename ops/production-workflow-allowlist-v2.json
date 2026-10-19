@@ -62,6 +62,12 @@
     ],
     "world-monitor-refresh.yml": [
       "20 1,7,13,19 * * *"
+    ],
+    "kanal-daily.yml": [
+      "0 5 * * *"
+    ],
+    "tjednik-daily.yml": [
+      "20 6 * * *"
     ]
   },
   "protectedManualRelease": [
@@ -98,5 +104,23 @@
     ],
     "socialLiveVariable": "SOCIAL_LIVE",
     "automaticTriggersAllowed": false
+  },
+  "channelPagesProjects": {
+    "gnk-asg-kanal": {
+      "workflows": [
+        "kanal-daily.yml",
+        "kanal-deploy.yml"
+      ],
+      "productionDomain": "https://gnk-asg-kanal.pages.dev/",
+      "canonicalPortal": false
+    },
+    "gnk-asg-tjednik": {
+      "workflows": [
+        "tjednik-daily.yml",
+        "tjednik-deploy.yml"
+      ],
+      "productionDomain": "https://gnk-asg-tjednik.pages.dev/",
+      "canonicalPortal": false
+    }
   }
 }

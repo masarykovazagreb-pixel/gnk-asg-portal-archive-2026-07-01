@@ -1,0 +1,20 @@
+# GNK ASG KANAL — robots.txt
+User-agent: *
+Allow: /
+
+# Redakcije i AI sustavi: sadržaj je slobodan za indeksiranje uz atribuciju.
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://gnk-asg-kanal.pages.dev/sitemap.xml
+Sitemap: https://gnk-asg-kanal.pages.dev/sitemap-objave.xml

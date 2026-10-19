@@ -22,6 +22,10 @@
       "apps/portal/data/freshness-status.json": {
         "reason": "Current cross-domain status aggregation is written by multiple legacy refresh workflows; migrate to STABILITY-owned aggregation.",
         "targetOwner": "STABILITY"
+      },
+      "apps/portal/gnk-aktual/index.html": {
+        "reason": "KANAL-BAND se ubacuje samo između stabilnih markera; ostatak stranice piše editorial publisher. Dnevni osvježeni blok je privremeno dijeljeni zapis.",
+        "targetOwner": "AKTUAL_NEWS"
       }
     },
     "knownDirectMainBaseline": [
@@ -38,6 +42,7 @@
       "gnk-news-refresh-v2.yml",
       "image-entity-seo.yml",
       "image-health-scan.yml",
+      "kanal-daily.yml",
       "linkedin-daily-rotation.yml",
       "macro-market-refresh.yml",
       "market-pulse-refresh.yml",
@@ -66,6 +71,7 @@
       "siroki-smoke.yml",
       "site-health-audit.yml",
       "social-distribution.yml",
+      "tjednik-daily.yml",
       "verify-email-status-production.yml",
       "verify-production-v12.yml",
       "weather-refresh.yml",
@@ -548,6 +554,52 @@
       "prohibitions": [
         "direct main push",
         "repository mutation"
+      ]
+    },
+    {
+      "workflow": "kanal-daily.yml",
+      "domain": "AKTUAL_NEWS",
+      "role": "canonical-writer-channel",
+      "cadence": "daily 05:00 UTC",
+      "read": [
+        "apps/kanal/engine/**",
+        "apps/kanal/src/**",
+        "apps/portal/data/kanal-latest.json"
+      ],
+      "write": [
+        "apps/kanal/src/articles",
+        "apps/kanal/site",
+        "apps/kanal/engine/state.json",
+        "apps/kanal/engine/last-run.json",
+        "apps/portal/data/kanal-latest.json"
+      ],
+      "gate": "kanal feed + build + Cloudflare Pages (gnk-asg-kanal)",
+      "handoff": "KANAL owner",
+      "prohibitions": [
+        "production portal deploy",
+        "write outside the KANAL paths"
+      ]
+    },
+    {
+      "workflow": "tjednik-daily.yml",
+      "domain": "AKTUAL_NEWS",
+      "role": "canonical-writer-channel",
+      "cadence": "daily 06:20 UTC",
+      "read": [
+        "apps/tjednik/engine/**",
+        "apps/tjednik/src/**"
+      ],
+      "write": [
+        "apps/tjednik/src/critiques",
+        "apps/tjednik/site",
+        "apps/tjednik/engine/state.json",
+        "apps/tjednik/engine/last-run.json"
+      ],
+      "gate": "tjednik feed + build + Cloudflare Pages (gnk-asg-tjednik)",
+      "handoff": "TJEDNIK owner",
+      "prohibitions": [
+        "production portal deploy",
+        "write outside the TJEDNIK paths"
       ]
     }
   ],
