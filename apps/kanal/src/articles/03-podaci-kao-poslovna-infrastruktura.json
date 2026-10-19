@@ -1,0 +1,40 @@
+{
+  "slug": "podaci-kao-poslovna-infrastruktura",
+  "section": "analiza",
+  "title": "Podaci nisu imovina dok netko ne odgovara za njih: kako izgraditi provjerljivu infrastrukturu",
+  "shortTitle": "Podaci kao poslovna infrastruktura",
+  "seoTitle": "Podaci kao infrastruktura: vlasništvo, trag i odgovornost",
+  "dek": "Većina tvrtki zna gdje su joj podaci. Malo ih zna tko za njih odgovara, po kojem pravilu se mijenjaju i kako se dokazuje da nisu izmijenjeni. To je razlika između skladišta i infrastrukture.",
+  "description": "Analiza: zašto podaci postaju poslovna infrastruktura samo uz vlasnika, pravilo izmjene i revizijski trag. Praktični okvir uz GDPR i AI Act.",
+  "date": "2026-10-15",
+  "updated": "2026-10-19",
+  "priority": 8,
+  "og": "assets/og/podaci-kao-poslovna-infrastruktura.png",
+  "imageAlt": "Naslovna grafika: podaci kao poslovna infrastruktura i revizijski trag",
+  "imageCaption": "Ilustracija: GNK ASG KANAL.",
+  "tags": ["podaci", "infrastruktura", "GDPR", "korporativno upravljanje", "revizijski trag"],
+  "keyFacts": [
+    "Podatak bez vlasnika nije imovina — to je trošak koji nitko ne mjeri.",
+    "Tri pitanja koja svaki skup podataka mora imati odgovorena: tko je vlasnik, po kojem pravilu se mijenja i kako se dokazuje povijest.",
+    "GDPR traži evidenciju obrade i pravnu osnovu, ne samo sigurnosne mjere.",
+    "AI Act uvodi obvezu dokumentiranja namjene i ljudskog nadzora za sustave koji utječu na ljude."
+  ],
+  "body": "<p>U razgovorima o digitalizaciji podaci se često opisuju kao „nova nafta” ili „novo zlato”. Metafora je atraktivna i gotovo uvijek pogrešna. Nafta ima cijenu neovisno o tome tko je posjeduje. Podatak nema vrijednost ako nitko ne može utvrditi odakle dolazi, tko ga smije mijenjati i što znači kada se promijeni. Zato podaci postaju infrastruktura tek kada uz njih postoje tri stvari: vlasnik, pravilo i trag.</p><h2>Vlasništvo: tko smije reći „ne”</h2><p>U većini tvrtki na pitanje „čiji su ovi podaci” odgovor je odjel. „To je marketing”, „to je financije”, „to je CRM tima prodaje”. Odjel nije vlasnik. Vlasnik je uloga koja ima ovlast odbiti zahtjev za uporabu, definirati dopuštene svrhe i snositi posljedicu ako se pravilo prekrši.</p><p>Razlika je praktična. Ako podatke o kupcima može kopirati svaki odjel bez pitanja, granica odgovornosti ne postoji. Kada dođe do incidenta ili pogrešne odluke, nitko nije nadležan — jer su svi „koristili”.</p><p>Zato dobar inventar podataka ne počinje tehničkim katalogom, nego pitanjem: koja je jedina osoba ili funkcija koja može odobriti novu uporabu ovog skupa podataka? Ako odgovor nije jasan u deset sekundi, vlasništvo nije uređeno.</p><h2>Pravilo: što se smije promijeniti i pod kojim uvjetom</h2><p>Podaci se mijenjaju cijelo vrijeme. Problem nije promjena, nego promjena bez pravila. Tvrtke koje to razumiju uvode nekoliko jednostavnih konvencija:</p><ul><li><strong>Definicija polja.</strong> Što točno znači „aktivan kupac”? Nakon koliko dana neaktivnosti status se mijenja?</li><li><strong>Izvor istine.</strong> Koji je sustav mjerodavan kada se dva sustava razlikuju?</li><li><strong>Dopuštena uporaba.</strong> Smiju li se podaci iz korisničke službe koristiti za marketinške kampanje bez nove pravne osnove?</li><li><strong>Rok čuvanja.</strong> Kada podatak prestaje biti imovina i postaje obveza?</li></ul><p>Bez tih pravila nastaje poznati fenomen: svaka analiza ima svoju verziju istine, a sastanak se pretvara u raspravu o brojkama umjesto o odluci.</p><h2>Trag: dokaz koji ne ovisi o sjećanju</h2><p>Revizijski trag nije administratorski dodatak. To je jedini način da tvrtka nakon godinu dana može odgovoriti na pitanje „zašto se ovo promijenilo”. U praksi to znači zapis o tome tko je unio podatak, kada, iz kojeg izvora i po kojoj osnovi — uključujući automatske izmjene.</p><p>Kod umjetne inteligencije to postaje još važnije. Kada model predloži cijenu, klasificira zahtjev ili sastavi odgovor korisniku, pitanje nije samo je li rezultat točan, nego može li se rekonstruirati put do njega. Bez zapisa o ulaznim podacima, verziji modela i osobi koja je prihvatila izlaz, nema ni odgovornosti ni mogućnosti ispravka.</p><h2>GDPR: osnova, ne dodatak</h2><p>Opća uredba o zaštiti podataka (Uredba (EU) 2016/679) od tvrtki ne traži da „imaju politiku privatnosti”. Traži da znaju svrhu obrade, pravnu osnovu, rok čuvanja i tko ima pristup. Kada se to postavi kao infrastruktura, usklađenost prestaje biti projekt koji traje tri mjeseca i postaje svojstvo sustava.</p><p>Najčešći propust nije nedostatak dokumenta, nego njegova nepovezanost sa stvarnim tokovima podataka. Politika kaže da se podaci ne prenose trećim stranama, a ugovor s dobavljačem alata za analitiku dopušta upravo to. Politika kaže da se čuvaju dvije godine, a sigurnosne kopije čuvaju se pet.</p><h2>AI Act: namjena je dio dokumentacije</h2><p>Uredba (EU) 2024/1689 uvodi obvezu da se za sustave s višim rizikom dokumentira namjena, način rada, ograničenja i ljudski nadzor. To je logičan nastavak iste ideje: podatak i model moraju imati kontekst. Nije dovoljno reći „koristimo AI za predikciju”; treba reći za koju odluku, s kojim podacima, s kojim ograničenjima i koja osoba može zaustaviti proces.</p><h2>Praktični okvir u pet koraka</h2><ol><li><strong>Popišite skupove podataka po svrsi, ne po sustavu.</strong> Jedan skup može živjeti u tri alata; svrha je ono što se štiti.</li><li><strong>Imenujte vlasnika za svaki skup.</strong> Vlasnik mora imati ovlast odbiti uporabu.</li><li><strong>Zapišite pravilo izmjene.</strong> Tko mijenja, pod kojim uvjetom i kako se verzija bilježi.</li><li><strong>Uvedite obavezan revizijski trag</strong> za sve što utječe na kupca, zaposlenika ili financijski izvještaj.</li><li><strong>Povežite politike s ugovorima.</strong> Ono što piše u politici mora pisati i u ugovoru s dobavljačem.</li></ol><h2>Zašto je to pitanje uprave, a ne samo IT-a</h2><p>Infrastruktura se ne ocjenjuje po tome koliko je moderna, nego po tome koliko je predvidiva. Tvrtka može imati najskuplji oblak i najnapredniji model, a i dalje ne znati čiji su podaci i tko ih je izmijenio. To nije tehnološki problem. To je problem upravljanja, i rješava se odlukom — ne licencom.</p>",
+  "editorNote": [
+    "U vlastitom poslovanju podatke tretiramo kao infrastrukturu: svaki skup ima vlasnika, svrhu i evidenciju izmjena. To nije savršenstvo — to je minimum bez kojeg se ne može razgovarati o odgovornosti.",
+    "Ako u tvrtki postoji samo jedan dokument koji opisuje tokove podataka, a nitko ga nije otvorio više od godinu dana, vjerojatno je opisivao stanje koje više ne postoji."
+  ],
+  "sources": [
+    { "label": "Uredba (EU) 2016/679 (GDPR) — EUR-Lex", "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj" },
+    { "label": "Uredba (EU) 2024/1689 (AI Act) — EUR-Lex", "url": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj" },
+    { "label": "Metodologija kanala — razine provjere i ispravci", "url": "../metodologija/" }
+  ],
+  "faq": [
+    { "q": "Je li revizijski trag obavezan za sve podatke?", "a": "Nije za svaki podatak, ali jest za sve što utječe na kupca, zaposlenika, financijski izvještaj ili zakonsku obvezu. Za ostalo je dobra praksa." },
+    { "q": "Može li mala tvrtka to provesti bez posebnog alata?", "a": "Može. Dovoljni su registar skupova podataka, imenovani vlasnici, pisana pravila izmjene i evidencija u postojećim sustavima. Alat pomaže, ali nije uvjet." }
+  ],
+  "x": [
+    "Podatak bez vlasnika nije imovina. To je trošak koji nitko ne mjeri. Tri stvari koje svaki skup podataka mora imati: vlasnika, pravilo izmjene i trag.",
+    "GDPR ne traži da imate politiku privatnosti. Traži da znate svrhu, osnovu, rok i pristup. Politika bez toga je literatura."
+  ]
+}
