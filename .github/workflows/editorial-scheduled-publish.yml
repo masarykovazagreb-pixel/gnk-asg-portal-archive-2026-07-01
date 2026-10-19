@@ -13,6 +13,10 @@ on:
     branches: [main]
     paths:
       - 'apps/portal/data/editorial-plan/**'
+      - 'apps/portal/data/editorial-premium-art.json'
+      - 'apps/portal/assets/editorial/*.svg'
+      - 'scripts/lib/editorial-premium-art-v1.mjs'
+      - 'scripts/generate-editorial-cover-assets-v1.mjs'
       - 'scripts/editorial-publish-scheduled-v1.mjs'
       - 'scripts/build-aktual-media-weekly-v1.mjs'
       - 'scripts/build-aktual-media-weekly-archive-v1.mjs'
@@ -86,6 +90,10 @@ jobs:
           test "$(head -c 4 "$RUNNER_TEMP/aktual-webp-functional-check.webp")" = 'RIFF'
           test "$(dd if="$RUNNER_TEMP/aktual-webp-functional-check.webp" bs=1 skip=8 count=4 status=none)" = 'WEBP'
           identify "$RUNNER_TEMP/aktual-webp-functional-check.webp"
+
+      - name: Validate original premium artwork and generated WebP quality
+        if: ${{ hashFiles('apps/portal/data/editorial-premium-art.json') != '' }}
+        run: node scripts/test-premium-editorial-art-v1.mjs
 
       - name: Generate and synchronize approved topical WebP cover for new commentary
         if: ${{ hashFiles('apps/portal/data/editorial-plan/20261019-roto-apfel-commentary.json') != '' }}
