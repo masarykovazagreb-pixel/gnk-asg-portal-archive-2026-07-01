@@ -122,10 +122,7 @@ jobs:
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          git commit -m "KANAL: dnevno izdanje ${{ steps.izdanje.outputs.date }} (10 objava)
-
-Automatski sastavljeno iz strukturiranih izvora. Nije pojedinačno urednički pregledano.
-Blok na AKTUAL MEDIA osvježen istim izdanjem."
+          git commit -m "KANAL: dnevno izdanje ${{ steps.izdanje.outputs.date }} (10 objava)" -m "Automatski sastavljeno iz strukturiranih izvora. Nije pojedinačno urednički pregledano. Blok na AKTUAL MEDIA osvježen istim izdanjem."
           echo "changed=true" >> "$GITHUB_OUTPUT"
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
