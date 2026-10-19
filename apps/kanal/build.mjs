@@ -223,7 +223,7 @@ function footer(root) {
     <div class="foot-brand">
       <b>${esc(SITE.brand)}</b><span>GNK ASG KANAL</span>
       <p>${esc(SITE.tagline)}</p>
-      <p style="font-size:12px">Glavni urednik: Nermin Sefić · ${esc(SITE.publisher.address)}</p>
+      <p class="fine-print">Glavni urednik: Nermin Sefić · ${esc(SITE.publisher.address)}</p>
     </div>
     <div><h3>Rubrike</h3><ul>
       ${Object.entries(SECTIONS).map(([k, s]) => `<li><a href="${root}tema/${k}/">${esc(s.label)}</a></li>`).join('')}
@@ -486,7 +486,7 @@ function buildPage(p) {
     body = body.replace('{{LIST}}', `<div class="list">${ARTICLES.map((a) => articleListRow(a, root)).join('')}</div>`);
   }
   if (body.includes('{{AUTOR_LIST}}')) {
-    body = body.replace('{{AUTOR_LIST}}', `<div class="grid grid--3" style="margin-top:8px">${ARTICLES.map((a) => articleCard(a, root)).join('')}</div>`);
+    body = body.replace('{{AUTOR_LIST}}', `<div class="grid grid--3 mt-sm">${ARTICLES.map((a) => articleCard(a, root)).join('')}</div>`);
   }
   const { html } = withHeadingIds(body);
   const faq = p.faq || [];
@@ -658,7 +658,7 @@ function buildTopic(key) {
       <h1>${esc(s.label)}</h1>
       <p>${esc(s.description)}</p>
     </header>
-    <div class="list">${items.length ? items.map((a) => articleListRow(a, root)).join('') : '<p style="color:var(--muted);padding:24px 0">U ovoj rubrici još nema objava.</p>'}</div>
+    <div class="list">${items.length ? items.map((a) => articleListRow(a, root)).join('') : '<p class="muted-empty">U ovoj rubrici još nema objava.</p>'}</div>
   </div>`;
   return {
     path: `tema/${key}/`,
@@ -932,7 +932,7 @@ write('_headers', `/*
   X-Frame-Options: SAMEORIGIN
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=(), interest-cohort=()
-  Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; form-action 'self' mailto:; base-uri 'self'; frame-ancestors 'self'
+  Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; form-action 'self' mailto:; base-uri 'self'; frame-ancestors 'self'
   Cache-Control: public, max-age=0, must-revalidate
 
 /assets/*
