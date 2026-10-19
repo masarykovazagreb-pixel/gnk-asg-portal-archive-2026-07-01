@@ -629,8 +629,8 @@ function buildHome() {
 </div>`;
 
   return page({
-    title: `${SITE.brandFull}: ${SITE.tagline}`,
-    description: SITE.description,
+    title: SITE.seoTitle || `${SITE.brandFull}: ${SITE.tagline}`,
+    description: SITE.seoDescription || SITE.description,
     canonical: '',
     content,
     og: 'assets/og/naslovnica.png',
