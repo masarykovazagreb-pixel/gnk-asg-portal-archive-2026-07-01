@@ -262,6 +262,9 @@ function extraCards() {
   for (const [id, desk] of Object.entries(DESKS)) {
     cards.push(`<article class="iz-card"><span class="flag">Desk · AKTUAL MEDIA</span><h2><a href="/izdanja/${id}/">${esc(desk.name)}</a></h2><p>${esc(desk.description)}</p><ul class="iz-tags">${desk.hashtags.map((x) => `<li>${esc(x)}</li>`).join('')}</ul><div class="acts"><a class="btn" href="/izdanja/${id}/">Otvori desk →</a></div></article>`);
   }
+  for (const p of PLATFORMS) {
+    cards.push(`<article class="iz-card"><span class="flag">Platforma · GNK ASG</span><h2><a href="${p.url}"${p.external ? ' rel="external noopener"' : ''}>${esc(p.name)}</a></h2><p>${esc(p.description)}</p><ul class="iz-tags">${p.tags.map((x) => `<li>${esc(x)}</li>`).join('')}</ul><div class="acts"><a class="btn" href="${p.url}"${p.external ? ' rel="external noopener"' : ''}>${esc(p.cta)}</a></div></article>`);
+  }
   return cards.join('\n');
 }
 
@@ -287,12 +290,41 @@ ${portalFooter()}`;
     keywords: ['AKTUAL MEDIA', 'izdanja', 'KANAL ZAGREB', 'KANAL BEOGRAD', 'KANAL SARAJEVO', 'KANAL BUDIMPEŠTA', 'KANAL LJUBLJANA', 'CANALE ROMA', 'KANAL SOFIJA', 'CANALUL BUCURESTI', 'BUSINESS TJEDNIK', 'GNK ASG', 'Nermin Sefić'],
     jsonld: [
       { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Naša izdanja — AKTUAL MEDIA', url: HUB, inLanguage: 'hr', isPartOf: { '@type': 'WebSite', name: 'AKTUAL MEDIA', url: 'https://gnk-asg.hr/' } },
-      { '@context': 'https://schema.org', '@type': 'ItemList', name: 'Izdanja AKTUAL MEDIA', numberOfItems: CHANNELS.length + 5, itemListElement: CHANNELS.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.title, url: c.base })) },
+      { '@context': 'https://schema.org', '@type': 'ItemList', name: 'Izdanja AKTUAL MEDIA', numberOfItems: CHANNELS.length + 8, itemListElement: CHANNELS.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.title, url: c.base })) },
       { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'AKTUAL MEDIA', item: 'https://gnk-asg.hr/gnk-aktual/' }, { '@type': 'ListItem', position: 2, name: 'Izdanja', item: HUB }] }
     ],
     body
   });
 }
+
+
+/* Platforme koje žive na matičnoj domeni, a ulaze u hub kao zasebne kartice. */
+const PLATFORMS = [
+  {
+    id: 'digital-workforce',
+    name: 'Digitalna radna snaga — javna simulacija',
+    url: '/digital-workforce/',
+    cta: 'Otvori simulaciju →',
+    tags: ['#DigitalnaRadnaSnaga', '#GNKASG', '#Simulacija'],
+    description: 'Javna ilustrativna simulacija sustava digitalne radne snage GNK ASG: planovi, projekti, rizici i katalog od 1.573 sintetička workera. Stranica objašnjava što simulacija jest, a što nije, i odvaja pokazne scenarije od stvarnih poslovnih odluka. Katalog se pregledava po timovima i ulogama, a svaki je zapis označen kao sintetički. Uz katalog stoje dokumentacija o rizicima i ograničenjima te odgovori na najčešća pitanja. Ništa sa stranice ne opisuje stvarne zaposlenike ni stvarne klijente, a brojke su dio simulacije. Kartica je ulaz u model, ne dokaz poslovnog učinka.',
+  },
+  {
+    id: 'radio',
+    name: 'AKTUAL MEDIA RADIO',
+    url: '/radio/',
+    cta: 'Otvori radio →',
+    tags: ['#AktualMediaRadio', '#AktualMedia', '#GNKASG'],
+    description: 'AKTUAL MEDIA RADIO je diskretni player u kutu stranice: preklopljen je dok ga čitatelj ne otvori i ne prekriva sadržaj. Nudi šest glazbenih streamova te popis javnih radijskih kuća osam zemalja koje portal prati. Stanice se ne reemitiraju; svaka poveznica vodi na službeni player te kuće, uz atribuciju. Player pamti je li zatvoren i može se otvoriti kao stalni prozor ili instalirati kao aplikacija. Ima vlastite kontrole glasnoće i reprodukcije, a stanice se biraju izravno u panelu. Kartica vodi na stranicu s playerom i popisom stanica.',
+  },
+  {
+    id: 'knowledge-center',
+    name: 'Centar znanja i odgovori',
+    url: '/knowledge-center/',
+    cta: 'Otvori centar znanja →',
+    tags: ['#CentarZnanja', '#GNKASG', '#AktualMedia'],
+    description: 'Centar znanja okuplja odgovore o grupi GNK ASG, projektima, financijama, medijskim prijavama, izvješćima, tehnologiji i službenim kontaktima. Pitanja su posložena po temama, a svaki odgovor upućuje na dokument ili stranicu na kojoj se tvrdnja može provjeriti. Stranica razlikuje objavljeno, planirano i uvjetno, pa se rok i uvjet ne čitaju kao jamstvo. Služi novinarima, partnerima i čitateljima koji žele prvi izvor umjesto prepričavanja. Odgovori se dopunjuju kad se promijeni matični dokument, a kontakt za ispravak je info@gnk-asg.hr. Kartica je ulaz u arhivu odgovora, a ne u marketinški pregled.',
+  },
+];
 
 /* ---------- deskovi ---------- */
 
