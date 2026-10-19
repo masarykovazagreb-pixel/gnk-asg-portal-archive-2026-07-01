@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "channel": "sarajevo",
+  "lang": "bs",
+  "city": "Sarajevo",
+  "country": "Bosna i Hercegovina",
+  "updatedAt": "2026-10-19T15:55:47.219Z",
+  "sources": [
+    {
+      "id": "n1ba",
+      "name": "N1 BiH",
+      "url": "https://n1info.ba/feed/",
+      "ok": false,
+      "fetched": 0,
+      "errors": [
+        "https://n1info.ba/feed/: fetch failed"
+      ],
+      "checkedAt": "2026-10-19T15:55:42.903Z"
+    },
+    {
+      "id": "klix",
+      "name": "Klix",
+      "url": "https://www.klix.ba/rss",
+      "ok": false,
+      "fetched": 0,
+      "errors": [
+        "https://www.klix.ba/rss: fetch failed",
+        "https://www.klix.ba/rss/naslovnica: fetch failed"
+      ],
+      "checkedAt": "2026-10-19T15:55:44.337Z"
+    },
+    {
+      "id": "oslobodjenje",
+      "name": "Oslobođenje",
+      "url": "https://www.oslobodjenje.ba/feed",
+      "ok": false,
+      "fetched": 0,
+      "errors": [
+        "https://www.oslobodjenje.ba/feed: fetch failed",
+        "https://www.oslobodjenje.ba/rss: fetch failed"
+      ],
+      "checkedAt": "2026-10-19T15:55:45.768Z"
+    },
+    {
+      "id": "avaz",
+      "name": "Avaz",
+      "url": "https://avaz.ba/feed",
+      "ok": false,
+      "fetched": 0,
+      "errors": [
+        "https://avaz.ba/feed: fetch failed",
+        "https://www.avaz.ba/rss: fetch failed"
+      ],
+      "checkedAt": "2026-10-19T15:55:47.219Z"
+    }
+  ],
+  "items": []
+}

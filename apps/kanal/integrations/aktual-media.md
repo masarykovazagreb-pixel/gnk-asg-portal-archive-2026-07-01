@@ -92,7 +92,7 @@ Primjer skripte: `apps/kanal/integrations/aktual-import.mjs`
 
 ## 6. Kontakt za integraciju
 
-`beckuphome@gmail.com` — predmet: „AKTUAL integracija / KANAL feed".
+`info@gnk-asg.hr` — predmet: „AKTUAL integracija / KANAL feed".
 Odgovor u pravilu u roku 3 radna dana.
 
 

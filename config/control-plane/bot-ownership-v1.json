@@ -68,6 +68,7 @@
       "refresh-index-live-data.yml",
       "regeneriraj-image-sitemap.yml",
       "regeneriraj-sitemapove.yml",
+      "region-daily.yml",
       "siroki-smoke.yml",
       "site-health-audit.yml",
       "social-distribution.yml",
@@ -600,6 +601,32 @@
       "prohibitions": [
         "production portal deploy",
         "write outside the TJEDNIK paths"
+      ]
+    },
+    {
+      "workflow": "region-daily.yml",
+      "domain": "AKTUAL_NEWS",
+      "role": "canonical-writer-region",
+      "cadence": "daily 05:50 UTC",
+      "read": [
+        "apps/region/channels.json",
+        "apps/region/engine/**",
+        "apps/portal/assets/people/nermin-sefic/**"
+      ],
+      "write": [
+        "apps/region/data",
+        "apps/region/site",
+        "apps/portal/izdanja",
+        "apps/portal/data/izdanja.json",
+        "apps/portal/data/izdanja-sport.json",
+        "apps/portal/data/nermin-sefic-gallery.json",
+        "apps/portal/galerija"
+      ],
+      "gate": "region feed + build + hub + Cloudflare Pages (gnk-asg-kanal-*)",
+      "handoff": "REGION owner",
+      "prohibitions": [
+        "production portal deploy outside exact-SHA release",
+        "write outside the region paths"
       ]
     }
   ],

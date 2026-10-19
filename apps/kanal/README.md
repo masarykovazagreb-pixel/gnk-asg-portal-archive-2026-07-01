@@ -9,7 +9,7 @@ preuzeti uz atribuciju.
 - **Hosting:** Cloudflare Pages (`gnk-asg-kanal`), workflow `.github/workflows/kanal-deploy.yml`
 - **Domena:** samo `gnk-asg-kanal.pages.dev` (odluka 19. 10. 2026: custom domena se ne koristi)
 - **Feed za AKTUAL:** `site/feed.json` (JSON Feed 1.1 + blok `_kanal`)
-- **Kontakt:** `beckuphome@gmail.com`
+- **Kontakt:** `info@gnk-asg.hr`
 
 ## Brze naredbe
 

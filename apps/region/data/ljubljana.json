@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "channel": "ljubljana",
+  "lang": "sl",
+  "city": "Ljubljana",
+  "country": "Slovenija",
+  "updatedAt": "2026-10-19T15:55:56.189Z",
+  "sources": [
+    {
+      "id": "sta",
+      "name": "STA",
+      "url": "https://www.sta.si/rss",
+      "ok": false,
+      "fetched": 0,
+      "errors": [
+        "https://www.sta.si/rss: fetch failed",
+        "https://english.sta.si/rss.php: fetch failed"
+      ],
+      "checkedAt": "2026-10-19T15:55:51.731Z"
+    },
+    {
+      "id": "delo",
+      "name": "Delo",
+      "url": "https://www.delo.si/feed/",
+      "ok": false,
+      "fetched": 0,
+      "errors": [
+        "https://www.delo.si/feed/: fetch failed",
+        "https://www.delo.si/rss: fetch failed"
+      ],
+      "checkedAt": "2026-10-19T15:55:53.327Z"
+    },
+    {
+      "id": "dnevnik",
+      "name": "Dnevnik",
+      "url": "https://www.dnevnik.si/rss",
+      "ok": false,
+      "fetched": 0,
+      "errors": [
+        "https://www.dnevnik.si/rss: fetch failed",
+        "https://www.dnevnik.si/feed: fetch failed"
+      ],
+      "checkedAt": "2026-10-19T15:55:54.770Z"
+    },
+    {
+      "id": "siol",
+      "name": "Siol.net",
+      "url": "https://siol.net/feeds/rss",
+      "ok": false,
+      "fetched": 0,
+      "errors": [
+        "https://siol.net/feeds/rss: fetch failed",
+        "https://siol.net/rss: fetch failed"
+      ],
+      "checkedAt": "2026-10-19T15:55:56.189Z"
+    }
+  ],
+  "items": []
+}

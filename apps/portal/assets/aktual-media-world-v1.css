@@ -180,3 +180,21 @@ img{max-width:100%}
 .kanal-item .kanal-ext{color:#8a8d96;font-size:11px}
 .kanal-foot{margin-top:12px;font-size:11.5px;color:rgba(255,255,255,.55);display:flex;flex-wrap:wrap;gap:10px 18px;justify-content:space-between}
 .kanal-foot a{color:rgba(255,255,255,.8)}
+
+/* Naša izdanja — regionalni kanali (dodano 2026-10-19) */
+.izdanja-band{margin:0 0 42px;border:1px solid rgba(255,255,255,.16);background:linear-gradient(180deg,rgba(20,32,48,.72),rgba(10,18,28,.5));padding:22px 24px}
+.izdanja-band-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:16px}
+.izdanja-band-title{margin:0;font-size:clamp(1.15rem,2.2vw,1.45rem);letter-spacing:.01em}
+.izdanja-band p.izdanja-sub{margin:4px 0 0;font-size:13px;color:rgba(255,255,255,.66);max-width:66ch}
+.izdanja-all{font-size:11px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:#c9a24a;border-bottom:1px solid rgba(201,162,74,.5);padding-bottom:2px;white-space:nowrap}
+.izdanja-all:hover{color:#fff;border-color:#fff}
+.izdanja-list{list-style:none;margin:0;padding:0;display:grid;gap:1px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08)}
+@media(min-width:760px){.izdanja-list{grid-template-columns:1fr 1fr}}
+@media(min-width:1100px){.izdanja-list{grid-template-columns:repeat(4,1fr)}}
+.izdanja-item{background:#0d0e12;padding:14px 15px;display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start}
+.izdanja-item:hover{background:#14161c}
+.izdanja-num{font-family:Georgia,serif;font-size:11px;color:#c9a24a;padding-top:2px;font-variant-numeric:tabular-nums}
+.izdanja-item h3{margin:0 0 3px;font-size:14px;line-height:1.3;font-weight:600}
+.izdanja-item h3 a{color:#f2eee4;text-decoration:none}
+.izdanja-item h3 a:hover{text-decoration:underline;text-decoration-color:#c9a24a;text-underline-offset:3px}
+.izdanja-item p{margin:0;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.5)}

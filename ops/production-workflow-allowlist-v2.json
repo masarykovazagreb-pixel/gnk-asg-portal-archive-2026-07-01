@@ -68,6 +68,9 @@
     ],
     "tjednik-daily.yml": [
       "20 6 * * *"
+    ],
+    "region-daily.yml": [
+      "50 5 * * *"
     ]
   },
   "protectedManualRelease": [
@@ -120,6 +123,70 @@
         "tjednik-deploy.yml"
       ],
       "productionDomain": "https://gnk-asg-tjednik.pages.dev/",
+      "canonicalPortal": false
+    },
+    "gnk-asg-kanal-zagreb": {
+      "workflows": [
+        "region-daily.yml",
+        "region-deploy.yml"
+      ],
+      "productionDomain": "https://gnk-asg-kanal-zagreb.pages.dev/",
+      "canonicalPortal": false
+    },
+    "gnk-asg-kanal-beograd": {
+      "workflows": [
+        "region-daily.yml",
+        "region-deploy.yml"
+      ],
+      "productionDomain": "https://gnk-asg-kanal-beograd.pages.dev/",
+      "canonicalPortal": false
+    },
+    "gnk-asg-kanal-sarajevo": {
+      "workflows": [
+        "region-daily.yml",
+        "region-deploy.yml"
+      ],
+      "productionDomain": "https://gnk-asg-kanal-sarajevo.pages.dev/",
+      "canonicalPortal": false
+    },
+    "gnk-asg-kanal-budimpesta": {
+      "workflows": [
+        "region-daily.yml",
+        "region-deploy.yml"
+      ],
+      "productionDomain": "https://gnk-asg-kanal-budimpesta.pages.dev/",
+      "canonicalPortal": false
+    },
+    "gnk-asg-kanal-ljubljana": {
+      "workflows": [
+        "region-daily.yml",
+        "region-deploy.yml"
+      ],
+      "productionDomain": "https://gnk-asg-kanal-ljubljana.pages.dev/",
+      "canonicalPortal": false
+    },
+    "gnk-asg-kanal-rim": {
+      "workflows": [
+        "region-daily.yml",
+        "region-deploy.yml"
+      ],
+      "productionDomain": "https://gnk-asg-kanal-rim.pages.dev/",
+      "canonicalPortal": false
+    },
+    "gnk-asg-kanal-sofija": {
+      "workflows": [
+        "region-daily.yml",
+        "region-deploy.yml"
+      ],
+      "productionDomain": "https://gnk-asg-kanal-sofija.pages.dev/",
+      "canonicalPortal": false
+    },
+    "gnk-asg-kanal-bukurest": {
+      "workflows": [
+        "region-daily.yml",
+        "region-deploy.yml"
+      ],
+      "productionDomain": "https://gnk-asg-kanal-bukurest.pages.dev/",
       "canonicalPortal": false
     }
   }

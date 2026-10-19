@@ -1,0 +1,213 @@
+{
+  "version": "AKTUAL_MEDIA_REGION_CHANNELS_V1_20261019",
+  "publisher": "AKTUAL MEDIA d.o.o.",
+  "editorInChief": "Nermin Sefić",
+  "parent": "https://gnk-asg.hr/gnk-aktual/",
+  "hub": "https://gnk-asg.hr/izdanja/",
+  "permission": {
+    "note": "Izričita dozvola vlasnika za rad regionalnih izdanja do 31. 12. 2027.",
+    "validUntil": "2027-12-31"
+  },
+  "channels": [
+    {
+      "id": "zagreb",
+      "lang": "hr",
+      "locale": "hr-HR",
+      "country": "Hrvatska",
+      "countryCode": "HR",
+      "city": "Zagreb",
+      "cityLocative": "Zagrebu",
+      "cityAdjective": "zagrebački",
+      "project": "gnk-asg-kanal-zagreb",
+      "base": "https://gnk-asg-kanal-zagreb.pages.dev/",
+      "title": "KANAL ZAGREB",
+      "palette": { "bg": "#08131c", "surface": "#0e2030", "accent": "#e2b857", "accent2": "#74b6ff", "ink": "#eef3f8" },
+      "hashtags": ["#KanalZagreb", "#Hrvatska", "#Zagreb", "#AktualMedia", "#GNKASG"],
+      "radio": [
+        { "name": "HRT Radio Sljeme", "url": "https://radio.hrt.hr/stream/sljeme" },
+        { "name": "Otvoreni radio", "url": "https://www.otvoreni.hr/" }
+      ],
+      "sources": [
+        { "id": "index", "name": "Index.hr", "type": "rss", "cap": 6, "urls": ["https://www.index.hr/rss"] },
+        { "id": "jutarnji", "name": "Jutarnji list", "type": "rss", "cap": 6, "urls": ["https://www.jutarnji.hr/feed"] },
+        { "id": "poslovni", "name": "Poslovni dnevnik", "type": "rss", "cap": 5, "urls": ["https://www.poslovni.hr/feed/"] },
+        { "id": "tportal", "name": "tportal", "type": "rss", "cap": 5, "urls": ["https://www.tportal.hr/rss"] }
+      ]
+    },
+    {
+      "id": "beograd",
+      "lang": "sr",
+      "locale": "sr-RS",
+      "country": "Srbija",
+      "countryCode": "RS",
+      "city": "Beograd",
+      "cityLocative": "Beogradu",
+      "cityAdjective": "beogradski",
+      "project": "gnk-asg-kanal-beograd",
+      "base": "https://gnk-asg-kanal-beograd.pages.dev/",
+      "title": "KANAL BEOGRAD",
+      "palette": { "bg": "#140d10", "surface": "#241419", "accent": "#e0544a", "accent2": "#f0c26a", "ink": "#f7efec" },
+      "hashtags": ["#KanalBeograd", "#Srbija", "#Beograd", "#AktualMedia", "#GNKASG"],
+      "radio": [
+        { "name": "N1 Radio", "url": "https://n1info.rs/" },
+        { "name": "Radio Beograd 202", "url": "https://www.rts.rs/radio/radio-beograd-202/" }
+      ],
+      "sources": [
+        { "id": "n1", "name": "N1 Srbija", "type": "rss", "cap": 6, "urls": ["https://n1info.rs/feed/"] },
+        { "id": "danas", "name": "Danas", "type": "rss", "cap": 6, "urls": ["https://www.danas.rs/feed/"] },
+        { "id": "nova", "name": "Nova.rs", "type": "rss", "cap": 6, "urls": ["https://nova.rs/feed/"] },
+        { "id": "politika", "name": "Politika", "type": "rss", "cap": 5, "urls": ["https://www.politika.rs/rss", "https://www.politika.rs/rss/"] }
+      ]
+    },
+    {
+      "id": "sarajevo",
+      "lang": "bs",
+      "locale": "bs-BA",
+      "country": "Bosna i Hercegovina",
+      "countryCode": "BA",
+      "city": "Sarajevo",
+      "cityLocative": "Sarajevu",
+      "cityAdjective": "sarajevski",
+      "project": "gnk-asg-kanal-sarajevo",
+      "base": "https://gnk-asg-kanal-sarajevo.pages.dev/",
+      "title": "KANAL SARAJEVO",
+      "palette": { "bg": "#0a1220", "surface": "#101d33", "accent": "#2f8fe0", "accent2": "#f2c14e", "ink": "#eef4fb" },
+      "hashtags": ["#KanalSarajevo", "#BosnaiHercegovina", "#Sarajevo", "#AktualMedia", "#GNKASG"],
+      "radio": [
+        { "name": "BH Radio 1", "url": "https://www.bhrt.ba/" },
+        { "name": "N1 BiH", "url": "https://n1info.ba/" }
+      ],
+      "sources": [
+        { "id": "n1ba", "name": "N1 BiH", "type": "rss", "cap": 6, "urls": ["https://n1info.ba/feed/"] },
+        { "id": "klix", "name": "Klix", "type": "rss", "cap": 6, "urls": ["https://www.klix.ba/rss", "https://www.klix.ba/rss/naslovnica"] },
+        { "id": "oslobodjenje", "name": "Oslobođenje", "type": "rss", "cap": 5, "urls": ["https://www.oslobodjenje.ba/feed", "https://www.oslobodjenje.ba/rss"] },
+        { "id": "avaz", "name": "Avaz", "type": "rss", "cap": 5, "urls": ["https://avaz.ba/feed", "https://www.avaz.ba/rss"] }
+      ]
+    },
+    {
+      "id": "budimpesta",
+      "lang": "hu",
+      "locale": "hu-HU",
+      "country": "Mađarska",
+      "countryCode": "HU",
+      "city": "Budimpešta",
+      "cityLocative": "Budimpešti",
+      "cityAdjective": "budimpeštanski",
+      "project": "gnk-asg-kanal-budimpesta",
+      "base": "https://gnk-asg-kanal-budimpesta.pages.dev/",
+      "title": "KANAL BUDIMPEŠTA",
+      "palette": { "bg": "#0a1512", "surface": "#12241d", "accent": "#28a07f", "accent2": "#d9a24a", "ink": "#edf6f1" },
+      "hashtags": ["#KanalBudimpesta", "#Magyarorszag", "#Budapest", "#AktualMedia", "#GNKASG"],
+      "radio": [
+        { "name": "Klubrádió", "url": "https://www.klubradio.hu/" },
+        { "name": "InfoRádió", "url": "https://infostart.hu/" }
+      ],
+      "sources": [
+        { "id": "telex", "name": "Telex", "type": "rss", "cap": 6, "urls": ["https://telex.hu/rss"] },
+        { "id": "444", "name": "444", "type": "rss", "cap": 5, "urls": ["https://444.hu/feed"] },
+        { "id": "hvg", "name": "HVG", "type": "rss", "cap": 6, "urls": ["https://hvg.hu/rss"] },
+        { "id": "portfolio", "name": "Portfolio", "type": "rss", "cap": 5, "urls": ["https://www.portfolio.hu/rss/all.xml"] }
+      ]
+    },
+    {
+      "id": "ljubljana",
+      "lang": "sl",
+      "locale": "sl-SI",
+      "country": "Slovenija",
+      "countryCode": "SI",
+      "city": "Ljubljana",
+      "cityLocative": "Ljubljani",
+      "cityAdjective": "ljubljanski",
+      "project": "gnk-asg-kanal-ljubljana",
+      "base": "https://gnk-asg-kanal-ljubljana.pages.dev/",
+      "title": "KANAL LJUBLJANA",
+      "palette": { "bg": "#08161a", "surface": "#0f2530", "accent": "#1fb2c4", "accent2": "#b8d94a", "ink": "#ecf7f9" },
+      "hashtags": ["#KanalLjubljana", "#Slovenija", "#Ljubljana", "#AktualMedia", "#GNKASG"],
+      "radio": [
+        { "name": "Radio Slovenija 1", "url": "https://www.rtvslo.si/radio" },
+        { "name": "Val 202", "url": "https://www.rtvslo.si/val202" }
+      ],
+      "sources": [
+        { "id": "sta", "name": "STA", "type": "rss", "cap": 6, "urls": ["https://www.sta.si/rss", "https://english.sta.si/rss.php"] },
+        { "id": "delo", "name": "Delo", "type": "rss", "cap": 6, "urls": ["https://www.delo.si/feed/", "https://www.delo.si/rss"] },
+        { "id": "dnevnik", "name": "Dnevnik", "type": "rss", "cap": 5, "urls": ["https://www.dnevnik.si/rss", "https://www.dnevnik.si/feed"] },
+        { "id": "siol", "name": "Siol.net", "type": "rss", "cap": 5, "urls": ["https://siol.net/feeds/rss", "https://siol.net/rss"] }
+      ]
+    },
+    {
+      "id": "rim",
+      "lang": "it",
+      "locale": "it-IT",
+      "country": "Italija",
+      "countryCode": "IT",
+      "city": "Rim",
+      "cityLocative": "Rimu",
+      "cityAdjective": "rimski",
+      "project": "gnk-asg-kanal-rim",
+      "base": "https://gnk-asg-kanal-rim.pages.dev/",
+      "title": "CANALE ROMA",
+      "palette": { "bg": "#180f0a", "surface": "#2a1810", "accent": "#cf6a35", "accent2": "#e9c98d", "ink": "#fbf2ea" },
+      "hashtags": ["#CanaleRoma", "#Italia", "#Roma", "#AktualMedia", "#GNKASG"],
+      "radio": [
+        { "name": "Rai Radio 1", "url": "https://www.raiplaysound.it/radio1" },
+        { "name": "Radio Radicale", "url": "https://www.radioradicale.it/" }
+      ],
+      "sources": [
+        { "id": "ansa", "name": "ANSA", "type": "rss", "cap": 6, "urls": ["https://www.ansa.it/sito/notizie/topnews/topnews_rss.xml"] },
+        { "id": "repubblica", "name": "la Repubblica", "type": "rss", "cap": 6, "urls": ["https://www.repubblica.it/rss/homepage/rss2.0.xml"] },
+        { "id": "ilpost", "name": "Il Post", "type": "rss", "cap": 6, "urls": ["https://www.ilpost.it/feed/"] },
+        { "id": "sole24", "name": "Il Sole 24 Ore", "type": "rss", "cap": 5, "urls": ["https://www.ilsole24ore.com/rss/italia--politica.xml", "https://www.ilsole24ore.com/rss/italia.xml"] }
+      ]
+    },
+    {
+      "id": "sofija",
+      "lang": "bg",
+      "locale": "bg-BG",
+      "country": "Bugarska",
+      "countryCode": "BG",
+      "city": "Sofija",
+      "cityLocative": "Sofiji",
+      "cityAdjective": "sofijski",
+      "project": "gnk-asg-kanal-sofija",
+      "base": "https://gnk-asg-kanal-sofija.pages.dev/",
+      "title": "KANAL SOFIJA",
+      "palette": { "bg": "#0f0c18", "surface": "#1b1530", "accent": "#8a6fd0", "accent2": "#e3c05a", "ink": "#f2eefb" },
+      "hashtags": ["#KanalSofija", "#Bulgaria", "#Sofia", "#AktualMedia", "#GNKASG"],
+      "radio": [
+        { "name": "BNR Horizont", "url": "https://bnr.bg/horizont" },
+        { "name": "Darik Radio", "url": "https://darikradio.bg/" }
+      ],
+      "sources": [
+        { "id": "bta", "name": "BTA", "type": "rss", "cap": 6, "urls": ["https://www.bta.bg/bg/rss", "https://www.bta.bg/en/rss"] },
+        { "id": "capital", "name": "Capital", "type": "rss", "cap": 6, "urls": ["https://www.capital.bg/rss/", "https://www.capital.bg/rss"] },
+        { "id": "mediapool", "name": "Mediapool", "type": "rss", "cap": 5, "urls": ["https://www.mediapool.bg/rss", "https://www.mediapool.bg/rss/"] },
+        { "id": "dnevnikbg", "name": "Dnevnik", "type": "rss", "cap": 5, "urls": ["https://www.dnevnik.bg/rss", "https://www.dnevnik.bg/rss/"] }
+      ]
+    },
+    {
+      "id": "bukurest",
+      "lang": "ro",
+      "locale": "ro-RO",
+      "country": "Rumunjska",
+      "countryCode": "RO",
+      "city": "Bukurešt",
+      "cityLocative": "Bukureštu",
+      "cityAdjective": "bukureštanski",
+      "project": "gnk-asg-kanal-bukurest",
+      "base": "https://gnk-asg-kanal-bukurest.pages.dev/",
+      "title": "CANALUL BUCUREȘTI",
+      "palette": { "bg": "#0a0f1c", "surface": "#111a30", "accent": "#4a6cf0", "accent2": "#e8a33d", "ink": "#eef2fc" },
+      "hashtags": ["#CanalulBucuresti", "#Romania", "#Bucuresti", "#AktualMedia", "#GNKASG"],
+      "radio": [
+        { "name": "Radio România Actualități", "url": "https://www.romania-actualitati.ro/" },
+        { "name": "Europa FM", "url": "https://www.europafm.ro/" }
+      ],
+      "sources": [
+        { "id": "agerpres", "name": "Agerpres", "type": "rss", "cap": 6, "urls": ["https://www.agerpres.ro/rss", "https://www.agerpres.ro/rss/"] },
+        { "id": "hotnews", "name": "HotNews", "type": "rss", "cap": 6, "urls": ["https://hotnews.ro/feed", "https://hotnews.ro/feed/"] },
+        { "id": "zf", "name": "Ziarul Financiar", "type": "rss", "cap": 5, "urls": ["https://www.zf.ro/rss", "https://www.zf.ro/rss/"] },
+        { "id": "profit", "name": "Profit.ro", "type": "rss", "cap": 5, "urls": ["https://www.profit.ro/rss", "https://www.profit.ro/rss/"] }
+      ]
+    }
+  ]
+}

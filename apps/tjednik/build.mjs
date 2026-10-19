@@ -32,7 +32,7 @@ const SHORT = 'BUSINESS TJEDNIK';
 const TAGLINE = 'Kritički tjednik o poslovnom izvještavanju: Lider, Jutarnji list, Poslovni dnevnik i Forbes.';
 const DESCRIPTION = 'Business tjednik GNK ASG-a: kritički osvrti na poslovne tekstove Lidera, Jutarnjeg lista, Poslovnog dnevnika i Forbesa, tjedna promjena i dnevni dodaci. Automatski sastavljeno, izvori uvijek navedeni.';
 const PUBLISHER = 'GNK ASG d.o.o.';
-const CONTACT = 'beckuphome@gmail.com';
+const CONTACT = 'info@gnk-asg.hr';
 const START = '2026-10-19';
 
 const SECTIONS = {
