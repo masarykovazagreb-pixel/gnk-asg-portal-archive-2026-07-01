@@ -23,7 +23,7 @@ jobs:
             [ -n "$path" ] || continue
             url="https://gnk-asg.hr$path"
             output="$(mktemp)"
-            code="$(curl --location --silent --show-error --retry 3 --retry-delay 1 --max-time 35 -A 'GNK-ASG-AKTUAL-Live-Check/1.0' -o "$output" -w '%{http_code}' "$url")"
+            code="$(curl --silent --show-error --retry 3 --retry-delay 1 --max-time 35 -A 'GNK-ASG-AKTUAL-Live-Check/1.0' -o "$output" -w '%{http_code}' "$url")"
             printf '%s -> HTTP %s\n' "$url" "$code"
             test "$code" = 200 || { echo "::error::Expected HTTP 200 for $url"; exit 1; }
             grep -Fq "$marker" "$output" || { echo "::error::Expected public marker missing on $url"; exit 1; }
@@ -31,6 +31,7 @@ jobs:
           done <<'ROUTES'
           /komentari/roto-dinamic-apfel-prijava-nije-odobrenje/|Roto Dinamic i Apfel
           /galerija/roto-apfel-logistika-koncept/|Originalna
+          /assets/editorial/roto-apfel-logistics-concept-20261019.svg|<svg
           /visual-index/roto-apfel-logistika-koncept/|Logistika
           /en/visual-index/roto-apfel-logistika-koncept/|Logistics
           /gnk-aktual/tjedni/2026-10-19/|AKTUAL
