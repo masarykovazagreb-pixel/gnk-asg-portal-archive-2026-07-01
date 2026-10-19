@@ -19,7 +19,7 @@ const released=[];
 for(const [id,val] of Object.entries(published)){
   const item=items.find(q=>q.id===id);
   if(!item||item.category!=='komentari')continue;
-  const publishedAt=typeof val==='string'?val:(val?.publishedAt||val?.date||'');
+  const publishedAt=typeof val==='string'?val:(val?.at||val?.publishedAt||val?.date||'');
   const publicationDay=publishedAt.slice(0,10);
   if(publicationDay!==date)continue;
   const route='/komentari/'+item.slug+'/';
