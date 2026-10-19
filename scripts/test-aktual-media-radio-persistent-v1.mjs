@@ -77,7 +77,8 @@ if(!floatCss.includes('#aktualMediaRadioFloat')) failures.push('float CSS: root 
 if(!floatCss.includes('grid-template-columns:repeat(3,minmax(0,1fr))')) failures.push('float CSS: responsive three-column station grid missing');
 if(!floatCss.includes('grid-template-areas:"down play up pop" "meter meter meter meter"')) failures.push('float CSS: balanced transport and volume-control layout missing');
 if(!floatCss.includes('@media(max-width:480px)')||!floatCss.includes('prefers-reduced-motion')) failures.push('float CSS: compact viewport or reduced-motion support missing');
-if(!menu.includes('20261012-radio-v5-balanced-panel')) failures.push('menu: floating radio assets need the current balanced-panel cache version');
+const floatVersions=[...menu.matchAll(/aktual-media-radio-float-v1\.(?:css|js)\?v=([A-Za-z0-9._-]+)/g)].map(m=>m[1]);
+if(floatVersions.length<2||new Set(floatVersions).size!==1||!/^2026/.test(floatVersions[0]||'')) failures.push('menu: floating radio assets need the current balanced-panel cache version');
 if(!read(files.playerCss).includes('.rp-shell')) failures.push('player CSS: shell missing');
 
 console.log(JSON.stringify({version:'AKTUAL_MEDIA_RADIO_PERSISTENT_V1',files:Object.keys(files).length,failures},null,2));
