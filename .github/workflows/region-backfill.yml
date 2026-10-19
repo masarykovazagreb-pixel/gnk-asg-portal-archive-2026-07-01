@@ -9,6 +9,12 @@ name: REGION — punjenje arhive (ručno)
 # Može se pokrenuti i nad granom (push ide na granu iz koje je pokrenut).
 
 on:
+  # Ručni marker: push datoteke .github/region-backfill-trigger pokreće punjenje.
+  # (Novi workflowi na grani ne mogu se pokrenuti preko workflow_dispatch dok ne
+  # uđu u main, a push trigger radi i na grani.)
+  push:
+    paths:
+      - '.github/region-backfill-trigger'
   workflow_dispatch:
     inputs:
       channel:
