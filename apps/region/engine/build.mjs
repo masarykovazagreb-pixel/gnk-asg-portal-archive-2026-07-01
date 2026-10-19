@@ -304,7 +304,7 @@ function footer(channel, strings, extra = '') {
   const tiles = [...others, channel].map((c) => `<li class="xf-tile"><a href="${c.base}" rel="external noopener">
       <img src="/assets/izdanja/${c.id}-tile.webp" alt="${esc(c.title)} — ${esc(c.country)} — otvori izdanje" width="880" height="587" loading="lazy" decoding="async">
     </a></li>`).join('');
-  const desks = [['sport', 'Sport'], ['politika', 'Politika'], ['sigurnost', 'Sigurnost'], ['biznis', 'Business'], ['tehnologija', 'Tehnologija'], ['moda', 'Moda']]
+  const desks = [['sport', 'Sport'], ['politika', 'Politika'], ['sigurnost', 'Sigurnost'], ['biznis', 'Business'], ['tehnologija', 'Tehnologija'], ['moda', 'Tjednik Mode']]
     .map(([id, label]) => `<a href="${CENTRAL}#deskovi" rel="external noopener">${esc(label)}</a>`).join('');
   return `<footer class="foot">
   <section class="xf" aria-label="Ostala izdanja AKTUAL MEDIA">

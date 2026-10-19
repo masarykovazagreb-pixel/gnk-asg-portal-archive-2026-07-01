@@ -132,7 +132,7 @@ const DESKS = {
     hashtags: ['#Tehnologija', '#UmjetnaInteligencija', '#Platforme', '#AktualMedia', '#GNKASG']
   },
   moda: {
-    name: 'MODA — AKTUAL MEDIA',
+    name: 'TJEDNIK MODE — AKTUAL MEDIA',
     title: 'Modni desk: stil, dizajn i brendovi regije',
     lang: 'hr',
     theme: 'drustvo',

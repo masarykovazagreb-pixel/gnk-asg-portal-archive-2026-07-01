@@ -54,7 +54,7 @@ const DESK_ALT = {
   sigurnost: 'Sigurnost — desk AKTUAL MEDIA: obavještajne teme, kibernetika i preuzimanja. Klik otvara sigurnosni desk.',
   biznis: 'Business — desk AKTUAL MEDIA: tržišta, bilance i kapital iz osam zemalja. Klik otvara business desk.',
   tehnologija: 'Tehnologija — desk AKTUAL MEDIA: umjetna inteligencija, platforme i podatkovni centri. Klik otvara tehnološki desk.',
-  moda: 'Moda — desk AKTUAL MEDIA: kolekcije, brendovi i poslovni modeli iza njih. Klik otvara modni desk.'
+  moda: 'Tjednik Mode — desk AKTUAL MEDIA: kolekcije, brendovi i poslovni modeli iza njih. Klik otvara modni desk.'
 };
 
 const HASHTAGS = [

@@ -52,7 +52,7 @@ const DESK = [
   { id: 'sigurnost', title: 'SIGURNOST', kicker: 'DESK · KIBERNETIKA I PREUZIMANJA', line: 'Obavještajne teme, incidenti i spajanja tvrtki.', cta: 'Klik → otvara se sigurnosni desk' },
   { id: 'biznis', title: 'BUSINESS', kicker: 'DESK · TRŽIŠTA I BILANCE', line: 'Tržišta, bilance i kapital iz osam zemalja regije.', cta: 'Klik → otvara se business desk' },
   { id: 'tehnologija', title: 'TEHNOLOGIJA', kicker: 'DESK · AI I INFRASTRUKTURA', line: 'Umjetna inteligencija, platforme i podatkovni centri.', cta: 'Klik → otvara se tehnološki desk' },
-  { id: 'moda', title: 'MODA', kicker: 'DESK · STIL I DIZAJN', line: 'Kolekcije, brendovi i poslovni modeli iza njih.', cta: 'Klik → otvara se modni desk' }
+  { id: 'moda', title: 'TJEDNIK MODE', kicker: 'DESK · STIL I DIZAJN', line: 'Kolekcije, brendovi i poslovni modeli iza njih.', cta: 'Klik → otvara se modni desk' }
 ];
 
 const run = (args) => execFileSync('convert', args, { stdio: 'pipe' });
