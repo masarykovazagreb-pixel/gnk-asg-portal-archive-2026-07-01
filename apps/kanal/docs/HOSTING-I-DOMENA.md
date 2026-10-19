@@ -18,8 +18,10 @@ Workflow `.github/workflows/kanal-pages.yml` gradi `apps/kanal/site` i objavljuj
 Trigger je samo promjena u `apps/kanal/**` ili ručno pokretanje — ne dira portal ni
 Cloudflare deploy.
 
-**Prvo uključivanje (jednom):** GitHub → repo → *Settings → Pages → Build and deployment →
-Source: GitHub Actions*. Zatim se workflow pokreće sam ili ručno:
+**Prvo uključivanje (jednom, potrebna je administratorska ovlast na repou):**
+GitHub → repo → *Settings → Pages → Build and deployment → Source: **GitHub Actions***.
+API to ne može sam uključiti jer integracijski token nema admin pravo (`403`), pa je
+potreban jedan klik u sučelju. Nakon toga se workflow pokreće sam ili ručno:
 
 ```bash
 gh workflow run kanal-pages.yml
@@ -76,6 +78,13 @@ Društvo već posjeduje `gnk-asg.hr`. Poddomena je besplatna i profesionalna:
 
 Prednost prema GitHub Pagesu: neograničen promet i bolji cache. Nedostatak: dodatni
 račun i build minuta.
+
+## 3b. Cloudflare Pages — Direct Upload (bez Git integracije)
+
+Ako ne želite povezivati repozitorij: *Workers & Pages → Create → Pages → Upload assets*
+i prevucite sadržaj mape `apps/kanal/site`. Dobijete `https://<ime>.pages.dev` odmah.
+Nedostatak: svaka izmjena je ručni upload; za automatizaciju koristite Git integraciju
+iz prethodne točke.
 
 ## 4. Alternative (ako zatreba)
 
