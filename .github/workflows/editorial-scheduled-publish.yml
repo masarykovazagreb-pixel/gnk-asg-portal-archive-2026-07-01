@@ -80,9 +80,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if ! command -v convert >/dev/null 2>&1; then
+          if ! command -v convert >/dev/null 2>&1 || ! command -v rsvg-convert >/dev/null 2>&1; then
             sudo apt-get update -qq
-            sudo apt-get install -y --no-install-recommends imagemagick fonts-dejavu-core
+            sudo apt-get install -y --no-install-recommends imagemagick fonts-dejavu-core librsvg2-bin
           fi
           convert -version
           convert -size 8x8 xc:white "$RUNNER_TEMP/aktual-webp-functional-check.webp"
