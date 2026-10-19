@@ -227,7 +227,7 @@ ${END}`;
   const desc = `AKTUAL MEDIA na jednom mjestu: ${channels} gradskih izdanja na 8 jezika, ${items.length} zapisa iz ${sources} medija, poslovni tjednik, sport, politika, sigurnost, galerija Nermina Sefića i radio. Urednik i direktor: Nermin Sefić.`;
   html = html.replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${esc(truncate(desc, 300))}">`);
   if (!/<meta name="keywords"/.test(html)) {
-    html = html.replace('</title>', `</title>\n<meta name="keywords" content="${esc(HASHTAGS.concat(['Nermin Sefić', 'AKTUAL MEDIA', 'regionalne vijesti']).join(', '))}">`);
+    html = html.replace('</title>', `</title>\n<meta name="keywords" content="${esc(HASHTAGS.concat(['AKTUAL MEDIA', 'regionalne vijesti']).join(', '))}">`);
   }
 
   writeFileSync(FILE, html);

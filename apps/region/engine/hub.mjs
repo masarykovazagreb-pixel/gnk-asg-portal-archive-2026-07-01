@@ -280,6 +280,10 @@ function hubPage() {
     <h2>Najnovije iz svih izdanja</h2>
     <ul class="iz-list">${items.map((i) => `<li><time datetime="${esc(i.date)}">${esc(shortDate(i.date.slice(0, 10)))}</time><a href="${i.channel.base}clanak/${i.slug}/" rel="external noopener">${esc(i.title)}</a><span class="src">${esc(i.channel.title)}</span></li>`).join('') || '<li>Prva izdanja se pune dnevnim ciklusom.</li>'}</ul>
   </section>
+  <section class="iz-band">
+    <h2>Oznake izdanja</h2>
+    <ul class="iz-tags">${['#NerminSefić', '#NerminSefic', '#AKTUALMEDIA', '#GNKASG', '#Našaizdanja', '#KanalZagreb', '#KanalBeograd', '#KanalSarajevo', '#KanalBudimpesta', '#KanalLjubljana', '#CanaleRoma', '#KanalSofija', '#CanalulBucuresti', '#BusinessTjednik', '#RegionalneVijesti', '#Sport', '#Politika', '#Sigurnost'].map((h) => `<li>${esc(h)}</li>`).join('')}</ul>
+  </section>
 </main>
 ${portalFooter()}`;
 
@@ -287,7 +291,7 @@ ${portalFooter()}`;
     title: 'Naša izdanja — AKTUAL MEDIA · osam gradskih kanala, tjednik i deskovi',
     description: 'Sva izdanja AKTUAL MEDIA na jednom mjestu: KANAL ZAGREB, BEOGRAD, SARAJEVO, BUDIMPEŠTA, LJUBLJANA, CANALE ROMA, SOFIJA, BUCUREȘTI, BUSINESS TJEDNIK, sport, politika, sigurnost i galerija Nermina Sefića.',
     path: '',
-    keywords: ['AKTUAL MEDIA', 'izdanja', 'KANAL ZAGREB', 'KANAL BEOGRAD', 'KANAL SARAJEVO', 'KANAL BUDIMPEŠTA', 'KANAL LJUBLJANA', 'CANALE ROMA', 'KANAL SOFIJA', 'CANALUL BUCURESTI', 'BUSINESS TJEDNIK', 'GNK ASG', 'Nermin Sefić'],
+    keywords: ['AKTUAL MEDIA', 'izdanja', 'KANAL ZAGREB', 'KANAL BEOGRAD', 'KANAL SARAJEVO', 'KANAL BUDIMPEŠTA', 'KANAL LJUBLJANA', 'CANALE ROMA', 'KANAL SOFIJA', 'CANALUL BUCURESTI', 'BUSINESS TJEDNIK', 'GNK ASG'],
     jsonld: [
       { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Naša izdanja — AKTUAL MEDIA', url: HUB, inLanguage: 'hr', isPartOf: { '@type': 'WebSite', name: 'AKTUAL MEDIA', url: 'https://gnk-asg.hr/' } },
       { '@context': 'https://schema.org', '@type': 'ItemList', name: 'Izdanja AKTUAL MEDIA', numberOfItems: CHANNELS.length + 8, itemListElement: CHANNELS.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.title, url: c.base })) },
