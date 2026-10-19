@@ -7,8 +7,11 @@
       "name": "Lider",
       "home": "https://lidermedia.hr/",
       "kind": "html",
-      "pages": ["https://lidermedia.hr/", "https://lidermedia.hr/najnovije"],
-      "cap": 8
+      "pages": [
+        "https://lidermedia.hr/",
+        "https://lidermedia.hr/najnovije"
+      ],
+      "cap": 10
     },
     {
       "id": "jutarnji",
@@ -16,7 +19,7 @@
       "home": "https://www.jutarnji.hr/novac/",
       "kind": "rss",
       "feed": "https://www.jutarnji.hr/novac/feed",
-      "cap": 8
+      "cap": 12
     },
     {
       "id": "poslovni",
@@ -24,7 +27,7 @@
       "home": "https://www.poslovni.hr/",
       "kind": "rss",
       "feed": "https://www.poslovni.hr/feed/",
-      "cap": 8
+      "cap": 12
     },
     {
       "id": "forbes",
@@ -32,9 +35,55 @@
       "home": "https://www.forbes.com/business/",
       "kind": "rss",
       "feed": "https://www.forbes.com/business/feed/",
-      "cap": 6,
-      "includeCategories": ["business", "markets", "retail", "tech", "ai", "money", "leadership", "entrepreneur", "energy", "health", "finance", "economy"],
-      "excludeCategories": ["sportsmoney", "gaming", "hollywood", "media"]
+      "cap": 8,
+      "includeCategories": [
+        "business",
+        "markets",
+        "retail",
+        "tech",
+        "ai",
+        "money",
+        "leadership",
+        "entrepreneur",
+        "energy",
+        "health",
+        "finance",
+        "economy"
+      ],
+      "excludeCategories": [
+        "sportsmoney",
+        "gaming",
+        "hollywood",
+        "media"
+      ],
+      "excludeTitleWords": [
+        "trump",
+        "midterm",
+        "senate",
+        "election",
+        "poll",
+        "judge",
+        "court",
+        "white house",
+        "congress",
+        "nfl",
+        "nba",
+        "suns",
+        "imdb",
+        "movie",
+        "film",
+        "bigfoot",
+        "gaming",
+        "episode",
+        "season",
+        "box office",
+        "olympic",
+        "coach",
+        "player",
+        "hollywood",
+        "celebrity",
+        "streaming"
+      ]
     }
   ]
 }

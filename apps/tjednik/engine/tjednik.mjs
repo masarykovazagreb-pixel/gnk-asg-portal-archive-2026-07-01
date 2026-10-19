@@ -133,9 +133,9 @@ const LIDER_SECTIONS = new Set([
 
 function parseLider(html) {
   const found = new Map();
-  const re = /<a[^>]+href=["'](https:\/\/lidermedia\.hr\/[a-z0-9-]+\/[a-z0-9-]+\/)["'][^>]*>([\s\S]*?)<\/a>/gi;
+  const re = /<a[^>]+href=["']((?:https:\/\/lidermedia\.hr)?\/[a-z0-9-]+\/[a-z0-9-]+\/)["'][^>]*>([\s\S]*?)<\/a>/gi;
   for (const m of html.matchAll(re)) {
-    const url = normalizeUrl(m[1]);
+    const url = normalizeUrl(new URL(m[1], 'https://lidermedia.hr').toString());
     const section = new URL(url).pathname.split('/').filter(Boolean)[0];
     if (!LIDER_SECTIONS.has(section)) continue;
     const title = stripTags(m[2]).replace(/\s*\\\s*$/, '').trim();
@@ -167,6 +167,8 @@ function keepFor(source, item) {
     const joined = cats.join(' ');
     if ((source.excludeCategories || []).some((x) => joined.includes(x))) return false;
     if (!(source.includeCategories || []).some((x) => joined.includes(x))) return false;
+    const text = `${item.title} ${item.summary}`.toLowerCase();
+    if ((source.excludeTitleWords || []).some((w) => text.includes(w))) return false;
   }
   if (!item.summary && source.id !== 'lider') item.summary = '';
   return true;
