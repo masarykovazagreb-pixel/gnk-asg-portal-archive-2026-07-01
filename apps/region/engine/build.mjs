@@ -155,7 +155,7 @@ function mravinjakPage(channel, strings, data) {
   }
   const chips = [...themeCount.entries()]
     .sort((a, b) => b[1] - a[1])
-    .map(([id, n]) => `<span class="chip">${esc(strings.themeNames[id] || id)} <strong>${n}</strong></span>`).join('');
+    .map(([id, n]) => `<a class="chip" href="../tema/${id}/">${esc(strings.themeNames[id] || id)} <strong>${n}</strong></a>`).join('');
 
   const body = `${header(channel, strings, 'mravinjak/', '../')}
 <main id="sadrzaj" class="page">
@@ -165,7 +165,7 @@ function mravinjakPage(channel, strings, data) {
   <p class="chips">${chips}</p>
   <section class="mrv mrv--page">
     <div class="mrv-head"><h2>${esc(m.title)} <span>· ${items.length}</span></h2><span class="mrv-count">${esc(channel.country)} · ${esc(channel.lang)}</span></div>
-    <div class="mrv-cols">${anthillList(channel, strings, items, { root: '../' })}</div>
+    <div class="mrv-cols">${anthillList(channel, strings, anthill(items, items.length), { root: '../' })}</div>
     <div class="mrv-foot">
       <a href="../">← ${esc(channel.title)}</a>
       <a href="https://gnk-asg.hr/gnk-aktual/#mravinjak" rel="external noopener">${esc(m.cross)} ↗</a>
@@ -639,7 +639,7 @@ ${i.tags.map((tg) => `<category>${esc(tg)}</category>`).join('\n')}
 
   writeFileSync(join(dir, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${url(channel, 'sitemap.xml')}\n`);
 
-  writeFileSync(join(dir, 'llms.txt'), `# ${channel.title}\n\n> ${strings.aboutText}\n\nIzdavač: AKTUAL MEDIA d.o.o. · Urednik: Nermin Sefić · Direktor: Nermin Sefić · Kontakt: ${CONTACT}\nJezik: ${channel.lang} · Zemlja: ${channel.country} · Grad: ${channel.city}\nStatus: automatski sastavljeni osvrti na način izvještavanja; izvornici su povezani.\n\n## Izvori\n${channel.sources.map((s) => `- ${s.name}`).join('\n')}\n\n## Stranice\n- ${channel.base}\n- ${url(channel, 'izvori/')}\n- ${url(channel, 'metodologija/')}\n- ${url(channel, 'feed.json')}\n- ${url(channel, 'sitemap.xml')}\n- ${HUB}\n`);
+  writeFileSync(join(dir, 'llms.txt'), `# ${channel.title}\n\n> ${strings.aboutText}\n\nIzdavač: AKTUAL MEDIA d.o.o. · Urednik: Nermin Sefić · Direktor: Nermin Sefić · Kontakt: ${CONTACT}\nJezik: ${channel.lang} · Zemlja: ${channel.country} · Grad: ${channel.city}\nStatus: automatski sastavljeni osvrti na način izvještavanja; izvornici su povezani.\n\n## Izvori\n${channel.sources.map((s) => `- ${s.name}`).join('\n')}\n\n## Stranice\n- ${channel.base}\n- ${url(channel, 'mravinjak/')}\n- ${url(channel, 'izvori/')}\n- ${url(channel, 'metodologija/')}\n- ${url(channel, 'feed.json')}\n- ${url(channel, 'sitemap.xml')}\n- ${HUB}\n`);
 }
 
 function writeSitemap(channel, data) {
