@@ -33,7 +33,7 @@ const flag = (name) => process.argv.includes(name);
 const TARGET = Number(arg('--target', '320'));
 const STORE = Math.max(TARGET, Number(arg('--store', '420')));
 const DAYS = Number(arg('--days', '400'));
-const MAX_PAGES = Number(arg('--max-pages', '6'));
+const MAX_PAGES = Number(arg('--max-pages', '10'));
 const ONLY = arg('--channel', '');
 const NO_BUILD = flag('--no-build');
 const PAUSE = Number(arg('--pause', '180'));
@@ -139,7 +139,7 @@ const xmlText = (node, tag) => {
   return m ? clean(m[1].replace(/<!\[CDATA\[|\]\]>/g, '')) : '';
 };
 
-async function readSitemap(source) {
+async function readSitemap(source, seeds = []) {
   const origin = originOf((source.urls || [])[0] || '');
   if (!origin) return { items: [], errors: [] };
   const items = [];
@@ -147,6 +147,7 @@ async function readSitemap(source) {
   const candidates = ['/sitemap.xml', '/sitemap_index.xml', '/news-sitemap.xml', '/sitemap-news.xml'];
   const queue = [];
   for (const path of candidates) queue.push(`${origin}${path}`);
+  for (const href of seeds) if (href && !queue.includes(href)) queue.push(href);
 
   while (queue.length && items.length < 400) {
     const href = queue.shift();
@@ -157,7 +158,7 @@ async function readSitemap(source) {
       if (indexes.length) {
         const locs = indexes.map((n) => xmlText(n, 'loc')).filter(Boolean);
         const newsy = locs.filter((u) => /news|post|article|clanak|vesti|vijesti/i.test(u));
-        for (const loc of (newsy.length ? newsy : locs).slice(0, 8)) queue.push(loc);
+        for (const loc of (newsy.length ? newsy : locs).slice(0, 16)) queue.push(loc);
       }
       for (const node of xmlBlocks(xml, 'url')) {
         const loc = xmlText(node, 'loc');
@@ -175,15 +176,57 @@ async function readSitemap(source) {
   return { items, errors };
 }
 
+
+/* Otkrivanje feedova i sitemapa iz same stranice: <link rel=alternate> i robots.txt. */
+async function discover(source) {
+  const origin = originOf((source.urls || [])[0] || '');
+  if (!origin) return { feeds: [], sitemaps: [] };
+  const feeds = [];
+  const sitemaps = [];
+  try {
+    const html = await fetchText(`${origin}/`, { timeout: 15000, tries: 1 });
+    const links = html.match(/<link\b[^>]*>/gi) || [];
+    for (const tag of links) {
+      if (!/application\/(rss|atom)\+xml/i.test(tag)) continue;
+      const href = (tag.match(/href=["']([^"']+)["']/i) || [])[1];
+      if (!href) continue;
+      const abs = href.startsWith('http') ? href : new URL(href, `${origin}/`).toString();
+      if (!feeds.includes(abs)) feeds.push(abs);
+    }
+    const sm = html.match(/https?:\/\/[^"'\s<>]+sitemap[^"'\s<>]*\.xml/gi) || [];
+    for (const href of sm.slice(0, 4)) if (!sitemaps.includes(href)) sitemaps.push(href);
+  } catch (error) {
+    // stranica može blokirati botove; nastavljamo s poznatim feedovima
+  }
+  try {
+    const robots = await fetchText(`${origin}/robots.txt`, { timeout: 10000, tries: 1 });
+    const re = /^sitemap:\s*(\S+)$/gim;
+    let m;
+    while ((m = re.exec(robots))) if (!sitemaps.includes(m[1])) sitemaps.push(m[1]);
+  } catch (error) {
+    // robots.txt nije obavezan
+  }
+  return { feeds: feeds.slice(0, 6), sitemaps: sitemaps.slice(0, 4) };
+}
+
 async function harvestSource(channel, source, budget) {
   const wp = await readWordPress(source, budget);
   const feed = await readFeedPages(source);
   let items = [...wp.items, ...feed.items];
   let errors = [...wp.errors, ...feed.errors];
-  if (items.length < Math.min(budget, 40)) {
-    const map = await readSitemap(source);
-    items = items.concat(map.items);
-    errors = errors.concat(map.errors);
+  if (items.length < Math.min(budget, 80)) {
+    const found = await discover(source);
+    if (found.feeds.length) {
+      const extra = await readFeedPages({ ...source, urls: found.feeds });
+      items = items.concat(extra.items);
+      errors = errors.concat(extra.errors);
+      await sleep(PAUSE);
+    }
+    if (items.length < Math.min(budget, 60)) {
+      const map = await readSitemap(source, found.sitemaps);
+      items = items.concat(map.items);
+      errors = errors.concat(map.errors);
+    }
   }
   return { items, errors };
 }
