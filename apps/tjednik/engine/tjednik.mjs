@@ -169,6 +169,7 @@ function keepFor(source, item) {
     if (!(source.includeCategories || []).some((x) => joined.includes(x))) return false;
     const text = `${item.title} ${item.summary}`.toLowerCase();
     if ((source.excludeTitleWords || []).some((w) => text.includes(w))) return false;
+    if ((source.requireAnyWord || []).length && !source.requireAnyWord.some((w) => text.includes(w))) return false;
   }
   if (!item.summary && source.id !== 'lider') item.summary = '';
   return true;
