@@ -1,0 +1,40 @@
+name: AKTUAL AI Governance Candidate Gate
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/data/editorial-plan/20261019-roto-apfel-commentary.json'
+      - 'apps/portal/data/editorial-plan/review/20261019-roto-apfel-ai-governance.json'
+      - 'scripts/check-ai-act-governance-v1.mjs'
+      - '.github/workflows/aktual-ai-governance-candidate-gate.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  candidate-governance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Fail closed on AI governance violations
+        run: |
+          node scripts/check-ai-act-governance-v1.mjs --candidate apps/portal/data/editorial-plan/review/20261019-roto-apfel-ai-governance.json --as-of 2026-10-19 --strict
+      - name: Check disclosure matches publishable editorial source
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import assert from 'node:assert/strict';
+          const candidate = JSON.parse(fs.readFileSync('apps/portal/data/editorial-plan/review/20261019-roto-apfel-ai-governance.json','utf8'));
+          const items = JSON.parse(fs.readFileSync('apps/portal/data/editorial-plan/20261019-roto-apfel-commentary.json','utf8'));
+          assert.equal(items.length,1);
+          assert.equal(items[0].title,candidate.title);
+          assert.deepEqual(items[0].aiGovernance,candidate.aiGovernance);
+          assert.equal(items[0].aiGovernance.usedAI,true);
+          assert.equal(items[0].aiGovernance.humanEditorialReview.substantive,false);
+          assert.ok(items[0].paragraphs.some(p=>p.includes(candidate.aiGovernance.disclosure.text)));
+          console.log('AKTUAL AI governance record and visible disclosure consistent.');
+          NODE
