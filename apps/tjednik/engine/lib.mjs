@@ -85,7 +85,7 @@ export const weekRangeLabel = (key) => {
   const end = new Date(start);
   end.setUTCDate(start.getUTCDate() + 6);
   const f = (d) => d.toLocaleDateString('hr-HR', { timeZone: 'UTC', day: 'numeric', month: 'numeric' });
-  return `${f(start)} – ${f(end)}. ${end.getUTCFullYear()}.`;
+  return `${f(start)} – ${f(end)} ${end.getUTCFullYear()}.`;
 };
 
 export const prevWeekKey = (key) => {
