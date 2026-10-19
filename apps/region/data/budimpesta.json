@@ -4,7 +4,7 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-10-19T21:02:39.822Z",
+  "updatedAt": "2026-10-19T21:10:00.156Z",
   "sources": [
     {
       "id": "telex",
@@ -15,10 +15,10 @@
       "errors": [
         "wp:1: HTTP 403",
         "https://telex.hu/rss#1: HTTP 403",
-        "https://telex.hu/sitemap.xml: HTTP 403",
-        "https://telex.hu/sitemap_index.xml: HTTP 403"
+        "https://telex.hu/rss/belfold#1: HTTP 403",
+        "https://telex.hu/rss/kulfold#1: HTTP 403"
       ],
-      "checkedAt": "2026-10-19T21:02:19.311Z"
+      "checkedAt": "2026-10-19T21:09:15.775Z"
     },
     {
       "id": "444",
@@ -32,7 +32,7 @@
         "https://444.hu/sitemap.xml: HTTP 404",
         "https://444.hu/sitemap_index.xml: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:02:30.244Z"
+      "checkedAt": "2026-10-19T21:09:25.250Z"
     },
     {
       "id": "hvg",
@@ -43,7 +43,7 @@
       "errors": [
         "wp:1: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:02:35.108Z"
+      "checkedAt": "2026-10-19T21:09:30.685Z"
     },
     {
       "id": "portfolio",
@@ -54,7 +54,41 @@
       "errors": [
         "wp:1: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:02:39.822Z"
+      "checkedAt": "2026-10-19T21:09:36.060Z"
+    },
+    {
+      "id": "index",
+      "name": "Index.hu",
+      "url": "https://index.hu/rss",
+      "ok": true,
+      "fetched": 51,
+      "errors": [
+        "wp:1: HTTP 404",
+        "https://index.hu/rss#1: HTTP 404"
+      ],
+      "checkedAt": "2026-10-19T21:09:46.716Z"
+    },
+    {
+      "id": "24hu",
+      "name": "24.hu",
+      "url": "https://24.hu/feed/",
+      "ok": true,
+      "fetched": 10,
+      "errors": [
+        "wp:1: HTTP 401"
+      ],
+      "checkedAt": "2026-10-19T21:09:49.235Z"
+    },
+    {
+      "id": "mandiner",
+      "name": "Mandiner",
+      "url": "https://mandiner.hu/rss",
+      "ok": true,
+      "fetched": 50,
+      "errors": [
+        "wp:1: HTTP 404"
+      ],
+      "checkedAt": "2026-10-19T21:10:00.156Z"
     }
   ],
   "items": [
@@ -142,6 +176,22 @@
       "backfilled": true
     },
     {
+      "slug": "budimpesta-2026-10-19-index-megszolalt-az-alarcos-enekesrol-kovi-9ef34d",
+      "title": "Megszólalt az Álarcos Énekesről Kovi, elárulta, szerepelne-e még hasonló műsorban",
+      "summary": "",
+      "date": "2026-10-19T20:04:11.000Z",
+      "url": "https://index.hu/mindekozben/poszt/2026/10/19/kovi-alarcos-enekes-pingvin-rtl/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Mindeközben"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.713Z",
+      "backfilled": true
+    },
+    {
       "slug": "budimpesta-2026-10-19-portfolio-45-milliard-dollaros-ugyletrol-targyal-az-235641",
       "title": "45 milliárd dolláros ügyletről tárgyal az Nscale AI-felhőszolgáltató és az Anthropic",
       "summary": "Mintegy 45 milliárd dolláros kapacitásbérleti megállapodásról tárgyal az Nscale mesterségesintelligencia-felhőszolgáltató és az Anthropic - írta meg a Bloomberg. A megállapodás megalapozhatja az Nscale közelgő tőzsdei bevezetését is.",
@@ -155,6 +205,44 @@
       "author": "",
       "theme": "ai",
       "addedAt": "2026-10-19T20:53:39.960Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-24hu-europai-elfogatoparancs-a-ket-nemet-fiatal-3041df",
+      "title": "Európai elfogatóparancs a két német fiatal ellen, akiket a bulgáriai Starlink-állomás felgyújtásával gyanúsítanak",
+      "summary": "A bolgár nemzetbiztonsági szolgálat szerint tűzeset szabotázsakció volt. The post Európai elfogatóparancs a két német fiatal ellen, akiket a bulgáriai Starlink-állomás felgyújtásával gyanúsítanak first appeared on 24.hu .",
+      "date": "2026-10-19T19:57:12.000Z",
+      "url": "https://24.hu/kulfold/2026/10/19/europai-elfogatoparancs-nemet-fiatalok-bulgariai-starlink-allomas-felgyujtasa/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Nagyvilág",
+        "bulgária",
+        "starlink",
+        "gyújtogatás"
+      ],
+      "author": "Spirk József",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:09:49.235Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-24hu-lezuhant-egy-robbanoszerrel-felszerelt-9e6ced",
+      "title": "Lezuhant egy robbanószerrel felszerelt ukrán drón Litvániában",
+      "summary": "Az ukránok szerint az oroszok térítették el a drónt. The post Lezuhant egy robbanószerrel felszerelt ukrán drón Litvániában first appeared on 24.hu .",
+      "date": "2026-10-19T19:45:29.000Z",
+      "url": "https://24.hu/kulfold/2026/10/19/dron-lezuhant-litvania-haboru/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Nagyvilág",
+        "orosz-ukrán háború",
+        "drón",
+        "litvánia"
+      ],
+      "author": "Papp Atilla",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:09:49.235Z",
       "backfilled": true
     },
     {
@@ -228,6 +316,94 @@
       "backfilled": true
     },
     {
+      "slug": "budimpesta-2026-10-19-index-meghalt-justin-bieber-exbaratnoje-08a4de",
+      "title": "Meghalt Justin Bieber exbarátnője",
+      "summary": "A modell, fürdőruha-tervező Sahara Ray 34 éves volt.",
+      "date": "2026-10-19T19:19:00.000Z",
+      "url": "https://index.hu/fomo/2026/10/19/meghalt-sahara-ray-justin-bieber-exbaratno-modell/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Fomo",
+        "Hirdetés és disclaimer mentes"
+      ],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:09:46.713Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-magyar-peter-tobb-mint-ketoras-beszede-12-c6a6ec",
+      "title": "Magyar Péter több mint kétórás beszéde 12 percben – ezek voltak a legfontosabb bejelentések",
+      "summary": "Wekerle Plusz, 9 százalékos szja, béremelés.",
+      "date": "2026-10-19T19:18:00.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/koltsegvettes-magyar-peter-parlament/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld",
+        "Belföld",
+        "Parlament"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.713Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-24hu-inognak-meszaros-lorinc-cegei-a-birodalmi-84027f",
+      "title": "Inognak Mészáros Lőrinc cégei, a birodalmi repülőgép viszont Hawaii-körútra ment",
+      "summary": "Idén másodszor. The post Inognak Mészáros Lőrinc cégei, a birodalmi repülőgép viszont Hawaii-körútra ment first appeared on 24.hu .",
+      "date": "2026-10-19T19:13:48.000Z",
+      "url": "https://24.hu/belfold/2026/10/19/meszaros-lorinc-oe-lad-repulogep-hawaii-korut/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "mészáros lőrinc",
+        "oe-lad",
+        "hawaii"
+      ],
+      "author": "Spirk József",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:09:49.235Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-24hu-a-nap-legfontosabb-hirei-2026-oktober-19-409b4c",
+      "title": "A nap legfontosabb hírei – 2026. október 19.",
+      "summary": "Magyar Péter bemutatta a jövő évi költségvetést, Macron helyett Von der Leyen jön Budapestre. The post A nap legfontosabb hírei – 2026. október 19. first appeared on 24.hu .",
+      "date": "2026-10-19T19:10:24.000Z",
+      "url": "https://24.hu/belfold/2026/10/19/a-nap-legfontosabb-hirei-2026-oktober-19/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "a nap legfontosabb hírei",
+        "hírösszefoglaló"
+      ],
+      "author": "Papp Atilla",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:49.235Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-elszolta-magat-az-egyik-szereplo-ez-a-ket-ec6a8e",
+      "title": "Elszólta magát az egyik szereplő, ez a két pár maradt együtt a Házasság első látásra vége óta",
+      "summary": "",
+      "date": "2026-10-19T19:08:12.000Z",
+      "url": "https://index.hu/mindekozben/poszt/2026/10/19/elszolta-magat-az-egyik-szereplo-ez-a-ket-par-maradt-egyutt-a-hazassag-elso-latasra-vege-ota/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Mindeközben"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.713Z",
+      "backfilled": true
+    },
+    {
       "slug": "budimpesta-2026-10-19-hvg-a-kozgyujtemenyi-dolgozok-arculcsapasa-a-10-43d1b0",
       "title": "A közgyűjteményi dolgozók arculcsapása a 10,7 százalékos béremelés a szakszervezet szerint",
       "summary": "A közgyűjteményi dolgozókat külön felháborította, hogy Magyar Péter beszédjéből úgy lehetett érteni, hogy a 10,7 százalékos kiigazításba beszámít majd az adócsökkentés is, de Tarr Zoltán szerint ezek különálló tételek, amelyek összeadódva javítják majd az ágazati dolgozók helyzetét. Ebben bíznak a dolgozók is.",
@@ -247,6 +423,25 @@
       "backfilled": true
     },
     {
+      "slug": "budimpesta-2026-10-19-24hu-ronaldo-fel-perc-alatt-megkeresi-az-b4db64",
+      "title": "Ronaldo fél perc alatt megkeresi az összeget, amire a válogatott elhagyásáért megbüntették",
+      "summary": "Jól odapörköltek neki. The post Ronaldo fél perc alatt megkeresi az összeget, amire a válogatott elhagyásáért megbüntették first appeared on 24.hu .",
+      "date": "2026-10-19T19:06:51.000Z",
+      "url": "https://24.hu/sport/foci/2026/10/19/cristiano-ronaldo-penzbuntetes-eltiltas-portugal-valogatott/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Foci",
+        "cristiano ronaldo",
+        "portugália",
+        "portugál válogatott"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:49.235Z",
+      "backfilled": true
+    },
+    {
       "slug": "budimpesta-2026-10-19-portfolio-megvan-a-2027-es-hianycel-mutatjuk-hogy-bb03f5",
       "title": "Megvan a 2027-es hiánycél - Mutatjuk, hogy reagál a forint",
       "summary": "Erősödéssel reagált a forint a 2027-es költségvetési terv bemutatására, amelyet Magyar Péter miniszterelnök ismertetett a parlamentben. A miniszterelnök számos adócsökkentést és pluszforrást jelentett be, melyek fedezetét az állami kiadások visszafogásából és egyes adótételek emeléséből teremtik elő. A költségvetési hiány így várhatóan a GDP 4,9 százalékát teszi ki 2027-ben.",
@@ -260,6 +455,22 @@
       "author": "",
       "theme": "politika",
       "addedAt": "2026-10-19T20:53:39.960Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-rajtunk-kivul-senki-mas-nem-mentett-volna-345427",
+      "title": "„Rajtunk kívül senki más nem mentett volna meg” – születésnapi ajándéknak indult, kétórás barlangi mentés lett a vége",
+      "summary": "Egy 30 éves nőt mentettek ki a magyar barlangi mentők 35 méterrel a felszín alól, 28 önkéntessel.",
+      "date": "2026-10-19T19:04:00.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/barlangi-mentes-szuletesnap-magyar-barlang-mentok-mentes-onkentes-baleset/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.714Z",
       "backfilled": true
     },
     {
@@ -279,6 +490,22 @@
       "author": "Benics Márk",
       "theme": "ai",
       "addedAt": "2026-10-19T20:53:32.669Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-kiszoritanak-az-europai-autokat-parizsban-c9313e",
+      "title": "Kiszorítanák az európai autókat? Párizsban kérdeztük a kínai terjeszkedés egyik vezetőjét",
+      "summary": "Európa vámfalat húzott, a kínaiak már a falon belül építkeznek.",
+      "date": "2026-10-19T18:50:00.000Z",
+      "url": "https://index.hu/gazdasag/2026/10/19/parizs-parizsi-autoszalon-auto-autoipar-jarmuipar-autogyartas-kinai-auto-europai-autoipar-omoda-jaecoo/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:09:46.714Z",
       "backfilled": true
     },
     {
@@ -387,6 +614,22 @@
       "backfilled": true
     },
     {
+      "slug": "budimpesta-2026-10-19-index-egy-keselyu-sokkolta-a-kozonseget-vasarnap-5952bc",
+      "title": "Egy keselyű sokkolta a közönséget vasárnap este a Budapest Kongresszusi Központban",
+      "summary": "Késhegyre menő licitharcok és váratlan kudarcok.",
+      "date": "2026-10-19T18:32:00.000Z",
+      "url": "https://index.hu/kultur/senkitobbet/2026/10/19/virag-judit-galeria-szazmillios-licitharc-zsolnay/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Senki többet, harmadszor"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:09:46.714Z",
+      "backfilled": true
+    },
+    {
       "slug": "budimpesta-2026-10-19-portfolio-millios-tamogatassal-ujulhatnak-meg-az-581601",
       "title": "Milliós támogatással újulhatnak meg az otthonok, országos szinten érzékelhető lehet a Wekerle Plusz hatása",
       "summary": "A ma bejelentett Wekerle Plusz program energetikai felújítási pillére fő célkitűzéseiben és alapvető konstrukciójában megfelel annak, amit a Masterplast régóta szorgalmaz – mondta a Portfolio.hu-nak Tibor Dávid, a cég elnök-vezérigazgatója. A vállalat vezetője szerint az évi 20 ezer otthon energetikai korszerűsítése már országos szinten is érzékelhető energiamegtakarítást eredményezhet, és érdemi keresletélénkülést hozhat a hazai szigetelőanyag-piacon, hosszabb távon ugyanakkor az évi 100 ezer lakóingatlan energetikai korszerűsítése lenne az ideális cél.",
@@ -400,6 +643,43 @@
       "author": "",
       "theme": "ai",
       "addedAt": "2026-10-19T20:53:39.960Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-a-legendas-magyar-iro-olyan-kegyetlenul-d9e67c",
+      "title": "A legendás magyar író olyan kegyetlenül bánt élete utolsó társával, hogy az a halált választotta",
+      "summary": "Könyvben állított neki emléket.",
+      "date": "2026-10-19T18:18:00.000Z",
+      "url": "https://index.hu/kultur/2026/10/19/pelle-janos-a-monoklis-magyarzsido-molnar-ferenc-konyv/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Kultúr",
+        "CE napi",
+        "CE femina"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.714Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-24hu-marine-le-pen-hatradol-es-ker-egy-kavet-a-ff2b5d",
+      "title": "Marine Le Pen „hátradől, és kér egy kávét” – a jobboldal profitálhat a franciaországi zavargásokból",
+      "summary": "A franciaországi tüntetések már régóta nem csak a diákokról szólnak, igaz, korábban is sejthető volt, hogy „fortyog a társadalomban valamiféle feszültség.” The post Marine Le Pen „hátradől, és kér egy kávét” – a jobboldal profitálhat a franciaországi zavargásokból first appeared on 24.hu .",
+      "date": "2026-10-19T18:10:29.000Z",
+      "url": "https://24.hu/kulfold/2026/10/19/franciaorszag-tuntetes-zavargas-marine-le-pen-elnokvalasztas-24extra/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Nagyvilág",
+        "franciaország",
+        "tüntetés",
+        "emmanuel macron"
+      ],
+      "author": "Kovács Barna",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:09:49.235Z",
       "backfilled": true
     },
     {
@@ -422,6 +702,25 @@
       "backfilled": true
     },
     {
+      "slug": "budimpesta-2026-10-19-24hu-az-osztrak-porr-nem-szandekozik-3582a8",
+      "title": "Az osztrák PORR nem szándékozik megvásárolni Mészáros Lőrinc vasutas cégét",
+      "summary": "Az építőipari cég inkább a dolgozókat és az eszközparkot venné csak át a V-Hídtól. The post Az osztrák PORR nem szándékozik megvásárolni Mészáros Lőrinc vasutas cégét first appeared on 24.hu .",
+      "date": "2026-10-19T18:09:06.000Z",
+      "url": "https://24.hu/fn/gazdasag/2026/10/19/osztrak-porr-v-hid-meszaros-lorinc/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Gazdaság",
+        "v-híd zrt.",
+        "porr",
+        "cégvásárlás"
+      ],
+      "author": "Spirk József",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:49.235Z",
+      "backfilled": true
+    },
+    {
       "slug": "budimpesta-2026-10-19-hvg-tavozik-a-cnn-legendas-ujsagiroja-96980a",
       "title": "Távozik a CNN legendás újságírója, Christiane Amanpour",
       "summary": "A riporter már az első öbölháborúból is tudósított.",
@@ -438,6 +737,22 @@
       "author": "szerzo@hvg.hu (HVG)",
       "theme": "rat",
       "addedAt": "2026-10-19T20:53:35.523Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-nem-csak-a-fodijert-kuzdott-young-g-beci-ef3cbb",
+      "title": "Nem csak a fődíjért küzdött Young G Béci, megrázó vallomást tett a Farm VIP után",
+      "summary": "",
+      "date": "2026-10-19T18:08:13.000Z",
+      "url": "https://index.hu/mindekozben/poszt/2026/10/19/farm-vip-young-g-beci-gyozelem-erre-megy-a-nyeremeny/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Mindeközben"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.714Z",
       "backfilled": true
     },
     {
@@ -495,6 +810,54 @@
       "backfilled": true
     },
     {
+      "slug": "budimpesta-2026-10-19-index-purhabbal-fujtak-ki-egy-szolnoki-ferfi-054f10",
+      "title": "Purhabbal fújták ki egy szolnoki férfi autóját – olyan „jó” munkát végeztek, hogy képtelenség bejutni a járműbe",
+      "summary": "A károsult Facebookon kér segítséget, hátha valaki látta az elkövetőt.",
+      "date": "2026-10-19T17:55:00.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/szolnok-rongalas-honda-purhab-szigetelofantom/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:09:46.714Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-torok-gabor-magyar-peter-maratoni-9bf3a5",
+      "title": "Török Gábor Magyar Péter maratoni felszólalásáról: Ezt már követni sem egyszerű",
+      "summary": "A miniszterelnök több mint két órán keresztül beszélt a 2027-es költségvetésről.",
+      "date": "2026-10-19T17:47:00.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/torok-gabor-parlament-magyar-peter-felszolalas/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:09:46.714Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-tavozik-a-cnn-tol-christiane-amanpour-a-1db1ba",
+      "title": "Távozik a CNN-től Christiane Amanpour, a csatorna legendás arca",
+      "summary": "Negyvenhárom év után búcsúzik a hírcsatornától.",
+      "date": "2026-10-19T17:39:00.000Z",
+      "url": "https://index.hu/kulfold/2026/10/19/christiane-amanpour-cnn-tavozas-tudosito-ujsagiro-riporter/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Külföld"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.714Z",
+      "backfilled": true
+    },
+    {
       "slug": "budimpesta-2026-10-19-hvg-meghalt-harom-gyerek-egy-varosi-parkra-mert-a05514",
       "title": "Meghalt három gyerek egy városi parkra mért orosz légicsapásban",
       "summary": "Összesen hatan vesztették életüket a dróntámadásban.",
@@ -544,6 +907,25 @@
       "theme": "politika",
       "addedAt": "2026-10-19T15:55:35.679Z",
       "seeded": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-24hu-karacsony-gergely-szerint-2027-a-4a9d4f",
+      "title": "Karácsony Gergely szerint 2027 a fellélegzés éve lehet az önkormányzatoknak",
+      "summary": "Esély mutatkozik arra, hogy az önkormányzatok a kormány partnerei lehessenek egy működő ország építésében a főpolgármester szerint. The post Karácsony Gergely szerint 2027 a fellélegzés éve lehet az önkormányzatoknak first appeared on 24.hu .",
+      "date": "2026-10-19T17:31:00.000Z",
+      "url": "https://24.hu/belfold/2026/10/19/karacsony-gergely-koltsegvetes-onkormanyzatok/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "karácsony gergely",
+        "2027-es költségvetés",
+        "önkormányzat"
+      ],
+      "author": "Papp Atilla",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:09:49.235Z",
+      "backfilled": true
     },
     {
       "slug": "budimpesta-2026-10-19-444-a-v4-az-orosz-energiaimport-szabalyainak-da42b1",
@@ -600,6 +982,60 @@
       "backfilled": true
     },
     {
+      "slug": "budimpesta-2026-10-19-index-hiaba-magyar-peter-bejelentese-kubatov-3e4c69",
+      "title": "Hiába Magyar Péter bejelentése, Kubatov Gábort újraválaszthatják a Ferencváros elnökének",
+      "summary": "Október 27-én lesz a voksolás.",
+      "date": "2026-10-19T17:30:00.000Z",
+      "url": "https://index.hu/sport/2026/10/19/ferencvaros-elnokvalasztas-kozgyules-kubatov-gabor-magyar-peter-kormany-osszeferhetetlenseg/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Sport"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.714Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-24hu-beranya-segitsegevel-lesz-apa-hollandia-b536bb",
+      "title": "Béranya segítségével lesz apa Hollandia meleg miniszterelnöke",
+      "summary": "Rob Jetten ismerőse vállalta a gyermek kihordását. The post Béranya segítségével lesz apa Hollandia meleg miniszterelnöke first appeared on 24.hu .",
+      "date": "2026-10-19T17:29:34.000Z",
+      "url": "https://24.hu/kulfold/2026/10/19/hollandia-miniszterelnok-apa-lesz/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Nagyvilág",
+        "hollandia",
+        "rob jetten",
+        "béranya"
+      ],
+      "author": "Spirk József",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:09:49.235Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-24hu-36-oras-ebrenlet-utan-verroggel-a-220d5b",
+      "title": "36 órás ébrenlét után, vérröggel a vádlijában játszott az NFL-sztár, tüdőembólia és trombózis lett a vége",
+      "summary": "Az egész szezonja ráment a meccsre. De lehetett volna ennél sokkal csúnyább végkifejlet is. The post 36 órás ébrenlét után, vérröggel a vádlijában játszott az NFL-sztár, tüdőembólia és trombózis lett a vége first appeared on 24.hu .",
+      "date": "2026-10-19T17:25:29.000Z",
+      "url": "https://24.hu/sport/2026/10/19/nfl-jalen-hurts-melyvenas-trombozis-tudoembolia/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Sport",
+        "amerikai sportok",
+        "jalen hurts",
+        "mélyvénás trombózis"
+      ],
+      "author": "24.hu",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:09:49.235Z",
+      "backfilled": true
+    },
+    {
       "slug": "budimpesta-2026-10-19-hvg-az-elemzok-szerint-a-kormany-hozta-a-40cd1c",
       "title": "Az elemzők szerint a kormány hozta a kötelezőt a 2027-es költségvetéssel",
       "summary": "A költségvetés terveit értékelték magyar elemzők, akik közül többen a kockázatokra hívták fel a figyelmet.",
@@ -616,6 +1052,22 @@
       "author": "szerzo@hvg.hu (MTI)",
       "theme": "politika",
       "addedAt": "2026-10-19T20:53:35.523Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-legendak-egy-kepen-eloszor-talalkozott-a-d5cf9d",
+      "title": "Legendák egy képen: először találkozott a Rubik-kocka és a Tetris megalkotója",
+      "summary": "A két feltaláló találkozásának apropója a Rubik’s Tetris nevű új játék.",
+      "date": "2026-10-19T17:10:00.000Z",
+      "url": "https://index.hu/fomo/2026/10/19/rubik-erno-kocka-tetris-foto/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Fomo"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.714Z",
       "backfilled": true
     },
     {
@@ -667,6 +1119,38 @@
       "author": "",
       "theme": "rat",
       "addedAt": "2026-10-19T20:53:39.961Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-europaban-kezd-uj-eletet-az-amerikaiak-uj-6114d5",
+      "title": "Európában kezd új életet az amerikaiak új csillaga, akinek a családját háborús sokk érte",
+      "summary": "Már megbánhatta a döntést, amit 14 éves fejjel hozott meg.",
+      "date": "2026-10-19T17:05:00.000Z",
+      "url": "https://index.hu/sport/futball/2026/10/19/cavan-sullivan-egyesult-allamok-philadelphia-manchester-city-mls/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Futball"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:09:46.714Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-selena-gomez-bevallotta-vegleg-a28630",
+      "title": "Selena Gomez bevallotta, végleg megváltoztatta a hangját a függősége",
+      "summary": "",
+      "date": "2026-10-19T17:04:13.000Z",
+      "url": "https://index.hu/mindekozben/poszt/2026/10/19/selena-gomez-bevallotta-vegleg-megvaltoztatta-a-hangjat-a-fuggosege/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Mindeközben"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.714Z",
       "backfilled": true
     },
     {
@@ -799,6 +1283,22 @@
       "backfilled": true
     },
     {
+      "slug": "budimpesta-2026-10-19-index-csunyan-osszetorte-az-autojat-az-m4-esen-a-0de267",
+      "title": "Csúnyán összetörte az autóját az M4-esen, a másik sofőr nézte egy darabig, majd továbbhajtott",
+      "summary": "Elvesztette uralmát a járműve felett.",
+      "date": "2026-10-19T16:43:00.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/baleset-sofor-auto-m4-autopalya/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.714Z",
+      "backfilled": true
+    },
+    {
       "slug": "budimpesta-2026-10-19-444-hat-embert-koztuk-harom-gyereket-megolt-egy-13e614",
       "title": "Hat embert, köztük három gyereket megölt egy orosz dróntámadás Harkiv megyében",
       "summary": "Ivan Vihivszkij ukrán belügyminiszter szerint a drón egy olyan parkba csapódott be, ahol családok játszottak a gyerekeikkel.",
@@ -888,6 +1388,22 @@
       "backfilled": true
     },
     {
+      "slug": "budimpesta-2026-10-19-index-megerkezett-a-legfrissebb-teli-elorejelzes-6db06b",
+      "title": "Megérkezett a legfrissebb téli előrejelzés, így alakulhat a hóhelyzet idén Magyarországon",
+      "summary": "Európa nagy részén elmaradhat a megszokottól a havazás.",
+      "date": "2026-10-19T16:29:00.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/havazas-idojaras-elorejelzes-tel/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:09:46.714Z",
+      "backfilled": true
+    },
+    {
       "slug": "budimpesta-2026-10-19-444-helyi-es-reszleges-kijarasi-tilalmakat-af8c8c",
       "title": "Helyi és részleges kijárási tilalmakat vezetnek be a francia városokban",
       "summary": "A miniszterelnök engedélyezte a polgármestereknek, hogy saját hatáskörben döntsenek a kérdésben.",
@@ -923,6 +1439,22 @@
       "backfilled": true
     },
     {
+      "slug": "budimpesta-2026-10-19-index-ugynokaktak-a-szakertok-szerint-kiderulhet-1871f1",
+      "title": "Ügynökakták: a szakértők szerint kiderülhet, miért titkolózott a hatalom 36 éven át",
+      "summary": "Több tízezer név és megannyi titok tárulhat fel november 4-én.",
+      "date": "2026-10-19T16:22:00.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/ugynokaktak-nyilvanossagra-hozatal-eorsi-laszlo-b-keder-zsuzsanna-tortenelem-republikon-kerekasztal/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.714Z",
+      "backfilled": true
+    },
+    {
       "slug": "budimpesta-2026-10-19-portfolio-drasztikus-szigoritas-jon-az-onkormanyzati-c7561d",
       "title": "Drasztikus szigorítás jön az önkormányzati lakásoknál: háromszoros büntetést kaphatnak a szabályszegők",
       "summary": "Új lakásrendelet megalkotásán dolgozik a Józsefvárosi Önkormányzat, amely a szabályszegő vagy az ingatlant üresen hagyó bérlőkkel szemben a korábbinál lényegesen szigorúbb szankciókat vezetne be. A módosításokról lakossági fórumot rendeznek, emellett a kerület lakói november 20-ig egy kérdőív segítségével is megoszthatják a véleményüket – derült ki a Józsefvárosi Önkormányzat Facebook-bejegyzéséből .",
@@ -955,6 +1487,24 @@
       "author": "",
       "theme": "politika",
       "addedAt": "2026-10-19T20:53:35.523Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-puzser-es-fam-nem-kertel-nem-szepit-9af35c",
+      "title": "Puzsér és FAM nem kertel, nem szépít, mindenhol áldozatok vannak, mindenfelé",
+      "summary": "A zsidók szégyenéből lett Az eskü, Farkas Attila Márton és Puzsér Róbert színdarabja.",
+      "date": "2026-10-19T16:04:00.000Z",
+      "url": "https://index.hu/kultur/2026/10/19/a-zsidok-szegyene-farkas-attila-marton-puzser-robert-eloadas-inga-kulturkavezo-az-esku-kritika/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Kultúr",
+        "CE napi",
+        "CE femina"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.714Z",
       "backfilled": true
     },
     {
@@ -1015,6 +1565,22 @@
       "backfilled": true
     },
     {
+      "slug": "budimpesta-2026-10-19-index-toman-szabina-tobb-tizmilliot-bukott-el-a-cc5658",
+      "title": "Tomán Szabina több tízmilliót bukott el a Cápák közöttben: „Végül mínuszos lettem”",
+      "summary": "",
+      "date": "2026-10-19T15:57:42.000Z",
+      "url": "https://index.hu/mindekozben/poszt/2026/10/19/toman-szabina-millios-osszeget-bukott-el-a-capak-kozottben-vegul-minuszos-lettem/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Mindeközben"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:09:46.715Z",
+      "backfilled": true
+    },
+    {
       "slug": "budimpesta-2026-10-19-hvg-parlamenti-kozjatek-szabo-balint-640f83",
       "title": "Parlamenti közjáték: Szabó Bálint belekiabált Magyar parlamenti felszólalásába, rögtön kiküldték a páholyból",
       "summary": "Forsthoffer Ágnes házelnök szerint Szabó a bekiabálás előtt is „folyamatosan ki-be mászkált, telefonált, zavarta az ülés munkáját”.",
@@ -1053,6 +1619,38 @@
       "backfilled": true
     },
     {
+      "slug": "budimpesta-2026-10-19-index-a-tisza-kepviseloi-is-tamogattak-hogy-a-99e6ad",
+      "title": "A Tisza képviselői is támogatták, hogy a KDNP jelöltje a Médiatanács tagja legyen",
+      "summary": "",
+      "date": "2026-10-19T15:54:28.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/orszaggyules-parlament-magyar-peter-koltsegvetes-tisza-part-fidesz-kdnp-mi-hazank-mozgalom/a-tisza-kepviseloi-is-tamogattak-hogy-a-kdnp-jeloltje-a-mediatanacs-tagja-legyen/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.715Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-elkeszult-tarantino-tizedik-filmjenek-f22be2",
+      "title": "Elkészült Tarantino tizedik filmjének forgatókönyve, de a premierre még várni kell",
+      "summary": "Régóta hangoztatja, hogy tíz film után befejezi a rendezést.",
+      "date": "2026-10-19T15:52:00.000Z",
+      "url": "https://index.hu/kultur/2026/10/19/quentin-tarantino-film-forgatokonyv-forgatas-rendezo/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Kultúr"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.715Z",
+      "backfilled": true
+    },
+    {
       "slug": "budimpesta-2026-10-19-444-modositottak-a-2026-os-koltsegvetest-7-5-50d8ed",
       "title": "Módosították a 2026-os költségvetést, 7,5 százalékra nőtt a hiánycél",
       "summary": "A Pénzügyminisztérium szerint azért volt szükség korrekcióra, mert az előző kormány által elfogadott költségvetésnek nem sok köze volt a valósághoz.",
@@ -1072,6 +1670,22 @@
       "backfilled": true
     },
     {
+      "slug": "budimpesta-2026-10-19-index-magyar-peternek-volt-egy-kerdese-a-65ee41",
+      "title": "Magyar Péternek volt egy kérdése a Költségvetési Tanács elnökéhez, majd megszavazták az idei büdzsé módosítását",
+      "summary": "",
+      "date": "2026-10-19T15:49:57.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/orszaggyules-parlament-magyar-peter-koltsegvetes-tisza-part-fidesz-kdnp-mi-hazank-mozgalom/magyar-peternek-volt-egy-kerdese-a-koltsegvetesi-tanacs-elnokehez-majd-megszavaztak-az-idei-budzse-modositasat/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.715Z",
+      "backfilled": true
+    },
+    {
       "slug": "budimpesta-2026-10-19-444-1-1-milliard-forinttal-csokkentettek-43aa99",
       "title": "1,1 milliárd forinttal csökkentették Békéscsaba idei kiadásait",
       "summary": "Ott sincs kolbászból a kerítés: úgy számolnak, hogy ennyivel kevesebb iparűzési adó folyik be várhatóan év végéig a büdzsébe.",
@@ -1088,6 +1702,22 @@
       "author": "Herczeg Márk",
       "theme": "ai",
       "addedAt": "2026-10-19T20:53:32.669Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-elhunyt-szolnoki-maria-00814b",
+      "title": "Elhunyt Szolnoki Mária",
+      "summary": "79 esztendős volt.",
+      "date": "2026-10-19T15:45:00.000Z",
+      "url": "https://index.hu/sport/2026/10/19/elhunyt-szolnoki-maria-olimpiai-ezustermes-torvivo/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Sport"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:09:46.715Z",
       "backfilled": true
     },
     {
@@ -1129,6 +1759,22 @@
       "backfilled": true
     },
     {
+      "slug": "budimpesta-2026-10-19-index-eskut-tett-a-fidesz-uj-kepviseloje-b4c7c8",
+      "title": "Esküt tett a Fidesz új képviselője",
+      "summary": "",
+      "date": "2026-10-19T15:37:25.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/orszaggyules-parlament-magyar-peter-koltsegvetes-tisza-part-fidesz-kdnp-mi-hazank-mozgalom/eskut-tett-a-fidesz-uj-kepviseloje/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.715Z",
+      "backfilled": true
+    },
+    {
       "slug": "budimpesta-2026-10-19-444-szabo-balint-pocs-janos-vendegekent-ult-be-434695",
       "title": "Szabó Bálint Pócs János vendégeként ült be a parlamenti páholyba, majd onnan ordibált, míg ki nem küldték",
       "summary": "Szabó a felszólításra sem akart lelépni, csak miután már Bóka János fideszes frakcióvezető és Pócs János is odament a páholyhoz, és mondott valamit neki.",
@@ -1148,6 +1794,22 @@
       "backfilled": true
     },
     {
+      "slug": "budimpesta-2026-10-19-index-pocs-janos-varga-judit-idezetet-mutatott-72fe10",
+      "title": "Pócs János Varga Judit-idézetet mutatott Magyar Péter felé",
+      "summary": "",
+      "date": "2026-10-19T15:34:08.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/orszaggyules-parlament-magyar-peter-koltsegvetes-tisza-part-fidesz-kdnp-mi-hazank-mozgalom/pocs-janos-varga-judit-idezetet-mutatott-magyar-peter-fele/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.715Z",
+      "backfilled": true
+    },
+    {
       "slug": "budimpesta-2026-10-19-telex-acelipari-munkasok-foglaltak-el-genova-26c8b5",
       "title": "Acélipari munkások foglalták el Genova repterét",
       "summary": "Az utasok először elérhették a beszállókapukat, majd a délelőtt folyamán ezt a folyosót is lezárták a létszámleépítés ellen demonstrálók.",
@@ -1162,6 +1824,38 @@
       "theme": "drustvo",
       "addedAt": "2026-10-19T15:55:35.679Z",
       "seeded": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-hidveghi-balazs-felszolalasa-utan-magyar-14f7c1",
+      "title": "Hidvéghi Balázs felszólalása után Magyar Péter ígéretet tett",
+      "summary": "",
+      "date": "2026-10-19T15:30:24.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/orszaggyules-parlament-magyar-peter-koltsegvetes-tisza-part-fidesz-kdnp-mi-hazank-mozgalom/hidveghi-balazs-felszolalasa-utan-magyar-peter-igeretet-tett/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.715Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-ha-keszul-szobor-a-farizeussagrol-akkor-jo-be88ec",
+      "title": "„Ha készül szobor a farizeusságról, akkor jó esélyeik vannak” – Máthé Zsuzsa és Magyar Péter vitáztak",
+      "summary": "",
+      "date": "2026-10-19T15:21:29.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/orszaggyules-parlament-magyar-peter-koltsegvetes-tisza-part-fidesz-kdnp-mi-hazank-mozgalom/-ha-keszul-szobor-a-farizeussagrol-akkor-jo-eselyeik-vannak---mathe-zsuzsa-es-magyar-peter-vitaztak/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:09:46.715Z",
+      "backfilled": true
     },
     {
       "slug": "budimpesta-2026-10-19-hvg-posfai-gabor-a-belugyi-dolgozok-bere-5ee32f",
@@ -1180,6 +1874,22 @@
       "author": "szerzo@hvg.hu (HVG)",
       "theme": "politika",
       "addedAt": "2026-10-19T20:53:35.524Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-karacsony-gergely-2027-a-fellelegzes-eve-72adc5",
+      "title": "Karácsony Gergely: 2027 a fellélegzés éve lehet az önkormányzatoknak",
+      "summary": "Nőhetnek a támogatások, csökkenhet a szolidaritási hozzájárulás.",
+      "date": "2026-10-19T15:18:00.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/onkormanyzat-koltsegvetes-kormany-budapest-karacsony-gergely/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:09:46.715Z",
       "backfilled": true
     },
     {
@@ -1202,6 +1912,22 @@
       "backfilled": true
     },
     {
+      "slug": "budimpesta-2026-10-19-index-nehany-evtizede-meg-satanfajzatnak-1dfc1f",
+      "title": "Néhány évtizede még sátánfajzatnak tartották őket, ma már milliók szerelmi életét mentik meg",
+      "summary": "Ez az Etsy boszorkányok felvirágzásának története.",
+      "date": "2026-10-19T15:11:00.000Z",
+      "url": "https://index.hu/fomo/2026/10/19/etsy-boszorkany-tiktok-bubaj-atok/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Fomo"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:09:46.715Z",
+      "backfilled": true
+    },
+    {
       "slug": "budimpesta-2026-10-19-hvg-gulyas-gergely-allitasa-szerint-nem-lat-el-93d6c6",
       "title": "Gulyás Gergely állítása szerint nem lát el politikai feladatokat a Fideszben, egyelőre csak felkérést kapott",
       "summary": "A korábbi miniszter szerint amúgy sem biztos, hogy neki már politikai pályában kell gondolkoznia.",
@@ -1218,6 +1944,22 @@
       "author": "szerzo@hvg.hu (HVG)",
       "theme": "ai",
       "addedAt": "2026-10-19T20:53:35.524Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-botrany-a-parlamentben-szabo-balint-az-93d726",
+      "title": "Botrány a parlamentben, Szabó Bálint az ülésteremben kiabált, Forsthoffer Ágnes felszólította a távozásra",
+      "summary": "",
+      "date": "2026-10-19T15:03:19.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/orszaggyules-parlament-magyar-peter-koltsegvetes-tisza-part-fidesz-kdnp-mi-hazank-mozgalom/botrany-a-parlamentben-szabo-balint-az-ulesteremben-kiabalt-forsthoffer-agnes-felszolitotta-a-tavozasra/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:09:46.715Z",
       "backfilled": true
     },
     {
@@ -1297,6 +2039,22 @@
       "backfilled": true
     },
     {
+      "slug": "budimpesta-2026-10-19-index-vinteden-bukkantak-fel-a-francia-962d57",
+      "title": "Vinteden bukkantak fel a francia luxusüzletekből ellopott termékek",
+      "summary": "A cég együttműködik a hatóságokkal és megpróbálja kiszűrni az efféle hirdetéseket.",
+      "date": "2026-10-19T14:54:00.000Z",
+      "url": "https://index.hu/kulfold/2026/10/19/franciaorszag-zavargasok-vinted-lopas/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Külföld"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:09:46.715Z",
+      "backfilled": true
+    },
+    {
       "slug": "budimpesta-2026-10-19-444-retvari-bence-a-kdnp-a-legsikeresebb-part-b5e826",
       "title": "Rétvári Bence: A KDNP a legsikeresebb párt",
       "summary": "A kormányzati ciklusok számát tekintve.",
@@ -1335,6 +2093,54 @@
       "backfilled": true
     },
     {
+      "slug": "budimpesta-2026-10-19-index-akar-nyolc-hetre-is-kidolhetett-a-7c3ab2",
+      "title": "Akár nyolc hétre is kidőlhetett a Manchester City kulcsembere",
+      "summary": "Erling Haaland is összeszedett egy kisebb sérülést.",
+      "date": "2026-10-19T14:49:00.000Z",
+      "url": "https://index.hu/sport/futball/2026/10/19/antoine-semenyo-serules-manchester-city/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Futball"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.715Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-forsthoffer-agnes-szunetet-rendelt-el-1e9f4c",
+      "title": "Forsthoffer Ágnes szünetet rendelt el",
+      "summary": "",
+      "date": "2026-10-19T14:40:57.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/orszaggyules-parlament-magyar-peter-koltsegvetes-tisza-part-fidesz-kdnp-mi-hazank-mozgalom/forsthoffer-agnes-szunetet-rendelt-el/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.715Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-hiaba-kiabal-hiaba-ajvekol-osszecsapott-1d6e88",
+      "title": "„Hiába kiabál, hiába ajvékol” – összecsapott Magyar Péter és Juhász Hajnalka",
+      "summary": "",
+      "date": "2026-10-19T14:40:05.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/orszaggyules-parlament-magyar-peter-koltsegvetes-tisza-part-fidesz-kdnp-mi-hazank-mozgalom/-hiaba-kiabal-hiaba-ajvekol---osszecsapott-magyar-peter-es-juhasz-hajnalka/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.715Z",
+      "backfilled": true
+    },
+    {
       "slug": "budimpesta-2026-10-19-hvg-plussmaci-acelgerinccel-az-extabornok-aki-2b39e0",
       "title": "Plüssmaci acélgerinccel: az extábornok, aki legyőzheti Netanjahut",
       "summary": "Eltérő személyiségével és stílusával Gadi Eisenkot, a politikában újonc egykori vezérkari főnök győzhet a veterán izraeli kormányfővel, Benjamin Netanjahuval szemben, akit Donald Trump teljes erővel támogat.",
@@ -1354,6 +2160,38 @@
       "backfilled": true
     },
     {
+      "slug": "budimpesta-2026-10-19-index-szja-csokkentes-beremelesek-es-nagy-45cebd",
+      "title": "Szja-csökkentés, béremelések és nagy bejelentések, de hiányzik a konkrét költségvetési tervezet",
+      "summary": "Magyar Péter ismertette a 2027-es költségvetés főbb terveit, de a költségvetési tervezetet nem nyújtották be az Országgyűlésnek.",
+      "date": "2026-10-19T14:34:00.000Z",
+      "url": "https://index.hu/gazdasag/2026/10/19/koltsegvetes-allamadossag-magyar-peter-kormany-fiskalis-politika-adokedvezmeny-szja-mentesseg/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.715Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-t-danny-kitalalt-elete-legnehezebb-bd5689",
+      "title": "T. Danny kitálalt élete legnehezebb időszakáról: „Nem voltam abban az állapotban, ahol lennem kellett volna”",
+      "summary": "",
+      "date": "2026-10-19T14:31:21.000Z",
+      "url": "https://index.hu/mindekozben/poszt/2026/10/19/t.-danny-tobbeves-onfejlesztes-maximalizmus-filmszerep/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Mindeközben"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.715Z",
+      "backfilled": true
+    },
+    {
       "slug": "budimpesta-2026-10-19-hvg-video-acelgyari-munkasok-vettek-blokad-ala-5d1c01",
       "title": "Videó: acélgyári munkások vették blokád alá a genovai repülőteret",
       "summary": "A munkahelyüket féltő gyári dolgozók sisakban vonultak be a Kolumbusz Kristóf repülőtér utasfelvételi csarnokába.",
@@ -1370,6 +2208,22 @@
       "author": "",
       "theme": "ai",
       "addedAt": "2026-10-19T20:53:35.524Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-magyar-peter-toroczkai-laszlo-lenezi-a-486eae",
+      "title": "Magyar Péter: Toroczkai László lenézi a magyar embereket, Rétvári Bence egy babérkoszorús hazugságbajnok",
+      "summary": "",
+      "date": "2026-10-19T14:23:00.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/orszaggyules-parlament-magyar-peter-koltsegvetes-tisza-part-fidesz-kdnp-mi-hazank-mozgalom/magyar-peter-toroczkai-laszlo-lenezi-a-magyar-embereket-retvari-bence-egy-baberkoszorus-hazugsagbajnok/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:09:46.715Z",
       "backfilled": true
     },
     {
@@ -1487,6 +2341,38 @@
       "backfilled": true
     },
     {
+      "slug": "budimpesta-2026-10-19-index-elszabadultak-az-indulatok-a-1e5732",
+      "title": "Elszabadultak az indulatok a Miniszterelnökségnél, Tarr Zoltánt bekiabálásokkal fogadták",
+      "summary": "Béremelésért tüntetnek a kulturális dolgozók.",
+      "date": "2026-10-19T14:08:00.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/tuntetes-kulturalis-dolgozo-beremeles-fizetes-tisza-miniszterelnok-magyar-peter/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:09:46.715Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-uj-honlap-mutatja-be-a-kozponti-8ce5ed",
+      "title": "Új honlap mutatja be a központi közigazgatást és az állami tulajdonú cégeket",
+      "summary": "A kormány szerint a cél az átláthatóság növelése.",
+      "date": "2026-10-19T14:07:00.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/honlap-kozigazgatas-kormany-atlathatosag-ceg/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:09:46.716Z",
+      "backfilled": true
+    },
+    {
       "slug": "budimpesta-2026-10-19-hvg-szja-csokkentes-dupla-csaladi-potlek-41cb53",
       "title": "Szja-csökkentés, dupla családi pótlék, vagyonadó és a Ne Lopj! – Itt vannak a jövő évi költségvetés tervei",
       "summary": "Béremelésekről, szja-csökkentésről, a családi pótlék megduplázásáról és egyes adók növeléséről beszélt hétfőn Magyar Péter a napirend előtti felszólalásában az Országgyűlésben.",
@@ -1525,6 +2411,55 @@
       "backfilled": true
     },
     {
+      "slug": "budimpesta-2026-10-19-index-csaszar-martin-miert-nem-tamogatjak-azokat-453e42",
+      "title": "Császár Martin: Miért nem támogatják azokat az intézkedéseket, amelyek az emberek életét könnyebbé tehetik?",
+      "summary": "",
+      "date": "2026-10-19T14:01:08.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/orszaggyules-parlament-magyar-peter-koltsegvetes-tisza-part-fidesz-kdnp-mi-hazank-mozgalom/csaszar-martin-miert-nem-tamogatjak-azokat-az-intezkedeseket-amelyek-az-emberek-eletet-konnyebbe-tehetik-/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.716Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-1956-sotet-arnyeka-a-holokauszt-utan-ujabb-b90756",
+      "title": "1956 sötét árnyéka: a holokauszt után újabb üldöztetéstől féltek a magyar zsidók",
+      "summary": "Így élte meg a magyar zsidóság 1956-ot a holokauszt árnyékában.",
+      "date": "2026-10-19T13:59:00.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/1956-os-forradalom-zsidosag-tortenelem/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld",
+        "CE napi"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.716Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-boka-janos-ritka-az-olyan-eskuvo-ahol-nem-91fc95",
+      "title": "Bóka János: Ritka az olyan esküvő, ahol nem jelenik meg sem a menyasszony, sem a vőlegény, mégis arról beszélgetünk, milyen szép az ifjú pár",
+      "summary": "",
+      "date": "2026-10-19T13:54:44.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/orszaggyules-parlament-magyar-peter-koltsegvetes-tisza-part-fidesz-kdnp-mi-hazank-mozgalom/boka-janos-ritka-az-olyan-eskuvo-ahol-nem-jelenik-meg-sem-a-menyasszony-sem-a-volegeny-megis-arrol-beszelgetunk-milyen-szep-az-ifju-par/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:09:46.716Z",
+      "backfilled": true
+    },
+    {
       "slug": "budimpesta-2026-10-19-444-egyetlen-termeket-sem-lehet-kapni-a-dpk-a03746",
       "title": "Egyetlen terméket sem lehet kapni a DPK Shopban, a Lázár Bazár pedig el is tűnt",
       "summary": "A webshop szerint minden „elfogyott”.",
@@ -1541,6 +2476,22 @@
       "author": "Molnár Kristóf",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:53:32.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-retvari-bence-magyar-peterrol-nekunk-a-508d46",
+      "title": "Rétvári Bence Magyar Péterről: Nekünk a Kárpátok Fidel Castrója jutott",
+      "summary": "",
+      "date": "2026-10-19T13:46:40.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/orszaggyules-parlament-magyar-peter-koltsegvetes-tisza-part-fidesz-kdnp-mi-hazank-mozgalom/retvari-bence-magyar-peterrol-nekunk-a-karpatok-fidel-castroja-jutott/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.716Z",
       "backfilled": true
     },
     {
@@ -1582,6 +2533,86 @@
       "backfilled": true
     },
     {
+      "slug": "budimpesta-2026-10-19-index-toroczkai-laszlo-magyar-peternek-sulyos-ara-cd673a",
+      "title": "Toroczkai László Magyar Péternek: Súlyos ára lesz annak, hogy bármilyen uniós nyomásgyakorlásnak lefeküdt",
+      "summary": "",
+      "date": "2026-10-19T13:39:13.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/orszaggyules-parlament-magyar-peter-koltsegvetes-tisza-part-fidesz-kdnp-mi-hazank-mozgalom/toroczkai-laszlo-magyar-peternek-sulyos-ara-lesz-annak-hogy-barmilyen-unios-nyomasgyakorlasnak-lefekudt/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:09:46.716Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-a-regi-evadokban-mukodott-iden-oriasi-d27585",
+      "title": "A régi évadokban működött, idén óriási kihívást okozott az Ázsia Expressz egyik alapfeladata Ördög Nóra szerint",
+      "summary": "",
+      "date": "2026-10-19T13:34:14.000Z",
+      "url": "https://index.hu/mindekozben/poszt/2026/10/19/a-regi-evadokban-mukodott-iden-oriasi-kihivast-okozott-az-azsia-expressz-egyik-alapfeladata-ordog-nora-szerint/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Mindeközben"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.716Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-jon-az-otthon-start-utodja-uj-0b4419",
+      "title": "Jön az Otthon Start utódja: új lakástámogatási csomaggal segítené a kormány az otthonteremtést",
+      "summary": "A családi otthonteremtési kedvezmény szabályain nem változtatnak.",
+      "date": "2026-10-19T13:32:00.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/magyar-peter-wekerle-plusz-wekerle-sandor-lakas-es-kollegiumepitesi-program-otthon-start/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:09:46.716Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-300-milliard-forint-biztonsagi-tartalek-3a14a1",
+      "title": "300 milliárd forint biztonsági tartalék lesz a 2027-es költségvetésben",
+      "summary": "",
+      "date": "2026-10-19T13:28:36.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/orszaggyules-parlament-magyar-peter-koltsegvetes-tisza-part-fidesz-kdnp-mi-hazank-mozgalom/300-milliard-forint-biztonsagi-tartalek-lesz-a-2027-es-koltsegvetesben/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.716Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-keretet-hirdetett-az-eb-selejtezore-a-1f8378",
+      "title": "Keretet hirdetett az Eb-selejtezőre a magyar válogatott új kapitánya, három újoncnak szavazott bizalmat",
+      "summary": "A spanyol élvonal kapusrangsorát vezető játékosunk is meghívást kapott.",
+      "date": "2026-10-19T13:27:00.000Z",
+      "url": "https://index.hu/sport/kezilabda/2026/10/19/kezilabda-europa-bajnoksag-selejtezo-magyar-ferfi-kezilabda-valogatott-kerethirdetes-sotonyi-laszlo-szovetsegi-kapitany/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Kézilabda"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.716Z",
+      "backfilled": true
+    },
+    {
       "slug": "budimpesta-2026-10-19-444-egy-nemet-ferfi-egy-kerti-to-epitese-kozben-a01deb",
       "title": "Egy német férfi egy kerti tó építése közben 22 befektetési aranytömböt ásott ki egy somogyi ingatlan udvarán",
       "summary": "Miután a tulajdonos felhívta a kivitelező figyelmét arra, hogy a tó építése közben kerülje el azt a területet, ahol a kb. 13,6 millió forintnyi arany van.",
@@ -1617,6 +2648,22 @@
       "author": "szerzo@hvg.hu (HVG)",
       "theme": "sport",
       "addedAt": "2026-10-19T20:53:35.525Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-10-19-index-magyar-peter-megszuntetjuk-a-tao-323ca6",
+      "title": "Magyar Péter: Megszüntetjük a tao finanszírozási rendszert",
+      "summary": "",
+      "date": "2026-10-19T13:19:02.000Z",
+      "url": "https://index.hu/belfold/2026/10/19/orszaggyules-parlament-magyar-peter-koltsegvetes-tisza-part-fidesz-kdnp-mi-hazank-mozgalom/magyar-peter-megszuntetjuk-a-tao-finanszirozasi-rendszert/",
+      "source": "index",
+      "sourceName": "Index.hu",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:09:46.716Z",
       "backfilled": true
     },
     {
@@ -3395,6 +4442,706 @@
       "author": "",
       "theme": "ai",
       "addedAt": "2026-10-19T20:53:32.674Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-04-mandiner-a-penzugyminiszter-utasitasara-kirugtak-a-ea0e31",
+      "title": "A pénzügyminiszter utasítására kirúgták a Mandiner vezérigazgatóját, főszerkesztőjét",
+      "summary": "A Mandiner tulajdonosa az MCC augusztus 31-i megszűnése után a Pénzügyminisztérium lett.",
+      "date": "2026-09-04T13:08:38.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/a-penzugyminiszter-utasitasara-kirugtak-a-mandiner-vezerigazgatojat-foszerkesztojet",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:00.153Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-04-mandiner-a-tisza-kormany-kepviselojevel-tart-d8914e",
+      "title": "A Tisza-kormány képviselőjével tart tanévnyitót ezekben a percekben is tucatnyi olyan szélsőséges, destruktív szervezet, mint amilyen az Amnesty International, a Labrisz vagy a…",
+      "summary": "„Maga a rendezvény – ha minden igaz – megszegi, az pedig egészen biztos, hogy teljesen semmibe veszi a jelenleg is hatályban lévő, 2021-ben elfogadott gyermekvédelmi („propaganda”) törvényt, amelyet egy 2022-es – a baloldal által megpuccsolt – népszavazáson 3 millió 800 ezren támogattak érvényes szavazatukkal.”",
+      "date": "2026-09-04T12:07:29.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/a-tisza-kormany-kepviselojevel-tart-tanevnyitot-ezekben-a-percekben-is-tucatnyi-olyan-szelsoseges-destruktiv-szervezet-mint-amilyen-az-amnesty-international-a-labrisz-vagy-a-hatter-tarsasag",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:10:00.153Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-04-mandiner-a-kormany-nemet-mondott-a-mohu-d3427d",
+      "title": "A kormány nemet mondott a MOHU készpénzmentes palackvisszaváltására",
+      "summary": "A minisztérium szerint a készpénzes visszatérítés fenntartása alapvető, a palackgyűjtés okozta gondokat pedig más módon kezelnék.",
+      "date": "2026-09-04T11:54:35.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/a-kormany-nemet-mondott-a-mohu-keszpenzmentes-palackvisszavaltasara",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:00.153Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-04-mandiner-a-kdnp-peticiot-indit-az-oktatasi-miniszter-d9e20f",
+      "title": "A KDNP petíciót indít az oktatási miniszter leváltásáért",
+      "summary": "Állj ki Te is a tanárod mellett! mottóval petíciót indított a Kereszténydemokrata Néppárt (KDNP), amelyben Lannert Judit oktatási miniszter távozását követelik a pedagógusokat sértő kijelentései miatt – hangzott el a párt pénteki online sajtótájékoztatóján.",
+      "date": "2026-09-04T11:54:28.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/a-kdnp-peticiot-indit-az-oktatasi-miniszter-levaltasaert",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:00.153Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-04-mandiner-kedves-tiszasok-ne-legyetek-tiszasabbak-0b6fe3",
+      "title": "Kedves tiszások! Ne legyetek tiszásabbak Magyar Péternél!",
+      "summary": "A szociális dolgozó, aki két helyen dolgozva nettó 500-at visz haza, hogy ebből fizesse a 200 ezres lakbért, és nevelje egyedül a két gyerekét, nem gonoszságból kér, hanem kétségbeesésből, és azért, mert ő azt várta az Orbán-rendszer leváltásától, hogy nem kell nyomorognia.",
+      "date": "2026-09-04T11:43:27.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/kedves-tiszasok-ne-legyetek-tiszasabbak-magyar-peternel",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:10:00.153Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-04-mandiner-lannert-judit-visszater-az-erasmus-a-magyar-669a90",
+      "title": "Lannert Judit: Visszatér az Erasmus a magyar egyetemekre",
+      "summary": "Az Európai Unió Tanácsa 2022-ben hozott döntést arról, hogy a modellváltó, vagyis a közérdekű vagyonkezelő alapítványok fenntartásába adott felsőoktatási intézmények összeférhetetlenségi és átláthatósági problémák miatt nem köthetnek új Erasmus-szerződéseket.",
+      "date": "2026-09-04T11:19:33.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/lannert-judit-visszater-az-erasmus-a-magyar-egyetemekre",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:10:00.153Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-04-mandiner-kizuhant-a-mentoszekhaz-hetedik-emeleterol-bfb209",
+      "title": "Kizuhant a mentőszékház hetedik emeletéről egy dolgozó",
+      "summary": "Meghalt az a dolgozó, aki csütörtökön Budapesten kizuhant a mentőszékház hetedik emeletéről – értesült az ATV.",
+      "date": "2026-09-04T10:37:25.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/kizuhant-a-mentoszekhaz-hetedik-emeleterol-egy-dolgozo",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:00.153Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-04-mandiner-reagalt-a-bizottsag-magyar-peternek-a-napi-3e060b",
+      "title": "Reagált a Bizottság Magyar Péternek a napi egymillió eurós migrációs bírság ügyében – egyelőre nem sok minden történt",
+      "summary": "„Amit a bizottság részéről teszünk és tehetünk, az az, hogy szorosan és nagyon konstruktívan egyeztetünk a magyar hatóságokkal az ügyben” – fogalmazott a bizottsági szóvivő.",
+      "date": "2026-09-04T10:11:58.000Z",
+      "url": "https://mandiner.hu/kulfold/2026/09/reagalt-a-bizottsag-magyar-peternek-a-napi-egymillio-euros-migracios-birsag-ugyeben-egyelore-nem-sok-minden-tortent",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:10:00.153Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-04-mandiner-annyian-ertettek-felre-a-tiszas-07e415",
+      "title": "Annyian értették félre a tiszás kampányszlogent, hogy egyenlevélben kellett egyértelművé tenni: nem osztogatnak mindenkinek 800 ezer forint uniós pénzt",
+      "summary": "A párt egyik automatikus válaszlevele szerint az összeg nem közvetlenül az állampolgároknak járó pénz, hanem a blokkolt uniós források egy főre vetített értéke.",
+      "date": "2026-09-04T09:37:13.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/annyian-ertettek-felre-a-tiszas-kampanyszlogent-hogy-egyenlevelben-kellett-eyertelmuve-tenni-nem-osztogatnak-mindenkinek-800-ezer-forint-unios-penzt",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:00.154Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-04-mandiner-ertesules-balhe-lett-az-m5-kozvetitesebol-c01170",
+      "title": "Értesülés: Balhé lett az M5 közvetítéséből, mert Magyar Péter megharagudott – néhány nappal később kirúgták a csatorna igazgatóját",
+      "summary": "Balhé lett Magyar Péter mohácsi beszédének közvetítséből, a miniszterelnöknek ugyanis meggyőződése, hogy az M5 stábja szándékosan vágott be olyan kameraképeket a mohácsi beszédéről, amelyeken látszottak az üres széksorok – állítja Németh Balázs a közmédiánál dolgozó forrásaira hivatkozva.",
+      "date": "2026-09-04T09:12:50.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/ertesules-balhe-lett-az-m5-kozvetitesebol-mert-magyar-peter-megharagudott-nehany-nappal-kesobb-kirugtak-a-csatorna-igazgatojat",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:00.154Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-04-mandiner-a-kornyezetvedelmi-miniszterium-nem-arulja-28be40",
+      "title": "A környezetvédelmi minisztérium nem árulja el, hogy melyik helyettes államtitkárnak mi a feladatköre",
+      "summary": "Sőt, szerintük nincs is meghatározva, hogy mi a dolguk.",
+      "date": "2026-09-04T08:19:38.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/a-kornyezetvedelmi-miniszterium-nem-arulja-el-hogy-melyik-helyettes-allamtitkarnak-mi-a-feladatkore",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:00.154Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-04-mandiner-a-pdsz-sem-ert-egyet-lannert-judit-minden-2bad26",
+      "title": "A PDSZ sem ért egyet Lannert Judit minden oktatási elképzelésével",
+      "summary": "A PDSZ elnöke arra is reagált, hogy Lannert Judit „nem önállóan gondolkodó embereknek” nevezte a tanárokat.",
+      "date": "2026-09-04T07:59:24.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/a-pdsz-sem-ert-egyet-lannert-judit-minden-oktatasi-elkepzelesevel",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:00.154Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-04-mandiner-megepul-a-mohacsi-duna-hid-de-lenyestek-a-0685d2",
+      "title": "Megépül a mohácsi Duna-híd, de lenyesték a beruházás egy jelentős részét",
+      "summary": "A közlekedési miniszter szerint a híd megépítése nem maradhat el, a szerintük indokolatlanul túlméretezett útszakasz terveit azonban elvetik.",
+      "date": "2026-09-04T06:46:07.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/megepul-a-mohacsi-duna-hid-de-lenyestek-a-beruhazas-egy-jelentos-reszet",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:00.154Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-04-mandiner-veled-vagyunk-istvan-ed45a7",
+      "title": "Veled vagyunk, István!",
+      "summary": "Szeretetország. Az, persze.",
+      "date": "2026-09-04T06:29:26.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/veled-vagyunk-istvan",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:00.154Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-04-mandiner-valaki-segitsen-mert-nem-allnak-ossze-a-020025",
+      "title": "Valaki segítsen, mert nem állnak össze a számok...",
+      "summary": "Miért nincsen meg a fedezete annak, hogy a rendőrök akár csak 5 százalékos béremelést kapjanak?",
+      "date": "2026-09-04T05:55:19.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/valaki-segitsen-mert-nem-allnak-ossze-a-szamok",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:00.154Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-04-mandiner-a-segitett-ongyilkossagrol-fogadott-el-d2a187",
+      "title": "A segített öngyilkosságról fogadott el törvényt az olaszországi Veneto tartomány",
+      "summary": "A támogatott öngyilkosságról fogadott el jogszabályt Olaszország Veneto tartománya – jelentette a La Repubblica című olasz lap csütörtökön.",
+      "date": "2026-09-04T05:03:04.000Z",
+      "url": "https://mandiner.hu/kulfold/2026/09/a-segitett-ongyilkossagrol-fogadott-el-torvenyt-az-olaszorszagi-veneto-tartomany",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:10:00.154Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-04-mandiner-penteken-megnyilik-az-ut-az-uj-magyar-81236f",
+      "title": "Pénteken megnyílik az út az új magyar szélerőművek előtt",
+      "summary": "Szeptember 4-én indul a pályázat az új és bővített szélerőművi kapacitásokra, az első eredményekre december közepéig kell várni.",
+      "date": "2026-09-04T04:39:29.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/penteken-megnyilik-az-ut-az-uj-magyar-szeleromuvek-elott",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:00.154Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-szoboszlai-uj-szerepkort-kaphat-a-2dbe3f",
+      "title": "Szoboszlai új szerepkört kaphat a Liverpoolban, Iraola nyíltan beszélt a terveiről",
+      "summary": "A magyar válogatott csapatkapitánya sokoldalúságával fontos szerepet tölthet be a Liverpoolban, akár a védelem jobb oldalán is.",
+      "date": "2026-09-03T19:58:01.000Z",
+      "url": "https://mandiner.hu/sport/2026/09/szoboszlai-uj-szerepkort-kaphat-a-liverpoolban-iraola-nyiltan-beszelt-a-terveirol",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:10:00.154Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-megszolalt-matolcsy-gyorgy-allok-elebe-az-c312ba",
+      "title": "Megszólalt Matolcsy György: „Állok elébe az összes vizsgálatnak”",
+      "summary": "A volt jegybankelnök szerint az MNB alapítványaiba került vagyon közpénz maradt, ezért szerinte indokolt annak teljes körű ellenőrzése.",
+      "date": "2026-09-03T19:22:37.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/megszolalt-matolcsy-gyorgy-allok-elebe-az-osszes-vizsgalatnak",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-19T21:10:00.154Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-miert-fontos-szeptember-5-add-tovabb-9c2a7f",
+      "title": "Miért fontos szeptember 5.? Add tovább!",
+      "summary": "Egészen addig él az ország egy jelentős része bántalmazó kapcsolatban a kormány kommunikációjával, amíg ezt hagyjuk.",
+      "date": "2026-09-03T18:56:35.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/miert-fontos-szeptember-5-add-tovabb",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:00.154Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-teljesen-termeszetes-hogy-egy-ilyen-musor-a-661a22",
+      "title": "Teljesen természetes, hogy egy ilyen műsor a Tisza és csahosai jelentette szellemi nívón nem maradhat a közmédiában",
+      "summary": "Lassan 8 éve indult az M5-ön az Ez itt a kérdés…, aminek nem csak az első adását vezethettem, de sokáig tán én csináltam a legtöbbet.",
+      "date": "2026-09-03T18:33:54.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/teljesen-termeszetes-hogy-egy-ilyen-musor-a-tisza-es-csahosai-jelentette-szellemi-nivon-nem-maradhat-a-kozmediaban",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:10:00.154Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-azonnali-hatallyal-levettek-a-kepernyorol-9e389c",
+      "title": "Azonnali hatállyal levették a képernyőről az M5 egyik legnépszerűbb műsorát",
+      "summary": "Jogi eljárás is indul.",
+      "date": "2026-09-03T17:54:14.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/azonnali-hatallyal-levettek-a-kepernyorol-az-m5-egyik-legnepszerubb-musorat",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:00.154Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-aki-erti-miert-kell-harom-kormanyszovivo-18ace8",
+      "title": "Aki érti, miért kell három kormányszóvivő, szóljon",
+      "summary": "Én a mai kormányszóvivői tájékoztató után sem kapizsgálom.",
+      "date": "2026-09-03T16:51:44.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/aki-erti-miert-kell-harom-kormanyszovivo-szoljon",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:00.154Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-itt-vannak-magyar-peter-bejelentesei-ujra-1bf78d",
+      "title": "Itt vannak Magyar Péter bejelentései: újra kötelező lehet a MOK-tagság az orvosoknak, radikálisan átalakítanák a koncessziós rendszert",
+      "summary": "A kormányfő az egészségügy, a hulladékgazdálkodás és a gyermekvédelem területén is jelentős változásokat jelentett be.",
+      "date": "2026-09-03T16:49:11.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/ujra-kotelezo-lehet-a-mok-tagsag-az-orvosoknak-radikalisan-atalakitanak-a-koncesszios-rendszert",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:00.154Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-osvath-zsolt-mindenki-szegyellje-magat-a-1a7fe7",
+      "title": "Osváth Zsolt: Mindenki szégyellje magát a Zsolti bácsi-ügy politikai felhasználása miatt (VIDEÓ)",
+      "summary": "„A DK-tól a TISZA-ig és a jószándékú influenszerekig, aktivistáig tényleg szégyellje magát mindenki és menjen a picsába.”",
+      "date": "2026-09-03T16:08:48.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/osvath-zsolt-mindenki-szegyellje-magat-a-zsolti-bacsi-ugy-politikai-felhasznalasa-miatt-video",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:10:00.155Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-deutsch-tamas-is-tavozasra-szolitotta-fel-b54e9a",
+      "title": "Deutsch Tamás is távozásra szólította fel Lannert Juditot (VIDEÓ)",
+      "summary": "A Fidesz EP-képviselője szerint a tiszás oktatási miniszter kijelentései miatt nem maradhat a posztján.",
+      "date": "2026-09-03T15:27:16.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/deutsch-tamas-is-tavozasra-szolitotta-fel-lannert-juditot-video",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:00.155Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-keri-laszlot-ellenpart-szervezesevel-1cde9f",
+      "title": "Kéri Lászlót ellenpárt szervezésével vádolták meg a tiszások",
+      "summary": "A politológus szerint a Tisza-szigetek felszámolása történelmi hiba lenne, miközben őt és feleségét ellenpárt szervezésével is megvádolták.",
+      "date": "2026-09-03T14:54:17.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/keri-laszlo-szerint-veszelyben-vannak-a-tisza-szigetek-miutan-osszeutkozesbe-kerult-a-parttal",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:00.155Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-a-pengeagyu-miniszter-87e932",
+      "title": "A pengeagyú miniszter",
+      "summary": "Lannert Judit annyira kreatív, annyira éles eszű és újító szellemű, hogy soha eszébe nem jutott volna tanárnak állni.",
+      "date": "2026-09-03T14:28:04.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/a-pengeagyu-miniszter",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:00.155Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-kilog-az-egesz-lo-328b3c",
+      "title": "Kilóg az egész ló",
+      "summary": "Azért nem kell ezentúl napi egymillió eurót fizetnünk, mert a magyar kormány ezentúl „betartja a bíróság kötelező érvényű ítéletét”?",
+      "date": "2026-09-03T14:10:37.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/kilog-az-egesz-lo",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:00.155Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-ukran-forrasok-szerint-szeptemberben-58dcc0",
+      "title": "Ukrán források szerint szeptemberben személyesen találkozik Magyar Péter és Volodimir Zelenszkij",
+      "summary": "Kijev szerint Budapest indokolatlanul blokkolja az uniós tárgyalásokat.",
+      "date": "2026-09-03T13:51:31.000Z",
+      "url": "https://mandiner.hu/kulfold/2026/09/ukran-forrasok-szerint-szeptemberben-szemelyesen-talalkozik-magyar-peter-es-volodimir-zelenszkij",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:00.155Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-europaban-elsokent-kotott-megallapodast-a-3eac45",
+      "title": "Európában elsőként kötött megállapodást a 4iG és a SpaceX a Starlink Mobile és szuverén műholdas megoldások bevezetéséről",
+      "summary": "Európában elsőként kötött megállapodást a 4iG Csoport és az amerikai SpaceX a Starlink Mobile kereskedelmi szolgáltatás, valamint a Sovereign Solutions elnevezésű, védett műholdas kommunikációs megoldások bevezetéséről – közölte a 4iG szerdán az MTI-vel.",
+      "date": "2026-09-03T13:03:21.000Z",
+      "url": "https://mandiner.hu/kulfold/2026/09/europaban-elsokent-kotott-megallapodast-a-4ig-es-a-spacex-a-starlink-mobile-es-szuveren-muholdas-megoldasok-bevezeteserol",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:00.155Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-publicus-romlott-magyar-peter-8d8d3f",
+      "title": "Publicus: Romlott Magyar Péter miniszterelnöki alkalmasságának megítélése",
+      "summary": "Kevesebben tartják alkalmasnak Magyar Pétert miniszterelnöknek, mint egy hónapja.",
+      "date": "2026-09-03T12:35:32.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/publicus-romlott-magyar-peter-miniszterelnoki-alkalmassaganak-megitelese",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:00.155Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-szimbolikus-foto-magyar-peter-egy-arab-3e62ce",
+      "title": "Szimbolikus fotó: Magyar Péter egy arab tulajdonú luxusszállodában fogadja a külföldi vendégeit",
+      "summary": "A háttérben üresen áll az e célra létrehozott magyar állami tulajdonú Karmelita!",
+      "date": "2026-09-03T12:24:08.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/szimbolikus-foto-magyar-peter-egy-arab-tulajdonu-luxusszallodaban-fogadja-a-kulfoldi-vendegeit",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:00.155Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-ujra-van-magyar-allami-tulajdon-a-molban-3d0b5a",
+      "title": "Újra van magyar állami tulajdon a Molban",
+      "summary": "A kekváktól visszakerültek a Mol részvényei a magyar államhoz.",
+      "date": "2026-09-03T11:52:23.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/ujra-van-magyar-allami-tulajdon-a-molban",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:00.155Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-balog-zoltan-odaallna-a-kegyelmi-ugyet-12242a",
+      "title": "Balog Zoltán odaállna a kegyelmi ügyet vizsgáló bizottság elé",
+      "summary": "Eleget fog tenni a megkeresésnek a református püspök, legalábbis állítása szerint.",
+      "date": "2026-09-03T09:43:32.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/balog-zoltan-odaallna-a-kegyelmi-ugyet-vizsgalo-bizottsag-ele",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:00.155Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-igy-esett-egymasnak-ket-ukran-5a7656",
+      "title": "Így esett egymásnak két ukrán titkosszolgálat Kijevben, a nyílt utcán (VIDEÓ)",
+      "summary": "Zelenszkij elnök szégyenletesnek nevezte a történteket.",
+      "date": "2026-09-03T09:40:26.000Z",
+      "url": "https://mandiner.hu/kulfold/2026/09/igy-esett-egymasnak-ket-ukran-titkosszolgalat-kijevben-a-nyilt-utcan-video",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:10:00.155Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-utanajaras-helyett-szajbaragas-a-444-es-a-d520fe",
+      "title": "Utánajárás helyett szájbarágás: a 444 és a baloldal nem érti a jobboldal szellemi mélységeit és magasságait, csak heherészik, és semmibe veszi a saját olvasóit is",
+      "summary": "A 444-es szerző azzal próbálkozott, hogy „a szcénával kapcsolatban antropológiai jellegű érdeklődést mutató olvasók” számára „összeszedje”, hogy „kifélék-micsodák az új posztfideszes lapok, és mire számíthatunk tőlük.” Jelentem, a vállalt feladat csak töredékesen sikerült.",
+      "date": "2026-09-03T09:02:13.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/utanajaras-helyett-szajbaragas-a-444-es-a-baloldal-nem-erti-a-jobboldal-szellemi-melysegeit-es-magassagait-csak-hehereszik-es-semmibe-veszi-a-sajat-olvasoit-is",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:10:00.155Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-feljelentest-tesznek-varga-mihalyek-az-mnb-280a88",
+      "title": "Feljelentést tesznek Varga Mihályék az MNB korábbi ügyeiben",
+      "summary": "A Magyar Nemzeti Bank új vezetése feljelentést tett hűtlen kezelés, hanyag kezelés, csalás és hivatali visszaélés gyanúja miatt öt tulajdonában álló ingatlan értékvesztésével összefüggésben.",
+      "date": "2026-09-03T07:54:20.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/feljelentest-tesznek-varga-mihalyek-az-mnb-korabbi-ugyeiben",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:00.155Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-oroszorszag-bezaratja-a-goethe-intezeteket-d5c925",
+      "title": "Oroszország bezáratja a Goethe Intézeteket a német–orosz drónvita miatt",
+      "summary": "Fokozódik a német-orosz konfliktus.",
+      "date": "2026-09-03T07:51:27.000Z",
+      "url": "https://mandiner.hu/kulfold/2026/09/oroszorszag-bezaratja-a-goethe-intezeteket-a-nemet-orosz-dronvita-miatt",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:10:00.155Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-viszont-amennyiben-a-hatosagok-sikerre-afa83f",
+      "title": "Viszont. Amennyiben a hatóságok sikerre viszik a nyuszimotor-visszaélés ügyét, és lecsapnak a galád kismotorbűnözőkre...",
+      "summary": "Úgy az új szabályok értelmében elkobozhatják az óvodások motorjait. A kormányzati gépjárműflotta akkor meg is van.",
+      "date": "2026-09-03T07:47:59.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/viszont-amennyiben-a-hatosagok-sikerre-viszik-a-nyuszimotor-visszaeles-ugyet-es-lecsapnak-a-galad-kismotorbunozokre",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "addedAt": "2026-10-19T21:10:00.155Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-a-kormany-felulvizsgalja-a-teljes-50b953",
+      "title": "A kormány felülvizsgálja a teljes hulladékgazdálkodási rendszert",
+      "summary": "Magyar Péter szerint tömegesen érkeznek a panaszok a MOHU működésére.",
+      "date": "2026-09-03T07:38:44.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/a-kormany-felulvizsgalja-a-teljes-hulladekgazdalkodasi-rendszert",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:10:00.156Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-tobb-penzt-kovetel-ukrajna-europatol-de-fa5490",
+      "title": "Több pénzt követel Ukrajna Európától, de azonnal",
+      "summary": "Kijev még idén 27 milliárd dollárt vár a Nyugattól.",
+      "date": "2026-09-03T06:43:49.000Z",
+      "url": "https://mandiner.hu/kulfold/2026/09/tobb-penzt-kovetel-ukrajna-europatol-de-azonnal",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:00.156Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-migracios-valsag-szorult-helyzetben-sanchez-9d6992",
+      "title": "Migrációs válság: szorult helyzetben Sánchez Ceuta miatt",
+      "summary": "Marokkót is érintő rendőrségi jelentés mélyíti Sánchez ceutai válságát.",
+      "date": "2026-09-03T06:39:24.000Z",
+      "url": "https://mandiner.hu/kulfold/2026/09/migracios-valsag-szorult-helyzetben-sanchez-ceuta-miatt",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:00.156Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-augusztus-volt-a-valaha-mert-legforrobb-b6eefd",
+      "title": "Augusztus volt a valaha mért legforróbb hónap Magyarországon",
+      "summary": "Még soha nem volt ilyen meleg hónap Magyarországon a mérések 1901-es kezdete óta.",
+      "date": "2026-09-03T05:04:18.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/augusztus-volt-a-valaha-mert-legforrobb-honap-magyarorszagon",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:00.156Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-03-mandiner-csodkozeli-helyzetben-budapest-aggodik-948e85",
+      "title": "Csődközeli helyzetben Budapest, aggódik Karácsony",
+      "summary": "Kormányzati megállapodásban bízik a főpolgármester.",
+      "date": "2026-09-03T04:58:42.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/csodkozeli-helyzetben-budapest-aggodik-karacsony",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:00.156Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-02-mandiner-radnai-mark-belebegtette-nem-kellenek-az-c517c7",
+      "title": "Radnai Márk belebegtette: nem kellenek az ellenzék jelöltjei, így is felállhat az állami média felügyelete",
+      "summary": "Radnai Márk szerint a médiaszakma jelölhet új tagokat a Független Közmédia Testületbe, a törvény azonban más feltételt szab – hívja fel a figyelmet a Média1.",
+      "date": "2026-09-02T19:51:36.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/radnai-mark-belebegtette-nem-kellenek-az-ellenzek-jeloltjei-igy-is-felallhat-az-allami-media-felugyelete",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:10:00.156Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-02-mandiner-tavozasra-szolitottak-fel-a-tiszas-oktatasi-8a9546",
+      "title": "Távozásra szólították fel a tiszás oktatási minisztert! (VIDEÓ)",
+      "summary": "Rétvári Bence szerint így még senki nem sértette meg a pedagógusokat, így még senki nem nézte le a tanárokat, mint Lannert Judit.",
+      "date": "2026-09-02T19:26:52.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/tavozasra-szolitottak-fel-a-tiszas-oktatasi-minisztert-video",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:00.156Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-02-mandiner-diplomaciai-nagyuzem-e9a1fb",
+      "title": "Diplomáciai nagyüzem",
+      "summary": "Ma este az Európai Tanács elnökét, António Costat láttam vendégül.",
+      "date": "2026-09-02T18:46:36.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/diplomaciai-nagyuzem",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:10:00.156Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-02-mandiner-ket-kettos-allampolgarsagu-ferfit-3f2397",
+      "title": "Két kettős állampolgárságú férfit azonosíthattak a lipcsei drónincidens gyanúsítottjaiként",
+      "summary": "A német hatóságok egy fehérorosz–orosz, illetve egy lett–orosz kettős állampolgárságú férfit azonosítottak az augusztus 4-én történt lipcsei drónincidens feltételezett elkövetőiként.",
+      "date": "2026-09-02T18:35:24.000Z",
+      "url": "https://mandiner.hu/kulfold/2026/09/ket-kettos-allampolgarsagu-ferfit-azonosithattak-a-lipcsei-dronincidens-gyanusitottjaikent",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:10:00.156Z",
+      "backfilled": true
+    },
+    {
+      "slug": "budimpesta-2026-09-02-mandiner-negy-konyhai-dolgozot-bocsatottak-el-egy-79f580",
+      "title": "Négy konyhai dolgozót bocsátottak el egy gyömrői iskolában, miután élelmiszert vittek volna haza",
+      "summary": "Az ügyben a rendőrség nyomozást indított.",
+      "date": "2026-09-02T18:08:44.000Z",
+      "url": "https://mandiner.hu/belfold/2026/09/negy-konyhai-dolgozot-bocsatottak-el-egy-gyomroi-iskolaban-miutan-elelmiszert-vittek-volna-haza",
+      "source": "mandiner",
+      "sourceName": "Mandiner",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:10:00.156Z",
       "backfilled": true
     }
   ]

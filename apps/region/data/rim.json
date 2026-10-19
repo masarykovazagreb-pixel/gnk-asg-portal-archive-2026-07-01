@@ -4,7 +4,7 @@
   "lang": "it",
   "city": "Rim",
   "country": "Italija",
-  "updatedAt": "2026-10-19T21:03:56.791Z",
+  "updatedAt": "2026-10-19T21:12:40.402Z",
   "sources": [
     {
       "id": "ansa",
@@ -18,19 +18,19 @@
         "https://www.ansa.it/sito/notizie/politica/notizie.rss#1: HTTP 404",
         "https://www.ansa.it/sito/notizie/economia/notizie.rss#1: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:03:19.709Z"
+      "checkedAt": "2026-10-19T21:11:09.489Z"
     },
     {
       "id": "repubblica",
       "name": "la Repubblica",
       "url": "https://www.repubblica.it/rss/homepage/rss2.0.xml",
-      "ok": true,
-      "fetched": 2,
+      "ok": false,
+      "fetched": 0,
       "errors": [
         "wp:1: HTTP 404",
         "https://www.repubblica.it/rss/sport/rss2.0.xml#1: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:03:31.288Z"
+      "checkedAt": "2026-10-19T21:11:21.774Z"
     },
     {
       "id": "ilpost",
@@ -44,7 +44,7 @@
         "https://www.ilpost.it/sitemap.xml: HTTP 403",
         "https://www.ilpost.it/sitemap_index.xml: HTTP 403"
       ],
-      "checkedAt": "2026-10-19T21:03:42.611Z"
+      "checkedAt": "2026-10-19T21:11:57.878Z"
     },
     {
       "id": "sole24",
@@ -55,10 +55,88 @@
       "errors": [
         "wp:1: HTTP 403"
       ],
-      "checkedAt": "2026-10-19T21:03:56.791Z"
+      "checkedAt": "2026-10-19T21:12:14.572Z"
+    },
+    {
+      "id": "corriere",
+      "name": "Corriere della Sera",
+      "url": "https://www.corriere.it/rss/homepage.xml",
+      "ok": false,
+      "fetched": 0,
+      "errors": [
+        "wp:1: HTTP 404"
+      ],
+      "checkedAt": "2026-10-19T21:12:19.075Z"
+    },
+    {
+      "id": "lastampa",
+      "name": "La Stampa",
+      "url": "https://www.lastampa.it/rss",
+      "ok": true,
+      "fetched": 72,
+      "errors": [
+        "wp:1: HTTP 404"
+      ],
+      "checkedAt": "2026-10-19T21:12:25.339Z"
+    },
+    {
+      "id": "fanpage",
+      "name": "Fanpage.it",
+      "url": "https://www.fanpage.it/feed/",
+      "ok": false,
+      "fetched": 0,
+      "errors": [
+        "wp:1: HTTP 403",
+        "https://www.fanpage.it/feed/#1: HTTP 403",
+        "https://www.fanpage.it/sitemap.xml: HTTP 403",
+        "https://www.fanpage.it/sitemap_index.xml: HTTP 403"
+      ],
+      "checkedAt": "2026-10-19T21:12:25.708Z"
+    },
+    {
+      "id": "adnkronos",
+      "name": "Adnkronos",
+      "url": "https://www.adnkronos.com/rss",
+      "ok": true,
+      "fetched": 98,
+      "errors": [
+        "wp:1: HTTP 404",
+        "https://www.adnkronos.com/rss#1: nije feed",
+        "https://www.adnkronos.com/sitemap_index.xml: HTTP 404",
+        "https://www.adnkronos.com/news-sitemap.xml: HTTP 404"
+      ],
+      "checkedAt": "2026-10-19T21:12:40.402Z"
     }
   ],
   "items": [
+    {
+      "slug": "rim-2026-10-19-adnkronos-news-in-tempo-reale-ultime-notizie-e-video-327309",
+      "title": "News in tempo reale, ultime notizie e video | Adnkronos",
+      "summary": "",
+      "date": "2026-10-19T21:02:07.000Z",
+      "url": "https://www.adnkronos.com/",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.397Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-totti-il-28-maggio-e-stato-come-morire-un-5e3a2c",
+      "title": "Totti: \"Il 28 maggio è stato come morire, un addio forzato. Tornare alla Roma? Le cose si fanno insieme\"",
+      "summary": "",
+      "date": "2026-10-19T20:59:42.000Z",
+      "url": "https://www.adnkronos.com/sport/totti-addio-roma-gasperini-cena-champions_3vNv1H24KT2Tp684S7h9fr",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.397Z",
+      "backfilled": true
+    },
     {
       "slug": "rim-2026-10-19-repubblica-la-protesta-dei-tir-si-allarga-picchetti-0f4607",
       "title": "La protesta dei tir si allarga, picchetti alle porte di Roma: “Dobbiamo fermarci tutti”",
@@ -90,6 +168,20 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-19-adnkronos-manovra-ok-in-cdm-slitta-atteso-confronto-9e6523",
+      "title": "Manovra, ok in Cdm slitta: atteso confronto con Ue",
+      "summary": "",
+      "date": "2026-10-19T20:43:56.000Z",
+      "url": "https://www.adnkronos.com/economia/manovra-2027-consiglio-ministri-news-19-ottobre_1cKYCNM8y79U6x32JQkC1P",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:12:40.397Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-19-ansa-calcio-parma-torino-0-3-a77153",
       "title": "Calcio: Parma-Torino 0-3",
       "summary": "Apre e chiude Simeone che fa doppietta, in gol anche Adams",
@@ -101,6 +193,20 @@
       "author": "",
       "theme": "sport",
       "addedAt": "2026-10-19T20:54:28.220Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-nicla-ozenda-lascia-la-ruota-della-fortuna-8a63ea",
+      "title": "Nicla Ozenda lascia la Ruota della fortuna: \"Ho una cisti alle corde vocali, devo operarmi\"",
+      "summary": "",
+      "date": "2026-10-19T20:38:35.000Z",
+      "url": "https://www.adnkronos.com/spettacoli/la-ruota-della-fortuna-nicla-lascia-programma-cisti_4jejMgdfoMdAfep4Xi75NG",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:40.398Z",
       "backfilled": true
     },
     {
@@ -117,6 +223,34 @@
       "author": "di Manuela Perrone",
       "theme": "politika",
       "addedAt": "2026-10-19T20:54:47.232Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-lbt-unveils-new-30-mev-medical-cyclotron-fd2c79",
+      "title": "LBT Unveils New 30 MeV Medical Cyclotron Platform at EANM 2026",
+      "summary": "",
+      "date": "2026-10-19T20:33:31.000Z",
+      "url": "https://www.adnkronos.com/immediapress/pr-newswire/lbt-unveils-new-30-mev-medical-cyclotron-platform-at-eanm-2026_2GVSBq4jl23GFSqBea4jsc",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:40.398Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-processo-a-russell-brand-la-terza-3e1d93",
+      "title": "Processo a Russell Brand, la terza accusatrice in aula: \"Ho chiuso gli occhi e ho cercato di non essere lì\"",
+      "summary": "",
+      "date": "2026-10-19T20:24:23.000Z",
+      "url": "https://www.adnkronos.com/spettacoli/russell-brand-processo-terza-accusatrice-racconto_3joAsTGsxBMPQamlYk5Q20",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.398Z",
       "backfilled": true
     },
     {
@@ -197,6 +331,20 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-19-adnkronos-guerriglia-a-milano-trump-all-adnkronos-in-d09b3e",
+      "title": "Guerriglia a Milano, Trump all'AdnKronos: \"In Italia e Francia colpa dell'immigrazione, l'avevo detto\"",
+      "summary": "",
+      "date": "2026-10-19T19:58:00.000Z",
+      "url": "https://www.adnkronos.com/internazionale/esteri/trump-cortei-italia-francia-immigrazione_11ZHzKAOremFH6LZw1ni6R",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:40.398Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-19-repubblica-strage-russa-al-parcogiochi-a-kharkiv-trump-889ef1",
       "title": "Strage russa al parcogiochi a Kharkiv. Trump apre a Putin: “Negozio con lui su Ucraina e Iran”",
       "summary": "Kiev accusa gli alleati di non aver condiviso l’intelligence su uno dei raid di Mosca. Ma Rubio smentisce. Il capo della Casa Bianca: “Pronto al trilaterale con Vladimir e Xi”",
@@ -243,6 +391,20 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-19-adnkronos-basket-in-lutto-addio-alla-17enne-anna-f8e968",
+      "title": "Basket in lutto: addio alla 17enne Anna Mellano, aveva giocato in Nazionale",
+      "summary": "",
+      "date": "2026-10-19T19:42:19.000Z",
+      "url": "https://www.adnkronos.com/sport/basket-lutto-anna-mellano-17-anni_1Z12uuhblK5OxgJegtfI01",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.398Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-19-ansa-trump-zelensky-non-sa-di-cosa-parla-a3c0a3",
       "title": "Trump, 'Zelensky non sa di cosa parla, dovrebbe esserci un altro a negoziare'",
       "summary": "'Se mi avesse dato retta avrebbe concluso un accordo migliore'",
@@ -268,6 +430,20 @@
       "author": "",
       "theme": "ai",
       "addedAt": "2026-10-19T20:54:28.220Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-uber-archiviata-la-causa-dei-tassisti-a-0a1e6c",
+      "title": "Uber, archiviata la causa dei tassisti a Londra: chiedevano risarcimento da oltre 400 milioni di euro",
+      "summary": "",
+      "date": "2026-10-19T19:12:35.000Z",
+      "url": "https://www.adnkronos.com/internazionale/esteri/uber-archiviazione-causa-tassisti-londra_50msrTIukYB8DaK3HxnwJ6",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:12:40.398Z",
       "backfilled": true
     },
     {
@@ -319,6 +495,22 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-19-lastampa-il-torino-vince-3-0-a-parma-doppietta-di-de8fa0",
+      "title": "Il Torino vince 3-0 a Parma, doppietta di Simeone",
+      "summary": "I granata salgono a 10 punti in classifica, agganciando il Napoli al nono posto",
+      "date": "2026-10-19T18:54:00.000Z",
+      "url": "https://www.lastampa.it/sport/2026/10/19/news/il_torino_vince_3-0_a_parma_doppietta_di_simeone-15771395/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/sport"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:25.333Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-19-repubblica-la-ue-scrive-a-kkr-informazioni-inesatte-e-238828",
       "title": "La Ue scrive a Kkr: informazioni inesatte e fuorvianti sull’acquisto della rete Tim",
       "summary": "Il fondo Usa replica, noi sempre corretti, pronti a chiarire con Bruxelles i dubbi sull’operazione Fibercop",
@@ -348,6 +540,20 @@
       "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
       "theme": "ai",
       "addedAt": "2026-10-19T20:54:35.272Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-sondaggio-politico-fratelli-d-italia-primo-0393ca",
+      "title": "Sondaggio politico, Fratelli d'Italia primo partito ma campo largo vince",
+      "summary": "",
+      "date": "2026-10-19T18:35:48.000Z",
+      "url": "https://www.adnkronos.com/politica/sondaggio-tg-la7-elezioni-voto-oggi-19-ottobre_1cWhygOlHVHoUYtosL1eNb",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:12:40.398Z",
       "backfilled": true
     },
     {
@@ -397,6 +603,20 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-19-adnkronos-trump-la-risposta-all-adnkronos-violenza-in-85b42f",
+      "title": "Trump, la risposta all'Adnkronos: \"Violenza in Italia è legata all'immigrazione\" - Video",
+      "summary": "",
+      "date": "2026-10-19T18:23:00.000Z",
+      "url": "https://www.adnkronos.com/internazionale/esteri/trump-la-risposta-alladnkronos-violenza-in-italia-e-legata-allimmigrazione-video_5S4GLAgi9KgyfraidgV0oU",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.398Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-19-repubblica-mattarella-violenze-inaccettabili-piena-e89d9f",
       "title": "Mattarella: “Violenze inaccettabili, piena solidarietà alle forze dell’ordine”",
       "summary": "Il presidente della Repubblica da Imperia: “Serve un'attenta vigilanza in grado di contrastare violenze che sembrano esplodere in modo in atteso da soggetti inediti, condizione quest'ultima che pone interrogativi su cui riflettere sotto diversi profili\"",
@@ -429,6 +649,20 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-19-adnkronos-i-simpson-il-ritorno-a-sorpresa-riecco-apu-c5c001",
+      "title": "I Simpson, il ritorno a sorpresa: riecco Apu dopo quasi 10 anni",
+      "summary": "",
+      "date": "2026-10-19T18:15:23.000Z",
+      "url": "https://www.adnkronos.com/spettacoli/simpson-apu-episodio-2026_2IUmIW0eZJoaX0a742XwoN",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.398Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-19-repubblica-avvelenate-ricina-piante-trovate-a-pochi-6ba18f",
       "title": "Avvelenate ricina, piante trovate a pochi metri dal luogo di lavoro della cugina di Gianni Di Vita",
       "summary": "Gli uomini della squadra mobile di Campobasso hanno prelevato campioni di erba vicino all'istituto di Casacalenda dove lavora, come insegnante di sostegno, Laura Di Vita",
@@ -442,6 +676,62 @@
       "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:54:35.270Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-il-pediatra-no-alla-carne-di-maiale-in-12fca1",
+      "title": "Il pediatra: \"No alla carne di maiale in mensa scolastica se c'è chi non può mangiarla\"",
+      "summary": "",
+      "date": "2026-10-19T17:59:31.000Z",
+      "url": "https://www.adnkronos.com/salute/il-pediatra-no-alla-carne-di-maiale-in-mensa-scolastica-se-ce-chi-non-puo-mangiarla_3GqfcPdMWyIerwOnYlFASt",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:40.398Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-longevity-valley-nel-lazio-il-campus-992ab6",
+      "title": "Longevity Valley, nel Lazio il campus internazionale per la scienza della longevità e l'intelligenza artificiale",
+      "summary": "",
+      "date": "2026-10-19T17:55:47.000Z",
+      "url": "https://www.adnkronos.com/tecnologia/longevity-valley-nel-lazio-il-campus-internazionale-per-la-scienza-della-longevita-e-lintelligenza-artificiale_5st5zw3iWvGPoNRPuyDD4d",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:40.398Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-graudio-flash-delle-19-50-del-19-ottobre-2a6455",
+      "title": "GrAudio Flash delle 19:50 del 19 ottobre",
+      "summary": "",
+      "date": "2026-10-19T17:55:46.000Z",
+      "url": "https://www.adnkronos.com/graudio-flash-delle-19-50-del-19-ottobre_2p4bnTiZotzPigO7Jze68U",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.398Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-videogiochi-un-disegno-di-legge-vieta-la-919868",
+      "title": "Videogiochi, un disegno di legge vieta la vendita come licenze e non copie reali",
+      "summary": "",
+      "date": "2026-10-19T17:55:39.000Z",
+      "url": "https://www.adnkronos.com/tecnologia/videogiochi-un-disegno-di-legge-vieta-la-vendita-come-licenze-e-non-copie-reali_6lhxakXGaDsWaoQyId56SR",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.398Z",
       "backfilled": true
     },
     {
@@ -461,6 +751,62 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-19-adnkronos-a-milano-apre-la-mostra-prototipi-di-futuro-0bb1bb",
+      "title": "A Milano apre la mostra 'Prototipi di Futuro' di Fondazione Fiera Milano con Assolombarda",
+      "summary": "",
+      "date": "2026-10-19T17:47:43.000Z",
+      "url": "https://www.adnkronos.com/cultura/a-milano-apre-la-mostra-prototipi-di-futuro-di-fondazione-fiera-milano-con-assolombarda_6Ss14GGFURJrmfA1Bjxfct",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.398Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-rai-variazioni-programmi-tv-di-domani-039956",
+      "title": "Rai: variazioni programmi tv di domani",
+      "summary": "",
+      "date": "2026-10-19T17:46:56.000Z",
+      "url": "https://www.adnkronos.com/spettacoli/rai-variazioni-programmi-tv-di-domani_7MZFGLUjtGM7qAGWi1aIXf",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:40.398Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-un-punto-d-accesso-semplice-all-economia-2dae83",
+      "title": "Un punto d'accesso semplice all'economia, Banca d'Italia lancia il 'Portale delle statistiche'",
+      "summary": "",
+      "date": "2026-10-19T17:45:16.000Z",
+      "url": "https://www.adnkronos.com/economia/un-punto-daccesso-semplice-alleconomia-banca-ditalia-lancia-il-portale-delle-statistiche_3o6aVL3gMzleu4F2nmcECl",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:40.399Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-caro-carburanti-e-tir-in-sciopero-l-allarme-e37739",
+      "title": "Caro carburanti e tir in sciopero, l'allarme: \"Col blocco a rischio rifornimenti supermercati e negozi\"",
+      "summary": "",
+      "date": "2026-10-19T17:41:50.000Z",
+      "url": "https://www.adnkronos.com/economia/caro-carburanti-blocco-tir-emergenza-supermercati-sud_1EPbRl9JvKwAv61OcK6dfu",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.399Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-19-repubblica-cpr-in-albania-in-un-anno-solo-59-rimpatri-9291b2",
       "title": "Cpr in Albania, in un anno solo 59 rimpatri. E sono costati più di 68mila euro ciascuno",
       "summary": "L’analisi è di Action Aid che sui centri albanesi già un anno fa aveva presentato un esposto alla Corte dei Conti. Magi: “Gli italiani costretti a pagare la propaganda di Meloni”",
@@ -474,6 +820,34 @@
       "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
       "theme": "sigurnost",
       "addedAt": "2026-10-19T20:54:35.270Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-japan-s-empress-emerita-michiko-turns-92-115a34",
+      "title": "Japan's Empress Emerita Michiko Turns 92, Living Peaceful Life",
+      "summary": "",
+      "date": "2026-10-19T17:40:23.000Z",
+      "url": "https://www.adnkronos.com/internazionale/akieng/japans-empress-emerita-michiko-turns-92-living-peaceful-life_1epmCnXIoi2KwoKvH3vOQE",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.399Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-bigmama-chi-piange-per-il-lavoro-chiede-una-e45177",
+      "title": "BigMama: \"Chi piange per il lavoro chiede una risposta, il Sud non può essere sempre ignorato\"",
+      "summary": "",
+      "date": "2026-10-19T17:39:00.000Z",
+      "url": "https://www.adnkronos.com/spettacoli/bigmama-chi-piange-per-il-lavoro-chiede-una-risposta-il-sud-non-puo-essere-sempre-ignorato_6DqXZd0lKZ2mSIXr8VUUOk",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:12:40.398Z",
       "backfilled": true
     },
     {
@@ -509,6 +883,62 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-19-adnkronos-rubrica-delle-buone-notizie-del-19-ottobre-779fd1",
+      "title": "Rubrica delle buone notizie del 19 ottobre",
+      "summary": "",
+      "date": "2026-10-19T17:36:12.000Z",
+      "url": "https://www.adnkronos.com/rubrica-delle-buone-notizie-del-19-ottobre_6oTIN7jGU5O973m3ryrxVC",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.399Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-graudio-edizione-delle-19-30-del-19-ottobre-390ca3",
+      "title": "GrAudio edizione delle 19:30 del 19 ottobre",
+      "summary": "",
+      "date": "2026-10-19T17:36:11.000Z",
+      "url": "https://www.adnkronos.com/graudio-edizione-delle-19-30-del-19-ottobre_4sdRW2lNE1jPEZNEWXGQYE",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.399Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-festa-del-cinema-idda-il-film-che-mette-117641",
+      "title": "Festa del Cinema, 'Idda': il film che mette insieme per la prima volta Tecla Insolia e Romana Maggiora Vergano",
+      "summary": "",
+      "date": "2026-10-19T17:32:35.000Z",
+      "url": "https://www.adnkronos.com/spettacoli/festa-cinema-roma-idda-irene-dionisio-alice-nella-citta_6j3r1PUuDtQhDWnLGeqbwE",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.399Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-alla-festa-del-cinema-di-roma-il-gruppo-fs-2d93d2",
+      "title": "Alla Festa del Cinema di Roma il Gruppo Fs presenta il nuovo spot fra treni d’epoca e memoria storica",
+      "summary": "",
+      "date": "2026-10-19T17:29:27.000Z",
+      "url": "https://www.adnkronos.com/spettacoli/alla-festa-del-cinema-di-roma-il-gruppo-fs-presenta-il-nuovo-spot-fra-treni-depoca-e-memoria-storica_5YYbRccsDYYRHXvOhNEKvv",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:40.399Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-19-ansa-questa-notte-coprifuoco-a-parigi-a-place-de-9bed5d",
       "title": "Questa notte coprifuoco a Parigi a Place de la Republique",
       "summary": "Dalle 23 fino alle 6 del mattino, la misura riguarda anche altre zone",
@@ -523,6 +953,20 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-19-adnkronos-dal-tacchino-alla-lonza-e-al-vitello-f0158c",
+      "title": "Dal tacchino alla lonza e al vitello tonnato, maxi richiamo per Listeria",
+      "summary": "",
+      "date": "2026-10-19T17:22:52.000Z",
+      "url": "https://www.adnkronos.com/cronaca/richiamo-listeria-vitello-tonnato-lonza-tacchino_53Rx2NgaKsFdoaiL7E1vC1",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:40.399Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-19-ansa-presidio-centrodestra-a-milano-momenti-di-f9bfd6",
       "title": "Presidio centrodestra a Milano, momenti di tensione con alcuni giovani",
       "summary": "Spintoni, urla e petardi",
@@ -534,6 +978,34 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:54:28.221Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-antonella-elia-operata-al-gemelli-il-video-fcd691",
+      "title": "Antonella Elia operata al Gemelli, il video dopo l'intervento: \"Era un tumore borderline, ora è tutto ok\"",
+      "summary": "",
+      "date": "2026-10-19T17:15:51.000Z",
+      "url": "https://www.adnkronos.com/cronaca/antonella-elisa-operata-tumore-come-sta_2reTvhAXjWoMtIQaSQKSMs",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:12:40.399Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-casa-spaziani-testa-confedilizia-dalla-488ad6",
+      "title": "Casa, Spaziani Testa (Confedilizia): \"Dalla manovra risposte per accesso e incentivi\"",
+      "summary": "",
+      "date": "2026-10-19T17:14:07.000Z",
+      "url": "https://www.adnkronos.com/economia/casa-spaziani-testa-confedilizia-dalla-manovra-risposte-per-accesso-e-incentivi_2Dr1dXHFJLoJ3JqNN8r3yk",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.399Z",
       "backfilled": true
     },
     {
@@ -567,6 +1039,20 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-19-adnkronos-damien-comolli-dopo-la-juve-e-il-nuovo-66486e",
+      "title": "Damien Comolli dopo la Juve è il nuovo Presidente e Ad del Pisa: \"C'è un potenziale di crescita importante\"",
+      "summary": "",
+      "date": "2026-10-19T17:08:48.000Z",
+      "url": "https://www.adnkronos.com/sport/comolli-dopo-juve-arriva-al-pisa-di-knaster_oVoqvGslNQEiDZXqOYxu1",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.399Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-19-repubblica-scuola-devastata-a-rozzano-imprenditore-d3382c",
       "title": "Scuola devastata a Rozzano, imprenditore egiziano ripara i danni: Magdy era cresciuto in comunità",
       "summary": "Don Massimo Mapelli, direttore Caritas sud Milano, racconta la storia di uno dei “ragazzini stranieri” che ha cresciuto nella sua struttura",
@@ -580,6 +1066,104 @@
       "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:54:35.270Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-garavaglia-in-campo-ora-do-voce-a-chi-non-561e97",
+      "title": "Garavaglia in campo: \"Ora do voce a chi non ce l'ha, dopo il voto Congresso con tutti i militanti e lì vinca il migliore'",
+      "summary": "",
+      "date": "2026-10-19T17:05:00.000Z",
+      "url": "https://www.adnkronos.com/politica/garavaglia-sfida-salvini-ora-do-voce-a-chi-non-ce-lha-dopo-il-voto-congresso-con-tutti-i-militanti-e-li-vinca-il-migliore_1DsnJuVmRZq4UbYgygMClr",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.399Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-japan-s-hangai-kawamoto-clinch-gold-at-b8c51b",
+      "title": "Japan's Hangai, Kawamoto Clinch Gold at Asian Para Games",
+      "summary": "",
+      "date": "2026-10-19T17:04:12.000Z",
+      "url": "https://www.adnkronos.com/internazionale/akieng/japans-hangai-kawamoto-clinch-gold-at-asian-para-games_OG0AmsGtrcqllDia1fsdO",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:40.399Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-richard-avedon-e-la-sua-spoon-river-del-a88ce1",
+      "title": "Richard Avedon e la sua Spoon River del West, al Palaexpo le foto di una leggenda",
+      "summary": "",
+      "date": "2026-10-19T17:04:00.000Z",
+      "url": "https://www.adnkronos.com/cultura/richard-avedon-e-la-sua-spoon-river-del-west-al-palaexpo-le-foto-di-una-leggenda_Rz32MfHajmhJ3wr60eiKE",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.399Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-musetti-vince-derby-con-arnaldi-e-vola-al-d569ca",
+      "title": "Musetti vince derby con Arnaldi e vola al secondo turno del torneo Atp di Lione",
+      "summary": "",
+      "date": "2026-10-19T17:02:00.000Z",
+      "url": "https://www.adnkronos.com/sport/musetti-arnaldi-vittoria-derby-lione_34ZgiIW5wP6ROdsB86kWFP",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.398Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-famiglia-nel-bosco-primo-weekend-a-casa-per-c22918",
+      "title": "Famiglia nel bosco, primo weekend a casa per i bimbi. Pillon: \"Strafelici ma per loro è molto faticoso\"",
+      "summary": "",
+      "date": "2026-10-19T16:56:08.000Z",
+      "url": "https://www.adnkronos.com/cronaca/famiglia-nel-bosco-bimbi-genitori-weekend_2iNzmArPjQStweQBLBtl3P",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.399Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-graudio-flash-delle-18-50-del-19-ottobre-acf1f9",
+      "title": "GrAudio Flash delle 18:50 del 19 ottobre",
+      "summary": "",
+      "date": "2026-10-19T16:55:37.000Z",
+      "url": "https://www.adnkronos.com/graudio-flash-delle-18-50-del-19-ottobre_73cAsf2jw8z0MCJgS2xAMo",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.399Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-si-apre-a-hangzhou-il-4-forum-di-liangzhu-e93ed4",
+      "title": "Si apre a Hangzhou il 4° Forum di Liangzhu per favorire il dialogo globale sul patrimonio culturale",
+      "summary": "",
+      "date": "2026-10-19T16:55:12.000Z",
+      "url": "https://www.adnkronos.com/immediapress/globenewswire/si-apre-a-hangzhou-il-4-forum-di-liangzhu-per-favorire-il-dialogo-globale-sul-patrimonio-culturale_6BzOr7vvYhJVxss4whkdHi",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.399Z",
       "backfilled": true
     },
     {
@@ -599,6 +1183,20 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-19-adnkronos-procomer-and-18-costa-rican-companies-953143",
+      "title": "PROCOMER and 18 Costa Rican companies pursue new business opportunities for the food industry at SIAL Paris",
+      "summary": "",
+      "date": "2026-10-19T16:53:40.000Z",
+      "url": "https://www.adnkronos.com/immediapress/pr-newswire/procomer-and-18-costa-rican-companies-pursue-new-business-opportunities-for-the-food-industry-at-sial-paris_4VtogoUmZazZkc402U1uyQ",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:12:40.399Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-19-repubblica-la-russa-no-a-vannacci-salvini-offri-a-8e450a",
       "title": "La Russa: “No a Vannacci, Salvini offrì a Meloni di fare il ministro degli Esteri nel Conte I”",
       "summary": "Il presidente del Senato è stato ospite di Fedez e Mr. Marra a Pulp Podcast: “Il busto di Mussolini è un regalo di mio padre”",
@@ -612,6 +1210,34 @@
       "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
       "theme": "sigurnost",
       "addedAt": "2026-10-19T20:54:35.270Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-a-roma-l-evento-comunicare-l-abitare-2026-d22122",
+      "title": "A Roma l'evento Comunicare l'Abitare 2026",
+      "summary": "",
+      "date": "2026-10-19T16:48:37.000Z",
+      "url": "https://www.adnkronos.com/speciali/comunicare_labitare_2026/",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.399Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-magaldi-kyoto-club-la-transizione-be659f",
+      "title": "Magaldi (Kyoto Club): \"La transizione energetica non può essere solo cinese\"",
+      "summary": "",
+      "date": "2026-10-19T16:47:14.000Z",
+      "url": "https://www.adnkronos.com/economia/magaldi-kyoto-club-la-transizione-energetica-non-puo-essere-solo-cinese_5oygQLOIgfASuNyvbFxv7e",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "addedAt": "2026-10-19T21:12:40.399Z",
       "backfilled": true
     },
     {
@@ -663,6 +1289,76 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-19-adnkronos-comunicare-l-abitare-a-roma-la-sfida-di-una-febc37",
+      "title": "Comunicare l’Abitare, a Roma la sfida di una casa migliore e più accessibile",
+      "summary": "",
+      "date": "2026-10-19T16:45:02.000Z",
+      "url": "https://www.adnkronos.com/economia/comunicare-labitare-a-roma-la-sfida-di-una-casa-migliore-e-piu-accessibile_6ndMnzCGLNHhn6gkM4Ok8Q",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.399Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-marco-liorni-torna-con-l-eredita-al-via-0a082e",
+      "title": "Marco Liorni torna con L'Eredità: al via stasera l'edizione numero 25 dello show di Rai 1",
+      "summary": "",
+      "date": "2026-10-19T16:43:04.000Z",
+      "url": "https://www.adnkronos.com/spettacoli/marco-liorni-leredita-nuove-professoresse-chi-sono_MSJax4L88tICxe9ubxdfC",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:40.400Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-guerriglia-a-milano-anche-oggi-tensione-in-9c368c",
+      "title": "Guerriglia a Milano, anche oggi tensione in città. Mattarella: \"Violenze inaccettabili\". In arrivo 500 militari in più, domani Cdm",
+      "summary": "",
+      "date": "2026-10-19T16:43:00.000Z",
+      "url": "https://www.adnkronos.com/politica/mattarella-guerriglia-milano-altre-citta-cdm-domani_3Ja2YVqwCiSZOwLZcdQxlq",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:12:40.398Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-guidesi-regione-lombardia-fabbrichiamo-adbdf4",
+      "title": "Guidesi (Regione Lombardia): \"Fabbrichiamo intelligenza artificiale per autosostenibilità\"",
+      "summary": "",
+      "date": "2026-10-19T16:38:05.000Z",
+      "url": "https://www.adnkronos.com/economia/guidesi-regione-lombardia-fabbrichiamo-intelligenza-artificiale-per-autosostenibilita_2RXAkvfhldXDlfp4PpUuYp",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:40.400Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-japan-s-keidanren-to-formulate-vision-for-2434ca",
+      "title": "Japan's Keidanren to Formulate Vision for 2050",
+      "summary": "",
+      "date": "2026-10-19T16:38:03.000Z",
+      "url": "https://www.adnkronos.com/internazionale/akieng/japans-keidanren-to-formulate-vision-for-2050_3v7Zo6BJ4wUODAAJ7CPeA8",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.400Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-19-repubblica-il-papa-sente-zelensky-sulla-crisi-cbd42b",
       "title": "Il Papa sente Zelensky sulla crisi umanitaria nella città di Oleshky: “Collaborazione per la tregua”",
       "summary": "Nei giorni scorsi aveva sentito Putin per lo stesso motivo, adesso si rivolge al presidente ucraino e sottolinea la necessità di uno sforzo comune per “consentire l’arrivo di aiuti alimentari e sanitari e l’evacuazione volontaria e sicura della popolazione civile”",
@@ -677,6 +1373,34 @@
       "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
       "theme": "ai",
       "addedAt": "2026-10-19T20:54:35.270Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-graudio-edizione-delle-18-30-del-19-ottobre-afff60",
+      "title": "GrAudio edizione delle 18:30 del 19 ottobre",
+      "summary": "",
+      "date": "2026-10-19T16:35:59.000Z",
+      "url": "https://www.adnkronos.com/graudio-edizione-delle-18-30-del-19-ottobre_1gksPhk1EvjMR7QzWYwXF6",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.400Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-i-sauditi-rinviano-al-2027-fii-la-future-23ac1c",
+      "title": "I sauditi rinviano al 2027 FII, la Future Investment Initiative",
+      "summary": "",
+      "date": "2026-10-19T16:34:13.000Z",
+      "url": "https://www.adnkronos.com/economia/i-sauditi-rinviano-al-2027-fii-la-future-investment-initiative_ZJQ767qVeW1aEtqcYaDiY",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.400Z",
       "backfilled": true
     },
     {
@@ -713,6 +1437,62 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-19-adnkronos-da-kylie-minogue-a-magic-johnson-fino-a-310da5",
+      "title": "Da Kylie Minogue a Magic Johnson fino a Leone XIV, parlare della malattia aiuta la prevenzione? L'analisi",
+      "summary": "",
+      "date": "2026-10-19T16:27:04.000Z",
+      "url": "https://www.adnkronos.com/salute/da-kylie-minogue-a-magic-johnson-fino-a-leone-xiv-parlare-della-malattia-aiuta-la-prevenzione-lanalisi_4WRvQGzlTJ8S7xvSRQU7JD",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:40.400Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-tumori-superare-i-muri-invisibili-che-472750",
+      "title": "Tumori, superare i muri invisibili che proteggono il cancro, la sfida della meccanobiologia oncologica",
+      "summary": "",
+      "date": "2026-10-19T16:24:07.000Z",
+      "url": "https://www.adnkronos.com/salute/tumori-superare-i-muri-invisibili-che-proteggono-il-cancro-la-sfida-della-meccanobiologia-oncologica_2MTEjqvQlg02LXQo1nyO8h",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.400Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-business-care-international-award-la-9a-4b86d6",
+      "title": "Business care international award, la 9a edizione a New York il 18 e il 19 novembre",
+      "summary": "",
+      "date": "2026-10-19T16:22:13.000Z",
+      "url": "https://www.adnkronos.com/lavoro/dati/business-care-international-award-la-9a-edizione-a-new-york-il-18-e-il-19-novembre_4qjuyR3SpmL6ycfyWROGVK",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.400Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-fisco-un-motore-di-ricerca-per-i-testi-d8030e",
+      "title": "Fisco, un motore di ricerca per i testi unici: i primi dati sulle norme più cercate su TrovaTu",
+      "summary": "",
+      "date": "2026-10-19T16:22:03.000Z",
+      "url": "https://www.adnkronos.com/economia/fisco-un-motore-di-ricerca-per-i-testi-unici-i-primi-dati-sulle-norme-piu-cercate-su-trovatu_3Lg2mHZjXDtfIB1L8xXEsF",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "addedAt": "2026-10-19T21:12:40.400Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-19-repubblica-melania-rea-dal-femminicidio-alla-serie-il-a574ac",
       "title": "“Melania Rea”, dal femminicidio alla serie. Il fratello: “La sua memoria aiuti a capire il pericolo”",
       "summary": "Presentata alla Festa del Cinema di Roma, accompagnata dall’emozionante messaggio di Michele Rea: “Lei era sogni, sorriso, affetti. E il suo futuro. Vorrei fosse ricordata così, prima ancora che per il modo in cui le è stata tolta la vita”",
@@ -729,6 +1509,106 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-19-adnkronos-tax-revenue-infographic-777845",
+      "title": "Tax Revenue (infographic)",
+      "summary": "",
+      "date": "2026-10-19T16:12:50.000Z",
+      "url": "https://www.adnkronos.com/internazionale/akieng/tax-revenue-infographic_6zgwj5YabatEBYVezopnq9",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:12:40.400Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-le-ultime-parole-del-prete-ucciso-da-una-dd8339",
+      "title": "Le ultime parole del prete ucciso da una croce durante la messa: \"Un giorno anche noi moriremo\"",
+      "summary": "",
+      "date": "2026-10-19T16:10:15.000Z",
+      "url": "https://www.adnkronos.com/internazionale/esteri/prete-ucciso-croce-messa-ultime-parole_6DI5Ut8SpCPgZpqETjRP2Q",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.400Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-papa-leone-l-oncopneumologa-ora-si-aprono-3db155",
+      "title": "Papa Leone, l'oncopneumologa: \"Ora si aprono due scenari, l'esame istologico indirizzerà per prossime tappe\"",
+      "summary": "",
+      "date": "2026-10-19T16:07:00.000Z",
+      "url": "https://www.adnkronos.com/cronaca/papa-leone-operato-polmone-scenari-intervista_1PPg5exr6ztzpNNcKrk70U",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:12:40.400Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-taisch-made-ai-e-una-sfida-difficile-da-317b8e",
+      "title": "Taisch (Made): \"Ai è una sfida difficile da comprendere\"",
+      "summary": "",
+      "date": "2026-10-19T16:04:09.000Z",
+      "url": "https://www.adnkronos.com/economia/taisch-made-ai-e-una-sfida-difficile-da-comprendere_1PU9lYPYBGpMYZZqjy1Afv",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:40.400Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-via-libera-allo-scostamento-di-bilancio-bed170",
+      "title": "Via libera allo scostamento di bilancio, verso la definizione della manovra",
+      "summary": "",
+      "date": "2026-10-19T16:02:33.000Z",
+      "url": "https://www.adnkronos.com/via-libera-allo-scostamento-di-bilancio-verso-la-definizione-della-manovra_2sTSeiCBANKlFpvqfsVk2B",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.400Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-furto-alla-reggia-di-venaria-reale-rubati-9303ac",
+      "title": "Furto alla Reggia di Venaria Reale, rubati 26 orologi antichi: un colpo da oltre 150.000 euro",
+      "summary": "Si tratta di pezzi di grande valore storico e artistico. I ladri erano almeno in tre e sono fuggiti a piedi, indagano i carabinieri",
+      "date": "2026-10-19T16:00:00.000Z",
+      "url": "https://www.lastampa.it/torino/2026/10/19/news/furto_orologi_reggia_venaria_reale_100000_euro-15771241/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/torino"
+      ],
+      "author": "Gianni Giacomino, Caterina Stamin",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:12:25.333Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-festa-del-cinema-di-roma-rocky-sono-io-il-2f1a55",
+      "title": "Festa del Cinema di Roma, 'Rocky sono io': il film che racconta la nascita del mito Stallone",
+      "summary": "",
+      "date": "2026-10-19T15:59:59.000Z",
+      "url": "https://www.adnkronos.com/spettacoli/festa-cinema-roma-presentato-rocky-sono-io-con-anthony-ippolito_3vJJCmzlOvQ7OYGZqngNa4",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.400Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-19-sole24-milano-resta-la-paura-molti-negozi-del-44419a",
       "title": "Milano, resta la paura: molti negozi del centro chiusi in anticipo. Francia, in vendita online gli articoli rubati",
       "summary": "Dopo la devastazione dello scorso fine settimana nella città di Milano , oggi – lunedì 19 ottobre – molti negozi del lusso hanno abbassato le loro serrande ...",
@@ -742,6 +1622,514 @@
       "author": "di Vittoria Belluschi",
       "theme": "sigurnost",
       "addedAt": "2026-10-19T20:54:47.232Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-francesco-colella-dagli-autotrasportatori-8bc7f7",
+      "title": "Francesco Colella: \"Dagli autotrasportatori alle violenze di piazza, indignato per il racconto di alcuni media\" - Video",
+      "summary": "",
+      "date": "2026-10-19T15:58:00.000Z",
+      "url": "https://www.adnkronos.com/spettacoli/festa-cinema-roma-sciopero-autotrasportatori-francesco-colella-video_1XRTDuRsBPV3LsowX6fIc0",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:40.398Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-guerriglia-a-milano-pm-da-arrestati-azioni-fd7567",
+      "title": "Guerriglia a Milano, pm: \"Da arrestati azioni distruttive di rara violenza\"",
+      "summary": "",
+      "date": "2026-10-19T15:57:00.000Z",
+      "url": "https://www.adnkronos.com/cronaca/guerriglia-milano-richiesta-carcere-arrestati_6FVDEerSXxPCyLCNsDexbO",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:12:40.400Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-graudio-flash-delle-17-50-del-19-ottobre-526ccf",
+      "title": "GrAudio Flash delle 17:50 del 19 ottobre",
+      "summary": "",
+      "date": "2026-10-19T15:55:26.000Z",
+      "url": "https://www.adnkronos.com/graudio-flash-delle-17-50-del-19-ottobre_3T51IEoUcal0x7zeFbZYqY",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.400Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-japan-eyeing-paper-digital-hybrid-textbooks-1b07c2",
+      "title": "Japan Eyeing Paper-Digital Hybrid Textbooks as Standard",
+      "summary": "",
+      "date": "2026-10-19T15:53:50.000Z",
+      "url": "https://www.adnkronos.com/internazionale/akieng/japan-eyeing-paper-digital-hybrid-textbooks-as-standard_28n8xLRseXwKH35CH2Iw5a",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.400Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-proteste-e-cortei-lo-sfogo-di-marracash-sui-944de8",
+      "title": "Proteste e cortei, lo sfogo di Marracash sui social: \"Con le buone non cambi le cose\"",
+      "summary": "",
+      "date": "2026-10-19T15:53:24.000Z",
+      "url": "https://www.adnkronos.com/spettacoli/marracash-scontri-cortei_6oaZwok04vDtg51QW3XEo1",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:40.400Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-russia-government-reshuffle-premier-s-cc5adb",
+      "title": "Russia, government reshuffle, Premier's confidant out, Siluanov also returns as Deputy Premier",
+      "summary": "",
+      "date": "2026-10-19T15:49:55.000Z",
+      "url": "https://www.adnkronos.com/internazionale/akieng/russia-government-reshuffle-premiers-confidant-out-siluanov-also-returns-as-deputy-premier_4l4ctOkIfP3r1sYIRhgOhP",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.400Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-rossi-perestanovki-v-pravitel-stve-658466",
+      "title": "Россия, перестановки в правительстве, доверенное лицо премьера уходит, Силуанов снова становится вице-премьером",
+      "summary": "",
+      "date": "2026-10-19T15:49:53.000Z",
+      "url": "https://www.adnkronos.com/internazionale/russian/_4veFrdQ1uTN9Gtcnz7hqqd",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.400Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-osvrt-7de541",
+      "title": "ロシア、内閣改造、首相の側近が辞任、シルアノフ氏が副首相に復帰",
+      "summary": "",
+      "date": "2026-10-19T15:49:49.000Z",
+      "url": "https://www.adnkronos.com/internazionale/japanese/_4oLRpILGGf16LaKLAj0y0h",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.400Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-a-milano-l-evento-ai-e-physical-ai-l-3852ea",
+      "title": "A Milano l'evento 'AI e Physical AI, l’impatto nel mondo reale'",
+      "summary": "",
+      "date": "2026-10-19T15:49:44.000Z",
+      "url": "https://www.adnkronos.com/speciali/ai_e_physical_ai/",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:40.401Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-usa-midterm-obsession-how-iran-wants-to-d26a9d",
+      "title": "USA, 'Midterm obsession', how Iran wants to punish Trump and warn future American leaders",
+      "summary": "",
+      "date": "2026-10-19T15:49:16.000Z",
+      "url": "https://www.adnkronos.com/internazionale/akieng/usa-midterm-obsession-how-iran-wants-to-punish-trump-and-warn-future-american-leaders_3TW8x9TJuoqlBrs0Kt6MXv",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.401Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-ssa-oderzimost-promezutocn-mi-v-borami-tak-6a3a9d",
+      "title": "США, 'одержимость' промежуточными выборами: так Иран хочет наказать Трампа и предупредить следующих американских лидеров",
+      "summary": "",
+      "date": "2026-10-19T15:49:13.000Z",
+      "url": "https://www.adnkronos.com/internazionale/russian/_3SQaCTNw5gghzQfhJbdYb7",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.401Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-osvrt-6ebccd",
+      "title": "米国、中間選挙への「執着」、イランはこうしてトランプを罰し、次期米指導者に警告したい",
+      "summary": "",
+      "date": "2026-10-19T15:49:12.000Z",
+      "url": "https://www.adnkronos.com/internazionale/japanese/_3UVPlYHrUbQ1qA52nl8enf",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.401Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-sweden-political-deadlock-after-elections-5f4ccc",
+      "title": "Sweden, political deadlock after elections, centrist leader tasked with forming government",
+      "summary": "",
+      "date": "2026-10-19T15:48:25.000Z",
+      "url": "https://www.adnkronos.com/internazionale/akieng/sweden-political-deadlock-after-elections-centrist-leader-tasked-with-forming-government_3a3AugQgSwQPDjMIAkOpuN",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.401Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-sveci-politiceski-tupik-posle-v-borov-3763e2",
+      "title": "Швеция, политический тупик после выборов, центристскому лидеру поручено сформировать правительство",
+      "summary": "",
+      "date": "2026-10-19T15:48:22.000Z",
+      "url": "https://www.adnkronos.com/internazionale/russian/_3hLIwkj5BGhwR1PP7Dymt6",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.401Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-osvrt-ad61f6",
+      "title": "スウェーデン、選挙後の政治的膠着、中道派リーダーが組閣を委任",
+      "summary": "",
+      "date": "2026-10-19T15:48:19.000Z",
+      "url": "https://www.adnkronos.com/internazionale/japanese/_38wjVSknNFASMobGC1gOmt",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.401Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-brazil-judges-ultimatum-to-meta-equal-10082d",
+      "title": "Brazil, judges' ultimatum to Meta, 'equal treatment between Lula and Bolsonaro or risk of fine'",
+      "summary": "",
+      "date": "2026-10-19T15:47:47.000Z",
+      "url": "https://www.adnkronos.com/internazionale/akieng/brazil-judges-ultimatum-to-meta-equal-treatment-between-lula-and-bolsonaro-or-risk-of-fine_2lY7cyH2qCQVrzJduemNG4",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.401Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-brazili-ul-timatum-sude-meta-ravnoe-904bb4",
+      "title": "Бразилия, ультиматум судей Meta: 'равное отношение к Луле и Болсонару или риск штрафа'",
+      "summary": "",
+      "date": "2026-10-19T15:47:45.000Z",
+      "url": "https://www.adnkronos.com/internazionale/russian/meta_2nzNrMWU1X3nC5uXg7tgj2",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.401Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-osvrt-93f228",
+      "title": "ブラジル、メタへの裁判官の最後通告、「ルーラとボルソナーロ間の平等な扱い、さもなくば罰金のリスク」",
+      "summary": "",
+      "date": "2026-10-19T15:47:43.000Z",
+      "url": "https://www.adnkronos.com/internazionale/japanese/_2lnDBYnEgtpvovfYZ0ASuJ",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.401Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-mayor-of-paris-centre-curfew-and-army-614304",
+      "title": "Mayor of Paris Centre, 'curfew and army intervention requested'",
+      "summary": "",
+      "date": "2026-10-19T15:47:08.000Z",
+      "url": "https://www.adnkronos.com/internazionale/akieng/mayor-of-paris-centre-curfew-and-army-intervention-requested_1ESfIWKfiZ12J8VdNGjNrj",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:12:40.401Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-m-r-parizskogo-centra-zaprosil-komendantski-71d0b9",
+      "title": "Мэр Парижского центра: \"Запросил комендантский час и вмешательство армии\"",
+      "summary": "",
+      "date": "2026-10-19T15:47:06.000Z",
+      "url": "https://www.adnkronos.com/internazionale/russian/_1Ct55cCt2d65c3VbHhIWmZ",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.401Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-osvrt-02e8e6",
+      "title": "パリ・センター区長、「外出禁止令と軍の介入を要請」",
+      "summary": "",
+      "date": "2026-10-19T15:47:04.000Z",
+      "url": "https://www.adnkronos.com/internazionale/japanese/_1FT1dGhTL1m6sZeI4Kea3T",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.401Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-biffi-assolombarda-con-officina-ai-centrali-224a38",
+      "title": "Biffi (Assolombarda): \"Con Officina Ai centrali in automazione e robotica all’avanguardia\"",
+      "summary": "",
+      "date": "2026-10-19T15:44:49.000Z",
+      "url": "https://www.adnkronos.com/economia/biffi-assolombarda-con-officina-ai-centrali-in-automazione-e-robotica-allavanguardia_7jgrO2yNFZfeIcHYUDWJdf",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:40.401Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-sanremo-giovani-selezionati-i-60-per-le-ab7c2d",
+      "title": "Sanremo giovani, selezionati i 60 per le audizioni: presenza femminile da record",
+      "summary": "",
+      "date": "2026-10-19T15:44:32.000Z",
+      "url": "https://www.adnkronos.com/spettacoli/sanremo-giovani-audizioni-presenza-record-femminile_eOUEonXiJQl9DrEsvBJ2I",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.401Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-graudio-edizione-delle-17-30-del-19-ottobre-ec479f",
+      "title": "GrAudio edizione delle 17:30 del 19 ottobre",
+      "summary": "",
+      "date": "2026-10-19T15:35:48.000Z",
+      "url": "https://www.adnkronos.com/graudio-edizione-delle-17-30-del-19-ottobre_5SVNGwCz4uxIqDW1UzP5de",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.401Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-scontri-la-liceale-giulia-difende-i-11ca24",
+      "title": "Scontri, la liceale Giulia difende i violenti: “Non li condanno, in Francia e Spagna ha funzionato”",
+      "summary": "Torino, la studentessa: «Sbagliato dividersi in bravi e cattivi»",
+      "date": "2026-10-19T15:32:00.000Z",
+      "url": "https://www.lastampa.it/torino/2026/10/19/news/scontri-liceale-giulia-violenza-proteste-francia-spagna-15771200/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/torino"
+      ],
+      "author": "Chiara Comai",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:25.332Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-sheglam-accelera-la-crescita-nel-mercato-2bd383",
+      "title": "Sheglam accelera la crescita nel mercato italiano",
+      "summary": "",
+      "date": "2026-10-19T15:31:04.000Z",
+      "url": "https://www.adnkronos.com/economia/sheglam-accelera-la-crescita-nel-mercato-italiano_2NKxCKDiAGpzVu8NYFUndi",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-19T21:12:40.401Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-champions-league-la-roma-contro-lo-slovan-ada33a",
+      "title": "Champions League: la Roma contro lo Slovan vede la prima vittoria",
+      "summary": "",
+      "date": "2026-10-19T15:30:02.000Z",
+      "url": "https://www.adnkronos.com/sport/champions-league-la-roma-contro-lo-slovan-vede-la-prima-vittoria_1bRQy2OI2h4olI6MkhXQqR",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:12:40.401Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-turismo-isole-eolie-non-solo-estate-cultura-4070ad",
+      "title": "Turismo Isole Eolie: non solo estate, cultura e imprese per un'accoglienza tutto l'anno",
+      "summary": "",
+      "date": "2026-10-19T15:28:19.000Z",
+      "url": "https://www.adnkronos.com/cronaca/turismo-isole-eolie-non-solo-estate-cultura-e-imprese-per-unaccoglienza-tutto-lanno_LAe67ieB1OwbMxftoAo6R",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.401Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-il-fratello-di-melania-rea-alla-festa-del-f437d0",
+      "title": "Il fratello di Melania Rea alla Festa del Cinema: \"Vorrei che fosse ricordata per i suoi sogni, non per la cronaca\"",
+      "summary": "",
+      "date": "2026-10-19T15:25:51.000Z",
+      "url": "https://www.adnkronos.com/spettacoli/festa-cinema-roma-presentata-serie-melania-rea-dal-6-novembre-su-hbo-max_4g9ttK6XNmU1RMaXDAmXEo",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:12:40.401Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-le-pappardelle-tornano-in-tv-a-la-volta-5644a5",
+      "title": "Le Pappardelle tornano in tv a La Volta Buona: \"Ecco cosa faremo con i soldi vinti a Reazione a Catena\"",
+      "summary": "",
+      "date": "2026-10-19T15:19:58.000Z",
+      "url": "https://www.adnkronos.com/spettacoli/pappardelle-reazione-a-catena-pino-insegno-soldi_6s6LlqioOS8yMfZSG9LRKV",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.401Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-passeggera-bloccata-nel-bagno-dell-aereo-29a50b",
+      "title": "Passeggera bloccata nel bagno dell'aereo: sfiorato l'atterraggio d'emergenza negli Usa",
+      "summary": "",
+      "date": "2026-10-19T15:14:36.000Z",
+      "url": "https://www.adnkronos.com/internazionale/esteri/passeggera-bloccata-bagno-aereo_4KsrIjssrImGYQeieB0uDG",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:12:40.402Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-je-so-pazzo-amanda-bonini-l-ultima-compagna-d16b02",
+      "title": "'Je so' pazzo', Amanda Bonini l'ultima compagna di Pino Daniele: \"Lui sarebbe inorridito per il film\"",
+      "summary": "",
+      "date": "2026-10-19T15:10:00.000Z",
+      "url": "https://www.adnkronos.com/spettacoli/ultima-compagna-pino-daniele-critica-je-so-pazzo_3OP7LtivsUtUdForn9VUzy",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.402Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-rifiuti-e-imballaggi-novita-e-criticita-del-335d1e",
+      "title": "Rifiuti e imballaggi, novità e criticità del Ppwr per il modello italiano",
+      "summary": "",
+      "date": "2026-10-19T15:09:28.000Z",
+      "url": "https://www.adnkronos.com/sostenibilita/rifiuti-e-imballaggi-novita-e-criticita-del-ppwr-per-il-modello-italiano_56xJdSPlye8xZlePfhP6jq",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:40.402Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-paganini-meraviglioso-a-palazzo-barbantini-3bd46b",
+      "title": "'Paganini Meraviglioso', a Palazzo Barbantini-Koch di Ferrara spettacolo Bper per 'È Cultura!'",
+      "summary": "",
+      "date": "2026-10-19T15:07:53.000Z",
+      "url": "https://www.adnkronos.com/spettacoli/paganini-meraviglioso-a-palazzo-barbantini-koch-di-ferrara-spettacolo-bper-per-e-cultura_5INuc7ZIVNoDRGNgY4zJxL",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.402Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-vi-remigreremo-tutti-tensione-alla-9aba08",
+      "title": "\"Vi remigreremo tutti\", tensione alla manifestazione dei giovani di centrodestra a Milano - Video",
+      "summary": "",
+      "date": "2026-10-19T14:56:00.000Z",
+      "url": "https://www.adnkronos.com/cronaca/milano_4ilwnVhg9du8W4O4b23bq0",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.399Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-trump-i-comizi-e-i-corpi-degli-uomini-ho-0b2ab1",
+      "title": "Trump, i comizi e i corpi degli uomini: “Ho studiato il suo sedere”. Chi sono i preferiti",
+      "summary": "Dal senatore dell’Ohio Jon Husted ai candidati repubblicani, fino ai leader del Golfo: il presidente usa l’aspetto fisico per elogiare gli alleati e punzecchiare gli avversari",
+      "date": "2026-10-19T14:34:00.000Z",
+      "url": "https://www.lastampa.it/esteri/2026/10/19/news/trump_sedere_husted-15771139/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/esteri"
+      ],
+      "author": "dal nostro corrispondente Alberto Simoni",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:25.333Z",
       "backfilled": true
     },
     {
@@ -777,6 +2165,20 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-19-adnkronos-sciopero-autotrasportatori-scaffali-vuoti-0ac2d7",
+      "title": "Sciopero autotrasportatori, scaffali vuoti in un supermercato a Palermo - Video",
+      "summary": "",
+      "date": "2026-10-19T13:42:00.000Z",
+      "url": "https://www.adnkronos.com/cronaca/scioepro-autotrasportatori-palermo-supermercati-scaffali-vuoti-video_7CyDfsSvx71uNTFicnKKZy",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-19T21:12:40.400Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-19-sole24-fisco-con-l-app-trova-tu-semplificazione-ec41be",
       "title": "Fisco, con l’app Trova Tu semplificazione per 4.700 norme",
       "summary": "Sanzioni tributarie amministrative e penali. Tributi erariali minori. Giustizia tributaria. Versamenti e riscossione. Imposta di registro e di altri tributi indiretti. Iva. Imposte sui redditi. Adempimenti e accertamento. L’operazione semplificazione...",
@@ -809,6 +2211,48 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-19-adnkronos-guerriglia-a-milano-i-negozianti-abbiamo-961873",
+      "title": "Guerriglia a Milano, i negozianti: \"Abbiamo avuto paura, devono intervenire duramente\" - Video",
+      "summary": "",
+      "date": "2026-10-19T13:31:00.000Z",
+      "url": "https://www.adnkronos.com/cronaca/milano-scontri-saccheggi-negozi-paura-guerriglia-video_6W1fdeUCFWHH3COJiNTeHC",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:12:40.400Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-guerriglia-a-milano-confcommercio-danni-per-2d706c",
+      "title": "Guerriglia a Milano, Confcommercio: \"Danni per un milione, un altro weekend come questo e il conto sale vertiginosamente\"",
+      "summary": "",
+      "date": "2026-10-19T13:05:00.000Z",
+      "url": "https://www.adnkronos.com/cronaca/guerriglia-milano-stima-danni-commercianti_4JCzLMZJCRMCQt0akzjvcd",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:12:40.401Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-proteste-in-francia-studenti-bloccano-il-d2c6d4",
+      "title": "Proteste in Francia, studenti bloccano il Louvre e arriva il coprifuoco in alcune città - Videonews",
+      "summary": "",
+      "date": "2026-10-19T13:01:00.000Z",
+      "url": "https://www.adnkronos.com/internazionale/esteri/francia-parigi-proteste-studenti-bloccano-louvre-coprifuoco-video_5vdaJp744cpMGA8NK2Cd20",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:40.401Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-19-repubblica-dopo-gli-scontri-a-milano-la-chiamata-sui-0ce3ff",
       "title": "Dopo gli scontri a Milano la chiamata sui social per Como: \"Va distrutta insieme\"",
       "summary": "Allerta tra le forze di polizia per un presunto appuntamento fissato per sabato 24 ottobre",
@@ -822,6 +2266,22 @@
       "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
       "theme": "sigurnost",
       "addedAt": "2026-10-19T20:54:35.271Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-vendeva-illegalmente-animali-esotici-sui-352421",
+      "title": "Vendeva illegalmente animali esotici sui social: erano nascosti e maltrattati in uno scantinato",
+      "summary": "I carabinieri forestali a Borgo Ticino hanno trovato 27 esemplari stipati in un locale privo di idonea aerazione e illuminazione: ricci africani, cocorite e canarini, ratti, lumache giganti, criceti, porcellini d’india",
+      "date": "2026-10-19T12:50:00.000Z",
+      "url": "https://www.lastampa.it/novara/2026/10/19/news/vendita_illegale_social_animali_maltrattati_novarese_carabinieri_forestali-15770987/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/novara"
+      ],
+      "author": "Marco Benvenuti",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:25.337Z",
       "backfilled": true
     },
     {
@@ -857,6 +2317,38 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-19-lastampa-nappi-vivere-bene-in-menopausa-si-puo-e-si-438625",
+      "title": "Nappi: \"Vivere bene in menopausa si può e si deve\"",
+      "summary": "Per la Giornata Mondiale della Menopausa, la presidente dell’International Menopause Society Rossella Nappi incontra nel suo studio a Pavia le lettrici e i lettori di SAE Salute, de La Stampa e dei quotidiani del Gruppo SAE. Dalle vampate di calore al rischio di sviluppare patologie, dalla terapia ormonale sostitutiva ai costi per la singola persona e per lo Stato: tutte le risposte alle domande che ogni donna si pone.",
+      "date": "2026-10-19T12:42:00.000Z",
+      "url": "https://www.lastampa.it/cronaca/2026/10/19/video/nappi_vivere_bene_in_menopausa_si_puo_e_si_deve-15770981/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/cronaca"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:25.337Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-se-non-vogliono-prendersi-un-estintore-132f24",
+      "title": "“Se non vogliono prendersi un estintore sulla nuca, cambino lavoro”. Il post choc del dottorando",
+      "summary": "«Un mestiere da figli di p…». La risposta immediata del rettore dell’Alma Mater Giovanni Molari: «Parole del tutto inaccettabili, abbiamo già avviato gli approfondimenti necessari. Solidarietà agli agenti feriti»",
+      "date": "2026-10-19T12:36:00.000Z",
+      "url": "https://www.lastampa.it/cronaca/2026/10/19/news/bologna_scontri_post_dottorando_fisica_poliziotti_estintore-15770975/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/cronaca"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:25.332Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-19-repubblica-viaggio-di-nozze-senza-valigie-per-4-giorni-de3c8d",
       "title": "Viaggio di nozze senza valigie per 4 giorni: la compagnia aerea risarcisce il pregiudizio agli sposi",
       "summary": "Il Giudice di pace di Bivona condanna Ita Airways a versare 1.181,86 euro alla coppia, riconoscendo anche 800 euro per i danni non patrimoniali. I due passeggeri costretti a comprare vestiti, medicinali e un trolley. Per il magistrato, i disagi subiti vanno oltre il normale...",
@@ -873,6 +2365,34 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-19-adnkronos-gli-studenti-albanesi-contro-edi-rama-550b55",
+      "title": "Gli studenti albanesi contro Edi Rama, violenti scontri a Tirana - Video",
+      "summary": "",
+      "date": "2026-10-19T12:32:00.000Z",
+      "url": "https://www.adnkronos.com/internazionale/esteri/albania-studenti-scontri-edi-rama-tirana-video_4BMuf8f69DpohnJTb71ZAI",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:40.402Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-francia-gli-studenti-bloccano-l-accesso-al-b5004e",
+      "title": "Francia, gli studenti bloccano l'accesso al Louvre - Video",
+      "summary": "",
+      "date": "2026-10-19T12:21:00.000Z",
+      "url": "https://www.adnkronos.com/internazionale/esteri/louvre-parigi-francia-studenti-video_352dIldlH99rTRTage9amc",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:40.401Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-19-sole24-poche-macchine-ora-alle-citta-premi-e-2aa135",
       "title": "«Poche macchine, ora alle città premi e penali in base alle flotte»",
       "summary": "«Le licenze sono aumentate, ma sono ancora insufficienti. Abbiamo bisogno di più taxi». Nicola Zaccheo, presidente dell’Autorità di regolazione dei trasporti, parte dai risultati della nuova indagine sul settore che...",
@@ -886,6 +2406,22 @@
       "author": "di Flavia Landolfi e Vittorio Nuti",
       "theme": "ai",
       "addedAt": "2026-10-19T20:54:47.232Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-coltellate-davanti-alla-stazione-di-porta-9f18ce",
+      "title": "Coltellate davanti alla stazione di Porta Nuova, un ferito",
+      "summary": "È successo intorno alle 13 sotto i portici di via Nizza: la vittima non è in pericolo di vita. Aggressori in fuga, indagini della polizia",
+      "date": "2026-10-19T11:34:00.000Z",
+      "url": "https://www.lastampa.it/torino/2026/10/19/news/coltellate_tentato_omicidio_porta_nuova_portici_via_nizza-15770946/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/torino"
+      ],
+      "author": "Caterina Stamin",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:25.333Z",
       "backfilled": true
     },
     {
@@ -937,6 +2473,54 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-19-lastampa-il-latinorum-di-littizzetto-nella-letterina-fd04bf",
+      "title": "Il latinorum di Littizzetto nella letterina a Papa Leone: \"Ora et riposa, impegna mollamus\"",
+      "summary": "Dopo l’intervento al polmone subito da Papa Leone XIV, Luciana Littizzetto gli dedica la sua letterina a “Che tempo che fa”. Tra auguri per la riuscita dell’operazione ed esortazioni a riposare e a ridurre gli impegni, la comica si rivolge al Pontefice in un latino tutto suo: “Mi raccomandum, ora et riposa. Et impegna mollamus”.",
+      "date": "2026-10-19T11:17:00.000Z",
+      "url": "https://www.lastampa.it/spettacoli/2026/10/19/video/littizzetto_letterina_papa_leone_latinorum-15770935/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/spettacoli"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:25.334Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-tullio-de-piscopo-mio-padre-mi-disse-che-57d7ae",
+      "title": "Tullio De Piscopo: \"Mio padre mi disse che Pino Daniele aveva avuto più coraggio di me\"",
+      "summary": "«Mio padre mi disse che Pino Daniele aveva avuto più coraggio di me». Tullio De Piscopo, intervistato al Teatro Colosseo di Torino durante il tour che celebra i suoi 80 anni, ripercorre una carriera lunga oltre sessant'anni, dagli esordi nei locali di Napoli alle collaborazioni con alcuni dei più grandi nomi della musica italiana. Tra i ricordi più forti c'è il primo incontro con Pino Daniele, dopo che il padre gli aveva parlato di un giovane cantante capace di raccontare Napoli senza paura. LEGGI ANCHE “La musica non mi stanca come va il mondo sì” | Tullio De Piscopo: “Con Andamento Lento comprai casa. A 80 anni i giovani mi danno ossigeno” | De Piscopo: con Pino Daniele scattò immediata…",
+      "date": "2026-10-19T11:12:00.000Z",
+      "url": "https://www.lastampa.it/spettacoli/2026/10/19/video/tullio_de_piscopo_ricordo_pino_daniele_aneddoto_padre_coraggio-15770931/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/spettacoli"
+      ],
+      "author": "DAVIDE CAVALLERI",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:25.334Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-dall-uovo-artificiale-al-chip-piu-piccolo-1a2283",
+      "title": "Dall’uovo artificiale al chip più piccolo, le 300 invenzioni più originali del 2026",
+      "summary": "Ci sono anche la protesi per il ginocchio stampata in 3D, un tablet tattile per i tifosi non vedenti, una vernice per pareti che regola l’umidità ambientale e un robot agricolo",
+      "date": "2026-10-19T11:10:00.000Z",
+      "url": "https://www.lastampa.it/cronaca/2026/10/19/news/dall_uovo_artificiale_al_chip_piu_piccolo_le_300_invenzioni_piu_originali_del_2026-15770926/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/cronaca"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:25.334Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-19-repubblica-maire-con-node-arriva-la-fabbrica-di-a757e7",
       "title": "Maire, con Node arriva la fabbrica di tecnologie per la transizione",
       "summary": "Nextchem (Maire) lancia il nuovo centro a Roma: laboratori e impianti pilota. Di Amato: “Bene il nucleare, dà stabilità, ma serve un mix con le rinnovabili”",
@@ -950,6 +2534,38 @@
       "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
       "theme": "ai",
       "addedAt": "2026-10-19T20:54:35.274Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-juve-fiducia-a-spalletti-ma-a-tempo-c1b622",
+      "title": "Juve, fiducia a Spalletti ma a tempo",
+      "summary": "I dirigenti confidano che il tecnico possa riprendere le redini della situazione. Però i risultati devono arrivare in fretta. Dopo il ko con la Lazio l’ex ct si rimette in gioco e prova a coinvolgere senatori e spogliatoio. Deve riconquistare anche i tifosi: la piazza invoca Conte. Sullo sfondo c’è Pioli",
+      "date": "2026-10-19T10:26:00.000Z",
+      "url": "https://www.lastampa.it/sport/2026/10/19/news/juve_fiducia_a_spalletti_ma_a_tempo-15770906/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/sport"
+      ],
+      "author": "Fabio Riva, Nicola Balice",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:25.334Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-parigi-giovani-incappucciati-soccorrono-un-3d3768",
+      "title": "Parigi, giovani incappucciati soccorrono un anziano in difficoltà tra i lacrimogeni",
+      "summary": "Nel pieno della manifestazione del 17 ottobre a Parigi, alcuni giovani con il volto coperto si fermano ad aiutare un anziano in difficoltà: lo sorreggono e lo accompagnano lontano dai lacrimogeni. La scena, pubblicata dal fotografo Johnny “Albatros” Faundez come uno dei “gesti invisibili” del corteo, mostra un volto diverso della mobilitazione raccontata soprattutto per gli scontri, gli incendi e i saccheggi. In tutta la Francia centinaia di migliaia di persone erano scese in piazza contro il caro vita e il deterioramento dei servizi pubblici.",
+      "date": "2026-10-19T10:25:00.000Z",
+      "url": "https://www.lastampa.it/esteri/2026/10/19/video/proteste_parigi_lacrimogeni_giovani_soccorrono_anziano-15770903/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/esteri"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:25.333Z",
       "backfilled": true
     },
     {
@@ -1033,6 +2649,38 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-19-lastampa-cortei-trump-anche-in-italia-proteste-390cc1",
+      "title": "Cortei, Trump: “Anche in Italia proteste dovute all'immigrazione”. A Milano in arrivo 500 soldati",
+      "summary": "Il presidente Usa: «Anche in Italia le proteste hanno a che fare con l'immigrazione»",
+      "date": "2026-10-19T09:20:00.000Z",
+      "url": "https://www.lastampa.it/politica/2026/10/19/news/cortei_in_corso_a_palazzo_chigi_il_vertice_sull_ordine_pubblico_presieduto_da_meloni-15770857/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/politica"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:25.332Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-proteste-in-albania-rama-incolpa-le-0ec093",
+      "title": "Proteste in Albania, Rama incolpa le “interferenze russe”. E promette un premio ai poliziotti",
+      "summary": "Dopo una settimana di pesanti scontri, il premier albanese Edi Rama in un video ribadisce di non volersi dimettere. Se la prende con le famiglie degli studenti in piazza: «Non proteggete i minori, pagherete voi». Agli agenti in prima fila, 2500 euro di bonus",
+      "date": "2026-10-19T09:18:00.000Z",
+      "url": "https://www.lastampa.it/esteri/2026/10/19/news/proteste_in_albania_rama_invoca_le_interferenze_russe_e_promette_un_premio_ai_poliziotti-15770855/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/esteri"
+      ],
+      "author": "Letizia Tortello",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:25.333Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-19-repubblica-scontri-a-milano-i-genitori-fuori-dalla-26a91e",
       "title": "Scontri a Milano, i genitori fuori dalla Questura: “Ero contento se ti spaccavano la testa”",
       "summary": "Tra preoccupazione e rabbia, le voci di chi è andato a recuperare i figli: “Lui appartiene al gruppo dei pirla, si ferma a guardare e… Oggi aveva il colloquio di lavoro”. “Dopo trent’anni in Italia mi vergogno a venire qui per colpa sua”",
@@ -1078,6 +2726,38 @@
       "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
       "theme": "politika",
       "addedAt": "2026-10-19T20:54:35.271Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-ex-ilva-il-commissario-quaranta-promette-l-355aba",
+      "title": "Ex Ilva, il commissario Quaranta promette: “L’impianto di Novi Ligure riapre a febbraio”",
+      "summary": "L’incontro in Prefettura oggi, lunedì 19 ottobre: il confronto tra lavoratori, sindacati e commissario di Acciaierie d’Italia. Il deputato Fornaro alla Camera: “Rispetto per gli operai”",
+      "date": "2026-10-19T08:57:00.000Z",
+      "url": "https://www.lastampa.it/alessandria/2026/10/19/news/ex_ilva_novi_ligure_incontro_prefettura_alessandria_commissario_ripresa_impianto_febbraio-15770846/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/alessandria"
+      ],
+      "author": "MAURIZIO IAPPINI",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:25.337Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-gabanelli-su-ranucci-fazio-e-vero-che-ti-7dfc12",
+      "title": "Gabanelli su Ranucci, Fazio: \"È vero che ti hanno chiesto di condurre di nuovo Report?\"",
+      "summary": "«Il conduttore è il volto, ma la forza è la squadra», Milena Gabanelli, ospite di Che Tempo Che Fa sul Nove, torna sul futuro della trasmissione d'inchiesta di Rai 3, Reportm dopo l’uscita di Sigfrido Ranucci dalla conduzione. «Sono convinta che si possa sopravvivere anche alla sparizione dei capi. Me lo auguro con tutto il cuore», spiega la giornalista, sottolineando il ruolo della redazione e degli inviati che negli anni hanno costruito il programma. LEGGI ANCHE Ranucci, il tribunale respinge il ricorso contro la Rai: niente reintegro alla guida di Report | Gabanelli: “Me l’hanno chiesto ma a Report non torno, niente riesumazioni” | GUARDA ANCHE Ranucci fa gli scatoloni e lascia redazione…",
+      "date": "2026-10-19T08:53:00.000Z",
+      "url": "https://www.lastampa.it/cronaca/2026/10/19/video/report_gabanelli_fazio_intervista-15770838/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/cronaca"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:25.334Z",
       "backfilled": true
     },
     {
@@ -1129,6 +2809,22 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-19-lastampa-nana-borgatara-magistrato-attacca-meloni-6caf6b",
+      "title": "“Nana borgatara”: magistrato attacca Meloni sul decreto stipendi. Poi si difende: “Colpa degli hacker”",
+      "summary": "Il post sul profilo Facebook di Alessandro Di Cicco segue la presa di posizione di Meloni sugli adeguamenti degli stipendi dei magistrati. L’Associazione nazionale magistrati: «Nessun regalo, nessun bonus»",
+      "date": "2026-10-19T08:36:00.000Z",
+      "url": "https://www.lastampa.it/politica/2026/10/19/news/magistrato_attacca_meloni_social_offese-15770822/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/politica"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:12:25.332Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-19-repubblica-proteste-in-francia-gli-studenti-bloccano-l-c5d0bd",
       "title": "Proteste in Francia, gli studenti bloccano l'ingresso al Louvre. Mosca: “Crisi al limite del caos”",
       "summary": "La manifestazione del movimento dei liceali che spiega ai turisti con cartelloni: \"Stiamo lottando contro il loro governo e contro le sue politiche ostili ai servizi pubblici”. A Marsiglia divieto di manifestare dalle 12 alle 20. I Gilet Gialli annunciano “secondo atto” per sabato prossimo. Lecornu ordina l'attuazione di coprifuoco",
@@ -1142,6 +2838,54 @@
       "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
       "theme": "ai",
       "addedAt": "2026-10-19T20:54:35.271Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-morte-di-david-rossi-la-commissione-d-7979dd",
+      "title": "Morte di David Rossi, la commissione d’inchiesta: “Mussari mandante, Ceccherelli organizzatore”",
+      "summary": "I due nomi fatti dal presidente della Commissione parlamentare di inchiesta, Gianluca Vinci, che parla di «errore nell’esecuzione, non di volontà di ucciderlo». La replica di Ceccherelli, ex militante del Calcio storico: «Nulla a che fare con questa vicenda»",
+      "date": "2026-10-19T08:25:00.000Z",
+      "url": "https://www.lastampa.it/cronaca/2026/10/19/news/morte_david_rossi_commissione_inchiesta_mussari-15770812/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/cronaca"
+      ],
+      "author": "REDAZIONE WEB",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:12:25.332Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-pino-daniele-conquista-il-box-office-je-so-8ed811",
+      "title": "Pino Daniele conquista il box office, “Je so’ pazzo” vola oltre il milione e mezzo di incassi",
+      "summary": "Secondo Mammina, terzo L'estranea. Il film su Carlo Acutis domenica sale fino al 4° posto",
+      "date": "2026-10-19T08:19:00.000Z",
+      "url": "https://www.lastampa.it/spettacoli/2026/10/19/news/pino_daniele_je_so_pazzo_film_piu_visto_italia_incassi_box_office-15770809/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/spettacoli"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:25.334Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-milano-con-i-genitori-in-questura-per-785374",
+      "title": "Milano, con i genitori in questura per riprendere i figli: “Che vergogna, un branco di deficienti”",
+      "summary": "Oltre 200 giovani fermati dopo le devastazioni in centro a Milano: nove su dieci sono minorenni",
+      "date": "2026-10-19T07:38:00.000Z",
+      "url": "https://www.lastampa.it/cronaca/2026/10/19/news/milano_scontri_genitori_questura_minorenni-15770786/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/cronaca"
+      ],
+      "author": "Andrea Siravo",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:12:25.332Z",
       "backfilled": true
     },
     {
@@ -1174,6 +2918,20 @@
       "author": "",
       "theme": "rat",
       "addedAt": "2026-10-19T20:54:47.233Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-adnkronos-proteste-in-francia-coprifuoco-da-parigi-a-781114",
+      "title": "Proteste in Francia, coprifuoco da Parigi a Nizza. Gilet Gialli annunciano nuova mobilitazione per sabato",
+      "summary": "",
+      "date": "2026-10-19T07:31:00.000Z",
+      "url": "https://www.adnkronos.com/internazionale/esteri/francia-proteste-news-oggi_H57stvJjxrZJkouzpYRe1",
+      "source": "adnkronos",
+      "sourceName": "Adnkronos",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:40.398Z",
       "backfilled": true
     },
     {
@@ -1225,6 +2983,22 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-19-lastampa-gli-scontri-infuriano-e-parigi-brucia-ma-d61a0c",
+      "title": "Gli scontri infuriano e Parigi brucia ma due persone continuano a fumare al tavolino del bar",
+      "summary": "Un uomo e una donna continuano a bere e fumare seduti al tavolino di un locale mentre, alle loro spalle, divampano le fiamme durante gli scontri a Parigi. La scena è stata ripresa il 17 ottobre, al termine della giornata di proteste contro il carovita e il deterioramento dei servizi pubblici. Centinaia di migliaia di persone hanno manifestato in tutta la Francia, in gran parte pacificamente, mentre gruppi violenti hanno dato vita a incendi, saccheggi e scontri con la polizia. LEGGI ANCHE Parigi, ancora scontri. Macron: “Rabbia e vergogna, chi ha distrutto deve pagare e risarcire” | In Francia gilet gialli e studenti, chi c'è dietro l'assalto ai palazzi del potere | GUARDA ANCHE Idranti e…",
+      "date": "2026-10-19T06:36:00.000Z",
+      "url": "https://www.lastampa.it/esteri/2026/10/19/video/proteste_parigi_persone_caffe_scontri_incendi-15770593/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/esteri"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:25.333Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-19-repubblica-samanta-e-mariam-in-casa-la-fatica-e-43740e",
       "title": "Samanta e Mariam: “In casa la fatica è arrivare a fine mese, abbiamo promosso noi Bologna in piazza”",
       "summary": "Le ragazze, 17 e 21 anni, raccontano la manifestazione contro il carovita poi “presa” da collettivi e giovani di seconda generazione: “Ci siamo messe in mezzo a questi violenti per cercare di difendere i partecipanti e la città. La polizia non ci ha aiutato”",
@@ -1239,6 +3013,54 @@
       "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
       "theme": "ai",
       "addedAt": "2026-10-19T20:54:35.271Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-francia-macron-impone-il-coprifuoco-trump-824fc7",
+      "title": "Francia, Macron impone il coprifuoco. Trump: “Presto Parigi diventerà musulmana”",
+      "summary": "Dopo le violenze del fine settimana, scattano restrizioni notturne in due zone della capitale e un coprifuoco per i minori nel centro di Nizza. Bloccato l’ingresso del Louvre, divieto di manifestare a Marsiglia. I gilet gialli annunciano una nuova mobilitazione per sabato",
+      "date": "2026-10-19T06:24:00.000Z",
+      "url": "https://www.lastampa.it/esteri/2026/10/19/news/ancora_scontri_e_350_fermi_nella_notte_a_parigi_manifestanti_bloccano_l_accesso_al_louvre-15770584/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/esteri"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:25.333Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-ponte-sullo-stretto-fazio-spiazza-renzo-060ad9",
+      "title": "Ponte sullo Stretto, Fazio spiazza Renzo Piano: \"Ti hanno mai chiesto di farlo?\"",
+      "summary": "Ospite della trasmissione di Fabio Fazio, Che Tempo Che Fa, l'architetto e senatore a vita Renzo Piano rivela: «Io per un ponte perderei la testa». Immediata la somanda del conduttore: «Ti hanno mai chiesto di fare il Ponte sullo Stretto?». Piano sorpeso, risponde senza giri di parole: «No, non me l’hanno mai chiesto». Piano era ospite della trasmissione per rpesentare il suo nuovo libro autobiografico Tutto qui. La costruzione di una vita (Solferino). LEGGI ANCHE Ponte, piano da rifare. Incognita cantieri | Ponte sullo Stretto, il governo risponde alla Corte dei conti per decreto",
+      "date": "2026-10-19T06:16:00.000Z",
+      "url": "https://www.lastampa.it/cronaca/2026/10/19/video/ponte_sullo_stretto_fazio_renzo_piano-15770580/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/cronaca"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:25.335Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-brezze-venti-e-tempeste-che-agitano-le-368aa0",
+      "title": "Brezze, venti e tempeste che agitano le opinioni",
+      "summary": "Influencer, attori, cantanti, spin doctor, esperti di social: a un anno dalle elezioni, ecco la nuova scienza della manipolazione delle menti. Ma attenti anche all’astensione: non decidere è una pessima decisione",
+      "date": "2026-10-19T06:09:00.000Z",
+      "url": "https://www.lastampa.it/speciale/scienza/il-cielo/2026/10/19/news/elezioni_manipolazione_consenso-15770569/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/speciale/scienza/il-cielo"
+      ],
+      "author": "Piero Bianucci",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:12:25.336Z",
       "backfilled": true
     },
     {
@@ -1418,6 +3240,38 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-19-lastampa-scappa-al-posto-di-blocco-caccia-all-uomo-e0d55e",
+      "title": "Scappa al posto di blocco, caccia all’uomo ad Asti. I carabinieri: “Potrebbe essere armato”",
+      "summary": "Sul posto anche il nucleo speciale dei carabinieri",
+      "date": "2026-10-19T05:40:00.000Z",
+      "url": "https://www.lastampa.it/asti/2026/10/19/news/scappa_al_posto_di_blocco_e_caccia_all_uomo_posti_di_blocco_e_traffico_in_tilt_ad_asti-15770539/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/asti"
+      ],
+      "author": "Thomas Usan, Paolo Viarengo",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:25.337Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-botta-e-risposta-tra-ragazze-e-funzionario-4a4498",
+      "title": "Botta e risposta tra ragazze e funzionario di polizia: \"Siete solo delle vandale\"",
+      "summary": "Acceso confronto in piazza Duomo, a Milano, al termine degli sconti dellla giornata di sabato. Alcune ragazze accusano gli agenti di aver sparato dei petardi vicino ai loro piedi, mentre un funzionario della Polizia di Stato urla loro di allontanarsi perché la manifestazione è sciolta. A quel punto le giovani replicano: «Ci battiamo anche per i tuoi diritti» e il funzionario stizzito risponde: «Vandali, siete solo vandali». Da qui la controreplica: «Stiamo dicendo quello che pensiamo e questo è un nostro diritto». LEGGI ANCHE Milano torna sotto assedio, violenze e saccheggi: in Questura oltre 200 ragazzi | Il Viminale: “Professionisti del disordine”. In tutta Italia è allerta manifestazioni…",
+      "date": "2026-10-19T05:39:00.000Z",
+      "url": "https://www.lastampa.it/cronaca/2026/10/19/video/scontri_milano_poliziotto_ragazze-15770529/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/cronaca"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:12:25.336Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-19-sole24-ucraina-kharkiv-strage-al-parco-giochi-f4759c",
       "title": "Ucraina: Kharkiv, strage al parco giochi. Missili sulle infrastrutture",
       "summary": "Jared Kushner, genero del presidente Donald Trump, e Steve Witkoff, suo inviato per il Medio Oriente, si recheranno questa settimana in Norvegia per il prossimo round di negoziati volti a porre fine alla guerra in Ucraina: lo scrive la Reuters sul proprio sito citando tre persone informate sui fatti",
@@ -1431,6 +3285,54 @@
       "author": "",
       "theme": "ai",
       "addedAt": "2026-10-19T20:54:47.233Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-a-racconigi-nella-fabbrica-fantasma-dell-ex-9044c0",
+      "title": "A Racconigi, nella fabbrica fantasma dell’ex Ilva: in due a presidiare il sito fermo da un anno",
+      "summary": "I nuovi numeri della cassa integrazione certificano lo stop dello stabilimento in provincia di Cuneo",
+      "date": "2026-10-19T05:26:00.000Z",
+      "url": "https://www.lastampa.it/cuneo/2026/10/19/news/a_racconigi_nella_fabbrica_fantasma-15770509/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/cuneo"
+      ],
+      "author": "Devis Rosso",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:25.337Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-milano-saccheggiato-decathlon-in-centro-7189a8",
+      "title": "Milano, saccheggiato Decathlon in centro: portano via le biciclette davanti alla folla incredula",
+      "summary": "Assaltato e saccheggiato lo store di Decathlon di largo Cairoli, nel centro di Milano, durante la seconda giornata consecutiva di disordini nel centro della città. Gruppi di giovani incappucciati sono entrati nel punto vendita sfasciando le vetrine e hanno portato via merce, comprese alcune biciclette. Solo l'irruzione degli agenti dei reparti mobili è riuscita a interrompere il saccheggio e bloccare le persone ancora all’interno. LEGGI ANCHE Milano torna sotto assedio, violenze e saccheggi: in Questura oltre 200 ragazzi | Il Viminale: “Professionisti del disordine”. In tutta Italia è allerta manifestazioni | GUARDA ANCHE Milano, nuova guerriglia in centro: ecco il momento dell'assalto ai…",
+      "date": "2026-10-19T04:11:00.000Z",
+      "url": "https://www.lastampa.it/cronaca/2026/10/19/video/scontri_milano_saccheggiato_decathlon-15770437/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/cronaca"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:25.335Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-tour-delle-streghe-per-richiamare-i-turisti-daf0db",
+      "title": "Tour delle streghe per richiamare i turisti. Il gelo del parroco: “Meglio lasciar perdere”",
+      "summary": "Cinque Comuni del Nord-Ovest fanno rete: “La nostra storia può essere un volano per lo sviluppo sostenibile”",
+      "date": "2026-10-19T04:09:00.000Z",
+      "url": "https://www.lastampa.it/cronaca/2026/10/19/news/tour_streghe_cinque_comuni_nord_ovest_turismo_parroco-15770434/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/cronaca"
+      ],
+      "author": "RENATO MORESCHI, DANIELE PASQUARELLI",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:25.334Z",
       "backfilled": true
     },
     {
@@ -1511,6 +3413,70 @@
       "author": "dal nostro corrispondente Marco Masciaga",
       "theme": "sigurnost",
       "addedAt": "2026-10-19T20:54:47.233Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-a-sally-rooney-b43619",
+      "title": "A Sally Rooney",
+      "summary": "Immaginate una mattina, entrare in libreria e scoprire che il romanzo che volete leggere è scomparso dagli scaffali. Eppure non si tratta di un’opera fuori catalogo, nemmeno in ristampa. ...",
+      "date": "2026-10-19T02:00:00.000Z",
+      "url": "https://www.lastampa.it/rubriche/la-strangera/2026/10/18/news/a_sally_rooney-15769864/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/rubriche/la-strangera"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:12:25.336Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-il-livello-dei-fiumi-e-ai-minimi-storici-ma-6a5c26",
+      "title": "Il livello dei fiumi è ai minimi storici ma la Regione Piemonte aumenta i prelievi",
+      "summary": "Con il 50% della rete idrica in sofferenza e portate inferiori anche del 70% alla media storica si punta ad aiutare l’agricoltura",
+      "date": "2026-10-19T02:00:00.000Z",
+      "url": "https://www.lastampa.it/vercelli/2026/10/19/news/il_livello_dei_fiumi_e_ai_minimi_storici_ma_la_regione_aumenta_i_prelievi-15770253/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/vercelli"
+      ],
+      "author": "RAPHAËL ZANOTTI",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:25.338Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-immobili-fantasma-controlli-con-l-ai-chi-eaf6fe",
+      "title": "Immobili fantasma, controlli con l’Ai: chi riguardano e cosa fare se arriva la lettera del fisco",
+      "summary": "In arrivo entro fine anno circa 20mila avvisi dall’Agenzia delle Entrate. Con gli algoritmi scandagliato il 96% del territorio, rilevate anche le case irregolari più nascoste",
+      "date": "2026-10-19T01:00:00.000Z",
+      "url": "https://www.lastampa.it/tuttosoldi/2026/10/19/news/immobili_fantasma_controlli_al_catasto_con_l_ai_cosa_fare_se_arriva_una_lettera-15769873/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/tuttosoldi"
+      ],
+      "author": "ANNA MARIA ANGELONE",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:25.336Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-lastampa-da-cagliari-a-olbia-la-maratona-in-bici-di-40c06a",
+      "title": "Da Cagliari a Olbia, la maratona in bici di Clelia Sessa al fianco delle pazienti oncologiche",
+      "summary": "La donna di Belgirate, nel Verbano, ha attraversato la Sardegna in una sola giornata: “Un messaggio di speranza”",
+      "date": "2026-10-19T01:00:00.000Z",
+      "url": "https://www.lastampa.it/verbano-cusio-ossola/2026/10/19/news/clelia_sessa_maratona_bici_cagliari_olbia_pazienti_oncologiche-15770375/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/verbano-cusio-ossola"
+      ],
+      "author": "Chiara Beretta",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:12:25.337Z",
       "backfilled": true
     },
     {
@@ -2097,6 +4063,134 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-18-lastampa-lele-adani-ironizza-su-spalletti-e-attacca-3f0d71",
+      "title": "Lele Adani ironizza su Spalletti e attacca Allegri",
+      "summary": "Le severe analisi dell’opinionista ieri sera a “La Domenica Sportiva”",
+      "date": "2026-10-18T21:52:00.000Z",
+      "url": "https://www.lastampa.it/sport/2026/10/19/news/calcio_in_tv_raidue_lele_adani_ironizza_su_spalletti_e_attacca_allegri-15770398/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/sport"
+      ],
+      "author": "Daniele Cavalla",
+      "theme": "sport",
+      "addedAt": "2026-10-19T21:12:25.334Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-18-lastampa-se-la-politica-non-intercetta-la-rivolta-5ae668",
+      "title": "Se la politica non intercetta la rivolta",
+      "summary": "Proprio non capiscono, lor signori, di che pasta sia fatta questa rivolta, così francese, in un Paese come l’Italia, storicamente alieno a fiammate di spontaneismo. ...",
+      "date": "2026-10-18T21:00:00.000Z",
+      "url": "https://www.lastampa.it/editoriali/lettere-e-idee/2026/10/19/news/se_la_politica_non_intercetta_la_rivolta-15770340/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/editoriali/lettere-e-idee"
+      ],
+      "author": "Alessandro De Angelis",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:12:25.332Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-18-lastampa-putin-usa-il-gelo-trump-il-petrolio-la-pace-c0a6de",
+      "title": "Putin usa il gelo, Trump il petrolio: la pace in ostaggio",
+      "summary": "La guerra in Ucraina si combatte sul fronte ma anche nelle scelte di Washington. La tregua energetica annunciata da Trump non ha fermato gli attacchi russi contro Kiev né quelli ucraini alle ...",
+      "date": "2026-10-18T21:00:00.000Z",
+      "url": "https://www.lastampa.it/editoriali/lettere-e-idee/2026/10/19/news/putin_usa_il_gelo_trump_il_petrolio_la_pace_in_ostaggio-15770305/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/editoriali/lettere-e-idee"
+      ],
+      "author": "ETTORE SEQUI",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:25.332Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-18-lastampa-tasse-il-punto-e-come-usare-quanto-2b41a9",
+      "title": "Tasse, il punto è come usare quanto raccogliamo",
+      "summary": "Il contributo di prosperità proposto da Gianrico Carofiglio, un’aliquota dell’1 per cento sui patrimoni tra 10 e 100 milioni e del 2 per cento oltre, risponde a una giusta preoccupazione, ma ...",
+      "date": "2026-10-18T21:00:00.000Z",
+      "url": "https://www.lastampa.it/editoriali/lettere-e-idee/2026/10/19/news/tasse_il_punto_e_come_usare_quanto_raccogliamo-15770295/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/editoriali/lettere-e-idee"
+      ],
+      "author": "ERNESTO MARIA RUFFINI",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:25.332Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-18-lastampa-cacciari-giovani-senza-speranza-si-sentono-f82ed1",
+      "title": "Cacciari: “Giovani senza speranza. Si sentono traditi, una vergogna le politiche dei loro padri”",
+      "summary": "Il filosofo: «Le democrazie non offrono più benessere né opportunità»",
+      "date": "2026-10-18T21:00:00.000Z",
+      "url": "https://www.lastampa.it/politica/2026/10/19/news/massimo_cacciari_una_crisi_profonda_servono_misure_concrete_per_i_giovani_e_i_piu_deboli-15770330/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/politica"
+      ],
+      "author": "Flavia Amabile",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:25.332Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-18-lastampa-dugin-il-filosofo-del-cremlino-su-francia-e-ad57b5",
+      "title": "Dugin, il filosofo del Cremlino su Francia e Italia in fiamme: “Più caos c’è meglio è, via Meloni”",
+      "summary": "Letto al Cremlino, apprezzato personalmente da Putin, il neofascista russo grande sostenitore a suo tempo del governo M5S-Lega ora fa il tifo per le barricate che devastano le città europee: «Questi europei vogliono combattere contro la Russia: come pensano che ciò possa accadere quando non riescono a garantire nemmeno un minimo di ordine nelle loro stesse città?»",
+      "date": "2026-10-18T21:00:00.000Z",
+      "url": "https://www.lastampa.it/esteri/2026/10/19/news/dugin_il_filosofo_del_cremlino_e_francia_e_italia_in_fiamme_piu_caos_c_e_meglio_e_via_la_meloni-15770205/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/esteri"
+      ],
+      "author": "Jacopo Iacoboni",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:12:25.333Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-18-lastampa-postava-le-mie-foto-nuda-io-usata-come-una-151be8",
+      "title": "“Postava le mie foto nuda, io usata come una figurina. Ma sono rinata grazie ai figli”",
+      "summary": "Torino, parla la donna che ha denunciato l’ex per revenge porn. Per 12 anni i suoi video intimi condivisi senza consenso",
+      "date": "2026-10-18T21:00:00.000Z",
+      "url": "https://www.lastampa.it/cronaca/2026/10/19/news/postava_le_mie_foto_nuda_io_usata_come_una_figurina_ma_sono_rinata_grazie_ai_figli-15770363/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/cronaca"
+      ],
+      "author": "Elisa Sola",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:25.334Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-18-lastampa-l-anas-dal-30-novembre-tenda-aperto-a-senso-8327e4",
+      "title": "L’Anas: “Dal 30 novembre Tenda aperto a senso unico alternato anche di notte”",
+      "summary": "Con una nota ufficiale, l'Anas ha confermato ieri (18 ottobre) la tabella di marcia per il completamento dei lavori sul versante francese del colle del Tenda. La società ha ricordato che ...",
+      "date": "2026-10-18T21:00:00.000Z",
+      "url": "https://www.lastampa.it/cuneo/2026/10/19/news/l_anas_dal_30_novembre_tenda_aperto_a_senso_unico_alternato_anche_di_notte-15770236/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/cuneo"
+      ],
+      "author": "Matteo Borgetto",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:25.338Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-18-repubblica-schlein-si-candida-a-premier-pronta-con-o-bb1c2b",
       "title": "Schlein si candida a premier: “Pronta con o senza primarie”",
       "summary": "La segretaria incassa la proroga del mandato all’assemblea nazionale ma chiude la competizione ai gazebo per gli altri dem. E la minoranza si astiene: “Una forzatura”",
@@ -2110,6 +4204,22 @@
       "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
       "theme": "ai",
       "addedAt": "2026-10-19T20:54:35.273Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-18-lastampa-kharkiv-raid-russo-su-parco-giochi-6-morti-58d789",
+      "title": "Kharkiv, raid russo su parco giochi: 6 morti, 3 i bimbi. Putin: summit con Trump, Xi. Fuori Zelensky",
+      "summary": "L’attacco nella regione di Kharkiv, nel nordest dell'Ucraina, causando almeno 6 morti, tra cui 3 bambini",
+      "date": "2026-10-18T20:17:00.000Z",
+      "url": "https://www.lastampa.it/esteri/2026/10/19/diretta/guerra_russia_ucraina_news_oggi-15770383/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/esteri"
+      ],
+      "author": "A CURA DELLA REDAZIONE WEB",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:25.333Z",
       "backfilled": true
     },
     {
@@ -2209,6 +4319,22 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-18-lastampa-ha-lasciato-ingegneria-per-fare-il-98e1d3",
+      "title": "Ha lasciato Ingegneria per fare il contadino nella valle del porro: “Orgoglioso di questo lavoro”",
+      "summary": "La storia di Fabio Fissore, ex studente universitario a Torino che ha scelto di abbandonare gli studi al Politecnico per proseguire la tradizione di famiglia: coltivare la terra a Cervere come il nonno e lo zio",
+      "date": "2026-10-18T12:48:00.000Z",
+      "url": "https://www.lastampa.it/cuneo/2026/10/18/news/la_storia_di_fabio_fissore_dal_politecnico_alla_valle_del_porro_orgoglioso_di_questo_lavoro-15770036/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/cuneo"
+      ],
+      "author": "Zaira Mureddu",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:25.338Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-18-sole24-dall-alluminio-alla-chimica-verde-ecco-le-806d42",
       "title": "Dall’alluminio alla chimica verde, ecco le vertenze aperte in Sardegna",
       "summary": "Dall’alluminio alla fluorite, passando per la metallurgia di piombo e zinco, sino ad arrivare alle telecomunicazioni e alla chimica verde. Sono parecchie le vertenze aperte che interessano la Sardegna dal...",
@@ -2270,6 +4396,22 @@
       "author": "di Alessandro Cicognani",
       "theme": "ekonomija",
       "addedAt": "2026-10-19T20:54:47.234Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-18-lastampa-maschera-antigas-sotto-un-cielo-giallo-3a9d61",
+      "title": "Maschera antigas sotto un cielo giallo, Emmanuela Shinta: \"Nel Kalimantan cerchiamo di sopravvivere\"",
+      "summary": "Con una maschera antigas sul volto, Emmanuela Shinta mostra la coltre giallo-arancione che avvolge Palangkaraya, nel Kalimantan centrale: «Non c’è un posto dove nascondersi o scappare, stiamo cercando di sopravvivere». Il fumo prodotto dagli incendi delle foreste e delle torbiere, aggravati dalla siccità legata a El Niño, ha portato l’inquinamento atmosferico a livelli estremamente pericolosi. L’attivista racconta che vengono allestiti rifugi con aria filtrata, ma denuncia che non sono sufficienti per tutta la popolazione. L’Indonesia sta affrontando la stagione degli incendi più grave dal 2015, con centinaia di migliaia di casi di disturbi respiratori e la nube tossica estesa anche ai…",
+      "date": "2026-10-18T10:57:00.000Z",
+      "url": "https://www.lastampa.it/esteri/2026/10/18/video/emmanuela_shinta_kalimantan_incendi_cielo_giallo_indonesia-15769962/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/esteri"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:25.335Z",
       "backfilled": true
     },
     {
@@ -2337,6 +4479,38 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-18-lastampa-si-getta-dalla-nave-da-crociera-perche-4a60ff",
+      "title": "Si getta dalla nave da crociera perché \"voleva sbarcare\": salvata dopo 20 ore in mare",
+      "summary": "Una passeggera di 44 anni, originaria di El Salvador, si è gettata dalla Odyssey of the Seas mentre la nave da crociera navigava al largo dell’isola greca di Zante. Ai soccorritori avrebbe poi spiegato di averlo fatto perché «voleva sbarcare». È rimasta per circa venti ore nel mar Ionio, aggrappata a un salvagente: a permettere di individuarla, nel buio, è stata la sua luce lampeggiante, avvistata dall’equipaggio di una nave cargo impegnata nelle ricerche. Recuperata cosciente a circa 70 miglia nautiche dalla costa, è stata trasportata prima nel porto di Katakolo e poi in ospedale a Pyrgos.",
+      "date": "2026-10-18T09:02:00.000Z",
+      "url": "https://www.lastampa.it/esteri/2026/10/18/video/odyssey_of_the_seas_donna_salvata_20_ore_mare_zante-15769926/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/esteri"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:25.335Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-18-lastampa-due-fratelli-da-110-e-lode-dalla-siria-a-471e56",
+      "title": "Due fratelli da 110 e lode. Dalla Siria a Novara: “La nostra vita ricomincia qui dall’università”",
+      "summary": "Lei è arrivata con una laurea in Medicina, ora ha vinto un dottorato in Biotecnologie, lui vuole continuare gli studi dopo aver completato Farmacia nel suo Paese",
+      "date": "2026-10-18T08:26:00.000Z",
+      "url": "https://www.lastampa.it/novara/2026/10/18/news/upo_siria_a_novara_universita_fratelli_medicina_farmacia-15769909/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/novara"
+      ],
+      "author": "Lorenzo Rotella",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:25.338Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-18-sole24-piacentini-piu-ai-in-azienda-e-che-sia-f4433c",
       "title": "Piacentini: «Più Ai in azienda e che sia gestita dall’alto»",
       "summary": "«Non c’è più spazio per imprenditori che non conoscono l’intelligenza artificiale e delegano tutto alla struttura. Il cambiamento deve essere gestito dall’alto». È quasi un vademecum per l’introduzione dell’Ai in...",
@@ -2382,6 +4556,22 @@
       "author": "",
       "theme": "sigurnost",
       "addedAt": "2026-10-19T20:54:47.233Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-18-lastampa-nessun-partner-completa-l-altro-l-amore-d27028",
+      "title": "Nessun partner completa l’altro: l’amore nasce dall’incontro di due identità, non di due metà",
+      "summary": "Nessun partner completa l’altro, l’amore nasce dall’incontro di due identità non di due metà . Ecco l'analisi della dottoressa Valeria Randone, psicologo e sessuologo clinico a Catania, Milano e online (www.valeriarandone.it), autrice della rubrica \"Amore non è solo amare\" (clicca qui) e del libro \"L'aggiustatrice di cuori, Le parole che riparano\" (clicca qui) - LEGGI ANCHE: Amare in sicurezza. La fusione in amore e la coppia simbiotica",
+      "date": "2026-10-18T04:48:00.000Z",
+      "url": "https://www.lastampa.it/speciale/benessere/amore-non-e-solo-amare/2026/10/18/video/valeria_randone_mezza_mela_coppia-15769796/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/speciale/benessere/amore-non-e-solo-amare"
+      ],
+      "author": "Valeria Randone",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:12:25.335Z",
       "backfilled": true
     },
     {
@@ -2800,6 +4990,150 @@
       "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
       "theme": "sigurnost",
       "addedAt": "2026-10-19T20:54:35.273Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-17-lastampa-sull-ucraina-va-ascoltato-lo-russo-481acc",
+      "title": "Sull’Ucraina va ascoltato Lo Russo",
+      "summary": "Per quanto priva ancora di riscontri (il presidente 5 stelle Conte e la segretaria Pd Schlein a stento si salutano) la proposta avanzata alla festa per ...",
+      "date": "2026-10-17T21:00:00.000Z",
+      "url": "https://www.lastampa.it/rubriche/il-taccuino/2026/10/18/news/sull_ucraina_ascoltare_lo_russo-15769630/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/rubriche/il-taccuino"
+      ],
+      "author": "Marcello Sorgi",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:25.336Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-17-lastampa-c-era-una-volta-il-welfare-europeo-quando-be69ef",
+      "title": "C’era una volta il welfare europeo, quando la casa era una cosa per tutti",
+      "summary": "Secondo Eurostat nel secondo trimestre del 2026 i prezzi degli appartamenti in Ue sono cresciuti del 4,7% e i canoni di locazione del 3%, con il risultato che oggi l’affitto assorbe circa il 35% di uno stipendio medio",
+      "date": "2026-10-17T21:00:00.000Z",
+      "url": "https://www.lastampa.it/specchio/temi/2026/10/18/news/c_era_una_volta_il_welfare_europeo_quando_la_casa_era_una_cosa_per_tutti-15767533/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/specchio/temi"
+      ],
+      "author": "Francesca Paci",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:12:25.338Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-17-lastampa-perche-svalutare-i-nostri-anni-intelligenti-11a212",
+      "title": "Perché svalutare i nostri anni intelligenti?",
+      "summary": "Tutti facciamo i conti con il tempo che passa. Noi donne di più",
+      "date": "2026-10-17T21:00:00.000Z",
+      "url": "https://www.lastampa.it/specchio/rubriche/la-grande-vecchia/2026/10/18/news/perche_svalutare_i_nostri_anni_intelligenti-15767277/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/specchio/rubriche/la-grande-vecchia"
+      ],
+      "author": "Lidia Ravera",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:25.338Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-17-lastampa-l-agonia-di-serena-e-quel-delitto-ancora-0c95a1",
+      "title": "L’agonia di Serena e quel delitto ancora impunito",
+      "summary": "A 25 anni dai fatti, per il delitto Mollicone è in corso un giudizio d’appello bis",
+      "date": "2026-10-17T21:00:00.000Z",
+      "url": "https://www.lastampa.it/specchio/rubriche/i-grandi-gialli/2026/10/18/news/l_agonia_di_serena_e_quel_delitto_spietato_ancora_impunito-15767369/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/specchio/rubriche/i-grandi-gialli"
+      ],
+      "author": "Pierangelo Sapegno",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:25.338Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-17-lastampa-a-qualcuno-piace-freddo-nuova-vita-per-i-1dd738",
+      "title": "A qualcuno piace freddo: nuova vita per i vini rossi",
+      "summary": "Fosse una congiura, sarebbe stata ordita a puntino. Sommando il clima reale (l’estate più torrida di sempre) a quello psicologico, che rema contro l’alcol distinguendo sempre meno tra ...",
+      "date": "2026-10-17T21:00:00.000Z",
+      "url": "https://www.lastampa.it/specchio/rubriche/sapore/2026/10/18/news/a_qualcuno_piace_freddo_nuova_vita_per_i_vini_rossi_e_basta_con_la_caccia-15767259/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/specchio/rubriche/sapore"
+      ],
+      "author": "ANTONIO PAOLINI",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:12:25.339Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-17-lastampa-quel-miele-senza-api-prezioso-da-millenni-2947df",
+      "title": "Quel “miele senza api” prezioso da millenni",
+      "summary": "Che c’è in tavola, di buono (e che fa bene)",
+      "date": "2026-10-17T21:00:00.000Z",
+      "url": "https://www.lastampa.it/specchio/rubriche/parlare-a-tavola/2026/10/18/news/quel_miele_senza_api_prezioso_da_millenni-15767253/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/specchio/rubriche/parlare-a-tavola"
+      ],
+      "author": "GIORGIO E CATERINA CALABRESE",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:12:25.339Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-17-lastampa-grazia-andreasi-mio-marito-felice-scriveva-a90a4b",
+      "title": "Grazia Andreasi: “Mio marito Felice scriveva le battute e guardava se ridevo”",
+      "summary": "Il ricordo: «Fu Enzo Iannacci a spingerlo allo spettacolo quando lo vide recitare sul palco gridò: “È di serie A! È di serie A!”»",
+      "date": "2026-10-17T21:00:00.000Z",
+      "url": "https://www.lastampa.it/specchio/rubriche/a-tu-per-tu/2026/10/18/news/mio_marito_felice_cabarettista_d_altri_tempi_scriveva_le_battute_e_guardava_se_ridevo-15767320/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/specchio/rubriche/a-tu-per-tu"
+      ],
+      "author": "Fulvia Caprara",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:25.339Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-17-lastampa-l-armata-in-ciabatte-1ed01f",
+      "title": "L’armata in ciabatte",
+      "summary": "Guerre, propagande, e tutto ciò che sta in mezzo fra la pace e noi",
+      "date": "2026-10-17T21:00:00.000Z",
+      "url": "https://www.lastampa.it/specchio/rubriche/provocazioni/2026/10/18/news/l_armata_in_ciabatte-15767204/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/specchio/rubriche/provocazioni"
+      ],
+      "author": "Jacopo Iacoboni",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:25.339Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-17-lastampa-uno-spazio-a-misura-di-tommy-e24bd5",
+      "title": "Uno spazio a misura di Tommy",
+      "summary": "Da almeno quindici anni la mia idea di casa ideale corrisponde a un luogo dove può vivere al meglio mio figlio autistico. La prima e unica che mi sono potuto comperare già la progettai in ...",
+      "date": "2026-10-17T21:00:00.000Z",
+      "url": "https://www.lastampa.it/specchio/temi/2026/10/18/news/uno_spazio_a_misura_di_tommy-15767529/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/specchio/temi"
+      ],
+      "author": "Gianluca Nicoletti",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:25.339Z",
       "backfilled": true
     },
     {
@@ -3279,6 +5613,70 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-16-lastampa-garlasco-la-lezione-del-giudice-vitelli-48ad8b",
+      "title": "Garlasco, la lezione del giudice Vitelli: \"Perché Baudelaire mi ha aiutato ad assolvere Stasi\"",
+      "summary": "«Sapete come riuscii a risolvere la famosa telefonata di Alberto Stasi al 118 (quella del “credo che abbiano ucciso una persona”)? Grazie a una poesia di Baudelaire». Così il giudice Stefano Vitelli, noto soprattutto per aver emesso la sentenza di primo grado del delitto di Garlasco, racconta agli studenti del liceo Umberto Eco di Alessandria come ha affrontato una delle decisioni più importanti della sua vita: quella che il 17 dicembre 2009 portò all’assoluzione di Alberto Stasi dall’accusa di aver ucciso Chiara Poggi. C’è un elemento che il giudice Vitelli non manca di rimarcare a ogni passaggio del suo racconto: il ragionevole dubbio (diventato anche il titolo del libro autobiografico…",
+      "date": "2026-10-16T21:00:00.000Z",
+      "url": "https://www.lastampa.it/cronaca/2026/10/17/video/garlasco_vitelli_baudelaire_stasi_ragionevole_dubbio-15768758/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/cronaca"
+      ],
+      "author": "Davide Cavalleri, Giuseppe Legato",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:25.335Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-16-lastampa-l-ammissione-in-tv-della-portavoce-di-trump-be128e",
+      "title": "L'ammissione in tv della portavoce di Trump Katie Zacharia: \"Non ho superato l'esame da avvocata\"",
+      "summary": "Katie Zacharia è stata licenziata dopo soli cinque giorni dall’incarico di portavoce della Casa Bianca. Lo scrive il New York Times, citando tre fonti informate. Poco prima, parlando con i giornalisti, il presidente americano Donald Trump aveva detto di averle consigliato di riflettere sull’opportunità di continuare nel ruolo. La brevissima esperienza di Zacharia era iniziata tra le polemiche. Dopo la sua prima e unica conferenza stampa di martedì, erano emersi dubbi sulle sue qualifiche professionali e sull’utilizzo del titolo di avvocata. Intervistata da Fox News, la 41enne ha ammesso di non aver superato l’esame di abilitazione alla professione forense negli Stati Uniti. Alla domanda del…",
+      "date": "2026-10-16T16:57:00.000Z",
+      "url": "https://www.lastampa.it/esteri/2026/10/16/video/portavoce_trump_zacharia_licenziata_casa_bianca_trump_avvocata-15768770/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/esteri"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:12:25.337Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-16-lastampa-energia-la-ricetta-di-confprofessioni-piu-86df1c",
+      "title": "Energia, la ricetta di Confprofessioni: \"Più rinnovabili per tagliare i costi\"",
+      "summary": "Il presidente di Confprofessioni: «Investire nelle fonti pulite conviene già nel breve periodo». Al centro del confronto anche le disuguaglianze sociali e la crisi demografica italiana.",
+      "date": "2026-10-16T13:15:00.000Z",
+      "url": "https://www.lastampa.it/economia/speciali/professioni/2026/10/16/video/energia_la_ricetta_di_confprofessioni_piu_rinnovabili_per_tagliare_i_costi-15768507/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/economia/speciali/professioni"
+      ],
+      "author": "Valentina Petrucci",
+      "theme": "energija",
+      "addedAt": "2026-10-19T21:12:25.337Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-16-lastampa-cinesettimana-primetime-prima-serata-col-05b2ca",
+      "title": "Cinesettimana, Primetime, prima serata col mostro e Thomas Mann e la Germania in Fatherland.",
+      "summary": "\"Primetime\" di Lance Oppenheim ci porta nel mondo della televisione: nel 2006 il giornalista Chris Hanson conduce il programma \"To catch a Predator\" in cui dà la caccia ai pedofili, ma è tv d'inchiesta o spettacolo sensazionalistico? Con \"Fatherland\" riflessione di un percorso tra l'uomo e la Storia con il ritorno dello scrittore Thomas Mann nella Germania post-bellica.di Fulvia Caprara video Nicola Roumeliotis",
+      "date": "2026-10-16T11:55:00.000Z",
+      "url": "https://www.lastampa.it/spettacoli/2026/10/16/video/cinesettimana_primetime_prima_serata_col_mostro_e_thomas_mann_e_la_germania_in_fatherland-15768435/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/spettacoli"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:25.336Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-16-sole24-mattarella-al-vertice-arraiolos-tre-sfide-8654f8",
       "title": "Mattarella al vertice Arraiolos: tre sfide per l’Europa",
       "summary": "È stato il primo a prendere la parola al vertice di Arraiolos in Slovenia. «Il più anziano e il più rispettato» lo definisce la presidente della Slovenia Pirc Musar e...",
@@ -3311,6 +5709,102 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-16-lastampa-guerre-caro-energia-intelligenza-86e5fc",
+      "title": "Guerre, caro-energia, intelligenza artificiale: ecco le sfide dell’agricoltura “Made in Italy”",
+      "summary": "Il conflitto in Iran fa lievitare i costi di oltre 250 euro per ettaro coltivato. L’esperto: “Bisogna restituire centralità a un comparto strategico”",
+      "date": "2026-10-16T07:13:00.000Z",
+      "url": "https://www.lastampa.it/economia/speciali/coltivare-il-futuro/2026/10/16/news/guerre_caro-energia_intelligenza_artificiale_ecco_le_sfide_dell_agricoltura_made_in_italy-15768243/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/economia/speciali/coltivare-il-futuro"
+      ],
+      "author": "Emanuele Bonini",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:12:25.334Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-16-lastampa-il-vino-piemontese-fa-i-conti-con-la-crisi-7dda28",
+      "title": "Il vino piemontese fa i conti con la crisi: in giacenza nelle cantine oltre 3 milioni di ettolitri",
+      "summary": "Giacenze record. Confragricoltura: riequilibrare produzione e domanda",
+      "date": "2026-10-16T05:20:00.000Z",
+      "url": "https://www.lastampa.it/cuneo/2026/10/16/news/crisi_vino_piemontese_giacenze-15768111/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/cuneo"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:25.338Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-16-lastampa-torinosette-da-letizia-battaglia-a-805cff",
+      "title": "TorinoSette, da Letizia Battaglia a Samoylova: il mondo attraverso lo sguardo delle fotografe",
+      "summary": "La retrospettiva della grande fotografa siciliana, Letizia Battaglia, si inaugura da Camera, mentre l’artista americana, Anastasia Samoylova, di origine russa propone “Harbour”, allestita alle Gallerie d’Italia. E Claudia Gerini tiene un monologo dedicato ad altra importante figura della fotografia, Tina Modotti. Comincia il Festival Interazionale dell’Economia che cerca cura, rinnovamento e difesa del welfare nel percorso del tema conduttore “Salviamo lo stato sociale”: fra i 140 incontri, il rapper Rancore – che dialoga con Lucana Castellina sul senso della politica – interviene anche sui movimenti studenteschi. Momenti conclusivi per View Conference e Torino Spiritualità, mentre si…",
+      "date": "2026-10-16T02:00:00.000Z",
+      "url": "https://www.lastampa.it/torinosette/2026/10/16/video/torinosette_letizia_battaglia_anastasia_samoylova_mostre_torino-15767483/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/torinosette"
+      ],
+      "author": "TIZIANA PLATZER",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:25.336Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-16-lastampa-spegniamo-gli-algoritmi-l-australia-sfida-i-cc723a",
+      "title": "\"Spegniamo gli algoritmi\": l'Australia sfida i colossi dei social",
+      "summary": "L’Australia vuole dare agli utenti dei social il potere di scegliere cosa vedere: i contenuti suggeriti dagli algoritmi oppure soltanto quelli delle persone che seguono. Con la proposta “My Feed, My Way”, il governo di Anthony Albanese sfida i colossi tecnologici, prevedendo multe fino a 67 milioni di euro. Dopo il divieto dei social agli under 16, sostenuto dal 77% degli australiani, Canberra prova a cambiare anche il funzionamento delle piattaforme. In Europa questa possibilità esiste già, anche se esercitarla può essere complicato, come dimostra una sentenza olandese contro Meta. Intanto Bluesky sperimenta un futuro in cui possiamo scegliere persino quale algoritmo utilizzare. E allora…",
+      "date": "2026-10-16T01:30:00.000Z",
+      "url": "https://www.lastampa.it/rubriche/il-mondo-a-pezzi/2026/10/16/audio/spegniamo_gli_algoritmi_laustralia_sfida_i_colossi_dei_social-15767387/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/rubriche/il-mondo-a-pezzi"
+      ],
+      "author": "di Nicolas Lozito",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:12:25.336Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-15-lastampa-vigo-nell-hotel-dove-l-italia-costrui-la-0d3972",
+      "title": "Vigo, nell'hotel dove l'Italia costruì la vittoria dei Mondiali: ecco come appare dopo 44 anni",
+      "summary": "La città di Vigo, Spagna, in questi giorni è centro dell'attenzione dei calciofili e dei tifosi della Juventus per l'impegno dei bianconeri in Europa League, ma è anche luogo storico per il calcio italiano perché ha ospitato le partite del girone dell'Italia Mundial nell'82. Siamo andati a visitare quella che fu la sede del quartier generale azzurro \"la Casa del Barón\" a Pontevedra, pochi chilometri fuori da Vigo rivivendo i momenti in cui Bearzot aveva trasformato un gruppo in una squadra capace di battere anche le polemiche. La sala in cui si giocava a carte, il tavolino per lo scopone. Le camere: la 101 solo per il ct, quella di Zoff e Scirea impregnata di carisma e silenzio, quella di…",
+      "date": "2026-10-15T15:39:00.000Z",
+      "url": "https://www.lastampa.it/sport/2026/10/15/video/vigo_italia_mundial_1982_ritiro_bearzot_pontevedra-15767363/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/sport"
+      ],
+      "author": "FABIO RIVA, NICOLA BALICE",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:12:25.338Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-15-lastampa-la-prima-uscita-di-harry-e-meghan-dopo-il-de8774",
+      "title": "La prima uscita di Harry e Meghan dopo il ritorno. Dalla folla le chiedono \"Sei felice?\"",
+      "summary": "Prima uscita pubblica, dopo il loro ritorno nel Regno Unito, per il principe Harry e sua moglie Meghan, in visita ad un ente benefico sostenuto dal figlio di Carlo III a Nottingham, nell'Inghilterra centrale. Nella loro agenda in programma anche tre visite ad altrettante organizzazioni che supportano i giovani attraverso la musica, il cinema e lo sport per combattere la povertà. Al lora arrivo una persona tra la folla ha chiesto alla duchessa se fosse felice di eesere tornata in Inghilterra, e Meghan ha risposto con un perentorio «Sì». LEGGI ANCHE Harry e Meghan tornano a vivere nel Regno Unito | GUARDA ANCHE Meghan e Harry, la nuova vita in Uk: il video con Archie e Lilibet tra boschi…",
+      "date": "2026-10-15T12:58:00.000Z",
+      "url": "https://www.lastampa.it/esteri/2026/10/15/video/reali_harry_meghan_prima_uscita_folla-15767092/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/esteri"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "sport",
+      "addedAt": "2026-10-19T21:12:25.338Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-15-sole24-carburanti-ok-del-senato-al-decreto-estesi-399bfe",
       "title": "Carburanti, ok del Senato al decreto. Estesi i poteri al commissario per le trivelle",
       "summary": "Trentotto pratiche per cercare ed estrarre idrocarburi sulla terraferma aspettano il via libera delle Regioni. Nei casi peggiori l’attesa arriva a nove anni dalla presentazione della domanda. L’obiettivo del decreto...",
@@ -3324,6 +5818,22 @@
       "author": "di Redazione Roma",
       "theme": "sigurnost",
       "addedAt": "2026-10-19T20:54:47.230Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-15-lastampa-la-super-bomba-contro-l-iran-il-piano-usa-e-e931aa",
+      "title": "La “super-bomba” contro l’Iran? Il piano Usa e le immagini della sua potenza distruttiva",
+      "summary": "Gli Stati Uniti valutano l'impiego della «madre di tutte le bombe» contro l'Iran. Secondo un'esclusiva della Cnn, il Pentagono ha preparato piani che prevedono il possibile utilizzo della GBU-43/B, un ordigno non nucleare da quasi 10 tonnellate, contro infrastrutture energetiche e siti nucleari iraniani, qualora Donald Trump ordinasse nuovi attacchi. L'arma, utilizzata per la prima volta in combattimento in Afghanistan nel 2017, è progettata per provocare esplosioni devastanti su vaste superfici, ma restano dubbi sulla sua efficacia contro installazioni sotterranee. Reuters non ha potuto verificare autonomamente la notizia. Nel video, le immagini d'archivio dei test del 2003 e dell'attacco…",
+      "date": "2026-10-15T05:03:00.000Z",
+      "url": "https://www.lastampa.it/esteri/2026/10/15/video/usa_iran_bombe_piano_attacco_potenza_distruttiva-15766668/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/esteri"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:25.337Z",
       "backfilled": true
     },
     {
@@ -3372,6 +5882,22 @@
       "author": "di Emilia Patta",
       "theme": "sigurnost",
       "addedAt": "2026-10-19T20:54:47.230Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-13-lastampa-e-nata-la-stampa-usa-il-taglio-del-nastro-a64073",
+      "title": "È nata “La Stampa Usa”: il taglio del nastro digitale al Waldorf Astoria di New York",
+      "summary": "Presentato il nuovo portale in lingua inglese del Gruppo SAE che racconterà l’Italia agli italo-americani e non solo",
+      "date": "2026-10-13T21:50:00.000Z",
+      "url": "https://www.lastampa.it/esteri/2026/10/14/news/la_stampa_usa_presentazione_new_york_waldorf_astoria-15765474/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/esteri"
+      ],
+      "author": "dal nostro corrispondente Alberto Simoni",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:12:25.338Z",
       "backfilled": true
     },
     {
@@ -3616,6 +6142,22 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-08-lastampa-nasce-fuoriclasse-il-giornale-degli-10b672",
+      "title": "Nasce Fuoriclasse, il giornale degli studenti / Video",
+      "summary": "Il nuovo inserto settimanale sarà in edicola con La Stampa a partire dal 26 ottobre",
+      "date": "2026-10-08T21:00:00.000Z",
+      "url": "https://www.lastampa.it/cronaca/2026/10/09/news/fuoriclasse_giornale_studenti-15761128/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/cronaca"
+      ],
+      "author": "Chiara Comai",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:25.338Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-08-sole24-legge-elettorale-il-plauso-di-meloni-e-la-dbdcfe",
       "title": "Legge elettorale, il plauso di Meloni e la strategia: preparare il voto in primavera senza dirlo",
       "summary": "La premier ad Ascoli esulta per il via libera alla riforma elettorale e liquida a «dibattiti surreali» le previsioni sulle urne anticipate. Ma la campagna elettorale è già in corso",
@@ -3760,6 +6302,22 @@
       "backfilled": true
     },
     {
+      "slug": "rim-2026-10-06-lastampa-pensioni-2027-aumentano-gli-assegni-ecco-96d660",
+      "title": "Pensioni 2027, aumentano gli assegni: ecco chi ci guadagna e quanto in base al reddito",
+      "summary": "La rivalutazione potrebbe salire al 2,9%: dal minimo agli assegni da 4 mila euro, tutti gli aumenti lordi e netti dal 1° gennaio",
+      "date": "2026-10-06T01:00:00.000Z",
+      "url": "https://www.lastampa.it/tuttosoldi/2026/10/06/news/pensioni-2027-aumenti-assegni-rivalutazione-importi-fasce-reddito-15758225/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/tuttosoldi"
+      ],
+      "author": "ANNA MARIA ANGELONE",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:12:25.336Z",
+      "backfilled": true
+    },
+    {
       "slug": "rim-2026-10-04-sole24-caso-scarpinato-fdi-chiede-al-m5s-di-75ae8a",
       "title": "Caso Scarpinato, FdI chiede al M5s di sostituirlo in Antimafia. I Cinque Stelle: «Nessun depistaggio»",
       "summary": "Fratelli d’Italia chiede al Movimento 5 Stelle di sostituire il senatore Roberto Scarpinato nella commissione parlamentare Antimafia. La richiesta è contenuta in una lettera firmata dai capigruppo di FdI al...",
@@ -3773,6 +6331,22 @@
       "author": "di Redazione Roma",
       "theme": "sigurnost",
       "addedAt": "2026-10-19T20:54:47.232Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-06-19-lastampa-la-stampa-per-voi-undici-tappe-nel-nord-ef0d15",
+      "title": "La Stampa per voi: undici tappe nel Nord Ovest",
+      "summary": "Il prossimo appuntamento è fissato per il 29 settembre ad Alessandria",
+      "date": "2026-06-19T04:54:00.000Z",
+      "url": "https://www.lastampa.it/economia/speciali/la-stampa-per-voi/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/economia/speciali/la-stampa-per-voi"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:12:25.338Z",
       "backfilled": true
     }
   ]

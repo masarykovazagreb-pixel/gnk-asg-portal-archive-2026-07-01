@@ -4,7 +4,7 @@
   "lang": "sl",
   "city": "Ljubljana",
   "country": "Slovenija",
-  "updatedAt": "2026-10-19T21:03:14.160Z",
+  "updatedAt": "2026-10-19T21:11:03.177Z",
   "sources": [
     {
       "id": "sta",
@@ -18,7 +18,7 @@
         "https://english.sta.si/rss.php#1: HTTP 403",
         "https://www.sta.si/rss.php#1: HTTP 403"
       ],
-      "checkedAt": "2026-10-19T21:02:41.062Z"
+      "checkedAt": "2026-10-19T21:10:00.741Z"
     },
     {
       "id": "delo",
@@ -30,7 +30,7 @@
         "wp:1: HTTP 404",
         "https://www.delo.si/feed/#1: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:02:55.868Z"
+      "checkedAt": "2026-10-19T21:10:06.035Z"
     },
     {
       "id": "dnevnik",
@@ -44,24 +44,88 @@
         "https://www.dnevnik.si/feed#1: HTTP 404",
         "https://www.dnevnik.si/sitemap.xml: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:02:58.236Z"
+      "checkedAt": "2026-10-19T21:10:09.234Z"
     },
     {
       "id": "siol",
       "name": "Siol.net",
       "url": "https://siol.net/feeds/rss",
-      "ok": true,
-      "fetched": 20,
+      "ok": false,
+      "fetched": 0,
       "errors": [
         "wp:1: HTTP 404",
         "https://siol.net/feeds/rss#1: HTTP 404",
         "https://siol.net/rss#1: HTTP 404",
         "https://www.siol.net/rss#1: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:03:14.160Z"
+      "checkedAt": "2026-10-19T21:10:26.054Z"
+    },
+    {
+      "id": "n1si",
+      "name": "N1 Slovenija",
+      "url": "https://n1info.si/feed/",
+      "ok": true,
+      "fetched": 50,
+      "errors": [
+        "wp:1: HTTP 403"
+      ],
+      "checkedAt": "2026-10-19T21:10:44.746Z"
+    },
+    {
+      "id": "24ur",
+      "name": "24ur.com",
+      "url": "https://www.24ur.com/rss",
+      "ok": true,
+      "fetched": 20,
+      "errors": [
+        "wp:1: HTTP 404"
+      ],
+      "checkedAt": "2026-10-19T21:10:52.328Z"
+    },
+    {
+      "id": "mladina",
+      "name": "Mladina",
+      "url": "https://www.mladina.si/feed/",
+      "ok": true,
+      "fetched": 17,
+      "errors": [
+        "wp:1: HTTP 404",
+        "https://www.mladina.si/feed/#1: nije feed"
+      ],
+      "checkedAt": "2026-10-19T21:10:58.308Z"
+    },
+    {
+      "id": "rtvslo",
+      "name": "RTV Slovenija",
+      "url": "https://www.rtvslo.si/rss",
+      "ok": false,
+      "fetched": 0,
+      "errors": [
+        "wp:1: HTTP 404",
+        "https://www.rtvslo.si/rss#1: nije feed",
+        "https://www.rtvslo.si/sitemap.xml: HTTP 404",
+        "https://www.rtvslo.si/sitemap_index.xml: HTTP 404"
+      ],
+      "checkedAt": "2026-10-19T21:11:03.177Z"
     }
   ],
   "items": [
+    {
+      "slug": "ljubljana-2026-10-19-24ur-novakova-in-biscak-o-rezultatih-a546f3",
+      "title": "Novakova in Biščak o rezultatih referendumov in pretresih pri Demokratih",
+      "summary": "Kako močna oziroma načeta je trenutna koalicija? Po tem, ko so vladajoči izgubili dva najpomembnejša referenduma, zakonodajnega o parlamentarni preiskavi in posvetovalnega o RTV-prispevku, se morajo ostrih očitkov o politični korupciji braniti v stranki Anžeta Logarja. Kaj to pomeni za Demokrate, ali je Logarjeva stranka zdaj najšibkejši člen že tako manjšinske koalicije? V oddaji 24UR ZVEČER sta bila gosta nekdanja predsednica NSi Ljudmila Novak in Bogdan Biščak, nekdanji generalni sekretar stranke Zares.",
+      "date": "2026-10-19T20:52:30.000Z",
+      "url": "https://www.24ur.com/novice/slovenija/novakova-in-biscak-o-rezultatih-referenduma-in-pretresih-pri-demokratih.html",
+      "source": "24ur",
+      "sourceName": "24ur.com",
+      "categories": [
+        "Slovenija"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:52.327Z",
+      "backfilled": true
+    },
     {
       "slug": "ljubljana-2026-10-19-delo-milijon-razlogov-za-nasmeh-otrok-iz-1e7f74",
       "title": "Milijon razlogov za nasmeh otrok iz socialno šibkih okolij",
@@ -74,6 +138,25 @@
       "author": "",
       "theme": "sigurnost",
       "addedAt": "2026-10-19T20:54:19.543Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-papez-leon-xiv-z-zelenskim-govoril-o-pomoci-0b52dd",
+      "title": "Papež Leon XIV. z Zelenskim govoril o pomoči obleganemu ukrajinskemu mestu Oleški",
+      "summary": "Papež Leon XIV. se je danes po telefonu pogovarjal z ukrajinskim predsednikom Volodimirjem Zelenskim in izrazil upanje na humanitarno prekinitev ognja",
+      "date": "2026-10-19T20:34:51.000Z",
+      "url": "https://n1info.si/novice/svet/papez-leon-xiv-z-zelenskim-govoril-o-pomoci-obleganemu-ukrajinskemu-mestu-oleski/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Svet",
+        "rusija",
+        "putin",
+        "papež"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:10:44.741Z",
       "backfilled": true
     },
     {
@@ -139,6 +222,59 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-n1si-postojnski-policisti-pri-45-letniku-zasegli-4bf7b3",
+      "title": "Postojnski policisti pri 45-letniku zasegli večjo količino konoplje",
+      "summary": "Postojnski policisti so danes 45-letnemu moškemu iz območja Postojne med hišno preiskavo stanovanjske hiše in pripadajočih zunanjih površin zasegli ve",
+      "date": "2026-10-19T19:49:42.000Z",
+      "url": "https://n1info.si/novice/crna-kronika/postojnski-policisti-pri-45-letniku-zasegli-vecjo-kolicino-konoplje/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Črna kronika",
+        "hišna preiskava",
+        "konoplja",
+        "policija"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:44.742Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-huda-neurja-v-spaniji-terjala-stiri-378c5d",
+      "title": "Huda neurja v Španiji terjala štiri življenja",
+      "summary": "Huda neurja so na vzhodu Španije od nedelje terjala štiri življenja. Zaradi obsežnih poplav so v več regijah potekale reševalne akcije, ponekod so dan",
+      "date": "2026-10-19T19:39:26.000Z",
+      "url": "https://n1info.si/novice/svet/huda-neurja-v-spaniji-terjala-stiri-zivljenja/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Svet",
+        "španija",
+        "neurja"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:44.742Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-24ur-v-34-letu-starosti-preminilo-nekdanje-dekle-c07a2a",
+      "title": "V 34. letu starosti preminilo nekdanje dekle Justina Bieberja",
+      "summary": "Avstralska manekenka in oblikovalka kopalk Sahara Ray, ki je pred leti pritegnila pozornost svetovne javnosti tudi zaradi domnevne romantične povezave z Justinom Bieberjem, je umrla v 34. letu starosti. \"Umrla je sinoči v bolnišnici, obkrožena s svojimi najbližjimi. Bila je neizmerno ljubljena,\" je njena družina povedala za TMZ.",
+      "date": "2026-10-19T19:38:40.000Z",
+      "url": "https://www.24ur.com/popin/tuja-scena/v-31-letu-starosti-preminilo-nekdanje-dekle-justina-bieberja.html",
+      "source": "24ur",
+      "sourceName": "24ur.com",
+      "categories": [
+        "Tuja scena"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:52.327Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-francija-uvaja-policijsko-uro-in-razmislja-1ce3fb",
       "title": "Francija uvaja policijsko uro in razmišlja o izrednih razmerah",
       "summary": "Gibanje rumenih jopičev je za prihodnjo soboto je že napovedalo drugi val demonstracij.",
@@ -150,6 +286,22 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:54:19.543Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-24ur-vec-mest-v-franciji-uvedlo-policijsko-uro-6e871b",
+      "title": "Več mest v Franciji uvedlo policijsko uro",
+      "summary": "V delih Pariza so uvedli policijsko uro in prepoved demonstracij. Za podobne ukrepe se je odločilo tudi več drugih mest po državi, med njimi Lille, Lyon in Nica. Pred tem je namreč francoski premier sporočil, da je po nasilnih protestih minuli konec tedna več mest dobilo pooblastila za uvedbo delne policijske ure. V enih najhujših javnih neredih v sodobni francoski zgodovini je bilo uničenih okoli 1500 trgovin in podjetij, poškodovanih pa je bilo okoli 1000 policistov. Za nemire je premier okrivil skrajno levico. Gibanje rumenih jopičev pa po množičnih protestih proti draginji za soboto napoveduje nov val demonstracij.",
+      "date": "2026-10-19T19:33:55.000Z",
+      "url": "https://www.24ur.com/novice/tujina/francoska-vlada-pod-pritiskom-zupani-zahtevajo-ukrepanje-po-nasilnih-izgredih.html",
+      "source": "24ur",
+      "sourceName": "24ur.com",
+      "categories": [
+        "Tujina"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:52.327Z",
       "backfilled": true
     },
     {
@@ -167,6 +319,24 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-n1si-v-mariboru-trcila-avtobus-in-kombi-stiri-a0f2b7",
+      "title": "V Mariboru trčila avtobus in kombi, štiri potnike odpeljali v bolnišnico",
+      "summary": "V Mariboru se je popoldne zgodila prometna nesreča, v kateri sta bila udeležena avtobus in kombi. Posredovati so morali tudi gasilci, več ljudi so odp",
+      "date": "2026-10-19T19:31:24.000Z",
+      "url": "https://n1info.si/novice/crna-kronika/v-mariboru-trcila-avtobus-in-kombi-stiri-potnike-odpeljali-v-bolnisnico/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Črna kronika",
+        "prometna nesreča",
+        "poškodba"
+      ],
+      "author": "",
+      "theme": "energija",
+      "addedAt": "2026-10-19T21:10:44.742Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-boj-za-trumpovo-nasledstvo-se-ze-zacenja-95fbab",
       "title": "Boj za Trumpovo nasledstvo se že začenja",
       "summary": "Podpredsednik J. D. Vance ni prepričan o tem, da se želi podati v boj za Belo hišo.",
@@ -178,6 +348,76 @@
       "author": "",
       "theme": "politika",
       "addedAt": "2026-10-19T20:54:19.543Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-24ur-rama-protestniki-prestopili-rdeco-crto-6cc207",
+      "title": "Rama: Protestniki prestopili rdečo črto",
+      "summary": "V albanski prestolnici Tirana še naprej potekajo protesti, na katerih so izbruhnili spopadi med policijo in demonstranti. Do nasilja je bil znova kritičen albanski premier Edi Rama. Potem ko so protestniki požgali policijsko postajo, jih je tudi obtožil, da so prestopili rdečo črto.",
+      "date": "2026-10-19T19:28:08.000Z",
+      "url": "https://www.24ur.com/novice/tujina/rama-protestniki-prestopili-rdeco-crto.html",
+      "source": "24ur",
+      "sourceName": "24ur.com",
+      "categories": [
+        "Tujina"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:52.327Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-priljubljena-zvezdnica-sporocila-zalostno-0b1904",
+      "title": "Priljubljena zvezdnica sporočila žalostno novico",
+      "summary": "Ameriška zvezdnica Ariana Grande se je poslovila od svoje dolgoletne živalske spremljevalke. Njena psička Coco, ki jo je pred leti rešila iz zavetišča",
+      "date": "2026-10-19T19:19:03.000Z",
+      "url": "https://n1info.si/magazin/priljubljena-zvezdnica-je-sporocila-zalostno-novico/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Magazin",
+        "Zanimivosti",
+        "pes",
+        "ariana grande"
+      ],
+      "author": "",
+      "theme": "sport",
+      "addedAt": "2026-10-19T21:10:44.742Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-24ur-kuhali-so-v-skromni-kuhinji-njihove-jedi-pa-4efa87",
+      "title": "Kuhali so v skromni kuhinji, njihove jedi pa so bile 'brutalno dobre'",
+      "summary": "Žreb je določil, da mora skupina Tadeja Oblaka kuhati v skromni kuhinji z omejenim prostorom in malo opreme. Vodja ter člana Ajda Osta in Jure Brumen so dane pogoje najbolje obrnili sebi v prid, dostavili izredno dobri jedi in si z njima zagotovili mesta na balkonu.",
+      "date": "2026-10-19T19:18:12.000Z",
+      "url": "https://www.24ur.com/tv-oddaje/masterchef-slovenija/kuhali-so-v-skromni-kuhinji-njihove-jedi-pa-so-bile-brutalno-dobre.html",
+      "source": "24ur",
+      "sourceName": "24ur.com",
+      "categories": [
+        "MasterChef Slovenija"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:52.327Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-v-raketnem-napadu-hutijevcev-v-jemnu-ubitih-c47dc9",
+      "title": "V raketnem napadu hutijevcev v Jemnu ubitih več kot 50 ljudi",
+      "summary": "V raketnem napadu uporniških hutijevcev na vojaško taborišče v Jemnu je bilo ubitih najmanj 53 ljudi, več kot 200 je ranjenih. Gre za najbolj smrtonos",
+      "date": "2026-10-19T19:16:51.000Z",
+      "url": "https://n1info.si/novice/svet/v-raketnem-napadu-hutijevcev-v-jemnu-ubitih-vec-kot-50-ljudi/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Svet",
+        "jemen",
+        "napad",
+        "hutijevci"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:10:44.742Z",
       "backfilled": true
     },
     {
@@ -197,6 +437,25 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-n1si-albanski-premier-oster-do-protestnikov-e03f60",
+      "title": "Albanski premier oster do protestnikov: Protestiranje je pravica, nasilje pa je kaznivo dejanje",
+      "summary": "V albanski prestolnici Tirana tudi danes potekajo protesti, na katerih so izbruhnili spopadi med policijo in demonstranti. Do nasilja je bil znova kri",
+      "date": "2026-10-19T19:07:04.000Z",
+      "url": "https://n1info.si/novice/svet/albanski-premier-oster-do-protestnikov-protestiranje-je-pravica-nasilje-pa-je-kaznivo-dejanje/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Svet",
+        "protesti",
+        "edi rama",
+        "nasilje"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:44.742Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-huda-neurja-na-vzhodu-spanije-terjale-stiri-cd8510",
       "title": "Huda neurja na vzhodu Španije terjale štiri življenja",
       "summary": "Španija se bori z ekstremnimi vremenskimi razmerami, v 24 urah je ponekod zapadlo kar 700 litrov dežja.",
@@ -208,6 +467,95 @@
       "author": "",
       "theme": "politika",
       "addedAt": "2026-10-19T20:54:19.543Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-ministrica-fridl-jarc-z-objavo-medijskega-14b258",
+      "title": "Ministrica Fridl Jarc: Z objavo medijskega razpisa ne čakamo na novelo zakona o medijih",
+      "summary": "Ministrica za kulturo Ignacija Fridl Jarc je danes v DZ dejala, da si ministrstvo prizadeva za čimprejšnjo objavo rednega medijskega razpisa za leto 2",
+      "date": "2026-10-19T18:59:53.000Z",
+      "url": "https://n1info.si/novice/slovenija/ministrica-fridl-jarc-z-objavo-medijskega-razpisa-ne-cakamo-na-novelo-zakona-o-medijih/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Slovenija",
+        "javni razpis",
+        "proračun 2027",
+        "medijski razpis"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:44.743Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-24ur-po-anonimni-prijavi-hisna-preiskava-zasegli-a53e43",
+      "title": "Po anonimni prijavi hišna preiskava: zasegli večjo količino konoplje",
+      "summary": "Postojnski policisti so 45-letnemu moškemu z območja Postojne med hišno preiskavo zasegli večjo količino snovi ter rastlinskih delov, za katere utemeljeno sumijo, da gre za konopljo in njene derivate. Osumljenca bodo kazensko ovadili.",
+      "date": "2026-10-19T18:56:15.000Z",
+      "url": "https://www.24ur.com/novice/crna-kronika/po-anonimni-prijavi-opravili-hisno-preiskavo-zasegli-vecjo-kolicino-konoplje.html",
+      "source": "24ur",
+      "sourceName": "24ur.com",
+      "categories": [
+        "Črna kronika"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-19T21:10:52.327Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-ilegalna-tovarna-cigaret-pri-lendavi-ena-61edde",
+      "title": "Ilegalna tovarna cigaret pri Lendavi ena večjih v Evropi, delavci živeli v groznih razmerah",
+      "summary": "Obljubljali so jim dobro plačano delo v Evropi, namesto tega pa so pristali v ilegalni tovarni cigaret pri Lendavi, kjer so delali po 12 ur na dan, br",
+      "date": "2026-10-19T18:52:14.000Z",
+      "url": "https://n1info.si/novice/crna-kronika/policija-in-financna-uprava-bosta-predstavili-podrobnosti-o-najvecji-ilegalni-tovarni-cigaret/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Črna kronika",
+        "Video",
+        "pomurje",
+        "nezakonita tovarna cigaret"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:44.743Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-po-nasilnih-protestih-vec-francoskih-mest-a5f158",
+      "title": "Po nasilnih protestih več francoskih mest uvedlo policijsko uro",
+      "summary": "Po nasilnih protestih, ki so minuli konec tedna ohromili Francijo, je več francoskih mest uvedlo policijsko uro in prepoved demonstracij. K takšnim uk",
+      "date": "2026-10-19T18:47:33.000Z",
+      "url": "https://n1info.si/novice/svet/po-nasilnih-protestih-vec-francoskih-mest-uvaja-delne-policijske-ure/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Svet",
+        "izgredi",
+        "sebastien lecornu",
+        "policijska ura"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:44.743Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-24ur-saga-je-sklenjena-ronaldo-kaznovan-zaradi-e3e8a7",
+      "title": "Saga je sklenjena: Ronaldo kaznovan zaradi predčasnega odhoda",
+      "summary": "Portugalski nogometni zvezdnik Cristiano Ronaldo je zaradi samovoljnega odhoda iz reprezentančnega tabora prejel 30-dnevno prepoved nastopanja in 255 evrov denarne kazni, je poročal portugalski medij Noticias ao Minuto.",
+      "date": "2026-10-19T18:45:58.000Z",
+      "url": "https://www.24ur.com/sport/nogomet/saga-je-sklenjena-ronaldo-kaznovan-zaradi-predcasnega-odhoda.html",
+      "source": "24ur",
+      "sourceName": "24ur.com",
+      "categories": [
+        "Nogomet"
+      ],
+      "author": "",
+      "theme": "sport",
+      "addedAt": "2026-10-19T21:10:52.328Z",
       "backfilled": true
     },
     {
@@ -224,6 +572,25 @@
       "author": "",
       "theme": "sport",
       "addedAt": "2026-10-19T21:03:14.158Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-razkrili-mrezo-botov-srbske-sns-vuciceve-ab9457",
+      "title": "Razkrili mrežo botov srbske SNS: Vučićeve objave prek lažnih profilov delili kar med službo",
+      "summary": "V Srbiji so v javnost prišli podatki o platformi vladajoče Srbske napredne stranke, s katero je ta širila svoja sporočila in narativ. Na platformi je",
+      "date": "2026-10-19T18:37:19.000Z",
+      "url": "https://n1info.si/novice/svet/razkrili-mrezo-botov-srbske-sns-vuciceve-objave-prek-laznih-profilov-delili-kar-med-sluzbo/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Svet",
+        "aleksandar vučić",
+        "družbena omrežja",
+        "bot"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:44.743Z",
       "backfilled": true
     },
     {
@@ -273,6 +640,38 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-24ur-lukic-v-sloveniji-nobenega-napredka-na-690711",
+      "title": "Lukić: V Sloveniji nobenega napredka na področju trgovine z ljudmi",
+      "summary": "V Sloveniji na področju trgovine z ljudmi in zaščite delavcev v preteklih letih ni prišlo do nobenega napredka, je odkritje nezakonite tovarne cigaret, kjer naj bi prisilno delalo prek 30 Paragvajcev, komentiral vodja Delavske svetovalnice Goran Lukić. Sistematičen pregon ni ne politična ne operativna prioriteta, je razočaran.",
+      "date": "2026-10-19T18:13:45.000Z",
+      "url": "https://www.24ur.com/novice/slovenija/lukic-v-sloveniji-nobenega-napredka-na-podrocju-trgovine-z-ljudmi.html",
+      "source": "24ur",
+      "sourceName": "24ur.com",
+      "categories": [
+        "Slovenija"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:10:52.328Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-24ur-zakaj-predlog-o-ustanovitvi-uciteljske-50d7b4",
+      "title": "Zakaj predlog o ustanovitvi učiteljske zbornice razburja?",
+      "summary": "Kdaj bo pri nas zaživela napovedana učiteljska zbornica? Predlog zakona je v pripravi, so potrdili na ministrstvu za izobraževanje, vsebino pa še usklajujejo. Je pa med šolniki završalo zaradi predloga učiteljskega združenja Slovenije, po katerem bi bilo za članstvo v zbornici treba plačevati obvezno članarino, približno osem evrov na mesec, predsednika zbornice pa bi imenoval kar državni zbor. Sindikati opozarjajo, da bi bila takšna zbornica podaljšana roka oblasti, zato je pod takšnimi pogoji ne bi podprli.",
+      "date": "2026-10-19T18:07:50.000Z",
+      "url": "https://www.24ur.com/novice/slovenija/zakaj-predlog-o-ustanovitvi-uciteljske-zbornice-razburja.html",
+      "source": "24ur",
+      "sourceName": "24ur.com",
+      "categories": [
+        "Slovenija"
+      ],
+      "author": "",
+      "theme": "potres",
+      "addedAt": "2026-10-19T21:10:52.328Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-siol-aleksander-aamodt-kilde-povsem-sem-na-tleh-01f187",
       "title": "Aleksander Aamodt Kilde: \"Povsem sem na tleh\"",
       "summary": "Norveški alpski smučar Aleksander Aamodt Kilde, ki je v zadnjih letih prestal pravo kalvarijo s poškodbami, je doživel nov hud udarec. Ravno ko je začel znova uživati na smučeh in dobivati občutek, da se vrača med najboljše, se je na treningu smuka v Čilu spet poškodoval. Tokrat si je poškodoval Ahilovo tetivo in se oglasil s čustvenim zapisom.",
@@ -317,6 +716,38 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-24ur-krajani-pretreseni-nic-nismo-vedeli-dokler-ca20ea",
+      "title": "Krajani pretreseni: 'Nič nismo vedeli, dokler niso prišli policisti'",
+      "summary": "Grozljivo odkritje v hali nekdanjega kompleksa Nafte Lendava je pretreslo tudi okoliške prebivalce. Delavci so bili v nečloveških razmerah zaprti le nekaj sto metrov od njihovih domov, sami pa so ves čas mislili, da je objekt zapuščen. Okna so bila zastrta oziroma zapečatena, tako ponoči ni bilo videti nobene svetlobe v njej. Industrijsko območje je obiskal tudi župan Lendave, ki je prepričan, da gre v tem primeru za špekulativen nakup nepremičnine, namenjen bogatenju na račun drugih.",
+      "date": "2026-10-19T17:50:56.000Z",
+      "url": "https://www.24ur.com/novice/slovenija/krajani-pretreseni-nic-nismo-vedeli-dokler-niso-prisli-policisti.html",
+      "source": "24ur",
+      "sourceName": "24ur.com",
+      "categories": [
+        "Slovenija"
+      ],
+      "author": "",
+      "theme": "energija",
+      "addedAt": "2026-10-19T21:10:52.326Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-24ur-rokometas-nik-henigman-in-hci-mira-cerarja-f06ee0",
+      "title": "Rokometaš Nik Henigman in hči Mira Cerarja bosta še tretjič starša",
+      "summary": "Družina slovenskega rokometaša Nika Henigmana in njegove žene Eve ima spet razlog za veselje. Zakonca namreč pričakujeta tretjega otroka, veselo novico pa sta sporočila na Instagramu. Njuni hčerki Leni in Lili bosta tako kmalu dobili še enega sorojenca.",
+      "date": "2026-10-19T17:49:28.000Z",
+      "url": "https://www.24ur.com/popin/domaca-scena/rokometas-nik-henigman-bo-se-tretjic-postal-ocka.html",
+      "source": "24ur",
+      "sourceName": "24ur.com",
+      "categories": [
+        "Domača scena"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:52.327Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-siol-trcenje-v-mariboru-poskodovana-voznica-b9ad15",
       "title": "Trčenje v Mariboru: poškodovana voznica avtobusa, štirje potniki v bolnišnici",
       "summary": "Na križišču Ptujske in Tržaške ceste v Mariboru sta danes trčila kombinirano vozilo in avtobus. V nesreči se je poškodovala voznica avtobusa, štiri potnike pa so reševalci prepeljali v Univerzitetni klinični center (UKC) Maribor.",
@@ -330,6 +761,41 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T21:03:14.158Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-24ur-nesrecni-norvezan-po-hudi-poskodbi-brutalno-3a14bc",
+      "title": "Nesrečni Norvežan po hudi poškodbi: Brutalno in težko sprejeti",
+      "summary": "Norveški alpski smučar Aleksander Aamodt Kilde je po novi hudi poškodbi na družbenih omrežjih čustveno spregovoril o svojem razočaranju. \"Brutalno je in vse skupaj je zelo težko sprejeti,\" je na Instagramu zapisal 34-letnik, ki si je prejšnji teden na treningu smuka v Čilu strgal Ahilovo tetivo.",
+      "date": "2026-10-19T17:46:58.000Z",
+      "url": "https://www.24ur.com/sport/zimski_sporti/nesrecni-norvezan-po-hudi-poskodbi-brutalno-in-tezko-sprejeti.html",
+      "source": "24ur",
+      "sourceName": "24ur.com",
+      "categories": [
+        "Zimski športi"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:52.328Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-ste-kupili-to-mleto-meso-zaradi-nevarne-94460f",
+      "title": "Ste kupili to mleto meso? Zaradi nevarne bakterije ga umikajo s polic (FOTO)",
+      "summary": "Uprava za varno hrano, veterinarstvo in varstvo rastlin je iz prodaje odpoklicala mleto mešano meso slovenskega proizvajalca Mesarstvo Oblak in distri",
+      "date": "2026-10-19T17:45:22.000Z",
+      "url": "https://n1info.si/novice/slovenija/ste-kupili-to-mleto-meso-zaradi-nevarne-bakterije-ga-umikajo-s-polic-foto/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Slovenija",
+        "Zanimivosti",
+        "trgovina",
+        "meso"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-19T21:10:44.743Z",
       "backfilled": true
     },
     {
@@ -360,6 +826,40 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:54:19.544Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-24ur-vec-kot-2-tisoc-rastlin-konoplje-temacna-18d72f",
+      "title": "Več kot 2 tisoč rastlin konoplje: temačna skrivnost nekdanjega nogometaša",
+      "summary": "Žarko Grabovač, nekdanji srbski nogometaš, ki je večji del kariere preživel v nizozemski ligi Eredivisie, je bil spoznan za krivega gojenja ogromne količine konoplje. Policija je v obsežni raciji odkrila več kot 2 tisoč rastlin, Srbu pa je bila izrečena pogojna zaporna kazen petih let, sodišče pa je odredilo tudi odvzem pol milijona evrov.",
+      "date": "2026-10-19T17:38:02.000Z",
+      "url": "https://www.24ur.com/sport/nogomet/vec-kot-2-tisoc-rastlin-konoplje-temacna-skrivnost-nekdanjega-nogometasa.html",
+      "source": "24ur",
+      "sourceName": "24ur.com",
+      "categories": [
+        "Nogomet"
+      ],
+      "author": "",
+      "theme": "sport",
+      "addedAt": "2026-10-19T21:10:52.327Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-starlink-v-bolgariji-naj-bi-pozgala-19-402026",
+      "title": "Starlink v Bolgariji naj bi požgala 19-letna Nemca, grozi jima do 12 let zapora",
+      "summary": "Bolgarsko sodišče je odobrilo izdajo evropskega naloga za prijetje za nemška državljana, ki sta osumljena požiga na objektu satelitske internetne stor",
+      "date": "2026-10-19T17:29:49.000Z",
+      "url": "https://n1info.si/novice/svet/starlink-v-bolgariji-naj-bi-pozgala-19-letna-nemca-grozi-jima-do-12-let-zapora/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Svet",
+        "starlink",
+        "požig"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:44.743Z",
       "backfilled": true
     },
     {
@@ -425,6 +925,25 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-n1si-pristeli-glasove-iz-tujine-razlika-pri-2309fa",
+      "title": "Prišteli glasove iz tujine, razlika pri referendumu o RTV-prispevku še večja",
+      "summary": "K izidom štirih referendumov, ki so potekali pred tednom dni, so danes okrajne volilne komisije prištele še glavnino glasov po pošti iz tujine, DVK pa",
+      "date": "2026-10-19T17:09:59.000Z",
+      "url": "https://n1info.si/novice/slovenija/pristeli-glasove-iz-tujine-razlika-pri-referendumu-o-rtv-prispevku-se-vecja/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Slovenija",
+        "dvk",
+        "državna volilna komisija",
+        "rezultati"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:44.743Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-ves-svet-postaja-jugoslavija-d41aea",
       "title": "»Ves svet postaja Jugoslavija«",
       "summary": "Trošimo denar, ki ga nimamo. Francija je že zadnjih nekaj let »bad boy« kapitalskih trgov.",
@@ -436,6 +955,75 @@
       "author": "",
       "theme": "ekonomija",
       "addedAt": "2026-10-19T20:54:19.544Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-cnn-po-43-letih-zapusca-legendarna-b30db0",
+      "title": "CNN po 43 letih zapušča legendarna novinarka",
+      "summary": "Legendarna novinarka in glavna mednarodna dopisnica ameriške televizijske mreže CNN Christiane Amanpour se po 43 letih poslavlja od televizijskih zasl",
+      "date": "2026-10-19T16:55:25.000Z",
+      "url": "https://n1info.si/novice/svet/cnn-po-43-letih-zapusca-legendarna-novinarka/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Svet",
+        "christiane amanpour",
+        "cnn"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:44.743Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-24ur-preprosta-enacba-vesela-novica-zakonca-455761",
+      "title": "Preprosta enačba, vesela novica: Zakonca Škrlec bosta prvič postala starša",
+      "summary": "Znani igralski par je sporočil veselo novico. Nik Škrlec in njegova srčna izbranka pričakujeta prvega otroka. Novico o prihodu dojenčka sta sporočila na družbenem omrežju, kjer sta objavila fotografijo nosečniškega trebuščka, zraven pa preprosto pripisala: 1 + 1 = 3.",
+      "date": "2026-10-19T16:53:14.000Z",
+      "url": "https://www.24ur.com/popin/domaca-scena/nik-skrlec-bo-prvic-postal-ocka.html",
+      "source": "24ur",
+      "sourceName": "24ur.com",
+      "categories": [
+        "Domača scena"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:52.328Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-24ur-krompirjeve-pocitnice-v-tujini-preverite-9de98d",
+      "title": "Krompirjeve počitnice v tujini? Preverite, kam potovanja odsvetujejo",
+      "summary": "Pred nami so prve počitnice v novem šolskem letu in mnoge družine jih izkoristijo za potovanje v tujino. Na zunanjem ministrstvu državljanom svetujejo, naj bodo pri načrtovanju potovanj previdni in se dobro pripravijo na pot. Zaradi trenutnih razmer odsvetujejo nenujna potovanja na Bližnji vzhod in v nekatere druge države.",
+      "date": "2026-10-19T16:52:29.000Z",
+      "url": "https://www.24ur.com/novice/slovenija/krompirjeve-pocitnice-v-tujini-preverite-kam-potovanja-odsvetujejo.html",
+      "source": "24ur",
+      "sourceName": "24ur.com",
+      "categories": [
+        "Slovenija"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:52.328Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-predsednik-trump-podpisal-pomemben-ukaz-66f4f9",
+      "title": "Predsednik Trump podpisal pomemben ukaz, pobuda je prišla od prve dame Melanie",
+      "summary": "Ameriški predsednik Donald Trump je danes podpisal izvršni ukaz za promocijo zdravja žensk, ki je bil pripravljen na pobudo prve dame Melanie Trump, p",
+      "date": "2026-10-19T16:45:54.000Z",
+      "url": "https://n1info.si/novice/svet/predsednik-trump-podpisal-pomemben-ukaz-pobuda-je-prisla-od-prve-dame-melanie/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Svet",
+        "donald trump",
+        "melania trump",
+        "zda"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:44.743Z",
       "backfilled": true
     },
     {
@@ -452,6 +1040,38 @@
       "author": "",
       "theme": "politika",
       "addedAt": "2026-10-19T21:03:14.159Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-24ur-pristeli-se-glasove-iz-tujine-razlika-pri-d31ca7",
+      "title": "Prišteli še glasove iz tujine: razlika pri referendumu o RTV še nekoliko višja",
+      "summary": "K izidom štirih referendumov, ki so potekali pred tednom dni, so volilni organi prišteli še izide glasovanja iz tujine. V tujino je bilo poslanih okoli 1400 glasovnic, ob tem pa je bilo na referendumsko nedeljo odprtih še 30 volišč na diplomatsko-konzularnih predstavništvih. Glasovi iz tujine pa izidov niso drastično spremenili.",
+      "date": "2026-10-19T16:39:34.000Z",
+      "url": "https://www.24ur.com/novice/slovenija/k-referendumskim-izidom-bodo-pristeli-se-glasove-iz-tujine.html",
+      "source": "24ur",
+      "sourceName": "24ur.com",
+      "categories": [
+        "Slovenija"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:52.328Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-24ur-v-mariboru-trcila-tovornjak-in-avtobus-cfb35d",
+      "title": "V Mariboru trčila tovornjak in avtobus: potnike odpeljali v bolnišnico",
+      "summary": "V Mariboru sta trčila kombinirano vozilo in mestni avtobus, na katerem je bilo 10 potnikov. Štiri so reševalci prepeljali v UKC Maribor, prav tako tudi voznico avtobusa.",
+      "date": "2026-10-19T16:27:58.000Z",
+      "url": "https://www.24ur.com/novice/crna-kronika/v-mariboru-trcila-tovornjak-in-avtobus-potnike-odpeljali-v-bolnisnico.html",
+      "source": "24ur",
+      "sourceName": "24ur.com",
+      "categories": [
+        "Črna kronika"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:52.327Z",
       "backfilled": true
     },
     {
@@ -485,6 +1105,25 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-n1si-pozabite-na-stroge-diete-strokovnjak-05b480",
+      "title": "Pozabite na stroge diete, strokovnjak razkril zlato pravilo zdrave prehrane",
+      "summary": "Ugotovitev strokovnjaka za prehrano z univerze Stanford bi lahko razočarala zagovornike strogih diet in zapletenih prehranskih pravil.",
+      "date": "2026-10-19T16:07:34.000Z",
+      "url": "https://n1info.si/magazin/pozabite-na-stroge-diete-strokovnjak-razkril-zlato-pravilo-zdrave-prehrane/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Magazin",
+        "Zanimivosti",
+        "zdravje",
+        "hujšanje"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:44.743Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-letalisce-ljubljana-kmalu-z-novima-2695e7",
       "title": "Letališče Ljubljana kmalu z novima povezavama",
       "summary": "Letos visoka rast letalskih potnikov, napovedi so pozitivne tudi za naprej.",
@@ -513,6 +1152,44 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-n1si-koalicija-napovedala-referendume-nato-pa-se-20406f",
+      "title": "Koalicija napovedala referendume, nato pa se zavila v molk",
+      "summary": "V koaliciji še ne razkrivajo načrtov o izvedbi ali morebitnem umiku treh posvetovalnih referendumov, ki so jih predlagali. Prvak Demokratov Anže Logar",
+      "date": "2026-10-19T15:53:14.000Z",
+      "url": "https://n1info.si/novice/slovenija/koalicija-napovedala-referendume-nato-pa-se-zavila-v-molk/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Slovenija",
+        "anže logar",
+        "jernej vrtovec",
+        "koalicija"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:44.743Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-nizozemski-premier-sporocil-veselo-novico-s-8aaffa",
+      "title": "Nizozemski premier sporočil veselo novico, s partnerjem pričakujeta otroka (FOTO)",
+      "summary": "Nizozemski premier Rob Jetten in njegov partner Nicolas Keenan sta danes sporočila, da s pomočjo darovalke jajčec in nadomestne matere pričakujeta otr",
+      "date": "2026-10-19T15:36:40.000Z",
+      "url": "https://n1info.si/magazin/nizozemski-premier-sporocil-veselo-novico-s-partnerjem-pricakujeta-otroka-foto/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Magazin",
+        "Zanimivosti",
+        "otrok",
+        "rob jetten"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:44.743Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-zaradi-teh-napak-pri-prenovi-hise-lahko-ab628c",
       "title": "Zaradi teh napak pri prenovi hiše lahko ostanete brez subvencije Eko sklada",
       "summary": "Energetski svetovalec dr. Ivan Kenda opozarja na napake pri prenovi hiše, zaradi katerih lahko Eko sklad zavrne vlogo za subvencijo, čeprav so dela že končana.",
@@ -524,6 +1201,60 @@
       "author": "",
       "theme": "potres",
       "addedAt": "2026-10-19T20:54:19.544Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-24ur-kastelic-upam-da-pride-v-gt3-se-kaksen-f8d963",
+      "title": "Kastelic: Upam, da pride v GT3 še kakšen dirkač Formule 1",
+      "summary": "Mnogi po vsem svetu sanjajo, da bi lahko dirkali proti 4-kratnemu svetovnemu prvaku Formule 1 Maxu Verstappnu ali 9-kratnemu motociklističnemu svetovnemu prvaku Valentinu Rossiju. Mark Kastelic je to doživel že minulo soboto, ko je na dirki GT World Challenge v Portimau za volanom Aston Martina dokazal, da se lahko kosa z najboljšimi. 19-letnik iz Ivančne Gorice je na Portugalskem sklenil uspešno sezono v prvenstvu GT3, v popkastu pa je spregovoril tudi o svojih dirkaških začetkih, treningih in ciljih.",
+      "date": "2026-10-19T15:14:35.000Z",
+      "url": "https://www.24ur.com/popkast/kastelic-upam-da-pride-v-gt3-se-kaksen-dirkac-formule-1.html",
+      "source": "24ur",
+      "sourceName": "24ur.com",
+      "categories": [
+        "POPKAST"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:10:52.328Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-protestniki-blokirajo-dostop-do-muzeja-6b9300",
+      "title": "Protestniki blokirajo dostop do muzeja Louvre",
+      "summary": "Dostop do znamenitega muzeja Louvre v Parizu danes blokirajo študenti, ki izražajo podporo dijaškemu gibanju in obsojajo nasilje policije nad protestn",
+      "date": "2026-10-19T15:11:49.000Z",
+      "url": "https://n1info.si/novice/svet/studenti-v-znak-podpore-dijaskim-protestom-blokirajo-dostop-do-muzeja-louvre/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Svet",
+        "francija",
+        "protest",
+        "študenti"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:44.743Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-se-odpravljate-na-pocitnice-tem-aeb7f8",
+      "title": "Se odpravljate na počitnice? Tem destinacijam se je po mnenju ministrstva bolje izogniti",
+      "summary": "Na zunanjem ministrstvu so danes državljanom pred prihajajočimi počitnicami svetovali, naj bodo previdni, in se dobro pripravijo na pot. Zaradi trenut",
+      "date": "2026-10-19T15:08:23.000Z",
+      "url": "https://n1info.si/novice/slovenija/se-odpravljate-na-pocitnice-tem-drzavam-se-je-po-priporocilih-ministrstva-bolje-izogniti/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Slovenija",
+        "slovenija",
+        "potovanje",
+        "ministrstvo"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:44.744Z",
       "backfilled": true
     },
     {
@@ -541,6 +1272,25 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-n1si-ljubljana-bogatejsa-za-novo-pridobitev-foto-ac6134",
+      "title": "Ljubljana bogatejša za novo pridobitev (FOTO)",
+      "summary": "Podhod pri stadionu v ljubljanski Šiški je odslej odprt, pešci in kolesarji lahko tako varno prečkajo železniško progo.",
+      "date": "2026-10-19T14:57:12.000Z",
+      "url": "https://n1info.si/novice/slovenija/ljubljana-bogatejsa-za-novo-pridobitev-foto/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Slovenija",
+        "Zanimivosti",
+        "kolesarji",
+        "šiška"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:44.744Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-gen-i-o-aretacijah-v-romuniji-ed25b9",
       "title": "Gen-I o aretacijah v Romuniji",
       "summary": "Nobena družba v skupini Gen-I ni vpletena v kazenski in regulatorni postopek, zatrjujejo pristojni.",
@@ -552,6 +1302,117 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:54:19.544Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-poplave-v-istanbulu-zahtevale-osem-zivljenj-ba2d98",
+      "title": "Poplave v Istanbulu zahtevale osem življenj, ena oseba še pogrešana",
+      "summary": "Število smrtnih žrtev poplav, ki so prejšnji teden prizadele Istanbul in sosednje province, je naraslo na osem. Eno osebo osebo še pogrešajo. V poplav",
+      "date": "2026-10-19T14:35:46.000Z",
+      "url": "https://n1info.si/novice/svet/poplave-v-istanbulu-zahtevale-osem-zivljenj-ena-oseba-se-pogresana/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Svet",
+        "turčija",
+        "istanbul",
+        "poplave"
+      ],
+      "author": "",
+      "theme": "potres",
+      "addedAt": "2026-10-19T21:10:44.744Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-mati-v-gorah-sredi-goste-megle-pustila-12d834",
+      "title": "Mati v gorah sredi goste megle pustila mladoletna sinova sama in se odpravila na vrh",
+      "summary": "Mati je v soboto v gorovju na jugu Poljske sredi goste megle pustila svoja osem- in 14-letna sinova sama ob planinski poti in nadaljevala vzpon proti",
+      "date": "2026-10-19T14:19:29.000Z",
+      "url": "https://n1info.si/novice/svet/mati-sredi-goste-megle-v-gorah-pustila-mladoletna-sinova-sama-in-odsla-osvojit-vrh/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Svet",
+        "Zanimivosti",
+        "poljska",
+        "gore"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:44.744Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-24ur-hudohmetu-v-romuniji-podaljsan-pripor-za-30-295f10",
+      "title": "Hudohmetu v Romuniji podaljšan pripor za 30 dni",
+      "summary": "Sodnik za pravice in svoboščine na sodišču v Bukarešti je podaljšal odredbe o priporu za direktorja družbe Gen-I Sonce Gregorja Hudohmeta, ki je osumljen jemanja podkupnine.",
+      "date": "2026-10-19T14:06:55.000Z",
+      "url": "https://www.24ur.com/novice/slovenija/hudohmetu-podaljsan-pripor-za-30-dni.html",
+      "source": "24ur",
+      "sourceName": "24ur.com",
+      "categories": [
+        "Slovenija"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:52.328Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-gen-i-zadeva-v-romuniji-se-nanasa-na-d6a53b",
+      "title": "Gen-I: Zadeva v Romuniji se nanaša na posameznika in konkreten projekt",
+      "summary": "Primer, v katerem so zaradi domnevne podkupnine v Romuniji pridržali direktorja družbe Gen-I Sonce Gregorja Hudohmeta, se nanaša na posameznika in na",
+      "date": "2026-10-19T13:59:22.000Z",
+      "url": "https://n1info.si/novice/slovenija/gen-i-zadeva-v-romuniji-se-nanasa-na-posameznika-in-konkreten-projekt/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Slovenija",
+        "romunija",
+        "gregor hudohmet",
+        "podkupnina"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:44.744Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-jansa-o-napovedani-solski-reformi-tiscati-f95ff4",
+      "title": "Janša o napovedani šolski reformi: Tiščati glavo v pesek bi bila velika zabloda",
+      "summary": "Premier Janez Janša je v odgovoru na poslansko vprašanje o napovedani šolski reformi dejal, da bi bilo ob slabih rezultatih mednarodnih primerjav \"tiš",
+      "date": "2026-10-19T13:45:48.000Z",
+      "url": "https://n1info.si/novice/slovenija/jansa-o-napovedani-solski-reformi-tiscati-glavo-v-pesek-bi-bila-velika-zabloda/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Slovenija",
+        "učitelji",
+        "šolska reforma",
+        "janez janša"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:44.744Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-medicinska-prevarantka-elizabeth-holmes-iz-7dbb98",
+      "title": "Medicinska prevarantka Elizabeth Holmes iz zapora poskrbela za rekordni zaslužek",
+      "summary": "Dokumentarni film You Can See Everything o življenju medicinske prevarantke Elizabeth Holmes, ki je zaradi lažnih obljub podjetja Theranos o revolucio",
+      "date": "2026-10-19T13:37:37.000Z",
+      "url": "https://n1info.si/magazin/medicinska-prevarantka-elizabeth-holmes-iz-zapora-poskrbela-za-rekordni-zasluzek/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Magazin",
+        "Zanimivosti",
+        "zanimivosti",
+        "dokumentarni film"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:44.744Z",
       "backfilled": true
     },
     {
@@ -597,6 +1458,41 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-n1si-telemach-v-svojo-ponudbo-dodaja-storitve-za-b75464",
+      "title": "Telemach v svojo ponudbo dodaja storitve za podporo učenju mladih",
+      "summary": "Digitalno okolje ni več le prostor za komunikacijo in zabavo, temveč tudi za učenje, zato eno največjih telekomunikacijskih podjetij pri nas svojo pon",
+      "date": "2026-10-19T13:17:02.000Z",
+      "url": "https://n1info.si/oglas/telemach-v-svojo-ponudbo-dodaja-storitve-za-podporo-ucenju-mladih/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Oglas"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:44.744Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-ste-tudi-vi-prejeli-taksen-klic-nijz-a7070f",
+      "title": "Ste tudi vi prejeli takšen klic? NIJZ opozarja na novo obliko zavajanja",
+      "summary": "Nacionalni inštitut za javno zdravje (NIJZ) opozarja na telefonske klice, v katerih se neznane osebe lažno predstavljajo kot predstavniki t. i. Zavoda",
+      "date": "2026-10-19T13:02:04.000Z",
+      "url": "https://n1info.si/novice/slovenija/ste-tudi-vi-prejeli-taksen-klic-nijz-opozarja-na-novo-obliko-zavajanja/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Slovenija",
+        "zdravstvo",
+        "zavajanje",
+        "telefonski pogovor"
+      ],
+      "author": "",
+      "theme": "potres",
+      "addedAt": "2026-10-19T21:10:44.744Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-colnic-z-bazenom-in-tobogani-za-ljubljenega-fbc85f",
       "title": "Čolnič z bazenom in tobogani za ljubljenega vodjo",
       "summary": "Ljudje živijo v revščini, partijska elita pa uživa v razkošju, ki si ga tudi na Zahodu lahko privoščijo samo najbogatejši.",
@@ -622,6 +1518,25 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:54:19.544Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-logar-ocitki-na-racun-novaka-so-napad-in-41f269",
+      "title": "Logar: Očitki na račun Novaka so napad in sredstvo za rahljanje koalicije",
+      "summary": "Predsednik Demokratov in gospodarski minister Anže Logar vidi očitke o potvarjanju dokumentov za dokazovanje okoliščin odstopa Aleša Novaka s funkcije",
+      "date": "2026-10-19T12:54:24.000Z",
+      "url": "https://n1info.si/novice/slovenija/logar-ocitki-na-racun-novaka-so-napad-in-sredstvo-za-rahljanje-koalicije/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Slovenija",
+        "tea košir",
+        "anže logar",
+        "kazenska ovadba"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:10:44.744Z",
       "backfilled": true
     },
     {
@@ -667,6 +1582,25 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-n1si-v-boj-za-mariborski-zupanski-stolcek-tudi-95effa",
+      "title": "V boj za mariborski županski stolček tudi 32-letni kandidat Resnice",
+      "summary": "Med desetimi kandidati za župana Mestne občine Maribor na prihajajočih volitvah je tudi kandidat stranke Resnica Mitja Zgoznik. Kot izpostavlja v pisn",
+      "date": "2026-10-19T12:42:19.000Z",
+      "url": "https://n1info.si/novice/slovenija/v-boj-za-mariborski-zupanski-stolcek-tudi-32-letni-kandidat-resnice/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Slovenija",
+        "maribor",
+        "lokalne volitve",
+        "resnica"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:44.744Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-igor-zorcic-ko-nekdo-ni-zadovoljen-z-izidom-062a9f",
       "title": "Igor Zorčič: Ko nekdo ni zadovoljen z izidom, je dežurni krivec DVK",
       "summary": "Direktor službe Državne volilne komisije pojasnjuje dogajanje v povezavi s superreferendumom: Merodajni so zapisniki, ne spletni prikaz.",
@@ -678,6 +1612,24 @@
       "author": "",
       "theme": "politika",
       "addedAt": "2026-10-19T20:54:19.545Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-ena-najvecjih-skrivnosti-ostaja-neresena-7c96a8",
+      "title": "Ena največjih skrivnosti ostaja nerešena, sled se je izkazala zgolj za kup dreves",
+      "summary": "Raziskovalna odprava, ki je želela razjasniti ozadje izginotja legendarne ameriške pilotke Amelie Earhart, se je domov vrnila praznih rok. Skrivnosten",
+      "date": "2026-10-19T12:37:04.000Z",
+      "url": "https://n1info.si/novice/svet/ena-najvecjih-skrivnosti-ostaja-neresena-sled-se-je-izkazala-zgolj-za-kup-dreves/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Svet",
+        "Zanimivosti",
+        "amelia earhart"
+      ],
+      "author": "",
+      "theme": "sport",
+      "addedAt": "2026-10-19T21:10:44.744Z",
       "backfilled": true
     },
     {
@@ -695,6 +1647,25 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-n1si-poslanci-tudi-o-odreditvi-parlamentarnih-6c3518",
+      "title": "Poslanci tudi o odreditvi parlamentarnih preiskav, Zavadlav Ušaj potrjena za nadomestno poslanko",
+      "summary": "Poslanci so dnevni red oktobrske redne seje razširili z zahtevami za odreditev treh parlamentarnih preiskav, ki jih na njem še ni bilo. Preiskavi o su",
+      "date": "2026-10-19T12:25:42.000Z",
+      "url": "https://n1info.si/novice/slovenija/poslanci-tudi-o-odreditvi-parlamentarnih-preiskav-zavadlav-usaj-potrjena-za-nadomestno-poslanko/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Slovenija",
+        "demokrati",
+        "državni zbor",
+        "preiskovalne komisije"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:44.744Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-toca-mu-je-unicila-streho-zavarovalnica-pa-177796",
       "title": "Toča mu je uničila streho, zavarovalnica pa ponuja le del stroškov popravila",
       "summary": "Bralcu je toča povsem poškodovala streho, zavarovalnica pa mu ponuja le 4.000 evrov. Pravnik pojasnjuje, od česa je odvisna višina zavarovalnine.",
@@ -706,6 +1677,25 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:54:19.545Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-kandidat-resnice-za-zupana-ljubljane-bi-se-eb8232",
+      "title": "Kandidat Resnice za župana Ljubljane bi se odpovedal plači in prepolovil ceno elektrike",
+      "summary": "Kandidat Resnice za župana Mestne občine Ljubljana je poslovnež in nekdanji dirkač Matjaž Tomlje. Napoveduje, da bi kot župan v Ljubljani izboljšal zd",
+      "date": "2026-10-19T12:14:00.000Z",
+      "url": "https://n1info.si/novice/slovenija/kandidat-resnice-za-zupana-ljubljane-bi-se-odpovedal-placi-in-prepolovil-ceno-elektrike/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Slovenija",
+        "resnica",
+        "lokalne volitve",
+        "matjaž tomlje"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:44.744Z",
       "backfilled": true
     },
     {
@@ -748,6 +1738,44 @@
       "author": "",
       "theme": "energija",
       "addedAt": "2026-10-19T20:54:19.545Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-premier-jansa-znova-nad-rtv-slovenija-56a6fd",
+      "title": "Premier Janša znova nad RTV Slovenija: \"Nezakonito je sodelovala v referendumski kampanji\"",
+      "summary": "RTV Slovenija je nezakonito sodelovala v referendumski kampanji o RTV-prispevku, je v državnem zboru dejal premier Janez Janša. Posvetovalni referendu",
+      "date": "2026-10-19T11:42:49.000Z",
+      "url": "https://n1info.si/novice/slovenija/jansa-rtv-slovenija-je-nezakonito-sodelovala-v-referendumski-kampanji-o-rtv-prispevku/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Slovenija",
+        "rtv-prispevek",
+        "rtv slovenija",
+        "posvetovalni referendumi"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:44.745Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-zelenski-zaveznice-obtozil-da-ukrajine-niso-e7850f",
+      "title": "Zelenski zaveznice obtožil, da Ukrajine niso opozorile na ruske raketne napade",
+      "summary": "Ukrajina pred novimi ruskimi napadi z balističnimi raketami, usmerjenimi v energetsko infrastrukturo, ni prejela nobenega opozorila od zaveznic, je da",
+      "date": "2026-10-19T11:33:07.000Z",
+      "url": "https://n1info.si/novice/svet/rubio-odgovoril-na-ocitke-da-so-ukrajino-tri-dni-pustili-v-nemilosti-rusije/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Svet",
+        "zda",
+        "volodimir zelenski",
+        "starlink"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:10:44.745Z",
       "backfilled": true
     },
     {
@@ -804,6 +1832,25 @@
       "author": "",
       "theme": "sigurnost",
       "addedAt": "2026-10-19T20:54:19.545Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-nove-cene-goriv-komu-se-nasmiha-prihranek-466c08",
+      "title": "Nove cene goriv: komu se nasmiha prihranek in kdo bo plačal več",
+      "summary": "Opolnoči se bodo na bencinskih servisih zunaj avtocestnega križa spremenile cene naftnih derivatov. Liter 95-oktanskega bencina se bo pocenil za štiri",
+      "date": "2026-10-19T10:48:37.000Z",
+      "url": "https://n1info.si/gospodarstvo/nove-cene-goriv-komu-se-nasmiha-prihranek-in-kdo-bo-placal-vec/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Gospodarstvo",
+        "cene goriv",
+        "gorivo",
+        "dizel"
+      ],
+      "author": "",
+      "theme": "energija",
+      "addedAt": "2026-10-19T21:10:44.745Z",
       "backfilled": true
     },
     {
@@ -963,6 +2010,25 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-n1si-na-duhovnika-med-maso-ki-so-jo-prenasali-v-0d7fed",
+      "title": "Na duhovnika med mašo, ki so jo prenašali v živo, padel križ in ga ubil",
+      "summary": "V Ekvadorju je umrl duhovnik, potem ko je nanj med mašo, ki so jo prenašali v živo, padel križ.",
+      "date": "2026-10-19T09:21:45.000Z",
+      "url": "https://n1info.si/novice/svet/na-duhovnika-med-maso-ki-so-jo-prenasali-v-zivo-padel-kriz-in-ga-ubil/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Svet",
+        "ekvador",
+        "duhovnik",
+        "križ"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:44.745Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-zadeva-lendava-zaplenili-44-ton-tobaka-in-aa7119",
       "title": "Zadeva Lendava: zaplenili 44 ton tobaka in 28 ton cigaret",
       "summary": "Nove podrobnosti o ozadju največje proizvodnje ponarejenih cigaret v slovenski zgodovini.",
@@ -1016,6 +2082,25 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:54:19.546Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-musk-pokazal-leteci-avtomobil-prizor-ki-eb46db",
+      "title": "Musk pokazal leteči avtomobil: prizor, ki jemlje dih (VIDEO)",
+      "summary": "Čeprav je še pred nekaj leti mislil, da leteči avtomobili niso prihodnost, je Elon Musk predstavil svoj \"leteči avtomobil\". Lahko ga že rezervirate.",
+      "date": "2026-10-19T08:25:54.000Z",
+      "url": "https://n1info.si/magazin/musk-pokazal-leteci-avtomobil-prizor-ki-jemlje-dih-video/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Magazin",
+        "Zanimivosti",
+        "leteči avtomobil",
+        "roadster"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:10:44.745Z",
       "backfilled": true
     },
     {
@@ -1091,6 +2176,25 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-n1si-med-tekmovanjem-v-porecu-umrl-slovenski-8cff08",
+      "title": "Med tekmovanjem v Poreču umrl slovenski državljan",
+      "summary": "Na nedeljskem triatlonskem tekmovanju Ironman 70.3 v hrvaškem Poreču je umrl slovenski državljan, poroča portal Glas Istre.",
+      "date": "2026-10-19T08:04:57.000Z",
+      "url": "https://n1info.si/novice/svet/med-tekmovanjem-v-porecu-umrl-slovenski-drzavljan/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Svet",
+        "tekmovanje",
+        "smrt",
+        "istra"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:44.745Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-prekmurec-po-sestnajstih-letih-znova-do-df35c7",
       "title": "Prekmurec po šestnajstih letih znova do kolajne na svetovnem prvenstvu",
       "summary": "Slovenski strelec je na svetovnem prvenstvu prišel do velikega uspeha. Že 16 let nazaj se je prvič okitil s srebrom.",
@@ -1102,6 +2206,25 @@
       "author": "",
       "theme": "sport",
       "addedAt": "2026-10-19T20:54:19.546Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-zakaj-je-50-milijonov-dolarjev-vredni-fb6a90",
+      "title": "Zakaj je 50 milijonov dolarjev vredni diamantni modrček nosila Kylie Jenner",
+      "summary": "V Los Angelesu se je sinoči odvila modna revija Victoria’s Secret za leto 2026, ki jo je odprla Bella Hadid. Po modni pisti so se sprehodili vsi znani",
+      "date": "2026-10-19T07:51:40.000Z",
+      "url": "https://n1info.si/magazin/zakaj-je-50-milijonov-dolarjev-vredni-diamantni-modrcek-nosila-kylie-jenner/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Magazin",
+        "modna revija",
+        "victoria's secret",
+        "kylie jenner"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:44.745Z",
       "backfilled": true
     },
     {
@@ -1191,6 +2314,82 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-n1si-putin-predlagal-srecanje-s-trumpom-in-sijem-2fca1b",
+      "title": "Putin predlagal srečanje s Trumpom in Šijem. Je na kocki usoda Ukrajine?",
+      "summary": "Ruski predsednik Vladimir Putin naj bi predlagal tristransko srečanje z ameriškim in kitajskim predsednikom Donaldom Trumpom in Ši Džinpingom, na kate",
+      "date": "2026-10-19T06:35:21.000Z",
+      "url": "https://n1info.si/novice/svet/putin-predlagal-srecanje-s-trumpom-in-sijem-na-katerem-bi-odlocali-o-prihodnosti-ukrajine/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Svet",
+        "ukrajina",
+        "donald trump",
+        "vladimir putin"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:44.745Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-voznik-lamborghinija-na-prehodu-za-pesce-76d051",
+      "title": "Voznik lamborghinija na prehodu za pešce trčil v rolkarja in pobegnil",
+      "summary": "V soboto je v Kopru na prehodu za pešce v rolkarja trčil voznik črnega lamborghinija in odpeljal, ne da bi mu nudil pomoč. Policija očividce prosi za",
+      "date": "2026-10-19T05:44:33.000Z",
+      "url": "https://n1info.si/novice/crna-kronika/voznik-lamborghinija-na-prehodu-za-pesce-trcil-v-rolkarja-in-pobegnil/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Črna kronika",
+        "koper",
+        "rolkar",
+        "lamborghini"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:44.745Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-s-poslanskimi-vprasanji-premierju-jansi-se-b46642",
+      "title": "S poslanskimi vprašanji premierju Janši se začenja oktobrsko zasedanje DZ",
+      "summary": "Državni zbor bo danes začel oktobrsko zasedanje, ki bo trajalo do petka. Danes bodo na vrsti poslanska vprašanja predsedniku vlade Janezu Janši in min",
+      "date": "2026-10-19T05:12:27.000Z",
+      "url": "https://n1info.si/novice/slovenija/s-poslanskimi-vprasanji-premierju-jansi-se-zacenja-oktobrsko-zasedanje-dz/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Slovenija",
+        "parlament",
+        "janez janša",
+        "državni zbor"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:44.745Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-letalo-na-poti-iz-izraela-v-avstrijo-zaradi-8db051",
+      "title": "Letalo na poti iz Izraela v Avstrijo zaradi grožnje z bombo zasilno pristalo",
+      "summary": "Letalo družbe Austrian Airlines na poti iz Tel Aviva na Dunaj je bilo po domnevni grožnji z bombo v nedeljo zvečer primorano pristati v bolgarski Sofi",
+      "date": "2026-10-19T04:54:13.000Z",
+      "url": "https://n1info.si/novice/svet/letalo-na-poti-iz-izraela-v-avstrijo-zaradi-groznje-z-bombo-zasilno-pristalo/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Svet",
+        "izrael",
+        "grožnja z bombo",
+        "austrian airlines"
+      ],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:10:44.745Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-siol-tadej-pogacar-in-urska-zigart-navdusila-682d57",
       "title": "Tadej Pogačar in Urška Žigart navdušila",
       "summary": "Tadej Pogačar je v nedeljo ob boku dobrodelnega dogodka Never give up, always give back (Nikoli ne odnehaj in vedno vračaj), ki jo je na golf igrišču Arboretum organiziral podjetnik in lastnik igrišča Joc Pečečnik, razkril cilje za prihodnost. Še pred koncem letošnjega leta se bo znova postavil na start, saj je potrdil nastop skupaj z Urško Žigart na dobrodelnem kriteriju BeKing v Monaku, ki bo 29. novembra. Z zaročenko sta konec tedna navdušila tudi na poroki, ko se je poročil Pogačarjev maser in prijatelj Žiga Jerman.",
@@ -1207,6 +2406,228 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-n1si-k-izidom-referendumov-bodo-danes-pristeli-f38ff2",
+      "title": "K izidom referendumov bodo danes prišteli še glasove iz tujine",
+      "summary": "K izidom štirih referendumov, ki so potekali pred tednom dni, bodo volilni organi danes prišteli še izide glasovanja iz tujine. V tujino je bilo posla",
+      "date": "2026-10-19T04:30:21.000Z",
+      "url": "https://n1info.si/novice/slovenija/k-izidom-referendumov-bodo-pristeli-se-glasove-iz-tujine/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Slovenija",
+        "referendumi",
+        "glasovi iz tujine",
+        "dvk"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:44.745Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-zakaj-je-malo-verjetno-da-bi-prislo-do-9f2e54",
+      "title": "Zakaj je malo verjetno, da bi prišlo do svetovnega izbruha pljučne kuge",
+      "summary": "Smrt 28-letne raziskovalke na ruskem inštitutu za preučevanje kuge in drugih nevarnih povzročiteljev bolezni je sprožila ugibanja o morebitnem širjenj",
+      "date": "2026-10-19T03:15:00.000Z",
+      "url": "https://n1info.si/zdravje/zakaj-je-malo-verjetno-da-bi-prislo-do-svetovnega-izbruha-pljucne-kuge/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Zdravje",
+        "Svet",
+        "pljučna kuga",
+        "ekidemija"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:44.745Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-javna-skrivnost-faliranih-studentov-183eb8",
+      "title": "Javna skrivnost faliranih študentov",
+      "summary": "Potem ko se je na spletu nedavno znova pojavilo vprašanje, kje v Sloveniji kupiti status študenta oziroma dijaka, smo preverili, kakšna je pot do prid",
+      "date": "2026-10-19T03:10:00.000Z",
+      "url": "https://n1info.si/novice/slovenija/javna-skrivnost-faliranih-studentov/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Slovenija",
+        "izobraževanje odraslih",
+        "študentsko delo",
+        "status"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:44.745Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-ledenik-sodnega-dne-na-antarktiki-se-topi-004535",
+      "title": "\"Ledenik sodnega dne\" na Antarktiki se topi hitreje, kot so mislili",
+      "summary": "Najširši ledenik na planetu se utegne stopiti precej prej, kot so napovedovali doslej. Kaj to pomeni za dvig svetovne morske gladine?",
+      "date": "2026-10-19T03:07:00.000Z",
+      "url": "https://n1info.si/novice/svet/ledenik-sodnega-dne-na-antarktiki-se-topi-hitreje-kot-so-mislili/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Svet",
+        "Zanimivosti",
+        "thwaites",
+        "ledenik"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:44.745Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-n1si-s-soprogo-vzgaja-otroka-vodi-pa-skrajno-4d13b6",
+      "title": "S soprogo vzgaja otroka, vodi pa skrajno desno stranko, ki nasprotuje istospolnim porokam. Kako to pojasnjuje?",
+      "summary": "Alice Weidel, sopredsednica skrajnodesničarske populistične stranke Alternativa za Nemčijo (AfD), je v intervjuju za The Economist pred nekaj dnevi me",
+      "date": "2026-10-19T03:05:00.000Z",
+      "url": "https://n1info.si/novice/svet/s-soprogo-vzgaja-otroka-vodi-pa-skrajno-desno-stranko-ki-nasprotuje-istospolnim-porokam-kako-to-pojasnjuje/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Svet",
+        "afd",
+        "alice weidel"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:44.746Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-24ur-danes-je-porocena-z-najlepsim-italijanom-fccff5",
+      "title": "Danes je poročena z najlepšim Italijanom, nekoč pa je bila videti povsem drugače",
+      "summary": "Danes jo poznamo po temnih laseh, poudarjenih očeh, drznih modnih kombinacijah in nekoliko skrivnostnem videzu. A Dove Cameron, ki je pred kratkim dahnila usodni da italijanskemu glasbeniku Damianu Davidu, je bila nekoč videti precej drugače. Ko je kot najstnica zaslovela na Disneyjevem kanalu, je imela svetle lase, nosila nežna oblačila in utelešala podobo prikupne najstniške zvezdnice.",
+      "date": "2026-10-19T02:00:03.000Z",
+      "url": "https://www.zadovoljna.si/traci/dove-cameron.html",
+      "source": "24ur",
+      "sourceName": "24ur.com",
+      "categories": [
+        "Trači"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:10:52.327Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-18-mladina-referendum-pristeti-tudi-glasovih-iz-tujine-3b344b",
+      "title": "Referendum / Prišteti tudi glasovih iz tujine",
+      "summary": "K izidom štirih referendumov, ki so potekali pred tednom dni, so danes okrajne volilne komisije prištele še glavnino glasov po pošti iz tujine, DVK pa izide glasovanja na diplomatsko-konzularnih predstavništvih. Na izide referendumov niso vplivali, se je pa razlika pri referendumu o ukinitvi rtv-prispevka povečala na več kot 2600 glasov. preberite več »",
+      "date": "2026-10-18T22:00:00.000Z",
+      "url": "https://www.mladina.si/251970/referendum-pristeti-tudi-glasovih-iz-tujine/",
+      "source": "mladina",
+      "sourceName": "Mladina",
+      "categories": [
+        "Mladina"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:58.305Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-18-mladina-kazenska-ovadba-zoper-logarja-novaka-in-0d79fd",
+      "title": "Kazenska ovadba zoper Logarja, Novaka in stranko Demokrati",
+      "summary": "Spodaj podpisani Boris Vezjak kot državljan, opazujoč erozijo demokracije in pravne države, zaskrbljen zaradi naskoka na sodstvo in tožilstvo pod krinko politične mimikrije, na podlagi analize spodaj naštetih medijsko objavljenih dokumentov podajam kazensko ovadbo zoper: preberite več »",
+      "date": "2026-10-18T22:00:00.000Z",
+      "url": "https://www.mladina.si/251964/kazenska-ovadba-zoper-logarja-novaka-in-stranko-demokrati/",
+      "source": "mladina",
+      "sourceName": "Mladina",
+      "categories": [
+        "Mladina"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:10:58.306Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-18-mladina-jansa-bo-odgovarjal-65166e",
+      "title": "Janša bo odgovarjal",
+      "summary": "Državni zbor bo danes začel oktobrsko zasedanje, ki bo trajalo do petka. Danes bodo na vrsti poslanska vprašanja predsedniku vlade Janezu Janši in ministrom. Janša bo odgovarjal na vprašanja o napovedani reformi šolstva, posvetovalnih referendumih, dohodninski razbremenitvi srednjega razreda in uredbi o zelenem javnem naročanju. preberite več »",
+      "date": "2026-10-18T22:00:00.000Z",
+      "url": "https://www.mladina.si/251961/jansa-bo-odgovarjal/",
+      "source": "mladina",
+      "sourceName": "Mladina",
+      "categories": [
+        "Mladina"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:58.306Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-18-mladina-anketa-podpora-levici-in-sd-raste-b85d55",
+      "title": "Anketa / Podpora Levici in SD raste",
+      "summary": "Rezultati oktobrske ankete Ninamedie Vox populi za Dnevnik kažejo, da bi trenutne opozicijske stranke s 46 poslanskimi mesti lahko sestavile vlado, saj podpora SD in Levici raste. Delo vlade Janeza Janše pa je kot neuspešno ocenilo 58,4 odstotka vprašanih. preberite več »",
+      "date": "2026-10-18T22:00:00.000Z",
+      "url": "https://www.mladina.si/251973/anketa-podpora-levici-in-sd-raste/",
+      "source": "mladina",
+      "sourceName": "Mladina",
+      "categories": [
+        "Mladina"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:58.306Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-18-mladina-nalog-za-aretacijo-nekdanjega-kubanskega-b00035",
+      "title": "Nalog za aretacijo nekdanjega kubanskega predsednika",
+      "summary": "Pravosodni minister Floride James Uthmeier je danes izdal nalog za aretacijo nekdanjega predsednika Kube Raula Castra zaradi obtožb umorov, povezanih s sestrelitvijo dveh civilnih letal leta 1996. Podobne obtožbe proti Castru so maja letos vložili tudi na zvezni ravni, poroča francoska tiskovna agencija AFP. preberite več »",
+      "date": "2026-10-18T22:00:00.000Z",
+      "url": "https://www.mladina.si/251971/nalog-za-aretacijo-nekdanjega-kubanskega-predsednika/",
+      "source": "mladina",
+      "sourceName": "Mladina",
+      "categories": [
+        "Mladina"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:58.306Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-18-mladina-pred-kom-je-tea-kosir-potrebovala-mir-ce0fd9",
+      "title": "Pred kom je Tea Košir potrebovala mir?",
+      "summary": "Zmaga! Eleno Ušaj Zavadlav so spravili v parlament in tam bo tudi ostala. Kot zanesljiv, vodljiv steber SDS. Njihova taktika je popolna. Treba je samo najti neizkušeno poslanko, novinko, ki še verjame v predvolilne pravljice. Treba je pritiskati in, če ne gre drugače, tudi groziti. Z vsem po vrsti. Da se prestraši. Očitno deluje in očitno je bila Tea Košir primerna tarča. preberite več »",
+      "date": "2026-10-18T22:00:00.000Z",
+      "url": "https://www.mladina.si/251965/pred-kom-je-tea-kosir-potrebovala-mir/",
+      "source": "mladina",
+      "sourceName": "Mladina",
+      "categories": [
+        "Mladina"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:58.306Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-18-mladina-nizozemski-premier-s-partnerjem-pricakuje-d5a034",
+      "title": "Nizozemski premier s partnerjem pričakuje otroka",
+      "summary": "Nizozemski premier Rob Jetten in njegov partner Nicolas Keenan sta danes sporočila, da s pomočjo darovalke jajčec in nadomestne matere pričakujeta otroka. Nosečnost sta omogočili prijateljici para, ki za to nista prejeli plačila. Nizozemsko pravo namreč dovoljuje le nekomercialne nadomestne nosečnosti, poroča francoska tiskovna agencija AFP. preberite več »",
+      "date": "2026-10-18T22:00:00.000Z",
+      "url": "https://www.mladina.si/251974/nizozemski-premier-s-partnerjem-pricakuje-otroka/",
+      "source": "mladina",
+      "sourceName": "Mladina",
+      "categories": [
+        "Mladina"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:10:58.306Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-18-siol-velika-ukrajinska-napaka-zdaj-jim-je-41f2e6",
       "title": "Velika ukrajinska napaka. Zdaj jim je verjetno zelo žal.",
       "summary": "Leta 1999 je Ukrajina Rusiji izročila osem strateških bombnikov tu-160, da bi poravnala svoje energetske dolgove do Moskve. Danes Rusi ta letala ali enako posodobljeno različico uporabljajo za napade na Ukrajino.",
@@ -1220,6 +2641,166 @@
       "author": "",
       "theme": "rat",
       "addedAt": "2026-10-19T21:03:14.159Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-15-mladina-dojencki-v-evropskem-parlamentu-e95d38",
+      "title": "Dojenčki v evropskem parlamentu",
+      "summary": "Zala Černilec Tomašič iz SDS, najmlajša poslanka v evropskem parlamentu v zgodovini Slovenije, se je na začetku julija poročila. Kot številni drugi mladi pari sta mladoporočenca kmalu po poroki sporočila, da pričakujeta otroka. Zala Tomašič je bila izvoljena na evropskih volitvah leta 2024, zato se lahko vprašamo, kako bo poslanske naloge opravljala v času materinskega dopusta. preberite več »",
+      "date": "2026-10-15T22:00:00.000Z",
+      "url": "https://www.mladina.si/251907/dojencki-v-evropskem-parlamentu/",
+      "source": "mladina",
+      "sourceName": "Mladina",
+      "categories": [
+        "Mladina"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:58.306Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-15-mladina-roncevicevo-soliranje-10d2d3",
+      "title": "Rončevićevo soliranje",
+      "summary": "Predsednica republike Nataša Pirc Musar je minuli konec tedna na Brdu pri Kranju gostila diamantne maturante in jim podelila priznanja za vse dosežene točke na maturi. Tradicionalnega sprejema se tokrat ni udeležil šolski minister Borut Rončević. V minulih letih sta predsedniški urad in resorno ministrstvo sprejem vedno pripravila skupaj. Tudi letos naj bi bilo tako, a so približno tri tedne pred sprejemom... preberite več »",
+      "date": "2026-10-15T22:00:00.000Z",
+      "url": "https://www.mladina.si/251911/roncevicevo-soliranje/",
+      "source": "mladina",
+      "sourceName": "Mladina",
+      "categories": [
+        "Mladina"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:10:58.306Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-15-mladina-foucault-je-vseprisoten-6002de",
+      "title": "Foucault je vseprisoten",
+      "summary": "Jardin du Luxembourg, Café Le Rostand. Sociolog Didier Eribon je naredil le kratek postanek v domačem Parizu. Prireditve povsod po svetu ob stoti obletnici rojstva francoskega filozofa Michela Foucaulta – umrl je 15. oktobra 1984 – so si namreč sledile tesno druga za drugo. Eribon je v Nemčiji zaslovel s svojo knjigo Vrnitev v Reims, ki je avtobiografija in sociološka analiza hkrati. preberite več »",
+      "date": "2026-10-15T22:00:00.000Z",
+      "url": "https://www.mladina.si/251925/foucault-je-vseprisoten/",
+      "source": "mladina",
+      "sourceName": "Mladina",
+      "categories": [
+        "Mladina"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:10:58.306Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-15-mladina-razdeljeno-mesto-e631d1",
+      "title": "Razdeljeno mesto",
+      "summary": "V nedeljo popoldan, sedem dni po volitvah, je Steffen sedel na robu ceste v Friedrichs- preberite več »",
+      "date": "2026-10-15T22:00:00.000Z",
+      "url": "https://www.mladina.si/251927/razdeljeno-mesto/",
+      "source": "mladina",
+      "sourceName": "Mladina",
+      "categories": [
+        "Mladina"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:58.306Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-15-mladina-mali-nepal-c7e4a2",
+      "title": "Mali Nepal",
+      "summary": "Na precej oblačno in rahlo deževno predreferendumsko soboto se je v Pivki zgodilo nekaj, kar se vsaj zunaj Ljubljane ne zgodi prav pogosto. Tudi sicer se redko zgodi, da bi se tuji delavci in lokalno prebivalstvo skupaj z ramo ob rami sprehodili po kraju in sporočili, da so pripravljeni sodelovati, soustvarjati skupnost, sobivati. Ter hkrati širši javnosti sporočiti, da je prihajajoča nova tujska zakonodaja... preberite več »",
+      "date": "2026-10-15T22:00:00.000Z",
+      "url": "https://www.mladina.si/251928/mali-nepal/",
+      "source": "mladina",
+      "sourceName": "Mladina",
+      "categories": [
+        "Mladina"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:10:58.307Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-15-mladina-ministricina-zgodba-931cf5",
+      "title": "Ministričina zgodba",
+      "summary": "V soboto, ko se je Slovenija pripravljala na nedeljske referendume, je v Ljubljani potekal tradicionalni Pohod za življenje. Gre za prijazno prireditev, ki naj bi podprla otroke in družine, četudi se za pozitivnimi sporočili skriva nasprotovanje ustavni pravici žensk do svobodnega odločanja o rojstvu otrok. To dokazujejo transparenti, ki jih nosijo udeleženci pohoda, slike zarodkov v maternici, pa tudi podpora... preberite več »",
+      "date": "2026-10-15T22:00:00.000Z",
+      "url": "https://www.mladina.si/251902/ministricina-zgodba/",
+      "source": "mladina",
+      "sourceName": "Mladina",
+      "categories": [
+        "Mladina"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:58.307Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-15-mladina-otroci-domovine-374c3a",
+      "title": "Otroci domovine",
+      "summary": "Dijaško gibanje srednjih šol v revnih pariških predmestjih, ki so ga sprožili slabe razmere in pomanjkanje učiteljev, se je do danes močno razširilo, geografsko in tudi demografsko, protesti namreč potekajo po celotnem ozemlju Francije. Predvsem pa so se oktobra dijakom pridružile študentske organizacije, sindikati in druge skupine, podprla jih je tudi osrednja francoska leva stranka Nepokorna Francija, ki jo vodi... preberite več »",
+      "date": "2026-10-15T22:00:00.000Z",
+      "url": "https://www.mladina.si/251923/otroci-domovine/",
+      "source": "mladina",
+      "sourceName": "Mladina",
+      "categories": [
+        "Mladina"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:58.307Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-15-mladina-ministrica-in-film-o-nedolznih-domobrancih-6f81f6",
+      "title": "Ministrica in film o »nedolžnih domobrancih«",
+      "summary": "V Portorožu pravkar poteka 29. Festival slovenskega filma, pregled najnovejše slovenske avdiovizualne produkcije. Za nekaj dvignjenega prahu je pred festivalom poskrbela ministrica za kulturo Ignacija Fridl Jarc, ko je zaradi neuvrstitve filma Exodus 1945: Naša kri v festivalski program protestno odpovedala udeležbo na odprtju. preberite več »",
+      "date": "2026-10-15T22:00:00.000Z",
+      "url": "https://www.mladina.si/251908/ministrica-in-film-o-nedolznih-domobrancih/",
+      "source": "mladina",
+      "sourceName": "Mladina",
+      "categories": [
+        "Mladina"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:10:58.307Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-15-mladina-bo-na-univerzi-prepovedana-politicna-ad7962",
+      "title": "Bo na univerzi prepovedana politična dejavnost?",
+      "summary": "Vlada je na začetku študijskega leta predlagala upočasnitev rasti javnega financiranja visokega šolstva in znanstvenoraziskovalne dejavnosti. Vloženi noveli zakonov sta predvideli, da bi se delež BDP za študijsko dejavnost v prihodnjih dveh letih povečal za dobro petino manj, kot določa zakon, za znanstvenoraziskovalno dejavnost pa za tretjino manj. preberite več »",
+      "date": "2026-10-15T22:00:00.000Z",
+      "url": "https://www.mladina.si/251906/bo-na-univerzi-prepovedana-politicna-dejavnost/",
+      "source": "mladina",
+      "sourceName": "Mladina",
+      "categories": [
+        "Mladina"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:58.307Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-15-mladina-pomembno-sporocilo-za-vse-ki-zelijo-vladi-b5e0d1",
+      "title": "Pomembno sporočilo za vse, ki želijo vladi gledati pod prste",
+      "summary": "Pred dnevi se je Aleš Primc, prvoborec proti zakonu o pomoči pri prostovoljnem končanju življenja, pohvalil, da je sodna bitka za zakon in referendum o njem končana, saj ustavno sodišče pritožbe zoper odločitev vrhovnega sodišča (to ni ugotovilo kršitev in referenduma ni razveljavilo) ni sprejelo v obravnavo. Primc je referendumsko zmago označil za »božji čudež« in se porogal pritožnikom, saj se je za prispevek v... preberite več »",
+      "date": "2026-10-15T22:00:00.000Z",
+      "url": "https://www.mladina.si/251904/pomembno-sporocilo-za-vse-ki-zelijo-vladi-gledati-pod-prste/",
+      "source": "mladina",
+      "sourceName": "Mladina",
+      "categories": [
+        "Mladina"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:10:58.308Z",
       "backfilled": true
     }
   ]

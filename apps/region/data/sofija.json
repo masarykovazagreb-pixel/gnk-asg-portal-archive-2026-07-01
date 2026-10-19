@@ -4,7 +4,7 @@
   "lang": "bg",
   "city": "Sofija",
   "country": "Bugarska",
-  "updatedAt": "2026-10-19T21:04:50.717Z",
+  "updatedAt": "2026-10-19T21:13:33.154Z",
   "sources": [
     {
       "id": "bta",
@@ -18,7 +18,7 @@
         "https://www.bta.bg/en/rss#1: HTTP 404",
         "https://www.bta.bg/sitemap.xml: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:04:01.496Z"
+      "checkedAt": "2026-10-19T21:12:45.924Z"
     },
     {
       "id": "capital",
@@ -30,18 +30,18 @@
         "wp:1: HTTP 403",
         "https://www.capital.bg/rss#1: HTTP 403"
       ],
-      "checkedAt": "2026-10-19T21:04:08.247Z"
+      "checkedAt": "2026-10-19T21:12:53.888Z"
     },
     {
       "id": "mediapool",
       "name": "Mediapool",
       "url": "https://www.mediapool.bg/rss",
-      "ok": true,
-      "fetched": 40,
+      "ok": false,
+      "fetched": 0,
       "errors": [
         "wp:1: HTTP 403"
       ],
-      "checkedAt": "2026-10-19T21:04:44.224Z"
+      "checkedAt": "2026-10-19T21:13:04.017Z"
     },
     {
       "id": "dnevnikbg",
@@ -53,10 +53,106 @@
         "wp:1: HTTP 403",
         "https://www.dnevnik.bg/rss#1: HTTP 403"
       ],
-      "checkedAt": "2026-10-19T21:04:50.717Z"
+      "checkedAt": "2026-10-19T21:13:10.804Z"
+    },
+    {
+      "id": "actualno",
+      "name": "Actualno.com",
+      "url": "https://www.actualno.com/rss",
+      "ok": true,
+      "fetched": 50,
+      "errors": [
+        "wp:1: HTTP 404"
+      ],
+      "checkedAt": "2026-10-19T21:13:17.655Z"
+    },
+    {
+      "id": "sega",
+      "name": "Sega.bg",
+      "url": "https://www.segabg.com/rss",
+      "ok": true,
+      "fetched": 81,
+      "errors": [
+        "wp:1: Unexpected token '<', \"<!doctype \"... is not valid JSON"
+      ],
+      "checkedAt": "2026-10-19T21:13:22.443Z"
+    },
+    {
+      "id": "novinite",
+      "name": "Novinite.com",
+      "url": "https://www.novinite.com/rss",
+      "ok": true,
+      "fetched": 22,
+      "errors": [
+        "wp:1: HTTP 403",
+        "https://www.novinite.com/rss#1: HTTP 404"
+      ],
+      "checkedAt": "2026-10-19T21:13:28.855Z"
+    },
+    {
+      "id": "btaen",
+      "name": "BTA English",
+      "url": "https://www.bta.bg/en/rss",
+      "ok": false,
+      "fetched": 0,
+      "errors": [
+        "wp:1: HTTP 404",
+        "https://www.bta.bg/en/rss#1: HTTP 404",
+        "https://www.bta.bg/sitemap.xml: HTTP 404",
+        "https://www.bta.bg/sitemap_index.xml: HTTP 404"
+      ],
+      "checkedAt": "2026-10-19T21:13:33.153Z"
     }
   ],
   "items": [
+    {
+      "slug": "sofija-2026-10-19-sega-sluhove-pratiha-kim-cen-un-v-kita-ska-f92e57",
+      "title": "Слухове пратиха Ким Чен Ун в китайска болница",
+      "summary": "",
+      "date": "2026-10-19T21:04:44.000Z",
+      "url": "https://www.segabg.com/hot/category-foreign-country/sluhove-pratiha-kim-chen-un-kitayska-bolnica",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.440Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-sestima-zaginali-sred-t-h-bebe-ma-ka-mu-i-dc5d35",
+      "title": "Шестима загинали, сред тях бебе, майка му и 11-годишно момиче, след руска атака срещу парк в Харковска област",
+      "summary": "Две момичета на 1 и 11 години, три жени и един мъж загинаха при удар на руски дрон по парк в Нова Водолага, Харковска об...",
+      "date": "2026-10-19T20:30:00.000Z",
+      "url": "https://www.actualno.com/europe/shestima-zaginali-sred-tjah-bebe-majka-mu-i-11-godishno-momiche-sled-ruska-ataka-sreshtu-park-v-harkovska-oblast-news_2652251.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.652Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-prognoza-za-vremeto-20-oktomvri-2026-g-db086f",
+      "title": "Прогноза за времето - 20 октомври 2026 г. (вторник)",
+      "summary": "През нощта над по-голямата част от страната ще бъде предимно ясно. Над Източна България облачността ще е предимно значит...",
+      "date": "2026-10-19T20:13:00.000Z",
+      "url": "https://www.actualno.com/society/prognoza-za-vremeto-20-oktomvri-2026-g-vtornik-news_2652248.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Общество"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.652Z",
+      "backfilled": true
+    },
     {
       "slug": "sofija-2026-10-19-dnevnikbg-tr-mp-podnovi-natiska-zelenski-da-se-7c238e",
       "title": "Тръмп поднови натиска Зеленски да се оттегли",
@@ -71,6 +167,38 @@
       "author": "Дневник",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-b-lgarski-s-d-e-izdal-evrope-ska-zapoved-za-49c781",
+      "title": "Български съд е издал европейска заповед за арест за двама, заподозрени в палежа на антените на Starlink",
+      "summary": "Български съд одобри издаването на европейска заповед за арест на двама германски граждани, обвинени в запалване на анте...",
+      "date": "2026-10-19T20:01:00.000Z",
+      "url": "https://www.actualno.com/europe/bylgarski-syd-e-izdal-evropejska-zapoved-za-arest-za-dvama-zapodozreni-v-paleja-na-antenite-na-starlink-news_2652245.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.652Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-radar-za-ikonomika-na-vaznite-novini-na-19-d2b4e4",
+      "title": "Радар за икономика: Най-важните новини на 19 октомври 2026 г.",
+      "summary": "Редакционният екип Ви представя най-важните икономически новини от изминалия ден, 19 октомври 2026 г. Задава се тежка...",
+      "date": "2026-10-19T20:00:00.000Z",
+      "url": "https://www.actualno.com/economy/radar-za-ikonomika-naj-vajnite-novini-na-19-oktomvri-2026-g-news_2652141.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Икономика"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-19T21:13:17.652Z",
       "backfilled": true
     },
     {
@@ -90,6 +218,22 @@
       "backfilled": true
     },
     {
+      "slug": "sofija-2026-10-19-actualno-v-v-franci-se-obmisl-izv-nredno-polozenie-42b344",
+      "title": "Във Франция се обмисля извънредно положение. Разграбиха магазини на Louis Vuitton и Dior",
+      "summary": "Масовите протести във Франция ескалираха в мащабни грабежи и вандализъм. В Марсилия група маскирани мъже разбиха стъклен...",
+      "date": "2026-10-19T19:47:00.000Z",
+      "url": "https://www.actualno.com/europe/vyv-francija-se-obmislja-izvynredno-polojenie-razgrabiha-magazini-na-louis-vuitton-i-dior-news_2652243.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.652Z",
+      "backfilled": true
+    },
+    {
       "slug": "sofija-2026-10-19-dnevnikbg-urolog-t-prof-d-r-kalo-n-davidov-e-novi-t-3115c5",
       "title": "Урологът проф. д-р Калоян Давидов е новият носител на отличието \"Лекар на годината\"",
       "summary": "Урологът проф. д-р Калоян Давидов е новият носител на отличието \"Лекар на годината\". Конкурсът се организира от Българския лекарски съюз. Според Давидов доверието на пациентите може да се върне с отношението, човешкото поведение,...",
@@ -106,6 +250,230 @@
       "backfilled": true
     },
     {
+      "slug": "sofija-2026-10-19-actualno-na-prezidentskite-izbori-v-tri-naseleni-2fd30a",
+      "title": "На президентските избори: В три населени места ще избират и кмет",
+      "summary": "Ключова седмица за президентския вот. Броени дни остават до изборите на 25 октомври, когато гласуваме за нов държавен гл...",
+      "date": "2026-10-19T19:32:00.000Z",
+      "url": "https://www.actualno.com/politics/na-prezidentskite-izbori-v-tri-naseleni-mesta-shte-izbirat-i-kmet-news_2652247.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Политика"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:13:17.652Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-dete-i-kuce-na-dobrata-kombinaci-dopamin-za-f2a726",
+      "title": "Дете и куче - най-добрата комбинация: Допамин за понеделник",
+      "summary": "Ориентираме се към край на сериозните новини за днес! Време е за вечерната ни доза допамин – няколко секунди, коит...",
+      "date": "2026-10-19T19:30:00.000Z",
+      "url": "https://www.actualno.com/society/dete-i-kuche-naj-dobrata-kombinacija-dopamin-za-ponedelnik-news_2652212.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Общество"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.652Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-proucvane-83-ot-zenite-v-menopauza-ne-254f3e",
+      "title": "Проучване: 83% от жените в менопауза не получават подкрепа",
+      "summary": "83,7% от жените в пери-, менопауза и постменопауза са се консултирали с лекар, но само една от всеки пет е получила подк...",
+      "date": "2026-10-19T19:18:00.000Z",
+      "url": "https://www.actualno.com/interest/prouchvane-83-ot-jenite-v-menopauza-ne-poluchavat-podkrepa-news_2652135.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Интересно"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.652Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-na-vaznite-novini-za-den-19-oktomvri-2026-g-c5fb79",
+      "title": "Най-важните новини за деня: 19 октомври 2026 г.",
+      "summary": "Редакционният екип ви представя най-важните новини за изминалия ден, 19 октомври 2026 г. \"СМЕТКАТА Я ПЛАЩА ЧА...",
+      "date": "2026-10-19T19:00:00.000Z",
+      "url": "https://www.actualno.com/society/naj-vajnite-novini-za-denja-19-oktomvri-2026-g-news_2652232.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Общество"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.652Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-ferari-izbra-s-pernik-na-nikola-colov-za-8231c3",
+      "title": "Ферари избра съперник на Никола Цолов за резервен пилот във Формула 1",
+      "summary": "Още един от съперниците на Никола Цолов влиза във Формула 1. Преди дни стана ясно, че Рафаел Камара, с когото бълга...",
+      "date": "2026-10-19T18:58:00.000Z",
+      "url": "https://www.actualno.com/moresport/ferari-izbra-sypernik-na-nikola-colov-za-rezerven-pilot-vyv-formula-1-news_2652237.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Още спорт"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.652Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-sega-ra-nmetal-kupi-korabostroitelnica-v-rum-ni-d4e531",
+      "title": "\"Райнметал\" купи корабостроителница в Румъния",
+      "summary": "",
+      "date": "2026-10-19T18:56:42.000Z",
+      "url": "https://www.segabg.com/hot/category-economy/raynmetal-kupi-korabostroitelnica-rumuniya",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.440Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-lisabon-si-v-rna-bl-s-ka-na-turisticeski-4e3dcc",
+      "title": "Лисабон си върна блясъка на туристически лидер с две отличия",
+      "summary": "Португалската столица триумфира в категориите „Най-добра градска дестинация в Европа“ и „Най-добра кру...",
+      "date": "2026-10-19T18:45:00.000Z",
+      "url": "https://www.actualno.com/economy/lisabon-si-vyrna-bljasyka-na-turisticheski-lider-s-dve-otlichija-news_2651955.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Икономика"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.652Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-b-lgari-i-kita-obs-diha-razsir-vaneto-na-56a786",
+      "title": "България и Китай обсъдиха разширяването на икономическото сътрудничество и свързаността между Европа и Азия",
+      "summary": "Министърът на външните работи Велислава Петрова се срещна с министъра на външните работи на Китайската народна република...",
+      "date": "2026-10-19T18:44:00.000Z",
+      "url": "https://www.actualno.com/politics/bylgarija-i-kitaj-obsydiha-razshirjavaneto-na-ikonomicheskoto-sytrudnichestvo-i-svyrzanostta-mejdu-evropa-i-azija-news_2652235.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Политика"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.652Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-z-lti-stotinki-i-bezsmisleno-nakazanie-3e0242",
+      "title": "\"Жълти стотинки\" и безсмислено наказание: Португалската федерация обяви съдбата на Роналдо",
+      "summary": "Португалската футболна федерация обяви наказанието на Кристиано Роналдо. Както е известно, в края на септември 41-годишн...",
+      "date": "2026-10-19T18:43:00.000Z",
+      "url": "https://www.actualno.com/football/jylti-stotinki-i-bezsmisleno-nakazanie-portugalskata-federacija-objavi-sydbata-na-ronaldo-news_2652234.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Футбол свят"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "sport",
+      "addedAt": "2026-10-19T21:13:17.652Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-tezka-katastrofa-s-tri-koli-kra-karnobat-4e66f9",
+      "title": "Тежка катастрофа с три коли край Карнобат, има загинал и пострадал",
+      "summary": "Тежка катастрофа между три автомобила е станала около 17:47 ч. на пътя Карнобат – Айтос. При инцидента на място е ...",
+      "date": "2026-10-19T18:20:00.000Z",
+      "url": "https://www.actualno.com/crime/tejka-katastrofa-s-tri-koli-kraj-karnobat-ima-zaginal-i-postradal-news_2652230.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Крими"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.652Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-v-angli-mancest-r-siti-moze-da-prekara-pone-81f469",
+      "title": "В Англия: Манчестър Сити може да прекара поне два сезона в Чемпиъншип",
+      "summary": "Последните новини около казуса на Манчестър Сити сочат, че клубът може да получи огромно наказание с отнемане на точки, ...",
+      "date": "2026-10-19T18:14:00.000Z",
+      "url": "https://www.actualno.com/football/v-anglija-manchestyr-siti-moje-da-prekara-pone-dva-sezona-v-chempiynship-news_2652231.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Футбол свят"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.652Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-kolko-sa-prekite-zagubi-za-ukrainski-biznes-22eed5",
+      "title": "Колко са преките загуби за украинския бизнес от началото на годината: Говори премиерът на страната",
+      "summary": "„През тази година руските удари нанесоха на украинския бизнес преки загуби в размер на 7,7 млрд. долара. Бяха унищ...",
+      "date": "2026-10-19T18:04:00.000Z",
+      "url": "https://www.actualno.com/economy/kolko-sa-prekite-zagubi-za-ukrainskija-biznes-ot-nachaloto-na-godinata-govori-premieryt-na-stranata-news_2652228.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Икономика"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.652Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-sega-kristian-amanpur-napuska-cnn-sled-43-godini-142827",
+      "title": "Кристиан Аманпур напуска CNN след 43 години",
+      "summary": "",
+      "date": "2026-10-19T17:59:20.000Z",
+      "url": "https://www.segabg.com/hot/category-media/kristian-amanpur-napuska-cnn-sled-43-godini",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.440Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-sega-kupa-na-b-lgari-1-16-finali-rezultati-i-7484a4",
+      "title": "КУПА НА БЪЛГАРИЯ, 1/16-ФИНАЛИ - РЕЗУЛТАТИ И ПРОГРАМА (видео репортажи)",
+      "summary": "",
+      "date": "2026-10-19T17:58:29.000Z",
+      "url": "https://www.segabg.com/category-sport/kupa-na-bulgariya-116-finali-rezultati-i-programa-video-reportazhi-1",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Спорт"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
+      "backfilled": true
+    },
+    {
       "slug": "sofija-2026-10-19-dnevnikbg-evrokomisi-ta-e-finansira-zavod-za-f78009",
       "title": "Еврокомисията ще финансира завод за рециклиране на мед в София",
       "summary": "ЕС ще финансира безвъзмездно изграждането в София на завод за рециклиране на мед. Това съобщи Европейската комисия обявявайки 77 проекта, които ще бъдат подпомогнати чрез Фонда за иновации. Фирмата \"София Мед\", която ще изгражда съоръжението трябва...",
@@ -119,6 +487,22 @@
       "author": "Дневник",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-senzacionen-obrat-za-edno-poluvreme-d76401",
+      "title": "Сензационен обрат за едно полувреме определи последния 1/8-финалист в Купата на България (РЕЗУЛТАТИ)",
+      "summary": "Ясни са последните 1/8-финалисти в Купата на България. Втородивизионният Добруджа победи Монтана, а час по-късно Сп...",
+      "date": "2026-10-19T17:55:00.000Z",
+      "url": "https://www.actualno.com/bgfootball/senzacionen-obrat-za-edno-poluvreme-opredeli-poslednija-18-finalist-v-kupata-na-bylgarija-rezultati-news_2652226.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Футбол България"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.652Z",
       "backfilled": true
     },
     {
@@ -154,6 +538,54 @@
       "backfilled": true
     },
     {
+      "slug": "sofija-2026-10-19-actualno-ukra-na-spasi-23-deca-ot-ruska-okupaci-sred-03a63b",
+      "title": "Украйна спаси 23 деца от руска окупация, сред тях е и 9-годишно момче, обучавано за военна служба",
+      "summary": "Украйна е успяла да върне още 23 деца от окупираните от Русия територии през последната седмица, съобщи президентската и...",
+      "date": "2026-10-19T17:42:00.000Z",
+      "url": "https://www.actualno.com/europe/ukrajna-spasi-23-deca-ot-ruska-okupacija-sred-tjah-e-i-9-godishno-momche-obuchavano-za-voenna-slujba-news_2652227.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.652Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-sega-uceniceskite-ekskurzii-u-nas-60-evro-v-afff75",
+      "title": "Ученическите екскурзии - у нас 60 евро, в Испания 6",
+      "summary": "",
+      "date": "2026-10-19T17:27:11.000Z",
+      "url": "https://www.segabg.com/hot/category-bulgaria/uchenicheskite-ekskurzii-u-nas-60-evro-ispaniya-6",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.440Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-ne-moze-da-ima-povece-ot-edin-petel-v-edin-4c73c4",
+      "title": "\"Не може да има повече от един петел в един и същ кокошарник\": Критикуваха трансфера на Мбапе в Реал Мадрид",
+      "summary": "Президентът на Барселона Жоан Лапорта отправи остра критика към Реал Мадрид, като настоя, че \"кралският\" клуб е загубил ...",
+      "date": "2026-10-19T17:27:00.000Z",
+      "url": "https://www.actualno.com/football/ne-moje-da-ima-poveche-ot-edin-petel-v-edin-i-sysht-kokosharnik-kritikuvaha-transfera-na-mbape-v-real-madrid-news_2652222.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Футбол свят"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.653Z",
+      "backfilled": true
+    },
+    {
       "slug": "sofija-2026-10-19-dnevnikbg-snimka-na-den-fokus-v-rhu-borbata-s-raka-na-5eacf2",
       "title": "Снимка на деня: Фокус върху борбата с рака на гърдата",
       "summary": "",
@@ -183,6 +615,22 @@
       "author": "Петър Карабоев",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-14-godisnoto-momce-namuskano-ot-vr-stnik-v-c12625",
+      "title": "14-годишното момче, намушкано от връстник в Карнобат, е в стабилно състояние",
+      "summary": "В стабилно състояние е 14-годишното момче, намушкано от свой връстник в Карнобат. Детето е прието по спешност в частна б...",
+      "date": "2026-10-19T17:15:00.000Z",
+      "url": "https://www.actualno.com/crime/14-godishnoto-momche-namushkano-ot-vrystnik-v-karnobat-e-v-stabilno-systojanie-news_2652225.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Крими"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.653Z",
       "backfilled": true
     },
     {
@@ -218,6 +666,54 @@
       "backfilled": true
     },
     {
+      "slug": "sofija-2026-10-19-actualno-mourin-o-za-novata-zvezda-na-real-madrid-648702",
+      "title": "Моуриньо за новата звезда на Реал Мадрид: \"Напомня ми за Винисиус Жуниор\"",
+      "summary": "Наставникът на Реал Мадрид Жозе Моуриньо даде откровена оценка за представянето на едно от летните попълнения. Става въп...",
+      "date": "2026-10-19T16:58:00.000Z",
+      "url": "https://www.actualno.com/football/mourinio-za-novata-zvezda-na-real-madrid-napomnja-mi-za-vinisius-junior-news_2652213.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Футбол свят"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.653Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-novinite-bulgaria-courts-chinese-business-with-new-bfe1d5",
+      "title": "Bulgaria Courts Chinese Business With New Investment Agreements",
+      "summary": "Bulgarian Prime Minister Rumen Radev has pledged to deepen economic cooperation with China, presenting Bulgaria as a gateway to the European market, while agreements pursued by his government have raised questions about transparency, economic benefits and alignment with European Union policy. “We see prospects in our relations for building better connectivity between Europe and China, with Bulgaria playing a key role as a gateway to Europe in terms of transport, energy, and digital connectivity. Bulgaria offers excellent conditions for investment in sectors such as electric vehicles, energy, agriculture, and high technology,” Radev said at the start of talks with Chinese Foreign Minister…",
+      "date": "2026-10-19T16:44:37.000Z",
+      "url": "https://www.novinite.com/view_news.php?id=241140",
+      "source": "novinite",
+      "sourceName": "Novinite.com",
+      "categories": [
+        "Politics"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:13:28.853Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-sega-v-gradove-v-severna-franci-e-v-veden-police-c360e2",
+      "title": "В градове в Северна Франция е въведен полицейски час",
+      "summary": "",
+      "date": "2026-10-19T16:43:39.000Z",
+      "url": "https://www.segabg.com/hot/category-foreign-country/gradove-severna-franciya-e-vuveden-policeyski-chas",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.440Z",
+      "backfilled": true
+    },
+    {
       "slug": "sofija-2026-10-19-dnevnikbg-otova-sezira-prokuraturata-za-kazusa-s-702597",
       "title": "Йотова сезира прокуратурата за казуса с помилвания от нея наркотрафикант",
       "summary": "Илияна Йотова обяви, че президентството днес е сезирало прокуратурата за казуса с помилвания от нея наркотрафикант. В съобщение до \"Сега\" от президенството уточняват, че президентът и кандидат за президент иска държавното обвинение да провери всички...",
@@ -231,6 +727,70 @@
       "author": "Георги Пауновски",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-kapan-t-s-ruskite-zamrazeni-aktivi-kak-es-9bf6a5",
+      "title": "Капанът с руските замразени активи: Как ЕС да освободи Белгия от огромния риск",
+      "summary": "Какво би се случило, ако САЩ се опитат да поемат контрола върху стотиците милиарди долари руски активи, замразени в межд...",
+      "date": "2026-10-19T16:41:00.000Z",
+      "url": "https://www.actualno.com/europe/kapanyt-s-ruskite-zamrazeni-aktivi-kak-es-da-osvobodi-belgija-ot-ogromnija-risk-news_2652208.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.653Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-kongres-t-da-razsledva-pomo-ta-ko-to-tr-mp-b62ea4",
+      "title": "\"Конгресът да разследва помощта, която Тръмп оказва на Путин\": Бивш защитник на президента с призив срещу него",
+      "summary": "Бившият федерален прокурор Андрю Маккарти, който преди това защитаваше Доналд Тръмп срещу обвиненията за връзки с Кремъл...",
+      "date": "2026-10-19T16:40:00.000Z",
+      "url": "https://www.actualno.com/america/kongresyt-da-razsledva-pomoshtta-kojato-trymp-okazva-na-putin-bivsh-zashtitnik-na-prezidenta-s-priziv-sreshtu-nego-news_2652207.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Америка"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.653Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-prizovaha-za-otlagane-na-psz-barselona-05fe31",
+      "title": "Призоваха за отлагане на ПСЖ - Барселона заради безредиците във Франция",
+      "summary": "Напрежението, свързано със сигурността във Франция през последните дни, постави под съмнение провеждането на дългоочаква...",
+      "date": "2026-10-19T16:33:00.000Z",
+      "url": "https://www.actualno.com/football/prizovaha-za-otlagane-na-psj-barselona-zaradi-bezredicite-vyv-francija-news_2652206.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Футбол свят"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:13:17.653Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-satelitni-snimki-pokazvat-cast-ot-etite-v-2f0a9e",
+      "title": "САТЕЛИТНИ СНИМКИ показват част от щетите в Санкт Петербург след голяма украинска атака",
+      "summary": "Какви щети успяха да нанесат украинските далекобойни дронове при атаката на 18 октомври срещу Санкт Петербург, родния гр...",
+      "date": "2026-10-19T16:27:00.000Z",
+      "url": "https://www.actualno.com/europe/satelitni-snimki-pokazvat-chast-ot-shtetite-v-sankt-peterburg-sled-goljama-ukrainska-ataka-news_2652203.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.653Z",
       "backfilled": true
     },
     {
@@ -250,6 +810,54 @@
       "backfilled": true
     },
     {
+      "slug": "sofija-2026-10-19-actualno-zagina-pri-bombardirovka-edva-na-43-b-d2687f",
+      "title": "Загина при бомбардировка едва на 43: Българката, която събу обувките си и промени балета завинаги",
+      "summary": "България има с какво да се гордее, но много често българите или забравяме, или не знаем. В новата ни рубрика \"Невъзпятит...",
+      "date": "2026-10-19T16:25:00.000Z",
+      "url": "https://www.actualno.com/faces/zagina-pri-bombardirovka-edva-na-43-bylgarkata-kojato-sybu-obuvkite-si-i-promeni-baleta-zavinagi-news_2640529.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Лица"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.653Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-sega-otova-dade-na-prokuraturata-pomilvaneto-na-67520d",
+      "title": "Йотова даде на прокуратурата помилването на Петричкия Ескобар",
+      "summary": "",
+      "date": "2026-10-19T16:24:51.000Z",
+      "url": "https://www.segabg.com/hot/category-bulgaria/yotova-dade-na-prokuraturata-pomilvaneto-na-petrichkiya-eskobar",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.440Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-sega-tunel-t-topli-dol-vece-e-tapa-na-hemus-i-90b002",
+      "title": "Тунелът \"Топли дол\" вече е тапа на \"Хемус\" и така 6 месеца",
+      "summary": "",
+      "date": "2026-10-19T16:20:10.000Z",
+      "url": "https://www.segabg.com/hot/category-economy/tunelut-topli-dol-veche-e-tapa-na-hemus-i-taka-6-meseca",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.440Z",
+      "backfilled": true
+    },
+    {
       "slug": "sofija-2026-10-19-dnevnikbg-ministerstvoto-na-otbranata-zasilva-nabl-623118",
       "title": "Министерството на отбраната засилва наблюдението по Черноморието с дронове",
       "summary": "Министерството на отбраната засилва наблюдението по Черноморието с дронове. Това съобщи пресцентърът на ведомството. Дейностите са част от превантивните мерки за повишаване на сигурността и осигуряване на своевременна информация за...",
@@ -263,6 +871,86 @@
       "author": "Дневник",
       "theme": "sigurnost",
       "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-samokov-e-domakin-na-evrope-skoto-p-99db34",
+      "title": "Самоков е домакин на Европейското първенство по естетическа групова гимнастика",
+      "summary": "Самоков е домакин на Европейското първенство по естетическа групова гимнастика! С тържествена церемония в спортния комп...",
+      "date": "2026-10-19T16:16:00.000Z",
+      "url": "https://www.actualno.com/sofia/samokov-e-domakin-na-evropejskoto-pyrvenstvo-po-esteticheska-grupova-gimnastika-news_2652199.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "София"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.653Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-novinite-bulgarian-court-approves-arrest-warrants-in-b6db0b",
+      "title": "Bulgarian Court Approves Arrest Warrants in Starlink Antenna Arson Case",
+      "summary": "Bulgaria’s Sofia City Court has authorized European Arrest Warrants for two German nationals suspected of setting fire to Starlink antennas at the Teleport Plana facility near Sofia, BNT reported, as the suspects have left the country and their current whereabouts remain unknown. The two men, Tirpan Beytulla and Zeka Islam, were born in Germany in 2007. The court considered the Prosecutor’s Office request for the warrants during proceedings today. ...",
+      "date": "2026-10-19T16:13:29.000Z",
+      "url": "https://www.novinite.com/view_news.php?id=241139",
+      "source": "novinite",
+      "sourceName": "Novinite.com",
+      "categories": [
+        "Defense"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:13:28.853Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-kolko-d-lgo-dvizenieto-prez-topli-dol-e-e-afc501",
+      "title": "Колко дълго движението през \"Топли дол\" ще е изпитание: Отговор от министър Шишков",
+      "summary": "Да затворим тунела \"Топли дол\" за ремонт не е каприз, а необходимост, за да не бъдат застрашени хора. Състоянието му беш...",
+      "date": "2026-10-19T16:11:00.000Z",
+      "url": "https://www.actualno.com/society/kolko-dylgo-dvijenieto-prez-topli-dol-shte-e-izpitanie-otgovor-ot-ministyr-shishkov-news_2652195.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Общество"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.653Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-ako-zelenski-be-patriot-i-ako-putin-be-963e8c",
+      "title": "Ако Зеленски бе патриот и ако Путин бе патриот",
+      "summary": "Следният диалог между двама потребители в социалните мрежи чудесно онагледява какво представлява \"логиката\" на поддържни...",
+      "date": "2026-10-19T16:09:00.000Z",
+      "url": "https://www.actualno.com/cite/ako-zelenski-be-patriot-i-ako-putin-be-patriot-news_2652190.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Цитати"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.653Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-idvat-povece-dronove-v-cerno-more-d-rzavata-289428",
+      "title": "Идват повече дронове в Черно море: Държавата предупреди да не се стряскаме, наши са",
+      "summary": "\"Във връзка с предприетите от Министерството на отбраната допълнителни мерки за сигурност по Българското черноморско кра...",
+      "date": "2026-10-19T16:03:00.000Z",
+      "url": "https://www.actualno.com/society/idvat-poveche-dronove-v-cherno-more-dyrjavata-predupredi-da-ne-se-strjaskame-nashi-sa-news_2652187.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Общество"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:13:17.653Z",
       "backfilled": true
     },
     {
@@ -282,6 +970,70 @@
       "backfilled": true
     },
     {
+      "slug": "sofija-2026-10-19-actualno-samo-edin-pilot-e-sposoben-da-pobedi-0c52c7",
+      "title": "Само един пилот е способен да победи Антонели във Формула 1 тази година... но и той няма да успее",
+      "summary": "\"Газ до дупка\" е спортна рубрика на Actualno.com с автори Дария Александрова и Жанина Колева, посветена на историит...",
+      "date": "2026-10-19T16:00:00.000Z",
+      "url": "https://www.actualno.com/moresport/samo-edin-pilot-e-sposoben-da-pobedi-antoneli-vyv-formula-1-tazi-godina-no-i-toj-njama-da-uspee-news_2651832.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Още спорт"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.653Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-venci-stefanov-za-sobstvenika-na-cska-to-e-8292f9",
+      "title": "Венци Стефанов за собственика на ЦСКА: Той е първият човек в новата история на България, който направи такова нещо",
+      "summary": "Остават броени дни до официалното завръщане на ЦСКА у дома. Столичната класика между \"червените\" и Славия ще бъде първия...",
+      "date": "2026-10-19T15:59:00.000Z",
+      "url": "https://www.actualno.com/bgfootball/venci-stefanov-za-sobstvenika-na-cska-toj-e-pyrvijat-chovek-v-novata-istorija-na-bylgarija-kojto-napravi-takova-neshto-news_2652183.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Футбол България"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.653Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-cetiri-giganta-mobilni-operatori-v-es-se-5be1ae",
+      "title": "Четири гиганта-мобилни оператори в ЕС се обединяват да създадат европейски Starlink",
+      "summary": "Европейските телекомуникационни компании Deutsche Telekom, Orange, Telefónica и Vodafone подписаха споразумение з...",
+      "date": "2026-10-19T15:55:00.000Z",
+      "url": "https://www.actualno.com/sciencelogy/chetiri-giganta-mobilni-operatori-v-es-se-obedinjavat-da-syzdadat-evropejski-starlink-news_2652182.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Технологии"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:13:17.653Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-b-lgarski-otbor-speceli-bronzovi-medali-v-941a70",
+      "title": "Български отбор спечели бронзови медали в Шампионска лига след невероятна драма в Гърция",
+      "summary": "Българският футболен отбор “Войводите” завоюва бронзовите медали на международния турнир Conference Champion...",
+      "date": "2026-10-19T15:54:00.000Z",
+      "url": "https://www.actualno.com/bgfootball/bylgarski-otbor-specheli-bronzovi-medali-v-shampionska-liga-sled-neverojatna-drama-v-gyrcija-news_2652001.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Футбол България"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "sport",
+      "addedAt": "2026-10-19T21:13:17.653Z",
+      "backfilled": true
+    },
+    {
       "slug": "sofija-2026-10-19-mediapool-ko-speceli-casticnite-mestni-izbori-i-k-de-92d5ee",
       "title": "Кой спечели частичните местни избори и къде ще има балотажи",
       "summary": "Кандидати на БСП и ДПС спечелиха частичните местни избори в седем населени места. В Полски Тръмбеш за кмет бе избран подкрепяния от “Прогресивна България” Росен Русанов. В три села изборът ще се реши на балотаж…",
@@ -298,6 +1050,86 @@
       "author": "",
       "theme": "politika",
       "addedAt": "2026-10-19T20:55:39.365Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-severni-t-morski-p-t-e-gol-m-probiv-za-rusi-da1740",
+      "title": "Северният морски път е голям пробив за Русия в износа на петрол",
+      "summary": "Доставките на руски петрол през Арктика са надхвърлили общия обем от миналата година с близо 50%, тъй като проблемите съ...",
+      "date": "2026-10-19T15:47:00.000Z",
+      "url": "https://www.actualno.com/economy/severnijat-morski-pyt-e-goljam-probiv-za-rusija-v-iznosa-na-petrol-news_2652179.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Икономика"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.653Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-poredno-uvolnenie-za-bivs-tren-or-na-cska-ede319",
+      "title": "Поредно уволнение за бивш треньор на ЦСКА",
+      "summary": "Неуспехите на клубно ниво за един от бившите треньори на ЦСКА продължават. Става въпрос за Нестор Ел Маестро, който има ...",
+      "date": "2026-10-19T15:44:00.000Z",
+      "url": "https://www.actualno.com/bgfootball/poredno-uvolnenie-za-bivsh-trenior-na-cska-news_2652176.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Футбол България"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.653Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-zad-rzaha-dvama-s-marihuana-za-nad-37-000-0106e9",
+      "title": "Задържаха двама с марихуана за над 37 000 евро на \"Капитан Андреево\"",
+      "summary": "Двама български граждани са привлечени като обвиняеми за опит за контрабанда на 4,560 кг марихуана на стойност 37 303 ев...",
+      "date": "2026-10-19T15:42:00.000Z",
+      "url": "https://www.actualno.com/crime/zadyrjaha-dvama-s-marihuana-za-nad-37-000-evro-na-kapitan-andreevo-news_2652172.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Крими"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.654Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-da-pomognem-na-malki-mitko-da-prohodi-2f2e17",
+      "title": "Да помогнем на малкия Митко да проходи",
+      "summary": "Първите четири месеца от живота на Митко преминават в кувьоз, а майка му се прибира у дома без него. Днес, след повече о...",
+      "date": "2026-10-19T15:40:00.000Z",
+      "url": "https://www.actualno.com/help/da-pomognem-na-malkija-mitko-da-prohodi-news_2652175.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "В помощ на"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.654Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-novinite-bulgaria-takes-four-medals-at-world-sumo-b5db09",
+      "title": "Bulgaria Takes Four Medals at World Sumo Championships",
+      "summary": "Bulgaria has crowned its first world sumo champion in 16 years, with Simeon Stankovic winning gold in the under-115 kg category at the World Championships in Baku, Azerbaijan, on October 17-18. Stankovic claimed the title after four consecutive victories. He beat Kyrgyzstan’s Sulde Dongak in the semifinals before defeating Hungary’s Marcell Gorica in the final. ...",
+      "date": "2026-10-19T15:38:02.000Z",
+      "url": "https://www.novinite.com/view_news.php?id=241138",
+      "source": "novinite",
+      "sourceName": "Novinite.com",
+      "categories": [
+        "Sports"
+      ],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:13:28.853Z",
       "backfilled": true
     },
     {
@@ -336,6 +1168,22 @@
       "backfilled": true
     },
     {
+      "slug": "sofija-2026-10-19-actualno-kapitan-hristo-papukciev-b-lgari-da-poiska-38e9de",
+      "title": "Капитан Христо Папукчиев: България да поиска от ЕС план за защита на корабоплаването в Черно море",
+      "summary": "Капитан Христо Папукчиев, експерт по морска сигурност, смята, че България трябва да поиска от Европейския съюз конкретен...",
+      "date": "2026-10-19T15:32:00.000Z",
+      "url": "https://www.actualno.com/europe/kapitan-hristo-papukchiev-bylgarija-da-poiska-ot-es-plan-za-zashtita-na-koraboplavaneto-v-cherno-more-news_2652169.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:13:17.654Z",
+      "backfilled": true
+    },
+    {
       "slug": "sofija-2026-10-19-dnevnikbg-zam-na-na-starite-pecki-s-fotovoltaici-619116",
       "title": "Замяна на старите печки с... фотоволтаици предлага Столичната община",
       "summary": "Фотоволтаици като алтернатива на старите печки ще предлага Столичната община. Вариантът е пилотен и е част от проект, финансиран по програма \"Околна среда\" 2021-2027 г. с над 37 млн.евро. Домакинство, получило безвъзмездно фотоволтаична...",
@@ -352,6 +1200,22 @@
       "backfilled": true
     },
     {
+      "slug": "sofija-2026-10-19-actualno-v-psz-imat-sen-plan-kak-da-sprat-lamin-mal-854ceb",
+      "title": "В ПСЖ имат ясен план как да спрат Ламин Ямал - Енрике иска да нанесе първа загуба на Барселона",
+      "summary": "Старши треньорът на Пари Сен Жермен Луис Енрике разкри тактическия си план за спиране на Ламин Ямал преди очаквания с го...",
+      "date": "2026-10-19T15:27:00.000Z",
+      "url": "https://www.actualno.com/football/v-psj-imat-jasen-plan-kak-da-sprat-lamin-jamal-enrike-iska-da-nanese-pyrva-zaguba-na-barselona-news_2652164.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Футбол свят"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.654Z",
+      "backfilled": true
+    },
+    {
       "slug": "sofija-2026-10-19-dnevnikbg-vinarnata-aya-estate-be-otlicena-ot-3775f7",
       "title": "Винарната AYA Estate бе отличена от световна класация",
       "summary": "Винарната Aya Estate влезе с отличие в класацията The 50 Best Vineyards. Това се разбира от инстаграм профила й. Тя се намира в Долината на Струма - определен от професионалната общност винен район в България. Преди няколко месеца...",
@@ -365,6 +1229,102 @@
       "author": "Татяна Димитрова",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-nad-1000-tona-celi-pileta-ot-starozagorski-aae26b",
+      "title": "Над 1000 тона цели пилета от старозагорски производител са реализирани в Kaufland през 2025 г.",
+      "summary": "Партньорството на ритрейлъра с Градус продължава вече 15 години Над 1000 тона тона цели пилета от „Градус“ ...",
+      "date": "2026-10-19T15:22:00.000Z",
+      "url": "https://www.actualno.com/society/nad-1000-tona-celi-pileta-ot-starozagorski-proizvoditel-sa-realizirani-v-kaufland-prez-2025-g-news_2652161.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Общество"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.654Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-sencesti-t-flot-na-rusi-s-nov-trik-kak-ae68a3",
+      "title": "Сенчестият флот на Русия с нов трик: Как танкерите \"изчезват\" пред очите на света",
+      "summary": "Изглежда, че руските кораби са намерили нов начин за заблуда и заобикаляне на западните санкции, като фалшифицират данни...",
+      "date": "2026-10-19T15:20:00.000Z",
+      "url": "https://www.actualno.com/europe/senchestijat-flot-na-rusija-s-nov-trik-kak-tankerite-izchezvat-pred-ochite-na-sveta-news_2652160.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.654Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-cetiri-bukvi-koito-mogat-da-spas-t-detski-cedf19",
+      "title": "Четири букви, които могат да спасят детски животи: Какво стои зад инициативата \"РАМО\" на Георги Кандев*",
+      "summary": "Разпознаване, адекватна намеса, механизми за подкрепа и отговорност - това са четирите принципа на инициативата, с която...",
+      "date": "2026-10-19T15:19:00.000Z",
+      "url": "https://www.actualno.com/politics/chetiri-bukvi-koito-mogat-da-spasjat-detski-jivoti-kakvo-stoi-zad-iniciativata-ramo-na-georgi-kandev-news_2652157.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Политика"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.654Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-novinite-tuesday-brings-higher-temperatures-across-a8daf5",
+      "title": "Tuesday Brings Higher Temperatures Across Bulgaria",
+      "summary": "Bulgaria will see sunny and warmer weather on Tuesday before rain, stronger winds and a drop in temperatures arrive later in the week, according to the forecast. Temperatures today will be higher than yesterday in most parts of the country, with highs ranging from 16°C in northeastern Bulgaria to 22°C in the northwest. Sofia will reach 17°C in the afternoon, compared with Sunday’s high of 13°C....",
+      "date": "2026-10-19T15:15:00.000Z",
+      "url": "https://www.novinite.com/view_news.php?id=241137",
+      "source": "novinite",
+      "sourceName": "Novinite.com",
+      "categories": [
+        "Environment"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:13:28.853Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-sega-arheolozi-ot-nim-razkriha-edin-ot-95064f",
+      "title": "Археолози от НИМ разкриха един от последните езически храмове на траките",
+      "summary": "",
+      "date": "2026-10-19T15:11:19.000Z",
+      "url": "https://www.segabg.com/category-culture/arheolozi-nim-razkriha-edin-poslednite-ezicheski-hramove-na-trakite",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Култура"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-c-rkoven-praznik-na-20-oktomvri-zabranata-4beafc",
+      "title": "Църковен празник на 20 октомври: Забраната, която всеки трябва да спазва",
+      "summary": "Утре, 20 октомври, е денят на паметта на Свети великомъченик Артемий в православния календар. Ето какви са традициите, о...",
+      "date": "2026-10-19T15:11:00.000Z",
+      "url": "https://www.actualno.com/celebrate/cyrkoven-praznik-na-20-oktomvri-zabranata-kojato-vseki-trjabva-da-spazva-news_2652050.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Празници"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.654Z",
       "backfilled": true
     },
     {
@@ -406,6 +1366,38 @@
       "backfilled": true
     },
     {
+      "slug": "sofija-2026-10-19-actualno-levski-cska-i-ludogorec-v-k-rvava-bitka-f4cbbb",
+      "title": "Левски, ЦСКА и Лудогорец в кървава битка! Гиздол казва \"чао\" при всички положения | Точно попадение",
+      "summary": "Левски взе първа точка в Лига Европа, а Светослав Вуцов беше \"виновникът\" за равенството с НЕК Ниймеген във всеки смисъл...",
+      "date": "2026-10-19T15:00:00.000Z",
+      "url": "https://www.actualno.com/bgfootball/levski-cska-i-ludogorec-v-kyrvava-bitka-gizdol-kazva-chao-pri-vsichki-polojenija-tochno-popadenie-news_2652051.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Футбол България"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.654Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-pazete-se-silna-magnitna-bur-udr-zem-ta-v-v-9143a1",
+      "title": "Пазете се: Силна магнитна буря удря земята във вторник, 20 октомври 2026",
+      "summary": "Очаквано след голямото затишие - дойдоха и лошите новини за метеочувствителните хора. Силна магнитна буря се з...",
+      "date": "2026-10-19T15:00:00.000Z",
+      "url": "https://www.actualno.com/cosmos/pazete-se-silna-magnitna-burja-udrja-zemjata-vyv-vtornik-20-oktomvri-2026-news_2651970.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Космос"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.654Z",
+      "backfilled": true
+    },
+    {
       "slug": "sofija-2026-10-19-dnevnikbg-andora-i-san-marino-podpisaha-za-asociirane-ad64ce",
       "title": "Андора и Сан Марино подписаха за асоцииране в ЕС",
       "summary": "Андора и Сан Марино подписаха споразумения за асоцииране в ЕС. Те им дават достъп до вътрешния пазар на ЕС, по-голяма правна сигурност, улесняват търговията, подкрепят инвестициите и насърчават трансграничната икономическа дейност. ...",
@@ -438,6 +1430,54 @@
       "author": "",
       "theme": "rat",
       "addedAt": "2026-10-19T20:55:39.365Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-sofi-ski-t-okr-zen-s-d-otnovo-os-den-za-4c52da",
+      "title": "Софийският окръжен съд отново осъден за незаконна конфискация",
+      "summary": "Босненска транспортна компания осъди Софийския окръжен съд заради неправомерна конфискация на нейно имущество, извъ...",
+      "date": "2026-10-19T14:52:00.000Z",
+      "url": "https://www.actualno.com/society/sofijskijat-okryjen-syd-otnovo-osyden-za-nezakonna-konfiskacija-news_2652140.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Общество"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.654Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-b-lgarite-v-ungari-sa-primer-za-podrazanie-d8cf1d",
+      "title": "Българите в Унгария са пример за подражание за всички малцинства: Унгарският зам.-омбудсман",
+      "summary": "Многовековната история на българите в Унгария показва една сплотена и работлива общност, която ревностно пази своя език,...",
+      "date": "2026-10-19T14:49:00.000Z",
+      "url": "https://www.actualno.com/goodnews/bylgarite-v-ungarija-sa-primer-za-podrajanie-za-vsichki-malcinstva-ungarskijat-zam-ombudsman-news_2652146.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Добрите новини"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.654Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-sega-radev-poiska-b-lgari-da-e-vrata-za-kita-k-m-3d154b",
+      "title": "Радев поиска България да е врата за Китай към Европа",
+      "summary": "",
+      "date": "2026-10-19T14:48:11.000Z",
+      "url": "https://www.segabg.com/hot/category-bulgaria/radev-poiska-bulgariya-da-e-vrata-za-kitay-kum-evropa",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "България"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
       "backfilled": true
     },
     {
@@ -492,6 +1532,54 @@
       "backfilled": true
     },
     {
+      "slug": "sofija-2026-10-19-actualno-ukra-na-rusi-e-mobilizirala-46-000-cuzdenci-955269",
+      "title": "Украйна: Русия е мобилизирала 46 000 чужденци от 151 страни, за да воюват срещу нас",
+      "summary": "Русия значително е увеличила броя на чуждестранните наемници в армията си, като те биват изпращани на война срещу Украйн...",
+      "date": "2026-10-19T14:33:00.000Z",
+      "url": "https://www.actualno.com/europe/ukrajna-rusija-e-mobilizirala-46-000-chujdenci-ot-151-strani-za-da-vouvat-sreshtu-nas-news_2652137.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:13:17.654Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-sega-dvamata-obvineni-za-paleza-na-starlink-sa-a77ab5",
+      "title": "Двамата, обвинени за палежа на Starlink, са избягали от България",
+      "summary": "",
+      "date": "2026-10-19T14:32:26.000Z",
+      "url": "https://www.segabg.com/hot/category-bulgaria/dvamata-obvineni-za-palezha-na-starlink-sa-izbyagali-bulgariya",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.440Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-sega-i-dogodina-vlastta-e-iztr-ska-castnika-kato-0418f0",
+      "title": "И догодина властта ще изтръска частника като брашнен чувал",
+      "summary": "",
+      "date": "2026-10-19T14:30:18.000Z",
+      "url": "https://www.segabg.com/category-observer/i-dogodina-vlastta-shte-iztruska-chastnika-kato-brashnen-chuval",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Наблюдател"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.440Z",
+      "backfilled": true
+    },
+    {
       "slug": "sofija-2026-10-19-capital-fotogaleri-kak-victoria-s-secret-prevr-a-fc50e7",
       "title": "Фотогалерия: Как Victoria's Secret превръща модния подиум в машина за продажби",
       "summary": "",
@@ -521,6 +1609,22 @@
       "author": "Йовка Димитрова",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-actualno-it-za-horata-sankcionirani-t-za-korupci-b5805a",
+      "title": "\"Щит за хората\": Санкционираният за корупция Пеевски ще брани хората от корупцията",
+      "summary": "Санкционираният за корупция от САЩ и Великобритания лидер на ДПС Делян Пеевски обяви национална кампания под името \"Щит ...",
+      "date": "2026-10-19T14:24:00.000Z",
+      "url": "https://www.actualno.com/politics/shtit-za-horata-sankcioniranijat-za-korupcija-peevski-shte-brani-horata-ot-korupcijata-news_2652134.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Политика"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:17.654Z",
       "backfilled": true
     },
     {
@@ -588,6 +1692,22 @@
       "author": "Ина Друмева",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-novinite-failure-bulgarian-authorities-face-a7daf3",
+      "title": "Failure? Bulgarian Authorities Face Questions After Two Starlink Arson Suspects Flee the Country",
+      "summary": "Two suspects accused of setting fire to 11 Starlink antennas at a secured site near Sofia have left Bulgaria, and their whereabouts are unknown, according to reports citing the investigation, as prosecutors seek European Arrest Warrants for them. The two men, aged 20 and 21, hold German passports but are not ethnic Germans. Both entered Bulgaria legally through the Kulata border crossing, Boulevard Bulgaria and the newspaper Sega reported. ...",
+      "date": "2026-10-19T14:03:00.000Z",
+      "url": "https://www.novinite.com/view_news.php?id=241136",
+      "source": "novinite",
+      "sourceName": "Novinite.com",
+      "categories": [
+        "Politics"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:13:28.853Z",
       "backfilled": true
     },
     {
@@ -715,6 +1835,22 @@
       "backfilled": true
     },
     {
+      "slug": "sofija-2026-10-19-sega-prof-betani-h-z-predstav-u-nas-kniga-i-film-5b5eb3",
+      "title": "Проф. Бетани Хюз представя у нас книга и филм за България",
+      "summary": "",
+      "date": "2026-10-19T13:34:11.000Z",
+      "url": "https://www.segabg.com/category-culture/prof-betani-hyuz-predstavya-u-nas-kniga-i-film-za-bulgariya",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Култура"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
       "slug": "sofija-2026-10-19-mediapool-bonus-tocki-za-nad-50-evrope-ski-dostavki-v-e4e62d",
       "title": "Бонус точки за над 50% европейски доставки в обществените поръчки иска бизнесът",
       "summary": "При оценяването на офертите на участници в стратегическите обществени поръчки в енергетиката, транспорта, отбраната, цифровата инфраструктура и критичните технологии да се дават побунс точки за онези от тях, които гарантират, че над 50 процента от доставките и услугите им ще идват от Европейския съюз. Това предлага Българската асоциация на електротехниката и електрониката (БАСЕЛ), според която в момента публични български и европейски публични средства изтичат към държави извън ЕС като Китай, Турция и Индия, които печелят търговете с по-ниски цени. Според организацията при оценката на предложенията трябва също така да се оценява сервизното присъствие в България…",
@@ -731,6 +1867,22 @@
       "author": "",
       "theme": "energija",
       "addedAt": "2026-10-19T20:55:39.365Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-novinite-presidential-candidate-iliana-yotova-the-b8dd4c",
+      "title": "Presidential Candidate Iliana Yotova: The Status Quo",
+      "summary": "Iliana Yotova will walk into a polling station on October 25 as the only candidate who already holds the job everyone else is competing for. She became Bulgaria's head of state on January 23, 2026, after Rumen Radev gave up the presidency to found Progressive Bulgaria and run for parliament, which made her both the first woman and the first vice president to occupy the office. Nine months later she is asking voters for a five-year term of her own beginning in January 2027 and every major pollster expects her to finish first by a wide margin....",
+      "date": "2026-10-19T13:16:00.000Z",
+      "url": "https://www.novinite.com/view_news.php?id=241127",
+      "source": "novinite",
+      "sourceName": "Novinite.com",
+      "categories": [
+        "Politics"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:28.853Z",
       "backfilled": true
     },
     {
@@ -817,6 +1969,22 @@
       "backfilled": true
     },
     {
+      "slug": "sofija-2026-10-19-sega-s-d-e-os-den-za-60-000-lv-zaradi-nezakonna-9f20d9",
+      "title": "Съд е осъден за 60 000 лв. заради незаконна конфискация",
+      "summary": "",
+      "date": "2026-10-19T12:51:21.000Z",
+      "url": "https://www.segabg.com/hot/category-bulgaria/sud-e-osuden-za-60-000-lv-zaradi-nezakonna-konfiskaciya",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "България"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
+      "backfilled": true
+    },
+    {
       "slug": "sofija-2026-10-19-dnevnikbg-globalnata-inflaci-pri-hranitelnite-749051",
       "title": "Глобалната инфлация при хранителните продукти ще се ускори",
       "summary": "Мухамад Ясин, 63-годишният паркинг служител в центъра на Джакарта, споделя, че е намалил броя на храненията си заради растящите цени на хранителните продукти, които са станали непосилни за него. \"Преди можех да си купя ориз, темпе и...",
@@ -830,6 +1998,22 @@
       "author": "Ройтерс",
       "theme": "ekonomija",
       "addedAt": "2026-10-19T20:55:42.671Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-sega-belgi-s-zdava-nova-zandarmeri-zaradi-2264f0",
+      "title": "Белгия създава нова жандармерия заради насилие по време на протести",
+      "summary": "",
+      "date": "2026-10-19T12:48:00.000Z",
+      "url": "https://www.segabg.com/category-foreign-country/belgiya-suzdava-nova-zhandarmeriya-zaradi-nasilie-po-vreme-na-protesti",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Чужбина"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
       "backfilled": true
     },
     {
@@ -922,6 +2106,22 @@
       "backfilled": true
     },
     {
+      "slug": "sofija-2026-10-19-novinite-14-year-old-stabs-classmate-during-fight-at-aadaf8",
+      "title": "14-Year-Old Stabs Classmate During Fight at Karnobat School",
+      "summary": "A 14-year-old student stabbed a classmate in the back during a fight at the Vocational High School of Agriculture in Karnobat this morning, BNT reported, adding that the injured boy’s life was not in danger. The two teenagers are classmates. Preliminary information indicates that tensions developed between them the previous day before their disagreement escalated into a physical confrontation on the school grounds....",
+      "date": "2026-10-19T12:02:00.000Z",
+      "url": "https://www.novinite.com/view_news.php?id=241135",
+      "source": "novinite",
+      "sourceName": "Novinite.com",
+      "categories": [
+        "Crime"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:13:28.854Z",
+      "backfilled": true
+    },
+    {
       "slug": "sofija-2026-10-19-mediapool-avstrali-ska-deputatka-e-v-kriticno-s-sto-8347e6",
       "title": "Австралийска депутатка е в критично състояние след предполагаемо умишлено блъскане с автомобил",
       "summary": "Австралийската независима депутатка Хелън Хейнс, на 65 години, е в критично състояние, след като е била блъсната от автомобил пред офиса ѝ в град Уангарата, щата Виктория, съобщиха премиерът Антъни Албанезе и полицията, цитирани от Асошиейтед прес. По данни на полицията 43-годишен мъж днес е блъснал Хейнс с бял джип „Тойота Ленд Крузър“. Депутатката е откарана в болница с тежки наранявания, особено в долната част на тялото…",
@@ -938,6 +2138,38 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:55:39.366Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-novinite-bulgaria-seeks-european-arrest-warrants-a9daf6",
+      "title": "Bulgaria Seeks European Arrest Warrants Over Starlink Antenna Fire",
+      "summary": "The Sofia City Court is due to consider a prosecution request for European Arrest Warrants for two people suspected of setting fire to 11 antennas used to communicate with the Starlink satellite system on the evening of October 9, the court said. The incident was first made public a week ago by Ivaylo Mirchev, co-chair of the Yes, Bulgaria party. Two days later, President Rumen Radev urged State Agency for National Security (SANS) head Plamen Tonchev, from the parliamentary rostrum, to withhold details of the ongoing investigation. ...",
+      "date": "2026-10-19T12:00:00.000Z",
+      "url": "https://www.novinite.com/view_news.php?id=241134",
+      "source": "novinite",
+      "sourceName": "Novinite.com",
+      "categories": [
+        "Crime"
+      ],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:13:28.854Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-sega-sofi-ima-nov-zamestnik-kmet-po-transporta-91d5be",
+      "title": "София има нов заместник-кмет по транспорта",
+      "summary": "",
+      "date": "2026-10-19T11:46:33.000Z",
+      "url": "https://www.segabg.com/hot/category-bulgaria/sofiya-ima-nov-zamestnik-kmet-po-transporta",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "България"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
       "backfilled": true
     },
     {
@@ -973,6 +2205,22 @@
       "author": "",
       "theme": "sigurnost",
       "addedAt": "2026-10-19T20:55:39.366Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-sega-evropa-ogranici-kita-skite-hibridi-do-350-47d769",
+      "title": "Европа ограничи китайските хибриди до 350 000 на година",
+      "summary": "",
+      "date": "2026-10-19T11:31:00.000Z",
+      "url": "https://www.segabg.com/category-cars/evropa-ogranichi-kitayskite-hibridi-350-000-na-godina",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Автомобили"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
       "backfilled": true
     },
     {
@@ -1064,6 +2312,102 @@
       "backfilled": true
     },
     {
+      "slug": "sofija-2026-10-19-novinite-bulgaria-and-hungary-pledge-closer-economic-acdafb",
+      "title": "Bulgaria and Hungary Pledge Closer Economic and Strategic Ties",
+      "summary": "Bulgaria and Hungary will seek closer economic cooperation and work toward greater stability and prosperity in Europe, Bulgarian Foreign Minister Velislava Petrova said during the opening of an exhibition at the Foreign Ministry alongside Hungarian Deputy Prime Minister and Foreign Minister Anita Orbán. The exhibition traces the history of the Lajos Kossuth House-Museum in Shumen and was inaugurated by the two ministers to mark Bulgarian-Hungarian Friendship Day on October 19. This year marks the 10th anniversary of the date being established as a joint holiday for the two countries. ...",
+      "date": "2026-10-19T11:00:00.000Z",
+      "url": "https://www.novinite.com/view_news.php?id=241133",
+      "source": "novinite",
+      "sourceName": "Novinite.com",
+      "categories": [
+        "Diplomacy"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:13:28.854Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-sega-klimentina-f-rcova-pres-zdava-na-scenata-1cb903",
+      "title": "Климентина Фърцова пресъздава на сцената ролята на Ваня Цветкова в \"Бариерата\"",
+      "summary": "",
+      "date": "2026-10-19T10:55:14.000Z",
+      "url": "https://www.segabg.com/category-culture/klimentina-furcova-presuzdava-na-scenata-rolyata-na-vanya-cvetkova-barierata",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Култура"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-sega-nova-v-lna-bombeni-zaplahi-zal-stranata-b7f3b2",
+      "title": "Нова вълна бомбени заплахи заля страната",
+      "summary": "",
+      "date": "2026-10-19T10:53:18.000Z",
+      "url": "https://www.segabg.com/hot/category-bulgaria/nova-vulna-bombeni-zaplahi-zalya-stranata",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "България"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-novinite-sofia-institutions-face-multiple-explosive-abdaf9",
+      "title": "Sofia Institutions Face Multiple Explosive Device Reports",
+      "summary": "Visitors and employees were evacuated from Bulgaria’s National Health Insurance Fund (NHIF) in Sofia after a report of an explosive device, while police confirmed they were responding to bomb threats against multiple institutions in the capital. The Sofia Directorate of the Interior (SDVR) told BTA that officers were following established procedures after receiving the report concerning the Health Insurance Fund. The Interior Ministry said it had also received reports of explosive devices at other locations in Sofia but did not identify the sites or disclose how many threats had been reported. ...",
+      "date": "2026-10-19T10:33:07.000Z",
+      "url": "https://www.novinite.com/view_news.php?id=241132",
+      "source": "novinite",
+      "sourceName": "Novinite.com",
+      "categories": [
+        "Incidents"
+      ],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:13:28.854Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-sega-turci-razdel-korabite-na-rusi-i-ukra-na-v-82afe6",
+      "title": "Турция разделя корабите на Русия и Украйна в Черно море",
+      "summary": "",
+      "date": "2026-10-19T10:30:49.000Z",
+      "url": "https://www.segabg.com/hot/category-foreign-country/turciya-razdelya-korabite-na-rusiya-i-ukrayna-cherno-more",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Тема на деня:Атаки в Черно море"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-novinite-bulgarian-authorities-seizes-nearly-39-tons-aedafe",
+      "title": "Bulgarian Authorities Seizes Nearly 39 Tons of Nitrous Oxide in Sofia",
+      "summary": "Nearly 38.76 tons of nitrous oxide were seized from three warehouses at the same address in Sofia during joint inspections by the Bulgarian Food Safety Agency and customs officials, the agency said. The operation was conducted by inspectors from the Sofia Regional Food Safety Directorate and representatives of the Sofia Customs Territorial Directorate following a delivery of nitrous oxide, also known as laughing gas. ...",
+      "date": "2026-10-19T10:28:22.000Z",
+      "url": "https://www.novinite.com/view_news.php?id=241131",
+      "source": "novinite",
+      "sourceName": "Novinite.com",
+      "categories": [
+        "Crime"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:13:28.854Z",
+      "backfilled": true
+    },
+    {
       "slug": "sofija-2026-10-19-mediapool-nova-v-lna-ot-udari-po-ukrainskata-4086ad",
       "title": "Нова вълна от удари по украинската енергетика, Украйна отново не е била предупредена от САЩ",
       "summary": "Украйна \"отново изобщо не беше предупредена\" от съюзниците си, преди Русия да нанесе удари с балистични ракети през изминалата нощ, заяви украинският президент в социалната мрежа Екс, цитиран от Франс прес. \"През нощта беше предприета поредната руска атака с балистични ракети, която премина на няколко вълни и отново изобщо не бяхме предупредени от нашите партньори\", заяви Зеленски, като уточни, че Русия е изстреляла 16 балистични ракети срещу Киев и Киевска област. \"Руснаците атакуваха и с над 200 дрона от различни типове, включително и \"Шахед\" с реактивни двигатели, като атаките бяха насочени от Харковска и Днепропетровска област до Волинска, Ривненска и Одеска област…",
@@ -1080,6 +2424,70 @@
       "author": "",
       "theme": "energija",
       "addedAt": "2026-10-19T20:55:39.366Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-sega-zadava-se-nov-protest-sre-u-otova-i-radev-490fc9",
+      "title": "Задава се нов протест срещу Йотова и Радев",
+      "summary": "",
+      "date": "2026-10-19T10:22:00.000Z",
+      "url": "https://www.segabg.com/hot/category-bulgaria/zadava-se-nov-protest-sreshtu-yotova-i-radev",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "България"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-sega-korabi-otkazvat-da-tovar-t-z-rno-ot-b-03fcf1",
+      "title": "Кораби отказват да товарят зърно от българските пристанища",
+      "summary": "",
+      "date": "2026-10-19T10:12:21.000Z",
+      "url": "https://www.segabg.com/hot/category-economy/korabi-otkazvat-da-tovaryat-zurno-bulgarskite-pristanishta",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Тема на деня:Атаки в Черно море"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-novinite-bulgaria-targets-3-deficit-as-2027-budget-addafd",
+      "title": "Bulgaria Targets 3% Deficit as 2027 Budget Debate Exposes Divisions",
+      "summary": "Bulgaria will seek to keep its budget deficit within the 3% limit, Deputy Prime Minister Ivo Hristov said on BNT, adding that the final budget figures would depend on parliamentary discussions and subsequent revisions. Hristov also discussed plans to raise pensions by 8%, public sector salaries by 5%, and teachers’ pay. He argued that the increases should prioritize those most affected by rising costs rather than apply the same approach across the board. ...",
+      "date": "2026-10-19T10:00:00.000Z",
+      "url": "https://www.novinite.com/view_news.php?id=241130",
+      "source": "novinite",
+      "sourceName": "Novinite.com",
+      "categories": [
+        "Finance"
+      ],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:13:28.854Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-sega-vsicki-nasi-tenisisti-v-top-1000-57a495",
+      "title": "Всички наши тенисисти в Топ 1000 прогресират",
+      "summary": "",
+      "date": "2026-10-19T09:48:28.000Z",
+      "url": "https://www.segabg.com/category-sport/vsichki-nashi-tenisisti-top-1000-progresirat",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Спорт"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
       "backfilled": true
     },
     {
@@ -1102,6 +2510,38 @@
       "backfilled": true
     },
     {
+      "slug": "sofija-2026-10-19-sega-klan-t-kardasi-n-se-obzavede-i-s-s-sutien-1b3c24",
+      "title": "Кланът Кардашиян се обзаведе и със сутиен за $ 50 млн.",
+      "summary": "",
+      "date": "2026-10-19T09:25:04.000Z",
+      "url": "https://www.segabg.com/category-culture/klanut-kardashiyan-se-obzavede-i-sutien-za-50-mln",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Култура"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-novinite-bulgaria-s-yotova-backs-eu-finding-on-aadd36",
+      "title": "Bulgaria's Yotova Backs EU Finding on Russia’s Role in Black Sea Strikes",
+      "summary": "President Iliana Yotova told Nova TV that she accepts the European Council’s conclusion that Russia is responsible for strikes in the Black Sea, but said Bulgaria must await evidence from the investigation before taking diplomatic action, while stressing that the incidents do not constitute a threat to national security. “There are certainly risks and threats to safety in the Black Sea. I cannot speak of a threat to national security,” Yotova said. ...",
+      "date": "2026-10-19T09:21:37.000Z",
+      "url": "https://www.novinite.com/view_news.php?id=241129",
+      "source": "novinite",
+      "sourceName": "Novinite.com",
+      "categories": [
+        "Politics"
+      ],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:13:28.854Z",
+      "backfilled": true
+    },
+    {
       "slug": "sofija-2026-10-19-capital-kaufland-pravi-sledva-a-kracka-v-razvitieto-704fd1",
       "title": "Kaufland прави следваща крачка в развитието си",
       "summary": "Визитка \"Kaufland България\" навлиза в нов етап от развитието си с амбиция за ускорена модернизация, дигитализация и иновации. От 1 октомври 2026 г. начело на компанията e Михаил Петров - мениджър с богат международен опит, над 20 години в структурите на Kaufland и групата от дружества Schwarz и силен фокус върху технологиите и развитието на хората. Като създател и дългогодишен ръководител последователно на Kaufland Service и \"Schwarz Digits България\" той има ключова роля в развитието на нови ...",
@@ -1115,6 +2555,38 @@
       "author": "Kaufland",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:54:55.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-sega-putin-predlaga-tristranna-sre-a-s-tr-mp-i-9c188d",
+      "title": "Путин предлага тристранна среща с Тръмп и Си Дзинпин",
+      "summary": "",
+      "date": "2026-10-19T09:15:50.000Z",
+      "url": "https://www.segabg.com/hot/category-foreign-country/putin-predlaga-tristranna-sreshta-trump-i-si-dzinpin",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Чужбина"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-novinite-bulgarians-waste-96-kg-of-food-per-person-2ad5b1",
+      "title": "Bulgarians Waste 96 Kg of Food per Person Each Year, Study Finds",
+      "summary": "Bulgarians discard an average of 96 kilograms of food per person annually, while half of households threw away food in the month before a national survey, according to research by Ipsos commissioned by the Bulgarian Food Bank and a major retail chain. The study, the first national survey to examine the scale of food waste in Bulgaria, found that one-quarter of households dispose of food at least once a month. Eurostat figures put Bulgaria’s annual average at 96 kg per person, compared with 129 kg across Europe. ...",
+      "date": "2026-10-19T09:02:00.000Z",
+      "url": "https://www.novinite.com/view_news.php?id=241119",
+      "source": "novinite",
+      "sourceName": "Novinite.com",
+      "categories": [
+        "Environment"
+      ],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:13:28.854Z",
       "backfilled": true
     },
     {
@@ -1134,6 +2606,22 @@
       "backfilled": true
     },
     {
+      "slug": "sofija-2026-10-19-sega-putin-napravi-5-promeni-v-ruskoto-c86684",
+      "title": "Путин направи 5 промени в руското правителство",
+      "summary": "",
+      "date": "2026-10-19T08:55:44.000Z",
+      "url": "https://www.segabg.com/category-foreign-country/putin-napravi-5-promeni-ruskoto-pravitelstvo",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Чужбина"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:13:22.441Z",
+      "backfilled": true
+    },
+    {
       "slug": "sofija-2026-10-19-capital-a1-group-b-de-eto-na-ict-biznesa-e-v-c19246",
       "title": "A1 Group: Бъдещето на ICT бизнеса е в суверенните AI агенти",
       "summary": "Брутните приходи от информационни и комуникационни технологии (ICT) на A1 Group са се удвоили от 285 милиона евро през 2021 г. до 573 милиона евро през 2025 г., отбелязвайки средногодишен темп на растеж (CAGR) 19% и 20% ръст само за последната година. С общи приходи 5.58 милиарда евро в края на 2025 г., телеком групата използва международния форум A1 Group ICT Summit 2026 във Виена, за да очертае следващата стратегическа фаза - преход от експериментално ползване на изкуствен интелект (AI) към ма...",
@@ -1147,6 +2635,86 @@
       "author": "Владимир Владков",
       "theme": "ai",
       "addedAt": "2026-10-19T20:54:55.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-novinite-france-s-week-of-fire-what-the-evidence-abdd38",
+      "title": "France’s Week of Fire: What the Evidence Says About Who Is Behind the Violence",
+      "summary": "A fire destroyed much of the 143-year-old city hall in Limoges on Saturday, October 17, during the largest day of protest France has seen in the current wave of unrest. The city’s mayor, Guillaume Guérin, described “a clear, premeditated intention to burn down the town hall,” and the prefect, Maurice Barate, said the roof had collapsed onto the lower floors. By Sunday evening, the Interior Ministry put the national toll at 2,397 arrests and 997 injured police officers and gendarmes, seven of them seriously. ...",
+      "date": "2026-10-19T08:17:12.000Z",
+      "url": "https://www.novinite.com/view_news.php?id=241128",
+      "source": "novinite",
+      "sourceName": "Novinite.com",
+      "categories": [
+        "EU"
+      ],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:13:28.855Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-sega-zaradi-vo-nata-cernomorskata-riba-posk-pva-8ca5d9",
+      "title": "Заради войната черноморската риба поскъпва",
+      "summary": "",
+      "date": "2026-10-19T07:45:48.000Z",
+      "url": "https://www.segabg.com/category-economy/zaradi-voynata-chernomorskata-riba-poskupva",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Тема на деня:Атаки в Черно море"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:13:22.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-novinite-st-john-of-rila-celebrated-as-bulgaria-s-b9dd4e",
+      "title": "St. John of Rila Celebrated as Bulgaria's Patron and Physicians' Protector",
+      "summary": "The Bulgarian Orthodox Church marks October 19 as the feast day of St. John of Rila the Wonderworker, the country's most revered saint and patron, while Bulgaria also celebrates the Day of the Bulgarian Physician in his honor. St....",
+      "date": "2026-10-19T07:39:37.000Z",
+      "url": "https://www.novinite.com/view_news.php?id=241126",
+      "source": "novinite",
+      "sourceName": "Novinite.com",
+      "categories": [
+        "Culture"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:13:28.855Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-novinite-putin-proposes-ukraine-talks-with-trump-and-b6dd49",
+      "title": "Putin Proposes Ukraine Talks With Trump and Xi in China",
+      "summary": "Russian leader Vladimir Putin has proposed a meeting with U.S. President Donald Trump and Chinese President Xi Jinping next month to discuss Ukraine and seek an end to the war on terms favorable to Moscow, The Wall Street Journal reported, citing people familiar with the discussions. ...",
+      "date": "2026-10-19T07:33:11.000Z",
+      "url": "https://www.novinite.com/view_news.php?id=241125",
+      "source": "novinite",
+      "sourceName": "Novinite.com",
+      "categories": [
+        "Ukraine"
+      ],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:13:28.855Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-novinite-bulgarian-mig-29s-escort-tel-aviv-vienna-b7dd4b",
+      "title": "Bulgarian MiG-29s Escort Tel Aviv-Vienna Flight After Bomb Threat",
+      "summary": "An Austrian Airlines flight from Tel Aviv to Vienna made an emergency landing at Sofia Airport after the crew reported a bomb threat while flying near the Bulgarian-Romanian border, the Bulgarian Ministry of Transport said, with the aircraft departing again shortly before 3 a.m., BNT reported. ...",
+      "date": "2026-10-19T07:28:44.000Z",
+      "url": "https://www.novinite.com/view_news.php?id=241124",
+      "source": "novinite",
+      "sourceName": "Novinite.com",
+      "categories": [
+        "Incidents"
+      ],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:13:28.855Z",
       "backfilled": true
     },
     {
@@ -1268,6 +2836,22 @@
       "backfilled": true
     },
     {
+      "slug": "sofija-2026-10-19-sega-mok-zakriva-komisiite-s-b-lgarski-clenove-1caaa8",
+      "title": "МОК закрива комисиите с български членове",
+      "summary": "",
+      "date": "2026-10-19T05:15:21.000Z",
+      "url": "https://www.segabg.com/hot/category-sport/mok-zakriva-komisiite-bulgarski-chlenove",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Спорт"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
+      "backfilled": true
+    },
+    {
       "slug": "sofija-2026-10-19-capital-nap-prihodite-na-vsicki-kompanii-v-b-lgari-c8a038",
       "title": "НАП: Приходите на всички компании в България се увеличават с 9% до 348 млрд. евро",
       "summary": "Финансовите резултати на всички фирми в България продължават да подобряват рекорди и през 2025 г. През изминалата година приходите на работещите компании в страната са се увеличили с 8.9% и достигат 347.5 млрд. евро, показва справка по запитване на \"Капитал\". Резултатът е постигнат от общо 417 хил. дружества, които са били активни в страната, според данните от данъчните декларации. Подобрението е малко по-високо в сравнение с отчетеното от 100-те най-големи компании, подреждани от \"Капитал\", при...",
@@ -1348,6 +2932,22 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:55:39.366Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-sega-makron-otkaza-ostavkata-na-v-tresni-minist-10a168",
+      "title": "Макрон отказа оставката на вътрешния министър",
+      "summary": "",
+      "date": "2026-10-19T04:21:28.000Z",
+      "url": "https://www.segabg.com/hot/category-foreign-country/makron-otkaza-ostavkata-na-vutreshniya-ministur",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Чужбина"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
       "backfilled": true
     },
     {
@@ -1438,6 +3038,38 @@
       "backfilled": true
     },
     {
+      "slug": "sofija-2026-10-19-sega-t-rsi-se-siva-s-sest-r-ce-za-disciplinata-v-4c4200",
+      "title": "Търси се Шива с шест ръце за дисциплината в училище",
+      "summary": "",
+      "date": "2026-10-19T03:30:48.000Z",
+      "url": "https://www.segabg.com/category-observer/tursi-se-shiva-shest-ruce-za-disciplinata-uchilishte",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Наблюдател"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.440Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-sega-kabinet-t-pravi-b-lgarska-sistema-za-naucno-c52248",
+      "title": "Кабинетът прави българска система за научно цитиране",
+      "summary": "",
+      "date": "2026-10-19T03:15:14.000Z",
+      "url": "https://www.segabg.com/hot/category-education/kabinetut-pravi-bulgarska-sistema-za-nauchno-citirane",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Просвета"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
       "slug": "sofija-2026-10-19-capital-biznes-zakuska-sa-iskat-ruski-gaz-obratno-v-5afac7",
       "title": "Бизнес закуска: 🥐САЩ искат руския газ обратно в Европа; България чака самолети на НАТО над Черно море; Гневни млади европейци",
       "summary": "Това е нюзлетърът \"Бизнес закуска\", който абонатите на \"Капитал\" получават всяка сутрин в електронните си пощи. В него дежурният редактор събира всичко важно, така че с един поглед да сте наясно какво се случва. Може да се абонирате от тук. България очаква да получи патрулна авиация, антидрон системи и въздушно наблюдение от НАТО заради ескалиращите случаи с ударени от дронове търговски кораби в Черно море, стана ясно от медийни участия на военния министър Димитър Стоянов през уикенда. До ...",
@@ -1451,6 +3083,86 @@
       "author": "Ани Коджаиванова",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:54:55.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-sega-sport-t-po-televizi-ta-19-oktomvri-0a2536",
+      "title": "Спортът по телевизията - 19 октомври",
+      "summary": "",
+      "date": "2026-10-19T03:06:06.000Z",
+      "url": "https://www.segabg.com/category-sport/sportut-po-televiziyata-19-oktomvri",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Спорт"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-sega-studenata-vo-na-za-pavlikovski-prod-lzava-aa07b6",
+      "title": "Студената война за Павликовски продължава",
+      "summary": "",
+      "date": "2026-10-18T19:55:47.000Z",
+      "url": "https://www.segabg.com/category-movie-release/studenata-voyna-za-pavlikovski-produlzhava",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Кинопремиера"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:13:22.443Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-sega-levski-sofi-izravni-rekorda-s-4-ta-e95879",
+      "title": "\"Левски София\" изравни рекорда с 4-та Суперкупа",
+      "summary": "",
+      "date": "2026-10-18T19:31:30.000Z",
+      "url": "https://www.segabg.com/category-sport/levski-sofiya-izravni-rekorda-4-ta-superkupa",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Спорт"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-sega-dara-i-lu-del-oz-e-pe-t-zaedno-na-detskata-62819f",
+      "title": "Дара и Лу Дельоз ще пеят заедно на детската \"Евровизия\"",
+      "summary": "",
+      "date": "2026-10-18T17:32:05.000Z",
+      "url": "https://www.segabg.com/category-culture/dara-i-lu-deloz-shte-peyat-zaedno-na-detskata-evroviziya",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Култура"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-sega-snar-d-popadnal-v-gazoprovod-na-kanadska-9d6c44",
+      "title": "Снаряд попаднал в газопровод на канадска военна база",
+      "summary": "",
+      "date": "2026-10-18T17:27:37.000Z",
+      "url": "https://www.segabg.com/hot/category-foreign-country/snaryad-popadnal-gazoprovod-na-kanadska-voenna-baza",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Чужбина"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
       "backfilled": true
     },
     {
@@ -1492,6 +3204,22 @@
       "backfilled": true
     },
     {
+      "slug": "sofija-2026-10-18-sega-levski-se-klasira-po-leko-ot-cska-za-1-8-f93e71",
+      "title": "\"Левски\" се класира по-леко от ЦСКА за 1/8-финалите за Купата",
+      "summary": "",
+      "date": "2026-10-18T17:00:49.000Z",
+      "url": "https://www.segabg.com/hot/category-sport/levski-se-klasira-po-leko-cska-za-18-finalite-za-kupata",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Спорт"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
+      "backfilled": true
+    },
+    {
       "slug": "sofija-2026-10-18-mediapool-zelenski-sa-v-zobnoviha-obmena-na-3dc24c",
       "title": "Зеленски: САЩ възобновиха обмена на разузнавателна информация с Украйна",
       "summary": "Съединените щати възобновиха споделянето на разузнавателна информация с Украйна след кратко прекъсване, съобщи украинският президент Володимир Зеленски, цитиран от Bloomberg. Макар да не предостави конкретни подробности, украинският лидер спомена, че следващата седмица може да се състои среща с представители на администрацията на Доналд Тръмп, на която да се обсъди прекратяването на войната.Зеленски заяви, че ще използва видеоразговор с американските специални пратеници Стив Уиткоф и Джаред Къшнър, за да обсъди възможната дата и място на срещата. Той допълни, че преговарящите екипи на двете страни поддържат \"практически непрекъсната връзка\".Зеленски отбеляза, че в продължение на три поредни…",
@@ -1508,6 +3236,22 @@
       "author": "",
       "theme": "rat",
       "addedAt": "2026-10-19T20:55:39.366Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-sega-sofi-blus-speceli-20-i-nacionalen-trofe-64ecee",
+      "title": "\"София Блус\" спечели 20-и национален трофей",
+      "summary": "",
+      "date": "2026-10-18T15:44:38.000Z",
+      "url": "https://www.segabg.com/category-sport/sofiya-blus-specheli-20-i-nacionalen-trofey",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Спорт"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
       "backfilled": true
     },
     {
@@ -1549,6 +3293,22 @@
       "backfilled": true
     },
     {
+      "slug": "sofija-2026-10-18-sega-medni-t-gigant-kra-pirdop-poluci-b-rza-3b551e",
+      "title": "Медният гигант край Пирдоп получи \"бърза писта\" от ЕК",
+      "summary": "",
+      "date": "2026-10-18T15:07:51.000Z",
+      "url": "https://www.segabg.com/hot/category-economy/medniyat-gigant-kray-pirdop-poluchi-burza-pista-ek",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Икономика"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
+      "backfilled": true
+    },
+    {
       "slug": "sofija-2026-10-18-mediapool-nad-1600-litra-raki-bez-akciz-sa-zad-rzani-7faf79",
       "title": "Над 1600 литра ракия без акциз са задържани",
       "summary": "Митнически служители задържаха 1606 литра високоградусов алкохол без доказан произход и качество, както и без български бандерол и документи по Закона за акцизите и данъчните складове. Това е станало при две отделни проверки на територията на „Митница Варна“, съобщиха от от Агенция „Митници“.В периода 14 - 17 октомври митнически мобилни екипи на Централно митническо управление са извършили засилени проверки в района на „Митница Варна“, включително областите Варна и Шумен. Целта е била установяване на нарушения на акцизното законодателство при съхранение, производство и търговия с алкохолни продукти.Извършени са общо четири проверки в различни обекти - данъчни складове, туристически обекти и…",
@@ -1568,6 +3328,22 @@
       "backfilled": true
     },
     {
+      "slug": "sofija-2026-10-18-sega-ispanec-zasluzi-p-rvata-si-mast-rs-titla-na-002541",
+      "title": "Испанец заслужи първата си \"Мастърс\" титла на 27",
+      "summary": "",
+      "date": "2026-10-18T14:20:30.000Z",
+      "url": "https://www.segabg.com/category-sport/ispanec-zasluzhi-purvata-si-masturs-titla-na-27",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Спорт"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
+      "backfilled": true
+    },
+    {
       "slug": "sofija-2026-10-18-capital-reakci-agresi-ta-ne-e-v-pros-na-gledna-02db6a",
       "title": "Реакция | Агресията не е въпрос на гледна точка",
       "summary": "[[img:4967972]] Стоян Мадин е асистент в Юридическия факултет на СУ \"Климент Охридски\" в катедра \"Международно право и отношения\". Адвокат, бивш прокурор и съдия. В интервю пред \"Евронюз България\" Антон Кутев от \"Прогресивна България\" сравни руската инвазия в Украйна с Руско-турската война от 1877-1878 г. Според него както Русия е била агресор за Османската империя, но освободител за българите, така днес тя може да бъде възприемана като агресор в Украйна, но като \"освободител\" от руснаците...",
@@ -1581,6 +3357,22 @@
       "author": "Стоян Мадин",
       "theme": "rat",
       "addedAt": "2026-10-19T20:54:55.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-sega-firmi-e-polucat-do-15-000-evro-za-obucenie-440fac",
+      "title": "Фирми ще получат до 15 000 евро за обучение на служителите",
+      "summary": "",
+      "date": "2026-10-18T13:13:26.000Z",
+      "url": "https://www.segabg.com/hot/category-economy/firmi-shte-poluchat-15-000-evro-za-obuchenie-na-sluzhitelite",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Икономика"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
       "backfilled": true
     },
     {
@@ -1695,6 +3487,70 @@
       "backfilled": true
     },
     {
+      "slug": "sofija-2026-10-18-novinite-black-sea-attacks-put-bulgarian-grain-b5dd48",
+      "title": "Black Sea Attacks Put Bulgarian Grain Exports and Tourism at Risk",
+      "summary": "Drone attacks on commercial vessels in the Black Sea are threatening Bulgaria’s exports and tourism, with financier Nikola Yankov warning on bTV that a lack of insurance could effectively shut the ports of Varna and Burgas, while grain producers say five million tonnes of wheat are awaiting export with no viable alternative to maritime transport. Yankov raised the risks to the economy during a discussion on bTV with Pavlina Ilieva of the Future for Tourism association, warning that uncertainty over shipping security was already affecting the insurance market and early bookings for next summer. Some insurers are increasing premiums, while others are declining to cover vessels operating in…",
+      "date": "2026-10-18T09:03:00.000Z",
+      "url": "https://www.novinite.com/view_news.php?id=241122",
+      "source": "novinite",
+      "sourceName": "Novinite.com",
+      "categories": [
+        "Defense"
+      ],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:13:28.855Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-novinite-bulgarian-power-exports-double-as-battery-29d5b0",
+      "title": "Bulgarian Power Exports Double as Battery Storage Expands",
+      "summary": "Bulgaria’s energy storage capacity has reached 6 gigawatts this year, approaching the country’s electricity demand of 7.4 GW and reshaping domestic and regional power markets, Greek outlet Newsit reported. The rapid expansion of battery storage is already affecting wholesale electricity prices and cross-border trade....",
+      "date": "2026-10-18T08:52:00.000Z",
+      "url": "https://www.novinite.com/view_news.php?id=241118",
+      "source": "novinite",
+      "sourceName": "Novinite.com",
+      "categories": [
+        "Energy"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:28.855Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-novinite-romania-downs-two-russian-type-geran-drones-b2dd43",
+      "title": "Romania Downs Two Russian-Type Geran Drones Over the Black Sea",
+      "summary": "Romanian F-16 fighter jets shot down two jet-powered Geran-series strike drones over the country's territorial waters in the Black Sea on October 17, with the Romanian Ministry of National Defense identifying the aircraft as belonging to a type used by Russia in the war in Ukraine. The ministry said the drones were jet-powered models from the Geran family, the designation Russia uses for Iranian Shahed kamikaze drones. According to BGNES, two separate aircraft destroyed the drones within four minutes of each other. ...",
+      "date": "2026-10-18T08:49:16.000Z",
+      "url": "https://www.novinite.com/view_news.php?id=241121",
+      "source": "novinite",
+      "sourceName": "Novinite.com",
+      "categories": [
+        "Southeast Europe"
+      ],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:13:28.855Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-novinite-bulgaria-s-current-account-deficit-hits-28d5ae",
+      "title": "Bulgaria’s Current Account Deficit Hits Highest Level Since 2009, BNB Says",
+      "summary": "The Bulgarian National Bank (BNB) has reported that the country's current account deficit reached 8.1% of gross domestic product over the 12 months to July, its highest level since 2009, while forecasting economic growth of 2.8% for 2026. ...",
+      "date": "2026-10-18T08:39:00.000Z",
+      "url": "https://www.novinite.com/view_news.php?id=241117",
+      "source": "novinite",
+      "sourceName": "Novinite.com",
+      "categories": [
+        "Finance"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:28.855Z",
+      "backfilled": true
+    },
+    {
       "slug": "sofija-2026-10-18-capital-fotogaleri-masovite-protesti-v-v-franci-b805bd",
       "title": "Фотогалерия: Масовите протести във Франция прераснаха в насилие и безредици",
       "summary": "",
@@ -1797,6 +3653,22 @@
       "backfilled": true
     },
     {
+      "slug": "sofija-2026-10-18-sega-bo-nata-v-bliz-i-izto-moze-da-c-ca-intepnet-bd0e4e",
+      "title": "Boйнaтa в Близĸия Изтoĸ мoжe дa \"cĸъca\" интepнeт",
+      "summary": "",
+      "date": "2026-10-18T06:22:14.000Z",
+      "url": "https://www.segabg.com/hot/category-technologies/boynata-blizkiya-iztok-mozhe-da-ckuca-intepnet",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Наука и технологии"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.443Z",
+      "backfilled": true
+    },
+    {
       "slug": "sofija-2026-10-18-mediapool-k-stendil-otnovo-ima-lekoatleticeska-pista-1157f0",
       "title": "Кюстендил отново има лекоатлетическа писта след 25 години",
       "summary": "„Доживяхме Кюстендил отново да има лекоатлетическа писта на стадион „Осогово“ след 25 години“ - така се поздравяваха дошлите атлети ветерани на обновения спортен комплекс в града в събота.Изненада за тях беше обръщането на секторите за хвърлянията, водното препятствие и 100-метровата дистанция. „Да ме бяха питали, да им обясня, къде трябва да е секторът за хвърляне“, ядосваше се Коце Сотиров - дългогодишен треньор по хвърляния в Кюстендил.Разместването на секторите и особено на класиката в царицата на спортовете - 100 м, беше най-коментираната тема. „Действително много хора ме питаха - защо е така, но това е проектанско решение“, коментира пред Mediapool Васил Гиков, заместник-директор на…",
@@ -1829,6 +3701,22 @@
       "author": "Владимир Владков",
       "theme": "ai",
       "addedAt": "2026-10-19T20:54:55.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-sega-masirana-ataka-s-dronove-nanese-tezki-eti-v-dc3438",
+      "title": "Масирана атака с дронове нанесе тежки щети в Санкт Петербург",
+      "summary": "",
+      "date": "2026-10-18T05:35:54.000Z",
+      "url": "https://www.segabg.com/hot/category-the-war/masirana-ataka-dronove-nanese-tezhki-shteti-sankt-peterburg",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Войната"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
       "backfilled": true
     },
     {
@@ -1886,6 +3774,22 @@
       "backfilled": true
     },
     {
+      "slug": "sofija-2026-10-17-sega-blizki-na-mor-cite-ot-hs-dignity-gi-57fe95",
+      "title": "Близки на моряците от HS Dignity ги издирват в социалните мрежи",
+      "summary": "",
+      "date": "2026-10-17T17:19:00.000Z",
+      "url": "https://www.segabg.com/hot/category-bulgaria/blizki-na-moryacite-hs-dignity-gi-izdirvat-socialnite-mrezhi",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Тема на деня:Атаки в Черно море"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
+      "backfilled": true
+    },
+    {
       "slug": "sofija-2026-10-17-mediapool-bezredici-provokacii-i-stotici-aresti-iz-c-532548",
       "title": "Безредици, провокации и стотици арести из цяла Франция в мащабни протести",
       "summary": "Стотици хора бяха арестувани в цяла Франция в събота следобед в рамките на мащабни протести срещу спада в образователните стандарти и високите разходи за живот. В Париж протестиращи влязоха в сблъсъци с частите за борба с безредиците. В Лион бе подпален туристически офис, а в Лил и Марсилия протестиращи нахлуха в сгради на кметствата…",
@@ -1899,6 +3803,22 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:55:39.367Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-17-sega-rum-nec-otvori-p-rvi-muze-na-sarmite-7f475e",
+      "title": "Румънец отвори първия музей на сармите",
+      "summary": "",
+      "date": "2026-10-17T16:23:07.000Z",
+      "url": "https://www.segabg.com/category-lyubopitno/rumunec-otvori-purviya-muzey-na-sarmite",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Любопитно"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
       "backfilled": true
     },
     {
@@ -1969,6 +3889,22 @@
       "backfilled": true
     },
     {
+      "slug": "sofija-2026-10-17-sega-v-kiev-se-provezda-miting-za-ostavkata-na-388cb3",
+      "title": "В Киев се провежда митинг за оставката на кмета Кличко",
+      "summary": "",
+      "date": "2026-10-17T14:28:52.000Z",
+      "url": "https://www.segabg.com/category-the-war/kiev-se-provezhda-miting-za-ostavkata-na-kmeta-klichko",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Войната"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
+      "backfilled": true
+    },
+    {
       "slug": "sofija-2026-10-17-mediapool-putin-ne-e-z-l-geni-kutev-sravni-vo-nata-v-41e753",
       "title": "Путин не е зъл гений: Кутев сравни войната в Украйна с Руско-турската от 1877-1878",
       "summary": "Депутатът Антон Кутев от \"Прогресивна България\" сравни руската инвазия в Украйна с Руско-турската война от 1877-1878 г. В интервю пред \"Евронюз България\" той каза, че има съображения дали Русия е агресор. „Когато Русия нападна Турция в Руско-турската война тя агресор ли е““, попита той водещата и отговори: „За Турция Русия е била агресор, а за България – освободител…",
@@ -2004,6 +3940,22 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:55:39.368Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-17-sega-117-godisna-albanka-moze-da-e-na-starata-d4ed78",
+      "title": "117-годишна албанка може да е най-старата жена на света",
+      "summary": "",
+      "date": "2026-10-17T11:17:05.000Z",
+      "url": "https://www.segabg.com/category-lyubopitno/117-godishna-albanka-mozhe-da-e-nay-starata-zhena-na-sveta",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Любопитно"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
       "backfilled": true
     },
     {
@@ -2304,6 +4256,38 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T21:04:44.221Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-16-sega-ukra-na-atakuva-kl-covo-predpri-tie-na-c6d889",
+      "title": "Украйна атакува ключово предприятие на \"Газпром\"",
+      "summary": "",
+      "date": "2026-10-16T17:22:55.000Z",
+      "url": "https://www.segabg.com/category-the-war/ukrayna-atakuva-klyuchovo-predpriyatie-na-gazprom",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Войната"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-16-sega-putin-si-izmisli-novi-grandiozni-pobedi-na-82f90c",
+      "title": "Путин си измисли нови \"грандиозни победи\" на фронта",
+      "summary": "",
+      "date": "2026-10-16T17:10:49.000Z",
+      "url": "https://www.segabg.com/hot/category-the-war/putin-si-izmisli-novi-grandiozni-pobedi-na-fronta",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Войната"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
       "backfilled": true
     },
     {
@@ -2881,6 +4865,518 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T21:04:44.224Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-16-sega-ilon-m-sk-predstavi-let-a-tesla-fb9de4",
+      "title": "Илон Мъск представи летяща Tesla",
+      "summary": "",
+      "date": "2026-10-16T09:50:27.000Z",
+      "url": "https://www.segabg.com/hot/category-cars/ilon-musk-predstavi-letyashta-tesla",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Автомобили"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-16-sega-volkswagen-iztegl-hil-di-elektromobili-19b73d",
+      "title": "Volkswagen изтегля хиляди електромобили",
+      "summary": "",
+      "date": "2026-10-16T07:10:19.000Z",
+      "url": "https://www.segabg.com/hot/category-cars/volkswagen-izteglya-hilyadi-elektromobili",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Автомобили"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-16-sega-nova-seri-kosmarni-razkazi-izleze-na-ve-ot-da2c66",
+      "title": "Нова серия кошмарни разкази излезе наяве от болниците",
+      "summary": "",
+      "date": "2026-10-16T03:58:24.000Z",
+      "url": "https://www.segabg.com/hot/category-zdrave/nova-seriya-koshmarni-razkazi-izleze-nayave-bolnicite",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Здраве"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-16-sega-kogato-dron-udari-kak-d-rzavata-zagl-hva-06c6d3",
+      "title": "Когато дрон удари, как държавата заглъхва",
+      "summary": "",
+      "date": "2026-10-16T03:30:58.000Z",
+      "url": "https://www.segabg.com/category-observer/kogato-dron-udari-kak-durzhavata-zagluhva",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Наблюдател"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.440Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-15-sega-influvak-v-ob-e-n-ma-da-stigne-do-aptekite-3386c0",
+      "title": "\"Инфлувак\" въобще няма да стигне до аптеките",
+      "summary": "",
+      "date": "2026-10-15T08:17:02.000Z",
+      "url": "https://www.segabg.com/hot/category-zdrave/influvak-vuobshte-nyama-da-stigne-aptekite",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Здраве"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-15-sega-netfliks-s-kra-ava-1000-sluziteli-efd2f4",
+      "title": "\"Нетфликс\" съкращава 1000 служители",
+      "summary": "",
+      "date": "2026-10-15T06:33:40.000Z",
+      "url": "https://www.segabg.com/category-media/netfliks-sukrashtava-1000-sluzhiteli",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Медии"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-15-sega-lekari-ob-viha-novite-pravila-za-insulta-za-838a0d",
+      "title": "Лекари обявиха новите правила за инсулта за опасни",
+      "summary": "",
+      "date": "2026-10-15T06:01:37.000Z",
+      "url": "https://www.segabg.com/hot/category-zdrave/lekari-obyaviha-novite-pravila-za-insulta-za-opasni",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Здраве"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-14-sega-telk-na-setne-e-moze-da-se-polucava-onla-n-627f74",
+      "title": "ТЕЛК най-сетне ще може да се получава онлайн",
+      "summary": "",
+      "date": "2026-10-14T11:42:34.000Z",
+      "url": "https://www.segabg.com/hot/category-zdrave/telk-nay-setne-shte-mozhe-da-se-poluchava-onlayn",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Здраве"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-14-sega-b-lgarceta-speceliha-103-medala-po-nauki-7dad87",
+      "title": "Българчета спечелиха 103 медала по науки тази година",
+      "summary": "",
+      "date": "2026-10-14T10:24:37.000Z",
+      "url": "https://www.segabg.com/category-education/bulgarcheta-specheliha-103-medala-po-nauki-tazi-godina",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Просвета"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-14-sega-200-nasi-desni-osiguriha-snimki-na-g-rov-v-b51ec7",
+      "title": "200 \"наши десни\" осигуриха снимки на Гюров в безрадостен град",
+      "summary": "",
+      "date": "2026-10-14T05:31:12.000Z",
+      "url": "https://www.segabg.com/category-observer/200-nashi-desni-osiguriha-snimki-na-gyurov-bezradosten-grad",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Наблюдател"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-14-sega-rusi-zad-rza-ponski-zurnalist-za-spionaz-77f985",
+      "title": "Русия задържа японски журналист за шпионаж",
+      "summary": "",
+      "date": "2026-10-14T04:10:24.000Z",
+      "url": "https://www.segabg.com/category-media/rusiya-zadurzha-yaponski-zhurnalist-za-shpionazh",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Медии"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-13-sega-dva-ruski-sp-tnika-padat-k-m-zem-ta-6b4c16",
+      "title": "Два руски спътника падат към Земята",
+      "summary": "",
+      "date": "2026-10-13T09:05:55.000Z",
+      "url": "https://www.segabg.com/hot/category-technologies/dva-ruski-sputnika-padat-kum-zemyata",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Наука и технологии"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.443Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-12-sega-betonofreni-dobre-dosli-v-z-k-pol-nite-db9df3",
+      "title": "Бетонофрения: Добре дошли в ж.к. \"Поляните\", Синеморец",
+      "summary": "",
+      "date": "2026-10-12T13:20:35.000Z",
+      "url": "https://www.segabg.com/category-observer/betonofreniya-dobre-doshli-zhk-polyanite-sinemorec",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Наблюдател"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-12-sega-su-vdigna-s-25-naema-v-ob-eziti-ta-6be84b",
+      "title": "СУ вдигна с 25% наема в общежитията",
+      "summary": "",
+      "date": "2026-10-12T05:19:37.000Z",
+      "url": "https://www.segabg.com/category-education/su-vdigna-25-naema-obshtezhitiyata",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Просвета"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-12-sega-kak-da-ne-stanem-prodavac-s-visse-2e1cea",
+      "title": "Как да (не) станем продавач с висше",
+      "summary": "",
+      "date": "2026-10-12T03:00:08.000Z",
+      "url": "https://www.segabg.com/category-observer/kak-da-ne-stanem-prodavach-visshe",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Наблюдател"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-10-sega-edna-b-lgarska-nina-roza-ot-kanada-d8b201",
+      "title": "Една българска \"Нина Роза\"... от Канада",
+      "summary": "",
+      "date": "2026-10-10T20:40:00.000Z",
+      "url": "https://www.segabg.com/category-movie-release/edna-bulgarska-nina-roza-kanada",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Кинопремиера"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.443Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-10-sega-v-itali-be-izv-rsena-na-gol-mata-krazba-na-b50f4d",
+      "title": "В Италия бе извършена най-голямата кражба на вино",
+      "summary": "",
+      "date": "2026-10-10T18:53:04.000Z",
+      "url": "https://www.segabg.com/hot/italiya-be-izvurshena-nay-golyamata-krazhba-na-vino",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Любопитно"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-10-sega-26-oktomvri-e-e-neuceben-den-za-vsicki-38cb88",
+      "title": "26 октомври ще е неучебен ден за всички ученици",
+      "summary": "",
+      "date": "2026-10-10T07:42:23.000Z",
+      "url": "https://www.segabg.com/hot/category-education/26-oktomvri-shte-e-neucheben-den-za-vsichki-uchenici",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Просвета"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-10-sega-ii-e-podal-falsiv-signal-za-nerazkrito-ubi-1f66be",
+      "title": "ИИ е подал фалшив сигнал за неразкрито убийство",
+      "summary": "",
+      "date": "2026-10-10T06:20:02.000Z",
+      "url": "https://www.segabg.com/hot/category-technologies/ii-e-podal-falshiv-signal-za-nerazkrito-ubiystvo",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Наука и технологии"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.443Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-09-sega-protivnik-na-diktaturata-na-proletariata-12daea",
+      "title": "Противник на диктатурата на пролетариата става министър след 9.IX.1944 г.",
+      "summary": "",
+      "date": "2026-10-09T11:16:43.000Z",
+      "url": "https://www.segabg.com/category-lyubopitno/protivnik-na-diktaturata-na-proletariata-stava-ministur-sled-9ix1944-g",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Любопитно"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-08-sega-ot-1-noemvri-se-podavat-deklaracii-zivot-za-645ef0",
+      "title": "От 1 ноември се подават декларации \"Живот\" за пенсия в чужбина",
+      "summary": "",
+      "date": "2026-10-08T08:12:48.000Z",
+      "url": "https://www.segabg.com/category-consult/1-noemvri-se-podavat-deklaracii-zhivot-za-pensiya-chuzhbina",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Консулт"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-07-sega-imotni-t-pazar-se-srina-sdelkite-namal-ha-s-8d2394",
+      "title": "Имотният пазар се срина - сделките намаляха с 22% за година",
+      "summary": "",
+      "date": "2026-10-07T03:31:06.000Z",
+      "url": "https://www.segabg.com/hot/imotniyat-pazar-se-srina-sdelkite-namalyaha-22-za-godina",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Имоти"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-02-sega-tom-kruz-potop-va-sveta-v-dig-r-4d8d70",
+      "title": "Том Круз потопява света в \"Дигър\"",
+      "summary": "",
+      "date": "2026-10-02T20:15:33.000Z",
+      "url": "https://www.segabg.com/category-movie-release/tom-kruz-potopyava-sveta-digur",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Кинопремиера"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.443Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-09-30-sega-v-b-lgari-zili-ata-sa-edni-ot-na-bc1414",
+      "title": "В България жилищата са едни от най-пренаселените в ЕС",
+      "summary": "",
+      "date": "2026-09-30T03:04:16.000Z",
+      "url": "https://www.segabg.com/hot/bulgariya-zhilishtata-sa-edni-nay-prenaselenite-es",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Имоти"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-09-29-sega-nevalidna-diploma-ot-medicinski-universitet-d4e0bd",
+      "title": "НЕВАЛИДНА ДИПЛОМА ОТ МЕДИЦИНСКИ УНИВЕРСИТЕТ- СОФИЯ",
+      "summary": "",
+      "date": "2026-09-29T14:32:43.000Z",
+      "url": "https://www.segabg.com/category-polezno/nevalidna-diploma-medicinski-universitet-sofiya",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Полезно"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-09-29-sega-ob-va-za-t-rg-s-ta-no-naddavane-ot-dst-333d0d",
+      "title": "ОБЯВА ЗА ТЪРГ С ТАЙНО НАДДАВАНЕ ОТ ДСТ \"АЛЕКО КОНСТАНТИНОВ\"",
+      "summary": "",
+      "date": "2026-09-29T09:41:34.000Z",
+      "url": "https://www.segabg.com/category-imoti/obyava-za-turg-tayno-naddavane-dst-aleko-konstantinov",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Имоти"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-09-28-sega-mf-zatvar-vratickite-za-pokupka-na-novo-2af6d8",
+      "title": "МФ затваря вратичките за покупка на ново жилище без ДДС",
+      "summary": "",
+      "date": "2026-09-28T02:36:56.000Z",
+      "url": "https://www.segabg.com/hot/mf-zatvarya-vratichkite-za-pokupka-na-novo-zhilishte-bez-dds",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Имоти"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-09-25-sega-dzi-zapocna-seri-ot-80-dobrovolceski-misii-49c9c1",
+      "title": "ДЗИ започна серия от 80 доброволчески мисии за своята 80-годишнина",
+      "summary": "",
+      "date": "2026-09-25T12:42:03.000Z",
+      "url": "https://www.segabg.com/category-polezno/dzi-zapochna-seriya-80-dobrovolcheski-misii-za-svoyata-80-godishnina",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Полезно"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-09-19-sega-otpada-edno-ot-bezumi-ta-za-licnite-karti-s-1658ae",
+      "title": "Отпада едно от безумията за личните карти с чип",
+      "summary": "",
+      "date": "2026-09-19T13:20:46.000Z",
+      "url": "https://www.segabg.com/hot/category-consult/otpada-edno-bezumiyata-za-lichnite-karti-chip",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Консулт"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-08-21-sega-e-ima-kardinalni-promeni-v-nasled-vaneto-i-895389",
+      "title": "Ще има кардинални промени в наследяването и придобиването на имоти",
+      "summary": "",
+      "date": "2026-08-21T13:12:54.000Z",
+      "url": "https://www.segabg.com/hot/category-consult/shte-ima-kardinalni-promeni-nasledyavaneto-i-pridobivaneto-na-imoti",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Консулт"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-07-20-sega-koi-damski-canti-sa-na-podhod-i-za-biznes-i-d1257e",
+      "title": "Кои дамски чанти са най-подходящи за бизнес и елегантен стил",
+      "summary": "",
+      "date": "2026-07-20T13:31:35.000Z",
+      "url": "https://www.segabg.com/category-polezno/koi-damski-chanti-sa-nay-podhodyashti-za-biznes-i-eleganten-stil",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Полезно"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-07-02-sega-ob-va-ot-toplofikaci-razgrad-ad-c77f36",
+      "title": "ОБЯВА ОТ \"ТОПЛОФИКАЦИЯ- РАЗГРАД\" АД",
+      "summary": "",
+      "date": "2026-07-02T14:46:23.000Z",
+      "url": "https://www.segabg.com/category-polezno/obyava-toplofikaciya-razgrad-ad",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Полезно"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:13:22.442Z",
       "backfilled": true
     }
   ]
