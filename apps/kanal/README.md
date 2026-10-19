@@ -55,18 +55,24 @@ apps/kanal/
 - vidljiv status provjere (AI transparentnost, EU AI Act čl. 50)
 - RSS, Atom, JSON Feed, sitemap, llms.txt
 
-## Uređivački status (važno)
+## Uređivački status
 
-Svi tekstovi u prvom izdanju nose status **„AI-asistirani nacrt · čeka potvrdu
-urednika"**. To je namjerno: tekstove je pripremila AI uz provjeru brojki prema
-navedenim izvorima, ali završni ljudski pregled (Nermin Sefić) nije zabilježen u
-ovom repozitoriju. Kada se pregled obavi, u `src/site.json` mijenja se:
+Svi tekstovi prvog izdanja su **urednički pregledani i odobreni 19. 10. 2026.**
+(odobrenje glavnog urednika Nermina Sefića, evidentirano na stranici
+`/metodologija/`). Status se u `src/site.json` mijenja poljem:
 
 ```json
-"editorial": { "status": "approved", "statusLabel": "Urednički pregledano" }
+"editorial": {
+  "status": "approved",
+  "statusLabel": "Urednički pregledano · 19. 10. 2026.",
+  "reviewer": "Nermin Sefić",
+  "reviewedAt": "2026-10-19"
+}
 ```
 
-i ponovno se gradi site. Bez toga AKTUAL ne smije objaviti tekst kao potvrđenu vijest
+Ako se činjenični dio nekog teksta izmijeni, status se vraća na
+`pending-human-review` do novog pregleda. AKTUAL preuzima `editorialStatus` iz
+feeda i ne objavljuje `pending` tekst kao potvrđenu vijest
 (vidi `integrations/aktual-media.md`, pravilo 3).
 
 ## Poznato ograničenje
