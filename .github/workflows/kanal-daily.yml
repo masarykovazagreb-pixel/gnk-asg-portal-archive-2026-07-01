@@ -85,7 +85,9 @@ jobs:
           const fs = require('node:fs');
           const date = process.argv[2];
           const feed = JSON.parse(fs.readFileSync('apps/kanal/site/feed.json', 'utf8'));
-          const items = feed.items.filter((i) => String(i.date_published).startsWith(date));
+          // Desk izdanje se filtrira po URL-u, jer istoga dana može biti i
+          // urednički pregledanih tekstova s istim datumom.
+          const items = feed.items.filter((i) => String(i.date_published).startsWith(date) && String(i.url).includes(`/dnevnik-${date}-`));
           if (items.length !== 10) {
             console.error(`::error::Feed ima ${items.length} objava za ${date}, očekivano 10`);
             process.exit(1);
@@ -185,7 +187,7 @@ jobs:
               if node -e '
                 const f=require("/tmp/feed.json");
                 const d=process.argv[1];
-                const n=f.items.filter(i=>String(i.date_published).startsWith(d)).length;
+                const n=f.items.filter(i=>String(i.date_published).startsWith(d)&&String(i.url).includes('/dnevnik-'+d+'-')).length;
                 process.exit(n===10?0:1);
               ' "$DATE"; then
                 echo "Smoke test OK: 10 objava za $DATE je javno."
