@@ -163,6 +163,9 @@ ${jsonld.map((n) => `<script type="application/ld+json">${safeJson(n)}</script>`
 .iz-head{padding:clamp(26px,5vw,54px) 0 22px;border-bottom:1px solid #1b3550}
 .iz-head .k{font:600 11px/1.4 system-ui;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
 .iz-head h1{font:700 clamp(30px,5vw,52px)/1.04 Georgia,"Times New Roman",serif;margin:8px 0 10px;letter-spacing:-.01em}
+.iz-head .iz-home-h1{font:700 clamp(20px,2.6vw,26px)/1.2 Georgia,"Times New Roman",serif;margin:6px 0 4px;letter-spacing:-.01em}
+.iz-head .iz-home-h1 a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(233,198,108,.45)}
+.iz-head .iz-home-h1 a:hover{color:var(--gold)}
 .iz-head p{max-width:78ch;color:var(--muted);margin:0}
 .iz-nav{display:flex;flex-wrap:wrap;gap:8px 18px;padding:14px 0;font:600 12px/1.5 system-ui;letter-spacing:.08em;text-transform:uppercase;color:#cdd8e5}
 .iz-nav a{color:#cdd8e5}.iz-nav a[aria-current]{color:var(--gold)}
@@ -203,11 +206,12 @@ ${body}
 </html>`;
 }
 
-const portalHeader = (active) => `<div class="iz-top"><div class="iz-wrap"><span>AKTUAL MEDIA d.o.o. · Izdanja</span><a href="/gnk-aktual/">← AKTUAL MEDIA</a></div></div>
+const portalHeader = (active, { h1 = true } = {}) => `<div class="iz-top"><div class="iz-wrap"><span>AKTUAL MEDIA d.o.o. · Izdanja</span><a href="/gnk-aktual/">← AKTUAL MEDIA</a></div></div>
 <header class="iz-head"><div class="iz-wrap">
   <p class="k">GNK ASG · AKTUAL MEDIA · regionalna izdanja</p>
-  <h1>Naša izdanja</h1>
-  <p>Osam gradskih kanala, poslovni tjednik, sportski, politički i sigurnosni desk te galerija. Svako izdanje ima vlastiti link, svoj jezik, svoj feed i svoju metodologiju — a sve se vraća ovamo.</p>
+  ${h1 ? `<h1>Naša izdanja</h1>
+  <p>Osam gradskih kanala, poslovni tjednik, sportski, politički i sigurnosni desk te galerija. Svako izdanje ima vlastiti link, svoj jezik, svoj feed i svoju metodologiju — a sve se vraća ovamo.</p>`
+    : `<p class="iz-home-h1"><a href="/izdanja/">Naša izdanja</a> <span aria-hidden="true">·</span> desk</p>`}
   <nav class="iz-nav" aria-label="Izdanja">${['', 'sport/', 'politika/', 'sigurnost/'].map((p, i) => `<a href="/izdanja/${p}"${active === p ? ' aria-current="page"' : ''}>${['Sva izdanja', 'Sport', 'Politika', 'Sigurnost'][i]}</a>`).join('')}<a href="/galerija/">Galerija</a><a href="/gnk-aktual/">AKTUAL MEDIA</a></nav>
 </div></header>`;
 
@@ -318,7 +322,7 @@ function deskPage(id, desk) {
     bySource.get(key).push(item);
   }
 
-  const body = `${portalHeader(id + '/')}
+  const body = `${portalHeader(id + '/', { h1: false })}
 <main class="iz-wrap">
   <section class="iz-head" style="border-bottom:0;padding-top:26px">
     <p class="k">Desk AKTUAL MEDIA</p>
@@ -329,7 +333,7 @@ function deskPage(id, desk) {
 
   ${id === 'sport' ? `<section class="iz-band"><h2>Rezultati objavljeni u izvorima</h2>
     <div id="izResults">${results.length ? results.map(({ item, score }) => `<div class="iz-score"><span>${esc(item.title)}<small>${esc(item.sourceName)} · ${esc(item.channel.title)}</small></span><b>${esc(score.label)}</b></div>`).join('') : '<p class="iz-small">U posljednjem ciklusu nije bilo naslova sa zapisanim rezultatom.</p>'}</div>
-    <p class="iz-small">Rezultat se prikazuje samo ako je zapisan u naslovu izvora. Stranica se osvježava svakih pet minuta iz podataka koje zapisuje dnevni ciklus.</p>
+    <p class="iz-small">Rezultat se prikazuje samo ako je zapisan u naslovu izvora. Stranica se osvježava pri svakom dnevnom ciklusu, iz podataka koje on zapisuje.</p>
   </section>` : ''}
 
   <section class="iz-band">

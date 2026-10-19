@@ -33,6 +33,9 @@
 .iz-head{padding:clamp(26px,5vw,54px) 0 22px;border-bottom:1px solid #1b3550}
 .iz-head .k{font:600 11px/1.4 system-ui;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
 .iz-head h1{font:700 clamp(30px,5vw,52px)/1.04 Georgia,"Times New Roman",serif;margin:8px 0 10px;letter-spacing:-.01em}
+.iz-head .iz-home-h1{font:700 clamp(20px,2.6vw,26px)/1.2 Georgia,"Times New Roman",serif;margin:6px 0 4px;letter-spacing:-.01em}
+.iz-head .iz-home-h1 a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(233,198,108,.45)}
+.iz-head .iz-home-h1 a:hover{color:var(--gold)}
 .iz-head p{max-width:78ch;color:var(--muted);margin:0}
 .iz-nav{display:flex;flex-wrap:wrap;gap:8px 18px;padding:14px 0;font:600 12px/1.5 system-ui;letter-spacing:.08em;text-transform:uppercase;color:#cdd8e5}
 .iz-nav a{color:#cdd8e5}.iz-nav a[aria-current]{color:var(--gold)}
@@ -69,8 +72,7 @@
 <div class="iz-top"><div class="iz-wrap"><span>AKTUAL MEDIA d.o.o. · Izdanja</span><a href="/gnk-aktual/">← AKTUAL MEDIA</a></div></div>
 <header class="iz-head"><div class="iz-wrap">
   <p class="k">GNK ASG · AKTUAL MEDIA · regionalna izdanja</p>
-  <h1>Naša izdanja</h1>
-  <p>Osam gradskih kanala, poslovni tjednik, sportski, politički i sigurnosni desk te galerija. Svako izdanje ima vlastiti link, svoj jezik, svoj feed i svoju metodologiju — a sve se vraća ovamo.</p>
+  <p class="iz-home-h1"><a href="/izdanja/">Naša izdanja</a> <span aria-hidden="true">·</span> desk</p>
   <nav class="iz-nav" aria-label="Izdanja"><a href="/izdanja/">Sva izdanja</a><a href="/izdanja/sport/" aria-current="page">Sport</a><a href="/izdanja/politika/">Politika</a><a href="/izdanja/sigurnost/">Sigurnost</a><a href="/galerija/">Galerija</a><a href="/gnk-aktual/">AKTUAL MEDIA</a></nav>
 </div></header>
 <main class="iz-wrap">
@@ -83,7 +85,7 @@
 
   <section class="iz-band"><h2>Rezultati objavljeni u izvorima</h2>
     <div id="izResults"><p class="iz-small">U posljednjem ciklusu nije bilo naslova sa zapisanim rezultatom.</p></div>
-    <p class="iz-small">Rezultat se prikazuje samo ako je zapisan u naslovu izvora. Stranica se osvježava svakih pet minuta iz podataka koje zapisuje dnevni ciklus.</p>
+    <p class="iz-small">Rezultat se prikazuje samo ako je zapisan u naslovu izvora. Stranica se osvježava pri svakom dnevnom ciklusu, iz podataka koje on zapisuje.</p>
   </section>
 
   <section class="iz-band">
