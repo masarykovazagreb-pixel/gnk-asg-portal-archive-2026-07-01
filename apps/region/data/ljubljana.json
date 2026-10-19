@@ -4,7 +4,7 @@
   "lang": "sl",
   "city": "Ljubljana",
   "country": "Slovenija",
-  "updatedAt": "2026-10-19T21:11:03.177Z",
+  "updatedAt": "2026-10-19T21:19:55.624Z",
   "sources": [
     {
       "id": "sta",
@@ -18,7 +18,7 @@
         "https://english.sta.si/rss.php#1: HTTP 403",
         "https://www.sta.si/rss.php#1: HTTP 403"
       ],
-      "checkedAt": "2026-10-19T21:10:00.741Z"
+      "checkedAt": "2026-10-19T21:18:42.355Z"
     },
     {
       "id": "delo",
@@ -30,7 +30,7 @@
         "wp:1: HTTP 404",
         "https://www.delo.si/feed/#1: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:10:06.035Z"
+      "checkedAt": "2026-10-19T21:18:46.703Z"
     },
     {
       "id": "dnevnik",
@@ -44,7 +44,7 @@
         "https://www.dnevnik.si/feed#1: HTTP 404",
         "https://www.dnevnik.si/sitemap.xml: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:10:09.234Z"
+      "checkedAt": "2026-10-19T21:18:48.513Z"
     },
     {
       "id": "siol",
@@ -58,41 +58,41 @@
         "https://siol.net/rss#1: HTTP 404",
         "https://www.siol.net/rss#1: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:10:26.054Z"
+      "checkedAt": "2026-10-19T21:19:02.613Z"
     },
     {
       "id": "n1si",
       "name": "N1 Slovenija",
       "url": "https://n1info.si/feed/",
-      "ok": true,
-      "fetched": 50,
+      "ok": false,
+      "fetched": 0,
       "errors": [
         "wp:1: HTTP 403"
       ],
-      "checkedAt": "2026-10-19T21:10:44.746Z"
+      "checkedAt": "2026-10-19T21:19:14.522Z"
     },
     {
       "id": "24ur",
       "name": "24ur.com",
       "url": "https://www.24ur.com/rss",
-      "ok": true,
-      "fetched": 20,
+      "ok": false,
+      "fetched": 0,
       "errors": [
         "wp:1: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:10:52.328Z"
+      "checkedAt": "2026-10-19T21:19:19.728Z"
     },
     {
       "id": "mladina",
       "name": "Mladina",
       "url": "https://www.mladina.si/feed/",
-      "ok": true,
-      "fetched": 17,
+      "ok": false,
+      "fetched": 0,
       "errors": [
         "wp:1: HTTP 404",
         "https://www.mladina.si/feed/#1: nije feed"
       ],
-      "checkedAt": "2026-10-19T21:10:58.308Z"
+      "checkedAt": "2026-10-19T21:19:25.034Z"
     },
     {
       "id": "rtvslo",
@@ -106,7 +106,68 @@
         "https://www.rtvslo.si/sitemap.xml: HTTP 404",
         "https://www.rtvslo.si/sitemap_index.xml: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:11:03.177Z"
+      "checkedAt": "2026-10-19T21:19:29.637Z"
+    },
+    {
+      "id": "slovenskenovice",
+      "name": "Slovenske novice",
+      "url": "https://www.slovenskenovice.si/rss",
+      "ok": true,
+      "fetched": 60,
+      "errors": [
+        "wp:1: HTTP 404"
+      ],
+      "checkedAt": "2026-10-19T21:19:39.555Z"
+    },
+    {
+      "id": "zurnal24",
+      "name": "Žurnal24",
+      "url": "https://www.zurnal24.si/rss",
+      "ok": false,
+      "fetched": 0,
+      "errors": [
+        "wp:1: HTTP 404",
+        "https://www.zurnal24.si/rss#1: HTTP 404",
+        "https://www.zurnal24.si/sitemap.xml: HTTP 404",
+        "https://www.zurnal24.si/sitemap_index.xml: HTTP 404"
+      ],
+      "checkedAt": "2026-10-19T21:19:43.752Z"
+    },
+    {
+      "id": "primorske",
+      "name": "Primorske novice",
+      "url": "https://www.primorske.si/rss",
+      "ok": false,
+      "fetched": 0,
+      "errors": [
+        "wp:1: fetch failed",
+        "https://www.primorske.si/rss#1: HTTP 403",
+        "https://www.primorske.si/sitemap.xml: HTTP 403",
+        "https://www.primorske.si/sitemap_index.xml: HTTP 403"
+      ],
+      "checkedAt": "2026-10-19T21:19:44.610Z"
+    },
+    {
+      "id": "vecer",
+      "name": "Večer",
+      "url": "https://www.vecer.com/rss",
+      "ok": true,
+      "fetched": 100,
+      "errors": [
+        "wp:1: HTTP 404"
+      ],
+      "checkedAt": "2026-10-19T21:19:55.624Z"
+    },
+    {
+      "id": "staslo",
+      "name": "STA Slovenija",
+      "url": "https://www.sta.si/rss",
+      "ok": true,
+      "fetched": 0,
+      "errors": [
+        "preskočeno: cilj dosegnut"
+      ],
+      "checkedAt": "2026-10-19T21:19:55.624Z"
     }
   ],
   "items": [
@@ -124,6 +185,20 @@
       "author": "",
       "theme": "politika",
       "addedAt": "2026-10-19T21:10:52.327Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-globoke-sanje-a5c1ce",
+      "title": "Globoke sanje ...",
+      "summary": "Sanje o 3D tehniki.",
+      "date": "2026-10-19T20:45:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/karikatura/globoke-sanje",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:39.550Z",
       "backfilled": true
     },
     {
@@ -176,6 +251,20 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-kolumna-gorazda-nejedlyja-ne-trzna-takticna-e6d10a",
+      "title": "Kolumna Gorazda Nejedlyja: (Ne)tržna taktična kultura",
+      "summary": "Že videni igralni modus operandi je prinesel bankrot.",
+      "date": "2026-10-19T20:25:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/kolumne/kolumna-gorazda-nejedlyja-ne-trzna-takticna-kultura",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:39.550Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-sovretova-nagrada-domnu-kavcicu-za-prevod-c286b6",
       "title": "Sovretova nagrada Domnu Kavčiču za prevod romana Yoko Tawada",
       "summary": "Prevajalec si je prislužil nagrado s poslovenjenjem dela Razkropljeni po zemlji; po mnenju žirije se je izzivov lotil s pretanjenostjo in natančnostjo.",
@@ -187,6 +276,20 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:54:19.543Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-policisti-v-postojni-zasegli-zajetno-8ddfea",
+      "title": "Policisti v Postojni zasegli zajetno količino konoplje: 45-letnika čaka kazenska ovadba (FOTO)",
+      "summary": "Zasegli so kar 192 svežih vej s cvetovi, posušene rastlinske delce in več zavojčkov s sumljivo snovjo.",
+      "date": "2026-10-19T20:10:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/slovenija/policisti-v-postojni-zasegli-zajetno-kolicino-konoplje-45-letnika-caka-kazenska-ovadba-foto",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-19T21:19:39.550Z",
       "backfilled": true
     },
     {
@@ -222,6 +325,20 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-uf-kaj-se-je-dogajalo-v-sovu-zivljenje-na-fce04b",
+      "title": "Uf, kaj se je dogajalo v šovu Življenje na tehtnici: tekmovalci padali po tleh, slišali so se kriki",
+      "summary": "Ko je že kazalo, da je zmagovalec odločen, je sledil nepričakovan preobrat.",
+      "date": "2026-10-19T19:55:00.000Z",
+      "url": "https://slovenskenovice.delo.si/bulvar/domaci-traci/uf-kaj-se-je-dogajalo-v-sovu-zivljenje-na-tehtnici-tekmovalci-padali-po-tleh-slisali-so-se-kriki",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:19:39.551Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-n1si-postojnski-policisti-pri-45-letniku-zasegli-4bf7b3",
       "title": "Postojnski policisti pri 45-letniku zasegli večjo količino konoplje",
       "summary": "Postojnski policisti so danes 45-letnemu moškemu iz območja Postojne med hišno preiskavo stanovanjske hiše in pripadajočih zunanjih površin zasegli ve",
@@ -238,6 +355,22 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T21:10:44.742Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-to-mesto-po-novem-za-tretjega-otroka-ponuja-3faa2b",
+      "title": "To mesto po novem za tretjega otroka ponuja pravo bogastvo, novih ugodnosti bodo deležni tudi tujci",
+      "summary": "Prosti čas",
+      "date": "2026-10-19T19:40:00.000Z",
+      "url": "https://vecer.com/prosti-cas/dojencek-pomoc-mesto-denar-10430841",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Prosti čas"
+      ],
+      "author": "A.L.",
+      "theme": "energija",
+      "addedAt": "2026-10-19T21:19:55.618Z",
       "backfilled": true
     },
     {
@@ -437,6 +570,22 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-vecer-foto-policisti-zasegli-vecjo-kolicino-df3003",
+      "title": "(FOTO) Policisti zasegli večjo količino konoplje in njenih derivatov, za pomoč se zahvaljujejo občanom",
+      "summary": "KRONIKA",
+      "date": "2026-10-19T19:08:00.000Z",
+      "url": "https://vecer.com/kronika/konoplja-policija-postojna-zaseg-10430840",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "KRONIKA"
+      ],
+      "author": "A.L.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.618Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-n1si-albanski-premier-oster-do-protestnikov-e03f60",
       "title": "Albanski premier oster do protestnikov: Protestiranje je pravica, nasilje pa je kaznivo dejanje",
       "summary": "V albanski prestolnici Tirana tudi danes potekajo protesti, na katerih so izbruhnili spopadi med policijo in demonstranti. Do nasilja je bil znova kri",
@@ -467,6 +616,20 @@
       "author": "",
       "theme": "politika",
       "addedAt": "2026-10-19T20:54:19.543Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-darko-duric-navdihuje-drugim-pomaga-do-def8eb",
+      "title": "Darko Đurić navdihuje: drugim pomaga do samostojnosti (Suzy)",
+      "summary": "»Velika prednost je, da srečaš ljudi s podobno izkušnjo, ki te razumejo in ti pokažejo, kaj vse je mogoče,« pravi.",
+      "date": "2026-10-19T19:00:00.000Z",
+      "url": "https://slovenskenovice.delo.si/bulvar/suzy/darko-duric-navdihuje-drugim-pomaga-do-samostojnosti-suzy",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:39.551Z",
       "backfilled": true
     },
     {
@@ -521,6 +684,20 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T21:10:44.743Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-obozevalci-v-solzah-zvezdnica-priljubljene-dfbd27",
+      "title": "Oboževalci v solzah! Zvezdnica priljubljene telenovele izgubila bitko z rakom",
+      "summary": "Žalostno vest je na spletu potrdil njen brat.",
+      "date": "2026-10-19T18:50:00.000Z",
+      "url": "https://slovenskenovice.delo.si/bulvar/tuji-traci/obozevalci-v-solzah-zvezdnica-priljubljene-telenovele-izgubila-bitko-z-rakom",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:19:39.551Z",
       "backfilled": true
     },
     {
@@ -610,6 +787,36 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-pristeli-se-glasove-iz-tujine-poglejte-kako-ef4b16",
+      "title": "Prišteli še glasove iz tujine: poglejte, kako so vplivali na izid štirih referendumov",
+      "summary": "Pri referendumu o ukinitvi RTV-prispevka je zdaj razlika več kot 2600 glasov.",
+      "date": "2026-10-19T18:20:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/slovenija/pristeli-se-glasove-iz-tujine-poglejte-kako-so-vplivali-na-izid-stirih-referendumov",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:19:39.551Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-slovenjgraska-bolnisnica-v-vse-vecjem-d74226",
+      "title": "Slovenjgraška bolnišnica v vse večjem minusu. Na pomemben razpis se ni prijavil nihče",
+      "summary": "Koroška",
+      "date": "2026-10-19T18:20:00.000Z",
+      "url": "https://vecer.com/koroska/splosna-bolnisnica-slovenj-gradec-izguba-strokovni-direktor-10430839",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Koroška"
+      ],
+      "author": "Nejc Strojnik",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.618Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-na-celo-2tdk-se-je-zavihtel-marko-pogacnik-965a02",
       "title": "Na čelo 2TDK se je zavihtel Marko Pogačnik",
       "summary": "Nekdanji poslanec SDS, državni sekretar na finančnem ministrstvu in direktor takratne Slovenske odškodninske družbe bo funkcijo nastopil jutri.",
@@ -688,6 +895,20 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-tedenski-horoskop-od-20-do-26-oktobra-333bd9",
+      "title": "Tedenski horoskop od 20. do 26. oktobra: Vodnarjem se obeta honorar, tehtnicam priložnost za vzpon",
+      "summary": "Nekaterim znamenjem se obeta preobrat v službi, drugim nova bližina ali vrnitev stare simpatije. Preverite, kaj tedenski horoskop napoveduje vam.",
+      "date": "2026-10-19T18:00:00.000Z",
+      "url": "https://slovenskenovice.delo.si/lifestyle/astro/r-tedenski-horoskop-od-20-do-26-oktobra-vodnarjem-se-obeta-honorar-tehtnicam-priloznost-za-vzpon",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:19:39.551Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-po-glasovih-iz-tujine-izidi-referendumov-00dab3",
       "title": "Po glasovih iz tujine izidi referendumov ostajajo enaki",
       "summary": "Razlika je le pri referendumu o ukinitvi RTV-prispevka, saj se je povečala na več kot 2600 glasov.",
@@ -729,6 +950,52 @@
       "author": "",
       "theme": "energija",
       "addedAt": "2026-10-19T21:10:52.326Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-poglejte-kako-lepa-je-izbranka-nekdanjega-447538",
+      "title": "Poglejte, kako lepa je izbranka nekdanjega ministra Klemna Boštjančiča: tokrat je ni skrival pred fotografi (FOTO)",
+      "summary": "Sanja Savić, ki jo povezujejo z nekdanjim ministrom, ima za seboj več kot dve desetletji izkušenj v mednarodnem okolju.",
+      "date": "2026-10-19T17:50:00.000Z",
+      "url": "https://slovenskenovice.delo.si/bulvar/domaci-traci/poglejte-kako-lepa-je-izbranka-nekdanjega-ministra-klemna-bostjancica-tokrat-je-ni-skrival-pred-fotografi-foto",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:19:39.551Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-na-celu-druzbe-2tdk-odslej-marko-pogacnik-ccc5bb",
+      "title": "Na čelu družbe 2TDK odslej Marko Pogačnik",
+      "summary": "SLOVENIJA",
+      "date": "2026-10-19T17:50:00.000Z",
+      "url": "https://vecer.com/slovenija/na-celu-druzbe-2tdk-odslej-marko-pogacnik-10430838",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SLOVENIJA"
+      ],
+      "author": "STA, A.L.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.619Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-meteorologinja-razkrila-kako-napovedati-bb4e43",
+      "title": "Meteorologinja razkrila, kako napovedati spremembo vremena",
+      "summary": "Prosti čas",
+      "date": "2026-10-19T17:50:00.000Z",
+      "url": "https://vecer.com/prosti-cas/napoved-vreme-sprememba-nebo-oblaki-10430799",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Prosti čas"
+      ],
+      "author": "A.B.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.619Z",
       "backfilled": true
     },
     {
@@ -815,6 +1082,22 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-vecer-foto-maribor-se-je-poklonil-ljudem-ki-so-mu-e28c54",
+      "title": "(FOTO) Maribor se je poklonil ljudem, ki so mu pomagali rasti",
+      "summary": "Aktualno",
+      "date": "2026-10-19T17:43:00.000Z",
+      "url": "https://vecer.com/maribor/aktualno/maribor-castni-obcan-zezlina-vlaisavljevic-10430837",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Aktualno"
+      ],
+      "author": "Barbara Bradač",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-19T21:19:55.619Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-obljuba-ki-bo-elona-muska-stala-9-5-4ab611",
       "title": "Obljuba, ki bo Elona Muska stala 9,5 milijarde evrov",
       "summary": "Elon Musk otrokom v ZDA obljublja delnice podjetja SpaceX, pojasniti bo moral še podrobnosti, kako bi to sploh izvedel.",
@@ -842,6 +1125,36 @@
       "author": "",
       "theme": "sport",
       "addedAt": "2026-10-19T21:10:52.327Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-pogovor-slovenca-iz-pariza-o-protestih-022d80",
+      "title": "(POGOVOR) Slovenca iz Pariza o protestih: Francija je na robu bankrota, skrajna desnica pa pred vrati oblasti",
+      "summary": "SVET",
+      "date": "2026-10-19T17:37:00.000Z",
+      "url": "https://vecer.com/svet/francija-protesti-pariz-brina-svit-10430829",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SVET"
+      ],
+      "author": "Jon Knez",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:19:55.619Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-po-grozljivem-odkritju-v-lendavi-se-je-736de1",
+      "title": "Po grozljivem odkritju v Lendavi se je oglasil lastnik objekta: prostore naj bi oddal v najem",
+      "summary": "V industrijski hali so odkrili 34 domnevnih žrtev trgovine z ljudmi.",
+      "date": "2026-10-19T17:30:41.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/slovenija/po-grozljivem-odkritju-v-lendavi-se-je-oglasil-lastnik-objekta-prostore-naj-bi-oddal-v-najem",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:39.551Z",
       "backfilled": true
     },
     {
@@ -895,6 +1208,22 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-vecer-je-vas-riz-po-kuhanju-lepljiv-strokovnjaki-70c6a0",
+      "title": "Je vaš riž po kuhanju lepljiv? Strokovnjaki razkrivajo ključno napako, ki jo delamo skoraj vsi",
+      "summary": "Prosti čas",
+      "date": "2026-10-19T17:20:00.000Z",
+      "url": "https://vecer.com/prosti-cas/kuhanje-riz-nasvet-lepljivost-recept-10430796",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Prosti čas"
+      ],
+      "author": "A.B.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.619Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-siol-rusom-prizgali-zeleno-luc-zdaj-se-jim-9d0e20",
       "title": "Rusom prižgali zeleno luč, zdaj se jim zapleta na dveh frontah",
       "summary": "Vrnitev na mednarodna tekmovanja se Rusom zapleta na dveh frontah. Čeprav jim je Mednarodna smučarska in deskarska zveza (FIS) dovolila nastopanje pod nevtralnim statusom, ruski smučarski skakalci še niso opravili obveznega 3D-skeniranja za tekmovalne drese. FIS je njihovo prošnjo za izvedbo postopka na Kitajskem ali v Kazahstanu zavrnil, dodatno oviro pa predstavljajo schengenski vizumi.",
@@ -908,6 +1237,38 @@
       "author": "",
       "theme": "rat",
       "addedAt": "2026-10-19T21:03:14.159Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-kako-izbrati-pravo-elektricno-kolo-in-2f6281",
+      "title": "Kako izbrati pravo električno kolo in kakšen doseg v resnici pričakovati?",
+      "summary": "Prosti čas",
+      "date": "2026-10-19T17:16:00.000Z",
+      "url": "https://vecer.com/prosti-cas/kako-izbrati-pravo-elektricno-kolo-in-kaksen-doseg-v-resnici-pricakovati-10430834",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Prosti čas"
+      ],
+      "author": "Oglasno sporočilo: Energija Bikes",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:19:55.619Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-izidi-referendumov-tudi-po-pristetih-adce8e",
+      "title": "Izidi referendumov tudi po prištetih glasovih iz tujine nespremenjeni",
+      "summary": "SLOVENIJA",
+      "date": "2026-10-19T17:14:00.000Z",
+      "url": "https://vecer.com/slovenija/izidi-referendum-tujina-rezultat-10430833",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SLOVENIJA"
+      ],
+      "author": "STA, A.L.",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:19:55.619Z",
       "backfilled": true
     },
     {
@@ -958,6 +1319,36 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-rok-lunacek-o-tezkih-trenutkih-spomnim-se-aaa960",
+      "title": "Rok Lunaček o težkih trenutkih: Spomnim se, ko sva imela finančni kolaps ... (VIDEO)",
+      "summary": "Rok Lunaček je v novem ŠOKkastu odprl več zelo osebnih poglavij svojega življenja in kariere. Spregovoril je o prihajajočem koncertu Flirrtov v Stožicah, pokojnem očetu, ki je med prvimi verjel v bend, partnerki Viti, težkih finančnih obdobjih ter tudi o tremi in paničnih napadih pred nastopi.",
+      "date": "2026-10-19T17:00:00.000Z",
+      "url": "https://slovenskenovice.delo.si/bulvar/sokkast/rok-lunacek-o-tezkih-trenutkih-spomnim-se-ko-sva-imela-financni-kolaps-video",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:19:39.551Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-cene-stanovanj-podirajo-rekorde-v-mariboru-cf94c0",
+      "title": "Cene stanovanj podirajo rekorde: V Mariboru prvič nad tri tisočake, v Ljubljani že 5630 evrov za kvadrat",
+      "summary": "SLOVENIJA",
+      "date": "2026-10-19T17:00:00.000Z",
+      "url": "https://vecer.com/slovenija/gursovo-porocilo-cene-nepremicnin-v-sloveniji-novogradnje-drazja-stanovanja-10430815",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SLOVENIJA"
+      ],
+      "author": "Sanja Verovnik",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:19:55.619Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-n1si-cnn-po-43-letih-zapusca-legendarna-b30db0",
       "title": "CNN po 43 letih zapušča legendarna novinarka",
       "summary": "Legendarna novinarka in glavna mednarodna dopisnica ameriške televizijske mreže CNN Christiane Amanpour se po 43 letih poslavlja od televizijskih zasl",
@@ -973,6 +1364,20 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T21:10:44.743Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-se-ena-v-vrsti-zlorab-tudi-ta-slovenska-9213e2",
+      "title": "Še ena v vrsti zlorab? Tudi ta slovenska igralka spregovorila o nadlegovanju kolegov (VIDEO)",
+      "summary": "Dotikal se je na neprimeren način.",
+      "date": "2026-10-19T16:55:00.000Z",
+      "url": "https://slovenskenovice.delo.si/bulvar/domaci-traci/se-ena-v-vrsti-zlorab-tudi-ta-slovenska-igralka-spregovorila-o-nadlegovanju-kolegov-video",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:39.552Z",
       "backfilled": true
     },
     {
@@ -1005,6 +1410,38 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T21:10:52.328Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-anketa-podpora-svobodi-pada-ostalim-7213e4",
+      "title": "Anketa: Podpora Svobodi pada, ostalim levosredinskim strankam raste. Kdo pa so najbolj priljubljeni politiki v državi?",
+      "summary": "SLOVENIJA",
+      "date": "2026-10-19T16:50:00.000Z",
+      "url": "https://vecer.com/slovenija/aketa-svoboda-sds-politiki-lestvica-10430832",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SLOVENIJA"
+      ],
+      "author": "STA, A.L.",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:19:55.619Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-kdo-je-zdravnica-iz-romunije-o-kateri-vsi-091a64",
+      "title": "Kdo je zdravnica iz Romunije, o kateri vsi govorijo?",
+      "summary": "Prosti čas",
+      "date": "2026-10-19T16:46:00.000Z",
+      "url": "https://vecer.com/prosti-cas/elena-sumanariu-zdravnica-romunija-letalisce-10430794",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Prosti čas"
+      ],
+      "author": "A.B.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.619Z",
       "backfilled": true
     },
     {
@@ -1059,6 +1496,52 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-vecer-pregled-po-prvi-tretjini-sezone-maribor-bcf5ce",
+      "title": "(PREGLED) Po prvi tretjini sezone: Maribor izkorišča izjemno izenačenost v ligi in padec konkurentov",
+      "summary": "Šport",
+      "date": "2026-10-19T16:38:00.000Z",
+      "url": "https://vecer.com/sport/prva-liga-lestvica-nk-maribor-rezultati-10430831",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Šport"
+      ],
+      "author": "Miha Dajčman",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.619Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-v-mariboru-trcila-avtobus-in-kombi-81e275",
+      "title": "V Mariboru trčila avtobus in kombi: poškodovana voznica in več potnikov",
+      "summary": "Gasilci so morali voznico avtobusa rešiti s tehničnim posegom, štiri osebe pa so reševalci prepeljali v bolnišnico.",
+      "date": "2026-10-19T16:36:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/slovenija/v-mariboru-trcila-avtobus-in-kombi-poskodovana-voznica-in-vec-potnikov",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "addedAt": "2026-10-19T21:19:39.552Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-tragedija-v-porecu-med-sportnim-dogodkom-0941e4",
+      "title": "Tragedija v Poreču: Med športnim dogodkom umrl Slovenec",
+      "summary": "KRONIKA",
+      "date": "2026-10-19T16:29:00.000Z",
+      "url": "https://vecer.com/kronika/porec-triatlon-umrl-slovenec-10430830",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "KRONIKA"
+      ],
+      "author": "A.L.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.619Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-24ur-v-mariboru-trcila-tovornjak-in-avtobus-cfb35d",
       "title": "V Mariboru trčila tovornjak in avtobus: potnike odpeljali v bolnišnico",
       "summary": "V Mariboru sta trčila kombinirano vozilo in mestni avtobus, na katerem je bilo 10 potnikov. Štiri so reševalci prepeljali v UKC Maribor, prav tako tudi voznico avtobusa.",
@@ -1089,6 +1572,22 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-vecer-ta-napaka-vam-bo-pozimi-izpraznila-30ae96",
+      "title": "Ta napaka vam bo pozimi izpraznila denarnico: Drva in peleti izgubljajo toploto, če jih napačno shranjujete",
+      "summary": "Prosti čas",
+      "date": "2026-10-19T16:18:00.000Z",
+      "url": "https://vecer.com/prosti-cas/drva-peleti-kurilna-sezona-prihranek-denarja-nasvet-10430792",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Prosti čas"
+      ],
+      "author": "A.B.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.619Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-siol-rokometas-nik-henigman-in-zena-eva-bosta-415694",
       "title": "Rokometaš Nik Henigman in žena Eva bosta spet zibala",
       "summary": "Po tem, ko sta si lani decembra obljubila večno zvestobo, bosta slovenski rokometaš Nik Henigman in njegova žena Eva, hči nekdanjega premierja Mira Cerarja, tretjič postala starša.",
@@ -1102,6 +1601,20 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T21:03:14.159Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-se-v-kratkem-odpravljate-na-pocitnice-412511",
+      "title": "Se v kratkem odpravljate na počitnice? Zaradi nevarnih razmer nekatera potovanja odsvetujejo",
+      "summary": "Zunanje ministrstvo pred prihajajočimi počitnicami opozarja na varnostna tveganja in Slovencem svetuje previdnost pri načrtovanju potovanj.",
+      "date": "2026-10-19T16:12:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/slovenija/se-v-kratkem-odpravljate-na-pocitnice-zaradi-nevarnih-razmer-nekatera-potovanja-odsvetujejo",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:19:39.552Z",
       "backfilled": true
     },
     {
@@ -1138,6 +1651,36 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-razlicna-pogleda-na-poroko-je-to-upravicen-70bcfd",
+      "title": "Različna pogleda na poroko: je to upravičen razlog za razhod?",
+      "summary": "Ljubezen in privlačnost sta lahko izjemno intenzivni, a če si partnerja prihodnosti ne predstavljata enako, lahko nastopi težava.",
+      "date": "2026-10-19T16:00:00.000Z",
+      "url": "https://slovenskenovice.delo.si/lifestyle/stil/razlicna-pogleda-na-poroko-je-to-upravicen-razlog-za-razhod",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:39.552Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-raziskava-razkrila-kateri-avtomobili-se-06ff5e",
+      "title": "Raziskava razkrila, kateri avtomobili se najmanj kvarijo: Na vrhu štirje povsem različni modeli",
+      "summary": "Prosti čas",
+      "date": "2026-10-19T16:00:00.000Z",
+      "url": "https://vecer.com/prosti-cas/avto-raziskava-okvara-lestvica-najboljsi-10430827",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Prosti čas"
+      ],
+      "author": "A.L.",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:19:55.619Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-v-trcenju-avtobusa-poskodovana-voznica-in-944f6b",
       "title": "V trčenju avtobusa poškodovana voznica in več potnikov",
       "summary": "Na avtobusu je bilo deset potnikov, reševalci so štiri prepeljali v UKC Maribor.",
@@ -1171,6 +1714,52 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-vecer-studentka-se-je-preselila-iz-londona-v-b0025f",
+      "title": "Študentka se je preselila iz Londona v Zagreb: \"Ko sem videla to, nisem mogla verjeti svojim očem\"",
+      "summary": "Prosti čas",
+      "date": "2026-10-19T15:46:00.000Z",
+      "url": "https://vecer.com/prosti-cas/zivljenje-london-zagreb-varnost-10430786",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Prosti čas"
+      ],
+      "author": "A.B.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.619Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-kaj-se-v-resnici-dogaja-na-mondialovih-1979ec",
+      "title": "Kaj se v resnici dogaja na Mondialovih maturantskih izletih? Spanje na tleh, strašenje z izjemno visokimi stroški, prevare s hoteli in neprimerno spremstvo",
+      "summary": "Ista agencija je organizirala tudi izlet, na katerem je leta 2017 umrla slovenska maturantka.",
+      "date": "2026-10-19T15:42:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/slovenija/kaj-se-v-resnici-dogaja-na-mondialovih-maturantskih-izletih-spanje-na-tleh-strasenje-z-izjemno-visokimi-stroski-prevare-s-hoteli-in-neprimerno-spremstvo",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:39.552Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-se-med-pocitnicami-odpravljate-v-tujino-4bf8da",
+      "title": "Se med počitnicami odpravljate v tujino? Ministrstvo ima posebno opozorilo",
+      "summary": "SLOVENIJA",
+      "date": "2026-10-19T15:37:00.000Z",
+      "url": "https://vecer.com/slovenija/pocitnice-potovanja-ministrstvo-kam-10430826",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SLOVENIJA"
+      ],
+      "author": "STA, A.L.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.620Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-n1si-nizozemski-premier-sporocil-veselo-novico-s-8aaffa",
       "title": "Nizozemski premier sporočil veselo novico, s partnerjem pričakujeta otroka (FOTO)",
       "summary": "Nizozemski premier Rob Jetten in njegov partner Nicolas Keenan sta danes sporočila, da s pomočjo darovalke jajčec in nadomestne matere pričakujeta otr",
@@ -1201,6 +1790,82 @@
       "author": "",
       "theme": "potres",
       "addedAt": "2026-10-19T20:54:19.544Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-verizno-trcenje-v-medvodah-na-kraju-24b953",
+      "title": "Verižno trčenje v Medvodah: na kraju policisti in gasilci, nastajajo zastoji (FOTO)",
+      "summary": "Bralka nas je opozorila na prometno nesrečo v Medvodah, kjer naj bi prišlo do verižnega trčenja.",
+      "date": "2026-10-19T15:30:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/slovenija/verizno-trcenje-v-medvodah-na-kraju-policisti-in-gasilci-nastajajo-zastoji-foto",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "addedAt": "2026-10-19T21:19:39.552Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-po-devetih-letih-konec-ljubezni-znana-f4e0b9",
+      "title": "Po devetih letih konec ljubezni: Znana slovenska lepotica znova samska",
+      "summary": "Popularno",
+      "date": "2026-10-19T15:30:00.000Z",
+      "url": "https://vecer.com/popularno/dasa-podrzaj-samska-miha-murn-misica-rajko-hrvatic-10430752",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Popularno"
+      ],
+      "author": "D.Ži",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.620Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-kar-je-bilo-desetletja-v-avstriji-1f8fde",
+      "title": "Kar je bilo desetletja v Avstriji nedotakljivo, bi se lahko spremenilo: Trgovine bi bile odprte dlje, tudi ob nedeljah",
+      "summary": "Prosti čas",
+      "date": "2026-10-19T15:30:00.000Z",
+      "url": "https://vecer.com/prosti-cas/trgovine-v-avstriji-daljsi-odpiralni-cas-odprtje-ob-nedeljah-avstrija-10430785",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Prosti čas"
+      ],
+      "author": "Sanja Verovnik",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.620Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-domen-je-mislil-da-praznuje-svoj-40-rojstni-dd9d69",
+      "title": "Domen je mislil, da praznuje svoj 40. rojstni dan, nato pa zagledal nevesto: na skrivni poroki presenetila tudi Marjetka in Raay (VIDEO)",
+      "summary": "Bodoči ženin ni niti slutil, kaj mu pripravlja njegova izbranka.",
+      "date": "2026-10-19T15:24:00.000Z",
+      "url": "https://slovenskenovice.delo.si/razno/domen-je-mislil-da-praznuje-svoj-40-rojstni-dan-nato-pa-zagledal-nevesto-na-skrivni-poroki-presenetila-tudi-marjetka-in-raay-video",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:19:39.552Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-foto-znana-manekenka-osupnila-svetovno-084f0c",
+      "title": "(FOTO) Znana manekenka osupnila svetovno javnost: Na modno brv se je vrnila le nekaj tednov po porodu",
+      "summary": "Popularno",
+      "date": "2026-10-19T15:20:00.000Z",
+      "url": "https://vecer.com/popularno/barbara-palvin-victorias-secret-nosecnost-10430781",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Popularno"
+      ],
+      "author": "A.B.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.620Z",
       "backfilled": true
     },
     {
@@ -1258,6 +1923,20 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-jansa-napoveduje-davcno-razbremenitev-dela-0f79c9",
+      "title": "Janša napoveduje davčno razbremenitev dela: bodo zaposleni prejemali višje neto plače?",
+      "summary": "Višja splošna dohodninska olajšava bi lahko zaposlenim prinesla večje neto prejemke.",
+      "date": "2026-10-19T15:02:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/slovenija/jansa-napoveduje-davcno-razbremenitev-dela-bodo-zaposleni-prejemali-visje-neto-place",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:39.552Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-kako-skodljivi-so-v-resnici-podatkovni-04a2bd",
       "title": "Kako škodljivi so v resnici podatkovni centri za umetno inteligenco?",
       "summary": "Umetna inteligenca potrebuje vse več elektrike, velik del podatkovnih centrov pa še vedno poganjajo fosilna goriva.",
@@ -1269,6 +1948,50 @@
       "author": "",
       "theme": "ai",
       "addedAt": "2026-10-19T20:54:19.544Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-jesen-je-cas-za-umirjanje-suzy-1945c4",
+      "title": "Jesen je čas za umirjanje (Suzy)",
+      "summary": "Ajurvedska tradicija v hladnih in suhih obdobjih daje prednost toplim, kuhanim in sočnim jedem.",
+      "date": "2026-10-19T15:00:00.000Z",
+      "url": "https://slovenskenovice.delo.si/bulvar/suzy/jesen-je-cas-za-umirjanje-suzy",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:39.552Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-luka-basi-komaj-zadrzeval-solze-nato-pa-566bc6",
+      "title": "Luka Basi komaj zadrževal solze, nato pa razkril veliko novico (FOTO)",
+      "summary": "Največje presenečenje je bil njegov sin Tai, ki je prvič stopil na veliki oder.",
+      "date": "2026-10-19T15:00:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/nedeljske-novice/luka-basi-komaj-zadrzeval-solze-nato-pa-razkril-veliko-novico-foto",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:19:39.552Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-pogled-kolumna-natase-lombergar-mozace-in-f27528",
+      "title": "(POGLED) Kolumna Nataše Lombergar: Možače in pomehkuženi moški 21. stoletja",
+      "summary": "POGLEDI",
+      "date": "2026-10-19T15:00:00.000Z",
+      "url": "https://vecer.com/pogledi/pogled-kolumna-natase-lombergar-mozace-in-pomehkuzeni-moski-21-stoletja-10430806",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "POGLEDI"
+      ],
+      "author": "Nataša Lombergar",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.620Z",
       "backfilled": true
     },
     {
@@ -1302,6 +2025,50 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:54:19.544Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-ves-dan-so-barantali-zahtevam-da-se-ogled-e75309",
+      "title": "Ves dan so barantali: Zahtevam, da se ogled in kupčije opravijo preudarno! (FOTO)",
+      "summary": "Na Rečici ob Savinji so znova oživili stare običaje, za red sta skrbela trška policaja.",
+      "date": "2026-10-19T14:45:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/slovenija/ves-dan-so-barantali-zahtevam-da-se-ogled-in-kupcije-opravijo-preudarno-foto",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:19:39.552Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-vrtovec-na-vprasanje-o-tei-kosir-odgovoril-62ea35",
+      "title": "Vrtovec na vprašanje o Tei Košir odgovoril, da nima časa za spremljanje dnevnih novic. Kaj pa Logar?",
+      "summary": "SLOVENIJA",
+      "date": "2026-10-19T14:45:00.000Z",
+      "url": "https://vecer.com/slovenija/jernej-vrtovec-anze-logar-tea-kosir-odziv-10430819",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SLOVENIJA"
+      ],
+      "author": "A.L., STA",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.620Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-mali-genij-edvard-uresnicil-svoje-sanje-na-8c09a8",
+      "title": "Mali genij Edvard uresničil svoje sanje: »Na žalost v Srbiji. Ker v Sloveniji ni posluha« (FOTO)",
+      "summary": "Edvard Kaloh je pretekel polmaraton, in to kar s kar drugim časom v kategoriji do 19 let.",
+      "date": "2026-10-19T14:36:00.000Z",
+      "url": "https://slovenskenovice.delo.si/bulvar/domaci-traci/mali-genij-edvard-uresnicil-svoje-sanje-na-zalost-v-srbiji-ker-v-sloveniji-ni-posluha-foto",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:19:39.552Z",
       "backfilled": true
     },
     {
@@ -1343,6 +2110,36 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-zapeljal-s-ceste-in-se-prevracal-po-f12a4a",
+      "title": "Zapeljal s ceste in se prevračal po vinogradu, z voznikom (27) je hudo",
+      "summary": "Iz vozila so ukleščenega moškega s tehničnim posegom rešili gasilci.",
+      "date": "2026-10-19T14:18:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/kronika/doma/zapeljal-s-ceste-in-se-prevracal-po-vinogradu-z-voznikom-27-je-hudo",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "addedAt": "2026-10-19T21:19:39.553Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-vse-vidijo-skozi-denar-ta-astroloska-58558b",
+      "title": "Vse vidijo skozi denar: Ta astrološka znamenja obožujejo materialne dobrine in prestiž",
+      "summary": "Prosti čas",
+      "date": "2026-10-19T14:10:00.000Z",
+      "url": "https://vecer.com/prosti-cas/astrologija-materializem-horoskop-napoved-denar-10430774",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Prosti čas"
+      ],
+      "author": "A.B.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.620Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-24ur-hudohmetu-v-romuniji-podaljsan-pripor-za-30-295f10",
       "title": "Hudohmetu v Romuniji podaljšan pripor za 30 dni",
       "summary": "Sodnik za pravice in svoboščine na sodišču v Bukarešti je podaljšal odredbe o priporu za direktorja družbe Gen-I Sonce Gregorja Hudohmeta, ki je osumljen jemanja podkupnine.",
@@ -1356,6 +2153,50 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T21:10:52.328Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-priljubljeni-slovenski-igralec-in-voditelj-ef10e8",
+      "title": "Priljubljeni slovenski igralec in voditelj bo postal očka! Z ženo razkrila veselo novico (FOTO)",
+      "summary": "Po več kot 15 letih ljubezni se priljubljenima igralcema obeta novo življenjsko poglavje.",
+      "date": "2026-10-19T14:04:00.000Z",
+      "url": "https://slovenskenovice.delo.si/bulvar/domaci-traci/priljubljeni-slovenski-igralec-in-voditelj-bo-postal-ocka-z-zeno-razkrila-veselo-novico-foto",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:39.553Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-najbolj-strasna-noc-je-odlicna-priloznost-ee94a1",
+      "title": "Najbolj strašna noč je odlična priložnost za ustvarjanje skupaj z otroki",
+      "summary": "Na trgovskih policah je na voljo nemalo artiklov, s katerimi lahko okrasimo dom, a težko se bodo kosali s tistimi, ki jih bomo skupaj z otroki naredili doma.",
+      "date": "2026-10-19T14:00:00.000Z",
+      "url": "https://slovenskenovice.delo.si/lifestyle/svetovalnica/najbolj-strasna-noc-je-odlicna-priloznost-za-ustvarjanje-skupaj-z-otroki",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:39.553Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-rekli-so-leon-magdalenc-podobno-se-96d3df",
+      "title": "(REKLI SO) Leon Magdalenc: Podobno se žrtvujejo mnogi podjetniki v tej državi, ker dajejo plače svojim zaposlenim",
+      "summary": "POGLEDI",
+      "date": "2026-10-19T14:00:00.000Z",
+      "url": "https://vecer.com/pogledi/leon-magdalenc-o-vladanju-javno-nase-10430790",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "POGLEDI"
+      ],
+      "author": "DR",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:19:55.620Z",
       "backfilled": true
     },
     {
@@ -1375,6 +2216,84 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T21:10:44.744Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-upad-se-zacne-prej-kot-si-mislite-dd9a20",
+      "title": "Upad se začne prej, kot si mislite: Znanstveniki odkrili, v katerem letu telo začne izgubljati moč in kondicijo",
+      "summary": "Prosti čas",
+      "date": "2026-10-19T13:56:00.000Z",
+      "url": "https://vecer.com/prosti-cas/upad-moc-kondicija-kdaj-leta-10430813",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Prosti čas"
+      ],
+      "author": "A.L.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.620Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-foto-nasilje-v-srediscu-milana-med-914967",
+      "title": "(FOTO) Nasilje v središču Milana: Med izgredniki celo enajstletni otroci",
+      "summary": "SVET",
+      "date": "2026-10-19T13:52:00.000Z",
+      "url": "https://vecer.com/svet/italija-milano-protesti-izgredi-meloni-10430812",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SVET"
+      ],
+      "author": "Bojan Brezigar",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.620Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-foto-v-mariboru-trcila-mestni-avtobus-in-b861dc",
+      "title": "(FOTO) V Mariboru trčila mestni avtobus in tovornjak: Nekaj potnikov in voznico prepeljali v bolnišnico",
+      "summary": "KRONIKA",
+      "date": "2026-10-19T13:52:00.000Z",
+      "url": "https://vecer.com/kronika/nesreca-avtobus-maribor-bolnica-tovornjak-10430811",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "KRONIKA"
+      ],
+      "author": "Gr. G.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.620Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-huda-nesreca-z-elektricnim-skirojem-na-e4a36a",
+      "title": "Huda nesreča z električnim skirojem na Ptuju: 55-letnik vozil pod vplivom alkohola",
+      "summary": "Policisti so ugotovili, da je vozil preblizu desnemu robu vozišča.",
+      "date": "2026-10-19T13:48:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/slovenija/huda-nesreca-z-elektricnim-skirojem-na-ptuju-55-letnik-vozil-pod-vplivom-alkohola",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:39.553Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-gen-i-zadeva-v-romuniji-se-nanasa-na-ed9dca",
+      "title": "Gen-I: Zadeva v Romuniji se nanaša na posameznika in konkreten projekt",
+      "summary": "SLOVENIJA",
+      "date": "2026-10-19T13:46:00.000Z",
+      "url": "https://vecer.com/slovenija/gen-i-romunija-gregor-hudohmet-10430809",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SLOVENIJA"
+      ],
+      "author": "STA, A.L.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.620Z",
       "backfilled": true
     },
     {
@@ -1413,6 +2332,36 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T21:10:44.744Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-znana-smucarska-skakalka-je-kmalu-po-najavi-1c9976",
+      "title": "Znana smučarska skakalka je kmalu po najavi nosečnosti prestala nujno operacijo slepiča",
+      "summary": "Popularno",
+      "date": "2026-10-19T13:37:00.000Z",
+      "url": "https://vecer.com/popularno/silje-opseth-nosecnost-operacija-slepic-10430773",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Popularno"
+      ],
+      "author": "A.B.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.620Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-po-smrti-slovenca-na-ironmanu-v-porecu-se-ad91c0",
+      "title": "Po smrti Slovenca na Ironmanu v Poreču se je oglasil znani plavalec: »Kakšen smisel imajo triatloni, na katerih ljudje umirajo?«",
+      "summary": "Po tragediji se je oglasil slovenski politolog in maratonski plavalec Bojan Korsika (71), ki je pred kratkim preplaval 11,5 kilometra okoli Golega otoka.",
+      "date": "2026-10-19T13:33:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/svet/po-smrti-slovenca-na-ironmanu-v-porecu-se-je-oglasil-znani-plavalec-kaksen-smisel-imajo-triatloni-na-katerih-ljudje-umirajo",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:19:39.553Z",
       "backfilled": true
     },
     {
@@ -1474,6 +2423,54 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-vecer-prihaja-nova-tiha-pandemija-strokovnjaki-db1e62",
+      "title": "Prihaja nova tiha pandemija: Strokovnjaki svarijo pred smrtonosno grožnjo",
+      "summary": "Prosti čas",
+      "date": "2026-10-19T13:08:00.000Z",
+      "url": "https://vecer.com/prosti-cas/superbakterije-virus-tiha-pandemija-odpornost-zdravje-10430771",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Prosti čas"
+      ],
+      "author": "A.B.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.620Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-zakon-mocnejsega-po-novem-rajgelj-z-lekcijo-d53109",
+      "title": "Zakon močnejšega po novem: Rajgelj z lekcijo pravniku ustavnega sodišča, kritičnemu do kriketa na šolskem igrišču",
+      "summary": "SLOVENIJA",
+      "date": "2026-10-19T13:08:00.000Z",
+      "url": "https://vecer.com/slovenija/kriket-igrisca-rajgelj-vuksanovic-10430805",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SLOVENIJA"
+      ],
+      "author": "Zo. M.",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:19:55.620Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-dve-hudi-nesreci-na-obmocju-pu-maribor-v-db6314",
+      "title": "Dve hudi nesreči na območju PU Maribor, v eni poškodovana mladoletnica",
+      "summary": "KRONIKA",
+      "date": "2026-10-19T13:05:00.000Z",
+      "url": "https://vecer.com/kronika/nesreca-poskodbe-pu-maribor-e-skiro-mladoletnica-skuter-10430804",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "KRONIKA"
+      ],
+      "author": "A.L.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.620Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-n1si-ste-tudi-vi-prejeli-taksen-klic-nijz-a7070f",
       "title": "Ste tudi vi prejeli takšen klic? NIJZ opozarja na novo obliko zavajanja",
       "summary": "Nacionalni inštitut za javno zdravje (NIJZ) opozarja na telefonske klice, v katerih se neznane osebe lažno predstavljajo kot predstavniki t. i. Zavoda",
@@ -1521,6 +2518,20 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-najboljse-sadje-za-zdravo-srce-8bda03",
+      "title": "Najboljše sadje za zdravo srce",
+      "summary": "Zdrava prehrana je eden od pomembnih dejavnikov, ki vplivajo na srce.",
+      "date": "2026-10-19T13:00:00.000Z",
+      "url": "https://slovenskenovice.delo.si/lifestyle/aktivni-in-zdravi/najboljse-sadje-za-zdravo-srce",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:39.553Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-n1si-logar-ocitki-na-racun-novaka-so-napad-in-41f269",
       "title": "Logar: Očitki na račun Novaka so napad in sredstvo za rahljanje koalicije",
       "summary": "Predsednik Demokratov in gospodarski minister Anže Logar vidi očitke o potvarjanju dokumentov za dokazovanje okoliščin odstopa Aleša Novaka s funkcije",
@@ -1554,6 +2565,20 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-je-kim-jong-un-v-komi-nekateri-govorijo-87ad38",
+      "title": "Je Kim Jong Un v komi? Nekateri govorijo celo, da naj bi umrl",
+      "summary": "Severnokorejskega diktatorja naj bi prepeljali v bolnišnico v Peking.",
+      "date": "2026-10-19T12:50:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/svet/je-kim-jong-un-v-komi-nekateri-govorijo-celo-da-naj-bi-umrl",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:39.553Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-razkritje-iz-zda-do-konca-desetletja-luka-1f9e94",
       "title": "Razkritje iz ZDA, do konca desetletja Luka Dončić in drugi asi tudi v Mehiki",
       "summary": "Vodstvo lige NBA resno proučuje možnost, da bi Ciudad de México že v sezoni 2028/29 imelo svojo franšizo. V prednosti pred Las Vegasom in Seattlom.",
@@ -1565,6 +2590,20 @@
       "author": "",
       "theme": "energija",
       "addedAt": "2026-10-19T20:54:19.544Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-v-soli-na-kolesih-vec-kot-53-tisoc-ljudi-ko-afad15",
+      "title": "V šoli na kolesih več kot 53 tisoč ljudi, ko zagori, štejejo sekunde",
+      "summary": "Posebno gasilsko vozilo s simulatorji za vse scenarije.",
+      "date": "2026-10-19T12:45:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/slovenija/v-soli-na-kolesih-vec-kot-53-tisoc-ljudi-ko-zagori-stejejo-sekunde",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "addedAt": "2026-10-19T21:19:39.553Z",
       "backfilled": true
     },
     {
@@ -1612,6 +2651,20 @@
       "author": "",
       "theme": "politika",
       "addedAt": "2026-10-19T20:54:19.545Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-v-demokratih-ponarejali-listine-anze-logar-e520fd",
+      "title": "V Demokratih ponarejali listine? Anže Logar: »Verjamem, da je nekoliko nenavadno«",
+      "summary": "Gre za prvo ovadbo v njegovi dolgoletni karieri.",
+      "date": "2026-10-19T12:40:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/slovenija/v-demokratih-ponarejali-listine-anze-logar-verjamem-da-je-nekoliko-nenavadno",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:19:39.553Z",
       "backfilled": true
     },
     {
@@ -1666,6 +2719,68 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-vecer-jenkova-nagrada-za-najboljso-pesnisko-a8a0c7",
+      "title": "Jenkova nagrada za najboljšo pesniško zbirko Vidu Karlovšku",
+      "summary": "Kultura",
+      "date": "2026-10-19T12:25:00.000Z",
+      "url": "https://vecer.com/kultura/jenkova-nagrada-za-najboljso-pesnisko-zbirko-vidu-karlovsku-10430800",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Kultura"
+      ],
+      "author": "P. V., STA",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.620Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-foto-hci-kobeja-bryanta-prvic-stopila-na-15b0ae",
+      "title": "(FOTO) Hči Kobeja Bryanta prvič stopila na modno brv znane znamke",
+      "summary": "Popularno",
+      "date": "2026-10-19T12:25:00.000Z",
+      "url": "https://vecer.com/popularno/natalia-bryant-modna-brv-victorias-secret-10430770",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Popularno"
+      ],
+      "author": "A.B.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.620Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-samantha-maya-v-novi-skladbi-odpira-vrata-b622c7",
+      "title": "Samantha Maya v novi skladbi odpira vrata preteklosti: Najstrašnejši duhovi so tisti, ki jih nosimo v sebi (VIDEO)",
+      "summary": "Samantha Maya v novi skladbi odpira vrata preteklosti: Najstrašnejši duhovi so tisti, ki jih nosimo v sebi",
+      "date": "2026-10-19T12:24:00.000Z",
+      "url": "https://slovenskenovice.delo.si/bulvar/glasba-in-film/samantha-maya-v-novi-skladbi-odpira-vrata-preteklosti-najstrasnejsi-duhovi-so-tisti-ki-jih-nosimo-v-sebi-video",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:19:39.553Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-foto-rogaska-slatina-pri-mladoletniku-in-18-1f8a34",
+      "title": "(FOTO) Rogaška Slatina: Pri mladoletniku in 18-letniku zasegli pirotehniko in tudi pištoli",
+      "summary": "KRONIKA",
+      "date": "2026-10-19T12:17:00.000Z",
+      "url": "https://vecer.com/kronika/rogaska-slatina-petarde-pirotehnika-zaseg-preiskava-pistola-10430798",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "KRONIKA"
+      ],
+      "author": "M.R.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.620Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-toca-mu-je-unicila-streho-zavarovalnica-pa-177796",
       "title": "Toča mu je uničila streho, zavarovalnica pa ponuja le del stroškov popravila",
       "summary": "Bralcu je toča povsem poškodovala streho, zavarovalnica pa mu ponuja le 4.000 evrov. Pravnik pojasnjuje, od česa je odvisna višina zavarovalnine.",
@@ -1699,6 +2814,20 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-slovenija-nima-lastnih-skladisc-plina-kako-d058dd",
+      "title": "Slovenija nima lastnih skladišč plina. Kako varna je njena oskrba?",
+      "summary": "Slovenski prenosni sistem plina povezuje gospodarstvo z Evropo. Plinovodi ga razvijajo za zanesljivo oskrbo, večjo odpornost in nove vire energije.",
+      "date": "2026-10-19T12:14:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/slovenija/slovenija-nima-lastnih-skladisc-plina-kako-varna-je-njena-oskrba",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "addedAt": "2026-10-19T21:19:39.553Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-vijolicna-takticna-kultura-ze-ima-be9ea7",
       "title": "Vijolična taktična kultura že ima šampionske obrise",
       "summary": "Po štajerskem derbiju v 12. kolu 1. SNL zadovoljni v obeh taborih. Mariborčani že z videno strategijo, Celjani pa v vidnem zastoju.",
@@ -1727,6 +2856,52 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-vecer-video-razhod-slovitega-teniskega-para-se-f785da",
+      "title": "(VIDEO) Razhod slovitega teniškega para: Še lani mu je obljubljala, da mu bo stala ob strani, zdaj pa to ...",
+      "summary": "Popularno",
+      "date": "2026-10-19T12:01:00.000Z",
+      "url": "https://vecer.com/popularno/svitolina-monfils-locitev-razhod-video-tenis-10430795",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Popularno"
+      ],
+      "author": "Zo. M.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.620Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-ko-zabolijo-sinusi-zdravnika-obiscemo-ce-se-5e7430",
+      "title": "Ko zabolijo sinusi: zdravnika obiščemo, če se stanje po približno desetih dneh ne izboljša",
+      "summary": "Značilni znaki so zamašen nos, izcedek, slabši voh ter bolečina ali pritisk v čelu, licih in okoli oči.",
+      "date": "2026-10-19T12:00:00.000Z",
+      "url": "https://slovenskenovice.delo.si/lifestyle/aktivni-in-zdravi/ko-zabolijo-sinusi-zdravnika-obiscemo-ce-se-stanje-po-priblizno-desetih-dneh-ne-izboljsa",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:39.553Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-nihce-si-ni-predstavljal-kaj-je-dozivljala-9de028",
+      "title": "Nihče si ni predstavljal, kaj je doživljala: Manca Špik priznala, da ji je šlo na bruhanje",
+      "summary": "Popularno",
+      "date": "2026-10-19T12:00:00.000Z",
+      "url": "https://vecer.com/popularno/manca-spik-bruhanje-trema-pa-brez-zamere-10430745",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Popularno"
+      ],
+      "author": "D.Ži",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.621Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-vec-kot-1-200-kilometrov-povezav-pomembnih-eaff4b",
       "title": "Več kot 1.200 kilometrov povezav, pomembnih za Slovenijo",
       "summary": "Slovenski prenosni sistem plina povezuje gospodarstvo z Evropo. Plinovodi ga razvijajo za zanesljivo oskrbo, večjo odpornost in nove vire energije.",
@@ -1738,6 +2913,22 @@
       "author": "",
       "theme": "energija",
       "addedAt": "2026-10-19T20:54:19.545Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-foto-na-fotografiji-so-opazili-nenavaden-dd533c",
+      "title": "(FOTO) Na fotografiji so opazili nenavaden obraz: Oglasila se je mati ženske, ki so jo našli mrtvo",
+      "summary": "Prosti čas",
+      "date": "2026-10-19T11:45:00.000Z",
+      "url": "https://vecer.com/prosti-cas/fotografija-skrivnostni-obraz-zda-mrtva-oseba-10430768",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Prosti čas"
+      ],
+      "author": "A.B.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.621Z",
       "backfilled": true
     },
     {
@@ -1760,6 +2951,68 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-vecer-bencin-bo-nekoliko-cenejsi-dizel-in-kurilno-bef509",
+      "title": "Bencin bo nekoliko cenejši, dizel in kurilno olje se bosta podražila",
+      "summary": "SLOVENIJA",
+      "date": "2026-10-19T11:42:00.000Z",
+      "url": "https://vecer.com/slovenija/bencin-cena-dizel-kurilno-olje-trosarine-vlada-podrazitev-oktober-2026-10430793",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SLOVENIJA"
+      ],
+      "author": "STA, M.R.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.621Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-ali-botoks-unicuje-film-vecno-mlade-a-vse-8a9f18",
+      "title": "Ali botoks uničuje film? Večno mlade, a vse manj prepričljive igralke",
+      "summary": "Polnila in botoks postajajo nekaj vsakdanjega, vendar gledalke in gledalci niso navdušeni nad zglajenimi, nenaravnimi obrazi, ki jih vidijo na filmskem platnu.",
+      "date": "2026-10-19T11:40:00.000Z",
+      "url": "https://slovenskenovice.delo.si/lifestyle/stil/r-ali-botoks-unicuje-film-vecno-mlade-a-vse-manj-prepricljive-igralke",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:39.553Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-asta-vrecko-sprasuje-janeza-janso-ali-71b919",
+      "title": "Asta Vrečko sprašuje Janeza Janšo: Ali nameravate spoštovati voljo ljudstva?",
+      "summary": "SLOVENIJA",
+      "date": "2026-10-19T11:39:00.000Z",
+      "url": "https://vecer.com/slovenija/asta-vrecko-janez-jansa-referendumi-posvetovalni-rtv-prispevek-10430791",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SLOVENIJA"
+      ],
+      "author": "M.R.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.621Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-tako-izgleda-sds-ova-nicelna-toleranca-c962b4",
+      "title": "Tako izgleda SDS-ova ničelna toleranca: Svetnik, ki je flirtal z mladoletnicami, spet kandidira",
+      "summary": "SLOVENIJA",
+      "date": "2026-10-19T11:34:00.000Z",
+      "url": "https://vecer.com/slovenija/skvarc-sds-mladoletnice-nadlegovanje-svetnik-ajdovscina-10430788",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SLOVENIJA"
+      ],
+      "author": "Zo. M.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.621Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-n1si-zelenski-zaveznice-obtozil-da-ukrajine-niso-e7850f",
       "title": "Zelenski zaveznice obtožil, da Ukrajine niso opozorile na ruske raketne napade",
       "summary": "Ukrajina pred novimi ruskimi napadi z balističnimi raketami, usmerjenimi v energetsko infrastrukturo, ni prejela nobenega opozorila od zaveznic, je da",
@@ -1776,6 +3029,36 @@
       "author": "",
       "theme": "rat",
       "addedAt": "2026-10-19T21:10:44.745Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-pretresljiva-izpoved-kevina-kampla-v-enem-218eb5",
+      "title": "Pretresljiva izpoved Kevina Kampla: \"V enem trenutku je bilo vse v redu, nato pa je naenkrat vse izginilo ...\"",
+      "summary": "Šport",
+      "date": "2026-10-19T11:33:00.000Z",
+      "url": "https://vecer.com/sport/pretresljiva-izpoved-kevina-kampla-10430789",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Šport"
+      ],
+      "author": "B. Pm., STA",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:19:55.621Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-prvic-po-izgubi-sina-in-brata-oglasili-sta-78e8de",
+      "title": "Prvič po izgubi sina in brata: oglasili sta se Cindy Crawford in njena hči, povedali sta tole",
+      "summary": "Ostanejo praznina, neizmerna žalost in ljubezen, ki nikoli ne izgine.",
+      "date": "2026-10-19T11:25:00.000Z",
+      "url": "https://slovenskenovice.delo.si/bulvar/tuji-traci/prvic-po-izgubi-sina-in-brata-oglasili-sta-se-cindy-crawford-in-njena-hci-povedali-sta-tole",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:19:39.553Z",
       "backfilled": true
     },
     {
@@ -1807,6 +3090,70 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-vecer-foto-in-video-lacni-brez-placila-in-stika-s-88ed24",
+      "title": "(FOTO in VIDEO) Lačni, brez plačila in stika s svetom: V tovarni cigaret pri Lendavi 34 žrtev trgovine z ljudmi!",
+      "summary": "SLOVENIJA",
+      "date": "2026-10-19T11:11:00.000Z",
+      "url": "https://vecer.com/slovenija/tovarna-cigaret-lendava-trgovina-z-ljudmi-policija-furs-10430784",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SLOVENIJA"
+      ],
+      "author": "Elizabeta Planinšič",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.621Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-easyjet-po-sodnem-zapletu-vendarle-postal-25f068",
+      "title": "EasyJet po sodnem zapletu vendarle postal lastnik Adrie Tehnike. Kdo je novi direktor?",
+      "summary": "MOJ USPEH",
+      "date": "2026-10-19T11:09:00.000Z",
+      "url": "https://vecer.com/moj-uspeh/easyjet-po-sodnem-zapletu-vendarle-postal-lastnik-adrie-tehnike-kdo-je-novi-direktor-10430783",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "MOJ USPEH"
+      ],
+      "author": "M. Sa., STA",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.621Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-nijz-ravne-dodatni-termini-za-odvzeme-krvi-d0c225",
+      "title": "NIJZ Ravne: Dodatni termini za odvzeme krvi otrokom za ugotavljanje vsebnosti svinca",
+      "summary": "Koroška",
+      "date": "2026-10-19T11:07:00.000Z",
+      "url": "https://vecer.com/koroska/testiranje-otrok-vsebnosti-svinca-v-krvi-nijz-ravne-10430782",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Koroška"
+      ],
+      "author": "Petra Lesjak Tušek",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.621Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-americanka-je-domacina-na-hrvaskem-vprasala-1850f5",
+      "title": "Američanka je domačina na Hrvaškem vprašala za nasvet o hrani: Njegovo priporočilo jo je popolnoma navdušilo",
+      "summary": "Prosti čas",
+      "date": "2026-10-19T11:06:00.000Z",
+      "url": "https://vecer.com/prosti-cas/hrvaska-hrana-kulinarika-jed-izpod-peke-10430763",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Prosti čas"
+      ],
+      "author": "A.B.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.621Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-luka-doncic-se-mora-do-jutri-znebiti-enega-f5de06",
       "title": "Luka Dončić se mora do jutri znebiti enega izmed soigralcev",
       "summary": "Jutri se začenja nova sezona košarkarske lige NBA. Visoke načrte imajo tudi pri Los Angeles Lakers Luke Dončića, kjer pa imajo igralca preveč.",
@@ -1821,6 +3168,20 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-za-zidovi-hale-v-lendavi-se-je-skrival-970d81",
+      "title": "Za zidovi hale v Lendavi se je skrival pravi pekel: kriminalist razkril pretresljive podrobnosti (FOTO)",
+      "summary": "Osumljenca so privedli pred preiskovalnega sodnika, ki pa ga je po zaslišanju izpustil na prostost. Drugi osumljenec je še vedno na begu.",
+      "date": "2026-10-19T11:02:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/slovenija/po-grozljivem-odkritju-pri-lendavi-zasuznjeni-delavci-lacni-in-brez-placila-policija-zaradi-trgovine-z-ljudmi-prijela-moskega",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:19:39.554Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-slovenija-uvaja-digitalno-denarnico-in-nov-852d4f",
       "title": "Slovenija uvaja digitalno denarnico in nov sistem obrambe pred kiber grožnjami",
       "summary": "Javna obravnava: Urad vlade za informacijsko varnost predstavil osnutek strategije kibernetske varnosti in pozval k dopolnitvam.",
@@ -1832,6 +3193,36 @@
       "author": "",
       "theme": "sigurnost",
       "addedAt": "2026-10-19T20:54:19.545Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-zeleno-dozivetje-za-telo-in-duso-suzy-f0790e",
+      "title": "Zeleno doživetje za telo in dušo (Suzy)",
+      "summary": "Pod sloganom 'Zelene navade za zeleni turizem' smo si v Krškem in Kostanjevici na Krki privoščili dan za dušo in telo.",
+      "date": "2026-10-19T11:00:00.000Z",
+      "url": "https://slovenskenovice.delo.si/bulvar/suzy/zeleno-dozivetje-za-telo-in-duso-suzy",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:39.554Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-prizor-ki-ga-ni-zelela-videti-alya-razkrila-f77ecb",
+      "title": "Prizor, ki ga ni želela videti: Alya razkrila, kaj je dobila v zasebnem sporočilu",
+      "summary": "Popularno",
+      "date": "2026-10-19T11:00:00.000Z",
+      "url": "https://vecer.com/popularno/alya-zasebno-sporocilo-neprijetno-kazen-parkiranje-10430743",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Popularno"
+      ],
+      "author": "D.Ži",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.621Z",
       "backfilled": true
     },
     {
@@ -1851,6 +3242,126 @@
       "author": "",
       "theme": "energija",
       "addedAt": "2026-10-19T21:10:44.745Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-nove-cene-goriv-koliko-bomo-od-torka-86cca2",
+      "title": "Nove cene goriv! Koliko bomo od torka plačevali na črpalkah?",
+      "summary": "Regulirane cene pogonskih goriv na bencinskih servisih zunaj avtocest se bodo opolnoči spremenile.",
+      "date": "2026-10-19T10:46:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/slovenija/nove-cene-goriv-koliko-bomo-od-torka-placevali-na-crpalkah",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "addedAt": "2026-10-19T21:19:39.554Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-nekdanje-skladisce-je-kulturno-sticisce-6-0f522c",
+      "title": "Nekdanje skladišče je kulturno stičišče: 6 milijonov je stala prenova (FOTO)",
+      "summary": "Dvesto let stara stavba Libertas je končno dobila novo življenje. Program napoveduje pestre vsebine z domačimi in tujimi ustvarjalci.",
+      "date": "2026-10-19T10:45:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/slovenija/nekdanje-skladisce-je-kulturno-sticisce-6-milijonov-je-stala-prenova-foto",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:39.554Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-pripravite-sani-prihaja-vremenski-preobrat-6f5633",
+      "title": "Pripravite sani, prihaja vremenski preobrat: Hribovja bi lahko prvič letos pobelil sneg!",
+      "summary": "SLOVENIJA",
+      "date": "2026-10-19T10:43:00.000Z",
+      "url": "https://vecer.com/slovenija/vreme-preobrat-sneg-padavine-sani-10430777",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SLOVENIJA"
+      ],
+      "author": "Zo. M.",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:19:55.621Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-konec-drame-med-romihom-in-pecarjevo-tokrat-e3bf70",
+      "title": "Konec drame med Romihom in Pečarjevo? Tokrat se oglasila s popolnoma drugačnim sporočilom (FOTO)",
+      "summary": "Tokrat se je vrnila s simboličnim sporočilom.",
+      "date": "2026-10-19T10:36:00.000Z",
+      "url": "https://slovenskenovice.delo.si/bulvar/domaci-traci/konec-drame-med-romihom-in-pecarjevo-tokrat-se-oglasila-s-popolnoma-drugacnim-sporocilom-foto",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:19:39.554Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-vodja-juznokorejske-sekte-ze-prestaja-17-4b11e4",
+      "title": "Vodja južnokorejske sekte že prestaja 17 let zapora, zdaj jih je dobil še 33",
+      "summary": "KRONIKA",
+      "date": "2026-10-19T10:32:00.000Z",
+      "url": "https://vecer.com/kronika/jung-myung-seok-spolna-zloraba-zaporna-kazen-10430761",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "KRONIKA"
+      ],
+      "author": "A.B.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.621Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-drama-pred-predorom-karavanke-slovencu-med-a7a081",
+      "title": "Drama pred predorom Karavanke: Slovencu med vožnjo zagorel avtomobil, drugi vozniki preprečili najhujše (FOTO)",
+      "summary": "68-letni Slovenec je v nočnih urah vozil proti predoru Karavanke, ko je njegov avtomobil zajel ogenj. Na nevarnost so ga opozorili drugi vozniki, ki so opazili, kaj se dogaja z njegovim vozilom.",
+      "date": "2026-10-19T10:25:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/kronika/na-tujem/drama-pred-predorom-karavanke-slovencu-med-voznjo-zagorel-avtomobil-drugi-vozniki-preprecili-najhujse-foto",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:19:39.554Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-castnik-pomagajmo-poslancu-aleksandru-c6d42f",
+      "title": "(ČASTNIK) Pomagajmo poslancu Aleksandru Reberšku!",
+      "summary": "Popularno",
+      "date": "2026-10-19T10:25:00.000Z",
+      "url": "https://vecer.com/popularno/rebersek-potnik-poslanci-politika-referendum-10430764",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Popularno"
+      ],
+      "author": "Aleksander Potnik",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.621Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-na-gorenjskem-razstrelili-bankomat-skoda-9af045",
+      "title": "Na Gorenjskem razstrelili bankomat, škoda tudi na objektu",
+      "summary": "KRONIKA",
+      "date": "2026-10-19T10:24:00.000Z",
+      "url": "https://vecer.com/kronika/preddvor-bankomat-razstreljen-skoda-objekt-10430775",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "KRONIKA"
+      ],
+      "author": "M.R.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.621Z",
       "backfilled": true
     },
     {
@@ -1896,6 +3407,36 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-toca-mu-je-unicila-streho-skode-za-60-000-708167",
+      "title": "Toča mu je uničila streho, škode za 60.000 evrov, zavarovalnica pa ponuja le 4.000",
+      "summary": "Bralcu je toča uničila streho, zavarovalnica pa mu ponuja le del stroškov popravila. Pravnik pojasnjuje, kdaj je takšno izplačilo upravičeno.",
+      "date": "2026-10-19T10:20:00.000Z",
+      "url": "https://slovenskenovice.delo.si/razno/r-toca-mu-je-unicila-streho-skode-za-60-000-evrov-zavarovalnica-pa-ponuja-le-4-000",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:39.554Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-foto-velik-dan-za-maribor-pred-tocno-30-282ce9",
+      "title": "(FOTO) Velik dan za Maribor: Pred točno 30 leti smo dobili Koroški most!",
+      "summary": "Aktualno",
+      "date": "2026-10-19T10:09:00.000Z",
+      "url": "https://vecer.com/maribor/aktualno/koroski-most-obletnica-30-maribor-10430772",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Aktualno"
+      ],
+      "author": "Zo. M.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.621Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-fotografije-dneva-19-10-3de211",
       "title": "Fotografije dneva (19. 10.)",
       "summary": "V uredništvu Dela smo za vas pripravili najbolj zanimive in povedne fotografije iz sveta v zadnjih 24 urah.",
@@ -1921,6 +3462,38 @@
       "author": "",
       "theme": "ai",
       "addedAt": "2026-10-19T20:54:19.545Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-foto-nova-drama-v-domu-tine-gaber-golob-afa44d",
+      "title": "(FOTO) Nova drama v domu Tine Gaber Golob: Sredi noči je bilo tam vse prej kot mirno",
+      "summary": "Popularno",
+      "date": "2026-10-19T10:00:00.000Z",
+      "url": "https://vecer.com/popularno/tina-gaber-golob-drama-ponoci-macke-10430740",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Popularno"
+      ],
+      "author": "D.Ži",
+      "theme": "sport",
+      "addedAt": "2026-10-19T21:19:55.621Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-zvezdnica-po-desetletju-razdvojenosti-znova-0b997b",
+      "title": "Zvezdnica po desetletju razdvojenosti znova v objemu moškega, s katerim je pisala zgodovino",
+      "summary": "Popularno",
+      "date": "2026-10-19T10:00:00.000Z",
+      "url": "https://vecer.com/popularno/ashanti-shequoiya-douglas-partner-ljubezen-kariera-10430753",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Popularno"
+      ],
+      "author": "A.B.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.621Z",
       "backfilled": true
     },
     {
@@ -1968,6 +3541,82 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-racunalniski-strokovnjak-47-med-letom-v-3096f9",
+      "title": "Računalniški strokovnjak (47) med letom v Zagreb razkazoval spolovilo. Aretirali so ga takoj po pristanku",
+      "summary": "Potnika letalske družbe Ryanair so v noči s sobote na nedeljo aretirali na letalu, neposredno po pristanku na zagrebškem letališču",
+      "date": "2026-10-19T09:38:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/kronika/na-tujem/racunalniski-strokovnjak-47-med-letom-v-zagreb-razkazoval-spolovilo-aretirali-so-ga-takoj-po-pristanku",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:19:39.554Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-na-letaliscu-v-zagrebu-prijeli-potnika-ki-065ecf",
+      "title": "Na letališču v Zagrebu prijeli potnika, ki je na letalu razkazoval svoje spolovilo",
+      "summary": "KRONIKA",
+      "date": "2026-10-19T09:36:00.000Z",
+      "url": "https://vecer.com/kronika/letalisce-polet-zagreb-potnik-aretacija-spolovilo-10430767",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "KRONIKA"
+      ],
+      "author": "M.R.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.621Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-je-kaj-cesar-edvard-in-frida-ne-zmoreta-ker-c4db8e",
+      "title": "Je kaj, česar Edvard in Frida ne zmoreta? Ker v Sloveniji ni posluha, sta tekaške sanje uresničila v Srbiji!",
+      "summary": "Popularno",
+      "date": "2026-10-19T09:36:00.000Z",
+      "url": "https://vecer.com/popularno/frida-edvard-kaloh-maraton-10430766",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Popularno"
+      ],
+      "author": "Zo. M.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.621Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-preselil-se-je-na-hrvasko-in-razkril-tega-v-98c616",
+      "title": "Preselil se je na Hrvaško in razkril: \"Tega v Ameriki nikoli ne bi mogel storiti\"",
+      "summary": "Prosti čas",
+      "date": "2026-10-19T09:35:00.000Z",
+      "url": "https://vecer.com/prosti-cas/zda-hrvaska-selitev-osebna-izkusnja-10430750",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Prosti čas"
+      ],
+      "author": "A.B.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.621Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-vinjeni-vozniki-za-volanom-eden-z-2-7-15be57",
+      "title": "Vinjeni vozniki za volanom: eden z 2,7 promila trčil v zabojnik, drugi v drevo",
+      "summary": "Policisti Policijske uprave Novo mesto so imeli minuli konec tedna veliko opravkov z vozniki, ki so sedli za volan pod vplivom alkohola.",
+      "date": "2026-10-19T09:32:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/kronika/doma/vinjeni-vozniki-za-volanom-eden-z-27-promila-trcil-v-zabojnik-drugi-v-drevo",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:39.554Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-seskov-united-tone-vse-globlje-kaj-se-9b6324",
       "title": "Šeškov United tone vse globlje, kaj se dogaja?",
       "summary": "V sedmih tekmah je četa Michaela Carricka, za katero zaradi poškodbe ne igra Benjamin Šeško, vknjižila le eno zmago.",
@@ -2010,6 +3659,20 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-najvecje-presenecenje-zavore-8bd0eb",
+      "title": "Največje presenečenje: zavore",
+      "summary": "Kaj je na Vranskem presenetilo celo najbolj izkušene voznike?",
+      "date": "2026-10-19T09:26:00.000Z",
+      "url": "https://slovenskenovice.delo.si/lifestyle/izlet/r-najvecje-presenecenje-zavore",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:39.554Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-n1si-na-duhovnika-med-maso-ki-so-jo-prenasali-v-0d7fed",
       "title": "Na duhovnika med mašo, ki so jo prenašali v živo, padel križ in ga ubil",
       "summary": "V Ekvadorju je umrl duhovnik, potem ko je nanj med mašo, ki so jo prenašali v živo, padel križ.",
@@ -2029,6 +3692,68 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-vecer-nekdanji-ameriski-veleposlanik-putin-dobi-35626f",
+      "title": "Nekdanji ameriški veleposlanik: Putin dobi šopek rož, se nasmehe in bombardira naprej",
+      "summary": "SVET",
+      "date": "2026-10-19T09:12:00.000Z",
+      "url": "https://vecer.com/svet/ameriski-veleposlanik-putin-trump-vojna-rusija-ukrajina-sankcije-taylor-william-10430762",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SVET"
+      ],
+      "author": "M.R.",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:19:55.622Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-turist-primerjal-dopust-na-hrvaskem-in-v-2e92bd",
+      "title": "Turist primerjal dopust na Hrvaškem in v Franciji, razlika v ceni ga je šokirala",
+      "summary": "Prosti čas",
+      "date": "2026-10-19T09:06:00.000Z",
+      "url": "https://vecer.com/prosti-cas/turizem-potovanje-cene-hrvaska-francija-10430746",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Prosti čas"
+      ],
+      "author": "A.B.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.622Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-nizje-nogometne-lige-dravinja-pod-zarometi-1e7353",
+      "title": "Nižje nogometne lige: Dravinja pod žarometi vzela mero Jesenicam",
+      "summary": "Šport",
+      "date": "2026-10-19T09:03:00.000Z",
+      "url": "https://vecer.com/sport/nizje-nogometne-lige-dravinja-zarometi-10430756",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Šport"
+      ],
+      "author": "Zmago Gomzi",
+      "theme": "sport",
+      "addedAt": "2026-10-19T21:19:55.622Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-v-ljubljani-nov-most-za-sest-milijonov-5fd61c",
+      "title": "V Ljubljani nov most za šest milijonov evrov: eni navdušeni, drugi besni, takšnega pa še nismo imeli (VIDEO)",
+      "summary": "Ljubljana je dobila še most čez Ljubljanico - Doživljajski most Muste. Čeprav se mnenja o ceni in smiselnosti gradnje močno razlikujejo, je novi most že postal priljubljena tema pogovorov. Morda pa se ga bo res prijel vzdevek Štepanjski Rialto.",
+      "date": "2026-10-19T09:02:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/slovenija/v-ljubljani-nov-most-za-sest-milijonov-evrov-eni-navduseni-drugi-besni-taksnega-pa-se-nismo-imeli-video",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:39.554Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-zadeva-lendava-zaplenili-44-ton-tobaka-in-aa7119",
       "title": "Zadeva Lendava: zaplenili 44 ton tobaka in 28 ton cigaret",
       "summary": "Nove podrobnosti o ozadju največje proizvodnje ponarejenih cigaret v slovenski zgodovini.",
@@ -2040,6 +3765,100 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:54:19.546Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-velike-druzinske-hise-samevajo-ljudje-pa-c581f4",
+      "title": "Velike družinske hiše samevajo, ljudje pa iščejo stanovanja: Se rešitev skriva v praznih prostorih?",
+      "summary": "Podravje",
+      "date": "2026-10-19T09:00:00.000Z",
+      "url": "https://vecer.com/podravje/velike-druzinske-hise-samevajo-urbanisticni-institut-republike-slovenije-iskanje-stanovanj-haloze-10430724",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Podravje"
+      ],
+      "author": "Sanja Verovnik",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.622Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-eu-ne-zagotavlja-da-javne-nalozbe-privedejo-d45f1b",
+      "title": "EU ne zagotavlja, da javne naložbe privedejo do inovacij. Kaj so še ugotovili revizorji Evropskega računskega sodišča?",
+      "summary": "MOJ USPEH",
+      "date": "2026-10-19T09:00:00.000Z",
+      "url": "https://vecer.com/moj-uspeh/eu-ne-zagotavlja-da-javne-nalozbe-privedejo-do-inovacij-kaj-so-se-ugotovili-revizorji-evropskega-racunskega-sodisca-10430732",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "MOJ USPEH"
+      ],
+      "author": "Darja Kocbek",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:19:55.622Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-poslovni-pretres-v-druzini-prevc-oce-nasih-3e710d",
+      "title": "Poslovni pretres v družini Prevc: Oče naših skakalnih šampionov ni več direktor",
+      "summary": "Popularno",
+      "date": "2026-10-19T09:00:00.000Z",
+      "url": "https://vecer.com/popularno/bozidar-prevc-domen-peter-druzinsko-podjetje-likvidacija-10430736",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Popularno"
+      ],
+      "author": "D.Ži",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.622Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-iscejo-ga-ze-100-dni-z-ocetom-ki-mu-je-1c3c9e",
+      "title": "Iščejo ga že 100 dni: Z očetom, ki mu je kupil stanovanje, sta odšla na kosilo, nato pa je nenadoma vstal in izginil",
+      "summary": "KRONIKA",
+      "date": "2026-10-19T08:50:00.000Z",
+      "url": "https://vecer.com/kronika/hrvat-izginotje-oce-sin-restavracija-kosilo-pogresani-damir-stanic-10430758",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "KRONIKA"
+      ],
+      "author": "M.R.",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:19:55.622Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-najslabsa-investicija-ministra-roncevica-a87023",
+      "title": "Najslabša investicija ministra Rončevića: Kako je na Tajskem (pre)prodajal vodne bivole",
+      "summary": "SLOVENIJA",
+      "date": "2026-10-19T08:47:00.000Z",
+      "url": "https://vecer.com/slovenija/roncevic-bivoli-investicija-10430757",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SLOVENIJA"
+      ],
+      "author": "Zo. M.",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-19T21:19:55.622Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-vrhunska-vina-in-umetnine-resujejo-bolnike-2f924a",
+      "title": "Vrhunska vina in umetnine rešujejo bolnike: boter dobrodelnega projekta šempetrske bolnišnice je priznani chef Tomaž Kavčič",
+      "summary": "Srčni vinarji so podarili tudi steklenice, ki niso na prodaj. Z donacijami v nakup monitorjev za nadzor življenjskih funkcij.",
+      "date": "2026-10-19T08:45:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/slovenija/vrhunska-vina-in-umetnine-resujejo-bolnike-boter-dobrodelnega-projekta-sempetrske-bolnisnice-je-priznani-chef-tomaz-kavcic",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:39.554Z",
       "backfilled": true
     },
     {
@@ -2057,6 +3876,52 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-med-gasenjem-pozara-na-koroskem-3bf842",
+      "title": "Med gašenjem požara na Koroškem eksplodirala plinska jeklenka, vikend zgorel do tal (FOTO)",
+      "summary": "V Ludranskem vrhu je okoli 22. ure zagorel lesen vikend. Gasilce je ob prihodu pričakal polno razvit požar, med intervencijo pa je eksplodirala plinska jeklenka.",
+      "date": "2026-10-19T08:40:22.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/kronika/doma/med-gasenjem-pozara-na-koroskem-eksplodirala-plinska-jeklenka-vikend-zgorel-do-tal-foto",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "addedAt": "2026-10-19T21:19:39.554Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-foto-rdeca-vrata-bogdana-borcica-odprla-7f189e",
+      "title": "(FOTO) Rdeča vrata Bogdana Borčića odprla nove umetniške izraze in stkala nove vezi in poznanstva",
+      "summary": "Koroška",
+      "date": "2026-10-19T08:40:00.000Z",
+      "url": "https://vecer.com/koroska/galerija-frida-franja-kocan-bogdan-borcic-10430755",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Koroška"
+      ],
+      "author": "P.L.T.",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:19:55.622Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-korosica-nezka-libnik-se-drugic-na-vrhu-ec072b",
+      "title": "Korošica Nežka Libnik še drugič na vrhu sveta, ustavil je ni niti padec",
+      "summary": "Šport",
+      "date": "2026-10-19T08:39:00.000Z",
+      "url": "https://vecer.com/sport/nezka-libnik-svetovna-prvakinja-enduro-10430754",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Šport"
+      ],
+      "author": "N.S.",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:19:55.622Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-jenkova-nagrada-vidu-karlovsku-za-06507f",
       "title": "Jenkova nagrada Vidu Karlovšku za Destrukcije",
       "summary": "»Največja moč zbirke je v jeziku: besede se ponavljajo, razmikajo, preobračajo in zvočno zaletavajo druga v drugo,« je med drugim zapisala žirija.",
@@ -2068,6 +3933,22 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:54:19.546Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-imate-ta-kovanec-za-dva-evra-zbiratelji-9cb2ff",
+      "title": "Imate ta kovanec za dva evra? Zbiratelji zanj plačujejo na tisoče evrov",
+      "summary": "Prosti čas",
+      "date": "2026-10-19T08:32:00.000Z",
+      "url": "https://vecer.com/prosti-cas/kovanec-dva-evra-zbiratelji-cena-10430744",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Prosti čas"
+      ],
+      "author": "A.B.",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:19:55.622Z",
       "backfilled": true
     },
     {
@@ -2104,6 +3985,20 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-tim-gajser-skocil-v-zakon-spela-blestela-v-a9364a",
+      "title": "Tim Gajser skočil v zakon! Špela blestela v beli čipki, za njuno poroko poskrbela znana Slovenka (FOTO)",
+      "summary": "Naš motokrosistični šampion je po skoraj enajstih letih zveze večno zvestobo obljubil svoji dolgoletni izbranki Špeli Motaln.",
+      "date": "2026-10-19T08:22:00.000Z",
+      "url": "https://slovenskenovice.delo.si/bulvar/domaci-traci/tim-gajser-skocil-v-zakon-spela-blestela-v-beli-cipki-za-njuno-poroko-poskrbela-znana-slovenka-foto",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "addedAt": "2026-10-19T21:19:39.554Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-zvezdniski-par-se-locuje-nekatere-bitke-66249c",
       "title": "Zvezdniški par se ločuje: Nekatere bitke mora človek izbojevati sam",
       "summary": "Po petih letih zakona je Jelina Svitolina zapisala, da mora nekatere bitke izbojevati sama. Dotaknila se je tudi vojne v Ukrajini. Monfils končal kariero.",
@@ -2129,6 +4024,52 @@
       "author": "",
       "theme": "drustvo",
       "addedAt": "2026-10-19T20:54:19.546Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-dobrodelni-vecer-s-tinetom-urnautom-kdo-bo-79a50e",
+      "title": "Dobrodelni večer s Tinetom Urnautom: Kdo bo naslednji ambasador botrstva?",
+      "summary": "Šport",
+      "date": "2026-10-19T08:15:00.000Z",
+      "url": "https://vecer.com/sport/tine-urnaut-dobrodelni-vecer-oks-10430747",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Šport"
+      ],
+      "author": "N.S., STA",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:19:55.622Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-boris-vezjak-podaja-kazensko-ovadbo-zoper-df424d",
+      "title": "Boris Vezjak podaja kazensko ovadbo zoper Aleša Novaka, Anžeta Logarja in stranko Demokrati",
+      "summary": "SLOVENIJA",
+      "date": "2026-10-19T08:15:00.000Z",
+      "url": "https://vecer.com/slovenija/kazenska-ovadba-vezjak-novak-logar-demokrati-mladinska-10430748",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SLOVENIJA"
+      ],
+      "author": "B.P.",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:19:55.622Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-tragedija-na-ironmanu-v-porecu-med-f93dd3",
+      "title": "Tragedija na Ironmanu v Poreču. Med plavalnim delom umrl slovenski triatlonec",
+      "summary": "Kot so potrdili na istrski policijski upravi, je slovenskemu tekmovalcu med plavanjem postalo slabo.",
+      "date": "2026-10-19T08:14:30.000Z",
+      "url": "https://slovenskenovice.delo.si/lifestyle/polet/tragedija-na-ironmanu-v-porecu-med-plavalnim-delom-umrl-slovenski-triatlonec",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:39.555Z",
       "backfilled": true
     },
     {
@@ -2176,6 +4117,20 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-osebna-izpoved-ive-dimic-takrat-nisem-be4a15",
+      "title": "Osebna izpoved Ive Dimic: Takrat nisem verjela, da se rak lahko zgodi meni",
+      "summary": "Občutek, da smo ljudje na tisti mizi tako ranljivi, šibki, minljivi, me je zelo pretresel. Dr. Erik Brecelj je v mojem boju in okrevanju odigral pomembno vlogo.",
+      "date": "2026-10-19T08:05:00.000Z",
+      "url": "https://slovenskenovice.delo.si/lifestyle/stil/r-osebna-izpoved-ive-dimic-takrat-nisem-verjela-da-se-rak-lahko-zgodi-meni",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:19:39.555Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-n1si-med-tekmovanjem-v-porecu-umrl-slovenski-8cff08",
       "title": "Med tekmovanjem v Poreču umrl slovenski državljan",
       "summary": "Na nedeljskem triatlonskem tekmovanju Ironman 70.3 v hrvaškem Poreču je umrl slovenski državljan, poroča portal Glas Istre.",
@@ -2206,6 +4161,68 @@
       "author": "",
       "theme": "sport",
       "addedAt": "2026-10-19T20:54:19.546Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-alarm-na-slovenskih-sodiscih-izmisljene-972f7a",
+      "title": "Alarm na slovenskih sodiščih! Izmišljene sodbe, poplava vlog in kaos zaradi umetne inteligence: prvi mož sodstva bije plat zvona",
+      "summary": "»UI naj bo previden pomočnik, ne sme pa biti niti učitelj niti odločevalec,« opozarja predsednik vrhovnega sodišča Damjan Orož.",
+      "date": "2026-10-19T08:02:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/slovenija/alarm-na-slovenskih-sodiscih-izmisljene-sodbe-poplava-vlog-in-kaos-zaradi-umetne-inteligence-prvi-moz-sodstva-bije-plat-zvona",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "potres",
+      "addedAt": "2026-10-19T21:19:39.555Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-lokalne-volitve-v-pomurju-ponekod-137fe3",
+      "title": "Lokalne volitve v Pomurju: Ponekod zmagovalci že znani, drugod pestro",
+      "summary": "Pomurje",
+      "date": "2026-10-19T08:00:00.000Z",
+      "url": "https://vecer.com/pomurje/lokalne-volitve-v-pomurju-zupanski-kadidati-kdo-bo-zmagal-10430739",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Pomurje"
+      ],
+      "author": "Tadeja Lepoša",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:19:55.622Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-foto-se-ga-spomnite-iz-masterchefa-zdaj-se-7ca815",
+      "title": "(FOTO) Se ga spomnite iz MasterChefa? Zdaj se podaja v boj za županski stolček",
+      "summary": "Popularno",
+      "date": "2026-10-19T08:00:00.000Z",
+      "url": "https://vecer.com/popularno/masterchef-zupan-volitve-jure-galicic-kandidatura-10430734",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Popularno"
+      ],
+      "author": "D.Ži",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.622Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-ryanair-z-objavo-na-druzbenih-omrezjih-50c3f2",
+      "title": "Ryanair z objavo na družbenih omrežjih šokiral potnike",
+      "summary": "Prosti čas",
+      "date": "2026-10-19T08:00:00.000Z",
+      "url": "https://vecer.com/prosti-cas/ryanair-facebook-objava-dezodorant-10430741",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Prosti čas"
+      ],
+      "author": "A.B.",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:19:55.622Z",
       "backfilled": true
     },
     {
@@ -2256,6 +4273,20 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-andrejeva-zgodba-en-zob-racun-za-1900-evrov-0a1a7f",
+      "title": "Andrejeva zgodba: en zob, račun za 1900 evrov",
+      "summary": "Težave z zobmi lahko napredujejo, še preden začutite bolečino. Z rednimi pregledi lahko zmanjšate tveganje za zahtevnejše zdravljenje.",
+      "date": "2026-10-19T07:44:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/slovenija/r-andrejeva-zgodba-en-zob-racun-za-1900-evrov",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:39.555Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-plecnikovi-stoletni-drevesi-skrivata-zgodbo-2b5d83",
       "title": "Plečnikovi stoletni drevesi skrivata zgodbo, ki bo navdušila obiskovalce",
       "summary": "V Plečnikovi hiši v Ljubljani je na ogled posebna razstava, ki povezuje umetnost, naravo in arhitektovo dediščino. Sedem obiskovalcev čaka tudi presenečenje.",
@@ -2284,6 +4315,20 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-kdo-so-ljudje-v-ozadju-najvecjega-728864",
+      "title": "Kdo so ljudje v ozadju največjega energetskega projekta v Sloveniji (video)",
+      "summary": "Slovenija se pripravlja na največji energetski projekt v svoji zgodovini, ki bi zaznamoval oskrbo z elektriko za več generacij. JEK 2 je v pripravljalni fazi, v kateri več kot 70 strokovnjakov preverja rešitve in pripravlja podlage, potrebne za odločitev o največji energetski naložbi v državi.",
+      "date": "2026-10-19T07:41:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/slovenija/r-kdo-so-ljudje-v-ozadju-najvecjega-energetskega-projekta-v-sloveniji-video",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "addedAt": "2026-10-19T21:19:39.555Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-delo-po-mesecih-odlasanja-trump-pred-volitvami-a539a0",
       "title": "Po mesecih odlašanja Trump pred volitvami podprl Netanjahuja",
       "summary": "Izraelskega premiera Benjamina Netanjahuja pred parlamentarnimi volitvami muči negotovi izid.",
@@ -2295,6 +4340,94 @@
       "author": "",
       "theme": "politika",
       "addedAt": "2026-10-19T20:54:19.546Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-konferenca-v-podporo-srbskim-novinarjem-ac7137",
+      "title": "Konferenca v podporo srbskim novinarjem: \"Novinarstvo je močno toliko, kot so trdne hrbtenice novinark in novinarjev\"",
+      "summary": "SLOVENIJA",
+      "date": "2026-10-19T07:37:00.000Z",
+      "url": "https://vecer.com/slovenija/shod-sindikat-novinarjev-drustvo-n1-nova-srbija-podpora-novinar-10430738",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SLOVENIJA"
+      ],
+      "author": "M.R.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.622Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-nova-fasada-vas-lahko-drago-stane-te-napake-0abeec",
+      "title": "Nova fasada vas lahko drago stane: te napake pri obnovi hiše mnogi prepozno obžalujejo",
+      "summary": "Nova fasada lahko zviša vrednost hiše in zmanjša stroške ogrevanja. A strokovnjaki opozarjajo na napake pri prenovi, ki vas lahko drago stanejo.",
+      "date": "2026-10-19T07:36:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/slovenija/nova-fasada-vas-lahko-drago-stane-te-napake-pri-obnovi-hise-mnogi-prepozno-obzalujejo",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "potres",
+      "addedAt": "2026-10-19T21:19:39.555Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-ljubljanski-maraton-v-znamenju-znanih-daa3d0",
+      "title": "Ljubljanski maraton v znamenju znanih obrazov: kdo je tekel in kdo navijal? (VIDEO in FOTO)",
+      "summary": "Jubilejni Ljubljanski maraton je tako tudi med znanimi Slovenci ponudil različne zgodbe – od premagovanja 42 kilometrov in osebnih športnih ciljev do čustvenih spoznanj ter navijanja za najbližje.",
+      "date": "2026-10-19T07:33:00.000Z",
+      "url": "https://slovenskenovice.delo.si/bulvar/domaci-traci/ljubljanski-maraton-v-znamenju-znanih-obrazov-kdo-je-tekel-in-kdo-navijal-video-in-foto",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:19:39.555Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-slovenska-pevka-ima-starse-za-vzor-video-471ff1",
+      "title": "Slovenska pevka ima starše za vzor (VIDEO)",
+      "summary": "Pevka je obudila skladbo, ki sta jo pred več kot dvajsetimi leti napisala njena mama in oče",
+      "date": "2026-10-19T07:25:00.000Z",
+      "url": "https://slovenskenovice.delo.si/bulvar/glasba-in-film/slovenska-pevka-ima-starse-za-vzor-video",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:39.555Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-slovenskenovice-kaj-se-dogaja-v-franciji-ulice-v-plamenih-503717",
+      "title": "Kaj se dogaja v Franciji? Ulice v plamenih, na tisoče aretiranih, več sto poškodovanih policistov",
+      "summary": "Vlada trenutno poskuša skozi parlament spraviti izjemno nepriljubljen proračun, ki predvideva ostre reze in zategovanje pasu.",
+      "date": "2026-10-19T07:19:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/svet/kaj-se-dogaja-s-francijo-ulice-v-plamenih-na-tisoce-aretiranih-vec-sto-poskodovanih-policistov",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:19:39.555Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-onesnazenje-morja-v-piranskem-zalivu-b4fd49",
+      "title": "Onesnaženje morja: V Piranskem zalivu opazili velik naftni madež",
+      "summary": "KRONIKA",
+      "date": "2026-10-19T07:19:00.000Z",
+      "url": "https://vecer.com/kronika/naftni-madez-piran-zaliv-morje-onesnazenje-10430735",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "KRONIKA"
+      ],
+      "author": "Primorske novice",
+      "theme": "energija",
+      "addedAt": "2026-10-19T21:19:55.622Z",
       "backfilled": true
     },
     {
@@ -2311,6 +4444,38 @@
       "author": "",
       "theme": "energija",
       "addedAt": "2026-10-19T21:03:14.159Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-pogovor-miha-hrobat-brez-dlake-na-jeziku-b8370b",
+      "title": "(POGOVOR) Miha Hrobat brez dlake na jeziku: Nekaterih tekem lani sploh ne bi bili smeli izpeljati",
+      "summary": "Šport",
+      "date": "2026-10-19T07:00:00.000Z",
+      "url": "https://vecer.com/sport/miha-hrobat-alpsko-smucanje-10430686",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Šport"
+      ],
+      "author": "Nejc Strojnik",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.622Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-foto-sredi-skal-se-nahaja-pravi-mali-raj-02d4f0",
+      "title": "(FOTO) Sredi skal se nahaja pravi mali raj: Voda v teh bazenih skriva neverjetno skrivnost",
+      "summary": "Prosti čas",
+      "date": "2026-10-19T06:55:00.000Z",
+      "url": "https://vecer.com/prosti-cas/turcija-bazen-tohma-kudret-skrivnost-10430733",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Prosti čas"
+      ],
+      "author": "D.Ži",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.622Z",
       "backfilled": true
     },
     {
@@ -2333,6 +4498,38 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-vecer-sahovski-koticek-laura-v-uniformi-5dd091",
+      "title": "(ŠAHOVSKI KOTIČEK) Laura v uniformi",
+      "summary": "Šport",
+      "date": "2026-10-19T06:00:00.000Z",
+      "url": "https://vecer.com/sport/sahovski-koticek-laura-unuk-mors-10430716",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Šport"
+      ],
+      "author": "Georg Mohr",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.622Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-sok-pred-tekmo-v-zda-vojak-med-spuscanjem-32a906",
+      "title": "Šok pred tekmo v ZDA: Vojak med spuščanjem po vrvi s strehe stadiona padel na tla in umrl",
+      "summary": "KRONIKA",
+      "date": "2026-10-19T05:58:00.000Z",
+      "url": "https://vecer.com/kronika/padec-spuscanje-vrv-san-antonio-ameriski-vojak-smrt-10430731",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "KRONIKA"
+      ],
+      "author": "M.R.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.622Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-n1si-voznik-lamborghinija-na-prehodu-za-pesce-76d051",
       "title": "Voznik lamborghinija na prehodu za pešce trčil v rolkarja in pobegnil",
       "summary": "V soboto je v Kopru na prehodu za pešce v rolkarja trčil voznik črnega lamborghinija in odpeljal, ne da bi mu nudil pomoč. Policija očividce prosi za",
@@ -2352,6 +4549,22 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-vecer-policija-isce-voznika-lamborghinija-ki-je-v-602bb1",
+      "title": "Policija išče voznika lamborghinija, ki je v Kopru trčil v rolkarja in se odpeljal",
+      "summary": "KRONIKA",
+      "date": "2026-10-19T05:40:00.000Z",
+      "url": "https://vecer.com/kronika/lamborhini-koper-rolkar-poskodbe-policija-iskanje-pobeg-10430730",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "KRONIKA"
+      ],
+      "author": "M.R.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.623Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-n1si-s-poslanskimi-vprasanji-premierju-jansi-se-b46642",
       "title": "S poslanskimi vprašanji premierju Janši se začenja oktobrsko zasedanje DZ",
       "summary": "Državni zbor bo danes začel oktobrsko zasedanje, ki bo trajalo do petka. Danes bodo na vrsti poslanska vprašanja predsedniku vlade Janezu Janši in min",
@@ -2368,6 +4581,38 @@
       "author": "",
       "theme": "politika",
       "addedAt": "2026-10-19T21:10:44.745Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-groznja-z-bombo-letalo-ki-je-bilo-iz-46853f",
+      "title": "Grožnja z bombo: Letalo, ki je bilo iz Izraela na poti na Dunaj, zasilno pristalo v Bolgariji",
+      "summary": "SVET",
+      "date": "2026-10-19T05:02:00.000Z",
+      "url": "https://vecer.com/svet/bolgarija-letalo-izrael-tel-aviv-sofija-dunaj-austria-airlines-groznja-bomba-10430729",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SVET"
+      ],
+      "author": "STA, M.R.",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:19:55.623Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-slovenski-nogometasi-v-tujini-obracun-brez-cef9a2",
+      "title": "Slovenski nogometaši v tujini: Obračun brez Slovencev in tisti, ki je pripadel Oblaku",
+      "summary": "Šport",
+      "date": "2026-10-19T05:00:00.000Z",
+      "url": "https://vecer.com/sport/nogomet-legionarji-oblak-bijol-sesko-10430728",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Šport"
+      ],
+      "author": "Nik Brumen",
+      "theme": "sport",
+      "addedAt": "2026-10-19T21:19:55.623Z",
       "backfilled": true
     },
     {
@@ -2425,6 +4670,86 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-vecer-minister-roncevic-napoveduje-uciteljsko-60288c",
+      "title": "Minister Rončević napoveduje učiteljsko zbornico: Bo članstvo učiteljev obvezno, članarina pa osem evrov na mesec?",
+      "summary": "SLOVENIJA",
+      "date": "2026-10-19T04:00:00.000Z",
+      "url": "https://vecer.com/slovenija/roncevic-skrinjar-strukelj-zbornica-ucitelji-matija-horvat-10430682",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SLOVENIJA"
+      ],
+      "author": "Franja Žišt",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.623Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-komentar-zdravila-za-necimrnost-ministra-so-3518a9",
+      "title": "(KOMENTAR) Zdravila za nečimrnost ministra so drobiž v primerjavi s tem, koliko nas bodo stali ukrepi napovedane reforme",
+      "summary": "SLOVENIJA",
+      "date": "2026-10-19T04:00:00.000Z",
+      "url": "https://vecer.com/slovenija/komentar-roncevic-minister-ucitelji-zbornica-10430692",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SLOVENIJA"
+      ],
+      "author": "Franja Žišt",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.623Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-prednosti-in-pomanjkljivosti-uporabe-lesne-64950f",
+      "title": "Prednosti in pomanjkljivosti uporabe lesne biomase za ogrevanje",
+      "summary": "Prosti čas",
+      "date": "2026-10-19T03:45:00.000Z",
+      "url": "https://vecer.com/prosti-cas/les-ogrevanje-drva-peleti-kotli-10430392",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Prosti čas"
+      ],
+      "author": "Matjaž Valenčič, dipl. inž. stroj., neodvisni energetski strokovnjak www.zaensve",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.623Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-zemlja-daje-nam-ce-mi-dajemo-zemlji-241774",
+      "title": "Zemlja daje nam, če mi dajemo zemlji",
+      "summary": "Prosti čas",
+      "date": "2026-10-19T03:30:00.000Z",
+      "url": "https://vecer.com/prosti-cas/vrtnarski-nasveti-zalozno-gnojenje-zastirka-10430212",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Prosti čas"
+      ],
+      "author": "Barbara Gavez Volčjak",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.623Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-jansa-sds-spet-v-vojni-z-drzavno-volilno-a22763",
+      "title": "Janša, SDS spet v vojni z Državno volilno komisijo: Premier si ne more brez posledic privoščiti morebitnih krivih ovadb",
+      "summary": "SLOVENIJA",
+      "date": "2026-10-19T03:30:00.000Z",
+      "url": "https://vecer.com/slovenija/jansa-in-sds-vojna-z-dvk-referendumi-kaj-sledi-10430711",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SLOVENIJA"
+      ],
+      "author": "Vanessa Čokl",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:19:55.623Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-n1si-zakaj-je-malo-verjetno-da-bi-prislo-do-9f2e54",
       "title": "Zakaj je malo verjetno, da bi prišlo do svetovnega izbruha pljučne kuge",
       "summary": "Smrt 28-letne raziskovalke na ruskem inštitutu za preučevanje kuge in drugih nevarnih povzročiteljev bolezni je sprožila ugibanja o morebitnem širjenj",
@@ -2441,6 +4766,22 @@
       "author": "",
       "theme": "politika",
       "addedAt": "2026-10-19T21:10:44.745Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-za-najvecje-zmrzljivce-ogrevanje-kopalnice-43c4d5",
+      "title": "Za največje zmrzljivce: Ogrevanje kopalnice jeseni in spomladi",
+      "summary": "Prosti čas",
+      "date": "2026-10-19T03:15:00.000Z",
+      "url": "https://vecer.com/prosti-cas/ogrevanje-kopalnice-paneli-infra-radiatorji-10430210",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Prosti čas"
+      ],
+      "author": "Barbara Gavez Volčjak",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.623Z",
       "backfilled": true
     },
     {
@@ -2500,6 +4841,102 @@
       "backfilled": true
     },
     {
+      "slug": "ljubljana-2026-10-19-vecer-pred-prodajo-hise-se-splaca-menjati-4a29de",
+      "title": "Pred prodajo hiše: Se splača menjati ogrevanje?",
+      "summary": "Prosti čas",
+      "date": "2026-10-19T03:00:00.000Z",
+      "url": "https://vecer.com/prosti-cas/ogrevanje-vrednost-nepremicnine-menjava-prodaja-10430208",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Prosti čas"
+      ],
+      "author": "Sanja Verovnik",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.623Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-predstava-sto-nas-je-v-mestnem-gledaliscu-9df045",
+      "title": "Predstava Sto nas je v Mestnem gledališču Ptuj: Svoboda izbire ali breme neštetih možnosti?",
+      "summary": "Podravje",
+      "date": "2026-10-19T03:00:00.000Z",
+      "url": "https://vecer.com/podravje/predstava-sto-nas-je-mestno-gledalisce-ptuj-10430487",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Podravje"
+      ],
+      "author": "Tjaša Gajšek",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.623Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-castnik-neverjetno-o-cem-vse-bomo-se-c9fe69",
+      "title": "(ČASTNIK) Neverjetno, o čem vse bomo še odločali! Imamo ekskluzivni vladni seznam novih referendumskih vprašanj",
+      "summary": "Popularno",
+      "date": "2026-10-19T03:00:00.000Z",
+      "url": "https://vecer.com/popularno/castnik-ekskluzivno-novi-referendumi-zaupnica-vladi-10430397",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Popularno"
+      ],
+      "author": "Zora I. Orčič",
+      "theme": "politika",
+      "addedAt": "2026-10-19T21:19:55.623Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-intervju-aleksander-koren-da-imamo-narave-ff6158",
+      "title": "(INTERVJU) Aleksander Koren: Da imamo narave še veliko, je samo občutek",
+      "summary": "Aktualno",
+      "date": "2026-10-19T03:00:00.000Z",
+      "url": "https://vecer.com/maribor/aktualno/intervju-aleksander-koren-narava-pohorje-10430709",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Aktualno"
+      ],
+      "author": "Andreja Kutin",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.623Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-tosemjaz-pomoc-obstaja-tudi-ko-se-zdi-da-je-e26514",
+      "title": "#tosemjaz: Pomoč obstaja – tudi, ko se zdi, da je ni",
+      "summary": "SLOVENIJA",
+      "date": "2026-10-19T03:00:00.000Z",
+      "url": "https://vecer.com/slovenija/tosemjaz-pomoc-mladostniki-klic-stiska-svetovalnica-10430712",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SLOVENIJA"
+      ],
+      "author": "Rozmari Petek",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.623Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-19-vecer-sport-na-tv-d8d2ad",
+      "title": "Šport na TV",
+      "summary": "Šport",
+      "date": "2026-10-19T03:00:00.000Z",
+      "url": "https://vecer.com/sport/sport-na-tv-10430684",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Šport"
+      ],
+      "author": "B. Pm.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.623Z",
+      "backfilled": true
+    },
+    {
       "slug": "ljubljana-2026-10-19-24ur-danes-je-porocena-z-najlepsim-italijanom-fccff5",
       "title": "Danes je poročena z najlepšim Italijanom, nekoč pa je bila videti povsem drugače",
       "summary": "Danes jo poznamo po temnih laseh, poudarjenih očeh, drznih modnih kombinacijah in nekoliko skrivnostnem videzu. A Dove Cameron, ki je pred kratkim dahnila usodni da italijanskemu glasbeniku Damianu Davidu, je bila nekoč videti precej drugače. Ko je kot najstnica zaslovela na Disneyjevem kanalu, je imela svetle lase, nosila nežna oblačila in utelešala podobo prikupne najstniške zvezdnice.",
@@ -2513,6 +4950,22 @@
       "author": "",
       "theme": "rat",
       "addedAt": "2026-10-19T21:10:52.327Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-18-vecer-absurd-kurilne-sezone-vedno-drazje-1b8b4e",
+      "title": "Absurd kurilne sezone: Vedno dražje ogrevanje, zrak pa še vedno slab?",
+      "summary": "KVADRATI",
+      "date": "2026-10-18T23:55:00.000Z",
+      "url": "https://vecer.com/kvadrati/prezracevalni-sistem-pozimi-resitev-za-slab-zrak-10430042",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "KVADRATI"
+      ],
+      "author": "Sponzoriran članek",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:19:55.623Z",
       "backfilled": true
     },
     {
@@ -2641,6 +5094,54 @@
       "author": "",
       "theme": "rat",
       "addedAt": "2026-10-19T21:03:14.159Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-18-vecer-macron-nagovoril-francoze-tisti-ki-so-d3ac21",
+      "title": "Macron nagovoril Francoze: \"Tisti, ki so poskušali zrušiti republiko, bodo morali za to odgovarjati\"",
+      "summary": "SVET",
+      "date": "2026-10-18T20:03:00.000Z",
+      "url": "https://vecer.com/svet/macron-nagovor-francozom-rusenje-republike-protesti-10430727",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SVET"
+      ],
+      "author": "VA",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.623Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-18-vecer-odzivi-milanic-po-remiju-s-celjem-miren-c92482",
+      "title": "(ODZIVI) Milanič po remiju s Celjem miren, Zeljković pa oster: \"Nočem jokati, poglejte si posnetek\"",
+      "summary": "Šport",
+      "date": "2026-10-18T19:11:00.000Z",
+      "url": "https://vecer.com/sport/odiziv-milanic-zeljkovic-maribor-celje-rezultat-prvaliga-10430725",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Šport"
+      ],
+      "author": "Miha Dajčman",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.623Z",
+      "backfilled": true
+    },
+    {
+      "slug": "ljubljana-2026-10-18-vecer-prvenec-reziserke-ester-ivakic-razglasili-938c0b",
+      "title": "Prvenec režiserke Ester Ivakič razglasili za najboljši film letošnjega Festivala slovenskega filma",
+      "summary": "Kultura",
+      "date": "2026-10-18T19:00:00.000Z",
+      "url": "https://vecer.com/kultura/nagrade-29-festival-slovenskega-filma-10430687",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Kultura"
+      ],
+      "author": "M. MAJ.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:19:55.623Z",
       "backfilled": true
     },
     {

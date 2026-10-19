@@ -4,7 +4,7 @@
   "lang": "bg",
   "city": "Sofija",
   "country": "Bugarska",
-  "updatedAt": "2026-10-19T21:13:33.154Z",
+  "updatedAt": "2026-10-19T21:20:46.804Z",
   "sources": [
     {
       "id": "bta",
@@ -18,7 +18,7 @@
         "https://www.bta.bg/en/rss#1: HTTP 404",
         "https://www.bta.bg/sitemap.xml: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:12:45.924Z"
+      "checkedAt": "2026-10-19T21:20:00.590Z"
     },
     {
       "id": "capital",
@@ -30,7 +30,7 @@
         "wp:1: HTTP 403",
         "https://www.capital.bg/rss#1: HTTP 403"
       ],
-      "checkedAt": "2026-10-19T21:12:53.888Z"
+      "checkedAt": "2026-10-19T21:20:08.338Z"
     },
     {
       "id": "mediapool",
@@ -39,9 +39,12 @@
       "ok": false,
       "fetched": 0,
       "errors": [
-        "wp:1: HTTP 403"
+        "wp:1: fetch failed",
+        "https://www.mediapool.bg/rss#1: fetch failed",
+        "https://www.mediapool.bg/rss/#1: HTTP 403",
+        "https://www.mediapool.bg/comments/feed/#2: This operation was aborted"
       ],
-      "checkedAt": "2026-10-19T21:13:04.017Z"
+      "checkedAt": "2026-10-19T21:20:25.502Z"
     },
     {
       "id": "dnevnikbg",
@@ -53,41 +56,44 @@
         "wp:1: HTTP 403",
         "https://www.dnevnik.bg/rss#1: HTTP 403"
       ],
-      "checkedAt": "2026-10-19T21:13:10.804Z"
+      "checkedAt": "2026-10-19T21:20:31.158Z"
     },
     {
       "id": "actualno",
       "name": "Actualno.com",
       "url": "https://www.actualno.com/rss",
-      "ok": true,
-      "fetched": 50,
+      "ok": false,
+      "fetched": 0,
       "errors": [
         "wp:1: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:13:17.655Z"
+      "checkedAt": "2026-10-19T21:20:36.447Z"
     },
     {
       "id": "sega",
       "name": "Sega.bg",
       "url": "https://www.segabg.com/rss",
-      "ok": true,
-      "fetched": 81,
+      "ok": false,
+      "fetched": 0,
       "errors": [
-        "wp:1: Unexpected token '<', \"<!doctype \"... is not valid JSON"
+        "wp:1: fetch failed",
+        "https://www.segabg.com/rss#1: fetch failed"
       ],
-      "checkedAt": "2026-10-19T21:13:22.443Z"
+      "checkedAt": "2026-10-19T21:20:41.594Z"
     },
     {
       "id": "novinite",
       "name": "Novinite.com",
       "url": "https://www.novinite.com/rss",
-      "ok": true,
-      "fetched": 22,
+      "ok": false,
+      "fetched": 0,
       "errors": [
-        "wp:1: HTTP 403",
-        "https://www.novinite.com/rss#1: HTTP 404"
+        "wp:1: fetch failed",
+        "https://www.novinite.com/rss#1: fetch failed",
+        "https://www.novinite.com/sitemap.xml: fetch failed",
+        "https://www.novinite.com/sitemap_index.xml: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:13:28.855Z"
+      "checkedAt": "2026-10-19T21:20:43.461Z"
     },
     {
       "id": "btaen",
@@ -101,7 +107,7 @@
         "https://www.bta.bg/sitemap.xml: HTTP 404",
         "https://www.bta.bg/sitemap_index.xml: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:13:33.153Z"
+      "checkedAt": "2026-10-19T21:20:46.804Z"
     }
   ],
   "items": [
