@@ -8,6 +8,7 @@ import { preflightContentQueue } from './content-queue-preflight-v1.mjs';
 import { addCommentListing, addAktualLink } from './lib/editorial-visibility-links-v1.mjs';
 import { articleAuthorFor, isVerifiedNerminAuthor } from './lib/editorial-attribution-v1.mjs';
 import { normalizeEditorialAttributionHtml, extractSocialHashtags } from './lib/editorial-html-attribution-v1.mjs';
+import { isProtectedEditorialRoute } from './lib/editorial-route-protection-v1.mjs';
 
 const SITE='https://gnk-asg.hr';
 const read=(p)=>{if(!existsSync(p))throw new Error('Missing required publication source: '+p);return JSON.parse(readFileSync(p,'utf8'));};
@@ -67,7 +68,7 @@ function repairMissingEditorialCovers() {
   const byPath=new Map((manifest.items||[]).map(entry=>[entry.path,entry]));
   const missing=(registry.items||[]).filter(entry=>{
     if(!entry.path||!['komentar','kolumna','analiza','objava'].includes(entry.type))return false;
-    if(entry.path.startsWith('/sports-performance-tracking/')||entry.path.startsWith('/banking/'))return false;
+    if(isProtectedEditorialRoute(entry.path))return false;
     const record=byPath.get(entry.path);
     return !record || !record.image || !existsSync('apps/portal'+record.image);
   }).map(entry=>entry.path);
