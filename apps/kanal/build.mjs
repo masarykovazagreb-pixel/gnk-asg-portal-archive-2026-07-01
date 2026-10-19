@@ -763,7 +763,8 @@ ${items.map((a) => `<entry>
         sectionLabel: SECTIONS[a.section]?.label,
         readingMinutes: a.readingTime,
         words: a.words,
-        sources: (a.sources || []).map((s) => s.url || s.label),
+        sources: (a.sources || []).filter((s) => s.url).map((s) => s.url),
+        sourcesNote: (a.sources || []).map((s) => s.label),
         editorialStatus: SITE.editorial.status
       }
     }))

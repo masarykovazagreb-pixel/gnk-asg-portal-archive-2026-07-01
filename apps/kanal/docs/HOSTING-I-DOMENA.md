@@ -53,7 +53,31 @@ Društvo već posjeduje `gnk-asg.hr`. Poddomena je besplatna i profesionalna:
 > Napomena: kanonske poveznice, sitemap, feedovi i OG slike ovise o `--base`.
 > Nakon promjene domene obavezno ponovno izgraditi i objaviti.
 
-## 3. Cloudflare Pages — besplatan `*.pages.dev` + neograničen promet
+## 3. Cloudflare Pages — AKTIVNO, javno vidljivo
+
+**Kanal je objavljen:** https://gnk-asg-kanal.pages.dev/
+
+Projekt `gnk-asg-kanal` postoji u Cloudflare računu, a deploy radi automatski iz
+workflowa `.github/workflows/kanal-deploy.yml` (push na `apps/kanal/**`).
+
+### Custom domena `kanal.gnk-asg.hr` — jedan korak u dashboardu
+
+Automatsko povezivanje nije prošlo jer API token ima prava za Workers/Pages, ali ne
+i za DNS zonu. Postupak (2 minute):
+
+1. Cloudflare dashboard → *Workers & Pages* → **gnk-asg-kanal** → *Custom domains*.
+2. *Set up a custom domain* → upiši `kanal.gnk-asg.hr` → *Continue*.
+3. Cloudflare sam kreira CNAME `kanal` → `gnk-asg-kanal.pages.dev` (zona `gnk-asg.hr`
+   je na Cloudflare imenskim poslužiteljima, pa nema ručnog DNS rada).
+4. Nakon toga pokreni workflow ponovno (Actions → kanal-deploy → Run workflow).
+   Workflow tada gradi site s `--base https://kanal.gnk-asg.hr/`, pa se kanonske
+   poveznice, sitemap i feedovi automatski prebacuju na novu domenu.
+
+Ako želiš da to radi bez ručnog koraka, dodaj API tokenu ovlasti
+`Zone:DNS:Edit` i `Zone:Zone:Read` za `gnk-asg.hr` — workflow tada sam kreira zapis
+i povezuje domenu.
+
+### Tehnički podaci
 
 | | |
 |---|---|

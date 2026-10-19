@@ -4,13 +4,19 @@ Samostalni urednički kanal društva GNK ASG d.o.o. — objave, analize, komenta
 pojašnjenja u obliku koji druge redakcije (prvenstveno AKTUAL MEDIA) mogu strojno
 preuzeti uz atribuciju.
 
+- **JAVNO:** https://gnk-asg-kanal.pages.dev/ (Cloudflare Pages, objavljeno 19. 10. 2026.)
 - **Izlaz:** `apps/kanal/site/` (statički HTML, bez baze i bez servera)
-- **Hosting:** GitHub Pages (workflow `.github/workflows/kanal-pages.yml`)
-- **Domena:** vidi `docs/HOSTING-I-DOMENA.md` (`kanal.gnk-asg.hr` preko CNAME-a)
+- **Hosting:** Cloudflare Pages (`gnk-asg-kanal`), workflow `.github/workflows/kanal-deploy.yml`
+- **Domena:** `kanal.gnk-asg.hr` — potrebno dodati custom domain u Cloudflare dashboardu
+  (vidi `docs/HOSTING-I-DOMENA.md`, odjeljak 3)
 - **Feed za AKTUAL:** `site/feed.json` (JSON Feed 1.1 + blok `_kanal`)
 - **Kontakt:** `beckuphome@gmail.com`
 
 ## Brze naredbe
+
+Deploy se pokreće automatski na svaki push koji dira `apps/kanal/**`
+(workflow `kanal-deploy.yml`). Ručno: Actions → kanal-deploy → Run workflow
+(dostupno kad je workflow na `main`).
 
 ```bash
 node apps/kanal/build.mjs                      # lokalna gradnja
