@@ -4,7 +4,7 @@
   "lang": "bg",
   "city": "Sofija",
   "country": "Bugarska",
-  "updatedAt": "2026-10-19T15:56:05.782Z",
+  "updatedAt": "2026-10-19T20:55:42.671Z",
   "sources": [
     {
       "id": "bta",
@@ -13,47 +13,2131 @@
       "ok": false,
       "fetched": 0,
       "errors": [
-        "https://www.bta.bg/bg/rss: fetch failed",
-        "https://www.bta.bg/en/rss: fetch failed"
+        "wp:1: HTTP 404",
+        "https://www.bta.bg/bg/rss#1: HTTP 404",
+        "https://www.bta.bg/en/rss#1: HTTP 404",
+        "https://www.bta.bg/sitemap.xml: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T15:56:01.462Z"
+      "checkedAt": "2026-10-19T20:54:51.248Z"
     },
     {
       "id": "capital",
       "name": "Capital",
       "url": "https://www.capital.bg/rss/",
-      "ok": false,
-      "fetched": 0,
+      "ok": true,
+      "fetched": 30,
       "errors": [
-        "https://www.capital.bg/rss/: fetch failed",
-        "https://www.capital.bg/rss: fetch failed"
+        "wp:1: HTTP 403",
+        "https://www.capital.bg/rss#1: HTTP 403"
       ],
-      "checkedAt": "2026-10-19T15:56:02.912Z"
+      "checkedAt": "2026-10-19T20:54:55.442Z"
     },
     {
       "id": "mediapool",
       "name": "Mediapool",
       "url": "https://www.mediapool.bg/rss",
-      "ok": false,
-      "fetched": 0,
+      "ok": true,
+      "fetched": 60,
       "errors": [
-        "https://www.mediapool.bg/rss: fetch failed",
-        "https://www.mediapool.bg/rss/: fetch failed"
+        "wp:1: HTTP 403"
       ],
-      "checkedAt": "2026-10-19T15:56:04.339Z"
+      "checkedAt": "2026-10-19T20:55:39.368Z"
     },
     {
       "id": "dnevnikbg",
       "name": "Dnevnik",
       "url": "https://www.dnevnik.bg/rss",
-      "ok": false,
-      "fetched": 0,
+      "ok": true,
+      "fetched": 30,
       "errors": [
-        "https://www.dnevnik.bg/rss: fetch failed",
-        "https://www.dnevnik.bg/rss/: fetch failed"
+        "wp:1: HTTP 403",
+        "https://www.dnevnik.bg/rss#1: HTTP 403"
       ],
-      "checkedAt": "2026-10-19T15:56:05.782Z"
+      "checkedAt": "2026-10-19T20:55:42.671Z"
     }
   ],
-  "items": []
+  "items": [
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-tr-mp-podnovi-natiska-zelenski-da-se-7c238e",
+      "title": "Тръмп поднови натиска Зеленски да се оттегли",
+      "summary": "Доналд Тръмп отново намекна за оттегляне на Зеленски като условие за мирни преговори за Украйна. Той каза, че \"може би е време Зеленски да намери някой друг да преговаря\". Според него Русия се държи нормално и \"не правят кой знае какво\" в...",
+      "date": "2026-10-19T20:04:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/10/19/4968484_trump_podnovi_natiska_zelenski_da_se_ottegli/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-tazi-sedmica-zapocva-remont-t-na-p-t-mezdu-b43cb6",
+      "title": "Тази седмица започва ремонтът на пътя между София и Перник в участъка край Владая",
+      "summary": "От сряда или четвъртък ще започне ремонтът на пътя между София и Перник в участъка край Владая. Това съобщи пред журналисти министърът на регионалното развитие и благоустройството арх. Иван Шишков, предава БТА. В тази част на пътя...",
+      "date": "2026-10-19T19:48:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/10/19/4968483_tazi_sedmica_zapochva_remontut_na_putia_mejdu_sofiia_i/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-urolog-t-prof-d-r-kalo-n-davidov-e-novi-t-3115c5",
+      "title": "Урологът проф. д-р Калоян Давидов е новият носител на отличието \"Лекар на годината\"",
+      "summary": "Урологът проф. д-р Калоян Давидов е новият носител на отличието \"Лекар на годината\". Конкурсът се организира от Българския лекарски съюз. Според Давидов доверието на пациентите може да се върне с отношението, човешкото поведение,...",
+      "date": "2026-10-19T19:42:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/10/19/4968477_urologut_prof_d-r_kaloian_davidov_e_noviiat_nositel_na/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-evrokomisi-ta-e-finansira-zavod-za-f78009",
+      "title": "Еврокомисията ще финансира завод за рециклиране на мед в София",
+      "summary": "ЕС ще финансира безвъзмездно изграждането в София на завод за рециклиране на мед. Това съобщи Европейската комисия обявявайки 77 проекта, които ще бъдат подпомогнати чрез Фонда за иновации. Фирмата \"София Мед\", която ще изгражда съоръжението трябва...",
+      "date": "2026-10-19T17:57:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/10/19/4968443_evrokomisiiata_shte_finansira_zavod_za_reciklirane_na/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-amerikanski-voenen-samolet-za-razuznavane-d7e5d8",
+      "title": "Американски военен самолет за разузнаване патрулира Черно море от Варна",
+      "summary": "Самолет P-8A Poseidon на ВМС на САЩ пристигна във Варна вчера следобед. Съобщението е на платформата itamilradar и според авторите той е пристигнал от авиобаза \"Сигонела\" в Италия. Днес този разузнавач на базата на Boeing 737‑800 e...",
+      "date": "2026-10-19T17:50:00.000Z",
+      "url": "https://www.dnevnik.bg/sviat/voinata_v_ukraina/2026/10/19/4968432_amerikanski_voenen_samolet_za_razuznavane_patrulira/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "4992"
+      ],
+      "author": "Петър Карабоев",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-veceren-cas-e-ob-ven-za-casti-ot-pariz-lil-d39ee7",
+      "title": "Вечерен час е обявен за части от Париж, Лил и Ница",
+      "summary": "Френските власти въведоха вечерен час за площад \"Република\" в Париж и за улицитe около \"Ле Ал\" (Les Halles). Той влиза в сила в 22 ч българско време в понеделник и ще продължи до 6 ч във вторник. Вечерният час вече е факт в северния град...",
+      "date": "2026-10-19T17:43:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/10/19/4968428_vecheren_chas_e_obiaven_za_chasti_ot_parij_lil/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-snimka-na-den-fokus-v-rhu-borbata-s-raka-na-5eacf2",
+      "title": "Снимка на деня: Фокус върху борбата с рака на гърдата",
+      "summary": "",
+      "date": "2026-10-19T17:26:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/10/19/4968430_snimka_na_denia_fokus_vurhu_borbata_s_raka_na_gurdata/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-citat-na-den-putin-e-voennoprest-pnik-n-ma-d7c4c4",
+      "title": "Цитат на деня: Путин е военнопрестъпник, няма място на маса за преговори",
+      "summary": "\"Поканата към Путин за подобна среща само би подхранила манията му за величие и би му придала значимост, която той не заслужава. Той не е световен лидер, а военнопрестъпник. А Русия не е световна сила, а глобален проблем.\" Това написа...",
+      "date": "2026-10-19T17:24:00.000Z",
+      "url": "https://www.dnevnik.bg/citat_na_deniia/2026/10/19/4968255_citat_na_denia_putin_e_voennoprestupnik_niama_miasto/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "2499"
+      ],
+      "author": "Петър Карабоев",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-kristi-n-amanpur-ob-vi-ce-napuska-si-en-en-851071",
+      "title": "Кристиян Аманпур обяви, че напуска Си Ен Ен",
+      "summary": "Легендата на Си Ен Ен Кристиан Аманпур обяви, че напуска медията през юни. Главният международен водещ на телевизията заяви, че \"очаква с нетърпение интересни нови проекти в бъдеще\", като добави, че винаги ще подкрепя Cи Ен Ен и ще пази...",
+      "date": "2026-10-19T17:12:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/10/19/4968414_kristiian_amanpur_obiavi_che_napuska_si_en_en/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-radev-pravoslavnata-v-ra-obedin-va-ob-c2c6d9",
+      "title": "Радев: Православната вяра обединява обществото в свят на разделение и противопоставяне",
+      "summary": "Православната вяра обединява обществото ни в свят на разделение и противопоставяне. Това каза премиерът Румен Радев по време на среща с Вселенския патриарх Вартоломей, съоби пресцентърът на правителството. Той...",
+      "date": "2026-10-19T17:08:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/10/19/4968420_radev_pravoslavnata_viara_obediniava_obshtestvoto_v/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "politika",
+      "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-otova-sezira-prokuraturata-za-kazusa-s-702597",
+      "title": "Йотова сезира прокуратурата за казуса с помилвания от нея наркотрафикант",
+      "summary": "Илияна Йотова обяви, че президентството днес е сезирало прокуратурата за казуса с помилвания от нея наркотрафикант. В съобщение до \"Сега\" от президенството уточняват, че президентът и кандидат за президент иска държавното обвинение да провери всички...",
+      "date": "2026-10-19T16:43:00.000Z",
+      "url": "https://www.dnevnik.bg/politika/2026/10/19/4968409_iotova_poiska_ot_prokuraturata_da_proveri_dali_ima/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "4047"
+      ],
+      "author": "Георги Пауновски",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-visse-ucili-e-dogovar-vr-ane-na-66d293",
+      "title": "Висше училище договаря връщане на виетнамските студенти в България",
+      "summary": "Висше училище договаря връщане на виетнамските студенти в България. След годините под комунизъм, когато в България са обучени хиляди, делегация на Висшето училище по телекомуникации и пощи (ВУТП) е подписала три документа и е рекламирала висшето ни...",
+      "date": "2026-10-19T16:26:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/10/19/4968402_visshe_uchilishte_dogovaria_vrushtane_na_vietnamskite/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-ministerstvoto-na-otbranata-zasilva-nabl-623118",
+      "title": "Министерството на отбраната засилва наблюдението по Черноморието с дронове",
+      "summary": "Министерството на отбраната засилва наблюдението по Черноморието с дронове. Това съобщи пресцентърът на ведомството. Дейностите са част от превантивните мерки за повишаване на сигурността и осигуряване на своевременна информация за...",
+      "date": "2026-10-19T16:20:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/10/19/4968403_ministerstvoto_na_otbranata_zasilva_nabljudenieto_po/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-sre-u-12-kandidati-za-clenove-na-vss-e-feb82a",
+      "title": "Срещу 12 кандидати за членове на ВСС е имало сигнали и прокурорски проверки",
+      "summary": "Съдийската колегия трябва да предостави информация за 12 кандидати за членове на ВСС от парламентарната квота, за които има данни за прокурорски преписки и сигнали за нарушения на Етичния кодекс на съдебната власт, съобщава Lex.bg. Преди две седмици правната комисия в Народното събрание поиска данни за проверки, дисциплинарни и етични производства срещу кандидатите за членове на ВСС, включително и информация дали в официално събраните материали във връзка с трите големи скандала в съдебната власт - „Нотариуса“, „Осемте джуджета“ и „Красьо Черния“. Срещу 6 действащи съдии - Милена Карагьозова (зам.-шеф на ОС - Велико Търново), Михаил Малчев (СГС), Иван Ранчев (АС - Пловдив), Калин Баталски…",
+      "date": "2026-10-19T16:02:04.000Z",
+      "url": "https://www.mediapool.bg/bulgaria/sreshtu-12-kandidati-za-chlenove-na-vss-e-imalo-signali-i-prokurorski-proverki/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "България"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T20:55:39.365Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-ko-speceli-casticnite-mestni-izbori-i-k-de-92d5ee",
+      "title": "Кой спечели частичните местни избори и къде ще има балотажи",
+      "summary": "Кандидати на БСП и ДПС спечелиха частичните местни избори в седем населени места. В Полски Тръмбеш за кмет бе избран подкрепяния от “Прогресивна България” Росен Русанов. В три села изборът ще се реши на балотаж…",
+      "date": "2026-10-19T15:47:13.000Z",
+      "url": "https://www.mediapool.bg/bulgaria/koi-specheli-chastichnite-mestni-izbori-i-kade-shte-ima-balotazhi/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "България",
+        "ГЕРБ",
+        "избори",
+        "БСП"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T20:55:39.365Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-za-o-v-krem-l-ne-otvar-t-sampanskoto-sled-1cf85f",
+      "title": "Защо в Кремъл не отварят шампанското след разрива между Тръмп и Зеленски",
+      "summary": "\"Ястребите\" в Кремъл се наслаждават на публичния разрив между Доналд Тръмп и Володимир Зеленски - след седмица, в която украинският президент загуби много, но беше благоприятна за Русия. Въпреки това, в Москва шампанското все още не е отворено....",
+      "date": "2026-10-19T15:37:00.000Z",
+      "url": "https://www.dnevnik.bg/sviat/voinata_v_ukraina/2026/10/19/4968364_zashto_v_kremul_ne_otvariat_shampanskoto_sled_razriva/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "4992"
+      ],
+      "author": "Андрю Осбърн, Ройтерс",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-m-sk-obe-a-da-dari-po-edna-svo-akci-ot-41143a",
+      "title": "Мъск обеща да дари по една своя акция от SpaceEx на всяко дете в САЩ",
+      "summary": "Илон Мъск обеща през следващата година да дари по една от собствените си акции в космическата компания „СпейсЕкс“ (SpaceX) на всяко дете в САЩ. При сегашната цена на акциите общата стойност на подобно дарение би достигнала около 10,5 млрд. долара, съобщи Блумбърг, цитирана от БТА в понеделник…",
+      "date": "2026-10-19T15:33:00.000Z",
+      "url": "https://www.mediapool.bg/svyat/mask-obeshta-da-dari-po-edna-svoya-aktsiya-ot-spaceex-na-vsyako-dete-v-sasht/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Свят",
+        "акции",
+        "дарение",
+        "Илон Мъск"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.365Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-zam-na-na-starite-pecki-s-fotovoltaici-619116",
+      "title": "Замяна на старите печки с... фотоволтаици предлага Столичната община",
+      "summary": "Фотоволтаици като алтернатива на старите печки ще предлага Столичната община. Вариантът е пилотен и е част от проект, финансиран по програма \"Околна среда\" 2021-2027 г. с над 37 млн.евро. Домакинство, получило безвъзмездно фотоволтаична...",
+      "date": "2026-10-19T15:29:00.000Z",
+      "url": "https://www.dnevnik.bg/gradska_sreda/2026/10/19/4968389_zamiana_na_starite_pechki_s_fotovoltaici_predlaga/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "2714"
+      ],
+      "author": "Максим Караджов",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-vinarnata-aya-estate-be-otlicena-ot-3775f7",
+      "title": "Винарната AYA Estate бе отличена от световна класация",
+      "summary": "Винарната Aya Estate влезе с отличие в класацията The 50 Best Vineyards. Това се разбира от инстаграм профила й. Тя се намира в Долината на Струма - определен от професионалната общност винен район в България. Преди няколко месеца...",
+      "date": "2026-10-19T15:24:00.000Z",
+      "url": "https://www.dnevnik.bg/bacchus/2026/10/19/4968363_vinarnata_aya_estate_be_otlichena_ot_svetovna_klasaciia/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5061"
+      ],
+      "author": "Татяна Димитрова",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-tri-protesta-v-cent-ra-na-sofi-v-v-vtornik-6c620a",
+      "title": "Три протеста в центъра на София във вторник",
+      "summary": "Студентите от НАТФИЗ, студентите по медицина и гражадни които са недов",
+      "date": "2026-10-19T15:10:55.000Z",
+      "url": "https://www.mediapool.bg/bulgaria/tri-protesta-v-tsentara-na-sofiya-vav-vtornik/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "България",
+        "НАТФИЗ",
+        "лекари",
+        "студенти"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.365Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-georgi-kandev-s-iniciativa-za-nov-podhod-993929",
+      "title": "Георги Кандев с инициатива за нов подход срещу насилието сред деца",
+      "summary": "Георги Кандев с инициатива за нов подход срещу насилието сред деца Инициативата “РАМО”, която би развил като вицепрезидент, представи в понеделник бившият главен секретар на МВР в служебното правителство на Андрей Гюров - Георги Кандев. Двамата са една от кандидатпрезидентските двойки, явявящи се на изборите тази неделя. Зад четирите букви стоят последователните принципе \"Разпознаване\", \"Адекватна намеса\", \"Механизми за подкрепа\" и \"Отговорност\", които очертават подход, при който държавата не чака трагедията, за да реагира, а изгражда способност да разпознава риска, да действа навреме, да подкрепя засегнатите и да изисква резултати от институциите…",
+      "date": "2026-10-19T15:09:40.000Z",
+      "url": "https://www.mediapool.bg/prezidentski-izbori-2026/georgi-kandev-s-initsiativa-za-nov-podhod-sreshtu-nasilieto-sred-detsa/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Президентски избори 2026",
+        "мерки",
+        "деца",
+        "Насилие"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T20:55:39.365Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-andora-i-san-marino-podpisaha-za-asociirane-ad64ce",
+      "title": "Андора и Сан Марино подписаха за асоцииране в ЕС",
+      "summary": "Андора и Сан Марино подписаха споразумения за асоцииране в ЕС. Те им дават достъп до вътрешния пазар на ЕС, по-голяма правна сигурност, улесняват търговията, подкрепят инвестициите и насърчават трансграничната икономическа дейност. ...",
+      "date": "2026-10-19T14:58:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/10/19/4968362_andora_i_san_marino_podpisaha_za_asociirane_v_es/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-v-rusi-e-vnesen-zakonoproekt-za-69b22e",
+      "title": "В Русия е внесен законопроект за преименуване на Волгоград в Сталинград, а на Санкт Петербург – в Ленинград",
+      "summary": "Депутатката от Държавната дума от Комунистическата партия на Руската федерация (КПРФ) Анжелика Глазкова предложи законопроект за статута на градовете герои, според който Санкт Петербург трябва отново да стане Ленинград, а Волгоград – Сталинград, пише The Moscow Times.Авторката на законопроекта обясни мотивите си с необходимостта от „възстановяване на историческата справедливост“ и съхраняване на паметта за Великата отечествена война.„Би било доста странно да се говори за „блокадата на Санкт Петербург“ или за „Волгоградската битка“, посочва Глазкова в пояснителната записка към законопроекта.Според проекта двата града трябва окончателно да възстановят имената, които са носили през периода…",
+      "date": "2026-10-19T14:53:56.000Z",
+      "url": "https://www.mediapool.bg/svyat/v-rusiya-e-vnesen-zakonoproekt-za-preimenuvane-na-volgograd-v-stalingrad-a-na-sankt-peterburg-v-leningrad/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Свят",
+        "Санкт Петербург",
+        "Ленинград",
+        "Волгоград"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T20:55:39.365Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-v-angli-e-glob-vat-za-silna-muzika-ot-fabe0d",
+      "title": "В Англия ще глобяват за силна музика от телефона в автобуса и влака",
+      "summary": "Пътници, които пускат силна музика в автобусите в Англия, могат да бъдат глобени с до 100 паунда. Това е част от правителствените усилия за ограничаване на антисоциалното поведение. Мерките са насочени също към справяне с изхвърлянето на отпадъци, употребата на електронни цигари и заплашителното поведение, с цел подобряване на пътуването във всички видове обществен транспорт, предаде ББС…",
+      "date": "2026-10-19T14:46:17.000Z",
+      "url": "https://www.mediapool.bg/svyat/v-angliya-shte-globyavat-za-silna-muzika-ot-telefona-v-avtobusa-i-vlaka/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Свят",
+        "силна музика",
+        "клипове",
+        "Англия"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.365Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-ukrainci-evakuiraha-s-dron-ranen-vo-nik-c9e07f",
+      "title": "Украинци евакуираха с дрон ранен войник",
+      "summary": "Военни евакуираха ранен украински войник с дрон. От ротата за безпилотни наземни системи към 92-ра отделна щурмова бригада отбелязаха, че това е първата в света евакуация на ранен войник с помощта на дрон. Военните, действали в...",
+      "date": "2026-10-19T14:43:00.000Z",
+      "url": "https://www.dnevnik.bg/sviat/voinata_v_ukraina/2026/10/19/4968356_ukrainci_evakuiraha_s_dron_ranen_voinik/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "4992"
+      ],
+      "author": "Петър Карабоев",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-kandidati-za-novi-s-deben-s-vet-se-91d5a6",
+      "title": "Кандидати за новия съдебен съвет се споменават в материалите за \"Нотариуса\"",
+      "summary": "Съдийската колегия на Висшия съдебен съвет (ВСС) обяви кои от 12-имата кандидати за членове на съвета от парламентарната квота, които са настоящи или бивши съдии, са били обект на прокурорски проверки и сигнали за нарушения на етичните правила....",
+      "date": "2026-10-19T14:43:00.000Z",
+      "url": "https://www.dnevnik.bg/bulgaria/2026/10/19/4968352_kandidati_za_noviia_sudeben_suvet_se_spomenavat_v/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "1657"
+      ],
+      "author": "Ина Друмева",
+      "theme": "politika",
+      "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-capital-fotogaleri-kak-victoria-s-secret-prevr-a-fc50e7",
+      "title": "Фотогалерия: Как Victoria's Secret превръща модния подиум в машина за продажби",
+      "summary": "",
+      "date": "2026-10-19T14:30:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/sedmicata/2026/10/19/4968072_fotogaleriia_kak_victorias_secret_prevrushta_modniia/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2260"
+      ],
+      "author": "Капитал",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:54:55.440Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-patici-leso-di-i-eltehnici-tri-b-lgarski-313a81",
+      "title": "Патици, лешояди и елтехници: три български проекта спечелиха финансиране по LIFE",
+      "summary": "Три български проекта бяха избрани за финансиране от Европейската комисия по програмата LIFE. В понеделник бяха публикувани 135-те инициативи, които ще си разпределят над 390 млн. евро за проекти за защита на природата и срещу климатичните...",
+      "date": "2026-10-19T14:25:00.000Z",
+      "url": "https://www.dnevnik.bg/evropa/2026/10/19/4968315_patici_leshoiadi_i_eltehnici_tri_bulgarski_proekta/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "1674"
+      ],
+      "author": "Йовка Димитрова",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-republikanci-zapocnaha-publicno-da-bb8dd9",
+      "title": "Републиканци започнаха публично да критикуват Тръмп за сближаването му с Путин преди изборите за Конгрес",
+      "summary": "Политиката на Доналд Тръмп още преди сделката му за дизеловото гориво с Владимир Путин започна да създава проблеми на някои от съпартийците му, които ще участват в изборите за Конгрес на 3 ноември.След сключването на сделката законодатели, които съвсем наскоро гласуваха за законопроекта на Линдзи Греъм за налагане на „адски“ санкции https://www.mediapool.bg/voina-v-ukraina/kongresat-prie-zakonoproekta-za-adski-sanktsii-sreshtu-rusiya-i-go-izprati-za-podpis-na-tramp/ срещу Русия, започнаха да се разграничават от действията на президента. Това важи особено за онези от тях, които водят оспорвани предизборни битки с демократите.Сделката на Тръмп, отказът…",
+      "date": "2026-10-19T14:17:01.000Z",
+      "url": "https://www.mediapool.bg/voina-v-ukraina/republikantsi-zapochnaha-publichno-da-kritikuvat-tramp-za-sblizhavaneto-mu-s-putin-predi-izborite-za-kongres/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Война в Украйна",
+        "Путин",
+        "избори",
+        "Тръмп"
+      ],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-19T20:55:39.365Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-nezakonni-t-kokosarnik-na-mareski-tr-bva-da-0911f3",
+      "title": "Незаконният \"кокошарник\" на Марешки трябва да бъде съборен, реши окончателно съдът",
+      "summary": "Дружеството \"Марешки недвижими имоти\" трябва да събори незаконната си сграда в Морската градина на Варна. След съдебни дела, продължили шест години, Върховният административен съд сложи край на историята с т.нар. лятна кухня в имота в северната част...",
+      "date": "2026-10-19T14:14:00.000Z",
+      "url": "https://www.dnevnik.bg/bulgaria/2026/10/19/4968314_nezakonniiat_kokosharnik_na_mareshki_triabva_da_bude/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "1657"
+      ],
+      "author": "Спас Спасов",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-predozirane-peevski-ob-vi-kampani-it-za-a9fdca",
+      "title": "Предозиране: Пеевски обяви кампания \"Щит за хората\", с която щял да пази от корупция",
+      "summary": "Рубриката \"Предозиране\" на \"Дневник\" започна със събиране на абсурдни послания в хода на предизборната кампания през 2014 г., но продължава и днес, защото българската публична среда подава нови и нови сюжети вече повече от десетилетие. ...",
+      "date": "2026-10-19T14:06:00.000Z",
+      "url": "https://www.dnevnik.bg/analizi/predozirane/2026/10/19/4968303_predozirane_peevski_obiavi_kampaniia_shtit_za_horata_s/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "4042"
+      ],
+      "author": "Йорданка Веселинова",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-s-d-t-odobri-evrope-ska-zapoved-za-arest-za-6a20fd",
+      "title": "Съдът одобри европейска заповед за арест за двама германци за палежа на \"Старлинк\"",
+      "summary": "Съдът разреши двама германски граждани да се издирват с Европейска заповед за арест. Те са обвинени за палежа на антени на \"Старлинк\". Искането за издаване на Европейска заповед за арест беше внесено от Софийската градска прокуратура, която настоява...",
+      "date": "2026-10-19T14:06:00.000Z",
+      "url": "https://www.dnevnik.bg/bulgaria/2026/10/19/4968319_sudut_odobri_evropeiska_zapoved_za_arest_za_dvama/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "1657"
+      ],
+      "author": "Ина Друмева",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-ombudsman-t-poiska-proverka-na-visokite-d027b6",
+      "title": "Омбудсманът поиска проверка на високите цени на екскурзии за ученици и деца от детските градини",
+      "summary": "Омбудсманът поиска проверка на високите цени на екскурзии за ученици и деца от детските градини. Поводът е нарастващото недоволство на родители, които сигнализират за оферти от 40-50 евро за кратки пътувания, при това без включени храна и входни...",
+      "date": "2026-10-19T14:02:00.000Z",
+      "url": "https://www.dnevnik.bg/bulgaria/2026/10/19/4968335_ombudsmanut_poiska_proverka_na_visokite_ceni_na/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "1657"
+      ],
+      "author": "Георги Пауновски",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-ra-nmetal-i-msc-e-stro-t-voenni-i-civilni-7f9829",
+      "title": "\"Райнметал\" и MSC ще строят военни и цивилни кораби в Румъния",
+      "summary": "Германската Rheinmetall (Райнметал) и швейцарската корабоплавателна компания MSC спечелиха търга за румънската корабостроителница „Мангалия“, разположена южно от Констанца, съобщиха от немския концерн в понеделник. Целта на придобиването е създаването на производствена база с двойно предназначение, в която паралелно да се развиват и осъществяват дейности по корабостроене както за граждански, така и за военни нужди – както за вътрешния, така и за международните пазари. За тази цел в бъдеще територията ще бъде разделена на различни сектори и зони за сигурност…",
+      "date": "2026-10-19T14:00:08.000Z",
+      "url": "https://www.mediapool.bg/biznes/rainmetal-i-msc-shte-stroyat-voenni-i-tsivilni-korabi-v-rumaniya/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Бизнес",
+        "търг",
+        "Румъния",
+        "корабостроителница"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T20:55:39.365Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-capital-es-otblizo-franci-gori-dronove-prod-lzavat-3c3218",
+      "title": "🇪🇺 ЕС отблизо: Франция гори; Дронове продължават да летят над Черно море; Зеленски отправи нови искания към ЕС, вкючително за следващ общ заем",
+      "summary": "[[img:4968349]] Франция отново се намира в центъра на европейското внимание, разпъната между вълна от улично насилие и засилващ се натиск върху публичните ѝ финанси. Сцени на опожарени кметства, вандализъм и сблъсъци между протестиращи и полиция предизвикаха сътресение в страната, което президентът Еманюел Макрон определи като \"национален срам\". Ситуацията се усложнява от факта, че традиционното за Париж решение за овладяване на социалното напрежение - увеличаване на бюджетните разходи - този пъ...",
+      "date": "2026-10-19T13:50:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/sviat/2026/10/19/4968321__es_otblizo_franciia_gori_dronove_produljavat_da/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2253"
+      ],
+      "author": "Моника Върбанова",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:54:55.440Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-kita-predlaga-da-e-nadezden-i-otgovoren-45d781",
+      "title": "Китай предлага да е надежден и отговорен партньор в модернизацията на България",
+      "summary": "Конфликтите в Близкия изток и Украйна, двустранното сътрудничество и възможностите за инвестиции. Това бяха сред основните теми в разговорите на външния министър на Китай Уан И с президента Илияна Йотова и премиера Румен Радев. Срещите се проведоха...",
+      "date": "2026-10-19T13:46:00.000Z",
+      "url": "https://www.dnevnik.bg/sviat/2026/10/19/4968320_kitai_predlaga_da_e_nadejden_i_otgovoren_partnyor_v/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "1658"
+      ],
+      "author": "Георги Пауновски",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:42.670Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-11-000-seme-stva-v-sofi-e-mogat-da-smen-t-01181e",
+      "title": "11 000 семейства в София ще могат да сменят безплатно старите си печки на дърва",
+      "summary": "Още около 11 000 семейства в София ще могат да сменят безплатно старите си печки на дърва и въглища с по-екологични алтернативи. От началото на ноември столичната община започва да събира заявки за подмяна на уредите. Вместо замърсяващите въздуха печки ще се монтират основно климатици…",
+      "date": "2026-10-19T13:45:17.000Z",
+      "url": "https://www.mediapool.bg/bulgaria/11-000-semeistva-v-sofiya-shte-mogat-da-smenyat-bezplatno-starite-si-pechki-na-darva/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "България",
+        "мръсен въздух",
+        "София",
+        "отопление"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.365Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-turci-e-poluci-cast-ot-ruski-dizel-za-sa-74cd23",
+      "title": "Турция ще получи част от руския дизел за САЩ",
+      "summary": "Турция ще получи част от количествата дизелово гориво, които Русия доставя на световните пазари по силата на споразумението с американския президент Доналд Тръмп, каза в понеделник турският министър на енергетиката Алпарслан Байрактар, цитиран от Ройтерс. Байрактар заяви, че споразумението за доставките на дизелово гориво между САЩ и Русия е важно за енергийната сигурност на Турция. Анкара разчита на Русия за част от енергийните си нужди, както и на Иран, Азербайджан и други доставчици…",
+      "date": "2026-10-19T13:44:43.000Z",
+      "url": "https://www.mediapool.bg/biznes/turtsiya-shte-poluchi-chast-ot-ruskiya-dizel-za-sasht/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Бизнес",
+        "Русия",
+        "сделка",
+        "дизел"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T20:55:39.365Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-ruski-voenen-sp-tnik-se-priblizi-opasno-do-7fb260",
+      "title": "Руски военен спътник се приближи опасно до финландски апарат, който предава данни на Украйна",
+      "summary": "На 17 октомври руският военен спътник „Космос-2612“ е започнал опасно сближаване с финландско-американския радиолокационен спътник X36.Подобни маневри могат да се използват за изучаване на друг космически апарат, за демонстриране на възможности или за подготовка за намеса в работата му. Собственик на X36 е компанията ICEYE, която предоставя изображения от своите спътници на украинските военни, съобщава вестник „Комерсант“ https://www.kommersant.ru/doc/9041473 .Според данни на американската компания LeoLabs и на нидерландския специалист по наблюдение на спътници Марко Лангбрук на 17 октомври разстоянието между руския и западния апарат е било между 1 и 5 километра.До 19 октомври, след…",
+      "date": "2026-10-19T13:42:01.000Z",
+      "url": "https://www.mediapool.bg/voina-v-ukraina/ruski-voenen-spatnik-se-priblizhi-opasno-do-finlandski-aparat-koito-predava-danni-na-ukraina/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Война в Украйна",
+        "Украйна",
+        "данни",
+        "финландски спътник"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.365Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-bonus-tocki-za-nad-50-evrope-ski-dostavki-v-e4e62d",
+      "title": "Бонус точки за над 50% европейски доставки в обществените поръчки иска бизнесът",
+      "summary": "При оценяването на офертите на участници в стратегическите обществени поръчки в енергетиката, транспорта, отбраната, цифровата инфраструктура и критичните технологии да се дават побунс точки за онези от тях, които гарантират, че над 50 процента от доставките и услугите им ще идват от Европейския съюз. Това предлага Българската асоциация на електротехниката и електрониката (БАСЕЛ), според която в момента публични български и европейски публични средства изтичат към държави извън ЕС като Китай, Турция и Индия, които печелят търговете с по-ниски цени. Според организацията при оценката на предложенията трябва също така да се оценява сервизното присъствие в България…",
+      "date": "2026-10-19T13:29:06.000Z",
+      "url": "https://www.mediapool.bg/biznes/bonus-tochki-za-nad-50-evropeiski-dostavki-v-obshtestvenite-porachki-iska-biznesat/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Бизнес",
+        "обществени поръчки",
+        "оферти",
+        "БАСЕЛ"
+      ],
+      "author": "",
+      "theme": "energija",
+      "addedAt": "2026-10-19T20:55:39.365Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-farmacevticni-t-sektor-vizda-risk-ot-zabav-7e5de9",
+      "title": "Фармацевтичният сектор вижда риск от забавяне на доставки на лекарства заради нови промени",
+      "summary": "Три организации във фармацевтичния сектор излязоха с позиция по повод промените в Закона за лекарствените продукти. Те настояват текстовете да бъдат преработени преди окончателното им приемане, за да не се забави достъпът на пациентите до лекарства...",
+      "date": "2026-10-19T13:09:00.000Z",
+      "url": "https://www.dnevnik.bg/zdrave/2026/10/19/4968278_farmacevtichniiat_sektor_vijda_risk_ot_zabaviane_na/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "2673"
+      ],
+      "author": "Вяра Николова",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:42.671Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-po-malko-pensii-sa-preizcisleni-sluzebno-ot-ba23df",
+      "title": "По-малко пенсии са преизчислени служебно от НОИ през 2026 г.",
+      "summary": "НОИ е преизчислил служебно 356 079 пенсии от 1 април 2026 г. – със 7622 по-малко спрямо миналата година, когато броят им е бил 363 701. Преизчисляването се извършва автоматично заради допълнителен осигурителен стаж, придобит от пенсионерите след пенсионирането им…",
+      "date": "2026-10-19T13:04:13.000Z",
+      "url": "https://www.mediapool.bg/bulgaria/po-malko-pensii-sa-preizchisleni-sluzhebno-ot-noi-prez-2026-g/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "България",
+        "НОИ",
+        "преизчисляване на пенсии",
+        "работещи пенсионери"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.365Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-burgaski-t-d-rzaven-universitet-otkri-60bb6a",
+      "title": "Бургаският държавен университет откри филиала си в Добрич",
+      "summary": "Бургаският държавен университет откри филиала си за обучение на медицински сестри в Добрич. Той ще започне обучението на първите 15 студенти още от тази учебна година. За 63-годишния университет \"Проф. д-р Асен Златаров\" това е първият...",
+      "date": "2026-10-19T13:04:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/10/19/4968289_burgaskiiat_durjaven_universitet_otkri_filiala_si_v/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:42.671Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-sofi-ski-t-okr-zen-s-d-e-os-den-ot-firma-za-141d9a",
+      "title": "Софийският окръжен съд е осъден от фирма за незаконна конфискация",
+      "summary": "Софийският окръжен съд е осъден от фирма за незаконна конфискация. Решението е на Софийския апелативен съд по жалба на босненската фирма \"Ceĸвac\", пише \"Де факто\". Toвa e поредно съдебно решение срещу съдилищата, ĸoитo cлeд...",
+      "date": "2026-10-19T13:01:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/10/19/4968294_sofiiskiiat_okrujen_sud_e_osuden_ot_firma_za_nezakonna/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:42.671Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-spored-resornoto-ministerstvo-situaci-ta-v-36dde0",
+      "title": "Според ресорното министерство ситуацията в Черно море засега не вреди на туризма",
+      "summary": "Ситуацията в Черно море засега не се отразява на предстоящия зимен и след това летен сезон. В това са уверили ресорния министър Илин Димитров туристическите аташета в Германия и Полша и посланиците на страната на основните пазари, емитиращи...",
+      "date": "2026-10-19T12:55:00.000Z",
+      "url": "https://www.dnevnik.bg/biznes/2026/10/19/4968285_spored_resornoto_ministerstvo_situaciiata_v_cherno/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "1661"
+      ],
+      "author": "Татяна Димитрова",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-19T20:55:42.671Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-dnevnikbg-globalnata-inflaci-pri-hranitelnite-749051",
+      "title": "Глобалната инфлация при хранителните продукти ще се ускори",
+      "summary": "Мухамад Ясин, 63-годишният паркинг служител в центъра на Джакарта, споделя, че е намалил броя на храненията си заради растящите цени на хранителните продукти, които са станали непосилни за него. \"Преди можех да си купя ориз, темпе и...",
+      "date": "2026-10-19T12:49:00.000Z",
+      "url": "https://www.dnevnik.bg/sviat/2026/10/19/4968279_globalnata_inflaciia_pri_hranitelnite_produkti_shte_se/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "1658"
+      ],
+      "author": "Ройтерс",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-19T20:55:42.671Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-capital-kapital-t-rsi-start-pite-koito-da-predstavl-bd8f4b",
+      "title": "\"Капитал\" търси стартъпите, които да представляват България на Nexus Luxembourg 2027",
+      "summary": "\"Капитал\" търси младите български компании, които да представляват страната на стартъп състезанието Startups & Scaleups Awards към конференцията Nexus Luxembourg, която ще се проведе на 9 и 10 март 2027 г. Победителите в българското състезание ще получат директно право на участие, без да преминават през общия подбор на стартъпи за конференцията в Люксембург, нито да заплащат разходите за кандидатстване през него. Nexus Luxembourg е една от най-големите технологични конференции в Европа, като на...",
+      "date": "2026-10-19T12:34:00.000Z",
+      "url": "https://www.capital.bg/biznes/startup/2026/10/08/4963938_kapital_tursi_startupite_koito_da_predstavliavat/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "3026"
+      ],
+      "author": "Йоан Запрянов",
+      "theme": "politika",
+      "addedAt": "2026-10-19T20:54:55.440Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-capital-d-rzavata-ignorira-iskani-ta-na-biznesa-za-648127",
+      "title": "Държавата игнорира исканията на бизнеса за защита на европейското производство в обществените поръчки",
+      "summary": "Българската асоциация на електротехниката и електрониката (БАСЕЛ) продължава битката си за въвеждането и в България на изискването в обществените поръчки поне 50% от стоките да са произведени в ЕС. Засега обаче без резултат, а и без отговор. Докато Европейската комисия предлага възложителите в търгове да могат да отхвърлят оферти, при които над половината доставки идват извън ЕС, четири български министерства - на икономиката, на транспорта, на енергетиката и на регионалното развитие, не отговар...",
+      "date": "2026-10-19T12:33:00.000Z",
+      "url": "https://www.capital.bg/biznes/energetika/2026/10/19/4968138_durjavata_ignorira_iskaniiata_na_biznesa_za_zashtita/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "3092"
+      ],
+      "author": "Румяна Гочева",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-19T20:54:55.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-farmaindustri-ta-predupredi-ce-zakonovi-8378e2",
+      "title": "Фармаиндустрията предупреди, че законови поправки може да забавят доставките на лекарства",
+      "summary": "Производителите и търговците на едро с лекарства настояват за преработване на част от поправките в Закона за лекарствените продукти в хуманната медицина, свързани със системата за проследяване на лекарствата СЕСПА. Според три браншови организации предвиденото сканиране на индивидуалния код на всяка опаковка в реално време може да затрудни доставките до аптеките и болниците и да забави достъпа на пациентите до лечение. Позицията е на Асоциацията на научноизследователските фармацевтични производители (ARPharM), Българската фармацевтична бизнес асоциация (BgPharMA) и Българската асоциация на търговците на едро с лекарства (БАТЕОДЛ) след приемането на законопроекта на първо четене от…",
+      "date": "2026-10-19T12:29:08.000Z",
+      "url": "https://www.mediapool.bg/zdrave/farmaindustriyata-predupredi-che-zakonovi-popravki-mozhe-da-zabavyat-dostavkite-na-lekarstva/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Бизнес",
+        "Здраве",
+        "Закон за лекарствените продукти в хуманната медицина",
+        "Асоциацията на научноизследователските фармацевтични производители"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T20:55:39.366Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-franci-v-vezda-casticen-i-lokaliziran-3d4210",
+      "title": "Франция въвежда частичен и локализиран полицейски час",
+      "summary": "Премиерът на Франция Себастиен Льокорню обяви днес, че е поискал от префектите в страната да обявят полицейски час на известен брой места, който да влезе в сила от тази вечер, предадоха световните агенции. Целта на мярката е да бъдат защитени търговците и магазините след уикенда на насилие и сцените на хаос в редица градове на цялата страна. Карта на населените места, в които ще бъде въведен полицейски час, ще бъде публикувана по-късно днес след разговори с кметовете на съответните населени места, добави Льокорню след края на специално междуведомствено заседание, посветено на кризата със сигурността в страната…",
+      "date": "2026-10-19T12:25:58.000Z",
+      "url": "https://www.mediapool.bg/evropa/frantsiya-vavezhda-chastichen-i-lokaliziran-politseiski-chas/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Европа",
+        "извънредно положение",
+        "полицейски час",
+        "Премиерът на Франция Себастиен Льокорню"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T20:55:39.366Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-za-treti-p-t-vasil-terziev-si-naznaci-nov-026bb4",
+      "title": "За трети път. Васил Терзиев си назначи нов заместник за транспорта",
+      "summary": "За трети път в трите години от мандата си като кмет Васил Терзиев си назначи нов заместник, който да отговаря за транспорта. На поста от вторник, 20 октомври, ще е досегашният шеф на дирекция “Транспорт” в общината Иван Николов. Иван Николов е в администрацията от 2017 г., когато общината се ръководеше от ГЕРБ в лицето на кмета Йорданка Фандъкова…",
+      "date": "2026-10-19T12:20:09.000Z",
+      "url": "https://www.mediapool.bg/bulgaria/za-treti-pat-vasil-terziev-si-naznachi-nov-zamestnik-za-transporta/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "България",
+        "София",
+        "транспорт",
+        "кмет на София"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.366Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-avstrali-ska-deputatka-e-v-kriticno-s-sto-8347e6",
+      "title": "Австралийска депутатка е в критично състояние след предполагаемо умишлено блъскане с автомобил",
+      "summary": "Австралийската независима депутатка Хелън Хейнс, на 65 години, е в критично състояние, след като е била блъсната от автомобил пред офиса ѝ в град Уангарата, щата Виктория, съобщиха премиерът Антъни Албанезе и полицията, цитирани от Асошиейтед прес. По данни на полицията 43-годишен мъж днес е блъснал Хейнс с бял джип „Тойота Ленд Крузър“. Депутатката е откарана в болница с тежки наранявания, особено в долната част на тялото…",
+      "date": "2026-10-19T12:00:23.000Z",
+      "url": "https://www.mediapool.bg/svyat/avstraliyska-deputatka-e-v-kritichno-sastoyanie-sled-predpolagaemo-umishleno-blaskane-s-avtomobil/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Свят",
+        "блъсната",
+        "кола",
+        "Австралийската независима депутатка Хелън Хейнс"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.366Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-capital-biznes-globus-v-lnata-ot-posk-pvane-na-5ca85a",
+      "title": "Бизнес глобус: Вълната от поскъпване на храните ще продължи и през 2027 г.; Китайската икономика расте с 4.5% през третото тримесечие",
+      "summary": "Глобалната инфлация при храните ще продължи и догодина Цени на храните в световен мащаб се очаква да продължат да се повишават до края на 2027 г. заради военните конфликти, нарушенията в корабоплаването и сушата, свързана с климатичното явление \"Ел Ниньо\". През септември индексът на цените на храните на ООН достигна най-високото си ниво от ноември 2022 г., а поскъпването вече се усеща осезаемо в Азия и Северна Африка. Цените на пшеницата са нараснали с над 30% от началото на 2026 г., а по-високи...",
+      "date": "2026-10-19T11:37:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/sviat/biznes-globus/2026/10/19/4968290_biznes_globus_vulnata_ot_poskupvane_na_hranite_shte/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "5060"
+      ],
+      "author": "Александър Куколев",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-19T20:54:55.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-ne-puska-te-rusnaci-v-evropa-premier-t-na-cc3e0d",
+      "title": "\"Не пускайте руснаци в Европа\". Премиерът на Латвия призова ЕС да спре туристическите визи за руски граждани",
+      "summary": "Премиерът на Латвия Андрис Кулбергс призова страните от Европейския съюз да прекратят издаването на туристически визи на руски граждани заради хибридните заплахи.„Ама просто не пускайте, по дяволите, руснаци в Европа“, заяви Кулбергс в интервю за Financial Times (FT).По думите му всяка страна трябва да заеме твърда позиция по този въпрос, тъй като Русия води агресивна война в Украйна и заплашва ЕС. Някои държави обаче продължават да издават визи на руски граждани заради приходите, които те носят.Кулбергс подчерта, че Латвия е подложена „всекидневно“ на хибридни заплахи от страна на Русия. Освен това тази година страната очаква най-големия за последните пет години приток на мигранти, които…",
+      "date": "2026-10-19T11:35:36.000Z",
+      "url": "https://www.mediapool.bg/evropa/ne-puskaite-rusnatsi-v-evropa-premierat-na-latviya-prizova-es-da-spre-turisticheskite-vizi-za-ruski-grazhdani/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Европа",
+        "Русия",
+        "забрана",
+        "Латвия"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T20:55:39.366Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-capital-prod-lzenieto-na-k-ata-na-duhovete-donese-0d9dd7",
+      "title": "Продължението на \"Къщата на духовете\" донесе на Исабел Алиенде награда и един милион евро",
+      "summary": "Когато на 15 октомври в Барселона по време на 75-ото издание на литературните награди Planeta (с най-висок награден фонд за неиздавана книга на испански език в света - един милион евро за победителя и двеста хиляди евро за подгласника) идва ред да бъде отворен анонимният плик с името на победителя, става ясно, че зад книгата с работно заглавие Los que faltan (\"Тези които липсват\") и псевдонима Лус Вентура стои чилийската писателка Исабел Алиенде с романа си La hora antes del alba (\"Часът преди з...",
+      "date": "2026-10-19T11:30:00.000Z",
+      "url": "https://www.capital.bg/light/neshta/2026/10/19/4968182_produljenieto_na_kushtata_na_duhovete_donese_na_isabel/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2280"
+      ],
+      "author": "Ивайло Харалампиев",
+      "theme": "politika",
+      "addedAt": "2026-10-19T20:54:55.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-capital-dzioti-hirani-dra-v-r-b-lgarskite-start-p-e73a4f",
+      "title": "Джиоти Хирани-Драйвър: Българските стартъп кандидатури за NATO DIANA нараснаха двойно",
+      "summary": "Джиоти Хирани-Драйвър е ИД изпълнителен директор и главен оперативен директор и на NATO DIANA (Акселератора за отбранителни иновации на НАТО). Тя отговаря за стратегическото планиране, оперативната дейност, координацията с правителствата на съюзническите държави и развитието на програмите за ускорено внедряване на отбранителни иновации. Тя ще е лектор на организирания от \"Капитал\" Regional Defence and Security Summit 2026, който ще се проведе на 21 октомври в Sofia Event Center. NATO DIANA (...",
+      "date": "2026-10-19T11:22:00.000Z",
+      "url": "https://www.capital.bg/biznes/startup/2026/10/19/4968226_djioti_hirani-draivur_bulgarskite_startup_kandidaturi/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "3026"
+      ],
+      "author": "Константин Николов",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T20:54:55.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-zapodozrenite-za-paleza-na-starlink-sa-v-d7468f",
+      "title": "Заподозрените за палежа на Starlink са в чужбина",
+      "summary": "Двамата млади мъже, заподозрени за палежа на антените на Starlink в България, са избягали от страната. Това става ясно от искане на прокуратурата по отношение на двамата да бъдат издадени европейски заповеди за арест. По закон такава заповед се издава от съда и се очаква решението на Софийския градски съд…",
+      "date": "2026-10-19T11:14:50.000Z",
+      "url": "https://www.mediapool.bg/bulgaria/zapodozrenite-za-palezha-na-starlink-sa-v-chuzhbina/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "България",
+        "палеж",
+        "заповед за арест",
+        "Starlink"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.366Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-sa-zaplasiha-es-s-razrusitelen-otveten-udar-9fc200",
+      "title": "САЩ заплашиха ЕС с \"разрушителен\" ответен удар, ако ограничи Starlink при разпределянето на честоти",
+      "summary": "Плановете на европейски представители и парламентаристи да дадат предимство на компаниите от Стария континент при разпределянето на честоти за сателитни комуникации се сблъскаха със съпротивата на Вашингтон.Посланикът на САЩ в Европейския съюз Андрю Паздър заплаши европейските компании с „разрушителни“ ответни мерки, ако Брюксел ограничи достъпа на американските конкуренти до европейския пазар, преди всичко на компанията SpaceX на Илон Мъск.Предвид мащабите на американския пазар последствията за европейските оператори ще бъдат изключително болезнени, предупреди той в разговор с Financial Times.В ЕС се опитват да намалят зависимостта си от американските технологии заради опасенията от…",
+      "date": "2026-10-19T11:05:07.000Z",
+      "url": "https://www.mediapool.bg/evropa/sasht-zaplashiha-es-s-razrushitelen-otveten-udar-ako-ogranichi-starlink-pri-razpredelyaneto-na-chestoti/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Европа",
+        "ЕС",
+        "заплахи",
+        "сателити"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-19T20:55:39.366Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-voennata-prokuratura-oglezda-porazeni-ot-54a292",
+      "title": "Военната прокуратура оглежда поразения от дрон кораб Chelsea 3",
+      "summary": "Под надзора на Военно-окръжната прокуратура - София започнаха огледите на поразения от дронове моторен кораб \"Челси 3\". След успешна операция на ИА \"Морска администрация\"- Бургас корабът беше изтеглен до бургаското пристанище \"Запад\", където в момента се намира под охрана.&nbsp…",
+      "date": "2026-10-19T11:01:00.000Z",
+      "url": "https://www.mediapool.bg/bulgaria/voennata-prokuratura-oglezhda-porazeniya-ot-dron-korab-chelsea-3/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "България",
+        "кораб",
+        "дрин"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.366Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-nova-v-lna-ot-udari-po-ukrainskata-4086ad",
+      "title": "Нова вълна от удари по украинската енергетика, Украйна отново не е била предупредена от САЩ",
+      "summary": "Украйна \"отново изобщо не беше предупредена\" от съюзниците си, преди Русия да нанесе удари с балистични ракети през изминалата нощ, заяви украинският президент в социалната мрежа Екс, цитиран от Франс прес. \"През нощта беше предприета поредната руска атака с балистични ракети, която премина на няколко вълни и отново изобщо не бяхме предупредени от нашите партньори\", заяви Зеленски, като уточни, че Русия е изстреляла 16 балистични ракети срещу Киев и Киевска област. \"Руснаците атакуваха и с над 200 дрона от различни типове, включително и \"Шахед\" с реактивни двигатели, като атаките бяха насочени от Харковска и Днепропетровска област до Волинска, Ривненска и Одеска област…",
+      "date": "2026-10-19T10:25:46.000Z",
+      "url": "https://www.mediapool.bg/voina-v-ukraina/nova-valna-ot-udari-po-ukrainskata-energetika-ukraina-otnovo-ne-e-bila-predupredena-ot-sasht/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Война в Украйна",
+        "предупреждение",
+        "енергетика",
+        "балистични ракети"
+      ],
+      "author": "",
+      "theme": "energija",
+      "addedAt": "2026-10-19T20:55:39.366Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-zelenski-obvini-tr-mp-ce-tlaska-ukra-na-k-m-159465",
+      "title": "Зеленски обвини Тръмп, че тласка Украйна към капитулация пред Путин",
+      "summary": "Президентът на Украйна Володимир Зеленски обвини американския лидер Доналд Тръмп в опит да принуди Киев да капитулира пред Русия.„Смятам, че бяха предприети стъпки, целящи да склонят Украйна към капитулация. Не ми се иска да мисля, че нашите американски партньори смятат, че войната може да бъде приключена по-бързо за сметка на Украйна. Но изглежда точно така“, заяви Зеленски в интервю за агенция Bloomberg.Украинският лидер отбеляза, че се е съгласил с искането на Тръмп Украйна да прекрати ударите по руските нефтопреработвателни заводи в замяна на доставки на допълнителни ракети за американската система за противовъздушна отбрана Patriot.„Но те просто искат да спрем да атакуваме…",
+      "date": "2026-10-19T09:35:44.000Z",
+      "url": "https://www.mediapool.bg/voina-v-ukraina/zelenski-obvini-tramp-che-tlaska-ukraina-kam-kapitulatsiya-pred-putin/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Война в Украйна",
+        "Путин",
+        "Украйна",
+        "Тръмп"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T20:55:39.366Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-capital-kaufland-pravi-sledva-a-kracka-v-razvitieto-704fd1",
+      "title": "Kaufland прави следваща крачка в развитието си",
+      "summary": "Визитка \"Kaufland България\" навлиза в нов етап от развитието си с амбиция за ускорена модернизация, дигитализация и иновации. От 1 октомври 2026 г. начело на компанията e Михаил Петров - мениджър с богат международен опит, над 20 години в структурите на Kaufland и групата от дружества Schwarz и силен фокус върху технологиите и развитието на хората. Като създател и дългогодишен ръководител последователно на Kaufland Service и \"Schwarz Digits България\" той има ключова роля в развитието на нови ...",
+      "date": "2026-10-19T09:17:00.000Z",
+      "url": "https://www.capital.bg/biznes/kompanii/2026/10/19/4965989_kaufland_pravi_sledvashta_krachka_v_razvitieto_si/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2268"
+      ],
+      "author": "Kaufland",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:54:55.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-capital-sa-sre-u-iran-ili-rusi-sre-u-ukra-na-ko-vo-bb9c0d",
+      "title": "САЩ срещу Иран или Русия срещу Украйна – коя война оказва по-силно влияние върху цените на дизела",
+      "summary": "Петролните пазари са разтърсвани от съчетанието на разрастващата се война в Близкия изток, продължаващите рискове за корабоплаването през Ормузкия проток и засилващите се украински атаки срещу руски рафинерии. Продължителните прекъсвания на доставките оказват сериозен натиск върху световните запаси от горива, особено от дизел. Според Международната агенция по енергетика (МАЕ) стремителното поскъпване на дизеловото гориво вече има широкообхватни последици за световната икономика - от увеличаванет...",
+      "date": "2026-10-19T08:57:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/sviat/2026/10/19/4968073_sasht_sreshtu_iran_ili_rusiia_sreshtu_ukraina_koia/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2253"
+      ],
+      "author": "Кирил Кирчев",
+      "theme": "rat",
+      "addedAt": "2026-10-19T20:54:55.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-capital-a1-group-b-de-eto-na-ict-biznesa-e-v-c19246",
+      "title": "A1 Group: Бъдещето на ICT бизнеса е в суверенните AI агенти",
+      "summary": "Брутните приходи от информационни и комуникационни технологии (ICT) на A1 Group са се удвоили от 285 милиона евро през 2021 г. до 573 милиона евро през 2025 г., отбелязвайки средногодишен темп на растеж (CAGR) 19% и 20% ръст само за последната година. С общи приходи 5.58 милиарда евро в края на 2025 г., телеком групата използва международния форум A1 Group ICT Summit 2026 във Виена, за да очертае следващата стратегическа фаза - преход от експериментално ползване на изкуствен интелект (AI) към ма...",
+      "date": "2026-10-19T08:54:00.000Z",
+      "url": "https://www.capital.bg/biznes/tehnologii_i_nauka/2026/10/19/4964230_a1_group_budeshteto_na_ict_biznesa_e_v_suverennite_ai/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2274"
+      ],
+      "author": "Владимир Владков",
+      "theme": "ai",
+      "addedAt": "2026-10-19T20:54:55.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-cenite-na-petrola-se-poniziha-sled-305194",
+      "title": "Цените на петрола се понижиха след облекчаването на санкциите срещу Русия",
+      "summary": "Цените на петрола се понижиха в азиатската търговия днес, след като президентът на САЩ Доналд Тръмп освободи Русия от ключови санкции и мита, което може да увеличи износа на руски горива. Инвеститорите прибираха печалби след поскъпването на сорта Брент до петмесечен максимум в края на миналата седмица, съобщи Ройтерс. Фючърсите на сорта Брент поевтиняха с 1.98 долара, или 1.80 на сто, до 107.88 долара за барел към 9:15 часа българско време…",
+      "date": "2026-10-19T07:26:23.000Z",
+      "url": "https://www.mediapool.bg/biznes/tsenite-na-petrola-se-ponizhiha-sled-oblekchavaneto-na-sanktsiite-sreshtu-rusiya/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Бизнес",
+        "петрол",
+        "Тръмп"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.366Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-capital-interv-ili-prodanov-cerno-more-n-ma-532b8a",
+      "title": "Интервю | Илия Проданов: Черно море няма алтернатива за износа на българско зърно, а кораби вече отказват курсове",
+      "summary": "Илия Проданов е председател на управителния съвет на Националната асоциация на зърнопроизводителите от април 2023 г, като преди това е бил зам.-председател на асоциацията и председател на сдружение \"Съюз на зърнопроизводителите \"Маркели\" - Карнобат. По образование е юрист, завършил е Великотърновския университет. НАЗ е регистрирана през 2006 г и в нея членуват 21 регионални сдружения на зърнопроизводители от всички области на България. Те включват общо над 2600 стопанства - предимно в средния...",
+      "date": "2026-10-19T07:20:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/ikonomika/2026/10/19/4967960_intervju_iliia_prodanov_cherno_more_niama_alternativa/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "3087"
+      ],
+      "author": "Ани Коджаиванова, Моника Върбанова",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:54:55.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-ivo-hristov-e-se-opitame-deficit-t-da-b-de-74dc71",
+      "title": "Иво Христов: Ще се опитаме дефицитът да бъде в рамките на 3%",
+      "summary": "Ще се опитаме дефицитътда бъде в рамките на 3% следващата година, заяви вицепремиерът Иво Христов пред БНТ. Той добави, че не е привърженик на строгите рамки, както и че почти никъде в Европа той не достига тази стойност. Иво Христов, вицепремиер: \"А представете си в какви рамки ще бъде след тази вълна от вандализъм, която ще удари всички застрахователи в цяла Европа…",
+      "date": "2026-10-19T06:41:41.000Z",
+      "url": "https://www.mediapool.bg/bulgaria/ivo-hristov-shte-se-opitame-defitsitat-da-bade-v-ramkite-na-3/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "България",
+        "Иво Христов",
+        "Бюджет"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.366Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-capital-komentar-n-kolko-vazni-tendencii-predi-0aada9",
+      "title": "Коментар | Няколко важни тенденции преди междинните избори в САЩ",
+      "summary": "[[img:4967918]] Моли Джонг-Фаст, политически анализатор, в коментар за британския \"Гардиън\". Паниката сред републиканците заради тазгодишните междинни избори е видима. Тези избори в САЩ винаги са своеобразен референдум за управляващите. Предстоящите в началото на ноември приличат по-малко на референдум за тръмпизма и повече на панихида. Не е трудно да се разбере как републиканците стигнаха дотук, успокоявайки се с мисълта, че техният човек Доналд Тръмп отново ще успее да се противопостави ...",
+      "date": "2026-10-19T06:30:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/redakcionni_komentari/2026/10/19/4967925_komentar_niakolko_vajni_tendencii_predi_mejdinnite/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2255"
+      ],
+      "author": "Моли Джонг-Фаст",
+      "theme": "politika",
+      "addedAt": "2026-10-19T20:54:55.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-capital-slovaki-zapocva-da-v-zstanov-va-otnoseni-ta-234a24",
+      "title": "Словакия започва да възстановява отношенията си с Русия",
+      "summary": "Словакия възобновява работата на замразен форум за сътрудничество с Москва, като сред основните теми на първата подобна среща от пет години насам ще бъдат доставките на руски газ и петрол, ядреното гориво и отношението към руските спортисти. Това става ясно от документ на руското правителство, с който Politico се е сдобило. Документът е изготвен от руския министър на науката и висшето образование Валерий Фалков и в него се посочва, че словашкият външен министър Юрай Бланар се е съгласил по време...",
+      "date": "2026-10-19T06:07:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/sviat/2026/10/19/4967374_slovakiia_zapochva_da_vuzstanoviava_otnosheniiata_si_s/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2253"
+      ],
+      "author": "Кирил Кирчев",
+      "theme": "politika",
+      "addedAt": "2026-10-19T20:54:55.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-albanski-t-premier-obvini-rusi-i-iran-za-dc843a",
+      "title": "Албанският премиер обвини Русия и Иран за ескалацията на протестите",
+      "summary": "Aлбанският премиер Еди Рама обвини чуждестранни сили и екстремистки групи за въздействие върху протестите в страната с цел предизвикване на насилие и разпространяване на дезинформация, съобщи АТА. По-конкретно Рама посочи Русия, Иран, крайнолявото движение „Антифа“, политически и религиозни екстремисти, както и лидера на опозиционната Демократическа партия Сали Бериша, като част от сложна мрежа за влияние, която подстрекава протестите. „Протестът се подклажда от чуждестранни ръце“, заяви Рама и спомена фалшиви по думите му информации, които циркулират по социалните медии, за предполагаемо присъствие на израелски граждани и на сръбски полицейски служители в Албания…",
+      "date": "2026-10-19T05:33:32.000Z",
+      "url": "https://www.mediapool.bg/svyat/albanskiyat-premier-obvini-rusiya-i-iran-za-eskalatsiyata-na-protestite/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Свят",
+        "Албания",
+        "Еди Рама"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T20:55:39.366Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-capital-kak-petrolnata-kriza-moze-da-dovede-do-811d66",
+      "title": "Как петролната криза може да доведе до инвестиционен бум",
+      "summary": "Тази година се очакваше да бъде тежка за петролните компании. В началото ѝ цената на фючърсите върху суровия петрол Brent, международния референтен сорт, се очакваше да падне под 60 долара за барел спрямо 68 долара през 2025 г. и 80 долара през 2024 г. заради \"свръхизобилие\" на пазара. Вместо това войната на Доналд Тръмп в Залива я тласна над 100 долара. Сега много от анализаторите очакват средната цена през 2026 г. да бъде 85 долара или повече, а някои прогнозират тя да достигне 120 долара за б...",
+      "date": "2026-10-19T05:17:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/sviat/2026/10/19/4957278_kak_petrolnata_kriza_moje_da_dovede_do_investicionen/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2253"
+      ],
+      "author": "The Economist",
+      "theme": "rat",
+      "addedAt": "2026-10-19T20:54:55.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-capital-nap-prihodite-na-vsicki-kompanii-v-b-lgari-c8a038",
+      "title": "НАП: Приходите на всички компании в България се увеличават с 9% до 348 млрд. евро",
+      "summary": "Финансовите резултати на всички фирми в България продължават да подобряват рекорди и през 2025 г. През изминалата година приходите на работещите компании в страната са се увеличили с 8.9% и достигат 347.5 млрд. евро, показва справка по запитване на \"Капитал\". Резултатът е постигнат от общо 417 хил. дружества, които са били активни в страната, според данните от данъчните декларации. Подобрението е малко по-високо в сравнение с отчетеното от 100-те най-големи компании, подреждани от \"Капитал\", при...",
+      "date": "2026-10-19T05:07:00.000Z",
+      "url": "https://www.capital.bg/biznes/kompanii/2026/10/19/4967014_nap_prihodite_na_vsichki_kompanii_v_bulgariia_se/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2268"
+      ],
+      "author": "Мария Иванова",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:54:55.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-capital-zlatenrezerv-bg-ili-ko-kak-i-k-de-kupuva-0c42e5",
+      "title": "ZlatenRezerv.bg, или кой, как и къде купува златни кюлчета",
+      "summary": "Компанията \"Златен Резерв\" (ZlatenRezerv.bg) е вносител и търговец на инвестиционно злато и сребро под формата на кюлчета и монети. Официален представител и вносител на кюлчета на швейцарската рафинерия Argor-Heraeus и на Британския кралски монетен двор (The Royal Mint). Работи както с клиенти на едро, като обменни бюра и локални търговци на злато, така и с крайни клиенти и инвеститори. Даниел Христов, управител на \"Златен Резерв\", коментира профила и мотивите на инвеститорите, тенденциите на...",
+      "date": "2026-10-19T05:00:00.000Z",
+      "url": "https://www.capital.bg/biznes/kompanii/2026/10/19/4961960_zlatenrezervbg_ili_koi_kak_i_kude_kupuva_zlatni/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2268"
+      ],
+      "author": "\"Златен Резерв\"",
+      "theme": "politika",
+      "addedAt": "2026-10-19T20:54:55.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-capital-industry-forward-2026-novite-pravila-na-6a5d33",
+      "title": "Industry Forward 2026: Новите правила на индустриалния растеж",
+      "summary": "Близо осем десетилетия след плана \"Маршал\" Европа отново е изправена пред задачата да укрепи индустриалния си капацитет. Този път не трябва да възстановява разрушени заводи, а да обърне негативната тенденция, продължила четвърт век. Делът на преработващата промишленост в икономиката на ЕС е намалял от 17.4% през 2000 г. до 14.3% през 2024 г., показват данните на Европейската комисия. Сега Брюксел предлага цел за увеличаване на дела му до 20% до 2035 г. Мащабът на предизвикателството личи и от оц...",
+      "date": "2026-10-19T05:00:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/ikonomika/2026/10/19/4967375_novata_bitka_za_zavodite_kude_e_miastoto_na_bulgariia/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "3087"
+      ],
+      "author": "KEvents",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-19T20:54:55.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-capital-interv-ivo-kovacev-hubavo-e-da-se-peceli-ot-404d41",
+      "title": "Интервю | Иво Ковачев: Хубаво е да се печели от борсите, но е добре и да спим добре",
+      "summary": "Иво Ковачев е д-р на икономическите науки и повече от 30 години управлява американски и английски фондове за фирми като Driehaus Capital (Чикаго), Kinsale Capital (Дъблин), а в момента е главен фонд мениджър за акции на възникващите пазари в бутиковата компания за инвестиции JO Hambro (Лондон). През 90-те години на миналия век д-р Ковачев работи за Агенцията за приватизация и за Българската инвестиционна банка. Той е завършил кибернетика в Прага, мениджмънт в Англия и Америка (\"Фулбрайт\"), би...",
+      "date": "2026-10-19T04:32:00.000Z",
+      "url": "https://www.capital.bg/moiat_capital/investments/2026/10/19/4965748_intervju_ivo_kovachev_hubavo_e_da_se_pecheli_ot/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "4919"
+      ],
+      "author": "Тодор Тодоров",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T20:54:55.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-gn-v-i-sram-makron-kak-e-v-zmozno-francuzi-8c52e3",
+      "title": "\"Гняв и срам\". Макрон: Как е възможно французи да причинят това на Франция?",
+      "summary": "Френският президент Еманюел Макрон изрази „гнева и срама“ на обществото заради безредиците и грабежите по време на обхваналите цялата страна през последните дни протести, насочени срещу растящите разходи за живот и лошите условия в учебните заведения, при които бяха арестувани най-малко 2400 души, предадоха Ройтерс и Асошиейтед прес. Макрон, подобно на други представители на властите, приписа голяма част от насилието на крайнолеви активисти, като ги обвини, че са нападали полицията и обществени сгради, за да предизвикат хаос. „Онези, които са извършили грабежи, ще трябва да платят за щетите, а онези, които са се опитали да съборят Републиката, ще бъдат подведени под отговорност“, заяви…",
+      "date": "2026-10-19T04:26:34.000Z",
+      "url": "https://www.mediapool.bg/svyat/gnyav-i-sram-makron-kak-e-vazmozhno-frantsuzi-da-prichinyat-tova-na-frantsiya/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Свят",
+        "Франция",
+        "протести",
+        "Макрон"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.366Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-tr-mp-vid-gol-m-napred-k-v-usili-ta-za-mir-aa0e40",
+      "title": "Tръмп видя голям напредък в усилията за мир и разкритикува Зеленски",
+      "summary": "Президентът на САЩ Доналд Тръмп защити подхода си към войната в Украйна, като заяви, че не иска да „отблъсне Русия от масата за преговори“, докато се опитва да постигне мир, предаде ДПА. „Постига се голям напредък в усилията за прекратяване на войната“, написа Тръмп в своята платформа „Трут Соушъл“. Той спомена и „текущи преговори за заложници“ – вероятно визирайки пленниците, държани от воюващите страни – но не предостави подробности…",
+      "date": "2026-10-19T04:19:09.000Z",
+      "url": "https://www.mediapool.bg/voina-v-ukraina/tramp-vidya-golyam-napredak-v-usiliyata-za-mir-i-razkritikuva-zelenski/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Война в Украйна",
+        "Путин",
+        "Зеленски",
+        "ТРЪМП"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T20:55:39.366Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-capital-sedmicen-b-letin-za-pravni-novini-3c5d00",
+      "title": "Седмичен бюлетин за правни новини: Прокурорите избират за ВСС; Трудният старт на личния фалит",
+      "summary": "Общото събрание на прокурорите изслуша в събота кандидатите за прокурорската колегия на Висшия съдебен съвет, което \"Дневник\" проследи на живо. Общо 25 прокурори кандидатстват за четирите места на професионалната квота в колегията, гласуването ще се проведе следващата събота (24 октомври). Очаква се балотаж, който ще е на следващия ден и ще съвпадне с изборите за президент. Прокурорите пред избор: кои са лагерите, които се борят за новия ВСС Магдалена Лазарова очаквано стана и.ф. главен проку...",
+      "date": "2026-10-19T04:17:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/pravo/2026/10/19/4968028_sedmichen_bjuletin_za_pravni_novini_prokurorite/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "4904"
+      ],
+      "author": "Мирела Веселинова",
+      "theme": "politika",
+      "addedAt": "2026-10-19T20:54:55.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-capital-p-rvo-strois-posle-urezdas-mrrb-predlaga-de25ed",
+      "title": "Първо строиш, после уреждаш: МРРБ предлага промени за \"търпими\" инфраструктурни строежи",
+      "summary": "Пътища, водопроводи, електропроводи и други инфраструктурни обекти, изградени без необходимите строителни книжа, да могат да получат статут на \"търпимост\" и така да бъдат запазени, а незавършените - довършени при определени условия. Това е основната промяна, заложена в проект за изменения в Закона за устройство на територията (ЗУТ), публикуван за обществено обсъждане от Министерството на регионалното развитие и благоустройството (МРРБ). Кои точно обекти обаче налагат промяната и колко са те, ост...",
+      "date": "2026-10-19T04:15:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/infrastructure/2026/10/19/4966981_purvo_stroish_posle_urejdash_kakvo_predlaga_mrrb_s/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "4910"
+      ],
+      "author": "Мила Чернева",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:54:55.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-samolet-s-marsrut-tel-aviv-viena-kacna-izv-cecdef",
+      "title": "Самолет с маршрут Тел Авив – Виена кацна извънредно в София заради сигнал за бомба",
+      "summary": "Самолет A320, летящ по маршрут Тел Авив - Виена, е бил пренасочен тази вечер за кацане в София заради сигнал за бомбена заплаха, съобщиха от Министерството на транспорта и съобщенията. По първоначална информация на борда има 6 души екипаж и 51 пътника. При изпълнение на полета, на границата с Румъния, екипажът докладва за получен сигнал за бомбена заплаха и решава да кацне извънредно в София…",
+      "date": "2026-10-19T04:13:44.000Z",
+      "url": "https://www.mediapool.bg/bulgaria/samolet-s-marshrut-tel-aviv-viena-katsna-izvanredno-v-sofiya-zaradi-signal-za-bomba/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "България",
+        "сигнал за бомба"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.366Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-mediapool-putin-e-predlozil-sre-a-na-visoko-ravni-e-s-d9f3be",
+      "title": "Путин е предложил среща на високо равнище с Доналд Тръмп и Си Цзинпин за Украйна",
+      "summary": "Руският президент Владимир Путин е предложил провеждането на среща на високо равнище следващия месец с президента на САЩ Доналд Тръмп и китайския лидер Си Цзинпин, за да се договори прекратяване на четиригодишния конфликт в Украйна при условия, благоприятни за Москва, предаде Ройтерс, като се позовава на статия на в. „Уолстрийт джърнъл“. Ройтерс отбелязва, че предложението за среща идва на фона на затопляне на отношенията между Тръмп и Путин – особено след като американският президент обяви сделка за закупуване на руски дизел и в петък подписа указ за отмяна на ключови санкции срещу Москва…",
+      "date": "2026-10-19T04:10:07.000Z",
+      "url": "https://www.mediapool.bg/voina-v-ukraina/putin-e-predlozhil-sreshta-na-visoko-ravnishte-s-donald-tramp-i-si-tszinpin-za-ukraina/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Война в Украйна",
+        "Зеленски",
+        "Си Цзипин",
+        "Тръмп"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.366Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-19-capital-biznes-zakuska-sa-iskat-ruski-gaz-obratno-v-5afac7",
+      "title": "Бизнес закуска: 🥐САЩ искат руския газ обратно в Европа; България чака самолети на НАТО над Черно море; Гневни млади европейци",
+      "summary": "Това е нюзлетърът \"Бизнес закуска\", който абонатите на \"Капитал\" получават всяка сутрин в електронните си пощи. В него дежурният редактор събира всичко важно, така че с един поглед да сте наясно какво се случва. Може да се абонирате от тук. България очаква да получи патрулна авиация, антидрон системи и въздушно наблюдение от НАТО заради ескалиращите случаи с ударени от дронове търговски кораби в Черно море, стана ясно от медийни участия на военния министър Димитър Стоянов през уикенда. До ...",
+      "date": "2026-10-19T03:13:00.000Z",
+      "url": "https://www.capital.bg/biznes-zakuska/2026/10/19/4967962_biznes_zakuska_sasht_iska_ruskiia_gaz_obratno_v_evropa/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "5035"
+      ],
+      "author": "Ани Коджаиванова",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:54:55.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-mediapool-po-b-rzoto-hodene-ud-lzava-zivota-na-v-b2b26a",
+      "title": "По-бързото ходене удължава живота на възрастните",
+      "summary": "Скоростта на ходене може да предскаже продължителността на живота, смятат учените. Колко бързо ходите може да разкрие колко добре остарявате и дори да даде насоки за това колко дълго ви остава да живеете. Анализ на 34 485 възрастни на 65 и повече години, публикуван в американския здравен портал JAMA, установи, че по-бързата обичайна скорост на ходене е свързана с по-дълъг живот…",
+      "date": "2026-10-18T17:23:47.000Z",
+      "url": "https://www.mediapool.bg/sport/po-barzoto-hodene-udalzhava-zhivota-na-vazrastnite/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Спорт",
+        "възраст",
+        "пнсионери",
+        "ходене"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.366Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-mediapool-himiceskata-industri-na-evropa-raste-moze-fba12b",
+      "title": "Химическата индустрия на Европа расте – може ли България да спечели?",
+      "summary": "Химическата индустрия е сред стратегическите отрасли на европейската икономика. Значението ѝ надхвърля производството на основни химикали и обхваща фармацевтични продукти, торове, пластмаси, специализирани материали и суровини за множество други производства. Данните на Евростат за 2025 г…",
+      "date": "2026-10-18T17:07:32.000Z",
+      "url": "https://www.mediapool.bg/biznes/himicheskata-industriya-na-evropa-raste-mozhe-li-bulgaria-da-specheli/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Бизнес",
+        "Европа",
+        "България",
+        "химикали"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-19T20:55:39.366Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-mediapool-zelenski-sa-v-zobnoviha-obmena-na-3dc24c",
+      "title": "Зеленски: САЩ възобновиха обмена на разузнавателна информация с Украйна",
+      "summary": "Съединените щати възобновиха споделянето на разузнавателна информация с Украйна след кратко прекъсване, съобщи украинският президент Володимир Зеленски, цитиран от Bloomberg. Макар да не предостави конкретни подробности, украинският лидер спомена, че следващата седмица може да се състои среща с представители на администрацията на Доналд Тръмп, на която да се обсъди прекратяването на войната.Зеленски заяви, че ще използва видеоразговор с американските специални пратеници Стив Уиткоф и Джаред Къшнър, за да обсъди възможната дата и място на срещата. Той допълни, че преговарящите екипи на двете страни поддържат \"практически непрекъсната връзка\".Зеленски отбеляза, че в продължение на три поредни…",
+      "date": "2026-10-18T16:33:12.000Z",
+      "url": "https://www.mediapool.bg/voina-v-ukraina/zelenski-sasht-vazobnoviha-obmena-na-razuznavatelna-informatsiya-s-ukraina/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Война в Украйна",
+        "Сащ",
+        "Старлинк",
+        "преговори"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T20:55:39.366Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-mediapool-spreni-sa-por-cki-za-nad-350-mln-evro-v-ac8262",
+      "title": "Спрени са поръчки за над 350 млн. евро в НКЖИ",
+      "summary": "Обществени поръчки за над 350 милиона евро в Национална компания „Железопътна инфраструктура“ (НКЖИ) са спрени, съобщи министърът на транспорта Георги Пеев пред Нова телевизия.Отделно са прекратени договори за над 20 млн. евро на НКЖИ, допълни той.Причините за прекратяване на процедурите са, че за тях не е имало осигурено финансиране, условията са били такива, че водят само до един кандидат, прогнозна стойност на обществената поръчка не е била пределна и се пчелеят на по-високи цени,посочи Георги Пеев.Той съобщи още, че в БДЖ също има процедури с нарушения. Те са свързани с покупката на подвижен състав, каза транспортният министър…",
+      "date": "2026-10-18T15:41:02.000Z",
+      "url": "https://www.mediapool.bg/biznes/spreni-sa-porachki-za-nad-350-mln-evro-v-nkzhi/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Бизнес",
+        "Георги Пеев",
+        "процедури",
+        "прекратени"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.366Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-mediapool-nikel-t-na-nova-kaledoni-franci-i-es-t-rs-t-015be5",
+      "title": "Никелът на Нова Каледония – Франция и ЕС търсят алтернатива на влиянието на Китай",
+      "summary": "Бъдещето на добива на никел в Нова Каледония се превръща във все по-важен въпрос за Франция и Европейския съюз, докато китайски инвеститори проявяват интерес към стратегическия ресурс на тихоокеанския архипелаг. На фона на тежката криза в местната индустрия Париж се стреми да ограничи навлизането на китайски капитали, а европейското партньорство трябва да помогне за привличането на нови инвеститори, пише Франс прес. Заместник-председателят на Европейската комисия и еврокомисар по индустриалната стратегия Стефан Сежурне се очаква да подпише меморандум за партньорство с Нова Каледония в областта на суровините при предстоящото си посещение в отвъдморската територия на Франция…",
+      "date": "2026-10-18T15:16:55.000Z",
+      "url": "https://www.mediapool.bg/biznes/nikelat-na-nova-kaledoniya-frantsiya-i-es-tarsyat-alternativa-na-vliyanieto-na-kitai/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Бизнес",
+        "никел",
+        "добив",
+        "Европа"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.367Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-mediapool-nad-1600-litra-raki-bez-akciz-sa-zad-rzani-7faf79",
+      "title": "Над 1600 литра ракия без акциз са задържани",
+      "summary": "Митнически служители задържаха 1606 литра високоградусов алкохол без доказан произход и качество, както и без български бандерол и документи по Закона за акцизите и данъчните складове. Това е станало при две отделни проверки на територията на „Митница Варна“, съобщиха от от Агенция „Митници“.В периода 14 - 17 октомври митнически мобилни екипи на Централно митническо управление са извършили засилени проверки в района на „Митница Варна“, включително областите Варна и Шумен. Целта е била установяване на нарушения на акцизното законодателство при съхранение, производство и търговия с алкохолни продукти.Извършени са общо четири проверки в различни обекти - данъчни складове, туристически обекти и…",
+      "date": "2026-10-18T14:39:28.000Z",
+      "url": "https://www.mediapool.bg/biznes/nad-1600-litra-rakiya-bez-aktsiz-sa-zadarzhani/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Бизнес",
+        "акциз",
+        "Гълъб Донев",
+        "ракия"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.367Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-capital-reakci-agresi-ta-ne-e-v-pros-na-gledna-02db6a",
+      "title": "Реакция | Агресията не е въпрос на гледна точка",
+      "summary": "[[img:4967972]] Стоян Мадин е асистент в Юридическия факултет на СУ \"Климент Охридски\" в катедра \"Международно право и отношения\". Адвокат, бивш прокурор и съдия. В интервю пред \"Евронюз България\" Антон Кутев от \"Прогресивна България\" сравни руската инвазия в Украйна с Руско-турската война от 1877-1878 г. Според него както Русия е била агресор за Османската империя, но освободител за българите, така днес тя може да бъде възприемана като агресор в Украйна, но като \"освободител\" от руснаците...",
+      "date": "2026-10-18T13:18:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/redakcionni_komentari/2026/10/18/4967970_reakciia_agresiiata_ne_e_vupros_na_gledna_tochka/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2255"
+      ],
+      "author": "Стоян Мадин",
+      "theme": "rat",
+      "addedAt": "2026-10-19T20:54:55.441Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-mediapool-oana-ilieva-vze-srebro-na-sab-v-p-rvi-za-ed191e",
+      "title": "Йоана Илиева взе сребро на сабя в първия за сезона турнир от Световната купа",
+      "summary": "Йоана Илиева спечели сребърен медал в първия турнир за сезона за Световната купа по фехтовка на сабя жени в Оран (Алжир). В надпреварата при жените участваха 152 сабльорки от 27 държави. Илиева се класира за финалите по право, тъй като е четвърта в световната ранглиста…",
+      "date": "2026-10-18T12:26:52.000Z",
+      "url": "https://www.mediapool.bg/sport/yoana-ilieva-vze-srebro-na-sabya-v-parviya-za-sezona-turnir-ot-svetovnata-kupa/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Спорт",
+        "спорт",
+        "Алжир",
+        "Йоана Илиева"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.367Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-mediapool-pekin-stovarva-dan-cnata-tezest-v-rhu-kita-3d30df",
+      "title": "Пекин стоварва данъчната тежест върху китайските милионери",
+      "summary": "Ерата на относителния финансов либерализъм в Китай изглежда е към своя край, съобщава агенция „Ройтерс“, позовавайки се на адвокати, финансови съветници и други източници, запознати с въпроса. Най-богатите граждани на Китай започнаха да затварят офшорни тръстове, да продават акции и дори да променят данъчния си статус в подготовка за нов закон, който значително ще увеличи данъчната им тежест, твърди агенция, на която се позовава УНИАН. Новите правила на Пекин изискват китайските граждани да декларират доходите от офшорни тръстове…",
+      "date": "2026-10-18T12:12:58.000Z",
+      "url": "https://www.mediapool.bg/biznes/pekin-stovarva-danachnata-tezhest-varhu-kitaiskite-milioneri/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Бизнес",
+        "данъци",
+        "богатсво",
+        "милионери"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.367Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-capital-top-5-ot-kapital-interv-s-predsedatel-na-22ac68",
+      "title": "Топ 5 от \"Капитал\": Интервю с председателя на КЗК; Какви ПВО системи ще купи България",
+      "summary": "1. Председателят на Комисията за защита на конкуренцията Росен Карадимов пред \"Капитал\": Следващата ни цел е наблюдение на телеком пазара \"Още миналата година публикувахме първия междинен доклад на секторния анализ на пазара на хранителни стоки. Той показва брутални структурни деформации на пазара. Структурни, не пазарни деформации. Показва фрагментираното производство на българските стопанства, показва изключително силната позиция на търговците спрямо производителите. Показва най-ниските бариер...",
+      "date": "2026-10-18T11:32:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/sedmicata/2026/10/18/4967944_top_5_ot_kapital_intervju_s_predsedatelia_na_kzk_kakvi/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2260"
+      ],
+      "author": "Капитал",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-19T20:54:55.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-mediapool-franci-se-izprav-pred-posledicite-ot-na-bbc9a1",
+      "title": "Франция се изправя пред последиците от най-бурните протести от години",
+      "summary": "Франция се изправя днес пред разрушенията от един от най-бурните дни на безредици от години, след като протестите срещу високите цени и състоянието на обществените услуги доведоха до смъртта на един демонстрант, раняването на стотици полицаи и арестуването на близо 1800 души, предаде Ройтерс. Демонстрациите в цялата страна вчера прераснаха в бунтове, при които беше подпалена сграда на кметство, магазини бяха разграбени, а няколко сгради бяха покрити с графити, докато групи от протестиращи влязоха в сблъсъци с полицията в градове из цялата страна. Един протестиращ загина след сърдечен арест по време на демонстрациите в столицата Париж, където полицията извърши рекордните 855 ареста…",
+      "date": "2026-10-18T11:16:30.000Z",
+      "url": "https://www.mediapool.bg/svyat/frantsiya-se-izpravya-pred-posleditsite-ot-nai-burnite-protesti-ot-godini/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Свят",
+        "разрушения",
+        "размирици",
+        "жертви"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.367Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-mediapool-dimit-r-sto-nov-aviaci-ot-nato-skoro-e-pazi-a92136",
+      "title": "Димитър Стоянов: Авиация от НАТО скоро ще пази българското небе",
+      "summary": "Скоро в България ще има присъствие от партньорска авиация от НАТО заради ударите на търговски кораби в Черно море. Работи се и за засилване на взаимодействието с Румъния, Турция за гарантиране на сигурността в Черноморския регион.. Това съобщи военният министър Димитър Стоянов.\"В Черно море кораби няма как да влязат, затова остава вариантът да разположим сили и средства по брега и по въздуха…",
+      "date": "2026-10-18T10:55:38.000Z",
+      "url": "https://www.mediapool.bg/bulgaria/dimitar-stoyanov-aviatsiya-ot-nato-skoro-shte-pazi-balgarskoto-nebe/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "България",
+        "НАТО",
+        "Черно море",
+        "Турция"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T20:55:39.367Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-mediapool-tri-levi-partii-v-berlin-dogovoriha-plan-za-158de2",
+      "title": "Три леви партии в Берлин договориха план за отчуждаване на около 160 000 апартамента",
+      "summary": "Следващото правителство на германската провинция Берлин може да прехвърли около 160 000 апартамента в публична собственост, след като Левите, Зелените и Германската социалдемократическа партия (ГСДП) постигнаха предварително коалиционно споразумение, предаде ДПА. Документът трябва да получи одобрението на трите партии, преди през ноември да започнат официални преговори за съставяне на правителство. Планът предвижда отчуждаване на част от жилищния фонд на компании, притежаващи над 10 000 апартамента в германската столица…",
+      "date": "2026-10-18T10:12:46.000Z",
+      "url": "https://www.mediapool.bg/biznes/tri-levi-partii-v-berlin-dogovoriha-plan-za-otchuzhdavane-na-okolo-160-000-apartamenta/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Бизнес",
+        "жилища",
+        "Германия",
+        "апартаменти"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T20:55:39.367Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-capital-fotogaleri-masovite-protesti-v-v-franci-b805bd",
+      "title": "Фотогалерия: Масовите протести във Франция прераснаха в насилие и безредици",
+      "summary": "",
+      "date": "2026-10-18T08:33:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/sedmicata/2026/10/18/4967842_fotogaleriia_masovite_protesti_vuv_franciia_prerasnaha/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2260"
+      ],
+      "author": "Капитал",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:54:55.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-capital-luis-koel-rodriges-da-silva-pilatus-ne-e-d395d6",
+      "title": "Луис Коелю Родригеш да Силва, Pilatus: Не е достатъчно да купиш F-16. Трябва да подготвиш и пилотите",
+      "summary": "Луиш Коелю Родригеш да Силва е директор \"Продажби - държавна и правителствена авиация\" в швейцарския самолетостроител Pilatus. Той има професионален опит с изтребителна авиация, обучението на пилоти, операции на НАТО и дистанционно пилотирани системи. В работата си се фокусира върху развитието на съвременни системи за подготовка на военни пилоти, интегрирането на симулационни технологии и оптимизирането на разходите за обучение. Той ще е лектор на организирания от \"Капитал\" Regional Defence ...",
+      "date": "2026-10-18T08:30:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/sviat/2026/10/18/4967552_luis_koelju_rodrigesh_da_silva_pilatus_ne_e/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2253"
+      ],
+      "author": "Константин Николов",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:54:55.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-capital-centrovete-za-danni-natovarvat-a68ede",
+      "title": "Центровете за данни натоварват застрахователния пазар",
+      "summary": "По-рано този месец Монте Карло беше домакин на годишната среща на световните застрахователни компании, включително презастрахователите, които ги застраховат. Rendez-Vous de Septembre е разкошно събитие. Стаите в основното място на провеждане могат да струват над 2000 долара на нощ. Участниците могат да изберат да пристигнат с хеликоптер. Организаторите не насърчават съпътстващи събития, които биха могли да се конкурират с \"Официалния коктейл\". И все пак на срещата мислите на любителите на джина ...",
+      "date": "2026-10-18T08:17:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/sviat/2026/10/18/4963150_centrovete_za_danni_natovarvat_zastrahovatelniia_pazar/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2253"
+      ],
+      "author": "The Economist",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-19T20:54:55.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-mediapool-masirana-ataka-s-dronove-sre-u-sankt-142f6a",
+      "title": "Масирана атака с дронове срещу Санкт Петербург, 1 загинал и 15 ранени",
+      "summary": "Един човек е убит, а петима са ранени при украинската атака с дронове срещу Санкт Петербург, съобщи губернаторът Александър Беглов, цитиран от Ройтерс.В нефтения терминал на града, петролна база и промишлени складове са избухнали пожари.Руската компания за електронна търговия \"Озон\" съобщи, че логистичният ѝ център в Санкт Петербург е обхванат от пламъци.Популярната руска социална мрежа “В Контакте” информира, че центърът ѝ за данни в Ленинградска област е бил атакуван с дронове. Имало е временно прекъсване на услугите, които вече са напълно възстановени за потребителите, посочват от компанията.През изминалата нощ подразделенията на руските сили за противовъздушна отбрана са свалили 1015…",
+      "date": "2026-10-18T08:14:02.000Z",
+      "url": "https://www.mediapool.bg/voina-v-ukraina/masirana-ataka-s-dronove-sreshtu-sankt-peterburg-1-zaginal-i-15-raneni/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Война в Украйна",
+        "Русия",
+        "Украйна",
+        "Санкт Петербург"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.367Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-capital-producentskata-k-a-push-pull-lansira-novo-464258",
+      "title": "Продуцентската къща Push Pull лансира ново AI звено",
+      "summary": "Продуцентската компания Push Pull е основана от Петко Спасов, Ангел Апостолски, а през 2021 г. към екипа се присъединява Деметри Василев. От началото на 2026 г. Push Pull разширява дейността си и основава Push Pull AI Studio. Според съдружниците с навлизането на AI рекламните кампании ще станат по-малки, но много повече на брой. Все по-кратките срокове за производство и желанието за мащабни кампании с малки бюджети променят начина, по който се създава рекламно съдържание. Изкуственият инт...",
+      "date": "2026-10-18T07:30:00.000Z",
+      "url": "https://www.capital.bg/biznes/media_i_reklama/2026/10/18/4963589_producentskata_kushta_push_pull_lansira_novo_ai_zveno/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2273"
+      ],
+      "author": "Евелина Дочева",
+      "theme": "ai",
+      "addedAt": "2026-10-19T20:54:55.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-mediapool-pariz-dade-ton-na-v-lna-ot-protesti-v-e8a568",
+      "title": "Париж даде тон на вълна от протести в Европа",
+      "summary": "Вълна от протести заля Европа в събота – от Франция през Белгия, Португалия и Италия до Албания. Причините за недоволството са различни – от поскъпването на живота, през дискириминация при обучението до корупция.На места се стигна до ескалация на напрежението – палежи и сблъсъци с полицията. Има пострадали, както сред протестиращите, така и от страна на силите на реда…",
+      "date": "2026-10-18T07:15:31.000Z",
+      "url": "https://www.mediapool.bg/svyat/parizh-dade-ton-na-valna-ot-protesti-v-evropa/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Свят",
+        "пари",
+        "Италия",
+        "Белгия"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T20:55:39.367Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-mediapool-k-stendil-otnovo-ima-lekoatleticeska-pista-1157f0",
+      "title": "Кюстендил отново има лекоатлетическа писта след 25 години",
+      "summary": "„Доживяхме Кюстендил отново да има лекоатлетическа писта на стадион „Осогово“ след 25 години“ - така се поздравяваха дошлите атлети ветерани на обновения спортен комплекс в града в събота.Изненада за тях беше обръщането на секторите за хвърлянията, водното препятствие и 100-метровата дистанция. „Да ме бяха питали, да им обясня, къде трябва да е секторът за хвърляне“, ядосваше се Коце Сотиров - дългогодишен треньор по хвърляния в Кюстендил.Разместването на секторите и особено на класиката в царицата на спортовете - 100 м, беше най-коментираната тема. „Действително много хора ме питаха - защо е така, но това е проектанско решение“, коментира пред Mediapool Васил Гиков, заместник-директор на…",
+      "date": "2026-10-18T06:11:22.000Z",
+      "url": "https://www.mediapool.bg/sport/kyustendil-otnovo-ima-lekoatleticheska-pista-sled-25-godini/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Спорт",
+        "стадион",
+        "Кюстендил",
+        "лека атлетика"
+      ],
+      "author": "Лили Границка",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.367Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-capital-ot-pwc-do-bansko-aleksis-sevalo-c8bad7",
+      "title": "От PwC до Банско: Алексис Шевало автоматизира с AI финансовите отдели",
+      "summary": "Развитието на иновативни технологии, включително на AI модели и агенти, обикновено се асоциира със Силициевата долина в САЩ или с Лондон и Париж в Европа. Историята на Алексис Шевало обаче променя тази перспектива. След успешна кариера в корпоративния свят на \"PwC Люксембург\" френският предприемач прави нестандартен, но прагматичен избор - той не просто напуска познатия комфорт на Западна Европа, но и избира да стартира своя бизнес в България. И то не в столицата, а в малкия планински град Банск...",
+      "date": "2026-10-18T06:00:00.000Z",
+      "url": "https://www.capital.bg/biznes/predpriemach/2026/10/18/4965741_ot_pwc_do_bansko_aleksis_shevalo_avtomatizira_s_ai/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2270"
+      ],
+      "author": "Владимир Владков",
+      "theme": "ai",
+      "addedAt": "2026-10-19T20:54:55.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-capital-kino-s-rceto-na-zv-ra-s-brad-pit-af21f2",
+      "title": "Кино | \"Сърцето на звяра\" с Брад Пит",
+      "summary": "3 и ½ от 5 Heart Of the Beast Режисьор: Дейвид Ейър С: Брад Пит, Дж. К. Симънс, Ана Ламб, (и Юбър, Райкър, Зайка и Хондо в \"ролята\" на Один) Времетраене: 101 мин. На филм с куче се плаче. Така е от времената на Рин Тин Тин и Ласи до съвсем скорошния \"Кучешките звезди\" на Ридли Скот. Heart Of the Beast е в този проверен коловоз, но с няколко добри изненади. Сантиментът в него е изстрадан с реалистично действие в кадъра, защитен с актьорска игра от висока проба. И от човека, и от четирикрак...",
+      "date": "2026-10-18T05:21:00.000Z",
+      "url": "https://www.capital.bg/light/revju/2026/10/16/4963510_kino_surceto_na_zviara_s_brad_pit/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2285"
+      ],
+      "author": "Янко Терзиев",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:54:55.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-18-mediapool-nyt-sa-predlagat-v-zobnov-vane-na-52cfd9",
+      "title": "NYT: САЩ предлагат възобновяване на доставките на руски газ за Европа",
+      "summary": "Администрацията на американския президент Доналд Тръмп предлага Европа да възобнови покупките на руски природен газ като част от план за прекратяване на войната в Украйна, съобщи „Ню Йорк Таймс“, позовавайки се на източници, запознати с преговорите. Европейски представители, включително германският канцлер Фридрих Мерц, са отхвърлили идеята, посочва изданието. Американските пратеници Джаред Къшнър и Стив Уиткоф са обсъдили предложението с украински и европейски представители, включително с президента Володимир Зеленски при посещение в Киев през миналия месец…",
+      "date": "2026-10-18T04:10:16.000Z",
+      "url": "https://www.mediapool.bg/voina-v-ukraina/nyt-sasht-predlagat-vazobnovyavane-na-dostavkite-na-ruski-gaz-za-evropa/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Война в Украйна",
+        "Русия",
+        "Украйна",
+        "Европа"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T20:55:39.367Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-17-mediapool-zaplati-natisk-karierni-bonusi-s-debna-e665d6",
+      "title": "Заплати, натиск, кариерни бонуси, съдебна реформа – 24 прокурорски кандидати за ВСС представиха концепциите си",
+      "summary": "След като липсата на кворум отложи с час общото събрание на прокурорите за избор на членове на Висшия съдебен съвет, то започна в събота в 11 часа. Събранието бе открито от Ваня Стефанова – временно изпълняващ функциите „главен прокурор“ с обявяване броя на присъстващите прокурори – 502 от общо 1570 регистрирани в избирателния списък като при повторното събиране бройката на участниците нямаше значение. Тя благодари на включилите се в изслушването на 25-те кандидади за четирите места за прокурорската колегия във ВСС…",
+      "date": "2026-10-17T18:45:00.000Z",
+      "url": "https://www.mediapool.bg/bulgaria/zaplati-natisk-karierni-bonusi-sadebna-reforma-24-prokurorski-kandidati-za-vss-predstaviha-kontseptsiite-si/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "България",
+        "ВСС",
+        "кандидати",
+        "заседание"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.367Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-17-mediapool-bezredici-provokacii-i-stotici-aresti-iz-c-532548",
+      "title": "Безредици, провокации и стотици арести из цяла Франция в мащабни протести",
+      "summary": "Стотици хора бяха арестувани в цяла Франция в събота следобед в рамките на мащабни протести срещу спада в образователните стандарти и високите разходи за живот. В Париж протестиращи влязоха в сблъсъци с частите за борба с безредиците. В Лион бе подпален туристически офис, а в Лил и Марсилия протестиращи нахлуха в сгради на кметствата…",
+      "date": "2026-10-17T16:31:55.000Z",
+      "url": "https://www.mediapool.bg/svyat/bezreditsi-provokatsii-i-stotitsi-aresti-iz-tsyala-frantsiya-v-mashtabni-protesti/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Свят"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.367Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-17-mediapool-papata-napusna-pesa-bolnicata-cetiri-dni-fc5903",
+      "title": "Папата напусна пеша болницата, четири дни след операцията на белия дроб",
+      "summary": "Папа Лъв XIV беше изписан от римската болница „Джемели“ в събота, само четири дни след операция за отстраняване на раково образувание от белия му дроб. 71-годишният папа стигна пеша и без чужда помощ до чакащия го автомобил, като спря за кратко, за да разговаря с хора, дошли да го поздравят. От Ватикана съобщиха, че в неделя папата ще отправи традиционната молитва „Ангел Господен“ (Angelus) и ще даде благословията си на събралото се множество на площад „Свети Петър“ – точно както направи и миналата седмица, когато изненада света, обявявайки предстоящата операция…",
+      "date": "2026-10-17T15:56:13.000Z",
+      "url": "https://www.mediapool.bg/svyat/papata-napusna-pesha-bolnitsata-chetiri-dni-sled-operatsiyata-na-beliya-drob/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Свят",
+        "болница",
+        "рак",
+        "папа"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.367Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-17-mediapool-rum-ni-e-gotova-da-si-plati-za-amerikanski-4612c8",
+      "title": "Румъния е готова да си плати за американски войски на своя територия",
+      "summary": "Румъния е предложила да поеме част от разходите за издръжката на американския военен контингент на своя територия, съобщи агенция Блумбърг позовавайки се на информирани източници. Според тях с тази стъпка Букурещ се надява да запази американското военно присъствие на фона на информации, че Пентагонът планира до края на годината да преразгледа разполагането на американските войски в Европа. Това може да доведе до ново съкращаване на контингентите…",
+      "date": "2026-10-17T15:48:42.000Z",
+      "url": "https://www.mediapool.bg/svyat/rumaniya-e-gotova-da-si-plati-za-amerikanski-voiski-na-svoya-teritoriya/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Свят"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.368Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-17-mediapool-zelenski-blokadata-na-sankciite-ot-tr-mp-0e5472",
+      "title": "Зеленски: Блокадата на санкциите от Тръмп \"насърчава\" Путин. За Москва това е \"исторически момент\"",
+      "summary": "Решението на американския президент Доналд Тръмп да освободи Русия част от новите тежки санкции на САЩ \"насърчава\" Владимир Путин, заяви днес Володимир Зеленски, докато Москва от своя страна приветства това като \"исторически момент\", предаде Франс прес. Тръмп нанесе удар по закон с голямо символично значение – Закона \"Линдзи Греъм\", приет в средата на септември, който представляваше първата значителна стъпка на американския Конгрес срещу Москва след завръщането на президента републиканец на власт. \"Освобождавам Русия от прилагането на подобни санкции, ограничения и мита, предвидени в Закона \"Линдзи Греъм\", се посочва в указ, публикуван снощи от Белия дом, в който Тръмп се позовава на…",
+      "date": "2026-10-17T15:35:34.000Z",
+      "url": "https://www.mediapool.bg/svyat/zelenski-blokadata-na-sanktsiite-ot-tramp-nasarchava-putin-za-moskva-tova-e-istoricheski-moment/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Свят"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.368Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-17-capital-opit-t-na-rum-nskite-csi-dobrovolnoto-s-b5f374",
+      "title": "Опитът на румънските ЧСИ: Доброволното събиране на дългове като мярка срещу кризата",
+      "summary": "Повече от четвърт век румънските съдебни изпълнители разполагат с процедури и механизми, за които българските частни съдебни изпълнители пледират от близо 7 години. В Румъния съдебното изпълнение е само частно, като над 750 съдебни изпълнители разполагат освен с правомощията по принудително изпълнение, но и със законово регламентирана процедура за доброволно изпълнение на задължения, за извънсъдебно събиране на доказателства (удостоверяване на факти), а от 2018 г. вече - и за администриране на п...",
+      "date": "2026-10-17T14:54:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/pravo/2026/10/17/4967573_dobrovolnoto_subirane_na_dulgove_kato_miarka_sreshtu/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "4904"
+      ],
+      "author": "Мирела Веселинова",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:54:55.442Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-17-mediapool-putin-ne-e-z-l-geni-kutev-sravni-vo-nata-v-41e753",
+      "title": "Путин не е зъл гений: Кутев сравни войната в Украйна с Руско-турската от 1877-1878",
+      "summary": "Депутатът Антон Кутев от \"Прогресивна България\" сравни руската инвазия в Украйна с Руско-турската война от 1877-1878 г. В интервю пред \"Евронюз България\" той каза, че има съображения дали Русия е агресор. „Когато Русия нападна Турция в Руско-турската война тя агресор ли е““, попита той водещата и отговори: „За Турция Русия е била агресор, а за България – освободител…",
+      "date": "2026-10-17T13:07:16.000Z",
+      "url": "https://www.mediapool.bg/bulgaria/putin-ne-e-zal-geniy-kutev-sravni-voinata-v-ukraina-s-rusko-turskata-ot-1877-1878/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "България",
+        "Путин",
+        "Русия",
+        "Украйна"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T20:55:39.368Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-17-mediapool-zaharni-iguani-zabi-pingvini-sre-at-biologi-a56ab4",
+      "title": "Захарни игуани, жаби, пингвини срещат биологията с изкуството",
+      "summary": "Екзотични цветя и животни, изработени от захар, царстват в изложбената зала на Биологическия факултет на Софийския университет и показват на посетителите какво се получава, когато биологията срещне изкуството. Изложбата на десет млади сладкари и декоратори „Вдъхновени от природата“ ще остане в сградата на факултета на бул. „Драган Цанков\" до 20 октомври…",
+      "date": "2026-10-17T11:24:00.000Z",
+      "url": "https://www.mediapool.bg/kultura/zaharni-iguani-zhabi-pingvini-sreshtat-biologiyata-s-izkustvoto/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Култура",
+        "изложба",
+        "биология",
+        "скулптури"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.368Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-17-mediapool-obs-deni-sa-direktni-poleti-mezdu-cerna-e55d08",
+      "title": "Обсъдени са директни полети между Черна гора и България",
+      "summary": "Установяването на директна въздушна връзка между Черна гора и България е един от приоритетите на министрите на туризма на двете страни, предвид значението ѝ за увеличаване на туристическия поток, подобряване на достъпа до дестинации и създаване на условия за развитие на нови форми на сътрудничество. Около това становище са се обединили министрите на туризма на Черна гора и България Симонида Кордич и Илин Димитров, които са разговаряли по време на междурегионален форум, предаде черногорската агенция МИНА, цитирана от БТА в събота. „По време на срещата, проведена в рамките на Междурегионалния форум „Европа – Азия“, беше отбелязано, че Черна гора и България разполагат със значителен потенциал…",
+      "date": "2026-10-17T10:30:39.000Z",
+      "url": "https://www.mediapool.bg/biznes/obsadeni-sa-direktni-poleti-mezhdu-cherna-gora-i-bulgaria/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Бизнес",
+        "туризъм",
+        "Черна гора",
+        "полети"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-19T20:55:39.368Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-17-mediapool-dva-tankera-sa-udareni-ot-snar-di-v-persi-fb5c50",
+      "title": "Два танкера са ударени от снаряди в Персийския залив, друг се натъкна на мина в Ормузкия проток",
+      "summary": "Британската организация за морски търговски операции съобщи в събота за поредни атаки срещу танкери в Персийския залив през последните месеци. Първият плавателния съд е бил ударен вчера от снаряд от неустановен вид на 68 морски мили (близо 126 километра) североизточно от саудитския град Джубайл, се казва в изявлението, цитирано от Ройтерс. Всички членове на екипажа са в безопасност и са били евакуирани, уточни британската специализирана агенция и добави, че няма данни за нанесени щети на околната среда…",
+      "date": "2026-10-17T10:22:10.000Z",
+      "url": "https://www.mediapool.bg/blizak-iztok/dva-tankera-sa-udareni-ot-snaryadi-v-persiyskiya-zaliv-drug-se-natakna-na-mina-v-ormuzkiya-protok/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Близък изток",
+        "танкери",
+        "Персийски залив",
+        "Ормузки проток"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.368Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-17-mediapool-stiga-vece-google-otkazal-na-tr-mp-da-prekr-d964f0",
+      "title": "\"Стига вече!\": Google отказал на Тръмп да прекръсти океан на негово име",
+      "summary": "Президентът на САЩ Доналд Тръмп разказа на свои привърженици за предполагаемия си опит да \"кръсти океан свое име\" и за отказа на технологичния гигант \"Гугъл\" (Google) да приеме тази идея, предаде ДПА, цитирана от БТА в събота. Говорейки на предизборен митинг в щата Джорджия, Тръмп заяви, че е предложил на представители на технологичната компания Атлантическият или Тихият океан да бъде преименуван на \"Океан Тръмп\". Според американският президент те отговорили възмутено: \"Стига…",
+      "date": "2026-10-17T09:40:18.000Z",
+      "url": "https://www.mediapool.bg/svyat/stiga-veche-google-otkazal-na-tramp-da-prekrasti-okean-na-negovo-ime/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Свят",
+        "Тихи океон",
+        "прекръстване",
+        "Тръмп"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.368Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-17-mediapool-mladezkite-protesti-sre-u-albanski-premier-3a908c",
+      "title": "Младежките протести срещу албанския премиер стават все по-насилствени",
+      "summary": "Хиляди млади албанци протестираха в петък в Тирана за четвърти пореден ден, съобщи Ройтерс. Демонстрантите отново счупиха прозорци и светофари, след като още от вторник протестите започнаха да стават все по-насилствени. Демонстрациите на студентите, които поведоха кампания с цел оставката на премиера Еди Рама, следват месеци на мирни протести, които според студентите правителството е пренебрегнало…",
+      "date": "2026-10-17T09:01:03.000Z",
+      "url": "https://www.mediapool.bg/svyat/mladezhkite-protesti-sreshtu-albanskiya-premier-stavat-vse-po-nasilstveni/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Свят",
+        "протести",
+        "студенти",
+        "Албания"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-19T20:55:39.368Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-17-mediapool-dvama-mladezi-sa-namuskani-s-noz-kra-ndk-fc9877",
+      "title": "Двама младежи са намушкани с нож край НДК",
+      "summary": "Двама млади мъже са намушкани с нож в парковото пространство до Малкото НДК късно снощи, съобщиха Министерството на вътрешните работи (МВР) в неделя. Нанесени са им порезни рани. Оказана е медицинска помощ на двамата пострадали…",
+      "date": "2026-10-17T08:47:45.000Z",
+      "url": "https://www.mediapool.bg/bulgaria/dvama-mladezhi-sa-namushkani-s-nozh-krai-ndk/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "България",
+        "нападение",
+        "НДК",
+        "намушкани"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.368Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-17-mediapool-zapocna-ogled-t-na-porazeni-ot-dronove-c7b1f2",
+      "title": "Започна огледът на поразения от дронове кораб \"Chelsea 3\", който бе изтеглен на порт Бургас",
+      "summary": "Поразеният от дронове преди дни кораб „Chelsea 3”(Челси 3) беше изтеглен до пристанище Бургас около 07:00 часа в събота сутринта при безпрецедентна акция в лошо време и беше приет от министъра на транспорта и съобщенията Георги Пеев и капитана на Пристанище Бургас Живко Петров. „Изключително сме доволни, че операцията беше успешна от втория опит. Тя беше под контрола на Министерството на транспорта и Морска администрация – Бургас“, заяви министърът…",
+      "date": "2026-10-17T08:28:00.000Z",
+      "url": "https://www.mediapool.bg/bulgaria/zapochna-ogledat-na-porazeniya-ot-dronove-korab-chelsea-3-koito-be-izteglen-na-port-burgas/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "България",
+        "Черно море",
+        "акция",
+        "разследване"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.368Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sofija-2026-10-17-mediapool-granicna-polici-n-ma-zapis-iva-miha-lova-da-38c521",
+      "title": "Гранична полиция няма запис Ива Михайлова да е влязла през пункт със Северна Македония",
+      "summary": "Няма никакво нарушение на българските гранични пунктове във връзка с влизането в България на Ива Михайлова, която пристигна на лечение в столичната болница „Пирогов“, въпреки че властите в Северна Македония отказват лечение на подсъдимата за катастрофа с чертва в Кочани. Това заяви пред Нова тв директорът на „Гранична полиция“ Антон Златанов по повод случая и уточни, че България вече е изпратила отговор до македонските власти и в системата за граничен контрол няма регистрирано преминаване през българо-македонските гранични пунктове. Златанов посочи, че по разпореждане на министъра на вътрешните работи се извършва проверка, а подробностите около пребиваването на Михайлова в България не могат…",
+      "date": "2026-10-17T08:20:14.000Z",
+      "url": "https://www.mediapool.bg/bulgaria/granichna-politsiya-nyama-zapis-iva-mihailova-da-e-vlyazla-prez-punkt-sas-severna-makedoniya/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "България",
+        "граница",
+        "Северна Македония",
+        "лечение"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T20:55:39.368Z",
+      "backfilled": true
+    }
+  ]
 }
