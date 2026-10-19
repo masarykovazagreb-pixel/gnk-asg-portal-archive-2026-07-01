@@ -10,7 +10,7 @@
  * izvornik. Nema izmišljenih tvrdnji: tekst osvrta govori o načinu
  * izvještavanja, a činjenice ostaju kod izvora.
  */
-import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, rmSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, rmSync, copyFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { esc, longDate, shortDate, slugify, isoWeek, themeFor, scoreFromTitle, truncate, safeJson } from './lib.mjs';
@@ -24,6 +24,7 @@ const SITE = join(APP, 'site');
 
 export const CHANNELS = JSON.parse(readFileSync(join(APP, 'channels.json'), 'utf8')).channels;
 export const HUB = 'https://gnk-asg.hr/izdanja/';
+export const CENTRAL = 'https://gnk-asg.hr/gnk-aktual/';
 export const CONTACT = 'info@gnk-asg.hr';
 export const SOCIAL_IMAGE = 'https://gnk-asg.hr/assets/gnk-asg-social-card.png';
 
@@ -291,7 +292,7 @@ function header(channel, strings, active = '', root = '') {
       <span>${esc(strings.publisher)}: AKTUAL MEDIA d.o.o.</span>
     </div>
   </div>
-  <nav class="mainnav" aria-label="${esc(strings.latest)}">${nav}<a href="${HUB}" rel="external">${esc(strings.hub)} ↗</a></nav>
+  <nav class="mainnav" aria-label="${esc(strings.latest)}">${nav}<a href="${CENTRAL}#izdanja-po-zemljama" rel="external">${esc(strings.hub)} ↗</a></nav>
 </header>`;
 }
 
@@ -301,20 +302,20 @@ function footer(channel, strings, extra = '') {
   const tags = [...channel.hashtags, '#AktualMedia', '#NerminSefić', '#SeficNermin'].map((x) => `<span class="tag">${esc(x)}</span>`).join(' ');
   /* Pločice drugih izdanja: kamo god čitatelj ode, vidi i ostale stranice. */
   const tiles = [...others, channel].map((c) => `<li class="xf-tile"><a href="${c.base}" rel="external noopener">
-      <img src="https://gnk-asg.hr/assets/izdanja/${c.id}-tile.webp" alt="${esc(c.title)} — ${esc(c.country)} — otvori izdanje" width="880" height="587" loading="lazy" decoding="async">
+      <img src="/assets/izdanja/${c.id}-tile.webp" alt="${esc(c.title)} — ${esc(c.country)} — otvori izdanje" width="880" height="587" loading="lazy" decoding="async">
     </a></li>`).join('');
   const desks = [['sport', 'Sport'], ['politika', 'Politika'], ['sigurnost', 'Sigurnost'], ['biznis', 'Business'], ['tehnologija', 'Tehnologija'], ['moda', 'Moda']]
-    .map(([id, label]) => `<a href="https://gnk-asg.hr/izdanja/${id}/" rel="external noopener">${esc(label)}</a>`).join('');
+    .map(([id, label]) => `<a href="${CENTRAL}#deskovi" rel="external noopener">${esc(label)}</a>`).join('');
   return `<footer class="foot">
   <section class="xf" aria-label="Ostala izdanja AKTUAL MEDIA">
-    <div class="xf-head"><h2>Ostala izdanja — klik vodi na izdanje</h2><a href="${HUB}" rel="external">Sva izdanja →</a></div>
+    <div class="xf-head"><h2>Ostala izdanja — klik vodi na izdanje</h2><a href="${CENTRAL}#izdanja-po-zemljama" rel="external noopener">Sva izdanja →</a></div>
     <ul class="xf-grid">${tiles}</ul>
     <div class="xf-desks">${desks}<a href="https://gnk-asg-tjednik.pages.dev/" rel="external noopener">BUSINESS TJEDNIK ↗</a><a href="https://gnk-asg.hr/gnk-aktual/" rel="external noopener">AKTUAL MEDIA — sve na jednom mjestu ↗</a></div>
   </section>
   <div class="footgrid">
     <div>
       <h2>${esc(strings.otherChannels)}</h2>
-      <p class="footlinks">${links}<a href="${HUB}" rel="external">${esc(strings.hub)} ↗</a></p>
+      <p class="footlinks">${links}<a href="${CENTRAL}#izdanja-po-zemljama" rel="external">${esc(strings.hub)} ↗</a></p>
     </div>
     <div>
       <h2>${esc(strings.publisher)}</h2>
@@ -752,6 +753,14 @@ ${footer(channel, strings)}`;
   }));
 
   writeFileSync(join(dir, 'assets', 'region.css'), CSS);
+  /* Pločice ostalih izdanja putuju s kanalom: footer ih prikazuje i prije nego
+     se središnji portal objavi, pa nema praznih sličica. */
+  const tileSource = join(ROOT, 'apps', 'portal', 'assets', 'izdanja');
+  mkdirSync(join(dir, 'assets', 'izdanja'), { recursive: true });
+  for (const other of CHANNELS) {
+    const from = join(tileSource, `${other.id}-tile.webp`);
+    if (existsSync(from)) copyFileSync(from, join(dir, 'assets', 'izdanja', `${other.id}-tile.webp`));
+  }
   writeFileSync(join(dir, 'assets', 'favicon.svg'), favicon(channel));
   writeFeed(channel, strings, data);
   writeSitemap(channel, data);
