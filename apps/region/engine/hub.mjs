@@ -387,7 +387,7 @@ function deskPage(id, desk) {
   const body = `${portalHeader(id + '/', { h1: false })}
 <main class="iz-wrap">
   <section class="iz-head" style="border-bottom:0;padding-top:26px">
-    <p class="k">Desk AKTUAL MEDIA</p>
+    <p class="k">${esc(desk.name)}</p>
     <h1>${esc(desk.title)}</h1>
     <p>${esc(desk.description)}</p>
     <ul class="iz-tags" style="margin-top:14px">${desk.hashtags.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
