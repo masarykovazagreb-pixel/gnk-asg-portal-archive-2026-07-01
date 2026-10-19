@@ -1,0 +1,40 @@
+{
+  "version": "tjednik-sources-v1",
+  "note": "Poslovni izvori. RSS gdje postoji; Lider nema javni feed pa se čita popis naslovnica i meta opis članka.",
+  "sources": [
+    {
+      "id": "lider",
+      "name": "Lider",
+      "home": "https://lidermedia.hr/",
+      "kind": "html",
+      "pages": ["https://lidermedia.hr/", "https://lidermedia.hr/najnovije"],
+      "cap": 8
+    },
+    {
+      "id": "jutarnji",
+      "name": "Jutarnji list",
+      "home": "https://www.jutarnji.hr/novac/",
+      "kind": "rss",
+      "feed": "https://www.jutarnji.hr/novac/feed",
+      "cap": 8
+    },
+    {
+      "id": "poslovni",
+      "name": "Poslovni dnevnik",
+      "home": "https://www.poslovni.hr/",
+      "kind": "rss",
+      "feed": "https://www.poslovni.hr/feed/",
+      "cap": 8
+    },
+    {
+      "id": "forbes",
+      "name": "Forbes",
+      "home": "https://www.forbes.com/business/",
+      "kind": "rss",
+      "feed": "https://www.forbes.com/business/feed/",
+      "cap": 6,
+      "includeCategories": ["business", "markets", "retail", "tech", "ai", "money", "leadership", "entrepreneur", "energy", "health", "finance", "economy"],
+      "excludeCategories": ["sportsmoney", "gaming", "hollywood", "media"]
+    }
+  ]
+}

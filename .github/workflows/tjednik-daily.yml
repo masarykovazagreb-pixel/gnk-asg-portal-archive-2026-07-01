@@ -1,0 +1,125 @@
+name: TJEDNIK — dnevni dodatak i tjedna promjena
+
+# Svakoga dana čita Lider, Jutarnji list, Poslovni dnevnik i Forbes,
+# sprema kritičke osvrte, gradi dnevni dodatak i tjednu promjenu,
+# zapisuje stanje u repozitorij i objavljuje na Cloudflare Pages.
+#
+# Registrirano u ops/automation-control-v1.json (knownCurrentSchedules) i
+# ops/automation-kill-switches.json (tjednikPublish).
+# Ručno: Actions → "TJEDNIK — dnevni dodatak i tjedna promjena" → Run workflow.
+
+on:
+  schedule:
+    # 06:20 UTC = 08:20 ljeti / 07:20 zimi po Europe/Zagreb.
+    - cron: '20 6 * * *'
+  workflow_dispatch:
+    inputs:
+      max:
+        description: 'Najviše novih osvrta po izvoru (prazno = cap iz sources.json)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gnk-asg-main-mutation
+  cancel-in-progress: false
+
+jobs:
+  daily:
+    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TJEDNIK_BASE: https://gnk-asg-tjednik.pages.dev/
+      TZ: Europe/Zagreb
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Zapamti polazni SHA
+        id: base
+        shell: bash
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Sastavi dnevni dodatak
+        shell: bash
+        run: |
+          set -uo pipefail
+          MAX="${{ inputs.max }}"
+          if [ -n "$MAX" ]; then ARG="--max $MAX"; else ARG=""; fi
+          node apps/tjednik/engine/tjednik.mjs $ARG || echo "::warning::Dio izvora nije dostupan — gradim iz postojeće arhive."
+          test -f apps/tjednik/site/index.html
+          node -e "const f=require('./apps/tjednik/site/feed.json'); console.log('kritika u feedu:', f.items.length); if(!f.items.length) process.exit(1)"
+
+      - name: Zapiši izdanje
+        id: commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "GNK ASG TJEDNIK"
+          git config user.email "beckuphome@gmail.com"
+          git add apps/tjednik/src/critiques apps/tjednik/engine/state.json apps/tjednik/engine/last-run.json apps/tjednik/site
+          if git diff --cached --quiet; then
+            echo "Nema novih osvrta — stanje je već zapisano."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git commit -m "TJEDNIK: dnevni dodatak $(date +%F) i osvrti na poslovne tekstove
+
+Automatski kritički osvrti na način izvještavanja. Izvornici su povezani, tekstovi nisu preuzeti."
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Push na main (uz provjeru pomaka)
+        if: steps.commit.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="${{ steps.base.outputs.sha }}"
+          git fetch origin main --no-tags
+          current=$(git rev-parse origin/main)
+          if [ "$current" != "$expected" ]; then
+            echo "::warning::main se pomaknuo tijekom izrade izdanja. Izdanje ostaje za sljedeći ciklus."
+            exit 0
+          fi
+          git push origin HEAD:main
+
+      - name: Objavi na Cloudflare Pages
+        if: steps.commit.outputs.changed == 'true'
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ] || [ -z "${CLOUDFLARE_ACCOUNT_ID:-}" ]; then
+            echo "::warning::Cloudflare secrets nisu dostupni — deploy preskočen."
+            exit 0
+          fi
+          npx --yes wrangler@4 pages deploy apps/tjednik/site \
+            --project-name=gnk-asg-tjednik \
+            --branch=main \
+            --commit-dirty=true
+
+      - name: Sažetak
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## BUSINESS TJEDNIK — dnevni ciklus"
+            echo "- Datum: $(date +%F)"
+            echo "- Promjena: ${{ steps.commit.outputs.changed }}"
+            echo "- Tjednik: https://gnk-asg-tjednik.pages.dev/"
+            echo "- Tjedna promjena: https://gnk-asg-tjednik.pages.dev/tjednik/"
+            echo "- Dnevni dodaci: https://gnk-asg-tjednik.pages.dev/dodaci/"
+            echo "- Status: automatski kritički osvrti, nije pojedinačno urednički pregledano"
+          } >> "$GITHUB_STEP_SUMMARY"

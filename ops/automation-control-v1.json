@@ -153,6 +153,21 @@
       "channelKillSwitch": "kanalPublish",
       "editorialStatus": "auto-assembled",
       "registeredAt": "2026-10-19T19:00:00+02:00"
+    },
+    {
+      "job": "TJEDNIK — dnevni dodatak i tjedna promjena",
+      "workflow": ".github/workflows/tjednik-daily.yml",
+      "frequency": "daily",
+      "cron": "20 6 * * * (Europe/Zagreb 07/08:20)",
+      "budgetMinutesPerRunEstimate": 6,
+      "writes": [
+        "apps/tjednik/src/critiques",
+        "apps/tjednik/site",
+        "apps/tjednik/engine/state.json"
+      ],
+      "channelKillSwitch": "tjednikPublish",
+      "editorialStatus": "auto-critique",
+      "registeredAt": "2026-10-19T21:00:00+02:00"
     }
   ],
   "resourceOwnership": {
