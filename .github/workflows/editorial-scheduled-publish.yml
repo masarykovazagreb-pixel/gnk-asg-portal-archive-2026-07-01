@@ -71,6 +71,18 @@ jobs:
         run: |
           node scripts/editorial-registry-v1.mjs
           node scripts/generate-editorial-sitemap-v2.mjs
+      - name: Install required ImageMagick WebP generator
+        if: ${{ hashFiles('apps/portal/data/editorial-plan/20261019-roto-apfel-commentary.json') != '' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! command -v convert >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y --no-install-recommends imagemagick fonts-dejavu-core
+          fi
+          convert -version
+          convert -list format | grep -E '^[[:space:]]*WEBP[[:space:]]' | grep -q 'rw'
+
       - name: Generate and synchronize approved topical WebP cover for new commentary
         if: ${{ hashFiles('apps/portal/data/editorial-plan/20261019-roto-apfel-commentary.json') != '' }}
         shell: bash
