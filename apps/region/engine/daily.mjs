@@ -185,7 +185,7 @@ async function main() {
 
   if (!NO_BUILD && !DRY) {
     const { buildHub } = await import('./hub.mjs');
-    const hub = buildHub();
+    const hub = await buildHub();
     console.log(`[hub] izdanja: ${hub.channels} · sport: ${hub.sport} · politika: ${hub.politics} · sigurnost: ${hub.security}`);
   }
 

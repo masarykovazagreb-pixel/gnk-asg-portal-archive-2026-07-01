@@ -402,7 +402,7 @@ const writePage = (path, html) => {
   writeFileSync(target, html);
 };
 
-export function buildHub() {
+export async function buildHub() {
   mkdirSync(OUT, { recursive: true });
   writePage('', hubPage());
   for (const [id, desk] of Object.entries(DESKS)) writePage(id, deskPage(id, desk));
@@ -445,6 +445,13 @@ ${entries.map((e) => `<url><loc>${e.loc}</loc><changefreq>daily</changefreq><pri
   writeFileSync(join(PORTAL, 'data', 'izdanja.json'), `${JSON.stringify({ version: 1, updatedAt: new Date().toISOString(), sourceOfTruth: HUB, cards }, null, 2)}\n`);
 
   injectBand(cards);
+  try {
+    const { buildAktualCentral } = await import('./aktual-central.mjs');
+    const central = buildAktualCentral({ cards });
+    console.log(`[central] ${JSON.stringify(central)}`);
+  } catch (error) {
+    console.log(`::warning::Središnji blok nije izgrađen: ${error.message}`);
+  }
 
   return { channels: CHANNELS.length, sport: collect('sport').length, politics: collect('politika').length, security: collect('sigurnost').length };
 }
@@ -478,5 +485,5 @@ function injectBand(cards) {
 }
 
 if (process.argv[1] && /hub\.mjs$/.test(process.argv[1])) {
-  console.log(JSON.stringify({ ok: true, ...buildHub() }, null, 2));
+  buildHub().then((hub) => console.log(JSON.stringify({ ok: true, ...hub }, null, 2)));
 }

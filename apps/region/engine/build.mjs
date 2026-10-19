@@ -485,6 +485,11 @@ export function buildChannel(channel) {
   data.items = [...data.items]
     .filter((i) => i && i.slug && i.title && i.url)
     .sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  // Dopunski izvori (optional) dobivaju stranicu i chip tek kada stvarno daju zapise.
+  channel = {
+    ...channel,
+    sources: channel.sources.filter((source) => !source.optional || data.items.some((item) => item.source === source.id))
+  };
 
   const dir = join(SITE, channel.id);
   if (existsSync(dir)) rmSync(dir, { recursive: true, force: true });
