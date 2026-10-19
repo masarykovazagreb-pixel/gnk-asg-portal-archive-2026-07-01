@@ -202,10 +202,11 @@ function header({ active = '', root }) {
 </header>`;
 }
 
-function disclosure(root = '') {
-  const pending = SITE.editorial.status !== 'approved';
+function disclosure(root = '', desk = false) {
+  const pending = desk || SITE.editorial.status !== 'approved';
+  const label = desk ? 'Automatski sastavljeno · Dnevni desk' : SITE.editorial.statusLabel;
   return `<div class="status-strip"><div class="wrap">
-  <a class="badge ${pending ? 'badge--pending' : ''}" href="${root}metodologija/"><span class="dot"></span>${esc(SITE.editorial.statusLabel)}</a>
+  <a class="badge ${pending ? 'badge--pending' : ''}" href="${root}${desk ? 'dnevnik/' : 'metodologija/'}"><span class="dot"></span>${esc(label)}</a>
   <span>Izvori su navedeni uz svaki tekst · ispravci se objavljuju javno</span>
 </div></div>`;
 }
@@ -254,12 +255,12 @@ function footer(root) {
 <script src="${root}assets/kanal.js" defer></script>`;
 }
 
-function page({ title, description, canonical, content, active = '', type = 'website', og, ogAlt, published, modified, section, tags, faq, graphExtra, noindex, bodyAttrs = '', rootOverride, authorName, authorId }) {
+function page({ title, description, canonical, content, active = '', type = 'website', og, ogAlt, published, modified, section, tags, faq, graphExtra, noindex, bodyAttrs = '', rootOverride, authorName, authorId, desk = false }) {
   const root = rootOverride !== undefined ? rootOverride : rootFor(canonical);
   return `${head({ title, description, canonical, root, og, ogAlt, type, published, modified, section, tags, faq, graphExtra, noindex, authorName, authorId })}
 <body ${bodyAttrs}>
 ${header({ active, root })}
-${disclosure(root)}
+${disclosure(root, desk)}
 <main id="sadrzaj">
 ${content}
 </main>
@@ -509,6 +510,7 @@ function buildArticle(a) {
     faq: a.faq,
     graphExtra,
     noindex: isDesk(a),
+    desk: isDesk(a),
     authorName: authorOf(a).name,
     authorId: authorOf(a).id,
     bodyAttrs: `data-slug="${a.slug}" data-root="${root}" data-title="${esc(a.title)}"`

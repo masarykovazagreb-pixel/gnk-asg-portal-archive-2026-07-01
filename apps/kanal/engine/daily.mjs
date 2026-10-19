@@ -111,7 +111,7 @@ const rotate = (list) => {
 
 /* ---------- generatori ---------- */
 const footerNote = (label) =>
-  `<p class="note">Ovo je ${label} izdanja <strong>Dnevnog deska</strong>. Sastavljeno automatski iz strukturiranih podataka i objavljenih izvora; urednički pregled cjelovitih analiza provodi glavni urednik. Status provjere naveden je u zaglavlju teksta, a izvori ispod teksta.</p>`;
+  `<p class="note">Ovo je ${label} izdanja <strong>Dnevnog deska</strong>. Tekst je sastavljen automatski iz strukturiranih podataka i objavljenih izvora. Nije pojedinačno urednički pregledan; status i izvori navedeni su uz tekst.</p>`;
 
 function deadlineItem(d) {
   const delta = daysBetween(DATE, d.date);
@@ -225,7 +225,7 @@ ${footerNote(isClaim ? 'dnevna provjera tvrdnje' : 'dnevni odgovor na pitanje')}
 }
 
 function poolItem(p) {
-  const body = `${p.body}${footerNote('tekst iz uredničkog reda')}`;
+  const body = `${p.body}${footerNote('pripremljeni tekst')}`;
   return {
     slug: `dnevnik-${DATE}-${p.id}`,
     section: p.section || 'analiza',
