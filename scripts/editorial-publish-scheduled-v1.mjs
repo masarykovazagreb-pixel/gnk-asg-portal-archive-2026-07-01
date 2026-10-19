@@ -140,7 +140,7 @@ function appendCard(indexPath, item) {
   const route = routeFor(item);
   if (html.includes(`href="${route}"`)) return false;
   const cardImage = articleImage(item).path;
-  const card = `<article class="editorial-card"><img src="${esc(cardImage)}" alt="Urednička ilustracija za: ${esc(item.title)}" title="${esc(item.title)}"><p class="eyebrow">${esc(item.section)}</p><h2>${esc(item.title)}</h2><p>${esc(item.summary)}</p><a href="${route}">Otvori ${item.type === 'objava' ? 'objavu' : 'komentar'} →</a></article>`;
+  const card = `<article class="editorial-card" data-editorial-route="${esc(route)}"><img src="${esc(cardImage)}" alt="Urednička ilustracija za: ${esc(item.title)}" title="${esc(item.title)}"><p class="eyebrow">${esc(item.section)}</p><h2>${esc(item.title)}</h2><p>${esc(item.summary)}</p><a href="${route}">Otvori ${item.type === 'objava' ? 'objavu' : 'komentar'} →</a></article>`;
   const gridOpen = /<section\b(?=[^>]*\bclass\s*=\s*["'][^"']*\beditorial-grid\b[^"']*["'])[^>]*>/i.exec(html);
   const gridContentStart = gridOpen ? gridOpen.index + gridOpen[0].length : -1;
   const gridEnd = gridContentStart >= 0 ? html.indexOf('</section>', gridContentStart) : -1;
