@@ -10,7 +10,10 @@ on:
       - 'apps/portal/data/editorial-plan/**'
       - 'scripts/content-queue-preflight-v1.mjs'
       - 'scripts/content-queue-publish-v1.mjs'
+      - 'scripts/newsroom-content-factory-export-v1.mjs'
       - 'tests/test-content-queue-preflight-v1.mjs'
+      - 'tests/content-queue-preflight-holds.test.mjs'
+      - 'tests/test-newsroom-content-factory-export-v1.mjs'
       - '.github/workflows/content-queue-publish.yml'
       - '.github/workflows/aktual-editorial-gate.yml'
 
@@ -26,7 +29,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: Verify Content Factory gate regression suite
-        run: node tests/test-content-queue-preflight-v1.mjs
+      - name: Verify Content Factory and AI newsroom export gate regression suites
+        run: |
+          node tests/test-content-queue-preflight-v1.mjs
+          node --test tests/content-queue-preflight-holds.test.mjs
+          node tests/test-newsroom-content-factory-export-v1.mjs
       - name: Confirm current queue is safe
         run: node scripts/content-queue-preflight-v1.mjs

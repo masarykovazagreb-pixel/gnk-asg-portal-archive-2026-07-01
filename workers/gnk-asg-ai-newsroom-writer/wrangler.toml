@@ -1,18 +1,19 @@
 name = "gnk-asg-ai-newsroom-writer"
 main = "src/index.js"
 compatibility_date = "2026-06-13"
-workers_dev = true
+workers_dev = false
 
-# Izoliran worker - NE dira postojeći gnk-asg-direct-operator cron
-# (koji ostaje isključivo email-status-sync). Ovaj worker ima vlastiti
-# cron i piše isključivo preko postojećeg /api/news-auto-publication/enqueue
-# API-ja, koji već sadrži sigurnosni klasifikator sadržaja.
+# Draft-only source-gated worker. There is no public route. The schedule is a
+# no-op unless the operator separately enables both runtime gates below and
+# configures reviewed service/trigger credentials.
+# It reads only the existing RSS metadata feed, creates original local SVG art,
+# and enqueues drafts for human review. It never republishes source images or
+# article bodies and never comments on external media platforms.
 
-# REVIEW-ONLY: bez routes bloka dok se ne odobri produkcijska aktivacija.
-# Dodati route tek nakon eksplicitnog odobrenja:
-# routes = [{ pattern = "gnk-asg.hr/api/ai-newsroom-writer*", zone_name = "gnk-asg.hr" }]
+[vars]
+NEWSROOM_DRAFT_GENERATION_ENABLED = "false"
+NEWSROOM_CLOUDFLARE_AI_APPROVED = "false"
 
 [triggers]
-# Jednom dnevno, 06:00 UTC (08:00 CEST) - prije 8h HR roka spomenutog
-# u internom pravilu odobravanja izvještaja.
+# Daily draft window only; generation stays disabled by default.
 crons = ["0 6 * * *"]
