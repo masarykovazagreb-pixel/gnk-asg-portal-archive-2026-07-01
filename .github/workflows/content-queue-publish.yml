@@ -64,6 +64,10 @@ jobs:
           node scripts/build-aktual-columns-index-v1.mjs --check
           python3 scripts/validate_aktual_columns.py
           node scripts/audit-aktual-columns-lifecycle-v1.mjs
+      - name: Index published topic images in the shared gallery
+        if: steps.pub.outputs.changed == 'true'
+        run: |
+          python3 scripts/build_gallery_standalone_pages.py
       - name: Commit and dispatch exact-SHA production deploy
         if: steps.pub.outputs.changed == 'true'
         env:

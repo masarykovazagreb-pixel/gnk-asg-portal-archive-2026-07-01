@@ -1,8 +1,31 @@
 #!/usr/bin/env python3
-import html, json
+import html, json, hashlib
+from urllib.parse import urlsplit
+import xml.etree.ElementTree as ET
 from pathlib import Path
 ROOT=Path.cwd()/"apps"/"portal"
 items=json.loads((ROOT/"data/visual_gallery.json").read_text(encoding="utf-8")).get("items",[])
+
+# The existing writer also indexes original local covers from registered articles.
+# Never copy external photos, protected assets or generic social cards.
+known_sources={str(item.get("src", "")) for item in items}
+registry_path=ROOT/"data/editorial-registry.json"
+if registry_path.exists():
+    for article in json.loads(registry_path.read_text(encoding="utf-8")).get("items",[]):
+        parsed=urlsplit(str(article.get("image") or "")); src=parsed.path
+        if parsed.netloc not in ("", "gnk-asg.hr") or not src.startswith("/assets/editorial/generated/"):
+            continue
+        if ".." in Path(src).parts or "\\" in src or not (ROOT/src.lstrip("/")).is_file() or src in known_sources:
+            continue
+        route=str(article.get("path") or "")
+        if not route.startswith("/") or route.startswith("//") or ".." in Path(route).parts:
+            continue
+        known_sources.add(src)
+        items.append({"id":"editorial-"+hashlib.sha256(src.encode()).hexdigest()[:16],
+            "src":src,"title":str(article.get("title") or "AKTUAL ilustracija"),
+            "description":str(article.get("description") or "Tematska ilustracija iz uredničke arhive GNK ASG."),
+            "alt":str(article.get("imageAlt") or article.get("title") or "AKTUAL ilustracija"),
+            "source_route":route,"gallery_only":True})
 
 def fmt(src):
     ext=Path(src).suffix.lower()
@@ -41,7 +64,16 @@ def page(item,en=False,route="visual-index"):
 count=0
 for item in items:
     slug=str(item["id"])
-    gal=ROOT/"galerija"/slug/"index.html"; gal.parent.mkdir(parents=True,exist_ok=True); gal.write_text(page(item,False,"galerija"),encoding="utf-8")
+    gal=ROOT/"galerija"/slug/"index.html"; gal.parent.mkdir(parents=True,exist_ok=True)
+    rendered=page(item,False,"galerija")
+    if item.get("source_route"):
+        rendered=rendered.replace('content="675"','content="630"').replace('height="675"','height="630"')
+        source_link=f'<p><a href="{html.escape(item["source_route"],quote=True)}">Povezani tekst / Related article</a></p>'
+        rendered=rendered.replace('</article>',source_link+'</article>')
+    gal.write_text(rendered,encoding="utf-8")
+    if item.get("gallery_only"):
+        count+=1
+        continue
     hr=ROOT/"visual-index"/slug/"index.html"; hr.parent.mkdir(parents=True,exist_ok=True)
     if not hr.exists(): hr.write_text(page(item,False,"visual-index"),encoding="utf-8")
     en=ROOT/"en"/"visual-index"/slug/"index.html"; en.parent.mkdir(parents=True,exist_ok=True)
@@ -66,6 +98,11 @@ all_links="\n".join(
     f'<li><a href="/galerija/{esc(item["id"])}/">{esc(item.get("title") or item["id"])}</a></li>'
     for item in items
 )
+# Preserve established gallery destinations outside either manifest.
+known_ids={str(item["id"]) for item in items}
+for existing in sorted(gal_root.glob("*/index.html")):
+    if existing.parent.name not in known_ids:
+        all_links+=f'\n<li><a href="/galerija/{esc(existing.parent.name)}/">{esc(existing.parent.name.replace("-", " "))}</a></li>'
 gallery_schema={
     "@context":"https://schema.org",
     "@graph":[
@@ -134,4 +171,29 @@ gallery_html=f'''<!doctype html>
 </ul></section></main></body></html>
 '''
 (gal_root/"index.html").write_text(gallery_html,encoding="utf-8")
+# Add gallery discovery without rebuilding or deleting other publishers' URLs.
+ns="http://www.sitemaps.org/schemas/sitemap/0.9"
+ins="http://www.google.com/schemas/sitemap-image/1.1"
+ET.register_namespace("",ns); ET.register_namespace("image",ins)
+for filename,with_image in (("sitemap.xml",False),("image-sitemap.xml",True)):
+    target=ROOT/filename
+    if not target.exists():
+        continue
+    tree=ET.parse(target); xmlroot=tree.getroot()
+    if xmlroot.tag!="{"+ns+"}urlset":
+        raise ValueError("Expected sitemap urlset: "+filename)
+    seen={entry.findtext("{"+ns+"}loc") for entry in xmlroot}
+    changed=False
+    for item in items:
+        url="https://gnk-asg.hr/galerija/"+str(item["id"])+"/"
+        if url in seen:
+            continue
+        entry=ET.SubElement(xmlroot,"{"+ns+"}url")
+        ET.SubElement(entry,"{"+ns+"}loc").text=url
+        if with_image:
+            image=ET.SubElement(entry,"{"+ins+"}image")
+            ET.SubElement(image,"{"+ins+"}loc").text="https://gnk-asg.hr"+str(item["src"])
+        seen.add(url); changed=True
+    if changed:
+        tree.write(target,encoding="utf-8",xml_declaration=True)
 print(f"Generated safe gallery routes for {count} manifest items")
