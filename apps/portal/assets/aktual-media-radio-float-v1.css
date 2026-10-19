@@ -8,8 +8,8 @@
   --amr-gold-bright:#ffe39a;
   --amr-line:rgba(224,197,118,.36);
   position:fixed;
-  right:18px;
-  bottom:18px;
+  right:12px;
+  bottom:12px;
   z-index:2147483638;
   width:min(368px,calc(100vw - 28px));
   color:var(--amr-ink);
@@ -281,21 +281,24 @@
   position:relative;
   display:grid;
   place-items:center;
-  width:58px;
-  height:58px;
+  width:42px;
+  height:42px;
   padding:0;
-  border:1px solid rgba(255,227,154,.9);
-  border-radius:19px;
-  background:linear-gradient(145deg,#132b4b,#08162b);
-  color:#fff;
+  border:1px solid rgba(255,227,154,.55);
+  border-radius:12px;
+  background:rgba(8,20,36,.78);
+  color:#e9c66c;
   cursor:pointer;
   touch-action:none;
-  box-shadow:0 10px 28px rgba(2,8,19,.35),0 0 0 5px rgba(233,198,108,.1),inset 0 1px 0 rgba(255,255,255,.13);
-  transition:transform .18s ease,box-shadow .18s ease,filter .18s ease;
+  opacity:.62;
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  box-shadow:0 4px 14px rgba(2,8,19,.22),inset 0 1px 0 rgba(255,255,255,.08);
+  transition:transform .18s ease,box-shadow .18s ease,filter .18s ease,opacity .18s ease;
 }
-#aktualMediaRadioFloat.amr-closed .amr-launch:hover{transform:translateY(-2px);filter:brightness(1.08);box-shadow:0 15px 34px rgba(2,8,19,.4),0 0 0 6px rgba(233,198,108,.13),inset 0 1px 0 rgba(255,255,255,.16)}
-#aktualMediaRadioFloat .amr-launch svg{display:block;width:27px;height:27px}
-#aktualMediaRadioFloat .amr-launch .amr-dot{position:absolute;top:8px;right:8px;width:9px;height:9px;border:2px solid #0b1a30;box-shadow:none}
+#aktualMediaRadioFloat.amr-closed .amr-launch:hover{opacity:1;transform:translateY(-1px);filter:brightness(1.06);box-shadow:0 8px 20px rgba(2,8,19,.3),inset 0 1px 0 rgba(255,255,255,.12)}
+#aktualMediaRadioFloat .amr-launch svg{display:block;width:20px;height:20px}
+#aktualMediaRadioFloat .amr-launch .amr-dot{position:absolute;top:5px;right:5px;width:7px;height:7px;border:2px solid #0b1a30;box-shadow:none}
 #aktualMediaRadioFloat .amr-launch .amr-dot.live{background:#44d3a0;box-shadow:0 0 10px rgba(68,211,160,.68)}
 @keyframes amr-panel-enter{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes amr-live-pulse{0%,100%{box-shadow:0 0 0 5px rgba(68,211,160,.12),0 0 10px rgba(68,211,160,.35)}50%{box-shadow:0 0 0 7px rgba(68,211,160,.08),0 0 18px rgba(68,211,160,.58)}}

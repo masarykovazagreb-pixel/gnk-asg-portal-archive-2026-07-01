@@ -184,7 +184,8 @@ const footer = (root) => `<footer>
       <a href="${root}izvori/">Izvori</a>
       <a href="${root}metodologija/">Metodologija</a>
       <a href="${abs('feed.json')}">Feed</a>
-      <a href="https://gnk-asg-kanal.pages.dev/" target="_blank" rel="external noopener">GNK ASG KANAL ↗</a>
+      <a href="https://gnk-asg-kanal.pages.dev/" target="_blank" rel="external noopener">KANAL ZAGREB ↗</a>
+      <a href="https://gnk-asg.hr/izdanja/" target="_blank" rel="external noopener">Naša izdanja — AKTUAL MEDIA ↗</a>
       <a href="https://gnk-asg.hr/gnk-aktual/" target="_blank" rel="external noopener">AKTUAL MEDIA ↗</a>
     </div>
   </div>

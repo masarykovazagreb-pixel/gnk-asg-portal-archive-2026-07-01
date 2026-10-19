@@ -257,7 +257,9 @@ ${footer(channel, strings)}`;
   ];
 
   return shell(channel, strings, {
-    title: `${channel.title} — ${strings.aboutTitle.replace(/^Što je /, '').replace(/^Šta je /, '').replace(/^Mi ez /, '').replace(/^Che cos’è /, '').replace(/^Kaj je /, '').replace(/^Какво е /, '').replace(/^Ce este /, '')} ${channel.city}`,
+    title: channel.id === 'zagreb'
+      ? `${channel.title} — 10 provjerljivih objava dnevno: analize, rokovi, brojke i pojašnjenja`
+      : `${channel.title} — dnevni osvrti na ${channel.city}, ${channel.country} · ${new Date().toISOString().slice(0, 10)}`,
     description: `${channel.title}: ${strings.aboutText}`,
     path: '',
     keywords: [...channel.hashtags, channel.country, channel.city, ...channel.sources.map((s) => s.name), 'AKTUAL MEDIA', 'GNK ASG'],
