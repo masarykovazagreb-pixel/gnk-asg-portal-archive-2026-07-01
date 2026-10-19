@@ -4,30 +4,29 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-10-19T20:56:23.932Z",
+  "updatedAt": "2026-10-19T21:04:50.771Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
       "url": "https://www.agerpres.ro/rss",
-      "ok": false,
+      "ok": true,
       "fetched": 0,
       "errors": [
-        "wp:1: HTTP 404",
-        "https://www.agerpres.ro/rss#1: This operation was aborted",
-        "https://www.agerpres.ro/rss/#1: This operation was aborted",
-        "https://www.agerpres.ro/sitemap.xml: nije sitemap"
+        "preskočeno: cilj dosegnut"
       ],
-      "checkedAt": "2026-10-19T20:56:12.427Z"
+      "checkedAt": "2026-10-19T21:04:50.771Z"
     },
     {
       "id": "hotnews",
       "name": "HotNews",
       "url": "https://hotnews.ro/feed",
       "ok": true,
-      "fetched": 400,
-      "errors": [],
-      "checkedAt": "2026-10-19T20:56:23.932Z"
+      "fetched": 0,
+      "errors": [
+        "preskočeno: cilj dosegnut"
+      ],
+      "checkedAt": "2026-10-19T21:04:50.771Z"
     },
     {
       "id": "zf",
@@ -38,7 +37,7 @@
       "errors": [
         "preskočeno: cilj dosegnut"
       ],
-      "checkedAt": "2026-10-19T20:56:23.932Z"
+      "checkedAt": "2026-10-19T21:04:50.771Z"
     },
     {
       "id": "profit",
@@ -49,7 +48,7 @@
       "errors": [
         "preskočeno: cilj dosegnut"
       ],
-      "checkedAt": "2026-10-19T20:56:23.932Z"
+      "checkedAt": "2026-10-19T21:04:50.771Z"
     }
   ],
   "items": [

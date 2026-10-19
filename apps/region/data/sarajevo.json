@@ -4,30 +4,30 @@
   "lang": "bs",
   "city": "Sarajevo",
   "country": "Bosna i Hercegovina",
-  "updatedAt": "2026-10-19T20:53:23.191Z",
+  "updatedAt": "2026-10-19T21:02:18.034Z",
   "sources": [
     {
       "id": "n1ba",
       "name": "N1 BiH",
       "url": "https://n1info.ba/feed/",
-      "ok": true,
-      "fetched": 50,
+      "ok": false,
+      "fetched": 0,
       "errors": [
         "wp:1: HTTP 403"
       ],
-      "checkedAt": "2026-10-19T20:53:11.589Z"
+      "checkedAt": "2026-10-19T21:01:54.486Z"
     },
     {
       "id": "klix",
       "name": "Klix",
       "url": "https://www.klix.ba/rss",
       "ok": true,
-      "fetched": 30,
+      "fetched": 4,
       "errors": [
         "wp:1: HTTP 404",
         "https://www.klix.ba/rss/naslovnica#1: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T20:53:14.432Z"
+      "checkedAt": "2026-10-19T21:01:58.772Z"
     },
     {
       "id": "oslobodjenje",
@@ -41,22 +41,38 @@
         "https://www.oslobodjenje.ba/rss#1: HTTP 404",
         "https://www.oslobodjenje.ba/sitemap_index.xml: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T20:53:20.601Z"
+      "checkedAt": "2026-10-19T21:02:12.931Z"
     },
     {
       "id": "avaz",
       "name": "Avaz",
       "url": "https://avaz.ba/feed",
       "ok": true,
-      "fetched": 10,
+      "fetched": 1,
       "errors": [
         "wp:1: HTTP 404",
         "https://avaz.ba/feed#1: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T20:53:23.191Z"
+      "checkedAt": "2026-10-19T21:02:18.033Z"
     }
   ],
   "items": [
+    {
+      "slug": "sarajevo-2026-10-19-avaz-tramp-trazi-da-novi-meksiko-odmah-promijeni-6b6735",
+      "title": "Tramp traži da Novi Meksiko odmah promijeni ime u \"Nova Amerika\"",
+      "summary": "Tramp traži da Novi Meksiko odmah promijeni ime u \"Nova Amerika\" - Vrijednost kuća i prihodi porasli bi, a vi biste bili još ponosniji dok salutirate našoj prelijepoj američkoj zastavi, poručio je",
+      "date": "2026-10-19T22:00:27.000Z",
+      "url": "https://avaz.ba/vijesti/globus/1081462/tramp-trazi-da-novi-meksiko-odmah-promijeni-ime-u-nova-amerika",
+      "source": "avaz",
+      "sourceName": "Avaz",
+      "categories": [
+        "Američki predsjednik"
+      ],
+      "author": "Dnevni avaz",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:02:18.033Z",
+      "backfilled": true
+    },
     {
       "slug": "sarajevo-2026-10-19-avaz-video-par-u-francuskoj-snimljen-kako-uziva-12aafe",
       "title": "Video / Par u Francuskoj snimljen kako uživa u piću dok Pariz gori",
@@ -167,6 +183,70 @@
       "author": "Dnevni avaz",
       "theme": "politika",
       "addedAt": "2026-10-19T20:53:23.190Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sarajevo-2026-10-19-klix-maja-suput-otkrila-kako-ju-je-osvojio-17-2d4d6e",
+      "title": "Maja Šuput otkrila kako ju je osvojio 17 godina mlađi dečko: Poslao mi je 68 hiljada poruka, bio je uporan",
+      "summary": "Hrvatska pjevačica Maja Šuput prvi put je javno progovorila o vezi s Emilom Tedeschijem juniorom, s kojim se povezuje od sredine septembra.",
+      "date": "2026-10-19T20:56:00.000Z",
+      "url": "https://www.klix.ba/magazin/showbiz/maja-suput-otkrila-kako-ju-je-osvojio-17-godina-mladi-decko-poslao-mi-je-68-hiljada-poruka-bio-je-uporan/261019355",
+      "source": "klix",
+      "sourceName": "Klix",
+      "categories": [
+        "Showbiz"
+      ],
+      "author": "Piše: D. V.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:01:58.772Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sarajevo-2026-10-19-klix-zujanje-u-usima-kada-je-bezazleno-a-kada-459f2b",
+      "title": "Zujanje u ušima: Kada je bezazleno, a kada trebate hitno ljekaru",
+      "summary": "Zvoni, zuji, šumi ili pišti, a niko osim vas to ne čuje. Zujanje u ušima najčešće nije opasno, ali postoje situacije u kojima s pregledom ne treba čekati.",
+      "date": "2026-10-19T20:56:00.000Z",
+      "url": "https://www.klix.ba/lifestyle/zdravlje/zujanje-u-usima-kada-je-bezazleno-a-kada-trebate-hitno-ljekaru/261019346",
+      "source": "klix",
+      "sourceName": "Klix",
+      "categories": [
+        "Zdravlje"
+      ],
+      "author": "Piše: L. R.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:01:58.772Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sarajevo-2026-10-19-klix-zacepljen-vam-je-nos-naucnici-otkrili-a01a28",
+      "title": "Začepljen vam je nos? Naučnici otkrili neobičan efekat orgazma",
+      "summary": "Istraživanje objavljeno u časopisu Ear, Nose & Throat Journal sugeriše da orgazam može privremeno otčepiti nos slično kao dekongestivni sprej.",
+      "date": "2026-10-19T20:55:00.000Z",
+      "url": "https://www.klix.ba/lifestyle/ljubav_i_veze/zacepljen-vam-je-nos-naucnici-otkrili-neobican-efekat-orgazma/261019352",
+      "source": "klix",
+      "sourceName": "Klix",
+      "categories": [
+        "Ljubav i veze"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-19T21:01:58.772Z",
+      "backfilled": true
+    },
+    {
+      "slug": "sarajevo-2026-10-19-klix-zemljino-jezgro-curi-iz-dubina-planete-4432d3",
+      "title": "Zemljino jezgro \"curi\": Iz dubina planete izlaze tvari starije od same Zemlje",
+      "summary": "Zemljino jezgro nije zatvoreno. Iz njega već milijardama godina polako izlaze tvari zarobljene još pri nastanku planete.",
+      "date": "2026-10-19T20:53:00.000Z",
+      "url": "https://www.klix.ba/scitech/nauka/zemljino-jezgro-curi-iz-dubina-planete-izlaze-tvari-starije-od-same-zemlje/261019332",
+      "source": "klix",
+      "sourceName": "Klix",
+      "categories": [
+        "Nauka"
+      ],
+      "author": "Piše: B. R.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-19T21:01:58.772Z",
       "backfilled": true
     },
     {

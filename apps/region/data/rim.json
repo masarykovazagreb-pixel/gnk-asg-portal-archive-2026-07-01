@@ -4,61 +4,77 @@
   "lang": "it",
   "city": "Rim",
   "country": "Italija",
-  "updatedAt": "2026-10-19T20:54:47.234Z",
+  "updatedAt": "2026-10-19T21:03:56.791Z",
   "sources": [
     {
       "id": "ansa",
       "name": "ANSA",
       "url": "https://www.ansa.it/sito/notizie/topnews/topnews_rss.xml",
-      "ok": true,
-      "fetched": 11,
+      "ok": false,
+      "fetched": 0,
       "errors": [
         "wp:1: HTTP 404",
         "https://www.ansa.it/sito/notizie/topnews/notizie.rss#1: HTTP 404",
         "https://www.ansa.it/sito/notizie/politica/notizie.rss#1: HTTP 404",
         "https://www.ansa.it/sito/notizie/economia/notizie.rss#1: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T20:54:28.221Z"
+      "checkedAt": "2026-10-19T21:03:19.709Z"
     },
     {
       "id": "repubblica",
       "name": "la Repubblica",
       "url": "https://www.repubblica.it/rss/homepage/rss2.0.xml",
       "ok": true,
-      "fetched": 80,
+      "fetched": 2,
       "errors": [
         "wp:1: HTTP 404",
         "https://www.repubblica.it/rss/sport/rss2.0.xml#1: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T20:54:35.275Z"
+      "checkedAt": "2026-10-19T21:03:31.288Z"
     },
     {
       "id": "ilpost",
       "name": "Il Post",
       "url": "https://www.ilpost.it/feed/",
-      "ok": true,
-      "fetched": 78,
+      "ok": false,
+      "fetched": 0,
       "errors": [
         "wp:1: HTTP 403",
         "https://www.ilpost.it/feed/#1: HTTP 403",
         "https://www.ilpost.it/sitemap.xml: HTTP 403",
         "https://www.ilpost.it/sitemap_index.xml: HTTP 403"
       ],
-      "checkedAt": "2026-10-19T20:54:38.007Z"
+      "checkedAt": "2026-10-19T21:03:42.611Z"
     },
     {
       "id": "sole24",
       "name": "Il Sole 24 Ore",
       "url": "https://www.ilsole24ore.com/rss/italia--politica.xml",
-      "ok": true,
-      "fetched": 72,
+      "ok": false,
+      "fetched": 0,
       "errors": [
         "wp:1: HTTP 403"
       ],
-      "checkedAt": "2026-10-19T20:54:47.234Z"
+      "checkedAt": "2026-10-19T21:03:56.791Z"
     }
   ],
   "items": [
+    {
+      "slug": "rim-2026-10-19-repubblica-la-protesta-dei-tir-si-allarga-picchetti-0f4607",
+      "title": "La protesta dei tir si allarga, picchetti alle porte di Roma: “Dobbiamo fermarci tutti”",
+      "summary": "A Ferentino, vicino a Frosinone, i camionisti reclutati via chat si ispirano alla Francia. In tutto il centro-sud aumentano i presidi. Salvini incontra le sigle degli autisti",
+      "date": "2026-10-19T20:56:58.000Z",
+      "url": "https://www.repubblica.it/economia/2026/10/19/news/protesta_tir_autostrade_bloccate_ferentino_racconto-425659238/?rss",
+      "source": "repubblica",
+      "sourceName": "la Repubblica",
+      "categories": [
+        "economia"
+      ],
+      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-19T21:03:31.288Z",
+      "backfilled": true
+    },
     {
       "slug": "rim-2026-10-19-ansa-media-kushner-witkoff-questa-settimana-in-a7f575",
       "title": "Media, Kushner-Witkoff questa settimana in Norvegia per negoziati su Ucraina",
@@ -117,6 +133,23 @@
       "author": "di Mariolina Sesto",
       "theme": "politika",
       "addedAt": "2026-10-19T20:54:47.232Z",
+      "backfilled": true
+    },
+    {
+      "slug": "rim-2026-10-19-repubblica-milano-chiesti-45-arresti-per-gli-assalti-80efa6",
+      "title": "Milano, chiesti 45 arresti per gli assalti ai negozi. Tantissimi i minori: “Azione di rara violenza”",
+      "summary": "Oggi le boutique del centro chiuse temendo nuovi scontri. Il sindaco Sala: “Una fase delicata per la città, la tensione resta ancora alta”",
+      "date": "2026-10-19T20:13:40.000Z",
+      "url": "https://milano.repubblica.it/cronaca/2026/10/19/news/scontri_milano_richieste_arresto_procura_minori-425659180/",
+      "source": "repubblica",
+      "sourceName": "la Repubblica",
+      "categories": [
+        "Cronaca",
+        "Cronaca"
+      ],
+      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
+      "theme": "ai",
+      "addedAt": "2026-10-19T21:03:31.287Z",
       "backfilled": true
     },
     {
