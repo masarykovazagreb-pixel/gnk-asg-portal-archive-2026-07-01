@@ -94,6 +94,14 @@ jobs:
           set -euo pipefail
           route="apps/portal/komentari/roto-dinamic-apfel-prijava-nije-odobrenje/index.html"
           if [ -f "$route" ]; then
+            # Ubuntu runners may omit ImageMagick's legacy 'convert' executable.
+            # Install the distro-packaged converter instead of weakening art/SEO gates.
+            if ! command -v convert >/dev/null 2>&1; then
+              sudo apt-get update -qq
+              sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends imagemagick fonts-dejavu-core
+            fi
+            command -v convert
+            convert -list format | grep -qi 'WEBP' || { echo "::error::ImageMagick WEBP support unavailable"; exit 1; }
             node scripts/generate-editorial-cover-assets-v1.mjs
             printf '["/komentari/roto-dinamic-apfel-prijava-nije-odobrenje/"]\n' > "$RUNNER_TEMP/aktual-image-routes.json"
             node scripts/apply-editorial-publication-completeness-v1.mjs --write --routes-file "$RUNNER_TEMP/aktual-image-routes.json"
