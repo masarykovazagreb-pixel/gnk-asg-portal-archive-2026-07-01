@@ -145,16 +145,29 @@ function parseLider(html) {
   return [...found.values()];
 }
 
+const metaContent = (html, key) => {
+  for (const m of html.matchAll(/<meta\b[^>]*>/gi)) {
+    const tagText = m[0];
+    if (!tagText.includes(key)) continue;
+    const c = tagText.match(/content=["']([^"']*)["']/i);
+    if (c) return decode(c[1]).trim();
+  }
+  return '';
+};
+
 async function enrichLider(item) {
   try {
     const html = await fetchText(item.url);
-    const desc = html.match(/<meta[^>]+property=["']og:description["'][^>]+content=["']([^"']+)["']/i)
-      || html.match(/<meta[^>]+name=["']description["'][^>]+content=["']([^"']+)["']/i);
-    const published = html.match(/<meta[^>]+property=["']article:published_time["'][^>]+content=["']([^"']+)["']/i);
-    if (desc) item.summary = stripTags(desc[1]).slice(0, 600);
-    if (published) item.date = parseDate(published[1]);
+    // Lider u popisu stavlja naslov i sažetak u isti <a>; čisti naslov uzimamo
+    // s og:title, a opis s og:description.
+    const ogTitle = metaContent(html, 'og:title').replace(/\s*[-|]\s*Lider(\s*Media)?\s*$/i, '').trim();
+    const desc = metaContent(html, 'og:description') || metaContent(html, 'description');
+    const published = metaContent(html, 'article:published_time');
+    if (ogTitle.length >= 20 && ogTitle.length <= 220) item.title = ogTitle;
+    if (desc) item.summary = stripTags(desc).slice(0, 600);
+    if (published) item.date = parseDate(published);
   } catch (e) {
-    // bez meta opisa: osvrt ostaje na razini naslova, što je eksplicitno označeno
+    // bez meta podataka osvrt ostaje na razini naslova s popisa
   }
   return item;
 }
