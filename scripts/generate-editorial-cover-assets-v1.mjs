@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { writeCoverWebp } from './lib/editorial-cover-art-v1.mjs';
+import { loadPremiumArtwork, writePremiumWebp } from './lib/editorial-premium-art-v1.mjs';
 import { isProtectedEditorialRoute as protectedPath } from './lib/editorial-route-protection-v1.mjs';
 
 const PORTAL = 'apps/portal';
@@ -24,6 +25,8 @@ if (!fs.existsSync(REGISTRY_PATH)) throw new Error(`Missing canonical registry: 
 const registry = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf8'));
 const existing = fs.existsSync(MANIFEST_PATH) ? JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8')) : { items: [] };
 const priorByPath = new Map((existing.items || []).map((item) => [item.path, item]));
+const premiumByRoute = loadPremiumArtwork();
+const premiumUsed = new Set();
 const items = [];
 let generated = 0;
 let reused = 0;
@@ -39,8 +42,11 @@ for (const entry of registry.items || []) {
   const output = path.join(OUTPUT_DIR, `${id}.webp`);
   const kicker = `${typeLabel(entry.type, entry.language)} · ${entry.author || 'AKTUAL MEDIA'}`;
   const previous = priorByPath.get(entry.path);
-  if (FORCE || existing.artVersion !== ART_VERSION || !fs.existsSync(output) || previous?.image !== relativeImage || previous?.title !== entry.title || previous?.kicker !== kicker) {
-    writeCoverWebp({
+  const curated = premiumByRoute.get(entry.path);
+  if (curated) premiumUsed.add(entry.path);
+  if (FORCE || existing.artVersion !== ART_VERSION || !fs.existsSync(output) || previous?.image !== relativeImage || previous?.title !== entry.title || previous?.kicker !== kicker || (curated && previous?.premiumSourceDigest !== curated.sha256) || (!curated && previous?.premiumSourceDigest)) {
+    if (curated) writePremiumWebp(curated, output);
+    else writeCoverWebp({
       title: entry.title,
       kicker,
       seed: `${entry.path}|${entry.title}`,
@@ -56,13 +62,15 @@ for (const entry of registry.items || []) {
     kicker,
     image: relativeImage,
     url: `${SITE}${relativeImage}`,
-    alt: `${entry.language === 'en' ? 'Editorial illustration for' : 'Urednička ilustracija za tekst'}: ${entry.title}`,
+    alt: curated?.alt || `${entry.language === 'en' ? 'Editorial illustration for' : 'Urednička ilustracija za tekst'}: ${entry.title}`,
     width: 1200,
     height: 630,
-    creator: 'GNK ASG d.o.o. · lokalno generirana urednička ilustracija',
-    license: 'GNK ASG original conceptual artwork; no third-party photograph included',
+    creator: curated?.creator || 'GNK ASG d.o.o. · lokalno generirana urednička ilustracija',
+    license: curated?.rights || 'GNK ASG original conceptual artwork; no third-party photograph included',
+    ...(curated ? { premiumSource: curated.source, premiumSourceDigest: curated.sha256, qualityTier: 'reviewed-original-illustration', visualType: curated.imageType } : {}),
   });
 }
+for (const route of premiumByRoute.keys()) if (!premiumUsed.has(route)) throw new Error(`Curated premium image route does not exist in the editorial registry: ${route}`);
 items.sort((a, b) => a.path.localeCompare(b.path));
 const manifestCore = {
   version: 'GNK_ASG_EDITORIAL_IMAGE_MANIFEST_V1',

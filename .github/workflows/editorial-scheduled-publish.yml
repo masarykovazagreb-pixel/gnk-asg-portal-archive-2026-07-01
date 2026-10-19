@@ -13,6 +13,10 @@ on:
     branches: [main]
     paths:
       - 'apps/portal/data/editorial-plan/**'
+      - 'apps/portal/data/editorial-premium-art.json'
+      - 'apps/portal/assets/editorial/*.svg'
+      - 'scripts/lib/editorial-premium-art-v1.mjs'
+      - 'scripts/generate-editorial-cover-assets-v1.mjs'
       - 'scripts/editorial-publish-scheduled-v1.mjs'
       - 'scripts/build-aktual-media-weekly-v1.mjs'
       - 'scripts/build-aktual-media-weekly-archive-v1.mjs'
@@ -71,6 +75,40 @@ jobs:
         run: |
           node scripts/editorial-registry-v1.mjs
           node scripts/generate-editorial-sitemap-v2.mjs
+      - name: Install required ImageMagick WebP generator
+        if: ${{ hashFiles('apps/portal/data/editorial-plan/20261019-roto-apfel-commentary.json') != '' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! command -v convert >/dev/null 2>&1 || ! command -v rsvg-convert >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y --no-install-recommends imagemagick fonts-dejavu-core librsvg2-bin
+          fi
+          convert -version
+          convert -size 8x8 xc:white "$RUNNER_TEMP/aktual-webp-functional-check.webp"
+          test -s "$RUNNER_TEMP/aktual-webp-functional-check.webp"
+          test "$(head -c 4 "$RUNNER_TEMP/aktual-webp-functional-check.webp")" = 'RIFF'
+          test "$(dd if="$RUNNER_TEMP/aktual-webp-functional-check.webp" bs=1 skip=8 count=4 status=none)" = 'WEBP'
+          identify "$RUNNER_TEMP/aktual-webp-functional-check.webp"
+
+      - name: Validate original premium artwork and generated WebP quality
+        if: ${{ hashFiles('apps/portal/data/editorial-premium-art.json') != '' }}
+        run: node scripts/test-premium-editorial-art-v1.mjs
+
+      - name: Generate and synchronize approved topical WebP cover for new commentary
+        if: ${{ hashFiles('apps/portal/data/editorial-plan/20261019-roto-apfel-commentary.json') != '' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          route="apps/portal/komentari/roto-dinamic-apfel-prijava-nije-odobrenje/index.html"
+          if [ -f "$route" ]; then
+            node scripts/generate-editorial-cover-assets-v1.mjs
+            printf '["/komentari/roto-dinamic-apfel-prijava-nije-odobrenje/"]\n' > "$RUNNER_TEMP/aktual-image-routes.json"
+            node scripts/apply-editorial-publication-completeness-v1.mjs --write --routes-file "$RUNNER_TEMP/aktual-image-routes.json"
+            node scripts/editorial-registry-v1.mjs
+            node scripts/generate-editorial-sitemap-v2.mjs
+            node scripts/audit-editorial-publication-completeness-v1.mjs
+          fi
       - name: Validate generated editorial package
         run: node scripts/test-editorial-publish-seo-v1.mjs
       - name: Commit due content
@@ -78,7 +116,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if git diff --quiet -- apps/portal/objave apps/portal/komentari apps/portal/gnk-aktual apps/portal/en/gnk-aktual/index.html apps/portal/en/gnk-aktual/weekly apps/portal/data/aktual-weekly.json apps/portal/data/aktual-weekly-archives apps/portal/editorial-sitemap.xml apps/portal/sitemap-index.xml apps/portal/data/editorial-registry.json apps/portal/data/editorial-plan artifacts/editorial-scheduled-publish.json; then
+          if git diff --quiet -- apps/portal/objave apps/portal/komentari apps/portal/gnk-aktual apps/portal/en/gnk-aktual/index.html apps/portal/en/gnk-aktual/weekly apps/portal/data/aktual-weekly.json apps/portal/data/aktual-weekly-archives apps/portal/editorial-sitemap.xml apps/portal/sitemap-index.xml apps/portal/data/editorial-registry.json apps/portal/data/editorial-image-manifest.json apps/portal/assets/editorial/generated apps/portal/data/editorial-plan artifacts/editorial-scheduled-publish.json; then
             echo "No scheduled public or state change is due."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
@@ -86,7 +124,7 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add apps/portal/objave apps/portal/komentari apps/portal/gnk-aktual apps/portal/en/gnk-aktual/index.html apps/portal/en/gnk-aktual/weekly apps/portal/data/aktual-weekly.json apps/portal/data/aktual-weekly-archives apps/portal/editorial-sitemap.xml apps/portal/sitemap-index.xml apps/portal/data/editorial-registry.json apps/portal/data/editorial-plan artifacts/editorial-scheduled-publish.json
+          git add apps/portal/objave apps/portal/komentari apps/portal/gnk-aktual apps/portal/en/gnk-aktual/index.html apps/portal/en/gnk-aktual/weekly apps/portal/data/aktual-weekly.json apps/portal/data/aktual-weekly-archives apps/portal/editorial-sitemap.xml apps/portal/sitemap-index.xml apps/portal/data/editorial-registry.json apps/portal/data/editorial-image-manifest.json apps/portal/assets/editorial/generated apps/portal/data/editorial-plan artifacts/editorial-scheduled-publish.json
           git commit -m "Publish scheduled editorial package"
 
           # Exact-SHA / single-writer fence: output was generated from one main
