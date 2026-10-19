@@ -629,7 +629,7 @@ function buildHome() {
 </div>`;
 
   return page({
-    title: `${SITE.brandFull} — ${SITE.tagline}`,
+    title: `${SITE.brandFull}: ${SITE.tagline}`,
     description: SITE.description,
     canonical: '',
     content,
