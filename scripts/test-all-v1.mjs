@@ -34,6 +34,7 @@ const GATES = [
   { name: 'AKTUAL MEDIA — sve stranice', cmd: ['node', 'scripts/audit-aktual-all-pages-v2.mjs'], required: true, slow: true },
   { name: 'WebSite JSON-LD', cmd: ['node', 'scripts/test-website-jsonld-v1.mjs'], required: true },
   { name: 'AKTUAL urednički desk', cmd: ['node', 'scripts/build-aktual-entity-desks-v1.mjs', '--check'], required: true },
+  { name: 'S+Chat agent', cmd: ['node', 'tests/test-s-chat-static-v1.mjs'], required: true },
 ];
 
 function run(gate) {

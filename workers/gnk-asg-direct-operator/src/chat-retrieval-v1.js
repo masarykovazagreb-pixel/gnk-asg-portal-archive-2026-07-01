@@ -260,16 +260,19 @@ export function knowledgeAnswer(query, lang = 'hr') {
   };
 }
 
-/** Tri srodna pitanja iz iste skupine — korisna kao sljedeći korak. */
-export function followUpQuestions(group, excludeQuestion, limit = 3) {
+const EN_START = /^(what|which|how|is|are|does|do|can|who|where|when|why)\b/i;
+
+/** Tri srodna pitanja iz iste skupine — korisna kao sljedeći korak.
+    Na engleskom pitanju prvo nudimo engleska pitanja iz iste skupine. */
+export function followUpQuestions(group, excludeQuestion, lang = 'hr', limit = 3) {
   const pool = (INDEX || buildIndex()).entries.filter(
     (entry) => entry.group === group && entry.question !== excludeQuestion,
   );
-  const picked = [];
-  for (let i = 0; i < pool.length && picked.length < limit; i += 1) {
-    picked.push(pool[i].question);
-  }
-  return picked;
+  const preferred = lang === 'en'
+    ? pool.filter((entry) => EN_START.test(entry.question))
+    : pool.filter((entry) => !EN_START.test(entry.question));
+  const ordered = [...preferred, ...pool.filter((entry) => !preferred.includes(entry))];
+  return ordered.slice(0, limit).map((entry) => entry.question);
 }
 
 export function suggestions(lang = 'hr') {

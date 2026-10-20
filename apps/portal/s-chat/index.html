@@ -1,1 +1,124 @@
-<!doctype html><html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GNK ASG S+Chat — AI razgovor | GNK ASG</title><meta name="description" content="GNK ASG S+Chat — javni AI pomoćnik za informacije i teme portala GNK ASG. Powered by GNK ASG."><meta name="robots" content="index,follow"><link rel="canonical" href="https://gnk-asg.hr/s-chat/"><meta property="og:title" content="GNK ASG S+Chat"><meta property="og:description" content="Javni AI pomoćnik GNK ASG. Powered by GNK ASG."><meta property="og:type" content="website"><meta property="og:url" content="https://gnk-asg.hr/s-chat/"><meta property="og:image" content="https://gnk-asg.hr/assets/gnk-asg-social-card.png"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/assets/s-chat-v1.css?v=20261020-stop-export-v2"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"GNK ASG S+Chat","url":"https://gnk-asg.hr/s-chat/","description":"Javni informativni AI pomoćnik GNK ASG.","publisher":{"@type":"Organization","name":"GNK ASG d.o.o.","url":"https://gnk-asg.hr/"}}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","@id":"https://gnk-asg.hr/#website","url":"https://gnk-asg.hr/","name":"GNK ASG","inLanguage":["hr","en"],"publisher":{"@type":"Organization","@id":"https://gnk-asg.hr/#gnk-asg","name":"GNK ASG d.o.o.","url":"https://gnk-asg.hr/"}}</script></head><body><div class="shell"><aside class="side"><a class="brand" href="/">✦ GNK ASG</a><span class="label">S+CHAT</span><h1>Inteligentan razgovor. Jednostavno.</h1><p>Postavite pitanje ili istražite teme. Razgovor koristi postojeći javni API GNK ASG Intelligence Deska.</p><button type="button" id="newChat" class="new">+ Novi razgovor</button><button type="button" id="exportChat" class="export">↓ Preuzmi razgovor</button><a href="/gnk-aktual/">AKTUAL MEDIA ↗</a><a href="/knowledge-center/">Baza znanja ↗</a><a href="/contact/">Kontakt ↗</a><div class="sidefoot">Powered by <strong>GNK ASG</strong></div></aside><main class="conversation"><header class="top"><div><strong>GNK ASG S+Chat</strong><small>AI pomoćnik · Powered by GNK ASG</small></div><button id="newChatMobile" type="button" class="new mobile-new">+ Novi razgovor</button><button id="exportChatMobile" type="button" class="export mobile-export" aria-label="Preuzmi razgovor">↓ TXT</button><span class="status" id="status" role="status">Spremno</span></header><div class="chat-scroll" id="scrollArea" role="region" aria-label="Povijest razgovora" tabindex="0"><div id="messages" class="messages" aria-live="polite"><div class="welcome"><div class="spark">✦</div><h2>Kako vam mogu pomoći?</h2><p>Odgovori mogu biti netočni. Ne unosite osjetljive, povjerljive ili osobne podatke.</p></div></div></div><div class="composer-wrap"><form id="chatForm" class="composer"><label for="chatInput" class="sr">Vaša poruka</label><textarea id="chatInput" rows="2" maxlength="600" placeholder="Napišite poruku…" required></textarea><button id="stop" type="button" class="stop" aria-label="Zaustavi generiranje odgovora" hidden>■</button><button id="send" type="submit" aria-label="Pošalji poruku">➤</button></form><p class="disclaimer">Razgovarate s umjetnom inteligencijom. Svaki odgovor koristi samo trenutačno pitanje; povijest se čuva samo u ovoj kartici preglednika. Ne unosite povjerljive podatke. · <a href="/contact/">Kontakt</a></p></div></main></div><script src="/assets/s-chat-v1.js?v=20261020-stop-export-v2" defer></script></body></html>
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>S+Chat — AI asistent GNK ASG portala | GNK ASG</title>
+<meta name="description" content="S+Chat je javni AI asistent portala GNK ASG. Odgovara iz provjerene baze znanja od 535 pitanja — o društvu, grupi, financijama, izdanjima, tržištima i kontaktima — s poveznicom na izvor.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#0d1723">
+<link rel="canonical" href="https://gnk-asg.hr/s-chat/">
+<link rel="alternate" hreflang="hr" href="https://gnk-asg.hr/s-chat/">
+<link rel="alternate" hreflang="en" href="https://gnk-asg.hr/en/s-chat/">
+<link rel="alternate" hreflang="x-default" href="https://gnk-asg.hr/s-chat/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="S+Chat — AI asistent GNK ASG portala">
+<meta property="og:description" content="Pitajte o GNK ASG-u, grupi GNK DINAMO, izdanjima i tržištima. Odgovor dolazi iz provjerene baze znanja, s poveznicom na izvor.">
+<meta property="og:url" content="https://gnk-asg.hr/s-chat/">
+<meta property="og:site_name" content="GNK ASG">
+<meta property="og:locale" content="hr_HR">
+<meta property="og:image" content="https://gnk-asg.hr/assets/gnk-asg-social-card.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="S+Chat — AI asistent GNK ASG portala">
+<meta name="twitter:description" content="Odgovori iz baze znanja portala, s poveznicom na izvor.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="stylesheet" href="/assets/s-chat-v2.css?v=20261020-v2">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","@id":"https://gnk-asg.hr/#website","url":"https://gnk-asg.hr/","name":"GNK ASG","inLanguage":["hr","en"],"publisher":{"@type":"Organization","@id":"https://gnk-asg.hr/#gnk-asg","name":"GNK ASG d.o.o.","url":"https://gnk-asg.hr/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","@id":"https://gnk-asg.hr/s-chat/#webpage","url":"https://gnk-asg.hr/s-chat/","name":"S+Chat — AI asistent GNK ASG portala","description":"Javni AI asistent portala GNK ASG. Odgovara iz provjerene baze znanja, s poveznicom na izvor.","inLanguage":"hr","isPartOf":{"@id":"https://gnk-asg.hr/#website"},"publisher":{"@id":"https://gnk-asg.hr/#gnk-asg"},"about":[{"@type":"Thing","name":"GNK ASG"},{"@type":"Thing","name":"GNK DINAMO Ltd."}],"dateModified":"2026-10-20T18:00:00Z"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"GNK ASG","item":"https://gnk-asg.hr/"},{"@type":"ListItem","position":2,"name":"S+Chat","item":"https://gnk-asg.hr/s-chat/"}]}</script>
+</head>
+<body class="sc">
+<a class="sc-skip" href="#scMain">Preskoči na razgovor</a>
+
+<div class="sc-app" id="scApp">
+
+  <aside class="sc-rail" id="scRail" aria-label="Navigacija razgovora">
+    <a class="sc-brand" href="/"><span class="sc-brand-mark" aria-hidden="true">✦</span> GNK ASG</a>
+    <p class="sc-rail-label">S+CHAT</p>
+
+    <button type="button" class="sc-new" id="scNew">
+      <span aria-hidden="true">＋</span> Novi razgovor
+    </button>
+
+    <nav class="sc-history" id="scHistory" aria-label="Prethodni razgovori u ovom pregledniku">
+      <p class="sc-history-empty" id="scHistoryEmpty">Povijest se čuva samo u ovom pregledniku.</p>
+      <ul id="scHistoryList"></ul>
+    </nav>
+
+    <div class="sc-rail-links">
+      <a href="/gnk-aktual/">AKTUAL MEDIA</a>
+      <a href="/knowledge-center/">Baza znanja</a>
+      <a href="/izdanja/">Izdanja</a>
+      <a href="/status/">Status sustava</a>
+      <a href="/contact/">Kontakt</a>
+      <a href="/en/s-chat/" hreflang="en" lang="en">English</a>
+    </div>
+    <p class="sc-rail-foot">Powered by <strong>GNK ASG</strong></p>
+  </aside>
+
+  <main class="sc-main" id="scMain">
+    <header class="sc-top">
+      <button type="button" class="sc-rail-toggle" id="scRailToggle" aria-label="Otvori navigaciju" aria-expanded="false" aria-controls="scRail">☰</button>
+      <div class="sc-top-title">
+        <strong>GNK ASG S+Chat</strong>
+        <span id="scMode" class="sc-mode">AI asistent · baza znanja portala</span>
+      </div>
+      <div class="sc-top-actions">
+        <button type="button" class="sc-icon" id="scExport" title="Preuzmi razgovor" aria-label="Preuzmi razgovor">↓</button>
+        <span class="sc-dot" id="scDot" aria-hidden="true"></span>
+        <span class="sc-status" id="scStatus" role="status" aria-live="polite">Spremno</span>
+      </div>
+    </header>
+
+    <div class="sc-scroll" id="scScroll" tabindex="0" role="region" aria-label="Povijest razgovora">
+      <div class="sc-thread" id="scThread" aria-live="polite" aria-relevant="additions text">
+
+        <section class="sc-welcome" id="scWelcome">
+          <div class="sc-welcome-mark" aria-hidden="true">✦</div>
+          <h1>Pitajte o portalu. Odgovor ima izvor.</h1>
+          <p class="sc-welcome-lead">Odgovaram iz javne baze znanja GNK ASG-a — <strong id="scKbCount">535</strong> provjerenih pitanja o društvu, grupi, financijama, izdanjima, tržištima i kontaktima. Kad nešto nije u bazi, to ću reći umjesto da nagađam.</p>
+          <div class="sc-suggest" id="scSuggest">
+            <button type="button" data-q="Koji su financijski pokazatelji GNK ASG-a za 2025.?">Financije 2025.</button>
+            <button type="button" data-q="Što je GNK ASG d.o.o.?">Što je GNK ASG?</button>
+            <button type="button" data-q="Kakav je odnos GNK ASG-a i GNK DINAMO Ltd.?">Grupa GNK DINAMO</button>
+            <button type="button" data-q="Koje sve cjeline postoje na portalu?">Dijelovi portala</button>
+          </div>
+          <ul class="sc-welcome-links">
+            <li><a href="/about/">O društvu</a></li>
+            <li><a href="/financije/">Financije</a></li>
+            <li><a href="/izdanja/">Osam izdanja</a></li>
+            <li><a href="/puls-trzista/">Puls tržišta</a></li>
+            <li><a href="/workers/grupacije/">Radne skupine</a></li>
+            <li><a href="/radio/">AKTUAL RADIO</a></li>
+          </ul>
+        </section>
+
+      </div>
+    </div>
+
+    <div class="sc-composer">
+      <form class="sc-form" id="scForm">
+        <label for="scInput" class="sc-sr">Vaša poruka</label>
+        <textarea id="scInput" rows="1" maxlength="800" placeholder="Napišite pitanje…" autocomplete="off" required></textarea>
+        <button type="button" class="sc-stop" id="scStop" hidden aria-label="Zaustavi odgovor">■</button>
+        <button type="submit" class="sc-send" id="scSend" aria-label="Pošalji">➤</button>
+      </form>
+      <div class="sc-meta">
+        <span id="scCounter" class="sc-counter">0 / 800</span>
+        <p class="sc-disclaimer">Razgovarate s umjetnom inteligencijom. Odgovori su informativni i mogu biti netočni — provjerite poveznicu na izvor. Ne unosite osobne ni povjerljive podatke. Urednik sadržaja: <a href="/nermin-sefic/">Nermin Sefić</a>.</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<footer class="sc-footer">
+  <p><strong>GNK ASG d.o.o.</strong> · Zagrebačka cesta 130, Zagreb · <a href="/contact/">info@gnk-asg.hr</a></p>
+  <p class="sc-footer-links">
+    <a href="/">Početna</a><a href="/gnk-aktual/">AKTUAL MEDIA</a><a href="/izdanja/">Izdanja</a><a href="/top-teme/">Top teme</a><a href="/zdravlje/">Zdravlje sustava</a><a href="/radio/">AKTUAL RADIO</a><a href="/nermin-sefic/">Nermin Sefić</a><a href="/en/s-chat/" hreflang="en" lang="en">English</a>
+  </p>
+  <p class="sc-tags"><span>#AKTUALMEDIA</span><span>#GNKASG</span><span>#SPlusChat</span><span>#Transparentnost</span></p>
+</footer>
+
+<script src="/assets/s-chat-v2.js?v=20261020-v2" defer></script>
+</body>
+</html>
