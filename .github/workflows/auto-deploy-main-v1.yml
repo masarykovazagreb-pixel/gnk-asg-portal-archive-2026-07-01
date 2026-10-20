@@ -46,6 +46,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -uo pipefail
+          export GH_REPO="$GITHUB_REPOSITORY"
           echo "gh $(gh --version | head -1)"
 
           current=$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha) || {
@@ -117,6 +118,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -uo pipefail
+          export GH_REPO="$GITHUB_REPOSITORY"
 
           latest_id() {
             gh run list --workflow deploy-admin-auth-v6.yml --branch main --limit 1 \
