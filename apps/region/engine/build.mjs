@@ -261,9 +261,24 @@ export function loadChannel(channel) {
 const relRoot = '';
 const url = (channel, path = '') => `${channel.base}${path}`;
 
+/* Engleska imena jezika — za "published in …" i jezični prekidač. */
+const COUNTRY_EN = {
+  'Hrvatska': 'Croatia', 'Srbija': 'Serbia', 'Bosna i Hercegovina': 'Bosnia and Herzegovina',
+  'Mađarska': 'Hungary', 'Slovenija': 'Slovenia', 'Italija': 'Italy',
+  'Bugarska': 'Bulgaria', 'Rumunjska': 'Romania'
+};
+const LANG_NAME = {
+  hr: 'Croatian', sr: 'Serbian', bs: 'Bosnian', hu: 'Hungarian',
+  sl: 'Slovenian', it: 'Italian', bg: 'Bulgarian', ro: 'Romanian'
+};
+
 /* ---------- HTML okvir ---------- */
 
-function shell(channel, strings, { title, description, path, keywords = [], jsonld = [], body, ogAlt = '', type = 'website', published, modified, root = '', image = '' }) {
+function shell(channel, strings, { title, description, path, keywords = [], jsonld = [], body, ogAlt = '', type = 'website', published, modified, root = '', image = '', lang = '', locale = '' }) {
+  const pageLang = lang || channel.lang;
+  const pageLocale = locale || strings.locale;
+  const altOriginal = `${PUBLIC}/kanal/${channel.id}/`;
+  const altEnglish = `${PUBLIC}/kanal/${channel.id}/en/`;
   const canonical = url(channel, path);
   /* Ime autora se NE stavlja u meta keywords (pravilo repoa i CI gate);
      ono ide u JSON-LD i u vidljive hashtagove. */
@@ -313,7 +328,7 @@ function shell(channel, strings, { title, description, path, keywords = [], json
   const ld = `<script type="application/ld+json">${safeJson(graph)}</script>`;
   const palette = channel.palette;
   return `<!doctype html>
-<html lang="${channel.lang}">
+<html lang="${pageLang}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -329,9 +344,9 @@ function shell(channel, strings, { title, description, path, keywords = [], json
 <meta name="geo.placename" content="${esc(channel.city)}">
 <meta name="theme-color" content="${palette.bg}">
 <link rel="canonical" href="${canonical}">
-<link rel="alternate" hreflang="${channel.lang}" href="${canonical}">
-<link rel="alternate" hreflang="hr" href="${PUBLIC}/kanal/${channel.id}/"${channel.lang === 'hr' ? '' : ''}>
-<link rel="alternate" hreflang="x-default" href="${canonical}">
+<link rel="alternate" hreflang="${channel.lang}" href="${altOriginal}">
+<link rel="alternate" hreflang="en" href="${altEnglish}">
+<link rel="alternate" hreflang="x-default" href="${altOriginal}">
 <link rel="alternate" type="application/rss+xml" title="${esc(channel.title)}" href="${url(channel, 'feed.xml')}">
 <link rel="alternate" type="application/feed+json" title="${esc(channel.title)}" href="${url(channel, 'feed.json')}">
 <link rel="author" href="${PUBLIC}/nermin-sefic/">
@@ -339,7 +354,7 @@ function shell(channel, strings, { title, description, path, keywords = [], json
 <link rel="preload" as="image" href="${hero}" fetchpriority="high">
 <meta property="og:type" content="${type}">
 <meta property="og:site_name" content="${esc(channel.title)}">
-<meta property="og:locale" content="${strings.locale}">
+<meta property="og:locale" content="${pageLocale}">
 <meta property="og:locale:alternate" content="hr_HR">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(truncate(description, 300))}">
@@ -407,7 +422,7 @@ function header(channel, strings, active = '', root = '') {
     <span>${esc(channel.hashtags[0] || '')}</span>
   </p>
   ${editionsStrip(channel)}
-  <nav class="mainnav" aria-label="${esc(strings.latest)}">${nav}<a href="${CENTRAL}#izdanja-po-zemljama" rel="external">${esc(strings.hub)} ↗</a></nav>
+  <nav class="mainnav" aria-label="${esc(strings.latest)}">${nav}<a href="${CENTRAL}#izdanja-po-zemljama" rel="external">${esc(strings.hub)} ↗</a><a class="langswitch" href="${root}en/" hreflang="en" lang="en" aria-label="Read this edition in English">EN — English</a></nav>
 </header>`;
 }
 
@@ -759,7 +774,7 @@ ${i.tags.map((tg) => `<category>${esc(tg)}</category>`).join('\n')}
 
   writeFileSync(join(dir, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${url(channel, 'sitemap.xml')}\n`);
 
-  writeFileSync(join(dir, 'llms.txt'), `# ${channel.title}\n\n> ${strings.aboutText}\n\nIzdavač: AKTUAL MEDIA d.o.o. · Urednik: Nermin Sefić · Direktor: Nermin Sefić · Kontakt: ${CONTACT}\nJezik: ${channel.lang} · Zemlja: ${channel.country} · Grad: ${channel.city}\nStatus: automatski sastavljeni osvrti na način izvještavanja; izvornici su povezani.\n\n## Izvori\n${channel.sources.map((s) => `- ${s.name}`).join('\n')}\n\n## Stranice\n- ${channel.base}\n- ${url(channel, 'mravinjak/')}\n- ${url(channel, 'izvori/')}\n- ${url(channel, 'metodologija/')}\n- ${url(channel, 'feed.json')}\n- ${url(channel, 'sitemap.xml')}\n- ${HUB}\n`);
+  writeFileSync(join(dir, 'llms.txt'), `# ${channel.title}\n\n> ${strings.aboutText}\n\nIzdavač: AKTUAL MEDIA d.o.o. · Urednik: Nermin Sefić · Direktor: Nermin Sefić · Kontakt: ${CONTACT}\nJezik: ${channel.lang} · Zemlja: ${channel.country} · Grad: ${channel.city}\nStatus: automatski sastavljeni osvrti na način izvještavanja; izvornici su povezani.\n\n## Izvori\n${channel.sources.map((s) => `- ${s.name}`).join('\n')}\n\n## Stranice\n- ${channel.base}\n- ${url(channel, 'mravinjak/')}\n- ${url(channel, 'izvori/')}\n- ${url(channel, 'metodologija/')}\n- ${url(channel, 'en/')} (English overview)\n- ${url(channel, 'feed.json')}\n- ${url(channel, 'sitemap.xml')}\n- ${HUB}\n`);
 }
 
 function writeSitemap(channel, data) {
@@ -768,6 +783,7 @@ function writeSitemap(channel, data) {
     { loc: url(channel, 'mravinjak/'), priority: '0.7' },
     { loc: url(channel, 'izvori/'), priority: '0.6' },
     { loc: url(channel, 'metodologija/'), priority: '0.5' },
+    { loc: url(channel, 'en/'), priority: '0.6' },
     ...[...new Set(data.items.map(themeOf))].map((id) => ({ loc: url(channel, `tema/${id}/`), priority: '0.5' })),
     ...channel.sources.map((s) => ({ loc: url(channel, `izvor/${s.id}/`), priority: '0.4' })),
     ...data.items.map((i) => ({ loc: url(channel, `clanak/${i.slug}/`), priority: '0.8', lastmod: i.date }))
@@ -803,6 +819,100 @@ function writeLegacyRedirect(channel) {
 </head>
 <body><p>Ovo izdanje je na novoj adresi: <a href="${channel.base}">${esc(channel.title)}</a>.</p></body>
 </html>`);
+}
+
+
+/* ---------- engleski pregled izdanja ----------
+ * Ne prevodi se svaki tekst: prevodi se ulaz. Engleska stranica objašnjava što
+ * izdanje radi, navodi izvore i zadnjih 24 naslova u izvornom jeziku (naslov se
+ * ne prepisuje), a svaki link vodi na izvorni članak i njegov izvor. */
+const EN_UI = {
+  intro: (c, n, s) => `AKTUAL MEDIA ${c.title.replace(/^AKTUAL MEDIA\s*/i, '')} covers ${c.city}, ${COUNTRY_EN[c.country] || c.country}. The edition is published in ${esc(LANG_NAME[c.lang] || c.lang)}. This page is the English entry point: it explains how the edition works and lists the latest ${n} headlines in the original language, each linked to its source.`,
+  what: 'What this edition does',
+  bullets: [
+    'Every day it reads the public feeds, sitemaps and APIs of the named outlets below.',
+    'For each text it writes a short review of how the story is reported: what the headline claims, which number lacks a document, who is quoted, and what the body leaves out.',
+    'It never republishes the full article. Each item links to the original with the publication date, and the source is named in the review.',
+    'Automated parts are labelled as such. Claims made by a source are attributed to that source, not to this newsroom.'
+  ],
+  latest: 'Latest headlines (original language)',
+  sources: 'Sources this edition reads',
+  original: 'Read the edition in the original language',
+  note: 'Headlines are shown exactly as published, in the original language. The English text on this page is an editorial overview, not a translation of the articles.'
+};
+
+function englishPage(channel, strings, data) {
+  const n = Math.min(24, data.items.length);
+  const items = data.items.slice(0, n);
+  const root = '../';
+  const updated = data.items[0]?.date ? shortDate(data.items[0].date.slice(0, 10), 'en') : '';
+  const city = CITY_SHORT[channel.id] || channel.city;
+  const title = `AKTUAL MEDIA ${city} — English overview of the ${COUNTRY_EN[channel.country] || channel.country} edition`;
+  const description = `English entry point for the ${channel.title} edition: what it covers, which outlets it reads and the latest headlines in ${esc(LANG_NAME[channel.lang] || channel.lang)}, each linked to the original source.`;
+  const body = `<div class="topbar"><span>AKTUAL MEDIA · ${esc(channel.country)}</span><a class="topback" href="${root}">← ${esc(EN_UI.original)}</a></div>
+<header class="top en-head">
+  <div class="masthead">
+    <div class="brand">
+      <span class="kicker">${esc(channel.country)} · ${esc(city)} · English</span>
+      <a class="logo" href="${root}">${esc(channel.title)}</a>
+      <p class="strap">${esc(EN_UI.note)}</p>
+    </div>
+    <div class="mastmeta">
+      <span>Editor &amp; director: <strong>Nermin Sefić</strong></span>
+      <span>Publisher: AKTUAL MEDIA d.o.o.</span>
+      <span>${esc(data.items.length)} reviews · ${esc(channel.sources.length)} sources${updated ? ` · latest ${esc(updated)}` : ''}</span>
+    </div>
+  </div>
+  <p class="hastag-line" aria-label="Tags">
+    <span class="hastag-k">Tags</span>
+    <a href="/nermin-sefic/">#NerminSefić</a>
+    <a href="/nermin-sefic/">#NerminSefic</a>
+    <a href="/nermin-sefic/">#SeficNermin</a>
+    <a href="/nermin-sefic/">#SEFICNERMIN</a>
+    <span>#AKTUALMEDIA</span><span>#GNKASG</span><span>#EnglishOverview</span>
+  </p>
+  <nav class="mainnav" aria-label="Sections"><a href="${root}" hreflang="${channel.lang}" lang="${channel.lang}">${esc(strings.latest)} (${esc(channel.langName)})</a><a href="${root}mravinjak/" hreflang="${channel.lang}" lang="${channel.lang}">${esc(mrvStrings(channel.lang).nav)}</a><a href="${root}metodologija/" hreflang="${channel.lang}" lang="${channel.lang}">${esc(strings.methodology)}</a><a href="${CENTRAL}" rel="external">AKTUAL MEDIA</a><a class="langswitch" href="${root}">${esc(channel.langName)}</a></nav>
+</header>
+<main id="sadrzaj" class="page">
+  <h1>${esc(title)}</h1>
+  <p class="lead">${esc(EN_UI.intro(channel, data.items.length, channel.sources.length))}</p>
+  <p><a class="cta" href="${root}" hreflang="${channel.lang}">← ${esc(EN_UI.original)}</a></p>
+
+  <h2>${esc(EN_UI.what)}</h2>
+  <ul class="rules">${EN_UI.bullets.map((b) => `<li>${esc(b)}</li>`).join('')}</ul>
+
+  <h2>${esc(EN_UI.latest)}</h2>
+  ${items.length ? `<ul class="list en-list">${items.map((i) => `<li><time datetime="${esc(i.date)}">${esc(shortDate(i.date.slice(0, 10), 'en'))}</time><a href="${root}clanak/${esc(i.slug)}/" hreflang="${channel.lang}" lang="${channel.lang}">${esc(i.title)}</a><span class="src">${esc(i.sourceName)}</span></li>`).join('')}</ul>` : '<p class="small">No items stored yet.</p>'}
+  <p class="small">${esc(EN_UI.note)}</p>
+
+  <h2>${esc(EN_UI.sources)}</h2>
+  <ul class="list">${channel.sources.map((x) => `<li><a href="${root}izvor/${x.id}/" hreflang="${channel.lang}">${esc(x.name)}</a><span class="src">${esc(x.type.toUpperCase())}</span></li>`).join('')}</ul>
+
+  <h2>Other editions</h2>
+  <ul class="list">${CHANNELS.filter((c) => c.id !== channel.id).map((c) => `<li><a href="${c.base}en/" hreflang="en">${esc(c.title)}</a><span class="src">${esc(c.country)}</span></li>`).join('')}</ul>
+  <p><a href="${HUB}" rel="external">All editions and desks →</a> · <a href="/kanal/" rel="external">Channels</a> · <a href="/radio/" rel="external">AKTUAL MEDIA RADIO</a> · <a href="${CENTRAL}" rel="external">AKTUAL MEDIA</a></p>
+</main>
+${footer(channel, strings)}`;
+
+  return shell(channel, strings, {
+    title: `${title} | AKTUAL MEDIA`,
+    description,
+    path: 'en/',
+    lang: 'en',
+    locale: 'en_US',
+    keywords: [...channel.hashtags, 'English', 'AKTUAL MEDIA', 'GNK ASG', 'Nermin Sefić review'],
+    type: 'website',
+    root,
+    body,
+    jsonld: [{
+      '@context': 'https://schema.org', '@type': 'WebPage',
+      name: title, description, inLanguage: 'en',
+      url: url(channel, 'en/'),
+      isPartOf: { '@type': 'WebSite', name: channel.title, url: channel.base },
+      about: { '@type': 'NewsMediaOrganization', name: 'AKTUAL MEDIA d.o.o.', url: `${PUBLIC}/` },
+      editor: { '@type': 'Person', name: 'Nermin Sefić', jobTitle: 'Editor and director', url: `${PUBLIC}/nermin-sefic/` }
+    }]
+  });
 }
 
 export function buildChannel(channel) {
@@ -856,6 +966,7 @@ export function buildChannel(channel) {
   }
 
   write('mravinjak/index.html', mravinjakPage(channel, strings, data));
+  write('en/index.html', englishPage(channel, strings, data));
 
   write('izvori/index.html', listPage(channel, strings, {
     title: `${strings.sources} — ${channel.title}`,
@@ -957,6 +1068,7 @@ img{max-width:100%;height:auto}
 .logo{display:block;font:700 clamp(30px,5vw,54px)/1.02 Georgia,serif;letter-spacing:-.01em;margin:6px 0 8px;color:var(--ink)}
 .strap{margin:0;max-width:46ch;color:rgba(255,255,255,.76);font-size:15px}
 .mastmeta{display:grid;gap:4px;font:500 12px/1.6 system-ui,sans-serif;color:rgba(255,255,255,.7);text-align:right}
+.langswitch{font-weight:800;letter-spacing:.08em;border:1px solid currentColor;border-radius:999px;padding:5px 10px;text-decoration:none!important}
 .hastag-line{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:10px 0 0;padding:10px 0 0;border-top:1px dashed rgba(0,0,0,.16);font:700 11px/1.4 system-ui,-apple-system,sans-serif;letter-spacing:.02em}
 .hastag-line a,.hastag-line span{text-decoration:none;color:var(--accent2,#8c2f2f)}
 .hastag-line a{background:rgba(140,47,47,.08);border:1px solid rgba(140,47,47,.22);border-radius:999px;padding:4px 9px}

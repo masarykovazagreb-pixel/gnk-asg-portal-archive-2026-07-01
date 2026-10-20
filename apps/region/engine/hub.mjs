@@ -606,6 +606,7 @@ function kanalIndex(cards) {
           <span class="kx-go">Otvori izdanje →</span>
         </div>
       </a>
+      <p class="kx-foot"><a href="/kanal/${c.id}/en/" hreflang="en" lang="en">English overview →</a> <span>${card.count || 0} reviews</span></p>
     </article>`;
   }).join('');
 
@@ -658,6 +659,10 @@ a{color:inherit;text-decoration:none}
 .kx-body h2{font:700 20px/1.2 Georgia,serif;margin:0}
 .kx-body p{margin:0;font-size:14px;color:#4a5158}
 .kx-meta{font:700 11px/1 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#7a6a4b}
+.kx-foot{display:flex;justify-content:space-between;gap:8px;align-items:center;margin:0;padding:0 18px 14px;font:700 10px/1 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.kx-foot a{color:#8c2f2f;border-bottom:1px solid rgba(140,47,47,.35);text-decoration:none}
+.kx-foot a:hover{border-color:#8c2f2f}
+.kx-foot span{color:#8a8272;font-weight:700}
 .kx-go{margin-top:4px;font:800 11px/1 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#8c2f2f}
 </style>
 </head>
