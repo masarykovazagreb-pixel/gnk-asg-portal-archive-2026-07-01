@@ -15,6 +15,8 @@ on:
       - 'workers/gnk-asg-direct-operator/src/index-admin-hub-v22-news.js'
       - 'workers/gnk-asg-direct-operator/src/public-shell-v11.js'
       - 'scripts/test-the-code-index-contract.mjs'
+      - 'scripts/build-index-parity.mjs'
+      - 'apps/portal/data/izdanja.json'
       - 'scripts/verify-public-redesign-contract.mjs'
       - '.github/workflows/check-index-code-showcase-v1.yml'
   workflow_dispatch:
@@ -79,6 +81,11 @@ jobs:
             node --check apps/portal/assets/index-redesign-production.js
             node scripts/verify-public-redesign-contract.mjs
           fi
+
+      - name: Validate HR/EN index parity
+        run: |
+          set -euxo pipefail
+          node scripts/build-index-parity.mjs --check
 
       - name: Preserve public shell safety contract
         run: |

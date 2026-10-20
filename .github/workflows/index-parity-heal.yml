@@ -1,0 +1,71 @@
+name: Index parity heal
+
+# Jednom dnevno provjeri da su HR i EN index u istom stanju.
+# Ako se raziđu (netko ručno promijeni samo jedan od njih), workflow
+# regenerira podium iz apps/portal/data/izdanja.json i otvori PR.
+# Ne piše na main i ne objavljuje ništa samo zato što je pokrenut.
+
+on:
+  schedule:
+    - cron: '12 4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: gnk-asg-index-parity-heal
+  cancel-in-progress: false
+
+jobs:
+  heal:
+    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Dohvati repozitorij
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Regeneriraj HR/EN podium
+        run: node scripts/build-index-parity.mjs
+
+      - name: Provjeri ima li razlike
+        id: diff
+        run: |
+          if git diff --quiet -- apps/portal/index.html apps/portal/en/index.html apps/portal/assets/index-redesign-production.css; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "HR i EN index su u istom stanju."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            git --no-pager diff --stat
+          fi
+
+      - name: Otvori PR s korekcijom
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -uo pipefail
+          export GH_REPO="$GITHUB_REPOSITORY"
+          branch="automation/index-parity-$(date -u +%Y%m%d-%H%M)"
+          git config user.name "gnk-asg-bot"
+          git config user.email "bot@gnk-asg.hr"
+          git checkout -b "$branch"
+          git add apps/portal/index.html apps/portal/en/index.html apps/portal/assets/index-redesign-production.css
+          git commit -m "chore(index): automatska HR/EN parity korekcija"
+          git push -u origin "$branch"
+          gh pr create --base main --head "$branch" \
+            --title "Index parity: automatska korekcija" \
+            --body "Dnevni watchdog je našao razliku između HR i EN indexa i regenerirao podium iz \`apps/portal/data/izdanja.json\`. Provjere moraju proći prije spajanja." \
+            || gh issue create \
+              --title "Index parity: potrebna ručna korekcija" \
+              --body "Grana \`$branch\` sadrži regenerirani podium, ali PR nije bilo moguće otvoriti automatski. Spoji granu ručno."
