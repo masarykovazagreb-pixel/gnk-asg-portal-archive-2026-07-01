@@ -117,7 +117,9 @@
     const status=document.getElementById('amFeedStatus');
     const latest=items[0]?new Date(items[0]._published):null;
     if(date) date.textContent=new Intl.DateTimeFormat(lang==='hr'?'hr-HR':'en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date());
-    if(status) status.textContent=items.length+' '+labels.stories+(latest&&!Number.isNaN(latest.getTime())?' · '+labels.updated+' '+timeAgo(latest.toISOString()):'');
+    if(status) status.textContent=items.length
+      ? items.length+' '+labels.stories+(latest&&!Number.isNaN(latest.getTime())?' · '+labels.updated+' '+timeAgo(latest.toISOString()):'')
+      : (lang==='hr'?'Osvježavam feed…':'Refreshing feed…');
   }
 
   function renderBreaking(items){
@@ -239,8 +241,15 @@
 
   async function boot(){
     try{
-      const r=await fetch('/data/news.json',{cache:'no-cache'});
-      if(!r.ok) throw new Error('HTTP '+r.status);
+      // Jedan ponovni pokušaj: tijekom deploya CDN zna vratiti prazan odgovor,
+      // a stranica je tada izgledala kao da nema vijesti.
+      let r=null;
+      for(let attempt=0;attempt<2;attempt+=1){
+        r=await fetch('/data/news.json',{cache:'no-cache'});
+        if(r.ok) break;
+        await new Promise(done=>setTimeout(done,1500));
+      }
+      if(!r||!r.ok) throw new Error('HTTP '+(r?r.status:'0'));
       const items=safeItems(await r.json());
       setEdition(items);
       if(view==='topics'){renderTopics(items);return}

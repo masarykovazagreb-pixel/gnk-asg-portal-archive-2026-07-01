@@ -9,9 +9,10 @@
    Izlaz: apps/portal/top-teme/index.html (+ /en/), data/top-teme.json */
 import { readdirSync, readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+const { themeFor } = await import(pathToFileURL(join(ROOT, 'apps/region/engine/lib.mjs')).href);
 const PORTAL = join(ROOT, 'apps', 'portal');
 const KANAL = join(PORTAL, 'kanal');
 
@@ -72,8 +73,11 @@ day.forEach((it, i) => {
 });
 
 const tokenSet = (n) => docTokens.get(n) || new Set();
+// Prag se prilagođava veličini dana: osam jezika i ~200 naslova dnevno ne mogu
+// dati token u osam naslova, a fiksni prag je 20. 10. dao nula tema.
+const MIN_DOCS = Math.max(4, Math.ceil(day.length * 0.02));
 const candidates = [...docTokens.entries()]
-  .filter(([, set]) => set.size >= 6)
+  .filter(([, set]) => set.size >= MIN_DOCS)
   .sort((a, b) => b[1].size - a[1].size);
 
 const clusters = [];
@@ -109,7 +113,7 @@ const topForm = (token) => {
 };
 
 const themes = clusters
-  .filter((c) => c.set.size >= 8)
+  .filter((c) => c.set.size >= MIN_DOCS)
   .map((c) => {
     const items = [...c.set].map((i) => day[i]);
     const tokens = [...new Set(c.tokens)].sort((a, b) => tokenSet(b).size - tokenSet(a).size);
@@ -125,6 +129,50 @@ const themes = clusters
   })
   .sort((a, b) => b.items.length - a.items.length)
   .slice(0, 5);
+
+/* Dopuna po rubrikama: kada dnevni fond nema dovoljno zajedničkih tokena
+   (osam jezika, ~200 naslova), teme se popunjavaju rubrikama iz iste arhive.
+   Rubrika se računa istim klasifikatorom koji grade gradske deske, pa je
+   brojka ponovno izračunljiva i ne uvodi nijednu novu tvrdnju. */
+const RUBRIC_LABEL = {
+  sigurnost: ['Sigurnost', 'Security'],
+  rat: ['Rat i sukobi', 'War and conflict'],
+  potres: ['Katastrofe', 'Disasters'],
+  politika: ['Politika', 'Politics'],
+  ekonomija: ['Ekonomija', 'Economy'],
+  ai: ['Umjetna inteligencija', 'Artificial intelligence'],
+  energija: ['Energija', 'Energy'],
+  sport: ['Sport', 'Sport'],
+  drustvo: ['Društvo', 'Society']
+};
+
+if (themes.length < 5) {
+  const covered = new Set();
+  themes.forEach((t) => t.items.forEach((it) => covered.add(it)));
+  const groups = new Map();
+  day.forEach((it, i) => {
+    const rubric = themeFor(`${it.title} ${it.summary}`).id;
+    if (!groups.has(rubric)) groups.set(rubric, new Set());
+    groups.get(rubric).add(i);
+  });
+  const candidatesRubric = [...groups.entries()]
+    .map(([id, set]) => ({ id, set }))
+    // 'drustvo' je zadana rubrika klasifikatora i skuplja sve što ne pogodi
+    // ključnu riječ, pa nije tema nego ostatak. Ne ulazi u popis.
+    .filter((g) => g.id !== 'drustvo')
+    .filter((g) => g.set.size >= Math.max(4, Math.ceil(day.length * 0.02)))
+    .filter((g) => g.set.size <= day.length * 0.4)
+    .sort((a, b) => b.set.size - a.set.size);
+  for (const group of candidatesRubric) {
+    if (themes.length >= 5) break;
+    const items = [...group.set].map((i) => day[i]);
+    const overlap = items.filter((it) => covered.has(it)).length / (items.length || 1);
+    if (overlap >= 0.5) continue;
+    const label = RUBRIC_LABEL[group.id] ? `${RUBRIC_LABEL[group.id][0]} · rubrika` : `${group.id} · rubrika`;
+    themes.push({ items, tokens: [label], labelEn: RUBRIC_LABEL[group.id] ? `${RUBRIC_LABEL[group.id][1]} · section` : `${group.id} · section`, rubric: group.id });
+    items.forEach((it) => covered.add(it));
+  }
+}
 
 const hasNumber = (t) => /\d/.test(t);
 const hasQuestion = (t) => /\?/.test(t);
@@ -169,7 +217,7 @@ themes.forEach((t, idx) => {
   data.themes.push({
     slug,
     label: t.tokens.join(' · '),
-    labelEn: t.tokens.join(' · '),
+    labelEn: t.labelEn || t.tokens.join(' · '),
     date: latest,
     count: items.length,
     channels: channels.length,
@@ -205,7 +253,7 @@ function page(lang, themeList) {
     return `<article class="tt-theme" id="t-${String(i + 1).padStart(2, '0')}">
       <header class="tt-head">
         <span class="tt-n">${String(i + 1).padStart(2, '0')}</span>
-        <h2>${esc(t.label)}</h2>
+        <h2>${esc(EN ? (t.labelEn || t.label) : t.label)}</h2>
         <span class="tt-count">${EN ? `${en(t.count, 'story', 'stories')} · ${en(t.channels, 'channel', 'channels')} · ${en(t.sources, 'source', 'sources')}` : `${hr(t.count, 'naslov', 'naslova', 'naslova')} · ${hr(t.channels, 'kanal', 'kanala', 'kanala')} · ${hr(t.sources, 'izvor', 'izvora', 'izvora')}`}</span>
       </header>
       <p class="tt-stat" data-stat="t${i + 1}-count" data-ev="s:t${i + 1}-count">${EN
@@ -284,8 +332,8 @@ h1{font:900 clamp(28px,4.6vw,46px)/1.02 Impact,"Arial Black",system-ui,sans-seri
 <main class="tt-wrap">
   <h1>${EN ? 'Top topics of the day' : 'Top teme dana'}</h1>
   <p class="tt-lead">${EN
-    ? 'Five topics with the most stories in the archive. Every sentence here is either a verbatim headline, a number computed from the archive, or a question.'
-    : 'Pet tema s najviše naslova u arhivi. Svaka rečenica ovdje je ili doslovan naslov, ili broj izračunat iz arhive, ili pitanje.'}</p>
+    ? 'Topics with the most stories in the archive for the latest day. Every sentence here is either a verbatim headline, a number computed from the archive, or a question.'
+    : 'Teme s najviše naslova u arhivi za zadnji dan. Svaka rečenica ovdje je ili doslovan naslov, ili broj izračunat iz arhive, ili pitanje.'}</p>
   <div class="tt-rule">
     <span class="tt-pill">${EN ? 'latest day in archive' : 'zadnji dan u arhivi'}: <b>${EN ? esc(dayLabelEn) : esc(dayLabel)}</b></span>
     <span class="tt-pill"><b>${day.length}</b> ${EN ? 'stories that day' : 'naslova tog dana'}</span>
