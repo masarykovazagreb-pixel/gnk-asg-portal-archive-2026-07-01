@@ -313,6 +313,7 @@ function netStrip() {
     ['/knowledge-center/', 'Centar znanja', 'odgovori'],
     ['/digital-workforce/knjiga/', 'Knjiga radnika', 'tko radi'],
     ['/workers/grupacije/', 'Grupacije radnika', 'automatizacije'],
+    ['/top-teme/', 'Top teme', 'dnevno'],
     ['/medijska-kritika/', 'Kritika medija', 'mjereno'],
     ['https://gnk-asg-tjednik.pages.dev/', 'Business Tjednik', 'tjednik'],
     ['https://gnk-asg-tjednik.pages.dev/tjednik/2026-W43/', 'Tjednik W43', 'ovaj tjedan']

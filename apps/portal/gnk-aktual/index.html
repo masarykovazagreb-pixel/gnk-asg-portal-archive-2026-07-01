@@ -76,20 +76,21 @@
 <style id="amx-style">.amx{margin:26px 0 0;background:#fffdf8;border:1px solid #d8d3c7;border-top:6px solid #111;scroll-margin-top:64px}
 .amx-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:12px 18px;border-bottom:1px solid #d8d3c7}
 .amx-flag{background:#d71920;color:#fff;font:900 11px/1 Inter,system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;padding:9px 12px;white-space:nowrap}
-.amx-head p{margin:0;font:400 12.5px/1.45 Georgia,serif;color:#4a4741;max-width:70ch}
+.amx-head p{margin:0;font:400 12.5px/1.45 Georgia,serif;color:#332f28;max-width:70ch}
 .amx-head p strong{font-family:system-ui,sans-serif;font-size:11.5px;letter-spacing:.04em;white-space:nowrap}
 .amx-all{margin-left:auto;font:900 10.5px/1 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border-bottom:2px solid #d71920;padding-bottom:4px;white-space:nowrap}
 .amx-all:hover{color:#d71920}
 .amx-row{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;list-style:none;margin:0;padding:16px 18px 6px}
 .amx-item{min-width:0}
 .amx-link{display:grid;justify-items:center;gap:7px;text-align:center;text-decoration:none}
-.amx-ring{position:relative;display:block;width:100%;aspect-ratio:1;border-radius:50%;padding:4px;background:linear-gradient(140deg,#e9c66c,#b8862f 45%,#f3dfa8);box-shadow:0 8px 18px rgba(15,23,42,.16);transition:transform .22s ease,box-shadow .22s ease}
-.amx-ring img{display:block;width:100%;height:100%;object-fit:cover;border-radius:50%;border:2px solid #fffdf8}
+.amx-ring{position:relative;display:block;width:100%;aspect-ratio:1;border-radius:50%;padding:4px;background:linear-gradient(140deg,#e9c66c,#b8862f 45%,#f3dfa8);box-shadow:0 10px 20px rgba(15,23,42,.22),0 2px 4px rgba(15,23,42,.12);transition:transform .22s ease,box-shadow .22s ease}
+.amx-ring img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 38%;border-radius:50%;border:2px solid #fffdf8;filter:contrast(1.07) saturate(1.06)}
+.amx-ring::after{content:"";position:absolute;inset:4px;border-radius:50%;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(8,15,24,.20),inset 0 -16px 24px rgba(8,15,24,.16)}
 .amx-badge{position:absolute;right:-2px;bottom:4px;background:#111;color:#e9c66c;font:800 9px/1 system-ui,sans-serif;letter-spacing:.02em;padding:4px 6px;border-radius:999px;border:2px solid #fffdf8}
-.amx-link b{font:900 13px/1.05 Impact,"Arial Black",system-ui,sans-serif;letter-spacing:.01em;text-transform:uppercase;color:#111}
+.amx-link b{font:900 13px/1.05 Impact,"Arial Black",system-ui,sans-serif;letter-spacing:.01em;text-transform:uppercase;color:#0a0d12}
 .amx-line{display:block;width:30px;height:3px;border-radius:3px;background:var(--c,#e9c66c);margin:1px auto 0;opacity:.9;box-shadow:0 1px 3px rgba(0,0,0,.12)}
-.amx-link small{font:700 9px/1.2 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#67645e}
-.amx-ago{font:700 8.5px/1.2 system-ui,sans-serif;font-style:normal;letter-spacing:.05em;color:#9a9384}
+.amx-link small{font:700 9px/1.2 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#4b4638}
+.amx-ago{font:700 8.5px/1.2 system-ui,sans-serif;font-style:normal;letter-spacing:.05em;color:#6d6555}
 .amx-podium{position:relative;padding:2px 0 8px}
 .amx-wires{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;padding:0 18px;height:24px;position:relative;z-index:2}
 .amx-wires span{justify-self:center;width:2px;height:100%;background:linear-gradient(180deg,color-mix(in srgb,var(--c) 25%,transparent),var(--c));position:relative}
@@ -103,7 +104,7 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
 .amm-rainbow{position:absolute;left:0;right:0;top:0;height:4px;background:var(--amm-rainbow,#e9c66c);opacity:.85;z-index:3}
 .amm-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:16px 18px 12px;border-bottom:1px solid #ece3d1;position:relative;z-index:1}
 .amm-flag{background:linear-gradient(135deg,#f3dfa8,#e9c66c 45%,#c8963c);color:#141414;font:900 10px/1 system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;padding:7px 11px;border-radius:999px;box-shadow:0 6px 14px rgba(200,150,60,.28)}
-.amm-count{margin:0;font:700 11px/1.3 system-ui,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#6d6555}
+.amm-count{margin:0;font:700 11px/1.3 system-ui,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#514a3b}
 .amm-count b{color:#171b21;font-size:13px}
 .amm-count span{color:#b9af9a;margin:0 3px}
 .amm-origin{margin-left:auto;display:inline-flex;align-items:center;gap:7px;font:800 10px/1 system-ui,sans-serif;letter-spacing:.09em;text-transform:uppercase;color:#8c2f2f;text-decoration:none;border:1px solid rgba(140,47,47,.35);border-radius:999px;padding:7px 12px;background:rgba(140,47,47,.06);transition:background .18s ease,color .18s ease,border-color .18s ease}
@@ -119,7 +120,7 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
 .amm-pin:hover .amm-dot{fill:#fff}
 .amm-co rect{fill:#f5d98a}
 .amm-co text{font:900 8px/1 system-ui,sans-serif;letter-spacing:.06em;fill:#0c1015}
-.amm-legend{margin:0;display:flex;align-items:center;gap:7px;padding:7px 12px;font:700 9px/1.3 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#cdc4b0;background:rgba(4,12,20,.55)}
+.amm-legend{margin:0;display:flex;align-items:center;gap:7px;padding:7px 12px;font:700 9px/1.3 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#ece3cf;background:rgba(4,12,20,.68)}
 .amm-stations{list-style:none;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;margin:0;padding:12px 18px 0;position:relative}
 .amm-stations::before{content:"";position:absolute;left:18px;right:18px;top:17px;height:2px;background:linear-gradient(90deg,#c8963c,#e9c66c 50%,#c8963c);opacity:.45}
 .amm-stations li{display:grid;justify-items:center;gap:4px;position:relative;z-index:1}
@@ -128,10 +129,10 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
 .amm-grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;padding:10px 18px 14px}
 .amm-card{display:grid;gap:3px;padding:9px 9px 8px;border-radius:12px;text-decoration:none;color:#171b21;background:#fff;border:1px solid #e8dfcc;border-top:3px solid var(--c);transition:transform .16s ease,box-shadow .16s ease,background .16s ease}
 .amm-card:hover,.amm-card:focus-visible{transform:translateY(-2px);box-shadow:0 10px 20px rgba(31,38,48,.12);background:color-mix(in srgb,var(--c) 9%,#fff)}
-.amm-card-k{font:800 7.5px/1 system-ui,sans-serif;letter-spacing:.18em;color:#a29884}
+.amm-card-k{font:800 7.5px/1 system-ui,sans-serif;letter-spacing:.18em;color:#786f5d}
 .amm-card b{font:900 11.5px/1.02 Impact,"Arial Black",system-ui,sans-serif;letter-spacing:.01em;text-transform:uppercase;color:#111}
 .amm-card-c{font:800 15px/1 system-ui,sans-serif;color:#111;letter-spacing:-.01em}
-.amm-card-l{font:700 7.5px/1.2 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#847c6b}
+.amm-card-l{font:700 7.5px/1.2 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#5b5445}
 .amm-card .amm-bar{position:static;height:3px;margin:1px 0 1px;border-radius:3px;background:#eee6d4;overflow:hidden}
 .amm-card .amm-bar span{display:block;height:100%;background:var(--c);opacity:.95}
 .amm-card-go{font:800 8px/1 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#8c2f2f;opacity:.9}
@@ -147,14 +148,22 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
 .amm-foot a{font:800 9.5px/1 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#8c2f2f;text-decoration:none;border-bottom:1px solid transparent}
 .amm-foot a:hover{border-color:#8c2f2f}
 .amm-tags{list-style:none;display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:0;padding:0 18px 14px;position:relative;z-index:1}
-.amm-tags-k{font:800 8.5px/1 system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#a29884;margin-right:2px}
+.amm-tags-k{font:800 8.5px/1 system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#786f5d;margin-right:2px}
 .amm-tags a{display:inline-block;font:800 9.5px/1 system-ui,sans-serif;letter-spacing:.04em;text-decoration:none;color:#4a463d;background:color-mix(in srgb,#e9c66c 16%,#fff);border:1px solid color-mix(in srgb,#c8963c 40%,#e3d9c3);border-radius:999px;padding:5px 9px;transition:background .15s ease,color .15s ease}
 .amm-tags a:hover{background:#8c2f2f;color:#fff;border-color:#8c2f2f}
 .amm-w43{color:#111 !important;background:linear-gradient(135deg,#f3dfa8,#e9c66c);border-bottom:0 !important;border-radius:999px;padding:5px 9px}
 .amm-w43:hover{background:#8c2f2f;color:#fff !important}
-.amm-foot-note{margin-left:auto;font:700 9px/1 system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#a49a86}
+.amm-foot-note{margin-left:auto;font:700 9px/1 system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#83795f}
 @media(max-width:1040px){.amx-wires,.amm-stations{display:none}.amm-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.amm-homebar{grid-template-columns:1fr}}
 @media(max-width:620px){.amm-grid{grid-template-columns:repeat(2,minmax(0,1fr));padding:10px 12px 12px}.amm-count{order:3;flex-basis:100%}.amm-origin{margin-left:0}.amm-foot-note{display:none}.amm-top{padding:14px 12px 10px}.amm-route{margin:10px 12px 0}.amm-homebar{padding:0 12px 12px}}
+.amx-ring img[alt*="Zagreb"]{object-position:center 42%}
+.amx-ring img[alt*="Beograd"]{object-position:center 40%}
+.amx-ring img[alt*="Sarajevo"]{object-position:center 44%}
+.amx-ring img[alt*="Budimpešta"]{object-position:center 38%}
+.amx-ring img[alt*="Ljubljana"]{object-position:center 40%}
+.amx-ring img[alt*="Rim"]{object-position:center 36%}
+.amx-ring img[alt*="Sofija"]{object-position:center 42%}
+.amx-ring img[alt*="Bukurešt"]{object-position:center 40%}
 .amx-link:hover .amx-ring,.amx-link:focus-visible .amx-ring{transform:translateY(-3px) scale(1.03);box-shadow:0 14px 26px rgba(15,23,42,.26)}
 .amx-link:hover b{color:#d71920}
 .amx-platforms{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:10px 18px 16px}
@@ -186,7 +195,7 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
         <b>Zagreb</b>
         <span class="amx-line" style="--c:#e9c66c" aria-hidden="true"></span>
         <small>hr · Hrvatska</small>
-        <em class="amx-ago">prije 11 h</em>
+        <em class="amx-ago">prije 12 h</em>
       </a>
     </li><li class="amx-item">
       <a class="amx-link" href="https://gnk-asg.hr/kanal/beograd/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL BEOGRAD — Srbija — 353 tekstova — otvori izdanje">
@@ -202,7 +211,7 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
         <b>Sarajevo</b>
         <span class="amx-line" style="--c:#7ee0a1" aria-hidden="true"></span>
         <small>bs · Bosna i Hercegovina</small>
-        <em class="amx-ago">prije 11 h</em>
+        <em class="amx-ago">prije 12 h</em>
       </a>
     </li><li class="amx-item">
       <a class="amx-link" href="https://gnk-asg.hr/kanal/budimpesta/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL BUDAPEST — Mađarska — 360 tekstova — otvori izdanje">
@@ -210,7 +219,7 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
         <b>Budimpešta</b>
         <span class="amx-line" style="--c:#ff9f6e" aria-hidden="true"></span>
         <small>hu · Mađarska</small>
-        <em class="amx-ago">prije 12 h</em>
+        <em class="amx-ago">prije 13 h</em>
       </a>
     </li><li class="amx-item">
       <a class="amx-link" href="https://gnk-asg.hr/kanal/ljubljana/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL LJUBLJANA — Slovenija — 327 tekstova — otvori izdanje">
@@ -218,7 +227,7 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
         <b>Ljubljana</b>
         <span class="amx-line" style="--c:#c79bff" aria-hidden="true"></span>
         <small>sl · Slovenija</small>
-        <em class="amx-ago">prije 12 h</em>
+        <em class="amx-ago">prije 13 h</em>
       </a>
     </li><li class="amx-item">
       <a class="amx-link" href="https://gnk-asg.hr/kanal/rim/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL ROMA — Italija — 413 tekstova — otvori izdanje">
@@ -226,7 +235,7 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
         <b>Rim</b>
         <span class="amx-line" style="--c:#ff7d7d" aria-hidden="true"></span>
         <small>it · Italija</small>
-        <em class="amx-ago">prije 12 h</em>
+        <em class="amx-ago">prije 13 h</em>
       </a>
     </li><li class="amx-item">
       <a class="amx-link" href="https://gnk-asg.hr/kanal/sofija/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL SOFIJA — Bugarska — 313 tekstova — otvori izdanje">
@@ -234,7 +243,7 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
         <b>Sofija</b>
         <span class="amx-line" style="--c:#6fe0d6" aria-hidden="true"></span>
         <small>bg · Bugarska</small>
-        <em class="amx-ago">prije 12 h</em>
+        <em class="amx-ago">prije 13 h</em>
       </a>
     </li><li class="amx-item">
       <a class="amx-link" href="https://gnk-asg.hr/kanal/bukurest/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL BUCUREȘTI — Rumunjska — 400 tekstova — otvori izdanje">
@@ -242,7 +251,7 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
         <b>Bukurešt</b>
         <span class="amx-line" style="--c:#f2a8d0" aria-hidden="true"></span>
         <small>ro · Rumunjska</small>
-        <em class="amx-ago">prije 9 h</em>
+        <em class="amx-ago">prije 10 h</em>
       </a>
     </li></ul>
   <div class="amx-wires" aria-hidden="true"><span style="--c:#e9c66c"></span><span style="--c:#7fb2ff"></span><span style="--c:#7ee0a1"></span><span style="--c:#ff9f6e"></span><span style="--c:#c79bff"></span><span style="--c:#ff7d7d"></span><span style="--c:#6fe0d6"></span><span style="--c:#f2a8d0"></span></div>
@@ -381,6 +390,7 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
       <a href="/kanal/">Svi kanali →</a>
       <a href="/izdanja/">Sva izdanja →</a>
       <a href="/radio/">Radio →</a>
+      <a href="/top-teme/">Top teme →</a>
       <a href="/medijska-kritika/">Kritika medija →</a>
       <a class="amm-w43" href="https://gnk-asg-tjednik.pages.dev/tjednik/2026-W43/">Tjednik 2026-W43 →</a>
       <a href="/usa/">USA →</a>
