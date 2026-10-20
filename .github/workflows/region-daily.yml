@@ -85,7 +85,7 @@ jobs:
           set -euo pipefail
           git config user.name "AKTUAL MEDIA REGION"
           git config user.email "info@gnk-asg.hr"
-          git add apps/region/data apps/region/site apps/portal/kanal apps/portal/usa apps/portal/izdanja apps/portal/data/izdanja.json apps/portal/data/izdanja-sport.json apps/portal/data/nermin-sefic-gallery.json apps/portal/galerija
+          git add apps/region/data apps/region/site apps/portal/kanal apps/portal/usa apps/portal/izdanja apps/portal/gnk-aktual apps/portal/en/gnk-aktual apps/portal/data/izdanja.json apps/portal/data/izdanja-sport.json apps/portal/data/nermin-sefic-gallery.json apps/portal/galerija
           if git diff --cached --quiet; then
             echo "Nema novih zapisa — stanje je već objavljeno."
             echo "changed=false" >> "$GITHUB_OUTPUT"
