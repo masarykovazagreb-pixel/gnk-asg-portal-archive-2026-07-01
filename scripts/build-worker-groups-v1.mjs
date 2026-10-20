@@ -186,7 +186,6 @@ writeFileSync(join(dir, 'index.html'), page('hr'));
 writeFileSync(join(dir, 'en', 'index.html'), page('en'));
 
 const out = {
-  updatedAt: new Date().toISOString(),
   note: 'Groups are derived from real workflow files; worker profiles are a modeled catalogue.',
   total: TOTAL,
   groups: GROUPS.map((g) => ({ id: g.id, name: g.hr.name, nameEn: g.en.name, automations: g.files.length, files: g.files })),
