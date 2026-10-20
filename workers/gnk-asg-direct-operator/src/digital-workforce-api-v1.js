@@ -81,6 +81,13 @@ async function readAdminJson(request){
   return{body};
 }
 
+/* Provizioniranje sheme iz vlastitog D1 bindinga. Poziva se iz
+   scheduled handlera (radni proces ima ovlast na svoju bazu), nikad
+   iz javnog health upita — ugovor to izričito zabranjuje. */
+export async function ensureEditorDeskSchema(env){
+  try { return await ensureTable(env); } catch { return false; }
+}
+
 async function ensureTable(env){
   if(!env.GNK_ASG_D1)return false;
   await env.GNK_ASG_D1.prepare(`CREATE TABLE IF NOT EXISTS editor_desk_packages(id INTEGER PRIMARY KEY AUTOINCREMENT, package_date TEXT NOT NULL UNIQUE, status TEXT NOT NULL DEFAULT 'draft', public_json TEXT NOT NULL, sensitive_json TEXT NOT NULL, updated_at TEXT NOT NULL)`).run();
