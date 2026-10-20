@@ -1,0 +1,37 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import { execFileSync } from 'node:child_process';
+const read=p=>fs.readFileSync(p,'utf8');
+const html=read('apps/portal/s-chat/index.html');
+const js=read('apps/portal/assets/s-chat-v1.js');
+const css=read('apps/portal/assets/s-chat-v1.css');
+const worker=read('workers/gnk-asg-ai-assist-worker/src/index.js');
+const menu=read('apps/portal/assets/public-unified-menu-v6.js');
+for (const path of ['apps/portal/assets/s-chat-v1.js','workers/gnk-asg-ai-assist-worker/src/index.js','apps/portal/assets/public-unified-menu-v6.js']) {
+  execFileSync(process.execPath,['--check',path],{stdio:'pipe'});
+}
+assert.match(html,/<html lang="hr">/);
+assert.match(html,/<link rel="canonical" href="https:\/\/gnk-asg\.hr\/s-chat\/">/);
+assert.match(html,/Powered by <strong>GNK ASG<\/strong>/);
+assert.match(html,/Razgovor vodi umjetna inteligencija/);
+for(const id of ['schatScroll','schatMessages','schatInput','schatForm','schatHistory','schatApiStatus','schatExport','schatNew','schatDialog']) assert.ok(html.includes('id="'+id+'"'),'missing DOM hook '+id);
+assert.match(css,/\.schat-scroll\{[^}]*min-height:0;overflow-y:auto/);
+assert.match(css,/\.schat-main\{[^}]*min-height:0;overflow:hidden/);
+assert.match(css,/@media\(max-width:850px\)/);
+assert.match(js,/API='\/api\/ai-assist\/chat'/);
+assert.match(js,/localStorage/);
+assert.match(js,/navigator\.clipboard/);
+assert.match(js,/aria-live="polite"/.test(html)?/schatMessages/:/schatMessages/);
+assert.match(js,/URL\.createObjectURL/);
+assert.match(js,/\.textContent/);
+assert.doesNotMatch(js,/innerHTML\s*=/);
+assert.match(worker,/async function splusChat\(request,env\)/);
+assert.match(worker,/origin_not_allowed/);
+assert.match(worker,/payload_too_large/);
+assert.match(worker,/invalid_messages/);
+assert.match(worker,/ai_service_unavailable/);
+assert.match(worker,/AI-generated response/);
+assert.match(worker,/if\(new URL\(request\.url\)\.pathname==="\/api\/ai-assist\/chat"\)/);
+assert.match(menu,/\/s-chat\//);
+assert.match(menu,/gnk-splus-home-button/);
+console.log('PASS S+Chat standalone UI, scroll, privacy, Worker AI contract, nav and JS syntax');
