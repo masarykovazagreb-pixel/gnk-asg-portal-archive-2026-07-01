@@ -21,6 +21,8 @@ assert.match(html,/id="stop"/);
 assert.match(html,/id="exportChat"/);
 assert.match(html,/id="exportChatMobile"/);
 assert.match(html,/Svaki odgovor koristi samo trenutačno pitanje/);
+assert.match(html,/s-chat-v1\.js\?v=20261020-stop-export-v2/);
+assert.match(html,/s-chat-v1\.css\?v=20261020-stop-export-v2/);
 assert.match(html,/rel="canonical" href="https:\/\/gnk-asg\.hr\/s-chat\/"/);
 assert.match(css,/\.chat-scroll\{[^}]*min-height:0;overflow-y:auto/);
 assert.match(css,/\.conversation\{[^}]*min-height:0/);
