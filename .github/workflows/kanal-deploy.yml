@@ -7,8 +7,10 @@ name: kanal-deploy
 # Ne dira portal gnk-asg.hr ni Cloudflare Workere.
 
 on:
+  # Samo main: sadržaj s razvojne grane ne smije završiti na produkcijskoj
+  # adresi. Grane se testiraju buildom, ne objavom.
   push:
-    branches: [main, 'arena/**']
+    branches: [main]
     paths:
       - 'apps/kanal/**'
       - '.github/workflows/kanal-deploy.yml'
@@ -69,6 +71,12 @@ jobs:
         if: steps.cf.outputs.ready == 'true'
         shell: bash
         run: |
+          # Dvije automatizacije objavljuju isti Pages projekt (ovaj workflow i
+          # kanal-daily). Ako bi svaka objavila svoj snimak, starija bi mogla
+          # pregaziti noviju i dnevni desk bi nestao s javne adrese. Zato se
+          # uvijek gradi iz vrha main, ne iz snimka koji je pokrenuo run.
+          git fetch origin main --no-tags
+          git reset --hard origin/main
           BASE="https://gnk-asg-kanal.pages.dev/"
           echo "KANAL_BASE=$BASE" >> "$GITHUB_ENV"
           node apps/kanal/build.mjs --base "$BASE"
@@ -94,6 +102,40 @@ jobs:
             --project-name=gnk-asg-kanal \
             --branch=main \
             --commit-dirty=true
+
+      - name: Provjeri da je dnevni desk i dalje javan
+        if: steps.cf.outputs.ready == 'true'
+        shell: bash
+        run: |
+          set -uo pipefail
+          DATE=$(TZ=Europe/Zagreb date +%F)
+          # Ako lokalni build ima današnji desk, javna adresa ga mora potvrditi.
+          # Time se hvata slučaj da deploy pregazi svježiji snimak.
+          EXPECT=$(node -e '
+            const f=require("./apps/kanal/site/feed.json");
+            const d=process.argv[1];
+            console.log(f.items.filter(i=>String(i.date_published).startsWith(d)&&String(i.url).includes("/dnevnik-"+d+"-")).length);
+          ' "$DATE")
+          if [ "${EXPECT:-0}" -ne 10 ]; then
+            echo "Lokalni build nema 10 desk objava za $DATE — provjera se preskače."
+            exit 0
+          fi
+          for i in $(seq 1 24); do
+            if curl -fsS "https://gnk-asg-kanal.pages.dev/feed.json?v=$(date +%s)-$i" -o /tmp/feed-public.json 2>/dev/null; then
+              GOT=$(node -e '
+                const f=require("/tmp/feed-public.json");
+                const d=process.argv[1];
+                console.log(f.items.filter(i=>String(i.date_published).startsWith(d)&&String(i.url).includes("/dnevnik-"+d+"-")).length);
+              ' "$DATE")
+              echo "Javni feed: $GOT/10 desk objava za $DATE (pokušaj $i/24)."
+              if [ "$GOT" -eq 10 ]; then exit 0; fi
+            else
+              echo "::warning::Javni feed nije dostupan (curl greška) — pokušaj $i/24."
+            fi
+            sleep 10
+          done
+          echo "::error::Javni feed ne potvrđuje 10 desk objava za $DATE nakon 4 minute."
+          exit 1
 
       - name: Sažetak
         if: steps.cf.outputs.ready == 'true'
