@@ -1,0 +1,43 @@
+{
+  "title": "GNK ASG S+Chat public conversational AI",
+  "date": "2026-10-20",
+  "owner": "GNK ASG d.o.o. — digital services and editorial operations",
+  "source": "workers/gnk-asg-ai-assist-worker/src/index.js",
+  "aiGovernance": {
+    "usedAI": true,
+    "role": "both",
+    "purpose": "Public conversational AI assistant for general questions, writing help and information; not automated high-stakes decisions",
+    "prohibitedUseScreenPassed": true,
+    "prohibitedUse": false,
+    "privacyAndRightsReviewed": true,
+    "riskClassification": "not-high-risk",
+    "publicInterest": true,
+    "generatesOrAltersText": true,
+    "deepfake": false,
+    "directAiInteraction": true,
+    "chatbotIdentifiedAsAI": true,
+    "generatesSyntheticMedia": true,
+    "machineReadableProvenanceReviewed": true,
+    "disclosure": {
+      "visible": true,
+      "text": "Razgovor vodi umjetna inteligencija. Odgovori mogu biti pogrešni."
+    },
+    "aiLiteracyMeasuresReviewed": true,
+    "humanEditorialReview": {
+      "substantive": false,
+      "reviewer": null,
+      "approvedAt": null,
+      "editorialResponsibilityAccepted": false
+    }
+  },
+  "technicalControls": {
+    "userMessageMaxCharacters": 5000,
+    "conversationTotalMaxCharacters": 12000,
+    "maxMessages": 12,
+    "serverSideModelAccess": true,
+    "userSuppliedSystemPromptAllowed": false,
+    "rateLimit": "Cloudflare Workers native rate limit binding required; 5 requests per 60 seconds per edge/IP",
+    "dataStorage": "Conversation history is stored in browser localStorage; model inference receives bounded history; no database or private-system permissions."
+  },
+  "notes": "This record is an internal documented risk review, not a legal certification, substantive human review, deployment authorization or verified WAF protection."
+}
