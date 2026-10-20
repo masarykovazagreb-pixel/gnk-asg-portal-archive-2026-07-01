@@ -7,7 +7,8 @@ name: Auto deploy main
 #
 # Ograde:
 #   - GNK_ASG_RELEASE_FENCE=true zaustavlja sve.
-#   - Crvena ili nedovršena provjera = nema objave (hard stop).
+#   - Crvena provjera = nema objave. Nedovršena provjera = čeka se sljedeći ciklus.
+#   - Ako se stanje provjera ne može pročitati, ne objavljuje se (fail-closed).
 #   - Deploy se šalje samo za točan trenutni SHA; ako se main promijeni,
 #     pokušava ponovno s novim SHA-om (do 3 pokušaja).
 #   - Deploy sam drži concurrency grupu gnk-asg-main-mutation; ovaj workflow
@@ -40,62 +41,86 @@ jobs:
     steps:
       - name: Stanje main grane, provjere i zadnja objava
         id: state
+        shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          set -euo pipefail
-          current=$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)
-          last=$(gh run list --workflow deploy-admin-auth-v6.yml --branch main --limit 30 \
-            --json headSha,conclusion \
-            --jq '[.[] | select(.conclusion=="success")][0].headSha // ""')
-          echo "main=$current" >> "$GITHUB_OUTPUT"
-          echo "last_success=$last" >> "$GITHUB_OUTPUT"
-          echo "SHA na main: $current"
-          echo "Zadnja uspješna objava: ${last:-nema}"
+          set -uo pipefail
+          echo "gh $(gh --version | head -1)"
 
-          if [ "$last" = "$current" ]; then
-            echo "already_deployed=true" >> "$GITHUB_OUTPUT"
+          current=$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha) || {
+            echo "::error::Ne mogu pročitati SHA main grane."
+            exit 1
+          }
+          echo "main=$current"
+          echo "main=$current" >> "$GITHUB_OUTPUT"
+
+          last=$(
+            gh run list --workflow deploy-admin-auth-v6.yml --branch main --limit 30 \
+              --json headSha,conclusion \
+              --jq '[.[] | select(.conclusion=="success")][0].headSha // ""' 2>/dev/null
+          ) || last=""
+          last=$(printf '%s' "$last" | tr -d '\r\n')
+          echo "last_success=$last"
+          echo "last_success=$last" >> "$GITHUB_OUTPUT"
+
+          if [ -n "$last" ] && [ "$last" = "$current" ]; then
+            echo "Već objavljeno — preskačem."
             echo "gate=done" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          echo "already_deployed=false" >> "$GITHUB_OUTPUT"
 
-          # Provjere za točno taj SHA.
-          states=$(gh api "repos/$GITHUB_REPOSITORY/commits/$current/check-runs" \
-            --jq '[.check_runs[] | "\(.status)/\(.conclusion // "-")"] | join("|")')
+          states=$(
+            gh api "repos/$GITHUB_REPOSITORY/commits/$current/check-runs?per_page=100" \
+              --jq '[.check_runs[] | "\(.status)/\(.conclusion // "-")"] | join("|")' 2>/dev/null
+          ) || states=""
+          echo "checks: ${states:-<nedostupno>}"
 
-          if printf '%s' "$states" | grep -Eq '/(in_progress|queued|waiting|requested|pending)/'; then
-            echo "gate=waiting"
+          if [ -z "$states" ]; then
+            # Fail-closed: bez uvida u provjere ne objavljujemo.
+            echo "gate=unknown" >> "$GITHUB_OUTPUT"
+            echo "::warning::Stanje provjera nije dostupno za $current — ne objavljujem."
+            exit 0
+          fi
+
+          if grep -Eq '/(in_progress|queued|waiting|requested|pending)(\||$)' <<<"$states"; then
+            echo "gate=waiting" >> "$GITHUB_OUTPUT"
             echo "::notice::Provjere još traju — čekam sljedeći ciklus."
             exit 0
           fi
-          if printf '%s' "$states" | grep -Eq '/(failure|timed_out|cancelled|action_required|startup_failure)/'; then
-            echo "gate=red"
+
+          if grep -Eq '/(failure|timed_out|cancelled|action_required|startup_failure)(\||$)' <<<"$states"; then
+            echo "gate=red" >> "$GITHUB_OUTPUT"
             echo "::error::Postoje crvene provjere za $current — objava je zaustavljena."
             exit 0
           fi
 
-          read -r readiness <<<"$(gh run list --workflow site-functional-readiness.yml \
-            --commit "$current" --limit 10 --json status,conclusion \
-            --jq '[.[] | "\(.status):\(.conclusion // "-")"] | join(" ")' || true)"
-          if [ -n "${readiness:-}" ] && ! printf '%s' "$readiness" | grep -q ':success'; then
-            echo "gate=no-readiness"
+          readiness=$(
+            gh run list --workflow site-functional-readiness.yml --commit "$current" --limit 10 \
+              --json status,conclusion \
+              --jq '[.[] | select(.status=="completed") | .conclusion] | join(",")' 2>/dev/null
+          ) || readiness=""
+          echo "readiness: ${readiness:-<nema>}"
+
+          if [ -n "$readiness" ] && ! grep -q 'success' <<<"$readiness"; then
+            echo "gate=no-readiness" >> "$GITHUB_OUTPUT"
             echo "::notice::Site Functional Readiness nije zelen za $current — čekam."
             exit 0
           fi
 
-          echo "gate=ready"
+          echo "gate=ready" >> "$GITHUB_OUTPUT"
 
       - name: Objavi trenutni main (do tri pokušaja)
         if: steps.state.outputs.gate == 'ready'
+        shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          set -euo pipefail
+          set -uo pipefail
 
           latest_id() {
             gh run list --workflow deploy-admin-auth-v6.yml --branch main --limit 1 \
-              --json databaseId --jq '.[0].databaseId // 0'
+              --json databaseId --jq '.[0].databaseId // 0' 2>/dev/null || echo 0
           }
 
           watch_run() {
@@ -104,7 +129,7 @@ jobs:
               sleep 15
               read -r status conclusion <<<"$(gh run view "$id" \
                 --json status,conclusion \
-                --jq '"\(.status) \(.conclusion // "")"')" || continue
+                --jq '"\(.status) \(.conclusion // "")"' 2>/dev/null)" || continue
               if [ "$status" = "completed" ]; then
                 echo "$conclusion"
                 return 0
