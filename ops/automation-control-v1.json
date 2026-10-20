@@ -187,6 +187,17 @@
       "channelKillSwitch": "regionPublish",
       "editorialStatus": "auto-critique",
       "registeredAt": "2026-10-19T18:30:00+02:00"
+    },
+    {
+      "job": "Objavljivanje — autonomni deploy nakon zelenih provjera",
+      "workflow": ".github/workflows/auto-deploy-main-v1.yml",
+      "frequency": "12/day + odmah nakon zelenog Site Functional Readiness",
+      "cron": "37 0,2,4,6,8,10,12,14,16,18,20,22 * * * (Europe/Zagreb)",
+      "budgetMinutesPerRunEstimate": 2,
+      "dispatches": ".github/workflows/deploy-admin-auth-v6.yml",
+      "releaseFence": "GNK_ASG_RELEASE_FENCE",
+      "editorialStatus": "deploy-only",
+      "registeredAt": "2026-10-20T10:00:00+02:00"
     }
   ],
   "resourceOwnership": {
