@@ -132,5 +132,23 @@ jobs:
             -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
             -f approved_sha="$APPROVED_SHA"
 
+      # Ako regionalna izdanja (osam gradova) nisu svježa, pokreni njihov ciklus.
+      # Ne piše sadržaj sam — samo poziva vlasnika posla, koji ima svoj fence.
+      - name: Pokreni regionalni ciklus ako su izdanja zastarjela
+        if: steps.control.outputs.should_run == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -uo pipefail
+          out=$(node scripts/check-aktual-freshness.mjs --max-age 5)
+          echo "$out" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const r=JSON.parse(s);console.log('News:',r.news.ageHours+'h','Kanali zastarjeli:',r.staleChannels.join(',')||'—')})"
+          if echo "$out" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>process.exit(JSON.parse(s).anyStale?0:1))"; then
+            echo "Regionalna izdanja su zastarjela — pokrećem REGION ciklus."
+            gh workflow run region-daily.yml --repo "$GITHUB_REPOSITORY" --ref main || \
+              echo "::warning::REGION ciklus nije bilo moguće pokrenuti (dozvole)."
+          else
+            echo "Svi izvori su unutar praga od 5 h."
+          fi
+
 # P0 2026-09-16: retrigger canonical producer after stale-output incident; no parallel fallback writer.
 # 2026-10-05: canonical input-path retrigger also provides safe post-race recovery on current main.
