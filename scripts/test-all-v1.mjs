@@ -32,9 +32,7 @@ const GATES = [
   { name: 'Top teme dana', cmd: ['node', 'scripts/audit-top-teme-v1.mjs'], required: true },
   { name: 'Javni portal', cmd: ['node', 'scripts/audit-public-portal-v1.mjs'], required: true, slow: true },
   { name: 'AKTUAL MEDIA — sve stranice', cmd: ['node', 'scripts/audit-aktual-all-pages-v2.mjs'], required: true, slow: true },
-  // Otvoreno poznat dug: WebSite JSON-LD na generiranim stranicama.
-  // Ne skriva se, ali ne blokira dok se generatore ne uskladi.
-  { name: 'WebSite JSON-LD (savjet)', cmd: ['node', 'scripts/test-website-jsonld-v1.mjs'], required: false },
+  { name: 'WebSite JSON-LD', cmd: ['node', 'scripts/test-website-jsonld-v1.mjs'], required: true },
 ];
 
 function run(gate) {

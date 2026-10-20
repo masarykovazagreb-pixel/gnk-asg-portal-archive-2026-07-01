@@ -28,6 +28,9 @@ const ENV = { generated: new Date().toISOString(), base: BASE };
 /* ---------- pomoćnici ---------- */
 const esc = (s = '') => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const abs = (p = '') => BASE + String(p).replace(/^\/+/, '');
+/* Kanonski entiteti žive na glavnoj domeni, ne na zrcalnoj domeni kanala. */
+const ORG_ID = 'https://gnk-asg.hr/#gnk-asg';
+const WEBSITE_ID = 'https://gnk-asg.hr/#website';
 const rootFor = (p = '') => {
   const clean = String(p).replace(/^\/+|\/+$/g, '');
   const depth = clean === '' ? 0 : clean.split('/').length;
@@ -72,8 +75,8 @@ for (const a of [...ARTICLES, ...PAGES]) {
 /* ---------- oznake / SEO ---------- */
 const org = {
   '@type': 'Organization',
-  '@id': abs('#organizacija'),
-  name: SITE.publisher.name,
+  '@id': ORG_ID,
+  name: 'GNK ASG d.o.o.',
   legalName: SITE.publisher.legalName,
   url: SITE.publisher.url,
   logo: { '@type': 'ImageObject', url: abs('assets/logo-gnk-asg-gold.svg'), width: 512, height: 512 },
@@ -88,21 +91,20 @@ const person = {
   jobTitle: SITE.author.role,
   url: SITE.author.url,
   image: abs('assets/nermin-sefic-portrait.webp'),
-  worksFor: { '@id': abs('#organizacija') },
+  worksFor: { '@id': ORG_ID },
   sameAs: [SITE.author.url, SITE.author.linkedin, SITE.publisher.url, 'https://gnk-asg.hr/gnk-aktual/'],
   knowsAbout: ['financije', 'revizija', 'korporativno upravljanje', 'umjetna inteligencija', 'izvoz softvera', 'tržišna analiza']
 };
-const workerAuthor = { '@type': 'Organization', '@id': abs('#worker'), name: 'Worker', description: 'AI urednički sustav GNK ASG KANAL', parentOrganization: { '@id': abs('#organizacija') } };
+const workerAuthor = { '@type': 'Organization', '@id': abs('#worker'), name: 'Worker', description: 'AI urednički sustav AKTUAL MEDIA KANAL', parentOrganization: { '@id': ORG_ID } };
 const website = {
   '@type': 'WebSite',
-  '@id': abs('#web-site'),
-  url: BASE,
-  name: SITE.brandFull,
-  alternateName: [SITE.brand, 'GNK ASG kanal'],
+  '@id': WEBSITE_ID,
+  url: 'https://gnk-asg.hr/',
+  name: 'GNK ASG',
+  alternateName: [SITE.brand, SITE.brandFull],
   description: SITE.description,
-  inLanguage: 'hr-HR',
-  publisher: { '@id': abs('#organizacija') },
-  about: [{ '@id': abs('#organizacija') }, { '@id': abs('#nermin-sefic') }]
+  inLanguage: ['hr', 'en'],
+  publisher: { '@id': ORG_ID }
 };
 
 /* ---------- HTML layout ---------- */
@@ -118,7 +120,7 @@ function head({ title, description, canonical, root, og, ogAlt, type = 'website'
     {
       '@type': type === 'article' || type === 'news' ? 'NewsArticle' : 'WebPage',
       '@id': pageUrl + '#clanak',
-      isPartOf: { '@id': abs('#web-site') },
+      isPartOf: { '@id': WEBSITE_ID },
       mainEntityOfPage: pageUrl,
       headline: title,
       name: title,
@@ -128,7 +130,7 @@ function head({ title, description, canonical, root, og, ogAlt, type = 'website'
       image: [{ '@type': 'ImageObject', url: image, width: 1200, height: 630 }],
       author: { '@id': authorId },
       editor: { '@id': authorId },
-      publisher: { '@id': abs('#organizacija') },
+      publisher: { '@id': ORG_ID },
       ...(published ? { datePublished: isoDate(published), dateModified: isoDate(modified || published) } : {}),
       ...(section ? { articleSection: section } : {}),
       ...(tags.length ? { keywords: tags.join(', ') } : {}),
@@ -274,7 +276,7 @@ ${footer(root)}
 /* ---------- dijelovi ---------- */
 const isDesk = (a) => a.kind === 'desk';
 const authorOf = (a) => a.author === 'Worker' ? { name: 'Worker', url: abs('dnevnik/'), id: abs('#worker') } : isDesk(a)
-  ? { name: 'GNK ASG KANAL · Dnevni desk', url: abs('dnevnik/'), id: abs('#organizacija') }
+  ? { name: 'GNK ASG KANAL · Dnevni desk', url: abs('dnevnik/'), id: ORG_ID }
   : { name: 'Nermin Sefić', url: SITE.author.url, id: abs('#nermin-sefic') };
 const statusOf = (a) => a.author === 'Worker' ? { label: 'Worker · AI autor', full: 'Autor: Worker · AI pripremljen informativni tekst, s navedenim javnim izvorima' } : isDesk(a)
   ? { label: 'Automatski sastavljeno', full: 'Automatski sastavljeno iz strukturiranih podataka · nije pojedinačno urednički pregledano' }

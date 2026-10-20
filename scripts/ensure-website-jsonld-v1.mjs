@@ -78,36 +78,50 @@ function normalizeWebsiteNode(node) {
   return node;
 }
 
+const DROP = Symbol('drop');
+
+/* Jedna stranica = jedan WebSite entitet. Kad generator ili starija
+   objava ostave drugi (ili treći) WebSite u grafu, ovdje se uklanja —
+   nikad se ne mijenja sadržaj stranice, samo JSON-LD. */
 function updateWebsiteJsonLd(html) {
-  let foundWebsite = false;
-  let normalizedWebsite = false;
+  const state = { kept: false, removed: 0, normalized: false };
+
+  function clean(value) {
+    if (Array.isArray(value)) {
+      return value.map((child) => clean(child)).filter((child) => child !== DROP);
+    }
+    if (!value || typeof value !== 'object') return value;
+    const typeList = Array.isArray(value['@type']) ? value['@type'] : [value['@type']];
+    if (typeList.includes('WebSite')) {
+      if (state.kept) return DROP;
+      state.kept = true;
+      const before = JSON.stringify(value);
+      normalizeWebsiteNode(value);
+      if (JSON.stringify(value) !== before) state.normalized = true;
+      return value;
+    }
+    for (const key of Object.keys(value)) {
+      const cleaned = clean(value[key]);
+      if (cleaned === DROP) delete value[key];
+      else value[key] = cleaned;
+    }
+    return value;
+  }
+
   const updated = html.replace(
     /<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi,
     (block, raw) => {
       let schema;
       try { schema = JSON.parse(raw); } catch { return block; }
-      let localFound = false;
-      const visit = (value) => {
-        if (Array.isArray(value)) return value.map(visit);
-        if (!value || typeof value !== 'object') return value;
-        const typeList = Array.isArray(value['@type']) ? value['@type'] : [value['@type']];
-        if (typeList.includes('WebSite')) {
-          localFound = true;
-          const before = JSON.stringify(value);
-          normalizeWebsiteNode(value);
-          if (JSON.stringify(value) !== before) normalizedWebsite = true;
-        }
-        for (const [key, child] of Object.entries(value)) value[key] = visit(child);
-        return value;
-      };
-      schema = visit(schema);
-      if (!localFound) return block;
-      foundWebsite = true;
-      return `<script type="application/ld+json">${JSON.stringify(schema).replace(/</g, '\\u003c')}</script>`;
+      const before = JSON.stringify(schema);
+      const cleaned = clean(schema);
+      if (cleaned === DROP) return '';
+      if (JSON.stringify(cleaned) === before) return block;
+      return `<script type="application/ld+json">${JSON.stringify(cleaned).replace(/</g, '\\u003c')}</script>`;
     },
   );
 
-  if (foundWebsite) return { html: updated, added: false, normalized: normalizedWebsite };
+  if (state.kept) return { html: updated, added: false, normalized: state.normalized };
   const tag = `<script type="application/ld+json">${JSON.stringify(websiteNode()).replace(/</g, '\\u003c')}</script>`;
   const withNode = /<\/head>/i.test(updated)
     ? updated.replace(/<\/head>/i, (closingTag) => `${tag}${closingTag}`)
