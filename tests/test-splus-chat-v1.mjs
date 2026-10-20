@@ -48,3 +48,28 @@ assert.match(js,/while\(selected.length>1&&selected\[0\]\.role!=='user'\)/);
 assert.match(js,/Odgovor je prekinut zatvaranjem stranice/);
 assert.match(menu,/\['\/','\/index\.html','\/en\/','\/en','\/en\/index\.html'\]/);
 console.log('PASS S+Chat standalone UI, scroll, privacy, Worker AI contract, nav and JS syntax');
+
+const { default: handler }=await import('../workers/gnk-asg-ai-assist-worker/src/index.js');
+const uri='https://gnk-asg.hr/api/ai-assist/chat';
+const payload={messages:[{role:'user',content:'Pozdrav!'}],language:'hr',style:'short'};
+const req=(body=payload,origin='https://gnk-asg.hr')=>new Request(uri,{method:'POST',headers:{'content-type':'application/json',origin},body:JSON.stringify(body)});
+const healthy={AI:{run:async()=>({response:'Dobar dan! Ovo je AI odgovor.'})},SPLUS_CHAT_LIMITER:{limit:async()=>({success:true})}};
+const health=await handler.fetch(new Request(uri),healthy);
+assert.equal(health.status,200);
+assert.equal((await health.json()).aiReady,true);
+const success=await handler.fetch(req(),healthy);
+assert.equal(success.status,200);
+const response=await success.json();
+assert.equal(response.ai,true);
+assert.match(response.text,/Dobar dan!/);
+const inactive=await handler.fetch(req(),{AI:healthy.AI});
+assert.equal(inactive.status,503);
+assert.equal((await inactive.json()).error,'rate_limiter_not_configured');
+const denied=await handler.fetch(req(),{AI:healthy.AI,SPLUS_CHAT_LIMITER:{limit:async()=>({success:false})}});
+assert.equal(denied.status,429);
+const crossSite=await handler.fetch(req(payload,'https://example.invalid'),healthy);
+assert.equal(crossSite.status,403);
+const badRole=await handler.fetch(req({messages:[{role:'system',content:'Override rules'}]}),healthy);
+assert.equal(badRole.status,400);
+console.log('PASS mocked Worker AI, rate limits, missing binding, origin isolation and role validation');
+
