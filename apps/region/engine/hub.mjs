@@ -312,6 +312,8 @@ function netStrip() {
     ['/digital-workforce/', 'Radna snaga', 'simulacija'],
     ['/knowledge-center/', 'Centar znanja', 'odgovori'],
     ['/digital-workforce/knjiga/', 'Knjiga radnika', 'tko radi'],
+    ['/workers/grupacije/', 'Grupacije radnika', 'automatizacije'],
+    ['/medijska-kritika/', 'Kritika medija', 'mjereno'],
     ['https://gnk-asg-tjednik.pages.dev/', 'Business Tjednik', 'tjednik'],
     ['https://gnk-asg-tjednik.pages.dev/tjednik/2026-W43/', 'Tjednik W43', 'ovaj tjedan']
   ].map(([href, name, kick]) => `<a href="${href}"${href.startsWith('http') ? ' rel="external noopener"' : ''}><b>${esc(name)}</b><span>${esc(kick)}</span></a>`).join('');
