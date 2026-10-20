@@ -318,7 +318,9 @@ jobs:
             echo "::warning::Cloudflare secrets nisu dostupni — D1 provizioniranje preskočeno."
             exit 0
           fi
+          cd workers/gnk-asg-direct-operator
           npx --yes wrangler@4 d1 execute gnk_asg_operator_logs --remote -y \
+            --config wrangler.workforce-production-no-routes.toml \
             --command "CREATE TABLE IF NOT EXISTS editor_desk_packages(id INTEGER PRIMARY KEY AUTOINCREMENT, package_date TEXT NOT NULL UNIQUE, status TEXT NOT NULL DEFAULT 'draft', public_json TEXT NOT NULL, sensitive_json TEXT NOT NULL, updated_at TEXT NOT NULL)" \
             || echo "::warning::D1 provizioniranje nije prošlo (token bez D1 ovlasti?) — health će ostati degraded dok se tablica ne stvori."
 
