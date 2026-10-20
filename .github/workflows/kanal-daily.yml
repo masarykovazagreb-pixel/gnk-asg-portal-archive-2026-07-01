@@ -36,7 +36,7 @@ jobs:
   daily:
     if: vars.GNK_ASG_RELEASE_FENCE != 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     env:
       KANAL_BASE: https://gnk-asg-kanal.pages.dev/
       TZ: Europe/Zagreb
@@ -180,24 +180,38 @@ jobs:
         if: steps.commit.outputs.changed == 'true'
         shell: bash
         run: |
-          set -euo pipefail
+          set -uo pipefail
           DATE="${{ steps.izdanje.outputs.date }}"
-          # Propagacija zna potrajati; provjera ide do 5 minuta i zaobilazi keš.
-          for i in $(seq 1 30); do
-            if curl -fsS "https://gnk-asg-kanal.pages.dev/feed.json?v=$(date +%s)-$i" -o /tmp/feed.json; then
-              if node -e '
-                const f=require("/tmp/feed.json");
-                const d=process.argv[1];
-                const n=f.items.filter(i=>String(i.date_published).startsWith(d)&&String(i.url).includes('/dnevnik-'+d+'-')).length;
-                process.exit(n===10?0:1);
-              ' "$DATE"; then
-                echo "Smoke test OK: 10 objava za $DATE je javno."
-                exit 0
+          count_public() {
+            curl -fsS "https://gnk-asg-kanal.pages.dev/feed.json?v=$(date +%s)-$1" -o /tmp/feed.json 2>/dev/null || return 1
+            node -e '
+              const f=require("/tmp/feed.json");
+              const d=process.argv[1];
+              console.log(f.items.filter(i=>String(i.date_published).startsWith(d)&&String(i.url).includes("/dnevnik-"+d+"-")).length);
+            ' "$DATE"
+          }
+          wait_for_edition() {
+            local from=$1 to=$2
+            for i in $(seq "$from" "$to"); do
+              if GOT=$(count_public "$i"); then
+                echo "Javni feed: $GOT/10 objava za $DATE (pokušaj $i/$to)."
+                if [ "$GOT" -eq 10 ]; then return 0; fi
+              else
+                echo "::warning::Javni feed nije dostupan (curl greška) — pokušaj $i/$to."
               fi
-            fi
-            echo "Čekam propagaciju ($i/30)..."
-            sleep 10
-          done
+              sleep 10
+            done
+            return 1
+          }
+          # Propagacija zna potrajati; provjera zaobilazi keš.
+          if wait_for_edition 1 36; then echo "Smoke test OK: 10 objava za $DATE je javno."; exit 0; fi
+          # Samoizdravljenje: ako prva objava nije potvrđena, objavljuje se
+          # isti izgrađeni snapshot još jednom, pa se čeka još 3 minute.
+          echo "::warning::Prva objava nije potvrđena — ponavljam objavu istog snapshota."
+          npx --yes wrangler@4 pages deploy apps/kanal/site \
+            --project-name=gnk-asg-kanal --branch=main --commit-dirty=true \
+            || echo "::warning::Ponovni deploy nije prošao."
+          if wait_for_edition 37 54; then echo "Smoke test OK nakon ponovne objave."; exit 0; fi
           echo "::error::Javni feed ne potvrđuje 10 objava za $DATE."
           exit 1
 

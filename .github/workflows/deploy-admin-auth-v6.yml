@@ -302,6 +302,26 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy --config wrangler.runtime.toml --name gnk-asg-mail-center-worker --keep-vars
 
+      # Editor Desk sprema pakete u D1. Tablica se stvara na zahtjev iz
+      # admin rute, ali javni health je ne smije stvarati (ugovor to
+      # izričito zabranjuje), pa je ovdje idempotentno provizioniranje.
+      # Ako token nema D1 ovlasti, deploy se ne ruši — samo se upozori.
+      - name: Provision Editor Desk schema (idempotent)
+        continue-on-error: true
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -uo pipefail
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ] || [ -z "${CLOUDFLARE_ACCOUNT_ID:-}" ]; then
+            echo "::warning::Cloudflare secrets nisu dostupni — D1 provizioniranje preskočeno."
+            exit 0
+          fi
+          npx --yes wrangler@4 d1 execute gnk_asg_operator_logs --remote -y \
+            --command "CREATE TABLE IF NOT EXISTS editor_desk_packages(id INTEGER PRIMARY KEY AUTOINCREMENT, package_date TEXT NOT NULL UNIQUE, status TEXT NOT NULL DEFAULT 'draft', public_json TEXT NOT NULL, sensitive_json TEXT NOT NULL, updated_at TEXT NOT NULL)" \
+            || echo "::warning::D1 provizioniranje nije prošlo (token bez D1 ovlasti?) — health će ostati degraded dok se tablica ne stvori."
+
       - name: Verify exact production release (with retry for automation-commit races)
         shell: bash
         run: |

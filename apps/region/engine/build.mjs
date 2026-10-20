@@ -290,8 +290,8 @@ function shell(channel, strings, { title, description, path, keywords = [], json
     '@context': 'https://schema.org',
     '@graph': [
       {
-        '@type': 'NewsMediaOrganization', '@id': `${PUBLIC}/#organizacija`,
-        name: 'AKTUAL MEDIA d.o.o.', alternateName: ['AKTUAL MEDIA', 'AKTUAL MEDIA KANAL'],
+        '@type': 'NewsMediaOrganization', '@id': `${PUBLIC}/#gnk-asg`,
+        name: 'GNK ASG d.o.o.', alternateName: ['AKTUAL MEDIA', 'AKTUAL MEDIA KANAL', 'GNK ASG'],
         url: `${PUBLIC}/`, email: CONTACT,
         logo: { '@type': 'ImageObject', url: `${PUBLIC}/assets/gnk-asg-social-card.png` },
         parentOrganization: { '@type': 'Organization', name: 'GNK ASG d.o.o.', url: `${PUBLIC}/` },
@@ -305,13 +305,13 @@ function shell(channel, strings, { title, description, path, keywords = [], json
         name: 'Nermin Sefić',
         jobTitle: 'Urednik i direktor',
         url: `${PUBLIC}/nermin-sefic/`,
-        worksFor: { '@id': `${PUBLIC}/#organizacija` },
+        worksFor: { '@id': `${PUBLIC}/#gnk-asg` },
         subjectOf: { '@type': 'ItemList', url: `${PUBLIC}/autorske-objave/` }
       },
       {
-        '@type': 'WebSite', '@id': `${channel.base}#website`,
-        url: channel.base, name: channel.title, inLanguage: channel.lang,
-        publisher: { '@id': `${PUBLIC}/#organizacija` }
+        '@type': 'WebSite', '@id': `${PUBLIC}/#website`,
+        url: `${PUBLIC}/`, name: 'GNK ASG', inLanguage: ['hr', 'en'],
+        publisher: { '@id': `${PUBLIC}/#gnk-asg` }
       },
       {
         '@type': 'BreadcrumbList',
@@ -322,7 +322,7 @@ function shell(channel, strings, { title, description, path, keywords = [], json
           ...(path ? [{ '@type': 'ListItem', position: 4, name: title, item: canonical }] : [])
         ]
       },
-      ...jsonld
+      ...jsonld.filter((node) => !(Array.isArray(node['@type']) ? node['@type'] : [node['@type']]).includes('WebSite'))
     ]
   };
   const ld = `<script type="application/ld+json">${safeJson(graph)}</script>`;
@@ -543,18 +543,9 @@ function homePage(channel, strings, data) {
 </main>
 ${footer(channel, strings)}`;
 
+  /* WebSite i Organization već nosi shell graf. Ovdje ostaje samo
+     sadržaj specifičan za stranicu — bez drugog entiteta iste vrste. */
   const jsonld = [
-    {
-      '@context': 'https://schema.org', '@type': 'WebSite',
-      '@id': `${channel.base}#website`, url: channel.base, name: channel.title,
-      inLanguage: channel.lang, publisher: { '@id': `${channel.base}#organizacija` }
-    },
-    {
-      '@context': 'https://schema.org', '@type': 'NewsMediaOrganization',
-      '@id': `${channel.base}#organizacija`, name: 'AKTUAL MEDIA d.o.o.',
-      url: HUB, email: CONTACT, parentOrganization: { '@type': 'Organization', name: 'GNK ASG d.o.o.', url: 'https://gnk-asg.hr/' },
-      editor: { '@type': 'Person', name: 'Nermin Sefić', url: 'https://gnk-asg.hr/nermin-sefic/' }
-    },
     {
       '@context': 'https://schema.org', '@type': 'ItemList',
       name: `${channel.title} — ${strings.latest}`, numberOfItems: items.length,

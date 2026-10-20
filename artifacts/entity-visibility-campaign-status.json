@@ -1,0 +1,172 @@
+{
+  "version": "GNK_ASG_ENTITY_VISIBILITY_CAMPAIGN_STATUS_V3_30_DAY_ORCHESTRATED_EDITORIAL_LED",
+  "generatedAt": "2026-10-20T14:28:21.519Z",
+  "phase": "active",
+  "campaignDays": 30,
+  "activeDailyBrief": {
+    "day": 17,
+    "date": "2026-10-20",
+    "title": "Odgovorna inovacija: ambicija uz mjerljivu provedbu",
+    "status": "editorial-brief-ready",
+    "fullPublicationRequiresEditorialApproval": true
+  },
+  "completedFoundation": true,
+  "orchestration": {
+    "lanes": [
+      {
+        "id": "source-ledger",
+        "mode": "human-review-required",
+        "owner": "Nermin Sefić"
+      },
+      {
+        "id": "editorial-quality",
+        "mode": "human-approval-required",
+        "owner": "Nermin Sefić"
+      },
+      {
+        "id": "metadata-discovery",
+        "mode": "read-only-model-support",
+        "owner": "Digitalna radna snaga · modelirana podrška"
+      },
+      {
+        "id": "visual-accessibility",
+        "mode": "read-only-model-support",
+        "owner": "Digitalna radna snaga · modelirana podrška"
+      },
+      {
+        "id": "canonical-distribution",
+        "mode": "human-release-gate",
+        "owner": "Nermin Sefić + urednička provjera"
+      }
+    ],
+    "humanApprovalRequired": true,
+    "runtimeEvidence": false
+  },
+  "reporting": {
+    "scheduledDailyBriefs": 30,
+    "publishedFoundation": 1,
+    "editorialBriefsAwaitingHumanSourceReview": 29,
+    "autonomousFullPublications": 0,
+    "requiredQualitySignals": 300,
+    "mediaAnalysisSourceDesks": 6,
+    "externalPublisherPostsOrComments": 0
+  },
+  "distributionModel": "canonical portal first; controlled mirror workflow after live HTTP 200",
+  "checks": [
+    {
+      "label": "30-day editorial calendar",
+      "status": "OK",
+      "detail": "30 entries; 30 unique dates; 2026-10-04 to 2026-11-02"
+    },
+    {
+      "label": "calendar ordered",
+      "status": "OK",
+      "detail": "calendar dates are strictly ascending"
+    },
+    {
+      "label": "quality-first policy",
+      "status": "OK",
+      "detail": "manual editorial quality gate and no-implied-partnership boundary remain enabled"
+    },
+    {
+      "label": "legal-case exclusion",
+      "status": "OK",
+      "detail": "campaign excludes legal-case commentary"
+    },
+    {
+      "label": "editorial lead",
+      "status": "OK",
+      "detail": "Nermin Sefić is the human editorial lead, not a synthetic Worker"
+    },
+    {
+      "label": "daily public desk",
+      "status": "OK",
+      "detail": "AKTUAL daily editorial brief keeps Radio Aktual first"
+    },
+    {
+      "label": "attributed campaign images",
+      "status": "OK",
+      "detail": "26 contextual assets have local files, alt text, credit and use boundaries"
+    },
+    {
+      "label": "daily source-and-image brief contract",
+      "status": "OK",
+      "detail": "each daily brief has a contextual image, hashtags, source requirement, transparent source/publication state and image metadata gate"
+    },
+    {
+      "label": "orchestrated human-led workflow",
+      "status": "OK",
+      "detail": "5 declared lanes and ten daily quality signals retain human approval and label modeled support as non-runtime evidence"
+    },
+    {
+      "label": "daily oversight reports",
+      "status": "OK",
+      "detail": "30 planned oversight records distinguish the published foundation from briefs awaiting human source review"
+    },
+    {
+      "label": "external media analysis desks",
+      "status": "OK",
+      "detail": "6 source-linked review desks cover the requested publishers without external comments, copying, or autonomous publication"
+    },
+    {
+      "label": "foundation package",
+      "status": "OK",
+      "detail": "foundation package is materialized"
+    },
+    {
+      "label": "foundation HTML",
+      "status": "OK",
+      "detail": "/objave/javni-podaci-autorski-rad-odgovorno-upravljanje/"
+    },
+    {
+      "label": "editorial registry",
+      "status": "OK",
+      "detail": "SEO-complete campaign entry is registered"
+    },
+    {
+      "label": "LLM corpus",
+      "status": "OK",
+      "detail": "short and full AEO corpora include the campaign"
+    },
+    {
+      "label": "free-network workflow",
+      "status": "OK",
+      "detail": "Blogger, Dev.to, Tumblr and Telegraph canonical mirror workflow is present"
+    },
+    {
+      "label": "mirror priority queue",
+      "status": "OK",
+      "detail": "campaign is queued for controlled canonical mirrors"
+    },
+    {
+      "label": "AKTUAL module",
+      "status": "OK",
+      "detail": "campaign is featured in AKTUAL MEDIA"
+    },
+    {
+      "label": "AKTUAL daily desk",
+      "status": "OK",
+      "detail": "daily campaign desk and human-led governance status are present in HR and EN AKTUAL Media"
+    },
+    {
+      "label": "AKTUAL external-media desk",
+      "status": "OK",
+      "detail": "AKTUAL exposes source-linked media-analysis intake with an explicit no-external-comments boundary"
+    },
+    {
+      "label": "AKTUAL entity SEO and editorial boundary",
+      "status": "OK",
+      "detail": "HR/EN metadata cover requested discoverability entities while sports coverage is labelled editorial reporting only"
+    },
+    {
+      "label": "workforce orchestration contract",
+      "status": "OK",
+      "detail": "public Workforce read and suite surfaces expose the same human-led campaign workflow model"
+    }
+  ],
+  "summary": {
+    "ok": true,
+    "passed": 22,
+    "failed": 0
+  }
+}

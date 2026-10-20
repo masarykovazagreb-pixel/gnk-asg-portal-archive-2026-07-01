@@ -1,8 +1,8 @@
 {
   "version": "GNK_ASG_FLEET_STATUS_V1",
-  "generatedAt": "2026-10-20T14:21:29.725Z",
+  "generatedAt": "2026-10-20T14:29:47.903Z",
   "runsCollectedAt": "2026-10-20T11:58:30.320Z",
-  "total": 327,
+  "total": 328,
   "scheduled": 24,
   "runsPerDay": 140,
   "tracked": 66,
@@ -11,23 +11,23 @@
       "id": "izdanja",
       "name": "Izdanja i sadržaj",
       "nameEn": "Editions and content",
-      "automations": 59,
-      "scheduled": 7,
-      "runsPerDay": 38
+      "automations": 64,
+      "scheduled": 8,
+      "runsPerDay": 39
     },
     {
       "id": "trzista",
       "name": "Tržišta i podaci",
       "nameEn": "Markets and data",
-      "automations": 3,
-      "scheduled": 2,
-      "runsPerDay": 4
+      "automations": 5,
+      "scheduled": 4,
+      "runsPerDay": 9
     },
     {
       "id": "distribucija",
       "name": "Distribucija i zrcala",
       "nameEn": "Distribution and mirrors",
-      "automations": 11,
+      "automations": 12,
       "scheduled": 1,
       "runsPerDay": 24
     },
@@ -35,15 +35,15 @@
       "id": "seo",
       "name": "SEO i indeksiranje",
       "nameEn": "SEO and indexing",
-      "automations": 15,
-      "scheduled": 2,
-      "runsPerDay": 5
+      "automations": 17,
+      "scheduled": 4,
+      "runsPerDay": 9
     },
     {
       "id": "odrzavanje",
       "name": "Održavanje i oporavak",
       "nameEn": "Maintenance and recovery",
-      "automations": 37,
+      "automations": 41,
       "scheduled": 4,
       "runsPerDay": 37
     },
@@ -51,15 +51,15 @@
       "id": "deploy",
       "name": "Objava i deploy",
       "nameEn": "Release and deploy",
-      "automations": 53,
-      "scheduled": 0,
-      "runsPerDay": 0
+      "automations": 57,
+      "scheduled": 1,
+      "runsPerDay": 12
     },
     {
       "id": "provjere",
       "name": "Provjere i auditi",
       "nameEn": "Checks and audits",
-      "automations": 71,
+      "automations": 94,
       "scheduled": 0,
       "runsPerDay": 0
     },
@@ -67,7 +67,7 @@
       "id": "mediji",
       "name": "Mediji, slike i galerija",
       "nameEn": "Media, images and gallery",
-      "automations": 9,
+      "automations": 11,
       "scheduled": 0,
       "runsPerDay": 0
     },
@@ -75,7 +75,15 @@
       "id": "pristup",
       "name": "Pristup i administracija",
       "nameEn": "Access and administration",
-      "automations": 5,
+      "automations": 8,
+      "scheduled": 0,
+      "runsPerDay": 0
+    },
+    {
+      "id": "jednokratno",
+      "name": "Jednokratne i povijesne objave",
+      "nameEn": "One-time and historical releases",
+      "automations": 10,
       "scheduled": 0,
       "runsPerDay": 0
     },
@@ -83,12 +91,12 @@
       "id": "nadzor",
       "name": "Nadzor i status",
       "nameEn": "Monitoring and status",
-      "automations": 5,
-      "scheduled": 0,
-      "runsPerDay": 0
+      "automations": 9,
+      "scheduled": 2,
+      "runsPerDay": 10
     }
   ],
-  "ungrouped": 59,
+  "ungrouped": 0,
   "failing": [
     {
       "workflow": "aeo-ai-visibility.yml",

@@ -1,0 +1,45 @@
+name: All gates (portal)
+
+# Jedan obavezni prag za svaki PR: iste provjere koje dnevni self-heal
+# pokreće lokalno. Cilj je da "zeleno" znači isto svugdje — u PR-u, na
+# mainu i na dnevnoj provjeri — bez sjećanja koji se skript još treba
+# pokrenuti. Workflow je samo za čitanje: ne piše u repozitorij.
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/**'
+      - 'apps/region/**'
+      - 'apps/kanal/**'
+      - 'scripts/**'
+      - 'ops/**'
+      - '.github/workflows/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: all-gates-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Dohvati granu
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Python 3 (za allowlist gate)
+        run: python3 --version
+
+      - name: Sve provjere
+        run: node scripts/test-all-v1.mjs

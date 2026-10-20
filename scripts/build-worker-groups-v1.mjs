@@ -81,6 +81,13 @@ const GROUPS = [
     page: ['/worker-ops/', 'Operativa'], pageEn: ['/worker-ops/', 'Operations']
   },
   {
+    id: 'jednokratno',
+    hr: { name: 'Jednokratne i povijesne objave', lead: 'Završeni paketi, migracije i ručne objave koje su odradile svoje — ostaju zapisane, ali se više ne pokreću same.' },
+    en: { name: 'One-time and historical releases', lead: 'Finished packages, migrations and manual releases that have done their job — kept on record, but no longer self-starting.' },
+    re: /^one-time-/,
+    page: ['/status/', 'Status objave'], pageEn: ['/status/', 'Release status']
+  },
+  {
     id: 'nadzor',
     hr: { name: 'Nadzor i status', lead: 'Zdravlje stranice, vrijeme odgovora, prekidači i izvještaji — ono što rano uhvati zastoj.' },
     en: { name: 'Monitoring and status', lead: 'Site health, response time, kill switches and reports — what catches a stall early.' },
@@ -89,13 +96,83 @@ const GROUPS = [
   }
 ];
 
+/* Naslijeđena imena koja se ne daju pouzdano razvrstati regexom.
+   Eksplicitna karta je čitljivija od sve dužeg regexa i sprječava da
+   automatizacija završi u pogrešnoj skupini zbog sličnog prefiksa. */
+const OVERRIDES = {
+  'all-gates-v1.yml': 'provjere',
+  'auto-deploy-main-v1.yml': 'deploy',
+  'direct-static-editorial-policy-v1.yml': 'provjere',
+  'export-campaign-continuation-readonly.yml': 'distribucija',
+  'final-v27-acceptance-issue98.yml': 'provjere',
+  'fix-operator-dashboard-route-v7.yml': 'odrzavanje',
+  'force-deploy-fresh-media-center.yml': 'deploy',
+  'generate-digital-workforce-newsroom-pages.yml': 'izdanja',
+  'homepage-browser-audit.yml': 'provjere',
+  'integration-portal-v12.yml': 'provjere',
+  'issue-news-v16-validation.yml': 'izdanja',
+  'key-routes-quality-gate.yml': 'provjere',
+  'live-index-redesign-preview.yml': 'provjere',
+  'master-asg-autonomous-agent-v1.yml': 'nadzor',
+  'media-readiness-audit.yml': 'provjere',
+  'no-en-en-canonical-contract.yml': 'provjere',
+  'objavi-15-dnevno.yml': 'izdanja',
+  'operator-approved-control.yml': 'pristup',
+  'operator-deploy-current.yml': 'pristup',
+  'operator-register-504m.yml': 'pristup',
+  'p0-rss-audit.yml': 'provjere',
+  'p1-dw-audit.yml': 'provjere',
+  'p2-lighthouse.yml': 'provjere',
+  'production-live-sync.yml': 'deploy',
+  'provjera-aplikacije.yml': 'provjere',
+  'provjera-tvrdnji.yml': 'provjere',
+  'provjera-workera.yml': 'provjere',
+  'provjeri-profil-stranicu.yml': 'provjere',
+  'public-market-contract.yml': 'provjere',
+  'public-portal-audit.yml': 'provjere',
+  'publication-calendar-source-of-truth.yml': 'izdanja',
+  'refresh-gnkc-index.yml': 'seo',
+  'refresh-index-live-data.yml': 'seo',
+  'restore-iq200-index-now.yml': 'odrzavanje',
+  'restore-production-2059.yml': 'odrzavanje',
+  'runtime-contract-issue96.yml': 'provjere',
+  'scheduled-production-deploy.yml': 'deploy',
+  'siroki-smoke.yml': 'provjere',
+  'site-functional-readiness.yml': 'provjere',
+  'sync-webshop-products.yml': 'trzista',
+  'test-public-visual-v13.yml': 'provjere',
+  'upload-correct-memorandum.yml': 'mediji',
+  'upload-media-pdf-issue92.yml': 'mediji',
+  'warm-news-v16.yml': 'izdanja',
+  'weather-refresh.yml': 'trzista',
+  'worker-groups-sync.yml': 'odrzavanje',
+  'worker-route-ownership-contract.yml': 'provjere',
+  'workforce-bot-orchestrator.yml': 'nadzor',
+  'workforce-production-smoke.yml': 'nadzor',
+  'workforce-supervisor-agent.yml': 'nadzor'
+};
+
 const files = readdirSync(WF).filter((f) => f.endsWith('.yml') || f.endsWith('.yaml')).sort();
 /* Svaka datoteka ide u točno jednu skupinu — prva koja je prepozna. */
 for (const g of GROUPS) g.files = [];
 const rest = [];
 for (const f of files) {
-  const g = GROUPS.find((x) => x.re.test(f));
+  const g = OVERRIDES[f] ? GROUPS.find((x) => x.id === OVERRIDES[f]) : GROUPS.find((x) => x.re.test(f));
   if (g) g.files.push(f); else rest.push(f);
+}
+
+/* Ništa ne smije ostati bez skupine: ako se pojavi novo ime, ide u
+   poštenu skupinu "ostalo" koja se vidi na stranici, umjesto da tiho
+   nestane s popisa. */
+if (rest.length) {
+  GROUPS.push({
+    id: 'ostalo',
+    hr: { name: 'Ostalo', lead: 'Automatizacije koje još nemaju svoju skupinu — vidljive su ovdje dok se ne razvrstaju.' },
+    en: { name: 'Other', lead: 'Automations that do not yet have a group — visible here until they are classified.' },
+    re: /$^/,
+    files: rest.slice(),
+    page: ['/status/', 'Status objave'], pageEn: ['/status/', 'Release status']
+  });
 }
 
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -196,7 +273,7 @@ h1{font:900 clamp(28px,4.6vw,46px)/1.02 Impact,"Arial Black",system-ui,sans-seri
 </head>
 <body>
 <div class="wg-top">
-  <a href="/">GNK ASG</a><a href="/workers/">${EN ? 'Workers' : 'Radnici'}</a><a href="/automation-status/">${EN ? 'Automation status' : 'Status automatizacije'}</a><a href="/automation-status/flota/">${EN ? 'Fleet' : 'Flota'}</a><a href="/izdanja/">${EN ? 'Editions' : 'Izdanja'}</a><a href="/radio/">Radio</a><a href="/galerija/">${EN ? 'Gallery' : 'Galerija'}</a>
+  <a href="/">GNK ASG</a><a href="/workers/">${EN ? 'Workers' : 'Radnici'}</a><a href="/automation-status/">${EN ? 'Automation status' : 'Status automatizacije'}</a><a href="/automation-status/flota/">${EN ? 'Fleet' : 'Flota'}</a><a href="${EN ? '/en/zdravlje/' : '/zdravlje/'}">${EN ? 'Health' : 'Zdravlje'}</a><a href="/izdanja/">${EN ? 'Editions' : 'Izdanja'}</a><a href="/radio/">Radio</a><a href="/galerija/">${EN ? 'Gallery' : 'Galerija'}</a>
 </div>
 <main class="wg-wrap">
   <h1>${EN ? 'Worker groups and automations' : 'Grupacije radnika i automatizacije'}</h1>

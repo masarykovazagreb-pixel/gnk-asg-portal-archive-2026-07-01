@@ -1,0 +1,171 @@
+/* GNK ASG — ploča zdravlja (2026-10-20)
+   Stilovi samo za /zdravlje/ i /en/zdravlje/. Oslanja se na tokene iz
+   gnk-design-v1.css; ništa ovdje ne dira druge stranice. */
+
+body.gnk-page {
+  margin: 0;
+  background:
+    radial-gradient(1200px 520px at 12% -8%, #fffdf6 0%, rgba(255, 253, 246, 0) 60%),
+    var(--gnk-paper);
+  color: var(--gnk-ink);
+  font-family: var(--gnk-font-ui);
+}
+
+/* ---------- gornja traka ---------- */
+.gnk-topbar {
+  position: sticky; top: 0; z-index: 20;
+  background: rgba(13, 23, 35, .96);
+  border-bottom: 1px solid rgba(200, 150, 60, .35);
+  backdrop-filter: saturate(140%) blur(6px);
+}
+.gnk-topbar-inner {
+  max-width: 1120px; margin: 0 auto; padding: 12px 20px;
+  display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+}
+.gnk-brand {
+  font: 900 15px/1 var(--gnk-font-ui); letter-spacing: .16em;
+  text-transform: uppercase; color: #fff; text-decoration: none;
+}
+.gnk-topnav { display: flex; gap: 14px; flex-wrap: wrap; margin-left: auto; }
+.gnk-topnav a {
+  color: #e8e2d2; text-decoration: none; font: 600 12.5px/1 var(--gnk-font-ui);
+  letter-spacing: .04em; padding: 6px 2px; border-bottom: 2px solid transparent;
+}
+.gnk-topnav a:hover { color: #fff; border-bottom-color: var(--gnk-gold); }
+.hz-lang a {
+  color: #0d1723; background: var(--gnk-gold); text-decoration: none;
+  font: 800 11px/1 var(--gnk-font-ui); letter-spacing: .12em; text-transform: uppercase;
+  padding: 8px 12px; border-radius: 999px;
+}
+.hz-lang a:hover { background: #e0b45c; }
+
+/* ---------- hero ---------- */
+.hz-hero {
+  display: flex; align-items: center; gap: 20px;
+  border: 1px solid var(--gnk-line);
+  border-left: 6px solid var(--gnk-gold);
+  border-radius: var(--gnk-radius);
+  background: var(--gnk-surface);
+  padding: 18px 22px;
+  box-shadow: var(--gnk-shadow);
+}
+.hz-hero strong { display: block; font: 700 19px/1.25 var(--gnk-font-head); }
+.hz-hero p { margin: 4px 0 0; color: var(--gnk-muted); font: 13px/1.4 var(--gnk-font-ui); }
+.hz-hero-ok { border-left-color: #1f7a4d; }
+.hz-hero-warn { border-left-color: #c8963c; }
+.hz-hero-bad { border-left-color: var(--gnk-accent); }
+
+.hz-ring {
+  width: 74px; height: 74px; flex: 0 0 auto;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font: 900 26px/1 var(--gnk-font-display);
+  color: #fff; background: var(--gnk-navy);
+  box-shadow: inset 0 0 0 5px rgba(255, 255, 255, .1);
+}
+.hz-hero-ok .hz-ring { background: #1f7a4d; }
+.hz-hero-warn .hz-ring { background: #b3801f; }
+.hz-hero-bad .hz-ring { background: var(--gnk-accent); }
+
+/* ---------- naslovi ---------- */
+.hz-h2 {
+  margin: 30px 0 12px;
+  font: 800 20px/1.2 var(--gnk-font-head);
+  letter-spacing: .01em;
+}
+.hz-count {
+  display: inline-block; margin-left: 8px; padding: 3px 9px;
+  border-radius: 999px; background: var(--gnk-gold-soft);
+  color: var(--gnk-gold-ink); font: 800 12px/1 var(--gnk-font-ui);
+  vertical-align: middle;
+}
+
+/* ---------- tablica ---------- */
+.hz-tablewrap { overflow-x: auto; border-radius: var(--gnk-radius); box-shadow: var(--gnk-shadow); }
+.hz-table {
+  width: 100%; border-collapse: collapse; background: var(--gnk-surface);
+  font: 14px/1.4 var(--gnk-font-ui); min-width: 620px;
+}
+.hz-table thead th {
+  text-align: left; padding: 11px 14px;
+  background: var(--gnk-navy); color: #efe8d6;
+  font: 800 10.5px/1 var(--gnk-font-ui); letter-spacing: .14em; text-transform: uppercase;
+}
+.hz-table tbody td { padding: 12px 14px; border-top: 1px solid var(--gnk-line-soft); vertical-align: top; }
+.hz-table tbody tr:nth-child(even) td { background: #fdfbf5; }
+.hz-table a { color: var(--gnk-ink); text-decoration: none; border-bottom: 1px solid var(--gnk-gold); }
+.hz-table a:hover { color: var(--gnk-gold-ink); }
+.hz-num { font-variant-numeric: tabular-nums; font-weight: 700; }
+.hz-sub { display: block; color: var(--gnk-muted); font-size: 12px; margin-top: 2px; }
+
+.hz-state {
+  display: inline-block; padding: 4px 10px; border-radius: 999px;
+  font: 800 10.5px/1 var(--gnk-font-ui); letter-spacing: .1em; text-transform: uppercase;
+  border: 1px solid transparent;
+}
+.hz-ok { background: #e8f5ee; color: #14603c; border-color: #bfe2ce; }
+.hz-warn { background: var(--gnk-gold-soft); color: #7a5a12; border-color: #ecd7a4; }
+.hz-bad { background: #fbeceb; color: #7c2626; border-color: #efc9c6; }
+.hz-unknown { background: #f1efe9; color: #6b6558; border-color: #e0dccf; }
+
+/* ---------- kartice ---------- */
+.hz-big {
+  margin: 2px 0 6px;
+  font: 900 clamp(28px, 5vw, 40px)/1 var(--gnk-font-display);
+  color: var(--gnk-ink);
+}
+.hz-grid { display: grid; gap: var(--gnk-step); grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+
+/* ---------- popis padova ---------- */
+.hz-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.hz-list li {
+  background: var(--gnk-surface);
+  border: 1px solid var(--gnk-line);
+  border-left: 4px solid var(--gnk-accent);
+  border-radius: var(--gnk-radius-sm);
+  padding: 11px 14px;
+}
+.hz-list li.hz-empty { border-left-color: #1f7a4d; color: var(--gnk-ink-soft); }
+.hz-list a { color: var(--gnk-ink); font-weight: 700; text-decoration: none; }
+.hz-list a:hover { color: var(--gnk-accent); }
+
+/* ---------- pravila ---------- */
+.hz-rules { display: grid; gap: var(--gnk-step); grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.hz-rule {
+  display: block; text-decoration: none; color: inherit;
+  background: var(--gnk-surface); border: 1px solid var(--gnk-line);
+  border-radius: var(--gnk-radius); padding: 14px 16px;
+  transition: box-shadow .18s ease, transform .18s ease;
+}
+.hz-rule:hover { box-shadow: var(--gnk-shadow-hover); transform: translateY(-2px); }
+.hz-rule strong { display: block; margin-bottom: 4px; font: 800 14px/1.2 var(--gnk-font-ui); }
+.hz-rule span { color: var(--gnk-ink-soft); font: 13.5px/1.45 var(--gnk-font-head); }
+
+/* ---------- podnožje ---------- */
+.gnk-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 10px; }
+.gnk-tag {
+  display: inline-block; padding: 6px 11px; border-radius: 999px;
+  background: var(--gnk-gold-soft); color: var(--gnk-gold-ink);
+  font: 800 10.5px/1 var(--gnk-font-ui); letter-spacing: .1em; text-transform: uppercase;
+}
+.hz-foot { color: var(--gnk-muted); font: 12.5px/1.6 var(--gnk-font-ui); }
+.hz-foot a { color: var(--gnk-ink-soft); text-decoration: none; border-bottom: 1px solid var(--gnk-line); }
+.hz-foot a:hover { border-bottom-color: var(--gnk-gold); }
+
+.gnk-footer {
+  margin-top: 40px; padding: 22px 0 30px;
+  background: var(--gnk-navy); color: #cfc8b6;
+  font: 12.5px/1.6 var(--gnk-font-ui);
+}
+.gnk-footer p { margin: 0; }
+
+@media (max-width: 640px) {
+  .gnk-shell { padding: 22px 14px 40px; }
+  .hz-hero { padding: 14px 16px; gap: 14px; }
+  .hz-ring { width: 58px; height: 58px; font-size: 21px; }
+  .gnk-topnav { width: 100%; margin-left: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
