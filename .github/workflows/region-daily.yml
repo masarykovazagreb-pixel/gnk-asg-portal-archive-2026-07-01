@@ -49,10 +49,11 @@ jobs:
     env:
       TZ: Europe/Zagreb
     steps:
-      - name: Checkout main
+      - name: Checkout pokrenute grane
         uses: actions/checkout@v4
         with:
-          ref: main
+          # Ne hardkodiraj main: push okidač mora raditi na grani na kojoj je pokrenut.
+          ref: ${{ github.ref }}
           fetch-depth: 0
 
       - uses: actions/setup-node@v4
