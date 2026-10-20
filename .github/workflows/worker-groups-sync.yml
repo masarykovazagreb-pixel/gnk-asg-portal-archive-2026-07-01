@@ -2,16 +2,14 @@ name: Worker groups — sync
 
 # Grupira stvarne workflowe u šest radnih skupina i objavljuje
 # /workers/grupacije/ (hr + en). Pokreće se kad se popis automatizacija
-# promijeni, svaki dan i ručno. Commit dira samo izlazne datoteke, pa
-# paths filtar sprječava petlju.
+# promijeni ili ručno. Commit dira samo izlazne datoteke, pa paths
+# filtar sprječava petlju.
 
 on:
   push:
     paths:
       - '.github/workflows/**'
       - 'scripts/build-worker-groups-v1.mjs'
-  schedule:
-    - cron: '20 4 * * *'
   workflow_dispatch:
 
 concurrency:
