@@ -1,7 +1,7 @@
 (() => {
   'use strict';
   const get = id => document.getElementById(id);
-  const form = get('chatForm'), input = get('chatInput'), send = get('send');
+  const form = get('chatForm'), input = get('chatInput'), send = get('send'), stop = get('stop');
   const feed = get('messages'), scroll = get('scrollArea'), status = get('status');
   const key = 'gnk-s-chat-v1-history';
   const maxChars = 600; // /api/intelligence-desk-chat truncates input to 600 characters.
@@ -43,6 +43,7 @@
     if (pending) { pending.abort(); pending = null; }
     input.disabled = false;
     send.disabled = false;
+    stop.hidden = true;
     status.textContent = 'Spremno';
     history = [];
     save();
@@ -55,6 +56,19 @@
   const desktopNew = get('newChat'), mobileNew = get('newChatMobile');
   desktopNew?.addEventListener('click', reset);
   mobileNew?.addEventListener('click', reset);
+  // Export never posts chat history back to the AI service.
+  function exportChat() {
+    const lines = history.map(item => (item.role === 'user' ? 'VI' : 'GNK ASG S+CHAT · AI') + '\n' + item.content);
+    const blob = new Blob(['GNK ASG S+Chat — lokalni izvoz razgovora\n\n' + lines.join('\n\n---\n\n')], {type:'text/plain;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url; link.download = 'gnk-asg-s-chat-' + new Date().toISOString().slice(0,10) + '.txt';
+    document.body.appendChild(link); link.click(); link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+  get('exportChat')?.addEventListener('click', exportChat);
+  get('exportChatMobile')?.addEventListener('click', exportChat);
+  stop?.addEventListener('click', () => { if (pending) pending.abort(); });
   for (const item of history) bubble(item.role, item.content);
   if (!history.length) welcome();
   input.setAttribute('maxlength', String(maxChars));
@@ -75,7 +89,7 @@
     const controller = new AbortController();
     pending = controller;
     input.value = '';
-    input.disabled = true; send.disabled = true;
+    input.disabled = true; send.disabled = true; stop.hidden = false;
     status.textContent = 'Odgovaram…';
     bubble('user',question);
     history.push({role:'user', content:question});
@@ -110,6 +124,7 @@
       clearTimeout(timeout);
       if (token === generation) {
         pending = null;
+        stop.hidden = true;
         input.disabled = false; send.disabled = false;
         status.textContent = 'Spremno';
         bottom(); input.focus();
