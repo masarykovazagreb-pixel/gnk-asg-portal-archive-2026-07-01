@@ -1,25 +1,20 @@
-name: Site self-heal daily
+name: Site parity audit (manual, read only)
 
-# Jednom dnevno, bez ljudske akcije:
-#   1. osvježi zapise o zadnjim runovima (samo čitanje GitHub API-ja),
-#   2. regeneriraj HR/EN index, katalog radnika i stranicu flote,
-#   3. pusti audite portala i kanala,
-#   4. ako je sve zeleno i ima razlike — commit + push na main (exact-SHA fence),
-#   5. ako audit padne — issue, bez pusha.
-# Ne zaobilazi provjere. GNK_ASG_RELEASE_FENCE=true zaustavlja sve.
+# Manual diagnostic only: run generators in CI workspace and audit differences.
+# This workflow is NOT a canonical writer, is not scheduled, and never commits.
+# The former direct-main self-heal was not allowlisted and conflicted with
+# protected home-page ownership and the production schedule safety gate.
 
 on:
-  schedule:
-    - cron: '12 4 * * *'
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   issues: write
   actions: read
 
 concurrency:
-  group: gnk-asg-main-mutation
+  group: gnk-asg-index-parity-readonly-audit
   cancel-in-progress: false
 
 jobs:
@@ -81,36 +76,16 @@ jobs:
             --body "Automatski dnevni audit nije prošao pa self-heal nije ništa objavio. Log: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
             || echo "Issue nije bilo moguće otvoriti."
 
-      - name: Commit i push uz exact-SHA fence
+      - name: Show working-tree drift (no push or commit)
         if: steps.audits.outputs.status == '0'
-        env:
-          EXPECTED_BASE_SHA: ${{ steps.base.outputs.sha }}
         shell: bash
         run: |
-          set -euo pipefail
-          PATHS="apps/portal/index.html apps/portal/en/index.html \
+          git status --short
+          git diff --stat -- apps/portal/index.html apps/portal/en/index.html \
             apps/portal/workers/grupacije apps/portal/data/worker-groups.json \
             apps/portal/automation-status/flota apps/portal/data/fleet-status.json \
-            apps/portal/data/workflow-runs.json"
-
-          if git diff --quiet -- $PATHS && [ -z "$(git ls-files --others --exclude-standard -- $PATHS)" ]; then
-            echo "Nema razlika — sve je usklađeno."
-            exit 0
-          fi
-
-          git config user.name "gnk-asg-self-heal"
-          git config user.email "actions@github.com"
-          git add $PATHS
-          git commit -m "Self-heal: dnevna HR/EN parity, katalog radnika i flota"
-
-          git fetch origin main
-          CURRENT_MAIN="$(git rev-parse origin/main)"
-          if [ "$CURRENT_MAIN" != "$EXPECTED_BASE_SHA" ]; then
-            echo "Main se pomaknuo tijekom runa (očekivano $EXPECTED_BASE_SHA, nađeno $CURRENT_MAIN). Odgađam bez rebasea."
-            exit 75
-          fi
-
-          git push origin HEAD:main
+            apps/portal/data/workflow-runs.json
+          echo "Audit only; changes remain on this temporary CI runner."
 
       - name: Padni ako audit nije prošao
         if: steps.audits.outputs.status != '0'
