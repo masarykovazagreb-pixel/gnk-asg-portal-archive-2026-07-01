@@ -92,6 +92,7 @@ const person = {
   sameAs: [SITE.author.url, SITE.author.linkedin, SITE.publisher.url, 'https://gnk-asg.hr/gnk-aktual/'],
   knowsAbout: ['financije', 'revizija', 'korporativno upravljanje', 'umjetna inteligencija', 'izvoz softvera', 'tržišna analiza']
 };
+const workerAuthor = { '@type': 'Organization', '@id': abs('#worker'), name: 'Worker', description: 'AI urednički sustav GNK ASG KANAL', parentOrganization: { '@id': abs('#organizacija') } };
 const website = {
   '@type': 'WebSite',
   '@id': abs('#web-site'),
@@ -112,6 +113,7 @@ function head({ title, description, canonical, root, og, ogAlt, type = 'website'
   const graph = [
     org,
     person,
+    workerAuthor,
     website,
     {
       '@type': type === 'article' || type === 'news' ? 'NewsArticle' : 'WebPage',
