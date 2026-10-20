@@ -1,0 +1,28 @@
+/* AKTUAL MEDIA — index podium (krugovi gradova i deskovi).
+   Vrijedi samo uz #aktual-izdanja; svijetla tema portala. */
+/* Krugovi: čista fotografija grada (bez zalijepljenog teksta), centrirana na središte. */
+#aktual-izdanja .amz-img{position:relative;background:#0d1723;box-shadow:0 12px 26px rgba(15,23,42,.22),0 2px 4px rgba(15,23,42,.16)}
+#aktual-izdanja .amz-img img{object-position:center 42%;filter:contrast(1.06) saturate(1.05)}
+#aktual-izdanja .amz-img::after{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;box-shadow:inset 0 0 0 2px rgba(8,15,24,.22),inset 0 -18px 26px rgba(8,15,24,.26)}
+#aktual-izdanja .amz-i:nth-child(1) .amz-img img{object-position:center 44%}
+#aktual-izdanja .amz-i:nth-child(2) .amz-img img{object-position:center 40%}
+#aktual-izdanja .amz-i:nth-child(3) .amz-img img{object-position:center 44%}
+#aktual-izdanja .amz-i:nth-child(4) .amz-img img{object-position:center 38%}
+#aktual-izdanja .amz-i:nth-child(5) .amz-img img{object-position:center 40%}
+#aktual-izdanja .amz-i:nth-child(6) .amz-img img{object-position:center 36%}
+#aktual-izdanja .amz-i:nth-child(7) .amz-img img{object-position:center 42%}
+#aktual-izdanja .amz-i:nth-child(8) .amz-img img{object-position:center 40%}
+/* Kontrast na svijetloj podlozi: naslovi, uvod i linkovi. */
+#aktual-izdanja h2{color:#0d1116}
+#aktual-izdanja .amz-lead{color:#3d3a33}
+#aktual-izdanja .amz-all{color:#8a6a1f;border-bottom-color:#c8963c}
+#aktual-izdanja .amz-all:hover{color:#6f5314;border-bottom-color:#8a6a1f}
+#aktual-izdanja .amz-i b{color:#0d1116}
+#aktual-izdanja .amz-i small{color:#8a6a1f}
+/* Deskovi: svijetle kartice na svijetloj podlozi, tamni tekst. */
+#aktual-izdanja .amz-net a{background:#fff;border:1px solid #e0d6c1;border-radius:9px;box-shadow:0 3px 8px rgba(20,24,30,.06);min-height:46px}
+#aktual-izdanja .amz-net a:hover{border-color:#c8963c;background:#fffdf6;box-shadow:0 8px 16px rgba(200,150,60,.18)}
+#aktual-izdanja .amz-net b{color:#14181e;font-size:12.5px}
+#aktual-izdanja .amz-net span{color:#6b6558;font-size:9px;letter-spacing:.13em}
+#aktual-izdanja .amz-net .is-radio{border-color:rgba(140,47,47,.42);background:linear-gradient(120deg,#fff8e4,#fffdf8)}
+#aktual-izdanja .amz-net .is-radio b{color:#8c2f2f}
