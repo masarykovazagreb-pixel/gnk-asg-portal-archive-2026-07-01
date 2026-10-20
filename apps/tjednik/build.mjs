@@ -32,7 +32,7 @@ const SHORT = 'BUSINESS TJEDNIK';
 const TAGLINE = 'Kritički tjednik o poslovnom izvještavanju: Lider, Jutarnji list, Poslovni dnevnik i Forbes.';
 const DESCRIPTION = 'Business tjednik GNK ASG-a: kritički osvrti na poslovne tekstove Lidera, Jutarnjeg lista, Poslovnog dnevnika i Forbesa, tjedna promjena i dnevni dodaci. Automatski sastavljeno, izvori uvijek navedeni.';
 const PUBLISHER = 'GNK ASG d.o.o.';
-const CONTACT = 'beckuphome@gmail.com';
+const CONTACT = 'info@gnk-asg.hr';
 const START = '2026-10-19';
 
 const SECTIONS = {
@@ -184,7 +184,8 @@ const footer = (root) => `<footer>
       <a href="${root}izvori/">Izvori</a>
       <a href="${root}metodologija/">Metodologija</a>
       <a href="${abs('feed.json')}">Feed</a>
-      <a href="https://gnk-asg-kanal.pages.dev/" target="_blank" rel="external noopener">GNK ASG KANAL ↗</a>
+      <a href="https://gnk-asg-kanal.pages.dev/" target="_blank" rel="external noopener">KANAL ZAGREB ↗</a>
+      <a href="https://gnk-asg.hr/izdanja/" target="_blank" rel="external noopener">Naša izdanja — AKTUAL MEDIA ↗</a>
       <a href="https://gnk-asg.hr/gnk-aktual/" target="_blank" rel="external noopener">AKTUAL MEDIA ↗</a>
     </div>
   </div>

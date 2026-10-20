@@ -1,0 +1,99 @@
+#!/usr/bin/env node
+/**
+ * Provjera izgrađenih izdanja prije deploya.
+ *
+ * Za svaki kanal provjerava:
+ *  - svaka stranica ima title, description, canonical i JSON-LD,
+ *  - sve unutarnje poveznice vode na postojeću datoteku,
+ *  - svaki osvrt ima poveznicu na izvornik (http) i datum,
+ *  - feed i sitemap postoje i sadrže iste adrese.
+ *
+ *   node apps/region/engine/audit.mjs
+ */
+import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
+import { join, dirname, relative, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const HERE = dirname(fileURLToPath(import.meta.url));
+const APP = join(HERE, '..');
+const SITE = join(APP, 'site');
+const DATA = join(APP, 'data');
+
+const walk = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+  const target = join(dir, entry.name);
+  return entry.isDirectory() ? walk(target) : [target];
+});
+
+const errors = [];
+const warnings = [];
+const report = [];
+
+for (const channel of readdirSync(SITE).filter((d) => statSync(join(SITE, d)).isDirectory())) {
+  const root = join(SITE, channel);
+  const pages = walk(root).filter((f) => f.endsWith('.html'));
+  const dataFile = join(DATA, `${channel}.json`);
+  const data = existsSync(dataFile) ? JSON.parse(readFileSync(dataFile, 'utf8')) : { items: [] };
+  const slugs = new Set((data.items || []).map((i) => i.slug));
+
+  for (const page of pages) {
+    const rel = `/${relative(root, page).replace(/\\/g, '/')}`;
+    const html = readFileSync(page, 'utf8');
+    const title = html.match(/<title>([\s\S]*?)<\/title>/i)?.[1]?.trim();
+    const description = html.match(/<meta\s+name="description"\s+content="([^"]*)"/i)?.[1];
+    const canonical = html.match(/<link\s+rel="canonical"\s+href="([^"]+)"/i)?.[1];
+    if (!title) errors.push(`${channel}${rel}: nema title`);
+    if (!description) errors.push(`${channel}${rel}: nema description`);
+    if (!canonical) errors.push(`${channel}${rel}: nema canonical`);
+    if (!/application\/ld\+json/.test(html) && rel !== '/404.html') errors.push(`${channel}${rel}: nema JSON-LD`);
+    if (!/name="keywords"/.test(html)) errors.push(`${channel}${rel}: nema keywords (hashtagovi)`);
+    if (!/og:title/.test(html) || !/twitter:card/.test(html)) errors.push(`${channel}${rel}: nema OG/Twitter`);
+    if (!/rel="alternate" hreflang=/.test(html)) errors.push(`${channel}${rel}: nema hreflang`);
+
+    // naslovi i JSON-LD moraju biti parsabilni
+    for (const block of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
+      try { JSON.parse(block[1]); } catch { errors.push(`${channel}${rel}: JSON-LD nije valjan JSON`); }
+    }
+
+    // unutarnje poveznice
+    for (const m of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
+      const href = m[1];
+      if (!href || href.startsWith('#') || /^(?:https?:|mailto:|tel:|data:|javascript:)/i.test(href)) continue;
+      const clean = href.split('#')[0].split('?')[0];
+      if (!clean) continue;
+      const target = clean.startsWith('/') ? join(root, clean.slice(1)) : resolve(dirname(page), clean);
+      const ok = existsSync(target) || existsSync(join(target, 'index.html'));
+      if (!ok) errors.push(`${channel}${rel}: slomljena poveznica ${href}`);
+    }
+
+    // članci moraju imati izvornik i datum
+    if (rel.startsWith('/clanak/')) {
+      if (!/<a[^>]+href="https?:\/\/[^"]+"[^>]*rel="external noopener nofollow"/.test(html)) {
+        errors.push(`${channel}${rel}: nema poveznicu na izvornik`);
+      }
+      if (!/<time datetime="\d{4}-\d{2}-\d{2}/.test(html)) errors.push(`${channel}${rel}: nema datum`);
+      const slug = rel.split('/')[2];
+      if (!slugs.has(slug)) errors.push(`${channel}${rel}: slug nije u podacima (${slug})`);
+    }
+  }
+
+  const feed = join(root, 'feed.json');
+  const sitemap = join(root, 'sitemap.xml');
+  if (!existsSync(feed)) errors.push(`${channel}: nema feed.json`);
+  if (!existsSync(sitemap)) errors.push(`${channel}: nema sitemap.xml`);
+  if (existsSync(feed)) {
+    const json = JSON.parse(readFileSync(feed, 'utf8'));
+    if (!json.items.length && (data.items || []).length) warnings.push(`${channel}: feed je prazan, a podaci imaju ${data.items.length} zapisa`);
+    for (const item of json.items) if (!/^https?:\/\//.test(item.url)) errors.push(`${channel}: feed stavka bez https adrese`);
+  }
+  if (existsSync(sitemap)) {
+    const xml = readFileSync(sitemap, 'utf8');
+    const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+    if (!locs.length) errors.push(`${channel}: sitemap je prazan`);
+    for (const slug of slugs) if (!locs.some((l) => l.endsWith(`/clanak/${slug}/`))) errors.push(`${channel}: sitemap ne sadrži ${slug}`);
+  }
+
+  report.push({ channel, pages: pages.length, items: (data.items || []).length });
+}
+
+console.log(JSON.stringify({ ok: errors.length === 0, channels: report, errors: [...new Set(errors)].slice(0, 60), warnings: [...new Set(warnings)].slice(0, 30) }, null, 2));
+if (errors.length) process.exit(1);

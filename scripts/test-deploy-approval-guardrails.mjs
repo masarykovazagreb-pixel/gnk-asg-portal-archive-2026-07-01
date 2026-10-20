@@ -105,11 +105,14 @@ const approved='.github/workflows/deploy-admin-auth-v6.yml';
 // Kanali se objavljuju na vlastite Cloudflare Pages projekte. To nije
 // produkcijski portal (gnk-asg.hr), pa je dopušten samo točno navedeni
 // projekt po workflowu; sve ostalo ostaje zabranjeno.
+const regionProject=(id)=>`gnk-asg-kanal-${id}`;
 const channelPagesProjects={
  'kanal-deploy.yml':'gnk-asg-kanal',
  'kanal-daily.yml':'gnk-asg-kanal',
  'tjednik-deploy.yml':'gnk-asg-tjednik',
- 'tjednik-daily.yml':'gnk-asg-tjednik'
+ 'tjednik-daily.yml':'gnk-asg-tjednik',
+ 'region-deploy.yml':['zagreb','beograd','sarajevo','budimpesta','ljubljana','rim','sofija','bukurest'].map(regionProject),
+ 'region-daily.yml':['zagreb','beograd','sarajevo','budimpesta','ljubljana','rim','sofija','bukurest'].map(regionProject)
 };
 const channelDeployments=[];
 const violations=[];
@@ -119,18 +122,40 @@ for(const file of fs.readdirSync('.github/workflows').filter(f=>/\.ya?ml$/i.test
  const source=read(path);
  const writeLine=source.split(/\r?\n/).find(line=>/^\s*(?:run:\s*)?(?:(?:npx|bunx)\s+(?:--yes\s+)?|(?:pnpm|yarn)\s+(?:dlx\s+)?)?wrangler(?:@\d+)?\s+(?:pages\s+)?deploy\b/i.test(line)&&!/--dry-run\b/i.test(line));
  if(writeLine){
-  const project=(source.match(/--project-name=([a-z0-9-]+)/i)||[])[1]||'';
   const expected=channelPagesProjects[file];
+  const listed=[...source.matchAll(/--project-name[= ]+["']?([a-z0-9-${}]+)["']?/gi)].map(m=>m[1]);
+  const literal=listed.filter(p=>!p.includes('$'));
+  const templated=listed.filter(p=>p.includes('$'));
   if(!expected)violations.push(`${file}: ${writeLine.trim()} (workflow not allowlisted for channel deploys)`);
-  else if(project!==expected)violations.push(`${file}: deploys ${project||'(no project)'} instead of ${expected}`);
-  else channelDeployments.push(`${file}:${project}`);
+  else if(Array.isArray(expected)){
+   const allowed=new Set(expected);
+   for(const p of literal)if(!allowed.has(p))violations.push(`${file}: deploys ${p} outside the region allowlist`);
+   if(!templated.length)violations.push(`${file}: regional deploy must use a templated project name`);
+   const declared=(source.match(/project=["']([a-z0-9-$]+)["']/i)||[])[1]||'';
+   const normalized=templated.map(p=>p.replace(/\$\{?\w+\}?/g,'*')).map(p=>p.startsWith('gnk-asg-kanal-')?p:(declared.replace(/\$\{?\w+\}?/g,'*')||p));
+   for(const p of new Set(normalized)){
+    if(!p.startsWith('gnk-asg-kanal-'))violations.push(`${file}: regional project template must be gnk-asg-kanal-*, got ${p}`);
+    channelDeployments.push(`${file}:${p}`);
+   }
+  } else {
+   const project=(source.match(/--project-name=([a-z0-9-]+)/i)||[])[1]||'';
+   if(project!==expected)violations.push(`${file}: deploys ${project||'(no project)'} instead of ${expected}`);
+   else channelDeployments.push(`${file}:${project}`);
+  }
  }
  if(/^\s*environment:\s*production\s*$/im.test(source))violations.push(`${file}: production environment`);
 }
 assert.deepEqual(violations,[],'Only deploy-admin-auth-v6.yml may contain production deployment capability');
+const expectedDeployments=Object.entries(channelPagesProjects).flatMap(([file,project])=>(Array.isArray(project)?['gnk-asg-kanal-*']:[project]).map(p=>`${file}:${p}`));
+const regionIds=['zagreb','beograd','sarajevo','budimpesta','ljubljana','rim','sofija','bukurest'];
+assert.deepEqual(
+ channelPagesProjects['region-daily.yml'].map(p=>p.replace('gnk-asg-kanal-','')).sort(),
+ [...regionIds].sort(),
+ 'region allowlist must cover all eight cities'
+);
 assert.deepEqual(
  [...new Set(channelDeployments)].sort(),
- Object.entries(channelPagesProjects).map(([file,project])=>`${file}:${project}`).sort(),
+ expectedDeployments.sort(),
  'channel deploy allowlist must match exactly'
 );
 

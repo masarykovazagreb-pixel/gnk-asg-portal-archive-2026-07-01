@@ -1,0 +1,177 @@
+name: REGION — dnevni ciklus izdanja
+
+# Osam gradskih kanala AKTUAL MEDIA (Zagreb, Beograd, Sarajevo, Budimpešta,
+# Ljubljana, Rim, Sofija, Bukurešt): čitanje javnih feedova, osvrti, build,
+# commit na main i deploy na vlastiti Cloudflare Pages projekt.
+#
+# Registrirano u ops/automation-control-v1.json (knownCurrentSchedules) i
+# ops/automation-kill-switches.json (regionPublish).
+# Ručno: Actions → "REGION — dnevni ciklus izdanja" → Run workflow.
+
+on:
+  schedule:
+    # 05:50 UTC = 07:50 ljeti / 06:50 zimi po Europe/Zagreb.
+    - cron: '50 5 * * *'
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: 'Samo jedan kanal (prazno = svi)'
+        required: false
+        type: string
+      force:
+        description: 'Zanemari kill-switch (samo za ručnu provjeru)'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: gnk-asg-main-mutation
+  cancel-in-progress: false
+
+jobs:
+  daily:
+    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      TZ: Europe/Zagreb
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Zapamti polazni SHA
+        id: base
+        shell: bash
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Dnevni ciklus (feedovi → osvrti → stranice → hub)
+        shell: bash
+        run: |-
+          set -uo pipefail
+          ARGS=""
+          if [ -n "${{ inputs.channel }}" ]; then ARGS="$ARGS --channel ${{ inputs.channel }}"; fi
+          if [ "${{ inputs.force }}" = "true" ]; then ARGS="$ARGS --force"; fi
+          node apps/region/engine/daily.mjs $ARGS || echo "::warning::Dio izvora nije dostupan — izdanja se grade iz postojeće arhive."
+          test -f apps/region/site/zagreb/index.html
+          node -e "const fs=require('fs');const f=JSON.parse(fs.readFileSync('apps/region/data/_status.json','utf8'));const r=f.lastRun;console.log('kanala:',Object.keys(r.channels).length);const ok=Object.values(r.channels).reduce((a,c)=>a+c.sourcesOk,0);const all=Object.values(r.channels).reduce((a,c)=>a+c.sourcesTotal,0);console.log('izvori:',ok+'/'+all);if(!Object.keys(r.channels).length)process.exit(1)"
+
+      - name: Galerija i matična stranica izdanja
+        shell: bash
+        run: |-
+          set -euo pipefail
+          node apps/portal/scripts/album-nermin-sefic-v1.mjs
+          node apps/region/engine/hub.mjs
+          node apps/region/engine/audit.mjs
+          test -f apps/portal/izdanja/index.html
+          test -f apps/portal/data/izdanja.json
+
+      - name: Zapiši izdanja
+        id: commit
+        shell: bash
+        run: |-
+          set -euo pipefail
+          git config user.name "AKTUAL MEDIA REGION"
+          git config user.email "info@gnk-asg.hr"
+          git add apps/region/data apps/region/site apps/portal/izdanja apps/portal/data/izdanja.json apps/portal/data/izdanja-sport.json apps/portal/data/nermin-sefic-gallery.json apps/portal/galerija
+          if git diff --cached --quiet; then
+            echo "Nema novih zapisa — stanje je već objavljeno."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git commit -m "REGION: dnevni ciklus $(date +%F) — osam gradskih izdanja i galerija" -m "Automatski sastavljeni osvrti na način izvještavanja iz javnih feedova. Izvornici su povezani, tekstovi nisu preuzeti. Nije pojedinačno urednički pregledano."
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Push na main (uz provjeru pomaka)
+        if: steps.commit.outputs.changed == 'true' && github.ref == 'refs/heads/main'
+        shell: bash
+        run: |-
+          set -euo pipefail
+          expected="${{ steps.base.outputs.sha }}"
+          git fetch origin main --no-tags
+          current=$(git rev-parse origin/main)
+          if [ "$current" != "$expected" ]; then
+            echo "::warning::main se pomaknuo tijekom izrade izdanja (očekivano $expected, stvarno $current). Izdanje ostaje za sljedeći ciklus."
+            exit 0
+          fi
+          git push origin HEAD:main
+
+      - name: Deploy na Cloudflare Pages (svaki kanal svoj projekt)
+        if: steps.commit.outputs.changed == 'true' && github.ref == 'refs/heads/main'
+        shell: bash
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |-
+          set -uo pipefail
+          if [ -z "${CF_TOKEN:-}" ] || [ -z "${CF_ACCOUNT:-}" ]; then
+            echo "::warning::Cloudflare secrets nisu dostupni — deploy preskočen."
+            exit 0
+          fi
+          for dir in apps/region/site/*/; do
+            id=$(basename "$dir")
+            project="gnk-asg-kanal-$id"
+            code=$(curl -s -o /dev/null -w '%{http_code}' -H "Authorization: Bearer $CF_TOKEN" \
+              "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/$project")
+            if [ "$code" != "200" ]; then
+              curl -s -o /dev/null -X POST -H "Authorization: Bearer $CF_TOKEN" -H "Content-Type: application/json" \
+                --data "{\"name\":\"$project\",\"production_branch\":\"main\"}" \
+                "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects" || true
+            fi
+            npx --yes wrangler@4 pages deploy "$dir" --project-name="$project" --branch=main --commit-dirty=true \
+              || echo "::warning::Deploy projekta $project nije uspio."
+          done
+
+      - name: Objavi AKTUAL MEDIA (točan SHA)
+        if: steps.commit.outputs.changed == 'true' && github.ref == 'refs/heads/main' && vars.REGION_PORTAL_DEPLOY != 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          APPROVED_SHA: ${{ steps.commit.outputs.sha }}
+        run: |-
+          set -euo pipefail
+          gh workflow run deploy-admin-auth-v6.yml \
+            --repo "$GITHUB_REPOSITORY" \
+            --ref main \
+            -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
+            -f approved_sha="$APPROVED_SHA" \
+            -f notify_search_engines=false
+
+      - name: Provjeri javni hub
+        if: steps.commit.outputs.changed == 'true' && github.ref == 'refs/heads/main'
+        shell: bash
+        run: |-
+          set -uo pipefail
+          for i in $(seq 1 12); do
+            if curl -fsS "https://gnk-asg.hr/izdanja/" -o /tmp/izdanja.html && grep -q "KANAL BEOGRAD" /tmp/izdanja.html; then
+              echo "Hub je javan i sadrži regionalna izdanja."
+              exit 0
+            fi
+            echo "Čekam propagaciju ($i/12)..."
+            sleep 10
+          done
+          echo "::warning::Hub još nije potvrđen na javnoj adresi (portal se objavljuje zasebnim exact-SHA deployem)."
+
+      - name: Sažetak
+        if: always()
+        shell: bash
+        run: |-
+          {
+            echo "## REGION — dnevni ciklus"
+            echo "- Datum: $(date +%F)"
+            echo "- Promjena: ${{ steps.commit.outputs.changed }}"
+            echo "- Hub: https://gnk-asg.hr/izdanja/"
+            echo "- Izdanja: Zagreb, Beograd, Sarajevo, Budimpešta, Ljubljana, Rim, Sofija, Bukurešt"
+            echo "- Galerija: https://gnk-asg.hr/galerija/"
+            echo "- Status: automatski osvrti, nije pojedinačno urednički pregledano"
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -168,6 +168,25 @@
       "channelKillSwitch": "tjednikPublish",
       "editorialStatus": "auto-critique",
       "registeredAt": "2026-10-19T21:00:00+02:00"
+    },
+    {
+      "job": "REGION — osam gradskih izdanja AKTUAL MEDIA",
+      "workflow": ".github/workflows/region-daily.yml",
+      "frequency": "daily",
+      "cron": "50 5 * * * (Europe/Zagreb 06:50/07:50)",
+      "budgetMinutesPerRunEstimate": 12,
+      "writes": [
+        "apps/region/data",
+        "apps/region/site",
+        "apps/portal/izdanja",
+        "apps/portal/data/izdanja.json",
+        "apps/portal/data/izdanja-sport.json",
+        "apps/portal/data/nermin-sefic-gallery.json",
+        "apps/portal/galerija"
+      ],
+      "channelKillSwitch": "regionPublish",
+      "editorialStatus": "auto-critique",
+      "registeredAt": "2026-10-19T18:30:00+02:00"
     }
   ],
   "resourceOwnership": {
@@ -190,6 +209,11 @@
     "marketData": {
       "status": "split-by-explicit-resource",
       "targetWriterCountPerResource": 1
+    },
+    "apps/portal/izdanja/index.html": {
+      "status": "single-writer-required",
+      "targetWriterCount": 1,
+      "owner": "region-daily.yml"
     }
   },
   "emergencyControls": {

@@ -122,7 +122,7 @@
         if (text.trim().length < 3) return;
         var subject = 'Komentar na KANAL: ' + title;
         var bodyText = text + '\n\n— ' + name + '\n' + location.href + '\n\n(Poslano s obrasca na kanalu. Molimo ne mijenjati ovaj redak.)';
-        location.href = 'mailto:beckuphome@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(bodyText);
+        location.href = 'mailto:info@gnk-asg.hr?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(bodyText);
       });
     }
   }

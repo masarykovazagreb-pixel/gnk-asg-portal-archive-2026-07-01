@@ -62,7 +62,7 @@ const state = readJSON(STATE_PATH, { seen: {}, days: {} });
 state.seen ||= {};
 state.days ||= {};
 
-const UA = 'GNK-ASG-Business-Tjednik/1.0 (+https://gnk-asg-tjednik.pages.dev/metodologija/; kontakt beckuphome@gmail.com)';
+const UA = 'GNK-ASG-Business-Tjednik/1.0 (+https://gnk-asg-tjednik.pages.dev/metodologija/; kontakt info@gnk-asg.hr)';
 
 const fetchText = async (url, timeoutMs = 20000) => {
   const ctrl = new AbortController();

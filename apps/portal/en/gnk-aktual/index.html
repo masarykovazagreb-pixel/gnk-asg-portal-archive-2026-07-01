@@ -69,7 +69,99 @@
     <div class="am-mast-side right">GNK ASG MEDIA DESK<br>Updates six times daily · feed refreshes automatically six times daily</div>
   </section>
 
-  <nav class="am-sectionnav" id="amSectionNav" aria-label="AKTUAL sections"><a href="#amLead">Latest</a><a href="#rubrika-hrvatska">Croatia</a><a href="#rubrika-svijet">World</a><a href="#rubrika-biznis">Business</a><a href="#rubrika-tehnologija">Technology</a><a href="#rubrika-sport">Sport</a><a href="#rubrika-kultura">Culture</a><a href="/en/gnk-aktual/weekly/">Weekly</a><a href="/en/commentary/">Commentary</a><a href="/en/gnk-aktual/columns/">Columns</a><a href="/en/publications/">All news</a><a href="/en/analyses/">All analyses</a></nav>
+  <nav class="am-sectionnav" id="amSectionNav" aria-label="AKTUAL sections"><a href="#izdanja-po-zemljama">Editions</a><a href="#deskovi">Desks</a><a href="#mravinjak">News river</a><a href="#amLead">Latest</a><a href="#rubrika-hrvatska">Croatia</a><a href="#rubrika-svijet">World</a><a href="#rubrika-biznis">Business</a><a href="#rubrika-tehnologija">Technology</a><a href="#rubrika-sport">Sport</a><a href="#rubrika-kultura">Culture</a><a href="/en/gnk-aktual/weekly/">Weekly</a><a href="/en/commentary/">Commentary</a><a href="/en/gnk-aktual/columns/">Columns</a><a href="/en/publications/">All news</a><a href="/en/analyses/">All analyses</a></nav>
+<!-- AKTUAL-RAIL:START -->
+<style id="amx-style">.amx{margin:26px 0 0;background:#fffdf8;border:1px solid #d8d3c7;border-top:6px solid #111;scroll-margin-top:64px}
+.amx-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:12px 18px;border-bottom:1px solid #d8d3c7}
+.amx-flag{background:#d71920;color:#fff;font:900 11px/1 Inter,system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;padding:9px 12px;white-space:nowrap}
+.amx-head p{margin:0;font:400 12.5px/1.45 Georgia,serif;color:#4a4741;max-width:70ch}
+.amx-head p strong{font-family:system-ui,sans-serif;font-size:11.5px;letter-spacing:.04em;white-space:nowrap}
+.amx-all{margin-left:auto;font:900 10.5px/1 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border-bottom:2px solid #d71920;padding-bottom:4px;white-space:nowrap}
+.amx-all:hover{color:#d71920}
+.amx-row{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;list-style:none;margin:0;padding:16px 18px 6px}
+.amx-item{min-width:0}
+.amx-link{display:grid;justify-items:center;gap:7px;text-align:center;text-decoration:none}
+.amx-ring{position:relative;display:block;width:100%;aspect-ratio:1;border-radius:50%;padding:4px;background:linear-gradient(140deg,#e9c66c,#b8862f 45%,#f3dfa8);box-shadow:0 8px 18px rgba(15,23,42,.16);transition:transform .22s ease,box-shadow .22s ease}
+.amx-ring img{display:block;width:100%;height:100%;object-fit:cover;border-radius:50%;border:2px solid #fffdf8}
+.amx-badge{position:absolute;right:-2px;bottom:4px;background:#111;color:#e9c66c;font:800 9px/1 system-ui,sans-serif;letter-spacing:.02em;padding:4px 6px;border-radius:999px;border:2px solid #fffdf8}
+.amx-link b{font:900 13px/1.05 Impact,"Arial Black",system-ui,sans-serif;letter-spacing:.01em;text-transform:uppercase;color:#111}
+.amx-link small{font:700 9px/1.2 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#67645e}
+.amx-link:hover .amx-ring,.amx-link:focus-visible .amx-ring{transform:translateY(-3px) scale(1.03);box-shadow:0 14px 26px rgba(15,23,42,.26)}
+.amx-link:hover b{color:#d71920}
+.amx-platforms{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:10px 18px 16px}
+.amx-plabel{font:800 9.5px/1 system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#8a8578;margin-right:4px}
+.amx-platforms a{border:1px solid #111;padding:7px 10px;font:800 10px/1 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;transition:background .15s ease,color .15s ease}
+.amx-platforms a:hover{background:#111;color:#fffdf8}
+@media(max-width:1040px){.amx-row{grid-template-columns:repeat(4,minmax(0,1fr));row-gap:16px}}
+@media(max-width:620px){
+  .amx-head{gap:10px;padding:12px}
+  .amx-head p{font-size:11.5px;order:3;flex-basis:100%}
+  .amx-all{margin-left:0}
+  .amx-row{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:14px 12px 8px;scrollbar-width:none;-ms-overflow-style:none}
+  .amx-row::-webkit-scrollbar{display:none;height:0}
+  .amx-item{flex:0 0 84px;scroll-snap-align:start}
+  .amx-link b{font-size:12px}
+  .amx-link small{font-size:8.5px}
+  .amx-platforms{padding:8px 12px 14px}
+}</style>
+<section class="amx" aria-label="Our editions — AKTUAL MEDIA channels">
+  <div class="amx-head">
+    <span class="amx-flag">Our editions</span>
+    <p>Eight city channels in eight languages, BUSINESS WEEKLY and FASHION WEEKLY. A click opens the edition; from every edition the <strong>← AKTUAL MEDIA</strong> button brings you back.</p>
+    <a class="amx-all" href="#izdanja-po-zemljama">All editions ↓</a>
+  </div>
+  <ul class="amx-row"><li class="amx-item">
+      <a class="amx-link" href="https://gnk-asg-kanal-zagreb.pages.dev/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL ZAGREB — Hrvatska — 420 stories — open edition">
+        <span class="amx-ring"><img src="/assets/izdanja/zagreb-440.webp" alt="AKTUAL MEDIA KANAL ZAGREB — Zagreb, Hrvatska" width="440" height="440" loading="lazy" decoding="async"><span class="amx-badge">420</span></span>
+        <b>Zagreb</b>
+        <small>hr · Hrvatska</small>
+      </a>
+    </li><li class="amx-item">
+      <a class="amx-link" href="https://gnk-asg-kanal-beograd.pages.dev/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL BEOGRAD — Srbija — 353 stories — open edition">
+        <span class="amx-ring"><img src="/assets/izdanja/beograd-440.webp" alt="AKTUAL MEDIA KANAL BEOGRAD — Beograd, Srbija" width="440" height="440" loading="lazy" decoding="async"><span class="amx-badge">353</span></span>
+        <b>Beograd</b>
+        <small>sr · Srbija</small>
+      </a>
+    </li><li class="amx-item">
+      <a class="amx-link" href="https://gnk-asg-kanal-sarajevo.pages.dev/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL SARAJEVO — Bosna i Hercegovina — 379 stories — open edition">
+        <span class="amx-ring"><img src="/assets/izdanja/sarajevo-440.webp" alt="AKTUAL MEDIA KANAL SARAJEVO — Sarajevo, Bosna i Hercegovina" width="440" height="440" loading="lazy" decoding="async"><span class="amx-badge">379</span></span>
+        <b>Sarajevo</b>
+        <small>bs · Bosna i Hercegovina</small>
+      </a>
+    </li><li class="amx-item">
+      <a class="amx-link" href="https://gnk-asg-kanal-budimpesta.pages.dev/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL BUDAPEST — Mađarska — 360 stories — open edition">
+        <span class="amx-ring"><img src="/assets/izdanja/budimpesta-440.webp" alt="AKTUAL MEDIA KANAL BUDAPEST — Budimpešta, Mađarska" width="440" height="440" loading="lazy" decoding="async"><span class="amx-badge">360</span></span>
+        <b>Budimpešta</b>
+        <small>hu · Mađarska</small>
+      </a>
+    </li><li class="amx-item">
+      <a class="amx-link" href="https://gnk-asg-kanal-ljubljana.pages.dev/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL LJUBLJANA — Slovenija — 327 stories — open edition">
+        <span class="amx-ring"><img src="/assets/izdanja/ljubljana-440.webp" alt="AKTUAL MEDIA KANAL LJUBLJANA — Ljubljana, Slovenija" width="440" height="440" loading="lazy" decoding="async"><span class="amx-badge">327</span></span>
+        <b>Ljubljana</b>
+        <small>sl · Slovenija</small>
+      </a>
+    </li><li class="amx-item">
+      <a class="amx-link" href="https://gnk-asg-kanal-rim.pages.dev/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL ROMA — Italija — 413 stories — open edition">
+        <span class="amx-ring"><img src="/assets/izdanja/rim-440.webp" alt="AKTUAL MEDIA KANAL ROMA — Rim, Italija" width="440" height="440" loading="lazy" decoding="async"><span class="amx-badge">413</span></span>
+        <b>Rim</b>
+        <small>it · Italija</small>
+      </a>
+    </li><li class="amx-item">
+      <a class="amx-link" href="https://gnk-asg-kanal-sofija.pages.dev/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL SOFIJA — Bugarska — 313 stories — open edition">
+        <span class="amx-ring"><img src="/assets/izdanja/sofija-440.webp" alt="AKTUAL MEDIA KANAL SOFIJA — Sofija, Bugarska" width="440" height="440" loading="lazy" decoding="async"><span class="amx-badge">313</span></span>
+        <b>Sofija</b>
+        <small>bg · Bugarska</small>
+      </a>
+    </li><li class="amx-item">
+      <a class="amx-link" href="https://gnk-asg-kanal-bukurest.pages.dev/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL BUCUREȘTI — Rumunjska — 400 stories — open edition">
+        <span class="amx-ring"><img src="/assets/izdanja/bukurest-440.webp" alt="AKTUAL MEDIA KANAL BUCUREȘTI — Bukurešt, Rumunjska" width="440" height="440" loading="lazy" decoding="async"><span class="amx-badge">400</span></span>
+        <b>Bukurešt</b>
+        <small>ro · Rumunjska</small>
+      </a>
+    </li></ul>
+  <div class="amx-platforms"><span class="amx-plabel">Desks and platforms</span><a href="https://gnk-asg-tjednik.pages.dev/" rel="external noopener">Business Weekly</a><a href="https://gnk-asg.hr/izdanja/moda/" rel="external noopener">Fashion Weekly</a><a href="https://gnk-asg.hr/izdanja/sport/" rel="external noopener">Sport</a><a href="https://gnk-asg.hr/izdanja/politika/" rel="external noopener">Politics</a><a href="https://gnk-asg.hr/izdanja/sigurnost/" rel="external noopener">Security</a><a href="https://gnk-asg.hr/izdanja/tehnologija/" rel="external noopener">Technology</a><a href="https://gnk-asg.hr/izdanja/biznis/" rel="external noopener">Business desk</a><a href="https://gnk-asg.hr/galerija/" rel="external noopener">Gallery</a><a href="https://gnk-asg.hr/radio/" rel="external noopener">Radio</a></div>
+</section>
+<!-- AKTUAL-RAIL:END -->
 
   <section class="am-breaking" aria-label="Latest headlines">
     <div class="am-breaking-label">JUST IN</div>

@@ -46,8 +46,8 @@
   // The only stored setting: whether the mini radio is closed (no tracking, no cookies).
   const UI_KEY='amr-float-ui-v1';
   let suppressLaunchClick=false;   // the click that ends a drag of the round button must not open the radio
-  function loadClosed(){try{return JSON.parse(localStorage.getItem(UI_KEY)||'{}').closed===true}catch(_){return false}}
-  function saveClosed(closed){try{if(closed)localStorage.setItem(UI_KEY,JSON.stringify({closed:true}));else localStorage.removeItem(UI_KEY)}catch(_){}}
+  function loadClosed(){try{const v=JSON.parse(localStorage.getItem(UI_KEY)||'{}');return v.closed!==false}catch(_){return true}}
+  function saveClosed(closed){try{localStorage.setItem(UI_KEY,JSON.stringify({closed:!!closed}))}catch(_){}}
 
   try{channel=new BroadcastChannel('aktual-media-radio-v1')}catch(_){}
 
@@ -188,7 +188,7 @@
     root.setAttribute('aria-label',text.title);
     const chips=STATIONS.map(s=>'<button type="button" class="amr-chip" data-amr-chip="'+s.id+'" aria-pressed="false">'+s.label.replace('&','&amp;')+'</button>').join('');
     root.innerHTML='<div class="amr-float"><div class="amr-head" data-amr-drag tabindex="0" title="'+text.drag+'" aria-label="'+text.drag+'"><div class="amr-brand"><span class="amr-dot"></span><div><div class="amr-title">AKTUAL MEDIA RADIO</div><div class="amr-state" data-amr-state></div></div></div><span class="amr-grip" aria-hidden="true">⠿</span><button class="amr-close" type="button" data-amr-close aria-label="'+text.close+'" title="'+text.close+'">×</button></div><div class="amr-body"><div class="amr-station"><strong data-amr-station>AKTUAL MEDIA RADIO</strong><span data-amr-tag>'+text.standby+'</span></div><div class="amr-chips" role="group" aria-label="'+text.stations+'">'+chips+'</div><div class="amr-actions"><button class="amr-btn amr-vol" type="button" data-amr-voldown aria-label="'+text.volDown+'" title="'+text.volDown+'">−</button><button class="amr-btn primary" type="button" data-amr-play>'+text.play+'</button><button class="amr-btn amr-vol" type="button" data-amr-volup aria-label="'+text.volUp+'" title="'+text.volUp+'">+</button><span class="amr-level" aria-label="'+text.volume+'"><span class="amr-level-track"><span class="amr-level-bar" data-amr-bar></span></span><span data-amr-level>80%</span></span><button class="amr-btn amr-pop" type="button" data-amr-open aria-label="'+text.detach+'" title="'+text.detach+'">↗</button></div></div><div class="amr-foot"><button type="button" data-amr-install>'+text.app+'</button><a href="'+(en?'/en/radio/':'/radio/')+'">'+(en?'Radio page':'Radio stranica')+'</a></div></div><button class="amr-launch" type="button" data-amr-launch aria-label="'+text.open+'" title="'+text.open+'"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M6 8.5 17.5 4" stroke="#d4af37" stroke-width="1.6" stroke-linecap="round" fill="none"/><rect x="3" y="8.5" width="18" height="11.5" rx="2.5" fill="none" stroke="#f7fafc" stroke-width="1.6"/><circle cx="9" cy="14.25" r="3" fill="none" stroke="#d4af37" stroke-width="1.6"/><path d="M14.5 12.5h4M14.5 15.5h4" stroke="#f7fafc" stroke-width="1.6" stroke-linecap="round"/></svg><span class="amr-dot"></span></button>';
-    if(loadClosed())root.classList.add('amr-closed');   // remembered across all portal pages
+    if(loadClosed())root.classList.add('amr-closed');   // diskretno: player je preklopljen dok ga čitatelj ne otvori
     document.body.appendChild(root);
     root.querySelector('[data-amr-play]')?.addEventListener('click',()=>{
       if(!state.connected){openPlayer(true,state.stationId!==STATIONS[0].id?state.stationId:null);return}

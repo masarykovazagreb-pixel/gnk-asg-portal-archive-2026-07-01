@@ -87,7 +87,7 @@ i povezuje domenu.
 | HTTPS | automatski |
 | Trošak | 0 € |
 
-**Postupak (10 minuta, potreban Cloudflare račun na `beckuphome@gmail.com`)**
+**Postupak (10 minuta, potreban Cloudflare račun na `info@gnk-asg.hr`)**
 
 1. Cloudflare dashboard → *Workers & Pages → Create → Pages → Connect to Git*.
 2. Odaberi repo `masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01`, grana `main`.

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-label="Apstraktni modni motiv: silueta i zlatne linije tkanine">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#08131f"/><stop offset=".55" stop-color="#0b1d33"/><stop offset="1" stop-color="#06101c"/></linearGradient>
+<linearGradient id="gold" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#8f6a20"/><stop offset=".5" stop-color="#e9c66c"/><stop offset="1" stop-color="#fff0c4"/></linearGradient>
+<linearGradient id="glow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9c66c" stop-opacity=".22"/><stop offset="1" stop-color="#e9c66c" stop-opacity="0"/></linearGradient>
+<radialGradient id="vig" cx=".5" cy=".42" r=".75"><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></radialGradient>
+<filter id="soft"><feGaussianBlur stdDeviation="18"/></filter>
+</defs>
+<rect width="1200" height="800" fill="url(#bg)"/>
+<ellipse cx="640" cy="300" rx="420" ry="240" fill="url(#glow)" filter="url(#soft)"/>
+<g stroke="#7fd0e8" stroke-opacity=".10" stroke-width="1">
+<line x1="0" y1="0" x2="0" y2="800"/><line x1="60" y1="0" x2="60" y2="800"/><line x1="120" y1="0" x2="120" y2="800"/><line x1="180" y1="0" x2="180" y2="800"/><line x1="240" y1="0" x2="240" y2="800"/><line x1="300" y1="0" x2="300" y2="800"/><line x1="360" y1="0" x2="360" y2="800"/><line x1="420" y1="0" x2="420" y2="800"/><line x1="480" y1="0" x2="480" y2="800"/><line x1="540" y1="0" x2="540" y2="800"/><line x1="600" y1="0" x2="600" y2="800"/><line x1="660" y1="0" x2="660" y2="800"/><line x1="720" y1="0" x2="720" y2="800"/><line x1="780" y1="0" x2="780" y2="800"/><line x1="840" y1="0" x2="840" y2="800"/><line x1="900" y1="0" x2="900" y2="800"/><line x1="960" y1="0" x2="960" y2="800"/><line x1="1020" y1="0" x2="1020" y2="800"/><line x1="1080" y1="0" x2="1080" y2="800"/><line x1="1140" y1="0" x2="1140" y2="800"/><line x1="1200" y1="0" x2="1200" y2="800"/><line x1="0" y1="0" x2="1200" y2="0"/><line x1="0" y1="60" x2="1200" y2="60"/><line x1="0" y1="120" x2="1200" y2="120"/><line x1="0" y1="180" x2="1200" y2="180"/><line x1="0" y1="240" x2="1200" y2="240"/><line x1="0" y1="300" x2="1200" y2="300"/><line x1="0" y1="360" x2="1200" y2="360"/><line x1="0" y1="420" x2="1200" y2="420"/><line x1="0" y1="480" x2="1200" y2="480"/><line x1="0" y1="540" x2="1200" y2="540"/><line x1="0" y1="600" x2="1200" y2="600"/><line x1="0" y1="660" x2="1200" y2="660"/><line x1="0" y1="720" x2="1200" y2="720"/><line x1="0" y1="780" x2="1200" y2="780"/>
+<g stroke="url(#gold)" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="7">
+  <path d="M600 190a44 44 0 1 1 0 88 44 44 0 0 1 0-88z"/>
+  <path d="M600 300c-70 0-104 46-118 116l-34 156h304l-34-156c-14-70-48-116-118-116z"/>
+  <path d="M482 416c40 26 76 38 118 38s78-12 118-38"/>
+  <path d="M600 454v180" stroke-opacity=".55"/>
+  <path d="M520 634h160" stroke-opacity=".55"/>
+</g>
+<g stroke="#7fd0e8" stroke-opacity=".28" fill="none" stroke-width="3">
+  <path d="M150 700c120-120 240-140 360-60"/><path d="M1050 700c-120-120-240-140-360-60"/>
+  <path d="M120 240c90 40 150 40 240 0"/><path d="M1080 240c-90 40-150 40-240 0"/>
+</g>
+</g>
+<rect width="1200" height="800" fill="url(#vig)"/>
+</svg>

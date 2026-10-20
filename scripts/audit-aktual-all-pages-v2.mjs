@@ -83,8 +83,13 @@ for(const file of pages){
 
   const canonicalMarks=[...html.matchAll(/<p[^>]*data-author-mark=["']nermin-sefic["'][^>]*>\s*#NerminSefić\s+#NerminSefic\s*<\/p>/gi)];
   const withoutCanonicalMark=html.replace(/<p[^>]*data-author-mark=["']nermin-sefic["'][^>]*>[\s\S]*?<\/p>/gi,'');
-  if(/#NerminSefić|#NerminSefic/i.test(withoutCanonicalMark)&&!approved.has(normalizeApproved(canonical)))critical.push(file+': Nermin author hashtag exists on an unapproved page');
-  if(/#(?:SefićNermin|SeficNermin|NerminSefi[cć][A-Za-zČĆŽŠĐčćžšđ]+)/i.test(html))critical.push(file+': unsupported Nermin author hashtag variant');
+  // Owner decision (2026-10-20): #SeficNermin and #SEFICNERMIN are supported author hashtags,
+  // but only on pages approved in data/approved_mentions.json — same rule as #NerminSefić/#NerminSefic.
+  const supportedReverse=/#(?:SeficNermin|SEFICNERMIN)(?![A-Za-zČĆŽŠĐčćžšđ])/gi;
+  const authorHashtag=/#(?:NerminSefić|NerminSefic|SeficNermin|SEFICNERMIN)/i;
+  if(authorHashtag.test(withoutCanonicalMark)&&!approved.has(normalizeApproved(canonical)))critical.push(file+': Nermin author hashtag exists on an unapproved page');
+  const variantProbe=html.replace(supportedReverse,'');
+  if(/#(?:SefićNermin|SeficNermin|NerminSefi[cć][A-Za-zČĆŽŠĐčćžšđ]+)/i.test(variantProbe))critical.push(file+': unsupported Nermin author hashtag variant');
   if(canonicalMarks.length>1)critical.push(file+': multiple canonical Nermin author marks');
 
   if(isIndexable){
