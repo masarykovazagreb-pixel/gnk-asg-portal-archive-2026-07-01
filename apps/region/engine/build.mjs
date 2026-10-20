@@ -435,7 +435,7 @@ function footer(channel, strings, extra = '') {
       <img src="/assets/izdanja/${c.id}-tile.webp" alt="${esc(c.title)} — ${esc(c.country)} — otvori izdanje" width="880" height="587" loading="lazy" decoding="async">
     </a></li>`).join('');
   const desks = [['sport', 'Sport'], ['politika', 'Politika'], ['sigurnost', 'Sigurnost'], ['biznis', 'Business'], ['tehnologija', 'Tehnologija'], ['moda', 'Tjednik Mode'], ['putovanja', 'Putovanja'], ['ljubimci', 'Ljubimci'], ['svijet', 'Svijet']]
-    .map(([id, label]) => `<a href="/izdanja/${id}/">${esc(label)}</a>`).join('') + '<a href="/radio/">Radio</a><a href="/galerija/">Galerija</a><a href="/kanal/">Svi kanali</a><a href="/digital-workforce/knjiga/">Knjiga radnika</a><a href="https://gnk-asg-tjednik.pages.dev/tjednik/2026-W43/" rel="external noopener">Tjednik W43 ↗</a>';
+    .map(([id, label]) => `<a href="/izdanja/${id}/">${esc(label)}</a>`).join('') + '<a href="/radio/">Radio</a><a href="/galerija/">Galerija</a><a href="/usa/">Colorado · USA</a><a href="/kanal/">Svi kanali</a><a href="/digital-workforce/knjiga/">Knjiga radnika</a><a href="https://gnk-asg-tjednik.pages.dev/tjednik/2026-W43/" rel="external noopener">Tjednik W43 ↗</a>';
   return `<footer class="foot">
   <section class="xf" aria-label="Ostala izdanja AKTUAL MEDIA">
     <div class="xf-head"><h2>Ostala izdanja — klik vodi na izdanje</h2><a href="${CENTRAL}#izdanja-po-zemljama" rel="external noopener">Sva izdanja →</a></div>
@@ -495,6 +495,7 @@ function homePage(channel, strings, data) {
       <p class="intro-text">${esc(strings.aboutText)}</p>
       <p class="live"><span class="live-n"><b>${items.length}</b> ${esc(strings.latest).toLowerCase()}</span><span class="live-sep">·</span><span class="live-t"><time datetime="${esc((items[0]?.date || data.updatedAt || '').slice(0, 10))}">${esc(strings.updated)} ${esc(shortDate((items[0]?.date || data.updatedAt || '').slice(0, 10), channel.lang))}</time></span></p>
       <p class="intro-tags">${channel.hashtags.map((h) => `<span class="tag">${esc(h)}</span>`).join(' ')}</p>
+      <p class="hero-tags">Oznake izdanja: <a href="/nermin-sefic/">#NerminSefić</a> · <a href="/nermin-sefic/">#NerminSefic</a> · <a href="/autorske-objave/">#SeficNermin</a> · <a href="/autorske-objave/">#SEFICNERMIN</a> · <a href="/nermin-sefic/">#UrednikNerminSefić</a> · #AKTUALMEDIA · #GNKASG · ${esc(channel.hashtags[0] || '')}</p>
     </div>
     <aside class="intro-side">
       <h2>${esc(strings.radio)}</h2>
@@ -582,6 +583,60 @@ ${footer(channel, strings)}`;
   });
 }
 
+
+/* ---------- komentar redakcijskog bota (označen kao automatiziran) ---------- */
+
+const BOT = {
+  hr: {
+    label: 'Komentar redakcijskog bota',
+    note: 'Ovaj komentar sastavio je redakcijski bot iz naslova, sažetka, datuma i poveznice na izvornik — nije komentar čitatelja i nije pojedinačno urednički pregledan.',
+    num: 'Naslov ističe brojku, pa je prvo pitanje što ta brojka mjeri, na koje se razdoblje odnosi i postoji li dokument iza nje.',
+    nonum: 'Naslov ne ističe brojku, pa je glavno pitanje što je u tekstu tvrdnja, a što kontekst koji je okružuje.'
+  },
+  sr: {
+    label: 'Komentar redakcijskog bota',
+    note: 'Ovaj komentar sastavio je redakcijski bot iz naslova, sažetka, datuma i veze ka izvoru — nije komentar čitalaca i nije pojedinačno urednički pregledan.',
+    num: 'Naslov ističe brojku, pa je prvo pitanje šta ta brojka meri, na koji period se odnosi i postoji li dokument iza nje.',
+    nonum: 'Naslov ne ističe brojku, pa je glavno pitanje šta je u tekstu tvrdnja, a šta kontekst koji je okružuje.'
+  },
+  bs: {
+    label: 'Komentar redakcijskog bota',
+    note: 'Ovaj komentar sastavio je redakcijski bot iz naslova, sažetka, datuma i linka na izvor — nije komentar čitalaca i nije pojedinačno urednički pregledan.',
+    num: 'Naslov ističe brojku, pa je prvo pitanje šta ta brojka mjeri, na koji period se odnosi i postoji li dokument iza nje.',
+    nonum: 'Naslov ne ističe brojku, pa je glavno pitanje šta je u tekstu tvrdnja, a šta kontekst koji je okružuje.'
+  },
+  hu: {
+    label: 'A szerkesztőségi bot megjegyzése',
+    note: 'Ezt a megjegyzést a szerkesztőségi bot készítette a címből, a kivonatból, a dátumból és a forráslinkből — nem olvasói hozzászólás, és nem esett egyedi szerkesztői ellenőrzésen.',
+    num: 'A cím számot emel ki, ezért az első kérdés az, hogy mit mér ez a szám, melyik időszakra vonatkozik, és van-e mögötte dokumentum.',
+    nonum: 'A cím nem emel ki számot, ezért a fő kérdés az, mi a tény állítása a szövegben, és mi a kontextus.'
+  },
+  sl: {
+    label: 'Komentar uredniškega bota',
+    note: 'Ta komentar je sestavil uredniški bot iz naslova, povzetka, datuma in povezave na vir — ni komentar bralcev in ni bil posamično uredniško pregledan.',
+    num: 'Naslov poudarja številko, zato je prvo vprašanje, kaj ta številka meri, na katero obdobje se nanaša in ali za njo stoji dokument.',
+    nonum: 'Naslov ne poudarja številke, zato je glavno vprašanje, kaj je v besedilu trditev in kaj kontekst.'
+  },
+  it: {
+    label: 'Commento del bot redazionale',
+    note: 'Questo commento è stato composto dal bot della redazione da titolo, sommario, data e link alla fonte — non è un commento dei lettori e non è stato verificato singolarmente.',
+    num: 'Il titolo mette in evidenza un numero: la prima domanda è che cosa misuri, a quale periodo si riferisca e se esista un documento a sostegno.',
+    nonum: 'Il titolo non mette in evidenza un numero: la domanda principale è che cosa sia affermazione nel testo e che cosa contesto.'
+  },
+  bg: {
+    label: 'Коментар на редакционния бот',
+    note: 'Този коментар е съставен от редакционния бот от заглавието, резюмето, датата и връзката към източника — не е читателски коментар и не е индивидуално редакторски проверен.',
+    num: 'Заглавието изтъква число, затова първият въпрос е какво измерва то, за кой период се отнася и има ли документ зад него.',
+    nonum: 'Заглавието не изтъква число, затова основният въпрос е кое в текста е твърдение и кое е контекст.'
+  },
+  ro: {
+    label: 'Comentariul botului redacției',
+    note: 'Acest comentariu a fost compus de botul redacției din titlu, rezumat, data și linkul către sursă — nu este un comentariu al cititorilor și nu a fost verificat individual.',
+    num: 'Titlul evidențiază o cifră, așa că prima întrebare este ce măsoară acea cifră, la ce perioadă se referă și dacă există un document în spatele ei.',
+    nonum: 'Titlul nu evidențiază o cifră, așa că întrebarea principală este ce este afirmație în text și ce este context.'
+  }
+};
+
 function articlePage(channel, strings, item, items) {
   const theme = themeOf(item);
   const a = ANALYSIS[channel.lang] || ANALYSIS.hr;
@@ -604,6 +659,8 @@ function articlePage(channel, strings, item, items) {
   const related = items.filter((i) => i.slug !== item.slug && themeOf(i) === theme).slice(0, 4);
   const score = scoreFromTitle(item.title);
   const tags = [...new Set([...channel.hashtags, channel.country, channel.city, item.sourceName, strings.themeNames[theme] || theme])];
+  const bot = BOT[channel.lang] || BOT.hr;
+  const botText = `${bot.note} ${/\d/.test(item.title) ? bot.num : bot.nonum}`;
 
   const root = '../../';
   const body = `${header(channel, strings, '', root)}
@@ -629,13 +686,28 @@ function articlePage(channel, strings, item, items) {
       ${paragraphs.map((p) => `<p>${esc(p)}</p>`).join('\n      ')}
     </section>
 
+    <section class="botnote" aria-label="${esc(bot.label)}">
+      <p class="botnote-k">${esc(bot.label)}</p>
+      <p>${esc(botText)}</p>
+    </section>
+
     <section class="checks">
       <h2>${esc(strings.analysis)}</h2>
       <ol>${checks.map((c) => `<li>${esc(c)}</li>`).join('')}</ol>
       <p class="small">${esc(strings.autoNote)}</p>
     </section>
 
-    <p class="tags">${tags.map((tag) => `<span class="tag">${esc(tag)}</span>`).join(' ')}</p>
+    <ul class="hastag-line" aria-label="Oznake teksta">
+      <li class="hastag-k">Oznake</li>
+      <li><a href="/nermin-sefic/">#NerminSefić</a></li>
+      <li><a href="/nermin-sefic/">#NerminSefic</a></li>
+      <li><a href="/autorske-objave/">#SeficNermin</a></li>
+      <li><a href="/autorske-objave/">#SEFICNERMIN</a></li>
+      <li><a href="/nermin-sefic/">#UrednikNerminSefić</a></li>
+      <li><a href="/gnk-aktual/">#AKTUALMEDIA</a></li>
+      <li><a href="/kanal/">#GNKASG</a></li>
+      ${tags.map((tag) => `<li><span>${esc(tag)}</span></li>`).join('')}
+    </ul>
 
     ${related.length ? `<section class="related"><h2>${esc(strings.themeNames[theme] || theme)}</h2><ul class="list">${related.map((r) => `<li><time datetime="${esc(r.date)}">${esc(shortDate(r.date.slice(0, 10), channel.lang))}</time><a href="${root}clanak/${r.slug}/">${esc(r.title)}</a><span class="src">${esc(r.sourceName)}</span></li>`).join('')}</ul></section>` : ''}
 
@@ -664,7 +736,12 @@ ${footer(channel, strings)}`;
         logo: { '@type': 'ImageObject', url: 'https://gnk-asg.hr/assets/logo-gnk-asg-canonical.svg' },
         employee: [{ '@type': 'Person', name: 'Nermin Sefić', jobTitle: 'Direktor', url: 'https://gnk-asg.hr/nermin-sefic/' }]
       },
-      citation: { '@type': 'CreativeWork', name: item.title, url: item.url, publisher: { '@type': 'Organization', name: item.sourceName } }
+      citation: { '@type': 'CreativeWork', name: item.title, url: item.url, publisher: { '@type': 'Organization', name: item.sourceName } },
+      comment: [{
+        '@type': 'Comment', '@id': `${canonical}#komentar-bota`, url: `${canonical}#komentar-bota`,
+        text: botText, dateCreated: item.date, inLanguage: channel.lang,
+        author: { '@type': 'Organization', name: 'AKTUAL MEDIA · redakcijski bot', url: url(channel, 'metodologija/') }
+      }]
     },
     {
       '@context': 'https://schema.org', '@type': 'BreadcrumbList',
@@ -1108,6 +1185,9 @@ main{max-width:1180px;margin:0 auto;padding:clamp(20px,4vw,44px) clamp(16px,4vw,
 .intro--hero .intro-side h2{color:#e9c66c}
 .intro--hero .radio{color:#fff;border-top-color:rgba(255,255,255,.14)}
 .intro--hero .radio small{color:rgba(255,255,255,.62)}
+.hero-tags{margin:10px 0 0;font:700 12px/1.7 system-ui,-apple-system,sans-serif;color:rgba(255,255,255,.86);max-width:74ch}
+.hero-tags a{color:#f0d68b;text-decoration:none;border-bottom:1px solid rgba(240,214,139,.4)}
+.hero-tags a:hover{border-color:#f0d68b}
 .live{display:flex;flex-wrap:wrap;gap:10px;align-items:baseline;margin:0 0 12px;font:600 13px/1.4 system-ui,sans-serif;color:rgba(255,255,255,.82)}
 .live b{color:#e9c66c;font-size:17px}
 .live-sep{color:rgba(255,255,255,.35)}
@@ -1198,6 +1278,9 @@ body.mrv-wall main.page{max-width:none}
 .quote blockquote{margin:0;font-size:19px;line-height:1.55;color:#232a33}
 .cta{display:inline-block;margin-top:8px;font:600 13px/1 system-ui,sans-serif;background:var(--bg);color:var(--accent);padding:12px 16px}
 .osvrt{margin:24px 0;font-size:17px;line-height:1.7;color:#252c35}.osvrt p{margin:0 0 12px}
+.botnote{margin:22px 0;padding:14px 16px;border-left:4px solid #d9b45a;background:#fbf7ec;border-radius:0 6px 6px 0}
+.botnote-k{margin:0 0 6px;font:800 9.5px/1.1 system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#8a6a1f}
+.botnote p{margin:0;font:400 15px/1.62 Georgia,serif;color:#2a3038}
 .checks{margin:26px 0}
 .checks h2,.related h2{font:700 14px/1.4 system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;margin:0 0 10px}
 .checks ol{margin:0;padding-left:20px}

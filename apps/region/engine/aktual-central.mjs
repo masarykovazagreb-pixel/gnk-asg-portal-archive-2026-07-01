@@ -202,7 +202,8 @@ const GEO = {
 };
 
 function regionMap(cards, lang = 'hr') {
-  const W = 640, H = 420;
+  /* Mala karta: 250×150 (prije 640×420). Karta je ulaz, ne plakat. */
+  const W = 250, H = 150;
   const lons = Object.values(GEO).map((g) => g[0]);
   const lats = Object.values(GEO).map((g) => g[1]);
   const [x0, x1] = [Math.min(...lons) - 1.6, Math.max(...lons) + 1.6];
@@ -216,29 +217,36 @@ function regionMap(cards, lang = 'hr') {
     const card = cards.find((x) => x.id === c.id) || {};
     const cx = px(g[0]).toFixed(1), cy = py(g[1]).toFixed(1);
     const city = CITY_SHORT[c.id] || c.city;
-    const anchor = cx > W * 0.78 ? 'end' : 'start';
-    const dx = anchor === 'end' ? '-14' : '14';
-    return `<a class="amm-pin" href="${esc(c.base)}" aria-label="${esc(c.title)} — ${card.count || 0} ${lang === 'en' ? 'stories' : 'tekstova'} — ${lang === 'en' ? 'open edition' : 'otvori izdanje'}">
-      <circle cx="${cx}" cy="${cy}" r="9"></circle>
-      <circle class="amm-pulse" cx="${cx}" cy="${cy}" r="9"></circle>
-      <text x="${(Number(cx) + Number(dx)).toFixed(1)}" y="${(Number(cy) + 4).toFixed(1)}" text-anchor="${anchor}">${esc(city)}</text>
-      <title>${esc(c.title)} — ${card.count || 0} ${lang === 'en' ? 'stories' : 'tekstova'}</title>
+    const count = card.count || 0;
+    return `<a class="amm-pin" href="${esc(c.base)}" aria-label="${esc(c.title)} — ${count} ${lang === 'en' ? 'stories' : 'tekstova'} — ${lang === 'en' ? 'open edition' : 'otvori izdanje'}">
+      <circle class="amm-hit" cx="${cx}" cy="${cy}" r="11"></circle>
+      <circle cx="${cx}" cy="${cy}" r="4.6"></circle>
+      <title>${esc(city)} — ${esc(c.title)} · ${count} ${lang === 'en' ? 'stories' : 'tekstova'}</title>
     </a>`;
   }).join('');
 
-  const list = CHANNELS.map((c) => `<li><a href="${esc(c.base)}">${esc(CITY_SHORT[c.id] || c.city)}</a></li>`).join('');
+  const list = [
+    `<li><a class="amm-home" href="/usa/"><b>GNK DINAMO Ltd.</b> · Boulder, Colorado, USA <span>ishodište →</span></a></li>`,
+    ...CHANNELS.map((c) => {
+      const card = cards.find((x) => x.id === c.id) || {};
+      return `<li><a href="${esc(c.base)}">${esc(CITY_SHORT[c.id] || c.city)} <em>${card.count || 0}</em></a></li>`;
+    })
+  ].join('');
   const label = lang === 'en' ? 'Region map — pick a city' : 'Karta regije — odaberi grad';
 
   return `<div class="amm">
-  <div class="amm-head"><span class="amm-flag">${lang === 'en' ? 'Map' : 'Karta'}</span><span>${esc(label)}</span></div>
-  <svg class="amm-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(label)}">
-    <defs><linearGradient id="ammSea" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0d1c2c"/><stop offset="1" stop-color="#060f19"/></linearGradient></defs>
-    <rect width="${W}" height="${H}" fill="url(#ammSea)"></rect>
-    ${[...Array(9)].map((_, i) => `<line x1="0" y1="${(i * H) / 8}" x2="${W}" y2="${(i * H) / 8}" stroke="rgba(255,255,255,.05)"></line>`).join('')}
-    ${[...Array(13)].map((_, i) => `<line x1="${(i * W) / 12}" y1="0" x2="${(i * W) / 12}" y2="${H}" stroke="rgba(255,255,255,.05)"></line>`).join('')}
-    ${pins}
-  </svg>
-  <ul class="amm-list">${list}</ul>
+  <div class="amm-head"><span class="amm-flag">${lang === 'en' ? 'Map' : 'Karta'}</span><span class="amm-title">${esc(label)}</span>
+    <a class="amm-origin" href="/usa/">${lang === 'en' ? 'Origin: GNK DINAMO Ltd. · Colorado, USA →' : 'Ishodište: GNK DINAMO Ltd. · Colorado, USA →'}</a></div>
+  <div class="amm-body">
+    <svg class="amm-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(label)}">
+      <defs><linearGradient id="ammSea" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0d1c2c"/><stop offset="1" stop-color="#060f19"/></linearGradient></defs>
+      <rect width="${W}" height="${H}" fill="url(#ammSea)"></rect>
+      ${[...Array(5)].map((_, i) => `<line x1="0" y1="${((i + 0.5) * H) / 5}" x2="${W}" y2="${((i + 0.5) * H) / 5}" stroke="rgba(255,255,255,.05)"></line>`).join('')}
+      ${[...Array(7)].map((_, i) => `<line x1="${((i + 0.5) * W) / 7}" y1="0" x2="${((i + 0.5) * W) / 7}" y2="${H}" stroke="rgba(255,255,255,.05)"></line>`).join('')}
+      ${pins}
+    </svg>
+    <ul class="amm-list">${list}</ul>
+  </div>
 </div>`;
 }
 
@@ -290,18 +298,27 @@ function homeRail(cards, moda, lang = 'hr') {
 .amx-link b{font:900 13px/1.05 Impact,"Arial Black",system-ui,sans-serif;letter-spacing:.01em;text-transform:uppercase;color:#111}
 .amx-link small{font:700 9px/1.2 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#67645e}
 .amx-ago{font:700 8.5px/1.2 system-ui,sans-serif;font-style:normal;letter-spacing:.05em;color:#9a9384}
-.amm{margin:6px 18px 4px;border:1px solid #111;background:#060f19;position:relative}
-.amm-head{display:flex;gap:10px;align-items:center;padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.12);font:700 10.5px/1.3 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.7)}
-.amm-flag{background:#e9c66c;color:#0c1015;padding:5px 8px;font-weight:900;letter-spacing:.14em}
-.amm-svg{display:block;width:100%;height:auto}
-.amm-pin circle{fill:#e9c66c;stroke:#060f19;stroke-width:2.5}
-.amm-pin .amm-pulse{fill:none;stroke:#e9c66c;stroke-width:1.5;opacity:.5}
-.amm-pin text{fill:#fff;font:800 13px/1 system-ui,sans-serif;letter-spacing:.02em;paint-order:stroke;stroke:#060f19;stroke-width:3.5}
+.amm{max-width:620px;margin:12px auto 6px;border:1px solid #111;background:#060f19;position:relative}
+.amm-head{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.12);font:700 9.5px/1.3 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.66)}
+.amm-flag{background:#e9c66c;color:#0c1015;padding:4px 7px;font-weight:900;letter-spacing:.14em}
+.amm-title{color:rgba(255,255,255,.62)}
+.amm-origin{margin-left:auto;color:#e9c66c;border-bottom:1px solid rgba(233,198,108,.4);text-decoration:none;font-size:9px;letter-spacing:.08em}
+.amm-origin:hover{border-color:#e9c66c}
+.amm-body{display:grid;grid-template-columns:250px minmax(0,1fr);gap:10px;padding:10px;align-items:start}
+.amm-svg{display:block;width:250px;max-width:100%;height:auto;border:1px solid rgba(255,255,255,.1)}
+.amm-pin circle{fill:#e9c66c;stroke:#060f19;stroke-width:1.6}
 .amm-pin:hover circle{fill:#fff}
-.amm-pin:hover text{fill:#e9c66c}
-.amm-list{display:none;list-style:none;margin:0;padding:10px 12px 14px;flex-wrap:wrap;gap:8px}
-.amm-list a{font:800 11px/1 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#e9c66c;border:1px solid rgba(233,198,108,.4);padding:7px 9px;text-decoration:none}
-@media(max-width:700px){.amm-svg{display:none}.amm-list{display:flex}}
+.amm-list{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:5px}
+.amm-list a{display:inline-flex;align-items:baseline;gap:5px;font:800 10px/1 system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#e9c66c;border:1px solid rgba(233,198,108,.35);padding:6px 8px;text-decoration:none;transition:background .15s ease,color .15s ease}
+.amm-list a:hover{background:#e9c66c;color:#0c1015}
+.amm-list a em{font-style:normal;font-weight:700;font-size:9px;color:rgba(255,255,255,.55)}
+.amm-list a:hover em{color:#0c1015}
+.amm-list .amm-home{width:100%;display:grid;gap:2px;color:#fff;border-color:#e9c66c;background:rgba(233,198,108,.08);font-size:10.5px;letter-spacing:.02em;text-transform:none}
+.amm-list .amm-home b{font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:#e9c66c;font-size:10px}
+.amm-list .amm-home span{font:700 9px/1 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.amm-list .amm-home:hover{background:#e9c66c}
+.amm-list .amm-home:hover b,.amm-list .amm-home:hover span{color:#0c1015}
+@media(max-width:620px){.amm-body{grid-template-columns:1fr;padding:8px}.amm-svg{width:100%;max-width:250px;margin:0 auto}.amm-list .amm-home{font-size:10px}}
 .amx-link:hover .amx-ring,.amx-link:focus-visible .amx-ring{transform:translateY(-3px) scale(1.03);box-shadow:0 14px 26px rgba(15,23,42,.26)}
 .amx-link:hover b{color:#d71920}
 .amx-platforms{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:10px 18px 16px}

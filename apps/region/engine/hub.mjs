@@ -303,6 +303,7 @@ function netStrip() {
   const editions = CHANNELS.map((c) => `<a href="${c.base}" rel="external noopener"><b>${esc(CITY_SHORT[c.id] || c.city)}</b><span>${esc(c.country)}</span></a>`).join('');
   const desks = Object.entries(DESKS).map(([id, d]) => `<a href="/izdanja/${id}/"><b>${esc(d.nav)}</b><span>desk</span></a>`).join('');
   const more = [
+    ['/usa/', 'Colorado · USA', 'ishodište projekta'],
     ['/radio/', 'Radio', 'player'],
     ['/galerija/', 'Galerija', 'foto'],
     ['/kanal/', 'Kanali', '8 izdanja'],
@@ -541,6 +542,7 @@ export async function buildHub() {
     { loc: HUB, priority: '1.0' },
     ...Object.keys(DESKS).map((id) => ({ loc: `${HUB}${id}/`, priority: '0.7' })),
     ...CHANNELS.map((c) => ({ loc: c.base, priority: '0.9' })),
+    { loc: 'https://gnk-asg.hr/usa/', priority: '0.9' },
     { loc: 'https://gnk-asg-tjednik.pages.dev/', priority: '0.7' },
     { loc: 'https://gnk-asg.hr/galerija/', priority: '0.6' }
   ];
@@ -667,7 +669,7 @@ a{color:inherit;text-decoration:none}
 </style>
 </head>
 <body>
-<div class="kx-top"><strong>AKTUAL MEDIA KANAL</strong><span><a href="/gnk-aktual/">← AKTUAL MEDIA</a> · <a href="/izdanja/">Sva izdanja i deskovi</a> · <a href="/digital-workforce/knjiga/">Knjiga radnika</a></span></div>
+<div class="kx-top"><strong>AKTUAL MEDIA KANAL</strong><span><a href="/gnk-aktual/">← AKTUAL MEDIA</a> · <a href="/izdanja/">Sva izdanja i deskovi</a> · <a href="/usa/">Colorado · USA</a> · <a href="/radio/">Radio</a> · <a href="/digital-workforce/knjiga/">Knjiga radnika</a></span></div>
 <main class="kx-wrap">
   <div class="kx-head">
     <h1>Osam gradova, osam jezika — pod jednom domenom</h1>
@@ -675,6 +677,206 @@ a{color:inherit;text-decoration:none}
   </div>
   <div class="kx-grid">${rows}</div>
 </main>
+</body>
+</html>`;
+}
+
+
+/* ---------- /usa/: ishodište projekta, GNK DINAMO Ltd., Boulder, Colorado ---------- */
+
+const USA = 'https://gnk-asg.hr/usa/';
+
+export function usaPage() {
+  const editions = CHANNELS.map((c) => `<li class="us-ed">
+    <a href="/kanal/${esc(c.id)}/">
+      <span class="us-ed-city">${esc(CITY_SHORT[c.id] || c.city)}</span>
+      <span class="us-ed-meta">AKTUAL MEDIA KANAL · ${esc(c.country)} · ${esc(c.lang)}</span>
+      <span class="us-ed-go">Otvori izdanje →</span>
+    </a>
+    <a class="us-ed-en" href="/kanal/${esc(c.id)}/en/" hreflang="en" lang="en">English</a>
+  </li>`).join('');
+
+  const links = [
+    ['/group-network/', 'Grupna mreža', '33 društva · 12 lokacija u širenju'],
+    ['/the-code/', 'THE CODE', 'aktivacija grupe iz Coloradoa'],
+    ['/nermin-sefic/', 'Nermin Sefić', 'ovlašteni predstavnik i UBO grupe'],
+    ['/izdanja/', 'Sva izdanja i deskovi', 'devet deskova · tjednik · galerija'],
+    ['/kanal/', 'AKTUAL MEDIA KANAL', 'osam gradskih izdanja'],
+    ['/radio/', 'AKTUAL MEDIA RADIO', 'player na svakoj stranici'],
+    ['/galerija/', 'Galerija', 'foto i vizuali'],
+    ['/gnk-aktual/', 'AKTUAL MEDIA', 'središnja stranica'],
+    ['/digital-workforce/', 'Digitalna radna snaga', 'javna simulacija'],
+    ['/knowledge-center/', 'Centar znanja', 'odgovori i pojmovnik'],
+    ['https://gnk-asg-tjednik.pages.dev/', 'Business Tjednik', 'tjedni pregled'],
+    ['https://gnk-asg-tjednik.pages.dev/tjednik/2026-W43/', 'Tjednik W43', 'ovaj tjedan']
+  ].map(([href, name, kick]) => `<a href="${esc(href)}"${href.startsWith('http') ? ' rel="external noopener"' : ''}><b>${esc(name)}</b><span>${esc(kick)}</span></a>`).join('');
+
+  const facts = [
+    ['Tvrtka', 'GNK DINAMO Ltd.'],
+    ['Sjedište', 'Boulder, Colorado, USA'],
+    ['Entity ID', '20238180649'],
+    ['Ovlašteni predstavnik', '<a href="/nermin-sefic/">Nermin Sefić</a>'],
+    ['Stvarni vlasnik / UBO grupe', '<a href="/nermin-sefic/">Nermin Sefić</a>'],
+    ['Povezana društva', '33'],
+    ['Lokacije u širenju', '12']
+  ].map(([k, v]) => `<div class="us-fact"><dt>${esc(k)}</dt><dd>${v}</dd></div>`).join('');
+
+  const kpis = [
+    ['Prihodi grupe', '4,7046 mlrd. EUR'],
+    ['Neto dobit', '982,48 mil. EUR'],
+    ['Ukupna aktiva', '3,4830 mlrd. EUR'],
+    ['Kapital i rezerve', '3,4140 mlrd. EUR'],
+    ['Obveze', '69,04 mil. EUR'],
+    ['Udio kapitala', '98,02 %']
+  ].map(([k, v]) => `<div><small>${esc(k)}</small><strong>${esc(v)}</strong></div>`).join('');
+
+  const jsonld = [
+    {
+      '@context': 'https://schema.org', '@type': 'Organization',
+      '@id': 'https://gnk-asg.hr/usa/#gnk-dinamo-ltd',
+      name: 'GNK DINAMO Ltd.', legalName: 'GNK DINAMO Ltd.',
+      identifier: '20238180649',
+      url: USA,
+      address: { '@type': 'PostalAddress', addressLocality: 'Boulder', addressRegion: 'Colorado', addressCountry: 'US' },
+      employee: { '@type': 'Person', name: 'Nermin Sefić', jobTitle: 'Ovlašteni predstavnik', url: 'https://gnk-asg.hr/nermin-sefic/' },
+      subOrganization: { '@type': 'Organization', name: 'GNK ASG d.o.o.', url: 'https://gnk-asg.hr/' }
+    },
+    {
+      '@context': 'https://schema.org', '@type': 'WebPage',
+      '@id': `${USA}#webpage`, url: USA, name: 'GNK DINAMO Ltd. — Boulder, Colorado, USA',
+      inLanguage: 'hr', isPartOf: { '@type': 'WebSite', name: 'AKTUAL MEDIA', url: 'https://gnk-asg.hr/' },
+      about: { '@id': 'https://gnk-asg.hr/usa/#gnk-dinamo-ltd' },
+      publisher: { '@type': 'NewsMediaOrganization', name: 'AKTUAL MEDIA d.o.o.', url: 'https://gnk-asg.hr/gnk-aktual/' }
+    },
+    {
+      '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'AKTUAL MEDIA', item: 'https://gnk-asg.hr/gnk-aktual/' },
+        { '@type': 'ListItem', position: 2, name: 'Sva izdanja', item: HUB },
+        { '@type': 'ListItem', position: 3, name: 'Colorado · USA', item: USA }
+      ]
+    },
+    {
+      '@context': 'https://schema.org', '@type': 'ItemList',
+      name: 'Izdanja povezana s ishodištem u Coloradu',
+      numberOfItems: CHANNELS.length,
+      itemListElement: CHANNELS.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.title, url: c.base }))
+    }
+  ];
+
+  return `<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GNK DINAMO Ltd. — Boulder, Colorado, USA | ishodište AKTUAL MEDIA</title>
+<meta name="description" content="GNK DINAMO Ltd., Boulder, Colorado, USA — matična tvrtka grupe i ishodište mreže AKTUAL MEDIA. Entity ID 20238180649, 33 povezana društva, 12 lokacija u širenju i konsolidirani pokazatelji FY 2025, s poveznicama na svih osam gradskih izdanja.">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<meta name="author" content="AKTUAL MEDIA d.o.o.">
+<meta name="editor" content="Nermin Sefić">
+<meta name="keywords" content="GNK DINAMO Ltd., Boulder, Colorado, USA, GNK ASG, AKTUAL MEDIA, ishodište projekta, Nermin Sefić, 20238180649">
+<link rel="canonical" href="${USA}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AKTUAL MEDIA">
+<meta property="og:title" content="GNK DINAMO Ltd. — Boulder, Colorado, USA">
+<meta property="og:description" content="Ishodište projekta i mreže AKTUAL MEDIA: GNK DINAMO Ltd., Boulder, Colorado, USA, Entity ID 20238180649.">
+<meta property="og:url" content="${USA}">
+<meta property="og:image" content="${SOCIAL_IMAGE}">
+<meta property="og:locale" content="hr_HR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GNK DINAMO Ltd. — Boulder, Colorado, USA">
+<meta name="twitter:description" content="Matična tvrtka grupe i ishodište mreže AKTUAL MEDIA.">
+<meta name="twitter:image" content="${SOCIAL_IMAGE}">
+<link rel="alternate" hreflang="hr" href="${USA}">
+<link rel="alternate" hreflang="x-default" href="${USA}">
+<script type="application/ld+json">${safeJson(jsonld)}</script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#061019;color:#e8edf3;font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:inherit;text-decoration:none}a:hover{text-decoration:underline}
+.us-top{background:#04101d;border-bottom:1px solid #1b3550;font:700 11px/1.4 system-ui;letter-spacing:.14em;text-transform:uppercase;color:#8fa3ba;padding:16px clamp(14px,4vw,40px);display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
+.us-top a{color:#e0bd69}
+.us-wrap{max-width:1120px;margin:0 auto;padding:0 clamp(14px,4vw,40px)}
+.us-hero{padding:clamp(28px,5vw,64px) 0 24px;border-bottom:1px solid #1b3550;background:radial-gradient(900px 340px at 12% -10%,rgba(224,189,105,.16),transparent 60%)}
+.us-kicker{font:800 11px/1 system-ui;letter-spacing:.2em;text-transform:uppercase;color:#e0bd69;margin:0 0 12px}
+.us-hero h1{font:700 clamp(30px,5vw,56px)/1.02 Georgia,serif;margin:0 0 14px;letter-spacing:-.02em;color:#fff}
+.us-lead{font:400 clamp(16px,1.6vw,19px)/1.6 Georgia,serif;color:#c6d2df;max-width:74ch;margin:0}
+.us-hero-meta{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 0;font:700 10.5px/1 system-ui;letter-spacing:.12em;text-transform:uppercase;color:#9fb0c2}
+.us-hero-meta span{border:1px solid #27405b;padding:7px 10px}
+.us-sec{padding:34px 0;border-bottom:1px solid #14283c}
+.us-sec h2{font:700 clamp(22px,2.6vw,32px)/1.15 Georgia,serif;margin:0 0 6px;color:#fff}
+.us-sub{color:#a9b6c6;margin:0 0 20px;max-width:76ch}
+.us-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:0}
+.us-fact{border:1px solid #1d3a58;background:#081a2b;padding:12px 14px}
+.us-fact dt{font:800 9.5px/1 system-ui;letter-spacing:.18em;text-transform:uppercase;color:#7f93a9;margin:0 0 5px}
+.us-fact dd{margin:0;font:600 15px/1.35 system-ui;color:#fff}
+.us-fact dd a{color:#e0bd69;border-bottom:1px solid rgba(224,189,105,.4)}
+.us-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.us-kpis div{border:1px solid #1d3a58;background:#081a2b;padding:14px}
+.us-kpis small{display:block;font:800 9.5px/1 system-ui;letter-spacing:.16em;text-transform:uppercase;color:#7f93a9;margin-bottom:6px}
+.us-kpis strong{font:700 20px/1.2 Georgia,serif;color:#e0bd69}
+.us-note{font:400 12.5px/1.55 Georgia,serif;color:#93a6ba;margin:14px 0 0;max-width:80ch;border-left:2px solid #27405b;padding-left:12px}
+.us-eds{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px}
+.us-ed{position:relative;border:1px solid #1d3a58;background:#081a2b;transition:border-color .18s ease,transform .18s ease}
+.us-ed:hover{border-color:#e0bd69;transform:translateY(-2px)}
+.us-ed>a:first-child{display:grid;gap:4px;padding:14px 14px 34px}
+.us-ed-city{font:800 16px/1 system-ui;letter-spacing:.04em;text-transform:uppercase;color:#fff}
+.us-ed-meta{font:600 11px/1.3 system-ui;color:#93a6ba}
+.us-ed-go{font:800 10px/1 system-ui;letter-spacing:.1em;text-transform:uppercase;color:#e0bd69;margin-top:6px}
+.us-ed-en{position:absolute;right:10px;bottom:9px;font:800 9px/1 system-ui;letter-spacing:.12em;text-transform:uppercase;color:#c6d2df;border-bottom:1px solid #3a5878;padding-bottom:2px}
+.us-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px}
+.us-links a{border:1px solid #1d3a58;background:#081a2b;padding:12px 14px;display:grid;gap:3px}
+.us-links a:hover{border-color:#e0bd69;text-decoration:none}
+.us-links b{font:700 14px/1.2 system-ui;color:#fff}
+.us-links span{font:600 10.5px/1.3 system-ui;letter-spacing:.06em;text-transform:uppercase;color:#7f93a9}
+.us-tags{list-style:none;display:flex;flex-wrap:wrap;gap:6px;margin:16px 0 0;padding:0}
+.us-tags li{font:700 10.5px/1 system-ui;letter-spacing:.06em;color:#e0bd69;border:1px solid rgba(224,189,105,.35);padding:6px 9px}
+.us-foot{background:#04101d;border-top:1px solid #1b3550;padding:26px 0 40px;font:400 12.5px/1.6 Georgia,serif;color:#93a6ba}
+.us-foot p{margin:0 0 8px}
+.us-foot a{color:#c6d2df;text-decoration:underline}
+</style>
+</head>
+<body>
+<div class="us-top"><strong>GNK DINAMO Ltd. · Boulder, Colorado</strong><span><a href="/gnk-aktual/">← AKTUAL MEDIA</a> · <a href="/izdanja/">Sva izdanja</a> · <a href="/kanal/">Kanali</a> · <a href="/radio/">Radio</a></span></div>
+<main>
+  <header class="us-hero"><div class="us-wrap">
+    <p class="us-kicker">Ishodište projekta · USA</p>
+    <h1>GNK DINAMO Ltd. — Boulder, Colorado</h1>
+    <p class="us-lead">Ovdašnji podaci su ishodište svih poveznica ove mreže: matična tvrtka GNK DINAMO Ltd. ima sjedište u Boulderu u Coloradu, a GNK ASG d.o.o. uključen je u njezin grupni prikaz. Iz ovog čvora vode poveznice na svih osam gradskih izdanja AKTUAL MEDIA KANAL, na devet deskova i na svaku drugu javnu stranicu portala — i svaka od tih stranica vodi natrag ovamo.</p>
+    <p class="us-hero-meta"><span>Entity ID 20238180649</span><span>Boulder · Colorado · USA</span><span>33 društva · 12 lokacija u širenju</span></p>
+  </div></header>
+
+  <section class="us-sec"><div class="us-wrap">
+    <h2>Tvrtka i ishodište</h2>
+    <p class="us-sub">Podaci kako ih portal objavljuje u grupnom prikazu GNK DINAMO Ltd. Iznos i status pojedinih stavki vrijede onako kako je navedeno u izvornom dokumentu; ovdje se ne dodaju nove tvrdnje.</p>
+    <dl class="us-facts">${facts}</dl>
+  </div></section>
+
+  <section class="us-sec"><div class="us-wrap">
+    <h2>Konsolidirani pokazatelji FY 2025</h2>
+    <p class="us-sub">Grupni podatci GNK DINAMO Ltd. iz dokumenta označenog kao management-certified i internally group-reviewed za javnu objavu u Coloradu.</p>
+    <div class="us-kpis">${kpis}</div>
+    <p class="us-note">Grupni podatci nisu predstavljeni kao neovisno revidirani izvještaji GNK ASG d.o.o. Pojedinačni financijski podaci društva objavljeni su zasebno na <a href="/group-network/">Grupnoj mreži</a>.</p>
+  </div></section>
+
+  <section class="us-sec"><div class="us-wrap">
+    <h2>Osam izdanja koja izlaze iz ovog ishodišta</h2>
+    <p class="us-sub">Svako izdanje ima svoj feed, sitemap i engleski pregled. Poveznica vraća na ovo ishodište sa svake stranice izdanja.</p>
+    <ul class="us-eds">${editions}</ul>
+  </div></section>
+
+  <section class="us-sec"><div class="us-wrap">
+    <h2>Sve poveznice iz Colorada</h2>
+    <p class="us-sub">Jedan ulaz, svi javni dijelovi mreže — od grupne mreže i tjednika do radija i galerije.</p>
+    <div class="us-links">${links}</div>
+    <ul class="us-tags" aria-label="Oznake"><li>#GNKDinamoLtd</li><li>#Colorado</li><li>#Boulder</li><li>#USA</li><li>#GNKASG</li><li>#AKTUALMEDIA</li><li>#NerminSefić</li><li>#NerminSefic</li><li>#SeficNermin</li><li>#SEFICNERMIN</li><li>#UrednikNerminSefić</li></ul>
+  </div></section>
+</main>
+<footer class="us-foot"><div class="us-wrap">
+  <p><strong>AKTUAL MEDIA d.o.o.</strong> · Urednik i direktor: <a href="/nermin-sefic/">Nermin Sefić</a> · <a href="mailto:${CONTACT}">${CONTACT}</a></p>
+  <p>Ishodište: GNK DINAMO Ltd., Boulder, Colorado, USA. Sva izdanja objavljuju osvrte na način izvještavanja; izvornici su uvijek povezani, a tvrdnje izvornika nisu tvrdnje redakcije.</p>
+  <p><a href="/izdanja/sitemap.xml">Sitemap izdanja</a> · <a href="/kanal/">Svi kanali</a> · <a href="https://gnk-asg.hr/">gnk-asg.hr</a></p>
+</div></footer>
 </body>
 </html>`;
 }
@@ -732,6 +934,8 @@ if (process.argv[1] && /hub\.mjs$/.test(process.argv[1])) {
     const cards = JSON.parse(readFileSync(join(PORTAL, 'data', 'izdanja.json'), 'utf8')).cards || [];
     mkdirSync(join(PORTAL, 'kanal'), { recursive: true });
     writeFileSync(join(PORTAL, 'kanal', 'index.html'), kanalIndex(cards));
+    mkdirSync(join(PORTAL, 'usa'), { recursive: true });
+    writeFileSync(join(PORTAL, 'usa', 'index.html'), usaPage());
     const sitemaps = writeSitemapIndex();
     console.log(JSON.stringify({ ok: true, ...hub, kanalIndex: true, sitemaps }, null, 2));
   });
