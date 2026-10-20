@@ -70,7 +70,7 @@
 .iz-net-h span{font:600 9.5px/1.4 system-ui;letter-spacing:.1em;color:#8296ad}
 .iz-net-g{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px;margin:0 0 8px}
 .iz-net-g--desks{grid-template-columns:repeat(9,minmax(0,1fr))}
-.iz-net-g--more{grid-template-columns:repeat(8,minmax(0,1fr))}
+.iz-net-g--more{grid-template-columns:repeat(5,minmax(0,1fr))}
 .iz-net-g a{display:grid;gap:3px;padding:9px 10px;border:1px solid #1c3854;border-radius:9px;background:#08182a;transition:border-color .16s ease,transform .16s ease}
 .iz-net-g a:hover{border-color:var(--gold);transform:translateY(-1px);text-decoration:none}
 .iz-net-g b{font:700 12px/1.15 system-ui;color:#eaf1f8;letter-spacing:.01em}
@@ -79,6 +79,10 @@
 @media(max-width:620px){.iz-net-g,.iz-net-g--desks,.iz-net-g--more{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .iz-foot{border-top:1px solid #17314a;padding:28px 0 44px;color:#8fa3ba;font:400 12px/1.6 system-ui}
 .iz-foot a{color:var(--gold)}
+.iz-hastags{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin:0 0 12px}
+.iz-hastags span{font:800 9px/1 system-ui;letter-spacing:.18em;text-transform:uppercase;color:#8296ad}
+.iz-hastags a{font:700 11px/1 system-ui;text-decoration:none;border:1px solid #24425f;border-radius:999px;padding:5px 9px;color:#dbe5f1}
+.iz-hastags a:hover{border-color:var(--gold);color:var(--gold);text-decoration:none}
 .iz-small{font:400 11px/1.6 system-ui;color:#8296ad}
 @media(max-width:760px){.iz-card--lead{grid-column:span 1}.iz-list li{grid-template-columns:70px minmax(0,1fr)}.iz-list .src{display:none}}
 
@@ -116,10 +120,11 @@
       <p class="iz-net-h">Mreža AKTUAL MEDIA <span>8 izdanja · 9 deskova · radio · galerija</span></p>
       <div class="iz-net-g"><a href="https://gnk-asg.hr/kanal/zagreb/" rel="external noopener"><b>Zagreb</b><span>Hrvatska</span></a><a href="https://gnk-asg.hr/kanal/beograd/" rel="external noopener"><b>Beograd</b><span>Srbija</span></a><a href="https://gnk-asg.hr/kanal/sarajevo/" rel="external noopener"><b>Sarajevo</b><span>Bosna i Hercegovina</span></a><a href="https://gnk-asg.hr/kanal/budimpesta/" rel="external noopener"><b>Budimpešta</b><span>Mađarska</span></a><a href="https://gnk-asg.hr/kanal/ljubljana/" rel="external noopener"><b>Ljubljana</b><span>Slovenija</span></a><a href="https://gnk-asg.hr/kanal/rim/" rel="external noopener"><b>Rim</b><span>Italija</span></a><a href="https://gnk-asg.hr/kanal/sofija/" rel="external noopener"><b>Sofija</b><span>Bugarska</span></a><a href="https://gnk-asg.hr/kanal/bukurest/" rel="external noopener"><b>Bukurešt</b><span>Rumunjska</span></a></div>
       <div class="iz-net-g iz-net-g--desks"><a href="/izdanja/sport/"><b>Sport</b><span>desk</span></a><a href="/izdanja/politika/"><b>Politika</b><span>desk</span></a><a href="/izdanja/biznis/"><b>Business</b><span>desk</span></a><a href="/izdanja/tehnologija/"><b>Tehnologija</b><span>desk</span></a><a href="/izdanja/putovanja/"><b>Putovanja</b><span>desk</span></a><a href="/izdanja/ljubimci/"><b>Ljubimci</b><span>desk</span></a><a href="/izdanja/svijet/"><b>Svijet</b><span>desk</span></a><a href="/izdanja/moda/"><b>Moda</b><span>desk</span></a><a href="/izdanja/sigurnost/"><b>Sigurnost</b><span>desk</span></a></div>
-      <div class="iz-net-g iz-net-g--more"><a href="/radio/"><b>Radio</b><span>player</span></a><a href="/galerija/"><b>Galerija</b><span>foto</span></a><a href="/kanal/"><b>Kanali</b><span>8 izdanja</span></a><a href="/gnk-aktual/"><b>AKTUAL MEDIA</b><span>središte</span></a><a href="/izdanja/"><b>Sva izdanja</b><span>popis</span></a><a href="/digital-workforce/"><b>Radna snaga</b><span>simulacija</span></a><a href="/knowledge-center/"><b>Centar znanja</b><span>odgovori</span></a><a href="https://gnk-asg-tjednik.pages.dev/" rel="external noopener"><b>Business Tjednik</b><span>tjednik</span></a></div>
+      <div class="iz-net-g iz-net-g--more"><a href="/radio/"><b>Radio</b><span>player</span></a><a href="/galerija/"><b>Galerija</b><span>foto</span></a><a href="/kanal/"><b>Kanali</b><span>8 izdanja</span></a><a href="/gnk-aktual/"><b>AKTUAL MEDIA</b><span>središte</span></a><a href="/izdanja/"><b>Sva izdanja</b><span>popis</span></a><a href="/digital-workforce/"><b>Radna snaga</b><span>simulacija</span></a><a href="/knowledge-center/"><b>Centar znanja</b><span>odgovori</span></a><a href="/digital-workforce/knjiga/"><b>Knjiga radnika</b><span>tko radi</span></a><a href="https://gnk-asg-tjednik.pages.dev/" rel="external noopener"><b>Business Tjednik</b><span>tjednik</span></a><a href="https://gnk-asg-tjednik.pages.dev/tjednik/2026-W43/" rel="external noopener"><b>Tjednik W43</b><span>ovaj tjedan</span></a></div>
       <p class="iz-small">Svaki link vodi na vlastito izdanje s vlastitim feedom i sitemapom. <a href="/kanal/">Svi kanali pod gnk-asg.hr →</a></p>
     </div>
   </section><footer class="iz-foot"><div class="iz-wrap">
+  <p class="iz-hastags" aria-label="Oznake"><span>Oznake</span> <a href="/nermin-sefic/">#NerminSefić</a> <a href="/nermin-sefic/">#NerminSefic</a> <a href="/autorske-objave/">#SeficNermin</a> <a href="/autorske-objave/">#SEFICNERMIN</a> <a href="/nermin-sefic/">#UrednikNerminSefić</a> <a href="/gnk-aktual/">#AKTUALMEDIA</a> <a href="/kanal/">#GNKASG</a></p>
   <p><strong>AKTUAL MEDIA d.o.o.</strong> · Urednik: Nermin Sefić · <a href="mailto:info@gnk-asg.hr">info@gnk-asg.hr</a></p>
   <p class="iz-small">Sva izdanja objavljuju osvrte na način izvještavanja. Izvornici su uvijek povezani, a tvrdnje izvornika nisu tvrdnje redakcije. Automatski sastavljeni dijelovi nisu pojedinačno urednički pregledani.</p>
   <p class="iz-small"><a href="/izdanja/sitemap.xml">Sitemap izdanja</a> · <a href="/gnk-aktual/">AKTUAL MEDIA</a> · <a href="https://gnk-asg.hr/">gnk-asg.hr</a></p>

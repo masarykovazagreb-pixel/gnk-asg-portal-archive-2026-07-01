@@ -395,6 +395,17 @@ function header(channel, strings, active = '', root = '') {
       <span>${esc(strings.publisher)}: AKTUAL MEDIA d.o.o.</span>
     </div>
   </div>
+  <p class="hastag-line" aria-label="Oznake izdanja">
+    <span class="hastag-k">Oznake</span>
+    <a href="/nermin-sefic/">#NerminSefić</a>
+    <a href="/nermin-sefic/">#NerminSefic</a>
+    <a href="/autorske-objave/">#SeficNermin</a>
+    <a href="/autorske-objave/">#SEFICNERMIN</a>
+    <a href="/nermin-sefic/">#UrednikNerminSefić</a>
+    <span>#AKTUALMEDIA</span>
+    <span>#GNKASG</span>
+    <span>${esc(channel.hashtags[0] || '')}</span>
+  </p>
   ${editionsStrip(channel)}
   <nav class="mainnav" aria-label="${esc(strings.latest)}">${nav}<a href="${CENTRAL}#izdanja-po-zemljama" rel="external">${esc(strings.hub)} ↗</a></nav>
 </header>`;
@@ -403,13 +414,13 @@ function header(channel, strings, active = '', root = '') {
 function footer(channel, strings, extra = '') {
   const others = CHANNELS.filter((c) => c.id !== channel.id);
   const links = others.map((c) => `<a href="${c.base}" rel="external noopener">${esc(c.title)}</a>`).join('');
-  const tags = [...channel.hashtags, '#AktualMedia', '#NerminSefić', '#SeficNermin'].map((x) => `<span class="tag">${esc(x)}</span>`).join(' ');
+  const tags = [...new Set([...channel.hashtags, '#AktualMedia', '#AKTUALMEDIA', '#GNKASG', '#NerminSefić', '#NerminSefic', '#SeficNermin', '#SEFICNERMIN', '#UrednikNerminSefić'])].map((x) => `<span class="tag">${esc(x)}</span>`).join(' ');
   /* Pločice drugih izdanja: kamo god čitatelj ode, vidi i ostale stranice. */
   const tiles = [...others, channel].map((c) => `<li class="xf-tile"><a href="${c.base}" rel="external noopener">
       <img src="/assets/izdanja/${c.id}-tile.webp" alt="${esc(c.title)} — ${esc(c.country)} — otvori izdanje" width="880" height="587" loading="lazy" decoding="async">
     </a></li>`).join('');
   const desks = [['sport', 'Sport'], ['politika', 'Politika'], ['sigurnost', 'Sigurnost'], ['biznis', 'Business'], ['tehnologija', 'Tehnologija'], ['moda', 'Tjednik Mode'], ['putovanja', 'Putovanja'], ['ljubimci', 'Ljubimci'], ['svijet', 'Svijet']]
-    .map(([id, label]) => `<a href="/izdanja/${id}/">${esc(label)}</a>`).join('') + '<a href="/radio/">Radio</a><a href="/galerija/">Galerija</a><a href="/kanal/">Svi kanali</a>';
+    .map(([id, label]) => `<a href="/izdanja/${id}/">${esc(label)}</a>`).join('') + '<a href="/radio/">Radio</a><a href="/galerija/">Galerija</a><a href="/kanal/">Svi kanali</a><a href="/digital-workforce/knjiga/">Knjiga radnika</a><a href="https://gnk-asg-tjednik.pages.dev/tjednik/2026-W43/" rel="external noopener">Tjednik W43 ↗</a>';
   return `<footer class="foot">
   <section class="xf" aria-label="Ostala izdanja AKTUAL MEDIA">
     <div class="xf-head"><h2>Ostala izdanja — klik vodi na izdanje</h2><a href="${CENTRAL}#izdanja-po-zemljama" rel="external noopener">Sva izdanja →</a></div>
@@ -568,6 +579,10 @@ function articlePage(channel, strings, item, items) {
   ];
   if (/\d/.test(item.title)) paragraphs.push(a.numbers(ctx));
   if (/\b(izvor|izvori|krugovi|neimenovan|anonim|prema saznanjima|saznaje)\b/i.test(`${item.title} ${item.summary}`)) paragraphs.push(a.unnamed(ctx));
+  if (a.headline) paragraphs.push(a.headline(ctx));
+  if (a.attribution) paragraphs.push(a.attribution(ctx));
+  if (a.verification) paragraphs.push(a.verification(ctx));
+  if (a.counterpoint) paragraphs.push(a.counterpoint(ctx));
   paragraphs.push(a.framing(ctx), a.read(ctx));
   const day = item.date.slice(0, 10);
   const checks = checksFor(item, strings);
@@ -942,6 +957,12 @@ img{max-width:100%;height:auto}
 .logo{display:block;font:700 clamp(30px,5vw,54px)/1.02 Georgia,serif;letter-spacing:-.01em;margin:6px 0 8px;color:var(--ink)}
 .strap{margin:0;max-width:46ch;color:rgba(255,255,255,.76);font-size:15px}
 .mastmeta{display:grid;gap:4px;font:500 12px/1.6 system-ui,sans-serif;color:rgba(255,255,255,.7);text-align:right}
+.hastag-line{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:10px 0 0;padding:10px 0 0;border-top:1px dashed rgba(0,0,0,.16);font:700 11px/1.4 system-ui,-apple-system,sans-serif;letter-spacing:.02em}
+.hastag-line a,.hastag-line span{text-decoration:none;color:var(--accent2,#8c2f2f)}
+.hastag-line a{background:rgba(140,47,47,.08);border:1px solid rgba(140,47,47,.22);border-radius:999px;padding:4px 9px}
+.hastag-line a:hover{background:rgba(140,47,47,.16)}
+.hastag-line .hastag-k{font:800 9px/1 system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#7a6a4b;border:0;background:none;padding:0}
+@media(max-width:600px){.hastag-line{font-size:10px;gap:5px 7px}}
 .eds{display:flex;align-items:center;gap:12px;padding:9px clamp(12px,3vw,40px);border-top:1px solid rgba(255,255,255,.12);border-bottom:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.22)}
 .eds-home{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:#0c1015;border-radius:999px;padding:8px 12px;font:800 10px/1 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
 .eds-home:hover{background:#fff;color:#0c1015;text-decoration:none}

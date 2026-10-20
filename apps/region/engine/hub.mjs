@@ -261,7 +261,7 @@ ${jsonld.map((n) => `<script type="application/ld+json">${safeJson(n)}</script>`
 .iz-net-h span{font:600 9.5px/1.4 system-ui;letter-spacing:.1em;color:#8296ad}
 .iz-net-g{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px;margin:0 0 8px}
 .iz-net-g--desks{grid-template-columns:repeat(9,minmax(0,1fr))}
-.iz-net-g--more{grid-template-columns:repeat(8,minmax(0,1fr))}
+.iz-net-g--more{grid-template-columns:repeat(5,minmax(0,1fr))}
 .iz-net-g a{display:grid;gap:3px;padding:9px 10px;border:1px solid #1c3854;border-radius:9px;background:#08182a;transition:border-color .16s ease,transform .16s ease}
 .iz-net-g a:hover{border-color:var(--gold);transform:translateY(-1px);text-decoration:none}
 .iz-net-g b{font:700 12px/1.15 system-ui;color:#eaf1f8;letter-spacing:.01em}
@@ -270,6 +270,10 @@ ${jsonld.map((n) => `<script type="application/ld+json">${safeJson(n)}</script>`
 @media(max-width:620px){.iz-net-g,.iz-net-g--desks,.iz-net-g--more{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .iz-foot{border-top:1px solid #17314a;padding:28px 0 44px;color:#8fa3ba;font:400 12px/1.6 system-ui}
 .iz-foot a{color:var(--gold)}
+.iz-hastags{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin:0 0 12px}
+.iz-hastags span{font:800 9px/1 system-ui;letter-spacing:.18em;text-transform:uppercase;color:#8296ad}
+.iz-hastags a{font:700 11px/1 system-ui;text-decoration:none;border:1px solid #24425f;border-radius:999px;padding:5px 9px;color:#dbe5f1}
+.iz-hastags a:hover{border-color:var(--gold);color:var(--gold);text-decoration:none}
 .iz-small{font:400 11px/1.6 system-ui;color:#8296ad}
 @media(max-width:760px){.iz-card--lead{grid-column:span 1}.iz-list li{grid-template-columns:70px minmax(0,1fr)}.iz-list .src{display:none}}
 ${cssExtra}
@@ -306,7 +310,9 @@ function netStrip() {
     ['/izdanja/', 'Sva izdanja', 'popis'],
     ['/digital-workforce/', 'Radna snaga', 'simulacija'],
     ['/knowledge-center/', 'Centar znanja', 'odgovori'],
-    ['https://gnk-asg-tjednik.pages.dev/', 'Business Tjednik', 'tjednik']
+    ['/digital-workforce/knjiga/', 'Knjiga radnika', 'tko radi'],
+    ['https://gnk-asg-tjednik.pages.dev/', 'Business Tjednik', 'tjednik'],
+    ['https://gnk-asg-tjednik.pages.dev/tjednik/2026-W43/', 'Tjednik W43', 'ovaj tjedan']
   ].map(([href, name, kick]) => `<a href="${href}"${href.startsWith('http') ? ' rel="external noopener"' : ''}><b>${esc(name)}</b><span>${esc(kick)}</span></a>`).join('');
   return `<section class="iz-net" aria-label="Mreža AKTUAL MEDIA">
     <div class="iz-wrap">
@@ -320,6 +326,7 @@ function netStrip() {
 }
 
 const portalFooter = () => `${netStrip()}<footer class="iz-foot"><div class="iz-wrap">
+  <p class="iz-hastags" aria-label="Oznake"><span>Oznake</span> <a href="/nermin-sefic/">#NerminSefić</a> <a href="/nermin-sefic/">#NerminSefic</a> <a href="/autorske-objave/">#SeficNermin</a> <a href="/autorske-objave/">#SEFICNERMIN</a> <a href="/nermin-sefic/">#UrednikNerminSefić</a> <a href="/gnk-aktual/">#AKTUALMEDIA</a> <a href="/kanal/">#GNKASG</a></p>
   <p><strong>AKTUAL MEDIA d.o.o.</strong> · Urednik: Nermin Sefić · <a href="mailto:${CONTACT}">${CONTACT}</a></p>
   <p class="iz-small">Sva izdanja objavljuju osvrte na način izvještavanja. Izvornici su uvijek povezani, a tvrdnje izvornika nisu tvrdnje redakcije. Automatski sastavljeni dijelovi nisu pojedinačno urednički pregledani.</p>
   <p class="iz-small"><a href="/izdanja/sitemap.xml">Sitemap izdanja</a> · <a href="/gnk-aktual/">AKTUAL MEDIA</a> · <a href="https://gnk-asg.hr/">gnk-asg.hr</a></p>
@@ -655,7 +662,7 @@ a{color:inherit;text-decoration:none}
 </style>
 </head>
 <body>
-<div class="kx-top"><strong>AKTUAL MEDIA KANAL</strong><span><a href="/gnk-aktual/">← AKTUAL MEDIA</a> · <a href="/izdanja/">Sva izdanja i deskovi</a></span></div>
+<div class="kx-top"><strong>AKTUAL MEDIA KANAL</strong><span><a href="/gnk-aktual/">← AKTUAL MEDIA</a> · <a href="/izdanja/">Sva izdanja i deskovi</a> · <a href="/digital-workforce/knjiga/">Knjiga radnika</a></span></div>
 <main class="kx-wrap">
   <div class="kx-head">
     <h1>Osam gradova, osam jezika — pod jednom domenom</h1>
