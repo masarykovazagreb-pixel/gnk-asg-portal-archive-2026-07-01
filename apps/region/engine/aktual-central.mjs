@@ -303,6 +303,7 @@ function homeRail(cards, moda, lang = 'hr') {
       <a class="amx-link" href="${esc(c.base)}" rel="external noopener" aria-label="${esc(c.title)} — ${esc(c.country)} — ${count} ${esc(T.texts)} — ${esc(T.open)}">
         <span class="amx-ring"><img src="${IMG}/${esc(c.id)}-440.webp" alt="${esc(c.title)} — ${esc(city)}, ${esc(c.country)}" width="440" height="440" loading="lazy" decoding="async">${count ? `<span class="amx-badge">${count}</span>` : ''}</span>
         <b>${esc(city)}</b>
+        <span class="amx-line" style="--c:${AMM_C[c.id] || '#e9c66c'}" aria-hidden="true"></span>
         <small>${esc(c.lang)} · ${esc(c.country)}</small>
         <em class="amx-ago">${esc(agoShort(card.lastItemAt, generatedAt))}</em>
       </a>
@@ -338,6 +339,7 @@ function homeRail(cards, moda, lang = 'hr') {
 .amx-ring img{display:block;width:100%;height:100%;object-fit:cover;border-radius:50%;border:2px solid #fffdf8}
 .amx-badge{position:absolute;right:-2px;bottom:4px;background:#111;color:#e9c66c;font:800 9px/1 system-ui,sans-serif;letter-spacing:.02em;padding:4px 6px;border-radius:999px;border:2px solid #fffdf8}
 .amx-link b{font:900 13px/1.05 Impact,"Arial Black",system-ui,sans-serif;letter-spacing:.01em;text-transform:uppercase;color:#111}
+.amx-line{display:block;width:30px;height:3px;border-radius:3px;background:var(--c,#e9c66c);margin:1px auto 0;opacity:.9;box-shadow:0 1px 3px rgba(0,0,0,.12)}
 .amx-link small{font:700 9px/1.2 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#67645e}
 .amx-ago{font:700 8.5px/1.2 system-ui,sans-serif;font-style:normal;letter-spacing:.05em;color:#9a9384}
 .amm{position:relative;max-width:940px;margin:30px auto 10px;border-radius:26px;border:1px solid #e3d9c3;background:
