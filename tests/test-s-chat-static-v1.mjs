@@ -7,7 +7,9 @@ const html=get('apps/portal/s-chat/index.html');
 const css=get('apps/portal/assets/s-chat-v1.css');
 const js=get('apps/portal/assets/s-chat-v1.js');
 const menu=get('apps/portal/assets/public-unified-menu-v6.js');
-for(const name of ['apps/portal/assets/s-chat-v1.js','apps/portal/assets/public-unified-menu-v6.js']){
+const floating=get('apps/portal/assets/s-chat-floating-v1.js');
+const home=get('apps/portal/assets/index-redesign-production.js');
+for(const name of ['apps/portal/assets/s-chat-v1.js','apps/portal/assets/public-unified-menu-v6.js','apps/portal/assets/s-chat-floating-v1.js','apps/portal/assets/index-redesign-production.js']){
   execFileSync(process.execPath,['--check',name],{stdio:'pipe'});
 }
 assert.match(html,/GNK ASG S\+Chat/);
@@ -25,10 +27,13 @@ assert.match(js,/if \(pending\) \{ pending\.abort\(\); pending = null; \}/);
 assert.match(js,/if \(token !== generation\) return/);
 assert.match(js,/textContent = data\.reply/);
 assert.match(js,/\/api\/intelligence-desk-chat/);
-assert.match(menu,/id='gnk-splus-floating-button'/);
-assert.match(menu,/link\.href='\/s-chat\/'/);
-assert.match(menu,/Otvori GNK ASG S\+Chat/);
-assert.match(menu,/9000/);
+assert.match(menu,/\/assets\/s-chat-floating-v1\.js/);
+assert.match(home,/\/assets\/s-chat-floating-v1\.js/);
+assert.match(floating,/link\.id = 'gnk-splus-floating-button'/);
+assert.match(floating,/link\.href = '\/s-chat\/'/);
+assert.match(floating,/Otvori GNK ASG S\+Chat/);
+assert.match(floating,/gnk-splus-home-button/);
+assert.match(floating,/9000/);
 const governance=JSON.parse(get('config/splus-chat-ai-governance-v1.json'));
 assert.equal(governance.aiGovernance.usedAI,true);
 assert.equal(governance.aiGovernance.directAiInteraction,true);
