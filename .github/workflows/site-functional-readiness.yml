@@ -54,6 +54,9 @@ jobs:
           bash -n scripts/check-newsroom-route-readiness.sh
           bash -n scripts/verify-production-route.sh
 
+      - name: GNK ASG S+Chat public launch, scroll, API and AI governance contract
+        run: node tests/test-s-chat-static-v1.mjs
+
       - name: Digital workforce API contract
         run: node scripts/test-digital-workforce-api-contract.mjs
 
