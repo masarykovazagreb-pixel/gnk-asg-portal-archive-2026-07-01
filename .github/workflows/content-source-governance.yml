@@ -7,6 +7,10 @@ on:
       - 'workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js'
       - 'workers/gnk-asg-direct-operator/src/digital-workforce-suite-v1.js'
       - 'workers/gnk-asg-ai-newsroom-writer/src/index.js'
+      - 'workers/gnk-asg-ai-newsroom-writer/wrangler.toml'
+      - 'apps/portal/admin-center/news-publication/index.html'
+      - 'scripts/test-newsroom-writer-safety-v1.mjs'
+      - 'scripts/test-news-publication-seo-contract.mjs'
       - 'scripts/test-content-source-governance-v1.mjs'
       - 'AGENTS.md'
       - 'config/eu-ai-act-governance-v1.json'
@@ -82,6 +86,8 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/news-auto-publication-v1.js
           node --check workers/gnk-asg-direct-operator/src/digital-workforce-suite-v1.js
           node --check workers/gnk-asg-ai-newsroom-writer/src/index.js
+          node --check scripts/test-newsroom-writer-safety-v1.mjs
+          node --check scripts/test-news-publication-seo-contract.mjs
           node --check scripts/test-content-source-governance-v1.mjs
           node --check scripts/check-ai-act-governance-v1.mjs
           node --check scripts/test-ai-act-governance-v1.mjs
@@ -102,6 +108,11 @@ jobs:
           node scripts/test-ai-act-governance-v1.mjs
       - name: Source provenance and publication safety contract
         run: node scripts/test-content-source-governance-v1.mjs
+      - name: Newsroom draft-only and no-external-publishing safeguards
+        run: |
+          set -euo pipefail
+          node scripts/test-newsroom-writer-safety-v1.mjs
+          node scripts/test-news-publication-seo-contract.mjs
       - name: Build and validate internal AKTUAL weekly candidate options
         run: |
           set -euo pipefail

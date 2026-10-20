@@ -30,6 +30,64 @@ function canonicalFrom(html){
     ||html.match(/<link\b[^>]*\bhref=["']([^"']+)["'][^>]*\brel=["'][^"']*canonical[^"']*["'][^>]*>/i)
     ||[])[1]||'';
 }
+function metaContent(html,name){
+  for(const tag of html.match(/<meta\b[^>]*>/gi)||[]){
+    const tagName=tag.match(/\bname=["']([^"']+)["']/i)?.[1];
+    if(tagName!==name)continue;
+    return tag.match(/\bcontent=["']([^"']*)["']/i)?.[1]||'';
+  }
+  return '';
+}
+function validateAiEditorialRecord(root,item,html,bytes,now,errors){
+  if(metaContent(html,'ai-generated').toLowerCase()!=='true')return;
+  const rel=`content/factory-queue/review-records/${item.slug}.json`;
+  let record;
+  try{record=readJson(root,rel)}catch{errors.push(item.id+': AI editorial approval record missing or invalid');return;}
+  const articleSha256=crypto.createHash('sha256').update(bytes).digest('hex');
+  const reviewer=String(record.approvedBy||'').trim();
+  const approvalDate=Date.parse(record.approvedAt||'');
+  const termsDate=Date.parse(record.sourceTermsVerifiedAt||'');
+  const sourceUrl=String(record.sourceUrl||'').trim();
+  let sourceSafe=false;try{sourceSafe=new URL(sourceUrl).protocol==='https:'}catch{}
+  const termsUrl=String(record.sourceTermsUrl||'').trim();
+  let termsSafe=false;try{termsSafe=new URL(termsUrl).protocol==='https:'}catch{}
+  const disclosure=metaContent(html,'ai-disclosure');
+  const bodyHash=metaContent(html,'ai-content-sha256');
+  const inputHash=metaContent(html,'ai-input-content-sha256');
+  const htmlSourceUrl=metaContent(html,'source-url').replace(/&amp;/g,'&');
+  const htmlLicense=metaContent(html,'source-license').replace(/&amp;/g,'&');
+  const htmlTermsUrl=metaContent(html,'source-terms-url').replace(/&amp;/g,'&');
+  const hashFormat=/^[a-f0-9]{64}$/i;
+  const decodeHtml=value=>String(value).replace(/&amp;/g,'&').replace(/&#39;/g,"'").replace(/&quot;/g,'"').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+  const sourceLinks=[...html.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/gi)];
+  const sourceInHtml=sourceLinks.some(match=>{
+    const href=match[1].match(/\bhref=["']([^"']+)["']/i)?.[1]||'';
+    const label=decodeHtml(match[2].replace(/<[^>]*>/g,'').trim());
+    return decodeHtml(href)===sourceUrl&&label===String(record.sourceName||'').trim();
+  })&&htmlSourceUrl===sourceUrl;
+  const pageReviewer=decodeHtml((html.match(/Urednička provjera:\s*([^<]+)/i)||[])[1]||'').trim();
+  const visibleDisclosure=html.includes('class="ai-disclosure"')&&html.includes(disclosure);
+  const coverTag=html.match(/<img\b[^>]*\bclass=["']article-cover["'][^>]*>/i)?.[0]||'';
+  const imageSrc=coverTag.match(/\bsrc=["']([^"']+)["']/i)?.[1]||'';
+  const caption=(html.match(/<figcaption\b[^>]*>([\s\S]*?)<\/figcaption>/i)?.[1]||'').toLowerCase();
+  const localIllustration=/^\/assets\/editorial\/generated\/[a-z0-9][a-z0-9-]{7,95}\.svg$/i.test(imageSrc);
+  const imageRights=record.visualRightsVerified===true&&record.imageUrl===imageSrc&&localIllustration
+    &&String(record.imageCredit||'').includes('izvorna generirana urednička ilustracija')
+    &&caption.includes('izvorna')&&caption.includes('ilustracija')&&caption.includes('nije fotografija')
+    &&html.includes(`https://gnk-asg.hr${imageSrc}`);
+  if(record.version!=='GNK_ASG_NEWSROOM_HUMAN_REVIEW_V1'||record.status!=='approved')errors.push(item.id+': invalid AI review record version/status');
+  if(!reviewer||pageReviewer!==reviewer||!Number.isFinite(approvalDate)||approvalDate>now.getTime())errors.push(item.id+': reviewer/approval time missing or future-dated');
+  if(record.editorialResponsibilityAccepted!==true||record.substantive!==true)errors.push(item.id+': substantive editorial responsibility not recorded');
+  if(record.sourceRightsVerified!==true||record.sourceTextNotCopied!==true||record.originalityAndAttributionReviewed!==true||record.privacyAndRightsReviewed!==true||record.prohibitedUse!==false||record.prohibitedUseScreenPassed!==true||record.riskClassification!=='not-high-risk')errors.push(item.id+': rights or risk assessment incomplete');
+  if(!imageRights)errors.push(item.id+': local illustration rights or attribution incomplete');
+  if(record.aiDisclosureVisible!==true||disclosure.length<20||!visibleDisclosure)errors.push(item.id+': visible AI disclosure missing');
+  if(!String(record.aiProvider||'').trim())errors.push(item.id+': AI provenance provider missing');
+  if(record.sourceClass!=='licensed-external'||!sourceSafe||!termsSafe||!record.sourceLicense||!Number.isFinite(termsDate)||termsDate>now.getTime()||termsDate>approvalDate||!sourceInHtml||htmlLicense!==record.sourceLicense||htmlTermsUrl!==termsUrl)errors.push(item.id+': licensed source provenance missing');
+  if(!hashFormat.test(record.approvedInputContentSha256||'')||!hashFormat.test(record.aiContentSha256||'')||inputHash!==record.approvedInputContentSha256||bodyHash!==record.aiContentSha256)errors.push(item.id+': approved AI content hash missing or mismatched');
+  if(!hashFormat.test(record.articleSha256||'')||record.articleSha256!==articleSha256)errors.push(item.id+': reviewed article hash mismatch');
+  if(metaContent(html,'author')!=='AKTUAL MEDIA uredništvo'||!html.includes('<span>AKTUAL MEDIA uredništvo</span>'))errors.push(item.id+': AI source article must use neutral editorial-desk byline');
+  if(/<meta\b[^>]*\bname=["']author["'][^>]*\bcontent=["'][^"']*Nermin Sefi[ćc][^"']*["']/i.test(html))errors.push(item.id+': unverified personal author attribution');
+}
 function heldSlugs(root){
   const manifest=readJson(root,'apps/portal/data/editorial-plan/manifest.json',{optional:true});
   const holds=readJson(root,'apps/portal/data/editorial-plan/publication-holds.json',{optional:true});
@@ -106,6 +164,7 @@ export function preflightContentQueue({root=process.cwd(),now=new Date(process.e
     }
     dueRoutes.add(route);
     if(held.has(item.slug))errors.push(item.id+': active editorial hold');
+    validateAiEditorialRecord(root,item,html,bytes,now,errors);
     checked.push({
       id:item.id,
       source,
@@ -117,7 +176,7 @@ export function preflightContentQueue({root=process.cwd(),now=new Date(process.e
 
   return {
     ok:errors.length===0,
-    version:'GNK_ASG_CONTENT_QUEUE_PREFLIGHT_V2_20261010',
+    version:'GNK_ASG_CONTENT_QUEUE_PREFLIGHT_V3_20261019',
     now:now.toISOString(),
     zagreb:{date,time},
     due:due.length,
