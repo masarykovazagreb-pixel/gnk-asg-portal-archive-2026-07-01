@@ -41,7 +41,7 @@ function render(data){
   body.innerHTML = html;
 }
 
-fetch('/data/cibona-news.json?v=' + Date.now(), { cache: 'no-store' })
+fetch('/data/cibona-news.json', { cache: 'no-cache' })
   .then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
   .then(render)
   .catch(function(){

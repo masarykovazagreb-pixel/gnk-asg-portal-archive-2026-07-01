@@ -88,7 +88,7 @@
 
   async function boot(){
     try{
-      const r=await fetch('/data/news.json?v='+Date.now(),{cache:'no-store'});
+      const r=await fetch('/data/news.json',{cache:'no-cache'});
       if(!r.ok) throw new Error('HTTP '+r.status);
       const items=normalize(await r.json());
       render(items,buildSources(items));

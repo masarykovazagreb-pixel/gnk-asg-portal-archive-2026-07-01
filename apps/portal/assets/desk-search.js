@@ -16,7 +16,7 @@
   const t = () => wording[lang()];
   async function loadNews() {
     try {
-      const response = await fetch('data/news.json?v=' + Date.now(), {cache:'no-store'});
+      const response = await fetch('data/news.json', {cache:'no-cache'});
       publicNews = response.ok ? await response.json() : [];
     } catch (error) { publicNews = []; }
   }

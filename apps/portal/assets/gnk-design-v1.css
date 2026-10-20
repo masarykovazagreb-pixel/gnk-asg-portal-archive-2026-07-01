@@ -1,0 +1,164 @@
+/* GNK ASG — design system v1 (2026-10-20)
+   Zajednicki sloj za javne stranice: tokeni, tipografija, kartice, gumbi,
+   oznake i fokus. Namjerno je aditivan: ne dira postojeće klase stranica,
+   nego daje im konzistentne vrijednosti kroz varijable i .gnk-* primitive. */
+
+:root {
+  --gnk-navy: #0d1723;
+  --gnk-ink: #14181e;
+  --gnk-ink-soft: #3d3a33;
+  --gnk-muted: #8a8578;
+  --gnk-paper: #faf7ef;
+  --gnk-surface: #ffffff;
+  --gnk-line: #e3d9c3;
+  --gnk-line-soft: #efe7d7;
+  --gnk-gold: #c8963c;
+  --gnk-gold-soft: #fdf1d2;
+  --gnk-gold-ink: #8a6a1f;
+  --gnk-accent: #8c2f2f;
+  --gnk-radius: 14px;
+  --gnk-radius-sm: 9px;
+  --gnk-shadow: 0 10px 24px rgba(31, 38, 48, .07);
+  --gnk-shadow-hover: 0 16px 32px rgba(31, 38, 48, .12);
+  --gnk-font-display: Impact, "Arial Black", system-ui, sans-serif;
+  --gnk-font-head: Georgia, "Times New Roman", serif;
+  --gnk-font-ui: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --gnk-font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --gnk-step: clamp(8px, 1.4vw, 14px);
+}
+
+/* Fokus: uvijek vidljiv, nikad agresivan. */
+:where(a, button, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--gnk-gold);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+::selection { background: var(--gnk-gold-soft); color: var(--gnk-ink); }
+
+/* Primitive */
+.gnk-shell { max-width: 1120px; margin: 0 auto; padding: 34px 20px 56px; }
+.gnk-eyebrow {
+  margin: 0 0 6px;
+  font: 800 10px/1 var(--gnk-font-ui);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--gnk-gold-ink);
+}
+.gnk-h1 {
+  margin: 0 0 10px;
+  font: 900 clamp(28px, 4.6vw, 46px)/1.02 var(--gnk-font-display);
+  text-transform: uppercase;
+  letter-spacing: .01em;
+  color: var(--gnk-ink);
+}
+.gnk-lead { margin: 0 0 18px; max-width: 78ch; font: 16.5px/1.55 var(--gnk-font-head); color: var(--gnk-ink-soft); }
+.gnk-rule { height: 2px; border: 0; margin: 18px 0 24px; background: linear-gradient(90deg, var(--gnk-gold), rgba(200, 150, 60, 0)); }
+
+.gnk-grid { display: grid; gap: var(--gnk-step); grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.gnk-card {
+  background: var(--gnk-surface);
+  border: 1px solid var(--gnk-line);
+  border-top: 4px solid var(--gnk-gold);
+  border-radius: var(--gnk-radius);
+  padding: 16px;
+  box-shadow: var(--gnk-shadow);
+  transition: box-shadow .18s ease, transform .18s ease;
+}
+.gnk-card:hover { box-shadow: var(--gnk-shadow-hover); transform: translateY(-2px); }
+
+.gnk-pill {
+  display: inline-flex; align-items: baseline; gap: 6px;
+  border: 1px solid var(--gnk-line);
+  border-radius: 999px;
+  background: var(--gnk-surface);
+  padding: 7px 12px;
+  font: 800 10px/1 var(--gnk-font-ui);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #5d5648;
+}
+.gnk-pill b { color: var(--gnk-ink); font-size: 12px; letter-spacing: 0; }
+
+.gnk-btn {
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--gnk-gold);
+  background: var(--gnk-gold-soft);
+  color: #6b4f10;
+  font: 900 11px/1 var(--gnk-font-ui);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background .16s ease, color .16s ease, transform .16s ease;
+}
+.gnk-btn:hover { background: var(--gnk-gold); color: #1a1305; transform: translateY(-1px); }
+
+.gnk-tag {
+  display: inline-block;
+  padding: 5px 9px;
+  border: 1px solid var(--gnk-line);
+  border-radius: 999px;
+  background: var(--gnk-surface);
+  color: #4a463d;
+  font: 800 9.5px/1 var(--gnk-font-ui);
+  letter-spacing: .06em;
+  text-decoration: none;
+}
+.gnk-tag:hover { border-color: var(--gnk-gold); background: var(--gnk-gold-soft); color: var(--gnk-gold-ink); }
+.gnk-tags { display: flex; flex-wrap: wrap; gap: 7px; margin: 18px 0 0; padding: 0; list-style: none; }
+
+.gnk-stat { font: 800 10px/1 var(--gnk-font-ui); letter-spacing: .1em; text-transform: uppercase; color: var(--gnk-muted); }
+.gnk-mono { font-family: var(--gnk-font-mono); }
+
+/* Ulazak sadržaja — samo ako korisnik nije tražio manje animacije. */
+@media (prefers-reduced-motion: no-preference) {
+  .gnk-rise { animation: gnk-rise .45s ease both; }
+  .gnk-rise:nth-child(2) { animation-delay: .05s; }
+  .gnk-rise:nth-child(3) { animation-delay: .1s; }
+  .gnk-rise:nth-child(4) { animation-delay: .15s; }
+}
+@keyframes gnk-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+  html { scroll-behavior: auto; }
+}
+
+/* --- Okvir stranice (topbar, navigacija, podnožje) ---------------------- */
+.gnk-page { margin: 0; background: var(--gnk-paper); color: var(--gnk-ink); }
+.gnk-skip {
+  position: absolute; left: -9999px; top: 0; z-index: 60;
+  background: var(--gnk-navy); color: #fff; padding: 10px 14px;
+  font: 800 12px/1 var(--gnk-font-ui); text-decoration: none; border-radius: 0 0 8px 0;
+}
+.gnk-skip:focus { left: 0; }
+
+.gnk-topbar { background: var(--gnk-navy); color: #f3ead6; }
+.gnk-topbar-inner {
+  max-width: 1120px; margin: 0 auto; padding: 12px 20px;
+  display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+}
+.gnk-brand {
+  font: 900 15px/1 var(--gnk-font-display); letter-spacing: .16em;
+  text-transform: uppercase; color: #f3ead6; text-decoration: none;
+}
+.gnk-brand b { color: var(--gnk-gold); }
+.gnk-topnav { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-left: auto; }
+.gnk-topnav a {
+  font: 800 10px/1.4 var(--gnk-font-ui); letter-spacing: .14em; text-transform: uppercase;
+  color: #e7ddc6; text-decoration: none; border-bottom: 2px solid transparent; padding: 3px 0;
+}
+.gnk-topnav a:hover, .gnk-topnav a:focus-visible { color: #fff; border-bottom-color: var(--gnk-gold); }
+
+.gnk-footer { background: var(--gnk-navy); color: #cfc6b3; padding: 26px 20px 34px; }
+.gnk-footer p { max-width: 1120px; margin: 0 auto 6px; font: 400 13px/1.6 var(--gnk-font-ui); }
+.gnk-footer a { color: var(--gnk-gold); text-decoration: none; }
+.gnk-footer a:hover { text-decoration: underline; }
+
+@media (max-width: 640px) {
+  .gnk-topbar-inner { gap: 8px 14px; padding: 10px 14px; }
+  .gnk-topnav { margin-left: 0; gap: 4px 12px; }
+  .gnk-shell { padding: 24px 14px 40px; }
+}

@@ -6,6 +6,7 @@
    Brojevi u podnožju su stvarni brojevi datoteka, a modelirani profili
    radnika ostaju označeni kao model (vidi data/worker-live-reports.json). */
 import { readdirSync, readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { readWorkflowCrons, scheduleOf as cronScheduleOf } from './lib/workflow-crons.mjs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -19,8 +20,37 @@ const GROUPS = [
     id: 'izdanja',
     hr: { name: 'Izdanja i sadržaj', lead: 'Osam gradskih kanala, deskovi, tjednik i svjetsko izdanje — prikupljanje, provjera izvora i objava tekstova.' },
     en: { name: 'Editions and content', lead: 'Eight city channels, desks, the weekly and the world edition — gathering, source checks and publishing.' },
-    re: /^(check-aktual|aktual-|region-|newsroom|editorial|blog|tjednik|moda|desk|world-)/,
+    re: /^(check-aktual|aktual-|region-|newsroom|editorial|blog|tjednik|moda|desk|world-|kanal-|content-queue|content-source|news-|gnk-news|dohvati-|build-world-cookbook|knowledge-center|digital-workforce)/,
     page: ['/izdanja/', 'Sva izdanja'], pageEn: ['/en/izdanja/', 'All editions']
+  },
+
+  {
+    id: 'trzista',
+    hr: { name: 'Tržišta i podaci', lead: 'Burze, robe, valute i makro pokazatelji — osvježavanje podataka koje stranice prikazuju.' },
+    en: { name: 'Markets and data', lead: 'Indices, commodities, currencies and macro indicators — refreshing the data the pages display.' },
+    re: /^(market|macro-|puls-|price|trading|finance-)/,
+    page: ['/puls-trzista/', 'Puls tržišta'], pageEn: ['/puls-trzista/', 'Market pulse']
+  },
+  {
+    id: 'distribucija',
+    hr: { name: 'Distribucija i zrcala', lead: 'Blog, Dev.to, LinkedIn, Tumblr, Telegraph i ostala zrcala — objava istog teksta na više mjesta, s odobrenjem.' },
+    en: { name: 'Distribution and mirrors', lead: 'Blog, Dev.to, LinkedIn, Tumblr, Telegraph and other mirrors — the same text published elsewhere, with approval.' },
+    re: /(devto|linkedin|tumblr|telegraph|social|distribution|mirror|medium|substack)/,
+    page: ['/objave/', 'Objave'], pageEn: ['/en/publications/', 'Publications']
+  },
+  {
+    id: 'seo',
+    hr: { name: 'SEO i indeksiranje', lead: 'Sitemapi, IndexNow, schema i noćne provjere vidljivosti — ono što stranicu čini pronađenom.' },
+    en: { name: 'SEO and indexing', lead: 'Sitemaps, IndexNow, schema and nightly visibility checks — what makes a page findable.' },
+    re: /(seo|aeo|sitemap|indexnow|schema|entity-seo)/,
+    page: ['/top-teme/', 'Top teme'], pageEn: ['/top-teme/', 'Top topics']
+  },
+  {
+    id: 'odrzavanje',
+    hr: { name: 'Održavanje i oporavak', lead: 'Čišćenje, sigurnosne kopije, dijagnostika i hitne zaustave — sustav koji se sam popravlja.' },
+    en: { name: 'Maintenance and recovery', lead: 'Cleanup, backups, diagnostics and emergency stops — a system that repairs itself.' },
+    re: /(cleanup|backup|recovery|emergency|diagnos|diag|watchdog|monitor|inspect|repair|parity|health|bot-ownership|external-distribution)/,
+    page: ['/automation-status/', 'Status automatizacije'], pageEn: ['/automation-status/', 'Automation status']
   },
   {
     id: 'deploy',
@@ -70,18 +100,33 @@ for (const f of files) {
 
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const TOTAL = GROUPS.reduce((n, g) => n + g.files.length, 0) + rest.length;
+
+/* --- raspored iz stvarnih datoteka ------------------------------------- */
+const CRONS = readWorkflowCrons(WF);
+const scheduleOf = (file) => cronScheduleOf(CRONS, file);
 const wfUrl = (f) => `https://github.com/${REPO}/actions/workflows/${f}`;
+
+const SCHEDULED = files.filter((f) => scheduleOf(f).crons.length);
+const RUNS_PER_DAY = files.reduce((n, f) => n + scheduleOf(f).perDay, 0);
 
 function page(lang) {
   const EN = lang === 'en';
   const cards = GROUPS.map((g) => {
     const t = g[lang];
-    const shown = g.files.slice(0, 6).map((f) => `<li><a href="${wfUrl(f)}" rel="external noopener">${esc(f.replace(/\.ya?ml$/, ''))}</a></li>`).join('');
-    const more = g.files.length > 6 ? `<li class="wg-more">+ ${g.files.length - 6} ${EN ? 'more' : 'još'}</li>` : '';
+    const items = g.files.map((f) => {
+      const sch = scheduleOf(f);
+      const badge = sch.crons.length
+        ? `<span class="wg-cron">${sch.perDay ? sch.perDay + '×/' + (EN ? 'day' : 'dan') : 'cron'}</span>`
+        : `<span class="wg-cron wg-man">${EN ? 'manual' : 'ručno'}</span>`;
+      return `<li><a href="${wfUrl(f)}" rel="external noopener">${esc(f.replace(/\.ya?ml$/, ''))}</a>${badge}</li>`;
+    }).join('');
+    const groupRuns = g.files.reduce((n, f) => n + scheduleOf(f).perDay, 0);
+    const groupSched = g.files.filter((f) => scheduleOf(f).crons.length).length;
     return `<article class="wg-card" id="g-${g.id}">
       <header><span class="wg-n">${String(g.files.length).padStart(2, '0')}</span><h2>${esc(t.name)}</h2></header>
       <p>${esc(t.lead)}</p>
-      <ul class="wg-wf">${shown}${more}</ul>
+      <p class="wg-stat">${groupSched} ${EN ? 'scheduled' : 'na rasporedu'} · ${groupRuns}×/${EN ? 'day' : 'dan'}</p>
+      <details class="wg-list"><summary>${EN ? 'All automations in this group' : 'Sve automatizacije u skupini'} (${g.files.length})</summary><ul class="wg-wf">${items}</ul></details>
       <div class="wg-links">
         <a href="https://github.com/${REPO}/actions" rel="external noopener">${EN ? 'All automations' : 'Sve automatizacije'} →</a>
         <a href="${g.page[0]}">${esc(EN ? g.pageEn[1] : g.page[1])} →</a>
@@ -90,9 +135,14 @@ function page(lang) {
     </article>`;
   }).join('\n');
 
+  const restItems = rest.map((f) => {
+    const sch = scheduleOf(f);
+    const badge = sch.crons.length ? `<span class="wg-cron">${sch.perDay}×/${EN ? 'day' : 'dan'}</span>` : `<span class="wg-cron wg-man">${EN ? 'manual' : 'ručno'}</span>`;
+    return `<li><a href="${wfUrl(f)}" rel="external noopener">${esc(f.replace(/\.ya?ml$/, ''))}</a>${badge}</li>`;
+  }).join('');
   const restBlock = rest.length ? `<section class="wg-rest"><h2>${EN ? 'Ungrouped jobs' : 'Poslovi izvan skupina'}</h2>
-    <p>${EN ? 'Automations that do not fit a single group; listed so nothing is hidden.' : 'Automatizacije koje ne pripadaju jednoj skupini; popisane su da ništa ne ostane skriveno.'}</p>
-    <ul class="wg-wf">${rest.slice(0, 12).map((f) => `<li><a href="${wfUrl(f)}" rel="external noopener">${esc(f.replace(/\.ya?ml$/, ''))}</a></li>`).join('')}${rest.length > 12 ? `<li class="wg-more">+ ${rest.length - 12}</li>` : ''}</ul></section>` : '';
+    <p>${EN ? 'Automations that do not fit a single group; all of them are listed so nothing is hidden.' : 'Automatizacije koje ne pripadaju jednoj skupini; sve su popisane da ništa ne ostane skriveno.'}</p>
+    <details class="wg-list" open><summary>${EN ? 'All ungrouped automations' : 'Sve automatizacije izvan skupina'} (${rest.length})</summary><ul class="wg-wf">${restItems}</ul></details></section>` : '';
 
   return `<!doctype html>
 <html lang="${EN ? 'en' : 'hr'}">
@@ -100,7 +150,7 @@ function page(lang) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${EN ? 'Worker groups and automations' : 'Grupacije radnika i automatizacije'} — GNK ASG</title>
-<meta name="description" content="${EN ? 'Six working groups of digital workers and the real GitHub Actions automations behind them.' : 'Šest radnih skupina digitalnih radnika i stvarne GitHub Actions automatizacije koje ih pokreću.'}">
+<meta name="description" content="${EN ? 'Ten working groups of digital workers and the real GitHub Actions automations behind them.' : 'Deset radnih skupina digitalnih radnika i stvarne GitHub Actions automatizacije koje ih pokreću.'}">
 <link rel="canonical" href="https://gnk-asg.hr/workers/grupacije/${EN ? 'en/' : ''}">
 <link rel="alternate" hreflang="hr" href="https://gnk-asg.hr/workers/grupacije/">
 <link rel="alternate" hreflang="en" href="https://gnk-asg.hr/workers/grupacije/en/">
@@ -108,9 +158,10 @@ function page(lang) {
 <meta name="keywords" content="GNK ASG, AKTUAL MEDIA, digitalni radnici, grupacije radnika, GitHub Actions, automatizacije, worker groups">
 <meta property="og:type" content="website">
 <meta property="og:title" content="${EN ? 'Worker groups and automations' : 'Grupacije radnika i automatizacije'} — GNK ASG">
-<meta property="og:description" content="${EN ? 'Six working groups and the real automations behind them.' : 'Šest radnih skupina i stvarne automatizacije koje ih pokreću.'}">
+<meta property="og:description" content="${EN ? 'Ten working groups and the real automations behind them.' : 'Deset radnih skupina i stvarne automatizacije koje ih pokreću.'}">
 <meta property="og:locale" content="${EN ? 'en_GB' : 'hr_HR'}">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/gnk-design-v1.css?v=20261020-fleet">
 <style>
 *{box-sizing:border-box}body{margin:0;background:#faf7ef;color:#14181e;font:16px/1.55 Georgia,serif}
 a{color:#8c2f2f}
@@ -135,6 +186,7 @@ h1{font:900 clamp(28px,4.6vw,46px)/1.02 Impact,"Arial Black",system-ui,sans-seri
 .wg-links{display:flex;gap:12px;flex-wrap:wrap;border-top:1px solid #efe7d7;padding-top:9px}
 .wg-links a{font:800 10px/1 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:#8c2f2f}
 .wg-rest{margin-top:26px;background:#fff;border:1px solid #e3d9c3;border-radius:14px;padding:16px}
+.wg-list{margin:0 0 10px}.wg-list summary{cursor:pointer;font:800 10px/1 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#8c2f2f;padding:4px 0}.wg-list[open] summary{margin-bottom:6px}.wg-stat{margin:0 0 8px!important;font:800 10px/1 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#8a8578}.wg-cron{margin-left:6px;font:800 9px/1 system-ui,sans-serif;letter-spacing:.08em;color:#8a6a1f;background:#fdf1d2;border:1px solid #e6d3a3;border-radius:999px;padding:3px 6px;white-space:nowrap}.wg-man{color:#8a8578;background:#f2efe7;border-color:#e0d6c1}.wg-wf li{display:flex;align-items:center;gap:4px}.wg-wf li>a{flex:1}
 .wg-rest h2{margin:0 0 6px;font:900 16px/1.1 system-ui,sans-serif}
 .wg-note{margin-top:22px;font-size:13.5px;color:#5d5648;border-left:3px solid #c8963c;padding-left:12px}
 .wg-foot{margin-top:30px;display:flex;gap:14px;flex-wrap:wrap;border-top:1px solid #e3d9c3;padding-top:14px}
@@ -144,15 +196,17 @@ h1{font:900 clamp(28px,4.6vw,46px)/1.02 Impact,"Arial Black",system-ui,sans-seri
 </head>
 <body>
 <div class="wg-top">
-  <a href="/">GNK ASG</a><a href="/workers/">${EN ? 'Workers' : 'Radnici'}</a><a href="/automation-status/">${EN ? 'Automation status' : 'Status automatizacije'}</a><a href="/izdanja/">${EN ? 'Editions' : 'Izdanja'}</a><a href="/radio/">Radio</a><a href="/galerija/">${EN ? 'Gallery' : 'Galerija'}</a>
+  <a href="/">GNK ASG</a><a href="/workers/">${EN ? 'Workers' : 'Radnici'}</a><a href="/automation-status/">${EN ? 'Automation status' : 'Status automatizacije'}</a><a href="/automation-status/flota/">${EN ? 'Fleet' : 'Flota'}</a><a href="/izdanja/">${EN ? 'Editions' : 'Izdanja'}</a><a href="/radio/">Radio</a><a href="/galerija/">${EN ? 'Gallery' : 'Galerija'}</a>
 </div>
 <main class="wg-wrap">
   <h1>${EN ? 'Worker groups and automations' : 'Grupacije radnika i automatizacije'}</h1>
   <p class="wg-lead">${EN
-    ? 'Digitalni radnici podijeljeni su u šest radnih skupina. Svaka skupina ima svoje stvarne GitHub Actions automatizacije — popis ispod vodi izravno na njih.'
-    : 'Digitalni radnici podijeljeni su u šest radnih skupina. Svaka skupina ima svoje stvarne GitHub Actions automatizacije — popis ispod vodi izravno na njih.'}</p>
+    ? 'Digitalni radnici podijeljeni su u deset radnih skupina. Svaka skupina ima svoje stvarne GitHub Actions automatizacije — popis ispod vodi izravno na njih, a stanje cijele flote je na zasebnoj stranici.'
+    : 'Digitalni radnici podijeljeni su u deset radnih skupina. Svaka skupina ima svoje stvarne GitHub Actions automatizacije — popis ispod vodi izravno na njih, a stanje cijele flote je na zasebnoj stranici.'}</p>
   <div class="wg-meta">
     <span class="wg-pill"><b>${TOTAL}</b> ${EN ? 'automations' : 'automatizacija'}</span>
+    <span class="wg-pill"><b>${SCHEDULED.length}</b> ${EN ? 'on schedule' : 'na rasporedu'}</span>
+    <span class="wg-pill"><b>${RUNS_PER_DAY}</b> ${EN ? 'runs/day' : 'pokretanja/dan'}</span>
     <span class="wg-pill"><b>${GROUPS.length}</b> ${EN ? 'groups' : 'skupina'}</span>
     <span class="wg-pill"><b>1.573</b> ${EN ? 'modeled profiles' : 'modelirana profila'}</span>
     <span class="wg-pill">${EN ? 'real workflows only' : 'samo stvarni workflowi'}</span>
@@ -167,6 +221,7 @@ h1{font:900 clamp(28px,4.6vw,46px)/1.02 Impact,"Arial Black",system-ui,sans-seri
     <a href="/workers/grupacije/${EN ? '' : 'en/'}">${EN ? 'Hrvatski' : 'English'}</a>
     <a href="/status/">Status</a>
     <a href="/automation-status/">${EN ? 'Automation status' : 'Status automatizacije'}</a>
+    <a href="/automation-status/flota/">${EN ? 'Full automation fleet' : 'Cijela flota automatizacija'}</a>
     <a href="/worker-ops/">${EN ? 'Operations' : 'Operativa'}</a>
     <a href="/gnk-aktual/">AKTUAL MEDIA</a>
     <a href="/kanal/">${EN ? 'All channels' : 'Svi kanali'}</a>
@@ -188,8 +243,8 @@ writeFileSync(join(dir, 'en', 'index.html'), page('en'));
 const out = {
   note: 'Groups are derived from real workflow files; worker profiles are a modeled catalogue.',
   total: TOTAL,
-  groups: GROUPS.map((g) => ({ id: g.id, name: g.hr.name, nameEn: g.en.name, automations: g.files.length, files: g.files })),
+  groups: GROUPS.map((g) => ({ id: g.id, name: g.hr.name, nameEn: g.en.name, automations: g.files.length, scheduled: g.files.filter((f) => scheduleOf(f).crons.length).length, runsPerDay: g.files.reduce((n, f) => n + scheduleOf(f).perDay, 0), files: g.files.map((f) => ({ file: f, crons: scheduleOf(f).crons, perDay: scheduleOf(f).perDay })) })),
   ungrouped: rest
 };
 writeFileSync(join(PORTAL, 'data', 'worker-groups.json'), `${JSON.stringify(out, null, 2)}\n`);
-console.log(JSON.stringify({ ok: true, total: TOTAL, groups: out.groups.map((g) => [g.id, g.automations]), ungrouped: rest.length }));
+console.log(JSON.stringify({ ok: true, total: TOTAL, scheduled: SCHEDULED.length, runsPerDay: RUNS_PER_DAY, groups: out.groups.map((g) => [g.id, g.automations, g.scheduled]), ungrouped: rest.length }));

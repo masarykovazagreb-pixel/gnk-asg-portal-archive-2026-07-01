@@ -1,7 +1,7 @@
 name: Worker groups — sync
 
-# Grupira stvarne workflowe u šest radnih skupina i objavljuje
-# /workers/grupacije/ (hr + en). Pokreće se kad se popis automatizacija
+# Grupira stvarne workflowe u deset radnih skupina i objavljuje
+# /workers/grupacije/ (hr + en) te stranicu flote /automation-status/flota/. Pokreće se kad se popis automatizacija
 # promijeni ili ručno. Commit dira samo izlazne datoteke, pa paths
 # filtar sprječava petlju.
 
@@ -28,16 +28,21 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Build groups
-        run: node scripts/build-worker-groups-v1.mjs
+      - name: Build groups and fleet
+        run: |
+          set -euo pipefail
+          node scripts/build-worker-groups-v1.mjs
+          node scripts/build-fleet-status-v1.mjs
       - name: Commit if changed
         run: |
-          if [ -z "$(git status --porcelain apps/portal/workers/grupacije apps/portal/data/worker-groups.json)" ]; then
+          PATHS="apps/portal/workers/grupacije apps/portal/data/worker-groups.json \
+            apps/portal/automation-status/flota apps/portal/data/fleet-status.json"
+          if [ -z "$(git status --porcelain $PATHS)" ]; then
             echo "Bez promjena."
             exit 0
           fi
           git config user.name "aktual-bot"
           git config user.email "aktual-bot@users.noreply.github.com"
-          git add apps/portal/workers/grupacije apps/portal/data/worker-groups.json
-          git commit -m "Worker groups: sync s popisom automatizacija"
+          git add $PATHS
+          git commit -m "Worker groups: sync s popisom automatizacija i flotom"
           git push
