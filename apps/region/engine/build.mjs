@@ -20,13 +20,15 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const APP = join(HERE, '..');
 const ROOT = join(APP, '..', '..');
 const DATA = join(APP, 'data');
-const SITE = join(APP, 'site');
+const SITE = join(ROOT, 'apps', 'portal', 'kanal');
+const LEGACY = join(APP, 'site');
 
 export const CHANNELS = JSON.parse(readFileSync(join(APP, 'channels.json'), 'utf8')).channels;
 export const HUB = 'https://gnk-asg.hr/izdanja/';
 export const CENTRAL = 'https://gnk-asg.hr/gnk-aktual/';
 export const CONTACT = 'info@gnk-asg.hr';
 export const SOCIAL_IMAGE = 'https://gnk-asg.hr/assets/gnk-asg-social-card.png';
+export const PUBLIC = 'https://gnk-asg.hr';
 
 const checksFor = (item, strings) => {
   const out = [];
@@ -46,7 +48,7 @@ const themeOf = (item) => themeFor(`${item.title} ${item.summary}`).id;
 
 /* ---------- traka izdanja: uvijek na dohvat, na svakoj stranici ---------- */
 
-const CITY_SHORT = {
+export const CITY_SHORT = {
   zagreb: 'Zagreb', beograd: 'Beograd', sarajevo: 'Sarajevo', budimpesta: 'Budimpešta',
   ljubljana: 'Ljubljana', rim: 'Rim', sofija: 'Sofija', bukurest: 'Bukurešt'
 };
@@ -63,6 +65,21 @@ function editionsStrip(channel) {
   <a class="eds-home" href="${CENTRAL}#izdanja-po-zemljama" rel="external noopener"><span aria-hidden="true">←</span> AKTUAL MEDIA</a>
   <ul class="eds-row">${items}</ul>
 </nav>`;
+}
+
+/* ---------- MINI TRAKA: 8 izdanja uvijek na dohvat, pojavi se nakon skrola ---------- */
+
+function miniRail(channel) {
+  const items = CHANNELS.map((c) => {
+    const cur = c.id === channel.id;
+    return `<a href="${c.base}"${cur ? ' aria-current="page"' : ''} title="${esc(c.title)}" aria-label="${esc(c.title)}${cur ? ' — ovo izdanje' : ' — otvori izdanje'}"><img src="/assets/izdanja/${c.id}-440.webp" alt="" width="34" height="34" loading="lazy" decoding="async"><span>${esc(CITY_SHORT[c.id] || c.city)}</span></a>`;
+  }).join('');
+  return `<nav class="edmini" id="edmini" aria-label="AKTUAL MEDIA izdanja" hidden>
+  <a class="edmini-home" href="${CENTRAL}#izdanja-po-zemljama">AKTUAL</a>${items}
+</nav>
+<script>(function(){var n=document.getElementById('edmini');if(!n)return;var h=document.querySelector('.masthead');if(!h)return;
+if(!('IntersectionObserver' in window)){n.hidden=false;return}
+new IntersectionObserver(function(e){n.hidden=e[0].isIntersecting},{rootMargin:'-60px 0px 0px 0px'}).observe(h)})();</script>`;
 }
 
 /* ---------- MRAVINJAK: gusti klaster naslova unutar izdanja ---------- */
@@ -184,7 +201,9 @@ function mravinjakPage(channel, strings, data) {
   <p class="lead">${esc(m.lead(items.length))}</p>
   <p class="chips">${chips}</p>
   <section class="mrv mrv--page">
-    <div class="mrv-head"><h2>${esc(m.title)} <span>· ${items.length}</span></h2><span class="mrv-count">${esc(channel.country)} · ${esc(channel.lang)}</span></div>
+    <div class="mrv-head"><h2>${esc(m.title)} <span>· ${items.length}</span></h2>
+      <label class="mrv-wall-btn"><input type="checkbox" id="mrvwall"><span>Zid · 8 stupaca</span></label>
+      <span class="mrv-count">${esc(channel.country)} · ${esc(channel.lang)}</span></div>
     <div class="mrv-cols">${anthillList(channel, strings, anthill(items, items.length), { root: '../' })}</div>
     <div class="mrv-foot">
       <a href="../">← ${esc(channel.title)}</a>
@@ -194,6 +213,9 @@ function mravinjakPage(channel, strings, data) {
   <p class="small">${esc(strings.autoNote)}</p>
   <p><a href="../">← ${esc(strings.back)}</a></p>
 </main>
+<script>(function(){var c=document.getElementById('mrvwall');if(!c)return;
+var k='mrv-wall';try{if(localStorage.getItem('mrv-wall')==='1'){document.body.classList.add(k);c.checked=true}}catch(e){}
+c.addEventListener('change',function(){document.body.classList.toggle(k,c.checked);try{localStorage.setItem('mrv-wall',c.checked?'1':'0')}catch(e){}})})();</script>
 ${footer(channel, strings)}`;
 
   const jsonld = [
@@ -241,10 +263,54 @@ const url = (channel, path = '') => `${channel.base}${path}`;
 
 /* ---------- HTML okvir ---------- */
 
-function shell(channel, strings, { title, description, path, keywords = [], jsonld = [], body, ogAlt = '', type = 'website', published, modified, root = '' }) {
+function shell(channel, strings, { title, description, path, keywords = [], jsonld = [], body, ogAlt = '', type = 'website', published, modified, root = '', image = '' }) {
   const canonical = url(channel, path);
-  const tags = [...new Set(keywords)].slice(0, 14);
-  const ld = jsonld.filter(Boolean).map((node) => `<script type="application/ld+json">${safeJson(node)}</script>`).join('\n');
+  /* Ime autora se NE stavlja u meta keywords (pravilo repoa i CI gate);
+     ono ide u JSON-LD i u vidljive hashtagove. */
+  const tags = [...new Set(keywords.filter((k) => !/nermin|sefi[cć]/i.test(k)))].slice(0, 18);
+  const ogImage = image || `${PUBLIC}/assets/izdanja/${channel.id}-og.jpg`;
+  const hero = `${PUBLIC}/assets/izdanja/${channel.id}-1200.webp`;
+
+  const graph = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'NewsMediaOrganization', '@id': `${PUBLIC}/#organizacija`,
+        name: 'AKTUAL MEDIA d.o.o.', alternateName: ['AKTUAL MEDIA', 'AKTUAL MEDIA KANAL'],
+        url: `${PUBLIC}/`, email: CONTACT,
+        logo: { '@type': 'ImageObject', url: `${PUBLIC}/assets/gnk-asg-social-card.png` },
+        parentOrganization: { '@type': 'Organization', name: 'GNK ASG d.o.o.', url: `${PUBLIC}/` },
+        editor: { '@id': `${PUBLIC}/#nermin-sefic` },
+        sameAs: [
+          `${PUBLIC}/gnk-aktual/`, `${PUBLIC}/izdanja/`, `${PUBLIC}/galerija/`, `${PUBLIC}/radio/`
+        ]
+      },
+      {
+        '@type': 'Person', '@id': `${PUBLIC}/#nermin-sefic`,
+        name: 'Nermin Sefić',
+        jobTitle: 'Urednik i direktor',
+        url: `${PUBLIC}/nermin-sefic/`,
+        worksFor: { '@id': `${PUBLIC}/#organizacija` },
+        subjectOf: { '@type': 'ItemList', url: `${PUBLIC}/autorske-objave/` }
+      },
+      {
+        '@type': 'WebSite', '@id': `${channel.base}#website`,
+        url: channel.base, name: channel.title, inLanguage: channel.lang,
+        publisher: { '@id': `${PUBLIC}/#organizacija` }
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'GNK ASG', item: `${PUBLIC}/` },
+          { '@type': 'ListItem', position: 2, name: 'AKTUAL MEDIA', item: `${PUBLIC}/gnk-aktual/` },
+          { '@type': 'ListItem', position: 3, name: channel.title, item: channel.base },
+          ...(path ? [{ '@type': 'ListItem', position: 4, name: title, item: canonical }] : [])
+        ]
+      },
+      ...jsonld
+    ]
+  };
+  const ld = `<script type="application/ld+json">${safeJson(graph)}</script>`;
   const palette = channel.palette;
   return `<!doctype html>
 <html lang="${channel.lang}">
@@ -253,32 +319,45 @@ function shell(channel, strings, { title, description, path, keywords = [], json
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(truncate(description, 300))}">
-<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 <meta name="author" content="AKTUAL MEDIA d.o.o.">
 <meta name="editor" content="Nermin Sefić">
+<meta name="publisher" content="AKTUAL MEDIA d.o.o.">
 <meta name="keywords" content="${esc(tags.join(', '))}">
+<meta name="news_keywords" content="${esc(tags.join(', '))}">
+<meta name="geo.region" content="${esc(channel.country)}">
+<meta name="geo.placename" content="${esc(channel.city)}">
+<meta name="theme-color" content="${palette.bg}">
 <link rel="canonical" href="${canonical}">
 <link rel="alternate" hreflang="${channel.lang}" href="${canonical}">
+<link rel="alternate" hreflang="hr" href="${PUBLIC}/kanal/${channel.id}/"${channel.lang === 'hr' ? '' : ''}>
 <link rel="alternate" hreflang="x-default" href="${canonical}">
 <link rel="alternate" type="application/rss+xml" title="${esc(channel.title)}" href="${url(channel, 'feed.xml')}">
 <link rel="alternate" type="application/feed+json" title="${esc(channel.title)}" href="${url(channel, 'feed.json')}">
+<link rel="author" href="${PUBLIC}/nermin-sefic/">
 <link rel="icon" href="${root}assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" as="image" href="${hero}" fetchpriority="high">
 <meta property="og:type" content="${type}">
 <meta property="og:site_name" content="${esc(channel.title)}">
 <meta property="og:locale" content="${strings.locale}">
+<meta property="og:locale:alternate" content="hr_HR">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(truncate(description, 300))}">
 <meta property="og:url" content="${canonical}">
-<meta property="og:image" content="${SOCIAL_IMAGE}">
+<meta property="og:image" content="${ogImage}">
+<meta property="og:image:secure_url" content="${ogImage}">
+<meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="${esc(ogAlt || title)}">
 ${published ? `<meta property="article:published_time" content="${published}">` : ''}
 ${modified ? `<meta property="article:modified_time" content="${modified}">` : ''}
+${published ? `<meta property="article:author" content="${PUBLIC}/nermin-sefic/">` : ''}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(truncate(description, 200))}">
-<meta name="twitter:image" content="${SOCIAL_IMAGE}">
+<meta name="twitter:image" content="${ogImage}">
+<meta name="twitter:image:alt" content="${esc(ogAlt || title)}">
 <meta name="twitter:site" content="@aktualmedia">
 <style>:root{--bg:${palette.bg};--surface:${palette.surface};--accent:${palette.accent};--accent2:${palette.accent2};--ink:${palette.ink}}</style>
 <link rel="stylesheet" href="${root}assets/region.css">
@@ -288,6 +367,8 @@ ${ld}
 <a class="skip" href="#sadrzaj">Sadržaj</a>
 ${body}
 <a class="hublink" href="${CENTRAL}#izdanja-po-zemljama" rel="external noopener" aria-label="Vrati se u AKTUAL MEDIA — sva izdanja"><span aria-hidden="true">←</span> AKTUAL MEDIA</a>
+${miniRail(channel)}
+<script src="/assets/aktual-radio-mini-v1.js?v=20261020-radio-mini" defer></script>
 </body>
 </html>`;
 }
@@ -327,13 +408,13 @@ function footer(channel, strings, extra = '') {
   const tiles = [...others, channel].map((c) => `<li class="xf-tile"><a href="${c.base}" rel="external noopener">
       <img src="/assets/izdanja/${c.id}-tile.webp" alt="${esc(c.title)} — ${esc(c.country)} — otvori izdanje" width="880" height="587" loading="lazy" decoding="async">
     </a></li>`).join('');
-  const desks = [['sport', 'Sport'], ['politika', 'Politika'], ['sigurnost', 'Sigurnost'], ['biznis', 'Business'], ['tehnologija', 'Tehnologija'], ['moda', 'Tjednik Mode']]
-    .map(([id, label]) => `<a href="${CENTRAL}#deskovi" rel="external noopener">${esc(label)}</a>`).join('');
+  const desks = [['sport', 'Sport'], ['politika', 'Politika'], ['sigurnost', 'Sigurnost'], ['biznis', 'Business'], ['tehnologija', 'Tehnologija'], ['moda', 'Tjednik Mode'], ['putovanja', 'Putovanja'], ['ljubimci', 'Ljubimci'], ['svijet', 'Svijet']]
+    .map(([id, label]) => `<a href="/izdanja/${id}/">${esc(label)}</a>`).join('') + '<a href="/radio/">Radio</a><a href="/galerija/">Galerija</a><a href="/kanal/">Svi kanali</a>';
   return `<footer class="foot">
   <section class="xf" aria-label="Ostala izdanja AKTUAL MEDIA">
     <div class="xf-head"><h2>Ostala izdanja — klik vodi na izdanje</h2><a href="${CENTRAL}#izdanja-po-zemljama" rel="external noopener">Sva izdanja →</a></div>
     <ul class="xf-grid">${tiles}</ul>
-    <div class="xf-desks">${desks}<a href="https://gnk-asg-tjednik.pages.dev/" rel="external noopener">BUSINESS TJEDNIK ↗</a><a href="https://gnk-asg.hr/gnk-aktual/" rel="external noopener">AKTUAL MEDIA — sve na jednom mjestu ↗</a></div>
+    <div class="xf-desks">${desks}<a href="https://gnk-asg-tjednik.pages.dev/" rel="external noopener">BUSINESS TJEDNIK ↗</a><a href="https://gnk-asg.hr/gnk-aktual/" rel="external noopener">AKTUAL MEDIA — sve na jednom mjestu ↗</a><a href="/izdanja/">Sva izdanja</a></div>
   </section>
   <div class="footgrid">
     <div>
@@ -380,11 +461,13 @@ function homePage(channel, strings, data) {
 
   const body = `${header(channel, strings)}
 <main id="sadrzaj">
-  <section class="intro">
+  <section class="intro intro--hero">
+    <img class="heroimg" src="/assets/izdanja/${channel.id}-1200.webp" alt="${esc(channel.title)} — ${esc(channel.city)}, ${esc(channel.country)}" width="1200" height="675" fetchpriority="high" decoding="async">
     <div class="intro-main">
       <p class="dateline">${esc(strings.daily)} · ${esc(longDate(new Date().toISOString().slice(0, 10), channel.lang))}${data.updatedAt ? ` · ${esc(strings.updated)} ${esc(shortDate(data.updatedAt.slice(0, 10), channel.lang))}` : ''}</p>
       <h1>${esc(channel.title)}</h1>
       <p class="intro-text">${esc(strings.aboutText)}</p>
+      <p class="live"><span class="live-n"><b>${items.length}</b> ${esc(strings.latest).toLowerCase()}</span><span class="live-sep">·</span><span class="live-t"><time datetime="${esc((items[0]?.date || data.updatedAt || '').slice(0, 10))}">${esc(strings.updated)} ${esc(shortDate((items[0]?.date || data.updatedAt || '').slice(0, 10), channel.lang))}</time></span></p>
       <p class="intro-tags">${channel.hashtags.map((h) => `<span class="tag">${esc(h)}</span>`).join(' ')}</p>
     </div>
     <aside class="intro-side">
@@ -684,6 +767,29 @@ ${urls.map((u) => `<url><loc>${u.loc}</loc>${u.lastmod ? `<lastmod>${u.lastmod.s
 
 /* ---------- javni poziv ---------- */
 
+
+/* ---------- 301: stara adresa izdanja -> gnk-asg.hr/kanal/<id>/ ---------- */
+/* Projekt na pages.dev ostaje živ samo kao preusmjerivač: svaki put vodi na
+   kanonsku adresu pod glavnom domenom, gdje su i sitemap i canonical. */
+
+function writeLegacyRedirect(channel) {
+  const dir = join(LEGACY, channel.id);
+  if (existsSync(dir)) rmSync(dir, { recursive: true, force: true });
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, '_redirects'), `/* ${channel.base}:splat 301\n`);
+  writeFileSync(join(dir, 'index.html'), `<!doctype html>
+<html lang="${channel.lang}">
+<head>
+<meta charset="utf-8">
+<title>${esc(channel.title)} — preseljeno</title>
+<link rel="canonical" href="${channel.base}">
+<meta name="robots" content="noindex,follow">
+<meta http-equiv="refresh" content="0; url=${channel.base}">
+</head>
+<body><p>Ovo izdanje je na novoj adresi: <a href="${channel.base}">${esc(channel.title)}</a>.</p></body>
+</html>`);
+}
+
 export function buildChannel(channel) {
   const strings = t(channel.lang).ui;
   const data = loadChannel(channel);
@@ -776,14 +882,8 @@ ${footer(channel, strings)}`;
   }));
 
   writeFileSync(join(dir, 'assets', 'region.css'), CSS);
-  /* Pločice ostalih izdanja putuju s kanalom: footer ih prikazuje i prije nego
-     se središnji portal objavi, pa nema praznih sličica. */
-  const tileSource = join(ROOT, 'apps', 'portal', 'assets', 'izdanja');
-  mkdirSync(join(dir, 'assets', 'izdanja'), { recursive: true });
-  for (const other of CHANNELS) {
-    const from = join(tileSource, `${other.id}-tile.webp`);
-    if (existsSync(from)) copyFileSync(from, join(dir, 'assets', 'izdanja', `${other.id}-tile.webp`));
-  }
+
+  writeLegacyRedirect(channel);
   writeFileSync(join(dir, 'assets', 'favicon.svg'), favicon(channel));
   writeFeed(channel, strings, data);
   writeSitemap(channel, data);
@@ -815,6 +915,21 @@ img{max-width:100%;height:auto}
 .xf-desks a:hover{border-color:var(--accent);color:var(--accent)}
 @media(max-width:900px){.xf-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:600px){.xf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.edmini{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:79;display:flex;align-items:center;gap:7px;padding:7px 11px;border-radius:999px;background:rgba(8,13,20,.94);border:1px solid rgba(233,198,108,.4);box-shadow:0 14px 34px rgba(0,0,0,.45);backdrop-filter:blur(8px);max-width:min(760px,calc(100vw - 150px));overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.edmini::-webkit-scrollbar{display:none;height:0}
+.edmini[hidden]{display:none}
+.edmini a{display:grid;justify-items:center;gap:2px;text-decoration:none;flex:0 0 auto}
+.edmini img{display:block;width:34px;height:34px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(233,198,108,.45)}
+.edmini span{font:700 7.5px/1 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.62)}
+.edmini a:hover img,.edmini a:focus-visible img{border-color:var(--accent);transform:translateY(-1px)}
+.edmini a:hover span{color:var(--accent)}
+.edmini a[aria-current] img{border-color:var(--accent);box-shadow:0 0 0 2px rgba(233,198,108,.25)}
+.edmini a[aria-current] span{color:var(--accent)}
+.edmini-home{font:800 9px/1 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#0c1015;background:var(--accent);border-radius:999px;padding:9px 10px;text-decoration:none}
+.edmini-home:hover{background:#fff;text-decoration:none}
+@media(max-width:760px){.edmini{max-width:calc(100vw - 20px);bottom:8px}.edmini span{display:none}}
+@media(prefers-reduced-motion:reduce){.edmini img,.edmini span{transition:none}}
+@media print{.edmini{display:none}}
 .hublink{position:fixed;left:18px;bottom:18px;z-index:80;display:inline-flex;align-items:center;gap:7px;background:#0c1015;color:#e9c66c;border:1px solid rgba(233,198,108,.55);border-radius:999px;padding:11px 16px;font:800 11px/1 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;box-shadow:0 12px 28px rgba(0,0,0,.35);transition:background .18s ease,color .18s ease,transform .18s ease}
 .hublink:hover,.hublink:focus-visible{background:#e9c66c;color:#0c1015;text-decoration:none;transform:translateY(-2px)}
 @media(max-width:600px){.hublink{left:10px;bottom:10px;padding:9px 12px;font-size:10px}}
@@ -849,6 +964,21 @@ img{max-width:100%;height:auto}
 .mainnav a{color:var(--ink);opacity:.85}
 .mainnav a[aria-current]{opacity:1;color:var(--accent)}
 main{max-width:1180px;margin:0 auto;padding:clamp(20px,4vw,44px) clamp(16px,4vw,48px) 56px}
+.intro--hero{position:relative;overflow:hidden;border-radius:0 0 6px 6px;padding:clamp(26px,5vw,54px) clamp(16px,4vw,44px);margin:0 calc(-1 * clamp(16px,4vw,48px)) 0;color:#fff;display:grid;grid-template-columns:minmax(0,1.8fr) minmax(240px,.8fr);gap:28px;border-bottom:none;align-items:end}
+.heroimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.intro--hero::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(6,12,20,.94) 0%,rgba(6,12,20,.86) 42%,rgba(6,12,20,.5) 72%,rgba(6,12,20,.34) 100%)}
+.intro--hero>*:not(.heroimg){position:relative;z-index:2}
+.intro--hero h1{color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.45)}
+.intro--hero .intro-text{color:rgba(255,255,255,.9)}
+.intro--hero .dateline{color:#e9c66c}
+.intro--hero .intro-side{background:rgba(8,13,20,.72);border-color:rgba(233,198,108,.28);backdrop-filter:blur(6px)}
+.intro--hero .intro-side h2{color:#e9c66c}
+.intro--hero .radio{color:#fff;border-top-color:rgba(255,255,255,.14)}
+.intro--hero .radio small{color:rgba(255,255,255,.62)}
+.live{display:flex;flex-wrap:wrap;gap:10px;align-items:baseline;margin:0 0 12px;font:600 13px/1.4 system-ui,sans-serif;color:rgba(255,255,255,.82)}
+.live b{color:#e9c66c;font-size:17px}
+.live-sep{color:rgba(255,255,255,.35)}
+@media(max-width:820px){.intro--hero{grid-template-columns:1fr;padding:26px 18px}}
 .intro{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(240px,.8fr);gap:28px;padding-bottom:28px;border-bottom:2px solid #dcd7cc}
 .dateline{font:600 11px/1.5 system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#7a6a4b;margin:0 0 10px}
 .intro h1{font:700 clamp(34px,5vw,58px)/1.02 Georgia,serif;margin:0 0 14px;letter-spacing:-.015em}
@@ -886,6 +1016,20 @@ main{max-width:1180px;margin:0 auto;padding:clamp(20px,4vw,44px) clamp(16px,4vw,
 .about{display:grid;grid-template-columns:1fr 1fr;gap:36px}
 .about h2{font:700 15px/1.3 system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;margin:0 0 10px}
 .small{font:400 12px/1.6 system-ui,sans-serif;color:#6f7783}
+.mrv-wall-btn{display:inline-flex;align-items:center;gap:7px;cursor:pointer;font:800 10px/1 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#e9c66c;border:1px solid rgba(233,198,108,.45);border-radius:999px;padding:8px 12px;margin-left:auto}
+.mrv-wall-btn input{position:absolute;opacity:0;width:1px;height:1px}
+.mrv-wall-btn:hover{background:rgba(233,198,108,.12)}
+.mrv-wall-btn input:checked+span::before{content:"✓ "}
+.mrv-wall-btn input:focus-visible+span{outline:2px solid #e9c66c;outline-offset:3px}
+body.mrv-wall .mrv-cols{columns:8;column-gap:14px}
+body.mrv-wall .mrv-i{font-size:12px;line-height:1.26;padding:5px 0 6px}
+body.mrv-wall .mrv-i b em{display:none}
+body.mrv-wall .mrv--page{max-width:none}
+body.mrv-wall main.page{max-width:none}
+@media(max-width:1400px){body.mrv-wall .mrv-cols{columns:6}}
+@media(max-width:1000px){body.mrv-wall .mrv-cols{columns:4}}
+@media(max-width:700px){body.mrv-wall .mrv-cols{columns:2}}
+@media(max-width:460px){body.mrv-wall .mrv-cols{columns:1}}
 .mrv{background:#0c1015;color:#eae4d6;border-radius:3px;padding:26px clamp(16px,3vw,32px) 20px;margin:0 0 8px}
 .mrv--page{margin-top:26px}
 .mrv-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:8px}

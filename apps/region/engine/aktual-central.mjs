@@ -54,7 +54,10 @@ const DESK_ALT = {
   sigurnost: 'Sigurnost — desk AKTUAL MEDIA: obavještajne teme, kibernetika i preuzimanja. Klik otvara sigurnosni desk.',
   biznis: 'Business — desk AKTUAL MEDIA: tržišta, bilance i kapital iz osam zemalja. Klik otvara business desk.',
   tehnologija: 'Tehnologija — desk AKTUAL MEDIA: umjetna inteligencija, platforme i podatkovni centri. Klik otvara tehnološki desk.',
-  moda: 'Tjednik Mode — desk AKTUAL MEDIA: kolekcije, brendovi i poslovni modeli iza njih. Klik otvara modni desk.'
+  moda: 'Tjednik Mode — desk AKTUAL MEDIA: kolekcije, brendovi i poslovni modeli iza njih. Klik otvara modni desk.',
+  putovanja: 'Putovanja — desk AKTUAL MEDIA: destinacije, sezona i cijena puta bez vodiča po narudžbi. Klik otvara putni desk.',
+  ljubimci: 'Ljubimci — desk AKTUAL MEDIA: udomljavanje, veterinarska skrb i gradska pravila. Klik otvara desk ljubimaca.',
+  svijet: 'Svijet — desk AKTUAL MEDIA: globalni okvir za lokalne odluke, od energije do migracija. Klik otvara desk Svijet.'
 };
 
 const HASHTAGS = [
@@ -108,10 +111,16 @@ function cityTiles(cards) {
 }
 
 function deskTiles(items, gallery) {
-  const count = (id) => id === 'moda'
-    ? items.filter((i) => MODA_RE.test(`${i.title} ${i.summary}`)).length
+  const DESK_RE = {
+    moda: MODA_RE,
+    putovanja: /putovanj|turiz|hotel|destinacij|plaž|plaz|letov|krstar|aviokart|aerodrom|viza|izlet|advent|sezon|gostiju|noćenj|nocenj|kampu|kamp|planinar|bicikl|vlak|trajekt/i,
+    ljubimci: /ljubimc|kućni ljubim|kucni ljubim|veterinar|udomlj|životinj|zivotinj|azil|kinolog|pas\b|psa\b|pse\b|psima|mačk|mack|ptic|akvarij|čipir|cipir|steriliz/i,
+    svijet: /svijet|svet\b|global|europ|\beu\b|nato|kijev|ukrajin|gaza|izrael|iran|\bsad\b|amerik|kina|kinesk|rusij|moskv|trump|putin|migracij|klim|opec|naft|tarif|carin|vijeće sigurnosti/i
+  };
+  const count = (id) => DESK_RE[id]
+    ? items.filter((i) => DESK_RE[id].test(`${i.title} ${i.summary}`)).length
     : items.filter((i) => i.theme === ({ sport: 'sport', politika: 'politika', sigurnost: 'sigurnost', biznis: 'ekonomija', tehnologija: 'ai' }[id] || '')).length;
-  const desks = ['sport', 'politika', 'sigurnost', 'biznis', 'tehnologija', 'moda'].map((id) => tile({
+  const desks = ['sport', 'politika', 'sigurnost', 'biznis', 'tehnologija', 'moda', 'putovanja', 'ljubimci', 'svijet'].map((id) => tile({
     href: `/izdanja/${id}/`, img: `${id}-tile.webp`, alt: DESK_ALT[id], badge: `${count(id)} tekstova`
   })).join('');
   const extra = [
@@ -170,8 +179,72 @@ const RAIL_TEXT = {
   }
 };
 
+
+/* ---------- "prije X" iz stvarnog datuma objave ---------- */
+
+function agoShort(iso, generated = new Date().toISOString()) {
+  if (!iso) return '';
+  const diff = Date.parse(generated) - Date.parse(iso);
+  if (!Number.isFinite(diff) || diff < 0) return '';
+  const h = Math.floor(diff / 3600000);
+  if (h < 1) return 'prije < 1 h';
+  if (h < 48) return `prije ${h} h`;
+  const d = Math.floor(h / 24);
+  return `prije ${d} d`;
+}
+
+/* ---------- karta regije: drugi ulaz u ista izdanja ---------- */
+
+const GEO = {
+  ljubljana: [14.51, 46.06], zagreb: [15.98, 45.81], budimpesta: [19.04, 47.50],
+  beograd: [20.46, 44.79], sarajevo: [18.41, 43.86], rim: [12.50, 41.90],
+  sofija: [23.32, 42.70], bukurest: [26.10, 44.43]
+};
+
+function regionMap(cards, lang = 'hr') {
+  const W = 640, H = 420;
+  const lons = Object.values(GEO).map((g) => g[0]);
+  const lats = Object.values(GEO).map((g) => g[1]);
+  const [x0, x1] = [Math.min(...lons) - 1.6, Math.max(...lons) + 1.6];
+  const [y0, y1] = [Math.min(...lats) - 1.2, Math.max(...lats) + 1.2];
+  const px = (lon) => ((lon - x0) / (x1 - x0)) * W;
+  const py = (lat) => H - ((lat - y0) / (y1 - y0)) * H;
+
+  const pins = CHANNELS.map((c) => {
+    const g = GEO[c.id];
+    if (!g) return '';
+    const card = cards.find((x) => x.id === c.id) || {};
+    const cx = px(g[0]).toFixed(1), cy = py(g[1]).toFixed(1);
+    const city = CITY_SHORT[c.id] || c.city;
+    const anchor = cx > W * 0.78 ? 'end' : 'start';
+    const dx = anchor === 'end' ? '-14' : '14';
+    return `<a class="amm-pin" href="${esc(c.base)}" aria-label="${esc(c.title)} — ${card.count || 0} ${lang === 'en' ? 'stories' : 'tekstova'} — ${lang === 'en' ? 'open edition' : 'otvori izdanje'}">
+      <circle cx="${cx}" cy="${cy}" r="9"></circle>
+      <circle class="amm-pulse" cx="${cx}" cy="${cy}" r="9"></circle>
+      <text x="${(Number(cx) + Number(dx)).toFixed(1)}" y="${(Number(cy) + 4).toFixed(1)}" text-anchor="${anchor}">${esc(city)}</text>
+      <title>${esc(c.title)} — ${card.count || 0} ${lang === 'en' ? 'stories' : 'tekstova'}</title>
+    </a>`;
+  }).join('');
+
+  const list = CHANNELS.map((c) => `<li><a href="${esc(c.base)}">${esc(CITY_SHORT[c.id] || c.city)}</a></li>`).join('');
+  const label = lang === 'en' ? 'Region map — pick a city' : 'Karta regije — odaberi grad';
+
+  return `<div class="amm">
+  <div class="amm-head"><span class="amm-flag">${lang === 'en' ? 'Map' : 'Karta'}</span><span>${esc(label)}</span></div>
+  <svg class="amm-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(label)}">
+    <defs><linearGradient id="ammSea" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0d1c2c"/><stop offset="1" stop-color="#060f19"/></linearGradient></defs>
+    <rect width="${W}" height="${H}" fill="url(#ammSea)"></rect>
+    ${[...Array(9)].map((_, i) => `<line x1="0" y1="${(i * H) / 8}" x2="${W}" y2="${(i * H) / 8}" stroke="rgba(255,255,255,.05)"></line>`).join('')}
+    ${[...Array(13)].map((_, i) => `<line x1="${(i * W) / 12}" y1="0" x2="${(i * W) / 12}" y2="${H}" stroke="rgba(255,255,255,.05)"></line>`).join('')}
+    ${pins}
+  </svg>
+  <ul class="amm-list">${list}</ul>
+</div>`;
+}
+
 function homeRail(cards, moda, lang = 'hr') {
   const T = RAIL_TEXT[lang] || RAIL_TEXT.hr;
+  const generatedAt = new Date().toISOString();
   const circles = CHANNELS.map((c) => {
     const card = cards.find((x) => x.id === c.id) || {};
     const city = CITY_SHORT[c.id] || c.city;
@@ -181,6 +254,7 @@ function homeRail(cards, moda, lang = 'hr') {
         <span class="amx-ring"><img src="${IMG}/${esc(c.id)}-440.webp" alt="${esc(c.title)} — ${esc(city)}, ${esc(c.country)}" width="440" height="440" loading="lazy" decoding="async">${count ? `<span class="amx-badge">${count}</span>` : ''}</span>
         <b>${esc(city)}</b>
         <small>${esc(c.lang)} · ${esc(c.country)}</small>
+        <em class="amx-ago">${esc(agoShort(card.lastItemAt, generatedAt))}</em>
       </a>
     </li>`;
   }).join('');
@@ -192,6 +266,9 @@ function homeRail(cards, moda, lang = 'hr') {
     [`${HUB}politika/`, 'Politika'],
     [`${HUB}sigurnost/`, 'Sigurnost'],
     [`${HUB}tehnologija/`, 'Tehnologija'],
+    [`${HUB}putovanja/`, 'Putovanja'],
+    [`${HUB}ljubimci/`, 'Ljubimci'],
+    [`${HUB}svijet/`, 'Svijet'],
     [`${HUB}biznis/`, 'Business desk'],
     ['https://gnk-asg.hr/galerija/', 'Galerija'],
     ['https://gnk-asg.hr/radio/', 'Radio']
@@ -212,6 +289,19 @@ function homeRail(cards, moda, lang = 'hr') {
 .amx-badge{position:absolute;right:-2px;bottom:4px;background:#111;color:#e9c66c;font:800 9px/1 system-ui,sans-serif;letter-spacing:.02em;padding:4px 6px;border-radius:999px;border:2px solid #fffdf8}
 .amx-link b{font:900 13px/1.05 Impact,"Arial Black",system-ui,sans-serif;letter-spacing:.01em;text-transform:uppercase;color:#111}
 .amx-link small{font:700 9px/1.2 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#67645e}
+.amx-ago{font:700 8.5px/1.2 system-ui,sans-serif;font-style:normal;letter-spacing:.05em;color:#9a9384}
+.amm{margin:6px 18px 4px;border:1px solid #111;background:#060f19;position:relative}
+.amm-head{display:flex;gap:10px;align-items:center;padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.12);font:700 10.5px/1.3 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.amm-flag{background:#e9c66c;color:#0c1015;padding:5px 8px;font-weight:900;letter-spacing:.14em}
+.amm-svg{display:block;width:100%;height:auto}
+.amm-pin circle{fill:#e9c66c;stroke:#060f19;stroke-width:2.5}
+.amm-pin .amm-pulse{fill:none;stroke:#e9c66c;stroke-width:1.5;opacity:.5}
+.amm-pin text{fill:#fff;font:800 13px/1 system-ui,sans-serif;letter-spacing:.02em;paint-order:stroke;stroke:#060f19;stroke-width:3.5}
+.amm-pin:hover circle{fill:#fff}
+.amm-pin:hover text{fill:#e9c66c}
+.amm-list{display:none;list-style:none;margin:0;padding:10px 12px 14px;flex-wrap:wrap;gap:8px}
+.amm-list a{font:800 11px/1 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#e9c66c;border:1px solid rgba(233,198,108,.4);padding:7px 9px;text-decoration:none}
+@media(max-width:700px){.amm-svg{display:none}.amm-list{display:flex}}
 .amx-link:hover .amx-ring,.amx-link:focus-visible .amx-ring{transform:translateY(-3px) scale(1.03);box-shadow:0 14px 26px rgba(15,23,42,.26)}
 .amx-link:hover b{color:#d71920}
 .amx-platforms{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:10px 18px 16px}
@@ -237,6 +327,7 @@ function homeRail(cards, moda, lang = 'hr') {
     <a class="amx-all" href="#izdanja-po-zemljama">${esc(T.all)}</a>
   </div>
   <ul class="amx-row">${circles}</ul>
+  ${regionMap(cards, lang)}
   <div class="amx-platforms"><span class="amx-plabel">${esc(T.platforms)}</span>${platforms}</div>
 </section>`;
 }
@@ -288,7 +379,7 @@ export function buildAktualCentral({ cards = [] } = {}) {
       numberOfItems: 15,
       itemListElement: [
         ...CHANNELS.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.title, url: c.base })),
-        ...['sport', 'politika', 'sigurnost', 'biznis', 'tehnologija', 'moda'].map((id, i) => ({ '@type': 'ListItem', position: 9 + i, name: id.toUpperCase(), url: `${HUB}${id}/` }))
+        ...['sport', 'politika', 'sigurnost', 'biznis', 'tehnologija', 'moda', 'putovanja', 'ljubimci', 'svijet'].map((id, i) => ({ '@type': 'ListItem', position: 9 + i, name: id.toUpperCase(), url: `${HUB}${id}/` }))
       ]
     }
   };
@@ -388,7 +479,7 @@ export function buildAktualCentral({ cards = [] } = {}) {
   <section class="amc-sec" id="deskovi" aria-labelledby="amcSec2">
     <div class="amc-sec-head">
       <div><span class="amc-sec-num">02 · PLOČICE 3 × 3</span><h3 id="amcSec2">Deskovi, tjednik mode i platforme</h3></div>
-      <span class="amc-dim">sport · politika · sigurnost · business · tehnologija · moda</span>
+      <span class="amc-dim">sport · politika · sigurnost · business · tehnologija · moda · putovanja · ljubimci · svijet</span>
     </div>
     <ul class="amc-grid3">${deskTiles(items, gallery)}</ul>
   </section>

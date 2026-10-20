@@ -48,3 +48,11 @@ const boot=()=>{
 };
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
+/* AKTUAL MEDIA RADIO — mini player se učitava jednom, lijeno, na svakoj stranici s izbornikom. */
+(function () {
+  if (window.__aktualRadioMini || /^\/radio(\/|$)/.test(location.pathname)) return;
+  var s = document.createElement('script');
+  s.src = '/assets/aktual-radio-mini-v1.js?v=20261020-radio-mini';
+  s.defer = true;
+  document.head.appendChild(s);
+})();
