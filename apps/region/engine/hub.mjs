@@ -839,12 +839,12 @@ a{color:inherit;text-decoration:none}a:hover{text-decoration:underline}
 <body>
 <div class="us-top"><strong>GNK DINAMO Ltd. · Boulder, Colorado</strong><span><a href="/gnk-aktual/">← AKTUAL MEDIA</a> · <a href="/izdanja/">Sva izdanja</a> · <a href="/kanal/">Kanali</a> · <a href="/radio/">Radio</a></span></div>
 <main>
-  <header class="us-hero"><div class="us-wrap">
+  <section class="us-hero"><div class="us-wrap">
     <p class="us-kicker">Ishodište projekta · USA</p>
     <h1>GNK DINAMO Ltd. — Boulder, Colorado</h1>
     <p class="us-lead">Ovdašnji podaci su ishodište svih poveznica ove mreže: matična tvrtka GNK DINAMO Ltd. ima sjedište u Boulderu u Coloradu, a GNK ASG d.o.o. uključen je u njezin grupni prikaz. Iz ovog čvora vode poveznice na svih osam gradskih izdanja AKTUAL MEDIA KANAL, na devet deskova i na svaku drugu javnu stranicu portala — i svaka od tih stranica vodi natrag ovamo.</p>
     <p class="us-hero-meta"><span>Entity ID 20238180649</span><span>Boulder · Colorado · USA</span><span>33 društva · 12 lokacija u širenju</span></p>
-  </div></header>
+  </div></section>
 
   <section class="us-sec"><div class="us-wrap">
     <h2>Tvrtka i ishodište</h2>
