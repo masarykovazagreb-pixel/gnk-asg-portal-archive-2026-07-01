@@ -44,6 +44,11 @@ on:
       - 'apps/portal/data/entity-graph.jsonld'
       - 'apps/portal/data/assistant-knowledge.json'
       - 'apps/portal/ai/index.html'
+      - 'apps/portal/s-chat/**'
+      - 'apps/portal/assets/s-chat-v1.*'
+      - 'apps/portal/assets/public-unified-menu-v6.js'
+      - 'workers/gnk-asg-ai-assist-worker/src/index.js'
+      - 'tests/test-splus-chat-v1.mjs'
       - 'apps/portal/assets/ai-reference-v1.css'
       - 'apps/portal/assets/ai-reference-ui-v1.js'
       - 'apps/portal/ai/assistant-reference.md'
@@ -95,7 +100,13 @@ jobs:
           node --check scripts/test-ai-reference-accessibility-v1.mjs
           node --check scripts/test-approved-author-markers-v1.mjs
           node --check apps/portal/assets/ai-reference-ui-v1.js
+          node --check workers/gnk-asg-ai-assist-worker/src/index.js
+          node --check apps/portal/assets/s-chat-v1.js
+          node --check apps/portal/assets/public-unified-menu-v6.js
+          node --check tests/test-splus-chat-v1.mjs
           python3 -m py_compile scripts/generate-sitemaps.py scripts/test-ai-reference-sitemap-pairing-v1.py
+      - name: S+Chat public AI contract (read-only)
+        run: node tests/test-splus-chat-v1.mjs
       - name: Validate EU AI Act governance contract for future AI use and publication
         run: |
           set -euo pipefail
