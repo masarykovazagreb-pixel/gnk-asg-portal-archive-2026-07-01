@@ -182,8 +182,9 @@ jobs:
         run: |
           set -euo pipefail
           DATE="${{ steps.izdanje.outputs.date }}"
-          for i in $(seq 1 12); do
-            if curl -fsS "https://gnk-asg-kanal.pages.dev/feed.json" -o /tmp/feed.json; then
+          # Propagacija zna potrajati; provjera ide do 5 minuta i zaobilazi keš.
+          for i in $(seq 1 30); do
+            if curl -fsS "https://gnk-asg-kanal.pages.dev/feed.json?v=$(date +%s)-$i" -o /tmp/feed.json; then
               if node -e '
                 const f=require("/tmp/feed.json");
                 const d=process.argv[1];
@@ -194,7 +195,7 @@ jobs:
                 exit 0
               fi
             fi
-            echo "Čekam propagaciju ($i/12)..."
+            echo "Čekam propagaciju ($i/30)..."
             sleep 10
           done
           echo "::error::Javni feed ne potvrđuje 10 objava za $DATE."
