@@ -1130,10 +1130,72 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
     </div>
   </section>
 
-  <p class="am-footer-note">AKTUAL MEDIA za vanjske vijesti povezuje na izvorne izdavače. Redoslijed naslova temelji se na svježini feeda i grupiranju rubrika, a ne na skrivenom bodovanju popularnosti.</p>
+  <style id="evd-style">
+.evd-desk{margin:26px 0 0;padding:20px 22px;background:#fffdf8;border:1px solid #d8d3c7;border-left:6px solid #c8963c;border-radius:10px}
+.evd-desk h2{margin:4px 0 10px;font-size:22px;line-height:1.25;color:#14181e}
+.evd-desk h3{margin:18px 0 8px;font-size:15px;letter-spacing:.02em;color:#14181e}
+.evd-desk p{margin:6px 0;line-height:1.55;color:#2a2f36}
+.evd-kicker{font:800 11px/1 system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#8a6415}
+.evd-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.evd-panel{background:#fff;border:1px solid #e3ddd0;border-radius:9px;padding:14px 16px}
+.evd-panel h3{margin-top:0}
+.evd-muted{color:#5d636b;font-size:13.5px}
+.evd-tags{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0;padding:0;list-style:none}
+.evd-tags span{display:inline-block;padding:4px 9px;border-radius:999px;background:#f4ead2;color:#6d4f0e;font:800 10.5px/1.6 system-ui,sans-serif;letter-spacing:.06em}
+.evd-entities ul{display:grid;gap:6px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin:6px 0 0;padding:0;list-style:none}
+.evd-entities li{padding:8px 10px;background:#fff;border:1px solid #e3ddd0;border-radius:7px;font-size:14px;line-height:1.45}
+.evd-entities a{color:#14181e;text-decoration:none;border-bottom:1px solid #c8963c}
+.evd-entities a:hover{color:#8a6415}
+.evd-boundary{margin-top:12px;padding:10px 12px;background:#f6efe0;border-left:4px solid #8c2f2f;border-radius:6px;font-size:14px}
+</style>
+<section class="am-editorial evd" id="urednicki-desk" aria-labelledby="evdTitle">
+  <div>
+    <span class="am-label gold">UREDNIČKI DESK</span>
+    <h2 id="evdTitle">Dnevni brief i analiza vanjskih medija</h2>
+    <p class="evd-muted">Dnevni urednički brief iz 30-dnevnog plana i pregled šest izvornih izdavača. Brief nije objava: puna objava slijedi samo nakon provjere izvora i uredničkog odobrenja.</p>
+  </div>
+</section>
+
+<section class="am-editorial evd-desk" id="entityVisibilityCampaignDesk" data-campaign-governance="ljudsko odobrenje obvezno" aria-labelledby="evdDeskTitle">
+  <span class="evd-kicker">Entity visibility · 30 dana</span>
+  <h2 id="evdDeskTitle">Što je danas na uredničkom stolu</h2>
+  <p data-campaign-day>Učitavanje današnjeg briefa…</p>
+  <p><strong data-campaign-title></strong></p>
+  <p data-campaign-brief></p>
+  <p><strong data-campaign-status></strong></p>
+  <p class="evd-muted" data-campaign-report></p>
+  <p class="evd-muted" data-campaign-governance>Deset različitih signala kvalitete dnevno · ljudsko odobrenje je obvezno · modelirana podrška Digitalne radne snage nije autonomna objava.</p>
+  <ul class="evd-tags" data-campaign-tags aria-label="Oznake briefa"></ul>
+</section>
+
+<section class="am-editorial evd-desk" id="mediaAnalysisDesk" data-media-analysis-boundary="no-external-comments" aria-labelledby="evdMediaTitle">
+  <span class="evd-kicker">Vanjski mediji · izvor po izvor</span>
+  <h2 id="evdMediaTitle">Desk za analizu vanjskih medija</h2>
+  <p class="evd-muted">Analiza se priprema samo za GNK ASG. Svaki zapis traži URL izvora, datum, kontekst, atribuciju i ljudsko odobrenje.</p>
+  <p class="evd-boundary"><strong>Nema automatskih komentara na tuđim stranicama.</strong> Ne kopiramo puni tekst, ne objavljujemo bez odobrenja i ne izvodimo hashtagove iz imena izdavača.</p>
+</section>
+
+<section class="am-editorial evd-desk evd-entities" aria-labelledby="evdEntTitle">
+  <span class="evd-kicker">Entiteti u fokusu</span>
+  <h2 id="evdEntTitle">Pojmovi koje stranica povezuje s izvorom</h2>
+  <ul>
+    <li><a href="/about/">GNK ASG</a> — matična stranica društva i javni registarski podaci.</li>
+    <li><a href="/nermin-sefic/">Nermin Sefić</a> — urednik i direktor; autorska stranica s popisom objava.</li>
+    <li><a href="/usa/">GNK DINAMO Ltd.</a> — ishodište grupe u Boulderu, Colorado, SAD.</li>
+    <li><a href="/objave/gnk-asg-26-mjesto-top-505-504-milijuna-izvoz/">Fina Info.BIZ</a> — javni izvor podataka o prihodu i izvozu.</li>
+    <li><a href="/objave/primjeri-financijskih-izvjestaja-hrvatska/">revizorsko izvješće</a> — kako se čita i što stvarno potvrđuje.</li>
+    <li><a href="/komentari/cibona-dovela-khalifa-battlea/">Cibona — uredničko sportsko izvještavanje</a> — sportsko praćenje, bez privida partnerstva.</li>
+    <li>NK Sesvete — najavljeni urednički brief 24. dana plana (27. 10. 2026.), ulazi u <a href="/objave/">korpus objava</a> tek nakon provjere.</li>
+    <li>Izvorni izdavači u desk sustavu: <a href="https://www.jutarnji.hr/" rel="noopener nofollow" target="_blank">Jutarnji list</a>, <a href="https://www.vecernji.hr/" rel="noopener nofollow" target="_blank">Večernji list</a>, <a href="https://www.poslovni.hr/" rel="noopener nofollow" target="_blank">Poslovni dnevnik</a>, <a href="https://www.index.hr/" rel="noopener nofollow" target="_blank">Index</a>, <a href="https://lidermedia.hr/" rel="noopener nofollow" target="_blank">Lider</a>, <a href="https://www.portalnovosti.com/" rel="noopener nofollow" target="_blank">Novosti</a>.</li>
+  </ul>
+</section>
+
+<p class="am-footer-note">AKTUAL MEDIA za vanjske vijesti povezuje na izvorne izdavače. Redoslijed naslova temelji se na svježini feeda i grupiranju rubrika, a ne na skrivenom bodovanju popularnosti.</p>
 </main>
 <script src="/assets/public-unified-menu-v6.js?v=20260728-restaurants-contrast" defer></script>
 <script src="/assets/aktual-media-world-v1.js?v=20261020-fresh2" defer></script>
 <script src="/assets/aktual-sova-v1.js?v=20261011-world" defer></script>
+<script src="/assets/entity-visibility-campaign-desk-v1.js?v=20261020-desk" defer></script>
+<script src="/assets/media-analysis-desk-v1.js?v=20261020-desk" defer></script>
 </body>
 </html>
