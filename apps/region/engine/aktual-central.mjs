@@ -138,6 +138,109 @@ function riverColumn(items) {
     </li>`).join('')}</ul>`;
 }
 
+
+/* ---------- NAŠA IZDANJA: krugovi na vrhu stranice ---------- */
+/* Krugovi su prave fotografije gradova (bez teksta u slici), pa se grad
+   prepoznaje na prvi pogled. Naziv i broj tekstova stoje ispod kruga, a
+   klik vodi na izdanje. Ispod je traka platformi. */
+
+const CITY_SHORT = {
+  zagreb: 'Zagreb', beograd: 'Beograd', sarajevo: 'Sarajevo', budimpesta: 'Budimpešta',
+  ljubljana: 'Ljubljana', rim: 'Rim', sofija: 'Sofija', bukurest: 'Bukurešt'
+};
+
+const RAIL_TEXT = {
+  hr: {
+    label: 'Naša izdanja',
+    lead: 'Osam gradskih kanala na osam jezika, BUSINESS TJEDNIK i TJEDNIK MODE. Klik vodi na izdanje, a s izdanja se uvijek vraćate gumbom <strong>← AKTUAL MEDIA</strong>.',
+    all: 'Sva izdanja ↓',
+    platforms: 'Deskovi i platforme',
+    aria: 'Naša izdanja — AKTUAL MEDIA kanali',
+    open: 'otvori izdanje', texts: 'tekstova',
+    names: ['Business Tjednik', 'Tjednik Mode', 'Sport', 'Politika', 'Sigurnost', 'Tehnologija', 'Business desk', 'Galerija', 'Radio']
+  },
+  en: {
+    label: 'Our editions',
+    lead: 'Eight city channels in eight languages, BUSINESS WEEKLY and FASHION WEEKLY. A click opens the edition; from every edition the <strong>← AKTUAL MEDIA</strong> button brings you back.',
+    all: 'All editions ↓',
+    platforms: 'Desks and platforms',
+    aria: 'Our editions — AKTUAL MEDIA channels',
+    open: 'open edition', texts: 'stories',
+    names: ['Business Weekly', 'Fashion Weekly', 'Sport', 'Politics', 'Security', 'Technology', 'Business desk', 'Gallery', 'Radio']
+  }
+};
+
+function homeRail(cards, moda, lang = 'hr') {
+  const T = RAIL_TEXT[lang] || RAIL_TEXT.hr;
+  const circles = CHANNELS.map((c) => {
+    const card = cards.find((x) => x.id === c.id) || {};
+    const city = CITY_SHORT[c.id] || c.city;
+    const count = card.count || 0;
+    return `<li class="amx-item">
+      <a class="amx-link" href="${esc(c.base)}" rel="external noopener" aria-label="${esc(c.title)} — ${esc(c.country)} — ${count} ${esc(T.texts)} — ${esc(T.open)}">
+        <span class="amx-ring"><img src="${IMG}/${esc(c.id)}-440.webp" alt="${esc(c.title)} — ${esc(city)}, ${esc(c.country)}" width="440" height="440" loading="lazy" decoding="async">${count ? `<span class="amx-badge">${count}</span>` : ''}</span>
+        <b>${esc(city)}</b>
+        <small>${esc(c.lang)} · ${esc(c.country)}</small>
+      </a>
+    </li>`;
+  }).join('');
+
+  const platforms = [
+    ['https://gnk-asg-tjednik.pages.dev/', 'Business Tjednik'],
+    [`${HUB}moda/`, 'Tjednik Mode'],
+    [`${HUB}sport/`, 'Sport'],
+    [`${HUB}politika/`, 'Politika'],
+    [`${HUB}sigurnost/`, 'Sigurnost'],
+    [`${HUB}tehnologija/`, 'Tehnologija'],
+    [`${HUB}biznis/`, 'Business desk'],
+    ['https://gnk-asg.hr/galerija/', 'Galerija'],
+    ['https://gnk-asg.hr/radio/', 'Radio']
+  ].map(([href], i) => `<a href="${esc(href)}"${href.startsWith('http') ? ' rel="external noopener"' : ''}>${esc(T.names[i])}</a>`).join('');
+
+  return `<style id="amx-style">.amx{margin:26px 0 0;background:#fffdf8;border:1px solid #d8d3c7;border-top:6px solid #111;scroll-margin-top:64px}
+.amx-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:12px 18px;border-bottom:1px solid #d8d3c7}
+.amx-flag{background:#d71920;color:#fff;font:900 11px/1 Inter,system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;padding:9px 12px;white-space:nowrap}
+.amx-head p{margin:0;font:400 12.5px/1.45 Georgia,serif;color:#4a4741;max-width:70ch}
+.amx-head p strong{font-family:system-ui,sans-serif;font-size:11.5px;letter-spacing:.04em;white-space:nowrap}
+.amx-all{margin-left:auto;font:900 10.5px/1 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border-bottom:2px solid #d71920;padding-bottom:4px;white-space:nowrap}
+.amx-all:hover{color:#d71920}
+.amx-row{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;list-style:none;margin:0;padding:16px 18px 6px}
+.amx-item{min-width:0}
+.amx-link{display:grid;justify-items:center;gap:7px;text-align:center;text-decoration:none}
+.amx-ring{position:relative;display:block;width:100%;aspect-ratio:1;border-radius:50%;padding:4px;background:linear-gradient(140deg,#e9c66c,#b8862f 45%,#f3dfa8);box-shadow:0 8px 18px rgba(15,23,42,.16);transition:transform .22s ease,box-shadow .22s ease}
+.amx-ring img{display:block;width:100%;height:100%;object-fit:cover;border-radius:50%;border:2px solid #fffdf8}
+.amx-badge{position:absolute;right:-2px;bottom:4px;background:#111;color:#e9c66c;font:800 9px/1 system-ui,sans-serif;letter-spacing:.02em;padding:4px 6px;border-radius:999px;border:2px solid #fffdf8}
+.amx-link b{font:900 13px/1.05 Impact,"Arial Black",system-ui,sans-serif;letter-spacing:.01em;text-transform:uppercase;color:#111}
+.amx-link small{font:700 9px/1.2 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#67645e}
+.amx-link:hover .amx-ring,.amx-link:focus-visible .amx-ring{transform:translateY(-3px) scale(1.03);box-shadow:0 14px 26px rgba(15,23,42,.26)}
+.amx-link:hover b{color:#d71920}
+.amx-platforms{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:10px 18px 16px}
+.amx-plabel{font:800 9.5px/1 system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#8a8578;margin-right:4px}
+.amx-platforms a{border:1px solid #111;padding:7px 10px;font:800 10px/1 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;transition:background .15s ease,color .15s ease}
+.amx-platforms a:hover{background:#111;color:#fffdf8}
+@media(max-width:1040px){.amx-row{grid-template-columns:repeat(4,minmax(0,1fr));row-gap:16px}}
+@media(max-width:620px){
+  .amx-head{gap:10px;padding:12px}
+  .amx-head p{font-size:11.5px;order:3;flex-basis:100%}
+  .amx-all{margin-left:0}
+  .amx-row{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:14px 12px 8px;scrollbar-width:none;-ms-overflow-style:none}
+  .amx-row::-webkit-scrollbar{display:none;height:0}
+  .amx-item{flex:0 0 84px;scroll-snap-align:start}
+  .amx-link b{font-size:12px}
+  .amx-link small{font-size:8.5px}
+  .amx-platforms{padding:8px 12px 14px}
+}</style>
+<section class="amx" aria-label="${esc(T.aria)}">
+  <div class="amx-head">
+    <span class="amx-flag">${esc(T.label)}</span>
+    <p>${T.lead}</p>
+    <a class="amx-all" href="#izdanja-po-zemljama">${esc(T.all)}</a>
+  </div>
+  <ul class="amx-row">${circles}</ul>
+  <div class="amx-platforms"><span class="amx-plabel">${esc(T.platforms)}</span>${platforms}</div>
+</section>`;
+}
+
 export function buildAktualCentral({ cards = [] } = {}) {
   if (!existsSync(FILE)) return { ok: false, reason: 'nema gnk-aktual/index.html' };
   let html = readFileSync(FILE, 'utf8');
@@ -347,6 +450,39 @@ ${END}`;
   html = html.replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${esc(truncate(desc, 300))}">`);
   html = html.replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${esc(truncate(desc, 300))}">`);
 
+  /* Traka krugova ide odmah ispod rubrika, prije vijesti. */
+  const RS = '<!-- AKTUAL-RAIL:START -->';
+  const RE = '<!-- AKTUAL-RAIL:END -->';
+  const railHr = homeRail(cards, moda, 'hr');
+  if (html.includes(RS) && html.includes(RE)) {
+    html = html.replace(new RegExp(`${RS}[\\s\\S]*?${RE}`), () => `${RS}\n${railHr}\n${RE}`);
+  } else {
+    const navOpen = html.indexOf('<nav class="am-sectionnav"');
+    const navClose = navOpen >= 0 ? html.indexOf('</nav>', navOpen) : -1;
+    if (navClose > 0) {
+      const at = navClose + '</nav>'.length;
+      html = `${html.slice(0, at)}\n${RS}\n${railHr}\n${RE}${html.slice(at)}`;
+    }
+  }
   writeFileSync(FILE, html);
+
+  /* Engleska stranica dobiva istu traku krugova, s engleskim natpisima. */
+  const EN = join(PORTAL, 'en', 'gnk-aktual', 'index.html');
+  if (existsSync(EN)) {
+    let en = readFileSync(EN, 'utf8');
+    const rail = homeRail(cards, moda, 'en');
+    if (en.includes(RS) && en.includes(RE)) {
+      en = en.replace(new RegExp(`${RS}[\\s\\S]*?${RE}`), () => `${RS}\n${rail}\n${RE}`);
+    } else {
+      const navOpen = en.indexOf('<nav class="am-sectionnav"');
+      const navClose = navOpen >= 0 ? en.indexOf('</nav>', navOpen) : -1;
+      if (navClose > 0) {
+        const at = navClose + '</nav>'.length;
+        en = `${en.slice(0, at)}\n${RS}\n${rail}\n${RE}${en.slice(at)}`;
+      }
+    }
+    writeFileSync(EN, en);
+  }
+
   return { ok: true, items: items.length, sources: sources.size, channels: CHANNELS.length, tiles: 15, river: river.length, moda };
 }

@@ -19,7 +19,10 @@ img{max-width:100%}
 .am-brand-sub{margin:12px 0 0;font-family:Georgia,serif;font-style:italic;color:var(--am-muted);font-size:.9rem}
 .am-mast-side{font-size:.72rem;color:var(--am-muted);line-height:1.45;font-weight:700}
 .am-mast-side.right{text-align:right}
-.am-sectionnav{display:flex;gap:0;overflow-x:auto;border-bottom:1px solid var(--am-line);background:var(--am-paper);position:sticky;top:0;z-index:20;box-shadow:0 6px 16px rgba(10,15,20,.04)}
+.am-sectionnav{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;border-bottom:1px solid var(--am-line);background:var(--am-paper);position:sticky;top:0;z-index:20;box-shadow:0 6px 16px rgba(10,15,20,.04)}
+.am-sectionnav::-webkit-scrollbar{display:none;height:0}
+#izdanja-po-zemljama,#deskovi,#mravinjak,#sve-aktual-media{scroll-margin-top:64px}
+html{scroll-padding-top:64px}
 .am-sectionnav a{white-space:nowrap;text-decoration:none;padding:13px 15px;font-size:.74rem;font-weight:900;text-transform:uppercase;letter-spacing:.035em;border-right:1px solid var(--am-line)}
 .am-sectionnav a:hover,.am-sectionnav a:focus{background:var(--am-ink);color:white}
 .am-breaking{display:grid;grid-template-columns:auto 1fr;align-items:stretch;margin:22px 0 26px;border:1px solid var(--am-ink);background:var(--am-paper)}

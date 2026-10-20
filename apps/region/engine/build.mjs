@@ -266,6 +266,7 @@ ${ld}
 <body data-channel="${channel.id}" data-lang="${channel.lang}">
 <a class="skip" href="#sadrzaj">Sadržaj</a>
 ${body}
+<a class="hublink" href="${CENTRAL}#izdanja-po-zemljama" rel="external noopener" aria-label="Vrati se u AKTUAL MEDIA — sva izdanja"><span aria-hidden="true">←</span> AKTUAL MEDIA</a>
 </body>
 </html>`;
 }
@@ -279,7 +280,7 @@ function header(channel, strings, active = '', root = '') {
     ['metodologija/', strings.methodology]
   ].map(([href, label]) => `<a href="${root}${href}"${href === active ? ' aria-current="page"' : ''}>${esc(label)}</a>`).join('');
   return `<header class="top">
-  <div class="topbar"><span>${esc(strings.editionOf)}</span><a class="topback" href="https://gnk-asg.hr/gnk-aktual/" rel="external noopener">← AKTUAL MEDIA · sve na jednom mjestu</a></div>
+  <div class="topbar"><span>${esc(strings.editionOf)}</span><a class="topback" href="${CENTRAL}#izdanja-po-zemljama" rel="external noopener">← AKTUAL MEDIA · sva izdanja</a></div>
   <div class="masthead">
     <div class="brand">
       <span class="kicker">${esc(channel.country)} · ${esc(channel.city)}</span>
@@ -792,9 +793,13 @@ img{max-width:100%;height:auto}
 .xf-desks a:hover{border-color:var(--accent);color:var(--accent)}
 @media(max-width:900px){.xf-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:600px){.xf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.hublink{position:fixed;left:18px;bottom:18px;z-index:80;display:inline-flex;align-items:center;gap:7px;background:#0c1015;color:#e9c66c;border:1px solid rgba(233,198,108,.55);border-radius:999px;padding:11px 16px;font:800 11px/1 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;box-shadow:0 12px 28px rgba(0,0,0,.35);transition:background .18s ease,color .18s ease,transform .18s ease}
+.hublink:hover,.hublink:focus-visible{background:#e9c66c;color:#0c1015;text-decoration:none;transform:translateY(-2px)}
+@media(max-width:600px){.hublink{left:10px;bottom:10px;padding:9px 12px;font-size:10px}}
+@media print{.hublink{display:none}}
 .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;font:600 11px/1.4 system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;padding:10px clamp(16px,4vw,48px);border-bottom:1px solid rgba(255,255,255,.14);color:var(--accent)}
-.topbar .topback{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(233,198,108,.5);padding-bottom:2px;letter-spacing:.1em}
-.topbar .topback:hover{color:#fff;border-bottom-color:#fff}
+.topbar .topback{color:var(--accent);text-decoration:none;border:1px solid rgba(233,198,108,.55);border-radius:999px;padding:6px 11px;letter-spacing:.1em;transition:background .18s ease,color .18s ease}
+.topbar .topback:hover{background:var(--accent);color:#0c1015;border-color:var(--accent)}
 .masthead{display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:flex-end;padding:clamp(20px,4vw,40px) clamp(16px,4vw,48px)}
 .kicker{display:block;font:600 12px/1.4 system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--accent2)}
 .logo{display:block;font:700 clamp(30px,5vw,54px)/1.02 Georgia,serif;letter-spacing:-.01em;margin:6px 0 8px;color:var(--ink)}
