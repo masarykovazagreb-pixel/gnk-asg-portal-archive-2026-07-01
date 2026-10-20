@@ -24,7 +24,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
-          fetch-depth: 0
+          # Puni klon ovog repozitorija traje dulje od timeouta posla; skripta
+          # i provjera rade samo nad radnim stablom, pa je plitki klon dovoljan.
+          fetch-depth: 1
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
