@@ -1,14 +1,14 @@
 {
   "note": "Groups are derived from real workflow files; worker profiles are a modeled catalogue.",
-  "total": 327,
+  "total": 328,
   "groups": [
     {
       "id": "izdanja",
       "name": "Izdanja i sadržaj",
       "nameEn": "Editions and content",
-      "automations": 59,
-      "scheduled": 7,
-      "runsPerDay": 38,
+      "automations": 64,
+      "scheduled": 8,
+      "runsPerDay": 39,
       "files": [
         {
           "file": "aktual-ai-governance-candidate-gate.yml",
@@ -225,11 +225,23 @@
           "perDay": 0
         },
         {
+          "file": "generate-digital-workforce-newsroom-pages.yml",
+          "crons": [
+            "0 6 * * *"
+          ],
+          "perDay": 1
+        },
+        {
           "file": "gnk-news-refresh-v2.yml",
           "crons": [
             "12 1,5,9,13,17,21 * * *"
           ],
           "perDay": 6
+        },
+        {
+          "file": "issue-news-v16-validation.yml",
+          "crons": [],
+          "perDay": 0
         },
         {
           "file": "kanal-daily.yml",
@@ -279,6 +291,16 @@
           "perDay": 0
         },
         {
+          "file": "objavi-15-dnevno.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "publication-calendar-source-of-truth.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
           "file": "region-backfill.yml",
           "crons": [],
           "perDay": 0
@@ -308,6 +330,11 @@
           "perDay": 0
         },
         {
+          "file": "warm-news-v16.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
           "file": "world-monitor-refresh.yml",
           "crons": [
             "20 1,7,13,19 * * *"
@@ -325,9 +352,9 @@
       "id": "trzista",
       "name": "Tržišta i podaci",
       "nameEn": "Markets and data",
-      "automations": 3,
-      "scheduled": 2,
-      "runsPerDay": 4,
+      "automations": 5,
+      "scheduled": 4,
+      "runsPerDay": 9,
       "files": [
         {
           "file": "macro-market-refresh.yml",
@@ -347,6 +374,20 @@
             "10 6,14 * * *"
           ],
           "perDay": 2
+        },
+        {
+          "file": "sync-webshop-products.yml",
+          "crons": [
+            "35 5 * * *"
+          ],
+          "perDay": 1
+        },
+        {
+          "file": "weather-refresh.yml",
+          "crons": [
+            "5 2,8,14,20 * * *"
+          ],
+          "perDay": 4
         }
       ]
     },
@@ -354,7 +395,7 @@
       "id": "distribucija",
       "name": "Distribucija i zrcala",
       "nameEn": "Distribution and mirrors",
-      "automations": 11,
+      "automations": 12,
       "scheduled": 1,
       "runsPerDay": 24,
       "files": [
@@ -369,6 +410,11 @@
             "45 * * * *"
           ],
           "perDay": 24
+        },
+        {
+          "file": "export-campaign-continuation-readonly.yml",
+          "crons": [],
+          "perDay": 0
         },
         {
           "file": "external-distribution-approval-gate.yml",
@@ -421,9 +467,9 @@
       "id": "seo",
       "name": "SEO i indeksiranje",
       "nameEn": "SEO and indexing",
-      "automations": 15,
-      "scheduled": 2,
-      "runsPerDay": 5,
+      "automations": 17,
+      "scheduled": 4,
+      "runsPerDay": 9,
       "files": [
         {
           "file": "aeo-ai-visibility.yml",
@@ -475,6 +521,20 @@
           "perDay": 0
         },
         {
+          "file": "refresh-gnkc-index.yml",
+          "crons": [
+            "20 6,14 * * *"
+          ],
+          "perDay": 2
+        },
+        {
+          "file": "refresh-index-live-data.yml",
+          "crons": [
+            "5 7,15 * * *"
+          ],
+          "perDay": 2
+        },
+        {
           "file": "regeneriraj-image-sitemap.yml",
           "crons": [],
           "perDay": 0
@@ -510,7 +570,7 @@
       "id": "odrzavanje",
       "name": "Održavanje i oporavak",
       "nameEn": "Maintenance and recovery",
-      "automations": 37,
+      "automations": 41,
       "scheduled": 4,
       "runsPerDay": 37,
       "files": [
@@ -627,6 +687,11 @@
           "perDay": 10
         },
         {
+          "file": "fix-operator-dashboard-route-v7.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
           "file": "image-health-scan.yml",
           "crons": [
             "15 3 * * 0"
@@ -681,6 +746,16 @@
           "perDay": 0
         },
         {
+          "file": "restore-iq200-index-now.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "restore-production-2059.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
           "file": "runtime-health-issue90.yml",
           "crons": [],
           "perDay": 0
@@ -703,6 +778,11 @@
           "perDay": 0
         },
         {
+          "file": "worker-groups-sync.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
           "file": "workforce-runtime-health-truth.yml",
           "crons": [],
           "perDay": 0
@@ -713,10 +793,17 @@
       "id": "deploy",
       "name": "Objava i deploy",
       "nameEn": "Release and deploy",
-      "automations": 53,
-      "scheduled": 0,
-      "runsPerDay": 0,
+      "automations": 57,
+      "scheduled": 1,
+      "runsPerDay": 12,
       "files": [
+        {
+          "file": "auto-deploy-main-v1.yml",
+          "crons": [
+            "37 0,2,4,6,8,10,12,14,16,18,20,22 * * *"
+          ],
+          "perDay": 12
+        },
         {
           "file": "deploy-admin-auth-v6.yml",
           "crons": [],
@@ -978,7 +1065,22 @@
           "perDay": 0
         },
         {
+          "file": "force-deploy-fresh-media-center.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "production-live-sync.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
           "file": "publish-first-validated-qa-v3.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "scheduled-production-deploy.yml",
           "crons": [],
           "perDay": 0
         }
@@ -988,10 +1090,15 @@
       "id": "provjere",
       "name": "Provjere i auditi",
       "nameEn": "Checks and audits",
-      "automations": 71,
+      "automations": 94,
       "scheduled": 0,
       "runsPerDay": 0,
       "files": [
+        {
+          "file": "all-gates-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
         {
           "file": "audit-floating-home-route-owners.yml",
           "crons": [],
@@ -1144,6 +1251,111 @@
         },
         {
           "file": "check-worker-review-preview-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "direct-static-editorial-policy-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "final-v27-acceptance-issue98.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "homepage-browser-audit.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "integration-portal-v12.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "key-routes-quality-gate.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "live-index-redesign-preview.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "media-readiness-audit.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "no-en-en-canonical-contract.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "p0-rss-audit.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "p1-dw-audit.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "p2-lighthouse.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "provjera-aplikacije.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "provjera-tvrdnji.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "provjera-workera.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "provjeri-profil-stranicu.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "public-market-contract.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "public-portal-audit.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "runtime-contract-issue96.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "siroki-smoke.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "site-functional-readiness.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "test-public-visual-v13.yml",
           "crons": [],
           "perDay": 0
         },
@@ -1346,6 +1558,11 @@
           "file": "verify-v31-browser.yml",
           "crons": [],
           "perDay": 0
+        },
+        {
+          "file": "worker-route-ownership-contract.yml",
+          "crons": [],
+          "perDay": 0
         }
       ]
     },
@@ -1353,7 +1570,7 @@
       "id": "mediji",
       "name": "Mediji, slike i galerija",
       "nameEn": "Media, images and gallery",
-      "automations": 9,
+      "automations": 11,
       "scheduled": 0,
       "runsPerDay": 0,
       "files": [
@@ -1398,6 +1615,16 @@
           "perDay": 0
         },
         {
+          "file": "upload-correct-memorandum.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "upload-media-pdf-issue92.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
           "file": "visual-index-news-images-live.yml",
           "crons": [],
           "perDay": 0
@@ -1408,7 +1635,7 @@
       "id": "pristup",
       "name": "Pristup i administracija",
       "nameEn": "Access and administration",
-      "automations": 5,
+      "automations": 8,
       "scheduled": 0,
       "runsPerDay": 0,
       "files": [
@@ -1419,6 +1646,21 @@
         },
         {
           "file": "internal-media-email-test.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "operator-approved-control.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "operator-deploy-current.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "operator-register-504m.yml",
           "crons": [],
           "perDay": 0
         },
@@ -1440,12 +1682,72 @@
       ]
     },
     {
+      "id": "jednokratno",
+      "name": "Jednokratne i povijesne objave",
+      "nameEn": "One-time and historical releases",
+      "automations": 10,
+      "scheduled": 0,
+      "runsPerDay": 0,
+      "files": [
+        {
+          "file": "one-time-autoreply-ai-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "one-time-direct-urgent-release-v37.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "one-time-final-urgent-package-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "one-time-fix-editorial-route-ownership-v35.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "one-time-fix-news-cache-and-contact-readiness-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "one-time-fix-todays-news-order-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "one-time-full-validate-and-deploy-v2.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "one-time-revalidate-urgent-package-v3.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "one-time-verify-final-urgent-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "one-time-verify-production-v4.yml",
+          "crons": [],
+          "perDay": 0
+        }
+      ]
+    },
+    {
       "id": "nadzor",
       "name": "Nadzor i status",
       "nameEn": "Monitoring and status",
-      "automations": 5,
-      "scheduled": 0,
-      "runsPerDay": 0,
+      "automations": 9,
+      "scheduled": 2,
+      "runsPerDay": 10,
       "files": [
         {
           "file": "actions-execution-probe.yml",
@@ -1463,6 +1765,11 @@
           "perDay": 0
         },
         {
+          "file": "master-asg-autonomous-agent-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
           "file": "report-current-public-portal.yml",
           "crons": [],
           "perDay": 0
@@ -1471,69 +1778,28 @@
           "file": "report-iq200-deploy.yml",
           "crons": [],
           "perDay": 0
+        },
+        {
+          "file": "workforce-bot-orchestrator.yml",
+          "crons": [
+            "17 */4 * * *"
+          ],
+          "perDay": 6
+        },
+        {
+          "file": "workforce-production-smoke.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "workforce-supervisor-agent.yml",
+          "crons": [
+            "50 2,8,14,20 * * *"
+          ],
+          "perDay": 4
         }
       ]
     }
   ],
-  "ungrouped": [
-    "auto-deploy-main-v1.yml",
-    "direct-static-editorial-policy-v1.yml",
-    "export-campaign-continuation-readonly.yml",
-    "final-v27-acceptance-issue98.yml",
-    "fix-operator-dashboard-route-v7.yml",
-    "force-deploy-fresh-media-center.yml",
-    "generate-digital-workforce-newsroom-pages.yml",
-    "homepage-browser-audit.yml",
-    "integration-portal-v12.yml",
-    "issue-news-v16-validation.yml",
-    "key-routes-quality-gate.yml",
-    "live-index-redesign-preview.yml",
-    "master-asg-autonomous-agent-v1.yml",
-    "media-readiness-audit.yml",
-    "no-en-en-canonical-contract.yml",
-    "objavi-15-dnevno.yml",
-    "one-time-autoreply-ai-v1.yml",
-    "one-time-direct-urgent-release-v37.yml",
-    "one-time-final-urgent-package-v1.yml",
-    "one-time-fix-editorial-route-ownership-v35.yml",
-    "one-time-fix-news-cache-and-contact-readiness-v1.yml",
-    "one-time-fix-todays-news-order-v1.yml",
-    "one-time-full-validate-and-deploy-v2.yml",
-    "one-time-revalidate-urgent-package-v3.yml",
-    "one-time-verify-final-urgent-v1.yml",
-    "one-time-verify-production-v4.yml",
-    "operator-approved-control.yml",
-    "operator-deploy-current.yml",
-    "operator-register-504m.yml",
-    "p0-rss-audit.yml",
-    "p1-dw-audit.yml",
-    "p2-lighthouse.yml",
-    "production-live-sync.yml",
-    "provjera-aplikacije.yml",
-    "provjera-tvrdnji.yml",
-    "provjera-workera.yml",
-    "provjeri-profil-stranicu.yml",
-    "public-market-contract.yml",
-    "public-portal-audit.yml",
-    "publication-calendar-source-of-truth.yml",
-    "refresh-gnkc-index.yml",
-    "refresh-index-live-data.yml",
-    "restore-iq200-index-now.yml",
-    "restore-production-2059.yml",
-    "runtime-contract-issue96.yml",
-    "scheduled-production-deploy.yml",
-    "siroki-smoke.yml",
-    "site-functional-readiness.yml",
-    "sync-webshop-products.yml",
-    "test-public-visual-v13.yml",
-    "upload-correct-memorandum.yml",
-    "upload-media-pdf-issue92.yml",
-    "warm-news-v16.yml",
-    "weather-refresh.yml",
-    "worker-groups-sync.yml",
-    "worker-route-ownership-contract.yml",
-    "workforce-bot-orchestrator.yml",
-    "workforce-production-smoke.yml",
-    "workforce-supervisor-agent.yml"
-  ]
+  "ungrouped": []
 }
