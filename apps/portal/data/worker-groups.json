@@ -286,7 +286,7 @@
         {
           "file": "region-daily.yml",
           "crons": [
-            "0 */2 * * *"
+            "7 */2 * * *"
           ],
           "perDay": 12
         },
@@ -511,8 +511,8 @@
       "name": "Održavanje i oporavak",
       "nameEn": "Maintenance and recovery",
       "automations": 37,
-      "scheduled": 5,
-      "runsPerDay": 38,
+      "scheduled": 4,
+      "runsPerDay": 37,
       "files": [
         {
           "file": "bot-ownership-contract.yml",
@@ -635,10 +635,8 @@
         },
         {
           "file": "index-parity-heal.yml",
-          "crons": [
-            "12 4 * * *"
-          ],
-          "perDay": 1
+          "crons": [],
+          "perDay": 0
         },
         {
           "file": "inspect-live-status-verification-20260722.yml",
