@@ -9,3 +9,12 @@ routes = [
 
 [ai]
 binding = "AI"
+# S+Chat anonymous usage budget: Cloudflare Workers Rate Limiting API.
+# Namespace IDs are unique within the Cloudflare account; this is a new S+Chat-only namespace.
+[[ratelimits]]
+name = "SPLUS_CHAT_LIMITER"
+namespace_id = "20261020"
+
+[ratelimits.simple]
+limit = 5
+period = 60
