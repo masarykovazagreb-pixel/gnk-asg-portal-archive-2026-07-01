@@ -69,6 +69,21 @@ for (const channel of channels) {
   assert.doesNotMatch(img, /opacity/, 'the hero photo is drawn at full strength');
 }
 
+/* ---------- 3. Generator, ne samo kopije ----------
+
+   Gradske kanale svaka dva sata ponovno gradi apps/region/engine/build.mjs i
+   zapisuje ih u main. Popravak samo u osam kopija CSS-a bio bi pregazan pri
+   prvom ciklusu — zato se provjerava izvor iz kojeg kopije nastaju. */
+
+const generator = read('apps/region/engine/build.mjs');
+const generatedHero = generator.match(/\.intro--hero::after\{content:"[^"]*"[^}]*\}/);
+assert.ok(generatedHero, 'the channel generator must still define the hero overlay');
+assert.match(generatedHero[0], /rgba\(6,12,20,0\)\s*100%/, 'generated hero veil must fade to nothing');
+assert.doesNotMatch(generatedHero[0], /rgba\(6,12,20,\.34\)\s*100%/,
+  'the near-opaque veil is back in the generator and the next region cycle would restore it');
+assert.match(generator, /assets\/region\.css\?v=\d{8}-hero-clear/,
+  'the generator must cache-bust the CSS it writes into every channel page');
+
 /* ---------- 3. Poveznica nosi novu verziju, inače preglednik posluži staru ---------- */
 
 const page = read('apps/portal/kanal/zagreb/index.html');
