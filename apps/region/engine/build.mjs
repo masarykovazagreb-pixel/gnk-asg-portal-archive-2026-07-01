@@ -351,7 +351,7 @@ function shell(channel, strings, { title, description, path, keywords = [], json
 <link rel="alternate" type="application/feed+json" title="${esc(channel.title)}" href="${url(channel, 'feed.json')}">
 <link rel="author" href="${PUBLIC}/nermin-sefic/">
 <link rel="icon" href="${root}assets/favicon.svg" type="image/svg+xml">
-<link rel="preload" as="image" href="${hero}" fetchpriority="high">
+<link rel="preload" as="image" href="${hero}"${hero.includes(`/izdanja/${channel.id}-1200.webp`) ? ` imagesrcset="/assets/izdanja/${channel.id}-800.webp 800w, /assets/izdanja/${channel.id}-1200.webp 1200w" imagesizes="(max-width:760px) 100vw, 1200px"` : ''} fetchpriority="high">
 <meta property="og:type" content="${type}">
 <meta property="og:site_name" content="${esc(channel.title)}">
 <meta property="og:locale" content="${pageLocale}">
@@ -488,7 +488,7 @@ function homePage(channel, strings, data) {
   const body = `${header(channel, strings)}
 <main id="sadrzaj">
   <section class="intro intro--hero">
-    <img class="heroimg" src="/assets/izdanja/${channel.id}-1200.webp" alt="${esc(channel.title)} — ${esc(channel.city)}, ${esc(channel.country)}" width="1200" height="675" fetchpriority="high" decoding="async">
+    <img class="heroimg" src="/assets/izdanja/${channel.id}-1200.webp" srcset="/assets/izdanja/${channel.id}-800.webp 800w, /assets/izdanja/${channel.id}-1200.webp 1200w" sizes="(max-width:760px) 100vw, 1200px" alt="${esc(channel.title)} — ${esc(channel.city)}, ${esc(channel.country)}" width="1200" height="675" fetchpriority="high" decoding="async">
     <div class="intro-main">
       <p class="dateline">${esc(strings.daily)} · ${esc(longDate(new Date().toISOString().slice(0, 10), channel.lang))}${data.updatedAt ? ` · ${esc(strings.updated)} ${esc(shortDate(data.updatedAt.slice(0, 10), channel.lang))}` : ''}</p>
       <h1>${esc(channel.title)}</h1>

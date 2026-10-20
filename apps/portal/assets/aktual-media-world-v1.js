@@ -239,7 +239,7 @@
 
   async function boot(){
     try{
-      const r=await fetch('/data/news.json?v='+Date.now(),{cache:'no-store'});
+      const r=await fetch('/data/news.json',{cache:'no-cache'});
       if(!r.ok) throw new Error('HTTP '+r.status);
       const items=safeItems(await r.json());
       setEdition(items);
