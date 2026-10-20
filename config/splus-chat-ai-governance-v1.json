@@ -1,0 +1,49 @@
+{
+  "title": "GNK ASG S+Chat — existing Intelligence Desk API public use case",
+  "date": "2026-10-20",
+  "owner": "GNK ASG d.o.o. — portal operations",
+  "source": "apps/portal/s-chat/index.html; apps/portal/assets/s-chat-v1.js; workers/gnk-asg-direct-operator/src/intelligence-desk-chat-v1.js",
+  "aiGovernance": {
+    "usedAI": true,
+    "role": "both",
+    "purpose": "Public general-question and portal-related AI chat via existing rate-limited Intelligence Desk API; informational assistance only",
+    "prohibitedUseScreenPassed": true,
+    "prohibitedUse": false,
+    "privacyAndRightsReviewed": true,
+    "riskClassification": "not-high-risk",
+    "publicInterest": false,
+    "generatesOrAltersText": true,
+    "deepfake": false,
+    "directAiInteraction": true,
+    "chatbotIdentifiedAsAI": true,
+    "generatesSyntheticMedia": false,
+    "machineReadableProvenanceReviewed": false,
+    "disclosure": {
+      "visible": true,
+      "text": "Razgovarate s umjetnom inteligencijom. Odgovori mogu biti netočni."
+    },
+    "aiLiteracyMeasuresReviewed": true,
+    "humanEditorialReview": {
+      "substantive": false,
+      "reviewer": null,
+      "approvedAt": null,
+      "editorialResponsibilityAccepted": false
+    }
+  },
+  "technicalControls": {
+    "endpoint": "POST /api/intelligence-desk-chat",
+    "inputMaxCharacters": 600,
+    "rateLimit": "Existing Intelligence Desk server-side KV hourly limiter, contingent on configured KV binding",
+    "localStorage": "sessionStorage per browser tab, last 16 entries; never claim remote server has no logs",
+    "backendRequired": "GNK ASG direct-operator worker with configured OPENAI_API_KEY and KV binding, not independently verified live",
+    "security": "No arbitrary tool access, no client-supplied system prompt, no claimed actions or outbound mail"
+  },
+  "risksAndRelease": [
+    "Check prod HTTP GET /s-chat/, JS and CSS",
+    "Confirm exact-SHA portal deployment",
+    "Perform authorized safe test POST (no personal data) and inspect 200/429/503 status",
+    "Verify data processing/retention and abuse mitigation",
+    "No independent substantive human review of responses claimed"
+  ],
+  "notes": "This is internal initial product-risk documentation based on code inspection, not legal approval or verification of Cloudflare/OpenAI retention settings."
+}
