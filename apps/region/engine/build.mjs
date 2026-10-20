@@ -827,7 +827,7 @@ function writeLegacyRedirect(channel) {
  * izdanje radi, navodi izvore i zadnjih 24 naslova u izvornom jeziku (naslov se
  * ne prepisuje), a svaki link vodi na izvorni članak i njegov izvor. */
 const EN_UI = {
-  intro: (c, n, s) => `AKTUAL MEDIA ${c.title.replace(/^AKTUAL MEDIA\s*/i, '')} covers ${c.city}, ${COUNTRY_EN[c.country] || c.country}. The edition is published in ${esc(LANG_NAME[c.lang] || c.lang)}. This page is the English entry point: it explains how the edition works and lists the latest ${n} headlines in the original language, each linked to its source.`,
+  intro: (c, n, s) => `AKTUAL MEDIA ${c.title.replace(/^AKTUAL MEDIA\s*/i, '')} covers ${c.city}, ${COUNTRY_EN[c.country] || c.country}. The edition is published in ${LANG_NAME[c.lang] || c.lang}. This page is the English entry point: it explains how the edition works and lists the latest ${n} headlines in the original language, each linked to its source.`,
   what: 'What this edition does',
   bullets: [
     'Every day it reads the public feeds, sitemaps and APIs of the named outlets below.',
@@ -875,7 +875,7 @@ function englishPage(channel, strings, data) {
 </header>
 <main id="sadrzaj" class="page">
   <h1>${esc(title)}</h1>
-  <p class="lead">${esc(EN_UI.intro(channel, data.items.length, channel.sources.length))}</p>
+  <p class="lead">${esc(EN_UI.intro(channel, n, channel.sources.length))}</p>
   <p><a class="cta" href="${root}" hreflang="${channel.lang}">← ${esc(EN_UI.original)}</a></p>
 
   <h2>${esc(EN_UI.what)}</h2>
@@ -889,7 +889,7 @@ function englishPage(channel, strings, data) {
   <ul class="list">${channel.sources.map((x) => `<li><a href="${root}izvor/${x.id}/" hreflang="${channel.lang}">${esc(x.name)}</a><span class="src">${esc(x.type.toUpperCase())}</span></li>`).join('')}</ul>
 
   <h2>Other editions</h2>
-  <ul class="list">${CHANNELS.filter((c) => c.id !== channel.id).map((c) => `<li><a href="${c.base}en/" hreflang="en">${esc(c.title)}</a><span class="src">${esc(c.country)}</span></li>`).join('')}</ul>
+  <ul class="list">${CHANNELS.filter((c) => c.id !== channel.id).map((c) => `<li><a href="${c.base}en/" hreflang="en">${esc(c.title)}</a><span class="src">${esc(COUNTRY_EN[c.country] || c.country)}</span></li>`).join('')}</ul>
   <p><a href="${HUB}" rel="external">All editions and desks →</a> · <a href="/kanal/" rel="external">Channels</a> · <a href="/radio/" rel="external">AKTUAL MEDIA RADIO</a> · <a href="${CENTRAL}" rel="external">AKTUAL MEDIA</a></p>
 </main>
 ${footer(channel, strings)}`;
