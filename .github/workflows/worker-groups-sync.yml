@@ -13,14 +13,15 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: worker-groups-sync
-  cancel-in-progress: true
+  group: gnk-asg-main-mutation
+  cancel-in-progress: false
 
 permissions:
   contents: write
 
 jobs:
   sync:
+    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
