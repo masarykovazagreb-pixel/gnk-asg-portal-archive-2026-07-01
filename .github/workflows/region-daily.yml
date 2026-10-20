@@ -2,7 +2,9 @@ name: REGION — dnevni ciklus izdanja
 
 # Osam gradskih kanala AKTUAL MEDIA (Zagreb, Beograd, Sarajevo, Budimpešta,
 # Ljubljana, Rim, Sofija, Bukurešt): čitanje javnih feedova, osvrti, build,
-# commit na main i deploy na vlastiti Cloudflare Pages projekt.
+# commit na main i deploy — svaka 2 sata, automatski. Ciklus je inkrementalan:
+# novi zapisi ulaze u arhivu, stranice se grade za sve kanale, a commit ide
+# samo ako se sadržaj stvarno promijenio.
 #
 # Registrirano u ops/automation-control-v1.json (knownCurrentSchedules) i
 # ops/automation-kill-switches.json (regionPublish).
@@ -10,8 +12,8 @@ name: REGION — dnevni ciklus izdanja
 
 on:
   schedule:
-    # 05:50 UTC = 07:50 ljeti / 06:50 zimi po Europe/Zagreb.
-    - cron: '50 5 * * *'
+    # Svaka 2 sata, cijeli dan: 12 ciklusa dnevno (00:00, 02:00, ... UTC).
+    - cron: '0 */2 * * *'
   workflow_dispatch:
     inputs:
       channel:
@@ -63,7 +65,7 @@ jobs:
           if [ -n "${{ inputs.channel }}" ]; then ARGS="$ARGS --channel ${{ inputs.channel }}"; fi
           if [ "${{ inputs.force }}" = "true" ]; then ARGS="$ARGS --force"; fi
           node apps/region/engine/daily.mjs $ARGS || echo "::warning::Dio izvora nije dostupan — izdanja se grade iz postojeće arhive."
-          test -f apps/region/site/zagreb/index.html
+          test -f apps/portal/kanal/zagreb/index.html
           node -e "const fs=require('fs');const f=JSON.parse(fs.readFileSync('apps/region/data/_status.json','utf8'));const r=f.lastRun;console.log('kanala:',Object.keys(r.channels).length);const ok=Object.values(r.channels).reduce((a,c)=>a+c.sourcesOk,0);const all=Object.values(r.channels).reduce((a,c)=>a+c.sourcesTotal,0);console.log('izvori:',ok+'/'+all);if(!Object.keys(r.channels).length)process.exit(1)"
 
       - name: Galerija i matična stranica izdanja
@@ -83,13 +85,13 @@ jobs:
           set -euo pipefail
           git config user.name "AKTUAL MEDIA REGION"
           git config user.email "info@gnk-asg.hr"
-          git add apps/region/data apps/region/site apps/portal/izdanja apps/portal/data/izdanja.json apps/portal/data/izdanja-sport.json apps/portal/data/nermin-sefic-gallery.json apps/portal/galerija
+          git add apps/region/data apps/region/site apps/portal/kanal apps/portal/usa apps/portal/izdanja apps/portal/data/izdanja.json apps/portal/data/izdanja-sport.json apps/portal/data/nermin-sefic-gallery.json apps/portal/galerija
           if git diff --cached --quiet; then
             echo "Nema novih zapisa — stanje je već objavljeno."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          git commit -m "REGION: dnevni ciklus $(date +%F) — osam gradskih izdanja i galerija" -m "Automatski sastavljeni osvrti na način izvještavanja iz javnih feedova. Izvornici su povezani, tekstovi nisu preuzeti. Nije pojedinačno urednički pregledano."
+          git commit -m "REGION: ciklus $(date +%F) $(date +%H):00 — osam gradskih izdanja i galerija" -m "Automatski sastavljeni osvrti na način izvještavanja iz javnih feedova. Izvornici su povezani, tekstovi nisu preuzeti. Nije pojedinačno urednički pregledano."
           echo "changed=true" >> "$GITHUB_OUTPUT"
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 

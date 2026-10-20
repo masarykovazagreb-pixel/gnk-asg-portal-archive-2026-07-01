@@ -172,8 +172,8 @@
     {
       "job": "REGION — osam gradskih izdanja AKTUAL MEDIA",
       "workflow": ".github/workflows/region-daily.yml",
-      "frequency": "daily",
-      "cron": "50 5 * * * (Europe/Zagreb 06:50/07:50)",
+      "frequency": "every-2-hours",
+      "cron": "0 */2 * * * (Europe/Zagreb, svaka 2 sata)",
       "budgetMinutesPerRunEstimate": 12,
       "writes": [
         "apps/region/data",
