@@ -495,6 +495,7 @@ function homePage(channel, strings, data) {
       <p class="intro-text">${esc(strings.aboutText)}</p>
       <p class="live"><span class="live-n"><b>${items.length}</b> ${esc(strings.latest).toLowerCase()}</span><span class="live-sep">·</span><span class="live-t"><time datetime="${esc((items[0]?.date || data.updatedAt || '').slice(0, 10))}">${esc(strings.updated)} ${esc(shortDate((items[0]?.date || data.updatedAt || '').slice(0, 10), channel.lang))}</time></span></p>
       <p class="intro-tags">${channel.hashtags.map((h) => `<span class="tag">${esc(h)}</span>`).join(' ')}</p>
+      <p class="hero-tags">Oznake izdanja: <a href="/nermin-sefic/">#NerminSefić</a> · <a href="/nermin-sefic/">#NerminSefic</a> · <a href="/autorske-objave/">#SeficNermin</a> · <a href="/autorske-objave/">#SEFICNERMIN</a> · <a href="/nermin-sefic/">#UrednikNerminSefić</a> · #AKTUALMEDIA · #GNKASG · ${esc(channel.hashtags[0] || '')}</p>
     </div>
     <aside class="intro-side">
       <h2>${esc(strings.radio)}</h2>
@@ -1108,6 +1109,9 @@ main{max-width:1180px;margin:0 auto;padding:clamp(20px,4vw,44px) clamp(16px,4vw,
 .intro--hero .intro-side h2{color:#e9c66c}
 .intro--hero .radio{color:#fff;border-top-color:rgba(255,255,255,.14)}
 .intro--hero .radio small{color:rgba(255,255,255,.62)}
+.hero-tags{margin:10px 0 0;font:700 12px/1.7 system-ui,-apple-system,sans-serif;color:rgba(255,255,255,.86);max-width:70ch}
+.hero-tags a{color:#f0d68b;text-decoration:none;border-bottom:1px solid rgba(240,214,139,.4)}
+.hero-tags a:hover{border-color:#f0d68b}
 .live{display:flex;flex-wrap:wrap;gap:10px;align-items:baseline;margin:0 0 12px;font:600 13px/1.4 system-ui,sans-serif;color:rgba(255,255,255,.82)}
 .live b{color:#e9c66c;font-size:17px}
 .live-sep{color:rgba(255,255,255,.35)}
