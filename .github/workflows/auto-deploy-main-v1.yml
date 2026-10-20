@@ -1,0 +1,158 @@
+name: Auto deploy main
+
+# Autonomna objava: čim provjere na main prođu, pokreće postojeći
+# Deploy Admin Auth V6 s točnim trenutnim SHA-om. Čovjek više ne mora
+# kliknuti "Run workflow" svaka dva sata — ovaj workflow to radi umjesto
+# njega, ali NE zaobilazi nijednu provjeru.
+#
+# Ograde:
+#   - GNK_ASG_RELEASE_FENCE=true zaustavlja sve.
+#   - Crvena ili nedovršena provjera = nema objave (hard stop).
+#   - Deploy se šalje samo za točan trenutni SHA; ako se main promijeni,
+#     pokušava ponovno s novim SHA-om (do 3 pokušaja).
+#   - Deploy sam drži concurrency grupu gnk-asg-main-mutation; ovaj workflow
+#     namjerno koristi drugu grupu da ne zaključa vlastiti deploy.
+#   - Ako je isti SHA već uspješno objavljen, preskače.
+
+on:
+  workflow_run:
+    workflows: ["Site Functional Readiness"]
+    types: [completed]
+    branches: [main]
+  schedule:
+    - cron: '37 0,2,4,6,8,10,12,14,16,18,20,22 * * *'
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  checks: read
+  contents: read
+
+concurrency:
+  group: gnk-asg-auto-deploy-dispatch
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - name: Stanje main grane, provjere i zadnja objava
+        id: state
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          current=$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)
+          last=$(gh run list --workflow deploy-admin-auth-v6.yml --branch main --limit 30 \
+            --json headSha,conclusion \
+            --jq '[.[] | select(.conclusion=="success")][0].headSha // ""')
+          echo "main=$current" >> "$GITHUB_OUTPUT"
+          echo "last_success=$last" >> "$GITHUB_OUTPUT"
+          echo "SHA na main: $current"
+          echo "Zadnja uspješna objava: ${last:-nema}"
+
+          if [ "$last" = "$current" ]; then
+            echo "already_deployed=true" >> "$GITHUB_OUTPUT"
+            echo "gate=done" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "already_deployed=false" >> "$GITHUB_OUTPUT"
+
+          # Provjere za točno taj SHA.
+          states=$(gh api "repos/$GITHUB_REPOSITORY/commits/$current/check-runs" \
+            --jq '[.check_runs[] | "\(.status)/\(.conclusion // "-")"] | join("|")')
+
+          if printf '%s' "$states" | grep -Eq '/(in_progress|queued|waiting|requested|pending)/'; then
+            echo "gate=waiting"
+            echo "::notice::Provjere još traju — čekam sljedeći ciklus."
+            exit 0
+          fi
+          if printf '%s' "$states" | grep -Eq '/(failure|timed_out|cancelled|action_required|startup_failure)/'; then
+            echo "gate=red"
+            echo "::error::Postoje crvene provjere za $current — objava je zaustavljena."
+            exit 0
+          fi
+
+          read -r readiness <<<"$(gh run list --workflow site-functional-readiness.yml \
+            --commit "$current" --limit 10 --json status,conclusion \
+            --jq '[.[] | "\(.status):\(.conclusion // "-")"] | join(" ")' || true)"
+          if [ -n "${readiness:-}" ] && ! printf '%s' "$readiness" | grep -q ':success'; then
+            echo "gate=no-readiness"
+            echo "::notice::Site Functional Readiness nije zelen za $current — čekam."
+            exit 0
+          fi
+
+          echo "gate=ready"
+
+      - name: Objavi trenutni main (do tri pokušaja)
+        if: steps.state.outputs.gate == 'ready'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          latest_id() {
+            gh run list --workflow deploy-admin-auth-v6.yml --branch main --limit 1 \
+              --json databaseId --jq '.[0].databaseId // 0'
+          }
+
+          watch_run() {
+            local id="$1" status="" conclusion=""
+            for _ in $(seq 1 130); do
+              sleep 15
+              read -r status conclusion <<<"$(gh run view "$id" \
+                --json status,conclusion \
+                --jq '"\(.status) \(.conclusion // "")"')" || continue
+              if [ "$status" = "completed" ]; then
+                echo "$conclusion"
+                return 0
+              fi
+            done
+            echo "timeout"
+          }
+
+          wait_for_new_run() {
+            local before="$1" id=""
+            for _ in $(seq 1 12); do
+              sleep 10
+              id=$(latest_id)
+              if [ "$id" != "$before" ] && [ "$id" != "0" ]; then
+                echo "$id"
+                return 0
+              fi
+            done
+            echo ""
+          }
+
+          for attempt in 1 2 3; do
+            sha=$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)
+            before=$(latest_id)
+            echo "::notice::Pokušaj $attempt — objavljujem $sha"
+
+            gh workflow run deploy-admin-auth-v6.yml --ref main \
+              -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
+              -f approved_sha="$sha" \
+              -F notify_search_engines=true || { sleep 20; continue; }
+
+            run_id=$(wait_for_new_run "$before")
+            if [ -z "$run_id" ]; then
+              echo "::warning::Deploy run nije pokrenut u očekivanom vremenu."
+              continue
+            fi
+
+            result=$(watch_run "$run_id")
+            echo "Ishod runa $run_id: $result"
+            if [ "$result" = "success" ]; then
+              echo "::notice::Objavljeno $sha (run $run_id)."
+              exit 0
+            fi
+
+            # najčešći razlog pada je pomak main grane između čitanja i objave
+            echo "::warning::Pokušaj $attempt nije uspio ($result) — provjeravam novi SHA."
+            sleep 10
+          done
+
+          echo "::error::Objava nije uspjela nakon tri pokušaja; potrebna je ručna provjera."
+          exit 1
