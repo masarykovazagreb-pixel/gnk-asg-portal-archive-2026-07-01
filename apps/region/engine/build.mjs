@@ -410,17 +410,17 @@ function header(channel, strings, active = '', root = '') {
       <span>${esc(strings.publisher)}: AKTUAL MEDIA d.o.o.</span>
     </div>
   </div>
-  <p class="hastag-line" aria-label="Oznake izdanja">
-    <span class="hastag-k">Oznake</span>
-    <a href="/nermin-sefic/">#NerminSefić</a>
-    <a href="/nermin-sefic/">#NerminSefic</a>
-    <a href="/autorske-objave/">#SeficNermin</a>
-    <a href="/autorske-objave/">#SEFICNERMIN</a>
-    <a href="/nermin-sefic/">#UrednikNerminSefić</a>
-    <span>#AKTUALMEDIA</span>
-    <span>#GNKASG</span>
-    <span>${esc(channel.hashtags[0] || '')}</span>
-  </p>
+  <ul class="hastag-line" aria-label="Oznake izdanja">
+    <li class="hastag-k">Oznake</li>
+    <li><a href="/nermin-sefic/">#NerminSefić</a></li>
+    <li><a href="/nermin-sefic/">#NerminSefic</a></li>
+    <li><a href="/autorske-objave/">#SeficNermin</a></li>
+    <li><a href="/autorske-objave/">#SEFICNERMIN</a></li>
+    <li><a href="/nermin-sefic/">#UrednikNerminSefić</a></li>
+    <li><span>#AKTUALMEDIA</span></li>
+    <li><span>#GNKASG</span></li>
+    <li><span>${esc(channel.hashtags[0] || '')}</span></li>
+  </ul>
   ${editionsStrip(channel)}
   <nav class="mainnav" aria-label="${esc(strings.latest)}">${nav}<a href="${CENTRAL}#izdanja-po-zemljama" rel="external">${esc(strings.hub)} ↗</a><a class="langswitch" href="${root}en/" hreflang="en" lang="en" aria-label="Read this edition in English">EN — English</a></nav>
 </header>`;
@@ -429,7 +429,7 @@ function header(channel, strings, active = '', root = '') {
 function footer(channel, strings, extra = '') {
   const others = CHANNELS.filter((c) => c.id !== channel.id);
   const links = others.map((c) => `<a href="${c.base}" rel="external noopener">${esc(c.title)}</a>`).join('');
-  const tags = [...new Set([...channel.hashtags, '#AktualMedia', '#AKTUALMEDIA', '#GNKASG', '#NerminSefić', '#NerminSefic', '#SeficNermin', '#SEFICNERMIN', '#UrednikNerminSefić'])].map((x) => `<span class="tag">${esc(x)}</span>`).join(' ');
+  const tags = [...new Set([...channel.hashtags, '#AktualMedia', '#AKTUALMEDIA', '#GNKASG', '#NerminSefić', '#NerminSefic', '#SeficNermin', '#SEFICNERMIN', '#UrednikNerminSefić'])].map((x) => `<li class="tag">${esc(x)}</li>`).join('');
   /* Pločice drugih izdanja: kamo god čitatelj ode, vidi i ostale stranice. */
   const tiles = [...others, channel].map((c) => `<li class="xf-tile"><a href="${c.base}" rel="external noopener">
       <img src="/assets/izdanja/${c.id}-tile.webp" alt="${esc(c.title)} — ${esc(c.country)} — otvori izdanje" width="880" height="587" loading="lazy" decoding="async">
@@ -453,7 +453,7 @@ function footer(channel, strings, extra = '') {
     </div>
     <div>
       <h2>${esc(strings.hashtags)}</h2>
-      <p class="tags">${tags}</p>
+      <ul class="tags">${tags}</ul>
     </div>
   </div>
   <p class="disclaimer">${esc(strings.autoNote)}</p>
@@ -1069,9 +1069,9 @@ img{max-width:100%;height:auto}
 .strap{margin:0;max-width:46ch;color:rgba(255,255,255,.76);font-size:15px}
 .mastmeta{display:grid;gap:4px;font:500 12px/1.6 system-ui,sans-serif;color:rgba(255,255,255,.7);text-align:right}
 .langswitch{font-weight:800;letter-spacing:.08em;border:1px solid currentColor;border-radius:999px;padding:5px 10px;text-decoration:none!important}
-.hastag-line{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:10px 0 0;padding:10px 0 0;border-top:1px dashed rgba(0,0,0,.16);font:700 11px/1.4 system-ui,-apple-system,sans-serif;letter-spacing:.02em}
-.hastag-line a,.hastag-line span{text-decoration:none;color:var(--accent2,#8c2f2f)}
-.hastag-line a{background:rgba(140,47,47,.08);border:1px solid rgba(140,47,47,.22);border-radius:999px;padding:4px 9px}
+.hastag-line{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:10px 0 0;padding:10px 0 0;border-top:1px dashed rgba(0,0,0,.16);font:700 11px/1.4 system-ui,-apple-system,sans-serif;letter-spacing:.02em;list-style:none}
+.hastag-line a,.hastag-line span,.hastag-line li{text-decoration:none;color:var(--accent2,#8c2f2f)}
+.hastag-line a{display:inline-block;background:rgba(140,47,47,.08);border:1px solid rgba(140,47,47,.22);border-radius:999px;padding:4px 9px}
 .hastag-line a:hover{background:rgba(140,47,47,.16)}
 .hastag-line .hastag-k{font:800 9px/1 system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#7a6a4b;border:0;background:none;padding:0}
 @media(max-width:600px){.hastag-line{font-size:10px;gap:5px 7px}}
@@ -1116,7 +1116,7 @@ main{max-width:1180px;margin:0 auto;padding:clamp(20px,4vw,44px) clamp(16px,4vw,
 .dateline{font:600 11px/1.5 system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#7a6a4b;margin:0 0 10px}
 .intro h1{font:700 clamp(34px,5vw,58px)/1.02 Georgia,serif;margin:0 0 14px;letter-spacing:-.015em}
 .intro-text{font-size:18px;line-height:1.6;margin:0 0 14px;max-width:60ch}
-.intro-tags,.tags{display:flex;flex-wrap:wrap;gap:6px;margin:0}
+.intro-tags,.tags{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
 .tag{font:600 11px/1 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;background:var(--bg);color:var(--accent);padding:6px 9px;border-radius:3px}
 .intro-side{background:#fff;border:1px solid #e2ddd2;padding:18px}
 .intro-side h2{font:600 12px/1.4 system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px;color:#6c7480}
