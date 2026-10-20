@@ -307,9 +307,22 @@ function networkPodium(circles, cards, lang = 'hr') {
       <a href="/kanal/">${EN ? 'All channels' : 'Svi kanali'} →</a>
       <a href="/izdanja/">${EN ? 'All editions' : 'Sva izdanja'} →</a>
       <a href="/radio/">Radio →</a>
+      <a href="/medijska-kritika/">${EN ? 'Media critique' : 'Kritika medija'} →</a>
+      <a class="amm-w43" href="https://gnk-asg-tjednik.pages.dev/tjednik/2026-W43/">Tjednik 2026-W43 →</a>
       <a href="/usa/">USA →</a>
       <span class="amm-foot-note">${EN ? 'USA → region → 8 cities' : 'USA → regija → 8 gradova'}</span>
     </div>
+    <ul class="amm-tags" aria-label="${EN ? 'Tags' : 'Oznake'}">
+      <li class="amm-tags-k">${EN ? 'Tags' : 'Oznake'}</li>
+      <li><a href="/nermin-sefic/">#NerminSefić</a></li>
+      <li><a href="/nermin-sefic/">#NerminSefic</a></li>
+      <li><a href="/autorske-objave/">#SeficNermin</a></li>
+      <li><a href="/autorske-objave/">#SEFICNERMIN</a></li>
+      <li><a href="/nermin-sefic/">#UrednikNerminSefić</a></li>
+      <li><a href="/gnk-aktual/">#AKTUALMEDIA</a></li>
+      <li><a href="/kanal/">#GNKASG</a></li>
+      <li><a href="https://gnk-asg-tjednik.pages.dev/tjednik/2026-W43/">#TjednikW43</a></li>
+    </ul>
   </section>
 </div>`;
 }
@@ -420,6 +433,12 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
 .amm-foot{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 18px 12px;border-top:1px solid #ece3d1;background:rgba(255,255,255,.55);position:relative;z-index:1}
 .amm-foot a{font:800 9.5px/1 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#8c2f2f;text-decoration:none;border-bottom:1px solid transparent}
 .amm-foot a:hover{border-color:#8c2f2f}
+.amm-tags{list-style:none;display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:0;padding:0 18px 14px;position:relative;z-index:1}
+.amm-tags-k{font:800 8.5px/1 system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#a29884;margin-right:2px}
+.amm-tags a{display:inline-block;font:800 9.5px/1 system-ui,sans-serif;letter-spacing:.04em;text-decoration:none;color:#4a463d;background:color-mix(in srgb,#e9c66c 16%,#fff);border:1px solid color-mix(in srgb,#c8963c 40%,#e3d9c3);border-radius:999px;padding:5px 9px;transition:background .15s ease,color .15s ease}
+.amm-tags a:hover{background:#8c2f2f;color:#fff;border-color:#8c2f2f}
+.amm-w43{color:#111 !important;background:linear-gradient(135deg,#f3dfa8,#e9c66c);border-bottom:0 !important;border-radius:999px;padding:5px 9px}
+.amm-w43:hover{background:#8c2f2f;color:#fff !important}
 .amm-foot-note{margin-left:auto;font:700 9px/1 system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#a49a86}
 @media(max-width:1040px){.amx-wires,.amm-stations{display:none}.amm-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.amm-homebar{grid-template-columns:1fr}}
 @media(max-width:620px){.amm-grid{grid-template-columns:repeat(2,minmax(0,1fr));padding:10px 12px 12px}.amm-count{order:3;flex-basis:100%}.amm-origin{margin-left:0}.amm-foot-note{display:none}.amm-top{padding:14px 12px 10px}.amm-route{margin:10px 12px 0}.amm-homebar{padding:0 12px 12px}}

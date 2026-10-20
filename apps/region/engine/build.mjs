@@ -57,7 +57,7 @@ function editionsStrip(channel) {
   const items = CHANNELS.map((c) => {
     const current = c.id === channel.id;
     return `<li class="eds-i${current ? ' is-current' : ''}"><a href="${c.base}"${current ? ' aria-current="page"' : ' rel="external noopener"'} aria-label="${esc(c.title)}${current ? ' — ovo izdanje' : ' — otvori izdanje'}">
-      <span class="eds-img"><img src="/assets/izdanja/${c.id}-tile.webp" alt="" width="96" height="64" loading="lazy" decoding="async"></span>
+      <span class="eds-img"><img src="/assets/izdanja/${c.id}-240.webp" alt="" width="96" height="64" loading="lazy" decoding="async"></span>
       <span class="eds-city">${esc(CITY_SHORT[c.id] || c.city)}</span>
     </a></li>`;
   }).join('');
