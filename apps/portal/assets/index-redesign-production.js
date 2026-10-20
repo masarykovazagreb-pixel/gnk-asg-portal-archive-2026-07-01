@@ -4,6 +4,14 @@
    Bez JS-a stranica radi potpuno isto; ovo samo skraćuje prvi klik. */
 (function () {
   'use strict';
+  // Launch the same S+Chat floating component used by AKTUAL, without editing
+  // the protected home-page HTML.
+  if (!document.querySelector('script[data-gnk-splus-float]')) {
+    var chatScript = document.createElement('script');
+    chatScript.src = '/assets/s-chat-floating-v1.js?v=20261020';
+    chatScript.dataset.gnkSplusFloat = '1';
+    document.head.appendChild(chatScript);
+  }
   var section = document.getElementById('aktual-izdanja');
   if (!section || !document.createElement) return;
 
