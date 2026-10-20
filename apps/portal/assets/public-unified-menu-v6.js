@@ -13,7 +13,7 @@ const boot=()=>{
  scrubBpp();
  // Single floating S+Chat entry on portal pages using the canonical global menu.
  // Keep the actual chat on its own route, and never intercept existing controls.
- if(!/^\\/s-chat(?:\\/|$)/.test(location.pathname)&&!document.getElementById('gnk-splus-floating-button')){
+ if(!/^\/s-chat(?:\/|$)/.test(location.pathname)&&!document.getElementById('gnk-splus-floating-button')){
   const style=document.createElement('style');
   style.id='gnk-splus-floating-style';
   style.textContent='#gnk-splus-floating-button{position:fixed;right:20px;bottom:92px;z-index:9000;display:inline-flex;align-items:center;gap:9px;min-height:48px;padding:12px 17px;border-radius:999px;color:#fff;background:linear-gradient(135deg,#0d4c48,#166e68);border:1px solid #c7aa72;box-shadow:0 8px 28px #0007;font:700 14px system-ui,sans-serif;text-decoration:none;letter-spacing:.01em}#gnk-splus-floating-button:hover,#gnk-splus-floating-button:focus-visible{background:#1e7770;color:#fff;box-shadow:0 10px 30px #0009;outline-offset:3px}#gnk-splus-floating-button .splus-star{color:#f1d89c;font-size:21px;line-height:1}@media(max-width:600px){#gnk-splus-floating-button{right:12px;bottom:95px;padding:11px 13px;font-size:12px;min-height:44px}}@media(prefers-reduced-motion:reduce){#gnk-splus-floating-button{transition:none}}';
