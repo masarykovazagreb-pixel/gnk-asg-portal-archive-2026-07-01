@@ -1,9 +1,12 @@
-name: Index parity heal
+name: Site self-heal daily
 
-# Jednom dnevno provjeri da su HR i EN index u istom stanju.
-# Ako se raziđu (netko ručno promijeni samo jedan od njih), workflow
-# regenerira podium iz apps/portal/data/izdanja.json i otvori PR.
-# Ne piše na main i ne objavljuje ništa samo zato što je pokrenut.
+# Jednom dnevno, bez ljudske akcije:
+#   1. osvježi zapise o zadnjim runovima (samo čitanje GitHub API-ja),
+#   2. regeneriraj HR/EN index, katalog radnika i stranicu flote,
+#   3. pusti audite portala i kanala,
+#   4. ako je sve zeleno i ima razlike — commit + push na main (exact-SHA fence),
+#   5. ako audit padne — issue, bez pusha.
+# Ne zaobilazi provjere. GNK_ASG_RELEASE_FENCE=true zaustavlja sve.
 
 on:
   schedule:
@@ -13,21 +16,22 @@ on:
 permissions:
   contents: write
   issues: write
-  pull-requests: write
+  actions: read
 
 concurrency:
-  group: gnk-asg-index-parity-heal
+  group: gnk-asg-main-mutation
   cancel-in-progress: false
 
 jobs:
   heal:
     if: vars.GNK_ASG_RELEASE_FENCE != 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
-      - name: Dohvati repozitorij
+      - name: Dohvati main
         uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 1
 
       - name: Node 22
@@ -35,37 +39,81 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Regeneriraj HR/EN podium
-        run: node scripts/build-index-parity.mjs
+      - name: Zabilježi polazni SHA
+        id: base
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
-      - name: Provjeri ima li razlike
-        id: diff
+      - name: Osvježi zapise o runovima
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node scripts/collect-workflow-runs.mjs
+
+      - name: Regeneriraj index, katalog radnika i flotu
         run: |
-          if git diff --quiet -- apps/portal/index.html apps/portal/en/index.html apps/portal/assets/index-redesign-production.css; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "HR i EN index su u istom stanju."
-          else
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-            git --no-pager diff --stat
-          fi
+          set -euo pipefail
+          node scripts/build-index-parity.mjs
+          node scripts/build-worker-groups-v1.mjs
+          node scripts/build-fleet-status-v1.mjs
 
-      - name: Otvori PR s korekcijom
-        if: steps.diff.outputs.changed == 'true'
+      - name: Auditi portala i kanala
+        id: audits
+        run: |
+          set -uo pipefail
+          status=0
+          node scripts/audit-public-portal-v1.mjs > /tmp/portal-audit.json 2>&1 || status=1
+          node scripts/audit-aktual-all-pages-v2.mjs > /tmp/aktual-audit.json 2>&1 || status=1
+          tail -5 /tmp/portal-audit.json || true
+          tail -5 /tmp/aktual-audit.json || true
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Issue ako audit padne
+        if: steps.audits.outputs.status != '0'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -uo pipefail
           export GH_REPO="$GITHUB_REPOSITORY"
-          branch="automation/index-parity-$(date -u +%Y%m%d-%H%M)"
-          git config user.name "gnk-asg-bot"
-          git config user.email "bot@gnk-asg.hr"
-          git checkout -b "$branch"
-          git add apps/portal/index.html apps/portal/en/index.html apps/portal/assets/index-redesign-production.css
-          git commit -m "chore(index): automatska HR/EN parity korekcija"
-          git push -u origin "$branch"
-          gh pr create --base main --head "$branch" \
-            --title "Index parity: automatska korekcija" \
-            --body "Dnevni watchdog je našao razliku između HR i EN indexa i regenerirao podium iz \`apps/portal/data/izdanja.json\`. Provjere moraju proći prije spajanja." \
-            || gh issue create \
-              --title "Index parity: potrebna ručna korekcija" \
-              --body "Grana \`$branch\` sadrži regenerirani podium, ali PR nije bilo moguće otvoriti automatski. Spoji granu ručno."
+          gh issue create \
+            --title "Dnevni audit: pad $(date -u +%Y-%m-%d)" \
+            --body "Automatski dnevni audit nije prošao pa self-heal nije ništa objavio. Log: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+            || echo "Issue nije bilo moguće otvoriti."
+
+      - name: Commit i push uz exact-SHA fence
+        if: steps.audits.outputs.status == '0'
+        env:
+          EXPECTED_BASE_SHA: ${{ steps.base.outputs.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          PATHS="apps/portal/index.html apps/portal/en/index.html \
+            apps/portal/workers/grupacije apps/portal/data/worker-groups.json \
+            apps/portal/automation-status/flota apps/portal/data/fleet-status.json \
+            apps/portal/data/workflow-runs.json"
+
+          if git diff --quiet -- $PATHS && [ -z "$(git ls-files --others --exclude-standard -- $PATHS)" ]; then
+            echo "Nema razlika — sve je usklađeno."
+            exit 0
+          fi
+
+          git config user.name "gnk-asg-self-heal"
+          git config user.email "actions@github.com"
+          git add $PATHS
+          git commit -m "Self-heal: dnevna HR/EN parity, katalog radnika i flota"
+
+          git fetch origin main
+          CURRENT_MAIN="$(git rev-parse origin/main)"
+          if [ "$CURRENT_MAIN" != "$EXPECTED_BASE_SHA" ]; then
+            echo "Main se pomaknuo tijekom runa (očekivano $EXPECTED_BASE_SHA, nađeno $CURRENT_MAIN). Odgađam bez rebasea."
+            exit 75
+          fi
+
+          git push origin HEAD:main
+
+      - name: Padni ako audit nije prošao
+        if: steps.audits.outputs.status != '0'
+        run: |
+          echo "::error::Dnevni audit nije prošao — vidi issue."
+          exit 1

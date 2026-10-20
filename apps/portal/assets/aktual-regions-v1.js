@@ -77,7 +77,7 @@
   async function boot(){
     document.querySelectorAll('[data-rg-filter]').forEach(btn=>btn.addEventListener('click',()=>{active=btn.dataset.rgFilter;render()}));
     try{
-      const r=await fetch('/data/news.json?v='+Date.now(),{cache:'no-store'});
+      const r=await fetch('/data/news.json',{cache:'no-cache'});
       if(!r.ok)throw new Error('HTTP '+r.status);
       all=normalize(await r.json());
       render();

@@ -4,76 +4,449 @@
   "lang": "sr",
   "city": "Beograd",
   "country": "Srbija",
-  "updatedAt": "2026-10-19T21:18:02.837Z",
+  "updatedAt": "2026-10-20T13:17:28.769Z",
   "sources": [
     {
       "id": "n1",
       "name": "N1 Srbija",
       "url": "https://n1info.rs/feed/",
       "ok": true,
-      "fetched": 0,
-      "errors": [
-        "preskočeno: cilj dosegnut"
-      ],
-      "checkedAt": "2026-10-19T21:18:02.837Z"
+      "fetched": 50,
+      "errors": [],
+      "checkedAt": "2026-10-20T13:17:23.958Z"
     },
     {
       "id": "danas",
       "name": "Danas",
       "url": "https://www.danas.rs/feed/",
       "ok": true,
-      "fetched": 0,
-      "errors": [
-        "preskočeno: cilj dosegnut"
-      ],
-      "checkedAt": "2026-10-19T21:18:02.837Z"
+      "fetched": 50,
+      "errors": [],
+      "checkedAt": "2026-10-20T13:17:24.376Z"
     },
     {
       "id": "nova",
       "name": "Nova.rs",
       "url": "https://nova.rs/feed/",
       "ok": true,
-      "fetched": 0,
-      "errors": [
-        "preskočeno: cilj dosegnut"
-      ],
-      "checkedAt": "2026-10-19T21:18:02.837Z"
+      "fetched": 50,
+      "errors": [],
+      "checkedAt": "2026-10-20T13:17:24.674Z"
     },
     {
       "id": "politika",
       "name": "Politika",
       "url": "https://www.politika.rs/rss",
       "ok": true,
-      "fetched": 0,
-      "errors": [
-        "preskočeno: cilj dosegnut"
-      ],
-      "checkedAt": "2026-10-19T21:18:02.837Z"
+      "fetched": 20,
+      "errors": [],
+      "checkedAt": "2026-10-20T13:17:25.117Z"
     },
     {
       "id": "rts",
       "name": "RTS",
       "url": "https://www.rts.rs/rss",
-      "ok": true,
+      "ok": false,
       "fetched": 0,
       "errors": [
-        "preskočeno: cilj dosegnut"
+        "https://www.rts.rs/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:18:02.837Z"
+      "checkedAt": "2026-10-20T13:17:27.301Z"
     },
     {
       "id": "b92",
       "name": "B92",
       "url": "https://www.b92.net/rss",
-      "ok": true,
+      "ok": false,
       "fetched": 0,
       "errors": [
-        "preskočeno: cilj dosegnut"
+        "https://www.b92.net/rss: nije feed"
       ],
-      "checkedAt": "2026-10-19T21:18:02.837Z"
+      "checkedAt": "2026-10-20T13:17:28.769Z"
     }
   ],
   "items": [
+    {
+      "slug": "beograd-2026-10-20-n1-gajic-sankcije-rusiji-znace-nezavisno-09765e",
+      "title": "Gajić: Sankcije Rusiji znače nezavisno Kosovo",
+      "summary": "Nosilac liste \"Alternativa za Srbiju\" i predsednik Narodne stranke Vladimir Gajić ocenio je da se svako ko se zalaže za uvođenje sankcija Rusiji \"isto",
+      "date": "2026-10-20T13:16:00.000Z",
+      "url": "https://n1info.rs/vesti/gajic-sankcije-rusiji-znace-nezavisno-kosovo/",
+      "source": "n1",
+      "sourceName": "N1 Srbija",
+      "categories": [
+        "Vesti",
+        "nato",
+        "rusija",
+        "izbori"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-20T13:17:23.958Z"
+    },
+    {
+      "slug": "beograd-2026-10-20-nova-2-horoskopska-znaka-koja-nikom-ne-pokazuju-db895d",
+      "title": "2 horoskopska znaka koja nikom ne pokazuju svoje pravo lice",
+      "summary": "Njihovo mirno držanje može biti fasada ispod koje se odvija prava oluja.",
+      "date": "2026-10-20T13:15:14.000Z",
+      "url": "https://nova.rs/magazin/lifestyle/2-horoskopska-znaka-koja-nikom-ne-pokazuju-svoje-pravo-lice/",
+      "source": "nova",
+      "sourceName": "Nova.rs",
+      "categories": [
+        "Lifestyle",
+        "horoskop"
+      ],
+      "author": "",
+      "theme": "potres",
+      "addedAt": "2026-10-20T13:17:24.674Z"
+    },
+    {
+      "slug": "beograd-2026-10-20-politika-kome-smeta-pravoslavni-krst-na-stratistu-na-4fcc5a",
+      "title": "Коме смета православни крст на стратишту на Пагу",
+      "summary": "Ту су усташе у Другом светском рату ликвидирале хиљаде Срба",
+      "date": "2026-10-20T13:15:00.000Z",
+      "url": "https://www.politika.rs/scc/clanak/795149/kome-smeta-pravoslavni-krst-na-stratistu-na-pagu",
+      "source": "politika",
+      "sourceName": "Politika",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:25.117Z"
+    },
+    {
+      "slug": "beograd-2026-10-20-nova-zajednicki-protest-novinara-i-zaposlenih-f995e8",
+      "title": "Zajednički protest novinara i zaposlenih Nova.rs, TV Nova i N1, Radara, Danasa i Forbsa: Danas u 19 sati",
+      "summary": "Zaposleni redakcija Nova.rs, N1, TV Nova, Danasa, Radara i Forbes Srbija danas u 19 časova organizuju protest ispred redakcije portala Nova.rs u Bulev",
+      "date": "2026-10-20T13:14:37.000Z",
+      "url": "https://nova.rs/vesti/drustvo/zajednicki-protest-novinara-i-zaposlenih-novars-tv-nova-i-n1-radara-danasa-i-forbsa-danas-u-19-sati/",
+      "source": "nova",
+      "sourceName": "Nova.rs",
+      "categories": [
+        "Društvo",
+        "tv nova",
+        "radar",
+        "nova.rs"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:24.674Z"
+    },
+    {
+      "slug": "beograd-2026-10-20-n1-evropski-parlament-usvojio-azurirana-554a40",
+      "title": "Evropski parlament usvojio ažurirana pravila za putnike u slučaju otkaza putovanja",
+      "summary": "Evropski parlament usvojio je danas ažurirana pravila Evropske unije (EU) u vezi sa zaštitom i informisanjem putnika u slučaju poremećaja prilikom put",
+      "date": "2026-10-20T13:13:47.000Z",
+      "url": "https://n1info.rs/biznis/evropski-parlament-usvojio-azurirana-pravila-za-putnike-u-slucaju-otkaza-putovanja/",
+      "source": "n1",
+      "sourceName": "N1 Srbija",
+      "categories": [
+        "Ekonomija",
+        "avioprevoznici",
+        "avio saobraćaj",
+        "putnici"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-20T13:17:23.958Z"
+    },
+    {
+      "slug": "beograd-2026-10-20-n1-performans-radnika-kolubare-za-studente-b35891",
+      "title": "Performans radnika “Kolubare” za studente pešake: Istakli baner \"Ujedinjene Srbije\", pa ga preokrenuli (VIDEO)",
+      "summary": "Radnici rudarskog basena \"Kolubara\" dočekali su studente pešake jednim zanimljivim performansom, što je izazvalo pozdrave i ovacije okupljenih.",
+      "date": "2026-10-20T13:13:16.000Z",
+      "url": "https://n1info.rs/vesti/performans-radnika-kolubare-za-studente-pesake-istakli-baner-ujedinjene-srbije-pa-ga-preokrenuli-video/",
+      "source": "n1",
+      "sourceName": "N1 Srbija",
+      "categories": [
+        "Vesti",
+        "pešačenje",
+        "rudarski basen kolubara",
+        "šetnja"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:23.958Z"
+    },
+    {
+      "slug": "beograd-2026-10-20-nova-neredi-u-francuskoj-menjaju-tok-7721ac",
+      "title": "Neredi u Francuskoj menjaju tok predsedničke trke: Le Pen profitira, Melanšon u problemu, Makron na udaru kritika",
+      "summary": "Nasilni protesti, pljačke i sukobi sa policijom koji su tokom vikenda potresli Francusku mogli bi značajno da utiču na predsedničke izbore 2027. godin",
+      "date": "2026-10-20T13:13:10.000Z",
+      "url": "https://nova.rs/vesti/svet/neredi-u-francuskoj-menjaju-tok-predsednicke-trke-le-pen-profitira-melanson-u-problemu-makron-na-udaru-kritika/",
+      "source": "nova",
+      "sourceName": "Nova.rs",
+      "categories": [
+        "Svet",
+        "marin le pen",
+        "emanuel makron",
+        "francuska"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-20T13:17:24.674Z"
+    },
+    {
+      "slug": "beograd-2026-10-20-danas-poverenik-antonijevic-zene-se-cesto-odricu-23f8af",
+      "title": "Poverenik Antonijević: Žene se često odriču nasledstva u korist muških srodnika",
+      "summary": "Poverenik za zaštitu ravnopravnosti Milan Antonijević izjavio je danas, povodom Međunarodnog dana žena na selu, da praksa pokazuje da se žene često odriču nasledstva u korist muških srodnika, ponekad i ne poznajući sopstvana prava niti sve pravne posledice takve odluke.",
+      "date": "2026-10-20T13:12:07.000Z",
+      "url": "https://www.danas.rs/vesti/drustvo/poverenik-antonijevic-zene-se-cesto-odricu-nasledstva-u-korist-muskih-srodnika/",
+      "source": "danas",
+      "sourceName": "Danas",
+      "categories": [
+        "Društvo",
+        "Milan Antonijević",
+        "nasledstvo",
+        "Poverenik za zaštitu ravnopravnosti"
+      ],
+      "author": "Radmila Marković",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:24.376Z"
+    },
+    {
+      "slug": "beograd-2026-10-20-nova-necemo-menjati-stil-zbog-sitija-zelimo-da-734e50",
+      "title": "\"Nećemo menjati stil zbog Sitija, želimo da pokažemo karakter\": Marko Nikolić pokazao da se ne plaši velikana",
+      "summary": "Trener fudbalera AEK-a Marko Nikolić izjavio je uoči gostovanja Mančester sitiju u trećem kolu Lige šampiona da njegova ekipa neće odustati od prepozn",
+      "date": "2026-10-20T13:09:49.000Z",
+      "url": "https://nova.rs/sport/fudbal/necemo-menjati-stil-zbog-sitija-zelimo-da-pokazemo-karakter-marko-nikolic-pokazao-da-se-ne-plasi-velikana/",
+      "source": "nova",
+      "sourceName": "Nova.rs",
+      "categories": [
+        "Fudbal",
+        "marko nikolić",
+        "fk mančester siti",
+        "fk aek"
+      ],
+      "author": "",
+      "theme": "sport",
+      "addedAt": "2026-10-20T13:17:24.674Z"
+    },
+    {
+      "slug": "beograd-2026-10-20-danas-direktor-telekoma-istrazicemo-zasto-je-e44cc9",
+      "title": "Direktor Telekoma: Istražićemo zašto je prijepoljski TV Forum zamenjen Informerom",
+      "summary": "Direktor kompanije Telekom Srbija Vladimir Lučić izjavio je danas za Udruženje novinara Srbije (UNS) da će istražiti da li je program televizije Forum iz Prijepolja bio zamenjen sadržajem televizije Informer i ko je za to odgovoran.",
+      "date": "2026-10-20T13:09:26.000Z",
+      "url": "https://www.danas.rs/vesti/drustvo/direktor-telekoma-istrazicemo-zasto-je-prijepoljski-tv-forum-zamenjen-informerom/",
+      "source": "danas",
+      "sourceName": "Danas",
+      "categories": [
+        "Društvo",
+        "Mediji",
+        "Telekom Srbija",
+        "TV Forum"
+      ],
+      "author": "Radmila Marković",
+      "theme": "politika",
+      "addedAt": "2026-10-20T13:17:24.376Z"
+    },
+    {
+      "slug": "beograd-2026-10-20-danas-vucicevim-pomilovanjem-mogu-biti-obuhvacena-a9e9c8",
+      "title": "„Vučićevim pomilovanjem mogu biti obuhvaćena i krivična dela koja nisu ni prijavljena, pa čak ni počinjena“: Pravni ugao na „opasan zid ćutnje“",
+      "summary": "Kada sam pre gotovo mesec dana ukazivao na mogućnost da bi bivši predsednik Aleksandar Vučić “na izlasku” mogao da potpiše odluke o pomilovanju svojih partijskih kolega i saradnika teško da je iko slutio kako ćemo se u vezi sa tim njegovim poslednjim aktom (sic!) “milosrđa” kao društvo naći u situaciji u kojoj se nalazimo danas.",
+      "date": "2026-10-20T13:09:15.000Z",
+      "url": "https://www.danas.rs/dijalog/licni-stavovi/vucic-pomilovanja-zid-cutnje-luka-jovanovic/",
+      "source": "danas",
+      "sourceName": "Danas",
+      "categories": [
+        "Lični stavovi",
+        "Aleksandar Vučić",
+        "Luka Jovanović",
+        "pomilovanja"
+      ],
+      "author": "Ivana Sundic",
+      "theme": "politika",
+      "addedAt": "2026-10-20T13:17:24.376Z"
+    },
+    {
+      "slug": "beograd-2026-10-20-politika-delegacija-psse-posmatrace-izbore-u-srbiji-15d6a0",
+      "title": "Делегација ПССE посматраће изборе у Србији 25. октобра",
+      "summary": "Делегацију ПССЕ предводи Пјеро Фасино из Италије",
+      "date": "2026-10-20T13:09:00.000Z",
+      "url": "https://www.politika.rs/scc/clanak/795299/delegacija-psse-posmatrace-izbore-u-srbiji-25-oktobra",
+      "source": "politika",
+      "sourceName": "Politika",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:25.117Z"
+    },
+    {
+      "slug": "beograd-2026-10-20-nova-jelena-tomasevic-na-jednom-vencanju-96796b",
+      "title": "Jelena Tomašević na jednom venčanju pozdravila mladoženjinu bivšu devojku: \"U zemlju sam propala\"",
+      "summary": "Pevačica Jelena Tomašević već više od dve decenije je na muzičkoj sceni, tokom kojih je doživela razne situacije.",
+      "date": "2026-10-20T13:07:36.000Z",
+      "url": "https://nova.rs/zabava/showbiz/jelena-tomasevic-na-jednom-vencanju-pozdravila-mladozenjinu-bivsu-devojku-u-zemlju-sam-propala/",
+      "source": "nova",
+      "sourceName": "Nova.rs",
+      "categories": [
+        "Showbiz",
+        "jelena tomašević"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:24.675Z"
+    },
+    {
+      "slug": "beograd-2026-10-20-politika-targetirali-zenu-koja-je-odvela-dete-kod-5ed26f",
+      "title": "Таргетирали жену која је одвела дете код лекара, она им одговорила: Нећете ме уплашити",
+      "summary": "„Ја се свог избора не стидим”",
+      "date": "2026-10-20T13:07:00.000Z",
+      "url": "https://www.politika.rs/scc/clanak/795298/targetirali-zenu-koja-je-odvela-dete-kod-lekara-ona-im-odgovorila-necete-me-uplasiti",
+      "source": "politika",
+      "sourceName": "Politika",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:25.118Z"
+    },
+    {
+      "slug": "beograd-2026-10-20-danas-mup-pozvao-gradane-na-oprez-grejna-sezona-b29a6f",
+      "title": "MUP pozvao građane na oprez: Grejna sezona donosi povećan rizik od požara (VIDEO)",
+      "summary": "Ministarstvo unutrašnjih poslova (MUP) apelovalo je na građane da budu odgovorni i oprezni tokom grejne sezone, kada se beleži povećan broj požara na stambenim i drugim objektima, najčešće izazvanih ljudskim faktorom.",
+      "date": "2026-10-20T13:06:26.000Z",
+      "url": "https://www.danas.rs/vesti/drustvo/mup-pozvao-gradjane-na-oprez-grejna-sezona-donosi-povecan-rizik-od-pozara-video/",
+      "source": "danas",
+      "sourceName": "Danas",
+      "categories": [
+        "Društvo",
+        "Apel",
+        "grejna sezona",
+        "MUP"
+      ],
+      "author": "Radmila Marković",
+      "theme": "potres",
+      "addedAt": "2026-10-20T13:17:24.376Z"
+    },
+    {
+      "slug": "beograd-2026-10-20-politika-evropski-gas-tri-puta-skuplji-nego-pre-rata-12eb9c",
+      "title": "Европски гас три пута скупљи него пре рата на Блиском истоку",
+      "summary": "Поскупела је и електрична енергија, а цена годишњег фјучерса за испоруку струје у Немачкој достигла је највиши ниво од јула 2023. године",
+      "date": "2026-10-20T13:06:00.000Z",
+      "url": "https://www.politika.rs/scc/clanak/795297/evropski-gas-tri-puta-skuplji-nego-pre-rata-na-bliskom-istoku",
+      "source": "politika",
+      "sourceName": "Politika",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "addedAt": "2026-10-20T13:17:25.118Z"
+    },
+    {
+      "slug": "beograd-2026-10-20-nova-oglasio-se-visoki-savet-tuzilastva-povodom-1df317",
+      "title": "Oglasio se Visoki savet tužilaštva povodom tvrdnji sudije Miodraga Majića da organizuju posebna dežurstva tužilaca za izborni dan",
+      "summary": "Visoki savet tužilaštva saopštio je, povodom tvrdnji sudije Apelacionog suda u Beogradu Miodraga Majića da će Više javno tužilaštvo (VJT) u Beogradu t",
+      "date": "2026-10-20T13:05:44.000Z",
+      "url": "https://nova.rs/vesti/politika/oglasio-se-visoki-savet-tuzilastva-povodom-tvrdnji-sudije-miodraga-majica-da-organizuju-posebna-dezurstva-tuzilaca-za-izborni-dan/",
+      "source": "nova",
+      "sourceName": "Nova.rs",
+      "categories": [
+        "Politika",
+        "visoki savet tužilaštva",
+        "miodrag majić",
+        "vjt"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-20T13:17:24.675Z"
+    },
+    {
+      "slug": "beograd-2026-10-20-danas-vucic-za-ruski-jutjub-kanal-oni-koji-zele-337aee",
+      "title": "Vučić za ruski Jutjub kanal: Oni koji žele da odem, mogu se grupisati pod tri tačke",
+      "summary": "Nosilac liste Ujedinjena Srbija Aleksandar Vučić dao je intervju ruskom Jutjub kanalu \"Ostorožno\" i poznatoj novinarki Kseniji Sobčak, u kome je naveo da se stavovi onih koji su za to da on ode sa vlasti u Srbiji mogu grupisati po tri tačke.",
+      "date": "2026-10-20T13:05:07.000Z",
+      "url": "https://www.danas.rs/vesti/politika/vucic-za-ruski-jutjub-kanal-oni-koji-zele-da-odem-mogu-se-grupisati-pod-tri-tacke/",
+      "source": "danas",
+      "sourceName": "Danas",
+      "categories": [
+        "Politika",
+        "Izbori26",
+        "Aleksandar Vučić",
+        "ksenija sobcak"
+      ],
+      "author": "Jasmina Lukac",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-20T13:17:24.377Z"
+    },
+    {
+      "slug": "beograd-2026-10-20-politika-broj-poginulih-u-napadu-huta-na-vojni-kamp-ea3ecf",
+      "title": "Број погинулих у нападу Хута на војни камп порастао на 73",
+      "summary": "Рањено вишеод 200 војника",
+      "date": "2026-10-20T13:04:00.000Z",
+      "url": "https://www.politika.rs/scc/clanak/795296/broj-poginulih-u-napadu-huta-na-vojni-kamp-porastao-na-73",
+      "source": "politika",
+      "sourceName": "Politika",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:25.118Z"
+    },
+    {
+      "slug": "beograd-2026-10-20-danas-ubus-podrzao-baletske-igrace-snp-a-traze-851077",
+      "title": "UBUS podržao baletske igrače SNP-a: Traže hitnu obustavu pritisaka i preispitivanje kadrovske politike",
+      "summary": "Udruženje baletskih umetnika Srbije (UBUS) pružilo je javnu podršku baletskim igračima Srpskog narodnog pozorišta (SNP) u Novom Sadu, koji su ukazali na narušavanje umetničkog integriteta i probleme u kadrovskoj politici ove ustanove.",
+      "date": "2026-10-20T13:00:43.000Z",
+      "url": "https://www.danas.rs/kultura/ubus-podrzao-baletske-igrace-snp-a-traze-hitnu-obustavu-pritisaka-i-preispitivanje-kadrovske-politike/",
+      "source": "danas",
+      "sourceName": "Danas",
+      "categories": [
+        "Kultura"
+      ],
+      "author": "Aleksandra Cuk",
+      "theme": "politika",
+      "addedAt": "2026-10-20T13:17:24.377Z"
+    },
+    {
+      "slug": "beograd-2026-10-20-n1-schieder-says-brnabic-letter-unprecedented-54a7e1",
+      "title": "Schieder says Brnabic letter unprecedented attack on observers",
+      "summary": "Andreas Schieder, leader of the European Parliament observer delegation to the October 25 elections, said acting president Ana Brnabic’s protest lette",
+      "date": "2026-10-20T13:00:18.000Z",
+      "url": "https://n1info.rs/english/news/schieder-says-brnabic-letter-unprecedented-attack-on-observers/",
+      "source": "n1",
+      "sourceName": "N1 Srbija",
+      "categories": [
+        "News",
+        "ana brnabic",
+        "observers",
+        "politcs"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:23.958Z"
+    },
+    {
+      "slug": "beograd-2026-10-20-n1-press-jovana-gligorijevic-o-odluci-n1-o-06a965",
+      "title": "PRESS: Jovana Gligorijević o odluci N1 o gostovanju Vučića",
+      "summary": "Odluka redakcije N1 da Aleksandar Vučić ne dođe u emisiju da predstavlja izbornu listu \"Ujedinjena Srbija\" je direktna manifestacija novinarske autono",
+      "date": "2026-10-20T13:00:00.000Z",
+      "url": "https://n1info.rs/video/novi-dan/press-jovana-gligorijevic-o-odluci-n1-o-gostovanju-vucica/",
+      "source": "n1",
+      "sourceName": "N1 Srbija",
+      "categories": [
+        "Novi dan",
+        "video",
+        "novi dan"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-20T13:17:23.958Z"
+    },
+    {
+      "slug": "beograd-2026-10-20-n1-jesenje-istrazivanje-nspm-studentska-lista-5a95c4",
+      "title": "Jesenje istraživanje NSPM: Studentska lista u blagoj prednosti u odnosu na SNS",
+      "summary": "Nova srpska politička misao (NSPM) objavila je nalaz svog redovnog jesenjeg istraživanja političkog javnog mnjenja Srbije (bez Kosova), sprovedenog kr",
+      "date": "2026-10-20T12:57:18.000Z",
+      "url": "https://n1info.rs/vesti/jesenje-istrazivanje-nspm-studentska-lista-u-blagoj-prednosti-u-odnosu-na-sns/",
+      "source": "n1",
+      "sourceName": "N1 Srbija",
+      "categories": [
+        "Vesti",
+        "sps",
+        "autentična desnica",
+        "izbori 2026"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:23.958Z"
+    },
     {
       "slug": "beograd-2026-10-19-danas-jovanovic-autenticna-desnica-za-odustajanje-62ecac",
       "title": "Jovanović (Autentična desnica): Za odustajanje od članstva u EU i drugačiji format pregovora o Kosovu",

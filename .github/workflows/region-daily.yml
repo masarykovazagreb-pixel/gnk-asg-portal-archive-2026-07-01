@@ -12,8 +12,15 @@ name: REGION — dnevni ciklus izdanja
 
 on:
   schedule:
-    # Svaka 2 sata, cijeli dan: 12 ciklusa dnevno (00:00, 02:00, ... UTC).
-    - cron: '0 */2 * * *'
+    # Svaka 2 sata, cijeli dan: 12 ciklusa dnevno. Minuta je namjerno 7, ne 0 —
+    # GitHub odbacuje dio rasporeda na puni sat zbog opterećenja, pa je ciklus
+    # 19. i 20. 10. preskočen i izdanja su ostala na 19. 10.
+    - cron: '7 */2 * * *'
+  # Ručno osvježavanje: izmjena ove datoteke pokreće ciklus i na grani.
+  push:
+    paths:
+      - '.github/region-refresh-trigger'
+      - '.github/workflows/region-daily.yml'
   workflow_dispatch:
     inputs:
       channel:
@@ -42,10 +49,11 @@ jobs:
     env:
       TZ: Europe/Zagreb
     steps:
-      - name: Checkout main
+      - name: Checkout pokrenute grane
         uses: actions/checkout@v4
         with:
-          ref: main
+          # Ne hardkodiraj main: push okidač mora raditi na grani na kojoj je pokrenut.
+          ref: ${{ github.ref }}
           fetch-depth: 0
 
       - uses: actions/setup-node@v4
@@ -97,19 +105,20 @@ jobs:
           echo "changed=true" >> "$GITHUB_OUTPUT"
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
-      - name: Push na main (uz provjeru pomaka)
-        if: steps.commit.outputs.changed == 'true' && github.ref == 'refs/heads/main'
+      - name: Push na granu iz koje je pokrenut (uz provjeru pomaka)
+        if: steps.commit.outputs.changed == 'true'
         shell: bash
         run: |-
           set -euo pipefail
           expected="${{ steps.base.outputs.sha }}"
-          git fetch origin main --no-tags
-          current=$(git rev-parse origin/main)
+          ref="${{ github.ref_name }}"
+          git fetch origin "$ref" --no-tags
+          current=$(git rev-parse "origin/$ref")
           if [ "$current" != "$expected" ]; then
-            echo "::warning::main se pomaknuo tijekom izrade izdanja (očekivano $expected, stvarno $current). Izdanje ostaje za sljedeći ciklus."
+            echo "::warning::$ref se pomaknuo tijekom izrade izdanja (očekivano $expected, stvarno $current). Izdanje ostaje za sljedeći ciklus."
             exit 0
           fi
-          git push origin HEAD:main
+          git push origin "HEAD:$ref"
 
       - name: Deploy na Cloudflare Pages (svaki kanal svoj projekt)
         if: steps.commit.outputs.changed == 'true' && github.ref == 'refs/heads/main'

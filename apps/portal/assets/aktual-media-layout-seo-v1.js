@@ -97,7 +97,7 @@
   async function boot() {
     installSeo(); reorder(); addVisibleEntityBlock();
     try {
-      const response = await fetch('/data/news.json?v=' + Date.now(), { cache:'no-store' });
+      const response = await fetch('/data/news.json', { cache:'no-cache' });
       const data = await response.json();
       const source = Array.isArray(data) ? data : (data.items || []);
       state.items = source.filter(item => item && item.title && item.url && item.image);

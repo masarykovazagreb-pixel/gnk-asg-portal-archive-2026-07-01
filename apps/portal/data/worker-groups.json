@@ -6,325 +6,1494 @@
       "id": "izdanja",
       "name": "Izdanja i sadržaj",
       "nameEn": "Editions and content",
-      "automations": 28,
+      "automations": 59,
+      "scheduled": 7,
+      "runsPerDay": 38,
       "files": [
-        "aktual-ai-governance-candidate-gate.yml",
-        "aktual-editorial-gate.yml",
-        "aktual-news-single-writer-guard.yml",
-        "aktual-premium-image-quality.yml",
-        "aktual-world-topic-promo.yml",
-        "blog-mirror-publish.yml",
-        "check-aktual-all-pages-v2.yml",
-        "check-aktual-media-radio-persistent-v1.yml",
-        "check-aktual-media-weekly-v1.yml",
-        "check-aktual-media-world-v1.yml",
-        "check-aktual-meta-matrix-v1.yml",
-        "check-aktual-radar-v1.yml",
-        "check-aktual-regions-v1.yml",
-        "check-aktual-sources-v1.yml",
-        "check-aktual-sova-v1.yml",
-        "check-aktual-weekly-source-integrity-v1.yml",
-        "editorial-center-check.yml",
-        "editorial-content-ci.yml",
-        "editorial-content-deploy.yml",
-        "editorial-scheduled-publish.yml",
-        "editorial-seo-audit.yml",
-        "region-backfill.yml",
-        "region-daily.yml",
-        "region-deploy.yml",
-        "tjednik-daily.yml",
-        "tjednik-deploy.yml",
-        "world-monitor-refresh.yml",
-        "world-topics-materialize.yml"
+        {
+          "file": "aktual-ai-governance-candidate-gate.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "aktual-editorial-gate.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "aktual-news-single-writer-guard.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "aktual-premium-image-quality.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "aktual-world-topic-promo.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "blog-mirror-publish.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "build-world-cookbook-premium.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-aktual-all-pages-v2.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-aktual-media-radio-persistent-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-aktual-media-weekly-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-aktual-media-world-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-aktual-meta-matrix-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-aktual-radar-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-aktual-regions-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-aktual-sources-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-aktual-sova-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-aktual-weekly-source-integrity-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "content-queue-backfill.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "content-queue-publish.yml",
+          "crons": [
+            "20 7,8,9,10,11,12,13,14,15,16,17,18,19 * * *"
+          ],
+          "perDay": 13
+        },
+        {
+          "file": "content-source-governance.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "digital-workforce-public-read-parity.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "dohvati-b01.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "dohvati-b02.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "dohvati-b03.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "dohvati-b04.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "dohvati-b05.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "dohvati-b06.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "dohvati-b07.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "dohvati-b08.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "dohvati-b09.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "dohvati-b10.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "dohvati-b11.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "dohvati-b12.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "dohvati-b13.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "dohvati-b14.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "dohvati-b15.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "dohvati-b16.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "editorial-center-check.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "editorial-content-ci.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "editorial-content-deploy.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "editorial-scheduled-publish.yml",
+          "crons": [
+            "20 8 * * *"
+          ],
+          "perDay": 1
+        },
+        {
+          "file": "editorial-seo-audit.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "gnk-news-refresh-v2.yml",
+          "crons": [
+            "12 1,5,9,13,17,21 * * *"
+          ],
+          "perDay": 6
+        },
+        {
+          "file": "kanal-daily.yml",
+          "crons": [
+            "0 5 * * *"
+          ],
+          "perDay": 1
+        },
+        {
+          "file": "kanal-deploy.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "knowledge-center-contract.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "news-image-integrity-readonly-probe.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "news-live-status.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "news-public-readonly-probe.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "news-publications-hotfix-live.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "news-refresh.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "news-v16-heartbeat.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "region-backfill.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "region-daily.yml",
+          "crons": [
+            "0 */2 * * *"
+          ],
+          "perDay": 12
+        },
+        {
+          "file": "region-deploy.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "tjednik-daily.yml",
+          "crons": [
+            "20 6 * * *"
+          ],
+          "perDay": 1
+        },
+        {
+          "file": "tjednik-deploy.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "world-monitor-refresh.yml",
+          "crons": [
+            "20 1,7,13,19 * * *"
+          ],
+          "perDay": 4
+        },
+        {
+          "file": "world-topics-materialize.yml",
+          "crons": [],
+          "perDay": 0
+        }
+      ]
+    },
+    {
+      "id": "trzista",
+      "name": "Tržišta i podaci",
+      "nameEn": "Markets and data",
+      "automations": 3,
+      "scheduled": 2,
+      "runsPerDay": 4,
+      "files": [
+        {
+          "file": "macro-market-refresh.yml",
+          "crons": [
+            "25 6,14 * * *"
+          ],
+          "perDay": 2
+        },
+        {
+          "file": "market-browser-issue96.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "market-pulse-refresh.yml",
+          "crons": [
+            "10 6,14 * * *"
+          ],
+          "perDay": 2
+        }
+      ]
+    },
+    {
+      "id": "distribucija",
+      "name": "Distribucija i zrcala",
+      "nameEn": "Distribution and mirrors",
+      "automations": 11,
+      "scheduled": 1,
+      "runsPerDay": 24,
+      "files": [
+        {
+          "file": "devto-mirror-contract.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "devto-mirror-publish.yml",
+          "crons": [
+            "45 * * * *"
+          ],
+          "perDay": 24
+        },
+        {
+          "file": "external-distribution-approval-gate.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "free-image-mirror.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "linkedin-daily-rotation.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "objavi-devto-sada.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "objavi-telegraph-sada.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "objavi-tumblr-sada.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "obnovi-devto-evidenciju.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "social-distribution.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "telegraph-mirror-publish.yml",
+          "crons": [],
+          "perDay": 0
+        }
+      ]
+    },
+    {
+      "id": "seo",
+      "name": "SEO i indeksiranje",
+      "nameEn": "SEO and indexing",
+      "automations": 15,
+      "scheduled": 2,
+      "runsPerDay": 5,
+      "files": [
+        {
+          "file": "aeo-ai-visibility.yml",
+          "crons": [
+            "20 2,8,14,20 * * *"
+          ],
+          "perDay": 4
+        },
+        {
+          "file": "check-digital-workforce-root-seo.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-nermin-author-seo-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-seo-attribution-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "entity-seo-integrity.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "gallery-seo-contract.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "gnk-seo-nightly-audit.yml",
+          "crons": [
+            "15 1 * * *"
+          ],
+          "perDay": 1
+        },
+        {
+          "file": "image-entity-seo.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "publication-sitemap-registry-gate.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "regeneriraj-image-sitemap.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "regeneriraj-sitemapove.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "seo-audit-refresh.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "seo-knowledge-graph-contract.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "seo-news-cycle.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "strengthen-objave-seo-v2.yml",
+          "crons": [],
+          "perDay": 0
+        }
+      ]
+    },
+    {
+      "id": "odrzavanje",
+      "name": "Održavanje i oporavak",
+      "nameEn": "Maintenance and recovery",
+      "automations": 37,
+      "scheduled": 5,
+      "runsPerDay": 38,
+      "files": [
+        {
+          "file": "bot-ownership-contract.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "cleanup-actions-artifacts.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "cleanup-campaign-mailer-remaining.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "contact-diagnostic.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "dark-menu-market-recovery.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-mail-profile-parity.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-v30-emergency.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "diag-direct-inbound-patch-20260722.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "diag-mail-autoreply-live-20260722.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "diag12-oneoff.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "diagnose-email-routing-now.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "diagnose-final-routes.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "diagnose-live-issue89.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "diagnose-media-projects-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "diagnose-media-worker-dryrun.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "diagnose-production-index.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "diagnose-project50-unified-menu-v16.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "diagnose-public-visual-v13-production.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "diagnose-special-public-routes.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "disaster-recovery-dispatch-check.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "emergency-stop-media-outreach.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "entity-visibility-campaign-monitor.yml",
+          "crons": [
+            "15 6,7,8,9,10,11,12,13,14,15 * * *"
+          ],
+          "perDay": 10
+        },
+        {
+          "file": "image-health-scan.yml",
+          "crons": [
+            "15 3 * * 0"
+          ],
+          "perDay": 1
+        },
+        {
+          "file": "index-parity-heal.yml",
+          "crons": [
+            "12 4 * * *"
+          ],
+          "perDay": 1
+        },
+        {
+          "file": "inspect-live-status-verification-20260722.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "inspect-public-route-owners.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "mail-session-repair.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "one-time-diagnose-validate-release-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "one-time-public-content-repair-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "ops-automation-sla-watchdog.yml",
+          "crons": [
+            "42 * * * *"
+          ],
+          "perDay": 24
+        },
+        {
+          "file": "probe-mail-health-now.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "repair-office-inbound-email.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "runtime-health-issue90.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "site-health-audit.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "site-health-check-v1.yml",
+          "crons": [
+            "0 0,12 * * *"
+          ],
+          "perDay": 2
+        },
+        {
+          "file": "test-portal-repair-v9.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "workforce-runtime-health-truth.yml",
+          "crons": [],
+          "perDay": 0
+        }
       ]
     },
     {
       "id": "deploy",
       "name": "Objava i deploy",
       "nameEn": "Release and deploy",
-      "automations": 55,
+      "automations": 53,
+      "scheduled": 0,
+      "runsPerDay": 0,
       "files": [
-        "deploy-admin-auth-v6.yml",
-        "deploy-admin-dashboard-v3.yml",
-        "deploy-admin-menu-route-pr.yml",
-        "deploy-bilingual-index-activation.yml",
-        "deploy-black-logo-smoke-test.yml",
-        "deploy-campaign-mailer-command.yml",
-        "deploy-current-public-portal.yml",
-        "deploy-delivery-issue91.yml",
-        "deploy-editorial-center.yml",
-        "deploy-email-logo-gateway-v1.yml",
-        "deploy-final-admin-gateway.yml",
-        "deploy-firefox-auth-issue93.yml",
-        "deploy-index-code-showcase-v1.yml",
-        "deploy-index-existing-fields-v2.yml",
-        "deploy-index-polish-v30.yml",
-        "deploy-index-visual-fix-v29.yml",
-        "deploy-luxury-index-pr.yml",
-        "deploy-mail-center-worker-v2.yml",
-        "deploy-mail-media-strict-english.yml",
-        "deploy-mail-profile-parity.yml",
-        "deploy-mail-studio-bridge-v15.yml",
-        "deploy-mail-studio-multilingual.yml",
-        "deploy-mail-studio-v24.yml",
-        "deploy-media-application-v1.yml",
-        "deploy-media-command-gateway.yml",
-        "deploy-media-email-import-v1.yml",
-        "deploy-media-html-v22-command.yml",
-        "deploy-media-html-v22.yml",
-        "deploy-media-projects-v1.yml",
-        "deploy-media-source-probe-pr.yml",
-        "deploy-media-source-probe-v1.yml",
-        "deploy-media-source-push-v2.yml",
-        "deploy-memorandum-studio-v2.yml",
-        "deploy-mobile-app-v2.yml",
-        "deploy-news-publications-v17.yml",
-        "deploy-news-v16.yml",
-        "deploy-operations-suite-v1.yml",
-        "deploy-portal-final-v12.yml",
-        "deploy-private-admin-ui-main.yml",
-        "deploy-private-admin-ui-v2.yml",
-        "deploy-project50-unified-menu-v16-pr.yml",
-        "deploy-project50-unified-menu-v16.yml",
-        "deploy-public-portal-assets-safe.yml",
-        "deploy-public-shell-v15.yml",
-        "deploy-public-visual-v13.yml",
-        "deploy-runtime-r11-issue96.yml",
-        "deploy-special-public-v13.yml",
-        "deploy-unified-auth-v14.yml",
-        "deploy-v21-index-preview.yml",
-        "deploy-v21-issue89.yml",
-        "deploy-v27-trigger.yml",
-        "deploy-v30-emergency.yml",
-        "deploy-v31-head-fix.yml",
-        "deploy-worker-review-preview-v1.yml",
-        "publish-first-validated-qa-v3.yml"
+        {
+          "file": "deploy-admin-auth-v6.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-admin-dashboard-v3.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-admin-menu-route-pr.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-bilingual-index-activation.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-black-logo-smoke-test.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-campaign-mailer-command.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-current-public-portal.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-delivery-issue91.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-editorial-center.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-email-logo-gateway-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-final-admin-gateway.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-firefox-auth-issue93.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-index-code-showcase-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-index-existing-fields-v2.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-index-polish-v30.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-index-visual-fix-v29.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-luxury-index-pr.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-mail-center-worker-v2.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-mail-media-strict-english.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-mail-studio-bridge-v15.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-mail-studio-multilingual.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-mail-studio-v24.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-media-application-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-media-command-gateway.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-media-email-import-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-media-html-v22-command.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-media-html-v22.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-media-projects-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-media-source-probe-pr.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-media-source-probe-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-media-source-push-v2.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-memorandum-studio-v2.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-mobile-app-v2.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-news-publications-v17.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-news-v16.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-operations-suite-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-portal-final-v12.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-private-admin-ui-main.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-private-admin-ui-v2.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-project50-unified-menu-v16-pr.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-project50-unified-menu-v16.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-public-portal-assets-safe.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-public-shell-v15.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-public-visual-v13.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-runtime-r11-issue96.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-special-public-v13.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-unified-auth-v14.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-v21-index-preview.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-v21-issue89.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-v27-trigger.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-v31-head-fix.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "deploy-worker-review-preview-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "publish-first-validated-qa-v3.yml",
+          "crons": [],
+          "perDay": 0
+        }
       ]
     },
     {
       "id": "provjere",
       "name": "Provjere i auditi",
       "nameEn": "Checks and audits",
-      "automations": 74,
+      "automations": 71,
+      "scheduled": 0,
+      "runsPerDay": 0,
       "files": [
-        "audit-floating-home-route-owners.yml",
-        "audit-public-portal-v1.yml",
-        "audit-public-routes-v1.yml",
-        "audit-three-public-routes.yml",
-        "audit2.yml",
-        "check-admin-center-v2.yml",
-        "check-admin-executive-portfolio-v1.yml",
-        "check-admin-mail-media-sms.yml",
-        "check-bilingual-publication-routes-v1.yml",
-        "check-company-operations-v1.yml",
-        "check-design-review-console.yml",
-        "check-digital-workforce-public.yml",
-        "check-digital-workforce-root-seo.yml",
-        "check-editorial-draft-planner.yml",
-        "check-editorial-launch-library.yml",
-        "check-enterprise-final-review.yml",
-        "check-enterprise-review-runtime-v3.yml",
-        "check-index-code-showcase-v1.yml",
-        "check-index-existing-fields-v2.yml",
-        "check-live-v28.yml",
-        "check-mail-profile-delivery-tests.yml",
-        "check-mail-sync-center.yml",
-        "check-media-application-v1.yml",
-        "check-media-applications-review.yml",
-        "check-nermin-author-seo-v1.yml",
-        "check-operations-suite-v1.yml",
-        "check-operations-visual-v1.yml",
-        "check-operator-module-routes.yml",
-        "check-publication-detail-pages-v1.yml",
-        "check-publication-detail-pages-v2.yml",
-        "check-responsive-review-evidence-v1.yml",
-        "check-seo-attribution-v1.yml",
-        "check-strategy-performance-review.yml",
-        "check-worker-review-preview-v1.yml",
-        "validate-campaign-mailer.yml",
-        "validate-command-center.yml",
-        "validate-contact-idempotency.yml",
-        "validate-index-news-retention-copy.yml",
-        "validate-mail-autoreply-dedupe.yml",
-        "validate-mail-mime-type.yml",
-        "validate-mail-security-abuse-guard.yml",
-        "validate-market-primary-alias-runtime.yml",
-        "validate-media-projects-v1.yml",
-        "validate-minimum-index-contact-admin.yml",
-        "validate-news-retention-contract.yml",
-        "validate-newsroom-enqueue-auth.yml",
-        "validate-production-authorization-contract.yml",
-        "validate-production-hotfix-contact-market-mail.yml",
-        "validate-verify-coinpaprika-upstream.yml",
-        "verify-admin-center-live.yml",
-        "verify-admin-mail-media-sms-live.yml",
-        "verify-admin-shell-v7-quick.yml",
-        "verify-admin-shell-v7.yml",
-        "verify-ai-badge-guard-v17.yml",
-        "verify-assistant-v14.yml",
-        "verify-editorial-live-through.yml",
-        "verify-email-status-production.yml",
-        "verify-email-tools-status-v6.yml",
-        "verify-final-portal.yml",
-        "verify-floating-home-v16-targeted.yml",
-        "verify-floating-home-v16.yml",
-        "verify-index-v26.yml",
-        "verify-mail-delivery-v1.yml",
-        "verify-production-v12-issue.yml",
-        "verify-production-v12.yml",
-        "verify-public-memorandum.yml",
-        "verify-public-shell-lock-v17.yml",
-        "verify-public-shell-v12.yml",
-        "verify-public-shell-v13-now.yml",
-        "verify-public-visual-v13-production.yml",
-        "verify-single-menu-v15.yml",
-        "verify-the-code-production.yml",
-        "verify-v30-browser.yml",
-        "verify-v31-browser.yml"
+        {
+          "file": "audit-floating-home-route-owners.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "audit-public-portal-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "audit-public-routes-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "audit-three-public-routes.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "audit2.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-admin-center-v2.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-admin-executive-portfolio-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-admin-mail-media-sms.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-bilingual-publication-routes-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-company-operations-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-design-review-console.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-digital-workforce-public.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-editorial-draft-planner.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-editorial-launch-library.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-enterprise-final-review.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-enterprise-review-runtime-v3.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-index-code-showcase-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-index-existing-fields-v2.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-live-v28.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-mail-profile-delivery-tests.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-mail-sync-center.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-media-application-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-media-applications-review.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-operations-suite-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-operations-visual-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-operator-module-routes.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-publication-detail-pages-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-publication-detail-pages-v2.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-responsive-review-evidence-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-strategy-performance-review.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-worker-review-preview-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "validate-campaign-mailer.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "validate-command-center.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "validate-contact-idempotency.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "validate-index-news-retention-copy.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "validate-mail-autoreply-dedupe.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "validate-mail-mime-type.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "validate-mail-security-abuse-guard.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "validate-market-primary-alias-runtime.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "validate-media-projects-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "validate-minimum-index-contact-admin.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "validate-news-retention-contract.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "validate-newsroom-enqueue-auth.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "validate-production-authorization-contract.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "validate-production-hotfix-contact-market-mail.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "validate-verify-coinpaprika-upstream.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "verify-admin-center-live.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "verify-admin-mail-media-sms-live.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "verify-admin-shell-v7-quick.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "verify-admin-shell-v7.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "verify-ai-badge-guard-v17.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "verify-assistant-v14.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "verify-editorial-live-through.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "verify-email-status-production.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "verify-email-tools-status-v6.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "verify-final-portal.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "verify-floating-home-v16-targeted.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "verify-floating-home-v16.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "verify-index-v26.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "verify-mail-delivery-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "verify-production-v12-issue.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "verify-production-v12.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "verify-public-memorandum.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "verify-public-shell-lock-v17.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "verify-public-shell-v12.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "verify-public-shell-v13-now.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "verify-public-visual-v13-production.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "verify-single-menu-v15.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "verify-the-code-production.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "verify-v30-browser.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "verify-v31-browser.yml",
+          "crons": [],
+          "perDay": 0
+        }
       ]
     },
     {
       "id": "mediji",
       "name": "Mediji, slike i galerija",
       "nameEn": "Media, images and gallery",
-      "automations": 15,
+      "automations": 9,
+      "scheduled": 0,
+      "runsPerDay": 0,
       "files": [
-        "digital-assets-single-writer-guard.yml",
-        "fix-image-dimensions.yml",
-        "free-image-mirror.yml",
-        "gallery-seo-contract.yml",
-        "gallery-sync.yml",
-        "image-entity-seo.yml",
-        "image-health-scan.yml",
-        "media-command-center-verify.yml",
-        "media-command-from-chat.yml",
-        "news-image-integrity-readonly-probe.yml",
-        "p0-test-image-validator.yml",
-        "public-editorial-assets-ci.yml",
-        "regeneriraj-image-sitemap.yml",
-        "test-media-command-center-v20.yml",
-        "visual-index-news-images-live.yml"
+        {
+          "file": "digital-assets-single-writer-guard.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "fix-image-dimensions.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "gallery-sync.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "media-command-center-verify.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "media-command-from-chat.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "p0-test-image-validator.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "public-editorial-assets-ci.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "test-media-command-center-v20.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "visual-index-news-images-live.yml",
+          "crons": [],
+          "perDay": 0
+        }
       ]
     },
     {
       "id": "pristup",
       "name": "Pristup i administracija",
       "nameEn": "Access and administration",
-      "automations": 11,
+      "automations": 5,
+      "scheduled": 0,
+      "runsPerDay": 0,
       "files": [
-        "approved-author-markers-backfill.yml",
-        "cleanup-campaign-mailer-remaining.yml",
-        "diag-mail-autoreply-live-20260722.yml",
-        "diagnose-email-routing-now.yml",
-        "internal-media-email-test.yml",
-        "mail-session-repair.yml",
-        "probe-mail-health-now.yml",
-        "repair-office-inbound-email.yml",
-        "report-unified-auth-v14.yml",
-        "send-the-code-regional-mailstudio.yml",
-        "set-pexels-secret.yml"
+        {
+          "file": "approved-author-markers-backfill.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "internal-media-email-test.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "report-unified-auth-v14.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "send-the-code-regional-mailstudio.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "set-pexels-secret.yml",
+          "crons": [],
+          "perDay": 0
+        }
       ]
     },
     {
       "id": "nadzor",
       "name": "Nadzor i status",
       "nameEn": "Monitoring and status",
-      "automations": 22,
+      "automations": 5,
+      "scheduled": 0,
+      "runsPerDay": 0,
       "files": [
-        "actions-execution-probe.yml",
-        "automation-kill-switch-contract.yml",
-        "diagnose-final-routes.yml",
-        "diagnose-live-issue89.yml",
-        "diagnose-media-projects-v1.yml",
-        "diagnose-media-worker-dryrun.yml",
-        "diagnose-production-index.yml",
-        "diagnose-project50-unified-menu-v16.yml",
-        "diagnose-public-visual-v13-production.yml",
-        "diagnose-special-public-routes.yml",
-        "entity-visibility-campaign-monitor.yml",
-        "fix-floating-home-page-routes-v16.yml",
-        "inspect-live-status-verification-20260722.yml",
-        "news-live-status.yml",
-        "news-public-readonly-probe.yml",
-        "one-time-diagnose-validate-release-v1.yml",
-        "report-current-public-portal.yml",
-        "report-iq200-deploy.yml",
-        "runtime-health-issue90.yml",
-        "site-health-audit.yml",
-        "site-health-check-v1.yml",
-        "workforce-runtime-health-truth.yml"
+        {
+          "file": "actions-execution-probe.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "automation-kill-switch-contract.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "fix-floating-home-page-routes-v16.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "report-current-public-portal.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "report-iq200-deploy.yml",
+          "crons": [],
+          "perDay": 0
+        }
       ]
     }
   ],
   "ungrouped": [
-    "aeo-ai-visibility.yml",
     "auto-deploy-main-v1.yml",
-    "bot-ownership-contract.yml",
-    "build-world-cookbook-premium.yml",
-    "cleanup-actions-artifacts.yml",
-    "contact-diagnostic.yml",
-    "content-queue-backfill.yml",
-    "content-queue-publish.yml",
-    "content-source-governance.yml",
-    "dark-menu-market-recovery.yml",
-    "devto-mirror-contract.yml",
-    "devto-mirror-publish.yml",
-    "diag-direct-inbound-patch-20260722.yml",
-    "diag12-oneoff.yml",
-    "digital-workforce-public-read-parity.yml",
     "direct-static-editorial-policy-v1.yml",
-    "disaster-recovery-dispatch-check.yml",
-    "dohvati-b01.yml",
-    "dohvati-b02.yml",
-    "dohvati-b03.yml",
-    "dohvati-b04.yml",
-    "dohvati-b05.yml",
-    "dohvati-b06.yml",
-    "dohvati-b07.yml",
-    "dohvati-b08.yml",
-    "dohvati-b09.yml",
-    "dohvati-b10.yml",
-    "dohvati-b11.yml",
-    "dohvati-b12.yml",
-    "dohvati-b13.yml",
-    "dohvati-b14.yml",
-    "dohvati-b15.yml",
-    "dohvati-b16.yml",
-    "emergency-stop-media-outreach.yml",
-    "entity-seo-integrity.yml",
     "export-campaign-continuation-readonly.yml",
-    "external-distribution-approval-gate.yml",
     "final-v27-acceptance-issue98.yml",
     "fix-operator-dashboard-route-v7.yml",
     "force-deploy-fresh-media-center.yml",
     "generate-digital-workforce-newsroom-pages.yml",
-    "gnk-news-refresh-v2.yml",
-    "gnk-seo-nightly-audit.yml",
     "homepage-browser-audit.yml",
-    "index-parity-heal.yml",
-    "inspect-public-route-owners.yml",
     "integration-portal-v12.yml",
     "issue-news-v16-validation.yml",
-    "kanal-daily.yml",
-    "kanal-deploy.yml",
     "key-routes-quality-gate.yml",
-    "knowledge-center-contract.yml",
-    "linkedin-daily-rotation.yml",
     "live-index-redesign-preview.yml",
-    "macro-market-refresh.yml",
-    "market-browser-issue96.yml",
-    "market-pulse-refresh.yml",
     "master-asg-autonomous-agent-v1.yml",
     "media-readiness-audit.yml",
-    "news-publications-hotfix-live.yml",
-    "news-refresh.yml",
-    "news-v16-heartbeat.yml",
     "no-en-en-canonical-contract.yml",
     "objavi-15-dnevno.yml",
-    "objavi-devto-sada.yml",
-    "objavi-telegraph-sada.yml",
-    "objavi-tumblr-sada.yml",
-    "obnovi-devto-evidenciju.yml",
     "one-time-autoreply-ai-v1.yml",
     "one-time-direct-urgent-release-v37.yml",
     "one-time-final-urgent-package-v1.yml",
@@ -332,14 +1501,12 @@
     "one-time-fix-news-cache-and-contact-readiness-v1.yml",
     "one-time-fix-todays-news-order-v1.yml",
     "one-time-full-validate-and-deploy-v2.yml",
-    "one-time-public-content-repair-v1.yml",
     "one-time-revalidate-urgent-package-v3.yml",
     "one-time-verify-final-urgent-v1.yml",
     "one-time-verify-production-v4.yml",
     "operator-approved-control.yml",
     "operator-deploy-current.yml",
     "operator-register-504m.yml",
-    "ops-automation-sla-watchdog.yml",
     "p0-rss-audit.yml",
     "p1-dw-audit.yml",
     "p2-lighthouse.yml",
@@ -351,24 +1518,15 @@
     "public-market-contract.yml",
     "public-portal-audit.yml",
     "publication-calendar-source-of-truth.yml",
-    "publication-sitemap-registry-gate.yml",
     "refresh-gnkc-index.yml",
     "refresh-index-live-data.yml",
-    "regeneriraj-sitemapove.yml",
     "restore-iq200-index-now.yml",
     "restore-production-2059.yml",
     "runtime-contract-issue96.yml",
     "scheduled-production-deploy.yml",
-    "seo-audit-refresh.yml",
-    "seo-knowledge-graph-contract.yml",
-    "seo-news-cycle.yml",
     "siroki-smoke.yml",
     "site-functional-readiness.yml",
-    "social-distribution.yml",
-    "strengthen-objave-seo-v2.yml",
     "sync-webshop-products.yml",
-    "telegraph-mirror-publish.yml",
-    "test-portal-repair-v9.yml",
     "test-public-visual-v13.yml",
     "upload-correct-memorandum.yml",
     "upload-media-pdf-issue92.yml",

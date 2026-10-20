@@ -4,87 +4,461 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-10-19T21:18:40.952Z",
+  "updatedAt": "2026-10-20T13:18:16.067Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": true,
-      "fetched": 46,
+      "ok": false,
+      "fetched": 0,
       "errors": [
-        "wp:1: HTTP 404"
+        "https://telex.hu/rss: HTTP 403",
+        "https://telex.hu/rss/belfold: HTTP 403",
+        "https://telex.hu/rss/kulfold: HTTP 403",
+        "https://telex.hu/rss/gazdasag: HTTP 403",
+        "https://telex.hu/rss/sport: HTTP 403"
       ],
-      "checkedAt": "2026-10-19T21:18:40.952Z"
+      "checkedAt": "2026-10-20T13:18:09.271Z"
     },
     {
       "id": "444",
       "name": "444",
       "url": "https://444.hu/feed",
       "ok": true,
-      "fetched": 0,
-      "errors": [
-        "preskočeno: cilj dosegnut"
-      ],
-      "checkedAt": "2026-10-19T21:18:40.952Z"
+      "fetched": 30,
+      "errors": [],
+      "checkedAt": "2026-10-20T13:18:09.488Z"
     },
     {
       "id": "hvg",
       "name": "HVG",
       "url": "https://hvg.hu/rss",
       "ok": true,
-      "fetched": 0,
-      "errors": [
-        "preskočeno: cilj dosegnut"
-      ],
-      "checkedAt": "2026-10-19T21:18:40.952Z"
+      "fetched": 60,
+      "errors": [],
+      "checkedAt": "2026-10-20T13:18:10.176Z"
     },
     {
       "id": "portfolio",
       "name": "Portfolio",
       "url": "https://www.portfolio.hu/rss/all.xml",
       "ok": true,
-      "fetched": 0,
-      "errors": [
-        "preskočeno: cilj dosegnut"
-      ],
-      "checkedAt": "2026-10-19T21:18:40.952Z"
+      "fetched": 20,
+      "errors": [],
+      "checkedAt": "2026-10-20T13:18:11.063Z"
     },
     {
       "id": "index",
       "name": "Index.hu",
       "url": "https://index.hu/rss",
-      "ok": true,
+      "ok": false,
       "fetched": 0,
       "errors": [
-        "preskočeno: cilj dosegnut"
+        "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:18:40.952Z"
+      "checkedAt": "2026-10-20T13:18:13.066Z"
     },
     {
       "id": "24hu",
       "name": "24.hu",
       "url": "https://24.hu/feed/",
       "ok": true,
-      "fetched": 0,
-      "errors": [
-        "preskočeno: cilj dosegnut"
-      ],
-      "checkedAt": "2026-10-19T21:18:40.952Z"
+      "fetched": 10,
+      "errors": [],
+      "checkedAt": "2026-10-20T13:18:15.140Z"
     },
     {
       "id": "mandiner",
       "name": "Mandiner",
       "url": "https://mandiner.hu/rss",
       "ok": true,
-      "fetched": 0,
-      "errors": [
-        "preskočeno: cilj dosegnut"
-      ],
-      "checkedAt": "2026-10-19T21:18:40.952Z"
+      "fetched": 50,
+      "errors": [],
+      "checkedAt": "2026-10-20T13:18:16.067Z"
     }
   ],
   "items": [
+    {
+      "slug": "budimpesta-2026-10-20-hvg-nem-erdemes-tuldimenzionalni-hogy-varkonyi-869e5d",
+      "title": "Nem érdemes túldimenzionálni, hogy Várkonyi Andrea nem ismeri saját házassági szerződését",
+      "summary": "Várkonyi férje, Mészáros Lőrinc iránti feltétlen bizalmát akarta szemléltetni egy interjúban, kijelentései viszont akarva-akaratlanul találgatásba torkollottak a Mészáros-vagyon sorsáról.",
+      "date": "2026-10-20T13:15:00.000Z",
+      "url": "https://hvg.hu/360/20261020_premium-hirlevelek-van-hozza-kozlony-vagyon-hazassagi-szerzodes-varkonyi-meszaros",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "hvg360",
+        "Prémium hírlevelek",
+        "Van hozzá közlöny"
+      ],
+      "author": "szerzo@hvg.hu (Mudra Márton István)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:10.176Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-20-portfolio-ujabb-attores-kuszoben-az-elhizas-elleni-4d7acf",
+      "title": "Újabb áttörés küszöbén az elhízás elleni küzdelem: a negyedével csökkentette a tesztalanyok testsúlyát az új gyógyszer",
+      "summary": "A Novo Nordisk legfrissebb elemzése szerint a cég következő generációs elhízás elleni gyógyszere, a CagriSema átlagosan 25 százalékos testsúlycsökkenést eredményezett felnőtt nőknél egy III. fázisú klinikai vizsgálat utólagos adatelemzésében - közölte a CNBC .",
+      "date": "2026-10-20T13:15:00.000Z",
+      "url": "https://www.portfolio.hu/uzlet/20261020/ujabb-attores-kuszoben-az-elhizas-elleni-kuzdelem-a-negyedevel-csokkentette-a-tesztalanyok-testsulyat-az-uj-gyogyszer-871002",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Üzlet"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:11.063Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-20-portfolio-dontott-a-jegybank-hamarosan-megszolal-8744e1",
+      "title": "Döntött a jegybank, hamarosan megszólal Varga Mihály",
+      "summary": "Az előzetes várakozásoknak megfelelően 5,5%-on hagyta kedden az alapkamatot az MNB Monetáris Tanácsa. A döntés hátteréről délután érkezik a jegybank közleménye, illetve sajtótájékoztatót tart Varga Mihály elnök.",
+      "date": "2026-10-20T13:15:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261020/dontott-a-jegybank-hamarosan-megszolal-varga-mihaly-870944",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-20T13:18:11.064Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-20-hvg-ketszobas-berlakas-euromilliardos-tartozas-f03167",
+      "title": "Kétszobás bérlakás, eurómilliárdos tartozás, fenyegetőző arabok: René Benko elhagyta a börtönt",
+      "summary": "Börtönből bérlakásba került az Ausztria legnagyobb csődjét okozó René Benko, de milliárdos tartozásai miatti monstre perei folytatódnak. De ki ez a szédületes csúcsokra emelkedő, majd onnan lezuhanó magyar száramázú ingatlanmágnás?",
+      "date": "2026-10-20T13:09:25.000Z",
+      "url": "https://hvg.hu/360/20261020_milliardos-borton-sigma-benko-ingatlan-csalas",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "hvg360",
+        "ingatlan",
+        "René Benko",
+        "milliárdos"
+      ],
+      "author": "szerzo@hvg.hu (Földvári Zsuzsa)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:10.176Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-20-444-hogyne-tertem-volna-vissza-itt-van-a-ff4d67",
+      "title": "„Hogyne tértem volna vissza? Itt van a családom” – ilyen az élet a halál után a városban, ami kétszer is gazdát cserélt",
+      "summary": "Mihajlo a feleségét, a lányát és három unokáját is elveszítette, amikor 2022 márciusában az oroszok lebombázták a házat, ahol éltek. Miután az oroszok megszállták Izjumot, a férfinak is menekülnie kellett, de a város felszabadítása után visszaköltözött.",
+      "date": "2026-10-20T13:09:21.000Z",
+      "url": "https://444.hu/2026/10/20/hogyne-tertem-volna-vissza-itt-van-a-csaladom-ilyen-az-elet-a-halal-utan-a-varosban-ami-ketszer-is-gazdat-cserelt?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "orosz invázió",
+        "donyeck",
+        "harkiv",
+        "orosz-ukrán háború"
+      ],
+      "author": "Győri Boldizsár",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:09.488Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-20-444-otszaz-katonat-vezenyel-milanoba-az-olasz-827266",
+      "title": "Ötszáz katonát vezényel Milánóba az olasz kormány a napok óta tartó tüntetések és fosztogatások után",
+      "summary": "Hétvégére újabb tüntetéseket jelentettek be.",
+      "date": "2026-10-20T13:08:20.000Z",
+      "url": "https://444.hu/2026/10/20/otszaz-katonat-vezenyel-milanoba-az-olasz-kormany-a-napok-ota-tarto-tuntetesek-es-fosztogatasok-utan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "maranzák",
+        "tüntetések",
+        "giorgia meloni",
+        "olaszország"
+      ],
+      "author": "Inkei Bence",
+      "theme": "politika",
+      "addedAt": "2026-10-20T13:18:09.488Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-20-hvg-visszatert-a-nezopont-intezete-es-kadar-d08466",
+      "title": "Visszatért a Nézőpont Intézete és Kádár János, meg Nagy Imre népszerűségét méri",
+      "summary": "Kiderült ugyanakkor a legfrissebb pártpreferencia-mérésük is, amely a választások után végrehajtott módszertani revíziót követően kifejezetten közel áll a legutóbbi Medián-méréshez.",
+      "date": "2026-10-20T13:07:33.000Z",
+      "url": "https://hvg.hu/itthon/20261020_nezopont-intezet-kozvelemeny-kutatas-kadar-janos-nagy-imre-partpreferencia-1956-oktober-23",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "politika",
+        "közvélemény-kutatás",
+        "Nézőpont Intézet"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "politika",
+      "addedAt": "2026-10-20T13:18:10.176Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-20-portfolio-itt-az-mnb-kozlemenye-a-kamatdontesrol-b593ae",
+      "title": "Itt az MNB közleménye a kamatdöntésről!",
+      "summary": "Az MNB Közleménye megerősíti, hogy a nemzetközi környezet egyre kevésbé támogató. Eközben viszont hazai oldalról az infláció cél alatt van, a gazdasági növekedést pedig az aszály fogja vissza. A legfontosabb utalás viszont az, hogy a jegybank mozgásterét meghatározza a a kormány gazdaságpolitikai intézkedése és azok piaci fogadtatása. Az MNB közleményét az alábbiakban teljes terjedelmében közüljük, a kiemelések tőlünk származnak.",
+      "date": "2026-10-20T13:07:00.000Z",
+      "url": "https://www.portfolio.hu/deviza/20261020/itt-az-mnb-kozlemenye-a-kamatdontesrol-870998",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Deviza"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-20T13:18:11.064Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-20-24hu-banfalvi-samu-magyar-peter-es-a-a6c1f8",
+      "title": "Bánfalvi Samu: Magyar Péter és a posztfasiszta konszenzus",
+      "summary": "Mi mondathatja Magyar Péterrel bárminemű bizonyíték vagy ésszerű logikai összefüggés hiányában, hogy a „felfordulásért” felelős francia tüntetők bevándorlók? The post Bánfalvi Samu: Magyar Péter és a posztfasiszta konszenzus first appeared on 24.hu .",
+      "date": "2026-10-20T13:06:45.000Z",
+      "url": "https://24.hu/belfold/2026/10/20/banfalvi-samu-magyar-peter-es-a-posztfasiszta-konszenzus/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "bevándorlás",
+        "franciaország",
+        "vélemény"
+      ],
+      "author": "Bánfalvi Samu",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:15.140Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-20-portfolio-nagy-titkokat-leplezett-le-az-ukran-0ef247",
+      "title": "Nagy titkokat leplezett le az ukrán parancsnok, béketárgyalást tartanak Zelenszkijjel - Orosz-ukrán háborús híreink kedden",
+      "summary": "Kedden Oslóba látogat Steve Witkoff, a Fehér Ház különmegbízottja, hogy Volodimir Zelenszkij ukrán elnökkel és európai vezetőkkel tárgyaljon az orosz-ukrán háború lezárásáról. Az amerikai diplomata az oslói megbeszéléseket követően a tervek szerint Moszkvában folytatja. Az ukrán 3. hadtest parancsnoka, Andrij Bileckij dandártábornok újságírók előtt fedte fel a Vivaldi hadműveletet övező, gondosan kidolgozott titoktartás részleteit. A sikeres ukrán művelet célja annak megakadályozása volt, hogy az orosz erők bekerítsék az ukrán ellenőrzésű területeket Dnyeckben. Volodimir Zelenszkij helyett valaki másnak kellene Ukrajna nevében a háború lezárásáról tárgyalnia - mondta Donald Trump…",
+      "date": "2026-10-20T13:05:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261020/nagy-titkokat-leplezett-le-az-ukran-parancsnok-beketargyalast-tartanak-zelenszkijjel-orosz-ukran-haborus-hireink-kedden-870782",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-20T13:18:11.064Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-20-portfolio-csak-szinjatek-trump-es-putyin-kozeledese-dbfa56",
+      "title": "Csak színjáték Trump és Putyin közeledése? Örökké egymás ellensége marad a két ország a volt orosz elnök szerint",
+      "summary": "Dmitrij Medvegyev, az orosz Biztonsági Tanács alelnöke szerint az Oroszország és az Egyesült Államok közötti, évtizedekre visszavetett kapcsolatok nem javulnak érdemben, mivel a két ország rendszerszintű ellenfél volt, és az is marad - írja az orosz állami TASZSZ hírügynökség.",
+      "date": "2026-10-20T13:05:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261020/csak-szinjatek-trump-es-putyin-kozeledese-orokke-egymas-ellensege-marad-a-ket-orszag-a-volt-orosz-elnok-szerint-870984",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:11.064Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-20-24hu-erzekenyebb-helyekre-is-el-tudnanak-repulni-b36b8c",
+      "title": "„Érzékenyebb helyekre is el tudnának repülni” – az ukrán Pilóta Nélküli Erőknél jártunk az orosz célpontokat támadó drónok indításakor",
+      "summary": "A Pilóta Nélküli Erők egyik ezredénél jártunk a drónok indításakor. The post „Érzékenyebb helyekre is el tudnának repülni” – az ukrán Pilóta Nélküli Erőknél jártunk az orosz célpontokat támadó drónok indításakor first appeared on 24.hu .",
+      "date": "2026-10-20T13:03:19.000Z",
+      "url": "https://24.hu/kulfold/2026/10/20/orosz-ukran-haboru-dronok-riport/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Nagyvilág",
+        "drónok",
+        "gyárak",
+        "mélységi csapás"
+      ],
+      "author": "Győri Boldizsár",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:15.140Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-20-hvg-vege-a-masokat-levetkozteto-appoknak-nagy-24d396",
+      "title": "Vége a másokat levetkőztető appoknak, nagy szigorítást jelentett be az Apple",
+      "summary": "Több év után most már vasszigor jön az App Store-ba, nem lehet többé meztelen deepfake tartalmakat generálni másokról.",
+      "date": "2026-10-20T13:03:00.000Z",
+      "url": "https://hvg.hu/tudomany/20261020_apple-app-store-uj-szabalyok-szigoritas-deepfake-meztelenseg-tiltas-exc",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Tech",
+        "tech",
+        "Apple",
+        "deepfake"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:10.176Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-20-hvg-hazkutatast-tartott-a-nav-a-rakay-fele-51232e",
+      "title": "Házkutatást tartott a NAV a Rákay-féle Petőfi-film miatt a filmintézetnél",
+      "summary": "A Nemzeti Filmintézet fővárosi és fóti telephelyére is kiszálltak a NAV nyomozói.",
+      "date": "2026-10-20T12:59:44.000Z",
+      "url": "https://hvg.hu/kultura/20261020_hazkutatas-nav-most-vagy-soha-film-filmintezet",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Kult",
+        "bűnügyek",
+        "Most vagy soha!",
+        "Nemzeti Adó- és Vámhivatal (NAV)"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:10.176Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-20-24hu-kapitany-istvan-1165-milliardba-kerul-de-a82752",
+      "title": "Kapitány István: 1165 milliárdba kerül, de marad a rezsicsökkentés",
+      "summary": "Jön az otthonkorszerűsítési program. The post Kapitány István: 1165 milliárdba kerül, de marad a rezsicsökkentés first appeared on 24.hu .",
+      "date": "2026-10-20T12:59:03.000Z",
+      "url": "https://24.hu/belfold/2026/10/20/kapitany-istvan-rezsicsokkentes-koltsegvetes/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "kapitány istván",
+        "rezsicsökkentés",
+        "költségvetés 2027"
+      ],
+      "author": "Ősze András",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:15.140Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-20-hvg-mi-maradt-meg-a-tancbol-hvg-cimlapsztori-a-eacd34",
+      "title": "Mi maradt még a táncból? – HVG-Címlapsztori a változó politikai és médiavilágról",
+      "summary": "Mi változott meg a mindent felforgató áprilisi választás óta a politikában és a médiában? Kéri Lászlóval, Tóta W. Árpáddal, Benyó Ritával és Martini Noémivel beszélgetünk az Eötvös10 Művelődési Házban.",
+      "date": "2026-10-20T12:58:26.000Z",
+      "url": "https://hvg.hu/itthon/20261020_mi-maradt-meg-a-tancbol-hvg-cimlapsztori-a-kormanyvaltasrol",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "politika",
+        "HVG-Címlapsztori",
+        "média"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "politika",
+      "addedAt": "2026-10-20T13:18:10.176Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-20-24hu-sarka-kata-ferje-lelepett-ezuttal-5f6238",
+      "title": "Sarka Kata férje lelépett: ezúttal milliárdos biztonsági vállalkozását hagyta ott",
+      "summary": "Bessenyei István kiszállt a Valton-Sec-ből. A Rogán Antallal jó viszonyt ápoló üzletember körül több céges változás is történt a közelmúltban. The post Sarka Kata férje lelépett: ezúttal milliárdos biztonsági vállalkozását hagyta ott first appeared on 24.hu .",
+      "date": "2026-10-20T12:47:18.000Z",
+      "url": "https://24.hu/belfold/2026/10/20/sarka-kata-bessenyei-istvan-valton-sec/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "valton",
+        "sec",
+        "bessenyei istván"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:15.140Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-20-24hu-cristiano-ronaldo-buntetesen-vitazik-c53fb8",
+      "title": "Cristiano Ronaldo büntetésén vitázik Portugália, korábbi edzője cserbenhagyásról beszél",
+      "summary": "Nem lett komolyabb következménye annak, hogy otthagyta a csapatot. The post Cristiano Ronaldo büntetésén vitázik Portugália, korábbi edzője cserbenhagyásról beszél first appeared on 24.hu .",
+      "date": "2026-10-20T12:41:51.000Z",
+      "url": "https://24.hu/sport/foci/2026/10/20/cristiano-ronaldo-buntetes-portugalia-erik-ten-hag/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Foci",
+        "labdarúgás",
+        "cristiano ronaldo",
+        "portugál válogatott"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:15.140Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-20-444-hazkutatast-tartott-a-petofi-film-ugyeben-1721b0",
+      "title": "Házkutatást tartott a Petőfi-film ügyében vizsgálódó NAV a Nemzeti Filmintézetben",
+      "summary": "A kutatás célja a Most vagy soha! című film által igénybe vett támogatások igényléséhez, odaítéléséhez, folyósításához, elszámolásához, valamint a játékfilm megvalósításához kötődő iratok, illetve egyéb tárgyi bizonyítási eszközök felkutatása és lefoglalása.",
+      "date": "2026-10-20T12:37:34.000Z",
+      "url": "https://444.hu/2026/10/20/hazkutatast-tartott-a-petofi-film-ugyeben-vizsgalodo-nav-a-nemzeti-filmintezetben?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "NAV",
+        "NAV Közép-Magyarországi Bűnügyi Igazgatóság",
+        "rákay philip",
+        "film"
+      ],
+      "author": "Inkei Bence",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:09.488Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-20-24hu-hazkutatast-tartottak-a-nemzeti-eb003f",
+      "title": "Házkutatást tartottak a Nemzeti Filmintézetnél Rákay Philip filmjének ügyében",
+      "summary": "Költségvetési csalás miatt nyomoz a hatóság. The post Házkutatást tartottak a Nemzeti Filmintézetnél Rákay Philip filmjének ügyében first appeared on 24.hu .",
+      "date": "2026-10-20T12:35:17.000Z",
+      "url": "https://24.hu/belfold/2026/10/20/hazkutatast-nfi-rakay-philip-koltsegvetesi-csalas/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "rákay philip",
+        "nemzeti filmintézet",
+        "költségvetési csalás"
+      ],
+      "author": "Ősze András",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:15.140Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-20-444-a-kormanye-lesz-a-rakosrendezoi-251dfa",
+      "title": "A kormányé lesz a rákosrendezői beruházásért felelős cég fele",
+      "summary": "Létrejön a Vitézy Dávid minisztériuma alá tartozó cégeket összefogó holding, a Hild Központ.",
+      "date": "2026-10-20T12:33:53.000Z",
+      "url": "https://444.hu/2026/10/20/a-kormanye-lesz-a-rakosrendezoi-beruhazasert-felelos-ceg-fele?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "kopaszi-gát",
+        "rákosrendező",
+        "igazságügyi palota",
+        "vitézy dávid"
+      ],
+      "author": "Molnár Kristóf",
+      "theme": "politika",
+      "addedAt": "2026-10-20T13:18:09.488Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-20-444-gyanusitottkent-hallgattak-ki-a-fideszes-de97fd",
+      "title": "Gyanúsítottként hallgatták ki a fideszes Simon Miklóst",
+      "summary": "A volt képviselő ellen májusban rendelték el az évekkel ezelőtt megszüntetett büntetőeljárás folytatását.",
+      "date": "2026-10-20T11:39:53.000Z",
+      "url": "https://444.hu/2026/10/20/gyanusitottkent-hallgattak-ki-a-fideszes-simon-miklost?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "barna-szabó tímea",
+        "büntetőeljárás",
+        "nyomozás",
+        "simon miklós"
+      ],
+      "author": "Székely Sarolta",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:09.488Z"
+    },
     {
       "slug": "budimpesta-2026-10-19-telex-trump-ha-zelenszkij-ram-hallgatott-volna-fa060d",
       "title": "Trump: Ha Zelenszkij rám hallgatott volna, életben lenne egymillió ember az ő oldalukon",
