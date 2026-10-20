@@ -37,7 +37,7 @@
 
   const T = LANG === 'en' ? {
     ready: 'Ready', thinking: 'Thinking…', stopped: 'Stopped', offline: 'Service unavailable',
-    you: 'You', bot: 'S+Chat · AI', copy: 'Copy', copied: 'Copied', retry: 'Retry',
+    you: 'You', bot: 'S+Chat · AI', copy: 'Copy', copied: 'Copied', retry: 'Retry', answerReady: 'Answer ready.',
     sources: 'Sources', next: 'Next', newChat: 'New chat', untitled: 'New conversation',
     error: 'The answer did not arrive. Check your connection and try again.',
     rate: 'Too many messages. Please try again in an hour.',
@@ -45,7 +45,7 @@
     regenerate: 'Regenerate', modeKnowledge: 'AI assistant · portal knowledge base',
   } : {
     ready: 'Spremno', thinking: 'Odgovaram…', stopped: 'Zaustavljeno', offline: 'Servis nedostupan',
-    you: 'Vi', bot: 'S+Chat · AI', copy: 'Kopiraj', copied: 'Kopirano', retry: 'Ponovi',
+    you: 'Vi', bot: 'S+Chat · AI', copy: 'Kopiraj', copied: 'Kopirano', retry: 'Ponovi', answerReady: 'Odgovor je spreman.',
     sources: 'Izvori', next: 'Dalje', newChat: 'Novi razgovor', untitled: 'Novi razgovor',
     error: 'Odgovor nije stigao. Provjerite vezu i pokušajte ponovno.',
     rate: 'Previše poruka. Pokušajte ponovno za sat vremena.',
@@ -129,6 +129,15 @@
     if (el.welcome) el.welcome.hidden = !show;
   }
 
+  // Čitač ekrana ne smije čitati odgovor slovo po slovo dok pristiže.
+  // Zato je tok tih, a gotov odgovor se najavljuje jednom, kratko.
+  function announce(text) {
+    const node = $('scAnnounce');
+    if (!node) return;
+    node.textContent = '';
+    window.setTimeout(() => { node.textContent = text; }, 30);
+  }
+
   function scrollToEnd(smooth = true) {
     requestAnimationFrame(() => {
       el.scroll.scrollTo({ top: el.scroll.scrollHeight, behavior: smooth ? 'smooth' : 'auto' });
@@ -145,7 +154,7 @@
     const avatar = document.createElement('span');
     avatar.className = 'sc-avatar';
     avatar.setAttribute('aria-hidden', 'true');
-    avatar.textContent = role === 'user' ? 'V' : '✦';
+    avatar.textContent = role === 'user' ? T.you.charAt(0) : '✦';
     const who = document.createElement('span');
     who.textContent = role === 'user' ? T.you : T.bot;
     head.append(avatar, who);
@@ -408,6 +417,7 @@
       });
       save();
       setStatus(T.ready, 'live');
+      announce(T.answerReady);
       el.mode.textContent = mode === 'knowledge' || mode === 'knowledge-fallback'
         ? (LANG === 'en' ? 'Answered from the portal knowledge base' : 'Odgovor iz baze znanja portala')
         : T.modeKnowledge;

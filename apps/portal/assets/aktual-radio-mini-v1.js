@@ -18,6 +18,29 @@
     { id: 'jazz', label: 'Jazz & Soul', url: 'https://ice1.somafm.com/7soul-128-mp3' }
   ];
 
+  // Isti player, dva jezika. Hrvatske oznake na engleskoj stranici
+  // izgledaju kao nedovršen prijevod, a ne kao odluka.
+  var EN = (document.documentElement.lang || 'hr').toLowerCase().indexOf('en') === 0;
+  var T = EN ? {
+    head: 'AKTUAL MEDIA RADIO · 6 stations',
+    more: 'All stations and player →',
+    moreHref: '/en/radio/',
+    play: 'Play AKTUAL MEDIA RADIO',
+    pause: 'Pause AKTUAL MEDIA RADIO',
+    volume: 'Radio volume',
+    choose: 'Choose a station',
+    kicker: 'Radio'
+  } : {
+    head: 'AKTUAL MEDIA RADIO · 6 stanica',
+    more: 'Sve stanice i player →',
+    moreHref: '/radio/',
+    play: 'Pokreni AKTUAL MEDIA RADIO',
+    pause: 'Pauziraj AKTUAL MEDIA RADIO',
+    volume: 'Glasnoća radija',
+    choose: 'Odaberi stanicu',
+    kicker: 'Radio'
+  };
+
   var store = {
     get: function (k, d) { try { var v = localStorage.getItem('amrm-' + k); return v === null ? d : v; } catch (e) { return d; } },
     set: function (k, v) { try { localStorage.setItem('amrm-' + k, v); } catch (e) {} }
@@ -87,7 +110,7 @@
 
   function paint(failed) {
     playBtn.innerHTML = playing ? '❚❚' : '▶';
-    playBtn.setAttribute('aria-label', playing ? 'Pauziraj AKTUAL MEDIA RADIO' : 'Pokreni AKTUAL MEDIA RADIO');
+    playBtn.setAttribute('aria-label', playing ? T.pause : T.play);
     name.textContent = STATIONS[idx].label + (failed ? ' · nedostupno' : '');
     [].forEach.call(stationBtns, function (b, i) { b.setAttribute('aria-pressed', i === idx ? 'true' : 'false'); });
   }
@@ -113,21 +136,21 @@
   var style = el('style', null, css);
   var panel = el('div', { class: 'amrm-panel', id: 'amrm-panel' });
   panel.innerHTML = ''
-    + '<p class="amrm-h">AKTUAL MEDIA RADIO · 6 stanica</p>'
+    + '<p class="amrm-h">' + T.head + '</p>'
     + '<ul class="amrm-st">' + STATIONS.map(function (s, i) {
       return '<li><button type="button" data-i="' + i + '" aria-pressed="' + (i === idx ? 'true' : 'false') + '">' + s.label + '<span>0' + (i + 1) + '</span></button></li>';
     }).join('') + '</ul>'
-    + '<div class="amrm-vol"><span aria-hidden="true">🔉</span><input type="range" min="0" max="1" step="0.05" value="' + vol + '" aria-label="Glasnoća radija"><span aria-hidden="true">🔊</span></div>'
-    + '<a class="amrm-more" href="/radio/">Sve stanice i player →</a>';
+    + '<div class="amrm-vol"><span aria-hidden="true">🔉</span><input type="range" min="0" max="1" step="0.05" value="' + vol + '" aria-label="' + T.volume + '"><span aria-hidden="true">🔊</span></div>'
+    + '<a class="amrm-more" href="' + T.moreHref + '">' + T.more + '</a>';
 
   var bar = el('div', { class: 'amrm-bar' });
-  var playBtn = el('button', { type: 'button', class: 'amrm-play', 'aria-label': 'Pokreni AKTUAL MEDIA RADIO' }, '▶');
+  var playBtn = el('button', { type: 'button', class: 'amrm-play', 'aria-label': T.play }, '▶');
   var meta = el('button', { type: 'button', class: 'amrm-meta' });
   var eq = el('span', { class: 'amrm-eq', 'aria-hidden': 'true' }, '<i></i><i></i><i></i>');
-  var kicker = el('span', { class: 'amrm-k' }, 'Radio');
+  var kicker = el('span', { class: 'amrm-k' }, T.kicker);
   var name = el('span', { class: 'amrm-name' }, STATIONS[idx].label);
   meta.appendChild(eq); meta.appendChild(kicker); meta.appendChild(name);
-  var chev = el('button', { type: 'button', class: 'amrm-chev', 'aria-expanded': 'false', 'aria-controls': 'amrm-panel', 'aria-label': 'Odaberi stanicu' }, '▲');
+  var chev = el('button', { type: 'button', class: 'amrm-chev', 'aria-expanded': 'false', 'aria-controls': 'amrm-panel', 'aria-label': T.choose }, '▲');
 
   bar.appendChild(playBtn); bar.appendChild(meta); bar.appendChild(chev);
   root.appendChild(style); root.appendChild(panel); root.appendChild(bar);
