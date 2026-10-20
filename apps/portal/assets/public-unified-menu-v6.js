@@ -13,14 +13,14 @@ const boot=()=>{
  scrubBpp();
  // Reuse the existing home-page AI block as a visible entry to the dedicated
  // S+Chat instead of submitting to an unrelated legacy chat handler.
- if(location.pathname==='/'||location.pathname==='/index.html'){
+ if(['/','/index.html','/en/','/en','/en/index.html'].includes(location.pathname)){
    const form=document.getElementById('chatForm');
    if(form&&!document.getElementById('gnk-splus-home-button')){
      form.style.display='none';
      const link=document.createElement('a');
      link.id='gnk-splus-home-button';
      link.href='/s-chat/';
-     link.textContent='OTVORI GNK ASG S+CHAT →';
+     link.textContent=location.pathname.startsWith('/en')?'OPEN GNK ASG S+CHAT →':'OTVORI GNK ASG S+CHAT →';
      link.setAttribute('aria-label','Otvori GNK ASG S+Chat na zasebnoj stranici');
      link.style.cssText='display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:13px 22px;border-radius:12px;background:linear-gradient(130deg,#146b5d,#259b86);color:#fff;font-weight:800;text-decoration:none;margin:15px 0;box-shadow:0 5px 24px rgba(7,79,68,.25)';
      form.insertAdjacentElement('afterend',link);
