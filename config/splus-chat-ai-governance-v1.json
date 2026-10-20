@@ -1,12 +1,12 @@
 {
-  "title": "GNK ASG S+Chat — existing Intelligence Desk API public use case",
+  "title": "GNK ASG S+Chat — public AI agent (streaming, knowledge-grounded)",
   "date": "2026-10-20",
   "owner": "GNK ASG d.o.o. — portal operations",
-  "source": "apps/portal/s-chat/index.html; apps/portal/assets/s-chat-v1.js; workers/gnk-asg-direct-operator/src/intelligence-desk-chat-v1.js",
+  "source": "apps/portal/s-chat/index.html; apps/portal/en/s-chat/index.html; apps/portal/assets/s-chat-v2.js; workers/gnk-asg-direct-operator/src/s-chat-agent-v1.js; workers/gnk-asg-direct-operator/src/chat-retrieval-v1.js",
   "aiGovernance": {
     "usedAI": true,
     "role": "both",
-    "purpose": "Public general-question and portal-related AI chat via existing rate-limited Intelligence Desk API; informational assistance only",
+    "purpose": "Public informational chat about GNK ASG, the GNK DINAMO group and the published portal content. Answers are grounded in the portal knowledge base (535 verified questions) and served through one of three tiers: OpenAI, Cloudflare Workers AI, or the knowledge base alone.",
     "prohibitedUseScreenPassed": true,
     "prohibitedUse": false,
     "privacyAndRightsReviewed": true,
@@ -20,7 +20,7 @@
     "machineReadableProvenanceReviewed": false,
     "disclosure": {
       "visible": true,
-      "text": "Razgovarate s umjetnom inteligencijom. Odgovori mogu biti netočni."
+      "text": "Razgovarate s umjetnom inteligencijom. Odgovori su informativni i mogu biti netočni — provjerite poveznicu na izvor."
     },
     "aiLiteracyMeasuresReviewed": true,
     "humanEditorialReview": {
@@ -31,19 +31,39 @@
     }
   },
   "technicalControls": {
-    "endpoint": "POST /api/intelligence-desk-chat",
-    "inputMaxCharacters": 600,
-    "rateLimit": "Existing Intelligence Desk server-side KV hourly limiter, contingent on configured KV binding",
-    "localStorage": "sessionStorage per browser tab, last 16 entries; never claim remote server has no logs",
-    "backendRequired": "GNK ASG direct-operator worker with configured OPENAI_API_KEY and KV binding, not independently verified live",
-    "security": "No arbitrary tool access, no client-supplied system prompt, no claimed actions or outbound mail"
+    "endpoint": "POST /api/s-chat",
+    "healthEndpoint": "GET /api/s-chat/health",
+    "transport": "Server-Sent Events (event: meta | delta | done | error)",
+    "streaming": true,
+    "inputMaxCharacters": 800,
+    "messageMaxHistoryTurns": 8,
+    "rateLimit": "Server-side KV limiter, 30 messages per IP per hour; degraded (no limit) if KV binding is missing",
+    "knowledgeGrounding": {
+      "source": "apps/portal/data/knowledge-base.json",
+      "generatedModule": "workers/gnk-asg-direct-operator/src/knowledge-base.generated-v1.js",
+      "generator": "scripts/knowledge-sync-v1.mjs",
+      "entries": 535,
+      "groups": 20,
+      "retrieval": "scripts-local lexical retrieval with idf weighting; refuses questions outside the portal domain instead of guessing",
+      "allowedLinks": "only pages present in the retrieved records"
+    },
+    "modelChain": [
+      "openai:gpt-4o-mini",
+      "workers-ai:@cf/meta/llama-3.1-8b-instruct-fast",
+      "knowledge-base"
+    ],
+    "systemPrompt": "Built server-side per request from the retrieved records. Client input cannot change it.",
+    "outputHandling": "Model output is escaped on the client before any markup is applied; the user text is never inserted as HTML.",
+    "clientStorage": "localStorage per browser: up to 30 conversations, titles and messages; server keeps no chat transcript",
+    "security": "No tool access, no outbound mail, no file upload, no client-supplied system prompt, no personal data requested"
   },
   "risksAndRelease": [
-    "Check prod HTTP GET /s-chat/, JS and CSS",
-    "Confirm exact-SHA portal deployment",
-    "Perform authorized safe test POST (no personal data) and inspect 200/429/503 status",
-    "Verify data processing/retention and abuse mitigation",
-    "No independent substantive human review of responses claimed"
+    "Check prod HTTP GET /s-chat/ and /en/s-chat/",
+    "Check GET /api/s-chat/health returns ok:true and the intended knowledge entry count",
+    "Perform an authorized safe test POST (no personal data) and verify event order meta → delta → done",
+    "Verify that an off-domain question returns matched:false with a contact route, not a fabricated answer",
+    "Confirm rate limiting and that no chat transcript is stored server-side",
+    "No independent substantive human review of individual answers is claimed; the editor is named for accountability only"
   ],
-  "notes": "This is internal initial product-risk documentation based on code inspection, not legal approval or verification of Cloudflare/OpenAI retention settings."
+  "notes": "Internal product-risk documentation based on code inspection. Not legal approval, and not verification of Cloudflare/OpenAI data-retention settings."
 }
