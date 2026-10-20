@@ -166,7 +166,7 @@
     const required=[...requiredGroups.map(g=>'<a href="#rubrika-'+esc(metaFor(g).slug)+'">'+esc(metaFor(g).label)+'</a>')];
     const extras=order.filter(g=>!requiredGroups.includes(g)).map(g=>'<a href="#rubrika-'+esc(metaFor(g).slug)+'">'+esc(metaFor(g).label)+'</a>');
     const central=[
-      '<a href="#izdanja-po-zemljama">'+(lang==='hr'?'Izdanja 3 × 3':'Editions 3 × 3')+'</a>',
+      '<a href="#izdanja-po-zemljama">'+(lang==='hr'?'Izdanja':'Editions')+'</a>',
       '<a href="#deskovi">'+(lang==='hr'?'Deskovi':'Desks')+'</a>',
       '<a href="#mravinjak">'+(lang==='hr'?'Mravinjak':'News river')+'</a>'
     ];

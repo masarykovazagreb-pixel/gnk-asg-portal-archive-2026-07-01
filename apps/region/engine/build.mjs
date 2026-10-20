@@ -44,6 +44,27 @@ const checksFor = (item, strings) => {
 
 const themeOf = (item) => themeFor(`${item.title} ${item.summary}`).id;
 
+/* ---------- traka izdanja: uvijek na dohvat, na svakoj stranici ---------- */
+
+const CITY_SHORT = {
+  zagreb: 'Zagreb', beograd: 'Beograd', sarajevo: 'Sarajevo', budimpesta: 'Budimpešta',
+  ljubljana: 'Ljubljana', rim: 'Rim', sofija: 'Sofija', bukurest: 'Bukurešt'
+};
+
+function editionsStrip(channel) {
+  const items = CHANNELS.map((c) => {
+    const current = c.id === channel.id;
+    return `<li class="eds-i${current ? ' is-current' : ''}"><a href="${c.base}"${current ? ' aria-current="page"' : ' rel="external noopener"'} aria-label="${esc(c.title)}${current ? ' — ovo izdanje' : ' — otvori izdanje'}">
+      <span class="eds-img"><img src="/assets/izdanja/${c.id}-tile.webp" alt="" width="96" height="64" loading="lazy" decoding="async"></span>
+      <span class="eds-city">${esc(CITY_SHORT[c.id] || c.city)}</span>
+    </a></li>`;
+  }).join('');
+  return `<nav class="eds" aria-label="AKTUAL MEDIA izdanja">
+  <a class="eds-home" href="${CENTRAL}#izdanja-po-zemljama" rel="external noopener"><span aria-hidden="true">←</span> AKTUAL MEDIA</a>
+  <ul class="eds-row">${items}</ul>
+</nav>`;
+}
+
 /* ---------- MRAVINJAK: gusti klaster naslova unutar izdanja ---------- */
 
 const MRV = {
@@ -293,6 +314,7 @@ function header(channel, strings, active = '', root = '') {
       <span>${esc(strings.publisher)}: AKTUAL MEDIA d.o.o.</span>
     </div>
   </div>
+  ${editionsStrip(channel)}
   <nav class="mainnav" aria-label="${esc(strings.latest)}">${nav}<a href="${CENTRAL}#izdanja-po-zemljama" rel="external">${esc(strings.hub)} ↗</a></nav>
 </header>`;
 }
@@ -805,6 +827,24 @@ img{max-width:100%;height:auto}
 .logo{display:block;font:700 clamp(30px,5vw,54px)/1.02 Georgia,serif;letter-spacing:-.01em;margin:6px 0 8px;color:var(--ink)}
 .strap{margin:0;max-width:46ch;color:rgba(255,255,255,.76);font-size:15px}
 .mastmeta{display:grid;gap:4px;font:500 12px/1.6 system-ui,sans-serif;color:rgba(255,255,255,.7);text-align:right}
+.eds{display:flex;align-items:center;gap:12px;padding:9px clamp(12px,3vw,40px);border-top:1px solid rgba(255,255,255,.12);border-bottom:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.22)}
+.eds-home{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:#0c1015;border-radius:999px;padding:8px 12px;font:800 10px/1 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.eds-home:hover{background:#fff;color:#0c1015;text-decoration:none}
+.eds-row{display:flex;gap:8px;list-style:none;margin:0;padding:0 2px 2px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;flex:1 1 auto}
+.eds-row::-webkit-scrollbar{display:none;height:0}
+.eds-i{flex:0 0 auto}
+.eds-i a{display:grid;justify-items:center;gap:4px;text-decoration:none;color:rgba(255,255,255,.72)}
+.eds-i a:hover{color:var(--accent);text-decoration:none}
+.eds-img{display:block;width:46px;height:46px;border-radius:50%;overflow:hidden;border:2px solid rgba(233,198,108,.35);transition:transform .18s ease,border-color .18s ease}
+.eds-img img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 40%}
+.eds-i a:hover .eds-img{transform:translateY(-2px);border-color:var(--accent)}
+.eds-city{font:700 8.5px/1 system-ui,sans-serif;letter-spacing:.09em;text-transform:uppercase;white-space:nowrap}
+.eds-i.is-current .eds-img{border-color:var(--accent);box-shadow:0 0 0 3px rgba(233,198,108,.18)}
+.eds-i.is-current a{color:#fff}
+.eds-i.is-current .eds-city{color:var(--accent)}
+.eds-i.is-current .eds-city::after{content:" ·"}
+@media(max-width:600px){.eds{padding:8px 10px;gap:8px}.eds-home{padding:7px 9px;font-size:9px}.eds-img{width:40px;height:40px}}
+@media print{.eds{display:none}}
 .mainnav{display:flex;flex-wrap:wrap;gap:4px 18px;padding:12px clamp(16px,4vw,48px);border-top:1px solid rgba(255,255,255,.14);font:600 12px/1.6 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase}
 .mainnav a{color:var(--ink);opacity:.85}
 .mainnav a[aria-current]{opacity:1;color:var(--accent)}
