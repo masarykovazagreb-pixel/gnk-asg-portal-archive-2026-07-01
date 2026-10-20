@@ -44,7 +44,7 @@ assert.match(en, /<link rel="canonical" href="https:\/\/gnk-asg\.hr\/en\/s-chat\
 assert.match(hr, /hreflang="en" href="https:\/\/gnk-asg\.hr\/en\/s-chat\/"/);
 assert.match(en, /hreflang="hr" href="https:\/\/gnk-asg\.hr\/s-chat\/"/);
 
-for (const id of ['scApp', 'scThread', 'scScroll', 'scForm', 'scInput', 'scSend', 'scStop',
+for (const id of ['scApp', 'scThread', 'scScroll', 'scForm', 'scInput', 'scSend', 'scStop', 'scAnnounce',
   'scStatus', 'scExport', 'scNew', 'scHistoryList', 'scSuggest', 'scRail', 'scRailToggle', 'scKbCount']) {
   assert.ok(hr.includes(`id="${id}"`), `HR missing #${id}`);
   assert.ok(en.includes(`id="${id}"`), `EN missing #${id}`);
@@ -82,7 +82,12 @@ assert.match(js, /renderMarkdown/);
 assert.match(js, /escapeHtml/);
 assert.match(js, /URL\.createObjectURL/);
 assert.match(js, /maxlength="800"|MAX_CHARS = 800/);
-assert.match(js, /prefers-reduced-motion/ === /x/ ? '' : /aria-busy/);
+assert.match(js, /aria-busy/);
+/* Čitač ekrana ne smije čitati tok slovo po slovo. */
+assert.match(hr, /id="scThread" role="log" aria-live="off"/);
+assert.match(hr, /id="scAnnounce"/);
+assert.match(js, /function announce/);
+assert.match(js, /T\.answerReady/);
 
 /* Korisnikov tekst nikad ne smije ići izravno u innerHTML. */
 assert.doesNotMatch(js, /innerHTML\s*=\s*(question|raw)\b/);
