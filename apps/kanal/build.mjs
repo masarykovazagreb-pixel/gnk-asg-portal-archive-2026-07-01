@@ -271,10 +271,10 @@ ${footer(root)}
 
 /* ---------- dijelovi ---------- */
 const isDesk = (a) => a.kind === 'desk';
-const authorOf = (a) => isDesk(a)
+const authorOf = (a) => a.author === 'Worker' ? { name: 'Worker', url: abs('dnevnik/'), id: abs('#worker') } : isDesk(a)
   ? { name: 'GNK ASG KANAL · Dnevni desk', url: abs('dnevnik/'), id: abs('#organizacija') }
   : { name: 'Nermin Sefić', url: SITE.author.url, id: abs('#nermin-sefic') };
-const statusOf = (a) => isDesk(a)
+const statusOf = (a) => a.author === 'Worker' ? { label: 'Worker · AI autor', full: 'Autor: Worker · AI pripremljen informativni tekst, s navedenim javnim izvorima' } : isDesk(a)
   ? { label: 'Automatski sastavljeno', full: 'Automatski sastavljeno iz strukturiranih podataka · nije pojedinačno urednički pregledano' }
   : { label: SITE.editorial.statusLabel, full: SITE.editorial.statusLabel };
 
@@ -372,7 +372,7 @@ function buildArticle(a) {
       <h1 itemprop="headline">${esc(a.title)}</h1>
       <p class="dek" itemprop="description">${esc(a.dek)}</p>
       <div class="article-meta">
-        ${isDesk(a)
+        ${a.author === 'Worker' ? `<div class="author-chip author-chip--desk"><span class="chip-mark" aria-hidden="true">W</span><span><b>Worker</b><span>AI autor · javni izvori</span></span></div>` : isDesk(a)
           ? `<a class="author-chip author-chip--desk" href="${root}dnevnik/">
           <span class="chip-mark" aria-hidden="true">K</span>
           <span><b>GNK ASG KANAL</b><span>Dnevni desk · automatski sastavljeno</span></span>
@@ -410,7 +410,7 @@ function buildArticle(a) {
           ${tags}
           ${faq}
         </div>
-        ${isDesk(a)
+        ${a.author === 'Worker' ? `<div class="authorbox authorbox--desk"><div><h2>Worker</h2><div class="role">AI autor · GNK ASG KANAL</div><p>Tekst pripremljen automatiziranim sustavom iz navedenih javno dostupnih izvora. Ispravke i dopune moguće je dostaviti uredništvu.</p></div></div>` : isDesk(a)
           ? `<div class="authorbox authorbox--desk">
           <div>
             <h2>Dnevni desk</h2>
