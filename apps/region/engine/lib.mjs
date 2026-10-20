@@ -179,6 +179,10 @@ export function longDate(day, lang = 'hr') {
 
 export function shortDate(day, lang = 'hr') {
   const [, m, d] = String(day).split('-').map(Number);
+  if (lang === 'en') {
+    const t = Date.parse(`${day}T00:00:00Z`);
+    if (Number.isFinite(t)) return new Date(t).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+  }
   if (lang === 'hu') return `${m}. ${d}.`;
   if (lang === 'bg') return `${d}.${String(m).padStart(2, '0')}`;
   return `${d}. ${m}.`;

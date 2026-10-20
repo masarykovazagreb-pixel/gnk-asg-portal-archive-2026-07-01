@@ -541,3 +541,60 @@ export const ANALYSIS = {
     context: (x) => `Tema este ${x.theme}, iar textul a fost publicat pe ${x.date} la ${x.source}.`
   }
 };
+
+/* ---------- kritički sloj: pitanja koja tekst mora izdržati ----------
+ * Ne dodaje tvrdnje o sadržaju izvornika — samo provjerava kako je izložen.
+ * Jezik prati izdanje; sve formulacije ostaju pitanja, ne ocjene. */
+const CRITIQUE = {
+  hr: {
+    headline: () => 'Kritički osvrt počinje od naslova: tvrdi li ono što tijelo teksta može dokazati. Ako je naslov u kondicionalu ili bez subjekta, čitatelj mora znati tko je što rekao, a ne samo što se dogodilo.',
+    attribution: () => 'Provjerite atribuciju: imenuje li tekst instituciju, tvrtku ili osobu, ili se poziva na „krugove” i „izvore bliske”. Nepripisana tvrdnja nije lažna, ali nije ni provjerljiva — i tako je treba čitati.',
+    verification: () => 'Tri stvari koje treba moći provjeriti prije zaključka: dokument (odluka, ugovor, izvješće), razdoblje na koje se brojka odnosi i definicija pojma iz naslova. Ako jedno od troje nedostaje, naslov obećava više nego tekst.',
+    counterpoint: () => 'Dobar izvještaj navodi i podatak koji mu ne ide u prilog. Ako u tekstu nema nijednog protuprimjera ni ograde, to je signal da je okvir zatvoren prije provjere.'
+  },
+  sr: {
+    headline: () => 'Kritički osvrt počinje od naslova: tvrdi li on ono što telo teksta može da dokaže. Ako je naslov u kondicionalu ili bez subjekta, čitalac mora da zna ko je šta rekao, a ne samo šta se dogodilo.',
+    attribution: () => 'Proverite atribuciju: imenuje li tekst instituciju, kompaniju ili osobu, ili se poziva na „krugove” i „izvore bliske”. Nepripisana tvrdnja nije lažna, ali nije ni proverljiva — i tako je treba čitati.',
+    verification: () => 'Tri stvari koje treba moći proveriti pre zaključka: dokument (odluka, ugovor, izveštaj), period na koji se broj odnosi i definicija pojma iz naslova. Ako jedno od troje nedostaje, naslov obećava više nego tekst.',
+    counterpoint: () => 'Dobar izveštaj navodi i podatak koji mu ne ide u prilog. Ako u tekstu nema nijednog protivprimera ni ograde, to je signal da je okvir zatvoren pre provere.'
+  },
+  bs: {
+    headline: () => 'Kritički osvrt počinje od naslova: tvrdi li on ono što tijelo teksta može dokazati. Ako je naslov u kondicionalu ili bez subjekta, čitatelj mora znati ko je šta rekao, a ne samo šta se dogodilo.',
+    attribution: () => 'Provjerite atribuciju: imenuje li tekst instituciju, firmu ili osobu, ili se poziva na „krugove” i „izvore bliske”. Nepripisana tvrdnja nije lažna, ali nije ni provjerljiva — i tako je treba čitati.',
+    verification: () => 'Tri stvari koje treba moći provjeriti prije zaključka: dokument (odluka, ugovor, izvještaj), period na koji se broj odnosi i definicija pojma iz naslova. Ako jedno od troje nedostaje, naslov obećava više nego tekst.',
+    counterpoint: () => 'Dobar izvještaj navodi i podatak koji mu ne ide u prilog. Ako u tekstu nema nijednog protuprimjera ni ograde, to je signal da je okvir zatvoren prije provjere.'
+  },
+  hu: {
+    headline: () => 'A kritikai elemzés a címmel kezdődik: állít-e annyit, mint amit a szöveg törzse bizonyítani tud. Ha a cím feltételes vagy alany nélküli, az olvasónak tudnia kell, ki mit mondott, nem csak azt, hogy mi történt.',
+    attribution: () => 'Ellenőrizze a hivatkozást: megnevezi-e a szöveg az intézményt, a céget vagy a személyt, vagy „körökre” és „közeli forrásokra” hivatkozik. A meg nem nevezett állítás nem feltétlenül hamis, de nem is ellenőrizhető — így kell olvasni.',
+    verification: () => 'Három dolgot kell tudni ellenőrizni a következtetés előtt: a dokumentumot (döntés, szerződés, jelentés), az időszakot, amelyre a szám vonatkozik, és a címben szereplő fogalom meghatározását. Ha valamelyik hiányzik, a cím többet ígér a szövegnél.',
+    counterpoint: () => 'A jó tudósítás olyan adatot is hoz, amely nem erősíti meg az állítását. Ha a szövegben nincs ellenpélda és nincs fenntartás, az annak a jele, hogy a keret a ellenőrzés előtt lezárult.'
+  },
+  sl: {
+    headline: () => 'Kritični osvrt se začne pri naslovu: trdi to, kar telo besedila lahko dokaže. Če je naslov pogojen ali brez osebka, mora bralec vedeti, kdo je kaj rekel, ne le, kaj se je zgodilo.',
+    attribution: () => 'Preverite pripis: ali besedilo imenuje ustanovo, podjetje ali osebo, ali se sklicuje na „kroge” in „bližnje vire”. Nepripisana trditev ni nujno napačna, a ni preverljiva — tako jo je treba brati.',
+    verification: () => 'Pred sklepom morajo biti preverljive tri stvari: dokument (odločitev, pogodba, poročilo), obdobje, na katero se nanaša številka, in opredelitev pojma iz naslova. Če eno od treh manjka, naslov obljublja več kot besedilo.',
+    counterpoint: () => 'Dobro poročanje navede tudi podatek, ki mu ne ustreza. Če v besedilu ni nobenega nasprotnega primera in nobenega pridržka, je to znak, da je bil okvir zaprt pred preverjanjem.'
+  },
+  it: {
+    headline: () => 'L’analisi critica parte dal titolo: afferma ciò che il corpo del testo può dimostrare. Se il titolo è al condizionale o senza soggetto, il lettore deve sapere chi ha detto cosa, non solo cosa è accaduto.',
+    attribution: () => 'Verificate l’attribuzione: il testo nomina un’istituzione, un’azienda o una persona, oppure si richiama a „ambienti” e „fonti vicine”. Un’affermazione non attribuita non è necessariamente falsa, ma non è verificabile — e va letta così.',
+    verification: () => 'Tre cose devono essere verificabili prima di concludere: il documento (decisione, contratto, rapporto), il periodo a cui si riferisce il numero e la definizione del termine nel titolo. Se manca una delle tre, il titolo promette più di quanto il testo dia.',
+    counterpoint: () => 'Un buon resoconto riporta anche il dato che non lo conferma. Se nel testo non c’è alcun controesempio né alcuna cautela, è il segnale che la cornice è stata chiusa prima della verifica.'
+  },
+  bg: {
+    headline: () => 'Критичният прочит започва от заглавието: твърди ли то това, което текстът може да докаже. Ако заглавието е в условно наклонение или без подлог, читателят трябва да знае кой какво е казал, а не само какво се е случило.',
+    attribution: () => 'Проверете приписването: назовава ли текстът институция, фирма или човек, или се позовава на „кръгове” и „близки източници”. Неприписаното твърдение не е непременно невярно, но не е и проверимо — така трябва да се чете.',
+    verification: () => 'Три неща трябва да могат да се проверят преди извода: документът (решение, договор, доклад), периодът, за който се отнася числото, и определението на понятието от заглавието. Ако едно от трите липсва, заглавието обещава повече от текста.',
+    counterpoint: () => 'Добрият репортаж посочва и данните, които не го потвърждават. Ако в текста няма нито един контрапример и никакво уточнение, това е знак, че рамката е затворена преди проверката.'
+  },
+  ro: {
+    headline: () => 'Analiza critică începe de la titlu: afirmă el ceea ce corpul textului poate demonstra. Dacă titlul este la condițional sau fără subiect, cititorul trebuie să știe cine a spus ce, nu doar ce s-a întâmplat.',
+    attribution: () => 'Verificați atribuirea: textul numește o instituție, o companie sau o persoană ori se referă la „cercuri” și „surse apropiate”. O afirmație neatribuită nu este neapărat falsă, dar nu este verificabilă — și trebuie citită astfel.',
+    verification: () => 'Trei lucruri trebuie să poată fi verificate înainte de concluzie: documentul (decizie, contract, raport), perioada la care se referă cifra și definiția termenului din titlu. Dacă lipsește unul dintre ele, titlul promite mai mult decât textul.',
+    counterpoint: () => 'Un reportaj bun citează și datul care nu îl confirmă. Dacă în text nu există niciun contraexemplu și nicio nuanțare, este semnalul că grila a fost închisă înainte de verificare.'
+  }
+};
+for (const [lang, extra] of Object.entries(CRITIQUE)) {
+  if (ANALYSIS[lang]) Object.assign(ANALYSIS[lang], extra);
+}

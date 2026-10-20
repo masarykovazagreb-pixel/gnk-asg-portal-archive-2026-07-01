@@ -16,7 +16,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { esc, longDate, shortDate, scoreFromTitle, truncate, themeFor, safeJson } from './lib.mjs';
-import { CHANNELS, HUB, CONTACT, SOCIAL_IMAGE, CSS as CHANNEL_CSS } from './build.mjs';
+import { CHANNELS, HUB, CONTACT, SOCIAL_IMAGE, CITY_SHORT, CSS as CHANNEL_CSS } from './build.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const APP = join(HERE, '..');
@@ -101,6 +101,7 @@ export const EDITION_META = {
 const DESKS = {
   sport: {
     name: 'SPORT — AKTUAL MEDIA',
+    nav: 'Sport',
     title: 'Sportski desk: rezultati i osvrti iz cijele regije',
     lang: 'hr',
     theme: 'sport',
@@ -109,6 +110,7 @@ const DESKS = {
   },
   politika: {
     name: 'POLITIKA — AKTUAL MEDIA',
+    nav: 'Politika',
     title: 'Politički desk: odluke, izbori i okvir poslovanja',
     lang: 'hr',
     theme: 'politika',
@@ -117,6 +119,7 @@ const DESKS = {
   },
   biznis: {
     name: 'BUSINESS — AKTUAL MEDIA',
+    nav: 'Business',
     title: 'Business desk: tržišta, bilance i kapital regije',
     lang: 'hr',
     theme: 'ekonomija',
@@ -125,14 +128,46 @@ const DESKS = {
   },
   tehnologija: {
     name: 'TEHNOLOGIJA — AKTUAL MEDIA',
+    nav: 'Tehnologija',
     title: 'Tehnološki desk: AI, platforme i infrastruktura',
     lang: 'hr',
     theme: 'ai',
     description: 'Tehnološki desk prati umjetnu inteligenciju, platforme, podatkovnu infrastrukturu i digitalizaciju javnog sektora u regiji. Osvrti razlikuju objavljeni proizvod od najave, pilot-projekt od primjene i brojku iz priopćenja od brojke iz izvješća. Uz svaki zapis stoji poveznica na izvornik i datum, pa se tvrdnja može provjeriti do izvora. Desk pokriva i teme koje utječu na poslovanje: regulaciju AI-ja, kibernetičku otpornost i nabavu infrastrukture. Stranica se osvježava iz dnevnih podataka svih gradskih kanala.',
     hashtags: ['#Tehnologija', '#UmjetnaInteligencija', '#Platforme', '#AktualMedia', '#GNKASG']
   },
+  putovanja: {
+    name: 'PUTOVANJA — AKTUAL MEDIA',
+    nav: 'Putovanja',
+    title: 'Putovanja: destinacije, sezona i cijena puta',
+    lang: 'hr',
+    theme: '*',
+    filter: /putovanj|turiz|hotel|destinacij|plaž|plaz|letov|krstar|aviokart|aerodrom|viza|izlet|advent|sezon|gostiju|noćenj|nocenj|kampu|kamp|planinar|bicikl|vlak|trajekt/i,
+    description: 'Putni desk okuplja tekstove o destinacijama, sezoni i cijeni putovanja iz svih gradskih kanala AKTUAL MEDIA. Ne piše vodiče po narudžbi i ne preporučuje agencije: prati što je objavljeno o dolascima, cijenama, prometu i lokalnim odlukama koje mijenjaju put. Svaki zapis nosi izvor, datum i poveznicu na izvornik, pa se brojka o posjetiteljima ili cijeni može provjeriti. Posebna pažnja ide željeznici, trajektima i sezonskom najmu, gdje se najave često razlikuju od stanja na terenu. Desk se osvježava iz istih dnevnih podataka kao i gradski kanali.',
+    hashtags: ['#Putovanja', '#Turizam', '#Destinacije', '#AktualMedia', '#GNKASG']
+  },
+  ljubimci: {
+    name: 'LJUBIMCI — AKTUAL MEDIA',
+    nav: 'Ljubimci',
+    title: 'Ljubimci: udomljavanje, skrb i pravila u gradu',
+    lang: 'hr',
+    theme: '*',
+    filter: /ljubimc|kućni ljubim|kucni ljubim|veterinar|udomlj|životinj|zivotinj|azil|kinolog|pas\b|psa\b|pse\b|psima|mačk|mack|ptic|akvarij|čipir|cipir|steriliz/i,
+    description: 'Desk ljubimaca prati tekstove o udomljavanju, veterinarskoj skrbi i gradskim pravilima za životinje. Ne objavljuje oglase ni cijene usluga kao vijesti: bilježi što je najavljeno, što je provedeno i koje brojke izvori navode. Posebno se prate azili, mikročipiranje, sterilizacija i sezonske opasnosti, jer se u tim temama najave i stvarno stanje često razlikuju. Svaki zapis ima izvor, datum i izravnu poveznicu, a osvrt ostaje na načinu izvještavanja. Desk se puni iz dnevnih podataka svih gradskih kanala.',
+    hashtags: ['#Ljubimci', '#Udomljavanje', '#Veterina', '#AktualMedia', '#GNKASG']
+  },
+  svijet: {
+    name: 'SVIJET — AKTUAL MEDIA',
+    nav: 'Svijet',
+    title: 'Svijet: globalni okvir za lokalne odluke',
+    lang: 'hr',
+    theme: '*',
+    filter: /svijet|svet\b|global|europ|\beu\b|nato|kijev|ukrajin|gaza|izrael|iran|\bsad\b|amerik|kina|kinesk|rusij|moskv|trump|putin|migracij|klim|opec|naft|tarif|carin|un\b|vijeće sigurnosti/i,
+    description: 'Desk Svijet povezuje vanjske teme s lokalnim posljedicama: energetiku, trgovinske mjere, migracije, sigurnost i klimu. Ne donosi stavove o sukobima i ne prenosi tvrdnje bez izvora; bilježi kako je pojedini događaj naslovljen u osam zemalja regije i što se od toga može provjeriti. Uz svaki zapis stoje izvor, datum i poveznica na izvornik, a brojke se ne zaokružuju bez konteksta. Desk služi kao okvir za razumijevanje lokalnih odluka, ne kao komentar svjetske politike. Ažurira se iz dnevnih podataka gradskih kanala.',
+    hashtags: ['#Svijet', '#Globalno', '#Sigurnost', '#AktualMedia', '#GNKASG']
+  },
   moda: {
     name: 'TJEDNIK MODE — AKTUAL MEDIA',
+    nav: 'Moda',
     title: 'Modni desk: stil, dizajn i brendovi regije',
     lang: 'hr',
     theme: 'drustvo',
@@ -142,6 +177,7 @@ const DESKS = {
   },
   sigurnost: {
     name: 'SIGURNOST I KIBERNETIKA',
+    nav: 'Sigurnost',
     title: 'Sigurnosni desk: obavještajne teme, kibernetika i preuzimanja',
     lang: 'hr',
     theme: 'sigurnost',
@@ -216,8 +252,28 @@ ${jsonld.map((n) => `<script type="application/ld+json">${safeJson(n)}</script>`
 .iz-score{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;background:#0b1d31;border:1px solid #1e3b58;border-radius:12px;padding:12px 16px;margin:0 0 10px}
 .iz-score b{font:700 24px/1 system-ui;color:var(--gold)}
 .iz-score small{display:block;color:#9fb0c4;font:400 11px/1.4 system-ui}
+.iz-radio{padding:22px 0;background:#071426}
+.iz-radio-b{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;border:1px solid #23425f;border-radius:14px;padding:16px 18px;background:#0a1b2d}
+.iz-radio-b>div{max-width:80ch}
+.iz-radio .btn{font:700 12px/1 system-ui;background:var(--gold);color:#08131f;padding:12px 16px;border-radius:999px;white-space:nowrap;text-decoration:none}
+.iz-net{border-top:1px solid #17314a;background:#04101d;padding:26px 0 8px;margin-top:10px}
+.iz-net-h{font:700 11px/1.4 system-ui;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 12px;display:flex;flex-wrap:wrap;gap:10px;align-items:baseline}
+.iz-net-h span{font:600 9.5px/1.4 system-ui;letter-spacing:.1em;color:#8296ad}
+.iz-net-g{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px;margin:0 0 8px}
+.iz-net-g--desks{grid-template-columns:repeat(9,minmax(0,1fr))}
+.iz-net-g--more{grid-template-columns:repeat(5,minmax(0,1fr))}
+.iz-net-g a{display:grid;gap:3px;padding:9px 10px;border:1px solid #1c3854;border-radius:9px;background:#08182a;transition:border-color .16s ease,transform .16s ease}
+.iz-net-g a:hover{border-color:var(--gold);transform:translateY(-1px);text-decoration:none}
+.iz-net-g b{font:700 12px/1.15 system-ui;color:#eaf1f8;letter-spacing:.01em}
+.iz-net-g span{font:600 8.5px/1.2 system-ui;letter-spacing:.12em;text-transform:uppercase;color:#8296ad}
+@media(max-width:1000px){.iz-net-g{grid-template-columns:repeat(4,minmax(0,1fr))}.iz-net-g--desks{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media(max-width:620px){.iz-net-g,.iz-net-g--desks,.iz-net-g--more{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .iz-foot{border-top:1px solid #17314a;padding:28px 0 44px;color:#8fa3ba;font:400 12px/1.6 system-ui}
 .iz-foot a{color:var(--gold)}
+.iz-hastags{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin:0 0 12px}
+.iz-hastags span{font:800 9px/1 system-ui;letter-spacing:.18em;text-transform:uppercase;color:#8296ad}
+.iz-hastags a{font:700 11px/1 system-ui;text-decoration:none;border:1px solid #24425f;border-radius:999px;padding:5px 9px;color:#dbe5f1}
+.iz-hastags a:hover{border-color:var(--gold);color:var(--gold);text-decoration:none}
 .iz-small{font:400 11px/1.6 system-ui;color:#8296ad}
 @media(max-width:760px){.iz-card--lead{grid-column:span 1}.iz-list li{grid-template-columns:70px minmax(0,1fr)}.iz-list .src{display:none}}
 ${cssExtra}
@@ -235,12 +291,42 @@ const portalHeader = (active, { h1 = true } = {}) => `<div class="iz-top"><div c
 <header class="iz-head"><div class="iz-wrap">
   <p class="k">GNK ASG · AKTUAL MEDIA · regionalna izdanja</p>
   ${h1 ? `<h1>Naša izdanja</h1>
-  <p>Osam gradskih kanala, poslovni tjednik, sportski, politički i sigurnosni desk te galerija. Svako izdanje ima vlastiti link, svoj jezik, svoj feed i svoju metodologiju — a sve se vraća ovamo.</p>`
+  <p>Osam gradskih kanala, poslovni tjednik i devet deskova — sport, politika, sigurnost, business, tehnologija, moda, putovanja, ljubimci i svijet. Svako izdanje ima vlastiti link, svoj jezik, svoj feed i svoju metodologiju, a sve se vraća ovamo.</p>`
     : `<p class="iz-home-h1"><a href="/izdanja/">Naša izdanja</a> <span aria-hidden="true">·</span> desk</p>`}
-  <nav class="iz-nav" aria-label="Izdanja">${['', 'sport/', 'politika/', 'sigurnost/', 'biznis/', 'tehnologija/', 'moda/'].map((p, i) => `<a href="/izdanja/${p}"${active === p ? ' aria-current="page"' : ''}>${['Sva izdanja', 'Sport', 'Politika', 'Sigurnost', 'Business', 'Tehnologija', 'Moda'][i]}</a>`).join('')}<a href="/galerija/">Galerija</a><a href="/gnk-aktual/">AKTUAL MEDIA</a></nav>
+  <nav class="iz-nav" aria-label="Izdanja"><a href="/izdanja/"${active === '' ? ' aria-current="page"' : ''}>Sva izdanja</a>${Object.entries(DESKS).map(([id, d]) => `<a href="/izdanja/${id}/"${active === `${id}/` ? ' aria-current="page"' : ''}>${esc(d.nav)}</a>`).join('')}<a href="/radio/">Radio</a><a href="/galerija/">Galerija</a><a href="/kanal/">Kanali</a><a href="/gnk-aktual/">AKTUAL MEDIA</a></nav>
 </div></header>`;
 
-const portalFooter = () => `<footer class="iz-foot"><div class="iz-wrap">
+
+/* ---------- mreža: svaka stranica nudi najmanje šest drugih ulaza ---------- */
+
+function netStrip() {
+  const editions = CHANNELS.map((c) => `<a href="${c.base}" rel="external noopener"><b>${esc(CITY_SHORT[c.id] || c.city)}</b><span>${esc(c.country)}</span></a>`).join('');
+  const desks = Object.entries(DESKS).map(([id, d]) => `<a href="/izdanja/${id}/"><b>${esc(d.nav)}</b><span>desk</span></a>`).join('');
+  const more = [
+    ['/radio/', 'Radio', 'player'],
+    ['/galerija/', 'Galerija', 'foto'],
+    ['/kanal/', 'Kanali', '8 izdanja'],
+    ['/gnk-aktual/', 'AKTUAL MEDIA', 'središte'],
+    ['/izdanja/', 'Sva izdanja', 'popis'],
+    ['/digital-workforce/', 'Radna snaga', 'simulacija'],
+    ['/knowledge-center/', 'Centar znanja', 'odgovori'],
+    ['/digital-workforce/knjiga/', 'Knjiga radnika', 'tko radi'],
+    ['https://gnk-asg-tjednik.pages.dev/', 'Business Tjednik', 'tjednik'],
+    ['https://gnk-asg-tjednik.pages.dev/tjednik/2026-W43/', 'Tjednik W43', 'ovaj tjedan']
+  ].map(([href, name, kick]) => `<a href="${href}"${href.startsWith('http') ? ' rel="external noopener"' : ''}><b>${esc(name)}</b><span>${esc(kick)}</span></a>`).join('');
+  return `<section class="iz-net" aria-label="Mreža AKTUAL MEDIA">
+    <div class="iz-wrap">
+      <p class="iz-net-h">Mreža AKTUAL MEDIA <span>8 izdanja · 9 deskova · radio · galerija</span></p>
+      <div class="iz-net-g">${editions}</div>
+      <div class="iz-net-g iz-net-g--desks">${desks}</div>
+      <div class="iz-net-g iz-net-g--more">${more}</div>
+      <p class="iz-small">Svaki link vodi na vlastito izdanje s vlastitim feedom i sitemapom. <a href="/kanal/">Svi kanali pod gnk-asg.hr →</a></p>
+    </div>
+  </section>`;
+}
+
+const portalFooter = () => `${netStrip()}<footer class="iz-foot"><div class="iz-wrap">
+  <p class="iz-hastags" aria-label="Oznake"><span>Oznake</span> <a href="/nermin-sefic/">#NerminSefić</a> <a href="/nermin-sefic/">#NerminSefic</a> <a href="/autorske-objave/">#SeficNermin</a> <a href="/autorske-objave/">#SEFICNERMIN</a> <a href="/nermin-sefic/">#UrednikNerminSefić</a> <a href="/gnk-aktual/">#AKTUALMEDIA</a> <a href="/kanal/">#GNKASG</a></p>
   <p><strong>AKTUAL MEDIA d.o.o.</strong> · Urednik: Nermin Sefić · <a href="mailto:${CONTACT}">${CONTACT}</a></p>
   <p class="iz-small">Sva izdanja objavljuju osvrte na način izvještavanja. Izvornici su uvijek povezani, a tvrdnje izvornika nisu tvrdnje redakcije. Automatski sastavljeni dijelovi nisu pojedinačno urednički pregledani.</p>
   <p class="iz-small"><a href="/izdanja/sitemap.xml">Sitemap izdanja</a> · <a href="/gnk-aktual/">AKTUAL MEDIA</a> · <a href="https://gnk-asg.hr/">gnk-asg.hr</a></p>
@@ -293,6 +379,18 @@ function extraCards() {
   return cards.join('\n');
 }
 
+function radioBand() {
+  return `<section class="iz-band iz-radio" id="radio">
+    <div class="iz-wrap">
+      <div class="iz-radio-b">
+        <div><p class="iz-net-h">AKTUAL MEDIA RADIO <span>diskretni player u kutu · 6 stanica</span></p>
+        <p class="iz-small" style="margin:0">Player stoji u kutu svake stranice, veličine jednog gumba, i ne prekriva sadržaj. Otvara se klikom, pamti stanicu i glasnoću, a ovdje su sve stanice i lokalni javni servisi.</p></div>
+        <a class="btn" href="/radio/">Otvori radio →</a>
+      </div>
+    </div>
+  </section>`;
+}
+
 function hubPage() {
   const cards = CHANNELS.map((c, i) => cardFor(c, { lead: i === 0 })).join('\n');
   const items = CHANNELS.flatMap((c) => latestFor(c, 3).map((i) => ({ ...i, channel: c })))
@@ -310,7 +408,7 @@ function hubPage() {
     <ul class="iz-tags">${['#NerminSefić', '#NerminSefic', '#SeficNermin', '#SEFICNERMIN', '#AKTUALMEDIA', '#GNKASG', '#Našaizdanja', '#KanalZagreb', '#KanalBeograd', '#KanalSarajevo', '#KanalBudimpesta', '#KanalLjubljana', '#CanaleRoma', '#KanalSofija', '#CanalulBucuresti', '#BusinessTjednik', '#RegionalneVijesti', '#Sport', '#Politika', '#Sigurnost'].map((h) => `<li>${esc(h)}</li>`).join('')}</ul>
   </section>
 </main>
-${portalFooter()}`;
+${radioBand()}${portalFooter()}`;
 
   return portalShell({
     title: 'Naša izdanja — AKTUAL MEDIA · osam gradskih kanala AKTUAL MEDIA KANAL, tjednik i deskovi',
@@ -362,8 +460,10 @@ function collect(theme, filter = null) {
   for (const channel of CHANNELS) {
     const data = channelData(channel.id);
     for (const item of data.items) {
-      const itemTheme = themeFor(`${item.title} ${item.summary}`).id;
-      if (itemTheme !== theme) continue;
+      if (theme !== '*') {
+        const itemTheme = themeFor(`${item.title} ${item.summary}`).id;
+        if (itemTheme !== theme) continue;
+      }
       if (filter && !filter.test(`${item.title} ${item.summary}`)) continue;
       out.push({ ...item, channel });
     }
@@ -464,7 +564,8 @@ ${entries.map((e) => `<url><loc>${e.loc}</loc><changefreq>daily</changefreq><pri
     ...CHANNELS.map((c) => ({
       id: c.id, name: c.title, url: c.base, lang: c.lang, city: c.city, country: c.country,
       description: (EDITION_META[c.id] || {}).description || '', hashtags: (EDITION_META[c.id] || {}).hashtags || c.hashtags,
-      count: channelData(c.id).items.length
+      count: channelData(c.id).items.length,
+      lastItemAt: channelData(c.id).items[0]?.date || channelData(c.id).updatedAt || ''
     })),
     { id: 'tjednik', name: 'BUSINESS TJEDNIK', url: 'https://gnk-asg-tjednik.pages.dev/', lang: 'hr', city: 'Zagreb', country: 'Hrvatska', description: 'Poslovni tjednik s kritičkim osvrtima na Lider, Jutarnji list, Poslovni dnevnik i Forbes, tjednom promjenom i dnevnim dodacima.', hashtags: ['#BusinessTjednik', '#AktualMedia'], count: 0 },
     { id: 'sport', name: 'SPORT', url: '/izdanja/sport/', lang: 'hr', city: 'Regija', country: 'AKTUAL MEDIA', description: DESKS.sport.description, hashtags: DESKS.sport.hashtags, count: collect('sport').length },
@@ -483,10 +584,122 @@ ${entries.map((e) => `<url><loc>${e.loc}</loc><changefreq>daily</changefreq><pri
     console.log(`::warning::Središnji blok nije izgrađen: ${error.message}`);
   }
 
-  return { channels: CHANNELS.length, sport: collect('sport').length, politics: collect('politika').length, security: collect('sigurnost').length, biznis: collect('ekonomija').length, tehnologija: collect('ai').length, moda: collect('drustvo', DESKS.moda.filter).length };
+  return { channels: CHANNELS.length, sport: collect('sport').length, politics: collect('politika').length, security: collect('sigurnost').length, biznis: collect('ekonomija').length, tehnologija: collect('ai').length, moda: collect('*', DESKS.moda.filter).length, putovanja: collect('*', DESKS.putovanja.filter).length, ljubimci: collect('*', DESKS.ljubimci.filter).length, svijet: collect('*', DESKS.svijet.filter).length };
 }
 
 /* ---------- blok na AKTUAL MEDIA ---------- */
+
+
+/* ---------- /kanal/: ulaz u sva izdanja pod glavnom domenom ---------- */
+
+function kanalIndex(cards) {
+  const rows = CHANNELS.map((c) => {
+    const card = cards.find((x) => x.id === c.id) || {};
+    return `<article class="kx-card">
+      <a class="kx-link" href="${c.base}">
+        <img src="/assets/izdanja/${c.id}-1200.webp" alt="${esc(c.title)} — ${esc(c.city)}, ${esc(c.country)}" width="1200" height="675" loading="lazy" decoding="async">
+        <div class="kx-body">
+          <span class="kx-flag">${esc(c.country)} · ${esc(c.lang)}</span>
+          <h2>${esc(c.title)}</h2>
+          <p>${esc(card.description || '').split('. ').slice(0, 2).join('. ')}.</p>
+          <span class="kx-meta">${card.count || 0} osvrta · ${esc(c.city)}</span>
+          <span class="kx-go">Otvori izdanje →</span>
+        </div>
+      </a>
+      <p class="kx-foot"><a href="/kanal/${c.id}/en/" hreflang="en" lang="en">English overview →</a> <span>${card.count || 0} reviews</span></p>
+    </article>`;
+  }).join('');
+
+  return `<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AKTUAL MEDIA KANAL — sva izdanja pod gnk-asg.hr</title>
+<meta name="description" content="Osam gradskih izdanja AKTUAL MEDIA na jednoj domeni: Zagreb, Beograd, Sarajevo, Budimpešta, Ljubljana, Rim, Sofija i Bukurešt. Svako ima svoj feed, sitemap i arhivu od više stotina tekstova.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://gnk-asg.hr/kanal/">
+<link rel="alternate" hreflang="hr" href="https://gnk-asg.hr/kanal/">
+<link rel="alternate" hreflang="x-default" href="https://gnk-asg.hr/kanal/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AKTUAL MEDIA">
+<meta property="og:title" content="AKTUAL MEDIA KANAL — sva izdanja">
+<meta property="og:description" content="Osam gradskih izdanja na jednoj domeni, s vlastitim feedom i arhivom.">
+<meta property="og:url" content="https://gnk-asg.hr/kanal/">
+<meta property="og:image" content="https://gnk-asg.hr/assets/izdanja/aktual-media-og.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AKTUAL MEDIA KANAL — sva izdanja">
+<meta name="twitter:image" content="https://gnk-asg.hr/assets/izdanja/aktual-media-og.jpg">
+<script type="application/ld+json">${safeJson({
+    '@context': 'https://schema.org', '@type': 'CollectionPage',
+    name: 'AKTUAL MEDIA KANAL — sva izdanja', url: 'https://gnk-asg.hr/kanal/',
+    inLanguage: 'hr', isPartOf: { '@type': 'WebSite', url: 'https://gnk-asg.hr/', name: 'GNK ASG' },
+    publisher: { '@type': 'NewsMediaOrganization', name: 'AKTUAL MEDIA d.o.o.', url: 'https://gnk-asg.hr/', parentOrganization: { '@type': 'Organization', name: 'GNK ASG d.o.o.', url: 'https://gnk-asg.hr/' } },
+    editor: { '@type': 'Person', name: 'Nermin Sefić', jobTitle: 'Urednik i direktor', url: 'https://gnk-asg.hr/nermin-sefic/' },
+    hasPart: CHANNELS.map((c) => ({ '@type': 'WebSite', name: c.title, url: c.base, inLanguage: c.lang })),
+    mainEntity: { '@type': 'ItemList', numberOfItems: CHANNELS.length, itemListElement: CHANNELS.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.title, url: c.base })) }
+  })}</script>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f6f4ef;color:#15191f;font:16px/1.6 Georgia,serif}
+a{color:inherit;text-decoration:none}
+.kx-top{background:#0c1015;color:#eae4d6;padding:18px clamp(14px,4vw,44px);display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:center}
+.kx-top a{color:#e9c66c;font:800 11px/1 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase}
+.kx-top strong{font:700 clamp(18px,2.6vw,26px)/1.1 Georgia,serif;color:#fff;letter-spacing:-.01em}
+.kx-wrap{max-width:1320px;margin:0 auto;padding:clamp(20px,4vw,44px) clamp(14px,4vw,44px) 60px}
+.kx-head{margin:0 0 26px}
+.kx-head h1{font:700 clamp(28px,4.4vw,52px)/1.04 Georgia,serif;margin:0 0 12px;letter-spacing:-.02em}
+.kx-head p{margin:0;max-width:76ch;color:#3d4753}
+.kx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px}
+.kx-card{background:#fff;border:1px solid #e2ddd2;border-radius:14px;overflow:hidden;transition:transform .2s ease,box-shadow .2s ease}
+.kx-card:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(15,23,42,.16)}
+.kx-card img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+.kx-body{padding:16px 18px 18px;display:grid;gap:6px}
+.kx-flag{font:800 9.5px/1 system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#8c6a1f}
+.kx-body h2{font:700 20px/1.2 Georgia,serif;margin:0}
+.kx-body p{margin:0;font-size:14px;color:#4a5158}
+.kx-meta{font:700 11px/1 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#7a6a4b}
+.kx-foot{display:flex;justify-content:space-between;gap:8px;align-items:center;margin:0;padding:0 18px 14px;font:700 10px/1 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.kx-foot a{color:#8c2f2f;border-bottom:1px solid rgba(140,47,47,.35);text-decoration:none}
+.kx-foot a:hover{border-color:#8c2f2f}
+.kx-foot span{color:#8a8272;font-weight:700}
+.kx-go{margin-top:4px;font:800 11px/1 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#8c2f2f}
+</style>
+</head>
+<body>
+<div class="kx-top"><strong>AKTUAL MEDIA KANAL</strong><span><a href="/gnk-aktual/">← AKTUAL MEDIA</a> · <a href="/izdanja/">Sva izdanja i deskovi</a> · <a href="/digital-workforce/knjiga/">Knjiga radnika</a></span></div>
+<main class="kx-wrap">
+  <div class="kx-head">
+    <h1>Osam gradova, osam jezika — pod jednom domenom</h1>
+    <p>Svako izdanje ima vlastiti feed, sitemap i arhivu od više stotina osvrta. Adrese su sada na gnk-asg.hr/kanal/, pa se sve izdaje indeksira kao jedna cjelina, a stari linkovi s pages.dev preusmjeravaju ovamo (301).</p>
+  </div>
+  <div class="kx-grid">${rows}</div>
+</main>
+</body>
+</html>`;
+}
+
+/* ---------- sitemap-index: jedan ulaz, svi sitemapi ---------- */
+
+function writeSitemapIndex() {
+  const today = new Date().toISOString().slice(0, 10);
+  const core = [
+    ['sitemap.xml', '2026-10-12'], ['editorial-sitemap.xml', '2026-10-19'],
+    ['corporate-editorials-sitemap.xml', '2026-08-30'], ['visual-sitemap.xml', '2026-08-26'],
+    ['image-sitemap.xml', '2026-10-12'], ['world-topics-image-sitemap.xml', '2026-08-26'],
+    ['spt-sitemap.xml', '2026-10-12'], ['izdanja/sitemap.xml', today], ['galerija/sitemap.xml', today]
+  ];
+  const channels = CHANNELS.map((c) => [`kanal/${c.id}/sitemap.xml`, today]);
+  const all = [...core, ...channels];
+  const seen = new Set();
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${all.filter(([loc]) => (seen.has(loc) ? false : seen.add(loc))).map(([loc, lastmod]) => `  <sitemap>\n    <loc>https://gnk-asg.hr/${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n  </sitemap>`).join('\n')}
+</sitemapindex>
+`;
+  writeFileSync(join(PORTAL, 'sitemap-index.xml'), xml);
+  return all.length;
+}
 
 function injectBand(cards) {
   const file = join(PORTAL, 'gnk-aktual', 'index.html');
@@ -501,7 +714,7 @@ function injectBand(cards) {
     <div class="izdanja-band-head">
       <div>
         <h2 class="izdanja-band-title" id="izdanjaBandTitle">Naša izdanja u regiji</h2>
-        <p class="izdanja-sub">Osam gradskih kanala na osam jezika, poslovni tjednik, sportski, politički i sigurnosni desk. Svako izdanje ima svoj link i svoj feed — a sve se vraća na AKTUAL MEDIA.</p>
+        <p class="izdanja-sub">Osam gradskih kanala na osam jezika, poslovni tjednik i devet deskova. Svako izdanje ima svoj link i svoj feed — a sve se vraća na AKTUAL MEDIA.</p>
       </div>
       <a class="izdanja-all" href="/izdanja/">Sva izdanja →</a>
     </div>
@@ -515,5 +728,11 @@ function injectBand(cards) {
 }
 
 if (process.argv[1] && /hub\.mjs$/.test(process.argv[1])) {
-  buildHub().then((hub) => console.log(JSON.stringify({ ok: true, ...hub }, null, 2)));
+  buildHub().then((hub) => {
+    const cards = JSON.parse(readFileSync(join(PORTAL, 'data', 'izdanja.json'), 'utf8')).cards || [];
+    mkdirSync(join(PORTAL, 'kanal'), { recursive: true });
+    writeFileSync(join(PORTAL, 'kanal', 'index.html'), kanalIndex(cards));
+    const sitemaps = writeSitemapIndex();
+    console.log(JSON.stringify({ ok: true, ...hub, kanalIndex: true, sitemaps }, null, 2));
+  });
 }

@@ -54,7 +54,10 @@ function edgeNormalize(html,route){
  return out.includes('</body>')?out.replace('</body>',`${scripts}</body>`):`${out}${scripts}`;
 }
 
-const htmlFiles=walk(ROOT).filter(file=>file.endsWith('.html')&&!utility(file));
+// Generirani kanali pod /kanal/ imaju vlastiti audit (apps/region/engine/audit.mjs):
+// title, description, canonical, JSON-LD, hreflang, feed i sitemap po izdanju.
+const isKanalPage=file=>file.split(path.sep).join('/').includes('/apps/portal/kanal/');
+const htmlFiles=walk(ROOT).filter(file=>file.endsWith('.html')&&!utility(file)&&!isKanalPage(file));
 const findings=[];
 const pages=[];
 for(const file of htmlFiles){

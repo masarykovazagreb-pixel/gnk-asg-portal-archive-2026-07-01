@@ -86,6 +86,19 @@
 .amx-badge{position:absolute;right:-2px;bottom:4px;background:#111;color:#e9c66c;font:800 9px/1 system-ui,sans-serif;letter-spacing:.02em;padding:4px 6px;border-radius:999px;border:2px solid #fffdf8}
 .amx-link b{font:900 13px/1.05 Impact,"Arial Black",system-ui,sans-serif;letter-spacing:.01em;text-transform:uppercase;color:#111}
 .amx-link small{font:700 9px/1.2 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#67645e}
+.amx-ago{font:700 8.5px/1.2 system-ui,sans-serif;font-style:normal;letter-spacing:.05em;color:#9a9384}
+.amm{margin:6px 18px 4px;border:1px solid #111;background:#060f19;position:relative}
+.amm-head{display:flex;gap:10px;align-items:center;padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.12);font:700 10.5px/1.3 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.amm-flag{background:#e9c66c;color:#0c1015;padding:5px 8px;font-weight:900;letter-spacing:.14em}
+.amm-svg{display:block;width:100%;height:auto}
+.amm-pin circle{fill:#e9c66c;stroke:#060f19;stroke-width:2.5}
+.amm-pin .amm-pulse{fill:none;stroke:#e9c66c;stroke-width:1.5;opacity:.5}
+.amm-pin text{fill:#fff;font:800 13px/1 system-ui,sans-serif;letter-spacing:.02em;paint-order:stroke;stroke:#060f19;stroke-width:3.5}
+.amm-pin:hover circle{fill:#fff}
+.amm-pin:hover text{fill:#e9c66c}
+.amm-list{display:none;list-style:none;margin:0;padding:10px 12px 14px;flex-wrap:wrap;gap:8px}
+.amm-list a{font:800 11px/1 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#e9c66c;border:1px solid rgba(233,198,108,.4);padding:7px 9px;text-decoration:none}
+@media(max-width:700px){.amm-svg{display:none}.amm-list{display:flex}}
 .amx-link:hover .amx-ring,.amx-link:focus-visible .amx-ring{transform:translateY(-3px) scale(1.03);box-shadow:0 14px 26px rgba(15,23,42,.26)}
 .amx-link:hover b{color:#d71920}
 .amx-platforms{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:10px 18px 16px}
@@ -111,55 +124,114 @@
     <a class="amx-all" href="#izdanja-po-zemljama">Sva izdanja ↓</a>
   </div>
   <ul class="amx-row"><li class="amx-item">
-      <a class="amx-link" href="https://gnk-asg-kanal-zagreb.pages.dev/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL ZAGREB — Hrvatska — 420 tekstova — otvori izdanje">
+      <a class="amx-link" href="https://gnk-asg.hr/kanal/zagreb/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL ZAGREB — Hrvatska — 420 tekstova — otvori izdanje">
         <span class="amx-ring"><img src="/assets/izdanja/zagreb-440.webp" alt="AKTUAL MEDIA KANAL ZAGREB — Zagreb, Hrvatska" width="440" height="440" loading="lazy" decoding="async"><span class="amx-badge">420</span></span>
         <b>Zagreb</b>
         <small>hr · Hrvatska</small>
+        <em class="amx-ago">prije 9 h</em>
       </a>
     </li><li class="amx-item">
-      <a class="amx-link" href="https://gnk-asg-kanal-beograd.pages.dev/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL BEOGRAD — Srbija — 353 tekstova — otvori izdanje">
+      <a class="amx-link" href="https://gnk-asg.hr/kanal/beograd/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL BEOGRAD — Srbija — 353 tekstova — otvori izdanje">
         <span class="amx-ring"><img src="/assets/izdanja/beograd-440.webp" alt="AKTUAL MEDIA KANAL BEOGRAD — Beograd, Srbija" width="440" height="440" loading="lazy" decoding="async"><span class="amx-badge">353</span></span>
         <b>Beograd</b>
         <small>sr · Srbija</small>
+        <em class="amx-ago">prije 11 h</em>
       </a>
     </li><li class="amx-item">
-      <a class="amx-link" href="https://gnk-asg-kanal-sarajevo.pages.dev/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL SARAJEVO — Bosna i Hercegovina — 379 tekstova — otvori izdanje">
+      <a class="amx-link" href="https://gnk-asg.hr/kanal/sarajevo/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL SARAJEVO — Bosna i Hercegovina — 379 tekstova — otvori izdanje">
         <span class="amx-ring"><img src="/assets/izdanja/sarajevo-440.webp" alt="AKTUAL MEDIA KANAL SARAJEVO — Sarajevo, Bosna i Hercegovina" width="440" height="440" loading="lazy" decoding="async"><span class="amx-badge">379</span></span>
         <b>Sarajevo</b>
         <small>bs · Bosna i Hercegovina</small>
+        <em class="amx-ago">prije 9 h</em>
       </a>
     </li><li class="amx-item">
-      <a class="amx-link" href="https://gnk-asg-kanal-budimpesta.pages.dev/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL BUDAPEST — Mađarska — 360 tekstova — otvori izdanje">
+      <a class="amx-link" href="https://gnk-asg.hr/kanal/budimpesta/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL BUDAPEST — Mađarska — 360 tekstova — otvori izdanje">
         <span class="amx-ring"><img src="/assets/izdanja/budimpesta-440.webp" alt="AKTUAL MEDIA KANAL BUDAPEST — Budimpešta, Mađarska" width="440" height="440" loading="lazy" decoding="async"><span class="amx-badge">360</span></span>
         <b>Budimpešta</b>
         <small>hu · Mađarska</small>
+        <em class="amx-ago">prije 10 h</em>
       </a>
     </li><li class="amx-item">
-      <a class="amx-link" href="https://gnk-asg-kanal-ljubljana.pages.dev/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL LJUBLJANA — Slovenija — 327 tekstova — otvori izdanje">
+      <a class="amx-link" href="https://gnk-asg.hr/kanal/ljubljana/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL LJUBLJANA — Slovenija — 327 tekstova — otvori izdanje">
         <span class="amx-ring"><img src="/assets/izdanja/ljubljana-440.webp" alt="AKTUAL MEDIA KANAL LJUBLJANA — Ljubljana, Slovenija" width="440" height="440" loading="lazy" decoding="async"><span class="amx-badge">327</span></span>
         <b>Ljubljana</b>
         <small>sl · Slovenija</small>
+        <em class="amx-ago">prije 11 h</em>
       </a>
     </li><li class="amx-item">
-      <a class="amx-link" href="https://gnk-asg-kanal-rim.pages.dev/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL ROMA — Italija — 413 tekstova — otvori izdanje">
+      <a class="amx-link" href="https://gnk-asg.hr/kanal/rim/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL ROMA — Italija — 413 tekstova — otvori izdanje">
         <span class="amx-ring"><img src="/assets/izdanja/rim-440.webp" alt="AKTUAL MEDIA KANAL ROMA — Rim, Italija" width="440" height="440" loading="lazy" decoding="async"><span class="amx-badge">413</span></span>
         <b>Rim</b>
         <small>it · Italija</small>
+        <em class="amx-ago">prije 10 h</em>
       </a>
     </li><li class="amx-item">
-      <a class="amx-link" href="https://gnk-asg-kanal-sofija.pages.dev/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL SOFIJA — Bugarska — 313 tekstova — otvori izdanje">
+      <a class="amx-link" href="https://gnk-asg.hr/kanal/sofija/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL SOFIJA — Bugarska — 313 tekstova — otvori izdanje">
         <span class="amx-ring"><img src="/assets/izdanja/sofija-440.webp" alt="AKTUAL MEDIA KANAL SOFIJA — Sofija, Bugarska" width="440" height="440" loading="lazy" decoding="async"><span class="amx-badge">313</span></span>
         <b>Sofija</b>
         <small>bg · Bugarska</small>
+        <em class="amx-ago">prije 10 h</em>
       </a>
     </li><li class="amx-item">
-      <a class="amx-link" href="https://gnk-asg-kanal-bukurest.pages.dev/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL BUCUREȘTI — Rumunjska — 400 tekstova — otvori izdanje">
+      <a class="amx-link" href="https://gnk-asg.hr/kanal/bukurest/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL BUCUREȘTI — Rumunjska — 400 tekstova — otvori izdanje">
         <span class="amx-ring"><img src="/assets/izdanja/bukurest-440.webp" alt="AKTUAL MEDIA KANAL BUCUREȘTI — Bukurešt, Rumunjska" width="440" height="440" loading="lazy" decoding="async"><span class="amx-badge">400</span></span>
         <b>Bukurešt</b>
         <small>ro · Rumunjska</small>
+        <em class="amx-ago">prije 8 h</em>
       </a>
     </li></ul>
-  <div class="amx-platforms"><span class="amx-plabel">Deskovi i platforme</span><a href="https://gnk-asg-tjednik.pages.dev/" rel="external noopener">Business Tjednik</a><a href="https://gnk-asg.hr/izdanja/moda/" rel="external noopener">Tjednik Mode</a><a href="https://gnk-asg.hr/izdanja/sport/" rel="external noopener">Sport</a><a href="https://gnk-asg.hr/izdanja/politika/" rel="external noopener">Politika</a><a href="https://gnk-asg.hr/izdanja/sigurnost/" rel="external noopener">Sigurnost</a><a href="https://gnk-asg.hr/izdanja/tehnologija/" rel="external noopener">Tehnologija</a><a href="https://gnk-asg.hr/izdanja/biznis/" rel="external noopener">Business desk</a><a href="https://gnk-asg.hr/galerija/" rel="external noopener">Galerija</a><a href="https://gnk-asg.hr/radio/" rel="external noopener">Radio</a></div>
+  <div class="amm">
+  <div class="amm-head"><span class="amm-flag">Karta</span><span>Karta regije — odaberi grad</span></div>
+  <svg class="amm-svg" viewBox="0 0 640 420" role="img" aria-label="Karta regije — odaberi grad">
+    <defs><linearGradient id="ammSea" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0d1c2c"/><stop offset="1" stop-color="#060f19"/></linearGradient></defs>
+    <rect width="640" height="420" fill="url(#ammSea)"></rect>
+    <line x1="0" y1="0" x2="640" y2="0" stroke="rgba(255,255,255,.05)"></line><line x1="0" y1="52.5" x2="640" y2="52.5" stroke="rgba(255,255,255,.05)"></line><line x1="0" y1="105" x2="640" y2="105" stroke="rgba(255,255,255,.05)"></line><line x1="0" y1="157.5" x2="640" y2="157.5" stroke="rgba(255,255,255,.05)"></line><line x1="0" y1="210" x2="640" y2="210" stroke="rgba(255,255,255,.05)"></line><line x1="0" y1="262.5" x2="640" y2="262.5" stroke="rgba(255,255,255,.05)"></line><line x1="0" y1="315" x2="640" y2="315" stroke="rgba(255,255,255,.05)"></line><line x1="0" y1="367.5" x2="640" y2="367.5" stroke="rgba(255,255,255,.05)"></line><line x1="0" y1="420" x2="640" y2="420" stroke="rgba(255,255,255,.05)"></line>
+    <line x1="0" y1="0" x2="0" y2="420" stroke="rgba(255,255,255,.05)"></line><line x1="53.333333333333336" y1="0" x2="53.333333333333336" y2="420" stroke="rgba(255,255,255,.05)"></line><line x1="106.66666666666667" y1="0" x2="106.66666666666667" y2="420" stroke="rgba(255,255,255,.05)"></line><line x1="160" y1="0" x2="160" y2="420" stroke="rgba(255,255,255,.05)"></line><line x1="213.33333333333334" y1="0" x2="213.33333333333334" y2="420" stroke="rgba(255,255,255,.05)"></line><line x1="266.6666666666667" y1="0" x2="266.6666666666667" y2="420" stroke="rgba(255,255,255,.05)"></line><line x1="320" y1="0" x2="320" y2="420" stroke="rgba(255,255,255,.05)"></line><line x1="373.3333333333333" y1="0" x2="373.3333333333333" y2="420" stroke="rgba(255,255,255,.05)"></line><line x1="426.6666666666667" y1="0" x2="426.6666666666667" y2="420" stroke="rgba(255,255,255,.05)"></line><line x1="480" y1="0" x2="480" y2="420" stroke="rgba(255,255,255,.05)"></line><line x1="533.3333333333334" y1="0" x2="533.3333333333334" y2="420" stroke="rgba(255,255,255,.05)"></line><line x1="586.6666666666666" y1="0" x2="586.6666666666666" y2="420" stroke="rgba(255,255,255,.05)"></line><line x1="640" y1="0" x2="640" y2="420" stroke="rgba(255,255,255,.05)"></line>
+    <a class="amm-pin" href="https://gnk-asg.hr/kanal/zagreb/" aria-label="AKTUAL MEDIA KANAL ZAGREB — 420 tekstova — otvori izdanje">
+      <circle cx="193.5" cy="151.7" r="9"></circle>
+      <circle class="amm-pulse" cx="193.5" cy="151.7" r="9"></circle>
+      <text x="207.5" y="155.7" text-anchor="start">Zagreb</text>
+      <title>AKTUAL MEDIA KANAL ZAGREB — 420 tekstova</title>
+    </a><a class="amm-pin" href="https://gnk-asg.hr/kanal/beograd/" aria-label="AKTUAL MEDIA KANAL BEOGRAD — 353 tekstova — otvori izdanje">
+      <circle cx="364.2" cy="205.3" r="9"></circle>
+      <circle class="amm-pulse" cx="364.2" cy="205.3" r="9"></circle>
+      <text x="378.2" y="209.3" text-anchor="start">Beograd</text>
+      <title>AKTUAL MEDIA KANAL BEOGRAD — 353 tekstova</title>
+    </a><a class="amm-pin" href="https://gnk-asg.hr/kanal/sarajevo/" aria-label="AKTUAL MEDIA KANAL SARAJEVO — 379 tekstova — otvori izdanje">
+      <circle cx="286.1" cy="254.1" r="9"></circle>
+      <circle class="amm-pulse" cx="286.1" cy="254.1" r="9"></circle>
+      <text x="300.1" y="258.1" text-anchor="start">Sarajevo</text>
+      <title>AKTUAL MEDIA KANAL SARAJEVO — 379 tekstova</title>
+    </a><a class="amm-pin" href="https://gnk-asg.hr/kanal/budimpesta/" aria-label="AKTUAL MEDIA KANAL BUDAPEST — 360 tekstova — otvori izdanje">
+      <circle cx="310.1" cy="63.0" r="9"></circle>
+      <circle class="amm-pulse" cx="310.1" cy="63.0" r="9"></circle>
+      <text x="324.1" y="67.0" text-anchor="start">Budimpešta</text>
+      <title>AKTUAL MEDIA KANAL BUDAPEST — 360 tekstova</title>
+    </a><a class="amm-pin" href="https://gnk-asg.hr/kanal/ljubljana/" aria-label="AKTUAL MEDIA KANAL LJUBLJANA — 327 tekstova — otvori izdanje">
+      <circle cx="137.5" cy="138.6" r="9"></circle>
+      <circle class="amm-pulse" cx="137.5" cy="138.6" r="9"></circle>
+      <text x="151.5" y="142.6" text-anchor="start">Ljubljana</text>
+      <title>AKTUAL MEDIA KANAL LJUBLJANA — 327 tekstova</title>
+    </a><a class="amm-pin" href="https://gnk-asg.hr/kanal/rim/" aria-label="AKTUAL MEDIA KANAL ROMA — 413 tekstova — otvori izdanje">
+      <circle cx="61.0" cy="357.0" r="9"></circle>
+      <circle class="amm-pulse" cx="61.0" cy="357.0" r="9"></circle>
+      <text x="75.0" y="361.0" text-anchor="start">Rim</text>
+      <title>AKTUAL MEDIA KANAL ROMA — 413 tekstova</title>
+    </a><a class="amm-pin" href="https://gnk-asg.hr/kanal/sofija/" aria-label="AKTUAL MEDIA KANAL SOFIJA — 313 tekstova — otvori izdanje">
+      <circle cx="473.1" cy="315.0" r="9"></circle>
+      <circle class="amm-pulse" cx="473.1" cy="315.0" r="9"></circle>
+      <text x="487.1" y="319.0" text-anchor="start">Sofija</text>
+      <title>AKTUAL MEDIA KANAL SOFIJA — 313 tekstova</title>
+    </a><a class="amm-pin" href="https://gnk-asg.hr/kanal/bukurest/" aria-label="AKTUAL MEDIA KANAL BUCUREȘTI — 400 tekstova — otvori izdanje">
+      <circle cx="579.0" cy="224.2" r="9"></circle>
+      <circle class="amm-pulse" cx="579.0" cy="224.2" r="9"></circle>
+      <text x="565.0" y="228.2" text-anchor="end">Bukurešt</text>
+      <title>AKTUAL MEDIA KANAL BUCUREȘTI — 400 tekstova</title>
+    </a>
+  </svg>
+  <ul class="amm-list"><li><a href="https://gnk-asg.hr/kanal/zagreb/">Zagreb</a></li><li><a href="https://gnk-asg.hr/kanal/beograd/">Beograd</a></li><li><a href="https://gnk-asg.hr/kanal/sarajevo/">Sarajevo</a></li><li><a href="https://gnk-asg.hr/kanal/budimpesta/">Budimpešta</a></li><li><a href="https://gnk-asg.hr/kanal/ljubljana/">Ljubljana</a></li><li><a href="https://gnk-asg.hr/kanal/rim/">Rim</a></li><li><a href="https://gnk-asg.hr/kanal/sofija/">Sofija</a></li><li><a href="https://gnk-asg.hr/kanal/bukurest/">Bukurešt</a></li></ul>
+</div>
+  <div class="amx-platforms"><span class="amx-plabel">Deskovi i platforme</span><a href="https://gnk-asg-tjednik.pages.dev/" rel="external noopener">Business Tjednik</a><a href="https://gnk-asg.hr/izdanja/moda/" rel="external noopener">Tjednik Mode</a><a href="https://gnk-asg.hr/izdanja/sport/" rel="external noopener">Sport</a><a href="https://gnk-asg.hr/izdanja/politika/" rel="external noopener">Politika</a><a href="https://gnk-asg.hr/izdanja/sigurnost/" rel="external noopener">Sigurnost</a><a href="https://gnk-asg.hr/izdanja/tehnologija/" rel="external noopener">Tehnologija</a><a href="https://gnk-asg.hr/izdanja/putovanja/" rel="external noopener">Business desk</a><a href="https://gnk-asg.hr/izdanja/ljubimci/" rel="external noopener">Galerija</a><a href="https://gnk-asg.hr/izdanja/svijet/" rel="external noopener">Radio</a><a href="https://gnk-asg.hr/izdanja/biznis/" rel="external noopener"></a><a href="https://gnk-asg.hr/galerija/" rel="external noopener"></a><a href="https://gnk-asg.hr/radio/" rel="external noopener"></a></div>
 </section>
 <!-- AKTUAL-RAIL:END -->
 
@@ -265,61 +337,61 @@
       <span class="amc-dim">8 gradova + business tjednik · klik vodi na izdanje</span>
     </div>
     <ul class="amc-grid3"><li class="amc-tile">
-    <a class="amc-tile-link" href="https://gnk-asg-kanal-zagreb.pages.dev/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL ZAGREB — Hrvatska, hrvatski. Dnevni pregled domaćih medija i deset provjerljivih tekstova. Klik otvara izdanje.">
+    <a class="amc-tile-link" href="https://gnk-asg.hr/kanal/zagreb/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL ZAGREB — Hrvatska, hrvatski. Dnevni pregled domaćih medija i deset provjerljivih tekstova. Klik otvara izdanje.">
       <img class="amc-tile-img" src="/assets/izdanja/zagreb-tile.webp" alt="AKTUAL MEDIA KANAL ZAGREB — Hrvatska, hrvatski. Dnevni pregled domaćih medija i deset provjerljivih tekstova. Klik otvara izdanje." width="880" height="587" loading="lazy" decoding="async">
       <span class="amc-tile-badge">420 tekstova</span>
       <span class="amc-tile-go" aria-hidden="true">→</span>
     </a>
-    <div class="amc-tile-foot"><span>Mravinjak</span><a href="https://gnk-asg-kanal-zagreb.pages.dev/mravinjak/" rel="external noopener">svih 420 naslova →</a></div>
+    <div class="amc-tile-foot"><span>Mravinjak</span><a href="https://gnk-asg.hr/kanal/zagreb/mravinjak/" rel="external noopener">svih 420 naslova →</a></div>
   </li><li class="amc-tile">
-    <a class="amc-tile-link" href="https://gnk-asg-kanal-beograd.pages.dev/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL BEOGRAD — Srbija, srpski. N1, Danas, Nova i Politika, osvrti s linkom na izvornik. Klik otvara izdanje.">
+    <a class="amc-tile-link" href="https://gnk-asg.hr/kanal/beograd/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL BEOGRAD — Srbija, srpski. N1, Danas, Nova i Politika, osvrti s linkom na izvornik. Klik otvara izdanje.">
       <img class="amc-tile-img" src="/assets/izdanja/beograd-tile.webp" alt="AKTUAL MEDIA KANAL BEOGRAD — Srbija, srpski. N1, Danas, Nova i Politika, osvrti s linkom na izvornik. Klik otvara izdanje." width="880" height="587" loading="lazy" decoding="async">
       <span class="amc-tile-badge">353 tekstova</span>
       <span class="amc-tile-go" aria-hidden="true">→</span>
     </a>
-    <div class="amc-tile-foot"><span>Mravinjak</span><a href="https://gnk-asg-kanal-beograd.pages.dev/mravinjak/" rel="external noopener">svih 353 naslova →</a></div>
+    <div class="amc-tile-foot"><span>Mravinjak</span><a href="https://gnk-asg.hr/kanal/beograd/mravinjak/" rel="external noopener">svih 353 naslova →</a></div>
   </li><li class="amc-tile">
-    <a class="amc-tile-link" href="https://gnk-asg-kanal-sarajevo.pages.dev/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL SARAJEVO — Bosna i Hercegovina, bosanski. N1 BiH, Klix, Oslobođenje i Avaz, politika i sigurnost regije. Klik otvara izdanje.">
+    <a class="amc-tile-link" href="https://gnk-asg.hr/kanal/sarajevo/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL SARAJEVO — Bosna i Hercegovina, bosanski. N1 BiH, Klix, Oslobođenje i Avaz, politika i sigurnost regije. Klik otvara izdanje.">
       <img class="amc-tile-img" src="/assets/izdanja/sarajevo-tile.webp" alt="AKTUAL MEDIA KANAL SARAJEVO — Bosna i Hercegovina, bosanski. N1 BiH, Klix, Oslobođenje i Avaz, politika i sigurnost regije. Klik otvara izdanje." width="880" height="587" loading="lazy" decoding="async">
       <span class="amc-tile-badge">379 tekstova</span>
       <span class="amc-tile-go" aria-hidden="true">→</span>
     </a>
-    <div class="amc-tile-foot"><span>Mravinjak</span><a href="https://gnk-asg-kanal-sarajevo.pages.dev/mravinjak/" rel="external noopener">svih 379 naslova →</a></div>
+    <div class="amc-tile-foot"><span>Mravinjak</span><a href="https://gnk-asg.hr/kanal/sarajevo/mravinjak/" rel="external noopener">svih 379 naslova →</a></div>
   </li><li class="amc-tile">
-    <a class="amc-tile-link" href="https://gnk-asg-kanal-budimpesta.pages.dev/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL BUDAPEST — Mađarska, mađarski. Telex, 444, HVG i Portfolio: proračun, inflacija, energetika. Klik otvara izdanje.">
+    <a class="amc-tile-link" href="https://gnk-asg.hr/kanal/budimpesta/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL BUDAPEST — Mađarska, mađarski. Telex, 444, HVG i Portfolio: proračun, inflacija, energetika. Klik otvara izdanje.">
       <img class="amc-tile-img" src="/assets/izdanja/budimpesta-tile.webp" alt="AKTUAL MEDIA KANAL BUDAPEST — Mađarska, mađarski. Telex, 444, HVG i Portfolio: proračun, inflacija, energetika. Klik otvara izdanje." width="880" height="587" loading="lazy" decoding="async">
       <span class="amc-tile-badge">360 tekstova</span>
       <span class="amc-tile-go" aria-hidden="true">→</span>
     </a>
-    <div class="amc-tile-foot"><span>Mravinjak</span><a href="https://gnk-asg-kanal-budimpesta.pages.dev/mravinjak/" rel="external noopener">svih 360 naslova →</a></div>
+    <div class="amc-tile-foot"><span>Mravinjak</span><a href="https://gnk-asg.hr/kanal/budimpesta/mravinjak/" rel="external noopener">svih 360 naslova →</a></div>
   </li><li class="amc-tile">
-    <a class="amc-tile-link" href="https://gnk-asg-kanal-ljubljana.pages.dev/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL LJUBLJANA — Slovenija, slovenski. Delo, Večer, 24ur i Slovenske novice: gospodarstvo i politika. Klik otvara izdanje.">
+    <a class="amc-tile-link" href="https://gnk-asg.hr/kanal/ljubljana/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL LJUBLJANA — Slovenija, slovenski. Delo, Večer, 24ur i Slovenske novice: gospodarstvo i politika. Klik otvara izdanje.">
       <img class="amc-tile-img" src="/assets/izdanja/ljubljana-tile.webp" alt="AKTUAL MEDIA KANAL LJUBLJANA — Slovenija, slovenski. Delo, Večer, 24ur i Slovenske novice: gospodarstvo i politika. Klik otvara izdanje." width="880" height="587" loading="lazy" decoding="async">
       <span class="amc-tile-badge">327 tekstova</span>
       <span class="amc-tile-go" aria-hidden="true">→</span>
     </a>
-    <div class="amc-tile-foot"><span>Mravinjak</span><a href="https://gnk-asg-kanal-ljubljana.pages.dev/mravinjak/" rel="external noopener">svih 327 naslova →</a></div>
+    <div class="amc-tile-foot"><span>Mravinjak</span><a href="https://gnk-asg.hr/kanal/ljubljana/mravinjak/" rel="external noopener">svih 327 naslova →</a></div>
   </li><li class="amc-tile">
-    <a class="amc-tile-link" href="https://gnk-asg-kanal-rim.pages.dev/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL ROMA — Italija, talijanski. ANSA, la Repubblica, Il Post e Il Sole 24 Ore: tržišta i EU. Klik otvara izdanje.">
+    <a class="amc-tile-link" href="https://gnk-asg.hr/kanal/rim/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL ROMA — Italija, talijanski. ANSA, la Repubblica, Il Post e Il Sole 24 Ore: tržišta i EU. Klik otvara izdanje.">
       <img class="amc-tile-img" src="/assets/izdanja/rim-tile.webp" alt="AKTUAL MEDIA KANAL ROMA — Italija, talijanski. ANSA, la Repubblica, Il Post e Il Sole 24 Ore: tržišta i EU. Klik otvara izdanje." width="880" height="587" loading="lazy" decoding="async">
       <span class="amc-tile-badge">413 tekstova</span>
       <span class="amc-tile-go" aria-hidden="true">→</span>
     </a>
-    <div class="amc-tile-foot"><span>Mravinjak</span><a href="https://gnk-asg-kanal-rim.pages.dev/mravinjak/" rel="external noopener">svih 413 naslova →</a></div>
+    <div class="amc-tile-foot"><span>Mravinjak</span><a href="https://gnk-asg.hr/kanal/rim/mravinjak/" rel="external noopener">svih 413 naslova →</a></div>
   </li><li class="amc-tile">
-    <a class="amc-tile-link" href="https://gnk-asg-kanal-sofija.pages.dev/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL SOFIJA — Bugarska, bugarski. BTA, Capital, Mediapool i Dnevnik: energetika i fondovi. Klik otvara izdanje.">
+    <a class="amc-tile-link" href="https://gnk-asg.hr/kanal/sofija/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL SOFIJA — Bugarska, bugarski. BTA, Capital, Mediapool i Dnevnik: energetika i fondovi. Klik otvara izdanje.">
       <img class="amc-tile-img" src="/assets/izdanja/sofija-tile.webp" alt="AKTUAL MEDIA KANAL SOFIJA — Bugarska, bugarski. BTA, Capital, Mediapool i Dnevnik: energetika i fondovi. Klik otvara izdanje." width="880" height="587" loading="lazy" decoding="async">
       <span class="amc-tile-badge">313 tekstova</span>
       <span class="amc-tile-go" aria-hidden="true">→</span>
     </a>
-    <div class="amc-tile-foot"><span>Mravinjak</span><a href="https://gnk-asg-kanal-sofija.pages.dev/mravinjak/" rel="external noopener">svih 313 naslova →</a></div>
+    <div class="amc-tile-foot"><span>Mravinjak</span><a href="https://gnk-asg.hr/kanal/sofija/mravinjak/" rel="external noopener">svih 313 naslova →</a></div>
   </li><li class="amc-tile">
-    <a class="amc-tile-link" href="https://gnk-asg-kanal-bukurest.pages.dev/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL BUCUREȘTI — Rumunjska, rumunjski. Agerpres, HotNews, Ziarul Financiar i Profit.ro: ekonomija. Klik otvara izdanje.">
+    <a class="amc-tile-link" href="https://gnk-asg.hr/kanal/bukurest/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL BUCUREȘTI — Rumunjska, rumunjski. Agerpres, HotNews, Ziarul Financiar i Profit.ro: ekonomija. Klik otvara izdanje.">
       <img class="amc-tile-img" src="/assets/izdanja/bukurest-tile.webp" alt="AKTUAL MEDIA KANAL BUCUREȘTI — Rumunjska, rumunjski. Agerpres, HotNews, Ziarul Financiar i Profit.ro: ekonomija. Klik otvara izdanje." width="880" height="587" loading="lazy" decoding="async">
       <span class="amc-tile-badge">400 tekstova</span>
       <span class="amc-tile-go" aria-hidden="true">→</span>
     </a>
-    <div class="amc-tile-foot"><span>Mravinjak</span><a href="https://gnk-asg-kanal-bukurest.pages.dev/mravinjak/" rel="external noopener">svih 400 naslova →</a></div>
+    <div class="amc-tile-foot"><span>Mravinjak</span><a href="https://gnk-asg.hr/kanal/bukurest/mravinjak/" rel="external noopener">svih 400 naslova →</a></div>
   </li><li class="amc-tile">
     <a class="amc-tile-link" href="https://gnk-asg-tjednik.pages.dev/" rel="external noopener" aria-label="BUSINESS TJEDNIK — Lider, Jutarnji, Poslovni i Forbes kroz tjednu kritiku. Klik otvara tjednik.">
       <img class="amc-tile-img" src="/assets/izdanja/tjednik-tile.webp" alt="BUSINESS TJEDNIK — Lider, Jutarnji, Poslovni i Forbes kroz tjednu kritiku. Klik otvara tjednik." width="880" height="587" loading="lazy" decoding="async">
@@ -333,7 +405,7 @@
   <section class="amc-sec" id="deskovi" aria-labelledby="amcSec2">
     <div class="amc-sec-head">
       <div><span class="amc-sec-num">02 · PLOČICE 3 × 3</span><h3 id="amcSec2">Deskovi, tjednik mode i platforme</h3></div>
-      <span class="amc-dim">sport · politika · sigurnost · business · tehnologija · moda</span>
+      <span class="amc-dim">sport · politika · sigurnost · business · tehnologija · moda · putovanja · ljubimci · svijet</span>
     </div>
     <ul class="amc-grid3"><li class="amc-tile">
     <a class="amc-tile-link" href="/izdanja/sport/" aria-label="Sport — desk AKTUAL MEDIA s rezultatima i osvrtima iz svih osam kanala. Klik otvara sportski desk.">
@@ -377,6 +449,27 @@
       <span class="amc-tile-go" aria-hidden="true">→</span>
     </a>
     
+  </li><li class="amc-tile">
+    <a class="amc-tile-link" href="/izdanja/putovanja/" aria-label="Putovanja — desk AKTUAL MEDIA: destinacije, sezona i cijena puta bez vodiča po narudžbi. Klik otvara putni desk.">
+      <img class="amc-tile-img" src="/assets/izdanja/putovanja-tile.webp" alt="Putovanja — desk AKTUAL MEDIA: destinacije, sezona i cijena puta bez vodiča po narudžbi. Klik otvara putni desk." width="880" height="587" loading="lazy" decoding="async">
+      <span class="amc-tile-badge">100 tekstova</span>
+      <span class="amc-tile-go" aria-hidden="true">→</span>
+    </a>
+    
+  </li><li class="amc-tile">
+    <a class="amc-tile-link" href="/izdanja/ljubimci/" aria-label="Ljubimci — desk AKTUAL MEDIA: udomljavanje, veterinarska skrb i gradska pravila. Klik otvara desk ljubimaca.">
+      <img class="amc-tile-img" src="/assets/izdanja/ljubimci-tile.webp" alt="Ljubimci — desk AKTUAL MEDIA: udomljavanje, veterinarska skrb i gradska pravila. Klik otvara desk ljubimaca." width="880" height="587" loading="lazy" decoding="async">
+      <span class="amc-tile-badge">74 tekstova</span>
+      <span class="amc-tile-go" aria-hidden="true">→</span>
+    </a>
+    
+  </li><li class="amc-tile">
+    <a class="amc-tile-link" href="/izdanja/svijet/" aria-label="Svijet — desk AKTUAL MEDIA: globalni okvir za lokalne odluke, od energije do migracija. Klik otvara desk Svijet.">
+      <img class="amc-tile-img" src="/assets/izdanja/svijet-tile.webp" alt="Svijet — desk AKTUAL MEDIA: globalni okvir za lokalne odluke, od energije do migracija. Klik otvara desk Svijet." width="880" height="587" loading="lazy" decoding="async">
+      <span class="amc-tile-badge">526 tekstova</span>
+      <span class="amc-tile-go" aria-hidden="true">→</span>
+    </a>
+    
   </li><li class="amc-tile amc-tile--small">
       <a class="amc-tile-link amc-tile-link--text" href="/galerija/" aria-label="Galerija Nermina Sefića — 63 stranica s portretima i vizualima. Klik otvara galeriju.">
         <span class="amc-tile-kicker">AKTUAL MEDIA</span>
@@ -411,231 +504,231 @@
     </div>
     <div class="amc-river"><ul class="amc-river-col"><li>
       <time datetime="2026-10-19T22:00:00.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-zagreb.pages.dev/clanak/zagreb-2026-10-19-poslovni-hzpp-za-7-4-milijuna-eura-obnavlja-sest-a92efe/">HŽPP za 7,4 milijuna eura obnavlja šest radionica za vlakove</a>
+      <a href="https://gnk-asg.hr/kanal/zagreb/clanak/zagreb-2026-10-19-poslovni-hzpp-za-7-4-milijuna-eura-obnavlja-sest-a92efe/">HŽPP za 7,4 milijuna eura obnavlja šest radionica za vlakove</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL ZAGREB">Poslovni dnevnik · Zagreb</span>
     </li><li>
       <time datetime="2026-10-19T20:48:29.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-beograd.pages.dev/clanak/beograd-2026-10-19-danas-jovanovic-autenticna-desnica-za-odustajanje-62ecac/">Jovanović (Autentična desnica): Za odustajanje od članstva u EU i drugačiji format…</a>
+      <a href="https://gnk-asg.hr/kanal/beograd/clanak/beograd-2026-10-19-danas-jovanovic-autenticna-desnica-za-odustajanje-62ecac/">Jovanović (Autentična desnica): Za odustajanje od članstva u EU i drugačiji format…</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL BEOGRAD">Danas · Beograd</span>
     </li><li>
       <time datetime="2026-10-19T22:00:27.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-sarajevo.pages.dev/clanak/sarajevo-2026-10-19-avaz-tramp-trazi-da-novi-meksiko-odmah-promijeni-6b6735/">Tramp traži da Novi Meksiko odmah promijeni ime u &quot;Nova Amerika&quot;</a>
+      <a href="https://gnk-asg.hr/kanal/sarajevo/clanak/sarajevo-2026-10-19-avaz-tramp-trazi-da-novi-meksiko-odmah-promijeni-6b6735/">Tramp traži da Novi Meksiko odmah promijeni ime u &quot;Nova Amerika&quot;</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL SARAJEVO">Avaz · Sarajevo</span>
     </li><li>
       <time datetime="2026-10-19T21:03:28.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-budimpesta.pages.dev/clanak/budimpesta-2026-10-19-telex-trump-ha-zelenszkij-ram-hallgatott-volna-fa060d/">Trump: Ha Zelenszkij rám hallgatott volna, életben lenne egymillió ember az ő oldalukon</a>
+      <a href="https://gnk-asg.hr/kanal/budimpesta/clanak/budimpesta-2026-10-19-telex-trump-ha-zelenszkij-ram-hallgatott-volna-fa060d/">Trump: Ha Zelenszkij rám hallgatott volna, életben lenne egymillió ember az ő oldalukon</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL BUDAPEST">Telex · Budimpešta</span>
     </li><li>
       <time datetime="2026-10-19T20:52:30.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-ljubljana.pages.dev/clanak/ljubljana-2026-10-19-24ur-novakova-in-biscak-o-rezultatih-a546f3/">Novakova in Biščak o rezultatih referendumov in pretresih pri Demokratih</a>
+      <a href="https://gnk-asg.hr/kanal/ljubljana/clanak/ljubljana-2026-10-19-24ur-novakova-in-biscak-o-rezultatih-a546f3/">Novakova in Biščak o rezultatih referendumov in pretresih pri Demokratih</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL LJUBLJANA">24ur.com · Ljubljana</span>
     </li><li>
       <time datetime="2026-10-19T21:02:07.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-rim.pages.dev/clanak/rim-2026-10-19-adnkronos-news-in-tempo-reale-ultime-notizie-e-video-327309/">News in tempo reale, ultime notizie e video | Adnkronos</a>
+      <a href="https://gnk-asg.hr/kanal/rim/clanak/rim-2026-10-19-adnkronos-news-in-tempo-reale-ultime-notizie-e-video-327309/">News in tempo reale, ultime notizie e video | Adnkronos</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL ROMA">Adnkronos · Rim</span>
     </li><li>
       <time datetime="2026-10-19T21:04:44.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-sofija.pages.dev/clanak/sofija-2026-10-19-sega-sluhove-pratiha-kim-cen-un-v-kita-ska-f92e57/">Слухове пратиха Ким Чен Ун в китайска болница</a>
+      <a href="https://gnk-asg.hr/kanal/sofija/clanak/sofija-2026-10-19-sega-sluhove-pratiha-kim-cen-un-v-kita-ska-f92e57/">Слухове пратиха Ким Чен Ун в китайска болница</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL SOFIJA">Sega.bg · Sofija</span>
     </li><li>
       <time datetime="2026-10-19T23:50:19.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-bukurest.pages.dev/clanak/bukurest-2026-10-19-hotnews-personajul-din-familia-simpson-care-a-f1b38f/">Personajul din Familia Simpson care a „vorbit” din nou, după o pauză de aproape un deceniu</a>
+      <a href="https://gnk-asg.hr/kanal/bukurest/clanak/bukurest-2026-10-19-hotnews-personajul-din-familia-simpson-care-a-f1b38f/">Personajul din Familia Simpson care a „vorbit” din nou, după o pauză de aproape un deceniu</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL BUCUREȘTI">HotNews · Bukurešt</span>
     </li><li>
       <time datetime="2026-10-19T22:00:00.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-zagreb.pages.dev/clanak/zagreb-2026-10-19-poslovni-imamo-prostora-za-jace-oporezivanje-imovine-c1992a/">Imamo prostora za jače oporezivanje imovine, ali i za smanjenje poreza na plaće</a>
+      <a href="https://gnk-asg.hr/kanal/zagreb/clanak/zagreb-2026-10-19-poslovni-imamo-prostora-za-jace-oporezivanje-imovine-c1992a/">Imamo prostora za jače oporezivanje imovine, ali i za smanjenje poreza na plaće</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL ZAGREB">Poslovni dnevnik · Zagreb</span>
     </li><li>
       <time datetime="2026-10-19T20:39:05.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-beograd.pages.dev/clanak/beograd-2026-10-19-danas-rektor-dokic-u-nisu-partija-na-vlasti-213dab/">Rektor Đokić u Nišu: Partija na vlasti pokušava da uruši Univerzitet i čitav obrazovni…</a>
+      <a href="https://gnk-asg.hr/kanal/beograd/clanak/beograd-2026-10-19-danas-rektor-dokic-u-nisu-partija-na-vlasti-213dab/">Rektor Đokić u Nišu: Partija na vlasti pokušava da uruši Univerzitet i čitav obrazovni…</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL BEOGRAD">Danas · Beograd</span>
     </li><li>
       <time datetime="2026-10-19T21:34:52.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-sarajevo.pages.dev/clanak/sarajevo-2026-10-19-avaz-video-par-u-francuskoj-snimljen-kako-uziva-12aafe/">Video / Par u Francuskoj snimljen kako uživa u piću dok Pariz gori</a>
+      <a href="https://gnk-asg.hr/kanal/sarajevo/clanak/sarajevo-2026-10-19-avaz-video-par-u-francuskoj-snimljen-kako-uziva-12aafe/">Video / Par u Francuskoj snimljen kako uživa u piću dok Pariz gori</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL SARAJEVO">Avaz · Sarajevo</span>
     </li><li>
       <time datetime="2026-10-19T20:40:31.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-budimpesta.pages.dev/clanak/budimpesta-2026-10-19-telex-azonnali-beremelesert-tuntettek-a-csalodott-a3a3cd/">Azonnali béremelésért tüntettek a csalódott közgyűjteményi, könyvtári és közművelődési…</a>
+      <a href="https://gnk-asg.hr/kanal/budimpesta/clanak/budimpesta-2026-10-19-telex-azonnali-beremelesert-tuntettek-a-csalodott-a3a3cd/">Azonnali béremelésért tüntettek a csalódott közgyűjteményi, könyvtári és közművelődési…</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL BUDAPEST">Telex · Budimpešta</span>
     </li><li>
       <time datetime="2026-10-19T20:45:00.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-ljubljana.pages.dev/clanak/ljubljana-2026-10-19-slovenskenovice-globoke-sanje-a5c1ce/">Globoke sanje ...</a>
+      <a href="https://gnk-asg.hr/kanal/ljubljana/clanak/ljubljana-2026-10-19-slovenskenovice-globoke-sanje-a5c1ce/">Globoke sanje ...</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL LJUBLJANA">Slovenske novice · Ljubljana</span>
     </li><li>
       <time datetime="2026-10-19T20:59:42.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-rim.pages.dev/clanak/rim-2026-10-19-adnkronos-totti-il-28-maggio-e-stato-come-morire-un-5e3a2c/">Totti: &quot;Il 28 maggio è stato come morire, un addio forzato. Tornare alla Roma? Le cose si…</a>
+      <a href="https://gnk-asg.hr/kanal/rim/clanak/rim-2026-10-19-adnkronos-totti-il-28-maggio-e-stato-come-morire-un-5e3a2c/">Totti: &quot;Il 28 maggio è stato come morire, un addio forzato. Tornare alla Roma? Le cose si…</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL ROMA">Adnkronos · Rim</span>
     </li><li>
       <time datetime="2026-10-19T20:30:00.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-sofija.pages.dev/clanak/sofija-2026-10-19-actualno-sestima-zaginali-sred-t-h-bebe-ma-ka-mu-i-dc5d35/">Шестима загинали, сред тях бебе, майка му и 11-годишно момиче, след руска атака срещу парк…</a>
+      <a href="https://gnk-asg.hr/kanal/sofija/clanak/sofija-2026-10-19-actualno-sestima-zaginali-sred-t-h-bebe-ma-ka-mu-i-dc5d35/">Шестима загинали, сред тях бебе, майка му и 11-годишно момиче, след руска атака срещу парк…</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL SOFIJA">Actualno.com · Sofija</span>
     </li><li>
       <time datetime="2026-10-19T23:42:24.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-bukurest.pages.dev/clanak/bukurest-2026-10-19-hotnews-a-fost-ca-o-adevarata-tornada-ce-se-953ef1/">„A fost ca o adevărată tornadă”. Ce se întâmplă acum în Franța, după un weekend plin de…</a>
+      <a href="https://gnk-asg.hr/kanal/bukurest/clanak/bukurest-2026-10-19-hotnews-a-fost-ca-o-adevarata-tornada-ce-se-953ef1/">„A fost ca o adevărată tornadă”. Ce se întâmplă acum în Franța, după un weekend plin de…</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL BUCUREȘTI">HotNews · Bukurešt</span>
     </li><li>
       <time datetime="2026-10-19T22:00:00.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-zagreb.pages.dev/clanak/zagreb-2026-10-19-poslovni-hrvatski-proizvodaci-hrane-u-parizu-traze-cbbc1d/">Hrvatski proizvođači hrane u Parizu traže put do novih tržišta</a>
+      <a href="https://gnk-asg.hr/kanal/zagreb/clanak/zagreb-2026-10-19-poslovni-hrvatski-proizvodaci-hrane-u-parizu-traze-cbbc1d/">Hrvatski proizvođači hrane u Parizu traže put do novih tržišta</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL ZAGREB">Poslovni dnevnik · Zagreb</span>
     </li><li>
       <time datetime="2026-10-19T20:38:09.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-beograd.pages.dev/clanak/beograd-2026-10-19-n1-vreme-ruling-party-also-set-to-hold-588670/">Vreme: Ruling party also set to hold Belgrade rally on Thursday</a>
+      <a href="https://gnk-asg.hr/kanal/beograd/clanak/beograd-2026-10-19-n1-vreme-ruling-party-also-set-to-hold-588670/">Vreme: Ruling party also set to hold Belgrade rally on Thursday</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL BEOGRAD">N1 Srbija · Beograd</span>
     </li><li>
       <time datetime="2026-10-19T21:30:41.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-sarajevo.pages.dev/clanak/sarajevo-2026-10-19-avaz-maja-suput-otkrila-kako-ju-je-osvojio-17-6882b9/">Maja Šuput otkrila kako ju je osvojio 17 godina mlađi partner: &quot;Bio je stvarno uporan&quot;</a>
+      <a href="https://gnk-asg.hr/kanal/sarajevo/clanak/sarajevo-2026-10-19-avaz-maja-suput-otkrila-kako-ju-je-osvojio-17-6882b9/">Maja Šuput otkrila kako ju je osvojio 17 godina mlađi partner: &quot;Bio je stvarno uporan&quot;</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL SARAJEVO">Avaz · Sarajevo</span>
     </li></ul><ul class="amc-river-col"><li>
       <time datetime="2026-10-19T20:37:05.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-budimpesta.pages.dev/clanak/budimpesta-2026-10-19-telex-szemkiloves-gyujtogatas-uszitas-mindenki-00dab2/">Szemkilövés, gyújtogatás, uszítás – mindenki mást emelt ki az erőszakba torkolló francia…</a>
+      <a href="https://gnk-asg.hr/kanal/budimpesta/clanak/budimpesta-2026-10-19-telex-szemkiloves-gyujtogatas-uszitas-mindenki-00dab2/">Szemkilövés, gyújtogatás, uszítás – mindenki mást emelt ki az erőszakba torkolló francia…</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL BUDAPEST">Telex · Budimpešta</span>
     </li><li>
       <time datetime="2026-10-19T20:38:31.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-ljubljana.pages.dev/clanak/ljubljana-2026-10-19-delo-milijon-razlogov-za-nasmeh-otrok-iz-1e7f74/">Milijon razlogov za nasmeh otrok iz socialno šibkih okolij</a>
+      <a href="https://gnk-asg.hr/kanal/ljubljana/clanak/ljubljana-2026-10-19-delo-milijon-razlogov-za-nasmeh-otrok-iz-1e7f74/">Milijon razlogov za nasmeh otrok iz socialno šibkih okolij</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL LJUBLJANA">Delo · Ljubljana</span>
     </li><li>
       <time datetime="2026-10-19T20:56:58.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-rim.pages.dev/clanak/rim-2026-10-19-repubblica-la-protesta-dei-tir-si-allarga-picchetti-0f4607/">La protesta dei tir si allarga, picchetti alle porte di Roma: “Dobbiamo fermarci tutti”</a>
+      <a href="https://gnk-asg.hr/kanal/rim/clanak/rim-2026-10-19-repubblica-la-protesta-dei-tir-si-allarga-picchetti-0f4607/">La protesta dei tir si allarga, picchetti alle porte di Roma: “Dobbiamo fermarci tutti”</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL ROMA">la Repubblica · Rim</span>
     </li><li>
       <time datetime="2026-10-19T20:13:00.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-sofija.pages.dev/clanak/sofija-2026-10-19-actualno-prognoza-za-vremeto-20-oktomvri-2026-g-db086f/">Прогноза за времето - 20 октомври 2026 г. (вторник)</a>
+      <a href="https://gnk-asg.hr/kanal/sofija/clanak/sofija-2026-10-19-actualno-prognoza-za-vremeto-20-oktomvri-2026-g-db086f/">Прогноза за времето - 20 октомври 2026 г. (вторник)</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL SOFIJA">Actualno.com · Sofija</span>
     </li><li>
       <time datetime="2026-10-19T23:22:00.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-bukurest.pages.dev/clanak/bukurest-2026-10-19-hotnews-cleric-roman-arestat-in-grecia-de-ce-era-020a7e/">Cleric român, arestat în Grecia. De ce era căutat la nivel european</a>
+      <a href="https://gnk-asg.hr/kanal/bukurest/clanak/bukurest-2026-10-19-hotnews-cleric-roman-arestat-in-grecia-de-ce-era-020a7e/">Cleric român, arestat în Grecia. De ce era căutat la nivel european</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL BUCUREȘTI">HotNews · Bukurešt</span>
     </li><li>
       <time datetime="2026-10-19T22:00:00.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-zagreb.pages.dev/clanak/zagreb-2026-10-19-poslovni-zagrebackoj-zracnoj-luci-promet-pada-vec-cbbe10/">Zagrebačkoj zračnoj luci promet pada već tri uzastopna mjeseca</a>
+      <a href="https://gnk-asg.hr/kanal/zagreb/clanak/zagreb-2026-10-19-poslovni-zagrebackoj-zracnoj-luci-promet-pada-vec-cbbe10/">Zagrebačkoj zračnoj luci promet pada već tri uzastopna mjeseca</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL ZAGREB">Poslovni dnevnik · Zagreb</span>
     </li><li>
       <time datetime="2026-10-19T20:37:48.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-beograd.pages.dev/clanak/beograd-2026-10-19-n1-dacic-nasa-politika-nespojiva-sa-politikom-843146/">Dačić: Naša politika nespojiva sa politikom &quot;blokaderske liste&quot; - koja želi da uništi SPS</a>
+      <a href="https://gnk-asg.hr/kanal/beograd/clanak/beograd-2026-10-19-n1-dacic-nasa-politika-nespojiva-sa-politikom-843146/">Dačić: Naša politika nespojiva sa politikom &quot;blokaderske liste&quot; - koja želi da uništi SPS</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL BEOGRAD">N1 Srbija · Beograd</span>
     </li><li>
       <time datetime="2026-10-19T21:24:52.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-sarajevo.pages.dev/clanak/sarajevo-2026-10-19-avaz-ibrahimovic-otvorena-pitanja-s-hrvatskom-su-f448d1/">Ibrahimović: Otvorena pitanja s Hrvatskom su blizu rješenja</a>
+      <a href="https://gnk-asg.hr/kanal/sarajevo/clanak/sarajevo-2026-10-19-avaz-ibrahimovic-otvorena-pitanja-s-hrvatskom-su-f448d1/">Ibrahimović: Otvorena pitanja s Hrvatskom su blizu rješenja</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL SARAJEVO">Avaz · Sarajevo</span>
     </li><li>
       <time datetime="2026-10-19T20:30:00.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-budimpesta.pages.dev/clanak/budimpesta-2026-10-19-portfolio-magyar-peter-bejelenteseket-tett-mutatjuk-324c3a/">Magyar Péter bejelentéseket tett - Mutatjuk, hogy reagált a tőzsde</a>
+      <a href="https://gnk-asg.hr/kanal/budimpesta/clanak/budimpesta-2026-10-19-portfolio-magyar-peter-bejelenteseket-tett-mutatjuk-324c3a/">Magyar Péter bejelentéseket tett - Mutatjuk, hogy reagált a tőzsde</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL BUDAPEST">Portfolio · Budimpešta</span>
     </li><li>
       <time datetime="2026-10-19T20:34:51.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-ljubljana.pages.dev/clanak/ljubljana-2026-10-19-n1si-papez-leon-xiv-z-zelenskim-govoril-o-pomoci-0b52dd/">Papež Leon XIV. z Zelenskim govoril o pomoči obleganemu ukrajinskemu mestu Oleški</a>
+      <a href="https://gnk-asg.hr/kanal/ljubljana/clanak/ljubljana-2026-10-19-n1si-papez-leon-xiv-z-zelenskim-govoril-o-pomoci-0b52dd/">Papež Leon XIV. z Zelenskim govoril o pomoči obleganemu ukrajinskemu mestu Oleški</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL LJUBLJANA">N1 Slovenija · Ljubljana</span>
     </li><li>
       <time datetime="2026-10-19T20:53:33.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-rim.pages.dev/clanak/rim-2026-10-19-ansa-media-kushner-witkoff-questa-settimana-in-a7f575/">Media, Kushner-Witkoff questa settimana in Norvegia per negoziati su Ucraina</a>
+      <a href="https://gnk-asg.hr/kanal/rim/clanak/rim-2026-10-19-ansa-media-kushner-witkoff-questa-settimana-in-a7f575/">Media, Kushner-Witkoff questa settimana in Norvegia per negoziati su Ucraina</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL ROMA">ANSA · Rim</span>
     </li><li>
       <time datetime="2026-10-19T20:04:00.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-sofija.pages.dev/clanak/sofija-2026-10-19-dnevnikbg-tr-mp-podnovi-natiska-zelenski-da-se-7c238e/">Тръмп поднови натиска Зеленски да се оттегли</a>
+      <a href="https://gnk-asg.hr/kanal/sofija/clanak/sofija-2026-10-19-dnevnikbg-tr-mp-podnovi-natiska-zelenski-da-se-7c238e/">Тръмп поднови натиска Зеленски да се оттегли</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL SOFIJA">Dnevnik · Sofija</span>
     </li><li>
       <time datetime="2026-10-19T23:05:09.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-bukurest.pages.dev/clanak/bukurest-2026-10-19-hotnews-modelele-ai-de-la-deepseek-interzise-in-bf8db2/">Modelele AI de la DeepSeek, interzise în guvernul american</a>
+      <a href="https://gnk-asg.hr/kanal/bukurest/clanak/bukurest-2026-10-19-hotnews-modelele-ai-de-la-deepseek-interzise-in-bf8db2/">Modelele AI de la DeepSeek, interzise în guvernul american</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL BUCUREȘTI">HotNews · Bukurešt</span>
     </li><li>
       <time datetime="2026-10-19T22:00:00.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-zagreb.pages.dev/clanak/zagreb-2026-10-19-poslovni-prijevoz-poskupio-16-posto-a12516/">Prijevoz poskupio 16 posto</a>
+      <a href="https://gnk-asg.hr/kanal/zagreb/clanak/zagreb-2026-10-19-poslovni-prijevoz-poskupio-16-posto-a12516/">Prijevoz poskupio 16 posto</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL ZAGREB">Poslovni dnevnik · Zagreb</span>
     </li><li>
       <time datetime="2026-10-19T20:37:12.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-beograd.pages.dev/clanak/beograd-2026-10-19-n1-rektor-dokic-partija-na-vlasti-pokusava-da-bf3a05/">Rektor Đokić: Partija na vlasti pokušava da uruši Univerzitet i čitav obrazovni sistem</a>
+      <a href="https://gnk-asg.hr/kanal/beograd/clanak/beograd-2026-10-19-n1-rektor-dokic-partija-na-vlasti-pokusava-da-bf3a05/">Rektor Đokić: Partija na vlasti pokušava da uruši Univerzitet i čitav obrazovni sistem</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL BEOGRAD">N1 Srbija · Beograd</span>
     </li><li>
       <time datetime="2026-10-19T21:19:58.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-sarajevo.pages.dev/clanak/sarajevo-2026-10-19-avaz-okoncana-burna-rasprava-u-zenici-nema-nista-f7dd2c/">Okončana burna rasprava u Zenici: Nema ništa od poskupljenja grijanja za 35 posto, večeras…</a>
+      <a href="https://gnk-asg.hr/kanal/sarajevo/clanak/sarajevo-2026-10-19-avaz-okoncana-burna-rasprava-u-zenici-nema-nista-f7dd2c/">Okončana burna rasprava u Zenici: Nema ništa od poskupljenja grijanja za 35 posto, večeras…</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL SARAJEVO">Avaz · Sarajevo</span>
     </li><li>
       <time datetime="2026-10-19T20:23:32.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-budimpesta.pages.dev/clanak/budimpesta-2026-10-19-telex-191-ember-megoleseben-talaltak-bunosnek-a-ed9f8a/">191 ember megölésében találták bűnösnek a kenyai szektavezért, aki híveit az éhhalálba…</a>
+      <a href="https://gnk-asg.hr/kanal/budimpesta/clanak/budimpesta-2026-10-19-telex-191-ember-megoleseben-talaltak-bunosnek-a-ed9f8a/">191 ember megölésében találták bűnösnek a kenyai szektavezért, aki híveit az éhhalálba…</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL BUDAPEST">Telex · Budimpešta</span>
     </li><li>
       <time datetime="2026-10-19T20:33:00.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-ljubljana.pages.dev/clanak/ljubljana-2026-10-19-siol-tine-urnaut-zbral-vec-kot-230-tisoc-evrov-69ab44/">Tine Urnaut zbral več kot 230 tisoč evrov, zdaj je na vrsti Anže Kopitar</a>
+      <a href="https://gnk-asg.hr/kanal/ljubljana/clanak/ljubljana-2026-10-19-siol-tine-urnaut-zbral-vec-kot-230-tisoc-evrov-69ab44/">Tine Urnaut zbral več kot 230 tisoč evrov, zdaj je na vrsti Anže Kopitar</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL LJUBLJANA">Siol.net · Ljubljana</span>
     </li><li>
       <time datetime="2026-10-19T20:43:56.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-rim.pages.dev/clanak/rim-2026-10-19-adnkronos-manovra-ok-in-cdm-slitta-atteso-confronto-9e6523/">Manovra, ok in Cdm slitta: atteso confronto con Ue</a>
+      <a href="https://gnk-asg.hr/kanal/rim/clanak/rim-2026-10-19-adnkronos-manovra-ok-in-cdm-slitta-atteso-confronto-9e6523/">Manovra, ok in Cdm slitta: atteso confronto con Ue</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL ROMA">Adnkronos · Rim</span>
     </li></ul><ul class="amc-river-col"><li>
       <time datetime="2026-10-19T20:01:00.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-sofija.pages.dev/clanak/sofija-2026-10-19-actualno-b-lgarski-s-d-e-izdal-evrope-ska-zapoved-za-49c781/">Български съд е издал европейска заповед за арест за двама, заподозрени в палежа на…</a>
+      <a href="https://gnk-asg.hr/kanal/sofija/clanak/sofija-2026-10-19-actualno-b-lgarski-s-d-e-izdal-evrope-ska-zapoved-za-49c781/">Български съд е издал европейска заповед за арест за двама, заподозрени в палежа на…</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL SOFIJA">Actualno.com · Sofija</span>
     </li><li>
       <time datetime="2026-10-19T22:45:22.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-bukurest.pages.dev/clanak/bukurest-2026-10-19-hotnews-kelemen-hunor-caracterizare-a-presedintelui-c2f853/">Kelemen Hunor, caracterizare a președintelui Nicușor Dan: „El are un anumit ritm, care…</a>
+      <a href="https://gnk-asg.hr/kanal/bukurest/clanak/bukurest-2026-10-19-hotnews-kelemen-hunor-caracterizare-a-presedintelui-c2f853/">Kelemen Hunor, caracterizare a președintelui Nicușor Dan: „El are un anumit ritm, care…</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL BUCUREȘTI">HotNews · Bukurešt</span>
     </li><li>
       <time datetime="2026-10-19T22:00:00.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-zagreb.pages.dev/clanak/zagreb-2026-10-19-poslovni-vladi-dali-rok-a-najavljuju-prosvjed-i-6d8595/">Vladi dali rok, a najavljuju prosvjed i dopis europskim institucijama</a>
+      <a href="https://gnk-asg.hr/kanal/zagreb/clanak/zagreb-2026-10-19-poslovni-vladi-dali-rok-a-najavljuju-prosvjed-i-6d8595/">Vladi dali rok, a najavljuju prosvjed i dopis europskim institucijama</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL ZAGREB">Poslovni dnevnik · Zagreb</span>
     </li><li>
       <time datetime="2026-10-19T20:30:17.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-beograd.pages.dev/clanak/beograd-2026-10-19-danas-dva-scenarija-za-izbore-124dd6/">Dva scenarija za izbore</a>
+      <a href="https://gnk-asg.hr/kanal/beograd/clanak/beograd-2026-10-19-danas-dva-scenarija-za-izbore-124dd6/">Dva scenarija za izbore</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL BEOGRAD">Danas · Beograd</span>
     </li><li>
       <time datetime="2026-10-19T21:15:31.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-sarajevo.pages.dev/clanak/sarajevo-2026-10-19-avaz-huti-balistickim-raketama-pogodili-kamp-za-e541cd/">Huti balističkim raketama pogodili kamp za obuku prosaudijskih vojnika: Najmanje 53…</a>
+      <a href="https://gnk-asg.hr/kanal/sarajevo/clanak/sarajevo-2026-10-19-avaz-huti-balistickim-raketama-pogodili-kamp-za-e541cd/">Huti balističkim raketama pogodili kamp za obuku prosaudijskih vojnika: Najmanje 53…</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL SARAJEVO">Avaz · Sarajevo</span>
     </li><li>
       <time datetime="2026-10-19T20:19:14.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-budimpesta.pages.dev/clanak/budimpesta-2026-10-19-telex-mar-fenn-is-vannak-a-vinteden-a-eeb64d/">Már fenn is vannak a Vinteden a franciaországi fosztogatásokban szerzett holmik</a>
+      <a href="https://gnk-asg.hr/kanal/budimpesta/clanak/budimpesta-2026-10-19-telex-mar-fenn-is-vannak-a-vinteden-a-eeb64d/">Már fenn is vannak a Vinteden a franciaországi fosztogatásokban szerzett holmik</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL BUDAPEST">Telex · Budimpešta</span>
     </li><li>
       <time datetime="2026-10-19T20:25:00.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-ljubljana.pages.dev/clanak/ljubljana-2026-10-19-slovenskenovice-kolumna-gorazda-nejedlyja-ne-trzna-takticna-e6d10a/">Kolumna Gorazda Nejedlyja: (Ne)tržna taktična kultura</a>
+      <a href="https://gnk-asg.hr/kanal/ljubljana/clanak/ljubljana-2026-10-19-slovenskenovice-kolumna-gorazda-nejedlyja-ne-trzna-takticna-e6d10a/">Kolumna Gorazda Nejedlyja: (Ne)tržna taktična kultura</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL LJUBLJANA">Slovenske novice · Ljubljana</span>
     </li><li>
       <time datetime="2026-10-19T20:40:39.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-rim.pages.dev/clanak/rim-2026-10-19-ansa-calcio-parma-torino-0-3-a77153/">Calcio: Parma-Torino 0-3</a>
+      <a href="https://gnk-asg.hr/kanal/rim/clanak/rim-2026-10-19-ansa-calcio-parma-torino-0-3-a77153/">Calcio: Parma-Torino 0-3</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL ROMA">ANSA · Rim</span>
     </li><li>
       <time datetime="2026-10-19T20:00:00.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-sofija.pages.dev/clanak/sofija-2026-10-19-actualno-radar-za-ikonomika-na-vaznite-novini-na-19-d2b4e4/">Радар за икономика: Най-важните новини на 19 октомври 2026 г.</a>
+      <a href="https://gnk-asg.hr/kanal/sofija/clanak/sofija-2026-10-19-actualno-radar-za-ikonomika-na-vaznite-novini-na-19-d2b4e4/">Радар за икономика: Най-важните новини на 19 октомври 2026 г.</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL SOFIJA">Actualno.com · Sofija</span>
     </li><li>
       <time datetime="2026-10-19T22:32:48.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-bukurest.pages.dev/clanak/bukurest-2026-10-19-hotnews-china-decizie-majora-privind-exportul-de-9d274d/">China, decizie majoră privind exportul de drone. „Demonstrează opoziţia noastră fermă”</a>
+      <a href="https://gnk-asg.hr/kanal/bukurest/clanak/bukurest-2026-10-19-hotnews-china-decizie-majora-privind-exportul-de-9d274d/">China, decizie majoră privind exportul de drone. „Demonstrează opoziţia noastră fermă”</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL BUCUREȘTI">HotNews · Bukurešt</span>
     </li><li>
       <time datetime="2026-10-19T22:00:00.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-zagreb.pages.dev/clanak/zagreb-2026-10-19-poslovni-europljani-vjeruju-u-ai-hrvatska-zaostaje-u-58256e/">Europljani vjeruju u AI, Hrvatska zaostaje u opsežnijoj primjeni</a>
+      <a href="https://gnk-asg.hr/kanal/zagreb/clanak/zagreb-2026-10-19-poslovni-europljani-vjeruju-u-ai-hrvatska-zaostaje-u-58256e/">Europljani vjeruju u AI, Hrvatska zaostaje u opsežnijoj primjeni</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL ZAGREB">Poslovni dnevnik · Zagreb</span>
     </li><li>
       <time datetime="2026-10-19T20:28:54.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-beograd.pages.dev/clanak/beograd-2026-10-19-n1-kragujevcani-podrzali-studente-pristalice-a54793/">Kragujevčani podržali studente, pristalice SNS-a došle nakon završetka skupa</a>
+      <a href="https://gnk-asg.hr/kanal/beograd/clanak/beograd-2026-10-19-n1-kragujevcani-podrzali-studente-pristalice-a54793/">Kragujevčani podržali studente, pristalice SNS-a došle nakon završetka skupa</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL BEOGRAD">N1 Srbija · Beograd</span>
     </li><li>
       <time datetime="2026-10-19T21:15:30.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-sarajevo.pages.dev/clanak/sarajevo-2026-10-19-avaz-dionice-igmana-niko-nije-kupio-za-4-6-649e02/">Dionice Igmana niko nije kupio za 4,6 miliona KM: Čeka se ponuda za preuzimanje kompanije</a>
+      <a href="https://gnk-asg.hr/kanal/sarajevo/clanak/sarajevo-2026-10-19-avaz-dionice-igmana-niko-nije-kupio-za-4-6-649e02/">Dionice Igmana niko nije kupio za 4,6 miliona KM: Čeka se ponuda za preuzimanje kompanije</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL SARAJEVO">Avaz · Sarajevo</span>
     </li><li>
       <time datetime="2026-10-19T20:16:00.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-budimpesta.pages.dev/clanak/budimpesta-2026-10-19-portfolio-megszolalt-az-osztrak-oriasceg-atvennek-a-1b3732/">Megszólalt az osztrák óriáscég: átvennék a dolgozókat a kegyvesztett magyar vállalattól</a>
+      <a href="https://gnk-asg.hr/kanal/budimpesta/clanak/budimpesta-2026-10-19-portfolio-megszolalt-az-osztrak-oriasceg-atvennek-a-1b3732/">Megszólalt az osztrák óriáscég: átvennék a dolgozókat a kegyvesztett magyar vállalattól</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL BUDAPEST">Portfolio · Budimpešta</span>
     </li><li>
       <time datetime="2026-10-19T20:14:00.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-ljubljana.pages.dev/clanak/ljubljana-2026-10-19-delo-sovretova-nagrada-domnu-kavcicu-za-prevod-c286b6/">Sovretova nagrada Domnu Kavčiču za prevod romana Yoko Tawada</a>
+      <a href="https://gnk-asg.hr/kanal/ljubljana/clanak/ljubljana-2026-10-19-delo-sovretova-nagrada-domnu-kavcicu-za-prevod-c286b6/">Sovretova nagrada Domnu Kavčiču za prevod romana Yoko Tawada</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL LJUBLJANA">Delo · Ljubljana</span>
     </li><li>
       <time datetime="2026-10-19T20:38:35.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-rim.pages.dev/clanak/rim-2026-10-19-adnkronos-nicla-ozenda-lascia-la-ruota-della-fortuna-8a63ea/">Nicla Ozenda lascia la Ruota della fortuna: &quot;Ho una cisti alle corde vocali, devo operarmi&quot;</a>
+      <a href="https://gnk-asg.hr/kanal/rim/clanak/rim-2026-10-19-adnkronos-nicla-ozenda-lascia-la-ruota-della-fortuna-8a63ea/">Nicla Ozenda lascia la Ruota della fortuna: &quot;Ho una cisti alle corde vocali, devo operarmi&quot;</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL ROMA">Adnkronos · Rim</span>
     </li><li>
       <time datetime="2026-10-19T19:48:00.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-sofija.pages.dev/clanak/sofija-2026-10-19-dnevnikbg-tazi-sedmica-zapocva-remont-t-na-p-t-mezdu-b43cb6/">Тази седмица започва ремонтът на пътя между София и Перник в участъка край Владая</a>
+      <a href="https://gnk-asg.hr/kanal/sofija/clanak/sofija-2026-10-19-dnevnikbg-tazi-sedmica-zapocva-remont-t-na-p-t-mezdu-b43cb6/">Тази седмица започва ремонтът на пътя между София и Перник в участъка край Владая</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL SOFIJA">Dnevnik · Sofija</span>
     </li><li>
       <time datetime="2026-10-19T22:11:46.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-bukurest.pages.dev/clanak/bukurest-2026-10-19-hotnews-unde-se-va-tine-summitul-ue-din-martie-se-2e7cc1/">Unde se va ține summitul UE din martie. Se împlinesc 70 de ani de la tratatul fondator</a>
+      <a href="https://gnk-asg.hr/kanal/bukurest/clanak/bukurest-2026-10-19-hotnews-unde-se-va-tine-summitul-ue-din-martie-se-2e7cc1/">Unde se va ține summitul UE din martie. Se împlinesc 70 de ani de la tratatul fondator</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL BUCUREȘTI">HotNews · Bukurešt</span>
     </li><li>
       <time datetime="2026-10-19T22:00:00.000Z">19. 10.</time>
-      <a href="https://gnk-asg-kanal-zagreb.pages.dev/clanak/zagreb-2026-10-19-poslovni-pocinje-novi-ciklus-radionica-o-ai-ju-za-01384b/">Počinje novi ciklus radionica o AI-ju za učenike</a>
+      <a href="https://gnk-asg.hr/kanal/zagreb/clanak/zagreb-2026-10-19-poslovni-pocinje-novi-ciklus-radionica-o-ai-ju-za-01384b/">Počinje novi ciklus radionica o AI-ju za učenike</a>
       <span class="amc-river-src" title="AKTUAL MEDIA KANAL ZAGREB">Poslovni dnevnik · Zagreb</span>
     </li></ul></div>
     <p class="amc-note">Mravinjak je naš dnevni pogon: osam kanala čita javne feedove, sitemape i API-je svojih medija, sprema naslov, sažetak, datum i poveznicu na izvornik te iz toga gradi osvrt na način izvještavanja. Tekstovi se ne preuzimaju u cijelosti; svaki zapis vodi na izvornik, a tvrdnje izvora nisu tvrdnje redakcije. Sport 211 · Politika 484 · Sigurnost, rat i potresi 313 · Moda i stil 36.</p>
@@ -656,6 +749,7 @@
       <li><a href="/knowledge-center/">Centar znanja</a></li>
       <li><a href="/digital-workforce/">Digitalna radna snaga</a></li>
       <li><a href="https://gnk-asg-tjednik.pages.dev/" rel="external noopener">BUSINESS TJEDNIK ↗</a></li>
+      <li><a href="https://gnk-asg-tjednik.pages.dev/tjednik/2026-W43/" rel="external noopener"><strong>Tjednik 2026-W43 — ovaj tjedan ↗</strong></a></li>
       <li><a href="https://gnk-asg-tjednik.pages.dev/izvori/lider/" rel="external noopener">Lider ↗</a></li>
       <li><a href="https://gnk-asg-tjednik.pages.dev/izvori/jutarnji/" rel="external noopener">Jutarnji list ↗</a></li>
       <li><a href="https://gnk-asg-tjednik.pages.dev/izvori/poslovni/" rel="external noopener">Poslovni dnevnik ↗</a></li>
@@ -672,7 +766,7 @@
     <p class="amc-note">Urednik i direktor izdanja je <strong>Nermin Sefić</strong>. Za autora se koriste oznake #NerminSefić, #NerminSefic, #SeficNermin i #SEFICNERMIN. Kontakt: <a href="mailto:info@gnk-asg.hr">info@gnk-asg.hr</a>.</p>
   </section>
 </section>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"AKTUAL MEDIA — sve na jednom mjestu","url":"https://gnk-asg.hr/gnk-aktual/","inLanguage":"hr","description":"Osam gradskih izdanja, šest deskova, poslovni tjednik, galerija, radio i centar znanja na jednoj stranici.","about":{"@type":"Organization","name":"AKTUAL MEDIA d.o.o.","url":"https://gnk-asg.hr/"},"editor":{"@type":"Person","name":"Nermin Sefić","jobTitle":"Urednik i direktor","url":"https://gnk-asg.hr/nermin-sefic/"},"hasPart":[{"@type":"WebSite","name":"AKTUAL MEDIA KANAL ZAGREB","url":"https://gnk-asg-kanal-zagreb.pages.dev/","inLanguage":"hr"},{"@type":"WebSite","name":"AKTUAL MEDIA KANAL BEOGRAD","url":"https://gnk-asg-kanal-beograd.pages.dev/","inLanguage":"sr"},{"@type":"WebSite","name":"AKTUAL MEDIA KANAL SARAJEVO","url":"https://gnk-asg-kanal-sarajevo.pages.dev/","inLanguage":"bs"},{"@type":"WebSite","name":"AKTUAL MEDIA KANAL BUDAPEST","url":"https://gnk-asg-kanal-budimpesta.pages.dev/","inLanguage":"hu"},{"@type":"WebSite","name":"AKTUAL MEDIA KANAL LJUBLJANA","url":"https://gnk-asg-kanal-ljubljana.pages.dev/","inLanguage":"sl"},{"@type":"WebSite","name":"AKTUAL MEDIA KANAL ROMA","url":"https://gnk-asg-kanal-rim.pages.dev/","inLanguage":"it"},{"@type":"WebSite","name":"AKTUAL MEDIA KANAL SOFIJA","url":"https://gnk-asg-kanal-sofija.pages.dev/","inLanguage":"bg"},{"@type":"WebSite","name":"AKTUAL MEDIA KANAL BUCUREȘTI","url":"https://gnk-asg-kanal-bukurest.pages.dev/","inLanguage":"ro"}],"mainEntity":{"@type":"ItemList","numberOfItems":15,"itemListElement":[{"@type":"ListItem","position":1,"name":"AKTUAL MEDIA KANAL ZAGREB","url":"https://gnk-asg-kanal-zagreb.pages.dev/"},{"@type":"ListItem","position":2,"name":"AKTUAL MEDIA KANAL BEOGRAD","url":"https://gnk-asg-kanal-beograd.pages.dev/"},{"@type":"ListItem","position":3,"name":"AKTUAL MEDIA KANAL SARAJEVO","url":"https://gnk-asg-kanal-sarajevo.pages.dev/"},{"@type":"ListItem","position":4,"name":"AKTUAL MEDIA KANAL BUDAPEST","url":"https://gnk-asg-kanal-budimpesta.pages.dev/"},{"@type":"ListItem","position":5,"name":"AKTUAL MEDIA KANAL LJUBLJANA","url":"https://gnk-asg-kanal-ljubljana.pages.dev/"},{"@type":"ListItem","position":6,"name":"AKTUAL MEDIA KANAL ROMA","url":"https://gnk-asg-kanal-rim.pages.dev/"},{"@type":"ListItem","position":7,"name":"AKTUAL MEDIA KANAL SOFIJA","url":"https://gnk-asg-kanal-sofija.pages.dev/"},{"@type":"ListItem","position":8,"name":"AKTUAL MEDIA KANAL BUCUREȘTI","url":"https://gnk-asg-kanal-bukurest.pages.dev/"},{"@type":"ListItem","position":9,"name":"SPORT","url":"https://gnk-asg.hr/izdanja/sport/"},{"@type":"ListItem","position":10,"name":"POLITIKA","url":"https://gnk-asg.hr/izdanja/politika/"},{"@type":"ListItem","position":11,"name":"SIGURNOST","url":"https://gnk-asg.hr/izdanja/sigurnost/"},{"@type":"ListItem","position":12,"name":"BIZNIS","url":"https://gnk-asg.hr/izdanja/biznis/"},{"@type":"ListItem","position":13,"name":"TEHNOLOGIJA","url":"https://gnk-asg.hr/izdanja/tehnologija/"},{"@type":"ListItem","position":14,"name":"MODA","url":"https://gnk-asg.hr/izdanja/moda/"}]}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"AKTUAL MEDIA — sve na jednom mjestu","url":"https://gnk-asg.hr/gnk-aktual/","inLanguage":"hr","description":"Osam gradskih izdanja, šest deskova, poslovni tjednik, galerija, radio i centar znanja na jednoj stranici.","about":{"@type":"Organization","name":"AKTUAL MEDIA d.o.o.","url":"https://gnk-asg.hr/"},"editor":{"@type":"Person","name":"Nermin Sefić","jobTitle":"Urednik i direktor","url":"https://gnk-asg.hr/nermin-sefic/"},"hasPart":[{"@type":"WebSite","name":"AKTUAL MEDIA KANAL ZAGREB","url":"https://gnk-asg.hr/kanal/zagreb/","inLanguage":"hr"},{"@type":"WebSite","name":"AKTUAL MEDIA KANAL BEOGRAD","url":"https://gnk-asg.hr/kanal/beograd/","inLanguage":"sr"},{"@type":"WebSite","name":"AKTUAL MEDIA KANAL SARAJEVO","url":"https://gnk-asg.hr/kanal/sarajevo/","inLanguage":"bs"},{"@type":"WebSite","name":"AKTUAL MEDIA KANAL BUDAPEST","url":"https://gnk-asg.hr/kanal/budimpesta/","inLanguage":"hu"},{"@type":"WebSite","name":"AKTUAL MEDIA KANAL LJUBLJANA","url":"https://gnk-asg.hr/kanal/ljubljana/","inLanguage":"sl"},{"@type":"WebSite","name":"AKTUAL MEDIA KANAL ROMA","url":"https://gnk-asg.hr/kanal/rim/","inLanguage":"it"},{"@type":"WebSite","name":"AKTUAL MEDIA KANAL SOFIJA","url":"https://gnk-asg.hr/kanal/sofija/","inLanguage":"bg"},{"@type":"WebSite","name":"AKTUAL MEDIA KANAL BUCUREȘTI","url":"https://gnk-asg.hr/kanal/bukurest/","inLanguage":"ro"}],"mainEntity":{"@type":"ItemList","numberOfItems":15,"itemListElement":[{"@type":"ListItem","position":1,"name":"AKTUAL MEDIA KANAL ZAGREB","url":"https://gnk-asg.hr/kanal/zagreb/"},{"@type":"ListItem","position":2,"name":"AKTUAL MEDIA KANAL BEOGRAD","url":"https://gnk-asg.hr/kanal/beograd/"},{"@type":"ListItem","position":3,"name":"AKTUAL MEDIA KANAL SARAJEVO","url":"https://gnk-asg.hr/kanal/sarajevo/"},{"@type":"ListItem","position":4,"name":"AKTUAL MEDIA KANAL BUDAPEST","url":"https://gnk-asg.hr/kanal/budimpesta/"},{"@type":"ListItem","position":5,"name":"AKTUAL MEDIA KANAL LJUBLJANA","url":"https://gnk-asg.hr/kanal/ljubljana/"},{"@type":"ListItem","position":6,"name":"AKTUAL MEDIA KANAL ROMA","url":"https://gnk-asg.hr/kanal/rim/"},{"@type":"ListItem","position":7,"name":"AKTUAL MEDIA KANAL SOFIJA","url":"https://gnk-asg.hr/kanal/sofija/"},{"@type":"ListItem","position":8,"name":"AKTUAL MEDIA KANAL BUCUREȘTI","url":"https://gnk-asg.hr/kanal/bukurest/"},{"@type":"ListItem","position":9,"name":"SPORT","url":"https://gnk-asg.hr/izdanja/sport/"},{"@type":"ListItem","position":10,"name":"POLITIKA","url":"https://gnk-asg.hr/izdanja/politika/"},{"@type":"ListItem","position":11,"name":"SIGURNOST","url":"https://gnk-asg.hr/izdanja/sigurnost/"},{"@type":"ListItem","position":12,"name":"BIZNIS","url":"https://gnk-asg.hr/izdanja/biznis/"},{"@type":"ListItem","position":13,"name":"TEHNOLOGIJA","url":"https://gnk-asg.hr/izdanja/tehnologija/"},{"@type":"ListItem","position":14,"name":"MODA","url":"https://gnk-asg.hr/izdanja/moda/"},{"@type":"ListItem","position":15,"name":"PUTOVANJA","url":"https://gnk-asg.hr/izdanja/putovanja/"},{"@type":"ListItem","position":16,"name":"LJUBIMCI","url":"https://gnk-asg.hr/izdanja/ljubimci/"},{"@type":"ListItem","position":17,"name":"SVIJET","url":"https://gnk-asg.hr/izdanja/svijet/"}]}}</script>
 <!-- AKTUAL-CENTRAL:END -->
 
   <!-- KANAL-BAND:START -->
@@ -739,11 +833,11 @@
     <div class="izdanja-band-head">
       <div>
         <h2 class="izdanja-band-title" id="izdanjaBandTitle">Naša izdanja u regiji</h2>
-        <p class="izdanja-sub">Osam gradskih kanala na osam jezika, poslovni tjednik, sportski, politički i sigurnosni desk. Svako izdanje ima svoj link i svoj feed — a sve se vraća na AKTUAL MEDIA.</p>
+        <p class="izdanja-sub">Osam gradskih kanala na osam jezika, poslovni tjednik i devet deskova. Svako izdanje ima svoj link i svoj feed — a sve se vraća na AKTUAL MEDIA.</p>
       </div>
       <a class="izdanja-all" href="/izdanja/">Sva izdanja →</a>
     </div>
-    <ol class="izdanja-list"><li class="izdanja-item"><span class="izdanja-num">01</span><div><h3><a href="https://gnk-asg-kanal-zagreb.pages.dev/" target="_blank" rel="external noopener">AKTUAL MEDIA KANAL ZAGREB</a></h3><p>hr · Zagreb · 420 osvrta</p></div></li><li class="izdanja-item"><span class="izdanja-num">02</span><div><h3><a href="https://gnk-asg-kanal-beograd.pages.dev/" target="_blank" rel="external noopener">AKTUAL MEDIA KANAL BEOGRAD</a></h3><p>sr · Beograd · 353 osvrta</p></div></li><li class="izdanja-item"><span class="izdanja-num">03</span><div><h3><a href="https://gnk-asg-kanal-sarajevo.pages.dev/" target="_blank" rel="external noopener">AKTUAL MEDIA KANAL SARAJEVO</a></h3><p>bs · Sarajevo · 379 osvrta</p></div></li><li class="izdanja-item"><span class="izdanja-num">04</span><div><h3><a href="https://gnk-asg-kanal-budimpesta.pages.dev/" target="_blank" rel="external noopener">AKTUAL MEDIA KANAL BUDAPEST</a></h3><p>hu · Budimpešta · 360 osvrta</p></div></li><li class="izdanja-item"><span class="izdanja-num">05</span><div><h3><a href="https://gnk-asg-kanal-ljubljana.pages.dev/" target="_blank" rel="external noopener">AKTUAL MEDIA KANAL LJUBLJANA</a></h3><p>sl · Ljubljana · 327 osvrta</p></div></li><li class="izdanja-item"><span class="izdanja-num">06</span><div><h3><a href="https://gnk-asg-kanal-rim.pages.dev/" target="_blank" rel="external noopener">AKTUAL MEDIA KANAL ROMA</a></h3><p>it · Rim · 413 osvrta</p></div></li><li class="izdanja-item"><span class="izdanja-num">07</span><div><h3><a href="https://gnk-asg-kanal-sofija.pages.dev/" target="_blank" rel="external noopener">AKTUAL MEDIA KANAL SOFIJA</a></h3><p>bg · Sofija · 313 osvrta</p></div></li><li class="izdanja-item"><span class="izdanja-num">08</span><div><h3><a href="https://gnk-asg-kanal-bukurest.pages.dev/" target="_blank" rel="external noopener">AKTUAL MEDIA KANAL BUCUREȘTI</a></h3><p>ro · Bukurešt · 400 osvrta</p></div></li></ol>
+    <ol class="izdanja-list"><li class="izdanja-item"><span class="izdanja-num">01</span><div><h3><a href="https://gnk-asg.hr/kanal/zagreb/" target="_blank" rel="external noopener">AKTUAL MEDIA KANAL ZAGREB</a></h3><p>hr · Zagreb · 420 osvrta</p></div></li><li class="izdanja-item"><span class="izdanja-num">02</span><div><h3><a href="https://gnk-asg.hr/kanal/beograd/" target="_blank" rel="external noopener">AKTUAL MEDIA KANAL BEOGRAD</a></h3><p>sr · Beograd · 353 osvrta</p></div></li><li class="izdanja-item"><span class="izdanja-num">03</span><div><h3><a href="https://gnk-asg.hr/kanal/sarajevo/" target="_blank" rel="external noopener">AKTUAL MEDIA KANAL SARAJEVO</a></h3><p>bs · Sarajevo · 379 osvrta</p></div></li><li class="izdanja-item"><span class="izdanja-num">04</span><div><h3><a href="https://gnk-asg.hr/kanal/budimpesta/" target="_blank" rel="external noopener">AKTUAL MEDIA KANAL BUDAPEST</a></h3><p>hu · Budimpešta · 360 osvrta</p></div></li><li class="izdanja-item"><span class="izdanja-num">05</span><div><h3><a href="https://gnk-asg.hr/kanal/ljubljana/" target="_blank" rel="external noopener">AKTUAL MEDIA KANAL LJUBLJANA</a></h3><p>sl · Ljubljana · 327 osvrta</p></div></li><li class="izdanja-item"><span class="izdanja-num">06</span><div><h3><a href="https://gnk-asg.hr/kanal/rim/" target="_blank" rel="external noopener">AKTUAL MEDIA KANAL ROMA</a></h3><p>it · Rim · 413 osvrta</p></div></li><li class="izdanja-item"><span class="izdanja-num">07</span><div><h3><a href="https://gnk-asg.hr/kanal/sofija/" target="_blank" rel="external noopener">AKTUAL MEDIA KANAL SOFIJA</a></h3><p>bg · Sofija · 313 osvrta</p></div></li><li class="izdanja-item"><span class="izdanja-num">08</span><div><h3><a href="https://gnk-asg.hr/kanal/bukurest/" target="_blank" rel="external noopener">AKTUAL MEDIA KANAL BUCUREȘTI</a></h3><p>ro · Bukurešt · 400 osvrta</p></div></li></ol>
   </section>
   <!-- IZDANJA-BAND:END -->
 

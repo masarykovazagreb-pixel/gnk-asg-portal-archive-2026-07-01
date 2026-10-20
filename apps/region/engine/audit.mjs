@@ -16,7 +16,9 @@ import { fileURLToPath } from 'node:url';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const APP = join(HERE, '..');
-const SITE = join(APP, 'site');
+const ROOT = join(APP, '..', '..');
+const SITE = join(ROOT, 'apps', 'portal', 'kanal');
+const PORTAL = join(ROOT, 'apps', 'portal');
 const DATA = join(APP, 'data');
 
 const walk = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
@@ -60,8 +62,12 @@ for (const channel of readdirSync(SITE).filter((d) => statSync(join(SITE, d)).is
       if (!href || href.startsWith('#') || /^(?:https?:|mailto:|tel:|data:|javascript:)/i.test(href)) continue;
       const clean = href.split('#')[0].split('?')[0];
       if (!clean) continue;
-      const target = clean.startsWith('/') ? join(root, clean.slice(1)) : resolve(dirname(page), clean);
-      const ok = existsSync(target) || existsSync(join(target, 'index.html'));
+      const local = clean.startsWith('/') ? join(root, clean.slice(1)) : resolve(dirname(page), clean);
+      // Kanali sada žive pod gnk-asg.hr/kanal/<id>/, pa se apsolutni putevi (/assets, /izdanja, /galerija …)
+      // provjeravaju i u korijenu portala, gdje ih poslužuje glavna domena.
+      const portal = clean.startsWith('/') ? join(PORTAL, clean.slice(1)) : null;
+      const ok = existsSync(local) || existsSync(join(local, 'index.html'))
+        || (portal && (existsSync(portal) || existsSync(join(portal, 'index.html'))));
       if (!ok) errors.push(`${channel}${rel}: slomljena poveznica ${href}`);
     }
 
