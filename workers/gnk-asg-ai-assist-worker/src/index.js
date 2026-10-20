@@ -67,12 +67,20 @@ async function runAi(env,prompt,system){
  * IMPORTANT: deployment requires the existing Cloudflare AI binding and rate limits.
  */
 async function splusChat(request,env){
-  if(request.method==="GET")return J({ok:true,service:"GNK ASG S+Chat",aiReady:!!(env.AI&&typeof env.AI.run==="function"),endpoint:"/api/ai-assist/chat",methods:["GET","POST"]});
+  if(request.method==="GET")return J({ok:true,service:"GNK ASG S+Chat",aiReady:!!(env.AI&&typeof env.AI.run==="function"&&env.SPLUS_CHAT_LIMITER&&typeof env.SPLUS_CHAT_LIMITER.limit==="function"),endpoint:"/api/ai-assist/chat",methods:["GET","POST"]});
   if(request.method!=="POST")return J({ok:false,error:"method_not_allowed"},405);
   const origin=request.headers.get("origin");
   if(origin&&origin!=="https://gnk-asg.hr")return J({ok:false,error:"origin_not_allowed"},403);
   if(!/^application\/json\b/i.test(request.headers.get("content-type")||""))return J({ok:false,error:"json_required"},415);
   if(Number(request.headers.get("content-length")||0)>20000)return J({ok:false,error:"payload_too_large"},413);
+  if(!env.SPLUS_CHAT_LIMITER||typeof env.SPLUS_CHAT_LIMITER.limit!=="function")return J({ok:false,ai:false,error:"rate_limiter_not_configured"},503);
+  // Per-edge, per-requester throttle. Anonymous fallbacks share a small pool;
+  // operators should additionally configure global Cloudflare WAF limits.
+  try{
+    const actor=request.headers.get("cf-connecting-ip")||"unidentified";
+    const verdict=await env.SPLUS_CHAT_LIMITER.limit({key:"splus-chat:"+actor});
+    if(!verdict.success)return J({ok:false,error:"rate_limited",retryAfterSeconds:60},429);
+  }catch{return J({ok:false,ai:false,error:"rate_limiter_unavailable"},503)}
   if(!env.AI||typeof env.AI.run!=="function")return J({ok:false,ai:false,error:"ai_service_unavailable"},503);
   let body;
   try{body=await request.json()}catch{return J({ok:false,error:"invalid_json"},400)}
