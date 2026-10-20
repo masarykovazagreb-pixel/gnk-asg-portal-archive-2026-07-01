@@ -21,7 +21,8 @@ permissions:
 
 jobs:
   sync:
-    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
+    # Samo main: feature grane ne smiju dobivati botske commite.
+    if: github.ref == 'refs/heads/main' && vars.GNK_ASG_RELEASE_FENCE != 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
