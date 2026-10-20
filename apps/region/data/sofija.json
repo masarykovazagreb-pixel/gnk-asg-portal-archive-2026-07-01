@@ -4,7 +4,7 @@
   "lang": "bg",
   "city": "Sofija",
   "country": "Bugarska",
-  "updatedAt": "2026-10-19T21:20:46.804Z",
+  "updatedAt": "2026-10-20T13:19:24.546Z",
   "sources": [
     {
       "id": "bta",
@@ -13,73 +13,57 @@
       "ok": false,
       "fetched": 0,
       "errors": [
-        "wp:1: HTTP 404",
-        "https://www.bta.bg/bg/rss#1: HTTP 404",
-        "https://www.bta.bg/en/rss#1: HTTP 404",
-        "https://www.bta.bg/sitemap.xml: HTTP 404"
+        "https://www.bta.bg/bg/rss: HTTP 404",
+        "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:20:00.590Z"
+      "checkedAt": "2026-10-20T13:19:16.272Z"
     },
     {
       "id": "capital",
       "name": "Capital",
       "url": "https://www.capital.bg/rss/",
-      "ok": false,
-      "fetched": 0,
-      "errors": [
-        "wp:1: HTTP 403",
-        "https://www.capital.bg/rss#1: HTTP 403"
-      ],
-      "checkedAt": "2026-10-19T21:20:08.338Z"
+      "ok": true,
+      "fetched": 30,
+      "errors": [],
+      "checkedAt": "2026-10-20T13:19:16.997Z"
     },
     {
       "id": "mediapool",
       "name": "Mediapool",
       "url": "https://www.mediapool.bg/rss",
-      "ok": false,
-      "fetched": 0,
-      "errors": [
-        "wp:1: fetch failed",
-        "https://www.mediapool.bg/rss#1: fetch failed",
-        "https://www.mediapool.bg/rss/#1: HTTP 403",
-        "https://www.mediapool.bg/comments/feed/#2: This operation was aborted"
-      ],
-      "checkedAt": "2026-10-19T21:20:25.502Z"
+      "ok": true,
+      "fetched": 10,
+      "errors": [],
+      "checkedAt": "2026-10-20T13:19:18.212Z"
     },
     {
       "id": "dnevnikbg",
       "name": "Dnevnik",
-      "url": "https://www.dnevnik.bg/rss",
-      "ok": false,
-      "fetched": 0,
+      "url": "https://www.dnevnik.bg/rss/",
+      "ok": true,
+      "fetched": 30,
       "errors": [
-        "wp:1: HTTP 403",
-        "https://www.dnevnik.bg/rss#1: HTTP 403"
+        "https://www.dnevnik.bg/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-19T21:20:31.158Z"
+      "checkedAt": "2026-10-20T13:19:19.865Z"
     },
     {
       "id": "actualno",
       "name": "Actualno.com",
       "url": "https://www.actualno.com/rss",
-      "ok": false,
-      "fetched": 0,
-      "errors": [
-        "wp:1: HTTP 404"
-      ],
-      "checkedAt": "2026-10-19T21:20:36.447Z"
+      "ok": true,
+      "fetched": 50,
+      "errors": [],
+      "checkedAt": "2026-10-20T13:19:21.302Z"
     },
     {
       "id": "sega",
       "name": "Sega.bg",
       "url": "https://www.segabg.com/rss",
-      "ok": false,
-      "fetched": 0,
-      "errors": [
-        "wp:1: fetch failed",
-        "https://www.segabg.com/rss#1: fetch failed"
-      ],
-      "checkedAt": "2026-10-19T21:20:41.594Z"
+      "ok": true,
+      "fetched": 95,
+      "errors": [],
+      "checkedAt": "2026-10-20T13:19:21.572Z"
     },
     {
       "id": "novinite",
@@ -88,12 +72,9 @@
       "ok": false,
       "fetched": 0,
       "errors": [
-        "wp:1: fetch failed",
-        "https://www.novinite.com/rss#1: fetch failed",
-        "https://www.novinite.com/sitemap.xml: fetch failed",
-        "https://www.novinite.com/sitemap_index.xml: HTTP 404"
+        "https://www.novinite.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:20:43.461Z"
+      "checkedAt": "2026-10-20T13:19:22.602Z"
     },
     {
       "id": "btaen",
@@ -102,15 +83,398 @@
       "ok": false,
       "fetched": 0,
       "errors": [
-        "wp:1: HTTP 404",
-        "https://www.bta.bg/en/rss#1: HTTP 404",
-        "https://www.bta.bg/sitemap.xml: HTTP 404",
-        "https://www.bta.bg/sitemap_index.xml: HTTP 404"
+        "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:20:46.804Z"
+      "checkedAt": "2026-10-20T13:19:24.546Z"
     }
   ],
   "items": [
+    {
+      "slug": "sofija-2026-10-20-mediapool-prezidentski-t-vot-6-590-000-b-lgari-sa-ima-9590cb",
+      "title": "Президентският вот: 6 590 000 българи са имащите право да гласуват",
+      "summary": "За престоящите в неделя президентски избори имащите право да гласуват са 6 590 000 българи. От тях 46 001 души ще имат възможност да упражнят правото си на глас за първи път, каза говорителят на Централната избирателна комисия (ЦИК) Стоянка Балова. Секциите в страната, в които ще се гласува с машина, са 9373, като във 2249 от тях ще има две машини…",
+      "date": "2026-10-20T13:18:58.000Z",
+      "url": "https://www.mediapool.bg/prezidentski-izbori-2026/prezidentskiyat-vot-6-590-000-balgari-sa-imashtite-pravo-da-glasuvat/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Президентски избори 2026",
+        "президент",
+        "държавен глава",
+        "вот"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-20T13:19:18.213Z"
+    },
+    {
+      "slug": "sofija-2026-10-20-mediapool-ultral-v-aktivist-e-arestuvan-v-v-franci-za-ffd7f1",
+      "title": "Ултраляв активист е арестуван във Франция за палежа на историческата сграда на кметството в Лимож",
+      "summary": "Във Франция е задържан заподозрян за палежа на кметството в Лимож по време на протестите. 34-годишният мъж е познат на полицията заради прояви на насилие срещу държавни служители и фигурира в т.нар. списък \"S\"- френски списък за наблюдение на лица, представляващи потенциална заплаха за националната сигурност, съобщават във вторник FranceInfo и BFMTV, цитирани от BBC…",
+      "date": "2026-10-20T13:17:41.000Z",
+      "url": "https://www.mediapool.bg/svyat/ultralyav-aktivist-e-arestuvan-vav-frantsiya-za-palezha-na-istoricheskata-sgrada-na-kmetstvoto-v-limozh/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Свят",
+        "Франция",
+        "протести",
+        "Лимож"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-20T13:19:18.213Z"
+    },
+    {
+      "slug": "sofija-2026-10-20-mediapool-zelenski-pristigna-v-norvegi-za-razgovori-s-e63f85",
+      "title": "Зеленски пристигна в Норвегия за разговори с американските специални пратеници",
+      "summary": "Украинският президент Володимир Зеленски пристигна в Норвегия. Очаква се там той да разговаря с американските специални пратеници в момент, когато отношенията между Киев и Вашингтон са се влошили значително, предаде Франс прес, като се позова на снимки на Норвежкото телеграфно бюро. В Осло Зеленски ще се срещне със специалния пратеник на американския президент Стив Уиткоф и с неговия колега Джаред Къшнър, който ще участва дистанционно…",
+      "date": "2026-10-20T13:07:28.000Z",
+      "url": "https://www.mediapool.bg/voina-v-ukraina/zelenski-pristigna-v-norvegiya-za-razgovori-s-amerikanskite-spetsialni-pratenitsi/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Война в Украйна",
+        "Къшнър",
+        "Зеленски",
+        "Осло"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:19:18.213Z"
+    },
+    {
+      "slug": "sofija-2026-10-20-sega-ankara-ratificira-dogovora-za-isl-mskoto-74f6c9",
+      "title": "Анкара ратифицира договора за ислямското НАТО",
+      "summary": "",
+      "date": "2026-10-20T13:06:04.000Z",
+      "url": "https://www.segabg.com/hot/category-foreign-country/ankara-ratificira-dogovora-za-islyamskoto-nato",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:19:21.573Z"
+    },
+    {
+      "slug": "sofija-2026-10-20-actualno-sled-skandala-s-poletite-na-peevski-c5c50f",
+      "title": "След скандала с полетите на Пеевски: Посланикът ни в ОАЕ е освободен",
+      "summary": "Иван Йорданов е освободен от поста извънреден и пълномощен посланик на България в Обединените арабски емирства (ОАЕ). Ук...",
+      "date": "2026-10-20T13:04:00.000Z",
+      "url": "https://www.actualno.com/society/sled-skandala-s-poletite-na-peevski-poslanikyt-ni-v-oae-e-osvoboden-news_2652533.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Общество"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:19:21.302Z"
+    },
+    {
+      "slug": "sofija-2026-10-20-dnevnikbg-kakvo-ni-dade-ukra-na-cea629",
+      "title": "Какво ни даде Украйна",
+      "summary": "Наскоро в интервю пред Белия дом президентът на САЩ Доналд Тръмп - запитан за Украйна - заяви: \"Дали сме много на Украйна. Те не са ни дали нищо!\" Като се има предвид, че това е гледната точка на един полуграмотен, псевдоуспешен предприемач в...",
+      "date": "2026-10-20T13:03:00.000Z",
+      "url": "https://www.dnevnik.bg/analizi/2026/10/20/4968889_kakvo_ni_dade_ukraina/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "1688"
+      ],
+      "author": "Мик Раян",
+      "theme": "sport",
+      "addedAt": "2026-10-20T13:19:19.866Z"
+    },
+    {
+      "slug": "sofija-2026-10-20-mediapool-rumen-radev-i-ministri-na-p-rva-kopka-na-3c3364",
+      "title": "Румен Радев и министри на първа копка на батериeн парк на Делян Добрев с Tesla край Твърдица",
+      "summary": "Първа копка на първия от трите батерийни парка за съхранение на електроенергия с участието на Tesla, анонсирани от бившия енергиен министър и депутат от ГЕРБ Делян Добрев преди месец, събра край Твърдица премиера Румен Радев, министрите на енергетиката Ива Петрова и на иновациите Иван Василев, представители на инвеститорите и на Tesla (\"Тесла\") Проектът предвижда изграждането на петчасова система за съхранение на електрическа енергия с капацитет 300 МВтч, базирана на технологията Tesla Megapack VXL. Планирано е да бъдат инсталирани 80 батерийни единици и 20 трансформатора с мощност 4.4 Мвт,. Инвестицията в Твърдица е първата от три планирани системи, които ще бъдат реализирани в…",
+      "date": "2026-10-20T13:02:42.000Z",
+      "url": "https://www.mediapool.bg/biznes/rumen-radev-i-ministri-na-parva-kopka-na-baterien-park-na-delyan-dobrev-s-tesla-krai-tvarditsa/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Бизнес"
+      ],
+      "author": "",
+      "theme": "energija",
+      "addedAt": "2026-10-20T13:19:18.213Z"
+    },
+    {
+      "slug": "sofija-2026-10-20-mediapool-amerikanski-t-samolet-pose-don-vece-leti-c962ea",
+      "title": "Американският самолет \"Посейдон\" вече лети над Черно море. Очаква се още помощ от НАТО",
+      "summary": "Американският военен самолет “Посейдон” (P-8A Poseidon) е патрулирал над Черно море след зачестилите атаки с дронове над търговски кораби близо до бреговете на България и Румъния. Министерството на отбраната също е предприело допълнителни мерки за сигурност по Българското Черноморско крайбрежие. Армията ни използва дронове за наблюдение освен на крайбрежието, а и на прилежащото въздушно и морско пространство…",
+      "date": "2026-10-20T13:01:00.000Z",
+      "url": "https://www.mediapool.bg/bulgaria/amerikanskiyat-samolet-poseidon-veche-leti-nad-cherno-more-ochakva-se-oshte-pomosht-ot-nato/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "България",
+        "Черно море",
+        "Посейдон"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-20T13:19:18.213Z"
+    },
+    {
+      "slug": "sofija-2026-10-20-actualno-skr-bna-vest-pocina-legenda-na-emblematicen-cdbb98",
+      "title": "Скръбна вест: Почина легенда на емблематичен български клуб",
+      "summary": "Легендата на Пирин Благоевград Методи Стоянов-Мечо е починал на 77-годишна възраст. Стоянов е роден през 1949 г. година ...",
+      "date": "2026-10-20T13:01:00.000Z",
+      "url": "https://www.actualno.com/bgfootball/skrybna-vest-pochina-legenda-na-emblematichen-bylgarski-klub-news_2652531.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Футбол България"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:19:21.302Z"
+    },
+    {
+      "slug": "sofija-2026-10-20-actualno-ko-destabilizira-evropa-analiz-na-kuzman-4a28ec",
+      "title": "Кой дестабилизира Европа? Анализ на Кузман Илиев (ВИДЕО)",
+      "summary": "Във Франция има изключителни социални проблеми, които са в основата на тези протести. Това заяви в предаването Студио Ac...",
+      "date": "2026-10-20T12:58:00.000Z",
+      "url": "https://www.actualno.com/interview/koj-destabilizira-evropa-analiz-na-kuzman-iliev-video-news_2652528.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Интервю"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:19:21.302Z"
+    },
+    {
+      "slug": "sofija-2026-10-20-actualno-vigenin-cerno-more-ne-biva-da-stane-nova-3d321c",
+      "title": "Вигенин: Черно море не бива да стане нова военна зона",
+      "summary": "\"Войната на Русия срещу Украйна стигна до нашия бряг. Системно се атакуват цивилни кораби, невинни моряци губят живота с...",
+      "date": "2026-10-20T12:57:00.000Z",
+      "url": "https://www.actualno.com/politics/vigenin-cherno-more-ne-biva-da-stane-nova-voenna-zona-news_2652527.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Политика"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "rat",
+      "addedAt": "2026-10-20T13:19:21.302Z"
+    },
+    {
+      "slug": "sofija-2026-10-20-dnevnikbg-sa-ob-sn-vat-s-t-rseneto-zak-sneni-ta-v-97adad",
+      "title": "САЩ обясняват с търсенето закъсненията в доставките на оръжие за Украйна",
+      "summary": "Марко Рубио призна, че има забавяния на доставките на прехващачи за Украйна, но каза, че те не са преднамерени. Държавният секретар на САЩ увери, че \"нищо не се е променило\" по доставките на американско оръжие по програмата PURL, купувани чрез...",
+      "date": "2026-10-20T12:55:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/10/20/4968902_sasht_obiasniavat_s_turseneto_zakusneniiata_v/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:19:19.866Z"
+    },
+    {
+      "slug": "sofija-2026-10-20-actualno-za-palezite-na-starlink-antenite-db-iska-8d8cee",
+      "title": "За палежите на Starlink антените: ДБ иска свикване на извънредно заседание на парламента",
+      "summary": "„Демократична България” ще настоява за свикване на извънредно заседание на парламента, на което да бъдат изс...",
+      "date": "2026-10-20T12:55:00.000Z",
+      "url": "https://www.actualno.com/politics/za-palejite-na-starlink-antenite-db-iska-svikvane-na-izvynredno-zasedanie-na-parlamenta-news_2652526.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Политика"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "politika",
+      "addedAt": "2026-10-20T13:19:21.302Z"
+    },
+    {
+      "slug": "sofija-2026-10-20-dnevnikbg-vlastite-razsledvat-zloupotrebi-s-ob-612a2c",
+      "title": "Властите разследват злоупотреби с обществени поръчки в Сунгурларе",
+      "summary": "Полицейски служители провеждат акция в общината на Сунгурларе. Властите са иззели документи и разследват нередности с обществени поръчки, съобщи БНТ. Според полицията има данни за отклонени големи суми от бюджета. Проверява...",
+      "date": "2026-10-20T12:50:00.000Z",
+      "url": "https://www.dnevnik.bg/bulgaria/2026/10/20/4968901_vlastite_razsledvat_zloupotrebi_s_obshtestveni/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:19:19.866Z"
+    },
+    {
+      "slug": "sofija-2026-10-20-actualno-les-itinerantes-s-p-rvi-koncert-v-sofi-na-626ded",
+      "title": "Les Itinérantes с първи концерт в София на 23 октомври",
+      "summary": "Gotobeat и емблематичният клуб \"Строежа\" ще представят изключителна музикална вечер, изпълнена с акапелна магия, полифон...",
+      "date": "2026-10-20T12:36:00.000Z",
+      "url": "https://www.actualno.com/music/les-itinrantes-s-pyrvi-koncert-v-sofija-na-23-oktomvri-news_2652459.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Музика"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:19:21.302Z"
+    },
+    {
+      "slug": "sofija-2026-10-20-dnevnikbg-poslanik-t-na-b-lgari-v-obedinenite-arabski-bbd8c2",
+      "title": "Посланикът на България в Обединените арабски емирства е освободен от длъжност",
+      "summary": "Посланикът на България в Обединените арабски емирства е освободен от длъжност. Иван Илиянов Йорданов вече не изпълнява длъжността след указ на президента Илияна Йотова, обнародван в Държавен вестник днес. На 18 септември министърът на...",
+      "date": "2026-10-20T12:25:00.000Z",
+      "url": "https://www.dnevnik.bg/politika/2026/10/20/4968879_poslanikut_na_bulgariia_v_obedinenite_arabski_emirstva/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "4047"
+      ],
+      "author": "Георги Василев",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:19:19.866Z"
+    },
+    {
+      "slug": "sofija-2026-10-20-dnevnikbg-pri-t-t-v-gorni-bogrov-vremenno-spira-da-aee1a5",
+      "title": "Приютът в Горни Богров временно спира да приема бездомни кучета",
+      "summary": "Спира се приемът на бездомни кучета в общинския приют в с. Горни Богров. Заповедта е на Областната дирекция по безопасност на храните (ОДБХ) -София-град и важи за срок до шест месеца, считано от 16 октомври. Забранява се и достъпът на доброволци,...",
+      "date": "2026-10-20T12:25:00.000Z",
+      "url": "https://www.dnevnik.bg/gradska_sreda/2026/10/20/4968880_prijutut_v_gorni_bogrov_vremenno_spira_da_priema/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "2714"
+      ],
+      "author": "Максим Караджов",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:19:19.866Z"
+    },
+    {
+      "slug": "sofija-2026-10-20-sega-na-udareni-korab-celsi-3-sa-namereni-1d23c4",
+      "title": "На ударения кораб \"Челси 3\" са намерени останки",
+      "summary": "",
+      "date": "2026-10-20T12:15:00.000Z",
+      "url": "https://www.segabg.com/hot/category-bulgaria/na-udareniya-korab-chelsi-3-sa-namereni-ostanki",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:19:21.573Z"
+    },
+    {
+      "slug": "sofija-2026-10-20-sega-radev-obvini-vo-nata-v-ukra-na-za-814b40",
+      "title": "Радев обвини войната в Украйна за протестите в Западна Европа",
+      "summary": "",
+      "date": "2026-10-20T12:03:00.000Z",
+      "url": "https://www.segabg.com/hot/category-bulgaria/radev-obvini-voynata-ukrayna-za-protestite-zapadna-evropa",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-20T13:19:21.573Z"
+    },
+    {
+      "slug": "sofija-2026-10-20-capital-kak-biznes-t-moze-da-nakara-mladite-da-56d288",
+      "title": "Как бизнесът може да накара младите да останат в България",
+      "summary": "Инициативата \"20 под 20\" е организирана от Младежкия съвет на американския посланик в България и \"Капитал\". Тя отличава 20 млади таланти под 20-годишна възраст в областта на науката и технологиите, бизнеса, изкуствата, спорта и гражданския активизъм. Целта е да се даде гласност на младите хора, чиито идеи и проекти допринасят за развитието на средата, в която живеем. Историите на отличените във випуск 2026 ще бъдат разказани от \"Капитал\" и събрани в специално печатно издание през февруари 202...",
+      "date": "2026-10-20T11:27:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/pazar-na-truda/2026/10/20/4968763_kak_biznesut_moje_da_nakara_mladite_da_ostanat_v/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "4908"
+      ],
+      "author": "Валерия Терзиева",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:19:16.997Z"
+    },
+    {
+      "slug": "sofija-2026-10-20-capital-proektozakon-t-za-lekarstvata-e-zabavi-1cd07a",
+      "title": "Проектозаконът за лекарствата ще забави снабдяването с тях",
+      "summary": "В България всяка година се продават около 160 млн. опаковки с лекарства. На ден през аптеките и през болниците минават общо около 400 хиляди. В част от случаите обаче определени лекарства липсват и различните екипи на здравните институции предлагат всевъзможни начини да се справят с недостига. Здравното министерство от две години обсъжда промени в лекарствения закон, които да решат проблема. Внезапно проектозаконът за изменение на Закона за лекарствените продукти в хуманната медицина (ЗЛПХМ) вле...",
+      "date": "2026-10-20T11:04:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/zdraveopazvane/2026/10/20/4968820_proektozakonut_za_lekarstvata_shte_zabavi/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "4913"
+      ],
+      "author": "Десислава Николова",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:19:16.997Z"
+    },
+    {
+      "slug": "sofija-2026-10-20-capital-biznes-globus-ryanair-ocakva-rekorden-r-st-fbfa19",
+      "title": "Бизнес глобус: Ryanair очаква рекорден ръст на цените на билетите; Anthropic може да сключи сделка за $45 млрд. долара с Nscale",
+      "summary": "Ryanair предупреждава за рекордно високи цени на самолетните билети Самолетните билети в Европа може да поскъпнат с до 20% през следващата година заради по-високите цени на петрола, подхранвани от войната в Близкия изток, прогнозира главният изпълнителен директор на Ryanair Майкъл О'Лиъри. Според него поскъпването може да се окаже недостатъчно, за да компенсира нарасналите разходи за гориво, което ще свие печалбите на авиокомпаниите. Допълнителен натиск оказват по-високите данъци, ограниченият к...",
+      "date": "2026-10-20T10:47:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/sviat/biznes-globus/2026/10/20/4968813_biznes_globus_ryanair_ochakva_rekorden_rust_na_cenite/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "5060"
+      ],
+      "author": "Александър Куколев",
+      "theme": "rat",
+      "addedAt": "2026-10-20T13:19:16.997Z"
+    },
+    {
+      "slug": "sofija-2026-10-20-capital-solun-deb-tira-v-gida-mislen-s-20-000aa0",
+      "title": "Солун дебютира в гида \"Мишлен\" с 20 ресторанта, засега без звезда",
+      "summary": "На фона на все още незатихналите съвсем вълнения около безрезултатния засега първи одит на световно известния кулинарен гид \"Мишлен\" в София във вторник (20 октомври) близкият Солун дебютира в гурмеводителя с общо 20 ресторанта. Засега на нито един от тях не е присъдена звезда, като 15 ресторанта са в селекцията \"препоръчани\", а още 5 са в секцията Bib Gourmand, която отличава вкусни, но достъпни места. Дебютът на Солун идва след почти двегодишно чакане, като градът бе задвижил процеса малко пр...",
+      "date": "2026-10-20T10:37:00.000Z",
+      "url": "https://www.capital.bg/light/mesta/2026/10/20/4968812_solun_debjutira_v_gida_mishlen_s_20_restoranta_zasega/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2281"
+      ],
+      "author": "Ани Коджаиванова",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:19:16.997Z"
+    },
+    {
+      "slug": "sofija-2026-10-20-capital-alb-rta-ostava-v-kanada-podkrepenite-ot-tr-2188c0",
+      "title": "Албърта остава в Канада: Подкрепените от Тръмп сепаратисти не успяха да убедят избирателите",
+      "summary": "Албърта отхвърли пътя към отцепване от Канада. Според неофициалните резултати около 76% от гласувалите са за оставане в страната, а около 23% са за започване на процес, който би могъл да доведе до отделяне. Тези данни са от преброяването на над милион бюлетини. Окончателните резултати предстои да бъдат обявени. Местни медии съобщиха, че преди изборите в столицата на провинцията Едмънтън, е нямало дълги опашки пред секциите, но интересът е необичайно висок. Над 1.35 млн. души, около 43% от избира...",
+      "date": "2026-10-20T10:17:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/sviat/2026/10/20/4968586_alburta_ostava_v_kanada_podkrepenite_ot_trump/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2253"
+      ],
+      "author": "Руслан Трад",
+      "theme": "politika",
+      "addedAt": "2026-10-20T13:19:16.997Z"
+    },
+    {
+      "slug": "sofija-2026-10-20-capital-evrope-skite-telekomi-obmisl-t-alternativa-bb728f",
+      "title": "Европейските телекоми обмислят алтернатива на Starlink след забавянето на интернет връзката в Украйна",
+      "summary": "Най-големите телекомуникационни компании в Европа обединяват усилията си за създаването на нова сателитна мобилна компания, която да оспори доминиращата позиция на Starlink на Илън Мъск. Deutsche Telekom, Orange, Telefónica и Vodafone проучват възможността за създаване на съвместно предприятие, което да осигури необходимия мобилен радиочестотен спектър за предаване на сигнали към мобилните телефони в Европа от сателити в орбита. Инициативата идва на фона на нарастващите опасения в Европа относно...",
+      "date": "2026-10-20T09:47:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/sviat/2026/10/20/4968577_evropeiskite_telekomi_obmisliat_alternativa_na/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2253"
+      ],
+      "author": "Кирил Кирчев",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:19:16.997Z"
+    },
     {
       "slug": "sofija-2026-10-19-sega-sluhove-pratiha-kim-cen-un-v-kita-ska-f92e57",
       "title": "Слухове пратиха Ким Чен Ун в китайска болница",

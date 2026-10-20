@@ -4,7 +4,7 @@
   "lang": "sl",
   "city": "Ljubljana",
   "country": "Slovenija",
-  "updatedAt": "2026-10-19T21:19:55.624Z",
+  "updatedAt": "2026-10-20T13:18:48.360Z",
   "sources": [
     {
       "id": "sta",
@@ -13,24 +13,22 @@
       "ok": false,
       "fetched": 0,
       "errors": [
-        "wp:1: HTTP 403",
-        "https://www.sta.si/rss#1: HTTP 403",
-        "https://english.sta.si/rss.php#1: HTTP 403",
-        "https://www.sta.si/rss.php#1: HTTP 403"
+        "https://www.sta.si/rss: HTTP 403",
+        "https://english.sta.si/rss.php: HTTP 403",
+        "https://www.sta.si/rss.php: HTTP 403"
       ],
-      "checkedAt": "2026-10-19T21:18:42.355Z"
+      "checkedAt": "2026-10-20T13:18:25.139Z"
     },
     {
       "id": "delo",
       "name": "Delo",
-      "url": "https://www.delo.si/feed/",
-      "ok": false,
-      "fetched": 0,
+      "url": "https://www.delo.si/rss",
+      "ok": true,
+      "fetched": 60,
       "errors": [
-        "wp:1: HTTP 404",
-        "https://www.delo.si/feed/#1: HTTP 404"
+        "https://www.delo.si/feed/: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:18:46.703Z"
+      "checkedAt": "2026-10-20T13:18:28.271Z"
     },
     {
       "id": "dnevnik",
@@ -39,12 +37,10 @@
       "ok": false,
       "fetched": 0,
       "errors": [
-        "wp:1: HTTP 404",
-        "https://www.dnevnik.si/rss#1: HTTP 404",
-        "https://www.dnevnik.si/feed#1: HTTP 404",
-        "https://www.dnevnik.si/sitemap.xml: HTTP 404"
+        "https://www.dnevnik.si/rss: HTTP 404",
+        "https://www.dnevnik.si/feed: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:18:48.513Z"
+      "checkedAt": "2026-10-20T13:18:31.228Z"
     },
     {
       "id": "siol",
@@ -53,34 +49,29 @@
       "ok": false,
       "fetched": 0,
       "errors": [
-        "wp:1: HTTP 404",
-        "https://siol.net/feeds/rss#1: HTTP 404",
-        "https://siol.net/rss#1: HTTP 404",
-        "https://www.siol.net/rss#1: HTTP 404"
+        "https://siol.net/feeds/rss: HTTP 404",
+        "https://siol.net/rss: HTTP 404",
+        "https://www.siol.net/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:19:02.613Z"
+      "checkedAt": "2026-10-20T13:18:36.663Z"
     },
     {
       "id": "n1si",
       "name": "N1 Slovenija",
       "url": "https://n1info.si/feed/",
-      "ok": false,
-      "fetched": 0,
-      "errors": [
-        "wp:1: HTTP 403"
-      ],
-      "checkedAt": "2026-10-19T21:19:14.522Z"
+      "ok": true,
+      "fetched": 50,
+      "errors": [],
+      "checkedAt": "2026-10-20T13:18:37.279Z"
     },
     {
       "id": "24ur",
       "name": "24ur.com",
       "url": "https://www.24ur.com/rss",
-      "ok": false,
-      "fetched": 0,
-      "errors": [
-        "wp:1: HTTP 404"
-      ],
-      "checkedAt": "2026-10-19T21:19:19.728Z"
+      "ok": true,
+      "fetched": 20,
+      "errors": [],
+      "checkedAt": "2026-10-20T13:18:37.900Z"
     },
     {
       "id": "mladina",
@@ -89,10 +80,9 @@
       "ok": false,
       "fetched": 0,
       "errors": [
-        "wp:1: HTTP 404",
-        "https://www.mladina.si/feed/#1: nije feed"
+        "https://www.mladina.si/feed/: nije feed"
       ],
-      "checkedAt": "2026-10-19T21:19:25.034Z"
+      "checkedAt": "2026-10-20T13:18:38.434Z"
     },
     {
       "id": "rtvslo",
@@ -101,12 +91,9 @@
       "ok": false,
       "fetched": 0,
       "errors": [
-        "wp:1: HTTP 404",
-        "https://www.rtvslo.si/rss#1: nije feed",
-        "https://www.rtvslo.si/sitemap.xml: HTTP 404",
-        "https://www.rtvslo.si/sitemap_index.xml: HTTP 404"
+        "https://www.rtvslo.si/rss: nije feed"
       ],
-      "checkedAt": "2026-10-19T21:19:29.637Z"
+      "checkedAt": "2026-10-20T13:18:40.447Z"
     },
     {
       "id": "slovenskenovice",
@@ -114,10 +101,8 @@
       "url": "https://www.slovenskenovice.si/rss",
       "ok": true,
       "fetched": 60,
-      "errors": [
-        "wp:1: HTTP 404"
-      ],
-      "checkedAt": "2026-10-19T21:19:39.555Z"
+      "errors": [],
+      "checkedAt": "2026-10-20T13:18:42.107Z"
     },
     {
       "id": "zurnal24",
@@ -126,12 +111,9 @@
       "ok": false,
       "fetched": 0,
       "errors": [
-        "wp:1: HTTP 404",
-        "https://www.zurnal24.si/rss#1: HTTP 404",
-        "https://www.zurnal24.si/sitemap.xml: HTTP 404",
-        "https://www.zurnal24.si/sitemap_index.xml: HTTP 404"
+        "https://www.zurnal24.si/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:19:43.752Z"
+      "checkedAt": "2026-10-20T13:18:43.985Z"
     },
     {
       "id": "primorske",
@@ -140,12 +122,9 @@
       "ok": false,
       "fetched": 0,
       "errors": [
-        "wp:1: fetch failed",
-        "https://www.primorske.si/rss#1: HTTP 403",
-        "https://www.primorske.si/sitemap.xml: HTTP 403",
-        "https://www.primorske.si/sitemap_index.xml: HTTP 403"
+        "https://www.primorske.si/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:19:44.610Z"
+      "checkedAt": "2026-10-20T13:18:46.300Z"
     },
     {
       "id": "vecer",
@@ -153,24 +132,465 @@
       "url": "https://www.vecer.com/rss",
       "ok": true,
       "fetched": 100,
-      "errors": [
-        "wp:1: HTTP 404"
-      ],
-      "checkedAt": "2026-10-19T21:19:55.624Z"
+      "errors": [],
+      "checkedAt": "2026-10-20T13:18:47.584Z"
     },
     {
       "id": "staslo",
       "name": "STA Slovenija",
       "url": "https://www.sta.si/rss",
-      "ok": true,
+      "ok": false,
       "fetched": 0,
       "errors": [
-        "preskočeno: cilj dosegnut"
+        "https://www.sta.si/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-19T21:19:55.624Z"
+      "checkedAt": "2026-10-20T13:18:48.360Z"
     }
   ],
   "items": [
+    {
+      "slug": "ljubljana-2026-10-20-n1si-kriminalisti-izvajajo-preiskave-v-ac09d7",
+      "title": "Kriminalisti izvajajo preiskave v bolnišnici Valdoltra",
+      "summary": "Koprski kriminalisti danes izvajajo preiskave v ortopedski bolnišnici Valdoltra, je neuradno poročala Televizija Slovenija. Preiskovanca naj bi bila d",
+      "date": "2026-10-20T13:10:13.000Z",
+      "url": "https://n1info.si/novice/slovenija/kriminalisti-izvajajo-preiskave-v-bolnisnici-valdoltra/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Slovenija",
+        "vado keranović",
+        "daniel radešić"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-20T13:18:37.280Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-n1si-tudi-drzavni-zbor-zavrnil-imenovanje-286f50",
+      "title": "Tudi državni zbor zavrnil imenovanje Hrovata za vrhovnega sodnika",
+      "summary": "Po mandatno-volilni komisiji je danes tudi državni zbor zavrnil predlog za imenovanje Borisa Gabrijela Hrovata za vrhovnega sodnika. Poslanci SDS so o",
+      "date": "2026-10-20T13:00:11.000Z",
+      "url": "https://n1info.si/novice/slovenija/tudi-drzavni-zbor-zavrnil-imenovanje-hrovata-za-vrhovnega-sodnika/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Slovenija",
+        "boris gabrijel horvat",
+        "dz",
+        "vrhovno sodišče"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-20T13:18:37.280Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-slovenskenovice-zaskrbljujoce-to-se-po-zauzitju-alkohola-2442ec",
+      "title": "Zaskrbljujoče: to se po zaužitju alkohola zgodi v možganih",
+      "summary": "Znanstveniki so odkrili spremembe, ki se začnejo že v eni uri po zaužitju opojne pijače.",
+      "date": "2026-10-20T13:00:00.000Z",
+      "url": "https://slovenskenovice.delo.si/lifestyle/aktivni-in-zdravi/zaskrbljujoce-to-se-po-zauzitju-alkohola-zgodi-v-mozganih",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:42.107Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-n1si-v-kavi-priljubljene-blagovne-znamke-odkrili-33ac09",
+      "title": "V kavi priljubljene blagovne znamke odkrili preseženo vrednost nevarnega toksina, kupili so jo tudi Slovenci",
+      "summary": "Uprava RS za varno hrano, veterinarstvo in varstvo rastlin je bila preko EU RASFF sistema obveščena, da so kavo z okusom karamele Perfetto Moka Carame",
+      "date": "2026-10-20T12:51:21.000Z",
+      "url": "https://n1info.si/novice/slovenija/v-kavi-priljubljene-blagovne-znamke-odkrili-presezeno-vrednost-nevarnega-toksina-kupili-so-jo-tudi-slovenci/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Slovenija",
+        "Zanimivosti",
+        "odpoklic",
+        "okus karamele"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-20T13:18:37.280Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-slovenskenovice-imate-zavarovano-hiso-ali-stanovanje-ob-af186d",
+      "title": "Imate zavarovano hišo ali stanovanje? Ob škodi vas lahko čaka hladen tuš",
+      "summary": "Plačujete zavarovanje doma, a to še ne pomeni, da boste ob škodi dobili odškodnino. Strokovnjaka v podkastu razkrivata najpogostejše pasti.",
+      "date": "2026-10-20T12:50:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/slovenija/r-imate-zavarovano-hiso-ali-stanovanje-ob-skodi-vas-lahko-caka-hladen-tus",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:42.107Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-slovenskenovice-na-turjaku-voznica-zapeljala-na-nasprotni-e1bd16",
+      "title": "Na Turjaku voznica zapeljala na nasprotni pas in trčila v avtomobil",
+      "summary": "Prometna nesreča se je zgodila okoli 14.30, ko je voznica na poti proti Ribnici zapeljala na nasprotno stran ceste in trčila v vozilo, ki je pripeljalo nasproti.",
+      "date": "2026-10-20T12:50:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/kronika/doma/na-turjaku-voznica-zapeljala-na-nasprotni-pas-in-trcila-v-avtomobil",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:42.107Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-n1si-trump-pripravljen-na-zgodovinsko-srecanje-ab16be",
+      "title": "Trump pripravljen na zgodovinsko srečanje, Zelenskega ne vidi za pogajalsko mizo",
+      "summary": "Ameriški predsednik Donald Trump je sporočil, da se je pripravljen udeležiti morebitnega tristranskega srečanja z ruskim predsednikom Vladimirjem Puti",
+      "date": "2026-10-20T12:46:47.000Z",
+      "url": "https://n1info.si/novice/svet/trump-pripravljen-na-zgodovinsko-srecanje-zelenskega-ne-vidi-za-pogajalsko-mizo/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Svet",
+        "vladimir putin",
+        "ukrajina",
+        "donald trump"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-20T13:18:37.280Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-slovenskenovice-le-redki-imajo-zizolo-na-vrtu-33eae2",
+      "title": "Le redki imajo žižolo na vrtu",
+      "summary": "Trpežno sadno drevo, ki dobro prenaša sušo in tudi hud mraz. Izvira iz Kitajske, udomačila se je na Primorskem, plodovi pa spominjajo na majhne datlje.",
+      "date": "2026-10-20T12:45:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/slovenija/le-redki-imajo-zizolo-na-vrtu",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:42.107Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-slovenskenovice-kardinal-na-dunajskem-letaliscu-trikrat-fc654c",
+      "title": "Kardinal na dunajskem letališču trikrat sprožil alarm: poglejte, kaj je imel v nahrbtniku, močno je zmotilo umetno inteligenco",
+      "summary": "Avstrijski kardinal Christoph Schönborn je razkril nenavadno izkušnjo z dunajskega letališča. Varnostne naprave so kar trikrat zaznale domnevno nevarnost, po pojasnilih osebja pa naj bi bila za vse kriva umetna inteligenca.",
+      "date": "2026-10-20T12:41:00.000Z",
+      "url": "https://slovenskenovice.delo.si/bulvar/zanimivosti/kardinal-na-dunajskem-letaliscu-trikrat-sprozil-alarm-poglejte-kaj-je-imel-v-nahrbtniku-mocno-je-zmotilo-umetno-inteligenco",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-20T13:18:42.108Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-vecer-med-obiranjem-oljk-v-istri-kombi-povozil-7625f1",
+      "title": "Med obiranjem oljk v Istri kombi povozil Nepalko, ki je počivala v visoki travi",
+      "summary": "KRONIKA",
+      "date": "2026-10-20T12:40:00.000Z",
+      "url": "https://vecer.com/kronika/istra-kombi-povozil-nepalko-nesreca-obiranje-oljk-10430888",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "KRONIKA"
+      ],
+      "author": "A.B.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:47.584Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-slovenskenovice-dodo-na-pragu-vrnitve-cbd8a0",
+      "title": "Dodo na pragu vrnitve",
+      "summary": "Umetna inteligenca našla na tisoče genetskih stikal izumrlega ptiča. Ekipa je izdelala ptičji regulatorni atlas z uporabo stotin vzorcev.",
+      "date": "2026-10-20T12:35:00.000Z",
+      "url": "https://slovenskenovice.delo.si/bulvar/zanimivosti/dodo-na-pragu-vrnitve",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-20T13:18:42.108Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-vecer-pogresan-je-33-letni-mariborcan-ki-ima-63bea3",
+      "title": "Pogrešan je 33-letni Mariborčan, ki ima manjšo tetovažo z napisom Laško",
+      "summary": "KRONIKA",
+      "date": "2026-10-20T12:34:00.000Z",
+      "url": "https://vecer.com/kronika/pogresan-je-33-letni-mariborcan-ki-ima-manjso-tetovazo-z-napisom-lasko-10430914",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "KRONIKA"
+      ],
+      "author": "STA, M.R.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:47.584Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-delo-zorman-izbral-borce-za-tekmi-z-bih-in-11324d",
+      "title": "Zorman izbral borce za tekmi z BiH in Izraelom, kaj pravi o Anžiču? (VIDEO)",
+      "summary": "Slovenci bodo kmalu začeli kvalifikacije za EP. Selektor povabil 22 rokometašev, manjkata Klemen Ferlin in Blaž Blagotinšek, slednjega čaka bitka s časom.",
+      "date": "2026-10-20T12:30:00.000Z",
+      "url": "https://www.delo.si/sport/rokomet/uros-zorman-reprezentanca-kvalifikacije-sp-2027-bor-rozman-bih-izrael",
+      "source": "delo",
+      "sourceName": "Delo",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-20T13:18:28.272Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-vecer-uros-zorman-tezek-izbor-saj-so-vsi-zdravi-e09eb4",
+      "title": "Uroš Zorman: Težek izbor, saj so vsi zdravi",
+      "summary": "Šport",
+      "date": "2026-10-20T12:27:00.000Z",
+      "url": "https://vecer.com/sport/uros-zorman-rokomet-slovenska-reprezentanca-10430912",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Šport"
+      ],
+      "author": "STA, U. G.",
+      "theme": "sport",
+      "addedAt": "2026-10-20T13:18:47.584Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-vecer-hrovat-ni-dobil-podpore-za-vrhovnega-3e660e",
+      "title": "Hrovat ni dobil podpore za vrhovnega sodnika",
+      "summary": "SLOVENIJA",
+      "date": "2026-10-20T12:26:00.000Z",
+      "url": "https://vecer.com/slovenija/drzavni-zbor-vrhovni-sodnik-izvolitev-10430913",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SLOVENIJA"
+      ],
+      "author": "Elizabeta Planinšič",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:47.584Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-24ur-iz-cesa-je-sestavljen-50-milijonov-vreden-9a52e7",
+      "title": "Iz česa je sestavljen 50-milijonov vreden modrček Victoria's Secret?",
+      "summary": "Na nedavni modni reviji priznanega spodnjega perila Victoria's Secret se je kot presenečenje pojavila tudi vplivnica in podjetnica Kylie Jenner, ki je nosila modrček, vreden 50 milijonov ameriških dolarjev (44,5 milijona evrov). Zakaj tolikšna vrednost? Ker je sestavljen iz diamantov!",
+      "date": "2026-10-20T12:21:19.000Z",
+      "url": "https://www.24ur.com/popin/tuja-scena/iz-cesa-je-sestavljen-50-milijonov-vreden-modrcek-victorias-secret.html",
+      "source": "24ur",
+      "sourceName": "24ur.com",
+      "categories": [
+        "Tuja scena"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:37.900Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-delo-imate-zavarovan-dom-zaradi-teh-napak-lahko-8e7d2e",
+      "title": "Imate zavarovan dom? Zaradi teh napak lahko ostanete brez odškodnine",
+      "summary": "V novi epizodi podkasta Deloindom strokovnjaka razkrivata najpogostejše napake pri zavarovanju doma in pojasnjujeta, kdaj lahko ostanemo brez odškodnine.",
+      "date": "2026-10-20T12:21:00.000Z",
+      "url": "https://www.delo.si/novice/slovenija/imate-zavarovan-dom-zaradi-teh-napak-lahko-ostanete-brez-odskodnine",
+      "source": "delo",
+      "sourceName": "Delo",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:28.272Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-vecer-netanjahu-objavil-zemljevid-to-so-drzave-ki-05a57d",
+      "title": "Netanjahu objavil zemljevid: To so države, ki jih vidi kot zaveznice, ena je z Balkana",
+      "summary": "SVET",
+      "date": "2026-10-20T12:16:00.000Z",
+      "url": "https://vecer.com/svet/benjamin-netanjahu-zemljevid-bliznji-vzhod-prijateljske-drzave-evropa-10430910",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "SVET"
+      ],
+      "author": "M.R.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:47.584Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-vecer-grski-otok-naprodaj-za-pet-milijonov-6b81c4",
+      "title": "Grški otok naprodaj za pet milijonov dolarjev, nekoč naj bi ga imel v lasti Johnny Depp",
+      "summary": "Prosti čas",
+      "date": "2026-10-20T12:15:00.000Z",
+      "url": "https://vecer.com/prosti-cas/strongylo-grski-otok-naprodaj-johnny-depp-cena-10430884",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Prosti čas"
+      ],
+      "author": "A.B.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:47.584Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-24ur-kje-je-33-letni-danijel-iz-maribora-26ceb7",
+      "title": "Kje je 33-letni Danijel iz Maribora?",
+      "summary": "Policisti Policijske postaje Maribor so bili obveščeni, da svojci pogrešajo 33-letnega Danijela Bračka z Limbuške ceste v Mariboru. Naprošajo vse, ki bi karkoli vedeli o pogrešani osebi, da o tem obvestijo najbližjo policijsko postajo ali pokličejo na telefonsko številko 113 oziroma na anonimni telefon policije 080-1200.",
+      "date": "2026-10-20T12:10:02.000Z",
+      "url": "https://www.24ur.com/novice/crna-kronika/kje-je-33-letni-danijel-iz-maribora.html",
+      "source": "24ur",
+      "sourceName": "24ur.com",
+      "categories": [
+        "Črna kronika"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:37.900Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-delo-mia-nova-inteligenca-za-stare-poslovne-006fd7",
+      "title": "mIA: nova inteligenca za stare poslovne izzive",
+      "summary": "Letošnja, že 18. konferenca podjetja Mikrografija pod naslovom »Inteligentno poslovanje v praksi – od podatkov do rezultatov«.",
+      "date": "2026-10-20T12:06:29.000Z",
+      "url": "https://www.delo.si/magazin/zanimivosti/mia-nova-inteligenca-za-stare-poslovne-izzive",
+      "source": "delo",
+      "sourceName": "Delo",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-20T13:18:28.272Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-24ur-tezave-z-aplikacijo-revolut-ali-so-vasa-a88484",
+      "title": "Težave z aplikacijo Revolut: ali so vaša sredstva varna?",
+      "summary": "Revolut je prizadel izpad, kar po njihovih besedah vpliva na več storitev. Kot so sporočili, so denar in podatki vseh njihovih strank varni. Odkar so zjutraj odkrili težavo, si jo prizadevajo odpraviti in se vsem prizadetim opravičujejo za nevšečnosti. O težavah, ki naj bi bile povezane z izpadom Googlovih storitev v oblaku, poročajo tudi uporabniki v Sloveniji.",
+      "date": "2026-10-20T11:59:45.000Z",
+      "url": "https://www.24ur.com/novice/tujina/revolut-prizadel-izpad-na-tisoce-uporabnikov-ima-tezave.html",
+      "source": "24ur",
+      "sourceName": "24ur.com",
+      "categories": [
+        "Tujina"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:37.900Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-n1si-luksuzni-predmeti-iz-izropanih-trgovin-v-c89fd6",
+      "title": "Luksuzni predmeti iz izropanih trgovin v Franciji so se znašli na Vintedu",
+      "summary": "Platforma za prodajo rabljenih predmetov in oblačil je sporočila, da je umaknila oglase, za katere domneva, da so ponujali blago, ukradeno v izgredih,",
+      "date": "2026-10-20T11:40:00.000Z",
+      "url": "https://n1info.si/magazin/luksuzni-predmeti-iz-izropanih-trgovin-v-franciji-so-se-znasli-na-vintedu/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Magazin",
+        "Zanimivosti",
+        "protesti",
+        "vinted"
+      ],
+      "author": "",
+      "theme": "ai",
+      "addedAt": "2026-10-20T13:18:37.280Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-delo-kako-v-hladnejsih-dneh-ucinkovito-00ee54",
+      "title": "Kako v hladnejših dneh učinkovito prezračiti dom",
+      "summary": "S sodobnimi rešitvami nad vlago, plesen in pršice. Jeseni se življenje počasi preseli v notranjost.",
+      "date": "2026-10-20T11:38:53.000Z",
+      "url": "https://www.delo.si/magazin/zanimivosti/kako-v-hladnejsih-dneh-ucinkovito-prezraciti-dom",
+      "source": "delo",
+      "sourceName": "Delo",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:28.272Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-n1si-sd-in-levica-ogorceni-zaradi-izkoriscanja-ee076c",
+      "title": "SD in Levica ogorčeni zaradi izkoriščanja tujcev v nezakoniti tovarni cigaret: \"To je zavržno dejanje\"",
+      "summary": "V Levici so zaradi nedavno odkritega primera izkoriščanja tujih delavcev v nezakoniti tovarni cigaret v Lendavi zahtevali sklic nujne seje parlamentar",
+      "date": "2026-10-20T11:32:00.000Z",
+      "url": "https://n1info.si/novice/slovenija/levica-po-odkritju-ilegalne-tovarne-cigaret-v-lendavi-vlada-odpira-vrata-za-izkoriscanje-tujih-delavcev/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Slovenija",
+        "levica",
+        "lendava",
+        "sd"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-20T13:18:37.280Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-24ur-spletni-nakupi-krediti-popravila-kaj-995f08",
+      "title": "Spletni nakupi, krediti, popravila: kaj prinašajo spremembe zakonodaje?",
+      "summary": "DZ je sprejel novelo zakona o varstvu potrošnikov in nov zakon o potrošniških kreditih, ki naj bi skladno z evropskimi direktivami zagotovila več pravic potrošnikov. Novosti se nanašajo na varnost pri spletnem nakupovanju ter sklepanju pogodb in kreditov na daljavo, preprečile naj bi zavajajoče zelene trditve in zagotovile več popravil blaga.",
+      "date": "2026-10-20T11:26:29.000Z",
+      "url": "https://www.24ur.com/novice/slovenija/sprejete-zakonske-spremembe-za-vecjo-zascito-potrosnikov.html",
+      "source": "24ur",
+      "sourceName": "24ur.com",
+      "categories": [
+        "Slovenija"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-20T13:18:37.900Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-delo-ob-15-jubileju-gre-posebna-zahvala-6e2533",
+      "title": "Ob 15. jubileju gre posebna zahvala zaposlenim",
+      "summary": "Zgodba o rasti, tehnološkem napredku in nenehnih spremembah je zgodba o ljudeh, ki so s svojim znanjem in predanostjo postavljali temelje razvoja.",
+      "date": "2026-10-20T11:18:01.000Z",
+      "url": "https://www.delo.si/delov-poslovni-center/energetika/ob-30-jubileju-gre-posebna-zahvala-zaposlenim",
+      "source": "delo",
+      "sourceName": "Delo",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-20T13:18:28.272Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-delo-zaprti-ze-leto-dni-zivijo-kot-na-marsu-e9fb7a",
+      "title": "Zaprti že leto dni: živijo kot na Marsu",
+      "summary": "Člani odprave so v 160 kvadratnih metrov velik habitat vstopili oktobra lani, njihova odprava bo trajala skupno 378 dni.",
+      "date": "2026-10-20T11:10:00.000Z",
+      "url": "https://www.delo.si/novice/znanoteh/zaprti-ze-leto-dni-zivijo-kot-na-marsu",
+      "source": "delo",
+      "sourceName": "Delo",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:28.272Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-24ur-ryanair-zaradi-visjih-davkov-krci-lete-leta-194d01",
+      "title": "Ryanair zaradi višjih davkov krči lete, leta 2027 pričakuje podražitve",
+      "summary": "Izvršni direktor družbe Ryanair Michael O'Leary je ob predstavitvi zimskega voznega reda napovedal ukinitev milijona sedežev in 20 letalskih povezav v Belgiji. Evropsko komisijo obtožuje, da z okoljskimi davki neupravičeno obremenjuje evropske letalske prevoznike, za leto 2027 pa napoveduje občutno podražitev vozovnic zaradi pričakovane rasti cen goriva.",
+      "date": "2026-10-20T10:43:02.000Z",
+      "url": "https://www.24ur.com/novice/tujina/ryanair-zaradi-visjih-davkov-krci-lete-leta-2027-pricakuje-podrazitve.html",
+      "source": "24ur",
+      "sourceName": "24ur.com",
+      "categories": [
+        "Tujina"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-20T13:18:37.900Z"
+    },
+    {
+      "slug": "ljubljana-2026-10-20-24ur-policija-zaradi-trgovine-z-ljudmi-isce-50-7bf70b",
+      "title": "Policija zaradi trgovine z ljudmi išče 50-letnega Simeona Motalna",
+      "summary": "Nacionalni preiskovalni urad v povezavi z odkritjem nezakonite proizvodnje ponarejenih cigaret v bližini Lendave zaradi utemeljenih razlogov za sum storitve kaznivega dejanja davčne zatajitve in trgovine z ljudmi išče 50-letnega Simeona Motalna. Vse, ki bi karkoli vedeli o njem ali ga opazili, prosijo, da jih o tem obvestijo.",
+      "date": "2026-10-20T10:36:28.000Z",
+      "url": "https://www.24ur.com/novice/crna-kronika/policija-zaradi-trgovine-z-ljudmi-isce-50-letnega-simeona-motolna.html",
+      "source": "24ur",
+      "sourceName": "24ur.com",
+      "categories": [
+        "Črna kronika"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:18:37.900Z"
+    },
     {
       "slug": "ljubljana-2026-10-19-24ur-novakova-in-biscak-o-rezultatih-a546f3",
       "title": "Novakova in Biščak o rezultatih referendumov in pretresih pri Demokratih",

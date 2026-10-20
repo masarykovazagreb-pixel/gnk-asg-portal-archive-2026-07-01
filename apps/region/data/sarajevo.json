@@ -4,98 +4,612 @@
   "lang": "bs",
   "city": "Sarajevo",
   "country": "Bosna i Hercegovina",
-  "updatedAt": "2026-10-19T21:18:02.969Z",
+  "updatedAt": "2026-10-20T13:17:55.883Z",
   "sources": [
     {
       "id": "n1ba",
       "name": "N1 BiH",
       "url": "https://n1info.ba/feed/",
       "ok": true,
-      "fetched": 0,
-      "errors": [
-        "preskočeno: cilj dosegnut"
-      ],
-      "checkedAt": "2026-10-19T21:18:02.969Z"
+      "fetched": 50,
+      "errors": [],
+      "checkedAt": "2026-10-20T13:17:38.616Z"
     },
     {
       "id": "klix",
       "name": "Klix",
       "url": "https://www.klix.ba/rss",
       "ok": true,
-      "fetched": 0,
-      "errors": [
-        "preskočeno: cilj dosegnut"
-      ],
-      "checkedAt": "2026-10-19T21:18:02.969Z"
+      "fetched": 30,
+      "errors": [],
+      "checkedAt": "2026-10-20T13:17:40.587Z"
     },
     {
       "id": "oslobodjenje",
       "name": "Oslobođenje",
       "url": "https://www.oslobodjenje.ba/feed",
-      "ok": true,
+      "ok": false,
       "fetched": 0,
       "errors": [
-        "preskočeno: cilj dosegnut"
+        "https://www.oslobodjenje.ba/feed: HTTP 404",
+        "https://www.oslobodjenje.ba/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:18:02.969Z"
+      "checkedAt": "2026-10-20T13:17:45.280Z"
     },
     {
       "id": "avaz",
       "name": "Avaz",
-      "url": "https://avaz.ba/feed",
+      "url": "https://www.avaz.ba/rss",
       "ok": true,
-      "fetched": 0,
+      "fetched": 10,
       "errors": [
-        "preskočeno: cilj dosegnut"
+        "https://avaz.ba/feed: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:18:02.969Z"
+      "checkedAt": "2026-10-20T13:17:49.491Z"
     },
     {
       "id": "radiosarajevo",
       "name": "Radio Sarajevo",
       "url": "https://radiosarajevo.ba/rss",
       "ok": true,
-      "fetched": 0,
-      "errors": [
-        "preskočeno: cilj dosegnut"
-      ],
-      "checkedAt": "2026-10-19T21:18:02.969Z"
+      "fetched": 25,
+      "errors": [],
+      "checkedAt": "2026-10-20T13:17:49.907Z"
     },
     {
       "id": "hayat",
       "name": "Hayat.ba",
       "url": "https://hayat.ba/feed/",
-      "ok": true,
+      "ok": false,
       "fetched": 0,
       "errors": [
-        "preskočeno: cilj dosegnut"
+        "https://hayat.ba/feed/: HTTP 403"
       ],
-      "checkedAt": "2026-10-19T21:18:02.969Z"
+      "checkedAt": "2026-10-20T13:17:51.461Z"
     },
     {
       "id": "buka",
       "name": "Buka",
       "url": "https://www.6yka.com/feed",
       "ok": true,
-      "fetched": 0,
-      "errors": [
-        "preskočeno: cilj dosegnut"
-      ],
-      "checkedAt": "2026-10-19T21:18:02.969Z"
+      "fetched": 10,
+      "errors": [],
+      "checkedAt": "2026-10-20T13:17:53.413Z"
     },
     {
       "id": "detektor",
       "name": "Detektor",
       "url": "https://detektor.ba/feed/",
       "ok": true,
-      "fetched": 0,
-      "errors": [
-        "preskočeno: cilj dosegnut"
-      ],
-      "checkedAt": "2026-10-19T21:18:02.969Z"
+      "fetched": 10,
+      "errors": [],
+      "checkedAt": "2026-10-20T13:17:55.882Z"
     }
   ],
   "items": [
+    {
+      "slug": "sarajevo-2026-10-20-avaz-objavljena-trasa-megaprojekta-u-bih-gasovod-94463b",
+      "title": "Objavljena trasa megaprojekta u BiH: Gasovod dug 94,4 kilometra prolazit će ispod dvije rijeke",
+      "summary": "Objavljena trasa megaprojekta u BiH: Gasovod dug 94,4 kilometra prolazit će ispod dvije rijeke - Uz osnovnu trasu planirana je i izgradnja priključnih gasovoda te objekata za mjerenje, regulaciju i distribuciju gasa",
+      "date": "2026-10-20T14:09:56.000Z",
+      "url": "https://avaz.ba/vijesti/biznis/1081622/objavljena-trasa-megaprojekta-u-bih-gasovod-dug-94-4-kilometra-prolazit-ce-ispod-dvije-rijeke",
+      "source": "avaz",
+      "sourceName": "Avaz",
+      "categories": [
+        "Novi energetski pravac"
+      ],
+      "author": "Dnevni avaz",
+      "theme": "energija",
+      "addedAt": "2026-10-20T13:17:49.491Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-avaz-megan-zaratila-s-dizajnerom-uzimala-haljine-da5657",
+      "title": "Megan zaratila s dizajnerom: Uzimala haljine, pa zaboravljala da ih vrati, u sve upetljana i Kejt",
+      "summary": "Megan zaratila s dizajnerom: Uzimala haljine, pa zaboravljala da ih vrati, u sve upetljana i Kejt - U memoarima otkrio kako je došlo do nesporazuma zbog pozajmljenih kreacija, nakon kojeg mu je vojvotkinja poručila da više neće nositi njegove modele",
+      "date": "2026-10-20T14:06:44.000Z",
+      "url": "https://avaz.ba/showbiz/jet-set/1081619/megan-zaratila-s-dizajnerom-uzimala-haljine-pa-zaboravljala-da-ih-vrati-u-sve-upetljana-i-kejt",
+      "source": "avaz",
+      "sourceName": "Avaz",
+      "categories": [
+        "Skandal širokih razmjera"
+      ],
+      "author": "Dnevni avaz",
+      "theme": "ai",
+      "addedAt": "2026-10-20T13:17:49.491Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-avaz-dvije-michelinove-zvjezdice-stizu-u-e2bc97",
+      "title": "Dvije Michelinove zvjezdice stižu u Sarajevo: Restoran Amber domaćin ekskluzivne gastronomske večeri",
+      "summary": "Dvije Michelinove zvjezdice stižu u Sarajevo: Restoran Amber domaćin ekskluzivne gastronomske večeri - Chefovi s Michelinovim zvjezdicama, Nikola Stojaković i Mario Mandarić, udružuju snage u restoranu Amber uz vrhunska vina vinarije Šapat",
+      "date": "2026-10-20T14:02:40.000Z",
+      "url": "https://avaz.ba/vijesti/1081618/dvije-michelinove-zvjezdice-stizu-u-sarajevo-restoran-amber-domacin-ekskluzivne-gastronomske-veceri",
+      "source": "avaz",
+      "sourceName": "Avaz",
+      "categories": [
+        "EKSKLUZIVNA VEČERA"
+      ],
+      "author": "Dnevni avaz",
+      "theme": "energija",
+      "addedAt": "2026-10-20T13:17:49.491Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-avaz-ovo-je-uzrok-smrti-sahare-rej-je-li-se-0d797b",
+      "title": "Ovo je uzrok smrti Sahare Rej: Je li se tragedija mogla izbjeći",
+      "summary": "Ovo je uzrok smrti Sahare Rej: Je li se tragedija mogla izbjeći - Manekenka je preminula u 34. godini, a dok strani mediji navode da se sumnja na predoziranje, sve okolnosti tragedije još nisu razjašnjene",
+      "date": "2026-10-20T13:42:48.000Z",
+      "url": "https://avaz.ba/showbiz/ljepotice/1081615/ovo-je-uzrok-smrti-sahare-rej-je-li-se-tragedija-mogla-izbjeci",
+      "source": "avaz",
+      "sourceName": "Avaz",
+      "categories": [
+        "pod velom misterije"
+      ],
+      "author": "Dnevni avaz",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:49.491Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-avaz-sajfer-jucer-postao-babo-a-ime-koje-su-dali-fd304d",
+      "title": "Sajfer jučer postao babo, a ime koje su dali kćerkici ima posebnu ljepotu",
+      "summary": "Sajfer jučer postao babo, a ime koje su dali kćerkici ima posebnu ljepotu - Reper Adnan Nikšić i supruga Lejla dobili su djevojčicu Noor, a sretne vijesti podijelili su s pratiteljima na društvenim mrežama",
+      "date": "2026-10-20T13:35:10.000Z",
+      "url": "https://avaz.ba/showbiz/jet-set/1081613/sajfer-jucer-postao-babo-a-ime-koje-su-dali-kcerkici-ima-posebnu-ljepotu",
+      "source": "avaz",
+      "sourceName": "Avaz",
+      "categories": [
+        "STIGLE RODE"
+      ],
+      "author": "Dnevni avaz",
+      "theme": "energija",
+      "addedAt": "2026-10-20T13:17:49.491Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-klix-kako-su-ratovi-na-bliskom-istoku-3721c7",
+      "title": "Kako su ratovi na Bliskom istoku promijenili tokove nafte: Hutska i iranska ruka na vratu energetike svijeta",
+      "summary": "Rat u Iranu i eskalacija rata u Jemenu omogućile su Hutima i Korpusu islamske revolucionarne garde kontrolu nad dva najvažnija pomorska prolaza Bab el Mandeb i Hormuz, što za posljedicu ima gubitke i troškove koji će se dugo osjećati.",
+      "date": "2026-10-20T13:14:00.000Z",
+      "url": "https://www.klix.ba/biznis/ekonomija/kako-su-ratovi-na-bliskom-istoku-promijenili-tokove-nafte-hutska-i-iranska-ruka-na-vratu-energetike-svijeta/261020053",
+      "source": "klix",
+      "sourceName": "Klix",
+      "categories": [
+        "Ekonomija"
+      ],
+      "author": "D. Dž.",
+      "theme": "rat",
+      "addedAt": "2026-10-20T13:17:40.587Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-klix-medunarodni-dan-kontrolora-letenja-954893",
+      "title": "Međunarodni dan kontrolora letenja: Nevidljivi čuvari neba upozoravaju na uslove rada",
+      "summary": "Sarajevo će 2027. godine biti domaćin evropskog regionalnog sastanka IFATCA-e, a Sindikat i Udruženje kontrolora letenja u BiH upozoravaju na važnost odgovarajućih radnih uslova i dovoljnog broja kadrova te su se oglasili saopćenjem za javnost.",
+      "date": "2026-10-20T13:10:00.000Z",
+      "url": "https://www.klix.ba/vijesti/bih/medunarodni-dan-kontrolora-letenja-nevidljivi-cuvari-neba-upozoravaju-na-uslove-rada/261020173",
+      "source": "klix",
+      "sourceName": "Klix",
+      "categories": [
+        "BiH"
+      ],
+      "author": "Piše: A. Ku.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:40.587Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-klix-ocekuju-se-novosti-22-oktobar-bi-mogao-biti-fc525c",
+      "title": "Očekuju se novosti: 22. oktobar bi mogao biti veliki dan za igru GTA 6",
+      "summary": "Budući da je do izlaska igre Grand Theft Auto 6, zakazanog za 19. novembar, ostalo manje od mjesec dana, Rockstar Games ulazi u završnu fazu marketinške kampanje za jednu od najiščekivanijih igara svih vremena, a sljedeći datum koji vrijedi pratiti je 22. oktobar.",
+      "date": "2026-10-20T13:06:00.000Z",
+      "url": "https://www.klix.ba/scitech/gaming/ocekuju-se-novosti-22-oktobar-bi-mogao-biti-veliki-dan-za-igru-gta-6/261020189",
+      "source": "klix",
+      "sourceName": "Klix",
+      "categories": [
+        "Gaming"
+      ],
+      "author": "Piše: D. B.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:40.587Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-klix-vozac-u-sarajevu-automobilom-blokirao-782592",
+      "title": "Vozač u Sarajevu automobilom blokirao pristup kontejnerima, ogorčeni građani smeće bacali po vozilu",
+      "summary": "KJKP Rad je objavio na Facebooku fotografiju automobila parkiranog ispred kontejnera u ulici Antuna Hangija na području općine Centar i ukazao na problem nepropisno parkiranih vozila.",
+      "date": "2026-10-20T13:02:00.000Z",
+      "url": "https://www.klix.ba/vijesti/bih/vozac-u-sarajevu-automobilom-blokirao-pristup-kontejnerima-ogorceni-gradani-smece-bacali-po-vozilu/261020188",
+      "source": "klix",
+      "sourceName": "Klix",
+      "categories": [
+        "BiH"
+      ],
+      "author": "Piše: A. L.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:40.587Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-klix-christina-applegate-otkrila-da-joj-je-9363a3",
+      "title": "Christina Applegate otkrila da joj je pogrešno dijagnosticirana multipla skleroza: Sada sam ponovo na početku",
+      "summary": "Američka glumica Christina Applegate otkrila je da joj je doktor saopćio kako ipak nema multiplu sklerozu, iako se od 2021. godine suočava s ozbiljnim zdravstvenim tegobama koje joj otežavaju svakodnevni život.",
+      "date": "2026-10-20T12:57:00.000Z",
+      "url": "https://www.klix.ba/magazin/showbiz/christina-applegate-otkrila-da-joj-je-pogresno-dijagnosticirana-multipla-skleroza-sada-sam-ponovo-na-pocetku/261020183",
+      "source": "klix",
+      "sourceName": "Klix",
+      "categories": [
+        "Showbiz"
+      ],
+      "author": "Piše: A. Ć.",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:40.587Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-detektor-u-akciji-za-pokusaj-ubistva-uhapsen-voda-7a000e",
+      "title": "U akciji za pokušaj ubistva uhapšen vođa proruske grupe iz Lončara",
+      "summary": "Srđan Letić, vođa neformalne proruske humanitarne organizacije “Sveti Georgije” iz Lončara kod Brčkog, priveden je s još nekoliko osoba u zajedničkoj akciji nekoliko policijskih agencija usmjerenoj ka rasvjetljavanju pokušaja ubistva, potvrđeno je za Detektor iz policijskih izvora. The post U akciji za pokušaj ubistva uhapšen vođa proruske grupe iz Lončara appeared first on Detektor .",
+      "date": "2026-10-20T12:51:26.000Z",
+      "url": "https://detektor.ba/2026/10/20/u-akciji-za-pokusaj-ubistva-uhapsen-vodja-proruske-grupe-iz-loncara/",
+      "source": "detektor",
+      "sourceName": "Detektor",
+      "categories": [
+        "Vijesti"
+      ],
+      "author": "Irvin Pekmez",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-20T13:17:55.882Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-n1ba-ap-vlasti-rs-pomazu-vucicu-pred-izbore-6aa67a",
+      "title": "AP: Vlasti RS pomažu Vučiću pred izbore, policija zabranjuje skupove podrške studentima",
+      "summary": "Dok se Aleksandar Vučić i njegova Srpska napredna stranka pripremaju za parlamentarne izbore u nedjelju, njihovi saveznici u Republici Srpskoj pružaju",
+      "date": "2026-10-20T12:48:54.000Z",
+      "url": "https://n1info.ba/vijesti/ap-vlasti-rs-pomazu-vucicu-pred-izbore-policija-zabranjuje-skupove-podrske-studentima/",
+      "source": "n1ba",
+      "sourceName": "N1 BiH",
+      "categories": [
+        "Vijesti",
+        "aleksandar vučić",
+        "milorad dodik"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-20T13:17:38.617Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-klix-od-vaznog-potpisa-do-viralnog-snimka-411f82",
+      "title": "Od važnog potpisa do viralnog snimka: Nespretan poljubac Donalda i Melanije u centru pažnje",
+      "summary": "Američki predsjednik Donald Trump potpisao je u ponedjeljak izvršnu naredbu kojom se osniva novi odjel za zdravlje žena u okviru Nacionalnog instituta za zdravlje (NIH). Inicijativu je predvodila prva dama Melania Trump.",
+      "date": "2026-10-20T12:45:00.000Z",
+      "url": "https://www.klix.ba/vijesti/svijet/od-vaznog-potpisa-do-viralnog-snimka-nespretan-poljubac-donalda-i-melanije-u-centru-paznje/261020171",
+      "source": "klix",
+      "sourceName": "Klix",
+      "categories": [
+        "Svijet"
+      ],
+      "author": "Piše: A. Ku.",
+      "theme": "politika",
+      "addedAt": "2026-10-20T13:17:40.587Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-n1ba-umrli-poznati-sijamski-blizanci-influenseri-b00212",
+      "title": "Umrli poznati sijamski blizanci - influenseri (27): Jedan doživio srčani zastoj, drugi infarkt nekoliko minuta kasnije",
+      "summary": "Dvadesetsedmogodišnja braća, koja su svojom pozitivnošću inspirisala preko 60.000 pratilaca, nisu uspjela da prevaziđu svoje zdravstvene probleme. \"In",
+      "date": "2026-10-20T12:44:47.000Z",
+      "url": "https://n1info.ba/magazin/lifestyle/umrli-poznati-sijamski-blizanci-influenseri-27-jedan-dozivio-srcani-zastoj-drugi-infarkt-nekoliko-minuta-kasnije/",
+      "source": "n1ba",
+      "sourceName": "N1 BiH",
+      "categories": [
+        "Lifestyle",
+        "Showbiz",
+        "jose armando sevatos",
+        "jose lusi sevatos"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:38.617Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-radiosarajevo-prirodna-bogatstva-i-stecene-privilegije-121a25",
+      "title": "Prirodna bogatstva i stečene privilegije: Slatki život Čengića ili šta je (pre)ostalo od ljevice",
+      "summary": "",
+      "date": "2026-10-20T12:43:00.000Z",
+      "url": "https://radiosarajevo.ba/metromahala/teme/irfan-cengic-nasljedno-bogatstvo-i-ljevica-u-bih/657536",
+      "source": "radiosarajevo",
+      "sourceName": "Radio Sarajevo",
+      "categories": [],
+      "author": "RSA",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:49.907Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-n1ba-policija-uklonila-protestne-kampove-u-bcfd0d",
+      "title": "Policija uklonila protestne kampove u Portugalu: Uhapšeno 55 osoba zbog stambene krize",
+      "summary": "Portugalska policija u utorak rano ujutro uklonila je protestne kampove u Lisabonu i Portu, uhapsivši 55 osoba koje su odbile napustiti javne površine",
+      "date": "2026-10-20T12:37:55.000Z",
+      "url": "https://n1info.ba/svijet/policija-uklonila-protestne-kampove-u-portugalu-uhapseno-55-osoba-zbog-stambene-krize/",
+      "source": "n1ba",
+      "sourceName": "N1 BiH",
+      "categories": [
+        "Svijet",
+        "protesti",
+        "portugal"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:38.617Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-buka-kraj-jeftinog-grijanja-u-rs-dodik-najavio-467f1e",
+      "title": "KRAJ JEFTINOG GRIJANJA U RS: Dodik najavio tržišne cijene za one koji se griju na struju, evo šta kaže struka",
+      "summary": "Najava Milorada Dodika da bi domaćinstva koja se griju na električnu energiju mogla plaćati višu, tržišnu cijenu struje otvorila je pitanja tehničke izvodljivosti takve mjere, opterećenja elektroenergetske mreže i mogućih posljedica po građane. Dodik je juče, na vanrednoj konferenciji za medije u Banjaluci, najavio da će struja za privredu poskupjeti ranije, dok se korekcija cijena",
+      "date": "2026-10-20T12:33:12.000Z",
+      "url": "https://6yka.com/bih/kraj-jeftinog-grijanja-u-rs-dodik-najavio-trzisne-cijene-za-one-koji-se-griju-na-struju-evo-sta-kaze-struka/",
+      "source": "buka",
+      "sourceName": "Buka",
+      "categories": [
+        "BiH",
+        "Izdvojeno",
+        "buka",
+        "cijena električne energije"
+      ],
+      "author": "Tatjana Calic",
+      "theme": "energija",
+      "addedAt": "2026-10-20T13:17:53.413Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-n1ba-jednostavan-potez-kako-spasiti-vuneni-723e74",
+      "title": "Jednostavan potez kako spasiti vuneni džemper koji se skupio nakon pranja - sastojak ima svaka kuća",
+      "summary": "Ako se vaš omiljeni vuneni džemper skupio tokom pranja, nije nužno izgubljen, jer postoji jednostavan trik koji vam može pomoći da barem djelimično vr",
+      "date": "2026-10-20T12:28:42.000Z",
+      "url": "https://n1info.ba/magazin/lifestyle/jednostavan-potez-kako-spasiti-vuneni-dzemper-koji-se-skupio-nakon-pranja-sastojak-ima-svaka-kuca/",
+      "source": "n1ba",
+      "sourceName": "N1 BiH",
+      "categories": [
+        "Lifestyle",
+        "džemper",
+        "vuna",
+        "pranje vune"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:38.617Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-buka-ilija-srdanovic-za-buku-srbija-ce-26-6f630b",
+      "title": "Ilija Srdanović za Buku: Srbija će 26. oktobra biti oslobođena od režima",
+      "summary": "Kada su mediji 1. novembra 2024. objavili da se na Željezničkoj stanici u Novom Sadu srušila nadstrešnica i da ima poginulih (konačni bilans je 16 mrtvih) sve je izgledalo kao da se radi o još jednoj vijesti iz crne hronike. No, ništa nije bilo isto. Građani kao da su probudili i osvijestili da mogu poginuti",
+      "date": "2026-10-20T12:27:06.000Z",
+      "url": "https://6yka.com/intervju/ilija-srdanovic-za-buku-srbija-ce-26-oktobra-biti-oslobodjena-od-rezima/",
+      "source": "buka",
+      "sourceName": "Buka",
+      "categories": [
+        "Intervju",
+        "Izdvojeno"
+      ],
+      "author": "Sladjan Tomic",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:53.413Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-n1ba-merz-kompanije-obecale-vise-od-800-508558",
+      "title": "Merz: Kompanije obećale više od 800 milijardi eura ulaganja u Njemačku do 2028. godine",
+      "summary": "Vodeće kompanije obećale su da će do 2028. godine uložiti više od 800 milijardi eura (898 milijardi dolara) u Njemačku, saopćio je u utorak kancelar F",
+      "date": "2026-10-20T12:23:50.000Z",
+      "url": "https://n1info.ba/svijet/merz-kompanije-obecale-vise-od-800-milijardi-eura-ulaganja-u-njemacku-do-2028-godine/",
+      "source": "n1ba",
+      "sourceName": "N1 BiH",
+      "categories": [
+        "Svijet",
+        "ekonomske reforme",
+        "njemačka ekonomija",
+        "strane investicije"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:38.617Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-buka-crnoj-gori-nedostaje-oko-25-hiljada-e01b09",
+      "title": "Crnoj Gori nedostaje oko 25 hiljada sezonskih radnika, uvode institut “stalnog sezonca”",
+      "summary": "Crna Gora do kraja godine planira uvođenje instituta stalnog sezonca kako bi, po uzoru na raniji hrvatski model, sezonske poslove pretvorila u stabilnije angažmane za domaće radnike, piše Radiotelevizija Crne Gore (RTCG) i dodaje da je Hrvatska od tog modela u međuvremenu odustala zbog sve većeg uvoza strane radne snage. Iako gospodarstvenici teško pronalaze radnike",
+      "date": "2026-10-20T12:22:40.000Z",
+      "url": "https://6yka.com/region/crnoj-gori-nedostaje-oko-25-hiljada-sezonskih-radnika-uvode-institut-stalnog-sezonca/",
+      "source": "buka",
+      "sourceName": "Buka",
+      "categories": [
+        "Region",
+        "crna gora",
+        "sezonski radnici",
+        "stalni sezonac"
+      ],
+      "author": "Milica Plavsic",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-20T13:17:53.413Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-radiosarajevo-balkan-insight-americki-ustupci-dodiku-d3ca4b",
+      "title": "Balkan Insight: Američki ustupci Dodiku jačaju utjecaj Moskve u Bosni i Hercegovini",
+      "summary": "",
+      "date": "2026-10-20T12:22:00.000Z",
+      "url": "https://radiosarajevo.ba/vijesti/bosna-i-hercegovina/americki-ustupci-dodiku-jacaju-uticaj-moskve-u-bih/657534",
+      "source": "radiosarajevo",
+      "sourceName": "Radio Sarajevo",
+      "categories": [],
+      "author": "RSA",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:49.907Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-n1ba-ukmto-tanker-ucestvovao-u-incidentu-s-7d1d38",
+      "title": "UKMTO: Tanker učestvovao u incidentu s vojnim snagama kod obale Omana",
+      "summary": "Tanker je učestvovao u incidentu s vojnim snagama kod obale Omana, saopćila je u utorak agencija Ujedinjenog Kraljevstva za pomorske trgovinske operac",
+      "date": "2026-10-20T12:21:17.000Z",
+      "url": "https://n1info.ba/svijet/ukmto-tanker-ucestvovao-u-incidentu-s-vojnim-snagama-kod-obale-omana/",
+      "source": "n1ba",
+      "sourceName": "N1 BiH",
+      "categories": [
+        "Svijet",
+        "tanker",
+        "hormuški moreuz",
+        "pomorska sigurnost"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-20T13:17:38.617Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-radiosarajevo-dragan-covic-i-tomislav-coric-u-zagrebu-7f6a08",
+      "title": "Dragan Čović i Tomislav Ćorić u Zagrebu: Povezanosti i saradnji na dobrobit građana BiH i Hrvatske",
+      "summary": "",
+      "date": "2026-10-20T12:19:00.000Z",
+      "url": "https://radiosarajevo.ba/vijesti/regija/draganu-covicu-i-tomislavu-coricu-sastanak-u-zagrebu/657535",
+      "source": "radiosarajevo",
+      "sourceName": "Radio Sarajevo",
+      "categories": [],
+      "author": "RSA",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:49.907Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-radiosarajevo-video-pogledajte-trenutak-izricanja-2722eb",
+      "title": "Video | Pogledajte trenutak izricanja oslobađajuće presude Osmanu Mehmedagiću u Sudu BiH",
+      "summary": "",
+      "date": "2026-10-20T12:08:00.000Z",
+      "url": "https://radiosarajevo.ba/vijesti/bosna-i-hercegovina/oslobodjena-presuda-osmanu-mehmedagicu-u-sudu-bih/657531",
+      "source": "radiosarajevo",
+      "sourceName": "Radio Sarajevo",
+      "categories": [],
+      "author": "RSA",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:49.907Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-radiosarajevo-radiosarajevo-ba-saznaje-konakovic-i-68e545",
+      "title": "Radiosarajevo.ba saznaje: Konaković i Košarac postigli dogovor, iz Srbije izvršen pritisak na SNSD",
+      "summary": "",
+      "date": "2026-10-20T12:05:00.000Z",
+      "url": "https://radiosarajevo.ba/vijesti/bosna-i-hercegovina/konakovic-kosarac-dogovor-pritisak-srbije-snsd/657533",
+      "source": "radiosarajevo",
+      "sourceName": "Radio Sarajevo",
+      "categories": [],
+      "author": "RSA",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:49.907Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-radiosarajevo-buffon-ponovo-govorio-o-porazu-od-bih-u-cb203a",
+      "title": "Buffon ponovo govorio o porazu od BiH u Zenici: \"Nije im dosuđen crveni karton\"",
+      "summary": "",
+      "date": "2026-10-20T12:05:00.000Z",
+      "url": "https://radiosarajevo.ba/sport/nogomet/buffon-ponovo-o-porazu-od-bih-u-zenici/657532",
+      "source": "radiosarajevo",
+      "sourceName": "Radio Sarajevo",
+      "categories": [],
+      "author": "RSA",
+      "theme": "sport",
+      "addedAt": "2026-10-20T13:17:49.907Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-buka-markovina-uvreda-inteligenciji-ili-nacizam-ea4ce5",
+      "title": "Markovina: Uvreda inteligenciji ili nacizam s „ljudskim licem“",
+      "summary": "Dvije su dobre stvari koje su se dogodile vezano uz nacistički marš Torcide ulicama Splita, uoči utakmice između Hajduka i Ajaxa. Prva je ta što je momentalno razoren malograđansko-domobranski konsenzus u kojem se najveći dio društva te političkih i medijskih aktera pravio lud u vezi stvarnosti u kojoj hrvatsko društvo živi. Jer sve dok se",
+      "date": "2026-10-20T11:41:13.000Z",
+      "url": "https://6yka.com/kolumne/markovina-uvreda-inteligenciji-ili-nacizam-s-ljudskim-licem/",
+      "source": "buka",
+      "sourceName": "Buka",
+      "categories": [
+        "Kolumne"
+      ],
+      "author": "Maja Isovic",
+      "theme": "sport",
+      "addedAt": "2026-10-20T13:17:53.413Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-buka-whatsapp-iznenadio-novom-funkcijom-poziva-c1f88d",
+      "title": "WhatsApp iznenadio novom funkcijom poziva",
+      "summary": "WhatsApp je uveo novu funkciju koja omogućava da se audio i video pozivima pridruže i osobe koje nemaju korisnički nalog na ovoj platformi. Za razgovor je dovoljno da dobiju poveznicu od osobe koja organizuje poziv, bez registracije i instaliranja aplikacije. Nova opcija, nazvana „gostujući pozivi“, namijenjena je korisnicima koji žele da razgovaraju s drugima bez",
+      "date": "2026-10-20T11:38:15.000Z",
+      "url": "https://6yka.com/kultura-i-zabava/whatsapp-iznenadio-novom-funkcijom-poziva/",
+      "source": "buka",
+      "sourceName": "Buka",
+      "categories": [
+        "Kultura i zabava"
+      ],
+      "author": "Maja Isovic",
+      "theme": "ai",
+      "addedAt": "2026-10-20T13:17:53.413Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-buka-sud-bih-osman-mehmedagic-osmica-osloboden-0591f3",
+      "title": "Sud BiH: Osman Mehmedagić Osmica oslobođen krivice!",
+      "summary": "foto Arhiva",
+      "date": "2026-10-20T11:34:12.000Z",
+      "url": "https://6yka.com/bih/sud-bih-osman-mehmedagic-osmica-oslobodjen-krivice/",
+      "source": "buka",
+      "sourceName": "Buka",
+      "categories": [
+        "BiH",
+        "Osman Mehmedagić Osmica"
+      ],
+      "author": "Elvir Padalovic",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:53.413Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-detektor-mehmedagic-osloboden-optuzbe-za-zloupotrebu-8d26fb",
+      "title": "Mehmedagić oslobođen optužbe za zloupotrebu položaja",
+      "summary": "Sud Bosne i Hercegovine je prvostepenom presudom nekadašnjeg direktora Obavještajno-sigurnosne agencija (OSA) Osmana Mehmedagića oslobodio optužbe za zloupotrebu položaja. The post Mehmedagić oslobođen optužbe za zloupotrebu položaja appeared first on Detektor .",
+      "date": "2026-10-20T11:33:43.000Z",
+      "url": "https://detektor.ba/2026/10/20/mehmedagic-oslobodjen-optuzbe-za-zloupotrebu-polozaja/",
+      "source": "detektor",
+      "sourceName": "Detektor",
+      "categories": [
+        "Vijesti"
+      ],
+      "author": "Marija Taušan",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-20T13:17:55.882Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-detektor-satara-i-ostali-zatekao-mrtvog-pritvorenika-e4b849",
+      "title": "Šatara i ostali: Zatekao mrtvog pritvorenika",
+      "summary": "Na suđenju za zločine u Donjem Vakufu, svjedok Tužilaštva Bosne i Hercegovine ispričao je kako je u policijskom pritvoru zatekao jedno mrtvo lice. The post Šatara i ostali: Zatekao mrtvog pritvorenika appeared first on Detektor .",
+      "date": "2026-10-20T08:54:46.000Z",
+      "url": "https://detektor.ba/2026/10/20/satara-i-ostali-zatekao-mrtvog-pritvorenika/",
+      "source": "detektor",
+      "sourceName": "Detektor",
+      "categories": [
+        "Dnevni izvještaji"
+      ],
+      "author": "Marija Taušan",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:55.882Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-detektor-vise-od-250-000-evra-za-organizacije-koje-4809b6",
+      "title": "Više od 250.000 evra za organizacije koje podržavaju SNS i Vučića u regionu",
+      "summary": "Ministarstvo spoljnih poslova dodelilo je više od 250.000 evra grupama iz dijaspore koje podržavaju Srpsku naprednu stranku ili propagiraju desničarske stavove, pokazuje istraživanje BIRN-a. The post Više od 250.000 evra za organizacije koje podržavaju SNS i Vučića u regionu appeared first on Detektor .",
+      "date": "2026-10-20T08:25:28.000Z",
+      "url": "https://detektor.ba/2026/10/20/vise-od-250-000-evra-za-organizacije-koje-podrzavaju-sns-i-vucica-u-regionu/",
+      "source": "detektor",
+      "sourceName": "Detektor",
+      "categories": [
+        "Region"
+      ],
+      "author": "Dejan Rakita",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-20T13:17:55.882Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-20-detektor-detektor-i-disinfo-zasto-su-netacne-f26f8a",
+      "title": "Detektor I Disinfo: Zašto su netačne Dodikove tvrdnje da Bošnjaci blokiraju Istočnu interkonekciju",
+      "summary": "The post Detektor I Disinfo: Zašto su netačne Dodikove tvrdnje da Bošnjaci blokiraju Istočnu interkonekciju appeared first on Detektor .",
+      "date": "2026-10-20T06:00:28.000Z",
+      "url": "https://detektor.ba/2026/10/20/detektor-i-disinfo-zasto-su-netacne-dodikove-tvrdnje-da-bosnjaci-blokiraju-istocnu-interkonekciju/",
+      "source": "detektor",
+      "sourceName": "Detektor",
+      "categories": [
+        "Detektor disinfo",
+        "Video"
+      ],
+      "author": "Irvin Pekmez",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:55.882Z"
+    },
     {
       "slug": "sarajevo-2026-10-19-avaz-tramp-trazi-da-novi-meksiko-odmah-promijeni-6b6735",
       "title": "Tramp traži da Novi Meksiko odmah promijeni ime u \"Nova Amerika\"",
@@ -2276,6 +2790,21 @@
       "theme": "rat",
       "addedAt": "2026-10-19T20:53:11.588Z",
       "backfilled": true
+    },
+    {
+      "slug": "sarajevo-2026-10-19-detektor-dragan-jevtic-i-ostali-pogubljenja-013325",
+      "title": "Dragan Jevtić i ostali: Pogubljenja Srebreničana u Orahovcu",
+      "summary": "Na suđenju za pomaganje u genocidu u Srebrenici, svjedok Tužilaštva Bosne i Hercegovine ispričao je kako su ubijani Srebreničani u Orahovcu i kako je nedaleko od mjesta strijeljanja kopala mašina. The post Dragan Jevtić i ostali: Pogubljenja Srebreničana u Orahovcu appeared first on Detektor .",
+      "date": "2026-10-19T15:10:11.000Z",
+      "url": "https://detektor.ba/2026/10/19/dragan-jevtic-i-ostali-pogubljenja-srebrenicana-u-orahovcu/",
+      "source": "detektor",
+      "sourceName": "Detektor",
+      "categories": [
+        "Dnevni izvještaji"
+      ],
+      "author": "Marija Taušan",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:55.882Z"
     },
     {
       "slug": "sarajevo-2026-10-19-n1ba-daily-mail-otkriva-kakva-se-kazna-sprema-91b2e4",

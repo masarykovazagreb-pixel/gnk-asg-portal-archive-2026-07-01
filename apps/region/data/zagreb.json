@@ -4,87 +4,634 @@
   "lang": "hr",
   "city": "Zagreb",
   "country": "Hrvatska",
-  "updatedAt": "2026-10-19T21:18:02.667Z",
+  "updatedAt": "2026-10-20T13:17:13.286Z",
   "sources": [
     {
       "id": "index",
       "name": "Index.hr",
       "url": "https://www.index.hr/rss",
       "ok": true,
-      "fetched": 0,
-      "errors": [
-        "preskočeno: cilj dosegnut"
-      ],
-      "checkedAt": "2026-10-19T21:18:02.648Z"
+      "fetched": 150,
+      "errors": [],
+      "checkedAt": "2026-10-20T13:17:06.829Z"
     },
     {
       "id": "jutarnji",
       "name": "Jutarnji list",
       "url": "https://www.jutarnji.hr/feed",
       "ok": true,
-      "fetched": 0,
-      "errors": [
-        "preskočeno: cilj dosegnut"
-      ],
-      "checkedAt": "2026-10-19T21:18:02.648Z"
+      "fetched": 50,
+      "errors": [],
+      "checkedAt": "2026-10-20T13:17:07.785Z"
     },
     {
       "id": "poslovni",
       "name": "Poslovni dnevnik",
       "url": "https://www.poslovni.hr/feed/",
       "ok": true,
-      "fetched": 0,
-      "errors": [
-        "preskočeno: cilj dosegnut"
-      ],
-      "checkedAt": "2026-10-19T21:18:02.648Z"
+      "fetched": 20,
+      "errors": [],
+      "checkedAt": "2026-10-20T13:17:08.657Z"
     },
     {
       "id": "tportal",
       "name": "tportal",
       "url": "https://www.tportal.hr/rss",
       "ok": true,
-      "fetched": 0,
-      "errors": [
-        "preskočeno: cilj dosegnut"
-      ],
-      "checkedAt": "2026-10-19T21:18:02.648Z"
+      "fetched": 20,
+      "errors": [],
+      "checkedAt": "2026-10-20T13:17:10.223Z"
     },
     {
       "id": "hrt",
       "name": "HRT Vijesti",
       "url": "https://vijesti.hrt.hr/rss",
-      "ok": true,
+      "ok": false,
       "fetched": 0,
       "errors": [
-        "preskočeno: cilj dosegnut"
+        "https://vijesti.hrt.hr/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-19T21:18:02.648Z"
+      "checkedAt": "2026-10-20T13:17:11.776Z"
     },
     {
       "id": "n1hr",
       "name": "N1 Hrvatska",
       "url": "https://n1info.hr/feed/",
       "ok": true,
-      "fetched": 0,
-      "errors": [
-        "preskočeno: cilj dosegnut"
-      ],
-      "checkedAt": "2026-10-19T21:18:02.648Z"
+      "fetched": 50,
+      "errors": [],
+      "checkedAt": "2026-10-20T13:17:12.384Z"
     },
     {
       "id": "telegram",
       "name": "Telegram.hr",
       "url": "https://telegram.hr/feed/",
       "ok": true,
-      "fetched": 0,
-      "errors": [
-        "preskočeno: cilj dosegnut"
-      ],
-      "checkedAt": "2026-10-19T21:18:02.648Z"
+      "fetched": 10,
+      "errors": [],
+      "checkedAt": "2026-10-20T13:17:13.285Z"
     }
   ],
   "items": [
+    {
+      "slug": "zagreb-2026-10-20-tportal-barca-veceras-protiv-najbolje-momcadi-3077a1",
+      "title": "Barca večeras protiv najbolje momčadi svijeta, a Flick ima ogroman problem: Evo kakva je situacija s Livakovićem",
+      "summary": "Barcelona Hansija Flicka izgleda nezaustavljivo. Katalonski velikan pobijedio je u svih devet prvenstvenih utakmica, postigao čak 39 pogodaka i izjednačio povijesni rekord Real Madrida iz 1968. godine. No večeras ga na Parku prinčeva čeka možda i najteži mogući ispit - gostovanje kod moćnog PSG-a, aktualnog europskog prvaka. I upravo uoči tog spektakla Flick se suočava s ozbiljnim problemima. Obrana mu je desetkovana ozljedama, mora tražiti alternativna rješenja, a u cijeloj se priči hrvatski reprezentativac Dominik Livaković nalazi u prilično neobičnoj situaciji.",
+      "date": "2026-10-20T13:11:00.000Z",
+      "url": "https://www.tportal.hr/sport/clanak/barca-veceras-protiv-najbolje-momcadi-svijeta-a-flick-ima-ogroman-problem-evo-kakva-je-situacija-s-livakovicem-20261020",
+      "source": "tportal",
+      "sourceName": "tportal",
+      "categories": [
+        "Sport"
+      ],
+      "author": "",
+      "theme": "sport",
+      "addedAt": "2026-10-20T13:17:10.223Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-jutarnji-bio-je-jedan-od-najvecih-zavodnika-a-danas-47991e",
+      "title": "Bio je jedan od najvećih zavodnika, a danas je snimljen na ulici nakon dugo vremena. Nitko ga nije prepoznao",
+      "summary": "Britanski glazbenik Gary Barlow snimljen je u javnosti nakon dugo vremena, a obožavatelje je iznenadio svojim izgledom. Član kultnog sastava Take That viđen je u ponedjeljak u izlasku s prijateljima, nakon što je priznao da se suočavao s izazovima povezanim s godinama. Barlow je snimljen na putu pre...",
+      "date": "2026-10-20T13:10:42.000Z",
+      "url": "https://www.jutarnji.hr/scena/strane-zvijezde/bio-je-jedan-od-najvecih-zavodnika-a-danas-je-snimljen-na-ulici-nakon-dugo-vremena-nitko-ga-nije-prepoznao-15757578",
+      "source": "jutarnji",
+      "sourceName": "Jutarnji list",
+      "categories": [
+        "Strane zvijezde"
+      ],
+      "author": "monika.kavedzic@hanzamedia.hr (Monika Kavedžić)",
+      "theme": "ekonomija",
+      "addedAt": "2026-10-20T13:17:07.785Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-index-bozinovic-nemam-saznanja-o-tome-da-navijace-1ba1b5",
+      "title": "Božinović: Nemam saznanja o tome da navijače obučavaju osobe s vojnim iskustvom",
+      "summary": "MINISTAR unutarnjih poslova Davor Božinović naglasio je u utorak da policija postupa protiv osumnjičenih za kaznena djela, a ne protiv navijačkih skupina ili klubova te kazao da nema saznanja da osobe s vojnim iskustvom obučavaju navijače kako da se ponašaju i kreću u skupinama.",
+      "date": "2026-10-20T13:10:00.000Z",
+      "url": "https://www.index.hr/vijesti/clanak/bozinovic-nemam-saznanja-o-tome-da-navijace-obucavaju-osobe-s-vojnim-iskustvom/2847726.aspx",
+      "source": "index",
+      "sourceName": "Index.hr",
+      "categories": [
+        "Vijesti"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-20T13:17:07.101Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-jutarnji-seks-bez-kocnica-napao-oporbenog-celnika-299e70",
+      "title": "Šeks bez kočnica, napao oporbenog čelnika: Hulja i nitkov nad nitkovima! Nema s njima cile-mile...",
+      "summary": "U Pločama je svečano obilježena 37. godišnjica osnutka prvog Općinskog odbora HDZ-a u Hrvatskoj, kojega su osnovali 18. listopada 1989. godine u baćinskom restoranu Čarli petorica Pločana: Velibor Kikerec, Filip Šalinović, Luka Šiljeg, Vedran Sršen i Joško Damić, uz goste iz Zagreba i Metkovića, Jos...",
+      "date": "2026-10-20T13:10:00.000Z",
+      "url": "https://www.jutarnji.hr/vijesti/hrvatska/seks-bez-kocnica-napao-oporbenog-celnika-hulja-i-nitkov-nad-nitkovima-nema-s-njima-cile-mile-15757579",
+      "source": "jutarnji",
+      "sourceName": "Jutarnji list",
+      "categories": [
+        "Hrvatska"
+      ],
+      "author": "redakcija@jutarnji.hr",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:07.785Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-index-trazite-ideju-za-obiteljski-izlet-u-subotu-aa2a24",
+      "title": "Tražite ideju za obiteljski izlet? U subotu je besplatan ulaz u karlovačku Aquatiku",
+      "summary": "KARLOVAČKI akvarij Aquatika slavi 10. rođendan u subotu, 24. listopada, uz Dan otvorenih vrata.",
+      "date": "2026-10-20T13:09:00.000Z",
+      "url": "https://www.index.hr/mame/clanak/trazite-ideju-za-obiteljski-izlet-u-subotu-je-besplatan-ulaz-u-karlovacku-aquatiku/2847741.aspx",
+      "source": "index",
+      "sourceName": "Index.hr",
+      "categories": [
+        "Mame"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:07.101Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-index-lijecnik-simulacijom-prikazao-moguce-a49acf",
+      "title": "Liječnik simulacijom prikazao moguće opasnosti pucketanja vratom",
+      "summary": "PUCKETANJE vratom za mnoge je ritual koji donosi osjećaj olakšanja od ukočenosti.",
+      "date": "2026-10-20T13:07:00.000Z",
+      "url": "https://www.index.hr/fit/clanak/lijecnik-simulacijom-prikazao-moguce-opasnosti-pucketanja-vratom/2847730.aspx",
+      "source": "index",
+      "sourceName": "Index.hr",
+      "categories": [
+        "Fit"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:07.101Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-index-njemacki-mediji-ovi-izljevi-nasilja-f5b436",
+      "title": "Njemački mediji: Ovi izljevi nasilja nagovještaj su onoga što čeka Europu i Zapad",
+      "summary": "KOMENTIRAJUĆI val nasilja koji prati prosvjede u nekim europskim zemljama, njemački mediji se u pitaju je li isti scenarij moguć i u Njemačkoj te ističu da napetosti rastu, ali da se prosvjed zasad očituje drugačije.",
+      "date": "2026-10-20T13:06:00.000Z",
+      "url": "https://www.index.hr/vijesti/clanak/njemacki-mediji-ovi-izljevi-nasilja-nagovjestaj-su-onoga-sto-ceka-europu-i-zapad/2847734.aspx",
+      "source": "index",
+      "sourceName": "Index.hr",
+      "categories": [
+        "Vijesti"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:07.101Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-tportal-lana-radeljak-objavila-nove-fotografije-s-ccae28",
+      "title": "Lana Radeljak objavila nove fotografije s vjenčanja: Romantični prizori govore više od riječi",
+      "summary": "Nakon što je njezino vjenčanje privuklo veliku pozornost javnosti, Lana Radeljak odlučila je podijeliti još nekoliko uspomena sa svojeg posebnog dana. Kći pokojne glumice Ene Begović i poduzetnika Josipa Radeljaka objavila je romantične crno-bijele fotografije na kojima su zabilježeni nježni pogledi, osmijesi i trenuci bliskosti s njezinim suprugom",
+      "date": "2026-10-20T13:05:00.000Z",
+      "url": "https://www.tportal.hr/showtime/clanak/lana-radeljak-objavila-nove-fotografije-s-vjencanja-romanticni-prizori-govore-vise-od-rijeci-20261020",
+      "source": "tportal",
+      "sourceName": "tportal",
+      "categories": [
+        "Showtime"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:10.223Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-n1hr-bozinovic-odgovorio-na-pitanje-obucavaju-li-78303e",
+      "title": "Božinović odgovorio na pitanje obučavaju li navijače osobe s vojnim iskustvom",
+      "summary": "Ministar unutarnjih poslova Davor Božinović naglasio je u utorak da policija postupa protiv osumnjičenih za kaznena djela, a ne protiv navijačkih skup",
+      "date": "2026-10-20T13:04:28.000Z",
+      "url": "https://n1info.hr/vijesti/bozinovic-odgovorio-na-pitanje-obucavaju-li-navijace-osobe-s-vojnim-iskustvom/",
+      "source": "n1hr",
+      "sourceName": "N1 Hrvatska",
+      "categories": [
+        "Vijesti",
+        "navijači",
+        "policija",
+        "davor božinović"
+      ],
+      "author": "",
+      "theme": "rat",
+      "addedAt": "2026-10-20T13:17:12.385Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-telegram-bivsi-sef-bih-obavjestajaca-osloboden-iako-1556a8",
+      "title": "Bivši šef BiH obavještajaca oslobođen iako je dokazano da je imao lažnu diplomu, evo i obrazloženja",
+      "summary": "Na poziciji direktora bio je unatoč činjenici za to nije ispunjavao zakonom propisane uvjete",
+      "date": "2026-10-20T13:04:16.000Z",
+      "url": "https://www.telegram.hr/vijesti/bivsi-sef-bih-obavjestajaca-osloboden-iako-je-dokazano-da-je-imao-laznu-diplomu-evo-i-obrazlozenja/",
+      "source": "telegram",
+      "sourceName": "Telegram.hr",
+      "categories": [
+        "Vijesti",
+        "Bakir Izetbegović",
+        "krivotvorena diploma",
+        "Osman Mehmedagić"
+      ],
+      "author": "Mirta Vranješ, Hina",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-20T13:17:13.285Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-jutarnji-draga-su-mi-oba-kluba-ali-srce-tuce-za-a46c9d",
+      "title": "‘Draga su mi oba kluba, ali srce tuče za Hajduk! Ovdje ih mnogi vole, očekujem novu europsku pobjedu‘",
+      "summary": "U drugoj utakmici Konferencijske lige Hajduk u četvrtak od 21 sat gostuje u Thunu i sigurno je najbolje pitati mišljenje nekadašnjeg igrača i Hajduka i Thuna, Stipu Matića (47). - Oli van nisam reka‘? – zadovoljno je započeo Matić i nastavio: - Prije nekoliko dana, točnije u četvrtak, preuzeo sam če...",
+      "date": "2026-10-20T13:03:39.000Z",
+      "url": "https://www.jutarnji.hr/sportske/nogomet/konferencijska-liga/stipe-matic-hajduk-je-kvalitetniji-ali-potreban-je-oprez-protiv-thuna-15757577",
+      "source": "jutarnji",
+      "sourceName": "Jutarnji list",
+      "categories": [
+        "Konferencijska liga"
+      ],
+      "author": "redakcija@jutarnji.hr",
+      "theme": "sport",
+      "addedAt": "2026-10-20T13:17:07.786Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-index-nike-predstavlja-plaid-pack-klasicne-3918ac",
+      "title": "Nike predstavlja \"Plaid Pack\": Klasične tenisice s kariranim uzorkom",
+      "summary": "NIKE lansira novu žensku kolekciju \"Plaid Pack\" s četiri klasična modela tenisica.",
+      "date": "2026-10-20T13:01:00.000Z",
+      "url": "https://www.index.hr/shopping/clanak/nike-predstavlja-plaid-pack-klasicne-tenisice-s-kariranim-uzorkom/2847736.aspx",
+      "source": "index",
+      "sourceName": "Index.hr",
+      "categories": [
+        "Shopping"
+      ],
+      "author": "",
+      "theme": "sport",
+      "addedAt": "2026-10-20T13:17:07.101Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-poslovni-lng-terminal-i-rafinerija-olaksat-ce-tesku-0dfbd9",
+      "title": "LNG terminal i rafinerija olakšat će tešku energetsku zimu",
+      "summary": "Hrvatska nije izolirana, nego dio međunarodnih tokova pa globalni poremećaji mogu utjecati na poslovanje i sigurnost opskrbe.",
+      "date": "2026-10-20T13:00:00.000Z",
+      "url": "https://www.poslovni.hr/trzista/lng-terminal-i-rafinerija-olaksat-ce-tesku-energetsku-zimu-4558481",
+      "source": "poslovni",
+      "sourceName": "Poslovni dnevnik",
+      "categories": [
+        "Tržišta",
+        "energenti",
+        "INA (INA-Industrija nafte d.d.)",
+        "LNG terminal"
+      ],
+      "author": "Siniša Malus",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-20T13:17:08.657Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-tportal-prosvjed-ispred-poznatog-pulskog-centra-kad-44ff03",
+      "title": "Prosvjed ispred poznatog pulskog centra: 'Kad treba europski novac, zajednica smo. Inače smo nekretnina'",
+      "summary": "pred Društvenog centra Rojc u Puli okupili su se u utorak korisnici prostora prosvjedujući zbog odluke Grada Pule o davanju u zakup gradskih poslovnih prostora u tom domu, o čemu će poslijepodne na sjednici raspravljati Gradsko vijeće.",
+      "date": "2026-10-20T12:58:00.000Z",
+      "url": "https://www.tportal.hr/kultura/clanak/gradani-prosvjeduju-ispred-rojca-bijesni-na-grbinovu-odluku-govore-da-taj-centar-ne-postoji-20261020",
+      "source": "tportal",
+      "sourceName": "tportal",
+      "categories": [
+        "Kultura"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:10.223Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-index-sestra-preminule-manekenke-34-slomljena-ne-5d5b3d",
+      "title": "Sestra preminule manekenke (34) slomljena: \"Ne mogu opisati koliko ova bol boli\"",
+      "summary": "MANEKENKA i poduzetnica Sahara Ray preminula je u 35. godini.",
+      "date": "2026-10-20T12:56:00.000Z",
+      "url": "https://www.index.hr/magazin/clanak/sestra-preminule-manekenke-34-slomljena-ne-mogu-opisati-koliko-ova-bol-boli/2847735.aspx",
+      "source": "index",
+      "sourceName": "Index.hr",
+      "categories": [
+        "Magazin"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:07.102Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-tportal-spika-zaprijetio-trazit-cu-brisanje-torcide-8a0e05",
+      "title": "Špika zaprijetio: Tražit ću brisanje Torcide iz registra udruga!",
+      "summary": "Incident u koji su upleteni pripadnici Torcide iz Splita, potaknuo je na reakciju i predsjednika Bloka umirovljenici zajedno, Milivoja Špiku, koji je u priopćenju oštro kritizirao nacističke i antisemitske ispade dijela pripadnika Torcide",
+      "date": "2026-10-20T12:55:00.000Z",
+      "url": "https://www.tportal.hr/vijesti/clanak/spika-zaprijetio-javno-cu-zatraziti-brisanje-torcide-iz-registra-udruga-20261020",
+      "source": "tportal",
+      "sourceName": "tportal",
+      "categories": [
+        "Vijesti"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-20T13:17:10.223Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-n1hr-u-puli-tesko-ozlijedena-nepalska-beracica-17eac3",
+      "title": "U Puli teško ozlijeđena nepalska beračica maslina. Na nju naletio kombi",
+      "summary": "Teške tjelesne ozljede zadobila je 27-godišnja državljanka Nepala kada je na nju u ponedjeljak, dok se odmarala od branja maslina ležeći u visokoj tra",
+      "date": "2026-10-20T12:50:46.000Z",
+      "url": "https://n1info.hr/svijet/u-puli-tesko-ozlijedjena-nepalska-beracica-maslina-na-nju-naletio-kombi/",
+      "source": "n1hr",
+      "sourceName": "N1 Hrvatska",
+      "categories": [
+        "Svijet",
+        "beračica",
+        "ozljede",
+        "pula"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:12.385Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-telegram-srpski-tuzitelj-koji-je-istrazivao-trumpov-fa249a",
+      "title": "Srpski tužitelj koji je istraživao Trumpov projekt u Beogradu postao meta moćnog špijunskog softvera",
+      "summary": "Analitičari Citizen Laba, laboratorija za digitalnu forenziku, zasad nisu utvrdili tko stoji iza napada",
+      "date": "2026-10-20T12:49:44.000Z",
+      "url": "https://www.telegram.hr/vijesti/srpski-tuzitelj-koji-je-istrazivao-trumpov-projekt-u-beogradu-postao-meta-mocnog-spijunskog-softvera/",
+      "source": "telegram",
+      "sourceName": "Telegram.hr",
+      "categories": [
+        "Vijesti",
+        "Donald Trump",
+        "SAD",
+        "Srbija"
+      ],
+      "author": "Helena Kolar",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-20T13:17:13.285Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-n1hr-imao-laznu-diplomu-zaradio-150-000-eura-i-474ee3",
+      "title": "Imao lažnu diplomu, zaradio 150.000 eura i sad je oslobođen. Optužnica bila neprecizna",
+      "summary": "Sud Bosne i Hercegovine u utorak je nepravomoćno oslobodio bivšeg direktora Obavještajno-sigurnosne agencije BiH (OSA) Osmana Mehmedagića optužbe za k",
+      "date": "2026-10-20T12:49:38.000Z",
+      "url": "https://n1info.hr/regija/imao-laznu-diplomu-zaradio-150000-eura-i-sad-je-oslobodjen-optuznica-bila-neprecizna/",
+      "source": "n1hr",
+      "sourceName": "N1 Hrvatska",
+      "categories": [
+        "Regija",
+        "krivotvorena diploma",
+        "osman mehmedagić",
+        "obavještajna agencija bih"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "addedAt": "2026-10-20T13:17:12.385Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-tportal-truth-tribe-spajaju-jazz-rock-i-elektroniku-f84ca8",
+      "title": "Truth ≠ Tribe spajaju jazz, rock i elektroniku u Zaboku",
+      "summary": "Zagrebački instrumentalni kvartet nastupa u Regeneratoru u petak, 23. listopada. Večer počinje u 21.30, a ulaznice stoje 12 odnosno 15 eura.",
+      "date": "2026-10-20T12:48:00.000Z",
+      "url": "https://www.tportal.hr/kultura/clanak/truth-tribe-spajaju-jazz-rock-i-elektroniku-u-zaboku-20261020",
+      "source": "tportal",
+      "sourceName": "tportal",
+      "categories": [
+        "Kultura"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:10.224Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-jutarnji-ricky-gervais-poslao-posebnu-poruku-uoci-2ac7da",
+      "title": "Ricky Gervais poslao posebnu poruku uoči dolaska u Zagreb: ‘Čuo sam sve najbolje o vama‘",
+      "summary": "Nakon što je poznati britanski komičar Ricky Gervais najavio prve datume svoje najnovije međunarodne stand-up turneje pod nazivom \"Legend\", od kojih je jedna postaja i Zagreb, posebnu je poruku poslao Hrvatima na svojim mrežama. Gervais je, podsjetimo, najavio najnovije datume u arenama najvećih eur...",
+      "date": "2026-10-20T12:44:50.000Z",
+      "url": "https://www.jutarnji.hr/scena/strane-zvijezde/ricky-gervais-poslao-posebnu-poruku-uoci-dolaska-u-zagreb-cuo-sam-sve-najbolje-o-vama-15757575",
+      "source": "jutarnji",
+      "sourceName": "Jutarnji list",
+      "categories": [
+        "Strane zvijezde"
+      ],
+      "author": "valentina.podrug@hanzamedia.hr (Valentina Podrug)",
+      "theme": "energija",
+      "addedAt": "2026-10-20T13:17:07.786Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-n1hr-studentski-centri-i-studenac-postigli-2bb706",
+      "title": "Studentski centri i Studenac postigli dogovor, evo kada idu isplate dugovanja studentima",
+      "summary": "Predstavnici studentskih centara dogovorili su s Upravom trgovačkog lanca Studenac da će sve dospjele naknade za studentski rad obavljen tijekom rujna",
+      "date": "2026-10-20T12:43:49.000Z",
+      "url": "https://n1info.hr/vijesti/studentski-centri-i-studenac-postigli-dogovor-evo-kada-idu-isplate-dugovanja-studentima/",
+      "source": "n1hr",
+      "sourceName": "N1 Hrvatska",
+      "categories": [
+        "Vijesti",
+        "studentski centri",
+        "studentski poslovi",
+        "studenac"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:12.385Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-telegram-dambrauskas-stvorio-euforiju-u-sabahu-na-6c32f4",
+      "title": "Dambrauskas stvorio euforiju u Sabahu, na domaću utakmicu u Ligi prvaka dolazi 55.000 ljudi",
+      "summary": "Na svom terenu ih inače gleda oko 1000 posjetitelja",
+      "date": "2026-10-20T12:42:32.000Z",
+      "url": "https://www.telegram.hr/telesport/na-prvu/dambrauskas-stvorio-euforiju-u-sabahu-na-domacu-utakmicu-u-ligi-prvaka-dolazi-55-000-ljudi/",
+      "source": "telegram",
+      "sourceName": "Telegram.hr",
+      "categories": [
+        "Na prvu",
+        "Telesport",
+        "Sabah",
+        "UEFA Liga prvaka"
+      ],
+      "author": "Telesport",
+      "theme": "sport",
+      "addedAt": "2026-10-20T13:17:13.285Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-jutarnji-bozinovic-obucavaju-li-navijace-osobe-s-fe2b62",
+      "title": "Božinović: Obučavaju li navijače osobe s vojnim iskustvom? Nemam saznanja o tome",
+      "summary": "Ministar unutarnjih poslova Davor Božinović naglasio je u utorak da policija postupa protiv osumnjičenih za kaznena djela, a ne protiv navijačkih skupina ili klubova te kazao da nema saznanja da osobe s vojnim iskustvom obučavaju navijače kako da se ponašaju i kreću u skupinama. \"Ja takvih saznanja...",
+      "date": "2026-10-20T12:42:03.000Z",
+      "url": "https://www.jutarnji.hr/vijesti/hrvatska/bozinovic-obucavaju-li-navijace-osobe-s-vojnim-iskustvom-nemam-saznanja-o-tome-15757573",
+      "source": "jutarnji",
+      "sourceName": "Jutarnji list",
+      "categories": [
+        "Hrvatska"
+      ],
+      "author": "redakcija@jutarnji.hr",
+      "theme": "rat",
+      "addedAt": "2026-10-20T13:17:07.786Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-n1hr-pljuste-reakcije-na-penavin-napad-na-mup-852149",
+      "title": "Pljušte reakcije na Penavin napad na MUP: \"Šef ne smije reći tajnici da pripremi DP-ova razrješenja jer bi onda morala i njemu\"",
+      "summary": "Ključni koalicijski partner HDZ-a, predsjednik DP-a i potpredsjednik Sabora Ivan Penava žestoko je napao MUP i medije zbog fašističkog kortea dijela T",
+      "date": "2026-10-20T12:40:55.000Z",
+      "url": "https://n1info.hr/vijesti/napad-koalicijskog-partnera-na-mup-i-medije-penava-je-postao-oporba-ali-toga-jos-nije-svjestan/",
+      "source": "n1hr",
+      "sourceName": "N1 Hrvatska",
+      "categories": [
+        "Vijesti",
+        "ivan penava",
+        "torcida",
+        "dp"
+      ],
+      "author": "",
+      "theme": "politika",
+      "addedAt": "2026-10-20T13:17:12.386Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-jutarnji-crna-gora-ispunila-dva-hrvatska-zahtjeva-na-6e1770",
+      "title": "Crna Gora ispunila dva hrvatska zahtjeva na putu prema EU!",
+      "summary": "Vlada Crne Gore sinoć je usvojila dvije odluke kojima praktički rješava dva otvorena pitanja u odnosima s Hrvatskom. Hrvatska je njihovo rješavanje navela među uvjetima za napredak prema zaključenju pregovora o članstvu u EU. Odluke, koje su objavljene u Službenom listu Crne Gore, odnose se na ime b...",
+      "date": "2026-10-20T12:40:49.000Z",
+      "url": "https://www.jutarnji.hr/vijesti/svijet/crna-gora-ispunila-dva-hrvatska-zahtjeva-na-putu-prema-eu-15757572",
+      "source": "jutarnji",
+      "sourceName": "Jutarnji list",
+      "categories": [
+        "Svijet"
+      ],
+      "author": "augustinpalokaj@gmail.com (Augustin Palokaj)",
+      "theme": "politika",
+      "addedAt": "2026-10-20T13:17:07.787Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-n1hr-otkazan-vam-je-let-eu-uvodi-nova-pravila-c706bb",
+      "title": "Otkazan vam je let? EU uvodi nova pravila, evo kada morate dobiti povrat novca",
+      "summary": "Eurozastupnici su u utorak dali konačno zeleno svjetlo ažuriranim pravilima EU-a kako bi se poboljšala zaštita i informiranje putnika u slučaju poreme",
+      "date": "2026-10-20T12:36:19.000Z",
+      "url": "https://n1info.hr/vijesti/otkazan-vam-je-let-eu-uvodi-nova-pravila-evo-kada-morate-dobiti-povrat-novca/",
+      "source": "n1hr",
+      "sourceName": "N1 Hrvatska",
+      "categories": [
+        "Vijesti",
+        "Svijet",
+        "prava putnika",
+        "zračni prijevoz"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:12.386Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-poslovni-upozorenje-ministarstva-ovo-ce-od-srijede-9917e1",
+      "title": "Upozorenje Ministarstva: Ovo će od srijede iz zrakoplova padati po Hrvatskoj, nemojte dirati",
+      "summary": "Jesenska kampanja započinje 21. listopada 2026. s lokacije aerodroma Vinkovci-Sopot.",
+      "date": "2026-10-20T12:31:13.000Z",
+      "url": "https://www.poslovni.hr/vijesti/upozorenje-ministarstva-ovo-ce-od-srijede-padati-po-hrvatskoj-iz-zrakoplova-nemojte-dirati-4560340",
+      "source": "poslovni",
+      "sourceName": "Poslovni dnevnik",
+      "categories": [
+        "Vijesti",
+        "bjesnoća",
+        "cijepljenje",
+        "lisica"
+      ],
+      "author": "Poslovni.hr",
+      "theme": "politika",
+      "addedAt": "2026-10-20T13:17:08.657Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-telegram-radio-free-europe-eu-diplomati-bjesne-na-55b4d7",
+      "title": "Radio Free Europe: ‘EU diplomati bjesne na Plenkovića, ali šefovi država su izgleda jedva dočekali blokadu Crne Gore’",
+      "summary": "'Čini se da proširenje ipak i nije neki prioritet liderima', navodi dopisnik RFE-a",
+      "date": "2026-10-20T12:23:40.000Z",
+      "url": "https://www.telegram.hr/politika-kriminal/radio-free-europe-eu-diplomati-bjesne-na-plenkovica-ali-sefovi-drzava-su-izgleda-jedva-docekali-blokadu-crne-gore/",
+      "source": "telegram",
+      "sourceName": "Telegram.hr",
+      "categories": [
+        "Politika & Kriminal",
+        "Andrej Plenković",
+        "Europska unija",
+        "Crna Gora"
+      ],
+      "author": "Katarina Škaro",
+      "theme": "politika",
+      "addedAt": "2026-10-20T13:17:13.286Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-telegram-ovih-se-dana-najbolji-sendvici-u-zagrebu-ed20d3",
+      "title": "Ovih se dana najbolji sendviči u Zagrebu jedu na mjestu koje ne biste očekivali",
+      "summary": "Ako ste htjeli probati kultne sendviče poput Pastramija i Bánh mìja, Melt je adresa do koje se trebate uputiti",
+      "date": "2026-10-20T12:14:34.000Z",
+      "url": "https://www.telegram.hr/super1/life/melt-zagreb-sendvici/",
+      "source": "telegram",
+      "sourceName": "Telegram.hr",
+      "categories": [
+        "Life",
+        "gastro",
+        "sendvič"
+      ],
+      "author": "Ema Glavina",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:13.286Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-telegram-majka-godine-ostavila-sinove-na-planini-u-d3a5cd",
+      "title": "Majka godine ostavila sinove na planini u magli: ‘Previše su zanovijetali’",
+      "summary": "Sve se dogodilo na planinarskoj stazi u planinama Bieszczady na jugu Poljske",
+      "date": "2026-10-20T12:11:32.000Z",
+      "url": "https://www.telegram.hr/vijesti/majka-godine-ostavila-sinove-na-planini-u-magli-previse-su-zanovijetali/",
+      "source": "telegram",
+      "sourceName": "Telegram.hr",
+      "categories": [
+        "Vijesti",
+        "Poljska",
+        "planinarenje",
+        "Rzeszów"
+      ],
+      "author": "Mirta Vranješ",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:13.286Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-poslovni-susnjar-nuklearna-energetika-otvara-prilike-064c25",
+      "title": "Šušnjar: Nuklearna energetika otvara prilike za domaću industriju",
+      "summary": "Cilj je prikupiti konkretne i usporedive informacije o dostupnim tehnološkim rješenjima, njihovim tehničkim karakteristikama i ekonomskim aspektima, kao podlogu za buduće odluke.",
+      "date": "2026-10-20T12:05:00.000Z",
+      "url": "https://www.poslovni.hr/vijesti/susnjar-nuklearna-energetika-otvara-prilike-za-domacu-industriju-4560337",
+      "source": "poslovni",
+      "sourceName": "Poslovni dnevnik",
+      "categories": [
+        "Vijesti",
+        "Ante Šušnjar",
+        "nuklearna energija",
+        "projekt"
+      ],
+      "author": "Poslovni.hr/Hina",
+      "theme": "energija",
+      "addedAt": "2026-10-20T13:17:08.657Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-poslovni-zagrebacki-vitalabs-razvija-lijek-za-c6aeb8",
+      "title": "Zagrebački vitaLABS razvija lijek za zdravije starenje pasa",
+      "summary": "U središtu projekta nalaze se formulacije koje sadrže molekulu koju razvijaju pod kodnim nazivom VB-7.",
+      "date": "2026-10-20T11:45:31.000Z",
+      "url": "https://www.poslovni.hr/after5/zagrebacki-vitalabs-razvija-lijek-za-zdravije-starenje-pasa-4560276",
+      "source": "poslovni",
+      "sourceName": "Poslovni dnevnik",
+      "categories": [
+        "After 5",
+        "kućni ljubimci",
+        "psi",
+        "Valentina Sunek"
+      ],
+      "author": "Zvonimir Varga",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:08.657Z"
+    },
+    {
+      "slug": "zagreb-2026-10-20-poslovni-otvorene-prijave-za-datathon-portala-5fa3d8",
+      "title": "Otvorene prijave za Datathon Portala otvorenih podataka: Nagradni fond od 12.000 eura",
+      "summary": "Rok za prijavu timova je 23. listopada, a rješenja se dostavljaju do 24. studenoga 2026. godine, uz kratku videoprezentaciju. Rok za objavu rezultata je 25. studenoga.",
+      "date": "2026-10-20T11:45:23.000Z",
+      "url": "https://www.poslovni.hr/posao-i-karijere/otvorene-prijave-za-datathon-portala-otvorenih-podataka-nagradni-fond-od-12-000-eura-4560328",
+      "source": "poslovni",
+      "sourceName": "Poslovni dnevnik",
+      "categories": [
+        "Posao i karijere",
+        "nagrade",
+        "studenti"
+      ],
+      "author": "Poslovni.hr/Hina",
+      "theme": "drustvo",
+      "addedAt": "2026-10-20T13:17:08.658Z"
+    },
     {
       "slug": "zagreb-2026-10-19-poslovni-hzpp-za-7-4-milijuna-eura-obnavlja-sest-a92efe",
       "title": "HŽPP za 7,4 milijuna eura obnavlja šest radionica za vlakove",
@@ -6087,580 +6634,6 @@
       "author": "",
       "theme": "energija",
       "addedAt": "2026-10-19T20:52:55.981Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-bmw-radnicima-nudi-i-vise-od-650-000-eura-b73f66",
-      "title": "BMW radnicima nudi i više od 650.000 eura za odlazak: Interes toliki da se srušio interni portal",
-      "summary": "Bavarski proizvođač do kraja 2027. želi smanjiti broj radnih mjesta za oko 8000.",
-      "date": "2026-10-18T18:29:00.000Z",
-      "url": "https://www.poslovni.hr/kompanije/bmw-radnicima-nudi-i-vise-od-650-000-eura-za-odlazak-interes-toliki-da-se-srusio-interni-portal-4559978",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [],
-      "author": "",
-      "theme": "politika",
-      "addedAt": "2026-10-19T20:52:55.981Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-zasto-je-vazan-feropolis-i-zasto-samo-uz-44a3d2",
-      "title": "Zašto je važan ‘Feropolis’ i zašto samo uz visoke kriterije ostajemo konkurentni",
-      "summary": "Bilo bi dobro da nakon generacija bivših profesora i studenata, okupljenih u Lisinskom, film o povijesti FER-a dođe do što šire publike.",
-      "date": "2026-10-18T18:00:00.000Z",
-      "url": "https://www.poslovni.hr/vijesti/zasto-je-vazan-feropolis-i-zasto-samo-uz-visoke-kriterije-ostajemo-konkurentni-4559730",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T20:52:55.981Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-poljoprivrednicima-naknada-za-izgubljene-0fc361",
-      "title": "Poljoprivrednicima naknada za izgubljene potpore: Osigurano 1,8 milijuna eura, prijave do 14. studenoga",
-      "summary": "Otvorene su prijave za nove potpore poljoprivrednicima koji su zbog promjene propisa izgubili pravo na ranija plaćanja. Visina potpore ovisi o poljoprivrednoj površini.",
-      "date": "2026-10-18T17:35:00.000Z",
-      "url": "https://www.poslovni.hr/financije/poljoprivrednicima-naknada-za-izgubljene-potpore-osigurano-18-milijuna-eura-prijave-do-14-studenoga-4559977",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [],
-      "author": "",
-      "theme": "ekonomija",
-      "addedAt": "2026-10-19T20:52:55.981Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-polovica-ih-ima-vise-od-10-godina-iskustva-c383fa",
-      "title": "Polovica ih ima više od 10 godina iskustva, a ipak traže mentorstvo: Evo što ih najviše koči",
-      "summary": "Analiza prijava pokazuje da najveći prostor za razvoj ne vide u stručnim ili strateškim znanjima, nego u samopouzdanju, asertivnosti i sposobnosti da se zauzmu za sebe.",
-      "date": "2026-10-18T16:41:17.000Z",
-      "url": "https://www.poslovni.hr/after5/polovica-ih-ima-vise-od-10-godina-iskustva-a-ipak-traze-mentorstvo-evo-sto-ih-najvise-koci-4559980",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [],
-      "author": "",
-      "theme": "rat",
-      "addedAt": "2026-10-19T20:52:55.981Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-dionica-skocila-450-posto-unatoc-padu-75353b",
-      "title": "Dionica skočila 450 posto unatoč padu prihoda za trećinu: AI je ovu francusku tvrtku pretvorio u burzovnu zvijezdu",
-      "summary": "Soitec proizvodi specijalizirane poluvodičke podloge, odnosno silicijske pločice na kojima njegovi kupci proizvode čipove, a posebno snažnu poziciju izgradio je u području silicijske fotonike.",
-      "date": "2026-10-18T16:04:01.000Z",
-      "url": "https://www.poslovni.hr/kompanije/dionica-skocila-450-posto-unatoc-padu-prihoda-za-trecinu-ai-je-ovu-francusku-tvrtku-pretvorio-u-burzovnu-zvijezdu-4559983",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [],
-      "author": "",
-      "theme": "ai",
-      "addedAt": "2026-10-19T20:52:55.981Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-poduzetnicima-do-10-000-eura-za-razvoj-b8b42b",
-      "title": "Poduzetnicima do 10.000 eura za razvoj novih proizvoda i usluga: Ministarstvo produljilo rok za prijave",
-      "summary": "Mikro, mali i srednji poduzetnici dobili su dodatna četiri mjeseca za prijavu na program Inovacijski vaučeri, kroz koji mogu ostvariti od 2.000 do 10.000 eura bespovratnih sredstava za testiranje, ispitivanje i razvoj novih proizvoda, usluga ili procesa.",
-      "date": "2026-10-18T15:32:09.000Z",
-      "url": "https://www.poslovni.hr/financije/poduzetnicima-do-10-000-eura-za-razvoj-novih-proizvoda-i-usluga-ministarstvo-produljilo-rok-za-prijave-4559976",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [],
-      "author": "",
-      "theme": "politika",
-      "addedAt": "2026-10-19T20:52:55.981Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-hz-ide-po-dio-gredelja-za-nekretnine-i-f0dc6d",
-      "title": "HŽ ide po dio Gredelja: Za nekretnine i imovinu planira 44 milijuna eura",
-      "summary": "U financijskom planu HŽ Putnički prijevoz navodi da bi time brže i jeftinije osigurao prostor za održavanje i garažiranje novih vlakova nego gradnjom novog tehničko-logističkog centra vrijednog oko 130 milijuna eura.",
-      "date": "2026-10-18T14:59:00.000Z",
-      "url": "https://www.poslovni.hr/kompanije/hz-ide-po-dio-gredelja-za-nekretnine-i-imovinu-planira-44-milijuna-eura-4559950",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [],
-      "author": "",
-      "theme": "politika",
-      "addedAt": "2026-10-19T20:52:55.981Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-sefica-mmf-a-upozorava-na-spori-tsunami-d2b75d",
-      "title": "Šefica MMF-a upozorava na „spori tsunami”: Prvi na udaru mladi koji tek traže posao",
-      "summary": "Najranjiviji su mladi koji tek ulaze na tržište rada, a promjene bi mogle prisiliti države da preispitaju ne samo obrazovanje nego i način na koji prikupljaju poreze.",
-      "date": "2026-10-18T14:36:10.000Z",
-      "url": "https://www.poslovni.hr/tech-ai/sefica-mmf-a-upozorava-na-spori-tsunami-prvi-na-udaru-mladi-koji-tek-traze-posao-4559971",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [],
-      "author": "",
-      "theme": "ekonomija",
-      "addedAt": "2026-10-19T20:52:55.981Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-drzava-daje-2-660-eura-ucenicima-i-4951af",
-      "title": "Država daje 2.660 eura učenicima i studentima: Pravo imaju i oni koji ne studiraju turizam",
-      "summary": "Prijave su otvorene do 12. studenoga, a postoji i važna obveza nakon završetka školovanja.",
-      "date": "2026-10-18T14:04:27.000Z",
-      "url": "https://www.poslovni.hr/financije/drzava-daje-2-660-eura-ucenicima-i-studentima-pravo-imaju-i-oni-koji-ne-studiraju-turizam-4559964",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T20:52:55.981Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-drzava-daje-do-540-eura-mjesecno-za-d7e41c",
-      "title": "Država daje do 540 eura mjesečno za troškove energenata: Prijave traju još samo deset dana",
-      "summary": "Prijaviti se mogu i pružatelji koji dosad nisu bili obuhvaćeni mjerom, a rok istječe 28. listopada u 15 sati.",
-      "date": "2026-10-18T13:26:25.000Z",
-      "url": "https://www.poslovni.hr/financije/drzava-daje-do-540-eura-mjesecno-za-troskove-energenata-prijave-traju-jos-samo-deset-dana-4559963",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [],
-      "author": "",
-      "theme": "politika",
-      "addedAt": "2026-10-19T20:52:55.981Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-treba-postupno-napredovati-ne-mozemo-iz-515ed6",
-      "title": "‘Treba postupno napredovati, ne možemo iz vrtića odmah u srednju školu’",
-      "summary": "Od industrijskog AI-ja do rizičnog kapitala: tehnologija i financiranje traže dugoročnu strategiju.",
-      "date": "2026-10-18T13:00:00.000Z",
-      "url": "https://www.poslovni.hr/tech-ai/treba-postupno-napredovati-ne-mozemo-iz-vrtica-odmah-u-srednju-skolu-4559721",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [],
-      "author": "",
-      "theme": "ekonomija",
-      "addedAt": "2026-10-19T20:52:55.981Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-poljoprivredi-prijeti-22-posto-manje-novca-7b1622",
-      "title": "Poljoprivredi prijeti 22 posto manje novca iz EU-a, Hrvatska traži novi izvor financiranja",
-      "summary": "U Dubrovniku je istodobno upozoreno na pad proizvodnje, nedostatak radnika i rizik smanjenja europskog novca za poljoprivredu i ribarstvo.",
-      "date": "2026-10-18T12:39:13.000Z",
-      "url": "https://www.poslovni.hr/vijesti/poljoprivredi-prijeti-22-posto-manje-novca-iz-eu-a-hrvatska-trazi-novi-izvor-financiranja-4559958",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [],
-      "author": "",
-      "theme": "politika",
-      "addedAt": "2026-10-19T20:52:55.981Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-cetvrti-stecaj-u-sest-godina-njemacki-7968e6",
-      "title": "Četvrti stečaj u šest godina: Njemački trgovački div traži novog vlasnika, 11.250 radnih mjesta pod upitnikom",
-      "summary": "Svih 83 poslovnice zasad rade, no stručnjaci procjenjuju da bi samo za njihovo tehničko uređenje i modernizaciju trebalo oko milijardu eura.",
-      "date": "2026-10-18T12:03:27.000Z",
-      "url": "https://www.poslovni.hr/kompanije/cetvrti-stecaj-u-sest-godina-njemacki-trgovacki-div-trazi-novog-vlasnika-11-250-radnih-mjesta-pod-upitnikom-4559955",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [],
-      "author": "",
-      "theme": "politika",
-      "addedAt": "2026-10-19T20:52:55.981Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-tommy-ide-na-burzu-nudi-do-27-posto-ebdac2",
-      "title": "Tommy ide na burzu: Nudi do 27 posto vlasništva i želi prikupiti 200 milijuna eura",
-      "summary": "Tommy Grupa krenula je u završnu fazu priprema za izlazak na Zagrebačku burzu. U inicijalnoj javnoj ponudi planira ponuditi između 25 i 27 posto vlasništva i prikupiti od 180 do 200 milijuna eura, a sva bi sredstva trebala biti uložena u daljnji rast kompanije.",
-      "date": "2026-10-18T11:42:36.000Z",
-      "url": "https://www.poslovni.hr/kompanije/tommy-ide-na-burzu-nudi-do-27-posto-vlasnistva-i-zeli-prikupiti-200-milijuna-eura-4559953",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [],
-      "author": "",
-      "theme": "ekonomija",
-      "addedAt": "2026-10-19T20:52:55.982Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-poznati-marketinski-strucnjak-zaklopio-f48d4b",
-      "title": "Poznati marketinški stručnjak zaklopio priču koja je trajala 30 godina i krenuo dalje s 5068.agency",
-      "summary": "Jedan dečko je dobro rekao: ‘AI će na kraju pokazati tko se krije iza njega, a tko je zaista kreativan’.",
-      "date": "2026-10-18T09:23:00.000Z",
-      "url": "https://www.poslovni.hr/hrvatska/poznati-marketinski-strucnjak-zaklopio-pricu-koja-je-trajala-30-godina-i-krenuo-dalje-s-5068-agency-4558496",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [
-        "Hrvatska",
-        "5068.agency",
-        "Nikola Žinić",
-        "poslovni vikend"
-      ],
-      "author": "Ilija Jandrić",
-      "theme": "ai",
-      "addedAt": "2026-10-19T20:52:55.982Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-advance-capital-partners-preuzeo-70-posto-b81496",
-      "title": "Advance Capital Partners preuzeo 70 posto udjela u slovenskom WOOP!-u",
-      "summary": "Investicijski fond nakon regulatornih odobrenja zaključio preuzimanje većinskog udjela u zabavnom parku.",
-      "date": "2026-10-18T09:00:00.000Z",
-      "url": "https://www.poslovni.hr/financije/advance-capital-partners-preuzeo-70-posto-udjela-u-slovenskom-woop-u-4558792",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [
-        "Financije",
-        "Advance Capital Partners",
-        "woop",
-        "zabavni park"
-      ],
-      "author": "Domagoj Puljizović",
-      "theme": "politika",
-      "addedAt": "2026-10-19T20:52:55.982Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-tehnoloski-sektor-povukao-wall-street-prema-0cee56",
-      "title": "Tehnološki sektor povukao Wall Street prema dolje: Nasdaq pao 4,5 posto, Europa snažno porasl",
-      "summary": "Posebno su pogođene dionice proizvođača čipova. PHLX Semiconductor Index padao je osam trgovinskih dana zaredom, što je najdulji takav niz od 2008. godine.",
-      "date": "2026-10-18T08:44:43.000Z",
-      "url": "https://www.poslovni.hr/burze/tehnoloski-sektor-povukao-wall-street-prema-dolje-nasdaq-pao-45-posto-europa-snazno-porasl-4559949",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [
-        "Burze",
-        "svjetska tržišta",
-        "tržište kapitala",
-        "Wall Street"
-      ],
-      "author": "Poslovni.hr/Hina",
-      "theme": "politika",
-      "addedAt": "2026-10-19T20:52:55.982Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-je-li-duznicka-kriza-jedini-nacin-da-6c8491",
-      "title": "Je li dužnička kriza jedini način da Amerika preispita prioritete?",
-      "summary": "SAD ima rješenje za dug, ali političari bježe od bolnih odluka.",
-      "date": "2026-10-18T08:24:00.000Z",
-      "url": "https://www.poslovni.hr/kolumne/je-li-duznicka-kriza-jedini-nacin-da-amerika-preispita-prioritete-4559460",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [
-        "Kolumne",
-        "Donald Trump",
-        "Gospodarstvo SAD-a",
-        "sjedinjene američke države"
-      ],
-      "author": "Kenneth Rogoff",
-      "theme": "ekonomija",
-      "addedAt": "2026-10-19T20:52:55.982Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-vlakovi-u-hrvatskoj-prosjecno-voze-42-9-km-41f0d0",
-      "title": "Vlakovi u Hrvatskoj prosječno voze 42,9 km/h: Zbog radova troškovi HŽ-a rastu i do 40 posto",
-      "summary": "HŽ objašnjava da na troškove istodobno utječu povećanje broja vlakova, širenje besplatnog i subvencioniranog prijevoza te otežano prometovanje zbog infrastrukturnih radova.",
-      "date": "2026-10-18T07:57:41.000Z",
-      "url": "https://www.poslovni.hr/kompanije/vlakovi-u-hrvatskoj-prosjecno-voze-429-km-h-zbog-radova-troskovi-hz-a-rastu-i-do-40-posto-4559946",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [
-        "Kompanije",
-        "Hrvatske željeznice",
-        "rebalans proračuna",
-        "željeznička infrastruktura"
-      ],
-      "author": "Poslovni.hr",
-      "theme": "ekonomija",
-      "addedAt": "2026-10-19T20:52:55.982Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-podstanarima-do-2160-eura-pomoci-rok-4af81b",
-      "title": "Podstanarima do 2160 eura pomoći: Rok istječe 23. listopada, a za prijavu ne morate imati ni ugovor o najmu",
-      "summary": "Namijenjena je građanima koji kao podstanari žive u stambenom prostoru na području Solina i ispunjavaju uvjete gradskog programa.",
-      "date": "2026-10-18T07:33:20.000Z",
-      "url": "https://www.poslovni.hr/vijesti/podstanarima-do-2160-eura-pomoci-rok-istjece-23-listopada-a-za-prijavu-ne-morate-imati-ni-ugovor-o-najmu-4559944",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [
-        "Vijesti",
-        "grad Solin",
-        "podstanari",
-        "sufinanciranje"
-      ],
-      "author": "Poslovni.hr",
-      "theme": "rat",
-      "addedAt": "2026-10-19T20:52:55.982Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-slovenski-mlinotest-najavljuje-investicije-14892c",
-      "title": "Slovenski Mlinotest najavljuje investicije u Srbiji i Hrvatskoj",
-      "summary": "Više od 60 posto klasične sušene tjestenine prodaju na inozemnim tržištima.",
-      "date": "2026-10-18T07:22:00.000Z",
-      "url": "https://www.poslovni.hr/kompanije/slovenski-mlinotest-najavljuje-investicije-u-srbiji-i-hrvatskoj-4559226",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [
-        "Kompanije",
-        "Mlinotest d.d.",
-        "pekarska industrija"
-      ],
-      "author": "Siniša Malus",
-      "theme": "ekonomija",
-      "addedAt": "2026-10-19T20:52:55.982Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-hrvatski-zatvori-pucaju-po-savovima-900-37580e",
-      "title": "Hrvatski zatvori pucaju po šavovima: 900 ljudi iznad kapaciteta, gotovo svaki peti zatvorenik je stranac",
-      "summary": "Hrvatski zatvorski sustav završio je 2025. s 4947 osoba na 4052 raspoloživa mjesta, odnosno s gotovo 900 ljudi više od kapaciteta.",
-      "date": "2026-10-18T07:16:51.000Z",
-      "url": "https://www.poslovni.hr/vijesti/hrvatski-zatvori-pucaju-po-savovima-900-ljudi-iznad-kapaciteta-gotovo-svaki-peti-zatvorenik-je-stranac-4559941",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [
-        "Vijesti",
-        "Zatvor",
-        "zatvorenici",
-        "zatvorski sustav"
-      ],
-      "author": "Poslovni.hr",
-      "theme": "politika",
-      "addedAt": "2026-10-19T20:52:55.982Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-hibridi-i-elektricni-automobili-cine-gotovo-5323b2",
-      "title": "Hibridi i električni automobili čine gotovo polovinu srpskog tržišta",
-      "summary": "U Srbiji je od siječnja do rujna 2026. prvi put registrirano 33.448 novih putničkih i lakih komercijalnih vozila.",
-      "date": "2026-10-18T07:00:00.000Z",
-      "url": "https://www.poslovni.hr/regija/hibridi-i-elektricni-automobili-cine-gotovo-polovinu-srpskog-trzista-4558731",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [
-        "Regija",
-        "Srbija",
-        "električni automobili",
-        "hibridni automobili"
-      ],
-      "author": "Siniša Malus",
-      "theme": "ekonomija",
-      "addedAt": "2026-10-19T20:52:55.982Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-od-1-ozujka-nova-pravila-na-autocestama-ab6c38",
-      "title": "Od 1. ožujka nova pravila na autocestama: Vožnja bez prijave može vas koštati više od 720 eura",
-      "summary": "Hrvatska od 1. ožujka 2027. prelazi na naplatu cestarine bez zaustavljanja. Vozači osobnih automobila neće morati imati ENC, nego će moći koristiti i sustav automatskog očitavanja registracijskih pločica, ali će vozilo prije puta morati prijaviti u novi sustav.",
-      "date": "2026-10-18T06:33:00.000Z",
-      "url": "https://www.poslovni.hr/vijesti/od-1-ozujka-nova-pravila-na-autocestama-voznja-bez-prijave-moze-vas-kostati-vise-od-720-eura-4559283",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [
-        "Vijesti",
-        "ENC elektronička naplata cestarine",
-        "Hrvatske autoceste HAC",
-        "naplata cestarine"
-      ],
-      "author": "Poslovni.hr",
-      "theme": "politika",
-      "addedAt": "2026-10-19T20:52:55.982Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-rokovi-otplate-duzi-od-vijeka-trajanja-4a8926",
-      "title": "Rokovi otplate duži od vijeka trajanja automobila: Prijeti slom tržišta vrijednog 1,7 bilijuna dolara",
-      "summary": "Automobili u SAD-u nikad nisu bili skuplji, a kupci sve češće rastežu kredite na šest, sedam pa i osam godina kako bi zadržali podnošljivu mjesečnu ratu.",
-      "date": "2026-10-18T06:17:22.000Z",
-      "url": "https://www.poslovni.hr/financije/rokovi-otplate-duzi-od-vijeka-trajanja-automobila-prijeti-slom-trzista-vrijednog-17-bilijuna-dolara-4559938",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [
-        "Financije",
-        "američko gospodarstvo",
-        "bankarski krediti",
-        "zaduživanje"
-      ],
-      "author": "Poslovni.hr",
-      "theme": "ekonomija",
-      "addedAt": "2026-10-19T20:52:55.982Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-vozaci-oprez-postavljeno-cak-39-novih-abaa04",
-      "title": "Vozači, oprez: Postavljeno čak 39 novih kamera, evo gdje vas sve mogu snimiti",
-      "summary": "Kamere bilježe i pohranjuju fotografije vozila koja su nepropisno zaustavljena ili parkirana.",
-      "date": "2026-10-18T06:00:00.000Z",
-      "url": "https://www.poslovni.hr/vijesti/vozaci-oprez-postavljeno-cak-39-novih-kamera-evo-gdje-vas-sve-mogu-snimiti-4559632",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [
-        "Vijesti",
-        "Automobili",
-        "kamere",
-        "sigurnost u prometu"
-      ],
-      "author": "Poslovni.hr",
-      "theme": "politika",
-      "addedAt": "2026-10-19T20:52:55.982Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-struja-s-ribnjaka-plutajuca-elektrana-a130f8",
-      "title": "Struja s ribnjaka: plutajuća elektrana mijenja Bilogoru",
-      "summary": "U pripremi projekt od 400 megavata koji spaja energiju, klimu i prirodu.",
-      "date": "2026-10-18T05:43:00.000Z",
-      "url": "https://www.poslovni.hr/hrvatska/struja-s-ribnjaka-plutajuca-elektrana-mijenja-bilogoru-4559012",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [
-        "Hrvatska",
-        "EnergoVizija",
-        "sunčana elektrana",
-        "Zeleno gospodarstvo"
-      ],
-      "author": "Zrinka Gabelica Toplek",
-      "theme": "energija",
-      "addedAt": "2026-10-19T20:52:55.982Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-rast-placa-puni-lokalne-blagajne-ali-nema-4317ca",
-      "title": "Rast plaća puni lokalne blagajne, ali nema volje za spajanjima",
-      "summary": "Od 2017. do 2025. osobni odbitak povećan samo 19 posto, a prosječna plaća 96 posto.",
-      "date": "2026-10-18T05:25:00.000Z",
-      "url": "https://www.poslovni.hr/financije/rast-placa-puni-lokalne-blagajne-ali-nema-volje-za-spajanjima-4559045",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [
-        "Financije",
-        "dohodak",
-        "oporezivanje",
-        "rast plaća"
-      ],
-      "author": "Jadranka Dozan",
-      "theme": "ekonomija",
-      "addedAt": "2026-10-19T20:52:55.982Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-u-munchenu-sam-radio-70-posto-2fdaca",
-      "title": "‘U Münchenu sam radio 70 posto rekonstrukcijskih zahvata i oko 30 posto estetskih. Ovdje je obrnuto’",
-      "summary": "Prof. dr. sc. Milomir Ninković karijeru je nastavio u Internacionalnom Medicinskom Centru Priora u Čepinu.",
-      "date": "2026-10-18T05:00:00.000Z",
-      "url": "https://www.poslovni.hr/posao-i-karijere/u-munchenu-sam-radio-70-posto-rekonstrukcijskih-zahvata-i-oko-30-posto-estetskih-ovdje-je-obrnuto-4559470",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [
-        "Posao i karijere",
-        "Milomir Ninković",
-        "rekonstrukcijska kirurgija",
-        "Specijalna bolnica Priora"
-      ],
-      "author": "Karolina Lubina/VL",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T20:52:55.982Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-18-poslovni-podvodna-patrola-prati-nestanak-smedih-algi-a84591",
-      "title": "Podvodna patrola prati nestanak smeđih algi i alarmantne promjene u podmorju",
-      "summary": "Znanstvenici Instituta Ruđer Bošković uključuju rekreativne ronioce u praćenje morskih šuma.",
-      "date": "2026-10-18T04:45:00.000Z",
-      "url": "https://www.poslovni.hr/hrvatska/podvodna-patrola-prati-nestanak-smedih-algi-i-alarmantne-promjene-u-podmorju-4559001",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [
-        "Hrvatska",
-        "Institut Ruđer Bošković",
-        "Zeleno gospodarstvo"
-      ],
-      "author": "Ana Roksandić",
-      "theme": "rat",
-      "addedAt": "2026-10-19T20:52:55.983Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-17-poslovni-mijenjaju-se-pravila-na-granici-s-bih-nova-e8ac06",
-      "title": "Mijenjaju se pravila na granici s BiH: Nova uredba obuhvaća 52 prijelaza, evo što se mijenja za putnike",
-      "summary": "Mijenja se kategorizacija prijelaza na granici Hrvatske i BiH.",
-      "date": "2026-10-17T19:08:15.000Z",
-      "url": "https://www.poslovni.hr/vijesti/mijenjaju-se-pravila-na-granici-s-bih-nova-uredba-obuhvaca-52-prijelaza-evo-sto-se-mijenja-za-putnike-4559935",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [
-        "Vijesti",
-        "državna granica",
-        "granični prijelaz",
-        "međunarodni promet"
-      ],
-      "author": "Poslovni.hr",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T20:52:55.983Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-17-poslovni-orqa-u-s-osvojila-ugovor-s-pentagonom-od-38-9fe28b",
-      "title": "Orqa U.S. osvojila ugovor s Pentagonom od 38 milijuna dolara",
-      "summary": "Tvrtka osječke Orqe i američkog By Lighta odabrana je u programu Drone Dominance Gauntlet II.",
-      "date": "2026-10-17T18:17:00.000Z",
-      "url": "https://www.poslovni.hr/kompanije/orqa-u-s-osvojila-ugovor-s-pentagonom-od-38-milijuna-dolara-4559266",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [
-        "Kompanije",
-        "američka vojska",
-        "dronovi",
-        "Orqa"
-      ],
-      "author": "Zrinka Gabelica Toplek",
-      "theme": "rat",
-      "addedAt": "2026-10-19T20:52:55.983Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-17-poslovni-dubrovacka-zracna-luka-vec-ima-vise-od-tri-d59308",
-      "title": "Dubrovačka zračna luka već ima više od tri milijuna putnika u 2026.",
-      "summary": "Do tri milijuna putnika Dubrovnik je stigao 15 dana prije nego lani.",
-      "date": "2026-10-17T18:00:00.000Z",
-      "url": "https://www.poslovni.hr/vijesti/dubrovacka-zracna-luka-vec-ima-vise-od-tri-milijuna-putnika-u-2026-4559908",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [
-        "Vijesti",
-        "hrvatske zračne luke",
-        "Viktor Šober",
-        "Zračna luka Dubrovnik"
-      ],
-      "author": "Siniša Malus",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T20:52:55.983Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-17-poslovni-drzava-nece-prihvatiti-lursenovu-ponudu-od-cb5f20",
-      "title": "Država neće prihvatiti Lürsenovu ponudu od 1 eura za projekt s ACI-jem?",
-      "summary": "Strateški partner za gradnju luksuzne marine u Rijeci nudi državnom lancu pravo prvokupa po atraktivnoj cijeni.",
-      "date": "2026-10-17T16:58:00.000Z",
-      "url": "https://www.poslovni.hr/vijesti/drzava-nece-prihvatiti-lursenovu-ponudu-od-1-eura-za-projekt-s-aci-jem-4559493",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [
-        "Vijesti",
-        "ACI dd",
-        "ACI Gitone",
-        "Gitone"
-      ],
-      "author": "Marija Brnić",
-      "theme": "rat",
-      "addedAt": "2026-10-19T20:52:55.983Z",
       "backfilled": true
     }
   ]
