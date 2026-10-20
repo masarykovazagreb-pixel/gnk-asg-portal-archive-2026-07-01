@@ -38,3 +38,6 @@ a.fl-file:hover{color:#8c2f2f;text-decoration:underline}
   .fl-table{min-width:560px;font-size:12px}
   .fl-list{grid-template-columns:1fr}
 }
+.fl-attention{border-color:#e8c4c4;border-top:4px solid #8c2f2f}
+.fl-attention .fl-num-badge{color:#8c2f2f;background:#fbeaea;border-color:#e8bfbf}
+.fl-count-badge{display:inline-block;margin-left:6px;font:900 12px/1 var(--gnk-font-ui,system-ui,sans-serif);color:#fff;background:#8c2f2f;border-radius:999px;padding:5px 9px;vertical-align:middle}

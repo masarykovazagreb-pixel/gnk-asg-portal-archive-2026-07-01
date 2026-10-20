@@ -58,6 +58,10 @@ const T = {
     details: 'Prikaži sve automatizacije skupine',
     scheduled: 'Na rasporedu',
     unscheduled: 'Bez rasporeda (ručno ili na događaj)',
+    attention: 'Zahtijeva pažnju',
+    attentionLead: 'Automatizacije kojima je zadnji zabilježeni run završio neuspješno. Popis se računa iz povijesti runova, ne iz procjene.',
+    attentionNone: 'Nema neuspješnih runova u zabilježenoj povijesti.',
+    attentionCount: 'neuspješnih',
     ungrouped: 'Izvan skupina',
     ungroupedLead: 'Automatizacije koje ne pripadaju nijednoj radnoj skupini. Popis je potpun, bez izostavljanja.',
     outcomes: { success: 'Uspjeh', failure: 'Pad', skipped: 'Preskočeno', cancelled: 'Otkazano', timed_out: 'Isteklo', action_required: 'Treba odobrenje', neutral: 'Neutralno', stale: 'Zastarjelo' },
@@ -97,6 +101,10 @@ const T = {
     details: 'Show all automations in this group',
     scheduled: 'Scheduled',
     unscheduled: 'Unscheduled (manual or event)',
+    attention: 'Needs attention',
+    attentionLead: 'Automations whose last recorded run did not succeed. This list is computed from run history, not estimated.',
+    attentionNone: 'No failed runs in the recorded history.',
+    attentionCount: 'failing',
     ungrouped: 'Outside groups',
     ungroupedLead: 'Automations that belong to no worker group. The list is complete, nothing is omitted.',
     outcomes: { success: 'Success', failure: 'Failure', skipped: 'Skipped', cancelled: 'Cancelled', timed_out: 'Timed out', action_required: 'Needs approval', neutral: 'Neutral', stale: 'Stale' },
@@ -209,6 +217,30 @@ ${rest.length ? `    <details class="fl-details">
   </section>`;
   }).join('\n');
 
+  const failing = Object.entries(runsDoc.runs)
+    .filter(([, run]) => ['failure', 'timed_out', 'action_required', 'startup_failure'].includes(run.conclusion))
+    .sort((a, b) => String(b[1].createdAt).localeCompare(String(a[1].createdAt)));
+
+  const attentionSection = `  <section class="fl-group fl-attention" id="paznja" aria-labelledby="h-attention">
+    <header class="fl-group-head">
+      <span class="fl-num-badge">!</span>
+      <h2 id="h-attention">${esc(t.attention)} <span class="fl-count-badge">${failing.length}</span></h2>
+      <p class="fl-stat-line">${esc(t.attentionLead)}</p>
+    </header>
+${failing.length ? `    <div class="fl-scroll">
+    <table class="fl-table">
+      <thead><tr><th scope="col">${esc(t.tabAutomation)}</th><th scope="col">${esc(t.tabLast)}</th><th scope="col">${esc(t.tabOutcome)}</th></tr></thead>
+      <tbody>
+${failing.map(([path, run]) => `      <tr>
+        <th scope="row"><a class="fl-file" href="${esc(run.url)}" rel="noopener">${esc(path.split('/').pop())}</a></th>
+        <td class="fl-mono">${esc(fmtRun(run.createdAt))}</td>
+        <td><span class="fl-badge fl-bad">${esc(t.outcomes[run.conclusion] || run.conclusion)}</span></td>
+      </tr>`).join('\n')}
+      </tbody>
+    </table>
+    </div>` : `    <p class="fl-mut">${esc(t.attentionNone)}</p>`}
+  </section>`;
+
   const ungroupedSection = groupsDoc.ungrouped.length ? `  <section class="fl-group" id="izvan-skupina" aria-labelledby="h-ungrouped">
     <header class="fl-group-head">
       <span class="fl-num-badge">—</span>
@@ -318,6 +350,7 @@ ${rest.length ? `    <details class="fl-details">
   </div>
   <p class="fl-stamp">${esc(t.collected)}: ${stampText ? `<time datetime="${esc(stamp)}">${esc(stampText)}</time>` : `<span class="fl-mut">${esc(t.noHistory)}</span>`}</p>
   <div class="gnk-rule"></div>
+${attentionSection}
 ${groupSections}
 ${ungroupedSection}
   <section class="fl-links">
@@ -357,6 +390,9 @@ const fleet = {
     runsPerDay: g.runsPerDay,
   })),
   ungrouped: groupsDoc.ungrouped.length,
+  failing: Object.entries(runsDoc.runs)
+    .filter(([, run]) => ['failure', 'timed_out', 'action_required', 'startup_failure'].includes(run.conclusion))
+    .map(([path, run]) => ({ workflow: path.split('/').pop(), conclusion: run.conclusion, createdAt: run.createdAt, url: run.url })),
 };
 mkdirSync(dirname(OUT_JSON), { recursive: true });
 writeFileSync(OUT_JSON, `${JSON.stringify(fleet, null, 2)}\n`, 'utf8');
