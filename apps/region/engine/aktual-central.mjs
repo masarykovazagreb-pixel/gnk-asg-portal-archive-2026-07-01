@@ -201,9 +201,15 @@ const GEO = {
   sofija: [23.32, 42.70], bukurest: [26.10, 44.43]
 };
 
+const AMM_C = {
+  zagreb: '#e9c66c', beograd: '#7fb2ff', sarajevo: '#7ee0a1', budimpesta: '#ff9f6e',
+  ljubljana: '#c79bff', rim: '#ff7d7d', sofija: '#6fe0d6', bukurest: '#f2a8d0'
+};
+
 function regionMap(cards, lang = 'hr') {
-  /* Mala karta: 250×150 (prije 640×420). Karta je ulaz, ne plakat. */
-  const W = 250, H = 150;
+  /* Mala karta mreže: 260×156, u panelu koji spaja krugove izdanja i linkove. */
+  const EN = lang === 'en';
+  const W = 260, H = 156;
   const lons = Object.values(GEO).map((g) => g[0]);
   const lats = Object.values(GEO).map((g) => g[1]);
   const [x0, x1] = [Math.min(...lons) - 1.6, Math.max(...lons) + 1.6];
@@ -211,43 +217,79 @@ function regionMap(cards, lang = 'hr') {
   const px = (lon) => ((lon - x0) / (x1 - x0)) * W;
   const py = (lat) => H - ((lat - y0) / (y1 - y0)) * H;
 
-  const pins = CHANNELS.map((c) => {
+  const counted = CHANNELS.map((c) => ({ c, count: (cards.find((x) => x.id === c.id) || {}).count || 0 }));
+  const total = counted.reduce((sum, x) => sum + x.count, 0);
+  const max = Math.max(1, ...counted.map((x) => x.count));
+  const nf = (n) => n.toLocaleString('hr-HR');
+
+  const rome = { x: px(GEO.rim[0]), y: py(GEO.rim[1]) };
+
+  const pins = counted.map(({ c, count }) => {
     const g = GEO[c.id];
     if (!g) return '';
-    const card = cards.find((x) => x.id === c.id) || {};
     const cx = px(g[0]).toFixed(1), cy = py(g[1]).toFixed(1);
     const city = CITY_SHORT[c.id] || c.city;
-    const count = card.count || 0;
-    return `<a class="amm-pin" href="${esc(c.base)}" aria-label="${esc(c.title)} — ${count} ${lang === 'en' ? 'stories' : 'tekstova'} — ${lang === 'en' ? 'open edition' : 'otvori izdanje'}">
-      <circle class="amm-hit" cx="${cx}" cy="${cy}" r="11"></circle>
-      <circle cx="${cx}" cy="${cy}" r="4.6"></circle>
-      <title>${esc(city)} — ${esc(c.title)} · ${count} ${lang === 'en' ? 'stories' : 'tekstova'}</title>
+    const color = AMM_C[c.id] || '#e9c66c';
+    return `<a class="amm-pin" href="${esc(c.base)}" style="--c:${color}" aria-label="${esc(c.title)} — ${count} ${EN ? 'stories' : 'tekstova'} — ${EN ? 'open edition' : 'otvori izdanje'}">
+      <circle class="amm-halo" cx="${cx}" cy="${cy}" r="10"></circle>
+      <circle class="amm-dot" cx="${cx}" cy="${cy}" r="4.2"></circle>
+      <title>${esc(city)} — ${esc(c.title)} · ${count} ${EN ? 'stories' : 'tekstova'}</title>
     </a>`;
   }).join('');
 
-  const list = [
-    `<li><a class="amm-home" href="/usa/"><b>GNK DINAMO Ltd.</b> · Boulder, Colorado, USA <span>ishodište →</span></a></li>`,
-    ...CHANNELS.map((c) => {
-      const card = cards.find((x) => x.id === c.id) || {};
-      return `<li><a href="${esc(c.base)}">${esc(CITY_SHORT[c.id] || c.city)} <em>${card.count || 0}</em></a></li>`;
-    })
-  ].join('');
-  const label = lang === 'en' ? 'Region map — pick a city' : 'Karta regije — odaberi grad';
+  const rows = counted.map(({ c, count }) => {
+    const city = CITY_SHORT[c.id] || c.city;
+    const color = AMM_C[c.id] || '#e9c66c';
+    const bar = Math.round((count / max) * 100);
+    return `<li><a class="amm-city" href="${esc(c.base)}" style="--c:${color}" aria-label="${esc(c.title)} — ${count} ${EN ? 'stories' : 'tekstova'}">
+      <i aria-hidden="true"></i><b>${esc(city)}</b><em>${nf(count)}</em>
+      <span class="amm-bar" aria-hidden="true"><span style="width:${bar}%"></span></span>
+    </a></li>`;
+  }).join('');
 
-  return `<div class="amm">
-  <div class="amm-head"><span class="amm-flag">${lang === 'en' ? 'Map' : 'Karta'}</span><span class="amm-title">${esc(label)}</span>
-    <a class="amm-origin" href="/usa/">${lang === 'en' ? 'Origin: GNK DINAMO Ltd. · Colorado, USA →' : 'Ishodište: GNK DINAMO Ltd. · Colorado, USA →'}</a></div>
-  <div class="amm-body">
-    <svg class="amm-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(label)}">
-      <defs><linearGradient id="ammSea" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0d1c2c"/><stop offset="1" stop-color="#060f19"/></linearGradient></defs>
-      <rect width="${W}" height="${H}" fill="url(#ammSea)"></rect>
-      ${[...Array(5)].map((_, i) => `<line x1="0" y1="${((i + 0.5) * H) / 5}" x2="${W}" y2="${((i + 0.5) * H) / 5}" stroke="rgba(255,255,255,.05)"></line>`).join('')}
-      ${[...Array(7)].map((_, i) => `<line x1="${((i + 0.5) * W) / 7}" y1="0" x2="${((i + 0.5) * W) / 7}" y2="${H}" stroke="rgba(255,255,255,.05)"></line>`).join('')}
-      ${pins}
-    </svg>
-    <ul class="amm-list">${list}</ul>
+  const label = EN ? 'Network map — pick a city' : 'Karta mreže — odaberi grad';
+
+  return `<section class="amm" aria-label="${esc(label)}">
+  <span class="amm-stem" aria-hidden="true"></span>
+  <div class="amm-top">
+    <span class="amm-flag">${EN ? 'Map' : 'Karta'}</span>
+    <p class="amm-count"><b>${nf(total)}</b> ${EN ? 'stories' : 'tekstova'} <span>·</span> <b>8</b> ${EN ? 'cities' : 'gradova'} <span>·</span> <b>8</b> ${EN ? 'languages' : 'jezika'}</p>
+    <a class="amm-origin" href="/usa/"><span class="amm-gem" aria-hidden="true"></span>${EN ? 'Origin: GNK DINAMO Ltd. · Colorado, USA' : 'Ishodište: GNK DINAMO Ltd. · Colorado, USA'} <b>→</b></a>
   </div>
-</div>`;
+  <div class="amm-body">
+    <figure class="amm-mapwrap">
+      <svg class="amm-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(label)}">
+        <defs>
+          <linearGradient id="ammSea" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10263c"/><stop offset=".55" stop-color="#0a1a2b"/><stop offset="1" stop-color="#060f19"/></linearGradient>
+          <radialGradient id="ammGlow" cx="0" cy="0" r="1" gradientTransform="translate(${rome.x} ${rome.y}) rotate(35) scale(150)"><stop offset="0" stop-color="rgba(255,125,125,.28)"/><stop offset="1" stop-color="rgba(255,125,125,0)"/></radialGradient>
+        </defs>
+        <rect width="${W}" height="${H}" rx="12" fill="url(#ammSea)"></rect>
+        <rect width="${W}" height="${H}" rx="12" fill="url(#ammGlow)"></rect>
+        ${[...Array(5)].map((_, i) => `<line x1="10" y1="${((i + 1) * H) / 6}" x2="${W - 10}" y2="${((i + 1) * H) / 6}" stroke="rgba(255,255,255,.055)" stroke-dasharray="1 5"></line>`).join('')}
+        ${[...Array(7)].map((_, i) => `<line x1="${((i + 1) * W) / 8}" y1="10" x2="${((i + 1) * W) / 8}" y2="${H - 10}" stroke="rgba(255,255,255,.045)" stroke-dasharray="1 5"></line>`).join('')}
+        <path d="M 9 17 C 12 62, ${(rome.x * 0.55).toFixed(1)} ${(rome.y * 0.8).toFixed(1)}, ${rome.x.toFixed(1)} ${rome.y.toFixed(1)}" fill="none" stroke="rgba(245,217,138,.55)" stroke-width="1.2" stroke-dasharray="3 4"></path>
+        <g class="amm-co" aria-hidden="true"><rect x="4" y="7" width="27" height="15" rx="7.5"></rect><text x="17.5" y="17.6" text-anchor="middle">CO</text></g>
+        ${pins}
+      </svg>
+      <figcaption class="amm-legend"><span class="amm-gem" aria-hidden="true"></span>${EN ? 'colour = edition · click opens the channel' : 'boja = izdanje · klik vodi na kanal'}</figcaption>
+    </figure>
+    <div class="amm-side">
+      <a class="amm-home" href="/usa/">
+        <span class="amm-home-k">${EN ? 'Project origin' : 'Ishodište projekta'}</span>
+        <b>GNK DINAMO Ltd.</b>
+        <span class="amm-home-loc">Boulder, Colorado, USA</span>
+        <span class="amm-home-go">${EN ? 'Open origin page' : 'Otvori stranicu ishodišta'} →</span>
+      </a>
+      <ul class="amm-list">${rows}</ul>
+    </div>
+  </div>
+  <div class="amm-foot">
+    <a href="/kanal/">${EN ? 'All channels' : 'Svi kanali'} →</a>
+    <a href="/izdanja/">${EN ? 'All editions' : 'Sva izdanja'} →</a>
+    <a href="/radio/">Radio →</a>
+    <span class="amm-foot-note">${EN ? 'USA → region → 8 cities' : 'USA → regija → 8 gradova'}</span>
+  </div>
+</section>`;
 }
 
 function homeRail(cards, moda, lang = 'hr') {
@@ -298,27 +340,54 @@ function homeRail(cards, moda, lang = 'hr') {
 .amx-link b{font:900 13px/1.05 Impact,"Arial Black",system-ui,sans-serif;letter-spacing:.01em;text-transform:uppercase;color:#111}
 .amx-link small{font:700 9px/1.2 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#67645e}
 .amx-ago{font:700 8.5px/1.2 system-ui,sans-serif;font-style:normal;letter-spacing:.05em;color:#9a9384}
-.amm{max-width:620px;margin:12px auto 6px;border:1px solid #111;background:#060f19;position:relative}
-.amm-head{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.12);font:700 9.5px/1.3 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.66)}
-.amm-flag{background:#e9c66c;color:#0c1015;padding:4px 7px;font-weight:900;letter-spacing:.14em}
-.amm-title{color:rgba(255,255,255,.62)}
-.amm-origin{margin-left:auto;color:#e9c66c;border-bottom:1px solid rgba(233,198,108,.4);text-decoration:none;font-size:9px;letter-spacing:.08em}
-.amm-origin:hover{border-color:#e9c66c}
-.amm-body{display:grid;grid-template-columns:250px minmax(0,1fr);gap:10px;padding:10px;align-items:start}
-.amm-svg{display:block;width:250px;max-width:100%;height:auto;border:1px solid rgba(255,255,255,.1)}
-.amm-pin circle{fill:#e9c66c;stroke:#060f19;stroke-width:1.6}
-.amm-pin:hover circle{fill:#fff}
-.amm-list{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:5px}
-.amm-list a{display:inline-flex;align-items:baseline;gap:5px;font:800 10px/1 system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#e9c66c;border:1px solid rgba(233,198,108,.35);padding:6px 8px;text-decoration:none;transition:background .15s ease,color .15s ease}
-.amm-list a:hover{background:#e9c66c;color:#0c1015}
-.amm-list a em{font-style:normal;font-weight:700;font-size:9px;color:rgba(255,255,255,.55)}
-.amm-list a:hover em{color:#0c1015}
-.amm-list .amm-home{width:100%;display:grid;gap:2px;color:#fff;border-color:#e9c66c;background:rgba(233,198,108,.08);font-size:10.5px;letter-spacing:.02em;text-transform:none}
-.amm-list .amm-home b{font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:#e9c66c;font-size:10px}
-.amm-list .amm-home span{font:700 9px/1 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6)}
-.amm-list .amm-home:hover{background:#e9c66c}
-.amm-list .amm-home:hover b,.amm-list .amm-home:hover span{color:#0c1015}
-@media(max-width:620px){.amm-body{grid-template-columns:1fr;padding:8px}.amm-svg{width:100%;max-width:250px;margin:0 auto}.amm-list .amm-home{font-size:10px}}
+.amm{position:relative;max-width:940px;margin:30px auto 10px;border-radius:26px;border:1px solid #e3d9c3;background:
+radial-gradient(70% 120% at 0% 0%,rgba(233,198,108,.30),transparent 58%),
+radial-gradient(60% 110% at 100% 0%,rgba(140,47,47,.10),transparent 60%),
+linear-gradient(165deg,#fffefb 0%,#faf5e9 52%,#fffdf8 100%);
+box-shadow:0 24px 50px rgba(31,38,48,.14),0 2px 0 #fff inset}
+.amm::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:0;background:linear-gradient(120deg,rgba(255,255,255,.55),transparent 40%,rgba(255,255,255,.35) 75%,transparent)}
+.amm-stem{position:absolute;top:-18px;left:50%;transform:translateX(-50%);width:2px;height:18px;background:linear-gradient(180deg,rgba(233,198,108,0),#c8963c)}
+.amm-stem::after{content:"";position:absolute;left:50%;top:-5px;width:9px;height:9px;border-radius:50%;transform:translateX(-50%);background:linear-gradient(135deg,#f3dfa8,#c8963c);box-shadow:0 0 0 4px rgba(233,198,108,.18)}
+.amm-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:14px 18px 12px;border-bottom:1px solid #ece3d1;position:relative;z-index:1}
+.amm-flag{background:linear-gradient(135deg,#f3dfa8,#e9c66c 45%,#c8963c);color:#141414;font:900 10px/1 system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;padding:7px 11px;border-radius:999px;box-shadow:0 6px 14px rgba(200,150,60,.28)}
+.amm-count{margin:0;font:700 11px/1.3 system-ui,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#6d6555}
+.amm-count b{color:#171b21;font-size:13px}
+.amm-count span{color:#b9af9a;margin:0 3px}
+.amm-origin{margin-left:auto;display:inline-flex;align-items:center;gap:7px;font:800 10px/1 system-ui,sans-serif;letter-spacing:.09em;text-transform:uppercase;color:#8c2f2f;text-decoration:none;border:1px solid rgba(140,47,47,.35);border-radius:999px;padding:7px 12px;background:rgba(140,47,47,.06);transition:background .18s ease,color .18s ease,border-color .18s ease}
+.amm-origin b{font-weight:900}
+.amm-origin:hover{background:#8c2f2f;color:#fff;border-color:#8c2f2f}
+.amm-gem{width:7px;height:7px;flex:0 0 auto;transform:rotate(45deg);background:linear-gradient(135deg,#f3dfa8,#c8963c);border-radius:1px;box-shadow:0 0 0 2px rgba(200,150,60,.16)}
+.amm-body{display:grid;grid-template-columns:300px minmax(0,1fr);gap:16px;padding:16px 18px 12px;position:relative;z-index:1}
+.amm-mapwrap{margin:0;display:grid;gap:8px}
+.amm-svg{display:block;width:300px;max-width:100%;height:auto;border-radius:14px;border:1px solid #0b1a2b;box-shadow:0 12px 26px rgba(11,26,43,.24),inset 0 0 30px rgba(0,0,0,.35)}
+.amm-pin .amm-halo{fill:var(--c,#e9c66c);opacity:.2;transition:opacity .18s ease}
+.amm-pin .amm-dot{fill:var(--c,#e9c66c);stroke:#061019;stroke-width:1.6}
+.amm-pin:hover .amm-halo,.amm-pin:focus-visible .amm-halo{opacity:.5}
+.amm-pin:hover .amm-dot{fill:#fff}
+.amm-co rect{fill:#f5d98a}
+.amm-co text{font:900 8.5px/1 system-ui,sans-serif;letter-spacing:.06em;fill:#0c1015}
+.amm-legend{margin:0;display:flex;align-items:center;gap:7px;font:700 9.5px/1.3 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#847c6b}
+.amm-side{display:grid;gap:10px;align-content:start}
+.amm-home{display:grid;gap:2px;padding:12px 14px;border-radius:16px;text-decoration:none;color:#171b21;background:linear-gradient(120deg,#fff8e4,#fdf1d2 65%,#fffdf8);border:1px solid rgba(200,150,60,.45);box-shadow:0 8px 18px rgba(200,150,60,.14);transition:transform .18s ease,box-shadow .18s ease}
+.amm-home:hover{transform:translateY(-2px);box-shadow:0 16px 30px rgba(200,150,60,.22)}
+.amm-home-k{font:800 8.5px/1 system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8a6a1f}
+.amm-home b{font:900 15px/1.1 Georgia,serif;letter-spacing:.01em;color:#111}
+.amm-home-loc{font:600 10px/1.3 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#6b6558}
+.amm-home-go{font:800 9.5px/1 system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#8c2f2f;margin-top:4px}
+.amm-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.amm-city{position:relative;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:6px;padding:8px 9px 10px;border-radius:10px;text-decoration:none;color:#1a1f27;background:#fff;border:1px solid #e8dfcc;transition:background .16s ease,border-color .16s ease,transform .16s ease,box-shadow .16s ease}
+.amm-city:hover,.amm-city:focus-visible{background:color-mix(in srgb,var(--c) 14%,#fff);border-color:color-mix(in srgb,var(--c) 55%,#e8dfcc);transform:translateY(-1px);box-shadow:0 6px 14px rgba(31,38,48,.1)}
+.amm-city i{width:8px;height:8px;border-radius:50%;background:var(--c);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 22%,transparent)}
+.amm-city b{font:800 10.5px/1 system-ui,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#14181e}
+.amm-city em{font:800 10px/1 system-ui,sans-serif;font-style:normal;color:#4b463c}
+.amm-bar{position:absolute;left:9px;right:9px;bottom:5px;height:2px;border-radius:2px;background:#eee6d4;overflow:hidden}
+.amm-bar span{display:block;height:100%;background:var(--c);opacity:.9}
+.amm-foot{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 18px 12px;border-top:1px solid #ece3d1;background:rgba(255,255,255,.55);border-radius:0 0 26px 26px;position:relative;z-index:1}
+.amm-foot a{font:800 9.5px/1 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#8c2f2f;text-decoration:none;border-bottom:1px solid transparent}
+.amm-foot a:hover{border-color:#8c2f2f}
+.amm-foot-note{margin-left:auto;font:700 9px/1 system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#a49a86}
+@media(max-width:820px){.amm-body{grid-template-columns:1fr}.amm-svg{width:100%}}
+@media(max-width:560px){.amm{border-radius:18px}.amm-list{grid-template-columns:1fr}.amm-count{order:3;flex-basis:100%}.amm-origin{margin-left:0}.amm-foot-note{display:none}.amm-foot{border-radius:0 0 18px 18px}}
 .amx-link:hover .amx-ring,.amx-link:focus-visible .amx-ring{transform:translateY(-3px) scale(1.03);box-shadow:0 14px 26px rgba(15,23,42,.26)}
 .amx-link:hover b{color:#d71920}
 .amx-platforms{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:10px 18px 16px}
