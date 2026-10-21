@@ -1,6 +1,6 @@
 {
   "version": "GNK_ASG_AUTONOMY_365_V1_20261021",
-  "generatedAt": "2026-10-21T17:10:22Z",
+  "generatedAt": "2026-10-21T17:23:18Z",
   "horizon": {
     "starts": "2026-10-21",
     "ends": "2027-10-21",
@@ -11,7 +11,7 @@
       "id": "kanali-arhiva",
       "state": "ok",
       "severity": "hard",
-      "actual": "407 / 300",
+      "actual": "420 / 300",
       "target": 300,
       "owner": "region-daily.yml",
       "route": "/kanal/",
@@ -20,15 +20,15 @@
         "en": "Every city channel holds at least 300 archived stories"
       },
       "note": {
-        "hr": "zagreb 420 · beograd 420 · sarajevo 420 · budimpesta 420 · ljubljana 420 · rim 420 · sofija 407 · bukurest 420",
-        "en": "zagreb 420 · beograd 420 · sarajevo 420 · budimpesta 420 · ljubljana 420 · rim 420 · sofija 407 · bukurest 420"
+        "hr": "zagreb 420 · beograd 420 · sarajevo 420 · budimpesta 420 · ljubljana 420 · rim 420 · sofija 420 · bukurest 420",
+        "en": "zagreb 420 · beograd 420 · sarajevo 420 · budimpesta 420 · ljubljana 420 · rim 420 · sofija 420 · bukurest 420"
       }
     },
     {
       "id": "kanali-svjezina",
       "state": "ok",
       "severity": "watch",
-      "actual": "5.7 h",
+      "actual": "0.6 h",
       "target": "48 h",
       "owner": "region-daily.yml",
       "route": "/kanal/",
@@ -37,8 +37,8 @@
         "en": "The newest story in every channel is no older than 48 h"
       },
       "note": {
-        "hr": "zagreb 5.6 h · beograd 5.5 h · sarajevo 4.7 h · budimpesta 5.6 h · ljubljana 5.6 h · rim 5.7 h · sofija 5.5 h · bukurest 5.5 h",
-        "en": "zagreb 5.6 h · beograd 5.5 h · sarajevo 4.7 h · budimpesta 5.6 h · ljubljana 5.6 h · rim 5.7 h · sofija 5.5 h · bukurest 5.5 h"
+        "hr": "zagreb 0.3 h · beograd 0.3 h · sarajevo 0 h · budimpesta 0.3 h · ljubljana 0.3 h · rim 0.6 h · sofija 0.3 h · bukurest 0.3 h",
+        "en": "zagreb 0.3 h · beograd 0.3 h · sarajevo 0 h · budimpesta 0.3 h · ljubljana 0.3 h · rim 0.6 h · sofija 0.3 h · bukurest 0.3 h"
       }
     },
     {
@@ -96,7 +96,7 @@
       "id": "news-svjezina",
       "state": "ok",
       "severity": "watch",
-      "actual": "1.2 h",
+      "actual": "1.4 h",
       "target": "6 h",
       "owner": "gnk-news-refresh-v2.yml",
       "route": "/gnk-aktual/",
@@ -155,56 +155,56 @@
       {
         "id": "zagreb",
         "items": 420,
-        "newest": "2026-10-21T11:37:04.000Z",
-        "ageHours": 5.6
+        "newest": "2026-10-21T17:03:58.000Z",
+        "ageHours": 0.3
       },
       {
         "id": "beograd",
         "items": 420,
-        "newest": "2026-10-21T11:38:00.000Z",
-        "ageHours": 5.5
+        "newest": "2026-10-21T17:04:00.000Z",
+        "ageHours": 0.3
       },
       {
         "id": "sarajevo",
         "items": 420,
-        "newest": "2026-10-21T12:29:35.000Z",
-        "ageHours": 4.7
+        "newest": "2026-10-21T18:00:21.000Z",
+        "ageHours": 0
       },
       {
         "id": "budimpesta",
         "items": 420,
-        "newest": "2026-10-21T11:34:00.000Z",
-        "ageHours": 5.6
+        "newest": "2026-10-21T17:03:33.000Z",
+        "ageHours": 0.3
       },
       {
         "id": "ljubljana",
         "items": 420,
-        "newest": "2026-10-21T11:35:00.000Z",
-        "ageHours": 5.6
+        "newest": "2026-10-21T17:05:51.000Z",
+        "ageHours": 0.3
       },
       {
         "id": "rim",
         "items": 420,
-        "newest": "2026-10-21T11:27:08.000Z",
-        "ageHours": 5.7
+        "newest": "2026-10-21T16:45:27.000Z",
+        "ageHours": 0.6
       },
       {
         "id": "sofija",
-        "items": 407,
-        "newest": "2026-10-21T11:38:23.000Z",
-        "ageHours": 5.5
+        "items": 420,
+        "newest": "2026-10-21T17:04:21.000Z",
+        "ageHours": 0.3
       },
       {
         "id": "bukurest",
         "items": 420,
-        "newest": "2026-10-21T11:41:51.523Z",
-        "ageHours": 5.5
+        "newest": "2026-10-21T17:07:43.000Z",
+        "ageHours": 0.3
       }
     ],
     "news": {
       "items": 300,
       "newest": "2026-10-21T16:00:14.000Z",
-      "ageHours": 1.2
+      "ageHours": 1.4
     },
     "proxies": {
       "allowed": 29,
