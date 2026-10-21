@@ -1,6 +1,6 @@
 {
   "note": "Groups are derived from real workflow files; worker profiles are a modeled catalogue.",
-  "total": 328,
+  "total": 330,
   "groups": [
     {
       "id": "izdanja",
@@ -1799,7 +1799,26 @@
           "perDay": 4
         }
       ]
+    },
+    {
+      "id": "ostalo",
+      "name": "Ostalo",
+      "nameEn": "Other",
+      "automations": 1,
+      "scheduled": 1,
+      "runsPerDay": 4,
+      "files": [
+        {
+          "file": "autonomija-365.yml",
+          "crons": [
+            "23 */6 * * *"
+          ],
+          "perDay": 4
+        }
+      ]
     }
   ],
-  "ungrouped": []
+  "ungrouped": [
+    "autonomija-365.yml"
+  ]
 }

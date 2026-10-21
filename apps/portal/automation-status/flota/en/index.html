@@ -46,9 +46,9 @@
   <h1 class="gnk-h1">Automation fleet</h1>
   <p class="gnk-lead">Every automation in the repository, grouped by worker group. Schedules come from the real cron expressions in the workflow files; outcomes come from the last recorded GitHub Actions run. Where there is no run, the page says so — nothing is assumed.</p>
   <div class="fl-pills">
-    <span class="gnk-pill"><b>328</b> automations</span>
-    <span class="gnk-pill"><b>24</b> scheduled</span>
-    <span class="gnk-pill"><b>140</b> runs / day</span>
+    <span class="gnk-pill"><b>330</b> automations</span>
+    <span class="gnk-pill"><b>26</b> scheduled</span>
+    <span class="gnk-pill"><b>148</b> runs / day</span>
     <span class="gnk-pill"><b>57</b> with run history</span>
   </div>
   <p class="fl-stamp">Run history collected: <time datetime="2026-10-20T14:51:28.272Z">20. 10. 2026. 14:51 UTC</time></p>
@@ -414,7 +414,39 @@
       <ul class="fl-list"><li><span class="fl-file">actions-execution-probe.yml</span></li><li><span class="fl-file">automation-kill-switch-contract.yml</span></li><li><span class="fl-file">fix-floating-home-page-routes-v16.yml</span></li><li><span class="fl-file">master-asg-autonomous-agent-v1.yml</span></li><li><span class="fl-file">report-current-public-portal.yml</span></li><li><span class="fl-file">report-iq200-deploy.yml</span></li><li><span class="fl-file">workforce-production-smoke.yml</span></li></ul>
     </details>
   </section>
+  <section class="fl-group" id="grupa-ostalo" aria-labelledby="h-ostalo">
+    <header class="fl-group-head">
+      <span class="fl-num-badge">12</span>
+      <h2 id="h-ostalo">Other</h2>
+      <p class="fl-stat-line">1 automations · 1 scheduled · 4 runs per day</p>
+    </header>
+    <div class="fl-scroll">
+    <table class="fl-table">
+      <thead><tr><th scope="col">Automation</th><th scope="col">Schedule</th><th scope="col">/ day</th><th scope="col">Last run</th><th scope="col">Outcome</th></tr></thead>
+      <tbody>
+      <tr>
+        <th scope="row"><a class="fl-file" href="https://github.com/masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01/actions/workflows/autonomija-365.yml" rel="noopener" title="Open in Actions">autonomija-365.yml</a></th>
+        <td class="fl-mono">23 */6 * * *</td>
+        <td class="fl-num">4</td>
+        <td class="fl-mono"><span class="fl-mut">—</span></td>
+        <td><span class="fl-badge fl-mut">No record</span></td>
+      </tr>
+      </tbody>
+    </table>
+    </div>
 
+  </section>
+  <section class="fl-group" id="izvan-skupina" aria-labelledby="h-ungrouped">
+    <header class="fl-group-head">
+      <span class="fl-num-badge">—</span>
+      <h2 id="h-ungrouped">Outside groups</h2>
+      <p class="fl-stat-line">Automations that belong to no worker group. The list is complete, nothing is omitted.</p>
+    </header>
+    <details class="fl-details" open>
+      <summary>Outside groups <b>1</b></summary>
+      <ul class="fl-list"><li><span class="fl-file">autonomija-365.yml</span><span class="fl-badge fl-mut">No record</span></li></ul>
+    </details>
+  </section>
   <section class="fl-links">
     <h2>Related</h2>
     <nav aria-label="Related"><a href="/en/workers/">All workers</a><a href="/workers/grupacije/en/">Worker groups</a><a href="/en/">GNK ASG home</a><a href="/izdanja/">Editions (HR)</a><a href="/en/radio/">AKTUAL RADIO</a><a href="/en/zdravlje/">System health</a><a href="/en/newsroom/">Newsroom</a><a href="/en/contact/">Contact</a><a href="/en/group-network/">Group network</a></nav>
