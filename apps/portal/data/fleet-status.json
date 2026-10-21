@@ -1,10 +1,10 @@
 {
   "version": "GNK_ASG_FLEET_STATUS_V1",
-  "generatedAt": "2026-10-20T15:18:03.788Z",
+  "generatedAt": "2026-10-21T16:14:33.117Z",
   "runsCollectedAt": "2026-10-20T14:51:28.272Z",
-  "total": 328,
-  "scheduled": 24,
-  "runsPerDay": 140,
+  "total": 330,
+  "scheduled": 26,
+  "runsPerDay": 148,
   "tracked": 57,
   "groups": [
     {
@@ -94,9 +94,17 @@
       "automations": 9,
       "scheduled": 2,
       "runsPerDay": 10
+    },
+    {
+      "id": "ostalo",
+      "name": "Ostalo",
+      "nameEn": "Other",
+      "automations": 1,
+      "scheduled": 1,
+      "runsPerDay": 4
     }
   ],
-  "ungrouped": 0,
+  "ungrouped": 1,
   "failing": [
     {
       "workflow": "workforce-supervisor-agent.yml",
