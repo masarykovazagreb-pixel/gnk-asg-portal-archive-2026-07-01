@@ -81,13 +81,18 @@ assert.ok(generatedHero, 'the channel generator must still define the hero overl
 assert.match(generatedHero[0], /rgba\(6,12,20,0\)\s*100%/, 'generated hero veil must fade to nothing');
 assert.doesNotMatch(generatedHero[0], /rgba\(6,12,20,\.34\)\s*100%/,
   'the near-opaque veil is back in the generator and the next region cycle would restore it');
-assert.match(generator, /assets\/region\.css\?v=\d{8}-hero-clear/,
-  'the generator must cache-bust the CSS it writes into every channel page');
+// Token smije mijenjati ime; važno je da je datumski i da ga generator
+// i stranica nose jednako. Zamrznuti sufiks je lomio test pri svakoj
+// promjeni CSS-a.
+const cssToken = generator.match(/assets\/region\.css\?v=(\d{8}-[a-z0-9-]+)/);
+assert.ok(cssToken, 'the generator must cache-bust the CSS it writes into every channel page');
+assert.match(cssToken[1], /^\d{8}-/, 'the CSS version must be dated');
 
 /* ---------- 3. Poveznica nosi novu verziju, inače preglednik posluži staru ---------- */
 
 const page = read('apps/portal/kanal/zagreb/index.html');
-assert.match(page, /region\.css\?v=\d{8}-hero-clear/, 'the channel page must cache-bust the fixed CSS');
+assert.ok(page.includes(`region.css?v=${cssToken[1]}`),
+  'the channel page must load the same dated CSS version the generator writes');
 const aktual = read('apps/portal/gnk-aktual/index.html');
 assert.match(aktual, /aktual-media-world-v1\.css\?v=2026\d{4}-[a-z0-9-]+/, 'AKTUAL must load a dated build of the layout CSS');
 // CSS i JS moraju nositi isti token: pola objave je gore od nijedne.

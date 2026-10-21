@@ -6,6 +6,10 @@ a:hover{text-decoration:underline}
 img{max-width:100%;height:auto}
 .skip{position:absolute;left:-9999px}
 .skip:focus{left:8px;top:8px;background:#fff;padding:8px;z-index:99}
+/* Tipkovnica mora vidjeti gdje je fokus. Bez ovoga preglednik nacrta
+   vlastiti obrub koji na tamnim pločama nestane. */
+a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:3px solid #e9c66c;outline-offset:3px;border-radius:4px}
+main:focus-visible{outline:3px solid #e9c66c;outline-offset:6px}
 .top{background:var(--bg);color:var(--ink)}
 .xf{border-top:1px solid rgba(255,255,255,.16);padding:26px clamp(16px,4vw,48px) 8px;margin:0 auto;max-width:1400px}
 .xf-head{display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:14px}
