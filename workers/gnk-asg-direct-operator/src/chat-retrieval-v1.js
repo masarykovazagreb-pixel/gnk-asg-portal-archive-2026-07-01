@@ -12,7 +12,7 @@
 
 import { KB_ENTRIES, KB_GROUPS, KB_VERSION, KB_SOURCE_TOTAL } from './knowledge-base.generated-v1.js';
 
-export const RETRIEVAL_VERSION = 'GNK_ASG_CHAT_RETRIEVAL_V2_20261021';
+export const RETRIEVAL_VERSION = 'GNK_ASG_CHAT_RETRIEVAL_V3_20261021';
 
 const STOPWORDS = new Set([
   // hrvatski
@@ -150,23 +150,78 @@ function buildIndex() {
   const total = entries.length;
   const idf = new Map();
   for (const [key, count] of df) idf.set(key, Math.log((total + 1) / (count + 1)) + 1);
-  INDEX = { entries, byKey, idf, groups: KB_GROUPS };
+  // Stranica → skupine: ako ijedan zapis spominje stranicu, cijela
+  // njegova skupina je o toj stranici blizu. Tako "Pitaj o ovoj stranici"
+  // radi i za stranice koje baza opisuje kroz više zapisa.
+  const contexts = new Set();
+  const contextGroups = new Map();
+  const entryContexts = [];
+  entries.forEach((entry, index) => {
+    const own = contextsOf(entry);
+    entryContexts.push(own);
+    for (const path of own) {
+      contexts.add(path);
+      if (!contextGroups.has(path)) contextGroups.set(path, new Set());
+      contextGroups.get(path).add(entry.group);
+      void index;
+    }
+  });
+  INDEX = { entries, byKey, idf, groups: KB_GROUPS, contexts, contextGroups, entryContexts };
   return INDEX;
 }
 
 export function knowledgeStats() {
-  return { entries: KB_SOURCE_TOTAL, indexed: KB_ENTRIES.length, groups: KB_GROUPS.length, version: KB_VERSION };
+  const index = INDEX || buildIndex();
+  return {
+    entries: KB_SOURCE_TOTAL,
+    indexed: KB_ENTRIES.length,
+    groups: KB_GROUPS.length,
+    contexts: index.contexts.size,
+    version: KB_VERSION,
+  };
+}
+
+/* Kontekst je putanja javne stranice ("/gnk-aktual/"). Prihvaćamo samo
+   oblik koji postoji u bazi, bez upita i bez pokušaja da se proširi. */
+export function normalizeContextPath(value) {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  if (raw.length > 120) return '';
+  if (!/^\/[a-z0-9][a-z0-9\-_/]*$/i.test(raw)) return '';
+  const path = raw.endsWith('/') ? raw : `${raw}/`;
+  const index = INDEX || buildIndex();
+  return index.contexts.has(path) ? path : '';
+}
+
+export function pathsIn(text) {
+  const out = new Set();
+  const raw = String(text || '');
+  for (const match of raw.matchAll(/gnk-asg\.hr(\/[A-Za-z0-9\-_/]*)?/g)) {
+    const path = (match[1] || '/').replace(/[.,;:]+$/, '');
+    if (!path || path === '/') continue;
+    out.add(path.endsWith('/') ? path : `${path}/`);
+  }
+  return out;
+}
+
+function contextsOf(entry) {
+  const out = new Set(pathsIn(entry.answer));
+  if (entry.url && entry.url !== '/') out.add(entry.url.endsWith('/') ? entry.url : `${entry.url}/`);
+  return out;
 }
 
 /**
  * Vrati najbliže zapise. Prag je namjerno konzervativan: bolje je reći
  * "nemam to u bazi" nego odgovoriti susjednom temom.
  */
-export function search(query, { limit = 5 } = {}) {
+export function search(query, { limit = 5, contextPath = '' } = {}) {
   const index = INDEX || buildIndex();
   const queryKeys = tokens(query);
   if (!queryKeys.length) return [];
   const normalizedQuery = normalize(query);
+  const context = normalizeContextPath(contextPath);
+  const entryContexts = index.entryContexts || [];
+  const contextGroups = index.contextGroups || new Map();
   const scored = [];
 
   for (let i = 0; i < index.entries.length; i += 1) {
@@ -191,6 +246,15 @@ export function search(query, { limit = 5 } = {}) {
     const entry = index.entries[i];
     const normalizedQuestion = normalize(entry.question);
     if (normalizedQuery.length >= 10 && normalizedQuestion.includes(normalizedQuery)) score += 24;
+    // Stranica s koje je pitanje postavljeno je kontekst, ne filter:
+    // zapisi koji opisuju tu stranicu dobiju prednost, ali upit i dalje
+    // mora sam pogoditi temu. Tako "Pitaj o ovoj stranici" ne može
+    // proizvesti odgovor o nečemu što na stranici nije.
+    if (context) {
+      // Izravni spomen stranice vrijedi više od pripadnosti skupini.
+      if (entryContexts[i].has(context)) score += 12;
+      else if (contextGroups.get(context)?.has(entry.group)) score += 5;
+    }
     const coverage = totalIdf ? coveredIdf / totalIdf : 0;
     score += coverage * 6;
     scored.push({
@@ -270,8 +334,9 @@ function cleanAnswer(text) {
  * drugi iz druge skupine i vraća poveznice. Nikad ne dodaje činjenice
  * kojih nema u bazi.
  */
-export function knowledgeAnswer(query, lang = 'hr') {
-  const hits = search(query, { limit: 4 });
+export function knowledgeAnswer(query, lang = 'hr', options = {}) {
+  const contextPath = normalizeContextPath(options.contextPath);
+  const hits = search(query, { limit: 4, contextPath });
   if (!hits.length) {
     return {
       reply: lang === 'en'

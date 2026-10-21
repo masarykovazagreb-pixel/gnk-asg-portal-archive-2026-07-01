@@ -332,6 +332,7 @@ function render(lang, rows) {
     <a href="/kanal/">${t('Kanali', 'Channels')}</a>
     <a href="/zdravlje/">${t('Zdravlje', 'Health')}</a>
     <a href="/radio/">Radio</a>
+    <a href="${hr ? '/s-chat/?ctx=%2Fautonomija%2F' : '/en/s-chat/?ctx=%2Fen%2Fautonomy%2F'}">${t('Pitaj asistenta', 'Ask the assistant')}</a>
     <a href="${hr ? '/en/autonomy/' : '/autonomija/'}" hreflang="${hr ? 'en' : 'hr'}" lang="${hr ? 'en' : 'hr'}">${hr ? 'English' : 'Hrvatski'}</a>
   </nav>
 </div></header>

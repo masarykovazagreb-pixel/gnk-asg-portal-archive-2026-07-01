@@ -146,6 +146,14 @@ check(sitemap.includes('<loc>https://gnk-asg.hr/autonomija/</loc>'), 'sitemap: m
 check(sitemap.includes('<loc>https://gnk-asg.hr/en/autonomy/</loc>'), 'sitemap: missing /en/autonomy/');
 
 assert.equal(failures.length, 0, failures.join('\n') || 'autonomy guard failed');
+// Svaka ploča mora imati ulaz u asistenta s kontekstom te stranice.
+for (const [name, page, ctx] of [
+  ['HR', hr, '/s-chat/?ctx=%2Fautonomija%2F'],
+  ['EN', en, '/en/s-chat/?ctx=%2Fen%2Fautonomy%2F'],
+]) {
+  if (!page.includes(ctx)) throw new Error(`${name} autonomy board: missing page-aware assistant entry (${ctx})`);
+}
+
 console.log(JSON.stringify({
   ok: true,
   criteria: status.criteria.length,

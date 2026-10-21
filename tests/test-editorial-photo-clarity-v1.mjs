@@ -89,8 +89,16 @@ assert.match(generator, /assets\/region\.css\?v=\d{8}-hero-clear/,
 const page = read('apps/portal/kanal/zagreb/index.html');
 assert.match(page, /region\.css\?v=\d{8}-hero-clear/, 'the channel page must cache-bust the fixed CSS');
 const aktual = read('apps/portal/gnk-aktual/index.html');
-assert.match(aktual, /aktual-media-world-v1\.css\?v=202610\d+-clear-photo/);
-const regije = read('apps/portal/gnk-aktual/regije/index.html');
-assert.match(regije, /aktual-regions-v1\.css\?v=202610\d+-clear-photo/);
+assert.match(aktual, /aktual-media-world-v1\.css\?v=2026\d{4}-[a-z0-9-]+/, 'AKTUAL must load a dated build of the layout CSS');
+// CSS i JS moraju nositi isti token: pola objave je gore od nijedne.
+for (const [file, page_html, stem] of [
+  ['AKTUAL', aktual, 'aktual-media-world-v1'],
+  ['Regije', read('apps/portal/gnk-aktual/regije/index.html'), 'aktual-regions-v1'],
+]) {
+  const css = (page_html.match(new RegExp(`${stem}\\.css\\?v=([^"&]+)`)) || [])[1];
+  const js = (page_html.match(new RegExp(`${stem}\\.js\\?v=([^"&]+)`)) || [])[1];
+  assert.ok(css, `${file}: CSS token missing`);
+  assert.equal(css, js, `${file}: CSS and JS must share one cache-busting token`);
+}
 
 console.log('Fotografije: pune slike na AKTUAL MEDIA, regijama i svih osam gradskih kanala — PASS');

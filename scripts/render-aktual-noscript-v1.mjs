@@ -24,6 +24,8 @@ const EN_PAGE = 'apps/portal/en/gnk-aktual/index.html';
 
 const MARK_START = '<!-- NEWS-NOSCRIPT:START -->';
 const MARK_END = '<!-- NEWS-NOSCRIPT:END -->';
+const ASK_START = '<!-- ASK-AGENT:START -->';
+const ASK_END = '<!-- ASK-AGENT:END -->';
 const CSS_START = '<!-- NEWS-NOSCRIPT:CSS:START -->';
 const CSS_END = '<!-- NEWS-NOSCRIPT:CSS:END -->';
 
@@ -81,6 +83,12 @@ const CSS = `${CSS_START}
 .amn-more a{font-size:12.5px;padding:7px 12px;border:1px solid var(--amn-line);border-radius:999px;color:#dbe6f4}
 @media (max-width:720px){.amn-lead{grid-template-columns:1fr}.amn-lead-media{aspect-ratio:16/10}}
 @media (prefers-reduced-motion:reduce){.amn *{transition:none!important}}
+/* Ulaz u asistenta s kontekstom ove stranice. */
+.am-ask{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin:0 0 14px;font-family:inherit}
+.am-ask-link{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border:1px solid rgba(233,198,108,.42);border-radius:999px;background:rgba(233,198,108,.10);color:#f4e7c6;font:700 12.5px/1.2 system-ui,sans-serif;letter-spacing:.01em;text-decoration:none}
+.am-ask-link:hover,.am-ask-link:focus-visible{border-color:#e9c66c;background:rgba(233,198,108,.20);color:#fff8e6}
+.am-ask-mark{color:#e9c66c}
+.am-ask-hint{font:500 12px/1.4 system-ui,sans-serif;color:#9fb0c6}
 </style>
 ${CSS_END}`;
 
@@ -90,6 +98,8 @@ const COPY = {
     heading: 'Najnovije u ovom trenutku',
     note: 'Statična verzija feeda za čitatelje bez JavaScripta — isti izvori i iste poveznice kao u interaktivnoj verziji.',
     moreLabel: 'Više iz AKTUAL MEDIA',
+    askLabel: 'Pitaj asistenta o AKTUAL MEDIA',
+    askHint: 'Odgovor dolazi iz baze znanja portala, s poveznicom na izvor.',
     nav: [
       ['/objave/', 'Sve vijesti'],
       ['/analize/', 'Sve analize'],
@@ -104,6 +114,8 @@ const COPY = {
     heading: 'Latest right now',
     note: 'Static version of the feed for readers without JavaScript — the same sources and the same links as the interactive view.',
     moreLabel: 'More from AKTUAL MEDIA',
+    askLabel: 'Ask the assistant about AKTUAL MEDIA',
+    askHint: 'The answer comes from the portal knowledge base, with a link to the source.',
     nav: [
       ['/en/publications/', 'All news'],
       ['/en/analyses/', 'All analyses'],
@@ -128,7 +140,7 @@ function leadBlock(item, copy, lang) {
   const showCredit = credit && credit.toLowerCase() !== source.toLowerCase();
   const summary = clean(item.summary).slice(0, 190);
   const media = image
-    ? `<a class="amn-lead-media" href="${esc(item.url)}" target="_blank" rel="external noopener noreferrer nofollow"><img src="${esc(image)}" alt="${esc(alt)}" width="640" height="360" loading="lazy" decoding="async" referrerpolicy="no-referrer"></a>`
+    ? `<a class="amn-lead-media" href="${esc(item.url)}" target="_blank" rel="external noopener noreferrer nofollow"><img src="${esc(image)}" alt="${esc(alt)}" width="640" height="360" loading="eager" fetchpriority="high" decoding="async" referrerpolicy="no-referrer"></a>`
     : '';
   return `<article class="amn-lead">${media}<div class="amn-lead-body"><span class="amn-source">${esc(source)}</span><h3><a href="${esc(item.url)}" target="_blank" rel="external noopener noreferrer nofollow">${esc(clean(item.title))}</a></h3>${summary ? `<p>${esc(summary)}${clean(item.summary).length > 190 ? '…' : ''}</p>` : ''}<time datetime="${esc(time ? time.iso : '')}">${esc(time ? time.label : '')}</time>${showCredit ? `<span class="amn-source" style="margin-top:6px">${esc(credit)}</span>` : ''}</div></article>`;
 }
@@ -138,6 +150,16 @@ function listBlock(items, lang) {
     const time = stamp(item, lang);
     return `<li><span class="amn-source">${esc(clean(item.source) || 'AKTUAL MEDIA')}</span><a href="${esc(item.url)}" target="_blank" rel="external noopener noreferrer nofollow">${esc(clean(item.title))}</a>${time ? `<time datetime="${esc(time.iso)}">${esc(time.label)}</time>` : ''}</li>`;
   }).join('')}</ol>`;
+}
+
+export function renderAskAgent(lang = 'hr') {
+  const copy = COPY[lang];
+  const href = lang === 'hr'
+    ? '/s-chat/?ctx=%2Fgnk-aktual%2F'
+    : '/en/s-chat/?ctx=%2Fen%2Fgnk-aktual%2F';
+  return `${ASK_START}
+<p class="am-ask"><a class="am-ask-link" href="${href}"><span class="am-ask-mark" aria-hidden="true">✦</span>${esc(copy.askLabel)}<span aria-hidden="true"> →</span></a><span class="am-ask-hint">${esc(copy.askHint)}</span></p>
+${ASK_END}`;
 }
 
 export function renderNoscript(news, lang = 'hr') {
@@ -170,9 +192,13 @@ function upsert(page, newBlock, start, end, anchor) {
 }
 
 export function renderPage(page, news, lang) {
-  let next = upsert(page, renderNoscript(news, lang), MARK_START, MARK_END, lang === 'hr'
-    ? '<section class="am-breaking"'
-    : '<section class="am-breaking"');
+  // Redoslijed: ulaz u asistenta (vidi se uvijek), pa statični feed
+  // (vidi se bez JavaScripta), pa interaktivni lead.
+  let next = upsert(page, renderNoscript(news, lang), MARK_START, MARK_END, '<section class="am-breaking"');
+  // Stari blok se uklanja prije umetanja, da mjesto bude stalno isto
+  // neovisno o tome gdje je bio u prethodnoj verziji stranice.
+  next = next.replace(new RegExp(`${ASK_START.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}[\\s\\S]*?${ASK_END.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\n?`), '');
+  next = upsert(next, renderAskAgent(lang), ASK_START, ASK_END, MARK_START);
   next = upsert(next, CSS, CSS_START, CSS_END, '</head>');
   return next;
 }

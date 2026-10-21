@@ -19,10 +19,10 @@
 //     kontekstu ili u pitanju, inače `done` nosi `grounded:false`
 //     (groundingReport).
 
-import { RETRIEVAL_VERSION, knowledgeAnswer, knowledgeStats, search, suggestions, followUpQuestions } from './chat-retrieval-v1.js';
+import { RETRIEVAL_VERSION, knowledgeAnswer, knowledgeStats, normalizeContextPath, search, suggestions, followUpQuestions } from './chat-retrieval-v1.js';
 import { KB_VERSION } from './knowledge-base.generated-v1.js';
 
-export const S_CHAT_VERSION = 'GNK_ASG_S_CHAT_AGENT_V2_20261021';
+export const S_CHAT_VERSION = 'GNK_ASG_S_CHAT_AGENT_V3_20261021';
 export const S_CHAT_PATH = '/api/s-chat';
 export const S_CHAT_HEALTH_PATH = '/api/s-chat/health';
 
@@ -397,6 +397,7 @@ export async function handleSChat(request, env) {
       rateLimit: { perHour: RATE_LIMIT_PER_HOUR, scope: 'per-ip-hourly' },
       streaming: true,
       retrieval: RETRIEVAL_VERSION,
+      context: { mode: 'page-aware', source: 'request.contextPath', scope: 'known public routes' },
       citations: { mode: 'inline-numbered', max: 4, guard: 'invalid-citations-dropped' },
       grounding: { mode: 'numeric-claims-checked', report: 'done.grounded' },
       history: { mode: 'client-and-server', maxTurns: MAX_HISTORY_TURNS },
@@ -429,9 +430,12 @@ export async function handleSChat(request, env) {
 
   const lang = body?.lang === 'en' || body?.lang === 'hr' ? body.lang : detectLang(message);
   const history = sanitizeHistory(body?.history);
-  const hits = search(message, { limit: 4 });
+  // Stranica s koje je pitanje postavljeno. Prihvaća se samo putanja
+  // koja postoji u bazi; sve ostalo se tiho ignorira.
+  const contextPath = normalizeContextPath(body?.contextPath);
+  const hits = search(message, { limit: 4, contextPath });
   const sources = pageLinks(hits, lang);
-  const knowledge = knowledgeAnswer(message, lang);
+  const knowledge = knowledgeAnswer(message, lang, { contextPath });
   // Kontekst koji je model stvarno dobio — protiv njega se provjerava
   // svaka brojka u odgovoru. Pitanje i povijest razgovora smiju se
   // citirati jer ih je korisnik sam napisao.
@@ -449,6 +453,7 @@ export async function handleSChat(request, env) {
       followUps: hits.length ? followUpQuestions(hits[0].group, hits[0].question, lang) : suggestions(lang),
       knowledgeVersion: KB_VERSION,
       matched: hits.length > 0,
+      context: contextPath || null,
     });
 
     if (!hits.length) {

@@ -1,6 +1,6 @@
 {
   "version": "GNK_ASG_AUTONOMY_365_V1_20261021",
-  "generatedAt": "2026-10-21T16:20:50Z",
+  "generatedAt": "2026-10-21T17:10:22Z",
   "horizon": {
     "starts": "2026-10-21",
     "ends": "2027-10-21",
@@ -28,7 +28,7 @@
       "id": "kanali-svjezina",
       "state": "ok",
       "severity": "watch",
-      "actual": "4.9 h",
+      "actual": "5.7 h",
       "target": "48 h",
       "owner": "region-daily.yml",
       "route": "/kanal/",
@@ -37,8 +37,8 @@
         "en": "The newest story in every channel is no older than 48 h"
       },
       "note": {
-        "hr": "zagreb 4.7 h · beograd 4.7 h · sarajevo 3.9 h · budimpesta 4.8 h · ljubljana 4.8 h · rim 4.9 h · sofija 4.7 h · bukurest 4.6 h",
-        "en": "zagreb 4.7 h · beograd 4.7 h · sarajevo 3.9 h · budimpesta 4.8 h · ljubljana 4.8 h · rim 4.9 h · sofija 4.7 h · bukurest 4.6 h"
+        "hr": "zagreb 5.6 h · beograd 5.5 h · sarajevo 4.7 h · budimpesta 5.6 h · ljubljana 5.6 h · rim 5.7 h · sofija 5.5 h · bukurest 5.5 h",
+        "en": "zagreb 5.6 h · beograd 5.5 h · sarajevo 4.7 h · budimpesta 5.6 h · ljubljana 5.6 h · rim 5.7 h · sofija 5.5 h · bukurest 5.5 h"
       }
     },
     {
@@ -96,7 +96,7 @@
       "id": "news-svjezina",
       "state": "ok",
       "severity": "watch",
-      "actual": "1.9 h",
+      "actual": "1.2 h",
       "target": "6 h",
       "owner": "gnk-news-refresh-v2.yml",
       "route": "/gnk-aktual/",
@@ -105,8 +105,8 @@
         "en": "The central feed is no older than 6 h"
       },
       "note": {
-        "hr": "300 zapisa · najnoviji 2026-10-21T14:27:21.000Z",
-        "en": "300 items · newest 2026-10-21T14:27:21.000Z"
+        "hr": "300 zapisa · najnoviji 2026-10-21T16:00:14.000Z",
+        "en": "300 items · newest 2026-10-21T16:00:14.000Z"
       }
     },
     {
@@ -130,7 +130,7 @@
       "id": "veze",
       "state": "ok",
       "severity": "hard",
-      "actual": "12 / 6",
+      "actual": "13 / 6",
       "target": "6",
       "owner": "autonomija-365.yml",
       "route": "/autonomija/",
@@ -139,8 +139,8 @@
         "en": "Every page carries at least 6 internal links"
       },
       "note": {
-        "hr": "hr 13 · en 12",
-        "en": "hr 13 · en 12"
+        "hr": "hr 14 · en 13",
+        "en": "hr 14 · en 13"
       }
     }
   ],
@@ -156,55 +156,55 @@
         "id": "zagreb",
         "items": 420,
         "newest": "2026-10-21T11:37:04.000Z",
-        "ageHours": 4.7
+        "ageHours": 5.6
       },
       {
         "id": "beograd",
         "items": 420,
         "newest": "2026-10-21T11:38:00.000Z",
-        "ageHours": 4.7
+        "ageHours": 5.5
       },
       {
         "id": "sarajevo",
         "items": 420,
         "newest": "2026-10-21T12:29:35.000Z",
-        "ageHours": 3.9
+        "ageHours": 4.7
       },
       {
         "id": "budimpesta",
         "items": 420,
         "newest": "2026-10-21T11:34:00.000Z",
-        "ageHours": 4.8
+        "ageHours": 5.6
       },
       {
         "id": "ljubljana",
         "items": 420,
         "newest": "2026-10-21T11:35:00.000Z",
-        "ageHours": 4.8
+        "ageHours": 5.6
       },
       {
         "id": "rim",
         "items": 420,
         "newest": "2026-10-21T11:27:08.000Z",
-        "ageHours": 4.9
+        "ageHours": 5.7
       },
       {
         "id": "sofija",
         "items": 407,
         "newest": "2026-10-21T11:38:23.000Z",
-        "ageHours": 4.7
+        "ageHours": 5.5
       },
       {
         "id": "bukurest",
         "items": 420,
         "newest": "2026-10-21T11:41:51.523Z",
-        "ageHours": 4.6
+        "ageHours": 5.5
       }
     ],
     "news": {
       "items": 300,
-      "newest": "2026-10-21T14:27:21.000Z",
-      "ageHours": 1.9
+      "newest": "2026-10-21T16:00:14.000Z",
+      "ageHours": 1.2
     },
     "proxies": {
       "allowed": 29,
