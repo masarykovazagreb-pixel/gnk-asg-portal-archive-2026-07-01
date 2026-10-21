@@ -67,6 +67,15 @@ else {
   const a2=renderImage({title:'Druga',image:'',_group:'sport'},false);
   if(a1===a2) failures.push('js: two different stories must not share an identical fallback');
 
+  // Guardian i tportal potpisuju točnu adresu — mijenjanje širine vraća
+  // 401/404, pa se te adrese ne smiju prepisivati. BBC dopušta veće veličine.
+  const signed = renderImage({title:'Potpisana adresa',image:'https://i.guim.co.uk/img/media/a/1.jpg?width=140&quality=85&s=abc',imageAlt:'Foto'},true,1200);
+  if(!signed.includes(encodeURIComponent('width=140'))||signed.includes(encodeURIComponent('width=1200'))) failures.push('js: signed Guardian URLs must not be resized');
+  const tportal = renderImage({title:'Tportal',image:'https://www.tportal.hr/media/thumbnail/500x300/1.jpeg',imageAlt:'Foto'},true,1200);
+  if(!tportal.includes(encodeURIComponent('thumbnail/500x300'))) failures.push('js: tportal thumbnail path must stay as published');
+  const bbc = renderImage({title:'BBC',image:'https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/x.jpg',imageAlt:'Foto'},false,480);
+  if(!bbc.includes(encodeURIComponent('/standard/480/'))) failures.push('js: BBC images should be requested at the size the layout needs');
+
   const original=renderImage({title:'Verificirana lokalna ilustracija',image:'/assets/gallery/agentic-ai-orchestration-organic-v3.svg',imageAlt:'Tema o AI-u',_group:'technology'});
   if(!original.includes('src="/assets/gallery/agentic-ai-orchestration-organic-v3.svg"')) failures.push('js: preserve approved local images');
   if(original.includes('/api/img')) failures.push('js: local assets must not be proxied');
