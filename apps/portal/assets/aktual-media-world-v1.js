@@ -81,24 +81,17 @@
   const localImage = /^\/assets\/[a-z0-9/_-]+\.(?:svg|webp|png|jpe?g)$/i;
   const remoteImage = /^https:\/\/[^\s"'<>]+$/i;
   // Izvori drže sliku u više veličina; tražimo onu koja odgovara okviru.
+  // Samo BBC dopušta traženje veće veličine iz istog potpisa. Guardian i
+  // tportal potpisuju točnu adresu: promjena širine vraća 401/404, pa se
+  // njihove slike koriste točno onako kako su objavljene.
   const biggerSource = (url, width) => {
     const want = Math.min(1600, Math.max(240, Number(width) || 880));
     try {
       const u = new URL(url);
-      if (u.hostname === 'i.guim.co.uk') {
-        const current = Number(u.searchParams.get('width')) || 0;
-        u.searchParams.set('width', String(Math.max(want, current)));
-        if (!u.searchParams.has('quality')) u.searchParams.set('quality', '85');
-        return u.href;
-      }
       if (u.hostname === 'ichef.bbci.co.uk') {
         const steps = [240, 320, 480, 640, 800, 976, 1024, 1280, 1536];
         const size = steps.find(n => n >= want) || 1536;
-        u.pathname = u.pathname.replace(/\/(240|320|480|640|800|976|1024|1280|1536)\//, '/'+size+'/');
-        return u.href;
-      }
-      if (u.hostname === 'www.tportal.hr' && /\/thumbnail\/\d+x\d+/.test(u.pathname)) {
-        u.pathname = u.pathname.replace(/\/thumbnail\/\d+x\d+/, want >= 880 ? '/thumbnail/1200x630' : '/thumbnail/640x336');
+        u.pathname = u.pathname.replace(/\/(240|320|480|640|800|976|1024|1280|1536)\//, '/' + size + '/');
         return u.href;
       }
       return url;
