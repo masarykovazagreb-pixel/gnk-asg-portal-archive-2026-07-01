@@ -57,6 +57,37 @@ const cleanSummary = (value) => stripTags(value)
   .replace(/\s+/g, ' ')
   .trim();
 
+
+/* Slika iz feeda. Redom: media:content, media:thumbnail, enclosure s
+   image/*, pa <img src> iz sažetka. Vraća se samo apsolutna https adresa —
+   relativne se rješavaju prema adresi izvora. */
+const imageFrom = (node, base, decodedSummary = '') => {
+  const candidates = [];
+  for (const m of node.matchAll(/<media:content\b[^>]*>/gi)) {
+    const url = m[0].match(/\burl=["']([^"']+)["']/i);
+    if (url) candidates.push(url[1]);
+  }
+  for (const m of node.matchAll(/<media:thumbnail\b[^>]*>/gi)) {
+    const url = m[0].match(/\burl=["']([^"']+)["']/i);
+    if (url) candidates.push(url[1]);
+  }
+  for (const m of node.matchAll(/<enclosure\b[^>]*>/gi)) {
+    const type = (m[0].match(/\btype=["']([^"']+)["']/i) || [])[1] || '';
+    const url = m[0].match(/\burl=["']([^"']+)["']/i);
+    if (url && /^image\//i.test(type)) candidates.push(url[1]);
+  }
+  for (const m of node.matchAll(/<img\b[^>]*\bsrc=["']([^"']+)["']/gi)) candidates.push(m[1]);
+  /* Sažetak često nosi escaped HTML, pa <img> postoji tek nakon dekodiranja. */
+  for (const m of decodedSummary.matchAll(/<img\b[^>]*\bsrc=["']([^"']+)["']/gi)) candidates.push(m[1]);
+  for (const raw of candidates) {
+    const url = resolveUrl(decode(raw).trim(), base);
+    if (!/^https:\/\//i.test(url)) continue;
+    if (!/\.[a-z0-9]{2,5}(?:[?#].*)?$/i.test(url)) continue;
+    return url;
+  }
+  return '';
+};
+
 export function parseFeed(xml, { base = '', sourceId = '', sourceName = '' } = {}) {
   const items = [];
   const rssItems = blocks(xml, 'item');
@@ -91,7 +122,9 @@ export function parseFeed(xml, { base = '', sourceId = '', sourceName = '' } = {
       categories,
       author,
       source: sourceId,
-      sourceName
+      sourceName,
+      image: imageFrom(node, base || link, decode(rawSummary || '')),
+      imageAlt: title.replace(/\s+/g, ' ').trim().slice(0, 180)
     });
   }
 

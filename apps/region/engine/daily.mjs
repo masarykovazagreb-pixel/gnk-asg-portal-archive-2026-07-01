@@ -115,6 +115,8 @@ export async function runChannel(channel, { dry = false, report = {} } = {}) {
         categories: item.categories || [],
         author: item.author || '',
         theme,
+        image: /^https:\/\//.test(item.image || '') ? item.image : '',
+        imageAlt: (item.imageAlt || item.title || '').slice(0, 180),
         addedAt: new Date().toISOString()
       };
       seen.set(key, record);

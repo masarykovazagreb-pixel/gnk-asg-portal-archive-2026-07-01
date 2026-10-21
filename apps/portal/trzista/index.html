@@ -62,6 +62,7 @@
 #aktualPreview h2{color:#f8fafc}
 #aktualPreview p{color:#9aa0ad}
 #aktualPreview a{color:#e5323a}
+.ap-plate{display:block;width:100%;aspect-ratio:16/9;background:radial-gradient(120% 90% at 15% 0%,rgba(233,198,108,.10),transparent 62%),linear-gradient(160deg,#101c2b,#0a1119 70%);border-bottom:1px solid rgba(233,198,108,.18)}
 .ap-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:20px}
 .ap-card{border:1px solid var(--line,#2a2b38);border-radius:12px;overflow:hidden;background:var(--panel,#15161d);text-decoration:none;color:inherit;display:block;transition:transform .2s ease}
 .ap-card:hover{transform:translateY(-3px)}
@@ -76,15 +77,17 @@
   function esc(s){ return String(s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
   // Keep media-source links, but never request third-party article images
   // from readers' browsers. They can set tracking cookies and violate licenses.
+  // Slika iz izvora ide kroz naš posrednik — izdavač ne vidi čitatelja,
+  // a slika se kešira. Bez slike kartica dobiva tihu plohu, ne istu
+  // zamjensku ilustraciju na svakoj vijesti.
   function previewVisual(item) {
     var raw=String(item.image||'').trim();
     var local=/^\/assets\/[a-z0-9/_-]+\.(?:svg|webp|png|jpe?g)$/i.test(raw) && raw.indexOf('..')===-1;
     if (local) return {src:raw,alt:String(item.imageAlt||item.title||'Urednička ilustracija')};
-    var isDigital=item.group==='digital-assets';
-    return {
-      src:isDigital?'/assets/gallery/digitalna-imovina-gold-navy-11-v2.svg':'/assets/gallery/kapitalna-disciplina-amber-energy-05-v2.svg',
-      alt:'Tematska ilustracija GNK ASG uz vijest: '+String(item.title||'')
-    };
+    if (/^https:\/\/[^\s"'<>]+$/i.test(raw)) {
+      return {src:'/api/img?u='+encodeURIComponent(raw)+'&w=640',alt:String(item.imageAlt||item.title||'')};
+    }
+    return {src:'',alt:''};
   }
   fetch('/data/news.json?v='+Date.now(), { cache:'no-store' })
     .then(function(r){ return r.json(); })
@@ -95,8 +98,12 @@
       var grid = document.getElementById('aktualPreviewGrid');
       if (!picked.length){ grid.innerHTML = '<p class="ap-loading">Vijesti trenutno nisu dostupne.</p>'; return; }
       grid.innerHTML = picked.map(function(item){
+        var v=previewVisual(item);
+        var media=v.src
+          ? '<img src="'+esc(v.src)+'" alt="'+esc(v.alt)+'" width="1200" height="675" loading="lazy" decoding="async" referrerpolicy="no-referrer">'
+          : '<span class="ap-plate" aria-hidden="true"></span>';
         return '<a class="ap-card" href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+
-          '<img src="'+esc(previewVisual(item).src)+'" alt="'+esc(previewVisual(item).alt)+'" width="1200" height="675" loading="lazy" decoding="async">'+
+          media+
           '<div class="ap-card-body"><h3>'+esc(item.title)+'</h3><span>'+esc(item.source||'')+'</span></div></a>';
       }).join('');
     })

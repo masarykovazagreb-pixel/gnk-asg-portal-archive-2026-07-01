@@ -104,6 +104,7 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/dynamic-editorial-image-v1.js
           node --check workers/gnk-asg-direct-operator/src/public-market-data-v1.js
           node --check workers/gnk-asg-direct-operator/src/canonical-news-feed-v1.js
+          node --check workers/gnk-asg-direct-operator/src/image-proxy-v1.js
           node --check workers/gnk-asg-direct-operator/src/mail-identity-autoreply-v2.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js
           node --check workers/gnk-asg-direct-operator/src/email-brand-mime-v1.js
@@ -132,6 +133,9 @@ jobs:
           grep -Fq '/api/public-news-feed' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           grep -Fq 'canonical-normalized-feed-v3-assets-primary-url-deduped' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           grep -Fq 'GNK_ASG_CANONICAL_NEWS_FEED_V1_20260719_URL_DEDUPLICATION' workers/gnk-asg-direct-operator/src/canonical-news-feed-v1.js
+          grep -Fq "import {handleImageProxy} from './image-proxy-v1.js';" workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
+          grep -Fq 'await handleImageProxy(request,env,ctx)' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
+          grep -Fq "IMAGE_PROXY_PATH = '/api/img'" workers/gnk-asg-direct-operator/src/image-proxy-v1.js
           grep -Fq 'coinbase-spot-static-fx' workers/gnk-asg-direct-operator/src/public-market-data-v1.js
           grep -Fq 'source-redirect' workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           grep -Fq '20260715-source-links-v2' workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js

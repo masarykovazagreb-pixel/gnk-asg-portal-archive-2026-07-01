@@ -654,6 +654,13 @@ function articlePage(channel, strings, item, items) {
   const botText = `${bot.note} ${/\d/.test(item.title) ? bot.num : bot.nonum}`;
 
   const root = '../../';
+  /* Slika ide kroz naš posrednik: izdavač ne vidi čitatelja, a slika je
+     keširana na rubu. Ako je nema, članak ostaje bez slike — ne lijepimo
+     zamjensku koja glumi fotografiju. */
+  const heroImage = /^https:\/\//.test(item.image || '')
+    ? `${PUBLIC}/api/img?u=${encodeURIComponent(item.image)}&w=1200`
+    : '';
+  const ogImage = heroImage || `${PUBLIC}/assets/izdanja/${channel.id}-og.jpg`;
   const body = `${header(channel, strings, '', root)}
 <main id="sadrzaj" class="article">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="${root}">${esc(channel.title)}</a> <span>›</span> <a href="${root}izvor/${item.source}/">${esc(item.sourceName)}</a> <span>›</span> <span>${esc(strings.analysis)}</span></nav>
@@ -663,6 +670,8 @@ function articlePage(channel, strings, item, items) {
       <h1>${esc(item.title)}</h1>
       <p class="artmeta"><time datetime="${esc(item.date)}">${esc(longDate(day, channel.lang))}</time> · ${esc(strings.source)}: <a href="${item.url}" target="_blank" rel="external noopener nofollow">${esc(item.sourceName)} ↗</a></p>
     </header>
+
+    ${heroImage ? `<figure class="artimg"><img src="${esc(heroImage)}" alt="${esc(item.imageAlt || item.title)}" width="1200" height="675" loading="eager" decoding="async" referrerpolicy="no-referrer">${item.sourceName ? `<figcaption>${esc(strings.photoFrom || 'Foto')}: ${esc(item.sourceName)}</figcaption>` : ''}</figure>` : ''}
 
     ${score ? `<div class="scorebox"><span class="scorelabel">${esc(strings.source)}</span><strong class="score">${esc(score.label)}</strong><span class="small">${esc(item.title)}</span></div>` : ''}
 
@@ -755,7 +764,8 @@ ${footer(channel, strings)}`;
     type: 'article',
     published: item.date,
     modified: item.date,
-    ogAlt: item.title,
+    ogAlt: item.imageAlt || item.title,
+    image: ogImage,
     root
   });
 }
@@ -1259,6 +1269,9 @@ body.mrv-wall main.page{max-width:none}
 .foot .tag{background:rgba(255,255,255,.08);color:var(--accent2)}
 .disclaimer{max-width:1180px;margin:26px auto 0;padding-top:16px;border-top:1px solid rgba(255,255,255,.16);font:400 11px/1.6 system-ui,sans-serif;color:rgba(255,255,255,.55)}
 .article{max-width:880px}
+.artimg{margin:4px 0 26px;background:#0c1015;border-radius:4px;overflow:hidden}
+.artimg img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;background:#0c1015}
+.artimg figcaption{padding:8px 12px;font:600 10.5px/1.5 system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#8a7c62;background:#fbf7ec}
 .crumbs{font:600 11px/1.6 system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#8a7c62;padding:0 0 18px}
 .crumbs a{color:#5b6472}
 .arthead h1{font:700 clamp(28px,4.2vw,46px)/1.1 Georgia,serif;margin:6px 0 12px;letter-spacing:-.012em}

@@ -75,41 +75,68 @@
       .sort((a,b)=>new Date(b._published)-new Date(a._published));
   };
   const storyLink = item => '<a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+esc(item.title)+'</a>';
-  // Privacy, licensing and Lighthouse: source image URLs remain metadata
-  // and source links, never third-party subresource requests by readers.
-  // Use topic-appropriate existing local illustrations only. No assertion
-  // that an illustrative image depicts the reported event or organisation.
-  const localEditorialVisuals = Object.freeze({
-    hrvatska:['/assets/gnk-asg-social-card.png'],
-    international:['/assets/gallery/globalna-mreza-emerald-growth-02-v2.svg'],
-    economy:['/assets/gallery/kapitalna-disciplina-amber-energy-05-v2.svg','/assets/gallery/investitorsko-povjerenje-azure-tech-13-v2.svg'],
-    technology:['/assets/gallery/agentic-ai-orchestration-organic-v3.svg','/assets/gallery/quantum-computing-organic-v3.svg','/assets/gallery/cyber-resilience-organic-v3.svg'],
-    sport:['/assets/gallery/sportska-tehnologija-rose-momentum-07-v2.svg','/assets/gallery/sportska-tehnologija--pregled-2-emerald-growth-22-v2.svg'],
-    znanost:['/assets/gallery/biotech-rd-platform-organic-v3.svg','/assets/gallery/quantum-computing-organic-v3.svg'],
-    lifestyle:['/assets/gnk-asg-social-card.png'],
-    culture:['/assets/gnk-asg-social-card.png'],
-    'digital-assets':['/assets/gallery/digitalna-imovina-gold-navy-11-v2.svg','/assets/gallery/digital-identity-organic-v3.svg'],
-    regije:['/assets/gnk-asg-social-card.png'],
-    other:['/assets/gnk-asg-social-card.png']
-  });
-  const selectImage = item => {
-    const original=String(item.image||'').trim();
-    // Local path allowlist protects against protocol-relative, data and javascript URLs.
-    if(/^\/assets\/[a-z0-9/_-]+\.(?:svg|webp|png|jpe?g)$/i.test(original)&&!original.includes('..')){
-      return {src:original,alt:item.imageAlt||item.title};
+  // Slika iz izvora ostaje izvor, ali je čitatelj ne dohvaća s tuđe domene:
+  // ide kroz naš posrednik /api/img. Izdavač ne vidi posjetitelja, slika se
+  // kešira, a kredit ostaje uz nju. Lokalne ilustracije prolaze izravno.
+  const localImage = /^\/assets\/[a-z0-9/_-]+\.(?:svg|webp|png|jpe?g)$/i;
+  const remoteImage = /^https:\/\/[^\s"'<>]+$/i;
+  // Izvori drže sliku u više veličina; tražimo onu koja odgovara okviru.
+  const biggerSource = (url, width) => {
+    const want = Math.min(1600, Math.max(240, Number(width) || 880));
+    try {
+      const u = new URL(url);
+      if (u.hostname === 'i.guim.co.uk') {
+        const current = Number(u.searchParams.get('width')) || 0;
+        u.searchParams.set('width', String(Math.max(want, current)));
+        if (!u.searchParams.has('quality')) u.searchParams.set('quality', '85');
+        return u.href;
+      }
+      if (u.hostname === 'ichef.bbci.co.uk') {
+        const steps = [240, 320, 480, 640, 800, 976, 1024, 1280, 1536];
+        const size = steps.find(n => n >= want) || 1536;
+        u.pathname = u.pathname.replace(/\/(240|320|480|640|800|976|1024|1280|1536)\//, '/'+size+'/');
+        return u.href;
+      }
+      if (u.hostname === 'www.tportal.hr' && /\/thumbnail\/\d+x\d+/.test(u.pathname)) {
+        u.pathname = u.pathname.replace(/\/thumbnail\/\d+x\d+/, want >= 880 ? '/thumbnail/1200x630' : '/thumbnail/640x336');
+        return u.href;
+      }
+      return url;
+    } catch { return url; }
+  };
+  const selectImage = (item, width = 880) => {
+    const original = String(item.image || '').trim();
+    if (localImage.test(original) && original.indexOf('..') === -1) {
+      return { src: original, alt: item.imageAlt || item.title || '' };
     }
-    const options=localEditorialVisuals[item._group]||localEditorialVisuals.other;
-    const hash=[...String(item.title||'')].reduce((n,ch)=>(n*31+ch.charCodeAt(0))>>>0,0);
-    const category=metaFor(item._group).label;
-    const alt=lang==='hr'
-      ? 'Tematska ilustracija AKTUAL MEDIA za rubriku '+category+' uz vijest: '+String(item.title||'')
-      : 'AKTUAL MEDIA topical illustration for '+category+' story: '+String(item.title||'');
-    return {src:options[hash%options.length],alt};
+    if (remoteImage.test(original)) {
+      return {
+        src: '/api/img?u=' + encodeURIComponent(biggerSource(original, width)) + '&w=' + Math.round(width),
+        alt: item.imageAlt || item.title || '',
+        credit: item.imageCredit || item.source || ''
+      };
+    }
+    // Bez slike: tiha ploha s rubrikom, nikad ista zamjenska ilustracija.
+    return { src: '', alt: '', plate: metaFor(item._group).label, source: item.source || '' };
   };
-  const image = (item,eager=false) => {
-    const visual=selectImage(item);
-    return '<img src="'+esc(visual.src)+'" alt="'+esc(visual.alt)+'" width="1200" height="675" loading="'+(eager?'eager':'lazy')+'" decoding="async">';
+  const plateFor = visual => '<span class="am-plate" aria-hidden="true"><b>' + esc(visual.plate || '') + '</b><i>' + esc(visual.source || '') + '</i></span>';
+  const image = (item, eager = false, width = 880) => {
+    const visual = selectImage(item, width);
+    if (!visual.src) return plateFor(visual);
+    return '<img src="' + esc(visual.src) + '" alt="' + esc(visual.alt) + '" width="1200" height="675" loading="' + (eager ? 'eager' : 'lazy') + '" decoding="async" referrerpolicy="no-referrer"'
+      + (visual.credit ? ' data-credit="' + esc(visual.credit) + '"' : '') + '>';
   };
+  document.addEventListener('error', event => {
+    const img = event.target;
+    if (!img || img.tagName !== 'IMG') return;
+    const host = img.closest('.am-card, .am-rail-card, .am-lead');
+    if (!host || host.querySelector('.am-plate')) return;
+    const plate = document.createElement('span');
+    plate.className = 'am-plate';
+    plate.setAttribute('aria-hidden', 'true');
+    plate.innerHTML = '<b>' + esc(host.dataset.group || '') + '</b><i>' + esc(host.dataset.source || '') + '</i>';
+    img.replaceWith(plate);
+  }, true);
   const meta = item => '<div class="am-meta"><span>'+esc(item.source||labels.source)+'</span><span>·</span><span>'+esc(timeAgo(item._published))+'</span></div>';
 
   function setEdition(items){
@@ -133,10 +160,12 @@
     const rail=document.getElementById('amRail');
     const main=items[0];
     if(lead){
-      lead.innerHTML=image(main,true)+'<div class="am-lead-copy"><span class="am-label">'+esc(metaFor(main._group).label)+'</span><h2>'+storyLink(main)+'</h2><p>'+esc(txt(main.summary).slice(0,280))+'</p>'+meta(main)+'</div>';
+      lead.dataset.group=metaFor(main._group).label;
+      lead.dataset.source=main.source||'';
+      lead.innerHTML=image(main,true,1200)+'<div class="am-lead-copy"><span class="am-label">'+esc(metaFor(main._group).label)+'</span><h2>'+storyLink(main)+'</h2><p>'+esc(txt(main.summary).slice(0,280))+'</p>'+meta(main)+(main.imageCredit?'<p class="am-credit">'+(lang==='hr'?'Foto':'Photo')+': '+esc(main.imageCredit)+'</p>':'')+'</div>';
     }
     if(rail){
-      rail.innerHTML=items.slice(1,3).map(item=>'<article class="am-rail-card">'+image(item)+'<div class="am-rail-copy"><span class="am-label blue">'+esc(metaFor(item._group).label)+'</span><h3>'+storyLink(item)+'</h3><p>'+esc(txt(item.summary).slice(0,120))+(txt(item.summary).length>120?'…':'')+'</p></div></article>').join('');
+      rail.innerHTML=items.slice(1,3).map(item=>'<article class="am-rail-card" data-group="'+esc(metaFor(item._group).label)+'" data-source="'+esc(item.source||'')+'">'+image(item,false,640)+'<div class="am-rail-copy"><span class="am-label blue">'+esc(metaFor(item._group).label)+'</span><h3>'+storyLink(item)+'</h3><p>'+esc(txt(item.summary).slice(0,120))+(txt(item.summary).length>120?'…':'')+'</p></div></article>').join('');
     }
   }
 
@@ -157,7 +186,7 @@
     const order=[...requiredGroups,...extras,...rest];
     host.innerHTML=order.map(group=>{
       const m=metaFor(group), all=by[group]||[], stories=all.slice(0,8);
-      const body=stories.length?'<div class="am-cardgrid">'+stories.map(item=>'<article class="am-card"><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+image(item)+'</a><div class="am-card-body"><span class="am-kicker">'+esc(item.source||m.label)+'</span><h3>'+storyLink(item)+'</h3><p>'+esc(txt(item.summary).slice(0,145))+(txt(item.summary).length>145?'…':'')+'</p><div class="am-cardmeta">'+esc(timeAgo(item._published))+'</div></div></article>').join('')+'</div>':'<p class="am-empty-group">'+(lang==='hr'?'Trenutačno nema stavki iz provjerenog feeda u ovoj rubrici.':'No current verified-feed stories in this section.')+'</p>';
+      const body=stories.length?'<div class="am-cardgrid">'+stories.map(item=>'<article class="am-card" data-group="'+esc(m.label)+'" data-source="'+esc(item.source||'')+'"><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+image(item,false,480)+'</a><div class="am-card-body"><span class="am-kicker">'+esc(item.source||m.label)+'</span><h3>'+storyLink(item)+'</h3><p>'+esc(txt(item.summary).slice(0,145))+(txt(item.summary).length>145?'…':'')+'</p><div class="am-cardmeta">'+esc(timeAgo(item._published))+'</div></div></article>').join('')+'</div>':'<p class="am-empty-group">'+(lang==='hr'?'Trenutačno nema stavki iz provjerenog feeda u ovoj rubrici.':'No current verified-feed stories in this section.')+'</p>';
       return '<section class="am-group" id="rubrika-'+esc(m.slug)+'"><div class="am-group-title"><h2>'+esc(m.label)+'</h2><span>'+stories.length+' / '+all.length+' '+esc(labels.stories)+'</span></div>'+body+'</section>';
     }).join('');
     renderSectionNav(order,by);

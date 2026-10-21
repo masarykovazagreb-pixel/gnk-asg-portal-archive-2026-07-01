@@ -25,7 +25,20 @@
       .map(x=>({...x,_cat:category(x),_published:x.published_at||x.publishedAt||''}))
       .sort((a,b)=>new Date(b._published)-new Date(a._published));
   };
-  const img=(item,eager=false)=>'<img src="'+esc(item.image||'/assets/editorial/aktual-media-800.webp')+'" alt="'+esc(item.imageAlt||item.title)+'" loading="'+(eager?'eager':'lazy')+'">';
+  // Slika iz izvora ide kroz naš posrednik; ako je nema, kartica dobiva
+  // tihu plohu umjesto iste zamjenske slike na svakoj vijesti.
+  const localAsset=/^\/assets\/[a-z0-9/_-]+\.(?:svg|webp|png|jpe?g)$/i;
+  const remoteAsset=/^https:\/\/[^\s"'<>]+$/i;
+  const img=(item,eager=false)=>{
+    const src=String(item.image||'').trim();
+    if(localAsset.test(src)&&src.indexOf('..')===-1){
+      return '<img src="'+esc(src)+'" alt="'+esc(item.imageAlt||item.title)+'" loading="'+(eager?'eager':'lazy')+'" decoding="async"'+(item.imageCredit?' data-credit="'+esc(item.imageCredit)+'"':'')+'>';
+    }
+    if(remoteAsset.test(src)){
+      return '<img src="/api/img?u='+encodeURIComponent(src)+'&w='+(eager?1200:640)+'" alt="'+esc(item.imageAlt||item.title)+'" loading="'+(eager?'eager':'lazy')+'" decoding="async" referrerpolicy="no-referrer"'+(item.imageCredit?' data-credit="'+esc(item.imageCredit)+'"':'')+'>';
+    }
+    return '<span class="ar-plate" aria-hidden="true"><b>'+esc(label(category(item)))+'</b><i>'+esc(item.source||'')+'</i></span>';
+  };
   const link=item=>'<a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+esc(item.title)+'</a>';
   const label=cat=>cat==='india'?copy.india:cat==='asia'?copy.asia:(lang==='hr'?'Regije':'Regions');
 
