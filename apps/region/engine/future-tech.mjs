@@ -76,7 +76,7 @@ const TIMELINE = [
   { date: '2026-03-16', hr: 'Pisanje mislima: 22 riječi u minuti, 95 % točnosti, uz 1,6 % pogrešnih riječi.', en: 'Typing by thought: 22 words per minute, 95% accuracy, 1.6% word error rate.', sources: ['natneuro2026'] },
   { date: '2026-05-20', hr: 'Kina: 1 180 W na 100 m uz 20,8 % iskoristivosti od istosmjerne do istosmjerne struje.', en: 'China: 1,180 W over 100 m at 20.8% DC-to-DC efficiency.', sources: ['pvmagazine2026'] },
   { date: '2026-06-01', hr: 'Pet godina KEYNOTE-942: 68,8 % bez povratka bolesti prema 49,1 %.', en: 'Five years of KEYNOTE-942: 68.8% recurrence-free versus 49.1%.', sources: ['merck2026', 'ascopost2026'] },
-  { date: '2026-06-15', hr: 'Više od 3 800 sati kućne upotrebe BCI-ja i 1,96 milijuna izgovorenih riječi.', en: 'More than 3,800 hours of at-home BCI use and 1.96 million words produced.', sources: ['natmed2026'] },
+  { date: '2026-06-15', hr: 'Više od 3 800 sati kućne upotrebe BCI-ja i 1,96 milijuna komuniciranih riječi.', en: 'More than 3,800 hours of at-home BCI use and 1.96 million words communicated.', sources: ['natmed2026'] },
   { date: '2026-08-19', hr: 'Prva pozitivna faza 3 personalizirane mRNA terapije protiv raka (melanom).', en: 'First positive phase 3 for a personalised mRNA cancer therapy (melanoma).', sources: ['businesswire2026', 'ajmc2026'] },
 ];
 
@@ -309,7 +309,7 @@ const T = {
     honest: 'Što nije',
     next: 'Što bi moralo biti istina',
     timelineTitle: 'Kako se to događalo',
-    timelineLead: 'Kronologija bez najava i bez najava najava: samo datumi i ono što je tog dana objavljeno.',
+    timelineLead: 'Kronologija bez najava: samo datumi i ono što je tog dana objavljeno.',
     sources: 'Izvori',
     sourcesLead: 'Svaka tvrdnja gore povezana je s barem jednim izvorom s ovog popisa. Bez izvora tvrdnje na ovoj stranici nema.',
     method: 'Kako je nastala ova stranica',
@@ -340,7 +340,7 @@ const T = {
     honest: 'What it is not',
     next: 'What would have to be true',
     timelineTitle: 'How it happened',
-    timelineLead: 'A chronology without announcements of announcements: only dates and what was published on that day.',
+    timelineLead: 'A chronology without announcements: only dates and what was published that day.',
     sources: 'Sources',
     sourcesLead: 'Every claim above is tied to at least one source in this list. Without a source there is no claim on this page.',
     method: 'How this page was made',
