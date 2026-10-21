@@ -6,7 +6,7 @@
   "aiGovernance": {
     "usedAI": true,
     "role": "both",
-    "purpose": "Public informational chat about GNK ASG, the GNK DINAMO group and the published portal content. Answers are grounded in the portal knowledge base (552 verified questions) and served through one of three tiers: OpenAI, Cloudflare Workers AI, or the knowledge base alone.",
+    "purpose": "Public informational chat about GNK ASG, the GNK DINAMO group and the published portal content. Answers are grounded in the portal knowledge base (563 verified questions) and served through one of three tiers: OpenAI, Cloudflare Workers AI, or the knowledge base alone.",
     "prohibitedUseScreenPassed": true,
     "prohibitedUse": false,
     "privacyAndRightsReviewed": true,
@@ -42,7 +42,7 @@
       "source": "apps/portal/data/knowledge-base.json",
       "generatedModule": "workers/gnk-asg-direct-operator/src/knowledge-base.generated-v1.js",
       "generator": "scripts/knowledge-sync-v1.mjs",
-      "entries": 552,
+      "entries": 563,
       "groups": 20,
       "retrieval": "scripts-local lexical retrieval with idf weighting; refuses questions outside the portal domain instead of guessing",
       "allowedLinks": "only pages present in the retrieved records"
