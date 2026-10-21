@@ -310,7 +310,7 @@ ${cssExtra}
 </style>
 </head>
 <body class="iz">
-<a class="skip-to-content" href="#sadrzaj">Preskoči na sadržaj</a><style>.skip-to-content{position:absolute;left:-9999px;top:0;z-index:9999;background:#e9c66c;color:#08131f;font:800 13px/1 system-ui,sans-serif;letter-spacing:.02em;padding:12px 18px;border-radius:0 0 12px 0;text-decoration:none}.skip-to-content:focus{left:0}main:focus{outline:none}main:focus-visible{outline:3px solid #e9c66c;outline-offset:4px}</style>
+<a class="skip-to-content" href="#sadrzaj">Preskoči na sadržaj</a><style>.skip-to-content{position:absolute;left:-9999px;top:0;z-index:9999;background:#e9c66c;color:#08131f;font:800 13px/1 system-ui,sans-serif;letter-spacing:.02em;padding:12px 18px;border-radius:0 0 12px 0;text-decoration:none}.skip-to-content:focus{left:0}main:focus{outline:none}main:focus-visible{outline:3px solid #e9c66c;outline-offset:4px}a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:3px solid #e9c66c;outline-offset:3px;border-radius:4px}</style>
 ${body}
 <script src="/assets/public-unified-menu-v6.js?v=20261019-izdanja" defer></script>
 <script src="/assets/public-contrast-hardening-v1.js?v=20261019-izdanja" defer></script>
@@ -715,7 +715,7 @@ a{color:inherit;text-decoration:none}
 </style>
 </head>
 <body>
-<a class="skip-to-content" href="#sadrzaj">Preskoči na sadržaj</a><style>.skip-to-content{position:absolute;left:-9999px;top:0;z-index:9999;background:#e9c66c;color:#08131f;font:800 13px/1 system-ui,sans-serif;letter-spacing:.02em;padding:12px 18px;border-radius:0 0 12px 0;text-decoration:none}.skip-to-content:focus{left:0}main:focus{outline:none}main:focus-visible{outline:3px solid #e9c66c;outline-offset:4px}</style>
+<a class="skip-to-content" href="#sadrzaj">Preskoči na sadržaj</a><style>.skip-to-content{position:absolute;left:-9999px;top:0;z-index:9999;background:#e9c66c;color:#08131f;font:800 13px/1 system-ui,sans-serif;letter-spacing:.02em;padding:12px 18px;border-radius:0 0 12px 0;text-decoration:none}.skip-to-content:focus{left:0}main:focus{outline:none}main:focus-visible{outline:3px solid #e9c66c;outline-offset:4px}a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:3px solid #e9c66c;outline-offset:3px;border-radius:4px}</style>
 <div class="kx-top"><strong>AKTUAL MEDIA KANAL</strong><span><a href="/gnk-aktual/">← AKTUAL MEDIA</a> · <a href="/izdanja/">Sva izdanja i deskovi</a> · <a href="/usa/">Colorado · USA</a> · <a href="/radio/">Radio</a> · <a href="/digital-workforce/knjiga/">Knjiga radnika</a></span></div>
 <main id="sadrzaj" tabindex="-1" class="kx-wrap">
   <div class="kx-head">
@@ -885,7 +885,7 @@ a{color:inherit;text-decoration:none}a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
-<a class="skip-to-content" href="#sadrzaj">Preskoči na sadržaj</a><style>.skip-to-content{position:absolute;left:-9999px;top:0;z-index:9999;background:#e9c66c;color:#08131f;font:800 13px/1 system-ui,sans-serif;letter-spacing:.02em;padding:12px 18px;border-radius:0 0 12px 0;text-decoration:none}.skip-to-content:focus{left:0}main:focus{outline:none}main:focus-visible{outline:3px solid #e9c66c;outline-offset:4px}</style>
+<a class="skip-to-content" href="#sadrzaj">Preskoči na sadržaj</a><style>.skip-to-content{position:absolute;left:-9999px;top:0;z-index:9999;background:#e9c66c;color:#08131f;font:800 13px/1 system-ui,sans-serif;letter-spacing:.02em;padding:12px 18px;border-radius:0 0 12px 0;text-decoration:none}.skip-to-content:focus{left:0}main:focus{outline:none}main:focus-visible{outline:3px solid #e9c66c;outline-offset:4px}a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:3px solid #e9c66c;outline-offset:3px;border-radius:4px}</style>
 <div class="us-top"><strong>GNK DINAMO Ltd. · Boulder, Colorado</strong><span><a href="/gnk-aktual/">← AKTUAL MEDIA</a> · <a href="/izdanja/">Sva izdanja</a> · <a href="/kanal/">Kanali</a> · <a href="/radio/">Radio</a></span></div>
 <main id="sadrzaj" tabindex="-1">
   <section class="us-hero"><div class="us-wrap">

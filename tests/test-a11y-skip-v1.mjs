@@ -95,7 +95,34 @@ for (const full of generated) {
 }
 check(missing === 0, `generirane stranice bez preskoka: ${missing}`);
 
-/* ---------- 3. vidljiv fokus nije uklonjen ---------- */
+/* ---------- 3. vidljiv fokus na svemu što se dohvaća ---------- */
+
+// Stranice kanala nose CSS iz svoje kopije; ako se u generatoru izgubi
+// pravilo fokusa, izgubi se na svih 3522 stranice odjednom.
+const walkAll = (dir) => {
+  const out = [];
+  if (!fs.existsSync(dir)) return out;
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) out.push(...walkAll(full));
+    else out.push(full);
+  }
+  return out;
+};
+const channelCss = walkAll(path.join(PORTAL, 'kanal')).filter((file) => file.endsWith(path.join('assets', 'region.css')));
+check(channelCss.length >= 8, `premalo kopija region.css: ${channelCss.length}`);
+for (const file of channelCss) {
+  const css = fs.readFileSync(file, 'utf8');
+  check(/:focus-visible/.test(css), `${path.relative(ROOT, file)}: nema :focus-visible pravila`);
+}
+
+for (const file of ['izdanja/index.html', 'kanal/index.html', 'usa/index.html', 'index.html', 'gnk-aktual/index.html', 'en/gnk-aktual/index.html']) {
+  if (!exists(file)) continue;
+  check(/:focus-visible/.test(read(file)), `${file}: nema :focus-visible pravila`);
+}
+check(/:focus-visible/.test(read('assets/s-chat-v2.css')), 's-chat-v2.css: nema :focus-visible pravila');
+
+/* ---------- 4. vidljiv fokus nije uklonjen ---------- */
 
 const focusCss = (file) => {
   if (!exists(file)) return '';
