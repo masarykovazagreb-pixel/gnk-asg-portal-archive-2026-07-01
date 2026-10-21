@@ -231,7 +231,8 @@ ${jsonld.map((n) => `<script type="application/ld+json">${safeJson(n)}</script>`
 .iz-nav{display:flex;flex-wrap:wrap;gap:8px 18px;padding:14px 0;font:600 12px/1.5 system-ui;letter-spacing:.08em;text-transform:uppercase;color:#cdd8e5}
 .iz-nav a{color:#cdd8e5}.iz-nav a[aria-current]{color:var(--gold)}
 .iz-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;padding:26px 0 10px}
-.iz-card{display:flex;flex-direction:column;gap:10px;background:#0b1d31;border:1px solid #1e3b58;border-radius:14px;padding:20px}
+.iz-card{display:flex;flex-direction:column;gap:10px;background:#0b1d31;border:1px solid #1e3b58;border-radius:14px;padding:20px;overflow:hidden}
+.iz-cover{display:block;width:calc(100% + 40px);margin:-20px -20px 6px;aspect-ratio:16/9;object-fit:cover;object-position:center 40%;background:#12283d}
 .iz-card--lead{grid-column:span 2}
 .iz-card .flag{display:flex;align-items:center;gap:8px;font:600 10px/1.4 system-ui;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
 .iz-card h2{font:700 22px/1.2 Georgia,serif;margin:0}
@@ -355,6 +356,7 @@ function cardFor(channel, { lead = false } = {}) {
   const latest = data.items.slice(0, 2);
   const updated = data.updatedAt ? shortDate(data.updatedAt.slice(0, 10)) : '—';
   return `<article class="iz-card${lead ? ' iz-card--lead' : ''}">
+    <img class="iz-cover" src="/assets/izdanja/${channel.id}-440.webp" alt="${esc(channel.city)}, ${esc(channel.country)}" width="440" height="248" loading="lazy" decoding="async">
     <span class="flag">${esc(meta.kicker || `${channel.country} · ${channel.city}`)} · ${esc(meta.langLabel || channel.lang)}</span>
     <h2><a href="${channel.base}" rel="external noopener">${esc(channel.title)}</a></h2>
     <p>${esc(meta.description || '')}</p>
@@ -380,11 +382,11 @@ function extraCards() {
     tags: ['#NerminSefić', '#Galerija', '#GNKASG', '#AktualMedia']
   };
   const cards = [
-    `<article class="iz-card"><span class="flag">${esc(tjednik.kicker)}</span><h2><a href="${tjednik.url}" rel="external noopener">${esc(tjednik.name)}</a></h2><p>${esc(tjednik.desc)}</p><ul class="iz-tags">${tjednik.tags.map((x) => `<li>${esc(x)}</li>`).join('')}</ul><div class="acts"><a class="btn" href="${tjednik.url}" rel="external noopener">Otvori tjednik ↗</a></div></article>`,
-    `<article class="iz-card"><span class="flag">${esc(galerija.kicker)}</span><h2><a href="${galerija.url}" rel="external noopener">${esc(galerija.name)}</a></h2><p>${esc(galerija.desc)}</p><ul class="iz-tags">${galerija.tags.map((x) => `<li>${esc(x)}</li>`).join('')}</ul><div class="acts"><a class="btn" href="${galerija.url}" rel="external noopener">Otvori galeriju ↗</a><a class="btn ghost" href="/galerija/sitemap.xml" rel="external noopener">Sitemap</a></div></article>`
+    `<article class="iz-card"><img class="iz-cover" src="/assets/izdanja/tjednik-tile.webp" alt="BUSINESS TJEDNIK" width="640" height="360" loading="lazy" decoding="async"><span class="flag">${esc(tjednik.kicker)}</span><h2><a href="${tjednik.url}" rel="external noopener">${esc(tjednik.name)}</a></h2><p>${esc(tjednik.desc)}</p><ul class="iz-tags">${tjednik.tags.map((x) => `<li>${esc(x)}</li>`).join('')}</ul><div class="acts"><a class="btn" href="${tjednik.url}" rel="external noopener">Otvori tjednik ↗</a></div></article>`,
+    `<article class="iz-card"><img class="iz-cover" src="/assets/izdanja/galerija-tile.webp" alt="GALERIJA NERMINA SEFIĆA" width="640" height="360" loading="lazy" decoding="async"><span class="flag">${esc(galerija.kicker)}</span><h2><a href="${galerija.url}" rel="external noopener">${esc(galerija.name)}</a></h2><p>${esc(galerija.desc)}</p><ul class="iz-tags">${galerija.tags.map((x) => `<li>${esc(x)}</li>`).join('')}</ul><div class="acts"><a class="btn" href="${galerija.url}" rel="external noopener">Otvori galeriju ↗</a><a class="btn ghost" href="/galerija/sitemap.xml" rel="external noopener">Sitemap</a></div></article>`
   ];
   for (const [id, desk] of Object.entries(DESKS)) {
-    cards.push(`<article class="iz-card"><span class="flag">Desk · AKTUAL MEDIA</span><h2><a href="/izdanja/${id}/">${esc(desk.name)}</a></h2><p>${esc(desk.description)}</p><ul class="iz-tags">${desk.hashtags.map((x) => `<li>${esc(x)}</li>`).join('')}</ul><div class="acts"><a class="btn" href="/izdanja/${id}/">Otvori desk →</a></div></article>`);
+    cards.push(`<article class="iz-card"><img class="iz-cover" src="/assets/izdanja/${id}-tile.webp" alt="${esc(desk.name)}" width="640" height="360" loading="lazy" decoding="async"><span class="flag">Desk · AKTUAL MEDIA</span><h2><a href="/izdanja/${id}/">${esc(desk.name)}</a></h2><p>${esc(desk.description)}</p><ul class="iz-tags">${desk.hashtags.map((x) => `<li>${esc(x)}</li>`).join('')}</ul><div class="acts"><a class="btn" href="/izdanja/${id}/">Otvori desk →</a></div></article>`);
   }
   for (const p of PLATFORMS) {
     cards.push(`<article class="iz-card"><span class="flag">Platforma · GNK ASG</span><h2><a href="${p.url}"${p.external ? ' rel="external noopener"' : ''}>${esc(p.name)}</a></h2><p>${esc(p.description)}</p><ul class="iz-tags">${p.tags.map((x) => `<li>${esc(x)}</li>`).join('')}</ul><div class="acts"><a class="btn" href="${p.url}"${p.external ? ' rel="external noopener"' : ''}>${esc(p.cta)}</a></div></article>`);
