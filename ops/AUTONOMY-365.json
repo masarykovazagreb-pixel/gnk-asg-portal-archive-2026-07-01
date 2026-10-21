@@ -22,7 +22,8 @@
         "en": "49 public sources; feeds are read on every cycle."
       },
       "owner": "region-daily.yml",
-      "cadence": "svaka 2 h (7 */2 * * *)"
+      "cadence": "svaka 2 h (7 */2 * * *)",
+      "cadenceEn": "every 2 h (7 */2 * * *)"
     },
     {
       "hr": "Kanali i deskovi",
@@ -32,7 +33,8 @@
         "en": "Eight city channels, nine desks and the /izdanja/ hub are built from the archive."
       },
       "owner": "region-daily.yml",
-      "cadence": "svaka 2 h"
+      "cadence": "svaka 2 h",
+      "cadenceEn": "every 2 h"
     },
     {
       "hr": "Središnji feed",
@@ -42,7 +44,8 @@
         "en": "news.json, the archive and the freshness status that AKTUAL MEDIA stands on."
       },
       "owner": "gnk-news-refresh-v2.yml",
-      "cadence": "4× dnevno (12 1,5,9,13,17,21 * * *)"
+      "cadence": "4× dnevno (12 1,5,9,13,17,21 * * *)",
+      "cadenceEn": "4× daily (12 1,5,9,13,17,21 * * *)"
     },
     {
       "hr": "Objavljivanje",
@@ -52,7 +55,8 @@
         "en": "Every commit on main goes through a deploy that checks the contracts before publishing."
       },
       "owner": "deploy-admin-auth-v6.yml",
-      "cadence": "na svaki push"
+      "cadence": "na svaki push",
+      "cadenceEn": "on every push"
     },
     {
       "hr": "Nadzor",
@@ -62,7 +66,8 @@
         "en": "The hourly watchdog checks deadlines and dispatches the canonical writer when one is late."
       },
       "owner": "ops-automation-sla-watchdog.yml",
-      "cadence": "svaki sat (42 * * * *)"
+      "cadence": "svaki sat (42 * * * *)",
+      "cadenceEn": "hourly (42 * * * *)"
     },
     {
       "hr": "Mjerilo",
@@ -72,7 +77,8 @@
         "en": "This page and /zdravlje/ measure state from files; nothing is filled in from memory."
       },
       "owner": "autonomija-365.yml",
-      "cadence": "svakih 6 h (23 */6 * * *)"
+      "cadence": "svakih 6 h (23 */6 * * *)",
+      "cadenceEn": "every 6 h (23 */6 * * *)"
     }
   ],
   "criteria": [
@@ -173,7 +179,10 @@
   "quarters": [
     {
       "id": "2026-Q4",
-      "label": { "hr": "Temelj: stvarna fotografija", "en": "Foundation: the real photograph" },
+      "label": {
+        "hr": "Temelj: stvarna fotografija",
+        "en": "Foundation: the real photograph"
+      },
       "from": "2026-10-21",
       "to": "2026-12-31",
       "focus": {
@@ -181,15 +190,31 @@
         "en": "No two stories should look alike. Source photos travel through the proxy; a story without a photo gets a quiet plate instead of shared artwork."
       },
       "deliverables": [
-        { "hr": "Posrednik /api/img s popisom hostova jednakim feedu", "en": "/api/img proxy with an allow-list equal to the feed" },
-        { "hr": "Deskovi: krugovi gradova i minijature uz svaki osvrt", "en": "Desks: city circles and a thumbnail beside every review" },
-        { "hr": "Kanali: slika iz feeda u članku i u og:image", "en": "Channels: feed image in the article and in og:image" }
+        {
+          "hr": "Posrednik /api/img s popisom hostova jednakim feedu",
+          "en": "/api/img proxy with an allow-list equal to the feed"
+        },
+        {
+          "hr": "Deskovi: krugovi gradova i minijature uz svaki osvrt",
+          "en": "Desks: city circles and a thumbnail beside every review"
+        },
+        {
+          "hr": "Kanali: slika iz feeda u članku i u og:image",
+          "en": "Channels: feed image in the article and in og:image"
+        }
       ],
-      "exit": ["aktual-slike", "proxy-popis", "deskovi-slike"]
+      "exit": [
+        "aktual-slike",
+        "proxy-popis",
+        "deskovi-slike"
+      ]
     },
     {
       "id": "2027-Q1",
-      "label": { "hr": "Dubina: arhiva i dvojezičnost", "en": "Depth: archive and bilingual parity" },
+      "label": {
+        "hr": "Dubina: arhiva i dvojezičnost",
+        "en": "Depth: archive and bilingual parity"
+      },
       "from": "2027-01-01",
       "to": "2027-03-31",
       "focus": {
@@ -197,15 +222,31 @@
         "en": "Each channel archive passes 500 stories, and every important route has an English twin carrying the same numbers."
       },
       "deliverables": [
-        { "hr": "500+ tekstova po kanalu, bez skraćivanja arhive", "en": "500+ stories per channel, without trimming the archive" },
-        { "hr": "Engleski blizanac za svaku novu rubriku", "en": "An English twin for every new section" },
-        { "hr": "Tjedni arhiv koji se sam dopunjava", "en": "A weekly archive that fills itself" }
+        {
+          "hr": "500+ tekstova po kanalu, bez skraćivanja arhive",
+          "en": "500+ stories per channel, without trimming the archive"
+        },
+        {
+          "hr": "Engleski blizanac za svaku novu rubriku",
+          "en": "An English twin for every new section"
+        },
+        {
+          "hr": "Tjedni arhiv koji se sam dopunjava",
+          "en": "A weekly archive that fills itself"
+        }
       ],
-      "exit": ["kanali-arhiva", "dvojezicno", "veze"]
+      "exit": [
+        "kanali-arhiva",
+        "dvojezicno",
+        "veze"
+      ]
     },
     {
       "id": "2027-Q2",
-      "label": { "hr": "AI uredništvo bez izmišljanja", "en": "AI newsroom without invention" },
+      "label": {
+        "hr": "AI uredništvo bez izmišljanja",
+        "en": "AI newsroom without invention"
+      },
       "from": "2027-04-01",
       "to": "2027-06-30",
       "focus": {
@@ -213,15 +254,30 @@
         "en": "The agent may reason only from what exists in the repository: headline, source, date and link. Every claim must have a path back to a record."
       },
       "deliverables": [
-        { "hr": "Dnevni brief sastavljen iz stvarnih zapisa, s poveznicom na svaki", "en": "A daily brief assembled from real records, each with its link" },
-        { "hr": "Baza znanja S+Chata preko 1000 unosa", "en": "S+Chat knowledge base above 1,000 entries" },
-        { "hr": "Provjera koja traži rečenicu bez izvora i pada", "en": "A check that hunts an unsourced sentence and fails" }
+        {
+          "hr": "Dnevni brief sastavljen iz stvarnih zapisa, s poveznicom na svaki",
+          "en": "A daily brief assembled from real records, each with its link"
+        },
+        {
+          "hr": "Baza znanja S+Chata preko 1000 unosa",
+          "en": "S+Chat knowledge base above 1,000 entries"
+        },
+        {
+          "hr": "Provjera koja traži rečenicu bez izvora i pada",
+          "en": "A check that hunts an unsourced sentence and fails"
+        }
       ],
-      "exit": ["news-svjezina", "kanali-svjezina"]
+      "exit": [
+        "news-svjezina",
+        "kanali-svjezina"
+      ]
     },
     {
       "id": "2027-Q3",
-      "label": { "hr": "Distribucija i otpornost", "en": "Distribution and resilience" },
+      "label": {
+        "hr": "Distribucija i otpornost",
+        "en": "Distribution and resilience"
+      },
       "from": "2027-07-01",
       "to": "2027-09-30",
       "focus": {
@@ -229,15 +285,31 @@
         "en": "Everything published must be findable: sitemaps, IndexNow and feeds without a hand-kept list. When a source fails, the page falls back to the archive, not to emptiness."
       },
       "deliverables": [
-        { "hr": "Sitemap i IndexNow iz istog izvora istine", "en": "Sitemap and IndexNow from the same source of truth" },
-        { "hr": "Pad izvora ne mijenja broj objavljenih tekstova", "en": "A failed source does not change the published count" },
-        { "hr": "Mjesečni obračun dostupnosti", "en": "A monthly availability statement" }
+        {
+          "hr": "Sitemap i IndexNow iz istog izvora istine",
+          "en": "Sitemap and IndexNow from the same source of truth"
+        },
+        {
+          "hr": "Pad izvora ne mijenja broj objavljenih tekstova",
+          "en": "A failed source does not change the published count"
+        },
+        {
+          "hr": "Mjesečni obračun dostupnosti",
+          "en": "A monthly availability statement"
+        }
       ],
-      "exit": ["kanali-arhiva", "news-svjezina", "deskovi-slike"]
+      "exit": [
+        "kanali-arhiva",
+        "news-svjezina",
+        "deskovi-slike"
+      ]
     },
     {
       "id": "2027-Q4",
-      "label": { "hr": "Zatvaranje prvog ciklusa", "en": "Closing the first cycle" },
+      "label": {
+        "hr": "Zatvaranje prvog ciklusa",
+        "en": "Closing the first cycle"
+      },
       "from": "2027-10-01",
       "to": "2027-10-21",
       "focus": {
@@ -245,11 +317,24 @@
         "en": "Day 365 is a checkpoint, not a finish line: the system must show what ran each day, who owned the job and where it stopped."
       },
       "deliverables": [
-        { "hr": "Godišnji izvještaj iz stvarnih artefakata", "en": "An annual report built from real artefacts" },
-        { "hr": "Popis poslova koji su preživjeli bez ručnog popravka", "en": "A list of jobs that survived without manual repair" },
-        { "hr": "Plan sljedećih 365 dana s istim mjerilom", "en": "The next 365-day plan on the same measure" }
+        {
+          "hr": "Godišnji izvještaj iz stvarnih artefakata",
+          "en": "An annual report built from real artefacts"
+        },
+        {
+          "hr": "Popis poslova koji su preživjeli bez ručnog popravka",
+          "en": "A list of jobs that survived without manual repair"
+        },
+        {
+          "hr": "Plan sljedećih 365 dana s istim mjerilom",
+          "en": "The next 365-day plan on the same measure"
+        }
       ],
-      "exit": ["dvojezicno", "veze", "proxy-popis"]
+      "exit": [
+        "dvojezicno",
+        "veze",
+        "proxy-popis"
+      ]
     }
   ],
   "next": {

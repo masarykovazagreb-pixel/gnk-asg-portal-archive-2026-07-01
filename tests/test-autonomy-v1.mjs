@@ -132,6 +132,12 @@ check(hr.includes('/en/autonomy/'), 'hr page must link to the English twin');
 check(en.includes('/autonomija/'), 'en page must link to the Croatian twin');
 check(!en.includes('Smjer za sljedećih'), 'en page must not carry Croatian section headings');
 check(en.includes('Direction for the next 365 days'), 'en page must carry the English heading');
+// Engleska stranica mora biti engleska i u mjerenjima, ne samo u naslovima.
+// ID-jevi kriterija (data-criterion) su strojne oznake i ne broje se kao tekst.
+const enVisible = en.replace(/data-criterion="[^"]*"/g, '').replace(/"@id":"[^"]*"/g, '');
+for (const word of ['svaki desk', 'zapisa', 'prisutan', 'nedostaje', 'bez slike', 'obje stranice', 'posrednik', 'svaka 2 h', 'svakih 6 h', 'na svaki push', 'mjereno ', 'zadovoljeno', 'nadzire se', 'otvoreno']) {
+  check(!enVisible.includes(word), `en page leaks Croatian text: ${word}`);
+}
 
 /* ---------- 5. Sitemap ---------- */
 
