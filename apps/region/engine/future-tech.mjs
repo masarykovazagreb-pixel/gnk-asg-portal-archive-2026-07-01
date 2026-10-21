@@ -109,13 +109,13 @@ const PILLARS = [
       },
       {
         id: 'home-use',
-        hr: 'Do lipnja 2026. objavljen je dugoročni rezultat: jedan sudionik s ALS-om koristio je sustav kod kuće više od 3 800 sati tijekom 19 mjeseci, izgovorio 183 060 rečenica (1 960 163 riječi) prosječno 56 riječi u minuti i zadržao puno radno vrijeme. U kontroliranim testovima točnost riječi prelazila je 99 % na rječniku od 125 000 riječi.',
+        hr: 'Do lipnja 2026. objavljen je dugoročni rezultat: jedan sudionik s ALS-om koristio je sustav kod kuće više od 3 800 sati tijekom 19 mjeseci, komunicirao 183 060 rečenica (1 960 163 riječi) prosječno 56 riječi u minuti i zadržao puno radno vrijeme. U kontroliranim testovima točnost riječi prelazila je 99 % na rječniku od 125 000 riječi.',
         en: 'By June 2026 a long-term result was published: one participant with ALS used the system at home for more than 3,800 hours over 19 months, produced 183,060 sentences (1,960,163 words) at an average of 56 words per minute, and held full-time employment. In controlled tests word accuracy exceeded 99% on a 125,000-word vocabulary.',
         sources: ['natmed2026'],
       },
       {
         id: 'typing',
-        hr: 'U ožujku 2026. druga skupina pokazala je pisanje mislima na virtualnoj tipkovnici. Sudionik sa spinom moždinom ozljedom tipkao je do 110 znakova, odnosno 22 riječi u minuti, uz 95 % točnosti i 1,6 % pogrešnih riječi — oko 81 % brzine kojom prosječna osoba njegove dobi tipka na mobitelu (27,3 riječi u minuti).',
+        hr: 'U ožujku 2026. druga skupina pokazala je pisanje mislima na virtualnoj tipkovnici. Sudionik s ozljedom kralježnične moždine tipkao je do 110 znakova, odnosno 22 riječi u minuti, uz 95 % točnosti i 1,6 % pogrešnih riječi — oko 81 % brzine kojom prosječna osoba njegove dobi tipka na mobitelu (27,3 riječi u minuti).',
         en: 'In March 2026 another team demonstrated typing by thought on a virtual keyboard. A participant with a spinal cord injury typed up to 110 characters, or 22 words per minute, at 95% accuracy and a 1.6% word error rate — about 81% of the speed at which an average person of his age texts on a phone (27.3 words per minute).',
         sources: ['natneuro2026'],
       },
@@ -725,7 +725,7 @@ function kbGroup() {
     pitanja: [
       { p: 'Što je na stranici Tehnologija budućnosti?', o: 'Pet tehnologija koje su već stigle, svaka s brojkom i izvorom: misao kao tipkovnica, personalizirano mRNA cjepivo, AI tutor, bežični prijenos energije i kvantna korekcija pogrešaka. Hrvatska stranica: gnk-asg.hr/tehnologija-buducnosti/ Engleska: gnk-asg.hr/en/future-technology/' },
       { p: 'Koliko točno može biti čitanje unutarnjeg govora?', o: 'Do 74 % točnosti na rječniku od 125 000 riječi, uz stopu pogreške 26–54 % za veliki rječnik i 14–33 % za rječnik od 50 riječi. Istraživanje je objavljeno u Cellu 14. kolovoza 2025. na četiri sudionika. Stranica: gnk-asg.hr/tehnologija-buducnosti/' },
-      { p: 'Koliko dugo netko koristi brain-computer interface kod kuće?', o: 'Jedan sudionik s ALS-om koristio je sustav kod kuće više od 3 800 sati tijekom 19 mjeseci, izgovorio 183 060 rečenica (1 960 163 riječi) prosječno 56 riječi u minuti i zadržao puno radno vrijeme. Podaci su objavljeni u Nature Medicine 15. lipnja 2026. Stranica: gnk-asg.hr/tehnologija-buducnosti/' },
+      { p: 'Koliko dugo netko koristi brain-computer interface kod kuće?', o: 'Jedan sudionik s ALS-om koristio je sustav kod kuće više od 3 800 sati tijekom 19 mjeseci, komunicirao 183 060 rečenica (1 960 163 riječi) prosječno 56 riječi u minuti i zadržao puno radno vrijeme. Podaci su objavljeni u Nature Medicine 15. lipnja 2026. Stranica: gnk-asg.hr/tehnologija-buducnosti/' },
       { p: 'Koliko brzo se može tipkati mislima?', o: 'Do 110 znakova, odnosno 22 riječi u minuti, uz 95 % točnosti i 1,6 % pogrešnih riječi — oko 81 % brzine prosječnog tipkanja na mobitelu. Rezultat je objavljen u Nature Neuroscience 16. ožujka 2026. Stranica: gnk-asg.hr/tehnologija-buducnosti/' },
       { p: 'Je li personalizirano mRNA cjepivo protiv melanoma odobreno?', o: 'Nije. Do 21. listopada 2026. terapija je istraživačka. Faza 3 (INTerpath-001, 1 137 bolesnika) zadovoljila je primarni i ključni sekundarni cilj, a petogodišnji podaci faze 2b pokazuju 49 % manji rizik povratka (HR 0,51) i 59 % manji rizik udaljenih metastaza. Stranica: gnk-asg.hr/tehnologija-buducnosti/' },
       { p: 'Koliko bolje radi AI tutor od klasične nastave?', o: 'U randomiziranom pokusu na 194 studenta fizike medijan rezultata bio je 4,5 uz AI tutora i 3,5 u učionici s aktivnim učenjem, uz početnu vrijednost 2,75. Napredak je više nego dvostruk, uz medijan 49 minuta učenja. Studija je objavljena u Scientific Reports 3. lipnja 2025. Stranica: gnk-asg.hr/tehnologija-buducnosti/' },
