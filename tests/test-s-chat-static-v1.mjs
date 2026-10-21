@@ -11,6 +11,7 @@
  *      AI suklađen je s pravilnikom.
  */
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import { readFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -119,7 +120,12 @@ const { handleSChat, S_CHAT_VERSION } = await load(AGENT);
 const { knowledgeStats, search } = await load(RETRIEVAL);
 assert.match(S_CHAT_VERSION, /S_CHAT_AGENT/);
 const stats = knowledgeStats();
-assert.equal(stats.entries, 535, 'knowledge base entry count drifted');
+// Broj unosa raste kad se baza dopuni; ugovor je da modul prati bazu i da
+// nijedna skupina ne nestane. Zato se čita baza, a ne zamrznuti broj.
+const kb = JSON.parse(fs.readFileSync('apps/portal/data/knowledge-base.json', 'utf8'));
+const kbEntries = kb.skupine.reduce((n, g) => n + (g.pitanja || []).length, 0);
+assert.equal(stats.entries, kbEntries, 'knowledge module drifted from the base');
+assert.ok(stats.entries >= 535, 'knowledge base shrank below the published floor');
 assert.ok(stats.groups >= 20, 'knowledge groups drifted');
 
 /* health */
@@ -129,7 +135,7 @@ const healthBody = await health.json();
 assert.equal(healthBody.ok, true);
 assert.ok(['openai', 'workers-ai', 'knowledge'].includes(healthBody.llm));
 assert.equal(healthBody.streaming, true);
-assert.equal(healthBody.knowledge.entries, 535);
+assert.equal(healthBody.knowledge.entries, kbEntries, 'health endpoint must report the live knowledge count');
 
 /* metoda */
 const badMethod = await handleSChat(new Request('https://gnk-asg.hr/api/s-chat', { method: 'GET' }), {});

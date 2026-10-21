@@ -1,0 +1,101 @@
+name: AUTONOMIJA 365 — mjerenje sustava
+
+# Ova automatizacija ne piše vijesti i ne dira kanale. Ona svakih šest sati
+# izmjeri stanje iz repozitorija, objavi /autonomija/ i /en/autonomy/ te
+# zapiše status u apps/portal/data/autonomy-status.json.
+#
+# Ako tvrdi kriterij padne, posao završi crveno — ali tek nakon što je
+# mjerenje objavljeno, da ploča pokaže stvarno stanje, a ne prazninu.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/AUTONOMY-365.json'
+      - 'scripts/build-autonomy-v1.mjs'
+      - 'tests/test-autonomy-v1.mjs'
+      - '.github/workflows/autonomija-365.yml'
+  schedule:
+    - cron: '23 */6 * * *'   # svakih 6 h; minuta 23 da ne udara u puni sat
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gnk-asg-autonomija-365
+  cancel-in-progress: false
+
+jobs:
+  measure:
+    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Dohvati main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Zapamti polazni SHA
+        id: base
+        shell: bash
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Izmjeri i napiši ploču
+        shell: bash
+        run: node scripts/build-autonomy-v1.mjs
+
+      - name: Provjeri ugovor stranice
+        shell: bash
+        run: node tests/test-autonomy-v1.mjs
+
+      - name: Zapiši mjerenje
+        id: commit
+        shell: bash
+        run: |-
+          set -euo pipefail
+          git config user.name "AKTUAL MEDIA AUTONOMIJA"
+          git config user.email "info@gnk-asg.hr"
+          git add apps/portal/autonomija apps/portal/en/autonomy apps/portal/data/autonomy-status.json artifacts/autonomy-status.json apps/portal/sitemap.xml
+          if git diff --cached --quiet; then
+            echo "Mjerenje je nepromijenjeno — nema novog zapisa."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git commit -m "AUTONOMIJA: mjerenje $(date -u +%F) $(date -u +%H):00 UTC" \
+            -m "Ploča /autonomija/ i /en/autonomy/ izmjerene iz repozitorija. Brojevi dolaze iz apps/region/data, news.json, posrednika slika i objavljenih deskova; nema ručnog upisa."
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Push na main (uz provjeru pomaka)
+        if: steps.commit.outputs.changed == 'true'
+        shell: bash
+        run: |-
+          set -euo pipefail
+          expected="${{ steps.base.outputs.sha }}"
+          git fetch origin main --no-tags
+          current=$(git rev-parse origin/main)
+          if [ "$current" != "$expected" ]; then
+            echo "::warning::main se pomaknuo tijekom mjerenja (očekivano $expected, stvarno $current). Mjerenje ostaje za sljedeći ciklus."
+            exit 0
+          fi
+          git push origin HEAD:main
+
+      - name: Signal tvrdih kriterija
+        shell: bash
+        run: |-
+          node -e '
+            const s = require("./apps/portal/data/autonomy-status.json");
+            const bad = s.criteria.filter((c) => c.severity === "hard" && c.state === "fail");
+            if (bad.length) {
+              console.error("Tvrdi kriteriji nisu zadovoljeni: " + bad.map((c) => c.id).join(", "));
+              process.exit(1);
+            }
+            console.log("Tvrdi kriteriji stoje: " + s.totals.ok + "/" + s.totals.all + " zadovoljeno.");
+          '
