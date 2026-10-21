@@ -498,3 +498,18 @@ body.sc {
   font: 700 13px/1 var(--sc-font); cursor: pointer;
 }
 .sc-context button:hover, .sc-context button:focus-visible { border-color: var(--sc-gold); color: var(--sc-gold); }
+
+/* Prijedlozi s konkretne stranice dolaze prvi i vidljivo su odvojeni
+   od općenitih; naslovi grupa lome flex red na punu širinu. */
+.sc-suggest-label {
+  flex-basis: 100%; margin: 6px 0 0;
+  color: var(--sc-muted);
+  font: 700 10.5px/1.4 var(--sc-font);
+  letter-spacing: .1em; text-transform: uppercase;
+}
+.sc-suggest-label:first-child { margin-top: 0; }
+.sc-suggest button.is-page {
+  border-color: rgba(200, 150, 60, .55);
+  background: var(--sc-gold-soft);
+}
+.sc-suggest button.is-page:hover { border-color: var(--sc-gold); }

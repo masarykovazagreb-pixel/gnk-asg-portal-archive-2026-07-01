@@ -133,8 +133,20 @@ jobs:
           expected_base="${{ steps.base.outputs.sha }}"
           current_main="$(git rev-parse origin/main)"
           if [ "$current_main" != "$expected_base" ]; then
-            echo "Main moved during editorial generation: expected $expected_base, found $current_main. Deferring without rebase/push."
-            exit 75
+            # Namjerno odgađanje, ne kvar: paket je složen iz jednog
+            # snimka maina i ne smije se rebaseati na pomaknuti main.
+            # Zeleni izlaz drži signal iskrenim — crveni run ovdje
+            # znači stvarni problem, a ne utrku s drugim pushom.
+            echo "::notice title=Editorial package deferred::Main moved during editorial generation: expected $expected_base, found $current_main. No rebase, no push; the next run publishes it."
+            {
+              echo "### Editorial package deferred"
+              echo ""
+              echo "Main moved during generation (expected \`$expected_base\`, found \`$current_main\`)."
+              echo "Nothing was rebased or pushed; the next scheduled or push run publishes the package."
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "changed=deferred" >> "$GITHUB_OUTPUT"
+            echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
 
           # Ordinary non-force push is the final compare-and-swap guard.

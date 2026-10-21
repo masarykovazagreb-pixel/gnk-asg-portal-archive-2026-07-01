@@ -310,6 +310,7 @@ ${cssExtra}
 </style>
 </head>
 <body class="iz">
+<a class="skip-to-content" href="#sadrzaj">Preskoči na sadržaj</a><style>.skip-to-content{position:absolute;left:-9999px;top:0;z-index:9999;background:#e9c66c;color:#08131f;font:800 13px/1 system-ui,sans-serif;letter-spacing:.02em;padding:12px 18px;border-radius:0 0 12px 0;text-decoration:none}.skip-to-content:focus{left:0}main:focus{outline:none}main:focus-visible{outline:3px solid #e9c66c;outline-offset:4px}</style>
 ${body}
 <script src="/assets/public-unified-menu-v6.js?v=20261019-izdanja" defer></script>
 <script src="/assets/public-contrast-hardening-v1.js?v=20261019-izdanja" defer></script>
@@ -432,7 +433,7 @@ function hubPage() {
     .sort((a, b) => String(b.date).localeCompare(String(a.date))).slice(0, 14);
 
   const body = `${portalHeader('')}
-<main class="iz-wrap">
+<main id="sadrzaj" tabindex="-1" class="iz-wrap">
   <div class="iz-grid">${cards}${extraCards()}</div>
   <section class="iz-band">
     <h2>Najnovije iz svih izdanja</h2>
@@ -528,7 +529,7 @@ function deskPage(id, desk) {
   }
 
   const body = `${portalHeader(id + '/', { h1: false })}
-<main class="iz-wrap">
+<main id="sadrzaj" tabindex="-1" class="iz-wrap">
   <section class="iz-head" style="border-bottom:0;padding-top:26px">
     <p class="k">${esc(desk.name)}</p>
     <h1>${esc(desk.title)}</h1>
@@ -714,8 +715,9 @@ a{color:inherit;text-decoration:none}
 </style>
 </head>
 <body>
+<a class="skip-to-content" href="#sadrzaj">Preskoči na sadržaj</a><style>.skip-to-content{position:absolute;left:-9999px;top:0;z-index:9999;background:#e9c66c;color:#08131f;font:800 13px/1 system-ui,sans-serif;letter-spacing:.02em;padding:12px 18px;border-radius:0 0 12px 0;text-decoration:none}.skip-to-content:focus{left:0}main:focus{outline:none}main:focus-visible{outline:3px solid #e9c66c;outline-offset:4px}</style>
 <div class="kx-top"><strong>AKTUAL MEDIA KANAL</strong><span><a href="/gnk-aktual/">← AKTUAL MEDIA</a> · <a href="/izdanja/">Sva izdanja i deskovi</a> · <a href="/usa/">Colorado · USA</a> · <a href="/radio/">Radio</a> · <a href="/digital-workforce/knjiga/">Knjiga radnika</a></span></div>
-<main class="kx-wrap">
+<main id="sadrzaj" tabindex="-1" class="kx-wrap">
   <div class="kx-head">
     <h1>Osam gradova, osam jezika — pod jednom domenom</h1>
     <p>Svako izdanje ima vlastiti feed, sitemap i arhivu od više stotina osvrta. Adrese su sada na gnk-asg.hr/kanal/, pa se sve izdaje indeksira kao jedna cjelina, a stari linkovi s pages.dev preusmjeravaju ovamo (301).</p>
@@ -883,8 +885,9 @@ a{color:inherit;text-decoration:none}a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
+<a class="skip-to-content" href="#sadrzaj">Preskoči na sadržaj</a><style>.skip-to-content{position:absolute;left:-9999px;top:0;z-index:9999;background:#e9c66c;color:#08131f;font:800 13px/1 system-ui,sans-serif;letter-spacing:.02em;padding:12px 18px;border-radius:0 0 12px 0;text-decoration:none}.skip-to-content:focus{left:0}main:focus{outline:none}main:focus-visible{outline:3px solid #e9c66c;outline-offset:4px}</style>
 <div class="us-top"><strong>GNK DINAMO Ltd. · Boulder, Colorado</strong><span><a href="/gnk-aktual/">← AKTUAL MEDIA</a> · <a href="/izdanja/">Sva izdanja</a> · <a href="/kanal/">Kanali</a> · <a href="/radio/">Radio</a></span></div>
-<main>
+<main id="sadrzaj" tabindex="-1">
   <section class="us-hero"><div class="us-wrap">
     <p class="us-kicker">Ishodište projekta · USA</p>
     <h1>GNK DINAMO Ltd. — Boulder, Colorado</h1>

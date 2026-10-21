@@ -61,6 +61,7 @@
     rate: 'Too many messages. Please try again in an hour.',
     stoppedByUser: 'You stopped the answer.', empty: 'Type a question first.',
     regenerate: 'Regenerate', modeKnowledge: 'AI assistant · portal knowledge base',
+    fromPage: 'From this page', general: 'Generally', pageLabel: 'Questions about the page you came from',
   } : {
     ready: 'Spremno', thinking: 'Odgovaram…', stopped: 'Zaustavljeno', offline: 'Servis nedostupan',
     you: 'Vi', bot: 'S+Chat · AI', copy: 'Kopiraj', copied: 'Kopirano', retry: 'Ponovi', answerReady: 'Odgovor je spreman.',
@@ -70,6 +71,7 @@
     rate: 'Previše poruka. Pokušajte ponovno za sat vremena.',
     stoppedByUser: 'Zaustavili ste odgovor.', empty: 'Prvo napišite pitanje.',
     regenerate: 'Ponovno generiraj', modeKnowledge: 'AI asistent · baza znanja portala',
+    fromPage: 'S ove stranice', general: 'Općenito', pageLabel: 'Pitanja o stranici s koje ste došli',
   };
 
   function renderContext() {
@@ -605,6 +607,76 @@
 
   /* ---------------- predložena pitanja ---------------- */
 
+  /* Kad je razgovor otvoren s neke stranice, prva pitanja su s te
+     stranice. Popis dolazi iz istog indeksa koji koristi agent, pa se
+     ne može dogoditi da ponudimo pitanje koje agent ne zna odgovoriti.
+     Ako podataka nema, ostaju opći prijedlozi iz HTML-a. */
+  const SUGGEST_URL = '/data/s-chat-context-suggest-v1.json';
+  const SUGGEST_TOKEN = '20261021-v1';
+
+  function suggestButton(question, isPage) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.dataset.q = question;
+    button.textContent = question;
+    if (isPage) button.className = 'is-page';
+    button.addEventListener('click', () => {
+      el.input.value = question;
+      resize();
+      count();
+      el.form.requestSubmit();
+    });
+    return button;
+  }
+
+  async function enhanceSuggestions() {
+    const box = $('scSuggest');
+    if (!box || !contextPath) return;
+    let data = null;
+    try {
+      const response = await fetch(`${SUGGEST_URL}?v=${SUGGEST_TOKEN}`, {
+        headers: { accept: 'application/json' },
+        cache: 'force-cache',
+      });
+      if (!response.ok) return;
+      data = await response.json();
+    } catch { return; }
+    if (!data) return;
+
+    const bank = Array.isArray(data.questions) ? data.questions : [];
+    const ids = data?.routes?.[contextPath];
+    const pageQuestions = Array.isArray(ids) ? ids.map((index) => bank[index]).filter(Boolean) : [];
+    const general = Array.isArray(data?.general?.[LANG]) ? data.general[LANG] : [];
+    if (!pageQuestions.length && !general.length) return;
+
+    const merged = [];
+    for (const question of [...pageQuestions, ...general]) {
+      if (!merged.includes(question)) merged.push(question);
+      if (merged.length >= 5) break;
+    }
+
+    box.innerHTML = '';
+    box.setAttribute('role', 'group');
+    box.setAttribute('aria-label', T.pageLabel);
+    if (pageQuestions.length) {
+      const pageLabel = document.createElement('p');
+      pageLabel.className = 'sc-suggest-label';
+      pageLabel.textContent = `${T.fromPage} · ${contextPath}`;
+      box.appendChild(pageLabel);
+    }
+    for (const question of pageQuestions.slice(0, 3)) box.appendChild(suggestButton(question, true));
+    const rest = merged.filter((question) => !pageQuestions.slice(0, 3).includes(question));
+    if (rest.length) {
+      if (pageQuestions.length) {
+        const generalLabel = document.createElement('p');
+        generalLabel.className = 'sc-suggest-label';
+        generalLabel.textContent = T.general;
+        box.appendChild(generalLabel);
+      }
+      for (const question of rest) box.appendChild(suggestButton(question, false));
+    }
+  }
+
   for (const button of document.querySelectorAll('#scSuggest button')) {
     button.addEventListener('click', () => {
       el.input.value = button.dataset.q || button.textContent || '';
@@ -644,5 +716,6 @@
   setStatus(T.ready, 'live');
   resize();
   count();
+  if (contextPath) enhanceSuggestions();
   el.input.focus({ preventScroll: true });
 })();

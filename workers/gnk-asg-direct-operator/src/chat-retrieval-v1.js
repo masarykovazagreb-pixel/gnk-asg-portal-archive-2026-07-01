@@ -367,6 +367,53 @@ export function knowledgeAnswer(query, lang = 'hr', options = {}) {
 
 const EN_START = /^(what|which|how|is|are|does|do|can|who|where|when|why)\b/i;
 
+/* Je li zapis engleski? Skupina "English pages" je najjači signal;
+   inače gledamo prvu riječ pitanja. */
+const looksEnglish = (entry) => entry.group === 'English pages' || EN_START.test(entry.question);
+
+/** Popis javnih ruta koje baza znanja pokriva. Koristi ga generator
+    prijedloga i test; ne mijenja ponašanje pretrage. */
+export function contextRoutes() {
+  const index = INDEX || buildIndex();
+  return [...index.contexts].sort();
+}
+
+/** Pitanja koja imaju smisla na stranici `contextPath`: prvo zapisi koji
+    tu stranicu izravno spominju, zatim ostatak pripadne skupine. Nikad
+    pitanje koje agent ne bi mogao odgovoriti. */
+export function contextSuggestions(contextPath, lang = 'hr', limit = 3) {
+  const path = normalizeContextPath(contextPath);
+  if (!path) return [];
+  const index = INDEX || buildIndex();
+  const groups = index.contextGroups.get(path) || new Set();
+  const wantEnglish = lang === 'en';
+  const scored = [];
+
+  index.entries.forEach((entry, i) => {
+    const own = index.entryContexts[i].has(path);
+    if (!own && !groups.has(entry.group)) return;
+    if (looksEnglish(entry) !== wantEnglish) return;
+    scored.push({ entry, weight: own ? 10 : 4, own, english: true });
+  });
+  // Stranica koja ima svoje zapise ne smije ih izgubiti pred općenitim
+  // pitanjima iz iste skupine — zato dvije razine, ne jedan zbroj.
+  const ownLevel = scored.filter((row) => row.own);
+  const chosen = ownLevel.length ? ownLevel : scored;
+
+  const pool = [...chosen];
+  pool.sort((a, b) => b.weight - a.weight);
+  const out = [];
+  const seen = new Set();
+  for (const row of pool) {
+    if (out.length >= limit) break;
+    const question = String(row.entry.question || '').trim();
+    if (!question || seen.has(question)) continue;
+    seen.add(question);
+    out.push(question);
+  }
+  return out;
+}
+
 /** Tri srodna pitanja iz iste skupine — korisna kao sljedeći korak.
     Na engleskom pitanju prvo nudimo engleska pitanja iz iste skupine. */
 export function followUpQuestions(group, excludeQuestion, lang = 'hr', limit = 3) {
