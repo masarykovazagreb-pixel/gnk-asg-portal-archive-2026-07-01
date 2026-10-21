@@ -7,7 +7,7 @@
  *   2. klijent stvarno čita tok (SSE), može zaustaviti odgovor i izvesti
  *      razgovor, i ne ubacuje korisnikov tekst kao HTML,
  *   3. agent ima tri razine odgovora i pošteno odbija pitanja izvan baze,
- *   4. baza znanja u modulu odgovara izvoru (535 pitanja), a ugovor o
+ *   4. baza znanja u modulu i javni broj na stranici odgovaraju izvoru, a ugovor o
  *      AI suklađen je s pravilnikom.
  */
 import assert from 'node:assert/strict';
@@ -54,6 +54,10 @@ for (const id of ['scApp', 'scThread', 'scScroll', 'scForm', 'scInput', 'scSend'
 assert.match(hr, /maxlength="800"/);
 assert.match(hr, /Razgovarate s umjetnom inteligencijom/);
 assert.match(en, /You are talking to artificial intelligence/);
+for (const page of [hr, en]) {
+  assert.match(page, /<ul class="sc-trust" aria-label="[^"]+">/, 'the welcome screen must state how answers are made');
+  assert.equal((page.match(/<li><strong>/g) || []).length >= 3, true, 'the trust strip needs three facts');
+}
 assert.match(hr, /s-chat-v2\.js\?v=/);
 assert.match(hr, /s-chat-v2\.css\?v=/);
 assert.match(en, /s-chat-v2\.js\?v=/);
@@ -187,8 +191,16 @@ assert.equal(governance.aiGovernance.chatbotIdentifiedAsAI, true);
 assert.equal(governance.technicalControls.endpoint, 'POST /api/s-chat');
 assert.equal(governance.technicalControls.inputMaxCharacters, 800);
 assert.equal(governance.technicalControls.streaming, true);
-assert.equal(governance.technicalControls.knowledgeGrounding.entries, 535);
+assert.equal(governance.technicalControls.knowledgeGrounding.entries, kbEntries,
+  'governance record must state the same knowledge-base size as the source');
+for (const file of [HR, EN]) {
+  const page = get(file);
+  const plain = page.replace(/<[^>]*>/g, ' ');
+  const match = plain.match(/(\d{3,4})\s+(?:[A-Za-zŠĐČĆŽšđčćž]+\s+){0,2}(?:questions|pitanja)\b/i);
+  assert.ok(match, `${file}: the page must state the knowledge-base size`);
+  assert.equal(Number(match[1]), kbEntries, `${file}: the public page claims ${match[1]} questions, the base has ${kbEntries}`);
+}
 execFileSync(process.execPath, ['scripts/check-ai-act-governance-v1.mjs',
   '--candidate', 'config/splus-chat-ai-governance-v1.json', '--strict'], { stdio: 'pipe' });
 
-console.log('S+Chat: stranica HR/EN, tok odgovora, baza znanja (535), odbijanje izvan domene i AI ugovor — PASS');
+console.log(`S+Chat: stranica HR/EN, tok odgovora, baza znanja (${kbEntries}), odbijanje izvan domene i AI ugovor — PASS`);

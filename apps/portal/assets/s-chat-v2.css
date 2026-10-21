@@ -463,3 +463,17 @@ body.sc {
   border: 1px solid rgba(233,198,108,.34); background: rgba(233,198,108,.08);
   color: var(--sc-ink-soft); font: 500 12px/1.4 var(--sc-font);
 }
+
+/* Tri činjenice o tome kako odgovor nastaje — vidljive prije prvog pitanja. */
+.sc-trust {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 10px; margin: 18px 0 0; padding: 0; list-style: none;
+}
+.sc-trust li {
+  padding: 11px 13px; border-radius: 12px;
+  border: 1px solid var(--sc-line); background: rgba(255,255,255,.02);
+  border-top: 2px solid rgba(233,198,108,.55);
+}
+.sc-trust strong { display: block; font: 700 12.5px/1.3 var(--sc-font); color: var(--sc-ink); }
+.sc-trust span { display: block; margin-top: 4px; font: 500 12px/1.45 var(--sc-font); color: var(--sc-muted); }
+@media (max-width: 520px) { .sc-trust { grid-template-columns: 1fr; } }

@@ -36,6 +36,7 @@ const GATES = [
   { name: 'AKTUAL urednički desk', cmd: ['node', 'scripts/build-aktual-entity-desks-v1.mjs', '--check'], required: true },
   { name: 'S+Chat agent', cmd: ['node', 'tests/test-s-chat-static-v1.mjs'], required: true },
   { name: 'S+Chat evaluacija', cmd: ['node', 'tests/test-s-chat-eval-v1.mjs'], required: true },
+  { name: 'HR Knowledge Center', cmd: ['node', 'scripts/knowledge-center-hr-sync-v1.mjs', '--check'], required: true },
   { name: 'Fotografije bez zastora', cmd: ['node', 'tests/test-editorial-photo-clarity-v1.mjs'], required: true },
   { name: 'Posrednik slika', cmd: ['node', 'tests/test-image-proxy-v1.mjs'], required: true },
   { name: 'Sigurnosna zaglavlja', cmd: ['node', 'tests/test-security-headers-v1.mjs'], required: true },
