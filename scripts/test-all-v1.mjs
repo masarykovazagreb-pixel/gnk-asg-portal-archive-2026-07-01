@@ -45,6 +45,7 @@ const GATES = [
   { name: 'Autonomija 365', cmd: ['node', 'tests/test-autonomy-v1.mjs'], required: true },
   { name: 'Pristupačnost — preskok', cmd: ['node', 'tests/test-a11y-skip-v1.mjs'], required: true },
   { name: 'S+Chat — pitanja s ove stranice', cmd: ['node', 'tests/test-s-chat-context-suggest-v1.mjs'], required: true },
+  { name: 'Podatkovni desk', cmd: ['node', 'tests/test-data-desk-v1.mjs'], required: true },
 ];
 
 function run(gate) {

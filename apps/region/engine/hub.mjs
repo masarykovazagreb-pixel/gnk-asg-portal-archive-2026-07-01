@@ -305,6 +305,11 @@ ${graph.map((n) => `<script type="application/ld+json">${safeJson(n)}</script>`)
 .iz-hastags a{font:700 11px/1 system-ui;text-decoration:none;border:1px solid #24425f;border-radius:999px;padding:5px 9px;color:#dbe5f1}
 .iz-hastags a:hover{border-color:var(--gold);color:var(--gold);text-decoration:none}
 .iz-small{font:400 11px/1.6 system-ui;color:#8296ad}
+.iz-datacards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;list-style:none;margin:0;padding:0}
+.iz-datacards a{display:block;border:1px solid #25435f;border-radius:12px;padding:11px 13px;background:rgba(11,29,49,.75);text-decoration:none}
+.iz-datacards a:hover{border-color:var(--gold);text-decoration:none}
+.iz-datacards b{display:block;font:700 14.5px/1.25 Georgia,serif;color:#f2f6fb;margin-bottom:3px}
+.iz-datacards span{display:block;color:#94a8bd;font-size:11.5px;line-height:1.4}
 @media(max-width:760px){.iz-card--lead{grid-column:span 1}.iz-list li{grid-template-columns:70px minmax(0,1fr)}.iz-list .src{display:none}}
 ${cssExtra}
 </style>
@@ -324,7 +329,7 @@ const portalHeader = (active, { h1 = true } = {}) => `<div class="iz-top"><div c
   ${h1 ? `<h1>Naša izdanja</h1>
   <p>Osam gradskih kanala, poslovni tjednik i devet deskova — sport, politika, sigurnost, business, tehnologija, moda, putovanja, ljubimci i svijet. Svako izdanje ima vlastiti link, svoj jezik, svoj feed i svoju metodologiju, a sve se vraća ovamo.</p>`
     : `<p class="iz-home-h1"><a href="/izdanja/">Naša izdanja</a> <span aria-hidden="true">·</span> desk</p>`}
-  <nav class="iz-nav" aria-label="Izdanja"><a href="/izdanja/"${active === '' ? ' aria-current="page"' : ''}>Sva izdanja</a>${Object.entries(DESKS).map(([id, d]) => `<a href="/izdanja/${id}/"${active === `${id}/` ? ' aria-current="page"' : ''}>${esc(d.nav)}</a>`).join('')}<a href="/radio/">Radio</a><a href="/galerija/">Galerija</a><a href="/kanal/">Kanali</a><a href="/gnk-aktual/">AKTUAL MEDIA</a></nav>
+  <nav class="iz-nav" aria-label="Izdanja"><a href="/izdanja/"${active === '' ? ' aria-current="page"' : ''}>Sva izdanja</a>${Object.entries(DESKS).map(([id, d]) => `<a href="/izdanja/${id}/"${active === `${id}/` ? ' aria-current="page"' : ''}>${esc(d.nav)}</a>`).join('')}<a href="/radio/">Radio</a><a href="/galerija/">Galerija</a><a href="/aktual-media/">Podaci</a><a href="/kanal/">Kanali</a><a href="/gnk-aktual/">AKTUAL MEDIA</a></nav>
 </div></header>`;
 
 
@@ -438,6 +443,17 @@ function hubPage() {
   <section class="iz-band">
     <h2>Najnovije iz svih izdanja</h2>
     <ul class="iz-list">${items.map((i) => `<li><time datetime="${esc(i.date)}">${esc(shortDate(i.date.slice(0, 10)))}</time><a href="${i.channel.base}clanak/${i.slug}/" rel="external noopener">${esc(i.title)}</a><span class="src">${esc(i.channel.title)}</span></li>`).join('') || '<li>Prva izdanja se pune dnevnim ciklusom.</li>'}</ul>
+  </section>
+  <section class="iz-band iz-data-desk" aria-labelledby="ddTitle">
+    <h2 id="ddTitle">Podatkovni desk — redakcija, izmjereno</h2>
+    <p class="iz-small" style="margin:0 0 12px">Četiri stranice na kojima AKTUAL MEDIA mjeri vlastitu arhivu: noćna smjena, koncentracija izvora, pauze u objavljivanju i zajednički rječnik osam gradova. Brojke se računaju iz arhive pri svakoj gradnji, bez procjena.</p>
+    <ul class="iz-datacards">
+      <li><a href="/aktual-media/nocna-smjena/"><b>Noćna smjena</b><span>što izlazi dok grad spava</span></a></li>
+      <li><a href="/aktual-media/jedan-glas/"><b>Jedan glas</b><span>koliko je izdanje pluralno</span></a></li>
+      <li><a href="/aktual-media/karta-tisine/"><b>Karta tišine</b><span>najdulja pauza po gradu</span></a></li>
+      <li><a href="/aktual-media/osam-jezika/"><b>Osam jezika</b><span>riječi koje dijele gradovi</span></a></li>
+      <li><a href="/en/aktual-media/" hreflang="en" lang="en"><b>Data desk (EN)</b><span>the same four measurements</span></a></li>
+    </ul>
   </section>
   <section class="iz-band">
     <h2>Oznake izdanja</h2>
@@ -623,6 +639,18 @@ ${entries.map((e) => `<url><loc>${e.loc}</loc><changefreq>daily</changefreq><pri
   writeFileSync(join(PORTAL, 'data', 'izdanja.json'), `${JSON.stringify({ version: 1, updatedAt: new Date().toISOString(), sourceOfTruth: HUB, cards }, null, 2)}\n`);
 
   injectBand(cards);
+
+  /* Podatkovni desk: četiri stranice koje mjere vlastitu arhivu. Brojke
+     se računaju iz istih datoteka koje je ovaj ciklus upravo zapisao,
+     pa stranice ne mogu zaostati za izdanjima. */
+  try {
+    const { buildDataDesk } = await import('./data-desk.mjs');
+    const desk = await buildDataDesk();
+    console.log(`[data-desk] ${JSON.stringify(desk)}`);
+  } catch (error) {
+    console.log(`::warning::Podatkovni desk nije izgrađen: ${error.message}`);
+  }
+
   try {
     const { buildAktualCentral } = await import('./aktual-central.mjs');
     const central = buildAktualCentral({ cards });
@@ -716,7 +744,7 @@ a{color:inherit;text-decoration:none}
 </head>
 <body>
 <a class="skip-to-content" href="#sadrzaj">Preskoči na sadržaj</a><style>.skip-to-content{position:absolute;left:-9999px;top:0;z-index:9999;background:#e9c66c;color:#08131f;font:800 13px/1 system-ui,sans-serif;letter-spacing:.02em;padding:12px 18px;border-radius:0 0 12px 0;text-decoration:none}.skip-to-content:focus{left:0}main:focus{outline:none}main:focus-visible{outline:3px solid #e9c66c;outline-offset:4px}a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:3px solid #e9c66c;outline-offset:3px;border-radius:4px}</style>
-<div class="kx-top"><strong>AKTUAL MEDIA KANAL</strong><span><a href="/gnk-aktual/">← AKTUAL MEDIA</a> · <a href="/izdanja/">Sva izdanja i deskovi</a> · <a href="/usa/">Colorado · USA</a> · <a href="/radio/">Radio</a> · <a href="/digital-workforce/knjiga/">Knjiga radnika</a></span></div>
+<div class="kx-top"><strong>AKTUAL MEDIA KANAL</strong><span><a href="/gnk-aktual/">← AKTUAL MEDIA</a> · <a href="/izdanja/">Sva izdanja i deskovi</a> · <a href="/aktual-media/">Podatkovni desk</a> · <a href="/usa/">Colorado · USA</a> · <a href="/radio/">Radio</a> · <a href="/digital-workforce/knjiga/">Knjiga radnika</a></span></div>
 <main id="sadrzaj" tabindex="-1" class="kx-wrap">
   <div class="kx-head">
     <h1>Osam gradova, osam jezika — pod jednom domenom</h1>
@@ -886,7 +914,7 @@ a{color:inherit;text-decoration:none}a:hover{text-decoration:underline}
 </head>
 <body>
 <a class="skip-to-content" href="#sadrzaj">Preskoči na sadržaj</a><style>.skip-to-content{position:absolute;left:-9999px;top:0;z-index:9999;background:#e9c66c;color:#08131f;font:800 13px/1 system-ui,sans-serif;letter-spacing:.02em;padding:12px 18px;border-radius:0 0 12px 0;text-decoration:none}.skip-to-content:focus{left:0}main:focus{outline:none}main:focus-visible{outline:3px solid #e9c66c;outline-offset:4px}a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:3px solid #e9c66c;outline-offset:3px;border-radius:4px}</style>
-<div class="us-top"><strong>GNK DINAMO Ltd. · Boulder, Colorado</strong><span><a href="/gnk-aktual/">← AKTUAL MEDIA</a> · <a href="/izdanja/">Sva izdanja</a> · <a href="/kanal/">Kanali</a> · <a href="/radio/">Radio</a></span></div>
+<div class="us-top"><strong>GNK DINAMO Ltd. · Boulder, Colorado</strong><span><a href="/gnk-aktual/">← AKTUAL MEDIA</a> · <a href="/izdanja/">Sva izdanja</a> · <a href="/aktual-media/">Podatkovni desk</a> · <a href="/kanal/">Kanali</a> · <a href="/radio/">Radio</a></span></div>
 <main id="sadrzaj" tabindex="-1">
   <section class="us-hero"><div class="us-wrap">
     <p class="us-kicker">Ishodište projekta · USA</p>
@@ -938,7 +966,8 @@ function writeSitemapIndex() {
     ['sitemap.xml', '2026-10-12'], ['editorial-sitemap.xml', '2026-10-19'],
     ['corporate-editorials-sitemap.xml', '2026-08-30'], ['visual-sitemap.xml', '2026-08-26'],
     ['image-sitemap.xml', '2026-10-12'], ['world-topics-image-sitemap.xml', '2026-08-26'],
-    ['spt-sitemap.xml', '2026-10-12'], ['izdanja/sitemap.xml', today], ['galerija/sitemap.xml', today]
+    ['spt-sitemap.xml', '2026-10-12'], ['izdanja/sitemap.xml', today], ['galerija/sitemap.xml', today],
+    ['aktual-media/sitemap.xml', today]
   ];
   const channels = CHANNELS.map((c) => [`kanal/${c.id}/sitemap.xml`, today]);
   const all = [...core, ...channels];
