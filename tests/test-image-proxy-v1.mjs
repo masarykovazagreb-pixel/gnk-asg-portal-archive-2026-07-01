@@ -132,6 +132,57 @@ try {
   check(response?.status === 502, 'preusmjeravanje na strani host mora biti 502');
   check((await response.json()).error === 'redirect_not_allowed', 'preusmjeravanje: redirect_not_allowed');
 
+  // Navigacija se odbija: posrednik nije otvoreni proxy u kartici.
+  globalThis.fetch = upstream({ 'content-type': 'image/jpeg' });
+  response = await handleImageProxy(
+    new Request(workerUrl(IMAGE_PROXY_PATH, '?u=https%3A%2F%2Fi.guim.co.uk%2Fa.jpg'), { headers: { 'sec-fetch-mode': 'navigate' } }),
+    {}, ctx
+  );
+  check(response?.status === 403, 'navigacija mora biti 403');
+  check((await response.json()).error === 'navigation_not_allowed', 'navigacija: navigation_not_allowed');
+
+  response = await handleImageProxy(
+    new Request(workerUrl(IMAGE_PROXY_PATH, '?u=https%3A%2F%2Fi.guim.co.uk%2Fa.jpg'), { headers: { 'sec-fetch-dest': 'document' } }),
+    {}, ctx
+  );
+  check(response?.status === 403, 'izravno otvaranje u kartici mora biti 403');
+
+  // Pad izvora na pet stotki vrijedi novog pokušaja — dva poziva, ne jedan.
+  let attempts = 0;
+  globalThis.fetch = async () => {
+    attempts += 1;
+    return attempts === 1
+      ? new Response('busy', { status: 503 })
+      : new Response('ok', { status: 200, headers: { 'content-type': 'image/jpeg' } });
+  };
+  response = await handleImageProxy(
+    new Request(workerUrl(IMAGE_PROXY_PATH, '?u=https%3A%2F%2Fi.guim.co.uk%2Fa.jpg')),
+    {}, ctx
+  );
+  check(response?.status === 200 && attempts === 2, `pet stotka mora imati drugi pokušaj (pokušaja: ${attempts})`);
+
+  // Kad izvor padne, a keš ima zadnju dobru kopiju, poslužuje se kopija.
+  const stored = new Response('stara-slika', { status: 200, headers: { 'content-type': 'image/jpeg', 'x-gnk-image-proxy': IMAGE_PROXY_VERSION } });
+  const realCaches = globalThis.caches;
+  let lookups = 0;
+  globalThis.caches = {
+    default: {
+      // Prvi pogled je promašaj (inače bi odgovor došao iz keša prije dohvata),
+      // drugi je zadnja dobra kopija nakon pada izvora.
+      match: async () => { lookups += 1; return lookups === 1 ? null : stored.clone(); },
+      put: async () => {},
+    },
+  };
+  globalThis.fetch = async () => { throw new Error('offline'); };
+  response = await handleImageProxy(
+    new Request(workerUrl(IMAGE_PROXY_PATH, '?u=https%3A%2F%2Fi.guim.co.uk%2Fa.jpg')),
+    {}, ctx
+  );
+  check(response?.status === 200, 'stale kopija mora vratiti 200');
+  check(response.headers.get('x-gnk-image-proxy-stale') === '1', 'stale kopija mora nositi oznaku');
+  check((await response.text()) === 'stara-slika', 'stale kopija mora vratiti spremljenu sliku');
+  if (realCaches === undefined) delete globalThis.caches; else globalThis.caches = realCaches;
+
   globalThis.fetch = async () => new Response('nope', { status: 404 });
   response = await handleImageProxy(
     new Request(workerUrl(IMAGE_PROXY_PATH, '?u=https%3A%2F%2Fi.guim.co.uk%2Fa.jpg')),

@@ -55,7 +55,14 @@ const CACHE_SECONDS = 60 * 60 * 24 * 30;
 
 const json = (data, status, extra = {}) => new Response(JSON.stringify(data), {
   status,
-  headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', ...extra },
+  headers: {
+    'content-type': 'application/json; charset=utf-8',
+    'cache-control': 'no-store',
+    'strict-transport-security': 'max-age=31536000; includeSubDomains; preload',
+    'x-content-type-options': 'nosniff',
+    'referrer-policy': 'strict-origin-when-cross-origin',
+    ...extra,
+  },
 });
 
 function pathOf(request) {
@@ -97,6 +104,12 @@ export async function handleImageProxy(request, env, ctx) {
     return json({ ok: false, error: 'method_not_allowed' }, 405, { allow: 'GET, HEAD' });
   }
 
+  // Posrednik služi <img> elementima, ne kao otvoreni proxy u kartici.
+  // Kad preglednik pošalje zaglavlja o namjeri, navigacija se odbija.
+  if (request.headers.get('sec-fetch-mode') === 'navigate' || request.headers.get('sec-fetch-dest') === 'document') {
+    return json({ ok: false, error: 'navigation_not_allowed' }, 403);
+  }
+
   const src = new URL(request.url).searchParams.get('u');
   const target = targetOf(src);
   if (!target) return json({ ok: false, error: 'not_allowed' }, 403);
@@ -108,18 +121,37 @@ export async function handleImageProxy(request, env, ctx) {
     if (hit) return hit;
   }
 
-  let upstream;
-  try {
-    upstream = await fetch(target.href, {
-      method: 'GET',
-      headers: { accept: 'image/avif,image/webp,image/*;q=0.8,*/*;q=0.5' },
-      redirect: 'follow',
-      signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
-      /* Cloudflare ne šalje Referer prema izdavaču iz Workera. */
-      cf: { cacheEverything: true, cacheTtl: CACHE_SECONDS },
-    });
-  } catch {
-    return json({ ok: false, error: 'upstream_unreachable' }, 502);
+  let upstream = null;
+  let lastError = '';
+  for (let attempt = 0; attempt < 2 && !upstream; attempt += 1) {
+    try {
+      const response = await fetch(target.href, {
+        method: 'GET',
+        headers: { accept: 'image/avif,image/webp,image/*;q=0.8,*/*;q=0.5' },
+        redirect: 'follow',
+        signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
+        /* Cloudflare ne šalje Referer prema izdavaču iz Workera. */
+        cf: { cacheEverything: true, cacheTtl: CACHE_SECONDS },
+      });
+      // Pet stotke i preopterećenje vrijede novog pokušaja; 404 ne.
+      if (response.ok || response.status < 500) upstream = response;
+      else lastError = `upstream_status_${response.status}`;
+    } catch {
+      lastError = 'upstream_unreachable';
+    }
+  }
+
+  if (!upstream) {
+    // Izdavač je pao, ali slika je već bila dobra. Radije poslužimo
+    // zadnju kopiju iz keša nego praznu plohu — uz jasan Stale zaglavlje.
+    const stale = cache ? await cache.match(cacheKey).catch(() => null) : null;
+    if (stale) {
+      const headers = new Headers(stale.headers);
+      headers.set('x-gnk-image-proxy-stale', '1');
+      headers.set('warning', '110 - "Response is stale"');
+      return new Response(request.method === 'HEAD' ? null : stale.body, { status: 200, headers });
+    }
+    return json({ ok: false, error: lastError || 'upstream_unreachable' }, 502);
   }
 
   if (!upstream.ok) return json({ ok: false, error: 'upstream_status', status: upstream.status }, 502);
@@ -141,8 +173,11 @@ export async function handleImageProxy(request, env, ctx) {
 
   const headers = new Headers({
     'content-type': type,
-    'cache-control': `public, max-age=${CACHE_SECONDS}, immutable`,
+    'cache-control': `public, max-age=${CACHE_SECONDS}, stale-if-error=${CACHE_SECONDS}, immutable`,
+    vary: 'accept',
     'x-content-type-options': 'nosniff',
+    'strict-transport-security': 'max-age=31536000; includeSubDomains; preload',
+    'referrer-policy': 'no-referrer',
     'content-security-policy': "default-src 'none'; style-src 'unsafe-inline'; sandbox",
     'x-gnk-image-proxy': IMAGE_PROXY_VERSION,
     'cross-origin-resource-policy': 'cross-origin',

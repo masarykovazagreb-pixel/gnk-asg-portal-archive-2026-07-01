@@ -1,9 +1,10 @@
 // S+Chat — dohvat iz javne baze znanja portala.
 //
-// Baza ima 535 pitanja u 20 skupina (apps/portal/data/knowledge-base.json).
+// Baza ima 542 pitanja u 21 skupini (apps/portal/data/knowledge-base.json).
 // Ovaj modul radi dvije stvari, bez ijednog mrežnog poziva:
 //   1. pronađe najbliže zapise za pitanje (leksičko podudaranje s
-//      hrvatskim i engleskim pojmovima, bez dijakritike),
+//      hrvatskim i engleskim pojmovima prevedenim na isti korijen,
+//      bez dijakritike, s težinom naziva skupine),
 //   2. iz njih sastavi pošten odgovor kad model nije dostupan.
 //
 // Nema izmišljanja: ako ništa ne prođe prag, modul to kaže i uputi na
@@ -11,7 +12,7 @@
 
 import { KB_ENTRIES, KB_GROUPS, KB_VERSION, KB_SOURCE_TOTAL } from './knowledge-base.generated-v1.js';
 
-export const RETRIEVAL_VERSION = 'GNK_ASG_CHAT_RETRIEVAL_V1_20261020';
+export const RETRIEVAL_VERSION = 'GNK_ASG_CHAT_RETRIEVAL_V2_20261021';
 
 const STOPWORDS = new Set([
   // hrvatski
@@ -26,7 +27,41 @@ const STOPWORDS = new Set([
   'the', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been', 'of', 'to', 'in', 'on', 'for', 'with', 'and',
   'or', 'what', 'who', 'how', 'many', 'much', 'where', 'when', 'why', 'which', 'does', 'do', 'did', 'can',
   'could', 'please', 'hello', 'hi', 'there', 'it', 'this', 'that', 'about', 'tell', 'me', 'i', 'you',
+  // slabi glagoli: ne nose temu, a ruše pokrivenost upita
+  'bavi', 'baviti', 'bave', 'cime', 'čime', 'odakle', 'dolazi', 'dolaze', 'radi', 'rade', 'drzi', 'drži',
 ]);
+
+/* Isti pojam na hrvatskom i engleskom mora pasti na isti ključ.
+   Bez ovoga "How do I contact the portal?" ne nalazi zapis
+   "Kako se šalje službeni upit?", jer su "contact" i "kontakt"
+   dva različita niza. Tablica je mala i ručno provjerena: ključ je
+   četveroznakovni korijen engleske riječi, vrijednost hrvatski korijen
+   koji postoji u bazi. */
+const CROSS_LANGUAGE = new Map(Object.entries({
+  comp: 'drus', busi: 'drus', corpor: 'drus',
+  grou: 'grup',
+  page: 'stran', site: 'stran', websi: 'stran',
+  news: 'vije', story: 'vije', stori: 'vije',
+  refr: 'osvj', upda: 'osvj', updo: 'osvj',
+  cont: 'kont', email: 'mail', mail: 'mail',
+  reve: 'prih', inco: 'prih', profi: 'dobi',
+  fina: 'fina', audit: 'revi', state: 'izvj', repor: 'izvj',
+  asse: 'akti', equi: 'kapi',
+  bili: 'dvoj', langu: 'jezi', trans: 'prij',
+  mark: 'trzi', pric: 'cije', inve: 'inve', advi: 'savj',
+  auto: 'auto', robo: 'auto',
+  know: 'znan', base: 'baza', ques: 'pita', answ: 'odgo',
+  assi: 'asist', chat: 'asist',
+  priv: 'priv', pers: 'osob', data: 'poda',
+  imag: 'slik', phot: 'foto', sour: 'izvo', lice: 'lice',
+  righ: 'prav', copy: 'autor',
+  offi: 'sluz', requ: 'upit', medi: 'medi', pres: 'medi',
+  lega: 'prav', term: 'uvje', poli: 'poli',
+  syst: 'sust', stat: 'stan', heal: 'zdra',
+  week: 'tjed', dail: 'dnev', edit: 'izda',
+  dire: 'dire', owne: 'vlas', foun: 'osni',
+  sear: 'pret', find: 'pret',
+}));
 
 const DIACRITICS = { 'đ': 'd', 'Đ': 'd' };
 
@@ -44,7 +79,8 @@ export function normalize(text) {
    zajednički prefiks od četiri znaka: "grad" i "gradova", "izvor" i
    "izvora", "franc" i "francuske" tako se sretnu bez rječnika oblika. */
 function stem(token) {
-  return token.length > 4 ? token.slice(0, 4) : token;
+  const key = token.length > 4 ? token.slice(0, 4) : token;
+  return CROSS_LANGUAGE.get(key) || key;
 }
 
 export function tokens(text) {
@@ -99,7 +135,10 @@ function buildIndex() {
     add(title, 1.5);
     add(answer, 0.8);
     const intentKeys = new Set([...tokens(intent), ...tokens(group)]);
-    byKey.push({ weights, intentKeys, known });
+    // Naziv skupine je tema, ne samo još jedna riječ: upit "kako
+    // kontaktirati portal" mora prije svega pasti u skupinu Kontakt.
+    const groupKeys = new Set(tokens(group));
+    byKey.push({ weights, intentKeys, groupKeys, known });
   });
   // Rijetki pojmovi nose više od onih koji se ponavljaju u svakom
   // drugom zapisu ("hrvatska", "portal"). Bez toga upit sklizne na
@@ -131,7 +170,7 @@ export function search(query, { limit = 5 } = {}) {
   const scored = [];
 
   for (let i = 0; i < index.entries.length; i += 1) {
-    const { weights, intentKeys } = index.byKey[i];
+    const { weights, intentKeys, groupKeys } = index.byKey[i];
     let score = 0;
     let matched = 0;
     let intentMatched = 0;
@@ -146,6 +185,7 @@ export function search(query, { limit = 5 } = {}) {
       coveredIdf += idf;
       matched += 1;
       if (intentKeys.has(key)) intentMatched += 1;
+      if (groupKeys.has(key)) score += 2 * idf;
     }
     if (!score) continue;
     const entry = index.entries[i];
@@ -180,7 +220,7 @@ export function search(query, { limit = 5 } = {}) {
   const relevant = scored.filter((entry) =>
     entry.intentMatched > 0 &&
     entry.coverage >= 0.5 &&
-    entry.score >= 8 + 5 * queryKeys.length &&
+    entry.score >= 8 + 4 * queryKeys.length &&
     !(queryKeys.length > 1 && unknown.length));
   return relevant.slice(0, limit);
 }
@@ -271,6 +311,9 @@ export function followUpQuestions(group, excludeQuestion, lang = 'hr', limit = 3
   const preferred = lang === 'en'
     ? pool.filter((entry) => EN_START.test(entry.question))
     : pool.filter((entry) => !EN_START.test(entry.question));
+  // Skupina bez engleskih zapisa ne smije engleskom čitatelju
+  // ponuditi hrvatska pitanja — radije opće engleske prijedloge.
+  if (lang === 'en' && !preferred.length) return suggestions('en').slice(0, limit);
   const ordered = [...preferred, ...pool.filter((entry) => !preferred.includes(entry))];
   return ordered.slice(0, limit).map((entry) => entry.question);
 }
