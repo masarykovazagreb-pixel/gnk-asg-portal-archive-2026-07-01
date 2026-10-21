@@ -651,6 +651,17 @@ ${entries.map((e) => `<url><loc>${e.loc}</loc><changefreq>daily</changefreq><pri
     console.log(`::warning::Podatkovni desk nije izgrađen: ${error.message}`);
   }
 
+  /* Tehnologija budućnosti: pet mjerenih tehnologija, svaka s izvorom.
+     Stranica je namjerno mirna — ne prati vijesti nego provjerene rezultate,
+     pa se gradi uz svaki ciklus i trakom ulazi u matične stranice. */
+  try {
+    const { buildFutureTech } = await import('./future-tech.mjs');
+    const tech = buildFutureTech({ quiet: true });
+    console.log(`[future-tech] ${JSON.stringify(tech)}`);
+  } catch (error) {
+    console.log(`::warning::Tehnologija budućnosti nije izgrađena: ${error.message}`);
+  }
+
   try {
     const { buildAktualCentral } = await import('./aktual-central.mjs');
     const central = buildAktualCentral({ cards });
@@ -967,7 +978,7 @@ function writeSitemapIndex() {
     ['corporate-editorials-sitemap.xml', '2026-08-30'], ['visual-sitemap.xml', '2026-08-26'],
     ['image-sitemap.xml', '2026-10-12'], ['world-topics-image-sitemap.xml', '2026-08-26'],
     ['spt-sitemap.xml', '2026-10-12'], ['izdanja/sitemap.xml', today], ['galerija/sitemap.xml', today],
-    ['aktual-media/sitemap.xml', today]
+    ['aktual-media/sitemap.xml', today], ['tehnologija-buducnosti/sitemap.xml', today]
   ];
   const channels = CHANNELS.map((c) => [`kanal/${c.id}/sitemap.xml`, today]);
   const all = [...core, ...channels];
@@ -1008,13 +1019,17 @@ function injectBand(cards) {
 }
 
 if (process.argv[1] && /hub\.mjs$/.test(process.argv[1])) {
-  buildHub().then((hub) => {
+  buildHub().then(async (hub) => {
     const cards = JSON.parse(readFileSync(join(PORTAL, 'data', 'izdanja.json'), 'utf8')).cards || [];
     mkdirSync(join(PORTAL, 'kanal'), { recursive: true });
     writeFileSync(join(PORTAL, 'kanal', 'index.html'), kanalIndex(cards));
     mkdirSync(join(PORTAL, 'usa'), { recursive: true });
     writeFileSync(join(PORTAL, 'usa', 'index.html'), usaPage());
     const sitemaps = writeSitemapIndex();
-    console.log(JSON.stringify({ ok: true, ...hub, kanalIndex: true, sitemaps }, null, 2));
+    /* /kanal/ i /usa/ su upravo prepisani, pa traku tehnologije vraćamo
+       nakon njih — inače bi nestala do sljedećeg ciklusa. */
+    const { injectFutureTechBands } = await import('./future-tech.mjs');
+    const techBands = injectFutureTechBands();
+    console.log(JSON.stringify({ ok: true, ...hub, kanalIndex: true, sitemaps, techBands }, null, 2));
   });
 }

@@ -46,6 +46,7 @@ const GATES = [
   { name: 'Pristupačnost — preskok', cmd: ['node', 'tests/test-a11y-skip-v1.mjs'], required: true },
   { name: 'S+Chat — pitanja s ove stranice', cmd: ['node', 'tests/test-s-chat-context-suggest-v1.mjs'], required: true },
   { name: 'Podatkovni desk', cmd: ['node', 'tests/test-data-desk-v1.mjs'], required: true },
+  { name: 'Tehnologija budućnosti', cmd: ['node', 'tests/test-future-tech-v1.mjs'], required: true },
 ];
 
 function run(gate) {
