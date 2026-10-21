@@ -201,3 +201,14 @@ html{scroll-padding-top:64px}
 .izdanja-item h3 a{color:#f2eee4;text-decoration:none}
 .izdanja-item h3 a:hover{text-decoration:underline;text-decoration-color:#c9a24a;text-underline-offset:3px}
 .izdanja-item p{margin:0;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+
+/* Tiha ploha: vijest bez fotografije ne dobiva zamjensku ilustraciju,
+   nego mirno polje s rubrikom i izvorom. Ista ploha zamjenjuje i sliku
+   koja se ne učita, da čitatelj ne gleda razbijenu ikonu. */
+.am-plate{position:relative;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;width:100%;aspect-ratio:16/10;padding:14px 16px;background:linear-gradient(160deg,#101c2b,#0a1119 70%);border-bottom:1px solid rgba(233,198,108,.18);overflow:hidden}
+.am-plate::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(233,198,108,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(233,198,108,.07) 1px,transparent 1px);background-size:28px 28px;mask-image:radial-gradient(120% 90% at 15% 0%,#000,transparent 62%);-webkit-mask-image:radial-gradient(120% 90% at 15% 0%,#000,transparent 62%)}
+.am-plate b{position:relative;font:700 10px/1.4 system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#e0bd69}
+.am-plate i{position:relative;font:600 10px/1.4 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#7f8fa3;font-style:normal}
+.am-lead .am-plate{position:absolute;inset:0;aspect-ratio:auto;border:0}
+.am-rail-card .am-plate{min-height:245px;aspect-ratio:auto}
+.am-credit{margin:8px 0 0;font:600 10px/1.5 system-ui,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#8a7c62}

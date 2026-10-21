@@ -248,6 +248,15 @@ ${jsonld.map((n) => `<script type="application/ld+json">${safeJson(n)}</script>`
 .iz-list{list-style:none;margin:0;padding:0}
 .iz-list li{display:grid;grid-template-columns:86px minmax(0,1fr) auto;gap:12px;padding:10px 0;border-top:1px solid #16304a;font-size:14.5px}
 .iz-list time{font:600 11px/1.6 system-ui;color:#8fa3ba}
+.iz-list .iz-cell{display:grid;gap:6px;align-content:start}
+.iz-thumb{display:block;width:86px;height:58px;object-fit:cover;border-radius:8px;background:#12283d}
+.iz-k{margin:18px 0 8px;font:700 10px/1.4 system-ui;letter-spacing:.14em;text-transform:uppercase;color:#8fa3ba}
+.iz-city{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px;list-style:none;margin:0 0 6px;padding:0}
+.iz-city a{display:grid;justify-items:center;gap:6px;text-decoration:none;color:#c8d6e6;font:600 10px/1.3 system-ui;letter-spacing:.04em;text-align:center}
+.iz-city img{width:100%;max-width:78px;aspect-ratio:1;object-fit:cover;border-radius:50%;border:2px solid rgba(233,198,108,.4);background:#12283d}
+.iz-city a:hover img{border-color:#e9c66c}
+.iz-city a:hover span{color:#e9c66c}
+@media(max-width:640px){.iz-city{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .iz-list .src{font:600 10px/1.6 system-ui;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);white-space:nowrap}
 .iz-score{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;background:#0b1d31;border:1px solid #1e3b58;border-radius:12px;padding:12px 16px;margin:0 0 10px}
 .iz-score b{font:700 24px/1 system-ui;color:var(--gold)}
@@ -478,6 +487,14 @@ function collect(theme, filter = null) {
     .sort((a, b) => String(b.date).localeCompare(String(a.date)));
 }
 
+/* Slika iz izvora ide kroz naš posrednik: izdavač ne vidi čitatelja,
+   a slika se kešira na rubu. Ako slike nema, ne lijepimo zamjensku. */
+const proxied = (src) => (src ? `/api/img?u=${encodeURIComponent(String(src))}&w=480` : '');
+
+const cityCircles = () => `<ul class="iz-city" aria-label="Osam gradskih izdanja AKTUAL MEDIA">${
+  CHANNELS.map((c) => `<li><a href="${c.base}" rel="external noopener" title="${esc(c.title)}"><img src="/assets/izdanja/${c.id}-240.webp" alt="${esc(c.city)}" width="96" height="96" loading="lazy" decoding="async"><span>${esc(c.city)}</span></a></li>`).join('')
+}</ul>`;
+
 function deskPage(id, desk) {
   const items = collect(desk.theme, desk.filter || null);
   const results = items.map((i) => ({ item: i, score: scoreFromTitle(i.title) })).filter((x) => x.score).slice(0, 12);
@@ -495,6 +512,8 @@ function deskPage(id, desk) {
     <h1>${esc(desk.title)}</h1>
     <p>${esc(desk.description)}</p>
     <ul class="iz-tags" style="margin-top:14px">${desk.hashtags.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
+    <p class="iz-k">Izdanja koja ovaj desk prati</p>
+    ${cityCircles()}
   </section>
 
   ${id === 'sport' ? `<section class="iz-band"><h2>Rezultati objavljeni u izvorima</h2>
@@ -504,7 +523,7 @@ function deskPage(id, desk) {
 
   <section class="iz-band">
     <h2>Osvrti</h2>
-    <ul class="iz-list">${items.slice(0, 40).map((i) => `<li><time datetime="${esc(i.date)}">${esc(shortDate(i.date.slice(0, 10)))}</time><a href="${i.channel.base}clanak/${i.slug}/" rel="external noopener">${esc(i.title)}</a><span class="src">${esc(i.channel.title)}</span></li>`).join('') || '<li>Prvi ciklus još nije zapisao tekstove za ovaj desk.</li>'}</ul>
+    <ul class="iz-list">${items.slice(0, 40).map((i) => `<li><span class="iz-cell">${i.image ? `<img class="iz-thumb" src="${esc(proxied(i.image))}" alt="" width="86" height="58" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : ''}<time datetime="${esc(i.date)}">${esc(shortDate(i.date.slice(0, 10)))}</time></span><a href="${i.channel.base}clanak/${i.slug}/" rel="external noopener">${esc(i.title)}</a><span class="src">${esc(i.channel.title)}</span></li>`).join('') || '<li>Prvi ciklus još nije zapisao tekstove za ovaj desk.</li>'}</ul>
   </section>
 
   <section class="iz-band">

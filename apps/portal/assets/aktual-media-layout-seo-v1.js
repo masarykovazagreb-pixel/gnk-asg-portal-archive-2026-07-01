@@ -41,8 +41,15 @@
     return `${Math.round(hours / 24)} d`;
   }
 
+  // Slika nosi samu sebe: ide kroz naš posrednik, alt opisuje vijest, a
+  // izvor i kredit stoje uz nju. Nema vodenog znaka preko fotografije.
+  const isRemote = src => /^https:\/\/[^\s"'<>]+$/i.test(String(src || '').trim());
+  const isLocal = src => /^\/assets\/[a-z0-9/_-]+\.(?:svg|webp|png|jpe?g)$/i.test(String(src || '').trim());
   function imageBlock(item, eager = false) {
-    return `<div class="ak-media-frame"><span class="ak-watermark">GNK ASG</span><img src="${esc(item.image)}" alt="${esc(BRAND)} · ${esc(item.title)}" title="${esc(BRAND)} · ${esc(item.title)}" loading="${eager ? 'eager' : 'lazy'}"><span class="ak-indexable-brand">${BRAND}</span></div>`;
+    const raw = String(item.image || '').trim();
+    const src = isRemote(raw) ? `/api/img?u=${encodeURIComponent(raw)}&w=${eager ? 1200 : 640}` : (isLocal(raw) ? raw : '');
+    if (!src) return `<div class="ak-media-frame"><span class="ak-plate" aria-hidden="true">${esc(groups[item.group] || 'Vijest')}</span></div>`;
+    return `<div class="ak-media-frame"><img src="${esc(src)}" alt="${esc(item.imageAlt || item.title)}" loading="${eager ? 'eager' : 'lazy'}" decoding="async" referrerpolicy="no-referrer"><span class="ak-credit">${esc(item.imageCredit || item.source || '')}</span></div>`;
   }
 
   function renderFeatured() {
@@ -116,7 +123,7 @@
   }
 
   const style = document.createElement('style');
-  style.textContent = `.ak-media-frame{position:relative}.ak-media-frame>img{width:100%;display:block;object-fit:cover}.ak-watermark{position:absolute;left:10px;top:10px;z-index:3;padding:5px 9px;border:1px solid rgba(242,210,125,.78);border-radius:999px;background:rgba(5,5,5,.9);color:#f2d27d;font:900 .64rem/1 Arial,sans-serif;letter-spacing:.1em}.ak-indexable-brand{display:block;padding:7px 10px;background:#09090b;color:#e2c66f;font:800 .66rem/1.35 Arial,sans-serif;letter-spacing:.04em}.ak-featured>.ak-media-frame img{height:100%;min-height:280px}.ak-card .ak-media-frame img{height:150px}.ak-entity-seo{margin:40px 0 0;padding:20px;border:1px solid rgba(212,175,55,.35);border-radius:14px;background:rgba(212,175,55,.06);font-family:Arial,sans-serif}.ak-entity-seo strong,.ak-entity-seo span{display:block}.ak-entity-seo strong{color:#f2d27d;margin-bottom:7px}.ak-entity-seo span{color:#b9b2a7;font-size:.82rem}@media(max-width:640px){.ak-card .ak-media-frame img{height:120px}}`;
+  style.textContent = `.ak-media-frame{position:relative}.ak-media-frame>img{width:100%;display:block;object-fit:cover}.ak-credit{position:absolute;right:8px;bottom:8px;z-index:3;padding:4px 7px;border-radius:4px;background:rgba(5,8,12,.72);color:#e8e2d2;font:600 .6rem/1 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase}.ak-plate{display:flex;align-items:flex-end;width:100%;aspect-ratio:16/10;padding:12px;background:linear-gradient(160deg,#101c2b,#0a1119 70%);color:#e0bd69;font:700 .66rem/1 system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase}.ak-featured>.ak-media-frame img{height:100%;min-height:280px}.ak-card .ak-media-frame img{height:150px}.ak-entity-seo{margin:40px 0 0;padding:20px;border:1px solid rgba(212,175,55,.35);border-radius:14px;background:rgba(212,175,55,.06);font-family:Arial,sans-serif}.ak-entity-seo strong,.ak-entity-seo span{display:block}.ak-entity-seo strong{color:#f2d27d;margin-bottom:7px}.ak-entity-seo span{color:#b9b2a7;font-size:.82rem}@media(max-width:640px){.ak-card .ak-media-frame img{height:120px}}`;
   document.head.appendChild(style);
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once:true }); else boot();
 })();

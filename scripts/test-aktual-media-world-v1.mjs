@@ -41,20 +41,35 @@ if(!js.includes("fetch('/data/news.json")) failures.push('js: must consume canon
 if(!js.includes("fetch('/data/kolumne.json")) failures.push('js: must consume canonical columns feed');
 if(!js.includes("world:'international'")) failures.push('js: world alias normalization missing');
 if(!js.includes("business:'economy'")) failures.push('js: business alias normalization missing');
-const imageGuard=js.slice(js.indexOf('const localEditorialVisuals ='),js.indexOf('  const meta = item =>'));
-if(!imageGuard.includes('localEditorialVisuals')||!imageGuard.includes('selectImage')) failures.push('js: local preview protection missing');
+// Uzimamo samo čiste funkcije; globalni error-listener dira document pa ostaje van.
+const imageGuard=js.slice(js.indexOf('const localImage ='),js.indexOf('  document.addEventListener('));
+if(!imageGuard.includes('selectImage')||!imageGuard.includes('/api/img')) failures.push('js: image pipeline missing');
 else {
-  // Browser-free contract test against the actual image renderer.
-  const renderImage=new Function('esc','lang','metaFor',`${imageGuard};return image;`)(
+  // Ugovor: slika iz izvora ide kroz naš posrednik, nikad izravno iz tuđe domene.
+  const renderImage=new Function('esc','lang','metaFor',`${imageGuard};return image;`).call(
+    null,
     value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char])),
     'hr',group=>({label:String(group||'Ostalo')})
   );
-  const external=renderImage({title:'Izvorna vijest',image:'https://img.decrypt.co/photo.jpg',_group:'technology'},true);
-  if(external.includes('img.decrypt.co') || external.includes('src="http') || external.includes('src="//')) failures.push('js: external images must never load as reader subresources');
-  if(!external.includes('src="/assets/gallery/')||!external.includes('Tematska ilustracija')) failures.push('js: external images must use attributed local topical illustrations');
+  const external=renderImage({title:'Izvorna vijest',image:'https://img.decrypt.co/photo.jpg',imageAlt:'Fotografija',imageCredit:'Decrypt',_group:'technology'},true);
+  if(external.includes('src="https://img.decrypt.co')||external.includes('src="//')) failures.push('js: external images must never load straight from the publisher');
+  if(!external.includes('src="/api/img?u=')) failures.push('js: external images must go through the same-origin proxy');
+  if(!external.includes('referrerpolicy="no-referrer"')) failures.push('js: proxied images must not leak the referrer');
   if(!external.includes('width="1200" height="675"')||!external.includes('loading="eager"')) failures.push('js: lead image dimensions/priority missing');
+
+  // Bez slike: tiha ploha, ne ista zamjenska ilustracija na svakoj vijesti.
+  const none=renderImage({title:'Vijest bez slike',image:'',_group:'economy'},false);
+  if(!none.includes('class="am-plate"')) failures.push('js: a story without a photo must render a quiet plate');
+  if(/assets\/gallery\//.test(none)) failures.push('js: leftover page must not reuse a gallery sticker');
+
+  // Dvije različite vijesti bez slike ne smiju dati istu sliku.
+  const a1=renderImage({title:'Prva',image:'',_group:'economy'},false);
+  const a2=renderImage({title:'Druga',image:'',_group:'sport'},false);
+  if(a1===a2) failures.push('js: two different stories must not share an identical fallback');
+
   const original=renderImage({title:'Verificirana lokalna ilustracija',image:'/assets/gallery/agentic-ai-orchestration-organic-v3.svg',imageAlt:'Tema o AI-u',_group:'technology'});
   if(!original.includes('src="/assets/gallery/agentic-ai-orchestration-organic-v3.svg"')) failures.push('js: preserve approved local images');
+  if(original.includes('/api/img')) failures.push('js: local assets must not be proxied');
 }
 if(/innerHTML\s*=\s*[^;]*item\.title/.test(js)) failures.push('js: unescaped direct title injection detected');
 if(!css.includes('.am-leadgrid')||!css.includes('.am-cardgrid')||!css.includes('@media')) failures.push('css: required responsive newsroom layout missing');
@@ -67,14 +82,15 @@ const visualEnd=marketsHtml.indexOf('\n  fetch(',visualStart);
 if(visualStart<0||visualEnd<=visualStart) failures.push('markets: missing approved preview image handler');
 else {
   const previewVisual=Function(`${marketsHtml.slice(visualStart,visualEnd)};return previewVisual;`)();
+  // Tržišta koriste isti posrednik kao AKTUAL MEDIA — nema izravnih tuđih adresa.
   const remoteEconomy=previewVisual({image:'https://img.decrypt.co/news.jpg',group:'economy',title:'Poslovna vijest'});
-  if(remoteEconomy.src!=='/assets/gallery/kapitalna-disciplina-amber-energy-05-v2.svg') failures.push('markets: economy remote images must use local fallback');
-  if(!remoteEconomy.alt.startsWith('Tematska ilustracija GNK ASG')) failures.push('markets: local illustration must be labelled honestly');
+  if(!String(remoteEconomy.src).startsWith('/api/img?u=')) failures.push('markets: source images must go through the proxy');
   const remoteDigital=previewVisual({image:'//remote.example/test.jpg',group:'digital-assets',title:'Digitalna imovina'});
-  if(remoteDigital.src!=='/assets/gallery/digitalna-imovina-gold-navy-11-v2.svg') failures.push('markets: protocol-relative image must use local fallback');
+  if(remoteDigital.src!=='') failures.push('markets: protocol-relative image must not be proxied');
   const local=previewVisual({image:'/assets/gallery/agentic-ai-orchestration-organic-v3.svg',imageAlt:'Urednička ilustracija AI',group:'technology'});
   if(local.src!=='/assets/gallery/agentic-ai-orchestration-organic-v3.svg') failures.push('markets: preserve existing approved local artwork');
   if(marketsHtml.includes("esc(item.image||")||!marketsHtml.includes('width="1200" height="675"')) failures.push('markets: uncensored image rendering or missing fixed dimensions');
+  if(!marketsHtml.includes('ap-plate')) failures.push('markets: missing quiet plate for stories without a photo');
 }
 
 for(const url of ['https://gnk-asg.hr/gnk-aktual/teme/','https://gnk-asg.hr/en/gnk-aktual/topics/']){
