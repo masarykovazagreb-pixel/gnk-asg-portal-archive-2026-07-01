@@ -491,3 +491,14 @@ footer li a:hover{color:var(--ink);text-decoration:underline;text-decoration-col
 /* Autorstvo: dnevni desk nije potpisan imenom glavnog urednika */
 .author-chip--desk .chip-mark{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid rgba(201,162,74,.55);color:var(--gold,#c9a24a);font-family:Georgia,serif;font-weight:700}
 .authorbox--desk{grid-template-columns:1fr}
+
+/* 2026-10 — urednički naglasak na objavama i kvaliteti čitanja */
+.nav a[href$="objave/"]{font-weight:800;color:var(--ink);border-bottom-color:var(--gold)}
+.nav a[href$="objave/"]:hover,.nav a[href$="objave/"][aria-current="page"]{border-bottom-color:var(--red)}
+.card-media img{transition:transform .45s ease,filter .3s ease}
+.card:hover .card-media img{transform:scale(1.035)}
+.card:focus-within{outline:2px solid var(--gold);outline-offset:3px}
+.card-body h3 a:hover,.lead h1 a:hover,.lead h2 a:hover{text-decoration:underline;text-decoration-color:var(--gold);text-underline-offset:.13em}
+.article-body p{hyphens:auto;overflow-wrap:break-word}
+@media(max-width:699px){.card-body{padding:18px}.nav a{padding:12px 11px}.wrap{padding-inline:17px}}
+@media(prefers-reduced-motion:reduce){.card,.card-media img,.lead-media img{transition:none!important;transform:none!important}}
