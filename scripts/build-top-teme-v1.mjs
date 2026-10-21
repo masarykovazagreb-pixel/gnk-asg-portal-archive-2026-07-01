@@ -291,7 +291,17 @@ function page(lang, themeList) {
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <script type="application/ld+json">${JSON.stringify({
     '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': 'https://gnk-asg.hr/#website',
+    name: 'GNK ASG',
+    url: 'https://gnk-asg.hr/',
+    inLanguage: ['hr', 'en'],
+    publisher: { '@type': 'Organization', '@id': 'https://gnk-asg.hr/#gnk-asg', name: 'GNK ASG d.o.o.', url: 'https://gnk-asg.hr/' }
+  })}</script>
+<script type="application/ld+json">${JSON.stringify({
+    '@context': 'https://schema.org',
     '@type': 'ItemList',
+    isPartOf: { '@id': 'https://gnk-asg.hr/#website' },
     name: EN ? 'Top topics of the day' : 'Top teme dana',
     datePublished: latest,
     numberOfItems: themeList.length,

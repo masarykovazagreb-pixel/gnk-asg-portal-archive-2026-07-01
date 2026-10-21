@@ -223,7 +223,7 @@ ${footer(channel, strings)}`;
       '@context': 'https://schema.org', '@type': 'CollectionPage',
       '@id': `${url(channel, 'mravinjak/')}#mravinjak`, url: url(channel, 'mravinjak/'),
       name: `${m.title} — ${channel.title}`, description: m.lead(items.length),
-      inLanguage: channel.lang, isPartOf: { '@type': 'WebSite', '@id': `${channel.base}#website`, url: channel.base, name: channel.title },
+      inLanguage: channel.lang, isPartOf: { '@id': `${PUBLIC}/#website` },
       publisher: { '@type': 'NewsMediaOrganization', name: 'AKTUAL MEDIA d.o.o.', url: HUB, email: CONTACT, editor: { '@type': 'Person', name: 'Nermin Sefić', url: 'https://gnk-asg.hr/nermin-sefic/' } }
     },
     {
@@ -790,7 +790,7 @@ ${footer(channel, strings)}`;
     jsonld: [{
       '@context': 'https://schema.org', '@type': 'CollectionPage',
       url: canonical, name: title, description, inLanguage: channel.lang,
-      isPartOf: { '@type': 'WebSite', url: channel.base, name: channel.title }
+      isPartOf: { '@id': `${PUBLIC}/#website` }
     }],
     body,
     root
@@ -986,7 +986,7 @@ ${footer(channel, strings)}`;
       '@context': 'https://schema.org', '@type': 'WebPage',
       name: title, description, inLanguage: 'en',
       url: url(channel, 'en/'),
-      isPartOf: { '@type': 'WebSite', name: channel.title, url: channel.base },
+      isPartOf: { '@id': `${PUBLIC}/#website` },
       about: { '@type': 'NewsMediaOrganization', name: 'AKTUAL MEDIA d.o.o.', url: `${PUBLIC}/` },
       editor: { '@type': 'Person', name: 'Nermin Sefić', jobTitle: 'Editor and director', url: `${PUBLIC}/nermin-sefic/` }
     }]
@@ -1074,7 +1074,7 @@ ${footer(channel, strings)}`;
     jsonld: [{
       '@context': 'https://schema.org', '@type': 'AboutPage',
       url: url(channel, 'metodologija/'), name: strings.methodology,
-      inLanguage: channel.lang, isPartOf: { '@type': 'WebSite', url: channel.base, name: channel.title }
+      inLanguage: channel.lang, isPartOf: { '@id': `${PUBLIC}/#website` }
     }],
     body: methodBody,
     root: '../'
