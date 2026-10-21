@@ -188,6 +188,7 @@ const RUNS_PER_DAY = files.reduce((n, f) => n + scheduleOf(f).perDay, 0);
 
 function page(lang) {
   const EN = lang === 'en';
+  const CANON = `https://gnk-asg.hr/workers/grupacije/${EN ? 'en/' : ''}`;
   const cards = GROUPS.map((g) => {
     const t = g[lang];
     const items = g.files.map((f) => {
@@ -227,16 +228,55 @@ function page(lang) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${EN ? 'Worker groups and automations' : 'Grupacije radnika i automatizacije'} — GNK ASG</title>
-<meta name="description" content="${EN ? 'Ten working groups of digital workers and the real GitHub Actions automations behind them.' : 'Deset radnih skupina digitalnih radnika i stvarne GitHub Actions automatizacije koje ih pokreću.'}">
+<meta name="description" content="${EN ? `${GROUPS.length} working groups of digital workers and the real GitHub Actions automations behind them.` : `${GROUPS.length} radnih skupina digitalnih radnika i stvarne GitHub Actions automatizacije koje ih pokreću.`}">
 <link rel="canonical" href="https://gnk-asg.hr/workers/grupacije/${EN ? 'en/' : ''}">
 <link rel="alternate" hreflang="hr" href="https://gnk-asg.hr/workers/grupacije/">
 <link rel="alternate" hreflang="en" href="https://gnk-asg.hr/workers/grupacije/en/">
 <link rel="alternate" hreflang="x-default" href="https://gnk-asg.hr/workers/grupacije/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","@id":"https://gnk-asg.hr/#website","name":"GNK ASG","url":"https://gnk-asg.hr/","inLanguage":["hr","en"],"publisher":{"@type":"Organization","@id":"https://gnk-asg.hr/#gnk-asg","name":"GNK ASG d.o.o.","url":"https://gnk-asg.hr/"}}</script>
+<script type="application/ld+json">${JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'WebSite', '@id': 'https://gnk-asg.hr/#website', name: 'GNK ASG', url: 'https://gnk-asg.hr/', inLanguage: ['hr', 'en'], publisher: { '@id': 'https://gnk-asg.hr/#gnk-asg' } },
+    { '@type': 'Organization', '@id': 'https://gnk-asg.hr/#gnk-asg', name: 'GNK ASG d.o.o.', url: 'https://gnk-asg.hr/', email: 'info@gnk-asg.hr' },
+    { '@type': 'Person', '@id': 'https://gnk-asg.hr/#nermin-sefic', name: 'Nermin Sefić', jobTitle: EN ? 'Editor and director' : 'Urednik i direktor', url: 'https://gnk-asg.hr/nermin-sefic/', worksFor: { '@id': 'https://gnk-asg.hr/#gnk-asg' } },
+    {
+      '@type': 'CollectionPage',
+      '@id': `${CANON}#webpage`,
+      url: CANON,
+      name: EN ? 'Worker groups and automations' : 'Grupacije radnika i automatizacije',
+      description: EN
+        ? `${GROUPS.length} working groups of digital workers and the real GitHub Actions automations behind them.`
+        : `${GROUPS.length} radnih skupina digitalnih radnika i stvarne GitHub Actions automatizacije koje ih pokreću.`,
+      inLanguage: EN ? 'en' : 'hr',
+      isPartOf: { '@id': 'https://gnk-asg.hr/#website' },
+      about: { '@id': 'https://gnk-asg.hr/#gnk-asg' },
+      editor: { '@id': 'https://gnk-asg.hr/#nermin-sefic' },
+      publisher: { '@id': 'https://gnk-asg.hr/#gnk-asg' },
+      mainEntity: { '@id': `${CANON}#grupe` }
+    },
+    {
+      '@type': 'ItemList',
+      '@id': `${CANON}#grupe`,
+      name: EN ? 'Worker groups' : 'Radne skupine',
+      numberOfItems: GROUPS.length,
+      itemListOrder: 'https://schema.org/ItemListOrderAscending',
+      itemListElement: GROUPS.map((g, i) => ({ '@type': 'ListItem', position: i + 1, name: (EN ? g.en : g.hr).name, url: `${CANON}#g-${g.id}` }))
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${CANON}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'GNK ASG', item: 'https://gnk-asg.hr/' },
+        { '@type': 'ListItem', position: 2, name: EN ? 'Workers' : 'Radnici', item: 'https://gnk-asg.hr/workers/' },
+        { '@type': 'ListItem', position: 3, name: EN ? 'Worker groups' : 'Grupacije radnika', item: CANON }
+      ]
+    }
+  ]
+})}</script>
 <meta name="keywords" content="GNK ASG, AKTUAL MEDIA, digitalni radnici, grupacije radnika, GitHub Actions, automatizacije, worker groups">
 <meta property="og:type" content="website">
 <meta property="og:title" content="${EN ? 'Worker groups and automations' : 'Grupacije radnika i automatizacije'} — GNK ASG">
-<meta property="og:description" content="${EN ? 'Ten working groups and the real automations behind them.' : 'Deset radnih skupina i stvarne automatizacije koje ih pokreću.'}">
+<meta property="og:description" content="${EN ? `${GROUPS.length} working groups and the real automations behind them.` : `${GROUPS.length} radnih skupina i stvarne automatizacije koje ih pokreću.`}">
 <meta property="og:locale" content="${EN ? 'en_GB' : 'hr_HR'}">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/gnk-design-v1.css?v=20261020-fleet">
@@ -279,8 +319,8 @@ h1{font:900 clamp(28px,4.6vw,46px)/1.02 Impact,"Arial Black",system-ui,sans-seri
 <main class="wg-wrap">
   <h1>${EN ? 'Worker groups and automations' : 'Grupacije radnika i automatizacije'}</h1>
   <p class="wg-lead">${EN
-    ? 'Digitalni radnici podijeljeni su u deset radnih skupina. Svaka skupina ima svoje stvarne GitHub Actions automatizacije — popis ispod vodi izravno na njih, a stanje cijele flote je na zasebnoj stranici.'
-    : 'Digitalni radnici podijeljeni su u deset radnih skupina. Svaka skupina ima svoje stvarne GitHub Actions automatizacije — popis ispod vodi izravno na njih, a stanje cijele flote je na zasebnoj stranici.'}</p>
+    ? `Digital workers are split into ${GROUPS.length} working groups. Each group carries its own real GitHub Actions automations — the list below links straight to them, and fleet status lives on its own page.`
+    : `Digitalni radnici podijeljeni su u ${GROUPS.length} radnih skupina. Svaka skupina ima svoje stvarne GitHub Actions automatizacije — popis ispod vodi izravno na njih, a stanje cijele flote je na zasebnoj stranici.`}</p>
   <div class="wg-meta">
     <span class="wg-pill"><b>${TOTAL}</b> ${EN ? 'automations' : 'automatizacija'}</span>
     <span class="wg-pill"><b>${SCHEDULED.length}</b> ${EN ? 'on schedule' : 'na rasporedu'}</span>
