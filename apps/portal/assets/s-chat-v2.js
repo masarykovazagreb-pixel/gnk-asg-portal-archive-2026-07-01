@@ -39,6 +39,7 @@
     ready: 'Ready', thinking: 'Thinking…', stopped: 'Stopped', offline: 'Service unavailable',
     you: 'You', bot: 'S+Chat · AI', copy: 'Copy', copied: 'Copied', retry: 'Retry', answerReady: 'Answer ready.',
     sources: 'Sources', next: 'Next', newChat: 'New chat', untitled: 'New conversation',
+    caution: 'Some numbers in this answer are not confirmed in the knowledge base — check the source before use.',
     error: 'The answer did not arrive. Check your connection and try again.',
     rate: 'Too many messages. Please try again in an hour.',
     stoppedByUser: 'You stopped the answer.', empty: 'Type a question first.',
@@ -47,6 +48,7 @@
     ready: 'Spremno', thinking: 'Odgovaram…', stopped: 'Zaustavljeno', offline: 'Servis nedostupan',
     you: 'Vi', bot: 'S+Chat · AI', copy: 'Kopiraj', copied: 'Kopirano', retry: 'Ponovi', answerReady: 'Odgovor je spreman.',
     sources: 'Izvori', next: 'Dalje', newChat: 'Novi razgovor', untitled: 'Novi razgovor',
+    caution: 'Neke brojke u ovom odgovoru nisu potvrđene u bazi znanja — provjerite izvor prije uporabe.',
     error: 'Odgovor nije stigao. Provjerite vezu i pokušajte ponovno.',
     rate: 'Previše poruka. Pokušajte ponovno za sat vremena.',
     stoppedByUser: 'Zaustavili ste odgovor.', empty: 'Prvo napišite pitanje.',
@@ -99,26 +101,37 @@
 
   /* Minimalni, sigurni markdown: prvo escape, pa obrasci. Nijedan unos
      korisnika ne prolazi kao HTML. */
-  function renderMarkdown(raw) {
+  function renderMarkdown(raw, sources = []) {
     const lines = escapeHtml(raw).split(/\n{2,}/);
     return lines.map((block) => {
       const trimmed = block.trim();
       if (!trimmed) return '';
       const items = trimmed.split('\n').filter((line) => /^\s*[-•*]\s+/.test(line));
       if (items.length && items.length === trimmed.split('\n').length) {
-        return `<ul>${items.map((line) => `<li>${inline(line.replace(/^\s*[-•*]\s+/, ''))}</li>`).join('')}</ul>`;
+        return `<ul>${items.map((line) => `<li>${inline(line.replace(/^\s*[-•*]\s+/, ''), sources)}</li>`).join('')}</ul>`;
       }
-      return `<p>${inline(trimmed).replace(/\n/g, '<br>')}</p>`;
+      return `<p>${inline(trimmed, sources).replace(/\n/g, '<br>')}</p>`;
     }).join('');
   }
 
-  function inline(text) {
+  /* Citat [1] postaje mali broj koji vodi na izvor iz meta događaja.
+     Ako izvor ne postoji, broj ostaje običan tekst — nikad lažna veza. */
+  function citation(n, sources) {
+    const source = sources[Number(n) - 1];
+    if (!source || !source.url) return `[${n}]`;
+    const href = escapeHtml(source.url);
+    const label = escapeHtml(source.title || source.url);
+    return `<sup class="sc-cite"><a href="${href}" rel="noopener" title="${label}" aria-label="[${n}] ${label}">${n}</a></sup>`;
+  }
+
+  function inline(text, sources = []) {
     return text
       .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" rel="noopener">$1</a>')
       .replace(/(^|[\s(])(https?:\/\/[^\s<)]+)/g, '$1<a href="$2" rel="noopener">$2</a>')
       .replace(/(^|[\s(])(\/[a-z0-9][a-z0-9\-_/]*\/)/gi, '$1<a href="$2">$2</a>')
       .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-      .replace(/(^|\s)\*([^*\n]+)\*(?=\s|$)/g, '$1<em>$2</em>');
+      .replace(/(^|\s)\*([^*\n]+)\*(?=\s|$)/g, '$1<em>$2</em>')
+      .replace(/\[(\d{1,2})\]/g, (match, n) => citation(n, sources));
   }
 
   function clearThread() {
@@ -197,6 +210,20 @@
       link.textContent = source.title || source.url.replace(/^https?:\/\//, '');
       row.appendChild(link);
     }
+  }
+
+  /* Ako agent u odgovoru navede brojku koje nema u bazi, to se kaže
+     izravno — bolje upozorenje nego tiha netočnost. */
+  function setCaution(node, show) {
+    let note = node.querySelector('.sc-caution');
+    if (!show) { if (note) note.remove(); return; }
+    if (!note) {
+      note = document.createElement('p');
+      note.className = 'sc-caution';
+      note.setAttribute('role', 'note');
+      node.querySelector('.sc-sources').before(note);
+    }
+    note.textContent = T.caution;
   }
 
   function setFollowUps(node, questions) {
@@ -342,7 +369,7 @@
 
     const paint = () => {
       const bubble = answer.querySelector('.sc-bubble');
-      bubble.innerHTML = renderMarkdown(raw);
+      bubble.innerHTML = renderMarkdown(raw, meta.sources || []);
       scrollToEnd(false);
     };
 
@@ -397,6 +424,7 @@
             mode = payload.mode || '';
             finished = true;
             if (payload.mode) answer.dataset.mode = payload.mode;
+            setCaution(answer, payload.grounded === false);
           } else if (event === 'error') {
             throw new Error(payload.message || 'stream');
           }

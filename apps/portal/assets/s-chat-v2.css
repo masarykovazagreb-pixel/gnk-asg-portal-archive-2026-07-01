@@ -446,3 +446,20 @@ body.sc {
   /* Chat ostaje svijetao i na tamnom sustavu — to je odluka, ne propust:
      bubble na papiru čita se bolje, a brend nosi tamna traka. */
 }
+
+/* Citat uz tvrdnju: mali broj koji vodi na izvor iz baze. */
+.sc-cite { font-size: .68em; line-height: 0; vertical-align: super; margin-left: 2px; }
+.sc-cite a {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 15px; height: 15px; padding: 0 3px; border-radius: 4px;
+  background: rgba(233,198,108,.16); color: var(--sc-gold, #e9c66c);
+  font: 700 .86em/1 var(--sc-font); text-decoration: none; vertical-align: 0;
+}
+.sc-cite a:hover, .sc-cite a:focus-visible { background: rgba(233,198,108,.32); text-decoration: none; }
+
+/* Napomena kad brojka nije potvrđena u bazi. */
+.sc-caution {
+  margin: 0; padding: 7px 10px; border-radius: 10px;
+  border: 1px solid rgba(233,198,108,.34); background: rgba(233,198,108,.08);
+  color: var(--sc-ink-soft); font: 500 12px/1.4 var(--sc-font);
+}

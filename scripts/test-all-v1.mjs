@@ -35,8 +35,11 @@ const GATES = [
   { name: 'WebSite JSON-LD', cmd: ['node', 'scripts/test-website-jsonld-v1.mjs'], required: true },
   { name: 'AKTUAL urednički desk', cmd: ['node', 'scripts/build-aktual-entity-desks-v1.mjs', '--check'], required: true },
   { name: 'S+Chat agent', cmd: ['node', 'tests/test-s-chat-static-v1.mjs'], required: true },
+  { name: 'S+Chat evaluacija', cmd: ['node', 'tests/test-s-chat-eval-v1.mjs'], required: true },
   { name: 'Fotografije bez zastora', cmd: ['node', 'tests/test-editorial-photo-clarity-v1.mjs'], required: true },
   { name: 'Posrednik slika', cmd: ['node', 'tests/test-image-proxy-v1.mjs'], required: true },
+  { name: 'Sigurnosna zaglavlja', cmd: ['node', 'tests/test-security-headers-v1.mjs'], required: true },
+  { name: 'AKTUAL bez JavaScripta', cmd: ['node', 'tests/test-aktual-noscript-v1.mjs'], required: true },
   { name: 'Autonomija 365', cmd: ['node', 'tests/test-autonomy-v1.mjs'], required: true },
 ];
 
