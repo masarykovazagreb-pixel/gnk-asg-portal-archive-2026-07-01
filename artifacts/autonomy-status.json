@@ -1,6 +1,6 @@
 {
   "version": "GNK_ASG_AUTONOMY_365_V1_20261021",
-  "generatedAt": "2026-10-21T15:05:06Z",
+  "generatedAt": "2026-10-21T15:19:36Z",
   "horizon": {
     "starts": "2026-10-21",
     "ends": "2027-10-21",
@@ -19,13 +19,16 @@
         "hr": "Svaki gradski kanal ima barem 300 tekstova u arhivi",
         "en": "Every city channel holds at least 300 archived stories"
       },
-      "note": "zagreb 420 · beograd 420 · sarajevo 420 · budimpesta 420 · ljubljana 420 · rim 420 · sofija 407 · bukurest 420"
+      "note": {
+        "hr": "zagreb 420 · beograd 420 · sarajevo 420 · budimpesta 420 · ljubljana 420 · rim 420 · sofija 407 · bukurest 420",
+        "en": "zagreb 420 · beograd 420 · sarajevo 420 · budimpesta 420 · ljubljana 420 · rim 420 · sofija 407 · bukurest 420"
+      }
     },
     {
       "id": "kanali-svjezina",
       "state": "ok",
       "severity": "watch",
-      "actual": "3.6 h",
+      "actual": "3.9 h",
       "target": "48 h",
       "owner": "region-daily.yml",
       "route": "/kanal/",
@@ -33,7 +36,10 @@
         "hr": "Najnoviji tekst u svakom kanalu nije stariji od 48 h",
         "en": "The newest story in every channel is no older than 48 h"
       },
-      "note": "zagreb 3.5 h · beograd 3.5 h · sarajevo 2.6 h · budimpesta 3.5 h · ljubljana 3.5 h · rim 3.6 h · sofija 3.4 h · bukurest 3.4 h"
+      "note": {
+        "hr": "zagreb 3.7 h · beograd 3.7 h · sarajevo 2.8 h · budimpesta 3.8 h · ljubljana 3.7 h · rim 3.9 h · sofija 3.7 h · bukurest 3.6 h",
+        "en": "zagreb 3.7 h · beograd 3.7 h · sarajevo 2.8 h · budimpesta 3.8 h · ljubljana 3.7 h · rim 3.9 h · sofija 3.7 h · bukurest 3.6 h"
+      }
     },
     {
       "id": "aktual-slike",
@@ -47,7 +53,10 @@
         "hr": "AKTUAL MEDIA slike šalje kroz vlastiti posrednik, bez zajedničkih zamjenskih ilustracija",
         "en": "AKTUAL MEDIA serves images through its own proxy, with no shared fallback artwork"
       },
-      "note": "/api/img?u= prisutan"
+      "note": {
+        "hr": "/api/img?u= prisutan",
+        "en": "/api/img?u= present"
+      }
     },
     {
       "id": "proxy-popis",
@@ -61,7 +70,10 @@
         "hr": "Popis dopuštenih hostova posrednika jednak je hostovima u feedu",
         "en": "The proxy allow-list matches the hosts actually present in the feed"
       },
-      "note": "popis i feed se podudaraju u cijelosti"
+      "note": {
+        "hr": "popis i feed se podudaraju u cijelosti",
+        "en": "the list and the feed match exactly"
+      }
     },
     {
       "id": "deskovi-slike",
@@ -75,13 +87,16 @@
         "hr": "Svaki desk ima barem jednu sliku na objavljenoj stranici",
         "en": "Every desk page carries at least one image"
       },
-      "note": "svaki desk ima sliku u objavljenom HTML-u"
+      "note": {
+        "hr": "svaki desk ima sliku u objavljenom HTML-u",
+        "en": "every desk carries an image in the published HTML"
+      }
     },
     {
       "id": "news-svjezina",
       "state": "ok",
       "severity": "watch",
-      "actual": "0.6 h",
+      "actual": "0.9 h",
       "target": "6 h",
       "owner": "gnk-news-refresh-v2.yml",
       "route": "/gnk-aktual/",
@@ -89,7 +104,10 @@
         "hr": "Središnji feed nije stariji od 6 h",
         "en": "The central feed is no older than 6 h"
       },
-      "note": "300 zapisa · najnoviji 2026-10-21T14:27:21.000Z"
+      "note": {
+        "hr": "300 zapisa · najnoviji 2026-10-21T14:27:21.000Z",
+        "en": "300 items · newest 2026-10-21T14:27:21.000Z"
+      }
     },
     {
       "id": "dvojezicno",
@@ -103,7 +121,10 @@
         "hr": "Stranica postoji na hrvatskom i engleskom, s međusobnim poveznicama",
         "en": "The page exists in Croatian and English, linked both ways"
       },
-      "note": "obje stranice nose hreflang i međusobnu poveznicu"
+      "note": {
+        "hr": "obje stranice nose hreflang i međusobnu poveznicu",
+        "en": "both pages carry hreflang and link to each other"
+      }
     },
     {
       "id": "veze",
@@ -117,7 +138,10 @@
         "hr": "Svaka stranica ima barem 6 internih poveznica",
         "en": "Every page carries at least 6 internal links"
       },
-      "note": "hr 13 · en 12"
+      "note": {
+        "hr": "hr 13 · en 12",
+        "en": "hr 13 · en 12"
+      }
     }
   ],
   "totals": {
@@ -132,55 +156,55 @@
         "id": "zagreb",
         "items": 420,
         "newest": "2026-10-21T11:37:04.000Z",
-        "ageHours": 3.5
+        "ageHours": 3.7
       },
       {
         "id": "beograd",
         "items": 420,
         "newest": "2026-10-21T11:38:00.000Z",
-        "ageHours": 3.5
+        "ageHours": 3.7
       },
       {
         "id": "sarajevo",
         "items": 420,
         "newest": "2026-10-21T12:29:35.000Z",
-        "ageHours": 2.6
+        "ageHours": 2.8
       },
       {
         "id": "budimpesta",
         "items": 420,
         "newest": "2026-10-21T11:34:00.000Z",
-        "ageHours": 3.5
+        "ageHours": 3.8
       },
       {
         "id": "ljubljana",
         "items": 420,
         "newest": "2026-10-21T11:35:00.000Z",
-        "ageHours": 3.5
+        "ageHours": 3.7
       },
       {
         "id": "rim",
         "items": 420,
         "newest": "2026-10-21T11:27:08.000Z",
-        "ageHours": 3.6
+        "ageHours": 3.9
       },
       {
         "id": "sofija",
         "items": 407,
         "newest": "2026-10-21T11:38:23.000Z",
-        "ageHours": 3.4
+        "ageHours": 3.7
       },
       {
         "id": "bukurest",
         "items": 420,
         "newest": "2026-10-21T11:41:51.523Z",
-        "ageHours": 3.4
+        "ageHours": 3.6
       }
     ],
     "news": {
       "items": 300,
       "newest": "2026-10-21T14:27:21.000Z",
-      "ageHours": 0.6
+      "ageHours": 0.9
     },
     "proxies": {
       "allowed": 29,

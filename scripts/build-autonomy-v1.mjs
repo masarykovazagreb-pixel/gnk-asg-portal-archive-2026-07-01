@@ -89,18 +89,18 @@ function measure(criterion) {
         measured: min,
         actual: `${min} / ${criterion.value}`,
         state: min >= criterion.value ? 'ok' : 'fail',
-        note: channels.map((c) => `${c.id} ${c.items}`).join(' · '),
+        note: { hr: channels.map((c) => `${c.id} ${c.items}`).join(' · '), en: channels.map((c) => `${c.id} ${c.items}`).join(' · ') },
       };
     }
     case 'channel-fresh-hours': {
       const ages = channels.map((c) => c.ageHours).filter((n) => typeof n === 'number');
-      if (!ages.length) return { value: null, actual: '—', state: 'fail', note: 'nijedan kanal nema datum' };
+      if (!ages.length) return { actual: '—', state: 'fail', note: { hr: 'nijedan kanal nema datum', en: 'no channel carries a date' } };
       const max = Math.max(...ages);
       return {
         measured: round1(max),
         actual: `${round1(max)} h`,
         state: max <= criterion.value ? 'ok' : 'watch',
-        note: channels.map((c) => `${c.id} ${c.ageHours === null ? '—' : round1(c.ageHours) + ' h'}`).join(' · '),
+        note: (() => { const n = channels.map((c) => `${c.id} ${c.ageHours === null ? '—' : round1(c.ageHours) + ' h'}`).join(' · '); return { hr: n, en: n }; })(),
       };
     }
     case 'source-images': {
@@ -109,8 +109,9 @@ function measure(criterion) {
       return {
         measured: proxied && !fallback ? 1 : 0,
         actual: proxied && !fallback ? 'posrednik' : (fallback ? 'zamjenske ilustracije' : 'bez posrednika'),
+        actualEn: proxied && !fallback ? 'proxy' : (fallback ? 'shared artwork' : 'no proxy'),
         state: proxied && !fallback ? 'ok' : 'fail',
-        note: proxied ? '/api/img?u= prisutan' : 'u portalu nema poziva posredniku',
+        note: proxied ? { hr: '/api/img?u= prisutan', en: '/api/img?u= present' } : { hr: 'u portalu nema poziva posredniku', en: 'the portal makes no proxy call' },
       };
     }
     case 'proxy-allowlist': {
@@ -120,8 +121,8 @@ function measure(criterion) {
         actual: `${allow.size} / ${feedHosts.size}`,
         state: equal ? 'ok' : 'fail',
         note: equal
-          ? 'popis i feed se podudaraju u cijelosti'
-          : `nedostaje: ${hostsMissing.join(', ') || '—'} · višak: ${hostsExtra.join(', ') || '—'}`,
+          ? { hr: 'popis i feed se podudaraju u cijelosti', en: 'the list and the feed match exactly' }
+          : { hr: `nedostaje: ${hostsMissing.join(', ') || '—'} · višak: ${hostsExtra.join(', ') || '—'}`, en: `missing: ${hostsMissing.join(', ') || '—'} · extra: ${hostsExtra.join(', ') || '—'}` },
       };
     }
     case 'desk-images': {
@@ -130,23 +131,23 @@ function measure(criterion) {
         actual: `${desksWithImages.length} / ${DESK_IDS.length}`,
         state: desksWithImages.length === DESK_IDS.length ? 'ok' : 'watch',
         note: desksWithImages.length === DESK_IDS.length
-          ? 'svaki desk ima sliku u objavljenom HTML-u'
-          : `bez slike: ${DESK_IDS.filter((d) => !desksWithImages.includes(d)).join(', ')}`,
+          ? { hr: 'svaki desk ima sliku u objavljenom HTML-u', en: 'every desk carries an image in the published HTML' }
+          : { hr: `bez slike: ${DESK_IDS.filter((d) => !desksWithImages.includes(d)).join(', ')}`, en: `without an image: ${DESK_IDS.filter((d) => !desksWithImages.includes(d)).join(', ')}` },
       };
     }
     case 'news-fresh-hours': {
-      if (newsAge === null) return { value: null, actual: '—', state: 'fail', note: 'news.json nema datum' };
+      if (newsAge === null) return { actual: '—', state: 'fail', note: { hr: 'news.json nema datum', en: 'news.json carries no date' } };
       return {
         measured: round1(newsAge),
         actual: `${round1(newsAge)} h`,
         state: newsAge <= criterion.value ? 'ok' : 'watch',
-        note: `${newsItems.length} zapisa · najnoviji ${newsNewest || '—'}`,
+        note: { hr: `${newsItems.length} zapisa · najnoviji ${newsNewest || '—'}`, en: `${newsItems.length} items · newest ${newsNewest || '—'}` },
       };
     }
     case 'bilingual':
     case 'links-min':
       // Mjeri se nad upravo generiranim HTML-om (vidi MeasureSelf niže).
-      return { actual: '—', state: 'ok', note: '' };
+      return { actual: '—', state: 'ok', note: { hr: '', en: '' } };
     default:
       return { value: null, actual: '—', state: 'fail', note: `nepoznat tip: ${criterion.type}` };
   }
@@ -309,7 +310,7 @@ function render(lang, rows) {
         '@type': 'ListItem',
         position: i + 1,
         name: r.label[lang],
-        description: `${r.actual} · ${stateLabel[lang][r.state]}`,
+        description: `${lang === 'en' && r.actualEn ? r.actualEn : r.actual} · ${stateLabel[lang][r.state]}`,
       })),
     },
     {
@@ -355,7 +356,7 @@ function render(lang, rows) {
       ${plan.pipeline.map((s) => `<article class="au-step">
         <h3>${esc(s[lang])}</h3>
         <p>${esc(s.detail[lang])}</p>
-        <small><b>${esc(s.owner)}</b><br>${esc(s.cadence)}</small>
+        <small><b>${esc(s.owner)}</b><br>${esc(lang === 'en' && s.cadenceEn ? s.cadenceEn : s.cadence)}</small>
       </article>`).join('\n      ')}
     </div>
   </div></section>
@@ -367,9 +368,9 @@ function render(lang, rows) {
       <thead><tr><th>${t('Kriterij', 'Criterion')}</th><th>${t('Stanje', 'State')}</th><th>${t('Vrijednost', 'Value')}</th><th>${t('Vlasnik', 'Owner')}</th></tr></thead>
       <tbody>
       ${rows.map((r) => `<tr>
-        <td><a href="${r.route}">${esc(r.label[lang])}</a><span class="au-note">${esc(r.note)}</span></td>
+        <td><a href="${r.route}">${esc(r.label[lang])}</a><span class="au-note">${esc(typeof r.note === 'string' ? r.note : (r.note?.[lang] || ''))}</span></td>
         <td><span class="au-state ${r.state}" data-criterion="${esc(r.id)}" data-state="${r.state}">${ic[r.state]} ${esc(stateLabel[lang][r.state])}</span></td>
-        <td>${esc(r.actual)}</td>
+        <td>${esc(lang === 'en' && r.actualEn ? r.actualEn : r.actual)}</td>
         <td><span class="au-owner">${esc(r.owner)}</span></td>
       </tr>`).join('\n      ')}
       </tbody>
@@ -398,7 +399,7 @@ function render(lang, rows) {
   <section class="au-band" id="sljedece"><div class="au-wrap">
     <h2>${t('Što je sada otvoreno', 'What is open right now')}</h2>
     <p class="au-sub">${esc(plan.next[lang])}</p>
-    ${open.length ? `<ul class="au-next">${open.map((r) => `<li><b>${esc(r.label[lang])}</b><span>${esc(r.actual)} · ${esc(r.owner)} · <a href="${r.route}">${t('provjeri', 'check')} →</a></span></li>`).join('')}</ul>`
+    ${open.length ? `<ul class="au-next">${open.map((r) => `<li><b>${esc(r.label[lang])}</b><span>${esc(lang === 'en' && r.actualEn ? r.actualEn : r.actual)} · ${esc(r.owner)} · <a href="${r.route}">${t('provjeri', 'check')} →</a></span></li>`).join('')}</ul>`
       : `<p><strong>${t('Nema otvorenih kriterija u ovom mjerenju.', 'No open criteria in this measurement.')}</strong> ${t('To vrijedi do sljedećeg ciklusa — ploča se mjeri iznova svakih šest sati.', 'That holds until the next cycle — the board is measured again every six hours.')}</p>`}
   </div></section>
 </main>
@@ -456,14 +457,16 @@ for (const criterion of criteria) {
     criterion.state = ok ? 'ok' : 'fail';
     criterion.actual = ok ? 'hr + en' : 'nedostaje veza';
     criterion.value = ok ? 1 : 0;
-    criterion.note = ok ? 'obje stranice nose hreflang i međusobnu poveznicu' : 'jedna stranica ne vodi na drugu';
+    criterion.note = ok
+      ? { hr: 'obje stranice nose hreflang i međusobnu poveznicu', en: 'both pages carry hreflang and link to each other' }
+      : { hr: 'jedna stranica ne vodi na drugu', en: 'one page does not link to the other' };
   }
   if (criterion.type === 'links-min') {
     const min = Math.min(internalLinks(hrHtml), internalLinks(enHtml));
     const target = Number(criterion.value) || 6;
     criterion.state = min >= target ? 'ok' : 'fail';
     criterion.actual = `${min} / ${target}`;
-    criterion.note = `hr ${internalLinks(hrHtml)} · en ${internalLinks(enHtml)}`;
+    criterion.note = { hr: `hr ${internalLinks(hrHtml)} · en ${internalLinks(enHtml)}`, en: `hr ${internalLinks(hrHtml)} · en ${internalLinks(enHtml)}` };
     criterion.measured = min;
   }
 }
