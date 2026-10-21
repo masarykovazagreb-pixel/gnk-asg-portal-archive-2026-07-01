@@ -4,7 +4,7 @@
   "lang": "hr",
   "city": "Zagreb",
   "country": "Hrvatska",
-  "updatedAt": "2026-10-21T04:30:15.014Z",
+  "updatedAt": "2026-10-21T11:38:58.424Z",
   "sources": [
     {
       "id": "index",
@@ -13,7 +13,7 @@
       "ok": true,
       "fetched": 150,
       "errors": [],
-      "checkedAt": "2026-10-21T04:30:09.291Z"
+      "checkedAt": "2026-10-21T11:38:52.301Z"
     },
     {
       "id": "jutarnji",
@@ -22,16 +22,18 @@
       "ok": true,
       "fetched": 50,
       "errors": [],
-      "checkedAt": "2026-10-21T04:30:10.006Z"
+      "checkedAt": "2026-10-21T11:38:52.845Z"
     },
     {
       "id": "poslovni",
       "name": "Poslovni dnevnik",
       "url": "https://www.poslovni.hr/feed/",
-      "ok": true,
-      "fetched": 20,
-      "errors": [],
-      "checkedAt": "2026-10-21T04:30:10.757Z"
+      "ok": false,
+      "fetched": 0,
+      "errors": [
+        "https://www.poslovni.hr/feed/: HTTP 403"
+      ],
+      "checkedAt": "2026-10-21T11:38:54.395Z"
     },
     {
       "id": "tportal",
@@ -40,7 +42,7 @@
       "ok": true,
       "fetched": 20,
       "errors": [],
-      "checkedAt": "2026-10-21T04:30:12.193Z"
+      "checkedAt": "2026-10-21T11:38:55.830Z"
     },
     {
       "id": "hrt",
@@ -51,7 +53,7 @@
       "errors": [
         "https://vijesti.hrt.hr/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-21T04:30:13.616Z"
+      "checkedAt": "2026-10-21T11:38:57.287Z"
     },
     {
       "id": "n1hr",
@@ -60,7 +62,7 @@
       "ok": true,
       "fetched": 50,
       "errors": [],
-      "checkedAt": "2026-10-21T04:30:14.445Z"
+      "checkedAt": "2026-10-21T11:38:57.818Z"
     },
     {
       "id": "telegram",
@@ -69,10 +71,537 @@
       "ok": true,
       "fetched": 10,
       "errors": [],
-      "checkedAt": "2026-10-21T04:30:15.013Z"
+      "checkedAt": "2026-10-21T11:38:58.423Z"
     }
   ],
   "items": [
+    {
+      "slug": "zagreb-2026-10-21-jutarnji-krenuo-je-motikom-na-novinara-nasred-4bdb1c",
+      "title": "Krenuo je motikom na novinara nasred splitske Rive. Objavljeno kakvu je kaznu dobio",
+      "summary": "Čovjek koji je u svibnju na splitskoj Rivi verbalno napao novinara Sinišu Vukovića, nakon čega je uzeo motiku s jednog od tamošnjih štandova i krenuo prema njemu s namjerom da ga i fizički napadne, Općinski sud u Splitu osudio je na šest mjeseci zatvora, uvjetno, s tri godine kušnje, piše Slobodna D...",
+      "date": "2026-10-21T11:37:04.000Z",
+      "url": "https://www.jutarnji.hr/vijesti/crna-kronika/krenuo-je-motikom-na-novinara-nasred-splitske-rive-objavljeno-kakvu-je-kaznu-dobio-15757865",
+      "source": "jutarnji",
+      "sourceName": "Jutarnji list",
+      "categories": [
+        "Crna kronika"
+      ],
+      "author": "redakcija@jutarnji.hr",
+      "theme": "drustvo",
+      "image": "https://media.jutarnji.hr/images/slike/2026/10/21/f_39359329_1280.jpg?1792582730",
+      "imageAlt": "Krenuo je motikom na novinara nasred splitske Rive. Objavljeno kakvu je kaznu dobio",
+      "addedAt": "2026-10-21T11:38:52.846Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-n1hr-novi-zetoncici-dvojica-oporbenjaka-bila-ae0798",
+      "title": "Novi \"žetončići\"? Dvojica oporbenjaka bila suzdržana pri glasovanju o povjerenju Plenkovićevoj Vladi",
+      "summary": "Saborski zastupnici Branko Kolarić i Ivica Baksa, koji formalno ne pripadaju vladajućoj većini, ostali su suzdržani tijekom glasovanja o povjerenju Vl",
+      "date": "2026-10-21T11:36:17.000Z",
+      "url": "https://n1info.hr/vijesti/novi-zetoncici-dvojica-oporbenjaka-bila-suzdrzana-pri-glasovanju-o-povjerenju-plenkovicevoj-vladi/",
+      "source": "n1hr",
+      "sourceName": "N1 Hrvatska",
+      "categories": [
+        "Vijesti",
+        "ivica baksa",
+        "vlada andreja plenkovića",
+        "andrej plenković"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://n1info.hr/media/images/2026/10/21/1792582328_PXL_080725_135246790.width-1200.jpg",
+      "imageAlt": "Novi \"žetončići\"? Dvojica oporbenjaka bila suzdržana pri glasovanju o povjerenju Plenkovićevoj Vladi",
+      "addedAt": "2026-10-21T11:38:57.818Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-telegram-osuden-tip-koji-je-motikom-na-splitskoj-71bcb9",
+      "title": "Osuđen tip koji je motikom na splitskoj Rivi ganjao novinara Novosti. ‘Neće vam uspjeti, ustaška klateži!’",
+      "summary": "57-godišnji muškarac je proglašen krivim za kazneno djelo prijetnje počinjeno prema novinaru",
+      "date": "2026-10-21T11:33:59.000Z",
+      "url": "https://www.telegram.hr/vijesti/osuden-tip-koji-je-motikom-na-splitskoj-rivi-ganjao-novinara-novosti-nece-vam-uspjeti-ustaska-klatezi/",
+      "source": "telegram",
+      "sourceName": "Telegram.hr",
+      "categories": [
+        "Vijesti",
+        "Split",
+        "napad",
+        "presuda"
+      ],
+      "author": "Matej Devčić",
+      "theme": "drustvo",
+      "image": "https://www.telegram.hr/wp-content/uploads/2026/10/pxl-180123-97837497-150x150.jpg",
+      "imageAlt": "Osuđen tip koji je motikom na splitskoj Rivi ganjao novinara Novosti. ‘Neće vam uspjeti, ustaška klateži!’",
+      "addedAt": "2026-10-21T11:38:58.423Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-jutarnji-coric-drzava-ce-na-kraju-godine-imati-76ca68",
+      "title": "Ćorić: ‘Država će na kraju godine imati manjak od četiri milijarde eura‘",
+      "summary": "Planirani rashodi državnog proračuna krajem ove godine bit će četiri milijarde eura veći od projiciranih prihoda, dok će udio javnog duga u BDP-u s 56,3 posto biti smanjen na 55,5 posto, rekao je ministar financija Tomislav Ćorić, predstavljajući u srijedu rebalans proračuna u Hrvatskom saboru. Prih...",
+      "date": "2026-10-21T11:33:42.000Z",
+      "url": "https://www.jutarnji.hr/vijesti/hrvatska/coric-drzava-ce-na-kraju-godine-imati-manjak-od-cetiri-milijarde-eura-15757863",
+      "source": "jutarnji",
+      "sourceName": "Jutarnji list",
+      "categories": [
+        "Hrvatska"
+      ],
+      "author": "redakcija@jutarnji.hr",
+      "theme": "politika",
+      "image": "https://media.jutarnji.hr/images/slike/2026/10/21/f_39813736_1280.jpg?1792582730",
+      "imageAlt": "Ćorić: ‘Država će na kraju godine imati manjak od četiri milijarde eura‘",
+      "addedAt": "2026-10-21T11:38:52.846Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-telegram-novi-model-umjetne-inteligencije-mogao-bi-9b964c",
+      "title": "Novi model umjetne inteligencije mogao bi pomoći u otkrivanju genetskog rizika od moždanog udara",
+      "summary": "Model se temelji na tehnologiji koja se koristi i u velikim jezičnim modelima poput ChatGPT-a",
+      "date": "2026-10-21T11:30:31.000Z",
+      "url": "https://www.telegram.hr/pitanje-zdravlja/novosti/ai-model-pomoc-u-otkrivanju-genetskog-rizika-od-mozdanog-udara/",
+      "source": "telegram",
+      "sourceName": "Telegram.hr",
+      "categories": [
+        "Pitanje zdravlja",
+        "Novosti",
+        "Chat GPT",
+        "moždani udar"
+      ],
+      "author": "PitanjeZdravlja",
+      "theme": "ai",
+      "image": "https://www.telegram.hr/wp-content/uploads/2026/10/novi-ai-model-mogao-bi-pomoci-u-otkrivanju-genetskog-rizika-od-mozdanog-udara-150x150.jpg",
+      "imageAlt": "Novi model umjetne inteligencije mogao bi pomoći u otkrivanju genetskog rizika od moždanog udara",
+      "addedAt": "2026-10-21T11:38:58.423Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-telegram-povjerenica-za-prosirenje-crnoj-gori-a6f00c",
+      "title": "Povjerenica za proširenje Crnoj Gori poručila da bez dogovora s Hrvatskom nema članstva u EU",
+      "summary": "Smatra da je potpisivanje pristupnog ugovora do ljeta 2027. realno",
+      "date": "2026-10-21T11:29:29.000Z",
+      "url": "https://www.telegram.hr/politika-kriminal/povjerenica-za-prosirenje-crnoj-gori-porucila-da-bez-dogovora-s-hrvatskom-nema-clanstva-u-eu/",
+      "source": "telegram",
+      "sourceName": "Telegram.hr",
+      "categories": [
+        "Politika & Kriminal",
+        "Andrej Plenković",
+        "Crna Gora",
+        "marta kos"
+      ],
+      "author": "Mirta Vranješ, Hina",
+      "theme": "drustvo",
+      "image": "https://www.telegram.hr/wp-content/uploads/2026/07/afp-20260129-aa-29012026-2627627-v1-midres-euforeignaffairscouncilmeetinginbrus-150x150.jpg",
+      "imageAlt": "Povjerenica za proširenje Crnoj Gori poručila da bez dogovora s Hrvatskom nema članstva u EU",
+      "addedAt": "2026-10-21T11:38:58.424Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-n1hr-coric-drzava-ce-na-kraju-godine-imati-0d2e3b",
+      "title": "Ćorić: Država će na kraju godine imati manjak od četiri milijarde eura",
+      "summary": "Planirani rashodi državnog proračuna krajem ove godine bit će četiri milijarde eura veći od projiciranih prihoda, dok će udio javnog duga u BDP-u s 56",
+      "date": "2026-10-21T11:29:00.000Z",
+      "url": "https://n1info.hr/biznis/coric-drzava-ce-na-kraju-godine-imati-manjak-od-cetiri-milijarde-eura/",
+      "source": "n1hr",
+      "sourceName": "N1 Hrvatska",
+      "categories": [
+        "Ekonomija",
+        "tomislav ćorić",
+        "proračun"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://n1info.hr/media/images/2026/2/1770648475_Tomislav_Coric_N1.width-1200.jpeg",
+      "imageAlt": "Ćorić: Država će na kraju godine imati manjak od četiri milijarde eura",
+      "addedAt": "2026-10-21T11:38:57.818Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-jutarnji-pobjeda-je-zamazala-oci-od-starta-se-vide-f1db18",
+      "title": "‘Pobjeda je zamazala oči, od starta se vide problemi! Da je Dinamo doveo Šotičeka, bi li bio ovakav?‘",
+      "summary": "Hajduk i Dinamo u četvrtak igraju utakmice Konferencijske odnosno Europske lige. U trenutku ulaska u studio ukupno je bilo prodano nešto manje od 11.200 ulaznica za utakmicu Dinamo - NEC. U brojku su uračunate i godišnje ulaznice... - Kod zagrebačke publike je definitivno stvar kakvog je raspoloženj...",
+      "date": "2026-10-21T11:27:19.000Z",
+      "url": "https://www.jutarnji.hr/sportske/kosarka/hrvatska-liga/pobjeda-je-zamazala-oci-od-starta-se-vide-problemi-da-je-dinamo-doveo-soticeka-bi-li-bio-ovakav-15757859",
+      "source": "jutarnji",
+      "sourceName": "Jutarnji list",
+      "categories": [
+        "Hrvatska liga"
+      ],
+      "author": "Hrvoje.sliskovic@hanzamedia.hr (Hrvoje Slišković)",
+      "theme": "sport",
+      "image": "https://media.jutarnji.hr/images/slike/2026/10/21/f_39808631_1280.jpg?1792582730",
+      "imageAlt": "‘Pobjeda je zamazala oči, od starta se vide problemi! Da je Dinamo doveo Šotičeka, bi li bio ovakav?‘",
+      "addedAt": "2026-10-21T11:38:52.846Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-tportal-ne-mogu-sakriti-kada-im-netko-ide-na-zivce-766059",
+      "title": "Ne mogu sakriti kada im netko ide na živce: Ovim znakovima sve se vidi na licu",
+      "summary": "Dovoljan je jedan pogled, podignuta obrva ili promjena izraza lica da svima postane jasno kako im nešto nije po volji. Ova tri horoskopska znaka posebno teško skrivaju nezadovoljstvo, a čak i kada odluče prešutjeti ono što misle, njihove reakcije često govore više od riječi",
+      "date": "2026-10-21T11:27:00.000Z",
+      "url": "https://www.tportal.hr/lifestyle/clanak/ne-mogu-sakriti-kada-im-netko-ide-na-zivce-ovim-znakovima-sve-se-vidi-na-licu-foto-20261021",
+      "source": "tportal",
+      "sourceName": "tportal",
+      "categories": [
+        "Lifestyle"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.tportal.hr/media/thumbnail/500x300/2814328.jpeg?cropId=4312475",
+      "imageAlt": "Ne mogu sakriti kada im netko ide na živce: Ovim znakovima sve se vidi na licu",
+      "addedAt": "2026-10-21T11:38:55.831Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-tportal-priveden-bivsi-sef-madarske-sredisnje-banke-7e5cd8",
+      "title": "Priveden bivši šef mađarske središnje banke: Istražitelji češljaju aferu tešku više od milijardu eura",
+      "summary": "Bivši guverner mađarske središnje banke György Matolcsy priveden je u srijedu ujutro zbog sumnje na gospodarsku prijevaru i korištenje krivotvorene privatne isprave. Slučaj je dio šire istrage o poslovanju fondacija povezanih sa središnjom bankom, iz kojih je, prema ranijim nalazima revizora, nestala imovina vrijedna stotine milijardi forinti",
+      "date": "2026-10-21T11:24:49.000Z",
+      "url": "https://www.tportal.hr/vijesti/clanak/priveden-bivsi-sef-madarske-sredisnje-banke-istrazitelji-cesljaju-aferu-tesku-vise-od-milijardu-eura-20261021",
+      "source": "tportal",
+      "sourceName": "tportal",
+      "categories": [
+        "Vijesti"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://www.tportal.hr/media/thumbnail/500x300/2814525.jpeg?cropId=0",
+      "imageAlt": "Priveden bivši šef mađarske središnje banke: Istražitelji češljaju aferu tešku više od milijardu eura",
+      "addedAt": "2026-10-21T11:38:55.831Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-jutarnji-video-ukrajincima-se-vjerojatno-okrece-777a13",
+      "title": "VIDEO Ukrajincima se vjerojatno okreće želudac kada su čuli što je Witkoff poručio Putinu",
+      "summary": "Američki posebni izaslanik Steve Witkoff sastao se s ruskim predsjednikom Vladimirom Putinom u Sankt Peterburgu kako bi razgovarali o mogućnostima završetka rata u Ukrajini. Tijekom susreta Witkoff je pohvalio ruskog predsjednika i nazvao ga humanitarcem, unatoč tome što Rusija već više od četiri i...",
+      "date": "2026-10-21T11:22:45.000Z",
+      "url": "https://www.jutarnji.hr/vijesti/svijet/video-ukrajincima-se-vjerojatno-okrece-zeludac-kada-su-culi-sto-je-witkoff-porucio-putinu-15757856",
+      "source": "jutarnji",
+      "sourceName": "Jutarnji list",
+      "categories": [
+        "Svijet"
+      ],
+      "author": "redakcija@jutarnji.hr",
+      "theme": "rat",
+      "image": "https://media.jutarnji.hr/images/slike/2026/10/21/f_39813583_1280.jpg?1792582730",
+      "imageAlt": "VIDEO Ukrajincima se vjerojatno okreće želudac kada su čuli što je Witkoff poručio Putinu",
+      "addedAt": "2026-10-21T11:38:52.846Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-n1hr-klauski-cudi-me-da-plenkovic-nije-trazio-7f0fb7",
+      "title": "Klauški: Čudi me da Plenković nije tražio autogram od Penave. Dobit ćemo nove šatoraše, opasnije od starih",
+      "summary": "Komentator 24sata Tomislav Klauški, u N1 studiju uživo kod naše Nine Kljenak, komentirao je \"razumijevanje\" premijera Andreja Plenkovića za napad Ivan",
+      "date": "2026-10-21T11:22:02.000Z",
+      "url": "https://n1info.hr/vijesti/klauski-cudi-me-da-plenkovic-nije-trazio-autogram-od-penave-dobit-cemo-nove-satorase-opasnije-od-starih/",
+      "source": "n1hr",
+      "sourceName": "N1 Hrvatska",
+      "categories": [
+        "Vijesti",
+        "šatoraši",
+        "vlada andreja plenkovića",
+        "dp"
+      ],
+      "author": "",
+      "theme": "rat",
+      "image": "https://n1info.hr/media/images/2026/10/21/1792581262_Snimka_zaslona_2026-10-21_120144.width-1200.png",
+      "imageAlt": "Klauški: Čudi me da Plenković nije tražio autogram od Penave. Dobit ćemo nove šatoraše, opasnije od starih",
+      "addedAt": "2026-10-21T11:38:57.818Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-index-sdp-i-mozemo-traze-smjenu-uprave-fonda-za-6265b2",
+      "title": "SDP i Možemo traže smjenu Uprave Fonda za zaštitu okoliša",
+      "summary": "SABORSKI zastupnici SDP-a i Možemo! zatražili su smjenu Uprave Fonda za zaštitu okoliša i energetsku učinkovitost zbog, kako kažu, 640 milijuna eura viška kojeg drže na računu i zarađuju na kamatama.",
+      "date": "2026-10-21T11:22:00.000Z",
+      "url": "https://www.index.hr/vijesti/clanak/sdp-i-mozemo-traze-smjenu-uprave-fonda-za-zastitu-okolisa/2848125.aspx",
+      "source": "index",
+      "sourceName": "Index.hr",
+      "categories": [
+        "Vijesti"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://bucket.index.hr/b/index/0145492c-152e-4461-9379-5cdce3e078da.png",
+      "imageAlt": "SDP i Možemo traže smjenu Uprave Fonda za zaštitu okoliša",
+      "addedAt": "2026-10-21T11:38:52.326Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-tportal-oporba-trazi-smjene-u-fondu-640-milijuna-cc6204",
+      "title": "Oporba traži smjene u Fondu: 640 milijuna eura na računu, a komunalci čekaju novac za otpad",
+      "summary": "Saborski zastupnici SDP-a i Možemo! zatražili su u srijedu smjenu Uprave Fonda za zaštitu okoliša i energetsku učinkovitost zbog, kako kažu, 640 milijuna eura viška kojeg drže na računu i zarađuju na kamatama dok istodobno ne ulažu u infrastrukturu i ne isplaćuju naknade komunalnim društvima",
+      "date": "2026-10-21T11:19:00.000Z",
+      "url": "https://www.tportal.hr/vijesti/clanak/oporba-trazi-smjene-u-fondu-640-milijuna-eura-na-racunu-a-komunalci-cekaju-novac-za-otpad-20261021",
+      "source": "tportal",
+      "sourceName": "tportal",
+      "categories": [
+        "Vijesti"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://www.tportal.hr/media/thumbnail/500x300/2814523.jpeg?cropId=0",
+      "imageAlt": "Oporba traži smjene u Fondu: 640 milijuna eura na računu, a komunalci čekaju novac za otpad",
+      "addedAt": "2026-10-21T11:38:55.831Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-index-knez-lihtenstajna-ulozio-veto-na-zakon-o-ca32ee",
+      "title": "Knez Lihtenštajna uložio veto na zakon o pobačaju",
+      "summary": "NASLJEDNI knez Lihtenštajna Alois vetom je blokirao zakon o legalizaciji pobačaja, unatoč potpori četvrtine birača i parlamenta. Žene će i dalje morati putovati u inozemstvo za taj zahvat.",
+      "date": "2026-10-21T11:18:00.000Z",
+      "url": "https://www.index.hr/vijesti/clanak/knez-lihtenstajna-ulozio-veto-na-zakon-o-pobacaju/2848120.aspx",
+      "source": "index",
+      "sourceName": "Index.hr",
+      "categories": [
+        "Vijesti"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://bucket.index.hr/b/index/07627ce4-95fb-40e3-831a-c44a5f65eca7.png",
+      "imageAlt": "Knez Lihtenštajna uložio veto na zakon o pobačaju",
+      "addedAt": "2026-10-21T11:38:52.326Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-index-zbog-nereda-odgode-nogometne-utakmice-u-74ca51",
+      "title": "Zbog nereda odgode nogometne utakmice u Francuskoj",
+      "summary": "NEMIRI u Francuskoj ometaju kalendar natjecanja.",
+      "date": "2026-10-21T11:17:00.000Z",
+      "url": "https://www.index.hr/sport/clanak/zbog-nereda-odgode-nogometne-utakmice-u-francuskoj/2848123.aspx",
+      "source": "index",
+      "sourceName": "Index.hr",
+      "categories": [
+        "Sport"
+      ],
+      "author": "",
+      "theme": "sport",
+      "image": "https://bucket.index.hr/b/index/86d896c2-e70c-439c-9937-7f62995b80c4.png",
+      "imageAlt": "Zbog nereda odgode nogometne utakmice u Francuskoj",
+      "addedAt": "2026-10-21T11:38:52.326Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-index-priscilla-presley-81-sa-sinom-posjetila-4ac127",
+      "title": "Priscilla Presley (81) sa sinom posjetila Njemačku, gdje je upoznala Elvisa",
+      "summary": "POSJETILI su grad Baesweiler, mjesto gdje je upoznala Elvisa.",
+      "date": "2026-10-21T11:17:00.000Z",
+      "url": "https://www.index.hr/magazin/clanak/priscilla-presley-81-sa-sinom-posjetila-njemacku-gdje-je-upoznala-elvisa/2848118.aspx",
+      "source": "index",
+      "sourceName": "Index.hr",
+      "categories": [
+        "Magazin"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://bucket.index.hr/b/index/03911b94-0f8d-4533-8488-0aed6a7c94e1.png",
+      "imageAlt": "Priscilla Presley (81) sa sinom posjetila Njemačku, gdje je upoznala Elvisa",
+      "addedAt": "2026-10-21T11:38:52.326Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-tportal-sutra-igraju-protiv-hajduka-a-u-klubu-kaos-8e0b4c",
+      "title": "Sutra igraju protiv Hajduka, a u klubu kaos: Trener šokirao svlačionicu drastičnom odlukom",
+      "summary": "Hajduk u četvrtak nastavlja europsku avanturu, a uoči gostovanja kod aktualnog švicarskog prvaka Thuna iz protivničkog tabora stižu vijesti koje otkrivaju koliko je situacija u klubu postala ozbiljna. Momčad koja je prošle sezone senzacionalno osvojila prvenstvo sada se muči s rezultatima, niže poraze i teško pronalazi izlaz iz krize. A problemi očito nisu ograničeni samo na travnjak. Trener Gian-Luca Privitelli nedavno je povukao drastičan potez i privremeno oduzeo kapetansku traku dvojici najvažnijih vođa momčadi, izazvavši iznenađenje i nezadovoljstvo u svlačionici.",
+      "date": "2026-10-21T11:17:00.000Z",
+      "url": "https://www.tportal.hr/sport/clanak/sutra-igraju-protiv-hajduka-a-u-klubu-kaos-trener-sokirao-svlacionicu-drasticnom-odlukom-20261021",
+      "source": "tportal",
+      "sourceName": "tportal",
+      "categories": [
+        "Sport"
+      ],
+      "author": "",
+      "theme": "sport",
+      "image": "https://www.tportal.hr/media/thumbnail/500x300/2813454.jpeg?cropId=0",
+      "imageAlt": "Sutra igraju protiv Hajduka, a u klubu kaos: Trener šokirao svlačionicu drastičnom odlukom",
+      "addedAt": "2026-10-21T11:38:55.831Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-n1hr-ruski-dizel-stize-u-ameriku-trump-i-putin-7e261b",
+      "title": "Ruski dizel stiže u Ameriku: Trump i Putin postigli dogovor koji je razljutio Ukrajinu i EU",
+      "summary": "Rusija bi u četvrtak trebala poslati prvu pošiljku dizela u Sjedinjene Države na temelju spornog sporazuma između američkog predsjednika Donalda Trump",
+      "date": "2026-10-21T11:16:45.000Z",
+      "url": "https://n1info.hr/svijet/ruski-dizel-stize-u-ameriku-trump-i-putin-postigli-dogovor-koji-je-razljutio-ukrajinu-i-eu/",
+      "source": "n1hr",
+      "sourceName": "N1 Hrvatska",
+      "categories": [
+        "Svijet",
+        "vijesti iz svijeta",
+        "rat u ukrajini",
+        "dizel"
+      ],
+      "author": "",
+      "theme": "rat",
+      "image": "https://n1info.hr/media/images/2026/10/14/1791993327_dogovor.width-1200.jpg",
+      "imageAlt": "Ruski dizel stiže u Ameriku: Trump i Putin postigli dogovor koji je razljutio Ukrajinu i EU",
+      "addedAt": "2026-10-21T11:38:57.819Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-telegram-orao-zabavlja-navijace-crystal-palacea-ali-68d238",
+      "title": "Orao zabavlja navijače Crystal Palacea, ali sada traže zabranu njegova pojavljivanja na stadionu",
+      "summary": "Organizacija za zaštitu životinja zatražila je od londonskog kluba da prestane koristiti orla",
+      "date": "2026-10-21T11:15:44.000Z",
+      "url": "https://www.telegram.hr/telesport/na-prvu/orao-zabavlja-navijace-crystal-palacea-ali-sada-traze-zabranu-njegova-pojavljivanja-na-stadionu/",
+      "source": "telegram",
+      "sourceName": "Telegram.hr",
+      "categories": [
+        "Na prvu",
+        "Telesport",
+        "Crystal Palace"
+      ],
+      "author": "Telesport",
+      "theme": "sport",
+      "image": "https://www.telegram.hr/wp-content/uploads/2026/10/profimedia-1132555481-e1792581005616-150x150.jpg",
+      "imageAlt": "Orao zabavlja navijače Crystal Palacea, ali sada traže zabranu njegova pojavljivanja na stadionu",
+      "addedAt": "2026-10-21T11:38:58.424Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-index-ruski-dizel-sutra-krece-prema-americi-e9a55d",
+      "title": "Ruski dizel sutra kreće prema Americi",
+      "summary": "TRUMP i Putin dogovorili su početkom listopada nastavak ruskih isporuka dizela u SAD.",
+      "date": "2026-10-21T11:15:00.000Z",
+      "url": "https://www.index.hr/vijesti/clanak/ruski-dizel-sutra-krece-prema-americi/2848124.aspx",
+      "source": "index",
+      "sourceName": "Index.hr",
+      "categories": [
+        "Vijesti"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://bucket.index.hr/b/index/9a3b3b5b-a8ad-4289-9ce4-ce721529a4b3.png",
+      "imageAlt": "Ruski dizel sutra kreće prema Americi",
+      "addedAt": "2026-10-21T11:38:52.326Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-n1hr-sdp-i-mozemo-traze-smjenu-uprave-fonda-za-eed960",
+      "title": "SDP i Možemo! traže smjenu Uprave Fonda za zaštitu okoliša",
+      "summary": "Saborski zastupnici SDP-a i Možemo! zatražili su u srijedu smjenu Uprave Fonda za zaštitu okoliša i energetsku učinkovitost zbog, kako kažu, 640 milij",
+      "date": "2026-10-21T11:12:24.000Z",
+      "url": "https://n1info.hr/vijesti/sdp-i-mozemo-traze-smjenu-uprave-fonda-za-zastitu-okolisa/",
+      "source": "n1hr",
+      "sourceName": "N1 Hrvatska",
+      "categories": [
+        "Vijesti",
+        "možemo",
+        "fond za zaštitu okoliša",
+        "sdp"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://n1info.hr/media/images/2026/8/11/1786444463_502803be-5574-48fa-8852-1de2826caca7.width-1200.jpg",
+      "imageAlt": "SDP i Možemo! traže smjenu Uprave Fonda za zaštitu okoliša",
+      "addedAt": "2026-10-21T11:38:57.819Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-n1hr-niko-kovac-postaje-najplaceniji-hrvatski-b77167",
+      "title": "Niko Kovač postaje najplaćeniji hrvatski trener u povijesti: Evo koliko će zarađivati",
+      "summary": "Borussia Dortmund bogato je nagradila hrvatskog stručnjaka novim ugovorom, a njegova godišnja primanja premašit će čak i ona Zlatka Dalića u Ujedinjen",
+      "date": "2026-10-21T11:10:06.000Z",
+      "url": "https://n1info.hr/sport-klub/nogomet/niko-kovac-postaje-najplaceniji-hrvatski-trener-u-povijesti-evo-koliko-ce-zaradjivati/",
+      "source": "n1hr",
+      "sourceName": "N1 Hrvatska",
+      "categories": [
+        "Nogomet",
+        "visoka plaća",
+        "nogometni trener",
+        "borussia dortmund"
+      ],
+      "author": "",
+      "theme": "sport",
+      "image": "https://n1info.hr/media/images/2026/10/21/1792580982_000_D34C6T3.width-1200.jpg",
+      "imageAlt": "Niko Kovač postaje najplaćeniji hrvatski trener u povijesti: Evo koliko će zarađivati",
+      "addedAt": "2026-10-21T11:38:57.819Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-jutarnji-trazi-se-smjena-uprave-drzavnog-fonda-imaju-885e3f",
+      "title": "Traži se smjena uprave državnog fonda: ‘Imaju 640 milijuna eura viška na računu i zarađuju na kamatama!‘",
+      "summary": "Saborski zastupnici SDP-a i Možemo! zatražili su u srijedu smjenu Uprave Fonda za zaštitu okoliša i energetsku učinkovitost zbog, kako kažu, 640 milijuna eura viška kojeg drže na računu i zarađuju na kamatama dok istodobno ne ulažu u infrastrukturu i ne isplaćuju naknade komunalnim društvima. \"Fond...",
+      "date": "2026-10-21T11:10:00.000Z",
+      "url": "https://www.jutarnji.hr/vijesti/hrvatska/trazi-se-smjena-uprave-drzavnog-fonda-imaju-640-milijuna-eura-viska-kojeg-drze-na-racunu-i-zaraduju-na-kamatama-15757848",
+      "source": "jutarnji",
+      "sourceName": "Jutarnji list",
+      "categories": [
+        "Hrvatska"
+      ],
+      "author": "redakcija@jutarnji.hr",
+      "theme": "ekonomija",
+      "image": "https://media.jutarnji.hr/images/slike/2026/10/21/f_39813684_1280.jpg?1792582730",
+      "imageAlt": "Traži se smjena uprave državnog fonda: ‘Imaju 640 milijuna eura viška na računu i zarađuju na kamatama!‘",
+      "addedAt": "2026-10-21T11:38:52.846Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-index-macron-se-nazivcirao-neki-cak-tvrde-da-su-2868f3",
+      "title": "Macron se naživcirao: Neki čak tvrde da su nas preplavile horde migranata i islamista",
+      "summary": "FRANCUSKI predsjednik Emmanuel Macron oštro je kritizirao \"neprihvatljive i glupe\" komentare stranih čelnika o prosvjedima i neredima u Francuskoj.",
+      "date": "2026-10-21T11:09:00.000Z",
+      "url": "https://www.index.hr/vijesti/clanak/macron-se-nazivcirao-neki-cak-tvrde-da-su-nas-preplavile-horde-migranata-i-islamista/2848116.aspx",
+      "source": "index",
+      "sourceName": "Index.hr",
+      "categories": [
+        "Vijesti"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://bucket.index.hr/b/index/356db6ed-e981-4e10-81dc-3b7cada67e6f.png",
+      "imageAlt": "Macron se naživcirao: Neki čak tvrde da su nas preplavile horde migranata i islamista",
+      "addedAt": "2026-10-21T11:38:52.326Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-jutarnji-mladost-srusila-pafos-na-cipru-mladostasice-34f319",
+      "title": "Mladost srušila Pafos na Cipru, Mladostašice posrnule u Azerbajdžanu",
+      "summary": "Odbojkaši Mladosti slavili su na Cipru na startu kvalifikacija za Ligu prvaka, dok su Mladostašice poražene na gostovanju u Azerbajdžanu. Momčad Tonija Kovačevića pobijedila je Kuutio Homes Pafiakos s 3-1 (25-21, 21-25, 25-21, 25-23), dok su odbojkašice Riccarda Boierija izgubile u Tovuzu od Turana...",
+      "date": "2026-10-21T11:08:21.000Z",
+      "url": "https://www.jutarnji.hr/sportske/sport-mix/odbojka/odbojka-ostalo/mladost-srusila-pafos-na-cipru-mladostasice-posrnule-u-azerbajdzanu-15757847",
+      "source": "jutarnji",
+      "sourceName": "Jutarnji list",
+      "categories": [
+        "Odbojka - ostalo"
+      ],
+      "author": "redakcija@jutarnji.hr",
+      "theme": "sport",
+      "image": "https://media.jutarnji.hr/images/slike/2026/10/21/f_39785018_1280.jpg?1792582730",
+      "imageAlt": "Mladost srušila Pafos na Cipru, Mladostašice posrnule u Azerbajdžanu",
+      "addedAt": "2026-10-21T11:38:52.846Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-tportal-stize-prva-posiljka-putin-salje-40-000-tona-dc8cf2",
+      "title": "Stiže prva pošiljka: Putin šalje 40.000 tona dizela Trumpu",
+      "summary": "Rusija bi u četvrtak trebala poslati prvu pošiljku dizela u Sjedinjene Države na temelju spornog sporazuma između američkog predsjednika Donalda Trumpa i ruskog predsjednika Vladimira Putina",
+      "date": "2026-10-21T11:07:39.000Z",
+      "url": "https://www.tportal.hr/vijesti/clanak/stize-prva-posiljka-putin-salje-40-000-tona-dizela-trumpu-20261021",
+      "source": "tportal",
+      "sourceName": "tportal",
+      "categories": [
+        "Vijesti"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://www.tportal.hr/media/thumbnail/500x300/2800396.jpeg?cropId=0",
+      "imageAlt": "Stiže prva pošiljka: Putin šalje 40.000 tona dizela Trumpu",
+      "addedAt": "2026-10-21T11:38:55.831Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-telegram-kimmich-nece-igrati-protiv-arsenala-zbog-0669bb",
+      "title": "Kimmich neće igrati protiv Arsenala zbog očeve smrti, a utakmicu bi mogao propustiti i Kompany",
+      "summary": "Velika dva izostanka uoči važnog susreta",
+      "date": "2026-10-21T10:58:49.000Z",
+      "url": "https://www.telegram.hr/telesport/na-prvu/kimmich-nece-igrati-protiv-arsenala-zbog-oceve-smrti-a-utakmicu-bi-mogao-propustiti-i-kompany/",
+      "source": "telegram",
+      "sourceName": "Telegram.hr",
+      "categories": [
+        "Na prvu",
+        "Telesport",
+        "Arsenal",
+        "Bayern Munchen"
+      ],
+      "author": "Telesport",
+      "theme": "sport",
+      "image": "https://www.telegram.hr/wp-content/uploads/2026/10/joshua-kimmich-150x150.jpg",
+      "imageAlt": "Kimmich neće igrati protiv Arsenala zbog očeve smrti, a utakmicu bi mogao propustiti i Kompany",
+      "addedAt": "2026-10-21T11:38:58.424Z"
+    },
+    {
+      "slug": "zagreb-2026-10-21-telegram-novi-detalji-navijackog-obracuna-u-karlovcu-935d00",
+      "title": "Novi detalji navijačkog obračuna u Karlovcu: dvoje uhićenih, jedan je jako dobro poznat policiji",
+      "summary": "Nekoliko navijača Dinama napalo je riječku Armadu",
+      "date": "2026-10-21T10:57:01.000Z",
+      "url": "https://www.telegram.hr/vijesti/video-policija-nakon-utakmice-kupa-u-karlovcu-uhitila-osobu-za-kojom-se-tragalo-doslo-i-do-sukoba-navijaca/",
+      "source": "telegram",
+      "sourceName": "Telegram.hr",
+      "categories": [
+        "Vijesti",
+        "HNK Rijeka",
+        "Hrvatski nogometni kup",
+        "PU karlovačka"
+      ],
+      "author": "Telegram",
+      "theme": "drustvo",
+      "image": "https://www.telegram.hr/wp-content/uploads/2026/10/f687f-150x150.png",
+      "imageAlt": "Novi detalji navijačkog obračuna u Karlovcu: dvoje uhićenih, jedan je jako dobro poznat policiji",
+      "addedAt": "2026-10-21T11:38:58.424Z"
+    },
     {
       "slug": "zagreb-2026-10-21-index-ai-izvan-kontrole-buduci-verzijama-25a1a9",
       "title": "AI izvan kontrole. Budući verzijama ostavljao upute kako da zaobiđu ljudsku kontrolu",
@@ -6235,456 +6764,6 @@
       "author": "",
       "theme": "ekonomija",
       "addedAt": "2026-10-19T20:52:45.037Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-index-potvrdeno-zabiljezen-najekstremniji-divlji-35d713",
-      "title": "Potvrđeno: Zabilježen najekstremniji divlji val u povijesti",
-      "summary": "KOD KANADE je 2020. zabilježen najekstremniji divlji val, visok 17,6 m. Fenomen koji se događa jednom u 1300 godina potaknuo je nova istraživanja o predviđanju ovih opasnih vodenih zidova.",
-      "date": "2026-10-19T10:34:00.000Z",
-      "url": "https://www.index.hr/vijesti/clanak/potvrdjeno-zabiljezen-najekstremniji-divlji-val-u-povijesti/2847114.aspx",
-      "source": "index",
-      "sourceName": "Index.hr",
-      "categories": [
-        "Vijesti"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T20:52:45.037Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-poslovni-troskovi-zivota-izveli-europljane-na-ulice-a06978",
-      "title": "Troškovi života izveli Europljane na ulice: Hrana skuplja 34 posto, stanovanje sve manje priuštivo",
-      "summary": "Istodobno izbijanje prosvjeda pokazuje koliko je trošak života postao politički i društveno osjetljivo pitanje diljem Europe.",
-      "date": "2026-10-19T10:33:49.000Z",
-      "url": "https://www.poslovni.hr/vijesti/troskovi-zivota-izveli-europljane-na-ulice-hrana-skuplja-34-posto-stanovanje-sve-manje-priustivo-4560046",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [],
-      "author": "",
-      "theme": "politika",
-      "addedAt": "2026-10-19T20:52:55.979Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-poslovni-dijelu-gradana-150-eura-mjesecno-od-b6fc38",
-      "title": "Dijelu građana 150 eura mjesečno, od listopada 2026. do lipnja 2027. godine",
-      "summary": "Do deset stipendija dodijelit će na temelju socio-ekonomskog statusa studenata, a do 20 na temelju izvrsnosti.",
-      "date": "2026-10-19T10:25:03.000Z",
-      "url": "https://www.poslovni.hr/financije/dijelu-gradana-150-eura-mjesecno-od-listopada-2026-do-lipnja-2027-godine-4560039",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [],
-      "author": "",
-      "theme": "politika",
-      "addedAt": "2026-10-19T20:52:55.979Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-index-bjelovar-ce-zatrpati-kanal-stare-pruge-590b45",
-      "title": "Bjelovar će zatrpati kanal stare pruge. Napravit će 120 parkirnih mjesta",
-      "summary": "GRAD BJELOVAR raspisao je javnu nabavu vrijednu 800.000 eura bez PDV-a za zatrpavanje kanala nekadašnje željezničke pruge u Ulici Brune Bušića.",
-      "date": "2026-10-19T10:25:00.000Z",
-      "url": "https://www.index.hr/vijesti/clanak/bjelovar-ce-zatrpati-kanal-stare-pruge-napravit-ce-120-parkirnih-mjesta/2847220.aspx",
-      "source": "index",
-      "sourceName": "Index.hr",
-      "categories": [
-        "Vijesti"
-      ],
-      "author": "",
-      "theme": "politika",
-      "addedAt": "2026-10-19T20:52:45.037Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-index-policija-dvaput-u-tri-sata-zaustavila-isti-56fb03",
-      "title": "Policija dvaput u tri sata zaustavila isti auto. Nitko od vozača nije imao vozačku",
-      "summary": "POLICIJA je u nedjelju u Slovincima kod Sunje u razmaku od samo tri i pol sata zaustavila isti automobil kojim su upravljale dvije osobe bez položenog vozačkog ispita.",
-      "date": "2026-10-19T10:21:00.000Z",
-      "url": "https://www.index.hr/vijesti/clanak/policija-dvaput-u-tri-sata-zaustavila-isti-auto-nitko-od-vozaca-nije-imao-vozacku/2847216.aspx",
-      "source": "index",
-      "sourceName": "Index.hr",
-      "categories": [
-        "Vijesti"
-      ],
-      "author": "",
-      "theme": "politika",
-      "addedAt": "2026-10-19T20:52:45.037Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-index-video-pljackasi-u-francuskoj-hvale-se-na-dab9f5",
-      "title": "VIDEO Pljačkaši u Francuskoj hvale se na TikToku: \"Sve smo razvalili\"",
-      "summary": "NAKON nasilnih prosvjeda u Francuskoj, šteta se procjenjuje na stotine milijuna eura. Više od 2000 trgovina je opljačkano, a mladi se hvale plijenom na društvenim mrežama dok ministar priznaje gubitak kontrole.",
-      "date": "2026-10-19T10:20:00.000Z",
-      "url": "https://www.index.hr/vijesti/clanak/video-pljackasi-u-francuskoj-hvale-se-na-tiktoku-sve-smo-razvalili/2847206.aspx",
-      "source": "index",
-      "sourceName": "Index.hr",
-      "categories": [
-        "Vijesti"
-      ],
-      "author": "",
-      "theme": "politika",
-      "addedAt": "2026-10-19T20:52:45.038Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-index-katastrofalne-poplave-u-spanjolskoj-bujice-7d6d3c",
-      "title": "Katastrofalne poplave u Španjolskoj. Bujice nose automobile, dvoje mrtvih",
-      "summary": "NAJMANJE dvije osobe poginule su u obilnim kišama i poplavama koje su pogodile istočnu Španjolsku.",
-      "date": "2026-10-19T10:17:00.000Z",
-      "url": "https://www.index.hr/vijesti/clanak/katastrofalne-poplave-u-spanjolskoj-bujice-nose-automobile-dvoje-mrtvih/2847212.aspx",
-      "source": "index",
-      "sourceName": "Index.hr",
-      "categories": [
-        "Vijesti"
-      ],
-      "author": "",
-      "theme": "potres",
-      "addedAt": "2026-10-19T20:52:45.038Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-index-video-podvig-za-povijest-ukrajinci-prvi-put-9c4037",
-      "title": "VIDEO \"Podvig za povijest\". Ukrajinci prvi put dronom spasili vojnika iz \"zone smrti\"",
-      "summary": "UKRAJINSKA vojska izvela je ono što naziva prvom zračnom evakuacijom ranjenog vojnika teškim dronom u povijesti ratovanj",
-      "date": "2026-10-19T10:17:00.000Z",
-      "url": "https://www.index.hr/vijesti/clanak/video-ovo-je-za-povijest-ukrajinci-prvi-put-dronom-spasili-vojnika-iz-zone-smrti/2847204.aspx",
-      "source": "index",
-      "sourceName": "Index.hr",
-      "categories": [
-        "Vijesti"
-      ],
-      "author": "",
-      "theme": "rat",
-      "addedAt": "2026-10-19T20:52:45.038Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-index-musk-svakom-djetetu-u-americi-poklonit-cu-c1b9f1",
-      "title": "Musk: Svakom djetetu u Americi poklonit ću jednu svoju dionicu SpaceX-a",
-      "summary": "SPACEX Elona Muska i tehnološka tvrtka Anthropic, poznata po razvoju umjetne inteligencije, najavile su velike donacije u obliku svojih dionica.",
-      "date": "2026-10-19T10:16:00.000Z",
-      "url": "https://www.index.hr/vijesti/clanak/musk-svakom-djetetu-u-americi-poklonit-cu-jednu-svoju-dionicu-spacexa/2847207.aspx",
-      "source": "index",
-      "sourceName": "Index.hr",
-      "categories": [
-        "Vijesti"
-      ],
-      "author": "",
-      "theme": "ai",
-      "addedAt": "2026-10-19T20:52:45.038Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-poslovni-prvo-su-najavili-ukidanje-50-000-radnih-634934",
-      "title": "Prvo su najavili ukidanje 50.000 radnih mjesta, a sada mnogim radnicima žele zamrznuti plaće",
-      "summary": "Ovi planovi mogli bi donijeti daljnje rezove za 275.000 zaposlenika tvrtke u Njemačkoj.",
-      "date": "2026-10-19T10:13:09.000Z",
-      "url": "https://www.poslovni.hr/kompanije/prvo-su-najavili-ukidanje-50-000-radnih-mjesta-a-sada-mnogim-radnicima-zele-zamrznuti-place-4560037",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [],
-      "author": "",
-      "theme": "ekonomija",
-      "addedAt": "2026-10-19T20:52:55.979Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-poslovni-hz-ulaze-7-4-milijuna-eura-radovi-krecu-u-c47ae1",
-      "title": "HŽ ulaže 7,4 milijuna eura : Radovi kreću u siječnju, evo koje gradove obuhvaćaju",
-      "summary": "Najpovoljnija ponuda birat će se prema cijeni i kvaliteti, a jedan od kriterija je i duljina jamstvenog roka koji ne smije biti kraći od dvije godine.",
-      "date": "2026-10-19T10:10:51.000Z",
-      "url": "https://www.poslovni.hr/hrvatska/hz-ulaze-74-milijuna-eura-radovi-krecu-u-sijecnju-evo-koje-gradove-obuhvacaju-4560020",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [],
-      "author": "",
-      "theme": "rat",
-      "addedAt": "2026-10-19T20:52:55.979Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-poslovni-muska-njega-na-visoj-razini-bulldog-40ebbd",
-      "title": "Muška njega na višoj razini: Bulldog Experience okupio urbanu zagrebačku ekipu",
-      "summary": "Današnji muškarci sve bolje poznaju svoje potrebe, traže kvalitetne proizvode, zanimaju se za sastojke i žele znati što stavljaju na kožu.",
-      "date": "2026-10-19T10:06:32.000Z",
-      "url": "https://www.poslovni.hr/after5/muska-njega-na-visoj-razini-bulldog-experience-okupio-urbanu-zagrebacku-ekipu-4560030",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T20:52:55.979Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-index-srpski-voditelj-napisao-da-ce-vucic-pucati-670e65",
-      "title": "Srpski voditelj napisao da će Vučić pucati na građane. Potom nestao na dva dana",
-      "summary": "UREDNIK emisije Slavija info Ljubomir Stefanović, za kojim se tragalo od subote, javio se portalu Danas i potvrdio da je na sigurnom.",
-      "date": "2026-10-19T10:02:00.000Z",
-      "url": "https://www.index.hr/vijesti/clanak/srpski-voditelj-napisao-da-ce-vucic-pucati-na-gradjane-pa-nestao-sad-se-javio/2847198.aspx",
-      "source": "index",
-      "sourceName": "Index.hr",
-      "categories": [
-        "Vijesti"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T20:52:45.038Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-index-mirko-galic-europa-zanje-ono-sto-je-sijala-7c74f9",
-      "title": "Mirko Galić: Europa žanje ono što je sijala, a sad svi glume iznenađenje",
-      "summary": "MIRKO Galić kritizira Plenkovića zbog društvenih podjela u Hrvatskoj te upozorava na krizu liderstva i val nezadovoljstva koji potresa Europu.",
-      "date": "2026-10-19T10:01:00.000Z",
-      "url": "https://www.index.hr/vijesti/clanak/mirko-galic-europa-zanje-ono-sto-je-sijala-a-sad-svi-glume-iznenadjenje/2847200.aspx",
-      "source": "index",
-      "sourceName": "Index.hr",
-      "categories": [
-        "Vijesti"
-      ],
-      "author": "",
-      "theme": "potres",
-      "addedAt": "2026-10-19T20:52:45.038Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-index-njemacki-vojni-div-kupio-brodogradiliste-u-3ae09f",
-      "title": "Njemački vojni div kupio brodogradilište u Rumunjskoj",
-      "summary": "RHEINMETALL i MSC kupuju rumunjsko brodogradilište Mangalia za 138 milijuna eura radi modernizacije te gradnje vojnih i civilnih brodova.",
-      "date": "2026-10-19T09:53:00.000Z",
-      "url": "https://www.index.hr/vijesti/clanak/njemacki-vojni-div-kupio-brodogradiliste-u-rumunjskoj/2847196.aspx",
-      "source": "index",
-      "sourceName": "Index.hr",
-      "categories": [
-        "Vijesti"
-      ],
-      "author": "",
-      "theme": "rat",
-      "addedAt": "2026-10-19T20:52:45.038Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-poslovni-crobex-na-rekordnoj-razini-jedna-dionica-4552ff",
-      "title": "Crobex na rekordnoj razini, jedna dionica skočila čak 39 posto: Danas se očekuje mirnije trgovanje",
-      "summary": "CROBEX i CROBEX10 prošloga su tjedna porasli više od jedan posto i dosegnuli rekordne razine, ali uz slabiji promet nego tjedan prije.",
-      "date": "2026-10-19T09:45:46.000Z",
-      "url": "https://www.poslovni.hr/burze/crobex-na-rekordnoj-razini-jedna-dionica-skocila-cak-39-posto-danas-se-ocekuje-mirnije-trgovanje-4560019",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T20:52:55.980Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-index-un-ostaje-bez-novca-za-hranu-u-gazi-pola-c3548f",
-      "title": "UN ostaje bez novca za hranu u Gazi. Pola milijuna ljudi gubi pomoć",
-      "summary": "SVJETSKI program za hranu (WFP) smanjuje pomoć u hrani za Gazu za trećinu zbog nedostatka sredstava. Odluka pogađa pola milijuna ljudi uoči zime, a pomoć je smanjena i na Zapadnoj obali.",
-      "date": "2026-10-19T09:43:00.000Z",
-      "url": "https://www.index.hr/vijesti/clanak/un-ostaje-bez-novca-za-hranu-u-gazi-pola-milijuna-ljudi-gubi-pomoc/2847188.aspx",
-      "source": "index",
-      "sourceName": "Index.hr",
-      "categories": [
-        "Vijesti"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T20:52:45.038Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-index-kosor-ja-sam-plenkovicu-otvorila-politicka-b6d043",
-      "title": "Kosor: Ja sam Plenkoviću otvorila politička vrata. On je moj politički baby boy",
-      "summary": "BIVŠA premijerka Jadranka Kosor oštro je kritizirala premijera Andreja Plenkovića i vladajuću većinu zbog reakcija na nacističke i antisemitske povike tijekom Torcidina kortea u Splitu.",
-      "date": "2026-10-19T09:43:00.000Z",
-      "url": "https://www.index.hr/vijesti/clanak/kosor-ja-sam-plenkovicu-otvorila-politicka-vrata-on-je-moj-politicki-baby-boy/2847192.aspx",
-      "source": "index",
-      "sourceName": "Index.hr",
-      "categories": [
-        "Vijesti"
-      ],
-      "author": "",
-      "theme": "politika",
-      "addedAt": "2026-10-19T20:52:45.038Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-index-glas-poduzetnika-i-mali-iznajmljivaci-895c60",
-      "title": "Glas poduzetnika i mali iznajmljivači predali 10 zahtjeva Vladi",
-      "summary": "KRISTINA Bakula iz UGP-a rekla je da je deset zahtjeva, koje su UGP i SMOi danas u obliku predstavke dostavili Vladi, istaknuto na nedavnom prosvjedu u Zagrebu.",
-      "date": "2026-10-19T09:41:00.000Z",
-      "url": "https://www.index.hr/vijesti/clanak/glas-poduzetnika-i-mali-iznajmljivaci-predali-10-zahtjeva-vladi/2847186.aspx",
-      "source": "index",
-      "sourceName": "Index.hr",
-      "categories": [
-        "Vijesti"
-      ],
-      "author": "",
-      "theme": "politika",
-      "addedAt": "2026-10-19T20:52:45.038Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-index-u-rijeci-nestao-15-godisnjak-1b5d1e",
-      "title": "U Rijeci nestao 15-godišnjak",
-      "summary": "U RIJECI je u subotu, 17. listopada, nestao 15-godišnji Marin Iveković. Policija moli građane za pomoć i informacije o mladiću koji je visok 175 cm, a u trenutku nestanka nosio je crnu odjeću.",
-      "date": "2026-10-19T09:40:00.000Z",
-      "url": "https://www.index.hr/vijesti/clanak/u-rijeci-nestao-15godisnjak/2847191.aspx",
-      "source": "index",
-      "sourceName": "Index.hr",
-      "categories": [
-        "Vijesti"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T20:52:45.038Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-index-sin-29-ocu-zaprijetio-da-ce-zapaliti-0b827a",
-      "title": "Sin (29) ocu zaprijetio da će zapaliti obiteljsku kuću. Ubrzo je izbio požar",
-      "summary": "U KAŠTELIMA je 29-godišnjak, nakon što je telefonom zaprijetio ocu, zapalio obiteljsku kuću. Policija ga je uhitila pijanog i hospitalizirala. Istraga o uzroku požara je u tijeku.",
-      "date": "2026-10-19T09:36:00.000Z",
-      "url": "https://www.index.hr/vijesti/clanak/sin-29-ocu-zaprijetio-da-ce-zapaliti-obiteljsku-kucu-ubrzo-je-izbio-pozar/2847184.aspx",
-      "source": "index",
-      "sourceName": "Index.hr",
-      "categories": [
-        "Vijesti"
-      ],
-      "author": "",
-      "theme": "potres",
-      "addedAt": "2026-10-19T20:52:45.038Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-index-drzavni-ai-od-gotovo-300-000-otkriva-258063",
-      "title": "Državni AI od gotovo 300.000 € otkriva identitete djece žrtava zlostavljanja",
-      "summary": "DRŽAVNI AI sustav plaćen 288.000 eura zakazao je u zaštiti privatnosti te u javnim sudskim presudama otkriva identitete zlostavljane djece.",
-      "date": "2026-10-19T09:36:00.000Z",
-      "url": "https://www.index.hr/vijesti/clanak/drzava-platila-160000-eura-za-sustav-koji-otkriva-identitete-zlostavljane-djece/2847183.aspx",
-      "source": "index",
-      "sourceName": "Index.hr",
-      "categories": [
-        "Vijesti"
-      ],
-      "author": "",
-      "theme": "ai",
-      "addedAt": "2026-10-19T20:52:45.038Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-poslovni-poduzetnicima-besplatna-pomoc-za-a38a48",
-      "title": "Poduzetnicima besplatna pomoć za prikupljanje kapitala: Evo što nudi Hanfin novi program",
-      "summary": "Poduzeća koja razmišljaju o izlasku na burzu, izdavanju obveznica ili ulasku fondova rizičnog i privatnog kapitala mogu bez naknade provjeriti koliko su spremna za takav korak.",
-      "date": "2026-10-19T09:35:15.000Z",
-      "url": "https://www.poslovni.hr/financije/poduzetnicima-besplatna-pomoc-za-prikupljanje-kapitala-evo-sto-nudi-hanfin-novi-program-4560017",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [],
-      "author": "",
-      "theme": "ekonomija",
-      "addedAt": "2026-10-19T20:52:55.980Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-index-na-australsku-zastupnicu-naletio-auto-6ed884",
-      "title": "Na australsku zastupnicu naletio auto, kritično je. Premijer: Napad je bio namjeran",
-      "summary": "AUSTRALSKA zastupnica Helen Haines kritično je ozlijeđena u namjernom napadu automobilom, a premijer Albanese upozorava na porast političkog nasilja.",
-      "date": "2026-10-19T09:34:00.000Z",
-      "url": "https://www.index.hr/vijesti/clanak/na-australsku-zastupnicu-naletio-auto-kriticno-je-premijer-napad-je-bio-namjeran/2847181.aspx",
-      "source": "index",
-      "sourceName": "Index.hr",
-      "categories": [
-        "Vijesti"
-      ],
-      "author": "",
-      "theme": "rat",
-      "addedAt": "2026-10-19T20:52:45.038Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-index-ljudi-u-zagrebu-spasili-psa-kojeg-su-tukli-47a558",
-      "title": "Ljudi u Zagrebu spasili psa kojeg su tukli otac i kćer. DIRH: Sumnja se na krađu",
-      "summary": "INSPEKTORAT je potvrdio zlostavljanje psa u Zagrebu, koji je zbrinut u Dumovcu, dok policija istražuje sumnju na krađu životinje od udomitelja.",
-      "date": "2026-10-19T09:31:00.000Z",
-      "url": "https://www.index.hr/vijesti/clanak/ljudi-u-zagrebu-spasili-psa-kojeg-su-tukli-otac-i-kcer-dirh-sumnja-se-na-kradju/2847158.aspx",
-      "source": "index",
-      "sourceName": "Index.hr",
-      "categories": [
-        "Vijesti"
-      ],
-      "author": "",
-      "theme": "rat",
-      "addedAt": "2026-10-19T20:52:45.038Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-index-zlatna-zutica-poharala-127-vinograda-u-2ea405",
-      "title": "Zlatna žutica poharala 127 vinograda u Hrvatskoj. Moraju se iskrčiti",
-      "summary": "FITOSANITARNA inspekcija Državnog inspektorata (DIRH) tijekom rujna i prve polovice listopada provela je ciljane nadzore vinograda u osam hrvatskih županija radi suzbijanja zlatne žutice vinove loze.",
-      "date": "2026-10-19T09:29:00.000Z",
-      "url": "https://www.index.hr/vijesti/clanak/zlatna-zutica-poharala-127-vinograda-u-hrvatskoj-moraju-se-iskrciti/2847182.aspx",
-      "source": "index",
-      "sourceName": "Index.hr",
-      "categories": [
-        "Vijesti"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T20:52:45.038Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-index-ruske-novine-otvoreno-slave-trumpa-on-je-23705c",
-      "title": "Ruske novine otvoreno slave Trumpa: \"On je kao mađioničar\"",
-      "summary": "DOK AMERIČKI predsjednik Donald Trump tvrdi da je zamrzavanje sankcija Rusiji potez kojim želi otvoriti prostor za mir, ruski državni mediji i tisak slave njegove poteze, otvoreno poručujući da Moskva ne pristaje ni na što osim na potpunu kapitulaciju Ukrajine, piše Steve Rosenberg, dugogodišnji BBC-jev dopisnik iz Moskve.",
-      "date": "2026-10-19T09:26:00.000Z",
-      "url": "https://www.index.hr/vijesti/clanak/ruske-novine-otvoreno-slave-trumpa-on-je-kao-madjionicar/2847180.aspx",
-      "source": "index",
-      "sourceName": "Index.hr",
-      "categories": [
-        "Vijesti"
-      ],
-      "author": "",
-      "theme": "politika",
-      "addedAt": "2026-10-19T20:52:45.038Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-index-uhicen-jos-jedan-torcidas-iz-naci-kortea-f62519",
-      "title": "Uhićen još jedan torcidaš iz naci-kortea",
-      "summary": "ZBOG sramotnih nacističkih i antisemitskih povika u Splitu, policija za poticanje na mržnju uoči utakmice s Ajaxom sumnjiči ukupno 23 osobe.",
-      "date": "2026-10-19T09:26:00.000Z",
-      "url": "https://www.index.hr/vijesti/clanak/uhicen-jos-jedan-torcidas-iz-nacikortea/2847179.aspx",
-      "source": "index",
-      "sourceName": "Index.hr",
-      "categories": [
-        "Vijesti"
-      ],
-      "author": "",
-      "theme": "sport",
-      "addedAt": "2026-10-19T20:52:45.039Z",
-      "backfilled": true
-    },
-    {
-      "slug": "zagreb-2026-10-19-index-video-prosvjednici-blokirali-louvre-u-225ab0",
-      "title": "VIDEO Prosvjednici blokirali Louvre u Parizu. Turisti ne mogu ući u muzej",
-      "summary": "PROSVJEDNICI, predvođeni studentima, blokirali su ulaz u pariški muzej Louvre. Time su iskazali podršku nacionalnom pokretu srednjoškolaca i osudili policijsku represiju te rast troškova života.",
-      "date": "2026-10-19T09:26:00.000Z",
-      "url": "https://www.index.hr/vijesti/clanak/video-prosvjednici-blokirali-louvre-u-parizu-turisti-ne-mogu-uci-u-muzej/2847176.aspx",
-      "source": "index",
-      "sourceName": "Index.hr",
-      "categories": [
-        "Vijesti"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T20:52:45.039Z",
       "backfilled": true
     }
   ]

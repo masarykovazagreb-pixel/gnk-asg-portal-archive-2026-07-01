@@ -170,6 +170,9 @@ body.mrv-wall main.page{max-width:none}
 .foot .tag{background:rgba(255,255,255,.08);color:var(--accent2)}
 .disclaimer{max-width:1180px;margin:26px auto 0;padding-top:16px;border-top:1px solid rgba(255,255,255,.16);font:400 11px/1.6 system-ui,sans-serif;color:rgba(255,255,255,.55)}
 .article{max-width:880px}
+.artimg{margin:4px 0 26px;background:#0c1015;border-radius:4px;overflow:hidden}
+.artimg img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;background:#0c1015}
+.artimg figcaption{padding:8px 12px;font:600 10.5px/1.5 system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#8a7c62;background:#fbf7ec}
 .crumbs{font:600 11px/1.6 system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#8a7c62;padding:0 0 18px}
 .crumbs a{color:#5b6472}
 .arthead h1{font:700 clamp(28px,4.2vw,46px)/1.1 Georgia,serif;margin:6px 0 12px;letter-spacing:-.012em}
