@@ -77,7 +77,8 @@
       "verify-production-v12.yml",
       "weather-refresh.yml",
       "world-monitor-refresh.yml",
-      "world-topics-materialize.yml"
+      "world-topics-materialize.yml",
+      "autonomija-365.yml"
     ],
     "knownDirectMainBaselineSemantics": "Detection inventory only; presence is migration debt, not approval. New direct-main writers fail CI. NO-TOUCH workflows are inventoried but not modified.",
     "noTouchWorkflowPatterns": [
@@ -627,6 +628,31 @@
       "prohibitions": [
         "production portal deploy outside exact-SHA release",
         "write outside the region paths"
+      ]
+    },
+    {
+      "workflow": "autonomija-365.yml",
+      "domain": "STABILITY",
+      "role": "measurement-writer",
+      "cadence": "every 6h (23 */6 * * *)",
+      "read": [
+        "ops/AUTONOMY-365.json",
+        "apps/region/data/**",
+        "apps/portal/data/**",
+        "workers/gnk-asg-direct-operator/src/image-proxy-v1.js"
+      ],
+      "write": [
+        "apps/portal/autonomija/**",
+        "apps/portal/en/autonomy/**",
+        "apps/portal/data/autonomy-status.json",
+        "apps/portal/sitemap.xml"
+      ],
+      "gate": "tests/test-autonomy-v1.mjs",
+      "handoff": "STABILITY",
+      "prohibitions": [
+        "write outside the autonomy paths",
+        "publish editorial claims",
+        "dispatch other workflows"
       ]
     }
   ],

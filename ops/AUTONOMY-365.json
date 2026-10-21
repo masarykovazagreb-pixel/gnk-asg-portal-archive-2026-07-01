@@ -1,0 +1,259 @@
+{
+  "version": "GNK_ASG_AUTONOMY_365_V1_20261021",
+  "title": {
+    "hr": "Autonomija 365 — kako sustav radi sam, godinu dana",
+    "en": "Autonomy 365 — how the system runs itself, for a year"
+  },
+  "horizon": {
+    "starts": "2026-10-21",
+    "ends": "2027-10-21",
+    "days": 365
+  },
+  "principle": {
+    "hr": "Sustav se ne održava ručno: svaki posao ima jednog vlasnika koji ga piše, satnicu koja ga pokreće i provjeru koja pada ako izostane. Ova stranica ne obećava rezultat — ona svakih šest sati izmjeri stvarno stanje u repozitoriju i pokaže što je otvoreno.",
+    "en": "The system is not maintained by hand: every job has one owner that writes it, a schedule that triggers it, and a check that fails when it does not run. This page promises no outcome — every six hours it measures the actual state of the repository and shows what is still open."
+  },
+  "pipeline": [
+    {
+      "hr": "Izvori",
+      "en": "Sources",
+      "detail": {
+        "hr": "49 javnih izvora; feedovi se čitaju na svakom ciklusu.",
+        "en": "49 public sources; feeds are read on every cycle."
+      },
+      "owner": "region-daily.yml",
+      "cadence": "svaka 2 h (7 */2 * * *)"
+    },
+    {
+      "hr": "Kanali i deskovi",
+      "en": "Channels and desks",
+      "detail": {
+        "hr": "Osam gradskih kanala, devet deskova i hub /izdanja/ grade se iz arhive.",
+        "en": "Eight city channels, nine desks and the /izdanja/ hub are built from the archive."
+      },
+      "owner": "region-daily.yml",
+      "cadence": "svaka 2 h"
+    },
+    {
+      "hr": "Središnji feed",
+      "en": "Central feed",
+      "detail": {
+        "hr": "news.json, arhiva i status svježine na kojima stoji AKTUAL MEDIA.",
+        "en": "news.json, the archive and the freshness status that AKTUAL MEDIA stands on."
+      },
+      "owner": "gnk-news-refresh-v2.yml",
+      "cadence": "4× dnevno (12 1,5,9,13,17,21 * * *)"
+    },
+    {
+      "hr": "Objavljivanje",
+      "en": "Publishing",
+      "detail": {
+        "hr": "Svaki zapis na main ide kroz deploy koji provjerava ugovore prije objave.",
+        "en": "Every commit on main goes through a deploy that checks the contracts before publishing."
+      },
+      "owner": "deploy-admin-auth-v6.yml",
+      "cadence": "na svaki push"
+    },
+    {
+      "hr": "Nadzor",
+      "en": "Watchdog",
+      "detail": {
+        "hr": "Satni nadzor provjerava rokove i pokreće kanonskog pisca kad izostane.",
+        "en": "The hourly watchdog checks deadlines and dispatches the canonical writer when one is late."
+      },
+      "owner": "ops-automation-sla-watchdog.yml",
+      "cadence": "svaki sat (42 * * * *)"
+    },
+    {
+      "hr": "Mjerilo",
+      "en": "Measurement",
+      "detail": {
+        "hr": "Ova stranica i /zdravlje/ mjere stanje iz datoteka; ništa se ne popunjava napamet.",
+        "en": "This page and /zdravlje/ measure state from files; nothing is filled in from memory."
+      },
+      "owner": "autonomija-365.yml",
+      "cadence": "svakih 6 h (23 */6 * * *)"
+    }
+  ],
+  "criteria": [
+    {
+      "id": "kanali-arhiva",
+      "label": {
+        "hr": "Svaki gradski kanal ima barem 300 tekstova u arhivi",
+        "en": "Every city channel holds at least 300 archived stories"
+      },
+      "type": "channel-archive-min",
+      "value": 300,
+      "severity": "hard",
+      "owner": "region-daily.yml",
+      "route": "/kanal/"
+    },
+    {
+      "id": "kanali-svjezina",
+      "label": {
+        "hr": "Najnoviji tekst u svakom kanalu nije stariji od 48 h",
+        "en": "The newest story in every channel is no older than 48 h"
+      },
+      "type": "channel-fresh-hours",
+      "value": 48,
+      "severity": "watch",
+      "owner": "region-daily.yml",
+      "route": "/kanal/"
+    },
+    {
+      "id": "aktual-slike",
+      "label": {
+        "hr": "AKTUAL MEDIA slike šalje kroz vlastiti posrednik, bez zajedničkih zamjenskih ilustracija",
+        "en": "AKTUAL MEDIA serves images through its own proxy, with no shared fallback artwork"
+      },
+      "type": "source-images",
+      "severity": "hard",
+      "owner": "deploy-admin-auth-v6.yml",
+      "route": "/gnk-aktual/"
+    },
+    {
+      "id": "proxy-popis",
+      "label": {
+        "hr": "Popis dopuštenih hostova posrednika jednak je hostovima u feedu",
+        "en": "The proxy allow-list matches the hosts actually present in the feed"
+      },
+      "type": "proxy-allowlist",
+      "severity": "hard",
+      "owner": "tests/test-image-proxy-v1.mjs",
+      "route": "/gnk-aktual/"
+    },
+    {
+      "id": "deskovi-slike",
+      "label": {
+        "hr": "Svaki desk ima barem jednu sliku na objavljenoj stranici",
+        "en": "Every desk page carries at least one image"
+      },
+      "type": "desk-images",
+      "value": 9,
+      "severity": "watch",
+      "owner": "region-daily.yml",
+      "route": "/izdanja/"
+    },
+    {
+      "id": "news-svjezina",
+      "label": {
+        "hr": "Središnji feed nije stariji od 6 h",
+        "en": "The central feed is no older than 6 h"
+      },
+      "type": "news-fresh-hours",
+      "value": 6,
+      "severity": "watch",
+      "owner": "gnk-news-refresh-v2.yml",
+      "route": "/gnk-aktual/"
+    },
+    {
+      "id": "dvojezicno",
+      "label": {
+        "hr": "Stranica postoji na hrvatskom i engleskom, s međusobnim poveznicama",
+        "en": "The page exists in Croatian and English, linked both ways"
+      },
+      "type": "bilingual",
+      "severity": "hard",
+      "owner": "autonomija-365.yml",
+      "route": "/autonomija/"
+    },
+    {
+      "id": "veze",
+      "label": {
+        "hr": "Svaka stranica ima barem 6 internih poveznica",
+        "en": "Every page carries at least 6 internal links"
+      },
+      "type": "links-min",
+      "value": 6,
+      "severity": "hard",
+      "owner": "autonomija-365.yml",
+      "route": "/autonomija/"
+    }
+  ],
+  "quarters": [
+    {
+      "id": "2026-Q4",
+      "label": { "hr": "Temelj: stvarna fotografija", "en": "Foundation: the real photograph" },
+      "from": "2026-10-21",
+      "to": "2026-12-31",
+      "focus": {
+        "hr": "Nijedna vijest ne smije izgledati kao druga. Slika iz izvora ide kroz posrednik, a vijest bez slike dobiva tihu plohu umjesto zajedničkog crteža.",
+        "en": "No two stories should look alike. Source photos travel through the proxy; a story without a photo gets a quiet plate instead of shared artwork."
+      },
+      "deliverables": [
+        { "hr": "Posrednik /api/img s popisom hostova jednakim feedu", "en": "/api/img proxy with an allow-list equal to the feed" },
+        { "hr": "Deskovi: krugovi gradova i minijature uz svaki osvrt", "en": "Desks: city circles and a thumbnail beside every review" },
+        { "hr": "Kanali: slika iz feeda u članku i u og:image", "en": "Channels: feed image in the article and in og:image" }
+      ],
+      "exit": ["aktual-slike", "proxy-popis", "deskovi-slike"]
+    },
+    {
+      "id": "2027-Q1",
+      "label": { "hr": "Dubina: arhiva i dvojezičnost", "en": "Depth: archive and bilingual parity" },
+      "from": "2027-01-01",
+      "to": "2027-03-31",
+      "focus": {
+        "hr": "Arhiva svakog kanala prelazi 500 tekstova, a svaka važna ruta ima engleski blizanac s istim brojevima.",
+        "en": "Each channel archive passes 500 stories, and every important route has an English twin carrying the same numbers."
+      },
+      "deliverables": [
+        { "hr": "500+ tekstova po kanalu, bez skraćivanja arhive", "en": "500+ stories per channel, without trimming the archive" },
+        { "hr": "Engleski blizanac za svaku novu rubriku", "en": "An English twin for every new section" },
+        { "hr": "Tjedni arhiv koji se sam dopunjava", "en": "A weekly archive that fills itself" }
+      ],
+      "exit": ["kanali-arhiva", "dvojezicno", "veze"]
+    },
+    {
+      "id": "2027-Q2",
+      "label": { "hr": "AI uredništvo bez izmišljanja", "en": "AI newsroom without invention" },
+      "from": "2027-04-01",
+      "to": "2027-06-30",
+      "focus": {
+        "hr": "Agent smije zaključivati samo iz onoga što u repozitoriju postoji: naslov, izvor, datum i poveznica. Svaka tvrdnja mora imati put natrag do zapisa.",
+        "en": "The agent may reason only from what exists in the repository: headline, source, date and link. Every claim must have a path back to a record."
+      },
+      "deliverables": [
+        { "hr": "Dnevni brief sastavljen iz stvarnih zapisa, s poveznicom na svaki", "en": "A daily brief assembled from real records, each with its link" },
+        { "hr": "Baza znanja S+Chata preko 1000 unosa", "en": "S+Chat knowledge base above 1,000 entries" },
+        { "hr": "Provjera koja traži rečenicu bez izvora i pada", "en": "A check that hunts an unsourced sentence and fails" }
+      ],
+      "exit": ["news-svjezina", "kanali-svjezina"]
+    },
+    {
+      "id": "2027-Q3",
+      "label": { "hr": "Distribucija i otpornost", "en": "Distribution and resilience" },
+      "from": "2027-07-01",
+      "to": "2027-09-30",
+      "focus": {
+        "hr": "Sve što je objavljeno mora biti pronađeno: sitemape, IndexNow i feedovi bez ručnog popisa. Kad izvor padne, stranica pada na arhivu, ne na prazninu.",
+        "en": "Everything published must be findable: sitemaps, IndexNow and feeds without a hand-kept list. When a source fails, the page falls back to the archive, not to emptiness."
+      },
+      "deliverables": [
+        { "hr": "Sitemap i IndexNow iz istog izvora istine", "en": "Sitemap and IndexNow from the same source of truth" },
+        { "hr": "Pad izvora ne mijenja broj objavljenih tekstova", "en": "A failed source does not change the published count" },
+        { "hr": "Mjesečni obračun dostupnosti", "en": "A monthly availability statement" }
+      ],
+      "exit": ["kanali-arhiva", "news-svjezina", "deskovi-slike"]
+    },
+    {
+      "id": "2027-Q4",
+      "label": { "hr": "Zatvaranje prvog ciklusa", "en": "Closing the first cycle" },
+      "from": "2027-10-01",
+      "to": "2027-10-21",
+      "focus": {
+        "hr": "365. dan nije cilj nego kontrolna točka: sustav mora moći pokazati što je radio svaki dan, tko je bio vlasnik posla i gdje je stao.",
+        "en": "Day 365 is a checkpoint, not a finish line: the system must show what ran each day, who owned the job and where it stopped."
+      },
+      "deliverables": [
+        { "hr": "Godišnji izvještaj iz stvarnih artefakata", "en": "An annual report built from real artefacts" },
+        { "hr": "Popis poslova koji su preživjeli bez ručnog popravka", "en": "A list of jobs that survived without manual repair" },
+        { "hr": "Plan sljedećih 365 dana s istim mjerilom", "en": "The next 365-day plan on the same measure" }
+      ],
+      "exit": ["dvojezicno", "veze", "proxy-popis"]
+    }
+  ],
+  "next": {
+    "hr": "Otvorene kriterije ne popravlja ova stranica: ona pokaže vlasnika. Popravak radi onaj workflow koji je za taj posao kanonski pisac.",
+    "en": "This page does not repair open criteria: it names the owner. The repair is done by the workflow that is the canonical writer for that job."
+  }
+}

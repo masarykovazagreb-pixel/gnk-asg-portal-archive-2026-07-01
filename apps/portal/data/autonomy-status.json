@@ -1,0 +1,194 @@
+{
+  "version": "GNK_ASG_AUTONOMY_365_V1_20261021",
+  "generatedAt": "2026-10-21T14:47:52Z",
+  "horizon": {
+    "starts": "2026-10-21",
+    "ends": "2027-10-21",
+    "days": 365
+  },
+  "criteria": [
+    {
+      "id": "kanali-arhiva",
+      "state": "ok",
+      "severity": "hard",
+      "actual": "407 / 300",
+      "target": 300,
+      "owner": "region-daily.yml",
+      "route": "/kanal/",
+      "label": {
+        "hr": "Svaki gradski kanal ima barem 300 tekstova u arhivi",
+        "en": "Every city channel holds at least 300 archived stories"
+      },
+      "note": "zagreb 420 · beograd 420 · sarajevo 420 · budimpesta 420 · ljubljana 420 · rim 420 · sofija 407 · bukurest 420"
+    },
+    {
+      "id": "kanali-svjezina",
+      "state": "ok",
+      "severity": "watch",
+      "actual": "3.3 h",
+      "target": "48 h",
+      "owner": "region-daily.yml",
+      "route": "/kanal/",
+      "label": {
+        "hr": "Najnoviji tekst u svakom kanalu nije stariji od 48 h",
+        "en": "The newest story in every channel is no older than 48 h"
+      },
+      "note": "zagreb 3.2 h · beograd 3.2 h · sarajevo 2.3 h · budimpesta 3.2 h · ljubljana 3.2 h · rim 3.3 h · sofija 3.2 h · bukurest 3.1 h"
+    },
+    {
+      "id": "aktual-slike",
+      "state": "ok",
+      "severity": "hard",
+      "actual": "posrednik",
+      "target": null,
+      "owner": "deploy-admin-auth-v6.yml",
+      "route": "/gnk-aktual/",
+      "label": {
+        "hr": "AKTUAL MEDIA slike šalje kroz vlastiti posrednik, bez zajedničkih zamjenskih ilustracija",
+        "en": "AKTUAL MEDIA serves images through its own proxy, with no shared fallback artwork"
+      },
+      "note": "/api/img?u= prisutan"
+    },
+    {
+      "id": "proxy-popis",
+      "state": "ok",
+      "severity": "hard",
+      "actual": "29 / 29",
+      "target": null,
+      "owner": "tests/test-image-proxy-v1.mjs",
+      "route": "/gnk-aktual/",
+      "label": {
+        "hr": "Popis dopuštenih hostova posrednika jednak je hostovima u feedu",
+        "en": "The proxy allow-list matches the hosts actually present in the feed"
+      },
+      "note": "popis i feed se podudaraju u cijelosti"
+    },
+    {
+      "id": "deskovi-slike",
+      "state": "ok",
+      "severity": "watch",
+      "actual": "9 / 9",
+      "target": 9,
+      "owner": "region-daily.yml",
+      "route": "/izdanja/",
+      "label": {
+        "hr": "Svaki desk ima barem jednu sliku na objavljenoj stranici",
+        "en": "Every desk page carries at least one image"
+      },
+      "note": "svaki desk ima sliku u objavljenom HTML-u"
+    },
+    {
+      "id": "news-svjezina",
+      "state": "ok",
+      "severity": "watch",
+      "actual": "0.3 h",
+      "target": "6 h",
+      "owner": "gnk-news-refresh-v2.yml",
+      "route": "/gnk-aktual/",
+      "label": {
+        "hr": "Središnji feed nije stariji od 6 h",
+        "en": "The central feed is no older than 6 h"
+      },
+      "note": "300 zapisa · najnoviji 2026-10-21T14:27:21.000Z"
+    },
+    {
+      "id": "dvojezicno",
+      "state": "ok",
+      "severity": "hard",
+      "actual": "hr + en",
+      "target": 1,
+      "owner": "autonomija-365.yml",
+      "route": "/autonomija/",
+      "label": {
+        "hr": "Stranica postoji na hrvatskom i engleskom, s međusobnim poveznicama",
+        "en": "The page exists in Croatian and English, linked both ways"
+      },
+      "note": "obje stranice nose hreflang i međusobnu poveznicu"
+    },
+    {
+      "id": "veze",
+      "state": "ok",
+      "severity": "hard",
+      "actual": "12 / 6",
+      "target": "6",
+      "owner": "autonomija-365.yml",
+      "route": "/autonomija/",
+      "label": {
+        "hr": "Svaka stranica ima barem 6 internih poveznica",
+        "en": "Every page carries at least 6 internal links"
+      },
+      "note": "hr 13 · en 12"
+    }
+  ],
+  "totals": {
+    "all": 8,
+    "ok": 8,
+    "watch": 0,
+    "fail": 0
+  },
+  "measured": {
+    "channels": [
+      {
+        "id": "zagreb",
+        "items": 420,
+        "newest": "2026-10-21T11:37:04.000Z",
+        "ageHours": 3.2
+      },
+      {
+        "id": "beograd",
+        "items": 420,
+        "newest": "2026-10-21T11:38:00.000Z",
+        "ageHours": 3.2
+      },
+      {
+        "id": "sarajevo",
+        "items": 420,
+        "newest": "2026-10-21T12:29:35.000Z",
+        "ageHours": 2.3
+      },
+      {
+        "id": "budimpesta",
+        "items": 420,
+        "newest": "2026-10-21T11:34:00.000Z",
+        "ageHours": 3.2
+      },
+      {
+        "id": "ljubljana",
+        "items": 420,
+        "newest": "2026-10-21T11:35:00.000Z",
+        "ageHours": 3.2
+      },
+      {
+        "id": "rim",
+        "items": 420,
+        "newest": "2026-10-21T11:27:08.000Z",
+        "ageHours": 3.3
+      },
+      {
+        "id": "sofija",
+        "items": 407,
+        "newest": "2026-10-21T11:38:23.000Z",
+        "ageHours": 3.2
+      },
+      {
+        "id": "bukurest",
+        "items": 420,
+        "newest": "2026-10-21T11:41:51.523Z",
+        "ageHours": 3.1
+      }
+    ],
+    "news": {
+      "items": 300,
+      "newest": "2026-10-21T14:27:21.000Z",
+      "ageHours": 0.3
+    },
+    "proxies": {
+      "allowed": 29,
+      "feedHosts": 29
+    },
+    "desks": {
+      "withImages": 9,
+      "total": 9
+    }
+  }
+}

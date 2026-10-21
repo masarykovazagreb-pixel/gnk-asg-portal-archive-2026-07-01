@@ -376,7 +376,7 @@ ${jsonld}
 
   <hr class="gnk-rule">
   <p class="gnk-tags">${tags}</p>
-  <p class="hz-foot">${esc(t.footer)} · <a href="/zdravlje/">HR</a> · <a href="/en/zdravlje/">EN</a> · <a href="/status/">${lang === 'hr' ? 'Status centar' : 'Status center'}</a> · <a href="/automation-status/flota/">${lang === 'hr' ? 'Flota' : 'Fleet'}</a> · <a href="/workers/grupacije/">${lang === 'hr' ? 'Radne skupine' : 'Worker groups'}</a> · <a href="${lang === 'hr' ? '/' : '/en/'}">GNK ASG</a></p>
+  <p class="hz-foot">${esc(t.footer)} · <a href="/zdravlje/">HR</a> · <a href="/en/zdravlje/">EN</a> · <a href="/status/">${lang === 'hr' ? 'Status centar' : 'Status center'}</a> · <a href="/automation-status/flota/">${lang === 'hr' ? 'Flota' : 'Fleet'}</a> · <a href="/workers/grupacije/">${lang === 'hr' ? 'Radne skupine' : 'Worker groups'}</a> · <a href="${lang === 'hr' ? '/autonomija/' : '/en/autonomy/'}">${lang === 'hr' ? 'Autonomija 365' : 'Autonomy 365'}</a> · <a href="${lang === 'hr' ? '/' : '/en/'}">GNK ASG</a></p>
 </main>
 <footer class="gnk-footer">
   <div class="gnk-shell">
