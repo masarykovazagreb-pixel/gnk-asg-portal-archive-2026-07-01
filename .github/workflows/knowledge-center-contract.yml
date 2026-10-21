@@ -10,6 +10,10 @@ on:
       - 'workers/gnk-asg-operator-center/src/index.js'
       - 'scripts/generate-en-knowledge-center-v1.mjs'
       - 'scripts/knowledge-center-hr-sync-v1.mjs'
+      - 'scripts/build-s-chat-context-suggest-v1.mjs'
+      - 'apps/portal/data/s-chat-context-suggest-v1.json'
+      - 'workers/gnk-asg-direct-operator/src/chat-retrieval-v1.js'
+      - 'tests/test-s-chat-context-suggest-v1.mjs'
       - 'scripts/validate-knowledge-center-v1.mjs'
       - '.github/workflows/knowledge-center-contract.yml'
 
@@ -33,3 +37,9 @@ jobs:
         run: node scripts/validate-knowledge-center-v1.mjs
       - name: HR Knowledge Center must carry every question from the base
         run: node scripts/knowledge-center-hr-sync-v1.mjs --check
+      - name: Reproduce S+Chat page suggestions
+        run: node scripts/build-s-chat-context-suggest-v1.mjs
+      - name: Verify page suggestions are committed
+        run: git diff --exit-code -- apps/portal/data/s-chat-context-suggest-v1.json
+      - name: Validate S+Chat page suggestions
+        run: node tests/test-s-chat-context-suggest-v1.mjs
