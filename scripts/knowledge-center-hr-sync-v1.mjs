@@ -47,6 +47,7 @@ const groups = (kb.skupine || [])
 let page = fs.readFileSync(PAGE, 'utf8');
 const original = page;
 const changes = [];
+let reportLd = 0;
 
 /* ---------- 1. sekcije ---------- */
 
@@ -75,6 +76,21 @@ for (const group of groups) {
   const missing = group.questions.filter((item) => !known.has(plain(item.q)));
   if (missing.length) added.push({ group, kind: 'questions', missing, section: existing });
 }
+
+/* ---------- 1b. odgovori koji su se u bazi promijenili ---------- */
+
+const answers = new Map();
+for (const group of groups) for (const item of group.questions) answers.set(plain(item.q), item.a);
+
+let updatedAnswers = 0;
+page = page.replace(/<details><summary>([\s\S]*?)<\/summary><p>([\s\S]*?)<\/p><\/details>/g, (match, summary, body) => {
+  const question = plain(summary);
+  const source = answers.get(question);
+  if (!source) return match;
+  if (plain(source) === plain(body)) return match;
+  updatedAnswers += 1;
+  return `<details><summary>${summary}</summary><p>${esc(source)}</p></details>`;
+});
 
 /* ---------- 2. primjena ---------- */
 
@@ -127,6 +143,19 @@ if (faqMatch) {
     throw new Error(`FAQPage JSON-LD nije valjan: ${error.message}`);
   }
   const known = new Set((data.mainEntity || []).map((item) => String(item?.name || '').trim()));
+  // Postojeći zapisi se ne osvježavaju sami: tekst u bazi se mijenja, a
+  // strukturne podatke treba dovesti na isto. Inače Google čita staru
+  // tvrdnju iako stranica pokazuje novu.
+  let refreshedLd = 0;
+  for (const item of data.mainEntity || []) {
+    const name = String(item?.name || '').trim();
+    const source = answers.get(name);
+    if (!source) continue;
+    if (String(item?.acceptedAnswer?.text || '') === source) continue;
+    item.acceptedAnswer = { '@type': 'Answer', text: source };
+    refreshedLd += 1;
+  }
+  if (refreshedLd) reportLd = refreshedLd;
   const missing = [];
   for (const group of groups) {
     for (const item of group.questions) {
@@ -135,8 +164,8 @@ if (faqMatch) {
       known.add(item.q);
     }
   }
-  if (missing.length) {
-    data.mainEntity = [...(data.mainEntity || []), ...missing];
+  if (missing.length) data.mainEntity = [...(data.mainEntity || []), ...missing];
+  if (missing.length || refreshedLd) {
     page = page.replace(faqMatch[0], `<script type="application/ld+json">${JSON.stringify(data)}</script>`);
   }
 }
@@ -150,6 +179,8 @@ const report = {
   knowledgeQuestions: total,
   knowledgeGroups: groups.length,
   newSections: sectionAdds.length,
+  updatedAnswers,
+  updatedStructuredData: reportLd,
   newQuestions: questionAdds.reduce((n, item) => n + item.missing.length, 0),
   changed: drifted,
 };

@@ -196,7 +196,7 @@
         },
         {
           "p": "Koliko se često vijesti osvježavaju?",
-          "o": "Svaka dva sata. Izdvojena vijest mijenja se svakih 15 minuta, a kartice se rotiraju svake tri minute, pa se prikaz mijenja i između osvježavanja podataka."
+          "o": "Šest puta dnevno. Izdvojena vijest mijenja se svakih 15 minuta, a kartice se rotiraju svake tri minute, pa se prikaz mijenja i između osvježavanja podataka."
         },
         {
           "p": "Kako se biraju vijesti?",
@@ -237,7 +237,7 @@
         },
         {
           "p": "Koliko se često osvježavaju tržišni podatci?",
-          "o": "Tržišni pokazatelji svaki sat, makro podatci — BTC, zlato, Brent i USD-EUR — svaka tri sata. Vrijednosti mogu kasniti za stvarnim tržištem."
+          "o": "Tržišni pokazatelji i makro podatci — BTC, zlato, Brent i USD-EUR — osvježavaju se dvaput dnevno, u 06:10 i 14:10 UTC, kroz market-pulse-refresh.yml i macro-market-refresh.yml. Vrijednosti mogu kasniti za stvarnim tržištem."
         },
         {
           "p": "Je li to investicijsko savjetovanje?",
@@ -1555,7 +1555,7 @@
         },
         {
           "p": "Što se nalazi na stranici „AKTUAL MEDIA — Vijesti\"?",
-          "o": "AKTUAL MEDIA — pregled najnovijih svjetskih vijesti po kategorijama, sa slikama i kratkim izvodima, s poveznicom na izvorni članak. Ažurira se svaka dva sata. Stranica: gnk-asg.hr/gnk-aktual/"
+          "o": "AKTUAL MEDIA — pregled najnovijih svjetskih vijesti po kategorijama, sa slikama i kratkim izvodima, s poveznicom na izvorni članak. Ažurira se šest puta dnevno. Stranica: gnk-asg.hr/gnk-aktual/"
         },
         {
           "p": "Što se nalazi na stranici „Globalna mreža GNK DINAMO Ltd. Grupe — jedna mreža, više tržišta, zajednički smjer\"?",
@@ -1792,7 +1792,7 @@
         },
         {
           "p": "What is on the „AKTUAL MEDIA — News\" page?",
-          "o": "AKTUAL MEDIA — an overview of the latest world news by category, with images and short excerpts, linking to the original article. Updated every hour. Stranica: gnk-asg.hr/en/gnk-aktual/"
+          "o": "AKTUAL MEDIA — an overview of the latest world news by category, with images and short excerpts, linking to the original article. Updated six times daily. Stranica: gnk-asg.hr/en/gnk-aktual/"
         },
         {
           "p": "What is on the „Global Network of the GNK DINAMO Ltd. Group — one network, multiple markets, a shared direction\" page?",
@@ -2249,7 +2249,7 @@
         },
         {
           "p": "Kako se sustav održava bez ručnog popravka?",
-          "o": "Svaki posao ima jednog kanonskog pisca i raspored: gradska izdanja i deskovi grade se svaka dva sata kroz region-daily.yml, središnji feed osvježava se četiri puta dnevno kroz gnk-news-refresh-v2.yml, objava ide kroz deploy-admin-auth-v6.yml na svaki push, a satni nadzor ops-automation-sla-watchdog.yml provjerava rokove i pokreće pisca kad izostane. Mjerenje objavljuje autonomija-365.yml svakih šest sati."
+          "o": "Svaki posao ima jednog kanonskog pisca i raspored: gradska izdanja i deskovi grade se svaka dva sata kroz region-daily.yml, središnji feed osvježava se šest puta dnevno kroz gnk-news-refresh-v2.yml, objava ide kroz deploy-admin-auth-v6.yml na svaki push, a satni nadzor ops-automation-sla-watchdog.yml provjerava rokove i pokreće pisca kad izostane. Mjerenje objavljuje autonomija-365.yml svakih šest sati."
         },
         {
           "p": "Kada se osvježavaju gradska izdanja?",
@@ -2257,7 +2257,7 @@
         },
         {
           "p": "Kada se osvježava središnji feed AKTUAL MEDIA?",
-          "o": "Središnji feed news.json osvježava se četiri puta dnevno, u 01, 05, 09, 13, 17 i 21 sat UTC (raspored 12 1,5,9,13,17,21 * * *), kroz automatizaciju gnk-news-refresh-v2.yml. Stranica feeda je https://gnk-asg.hr/gnk-aktual/."
+          "o": "Središnji feed news.json osvježava se šest puta dnevno, u 01, 05, 09, 13, 17 i 21 sat UTC (raspored 12 1,5,9,13,17,21 * * *), kroz automatizaciju gnk-news-refresh-v2.yml. Stranica feeda je https://gnk-asg.hr/gnk-aktual/."
         },
         {
           "p": "Kako se provjeravaju slike iz tuđih izvora?",
@@ -2275,5 +2275,5 @@
     }
   ],
   "ukupnoPitanja": 542,
-  "verzija": "2026-07-28"
+  "verzija": "2026-10-21"
 }
