@@ -580,7 +580,7 @@
   /* ---------------- pokretanje ---------------- */
 
   function boot(text) {
-    el.kbCount.textContent = String(text || '535');
+    el.kbCount.textContent = String(text || '542');
   }
 
   fetch(HEALTH, { headers: { accept: 'application/json' }, cache: 'no-store' })

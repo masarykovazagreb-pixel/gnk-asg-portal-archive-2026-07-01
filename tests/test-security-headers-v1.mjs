@@ -43,6 +43,33 @@ for (const [name, pattern] of [
   check(pattern.test(value), `_headers: ${name} has an unexpected value (${value.trim()})`);
 }
 check(!/\bunsafe-eval\b/.test(headers), '_headers: unsafe-eval must not appear');
+
+/* Sintaksa _headers: blok počinje stazom, zaglavlja su uvučena, blokovi
+   su odvojeni praznim redom. Cloudflare tiho ignorira krivo napisan blok,
+   pa ovo mora pasti ovdje, a ne na produkciji. */
+const headerBlocks = [];
+let current = null;
+for (const rawLine of headers.split('\n')) {
+  const line = rawLine.replace(/\s+$/, '');
+  if (!line || line.startsWith('#')) { current = null; continue; }
+  if (!line.startsWith(' ') && !line.startsWith('\t')) {
+    check(/^\/[^\s]*$/.test(line), `_headers: block path is malformed: ${line}`);
+    current = { path: line, names: new Set() };
+    headerBlocks.push(current);
+    continue;
+  }
+  check(Boolean(current), `_headers: indented header outside a block: ${line}`);
+  const match = line.trim().match(/^([A-Za-z0-9-]+):\s*(\S.*)$/);
+  check(Boolean(match), `_headers: header is malformed: ${line.trim()}`);
+  if (match && current) {
+    const name = match[1].toLowerCase();
+    check(!current.names.has(name), `_headers: duplicate ${match[1]} in block ${current.path}`);
+    current.names.add(name);
+  }
+}
+check(headerBlocks.length >= 20, `_headers: blocks disappeared (${headerBlocks.length})`);
+check(headerBlocks.some((block) => block.path === '/*'), '_headers: the global block must stay first');
+check(headerBlocks[0].path === '/*', '_headers: the global block should be the first block');
 check((headers.match(/Content-Security-Policy:/g) || []).length >= 5, '_headers: route CSPs disappeared');
 check((headers.match(/frame-ancestors 'none'/g) || []).length >= 5, '_headers: route CSPs must keep frame-ancestors none');
 const xfo = (headers.match(/X-Frame-Options:/g) || []).length;
