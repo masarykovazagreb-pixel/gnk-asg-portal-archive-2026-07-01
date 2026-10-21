@@ -2,15 +2,15 @@
   "city": "Zagreb",
   "lat": 45.815,
   "lon": 15.9819,
-  "updated_at": "2026-10-21T13:42:06.254Z",
+  "updated_at": "2026-10-21T18:33:08.703Z",
   "source": "open-meteo.com",
   "state": "live",
   "current": {
-    "temperature_c": 14.9,
-    "feels_like_c": 14.3,
-    "humidity_pct": 86,
-    "wind_kmh": 9.2,
-    "is_day": true,
+    "temperature_c": 15.3,
+    "feels_like_c": 16.4,
+    "humidity_pct": 95,
+    "wind_kmh": 2.3,
+    "is_day": false,
     "weather_code": 61,
     "condition_hr": "Slaba kiša",
     "condition_en": "Slight rain"
@@ -18,24 +18,24 @@
   "forecast": [
     {
       "date": "2026-10-21",
-      "max_c": 16.4,
+      "max_c": 16.6,
       "min_c": 8.8,
+      "weather_code": 95,
+      "condition_hr": "Grmljavinsko nevrijeme",
+      "condition_en": "Thunderstorm"
+    },
+    {
+      "date": "2026-10-22",
+      "max_c": 14.8,
+      "min_c": 8.7,
       "weather_code": 80,
       "condition_hr": "Slabi pljuskovi",
       "condition_en": "Slight rain showers"
     },
     {
-      "date": "2026-10-22",
-      "max_c": 14.6,
-      "min_c": 8,
-      "weather_code": 61,
-      "condition_hr": "Slaba kiša",
-      "condition_en": "Slight rain"
-    },
-    {
       "date": "2026-10-23",
-      "max_c": 12.4,
-      "min_c": 4,
+      "max_c": 12.2,
+      "min_c": 3.8,
       "weather_code": 45,
       "condition_hr": "Magla",
       "condition_en": "Fog"
