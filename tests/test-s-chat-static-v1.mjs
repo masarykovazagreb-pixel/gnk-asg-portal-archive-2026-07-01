@@ -46,7 +46,8 @@ assert.match(hr, /hreflang="en" href="https:\/\/gnk-asg\.hr\/en\/s-chat\/"/);
 assert.match(en, /hreflang="hr" href="https:\/\/gnk-asg\.hr\/s-chat\/"/);
 
 for (const id of ['scApp', 'scThread', 'scScroll', 'scForm', 'scInput', 'scSend', 'scStop', 'scAnnounce',
-  'scStatus', 'scExport', 'scNew', 'scHistoryList', 'scSuggest', 'scRail', 'scRailToggle', 'scKbCount']) {
+  'scStatus', 'scExport', 'scNew', 'scHistoryList', 'scSuggest', 'scRail', 'scRailToggle', 'scKbCount',
+  'scContext', 'scContextPath', 'scContextClear']) {
   assert.ok(hr.includes(`id="${id}"`), `HR missing #${id}`);
   assert.ok(en.includes(`id="${id}"`), `EN missing #${id}`);
 }
@@ -58,6 +59,15 @@ for (const page of [hr, en]) {
   assert.match(page, /<ul class="sc-trust" aria-label="[^"]+">/, 'the welcome screen must state how answers are made');
   assert.equal((page.match(/<li><strong>/g) || []).length >= 3, true, 'the trust strip needs three facts');
 }
+for (const page of [hr, en]) {
+  assert.match(page, /id="scContext" hidden/, 'the page context chip must start hidden');
+  assert.match(page, /aria-label="[^"]*kontekst|aria-label="[^"]*context/, 'the context chip needs an accessible label');
+}
+assert.match(js, /contextPath: contextPath \|\| undefined/, 'the client must send the page context');
+assert.match(js, /URLSearchParams\(window\.location\.search\)\.get\('ctx'\)/, 'the client must read ?ctx=');
+assert.match(js, /CONTEXT_PATTERN = \/\^\\\/\[a-z0-9\]/, 'the client must validate the context path');
+assert.match(js, /history\.replaceState/, 'clearing the context must clean the URL');
+assert.match(css, /\.sc-context/, 'the context chip needs styles');
 assert.match(hr, /s-chat-v2\.js\?v=/);
 assert.match(hr, /s-chat-v2\.css\?v=/);
 assert.match(en, /s-chat-v2\.js\?v=/);

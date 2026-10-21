@@ -116,7 +116,7 @@
   const image = (item, eager = false, width = 880) => {
     const visual = selectImage(item, width);
     if (!visual.src) return plateFor(visual);
-    return '<img src="' + esc(visual.src) + '" alt="' + esc(visual.alt) + '" width="1200" height="675" loading="' + (eager ? 'eager' : 'lazy') + '" decoding="async" referrerpolicy="no-referrer"'
+    return '<img src="' + esc(visual.src) + '" alt="' + esc(visual.alt) + '" width="1200" height="675" loading="' + (eager ? 'eager' : 'lazy') + '"' + (eager ? ' fetchpriority="high"' : '') + ' decoding="async" referrerpolicy="no-referrer"'
       + (visual.credit ? ' data-credit="' + esc(visual.credit) + '"' : '') + '>';
   };
   document.addEventListener('error', event => {

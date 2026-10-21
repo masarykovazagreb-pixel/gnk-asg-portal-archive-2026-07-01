@@ -27,6 +27,9 @@
     rail: $('scRail'),
     railToggle: $('scRailToggle'),
     kbCount: $('scKbCount'),
+    context: $('scContext'),
+    contextPath: $('scContextPath'),
+    contextClear: $('scContextClear'),
   };
 
   const STORE = 'gnk-s-chat-v2';
@@ -34,6 +37,20 @@
   const ENDPOINT = '/api/s-chat';
   const HEALTH = '/api/s-chat/health';
   const LANG = (document.documentElement.lang || 'hr').toLowerCase().startsWith('en') ? 'en' : 'hr';
+
+  /* Stranica s koje je razgovor otvoren ("/s-chat/?ctx=/gnk-aktual/").
+     Prihvaćamo samo putanju bez upita; agent je ionako provjerava prema
+     bazi, pa nepoznata putanja ne mijenja ništa. */
+  const CONTEXT_PATTERN = /^\/[a-z0-9][a-z0-9\-_/]*$/i;
+  function readContext() {
+    try {
+      const raw = new URLSearchParams(window.location.search).get('ctx') || '';
+      const path = raw.trim();
+      if (!path || path.length > 120 || !CONTEXT_PATTERN.test(path)) return '';
+      return path;
+    } catch { return ''; }
+  }
+  let contextPath = readContext();
 
   const T = LANG === 'en' ? {
     ready: 'Ready', thinking: 'Thinking…', stopped: 'Stopped', offline: 'Service unavailable',
@@ -54,6 +71,26 @@
     stoppedByUser: 'Zaustavili ste odgovor.', empty: 'Prvo napišite pitanje.',
     regenerate: 'Ponovno generiraj', modeKnowledge: 'AI asistent · baza znanja portala',
   };
+
+  function renderContext() {
+    if (!el.context) return;
+    el.context.hidden = !contextPath;
+    if (el.contextPath) el.contextPath.textContent = contextPath;
+  }
+
+  function clearContext() {
+    contextPath = '';
+    renderContext();
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('ctx');
+      window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
+    } catch {}
+    el.input?.focus();
+  }
+
+  if (el.contextClear) el.contextClear.addEventListener('click', clearContext);
+  renderContext();
 
   /* ---------------- pohrana ---------------- */
 
@@ -384,7 +421,7 @@
         headers: { 'content-type': 'application/json', accept: 'text/event-stream' },
         credentials: 'same-origin',
         cache: 'no-store',
-        body: JSON.stringify({ message: question, history, lang: LANG }),
+        body: JSON.stringify({ message: question, history, lang: LANG, contextPath: contextPath || undefined }),
         signal: controller.signal,
       });
 
