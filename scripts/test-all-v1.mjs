@@ -58,6 +58,7 @@ const GATES = [
   { name: 'Stabilnost i ažurnost izdanja', cmd: ['node', 'tests/test-stability-contracts-v1.mjs'], required: true },
   { name: 'AKTUAL MEDIA — najava proizvoda', cmd: ['node', 'tests/test-aktual-promo-v1.mjs'], required: true },
   { name: 'AKTUAL MEDIA — popis svih proizvoda', cmd: ['node', 'tests/test-aktual-products-v1.mjs'], required: true },
+  { name: 'Samostalni portali — ARHIVA i DNEVNIK', cmd: ['node', 'tests/test-satellites-v1.mjs'], required: true },
   { name: 'Znak u čvoru izdavača', cmd: ['node', 'scripts/backfill-brand-entity-logo-v1.mjs', '--check'], required: true },
 ];
 

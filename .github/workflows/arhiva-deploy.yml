@@ -1,0 +1,111 @@
+name: ARHIVA — deploy
+
+# Objavljuje AKTUAL ARHIVU (apps/arhiva) na Cloudflare Pages.
+# Kanonska adresa: https://gnk-asg-arhiva.pages.dev/
+# Portal je samostalan: vlastita domena, vlastiti sitemap.xml, feed.xml i robots.txt.
+# Prije deploya gradi se site i prolazi gate tests/test-satellites-v1.mjs.
+
+on:
+  push:
+    branches: [main, 'arena/**']
+    paths:
+      - 'apps/arhiva/**'
+      - 'apps/satellites/**'
+      - 'apps/region/data/**'
+      - 'apps/region/channels.json'
+      - 'tests/test-satellites-v1.mjs'
+      - '.github/workflows/arhiva-deploy.yml'
+  schedule:
+    - cron: '35 1,7,13,19 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: arhiva-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      ARHIVA_BASE: https://gnk-asg-arhiva.pages.dev/
+      CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Sastavi arhivu
+        shell: bash
+        run: |
+          set -uo pipefail
+          node apps/arhiva/engine/build.mjs
+          test -f apps/arhiva/site/index.html
+          test -f apps/arhiva/site/en/index.html
+          test -f apps/arhiva/site/sitemap.xml
+          test -f apps/arhiva/site/feed.xml
+          test -f apps/arhiva/site/data/arhiva.json
+          node -e "const d=require('./apps/arhiva/site/data/arhiva.json'); console.log('zapisa:', d.items.length); if(!d.items.length) process.exit(1)"
+
+      - name: Gate samostalnih portala
+        shell: bash
+        run: node tests/test-satellites-v1.mjs
+
+      - name: Pripremi Cloudflare Pages projekt
+        id: cf
+        shell: bash
+        run: |
+          set -uo pipefail
+          if [ -z "${CF_TOKEN:-}" ] || [ -z "${CF_ACCOUNT:-}" ]; then
+            echo "::warning::Cloudflare secrets nisu dostupni — preskačem deploy."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          code=$(curl -s -o /tmp/proj.json -w '%{http_code}' \
+            -H "Authorization: Bearer $CF_TOKEN" \
+            "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/gnk-asg-arhiva")
+          if [ "$code" != "200" ]; then
+            echo "Projekt ne postoji (HTTP $code) — kreiram."
+            curl -s -o /tmp/create.json -w 'Create HTTP %{http_code}\n' -X POST \
+              -H "Authorization: Bearer $CF_TOKEN" -H "Content-Type: application/json" \
+              --data '{"name":"gnk-asg-arhiva","production_branch":"main"}' \
+              "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects"
+            head -c 300 /tmp/create.json || true; echo
+          fi
+          if curl -fsS -H "Authorization: Bearer $CF_TOKEN" \
+            "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/gnk-asg-arhiva" >/dev/null; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::Projekt nije dostupan (ovlasti tokena Pages:Edit?)."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Objavi na Cloudflare Pages
+        if: steps.cf.outputs.ready == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          npx --yes wrangler@4 pages deploy apps/arhiva/site \
+            --project-name=gnk-asg-arhiva \
+            --branch=main \
+            --commit-dirty=true
+
+      - name: Sažetak
+        if: always()
+        shell: bash
+        run: |
+          COUNT=$(node -e "const d=require('./apps/arhiva/site/data/arhiva.json');console.log(d.items.length)" 2>/dev/null || echo 0)
+          {
+            echo "## AKTUAL ARHIVA"
+            echo "- https://gnk-asg-arhiva.pages.dev/"
+            echo "- zapisa u indeksu: ${COUNT}"
+            echo "- rute: /, /en/, /grad/<id>/, /en/city/<id>/, /o-arhivi/, /en/about/"
+            echo "- sitemap: https://gnk-asg-arhiva.pages.dev/sitemap.xml"
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -61,7 +61,9 @@ const PLATFORMS = [
   ['/radio/', 'Radio', 'Šest stanica, jedan player'],
   ['/gnk-aktual/mreza/', 'Mreža izdanja', '8 gradova i 8 jezika na jednoj karti'],
   ['/status/', 'Status ažurnosti', 'Javno mjerenje svježine svakog izdanja'],
-  ['/aktual-media/', 'Podatkovni desk', 'Četiri mjerenja vlastite arhive']
+  ['/aktual-media/', 'Podatkovni desk', 'Četiri mjerenja vlastite arhive'],
+  ['https://gnk-asg-arhiva.pages.dev/', 'AKTUAL ARHIVA', 'Samostalan portal: 3.360 tekstova u pretraživoj arhivi'],
+  ['https://gnk-asg-dnevnik.pages.dev/', 'AKTUAL DNEVNIK', 'Samostalan portal: jedan dan, osam gradova, po satima']
 ];
 
 const css = `*{box-sizing:border-box}
@@ -119,7 +121,9 @@ const platformCards = (lang) => PLATFORMS.map(([url, hr, note]) => {
     'Šest stanica, jedan player': 'Six stations, one player',
     '8 gradova i 8 jezika na jednoj karti': '8 cities and 8 languages on one map',
     'Javno mjerenje svježine svakog izdanja': 'Public freshness measurement for every edition',
-    'Četiri mjerenja vlastite arhive': 'Four measurements of our own archive'
+    'Četiri mjerenja vlastite arhive': 'Four measurements of our own archive',
+    'Samostalan portal: 3.360 tekstova u pretraživoj arhivi': 'Standalone portal: 3,360 stories in a searchable archive',
+    'Samostalan portal: jedan dan, osam gradova, po satima': 'Standalone portal: one day, eight cities, hour by hour'
   }[note] || note;
   return `<li><a class="pr-card" href="${url}"${/^https?:/.test(url) ? ' rel="external noopener"' : ''}><b>${label}</b><span>${lang === 'hr' ? note : noteEn}</span></a></li>`;
 }).join('');
@@ -166,7 +170,7 @@ function page(lang) {
     lead: 'Osam gradskih izdanja, devet deskova, poslovni tjednik, moda, galerija, radio i javni status — svaki proizvod ima svoj link i svoje mjesto.',
     cities: 'Gradska izdanja', citiesNote: 'Svaki grad ima vlastito izdanje na svom jeziku, s poveznicom na svaki izvornik.',
     desks: 'Deskovi i rubrike', desksNote: 'Devet deskova koji dijele istu arhivu, ali gledaju je iz drugog kuta.',
-    platforms: 'Platforme i mjerenja', platformsNote: 'Tjednik, galerija, radio, mreža izdanja, status ažurnosti i podatkovni desk.',
+    platforms: 'Platforme i mjerenja', platformsNote: 'Tjednik, galerija, radio, mreža izdanja, status ažurnosti, podatkovni desk te dva samostalna portala na vlastitim domenama — ARHIVA i DNEVNIK.',
     note: 'Svi automatski sastavljeni dijelovi označeni su kao takvi i nisu pojedinačno urednički pregledani. Izvornici su uvijek povezani; tvrdnje izvornika nisu tvrdnje redakcije.',
     foot: 'Urednik i direktor: Nermin Sefić · AKTUAL MEDIA d.o.o.', back: '← AKTUAL MEDIA', all: 'Sva izdanja', status: 'Status ažurnosti'
   } : {
@@ -174,7 +178,7 @@ function page(lang) {
     lead: 'Eight city editions, nine desks, the business weekly, mode, gallery, radio and the public status — every product has its own link and its own place.',
     cities: 'City editions', citiesNote: 'Every city has its own edition in its own language, with a link to every original source.',
     desks: 'Desks and sections', desksNote: 'Nine desks sharing one archive, each looking at it from a different angle.',
-    platforms: 'Platforms and measurements', platformsNote: 'Weekly, gallery, radio, edition network, freshness status and the data desk.',
+    platforms: 'Platforms and measurements', platformsNote: 'Weekly, gallery, radio, edition network, freshness status, the data desk and two standalone portals on their own domains — ARCHIVE and DAILY.',
     note: 'Automatically assembled parts are labelled as such and are not individually editorially reviewed. Original sources are always linked; claims from sources are not the claims of the newsroom.',
     foot: 'Editor and director: Nermin Sefić · AKTUAL MEDIA d.o.o.', back: '← AKTUAL MEDIA', all: 'All editions', status: 'Freshness status'
   };

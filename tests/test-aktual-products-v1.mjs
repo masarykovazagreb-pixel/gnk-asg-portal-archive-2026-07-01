@@ -74,9 +74,9 @@ for (const { page, lang, canonical, alternate } of PAGES) {
     if (!candidates.some((p) => existsSync(p))) fails.push(`${page}: poveznica vodi na nepostojeću rutu ${href}`);
   }
 
-  /* Sadržaj: osam gradova, devet deskova, šest platformi. */
+  /* Sadržaj: osam gradova, devet deskova, osam platformi (dvije su samostalni portali). */
   const cards = (html.match(/class="pr-card"/g) || []).length;
-  if (cards !== 23) fails.push(`${page}: ${cards} kartica (mora biti 23: 8 gradova + 9 deskova + 6 platformi)`);
+  if (cards !== 25) fails.push(`${page}: ${cards} kartica (mora biti 25: 8 gradova + 9 deskova + 8 platformi)`);
   for (const city of ['zagreb', 'beograd', 'sarajevo', 'budimpesta', 'ljubljana', 'rim', 'sofija', 'bukurest']) {
     if (!html.includes(`href="/kanal/${city}/"`)) fails.push(`${page}: nema grada ${city}`);
   }
@@ -119,10 +119,14 @@ else {
   let cat;
   try { cat = JSON.parse(read(catalogPath)); } catch (e) { fails.push(`${catalogPath}: nije valjan JSON (${e.message})`); }
   if (cat) {
-    if (!cat.counts || cat.counts.cities !== 8 || cat.counts.desks !== 9 || cat.counts.platforms !== 6) {
+    const urls = (cat.products || []).map((x) => x.url);
+    for (const portal of ['https://gnk-asg-arhiva.pages.dev/', 'https://gnk-asg-dnevnik.pages.dev/']) {
+      if (!urls.includes(portal)) errors.push(`katalog ne sadrži samostalni portal ${portal}`);
+    }
+    if (!cat.counts || cat.counts.cities !== 8 || cat.counts.desks !== 9 || cat.counts.platforms !== 8) {
       fails.push(`${catalogPath}: krivi brojevi (${JSON.stringify(cat.counts)})`);
     }
-    if (!Array.isArray(cat.products) || cat.products.length !== 23) fails.push(`${catalogPath}: nema 23 proizvoda`);
+    if (!Array.isArray(cat.products) || cat.products.length !== 25) fails.push(`${catalogPath}: nema 25 proizvoda`);
     if (cat.pages?.hr !== `${SITE}/aktual-media/proizvodi/` || cat.pages?.en !== `${SITE}/en/aktual-media/proizvodi/`) {
       fails.push(`${catalogPath}: krive stranice`);
     }
