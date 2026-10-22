@@ -5,6 +5,7 @@
  */
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
+import {strengthenAktualBrand} from '../apps/region/engine/aktual-central.mjs';
 const root='apps/portal';
 const brand='https://gnk-asg.hr/gnk-aktual/#news-organization';
 const cities={
@@ -51,9 +52,29 @@ const hubSource=get('apps/region/engine/hub.mjs');
 assert(hubSource.includes('MEDIA_ENTITY_NODE')&&hubSource.includes('NewsMediaOrganization'));
 assert(hubSource.includes("numberOfItems: Math.min(20, items.length)"));
 const dataSource=get('apps/region/engine/data-desk.mjs');
-assert(dataSource.includes('/gnk-aktual/#news-organization'),'data desk publisher must match');
+assert(dataSource.includes('BRAND_ID'),'data desk must retain shared publisher identity');
 const central=get('apps/region/engine/aktual-central.mjs');
-assert(central.includes('strengthenAktualBrand(addPerf(html)'), 'central published writer must preserve publisher entity');
-assert(central.includes('numberOfItems: CHANNELS.length + 9'),'17 edition/topic items correct');
+assert(central.includes("strengthenAktualBrand(html, 'hr', jsonld)"), 'central published writer must preserve publisher entity');
+const destinations=page[0].mainEntity;
+assert.equal(destinations.numberOfItems,destinations.itemListElement.length,'edition/topic item count must match');
+assert(destinations.numberOfItems>=17,'keep all eight editions and nine topic desks');
+for(const lang of ['hr','en']){
+ const url=lang==='en'?'https://gnk-asg.hr/en/gnk-aktual/':'https://gnk-asg.hr/gnk-aktual/';
+ const publisher={'@type':'NewsMediaOrganization','@id':brand,name:'AKTUAL MEDIA d.o.o.',logo:{url:'https://gnk-asg.hr/brand.webp'}};
+ const schema=x=>'<script type="application/ld+json">'+JSON.stringify(x)+'</script>';
+ const marker='<!-- AKTUAL-MEDIA-SEO-ENTITY:START -->'+schema({'@graph':[publisher]})+'<!-- AKTUAL-MEDIA-SEO-ENTITY:END -->';
+ const fixture='<head>'+schema({'@type':'CollectionPage',url,publisher:{'@id':'old'}})+
+   (lang==='hr'?schema(publisher):'')+marker+'</head>';
+ let html=fixture;
+ for(let cycle=0;cycle<2;cycle++){
+  html=strengthenAktualBrand(html,lang,{'@type':'ItemList',numberOfItems:17,itemListElement:Array.from({length:17},(_,i)=>({'@type':'ListItem',position:i+1}))});
+  const nodes=scripts(html);
+  assert.equal(nodes.filter(n=>n['@type']==='NewsMediaOrganization'&&n['@id']===brand).length,1,'publisher survives repeated '+lang+' regeneration');
+  const collection=nodes.find(n=>n['@type']==='CollectionPage'&&n.url===url);
+  assert.equal(collection.publisher['@id'],brand);
+  assert.equal(collection.mainEntity.numberOfItems,17);
+  if(lang==='hr')assert.equal(nodes.find(n=>n['@type']==='NewsMediaOrganization').logo.url,publisher.logo.url,'preserve current brand logo');
+ }
+}
 console.log(JSON.stringify({pass:true,namedRegionalEditions:8,regionalSitemapLocations:regional,
   topicDesks:9,editor:'Nermin Sefić',brand:'AKTUAL MEDIA',scope:'repository only'}));

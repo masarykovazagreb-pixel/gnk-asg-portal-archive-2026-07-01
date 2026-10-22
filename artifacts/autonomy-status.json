@@ -1,6 +1,6 @@
 {
   "version": "GNK_ASG_AUTONOMY_365_V1_20261021",
-  "generatedAt": "2026-10-22T04:59:05Z",
+  "generatedAt": "2026-10-22T12:01:43Z",
   "horizon": {
     "starts": "2026-10-21",
     "ends": "2027-10-21",
@@ -28,7 +28,7 @@
       "id": "kanali-svjezina",
       "state": "ok",
       "severity": "watch",
-      "actual": "6.7 h",
+      "actual": "6 h",
       "target": "48 h",
       "owner": "region-daily.yml",
       "route": "/kanal/",
@@ -37,8 +37,8 @@
         "en": "The newest story in every channel is no older than 48 h"
       },
       "note": {
-        "hr": "zagreb 4.7 h · beograd 4.9 h · sarajevo 5.9 h · budimpesta 6.7 h · ljubljana 5 h · rim 5 h · sofija 4.9 h · bukurest 4.4 h",
-        "en": "zagreb 4.7 h · beograd 4.9 h · sarajevo 5.9 h · budimpesta 6.7 h · ljubljana 5 h · rim 5 h · sofija 4.9 h · bukurest 4.4 h"
+        "hr": "zagreb 6 h · beograd 5.9 h · sarajevo 4.9 h · budimpesta 5.9 h · ljubljana 5.9 h · rim 6 h · sofija 5.9 h · bukurest 5.9 h",
+        "en": "zagreb 6 h · beograd 5.9 h · sarajevo 4.9 h · budimpesta 5.9 h · ljubljana 5.9 h · rim 6 h · sofija 5.9 h · bukurest 5.9 h"
       }
     },
     {
@@ -60,9 +60,9 @@
     },
     {
       "id": "proxy-popis",
-      "state": "ok",
+      "state": "fail",
       "severity": "hard",
-      "actual": "29 / 29",
+      "actual": "60 / 29",
       "target": null,
       "owner": "tests/test-image-proxy-v1.mjs",
       "route": "/gnk-aktual/",
@@ -71,8 +71,8 @@
         "en": "The proxy allow-list matches the hosts actually present in the feed"
       },
       "note": {
-        "hr": "popis i feed se podudaraju u cijelosti",
-        "en": "the list and the feed match exactly"
+        "hr": "nedostaje: — · višak: media.jutarnji.hr, bucket.index.hr, n1info.hr, www.telegram.hr, i2.res.24o.it, www.danas.rs, nova.rs, n1info.rs, www.politika.rs, static.klix.ba, n1info.ba, storage.radiosarajevo.ba, gale-s3-bucket.s3.eu-central-1.amazonaws.com, images.24ur.com, n1info.si, slovenskenovice.delo.si, www.delo.si, iasstorage.vecer.com, img.hvg.hu, s.24.hu, pcdn.hu, assets.4cdn.hu, assets.telex.hu, www.gedistatic.it, img.dnevnik.bg, www.segabg.com, cdn.actualno.eu, www.g4media.ro, s.iw.ro, storage0.dms.mpinteractiv.ro, i0.1616.ro",
+        "en": "missing: — · extra: media.jutarnji.hr, bucket.index.hr, n1info.hr, www.telegram.hr, i2.res.24o.it, www.danas.rs, nova.rs, n1info.rs, www.politika.rs, static.klix.ba, n1info.ba, storage.radiosarajevo.ba, gale-s3-bucket.s3.eu-central-1.amazonaws.com, images.24ur.com, n1info.si, slovenskenovice.delo.si, www.delo.si, iasstorage.vecer.com, img.hvg.hu, s.24.hu, pcdn.hu, assets.4cdn.hu, assets.telex.hu, www.gedistatic.it, img.dnevnik.bg, www.segabg.com, cdn.actualno.eu, www.g4media.ro, s.iw.ro, storage0.dms.mpinteractiv.ro, i0.1616.ro"
       }
     },
     {
@@ -96,7 +96,7 @@
       "id": "news-svjezina",
       "state": "ok",
       "severity": "watch",
-      "actual": "5.1 h",
+      "actual": "5.9 h",
       "target": "6 h",
       "owner": "gnk-news-refresh-v2.yml",
       "route": "/gnk-aktual/",
@@ -105,8 +105,8 @@
         "en": "The central feed is no older than 6 h"
       },
       "note": {
-        "hr": "300 zapisa · najnoviji 2026-10-21T23:52:12.000Z",
-        "en": "300 items · newest 2026-10-21T23:52:12.000Z"
+        "hr": "300 zapisa · najnoviji 2026-10-22T06:05:03.000Z",
+        "en": "300 items · newest 2026-10-22T06:05:03.000Z"
       }
     },
     {
@@ -146,68 +146,68 @@
   ],
   "totals": {
     "all": 8,
-    "ok": 8,
+    "ok": 7,
     "watch": 0,
-    "fail": 0
+    "fail": 1
   },
   "measured": {
     "channels": [
       {
         "id": "zagreb",
         "items": 420,
-        "newest": "2026-10-22T00:16:19.000Z",
-        "ageHours": 4.7
+        "newest": "2026-10-22T06:03:10.000Z",
+        "ageHours": 6
       },
       {
         "id": "beograd",
         "items": 420,
-        "newest": "2026-10-22T00:08:00.000Z",
-        "ageHours": 4.9
+        "newest": "2026-10-22T06:05:03.000Z",
+        "ageHours": 5.9
       },
       {
         "id": "sarajevo",
         "items": 420,
-        "newest": "2026-10-21T23:07:22.000Z",
-        "ageHours": 5.9
+        "newest": "2026-10-22T07:04:47.000Z",
+        "ageHours": 4.9
       },
       {
         "id": "budimpesta",
         "items": 420,
-        "newest": "2026-10-21T22:19:18.000Z",
-        "ageHours": 6.7
+        "newest": "2026-10-22T06:05:00.000Z",
+        "ageHours": 5.9
       },
       {
         "id": "ljubljana",
         "items": 420,
-        "newest": "2026-10-22T00:00:00.000Z",
-        "ageHours": 5
+        "newest": "2026-10-22T06:06:13.000Z",
+        "ageHours": 5.9
       },
       {
         "id": "rim",
         "items": 420,
-        "newest": "2026-10-21T23:58:49.000Z",
-        "ageHours": 5
+        "newest": "2026-10-22T06:01:26.000Z",
+        "ageHours": 6
       },
       {
         "id": "sofija",
         "items": 420,
-        "newest": "2026-10-22T00:03:03.000Z",
-        "ageHours": 4.9
+        "newest": "2026-10-22T06:08:00.000Z",
+        "ageHours": 5.9
       },
       {
         "id": "bukurest",
         "items": 420,
-        "newest": "2026-10-22T00:37:41.415Z",
-        "ageHours": 4.4
+        "newest": "2026-10-22T06:09:47.794Z",
+        "ageHours": 5.9
       }
     ],
     "news": {
       "items": 300,
-      "newest": "2026-10-21T23:52:12.000Z",
-      "ageHours": 5.1
+      "newest": "2026-10-22T06:05:03.000Z",
+      "ageHours": 5.9
     },
     "proxies": {
-      "allowed": 29,
+      "allowed": 60,
       "feedHosts": 29
     },
     "desks": {

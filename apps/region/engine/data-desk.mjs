@@ -24,6 +24,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CHANNELS, HUB } from './build.mjs';
+import { logoJsonLd } from './brand.mjs';
 import { esc, safeJson } from './lib.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -33,7 +34,23 @@ const PORTAL = join(ROOT, 'apps', 'portal');
 const DATA = join(APP, 'data');
 
 const SITE = 'https://gnk-asg.hr';
-const SECTION = `${SITE}/aktual-media/`;
+
+/* Jedan @id za AKTUAL MEDIA na svim podstranicama podatkovnog deska.
+   Prije je ovdje stajao `${SITE}/#gnk-asg`, što je id GNK ASG organizacije —
+   dvije različite organizacije dijelile su isti čvor, pa je Google čitao
+   AKTUAL MEDIA i GNK ASG kao istu osobu. */
+const BRAND_ID = `${SITE}/gnk-aktual/#news-organization`;
+const BRAND_NAMES = ['AKTUAL MEDIA', 'Aktual Media', 'Aktual mediji', 'Aktual medija', 'Aktual Media d.o.o.', 'AKTUAL MEDIA KANAL', 'AKTUAL MEDIA KANAL ZAGREB'];
+
+/* Oznake idu u article:tag; u meta keywords ostaju samo riječi. */
+const wordsOf = (list) => [...new Map(list
+  .map((word) => String(word).replace(/^#/, '').trim())
+  .filter((word) => word && !/nermin|sefi[cć]/i.test(word))
+  .map((word) => [word.toLowerCase(), word])).values()].join(', ');
+const tagMetas = (list) => list
+  .filter((word) => String(word).startsWith('#'))
+  .map((word) => `<meta property="article:tag" content="${word}">`)
+  .join('\n');const SECTION = `${SITE}/aktual-media/`;
 const VERSION = 'GNK_ASG_DATA_DESK_V1_20261021';
 const MARK_START = '<!-- DATA-DESK-BAND:START -->';
 const MARK_END = '<!-- DATA-DESK-BAND:END -->';
@@ -645,15 +662,19 @@ function jsonld(desk, lang, canonical, alternate, keywords) {
         name: 'GNK ASG',
         url: `${SITE}/`,
         inLanguage: ['hr', 'en'],
+        /* WebSite ostaje GNK ASG; AKTUAL MEDIA je izdavač sadržaja, ne
+           vlasnik domene. */
         publisher: { '@id': `${SITE}/#gnk-asg` },
       },
       {
         '@type': 'NewsMediaOrganization',
-        '@id': `${SITE}/gnk-aktual/#news-organization`,
+        '@id': BRAND_ID,
         name: 'AKTUAL MEDIA d.o.o.',
-        alternateName: ['AKTUAL MEDIA', 'Aktual mediji', 'Aktual Media', 'AKTUAL MEDIA KANAL'],
+        alternateName: BRAND_NAMES,
         url: `${SITE}/gnk-aktual/`,
-        parentOrganization: { '@id': `${SITE}/#gnk-asg` },
+        /* Znak izdavača: vlastiti wordmark AKTUAL MEDIA, ne znak matičnog društva. */
+        logo: logoJsonLd(lang === 'en' ? 'aktual-media-en' : 'aktual-media-hr', { url: SITE }),
+        parentOrganization: { '@type': 'Organization', '@id': `${SITE}/#gnk-asg`, name: 'GNK ASG d.o.o.', url: `${SITE}/` },
         editor: { '@id': `${SITE}/#nermin-sefic` },
       },
       {
@@ -662,7 +683,7 @@ function jsonld(desk, lang, canonical, alternate, keywords) {
         name: 'Nermin Sefić',
         jobTitle: lang === 'en' ? 'Editor and director' : 'Urednik i direktor',
         url: `${SITE}/nermin-sefic/`,
-        worksFor: { '@id': `${SITE}/#gnk-asg` },
+        worksFor: { '@id': BRAND_ID },
       },
       {
         '@type': 'CollectionPage',
@@ -673,7 +694,7 @@ function jsonld(desk, lang, canonical, alternate, keywords) {
         inLanguage: lang,
         isPartOf: { '@id': `${SITE}/#website` },
         about: { '@id': datasetId },
-        publisher: { '@id': `${SITE}/gnk-aktual/#news-organization` },
+        publisher: { '@id': BRAND_ID },
         editor: { '@id': `${SITE}/#nermin-sefic` },
         mainEntity: { '@id': datasetId },
         keywords: keywords.join(', '),
@@ -683,7 +704,7 @@ function jsonld(desk, lang, canonical, alternate, keywords) {
         '@id': datasetId,
         name: copy.title,
         description: copy.description,
-        creator: { '@id': `${SITE}/gnk-aktual/#news-organization` },
+        creator: { '@id': BRAND_ID },
         isAccessibleForFree: true,
         dateModified: generatedAt,
         temporalCoverage: `${generatedAt.slice(0, 10)}/..`,
@@ -761,8 +782,9 @@ function page(desk, lang) {
 <meta name="author" content="AKTUAL MEDIA d.o.o.">
 <meta name="editor" content="Nermin Sefić">
 <meta name="publisher" content="AKTUAL MEDIA d.o.o.">
-<meta name="keywords" content="${esc(keywords.join(', '))}, AKTUAL MEDIA, GNK ASG">
-<meta name="news_keywords" content="${esc(keywords.join(', '))}, AKTUAL MEDIA, GNK ASG">
+<meta name="keywords" content="${esc(wordsOf([...keywords, 'AKTUAL MEDIA', 'Aktual mediji', 'GNK ASG']))}">
+<meta name="news_keywords" content="${esc(wordsOf([...keywords, 'AKTUAL MEDIA', 'Aktual mediji', 'GNK ASG']))}">
+${tagMetas(keywords)}
 <meta name="theme-color" content="#061019">
 <link rel="canonical" href="${canonical}">
 <link rel="alternate" hreflang="${lang}" href="${canonical}">
@@ -856,7 +878,7 @@ function sectionPage(lang) {
     '@context': 'https://schema.org',
     '@graph': [
       { '@type': 'WebSite', '@id': `${SITE}/#website`, name: 'GNK ASG', url: `${SITE}/`, inLanguage: ['hr', 'en'], publisher: { '@id': `${SITE}/#gnk-asg` } },
-      { '@type': 'NewsMediaOrganization', '@id': `${SITE}/gnk-aktual/#news-organization`, name: 'AKTUAL MEDIA d.o.o.', alternateName: ['Aktual mediji', 'Aktual Media'], url: `${SITE}/gnk-aktual/`, parentOrganization: { '@id': `${SITE}/#gnk-asg` }, editor: { '@id': `${SITE}/#nermin-sefic` } },
+      { '@type': 'NewsMediaOrganization', '@id': BRAND_ID, name: 'AKTUAL MEDIA d.o.o.', alternateName: BRAND_NAMES, url: `${SITE}/gnk-aktual/`, logo: logoJsonLd(lang === 'en' ? 'aktual-media-en' : 'aktual-media-hr', { url: SITE }), editor: { '@id': `${SITE}/#nermin-sefic` } },
       { '@type': 'Person', '@id': `${SITE}/#nermin-sefic`, name: 'Nermin Sefić', jobTitle: lang === 'en' ? 'Editor and director' : 'Urednik i direktor', url: `${SITE}/nermin-sefic/` },
       {
         '@type': 'CollectionPage',
@@ -866,7 +888,7 @@ function sectionPage(lang) {
         description: copy.description,
         inLanguage: lang,
         isPartOf: { '@id': `${SITE}/#website` },
-        publisher: { '@id': `${SITE}/gnk-aktual/#news-organization` },
+        publisher: { '@id': BRAND_ID },
         editor: { '@id': `${SITE}/#nermin-sefic` },
         mainEntity: {
           '@type': 'ItemList',
@@ -898,8 +920,9 @@ function sectionPage(lang) {
 <meta name="author" content="AKTUAL MEDIA d.o.o.">
 <meta name="editor" content="Nermin Sefić">
 <meta name="publisher" content="AKTUAL MEDIA d.o.o.">
-<meta name="keywords" content="${esc(keywords.join(', '))}, AKTUAL MEDIA, GNK ASG">
-<meta name="news_keywords" content="${esc(keywords.join(', '))}, AKTUAL MEDIA, GNK ASG">
+<meta name="keywords" content="${esc(wordsOf([...keywords, 'AKTUAL MEDIA', 'Aktual mediji', 'GNK ASG']))}">
+<meta name="news_keywords" content="${esc(wordsOf([...keywords, 'AKTUAL MEDIA', 'Aktual mediji', 'GNK ASG']))}">
+${tagMetas(keywords)}
 <meta name="theme-color" content="#061019">
 <link rel="canonical" href="${canonical}">
 <link rel="alternate" hreflang="${lang}" href="${canonical}">

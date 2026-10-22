@@ -14,6 +14,7 @@ import {
   handleImageProxy,
   targetOf,
 } from '../workers/gnk-asg-direct-operator/src/image-proxy-v1.js';
+import { REGION_IMAGE_HOST_LIST } from '../workers/gnk-asg-direct-operator/src/image-hosts-v1.js';
 
 const failures = [];
 const check = (ok, message) => { if (!ok) failures.push(message); };
@@ -28,10 +29,17 @@ for (const item of items) {
   feedHosts.add(new URL(item.image).hostname.toLowerCase());
 }
 const allowed = new Set(allowedImageHosts());
+/* Popis ima dva dijela: matični feed (apps/portal/data/news.json) i osam
+   regionalnih izdanja (apps/region/data/*.json). Prvi mora odgovarati
+   feedu u oba smjera; drugi se provjerava u test-image-proxy-coverage-v1
+   protiv svojih podataka. Zato se ovdje "višak" mjeri samo na matičnom
+   dijelu — inače bi svaki regionalni host izgledao kao višak. */
+const regionHosts = new Set(REGION_IMAGE_HOST_LIST);
 const missing = [...feedHosts].filter((h) => !allowed.has(h)).sort();
-const unused = [...allowed].filter((h) => !feedHosts.has(h)).sort();
+const unused = [...allowed].filter((h) => !feedHosts.has(h) && !regionHosts.has(h)).sort();
 check(missing.length === 0, `hostovi u feedu kojih nema na popisu: ${missing.join(', ')}`);
 check(unused.length === 0, `hostovi na popisu koje feed ne koristi: ${unused.join(', ')}`);
+for (const host of regionHosts) check(allowed.has(host), `regionalni host nije u posredniku: ${host}`);
 check(items.length >= 300, `feed mora imati barem 300 zapisa, ima ${items.length}`);
 
 /* ---------- 2. Adresa mora biti točno dopuštena ---------- */
