@@ -154,7 +154,7 @@ function home(lang) {
           '@type': 'ItemList', numberOfItems: channels.length,
           itemListElement: data.map(({ c, items }, i) => ({
             '@type': 'ListItem', position: i + 1,
-            name: `${hr ? c.title : `AKTUAL MEDIA KANAL ${CITY_EN[c.id].toUpperCase()}`}`,
+            name: hr ? c.title : c.title.replace('KANAL', 'CHANNEL'),
             url: `${SITE_URL}${hr ? `/grad/${c.id}/` : `/en/city/${c.id}/`}`,
             description: `${items.length} ${hr ? 'tekstova' : 'stories'}`
           }))
@@ -172,16 +172,19 @@ function cityPage(entry, lang) {
   const path = hr ? `/grad/${c.id}/` : `/en/city/${c.id}/`;
   const cityName = hr ? c.city : c.cityEn;
   const country = hr ? c.country : c.countryEn;
+  // Naslov izdanja je vlastito ime; na engleskom "KANAL" postaje "CHANNEL",
+  // da EN stranica ne nosi hrvatsku riječ u naslovu i opisu.
+  const editionTitle = hr ? c.title : c.title.replace('KANAL', 'CHANNEL');
   const title = hr
     ? `${cityName} — arhiva ${items.length} tekstova | AKTUAL ARHIVA`
     : `${cityName} — archive of ${items.length} stories | AKTUAL ARCHIVE`;
   const desc = hr
     ? `Svi tekstovi izdanja ${c.title} (${country}, ${c.lang}) u arhivi: ${items.length} zapisa s medijem, vremenom i poveznicom na izvornik.`
-    : `Every story of the ${c.title} edition (${country}, ${c.lang}) in the archive: ${items.length} records with publisher, time and a link to the original.`;
+    : `All ${items.length} stories of the ${editionTitle} edition (${country}, ${c.lang}) in one archive, each with publisher, time and a link to the original.`;
 
   const neighbours = data.filter((x) => x.c.id !== c.id).slice(0, 7);
   const body = `<header class="hero">
-  <p class="kicker">${esc(c.title)} · ${esc(c.lang)} · ${esc(country)}</p>
+  <p class="kicker">${esc(editionTitle)} · ${esc(c.lang)} · ${esc(country)}</p>
   <h1>${esc(cityName)}</h1>
   <p class="lead">${hr
     ? `Arhiva izdanja za ${cityName}: ${items.length} tekstova iz ${new Set(items.map((i) => i.sourceName)).size} medija. Poredano od najnovijeg.`
