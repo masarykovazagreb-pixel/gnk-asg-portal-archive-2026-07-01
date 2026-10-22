@@ -1,6 +1,6 @@
 {
   "note": "Groups are derived from real workflow files; worker profiles are a modeled catalogue.",
-  "total": 340,
+  "total": 342,
   "groups": [
     {
       "id": "izdanja",
@@ -1827,9 +1827,9 @@
       "id": "ostalo",
       "name": "Ostalo",
       "nameEn": "Other",
-      "automations": 4,
-      "scheduled": 4,
-      "runsPerDay": 36,
+      "automations": 5,
+      "scheduled": 5,
+      "runsPerDay": 37,
       "files": [
         {
           "file": "arhiva-deploy.yml",
@@ -1853,6 +1853,13 @@
           "perDay": 4
         },
         {
+          "file": "network-agents-daily.yml",
+          "crons": [
+            "40 4 * * *"
+          ],
+          "perDay": 1
+        },
+        {
           "file": "sites-deploy.yml",
           "crons": [
             "17 * * * *"
@@ -1866,6 +1873,7 @@
     "arhiva-deploy.yml",
     "autonomija-365.yml",
     "dnevnik-deploy.yml",
+    "network-agents-daily.yml",
     "sites-deploy.yml"
   ]
 }
