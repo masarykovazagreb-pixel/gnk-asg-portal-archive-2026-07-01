@@ -46,9 +46,9 @@
   <h1 class="gnk-h1">Automation fleet</h1>
   <p class="gnk-lead">Every automation in the repository, grouped by worker group. Schedules come from the real cron expressions in the workflow files; outcomes come from the last recorded GitHub Actions run. Where there is no run, the page says so — nothing is assumed.</p>
   <div class="fl-pills">
-    <span class="gnk-pill"><b>336</b> automations</span>
-    <span class="gnk-pill"><b>29</b> scheduled</span>
-    <span class="gnk-pill"><b>224</b> runs / day</span>
+    <span class="gnk-pill"><b>340</b> automations</span>
+    <span class="gnk-pill"><b>33</b> scheduled</span>
+    <span class="gnk-pill"><b>240</b> runs / day</span>
     <span class="gnk-pill"><b>57</b> with run history</span>
   </div>
   <p class="fl-stamp">Run history collected: <time datetime="2026-10-20T14:51:28.272Z">20. 10. 2026. 14:51 UTC</time></p>
@@ -425,15 +425,29 @@
     <header class="fl-group-head">
       <span class="fl-num-badge">12</span>
       <h2 id="h-ostalo">Other</h2>
-      <p class="fl-stat-line">2 automations · 2 scheduled · 28 runs per day</p>
+      <p class="fl-stat-line">4 automations · 4 scheduled · 36 runs per day</p>
     </header>
     <div class="fl-scroll">
     <table class="fl-table">
       <thead><tr><th scope="col">Automation</th><th scope="col">Schedule</th><th scope="col">/ day</th><th scope="col">Last run</th><th scope="col">Outcome</th></tr></thead>
       <tbody>
       <tr>
+        <th scope="row"><a class="fl-file" href="https://github.com/masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01/actions/workflows/arhiva-deploy.yml" rel="noopener" title="Open in Actions">arhiva-deploy.yml</a></th>
+        <td class="fl-mono">35 1,7,13,19 * * *</td>
+        <td class="fl-num">4</td>
+        <td class="fl-mono"><span class="fl-mut">—</span></td>
+        <td><span class="fl-badge fl-mut">No record</span></td>
+      </tr>
+      <tr>
         <th scope="row"><a class="fl-file" href="https://github.com/masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01/actions/workflows/autonomija-365.yml" rel="noopener" title="Open in Actions">autonomija-365.yml</a></th>
         <td class="fl-mono">23 */6 * * *</td>
+        <td class="fl-num">4</td>
+        <td class="fl-mono"><span class="fl-mut">—</span></td>
+        <td><span class="fl-badge fl-mut">No record</span></td>
+      </tr>
+      <tr>
+        <th scope="row"><a class="fl-file" href="https://github.com/masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01/actions/workflows/dnevnik-deploy.yml" rel="noopener" title="Open in Actions">dnevnik-deploy.yml</a></th>
+        <td class="fl-mono">45 1,7,13,19 * * *</td>
         <td class="fl-num">4</td>
         <td class="fl-mono"><span class="fl-mut">—</span></td>
         <td><span class="fl-badge fl-mut">No record</span></td>
@@ -457,8 +471,8 @@
       <p class="fl-stat-line">Automations that belong to no worker group. The list is complete, nothing is omitted.</p>
     </header>
     <details class="fl-details" open>
-      <summary>Outside groups <b>2</b></summary>
-      <ul class="fl-list"><li><span class="fl-file">autonomija-365.yml</span><span class="fl-badge fl-mut">No record</span></li><li><span class="fl-file">sites-deploy.yml</span><span class="fl-badge fl-mut">No record</span></li></ul>
+      <summary>Outside groups <b>4</b></summary>
+      <ul class="fl-list"><li><span class="fl-file">arhiva-deploy.yml</span><span class="fl-badge fl-mut">No record</span></li><li><span class="fl-file">autonomija-365.yml</span><span class="fl-badge fl-mut">No record</span></li><li><span class="fl-file">dnevnik-deploy.yml</span><span class="fl-badge fl-mut">No record</span></li><li><span class="fl-file">sites-deploy.yml</span><span class="fl-badge fl-mut">No record</span></li></ul>
     </details>
   </section>
   <section class="fl-links">
