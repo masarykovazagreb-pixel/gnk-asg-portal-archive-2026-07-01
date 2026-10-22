@@ -144,7 +144,17 @@ for (const collection of Object.keys(groups).sort()) {
   }
 }
 full += `\n---\nEntries: ${items.length}. Registry content timestamp: ${new Date(generatedAt).toISOString()}.\n`;
-write('apps/portal/llms-full.txt', full);
+// I llms-full.txt dobiva marker-blok kataloga proizvoda iz druge skripte;
+// bez ovoga bi ga svaki AEO izvoz izbrisao.
+const LLMS_FULL_PATH = 'apps/portal/llms-full.txt';
+const PRODUCTS_BLOCK_FULL = /<!-- AKTUAL-PRODUCTS-LLMS:START -->[\s\S]*?<!-- AKTUAL-PRODUCTS-LLMS:END -->/;
+let fullOut = full;
+if (fs.existsSync(LLMS_FULL_PATH)) {
+  const prevFull = fs.readFileSync(LLMS_FULL_PATH, 'utf8');
+  const kept = (prevFull.match(PRODUCTS_BLOCK_FULL) || [])[0];
+  if (kept && !fullOut.includes(kept)) fullOut = `${fullOut.trimEnd()}\n\n${kept}\n`;
+}
+write(LLMS_FULL_PATH, fullOut);
 
 const pageTitle = 'GNK ASG d.o.o. — Corporate & Editorial Reference';
 const pageDescription = 'Official company and editorial reference for GNK ASG d.o.o. in Zagreb, with public records, the publication register, and page-specific bylines and sources.';

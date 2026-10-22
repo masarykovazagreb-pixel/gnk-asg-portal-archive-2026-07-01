@@ -770,7 +770,7 @@ export function buildAktualCentral({ cards = [] } = {}) {
     <div class="amc-hero-copy">
       ${masterMark(lang)}
       <p class="amc-eyebrow">${T('AKTUAL MEDIA · sve na jednom mjestu', 'AKTUAL MEDIA · everything in one place')}</p>
-      <h2 id="amcTitle">${T('Osam zemalja', 'Eight countries')}, ${T('sva izdanja', 'every edition')}, ${items.length} ${T('tekstova', 'stories')} — ${T('na jednoj ploči', 'on one board')}</h2>
+      <h2 id="amcTitle">${T('Osam zemalja', 'Eight countries')}, ${T('sva izdanja', 'every edition')}, ${items.length.toLocaleString(en ? 'en-US' : 'hr-HR')} ${T('tekstova', 'stories')} — ${T('na jednoj ploči', 'on one board')}</h2>
       <p class="amc-lead">${T('Svaka pločica je naslovnica izdanja: na njoj piše što se klikom dobije, a klik vodi na glavni link — AKTUAL MEDIA KANAL Zagreb, Beograd, Sarajevo, Budapest, Ljubljana, Roma, Sofija ili București. S tih stranica uvijek se vraćate ovamo, u središte gdje se sve spaja.', 'Every tile is the cover of an edition: it says what a click gets you, and the click opens the main link — AKTUAL MEDIA KANAL Zagreb, Belgrade, Sarajevo, Budapest, Ljubljana, Rome, Sofia or Bucharest. From those pages you always come back here, to the centre where everything connects.')}</p>
       <div class="amc-hero-cta">
         <a class="amc-btn amc-btn--solid" href="#izdanja-po-zemljama">${T('Izdanja 3 × 3 ↓', 'Editions 3 × 3 ↓')}</a>
