@@ -187,6 +187,18 @@ const W = {
   }
 };
 
+/* Navigacijske riječi koje nisu dio sadržaja izdanja. */
+const CHROME = {
+  hr: { skip: 'Preskoči na sadržaj', nav: 'Glavna navigacija', crumbs: 'Putanja' },
+  en: { skip: 'Skip to content', nav: 'Main navigation', crumbs: 'Breadcrumb' },
+  id: { skip: 'Lewati ke konten', nav: 'Navigasi utama', crumbs: 'Remah roti' },
+  pt: { skip: 'Pular para o conteúdo', nav: 'Navegação principal', crumbs: 'Trilha de navegação' },
+  ar: { skip: 'تخطَّ إلى المحتوى', nav: 'التنقل الرئيسي', crumbs: 'مسار التنقل' },
+  ja: { skip: '本文へスキップ', nav: 'メインナビゲーション', crumbs: 'パンくず' },
+  zh: { skip: '跳到正文', nav: '主导航', crumbs: '面包屑导航' }
+};
+const chrome = (portal) => CHROME[portal.lang] || CHROME.en;
+
 const displayCity = (portal) => portal.cityNative || portal.city;
 const wl = (portal, key) => (W[portal.lang] || W.en)[key] ?? W.en[key];
 const continentName = (portal) => portal.continent[portal.lang === 'hr' ? 'hr' : 'en'];
@@ -237,7 +249,7 @@ function header(portal, active = '') {
       ${portal.lang === 'en' ? '' : `<a href="${portal.englishBase}" hreflang="en" lang="en" rel="external noopener">${esc(wl(portal, 'english'))} ↗</a>`}
     </div>
   </div>
-  <nav class="mainnav" aria-label="${esc(words.latest)}">${nav}</nav>
+  <nav class="mainnav" aria-label="${esc(chrome(portal).nav)}">${nav}</nav>
 </header>`;
 }
 
@@ -362,7 +374,7 @@ function shell(portal, { title, description, path = '', body, robots = 'index,fo
 <link rel="stylesheet" href="/assets/region.css">
 </head>
 <body data-channel="${portal.id}" data-lang="${portal.lang}">
-<a class="skip" href="#sadrzaj">${esc(words.latest)}</a>
+<a class="skip" href="#sadrzaj">${esc(chrome(portal).skip)}</a>
 ${body}
 </body>
 </html>`;
@@ -412,7 +424,7 @@ function homePage(portal, data) {
   </section>
   <p class="note">${esc(wl(portal, 'portalNote'))}</p>
 </main>
-${meshBlock({ lang: 'en', selfUrl: portalBase(portal) })}
+${meshBlock({ lang: 'en', selfUrl: portalBase(portal), theme: 'light' })}
 ${footer(portal)}`;
 
   const jsonld = [{
@@ -437,13 +449,13 @@ function themePage(portal, data, themeId, items) {
   const label = (words.themeNames || {})[themeId] || themeId;
   const body = `${header(portal, '')}
 <main id="sadrzaj" class="page">
-  <nav class="crumbs" aria-label="breadcrumbs"><a href="./">${esc(displayCity(portal))}</a> · ${esc(label)}</nav>
+  <nav class="crumbs" aria-label="${esc(chrome(portal).crumbs)}"><a href="./">${esc(displayCity(portal))}</a> · ${esc(label)}</nav>
   <h1>${esc(label)}</h1>
   <p class="lead">${items.length} ${esc(wl(portal, 'sourceRecords'))} · ${esc(portal.city)} · ${esc(portal.country)}</p>
   <div class="grid">${cards(portal, items)}</div>
   <p class="backlink"><a href="./">← ${esc(wl(portal, 'backHome'))}</a></p>
 </main>
-${meshBlock({ lang: 'en', selfUrl: portalBase(portal) })}
+${meshBlock({ lang: 'en', selfUrl: portalBase(portal), theme: 'light' })}
 ${footer(portal)}`;
   return shell(portal, {
     title: `${label} — ${displayCity(portal)} · AKTUAL MEDIA`,
@@ -458,13 +470,13 @@ function sourcePage(portal, data, source, items) {
   const words = ui(portal);
   const body = `${header(portal, '')}
 <main id="sadrzaj" class="page">
-  <nav class="crumbs" aria-label="breadcrumbs"><a href="./">${esc(displayCity(portal))}</a> · <a href="izvori/">${esc(words.sources)}</a> · ${esc(source.name)}</nav>
+  <nav class="crumbs" aria-label="${esc(chrome(portal).crumbs)}"><a href="./">${esc(displayCity(portal))}</a> · <a href="izvori/">${esc(words.sources)}</a> · ${esc(source.name)}</nav>
   <h1>${esc(source.name)}</h1>
   <p class="lead">${items.length} ${esc(wl(portal, 'sourceRecords'))} · ${esc(source.type ? source.type.toUpperCase() : 'RSS')}</p>
   ${items.length ? `<div class="grid">${cards(portal, items)}</div>` : `<p class="empty">${esc(wl(portal, 'noRecords'))}</p>`}
   <p class="backlink"><a href="izvori/">← ${esc(words.sources)}</a></p>
 </main>
-${meshBlock({ lang: 'en', selfUrl: portalBase(portal) })}
+${meshBlock({ lang: 'en', selfUrl: portalBase(portal), theme: 'light' })}
 ${footer(portal)}`;
   return shell(portal, {
     title: `${source.name} — ${displayCity(portal)} · AKTUAL MEDIA`,
@@ -490,7 +502,7 @@ function sourcesPage(portal, data) {
   <p>${esc(words.methodLead)}</p>
   <p class="backlink"><a href="metodologija/">${esc(words.methodology)} →</a> · <a href="./">← ${esc(wl(portal, 'backHome'))}</a></p>
 </main>
-${meshBlock({ lang: 'en', selfUrl: portalBase(portal) })}
+${meshBlock({ lang: 'en', selfUrl: portalBase(portal), theme: 'light' })}
 ${footer(portal)}`;
   return shell(portal, {
     title: `${words.sources} — ${displayCity(portal)} · AKTUAL MEDIA`,
@@ -514,7 +526,7 @@ function methodPage(portal, data) {
   <p class="small">${esc(words.autoNote)}</p>
   <p class="backlink"><a href="./">← ${esc(wl(portal, 'backHome'))}</a></p>
 </main>
-${meshBlock({ lang: 'en', selfUrl: portalBase(portal) })}
+${meshBlock({ lang: 'en', selfUrl: portalBase(portal), theme: 'light' })}
 ${footer(portal)}`;
   return shell(portal, {
     title: `${words.methodology} — ${displayCity(portal)} · AKTUAL MEDIA`,
@@ -531,7 +543,7 @@ function networkPage(portal) {
 <main id="sadrzaj" class="page">
   <h1>${esc(wl(portal, 'network'))}</h1>
   <p class="lead">${esc(wl(portal, 'worldNote'))}</p>
-  ${meshBlock({ lang: 'en', selfUrl: portalBase(portal) })}
+  ${meshBlock({ lang: 'en', selfUrl: portalBase(portal), theme: 'light' })}
   <p class="backlink"><a href="${portal.lang === 'en' ? HUB_EN : HUB_HR}" rel="external noopener">${esc(wl(portal, 'allNetwork'))} ↗</a> · <a href="./">← ${esc(wl(portal, 'backHome'))}</a></p>
 </main>
 ${footer(portal)}`;
@@ -551,7 +563,7 @@ function notFound(portal) {
   <p class="lead">${esc(words.emptyText)}</p>
   <p><a href="/">← ${esc(wl(portal, 'backHome'))}</a></p>
 </main>
-${meshBlock({ lang: 'en', selfUrl: portalBase(portal) })}
+${meshBlock({ lang: 'en', selfUrl: portalBase(portal), theme: 'light' })}
 ${footer(portal)}`;
   return shell(portal, {
     title: `404 — ${portal.name}`,

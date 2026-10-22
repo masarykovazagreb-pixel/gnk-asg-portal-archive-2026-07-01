@@ -106,7 +106,7 @@ node scripts/network-agents-v1.mjs --only world-tokio-agent
 `.github/workflows/world-portals-deploy.yml`:
 
 - **push** na `apps/world/**`, `apps/region/data/**` i `channels.json`;
-- **raspored** `27 */2 * * *` (svaka dva sata, uz region engine);
+- **raspored** `17 1,7,13,19 * * *` (četiri puta dnevno, uz arhivu i dnevnik);
 - **ručno** pokretanje.
 
 Radnja je `contents: read`, gradi devet portala u runneru, provjerava ih i
