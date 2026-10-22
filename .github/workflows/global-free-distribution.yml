@@ -1,0 +1,134 @@
+name: AKTUAL MEDIA — Global Free Distribution
+
+# Manual-only: preview is open; real external publishing requires a separate
+# affirmative per-run approval AND the repository-wide opt-in variable.
+# Blogger / DEV.to / Tumblr / Telegraph retain their existing single writer.
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_external_distribution:
+        description: 'I approve external publication of this reviewed main SHA to connected Bluesky/Mastodon accounts'
+        required: true
+        type: boolean
+        default: false
+      languages:
+        description: 'Preview/publishing locales: source,en,es,pt,ja,zh,vi,ar etc. (max 3 per story)'
+        required: false
+        default: 'source,en'
+        type: string
+      max_per_platform:
+        description: 'Maximum external posts per platform in this run (1-4)'
+        required: false
+        default: '2'
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: aktual-media-global-writer
+  cancel-in-progress: false
+
+jobs:
+  preview:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      GLOBAL_LANGS: ${{ inputs.languages }}
+      GLOBAL_PER_PLATFORM: ${{ inputs.max_per_platform }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate global syndication, media rights and per-run approvals
+        run: |
+          node --check scripts/global-distribution-core-v1.mjs
+          node --check scripts/global-free-distribution-v1.mjs
+          node tests/test-global-free-distribution-v1.mjs
+      - name: Generate multilingual review packages without publishing
+        run: node scripts/global-free-distribution-v1.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aktual-global-preview-${{ github.run_id }}
+          path: |
+            apps/portal/data/global-distribution/preview.json
+            apps/portal/data/global-distribution/last-report.json
+          if-no-files-found: warn
+          retention-days: 14
+
+  publish:
+    needs: preview
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.confirm_external_distribution == true && vars.GNK_ASG_EXTERNAL_DISTRIBUTION == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GLOBAL_LANGS: ${{ inputs.languages }}
+      GLOBAL_PER_PLATFORM: ${{ inputs.max_per_platform }}
+      GNK_ASG_EXTERNAL_DISTRIBUTION: ${{ vars.GNK_ASG_EXTERNAL_DISTRIBUTION }}
+      CONFIRM_EXTERNAL_PUBLISH: AKTUAL_MEDIA_APPROVED_20261022
+      BSKY_IDENTIFIER: ${{ secrets.BSKY_IDENTIFIER }}
+      BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
+      MASTODON_INSTANCE_URL: ${{ vars.MASTODON_INSTANCE_URL }}
+      MASTODON_ACCESS_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Verify exact reviewed main and restore durable state outside main
+        id: state
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "aktual-global-distribution-bot"
+          git config user.email "actions@github.com"
+          bash scripts/restore-distribution-state-v1.sh automation/global-distribution-state \
+            apps/portal/data/global-distribution/published.json "$GITHUB_SHA"
+      - name: Publish only verified canonical pages to connected global channels
+        id: external
+        if: steps.state.outputs.ready == 'true'
+        run: node scripts/global-free-distribution-v1.mjs --live
+      - name: Persist publication and verification state on dedicated branch
+        if: always() && steps.state.outputs.ready == 'true'
+        shell: bash
+        env:
+          OLD_REMOTE_SHA: ${{ steps.state.outputs.remote_sha }}
+        run: |
+          set -euo pipefail
+          test "$(git branch --show-current)" = 'automation/global-distribution-state'
+          git add apps/portal/data/global-distribution/published.json apps/portal/data/global-distribution/last-report.json
+          if git diff --cached --quiet; then
+            echo 'No new verified global posts or state changes.'
+            exit 0
+          fi
+          git commit -m "AKTUAL global external distribution results ${{ github.run_id }}"
+          if [ -n "$OLD_REMOTE_SHA" ]; then
+            git push --force-with-lease="refs/heads/automation/global-distribution-state:$OLD_REMOTE_SHA" origin HEAD:automation/global-distribution-state
+          else
+            git push origin HEAD:automation/global-distribution-state
+          fi
+      - name: Report verified public post URLs
+        if: always()
+        shell: bash
+        run: |
+          if [ -f apps/portal/data/global-distribution/last-report.json ]; then
+            node - <<'NODE'
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('apps/portal/data/global-distribution/last-report.json','utf8'));
+          const urls=x.verifiedUrls||[];
+          console.log('AKTUAL MEDIA — verified new external URLs: '+urls.length);
+          for(const url of urls)console.log('VERIFIED '+url);
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,'## AKTUAL MEDIA international distribution\n'+
+            '- Verified new URLs: **'+urls.length+'**\n'+
+            urls.map(url=>'- '+url).join('\n')+'\n'+
+            '- Manual opt-in, source HTTP verification and durable per-platform dedupe apply.\n');
+          NODE
+          fi

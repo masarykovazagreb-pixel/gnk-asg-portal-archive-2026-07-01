@@ -8,6 +8,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
+import {readDistributionState,waitForMedia} from './distribution-safety-v1.mjs';
 
 const ROOT = 'apps/portal';
 const ORIGIN = 'https://gnk-asg.hr';
@@ -28,6 +29,8 @@ const permitted = new Set(config.newChannels.map(x=>x.id));
 const assert=(yes,message)=>{if(!yes)throw Error(message)};
 assert(!live || (args.includes('--confirm-live') && process.env.GNK_ASG_EXTERNAL_DISTRIBUTION==='true'),
   'Live distribution requires manual approval for this run AND GNK_ASG_EXTERNAL_DISTRIBUTION=true');
+assert(!live || !platforms.some(p=>['bluesky','mastodon'].includes(p)),
+  'Bluesky/Mastodon have one live writer: global-free-distribution.yml');
 assert(platforms.length>0 && platforms.every(p=>permitted.has(p)),'Unknown distribution platform');
 assert(langs.length>0 && langs.every(l=>config.languages[l]),'Unknown distribution language');
 assert(platforms.length*langs.length<=3 || !live,'At most three external publications in each live run');
@@ -59,7 +62,7 @@ const published=article.datePublished?new Date(article.datePublished):null;
 assert(!published || (!Number.isNaN(published.getTime())&&published.getTime()<=Date.now()),
  'Unpublished or future-dated article');
 const authorNode=article.author||null;
-const author=authorNode?.name|| (Array.isArray(authorNode)&&authorNode[0]?.name) || clean(meta('author')) || 'AKTUAL MEDIA editorial desk';
+const author=authorNode?.name|| (Array.isArray(authorNode)&&authorNode[0]?.name) || clean(meta('author')) || '';
 const sourceLang=article.inLanguage||html.match(/<html[^>]*lang=["']([^"']+)/i)?.[1]||'hr';
 const rawImage=meta('og:image','property');
 const imgURL=(()=>{try{const u=new URL(rawImage);if(u.protocol!=='https:'||u.hostname!=='gnk-asg.hr')return null;
@@ -90,7 +93,7 @@ const output={generatedAt:new Date().toISOString(),mode:live?'live':'preview',
   source:canonical,canonicalOnly:true,imageRightsCheck:'owned asset URL only, not proof of legal license',
   translatedFullArticle:false,entries};
 if(!check&&!live){fs.mkdirSync(path.dirname(outPath),{recursive:true});fs.writeFileSync(outPath,JSON.stringify(output,null,2)+'\n');}
-const readState=()=>{try{return JSON.parse(fs.readFileSync(statePath,'utf8'))}catch{return{version:1,posted:{}}}};
+const readState=()=>readDistributionState(statePath,{allowMissing:!live});
 const state=readState();
 const saveState=()=>{fs.mkdirSync(path.dirname(statePath),{recursive:true});fs.writeFileSync(statePath,JSON.stringify(state,null,2)+'\n');};
 const fetchJSON=async(url,options={})=>{
@@ -164,7 +167,8 @@ async function toFediverse(e,provider){
   form.append('file',new Blob([photo.bytes],{type:photo.mime}),'aktual-media.'+photo.mime.split('/')[1]);
   form.append('description',e.imageAlt);
   const obj=await fetchJSON(site+'/api/v2/media',{method:'POST',headers,body:form});
-  assert(obj.id,'Media server did not return upload ID');mediaId=String(obj.id);
+  const ready=await waitForMedia({request:(url,options)=>fetch(url,{...options,signal:AbortSignal.timeout(20000)}),site,headers,upload:obj});
+  mediaId=String(ready.id);
  }
  if(provider==='pixelfed')assert(mediaId,'Pixelfed requires owned image: no media uploaded');
  const payload={status:e.text,visibility:'public',language:e.language};
@@ -173,7 +177,10 @@ async function toFediverse(e,provider){
   method:'POST',headers:{...headers,'content-type':'application/json','Idempotency-Key':e.key},
   body:JSON.stringify(payload)});
  assert(obj.url||obj.uri,'Fediverse did not return public post URI');
- return {url:obj.url||obj.uri,providerId:obj.id};
+ return {url:obj.url||obj.uri,providerId:obj.id,verify:async()=>{
+  const checked=await fetchJSON(site+'/api/v1/statuses/'+encodeURIComponent(obj.id),{headers});
+  return String(checked.id)===String(obj.id)&&checked.visibility==='public';
+ }};
 }
 async function toWordPress(e){
  requireEnv(['WORDPRESS_SITE_ID','WORDPRESS_ACCESS_TOKEN']);
@@ -183,14 +190,18 @@ async function toWordPress(e){
  const body=ownedImage+'<p>'+escapeHtml(l.lead)+': <strong>'+escapeHtml(e.title)+'</strong></p>'+
   '<p>'+escapeHtml(e.description.slice(0,350))+'</p>'+
   '<p>'+escapeHtml(l.read)+': <a href="'+escapeHtml(e.canonical)+'">'+escapeHtml(e.canonical)+'</a></p>'+
-  '<p>AKTUAL MEDIA · '+escapeHtml(e.author)+' · '+escapeHtml(e.originalLanguage)+'</p>';
+  '<p>'+['AKTUAL MEDIA',e.author,e.originalLanguage].filter(Boolean).map(escapeHtml).join(' · ')+'</p>';
  const qs=new URLSearchParams({status:'publish',publicize:'false',
   title:l.lead+': '+e.title,content:body,tags:'AKTUAL MEDIA,Aktual Media,Regional News'});
  const result=await fetchJSON('https://public-api.wordpress.com/rest/v1.1/sites/'+process.env.WORDPRESS_SITE_ID+'/posts/new',{
   method:'POST',headers:{authorization:'Bearer '+process.env.WORDPRESS_ACCESS_TOKEN,
   'content-type':'application/x-www-form-urlencoded'},body:qs.toString()});
  assert(result.status==='publish'&&result.URL,'WordPress did not confirm published URL');
- return {url:result.URL,providerId:result.ID};
+ return {url:result.URL,providerId:result.ID,verify:async()=>{
+  const checked=await fetchJSON('https://public-api.wordpress.com/rest/v1.1/sites/'+process.env.WORDPRESS_SITE_ID+'/posts/'+result.ID,{
+   headers:{authorization:'Bearer '+process.env.WORDPRESS_ACCESS_TOKEN}});
+  return checked.status==='publish'&&checked.URL===result.URL;
+ }};
 }
 if(check){
  console.log(JSON.stringify({ok:true,mode:'read-only',source:canonical,platforms,langs,entries:entries.length,
@@ -203,15 +214,20 @@ if(check){
    console.log('MANUAL ONLY '+e.platform+' '+e.language);skipped++;continue;
   }
   if(state.posted[e.key]){
-   console.log('ALREADY POSTED '+e.platform+' '+e.language+' '+state.posted[e.key].url);skipped++;continue;
+   const previous=state.posted[e.key];
+   console.log((previous.status==='verified'?'ALREADY POSTED ':'RECEIPT HELD FOR VERIFICATION ')+e.platform+' '+e.language+' '+(previous.url||''));skipped++;continue;
   }
   try{
+   state.posted[e.key]={canonical:e.canonical,platform:e.platform,language:e.language,
+     status:'submission_pending',at:new Date().toISOString()};saveState();
    const result=e.platform==='bluesky'?await toBluesky(e)
     :e.platform==='wordpress'?await toWordPress(e)
     :await toFediverse(e,e.platform);
-   state.posted[e.key]={...result,canonical:e.canonical,platform:e.platform,
-     language:e.language,at:new Date().toISOString()};
-   saveState();published++;
+   state.posted[e.key]={url:result.url,providerId:result.providerId,canonical:e.canonical,platform:e.platform,
+     language:e.language,status:'pending_verification',at:new Date().toISOString()};
+   saveState();
+   assert(await result.verify(),'Published object requires read-back verification; receipt preserved');
+   state.posted[e.key].status='verified';saveState();published++;
    console.log('CONFIRMED '+e.platform+' '+e.language+' '+result.url);
   }catch(err){failed++;console.error('FAILED '+e.platform+' '+e.language+' '+String(err).slice(0,400));}
  }

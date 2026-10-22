@@ -33,6 +33,8 @@ const GATES = [
   { name: 'Javni portal', cmd: ['node', 'scripts/audit-public-portal-v1.mjs'], required: true, slow: true },
   { name: 'AKTUAL MEDIA — sve stranice', cmd: ['node', 'scripts/audit-aktual-all-pages-v2.mjs'], required: true, slow: true },
   { name: 'AKTUAL MEDIA — izdavač, 22 medijske cjeline i sitemapovi', cmd: ['node', 'tests/test-aktual-media-discovery-v1.mjs'], required: true },
+  { name: 'AKTUAL MEDIA — besplatni međunarodni kanali i zaštita objave', cmd: ['node', 'tests/test-global-free-distribution-v1.mjs'], required: true },
+  { name: 'Distribucija — evidencija, obrada slika i oporavak', cmd: ['node', 'tests/test-distribution-reliability-v1.mjs'], required: true },
   { name: 'WebSite JSON-LD', cmd: ['node', 'scripts/test-website-jsonld-v1.mjs'], required: true },
   { name: 'AKTUAL urednički desk', cmd: ['node', 'scripts/build-aktual-entity-desks-v1.mjs', '--check'], required: true },
   { name: 'S+Chat agent', cmd: ['node', 'tests/test-s-chat-static-v1.mjs'], required: true },

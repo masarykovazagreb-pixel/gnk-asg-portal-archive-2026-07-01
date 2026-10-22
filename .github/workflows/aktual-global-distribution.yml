@@ -10,6 +10,9 @@ on:
     paths:
       - 'ops/aktual-global-distribution-v1.json'
       - 'scripts/aktual-global-distribution-v1.mjs'
+      - 'scripts/distribution-safety-v1.mjs'
+      - 'scripts/restore-distribution-state-v1.sh'
+      - 'tests/test-distribution-reliability-v1.mjs'
       - 'tests/test-aktual-global-distribution-v1.mjs'
       - '.github/workflows/aktual-global-distribution.yml'
   workflow_dispatch:
@@ -23,7 +26,7 @@ on:
         description: 'bluesky,mastodon,pixelfed,wordpress,substack,medium'
         type: string
         required: true
-        default: 'bluesky'
+        default: 'pixelfed'
       languages:
         description: '1-3 localized introductions (hr,en,de,fr,es,pt,...)'
         type: string
@@ -105,6 +108,7 @@ jobs:
           path: artifacts/distribution/aktual-global-preview.json
           retention-days: 14
       - name: Recover durable receipts without mutating production main
+        id: receipts
         if: inputs.confirm_live == true
         shell: bash
         run: |
@@ -112,19 +116,8 @@ jobs:
           test "$GNK_ASG_EXTERNAL_DISTRIBUTION" = "true"
           git config user.name "aktual-global-publisher"
           git config user.email "actions@github.com"
-          git fetch origin main --no-tags
-          git fetch origin automation/aktual-global-distribution-state:refs/remotes/origin/automation/aktual-global-distribution-state --no-tags 2>/dev/null || true
-          if git show-ref --verify --quiet refs/remotes/origin/automation/aktual-global-distribution-state; then
-            git checkout -B automation/aktual-global-distribution-state refs/remotes/origin/automation/aktual-global-distribution-state
-          else
-            git checkout -B automation/aktual-global-distribution-state origin/main
-          fi
-          git checkout origin/main -- scripts/aktual-global-distribution-v1.mjs ops/aktual-global-distribution-v1.json
-          article_file="apps/portal${ARTICLE_PATH}index.html"
-          git checkout origin/main -- "$article_file"
-          mkdir -p apps/portal/data/aktual-global-distribution
-          state=apps/portal/data/aktual-global-distribution/state.json
-          if ! test -s "$state"; then printf '{"version":1,"posted":{}}\n' > "$state"; fi
+          bash scripts/restore-distribution-state-v1.sh automation/aktual-global-distribution-state \
+            apps/portal/data/aktual-global-distribution/state.json "$GITHUB_SHA"
       - name: Publish only expressly authorized channels and record provider URLs
         if: inputs.confirm_live == true
         shell: bash
@@ -134,14 +127,16 @@ jobs:
             --article "$ARTICLE_PATH" --platforms "$PLATFORMS" \
             --languages "$LANGUAGES"
       - name: Preserve published receipts on isolated branch
-        if: inputs.confirm_live == true && (success() || failure())
+        if: inputs.confirm_live == true && steps.receipts.outputs.ready == 'true' && (success() || failure())
         shell: bash
+        env:
+          OLD_REMOTE_SHA: ${{ steps.receipts.outputs.remote_sha }}
         run: |
           set -euo pipefail
           if [ -f apps/portal/data/aktual-global-distribution/state.json ]; then
             git add apps/portal/data/aktual-global-distribution/state.json
             if ! git diff --cached --quiet; then
               git commit -m "distribution: persist verified external URLs for run ${{ github.run_id }}"
-              git push origin HEAD:refs/heads/automation/aktual-global-distribution-state
+              git push --force-with-lease="refs/heads/automation/aktual-global-distribution-state:$OLD_REMOTE_SHA" origin HEAD:refs/heads/automation/aktual-global-distribution-state
             fi
           fi
