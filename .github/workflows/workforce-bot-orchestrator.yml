@@ -71,6 +71,11 @@ jobs:
         run: node tests/test-aktual-regional-seo-identity-v1.mjs
       - name: AKTUAL MEDIA — free-only 8 regional + 15 national editorial desks
         run: node tests/test-aktual-free-editorial-network-v1.mjs
+      - name: Observe official national RSS sources on existing four-hour schedule (free, no publication)
+        if: github.event_name == 'schedule'
+        env:
+          AKTUAL_FREE_FEEDS: '1'
+        run: node scripts/aktual-free-editorial-network-v1.mjs
       - name: Confirm paid editorial APIs remain disabled
         run: |
           echo "Free-tier-only: 0 Exa/OpenAI requests, existing 4h cron, no public publishing."
