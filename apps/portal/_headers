@@ -35,6 +35,14 @@
 /en/gnk-aktual/*
   Cache-Control: public, max-age=0, must-revalidate
 
+# Popis proizvoda mijenja se s izdanjima i mjerenjima (novi grad, novi desk,
+# novi brojevi) pa se HTML provjerava kod izvora, kao i AKTUAL.
+/aktual-media/proizvodi/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/en/aktual-media/proizvodi/*
+  Cache-Control: public, max-age=0, must-revalidate
+
 /data/*
   Cache-Control: public, max-age=0, must-revalidate
 

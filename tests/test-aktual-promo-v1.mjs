@@ -41,8 +41,8 @@ for (const [page, lang] of [['gnk-aktual/index.html', 'hr'], ['en/gnk-aktual/ind
     'aria-labelledby="amPromoTitle"',
     'data-am-promo-close',
     'data-am-promo-never',
-    '/assets/aktual-promo-v1.css',
-    '/assets/aktual-promo-v1.js',
+    '/assets/aktual-promo-v1.css?v=',
+    '/assets/aktual-promo-v1.js?v=',
   ]) {
     if (!block.includes(required)) fails.push(`${page}: nedostaje ${required}`);
   }
@@ -51,6 +51,10 @@ for (const [page, lang] of [['gnk-aktual/index.html', 'hr'], ['en/gnk-aktual/ind
     fails.push(`${page}: najava nije skrivena dok JS ne odluči (mora imati hidden)`);
   }
   if (/<style[\s>]/.test(block)) fails.push(`${page}: ugrađeni <style> u najavi (CSP)`);
+  /* /assets/* je immutable na godinu dana — bez novog ?v= posjetitelji drže stari CSS/JS. */
+  if (!/aktual-promo-v1\.css\?v=\d{8}[a-z]?/.test(block)) fails.push(`${page}: CSS nema cache-buster`);
+  if (!/aktual-promo-v1\.js\?v=\d{8}[a-z]?/.test(block)) fails.push(`${page}: JS nema cache-buster`);
+
   if (/<script(?![^>]*src=)[^>]*>/.test(block)) fails.push(`${page}: ugrađena skripta u najavi (CSP)`);
 
   /* Beograd je prvi jer je srpsko izdanje novo; uz njega stalni proizvodi. */
@@ -70,6 +74,44 @@ for (const [page, lang] of [['gnk-aktual/index.html', 'hr'], ['en/gnk-aktual/ind
   }
 }
 
+/* ---------- prozorčići i lebdeća reklama (oba jezika) ---------- */
+const WINDOW_TARGETS = {
+  hr: ['/status/', '/kanal/beograd/', '/galerija/', '/gnk-aktual/mreza/', '/aktual-media/proizvodi/'],
+  en: ['/en/status/', '/kanal/beograd/', '/galerija/', '/en/gnk-aktual/network/', '/en/aktual-media/proizvodi/']
+};
+for (const [page, lang] of [['gnk-aktual/index.html', 'hr'], ['en/gnk-aktual/index.html', 'en']]) {
+  const html = read(page);
+  if (!html.includes('class="am-win-row"')) { fails.push(`${page}: nema trake prozorčića`); continue; }
+  const row = html.slice(html.indexOf('class="am-win-row"'), html.indexOf('</nav>', html.indexOf('class="am-win-row"')));
+  const wins = (row.match(/<li class="am-win">/g) || []).length;
+  if (wins !== 5) fails.push(`${page}: ${wins} prozorčića (mora biti 5)`);
+  for (const href of WINDOW_TARGETS[lang]) {
+    if (!row.includes(`href="${href}"`)) fails.push(`${page}: prozorčić ne vodi na ${href}`);
+  }
+  if (!/am-win-head[\s\S]{0,400}Svi proizvodi|am-win-head[\s\S]{0,400}All products/.test(row)) {
+    fails.push(`${page}: nema poveznice na popis svih proizvoda u zaglavlju prozorčića`);
+  }
+  if (row.includes('<style')) fails.push(`${page}: ugrađeni stil u prozorčićima`);
+  // prozorčići moraju biti prije mastheada, kao i traka
+  const mastIdx = html.indexOf('<section class="am-masthead"');
+  if (mastIdx > 0 && html.indexOf('class="am-win-row"') > mastIdx) fails.push(`${page}: prozorčići su ispod mastheada`);
+
+  if (!html.includes('id="amAd"')) { fails.push(`${page}: nema lebdeće reklame`); continue; }
+  const adStart = html.indexOf('id="amAd"');
+  const ad = html.slice(html.lastIndexOf('<aside', adStart), html.indexOf('</aside>', adStart));
+  const offers = (ad.match(/data-am-ad-item/g) || []).length;
+  if (offers !== 3) fails.push(`${page}: ${offers} ponuda u reklami (moraju biti 3)`);
+  if ((ad.match(/<aside class="am-ad" id="amAd" hidden/g) || []).length !== 1) fails.push(`${page}: reklama nije skrivena dok JS ne odluči`);
+  for (const token of ['data-am-ad-close', 'am-ad-dots', 'aria-label=']) {
+    if (!ad.includes(token)) fails.push(`${page}: reklama nema ${token}`);
+  }
+  // barem jedna ponuda mora voditi na Beograd — novo izdanje
+  if (!ad.includes('href="/kanal/beograd/"')) fails.push(`${page}: reklama ne nudi Beograd`);
+}
+
+/* Reklama mora biti ponuđena i bez JS-a: <noscript> nije potreban jer je
+   reklama samo dodatak, ali ne smije blokirati čitanje (nema position:fixed
+   preko cijelog ekrana u CSS-u). */
 /* ---------- masthead: JEDAN naslov, bez drugog „loga" ---------- */
 for (const page of ['gnk-aktual/index.html', 'en/gnk-aktual/index.html']) {
   const html = read(page);
@@ -104,6 +146,20 @@ if (has(jsPath)) {
   if (!js.includes("document.addEventListener('mouseout'")) fails.push('JS: nema izlaznog pokreta');
 }
 
+if (has('assets/aktual-promo-v1.css')) {
+  const css = read('assets/aktual-promo-v1.css');
+  for (const token of ['@keyframes am-win-pop', '.am-win-grid', '.am-ad', '.am-ad-close', '[hidden]']) {
+    if (!css.includes(token)) fails.push(`CSS: nema ${token}`);
+  }
+  if (!/@media \(max-width: 700px\)/.test(css)) fails.push('CSS: nema mobilnog prekida za reklamu/prozorčiće');
+}
+if (has('assets/aktual-promo-v1.js')) {
+  const js = read('assets/aktual-promo-v1.js');
+  for (const token of ['IntersectionObserver', 'am-ad-v1:hidden', 'am-ad-v1:never', 'data-am-ad-close', 'is-in']) {
+    if (!js.includes(token)) fails.push(`JS: nema ${token} (prozorčići/reklama)`);
+  }
+}
+
 /* Status mora ostati bez ugrađenog stila — /status/* ima strogi CSP. */
 for (const page of ['status/index.html', 'en/status/index.html']) {
   if (!has(page)) { fails.push(`${page}: nema stranice`); continue; }
@@ -115,7 +171,7 @@ if (!has('assets/status-page-v1.css')) fails.push('assets/status-page-v1.css: ne
 
 console.log(JSON.stringify({
   ok: fails.length === 0,
-  version: 'GNK_ASG_AKTUAL_PROMO_V1_20261022',
+  version: 'GNK_ASG_AKTUAL_PROMO_V2_20261022',
   pages: 2,
   failures: fails,
 }, null, 2));

@@ -808,7 +808,7 @@ ${tagMetas(keywords)}
 <a class="dd-skip" href="#sadrzaj">${lang === 'en' ? 'Skip to content' : 'Preskoči na sadržaj'}</a>
 <div class="dd-top"><div class="dd-wrap">
   <span>${esc(t.top)}</span>
-  <span><a href="/gnk-aktual/">${esc(t.back)}</a> · <a href="/izdanja/">${esc(t.editions)}</a> · <a href="/kanal/">${esc(t.channels)}</a> · <a href="/radio/">${esc(t.radio)}</a> · <a href="${lang === 'en' ? '/s-chat/?ctx=%2Fen%2Fgnk-aktual%2F' : '/s-chat/?ctx=%2Fgnk-aktual%2F'}">${esc(t.agent)}</a> · <a href="${alternate}" hreflang="${lang === 'en' ? 'hr' : 'en'}" lang="${lang === 'en' ? 'hr' : 'en'}">${esc(t.lang)}</a></span>
+  <span><a href="/gnk-aktual/">${esc(t.back)}</a> · <a href="/izdanja/">${esc(t.editions)}</a> · <a href="/kanal/">${esc(t.channels)}</a> · <a href="${lang === 'en' ? '/en/aktual-media/proizvodi/' : '/aktual-media/proizvodi/'}">${lang === 'en' ? 'All products' : 'Svi proizvodi'}</a> · <a href="/radio/">${esc(t.radio)}</a> · <a href="${lang === 'en' ? '/s-chat/?ctx=%2Fen%2Fgnk-aktual%2F' : '/s-chat/?ctx=%2Fgnk-aktual%2F'}">${esc(t.agent)}</a> · <a href="${alternate}" hreflang="${lang === 'en' ? 'hr' : 'en'}" lang="${lang === 'en' ? 'hr' : 'en'}">${esc(t.lang)}</a></span>
 </div></div>
 ${body}
 <footer class="dd-foot"><div class="dd-wrap">
@@ -948,7 +948,7 @@ ${tagMetas(keywords)}
 <a class="dd-skip" href="#sadrzaj">${lang === 'en' ? 'Skip to content' : 'Preskoči na sadržaj'}</a>
 <div class="dd-top"><div class="dd-wrap">
   <span>${esc(t.top)}</span>
-  <span><a href="/gnk-aktual/">${esc(t.back)}</a> · <a href="/izdanja/">${esc(t.editions)}</a> · <a href="/kanal/">${esc(t.channels)}</a> · <a href="/radio/">${esc(t.radio)}</a> · <a href="${lang === 'en' ? '/s-chat/?ctx=%2Fen%2Faktual-media%2F' : '/s-chat/?ctx=%2Faktual-media%2F'}">${esc(t.agent)}</a> · <a href="${alternate}" hreflang="${lang === 'en' ? 'hr' : 'en'}" lang="${lang === 'en' ? 'hr' : 'en'}">${esc(t.lang)}</a></span>
+  <span><a href="/gnk-aktual/">${esc(t.back)}</a> · <a href="/izdanja/">${esc(t.editions)}</a> · <a href="/kanal/">${esc(t.channels)}</a> · <a href="${lang === 'en' ? '/en/aktual-media/proizvodi/' : '/aktual-media/proizvodi/'}">${lang === 'en' ? 'All products' : 'Svi proizvodi'}</a> · <a href="/radio/">${esc(t.radio)}</a> · <a href="${lang === 'en' ? '/s-chat/?ctx=%2Fen%2Faktual-media%2F' : '/s-chat/?ctx=%2Faktual-media%2F'}">${esc(t.agent)}</a> · <a href="${alternate}" hreflang="${lang === 'en' ? 'hr' : 'en'}" lang="${lang === 'en' ? 'hr' : 'en'}">${esc(t.lang)}</a></span>
 </div></div>
 <main id="sadrzaj" tabindex="-1">
   <header class="dd-head"><div class="dd-wrap">
@@ -1037,6 +1037,8 @@ function injectBand(lang) {
 function writeSectionSitemap() {
   const sectionLinks = `<url><loc>${SITE}/aktual-media/</loc><lastmod>${generatedAt.slice(0, 10)}</lastmod><changefreq>daily</changefreq><priority>0.9</priority><xhtml:link rel="alternate" hreflang="hr" href="${SITE}/aktual-media/"/><xhtml:link rel="alternate" hreflang="en" href="${SITE}/en/aktual-media/"/><xhtml:link rel="alternate" hreflang="x-default" href="${SITE}/aktual-media/"/></url>
 <url><loc>${SITE}/en/aktual-media/</loc><lastmod>${generatedAt.slice(0, 10)}</lastmod><changefreq>daily</changefreq><priority>0.9</priority><xhtml:link rel="alternate" hreflang="hr" href="${SITE}/aktual-media/"/><xhtml:link rel="alternate" hreflang="en" href="${SITE}/en/aktual-media/"/><xhtml:link rel="alternate" hreflang="x-default" href="${SITE}/aktual-media/"/></url>`;
+  const productsLinks = `<url><loc>${SITE}/aktual-media/proizvodi/</loc><lastmod>${generatedAt.slice(0, 10)}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority><xhtml:link rel="alternate" hreflang="hr" href="${SITE}/aktual-media/proizvodi/"/><xhtml:link rel="alternate" hreflang="en" href="${SITE}/en/aktual-media/proizvodi/"/><xhtml:link rel="alternate" hreflang="x-default" href="${SITE}/aktual-media/proizvodi/"/></url>
+<url><loc>${SITE}/en/aktual-media/proizvodi/</loc><lastmod>${generatedAt.slice(0, 10)}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority><xhtml:link rel="alternate" hreflang="hr" href="${SITE}/aktual-media/proizvodi/"/><xhtml:link rel="alternate" hreflang="en" href="${SITE}/en/aktual-media/proizvodi/"/><xhtml:link rel="alternate" hreflang="x-default" href="${SITE}/aktual-media/proizvodi/"/></url>`;
   const entries = DESKS.map((desk) => {
     const hr = abs(desk, 'hr');
     const en = abs(desk, 'en');
@@ -1047,12 +1049,13 @@ function writeSectionSitemap() {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${sectionLinks}
+${productsLinks}
 ${entries}
 </urlset>
 `;
   mkdirSync(join(PORTAL, 'aktual-media'), { recursive: true });
   writeFileSync(join(PORTAL, 'aktual-media', 'sitemap.xml'), xml);
-  return DESKS.length * 2 + 2;
+  return DESKS.length * 2 + 4;
 }
 
 function upsertMainSitemap() {

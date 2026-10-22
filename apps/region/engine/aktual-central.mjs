@@ -867,11 +867,45 @@ ${END}`;
     };
     const ext = (url) => /^https?:/.test(url) ? ' rel="external noopener"' : '';
     const tiles = t.tiles.map(([url, name, note, badge]) => `<li><a href="${url}"${ext(url)}>${badge ? `<span>${esc(badge)}</span>` : ''}<b>${esc(name)}</b><i>${esc(note)}</i></a></li>`).join('');
+    const win = hr ? [
+      ['/status/', 'status', 'Status ažurnosti', 'Javno mjerenje svježine'],
+      ['/kanal/beograd/', 'beograd', 'KANAL BEOGRAD', 'Novo izdanje za Srbiju'],
+      ['https://gnk-asg-tjednik.pages.dev/', 'tjednik', 'Business Tjednik', 'W43 · poslovni pregled'],
+      ['/galerija/', 'galerija', 'Galerija', '63 stranice znakova'],
+      ['/gnk-aktual/mreza/', 'mreza', 'Mreža izdanja', '8 gradova, 8 jezika']
+    ] : [
+      ['/en/status/', 'status', 'Freshness status', 'Public freshness measurement'],
+      ['/kanal/beograd/', 'beograd', 'KANAL BEOGRAD', 'New edition for Serbia'],
+      ['https://gnk-asg-tjednik.pages.dev/', 'tjednik', 'Business Weekly', 'Week W43 · business review'],
+      ['/galerija/', 'galerija', 'Gallery', '63 brand pages'],
+      ['/en/gnk-aktual/network/', 'mreza', 'Edition network', '8 cities, 8 languages']
+    ];
+    const windowRow = `<nav class="am-win-row" aria-label="${esc(hr ? 'Nove stranice AKTUAL MEDIA' : 'New AKTUAL MEDIA pages')}">
+  <div class="am-win-head"><h2>${esc(hr ? 'Prozorčići · novo u AKTUAL MEDIA' : 'Mini windows · new in AKTUAL MEDIA')}</h2><a href="${hr ? '/aktual-media/proizvodi/' : '/en/aktual-media/proizvodi/'}">${esc(hr ? 'Svi proizvodi →' : 'All products →')}</a></div>
+  <ul class="am-win-grid">${win.map(([url, slug, title, note]) => `<li class="am-win"><a href="${url}"${/^https?:/.test(url) ? ' rel="external noopener"' : ''}><span class="am-win-bar" aria-hidden="true"><i></i><i></i><i></i><b>${esc(slug)}</b></span><span class="am-win-body"><strong>${esc(title)}</strong><span>${esc(note)}</span></span></a></li>`).join('')}</ul>
+</nav>`;
+    const adCopy = hr ? [
+      ['/kanal/beograd/', 'Beograd je otvoren', '420 tekstova, osam izvora i dnevni ritam — novo izdanje za Srbiju.', 'Otvori Beograd →'],
+      ['https://gnk-asg-tjednik.pages.dev/', 'Business Tjednik', 'W43: brojevi, odluke i kontekst za poslovni tjedan.', 'Otvori tjednik ↗'],
+      ['/status/', 'Status ažurnosti', 'Vidi kada je koje izdanje zadnji put obnovljeno — bez procjena.', 'Pogledaj status →']
+    ] : [
+      ['/kanal/beograd/', 'Belgrade is live', '420 stories, eight sources and a daily rhythm — a new edition for Serbia.', 'Open Belgrade →'],
+      ['https://gnk-asg-tjednik.pages.dev/', 'Business Weekly', 'Week W43: numbers, decisions and context for the business week.', 'Open weekly ↗'],
+      ['/en/status/', 'Freshness status', 'See when each edition was last refreshed — measured, not estimated.', 'View status →']
+    ];
+    const adHtml = `<aside class="am-ad" id="amAd" hidden aria-label="${esc(hr ? 'Reklama AKTUAL MEDIA' : 'AKTUAL MEDIA promotion')}">
+  <div class="am-ad-top"><span class="am-ad-kicker">${esc(hr ? 'AKTUAL MEDIA · preporuka' : 'AKTUAL MEDIA · recommended')}</span><button class="am-ad-close" type="button" data-am-ad-close aria-label="${esc(hr ? 'Zatvori reklamu' : 'Close promotion')}">×</button></div>
+  ${adCopy.map(([url, title, text, cta], i) => `<div class="am-ad-body" data-am-ad-item${i ? ' hidden' : ''}><a href="${url}"${/^https?:/.test(url) ? ' rel="external noopener"' : ''}><b>${esc(title)}</b><span>${esc(text)}</span><em>${esc(cta)}</em></a></div>`).join('')}
+  <div class="am-ad-dots" aria-hidden="true">${adCopy.map((_, i) => `<i${i === 0 ? ' class="on"' : ''}></i>`).join('')}</div>
+</aside>`;
+
     const shareStatus = 'https://twitter.com/intent/tweet?url=' + encodeURIComponent('https://gnk-asg.hr' + (hr ? '/status/' : '/en/status/')) + '&text=' + encodeURIComponent(hr ? 'AKTUAL MEDIA — javni status ažurnosti osam gradskih izdanja' : 'AKTUAL MEDIA — public freshness status of eight city editions');
     const shareBeograd = 'https://twitter.com/intent/tweet?url=' + encodeURIComponent('https://gnk-asg.hr/kanal/beograd/') + '&text=' + encodeURIComponent(hr ? 'AKTUAL MEDIA KANAL BEOGRAD — novo izdanje za Srbiju' : 'AKTUAL MEDIA KANAL BEOGRAD — a new edition for Serbia');
     return `<!-- AKTUAL-PROMO:START -->
-<link rel="stylesheet" href="/assets/aktual-promo-v1.css?v=20261022">
+<link rel="stylesheet" href="/assets/aktual-promo-v1.css?v=20261022b">
 <nav class="am-promo-top" id="amPromoTop" aria-label="${esc(t.nav)}"><div class="am-promo-top-in"><span class="am-promo-top-label">AKTUAL MEDIA</span><ul><li><a href="/kanal/beograd/"><b>${esc(t.new)}</b> ${esc(t.beograd)}</a></li><li><a href="https://gnk-asg-tjednik.pages.dev/" rel="external noopener">${esc(t.business)} ↗</a></li><li><a href="/izdanja/moda/">${esc(t.mode)}</a></li><li><a href="/izdanja/">${esc(t.editions)}</a></li><li><a href="/galerija/">${esc(t.gallery)}</a></li><li><a href="${hr ? '/status/' : '/en/status/'}">${esc(t.status)}</a></li><li><a href="/radio/">${esc(t.radio)}</a></li></ul></div></nav>
+${windowRow}
+${adHtml}
 <div class="am-promo-modal" id="amPromoModal" hidden>
   <div class="am-promo-backdrop" data-am-promo-close></div>
   <div class="am-promo-card" role="dialog" aria-modal="true" aria-labelledby="amPromoTitle" aria-describedby="amPromoLead">
@@ -889,7 +923,7 @@ ${END}`;
     </div>
   </div>
 </div>
-<script src="/assets/aktual-promo-v1.js?v=20261022" defer></script>
+<script src="/assets/aktual-promo-v1.js?v=20261022b" defer></script>
 <!-- AKTUAL-PROMO:END -->`;
   };
   const withPromo = (page, lang) => {
@@ -958,6 +992,7 @@ ${END}`;
       .replace(/\.am-mast-logo img\{[^}]*\}\n?/g, '')
       .replace(/@media\(max-width:620px\)\{\.am-mast-logo\{max-width:300px\}\}\n?/g, '')
       .replace(/<a class="am-mast-logo"[\s\S]*?<\/a>/g, '');
+    en = withPromo(en, 'en');
     en = addPerf(addLogoAlternates(en, ['aktual-media-en', 'aktual-media-hr']));
     en = strengthenAktualBrand(en, 'en', jsonld);
     writeFileSync(EN, en);

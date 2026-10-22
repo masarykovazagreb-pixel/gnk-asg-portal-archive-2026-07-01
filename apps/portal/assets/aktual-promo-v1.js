@@ -136,6 +136,87 @@
       else if (!alreadySeen()) timer = window.setTimeout(open, 4000);
     });
 
+    /* ---------- prozorčići: tiho „iskaču" kad uđu u vidno polje ---------- */
+    var wins = document.querySelectorAll('.am-win');
+    if (wins.length) {
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-in');
+            io.unobserve(entry.target);
+          });
+        }, { threshold: 0.15, rootMargin: '0px 0px -6% 0px' });
+        Array.prototype.forEach.call(wins, function (el) { io.observe(el); });
+      } else {
+        Array.prototype.forEach.call(wins, function (el) { el.classList.add('is-in'); });
+      }
+    }
+
+    /* ---------- lebdeća reklama: tri proizvoda u rotaciji ---------- */
+    var ad = document.getElementById('amAd');
+    if (ad && store('session', 'am-ad-v1:hidden') !== '1' && store('local', 'am-ad-v1:never') !== '1') {
+      var adItems = Array.prototype.slice.call(ad.querySelectorAll('[data-am-ad-item]'));
+      var adDots = Array.prototype.slice.call(ad.querySelectorAll('.am-ad-dots i'));
+      var adIndex = 0;
+      var adTimer = null;
+      var adShown = false;
+
+      function paintAd() {
+        adItems.forEach(function (el, i) { el.hidden = i !== adIndex; });
+        adDots.forEach(function (el, i) { el.classList.toggle('on', i === adIndex); });
+      }
+
+      function rotateAd() {
+        if (!adItems.length) return;
+        adIndex = (adIndex + 1) % adItems.length;
+        paintAd();
+      }
+
+      function startAd() {
+        if (adTimer) window.clearInterval(adTimer);
+        adTimer = window.setInterval(rotateAd, 9000);
+      }
+
+      function stopAd() {
+        if (adTimer) window.clearInterval(adTimer);
+        adTimer = null;
+      }
+
+      function showAd() {
+        if (adShown || document.hidden || opened) return;
+        adShown = true;
+        ad.hidden = false;
+        paintAd();
+        startAd();
+      }
+
+      var adClose = ad.querySelector('[data-am-ad-close]');
+      if (adClose) {
+        adClose.addEventListener('click', function () {
+          ad.hidden = true;
+          stopAd();
+          store('session', 'am-ad-v1:hidden', '1');
+        });
+      }
+
+      ad.addEventListener('mouseenter', stopAd);
+      ad.addEventListener('mouseleave', startAd);
+      ad.addEventListener('focusin', stopAd);
+      ad.addEventListener('focusout', startAd);
+
+      window.setTimeout(showAd, 12000);
+
+      /* Dok je velika najava otvorena, reklama se ne pojavljuje preko nje. */
+      var adWatch = window.setInterval(function () {
+        if (document.documentElement.classList.contains('am-promo-open') && !ad.hidden) {
+          ad.hidden = true;
+          stopAd();
+        }
+      }, 500);
+      window.addEventListener('pagehide', function () { window.clearInterval(adWatch); stopAd(); }, { once: true });
+    }
+
     /* Traka na vrhu: označi aktivnu stranicu ako je jedna od ponuđenih. */
     var top = document.getElementById(TOP);
     if (top) {
