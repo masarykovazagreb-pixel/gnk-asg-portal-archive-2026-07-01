@@ -1,10 +1,9 @@
 name: MASTER ASG Multi-Agent Factory V2
 
-# Only Masarykova controls the canonical repository. No production writes.
+# Only Masarykova controls the canonical repository. Manual/PR-only diagnostics;
+# the existing 4-hour Workforce Orchestrator provides the recurring cadence.
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '41 0,6,12,18 * * *'
   pull_request:
     paths:
       - 'config/control-plane/master-asg-agent-network-v2.json'
