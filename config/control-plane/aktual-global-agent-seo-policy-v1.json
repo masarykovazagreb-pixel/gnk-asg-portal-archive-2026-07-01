@@ -1,0 +1,71 @@
+{
+  "version": "AKTUAL_MEDIA_GLOBAL_AGENT_SEO_POLICY_V1",
+  "effectiveDate": "2026-10-22",
+  "sourceOfTruth": "masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01",
+  "brand": {
+    "primary": "AKTUAL MEDIA",
+    "aliases": [
+      "Aktual mediji",
+      "Aktual Media"
+    ],
+    "parent": "GNK ASG",
+    "central": "https://gnk-asg.hr/gnk-aktual/",
+    "globalHub": "https://gnk-asg.hr/izdanja/"
+  },
+  "editor": {
+    "name": "Nermin Sefić",
+    "asciiAlias": "Nermin Sefic",
+    "role": "editor-in-chief",
+    "bylinePolicy": "Individual author only on sourced, demonstrably authored material. Automatic agent content must not impersonate personal author.",
+    "disclosure": "AI-assisted when used; identify publisher separately."
+  },
+  "workerPolicy": {
+    "internalAgentsPerServiceCap": null,
+    "githubActionsInternalMinuteCap": null,
+    "canScaleRolesByRegistry": true,
+    "freeServicesOnly": true,
+    "noAutomaticPaidUsage": true,
+    "unverifiedPublicationForbidden": true,
+    "noArtificialDailyArticleQuota": true,
+    "duplicateContentPrevention": true,
+    "releaseFencesRequired": true
+  },
+  "network": {
+    "nationalSourceAgents": 15,
+    "regionalEditions": 8,
+    "worldEditions": 12,
+    "canonicalWorldRegistry": "config/control-plane/world-free-portal-network-v1.json",
+    "canonicalRegionalRegistry": "apps/region/channels.json",
+    "allowedWebsiteStatus": [
+      "staged-noindex",
+      "approved-deployed-verified",
+      "indexed-verified"
+    ]
+  },
+  "seo": {
+    "title": "Unique, descriptive, native language; brand as editorial publisher",
+    "description": "Original 140–165 character intent, no stuffing",
+    "pageLanguage": "Native language body, not translated boilerplate only",
+    "canonical": "Only a verified real live URL; self-canonical per unique original page",
+    "hreflang": "Only genuinely equivalent translated pages, reciprocal and validated",
+    "sitemap": "Only verified 200 indexable pages, no staging or future pages",
+    "schema": "NewsMediaOrganization as publisher, Article author actual authenticated author or organization, Nermin Sefić editor only unless proven as author",
+    "social": "Open Graph and Twitter cards with owned or licensed landscape image",
+    "images": "Unique illustration or licensed original, descriptive localized alt, source attribution and rights",
+    "hashtags": "Contextual limited distinct tags for user-facing distribution; do not hide large hashtag blocks in body or meta keywords",
+    "backlinks": "Only relevant editorial cross-links between genuine editions; never thin doorway/link farms",
+    "searchPolicy": "Google Search Central spam policies and multi-regional guidelines"
+  },
+  "review": {
+    "notificationRequiresEvidence": true,
+    "waitMinutes": 30,
+    "internalLowRiskSilentApproval": true,
+    "publicSensitiveReleaseRequiresChecks": true,
+    "neverRepresentSilenceAsHumanFactCheck": true
+  },
+  "external": {
+    "cloudflarePages": "Free plan only, respect account quota and one-concurrent-build cap",
+    "githubActions": "No GNK ASG self-imposed minute cap; account's free runner eligibility and billing block still apply",
+    "paidFeatures": false
+  }
+}
