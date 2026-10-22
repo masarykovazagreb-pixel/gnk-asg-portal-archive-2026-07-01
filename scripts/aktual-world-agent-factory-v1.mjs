@@ -159,13 +159,24 @@ for(const agent of lanes['regional-editorial']||[]){
    'Regional scheduled writer remains the single feed collector; this agent reads its source archive.');
 }
 function siteFiles(){
- const sorted=['index.html','admin-center/index.html','gnk-aktual/index.html','izdanja/index.html',
-   'komentari/index.html','objave/index.html','galerija/index.html','en/index.html',
-   ...regions.channels.map(r=>'kanal/'+r.id+'/index.html')].map(x=>'apps/portal/'+x);
- return sorted.filter(p=>fs.existsSync(path.join(ROOT,p)));
+ const candidates=new Set(['index.html','admin-center/index.html','gnk-aktual/index.html','izdanja/index.html',
+   'komentari/index.html','objave/index.html','galerija/index.html','en/index.html'].map(x=>'apps/portal/'+x));
+ for(const r of regions.channels)candidates.add('apps/portal/kanal/'+r.id+'/index.html');
+ // Prefer distinct, actual source routes to cycling through the same 16 pages.
+ const siteDir=path.join(ROOT,'apps/portal');
+ for(const entry of fs.readdirSync(siteDir,{withFileTypes:true})){
+  if(!entry.isDirectory()||entry.name.startsWith('.')||['assets','data','scripts'].includes(entry.name))continue;
+  const rel='apps/portal/'+entry.name+'/index.html';
+  if(fs.existsSync(path.join(ROOT,rel)))candidates.add(rel);
+ }
+ return [...candidates].filter(p=>fs.existsSync(path.join(ROOT,p)));
 }
 const htmls=siteFiles(),workers=fs.readdirSync(path.join(ROOT,'workers'),{withFileTypes:true}).filter(d=>d.isDirectory()).map(d=>d.name);
-const scripts=fs.readdirSync(path.join(ROOT,'scripts')).filter(x=>x.endsWith('.mjs'));
+const backendEntrypoints=workers.flatMap(w=>{
+ const folder=path.join(ROOT,'workers',w,'src');
+ if(!fs.existsSync(folder))return [];
+ return fs.readdirSync(folder).filter(f=>f.endsWith('.js')).map(file=>({worker:w,path:'workers/'+w+'/src/'+file,absolute:path.join(folder,file)}));
+});
 const tests=fs.readdirSync(path.join(ROOT,'tests')).filter(x=>x.endsWith('.mjs'));
 const workflowDir=path.join(ROOT,'.github/workflows'),workflows=fs.readdirSync(workflowDir).filter(x=>x.endsWith('.yml'));
 for(const lane of ['frontend','backend','seo','visual','qa','distribution','security']){
@@ -183,10 +194,9 @@ for(const lane of ['frontend','backend','seo','visual','qa','distribution','secu
    }
    status=Object.values(details).some(x=>x===false)||(details.imagesMissingAlt>0)?'needs-fix':'pass';
   }else if(lane==='backend'){
-   const w=workers[i%workers.length],dir=path.join(ROOT,'workers',w,'src');
-   const js=fs.existsSync(dir)?fs.readdirSync(dir).find(f=>f.endsWith('.js')):null;
-   details={worker:w,entrypoint:js?'workers/'+w+'/src/'+js:null};
-   if(js){try{execFileSync(process.execPath,['--check',path.join(dir,js)],{stdio:'pipe',timeout:7000});status='pass'}catch(e){status='needs-fix';details.error=word(e.message).slice(0,180)}}
+   const entry=backendEntrypoints[i]||null;
+   details={worker:entry?.worker||null,entrypoint:entry?.path||null};
+   if(entry){try{execFileSync(process.execPath,['--check',entry.absolute],{stdio:'pipe',timeout:7000});status='pass'}catch(e){status='needs-fix';details.error=word(e.message).slice(0,180)}}
    else status='missing-entrypoint';
   }else if(lane==='qa'){
    details={existingTest:tests[i%tests.length]||null,workflow:workflows[i%workflows.length]||null};status='file-audited';
