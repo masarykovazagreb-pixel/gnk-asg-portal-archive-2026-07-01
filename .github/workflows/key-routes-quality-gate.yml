@@ -57,8 +57,8 @@ jobs:
       - name: Validate public refresh cadence truth
         run: node scripts/test-public-refresh-cadence-v1.mjs
       - name: Install Lighthouse CI and browser driver
-        env:
-          PUPPETEER_SKIP_DOWNLOAD: 'true'
+        # Bez PUPPETEER_SKIP_DOWNLOAD: korak „Capture /objave/ CLS element
+        # evidence" traži preglednik, a runner nema /usr/bin/google-chrome.
         run: npm install --global @lhci/cli@0.14.0 puppeteer@24.16.0
       - name: Capture /objave/ CLS element evidence
         env:
