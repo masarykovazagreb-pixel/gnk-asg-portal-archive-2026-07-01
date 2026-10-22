@@ -18,6 +18,8 @@ import { readFileSync, existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { PORTALS as NETWORK_PORTALS } from '../apps/satellites/lib/network-v1.mjs';
+import { WORLD_PORTALS } from '../apps/world/lib/registry.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (rel) => readFileSync(join(ROOT, rel), 'utf8');
@@ -30,6 +32,11 @@ for (const [dir, script] of [['apps/arhiva/site/index.html', 'apps/arhiva/engine
     execFileSync(process.execPath, [join(ROOT, script)], { cwd: ROOT, stdio: 'pipe' });
   }
 }
+/* Devet svjetskih portala gradi se iz istog popisa; ako izlaz ne postoji,
+   test ga izgradi prije provjere (kao i arhivu i dnevnik). */
+if (!has('apps/world/site/tokio/index.html')) {
+  execFileSync(process.execPath, [join(ROOT, 'apps/world/build.mjs')], { cwd: ROOT, stdio: 'pipe' });
+}
 
 const fails = [];
 const check = (ok, message) => { if (!ok) fails.push(message); };
@@ -38,12 +45,9 @@ const SITES = ['bor-usa', 'kosarka', 'scena-znanosti', 'step-buducnosti', 'zdrav
 const CHANNELS = JSON.parse(read('apps/region/channels.json')).channels;
 const EDITION_URLS = CHANNELS.map((channel) => channel.base.replace(/\/+$/, ''));
 const CORE = ['https://gnk-asg.hr/gnk-aktual', 'https://gnk-asg-arhiva.pages.dev', 'https://gnk-asg-dnevnik.pages.dev', ...EDITION_URLS];
-const PORTALS = [
-  ...JSON.parse(JSON.stringify(SITES)).map((slug) => `https://gnk-${slug}.pages.dev`),
-  'https://gnk-asg-arhiva.pages.dev',
-  'https://gnk-asg-dnevnik.pages.dev',
-  'https://gnk-asg-tjednik.pages.dev'
-];
+/* Popis portala dolazi iz samog lib-a — test ne smije imati vlastiti popis,
+   inače novi portal tiho izostane iz provjere. */
+const PORTALS = NETWORK_PORTALS.map((portal) => portal.url);
 
 const group = (html, name) => {
   const match = html.match(new RegExp(`data-mesh-group="${name}"[\\s\\S]*?</ul>`));
@@ -112,8 +116,21 @@ for (const slug of SITES) {
 audit('apps/arhiva/site/index.html', 'https://gnk-asg-arhiva.pages.dev/');
 audit('apps/dnevnik/site/index.html', 'https://gnk-asg-dnevnik.pages.dev/');
 
+/* Devet svjetskih portala: svaki nosi isti blok, a vlastita adresa je
+   označena u drugom sloju (ili izostavljena kao link). */
+for (const portal of WORLD_PORTALS) {
+  audit(`apps/world/site/${portal.id}/index.html`, portal.base);
+}
+
+/* Gradska izdanja na gnk-asg.hr: svaka naslovnica nosi isti blok, a hub
+   /kanal/ je popis svih sedamnaest. */
+for (const channel of CHANNELS) {
+  audit(`apps/portal/kanal/${channel.id}/index.html`, channel.base);
+}
+audit('apps/portal/kanal/index.html', 'https://gnk-asg.hr/kanal/');
+
 /* Blok ne smije ponavljati isti link dva puta na istoj stranici. */
-for (const file of ['apps/arhiva/site/index.html', 'apps/dnevnik/site/index.html', ...SITES.map((slug) => `apps/sites/site/${slug}/index.html`)]) {
+for (const file of ['apps/arhiva/site/index.html', 'apps/dnevnik/site/index.html', ...SITES.map((slug) => `apps/sites/site/${slug}/index.html`), ...WORLD_PORTALS.map((portal) => `apps/world/site/${portal.id}/index.html`), ...CHANNELS.map((channel) => `apps/portal/kanal/${channel.id}/index.html`), 'apps/portal/kanal/index.html']) {
   if (!has(file)) continue;
   const html = read(file);
   const all = [...html.matchAll(/data-mesh-link="([^"]+)"/g)].map((m) => m[1]);
@@ -126,7 +143,7 @@ const report = {
   editions: CHANNELS.length,
   portals: PORTALS.length,
   core: 20,
-  checked: SITES.length * 2 + 2,
+  checked: SITES.length * 2 + 2 + WORLD_PORTALS.length + CHANNELS.length + 1,
   failures: fails.slice(0, 40)
 };
 console.log(JSON.stringify(report, null, 2));

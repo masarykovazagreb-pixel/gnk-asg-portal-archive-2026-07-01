@@ -17,6 +17,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { SITES, NETWORK_HUB_HR, NETWORK_HUB_EN, siteBase, siteBySlug, pagePath } from '../lib/registry.mjs';
+import { WORLD_PORTALS } from '../../world/lib/registry.mjs';
 import { artSvg } from '../lib/kit.mjs';
 import { buildElectionDesk } from '../lib/elections.mjs';
 import { buildAktualNetwork } from './aktual-network.mjs';
@@ -33,21 +34,22 @@ const write = (file, body) => { mkdirSync(dirname(file), { recursive: true }); w
 
 const T = {
   hr: {
-    lang: 'hr', other: 'en', title: 'Mreža neovisnih izdanja — šest stranica, jedan izvor provjere | GNK ASG',
-    description: 'Šest neovisnih stranica GNK ASG mreže: BOR USA, KOŠARKA 360, SCENA ZNANOSTI, STEP BUDUĆNOSTI, ZDRAVLJE 360 i privremeni desk IZBORI U SRBIJI. Svaka ima vlastitu domenu, sitemap, feed i urednički potpis — i svaka vodi natrag na gnk-asg.hr.',
-    kicker: 'GNK ASG · mreža', h1: 'Šest stranica. Jedan izvor provjere.', hub: NETWORK_HUB_HR,
+    lang: 'hr', other: 'en', title: 'Mreža AKTUAL MEDIA — petnaest stranica, jedan izvor | GNK ASG',
+    description: 'Petnaest samostalnih stranica GNK ASG mreže: šest tematskih izdanja i devet svjetskih portala na pet kontinenata. Svaka ima vlastitu domenu, sitemap i feed.',
+    kicker: 'GNK ASG · mreža', h1: 'Petnaest stranica. Jedan izvor provjere.', hub: NETWORK_HUB_HR,
     lead: 'Mreža neovisnih izdanja nastala je zato što su neke teme na matičnoj stranici bile prekratko obrađene: borilački sport u SAD-u, košarka, način na koji znanost nastaje, ples i pokret, svakodnevno zdravlje — i izbori u Srbiji, koji se prate samo dok traju.',
     meta: [
-      ['6', 'neovisnih stranica'], ['2', 'jezika na svakoj'], ['1', 'uredništvo'],
+      ['15', 'stranica u mreži'], ['5', 'kontinenata'], ['1', 'uredništvo'],
     ],
     cardsTitle: 'Izdanja', cardsLead: 'Svaka kartica vodi na vlastitu domenu. Boja je identitet izdanja, struktura je zajednička.',
+    worldTitle: 'Svjetska izdanja', worldLead: 'Devet portala pokriva pet kontinenata: Afriku, Aziju, Sjevernu Ameriku, Južnu Ameriku i Oceaniju. Svaki je ulaz u svoje izdanje — puni osvrti ostaju na gnk-asg.hr, a portal vraća link na maticu.',
     whyTitle: 'Zašto odvojene stranice, a ne rubrike', why: [
       'Tema koja ima vlastitu domenu ima i vlastiti sitemap, feed i arhivu. Kad se jedna stranica promijeni, ostale ne trpe — i obratno. To je razlika između mreže i jedne velike stranice koja se raspada pod vlastitom težinom.',
       'Veza je obostrana: svako izdanje u traci i podnožju nosi poveznicu na gnk-asg.hr i na ovaj hub, a hub nosi poveznicu na svako izdanje. Tako se backlink ne moli — on je dio strukture.',
       'Uredništvo je jedno. Potpis je isti, standard je isti, a pogreška se ispravlja na stranici na kojoj je nastala.',
     ],
     rulesTitle: 'Što mreža jest, a što nije', rules: [
-      ['Jest', 'šest samostalnih stranica s vlastitim hostingom, sitemapom, feedom i robots.txt — svaka s vlastitim SEO slojem: canonical, hreflang, OG, Twitter kartica, JSON-LD i hashtagovi.'],
+      ['Jest', 'petnaest samostalnih stranica s vlastitim hostingom, sitemapom, feedom i robots.txt — svaka s vlastitim SEO slojem: canonical, hreflang, OG, Twitter kartica, JSON-LD i hashtagovi.'],
       ['Jest', 'mreža s obostranim poveznicama: izdanja vode na maticu, matica vodi na izdanja, a hub je popis koji se može provjeriti.'],
       ['Nije', 'farmom linkova. Nijedna stranica ne postoji samo da bi nosila poveznicu; svaka ima sadržaj, izvore i metodologiju.'],
       ['Nije', 'automatom za vijesti. Pet stalnih izdanja ne ovise o dnevnom feedu. Samo izborni desk je živ i privremen.'],
@@ -58,19 +60,20 @@ const T = {
     monitorCta: 'Otvori desk', footer: 'Mreža je dio GNK ASG. Matična stranica je gnk-asg.hr; sva izdanja objavljuju pod AKTUAL MEDIA d.o.o.',
   },
   en: {
-    lang: 'en', other: 'hr', title: 'Network of independent editions — six sites, one source of record | GNK ASG',
-    description: 'Six independent GNK ASG network sites: BOR USA, KOŠARKA 360, SCENA ZNANOSTI, STEP BUDUĆNOSTI, ZDRAVLJE 360 and the temporary IZBORI U SRBIJI desk. Each has its own domain, sitemap, feed and editor’s signature — and each links back to gnk-asg.hr.',
-    kicker: 'GNK ASG · network', h1: 'Six sites. One source of record.', hub: NETWORK_HUB_EN,
+    lang: 'en', other: 'hr', title: 'AKTUAL MEDIA network — fifteen sites, one source of record | GNK ASG',
+    description: 'Fifteen standalone GNK ASG sites: six topical editions and nine world portals across five continents. Each has its own domain, sitemap and feed.',
+    kicker: 'GNK ASG · network', h1: 'Fifteen sites. One source of record.', hub: NETWORK_HUB_EN,
     lead: 'The network exists because some topics were covered too briefly on the main site: combat sports in the US, basketball, how science is actually made, dance and movement, everyday health — and Serbia’s election, which is followed only while it lasts.',
-    meta: [['6', 'independent sites'], ['2', 'languages each'], ['1', 'newsroom']],
+    meta: [['15', 'sites in the network'], ['5', 'continents'], ['1', 'newsroom']],
     cardsTitle: 'Editions', cardsLead: 'Every card opens its own domain. The colour is the edition’s identity; the structure is shared.',
+    worldTitle: 'World editions', worldLead: 'Nine portals cover five continents: Africa, Asia, North America, South America and Oceania. Each is the entrance to its edition — the full reviews stay on gnk-asg.hr, and the portal links back to the parent site.',
     whyTitle: 'Why separate sites, not sections', why: [
       'A topic with its own domain has its own sitemap, feed and archive. When one site changes, the others do not suffer — and the reverse holds too. That is the difference between a network and one large site buckling under its own weight.',
       'The link is mutual: every edition carries gnk-asg.hr and this hub in its bar and footer, and the hub links to every edition. The backlink is not begged for — it is structural.',
       'There is one newsroom. The signature is the same, the standard is the same, and a correction is published where the error was made.',
     ],
     rulesTitle: 'What the network is — and is not', rules: [
-      ['It is', 'six standalone sites with their own hosting, sitemap, feed and robots.txt — each with the full SEO layer: canonical, hreflang, OG, Twitter card, JSON-LD and hashtags.'],
+      ['It is', 'fifteen standalone sites with their own hosting, sitemap, feed and robots.txt — each with the full SEO layer: canonical, hreflang, OG, Twitter card, JSON-LD and hashtags.'],
       ['It is', 'a network of reciprocal links: editions point to the parent site, the parent points to the editions, and the hub is a list anyone can check.'],
       ['It is not', 'a link farm. No site exists only to carry a link; each has content, sources and a method page.'],
       ['It is not', 'a news robot. The five permanent editions do not depend on a daily feed. Only the election desk is live, and only temporarily.'],
@@ -113,6 +116,7 @@ section>p.lead{color:var(--soft);max-width:80ch;margin:0 0 18px}
 .card h3{font:800 20px/1.2 Georgia,serif;margin:0 0 6px}
 .card p{margin:0;color:var(--soft);font-size:13.5px}
 .card .dom{display:block;color:#7f93ab;font-size:11px;margin-top:10px;letter-spacing:.04em}
+.wband{display:flex;align-items:center;justify-content:center;height:74px;font:800 17px/1 Georgia,serif;letter-spacing:.14em}
 .two{display:grid;grid-template-columns:1.2fr .8fr;gap:26px;align-items:start}
 @media(max-width:820px){.two{grid-template-columns:1fr}}
 .prose p{color:#cbd7e4;margin:0 0 13px;max-width:76ch}
@@ -153,13 +157,31 @@ function card(site, lang) {
   </a>`;
 }
 
+function worldCard(portal, lang) {
+  const city = lang === 'en' ? portal.cityEn : portal.city;
+  const note = lang === 'en' ? portal.note.en : portal.note.hr;
+  return `<a class="card wcard" id="world-${portal.id}" href="${portal.base}" rel="external noopener" hreflang="${portal.lang}" lang="${portal.lang}">
+    <span class="wband" style="background:linear-gradient(135deg,${portal.palette.bg},${portal.palette.surface});color:${portal.palette.accent}">${esc(city.toUpperCase())}</span>
+    <div class="b">
+      <span class="tag" style="color:${portal.palette.accent2}">${lang === 'en' ? 'world edition' : 'svjetsko izdanje'}</span>
+      <h3>${esc(portal.name)}</h3>
+      <p>${esc(note)} · ${esc(lang === 'en' ? portal.continent.en : portal.continent.hr)}</p>
+      <span class="dom">${esc(portal.domain)} · ${esc(portal.hashtags.join(' '))}</span>
+    </div>
+  </a>`;
+}
+
 function page(lang) {
   const t = T[lang];
   const canonical = lang === 'en' ? NETWORK_HUB_EN : NETWORK_HUB_HR;
   const alternate = lang === 'en' ? NETWORK_HUB_HR : NETWORK_HUB_EN;
   const title = t.title;
   const cards = SITES.map((site) => card(site, lang)).join('');
-  const listItems = SITES.map((site, i) => ({ '@type': 'ListItem', position: i + 1, name: site.name, url: `${siteBase(site)}/`, description: site.tagline[lang] }));
+  const worldCards = WORLD_PORTALS.map((portal) => worldCard(portal, lang)).join('');
+  const listItems = [
+    ...SITES.map((site, i) => ({ '@type': 'ListItem', position: i + 1, name: site.name, url: `${siteBase(site)}/`, description: site.tagline[lang] })),
+    ...WORLD_PORTALS.map((portal, i) => ({ '@type': 'ListItem', position: SITES.length + i + 1, name: portal.name, url: portal.base, description: lang === 'en' ? portal.note.en : portal.note.hr }))
+  ];
 
   let monitor = '';
   try {
@@ -187,7 +209,7 @@ function page(lang) {
         image: { '@type': 'ImageObject', url: OG, width: 1200, height: 630 },
         mainEntity: { '@id': `${canonical}#lista` },
       },
-      { '@type': 'ItemList', '@id': `${canonical}#lista`, name: t.cardsTitle, numberOfItems: SITES.length, itemListElement: listItems },
+      { '@type': 'ItemList', '@id': `${canonical}#lista`, name: t.cardsTitle, numberOfItems: listItems.length, itemListElement: listItems },
       {
         '@type': 'BreadcrumbList', '@id': `${canonical}#breadcrumb`,
         itemListElement: [
@@ -250,7 +272,10 @@ function page(lang) {
   <h2>${esc(t.cardsTitle)}</h2>
   <p class="lead">${esc(t.cardsLead)}</p>
   <div class="grid">${cards}</div>
-  <div class="note">${lang === 'en' ? 'Each edition’s protocol is <code>https://&lt;edition&gt;/sitemap.xml</code> and <code>/feed.xml</code>. The machine-readable list of all six is' : 'Svako izdanje ima svoj <code>/sitemap.xml</code> i <code>/feed.xml</code>. Strojni popis svih šest je'} <a href="/data/mreza-v1.json">/data/mreza-v1.json</a>.</div>
+  <h2 style="margin-top:34px">${esc(t.worldTitle)}</h2>
+  <p class="lead">${esc(t.worldLead)}</p>
+  <div class="grid">${worldCards}</div>
+  <div class="note">${lang === 'en' ? 'Each edition’s protocol is <code>https://&lt;edition&gt;/sitemap.xml</code> and <code>/feed.xml</code>. The machine-readable list of all fifteen is' : 'Svako izdanje ima svoj <code>/sitemap.xml</code> i <code>/feed.xml</code>. Strojni popis svih petnaest je'} <a href="/data/mreza-v1.json">/data/mreza-v1.json</a>.</div>
 </div></section>
 
 <section><div class="wrap two">
@@ -285,7 +310,7 @@ function page(lang) {
 <footer><div class="wrap">
   <div class="fcols">
     <div><h3>GNK ASG</h3><p>${esc(t.footer)}</p></div>
-    <div><h3>${lang === 'en' ? 'Editions' : 'Izdanja'}</h3><ul>${SITES.map((site) => `<li><a href="${siteBase(site)}/" rel="external noopener" hreflang="${site.lang}" lang="${site.lang}">${esc(site.name)}</a></li>`).join('')}</ul></div>
+    <div><h3>${lang === 'en' ? 'Editions and portals' : 'Izdanja i portali'}</h3><ul>${[...SITES.map((site) => `<li><a href="${siteBase(site)}/" rel="external noopener" hreflang="${site.lang}" lang="${site.lang}">${esc(site.name)}</a></li>`), ...WORLD_PORTALS.map((portal) => `<li><a href="${portal.base}" rel="external noopener" hreflang="${portal.lang}" lang="${portal.lang}">${esc(portal.name)}</a></li>`)].join('')}</ul></div>
     <div><h3>${lang === 'en' ? 'Main site' : 'Matična stranica'}</h3><ul>
       <li><a href="https://gnk-asg.hr/">gnk-asg.hr</a></li>
       <li><a href="/izdanja/">${lang === 'en' ? 'All editions' : 'Sva izdanja'}</a></li>
@@ -377,6 +402,14 @@ function build() {
       outputs: { sitemap: `${siteBase(site)}/sitemap.xml`, feed: `${siteBase(site)}/feed.xml`, robots: `${siteBase(site)}/robots.txt`, manifest: `${siteBase(site)}/manifest.webmanifest` },
       relations: { parent: 'https://gnk-asg.hr/', hub: NETWORK_HUB_HR, siblings: SITES.filter((s) => s.slug !== site.slug).map((s) => `${siteBase(s)}/`) },
     })),
+    worldCount: WORLD_PORTALS.length,
+    world: WORLD_PORTALS.map((portal) => ({
+      id: portal.id, name: portal.name, url: portal.base, domain: portal.domain,
+      city: portal.city, cityEn: portal.cityEn, country: portal.country, continent: portal.continent,
+      lang: portal.lang, palette: portal.palette, hashtags: portal.hashtags,
+      canonicalEdition: portal.sourceBase,
+      outputs: { sitemap: `${portal.base}sitemap.xml`, feed: `${portal.base}feed.xml`, robots: `${portal.base}robots.txt`, manifest: `${portal.base}manifest.webmanifest` }
+    })),
   };
   write(join(PORTAL, 'data/mreza-v1.json'), JSON.stringify(data, null, 2) + '\n');
 
@@ -427,7 +460,7 @@ function build() {
   }
 
   const sitemapChanges = upsertMasterSitemap();
-  console.log(`[mreza] hub HR/EN + ${SITES.length} kartica + data/mreza-v1.json; sitemap +${sitemapChanges}${networkDesk ? `; AKTUAL MEDIA indeks ${networkDesk.pages} stranica` : ''}${seoMatrix ? `; SEO matrica ${seoMatrix.totals.ok}/${seoMatrix.totals.routes} (${seoMatrix.totals.score}%)` : ''}`);
+  console.log(`[mreza] hub HR/EN + ${SITES.length + WORLD_PORTALS.length} kartica + data/mreza-v1.json; sitemap +${sitemapChanges}${networkDesk ? `; AKTUAL MEDIA indeks ${networkDesk.pages} stranica` : ''}${seoMatrix ? `; SEO matrica ${seoMatrix.totals.ok}/${seoMatrix.totals.routes} (${seoMatrix.totals.score}%)` : ''}`);
 }
 
 build();

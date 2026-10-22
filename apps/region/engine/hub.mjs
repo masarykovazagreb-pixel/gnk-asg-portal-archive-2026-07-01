@@ -17,6 +17,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { esc, longDate, shortDate, stampLocal, scoreFromTitle, truncate, themeFor, safeJson } from './lib.mjs';
 import { CHANNELS, HUB, CONTACT, SOCIAL_IMAGE, CITY_SHORT, CSS as CHANNEL_CSS } from './build.mjs';
+import { meshBlock, MESH_CSS } from '../../satellites/lib/network-v1.mjs';
 import { ensureDeskTiles, tilePath, variantFor } from './desk-art.mjs';
 import { logoImg, logoFor, logoAlternate, channelLogoSlug, deskLogoSlug, logoJsonLd } from './brand.mjs';
 
@@ -992,6 +993,7 @@ a{color:inherit;text-decoration:none}
 .kx-foot a:hover{border-color:#8c2f2f}
 .kx-foot span{color:#8a8272;font-weight:700}
 .kx-go{margin-top:4px;font:800 11px/1 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#8c2f2f}
+${MESH_CSS}
 </style>
 </head>
 <body>
@@ -1004,6 +1006,7 @@ a{color:inherit;text-decoration:none}
   </div>
   <div class="kx-grid">${rows}</div>
 </main>
+${meshBlock({ lang: 'hr', selfUrl: 'https://gnk-asg.hr/kanal/', theme: 'light' })}
 </body>
 </html>`;
 }

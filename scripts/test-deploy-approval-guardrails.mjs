@@ -128,6 +128,13 @@ const channelPagesProjects={
 const sitesNetworkProjects={
  'sites-deploy.yml':['gnk-bor-usa','gnk-kosarka','gnk-scena-znanosti','gnk-step-buducnosti','gnk-zdravlje','gnk-izbori-srbija']
 };
+// Devet svjetskih portala ima vlastite Pages projekte. Popis se čita iz
+// registra (apps/world/lib/registry.mjs) — on je jedini izvor istine — a
+// workflow mora svaki projekt navesti imenom, bez džokera.
+const { WORLD_IDS } = await import('../apps/world/lib/registry.mjs');
+const worldPortalsProjects={
+ 'world-portals-deploy.yml':WORLD_IDS.map((id)=>`gnk-world-${id}`)
+};
 const channelDeployments=[];
 const violations=[];
 for(const file of fs.readdirSync('.github/workflows').filter(f=>/\.ya?ml$/i.test(f))){
@@ -135,8 +142,9 @@ for(const file of fs.readdirSync('.github/workflows').filter(f=>/\.ya?ml$/i.test
  if(path===approved)continue;
  const source=read(path);
  const writeLine=source.split(/\r?\n/).find(line=>/^\s*(?:run:\s*)?(?:(?:npx|bunx)\s+(?:--yes\s+)?|(?:pnpm|yarn)\s+(?:dlx\s+)?)?wrangler(?:@\d+)?\s+(?:pages\s+)?deploy\b/i.test(line)&&!/--dry-run\b/i.test(line));
- if(writeLine&&sitesNetworkProjects[file]){
-  const allowed=new Set(sitesNetworkProjects[file]);
+ const literalProjects=sitesNetworkProjects[file]||worldPortalsProjects[file];
+ if(writeLine&&literalProjects){
+  const allowed=new Set(literalProjects);
   const listed=[...source.matchAll(/--project-name[= ]+["']?([a-z0-9-${}]+)["']?/gi)].map(m=>m[1]);
   for(const project of listed){
    if(project.includes('$'))violations.push(`${file}: network deploy must use a literal project name`);
@@ -172,7 +180,8 @@ for(const file of fs.readdirSync('.github/workflows').filter(f=>/\.ya?ml$/i.test
 assert.deepEqual(violations,[],'Only deploy-admin-auth-v6.yml may contain production deployment capability');
 const expectedDeployments=[
  ...Object.entries(channelPagesProjects).flatMap(([file,project])=>(Array.isArray(project)?['gnk-asg-kanal-*']:[project]).map(p=>`${file}:${p}`)),
- ...Object.entries(sitesNetworkProjects).flatMap(([file,projects])=>projects.map(p=>`${file}:${p}`))
+ ...Object.entries(sitesNetworkProjects).flatMap(([file,projects])=>projects.map(p=>`${file}:${p}`)),
+ ...Object.entries(worldPortalsProjects).flatMap(([file,projects])=>projects.map(p=>`${file}:${p}`))
 ];
 assert.deepEqual(
  channelPagesProjects['region-daily.yml'].map(p=>p.replace('gnk-asg-kanal-','')).sort(),

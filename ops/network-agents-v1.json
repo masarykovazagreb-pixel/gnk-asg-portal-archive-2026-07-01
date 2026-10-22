@@ -86,7 +86,70 @@
       "name": "Sinkronizacija mreže",
       "required": false,
       "cmd": ["node", "scripts/network-sync-v1.mjs"],
-      "checks": "Ponovno gradi šest stranica, arhivu i dnevnik iz istih podataka i provjerava mrežu."
+      "checks": "Ponovno gradi šest stranica, devet svjetskih portala, arhivu i dnevnik iz istih podataka i provjerava mrežu."
+    },
+    {
+      "id": "world-nairobi-agent",
+      "name": "Svjetski portal — Nairobi",
+      "required": true,
+      "cmd": ["node", "tests/test-world-portals-v1.mjs", "--only", "nairobi"],
+      "checks": "Naslovnica, canonical, sitemap, RSS i JSON feed, robots.txt, CSP i blok mreže na portalu Nairobi (Kenija)."
+    },
+    {
+      "id": "world-jakarta-agent",
+      "name": "Svjetski portal — Jakarta",
+      "required": true,
+      "cmd": ["node", "tests/test-world-portals-v1.mjs", "--only", "jakarta"],
+      "checks": "Naslovnica, canonical, sitemap, RSS i JSON feed, robots.txt, CSP i blok mreže na portalu Jakarta (Indonezija)."
+    },
+    {
+      "id": "world-newyork-agent",
+      "name": "Svjetski portal — New York",
+      "required": true,
+      "cmd": ["node", "tests/test-world-portals-v1.mjs", "--only", "newyork"],
+      "checks": "Naslovnica, canonical, sitemap, RSS i JSON feed, robots.txt, CSP i blok mreže na portalu New York (SAD)."
+    },
+    {
+      "id": "world-saopaulo-agent",
+      "name": "Svjetski portal — São Paulo",
+      "required": true,
+      "cmd": ["node", "tests/test-world-portals-v1.mjs", "--only", "saopaulo"],
+      "checks": "Naslovnica, canonical, sitemap, RSS i JSON feed, robots.txt, CSP i blok mreže na portalu São Paulo (Brazil)."
+    },
+    {
+      "id": "world-sydney-agent",
+      "name": "Svjetski portal — Sydney",
+      "required": true,
+      "cmd": ["node", "tests/test-world-portals-v1.mjs", "--only", "sydney"],
+      "checks": "Naslovnica, canonical, sitemap, RSS i JSON feed, robots.txt, CSP i blok mreže na portalu Sydney (Australija)."
+    },
+    {
+      "id": "world-singapur-agent",
+      "name": "Svjetski portal — Singapur",
+      "required": true,
+      "cmd": ["node", "tests/test-world-portals-v1.mjs", "--only", "singapur"],
+      "checks": "Naslovnica, canonical, sitemap, RSS i JSON feed, robots.txt, CSP i blok mreže na portalu Singapur (Singapur)."
+    },
+    {
+      "id": "world-kairo-agent",
+      "name": "Svjetski portal — Kairo",
+      "required": true,
+      "cmd": ["node", "tests/test-world-portals-v1.mjs", "--only", "kairo"],
+      "checks": "Naslovnica, canonical, sitemap, RSS i JSON feed, robots.txt, CSP i blok mreže na portalu Kairo (Egipat)."
+    },
+    {
+      "id": "world-tokio-agent",
+      "name": "Svjetski portal — Tokio",
+      "required": true,
+      "cmd": ["node", "tests/test-world-portals-v1.mjs", "--only", "tokio"],
+      "checks": "Naslovnica, canonical, sitemap, RSS i JSON feed, robots.txt, CSP i blok mreže na portalu Tokio (Japan)."
+    },
+    {
+      "id": "world-peking-agent",
+      "name": "Svjetski portal — Peking",
+      "required": true,
+      "cmd": ["node", "tests/test-world-portals-v1.mjs", "--only", "peking"],
+      "checks": "Naslovnica, canonical, sitemap, RSS i JSON feed, robots.txt, CSP i blok mreže na portalu Peking (Kina)."
     }
   ]
 }

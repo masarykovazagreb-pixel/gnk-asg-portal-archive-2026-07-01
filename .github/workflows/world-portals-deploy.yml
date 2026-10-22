@@ -1,0 +1,179 @@
+name: world-portals-deploy
+
+# Objavljuje devet svjetskih portala AKTUAL MEDIA na njihove Cloudflare Pages
+# projekte: gnk-world-nairobi, -jakarta, -newyork, -saopaulo, -sydney,
+# -singapur, -kairo, -tokio, -peking.
+#
+# • push na apps/world/** (ili na podatke izdanja) gradi i objavljuje svih devet;
+# • raspored svaka dva sata osvježava portale iz svježih podataka region enginea;
+# • kill switch nije potreban: portal nema vlastiti feed prema van, samo
+#   prikazuje zapise koje je izdanje već objavilo na gnk-asg.hr.
+#
+# Portali ne kopiraju članke. Svaki zapis vodi na kanonski osvrt pod
+# gnk-asg.hr/kanal/<grad>/, pa nema dvostrukog sadržaja među domenama.
+#
+# Ne dira gnk-asg.hr ni ostale projekte: ova radnja gradi samo apps/world/site
+# i predaje ga Cloudflareu. Popis projekata je izravno u ovom zapisu, pa se iz
+# njega može pročitati točno što se objavljuje.
+
+on:
+  push:
+    branches: [main, 'arena/**']
+    paths:
+      - 'apps/world/**'
+      - 'apps/region/data/**'
+      - 'apps/region/channels.json'
+      - 'tests/test-world-portals-v1.mjs'
+      - '.github/workflows/world-portals-deploy.yml'
+  schedule:
+    - cron: '27 */2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: world-portals-deploy
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Popis portala
+        shell: bash
+        run: |
+          node -e '
+            import("./apps/world/lib/registry.mjs").then(({ WORLD_PORTALS }) => {
+              console.log(`portala u registru: ${WORLD_PORTALS.length}`);
+              for (const p of WORLD_PORTALS) console.log(`- ${p.id} → https://${p.domain}/ (${p.lang}, ${p.continent.hr})`);
+            });
+          '
+
+      - name: Gradnja devet portala
+        shell: bash
+        run: node apps/world/build.mjs
+
+      - name: Provjere portala (svježi izlaz)
+        shell: bash
+        run: node tests/test-world-portals-v1.mjs --no-fresh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: world-out
+          path: apps/world/site
+          retention-days: 3
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: world-out
+          path: world-out
+
+      - name: Provjeri Cloudflare pristup i projekte
+        id: cf
+        shell: bash
+        run: |
+          set -uo pipefail
+          if [ -z "${CF_TOKEN:-}" ] || [ -z "${CF_ACCOUNT:-}" ]; then
+            echo "::warning::Cloudflare secrets nisu dostupni — preskačem deploy svjetskih portala."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          for slug in nairobi jakarta newyork saopaulo sydney singapur kairo tokio peking; do
+            project="gnk-world-${slug}"
+            code=$(curl -s -o /tmp/proj.json -w '%{http_code}' \
+              -H "Authorization: Bearer $CF_TOKEN" \
+              "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/$project")
+            if [ "$code" != "200" ]; then
+              echo "Projekt $project ne postoji (HTTP $code) — kreiram."
+              curl -s -o /tmp/create.json -X POST \
+                -H "Authorization: Bearer $CF_TOKEN" -H "Content-Type: application/json" \
+                --data "{\"name\":\"$project\",\"production_branch\":\"main\"}" \
+                "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects" || true
+              head -c 200 /tmp/create.json || true; echo
+            fi
+            if [ ! -s "world-out/$slug/index.html" ]; then
+              echo "::error::Nedostaje izlaz za $slug."
+              echo "ready=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          done
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+
+      - name: Instaliraj wrangler
+        if: steps.cf.outputs.ready == 'true'
+        shell: bash
+        run: npm install --global wrangler@4
+
+      - name: Objavi — Nairobi
+        if: steps.cf.outputs.ready == 'true'
+        shell: bash
+        run: wrangler pages deploy "world-out/nairobi" --project-name=gnk-world-nairobi --branch=main --commit-dirty=true
+
+      - name: Objavi — Jakarta
+        if: steps.cf.outputs.ready == 'true'
+        shell: bash
+        run: wrangler pages deploy "world-out/jakarta" --project-name=gnk-world-jakarta --branch=main --commit-dirty=true
+
+      - name: Objavi — New York
+        if: steps.cf.outputs.ready == 'true'
+        shell: bash
+        run: wrangler pages deploy "world-out/newyork" --project-name=gnk-world-newyork --branch=main --commit-dirty=true
+
+      - name: Objavi — São Paulo
+        if: steps.cf.outputs.ready == 'true'
+        shell: bash
+        run: wrangler pages deploy "world-out/saopaulo" --project-name=gnk-world-saopaulo --branch=main --commit-dirty=true
+
+      - name: Objavi — Sydney
+        if: steps.cf.outputs.ready == 'true'
+        shell: bash
+        run: wrangler pages deploy "world-out/sydney" --project-name=gnk-world-sydney --branch=main --commit-dirty=true
+
+      - name: Objavi — Singapur
+        if: steps.cf.outputs.ready == 'true'
+        shell: bash
+        run: wrangler pages deploy "world-out/singapur" --project-name=gnk-world-singapur --branch=main --commit-dirty=true
+
+      - name: Objavi — Kairo
+        if: steps.cf.outputs.ready == 'true'
+        shell: bash
+        run: wrangler pages deploy "world-out/kairo" --project-name=gnk-world-kairo --branch=main --commit-dirty=true
+
+      - name: Objavi — Tokio
+        if: steps.cf.outputs.ready == 'true'
+        shell: bash
+        run: wrangler pages deploy "world-out/tokio" --project-name=gnk-world-tokio --branch=main --commit-dirty=true
+
+      - name: Objavi — Peking
+        if: steps.cf.outputs.ready == 'true'
+        shell: bash
+        run: wrangler pages deploy "world-out/peking" --project-name=gnk-world-peking --branch=main --commit-dirty=true
+
+      - name: Sažetak
+        if: steps.cf.outputs.ready == 'true'
+        shell: bash
+        run: |
+          {
+            echo "## Svjetska izdanja objavljena"
+            echo "- okidač: ${{ github.event_name }}"
+            echo "- portala: 9 (Nairobi, Jakarta, New York, São Paulo, Sydney, Singapur, Kairo, Tokio, Peking)"
+            echo "- kontinenti: Afrika, Azija, Sjeverna Amerika, Južna Amerika, Oceanija"
+            echo "- hub: https://gnk-asg.hr/mreza/ · matica: https://gnk-asg.hr/gnk-aktual/"
+          } >> "$GITHUB_STEP_SUMMARY"
