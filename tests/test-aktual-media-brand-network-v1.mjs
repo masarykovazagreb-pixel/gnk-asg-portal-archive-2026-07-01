@@ -44,7 +44,7 @@ for(const [city,locale] of Object.entries(cities)){
 const generator=get('apps/region/engine/build.mjs');
 assert(generator.includes('#edition')&&generator.includes("name: channel.title"));
 assert(generator.includes('channel.base')&&generator.includes("isPartOf: { '@id':"));
-assert(generator.includes("publisher: { '@id': 'https://gnk-asg.hr/gnk-aktual/#news-organization' }"));
+assert(generator.includes("publisher: { '@id': AKTUAL_NEWS_ENTITY_ID }"),'article must use main publisher constant');
 assert(generator.includes("editor: { '@type': 'Person'"));
 assert(generator.includes('item.sourceName'),'source attribution must be retained');
 const hubSource=get('apps/region/engine/hub.mjs');
