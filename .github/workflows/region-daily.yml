@@ -85,6 +85,7 @@ jobs:
           node scripts/audit-top-teme-v1.mjs
           node apps/region/engine/hub.mjs
           node apps/region/engine/audit.mjs
+          node scripts/audit-aktual-brand-indexability-v1.mjs
           test -f apps/portal/izdanja/index.html
           test -f apps/portal/data/izdanja.json
 
