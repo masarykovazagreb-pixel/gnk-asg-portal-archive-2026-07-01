@@ -39,3 +39,16 @@ Prijedlog ide u postojeći zaštićeni `/admin-center/editorial-approval/` / ure
 5. Tek na provjerenim javnim URL-ovima graditi indeksabilne originalne tekstove, licencirane vlastite slike, dobar alt, JSON-LD, sitemap, hreflang i opravdane lokalizirane ključne riječi, uz selektivno povezivanje s AKTUAL MEDIA. Bez spam farmi i dupliciranja medijskih članaka.
 
 Ovaj sustav je stvarni program za pripremu, nadzor, testove i multijezični staging. Nije istinito tvrditi da 150 samostalnih LLM-ova kontinuirano razvija projekt ili da je 12 portala već javno izdano dok to ne potvrde pravo izvršenje i hosting.
+
+
+## Exa provjera besplatnih ograničenja i Google SEO pravila (22.10.2026.)
+
+Exa je pregledao službene izvore; ova pravila imaju prednost pred neprovjerenim SEO trikovima:
+
+1. Cloudflare Pages Free: 100 Pages projekata po računu, 500 buildova mjesečno, jedan istodobni build, najviše 20.000 datoteka po stranici; administrativna ograničenja i početna ograničenja novih projekata mogu smanjiti dostupni kapacitet. Izvor: https://developers.cloudflare.com/pages/platform/limits/ (ažurirano 05.09.2026.). Cloudflare Pages Free nije zajamčen za korisnički račun dok se kvota ne očita.
+2. Cloudflare Workers Free je ograničen na 100 zasebnih Worker skripti, 100.000 zahtjeva dnevno za Workers Free i 10 ms CPU po zahtjevu; 150 agenata mora ostati više izvršnih uloga nad postojećim resursima, NE 150 zasebnih Cloudflare Worker servisa. Izvor: https://www.cloudflare.com/plans/developer-platform/
+3. GitHub Actions standardni hostani runneri besplatni su u javnim repozitorijima, dok privatni podliježu mjesečnoj kvoti računa. Konzervativni interni limit projekta 1000 min/mj ostaje dok se ne potvrdi vidljivost repozitorija i obračunska potrošnja. Izvor: https://docs.github.com/en/billing/concepts/product-billing/github-actions
+4. Google izričito zabranjuje doorway abuse: višestruke lokacijske stranice na različitim domenama koje korisnike prosljeđuju na glavni portal bez samostalne vrijednosti. Google navodi i scaled content abuse kada se feedovi automatizirano prevode/spajaju radi manipulacije rangiranjem. Izvor: https://developers.google.com/search/docs/essentials/spam-policies
+5. Hreflang se dodaje samo **stvarnim jednakovrijednim lokaliziranim člancima** s međusobno usklađenim apsolutnim URL-ovima i povratnim oznakama. Nije dopušteno postaviti izmišljene Pages poddomene ni proglašavati tematski različite članke prijevodima. Izvor: https://developers.google.com/search/docs/specialty/international/localized-versions
+
+**Projektni kriterij:** novo izdanje prelazi iz NOINDEX u indeksabilno tek kada ima službeno verificiranu i dopuštenu javnu adresu, samostalan koristan sadržaj na lokalnom jeziku, provjerljive izvorne URL-ove, originalne ili dopuštene slike, urednički review, primjerenu JSON-LD / SEO tehniku i produkcijski release dokaz. Hashtagovi i backlinkovi nisu zamjena za sadržaj. Nema masovnog generiranja sličnih stranica radi tražilice.
