@@ -1,12 +1,12 @@
 {
   "note": "Groups are derived from real workflow files; worker profiles are a modeled catalogue.",
-  "total": 333,
+  "total": 334,
   "groups": [
     {
       "id": "izdanja",
       "name": "Izdanja i sadržaj",
       "nameEn": "Editions and content",
-      "automations": 64,
+      "automations": 65,
       "scheduled": 8,
       "runsPerDay": 39,
       "files": [
@@ -17,6 +17,11 @@
         },
         {
           "file": "aktual-editorial-gate.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "aktual-global-distribution.yml",
           "crons": [],
           "perDay": 0
         },
