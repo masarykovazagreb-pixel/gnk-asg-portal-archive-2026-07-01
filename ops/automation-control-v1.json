@@ -22,15 +22,16 @@
     "sha": "c38578c057655af8439aa23197cd141f90433850"
   },
   "actionsBudget": {
-    "accountLimitMinutesPerMonth": 2000,
-    "operatingHardLimitMinutesPerMonth": 1000,
-    "protectedReserveMinutes": 1000,
-    "protectedReserveRequiresExplicitUserApproval": true,
-    "normalTargetMinutesPerMonth": 600,
-    "cautionProjectedMinutes": 600,
-    "conserveProjectedMinutes": 800,
-    "zeroMinuteFirst": true,
-    "publicPortalAuditMode": "manual-major-release-only"
+    "providerIncludedMinutesPerMonthReference": 2000,
+    "internalMinuteCapEnabled": false,
+    "internalMinuteCapMinutes": null,
+    "protectedReserveMinutes": 0,
+    "protectedReserveRequiresExplicitUserApproval": false,
+    "paidUsageAuthorized": false,
+    "allowPaidRunners": false,
+    "allowPlanUpgrade": false,
+    "mode": "use-all-platform-free-capacity-without-paid-overages",
+    "note": "No GNK ASG internal GitHub Actions minutes cap. Free allowance, workflow rate limits and account billing guardrails still apply. Public standard runner minutes are free; private repo included minutes depend on actual account plan."
   },
   "globalRules": {
     "singleWriterPerResource": true,
@@ -48,8 +49,7 @@
       "social live activation",
       "legal or medical claims",
       "material financial claims",
-      "changes to secrets, DNS, routes or production bindings",
-      "use of protected Actions reserve"
+      "changes to secrets, DNS, routes or production bindings"
     ]
   },
   "editorialIdentity": {
