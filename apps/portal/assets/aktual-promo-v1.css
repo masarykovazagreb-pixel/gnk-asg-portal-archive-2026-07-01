@@ -290,7 +290,9 @@
 
 @media print {
   .am-promo-top,
-  .am-promo-modal { display: none !important; }
+  .am-promo-modal,
+  .am-win-row,
+  .am-ad { display: none !important; }
 }
 
 /* ---------- prozorčići: pet novih stranica ---------- */
