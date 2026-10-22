@@ -650,8 +650,8 @@ function jsonld(desk, lang, canonical, alternate, keywords) {
       {
         '@type': 'NewsMediaOrganization',
         '@id': `${SITE}/gnk-aktual/#news-organization`,
-        name: 'AKTUAL MEDIA',
-        alternateName: ['Aktual mediji', 'Aktual Media', 'AKTUAL MEDIA KANAL'],
+        name: 'AKTUAL MEDIA d.o.o.',
+        alternateName: ['AKTUAL MEDIA', 'Aktual mediji', 'Aktual Media', 'AKTUAL MEDIA KANAL'],
         url: `${SITE}/gnk-aktual/`,
         parentOrganization: { '@id': `${SITE}/#gnk-asg` },
         editor: { '@id': `${SITE}/#nermin-sefic` },
@@ -704,7 +704,7 @@ function jsonld(desk, lang, canonical, alternate, keywords) {
         '@id': `${canonical}#breadcrumb`,
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'GNK ASG', item: `${SITE}/` },
-          { '@type': 'ListItem', position: 2, name: 'AKTUAL MEDIA', item: `${SITE}/gnk-aktual/` },
+          { '@type': 'ListItem', position: 2, name: 'AKTUAL MEDIA d.o.o.', item: `${SITE}/gnk-aktual/` },
           { '@type': 'ListItem', position: 3, name: lang === 'en' ? 'Data desk' : 'Podatkovni desk', item: lang === 'en' ? `${SITE}/en/aktual-media/` : SECTION },
           { '@type': 'ListItem', position: 4, name: copy.h1, item: canonical },
         ],
@@ -856,7 +856,7 @@ function sectionPage(lang) {
     '@context': 'https://schema.org',
     '@graph': [
       { '@type': 'WebSite', '@id': `${SITE}/#website`, name: 'GNK ASG', url: `${SITE}/`, inLanguage: ['hr', 'en'], publisher: { '@id': `${SITE}/#gnk-asg` } },
-      { '@type': 'NewsMediaOrganization', '@id': `${SITE}/gnk-aktual/#news-organization`, name: 'AKTUAL MEDIA', alternateName: ['Aktual mediji', 'Aktual Media'], url: `${SITE}/gnk-aktual/`, parentOrganization: { '@id': `${SITE}/#gnk-asg` }, editor: { '@id': `${SITE}/#nermin-sefic` } },
+      { '@type': 'NewsMediaOrganization', '@id': `${SITE}/gnk-aktual/#news-organization`, name: 'AKTUAL MEDIA d.o.o.', alternateName: ['Aktual mediji', 'Aktual Media'], url: `${SITE}/gnk-aktual/`, parentOrganization: { '@id': `${SITE}/#gnk-asg` }, editor: { '@id': `${SITE}/#nermin-sefic` } },
       { '@type': 'Person', '@id': `${SITE}/#nermin-sefic`, name: 'Nermin Sefić', jobTitle: lang === 'en' ? 'Editor and director' : 'Urednik i direktor', url: `${SITE}/nermin-sefic/` },
       {
         '@type': 'CollectionPage',
@@ -880,7 +880,7 @@ function sectionPage(lang) {
         '@id': `${canonical}#breadcrumb`,
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'GNK ASG', item: `${SITE}/` },
-          { '@type': 'ListItem', position: 2, name: 'AKTUAL MEDIA', item: `${SITE}/gnk-aktual/` },
+          { '@type': 'ListItem', position: 2, name: 'AKTUAL MEDIA d.o.o.', item: `${SITE}/gnk-aktual/` },
           { '@type': 'ListItem', position: 3, name: copy.h1, item: canonical },
         ],
       },
