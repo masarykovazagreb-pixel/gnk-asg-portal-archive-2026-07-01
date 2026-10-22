@@ -506,7 +506,7 @@ function strengthenAktualBrand(html, lang = 'hr') {
     '@graph': [
       {
         '@type': 'NewsMediaOrganization', '@id': AKTUAL_BRAND_ID,
-        name: 'AKTUAL MEDIA', alternateName: ['Aktual mediji', 'Aktual Media', 'AKTUAL MEDIA KANAL'],
+        name: 'AKTUAL MEDIA d.o.o.', alternateName: ['AKTUAL MEDIA', 'Aktual mediji', 'Aktual Media', 'AKTUAL MEDIA KANAL'],
         url: 'https://gnk-asg.hr/gnk-aktual/',
         description: 'Vijesti, regionalna izdanja, analize, tematski deskovi, poslovni tjednik i radio.',
         parentOrganization: { '@id': 'https://gnk-asg.hr/#gnk-asg' },
