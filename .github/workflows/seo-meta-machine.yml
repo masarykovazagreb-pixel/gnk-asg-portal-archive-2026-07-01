@@ -1,0 +1,103 @@
+name: seo-meta-machine
+
+# SEO stroj mreže — nadzire meta sloj svih 76 javnih stranica.
+#
+# • svakih šest sati ponovno gradi mrežu i provjerava matricu;
+# • na push provjerava da nova stranica nije ušla bez meta ugovora;
+# • ne mijenja repozitorij i ne objavljuje ništa (contents: read);
+# • IndexNow slanje je opt-in: ili ručno (`confirm_indexnow=INDEXNOW`)
+#   ili trajno preko repository variable SEO_INDEXNOW_AUTO=true.
+
+on:
+  schedule:
+    - cron: '23 */6 * * *'
+  push:
+    branches: [main, 'arena/**']
+    paths:
+      - 'apps/sites/**'
+      - 'apps/portal/gnk-aktual/**'
+      - 'tests/test-seo-matrix-v1.mjs'
+      - 'tests/test-sites-network-v1.mjs'
+      - '.github/workflows/seo-meta-machine.yml'
+  workflow_dispatch:
+    inputs:
+      confirm_indexnow:
+        description: 'Upiši INDEXNOW za slanje 76 URL-ova tražilicama'
+        required: false
+        default: 'no'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: seo-meta-machine
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Gradnja mreže i indeksa
+        shell: bash
+        run: |
+          node apps/sites/build.mjs
+          node apps/sites/engine/hub.mjs
+
+      - name: Mrežni gate (svježi izlaz)
+        shell: bash
+        run: node tests/test-sites-network-v1.mjs --no-fresh
+
+      - name: SEO matrica
+        shell: bash
+        run: node tests/test-seo-matrix-v1.mjs
+
+      - name: Sažetak
+        shell: bash
+        run: |
+          node -e '
+            const m = require("./apps/portal/data/seo-matrix-v1.json");
+            const lines = [
+              "## SEO stroj — mreža",
+              `- ruta: ${m.totals.routes}, čistih: ${m.totals.ok}, ocjena: ${m.totals.score}`,
+              `- hashtagova u opticaju: ${m.totals.hashtags}`,
+              `- otvorenih problema: ${m.totals.issues}`,
+              "",
+              "| izdanje | ruta | ocjena |",
+              "|---|---|---|",
+              ...m.editions.map((e) => `| ${e.name} | ${e.routes} | ${e.score} |`),
+            ];
+            require("node:fs").appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${lines.join("\n")}\n`);
+          '
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: seo-matrix
+          path: apps/portal/data/seo-matrix-v1.json
+          retention-days: 14
+
+  indexnow:
+    needs: audit
+    if: |
+      (github.event_name == 'schedule' && vars.SEO_INDEXNOW_AUTO == 'true') ||
+      (github.event_name == 'workflow_dispatch' && inputs.confirm_indexnow == 'INDEXNOW')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Popis objavljenih stranica
+        shell: bash
+        run: node apps/sites/build.mjs
+
+      - name: IndexNow — 76 URL-ova na 7 domena
+        shell: bash
+        run: node scripts/gnk-indexnow-network-v1.mjs
