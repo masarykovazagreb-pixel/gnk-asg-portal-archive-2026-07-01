@@ -30,8 +30,6 @@ jobs:
     timeout-minutes: 8
     env:
       GITHUB_TOKEN: ${{ github.token }}
-      EXA_API_KEY: ${{ secrets.EXA_API_KEY }}
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       ENABLE_PUBLIC_RESEARCH: ${{ vars.AGENT_ENABLE_PUBLIC_RESEARCH == 'true' && '1' || '0' }}
       ENABLE_AI_WRITING: ${{ vars.AGENT_ENABLE_AI_WRITING == 'true' && '1' || '0' }}
       OPENAI_MODEL: ${{ vars.AGENT_OPENAI_MODEL || 'gpt-4.1-mini' }}
@@ -51,6 +49,9 @@ jobs:
         run: node scripts/master-asg-agent-preflight-v1.mjs
       - name: Observe workers, issues, CI, routes and optional public research
         if: github.event_name != 'pull_request'
+        env:
+          EXA_API_KEY: ${{ secrets.EXA_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: node scripts/master-asg-agent-network-v2.mjs
       - name: Report actual evidence
         if: github.event_name != 'pull_request'
