@@ -23,6 +23,8 @@ on:
       - 'tests/test-world-network-free-v1.mjs'
       - 'scripts/aktual-free-editorial-network-v1.mjs'
       - 'tests/test-aktual-free-editorial-network-v1.mjs'
+      - 'tests/test-aktual-regional-seo-identity-v1.mjs'
+      - 'scripts/audit-aktual-brand-indexability-v1.mjs'
       - 'tests/test-worker-agent-swarm-v1.mjs'
       - 'tests/test-agent-factory-150-v1.mjs'
       - 'scripts/agent-factory-150-v1.mjs'
@@ -45,6 +47,8 @@ on:
       - 'scripts/swarm-public-research-draft-v1.mjs'
       - 'scripts/aktual-free-editorial-network-v1.mjs'
       - 'tests/test-aktual-free-editorial-network-v1.mjs'
+      - 'tests/test-aktual-regional-seo-identity-v1.mjs'
+      - 'scripts/audit-aktual-brand-indexability-v1.mjs'
       - 'tests/test-worker-agent-swarm-v1.mjs'
       - '.github/workflows/workforce-bot-orchestrator.yml'
   schedule:
@@ -73,6 +77,8 @@ jobs:
         run: node scripts/workforce-bot-orchestrator-v1.mjs
       - name: Execute specialized Worker agents and governance tests
         run: node tests/test-worker-agent-swarm-v1.mjs
+      - name: Validate AKTUAL MEDIA regional SEO and real author/editor attribution
+        run: node tests/test-aktual-regional-seo-identity-v1.mjs
       - name: AKTUAL MEDIA — free-only 8 regional + 15 national editorial desks
         run: node tests/test-aktual-free-editorial-network-v1.mjs
       - name: Execute 150 specialized roles and build 12 free global STAGING sites
