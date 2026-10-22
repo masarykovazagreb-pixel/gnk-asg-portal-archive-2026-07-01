@@ -705,6 +705,21 @@ export function buildAktualCentral({ cards = [] } = {}) {
 .amc-btn--solid{background:var(--amc-gold);color:#06111f;border-color:var(--amc-gold)}
 .amc-btn--solid:hover{background:#fff0c4}
 .amc-stripe{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;list-style:none;padding:0;margin:26px 0 6px}
+.amc-line{margin-top:30px}
+.amc-rail{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;list-style:none;padding:0;margin:8px 0 22px;counter-reset:none}
+.amc-rail::before{content:"";position:absolute;left:8%;right:8%;top:15px;height:2px;background:linear-gradient(90deg,rgba(233,198,108,.15),rgba(233,198,108,.55),rgba(233,198,108,.15))}
+.amc-node{position:relative;padding:0 10px;text-align:center}
+.amc-node::before{content:"";display:block;width:14px;height:14px;margin:8px auto 12px;border-radius:50%;background:#050d18;border:2px solid rgba(233,198,108,.55);position:relative;z-index:1}
+.amc-node--here::before{background:var(--amc-gold);border-color:var(--amc-gold);box-shadow:0 0 0 5px rgba(233,198,108,.16)}
+.amc-node b{display:block;font:800 12.5px/1.3 Inter,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--amc-ink)}
+.amc-node a b{color:var(--amc-gold)}
+.amc-node a:hover b{text-decoration:underline}
+.amc-node span{display:block;margin-top:6px;font-size:12.5px;line-height:1.45;color:var(--amc-muted)}
+.amc-why{border:1px dashed var(--amc-line);border-radius:16px;padding:18px;background:rgba(255,255,255,.02);list-style:none}
+.amc-why b{display:block;font:800 12px/1.3 Inter,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--amc-gold);margin-bottom:8px}
+.amc-why p{margin:0;font-size:13px;line-height:1.6;color:var(--amc-muted)}
+.amc-why a{color:var(--amc-gold);text-decoration:underline}
+@media (max-width:860px){.amc-rail{grid-template-columns:1fr;gap:14px}.amc-rail::before{left:21px;right:auto;top:8%;bottom:8%;width:2px;height:auto;background:linear-gradient(180deg,rgba(233,198,108,.15),rgba(233,198,108,.55),rgba(233,198,108,.15))}.amc-node{text-align:left;padding-left:56px}.amc-node::before{position:absolute;left:15px;top:2px;margin:0}}
 .amc-stripe li{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:13px 13px 11px}
 .amc-stripe b{display:block;font:700 25px/1 Georgia,serif;color:var(--amc-gold)}
 .amc-stripe span{display:block;margin-top:6px;font-size:11.5px;color:var(--amc-muted);line-height:1.32}
@@ -755,7 +770,7 @@ export function buildAktualCentral({ cards = [] } = {}) {
     <div class="amc-hero-copy">
       ${masterMark(lang)}
       <p class="amc-eyebrow">${T('AKTUAL MEDIA · sve na jednom mjestu', 'AKTUAL MEDIA · everything in one place')}</p>
-      <h2 id="amcTitle">${T('Osam zemalja', 'Eight countries')}, ${T('sva izdanja', 'every edition')}, ${items.length} ${T('tekstova', 'stories')} — ${T('na jednoj ploči', 'on one board')}</h2>
+      <h2 id="amcTitle">${T('Osam zemalja', 'Eight countries')}, ${T('sva izdanja', 'every edition')}, ${items.length.toLocaleString(en ? 'en-US' : 'hr-HR')} ${T('tekstova', 'stories')} — ${T('na jednoj ploči', 'on one board')}</h2>
       <p class="amc-lead">${T('Svaka pločica je naslovnica izdanja: na njoj piše što se klikom dobije, a klik vodi na glavni link — AKTUAL MEDIA KANAL Zagreb, Beograd, Sarajevo, Budapest, Ljubljana, Roma, Sofija ili București. S tih stranica uvijek se vraćate ovamo, u središte gdje se sve spaja.', 'Every tile is the cover of an edition: it says what a click gets you, and the click opens the main link — AKTUAL MEDIA KANAL Zagreb, Belgrade, Sarajevo, Budapest, Ljubljana, Rome, Sofia or Bucharest. From those pages you always come back here, to the centre where everything connects.')}</p>
       <div class="amc-hero-cta">
         <a class="amc-btn amc-btn--solid" href="#izdanja-po-zemljama">${T('Izdanja 3 × 3 ↓', 'Editions 3 × 3 ↓')}</a>
@@ -769,6 +784,7 @@ export function buildAktualCentral({ cards = [] } = {}) {
   </div>
 
   <ul class="amc-stripe">${stripeFor(lang)}</ul>
+  ${lineBlock(lang)}
 
   <section class="amc-sec" id="izdanja-po-zemljama" aria-labelledby="amcSec1">
     <div class="amc-sec-head">
@@ -831,6 +847,38 @@ export function buildAktualCentral({ cards = [] } = {}) {
   </section>
 </section>
 ${END}`;
+  };
+
+  // "Linija": tri portala na istoj crti. ARHIVA i DNEVNIK imaju vlastitu domenu,
+  // vlastiti sitemap i vlastiti feed — zato su ovdje pločice, a ne podstranice.
+  const lineBlock = (lang) => {
+    const en = lang === 'en';
+    const T = (hr, eng) => (en ? eng : hr);
+    // Brojevi se čitaju iz podataka, nikad ne upisuju rukom.
+    const total = items.length.toLocaleString(en ? 'en-US' : 'hr-HR');
+    const nodes = [
+      `<li class="amc-node amc-node--here"><b>GNK ASG</b><span>${T('matični portal · ovdje ste', 'main portal · you are here')}</span></li>`,
+      `<li class="amc-node"><a href="https://gnk-asg-arhiva.pages.dev/${en ? 'en/' : ''}"><b>AKTUAL ARHIVA</b><span>${T(`${total} tekstova, osam gradova, pretraga po mediju`, `${total} stories, eight cities, search by publisher`)}</span></a></li>`,
+      `<li class="amc-node"><a href="https://gnk-asg-dnevnik.pages.dev/${en ? 'en/' : ''}"><b>AKTUAL DNEVNIK</b><span>${T('jedan dan, osam gradova, sve po satima', 'one day, eight cities, hour by hour')}</span></a></li>`,
+    ].join('');
+    return `
+  <section class="amc-sec amc-line" id="linija" aria-labelledby="amcLine">
+    <div class="amc-sec-head">
+      <div><span class="amc-sec-num">${T('LINIJA · TRI ADRESE', 'LINE · THREE ADDRESSES')}</span><h3 id="amcLine">${T('Ista linija, tri portala', 'One line, three portals')}</h3></div>
+      <span class="amc-dim">gnk-asg.hr → gnk-asg-arhiva.pages.dev → gnk-asg-dnevnik.pages.dev</span>
+    </div>
+    <ol class="amc-rail">${nodes}</ol>
+    <ul class="amc-grid3">
+      ${tile({ href: `https://gnk-asg-arhiva.pages.dev/${en ? 'en/' : ''}`, img: 'arhiva-tile.webp', alt: T(`AKTUAL ARHIVA — pločica: ${total} tekstova osam gradova, pretraga arhive, svaki zapis vodi na izvornik. Klik otvara arhivu.`, `AKTUAL ARHIVA tile: ${total} stories from eight cities, archive search, every record links to the original. Click opens the archive.`), external: true, badge: T('arhiva', 'archive') })}
+      ${tile({ href: `https://gnk-asg-dnevnik.pages.dev/${en ? 'en/' : ''}`, img: 'dnevnik-tile.webp', alt: T('AKTUAL DNEVNIK — pločica: jedan dan, osam gradova, objave po satima. Klik otvara dnevnik.', 'AKTUAL DNEVNIK tile: one day, eight cities, posts by the hour. Click opens the daily.'), external: true, badge: T('dnevnik', 'daily') })}
+      <li class="amc-why"><b>${T('Zašto zasebno', 'Why separate')}</b><p>${T(
+        `Arhiva i dnevnik imaju vlastitu domenu, vlastiti sitemap, vlastiti feed i vlastiti robots.txt. Tako pretraživač ne mora proći kroz cijeli matični portal da dođe do ${total} zapisa, a vi možete otvoriti arhivu bez ijedne druge stranice. Sve je na free hostingu (Cloudflare Pages), bez plaćene domene — i dalje povezano ovom linijom.`,
+        `The archive and the daily have their own domain, sitemap, feed and robots.txt. That way a crawler does not have to walk the whole main portal to reach ${total} records, and you can open the archive without any other page. Everything runs on free hosting (Cloudflare Pages), with no paid domain — and still connected by this line.`
+      )}</p></li>
+    </ul>
+  </section>
+
+`;
   };
 
   const block = centralBlock('hr');
