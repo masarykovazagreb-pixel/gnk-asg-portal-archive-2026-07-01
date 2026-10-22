@@ -90,12 +90,6 @@ jobs:
         run: |
           node scripts/aktual-existing-portals-daily-weekly-v1.mjs
           node --test tests/test-aktual-existing-portals-daily-weekly-v1.mjs
-      - name: Execute 150 shared-free-tier agent roles and build 12 global STAGING previews
-        env:
-          ASG_MONITOR_PUBLIC_FEEDS: ${{ github.event_name == 'schedule' && '1' || '0' }}
-        run: |
-          node scripts/aktual-world-agent-factory-v1.mjs
-          node --test tests/test-aktual-world-agent-factory-v1.mjs
       - name: Enforce 30-minute editorial delivery and release decision safety
         run: node --test tests/test-aktual-review-window-gate-v1.mjs
       - name: Confirm paid editorial APIs remain disabled
