@@ -60,6 +60,13 @@ jobs:
           ENABLE_PUBLIC_RESEARCH: '0'
           ENABLE_AI_WRITING: '0'
         run: node scripts/master-asg-agent-network-v2.mjs
+      - name: Execute MASTER ASG agent network V2 (GitHub CI, issues, public routes)
+        if: github.event_name != 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          ENABLE_PUBLIC_RESEARCH: '0'
+          ENABLE_AI_WRITING: '0'
+        run: node scripts/master-asg-agent-network-v2.mjs
       - name: Optional Exa public research + model-powered draft in HOLD
         if: |
           (github.event_name == 'workflow_dispatch' && inputs.run_ai_research == true) ||
