@@ -29,6 +29,8 @@ const PORTAL = join(ROOT, 'apps', 'portal');
 const NO_FRESH = process.argv.includes('--no-fresh');
 const fails = [];
 const note = (message) => fails.push(message);
+const DESK_HR = 'https://gnk-asg.hr/gnk-aktual/mreza/';
+const DESK_EN = 'https://gnk-asg.hr/en/gnk-aktual/network/';
 
 const walk = (dir, base = dir, out = []) => {
   for (const entry of readdirSync(dir)) {
@@ -126,6 +128,11 @@ function checkHtml(file, site, lang, slug) {
   if (links.length < 6) note(`${where}: samo ${links.length} poveznica (minimum 6)`);
   if (!links.some((href) => href.includes('gnk-asg.hr'))) note(`${where}: nema poveznice na gnk-asg.hr`);
   if (!links.some((href) => href === NETWORK_HUB_HR || href === NETWORK_HUB_EN)) note(`${where}: nema poveznice na mrežni hub`);
+  const deskLink = lang === 'en' ? DESK_EN : DESK_HR;
+  if (!links.some((href) => href === deskLink)) note(`${where}: nema poveznice na AKTUAL MEDIA indeks`);
+  if (!links.some((href) => href.startsWith('https://gnk-asg.hr/gnk-aktual/'))) note(`${where}: nema poveznice na AKTUAL MEDIA`);
+  if (!/Izdanje AKTUAL MEDIA|An AKTUAL MEDIA edition/.test(html)) note(`${where}: nema vidljive oznake izdavača AKTUAL MEDIA`);
+  if (!/name="copyright" content="AKTUAL MEDIA d.o.o."/.test(html)) note(`${where}: nema copyright meta`);
 
   /* Jezična čistoća: hrvatska rečenica ne smije procuriti na /en/ stranicu.
      Provjeravamo zaglavlja kartica, jer su se prijevodi tamo lako zaborave. */
@@ -244,6 +251,82 @@ else {
     if (!entry.url || !entry.outputs?.sitemap) note(`mreza-v1.json: ${site.slug} bez izlaza`);
     if (entry.relations?.siblings?.length !== SITES.length - 1) note(`mreza-v1.json: ${site.slug} bez svih susjeda`);
   }
+}
+
+/* ---------- 3b. AKTUAL MEDIA — indeks svih stranica ---------- */
+const deskPages = join(PORTAL, 'gnk-aktual', 'mreza', 'index.html');
+const deskPagesEn = join(PORTAL, 'en', 'gnk-aktual', 'network', 'index.html');
+const pagesJson = join(PORTAL, 'data', 'mreza-pages-v1.json');
+let index = null;
+
+if (!existsSync(pagesJson)) note('data/mreza-pages-v1.json nedostaje');
+else {
+  index = JSON.parse(readFileSync(pagesJson, 'utf8'));
+  if (index.count !== 62) note(`mreza-pages-v1.json ima ${index.count} stranica (očekivano 62)`);
+  if (index.publisher?.name !== 'AKTUAL MEDIA d.o.o.') note('mreza-pages-v1.json: izdavač nije AKTUAL MEDIA');
+  if (index.editor?.name !== 'Nermin Sefić') note('mreza-pages-v1.json: nema urednika');
+  for (const page of index.pages || []) {
+    if (!/^https:\/\/gnk-[a-z-]+\.pages\.dev\//.test(page.url)) note(`mreza-pages-v1.json: URL izvan mreže ${page.url}`);
+    const site = SITES.find((item) => item.slug === page.edition);
+    if (!site) { note(`mreza-pages-v1.json: nepoznato izdanje ${page.edition}`); continue; }
+    const rel = page.url.replace(siteBase(site), '').replace(/^\//, '');
+    const file = page.slug === '' ? join(SITE, page.edition, rel, 'index.html') : join(SITE, page.edition, rel, 'index.html');
+    if (!existsSync(file)) note(`mreza-pages-v1.json: stranica ne postoji u izlazu ${page.url}`);
+  }
+}
+
+for (const [file, canonical, lang] of [[deskPages, DESK_HR, 'hr'], [deskPagesEn, DESK_EN, 'en']]) {
+  const where = relative(ROOT, file);
+  if (!existsSync(file)) { note(`${where}: nema`); continue; }
+  const html = readFileSync(file, 'utf8');
+  if (attr(html, /<link rel="canonical" href="([^"]+)">/) !== canonical) note(`${where}: canonical nije ${canonical}`);
+  if (!html.includes('hreflang="x-default"')) note(`${where}: nema x-default`);
+  if (!/name="editor" content="Nermin Sefić"/.test(html)) note(`${where}: nema potpis urednika`);
+  if (!/property="og:image" content="https:\/\/gnk-asg\.hr\//.test(html)) note(`${where}: OG slika nije na matičnoj domeni`);
+  if (!/name="twitter:card" content="summary_large_image"/.test(html)) note(`${where}: nema Twitter karticu`);
+  const ld = (html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/) || [])[1];
+  try {
+    const graph = JSON.parse(ld)['@graph'];
+    const types = graph.map((node) => node['@type']);
+    for (const type of ['CollectionPage', 'ItemList', 'NewsMediaOrganization', 'Person', 'BreadcrumbList']) {
+      if (!types.includes(type)) note(`${where}: JSON-LD bez ${type}`);
+    }
+    const list = graph.find((node) => node['@type'] === 'ItemList');
+    if (list?.numberOfItems !== 62) note(`${where}: ItemList ima ${list?.numberOfItems} stavki`);
+    const org = graph.find((node) => node['@type'] === 'NewsMediaOrganization');
+    if (org?.name !== 'AKTUAL MEDIA d.o.o.') note(`${where}: izdavač nije AKTUAL MEDIA`);
+    if (!org?.owns?.length) note(`${where}: izdavač ne navodi izdanja`);
+  } catch { note(`${where}: JSON-LD se ne parsira`); }
+  if (!html.includes('/data/mreza-pages-v1.json')) note(`${where}: nema poveznicu na JSON indeks`);
+  if (!html.includes('/mreza/feed.xml')) note(`${where}: nema poveznicu na zbirni feed`);
+  let linked = 0;
+  for (const site of SITES) if (html.includes(`href="${siteBase(site)}/`)) linked += 1;
+  if (linked !== SITES.length) note(`${where}: poveznice na ${linked}/${SITES.length} izdanja`);
+  if ((html.match(/https:\/\/gnk-[a-z-]+\.pages\.dev\//g) || []).length < 40) note(`${where}: premalo poveznica na stranice izdanja`);
+}
+
+const feedFile = join(PORTAL, 'mreza', 'feed.xml');
+if (!existsSync(feedFile)) note('mreza/feed.xml nedostaje');
+else {
+  const xml = readFileSync(feedFile, 'utf8');
+  if (!xml.includes('<feed xmlns="http://www.w3.org/2005/Atom">')) note('mreza/feed.xml nije Atom');
+  if (count(xml, /<entry>/g) !== 62) note(`mreza/feed.xml ima ${count(xml, /<entry>/g)} zapisa`);
+  if (!xml.includes(DESK_HR)) note('mreza/feed.xml ne pokazuje na indeks');
+}
+
+const deskSitemap = join(PORTAL, 'gnk-aktual', 'mreza', 'sitemap.xml');
+if (!existsSync(deskSitemap)) note('gnk-aktual/mreza/sitemap.xml nedostaje');
+else if (count(readFileSync(deskSitemap, 'utf8'), /<loc>/g) !== 4) note('mreza sitemap mora imati 4 URL-a');
+
+for (const loc of [DESK_HR, DESK_EN]) {
+  if (!master.includes(`<loc>${loc}</loc>`)) note(`glavni sitemap ne sadrži ${loc}`);
+}
+
+for (const [file, label] of [[join(PORTAL, 'gnk-aktual', 'index.html'), 'HR'], [join(PORTAL, 'en', 'gnk-aktual', 'index.html'), 'EN']]) {
+  if (!existsSync(file)) { note(`/gnk-aktual/ ${label}: nema`); continue; }
+  const html = readFileSync(file, 'utf8');
+  if (!html.includes('<!-- AKTUAL-MREZA-BAND:START -->')) note(`/gnk-aktual/ ${label}: nema trake mreže`);
+  if (!html.includes(label === 'EN' ? 'en/gnk-aktual/network/' : 'gnk-aktual/mreza/')) note(`/gnk-aktual/ ${label}: traka ne vodi na indeks`);
 }
 
 /* ---------- 4. izborni desk ---------- */

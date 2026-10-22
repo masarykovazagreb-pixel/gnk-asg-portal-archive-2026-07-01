@@ -155,8 +155,8 @@ function notice(site, lang, page) {
 
   return `<div class="note"><strong>${lang === 'en' ? 'Network notice.' : 'Obavijest mreže.'}</strong>
     ${lang === 'en'
-      ? `This is an independent edition inside the GNK ASG network. The main site is <a href="${MAIN_SITE}" rel="external noopener">gnk-asg.hr</a>; the list of all editions is at <a href="${hub}">gnk-asg.hr/en/network</a>. Editor and director: <a href="https://gnk-asg.hr/nermin-sefic/" rel="external noopener">Nermin Sefić</a>.`
-      : `Ovo je neovisno izdanje u mreži GNK ASG. Matična stranica je <a href="${MAIN_SITE}" rel="external noopener">gnk-asg.hr</a>, a popis svih izdanja na <a href="${hub}">gnk-asg.hr/mreza</a>. Urednik i direktor: <a href="https://gnk-asg.hr/nermin-sefic/" rel="external noopener">Nermin Sefić</a>.`}
+      ? `This is an independent edition inside the GNK ASG network. The main site is <a href="${MAIN_SITE}" rel="external noopener">gnk-asg.hr</a>; the list of all editions is at <a href="${hub}">gnk-asg.hr/en/network</a>. The publisher is <a href="https://gnk-asg.hr/gnk-aktual/" rel="external noopener">AKTUAL MEDIA d.o.o.</a>, and every text in the network is listed at <a href="https://gnk-asg.hr/en/gnk-aktual/network/" rel="external noopener">AKTUAL MEDIA — network of editions</a>. Editor and director: <a href="https://gnk-asg.hr/nermin-sefic/" rel="external noopener">Nermin Sefić</a>.`
+      : `Ovo je neovisno izdanje u mreži GNK ASG. Matična stranica je <a href="${MAIN_SITE}" rel="external noopener">gnk-asg.hr</a>, a popis svih izdanja na <a href="${hub}">gnk-asg.hr/mreza</a>. Izdavač je <a href="https://gnk-asg.hr/gnk-aktual/" rel="external noopener">AKTUAL MEDIA d.o.o.</a>, a svi tekstovi mreže popisani su na <a href="${lang === 'en' ? 'https://gnk-asg.hr/en/gnk-aktual/network/' : 'https://gnk-asg.hr/gnk-aktual/mreza/'}" rel="external noopener">${lang === 'en' ? 'AKTUAL MEDIA — network of editions' : 'AKTUAL MEDIA — mreža izdanja'}</a>. Urednik i direktor: <a href="https://gnk-asg.hr/nermin-sefic/" rel="external noopener">Nermin Sefić</a>.`}
     ${extra ? `<br><br>${esc(extra)}` : ''}</div>`;
 }
 
@@ -378,20 +378,36 @@ async function buildSite(site) {
   write(join(dist, '_headers'), headers());
   write(join(dist, '.nojekyll'), '');
 
-  return { site, pages: pages.length, files: written.length, items: content.items?.length || 0, updated: pages.map((page) => page.updated).filter(Boolean).sort().pop() || '2026-10-22' };
+  const pageIndex = pages.flatMap((page) => ['hr', 'en'].map((lang) => ({
+    edition: site.slug,
+    editionName: site.name,
+    domain: site.domain,
+    lang,
+    slug: page.slug,
+    nav: page.nav[lang],
+    url: `${base}${pagePath(page.slug, lang)}`,
+    title: page.title[lang],
+    description: plain(page.lead, lang).replace(/\s+/g, ' ').slice(0, 240),
+    updated: page.updated || '2026-10-22',
+    image: `${base}${heroArt(site, page)}`,
+  })));
+
+  return { site, pages: pages.length, files: written.length, items: content.items?.length || 0, updated: pages.map((page) => page.updated).filter(Boolean).sort().pop() || '2026-10-22', pageIndex };
 }
 
 async function buildNetwork() {
   const results = [];
   for (const site of SITES) results.push(await buildSite(site));
 
+  const pageIndex = results.flatMap((result) => result.pageIndex || []);
   const network = {
-    version: 1,
+    version: 2,
     updatedAt: new Date().toISOString(),
+    pageCount: pageIndex.length,
     editor: { name: 'Nermin Sefić', url: 'https://gnk-asg.hr/nermin-sefic/', role: 'Urednik i direktor' },
     publisher: { name: 'AKTUAL MEDIA d.o.o.', url: 'https://gnk-asg.hr/gnk-aktual/' },
     network: { hr: NETWORK_HUB_HR, en: NETWORK_HUB_EN },
-    sites: SITES.map((site) => ({
+    sites: SITES.map((site, index) => ({
       slug: site.slug,
       name: site.name,
       url: siteBase(site) + '/',
@@ -404,9 +420,14 @@ async function buildNetwork() {
       outputs: {
         sitemap: `${siteBase(site)}/sitemap.xml`,
         feed: `${siteBase(site)}/feed.xml`,
+        feedEn: `${siteBase(site)}/en/feed.xml`,
         robots: `${siteBase(site)}/robots.txt`,
+        network: `${NETWORK_HUB_HR}#${site.slug}`,
+        aktual: 'https://gnk-asg.hr/gnk-aktual/mreza/',
       },
+      pageCount: (results[index].pageIndex || []).length,
     })),
+    pages: pageIndex,
   };
   write(join(OUT, 'network.json'), JSON.stringify(network, null, 2));
 

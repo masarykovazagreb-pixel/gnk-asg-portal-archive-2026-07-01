@@ -16,9 +16,10 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { SITES, NETWORK_HUB_HR, NETWORK_HUB_EN, siteBase } from '../lib/registry.mjs';
+import { SITES, NETWORK_HUB_HR, NETWORK_HUB_EN, siteBase, siteBySlug } from '../lib/registry.mjs';
 import { artSvg } from '../lib/kit.mjs';
 import { buildElectionDesk } from '../lib/elections.mjs';
+import { buildAktualNetwork } from './aktual-network.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..', '..', '..');
@@ -319,15 +320,21 @@ function upsertMasterSitemap() {
   const file = join(PORTAL, 'sitemap.xml');
   if (!existsSync(file)) return 0;
   let xml = readFileSync(file, 'utf8');
+  const DESK_HR = 'https://gnk-asg.hr/gnk-aktual/mreza/';
+  const DESK_EN = 'https://gnk-asg.hr/en/gnk-aktual/network/';
   const urls = [
-    { loc: NETWORK_HUB_HR, alt: NETWORK_HUB_EN, lang: 'hr' },
-    { loc: NETWORK_HUB_EN, alt: NETWORK_HUB_HR, lang: 'en' },
+    { loc: NETWORK_HUB_HR, alt: NETWORK_HUB_EN, lang: 'hr', x: NETWORK_HUB_HR },
+    { loc: NETWORK_HUB_EN, alt: NETWORK_HUB_HR, lang: 'en', x: NETWORK_HUB_HR },
+    { loc: DESK_HR, alt: DESK_EN, lang: 'hr', x: DESK_HR },
+    { loc: DESK_EN, alt: DESK_HR, lang: 'en', x: DESK_HR },
   ];
   let changed = 0;
-  for (const { loc, alt, lang } of urls) {
-    if (xml.includes(`<loc>${loc}</loc>`)) continue;
-    const row = `  <url><loc>${loc}</loc><lastmod>${TODAY}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority><xhtml:link rel="alternate" hreflang="${lang}" href="${loc}"/><xhtml:link rel="alternate" hreflang="${lang === 'hr' ? 'en' : 'hr'}" href="${alt}"/><xhtml:link rel="alternate" hreflang="x-default" href="${NETWORK_HUB_HR}"/></url>\n`;
-    xml = xml.replace('</urlset>', `${row}</urlset>`);
+  for (const { loc, alt, lang, x } of urls) {
+    const row = `  <url><loc>${loc}</loc><lastmod>${TODAY}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority><xhtml:link rel="alternate" hreflang="${lang}" href="${loc}"/><xhtml:link rel="alternate" hreflang="${lang === 'hr' ? 'en' : 'hr'}" href="${alt}"/><xhtml:link rel="alternate" hreflang="x-default" href="${x}"/></url>`;
+    if (xml.includes(row)) continue;
+    const existing = new RegExp(`  <url><loc>${loc.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}</loc>[\\s\\S]*?</url>`);
+    if (existing.test(xml)) xml = xml.replace(existing, row);
+    else xml = xml.replace('</urlset>', `${row}\n</urlset>`);
     changed += 1;
   }
   if (changed) writeFileSync(file, xml);
@@ -359,8 +366,25 @@ function build() {
     })),
   };
   write(join(PORTAL, 'data/mreza-v1.json'), JSON.stringify(data, null, 2) + '\n');
+
+  /* AKTUAL MEDIA — mreža izdanja: indeks svih stranica pod matičnom domenom.
+     Stranice dolaze iz apps/sites/site/network.json, kojeg je upravo napisao
+     build.mjs, pa indeks ne može odstupiti od objavljenog izdanja. */
+  let networkDesk = null;
+  try {
+    const built = JSON.parse(readFileSync(join(HERE, '..', 'site', 'network.json'), 'utf8'));
+    const siteList = built.sites.map((site) => ({
+      ...site,
+      url: siteBase(siteBySlug(site.slug) || site).replace(/\/$/, ''),
+      outputs: site.outputs,
+    }));
+    networkDesk = buildAktualNetwork(PORTAL, { sites: siteList, pages: built.pages, today: TODAY });
+  } catch (error) {
+    console.log(`::warning::AKTUAL MEDIA mreža nije izgrađena: ${error.message}`);
+  }
+
   const sitemapChanges = upsertMasterSitemap();
-  console.log(`[mreza] hub HR/EN + ${SITES.length} kartica + data/mreza-v1.json; sitemap +${sitemapChanges}`);
+  console.log(`[mreza] hub HR/EN + ${SITES.length} kartica + data/mreza-v1.json; sitemap +${sitemapChanges}${networkDesk ? `; AKTUAL MEDIA indeks ${networkDesk.pages} stranica` : ''}`);
 }
 
 build();

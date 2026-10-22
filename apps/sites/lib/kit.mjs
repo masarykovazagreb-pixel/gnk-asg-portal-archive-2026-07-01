@@ -191,7 +191,7 @@ export function networkBar(site, lang) {
     .join(' · ');
   return `<div class="net"><div class="wrap">
     <span>GNK ASG MREŽA · <b>${esc(site.name)}</b> · ${lang === 'en' ? 'independent edition' : 'neovisno izdanje'}</span>
-    <span><a href="${MAIN_SITE}" rel="external noopener">gnk-asg.hr</a> · <a href="${hub}"${lang === 'en' ? ' hreflang="en"' : ''}>${lang === 'en' ? 'Network' : 'Mreža'}</a> · ${siblings}</span>
+    <span><a href="${MAIN_SITE}" rel="external noopener">gnk-asg.hr</a> · <a href="https://gnk-asg.hr/gnk-aktual/" rel="external noopener">AKTUAL MEDIA</a> · <a href="${hub}"${lang === 'en' ? ' hreflang="en"' : ''}>${lang === 'en' ? 'Network' : 'Mreža'}</a> · ${siblings}</span>
   </div></div>`;
 }
 
@@ -206,6 +206,7 @@ export function siteHeader(site, lang, pages, current) {
       <div>
         <h1>${esc(site.name)}</h1>
         <p>${esc(site.tagline[lang])}</p>
+        <p style="margin-top:4px;color:#7f8fa1;font:700 10px/1.4 system-ui;letter-spacing:.14em;text-transform:uppercase">${lang === 'en' ? 'An AKTUAL MEDIA edition · GNK ASG network' : 'Izdanje AKTUAL MEDIA · GNK ASG mreža'}</p>
       </div>
       <span style="margin-left:auto"><a href="${pagePath(current, other)}" hreflang="${other}" lang="${other}" style="border:1px solid var(--line);border-radius:999px;padding:7px 12px;font:800 11px/1 system-ui;letter-spacing:.1em;text-transform:uppercase">${other === 'en' ? 'English' : 'Hrvatski'}</a></span>
     </div>
@@ -225,6 +226,7 @@ export function head({ site, lang, page, title, description, canonical, alternat
 <meta name="author" content="AKTUAL MEDIA d.o.o.">
 <meta name="editor" content="Nermin Sefić">
 <meta name="publisher" content="AKTUAL MEDIA d.o.o.">
+<meta name="copyright" content="AKTUAL MEDIA d.o.o.">
 <meta name="keywords" content="${esc(keywords)}">
 <meta name="news_keywords" content="${esc(keywords)}">
 <meta name="theme-color" content="${site.bg}">
@@ -262,7 +264,7 @@ export function jsonLd({ site, lang, page, title, description, canonical, altern
   const orgId = 'https://gnk-asg.hr/#aktual-media';
   const graph = [
     { '@type': 'WebSite', '@id': `${canonical}#website`, name: site.name, url: `${canonical}`, inLanguage: [lang], publisher: { '@id': orgId } },
-    { '@type': 'Organization', '@id': orgId, name: 'AKTUAL MEDIA d.o.o.', url: 'https://gnk-asg.hr/gnk-aktual/', parentOrganization: { '@type': 'Organization', name: 'GNK ASG d.o.o.', url: 'https://gnk-asg.hr/' }, editor: { '@id': 'https://gnk-asg.hr/#nermin-sefic' } },
+    { '@type': 'Organization', '@id': orgId, name: 'AKTUAL MEDIA d.o.o.', url: 'https://gnk-asg.hr/gnk-aktual/', brand: { '@type': 'Brand', name: 'AKTUAL MEDIA', url: 'https://gnk-asg.hr/gnk-aktual/mreza/' }, parentOrganization: { '@type': 'Organization', name: 'GNK ASG d.o.o.', url: 'https://gnk-asg.hr/' }, editor: { '@id': 'https://gnk-asg.hr/#nermin-sefic' } },
     { '@type': 'Person', '@id': 'https://gnk-asg.hr/#nermin-sefic', name: 'Nermin Sefić', jobTitle: lang === 'en' ? 'Editor and director' : 'Urednik i direktor', url: 'https://gnk-asg.hr/nermin-sefic/', worksFor: { '@id': orgId } },
     {
       '@type': page === 'home' ? 'CollectionPage' : 'Article',
@@ -274,7 +276,8 @@ export function jsonLd({ site, lang, page, title, description, canonical, altern
       inLanguage: lang,
       datePublished: '2026-10-22',
       dateModified: '2026-10-22',
-      isPartOf: { '@id': `${canonical}#website` },
+      isPartOf: [{ '@id': `${canonical}#website` }, { '@id': 'https://gnk-asg.hr/gnk-aktual/mreza/#page' }],
+      copyrightHolder: { '@id': orgId },
       author: { '@id': orgId },
       editor: { '@id': 'https://gnk-asg.hr/#nermin-sefic' },
       publisher: { '@id': orgId },
