@@ -55,7 +55,7 @@ jobs:
 
       - name: Gate samostalnih portala
         shell: bash
-        run: node tests/test-satellites-v1.mjs
+        run: node tests/test-satellites-v1.mjs --only=arhiva
 
       - name: Pripremi Cloudflare Pages projekt
         id: cf

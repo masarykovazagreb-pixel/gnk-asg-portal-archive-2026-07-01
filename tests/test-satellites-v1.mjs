@@ -17,7 +17,12 @@
  *  - "linija": svaka stranica linka na gnk-asg.hr, sestrinski portal i
  *    vlastiti jezični par.
  *
- * Pokretanje: node tests/test-satellites-v1.mjs
+ * Pokretanje:
+ *   node tests/test-satellites-v1.mjs              oba portala
+ *   node tests/test-satellites-v1.mjs --only=arhiva  samo jedan (u deployu)
+ *
+ * Deploy jednog portala ne gradi i drugi, pa --only provjerava samo ono što
+ * je u tom poslu stvarno izgrađeno; puni skup ostaje u scripts/test-all-v1.mjs.
  */
 import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { join, relative, dirname } from 'node:path';
@@ -30,6 +35,13 @@ const SITES = [
   { id: 'arhiva', name: 'AKTUAL ARHIVA', dir: join(ROOT, 'apps/arhiva/site'), url: 'https://gnk-asg-arhiva.pages.dev', sister: 'https://gnk-asg-dnevnik.pages.dev' },
   { id: 'dnevnik', name: 'AKTUAL DNEVNIK', dir: join(ROOT, 'apps/dnevnik/site'), url: 'https://gnk-asg-dnevnik.pages.dev', sister: 'https://gnk-asg-arhiva.pages.dev' },
 ];
+
+const ONLY = (process.argv.find((a) => a.startsWith('--only=')) || '').split('=')[1] || '';
+const SITES_RUN = ONLY ? SITES.filter((s) => s.id === ONLY) : SITES;
+if (ONLY && !SITES_RUN.length) {
+  console.log(JSON.stringify({ ok: false, failures: [`nepoznat portal: ${ONLY}`] }, null, 2));
+  process.exit(1);
+}
 
 const failures = [];
 const notes = [];
@@ -47,7 +59,7 @@ const walk = (dir, ext, out = []) => {
 const attr = (html, re) => { const m = html.match(re); return m ? m[1] : null; };
 const decode = (s) => s.replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>');
 
-for (const site of SITES) {
+for (const site of SITES_RUN) {
   if (!existsSync(site.dir)) { fail(site, null, 'izlazni direktorij ne postoji — pokreni build'); continue; }
 
   const files = walk(site.dir, '.html');
@@ -256,6 +268,6 @@ for (const site of SITES) {
   notes.push(`${site.id}: ${pages.length} HTML stranica`);
 }
 
-const result = { ok: failures.length === 0, sites: SITES.length, notes, failures };
+const result = { ok: failures.length === 0, sites: SITES_RUN.length, notes, failures };
 console.log(JSON.stringify(result, null, 2));
 process.exit(result.ok ? 0 : 1);
