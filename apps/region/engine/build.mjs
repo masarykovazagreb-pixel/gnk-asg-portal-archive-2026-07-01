@@ -369,7 +369,7 @@ ${hasLanguageAlternative ? `<link rel="alternate" hreflang="${channel.lang}" hre
 ${logoAlternate(channelLogoSlug(channel.id))}
 <link rel="alternate" type="application/rss+xml" title="${esc(channel.title)}" href="${url(channel, 'feed.xml')}">
 <link rel="alternate" type="application/feed+json" title="${esc(channel.title)}" href="${url(channel, 'feed.json')}">
-<link rel="author" href="${PUBLIC}/nermin-sefic/">
+<!-- Urednik se bilježi u editor polju JSON-LD; automatske osvrte ne potpisujemo osobno. -->
 <link rel="icon" href="${root}assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" as="image" href="${hero}"${hero.includes(`/izdanja/${channel.id}-1200.webp`) ? ` imagesrcset="/assets/izdanja/${channel.id}-800.webp 800w, /assets/izdanja/${channel.id}-1200.webp 1200w" imagesizes="(max-width:760px) 100vw, 1200px"` : ''} fetchpriority="high">
 <meta property="og:type" content="${type}">
