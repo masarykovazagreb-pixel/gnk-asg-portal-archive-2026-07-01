@@ -1,10 +1,12 @@
 name: REGION — dnevni ciklus izdanja
 
-# Osam gradskih kanala AKTUAL MEDIA (Zagreb, Beograd, Sarajevo, Budimpešta,
-# Ljubljana, Rim, Sofija, Bukurešt): čitanje javnih feedova, osvrti, build,
-# commit na main i deploy — svaka 2 sata, automatski. Ciklus je inkrementalan:
-# novi zapisi ulaze u arhivu, stranice se grade za sve kanale, a commit ide
-# samo ako se sadržaj stvarno promijenio.
+# Sedamnaest gradskih kanala AKTUAL MEDIA — osam regionalnih (Zagreb, Beograd,
+# Sarajevo, Budimpešta, Ljubljana, Rim, Sofija, Bukurešt) i devet svjetskih
+# (Nairobi, Jakarta, New York, São Paulo, Sydney, Singapur, Kairo, Tokio,
+# Peking): čitanje javnih feedova, osvrti, build, commit na main i deploy —
+# svaka 2 sata, automatski. Ciklus je inkrementalan: novi zapisi ulaze u
+# arhivu, stranice se grade za sve kanale, a commit ide samo ako se sadržaj
+# stvarno promijenio.
 #
 # Registrirano u ops/automation-control-v1.json (knownCurrentSchedules) i
 # ops/automation-kill-switches.json (regionPublish).
@@ -123,13 +125,26 @@ jobs:
           pushed=false
           for attempt in 1 2 3; do
             git fetch origin "$ref" --no-tags
+            # Build regenerira i datoteke koje nisu u commit popisu (index,
+            # mreza, jsonld). Git rebase odbija raditi s necommitanim
+            # promjenama, pa je do 22. 10. 2026. svaki ciklus tiho padao na
+            # prvom rebaseu i izdanje se gubilo. Artifakti se stashaju prije
+            # rebasea; ako se ne vrate, sljedeći ciklus ih ionako ponovno
+            # generira — važnije je da zapis izađe.
+            git stash push -u -m "region-artifacts-$attempt" >/dev/null 2>&1 || true
             if ! git rebase "origin/$ref"; then
               echo "::warning::Rebase na origin/$ref nije prošao (pokušaj $attempt) — izdanje ostaje za sljedeći ciklus."
               git rebase --abort || true
+              git stash drop >/dev/null 2>&1 || true
               break
             fi
-            if git push origin "HEAD:$ref"; then pushed=true; break; fi
+            if git push origin "HEAD:$ref"; then
+              pushed=true
+              git stash drop >/dev/null 2>&1 || true
+              break
+            fi
             echo "::warning::Push odbijen (pokušaj $attempt) — ponavljam nakon rebasea."
+            git stash drop >/dev/null 2>&1 || true
             sleep 5
           done
           echo "pushed=$pushed" >> "$GITHUB_OUTPUT"
