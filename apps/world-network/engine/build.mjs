@@ -19,6 +19,7 @@ const localeNames={
  ja:{source:'情報源',method:'編集方針',about:'世界の編集ネットワーク',out:'原文サイトを見る',new:'新しい地域版・プレビュー',status:'プレビューのみ・ニュース記事は未公開',editor:'編集責任者',publisher:'発行元',parent:'ネットワーク',notice:'画像は独自に制作したイラストであり、報道写真ではありません。外部リンクは情報源の案内です。'},
  ko:{source:'원본 언론사',method:'편집 원칙',about:'글로벌 편집 네트워크',out:'원문 출처 보기',new:'새 지역판 · 미리보기',status:'미리보기 전용 · 뉴스 기사 미게시',editor:'편집 책임자',publisher:'발행인',parent:'네트워크',notice:'이 그림은 독자 제작한 편집용 일러스트이며 보도 사진이 아닙니다. 외부 링크는 자료 조사용입니다.'},
  ar:{source:'الوسائل الأصلية',method:'منهج التحرير',about:'شبكة التحرير العالمية',out:'زيارة الناشر الأصلي',new:'إصدار جديد · معاينة',status:'معاينة فقط · لا توجد مقالات إخبارية منشورة',editor:'رئيس التحرير',publisher:'الناشر',parent:'الشبكة',notice:'رسم تحريري أصلي وليس صورة صحفية. روابط المصادر الخارجية مخصصة للبحث.'},
+ hi:{source:'समाचार स्रोत',method:'संपादकीय प्रक्रिया',about:'वैश्विक संपादकीय नेटवर्क',out:'मूल प्रकाशक देखें',new:'नया संस्करण · पूर्वावलोकन',status:'केवल पूर्वावलोकन · कोई समाचार लेख प्रकाशित नहीं',editor:'मुख्य संपादक',publisher:'प्रकाशक',parent:'नेटवर्क',notice:'यह मौलिक संपादकीय चित्रण है, घटना की वास्तविक तस्वीर नहीं। बाहरी लिंक केवल स्रोत जानकारी के लिए हैं।'},
  sw:{source:'Vyombo vya habari vya chanzo',method:'Mbinu ya uhariri',about:'Mtandao wa uhariri duniani',out:'Fungua chanzo halisi',new:'Toleo jipya · hakikisho',status:'Hakikisho tu · hakuna makala mpya zilizochapishwa',editor:'Mhariri mkuu',publisher:'Mchapishaji',parent:'Mtandao',notice:'Mchoro asilia wa uhariri, si picha ya tukio. Viungo vya nje ni kwa utafiti.'}
 };
 function visual(site){
@@ -46,7 +47,7 @@ function html(site){
 }
 export function build({root=ROOT,out}={}){
  const registry=JSON.parse(fs.readFileSync(path.join(root,CONFIG),'utf8'));
- if(registry.sites?.length!==13||registry.agents?.length<150||registry.policy?.paidApis!==false||registry.policy?.externalPublicationEnabled!==false)throw Error('Free-plan control registry invalid');
+ if(registry.sites?.length!==15||registry.agents?.length<150||registry.policy?.paidApis!==false||registry.policy?.externalPublicationEnabled!==false)throw Error('Free-plan control registry invalid');
  const dest=path.resolve(out||path.join(root,'apps/world-network/site'));
  fs.mkdirSync(dest,{recursive:true});
  let pages=[];
