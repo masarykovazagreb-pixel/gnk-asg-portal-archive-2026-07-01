@@ -279,6 +279,7 @@ const metrics = {
   version: VERSION,
   generatedAt,
   channels: channels.length,
+  channelIds: channels.map((row) => row.channel.id),
   items: allStamps.length,
   night: { totals: nightTotals, rows: night },
   voice: { rows: voice, sharedSources: sharedSources.map(([name, cities]) => ({ name, cities: [...cities] })) },
@@ -360,6 +361,8 @@ const T = {
     more: 'Ostala mjerenja',
     cities: 'Osam regionalnih izdanja',
     citiesNote: 'Svaka brojka na ovoj stranici dolazi iz arhive tih regionalnih izdanja; svjetska izdanja mjere se u arhivi i dnevniku.',
+    measuredEditions: 'mjerenih regionalnih izdanja',
+    totalEditions: 'izdanja ukupno',
     method: 'Kako je izmjereno',
     methodBody: 'Brojke se računaju pri svakoj gradnji stranice iz datoteka arhive osam gradskih izdanja (po 420 zapisa). Ne prepisuju se ručno i ne zaokružuju naviše. Vremena su u UTC-u. Ako se arhiva promijeni, mijenja se i stranica — u istom ciklusu.',
     measured: 'Mjereno',
@@ -382,6 +385,8 @@ const T = {
     more: 'Other measurements',
     cities: 'The eight regional editions',
     citiesNote: 'Every number on this page comes from the archive of those regional editions; world editions are measured in the archive and the daily.',
+    measuredEditions: 'measured regional editions',
+    totalEditions: 'editions in total',
     method: 'How this was measured',
     methodBody: 'Numbers are computed on every build from the archive files of the eight city editions (420 records each). Nothing is typed by hand and nothing is rounded up. Times are UTC. When the archive changes, this page changes in the same cycle.',
     measured: 'Measured',
@@ -773,7 +778,7 @@ function page(desk, lang) {
       ${cityLinks(lang)}
     </section>
     <p class="dd-method"><strong>${esc(t.method)}</strong> ${esc(t.methodBody)}<br>
-      ${esc(t.measured)}: ${esc(utcLabel(Date.parse(generatedAt)))} · ${allStamps.length} ${esc(t.items)} · ${CHANNELS.length} ${lang === 'en' ? 'editions' : 'izdanja'}.</p>
+      ${esc(t.measured)}: ${esc(utcLabel(Date.parse(generatedAt)))} · ${allStamps.length} ${esc(t.items)} · ${channels.length} ${esc(t.measuredEditions)} · ${CHANNELS.length} ${esc(t.totalEditions)}.</p>
   </div>
 </main>`;
 
@@ -975,7 +980,7 @@ ${tagMetas(keywords)}
       ${cityLinks(lang)}
     </section>
     <p class="dd-method"><strong>${esc(t.method)}</strong> ${esc(t.methodBody)}<br>
-      ${esc(t.measured)}: ${esc(utcLabel(Date.parse(generatedAt)))} · ${allStamps.length} ${esc(t.items)} · ${CHANNELS.length} ${lang === 'en' ? 'editions' : 'izdanja'}.</p>
+      ${esc(t.measured)}: ${esc(utcLabel(Date.parse(generatedAt)))} · ${allStamps.length} ${esc(t.items)} · ${channels.length} ${esc(t.measuredEditions)} · ${CHANNELS.length} ${esc(t.totalEditions)}.</p>
   </div>
 </main>
 <footer class="dd-foot"><div class="dd-wrap">

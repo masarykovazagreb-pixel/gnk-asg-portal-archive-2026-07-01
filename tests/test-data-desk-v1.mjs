@@ -75,15 +75,24 @@ const dataFile = 'apps/portal/data/aktual-data-desk-v1.json';
 check(exists(dataFile), `${dataFile}: nema datoteke s mjerenjima`);
 if (exists(dataFile)) {
   const data = JSON.parse(read(dataFile));
-  const channels = fs.readdirSync(DATA).filter((name) => name.endsWith('.json') && !name.startsWith('_'));
-  check(data.channels === channels.length, `mjerenja pokrivaju ${data.channels} izdanja, arhiva ima ${channels.length}`);
+  const archive = fs.readdirSync(DATA).filter((name) => name.endsWith('.json') && !name.startsWith('_')).map((name) => name.replace(/\.json$/, ''));
+  /* Desk mjeri osam regionalnih izdanja, ne cijelu mrežu. Mjereni popis mora
+     biti u datoteci s brojkama — inače test ne zna što je mjereno, a brojka
+     „osam" ostaje tvrdnja bez izvora. */
+  check(Array.isArray(data.channelIds) && data.channelIds.length > 0, 'mjerenja ne navode koja su izdanja mjerena');
+  const measured = Array.isArray(data.channelIds) ? data.channelIds : [];
+  check(data.channels === measured.length, `mjerenja tvrde ${data.channels} izdanja, popis ima ${measured.length}`);
+  check(measured.every((id) => archive.includes(id)), `mjerenja uključuju izdanje kojeg nema u arhivi: ${measured.filter((id) => !archive.includes(id)).join(', ')}`);
+  check(data.channels <= archive.length, `mjerenja pokrivaju ${data.channels} izdanja, arhiva ima ${archive.length}`);
 
   let items = 0;
-  for (const name of channels) {
-    const channel = JSON.parse(fs.readFileSync(path.join(DATA, name), 'utf8'));
+  for (const id of measured) {
+    const channel = JSON.parse(fs.readFileSync(path.join(DATA, `${id}.json`), 'utf8'));
     items += (channel.items || []).filter((item) => item && item.date && item.slug).length;
   }
-  check(data.items === items, `mjerenja tvrde ${data.items} zapisa, arhiva ima ${items}`);
+  check(data.items === items, `mjerenja tvrde ${data.items} zapisa, mjerena izdanja imaju ${items}`);
+  const html = read('apps/portal/aktual-media/nocna-smjena/index.html');
+  check(html.includes(`${items} `), `stranica ne nosi ${items} mjerenih zapisa`);
 
   const sumNight = data.night.rows.reduce((n, row) => n + row.count, 0);
   check(sumNight === data.night.totals.items, `zbroj noćnih redaka ${sumNight} nije jednak ukupnom ${data.night.totals.items}`);

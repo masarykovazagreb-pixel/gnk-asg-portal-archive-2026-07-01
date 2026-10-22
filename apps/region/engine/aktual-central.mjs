@@ -1120,7 +1120,7 @@ ${END}`;
   <div class="am-ad-dots" aria-hidden="true">${adCopy.map((_, i) => `<i${i === 0 ? ' class="on"' : ''}></i>`).join('')}</div>
 </aside>`;
 
-    const shareStatus = 'https://twitter.com/intent/tweet?url=' + encodeURIComponent('https://gnk-asg.hr' + (hr ? '/status/' : '/en/status/')) + '&text=' + encodeURIComponent(hr ? 'AKTUAL MEDIA — javni status ažurnosti osam gradskih izdanja' : 'AKTUAL MEDIA — public freshness status of eight city editions');
+    const shareStatus = 'https://twitter.com/intent/tweet?url=' + encodeURIComponent('https://gnk-asg.hr' + (hr ? '/status/' : '/en/status/')) + '&text=' + encodeURIComponent(hr ? 'AKTUAL MEDIA — javni status ažurnosti sedamnaest gradskih izdanja' : 'AKTUAL MEDIA — public freshness status of seventeen city editions');
     const shareBeograd = 'https://twitter.com/intent/tweet?url=' + encodeURIComponent('https://gnk-asg.hr/kanal/beograd/') + '&text=' + encodeURIComponent(hr ? 'AKTUAL MEDIA KANAL BEOGRAD — novo izdanje za Srbiju' : 'AKTUAL MEDIA KANAL BEOGRAD — a new edition for Serbia');
     return `<!-- AKTUAL-PROMO:START -->
 <link rel="stylesheet" href="/assets/aktual-promo-v1.css?v=20261022b">

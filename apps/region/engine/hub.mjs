@@ -470,7 +470,7 @@ function netStrip() {
     ['/usa/', 'Colorado · USA', 'ishodište projekta'],
     ['/radio/', 'Radio', 'player'],
     ['/galerija/', 'Galerija', 'foto'],
-    ['/kanal/', 'Kanali', '8 izdanja'],
+    ['/kanal/', 'Kanali', `${CHANNELS.length} izdanja`],
     ['/gnk-aktual/', 'AKTUAL MEDIA', 'središte'],
     ['/izdanja/', 'Sva izdanja', 'popis'],
     ['/digital-workforce/', 'Radna snaga', 'simulacija'],
@@ -484,7 +484,7 @@ function netStrip() {
   ].map(([href, name, kick]) => `<a href="${href}"${href.startsWith('http') ? ' rel="external noopener"' : ''}><b>${esc(name)}</b><span>${esc(kick)}</span></a>`).join('');
   return `<section class="iz-net" aria-label="Mreža AKTUAL MEDIA">
     <div class="iz-wrap">
-      <p class="iz-net-h">Mreža AKTUAL MEDIA <span>8 izdanja · 9 deskova · radio · galerija</span></p>
+      <p class="iz-net-h">Mreža AKTUAL MEDIA <span>${CHANNELS.length} izdanja · 9 deskova · radio · galerija</span></p>
       <div class="iz-net-g">${editions}</div>
       <div class="iz-net-g iz-net-g--desks">${desks}</div>
       <div class="iz-net-g iz-net-g--more">${more}</div>
@@ -767,7 +767,7 @@ function deskPage(id, desk) {
 
   <section class="iz-band iz-aktual" aria-labelledby="aktualTitle">
     <h2 id="aktualTitle">AKTUAL MEDIA <span>izdavač ovog deska</span></h2>
-    <p class="iz-small" style="margin:0 0 12px">Ovaj desk je dio AKTUAL MEDIA — kuće koja pod istim imenom vodi osam gradskih kanala, devet tematskih deskova, business tjednik, radio, galeriju i podatkovni desk. Isti izdavač, isti urednik i ista metodologija vrijede za svaku stranicu, pa se svaki tekst može provjeriti do izvornika.</p>
+    <p class="iz-small" style="margin:0 0 12px">Ovaj desk je dio AKTUAL MEDIA — kuće koja pod istim imenom vodi ${CHANNELS.length} gradskih kanala, devet tematskih deskova, business tjednik, radio, galeriju i podatkovni desk. Isti izdavač, isti urednik i ista metodologija vrijede za svaku stranicu, pa se svaki tekst može provjeriti do izvornika.</p>
     <ul class="iz-datacards">
       <li><a href="/gnk-aktual/"><b>AKTUAL MEDIA</b><span>središte kuće</span></a></li>
       <li><a href="/izdanja/"><b>Sva izdanja</b><span>8 kanala · 9 deskova</span></a></li>
@@ -1028,7 +1028,7 @@ export function usaPage() {
     ['/the-code/', 'THE CODE', 'aktivacija grupe iz Coloradoa'],
     ['/nermin-sefic/', 'Nermin Sefić', 'ovlašteni predstavnik i UBO grupe'],
     ['/izdanja/', 'Sva izdanja i deskovi', 'devet deskova · tjednik · galerija'],
-    ['/kanal/', 'AKTUAL MEDIA KANAL', 'osam gradskih izdanja'],
+    ['/kanal/', 'AKTUAL MEDIA KANAL', `${CHANNELS.length} gradskih izdanja`],
     ['/radio/', 'AKTUAL MEDIA RADIO', 'player na svakoj stranici'],
     ['/galerija/', 'Galerija', 'foto i vizuali'],
     ['/gnk-aktual/', 'AKTUAL MEDIA', 'središnja stranica'],
@@ -1098,7 +1098,7 @@ export function usaPage() {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GNK DINAMO Ltd. — Boulder, Colorado, USA | ishodište AKTUAL MEDIA</title>
-<meta name="description" content="GNK DINAMO Ltd., Boulder, Colorado, USA — matična tvrtka grupe i ishodište mreže AKTUAL MEDIA. Entity ID 20238180649, 33 povezana društva, 12 lokacija u širenju i konsolidirani pokazatelji FY 2025, s poveznicama na svih osam gradskih izdanja.">
+<meta name="description" content="GNK DINAMO Ltd., Boulder, Colorado, USA — matična tvrtka grupe i ishodište mreže AKTUAL MEDIA. Entity ID 20238180649, 33 povezana društva, 12 lokacija u širenju i konsolidirani pokazatelji FY 2025, s poveznicama na svih ${CHANNELS.length} gradskih izdanja.">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
 <meta name="author" content="AKTUAL MEDIA d.o.o.">
 <meta name="editor" content="Nermin Sefić">
@@ -1172,7 +1172,7 @@ a{color:inherit;text-decoration:none}a:hover{text-decoration:underline}
   <section class="us-hero"><div class="us-wrap">
     <p class="us-kicker">Ishodište projekta · USA</p>
     <h1>GNK DINAMO Ltd. — Boulder, Colorado</h1>
-    <p class="us-lead">Ovdašnji podaci su ishodište svih poveznica ove mreže: matična tvrtka GNK DINAMO Ltd. ima sjedište u Boulderu u Coloradu, a GNK ASG d.o.o. uključen je u njezin grupni prikaz. Iz ovog čvora vode poveznice na svih osam gradskih izdanja AKTUAL MEDIA KANAL, na devet deskova i na svaku drugu javnu stranicu portala — i svaka od tih stranica vodi natrag ovamo.</p>
+    <p class="us-lead">Ovdašnji podaci su ishodište svih poveznica ove mreže: matična tvrtka GNK DINAMO Ltd. ima sjedište u Boulderu u Coloradu, a GNK ASG d.o.o. uključen je u njezin grupni prikaz. Iz ovog čvora vode poveznice na svih ${CHANNELS.length} gradskih izdanja AKTUAL MEDIA KANAL, na devet deskova i na svaku drugu javnu stranicu portala — i svaka od tih stranica vodi natrag ovamo.</p>
     <p class="us-hero-meta"><span>Entity ID 20238180649</span><span>Boulder · Colorado · USA</span><span>33 društva · 12 lokacija u širenju</span></p>
   </div></section>
 

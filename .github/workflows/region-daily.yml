@@ -83,9 +83,11 @@ jobs:
         run: |-
           set -euo pipefail
           node apps/portal/scripts/album-nermin-sefic-v1.mjs
+          node scripts/build-brand-gallery-v1.mjs || echo "::warning::Galerija znakova nije dovršena — provjeri manifest i naslovnicu."
           node scripts/build-top-teme-v1.mjs
           node scripts/audit-top-teme-v1.mjs
           node apps/region/engine/hub.mjs
+          node scripts/knowledge-center-hr-sync-v1.mjs --apply
           node apps/region/engine/audit.mjs
           node scripts/audit-aktual-brand-indexability-v1.mjs --strict
           test -f apps/portal/izdanja/index.html
@@ -98,7 +100,7 @@ jobs:
           set -euo pipefail
           git config user.name "AKTUAL MEDIA REGION"
           git config user.email "info@gnk-asg.hr"
-          git add apps/region/data apps/region/site apps/portal/kanal apps/portal/usa apps/portal/izdanja apps/portal/gnk-aktual apps/portal/en/gnk-aktual apps/portal/top-teme apps/portal/data/izdanja.json apps/portal/data/izdanja-sport.json apps/portal/data/nermin-sefic-gallery.json apps/portal/data/top-teme.json apps/portal/galerija
+          git add apps/region/data apps/region/site apps/portal/kanal apps/portal/usa apps/portal/izdanja apps/portal/gnk-aktual apps/portal/en/gnk-aktual apps/portal/top-teme apps/portal/data/izdanja.json apps/portal/data/izdanja-sport.json apps/portal/data/nermin-sefic-gallery.json apps/portal/data/top-teme.json apps/portal/galerija apps/portal/aktual-media apps/portal/en/aktual-media apps/portal/knowledge-center apps/portal/data/aktual-data-desk-v1.json apps/portal/data/knowledge-base.json apps/portal/sitemap.xml apps/portal/sitemap-index.xml
           if git diff --cached --quiet; then
             echo "Nema novih zapisa — stanje je već objavljeno."
             echo "changed=false" >> "$GITHUB_OUTPUT"
