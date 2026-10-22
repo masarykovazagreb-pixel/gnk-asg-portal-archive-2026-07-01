@@ -3,8 +3,9 @@ import {test} from 'node:test';
 import {assessReview,REVIEW_MS,evaluateLedger} from '../scripts/aktual-review-window-gate-v1.mjs';
 const SHA='a'.repeat(64);
 const delivered=new Date('2026-10-22T18:00:00Z');
-const base={id:'EDITORIAL-TEST-1',sourceUrl:'https://gnk-asg.hr/gnk-aktual/',sha256:SHA,currentSha256:SHA,
- proofOfDelivery:{status:'delivered',receiptId:'smtp-provider-confirmation-123',deliveredAt:delivered.toISOString()},
+const prepared=new Date(delivered.getTime()-60000).toISOString();
+const base={id:'EDITORIAL-TEST-1',sourceUrl:'https://gnk-asg.hr/gnk-aktual/',sha256:SHA,currentSha256:SHA,preparedAt:prepared,
+ proofOfDelivery:{status:'delivered',verified:true,contentSha256:SHA,receiptId:'smtp-provider-confirmation-123',deliveredAt:delivered.toISOString(),verifiedAt:delivered.toISOString()},
  sourceVerified:true,action:'internal-seo-check',scope:'low-risk-internal',decision:{type:'none'}};
 const assess=(entry,offset)=>assessReview(entry,{verifiedDigest:entry.currentSha256,now:new Date(delivered.getTime()+offset)});
 test('Cannot silently approve before confirmed delivery',()=>{
@@ -36,4 +37,14 @@ test('No future-delivery approval, and ledger always denies publishing',()=>{
  const ledger=evaluateLedger({entries:[base]},{now:new Date(delivered.getTime()+REVIEW_MS)});
  assert.equal(ledger.decisions.length,1);
  assert.equal(ledger.decisions[0].mayPublish,false);
+});
+
+test('Content-bound delivery receipt and exact clock are required',()=>{
+ for(const proof of [{verified:false},{contentSha256:'b'.repeat(64)},{verifiedAt:new Date(delivered.getTime()+REVIEW_MS+5000).toISOString()},{receiptId:''}]){
+  assert.equal(assess({...base,proofOfDelivery:{...base.proofOfDelivery,...proof}},REVIEW_MS).mayProceedInternally,false);
+ }
+ const late=new Date(delivered.getTime()+600000).toISOString();
+ const updated={...base,proofOfDelivery:{...base.proofOfDelivery,deliveredAt:late,verifiedAt:late}};
+ assert.equal(assess(updated,REVIEW_MS).status,'AWAITING_REVIEW');
+ assert.equal(assess(updated,REVIEW_MS+600000).status,'SILENT_INTERNAL_APPROVAL');
 });
