@@ -33,6 +33,7 @@ test('factory derives bot identities and respects 30-minute, objection and risk 
       {id:'LOW-TOO-NEW',risk:'low',status:'proposed',action:'Propose a test-only change',notifiedAt:'2026-10-22T14:45:00Z',deliveryEvidence:{messageId:'gh-notice-101',deliveryConfirmedAt:'2026-10-22T14:45:00Z'}},
       {id:'LOW-REJECTED',risk:'low',status:'proposed',action:'Rejected item',notifiedAt:'2026-10-22T13:45:00Z',deliveryEvidence:delivery,rejectedAt:'2026-10-22T14:55:00Z'},
       {id:'PROD-HOLD',risk:'critical',status:'proposed',action:'Deploy production',notifiedAt:'2026-10-22T13:45:00Z',deliveryEvidence:delivery},
+      {id:'LOW-FAKE-DEPLOY',risk:'low',status:'proposed',action:'Deploy production',notifiedAt:'2026-10-22T13:45:00Z',deliveryEvidence:delivery},
       {id:'NO-NOTICE',risk:'low',status:'proposed',action:'Not actually delivered',notifiedAt:'2026-10-22T13:45:00Z',deliveryEvidence:null}
     ];
     fs.writeFileSync(ledgerPath,JSON.stringify(ledger,null,2));
@@ -49,6 +50,8 @@ test('factory derives bot identities and respects 30-minute, objection and risk 
     assert.equal(byId['LOW-TOO-NEW'].status,'pending');
     assert.equal(byId['LOW-REJECTED'].status,'rejected');
     assert.equal(byId['PROD-HOLD'].reason,'explicit-human-approval-required');
+    assert.equal(byId['LOW-FAKE-DEPLOY'].reason,'protected-action-requires-explicit-review');
+    assert.ok(report.roleChecks.length>=5);
     assert.equal(byId['NO-NOTICE'].reason,'no-verifiable-delivery');
     assert.equal(report.governanceMissingWorkers.length,1);
     assert.ok(report.governanceMissingWorkers.includes('gnk-asg-new-worker-unknown'));
