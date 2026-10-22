@@ -110,6 +110,26 @@ gallery_jsonld=json.dumps(gallery_schema,ensure_ascii=False).replace("<", r"\u00
 # HTML template is intentionally kept adjacent to the source gallery manifest,
 # not maintained independently in an untracked front-end worker.
 gallery_css=":root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#071426;color:#edf2f7;font:16px/1.65 system-ui,-apple-system,\"Segoe UI\",Arial,sans-serif}main{max-width:1180px;margin:auto;padding:32px 18px 64px}a{color:#f0cf87}a:focus-visible{outline:3px solid #f7d777;outline-offset:4px}nav{margin-bottom:22px}.lead{max-width:800px;color:#cbd5e1}h1{font-size:clamp(2rem,5vw,3.1rem);line-height:1.2;margin:.3rem 0 1rem}h2{font-size:1.45rem;margin:2rem 0 1rem}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:20px}.tile{overflow:hidden;border-radius:16px;background:#10253c;border:1px solid #37516d;transition:transform .18s ease,border-color .18s ease}.tile:hover{transform:translateY(-3px);border-color:#d4af37}.tile a{color:inherit;text-decoration:none;display:block;height:100%}.tile img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;background:#162c45}.caption{padding:16px}.caption h3{font-size:1.1rem;margin:0 0 .35rem;color:#fff}.caption p{margin:0 0 .75rem;color:#cedae7;font-size:.91rem}.caption span{color:#f0cf87;font-weight:700}.note{margin-top:20px;padding:14px 18px;border-left:3px solid #d4af37;background:#122a43;color:#d7e1eb}.directory{columns:3;column-gap:28px;padding-left:20px}.directory li{break-inside:avoid;margin-bottom:8px}.directory a{text-decoration-thickness:1px;text-underline-offset:2px}@media(max-width:800px){.directory{columns:2}}@media(max-width:520px){main{padding:24px 16px 48px}.directory{columns:1}}@media(prefers-reduced-motion:reduce){.tile{transition:none}.tile:hover{transform:none}}"
+# SPT-style feature card na vrhu galerije: slika lijevo, tamni panel desno.
+brand_css = r"""
+.bf{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);border:1px solid #37516d;border-radius:18px;overflow:hidden;background:#0b1a2c;margin:22px 0 34px}
+.bf-media{display:flex;align-items:center;justify-content:center;background:#f4f1e8;padding:26px}
+.bf-media img{display:block;width:100%;height:auto;border-radius:4px}
+.bf-body{padding:26px 26px 24px;background:#0a1524;display:flex;flex-direction:column;gap:14px}
+.bf-kicker{margin:0;font:700 .72rem/1.2 system-ui,Arial,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#e0bd69}
+.bf h3{margin:0;font:600 clamp(1.4rem,2.6vw,2rem)/1.18 Georgia,"Times New Roman",serif;color:#fff}
+.bf-spec{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;margin:2px 0 0;padding:0}
+.bf-spec li{position:relative;padding-left:16px;font-size:.9rem;color:#c3d0de}
+.bf-spec li::before{content:"\2022";position:absolute;left:0;color:#e0bd69}
+.bf-acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.bf-btn{display:inline-block;padding:10px 16px;border-radius:999px;border:1px solid #3c5a79;color:#e8eef5;text-decoration:none;font:600 .86rem/1 system-ui,Arial,sans-serif}
+.bf-btn.solid{background:#4fd1e0;border-color:#4fd1e0;color:#06202b}
+.bf-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:6px}
+.bf-pill{padding:6px 12px;border-radius:999px;background:#122a43;border:1px solid #31506e;font:700 .75rem/1 system-ui,Arial,sans-serif;color:#f0cf87}
+.bf-live{font:700 .72rem/1 system-ui,Arial,sans-serif;letter-spacing:.1em;color:#8fe3a8}
+@media(max-width:760px){.bf{grid-template-columns:1fr}.bf-spec{grid-template-columns:1fr}}
+"""
+
 # --- Znakovi kuće AKTUAL MEDIA -------------------------------------------
 # Sekciju piše ovaj generator jer je on jedini vlasnik /galerija/index.html.
 # Podaci dolaze iz istog manifesta koji puni scripts/build-aktual-media-logos-v1.py
@@ -145,7 +165,32 @@ _city_tiles = "".join(
           f'{c["city"]} — naslovnica izdanja {c["title"]}') for c in _channels
 )
 
+_master = next((l for l in brand_logos if l["slug"] == "aktual-media-hr"), brand_logos[0] if brand_logos else None)
+
+_feature = ""
+if _master:
+    _feature = f'''<article class="bf" aria-labelledby="bf-title">
+  <div class="bf-media"><img src="{esc(_master['webp'])}" alt="{esc(_master['title'])} — {esc(_master.get('tagline',''))}" width="1200" height="345" loading="eager" decoding="async"></div>
+  <div class="bf-body">
+    <p class="bf-kicker">AKTUAL MEDIA · svjetsko izdanje</p>
+    <h3 id="bf-title">Jedan znak, devetnaest izdanja</h3>
+    <ul class="bf-spec">
+      <li>{len(brand_logos)} znakova u familiji</li>
+      <li>SVG vektor + WebP 1200×345</li>
+      <li>{len(_channels)} gradskih izdanja</li>
+      <li>krem podloga, navy i crvena</li>
+    </ul>
+    <div class="bf-acts">
+      <a class="bf-btn solid" href="/galerija/znak-{esc(_master['slug'])}/">Otvori znak</a>
+      <a class="bf-btn" href="/gnk-aktual/">AKTUAL MEDIA</a>
+      <a class="bf-btn" href="/galerija/">Sve u galeriji</a>
+    </div>
+    <div class="bf-meta"><span class="bf-pill">{len(brand_logos)} znakova · {len(_channels)} gradova</span><span class="bf-live">· SVG</span></div>
+  </div>
+</article>'''
+
 brand_section = f'''{BRAND_START}
+{_feature}
 <section aria-labelledby="znakovi" style="margin:40px 0 0">
   <h2 id="znakovi">Znakovi kuće AKTUAL MEDIA</h2>
   <p class="lead">Svako izdanje ima svoj znak u istoj familiji: prvi dio imena u navyju, drugi u crvenoj, natpis iznad i slogan ispod. Znakovi su vektorski (SVG) i svaki ima vlastitu stranicu s podacima o upotrebi.</p>
@@ -167,6 +212,7 @@ gallery_html=f'''<!doctype html>
 <link rel="canonical" href="https://gnk-asg.hr/galerija/">
 <link rel="alternate" hreflang="hr" href="https://gnk-asg.hr/galerija/">
 <link rel="alternate" hreflang="x-default" href="https://gnk-asg.hr/galerija/">
+<link rel="alternate" type="image/svg+xml" href="/assets/brand/aktual-media-hr.svg" title="AKTUAL MEDIA — svjetsko izdanje">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="GNK ASG">
 <meta property="og:title" content="{esc(title)}">
@@ -185,7 +231,7 @@ gallery_html=f'''<!doctype html>
 <script type="application/ld+json">{gallery_jsonld}</script>
 <link rel="alternate" type="application/rss+xml" title="GNK ASG RSS" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="GNK ASG Atom" href="/atom.xml">
-<style>{gallery_css}</style></head><body>
+<style>{gallery_css}{brand_css}</style></head><body>
 <main><nav aria-label="Putanja"><a href="/">GNK ASG</a> / Galerija</nav>
 <header><h1>GNK ASG / AKTUAL — galerija</h1><p class="lead">{esc(desc)}</p></header>
 <section aria-labelledby="izdvojeno"><h2 id="izdvojeno">Izdvojeni tematski vizuali</h2><div class="grid">

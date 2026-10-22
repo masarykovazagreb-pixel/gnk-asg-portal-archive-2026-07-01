@@ -18,7 +18,7 @@ import { fileURLToPath } from 'node:url';
 import { esc, longDate, shortDate, scoreFromTitle, truncate, themeFor, safeJson } from './lib.mjs';
 import { CHANNELS, HUB, CONTACT, SOCIAL_IMAGE, CITY_SHORT, CSS as CHANNEL_CSS } from './build.mjs';
 import { ensureDeskTiles, tilePath, variantFor } from './desk-art.mjs';
-import { logoImg, logoFor, channelLogoSlug, deskLogoSlug, logoJsonLd } from './brand.mjs';
+import { logoImg, logoFor, logoAlternate, channelLogoSlug, deskLogoSlug, logoJsonLd } from './brand.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const APP = join(HERE, '..');
@@ -251,7 +251,7 @@ const mediaItems = () => [
 ];
 const isWebsiteNode = (node) => (Array.isArray(node?.['@type']) ? node['@type'] : [node?.['@type']]).includes('WebSite');
 
-function portalShell({ title, description, path, keywords, tags = [], jsonld = [], body, cssExtra = '', image = SOCIAL_IMAGE, imageAlt = 'AKTUAL MEDIA' }) {
+function portalShell({ title, description, path, keywords, tags = [], jsonld = [], body, cssExtra = '', image = SOCIAL_IMAGE, imageAlt = 'AKTUAL MEDIA', logos = [] }) {
   const canonical = `${HUB}${path}`;
   /* HUB je /izdanja/, a plohe i naslovnice žive u korijenu portala, pa se
      apsolutna adresa gradi iz ishodišta, ne iz putanje huba. */
@@ -282,6 +282,7 @@ function portalShell({ title, description, path, keywords, tags = [], jsonld = [
 ${[...new Map(tags.filter((t) => String(t).startsWith('#')).map((t) => [String(t).toLowerCase(), String(t)])).values()].map((t) => `<meta property="article:tag" content="${esc(t)}">`).join('\n')}
 <meta property="og:image:alt" content="${esc(imageAlt)}">
 <link rel="canonical" href="${canonical}">
+${logos.map((slug) => logoAlternate(slug)).filter(Boolean).join('\n')}
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AKTUAL MEDIA">
 <meta property="og:title" content="${esc(title)}">
@@ -589,6 +590,7 @@ ${radioBand()}${portalFooter()}`;
     description: 'Sva izdanja AKTUAL MEDIA na jednom mjestu: osam regionalnih kanala, BUSINESS TJEDNIK, devet tematskih deskova, radio, galerija i podatkovni desk.',
     path: '',
     tags: ['#AKTUALMEDIA', '#AktualMedia', '#Našaizdanja', '#GNKASG'],
+    logos: ['aktual-media-hr', 'aktual-media-en'],
     keywords: ['AKTUAL MEDIA', 'Aktual mediji', 'izdanja', 'AKTUAL MEDIA KANAL ZAGREB', 'AKTUAL MEDIA KANAL BEOGRAD', 'AKTUAL MEDIA KANAL SARAJEVO', 'AKTUAL MEDIA KANAL BUDAPEST', 'AKTUAL MEDIA KANAL LJUBLJANA', 'AKTUAL MEDIA KANAL ROMA', 'AKTUAL MEDIA KANAL SOFIJA', 'AKTUAL MEDIA KANAL BUCUREȘTI', 'BUSINESS TJEDNIK', 'GNK ASG'],
     jsonld: [
       { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Naša izdanja — AKTUAL MEDIA', url: HUB, inLanguage: 'hr', isPartOf: { '@id': 'https://gnk-asg.hr/#website' } },
@@ -744,6 +746,7 @@ ${id === 'sport' ? `<script>(()=>{const box=document.getElementById('izResults')
     /* Oznake idu u article:tag, a u keywords ostaju samo riječi. */
     keywords: [...desk.hashtags.map((t) => t.replace(/^#/, '')), 'AKTUAL MEDIA', 'Aktual mediji', 'GNK ASG', 'regija', desk.nav],
     tags: [...desk.hashtags, '#AktualMedia', '#GNKASG'],
+    logos: [deskLogoSlug(id)],
     image: cover,
     imageAlt: `${desk.title} — AKTUAL MEDIA`,
     jsonld: [
@@ -880,6 +883,7 @@ function kanalIndex(cards) {
 <meta name="description" content="Osam gradskih izdanja AKTUAL MEDIA na jednoj domeni: Zagreb, Beograd, Sarajevo, Budimpešta, Ljubljana, Rim, Sofija i Bukurešt. Svako ima svoj feed, sitemap i arhivu od više stotina tekstova.">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <link rel="canonical" href="https://gnk-asg.hr/kanal/">
+${logoAlternate('aktual-media-hr')}
 <link rel="alternate" hreflang="hr" href="https://gnk-asg.hr/kanal/">
 <link rel="alternate" hreflang="x-default" href="https://gnk-asg.hr/kanal/">
 <meta property="og:type" content="website">

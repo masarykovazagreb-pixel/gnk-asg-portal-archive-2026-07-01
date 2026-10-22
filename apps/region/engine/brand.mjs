@@ -63,6 +63,19 @@ export function logoImg(slug, { cls = 'brand-logo', size = 40, href = '', priori
   return `<a class="${cls}-link" href="${href}" aria-label="${escapeHtml(logo.title)} — otvori izdanje">${img}</a>`;
 }
 
+/**
+ * <link rel="alternate" type="image/svg+xml"> — vektorska inačica istog znaka.
+ *
+ * Zašto: uz WebP postoje i SVG datoteke, a tražilice i alati za dijeljenje
+ * inače nemaju način saznati da je vektorska verzija dostupna. Link to kaže
+ * eksplicitno, bez ijednog dodatnog zahtjeva prema poslužitelju.
+ */
+export function logoAlternate(slug) {
+  const logo = logoFor(slug);
+  if (!logo) return '';
+  return `<link rel="alternate" type="image/svg+xml" href="${logo.svg}" title="${escapeHtml(logo.title)}">`;
+}
+
 /** Logo kao ImageObject za JSON-LD. */
 export function logoJsonLd(slug, { url = 'https://gnk-asg.hr' } = {}) {
   const logo = logoFor(slug);

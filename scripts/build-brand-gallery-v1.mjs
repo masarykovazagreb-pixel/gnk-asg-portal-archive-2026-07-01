@@ -69,6 +69,7 @@ function buildEntries(manifest) {
       width: 1200,
       height: 345,
       file: logo.svg,
+      svg: logo.svg,
       plate: true,
       lang,
       title: logo.title,
@@ -267,6 +268,7 @@ function pageHtml(entry, all) {
 <link rel="canonical" href="${canonical}">
 <link rel="alternate" hreflang="${entry.lang}" href="${canonical}">
 <link rel="alternate" hreflang="x-default" href="${canonical}">
+${entry.kind === 'logo' ? `<link rel="alternate" type="image/svg+xml" href="${entry.svg}" title="${esc(entry.title)}">` : ''}
 ${tagMetas(entry.tags)}
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="AKTUAL MEDIA">

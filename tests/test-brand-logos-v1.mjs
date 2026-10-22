@@ -100,6 +100,32 @@ for (const [page, slug] of mustHave) {
   if (!has(page)) { fails.push(`${page}: nedostaje`); continue; }
   const html = read(page);
   if (!html.includes(`/assets/brand/${slug}`)) fails.push(`${page}: ne pokazuje znak ${slug}`);
+  /* Vektorska inačica mora biti najavljena u <head> — inače tražilica i
+     alati za dijeljenje ne znaju da SVG postoji. */
+  if (!/rel="alternate" type="image\/svg\+xml" href="\/assets\/brand\/[a-z0-9-]+\.svg"/.test(html)) {
+    fails.push(`${page}: nema <link rel=alternate type=image/svg+xml> na vlastiti znak`);
+  }
+}
+
+/* Naslovnica galerije nosi istu karticu kao SPT: slika lijevo, tamni panel
+   desno, četiri činjenice u dva stupca, tri gumba, pilula i oznaka. */
+{
+  const html = read('galerija/index.html');
+  for (const part of ['class="bf"', 'class="bf-media"', 'class="bf-body"', 'class="bf-kicker"', 'class="bf-spec"', 'class="bf-pill"', 'class="bf-live"']) {
+    if (!html.includes(part)) fails.push(`galerija/index.html: kartica znakova nema ${part}`);
+  }
+  const buttons = (html.match(/class="bf-btn/g) || []).length;
+  if (buttons !== 3) fails.push(`galerija/index.html: kartica ima ${buttons} gumba, očekivano 3`);
+  const facts = (html.match(/<li>[^<]*<\/li>/g) || []).length;
+  if (facts < 4) fails.push(`galerija/index.html: kartica ima ${facts} činjenica, očekivano 4`);
+}
+
+/* Stranice s jednim znakom moraju najaviti točno taj SVG. */
+for (const [page, slug] of [['izdanja/moda/index.html', 'desk-moda'], ['gnk-aktual/index.html', 'aktual-media-hr'], ['en/gnk-aktual/index.html', 'aktual-media-en'], ['galerija/index.html', 'aktual-media-hr']]) {
+  const html = read(page);
+  if (!html.includes(`type="image/svg+xml" href="/assets/brand/${slug}.svg"`)) {
+    fails.push(`${page}: SVG alternate ne pokazuje ${slug}.svg`);
+  }
 }
 
 /* Gradska izdanja: svaki kanal mora imati svoj znak u zaglavlju. */
@@ -109,6 +135,9 @@ for (const channel of channels) {
   const html = read(page);
   if (!html.includes(`/assets/brand/kanal-${channel.id}-1200.webp`)) fails.push(`${page}: nema svoj znak`);
   if (!/class="ed-logo"/.test(html)) fails.push(`${page}: znak nije u zaglavlju`);
+  if (!html.includes(`type="image/svg+xml" href="/assets/brand/kanal-${channel.id}.svg"`)) {
+    fails.push(`${page}: nema SVG alternate za znak izdanja`);
+  }
 }
 
 /* ---------- 5. ništa nije razvučeno ---------- */
