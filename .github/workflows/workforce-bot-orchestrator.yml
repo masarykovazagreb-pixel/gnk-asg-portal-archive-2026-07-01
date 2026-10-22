@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       run_ai_research:
-        description: 'Optional Exa + AI candidate generation (HOLD only)'
+        description: 'Paid AI disabled in free-only mode; input ignored'
         type: boolean
         default: false
   pull_request:
@@ -27,6 +27,10 @@ on:
       - 'tests/test-agent-factory-150-v1.mjs'
       - 'scripts/agent-factory-150-v1.mjs'
       - 'apps/world/site/**'
+      - 'apps/region/engine/build.mjs'
+      - 'apps/region/engine/theme-art.mjs'
+      - 'apps/region/engine/hub.mjs'
+      - 'tests/test-regional-original-art-v1.mjs'
       - '.github/workflows/workforce-bot-orchestrator.yml'
   push:
     branches: [main]
