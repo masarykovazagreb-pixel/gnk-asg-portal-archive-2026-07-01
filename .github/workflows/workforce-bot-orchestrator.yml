@@ -15,6 +15,8 @@ on:
       - 'scripts/worker-agent-swarm-v1.mjs'
       - 'scripts/aktual-world-agent-factory-v1.mjs'
       - 'tests/test-aktual-world-agent-factory-v1.mjs'
+      - 'scripts/aktual-review-window-gate-v1.mjs'
+      - 'tests/test-aktual-review-window-gate-v1.mjs'
       - 'ops/aktual-editor-priorities-v1.json'
       - 'scripts/master-asg-agent-network-v2.mjs'
       - 'scripts/swarm-public-research-draft-v1.mjs'
@@ -39,6 +41,8 @@ on:
       - 'scripts/worker-agent-swarm-v1.mjs'
       - 'scripts/aktual-world-agent-factory-v1.mjs'
       - 'tests/test-aktual-world-agent-factory-v1.mjs'
+      - 'scripts/aktual-review-window-gate-v1.mjs'
+      - 'tests/test-aktual-review-window-gate-v1.mjs'
       - 'ops/aktual-editor-priorities-v1.json'
       - 'scripts/swarm-public-research-draft-v1.mjs'
       - 'scripts/aktual-free-editorial-network-v1.mjs'
@@ -92,6 +96,8 @@ jobs:
         run: |
           node scripts/aktual-world-agent-factory-v1.mjs
           node --test tests/test-aktual-world-agent-factory-v1.mjs
+      - name: Enforce 30-minute editorial delivery and release decision safety
+        run: node --test tests/test-aktual-review-window-gate-v1.mjs
       - name: Confirm paid editorial APIs remain disabled
         run: |
           echo "Free-tier-only: 0 Exa/OpenAI requests, existing 4h cron, no public publishing."
