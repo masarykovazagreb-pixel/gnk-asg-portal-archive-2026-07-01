@@ -18,7 +18,7 @@ function probe(agent,reg){
   const paths={'orchestrator':'scripts/master-asg-agent-network-v2.mjs','task-scheduler':'.github/workflows/workforce-bot-orchestrator.yml','source-provenance':'docs/EDITORIAL-REVIEW-GATE-V1.md','fact-check':'scripts/check-editorial-prepublication-readiness-v1.mjs','original-journalism':'workers/gnk-asg-ai-newsroom-writer/src/index.js','seo-audit':'apps/region/engine/audit.mjs','metadata-schema':'apps/world-network/engine/build.mjs','social-preview':'apps/portal/assets/izdanja/aktual-media-og.jpg','accessibility':'apps/portal/kanal/zagreb/index.html','performance':'lighthouserc.json','security':'AGENTS.md','uptime':'scripts/master-asg-agent-network-v2.mjs'};
   if(paths[agent.role])need(paths[agent.role]);
   else{
-   const tests={'budget-watchdog':reg.policy.paidApis===false&&reg.policy.noNewCosts===true,'language-quality':reg.sites.every(s=>s.lang&&s.locale&&s.description),'editorial-hold':reg.policy.editorialHoldForUnverifiedClaims===true,'release-gate':!reg.policy.externalPublicationEnabled&&!reg.policy.autoApprovalEnabled,'image-rights':reg.policy.originalVisualsOnly===true,'search-indexing':reg.policy.hostnamesAreProposedNotVerified===true,'delivery-evidence':reg.policy.reviewWindowBeginsOnlyAfterVerifiedDelivery===true};
+   const tests={'budget-watchdog':reg.policy.paidApis===false&&reg.policy.noNewCosts===true,'language-quality':reg.sites.every(s=>s.lang&&s.locale&&s.description),'editorial-hold':reg.policy.editorialHoldForUnverifiedClaims===true,'release-gate':!reg.policy.externalPublicationEnabled&&!reg.policy.autoApprovalEnabled,'image-rights':reg.policy.originalVisualsOnly===true,'search-indexing':reg.policy.hostnamesAreProposedNotVerified===true,'delivery-evidence':reg.policy.reviewWindowBeginsOnlyAfterVerifiedDelivery===true,'regional-synchronization':exists('apps/region/engine/hub.mjs')&&exists('apps/portal/world-network/index.html')};
    check(tests[agent.role]===true,'central-check:'+agent.role);
   }
  }else if(agent.scope==='regional'&&regionalIds.includes(agent.channel)){
@@ -39,7 +39,7 @@ function probe(agent,reg){
 export function run({write=true}={}){
  const reg=json('config/control-plane/global-150-free-network-v1.json');
  if(reg.repo!=='masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01')throw Error('wrong-canonical-repo');
- if(reg.agents.length!==150||reg.sites.length!==13)throw Error('incorrect-agent-count');
+ if(reg.agents.length!==150||reg.sites.length!==15)throw Error('incorrect-agent-count');
  if(reg.policy.paidApis!==false||reg.policy.externalPublicationEnabled!==false)throw Error('free-only-or-publication-guard-off');
  const reports=reg.agents.map(a=>probe(a,reg));
  const passed=reports.filter(x=>x.result==='PASS').length;
