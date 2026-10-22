@@ -194,8 +194,8 @@ const DESKS = {
 const AKTUAL_MEDIA_ID = 'https://gnk-asg.hr/gnk-aktual/#news-organization';
 const AKTUAL_MEDIA_NODE = {
   '@context': 'https://schema.org', '@type': 'NewsMediaOrganization',
-  '@id': AKTUAL_MEDIA_ID, name: 'AKTUAL MEDIA',
-  alternateName: ['Aktual mediji', 'Aktual Media', 'AKTUAL MEDIA KANAL'],
+  '@id': AKTUAL_MEDIA_ID, name: 'AKTUAL MEDIA d.o.o.',
+  alternateName: ['AKTUAL MEDIA', 'Aktual mediji', 'Aktual Media', 'AKTUAL MEDIA KANAL'],
   legalName: 'AKTUAL MEDIA d.o.o.',
   url: 'https://gnk-asg.hr/gnk-aktual/',
   parentOrganization: { '@id': 'https://gnk-asg.hr/#gnk-asg' },
