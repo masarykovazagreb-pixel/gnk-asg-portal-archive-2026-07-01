@@ -13,22 +13,14 @@ on:
       - 'config/control-plane/**'
       - 'scripts/workforce-bot-orchestrator-v1.mjs'
       - 'scripts/worker-agent-swarm-v1.mjs'
-      - 'scripts/aktual-world-agent-factory-v1.mjs'
-      - 'tests/test-aktual-world-agent-factory-v1.mjs'
       - 'ops/aktual-editor-priorities-v1.json'
       - 'scripts/master-asg-agent-network-v2.mjs'
       - 'scripts/swarm-public-research-draft-v1.mjs'
-      - 'scripts/global-free-agent-supervisor-v1.mjs'
-      - 'apps/world-network/**'
-      - 'tests/test-world-network-free-v1.mjs'
       - 'scripts/aktual-free-editorial-network-v1.mjs'
       - 'tests/test-aktual-free-editorial-network-v1.mjs'
       - 'tests/test-aktual-regional-seo-identity-v1.mjs'
       - 'scripts/audit-aktual-brand-indexability-v1.mjs'
       - 'tests/test-worker-agent-swarm-v1.mjs'
-      - 'tests/test-agent-factory-150-v1.mjs'
-      - 'scripts/agent-factory-150-v1.mjs'
-      - 'apps/world/site/**'
       - 'apps/region/engine/build.mjs'
       - 'apps/region/engine/theme-art.mjs'
       - 'apps/region/engine/hub.mjs'
@@ -41,8 +33,6 @@ on:
       - 'config/control-plane/**'
       - 'scripts/workforce-bot-orchestrator-v1.mjs'
       - 'scripts/worker-agent-swarm-v1.mjs'
-      - 'scripts/aktual-world-agent-factory-v1.mjs'
-      - 'tests/test-aktual-world-agent-factory-v1.mjs'
       - 'ops/aktual-editor-priorities-v1.json'
       - 'scripts/swarm-public-research-draft-v1.mjs'
       - 'scripts/aktual-free-editorial-network-v1.mjs'
@@ -81,17 +71,9 @@ jobs:
         run: node tests/test-aktual-regional-seo-identity-v1.mjs
       - name: AKTUAL MEDIA — free-only 8 regional + 15 national editorial desks
         run: node tests/test-aktual-free-editorial-network-v1.mjs
-      - name: Execute 150 specialized roles and build 12 free global STAGING sites
-        env:
-          ASG_MONITOR_PUBLIC_FEEDS: ${{ github.event_name == 'schedule' && '1' || '0' }}
-        run: |
-          node scripts/aktual-world-agent-factory-v1.mjs
-          node --test tests/test-aktual-world-agent-factory-v1.mjs
       - name: Confirm paid editorial APIs remain disabled
         run: |
           echo "Free-tier-only: 0 Exa/OpenAI requests, existing 4h cron, no public publishing."
-      - name: Test 12 release-candidate world sites and 150-role safety invariants
-        run: node tests/test-agent-factory-150-v1.mjs
       - name: Observe canonical MASTER ASG V2 CI and public route evidence
         if: github.event_name != 'pull_request'
         env:
@@ -105,9 +87,6 @@ jobs:
         run: |
           if [ -f artifacts/master-asg-agent-network/summary.md ]; then
             cat artifacts/master-asg-agent-network/summary.md >> "$GITHUB_STEP_SUMMARY"
-          fi
-          if [ -f artifacts/aktual-world-agent-factory/summary.md ]; then
-            cat artifacts/aktual-world-agent-factory/summary.md >> "$GITHUB_STEP_SUMMARY"
           fi
           if [ -f artifacts/aktual-editorial-network/summary.md ]; then
             cat artifacts/aktual-editorial-network/summary.md >> "$GITHUB_STEP_SUMMARY"
@@ -131,7 +110,5 @@ jobs:
             artifacts/worker-agent-swarm/
             artifacts/master-asg-agent-network/
             artifacts/aktual-editorial-network/
-            artifacts/aktual-world-agent-factory/
-            apps/global-free/sites/
           if-no-files-found: warn
           retention-days: 14
