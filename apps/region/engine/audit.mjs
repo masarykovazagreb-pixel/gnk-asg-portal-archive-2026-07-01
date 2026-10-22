@@ -49,7 +49,14 @@ for (const channel of readdirSync(SITE).filter((d) => statSync(join(SITE, d)).is
     if (!/application\/ld\+json/.test(html) && rel !== '/404.html') errors.push(`${channel}${rel}: nema JSON-LD`);
     if (!/name="keywords"/.test(html)) errors.push(`${channel}${rel}: nema keywords (hashtagovi)`);
     if (!/og:title/.test(html) || !/twitter:card/.test(html)) errors.push(`${channel}${rel}: nema OG/Twitter`);
-    if (!/rel="alternate" hreflang=/.test(html)) errors.push(`${channel}${rel}: nema hreflang`);
+    // Hreflang is used only when a genuinely equivalent language overview exists.
+    // Individual article/topic/source URLs have no English translation and must
+    // not claim that their channel homepage is a language alternate.
+    const hasLanguagePair = rel === '/index.html' || rel === '/en/index.html';
+    const declaresHreflang = /rel="alternate" hreflang=/.test(html);
+    if (hasLanguagePair && !declaresHreflang) errors.push(`${channel}${rel}: nema hreflang para za naslovnicu`);
+    if (!hasLanguagePair && declaresHreflang) errors.push(`${channel}${rel}: nepostojeći prijevod u hreflang`);
+    if (/property="og:locale" content="(?:undefined|null|)"/i.test(html)) errors.push(`${channel}${rel}: neispravan og:locale`);
 
     // naslovi i JSON-LD moraju biti parsabilni
     for (const block of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {

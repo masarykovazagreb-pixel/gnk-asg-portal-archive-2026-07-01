@@ -29,6 +29,7 @@ export const CENTRAL = 'https://gnk-asg.hr/gnk-aktual/';
 export const CONTACT = 'info@gnk-asg.hr';
 export const SOCIAL_IMAGE = 'https://gnk-asg.hr/assets/gnk-asg-social-card.png';
 export const PUBLIC = 'https://gnk-asg.hr';
+export const AKTUAL_NEWS_ENTITY_ID = `${CENTRAL}#news-organization`;
 
 const checksFor = (item, strings) => {
   const out = [];
@@ -224,7 +225,7 @@ ${footer(channel, strings)}`;
       '@id': `${url(channel, 'mravinjak/')}#mravinjak`, url: url(channel, 'mravinjak/'),
       name: `${m.title} — ${channel.title}`, description: m.lead(items.length),
       inLanguage: channel.lang, isPartOf: { '@id': `${PUBLIC}/#website` },
-      publisher: { '@type': 'NewsMediaOrganization', name: 'AKTUAL MEDIA d.o.o.', url: HUB, email: CONTACT, editor: { '@type': 'Person', name: 'Nermin Sefić', url: 'https://gnk-asg.hr/nermin-sefic/' } }
+      publisher: { '@id': AKTUAL_NEWS_ENTITY_ID }
     },
     {
       '@context': 'https://schema.org', '@type': 'BreadcrumbList',
@@ -236,7 +237,7 @@ ${footer(channel, strings)}`;
     },
     {
       '@context': 'https://schema.org', '@type': 'ItemList',
-      name: `${m.title} — ${channel.title}`, numberOfItems: items.length,
+      name: `${m.title} — ${channel.title}`, numberOfItems: Math.min(60, items.length),
       itemListElement: items.slice(0, 60).map((i, index) => ({ '@type': 'ListItem', position: index + 1, url: url(channel, `clanak/${i.slug}/`), name: i.title }))
     }
   ];
@@ -276,7 +277,13 @@ const LANG_NAME = {
 
 function shell(channel, strings, { title, description, path, keywords = [], jsonld = [], body, ogAlt = '', type = 'website', published, modified, root = '', image = '', lang = '', locale = '' }) {
   const pageLang = lang || channel.lang;
-  const pageLocale = locale || strings.locale;
+  // The translated UI is t(lang).ui; locale belongs to the channel record, never strings.locale.
+  const nativeLocale = String(channel.locale || `${channel.lang}-HR`).replace(/-/g, '_');
+  const pageLocale = locale || (pageLang === 'en' ? 'en_US' : nativeLocale);
+  const alternateLocale = pageLang === 'en' ? nativeLocale : 'en_US';
+  // Hreflang is valid only for equivalent language alternatives, not individual
+  // article pages that merely link to the edition homepage/English overview.
+  const hasLanguageAlternative = path === '' || path === 'en/';
   const altOriginal = `${PUBLIC}/kanal/${channel.id}/`;
   const altEnglish = `${PUBLIC}/kanal/${channel.id}/en/`;
   const canonical = url(channel, path);
@@ -290,15 +297,10 @@ function shell(channel, strings, { title, description, path, keywords = [], json
     '@context': 'https://schema.org',
     '@graph': [
       {
-        '@type': 'NewsMediaOrganization', '@id': `${PUBLIC}/#gnk-asg`,
-        name: 'GNK ASG d.o.o.', alternateName: ['AKTUAL MEDIA', 'AKTUAL MEDIA KANAL', 'GNK ASG'],
-        url: `${PUBLIC}/`, email: CONTACT,
-        logo: { '@type': 'ImageObject', url: `${PUBLIC}/assets/gnk-asg-social-card.png` },
-        parentOrganization: { '@type': 'Organization', name: 'GNK ASG d.o.o.', url: `${PUBLIC}/` },
-        editor: { '@id': `${PUBLIC}/#nermin-sefic` },
-        sameAs: [
-          `${PUBLIC}/gnk-aktual/`, `${PUBLIC}/izdanja/`, `${PUBLIC}/galerija/`, `${PUBLIC}/radio/`
-        ]
+        '@type': 'NewsMediaOrganization', '@id': AKTUAL_NEWS_ENTITY_ID,
+        name: 'AKTUAL MEDIA d.o.o.', alternateName: ['AKTUAL MEDIA', 'Aktual mediji', 'AKTUAL MEDIA KANAL'],
+        url: CENTRAL,
+        editor: { '@id': `${PUBLIC}/#nermin-sefic` }
       },
       {
         '@type': 'Person', '@id': `${PUBLIC}/#nermin-sefic`,
@@ -344,9 +346,9 @@ function shell(channel, strings, { title, description, path, keywords = [], json
 <meta name="geo.placename" content="${esc(channel.city)}">
 <meta name="theme-color" content="${palette.bg}">
 <link rel="canonical" href="${canonical}">
-<link rel="alternate" hreflang="${channel.lang}" href="${altOriginal}">
+${hasLanguageAlternative ? `<link rel="alternate" hreflang="${channel.lang}" href="${altOriginal}">
 <link rel="alternate" hreflang="en" href="${altEnglish}">
-<link rel="alternate" hreflang="x-default" href="${altOriginal}">
+<link rel="alternate" hreflang="x-default" href="${altOriginal}">` : ''}
 <link rel="alternate" type="application/rss+xml" title="${esc(channel.title)}" href="${url(channel, 'feed.xml')}">
 <link rel="alternate" type="application/feed+json" title="${esc(channel.title)}" href="${url(channel, 'feed.json')}">
 <link rel="author" href="${PUBLIC}/nermin-sefic/">
@@ -355,7 +357,7 @@ function shell(channel, strings, { title, description, path, keywords = [], json
 <meta property="og:type" content="${type}">
 <meta property="og:site_name" content="${esc(channel.title)}">
 <meta property="og:locale" content="${pageLocale}">
-<meta property="og:locale:alternate" content="hr_HR">
+${hasLanguageAlternative ? `<meta property="og:locale:alternate" content="${alternateLocale}">` : ''}
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(truncate(description, 300))}">
 <meta property="og:url" content="${canonical}">
@@ -548,7 +550,7 @@ ${footer(channel, strings)}`;
   const jsonld = [
     {
       '@context': 'https://schema.org', '@type': 'ItemList',
-      name: `${channel.title} — ${strings.latest}`, numberOfItems: items.length,
+      name: `${channel.title} — ${strings.latest}`, numberOfItems: Math.min(20, items.length),
       itemListElement: items.slice(0, 20).map((i, index) => ({
         '@type': 'ListItem', position: index + 1, url: url(channel, `clanak/${i.slug}/`), name: i.title
       }))
@@ -729,13 +731,9 @@ ${footer(channel, strings)}`;
       isAccessibleForFree: true,
       articleSection: strings.themeNames[theme] || theme,
       keywords: [...new Set([...tags, 'AKTUAL MEDIA', 'media critique'])].join(', '),
-      author: { '@type': 'Organization', name: 'AKTUAL MEDIA d.o.o.', url: HUB },
+      author: { '@id': AKTUAL_NEWS_ENTITY_ID },
       editor: { '@type': 'Person', name: 'Nermin Sefić', url: 'https://gnk-asg.hr/nermin-sefic/' },
-      publisher: {
-        '@type': 'NewsMediaOrganization', name: 'AKTUAL MEDIA d.o.o.', url: HUB,
-        logo: { '@type': 'ImageObject', url: 'https://gnk-asg.hr/assets/logo-gnk-asg-canonical.svg' },
-        employee: [{ '@type': 'Person', name: 'Nermin Sefić', jobTitle: 'Direktor', url: 'https://gnk-asg.hr/nermin-sefic/' }]
-      },
+      publisher: { '@id': AKTUAL_NEWS_ENTITY_ID },
       citation: { '@type': 'CreativeWork', name: item.title, url: item.url, publisher: { '@type': 'Organization', name: item.sourceName } },
       comment: [{
         '@type': 'Comment', '@id': `${canonical}#komentar-bota`, url: `${canonical}#komentar-bota`,
