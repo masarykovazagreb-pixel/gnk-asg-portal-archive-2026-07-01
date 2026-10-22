@@ -5,6 +5,8 @@
  * svi dijele isti SEO ugovor: canonical, hreflang par, OG/Twitter sliku,
  * JSON-LD graf, opis u granicama i alt na svakoj slici.
  */
+import { meshBlock, MESH_CSS, EDITIONS } from './network-v1.mjs';
+
 export const MAIN = 'https://gnk-asg.hr';
 export const ARHIVA = 'https://gnk-asg-arhiva.pages.dev';
 export const DNEVNIK = 'https://gnk-asg-dnevnik.pages.dev';
@@ -113,6 +115,7 @@ footer a{color:#cfe0f2}
 @media (max-width:620px){.item{grid-template-columns:minmax(0,1fr)}.item img{display:none}}
 @media (prefers-reduced-motion:reduce){.card{transition:none}.card:hover{transform:none}}
 @media print{.top,.nav,.btn,.search{display:none}body{background:#fff;color:#000}}
+${MESH_CSS}
 `;
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -192,6 +195,7 @@ ${ld}
 <main id="sadrzaj" class="wrap">
 ${body}
 </main>
+${meshBlock({ lang, selfUrl: siteUrl })}
 <footer><div class="wrap">
   <ul class="footlinks">
     <li><a href="${MAIN}/gnk-aktual/">AKTUAL MEDIA</a></li>
@@ -204,8 +208,8 @@ ${body}
     <li><a href="mailto:info@gnk-asg.hr">info@gnk-asg.hr</a></li>
   </ul>
   <p>${lang === 'hr'
-    ? 'Automatski sastavljeno iz javnih izvora osam gradskih izdanja AKTUAL MEDIA. Svaki zapis vodi na izvornik; tvrdnje izvora nisu tvrdnje redakcije.'
-    : 'Automatically assembled from public sources of the eight AKTUAL MEDIA city editions. Every record links to the original; claims from sources are not the claims of the newsroom.'}</p>
+    ? `Automatski sastavljeno iz javnih izvora ${EDITIONS.length} gradskih izdanja AKTUAL MEDIA. Svaki zapis vodi na izvornik; tvrdnje izvora nisu tvrdnje redakcije.`
+    : `Automatically assembled from public sources of the ${EDITIONS.length} AKTUAL MEDIA city editions. Every record links to the original; claims from sources are not the claims of the newsroom.`}</p>
   <p>AKTUAL MEDIA d.o.o. · ${lang === 'hr' ? 'Urednik i direktor' : 'Editor and director'}: Nermin Sefić · <a href="${MAIN}/nermin-sefic/">${lang === 'hr' ? 'profil' : 'profile'}</a></p>
 </div></footer>
 </body>

@@ -1,0 +1,97 @@
+name: MREŽA — agenti i sinkronizacija
+
+# Dvanaest neovisnih agenata nad istom mrežom: šest samostalnih stranica,
+# arhiva, dnevnik, tjednik i 17 gradskih izdanja pod gnk-asg.hr.
+#
+# Zašto zaseban workflow: agenti moraju pasti zbog sebe, a ne zbog deploya.
+# Zato je posao strogo čitljiv (contents: read) — gradi izlazne mape u
+# radnom prostoru runnera, provjerava ih i sprema izvještaj kao artifact.
+# Ništa se ne commitа i ne pusha, pa ovaj workflow ne može pomaknuti main.
+#
+# Ručno: Actions → "MREŽA — agenti i sinkronizacija" → Run workflow.
+# Popis agenata i vlasnik: ops/network-agents-v1.json.
+
+on:
+  schedule:
+    # Jednom dnevno, iza noćnog SEO audita (01:15 UTC) i prije jutarnjeg
+    # ciklusa izdanja. Minuta 40 je namjerno izvan punog sata.
+    - cron: '40 4 * * *'
+  workflow_dispatch:
+    inputs:
+      only:
+        description: 'Samo navedeni agenti, odvojeni zarezom (prazno = svi)'
+        required: false
+        type: string
+  push:
+    paths:
+      - 'apps/satellites/**'
+      - 'apps/sites/**'
+      - 'apps/arhiva/**'
+      - 'apps/dnevnik/**'
+      - 'tests/test-network-mesh-v1.mjs'
+      - 'scripts/network-agents-v1.mjs'
+      - 'scripts/network-sync-v1.mjs'
+      - 'ops/network-agents-v1.json'
+      - '.github/workflows/network-agents-daily.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: network-agents-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  agents:
+    name: Mreža — sinkronizacija i agenti
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NETWORK_AGENTS_REPORT: artifacts/network-agents-v1.json
+    steps:
+      - name: Dohvati granu
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Sinkroniziraj šest stranica, arhivu i dnevnik
+        run: node scripts/network-sync-v1.mjs
+
+      - name: Pokreni agente
+        run: |
+          if [ -n "${{ inputs.only }}" ]; then
+            node scripts/network-agents-v1.mjs --only "${{ inputs.only }}"
+          else
+            node scripts/network-agents-v1.mjs
+          fi
+
+      - name: Sažetak u summary
+        if: always()
+        shell: bash
+        run: |
+          if [ -s "$NETWORK_AGENTS_REPORT" ]; then
+            node -e "
+              const r = require('./' + process.env.NETWORK_AGENTS_REPORT);
+              console.log('## Mreža — agenti ' + r.generatedAt);
+              console.log('');
+              console.log('Prošlo: **' + r.passed + '/' + r.total + '**');
+              if (r.failed.length) console.log('Palo: ' + r.failed.join(', '));
+              if (r.advisory.length) console.log('Savjet: ' + r.advisory.join(', '));
+              console.log('');
+              for (const a of r.agents) console.log('- ' + (a.ok ? 'OK' : 'PAD') + ' · ' + a.name + ' (`' + a.command + '`)');
+            " >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Spremi izvještaj agenata
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: network-agents-report-${{ github.run_id }}
+          path: artifacts/network-agents-v1.json
+          if-no-files-found: warn
+          retention-days: 30

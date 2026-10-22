@@ -37,3 +37,6 @@ artifacts/seo/aktual-meta-matrix.json
 # Generirani izlaz samostalnih portala (build se pokreće u deployu)
 apps/arhiva/site/
 apps/dnevnik/site/
+
+# Izvještaj agenata mreže — generira se u CI-u i lokalno, ne čuva se u gitu
+artifacts/network-agents-v1.json

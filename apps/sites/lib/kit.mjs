@@ -12,6 +12,7 @@
  *   BreadcrumbList, FAQPage), vlastiti sitemap.xml, robots.txt i feed.xml.
  */
 import { SITES, MAIN_SITE, NETWORK_HUB_HR, NETWORK_HUB_EN, pagePath, siteBase } from './registry.mjs';
+import { meshBlock, MESH_CSS } from '../../satellites/lib/network-v1.mjs';
 
 export const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 export const srDate = (iso) => {
@@ -178,7 +179,7 @@ main:focus{outline:none}
 .mosaic a:nth-child(1){grid-column:span 2;grid-row:span 2}
 .mosaic a:nth-child(1) img{aspect-ratio:auto;height:100%}
 @media(max-width:760px){.mosaic{grid-template-columns:repeat(2,1fr)}.mosaic a:nth-child(1){grid-column:span 2;grid-row:auto}}
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto}}`;
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto}}\n${MESH_CSS}`;
 }
 
 /* ---------- mrežna traka i navigacija ---------- */
@@ -324,7 +325,7 @@ export function footer(site, lang, pages) {
   const siblings = SITES.filter((item) => item.slug !== site.slug)
     .map((item) => `<li><a href="${item.base}" rel="external noopener" hreflang="hr" lang="hr">${esc(item.name)}<span style="color:#7f8fa1"> · ${esc(item.domain)}</span></a></li>`)
     .join('');
-  return `<footer class="site"><div class="wrap">
+  return `${meshBlock({ lang, selfUrl: siteBase(site) })}\n<footer class="site"><div class="wrap">
     <div class="cols">
       <div>
         <h2>${esc(site.name)}</h2>

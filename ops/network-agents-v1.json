@@ -1,0 +1,92 @@
+{
+  "version": "GNK_ASG_NETWORK_AGENTS_V1_20261022",
+  "policy": "Svaki agent radi jednu stvar, čita javne datoteke i ne piše u produkciju. Agent koji padne ruši izvještaj; agent koji je savjetodavan (required=false) ostaje vidljiv, ali ne blokira.",
+  "owner": "AKTUAL MEDIA d.o.o. · urednik Nermin Sefić",
+  "report": "artifacts/network-agents-v1.json",
+  "agents": [
+    {
+      "id": "mesh-link-agent",
+      "name": "Paukova mreža — 20 ulaza",
+      "required": true,
+      "cmd": ["node", "tests/test-network-mesh-v1.mjs"],
+      "checks": "Svaki samostalni portal nosi blok s 20 ulaza, linkovi su apsolutni https, bez self-linka i bez nofollowa."
+    },
+    {
+      "id": "edition-parity-agent",
+      "name": "Izdanja — 17 parova HR/EN",
+      "required": true,
+      "cmd": ["node", "tests/test-sites-network-v1.mjs"],
+      "checks": "Šest samostalnih stranica, hub HR/EN, sitemapi i JSON indeks; svaka stranica ima svoj izlaz."
+    },
+    {
+      "id": "seo-matrix-agent",
+      "name": "SEO matrica mreže",
+      "required": true,
+      "cmd": ["node", "tests/test-seo-matrix-v1.mjs"],
+      "checks": "Title, description, canonical, hreflang i OG na svakoj javnoj ruti mreže."
+    },
+    {
+      "id": "meta-hygiene-agent",
+      "name": "Meta higijena",
+      "required": true,
+      "cmd": ["node", "tests/test-meta-hygiene-v1.mjs"],
+      "checks": "Nema # ni autora u meta keywords; hashtagovi su vidljivi i u article:tag."
+    },
+    {
+      "id": "brand-logo-agent",
+      "name": "Znakovi kuće",
+      "required": true,
+      "cmd": ["node", "tests/test-brand-logos-v1.mjs"],
+      "checks": "Svaki znak ima datoteku, galerijsku stranicu, sitemap unos i alt."
+    },
+    {
+      "id": "image-proxy-agent",
+      "name": "Posrednik slika",
+      "required": true,
+      "cmd": ["node", "tests/test-image-proxy-coverage-v1.mjs"],
+      "checks": "Nijedna slika iz arhive ne ide na host koji posrednik ne dopušta."
+    },
+    {
+      "id": "satellites-agent",
+      "name": "Arhiva i dnevnik",
+      "required": true,
+      "cmd": ["node", "tests/test-satellites-v1.mjs"],
+      "checks": "Dva samostalna portala: canonical, hreflang, JSON-LD, sitemap i feed."
+    },
+    {
+      "id": "accessibility-agent",
+      "name": "Pristupačnost — preskok sadržaja",
+      "required": true,
+      "cmd": ["node", "tests/test-a11y-skip-v1.mjs"],
+      "checks": "Svaka javna stranica ima preskok sadržaja i vidljiv fokus."
+    },
+    {
+      "id": "security-headers-agent",
+      "name": "Sigurnosna zaglavlja",
+      "required": true,
+      "cmd": ["node", "tests/test-security-headers-v1.mjs"],
+      "checks": "CSP i prateća zaglavlja nisu oslabljena; nema iframe iznimke za kanale."
+    },
+    {
+      "id": "stability-agent",
+      "name": "Stabilnost i ažurnost",
+      "required": true,
+      "cmd": ["node", "tests/test-stability-contracts-v1.mjs"],
+      "checks": "Dnevni ciklusi, kill-switch i zapis izdanja; push guard se čita iz workflowa."
+    },
+    {
+      "id": "data-desk-agent",
+      "name": "Podatkovni desk",
+      "required": true,
+      "cmd": ["node", "tests/test-data-desk-v1.mjs"],
+      "checks": "Svaka brojka na desku dolazi iz arhive i pokriva upravo mjerena izdanja."
+    },
+    {
+      "id": "sync-agent",
+      "name": "Sinkronizacija mreže",
+      "required": false,
+      "cmd": ["node", "scripts/network-sync-v1.mjs"],
+      "checks": "Ponovno gradi šest stranica, arhivu i dnevnik iz istih podataka i provjerava mrežu."
+    }
+  ]
+}
