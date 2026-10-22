@@ -4,16 +4,22 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-10-21T21:34:41.302Z",
+  "updatedAt": "2026-10-22T00:36:27.109Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": true,
-      "fetched": 50,
-      "errors": [],
-      "checkedAt": "2026-10-21T21:34:36.671Z"
+      "ok": false,
+      "fetched": 0,
+      "errors": [
+        "https://telex.hu/rss: HTTP 403",
+        "https://telex.hu/rss/belfold: HTTP 403",
+        "https://telex.hu/rss/kulfold: HTTP 403",
+        "https://telex.hu/rss/gazdasag: HTTP 403",
+        "https://telex.hu/rss/sport: HTTP 403"
+      ],
+      "checkedAt": "2026-10-22T00:36:22.651Z"
     },
     {
       "id": "444",
@@ -22,7 +28,7 @@
       "ok": true,
       "fetched": 30,
       "errors": [],
-      "checkedAt": "2026-10-21T21:34:37.508Z"
+      "checkedAt": "2026-10-22T00:36:23.305Z"
     },
     {
       "id": "hvg",
@@ -31,7 +37,7 @@
       "ok": true,
       "fetched": 60,
       "errors": [],
-      "checkedAt": "2026-10-21T21:34:37.878Z"
+      "checkedAt": "2026-10-22T00:36:23.545Z"
     },
     {
       "id": "portfolio",
@@ -40,7 +46,7 @@
       "ok": true,
       "fetched": 20,
       "errors": [],
-      "checkedAt": "2026-10-21T21:34:38.645Z"
+      "checkedAt": "2026-10-22T00:36:24.227Z"
     },
     {
       "id": "index",
@@ -51,7 +57,7 @@
       "errors": [
         "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-21T21:34:40.476Z"
+      "checkedAt": "2026-10-22T00:36:26.104Z"
     },
     {
       "id": "24hu",
@@ -60,7 +66,7 @@
       "ok": true,
       "fetched": 10,
       "errors": [],
-      "checkedAt": "2026-10-21T21:34:40.674Z"
+      "checkedAt": "2026-10-22T00:36:26.311Z"
     },
     {
       "id": "mandiner",
@@ -69,10 +75,30 @@
       "ok": true,
       "fetched": 50,
       "errors": [],
-      "checkedAt": "2026-10-21T21:34:41.302Z"
+      "checkedAt": "2026-10-22T00:36:27.109Z"
     }
   ],
   "items": [
+    {
+      "slug": "budimpesta-2026-10-21-444-a-szokeveny-matolcsy-e4f043",
+      "title": "A szökevény Matolcsy",
+      "summary": "Az őrizetbe vett exjegybankelnök, az elfogatóparanccsal körözött fia, a parlamenti bizottság előtt kitálaló ügyész és a költségvetés veszélyei a 444 reggeli hírlevelében.",
+      "date": "2026-10-21T22:19:18.000Z",
+      "url": "https://444.hu/2026/10/22/a-szokeveny-matolcsy?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "napindító",
+        "reggeli hírlevél",
+        "hírlevél",
+        "reggel 4"
+      ],
+      "author": "Herczeg Márk",
+      "theme": "politika",
+      "image": "https://assets.4cdn.hu/kraken/8FXl2XYzjmSPfINEs.jpeg",
+      "imageAlt": "A szökevény Matolcsy",
+      "addedAt": "2026-10-22T00:36:23.305Z"
+    },
     {
       "slug": "budimpesta-2026-10-21-telex-nagy-seregek-proto-gyurulidercek-balrogok-f34dde",
       "title": "Nagy seregek, proto-gyűrűlidércek, balrogok és Gandalf – itt A hatalom gyűrűi új évadjának előzetese",
@@ -7279,20 +7305,6 @@
       "summary": "",
       "date": "2026-10-18T05:24:28.000Z",
       "url": "https://444.hu/2026/10/18/tuntetok-gyujtottak-fel-a-143-eves-limoges-i-varoshazat-osszeomlott-az-oratorony",
-      "source": "444",
-      "sourceName": "444",
-      "categories": [],
-      "author": "",
-      "theme": "rat",
-      "addedAt": "2026-10-19T20:53:32.672Z",
-      "backfilled": true
-    },
-    {
-      "slug": "budimpesta-2026-10-18-444-1956-elozmenyei-haborus-propagandaval-8bfa08",
-      "title": "1956 előzményei: háborús propagandával riogatva facsarták szét a magyar társadalmat",
-      "summary": "",
-      "date": "2026-10-18T04:58:26.000Z",
-      "url": "https://444.hu/2026/10/18/1956-elozmenyei-haborus-propagandaval-riogatva-facsartak-szet-a-magyar-tarsadalmat",
       "source": "444",
       "sourceName": "444",
       "categories": [],
