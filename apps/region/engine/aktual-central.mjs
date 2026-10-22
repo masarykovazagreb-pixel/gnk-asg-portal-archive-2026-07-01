@@ -486,7 +486,7 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
  * names to subdirectories, so we model the brand as a NewsMediaOrganization. */
 const AKTUAL_BRAND_START = '<!-- AKTUAL-MEDIA-SEO-ENTITY:START -->';
 const AKTUAL_BRAND_END = '<!-- AKTUAL-MEDIA-SEO-ENTITY:END -->';
-const AKTUAL_BRAND_ID = 'https://gnk-asg.hr/gnk-aktual/#publisher';
+const AKTUAL_BRAND_ID = 'https://gnk-asg.hr/gnk-aktual/#news-organization';
 function strengthenAktualBrand(html, lang = 'hr') {
   const editionUrls = CHANNELS.map((channel) => ({
     '@type': 'ListItem', name: channel.title, url: channel.base
