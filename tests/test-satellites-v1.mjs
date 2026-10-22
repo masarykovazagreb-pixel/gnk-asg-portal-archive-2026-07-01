@@ -25,6 +25,7 @@
  * je u tom poslu stvarno izgrađeno; puni skup ostaje u scripts/test-all-v1.mjs.
  */
 import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { join, relative, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -32,8 +33,8 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const MAIN = 'https://gnk-asg.hr';
 
 const SITES = [
-  { id: 'arhiva', name: 'AKTUAL ARHIVA', dir: join(ROOT, 'apps/arhiva/site'), url: 'https://gnk-asg-arhiva.pages.dev', sister: 'https://gnk-asg-dnevnik.pages.dev' },
-  { id: 'dnevnik', name: 'AKTUAL DNEVNIK', dir: join(ROOT, 'apps/dnevnik/site'), url: 'https://gnk-asg-dnevnik.pages.dev', sister: 'https://gnk-asg-arhiva.pages.dev' },
+  { id: 'arhiva', name: 'AKTUAL ARHIVA', dir: join(ROOT, 'apps/arhiva/site'), build: join(ROOT, 'apps/arhiva/engine/build.mjs'), url: 'https://gnk-asg-arhiva.pages.dev', sister: 'https://gnk-asg-dnevnik.pages.dev' },
+  { id: 'dnevnik', name: 'AKTUAL DNEVNIK', dir: join(ROOT, 'apps/dnevnik/site'), build: join(ROOT, 'apps/dnevnik/engine/build.mjs'), url: 'https://gnk-asg-dnevnik.pages.dev', sister: 'https://gnk-asg-arhiva.pages.dev' },
 ];
 
 const ONLY = (process.argv.find((a) => a.startsWith('--only=')) || '').split('=')[1] || '';
@@ -60,6 +61,17 @@ const attr = (html, re) => { const m = html.match(re); return m ? m[1] : null; }
 const decode = (s) => s.replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>');
 
 for (const site of SITES_RUN) {
+  // Izlaz se ne commita (generira se u deployu), pa gate sam sagradi ono što
+  // nedostaje — inače bi u svježem checkoutu padalo bez razloga.
+  if (!existsSync(site.dir)) {
+    try {
+      execFileSync('node', [site.build], { stdio: 'pipe' });
+      notes.push(`${site.id}: izlaz nije bio u checkoutu — sagrađen za provjeru`);
+    } catch (e) {
+      fail(site, null, `build nije prošao: ${String(e.stderr || e.message).slice(0, 200)}`);
+      continue;
+    }
+  }
   if (!existsSync(site.dir)) { fail(site, null, 'izlazni direktorij ne postoji — pokreni build'); continue; }
 
   const files = walk(site.dir, '.html');
