@@ -357,7 +357,7 @@ ${hasLanguageAlternative ? `<link rel="alternate" hreflang="${channel.lang}" hre
 <meta property="og:type" content="${type}">
 <meta property="og:site_name" content="${esc(channel.title)}">
 <meta property="og:locale" content="${pageLocale}">
-<meta property="og:locale:alternate" content="${alternateLocale}">
+${hasLanguageAlternative ? `<meta property="og:locale:alternate" content="${alternateLocale}">` : ''}
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(truncate(description, 300))}">
 <meta property="og:url" content="${canonical}">
