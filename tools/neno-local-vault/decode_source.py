@@ -5,7 +5,7 @@ import hashlib
 import zipfile
 
 HERE = Path(__file__).resolve().parent
-EXPECTED_SHA256 = "65b0f741dbbc64461abe9f5228e64c94fb57091faa227eb0569edb2eee94f4a5"
+EXPECTED_SHA256 = "417b1669b3b68452380db0463c2a96605abee1be5900c5fddba9bac26979b339"
 repo_readme = (HERE / "README.md").read_text(encoding="utf-8")
 data = (HERE / "source-v0.2.0.md").read_text(encoding="utf-8")
 payload = data.split("BASE85-BEGIN", 1)[1].split("BASE85-END", 1)[0]
