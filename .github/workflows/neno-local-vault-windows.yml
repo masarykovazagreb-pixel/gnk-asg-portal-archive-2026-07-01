@@ -1,0 +1,45 @@
+name: NENO Local Vault Windows
+on:
+  push:
+    branches:
+      - feature/neno-local-vault-20261022
+    paths:
+      - 'tools/neno-local-vault/**'
+      - '.github/workflows/neno-local-vault-windows.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows-build:
+    runs-on: windows-latest
+    timeout-minutes: 22
+    defaults:
+      run:
+        working-directory: tools/neno-local-vault
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Unpack source
+        run: python decode_source.py
+      - name: Install dependencies
+        run: python -m pip install -r requirements-build.txt
+      - name: Test index and retrieval
+        run: python -m unittest discover -s tests -v
+      - name: Build portable Windows exe
+        run: python -m PyInstaller --clean --noconfirm --onefile --windowed --name NenoLocalVault app.py
+      - name: Package Windows executable
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path output | Out-Null
+          Copy-Item dist/NenoLocalVault.exe output/
+          Copy-Item install.ps1 output/
+          Copy-Item README.md output/
+          Compress-Archive -Path output/* -DestinationPath NenoLocalVault-Windows.zip -Force
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NenoLocalVault-Windows
+          path: tools/neno-local-vault/NenoLocalVault-Windows.zip
+          retention-days: 30
+          if-no-files-found: error
