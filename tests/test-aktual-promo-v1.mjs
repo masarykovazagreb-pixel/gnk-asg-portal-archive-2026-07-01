@@ -74,6 +74,31 @@ for (const [page, lang] of [['gnk-aktual/index.html', 'hr'], ['en/gnk-aktual/ind
   }
 }
 
+/* ---------- paritet sekcija: EN nije kraća verzija HR-a ---------- */
+const hrPage = read('gnk-aktual/index.html');
+const enPage = read('en/gnk-aktual/index.html');
+for (const [page, html] of [['gnk-aktual/index.html', hrPage], ['en/gnk-aktual/index.html', enPage]]) {
+  for (const marker of ['<!-- AKTUAL-CENTRAL:START -->', '<!-- IZDANJA-BAND:START -->', '<!-- KANAL-BAND:START -->']) {
+    if (!html.includes(marker)) fails.push(`${page}: nema bloka ${marker}`);
+  }
+  if (html.split('<!-- AKTUAL-CENTRAL:START -->').length !== 2) fails.push(`${page}: središnja ploča nije točno jednom`);
+}
+const countH2 = (html) => (html.match(/<h2\b/g) || []).length;
+if (countH2(hrPage) !== countH2(enPage)) {
+  fails.push(`EN ima ${countH2(enPage)} naslova druge razine, HR ${countH2(hrPage)} — EN je opet kraća`);
+}
+for (const [needle, label] of [
+  ['Eight countries, every edition', 'engleski naslov ploče'],
+  ['Our editions in the region', 'engleska traka izdanja'],
+  ['From the GNK ASG channel', 'engleska traka kanala'],
+  ['Edition hashtags', 'engleske oznake']
+]) {
+  if (!enPage.includes(needle)) fails.push(`EN: nema ${label} (${needle})`);
+}
+for (const croatian of ['Osam zemalja, sva izdanja', 'Naša izdanja u regiji', 'Iz GNK ASG KANALA', 'Hashtagovi izdanja']) {
+  if (enPage.includes(croatian)) fails.push(`EN: hrvatski naslov ${croatian} na engleskoj stranici`);
+}
+
 /* ---------- prozorčići i lebdeća reklama (oba jezika) ---------- */
 const WINDOW_TARGETS = {
   hr: ['/status/', '/kanal/beograd/', '/galerija/', '/gnk-aktual/mreza/', '/aktual-media/proizvodi/'],

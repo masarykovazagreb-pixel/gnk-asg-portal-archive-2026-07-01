@@ -820,6 +820,7 @@ ${entries.map((e) => `<url><loc>${e.loc}</loc><changefreq>daily</changefreq><pri
   writeFileSync(join(PORTAL, 'data', 'izdanja.json'), `${JSON.stringify({ version: 1, updatedAt: new Date().toISOString(), sourceOfTruth: HUB, cards }, null, 2)}\n`);
 
   injectBand(cards);
+  injectBand(cards, 'en');
 
   /* Podatkovni desk: četiri stranice koje mjere vlastitu arhivu. Brojke
      se računaju iz istih datoteka koje je ovaj ciklus upravo zapisao,
@@ -1178,29 +1179,41 @@ ${all.filter(([loc]) => (seen.has(loc) ? false : seen.add(loc))).map(([loc, last
   return all.length;
 }
 
-function injectBand(cards) {
-  const file = join(PORTAL, 'gnk-aktual', 'index.html');
+function injectBand(cards, lang = 'hr') {
+  const en = lang === 'en';
+  const file = en ? join(PORTAL, 'en', 'gnk-aktual', 'index.html') : join(PORTAL, 'gnk-aktual', 'index.html');
   if (!existsSync(file)) return;
   let html = readFileSync(file, 'utf8');
   const start = '<!-- IZDANJA-BAND:START -->';
   const end = '<!-- IZDANJA-BAND:END -->';
   const picks = cards.filter((c) => ['zagreb', 'beograd', 'sarajevo', 'budimpesta', 'ljubljana', 'rim', 'sofija', 'bukurest'].includes(c.id));
-  const lis = picks.map((c, i) => `<li class="izdanja-item"><span class="izdanja-num">${String(i + 1).padStart(2, '0')}</span><div><h3><a href="${c.url}" target="_blank" rel="external noopener">${esc(c.name)}</a></h3><p>${esc(c.lang)} · ${esc(c.city)} · ${c.count} osvrta</p></div></li>`).join('');
+  const lis = picks.map((c, i) => `<li class="izdanja-item"><span class="izdanja-num">${String(i + 1).padStart(2, '0')}</span><div><h3><a href="${c.url}" target="_blank" rel="external noopener">${esc(c.name)}</a></h3><p>${esc(c.lang)} · ${esc(c.city)} · ${c.count} ${en ? 'reviews' : 'osvrta'}</p></div></li>`).join('');
+  const title = en ? 'Our editions in the region' : 'Naša izdanja u regiji';
+  const sub = en
+    ? 'Eight city channels in eight languages, a business weekly and nine desks. Every edition has its own link and its own feed — and everything returns to AKTUAL MEDIA.'
+    : 'Osam gradskih kanala na osam jezika, poslovni tjednik i devet deskova. Svako izdanje ima svoj link i svoj feed — a sve se vraća na AKTUAL MEDIA.';
+  const all = en ? 'All editions →' : 'Sva izdanja →';
   const block = `${start}
   <section class="izdanja-band" aria-labelledby="izdanjaBandTitle">
     <div class="izdanja-band-head">
       <div>
-        <h2 class="izdanja-band-title" id="izdanjaBandTitle">Naša izdanja u regiji</h2>
-        <p class="izdanja-sub">Osam gradskih kanala na osam jezika, poslovni tjednik i devet deskova. Svako izdanje ima svoj link i svoj feed — a sve se vraća na AKTUAL MEDIA.</p>
+        <h2 class="izdanja-band-title" id="izdanjaBandTitle">${title}</h2>
+        <p class="izdanja-sub">${sub}</p>
       </div>
-      <a class="izdanja-all" href="/izdanja/">Sva izdanja →</a>
+      <a class="izdanja-all" href="/izdanja/">${all}</a>
     </div>
     <ol class="izdanja-list">${lis}</ol>
   </section>
   ${end}`;
-  html = html.includes(start) && html.includes(end)
-    ? html.replace(new RegExp(`${start}[\\s\\S]*?${end}`), block)
-    : html.replace('<!-- KANAL-BAND:END -->', `<!-- KANAL-BAND:END -->\n${block}`);
+  if (html.includes(start) && html.includes(end)) {
+    html = html.replace(new RegExp(`${start}[\\s\\S]*?${end}`), block);
+  } else if (en && /<section class="am-spt"[^>]*>/.test(html)) {
+    html = html.replace(/<section class="am-spt"[^>]*>/, (m) => `${block}\n${m}`);
+  } else if (en && html.includes('<!-- AKTUAL-MREZA-BAND:START -->')) {
+    html = html.replace('<!-- AKTUAL-MREZA-BAND:START -->', `${block}\n<!-- AKTUAL-MREZA-BAND:START -->`);
+  } else {
+    html = html.replace('<!-- KANAL-BAND:END -->', `<!-- KANAL-BAND:END -->\n${block}`);
+  }
   writeFileSync(file, html);
 }
 
