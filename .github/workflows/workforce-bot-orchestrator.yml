@@ -88,7 +88,8 @@ jobs:
           node scripts/aktual-world-agent-factory-v1.mjs
           node --test tests/test-aktual-world-agent-factory-v1.mjs
       - name: Confirm paid editorial APIs remain disabled
-        run: echo "Free-tier-only: 0 Exa/OpenAI requests, existing 4h cron, no public publishing."
+        run: |
+          echo "Free-tier-only: 0 Exa/OpenAI requests, existing 4h cron, no public publishing."
       - name: Test 12 release-candidate world sites and 150-role safety invariants
         run: node tests/test-agent-factory-150-v1.mjs
       - name: Observe canonical MASTER ASG V2 CI and public route evidence
