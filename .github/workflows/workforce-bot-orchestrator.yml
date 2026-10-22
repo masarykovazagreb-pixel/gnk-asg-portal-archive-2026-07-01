@@ -13,6 +13,7 @@ on:
       - 'config/control-plane/**'
       - 'scripts/workforce-bot-orchestrator-v1.mjs'
       - 'scripts/worker-agent-swarm-v1.mjs'
+      - 'scripts/master-asg-agent-network-v2.mjs'
       - 'scripts/swarm-public-research-draft-v1.mjs'
       - 'tests/test-worker-agent-swarm-v1.mjs'
       - '.github/workflows/workforce-bot-orchestrator.yml'
@@ -31,6 +32,9 @@ on:
 
 permissions:
   contents: read
+  actions: read
+  issues: read
+  pull-requests: read
 
 concurrency:
   group: workforce-bot-orchestrator-${{ github.ref }}
@@ -49,6 +53,13 @@ jobs:
         run: node scripts/workforce-bot-orchestrator-v1.mjs
       - name: Execute specialized Worker agents and governance tests
         run: node tests/test-worker-agent-swarm-v1.mjs
+      - name: MASTER ASG — run canonical worker, backend, frontend and SEO supervisor
+        if: github.event_name != 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          ENABLE_PUBLIC_RESEARCH: '0'
+          ENABLE_AI_WRITING: '0'
+        run: node scripts/master-asg-agent-network-v2.mjs
       - name: Optional Exa public research + model-powered draft in HOLD
         if: |
           (github.event_name == 'workflow_dispatch' && inputs.run_ai_research == true) ||
@@ -62,6 +73,9 @@ jobs:
         if: always()
         shell: bash
         run: |
+          if [ -f artifacts/master-asg-agent-network/summary.md ]; then
+            cat artifacts/master-asg-agent-network/summary.md >> "$GITHUB_STEP_SUMMARY"
+          fi
           if [ -f artifacts/worker-agent-swarm/summary.md ]; then
             cat artifacts/worker-agent-swarm/summary.md >> "$GITHUB_STEP_SUMMARY"
           fi
@@ -79,5 +93,6 @@ jobs:
           path: |
             artifacts/workforce-bot-orchestrator/assignment.json
             artifacts/worker-agent-swarm/
+            artifacts/master-asg-agent-network/
           if-no-files-found: warn
           retention-days: 14
