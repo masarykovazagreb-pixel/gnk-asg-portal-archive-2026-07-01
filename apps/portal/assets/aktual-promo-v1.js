@@ -205,7 +205,15 @@
       ad.addEventListener('focusin', stopAd);
       ad.addEventListener('focusout', startAd);
 
+      var adDue = Date.now() + 12000;
       window.setTimeout(showAd, 12000);
+
+      /* Ako je u trenutku dospijeća bila otvorena velika najava, reklama se
+         pojavljuje odmah nakon zatvaranja — ali nikad prije 12 s. */
+      var adRetry = window.setInterval(function () {
+        if (adShown || Date.now() < adDue) { if (adShown) window.clearInterval(adRetry); return; }
+        if (!document.documentElement.classList.contains('am-promo-open')) showAd();
+      }, 3000);
 
       /* Dok je velika najava otvorena, reklama se ne pojavljuje preko nje. */
       var adWatch = window.setInterval(function () {
