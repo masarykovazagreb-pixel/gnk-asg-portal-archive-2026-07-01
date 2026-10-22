@@ -107,6 +107,10 @@ const approved='.github/workflows/deploy-admin-auth-v6.yml';
 // produkcijski portal (gnk-asg.hr), pa je dopušten samo točno navedeni
 // projekt po workflowu; sve ostalo ostaje zabranjeno.
 const regionProject=(id)=>`gnk-asg-kanal-${id}`;
+/* Popis izdanja dolazi iz channels.json. Tvrdi popis od osam gradova ovdje
+   je značio da svako novo izdanje pada guardrail prije nego što uopće stigne
+   do deploya — a allowlist i dalje mora biti zatvoren, ne džoker. */
+const regionIds=JSON.parse(read('apps/region/channels.json')).channels.map((c)=>c.id);
 const channelPagesProjects={
  'kanal-deploy.yml':'gnk-asg-kanal',
  'kanal-daily.yml':'gnk-asg-kanal',
@@ -115,8 +119,8 @@ const channelPagesProjects={
  // Samostalni portali: svaki ima svoj Pages projekt i vlastitu domenu.
  'arhiva-deploy.yml':'gnk-asg-arhiva',
  'dnevnik-deploy.yml':'gnk-asg-dnevnik',
- 'region-deploy.yml':['zagreb','beograd','sarajevo','budimpesta','ljubljana','rim','sofija','bukurest'].map(regionProject),
- 'region-daily.yml':['zagreb','beograd','sarajevo','budimpesta','ljubljana','rim','sofija','bukurest'].map(regionProject)
+ 'region-deploy.yml':regionIds.map(regionProject),
+ 'region-daily.yml':regionIds.map(regionProject)
 };
 // Mreža neovisnih izdanja objavljuje šest stranica na vlastite Pages
 // projekte. Popis je zatvoren i mora se poklapati sa stvarnim imenima u
@@ -170,11 +174,10 @@ const expectedDeployments=[
  ...Object.entries(channelPagesProjects).flatMap(([file,project])=>(Array.isArray(project)?['gnk-asg-kanal-*']:[project]).map(p=>`${file}:${p}`)),
  ...Object.entries(sitesNetworkProjects).flatMap(([file,projects])=>projects.map(p=>`${file}:${p}`))
 ];
-const regionIds=['zagreb','beograd','sarajevo','budimpesta','ljubljana','rim','sofija','bukurest'];
 assert.deepEqual(
  channelPagesProjects['region-daily.yml'].map(p=>p.replace('gnk-asg-kanal-','')).sort(),
  [...regionIds].sort(),
- 'region allowlist must cover all eight cities'
+ 'region allowlist must cover every edition in channels.json'
 );
 assert.deepEqual(
  [...new Set(channelDeployments)].sort(),

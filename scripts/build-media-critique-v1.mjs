@@ -70,7 +70,7 @@ const T = {
     title: 'Kritika medija — što se da izmjeriti',
     lead: 'Ova stranica ne ocjenjuje je li neki tekst istinit. Mjeri oblik: koliko naslovi koriste brojke, superlative, pitanja i neimenovane izvore, te koliko je dugačak sažetak. Sve je izračunato iz objavljenih osvrta i njihovih izvora.',
     method: 'Metoda',
-    methodText: 'Uzet je svaki objavljeni osvrt iz osam kanala i pridružen izvoru iz oznake. Postotci su udjeli u ukupnom broju osvrta tog izvora. Uključeni su izvori s najmanje osam osvrta. Brojka u naslovu nije mana; pitanje je samo je li objašnjena u tekstu. Superlativ nije laž; pitanje je čime je potkrijepljen.',
+    methodText: 'Uzet je svaki objavljeni osvrt iz svih kanala s arhivom i pridružen izvoru iz oznake. Postotci su udjeli u ukupnom broju osvrta tog izvora. Uključeni su izvori s najmanje osam osvrta. Brojka u naslovu nije mana; pitanje je samo je li objašnjena u tekstu. Superlativ nije laž; pitanje je čime je potkrijepljen.',
     cols: ['Izvor', 'Osvrta', 'Kanalâ', 'Brojka u naslovu', 'Superlativ', 'Pitanje', 'Neimenovan izvor', 'Ekskluziva', 'Sažetak (znakova)'],
     note: 'Pokazatelji su formalni. Visok udio ne znači da izvor griješi, ali znači da čitatelj mora više provjeravati.',
     back: '← AKTUAL MEDIA',

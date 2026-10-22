@@ -22,6 +22,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { esc } from './lib.mjs';
+import { CHANNELS } from './build.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const APP = join(HERE, '..');
@@ -321,9 +322,9 @@ const T = {
     nextLinks: [
       ['/aktual-media/nocna-smjena/', 'Noćna smjena', 'Što arhiva objavljuje noću'],
       ['/izdanja/tehnologija/', 'Desk tehnologija', 'Dnevni tehnološki pregled'],
-      ['/izdanja/', 'Sva izdanja', 'Osam gradova, devet deskova'],
+      ['/izdanja/', 'Sva izdanja', `${CHANNELS.length} gradova, devet deskova`],
       ['/gnk-aktual/', 'AKTUAL MEDIA', 'Sve na jednom mjestu'],
-      ['/kanal/', 'Kanali', 'Osam gradskih izdanja'],
+      ['/kanal/', 'Kanali', `${CHANNELS.length} gradskih izdanja`],
       ['/nermin-sefic/', 'Nermin Sefić', 'Urednik i direktor'],
       ['/radio/', 'Radio', 'Diskretno, na svakoj stranici'],
     ],

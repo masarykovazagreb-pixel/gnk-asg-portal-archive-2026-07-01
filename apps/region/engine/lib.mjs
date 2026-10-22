@@ -166,7 +166,13 @@ const MONTHS = {
   sl: ['januarja', 'februarja', 'marca', 'aprila', 'maja', 'junija', 'julija', 'avgusta', 'septembra', 'oktobra', 'novembra', 'decembra'],
   it: ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'],
   bg: ['януари', 'февруари', 'март', 'април', 'май', 'юни', 'юли', 'август', 'септември', 'октомври', 'ноември', 'декември'],
-  ro: ['ianuarie', 'februarie', 'martie', 'aprilie', 'mai', 'iunie', 'iulie', 'august', 'septembrie', 'octombrie', 'noiembrie', 'decembrie']
+  ro: ['ianuarie', 'februarie', 'martie', 'aprilie', 'mai', 'iunie', 'iulie', 'august', 'septembrie', 'octombrie', 'noiembrie', 'decembrie'],
+  en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+  id: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
+  pt: ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'],
+  ar: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'],
+  ja: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+  zh: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
 };
 
 export function longDate(day, lang = 'hr') {
@@ -174,11 +180,19 @@ export function longDate(day, lang = 'hr') {
   const month = (MONTHS[lang] || MONTHS.hr)[m - 1] || '';
   if (lang === 'hu') return `${y}. ${month} ${d}.`;
   if (lang === 'bg') return `${d} ${month} ${y} г.`;
+  /* CJK ne piše mjesece riječju između brojeva — datum ide znakovima. */
+  if (lang === 'ja' || lang === 'zh') return `${y}年${m}月${d}日`;
+  if (lang === 'en') return `${d} ${month} ${y}`;
+  if (lang === 'pt') return `${d} de ${month} de ${y}`;
+  if (lang === 'ar') return `${d} ${month} ${y}`;
   return `${d}. ${month} ${y}.`;
 }
 
 export function shortDate(day, lang = 'hr') {
   const [, m, d] = String(day).split('-').map(Number);
+  if (lang === 'ja' || lang === 'zh') return `${m}月${d}日`;
+  if (lang === 'id') return `${d}/${m}`;
+  if (lang === 'pt' || lang === 'ar') return `${String(d).padStart(2, '0')}/${String(m).padStart(2, '0')}`;
   if (lang === 'en') {
     const t = Date.parse(`${day}T00:00:00Z`);
     if (Number.isFinite(t)) return new Date(t).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
@@ -248,6 +262,25 @@ export const THEMES = [
   { id: 'drustvo', color: '#9a6fb0',
     words: ['zdravstv', 'bolnic', 'lijek', 'obrazovan', 'škol', 'skol', 'univerzitet', 'student', 'kulturu', 'kultura', 'film', 'muzik', 'koncert', 'medij', 'novinar', 'cenzur', 'prava', 'migracij', 'socijal', 'penzij', 'mirovin', 'stanov', 'nekretnin', 'grad', 'egeszseg', 'korhaz', 'oktatas', 'iskola', 'zdravstvo', 'bolnisnica', 'salute', 'scuola', 'здраве', 'училище', 'sanatate', 'scoala'] }
 ];
+
+/* Riječi tema na jezicima globalnih izdanja. Popis je namjerno kratak:
+   tema se određuje iz naslova i sažetka, pa svaka riječ mora biti dovoljno
+   specifična da ne povuče cijeli tekst na pogrešnu stranu. */
+const GLOBAL_THEME_WORDS = {
+  sigurnost: ['security', 'cyber', 'cybersecurity', 'intelligence', 'surveillance', 'espionage', 'spy', 'hack', 'hacker', 'ransomware', 'phishing', 'disinformation', 'keamanan', 'siber', 'intelijen', 'penyadapan', 'peretasan', 'segurança', 'cibernético', 'espionagem', 'vigilância', 'vazamento', 'أمن', 'سيبراني', 'استخبارات', 'تجسس', 'قرصنة', 'تضليل', '安全保障', 'サイバー', '情報機関', 'スパイ', '漏洩', '安全', '网络', '间谍', '情报', '黑客', '泄露'],
+  rat: ['war', 'invasion', 'missile', 'drone', 'troops', 'ceasefire', 'offensive', 'airstrike', 'perang', 'invasi', 'rudal', 'serangan', 'gencatan senjata', 'guerra', 'invasão', 'míssil', 'conflito', 'cessar-fogo', 'حرب', 'غزو', 'صاروخ', 'هجوم', 'وقف إطلاق النار', '戦争', '侵攻', 'ミサイル', '停戦', '空爆', '战争', '入侵', '导弹', '停火', '空袭'],
+  potres: ['earthquake', 'quake', 'flood', 'wildfire', 'storm', 'tsunami', 'eruption', 'disaster', 'gempa', 'banjir', 'erupsi', 'badai', 'kebakaran hutan', 'terremoto', 'enchente', 'tempestade', 'incêndio', 'زلزال', 'فيضان', 'عاصفة', 'كارثة', '地震', '洪水', '台風', '災害', '噴火', '地震', '洪水', '台风', '灾害', '火山'],
+  politika: ['election', 'parliament', 'president', 'minister', 'government', 'coalition', 'opposition', 'referendum', 'pemilu', 'parlemen', 'presiden', 'menteri', 'koalisi', 'oposisi', 'eleição', 'parlamento', 'presidente', 'governo', 'oposição', 'انتخابات', 'برلمان', 'رئيس', 'حكومة', 'معارضة', '選挙', '国会', '首相', '政府', '野党', '选举', '议会', '总统', '政府', '反对派'],
+  ekonomija: ['inflation', 'economy', 'market', 'budget', 'tax', 'trade', 'gdp', 'interest rate', 'inflasi', 'ekonomi', 'pasar', 'anggaran', 'pajak', 'inflação', 'economia', 'mercado', 'orçamento', 'imposto', 'تضخم', 'اقتصاد', 'سوق', 'ميزانية', 'ضرائب', 'インフレ', '経済', '市場', '予算', '増税', '通胀', '经济', '市场', '预算', '税收'],
+  ai: ['artificial intelligence', 'machine learning', 'algorithm', 'chatbot', 'large language', 'kecerdasan buatan', 'algoritma', 'inteligência artificial', 'aprendizado de máquina', 'ذكاء اصطناعي', 'خوارزمية', '人工知能', 'アルゴリズム', '生成ai', '人工智能', '算法', '大模型'],
+  energija: ['energy', 'electricity', 'oil', 'solar', 'wind power', 'nuclear', 'power grid', 'energi', 'listrik', 'minyak', 'tenaga surya', 'energia', 'eletricidade', 'petróleo', 'eólica', 'طاقة', 'كهرباء', 'نفط', 'شمسية', 'エネルギー', '電力', '原発', '再生可能', '能源', '电力', '石油', '太阳能'],
+  sport: ['football', 'basketball', 'tennis', 'match', 'league', 'club', 'olympics', 'coach', 'sepak bola', 'pertandingan', 'liga', 'pelatih', 'futebol', 'basquete', 'campeonato', 'técnico', 'مباراة', 'كرة القدم', 'الدوري', 'أولمبياد', 'サッカー', '野球', '試合', 'リーグ', '五輪', '足球', '篮球', '比赛', '联赛', '奥运'],
+  drustvo: ['health', 'hospital', 'school', 'university', 'migration', 'pension', 'housing', 'kesehatan', 'rumah sakit', 'sekolah', 'universitas', 'migrasi', 'saúde', 'hospital', 'escola', 'universidade', 'migração', 'صحة', 'مستشفى', 'مدرسة', 'هجرة', '医療', '病院', '学校', '移民', '医療', '医院', '学校', '移民']
+};
+for (const theme of THEMES) {
+  const extraWords = GLOBAL_THEME_WORDS[theme.id];
+  if (extraWords) theme.words.push(...extraWords);
+}
 
 export function themeFor(text = '') {
   const haystack = ` ${String(text).toLowerCase().replace(/\s+/g, ' ')} `;

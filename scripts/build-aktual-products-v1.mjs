@@ -2,7 +2,7 @@
 /**
  * AKTUAL MEDIA — stranica sa svim proizvodima.
  *
- * Jedno mjesto na koje vode „prozorčići" s naslovnice: osam gradskih izdanja,
+ * Jedno mjesto na koje vode „prozorčići" s naslovnice: gradska izdanja,
  * devet deskova, tjednik, moda, galerija, radio, mreža i javni status.
  * Stranica je dvojezična (HR/EN), ima vlastiti CSS (bez ugrađenih stilova),
  * JSON-LD graf i unose u glavnom sitemapu.
@@ -40,7 +40,17 @@ const CITY_COPY = {
   ljubljana: ['Ljubljana', 'Slovenija'],
   rim: ['Rim', 'Italija'],
   sofija: ['Sofija', 'Bugarska'],
-  bukurest: ['Bukurešt', 'Rumunjska']
+  bukurest: ['Bukurešt', 'Rumunjska'],
+  /* Svjetska izdanja: pet kontinenata izvan regije. */
+  nairobi: ['Nairobi', 'Kenija'],
+  jakarta: ['Jakarta', 'Indonezija'],
+  newyork: ['New York', 'SAD'],
+  saopaulo: ['São Paulo', 'Brazil'],
+  sydney: ['Sydney', 'Australija'],
+  singapur: ['Singapur', 'Singapur'],
+  kairo: ['Kairo', 'Egipat'],
+  tokio: ['Tokio', 'Japan'],
+  peking: ['Peking', 'Kina']
 };
 
 const DESKS = [
@@ -59,11 +69,11 @@ const PLATFORMS = [
   ['https://gnk-asg-tjednik.pages.dev/', 'Business Tjednik', 'Tjedni poslovni pregled W43'],
   ['/galerija/', 'Galerija znakova', '63 stranice znakova kuće'],
   ['/radio/', 'Radio', 'Šest stanica, jedan player'],
-  ['/gnk-aktual/mreza/', 'Mreža izdanja', '8 gradova i 8 jezika na jednoj karti'],
+  ['/gnk-aktual/mreza/', 'Mreža izdanja', '17 gradova i 13 jezika na jednoj karti'],
   ['/status/', 'Status ažurnosti', 'Javno mjerenje svježine svakog izdanja'],
   ['/aktual-media/', 'Podatkovni desk', 'Četiri mjerenja vlastite arhive'],
   ['https://gnk-asg-arhiva.pages.dev/', 'AKTUAL ARHIVA', 'Samostalan portal: 3.360 tekstova u pretraživoj arhivi'],
-  ['https://gnk-asg-dnevnik.pages.dev/', 'AKTUAL DNEVNIK', 'Samostalan portal: jedan dan, osam gradova, po satima']
+  ['https://gnk-asg-dnevnik.pages.dev/', 'AKTUAL DNEVNIK', 'Samostalan portal: jedan dan, svi gradovi koji objave, po satima']
 ];
 
 const css = `*{box-sizing:border-box}
@@ -96,10 +106,14 @@ h1{margin:0 0 12px;font-family:Georgia,"Times New Roman",serif;font-size:clamp(3
 @media (prefers-reduced-motion:reduce){.pr-card{transition:none}.pr-card:hover{transform:none}}
 `;
 
+const WORLD_IDS = ['nairobi', 'jakarta', 'newyork', 'saopaulo', 'sydney', 'singapur', 'kairo', 'tokio', 'peking'];
+const LANGS = new Set(channels.map((c) => c.lang)).size;
+const REGION = channels.filter((c) => !WORLD_IDS.includes(c.id)).length;
+const WORLD = channels.length - REGION;
 const hrTitle = 'Svi proizvodi AKTUAL MEDIA — izdanja, deskovi, tjednik, galerija, status';
-const hrDesc = 'Osam gradskih izdanja na osam jezika, devet deskova, Business Tjednik, Tjednik Mode, galerija znakova, radio, mreža izdanja i javni status ažurnosti — svi proizvodi AKTUAL MEDIA na jednom popisu.';
+const hrDesc = `${channels.length} gradskih izdanja na ${LANGS} jezika na pet kontinenata (${REGION} regionalnih i ${WORLD} svjetskih), devet deskova, Business Tjednik, Tjednik Mode, galerija znakova, radio, mreža izdanja i javni status ažurnosti — svi proizvodi AKTUAL MEDIA na jednom popisu.`;
 const enTitle = 'All AKTUAL MEDIA products — editions, desks, weekly, gallery, status';
-const enDesc = 'Eight city editions in eight languages, nine desks, Business Weekly, Mode Weekly, the brand gallery, radio, the edition network and the public freshness status — every AKTUAL MEDIA product on one page.';
+const enDesc = `${channels.length} city editions in ${LANGS} languages across five continents (${REGION} regional and ${WORLD} world editions), nine desks, Business Weekly, Mode Weekly, the brand gallery, radio, the edition network and the public freshness status — every AKTUAL MEDIA product on one page.`;
 
 const cityCards = (lang) => channels.map((c) => {
   const [name, country] = CITY_COPY[c.id] || [c.id, ''];
@@ -123,7 +137,7 @@ const platformCards = (lang) => PLATFORMS.map(([url, hr, note]) => {
     'Javno mjerenje svježine svakog izdanja': 'Public freshness measurement for every edition',
     'Četiri mjerenja vlastite arhive': 'Four measurements of our own archive',
     'Samostalan portal: 3.360 tekstova u pretraživoj arhivi': 'Standalone portal: 3,360 stories in a searchable archive',
-    'Samostalan portal: jedan dan, osam gradova, po satima': 'Standalone portal: one day, eight cities, hour by hour'
+    'Samostalan portal: jedan dan, svi gradovi koji objave, po satima': 'Standalone portal: one day, every city that published, hour by hour'
   }[note] || note;
   return `<li><a class="pr-card" href="${url}"${/^https?:/.test(url) ? ' rel="external noopener"' : ''}><b>${label}</b><span>${lang === 'hr' ? note : noteEn}</span></a></li>`;
 }).join('');
@@ -144,9 +158,9 @@ const ld = (lang, title, desc, canonical) => JSON.stringify({
       '@type': 'CollectionPage', '@id': `${canonical}#webpage`, url: canonical, name: title, description: desc, inLanguage: lang,
       isPartOf: { '@id': `${SITE}/#website` }, publisher: { '@id': `${SITE}/gnk-aktual/#news-organization` }, editor: { '@id': `${SITE}/#nermin-sefic` },
       mainEntity: {
-        '@type': 'ItemList', numberOfItems: 8 + DESKS.length + PLATFORMS.length,
+        '@type': 'ItemList', numberOfItems: channels.length + DESKS.length + PLATFORMS.length,
         itemListElement: [
-          ...channels.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: `AKTUAL MEDIA KANAL ${(CITY_COPY[c.id] || [c.id])[0].toUpperCase()}`, url: `${SITE}/kanal/${c.id}/` })),
+          ...channels.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.title, url: `${SITE}/kanal/${c.id}/` })),
           ...DESKS.map(([slug, name], i) => ({ '@type': 'ListItem', position: channels.length + i + 1, name: `${name} — AKTUAL MEDIA`, url: `${SITE}/izdanja/${slug}/` })),
           ...PLATFORMS.map(([url, name], i) => ({ '@type': 'ListItem', position: channels.length + DESKS.length + i + 1, name, url: url.startsWith('http') ? url : `${SITE}${url}` }))
         ]
@@ -167,16 +181,16 @@ function page(lang) {
   const desc = hr ? hrDesc : enDesc;
   const T = hr ? {
     kicker: 'AKTUAL MEDIA · proizvodi', h1: 'Svi proizvodi AKTUAL MEDIA',
-    lead: 'Osam gradskih izdanja, devet deskova, poslovni tjednik, moda, galerija, radio i javni status — svaki proizvod ima svoj link i svoje mjesto.',
-    cities: 'Gradska izdanja', citiesNote: 'Svaki grad ima vlastito izdanje na svom jeziku, s poveznicom na svaki izvornik.',
+    lead: `${channels.length} gradskih izdanja na ${LANGS} jezika i pet kontinenata, devet deskova, poslovni tjednik, moda, galerija, radio i javni status — svaki proizvod ima svoj link i svoje mjesto.`,
+    cities: 'Gradska izdanja', citiesNote: 'Svaki grad ima vlastito izdanje na svom jeziku, s poveznicom na svaki izvornik. Prvih osam pokriva regiju, devet novih pokriva pet kontinenata.',
     desks: 'Deskovi i rubrike', desksNote: 'Devet deskova koji dijele istu arhivu, ali gledaju je iz drugog kuta.',
     platforms: 'Platforme i mjerenja', platformsNote: 'Tjednik, galerija, radio, mreža izdanja, status ažurnosti, podatkovni desk te dva samostalna portala na vlastitim domenama — ARHIVA i DNEVNIK.',
     note: 'Svi automatski sastavljeni dijelovi označeni su kao takvi i nisu pojedinačno urednički pregledani. Izvornici su uvijek povezani; tvrdnje izvornika nisu tvrdnje redakcije.',
     foot: 'Urednik i direktor: Nermin Sefić · AKTUAL MEDIA d.o.o.', back: '← AKTUAL MEDIA', all: 'Sva izdanja', status: 'Status ažurnosti'
   } : {
     kicker: 'AKTUAL MEDIA · products', h1: 'All AKTUAL MEDIA products',
-    lead: 'Eight city editions, nine desks, the business weekly, mode, gallery, radio and the public status — every product has its own link and its own place.',
-    cities: 'City editions', citiesNote: 'Every city has its own edition in its own language, with a link to every original source.',
+    lead: `${channels.length} city editions in ${LANGS} languages across five continents, nine desks, the business weekly, mode, gallery, radio and the public status — every product has its own link and its own place.`,
+    cities: 'City editions', citiesNote: 'Every city has its own edition in its own language, with a link to every original source. The first eight cover the region; nine new ones cover five continents.',
     desks: 'Desks and sections', desksNote: 'Nine desks sharing one archive, each looking at it from a different angle.',
     platforms: 'Platforms and measurements', platformsNote: 'Weekly, gallery, radio, edition network, freshness status, the data desk and two standalone portals on their own domains — ARCHIVE and DAILY.',
     note: 'Automatically assembled parts are labelled as such and are not individually editorially reviewed. Original sources are always linked; claims from sources are not the claims of the newsroom.',

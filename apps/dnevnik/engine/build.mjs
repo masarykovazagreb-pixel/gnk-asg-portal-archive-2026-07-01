@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * AKTUAL DNEVNIK — samostalan portal: jedan dan, osam gradova.
+ * AKTUAL DNEVNIK — samostalan portal: jedan dan, sva izdanja mreže.
  *
  * Ulaz: apps/region/data/*.json. Izlaz: apps/dnevnik/site/.
  * Za svaki od posljednjih 14 dana gradi stranicu koja pokazuje što je
@@ -31,8 +31,12 @@ const CITY_EN = {
 const data = channels.map((c) => {
   const file = join(ROOT, 'apps', 'region', 'data', `${c.id}.json`);
   const parsed = existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : { items: [] };
-  return { c: { ...c, cityEn: CITY_EN[c.id] }, items: parsed.items || [] };
+  return { c: { ...c, cityEn: c.cityEn || CITY_EN[c.id] }, items: parsed.items || [] };
 });
+/* Koliko izdanja stvarno ima zapise — iz toga se računa svaki broj i svaki
+   naslov. Mreža može imati više kanala od današnjeg presjeka i to se kaže. */
+const live = data.filter((d) => d.items.length > 0);
+const citiesLabel = (n) => (n % 10 === 1 && n % 100 !== 11 ? 'grad' : [2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100) ? 'grada' : 'gradova');
 
 const all = data.flatMap(({ c, items }) => items.map((it) => ({ ...it, city: c })));
 const byDay = new Map();
@@ -94,41 +98,41 @@ const bars = (items, lang) => {
 function home(lang) {
   const hr = lang === 'hr';
   const path = hr ? '/' : '/en/';
-  const title = hr ? 'AKTUAL DNEVNIK — jedan dan, osam gradova' : 'AKTUAL DAILY — one day, eight cities';
+  const title = hr ? `AKTUAL DNEVNIK — jedan dan, ${live.length} ${citiesLabel(live.length)}` : `AKTUAL DAILY — one day, ${live.length} cities`;
   const desc = hr
-    ? `Presjek osam gradskih izdanja po danima i satima: ${days.length} dana unatrag, tko je što objavio i kada. Svaki zapis vodi na izvornik.`
-    : `Eight city editions cut by day and hour: the last ${days.length} days, who published what and when. Every record links to the original.`;
+    ? `Presjek ${live.length} gradskih izdanja po danima i satima: ${days.length} dana unatrag, tko je što objavio i kada. Svaki zapis vodi na izvornik.`
+    : `${live.length} city editions cut by day and hour: the last ${days.length} days, who published what and when. Every record links to the original.`;
 
   const total = days.reduce((a, d) => a + byDay.get(d).length, 0);
   const dayRows = days.map((d) => {
     const items = byDay.get(d);
     const cities = new Set(items.map((i) => i.city.id)).size;
-    return `<li><a href="${hr ? `/dan/${d}/` : `/en/day/${d}/`}"><b>${fmtDay(d, lang)}</b><span>${items.length} ${hr ? 'tekstova' : 'stories'} · ${cities}/8 ${hr ? 'gradova' : 'cities'}</span></a></li>`;
+    return `<li><a href="${hr ? `/dan/${d}/` : `/en/day/${d}/`}"><b>${fmtDay(d, lang)}</b><span>${items.length} ${hr ? 'tekstova' : 'stories'} · ${cities}/${live.length} ${hr ? 'gradova' : 'cities'}</span></a></li>`;
   }).join('');
 
   const body = `<header class="hero">
   <p class="kicker">${hr ? 'AKTUAL MEDIA · dnevnik' : 'AKTUAL MEDIA · daily'}</p>
-  <h1>${hr ? 'Jedan dan, osam gradova' : 'One day, eight cities'}</h1>
+  <h1>${hr ? `Jedan dan, ${live.length} ${citiesLabel(live.length)}` : `One day, ${live.length} cities`}</h1>
   <p class="lead">${hr
-    ? 'Umjesto još jednog popisa vijesti, ovdje stoji dan: što je svako od osam izdanja objavilo, u kojem satu i iz kojeg medija. Odaberite dan i vidite cijelu sliku.'
-    : 'Instead of another list of news, here is a day: what each of the eight editions published, in which hour and from which publisher. Pick a day and see the whole picture.'}</p>
+    ? `Umjesto još jednog popisa vijesti, ovdje stoji dan: što je svako od ${live.length} izdanja s arhivom objavilo, u kojem satu i iz kojeg medija. Mreža ukupno ima ${channels.length} kanala; novi se pridružuju kad dobiju zapise. Odaberite dan i vidite cijelu sliku.`
+    : `Instead of another list of news, here is a day: what each of the ${live.length} editions with an archive published, in which hour and from which publisher. The network has ${channels.length} channels in total; new ones join once they have records. Pick a day and see the whole picture.`}</p>
   <ul class="stats">
     <li><b>${days.length}</b><span>${hr ? 'dana u presjeku' : 'days in view'}</span></li>
     <li><b>${total}</b><span>${hr ? 'tekstova u tim danima' : 'stories in those days'}</span></li>
-    <li><b>${channels.length}</b><span>${hr ? 'gradova' : 'cities'}</span></li>
+    <li><b>${live.length}</b><span>${hr ? 'gradova u presjeku' : 'cities in view'}</span></li>
     <li><b>${sources.size}</b><span>${hr ? 'medija ukupno' : 'publishers overall'}</span></li>
   </ul>
 </header>
 
 <section id="dani">
   <h2>${hr ? `Posljednjih ${days.length} dana` : `The last ${days.length} days`}</h2>
-  <p class="sub">${hr ? 'Klik otvara dnevni presjek: osam kolona, jedan dan, svi izvornici povezani.' : 'A click opens the day: eight columns, one day, every original linked.'}</p>
+  <p class="sub">${hr ? 'Klik otvara dnevni presjek: kolona po gradu, jedan dan, svi izvornici povezani.' : 'A click opens the day: one column per city, one day, every original linked.'}</p>
   <ul class="days">${dayRows}</ul>
 </section>
 
 <section>
   <h2>${hr ? 'Najnovije u ovom trenutku' : 'Latest right now'}</h2>
-  <p class="sub">${hr ? 'Posljednjih 12 zapisa iz svih osam izdanja.' : 'The last 12 records from all eight editions.'}</p>
+  <p class="sub">${hr ? `Posljednjih 12 zapisa iz svih ${live.length} izdanja s arhivom.` : `The last 12 records from all ${live.length} editions with an archive.`}</p>
   <ul class="list">${recent.slice(0, 12).map((it) => storyRow(it, lang, { city: it.city, cityBase: ARHIVA })).join('')}</ul>
   <div class="row">
     <a class="btn solid" href="${ARHIVA}${hr ? '/' : '/en/'}">${hr ? 'Cijela arhiva →' : 'The whole archive →'}</a>
@@ -176,8 +180,8 @@ function dayPage(dayIso, lang) {
     ? `${fmtDay(dayIso, 'hr')} — ${items.length} tekstova | AKTUAL DNEVNIK`
     : `${fmtDay(dayIso, 'en')} — ${items.length} stories | AKTUAL DAILY`;
   const desc = hr
-    ? `Što su ${fmtDay(dayIso, 'hr')} objavila osam AKTUAL MEDIA izdanja: ${items.length} tekstova iz ${pubs} medija, po gradovima i satima. Svaki zapis vodi na izvornik.`
-    : `What the eight AKTUAL MEDIA editions published on ${fmtDay(dayIso, 'en')}: ${items.length} stories from ${pubs} publishers, by city and hour. Every record links to the original.`;
+    ? `Što su ${fmtDay(dayIso, 'hr')} objavila AKTUAL MEDIA izdanja: ${items.length} tekstova iz ${pubs} medija, po gradovima i satima. Svaki zapis vodi na izvornik.`
+    : `What the AKTUAL MEDIA editions published on ${fmtDay(dayIso, 'en')}: ${items.length} stories from ${pubs} publishers, by city and hour. Every record links to the original.`;
 
   const idx = days.indexOf(dayIso);
   const newer = idx > 0 ? days[idx - 1] : null;
@@ -214,7 +218,7 @@ function dayPage(dayIso, lang) {
   </div>
 </header>
 <section>
-  <h2>${hr ? 'Osam gradova, jedan dan' : 'Eight cities, one day'}</h2>
+  <h2>${hr ? `${live.length} ${citiesLabel(live.length)}, jedan dan` : `${live.length} cities, one day`}</h2>
   <p class="sub">${hr ? 'Po deset najnovijih zapisa po gradu; puni popis je u arhivi grada.' : 'The ten latest records per city; the full list is in the city archive.'}</p>
   <div class="cols">${columns}</div>
 </section>
@@ -253,22 +257,22 @@ function about(lang) {
   const path = hr ? '/o-dnevniku/' : '/en/about/';
   const title = hr ? 'O dnevniku — što je presjek i što nije | AKTUAL DNEVNIK' : 'About the daily — what it is and is not | AKTUAL DAILY';
   const desc = hr
-    ? 'AKTUAL DNEVNIK je presjek, ne rangiranje: bilježi što su osam izdanja objavila u kojem satu, povezuje izvornike i ne ocjenjuje važnost.'
-    : 'AKTUAL DAILY is a cross-section, not a ranking: it records what the eight editions published in which hour, links the originals and does not judge importance.';
+    ? `AKTUAL DNEVNIK je presjek, ne rangiranje: bilježi što su izdanja mreže objavila u kojem satu i povezuje izvornike. U presjeku: ${live.length} od ${channels.length} kanala.`
+    : `AKTUAL DAILY is a cross-section, not a ranking: it records what the network's editions published in which hour and links every original (${live.length} of ${channels.length} channels).`;
 
   const body = `<header class="hero">
   <p class="kicker">${hr ? 'Metodologija' : 'Methodology'}</p>
   <h1>${hr ? 'Presjek, ne rangiranje' : 'A cross-section, not a ranking'}</h1>
   <p class="lead">${hr
-    ? 'Dnevnik odgovara na pitanje „što se dogodilo tog dana u osam gradova", a ne „što je najvažnije". Zato nema bodova, ni redoslijeda važnosti — samo vrijeme, grad i izvornik.'
-    : 'The daily answers “what happened that day in eight cities”, not “what matters most”. That is why there are no scores and no order of importance — only time, city and the original.'}</p>
+    ? `Dnevnik odgovara na pitanje „što se dogodilo tog dana u ${live.length} ${citiesLabel(live.length)}", a ne „što je najvažnije". Zato nema bodova, ni redoslijeda važnosti — samo vrijeme, grad i izvornik.`
+    : `The daily answers “what happened that day in ${live.length} cities”, not “what matters most”. That is why there are no scores and no order of importance — only time, city and the original.`}</p>
   <div class="row"><a class="btn solid" href="${hr ? '/' : '/en/'}">${hr ? '← Dani' : '← Days'}</a></div>
 </header>
 <section>
   <h2>${hr ? 'Što stoji u presjeku' : 'What the cross-section contains'}</h2>
   <ul class="grid">
     <li class="card"><b>${hr ? 'Sat po sat' : 'Hour by hour'}</b><span>${hr ? 'Stupci pokazuju koliko je zapisa objavljeno u svakom satu (UTC).' : 'Bars show how many records were published in each hour (UTC).'}</span></li>
-    <li class="card"><b>${hr ? 'Grad po grad' : 'City by city'}</b><span>${hr ? 'Osam kolona, ista pravila za sve; prazna kolona je jednako važna informacija.' : 'Eight columns, the same rules for all; an empty column is information too.'}</span></li>
+    <li class="card"><b>${hr ? 'Grad po grad' : 'City by city'}</b><span>${hr ? 'Kolona po gradu, ista pravila za sve; prazna kolona je jednako važna informacija.' : 'One column per city, the same rules for all; an empty column is information too.'}</span></li>
     <li class="card"><b>${hr ? 'Izvornik uz svaki naslov' : 'An original next to every headline'}</b><span>${hr ? 'Bez prijepisa cijelog teksta i bez izmišljenih citata.' : 'No full-text copies and no invented quotes.'}</span></li>
     <li class="card"><b>${hr ? 'Bez uredničkog rangiranja' : 'No editorial ranking'}</b><span>${hr ? 'Redoslijed je vremenski; o važnosti čitatelj odlučuje sam.' : 'The order is chronological; the reader decides what matters.'}</span></li>
   </ul>
@@ -307,7 +311,7 @@ write('assets/site.css', SITE_CSS);
 write('robots.txt', robots(SITE_URL));
 write('feed.xml', rss({
   siteUrl: SITE_URL, siteName: 'AKTUAL DNEVNIK',
-  desc: 'Dnevni presjek osam gradskih izdanja AKTUAL MEDIA',
+  desc: 'Dnevni presjek gradskih izdanja AKTUAL MEDIA',
   items: recent.slice(0, 40), lang: 'hr'
 }));
 
@@ -345,9 +349,9 @@ const entries = [
 ].map((e) => ({ ...e, lastmod: day0 }));
 write('sitemap.xml', sitemap(entries));
 
-write('llms.txt', `# AKTUAL DNEVNIK — one day, eight cities
+write('llms.txt', `# AKTUAL DNEVNIK — one day, ${live.length} cities
 
-> Independent daily cross-section of the eight AKTUAL MEDIA editions. For each of the last ${days.length} days it lists what every city edition published, by hour and by city. Every record links to the original publisher; there is no ranking of importance.
+> Independent daily cross-section of the ${live.length} AKTUAL MEDIA editions with an archive (network: ${channels.length} channels). For each of the last ${days.length} days it lists what every city edition published, by hour and by city. Every record links to the original publisher; there is no ranking of importance.
 
 - Days in view: ${days.length}; records: ${days.reduce((a, d) => a + byDay.get(d).length, 0)}; publishers: ${sources.size}.
 - Start page: ${SITE_URL}/

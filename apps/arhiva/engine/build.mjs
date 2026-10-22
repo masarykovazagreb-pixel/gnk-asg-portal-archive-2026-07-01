@@ -2,7 +2,7 @@
 /**
  * AKTUAL ARHIVA — samostalan portal na vlastitoj domeni.
  *
- * Ulaz: apps/region/data/*.json (osam gradskih izdanja, stvarna arhiva).
+ * Ulaz: apps/region/data/*.json (gradska izdanja koja imaju stvarnu arhivu).
  * Izlaz: apps/arhiva/site/ — statične stranice, sitemap, feed, robots,
  *        strojni indeks za pretragu i zajednička ljuska.
  *
@@ -35,8 +35,14 @@ const data = channels.map((c) => {
   const file = join(ROOT, 'apps', 'region', 'data', `${c.id}.json`);
   if (!existsSync(file)) return { c, items: [] };
   const parsed = JSON.parse(readFileSync(file, 'utf8'));
-  return { c: { ...c, cityEn: CITY_EN[c.id], countryEn: COUNTRY_EN[c.id] }, items: parsed.items || [] };
+  return { c: { ...c, cityEn: c.cityEn || CITY_EN[c.id], countryEn: c.countryEn || COUNTRY_EN[c.id] }, items: parsed.items || [] };
 });
+/* Arhiva raste s mrežom: gradovi s najmanje jednim zapisom su „živi" i samo
+   oni ulaze u naslove i brojke. Ostali su na karti mreže, s praznom arhivom
+   koja se puni, i to se tako i piše — bez zaokruživanja na starih osam. */
+const live = data.filter((d) => d.items.length > 0);
+const citiesLabel = (n) => (n % 10 === 1 && n % 100 !== 11 ? 'grad' : [2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100) ? 'grada' : 'gradova');
+const liveNames = (lang) => live.map(({ c }) => (lang === 'hr' ? c.city : c.cityEn)).join(', ');
 
 const all = data.flatMap(({ c, items }) => items.map((it) => ({ ...it, city: c })));
 all.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -72,13 +78,13 @@ const OG_ALT = 'AKTUAL ARHIVA — linija s tri čvora: GNK ASG, ARHIVA, DNEVNIK'
 
 const stats = [
   [String(all.length), 'tekstova u arhivi'],
-  [String(channels.length), 'gradova'],
+  [`${live.length}`, `gradova s arhivom (od ${channels.length} u mreži)`],
   [String(langs.size), 'jezika'],
   [String(sources.size), 'medijskih izvora']
 ];
 const statsEn = [
   [String(all.length), 'stories in the archive'],
-  [String(channels.length), 'cities'],
+  [`${live.length}`, `cities with an archive (of ${channels.length} in the network)`],
   [String(langs.size), 'languages'],
   [String(sources.size), 'media sources']
 ];
@@ -95,18 +101,18 @@ function home(lang) {
   const path = hr ? '/' : '/en/';
   const n = hr ? all.length.toLocaleString('hr-HR') : all.length.toLocaleString('en-US');
   const title = hr
-    ? `AKTUAL ARHIVA — ${n} tekstova, osam gradova`
-    : `AKTUAL ARCHIVE — ${n} stories, eight cities`;
+    ? `AKTUAL ARHIVA — ${n} tekstova, ${live.length} ${citiesLabel(live.length)}`
+    : `AKTUAL ARCHIVE — ${n} stories, ${live.length} cities`;
   const desc = hr
-    ? `Pretraživa arhiva ${n} tekstova osam gradskih izdanja — Zagreb, Beograd, Sarajevo, Budimpešta, Ljubljana, Rim, Sofija, Bukurešt. Svaki zapis vodi na izvornik.`
-    : `Archive of ${n} stories from eight city editions: Zagreb, Belgrade, Sarajevo, Budapest, Ljubljana, Rome, Sofia, Bucharest. Each record links to the publisher.`;
+    ? `Pretraživa arhiva ${n} tekstova iz ${live.length} ${citiesLabel(live.length)} AKTUAL MEDIA. Svaki zapis vodi na izvornik; mreža ima ${channels.length} kanala i raste.`
+    : `Archive of ${n} stories from ${live.length} AKTUAL MEDIA city editions. Every record links to the publisher; the network has ${channels.length} channels and keeps growing.`;
 
   const body = `<header class="hero">
   <p class="kicker">${hr ? 'AKTUAL MEDIA · arhiva' : 'AKTUAL MEDIA · archive'}</p>
-  <h1>${hr ? 'Arhiva osam gradova, jedan indeks' : 'Eight cities, one index'}</h1>
+  <h1>${hr ? `Arhiva ${live.length} ${citiesLabel(live.length)}, jedan indeks` : `${live.length} cities, one index`}</h1>
   <p class="lead">${hr
-    ? 'Ovo nije još jedan pregled vijesti. Ovo je arhiva: svaki tekst koji su osam gradskih izdanja zabilježila, s medijem, vremenom i izvornikom. Pretražujete naslove i izvore, a čitate kod izdavača.'
-    : 'This is not another news digest. This is an archive: every story the eight city editions recorded, with the publisher, the time and the original. Search headlines and sources, read at the publisher.'}</p>
+    ? `Ovo nije još jedan pregled vijesti. Ovo je arhiva: svaki tekst koji su gradski kanali zabilježili, s medijem, vremenom i izvornikom. Sada je u njoj ${live.length} od ${channels.length} izdanja mreže; ostala se pune svojim ciklusima. Pretražujete naslove i izvore, a čitate kod izdavača.`
+    : `This is not another news digest. This is an archive: every story the city channels recorded, with the publisher, the time and the original. It currently holds ${live.length} of the ${channels.length} editions in the network; the rest fill up through their own cycles. Search headlines and sources, read at the publisher.`}</p>
   <ul class="stats">${statsList(lang)}</ul>
   <div class="search" role="search">
     <label class="skip" for="q">${hr ? 'Pretraži arhivu' : 'Search the archive'}</label>
@@ -118,9 +124,9 @@ function home(lang) {
 </header>
 
 <section id="gradovi">
-  <h2>${hr ? 'Osam gradova' : 'Eight cities'}</h2>
-  <p class="sub">${hr ? 'Svaki grad ima svoje izdanje, svoj jezik i svoj izvor. Klik otvara arhivu tog grada.' : 'Every city has its own edition, its own language and its own sources. A click opens that city archive.'}</p>
-  <ul class="grid">${data.map(({ c, items }) => cityCard(c, `${items.length} ${hr ? 'tekstova' : 'stories'}`, lang)).join('')}</ul>
+  <h2>${hr ? `${channels.length} gradova u mreži` : `${channels.length} cities in the network`}</h2>
+  <p class="sub">${hr ? 'Svaki grad ima svoje izdanje, svoj jezik i svoj izvor. Klik otvara arhivu tog grada; kartica bez zapisa znači da arhiva tog izdanja još nije počela.' : 'Every city has its own edition, its own language and its own sources. A click opens that city archive; a card without records means that edition’s archive has not started yet.'}</p>
+  <ul class="grid">${data.map(({ c, items }) => cityCard(c, items.length ? `${items.length} ${hr ? 'tekstova' : 'stories'}` : (hr ? 'arhiva se puni' : 'archive filling'), lang)).join('')}</ul>
 </section>
 
 <section id="najnovije">
@@ -129,7 +135,7 @@ function home(lang) {
   ${itemList(all.slice(0, 40), lang)}
   <div class="row">
     <a class="btn solid" href="${hr ? '/#gradovi' : '/en/#cities'}">${hr ? 'Odaberi grad →' : 'Pick a city →'}</a>
-    <a class="btn" href="${DNEVNIK}${hr ? '/' : '/en/'}">${hr ? 'DNEVNIK: jedan dan, osam gradova →' : 'DAILY: one day, eight cities →'}</a>
+    <a class="btn" href="${DNEVNIK}${hr ? '/' : '/en/'}">${hr ? `DNEVNIK: jedan dan, ${live.length} ${citiesLabel(live.length)} →` : `DAILY: one day, ${live.length} cities →`}</a>
   </div>
 </section>
 
@@ -236,8 +242,8 @@ function about(lang) {
   const path = hr ? '/o-arhivi/' : '/en/about/';
   const title = hr ? 'O arhivi — kako nastaje i što jamči | AKTUAL ARHIVA' : 'About the archive — how it is built | AKTUAL ARCHIVE';
   const desc = hr
-    ? 'Metodologija AKTUAL ARHIVA: javni feedovi, sitemapi i API-ji osam izdanja, atribucija izvornika, automatsko sastavljanje i jasne granice.'
-    : 'AKTUAL ARCHIVE methodology: public feeds, sitemaps and APIs of eight editions, source attribution, automatic assembly and clear limits.';
+    ? `Metodologija AKTUAL ARHIVA: javni feedovi, sitemapi i API-ji ${channels.length} izdanja, atribucija izvornika, automatsko sastavljanje i jasne granice.`
+    : `AKTUAL ARCHIVE methodology: public feeds, sitemaps and APIs of ${channels.length} editions, source attribution, automatic assembly and clear limits.`;
 
   const body = `<header class="hero">
   <p class="kicker">${hr ? 'Metodologija' : 'Methodology'}</p>
@@ -268,8 +274,8 @@ function about(lang) {
 <section>
   <h2>${hr ? 'Dalje' : 'Next'}</h2>
   <ul class="grid">
-    <li><a class="card" href="${DNEVNIK}${hr ? '/' : '/en/'}"><b>${hr ? 'AKTUAL DNEVNIK' : 'AKTUAL DAILY'}</b><span>${hr ? 'Jedan dan, osam gradova — što je objavljeno i kada.' : 'One day, eight cities — what was published and when.'}</span></a></li>
-    <li><a class="card" href="${MAIN}/gnk-aktual/"><b>AKTUAL MEDIA</b><span>${hr ? 'Središnje izdanje i osam gradskih kanala.' : 'The central edition and eight city channels.'}</span></a></li>
+    <li><a class="card" href="${DNEVNIK}${hr ? '/' : '/en/'}"><b>${hr ? 'AKTUAL DNEVNIK' : 'AKTUAL DAILY'}</b><span>${hr ? `Jedan dan, ${live.length} ${citiesLabel(live.length)} — što je objavljeno i kada.` : `One day, ${live.length} cities — what was published and when.`}</span></a></li>
+    <li><a class="card" href="${MAIN}/gnk-aktual/"><b>AKTUAL MEDIA</b><span>${hr ? `Središnje izdanje i ${channels.length} gradskih kanala.` : `The central edition and ${channels.length} city channels.`}</span></a></li>
     <li><a class="card" href="${MAIN}/aktual-media/"><b>${hr ? 'Podatkovni desk' : 'Data desk'}</b><span>${hr ? 'Četiri mjerenja vlastite arhive.' : 'Four measurements of our own archive.'}</span></a></li>
   </ul>
 </section>`;
@@ -300,7 +306,7 @@ write('404.html', `<!doctype html><html lang="hr"><head><meta charset="utf-8"><m
 /* ---------- statika ---------- */
 write('assets/site.css', SITE_CSS);
 write('robots.txt', robots(SITE_URL));
-write('feed.xml', rss({ siteUrl: SITE_URL, siteName: 'AKTUAL ARHIVA', desc: 'Arhiva osam gradskih izdanja AKTUAL MEDIA', items: all.slice(0, 40), lang: 'hr' }));
+write('feed.xml', rss({ siteUrl: SITE_URL, siteName: 'AKTUAL ARHIVA', desc: `Arhiva gradskih izdanja AKTUAL MEDIA (${live.length} od ${channels.length} izdanja)`, items: all.slice(0, 40), lang: 'hr' }));
 
 write('data/arhiva.json', JSON.stringify({
   version: VERSION,
@@ -401,9 +407,9 @@ const entries = [
 ].map((e) => ({ ...e, lastmod: day }));
 write('sitemap.xml', sitemap(entries));
 
-write('llms.txt', `# AKTUAL ARHIVA — archive of eight AKTUAL MEDIA editions
+write('llms.txt', `# AKTUAL ARHIVA — archive of AKTUAL MEDIA city editions
 
-> Independent archive portal. Machine-assembled from public feeds, sitemaps and APIs of the eight city editions. Every record links to the original publisher; texts are never reproduced in full.
+> Independent archive portal. Machine-assembled from public feeds, sitemaps and APIs of the ${channels.length} city editions in the network. Every record links to the original publisher; texts are never reproduced in full.
 
 - ${all.length} records, ${channels.length} cities, ${sources.size} publishers, ${langs.size} languages.
 - Human start page: ${SITE_URL}/

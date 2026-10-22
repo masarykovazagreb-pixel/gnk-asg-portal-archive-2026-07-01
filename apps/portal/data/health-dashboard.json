@@ -1,8 +1,8 @@
 {
   "version": "GNK_ASG_HEALTH_DASHBOARD_V1",
-  "generatedAt": "2026-10-21T14:47:31.660Z",
-  "date": "2026-10-21",
-  "overall": "warn",
+  "generatedAt": "2026-10-22T19:02:51.379Z",
+  "date": "2026-10-22",
+  "overall": "bad",
   "channels": [
     {
       "id": "zagreb",
@@ -12,9 +12,9 @@
       "lang": "hr",
       "url": "https://gnk-asg.hr/kanal/zagreb/",
       "items": 240,
-      "newest": "2026-10-21T11:37:04.000Z",
-      "age": 3.2,
-      "state": "ok"
+      "newest": "2026-10-22T06:03:10.000Z",
+      "age": 13,
+      "state": "warn"
     },
     {
       "id": "beograd",
@@ -24,9 +24,9 @@
       "lang": "sr",
       "url": "https://gnk-asg.hr/kanal/beograd/",
       "items": 240,
-      "newest": "2026-10-21T11:38:00.000Z",
-      "age": 3.2,
-      "state": "ok"
+      "newest": "2026-10-22T06:05:03.000Z",
+      "age": 13,
+      "state": "warn"
     },
     {
       "id": "sarajevo",
@@ -36,9 +36,9 @@
       "lang": "bs",
       "url": "https://gnk-asg.hr/kanal/sarajevo/",
       "items": 240,
-      "newest": "2026-10-21T12:29:35.000Z",
-      "age": 2.3,
-      "state": "ok"
+      "newest": "2026-10-22T07:04:47.000Z",
+      "age": 12,
+      "state": "warn"
     },
     {
       "id": "budimpesta",
@@ -48,9 +48,9 @@
       "lang": "hu",
       "url": "https://gnk-asg.hr/kanal/budimpesta/",
       "items": 240,
-      "newest": "2026-10-21T11:34:00.000Z",
-      "age": 3.2,
-      "state": "ok"
+      "newest": "2026-10-22T06:05:00.000Z",
+      "age": 13,
+      "state": "warn"
     },
     {
       "id": "ljubljana",
@@ -60,9 +60,9 @@
       "lang": "sl",
       "url": "https://gnk-asg.hr/kanal/ljubljana/",
       "items": 240,
-      "newest": "2026-10-21T11:35:00.000Z",
-      "age": 3.2,
-      "state": "ok"
+      "newest": "2026-10-22T06:06:13.000Z",
+      "age": 12.9,
+      "state": "warn"
     },
     {
       "id": "rim",
@@ -72,9 +72,9 @@
       "lang": "it",
       "url": "https://gnk-asg.hr/kanal/rim/",
       "items": 240,
-      "newest": "2026-10-21T11:27:08.000Z",
-      "age": 3.3,
-      "state": "ok"
+      "newest": "2026-10-22T06:01:26.000Z",
+      "age": 13,
+      "state": "warn"
     },
     {
       "id": "sofija",
@@ -84,9 +84,9 @@
       "lang": "bg",
       "url": "https://gnk-asg.hr/kanal/sofija/",
       "items": 240,
-      "newest": "2026-10-21T11:38:23.000Z",
-      "age": 3.2,
-      "state": "ok"
+      "newest": "2026-10-22T06:08:00.000Z",
+      "age": 12.9,
+      "state": "warn"
     },
     {
       "id": "bukurest",
@@ -96,24 +96,132 @@
       "lang": "ro",
       "url": "https://gnk-asg.hr/kanal/bukurest/",
       "items": 240,
-      "newest": "2026-10-21T11:41:51.523Z",
-      "age": 3.1,
-      "state": "ok"
+      "newest": "2026-10-22T06:09:47.794Z",
+      "age": 12.9,
+      "state": "warn"
+    },
+    {
+      "id": "nairobi",
+      "name": "AKTUAL MEDIA CHANNEL NAIROBI",
+      "city": "Nairobi",
+      "country": "Kenija",
+      "lang": "en",
+      "url": "https://gnk-asg.hr/kanal/nairobi/",
+      "items": 0,
+      "newest": null,
+      "age": null,
+      "state": "unknown"
+    },
+    {
+      "id": "jakarta",
+      "name": "AKTUAL MEDIA KANAL JAKARTA",
+      "city": "Jakarta",
+      "country": "Indonezija",
+      "lang": "id",
+      "url": "https://gnk-asg.hr/kanal/jakarta/",
+      "items": 0,
+      "newest": null,
+      "age": null,
+      "state": "unknown"
+    },
+    {
+      "id": "newyork",
+      "name": "AKTUAL MEDIA CHANNEL NEW YORK",
+      "city": "New York",
+      "country": "Sjedinjene Američke Države",
+      "lang": "en",
+      "url": "https://gnk-asg.hr/kanal/newyork/",
+      "items": 0,
+      "newest": null,
+      "age": null,
+      "state": "unknown"
+    },
+    {
+      "id": "saopaulo",
+      "name": "AKTUAL MEDIA CANAL SÃO PAULO",
+      "city": "São Paulo",
+      "country": "Brazil",
+      "lang": "pt",
+      "url": "https://gnk-asg.hr/kanal/saopaulo/",
+      "items": 0,
+      "newest": null,
+      "age": null,
+      "state": "unknown"
+    },
+    {
+      "id": "sydney",
+      "name": "AKTUAL MEDIA CHANNEL SYDNEY",
+      "city": "Sydney",
+      "country": "Australija",
+      "lang": "en",
+      "url": "https://gnk-asg.hr/kanal/sydney/",
+      "items": 0,
+      "newest": null,
+      "age": null,
+      "state": "unknown"
+    },
+    {
+      "id": "singapur",
+      "name": "AKTUAL MEDIA CHANNEL SINGAPUR",
+      "city": "Singapur",
+      "country": "Singapur",
+      "lang": "en",
+      "url": "https://gnk-asg.hr/kanal/singapur/",
+      "items": 0,
+      "newest": null,
+      "age": null,
+      "state": "unknown"
+    },
+    {
+      "id": "kairo",
+      "name": "AKTUAL MEDIA KANAL KAIRO",
+      "city": "Kairo",
+      "country": "Egipat",
+      "lang": "ar",
+      "url": "https://gnk-asg.hr/kanal/kairo/",
+      "items": 0,
+      "newest": null,
+      "age": null,
+      "state": "unknown"
+    },
+    {
+      "id": "tokio",
+      "name": "AKTUAL MEDIA KANAL TOKIO",
+      "city": "Tokio",
+      "country": "Japan",
+      "lang": "ja",
+      "url": "https://gnk-asg.hr/kanal/tokio/",
+      "items": 0,
+      "newest": null,
+      "age": null,
+      "state": "unknown"
+    },
+    {
+      "id": "peking",
+      "name": "AKTUAL MEDIA KANAL PEKING",
+      "city": "Peking",
+      "country": "Kina",
+      "lang": "zh",
+      "url": "https://gnk-asg.hr/kanal/peking/",
+      "items": 0,
+      "newest": null,
+      "age": null,
+      "state": "unknown"
     }
   ],
   "news": {
     "items": 300,
     "sources": 48,
-    "newest": "2026-10-21T14:27:21.000Z",
-    "ageHours": 0.3,
+    "newest": "2026-10-22T17:33:38.000Z",
+    "ageHours": 1.5,
     "state": "ok"
   },
   "fleet": {
-    "totalAutomations": 328,
-    "scheduled": 24,
-    "runsPerDay": 140,
-    "groups": 11,
-    "ungrouped": 0,
+    "totalAutomations": 340,
+    "scheduled": 29,
+    "runsPerDay": 204,
+    "groups": 12,
+    "ungrouped": 4,
     "runsCollectedAt": "2026-10-20T14:51:28.272Z",
     "failing": [
       {

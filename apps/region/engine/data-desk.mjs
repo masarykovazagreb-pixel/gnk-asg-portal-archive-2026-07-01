@@ -3,8 +3,9 @@
  * AKTUAL MEDIA — DATA DESK.
  *
  * Četiri stranice koje ne opisuju portal, nego ga mjere. Sve brojke se
- * računaju iz arhive osam gradskih izdanja (apps/region/data/*.json) u
- * trenutku gradnje — ništa se ne upisuje ručno i ništa se ne izmišlja.
+ * računaju iz arhive osam regionalnih gradskih izdanja (apps/region/data/*.json)
+ * u trenutku gradnje — ništa se ne upisuje ručno i ništa se ne izmišlja.
+ * Svjetska izdanja (pet kontinenata) imaju vlastita mjerenja u arhivi i dnevniku.
  *
  *   /aktual-media/nocna-smjena/   ↔ /en/aktual-media/the-3am-edition/
  *   /aktual-media/jedan-glas/     ↔ /en/aktual-media/one-voice/
@@ -76,7 +77,12 @@ const HOUR = 3600000;
 const NIGHT_START = 22;
 const NIGHT_END = 6;
 
-const channels = CHANNELS.map((channel) => {
+/* Podatkovni desk mjeri regionalnu arhivu: osam europskih izdanja koja su
+   nastala prije svjetske mreže. Mjerenje tako ostaje usporedivo između
+   gradova i ne mijenja se kad se doda novo izdanje na drugom kontinentu;
+   svjetska izdanja imaju svoje mjerenje u arhivi i dnevniku. */
+const REGION_IDS = ['zagreb', 'beograd', 'sarajevo', 'budimpesta', 'ljubljana', 'rim', 'sofija', 'bukurest'];
+const channels = CHANNELS.filter((channel) => REGION_IDS.includes(channel.id)).map((channel) => {
   const file = readJSON(join(DATA, `${channel.id}.json`), { items: [] });
   const items = (file.items || []).filter((item) => item && item.date && item.slug);
   const stamps = items.map((item) => Date.parse(item.date)).filter((value) => Number.isFinite(value));
@@ -352,8 +358,8 @@ const T = {
     agent: 'Pitaj asistenta',
     lang: 'English',
     more: 'Ostala mjerenja',
-    cities: 'Osam gradskih izdanja',
-    citiesNote: 'Svaka brojka na ovoj stranici dolazi iz arhive tih izdanja.',
+    cities: 'Osam regionalnih izdanja',
+    citiesNote: 'Svaka brojka na ovoj stranici dolazi iz arhive tih regionalnih izdanja; svjetska izdanja mjere se u arhivi i dnevniku.',
     method: 'Kako je izmjereno',
     methodBody: 'Brojke se računaju pri svakoj gradnji stranice iz datoteka arhive osam gradskih izdanja (po 420 zapisa). Ne prepisuju se ručno i ne zaokružuju naviše. Vremena su u UTC-u. Ako se arhiva promijeni, mijenja se i stranica — u istom ciklusu.',
     measured: 'Mjereno',
@@ -374,8 +380,8 @@ const T = {
     agent: 'Ask the assistant',
     lang: 'Hrvatski',
     more: 'Other measurements',
-    cities: 'The eight city editions',
-    citiesNote: 'Every number on this page comes from the archive of those editions.',
+    cities: 'The eight regional editions',
+    citiesNote: 'Every number on this page comes from the archive of those regional editions; world editions are measured in the archive and the daily.',
     method: 'How this was measured',
     methodBody: 'Numbers are computed on every build from the archive files of the eight city editions (420 records each). Nothing is typed by hand and nothing is rounded up. Times are UTC. When the archive changes, this page changes in the same cycle.',
     measured: 'Measured',

@@ -13,7 +13,7 @@
  *   apps/portal/data/news-automation-status.json   — središnji AKTUAL
  *   apps/portal/data/news.json                     — središnji feed
  *   apps/region/data/_status.json                  — ciklus izdanja
- *   apps/region/data/<kanal>.json                  — osam gradskih izdanja
+ *   apps/region/data/<kanal>.json                  — gradska izdanja iz channels.json
  *   apps/region/channels.json                      — nazivi, jezici, zone
  *   apps/portal/data/aktual-logos-v1.json          — znakovi (opcionalno)
  *
@@ -100,7 +100,7 @@ const centralMin = minutes(centralIso);
 const centralGrade = grade(centralMin, CENTRAL_SOFT_MIN, CENTRAL_HARD_MIN);
 const centralStamp = stamp(centralIso, 'Europe/Zagreb');
 
-/* ---------- osam gradskih izdanja ---------- */
+/* ---------- gradska izdanja (popis iz channels.json) ---------- */
 
 const regionChannels = (regionStatus.lastRun || {}).channels || {};
 const editions = channelsCfg.map((c) => {
@@ -203,11 +203,11 @@ function page(lang) {
   const hr = lang !== 'en';
   const canonical = hr ? `${SITE}/status/` : `${SITE}/en/status/`;
   const title = hr
-    ? 'Status ažurnosti — AKTUAL MEDIA i osam gradskih izdanja'
-    : 'Freshness status — AKTUAL MEDIA and its eight city editions';
+    ? `Status ažurnosti — AKTUAL MEDIA i ${channelsCfg.length} gradskih izdanja`
+    : `Freshness status — AKTUAL MEDIA and its ${channelsCfg.length} city editions`;
   const desc = hr
-    ? `Kada je svako izdanje AKTUAL MEDIA posljednji put obnovljeno: središnji feed, osam gradskih kanala i devet deskova, s pragovima po kojima se proglašava zastoj. Provjereno ${centralStamp.text}.`
-    : `When each AKTUAL MEDIA edition was last refreshed: the central feed, eight city channels and nine desks, with the thresholds that define a stall. Checked ${centralStamp.text}.`;
+    ? `Kada je svako izdanje AKTUAL MEDIA posljednji put obnovljeno: središnji feed, ${channelsCfg.length} gradskih kanala i devet deskova, s pragovima po kojima se proglašava zastoj. Provjereno ${centralStamp.text}.`
+    : `When each AKTUAL MEDIA edition was last refreshed: the central feed, ${channelsCfg.length} city channels and nine desks, with the thresholds that define a stall. Checked ${centralStamp.text}.`;
 
   const editionRows = editions.map((e) => row(e, lang)).join('\n      ');
   const deskRows = DESKS.map(([id, name]) => {
@@ -307,7 +307,7 @@ function page(lang) {
 
   <div class="grid">
     <div class="card"><b>${newsItems.length}</b><span>${hr ? 'tekstova u središnjem feedu' : 'items in the central feed'}</span></div>
-    <div class="card"><b>${editions.reduce((a, e) => a + e.items, 0)}</b><span>${hr ? 'tekstova u osam gradskih izdanja' : 'items across eight city editions'}</span></div>
+    <div class="card"><b>${editions.reduce((a, e) => a + e.items, 0)}</b><span>${hr ? `tekstova u ${editions.filter((e) => e.items > 0).length} izdanja s arhivom (od ${editions.length})` : `items across ${editions.filter((e) => e.items > 0).length} editions with an archive (of ${editions.length})`}</span></div>
     <div class="card"><b>${editions.reduce((a, e) => a + e.sourcesOk, 0)}/${editions.reduce((a, e) => a + e.sourcesTotal, 0)}</b><span>${hr ? 'izvora odgovorilo u zadnjem ciklusu' : 'sources answered in the last cycle'}</span></div>
   </div>
 

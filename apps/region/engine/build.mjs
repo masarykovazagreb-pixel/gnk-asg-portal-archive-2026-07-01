@@ -52,7 +52,10 @@ const themeOf = (item) => themeFor(`${item.title} ${item.summary}`).id;
 
 export const CITY_SHORT = {
   zagreb: 'Zagreb', beograd: 'Beograd', sarajevo: 'Sarajevo', budimpesta: 'Budimpešta',
-  ljubljana: 'Ljubljana', rim: 'Rim', sofija: 'Sofija', bukurest: 'Bukurešt'
+  ljubljana: 'Ljubljana', rim: 'Rim', sofija: 'Sofija', bukurest: 'Bukurešt',
+  /* Globalna izdanja — pet kontinenata izvan regije. */
+  nairobi: 'Nairobi', jakarta: 'Jakarta', newyork: 'New York', saopaulo: 'São Paulo',
+  sydney: 'Sydney', singapur: 'Singapur', kairo: 'Kairo', tokio: 'Tokio', peking: 'Peking'
 };
 
 function editionsStrip(channel) {
@@ -85,6 +88,26 @@ new IntersectionObserver(function(e){n.hidden=e[0].isIntersecting},{rootMargin:'
 }
 
 /* ---------- MRAVINJAK: gusti klaster naslova unutar izdanja ---------- */
+
+/* Naslovi i opisi stranica po jeziku. Ranije su bili hrvatski za sve kanale,
+   pa je japansko izdanje imalo hrvatski <title>. */
+const PAGE_WORDS = {
+  hr: { daily: 'dnevni osvrti', review: 'Osvrt', theme: (n, c) => `${n} osvrta u izdanju ${c}` },
+  sr: { daily: 'dnevni osvrti', review: 'Osvrt', theme: (n, c) => `${n} osvrta u izdanju ${c}` },
+  bs: { daily: 'dnevni osvrti', review: 'Osvrt', theme: (n, c) => `${n} osvrta u izdanju ${c}` },
+  hu: { daily: 'napi elemzés', review: 'Elemzés', theme: (n, c) => `${n} elemzés a(z) ${c} kiadásban` },
+  sl: { daily: 'dnevni osvrti', review: 'Osvrt', theme: (n, c) => `${n} osvrtov v izdaji ${c}` },
+  it: { daily: 'analisi quotidiane', review: 'Analisi', theme: (n, c) => `${n} analisi nell’edizione ${c}` },
+  bg: { daily: 'дневни анализи', review: 'Анализ', theme: (n, c) => `${n} анализа в изданието ${c}` },
+  ro: { daily: 'analize zilnice', review: 'Analiză', theme: (n, c) => `${n} analize în ediția ${c}` },
+  en: { daily: 'daily reviews', review: 'Review', theme: (n, c) => `${n} reviews in the ${c} edition` },
+  id: { daily: 'tinjauan harian', review: 'Tinjauan', theme: (n, c) => `${n} tinjauan dalam edisi ${c}` },
+  pt: { daily: 'revisões diárias', review: 'Revisão', theme: (n, c) => `${n} revisões na edição ${c}` },
+  ar: { daily: 'مراجعات يومية', review: 'مراجعة', theme: (n, c) => `${n} مراجعة في إصدار ${c}` },
+  ja: { daily: '日刊レビュー', review: 'レビュー', theme: (n, c) => `${c} の ${n} 本のレビュー` },
+  zh: { daily: '每日评论', review: '评论', theme: (n, c) => `${c} 的 ${n} 篇评论` }
+};
+const pageWords = (lang) => PAGE_WORDS[lang] || PAGE_WORDS.hr;
 
 const MRV = {
   hr: {
@@ -126,6 +149,36 @@ const MRV = {
     nav: 'Furnicar', title: 'Furnicar',
     lead: (n) => `Des, fără introducere: ${n} titluri în această ediție. Titlul duce la analiză, analiza la sursă — fără link nu există afirmație.`,
     all: 'Tot furnicarul', cross: 'Furnicarul tuturor edițiilor', source: 'sursă'
+  },
+  en: {
+    nav: 'Anthill', title: 'The anthill',
+    lead: (n) => `Dense, without an introduction: ${n} headlines in this edition. The headline leads to the review, the review to the original — nothing is claimed without a link.`,
+    all: 'The whole anthill', cross: 'The anthill of all editions', source: 'source'
+  },
+  id: {
+    nav: 'Sarang berita', title: 'Sarang berita',
+    lead: (n) => `Padat, tanpa pengantar: ${n} judul dalam edisi ini. Judul menuju tinjauan, tinjauan menuju sumber asli — tidak ada klaim tanpa tautan.`,
+    all: 'Seluruh sarang berita', cross: 'Sarang berita semua edisi', source: 'sumber'
+  },
+  pt: {
+    nav: 'Formigueiro', title: 'Formigueiro',
+    lead: (n) => `Denso, sem introdução: ${n} títulos nesta edição. O título leva à revisão, a revisão ao original — nada é afirmado sem link.`,
+    all: 'Formigueiro completo', cross: 'Formigueiro de todas as edições', source: 'fonte'
+  },
+  ar: {
+    nav: 'مستعمرة الأخبار', title: 'مستعمرة الأخبار',
+    lead: (n) => `مكثّف، بلا مقدمة: ${n} عنواناً في هذا الإصدار. العنوان يقود إلى المراجعة، والمراجعة إلى المصدر الأصلي — ولا ادعاء بلا رابط.`,
+    all: 'المستعمرة كاملة', cross: 'مستعمرة كل الإصدارات', source: 'المصدر'
+  },
+  ja: {
+    nav: 'ニュースの蟻塚', title: 'ニュースの蟻塚',
+    lead: (n) => `前置きなしで密集：この版の見出し${n}本。見出しはレビューへ、レビューは原文へ——リンクのない主張はありません。`,
+    all: '蟻塚のすべて', cross: 'すべての版の蟻塚', source: '情報源'
+  },
+  zh: {
+    nav: '新闻蚁丘', title: '新闻蚁丘',
+    lead: (n) => `密集呈现，不作导语：本版共 ${n} 条标题。标题通向评论，评论通向原文——没有链接就没有主张。`,
+    all: '全部蚁丘', cross: '所有版本的蚁丘', source: '来源'
   }
 };
 
@@ -262,21 +315,32 @@ export function loadChannel(channel) {
 
 const relRoot = '';
 const url = (channel, path = '') => `${channel.base}${path}`;
+/* Vrijeme gradnje: izdanje koje još nema zapisa ipak ima stranicu koja je
+   upravo obnovljena. Bez ovog fallbacka nove su stranice ostajale bez
+   datuma i bez dateModified u JSON-LD-u — što čitač vidi kao praznu stranicu. */
+const BUILD_ISO = new Date().toISOString();
 
 /* Engleska imena jezika — za "published in …" i jezični prekidač. */
 const COUNTRY_EN = {
   'Hrvatska': 'Croatia', 'Srbija': 'Serbia', 'Bosna i Hercegovina': 'Bosnia and Herzegovina',
   'Mađarska': 'Hungary', 'Slovenija': 'Slovenia', 'Italija': 'Italy',
-  'Bugarska': 'Bulgaria', 'Rumunjska': 'Romania'
+  'Bugarska': 'Bulgaria', 'Rumunjska': 'Romania',
+  'Kenija': 'Kenya', 'Indonezija': 'Indonesia', 'Sjedinjene Američke Države': 'United States',
+  'Brazil': 'Brazil', 'Australija': 'Australia', 'Singapur': 'Singapore',
+  'Egipat': 'Egypt', 'Japan': 'Japan', 'Kina': 'China'
 };
 const LANG_NAME = {
   hr: 'Croatian', sr: 'Serbian', bs: 'Bosnian', hu: 'Hungarian',
-  sl: 'Slovenian', it: 'Italian', bg: 'Bulgarian', ro: 'Romanian'
+  sl: 'Slovenian', it: 'Italian', bg: 'Bulgarian', ro: 'Romanian',
+  en: 'English', id: 'Indonesian', pt: 'Portuguese',
+  ar: 'Arabic', ja: 'Japanese', zh: 'Chinese'
 };
+/* Jezici koji se pišu zdesna nalijevo. */
+const RTL_LANGS = new Set(['ar', 'he', 'fa', 'ur']);
 
 /* ---------- HTML okvir ---------- */
 
-function shell(channel, strings, { title, description, path, keywords = [], jsonld = [], body, ogAlt = '', type = 'website', published, modified, root = '', image = '', lang = '', locale = '' }) {
+function shell(channel, strings, { title, description, path, keywords = [], jsonld = [], body, ogAlt = '', type = 'website', published, modified, root = '', image = '', lang = '', locale = '', robots = 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1', canonicalUrl = '' }) {
   const pageLang = lang || channel.lang;
   // The translated UI is t(lang).ui; locale belongs to the channel record, never strings.locale.
   const nativeLocale = String(channel.locale || `${channel.lang}-HR`).replace(/-/g, '_');
@@ -284,10 +348,14 @@ function shell(channel, strings, { title, description, path, keywords = [], json
   const alternateLocale = pageLang === 'en' ? nativeLocale : 'en_US';
   // Hreflang is valid only for equivalent language alternatives, not individual
   // article pages that merely link to the edition homepage/English overview.
-  const hasLanguageAlternative = path === '' || path === 'en/';
+  /* Engleska izdanja nemaju jezični par: /en/ je tada isti jezik i ne smije
+     se predstaviti kao prijevod. Za njih se hreflang ne ispisuje. */
+  const sameLanguageEdition = channel.lang === 'en';
+  const hasLanguageAlternative = !sameLanguageEdition && (path === '' || path === 'en/');
   const altOriginal = `${PUBLIC}/kanal/${channel.id}/`;
   const altEnglish = `${PUBLIC}/kanal/${channel.id}/en/`;
-  const canonical = url(channel, path);
+  const canonical = canonicalUrl || url(channel, path);
+  const dirAttr = RTL_LANGS.has(pageLang) ? ' dir="rtl"' : '';
   /* Ime autora se NE stavlja u meta keywords (pravilo repoa i CI gate);
      ono ide u JSON-LD i u vidljive hashtagove. */
   const tags = [...new Set(keywords.filter((k) => !/nermin|sefi[cć]/i.test(k)))].slice(0, 18);
@@ -345,13 +413,13 @@ const plainTags = [...new Map(tags.map((t) => String(t).replace(/^#/, '')).filte
   const ld = `<script type="application/ld+json">${safeJson(graph)}</script>`;
   const palette = channel.palette;
   return `<!doctype html>
-<html lang="${pageLang}">
+<html lang="${pageLang}"${dirAttr}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(truncate(description, 300))}">
-<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<meta name="robots" content="${esc(robots)}">
 <meta name="author" content="AKTUAL MEDIA d.o.o.">
 <meta name="editor" content="Nermin Sefić">
 <meta name="publisher" content="AKTUAL MEDIA d.o.o.">
@@ -480,7 +548,7 @@ function footer(channel, strings, extra = '') {
     <div>
       <h2>${esc(strings.publisher)}</h2>
       <p>AKTUAL MEDIA d.o.o. · GNK ASG<br>${esc(strings.editor)}: Nermin Sefić<br><a href="mailto:${CONTACT}">${CONTACT}</a></p>
-      <p class="iz-small">AKTUAL MEDIA vodi osam gradskih kanala, devet deskova, business tjednik, radio i podatkovni desk pod istim imenom i istom metodologijom. <a href="${CENTRAL}">AKTUAL MEDIA — sve na jednom mjestu →</a></p>
+      <p class="iz-small">AKTUAL MEDIA vodi ${CHANNELS.length} gradskih kanala, devet deskova, business tjednik, radio i podatkovni desk pod istim imenom i istom metodologijom. <a href="${CENTRAL}">AKTUAL MEDIA — sve na jednom mjestu →</a></p>
     </div>
     <div>
       <h2>${esc(strings.hashtags)}</h2>
@@ -522,10 +590,10 @@ function homePage(channel, strings, data) {
   <section class="intro intro--hero">
     <img class="heroimg" src="/assets/izdanja/${channel.id}-1200.webp" srcset="/assets/izdanja/${channel.id}-800.webp 800w, /assets/izdanja/${channel.id}-1200.webp 1200w" sizes="(max-width:760px) 100vw, 1200px" alt="${esc(channel.title)} — ${esc(channel.city)}, ${esc(channel.country)}" width="1200" height="675" fetchpriority="high" decoding="async">
     <div class="intro-main">
-      <p class="dateline">${esc(strings.daily)} · ${esc(longDate(new Date().toISOString().slice(0, 10), channel.lang))}${data.updatedAt ? (() => { const st = stampLocal(data.updatedAt, channel.lang, CHANNEL_TZ); return st ? ` · ${esc(strings.updated)} <time datetime="${esc(st.iso)}">${esc(st.stamp)}</time>` : ''; })() : ''}</p>
+      <p class="dateline">${esc(strings.daily)} · ${esc(longDate(new Date().toISOString().slice(0, 10), channel.lang))}${(() => { const st = stampLocal(data.updatedAt || BUILD_ISO, channel.lang, CHANNEL_TZ); return st ? ` · ${esc(strings.updated)} <time datetime="${esc(st.iso)}">${esc(st.stamp)}</time>` : ''; })()}</p>
       <h1>${esc(channel.title)}</h1>
       <p class="intro-text">${esc(strings.aboutText)}</p>
-      <p class="live"><span class="live-n"><b>${items.length}</b> ${esc(strings.latest).toLowerCase()}</span><span class="live-sep">·</span><span class="live-t"><time datetime="${esc(data.updatedAt || items[0]?.date || '')}">${esc(strings.updated)} ${esc((stampLocal(data.updatedAt || items[0]?.date, channel.lang, CHANNEL_TZ) || {}).stamp || shortDate((items[0]?.date || '').slice(0, 10), channel.lang))}</time></span></p>
+      <p class="live"><span class="live-n"><b>${items.length}</b> ${esc(strings.latest).toLowerCase()}</span><span class="live-sep">·</span><span class="live-t"><time datetime="${esc(data.updatedAt || items[0]?.date || BUILD_ISO)}">${esc(strings.updated)} ${esc((stampLocal(data.updatedAt || items[0]?.date || BUILD_ISO, channel.lang, CHANNEL_TZ) || {}).stamp || shortDate((items[0]?.date || BUILD_ISO).slice(0, 10), channel.lang))}</time></span></p>
       <p class="intro-tags">${channel.hashtags.map((h) => `<span class="tag">${esc(h)}</span>`).join(' ')}</p>
       <p class="hero-tags">Oznake izdanja: <a href="/nermin-sefic/">#NerminSefić</a> · <a href="/nermin-sefic/">#NerminSefic</a> · <a href="/autorske-objave/">#SeficNermin</a> · <a href="/autorske-objave/">#SEFICNERMIN</a> · <a href="/nermin-sefic/">#UrednikNerminSefić</a> · #AKTUALMEDIA · #GNKASG · ${esc(channel.hashtags[0] || '')}</p>
     </div>
@@ -585,8 +653,8 @@ ${footer(channel, strings)}`;
     publisher: { '@id': AKTUAL_NEWS_ENTITY_ID },
     editor: { '@id': `${PUBLIC}/#nermin-sefic` },
     /* Kad je izdanje stvarno obnovljeno — tražilica i čitatelj vide isti podatak. */
-    dateModified: data.updatedAt || undefined,
-    datePublished: data.updatedAt || undefined,
+    dateModified: data.updatedAt || items[0]?.date || BUILD_ISO,
+    datePublished: data.updatedAt || items[0]?.date || BUILD_ISO,
     isPartOf: { '@id': `${PUBLIC}/gnk-aktual/#webpage` },
     about: { '@type': 'Place', name: channel.city,
       address: { '@type': 'PostalAddress', addressLocality: channel.city, addressCountry: channel.country } },
@@ -620,7 +688,7 @@ ${footer(channel, strings)}`;
   return shell(channel, strings, {
     title: channel.id === 'zagreb'
       ? `${channel.title} — 10 provjerljivih objava dnevno: analize, rokovi, brojke i pojašnjenja`
-      : `${channel.title} — dnevni osvrti · ${channel.city}, ${channel.country} · ${new Date().toISOString().slice(0, 10)}`,
+      : `${channel.title} — ${pageWords(channel.lang).daily} · ${channel.cityNative || channel.city}, ${channel.countryNative || channel.country} · ${new Date().toISOString().slice(0, 10)}`,
     description: `${channel.title}: ${strings.aboutText}`,
     path: '',
     keywords: [...channel.hashtags, channel.country, channel.city, ...channel.sources.map((s) => s.name), 'AKTUAL MEDIA', 'GNK ASG'],
@@ -856,7 +924,7 @@ ${footer(channel, strings)}`;
 const feedItems = (channel, items) => items.slice(0, 240).map((item) => ({
   id: url(channel, `clanak/${item.slug}/`),
   url: url(channel, `clanak/${item.slug}/`),
-  title: `Osvrt: ${item.title}`,
+  title: `${pageWords(channel.lang).review}: ${item.title}`,
   summary: item.summary || item.title,
   date_published: item.date,
   authors: [{ name: 'AKTUAL MEDIA', url: channel.base }],
@@ -915,7 +983,9 @@ function writeSitemap(channel, data) {
     { loc: url(channel, 'mravinjak/'), priority: '0.7' },
     { loc: url(channel, 'izvori/'), priority: '0.6' },
     { loc: url(channel, 'metodologija/'), priority: '0.5' },
-    { loc: url(channel, 'en/'), priority: '0.6' },
+    /* Englesko izdanje nema /en/ prijevod — ta je stranica noindex alias, pa
+       ne smije u sitemap. Za ostale kanale /en/ je stvarni prijevod. */
+    ...(channel.lang === 'en' ? [] : [{ loc: url(channel, 'en/'), priority: '0.6' }]),
     ...[...new Set(data.items.map(themeOf))].map((id) => ({ loc: url(channel, `tema/${id}/`), priority: '0.5' })),
     ...channel.sources.map((s) => ({ loc: url(channel, `izvor/${s.id}/`), priority: '0.4' })),
     ...data.items.map((i) => ({ loc: url(channel, `clanak/${i.slug}/`), priority: '0.8', lastmod: i.date }))
@@ -1047,6 +1117,24 @@ ${footer(channel, strings)}`;
   });
 }
 
+function englishAlias(channel, strings, data) {
+  const title = `${channel.title} — English edition`;
+  const description = `${channel.title} is published in English. Open the edition for the latest ${data.items.length} reviews, sources and the archive.`;
+  const body = `${header(channel, strings, '', '../')}
+<main id="sadrzaj" class="page">
+  <h1>${esc(title)}</h1>
+  <p class="lead">${esc(description)}</p>
+  <p><a class="cta" href="../">Open the edition →</a></p>
+  <p class="small">This edition is written in English, so there is no separate translation. The canonical address is <a href="${esc(channel.base)}">${esc(channel.base)}</a>.</p>
+</main>
+${footer(channel, strings)}`;
+  return shell(channel, strings, {
+    title, description, path: 'en/', lang: 'en', locale: 'en_US', root: '../',
+    robots: 'noindex,follow', canonicalUrl: channel.base, body,
+    keywords: [...channel.hashtags, 'English', 'AKTUAL MEDIA']
+  });
+}
+
 export function buildChannel(channel) {
   const strings = t(channel.lang).ui;
   const data = loadChannel(channel);
@@ -1056,6 +1144,7 @@ export function buildChannel(channel) {
   // Dopunski izvori (optional) dobivaju stranicu i chip tek kada stvarno daju zapise.
   channel = {
     ...channel,
+    langName: LANG_NAME[channel.lang] || channel.lang,
     sources: channel.sources.filter((source) => !source.optional || data.items.some((item) => item.source === source.id))
   };
 
@@ -1081,7 +1170,7 @@ export function buildChannel(channel) {
   for (const [id, list] of byTheme) {
     write(`tema/${id}/index.html`, listPage(channel, strings, {
       title: `${strings.themeNames[id] || id} — ${channel.title}`,
-      description: `${strings.themeNames[id] || id}: ${list.length} osvrta u izdanju ${channel.title}.`,
+      description: pageWords(channel.lang).theme(list.length, channel.title),
       path: `tema/${id}/`, items: list,
       lead: `${strings.themeNames[id] || id} · ${channel.city} · ${list.length}`
     }));
@@ -1098,7 +1187,12 @@ export function buildChannel(channel) {
   }
 
   write('mravinjak/index.html', mravinjakPage(channel, strings, data));
-  write('en/index.html', englishPage(channel, strings, data));
+  /* Izdanje koje je već na engleskom ne dobiva drugi engleski članak —
+     to bi bio dvostruki sadržaj. /en/ tada je kratka stranica s poveznicom
+     na izdanje, označena kao noindex, a kanonska adresa je izdanje. */
+  write('en/index.html', channel.lang === 'en'
+    ? englishAlias(channel, strings, data)
+    : englishPage(channel, strings, data));
 
   write('izvori/index.html', listPage(channel, strings, {
     title: `${strings.sources} — ${channel.title}`,
@@ -1154,6 +1248,10 @@ const favicon = (channel) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0
 export const CSS = `*,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:#f6f4ef;color:#15191f;font:16px/1.62 Georgia,"Times New Roman",serif}
+html[lang="ja"] body,html[lang="zh"] body{font-family:"Hiragino Sans","Yu Gothic","Noto Sans JP","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;line-height:1.75}
+html[lang="ar"] body{font-family:"Geeza Pro","Noto Naskh Arabic","Noto Sans Arabic",Tahoma,system-ui,sans-serif;line-height:1.85}
+html[lang="ja"] h1,html[lang="zh"] h1,html[lang="ja"] h2,html[lang="zh"] h2{line-height:1.35}
+html[dir="rtl"] .hastag-line{direction:rtl}
 a{color:inherit;text-decoration:none}
 a:hover{text-decoration:underline}
 img{max-width:100%;height:auto}

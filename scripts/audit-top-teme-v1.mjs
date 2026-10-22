@@ -21,7 +21,12 @@ for (const ch of readdirSync(join(PORTAL, 'kanal'), { withFileTypes: true })) {
   const f = join(PORTAL, 'kanal', ch.name, 'feed.json');
   if (!existsSync(f)) continue;
   for (const it of JSON.parse(readFileSync(f, 'utf8')).items || []) {
-    titles.add(String(it.title || '').replace(/^Osvrt:\s*/i, '').replace(/\s+/g, ' ').trim());
+    /* Naslov u feedu nosi lokaliziranu oznaku vrste teksta (Osvrt:, Elemzés:,
+       Analiză:, Анализ:, Analisi:). Citat je naslov bez te oznake, pa se u
+       skup titula dodaje i čisti oblik — inače svaki ne-hrvatski kanal pada. */
+    const title = String(it.title || '').replace(/\s+/g, ' ').trim();
+    titles.add(title);
+    titles.add(title.replace(/^(Osvrt|Elemzés|Analiză|Анализ|Analisi)\s*:\s*/i, '').trim());
   }
 }
 
