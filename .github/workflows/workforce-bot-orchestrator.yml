@@ -18,6 +18,9 @@ on:
       - 'scripts/aktual-free-editorial-network-v1.mjs'
       - 'tests/test-aktual-free-editorial-network-v1.mjs'
       - 'tests/test-worker-agent-swarm-v1.mjs'
+      - 'tests/test-agent-factory-150-v1.mjs'
+      - 'scripts/agent-factory-150-v1.mjs'
+      - 'apps/world/site/**'
       - '.github/workflows/workforce-bot-orchestrator.yml'
   push:
     branches: [main]
@@ -72,6 +75,9 @@ jobs:
         if: always()
         shell: bash
         run: |
+          if [ -f artifacts/agent-factory-150/summary.md ]; then
+            cat artifacts/agent-factory-150/summary.md >> "$GITHUB_STEP_SUMMARY"
+          fi
           if [ -f artifacts/master-asg-agent-network/summary.md ]; then
             cat artifacts/master-asg-agent-network/summary.md >> "$GITHUB_STEP_SUMMARY"
           fi
@@ -96,6 +102,7 @@ jobs:
             artifacts/workforce-bot-orchestrator/assignment.json
             artifacts/worker-agent-swarm/
             artifacts/master-asg-agent-network/
+            artifacts/agent-factory-150/
             artifacts/aktual-editorial-network/
           if-no-files-found: warn
           retention-days: 14
