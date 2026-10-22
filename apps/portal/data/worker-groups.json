@@ -1,12 +1,12 @@
 {
   "note": "Groups are derived from real workflow files; worker profiles are a modeled catalogue.",
-  "total": 335,
+  "total": 336,
   "groups": [
     {
       "id": "izdanja",
       "name": "Izdanja i sadržaj",
       "nameEn": "Editions and content",
-      "automations": 65,
+      "automations": 66,
       "scheduled": 8,
       "runsPerDay": 39,
       "files": [
@@ -52,6 +52,11 @@
         },
         {
           "file": "check-aktual-all-pages-v2.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "check-aktual-media-brand-network.yml",
           "crons": [],
           "perDay": 0
         },
@@ -589,7 +594,7 @@
       "nameEn": "Maintenance and recovery",
       "automations": 41,
       "scheduled": 4,
-      "runsPerDay": 37,
+      "runsPerDay": 61,
       "files": [
         {
           "file": "bot-ownership-contract.yml",
@@ -748,9 +753,10 @@
         {
           "file": "ops-automation-sla-watchdog.yml",
           "crons": [
+            "12 * * * *",
             "42 * * * *"
           ],
-          "perDay": 24
+          "perDay": 48
         },
         {
           "file": "probe-mail-health-now.yml",
