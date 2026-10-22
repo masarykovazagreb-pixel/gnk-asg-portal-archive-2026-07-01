@@ -22,7 +22,11 @@
     "editorialHoldForUnverifiedClaims": true,
     "neverAttributeBotWritingToHuman": true,
     "originalVisualsOnly": true,
-    "protectCurrentRegionalFeeds": true
+    "protectCurrentRegionalFeeds": true,
+    "maxWorldSites": 15,
+    "worldHostingMaxRefreshesPerMonthPerSite": 4,
+    "worldDeployBudgetCeilingPerMonth": 60,
+    "worldLaunchBlockedUntilUsageValidated": true
   },
   "sites": [
     {
@@ -388,6 +392,62 @@
       "brand": "AKTUAL MEDIA",
       "parent": "GNK ASG d.o.o.",
       "hosting": "cloudflare-pages-free-candidate"
+    },
+    {
+      "id": "mumbai",
+      "city": "मुंबई",
+      "country": "India",
+      "lang": "hi",
+      "locale": "hi_IN",
+      "heading": "स्रोतों के साथ समाचार का स्वतंत्र विश्लेषण",
+      "description": "AKTUAL MEDIA सार्वजनिक समाचार स्रोतों को स्पष्ट रूप से उद्धृत करता है, तथ्यों और राय में अंतर रखता है और मूल पत्रकारिता के लिए सीधे लिंक देता है। हम अन्य प्रकाशकों के पूरे लेख पुनः प्रकाशित नहीं करते।",
+      "sourceLinks": [
+        {
+          "name": "The Hindu",
+          "url": "https://www.thehindu.com/"
+        },
+        {
+          "name": "The Indian Express",
+          "url": "https://indianexpress.com/"
+        },
+        {
+          "name": "Press Information Bureau",
+          "url": "https://pib.gov.in/"
+        }
+      ],
+      "draftHost": "gnk-asg-world-mumbai.pages.dev",
+      "editor": "Nermin Sefić",
+      "brand": "AKTUAL MEDIA",
+      "parent": "GNK ASG d.o.o.",
+      "hosting": "cloudflare-pages-free-candidate"
+    },
+    {
+      "id": "lagos",
+      "city": "Lagos",
+      "country": "Nigeria",
+      "lang": "en",
+      "locale": "en_NG",
+      "heading": "West African reporting with traceable sources",
+      "description": "AKTUAL MEDIA reads economic and civic reporting with transparent citations, distinguishes published facts from interpretation and connects Nigerian perspectives with our global editorial network.",
+      "sourceLinks": [
+        {
+          "name": "Premium Times",
+          "url": "https://www.premiumtimesng.com/"
+        },
+        {
+          "name": "The Guardian Nigeria",
+          "url": "https://guardian.ng/"
+        },
+        {
+          "name": "BusinessDay",
+          "url": "https://businessday.ng/"
+        }
+      ],
+      "draftHost": "gnk-asg-world-lagos.pages.dev",
+      "editor": "Nermin Sefić",
+      "brand": "AKTUAL MEDIA",
+      "parent": "GNK ASG d.o.o.",
+      "hosting": "cloudflare-pages-free-candidate"
     }
   ],
   "agents": [
@@ -521,6 +581,13 @@
       "id": "central-19",
       "scope": "platform",
       "role": "delivery-evidence",
+      "costTier": "free-only",
+      "mode": "audit-and-proposal"
+    },
+    {
+      "id": "central-20",
+      "scope": "platform",
+      "role": "regional-synchronization",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
     },
@@ -857,7 +924,7 @@
       "id": "world-new-york-2",
       "scope": "world",
       "channel": "new-york",
-      "role": "research-desk",
+      "role": "original-draft",
       "language": "en",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -866,7 +933,7 @@
       "id": "world-new-york-3",
       "scope": "world",
       "channel": "new-york",
-      "role": "original-draft",
+      "role": "localization-qa",
       "language": "en",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -875,7 +942,7 @@
       "id": "world-new-york-4",
       "scope": "world",
       "channel": "new-york",
-      "role": "localization-qa",
+      "role": "art-direction",
       "language": "en",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -884,22 +951,13 @@
       "id": "world-new-york-5",
       "scope": "world",
       "channel": "new-york",
-      "role": "art-direction",
-      "language": "en",
-      "costTier": "free-only",
-      "mode": "audit-and-proposal"
-    },
-    {
-      "id": "world-new-york-6",
-      "scope": "world",
-      "channel": "new-york",
       "role": "seo-and-social",
       "language": "en",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
     },
     {
-      "id": "world-new-york-7",
+      "id": "world-new-york-6",
       "scope": "world",
       "channel": "new-york",
       "role": "review-gate",
@@ -920,7 +978,7 @@
       "id": "world-london-2",
       "scope": "world",
       "channel": "london",
-      "role": "research-desk",
+      "role": "original-draft",
       "language": "en",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -929,7 +987,7 @@
       "id": "world-london-3",
       "scope": "world",
       "channel": "london",
-      "role": "original-draft",
+      "role": "localization-qa",
       "language": "en",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -938,7 +996,7 @@
       "id": "world-london-4",
       "scope": "world",
       "channel": "london",
-      "role": "localization-qa",
+      "role": "art-direction",
       "language": "en",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -947,22 +1005,13 @@
       "id": "world-london-5",
       "scope": "world",
       "channel": "london",
-      "role": "art-direction",
-      "language": "en",
-      "costTier": "free-only",
-      "mode": "audit-and-proposal"
-    },
-    {
-      "id": "world-london-6",
-      "scope": "world",
-      "channel": "london",
       "role": "seo-and-social",
       "language": "en",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
     },
     {
-      "id": "world-london-7",
+      "id": "world-london-6",
       "scope": "world",
       "channel": "london",
       "role": "review-gate",
@@ -983,7 +1032,7 @@
       "id": "world-paris-2",
       "scope": "world",
       "channel": "paris",
-      "role": "research-desk",
+      "role": "original-draft",
       "language": "fr",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -992,7 +1041,7 @@
       "id": "world-paris-3",
       "scope": "world",
       "channel": "paris",
-      "role": "original-draft",
+      "role": "localization-qa",
       "language": "fr",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1001,7 +1050,7 @@
       "id": "world-paris-4",
       "scope": "world",
       "channel": "paris",
-      "role": "localization-qa",
+      "role": "art-direction",
       "language": "fr",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1010,22 +1059,13 @@
       "id": "world-paris-5",
       "scope": "world",
       "channel": "paris",
-      "role": "art-direction",
-      "language": "fr",
-      "costTier": "free-only",
-      "mode": "audit-and-proposal"
-    },
-    {
-      "id": "world-paris-6",
-      "scope": "world",
-      "channel": "paris",
       "role": "seo-and-social",
       "language": "fr",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
     },
     {
-      "id": "world-paris-7",
+      "id": "world-paris-6",
       "scope": "world",
       "channel": "paris",
       "role": "review-gate",
@@ -1046,7 +1086,7 @@
       "id": "world-berlin-2",
       "scope": "world",
       "channel": "berlin",
-      "role": "research-desk",
+      "role": "original-draft",
       "language": "de",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1055,7 +1095,7 @@
       "id": "world-berlin-3",
       "scope": "world",
       "channel": "berlin",
-      "role": "original-draft",
+      "role": "localization-qa",
       "language": "de",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1064,7 +1104,7 @@
       "id": "world-berlin-4",
       "scope": "world",
       "channel": "berlin",
-      "role": "localization-qa",
+      "role": "art-direction",
       "language": "de",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1073,22 +1113,13 @@
       "id": "world-berlin-5",
       "scope": "world",
       "channel": "berlin",
-      "role": "art-direction",
-      "language": "de",
-      "costTier": "free-only",
-      "mode": "audit-and-proposal"
-    },
-    {
-      "id": "world-berlin-6",
-      "scope": "world",
-      "channel": "berlin",
       "role": "seo-and-social",
       "language": "de",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
     },
     {
-      "id": "world-berlin-7",
+      "id": "world-berlin-6",
       "scope": "world",
       "channel": "berlin",
       "role": "review-gate",
@@ -1109,7 +1140,7 @@
       "id": "world-madrid-2",
       "scope": "world",
       "channel": "madrid",
-      "role": "research-desk",
+      "role": "original-draft",
       "language": "es",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1118,7 +1149,7 @@
       "id": "world-madrid-3",
       "scope": "world",
       "channel": "madrid",
-      "role": "original-draft",
+      "role": "localization-qa",
       "language": "es",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1127,7 +1158,7 @@
       "id": "world-madrid-4",
       "scope": "world",
       "channel": "madrid",
-      "role": "localization-qa",
+      "role": "art-direction",
       "language": "es",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1136,22 +1167,13 @@
       "id": "world-madrid-5",
       "scope": "world",
       "channel": "madrid",
-      "role": "art-direction",
-      "language": "es",
-      "costTier": "free-only",
-      "mode": "audit-and-proposal"
-    },
-    {
-      "id": "world-madrid-6",
-      "scope": "world",
-      "channel": "madrid",
       "role": "seo-and-social",
       "language": "es",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
     },
     {
-      "id": "world-madrid-7",
+      "id": "world-madrid-6",
       "scope": "world",
       "channel": "madrid",
       "role": "review-gate",
@@ -1172,7 +1194,7 @@
       "id": "world-sao-paulo-2",
       "scope": "world",
       "channel": "sao-paulo",
-      "role": "research-desk",
+      "role": "original-draft",
       "language": "pt",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1181,7 +1203,7 @@
       "id": "world-sao-paulo-3",
       "scope": "world",
       "channel": "sao-paulo",
-      "role": "original-draft",
+      "role": "localization-qa",
       "language": "pt",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1190,7 +1212,7 @@
       "id": "world-sao-paulo-4",
       "scope": "world",
       "channel": "sao-paulo",
-      "role": "localization-qa",
+      "role": "art-direction",
       "language": "pt",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1199,22 +1221,13 @@
       "id": "world-sao-paulo-5",
       "scope": "world",
       "channel": "sao-paulo",
-      "role": "art-direction",
-      "language": "pt",
-      "costTier": "free-only",
-      "mode": "audit-and-proposal"
-    },
-    {
-      "id": "world-sao-paulo-6",
-      "scope": "world",
-      "channel": "sao-paulo",
       "role": "seo-and-social",
       "language": "pt",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
     },
     {
-      "id": "world-sao-paulo-7",
+      "id": "world-sao-paulo-6",
       "scope": "world",
       "channel": "sao-paulo",
       "role": "review-gate",
@@ -1235,7 +1248,7 @@
       "id": "world-mexico-city-2",
       "scope": "world",
       "channel": "mexico-city",
-      "role": "research-desk",
+      "role": "original-draft",
       "language": "es",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1244,7 +1257,7 @@
       "id": "world-mexico-city-3",
       "scope": "world",
       "channel": "mexico-city",
-      "role": "original-draft",
+      "role": "localization-qa",
       "language": "es",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1253,7 +1266,7 @@
       "id": "world-mexico-city-4",
       "scope": "world",
       "channel": "mexico-city",
-      "role": "localization-qa",
+      "role": "art-direction",
       "language": "es",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1262,22 +1275,13 @@
       "id": "world-mexico-city-5",
       "scope": "world",
       "channel": "mexico-city",
-      "role": "art-direction",
-      "language": "es",
-      "costTier": "free-only",
-      "mode": "audit-and-proposal"
-    },
-    {
-      "id": "world-mexico-city-6",
-      "scope": "world",
-      "channel": "mexico-city",
       "role": "seo-and-social",
       "language": "es",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
     },
     {
-      "id": "world-mexico-city-7",
+      "id": "world-mexico-city-6",
       "scope": "world",
       "channel": "mexico-city",
       "role": "review-gate",
@@ -1298,7 +1302,7 @@
       "id": "world-tokyo-2",
       "scope": "world",
       "channel": "tokyo",
-      "role": "research-desk",
+      "role": "original-draft",
       "language": "ja",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1307,7 +1311,7 @@
       "id": "world-tokyo-3",
       "scope": "world",
       "channel": "tokyo",
-      "role": "original-draft",
+      "role": "localization-qa",
       "language": "ja",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1316,7 +1320,7 @@
       "id": "world-tokyo-4",
       "scope": "world",
       "channel": "tokyo",
-      "role": "localization-qa",
+      "role": "art-direction",
       "language": "ja",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1325,22 +1329,13 @@
       "id": "world-tokyo-5",
       "scope": "world",
       "channel": "tokyo",
-      "role": "art-direction",
-      "language": "ja",
-      "costTier": "free-only",
-      "mode": "audit-and-proposal"
-    },
-    {
-      "id": "world-tokyo-6",
-      "scope": "world",
-      "channel": "tokyo",
       "role": "seo-and-social",
       "language": "ja",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
     },
     {
-      "id": "world-tokyo-7",
+      "id": "world-tokyo-6",
       "scope": "world",
       "channel": "tokyo",
       "role": "review-gate",
@@ -1361,7 +1356,7 @@
       "id": "world-seoul-2",
       "scope": "world",
       "channel": "seoul",
-      "role": "research-desk",
+      "role": "original-draft",
       "language": "ko",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1370,7 +1365,7 @@
       "id": "world-seoul-3",
       "scope": "world",
       "channel": "seoul",
-      "role": "original-draft",
+      "role": "localization-qa",
       "language": "ko",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1379,7 +1374,7 @@
       "id": "world-seoul-4",
       "scope": "world",
       "channel": "seoul",
-      "role": "localization-qa",
+      "role": "art-direction",
       "language": "ko",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1388,22 +1383,13 @@
       "id": "world-seoul-5",
       "scope": "world",
       "channel": "seoul",
-      "role": "art-direction",
-      "language": "ko",
-      "costTier": "free-only",
-      "mode": "audit-and-proposal"
-    },
-    {
-      "id": "world-seoul-6",
-      "scope": "world",
-      "channel": "seoul",
       "role": "seo-and-social",
       "language": "ko",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
     },
     {
-      "id": "world-seoul-7",
+      "id": "world-seoul-6",
       "scope": "world",
       "channel": "seoul",
       "role": "review-gate",
@@ -1424,7 +1410,7 @@
       "id": "world-singapore-2",
       "scope": "world",
       "channel": "singapore",
-      "role": "research-desk",
+      "role": "original-draft",
       "language": "en",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1433,7 +1419,7 @@
       "id": "world-singapore-3",
       "scope": "world",
       "channel": "singapore",
-      "role": "original-draft",
+      "role": "localization-qa",
       "language": "en",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1442,7 +1428,7 @@
       "id": "world-singapore-4",
       "scope": "world",
       "channel": "singapore",
-      "role": "localization-qa",
+      "role": "art-direction",
       "language": "en",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1451,22 +1437,13 @@
       "id": "world-singapore-5",
       "scope": "world",
       "channel": "singapore",
-      "role": "art-direction",
-      "language": "en",
-      "costTier": "free-only",
-      "mode": "audit-and-proposal"
-    },
-    {
-      "id": "world-singapore-6",
-      "scope": "world",
-      "channel": "singapore",
       "role": "seo-and-social",
       "language": "en",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
     },
     {
-      "id": "world-singapore-7",
+      "id": "world-singapore-6",
       "scope": "world",
       "channel": "singapore",
       "role": "review-gate",
@@ -1487,7 +1464,7 @@
       "id": "world-dubai-2",
       "scope": "world",
       "channel": "dubai",
-      "role": "research-desk",
+      "role": "original-draft",
       "language": "ar",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1496,7 +1473,7 @@
       "id": "world-dubai-3",
       "scope": "world",
       "channel": "dubai",
-      "role": "original-draft",
+      "role": "localization-qa",
       "language": "ar",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1505,7 +1482,7 @@
       "id": "world-dubai-4",
       "scope": "world",
       "channel": "dubai",
-      "role": "localization-qa",
+      "role": "art-direction",
       "language": "ar",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1514,22 +1491,13 @@
       "id": "world-dubai-5",
       "scope": "world",
       "channel": "dubai",
-      "role": "art-direction",
-      "language": "ar",
-      "costTier": "free-only",
-      "mode": "audit-and-proposal"
-    },
-    {
-      "id": "world-dubai-6",
-      "scope": "world",
-      "channel": "dubai",
       "role": "seo-and-social",
       "language": "ar",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
     },
     {
-      "id": "world-dubai-7",
+      "id": "world-dubai-6",
       "scope": "world",
       "channel": "dubai",
       "role": "review-gate",
@@ -1550,7 +1518,7 @@
       "id": "world-nairobi-2",
       "scope": "world",
       "channel": "nairobi",
-      "role": "research-desk",
+      "role": "original-draft",
       "language": "sw",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1559,7 +1527,7 @@
       "id": "world-nairobi-3",
       "scope": "world",
       "channel": "nairobi",
-      "role": "original-draft",
+      "role": "localization-qa",
       "language": "sw",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1568,7 +1536,7 @@
       "id": "world-nairobi-4",
       "scope": "world",
       "channel": "nairobi",
-      "role": "localization-qa",
+      "role": "art-direction",
       "language": "sw",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1577,22 +1545,13 @@
       "id": "world-nairobi-5",
       "scope": "world",
       "channel": "nairobi",
-      "role": "art-direction",
-      "language": "sw",
-      "costTier": "free-only",
-      "mode": "audit-and-proposal"
-    },
-    {
-      "id": "world-nairobi-6",
-      "scope": "world",
-      "channel": "nairobi",
       "role": "seo-and-social",
       "language": "sw",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
     },
     {
-      "id": "world-nairobi-7",
+      "id": "world-nairobi-6",
       "scope": "world",
       "channel": "nairobi",
       "role": "review-gate",
@@ -1613,7 +1572,7 @@
       "id": "world-sydney-2",
       "scope": "world",
       "channel": "sydney",
-      "role": "research-desk",
+      "role": "original-draft",
       "language": "en",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1622,7 +1581,7 @@
       "id": "world-sydney-3",
       "scope": "world",
       "channel": "sydney",
-      "role": "original-draft",
+      "role": "localization-qa",
       "language": "en",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1631,7 +1590,7 @@
       "id": "world-sydney-4",
       "scope": "world",
       "channel": "sydney",
-      "role": "localization-qa",
+      "role": "art-direction",
       "language": "en",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1640,7 +1599,7 @@
       "id": "world-sydney-5",
       "scope": "world",
       "channel": "sydney",
-      "role": "art-direction",
+      "role": "seo-and-social",
       "language": "en",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
@@ -1649,15 +1608,114 @@
       "id": "world-sydney-6",
       "scope": "world",
       "channel": "sydney",
+      "role": "review-gate",
+      "language": "en",
+      "costTier": "free-only",
+      "mode": "audit-and-proposal"
+    },
+    {
+      "id": "world-mumbai-1",
+      "scope": "world",
+      "channel": "mumbai",
+      "role": "source-monitor",
+      "language": "hi",
+      "costTier": "free-only",
+      "mode": "audit-and-proposal"
+    },
+    {
+      "id": "world-mumbai-2",
+      "scope": "world",
+      "channel": "mumbai",
+      "role": "original-draft",
+      "language": "hi",
+      "costTier": "free-only",
+      "mode": "audit-and-proposal"
+    },
+    {
+      "id": "world-mumbai-3",
+      "scope": "world",
+      "channel": "mumbai",
+      "role": "localization-qa",
+      "language": "hi",
+      "costTier": "free-only",
+      "mode": "audit-and-proposal"
+    },
+    {
+      "id": "world-mumbai-4",
+      "scope": "world",
+      "channel": "mumbai",
+      "role": "art-direction",
+      "language": "hi",
+      "costTier": "free-only",
+      "mode": "audit-and-proposal"
+    },
+    {
+      "id": "world-mumbai-5",
+      "scope": "world",
+      "channel": "mumbai",
+      "role": "seo-and-social",
+      "language": "hi",
+      "costTier": "free-only",
+      "mode": "audit-and-proposal"
+    },
+    {
+      "id": "world-mumbai-6",
+      "scope": "world",
+      "channel": "mumbai",
+      "role": "review-gate",
+      "language": "hi",
+      "costTier": "free-only",
+      "mode": "audit-and-proposal"
+    },
+    {
+      "id": "world-lagos-1",
+      "scope": "world",
+      "channel": "lagos",
+      "role": "source-monitor",
+      "language": "en",
+      "costTier": "free-only",
+      "mode": "audit-and-proposal"
+    },
+    {
+      "id": "world-lagos-2",
+      "scope": "world",
+      "channel": "lagos",
+      "role": "original-draft",
+      "language": "en",
+      "costTier": "free-only",
+      "mode": "audit-and-proposal"
+    },
+    {
+      "id": "world-lagos-3",
+      "scope": "world",
+      "channel": "lagos",
+      "role": "localization-qa",
+      "language": "en",
+      "costTier": "free-only",
+      "mode": "audit-and-proposal"
+    },
+    {
+      "id": "world-lagos-4",
+      "scope": "world",
+      "channel": "lagos",
+      "role": "art-direction",
+      "language": "en",
+      "costTier": "free-only",
+      "mode": "audit-and-proposal"
+    },
+    {
+      "id": "world-lagos-5",
+      "scope": "world",
+      "channel": "lagos",
       "role": "seo-and-social",
       "language": "en",
       "costTier": "free-only",
       "mode": "audit-and-proposal"
     },
     {
-      "id": "world-sydney-7",
+      "id": "world-lagos-6",
       "scope": "world",
-      "channel": "sydney",
+      "channel": "lagos",
       "role": "review-gate",
       "language": "en",
       "costTier": "free-only",
