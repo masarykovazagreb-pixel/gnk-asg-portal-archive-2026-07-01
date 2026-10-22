@@ -71,7 +71,12 @@ const news = wf('gnk-news-refresh-v2.yml');
 if (!/gh workflow run gnk-news-refresh-v2\.yml/.test(news)) fails.push('news: kad se main pomakne, nema odmah novog ciklusa (čeka se do 4 h)');
 
 const indexRefresh = wf('refresh-index-live-data.yml');
-if (!indexRefresh.includes("'gnk-asg-index-refresh'")) fails.push('refresh-index-live-data nije dobio vlastitu concurrency grupu');
+/* Raspored ovog posla piše u main (git push HEAD:main), pa mora biti u
+   dijeljenoj grupi pisaca — ali bez cancel-in-progress, da ne prekida tuđi
+   ciklus. PR provjere ostaju u vlastitoj grupi. */
+if (!indexRefresh.includes("'gnk-asg-main-mutation'")) fails.push('refresh-index-live-data ne dijeli grupu pisaca (može pregaziti tuđi commit)');
+if (/cancel-in-progress:\s*true/.test(indexRefresh)) fails.push('refresh-index-live-data prekida pisce (cancel-in-progress: true)');
+if (!indexRefresh.includes('refresh-index-live-data-')) fails.push('refresh-index-live-data: PR provjere nemaju vlastitu grupu');
 
 /* ---------- 3. vrijeme na svakom izdanju ---------- */
 

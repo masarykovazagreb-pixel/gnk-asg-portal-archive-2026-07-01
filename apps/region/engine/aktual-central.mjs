@@ -100,18 +100,35 @@ function tile({ href, img, alt, external = false, badge = '', small = false, sub
   </li>`;
 }
 
-function cityTiles(cards) {
+const CITY_ALT_EN = {
+  zagreb: 'AKTUAL MEDIA KANAL ZAGREB — Croatia, Croatian. A daily review of domestic media and ten verifiable stories. Click opens the edition.',
+  beograd: 'AKTUAL MEDIA KANAL BEOGRAD — Serbia, Serbian. N1, Danas, Nova and Politika, reviews with a link to the original. Click opens the edition.',
+  sarajevo: 'AKTUAL MEDIA KANAL SARAJEVO — Bosnia and Herzegovina, Bosnian. N1 BiH, Klix, Oslobođenje and Avaz, politics and security in the region. Click opens the edition.',
+  budimpesta: 'AKTUAL MEDIA KANAL BUDAPEST — Hungary, Hungarian. Telex, 444, HVG and Portfolio: budget, inflation, energy. Click opens the edition.',
+  ljubljana: 'AKTUAL MEDIA KANAL LJUBLJANA — Slovenia, Slovenian. Delo, Večer, 24ur and Slovenske novice: economy and politics. Click opens the edition.',
+  rim: 'AKTUAL MEDIA KANAL ROMA — Italy, Italian. ANSA, la Repubblica, Il Post and Il Sole 24 Ore: markets and the EU. Click opens the edition.',
+  sofija: 'AKTUAL MEDIA KANAL SOFIJA — Bulgaria, Bulgarian. BTA, Capital, Mediapool and Dnevnik: energy and funds. Click opens the edition.',
+  bukurest: 'AKTUAL MEDIA KANAL BUCUREȘTI — Romania, Romanian. Agerpres, HotNews, Ziarul Financiar and Profit.ro: the economy. Click opens the edition.'
+};
+
+function cityTiles(cards, lang = 'hr') {
+  const en = lang === 'en';
   return CHANNELS.map((c) => {
     const card = cards.find((x) => x.id === c.id) || {};
     return tile({
-      href: c.base, img: `${c.id}-tile.webp`, alt: CITY_ALT[c.id] || `${c.title} — klik otvara izdanje.`,
-      external: true, badge: card.count ? `${card.count} tekstova` : '',
-      sub: { href: `${c.base}mravinjak/`, label: 'Mravinjak', cta: card.count ? `svih ${card.count} naslova` : 'svi naslovi' }
+      href: c.base, img: `${c.id}-tile.webp`,
+      alt: (en ? CITY_ALT_EN[c.id] : CITY_ALT[c.id]) || `${c.title} — ${en ? 'click opens the edition.' : 'klik otvara izdanje.'}`,
+      external: true, badge: card.count ? `${card.count} ${en ? 'stories' : 'tekstova'}` : '',
+      sub: {
+        href: `${c.base}mravinjak/`,
+        label: en ? 'News anthill' : 'Mravinjak',
+        cta: card.count ? (en ? `all ${card.count} headlines` : `svih ${card.count} naslova`) : (en ? 'all headlines' : 'svi naslovi')
+      }
     });
   }).join('');
 }
 
-function deskTiles(items, gallery) {
+function deskTiles(items, gallery, lang = 'hr') {
   const DESK_RE = {
     moda: MODA_RE,
     putovanja: /putovanj|turiz|hotel|destinacij|plaž|plaz|letov|krstar|aviokart|aerodrom|viza|izlet|advent|sezon|gostiju|noćenj|nocenj|kampu|kamp|planinar|bicikl|vlak|trajekt/i,
@@ -121,13 +138,26 @@ function deskTiles(items, gallery) {
   const count = (id) => DESK_RE[id]
     ? items.filter((i) => DESK_RE[id].test(`${i.title} ${i.summary}`)).length
     : items.filter((i) => i.theme === ({ sport: 'sport', politika: 'politika', sigurnost: 'sigurnost', biznis: 'ekonomija', tehnologija: 'ai' }[id] || '')).length;
+  const en = lang === 'en';
+  const DESK_ALT_EN = {
+    sport: 'Sport — an AKTUAL MEDIA desk with results and reviews from all eight channels. Click opens the sport desk.',
+    politika: 'Politics — an AKTUAL MEDIA desk: the same decision does not look the same in eight countries. Click opens the politics desk.',
+    sigurnost: 'Security — an AKTUAL MEDIA desk: intelligence topics, cyber and takeovers. Click opens the security desk.',
+    biznis: 'Business — an AKTUAL MEDIA desk: markets, balance sheets and capital from eight countries. Click opens the business desk.',
+    tehnologija: 'Technology — an AKTUAL MEDIA desk: artificial intelligence, platforms and data centres. Click opens the technology desk.',
+    moda: 'Mode Weekly — an AKTUAL MEDIA desk: collections, brands and the business models behind them. Click opens the mode desk.',
+    putovanja: 'Travel — an AKTUAL MEDIA desk: destinations, season and the real cost of the trip. Click opens the travel desk.',
+    ljubimci: 'Pets — an AKTUAL MEDIA desk: adoption, veterinary care and city rules. Click opens the pets desk.',
+    svijet: 'World — an AKTUAL MEDIA desk: the global frame for local decisions, from energy to migration. Click opens the world desk.'
+  };
   const desks = ['sport', 'politika', 'sigurnost', 'biznis', 'tehnologija', 'moda', 'putovanja', 'ljubimci', 'svijet'].map((id) => tile({
-    href: `/izdanja/${id}/`, img: `${id}-tile.webp`, alt: DESK_ALT[id], badge: `${count(id)} tekstova`
+    href: `/izdanja/${id}/`, img: `${id}-tile.webp`, alt: en ? DESK_ALT_EN[id] : DESK_ALT[id],
+    badge: `${count(id)} ${en ? 'stories' : 'tekstova'}`
   })).join('');
   const extra = [
-    { href: '/galerija/', img: 'galerija-tile.webp', alt: `Galerija Nermina Sefića — ${gallery.count || 63} stranica s portretima i vizualima. Klik otvara galeriju.`, badge: `${gallery.count || 63} stranica` },
-    { href: '/radio/', img: 'radio-tile.webp', alt: 'AKTUAL MEDIA RADIO — diskretni player i popis javnih radijskih kuća osam zemalja. Klik otvara radio.', badge: '8 zemalja' },
-    { href: '/knowledge-center/', img: 'znanje-tile.webp', alt: 'Centar znanja — odgovori o grupi, projektima i financijama s poveznicom na dokument. Klik otvara centar znanja.', badge: 'odgovori' }
+    { href: '/galerija/', img: 'galerija-tile.webp', alt: en ? `Nermin Sefić gallery — ${gallery.count || 63} pages of portraits and visuals. Click opens the gallery.` : `Galerija Nermina Sefića — ${gallery.count || 63} stranica s portretima i vizualima. Klik otvara galeriju.`, badge: `${gallery.count || 63} ${en ? 'pages' : 'stranica'}` },
+    { href: '/radio/', img: 'radio-tile.webp', alt: en ? 'AKTUAL MEDIA RADIO — a discreet player and a list of public radio stations from eight countries. Click opens the radio.' : 'AKTUAL MEDIA RADIO — diskretni player i popis javnih radijskih kuća osam zemalja. Klik otvara radio.', badge: en ? '8 countries' : '8 zemalja' },
+    { href: '/knowledge-center/', img: 'znanje-tile.webp', alt: en ? 'Knowledge Center — answers about the group, projects and finances with a link to the document. Click opens the Knowledge Center.' : 'Centar znanja — odgovori o grupi, projektima i financijama s poveznicom na dokument. Klik otvara centar znanja.', badge: en ? 'answers' : 'odgovori' }
   ].map((x) => `<li class="amc-tile amc-tile--small">
       <a class="amc-tile-link amc-tile-link--text" href="${esc(x.href)}" aria-label="${esc(x.alt)}">
         <span class="amc-tile-kicker">AKTUAL MEDIA</span>
@@ -601,10 +631,17 @@ export function buildAktualCentral({ cards = [] } = {}) {
   const third = Math.ceil(river.length / 3);
   const columns = [river.slice(0, third), river.slice(third, third * 2), river.slice(third * 2)];
 
-  const stripe = [
-    ['8', 'gradskih izdanja'], [String(items.length), 'tekstova u arhivi'], [String(sources.size), 'medijskih izvora'],
-    [String(gallery.count || 63), 'stranica galerije'], ['8', 'jezika'], ['9', 'deskova i platformi']
-  ].map(([n, l]) => `<li><b>${esc(n)}</b><span>${esc(l)}</span></li>`).join('');
+  const stripeFor = (lang) => {
+    const en = lang === 'en';
+    return [
+      ['8', en ? 'city editions' : 'gradskih izdanja'],
+      [String(items.length), en ? 'stories in the archive' : 'tekstova u arhivi'],
+      [String(sources.size), en ? 'media sources' : 'medijskih izvora'],
+      [String(gallery.count || 63), en ? 'gallery pages' : 'stranica galerije'],
+      ['8', en ? 'languages' : 'jezika'],
+      ['9', en ? 'desks and platforms' : 'deskova i platformi']
+    ].map(([n, l]) => `<li><b>${esc(n)}</b><span>${esc(l)}</span></li>`).join('');
+  };
 
   /* Stranica već nosi svoj CollectionPage čvor (glavni generator) s
      publisherom i mainEntity popisom. Ovaj blok zato NE ponavlja
@@ -628,17 +665,21 @@ export function buildAktualCentral({ cards = [] } = {}) {
   /* Oba matična znaka stoje u herou: hrvatski i engleski. Čitatelj koji
      dođe na /gnk-aktual/ prvo vidi kako se kuća potpisuje, a EN znak vodi
      na englesku stranicu istog sadržaja. */
-  const masterMark = () => {
+  const masterMark = (lang = 'hr') => {
+    const isEn = lang === 'en';
     const hr = logoFor('aktual-media-hr');
     const en = logoFor('aktual-media-en');
     if (!hr || !en) return '';
     return `<div class="amc-marks">
-      <a class="amc-mark amc-mark--hr" href="/gnk-aktual/" aria-label="AKTUAL MEDIA — hrvatsko izdanje"><img src="${hr.webp}" alt="${esc(hr.title)} — ${esc(hr.tagline)}" width="420" height="121" loading="eager" decoding="async" fetchpriority="high"></a>
+      <a class="amc-mark amc-mark--hr" href="/gnk-aktual/" aria-label="${isEn ? 'AKTUAL MEDIA — Croatian edition' : 'AKTUAL MEDIA — hrvatsko izdanje'}"><img src="${hr.webp}" alt="${esc(hr.title)} — ${esc(hr.tagline)}" width="420" height="121" loading="eager" decoding="async" fetchpriority="high"></a>
       <a class="amc-mark amc-mark--en" href="/en/gnk-aktual/" hreflang="en" lang="en" aria-label="AKTUAL MEDIA — world edition"><img src="${en.webp}" alt="${esc(en.title)} — ${esc(en.tagline)}" width="300" height="86" loading="lazy" decoding="async"></a>
     </div>`;
   };
 
-  const block = `${START}
+  const centralBlock = (lang = 'hr') => {
+  const en = lang === 'en';
+  const T = (hr, eng) => (en ? eng : hr);
+  return `${START}
 <style id="amc-style">
 .am-central{--amc-ink:#f4f7fc;--amc-muted:#a9b8cc;--amc-gold:#e9c66c;--amc-line:rgba(233,198,108,.28);background:radial-gradient(1200px 600px at 12% -10%,rgba(233,198,108,.12),transparent 60%),#050d18;color:var(--amc-ink);border:1px solid rgba(233,198,108,.24);border-radius:26px;padding:clamp(16px,3.2vw,40px);margin:30px 0;font-family:inherit;overflow:hidden}
 .am-central *{box-sizing:border-box}
@@ -712,43 +753,43 @@ export function buildAktualCentral({ cards = [] } = {}) {
 <section class="am-central" id="sve-aktual-media" aria-labelledby="amcTitle">
   <div class="amc-hero">
     <div class="amc-hero-copy">
-      ${masterMark()}
-      <p class="amc-eyebrow">AKTUAL MEDIA · sve na jednom mjestu</p>
-      <h2 id="amcTitle">Osam zemalja, sva izdanja, ${items.length} tekstova — na jednoj ploči</h2>
-      <p class="amc-lead">Svaka pločica je naslovnica izdanja: na njoj piše što se klikom dobije, a klik vodi na glavni link — AKTUAL MEDIA KANAL Zagreb, Beograd, Sarajevo, Budapest, Ljubljana, Roma, Sofija ili București. S tih stranica uvijek se vraćate ovamo, u središte gdje se sve spaja.</p>
+      ${masterMark(lang)}
+      <p class="amc-eyebrow">${T('AKTUAL MEDIA · sve na jednom mjestu', 'AKTUAL MEDIA · everything in one place')}</p>
+      <h2 id="amcTitle">${T('Osam zemalja', 'Eight countries')}, ${T('sva izdanja', 'every edition')}, ${items.length} ${T('tekstova', 'stories')} — ${T('na jednoj ploči', 'on one board')}</h2>
+      <p class="amc-lead">${T('Svaka pločica je naslovnica izdanja: na njoj piše što se klikom dobije, a klik vodi na glavni link — AKTUAL MEDIA KANAL Zagreb, Beograd, Sarajevo, Budapest, Ljubljana, Roma, Sofija ili București. S tih stranica uvijek se vraćate ovamo, u središte gdje se sve spaja.', 'Every tile is the cover of an edition: it says what a click gets you, and the click opens the main link — AKTUAL MEDIA KANAL Zagreb, Belgrade, Sarajevo, Budapest, Ljubljana, Rome, Sofia or Bucharest. From those pages you always come back here, to the centre where everything connects.')}</p>
       <div class="amc-hero-cta">
-        <a class="amc-btn amc-btn--solid" href="#izdanja-po-zemljama">Izdanja 3 × 3 ↓</a>
-        <a class="amc-btn" href="#mravinjak">Mravinjak vijesti ↓</a>
-        <a class="amc-btn" href="/izdanja/">Sva izdanja →</a>
+        <a class="amc-btn amc-btn--solid" href="#izdanja-po-zemljama">${T('Izdanja 3 × 3 ↓', 'Editions 3 × 3 ↓')}</a>
+        <a class="amc-btn" href="#mravinjak">${T('Mravinjak vijesti ↓', 'News anthill ↓')}</a>
+        <a class="amc-btn" href="/izdanja/">${T('Sva izdanja →', 'All editions →')}</a>
       </div>
     </div>
-    <a class="amc-hero-art" href="https://gnk-asg.hr/izdanja/" aria-label="AKTUAL MEDIA — sva izdanja na jednom mjestu">
-      <img src="${IMG}/aktual-media-tile.webp" alt="AKTUAL MEDIA — sve što imamo: izdanja, deskovi, tjednik, galerija i radio. Središnje mjesto." width="880" height="587" loading="eager" decoding="async">
+    <a class="amc-hero-art" href="https://gnk-asg.hr/izdanja/" aria-label="${T('AKTUAL MEDIA — sva izdanja na jednom mjestu', 'AKTUAL MEDIA — every edition in one place')}">
+      <img src="${IMG}/aktual-media-tile.webp" alt="${T('AKTUAL MEDIA — sve što imamo: izdanja, deskovi, tjednik, galerija i radio. Središnje mjesto.', 'AKTUAL MEDIA — everything we have: editions, desks, weekly, gallery and radio. One central place.')}" width="880" height="587" loading="eager" decoding="async">
     </a>
   </div>
 
-  <ul class="amc-stripe">${stripe}</ul>
+  <ul class="amc-stripe">${stripeFor(lang)}</ul>
 
   <section class="amc-sec" id="izdanja-po-zemljama" aria-labelledby="amcSec1">
     <div class="amc-sec-head">
-      <div><span class="amc-sec-num">01 · PLOČICE 3 × 3</span><h3 id="amcSec1">Izdanja po zemljama</h3></div>
-      <span class="amc-dim">8 gradova + business tjednik · klik vodi na izdanje</span>
+      <div><span class="amc-sec-num">${T('01 · PLOČICE 3 × 3', '01 · TILES 3 × 3')}</span><h3 id="amcSec1">${T('Izdanja po zemljama', 'Editions by country')}</h3></div>
+      <span class="amc-dim">${T('8 gradova + business tjednik · klik vodi na izdanje', '8 cities + business weekly · click opens the edition')}</span>
     </div>
-    <ul class="amc-grid3">${cityTiles(cards)}${tile({ href: 'https://gnk-asg-tjednik.pages.dev/', img: 'tjednik-tile.webp', alt: 'BUSINESS TJEDNIK — Lider, Jutarnji, Poslovni i Forbes kroz tjednu kritiku. Klik otvara tjednik.', external: true, badge: 'tjednik' })}</ul>
+    <ul class="amc-grid3">${cityTiles(cards, lang)}${tile({ href: 'https://gnk-asg-tjednik.pages.dev/', img: 'tjednik-tile.webp', alt: T('BUSINESS TJEDNIK — Lider, Jutarnji, Poslovni i Forbes kroz tjednu kritiku. Klik otvara tjednik.', 'BUSINESS TJEDNIK — Lider, Jutarnji, Poslovni and Forbes in a weekly review. Click opens the weekly.'), external: true, badge: T('tjednik', 'weekly') })}</ul>
   </section>
 
   <section class="amc-sec" id="deskovi" aria-labelledby="amcSec2">
     <div class="amc-sec-head">
-      <div><span class="amc-sec-num">02 · PLOČICE 3 × 3</span><h3 id="amcSec2">Deskovi, tjednik mode i platforme</h3></div>
+      <div><span class="amc-sec-num">${T('02 · PLOČICE 3 × 3', '02 · TILES 3 × 3')}</span><h3 id="amcSec2">${T('Deskovi, tjednik mode i platforme', 'Desks, Mode weekly and platforms')}</h3></div>
       <span class="amc-dim">sport · politika · sigurnost · business · tehnologija · moda · putovanja · ljubimci · svijet</span>
     </div>
-    <ul class="amc-grid3">${deskTiles(items, gallery)}</ul>
+    <ul class="amc-grid3">${deskTiles(items, gallery, lang)}</ul>
   </section>
 
   <section class="amc-sec" id="mravinjak" aria-labelledby="amcSec3">
     <div class="amc-sec-head">
-      <div><span class="amc-sec-num">03 · MRAVINJAK · 3 × 19</span><h3 id="amcSec3">Vijesti koje vučemo k sebi</h3></div>
-      <span class="amc-dim">${items.length} tekstova iz ${sources.size} medija · 8 jezika</span>
+      <div><span class="amc-sec-num">${T('03 · MRAVINJAK · 3 × 19', '03 · ANTHILL · 3 × 19')}</span><h3 id="amcSec3">${T('Vijesti koje vučemo k sebi', 'Stories we pull toward us')}</h3></div>
+      <span class="amc-dim">${items.length} ${T('tekstova', 'stories')} ${T('iz', 'from')} ${sources.size} ${T('medija', 'media')} · 8 ${T('jezika', 'languages')}</span>
     </div>
     <div class="amc-river">${columns.map(riverColumn).join('')}</div>
     <p class="amc-note">Mravinjak je naš dnevni pogon: osam kanala čita javne feedove, sitemape i API-je svojih medija, sprema naslov, sažetak, datum i poveznicu na izvornik te iz toga gradi osvrt na način izvještavanja. Tekstovi se ne preuzimaju u cijelosti; svaki zapis vodi na izvornik, a tvrdnje izvora nisu tvrdnje redakcije. Sport ${sport} · Politika ${politics} · Sigurnost, rat i potresi ${security} · Moda i stil ${moda}.</p>
@@ -756,20 +797,20 @@ export function buildAktualCentral({ cards = [] } = {}) {
 
   <section class="amc-sec" aria-labelledby="amcSec4">
     <div class="amc-sec-head">
-      <div><span class="amc-sec-num">04 · DALJE</span><h3 id="amcSec4">Gdje još možete otići</h3></div>
-      <span class="amc-dim">tabloidi · arhiva · alati</span>
+      <div><span class="amc-sec-num">${T('04 · DALJE', '04 · NEXT')}</span><h3 id="amcSec4">${T('Gdje još možete otići', 'Where else you can go')}</h3></div>
+      <span class="amc-dim">${T('tabloidi · arhiva · alati', 'tabloids · archive · tools')}</span>
     </div>
     <ul class="amc-footlink">
-      <li><a href="/izdanja/">Naša izdanja</a></li>
-      <li><a href="/objave/">Objave</a></li>
-      <li><a href="/komentari/">Komentari</a></li>
-      <li><a href="/autorske-objave/">Autorske objave</a></li>
-      <li><a href="/galerija/">Galerija Nermina Sefića</a></li>
+      <li><a href="/izdanja/">${T('Naša izdanja', 'Our editions')}</a></li>
+      <li><a href="/objave/">${T('Objave', 'Publications')}</a></li>
+      <li><a href="/komentari/">${T('Komentari', 'Commentary')}</a></li>
+      <li><a href="/autorske-objave/">${T('Autorske objave', 'Author publications')}</a></li>
+      <li><a href="/galerija/">${T('Galerija Nermina Sefića', 'Nermin Sefić gallery')}</a></li>
       <li><a href="/radio/">AKTUAL MEDIA RADIO</a></li>
-      <li><a href="/knowledge-center/">Centar znanja</a></li>
-      <li><a href="/digital-workforce/">Digitalna radna snaga</a></li>
+      <li><a href="/knowledge-center/">${T('Centar znanja', 'Knowledge Center')}</a></li>
+      <li><a href="/digital-workforce/">${T('Digitalna radna snaga', 'Digital workforce')}</a></li>
       <li><a href="https://gnk-asg-tjednik.pages.dev/" rel="external noopener">BUSINESS TJEDNIK ↗</a></li>
-      <li><a href="https://gnk-asg-tjednik.pages.dev/tjednik/2026-W43/" rel="external noopener"><strong>Tjednik 2026-W43 — ovaj tjedan ↗</strong></a></li>
+      <li><a href="https://gnk-asg-tjednik.pages.dev/tjednik/2026-W43/" rel="external noopener"><strong>${T('Tjednik 2026-W43 — ovaj tjedan ↗', 'Week 2026-W43 — this week ↗')}</strong></a></li>
       <li><a href="https://gnk-asg-tjednik.pages.dev/izvori/lider/" rel="external noopener">Lider ↗</a></li>
       <li><a href="https://gnk-asg-tjednik.pages.dev/izvori/jutarnji/" rel="external noopener">Jutarnji list ↗</a></li>
       <li><a href="https://gnk-asg-tjednik.pages.dev/izvori/poslovni/" rel="external noopener">Poslovni dnevnik ↗</a></li>
@@ -779,7 +820,7 @@ export function buildAktualCentral({ cards = [] } = {}) {
 
   <section class="amc-sec" aria-labelledby="amcSec5">
     <div class="amc-sec-head">
-      <div><span class="amc-sec-num">05 · OZNAKE</span><h3 id="amcSec5">Hashtagovi izdanja</h3></div>
+      <div><span class="amc-sec-num">${T('05 · OZNAKE', '05 · TAGS')}</span><h3 id="amcSec5">${T('Hashtagovi izdanja', 'Edition hashtags')}</h3></div>
       <span class="amc-dim">#NerminSefić · #NerminSefic · #SeficNermin · #SEFICNERMIN</span>
     </div>
     <ul class="amc-tags">${HASHTAGS.map((h) => `<li>${esc(h)}</li>`).join('')}</ul>
@@ -787,6 +828,9 @@ export function buildAktualCentral({ cards = [] } = {}) {
   </section>
 </section>
 ${END}`;
+  };
+
+  const block = centralBlock('hr');
 
   if (html.includes(START) && html.includes(END)) {
     html = html.replace(new RegExp(`${START}[\\s\\S]*?${END}`), () => block);
@@ -867,11 +911,45 @@ ${END}`;
     };
     const ext = (url) => /^https?:/.test(url) ? ' rel="external noopener"' : '';
     const tiles = t.tiles.map(([url, name, note, badge]) => `<li><a href="${url}"${ext(url)}>${badge ? `<span>${esc(badge)}</span>` : ''}<b>${esc(name)}</b><i>${esc(note)}</i></a></li>`).join('');
+    const win = hr ? [
+      ['/status/', 'status', 'Status ažurnosti', 'Javno mjerenje svježine'],
+      ['/kanal/beograd/', 'beograd', 'KANAL BEOGRAD', 'Novo izdanje za Srbiju'],
+      ['https://gnk-asg-tjednik.pages.dev/', 'tjednik', 'Business Tjednik', 'W43 · poslovni pregled'],
+      ['/galerija/', 'galerija', 'Galerija', '63 stranice znakova'],
+      ['/gnk-aktual/mreza/', 'mreza', 'Mreža izdanja', '8 gradova, 8 jezika']
+    ] : [
+      ['/en/status/', 'status', 'Freshness status', 'Public freshness measurement'],
+      ['/kanal/beograd/', 'beograd', 'KANAL BEOGRAD', 'New edition for Serbia'],
+      ['https://gnk-asg-tjednik.pages.dev/', 'tjednik', 'Business Weekly', 'Week W43 · business review'],
+      ['/galerija/', 'galerija', 'Gallery', '63 brand pages'],
+      ['/en/gnk-aktual/network/', 'mreza', 'Edition network', '8 cities, 8 languages']
+    ];
+    const windowRow = `<nav class="am-win-row" aria-label="${esc(hr ? 'Nove stranice AKTUAL MEDIA' : 'New AKTUAL MEDIA pages')}">
+  <div class="am-win-head"><h2>${esc(hr ? 'Prozorčići · novo u AKTUAL MEDIA' : 'Mini windows · new in AKTUAL MEDIA')}</h2><a href="${hr ? '/aktual-media/proizvodi/' : '/en/aktual-media/proizvodi/'}">${esc(hr ? 'Svi proizvodi →' : 'All products →')}</a></div>
+  <ul class="am-win-grid">${win.map(([url, slug, title, note]) => `<li class="am-win"><a href="${url}"${/^https?:/.test(url) ? ' rel="external noopener"' : ''}><span class="am-win-bar" aria-hidden="true"><i></i><i></i><i></i><b>${esc(slug)}</b></span><span class="am-win-body"><strong>${esc(title)}</strong><span>${esc(note)}</span></span></a></li>`).join('')}</ul>
+</nav>`;
+    const adCopy = hr ? [
+      ['/kanal/beograd/', 'Beograd je otvoren', '420 tekstova, osam izvora i dnevni ritam — novo izdanje za Srbiju.', 'Otvori Beograd →'],
+      ['https://gnk-asg-tjednik.pages.dev/', 'Business Tjednik', 'W43: brojevi, odluke i kontekst za poslovni tjedan.', 'Otvori tjednik ↗'],
+      ['/status/', 'Status ažurnosti', 'Vidi kada je koje izdanje zadnji put obnovljeno — bez procjena.', 'Pogledaj status →']
+    ] : [
+      ['/kanal/beograd/', 'Belgrade is live', '420 stories, eight sources and a daily rhythm — a new edition for Serbia.', 'Open Belgrade →'],
+      ['https://gnk-asg-tjednik.pages.dev/', 'Business Weekly', 'Week W43: numbers, decisions and context for the business week.', 'Open weekly ↗'],
+      ['/en/status/', 'Freshness status', 'See when each edition was last refreshed — measured, not estimated.', 'View status →']
+    ];
+    const adHtml = `<aside class="am-ad" id="amAd" hidden aria-label="${esc(hr ? 'Reklama AKTUAL MEDIA' : 'AKTUAL MEDIA promotion')}">
+  <div class="am-ad-top"><span class="am-ad-kicker">${esc(hr ? 'AKTUAL MEDIA · preporuka' : 'AKTUAL MEDIA · recommended')}</span><button class="am-ad-close" type="button" data-am-ad-close aria-label="${esc(hr ? 'Zatvori reklamu' : 'Close promotion')}">×</button></div>
+  ${adCopy.map(([url, title, text, cta], i) => `<div class="am-ad-body" data-am-ad-item${i ? ' hidden' : ''}><a href="${url}"${/^https?:/.test(url) ? ' rel="external noopener"' : ''}><b>${esc(title)}</b><span>${esc(text)}</span><em>${esc(cta)}</em></a></div>`).join('')}
+  <div class="am-ad-dots" aria-hidden="true">${adCopy.map((_, i) => `<i${i === 0 ? ' class="on"' : ''}></i>`).join('')}</div>
+</aside>`;
+
     const shareStatus = 'https://twitter.com/intent/tweet?url=' + encodeURIComponent('https://gnk-asg.hr' + (hr ? '/status/' : '/en/status/')) + '&text=' + encodeURIComponent(hr ? 'AKTUAL MEDIA — javni status ažurnosti osam gradskih izdanja' : 'AKTUAL MEDIA — public freshness status of eight city editions');
     const shareBeograd = 'https://twitter.com/intent/tweet?url=' + encodeURIComponent('https://gnk-asg.hr/kanal/beograd/') + '&text=' + encodeURIComponent(hr ? 'AKTUAL MEDIA KANAL BEOGRAD — novo izdanje za Srbiju' : 'AKTUAL MEDIA KANAL BEOGRAD — a new edition for Serbia');
     return `<!-- AKTUAL-PROMO:START -->
-<link rel="stylesheet" href="/assets/aktual-promo-v1.css?v=20261022">
+<link rel="stylesheet" href="/assets/aktual-promo-v1.css?v=20261022b">
 <nav class="am-promo-top" id="amPromoTop" aria-label="${esc(t.nav)}"><div class="am-promo-top-in"><span class="am-promo-top-label">AKTUAL MEDIA</span><ul><li><a href="/kanal/beograd/"><b>${esc(t.new)}</b> ${esc(t.beograd)}</a></li><li><a href="https://gnk-asg-tjednik.pages.dev/" rel="external noopener">${esc(t.business)} ↗</a></li><li><a href="/izdanja/moda/">${esc(t.mode)}</a></li><li><a href="/izdanja/">${esc(t.editions)}</a></li><li><a href="/galerija/">${esc(t.gallery)}</a></li><li><a href="${hr ? '/status/' : '/en/status/'}">${esc(t.status)}</a></li><li><a href="/radio/">${esc(t.radio)}</a></li></ul></div></nav>
+${windowRow}
+${adHtml}
 <div class="am-promo-modal" id="amPromoModal" hidden>
   <div class="am-promo-backdrop" data-am-promo-close></div>
   <div class="am-promo-card" role="dialog" aria-modal="true" aria-labelledby="amPromoTitle" aria-describedby="amPromoLead">
@@ -889,7 +967,7 @@ ${END}`;
     </div>
   </div>
 </div>
-<script src="/assets/aktual-promo-v1.js?v=20261022" defer></script>
+<script src="/assets/aktual-promo-v1.js?v=20261022b" defer></script>
 <!-- AKTUAL-PROMO:END -->`;
   };
   const withPromo = (page, lang) => {
@@ -958,6 +1036,18 @@ ${END}`;
       .replace(/\.am-mast-logo img\{[^}]*\}\n?/g, '')
       .replace(/@media\(max-width:620px\)\{\.am-mast-logo\{max-width:300px\}\}\n?/g, '')
       .replace(/<a class="am-mast-logo"[\s\S]*?<\/a>/g, '');
+    /* Engleska stranica dobiva istu središnju ploču, s engleskim natpisima.
+       Do 22. 10. 2026. EN je imala samo traku krugova — bez ploče izdanja,
+       deskova, mravinjaka i odredišta, pa je bila ~500 redaka kraća od HR. */
+    const enBlock = centralBlock('en');
+    if (en.includes(START) && en.includes(END)) {
+      en = en.replace(new RegExp(`${START}[\\s\\S]*?${END}`), () => enBlock);
+    } else if (en.includes('<!-- IZDANJA-BAND:START -->')) {
+      en = en.replace('<!-- IZDANJA-BAND:START -->', `${enBlock}\n<!-- IZDANJA-BAND:START -->`);
+    } else if (en.includes('<!-- AKTUAL-MREZA-BAND:START -->')) {
+      en = en.replace('<!-- AKTUAL-MREZA-BAND:START -->', `${enBlock}\n<!-- AKTUAL-MREZA-BAND:START -->`);
+    }
+    en = withPromo(en, 'en');
     en = addPerf(addLogoAlternates(en, ['aktual-media-en', 'aktual-media-hr']));
     en = strengthenAktualBrand(en, 'en', jsonld);
     writeFileSync(EN, en);

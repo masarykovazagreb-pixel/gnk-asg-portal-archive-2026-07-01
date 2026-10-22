@@ -16,9 +16,11 @@ function round(value) {
 async function main() {
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 
+  /* CHROME_PATH je izborni; bez njega Puppeteer koristi preglednik koji je
+     instalirao uz sebe (runner nema /usr/bin/google-chrome). */
   const browser = await puppeteer.launch({
     headless: true,
-    executablePath: process.env.CHROME_PATH || '/usr/bin/google-chrome',
+    ...(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {}),
     args: ['--no-sandbox', '--disable-dev-shm-usage', '--lang=hr-HR'],
   });
 

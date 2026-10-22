@@ -57,6 +57,7 @@ const GATES = [
   { name: 'Znakovi kuće AKTUAL MEDIA', cmd: ['node', 'tests/test-brand-logos-v1.mjs'], required: true },
   { name: 'Stabilnost i ažurnost izdanja', cmd: ['node', 'tests/test-stability-contracts-v1.mjs'], required: true },
   { name: 'AKTUAL MEDIA — najava proizvoda', cmd: ['node', 'tests/test-aktual-promo-v1.mjs'], required: true },
+  { name: 'AKTUAL MEDIA — popis svih proizvoda', cmd: ['node', 'tests/test-aktual-products-v1.mjs'], required: true },
   { name: 'Znak u čvoru izdavača', cmd: ['node', 'scripts/backfill-brand-entity-logo-v1.mjs', '--check'], required: true },
 ];
 

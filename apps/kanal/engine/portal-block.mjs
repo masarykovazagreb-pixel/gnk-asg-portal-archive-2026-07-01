@@ -39,38 +39,53 @@ const items = (feed.items || []).slice(0, LIMIT);
 const esc = (s = '') => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const hrDate = (iso) => new Date(iso).toLocaleDateString('hr-HR', { day: 'numeric', month: 'long' });
 
-const list = items.map((it, i) => {
-  const isDesk = it._kanal?.section === 'desk' || /dnevnik-/.test(it.url) || it._kanal?.editorialStatus === 'auto-assembled';
-  const sec = isDesk ? 'Dnevni desk' : (it._kanal?.sectionLabel || 'Kanal');
-  return `      <li class="kanal-item">
+const listFor = (lang = 'hr') => {
+  const en = lang === 'en';
+  return items.map((it, i) => {
+    const isDesk = it._kanal?.section === 'desk' || /dnevnik-/.test(it.url) || it._kanal?.editorialStatus === 'auto-assembled';
+    const sec = isDesk ? (en ? 'Daily desk' : 'Dnevni desk') : (it._kanal?.sectionLabel || (en ? 'Channel' : 'Kanal'));
+    const date = en
+      ? new Date(it.date_published).toLocaleDateString('en-GB', { day: 'numeric', month: 'long' })
+      : hrDate(it.date_published);
+    return `      <li class="kanal-item">
         <span class="kanal-num">${String(i + 1).padStart(2, '0')}</span>
         <div>
           <h3><a href="${esc(it.url)}" target="_blank" rel="external noopener">${esc(it.title)}</a></h3>
-          <div class="kanal-meta"><span class="sec">${esc(sec)}</span><span>${hrDate(it.date_published)}</span><span class="kanal-ext">${isDesk ? 'automatski sastavljeno' : 'vanjski link ↗'}</span></div>
+          <div class="kanal-meta"><span class="sec">${esc(sec)}</span><span>${date}</span><span class="kanal-ext">${isDesk ? (en ? 'auto-assembled' : 'automatski sastavljeno') : (en ? 'external link ↗' : 'vanjski link ↗')}</span></div>
         </div>
       </li>`;
-}).join('\n');
+  }).join('\n');
+};
 
 const stamp = new Date().toLocaleString('hr-HR', { timeZone: 'Europe/Zagreb', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 
-const band = `${START}
+const bandFor = (lang = 'hr') => {
+  const en = lang === 'en';
+  const stampLocal = en
+    ? new Date().toLocaleString('en-GB', { timeZone: 'Europe/Zagreb', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+    : stamp;
+  return `${START}
   <section class="kanal-band" aria-labelledby="kanalBandTitle">
     <div class="kanal-band-head">
       <div>
-        <h2 class="kanal-band-title" id="kanalBandTitle"><span class="kanal-mark" aria-hidden="true">K</span> Iz GNK ASG KANALA</h2>
-        <p class="kanal-sub">Deset novih objava svakoga dana: analize, pojašnjenja, rokovi, brojke i provjere tvrdnji. Tekstovi se preuzimaju uz atribuciju „Izvor: GNK ASG KANAL".</p>
+        <h2 class="kanal-band-title" id="kanalBandTitle"><span class="kanal-mark" aria-hidden="true">K</span> ${en ? 'From the GNK ASG channel' : 'Iz GNK ASG KANALA'}</h2>
+        <p class="kanal-sub">${en
+          ? 'Ten new posts every day: analyses, explainers, deadlines, numbers and claim checks. Texts are reused with the attribution “Source: GNK ASG KANAL”.'
+          : 'Deset novih objava svakoga dana: analize, pojašnjenja, rokovi, brojke i provjere tvrdnji. Tekstovi se preuzimaju uz atribuciju „Izvor: GNK ASG KANAL".'}</p>
       </div>
-      <a class="kanal-band-all" href="https://gnk-asg-kanal.pages.dev/" target="_blank" rel="external noopener">Sve objave na kanalu ↗</a>
+      <a class="kanal-band-all" href="https://gnk-asg-kanal.pages.dev/" target="_blank" rel="external noopener">${en ? 'All posts on the channel ↗' : 'Sve objave na kanalu ↗'}</a>
     </div>
     <ol class="kanal-list">
-${list}
+${listFor(lang)}
     </ol>
     <div class="kanal-foot">
-      <span>Blok se osvježava automatski · zadnja izmjena ${esc(stamp)}</span>
-      <span><a href="https://gnk-asg-kanal.pages.dev/dnevnik/" target="_blank" rel="external noopener">Dnevni desk ↗</a> · <a href="https://gnk-asg-kanal.pages.dev/feed.json" target="_blank" rel="external noopener">Feed za preuzimanje</a> · <a href="https://gnk-asg-kanal.pages.dev/metodologija/" target="_blank" rel="external noopener">Metodologija</a></span>
+      <span>${en ? `This block refreshes automatically · last change ${esc(stampLocal)}` : `Blok se osvježava automatski · zadnja izmjena ${esc(stampLocal)}`}</span>
+      <span><a href="https://gnk-asg-kanal.pages.dev/dnevnik/" target="_blank" rel="external noopener">${en ? 'Daily desk ↗' : 'Dnevni desk ↗'}</a> · <a href="https://gnk-asg-kanal.pages.dev/feed.json" target="_blank" rel="external noopener">${en ? 'Feed' : 'Feed za preuzimanje'}</a> · <a href="https://gnk-asg-kanal.pages.dev/metodologija/" target="_blank" rel="external noopener">${en ? 'Methodology' : 'Metodologija'}</a></span>
     </div>
   </section>
   ${END}`;
+};
+const band = bandFor('hr');
 
 /* 1) podaci za portal */
 const data = {
@@ -107,6 +122,25 @@ if (html.includes(START) && html.includes(END)) {
   console.log('Portal: blok umetnut nakon glavnih vijesti (prije SPT sekcije).');
 }
 writeFileSync(PORTAL_PAGE, html, 'utf8');
+
+/* 3) isti blok na engleskoj stranici — engleski okvir, isti izvorni naslovi */
+const PORTAL_PAGE_EN = join(REPO, 'apps', 'portal', 'en', 'gnk-aktual', 'index.html');
+if (existsSync(PORTAL_PAGE_EN)) {
+  let en = readFileSync(PORTAL_PAGE_EN, 'utf8');
+  const enBand = bandFor('en');
+  if (en.includes(START) && en.includes(END)) {
+    en = en.replace(new RegExp(`${START}[\\s\\S]*?${END}`), enBand);
+  } else {
+    if (/<section class="am-spt"[^>]*>/.test(en)) {
+      en = en.replace(/<section class="am-spt"[^>]*>/, (m) => `${enBand}\n\n${m}`);
+    } else {
+      const mreza = '<!-- AKTUAL-MREZA-BAND:START -->';
+      if (en.includes(mreza)) en = en.replace(mreza, `${enBand}\n${mreza}`);
+      else console.error('EN: ne mogu naći mjesto za blok kanala.');
+    }
+  }
+  writeFileSync(PORTAL_PAGE_EN, en, 'utf8');
+}
 
 console.log(`Portal data: ${PORTAL_DATA} (${data.items.length} stavki)`);
 console.log(`AKTUAL blok: ${items.length} vanjskih linkova`);
