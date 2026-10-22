@@ -29,12 +29,16 @@ permissions:
   contents: read
 
 concurrency:
-  # Ovaj posao samo čita i provjerava podatke (contents: read). Dok je bio u
-  # grupi gnk-asg-main-mutation s cancel-in-progress: true, svaki njegov start
-  # ubio je tekući ciklus izdanja — 4-6 minuta rada nestalo bi u sekundi.
-  # Zato ima vlastitu grupu i više ne dira pisce sadržaja.
-  group: ${{ github.event_name == 'pull_request' && format('refresh-index-live-data-{0}', github.event_name) || 'gnk-asg-index-refresh' }}
-  cancel-in-progress: true
+  # Raspored u 07:05 i 15:05 UTC piše u main (git push HEAD:main), pa mora
+  # dijeliti grupu sa svim ostalim piscima — inače dva pisca istovremeno
+  # rebaseaju i jedan ciklus izdanja ostane bez svog commita.
+  #
+  # Ranije je ovaj posao imao uključeno prekidanje u dijeljenoj grupi i svaki
+  # njegov start ubio bi tekući ciklus izdanja. Sada je prekidanje isključeno:
+  # novi posao čeka u redu, ali ne prekida ništa.
+  # PR provjere ostaju u vlastitoj grupi i ne troše produkcijski red.
+  group: ${{ github.event_name == 'pull_request' && format('refresh-index-live-data-{0}', github.event_name) || 'gnk-asg-main-mutation' }}
+  cancel-in-progress: false
 
 jobs:
   validate-pr:
