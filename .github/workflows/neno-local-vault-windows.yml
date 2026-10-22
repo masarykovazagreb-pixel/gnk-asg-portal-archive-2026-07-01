@@ -7,8 +7,14 @@ on:
       - 'tools/neno-local-vault/**'
       - '.github/workflows/neno-local-vault-windows.yml'
   workflow_dispatch:
+
 permissions:
   contents: read
+
+concurrency:
+  group: neno-local-vault-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   windows-build:
     runs-on: windows-latest
@@ -21,21 +27,25 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Unpack source
+      - name: Verify exact source archive and unpack
         run: python decode_source.py
-      - name: Install dependencies
+      - name: Install Windows dependencies
         run: python -m pip install -r requirements-build.txt
-      - name: Test index and retrieval
+      - name: Check package and OCR imports
+        run: python -c "import pypdfium2, pytesseract, PIL, tkinter; import neno_vault.gui; print('imports OK')"
+      - name: Run local regression suite
         run: python -m unittest discover -s tests -v
-      - name: Build portable Windows exe
-        run: python -m PyInstaller --clean --noconfirm --onefile --windowed --name NenoLocalVault app.py
-      - name: Package Windows executable
+      - name: Build portable Windows executable
+        run: python -m PyInstaller --clean --noconfirm --onefile --windowed --collect-all pypdfium2 --name NenoLocalVault app.py
+      - name: Verify and package portable application
         shell: pwsh
         run: |
+          if (-not (Test-Path -LiteralPath 'dist/NenoLocalVault.exe')) { throw 'Windows EXE missing' }
           New-Item -ItemType Directory -Force -Path output | Out-Null
           Copy-Item dist/NenoLocalVault.exe output/
           Copy-Item install.ps1 output/
           Copy-Item README.md output/
+          Get-FileHash -Algorithm SHA256 output/NenoLocalVault.exe | Format-List | Out-String | Set-Content output/SHA256.txt
       - uses: actions/upload-artifact@v4
         with:
           name: NenoLocalVault-Windows
