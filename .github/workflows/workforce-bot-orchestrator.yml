@@ -13,8 +13,6 @@ on:
       - 'config/control-plane/**'
       - 'scripts/workforce-bot-orchestrator-v1.mjs'
       - 'scripts/worker-agent-swarm-v1.mjs'
-      - 'scripts/aktual-world-agent-factory-v1.mjs'
-      - 'tests/test-aktual-world-agent-factory-v1.mjs'
       - 'scripts/aktual-review-window-gate-v1.mjs'
       - 'tests/test-aktual-review-window-gate-v1.mjs'
       - 'ops/aktual-editor-priorities-v1.json'
@@ -39,8 +37,6 @@ on:
       - 'config/control-plane/**'
       - 'scripts/workforce-bot-orchestrator-v1.mjs'
       - 'scripts/worker-agent-swarm-v1.mjs'
-      - 'scripts/aktual-world-agent-factory-v1.mjs'
-      - 'tests/test-aktual-world-agent-factory-v1.mjs'
       - 'scripts/aktual-review-window-gate-v1.mjs'
       - 'tests/test-aktual-review-window-gate-v1.mjs'
       - 'ops/aktual-editor-priorities-v1.json'
@@ -109,9 +105,6 @@ jobs:
           if [ -f artifacts/master-asg-agent-network/summary.md ]; then
             cat artifacts/master-asg-agent-network/summary.md >> "$GITHUB_STEP_SUMMARY"
           fi
-          if [ -f artifacts/aktual-world-agent-factory/summary.md ]; then
-            cat artifacts/aktual-world-agent-factory/summary.md >> "$GITHUB_STEP_SUMMARY"
-          fi
           if [ -f artifacts/aktual-editorial-network/daily-weekly-brief.md ]; then
             cat artifacts/aktual-editorial-network/daily-weekly-brief.md >> "$GITHUB_STEP_SUMMARY"
           fi
@@ -137,7 +130,5 @@ jobs:
             artifacts/worker-agent-swarm/
             artifacts/master-asg-agent-network/
             artifacts/aktual-editorial-network/
-            artifacts/aktual-world-agent-factory/
-            apps/global-free/sites/
           if-no-files-found: warn
           retention-days: 14
