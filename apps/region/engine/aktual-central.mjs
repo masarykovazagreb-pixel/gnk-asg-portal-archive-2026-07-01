@@ -19,7 +19,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { esc, shortDate, truncate, themeFor } from './lib.mjs';
 import { CHANNELS, HUB } from './build.mjs';
-import { logoFor } from './brand.mjs';
+import { logoFor, logoAlternate } from './brand.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const APP = join(HERE, '..');
@@ -713,6 +713,15 @@ ${END}`;
 
   const PERF = `<link rel="preload" as="image" href="${IMG}/zagreb-440.webp" imagesrcset="${IMG}/zagreb-240.webp 240w, ${IMG}/zagreb-440.webp 440w" imagesizes="(max-width:620px) 84px,(max-width:1040px) 22vw,11vw" fetchpriority="high">\n<style id="aktual-perf">.amc-river,.amc-tiles,.amm-grid,.amx-platforms{content-visibility:auto;contain-intrinsic-size:auto 640px}@media(prefers-reduced-motion:reduce){.amx-ring,.amm-card,.amm-home{transition:none}}</style>\n</head>`;
   const addPerf = (page) => page.includes('id="aktual-perf"') ? page : page.replace('</head>', PERF);
+  /* Vektorska inačica znaka u <head> — jednom, ne na svakom ciklusu. */
+  const addLogoAlternates = (page, slugs) => {
+    if (/rel="alternate" type="image\/svg\+xml"/.test(page)) return page;
+    const links = slugs.map((slug) => logoAlternate(slug)).filter(Boolean).join('\n');
+    if (!links) return page;
+    const canonical = page.match(/<link rel="canonical" href="[^"]+">/);
+    if (!canonical) return page;
+    return page.replace(canonical[0], `${canonical[0]}\n${links}`);
+  };
   /* Traka krugova ide odmah ispod rubrika, prije vijesti. */
   const RS = '<!-- AKTUAL-RAIL:START -->';
   const RE = '<!-- AKTUAL-RAIL:END -->';
@@ -727,7 +736,7 @@ ${END}`;
       html = `${html.slice(0, at)}\n${RS}\n${railHr}\n${RE}${html.slice(at)}`;
     }
   }
-  html = addPerf(html);
+  html = addPerf(addLogoAlternates(html, ['aktual-media-hr']));
   writeFileSync(FILE, html);
 
   /* Engleska stranica dobiva istu traku krugova, s engleskim natpisima. */
@@ -765,7 +774,7 @@ ${END}`;
         }
       }
     }
-    en = addPerf(en);
+    en = addPerf(addLogoAlternates(en, ['aktual-media-en', 'aktual-media-hr']));
     writeFileSync(EN, en);
   }
 

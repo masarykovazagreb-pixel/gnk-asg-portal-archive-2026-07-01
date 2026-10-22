@@ -15,7 +15,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { esc, longDate, shortDate, slugify, isoWeek, themeFor, scoreFromTitle, truncate, safeJson } from './lib.mjs';
 import { t, ANALYSIS } from '../src/strings.mjs';
-import { logoFor, channelLogoSlug, LOGO_W, LOGO_H } from './brand.mjs';
+import { logoFor, logoAlternate, channelLogoSlug, LOGO_W, LOGO_H } from './brand.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const APP = join(HERE, '..');
@@ -365,6 +365,7 @@ ${tags.filter((t) => String(t).startsWith('#')).map((t) => `<meta property="arti
 ${hasLanguageAlternative ? `<link rel="alternate" hreflang="${channel.lang}" href="${altOriginal}">
 <link rel="alternate" hreflang="en" href="${altEnglish}">
 <link rel="alternate" hreflang="x-default" href="${altOriginal}">` : ''}
+${logoAlternate(channelLogoSlug(channel.id))}
 <link rel="alternate" type="application/rss+xml" title="${esc(channel.title)}" href="${url(channel, 'feed.xml')}">
 <link rel="alternate" type="application/feed+json" title="${esc(channel.title)}" href="${url(channel, 'feed.json')}">
 <link rel="author" href="${PUBLIC}/nermin-sefic/">
