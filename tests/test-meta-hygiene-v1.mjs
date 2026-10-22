@@ -25,7 +25,7 @@ const AUTHOR = /Nermin\s+Sefi[cć]|Sefi[cć]\s+Nermin/i;
 /* Proizvodi koje ovaj generator sada piše. Starije, zasebno generirane
    stranice (spt/, publications/ …) imaju svoje testove i svoj red čišćenja;
    ovdje se čuva pravilo za kanale, deskove, podatkovni desk i mrežu. */
-const SCOPE = ['kanal', 'izdanja', 'aktual-media', 'gnk-aktual', 'mreza'];
+const SCOPE = ['kanal', 'izdanja', 'aktual-media', 'gnk-aktual', 'mreza', 'galerija'];
 const HTML = [];
 const walk = (dir) => {
   for (const name of readdirSync(dir)) {
@@ -55,7 +55,13 @@ for (const file of HTML) {
     const content = raw.replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
       .replace(/&amp;/g, '&').replace(/&quot;/g, '"');
     if (content.includes('#')) fails.push(`${rel}: ${match[1]} sadrži # (${content.slice(0, 80)})`);
-    if (AUTHOR.test(content)) fails.push(`${rel}: ${match[1]} sadrži ime urednika`);
+    /* Pravilo je: ime urednika ne ide u popis pojmova kao autorstvo. Stranice
+       portreta u galeriji imaju Nermina kao SUBJEKT, ne kao autora — ondje
+       ime stoji u naslovu, alt tekstu i JSON-LD-u, a u keywords samo imenom
+       osobe koju stranica prikazuje. Zato se te stranice izuzimaju iz ovog
+       dijela provjere, ali ne i iz provjere oznaka. */
+    const portrait = /galerija\/nermin-sefic/.test(rel);
+    if (!portrait && AUTHOR.test(content)) fails.push(`${rel}: ${match[1]} sadrži ime urednika`);
   }
   if (/property=["']article:tag["']/.test(html)) withTags += 1;
   if (html.includes(BRAND_ID)) brandPages += 1;

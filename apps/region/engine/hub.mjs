@@ -18,6 +18,7 @@ import { fileURLToPath } from 'node:url';
 import { esc, longDate, shortDate, scoreFromTitle, truncate, themeFor, safeJson } from './lib.mjs';
 import { CHANNELS, HUB, CONTACT, SOCIAL_IMAGE, CITY_SHORT, CSS as CHANNEL_CSS } from './build.mjs';
 import { ensureDeskTiles, tilePath, variantFor } from './desk-art.mjs';
+import { logoImg, logoFor, channelLogoSlug, deskLogoSlug, logoJsonLd } from './brand.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const APP = join(HERE, '..');
@@ -304,6 +305,7 @@ ${graph.map((n) => `<script type="application/ld+json">${safeJson(n)}</script>`)
 .iz-head{padding:clamp(26px,5vw,54px) 0 22px;border-bottom:1px solid #1b3550}
 .iz-head .k{font:600 11px/1.4 system-ui;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
 .iz-head h1{font:700 clamp(30px,5vw,52px)/1.04 Georgia,"Times New Roman",serif;margin:8px 0 10px;letter-spacing:-.01em}
+.iz-desk-logo{display:block;width:auto;height:56px;max-width:280px;object-fit:contain;object-position:left center;border-radius:6px;margin-bottom:14px}
 .iz-head .iz-home-h1{font:700 clamp(20px,2.6vw,26px)/1.2 Georgia,"Times New Roman",serif;margin:6px 0 4px;letter-spacing:-.01em}
 .iz-head .iz-home-h1 a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(233,198,108,.45)}
 .iz-head .iz-home-h1 a:hover{color:var(--gold)}
@@ -320,6 +322,17 @@ ${graph.map((n) => `<script type="application/ld+json">${safeJson(n)}</script>`)
 .iz-card .acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:auto;padding-top:8px}
 .iz-card .btn{font:600 12px/1 system-ui;letter-spacing:.04em;background:var(--gold);color:#08131f;padding:10px 13px;border-radius:999px}
 .iz-card .btn.ghost{background:transparent;border:1px solid #2c4a6b;color:#dbe5f1}
+.iz-logo{display:block;width:auto;height:34px;max-width:220px;object-fit:contain;object-position:left center;border-radius:4px}
+.iz-brand-masters{list-style:none;padding:0;margin:0 0 12px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.iz-brand-master a{display:block;background:#f4f1e8;border-radius:10px;overflow:hidden;border:1px solid #2c4a6b}
+.iz-brand-master img{display:block;width:100%;height:auto}
+.iz-brand-master span{display:block;padding:7px 10px;background:#08182a;color:#e0bd69;font:600 10px/1.3 system-ui;letter-spacing:.14em;text-transform:uppercase}
+.iz-brand-grid{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.iz-brand-grid a{display:block;background:#f4f1e8;border:1px solid #2c4a6b;border-radius:8px;overflow:hidden}
+.iz-brand-grid img{display:block;width:100%;height:auto}
+.iz-brand-grid span{display:block;padding:6px 8px;background:#08182a;color:#c3cede;font:600 9.5px/1.3 system-ui;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:1000px){.iz-brand-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:620px){.iz-brand-masters{grid-template-columns:1fr}.iz-brand-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .iz-tags{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none;font:600 10px/1 system-ui;letter-spacing:.05em;text-transform:uppercase;color:#9fb0c4}
 .iz-tags li{border:1px solid #25435f;border-radius:999px;padding:5px 8px}
 .iz-latest{font:400 12px/1.5 system-ui;color:#9fb0c4;border-top:1px dashed #24425f;padding-top:8px}
@@ -444,6 +457,7 @@ function cardFor(channel, { lead = false } = {}) {
   return `<article class="iz-card${lead ? ' iz-card--lead' : ''}">
     <img class="iz-cover" src="/assets/izdanja/${channel.id}-440.webp" alt="${esc(channel.city)}, ${esc(channel.country)}" width="440" height="248" loading="lazy" decoding="async">
     <span class="flag">${esc(meta.kicker || `${channel.country} · ${channel.city}`)} · ${esc(meta.langLabel || channel.lang)}</span>
+    ${logoImg(channelLogoSlug(channel.id), { href: channel.base, size: 34, cls: 'iz-logo' })}
     <h2><a href="${channel.base}" rel="external noopener">${esc(channel.title)}</a></h2>
     <p>${esc(meta.description || '')}</p>
     <ul class="iz-tags">${(meta.hashtags || channel.hashtags).map((tag) => `<li>${esc(tag)}</li>`).join('')}</ul>
@@ -511,6 +525,33 @@ function networkBand() {
   </section>`;
 }
 
+/* Zid brenda: dva matična znaka (hrvatski i engleski) pa svi znakovi
+   izdanja. Služi dvjema svrhama — čitatelj jednim pogledom vidi kuću, a
+   tražilica dobiva stvarne slike s opisnim alt tekstom i poveznicama. */
+function brandWall() {
+  const master = ['aktual-media-hr', 'aktual-media-en']
+    .map((slug) => {
+      const logo = logoFor(slug);
+      if (!logo) return '';
+      const href = slug.endsWith('-en') ? '/en/gnk-aktual/' : '/gnk-aktual/';
+      return `<li class="iz-brand-master"><a href="${href}"><img src="${logo.webp}" alt="${esc(logo.title)} — ${esc(logo.tagline)}" width="600" height="173" loading="lazy" decoding="async"><span>${esc(slug.endsWith('-en') ? 'World edition' : 'Svjetsko izdanje')}</span></a></li>`;
+    }).join('');
+  const editions = [
+    ...CHANNELS.map((c) => [`kanal-${c.id}`, c.base]),
+    ...Object.keys(DESKS).map((id) => [`desk-${id}`, `/izdanja/${id}/`]),
+  ].map(([slug, href]) => {
+    const logo = logoFor(slug);
+    if (!logo) return '';
+    return `<li><a href="${href}"${href.startsWith('http') ? ' rel="external noopener"' : ''}><img src="${logo.webp}" alt="${esc(logo.title)}" width="300" height="86" loading="lazy" decoding="async"><span>${esc(logo.title.replace(/^AKTUAL MEDIA\s*/i, ''))}</span></a></li>`;
+  }).join('');
+  return `<section class="iz-band iz-brandwall" aria-labelledby="brandwallTitle">
+    <h2 id="brandwallTitle">Znakovi kuće AKTUAL MEDIA <span>19 izdanja, isti znak</span></h2>
+    <p class="iz-small" style="margin:0 0 14px">Svako izdanje ima svoj znak u istoj familiji: navy dio je ime kuće ili rubrike, crveni je izdanje. Znakovi su vektorski, pa se ne rasplinjavaju ni na velikim zaslonima, a svaki vodi na svoje izdanje.</p>
+    <ul class="iz-brand-masters">${master}</ul>
+    <ul class="iz-brand-grid">${editions}</ul>
+  </section>`;
+}
+
 function hubPage() {
   const cards = CHANNELS.map((c, i) => cardFor(c, { lead: i === 0 })).join('\n');
   const items = CHANNELS.flatMap((c) => latestFor(c, 3).map((i) => ({ ...i, channel: c })))
@@ -535,6 +576,7 @@ function hubPage() {
       <li><a href="/en/aktual-media/" hreflang="en" lang="en"><b>Data desk (EN)</b><span>the same four measurements</span></a></li>
     </ul>
   </section>
+  ${brandWall()}
   <section class="iz-band">
     <h2>Oznake izdanja</h2>
     <ul class="iz-tags">${['#NerminSefić', '#NerminSefic', '#SeficNermin', '#SEFICNERMIN', '#AKTUALMEDIA', '#GNKASG', '#Našaizdanja', '#KanalZagreb', '#KanalBeograd', '#KanalSarajevo', '#KanalBudimpesta', '#KanalLjubljana', '#CanaleRoma', '#KanalSofija', '#CanalulBucuresti', '#BusinessTjednik', '#RegionalneVijesti', '#Sport', '#Politika', '#Sigurnost'].map((h) => `<li>${esc(h)}</li>`).join('')}</ul>
@@ -645,6 +687,7 @@ function deskPage(id, desk) {
   const body = `${portalHeader(id + '/', { h1: false })}
 <main id="sadrzaj" tabindex="-1" class="iz-wrap">
   <section class="iz-head" style="border-bottom:0;padding-top:26px">
+    ${logoImg(deskLogoSlug(id), { href: '/izdanja/', size: 56, cls: 'iz-desk-logo', priority: true })}
     <p class="k">${esc(desk.name)}</p>
     <h1>${esc(desk.title)}</h1>
     <p>${esc(desk.description)}</p>
@@ -704,7 +747,8 @@ ${id === 'sport' ? `<script>(()=>{const box=document.getElementById('izResults')
     image: cover,
     imageAlt: `${desk.title} — AKTUAL MEDIA`,
     jsonld: [
-      { '@context': 'https://schema.org', '@type': 'CollectionPage', name: desk.title, url: `${HUB}${id}/`, inLanguage: 'hr', description: desk.description, primaryImageOfPage: { '@type': 'ImageObject', url: `${new URL(HUB).origin}${cover}`, caption: `${desk.title} — AKTUAL MEDIA` }, image: [`${new URL(HUB).origin}${cover}`, `${new URL(HUB).origin}${artCover}`], publisher: { '@id': MEDIA_ID }, isPartOf: { '@id': `${HUB}#website` } },
+      { '@context': 'https://schema.org', '@type': 'NewsMediaOrganization', '@id': `${HUB}${id}/#organization`, name: desk.name, url: `${HUB}${id}/`, inLanguage: 'hr', logo: logoJsonLd(deskLogoSlug(id), { url: 'https://gnk-asg.hr' }), parentOrganization: { '@id': MEDIA_ID } },
+      { '@context': 'https://schema.org', '@type': 'CollectionPage', name: desk.title, url: `${HUB}${id}/`, inLanguage: 'hr', description: desk.description, publisher: { '@id': `${HUB}${id}/#organization` }, primaryImageOfPage: { '@type': 'ImageObject', url: `${new URL(HUB).origin}${cover}`, caption: `${desk.title} — AKTUAL MEDIA` }, image: [`${new URL(HUB).origin}${cover}`, `${new URL(HUB).origin}${artCover}`], publisher: { '@id': MEDIA_ID }, isPartOf: { '@id': `${HUB}#website` } },
       { '@context': 'https://schema.org', '@type': 'ItemList', name: desk.title, numberOfItems: Math.min(20, items.length), itemListElement: items.slice(0, 20).map((i, n) => ({ '@type': 'ListItem', position: n + 1, name: i.title, url: `${i.channel.base}clanak/${i.slug}/` })) }
     ],
     body
@@ -815,6 +859,7 @@ function kanalIndex(cards) {
       <a class="kx-link" href="${c.base}">
         <img src="/assets/izdanja/${c.id}-1200.webp" alt="${esc(c.title)} — ${esc(c.city)}, ${esc(c.country)}" width="1200" height="675" loading="lazy" decoding="async">
         <div class="kx-body">
+          ${logoImg(channelLogoSlug(c.id), { size: 30, cls: 'kx-logo' })}
           <span class="kx-flag">${esc(c.country)} · ${esc(c.lang)}</span>
           <h2>${esc(c.title)}</h2>
           <p>${esc(card.description || '').split('. ').slice(0, 2).join('. ')}.</p>
@@ -870,6 +915,7 @@ a{color:inherit;text-decoration:none}
 .kx-head p{margin:0;max-width:76ch;color:#3d4753}
 .kx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px}
 .kx-card{background:#fff;border:1px solid #e2ddd2;border-radius:14px;overflow:hidden;transition:transform .2s ease,box-shadow .2s ease}
+.kx-logo{display:block;width:auto;height:30px;max-width:190px;object-fit:contain;object-position:left center;border-radius:3px;margin:0 0 8px}
 .kx-card:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(15,23,42,.16)}
 .kx-card img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
 .kx-body{padding:16px 18px 18px;display:grid;gap:6px}

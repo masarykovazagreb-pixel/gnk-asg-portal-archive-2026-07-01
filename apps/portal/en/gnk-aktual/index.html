@@ -38,6 +38,14 @@
 .am-spt-cta a{display:inline-flex;align-items:center;padding:10px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.24);color:#e8f1fa;text-decoration:none;font-weight:700;font-size:14.5px}
 .am-spt-cta a.primary{background:#3dd6f5;border-color:#3dd6f5;color:#04121c}.am-spt-cta a:hover{border-color:#3dd6f5}
 @media(max-width:820px){.am-spt{grid-template-columns:1fr}.am-spt-media img{height:auto;aspect-ratio:16/9}.am-spt ul{grid-template-columns:1fr}.am-spt-body{padding:20px}}
+.amc-marks{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin:0 0 18px}
+.amc-mark{display:block;border-radius:10px;overflow:hidden;line-height:0;border:1px solid rgba(233,198,108,.3)}
+.amc-mark img{display:block;width:auto;height:auto}
+.amc-mark--en img{height:92px}
+.amc-mark--hr img{height:64px}
+.am-mast-logo{display:block;max-width:420px;margin:0 0 12px;line-height:0;border-radius:10px;overflow:hidden}
+.am-mast-logo img{display:block;width:100%;height:auto}
+@media(max-width:620px){.am-mast-logo{max-width:300px}}
 </style>
 <meta name="editor" content="Nermin Sefić"><link rel="preload" as="image" href="/assets/izdanja/zagreb-440.webp" imagesrcset="/assets/izdanja/zagreb-240.webp 240w, /assets/izdanja/zagreb-440.webp 440w" imagesizes="(max-width:620px) 84px,(max-width:1040px) 22vw,11vw" fetchpriority="high">
 <style id="aktual-perf">.amc-river,.amc-tiles,.amm-grid,.amx-platforms{content-visibility:auto;contain-intrinsic-size:auto 640px}@media(prefers-reduced-motion:reduce){.amx-ring,.amm-card,.amm-home{transition:none}}</style>
@@ -99,7 +107,9 @@
   <section class="am-masthead" aria-labelledby="amMasthead">
     <div class="am-mast-side">SOURCE-LINKED NEWSROOM<br>Original publishers remain the source</div>
     <div class="am-brand">
-      <span class="am-brand-kicker">World edition</span>
+      <a class="am-mast-logo" href="/en/gnk-aktual/" hreflang="en" lang="en" aria-label="AKTUAL MEDIA — world edition">
+        <img src="/assets/brand/aktual-media-en-1200.webp" alt="AKTUAL MEDIA — world edition — News · context · sources" width="420" height="121" loading="eager" decoding="async" fetchpriority="high">
+      </a><span class="am-brand-kicker">World edition</span>
       <h1 id="amMasthead">AKTUAL <span>MEDIA</span></h1>
       <p class="am-brand-sub">News · context · sources</p>
     </div>
@@ -271,7 +281,7 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
         <b>Zagreb</b>
         <span class="amx-line" style="--c:#e9c66c" aria-hidden="true"></span>
         <small>hr · Hrvatska</small>
-        <em class="amx-ago">prije 3 h</em>
+        <em class="amx-ago">prije 5 h</em>
       </a>
     </li><li class="amx-item">
       <a class="amx-link" href="https://gnk-asg.hr/kanal/beograd/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL BEOGRAD — Srbija — 420 stories — open edition">
@@ -279,7 +289,7 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
         <b>Beograd</b>
         <span class="amx-line" style="--c:#7fb2ff" aria-hidden="true"></span>
         <small>sr · Srbija</small>
-        <em class="amx-ago">prije 3 h</em>
+        <em class="amx-ago">prije 5 h</em>
       </a>
     </li><li class="amx-item">
       <a class="amx-link" href="https://gnk-asg.hr/kanal/sarajevo/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL SARAJEVO — Bosna i Hercegovina — 420 stories — open edition">
@@ -287,7 +297,7 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
         <b>Sarajevo</b>
         <span class="amx-line" style="--c:#7ee0a1" aria-hidden="true"></span>
         <small>bs · Bosna i Hercegovina</small>
-        <em class="amx-ago">prije 2 h</em>
+        <em class="amx-ago">prije 4 h</em>
       </a>
     </li><li class="amx-item">
       <a class="amx-link" href="https://gnk-asg.hr/kanal/budimpesta/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL BUDAPEST — Mađarska — 420 stories — open edition">
@@ -295,7 +305,7 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
         <b>Budimpešta</b>
         <span class="amx-line" style="--c:#ff9f6e" aria-hidden="true"></span>
         <small>hu · Mađarska</small>
-        <em class="amx-ago">prije 3 h</em>
+        <em class="amx-ago">prije 5 h</em>
       </a>
     </li><li class="amx-item">
       <a class="amx-link" href="https://gnk-asg.hr/kanal/ljubljana/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL LJUBLJANA — Slovenija — 420 stories — open edition">
@@ -303,7 +313,7 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
         <b>Ljubljana</b>
         <span class="amx-line" style="--c:#c79bff" aria-hidden="true"></span>
         <small>sl · Slovenija</small>
-        <em class="amx-ago">prije 3 h</em>
+        <em class="amx-ago">prije 5 h</em>
       </a>
     </li><li class="amx-item">
       <a class="amx-link" href="https://gnk-asg.hr/kanal/rim/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL ROMA — Italija — 420 stories — open edition">
@@ -311,7 +321,7 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
         <b>Rim</b>
         <span class="amx-line" style="--c:#ff7d7d" aria-hidden="true"></span>
         <small>it · Italija</small>
-        <em class="amx-ago">prije 3 h</em>
+        <em class="amx-ago">prije 5 h</em>
       </a>
     </li><li class="amx-item">
       <a class="amx-link" href="https://gnk-asg.hr/kanal/sofija/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL SOFIJA — Bugarska — 420 stories — open edition">
@@ -319,7 +329,7 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
         <b>Sofija</b>
         <span class="amx-line" style="--c:#6fe0d6" aria-hidden="true"></span>
         <small>bg · Bugarska</small>
-        <em class="amx-ago">prije 3 h</em>
+        <em class="amx-ago">prije 5 h</em>
       </a>
     </li><li class="amx-item">
       <a class="amx-link" href="https://gnk-asg.hr/kanal/bukurest/" rel="external noopener" aria-label="AKTUAL MEDIA KANAL BUCUREȘTI — Rumunjska — 420 stories — open edition">
@@ -327,7 +337,7 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
         <b>Bukurešt</b>
         <span class="amx-line" style="--c:#f2a8d0" aria-hidden="true"></span>
         <small>ro · Rumunjska</small>
-        <em class="amx-ago">prije 3 h</em>
+        <em class="amx-ago">prije 5 h</em>
       </a>
     </li></ul>
   <div class="amx-wires" aria-hidden="true"><span style="--c:#e9c66c"></span><span style="--c:#7fb2ff"></span><span style="--c:#7ee0a1"></span><span style="--c:#ff9f6e"></span><span style="--c:#c79bff"></span><span style="--c:#ff7d7d"></span><span style="--c:#6fe0d6"></span><span style="--c:#f2a8d0"></span></div>
