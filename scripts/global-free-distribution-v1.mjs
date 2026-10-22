@@ -149,11 +149,12 @@ const platforms=[
   {name:'bluesky',ready:Boolean(bskyCfg.id&&bskyCfg.pass),publish:bskyPublish},
   {name:'mastodon',ready:Boolean(mastoCfg.host&&mastoCfg.token),publish:mastoPublish}
 ];
+if(!platforms.some(p=>p.ready))throw new Error('No connected Bluesky or Mastodon credentials: nothing was published');
 for(const target of platforms){
-  let ok=0,fail=0,skipped=0;const outputs=[];
+  let ok=0,fail=0,skipped=0,attempted=0;const outputs=[];
   if(!target.ready){report.platforms[target.name]={status:'missing_account_credentials',published:0};continue;}
   for(const v of variants){
-    if(ok>=PER_RUN)break;
+    if(attempted>=PER_RUN)break;
     const key=postKey(target.name,v.item,v.language);
     const previous=state.posted[key];
     if(previous){
@@ -163,6 +164,7 @@ for(const target of platforms){
       skipped++;report.errors.push(target.name+': pending verification for '+v.item.canonical);continue;
     }
     if(!(await preflight(v.item.canonical))){skipped++;continue;}
+    attempted++;
     try{
       const result=await target.publish(v.copy,key);
       const url=publicUrl(result.url);
