@@ -814,6 +814,96 @@ ${END}`;
     return page.replace(canonical[0], `${canonical[0]}\n${links}`);
   };
   /* Traka krugova ide odmah ispod rubrika, prije vijesti. */
+  /* Traka proizvoda na vrhu i iskačuća najava.
+     Beograd je prvi jer je srpsko izdanje novo; uz njega idu i ostali
+     proizvodi AKTUAL MEDIA (tjednik, moda, galerija, status). Sve je u
+     vanjskim datotekama da radi i pod strogim CSP-om. */
+  const promoBlock = (lang) => {
+    const hr = lang !== 'en';
+    const t = hr ? {
+      nav: 'AKTUAL MEDIA — izdanja i proizvodi',
+      new: 'Novo', beograd: 'Beograd · Srbija', business: 'Business Tjednik',
+      mode: 'Tjednik Mode', editions: 'Sva izdanja', gallery: 'Galerija',
+      status: 'Status ažurnosti', radio: 'Radio',
+      eyebrow: 'AKTUAL MEDIA · mreža izdanja',
+      title: 'Beograd je sada u fokusu',
+      lead: 'Novo gradsko izdanje za Srbiju: 420 tekstova, osam izvora i dnevni ritam. Uz njega idu poslovni tjednik, moda, galerija i javni status ažurnosti — sve na jednom mjestu.',
+      tiles: [
+        ['/kanal/beograd/', 'Beograd', 'Srbija · 420 tekstova', 'Novo'],
+        ['/kanal/zagreb/', 'Zagreb', 'Hrvatska · 420 tekstova', ''],
+        ['/kanal/sarajevo/', 'Sarajevo', 'Bosna i Hercegovina', ''],
+        ['https://gnk-asg-tjednik.pages.dev/', 'Business Tjednik', 'Tjednik W43', ''],
+        ['/izdanja/moda/', 'Tjednik Mode', 'Moda i stil', ''],
+        ['/status/', 'Status ažurnosti', 'Javno mjerenje svježine', 'Novo']
+      ],
+      cta: 'Sva izdanja →',
+      shareStatus: 'Podijeli status na X ↗',
+      shareBeograd: 'Podijeli Beograd na X ↗',
+      close: 'Zatvori najavu',
+      later: 'Kasnije',
+      never: 'Ne prikazuj više'
+    } : {
+      nav: 'AKTUAL MEDIA — editions and products',
+      new: 'New', beograd: 'Belgrade · Serbia', business: 'Business Weekly',
+      mode: 'Mode Weekly', editions: 'All editions', gallery: 'Gallery',
+      status: 'Freshness status', radio: 'Radio',
+      eyebrow: 'AKTUAL MEDIA · edition network',
+      title: 'Belgrade is now in focus',
+      lead: 'A new city edition for Serbia: 420 stories, eight sources and a daily rhythm. Alongside it: the business weekly, mode, gallery and a public freshness status — all in one place.',
+      tiles: [
+        ['/kanal/beograd/', 'Belgrade', 'Serbia · 420 stories', 'New'],
+        ['/kanal/zagreb/', 'Zagreb', 'Croatia · 420 stories', ''],
+        ['/kanal/sarajevo/', 'Sarajevo', 'Bosnia and Herzegovina', ''],
+        ['https://gnk-asg-tjednik.pages.dev/', 'Business Weekly', 'Week W43', ''],
+        ['/izdanja/moda/', 'Mode Weekly', 'Fashion and style', ''],
+        ['/en/status/', 'Freshness status', 'Public freshness measurement', 'New']
+      ],
+      cta: 'All editions →',
+      shareStatus: 'Share status on X ↗',
+      shareBeograd: 'Share Belgrade on X ↗',
+      close: 'Close announcement',
+      later: 'Later',
+      never: "Don't show again"
+    };
+    const ext = (url) => /^https?:/.test(url) ? ' rel="external noopener"' : '';
+    const tiles = t.tiles.map(([url, name, note, badge]) => `<li><a href="${url}"${ext(url)}>${badge ? `<span>${esc(badge)}</span>` : ''}<b>${esc(name)}</b><i>${esc(note)}</i></a></li>`).join('');
+    const shareStatus = 'https://twitter.com/intent/tweet?url=' + encodeURIComponent('https://gnk-asg.hr' + (hr ? '/status/' : '/en/status/')) + '&text=' + encodeURIComponent(hr ? 'AKTUAL MEDIA — javni status ažurnosti osam gradskih izdanja' : 'AKTUAL MEDIA — public freshness status of eight city editions');
+    const shareBeograd = 'https://twitter.com/intent/tweet?url=' + encodeURIComponent('https://gnk-asg.hr/kanal/beograd/') + '&text=' + encodeURIComponent(hr ? 'AKTUAL MEDIA KANAL BEOGRAD — novo izdanje za Srbiju' : 'AKTUAL MEDIA KANAL BEOGRAD — a new edition for Serbia');
+    return `<!-- AKTUAL-PROMO:START -->
+<link rel="stylesheet" href="/assets/aktual-promo-v1.css?v=20261022">
+<nav class="am-promo-top" id="amPromoTop" aria-label="${esc(t.nav)}"><div class="am-promo-top-in"><span class="am-promo-top-label">AKTUAL MEDIA</span><ul><li><a href="/kanal/beograd/"><b>${esc(t.new)}</b> ${esc(t.beograd)}</a></li><li><a href="https://gnk-asg-tjednik.pages.dev/" rel="external noopener">${esc(t.business)} ↗</a></li><li><a href="/izdanja/moda/">${esc(t.mode)}</a></li><li><a href="/izdanja/">${esc(t.editions)}</a></li><li><a href="/galerija/">${esc(t.gallery)}</a></li><li><a href="${hr ? '/status/' : '/en/status/'}">${esc(t.status)}</a></li><li><a href="/radio/">${esc(t.radio)}</a></li></ul></div></nav>
+<div class="am-promo-modal" id="amPromoModal" hidden>
+  <div class="am-promo-backdrop" data-am-promo-close></div>
+  <div class="am-promo-card" role="dialog" aria-modal="true" aria-labelledby="amPromoTitle" aria-describedby="amPromoLead">
+    <button class="am-promo-x" type="button" data-am-promo-close aria-label="${esc(t.close)}">×</button>
+    <p class="am-promo-eyebrow">${esc(t.eyebrow)}</p>
+    <h2 id="amPromoTitle">${esc(t.title)}</h2>
+    <p class="am-promo-lead" id="amPromoLead">${esc(t.lead)}</p>
+    <ul class="am-promo-grid">${tiles}</ul>
+    <div class="am-promo-actions">
+      <a class="am-promo-cta" href="/izdanja/">${esc(t.cta)}</a>
+      <a class="am-promo-share" href="${esc(shareStatus)}" target="_blank" rel="external noopener noreferrer nofollow">${esc(t.shareStatus)}</a>
+      <a class="am-promo-share" href="${esc(shareBeograd)}" target="_blank" rel="external noopener noreferrer nofollow">${esc(t.shareBeograd)}</a>
+      <button type="button" class="am-promo-later" data-am-promo-close>${esc(t.later)}</button>
+      <button type="button" class="am-promo-never" data-am-promo-never>${esc(t.never)}</button>
+    </div>
+  </div>
+</div>
+<script src="/assets/aktual-promo-v1.js?v=20261022" defer></script>
+<!-- AKTUAL-PROMO:END -->`;
+  };
+  const withPromo = (page, lang) => {
+    const block = promoBlock(lang);
+    const PS = '<!-- AKTUAL-PROMO:START -->';
+    const PE = '<!-- AKTUAL-PROMO:END -->';
+    if (page.includes(PS) && page.includes(PE)) {
+      return page.replace(new RegExp(`${PS}[\\s\\S]*?${PE}`), () => block);
+    }
+    const at = page.indexOf('<section class="am-masthead"');
+    if (at > 0) return `${page.slice(0, at)}${block}\n\n  ${page.slice(at)}`;
+    return page;
+  };
+
   const RS = '<!-- AKTUAL-RAIL:START -->';
   const RE = '<!-- AKTUAL-RAIL:END -->';
   const railHr = homeRail(cards, moda, 'hr');
@@ -827,6 +917,7 @@ ${END}`;
       html = `${html.slice(0, at)}\n${RS}\n${railHr}\n${RE}${html.slice(at)}`;
     }
   }
+  html = withPromo(html, 'hr');
   html = addPerf(addLogoAlternates(html, ['aktual-media-hr']));
   html = strengthenAktualBrand(html, 'hr', jsonld);
   writeFileSync(FILE, html);
@@ -866,6 +957,7 @@ ${END}`;
         }
       }
     }
+    en = withPromo(en, 'en');
     en = addPerf(addLogoAlternates(en, ['aktual-media-en', 'aktual-media-hr']));
     en = strengthenAktualBrand(en, 'en', jsonld);
     writeFileSync(EN, en);

@@ -290,7 +290,7 @@ function page(lang) {
 <meta name="twitter:image" content="${SITE}/assets/brand/aktual-media-hr-og.jpg">
 <meta name="twitter:image:alt" content="AKTUAL MEDIA — svjetsko izdanje">
 <script type="application/ld+json">${JSON.stringify(jsonld)}</script>
-<style>${CSS}</style>
+<link rel="stylesheet" href="/assets/status-page-v1.css?v=20261022">
 </head>
 <body>
 <main>
@@ -370,6 +370,17 @@ const targets = [
   [join(PORTAL, 'en', 'status', 'index.html'), en],
 ];
 
+/* /status/* ima strog CSP (style-src 'self') — ugrađeni <style> bio bi
+   blokiran u produkciji, pa CSS ide u vanjsku datoteku pod /assets/. */
+const cssFile = join(PORTAL, 'assets', 'status-page-v1.css');
+mkdirSync(dirname(cssFile), { recursive: true });
+const prevCss = existsSync(cssFile) ? readFileSync(cssFile, 'utf8') : '';
+let cssChanged = 0;
+if (prevCss !== CSS) {
+  cssChanged = 1;
+  if (!CHECK) writeFileSync(cssFile, CSS);
+}
+
 let changed = 0;
 for (const [file, html] of targets) {
   mkdirSync(dirname(file), { recursive: true });
@@ -413,7 +424,8 @@ console.log(JSON.stringify({
   central: { ageMinutes: centralMin, grade: centralGrade },
   editions: editions.map((e) => ({ id: e.id, ageMinutes: e.mins, grade: e.grade })),
   pagesChanged: changed,
+  cssChanged,
   sitemapChanged,
 }, null, 2));
 
-if (CHECK && (changed || sitemapChanged)) process.exitCode = 1;
+if (CHECK && (changed || cssChanged || sitemapChanged)) process.exitCode = 1;

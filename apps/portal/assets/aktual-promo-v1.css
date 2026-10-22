@@ -1,0 +1,294 @@
+/* AKTUAL MEDIA — prometna traka i iskačuća najava proizvoda.
+   Sve je u vanjskoj datoteci jer /gnk-aktual/ i /en/gnk-aktual/ moraju
+   ostati čitljivi i pod strogim CSP-om (bez ugrađenih stilova).
+   Pravilo: ništa ne prekriva glavnu sliku i ništa se ne slaže jedno
+   preko drugoga — traka je u toku dokumenta, a kartica je fiksni sloj. */
+
+.am-promo-top {
+  --am-promo-gold: #e9c66c;
+  position: relative;
+  z-index: 3;
+  margin: 0 0 18px;
+  border-top: 1px solid rgba(233, 198, 108, .28);
+  border-bottom: 1px solid rgba(233, 198, 108, .28);
+  background: linear-gradient(90deg, rgba(233, 198, 108, .10), rgba(6, 17, 31, .5) 40%, rgba(6, 17, 31, .5));
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.am-promo-top-in {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 clamp(12px, 3vw, 28px);
+  min-height: 46px;
+}
+
+.am-promo-top-label {
+  flex: 0 0 auto;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--am-promo-gold);
+}
+
+.am-promo-top ul {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.am-promo-top li { flex: 0 0 auto; }
+
+.am-promo-top a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 7px 11px;
+  border: 1px solid rgba(233, 198, 108, .28);
+  border-radius: 999px;
+  color: #e8eef7;
+  font-size: 12.5px;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: border-color .18s ease, color .18s ease, background .18s ease;
+}
+
+.am-promo-top a:hover,
+.am-promo-top a:focus-visible {
+  border-color: var(--am-promo-gold);
+  color: #fff8e6;
+  background: rgba(233, 198, 108, .12);
+}
+
+.am-promo-top b {
+  color: var(--am-promo-gold);
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+/* ---------- iskačuća najava ---------- */
+
+.am-promo-modal[hidden] { display: none !important; }
+
+.am-promo-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9500;
+  display: grid;
+  place-items: center;
+  padding: clamp(12px, 3vw, 32px);
+}
+
+.am-promo-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 9, 15, .72);
+  backdrop-filter: blur(3px);
+}
+
+.am-promo-card {
+  position: relative;
+  z-index: 1;
+  width: min(720px, 100%);
+  max-height: min(88vh, 760px);
+  overflow: auto;
+  padding: clamp(18px, 3vw, 30px);
+  border: 1px solid rgba(233, 198, 108, .45);
+  border-radius: 18px;
+  background: linear-gradient(160deg, #0d1d2e, #08131f 62%);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .6);
+  color: #e8eef7;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  animation: am-promo-in .22s ease-out;
+}
+
+@keyframes am-promo-in {
+  from { opacity: 0; transform: translateY(8px) scale(.99); }
+  to { opacity: 1; transform: none; }
+}
+
+.am-promo-card h2 {
+  margin: 4px 0 8px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(22px, 3.4vw, 31px);
+  line-height: 1.08;
+  letter-spacing: -.02em;
+  color: #fff;
+}
+
+.am-promo-eyebrow {
+  margin: 0;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #e9c66c;
+}
+
+.am-promo-lead {
+  margin: 0 0 16px;
+  color: #b9c8d8;
+  font-size: 14.5px;
+  line-height: 1.55;
+  max-width: 62ch;
+}
+
+.am-promo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 8px;
+  list-style: none;
+  margin: 0 0 18px;
+  padding: 0;
+}
+
+.am-promo-grid a {
+  display: block;
+  height: 100%;
+  padding: 11px 13px;
+  border: 1px solid #23405a;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #e8eef7;
+  background: rgba(9, 22, 35, .65);
+  transition: border-color .18s ease, transform .18s ease;
+}
+
+.am-promo-grid a:hover,
+.am-promo-grid a:focus-visible {
+  border-color: #e9c66c;
+  transform: translateY(-1px);
+}
+
+.am-promo-grid b {
+  display: block;
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+.am-promo-grid i {
+  display: block;
+  margin-top: 2px;
+  font-size: 11.5px;
+  font-style: normal;
+  color: #93a6bb;
+}
+
+.am-promo-grid span {
+  display: inline-block;
+  margin-bottom: 4px;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #0a1522;
+  background: #e9c66c;
+  border-radius: 999px;
+  padding: 2px 7px;
+}
+
+.am-promo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.am-promo-actions a,
+.am-promo-actions button {
+  font: 700 12.5px/1 Inter, system-ui, sans-serif;
+  border-radius: 10px;
+  padding: 11px 15px;
+  cursor: pointer;
+}
+
+.am-promo-cta {
+  background: #e9c66c;
+  color: #08131f;
+  border: 1px solid #e9c66c;
+  text-decoration: none;
+}
+
+.am-promo-share {
+  border: 1px solid #2c4a67;
+  color: #cfdceb;
+  text-decoration: none;
+}
+
+.am-promo-later,
+.am-promo-never {
+  background: transparent;
+  border: 1px solid transparent;
+  color: #93a6bb;
+}
+
+.am-promo-later:hover,
+.am-promo-never:hover,
+.am-promo-later:focus-visible,
+.am-promo-never:focus-visible {
+  color: #fff;
+  border-color: #2c4a67;
+}
+
+.am-promo-x {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #2c4a67;
+  border-radius: 50%;
+  background: #0b1a2a;
+  color: #cfdceb;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.am-promo-x:hover,
+.am-promo-x:focus-visible { border-color: #e9c66c; color: #fff; }
+
+/* Fokus nikad ne smije pobjeći iza sloja. */
+.am-promo-card :focus-visible {
+  outline: 3px solid #e9c66c;
+  outline-offset: 2px;
+}
+
+@media (max-width: 620px) {
+  .am-promo-modal { place-items: end center; padding: 0; }
+  .am-promo-card {
+    width: 100%;
+    max-height: 86vh;
+    border-radius: 18px 18px 0 0;
+    animation: am-promo-up .22s ease-out;
+  }
+  @keyframes am-promo-up {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: none; }
+  }
+  .am-promo-top-label { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .am-promo-card { animation: none; }
+  .am-promo-grid a { transition: none; }
+  .am-promo-grid a:hover { transform: none; }
+}
+
+@media print {
+  .am-promo-top,
+  .am-promo-modal { display: none !important; }
+}
