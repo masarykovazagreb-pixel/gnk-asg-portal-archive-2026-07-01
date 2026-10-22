@@ -44,7 +44,9 @@
     "autoDeploy": false,
     "externalPublishing": false,
     "workflows": "reuse workforce-bot-orchestrator.yml 4-hour schedule",
-    "monthlyGithubActionsWorkingCeilingMinutes": 1000
+    "githubActionsInternalMinutesCap": null,
+    "githubActionsOnlyFreeUse": true,
+    "paidRunnerAndBillingForbidden": true
   },
   "editor": "Nermin Sefić"
 }
