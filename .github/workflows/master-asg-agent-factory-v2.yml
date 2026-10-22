@@ -1,0 +1,72 @@
+name: MASTER ASG Multi-Agent Factory V2
+
+# Only Masarykova controls the canonical repository. No production writes.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '41 0,6,12,18 * * *'
+  pull_request:
+    paths:
+      - 'config/control-plane/master-asg-agent-network-v2.json'
+      - 'ops/agent-decisions-v1.json'
+      - 'scripts/master-asg-agent-network-v2.mjs'
+      - 'tests/master-asg-agent-network-v2.test.mjs'
+      - '.github/workflows/master-asg-agent-factory-v2.yml'
+
+permissions:
+  contents: read
+  actions: read
+  issues: read
+  pull-requests: read
+
+concurrency:
+  group: master-asg-agent-factory-v2
+  cancel-in-progress: true
+
+jobs:
+  agent-network:
+    name: Inspect, assign worker agents, prepare verified evidence
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      EXA_API_KEY: ${{ secrets.EXA_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      ENABLE_PUBLIC_RESEARCH: ${{ vars.AGENT_ENABLE_PUBLIC_RESEARCH == 'true' && '1' || '0' }}
+      ENABLE_AI_WRITING: ${{ vars.AGENT_ENABLE_AI_WRITING == 'true' && '1' || '0' }}
+      OPENAI_MODEL: ${{ vars.AGENT_OPENAI_MODEL || 'gpt-4.1-mini' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check orchestrator syntax
+        run: node --check scripts/master-asg-agent-network-v2.mjs
+      - name: Offline policy and allocation tests
+        run: node --test tests/master-asg-agent-network-v2.test.mjs
+      - name: Existing MASTER ASG guard
+        run: node scripts/master-asg-agent-preflight-v1.mjs
+      - name: Observe workers, issues, CI, routes and optional public research
+        if: github.event_name != 'pull_request'
+        run: node scripts/master-asg-agent-network-v2.mjs
+      - name: Report actual evidence
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          if [ -s artifacts/master-asg-agent-network/summary.md ]; then
+            cat artifacts/master-asg-agent-network/summary.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'Agent report missing: no success claim.' >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+      - name: Retain evidence and held editorial drafts
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: master-asg-agent-network-${{ github.run_id }}
+          path: artifacts/master-asg-agent-network/
+          if-no-files-found: error
+          retention-days: 7
