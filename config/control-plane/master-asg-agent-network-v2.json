@@ -1,0 +1,115 @@
+{
+  "version": "MASTER_ASG_AGENT_NETWORK_V2",
+  "canonicalRepository": "masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01",
+  "sourceBranch": "main",
+  "mode": "supervised-autonomy",
+  "architecture": {
+    "factory": "one operational bot per existing workers/* directory",
+    "tiers": [
+      "supervisor",
+      "backend",
+      "frontend",
+      "seo",
+      "research",
+      "reporter",
+      "editor",
+      "quality",
+      "release"
+    ],
+    "allocation": "priority-first then worker ownership",
+    "sourceOfTasks": "config/control-plane/workforce-bot-taskboard-v1.json",
+    "report": "artifacts/master-asg-agent-network/report.json"
+  },
+  "operating": {
+    "readOnlyInspection": true,
+    "runEveryHours": 6,
+    "maxMonthlyActionsMinutes": 1000,
+    "maxPaidAiCallsPerRun": 1,
+    "neverPushMain": true,
+    "prFirst": true,
+    "doNotAutoMerge": true,
+    "exactShaProductionOnly": true,
+    "doNotChangeKillSwitches": true,
+    "doNotModifyProtectedSystems": true,
+    "canonicalProductionMustBeHttpVerified": true,
+    "noFalseLiveClaims": true,
+    "stopOnMissingEvidence": true
+  },
+  "approval": {
+    "mode": "30-minute-no-objection-for-low-risk-only",
+    "minutes": 30,
+    "clockStartsAt": "confirmed-notifiedAt-with-delivery-evidence",
+    "recordPath": "ops/agent-decisions-v1.json",
+    "allowedRisk": [
+      "low"
+    ],
+    "silenceNeverApproves": [
+      "public editorial human review",
+      "production deployment",
+      "external distribution",
+      "secrets or permissions",
+      "financial or legal decisions",
+      "personally sensitive data",
+      "payments",
+      "DNS",
+      "mail",
+      "material public claims"
+    ],
+    "rejectionAlwaysOverrides": true,
+    "emergencyStopOverrides": true
+  },
+  "publication": {
+    "stages": [
+      "research",
+      "draft",
+      "automated-source-check",
+      "AI-editorial-proposal",
+      "human-editorial-review",
+      "quality-ci",
+      "exact-sha-deploy",
+      "verified-live",
+      "optional-external-distribution"
+    ],
+    "aiEditorCannotAssertHumanReview": true,
+    "doNotAssignHumanAuthorshipWithoutProof": true,
+    "labelAiPublicInterestTextUnlessQualifyingSubstantiveHumanReview": true
+  },
+  "research": {
+    "provider": "exa",
+    "publicOnly": true,
+    "enabledOnlyWith": "EXA_API_KEY and ENABLE_PUBLIC_RESEARCH=1",
+    "neverExportRepositoryOrPersonalData": true,
+    "topics": [
+      {
+        "id": "eu-business",
+        "query": "Latest verified European business, technology and economic developments October 2026 from primary official sources"
+      },
+      {
+        "id": "ai-industry",
+        "query": "Official European Commission 2026 public statements AI Act technology regulation business impact"
+      }
+    ]
+  },
+  "aiWriting": {
+    "provider": "OpenAI API",
+    "enabledOnlyWith": "OPENAI_API_KEY and ENABLE_AI_WRITING=1 and Exa research success",
+    "defaultModel": "gpt-4.1-mini",
+    "output": "draft artifact only",
+    "noProductionWrites": true
+  },
+  "publicEndpoints": [
+    "https://gnk-asg.hr/",
+    "https://gnk-asg.hr/gnk-aktual/",
+    "https://gnk-asg.hr/objave/",
+    "https://gnk-asg.hr/komentari/"
+  ],
+  "protectedPaths": [
+    ".github/workflows/deploy-admin-auth-v6.yml",
+    "workers/**/wrangler.toml",
+    "docs/governance/EU-AI-ACT-2026-POLICY.md"
+  ],
+  "budget": {
+    "maxGitHubIssuesCreatedPerRun": 0,
+    "comment": "Do not create duplicated Issues or additional billing until explicitly designed and deduplicated."
+  }
+}
