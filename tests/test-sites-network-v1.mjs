@@ -99,6 +99,16 @@ function checkHtml(file, site, lang, slug) {
   const keywords = attr(html, /<meta name="keywords" content="([^"]*)">/);
   if (keywords.length < 20) note(`${where}: keywords prekratki`);
   if (/Nermin Sefić/.test(keywords)) note(`${where}: ime urednika ne smije biti u meta keywords`);
+  const hashtags = attr(html, /<meta name="hashtags" content="([^"]*)">/).split(/\s+/).filter(Boolean);
+  if (hashtags.length < 3) note(`${where}: samo ${hashtags.length} hashtagova`);
+  if (hashtags.some((tag) => !/^#[A-Za-z0-9]+$/.test(tag))) note(`${where}: neispravan hashtag`);
+  if (!hashtags.some((tag) => /aktualmedia/i.test(tag))) note(`${where}: hashtagovi ne nose #AktualMedia`);
+  if (slug !== '') {
+    const articleTags = [...html.matchAll(/<meta property="article:tag" content="([^"]+)"/g)].map((match) => match[1]);
+    if (articleTags.length < 3) note(`${where}: article:tag ${articleTags.length}/3`);
+    if (!/property="article:section" content="[^"]+"/.test(html)) note(`${where}: nema article:section`);
+    if (!/property="article:published_time" content="[^"]+"/.test(html)) note(`${where}: nema article:published_time`);
+  }
   for (const [label, re] of [
     ['og:title', /property="og:title" content="[^"]+"/], ['og:description', /property="og:description" content="[^"]+"/],
     ['og:url', /property="og:url" content="[^"]+"/], ['og:image', /property="og:image" content="[^"]+"/],
@@ -314,11 +324,21 @@ else {
   if (!xml.includes(DESK_HR)) note('mreza/feed.xml ne pokazuje na indeks');
 }
 
+const opmlFile = join(PORTAL, 'mreza', 'feeds.opml');
+if (!existsSync(opmlFile)) note('mreza/feeds.opml nedostaje');
+else {
+  const opml = readFileSync(opmlFile, 'utf8');
+  if (!/^<\?xml version="1\.0" encoding="UTF-8"\?>/.test(opml)) note('feeds.opml nema XML zaglavlje');
+  const outlines = count(opml, /<outline /g);
+  if (outlines !== 1 + SITES.length * 2) note(`feeds.opml ima ${outlines} stavki (očekivano ${1 + SITES.length * 2})`);
+  if (!opml.includes('<opml version="2.0">')) note('feeds.opml nije OPML 2.0');
+}
+
 const deskSitemap = join(PORTAL, 'gnk-aktual', 'mreza', 'sitemap.xml');
 if (!existsSync(deskSitemap)) note('gnk-aktual/mreza/sitemap.xml nedostaje');
 else {
   const locs = count(readFileSync(deskSitemap, 'utf8'), /<loc>/g);
-  const expected = 4 + SITES.length * 2;
+  const expected = 4 + SITES.length * 2 + 2;
   if (locs !== expected) note(`mreza sitemap ima ${locs} URL-a (očekivano ${expected})`);
 }
 
@@ -370,6 +390,41 @@ for (const [file, label] of [[join(PORTAL, 'gnk-aktual', 'index.html'), 'HR'], [
   const html = readFileSync(file, 'utf8');
   if (!html.includes('<!-- AKTUAL-MREZA-BAND:START -->')) note(`/gnk-aktual/ ${label}: nema trake mreže`);
   if (!html.includes(label === 'EN' ? 'en/gnk-aktual/network/' : 'gnk-aktual/mreza/')) note(`/gnk-aktual/ ${label}: traka ne vodi na indeks`);
+}
+
+/* ---------- 3d. oznake i Markdown indeks ---------- */
+const TAG_HR = `${DESK_HR}oznake/`;
+const TAG_EN = `${DESK_EN}tags/`;
+for (const [lang, canonical, alternate, file] of [
+  ['hr', TAG_HR, TAG_EN, join(PORTAL, 'gnk-aktual/mreza/oznake/index.html')],
+  ['en', TAG_EN, TAG_HR, join(PORTAL, 'en/gnk-aktual/network/tags/index.html')],
+]) {
+  const where = relative(ROOT, file);
+  if (!existsSync(file)) { note(`${where}: nema`); continue; }
+  const html = readFileSync(file, 'utf8');
+  if (attr(html, /<link rel="canonical" href="([^"]+)">/) !== canonical) note(`${where}: canonical nije ${canonical}`);
+  if (!html.includes(`hreflang="${lang === 'hr' ? 'en' : 'hr'}" href="${alternate}"`)) note(`${where}: nema hreflang na ${alternate}`);
+  if (!html.includes('hreflang="x-default"')) note(`${where}: nema x-default`);
+  const title = unescape((html.match(/<title>([\s\S]*?)<\/title>/) || [])[1] || '');
+  if (title.length < 15 || title.length > 90) note(`${where}: naslov ${title.length}`);
+  const desc = attr(html, /<meta name="description" content="([^"]+)">/);
+  if (desc.length < 80 || desc.length > 320) note(`${where}: opis ${desc.length}`);
+  if (!master.includes(`<loc>${canonical}</loc>`)) note(`${where}: nema u glavnom sitemapu`);
+  const tags = attr(html, /<meta name="hashtags" content="([^"]*)">/).split(/\s+/).filter(Boolean);
+  if (tags.length < 3) note(`${where}: premalo hashtagova`);
+  if ((html.match(/<h1/g) || []).length !== 1) note(`${where}: nema točno jedan h1`);
+  if ((html.match(/<a [^>]*href="/g) || []).length < 6) note(`${where}: premalo poveznica`);
+  if ((html.match(/id="[a-z0-9]+"/g) || []).length < 20) note(`${where}: premalo sidra oznaka`);
+  if (!html.includes('type="text/markdown"')) note(`${where}: nema Markdown alternate`);
+}
+for (const [file, lang] of [[join(PORTAL, 'gnk-aktual/mreza/index.md'), 'hr'], [join(PORTAL, 'en/gnk-aktual/network/index.md'), 'en']]) {
+  const where = relative(ROOT, file);
+  if (!existsSync(file)) { note(`${where}: nema`); continue; }
+  const md = readFileSync(file, 'utf8');
+  const linked = (md.match(/https:\/\/gnk-[a-z-]+\.pages\.dev\//g) || []).length;
+  if (linked < 31) note(`${where}: samo ${linked} poveznica na tekstove`);
+  if (!md.includes(lang === 'en' ? 'Publisher: AKTUAL MEDIA' : 'Izdavač: AKTUAL MEDIA')) note(`${where}: nema izdavača`);
+  if (!md.includes('Nermin Sefić')) note(`${where}: nema urednika`);
 }
 
 /* ---------- 4. izborni desk ---------- */

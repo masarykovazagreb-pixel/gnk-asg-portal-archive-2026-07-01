@@ -16,6 +16,7 @@
  * nepovezanih micrositeova.
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { deskHashtags, tagSlug } from '../lib/seo.mjs';
 import { join, dirname } from 'node:path';
 
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -28,6 +29,9 @@ const HUB_HR = `${SITE}/mreza/`;
 const HUB_EN = `${SITE}/en/network/`;
 const AKTUAL = `${SITE}/gnk-aktual/`;
 const editionDesk = (lang, slug) => (lang === 'en' ? `${DESK_EN}${slug}/` : `${DESK_HR}${slug}/`);
+const TAG_HR = `${DESK_HR}oznake/`;
+const TAG_EN = `${DESK_EN}tags/`;
+const tagDesk = (lang) => (lang === 'en' ? TAG_EN : TAG_HR);
 const OG = `${SITE}/assets/izdanja/aktual-media-og.jpg`;
 const MARK_START = '<!-- AKTUAL-MREZA-BAND:START -->';
 const MARK_END = '<!-- AKTUAL-MREZA-BAND:END -->';
@@ -131,6 +135,9 @@ section > p.lead{color:var(--soft);max-width:82ch;margin:0 0 18px}
 .links{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 0}
 .links a{border:1px solid #2c4a6b;border-radius:999px;padding:9px 14px;font:800 11px/1 system-ui;letter-spacing:.08em;text-transform:uppercase;color:#dbe5f1}
 .links a:hover{border-color:var(--gold);color:var(--gold);text-decoration:none}
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 0;padding:0;list-style:none}
+.tags a{display:inline-block;border:1px solid #24425f;border-radius:999px;padding:6px 11px;font:700 10.5px/1 system-ui;letter-spacing:.06em;color:#cfe0f2;background:rgba(9,20,34,.6)}
+.tags a:hover{border-color:var(--gold);color:var(--gold);text-decoration:none}
 .btn{display:inline-block;border:1px solid var(--gold);border-radius:999px;padding:10px 16px;font:800 11.5px/1 system-ui;letter-spacing:.1em;text-transform:uppercase;color:#0a0d12;background:var(--gold);margin-top:14px}
 .btn:hover{text-decoration:none;filter:brightness(1.06)}
 footer{padding:30px 0 54px;color:#8496ab;font-size:13px}
@@ -139,6 +146,11 @@ footer a{color:#d6e0ea}
 .skip:focus{left:0}
 :focus-visible{outline:3px solid #74b6ff;outline-offset:3px}
 `;
+
+const siteSlugForTag = (tag, sites) => {
+  const match = sites.find((site) => (site.hashtags || []).some((item) => item.toLowerCase() === tag.toLowerCase()));
+  return match ? match.slug : '';
+};
 
 const byEdition = (pages) => {
   const map = new Map();
@@ -185,6 +197,8 @@ function deskPage(lang, { sites, pages }) {
   const counts = new Map([...grouped].map(([slug, list]) => [slug, list.length]));
   const total = pages.length;
   const perLang = pages.filter((page) => page.lang === lang).length;
+  const hashtags = deskHashtags(sites);
+  const keywords = [...hashtags.map((tag) => tag.replace('#', '')), 'AKTUAL MEDIA', lang === 'en' ? 'network of editions' : 'mreža izdanja', ...sites.map((site) => site.name), 'GNK ASG'].join(', ');
   const stats = lang === 'en'
     ? [[String(sites.length), 'editions'], [String(perLang), 'pages per language'], ['2', 'languages'], [String(sites.length), 'domains'], ['1', 'editor']]
     : [[String(sites.length), 'izdanja'], [String(perLang), 'stranica po jeziku'], ['2', 'jezika'], [String(sites.length), 'domena'], ['1', 'urednik']];
@@ -227,7 +241,8 @@ function deskPage(lang, { sites, pages }) {
       {
         '@type': 'CollectionPage', '@id': `${canonical}#page`, url: canonical, name: t.title, headline: t.h1, description: t.description,
         inLanguage: lang, datePublished: '2026-10-22', dateModified: new Date().toISOString().slice(0, 10),
-        isPartOf: { '@id': 'https://gnk-asg.hr/#website' }, author: { '@id': 'https://gnk-asg.hr/#aktual-media' },
+        keywords: keywords,
+        isPartOf: [{ '@id': 'https://gnk-asg.hr/#website' }, { '@id': `${HUB_HR}#page` }], author: { '@id': 'https://gnk-asg.hr/#aktual-media' },
         editor: { '@id': 'https://gnk-asg.hr/#nermin-sefic' }, publisher: { '@id': 'https://gnk-asg.hr/#aktual-media' },
         image: { '@type': 'ImageObject', url: OG, width: 1200, height: 630 },
         hasPart: sites.map((site) => ({ '@type': 'CreativeWork', name: site.name, url: `${site.url}/`, inLanguage: ['hr', 'en'], publisher: { '@id': 'https://gnk-asg.hr/#aktual-media' } })),
@@ -261,8 +276,10 @@ function deskPage(lang, { sites, pages }) {
 <meta name="author" content="AKTUAL MEDIA d.o.o.">
 <meta name="editor" content="Nermin Sefić">
 <meta name="publisher" content="AKTUAL MEDIA d.o.o.">
-<meta name="keywords" content="AKTUAL MEDIA, mreža izdanja, BOR USA, KOŠARKA 360, SCENA ZNANOSTI, STEP BUDUĆNOSTI, ZDRAVLJE 360, IZBORI U SRBIJI, GNK ASG">
-<meta name="news_keywords" content="AKTUAL MEDIA, mreža izdanja, GNK ASG">
+<meta name="copyright" content="AKTUAL MEDIA d.o.o.">
+<meta name="keywords" content="${esc(keywords)}">
+<meta name="news_keywords" content="${esc(keywords)}">
+<meta name="hashtags" content="${esc(hashtags.join(' '))}">
 <meta name="theme-color" content="#04080f">
 <link rel="canonical" href="${canonical}">
 <link rel="alternate" hreflang="${lang}" href="${canonical}">
@@ -270,6 +287,7 @@ function deskPage(lang, { sites, pages }) {
 <link rel="alternate" hreflang="x-default" href="${DESK_HR}">
 <link rel="alternate" type="application/atom+xml" title="AKTUAL MEDIA — mreža" href="/mreza/feed.xml">
 <link rel="alternate" type="application/json" title="Mreža — popis stranica" href="/data/mreza-pages-v1.json">
+<link rel="alternate" type="text/markdown" title="Mreža — Markdown" href="/gnk-aktual/mreza/index.md">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AKTUAL MEDIA · mreža izdanja">
 <meta property="og:title" content="${esc(t.title)}">
@@ -296,11 +314,13 @@ function deskPage(lang, { sites, pages }) {
   <p class="k">${esc(t.kicker)}</p>
   <h1>${esc(t.h1)}</h1>
   <p class="sub">${esc(t.lead)}</p>
+  <ul class="tags">${hashtags.map((tag) => `<li><a href="${HUB_HR}#${siteSlugForTag(tag, sites)}" rel="external noopener">${esc(tag)}</a></li>`).join('')}</ul>
   <ul class="stats">${stats.map(([n, l]) => `<li><div><b>${esc(n)}</b><span>${esc(l)}</span></div></li>`).join('')}</ul>
   <p class="links">
     <a href="/data/mreza-pages-v1.json">${esc(t.jsonLink)}</a>
     <a href="/mreza/feed.xml">${esc(t.feedLink)}</a>
     <a href="${lang === 'en' ? HUB_EN : HUB_HR}">${esc(t.backHub)}</a>
+    <a href="${tagDesk(lang)}">${lang === 'en' ? 'All hashtags' : 'Sve oznake'}</a>
   </p>
 </div></div>
 
@@ -324,8 +344,10 @@ function deskPage(lang, { sites, pages }) {
   <p class="links">
     <a href="/data/mreza-pages-v1.json">mreza-pages-v1.json</a>
     <a href="/data/mreza-v1.json">mreza-v1.json</a>
+    <a href="/data/seo-matrix-v1.json">seo-matrix-v1.json</a>
     <a href="/mreza/sitemap.xml">sitemap.xml</a>
     <a href="/mreza/feed.xml">feed.xml</a>
+    <a href="/mreza/feeds.opml">feeds.opml</a>
     <a href="${AKTUAL}">${esc(t.desk)}</a>
     <a href="/nermin-sefic/">Nermin Sefić</a>
   </p>
@@ -350,6 +372,8 @@ function editionPage(lang, site, { sites, pages }) {
     .sort((a, b) => orderOf(a.slug) - orderOf(b.slug));
   const count = pages.filter((page) => page.edition === site.slug).length;
   const tagline = String(site.tagline[lang] || '').trim();
+  const hashtags = deskHashtags(sites, site.slug);
+  const hashtagWords = hashtags.map((tag) => tag.replace('#', ''));
   const title = lang === 'en'
     ? `${site.name} — every page of the edition under AKTUAL MEDIA | GNK ASG`
     : `${site.name} — sve stranice izdanja pod AKTUAL MEDIA | GNK ASG`;
@@ -378,6 +402,7 @@ function editionPage(lang, site, { sites, pages }) {
       {
         '@type': 'CollectionPage', '@id': `${canonical}#page`, url: canonical, name: title, headline: aboutName, description,
         inLanguage: lang, datePublished: '2026-10-22', dateModified: new Date().toISOString().slice(0, 10),
+        keywords: [...hashtagWords, site.name, 'AKTUAL MEDIA'].join(', '),
         isPartOf: [{ '@id': 'https://gnk-asg.hr/#website' }, { '@id': `${desk}#page` }],
         author: { '@id': 'https://gnk-asg.hr/#aktual-media' }, editor: { '@id': 'https://gnk-asg.hr/#nermin-sefic' },
         publisher: { '@id': 'https://gnk-asg.hr/#aktual-media' },
@@ -414,8 +439,9 @@ function editionPage(lang, site, { sites, pages }) {
 <meta name="editor" content="Nermin Sefić">
 <meta name="publisher" content="AKTUAL MEDIA d.o.o.">
 <meta name="copyright" content="AKTUAL MEDIA d.o.o.">
-<meta name="keywords" content="${esc(`${site.name}, AKTUAL MEDIA, mreža izdanja, izdanja, ${lang === 'en' ? 'edition pages, publisher, editor' : 'stranice izdanja, izdavač, urednik'}, GNK ASG`)}">
-<meta name="news_keywords" content="${esc(`AKTUAL MEDIA, ${site.name}, GNK ASG`)}">
+<meta name="keywords" content="${esc([...hashtagWords, site.name, 'AKTUAL MEDIA', lang === 'en' ? 'network of editions, publisher, editor' : 'mreža izdanja, izdavač, urednik', 'GNK ASG'].join(', '))}">
+<meta name="news_keywords" content="${esc([...hashtagWords, site.name, 'AKTUAL MEDIA', 'GNK ASG'].join(', '))}">
+<meta name="hashtags" content="${esc(hashtags.join(' '))}">
 <meta name="theme-color" content="#04080f">
 <link rel="canonical" href="${canonical}">
 <link rel="alternate" hreflang="${lang}" href="${canonical}">
@@ -423,6 +449,7 @@ function editionPage(lang, site, { sites, pages }) {
 <link rel="alternate" hreflang="x-default" href="${editionDesk('hr', site.slug)}">
 <link rel="alternate" type="application/atom+xml" title="AKTUAL MEDIA — mreža" href="/mreza/feed.xml">
 <link rel="alternate" type="application/json" title="Mreža — popis stranica" href="/data/mreza-pages-v1.json">
+<link rel="alternate" type="text/markdown" title="Mreža — Markdown" href="${lang === 'en' ? '/en/gnk-aktual/network/index.md' : '/gnk-aktual/mreza/index.md'}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AKTUAL MEDIA · ${esc(site.name)}">
 <meta property="og:title" content="${esc(title)}">
@@ -449,6 +476,7 @@ function editionPage(lang, site, { sites, pages }) {
   <p class="k">${esc(t.kicker)} · ${esc(site.name)}</p>
   <h1>${esc(site.name)} — ${lang === 'en' ? 'every page under AKTUAL MEDIA' : 'sve stranice pod AKTUAL MEDIA'}</h1>
   <p class="sub">${esc(tagline)}</p>
+  <ul class="tags">${hashtags.map((tag) => `<li><a href="${HUB_HR}#${site.slug}" rel="external noopener">${esc(tag)}</a></li>`).join('')}</ul>
   <ul class="stats">
     <li><div><b>${list.length}</b><span>${lang === 'en' ? 'pages in this language' : 'stranica na ovom jeziku'}</span></div></li>
     <li><div><b>${count}</b><span>${lang === 'en' ? 'pages in both languages' : 'stranica na oba jezika'}</span></div></li>
@@ -462,6 +490,7 @@ function editionPage(lang, site, { sites, pages }) {
     <a href="${site.outputs.sitemap}">sitemap.xml</a>
     <a href="${site.outputs.feed}">feed.xml</a>
     <a href="${site.outputs.robots}">robots.txt</a>
+    <a href="${tagDesk(lang)}">${lang === 'en' ? 'All hashtags' : 'Sve oznake'}</a>
   </p>
 </div></div>
 
@@ -482,6 +511,173 @@ function editionPage(lang, site, { sites, pages }) {
   <ul class="pages">${siblingRows}</ul>
   <p class="links"><a href="${desk}">${lang === 'en' ? 'AKTUAL MEDIA — network of editions' : 'AKTUAL MEDIA — mreža izdanja'} →</a></p>
 </div></section>
+</main>
+<footer><div class="wrap">
+  <p>${esc(t.footer)}</p>
+  <p>© 2026 AKTUAL MEDIA d.o.o. · <a href="/nermin-sefic/">Nermin Sefić</a> · ${lang === 'en' ? 'Editor and director' : 'Urednik i direktor'} · <a href="${desk}">${lang === 'en' ? 'Network index' : 'Popis mreže'}</a></p>
+</div></footer>
+</body>
+</html>`;
+}
+
+
+
+function markdownIndex(lang, { sites, pages }) {
+  const t = T[lang];
+  const desk = lang === 'en' ? DESK_EN : DESK_HR;
+  const grouped = byEdition(pages);
+  const lines = [
+    `# ${lang === 'en' ? 'AKTUAL MEDIA — network of editions' : 'AKTUAL MEDIA — mreža izdanja'}`,
+    '',
+    `> ${t.description}`,
+    '',
+    `- ${lang === 'en' ? 'Publisher' : 'Izdavač'}: AKTUAL MEDIA d.o.o. — ${AKTUAL}`,
+    `- ${lang === 'en' ? 'Editor and director' : 'Urednik i direktor'}: Nermin Sefić — https://gnk-asg.hr/nermin-sefic/`,
+    `- ${lang === 'en' ? 'Index' : 'Indeks'} (HR): ${DESK_HR}`,
+    `- ${lang === 'en' ? 'Index' : 'Indeks'} (EN): ${DESK_EN}`,
+    `- ${lang === 'en' ? 'Hashtags' : 'Oznake'}: ${lang === 'en' ? TAG_EN : TAG_HR}`,
+    `- ${lang === 'en' ? 'Machine-readable list' : 'Strojni popis'}: ${SITE}/data/mreza-pages-v1.json`,
+    `- ${lang === 'en' ? 'Combined feed' : 'Zbirni feed'}: ${SITE}/mreza/feed.xml`,
+    '',
+  ];
+  for (const site of sites) {
+    const list = (grouped.get(site.slug) || []).filter((page) => page.lang === lang).sort((a, b) => orderOf(a.slug) - orderOf(b.slug));
+    lines.push(`## ${site.name}`, '', `${site.domain} · ${site.url}/ · ${list.length} ${lang === 'en' ? 'pages' : 'stranica'}`, '');
+    for (const page of list) lines.push(`- [${page.title}](${page.url}) — ${short(page.description, 220)}`);
+    lines.push('');
+  }
+  const tags = [...new Set(pages.filter((page) => page.lang === lang).flatMap((page) => page.hashtags || []))].sort();
+  lines.push(`## ${lang === 'en' ? 'Hashtags' : 'Oznake'}`, '', tags.map((tag) => `[${tag}](${tagDesk(lang)}#${tagSlug(tag)})`).join(' · '), '');
+  return `${lines.join('\n').trimEnd()}\n`;
+}
+
+function tagsPage(lang, { sites, pages }) {
+  const t = T[lang];
+  const canonical = tagDesk(lang);
+  const alternate = tagDesk(lang === 'en' ? 'hr' : 'en');
+  const desk = lang === 'en' ? DESK_EN : DESK_HR;
+  const local = pages.filter((page) => page.lang === lang);
+
+  const groups = new Map();
+  for (const page of local) {
+    for (const tag of page.hashtags || []) {
+      if (!groups.has(tag)) groups.set(tag, []);
+      groups.get(tag).push(page);
+    }
+  }
+  const ordered = [...groups.entries()].sort((a, b) => (b[1].length - a[1].length) || a[0].localeCompare(b[0]));
+  const hashtags = [...new Set([...deskHashtags(sites), ...ordered.map(([tag]) => tag)])].slice(0, 20);
+  const hashtagWords = hashtags.map((tag) => tag.replace('#', ''));
+  const title = lang === 'en'
+    ? `All hashtags of the network — every AKTUAL MEDIA edition | GNK ASG`
+    : `Sve oznake mreže — hashtagovi svih izdanja AKTUAL MEDIA | GNK ASG`;
+  const description = lang === 'en'
+    ? `All ${ordered.length} hashtags used across the six editions of the AKTUAL MEDIA network, with every page that carries them. One publisher, one editor, two languages: every tag opens the exact texts it marks.`
+    : `Svih ${ordered.length} oznaka koje koristi šest izdanja mreže AKTUAL MEDIA, uz svaku stranicu koja ih nosi. Jedan izdavač, jedan urednik, dva jezika: svaka oznaka vodi na točno one tekstove koje označava.`;
+  const jsonld = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'WebSite', '@id': 'https://gnk-asg.hr/#website', name: 'GNK ASG', url: 'https://gnk-asg.hr/', inLanguage: ['hr', 'en'], publisher: { '@id': 'https://gnk-asg.hr/#gnk-asg' } },
+      { '@type': 'Organization', '@id': 'https://gnk-asg.hr/#gnk-asg', name: 'GNK ASG d.o.o.', url: 'https://gnk-asg.hr/' },
+      {
+        '@type': 'NewsMediaOrganization', '@id': 'https://gnk-asg.hr/#aktual-media', name: 'AKTUAL MEDIA d.o.o.', url: AKTUAL,
+        parentOrganization: { '@id': 'https://gnk-asg.hr/#gnk-asg' }, editor: { '@id': 'https://gnk-asg.hr/#nermin-sefic' },
+        brand: { '@type': 'Brand', name: 'AKTUAL MEDIA', url: DESK_HR },
+        owns: sites.map((site) => ({ '@type': 'Brand', name: site.name, url: `${site.url}/` })),
+      },
+      { '@type': 'Person', '@id': 'https://gnk-asg.hr/#nermin-sefic', name: 'Nermin Sefić', jobTitle: lang === 'en' ? 'Editor and director' : 'Urednik i direktor', url: 'https://gnk-asg.hr/nermin-sefic/', worksFor: { '@id': 'https://gnk-asg.hr/#aktual-media' } },
+      {
+        '@type': 'CollectionPage', '@id': `${canonical}#page`, url: canonical, name: title, headline: lang === 'en' ? 'All hashtags of the network' : 'Sve oznake mreže',
+        description, inLanguage: lang, datePublished: '2026-10-22', dateModified: new Date().toISOString().slice(0, 10),
+        keywords: [...hashtagWords, 'AKTUAL MEDIA', lang === 'en' ? 'hashtags, network of editions' : 'hashtagovi, mreža izdanja', 'GNK ASG'].join(', '),
+        isPartOf: [{ '@id': 'https://gnk-asg.hr/#website' }, { '@id': `${desk}#page` }],
+        author: { '@id': 'https://gnk-asg.hr/#aktual-media' }, editor: { '@id': 'https://gnk-asg.hr/#nermin-sefic' },
+        publisher: { '@id': 'https://gnk-asg.hr/#aktual-media' },
+        image: { '@type': 'ImageObject', url: OG, width: 1200, height: 630 },
+        mainEntity: { '@id': `${canonical}#lista` },
+      },
+      {
+        '@type': 'ItemList', '@id': `${canonical}#lista`, name: lang === 'en' ? 'Hashtags' : 'Oznake', numberOfItems: ordered.length,
+        itemListElement: ordered.map(([tag, list], index) => ({
+          '@type': 'ListItem', position: index + 1, name: tag, url: `${canonical}#${tagSlug(tag)}`,
+          description: lang === 'en' ? `${list.length} pages` : `${list.length} stranica`,
+        })),
+      },
+      {
+        '@type': 'BreadcrumbList', '@id': `${canonical}#breadcrumb`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'GNK ASG', item: 'https://gnk-asg.hr/' },
+          { '@type': 'ListItem', position: 2, name: 'AKTUAL MEDIA', item: AKTUAL },
+          { '@type': 'ListItem', position: 3, name: lang === 'en' ? 'Network of editions' : 'Mreža izdanja', item: desk },
+          { '@type': 'ListItem', position: 4, name: lang === 'en' ? 'Hashtags' : 'Oznake', item: canonical },
+        ],
+      },
+    ],
+  };
+
+  const blocks = ordered.map(([tag, list]) => `<section class="tagblock" id="${tagSlug(tag)}" style="border-bottom:1px solid #132840;padding:18px 0">
+    <h2 style="font-size:clamp(20px,2.6vw,28px);margin:0 0 4px">${esc(tag)} <span style="font:700 11px/1 system-ui;letter-spacing:.1em;text-transform:uppercase;color:#8ba1b8">${lang === 'en' ? `${list.length} pages` : `${list.length} stranica`}</span></h2>
+    <ul class="pages">${list.map((page) => pageRow(page, lang)).join('')}</ul>
+  </section>`).join('\n');
+
+  return `<!doctype html>
+<html lang="${lang}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${esc(title)}</title>
+<meta name="description" content="${esc(description)}">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<meta name="author" content="AKTUAL MEDIA d.o.o.">
+<meta name="editor" content="Nermin Sefić">
+<meta name="publisher" content="AKTUAL MEDIA d.o.o.">
+<meta name="copyright" content="AKTUAL MEDIA d.o.o.">
+<meta name="keywords" content="${esc([...hashtagWords, 'AKTUAL MEDIA', lang === 'en' ? 'hashtags' : 'hashtagovi', lang === 'en' ? 'network of editions' : 'mreža izdanja', 'GNK ASG'].join(', '))}">
+<meta name="news_keywords" content="${esc([...hashtagWords, 'AKTUAL MEDIA', 'GNK ASG'].join(', '))}">
+<meta name="hashtags" content="${esc(hashtags.join(' '))}">
+<meta name="theme-color" content="#04080f">
+<link rel="canonical" href="${canonical}">
+<link rel="alternate" hreflang="${lang}" href="${canonical}">
+<link rel="alternate" hreflang="${t.other}" href="${alternate}">
+<link rel="alternate" hreflang="x-default" href="${TAG_HR}">
+<link rel="alternate" type="application/atom+xml" title="AKTUAL MEDIA — mreža" href="/mreza/feed.xml">
+<link rel="alternate" type="application/json" title="Mreža — popis stranica" href="/data/mreza-pages-v1.json">
+<link rel="alternate" type="text/markdown" title="Mreža — Markdown" href="${lang === 'en' ? '/en/gnk-aktual/network/index.md' : '/gnk-aktual/mreza/index.md'}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AKTUAL MEDIA · ${lang === 'en' ? 'hashtags' : 'oznake'}">
+<meta property="og:title" content="${esc(title)}">
+<meta property="og:description" content="${esc(description)}">
+<meta property="og:url" content="${canonical}">
+<meta property="og:locale" content="${lang === 'en' ? 'en_GB' : 'hr_HR'}">
+<meta property="og:image" content="${OG}">
+<meta property="og:image:alt" content="AKTUAL MEDIA — ${lang === 'en' ? 'hashtags of the network' : 'oznake mreže'}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(title)}">
+<meta name="twitter:description" content="${esc(description)}">
+<meta name="twitter:image" content="${OG}">
+<meta name="twitter:image:alt" content="AKTUAL MEDIA — ${lang === 'en' ? 'hashtags of the network' : 'oznake mreže'}">
+<style>${CSS}</style>
+<script type="application/ld+json">${JSON.stringify(jsonld)}</script>
+</head>
+<body>
+<a class="skip" href="#main">${lang === 'en' ? 'Skip to content' : 'Preskoči na sadržaj'}</a>
+<div class="top"><div class="wrap"><span>AKTUAL MEDIA d.o.o. · ${esc(t.kicker)}</span><span><a href="${AKTUAL}">${esc(t.desk)}</a> · <a href="${desk}">${lang === 'en' ? 'Edition network' : 'Mreža izdanja'}</a> · <a href="${alternate}" hreflang="${t.other}" lang="${t.other}">${lang === 'en' ? 'Hrvatski' : 'English'}</a></span></div></div>
+<main id="main">
+<div class="hero"><div class="wrap">
+  <p class="k">${esc(t.kicker)} · ${lang === 'en' ? 'hashtags' : 'oznake'}</p>
+  <h1>${lang === 'en' ? 'All hashtags of the network' : 'Sve oznake mreže'}</h1>
+  <p class="sub">${esc(description)}</p>
+  <p class="links">
+    <a href="${desk}">${lang === 'en' ? 'Full network index' : 'Cijeli popis mreže'}</a>
+    <a href="${AKTUAL}">AKTUAL MEDIA</a>
+    <a href="${lang === 'en' ? HUB_EN : HUB_HR}">${esc(t.backHub)}</a>
+    <a href="/data/mreza-pages-v1.json">${esc(t.jsonLink)}</a>
+    <a href="/mreza/feed.xml">${esc(t.feedLink)}</a>
+  </p>
+</div></div>
+${blocks}
 </main>
 <footer><div class="wrap">
   <p>${esc(t.footer)}</p>
@@ -562,6 +758,7 @@ ${sorted.map((page) => `  <entry>
     <updated>${page.updated}T07:00:00Z</updated>
     <summary>${esc(short(page.description, 300))}</summary>
     <category term="${esc(page.edition)}"/>
+${(page.hashtags || []).map((tag) => `    <category term="${esc(tag.replace('#', ''))}"/>`).join('\n')}
   </entry>`).join('\n')}
 </feed>
 `;
@@ -611,6 +808,10 @@ function ensureLlms(portalRoot, { sites, pages }) {
 - English index: ${DESK_EN}
 - Machine-readable list of every page: ${SITE}/data/mreza-pages-v1.json
 - Combined Atom feed: ${SITE}/mreza/feed.xml
+- Hashtag index: ${TAG_HR} (HR) · ${TAG_EN} (EN)
+- Markdown index for assistants and crawlers: ${DESK_HR}index.md (HR) · ${DESK_EN}index.md (EN)
+- SEO matrix (title, description, hashtags, JSON-LD per route): ${SITE}/data/seo-matrix-v1.json
+- Feeds for any reader: ${SITE}/mreza/feeds.opml
 ${sites.map((site) => `- ${site.name}: ${site.url}/ · every page under AKTUAL MEDIA: ${editionDesk('hr', site.slug)} (HR) · ${editionDesk('en', site.slug)} (EN)`).join('\n')}
 - Each edition keeps its own domain, sitemap, feed and robots.txt; the index lists the exact title and description of every page without rewriting them.
 ${END}`;
@@ -637,6 +838,10 @@ export function buildAktualNetwork(portalRoot, { sites, pages, today }) {
     write(join(portalRoot, 'gnk-aktual', 'mreza', site.slug, 'index.html'), editionPage('hr', site, { sites, pages: withMeta }));
     write(join(portalRoot, 'en', 'gnk-aktual', 'network', site.slug, 'index.html'), editionPage('en', site, { sites, pages: withMeta }));
   }
+  write(join(portalRoot, 'gnk-aktual', 'mreza', 'oznake', 'index.html'), tagsPage('hr', { sites, pages: withMeta }));
+  write(join(portalRoot, 'en', 'gnk-aktual', 'network', 'tags', 'index.html'), tagsPage('en', { sites, pages: withMeta }));
+  write(join(portalRoot, 'gnk-aktual', 'mreza', 'index.md'), markdownIndex('hr', { sites, pages: withMeta }));
+  write(join(portalRoot, 'en', 'gnk-aktual', 'network', 'index.md'), markdownIndex('en', { sites, pages: withMeta }));
 
   const index = {
     version: 'GNK_ASG_MREZA_PAGES_V1_20261022',
@@ -649,10 +854,22 @@ export function buildAktualNetwork(portalRoot, { sites, pages, today }) {
     pages: withMeta.map((page) => ({
       edition: page.edition, editionName: page.editionName, lang: page.lang, slug: page.slug, nav: page.nav,
       url: page.url, title: page.title, description: page.description, updated: page.updated, image: page.image,
+      hashtags: page.hashtags || [],
     })),
   };
   write(join(portalRoot, 'data', 'mreza-pages-v1.json'), JSON.stringify(index, null, 2) + '\n');
   write(join(portalRoot, 'mreza', 'feed.xml'), atom(withMeta));
+  const opml = `<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head><title>AKTUAL MEDIA — mreža izdanja</title><ownerName>AKTUAL MEDIA d.o.o.</ownerName></head>
+  <body>
+    <outline text="AKTUAL MEDIA — sve stranice mreže" title="AKTUAL MEDIA — sve stranice mreže" type="rss" xmlUrl="${SITE}/mreza/feed.xml" htmlUrl="${DESK_HR}"/>
+${sites.map((site) => `    <outline text="${esc(site.name)}" title="${esc(site.name)}" type="rss" xmlUrl="${site.outputs.feed}" htmlUrl="${site.url}/"/>
+    <outline text="${esc(site.name)} (EN)" title="${esc(site.name)} (EN)" type="rss" xmlUrl="${site.outputs.feedEn || `${site.url}/en/feed.xml`}" htmlUrl="${site.url}/en/"/>`).join('\n')}
+  </body>
+</opml>
+`;
+  write(join(portalRoot, 'mreza', 'feeds.opml'), opml);
 
   const editionRows = sites.map((site) => {
     const hr = editionDesk('hr', site.slug);
@@ -660,11 +877,14 @@ export function buildAktualNetwork(portalRoot, { sites, pages, today }) {
     return `  <url><loc>${hr}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority><xhtml:link rel="alternate" hreflang="hr" href="${hr}"/><xhtml:link rel="alternate" hreflang="en" href="${en}"/><xhtml:link rel="alternate" hreflang="x-default" href="${hr}"/></url>
   <url><loc>${en}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority><xhtml:link rel="alternate" hreflang="en" href="${en}"/><xhtml:link rel="alternate" hreflang="hr" href="${hr}"/><xhtml:link rel="alternate" hreflang="x-default" href="${hr}"/></url>`;
   }).join('\n');
+  const tagRow = (loc, alt, lang) => `  <url><loc>${loc}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority><xhtml:link rel="alternate" hreflang="${lang}" href="${loc}"/><xhtml:link rel="alternate" hreflang="${lang === 'hr' ? 'en' : 'hr'}" href="${alt}"/><xhtml:link rel="alternate" hreflang="x-default" href="${TAG_HR}"/></url>`;
   const sitemapDesk = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url><loc>${DESK_HR}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority><xhtml:link rel="alternate" hreflang="hr" href="${DESK_HR}"/><xhtml:link rel="alternate" hreflang="en" href="${DESK_EN}"/><xhtml:link rel="alternate" hreflang="x-default" href="${DESK_HR}"/></url>
   <url><loc>${DESK_EN}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority><xhtml:link rel="alternate" hreflang="en" href="${DESK_EN}"/><xhtml:link rel="alternate" hreflang="hr" href="${DESK_HR}"/><xhtml:link rel="alternate" hreflang="x-default" href="${DESK_HR}"/></url>
 ${editionRows}
+${tagRow(TAG_HR, TAG_EN, 'hr')}
+${tagRow(TAG_EN, TAG_HR, 'en')}
   <url><loc>${SITE}/mreza/</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority><xhtml:link rel="alternate" hreflang="hr" href="${HUB_HR}"/><xhtml:link rel="alternate" hreflang="en" href="${HUB_EN}"/><xhtml:link rel="alternate" hreflang="x-default" href="${HUB_HR}"/></url>
   <url><loc>${SITE}/en/network/</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority><xhtml:link rel="alternate" hreflang="en" href="${HUB_EN}"/><xhtml:link rel="alternate" hreflang="hr" href="${HUB_HR}"/><xhtml:link rel="alternate" hreflang="x-default" href="${HUB_HR}"/></url>
 </urlset>

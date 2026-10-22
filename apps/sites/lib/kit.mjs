@@ -216,8 +216,9 @@ export function siteHeader(site, lang, pages, current) {
 
 /* ---------- head ---------- */
 
-export function head({ site, lang, page, title, description, canonical, alternate, image, imageW = 1200, imageH = 800, keywords, jsonld, extra = '' }) {
+export function head({ site, lang, page, title, description, canonical, alternate, image, imageW = 1200, imageH = 800, keywords, jsonld, hashtags = [], section = '', published = '2026-10-22', modified = published, extra = '' }) {
   const locale = lang === 'en' ? 'en_GB' : 'hr_HR';
+  const articleTags = page === 'home' ? '' : hashtags.map((tag) => `<meta property="article:tag" content="${esc(tag)}">`).join('\n');
   return `<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
@@ -229,6 +230,7 @@ export function head({ site, lang, page, title, description, canonical, alternat
 <meta name="copyright" content="AKTUAL MEDIA d.o.o.">
 <meta name="keywords" content="${esc(keywords)}">
 <meta name="news_keywords" content="${esc(keywords)}">
+<meta name="hashtags" content="${esc(hashtags.join(' '))}">
 <meta name="theme-color" content="${site.bg}">
 <link rel="canonical" href="${canonical}">
 <link rel="alternate" hreflang="${lang}" href="${canonical}">
@@ -236,6 +238,8 @@ export function head({ site, lang, page, title, description, canonical, alternat
 <link rel="alternate" hreflang="x-default" href="${lang === 'en' ? alternate : canonical}">
 <link rel="alternate" type="application/rss+xml" title="${esc(site.name)}" href="/feed.xml">
 <link rel="alternate" type="application/json" title="Network" href="https://gnk-asg.hr/data/mreza-v1.json">
+<link rel="sitemap" type="application/xml" title="Sitemap" href="https://gnk-asg.hr/mreza/sitemap.xml">
+<link rel="hub" href="https://pubsubhubbub.appspot.com/">
 <link rel="manifest" href="/manifest.webmanifest">
 <meta property="og:type" content="${page === 'home' ? 'website' : 'article'}">
 <meta property="og:site_name" content="${esc(site.name)} · GNK ASG mreža">
@@ -243,6 +247,7 @@ export function head({ site, lang, page, title, description, canonical, alternat
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${canonical}">
 <meta property="og:locale" content="${locale}">
+<meta property="og:updated_time" content="${esc(modified)}T07:00:00+02:00">
 <meta property="og:image" content="${image}">
 <meta property="og:image:alt" content="${esc(title)}">
 <meta property="og:image:type" content="image/png">
@@ -254,13 +259,14 @@ export function head({ site, lang, page, title, description, canonical, alternat
 <meta name="twitter:image" content="${image}">
 <meta name="twitter:image:alt" content="${esc(title)}">
 <meta name="twitter:url" content="${canonical}">
+${articleTags}${articleTags && section ? '\n' : ''}${page === 'home' ? '' : `<meta property="article:section" content="${esc(section)}">\n<meta property="article:published_time" content="${esc(published)}T07:00:00+02:00">\n<meta property="article:modified_time" content="${esc(modified)}T07:00:00+02:00">`}
 <script type="application/ld+json">${JSON.stringify(jsonld)}</script>
 ${extra}`;
 }
 
 /* ---------- JSON-LD ---------- */
 
-export function jsonLd({ site, lang, page, title, description, canonical, alternate, image, imageW = 1200, imageH = 800, pages, sources, faq }) {
+export function jsonLd({ site, lang, page, title, description, canonical, alternate, image, imageW = 1200, imageH = 800, pages, sources, faq, keywords = [], section = '', published = '2026-10-22', modified = published }) {
   const orgId = 'https://gnk-asg.hr/#aktual-media';
   const graph = [
     { '@type': 'WebSite', '@id': `${canonical}#website`, name: site.name, url: `${canonical}`, inLanguage: [lang], publisher: { '@id': orgId } },
@@ -274,8 +280,13 @@ export function jsonLd({ site, lang, page, title, description, canonical, altern
       name: title,
       description,
       inLanguage: lang,
-      datePublished: '2026-10-22',
-      dateModified: '2026-10-22',
+      datePublished: published,
+      dateModified: modified,
+      keywords: keywords.join(', '),
+      isAccessibleForFree: true,
+      copyrightNotice: '© 2026 AKTUAL MEDIA d.o.o.',
+      creditText: 'AKTUAL MEDIA d.o.o.',
+      ...(page === 'home' ? {} : { articleSection: section }),
       isPartOf: [{ '@id': `${canonical}#website` }, { '@id': 'https://gnk-asg.hr/gnk-aktual/mreza/#page' }],
       copyrightHolder: { '@id': orgId },
       author: { '@id': orgId },
@@ -395,6 +406,7 @@ export function feed(site, pages, lang = 'hr') {
   <subtitle>${esc(site.tagline[lang])}</subtitle>
   <link href="${base}/feed.xml" rel="self"/>
   <link href="${base}/"/>
+  <link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
   <id>${base}/</id>
   <updated>${stamp}</updated>
   <author><name>AKTUAL MEDIA · Nermin Sefić</name></author>

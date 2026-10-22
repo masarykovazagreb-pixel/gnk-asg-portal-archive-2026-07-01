@@ -16,10 +16,11 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { SITES, NETWORK_HUB_HR, NETWORK_HUB_EN, siteBase, siteBySlug } from '../lib/registry.mjs';
+import { SITES, NETWORK_HUB_HR, NETWORK_HUB_EN, siteBase, siteBySlug, pagePath } from '../lib/registry.mjs';
 import { artSvg } from '../lib/kit.mjs';
 import { buildElectionDesk } from '../lib/elections.mjs';
 import { buildAktualNetwork } from './aktual-network.mjs';
+import { buildSeoMatrix } from './seo-matrix.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..', '..', '..');
@@ -322,11 +323,15 @@ function upsertMasterSitemap() {
   let xml = readFileSync(file, 'utf8');
   const DESK_HR = 'https://gnk-asg.hr/gnk-aktual/mreza/';
   const DESK_EN = 'https://gnk-asg.hr/en/gnk-aktual/network/';
+  const TAG_HR = `${DESK_HR}oznake/`;
+  const TAG_EN = `${DESK_EN}tags/`;
   const urls = [
     { loc: NETWORK_HUB_HR, alt: NETWORK_HUB_EN, lang: 'hr', x: NETWORK_HUB_HR },
     { loc: NETWORK_HUB_EN, alt: NETWORK_HUB_HR, lang: 'en', x: NETWORK_HUB_HR },
     { loc: DESK_HR, alt: DESK_EN, lang: 'hr', x: DESK_HR },
     { loc: DESK_EN, alt: DESK_HR, lang: 'en', x: DESK_HR },
+    { loc: TAG_HR, alt: TAG_EN, lang: 'hr', x: TAG_HR },
+    { loc: TAG_EN, alt: TAG_HR, lang: 'en', x: TAG_HR },
     ...SITES.flatMap((site) => {
       const hr = `${DESK_HR}${site.slug}/`;
       const en = `${DESK_EN}${site.slug}/`;
@@ -379,20 +384,50 @@ function build() {
      Stranice dolaze iz apps/sites/site/network.json, kojeg je upravo napisao
      build.mjs, pa indeks ne može odstupiti od objavljenog izdanja. */
   let networkDesk = null;
+  let seoMatrix = null;
+  let siteList = [];
+  let builtPages = [];
   try {
     const built = JSON.parse(readFileSync(join(HERE, '..', 'site', 'network.json'), 'utf8'));
-    const siteList = built.sites.map((site) => ({
+    builtPages = built.pages;
+    siteList = built.sites.map((site) => ({
       ...site,
       url: siteBase(siteBySlug(site.slug) || site).replace(/\/$/, ''),
       outputs: site.outputs,
     }));
     networkDesk = buildAktualNetwork(PORTAL, { sites: siteList, pages: built.pages, today: TODAY });
+
+    /* SEO stroj: matrica se gradi iz izgrađenih datoteka, ne iz popisa želja. */
+    const viaPages = SITES.map((site) => ({ site, base: siteBase(site) }));
+    const routes = [
+      ...built.pages.map((page) => {
+        const pair = viaPages.find((item) => item.site.slug === page.edition);
+        return {
+          url: page.url,
+          file: join(HERE, '..', 'site', page.edition, pagePath(page.slug, page.lang), 'index.html'),
+          kind: page.slug === '' ? 'home' : 'article',
+          edition: page.edition,
+          editionName: page.editionName,
+          lang: page.lang,
+        };
+      }),
+      { url: 'https://gnk-asg.hr/gnk-aktual/mreza/', file: join(PORTAL, 'gnk-aktual/mreza/index.html'), kind: 'desk', edition: null, editionName: 'AKTUAL MEDIA', lang: 'hr' },
+      { url: 'https://gnk-asg.hr/en/gnk-aktual/network/', file: join(PORTAL, 'en/gnk-aktual/network/index.html'), kind: 'desk', edition: null, editionName: 'AKTUAL MEDIA', lang: 'en' },
+      { url: 'https://gnk-asg.hr/gnk-aktual/mreza/oznake/', file: join(PORTAL, 'gnk-aktual/mreza/oznake/index.html'), kind: 'desk', edition: null, editionName: 'AKTUAL MEDIA', lang: 'hr' },
+      { url: 'https://gnk-asg.hr/en/gnk-aktual/network/tags/', file: join(PORTAL, 'en/gnk-aktual/network/tags/index.html'), kind: 'desk', edition: null, editionName: 'AKTUAL MEDIA', lang: 'en' },
+      ...siteList.flatMap((site) => ['hr', 'en'].map((lang) => ({
+        url: `https://gnk-asg.hr/${lang === 'en' ? `en/gnk-aktual/network/${site.slug}` : `gnk-aktual/mreza/${site.slug}`}/`,
+        file: join(PORTAL, lang === 'en' ? `en/gnk-aktual/network/${site.slug}/index.html` : `gnk-aktual/mreza/${site.slug}/index.html`),
+        kind: 'edition-desk', edition: site.slug, editionName: site.name, lang,
+      }))),
+    ];
+    seoMatrix = buildSeoMatrix(PORTAL, { routes, sites: siteList, today: TODAY });
   } catch (error) {
     console.log(`::warning::AKTUAL MEDIA mreža nije izgrađena: ${error.message}`);
   }
 
   const sitemapChanges = upsertMasterSitemap();
-  console.log(`[mreza] hub HR/EN + ${SITES.length} kartica + data/mreza-v1.json; sitemap +${sitemapChanges}${networkDesk ? `; AKTUAL MEDIA indeks ${networkDesk.pages} stranica` : ''}`);
+  console.log(`[mreza] hub HR/EN + ${SITES.length} kartica + data/mreza-v1.json; sitemap +${sitemapChanges}${networkDesk ? `; AKTUAL MEDIA indeks ${networkDesk.pages} stranica` : ''}${seoMatrix ? `; SEO matrica ${seoMatrix.totals.ok}/${seoMatrix.totals.routes} (${seoMatrix.totals.score}%)` : ''}`);
 }
 
 build();

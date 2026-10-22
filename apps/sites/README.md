@@ -90,3 +90,37 @@ na novu domenu — nigdje nije upisan `pages.dev` kao trajna adresa.
 - Zdravlje nije medicinski savjet; scena znanosti ne recenzira radove.
 - Nijedna brojka nije iz pamćenja: ako izvor ne postoji, brojka ne postoji.
 - Ispravak se objavljuje na stranici na kojoj je pogreška nastala.
+
+## SEO stroj i hashtagovi
+
+Svaka stranica mreže dobiva meta sloj iz generatora, ne ručno:
+
+- `lib/seo.mjs` izvodi hashtagove iz imena izdanja, rubrike (`nav`) i
+  registriranih tema. Isti sadržaj uvijek daje isti skup oznaka.
+- `build.mjs` upisuje `keywords`, `news_keywords`, `hashtags`,
+  `article:tag` (jedan po oznaci), `article:section`,
+  `article:published_time`, `article:modified_time`, `og:updated_time`,
+  `rel="sitemap"`, `rel="hub"` i JSON-LD `keywords`, `articleSection`,
+  `isAccessibleForFree`, `copyrightNotice`, `creditText`.
+- Vidljive oznake na svakoj stranici vode na indeks oznaka:
+  `/gnk-aktual/mreza/oznake/` (HR) i `/en/gnk-aktual/network/tags/` (EN).
+- `engine/aktual-network.mjs` gradi i indeks oznaka, i Markdown verziju
+  indeksa (`/gnk-aktual/mreza/index.md`) za asistente i crawlere.
+- `engine/seo-matrix.mjs` čita stvarno izgrađene datoteke i piše
+  `apps/portal/data/seo-matrix-v1.json`: 78 ruta, ocjena, hashtagovi i
+  otvoreni problemi. `tests/test-seo-matrix-v1.mjs` je obavezan gate.
+
+### Background stroj
+
+`.github/workflows/seo-meta-machine.yml` svakih šest sati ponovno gradi
+mrežu, provjerava mrežni gate i SEO matricu te sprema matricu kao artefakt.
+Ne mijenja repozitorij i ne objavljuje ništa.
+
+IndexNow slanje je opt-in:
+
+- ručno: Actions → `seo-meta-machine` → `confirm_indexnow=INDEXNOW`;
+- trajno: repository variable `SEO_INDEXNOW_AUTO=true` — tada i raspored
+  šalje 78 URL-ova na 7 domena (`scripts/gnk-indexnow-network-v1.mjs`).
+
+Ključ je javan (`/<key>.txt` na svakoj domeni, build ga upisuje u izlaz), pa
+tražilica može provjeriti vlasništvo bez ijednog secreta.

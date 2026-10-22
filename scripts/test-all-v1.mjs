@@ -48,6 +48,7 @@ const GATES = [
   { name: 'Podatkovni desk', cmd: ['node', 'tests/test-data-desk-v1.mjs'], required: true },
   { name: 'Tehnologija budućnosti', cmd: ['node', 'tests/test-future-tech-v1.mjs'], required: true },
   { name: 'Mreža neovisnih izdanja', cmd: ['node', 'tests/test-sites-network-v1.mjs'], required: true },
+  { name: 'SEO matrica mreže', cmd: ['node', 'tests/test-seo-matrix-v1.mjs'], required: true },
 ];
 
 function run(gate) {

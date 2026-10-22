@@ -10,6 +10,7 @@
  * Ništa se ne piše rukom u izlaz: ako treba promjena, mijenja se generator
  * ili sadržaj, pa se build ponovno pokrene.
  */
+import { pageHashtags, keywordsFor, tagSlug, INDEXNOW_KEY } from './lib/seo.mjs';
 import { mkdirSync, writeFileSync, rmSync, readFileSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -124,14 +125,17 @@ function heroArt(site, page) {
 
 /* ---------- dijelovi stranice ---------- */
 
-function chips(site, lang, pages) {
+function chips(site, lang, pages, page) {
   const hub = lang === 'en' ? NETWORK_HUB_EN : NETWORK_HUB_HR;
   const topics = site.topics
     .filter((topic) => pages.some((page) => page.slug === topic))
     .map((topic) => `<li><a href="${pagePath(topic, lang)}">${esc(pages.find((page) => page.slug === topic).nav[lang])}</a></li>`)
     .join('');
-  const tags = site.hashtags
-    .map((tag) => `<li><a href="${hub}#${site.slug}" rel="external noopener">${esc(tag)}</a></li>`)
+  const tagDesk = lang === 'en'
+    ? 'https://gnk-asg.hr/en/gnk-aktual/network/tags/'
+    : 'https://gnk-asg.hr/gnk-aktual/mreza/oznake/';
+  const tags = pageHashtags(site, page, lang)
+    .map((tag) => `<li><a href="${tagDesk}#${tagSlug(tag)}" rel="external noopener">${esc(tag)}</a></li>`)
     .join('');
   return `<ul class="chips">${topics}${tags}</ul>`;
 }
@@ -246,16 +250,18 @@ function renderPage(site, content, pages, page, lang, base) {
   const image = `${base}/img/${site.slug}-og.png`;
   const description = plain(page.lead, lang).replace(/\s+/g, ' ').slice(0, 300);
   const title = page.title[lang].includes(site.name) ? page.title[lang] : `${page.title[lang]} · ${site.name}`;
-  const keywords = [...site.hashtags.map((tag) => tag.replace('#', '')), ...site.topics, site.name, 'GNK ASG mreža', 'AKTUAL MEDIA'].join(', ');
+  const hashtags = pageHashtags(site, page, lang);
+  const keywords = keywordsFor(site, page, lang);
+  const updated = page.updated || '2026-10-22';
   const faq = page.faq || [];
-  const jsonld = jsonLd({ site, lang, page: page.slug === '' ? 'home' : 'page', title: page.title[lang], description, canonical, alternate, image, imageW: 1200, imageH: 630, pages, sources: content.sources || [], faq });
+  const jsonld = jsonLd({ site, lang, page: page.slug === '' ? 'home' : 'page', title: page.title[lang], description, canonical, alternate, image, imageW: 1200, imageH: 630, pages, sources: content.sources || [], faq, keywords: hashtags.map((tag) => tag.replace('#', '')), section: page.nav[lang], published: updated, modified: updated });
 
   const sections = page.sections.map((section, index) => sectionHtml(section, lang, index)).join('');
   const hero = `<div class="hero"><div class="wrap">
     <p class="kicker">${esc(page.kicker[lang])}${site.temporary ? ` · <span class="live"><i></i>${lang === 'en' ? 'live desk' : 'desk uživo'}</span>` : ''}</p>
     <h2>${esc(page.title[lang])}</h2>
     <p class="lead">${esc(page.lead[lang])}</p>
-    ${chips(site, lang, pages)}
+    ${chips(site, lang, pages, page)}
     <figure style="margin:26px 0 0;border:1px solid var(--line);border-radius:18px;overflow:hidden">
       <img src="${heroArt(site, page)}" alt="${esc(site.name)} — ${esc(page.nav[lang])}" width="1200" height="800" fetchpriority="high" style="width:100%">
     </figure>
@@ -272,7 +278,7 @@ function renderPage(site, content, pages, page, lang, base) {
   return `<!doctype html>
 <html lang="${lang}">
 <head>
-${head({ site, lang, page: page.slug === '' ? 'home' : 'page', title, description, canonical, alternate, image, imageW: 1200, imageH: 630, keywords, jsonld, extra: `<meta name="format-detection" content="telephone=no">\n<style>${css(site)}</style>` })}
+${head({ site, lang, page: page.slug === '' ? 'home' : 'page', title, description, canonical, alternate, image, imageW: 1200, imageH: 630, keywords, jsonld, hashtags, section: page.nav[lang], published: updated, modified: updated, extra: `<meta name="format-detection" content="telephone=no">\n<style>${css(site)}</style>` })}
 </head>
 <body>
 <a class="skip" href="#main">${lang === 'en' ? 'Skip to content' : 'Preskoči na sadržaj'}</a>
@@ -375,6 +381,7 @@ async function buildSite(site) {
   write(join(dist, 'en', 'feed.xml'), feed(site, pages, 'en'));
   write(join(dist, 'manifest.webmanifest'), manifest(site));
   write(join(dist, '404.html'), notFound(site));
+  write(join(dist, `${INDEXNOW_KEY}.txt`), `${INDEXNOW_KEY}\n`);
   write(join(dist, '_headers'), headers());
   write(join(dist, '.nojekyll'), '');
 
@@ -390,6 +397,7 @@ async function buildSite(site) {
     description: plain(page.lead, lang).replace(/\s+/g, ' ').slice(0, 240),
     updated: page.updated || '2026-10-22',
     image: `${base}${heroArt(site, page)}`,
+    hashtags: pageHashtags(site, page, lang),
   })));
 
   return { site, pages: pages.length, files: written.length, items: content.items?.length || 0, updated: pages.map((page) => page.updated).filter(Boolean).sort().pop() || '2026-10-22', pageIndex };
