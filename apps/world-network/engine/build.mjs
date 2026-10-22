@@ -52,7 +52,7 @@ export function build({root=ROOT,out}={}){
  fs.mkdirSync(dest,{recursive:true});
  let pages=[];
  for(const site of registry.sites){
-  if(!/^[a-z0-9-]+$/.test(site.id)||!/^https?:\/\/[^/]+\/?$/.test(site.sourceLinks[0]?.url||''))throw Error('Invalid city source/slug '+site.id);
+  if(!/^[a-z0-9-]+$/.test(site.id)||!site.sourceLinks?.length||!site.sourceLinks.every(source=>{try{const u=new URL(source.url);return u.protocol==='https:'&&Boolean(u.hostname)&&!u.username&&!u.password;}catch{return false}}))throw Error('Invalid city source/slug '+site.id);
   const dir=path.join(dest,site.id,'assets');fs.mkdirSync(dir,{recursive:true});
   fs.writeFileSync(path.join(dir,'hero.svg'),visual(site));
   fs.writeFileSync(path.join(dest,site.id,'index.html'),html(site));
