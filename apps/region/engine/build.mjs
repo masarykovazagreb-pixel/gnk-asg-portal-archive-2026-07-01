@@ -13,9 +13,10 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, rmSync, copyFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { esc, longDate, shortDate, stampLocal, slugify, isoWeek, themeFor, scoreFromTitle, truncate, safeJson } from './lib.mjs';
+import { esc, longDate, shortDate, stampLocal, slugify, isoWeek, themeFor, scoreFromTitle, truncate, safeJson, THEMES } from './lib.mjs';
 import { t, ANALYSIS } from '../src/strings.mjs';
 import { logoFor, logoAlternate, channelLogoSlug, LOGO_W, LOGO_H } from './brand.mjs';
+import { themeArtwork } from './theme-art.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const APP = join(HERE, '..');
@@ -368,11 +369,11 @@ ${hasLanguageAlternative ? `<link rel="alternate" hreflang="${channel.lang}" hre
 ${logoAlternate(channelLogoSlug(channel.id))}
 <link rel="alternate" type="application/rss+xml" title="${esc(channel.title)}" href="${url(channel, 'feed.xml')}">
 <link rel="alternate" type="application/feed+json" title="${esc(channel.title)}" href="${url(channel, 'feed.json')}">
-<link rel="author" href="${PUBLIC}/nermin-sefic/">
+<!-- Urednik se bilježi u editor polju JSON-LD; automatske osvrte ne potpisujemo osobno. -->
 <link rel="icon" href="${root}assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" as="image" href="${hero}"${hero.includes(`/izdanja/${channel.id}-1200.webp`) ? ` imagesrcset="/assets/izdanja/${channel.id}-800.webp 800w, /assets/izdanja/${channel.id}-1200.webp 1200w" imagesizes="(max-width:760px) 100vw, 1200px"` : ''} fetchpriority="high">
 <meta property="og:type" content="${type}">
-<meta property="og:site_name" content="${esc(channel.title)}">
+<meta property="og:site_name" content="AKTUAL MEDIA">
 <meta property="og:locale" content="${pageLocale}">
 ${hasLanguageAlternative ? `<meta property="og:locale:alternate" content="${alternateLocale}">` : ''}
 <meta property="og:title" content="${esc(title)}">
@@ -386,7 +387,7 @@ ${hasLanguageAlternative ? `<meta property="og:locale:alternate" content="${alte
 <meta property="og:image:alt" content="${esc(ogAlt || title)}">
 ${published ? `<meta property="article:published_time" content="${published}">` : ''}
 ${modified ? `<meta property="article:modified_time" content="${modified}">` : ''}
-${published ? `<meta property="article:author" content="${PUBLIC}/nermin-sefic/">` : ''}
+${published ? `<meta property="article:author" content="AKTUAL MEDIA redakcijski desk">` : ''}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(truncate(description, 200))}">
@@ -498,6 +499,7 @@ function card(channel, strings, item, { lead = false, root = '' } = {}) {
   const theme = themeOf(item);
   const labels = strings.themeNames;
   return `<article class="card${lead ? ' card--lead' : ''}">
+  <a class="cardvisual" href="${root}clanak/${item.slug}/" aria-label="${esc(item.title)}"><img src="${root}assets/tema-${theme}.svg" alt="AKTUAL MEDIA — ${esc(channel.city)} — ${esc(labels[theme] || theme)} — originalna ilustracija" width="1280" height="720" loading="lazy" decoding="async"></a>
   <div class="cardmeta"><span class="src">${esc(item.sourceName)}</span><span class="dot">·</span><span class="theme">${esc(labels[theme] || theme)}</span><span class="dot">·</span><time datetime="${esc(item.date)}">${esc(shortDate(item.date.slice(0, 10), channel.lang))}</time></div>
   <h3 class="cardtitle"><a href="${root}clanak/${item.slug}/">${esc(item.title)}</a></h3>
   ${item.summary ? `<p class="cardsum">${esc(truncate(item.summary, lead ? 320 : 170))}</p>` : ''}
@@ -709,13 +711,13 @@ function articlePage(channel, strings, item, items) {
   const botText = `${bot.note} ${/\d/.test(item.title) ? bot.num : bot.nonum}`;
 
   const root = '../../';
-  /* Slika ide kroz naš posrednik: izdavač ne vidi čitatelja, a slika je
-     keširana na rubu. Ako je nema, članak ostaje bez slike — ne lijepimo
-     zamjensku koja glumi fotografiju. */
-  const heroImage = /^https:\/\//.test(item.image || '')
+  // Only explicitly rights-verified external photos are used.
+  // Other articles receive original editorial art, not a fake event photograph.
+  const licensedPhoto = item.imageRightsVerified === true && /^https:\/\//.test(item.image || '');
+  const heroImage = licensedPhoto
     ? `${PUBLIC}/api/img?u=${encodeURIComponent(item.image)}&w=1200`
-    : '';
-  const ogImage = heroImage || `${PUBLIC}/assets/izdanja/${channel.id}-og.jpg`;
+    : `${root}assets/tema-${theme}.svg`;
+  const ogImage = licensedPhoto ? heroImage : `${PUBLIC}/assets/izdanja/${channel.id}-og.jpg`;
   const body = `${header(channel, strings, '', root)}
 <main id="sadrzaj" class="article">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="${root}">${esc(channel.title)}</a> <span>›</span> <a href="${root}izvor/${item.source}/">${esc(item.sourceName)}</a> <span>›</span> <span>${esc(strings.analysis)}</span></nav>
@@ -726,7 +728,7 @@ function articlePage(channel, strings, item, items) {
       <p class="artmeta"><time datetime="${esc(item.date)}">${esc(longDate(day, channel.lang))}</time> · ${esc(strings.source)}: <a href="${item.url}" target="_blank" rel="external noopener nofollow">${esc(item.sourceName)} ↗</a></p>
     </header>
 
-    ${heroImage ? `<figure class="artimg"><img src="${esc(heroImage)}" alt="${esc(item.imageAlt || item.title)}" width="1200" height="675" loading="eager" decoding="async" referrerpolicy="no-referrer">${item.sourceName ? `<figcaption>${esc(strings.photoFrom || 'Foto')}: ${esc(item.sourceName)}</figcaption>` : ''}</figure>` : ''}
+    ${heroImage ? `<figure class="artimg"><img src="${esc(heroImage)}" alt="${esc(item.imageAlt || item.title)}" width="1200" height="675" loading="eager" decoding="async" referrerpolicy="no-referrer">${licensedPhoto ? `<figcaption>${esc(strings.photoFrom || 'Foto')}: ${esc(item.sourceName)}</figcaption>` : `<figcaption>AKTUAL MEDIA · ${esc(({hr:"Izvorna urednička ilustracija, nije fotografija događaja",sr:"Originalna urednička ilustracija, nije fotografija događaja",bs:"Izvorna urednička ilustracija, nije fotografija događaja",hu:"Eredeti szerkesztőségi illusztráció, nem hírkép",sl:"Izvirna uredniška ilustracija, ni fotografija dogodka",it:"Illustrazione editoriale originale, non foto di cronaca",bg:"Оригинална редакционна илюстрация, не новинарска снимка",ro:"Ilustrație editorială originală, nu fotografie de știri"})[channel.lang]||"Original editorial illustration")}</figcaption>`}</figure>` : ''}
 
     ${score ? `<div class="scorebox"><span class="scorelabel">${esc(strings.source)}</span><strong class="score">${esc(score.label)}</strong><span class="small">${esc(item.title)}</span></div>` : ''}
 
@@ -1139,6 +1141,8 @@ ${footer(channel, strings)}`;
     jsonld: [], root: '', body: `${header(channel, strings)}<main id="sadrzaj" class="page"><h1>404</h1><p class="lead">${esc(strings.emptyText)}</p><p><a href="/">← ${esc(strings.back)}</a></p></main>${footer(channel, strings)}`
   }));
 
+  // Theme artwork persists across every full regional rebuild.
+  for (const theme of THEMES) writeFileSync(join(dir, 'assets', 'tema-'+theme.id+'.svg'), themeArtwork(channel,theme.id));
   writeFileSync(join(dir, 'assets', 'region.css'), CSS);
 
   writeLegacyRedirect(channel);
@@ -1266,7 +1270,11 @@ main{max-width:1180px;margin:0 auto;padding:clamp(20px,4vw,44px) clamp(16px,4vw,
 .radio-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px rgba(0,0,0,.06);grid-row:span 2}
 .leadgrid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:26px;padding:32px 0;border-bottom:1px solid #dcd7cc}
 .leadside{display:grid;gap:16px}
-.card{border-top:3px solid var(--bg);padding-top:12px;display:grid;gap:6px;align-content:start}
+.card{border-top:3px solid var(--bg);padding-top:12px;display:grid;gap:9px;align-content:start;min-width:0}
+.cardvisual{display:block;overflow:hidden;border-radius:11px;border:1px solid #e4dfd5;background:var(--bg);aspect-ratio:16/9}
+.cardvisual img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
+.cardvisual:hover img{transform:scale(1.035)}
+.cardvisual:focus-visible{outline:3px solid #e9c66c;outline-offset:4px}
 .card--lead{border-top-width:6px}
 .card--lead .cardtitle{font:700 clamp(26px,3.2vw,40px)/1.1 Georgia,serif;letter-spacing:-.01em}
 .cardmeta{display:flex;flex-wrap:wrap;gap:6px;font:600 11px/1.4 system-ui,sans-serif;color:#7a6a4b;letter-spacing:.04em;text-transform:uppercase}

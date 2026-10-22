@@ -1,0 +1,100 @@
+{
+  "version": "AKTUAL_MEDIA_REGIONAL_EDITORIAL_AGENTS_V1",
+  "canonicalRepository": "masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01",
+  "canonicalSource": "apps/region/channels.json",
+  "sourceMetadata": "apps/region/data/<id>.json",
+  "parentBrand": "AKTUAL MEDIA",
+  "alternateBrand": "Aktual mediji",
+  "editor": {
+    "name": "Nermin Sefić",
+    "searchAlias": "Nermin Sefic",
+    "role": "glavni urednik",
+    "bylinePolicy": "Do not attribute personal authorship to Nermin Sefić without verified original author evidence"
+  },
+  "controls": {
+    "sourceLinkedOnly": true,
+    "localLanguageRequired": true,
+    "doNotTranslateForeignClaimsWithoutChecking": true,
+    "originalCommentaryOnly": true,
+    "doNotCopyFullText": true,
+    "aiDisclosureRequired": true,
+    "humanFactCheckRequired": true,
+    "noPublicDrafts": true,
+    "noMainWrite": true,
+    "noDeploy": true,
+    "noAutomaticPublishing": true,
+    "deliveryProofRequired": true,
+    "reviewWindowMinutes": 30,
+    "noObjectionAllowedFor": "internal-low-risk-proposal-only",
+    "rejectAndHoldOverride": true,
+    "immutableContentHashRequired": true,
+    "protectedIssuesRequireExplicitHumanReview": true
+  },
+  "agents": [
+    {
+      "id": "REG-ZAGREB",
+      "channel": "zagreb",
+      "lang": "hr",
+      "language": "hrvatski",
+      "editorialDesk": "Zagreb",
+      "promptLanguage": "hrvatskom standardnom jeziku"
+    },
+    {
+      "id": "REG-BEOGRAD",
+      "channel": "beograd",
+      "lang": "sr",
+      "language": "srpski",
+      "editorialDesk": "Beograd",
+      "promptLanguage": "srpskom jeziku, latinicom"
+    },
+    {
+      "id": "REG-SARAJEVO",
+      "channel": "sarajevo",
+      "lang": "bs",
+      "language": "bosanski",
+      "editorialDesk": "Sarajevo",
+      "promptLanguage": "bosanskom standardnom jeziku"
+    },
+    {
+      "id": "REG-BUDIMPESTA",
+      "channel": "budimpesta",
+      "lang": "hu",
+      "language": "magyar",
+      "editorialDesk": "Budapest",
+      "promptLanguage": "mađarskom jeziku (magyar)"
+    },
+    {
+      "id": "REG-LJUBLJANA",
+      "channel": "ljubljana",
+      "lang": "sl",
+      "language": "slovenščina",
+      "editorialDesk": "Ljubljana",
+      "promptLanguage": "slovenskom jeziku"
+    },
+    {
+      "id": "REG-RIM",
+      "channel": "rim",
+      "lang": "it",
+      "language": "italiano",
+      "editorialDesk": "Roma",
+      "promptLanguage": "talijanskom jeziku"
+    },
+    {
+      "id": "REG-SOFIJA",
+      "channel": "sofija",
+      "lang": "bg",
+      "language": "български",
+      "editorialDesk": "София",
+      "promptLanguage": "bugarskom jeziku, ćirilicom"
+    },
+    {
+      "id": "REG-BUKUREST",
+      "channel": "bukurest",
+      "lang": "ro",
+      "language": "română",
+      "editorialDesk": "București",
+      "promptLanguage": "rumunjskom jeziku"
+    }
+  ],
+  "output": "artifacts/regional-newsroom-agents"
+}

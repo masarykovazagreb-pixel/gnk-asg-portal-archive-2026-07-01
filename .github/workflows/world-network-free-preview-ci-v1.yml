@@ -1,0 +1,58 @@
+name: AKTUAL MEDIA 15 World Editions - Free Preview Gate
+
+# One on-demand/PR check; no cron, paid API, GitHub writer or external deployment.
+on:
+  pull_request:
+    paths:
+      - 'config/control-plane/global-150-free-network-v1.json'
+      - 'apps/world-network/**'
+      - 'apps/region/engine/theme-art.mjs'
+      - 'apps/region/engine/build.mjs'
+      - 'apps/portal/world-network/**'
+      - 'scripts/global-free-agent-supervisor-v1.mjs'
+      - 'tests/test-world-network-free-v1.mjs'
+      - 'tests/test-regional-original-art-v1.mjs'
+      - '.github/workflows/world-network-free-preview-ci-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: world-free-preview-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check rights-safe regional illustration generator
+        run: node tests/test-regional-original-art-v1.mjs
+      - name: Check no-cost 15-world / 150-role configuration and site previews
+        run: node tests/test-world-network-free-v1.mjs
+      - name: Generate 15 static sites and original local SVG artwork
+        run: node apps/world-network/engine/build.mjs
+      - name: Execute exactly 150 zero-cost evidence checks
+        run: node scripts/global-free-agent-supervisor-v1.mjs
+      - name: Report staging status
+        if: always()
+        shell: bash
+        run: |
+          if [ -f artifacts/global-free-network/summary.md ]; then
+            cat artifacts/global-free-network/summary.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+          echo "External publication: disabled. All hostnames unverified. No paid APIs." >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aktual-media-world-free-preview-${{ github.run_id }}
+          path: |
+            apps/world-network/site/
+            artifacts/global-free-network/
+          if-no-files-found: warn
+          retention-days: 7

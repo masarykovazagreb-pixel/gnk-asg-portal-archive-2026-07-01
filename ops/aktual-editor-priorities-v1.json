@@ -1,0 +1,40 @@
+{
+  "version": "AKTUAL_MEDIA_EDITOR_PRIORITIES_V1",
+  "editorialOwner": "AKTUAL MEDIA",
+  "maxCandidatesPerAgentPerDay": 5,
+  "priorityDesks": [
+    "business",
+    "technology",
+    "music",
+    "general"
+  ],
+  "regionalPriority": [
+    "zagreb",
+    "beograd",
+    "sarajevo",
+    "budimpesta",
+    "ljubljana",
+    "rim",
+    "sofija",
+    "bukurest"
+  ],
+  "holdSourceIds": [],
+  "blockedTopics": [
+    "unverified-allegations",
+    "legal-accusations",
+    "personal-medical-data",
+    "private-information",
+    "unlicensed-media",
+    "political-persuasion"
+  ],
+  "review": "Source-linked original analytical briefs require real editorial quality and source checks; private newsroom queue only. No auto-publishing from elapsed time.",
+  "allowOpenAiPaidCalls": false,
+  "allowExaPaidCalls": false,
+  "metadata": {
+    "publisher": "AKTUAL MEDIA",
+    "attribution": "AI-assisted editorial candidate; no named personal author until verified",
+    "images": "Own or licensed only; no publisher image reuse",
+    "canonical": "gnk-asg.hr source first",
+    "external": "off unless existing channel guards explicitly allow"
+  }
+}

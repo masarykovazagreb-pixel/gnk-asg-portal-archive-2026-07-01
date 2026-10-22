@@ -1,0 +1,15 @@
+{
+  "version": "MASTER_ASG_AGENT_DECISIONS_V1",
+  "rules": "A decision is actionable by non-objection only when risk=low, owner was actually notified with independently verifiable delivery evidence, and at least 30 minutes passed with no recorded rejection. This does not substitute legally or operationally required affirmative review or approval.",
+  "decisions": [],
+  "exampleNotActive": {
+    "id": "EXAMPLE-NOT-A-DECISION",
+    "status": "proposed",
+    "risk": "low",
+    "notifiedAt": null,
+    "deliveryEvidence": null,
+    "rejectedAt": null,
+    "decision": "pending",
+    "action": "Suggest a non-production CSS correction via PR"
+  }
+}

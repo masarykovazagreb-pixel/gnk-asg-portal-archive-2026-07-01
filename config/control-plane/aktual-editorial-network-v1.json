@@ -1,0 +1,219 @@
+{
+  "version": "AKTUAL_MEDIA_EDITORIAL_NETWORK_V1_20261022",
+  "canonicalRepository": "masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01",
+  "publisher": "AKTUAL MEDIA",
+  "primaryBrand": "AKTUAL MEDIA",
+  "alias": "Aktual mediji",
+  "mission": "Fifteen publisher-specific observers and eight existing city-edition observers; a daily maximum of five original commentary candidates per observer.",
+  "noExtraCloudflareWorkers": true,
+  "national": {
+    "language": "hr",
+    "maxCandidatesPerAgentPerDay": 5,
+    "sources": [
+      {
+        "id": "jutarnji",
+        "name": "Jutarnji list",
+        "homepage": "https://www.jutarnji.hr/novac/",
+        "desk": "business",
+        "feedUrls": [
+          "https://www.jutarnji.hr/novac/feed"
+        ],
+        "autoDiscoverOfficialRss": true
+      },
+      {
+        "id": "poslovni",
+        "name": "Poslovni dnevnik",
+        "homepage": "https://www.poslovni.hr/",
+        "desk": "business",
+        "feedUrls": [
+          "https://www.poslovni.hr/feed/"
+        ],
+        "autoDiscoverOfficialRss": true
+      },
+      {
+        "id": "lider",
+        "name": "Lider",
+        "homepage": "https://lidermedia.hr/",
+        "desk": "business",
+        "feedUrls": [],
+        "autoDiscoverOfficialRss": true
+      },
+      {
+        "id": "forbes",
+        "name": "Forbes",
+        "homepage": "https://www.forbes.com/business/",
+        "desk": "business",
+        "feedUrls": [
+          "https://www.forbes.com/business/feed/"
+        ],
+        "autoDiscoverOfficialRss": true
+      },
+      {
+        "id": "index",
+        "name": "Index.hr",
+        "homepage": "https://www.index.hr/",
+        "desk": "general",
+        "feedUrls": [
+          "https://www.index.hr/rss/vijesti",
+          "https://www.index.hr/rss"
+        ],
+        "autoDiscoverOfficialRss": true
+      },
+      {
+        "id": "tportal",
+        "name": "tportal",
+        "homepage": "https://www.tportal.hr/",
+        "desk": "general",
+        "feedUrls": [
+          "https://www.tportal.hr/rss"
+        ],
+        "autoDiscoverOfficialRss": true
+      },
+      {
+        "id": "n1hr",
+        "name": "N1 Hrvatska",
+        "homepage": "https://n1info.hr/",
+        "desk": "general",
+        "feedUrls": [
+          "https://n1info.hr/feed/"
+        ],
+        "autoDiscoverOfficialRss": true
+      },
+      {
+        "id": "hrt",
+        "name": "HRT Vijesti",
+        "homepage": "https://vijesti.hrt.hr/",
+        "desk": "general",
+        "feedUrls": [
+          "https://vijesti.hrt.hr/rss"
+        ],
+        "autoDiscoverOfficialRss": true
+      },
+      {
+        "id": "telegram",
+        "name": "Telegram.hr",
+        "homepage": "https://www.telegram.hr/",
+        "desk": "general",
+        "feedUrls": [
+          "https://telegram.hr/feed/"
+        ],
+        "autoDiscoverOfficialRss": true
+      },
+      {
+        "id": "24sata",
+        "name": "24sata",
+        "homepage": "https://www.24sata.hr/",
+        "desk": "general",
+        "feedUrls": [
+          "https://www.24sata.hr/feeds/aktualno.xml"
+        ],
+        "autoDiscoverOfficialRss": true
+      },
+      {
+        "id": "vecernji",
+        "name": "Večernji list",
+        "homepage": "https://www.vecernji.hr/",
+        "desk": "general",
+        "feedUrls": [
+          "https://www.vecernji.hr/feeds/latest"
+        ],
+        "autoDiscoverOfficialRss": true
+      },
+      {
+        "id": "bug",
+        "name": "Bug.hr",
+        "homepage": "https://www.bug.hr/",
+        "desk": "technology",
+        "feedUrls": [
+          "https://www.bug.hr/rss/"
+        ],
+        "autoDiscoverOfficialRss": true
+      },
+      {
+        "id": "muzika",
+        "name": "Muzika.hr",
+        "homepage": "https://www.muzika.hr/",
+        "desk": "music",
+        "feedUrls": [],
+        "autoDiscoverOfficialRss": true
+      },
+      {
+        "id": "ravnododna",
+        "name": "Ravno do dna",
+        "homepage": "https://ravnododna.com/",
+        "desk": "music",
+        "feedUrls": [],
+        "autoDiscoverOfficialRss": true
+      },
+      {
+        "id": "glazba",
+        "name": "Glazba.hr",
+        "homepage": "https://glazba.hr/",
+        "desk": "music",
+        "feedUrls": [],
+        "autoDiscoverOfficialRss": true
+      }
+    ]
+  },
+  "regional": {
+    "registry": "apps/region/channels.json",
+    "maxCandidatesPerChannelPerDay": 5,
+    "expected": [
+      "zagreb",
+      "beograd",
+      "sarajevo",
+      "budimpesta",
+      "ljubljana",
+      "rim",
+      "sofija",
+      "bukurest"
+    ],
+    "requireNativeLanguage": true
+  },
+  "execution": {
+    "mode": "observe-and-draft-HOLD",
+    "cadence": "reuse existing workforce-bot-orchestrator 4h cron",
+    "onlyProduceDailyQueueAtUtcHour": 9,
+    "maxItemsReadPerFeed": 20,
+    "maxAgeHours": 48,
+    "requestTimeoutMs": 9000,
+    "concurrency": 5,
+    "maxFeedsPerRegionalAgent": 4,
+    "maxFeedsPerNationalAgent": 2,
+    "allowHtmlArticleScraping": false,
+    "allowSourceImageCopying": false,
+    "allowUnlicensedFullText": false,
+    "allowExternalPosting": false,
+    "allowDirectMainWrites": false,
+    "allowProdDeploy": false
+  },
+  "destinations": {
+    "national": [
+      "https://gnk-asg.hr/gnk-aktual/",
+      "https://gnk-asg-tjednik.pages.dev/dodaci/",
+      "https://gnk-asg.hr/komentari/"
+    ],
+    "regional": "https://gnk-asg.hr/kanal/{id}/",
+    "regionHub": "https://gnk-asg.hr/izdanja/"
+  },
+  "moderation": {
+    "editorPriorityFile": "ops/aktual-editor-priorities-v1.json",
+    "notificationMethod": "existing protected editorial approval queue: integration needed",
+    "publicApprovalPolicy": "HOLD unless human review and publication gate succeed",
+    "automatic30MinutePublication": false,
+    "aiContentDisclosureRequired": true,
+    "noPersonalAuthorImpersonation": true
+  },
+  "evidence": {
+    "output": "artifacts/aktual-editorial-network/",
+    "sourceUrlRequired": true,
+    "sourceTimestampRequired": true,
+    "contentHashRequired": true,
+    "deliveryConfirmedRequiredBeforeTimer": true
+  },
+  "budget": {
+    "modelWritesDisabledByDefault": true,
+    "maxAICallsPerRun": 0
+  },
+  "note": "Each declared watcher is an executable agent responsibility in one read-only runner, not a newly deployed Cloudflare Worker. Music sources use official RSS discovery; absence of a valid official feed is recorded as unavailable, not scraped or invented."
+}

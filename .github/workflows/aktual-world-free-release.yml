@@ -1,0 +1,80 @@
+name: AKTUAL WORLD — FREE hosting readiness (manual, no deploy)
+
+# Repository policy authorizes production deployment only through its established
+# guarded release path. This workflow is a READ-ONLY, no-network staging handoff.
+# It does not create Cloudflare projects, mutate main, publish, or send mail.
+on:
+  workflow_dispatch:
+    inputs:
+      expected_main_sha:
+        description: 'Exact current main commit SHA to inspect'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aktual-world-free-staging-preflight
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      EXPECTED_SHA: ${{ inputs.expected_main_sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate canonical free-tier staging and exact commit SHA
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ ]] || { echo "::error::Invalid SHA"; exit 1; }
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA" || { echo "::error::Main changed; abort"; exit 1; }
+          node -e "const x=require('./config/control-plane/world-free-portal-network-v1.json');if(x.sites.length!==12||!x.noPaidServices||x.release.state!=='STAGING_ONLY'||x.release.publishDefault!==false)process.exit(1)"
+          mkdir -p artifacts/aktual-world-free-release
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const config=JSON.parse(fs.readFileSync('config/control-plane/world-free-portal-network-v1.json','utf8'));
+          const results=[];
+          for(const site of config.sites){
+            if(!/^[a-z0-9-]+$/.test(site.id)||!site.outputDirectory.startsWith('apps/world/site/'))throw Error('Unsafe path');
+            const index=site.outputDirectory+'/index.html';
+            const html=fs.readFileSync(index,'utf8');
+            if(!html.includes('name="robots" content="noindex,nofollow,noarchive"'))throw Error('Missing NOINDEX: '+site.id);
+            if(!html.includes('https://gnk-asg.hr/gnk-aktual/'))throw Error('Missing canonical brand link: '+site.id);
+            results.push({id:site.id,projectCandidate:site.projectName,language:site.lang,stagedPath:index,
+              publicUrl:null,hostVerified:false,indexingApproved:false,productionDeployment:false});
+          }
+          fs.writeFileSync('artifacts/aktual-world-free-release/handoff.json',JSON.stringify({
+            mode:'READ_ONLY_FREE_STAGING_HANDOFF',expectedMainSha:process.env.EXPECTED_SHA,
+            sites:results,verifiedPublicUrls:0,releaseBlocked:true,
+            note:'No Cloudflare credentials used. Existing protected production release procedures remain required.'
+          },null,2)+'\n');
+          console.log('PASS staging preflight:',results.length,'sites. Release blocked until existing guarded deploy procedure.');
+          NODE
+      - name: Truthful handoff summary
+        if: always()
+        run: |
+          {
+            echo '## AKTUAL WORLD — free staging audit only'
+            echo '- New Cloudflare Pages projects provisioned: 0'
+            echo '- New public deployments: 0'
+            echo '- Canonical source: main, exact requested SHA'
+            echo '- Next step: existing protected deployment pathway; do not weaken authorization tests'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aktual-world-staging-handoff-${{ github.run_id }}
+          path: artifacts/aktual-world-free-release/
+          if-no-files-found: warn
+          retention-days: 14

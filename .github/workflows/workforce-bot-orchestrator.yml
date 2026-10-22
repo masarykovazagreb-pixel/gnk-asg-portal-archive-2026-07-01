@@ -2,29 +2,56 @@ name: Workforce Bot Orchestrator
 
 on:
   workflow_dispatch:
+    inputs:
+      run_ai_research:
+        description: 'Paid AI disabled in free-only mode; input ignored'
+        type: boolean
+        default: false
   pull_request:
     paths:
       - 'workers/**'
-      - 'config/control-plane/workforce-bot-registry-v1.json'
-      - 'config/control-plane/workforce-bot-taskboard-v1.json'
+      - 'config/control-plane/**'
       - 'scripts/workforce-bot-orchestrator-v1.mjs'
+      - 'scripts/worker-agent-swarm-v1.mjs'
+      - 'ops/aktual-editor-priorities-v1.json'
+      - 'scripts/master-asg-agent-network-v2.mjs'
+      - 'scripts/swarm-public-research-draft-v1.mjs'
+      - 'scripts/aktual-free-editorial-network-v1.mjs'
+      - 'tests/test-aktual-free-editorial-network-v1.mjs'
+      - 'tests/test-aktual-regional-seo-identity-v1.mjs'
+      - 'scripts/audit-aktual-brand-indexability-v1.mjs'
+      - 'tests/test-worker-agent-swarm-v1.mjs'
+      - 'apps/region/engine/build.mjs'
+      - 'apps/region/engine/theme-art.mjs'
+      - 'apps/region/engine/hub.mjs'
+      - 'tests/test-regional-original-art-v1.mjs'
       - '.github/workflows/workforce-bot-orchestrator.yml'
   push:
     branches: [main]
     paths:
       - 'workers/**'
-      - 'config/control-plane/workforce-bot-registry-v1.json'
-      - 'config/control-plane/workforce-bot-taskboard-v1.json'
+      - 'config/control-plane/**'
       - 'scripts/workforce-bot-orchestrator-v1.mjs'
+      - 'scripts/worker-agent-swarm-v1.mjs'
+      - 'ops/aktual-editor-priorities-v1.json'
+      - 'scripts/swarm-public-research-draft-v1.mjs'
+      - 'scripts/aktual-free-editorial-network-v1.mjs'
+      - 'tests/test-aktual-free-editorial-network-v1.mjs'
+      - 'tests/test-aktual-regional-seo-identity-v1.mjs'
+      - 'scripts/audit-aktual-brand-indexability-v1.mjs'
+      - 'tests/test-worker-agent-swarm-v1.mjs'
       - '.github/workflows/workforce-bot-orchestrator.yml'
   schedule:
     - cron: '17 */4 * * *'
 
 permissions:
   contents: read
+  actions: read
+  issues: read
+  pull-requests: read
 
 concurrency:
-  group: workforce-bot-orchestrator
+  group: workforce-bot-orchestrator-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -36,23 +63,52 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Build bot assignments and enforce complete worker coverage
+      - name: Build bot assignments and enforce complete Worker coverage
         run: node scripts/workforce-bot-orchestrator-v1.mjs
-      - name: Publish summary
+      - name: Execute specialized Worker agents and governance tests
+        run: node tests/test-worker-agent-swarm-v1.mjs
+      - name: Validate AKTUAL MEDIA regional SEO and real author/editor attribution
+        run: node tests/test-aktual-regional-seo-identity-v1.mjs
+      - name: AKTUAL MEDIA — free-only 8 regional + 15 national editorial desks
+        run: node tests/test-aktual-free-editorial-network-v1.mjs
+      - name: Confirm paid editorial APIs remain disabled
+        run: |
+          echo "Free-tier-only: 0 Exa/OpenAI requests, existing 4h cron, no public publishing."
+      - name: Observe canonical MASTER ASG V2 CI and public route evidence
+        if: github.event_name != 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          ENABLE_PUBLIC_RESEARCH: '0'
+          ENABLE_AI_WRITING: '0'
+        run: node scripts/master-asg-agent-network-v2.mjs
+      - name: Summarize agent evidence
+        if: always()
         shell: bash
         run: |
-          node - <<'NODE' >> "$GITHUB_STEP_SUMMARY"
+          if [ -f artifacts/master-asg-agent-network/summary.md ]; then
+            cat artifacts/master-asg-agent-network/summary.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ -f artifacts/aktual-editorial-network/summary.md ]; then
+            cat artifacts/aktual-editorial-network/summary.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ -f artifacts/worker-agent-swarm/summary.md ]; then
+            cat artifacts/worker-agent-swarm/summary.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ -f artifacts/workforce-bot-orchestrator/assignment.json ]; then
+            node - <<'NODE' >> "$GITHUB_STEP_SUMMARY"
           const fs=require('fs');
           const r=JSON.parse(fs.readFileSync('artifacts/workforce-bot-orchestrator/assignment.json','utf8'));
-          console.log('## GNK ASG Workforce Bot Orchestrator');
-          console.log('- Worker directories: **'+r.workers+'**');
-          console.log('- Registered bots: **'+r.bots+'**');
-          console.log('- Coverage: **'+(r.coverageOk?'PASS':'FAIL')+'**');
-          console.log('- Protected observe-only bots: **'+r.summary.protectedObserveOnly+'**');
-          console.log('- Cadence: **every 4 hours + scoped push/manual**');
+          console.log('\nOrchestration coverage: '+(r.coverageOk?'PASS':'FAIL')+' ('+r.bots+'/'+r.workers+' worker bots)');
           NODE
+          fi
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: workforce-bot-assignments-${{ github.run_id }}
-          path: artifacts/workforce-bot-orchestrator/assignment.json
+          name: workforce-agent-evidence-${{ github.run_id }}
+          path: |
+            artifacts/workforce-bot-orchestrator/assignment.json
+            artifacts/worker-agent-swarm/
+            artifacts/master-asg-agent-network/
+            artifacts/aktual-editorial-network/
+          if-no-files-found: warn
           retention-days: 14

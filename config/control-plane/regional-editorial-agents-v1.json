@@ -1,0 +1,272 @@
+{
+  "version": "AKTUAL_MEDIA_REGIONAL_AGENT_NETWORK_V1",
+  "canonicalRepository": "masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01",
+  "brand": "AKTUAL MEDIA",
+  "alternativeBrand": "Aktual mediji",
+  "baseSource": "apps/region/channels.json",
+  "livePublicationControlledExternally": true,
+  "writingPolicy": "Original regional AI draft and review packets only; never publish, push main, or override kill switches.",
+  "review": {
+    "minutes": 30,
+    "startsOnlyAfterVerifiedDelivery": true,
+    "requiresSameContentHash": true,
+    "default": "HOLD",
+    "noReplyIsNotHumanFactCheck": true,
+    "rejectionAlwaysWins": true,
+    "allowedKinds": [
+      "original-source-linked-low-risk-commentary"
+    ],
+    "exemptFromSilenceApproval": [
+      "defamation",
+      "political-accusations",
+      "criminal-allegations",
+      "financial-advice",
+      "medical-advice",
+      "personal-data",
+      "third-party-copyright",
+      "unverified-claims",
+      "editorial-misattribution",
+      "production-deploy"
+    ]
+  },
+  "agents": [
+    {
+      "id": "zagreb",
+      "city": "Zagreb",
+      "country": "Hrvatska",
+      "locale": "hr",
+      "language": "hrvatskom",
+      "portal": "https://gnk-asg.hr/kanal/zagreb/",
+      "sourceRegistry": "apps/region/channels.json",
+      "data": "apps/region/data/zagreb.json",
+      "roles": [
+        {
+          "id": "researcher",
+          "task": "Read existing public publisher RSS/Atom records, verify HTTPS references and provenance."
+        },
+        {
+          "id": "reporter",
+          "task": "Write original commentary in hrvatskom with source citations, factual vs analysis separation, no plagiarism."
+        },
+        {
+          "id": "local-editor",
+          "task": "Check idiomatic hrvatskom, source claims, AI disclosure and risk; HOLD on any uncertainty."
+        },
+        {
+          "id": "seo-editor",
+          "task": "Check language tag, correct local canonical, OG/Twitter, image rights and non-spam links."
+        }
+      ]
+    },
+    {
+      "id": "beograd",
+      "city": "Beograd",
+      "country": "Srbija",
+      "locale": "sr",
+      "language": "srpskom (latinica)",
+      "portal": "https://gnk-asg.hr/kanal/beograd/",
+      "sourceRegistry": "apps/region/channels.json",
+      "data": "apps/region/data/beograd.json",
+      "roles": [
+        {
+          "id": "researcher",
+          "task": "Read existing public publisher RSS/Atom records, verify HTTPS references and provenance."
+        },
+        {
+          "id": "reporter",
+          "task": "Write original commentary in srpskom (latinica) with source citations, factual vs analysis separation, no plagiarism."
+        },
+        {
+          "id": "local-editor",
+          "task": "Check idiomatic srpskom (latinica), source claims, AI disclosure and risk; HOLD on any uncertainty."
+        },
+        {
+          "id": "seo-editor",
+          "task": "Check language tag, correct local canonical, OG/Twitter, image rights and non-spam links."
+        }
+      ]
+    },
+    {
+      "id": "sarajevo",
+      "city": "Sarajevo",
+      "country": "Bosna i Hercegovina",
+      "locale": "bs",
+      "language": "bosanskom",
+      "portal": "https://gnk-asg.hr/kanal/sarajevo/",
+      "sourceRegistry": "apps/region/channels.json",
+      "data": "apps/region/data/sarajevo.json",
+      "roles": [
+        {
+          "id": "researcher",
+          "task": "Read existing public publisher RSS/Atom records, verify HTTPS references and provenance."
+        },
+        {
+          "id": "reporter",
+          "task": "Write original commentary in bosanskom with source citations, factual vs analysis separation, no plagiarism."
+        },
+        {
+          "id": "local-editor",
+          "task": "Check idiomatic bosanskom, source claims, AI disclosure and risk; HOLD on any uncertainty."
+        },
+        {
+          "id": "seo-editor",
+          "task": "Check language tag, correct local canonical, OG/Twitter, image rights and non-spam links."
+        }
+      ]
+    },
+    {
+      "id": "budimpesta",
+      "city": "Budimpešta",
+      "country": "Mađarska",
+      "locale": "hu",
+      "language": "mađarskom",
+      "portal": "https://gnk-asg.hr/kanal/budimpesta/",
+      "sourceRegistry": "apps/region/channels.json",
+      "data": "apps/region/data/budimpesta.json",
+      "roles": [
+        {
+          "id": "researcher",
+          "task": "Read existing public publisher RSS/Atom records, verify HTTPS references and provenance."
+        },
+        {
+          "id": "reporter",
+          "task": "Write original commentary in mađarskom with source citations, factual vs analysis separation, no plagiarism."
+        },
+        {
+          "id": "local-editor",
+          "task": "Check idiomatic mađarskom, source claims, AI disclosure and risk; HOLD on any uncertainty."
+        },
+        {
+          "id": "seo-editor",
+          "task": "Check language tag, correct local canonical, OG/Twitter, image rights and non-spam links."
+        }
+      ]
+    },
+    {
+      "id": "ljubljana",
+      "city": "Ljubljana",
+      "country": "Slovenija",
+      "locale": "sl",
+      "language": "slovenskom",
+      "portal": "https://gnk-asg.hr/kanal/ljubljana/",
+      "sourceRegistry": "apps/region/channels.json",
+      "data": "apps/region/data/ljubljana.json",
+      "roles": [
+        {
+          "id": "researcher",
+          "task": "Read existing public publisher RSS/Atom records, verify HTTPS references and provenance."
+        },
+        {
+          "id": "reporter",
+          "task": "Write original commentary in slovenskom with source citations, factual vs analysis separation, no plagiarism."
+        },
+        {
+          "id": "local-editor",
+          "task": "Check idiomatic slovenskom, source claims, AI disclosure and risk; HOLD on any uncertainty."
+        },
+        {
+          "id": "seo-editor",
+          "task": "Check language tag, correct local canonical, OG/Twitter, image rights and non-spam links."
+        }
+      ]
+    },
+    {
+      "id": "rim",
+      "city": "Rim",
+      "country": "Italija",
+      "locale": "it",
+      "language": "talijanskom",
+      "portal": "https://gnk-asg.hr/kanal/rim/",
+      "sourceRegistry": "apps/region/channels.json",
+      "data": "apps/region/data/rim.json",
+      "roles": [
+        {
+          "id": "researcher",
+          "task": "Read existing public publisher RSS/Atom records, verify HTTPS references and provenance."
+        },
+        {
+          "id": "reporter",
+          "task": "Write original commentary in talijanskom with source citations, factual vs analysis separation, no plagiarism."
+        },
+        {
+          "id": "local-editor",
+          "task": "Check idiomatic talijanskom, source claims, AI disclosure and risk; HOLD on any uncertainty."
+        },
+        {
+          "id": "seo-editor",
+          "task": "Check language tag, correct local canonical, OG/Twitter, image rights and non-spam links."
+        }
+      ]
+    },
+    {
+      "id": "sofija",
+      "city": "Sofija",
+      "country": "Bugarska",
+      "locale": "bg",
+      "language": "bugarskom (ćirilica)",
+      "portal": "https://gnk-asg.hr/kanal/sofija/",
+      "sourceRegistry": "apps/region/channels.json",
+      "data": "apps/region/data/sofija.json",
+      "roles": [
+        {
+          "id": "researcher",
+          "task": "Read existing public publisher RSS/Atom records, verify HTTPS references and provenance."
+        },
+        {
+          "id": "reporter",
+          "task": "Write original commentary in bugarskom (ćirilica) with source citations, factual vs analysis separation, no plagiarism."
+        },
+        {
+          "id": "local-editor",
+          "task": "Check idiomatic bugarskom (ćirilica), source claims, AI disclosure and risk; HOLD on any uncertainty."
+        },
+        {
+          "id": "seo-editor",
+          "task": "Check language tag, correct local canonical, OG/Twitter, image rights and non-spam links."
+        }
+      ]
+    },
+    {
+      "id": "bukurest",
+      "city": "Bukurešt",
+      "country": "Rumunjska",
+      "locale": "ro",
+      "language": "rumunjskom",
+      "portal": "https://gnk-asg.hr/kanal/bukurest/",
+      "sourceRegistry": "apps/region/channels.json",
+      "data": "apps/region/data/bukurest.json",
+      "roles": [
+        {
+          "id": "researcher",
+          "task": "Read existing public publisher RSS/Atom records, verify HTTPS references and provenance."
+        },
+        {
+          "id": "reporter",
+          "task": "Write original commentary in rumunjskom with source citations, factual vs analysis separation, no plagiarism."
+        },
+        {
+          "id": "local-editor",
+          "task": "Check idiomatic rumunjskom, source claims, AI disclosure and risk; HOLD on any uncertainty."
+        },
+        {
+          "id": "seo-editor",
+          "task": "Check language tag, correct local canonical, OG/Twitter, image rights and non-spam links."
+        }
+      ]
+    }
+  ],
+  "editorial": {
+    "maxSourceItemsPerCity": 5,
+    "maxGeneratedPerRun": 1,
+    "maxPaidCallsPerRun": 1,
+    "requiresApiKeys": [
+      "OPENAI_API_KEY"
+    ],
+    "enabledOnlyWith": "REGIONAL_AI_DRAFTS=1",
+    "noExternalPublication": true,
+    "sourceDataPublicOnly": true,
+    "output": "artifacts/regional-editorial-agents/",
+    "serverSideReviewLedger": "ops/regional-review-ledger-v1.json",
+    "summaryInbox": "apps/portal/data/regional-review-inbox.json"
+  }
+}
