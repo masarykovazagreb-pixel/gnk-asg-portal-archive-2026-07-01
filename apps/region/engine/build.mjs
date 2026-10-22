@@ -276,8 +276,12 @@ const LANG_NAME = {
 
 function shell(channel, strings, { title, description, path, keywords = [], jsonld = [], body, ogAlt = '', type = 'website', published, modified, root = '', image = '', lang = '', locale = '' }) {
   const pageLang = lang || channel.lang;
-  const pageLocale = locale || strings.locale;
+  const pageLocale = locale || channel.locale?.replace('-', '_') || 'hr_HR';
   const altOriginal = `${PUBLIC}/kanal/${channel.id}/`;
+  // Only the true edition landing page has an English overview. An article,
+  // source page or archive has no translated equivalent: never point its
+  // hreflang to a different page with unrelated content.
+  const isEditionLanding = path === '' || path === 'en/';
   const altEnglish = `${PUBLIC}/kanal/${channel.id}/en/`;
   const canonical = url(channel, path);
   /* Ime autora se NE stavlja u meta keywords (pravilo repoa i CI gate);
@@ -290,14 +294,19 @@ function shell(channel, strings, { title, description, path, keywords = [], json
     '@context': 'https://schema.org',
     '@graph': [
       {
-        '@type': 'NewsMediaOrganization', '@id': `${PUBLIC}/#gnk-asg`,
-        name: 'GNK ASG d.o.o.', alternateName: ['AKTUAL MEDIA', 'AKTUAL MEDIA KANAL', 'GNK ASG'],
-        url: `${PUBLIC}/`, email: CONTACT,
-        logo: { '@type': 'ImageObject', url: `${PUBLIC}/assets/gnk-asg-social-card.png` },
-        parentOrganization: { '@type': 'Organization', name: 'GNK ASG d.o.o.', url: `${PUBLIC}/` },
+        '@type': 'Organization', '@id': `${PUBLIC}/#gnk-asg`,
+        name: 'GNK ASG d.o.o.', url: `${PUBLIC}/`
+      },
+      {
+        '@type': 'NewsMediaOrganization', '@id': `${PUBLIC}/gnk-aktual/#publisher`,
+        name: 'AKTUAL MEDIA', alternateName: ['Aktual mediji', 'AKTUAL MEDIA KANAL', channel.title],
+        legalName: 'AKTUAL MEDIA d.o.o.', url: CENTRAL, email: CONTACT,
+        logo: { '@type': 'ImageObject', url: `${PUBLIC}/assets/izdanja/aktual-media-og.jpg` },
+        parentOrganization: { '@id': `${PUBLIC}/#gnk-asg` },
         editor: { '@id': `${PUBLIC}/#nermin-sefic` },
-        sameAs: [
-          `${PUBLIC}/gnk-aktual/`, `${PUBLIC}/izdanja/`, `${PUBLIC}/galerija/`, `${PUBLIC}/radio/`
+        subjectOf: [
+          { '@type': 'WebPage', url: HUB },
+          { '@type': 'WebPage', url: `${PUBLIC}/radio/` }
         ]
       },
       {
@@ -344,18 +353,17 @@ function shell(channel, strings, { title, description, path, keywords = [], json
 <meta name="geo.placename" content="${esc(channel.city)}">
 <meta name="theme-color" content="${palette.bg}">
 <link rel="canonical" href="${canonical}">
-<link rel="alternate" hreflang="${channel.lang}" href="${altOriginal}">
+${isEditionLanding ? `<link rel="alternate" hreflang="${channel.lang}" href="${altOriginal}">
 <link rel="alternate" hreflang="en" href="${altEnglish}">
-<link rel="alternate" hreflang="x-default" href="${altOriginal}">
+<link rel="alternate" hreflang="x-default" href="${altOriginal}">` : `<link rel="alternate" hreflang="${pageLang}" href="${canonical}">`}
 <link rel="alternate" type="application/rss+xml" title="${esc(channel.title)}" href="${url(channel, 'feed.xml')}">
 <link rel="alternate" type="application/feed+json" title="${esc(channel.title)}" href="${url(channel, 'feed.json')}">
-<link rel="author" href="${PUBLIC}/nermin-sefic/">
 <link rel="icon" href="${root}assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" as="image" href="${hero}"${hero.includes(`/izdanja/${channel.id}-1200.webp`) ? ` imagesrcset="/assets/izdanja/${channel.id}-800.webp 800w, /assets/izdanja/${channel.id}-1200.webp 1200w" imagesizes="(max-width:760px) 100vw, 1200px"` : ''} fetchpriority="high">
 <meta property="og:type" content="${type}">
-<meta property="og:site_name" content="${esc(channel.title)}">
+<meta property="og:site_name" content="AKTUAL MEDIA">
 <meta property="og:locale" content="${pageLocale}">
-<meta property="og:locale:alternate" content="hr_HR">
+${isEditionLanding ? `<meta property="og:locale:alternate" content="${pageLang === 'en' ? channel.locale.replace('-', '_') : 'en_US'}">` : ''}
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(truncate(description, 300))}">
 <meta property="og:url" content="${canonical}">
@@ -367,13 +375,13 @@ function shell(channel, strings, { title, description, path, keywords = [], json
 <meta property="og:image:alt" content="${esc(ogAlt || title)}">
 ${published ? `<meta property="article:published_time" content="${published}">` : ''}
 ${modified ? `<meta property="article:modified_time" content="${modified}">` : ''}
-${published ? `<meta property="article:author" content="${PUBLIC}/nermin-sefic/">` : ''}
+
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(truncate(description, 200))}">
 <meta name="twitter:image" content="${ogImage}">
 <meta name="twitter:image:alt" content="${esc(ogAlt || title)}">
-<meta name="twitter:site" content="@aktualmedia">
+
 <style>:root{--bg:${palette.bg};--surface:${palette.surface};--accent:${palette.accent};--accent2:${palette.accent2};--ink:${palette.ink}}</style>
 <link rel="stylesheet" href="${root}assets/region.css?v=20261021-focus-ring">
 ${ld}
