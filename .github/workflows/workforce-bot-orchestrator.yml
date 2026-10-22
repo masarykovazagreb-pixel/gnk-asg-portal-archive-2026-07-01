@@ -16,6 +16,8 @@ on:
       - 'scripts/aktual-world-agent-factory-v1.mjs'
       - 'scripts/aktual-agent-task-scheduler-v1.mjs'
       - 'tests/test-aktual-world-agent-factory-v1.mjs'
+      - 'tests/test-aktual-world-canonical-release-boundary-v1.mjs'
+      - '.github/workflows/aktual-world-free-release.yml'
       - 'tests/test-aktual-agent-task-scheduler-v1.mjs'
       - 'scripts/aktual-review-window-gate-v1.mjs'
       - 'tests/test-aktual-review-window-gate-v1.mjs'
@@ -44,6 +46,8 @@ on:
       - 'scripts/aktual-world-agent-factory-v1.mjs'
       - 'scripts/aktual-agent-task-scheduler-v1.mjs'
       - 'tests/test-aktual-world-agent-factory-v1.mjs'
+      - 'tests/test-aktual-world-canonical-release-boundary-v1.mjs'
+      - '.github/workflows/aktual-world-free-release.yml'
       - 'tests/test-aktual-agent-task-scheduler-v1.mjs'
       - 'scripts/aktual-review-window-gate-v1.mjs'
       - 'tests/test-aktual-review-window-gate-v1.mjs'
@@ -81,6 +85,8 @@ jobs:
         run: node scripts/workforce-bot-orchestrator-v1.mjs
       - name: Execute specialized Worker agents and governance tests
         run: node tests/test-worker-agent-swarm-v1.mjs
+      - name: Keep 12 canonical international sites isolated from 15-site prototypes
+        run: node --test tests/test-aktual-world-canonical-release-boundary-v1.mjs
       - name: Validate AKTUAL MEDIA regional SEO and real author/editor attribution
         run: node tests/test-aktual-regional-seo-identity-v1.mjs
       - name: AKTUAL MEDIA — free-only 8 regional + 15 national editorial desks
