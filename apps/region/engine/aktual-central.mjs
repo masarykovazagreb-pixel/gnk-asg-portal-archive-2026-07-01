@@ -513,25 +513,23 @@ export function buildAktualCentral({ cards = [] } = {}) {
     [String(gallery.count || 63), 'stranica galerije'], ['8', 'jezika'], ['9', 'deskova i platformi']
   ].map(([n, l]) => `<li><b>${esc(n)}</b><span>${esc(l)}</span></li>`).join('');
 
+  /* Stranica već nosi svoj CollectionPage čvor (glavni generator) s
+     publisherom i mainEntity popisom. Ovaj blok zato NE ponavlja
+     CollectionPage — dva čvora s istim URL-om ruše test identiteta i Google
+     čita dva različita opisa iste stranice. Umjesto toga dodaje se jedan
+     ItemList s popisom svih odredišta koja blok nudi. */
+  const destinations = [
+    ...CHANNELS.map((c) => ({ name: c.title, url: c.base })),
+    ...['sport', 'politika', 'sigurnost', 'biznis', 'tehnologija', 'moda', 'putovanja', 'ljubimci', 'svijet']
+      .map((id) => ({ name: `${id.toUpperCase()} — AKTUAL MEDIA`, url: `${HUB}${id}/` })),
+  ];
   const jsonld = {
     '@context': 'https://schema.org',
-    '@type': 'CollectionPage',
-    name: 'AKTUAL MEDIA — sve na jednom mjestu',
-    url: 'https://gnk-asg.hr/gnk-aktual/',
-    inLanguage: 'hr',
-    description: 'Osam gradskih izdanja, šest deskova, poslovni tjednik, galerija, radio i centar znanja na jednoj stranici.',
-    about: { '@type': 'Organization', name: 'AKTUAL MEDIA d.o.o.', url: 'https://gnk-asg.hr/' },
-    editor: { '@type': 'Person', name: 'Nermin Sefić', jobTitle: 'Urednik i direktor', url: 'https://gnk-asg.hr/nermin-sefic/' },
-    isPartOf: { '@id': 'https://gnk-asg.hr/#website' },
-    hasPart: CHANNELS.map((c) => ({ '@type': 'WebPage', name: c.title, url: c.base, inLanguage: c.lang })),
-    mainEntity: {
-      '@type': 'ItemList',
-      numberOfItems: 15,
-      itemListElement: [
-        ...CHANNELS.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.title, url: c.base })),
-        ...['sport', 'politika', 'sigurnost', 'biznis', 'tehnologija', 'moda', 'putovanja', 'ljubimci', 'svijet'].map((id, i) => ({ '@type': 'ListItem', position: 9 + i, name: id.toUpperCase(), url: `${HUB}${id}/` }))
-      ]
-    }
+    '@type': 'ItemList',
+    '@id': 'https://gnk-asg.hr/gnk-aktual/#all-destinations',
+    name: 'Sva odredišta AKTUAL MEDIA s ove stranice',
+    numberOfItems: destinations.length,
+    itemListElement: destinations.map((item, i) => ({ '@type': 'ListItem', position: i + 1, name: item.name, url: item.url })),
   };
 
   const block = `${START}
