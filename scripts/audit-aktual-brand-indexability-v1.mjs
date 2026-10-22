@@ -76,7 +76,7 @@ for (const id of channels) {
     }
     // A media network must consistently identify itself in preview cards, irrespective
     // of the GNK ASG parent company and the page's local language.
-    const ogSiteName = html.match(/<meta\\b[^>]*property=["']og:site_name["'][^>]*content=["']([^"']+)["']/i)?.[1] || '';
+    const ogSiteName = html.match(/<meta\b[^>]*property=["']og:site_name["'][^>]*content=["']([^"']+)["']/i)?.[1] || '';
     if (!ogSiteName) {
       stats.missingOpenGraphPublisher++;
       shown(warningSamples, { url: loc, warning: 'Open Graph site name missing' });
@@ -86,14 +86,14 @@ for (const id of channels) {
     }
     const localeFor = { zagreb:'hr_HR',beograd:'sr_RS',sarajevo:'bs_BA',budimpesta:'hu_HU',
       ljubljana:'sl_SI',rim:'it_IT',sofija:'bg_BG',bukurest:'ro_RO' }[id];
-    const htmlLang = html.match(/<html\\b[^>]*lang=["']([^"']+)["']/i)?.[1] || '';
-    const ogLocale = html.match(/<meta\\b[^>]*property=["']og:locale["'][^>]*content=["']([^"']+)["']/i)?.[1] || '';
+    const htmlLang = html.match(/<html\b[^>]*lang=["']([^"']+)["']/i)?.[1] || '';
+    const ogLocale = html.match(/<meta\b[^>]*property=["']og:locale["'][^>]*content=["']([^"']+)["']/i)?.[1] || '';
     // English edition landing pages use en_US and are not national articles.
     if (htmlLang && htmlLang !== 'en' && ogLocale && ogLocale !== localeFor) {
       stats.mismatchedRegionalLocale++;
       shown(warningSamples, { url: loc, warning: 'Mismatched localized Open Graph locale: ' + ogLocale });
     }
-    if (isArticle(loc) && /<link\\b[^>]*rel=["']author["'][^>]*href=["']https:\/\/gnk-asg\\.hr\/nermin-sefic\/?["']/i.test(html)) {
+    if (isArticle(loc) && /<link\b[^>]*rel=["']author["'][^>]*href=["']https:\/\/gnk-asg\.hr\/nermin-sefic\/?["']/i.test(html)) {
       stats.unverifiedPersonalAuthorLink++;
       shown(warningSamples, { url: loc, warning: 'Automated source commentary incorrectly declares personal rel=author' });
     }
@@ -120,11 +120,11 @@ stats.unregisteredChannelSitemaps = channels.filter(
   (id) => !registered.includes(host + '/kanal/' + id + '/sitemap.xml'));
 stats.fatalIssues = stats.missingFiles + stats.badCanonical + stats.duplicateUrls
   + stats.noindexInSitemap + stats.unregisteredChannelSitemaps.length;
-console.log(JSON.stringify({ summary: stats, errors: errorSamples, warnings: warningSamples }, null, 2));
 // Opt-in strict branding after a fresh source regeneration. The existing --strict
 // behavior is unchanged for historical snapshots to avoid unexpected release churn.
 stats.brandIdentityIssues = stats.mismatchedOpenGraphPublisher + stats.missingOpenGraphPublisher
   + stats.unverifiedPersonalAuthorLink + stats.mismatchedRegionalLocale;
+console.log(JSON.stringify({ summary: stats, errors: errorSamples, warnings: warningSamples }, null, 2));
 if (process.argv.includes('--strict') && stats.fatalIssues > 0) process.exitCode = 1;
 if (process.argv.includes('--brand-strict') && (stats.fatalIssues > 0 || stats.brandIdentityIssues > 0))
   process.exitCode = 1;
