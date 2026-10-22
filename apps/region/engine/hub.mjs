@@ -191,6 +191,16 @@ const DESKS = {
 /* Jedan kanonski WebSite čvor po stranici. Stranice /izdanja/ dijele isti
    entitet, pa ga shell dodaje sam; proslijeđeni graf ne smije nositi
    drugi (inače stranica ima dva ili nijedan). */
+const AKTUAL_MEDIA_ID = 'https://gnk-asg.hr/gnk-aktual/#news-organization';
+const AKTUAL_MEDIA_NODE = {
+  '@context': 'https://schema.org', '@type': 'NewsMediaOrganization',
+  '@id': AKTUAL_MEDIA_ID, name: 'AKTUAL MEDIA',
+  alternateName: ['Aktual mediji', 'Aktual Media', 'AKTUAL MEDIA KANAL'],
+  legalName: 'AKTUAL MEDIA d.o.o.',
+  url: 'https://gnk-asg.hr/gnk-aktual/',
+  parentOrganization: { '@id': 'https://gnk-asg.hr/#gnk-asg' },
+  editor: { '@type': 'Person', '@id': 'https://gnk-asg.hr/#nermin-sefic', name: 'Nermin Sefić', url: 'https://gnk-asg.hr/nermin-sefic/' }
+};
 const WEBSITE_NODE = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
@@ -209,7 +219,7 @@ const isWebsiteNode = (node) => (Array.isArray(node?.['@type']) ? node['@type'] 
 
 function portalShell({ title, description, path, keywords, jsonld = [], body, cssExtra = '' }) {
   const canonical = `${HUB}${path}`;
-  const graph = [WEBSITE_NODE, ...jsonld.filter((node) => !isWebsiteNode(node))];
+  const graph = [WEBSITE_NODE, AKTUAL_MEDIA_NODE, ...jsonld.filter((node) => !isWebsiteNode(node) && node?.['@id'] !== AKTUAL_MEDIA_ID)];
   return `<!doctype html>
 <html lang="hr">
 <head>
@@ -468,8 +478,8 @@ ${radioBand()}${portalFooter()}`;
     path: '',
     keywords: ['AKTUAL MEDIA', 'izdanja', 'AKTUAL MEDIA KANAL ZAGREB', 'AKTUAL MEDIA KANAL BEOGRAD', 'AKTUAL MEDIA KANAL SARAJEVO', 'AKTUAL MEDIA KANAL BUDAPEST', 'AKTUAL MEDIA KANAL LJUBLJANA', 'AKTUAL MEDIA KANAL ROMA', 'AKTUAL MEDIA KANAL SOFIJA', 'AKTUAL MEDIA KANAL BUCUREȘTI', 'BUSINESS TJEDNIK', 'GNK ASG'],
     jsonld: [
-      { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Naša izdanja — AKTUAL MEDIA', url: HUB, inLanguage: 'hr', isPartOf: { '@id': 'https://gnk-asg.hr/#website' } },
-      { '@context': 'https://schema.org', '@type': 'ItemList', name: 'Izdanja AKTUAL MEDIA', numberOfItems: CHANNELS.length + 8, itemListElement: CHANNELS.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.title, url: c.base })) },
+      { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Naša izdanja — AKTUAL MEDIA', url: HUB, inLanguage: 'hr', isPartOf: { '@id': 'https://gnk-asg.hr/#website' }, publisher: { '@id': AKTUAL_MEDIA_ID }, about: { '@id': AKTUAL_MEDIA_ID }, editor: { '@id': 'https://gnk-asg.hr/#nermin-sefic' } },
+      { '@context': 'https://schema.org', '@type': 'ItemList', name: 'Izdanja AKTUAL MEDIA', numberOfItems: CHANNELS.length, itemListElement: CHANNELS.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.title, url: c.base })) },
       { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'AKTUAL MEDIA', item: 'https://gnk-asg.hr/gnk-aktual/' }, { '@type': 'ListItem', position: 2, name: 'Izdanja', item: HUB }] }
     ],
     body
@@ -579,8 +589,8 @@ ${id === 'sport' ? `<script>(()=>{const box=document.getElementById('izResults')
     path: `${id}/`,
     keywords: [...desk.hashtags, 'AKTUAL MEDIA', 'GNK ASG', 'regija'],
     jsonld: [
-      { '@context': 'https://schema.org', '@type': 'CollectionPage', name: desk.title, url: `${HUB}${id}/`, inLanguage: 'hr', description: desk.description },
-      { '@context': 'https://schema.org', '@type': 'ItemList', name: desk.title, numberOfItems: items.length, itemListElement: items.slice(0, 20).map((i, n) => ({ '@type': 'ListItem', position: n + 1, name: i.title, url: `${i.channel.base}clanak/${i.slug}/` })) }
+      { '@context': 'https://schema.org', '@type': 'CollectionPage', name: desk.title, url: `${HUB}${id}/`, inLanguage: 'hr', description: desk.description, publisher: { '@id': AKTUAL_MEDIA_ID }, about: { '@id': AKTUAL_MEDIA_ID }, editor: { '@id': 'https://gnk-asg.hr/#nermin-sefic' } },
+      { '@context': 'https://schema.org', '@type': 'ItemList', name: desk.title, numberOfItems: Math.min(items.length, 20), itemListElement: items.slice(0, 20).map((i, n) => ({ '@type': 'ListItem', position: n + 1, name: i.title, url: `${i.channel.base}clanak/${i.slug}/` })) }
     ],
     body
   });
@@ -604,7 +614,9 @@ export async function buildHub() {
     ...Object.keys(DESKS).map((id) => ({ loc: `${HUB}${id}/`, priority: '0.7' })),
     ...CHANNELS.map((c) => ({ loc: c.base, priority: '0.9' })),
     { loc: 'https://gnk-asg.hr/usa/', priority: '0.9' },
-    { loc: 'https://gnk-asg-tjednik.pages.dev/', priority: '0.7' },
+    { loc: 'https://gnk-asg.hr/gnk-aktual/', priority: '0.9' },
+    { loc: 'https://gnk-asg.hr/radio/', priority: '0.8' },
+    { loc: 'https://gnk-asg.hr/kanal/', priority: '0.8' },
     { loc: 'https://gnk-asg.hr/galerija/', priority: '0.6' }
   ];
   writeFileSync(join(OUT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
@@ -722,7 +734,7 @@ function kanalIndex(cards) {
     '@context': 'https://schema.org', '@type': 'CollectionPage',
     name: 'AKTUAL MEDIA KANAL — sva izdanja', url: 'https://gnk-asg.hr/kanal/',
     inLanguage: 'hr', isPartOf: { '@id': 'https://gnk-asg.hr/#website' },
-    publisher: { '@type': 'NewsMediaOrganization', name: 'AKTUAL MEDIA d.o.o.', url: 'https://gnk-asg.hr/', parentOrganization: { '@type': 'Organization', name: 'GNK ASG d.o.o.', url: 'https://gnk-asg.hr/' } },
+    publisher: { '@id': AKTUAL_MEDIA_ID },
     editor: { '@type': 'Person', name: 'Nermin Sefić', jobTitle: 'Urednik i direktor', url: 'https://gnk-asg.hr/nermin-sefic/' },
     hasPart: CHANNELS.map((c) => ({ '@type': 'WebPage', name: c.title, url: c.base, inLanguage: c.lang })),
     mainEntity: { '@type': 'ItemList', numberOfItems: CHANNELS.length, itemListElement: CHANNELS.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.title, url: c.base })) }
@@ -833,7 +845,7 @@ export function usaPage() {
       '@id': `${USA}#webpage`, url: USA, name: 'GNK DINAMO Ltd. — Boulder, Colorado, USA',
       inLanguage: 'hr', isPartOf: { '@id': 'https://gnk-asg.hr/#website' },
       about: { '@id': 'https://gnk-asg.hr/usa/#gnk-dinamo-ltd' },
-      publisher: { '@type': 'NewsMediaOrganization', name: 'AKTUAL MEDIA d.o.o.', url: 'https://gnk-asg.hr/gnk-aktual/' }
+      publisher: { '@id': AKTUAL_MEDIA_ID }
     },
     {
       '@context': 'https://schema.org', '@type': 'BreadcrumbList',
