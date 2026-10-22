@@ -112,6 +112,9 @@ const channelPagesProjects={
  'kanal-daily.yml':'gnk-asg-kanal',
  'tjednik-deploy.yml':'gnk-asg-tjednik',
  'tjednik-daily.yml':'gnk-asg-tjednik',
+ // Samostalni portali: svaki ima svoj Pages projekt i vlastitu domenu.
+ 'arhiva-deploy.yml':'gnk-asg-arhiva',
+ 'dnevnik-deploy.yml':'gnk-asg-dnevnik',
  'region-deploy.yml':['zagreb','beograd','sarajevo','budimpesta','ljubljana','rim','sofija','bukurest'].map(regionProject),
  'region-daily.yml':['zagreb','beograd','sarajevo','budimpesta','ljubljana','rim','sofija','bukurest'].map(regionProject)
 };
