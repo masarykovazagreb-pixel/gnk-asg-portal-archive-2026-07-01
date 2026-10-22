@@ -102,7 +102,7 @@ function tile({ href, img, alt, external = false, badge = '', small = false, sub
 
 const CITY_ALT_EN = {
   zagreb: 'AKTUAL MEDIA KANAL ZAGREB — Croatia, Croatian. A daily review of domestic media and ten verifiable stories. Click opens the edition.',
-  beograd: 'AKTUAL MEDIA KANAL BEOGRAD — Serbia, Serbian. N1, Danas, Nova and Politika, reviews with a link to the original. Click opens the edition.',
+  beograd: 'AKTUAL MEDIA KANAL BELGRADE — Serbia, Serbian. N1, Danas, Nova and Politika, reviews with a link to the original. Click opens the edition.',
   sarajevo: 'AKTUAL MEDIA KANAL SARAJEVO — Bosnia and Herzegovina, Bosnian. N1 BiH, Klix, Oslobođenje and Avaz, politics and security in the region. Click opens the edition.',
   budimpesta: 'AKTUAL MEDIA KANAL BUDAPEST — Hungary, Hungarian. Telex, 444, HVG and Portfolio: budget, inflation, energy. Click opens the edition.',
   ljubljana: 'AKTUAL MEDIA KANAL LJUBLJANA — Slovenia, Slovenian. Delo, Večer, 24ur and Slovenske novice: economy and politics. Click opens the edition.',
@@ -792,7 +792,10 @@ export function buildAktualCentral({ cards = [] } = {}) {
       <span class="amc-dim">${items.length} ${T('tekstova', 'stories')} ${T('iz', 'from')} ${sources.size} ${T('medija', 'media')} · 8 ${T('jezika', 'languages')}</span>
     </div>
     <div class="amc-river">${columns.map(riverColumn).join('')}</div>
-    <p class="amc-note">Mravinjak je naš dnevni pogon: osam kanala čita javne feedove, sitemape i API-je svojih medija, sprema naslov, sažetak, datum i poveznicu na izvornik te iz toga gradi osvrt na način izvještavanja. Tekstovi se ne preuzimaju u cijelosti; svaki zapis vodi na izvornik, a tvrdnje izvora nisu tvrdnje redakcije. Sport ${sport} · Politika ${politics} · Sigurnost, rat i potresi ${security} · Moda i stil ${moda}.</p>
+    <p class="amc-note">${T(
+      `Mravinjak je naš dnevni pogon: osam kanala čita javne feedove, sitemape i API-je svojih medija, sprema naslov, sažetak, datum i poveznicu na izvornik te iz toga gradi osvrt na način izvještavanja. Tekstovi se ne preuzimaju u cijelosti; svaki zapis vodi na izvornik, a tvrdnje izvora nisu tvrdnje redakcije. Sport ${sport} · Politika ${politics} · Sigurnost, rat i potresi ${security} · Moda i stil ${moda}.`,
+      `The anthill is our daily engine: eight channels read public feeds, sitemaps and APIs of their media, store the headline, summary, date and a link to the original, and from that build a review of how the story was reported. Texts are never copied in full; every record links to the original, and claims from sources are not the claims of the newsroom. Sport ${sport} · Politics ${politics} · Security, war and earthquakes ${security} · Mode and style ${moda}.`
+    )}</p>
   </section>
 
   <section class="amc-sec" aria-labelledby="amcSec4">
@@ -824,7 +827,7 @@ export function buildAktualCentral({ cards = [] } = {}) {
       <span class="amc-dim">#NerminSefić · #NerminSefic · #SeficNermin · #SEFICNERMIN</span>
     </div>
     <ul class="amc-tags">${HASHTAGS.map((h) => `<li>${esc(h)}</li>`).join('')}</ul>
-    <p class="amc-note">Urednik i direktor izdanja je <strong>Nermin Sefić</strong>. Za autora se koriste oznake #NerminSefić, #NerminSefic, #SeficNermin i #SEFICNERMIN. Kontakt: <a href="mailto:info@gnk-asg.hr">info@gnk-asg.hr</a>.</p>
+    <p class="amc-note">${T('Urednik i direktor izdanja je', 'The editor and director of the edition is')} <strong>Nermin Sefić</strong>. ${T('Za autora se koriste oznake', 'Author tags are')} #NerminSefić, #NerminSefic, #SeficNermin ${T('i', 'and')} #SEFICNERMIN. ${T('Kontakt', 'Contact')}: <a href="mailto:info@gnk-asg.hr">info@gnk-asg.hr</a>.</p>
   </section>
 </section>
 ${END}`;

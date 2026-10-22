@@ -68,7 +68,7 @@ const bandFor = (lang = 'hr') => {
   <section class="kanal-band" aria-labelledby="kanalBandTitle">
     <div class="kanal-band-head">
       <div>
-        <h2 class="kanal-band-title" id="kanalBandTitle"><span class="kanal-mark" aria-hidden="true">K</span> ${en ? 'From the GNK ASG channel' : 'Iz GNK ASG KANALA'}</h2>
+        <h2 class="kanal-band-title" id="kanalBandTitle">${en ? 'From the GNK ASG channel' : '<span class="kanal-mark" aria-hidden="true">K</span> Iz GNK ASG KANALA'}</h2>
         <p class="kanal-sub">${en
           ? 'Ten new posts every day: analyses, explainers, deadlines, numbers and claim checks. Texts are reused with the attribution “Source: GNK ASG KANAL”.'
           : 'Deset novih objava svakoga dana: analize, pojašnjenja, rokovi, brojke i provjere tvrdnji. Tekstovi se preuzimaju uz atribuciju „Izvor: GNK ASG KANAL".'}</p>
