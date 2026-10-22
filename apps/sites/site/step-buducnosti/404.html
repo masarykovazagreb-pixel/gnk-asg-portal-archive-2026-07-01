@@ -84,7 +84,23 @@ main:focus{outline:none}
 .mosaic a:nth-child(1){grid-column:span 2;grid-row:span 2}
 .mosaic a:nth-child(1) img{aspect-ratio:auto;height:100%}
 @media(max-width:760px){.mosaic{grid-template-columns:repeat(2,1fr)}.mosaic a:nth-child(1){grid-column:span 2;grid-row:auto}}
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto}}</style></head>
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto}}
+/* mreža — zajednički blok na svim portalima */
+.mesh{padding:30px 0 34px;border-top:1px solid var(--line,rgba(255,255,255,.12));background:rgba(0,0,0,.16)}
+.mesh .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
+.mesh-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px;margin-bottom:12px}
+.mesh-head h2{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(19px,2.3vw,26px);letter-spacing:-.01em;color:var(--ink,#eef3f8)}
+.mesh-head p{margin:0;color:var(--muted,var(--soft,#9fb2c8));font-size:12.5px;max-width:70ch}
+.mesh-k{margin:16px 0 8px;font:800 10px/1.4 system-ui;letter-spacing:.16em;text-transform:uppercase;color:var(--accent,var(--gold,#e0bd69))}
+.mesh-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:7px}
+.mesh-grid a,.mesh-grid .is-self span{display:block;height:100%;padding:9px 11px;border:1px solid var(--line,rgba(255,255,255,.12));border-radius:10px;background:var(--panel,rgba(255,255,255,.04))}
+.mesh-grid a:hover,.mesh-grid a:focus-visible{border-color:var(--accent,var(--gold,#e0bd69));text-decoration:none}
+.mesh-grid b{display:block;font:700 12.5px/1.25 system-ui;letter-spacing:.02em;color:var(--ink,#eef3f8)}
+.mesh-grid span{display:block;margin-top:2px;font-size:10.5px;line-height:1.35;color:var(--muted,var(--soft,#9fb2c8))}
+.mesh-grid .is-self{opacity:.6}
+.mesh-grid .is-self span{border-style:dashed}
+.mesh-foot{margin:14px 0 0;font-size:11.5px;color:var(--muted,var(--soft,#9fb2c8));max-width:80ch}
+@media (max-width:520px){.mesh-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}}</style></head>
 <body><main id="main"><div class="hero"><div class="wrap">
 <p class="kicker">404</p><h2>Ove stranice nema.</h2>
 <p class="lead">Možda je poveznica stara ili je stranica premještena. Naslovnica je ovdje, a popis svih izdanja na <a href="https://gnk-asg.hr/mreza/">gnk-asg.hr/mreza</a>.</p>

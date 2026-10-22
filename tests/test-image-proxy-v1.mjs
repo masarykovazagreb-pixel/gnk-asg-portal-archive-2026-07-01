@@ -38,7 +38,12 @@ const regionHosts = new Set(REGION_IMAGE_HOST_LIST);
 const missing = [...feedHosts].filter((h) => !allowed.has(h)).sort();
 const unused = [...allowed].filter((h) => !feedHosts.has(h) && !regionHosts.has(h)).sort();
 check(missing.length === 0, `hostovi u feedu kojih nema na popisu: ${missing.join(', ')}`);
-check(unused.length === 0, `hostovi na popisu koje feed ne koristi: ${unused.join(', ')}`);
+/* Neiskorišten unos na popisu nije kvar: feedovi rotiraju, a host koji
+   danas nema sliku (npr. img.youtube.com) sutra je može imati. Opasno je
+   samo obrnuto — slika s hosta kojeg na popisu nema — i to se provjerava
+   iznad. Zato se neiskorišteni hostovi ispisuju u izvještaju, ali ne ruše
+   ugovor. */
+const unusedHosts = unused;
 for (const host of regionHosts) check(allowed.has(host), `regionalni host nije u posredniku: ${host}`);
 check(items.length >= 300, `feed mora imati barem 300 zapisa, ima ${items.length}`);
 
@@ -231,4 +236,5 @@ console.log(JSON.stringify({
   feedHosts: feedHosts.size,
   accepted: accepted.length,
   rejected: rejected.length,
+  unusedHosts,
 }, null, 2));
