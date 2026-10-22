@@ -4,7 +4,7 @@
   "lang": "bs",
   "city": "Sarajevo",
   "country": "Bosna i Hercegovina",
-  "updatedAt": "2026-10-22T00:36:09.625Z",
+  "updatedAt": "2026-10-22T06:07:44.268Z",
   "sources": [
     {
       "id": "n1ba",
@@ -13,7 +13,7 @@
       "ok": true,
       "fetched": 50,
       "errors": [],
-      "checkedAt": "2026-10-22T00:35:59.165Z"
+      "checkedAt": "2026-10-22T06:07:34.596Z"
     },
     {
       "id": "klix",
@@ -22,7 +22,7 @@
       "ok": true,
       "fetched": 30,
       "errors": [],
-      "checkedAt": "2026-10-22T00:35:59.658Z"
+      "checkedAt": "2026-10-22T06:07:34.949Z"
     },
     {
       "id": "oslobodjenje",
@@ -34,7 +34,7 @@
         "https://www.oslobodjenje.ba/feed: HTTP 404",
         "https://www.oslobodjenje.ba/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-22T00:36:03.162Z"
+      "checkedAt": "2026-10-22T06:07:38.287Z"
     },
     {
       "id": "avaz",
@@ -45,7 +45,7 @@
       "errors": [
         "https://avaz.ba/feed: HTTP 404"
       ],
-      "checkedAt": "2026-10-22T00:36:04.797Z"
+      "checkedAt": "2026-10-22T06:07:40.046Z"
     },
     {
       "id": "radiosarajevo",
@@ -54,7 +54,7 @@
       "ok": true,
       "fetched": 25,
       "errors": [],
-      "checkedAt": "2026-10-22T00:36:05.197Z"
+      "checkedAt": "2026-10-22T06:07:40.842Z"
     },
     {
       "id": "hayat",
@@ -65,16 +65,18 @@
       "errors": [
         "https://hayat.ba/feed/: HTTP 403"
       ],
-      "checkedAt": "2026-10-22T00:36:06.730Z"
+      "checkedAt": "2026-10-22T06:07:42.466Z"
     },
     {
       "id": "buka",
       "name": "Buka",
       "url": "https://www.6yka.com/feed",
-      "ok": true,
-      "fetched": 10,
-      "errors": [],
-      "checkedAt": "2026-10-22T00:36:08.435Z"
+      "ok": false,
+      "fetched": 0,
+      "errors": [
+        "https://www.6yka.com/feed: HTTP 403"
+      ],
+      "checkedAt": "2026-10-22T06:07:43.249Z"
     },
     {
       "id": "detektor",
@@ -83,10 +85,402 @@
       "ok": true,
       "fetched": 10,
       "errors": [],
-      "checkedAt": "2026-10-22T00:36:09.625Z"
+      "checkedAt": "2026-10-22T06:07:44.268Z"
     }
   ],
   "items": [
+    {
+      "slug": "sarajevo-2026-10-22-avaz-marija-serifovic-se-oprostila-dosao-je-kraj-5ddbf2",
+      "title": "Marija Šerifović se oprostila: Došao je kraj",
+      "summary": "Marija Šerifović se oprostila: Došao je kraj - Njena poruka podsjetila je na to da se ponekad najveće promjene ne događaju uz velike odluke i dramatične preokrete",
+      "date": "2026-10-22T07:04:47.000Z",
+      "url": "https://avaz.ba/showbiz/jet-set/1082038/marija-serifovic-se-oprostila-dosao-je-kraj",
+      "source": "avaz",
+      "sourceName": "Avaz",
+      "categories": [
+        "fanovi iznenađeni"
+      ],
+      "author": "Dnevni avaz",
+      "theme": "drustvo",
+      "image": "https://gale-s3-bucket.s3.eu-central-1.amazonaws.com/c9aee45c-34e4-4959-a7ed-e4aacf127b07.jpeg",
+      "imageAlt": "Marija Šerifović se oprostila: Došao je kraj",
+      "addedAt": "2026-10-22T06:07:40.046Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-22-avaz-kristo-danas-na-summitu-lidera-berlinskog-6e1630",
+      "title": "Krišto danas na Summitu lidera Berlinskog procesa",
+      "summary": "Krišto danas na Summitu lidera Berlinskog procesa - Učestvovanje Krišto na Summitu na visokom nivou potvrda je kontinuirane opredijeljenosti Bosne i Hercegovine jačanju regionalne saradnje i intenziviranju reformskih procesa",
+      "date": "2026-10-22T07:03:23.000Z",
+      "url": "https://avaz.ba/vijesti/bih/1082037/kristo-danas-na-summitu-lidera-berlinskog-procesa",
+      "source": "avaz",
+      "sourceName": "Avaz",
+      "categories": [
+        "u Miločeru kod Budve"
+      ],
+      "author": "Dnevni avaz",
+      "theme": "drustvo",
+      "image": "https://gale-s3-bucket.s3.eu-central-1.amazonaws.com/a1011621-6226-4d4b-8642-668baf5b3e54.jpeg",
+      "imageAlt": "Krišto danas na Summitu lidera Berlinskog procesa",
+      "addedAt": "2026-10-22T06:07:40.046Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-22-avaz-pavel-upozorio-evropu-ako-nastavimo-ovako-63a036",
+      "title": "Pavel upozorio Evropu: \"Ako nastavimo ovako, mogli bismo završiti u otvorenom ratu s Rusijom\"",
+      "summary": "Pavel upozorio Evropu: \"Ako nastavimo ovako, mogli bismo završiti u otvorenom ratu s Rusijom\" - Zato vjerujem da bismo prvo trebali učiniti sve da mi Evropljani razvijemo jasno formulisanu predstavu o pregovorima, rekao je Pavel",
+      "date": "2026-10-22T06:52:31.000Z",
+      "url": "https://avaz.ba/vijesti/globus/1082034/pavel-upozorio-evropu-ako-nastavimo-ovako-mogli-bismo-zavrsiti-u-otvorenom-ratu-s-rusijom",
+      "source": "avaz",
+      "sourceName": "Avaz",
+      "categories": [
+        "Češki predsjednik"
+      ],
+      "author": "Dnevni avaz",
+      "theme": "rat",
+      "image": "https://gale-s3-bucket.s3.eu-central-1.amazonaws.com/0ef07fab-153a-469e-b92c-49ba1995850d.jpeg",
+      "imageAlt": "Pavel upozorio Evropu: \"Ako nastavimo ovako, mogli bismo završiti u otvorenom ratu s Rusijom\"",
+      "addedAt": "2026-10-22T06:07:40.047Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-22-avaz-mekane-domace-kiflice-po-starinskom-receptu-0abcb5",
+      "title": "Mekane domaće kiflice po starinskom receptu",
+      "summary": "Mekane domaće kiflice po starinskom receptu - Gotove kiflice izvadite iz rerne i ostavite nekoliko minuta da se malo ohlade prije posluživanja",
+      "date": "2026-10-22T06:19:38.000Z",
+      "url": "https://avaz.ba/lifestyle/recepti/1082033/mekane-domace-kiflice-po-starinskom-receptu",
+      "source": "avaz",
+      "sourceName": "Avaz",
+      "categories": [
+        "jednostavni sastojci"
+      ],
+      "author": "Dnevni avaz",
+      "theme": "drustvo",
+      "image": "https://gale-s3-bucket.s3.eu-central-1.amazonaws.com/2a6f88c4-0b6c-459f-96f4-b4050985fe20.jpeg",
+      "imageAlt": "Mekane domaće kiflice po starinskom receptu",
+      "addedAt": "2026-10-22T06:07:40.047Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-22-avaz-vens-nakon-poraza-orbana-mijenja-stav-vise-387fd8",
+      "title": "Vens nakon poraza Orbana mijenja stav: Više ne želi podržavati strane kandidate, evo šta je poručio o Netanjahuu",
+      "summary": "Vens nakon poraza Orbana mijenja stav: Više ne želi podržavati strane kandidate, evo šta je poručio o Netanjahuu - Podržao sam jednog stranog kandidata na izborima u cijelom životu i, prije svega, to nije prošlo baš najbolje, koliko god da se jako divim premijeru Orbanu, rekao je Vens",
+      "date": "2026-10-22T06:16:18.000Z",
+      "url": "https://avaz.ba/vijesti/globus/1082032/vens-nakon-poraza-orbana-mijenja-stav-vise-ne-zeli-podrzavati-strane-kandidate-evo-sta-je-porucio-o-netanjahuu",
+      "source": "avaz",
+      "sourceName": "Avaz",
+      "categories": [
+        "Američki potpredsjednik"
+      ],
+      "author": "Dnevni avaz",
+      "theme": "politika",
+      "image": "https://gale-s3-bucket.s3.eu-central-1.amazonaws.com/8cf1e379-9c97-46c3-85eb-e1562152a618.jpeg",
+      "imageAlt": "Vens nakon poraza Orbana mijenja stav: Više ne želi podržavati strane kandidate, evo šta je poručio o Netanjahuu",
+      "addedAt": "2026-10-22T06:07:40.047Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-22-klix-potencijalni-reprezentativac-bih-amin-cosic-5eef51",
+      "title": "Potencijalni reprezentativac BiH Amin Ćosić debitovao u Ligi prvaka u dresu Vikinga",
+      "summary": "Amin Ćosić, dvadesetogodišnji nogometaš s pasošima Bosne i Hercegovine i Islanda, je sinoć upisao prvi nastup u Ligi prvaka.",
+      "date": "2026-10-22T06:06:00.000Z",
+      "url": "https://www.klix.ba/sport/nogomet/potencijalni-reprezentativac-bih-amin-cosic-debitovao-u-ligi-prvaka-u-dresu-vikinga/261022025",
+      "source": "klix",
+      "sourceName": "Klix",
+      "categories": [
+        "Nogomet"
+      ],
+      "author": "Piše: E. B.",
+      "theme": "sport",
+      "image": "https://static.klix.ba/media/images/vijesti/img32_261022025.jpg",
+      "imageAlt": "Potencijalni reprezentativac BiH Amin Ćosić debitovao u Ligi prvaka u dresu Vikinga",
+      "addedAt": "2026-10-22T06:07:34.949Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-22-klix-sirom-bih-mokre-i-klizave-ceste-povecena-d4efdd",
+      "title": "Širom BiH mokre i klizave ceste, povećena opasnost od odrona",
+      "summary": "Širom Bosne i Hercegovine jutros su mokre i klizave ceste. Zbog kiše, na brojnim putnim dionicama dolazi do zadržavanja vode na cesti što produžava zaustavni put vozila i umanjuje opštu sigurnost u saobraćaju.",
+      "date": "2026-10-22T06:06:00.000Z",
+      "url": "https://www.klix.ba/vijesti/bih/sirom-bih-mokre-i-klizave-ceste-povecena-opasnost-od-odrona/261022015",
+      "source": "klix",
+      "sourceName": "Klix",
+      "categories": [
+        "BiH"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://static.klix.ba/media/images/vijesti/img32_261022015.jpg",
+      "imageAlt": "Širom BiH mokre i klizave ceste, povećena opasnost od odrona",
+      "addedAt": "2026-10-22T06:07:34.949Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-22-klix-zavodljivo-izdanje-alessandre-ambrosio-na-78b0fd",
+      "title": "Zavodljivo izdanje Alessandre Ambrosio na afterpartyju Victoria's Secreta: U crvenoj lateks haljini istakla vitku figuru",
+      "summary": "Brazilsku manekenku Alessandru Ambrosio ponovo smo imali priliku vidjeti na pisti Victoria's Secret revije, a nakon modnog spektakla pažnju je privukla i svojim izdanjem za afterparty. Za zabavu je odabrala kratku, pripijenu crvenu lateks haljinu koja je istakla njenu figuru.",
+      "date": "2026-10-22T06:04:00.000Z",
+      "url": "https://www.klix.ba/lifestyle/modailjepota/zavodljivo-izdanje-alessandre-ambrosio-na-afterpartyju-victorias-secreta-u-crvenoj-lateks-haljini-istakla-vitku-figuru/261022022",
+      "source": "klix",
+      "sourceName": "Klix",
+      "categories": [
+        "Moda i ljepota"
+      ],
+      "author": "Piše: A. Ć.",
+      "theme": "drustvo",
+      "image": "https://static.klix.ba/media/images/vijesti/img32_261022022.jpg",
+      "imageAlt": "Zavodljivo izdanje Alessandre Ambrosio na afterpartyju Victoria's Secreta: U crvenoj lateks haljini istakla vitku figuru",
+      "addedAt": "2026-10-22T06:07:34.949Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-22-radiosarajevo-pamtimo-i-ne-zaboravljamo-danas-se-navrsava-f67da3",
+      "title": "Pamtimo i ne zaboravljamo: Danas se navršava 34. godišnjica od zločina u Sjeverinu",
+      "summary": "",
+      "date": "2026-10-22T05:59:00.000Z",
+      "url": "https://radiosarajevo.ba/vijesti/regija/sjeverin-34-godisnjica-otmice-civila/657746",
+      "source": "radiosarajevo",
+      "sourceName": "Radio Sarajevo",
+      "categories": [],
+      "author": "RSA",
+      "theme": "drustvo",
+      "image": "https://storage.radiosarajevo.ba/article/657746/871x540/Milan_Lukic.jpg?v1792648799",
+      "imageAlt": "Pamtimo i ne zaboravljamo: Danas se navršava 34. godišnjica od zločina u Sjeverinu",
+      "addedAt": "2026-10-22T06:07:40.842Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-22-n1ba-kristo-danas-na-summitu-lidera-berlinskog-aa6750",
+      "title": "Krišto danas na Summitu lidera Berlinskog procesa",
+      "summary": "Predsjedavajuća Vijeća ministara Bosne i Hercegovine Borjana Krišto sudjelovat će danas na Summitu lidera Berlinskog procesa u Miločeru kod Budve (Sv",
+      "date": "2026-10-22T05:56:22.000Z",
+      "url": "https://n1info.ba/vijesti/kristo-danas-na-summitu-lidera-berlinskog-procesa/",
+      "source": "n1ba",
+      "sourceName": "N1 BiH",
+      "categories": [
+        "Vijesti",
+        "borjana krišto",
+        "summit premijera zapadnog balkana"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://n1info.ba/media/images/2026/10/15/1792053376_borjana_kristo.width-1200.png",
+      "imageAlt": "Krišto danas na Summitu lidera Berlinskog procesa",
+      "addedAt": "2026-10-22T06:07:34.596Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-22-klix-trump-odbacio-navode-o-pregovorima-s-iranom-3bc723",
+      "title": "Trump odbacio navode o pregovorima s Iranom: \"Nešto će se desiti vrlo brzo\"",
+      "summary": "Američki predsjednik Donald Trump izjavio je da Sjedinjene Američke Države (SAD) ne pregovaraju s Iranom i da će se u sukobu s Iranom \"nešto desiti vrlo brzo\".",
+      "date": "2026-10-22T05:56:00.000Z",
+      "url": "https://www.klix.ba/vijesti/svijet/trump-odbacio-navode-o-pregovorima-s-iranom-nesto-ce-se-desiti-vrlo-brzo/261022018",
+      "source": "klix",
+      "sourceName": "Klix",
+      "categories": [
+        "Svijet"
+      ],
+      "author": "Piše: D. R.",
+      "theme": "rat",
+      "image": "https://static.klix.ba/media/images/vijesti/img32_261022018.jpg",
+      "imageAlt": "Trump odbacio navode o pregovorima s Iranom: \"Nešto će se desiti vrlo brzo\"",
+      "addedAt": "2026-10-22T06:07:34.949Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-22-n1ba-sad-nareduju-nekim-diplomatama-da-napuste-f89906",
+      "title": "SAD naređuju nekim diplomatama da napuste Saudijsku Arabiju",
+      "summary": "State Department naređuje nekim diplomatama i porodicama američkih vladinih službenika da napuste Saudijsku Arabiju nakon serije smrtonosnih napada u",
+      "date": "2026-10-22T05:53:46.000Z",
+      "url": "https://n1info.ba/svijet/sad-naredjuju-nekim-diplomatama-da-napuste-saudijsku-arabiju/",
+      "source": "n1ba",
+      "sourceName": "N1 BiH",
+      "categories": [
+        "Svijet",
+        "sad",
+        "saudijska arabija"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://n1info.ba/media/images/2026/10/20/1792497328_AP26287636583460.width-1200.jpg",
+      "imageAlt": "SAD naređuju nekim diplomatama da napuste Saudijsku Arabiju",
+      "addedAt": "2026-10-22T06:07:34.596Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-22-radiosarajevo-eskalacija-na-bliskom-istoku-sad-evakuisu-41dda8",
+      "title": "Eskalacija na Bliskom istoku: SAD evakuišu dio diplomata i porodica iz Saudijske Arabije",
+      "summary": "",
+      "date": "2026-10-22T05:50:00.000Z",
+      "url": "https://radiosarajevo.ba/vijesti/svijet/eskalacija-na-bliskom-istoku-sad-evakuisu-diplomate-iz-saudijske-arabije/657744",
+      "source": "radiosarajevo",
+      "sourceName": "Radio Sarajevo",
+      "categories": [],
+      "author": "RSA",
+      "theme": "rat",
+      "image": "https://storage.radiosarajevo.ba/article/657744/871x540/hutisti-novembar-2024-epaefe.jpg?v1792648096",
+      "imageAlt": "Eskalacija na Bliskom istoku: SAD evakuišu dio diplomata i porodica iz Saudijske Arabije",
+      "addedAt": "2026-10-22T06:07:40.842Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-22-klix-njemacki-medijski-magnat-zeli-preuzeti-udio-804ed3",
+      "title": "Njemački medijski magnat želi preuzeti udio u evropskom poslovanju TikToka",
+      "summary": "Mathias Döpfner, izvršni direktor i suvlasnik njemačkog medijskog koncerna Axel Springer, nastojao je da njegova kompanija preuzme udio u evropskom poslovanju TikToka. Plan je predstavio Charlesu Kushneru, ambasadoru SAD-a u Francuskoj, piše Financial Times, pozivajući se na izvore upoznate s razgovorima.",
+      "date": "2026-10-22T05:48:00.000Z",
+      "url": "https://www.klix.ba/biznis/ekonomija/njemacki-medijski-magnat-zeli-preuzeti-udio-u-evropskom-poslovanju-tiktoka/261022019",
+      "source": "klix",
+      "sourceName": "Klix",
+      "categories": [
+        "Ekonomija"
+      ],
+      "author": "Piše: N. V.",
+      "theme": "drustvo",
+      "image": "https://static.klix.ba/media/images/vijesti/img32_261022019.jpg",
+      "imageAlt": "Njemački medijski magnat želi preuzeti udio u evropskom poslovanju TikToka",
+      "addedAt": "2026-10-22T06:07:34.949Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-22-radiosarajevo-cetvrta-po-redu-film-moj-komsija-elvis-506f2c",
+      "title": "Četvrta po redu: Film \"Moj komšija Elvis\" osvojio još jednu nagradu",
+      "summary": "",
+      "date": "2026-10-22T05:48:00.000Z",
+      "url": "https://radiosarajevo.ba/metromahala/kultura/film-moj-komsija-elvis-osvojio-novu-nagradu-u-novom-sadu/657745",
+      "source": "radiosarajevo",
+      "sourceName": "Radio Sarajevo",
+      "categories": [],
+      "author": "RSA",
+      "theme": "drustvo",
+      "image": "https://storage.radiosarajevo.ba/article/657745/871x540/moj-komsija-elvis-film-22oktobar2026.jpg?v1792648130",
+      "imageAlt": "Četvrta po redu: Film \"Moj komšija Elvis\" osvojio još jednu nagradu",
+      "addedAt": "2026-10-22T06:07:40.842Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-22-n1ba-tragedija-na-prvenstvu-u-bodybuildingu-703258",
+      "title": "Tragedija na prvenstvu u bodybuildingu: Takmičar se srušio pred publikom i preminuo na svoj 33. rođendan",
+      "summary": "Prvenstvo Velike Britanije u bodybuildingu, održano u engleskom Telfordu, obilježila je velika tragedija. Poljski takmičar Mateusz Chmura preminuo je",
+      "date": "2026-10-22T05:44:00.000Z",
+      "url": "https://n1info.ba/sport/ostali-sportovi/tragedija-na-prvenstvu-u-bodybuildingu-takmicar-se-srusio-pred-publikom-i-preminuo-na-svoj-33-rodjendan/",
+      "source": "n1ba",
+      "sourceName": "N1 BiH",
+      "categories": [
+        "Ostali sportovi",
+        "bodybuilding",
+        "sport",
+        "mateusz chmura"
+      ],
+      "author": "",
+      "theme": "sport",
+      "image": "https://n1info.ba/media/images/2026/10/21/1792613366_chmura.width-1200.png",
+      "imageAlt": "Tragedija na prvenstvu u bodybuildingu: Takmičar se srušio pred publikom i preminuo na svoj 33. rođendan",
+      "addedAt": "2026-10-22T06:07:34.596Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-22-klix-spasioci-satima-spasavali-ajkulu-iz-kanala-f164a0",
+      "title": "Spasioci satima spašavali ajkulu iz kanala u Južnoj Koreji, ali se ona ubrzo vratila",
+      "summary": "Ženka ajkule poznata kao Bukangi, koja već više od mjesec boravi u umjetnom kanalu parka uz Sjevernu luku u južnokorejskom Busanu, vratila se svega nekoliko sati nakon što su je vlasti u srijedu u trećem pokušaju izvele iz njega.",
+      "date": "2026-10-22T05:43:00.000Z",
+      "url": "https://www.klix.ba/vijesti/svijet/spasioci-satima-spasavali-ajkulu-iz-kanala-u-juznoj-koreji-ali-se-ona-ubrzo-vratila/261022016",
+      "source": "klix",
+      "sourceName": "Klix",
+      "categories": [
+        "Svijet"
+      ],
+      "author": "Piše: N. V.",
+      "theme": "ai",
+      "image": "https://static.klix.ba/media/images/vijesti/img32_261022016.jpg",
+      "imageAlt": "Spasioci satima spašavali ajkulu iz kanala u Južnoj Koreji, ali se ona ubrzo vratila",
+      "addedAt": "2026-10-22T06:07:34.949Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-22-radiosarajevo-film-naza-od-danas-na-repertoaru-kina-0c02dd",
+      "title": "Film NAZA od danas na repertoaru kina Meeting Point",
+      "summary": "",
+      "date": "2026-10-22T05:42:00.000Z",
+      "url": "https://radiosarajevo.ba/magazin/muzikafilmlektira/film-naza-od-danas-na-repertoaru-kina-meeting-point/657743",
+      "source": "radiosarajevo",
+      "sourceName": "Radio Sarajevo",
+      "categories": [],
+      "author": "RSA",
+      "theme": "drustvo",
+      "image": "https://storage.radiosarajevo.ba/article/657743/871x540/film-naza-prtscryt.jpg?v1792648060",
+      "imageAlt": "Film NAZA od danas na repertoaru kina Meeting Point",
+      "addedAt": "2026-10-22T06:07:40.842Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-22-n1ba-bihamk-mokre-i-klizave-ceste-povecena-0c7843",
+      "title": "BIHAMK: Mokre i klizave ceste, povećena opasnost od odrona",
+      "summary": "Širom Bosne i Hercegovine jutros su mokre i klizave ceste. Zbog kiše, na brojnim putnim dionicama dolazi do zadržavanja vode na cesti što produžava za",
+      "date": "2026-10-22T05:40:11.000Z",
+      "url": "https://n1info.ba/vijesti/bihamk-mokre-i-klizave-ceste-povecena-opasnost-od-odrona/",
+      "source": "n1ba",
+      "sourceName": "N1 BiH",
+      "categories": [
+        "Vijesti",
+        "stanje na putevima",
+        "bihamk"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://n1info.ba/media/images/2026/5/17/1779001919_cesta_sarajevo.width-1200.jpg",
+      "imageAlt": "BIHAMK: Mokre i klizave ceste, povećena opasnost od odrona",
+      "addedAt": "2026-10-22T06:07:34.596Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-22-n1ba-svecano-obiljezena-80-godisnjica-fudbalskog-627daa",
+      "title": "Svečano obilježena 80. godišnjica Fudbalskog kluba Sarajevo",
+      "summary": "Fudbalski klub Sarajevo u srijedu je u sarajevskoj Vijećnici svečano obilježio veliki jubilej – 80 godina od osnivanja kluba. Svečana akademija posveć",
+      "date": "2026-10-22T05:35:01.000Z",
+      "url": "https://n1info.ba/sport/nogomet/svecano-obiljezena-80-godisnjica-fudbalskog-kluba-sarajevo/",
+      "source": "n1ba",
+      "sourceName": "N1 BiH",
+      "categories": [
+        "Nogomet",
+        "fk sarajevo"
+      ],
+      "author": "",
+      "theme": "sport",
+      "image": "https://n1info.ba/media/images/1792647296_AA-20261021-42826448-42826444-SVECANO_OBILJEZAVANJE_.width-1200.jpg",
+      "imageAlt": "Svečano obilježena 80. godišnjica Fudbalskog kluba Sarajevo",
+      "addedAt": "2026-10-22T06:07:34.596Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-22-radiosarajevo-dobre-vijesti-iz-vatikana-ljekari-potvrdili-ebb9cf",
+      "title": "Dobre vijesti iz Vatikana: Ljekari potvrdili da papa Lav ne treba daljnje liječenje nakon operacije",
+      "summary": "",
+      "date": "2026-10-22T05:29:00.000Z",
+      "url": "https://radiosarajevo.ba/vijesti/svijet/dobre-vijesti-iz-vatikana-ljekari-potvrdili-da-papa-lav-ne-treba-lijecenje/657741",
+      "source": "radiosarajevo",
+      "sourceName": "Radio Sarajevo",
+      "categories": [],
+      "author": "RSA",
+      "theme": "drustvo",
+      "image": "https://storage.radiosarajevo.ba/article/657741/871x540/papa-lav-xiv-decembar-2025-epaefe.jpg?v1792646868",
+      "imageAlt": "Dobre vijesti iz Vatikana: Ljekari potvrdili da papa Lav ne treba daljnje liječenje nakon operacije",
+      "addedAt": "2026-10-22T06:07:40.842Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-22-n1ba-sutra-pocinje-sezona-skorpije-cetiri-znaka-3eac3b",
+      "title": "Sutra počinje sezona Škorpije: Četiri znaka ulaze u period velikih promjena, evo kome se vraća bivša ljubav",
+      "summary": "Sezona Škorpije počinje 23. oktobra, a ove godine donosi astrološki period obilježen preispitivanjem emocija, ljubavnih odnosa i odluka iz prošlosti.",
+      "date": "2026-10-22T05:23:00.000Z",
+      "url": "https://n1info.ba/magazin/lifestyle/sutra-pocinje-sezona-skorpije-cetiri-znaka-ulaze-u-period-velikih-promjena-evo-kome-se-vraca-bivsa-ljubav/",
+      "source": "n1ba",
+      "sourceName": "N1 BiH",
+      "categories": [
+        "Lifestyle",
+        "rak",
+        "bik",
+        "škorpija"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://n1info.ba/media/images/2025/8/1754415936_Slide_4_44.width-1200.png",
+      "imageAlt": "Sutra počinje sezona Škorpije: Četiri znaka ulaze u period velikih promjena, evo kome se vraća bivša ljubav",
+      "addedAt": "2026-10-22T06:07:34.596Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-22-radiosarajevo-protesti-paralizovali-jug-italije-police-abcfaa",
+      "title": "Protesti paralizovali jug Italije: Police prazne, pumpe bez goriva",
+      "summary": "",
+      "date": "2026-10-22T05:22:00.000Z",
+      "url": "https://radiosarajevo.ba/vijesti/svijet/strajk-kamiondzija-paralizovao-jug-italije/657740",
+      "source": "radiosarajevo",
+      "sourceName": "Radio Sarajevo",
+      "categories": [],
+      "author": "RSA",
+      "theme": "energija",
+      "image": "https://storage.radiosarajevo.ba/article/657740/871x540/italija-protesti-epaefe-22oktobar2026.jpg?v1792646571",
+      "imageAlt": "Protesti paralizovali jug Italije: Police prazne, pumpe bez goriva",
+      "addedAt": "2026-10-22T06:07:40.842Z"
+    },
     {
       "slug": "sarajevo-2026-10-21-avaz-sda-nakon-hapsenja-sarajlije-zbog-murala-u-906fe0",
       "title": "SDA nakon hapšenja Sarajlije zbog murala u Istočnom Sarajevu prozvala MUP KS: \"Važe li isti zakoni i aršini za sve?\"",
@@ -6610,370 +7004,6 @@
       "author": "",
       "theme": "potres",
       "addedAt": "2026-10-19T21:09:00.913Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sarajevo-2026-10-19-hayat-trumpovi-saradnici-snimljeni-iza-dodika-b95041",
-      "title": "Trumpovi saradnici snimljeni iza Dodika: Potvrđeno prisustvo na završnom skupu SNSD-a",
-      "summary": "",
-      "date": "2026-10-19T10:09:48.989Z",
-      "url": "https://www.hayat.ba/news/article/trumpovi-saradnici-snimljeni-iza-dodika-potvrdeno-prisustvo-na-zavrsnom-skupu-snsd-a/6ad5ec26404b42b0a207bc20",
-      "source": "hayat",
-      "sourceName": "Hayat.ba",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:09:00.913Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sarajevo-2026-10-19-buka-studenti-blokirali-pristup-muzeju-louvre-u-465ee7",
-      "title": "Studenti blokirali pristup muzeju Louvre u znak podrške protestima srednjoškolaca",
-      "summary": "– Pariski muzej nije mogao biti otvoren dok demonstranti osuđuju “policijsku represiju” ISTANBUL (AA) – Studenti su u ponedjeljak blokirali pristup muzeju Louvre u Parizu, pružajući podršku protestima srednjoškolaca koji su u toku i osuđujući ono što su nazvali policijskom represijom, javljaju francuski mediji, javlja Anadolu. Blokada je onemogućila otvaranje muzeja u uobičajeno vrijeme, u",
-      "date": "2026-10-19T10:04:09.000Z",
-      "url": "https://6yka.com/svijet/studenti-blokirali-pristup-muzeju-louvre-u-znak-podrske-protestima-srednjoskolaca/",
-      "source": "buka",
-      "sourceName": "Buka",
-      "categories": [
-        "Svijet",
-        "blokada",
-        "louvre",
-        "protesti"
-      ],
-      "author": "Milica Plavsic",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:09:15.066Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sarajevo-2026-10-19-hayat-vkbi-poklonio-komplete-visetomnog-rjecnika-ca3c49",
-      "title": "VKBI poklonio komplete višetomnog Rječnika bosanskog jezika osnovnim školama u Sjevernoj Makedoniji",
-      "summary": "",
-      "date": "2026-10-19T10:00:10.980Z",
-      "url": "https://www.hayat.ba/news/article/vkbi-poklonio-komplete-visetomnog-rjecnika-bosanskog-jezika-osnovnim-skolama-u-sjevernoj-makedoniji/6ad5ea01404b42b0a207bb22",
-      "source": "hayat",
-      "sourceName": "Hayat.ba",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:09:00.913Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sarajevo-2026-10-19-buka-vatrogasci-pravili-vjestacku-kisu-tokom-ab0ee1",
-      "title": "Vatrogasci pravili vještačku kišu tokom snimanja u Banjaluci: Grad demantuje da je riječ o Stanivukovićevom promotivnom videu",
-      "summary": "Nakon što su mediji objavili snimak na kojem banjalučki vatrogasci stvaraju vještačku kišu tokom snimanja kod Centralnog spomen-obilježja, Gradska uprava Banjaluka demantovala je da je riječ o promotivnom videu gradonačelnika Draška Stanivukovića. Međutim, otvorilo se novo pitanje: zašto se datum naveden u demantiju Grada razlikuje od datuma u prvobitnom izvještaju vatrogasaca, koji je u međuvremenu",
-      "date": "2026-10-19T09:52:52.000Z",
-      "url": "https://6yka.com/bih/vatrogasci-pravili-vjestacku-kisu-za-snimanje-stanivukovicevog-videa/",
-      "source": "buka",
-      "sourceName": "Buka",
-      "categories": [
-        "BiH",
-        "Izdvojeno",
-        "snimak",
-        "Stanivuković"
-      ],
-      "author": "Milica Plavsic",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:09:15.066Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sarajevo-2026-10-19-hayat-barbarez-otkrio-bolne-detalje-iz-karijere-1969f2",
-      "title": "Barbarez otkrio bolne detalje iz karijere: Osjećao sam se izdanim",
-      "summary": "",
-      "date": "2026-10-19T09:49:48.481Z",
-      "url": "https://www.hayat.ba/news/article/barbarez-otkrio-bolne-detalje-iz-karijere-osjecao-sam-se-izdanim/6ad5e7a6404b42b0a207ba38",
-      "source": "hayat",
-      "sourceName": "Hayat.ba",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:09:00.912Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sarajevo-2026-10-19-buka-sloboda-narodu-u-banjaluci-tri-razgovora-o-6933bc",
-      "title": "Sloboda Narodu u Banjaluci: Tri razgovora o nasilju nad ženama, slobodama i budućnosti društva",
-      "summary": "Kako zaštititi žene od nasilja i femicida, kakve su posljedice kulture isključivanja i u kojem pravcu se kreće bosanskohercegovačko društvo neka su od pitanja o kojima će se razgovarati na događaju #SlobodaNarodu, koji će biti održan u srijedu, 21. oktobra, u Domu omladine u Banjaluci, s početkom u 14 časova. Program obuhvata tri panel-diskusije posvećene",
-      "date": "2026-10-19T09:45:20.000Z",
-      "url": "https://6yka.com/bih/sloboda-narodu-u-banjaluci-tri-razgovora-o-nasilju-nad-zenama-slobodama-i-buducnosti-drustva/",
-      "source": "buka",
-      "sourceName": "Buka",
-      "categories": [
-        "BiH",
-        "banjaluka",
-        "raygovor",
-        "sloboda"
-      ],
-      "author": "Maja Isovic",
-      "theme": "rat",
-      "addedAt": "2026-10-19T21:09:15.066Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sarajevo-2026-10-19-hayat-covic-u-zagrebu-s-plenkovicem-u-fokusu-2f99df",
-      "title": "Čović u Zagrebu s Plenkovićem: U fokusu evropski put BiH, Izborni zakon i energetska saradnja",
-      "summary": "",
-      "date": "2026-10-19T09:43:09.961Z",
-      "url": "https://www.hayat.ba/news/article/covic-u-zagrebu-s-plenkovicem-u-fokusu-evropski-put-bih-izborni-zakon-i-energetska-saradnja/6ad5e60b404b42b0a207b993",
-      "source": "hayat",
-      "sourceName": "Hayat.ba",
-      "categories": [],
-      "author": "",
-      "theme": "politika",
-      "addedAt": "2026-10-19T21:09:00.912Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sarajevo-2026-10-19-hayat-i-nakon-23-godine-ne-blijedi-sjecanje-na-da526b",
-      "title": "I nakon 23 godine ne blijedi sjećanje: Na Kovačima odata počast Aliji Izetbegoviću",
-      "summary": "",
-      "date": "2026-10-19T09:41:21.068Z",
-      "url": "https://www.hayat.ba/news/article/i-nakon-23-godine-ne-blijedi-sjecanje-na-kovacima-odata-pocast-aliji-izetbegovicu/6ad5e501404b42b0a207b90a",
-      "source": "hayat",
-      "sourceName": "Hayat.ba",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:09:00.912Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sarajevo-2026-10-19-buka-srbija-dojave-o-postavljenim-bombama-u-f3a544",
-      "title": "Srbija: Dojave o postavljenim bombama u školama",
-      "summary": "Na imejl adrese više beogradskih i novosadskih škola jutros su stigle dojave o postavljenim bombama, nezvanično je potvrđeno Danasu u policiji. Jedna od njih je i OŠ „Sonja Marinković“ u Zemunu, potvrdila je čitateljka Danasa. Roditelji javljaju da je dojava o postavljenim eksplozivnim napravama stigala i u OŠ „Vlada Aksentijević“. Učenici su evakuisani, a roditelji",
-      "date": "2026-10-19T09:37:12.000Z",
-      "url": "https://6yka.com/region/srbija-dojave-o-postavljenim-bombama-u-skolama/",
-      "source": "buka",
-      "sourceName": "Buka",
-      "categories": [
-        "Region",
-        "bombe",
-        "dojava",
-        "škole"
-      ],
-      "author": "Milica Plavsic",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:09:15.066Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sarajevo-2026-10-19-hayat-stanivukovic-iskoristio-vatrogasce-za-ef5e3d",
-      "title": "Stanivuković iskoristio vatrogasce za promotivni snimak: Dok gore livade, njemu prave kišu za efekat",
-      "summary": "",
-      "date": "2026-10-19T09:27:02.736Z",
-      "url": "https://www.hayat.ba/news/article/stanivukovic-iskoristio-vatrogasce-za-promotivni-snimak-dok-gore-livade-njemu-prave-kisu-za-efekat/6ad5e23a404b42b0a207b7fc",
-      "source": "hayat",
-      "sourceName": "Hayat.ba",
-      "categories": [],
-      "author": "",
-      "theme": "energija",
-      "addedAt": "2026-10-19T21:09:00.912Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sarajevo-2026-10-19-buka-oglasio-se-begic-nakon-promjene-rezultata-a32eb7",
-      "title": "Oglasio se Begić nakon promjene rezultata za potpredsjednika RS",
-      "summary": "Kandidat SDP-a BiH za potpredsjednika Republike Srpske Ivan Begić oglasio se nakon promjene rezultata, uputivši poruku svom protivkandidatu Igoru Balukčiću iz HDZ-a 1990. “Čestitam Igoru Balučkiću na ostvarenom izbornom rezultatu i želim mu uspješan i odgovoran rad u interesu građana. Radujem se svakom njegovom potezu koji će doprinijeti boljem životu ljudi, ravnopravnosti i razvoju naših",
-      "date": "2026-10-19T09:11:22.000Z",
-      "url": "https://6yka.com/bih/oglasio-se-begic-nakon-promjene-rezultata-za-potpredsjednika-rs/",
-      "source": "buka",
-      "sourceName": "Buka",
-      "categories": [
-        "BiH",
-        "igor balukčić",
-        "ivan begić",
-        "potpredsjednik rs"
-      ],
-      "author": "Milica Plavsic",
-      "theme": "politika",
-      "addedAt": "2026-10-19T21:09:15.067Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sarajevo-2026-10-19-hayat-ramic-upozorio-na-politicku-trgovinu-u-rs-u-455e58",
-      "title": "Ramić upozorio na političku trgovinu u RS-u: Oni ne čekaju poštu, svi SNSD-ovi ulaze direktno",
-      "summary": "",
-      "date": "2026-10-19T09:07:35.766Z",
-      "url": "https://www.hayat.ba/news/article/ramic-upozorio-na-politicku-trgovinu-u-rs-u-oni-ne-cekaju-postu-svi-snsd-ovi-ulaze-direktno/6ad5dd7e404b42b0a207b5da",
-      "source": "hayat",
-      "sourceName": "Hayat.ba",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:09:00.912Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sarajevo-2026-10-19-buka-imenovana-v-d-direktora-zotovica-6d5e55",
-      "title": "Imenovana v.d. direktora “Zotovića”",
-      "summary": "Snježana Novaković Bursać, specijalista fizikalne medicine i rehabilitacije, imenovana je za vršioca dužnosti direktora JZU Institut za fizikalnu medicinu, rehabilitaciju i ortopedsku hirurgiju “Dr Miroslav Zotović” Banjaluka. Kako je navedeno u odluci Vlade RS, Novaković Bursać je imenovana na period od dva mjeseca. Odluku je potpisao Savo Minić, predsjednik Vlade Republike Srpske, a rješenje stupa",
-      "date": "2026-10-19T08:54:35.000Z",
-      "url": "https://6yka.com/bih/imenovana-v-d-direktora-zotovica/",
-      "source": "buka",
-      "sourceName": "Buka",
-      "categories": [
-        "BiH",
-        "dr miroslav zotović",
-        "v.d. direktor"
-      ],
-      "author": "Milica Plavsic",
-      "theme": "politika",
-      "addedAt": "2026-10-19T21:09:15.067Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sarajevo-2026-10-19-hayat-saliha-iz-tesnja-kazu-proletio-metak-ma-de-c25c20",
-      "title": "Saliha iz Tešnja: Kažu, proletio metak. Ma, de bolan, da je Stojan, ne bi proletio",
-      "summary": "",
-      "date": "2026-10-19T08:49:49.735Z",
-      "url": "https://www.hayat.ba/news/article/saliha-iz-tesnja-kazu-proletio-metak-ma-de-bolan-da-je-stojan-ne-bi-proletio/6ad5d8d8404b42b0a207b42a",
-      "source": "hayat",
-      "sourceName": "Hayat.ba",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:09:00.912Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sarajevo-2026-10-19-hayat-fantomi-ponovo-pokorili-zagreb-odbranili-9b1255",
-      "title": "Fantomi ponovo pokorili Zagreb: Odbranili titulu na turniru 'Prijateljstvo 2026'",
-      "summary": "",
-      "date": "2026-10-19T08:41:45.218Z",
-      "url": "https://www.hayat.ba/news/article/fantomi-ponovo-pokorili-zagreb-odbranili-titulu-na-turniru-prijateljstvo-2026/6ad5d7ad404b42b0a207b3bf",
-      "source": "hayat",
-      "sourceName": "Hayat.ba",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:09:00.912Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sarajevo-2026-10-19-hayat-tarik-muharemovic-usao-u-historiju-leedsa-e2f2a0",
-      "title": "Tarik Muharemović ušao u historiju Leedsa: Ovo nijednom defanzivcu nije pošlo za rukom 36 godina",
-      "summary": "",
-      "date": "2026-10-19T08:39:05.341Z",
-      "url": "https://www.hayat.ba/news/article/tarik-muharemovic-usao-u-historiju-leedsa-ovo-nijednom-defanzivcu-nije-poslo-za-rukom-36-godina/6ad5d660404b42b0a207b333",
-      "source": "hayat",
-      "sourceName": "Hayat.ba",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:09:00.912Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sarajevo-2026-10-19-hayat-godinu-nakon-pljacke-louvrea-nakit-vrijedan-fb808c",
-      "title": "Godinu nakon pljačke Louvrea: Nakit vrijedan 100 miliona dolara kao da je u zemlju propao",
-      "summary": "",
-      "date": "2026-10-19T08:26:21.357Z",
-      "url": "https://www.hayat.ba/news/article/godinu-nakon-pljacke-louvrea-nakit-vrijedan-100-miliona-dolara-kao-da-je-u-zemlju-propao/6ad5d3f4404b42b0a207b268",
-      "source": "hayat",
-      "sourceName": "Hayat.ba",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:09:00.912Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sarajevo-2026-10-19-hayat-tuzlaku-potvrdena-optuznica-za-pokusaj-c7b6fb",
-      "title": "Tuzlaku potvrđena optužnica za pokušaj ubistva komšinice: Građani spriječili tragediju",
-      "summary": "",
-      "date": "2026-10-19T08:24:27.247Z",
-      "url": "https://www.hayat.ba/news/article/tuzlaku-potvrdena-optuznica-za-pokusaj-ubistva-komsinice-gradani-sprijecili-tragediju/6ad5d395404b42b0a207b24f",
-      "source": "hayat",
-      "sourceName": "Hayat.ba",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:09:00.912Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sarajevo-2026-10-19-buka-jeste-li-ikad-culi-za-ovu-drzavu-3b5677",
-      "title": "Jeste li ikad čuli za ovu “državu”?",
-      "summary": "Malo koraljno ostrvo usred Tihog okeana, sa svega oko 1.700 stanovnika, ima sopstvenu vladu i parlament, donosi svoje zakone, a njegovi stanovnici državljani su Novog Zelanda. Riječ je o Niueu, samoupravnoj državi koja je 19. oktobra 1974. godine stupila u slobodni savez sa Novim Zelandom. Taj datum obilježava se kao Dan ustava, a odluka o",
-      "date": "2026-10-19T08:06:45.000Z",
-      "url": "https://6yka.com/svijet/jeste-li-ikad-culi-za-ovu-drzavu/",
-      "source": "buka",
-      "sourceName": "Buka",
-      "categories": [
-        "Svijet"
-      ],
-      "author": "Maja Isovic",
-      "theme": "politika",
-      "addedAt": "2026-10-19T21:09:15.067Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sarajevo-2026-10-19-buka-sta-se-to-desava-s-francuskom-c9eabc",
-      "title": "Šta se to dešava s Francuskom?",
-      "summary": "Nezadovoljstvo stanjem u školama, rastom troškova života i radom vlasti preraslo je u širok protestni pokret. Dok se građani suočavaju sa prizorima zapaljenih automobila i opljačkanih prodavnica, političke stranke međusobno se optužuju za eskalaciju krize. Francuska se suočava sa ozbiljnom krizom nakon što su masovni protesti protiv vlasti prerasli u nasilne sukobe, paljenje objekata i",
-      "date": "2026-10-19T08:03:04.000Z",
-      "url": "https://6yka.com/svijet/sta-se-to-desava-s-francuskom/",
-      "source": "buka",
-      "sourceName": "Buka",
-      "categories": [
-        "Svijet",
-        "francuska",
-        "protesti"
-      ],
-      "author": "Maja Isovic",
-      "theme": "rat",
-      "addedAt": "2026-10-19T21:09:15.067Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sarajevo-2026-10-19-buka-u-saobracajnoj-nesreci-kod-konjica-tesko-ec2621",
-      "title": "U saobraćajnoj nesreći kod Konjica teško ozlijeđen biciklista iz Finske",
-      "summary": "Biciklist iz Finske teško je ozlijeđen u prometnoj nesreći koja se u nedjelju dogodila u mjestu Podorašac kod Konjica, priopćili su u ponedjeljak iz MUP-a Hercegovačko neretvanske županije. Do nesreće je na magistralnoj cesti M-17 došlo oko 15 sati i 40 minuta, a sudjelovali su S. Š. (1959.) iz Sarajeva s vozilom “T-Cross” i G.",
-      "date": "2026-10-19T07:58:54.000Z",
-      "url": "https://6yka.com/bih/u-prometnoj-nesreci-kod-konjica-tesko-ozlijedjen-biciklista-iz-finske/",
-      "source": "buka",
-      "sourceName": "Buka",
-      "categories": [
-        "BiH"
-      ],
-      "author": "Maja Isovic",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:09:15.067Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sarajevo-2026-10-19-buka-ebola-se-prosirila-na-osmu-provinciju-u-8fed7e",
-      "title": "Ebola se proširila na osmu provinciju u Kongu",
-      "summary": "Epidemija virusa ebole u Demokratskoj Republici Kongo proširila se na osmu provinciju, dok se nadležni bore da suzbiju najtežu epidemiju ikada zabilježenu u ovoj zemlji, saopćile su u nedjelju zdravstvene vlasti, javlja Anadolu. Ministarstvo zdravlja navelo je da je Sjeverni Ubangi, na sjeverozapadu Konga, postao najnovija pogođena provincija nakon što su potvrđena dva slučaja, uključujući",
-      "date": "2026-10-19T07:54:42.000Z",
-      "url": "https://6yka.com/svijet/ebola-se-prosirila-na-osmu-provinciju-u-kongu/",
-      "source": "buka",
-      "sourceName": "Buka",
-      "categories": [
-        "Svijet"
-      ],
-      "author": "Maja Isovic",
-      "theme": "rat",
-      "addedAt": "2026-10-19T21:09:15.067Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sarajevo-2026-10-19-buka-macron-odbio-ostavku-ministra-unutrasnjih-45f899",
-      "title": "Macron odbio ostavku ministra unutrašnjih poslova nakon nereda širom Francuske",
-      "summary": "Predsjednik Francuske Emmanuel Macron u ponedjeljak je odbio ostavku ministra unutrašnjih poslova Laurenta Nuneza, nakon rasprostranjenog nasilja i pljački širom zemlje tokom protesta proteklog vikenda, javlja televizijska kuća BFMTV, prenosi Anadolu. Nunez je u nedjelju podnio ostavku Macronu uslijed sve glasnijih kritika na račun načina na koji su vlasti reagovale na nemire. “Ja sam ministar",
-      "date": "2026-10-19T07:53:44.000Z",
-      "url": "https://6yka.com/svijet/macron-odbio-ostavku-ministra-unutrasnjih-poslova-nakon-nereda-sirom-francuske/",
-      "source": "buka",
-      "sourceName": "Buka",
-      "categories": [
-        "Svijet",
-        "Anadolija"
-      ],
-      "author": "Maja Isovic",
-      "theme": "politika",
-      "addedAt": "2026-10-19T21:09:15.067Z",
       "backfilled": true
     }
   ]
