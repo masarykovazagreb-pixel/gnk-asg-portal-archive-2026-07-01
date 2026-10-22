@@ -332,6 +332,8 @@ export function footer(site, lang, pages) {
           <li><a href="https://gnk-asg.hr/izdanja/" rel="external noopener">${lang === 'en' ? 'Editions' : 'Izdanja'}</a></li>
           <li><a href="https://gnk-asg.hr/kanal/" rel="external noopener">${lang === 'en' ? 'Channels' : 'Kanali'}</a></li>
           <li><a href="https://gnk-asg.hr/tehnologija-buducnosti/" rel="external noopener" hreflang="hr" lang="hr">Tehnologija budućnosti</a></li>
+          <li><a href="https://gnk-asg.hr/gnk-aktual/" rel="external noopener">AKTUAL MEDIA</a></li>
+          <li><a href="https://gnk-asg.hr/${lang === 'en' ? `en/gnk-aktual/network/${site.slug}/` : `gnk-aktual/mreza/${site.slug}/`}" rel="external noopener">${lang === 'en' ? 'This edition under AKTUAL MEDIA' : 'Ovo izdanje pod AKTUAL MEDIA'}</a></li>
           <li><a href="https://gnk-asg.hr/aktual-media/" rel="external noopener" hreflang="hr" lang="hr">Podatkovni desk</a></li>
           <li><a href="https://gnk-asg.hr/radio/" rel="external noopener" hreflang="hr" lang="hr">Radio</a></li>
           <li><a href="https://gnk-asg.hr/nermin-sefic/" rel="external noopener">Nermin Sefić</a></li>

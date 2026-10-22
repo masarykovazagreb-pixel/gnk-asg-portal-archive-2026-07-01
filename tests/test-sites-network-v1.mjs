@@ -316,7 +316,50 @@ else {
 
 const deskSitemap = join(PORTAL, 'gnk-aktual', 'mreza', 'sitemap.xml');
 if (!existsSync(deskSitemap)) note('gnk-aktual/mreza/sitemap.xml nedostaje');
-else if (count(readFileSync(deskSitemap, 'utf8'), /<loc>/g) !== 4) note('mreza sitemap mora imati 4 URL-a');
+else {
+  const locs = count(readFileSync(deskSitemap, 'utf8'), /<loc>/g);
+  const expected = 4 + SITES.length * 2;
+  if (locs !== expected) note(`mreza sitemap ima ${locs} URL-a (očekivano ${expected})`);
+}
+
+/* ---------- 3c. indeks po izdanju unutar AKTUAL MEDIA ---------- */
+for (const site of SITES) {
+  for (const lang of ['hr', 'en']) {
+    const file = join(PORTAL, lang === 'en' ? 'en/gnk-aktual/network' : 'gnk-aktual/mreza', site.slug, 'index.html');
+    const canonical = lang === 'en' ? `${DESK_EN}${site.slug}/` : `${DESK_HR}${site.slug}/`;
+    const alternate = lang === 'en' ? `${DESK_HR}${site.slug}/` : `${DESK_EN}${site.slug}/`;
+    const where = relative(ROOT, file);
+    if (!existsSync(file)) { note(`${where}: nema`); continue; }
+    const html = readFileSync(file, 'utf8');
+    const title = unescape((html.match(/<title>([\s\S]*?)<\/title>/) || [])[1] || '');
+    const description = attr(html, /<meta name="description" content="([^"]+)">/);
+    if (title.length < 15 || title.length > 90) note(`${where}: naslov ${title.length} znakova`);
+    if (description.length < 80 || description.length > 320) note(`${where}: opis ${description.length} znakova`);
+    if (attr(html, /<link rel="canonical" href="([^"]+)">/) !== canonical) note(`${where}: canonical nije ${canonical}`);
+    if (!html.includes(`hreflang="x-default" href="${DESK_HR}${site.slug}/"`)) note(`${where}: x-default nije HR izdanje`);
+    if (!html.includes(`hreflang="${lang === 'en' ? 'hr' : 'en'}" href="${alternate}"`)) note(`${where}: nema hreflang na ${alternate}`);
+    if ((html.match(/<h1/g) || []).length !== 1) note(`${where}: nema točno jedan h1`);
+    const links = [...html.matchAll(/<a [^>]*href="([^"]+)"/g)].map((m) => m[1]);
+    if (links.length < 6) note(`${where}: samo ${links.length} poveznica`);
+    if (!links.some((href) => href === `${siteBase(site)}/`)) note(`${where}: nema poveznice na izdanje`);
+    if (!links.some((href) => href === (lang === 'en' ? DESK_EN : DESK_HR))) note(`${where}: nema poveznice na mrežu`);
+    const editionPages = index?.pages?.filter((page) => page.edition === site.slug && page.lang === lang) || [];
+    if (editionPages.length < 5) note(`${where}: indeks ima ${editionPages.length} stranica izdanja`);
+    for (const page of editionPages) if (!html.includes(`href="${page.url}"`)) note(`${where}: nema poveznice na ${page.url}`);
+    if (!/name="editor" content="Nermin Sefić"/.test(html)) note(`${where}: nema urednika`);
+    if (!/name="copyright" content="AKTUAL MEDIA d.o.o."/.test(html)) note(`${where}: nema copyright`);
+    if (!master.includes(`<loc>${canonical}</loc>`)) note(`${where}: nema u glavnom sitemapu`);
+    const ld = (html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/) || [])[1];
+    try {
+      const graph = JSON.parse(ld)['@graph'];
+      const types = graph.map((node) => node['@type']);
+      for (const type of ['CollectionPage', 'ItemList', 'BreadcrumbList', 'NewsMediaOrganization', 'Person']) if (!types.includes(type)) note(`${where}: JSON-LD bez ${type}`);
+      const list = graph.find((node) => node['@type'] === 'ItemList');
+      if (list?.numberOfItems !== editionPages.length) note(`${where}: ItemList ima ${list?.numberOfItems} stavki (${editionPages.length})`);
+      if ((html.match(/https:\/\/gnk-[a-z-]+\.pages\.dev\//g) || []).length < editionPages.length) note(`${where}: premalo poveznica na tekstove`);
+    } catch { note(`${where}: JSON-LD se ne parsira`); }
+  }
+}
 
 for (const loc of [DESK_HR, DESK_EN]) {
   if (!master.includes(`<loc>${loc}</loc>`)) note(`glavni sitemap ne sadrži ${loc}`);

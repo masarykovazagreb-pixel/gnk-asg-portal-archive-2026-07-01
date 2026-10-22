@@ -327,6 +327,14 @@ function upsertMasterSitemap() {
     { loc: NETWORK_HUB_EN, alt: NETWORK_HUB_HR, lang: 'en', x: NETWORK_HUB_HR },
     { loc: DESK_HR, alt: DESK_EN, lang: 'hr', x: DESK_HR },
     { loc: DESK_EN, alt: DESK_HR, lang: 'en', x: DESK_HR },
+    ...SITES.flatMap((site) => {
+      const hr = `${DESK_HR}${site.slug}/`;
+      const en = `${DESK_EN}${site.slug}/`;
+      return [
+        { loc: hr, alt: en, lang: 'hr', x: hr },
+        { loc: en, alt: hr, lang: 'en', x: hr },
+      ];
+    }),
   ];
   let changed = 0;
   for (const { loc, alt, lang, x } of urls) {
