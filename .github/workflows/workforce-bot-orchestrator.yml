@@ -18,6 +18,9 @@ on:
       - 'ops/aktual-editor-priorities-v1.json'
       - 'scripts/master-asg-agent-network-v2.mjs'
       - 'scripts/swarm-public-research-draft-v1.mjs'
+      - 'scripts/global-free-agent-supervisor-v1.mjs'
+      - 'apps/world-network/**'
+      - 'tests/test-world-network-free-v1.mjs'
       - 'scripts/aktual-free-editorial-network-v1.mjs'
       - 'tests/test-aktual-free-editorial-network-v1.mjs'
       - 'tests/test-worker-agent-swarm-v1.mjs'
@@ -66,13 +69,6 @@ jobs:
         run: node scripts/workforce-bot-orchestrator-v1.mjs
       - name: Execute specialized Worker agents and governance tests
         run: node tests/test-worker-agent-swarm-v1.mjs
-      - name: Execute MASTER ASG agent network V2 (GitHub CI, issues, public routes)
-        if: github.event_name != 'pull_request'
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          ENABLE_PUBLIC_RESEARCH: '0'
-          ENABLE_AI_WRITING: '0'
-        run: node scripts/master-asg-agent-network-v2.mjs
       - name: AKTUAL MEDIA — free-only 8 regional + 15 national editorial desks
         run: node tests/test-aktual-free-editorial-network-v1.mjs
       - name: Execute 150 specialized roles and build 12 free global STAGING sites
@@ -83,6 +79,12 @@ jobs:
           node --test tests/test-aktual-world-agent-factory-v1.mjs
       - name: Confirm paid editorial APIs remain disabled
         run: echo "Free-tier-only: 0 Exa/OpenAI requests, existing 4h cron, no public publishing."
+      - name: Test 13 independent world portal previews without external API calls
+        run: node tests/test-world-network-free-v1.mjs
+      - name: Generate 13 original artwork and free static sites (PREVIEW, NO DEPLOY)
+        run: node apps/world-network/engine/build.mjs
+      - name: Execute all 150 zero-cost supervisory agent roles
+        run: node scripts/global-free-agent-supervisor-v1.mjs
       - name: Summarize agent evidence
         if: always()
         shell: bash
@@ -98,6 +100,9 @@ jobs:
           fi
           if [ -f artifacts/aktual-editorial-network/summary.md ]; then
             cat artifacts/aktual-editorial-network/summary.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ -f artifacts/global-free-network/summary.md ]; then
+            cat artifacts/global-free-network/summary.md >> "$GITHUB_STEP_SUMMARY"
           fi
           if [ -f artifacts/worker-agent-swarm/summary.md ]; then
             cat artifacts/worker-agent-swarm/summary.md >> "$GITHUB_STEP_SUMMARY"
@@ -117,6 +122,8 @@ jobs:
             artifacts/workforce-bot-orchestrator/assignment.json
             artifacts/worker-agent-swarm/
             artifacts/master-asg-agent-network/
+            artifacts/global-free-network/
+            apps/world-network/site/
             artifacts/agent-factory-150/
             artifacts/aktual-editorial-network/
             artifacts/aktual-world-agent-factory/
