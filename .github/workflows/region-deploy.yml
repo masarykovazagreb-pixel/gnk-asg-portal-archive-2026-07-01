@@ -43,6 +43,7 @@ jobs:
           node apps/region/engine/build.mjs
           node apps/region/engine/hub.mjs
           node apps/region/engine/audit.mjs
+          node scripts/audit-aktual-brand-indexability-v1.mjs --strict
           # Kanali su sada pod glavnom domenom: apps/portal/kanal/<id>/ ; apps/region/site/<id>/ je samo 301 stub.
           test -f apps/region/site/zagreb/index.html
           grep -q '301' apps/region/site/zagreb/_redirects

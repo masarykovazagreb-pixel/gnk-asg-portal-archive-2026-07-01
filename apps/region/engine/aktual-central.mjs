@@ -19,7 +19,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { esc, shortDate, truncate, themeFor } from './lib.mjs';
 import { CHANNELS, HUB } from './build.mjs';
-import { logoFor, logoAlternate } from './brand.mjs';
+import { logoFor, logoAlternate, logoJsonLd } from './brand.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const APP = join(HERE, '..');
@@ -482,6 +482,98 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
 </section>`;
 }
 
+/* AKTUAL MEDIA is the editorial brand; GNK ASG keeps its separate corporate
+ * WebSite identity at the domain root. Google does not grant independent site
+ * names to subdirectories, so we model the brand as a NewsMediaOrganization. */
+const AKTUAL_BRAND_START = '<!-- AKTUAL-MEDIA-SEO-ENTITY:START -->';
+const AKTUAL_BRAND_END = '<!-- AKTUAL-MEDIA-SEO-ENTITY:END -->';
+const AKTUAL_BRAND_ID = 'https://gnk-asg.hr/gnk-aktual/#news-organization';
+export function strengthenAktualBrand(html, lang = 'hr', collection = null) {
+  // Inspect only publisher nodes that survive replacement of our own marker.
+  const oldStart=html.indexOf(AKTUAL_BRAND_START),oldEnd=html.indexOf(AKTUAL_BRAND_END);
+  if(oldStart!==-1&&oldEnd>oldStart)
+    html=html.slice(0,oldStart)+html.slice(oldEnd+AKTUAL_BRAND_END.length);
+  const pageUrl=lang==='en'?'https://gnk-asg.hr/en/gnk-aktual/':'https://gnk-asg.hr/gnk-aktual/';
+  // Update the canonical newsroom CollectionPage rather than adding another
+  // conflicting copy in the body on every daily build.
+  const existingScripts = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/g;
+  html = html.replace(existingScripts, (block, raw) => {
+    let node;
+    try { node = JSON.parse(raw); } catch { return block; }
+    if (node['@type'] === 'CollectionPage'
+        && node.url === pageUrl) {
+      node.publisher = { '@id': AKTUAL_BRAND_ID };
+      node.about = { '@id': AKTUAL_BRAND_ID };
+      if(collection?.['@type']==='ItemList')node.mainEntity={
+        '@type':'ItemList',numberOfItems:collection.numberOfItems,itemListElement:collection.itemListElement};
+      else if(collection?.mainEntity)node.mainEntity=collection.mainEntity;
+      if(collection?.hasPart)node.hasPart=collection.hasPart;
+      return '<script type="application/ld+json">' + JSON.stringify(node) + '</script>';
+    }
+    return block;
+  });
+  const hasPublisherEntity = [...html.matchAll(existingScripts)].some((match) => {
+    try {
+      const node = JSON.parse(match[1]);
+      return (node['@graph'] || [node]).some((part) =>
+        part['@type'] === 'NewsMediaOrganization' && part['@id'] === AKTUAL_BRAND_ID);
+    } catch { return false; }
+  });
+  const editionUrls = CHANNELS.map((channel) => ({
+    '@type': 'ListItem', name: channel.title, url: channel.base
+  }));
+  const sections = [
+    ['/izdanja/sport/', 'Sport'], ['/izdanja/politika/', 'Politika'],
+    ['/izdanja/sigurnost/', 'Sigurnost'], ['/izdanja/biznis/', 'Biznis'],
+    ['/izdanja/tehnologija/', 'Tehnologija'], ['/izdanja/moda/', 'Moda'],
+    ['/izdanja/putovanja/', 'Putovanja'], ['/izdanja/ljubimci/', 'Ljubimci'],
+    ['/izdanja/svijet/', 'Svijet']
+  ].map(([route, name]) => ({ '@type': 'ListItem', name: name + ' — AKTUAL MEDIA', url: 'https://gnk-asg.hr' + route }));
+  const endpoints = [...editionUrls, ...sections, {
+    '@type': 'ListItem', name: 'BUSINESS TJEDNIK', url: 'https://gnk-asg-tjednik.pages.dev/'
+  }].map((item, i) => ({ ...item, position: i + 1 }));
+  const entity = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'NewsMediaOrganization', '@id': AKTUAL_BRAND_ID,
+        name: 'AKTUAL MEDIA d.o.o.', alternateName: ['AKTUAL MEDIA', 'Aktual mediji', 'Aktual Media', 'AKTUAL MEDIA KANAL'],
+        url: 'https://gnk-asg.hr/gnk-aktual/',
+        logo: logoJsonLd(lang==='en'?'aktual-media-en':'aktual-media-hr'),
+        description: 'Vijesti, regionalna izdanja, analize, tematski deskovi, poslovni tjednik i radio.',
+        parentOrganization: { '@id': 'https://gnk-asg.hr/#gnk-asg' },
+        editor: { '@id': 'https://gnk-asg.hr/#nermin-sefic' },
+        subjectOf: [
+          { '@type': 'WebPage', url: 'https://gnk-asg.hr/izdanja/' },
+          { '@type': 'WebPage', url: 'https://gnk-asg.hr/radio/' },
+          { '@type': 'WebPage', url: 'https://gnk-asg.hr/aktual-media/' }
+        ]
+      },
+      {
+        '@type': 'ItemList', '@id': 'https://gnk-asg.hr/gnk-aktual/#editions',
+        name: 'Izdanja AKTUAL MEDIA', numberOfItems: endpoints.length,
+        itemListElement: endpoints
+      }
+    ]
+  };
+  if (hasPublisherEntity) entity['@graph'] = entity['@graph'].filter(
+    (part) => part['@type'] !== 'NewsMediaOrganization');
+  const snippet = AKTUAL_BRAND_START + '\n' +
+    '<script type="application/ld+json">' + JSON.stringify(entity).replace(/</g, '\\u003c') + '</script>\n' +
+    '<link rel="sitemap" type="application/xml" href="/izdanja/sitemap.xml">\n' +
+    AKTUAL_BRAND_END;
+  html = html.replace(/<meta property="og:site_name" content="[^"]*">/i,
+    '<meta property="og:site_name" content="AKTUAL MEDIA">');
+  const start = html.indexOf(AKTUAL_BRAND_START);
+  const end = html.indexOf(AKTUAL_BRAND_END);
+  if (start !== -1 && end > start) {
+    html = html.slice(0, start) + snippet + html.slice(end + AKTUAL_BRAND_END.length);
+  } else {
+    html = html.replace('</head>', snippet + '\n</head>');
+  }
+  return html;
+}
+
 export function buildAktualCentral({ cards = [] } = {}) {
   if (!existsSync(FILE)) return { ok: false, reason: 'nema gnk-aktual/index.html' };
   let html = readFileSync(FILE, 'utf8');
@@ -694,7 +786,6 @@ export function buildAktualCentral({ cards = [] } = {}) {
     <p class="amc-note">Urednik i direktor izdanja je <strong>Nermin Sefić</strong>. Za autora se koriste oznake #NerminSefić, #NerminSefic, #SeficNermin i #SEFICNERMIN. Kontakt: <a href="mailto:info@gnk-asg.hr">info@gnk-asg.hr</a>.</p>
   </section>
 </section>
-<script type="application/ld+json">${JSON.stringify(jsonld)}</script>
 ${END}`;
 
   if (html.includes(START) && html.includes(END)) {
@@ -737,6 +828,7 @@ ${END}`;
     }
   }
   html = addPerf(addLogoAlternates(html, ['aktual-media-hr']));
+  html = strengthenAktualBrand(html, 'hr', jsonld);
   writeFileSync(FILE, html);
 
   /* Engleska stranica dobiva istu traku krugova, s engleskim natpisima. */
@@ -775,6 +867,7 @@ ${END}`;
       }
     }
     en = addPerf(addLogoAlternates(en, ['aktual-media-en', 'aktual-media-hr']));
+    en = strengthenAktualBrand(en, 'en', jsonld);
     writeFileSync(EN, en);
   }
 

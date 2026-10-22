@@ -574,9 +574,29 @@ function homePage(channel, strings, data) {
 </main>
 ${footer(channel, strings)}`;
 
+  /* The named edition has its own identity without stealing the site's
+     NewsMediaOrganization or the original publishers' article bylines. */
+  const editionEntity = {
+    '@context': 'https://schema.org', '@type': 'CollectionPage',
+    '@id': `${channel.base}#edition`,
+    url: channel.base, name: channel.title, inLanguage: channel.lang,
+    description: `${channel.title}: ${strings.aboutText}`,
+    publisher: { '@id': AKTUAL_NEWS_ENTITY_ID },
+    editor: { '@id': `${PUBLIC}/#nermin-sefic` },
+    isPartOf: { '@id': `${PUBLIC}/gnk-aktual/#webpage` },
+    about: { '@type': 'Place', name: channel.city,
+      address: { '@type': 'PostalAddress', addressLocality: channel.city, addressCountry: channel.country } },
+    hasPart: [
+      { '@type': 'WebPage', url: url(channel, 'mravinjak/'), name: `${channel.title} — arhiva` },
+      { '@type': 'WebPage', url: url(channel, 'izvori/'), name: `${channel.title} — izvori` },
+      { '@type': 'WebPage', url: url(channel, 'metodologija/'), name: `${channel.title} — metodologija` }
+    ]
+  };
+
   /* WebSite i Organization već nosi shell graf. Ovdje ostaje samo
      sadržaj specifičan za stranicu — bez drugog entiteta iste vrste. */
   const jsonld = [
+    editionEntity,
     {
       '@context': 'https://schema.org', '@type': 'ItemList',
       name: `${channel.title} — ${strings.latest}`, numberOfItems: Math.min(20, items.length),
@@ -763,6 +783,9 @@ ${footer(channel, strings)}`;
       author: { '@id': AKTUAL_NEWS_ENTITY_ID },
       editor: { '@type': 'Person', name: 'Nermin Sefić', url: 'https://gnk-asg.hr/nermin-sefic/' },
       publisher: { '@id': AKTUAL_NEWS_ENTITY_ID },
+      isPartOf: { '@id': `${channel.base}#edition` },
+      about: { '@type': 'Place', name: channel.city,
+        address: { '@type': 'PostalAddress', addressLocality: channel.city, addressCountry: channel.country } },
       citation: { '@type': 'CreativeWork', name: item.title, url: item.url, publisher: { '@type': 'Organization', name: item.sourceName } },
       comment: [{
         '@type': 'Comment', '@id': `${canonical}#komentar-bota`, url: `${canonical}#komentar-bota`,

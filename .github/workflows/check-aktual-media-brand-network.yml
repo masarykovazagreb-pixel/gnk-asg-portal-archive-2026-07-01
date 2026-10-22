@@ -1,0 +1,41 @@
+name: Check AKTUAL MEDIA Brand Network
+on:
+  pull_request:
+    paths:
+      - 'apps/region/engine/build.mjs'
+      - 'apps/region/engine/hub.mjs'
+      - 'apps/region/engine/data-desk.mjs'
+      - 'apps/region/engine/aktual-central.mjs'
+      - 'apps/portal/kanal/**'
+      - 'apps/portal/izdanja/**'
+      - 'apps/portal/gnk-aktual/**'
+      - 'apps/portal/nermin-sefic/**'
+      - 'tests/test-aktual-media-brand-network-v1.mjs'
+      - '.github/workflows/check-aktual-media-brand-network.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/region/engine/build.mjs'
+      - 'apps/region/engine/hub.mjs'
+      - 'apps/region/engine/data-desk.mjs'
+      - 'apps/region/engine/aktual-central.mjs'
+      - 'tests/test-aktual-media-brand-network-v1.mjs'
+permissions:
+  contents: read
+jobs:
+  network:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Verify source generators are valid JavaScript
+        run: |
+          node --check apps/region/engine/build.mjs
+          node --check apps/region/engine/hub.mjs
+          node --check apps/region/engine/data-desk.mjs
+          node --check apps/region/engine/aktual-central.mjs
+      - name: Verify publisher, editor, named regions and article-sitemap connections
+        run: node tests/test-aktual-media-brand-network-v1.mjs

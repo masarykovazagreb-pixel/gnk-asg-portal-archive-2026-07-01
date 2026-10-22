@@ -725,7 +725,7 @@ function jsonld(desk, lang, canonical, alternate, keywords) {
         '@id': `${canonical}#breadcrumb`,
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'GNK ASG', item: `${SITE}/` },
-          { '@type': 'ListItem', position: 2, name: 'AKTUAL MEDIA', item: `${SITE}/gnk-aktual/` },
+          { '@type': 'ListItem', position: 2, name: 'AKTUAL MEDIA d.o.o.', item: `${SITE}/gnk-aktual/` },
           { '@type': 'ListItem', position: 3, name: lang === 'en' ? 'Data desk' : 'Podatkovni desk', item: lang === 'en' ? `${SITE}/en/aktual-media/` : SECTION },
           { '@type': 'ListItem', position: 4, name: copy.h1, item: canonical },
         ],
@@ -902,7 +902,7 @@ function sectionPage(lang) {
         '@id': `${canonical}#breadcrumb`,
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'GNK ASG', item: `${SITE}/` },
-          { '@type': 'ListItem', position: 2, name: 'AKTUAL MEDIA', item: `${SITE}/gnk-aktual/` },
+          { '@type': 'ListItem', position: 2, name: 'AKTUAL MEDIA d.o.o.', item: `${SITE}/gnk-aktual/` },
           { '@type': 'ListItem', position: 3, name: copy.h1, item: canonical },
         ],
       },
