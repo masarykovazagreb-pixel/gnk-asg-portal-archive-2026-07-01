@@ -4,7 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { build,ROOT } from '../apps/world-network/engine/build.mjs';
 const registry=JSON.parse(fs.readFileSync(path.join(ROOT,'config/control-plane/global-150-free-network-v1.json'),'utf8'));
-assert.equal(registry.sites.length,13);
+assert.equal(registry.sites.length,15);
 assert.equal(registry.agents.length,150);
 assert.equal(registry.policy.paidApis,false);
 assert.equal(registry.policy.externalPublicationEnabled,false);
@@ -13,13 +13,13 @@ assert.equal(registry.policy.reviewWindowMinutes,30);
 assert.equal(registry.policy.reviewWindowBeginsOnlyAfterVerifiedDelivery,true);
 const ids=new Set(registry.agents.map(x=>x.id));
 assert.equal(ids.size,150);
-assert.equal(registry.agents.filter(x=>x.scope==='platform').length,19);
+assert.equal(registry.agents.filter(x=>x.scope==='platform').length,20);
 assert.equal(registry.agents.filter(x=>x.scope==='regional').length,40);
-assert.equal(registry.agents.filter(x=>x.scope==='world').length,91);
+assert.equal(registry.agents.filter(x=>x.scope==='world').length,90);
 const temp=fs.mkdtempSync(path.join(os.tmpdir(),'gnk-world-free-test-'));
 try{
  const report=build({out:temp});
- assert.equal(report.sites,13);
+ assert.equal(report.sites,15);
  assert.equal(report.agents,150);
  assert.equal(report.published,false);
  for(const site of registry.sites){
@@ -46,5 +46,5 @@ try{
   }
   assert.match(fs.readFileSync(path.join(dir,'robots.txt'),'utf8'),/Disallow: \//);
  }
- console.log('PASS: 150 budget-safe roles, 13 language-aware world portal previews, artwork, citations, noindex publication hold');
+ console.log('PASS: 150 budget-safe roles, 15 language-aware world portal previews, artwork, citations, noindex publication hold');
 }finally{fs.rmSync(temp,{recursive:true,force:true})}
