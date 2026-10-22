@@ -24,6 +24,7 @@ import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { SITES } from '../../sites/lib/registry.mjs';
+import { WORLD_PORTALS } from '../../world/lib/registry.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const { channels } = JSON.parse(readFileSync(join(ROOT, 'apps', 'region', 'channels.json'), 'utf8'));
@@ -48,7 +49,9 @@ export const EDITIONS = channels.map((channel) => ({
   lang: channel.lang
 }));
 
-/** Samostalni portali: šest neovisnih stranica, arhiva, dnevnik i tjednik. */
+/** Samostalni portali: šest neovisnih stranica, arhiva, dnevnik, tjednik i
+    devet svjetskih portala. Svjetski portal je ulaz u izdanje — puni osvrti
+    ostaju na gnk-asg.hr, a portal vraća link na maticu. */
 export const PORTALS = [
   ...SITES.map((site) => ({
     id: site.slug,
@@ -82,7 +85,18 @@ export const PORTALS = [
       hr: 'Tjedni pregled poslovnog izvještavanja, s kritičkim osvrtom.',
       en: 'Weekly review of business reporting, with a critical reading.'
     }
-  }
+  },
+  ...WORLD_PORTALS.map((portal) => ({
+    /* ID nosi prefiks world- jer gradsko izdanje istog imena već stoji u
+       jezgri; dva različita linka ne smiju imati istu oznaku. */
+    id: `world-${portal.id}`,
+    url: portal.base,
+    name: portal.city.toUpperCase(),
+    note: {
+      hr: `svjetski portal · ${portal.country}`,
+      en: `world portal · ${portal.countryEn}`
+    }
+  }))
 ];
 
 const KEY = (url) => String(url || '').replace(/\/+$/, '').toLowerCase();
@@ -129,7 +143,7 @@ const link = (target, note) => [
  * Blok mreže. Stoji na svakoj stranici, prije podnožja.
  * @param {{lang?: 'hr'|'en', selfUrl?: string}} options
  */
-export function meshBlock({ lang = 'hr', selfUrl = '' } = {}) {
+export function meshBlock({ lang = 'hr', selfUrl = '', theme = '' } = {}) {
   const en = lang === 'en';
   const self = KEY(selfUrl);
   const core = coreTargets(lang);
@@ -141,7 +155,7 @@ export function meshBlock({ lang = 'hr', selfUrl = '' } = {}) {
 
   const portalItems = portals.map((portal) => `<li data-mesh-item="${esc(portal.id)}">${link(portal, portal.note[lang] || portal.note.hr)}</li>`).join('');
 
-  return `<nav class="mesh" aria-label="${en ? 'AKTUAL MEDIA network' : 'Mreža AKTUAL MEDIA'}" data-mesh="v1">
+  return `<nav class="mesh${theme === 'light' ? ' mesh--light' : ''}" aria-label="${en ? 'AKTUAL MEDIA network' : 'Mreža AKTUAL MEDIA'}" data-mesh="v1">
   <div class="wrap">
     <div class="mesh-head">
       <h2>${en ? 'The AKTUAL MEDIA network' : 'Mreža AKTUAL MEDIA'}</h2>
@@ -172,4 +186,7 @@ export const MESH_CSS = `/* mreža — zajednički blok na svim portalima */
 .mesh-grid .is-self{opacity:.6}
 .mesh-grid .is-self span{border-style:dashed}
 .mesh-foot{margin:14px 0 0;font-size:11.5px;color:var(--muted,var(--soft,#9fb2c8));max-width:80ch}
+/* Svijetla podloga (npr. /kanal/ hub): iste kartice, tamno pismo. */
+.mesh--light{--ink:#15191f;--muted:#4a5158;--line:#ddd6c8;--panel:#fff;--gold:#8c6a1f;background:#efece4}
+.mesh--light .mesh-head h2{color:#15191f}
 @media (max-width:520px){.mesh-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}}`;

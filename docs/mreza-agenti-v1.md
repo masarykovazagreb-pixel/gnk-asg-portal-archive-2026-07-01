@@ -1,4 +1,4 @@
-# Mreža AKTUAL MEDIA — 20 ulaza, 9 domena, 12 agenata
+# Mreža AKTUAL MEDIA — 20 ulaza, 18 portala, 21 agent
 
 Ovaj dokument objašnjava kako je mreža povezana, odakle koja stranica dobiva
 linkove, tko njome upravlja i koji agent što provjerava. Ako se nešto ovdje
@@ -12,7 +12,7 @@ sloja:
 | Sloj | Broj | Što sadrži |
 | --- | --- | --- |
 | Jezgra | **20 ulaza** | AKTUAL MEDIA (`/gnk-aktual/`), AKTUAL ARHIVA, AKTUAL DNEVNIK i **17 gradskih izdanja** (`/kanal/<grad>/`) |
-| Portali | **9 domena** | šest samostalnih stranica (BOR USA, KOŠARKA 360, SCENA ZNANOSTI, STEP BUDUĆNOSTI, ZDRAVLJE 360, IZBORI U SRBIJI), ARHIVA, DNEVNIK i BUSINESS TJEDNIK |
+| Portali | **18 domena** | šest samostalnih stranica (BOR USA, KOŠARKA 360, SCENA ZNANOSTI, STEP BUDUĆNOSTI, ZDRAVLJE 360, IZBORI U SRBIJI), ARHIVA, DNEVNIK, BUSINESS TJEDNIK i devet svjetskih portala (`gnk-world-<grad>.pages.dev`) |
 
 Pravila bloka:
 
@@ -30,18 +30,24 @@ Blok se ne piše ručno ni u jednu stranicu. Jedini izvor je
 
 - `apps/sites/lib/kit.mjs` → šest samostalnih stranica (`apps/sites/site/`),
 - `apps/satellites/lib/shell.mjs` → arhiva (`apps/arhiva/site/`) i dnevnik
-  (`apps/dnevnik/site/`).
+  (`apps/dnevnik/site/`),
+- `apps/world/build.mjs` → devet svjetskih portala (`apps/world/site/`),
+- `apps/region/engine/build.mjs` i `hub.mjs` → 17 naslovnica gradskih izdanja
+  i hub `/kanal/`.
 
-Ako se doda izdanje, mijenja se `apps/region/channels.json`; ako se doda
-portal, mijenja se `apps/sites/lib/registry.mjs`. Blok i test prate sami.
+Blok stoji na **41 površini**. Ako se doda izdanje, mijenja se
+`apps/region/channels.json`; ako se doda tematski portal, mijenja se
+`apps/sites/lib/registry.mjs`; ako se doda svjetski portal, mijenja se
+`apps/world/lib/registry.mjs`. Blok i test prate sami.
 
 ## 2. Odakle stranice dobivaju linkove
 
 Mreža nije skup slijepih ulica. Svaka stranica ima najmanje tri izvora
 dolaznih veza:
 
-1. **matica** — `/kanal/` (17 kartica), `/izdanja/`, `/mreza/` i hub
-   `/gnk-aktual/mreza/` vode na svako izdanje i svaki samostalni portal;
+1. **matica** — `/kanal/` (17 kartica), `/izdanja/`, `/mreza/` (15 kartica)
+   i hub `/gnk-aktual/mreza/` vode na svako izdanje i svaki samostalni portal,
+   uključujući devet svjetskih;
 2. **sestrinske stranice** — blok mreže na svakoj stranici vodi na svih 20
    ulaza i na ostale portale, u oba smjera;
 3. **strojni kanali** — svaka stranica ima vlastiti `sitemap.xml`, `feed.xml`
@@ -83,7 +89,8 @@ izvještaj ide u `artifacts/network-agents-v1.json`.
 | `security-headers-agent` | CSP i prateća zaglavlja nisu oslabljena |
 | `stability-agent` | dnevni ciklusi, kill-switch i push guard |
 | `data-desk-agent` | svaka brojka na desku dolazi iz arhive |
-| `sync-agent` | ponovno gradi tri površine iz istih podataka i provjeri mrežu |
+| `sync-agent` | ponovno gradi četiri površine iz istih podataka i provjeri mrežu |
+| `world-<grad>-agent` ×9 | svjetski portal: jezik, canonical, sitemap, feedovi, robots, CSP, blok mreže |
 
 Ručno:
 
@@ -93,7 +100,7 @@ node scripts/network-agents-v1.mjs --only mesh-link-agent,seo-matrix-agent
 node scripts/network-sync-v1.mjs
 ```
 
-Workflow `MREŽA — agenti i sinkronizacija` radi svaki dan u 04:40 UTC i na
+Workflow `MREŽA — agenti i sinkronizacija` radi svaki dan u 04:40 UTC (21 agent) i na
 svaku promjenu bloka, graditelja ili registra agenata. Posao je **samo za
 čitanje** (`contents: read`): gradi u radnom prostoru runnera i sprema
 izvještaj kao artifact, pa ne može pomaknuti `main`.

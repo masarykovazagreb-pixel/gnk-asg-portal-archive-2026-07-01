@@ -11,11 +11,12 @@
  * izvještavanja, a činjenice ostaju kod izvora.
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, rmSync, copyFileSync } from 'node:fs';
-import { join, dirname } from 'node:path';
+import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { esc, longDate, shortDate, stampLocal, slugify, isoWeek, themeFor, scoreFromTitle, truncate, safeJson } from './lib.mjs';
 import { t, ANALYSIS } from '../src/strings.mjs';
 import { logoFor, logoAlternate, channelLogoSlug, LOGO_W, LOGO_H } from './brand.mjs';
+import { meshBlock, MESH_CSS } from '../../satellites/lib/network-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const APP = join(HERE, '..');
@@ -641,6 +642,7 @@ function homePage(channel, strings, data) {
 
   ${items.length ? '' : `<section class="band empty"><h2>${esc(strings.emptyTitle)}</h2><p>${esc(strings.emptyText)}</p></section>`}
 </main>
+${meshBlock({ lang: channel.lang === 'hr' ? 'hr' : 'en', selfUrl: channel.base, theme: 'light' })}
 ${footer(channel, strings)}`;
 
   /* The named edition has its own identity without stealing the site's
@@ -1233,7 +1235,7 @@ ${footer(channel, strings)}`;
     jsonld: [], root: '', body: `${header(channel, strings)}<main id="sadrzaj" class="page"><h1>404</h1><p class="lead">${esc(strings.emptyText)}</p><p><a href="/">← ${esc(strings.back)}</a></p></main>${footer(channel, strings)}`
   }));
 
-  writeFileSync(join(dir, 'assets', 'region.css'), CSS);
+  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}`);
 
   writeLegacyRedirect(channel);
   writeFileSync(join(dir, 'assets', 'favicon.svg'), favicon(channel));
@@ -1462,7 +1464,9 @@ body.mrv-wall main.page{max-width:none}
 @media(prefers-reduced-motion:no-preference){.cardtitle a{transition:color .15s}.cardtitle a:hover{color:#8c2f2f}}
 `;
 
-if (process.argv[1] && process.argv[1].endsWith('build.mjs')) {
+/* Pokreni gradnju samo kad je OVA datoteka ulazna točka. Bez ovoga svaki
+   import (npr. iz apps/world/build.mjs) slučajno pregradi sva izdanja. */
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const only = process.argv.includes('--channel') ? process.argv[process.argv.indexOf('--channel') + 1] : '';
   const targets = CHANNELS.filter((c) => !only || c.id === only);
   const report = targets.map((channel) => buildChannel(channel));

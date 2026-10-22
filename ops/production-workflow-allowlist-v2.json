@@ -1,5 +1,5 @@
 {
-  "version": "GNK_ASG_PRODUCTION_WORKFLOW_ALLOWLIST_V2_11",
+  "version": "GNK_ASG_PRODUCTION_WORKFLOW_ALLOWLIST_V2_12",
   "repository": "masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01",
   "policy": "Every workflow containing an Actions schedule trigger must appear here with the exact cron expression. All other workflows are manual, event-scoped validation, or retired.",
   "scheduledProductionOwners": {
@@ -93,6 +93,9 @@
     ],
     "network-agents-daily.yml": [
       "40 4 * * *"
+    ],
+    "world-portals-deploy.yml": [
+      "17 1,7,13,19 * * *"
     ]
   },
   "protectedManualRelease": [

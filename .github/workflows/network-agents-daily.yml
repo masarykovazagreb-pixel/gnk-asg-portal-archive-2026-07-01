@@ -1,7 +1,8 @@
 name: MREŽA — agenti i sinkronizacija
 
-# Dvanaest neovisnih agenata nad istom mrežom: šest samostalnih stranica,
-# arhiva, dnevnik, tjednik i 17 gradskih izdanja pod gnk-asg.hr.
+# Dvadeset i jedan neovisni agent nad istom mrežom: šest samostalnih stranica,
+# devet svjetskih portala, arhiva, dnevnik, tjednik i 17 gradskih izdanja pod
+# gnk-asg.hr.
 #
 # Zašto zaseban workflow: agenti moraju pasti zbog sebe, a ne zbog deploya.
 # Zato je posao strogo čitljiv (contents: read) — gradi izlazne mape u
@@ -26,9 +27,14 @@ on:
     paths:
       - 'apps/satellites/**'
       - 'apps/sites/**'
+      - 'apps/world/**'
+      - 'apps/region/channels.json'
+      - 'apps/region/engine/build.mjs'
+      - 'apps/region/engine/hub.mjs'
       - 'apps/arhiva/**'
       - 'apps/dnevnik/**'
       - 'tests/test-network-mesh-v1.mjs'
+      - 'tests/test-world-portals-v1.mjs'
       - 'scripts/network-agents-v1.mjs'
       - 'scripts/network-sync-v1.mjs'
       - 'ops/network-agents-v1.json'
@@ -59,7 +65,7 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Sinkroniziraj šest stranica, arhivu i dnevnik
+      - name: Sinkroniziraj stranice, svjetske portale, arhivu i dnevnik
         run: node scripts/network-sync-v1.mjs
 
       - name: Pokreni agente
