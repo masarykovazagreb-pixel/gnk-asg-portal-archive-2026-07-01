@@ -649,7 +649,7 @@ function jsonld(desk, lang, canonical, alternate, keywords) {
       },
       {
         '@type': 'NewsMediaOrganization',
-        '@id': `${SITE}/gnk-aktual/#publisher`,
+        '@id': `${SITE}/gnk-aktual/#news-organization`,
         name: 'AKTUAL MEDIA',
         alternateName: ['Aktual mediji', 'Aktual Media', 'AKTUAL MEDIA KANAL'],
         url: `${SITE}/gnk-aktual/`,
@@ -673,7 +673,7 @@ function jsonld(desk, lang, canonical, alternate, keywords) {
         inLanguage: lang,
         isPartOf: { '@id': `${SITE}/#website` },
         about: { '@id': datasetId },
-        publisher: { '@id': `${SITE}/gnk-aktual/#publisher` },
+        publisher: { '@id': `${SITE}/gnk-aktual/#news-organization` },
         editor: { '@id': `${SITE}/#nermin-sefic` },
         mainEntity: { '@id': datasetId },
         keywords: keywords.join(', '),
@@ -683,7 +683,7 @@ function jsonld(desk, lang, canonical, alternate, keywords) {
         '@id': datasetId,
         name: copy.title,
         description: copy.description,
-        creator: { '@id': `${SITE}/gnk-aktual/#publisher` },
+        creator: { '@id': `${SITE}/gnk-aktual/#news-organization` },
         isAccessibleForFree: true,
         dateModified: generatedAt,
         temporalCoverage: `${generatedAt.slice(0, 10)}/..`,
@@ -856,7 +856,7 @@ function sectionPage(lang) {
     '@context': 'https://schema.org',
     '@graph': [
       { '@type': 'WebSite', '@id': `${SITE}/#website`, name: 'GNK ASG', url: `${SITE}/`, inLanguage: ['hr', 'en'], publisher: { '@id': `${SITE}/#gnk-asg` } },
-      { '@type': 'NewsMediaOrganization', '@id': `${SITE}/gnk-aktual/#publisher`, name: 'AKTUAL MEDIA', alternateName: ['Aktual mediji', 'Aktual Media'], url: `${SITE}/gnk-aktual/`, parentOrganization: { '@id': `${SITE}/#gnk-asg` }, editor: { '@id': `${SITE}/#nermin-sefic` } },
+      { '@type': 'NewsMediaOrganization', '@id': `${SITE}/gnk-aktual/#news-organization`, name: 'AKTUAL MEDIA', alternateName: ['Aktual mediji', 'Aktual Media'], url: `${SITE}/gnk-aktual/`, parentOrganization: { '@id': `${SITE}/#gnk-asg` }, editor: { '@id': `${SITE}/#nermin-sefic` } },
       { '@type': 'Person', '@id': `${SITE}/#nermin-sefic`, name: 'Nermin Sefić', jobTitle: lang === 'en' ? 'Editor and director' : 'Urednik i direktor', url: `${SITE}/nermin-sefic/` },
       {
         '@type': 'CollectionPage',
@@ -866,7 +866,7 @@ function sectionPage(lang) {
         description: copy.description,
         inLanguage: lang,
         isPartOf: { '@id': `${SITE}/#website` },
-        publisher: { '@id': `${SITE}/gnk-aktual/#publisher` },
+        publisher: { '@id': `${SITE}/gnk-aktual/#news-organization` },
         editor: { '@id': `${SITE}/#nermin-sefic` },
         mainEntity: {
           '@type': 'ItemList',
