@@ -1,3 +1,5 @@
+> **ODLUKA VLASNIKA — 22.10.2026.: ZAUSTAVLJEN RAZVOJ 12 NOVIH PORTALA.** Nove međunarodne stranice kreira vlasnik izvan ovog zadatka. Nema dodatnog razvoja, deploya, robots-index aktivacije ili automatskog ciklusa za `apps/world/`, `apps/global-free/` i `apps/world-network/`. Ranije izrađeni nacrti ostaju samo povijesni staging materijal. Budući vlasnikovi portali mogu se naknadno registrirati za besplatno čitanje i nadzor, bez automatskog objavljivanja. Prioritet su postojeća AKTUAL MEDIA i osam regionalnih izdanja, urednički Infocentar, Worker sigurnost, izvorna istraživanja i CI stabilizacija.
+
 # AKTUAL MEDIA / GNK ASG — 150 agenata i 12 besplatnih globalnih portala (operativna istina)
 
 Datum pripreme: 22.10.2026. Jedini aktivni GitHub repozitorij: `masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01`. Beckuphome je arhiva. `main` nije isto što i dokazano aktivna produkcija.
