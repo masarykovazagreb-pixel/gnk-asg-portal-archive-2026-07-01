@@ -6,9 +6,11 @@
 
 - Iz svakog postojećeg `workers/` direktorija stvara operativni profil agenta i mapira ga na postojeći bot registar i backlog. Nepoznati Worker dobiva samo nadzorni identitet, bez prava pisanja.
 - Odvojeni slojevi: supervizor, backend, frontend, SEO/AEO, Exa-istraživanje, AI novinar, AI urednik, QA i release kontrola.
-- GitHub Actions workflow četiriput dnevno (nakon mergea) dohvaća javne GitHub issue/run dokaze, dodjeljuje zadatke, provjerava javne HTTP rute i izrađuje JSON izvještaj. Ne mijenja `main`, Cloudflare, DNS ni produkciju.
+- Postojeći `workforce-bot-orchestrator.yml` svakih 4 sata (nakon mergea) dohvaća javne GitHub issue/run dokaze, dodjeljuje zadatke, provjerava javne HTTP rute i izrađuje JSON izvještaj. Ne mijenja `main`, Cloudflare, DNS ni produkciju.
 - Povezuje Exa javno istraživanje i jedan opcionalni LLM nacrt uz jasnu AI oznaku. Svi nacrti ostaju HOLD radi izvora, prava i stvarne ljudske uredničke provjere.
 - Izlazi: `artifacts/master-asg-agent-network/report.json`, `summary.md`, opcionalno `editorial-draft.md` kao privatni CI artefakt.
+
+Novi `.github/workflows/master-asg-agent-factory-v2.yml` služi za ručno pokretanje i PR provjere; nema vlastiti schedule i ne troši dodatne planirane Actions minute. Opcionalno Exa/AI istraživanje u postojeći 4-satni orkestrator ulazi samo kroz `SWARM_RESEARCH_ENABLED=true` ili ručni `run_ai_research`, dok je redovni MASTER ASG nadzor bez naplatnih API poziva.
 
 **Precizna granica**: profili nisu automatski novi Cloudflare Worker procesi niti neovisno živi LLM-ovi. Ovo je stvarno izvršivi nadzorni i istraživački sloj. Samostalni kodni popravci, automatski PR-ovi, vizualni redizajn i javne publikacije zahtijevaju dodatne ograničene egzekutore, testove i odgovarajuće ovlasti; nisu lažno prijavljeni kao izvršeni.
 
