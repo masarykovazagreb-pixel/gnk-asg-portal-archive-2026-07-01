@@ -18,6 +18,7 @@ on:
       - 'scripts/swarm-public-research-draft-v1.mjs'
       - 'scripts/aktual-free-editorial-network-v1.mjs'
       - 'scripts/aktual-existing-portals-daily-weekly-v1.mjs'
+      - 'tests/test-aktual-existing-portals-daily-weekly-v1.mjs'
       - 'tests/test-aktual-free-editorial-network-v1.mjs'
       - 'tests/test-aktual-regional-seo-identity-v1.mjs'
       - 'scripts/audit-aktual-brand-indexability-v1.mjs'
@@ -78,7 +79,9 @@ jobs:
           AKTUAL_FREE_FEEDS: '1'
         run: node scripts/aktual-free-editorial-network-v1.mjs
       - name: Create ranked daily and weekly source-linked editorial queue (HOLD)
-        run: node scripts/aktual-existing-portals-daily-weekly-v1.mjs
+        run: |
+          node scripts/aktual-existing-portals-daily-weekly-v1.mjs
+          node --test tests/test-aktual-existing-portals-daily-weekly-v1.mjs
       - name: Confirm paid editorial APIs remain disabled
         run: |
           echo "Free-tier-only: 0 Exa/OpenAI requests, existing 4h cron, no public publishing."
