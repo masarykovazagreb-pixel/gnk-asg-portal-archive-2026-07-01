@@ -191,16 +191,6 @@ const DESKS = {
 /* Jedan kanonski WebSite čvor po stranici. Stranice /izdanja/ dijele isti
    entitet, pa ga shell dodaje sam; proslijeđeni graf ne smije nositi
    drugi (inače stranica ima dva ili nijedan). */
-const AKTUAL_MEDIA_ID = 'https://gnk-asg.hr/gnk-aktual/#news-organization';
-const AKTUAL_MEDIA_NODE = {
-  '@context': 'https://schema.org', '@type': 'NewsMediaOrganization',
-  '@id': AKTUAL_MEDIA_ID, name: 'AKTUAL MEDIA d.o.o.',
-  alternateName: ['AKTUAL MEDIA', 'Aktual mediji', 'Aktual Media', 'AKTUAL MEDIA KANAL'],
-  legalName: 'AKTUAL MEDIA d.o.o.',
-  url: 'https://gnk-asg.hr/gnk-aktual/',
-  parentOrganization: { '@id': 'https://gnk-asg.hr/#gnk-asg' },
-  editor: { '@type': 'Person', '@id': 'https://gnk-asg.hr/#nermin-sefic', name: 'Nermin Sefić', url: 'https://gnk-asg.hr/nermin-sefic/' }
-};
 const WEBSITE_NODE = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
@@ -215,11 +205,37 @@ const WEBSITE_NODE = {
     url: 'https://gnk-asg.hr/',
   },
 };
+/* AKTUAL MEDIA is the publisher entity; GNK ASG remains the separate corporate WebSite. */
+const MEDIA_ID = 'https://gnk-asg.hr/gnk-aktual/#news-organization';
+const MEDIA_ENTITY_NODE = {
+  '@context': 'https://schema.org',
+  '@type': 'NewsMediaOrganization',
+  '@id': MEDIA_ID,
+  name: 'AKTUAL MEDIA d.o.o.',
+  alternateName: ['AKTUAL MEDIA', 'Aktual mediji', 'AKTUAL MEDIA KANAL'],
+  url: 'https://gnk-asg.hr/gnk-aktual/'
+};
+const MEDIA_EXTRA_DESTINATIONS = [
+  { name: 'BUSINESS TJEDNIK', url: 'https://gnk-asg-tjednik.pages.dev/' },
+  { name: 'AKTUAL MEDIA RADIO', url: 'https://gnk-asg.hr/radio/' },
+  { name: 'Podatkovni desk', url: 'https://gnk-asg.hr/aktual-media/' },
+  { name: 'Galerija', url: 'https://gnk-asg.hr/galerija/' },
+  { name: 'Regionalni kanali', url: 'https://gnk-asg.hr/kanal/' }
+];
+const mediaItems = () => [
+  ...CHANNELS.map((c) => ({ name: c.title, url: c.base })),
+  ...Object.entries(DESKS).map(([id, d]) => ({ name: d.name, url: `https://gnk-asg.hr/izdanja/${id}/` })),
+  ...MEDIA_EXTRA_DESTINATIONS
+];
 const isWebsiteNode = (node) => (Array.isArray(node?.['@type']) ? node['@type'] : [node?.['@type']]).includes('WebSite');
 
 function portalShell({ title, description, path, keywords, jsonld = [], body, cssExtra = '' }) {
   const canonical = `${HUB}${path}`;
-  const graph = [WEBSITE_NODE, AKTUAL_MEDIA_NODE, ...jsonld.filter((node) => !isWebsiteNode(node) && node?.['@id'] !== AKTUAL_MEDIA_ID)];
+  const graph = [WEBSITE_NODE, MEDIA_ENTITY_NODE, ...jsonld.filter((node) => !isWebsiteNode(node)).map((node) =>
+    node['@type'] === 'CollectionPage'
+      ? { ...node, publisher: { '@id': MEDIA_ID }, about: { '@id': MEDIA_ID } }
+      : node
+  )];
   return `<!doctype html>
 <html lang="hr">
 <head>
@@ -442,6 +458,25 @@ function radioBand() {
   </section>`;
 }
 
+/* Mreža neovisnih izdanja: šest stranica s vlastitim hostingom. Traka je
+   namjerno kratka — popis, jedna rečenica i poveznica na hub, da /izdanja/
+   ostane popis izdanja, a ne druga naslovnica. */
+function networkBand() {
+  let sites = [];
+  try {
+    const data = JSON.parse(readFileSync(join(PORTAL, 'data', 'mreza-v1.json'), 'utf8'));
+    sites = data.sites || [];
+  } catch { sites = []; }
+  if (!sites.length) return '';
+  const items = sites.map((site) => `<li><a href="${site.url}" rel="external noopener" hreflang="hr" lang="hr"><b>${esc(site.name)}</b><span>${esc(site.tagline.hr.split(':')[0])}</span></a></li>`).join('');
+  return `<section class="iz-band iz-mreza" aria-labelledby="mrezaTitle">
+    <h2 id="mrezaTitle">Mreža neovisnih izdanja <span>${sites.length} stranica · vlastiti hosting · isti urednik</span></h2>
+    <p class="iz-small" style="margin:0 0 12px">Teme koje su na matičnoj stranici bile prekratko obrađene dobile su vlastite domene: borilački sport u SAD-u, košarka, scena znanosti, ples i pokret, zdravlje — i privremeni desk za izbore u Srbiji. Svaka stranica ima svoj sitemap, feed i metodologiju, a sve vode natrag na gnk-asg.hr.</p>
+    <ul class="iz-datacards">${items}</ul>
+    <p class="iz-small" style="margin:12px 0 0"><a href="/mreza/">Cijela mreža →</a> · <a href="/en/network/" hreflang="en" lang="en">Network (EN)</a> · <a href="/data/mreza-v1.json">JSON</a></p>
+  </section>`;
+}
+
 function hubPage() {
   const cards = CHANNELS.map((c, i) => cardFor(c, { lead: i === 0 })).join('\n');
   const items = CHANNELS.flatMap((c) => latestFor(c, 3).map((i) => ({ ...i, channel: c })))
@@ -454,6 +489,7 @@ function hubPage() {
     <h2>Najnovije iz svih izdanja</h2>
     <ul class="iz-list">${items.map((i) => `<li><time datetime="${esc(i.date)}">${esc(shortDate(i.date.slice(0, 10)))}</time><a href="${i.channel.base}clanak/${i.slug}/" rel="external noopener">${esc(i.title)}</a><span class="src">${esc(i.channel.title)}</span></li>`).join('') || '<li>Prva izdanja se pune dnevnim ciklusom.</li>'}</ul>
   </section>
+  ${networkBand()}
   <section class="iz-band iz-data-desk" aria-labelledby="ddTitle">
     <h2 id="ddTitle">Podatkovni desk — redakcija, izmjereno</h2>
     <p class="iz-small" style="margin:0 0 12px">Četiri stranice na kojima AKTUAL MEDIA mjeri vlastitu arhivu: noćna smjena, koncentracija izvora, pauze u objavljivanju i zajednički rječnik osam gradova. Brojke se računaju iz arhive pri svakoj gradnji, bez procjena.</p>
@@ -474,12 +510,12 @@ ${radioBand()}${portalFooter()}`;
 
   return portalShell({
     title: 'Naša izdanja — AKTUAL MEDIA · osam gradskih kanala AKTUAL MEDIA KANAL, tjednik i deskovi',
-    description: 'Sva izdanja AKTUAL MEDIA na jednom mjestu: AKTUAL MEDIA KANAL ZAGREB, BEOGRAD, SARAJEVO, BUDAPEST, LJUBLJANA, ROMA, SOFIJA, BUCUREȘTI, BUSINESS TJEDNIK, šest deskova i galerija Nermina Sefića.',
+    description: 'Sva izdanja AKTUAL MEDIA na jednom mjestu: osam regionalnih kanala, BUSINESS TJEDNIK, devet tematskih deskova, radio, galerija i podatkovni desk.',
     path: '',
-    keywords: ['AKTUAL MEDIA', 'izdanja', 'AKTUAL MEDIA KANAL ZAGREB', 'AKTUAL MEDIA KANAL BEOGRAD', 'AKTUAL MEDIA KANAL SARAJEVO', 'AKTUAL MEDIA KANAL BUDAPEST', 'AKTUAL MEDIA KANAL LJUBLJANA', 'AKTUAL MEDIA KANAL ROMA', 'AKTUAL MEDIA KANAL SOFIJA', 'AKTUAL MEDIA KANAL BUCUREȘTI', 'BUSINESS TJEDNIK', 'GNK ASG'],
+    keywords: ['AKTUAL MEDIA', 'Aktual mediji', 'izdanja', 'AKTUAL MEDIA KANAL ZAGREB', 'AKTUAL MEDIA KANAL BEOGRAD', 'AKTUAL MEDIA KANAL SARAJEVO', 'AKTUAL MEDIA KANAL BUDAPEST', 'AKTUAL MEDIA KANAL LJUBLJANA', 'AKTUAL MEDIA KANAL ROMA', 'AKTUAL MEDIA KANAL SOFIJA', 'AKTUAL MEDIA KANAL BUCUREȘTI', 'BUSINESS TJEDNIK', 'GNK ASG'],
     jsonld: [
-      { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Naša izdanja — AKTUAL MEDIA', url: HUB, inLanguage: 'hr', isPartOf: { '@id': 'https://gnk-asg.hr/#website' }, publisher: { '@id': AKTUAL_MEDIA_ID }, about: { '@id': AKTUAL_MEDIA_ID }, editor: { '@id': 'https://gnk-asg.hr/#nermin-sefic' } },
-      { '@context': 'https://schema.org', '@type': 'ItemList', name: 'Izdanja AKTUAL MEDIA', numberOfItems: CHANNELS.length, itemListElement: CHANNELS.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.title, url: c.base })) },
+      { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Naša izdanja — AKTUAL MEDIA', url: HUB, inLanguage: 'hr', isPartOf: { '@id': 'https://gnk-asg.hr/#website' } },
+      { '@context': 'https://schema.org', '@type': 'ItemList', '@id': 'https://gnk-asg.hr/izdanja/#all-editions', name: 'Izdanja AKTUAL MEDIA', numberOfItems: mediaItems().length, itemListElement: mediaItems().map((item, i) => ({ '@type': 'ListItem', position: i + 1, name: item.name, url: item.url })) },
       { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'AKTUAL MEDIA', item: 'https://gnk-asg.hr/gnk-aktual/' }, { '@type': 'ListItem', position: 2, name: 'Izdanja', item: HUB }] }
     ],
     body
@@ -589,8 +625,8 @@ ${id === 'sport' ? `<script>(()=>{const box=document.getElementById('izResults')
     path: `${id}/`,
     keywords: [...desk.hashtags, 'AKTUAL MEDIA', 'GNK ASG', 'regija'],
     jsonld: [
-      { '@context': 'https://schema.org', '@type': 'CollectionPage', name: desk.title, url: `${HUB}${id}/`, inLanguage: 'hr', description: desk.description, publisher: { '@id': AKTUAL_MEDIA_ID }, about: { '@id': AKTUAL_MEDIA_ID }, editor: { '@id': 'https://gnk-asg.hr/#nermin-sefic' } },
-      { '@context': 'https://schema.org', '@type': 'ItemList', name: desk.title, numberOfItems: Math.min(items.length, 20), itemListElement: items.slice(0, 20).map((i, n) => ({ '@type': 'ListItem', position: n + 1, name: i.title, url: `${i.channel.base}clanak/${i.slug}/` })) }
+      { '@context': 'https://schema.org', '@type': 'CollectionPage', name: desk.title, url: `${HUB}${id}/`, inLanguage: 'hr', description: desk.description },
+      { '@context': 'https://schema.org', '@type': 'ItemList', name: desk.title, numberOfItems: Math.min(20, items.length), itemListElement: items.slice(0, 20).map((i, n) => ({ '@type': 'ListItem', position: n + 1, name: i.title, url: `${i.channel.base}clanak/${i.slug}/` })) }
     ],
     body
   });
@@ -614,10 +650,12 @@ export async function buildHub() {
     ...Object.keys(DESKS).map((id) => ({ loc: `${HUB}${id}/`, priority: '0.7' })),
     ...CHANNELS.map((c) => ({ loc: c.base, priority: '0.9' })),
     { loc: 'https://gnk-asg.hr/usa/', priority: '0.9' },
-    { loc: 'https://gnk-asg.hr/gnk-aktual/', priority: '0.9' },
-    { loc: 'https://gnk-asg.hr/radio/', priority: '0.8' },
-    { loc: 'https://gnk-asg.hr/kanal/', priority: '0.8' },
-    { loc: 'https://gnk-asg.hr/galerija/', priority: '0.6' }
+    // The external tjednik is linked from the hub and structured media graph, not submitted as our domain's sitemap URL.
+    { loc: 'https://gnk-asg.hr/galerija/', priority: '0.6' },
+    { loc: 'https://gnk-asg.hr/kanal/', priority: '0.9' },
+    { loc: 'https://gnk-asg.hr/radio/', priority: '0.9' },
+    { loc: 'https://gnk-asg.hr/aktual-media/', priority: '0.8' },
+    { loc: 'https://gnk-asg.hr/gnk-aktual/', priority: '1.0' }
   ];
   writeFileSync(join(OUT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -730,11 +768,12 @@ function kanalIndex(cards) {
 <meta name="twitter:title" content="AKTUAL MEDIA KANAL — sva izdanja">
 <meta name="twitter:image" content="https://gnk-asg.hr/assets/izdanja/aktual-media-og.jpg">
 <script type="application/ld+json">${safeJson(WEBSITE_NODE)}</script>
+<script type="application/ld+json">${safeJson(MEDIA_ENTITY_NODE)}</script>
 <script type="application/ld+json">${safeJson({
     '@context': 'https://schema.org', '@type': 'CollectionPage',
     name: 'AKTUAL MEDIA KANAL — sva izdanja', url: 'https://gnk-asg.hr/kanal/',
     inLanguage: 'hr', isPartOf: { '@id': 'https://gnk-asg.hr/#website' },
-    publisher: { '@id': AKTUAL_MEDIA_ID },
+    publisher: { '@id': MEDIA_ID }, about: { '@id': MEDIA_ID },
     editor: { '@type': 'Person', name: 'Nermin Sefić', jobTitle: 'Urednik i direktor', url: 'https://gnk-asg.hr/nermin-sefic/' },
     hasPart: CHANNELS.map((c) => ({ '@type': 'WebPage', name: c.title, url: c.base, inLanguage: c.lang })),
     mainEntity: { '@type': 'ItemList', numberOfItems: CHANNELS.length, itemListElement: CHANNELS.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.title, url: c.base })) }
@@ -845,7 +884,7 @@ export function usaPage() {
       '@id': `${USA}#webpage`, url: USA, name: 'GNK DINAMO Ltd. — Boulder, Colorado, USA',
       inLanguage: 'hr', isPartOf: { '@id': 'https://gnk-asg.hr/#website' },
       about: { '@id': 'https://gnk-asg.hr/usa/#gnk-dinamo-ltd' },
-      publisher: { '@id': AKTUAL_MEDIA_ID }
+      publisher: { '@type': 'NewsMediaOrganization', name: 'AKTUAL MEDIA d.o.o.', url: 'https://gnk-asg.hr/gnk-aktual/' }
     },
     {
       '@context': 'https://schema.org', '@type': 'BreadcrumbList',
@@ -1042,6 +1081,15 @@ if (process.argv[1] && /hub\.mjs$/.test(process.argv[1])) {
        nakon njih — inače bi nestala do sljedećeg ciklusa. */
     const { injectFutureTechBands } = await import('./future-tech.mjs');
     const techBands = injectFutureTechBands();
-    console.log(JSON.stringify({ ok: true, ...hub, kanalIndex: true, sitemaps, techBands }, null, 2));
+    /* Mreža neovisnih izdanja: hub /mreza/ i /en/network/ nose brojke
+       izbornog deska, pa se pregraddе u istom ciklusu kao i ostatak portala. */
+    let network = null;
+    try {
+      const { execFileSync } = await import('node:child_process');
+      network = execFileSync(process.execPath, [join(ROOT, 'apps', 'sites', 'engine', 'hub.mjs')], { encoding: 'utf8' }).trim().split('\n').pop();
+    } catch (error) {
+      network = `preskočeno: ${error.message.split('\n')[0]}`;
+    }
+    console.log(JSON.stringify({ ok: true, ...hub, kanalIndex: true, sitemaps, techBands, network }, null, 2));
   });
 }
