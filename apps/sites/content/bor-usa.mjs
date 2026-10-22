@@ -50,7 +50,7 @@ export default {
             ],
           },
           list: {
-            hr: ['Tko odobrava priredbu i tko licencira borca', 'Što znači objedinjena pravila i gdje se razlikuju', 'Kako se čita kartа: glavna borba, uvodne, pravila po borbi', 'Što medicinska suspenzija znači za sljedeći nastup'],
+            hr: ['Tko odobrava priredbu i tko licencira borca', 'Što znači objedinjena pravila i gdje se razlikuju', 'Kako se čita karta: glavna borba, uvodne, pravila po borbi', 'Što medicinska suspenzija znači za sljedeći nastup'],
             en: ['Who sanctions an event and who licenses a fighter', 'What the Unified Rules mean and where they differ', 'How to read a card: main event, prelims, rules per bout', 'What a medical suspension means for the next bout'],
           },
         },

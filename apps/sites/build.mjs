@@ -38,12 +38,60 @@ const paragraph = (value, lang) => {
 
 const plain = (value, lang) => paragraph(value, lang).join(' ');
 
-/* Sadržaj: pet stranica ima fiksne module, izbori se grade iz arhive. */
+/* Kratki opis za karticu: reži na granici riječi, nikad usred sloga. */
+const clip = (text, limit = 150) => {
+  const clean = String(text || '').replace(/\s+/g, ' ').trim();
+  if (clean.length <= limit) return clean;
+  const cut = clean.slice(0, limit);
+  const space = cut.lastIndexOf(' ');
+  return `${cut.slice(0, space > 60 ? space : limit).replace(/[\s,;:–-]+$/, '')}…`;
+};
+
+/* Adrese medija koje desk može sresti u feedovima; koriste se samo za
+   poveznicu na izvornik, nikad kao tvrdnja o sadržaju. */
+const OUTLET_HOME = {
+  'Danas': 'https://www.danas.rs/',
+  'N1 Srbija': 'https://n1info.rs/',
+  'Nova.rs': 'https://nova.rs/',
+  'Jutarnji list': 'https://www.jutarnji.hr/',
+  'Index.hr': 'https://www.index.hr/',
+  'N1 BiH': 'https://n1info.ba/',
+  'N1 Hrvatska': 'https://n1info.hr/',
+  'Buka': 'https://www.6yka.com/',
+  'RTS': 'https://www.rts.rs/',
+  'B92': 'https://www.b92.net/',
+  'Politika': 'https://www.politika.rs/',
+  'BBC News': 'https://www.bbc.com/news',
+  'The Guardian': 'https://www.theguardian.com/',
+  'The New York Times': 'https://www.nytimes.com/',
+  'Al Jazeera': 'https://www.aljazeera.com/',
+  'Deutsche Welle': 'https://www.dw.com/',
+};
+
+/* Sadržaj: pet stranica ima fiksne module, izbori se grade iz arhive i
+   javnih feedova. Popis izvora na izbornom desku nije statičan: prikazuje
+   samo medije čije zapise desk stvarno ima, da nitko ne glumi pokrivenost. */
 async function loadContent(site) {
   const base = (await import(`./content/${site.slug}.mjs`)).default;
   if (site.slug !== 'izbori-srbija') return base;
   const desk = buildElectionDesk(ROOT);
-  return { ...base, ...desk, pages: desk.pages };
+  const present = [...new Set(desk.items.map((item) => item.source))];
+  const sources = base.sources.filter((source) => present.includes(source.name));
+  for (const name of present) {
+    if (sources.some((source) => source.name === name)) continue;
+    const url = OUTLET_HOME[name];
+    if (!url) continue;
+    sources.push({
+      name,
+      url,
+      what: {
+        hr: 'Medij čije je objave desk zabilježio u promatranom razdoblju.',
+        en: 'An outlet whose items the desk recorded during the observed period.',
+      },
+    });
+  }
+  sources.push(base.sources.find((source) => source.id === 'arhiva'));
+  return { ...base, ...desk, sources, pages: desk.pages };
 }
 
 const ORDER_LAST = new Set(['metodologija']);
@@ -128,7 +176,7 @@ function cards(site, pages, lang, skip, limit = 4) {
     .slice(0, limit)
     .map((page) => `<a class="card" href="${pagePath(page.slug, lang)}">
       <img src="${imageList(site, page)[0]}" alt="${esc(site.name)} — ${esc(page.nav[lang])}" loading="lazy" width="1200" height="800">
-      <div class="body"><span class="tag">${esc(page.nav[lang])}</span><h3>${esc(page.title[lang])}</h3><p>${esc(plain(page.lead, lang).slice(0, 140))}…</p></div>
+      <div class="body"><span class="tag">${esc(page.nav[lang])}</span><h3>${esc(page.title[lang])}</h3><p>${esc(clip(plain(page.lead, lang)))}</p></div>
     </a>`)
     .join('');
 }

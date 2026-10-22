@@ -79,7 +79,8 @@ export function collect(portalRoot) {
           source: item.source || 'nepoznat izvor',
           date: item.date.slice(0, 10),
           time: item.date.slice(11, 16),
-          channel: item.sourceId || 'feed',
+          channel: 'feed',
+          feedId: item.sourceId || '',
           city: item.city || '',
           country: item.country || '',
           incident: INCIDENT.test(item.title || '') || INCIDENT.test(item.summary || ''),
@@ -115,7 +116,7 @@ function lastUpdated(portalRoot) {
 }
 
 export function metrics(items) {
-  const byChannel = counts(items, 'channel');
+  const byChannel = counts(items.filter((item) => item.via === 'arhiva'), 'channel');
   const bySource = counts(items, 'source');
   const byDay = counts(items, 'date').sort((a, b) => (a[0] < b[0] ? 1 : -1));
   const incidents = items.filter((item) => item.incident);
@@ -134,6 +135,8 @@ export function metrics(items) {
     byChannel,
     bySource,
     byCountry,
+    feedItems: items.filter((item) => item.via === 'feed').length,
+    feedSources: new Set(items.filter((item) => item.via === 'feed').map((item) => item.source)).size,
     byDay,
     incidentShare: pct(incidents.length, items.length),
     serbiaShare: pct(byChannel.find(([id]) => id === 'beograd')?.[1] || 0, items.length),
@@ -157,24 +160,25 @@ export function buildElectionDesk(portalRoot) {
   const table = (rows, caption = '') => `<table>${caption ? `<caption style="caption-side:top;text-align:left;color:#8b9bad;font-size:12px;padding-bottom:6px">${esc(caption)}</caption>` : ''}<thead><tr><th>Vrijeme</th><th>Objava</th></tr></thead><tbody>${rows.join('')}</tbody></table>`;
 
   const statCards = (lang) => `<div class="stat">
-    <div><b>${m.total}</b><span>${lang === 'en' ? 'items in the archive' : 'zapisa u arhivi'}</span></div>
+    <div><b>${m.total}</b><span>${lang === 'en' ? 'items tracked' : 'zapisa u arhivi'}</span></div>
     <div><b>${m.sources}</b><span>${lang === 'en' ? 'media outlets' : 'medija'}</span></div>
-    <div><b>${m.channels}</b><span>${lang === 'en' ? 'editions with matches' : 'izdanja s pogodcima'}</span></div>
+    <div><b>${m.channels}</b><span>${lang === 'en' ? 'city editions' : 'gradskih izdanja'}</span></div>
+    <div><b>${m.feedItems}</b><span>${lang === 'en' ? 'items from public feeds' : 'zapisa iz javnih feedova'}</span></div>
     <div><b>${m.incidents}</b><span>${lang === 'en' ? 'items mentioning incidents' : 'zapisa koji spominju incident'}</span></div>
   </div>`;
 
   const sourceTable = `<table><thead><tr><th>Medij</th><th>Zapisa</th></tr></thead><tbody>${m.bySource.map(([name, n]) => `<tr><td>${esc(name)}</td><td>${n}</td></tr>`).join('')}</tbody></table>`;
-  const channelTable = `<table><thead><tr><th>Izdanje</th><th>Zapisa</th><th>Udio</th></tr></thead><tbody>${m.byChannel.map(([id, n]) => `<tr><td>${esc(CITY[id] || id)}</td><td>${n}</td><td>${pct(n, m.total)} %</td></tr>`).join('')}</tbody></table>`;
+  const channelTable = `<table><thead><tr><th>Izdanje</th><th>Zapisa</th><th>Udio</th></tr></thead><tbody>${m.byChannel.map(([id, n]) => `<tr><td>${esc(CITY[id] || id)}</td><td>${n}</td><td>${pct(n, m.total)} %</td></tr>`).join('')}${m.feedItems ? `<tr><td>${'Javni feedovi (izvan arhive)'}</td><td>${m.feedItems}</td><td>${pct(m.feedItems, m.total)} %</td></tr>` : ''}</tbody></table>`;
   const countryTable = `<table><thead><tr><th>Država izvora</th><th>Zapisa</th><th>Udio</th></tr></thead><tbody>${m.byCountry.map(([code, n]) => `<tr><td>${esc(COUNTRY_NAME[code] || code)}</td><td>${n}</td><td>${pct(n, m.total)} %</td></tr>`).join('')}</tbody></table>`;
   const dayTable = `<table><thead><tr><th>Dan</th><th>Zapisa</th></tr></thead><tbody>${m.byDay.map(([day, n]) => `<tr><td><time datetime="${day}">${dayLabel(day)}</time></td><td>${n}</td></tr>`).join('')}</tbody></table>`;
 
   const methodHr = [
-    'Desk ne anketira i ne prognozira. Jedini izvor je arhiva osam gradskih izdanja AKTUAL MEDIA, koju svaka dva sata osvježava dnevni ciklus. Zapis ulazi u desk ako istodobno spominje Srbiju (ili njezine gradove i aktere) i izborni proces.',
+    'Desk ne anketira i ne prognozira. Ima dva sloja izvora: arhivu osam gradskih izdanja AKTUAL MEDIA, koju osvježava dnevni ciklus, i javne RSS/Atom feedove srpskih, hrvatskih, bosanskih, britanskih, američkih i drugih medija. Oba sloja prolaze isti kriterij, a isti URL se broji samo jednom.',
     'Zato brojke na ovoj stranici mjere medijsku pokrivenost, ne stvarnost: 40 zapisa o istom skupu nije 40 skupova. Kad se brojka može pogrešno pročitati, uz nju stoji objašnjenje.',
     'Incident se broji po ključnim riječima u naslovu i sažetku (policija, sukob, hapšenje, napad, protest, blokada). To je grubo mjerenje i tako je označeno — ne tvrdimo da je svaki takav zapis incident ni da su svi incidenti zabilježeni.',
   ];
   const methodEn = [
-    'The desk does not poll and does not forecast. Its only source is the archive of eight AKTUAL MEDIA city editions, refreshed every two hours by the daily cycle. An item enters the desk if it mentions Serbia (or its cities and actors) and the election process at the same time.',
+    'The desk does not poll and does not forecast. It has two source layers: the archive of eight AKTUAL MEDIA city editions, refreshed by the daily cycle, and public RSS/Atom feeds from Serbian, Croatian, Bosnian, British, American and other outlets. Both layers pass the same criterion, and the same URL is counted once.',
     'So the numbers here measure media coverage, not reality: 40 items about one rally are not 40 rallies. Where a figure can be misread, it is explained next to the figure.',
     'An incident is counted by keywords in the title and summary (police, clash, arrest, attack, protest, blockade). That is a rough measure and it is labelled as such — we do not claim every such item is an incident, nor that every incident is captured.',
   ];
@@ -264,8 +268,8 @@ export function buildElectionDesk(portalRoot) {
       kicker: { hr: 'Izvori', en: 'Sources' },
       title: { hr: 'Mediji koje desk čita', en: 'Outlets the desk reads' },
       lead: {
-        hr: 'Desk ne bira medije po naklonosti nego po tome ulaze li u arhivu osam gradskih izdanja. Popis je javan i mijenja se kad se promijeni arhiva.',
-        en: 'The desk does not pick outlets by sympathy but by whether they enter the eight city editions’ archive. The list is public and changes when the archive does.',
+        hr: 'Desk ne bira medije po naklonosti. U arhivu ulazi sve što osam gradskih izdanja preuzme, a javni feedovi se čitaju po fiksnom popisu. Oba popisa su javna i mijenjaju se kad se promijeni izvor.',
+        en: 'The desk does not pick outlets by sympathy. The archive carries whatever the eight city editions ingest, and public feeds are read from a fixed list. Both lists are public and change when the source does.',
       },
       sections: [
         { h: { hr: 'Popis s brojem zapisa', en: 'The list with item counts' }, p: { hr: ['Broj zapisa nije ocjena kvalitete. Medij koji objavi više tekstova ima više zapisa.'], en: ['An item count is not a quality rating. An outlet that publishes more has more items.'] }, html: { hr: sourceTable, en: sourceTable } },

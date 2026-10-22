@@ -1030,6 +1030,15 @@ if (process.argv[1] && /hub\.mjs$/.test(process.argv[1])) {
        nakon njih — inače bi nestala do sljedećeg ciklusa. */
     const { injectFutureTechBands } = await import('./future-tech.mjs');
     const techBands = injectFutureTechBands();
-    console.log(JSON.stringify({ ok: true, ...hub, kanalIndex: true, sitemaps, techBands }, null, 2));
+    /* Mreža neovisnih izdanja: hub /mreza/ i /en/network/ nose brojke
+       izbornog deska, pa se pregraddе u istom ciklusu kao i ostatak portala. */
+    let network = null;
+    try {
+      const { execFileSync } = await import('node:child_process');
+      network = execFileSync(process.execPath, [join(ROOT, 'apps', 'sites', 'engine', 'hub.mjs')], { encoding: 'utf8' }).trim().split('\n').pop();
+    } catch (error) {
+      network = `preskočeno: ${error.message.split('\n')[0]}`;
+    }
+    console.log(JSON.stringify({ ok: true, ...hub, kanalIndex: true, sitemaps, techBands, network }, null, 2));
   });
 }
