@@ -1,6 +1,6 @@
 {
   "note": "Groups are derived from real workflow files; worker profiles are a modeled catalogue.",
-  "total": 334,
+  "total": 335,
   "groups": [
     {
       "id": "izdanja",
@@ -400,7 +400,7 @@
       "id": "distribucija",
       "name": "Distribucija i zrcala",
       "nameEn": "Distribution and mirrors",
-      "automations": 12,
+      "automations": 13,
       "scheduled": 1,
       "runsPerDay": 24,
       "files": [
@@ -428,6 +428,11 @@
         },
         {
           "file": "free-image-mirror.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "global-free-distribution.yml",
           "crons": [],
           "perDay": 0
         },
