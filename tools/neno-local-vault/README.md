@@ -1,49 +1,36 @@
-# NENO LOCAL VAULT — v0.2.0
+# NENO LOCAL VAULT — v0.3.0 (Windows 11 installer + ChatGPT sign-in)
 
-**Privatna Windows 11 aplikacija** za lokalno pretraživanje diskova, USB-ova, dokumenata i prethodno izvezene korespondencije. Datoteke koje korisnik odabere indeksiraju se u SQLite bazu na njegovom računalu. Za običnu pretragu nisu potrebni internet, račun ni AI ključ. Izvornike samo čita; sadržaj baze nije objavljen na GitHubu.
+Osobna aplikacija koja indeksira odabrane lokalne HDD/SSD/USB mape te pronalazi tekstove, dokumente i prethodno izvezene .eml poruke. Lokalno indeksiranje i pretraga rade bez interneta. Privatni dokumenti **nisu** uključeni u GitHub kod ili artefakte.
 
-## Mogućnosti
+## Preuzimanje pravog Windows Setup programa
 
-- Indeksiranje odabranih mapa, diskova i USB-ova, s prekidom i inkrementalnim nastavkom. Ranije pronađeni tekst ostaje dostupan nakon iskopčavanja USB-a.
-- Pretraživanje na hrvatskom (npr. `što sam pisao o Saneli`), filtriranje po mapi i vrsti, pregled teksta, otvaranje izvornika i izvoz CSV-a.
-- Nova kartica **Komunikacija** za lokalne `.eml` poruke: pošiljatelj, primatelji, predmet, datum iz zaglavlja, putanja i pregled sadržaja. Poruke treba prethodno izvesti: ovo nije neposredan Outlook/Gmail pristup.
-- Oznake `aktualan` / `izmijenjen` / `nedostupan` za izvore, zasebna provjera SHA-256 izvornika, izvoz dokaznog CSV-a sa zapisanim SHA-256 vrijednostima.
-- Ručna sigurnosna kopija baze putem SQLite backup mehanizma, povijest upita, pohranjene analize i pretraga jednakog izvučenog teksta.
-- AI analiza koristeći relevantne izvatke iz cijelog indeksiranog teksta (najviše 12 dokumenata, do 4500 znakova iz svakog). Način `Offline pregled` radi bez AI-ja; lokalna Ollama radi bez oblaka; OpenAI API zahtijeva posebnu potvrdu prije svakog slanja.
-- OCR za slike i skenirane PDF-ove ako je instaliran vanjski Tesseract OCR. Podržava `.png`, `.jpg`, `.jpeg`, `.tif`, `.tiff`, `.bmp`, a OCR skeniranog PDF-a ograničen je na prvih 25 stranica.
-- Pri neuspjelom ponovnom čitanju **čuva prethodno indeksirani tekst**. Postoji ručno `Ukloni iz indeksa` koje ne briše original s diska.
+Otvoriti **Actions → NENO Local Vault Windows Installer → zadnji uspješni build → Artifacts** i preuzeti `NenoLocalVault-Setup-Windows11-v0.3.0`. U ZIP-u treba biti:
 
-## Instalacija za Windows 11
+- `NenoLocalVault-Setup-0.3.0.exe`: instalacijski čarobnjak za Windows 11 (NSIS), per-user bez administratorskih prava; Start prečac i deinstalacija.
+- `NenoLocalVault-portable.exe`: prenosiva aplikacija bez instalacije.
+- `SHA256.txt`: kontrolne vrijednosti EXE datoteka.
+- `README.md`: upute.
 
-**Za korisnike:** na GitHub razvojnoj grani Masarikove otvori Actions > `NENO Local Vault Windows` > **uspješno završeno** pokretanje > Artifacts > `NenoLocalVault-Windows`. Raspakiraj. Pokreni `NenoLocalVault.exe` ili `install.ps1` iz iste mape za korisničku Start prečicu. **Dok nije potvrđen uspješan Windows Actions build, ne može se tvrditi da je `.exe` dostupan.**
+**Sadržaj je dostupan tek nakon uspješnog Windows builda.** Workflow prvo provodi testove, pakira Windows EXE, kompajlira NSIS Setup i provjerava tihu instalaciju i deinstalaciju. Build nije isto što i dokaz pokretanja GUI-ja na korisnikovu stvarnom računalu. NSIS EXE nije digitalno potpisan; SmartScreen može upozoriti.
 
-**Za razvoj / ručno stvaranje `.exe`:**
+## Nova prijava putem ChatGPT računa
 
-```powershell
-py -3.12 -m venv .venv
-.\.venv\Scripts\python -m pip install -r requirements-build.txt
-.\.venv\Scripts\python -m unittest discover -s tests -v
-.\.venv\Scripts\python app.py
-.\.venv\Scripts\python -m PyInstaller --clean --noconfirm --onefile --windowed --collect-all pypdfium2 --name NenoLocalVault app.py
-```
+U kartici **ChatGPT povezivanje** odabrati **Nastavi s ChatGPT-jem**. Aplikacija otvara službeni OpenAI OAuth/OIDC PKCE postupak u sistemskom pregledniku; e-mail (uključujući beckuphome adresu) koristi se samo ako je njime registriran taj ChatGPT račun. E-mail se provjerava kriptografski preko OpenAI ID tokena; aplikacija ne traži niti sprema lozinku.
 
-**OCR:** odvojeno instaliraj Tesseract, provjeri da je `tesseract.exe` u Windows PATH-u te po potrebi instaliraj hrvatski jezični paket i postavi `NENO_OCR_LANG=hrv+eng`. Bez Tesseracta normalna pretraga PDF/DOCX/TXT i ostalih tekstualnih formata i dalje radi; pogreške OCR-a evidentiraju se u indeksu.
+Nakon uspješne prijave odabrati **Učitaj AI modele**, zatim način **ChatGPT račun (prijava)**. Za svaku AI analizu treba zasebno potvrditi slanje odabranih izvadaka. OAuth tokeni ostaju lokalno zaštićeni Windows DPAPI-jem. Korištenje ChatGPT plana ovisi o ovlaštenju i dostupnim modelima; nijedan postupak ne daje pristup ranijim ChatGPT razgovorima ili memoriji. Za Responses API koristi se `store:false` i `stream:true`.
 
-**Ollama:** odvojeno instaliraj Ollama i model, npr. `ollama pull llama3.2`, pa u aplikaciji odaberi Lokalni Ollama. Model se bira varijablom `NENO_OLLAMA_MODEL`.
+Alternativno: potpuno offline dokazni pregled, lokalni Ollama ili zaseban OpenAI API ključ (`OPENAI_API_KEY`; API trošak je odvojen od ChatGPT pretplate).
 
-**OpenAI:** postavi vlastiti `OPENAI_API_KEY` u korisničke varijable okruženja; OpenAI API naplaćuje se zasebno od ChatGPT pretplate. Prije svakog slanja prikazuje se potvrda. Privatne pravne i poslovne spise ne šalji u oblak bez zasebne procjene rizika.
+**Granica provjere:** službeni OAuth integracijski kod ima automatske testove, ali prijava stvarnim ChatGPT računom i AI poziv nisu izvršeni bez vlasnikova aktivnog pristanka.
 
-## Sigurnost i granice
+## OCR, baza, privatnost
 
-- Indeks sadrži **nešifrirani tekst** u `%LOCALAPPDATA%\NenoLocalVault\vault.sqlite3`; preporučeni su BitLocker, zaštićen Windows korisnički račun i sigurna lokacija backup kopija. Lokalna baza se nikad ne stavlja u GitHub.
-- SHA-256 omogućuje utvrditi je li original identičan indeksiranoj verziji, ali sam po sebi **ne dokazuje autentičnost, autora ni valjanost pravnog dokumenta**. Datum `.eml` zaglavlja sam po sebi ne dokazuje primitak.
-- Ne podržava automatski Outlook `.pst/.msg/.ost`, stare binarne Word `.doc`/Excel `.xls` dokumente, WhatsApp baze, sadržaj poruka skriven u aplikacijama, ni govor/video bez izvezenog teksta. Ti su formati predmet zasebne nadogradnje.
-- Izvučeni tekst ograničen je na 350.000 znakova po dokumentu; sirove datoteke do 16 MiB; PDF tekstualni prolaz do 400 stranica; OCR 25 PDF stranica. Za iznimno velike arhive treba daljnja optimizacija i provjera.
-- Indeksiranje ne ulazi automatski u Windows sistemske/skrivene cache foldere; ručno odaberi relevantnu mapu. Izbrisana ili odspojena datoteka ne uklanja automatski ranije pohranjeni indeks.
-- OCR i AI podložni su pogreškama; svaku važnu pravnu/financijsku tvrdnju provjeri iz originala. Testovi ne dokazuju da je Windows `.exe` gotov dok Windows Actions ne prođe.
+OCR skenova zahtijeva vanjski Tesseract i željene jezike, primjerice `NENO_OCR_LANG=hrv+eng`. Baza je `%LOCALAPPDATA%\NenoLocalVault\vault.sqlite3` i sadrži indeksirane tekstove; nije šifrirana na aplikacijskoj razini. Preporučeni BitLocker i dobra Windows zaštita. Deinstalacija **ne briše** privatnu bazu ni prijave, kako ne bi dovela do gubitka sadržaja. Za uklanjanje cijelog lokalnog profila potrebna je zasebna odluka.
 
-## Razvoj i kontrola
+Nisu podržani Outlook PST/MSG, svi povijesni razgovori drugih aplikacija bez izvoza ni pouzdana semantička pretraga. Hash dokazuje identičnost podataka u trenutku provjere, a ne pravnu autentičnost.
 
-Provjera: `python -m unittest discover -s tests -v` (12 testova, uključujući email kronologiju, migraciju baze v0.1, backup, hash, offline USB, relevantan AI izvadak i čuvanje podataka nakon neuspjelog ponovnog čitanja). GUI smoke-test također je proveden u virtualnom Linux prikazu; Windows 11 zahtijeva neovisan test.
+## Reproducibilna izgradnja
 
-**Razgraničenje:** sve se razvija na izdvojenoj grani GitHuba Masarikova i ne mijenja produkciju GNK ASG portala ni Cloudflare Workere.
+`decode_source.py` provjerava SHA-256 izvornog ZIP-a v0.2, `apply_upgrade.py` zatim provjerava SHA-256 dodatka v0.3, učitava unaprijeđene Python datoteke, tests i NSIS `installer.nsi`. `requirements-build.txt` priprema PyInstaller. Dodatne korisničke datoteke ili tokeni ne smiju biti uključeni u build.
+
+Programski rad ostaje izoliran u razvojnoj grani. GNK ASG produkcija nije mijenjana.
