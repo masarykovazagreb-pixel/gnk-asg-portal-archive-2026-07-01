@@ -1,0 +1,185 @@
+name: sites-deploy
+
+# Objavljuje šest neovisnih stranica GNK ASG mreže na vlastite Cloudflare
+# Pages projekte (gnk-bor-usa, gnk-kosarka, gnk-scena-znanosti,
+# gnk-step-buducnosti, gnk-zdravlje, gnk-izbori-srbija).
+#
+# • push na apps/sites/** gradi i objavljuje svih šest;
+# • raspored svakih sat vremena osvježava SAMO izborni desk (ostalih pet se
+#   ne mijenja samo zato što je prošao sat);
+# • kill switch: repository variable IZBORI_DESK_ENABLED=false zaustavlja
+#   raspored bez diranja povijesti — desk prestaje biti živ, arhiva ostaje.
+#
+# Ne dira gnk-asg.hr: hub (/mreza/) putuje s portalom, a ova radnja samo
+# gradi apps/sites/site i predaje ga Cloudflareu.
+
+on:
+  push:
+    branches: [main, 'arena/**']
+    paths:
+      - 'apps/sites/**'
+      - '.github/workflows/sites-deploy.yml'
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sites-deploy
+  cancel-in-progress: true
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.list.outputs.matrix }}
+      enabled: ${{ steps.kill.outputs.enabled }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Kill switch
+        id: kill
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "${{ vars.IZBORI_DESK_ENABLED }}" = "false" ]; then
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::IZBORI_DESK_ENABLED=false — raspored preskače izborni desk."
+          else
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Popis stranica
+        id: list
+        shell: bash
+        run: |
+          ONLY=""
+          if [ "${{ github.event_name }}" = "schedule" ]; then ONLY="izbori-srbija"; fi
+          MATRIX=$(ONLY="$ONLY" node -e '
+            import("./apps/sites/lib/registry.mjs").then(({ SITES }) => {
+              const only = process.env.ONLY || "";
+              const list = SITES.filter((s) => !only || s.slug === only)
+                .map((s) => ({ slug: s.slug, project: `gnk-${s.slug}` }));
+              process.stdout.write(JSON.stringify({ include: list }));
+            });
+          ')
+          echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: prepare
+    if: needs.prepare.outputs.enabled == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Provjere mreže (stanje u repozitoriju)
+        shell: bash
+        run: node tests/test-sites-network-v1.mjs
+
+      - name: Izborni feedovi (neobavezno)
+        shell: bash
+        continue-on-error: true
+        run: node apps/sites/engine/ingest-izbori.mjs
+
+      - name: Gradnja šest stranica
+        shell: bash
+        run: node apps/sites/build.mjs
+
+      - name: Provjere mreže (svježi izlaz)
+        shell: bash
+        run: node tests/test-sites-network-v1.mjs --no-fresh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sites-out
+          path: apps/sites/site
+          retention-days: 3
+
+  deploy:
+    needs: [prepare, build]
+    if: needs.prepare.outputs.enabled == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    env:
+      CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: sites-out
+          path: sites-out
+
+      - name: Provjeri Cloudflare pristup
+        id: cf
+        shell: bash
+        run: |
+          set -uo pipefail
+          if [ -z "${CF_TOKEN:-}" ] || [ -z "${CF_ACCOUNT:-}" ]; then
+            echo "::warning::Cloudflare secrets nisu dostupni — preskačem deploy ${{ matrix.project }}."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          code=$(curl -s -o /tmp/proj.json -w '%{http_code}' \
+            -H "Authorization: Bearer $CF_TOKEN" \
+            "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/${{ matrix.project }}")
+          if [ "$code" != "200" ]; then
+            echo "Projekt ${{ matrix.project }} ne postoji (HTTP $code) — kreiram."
+            curl -s -o /tmp/create.json -X POST \
+              -H "Authorization: Bearer $CF_TOKEN" -H "Content-Type: application/json" \
+              --data "{\"name\":\"${{ matrix.project }}\",\"production_branch\":\"main\"}" \
+              "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects" || true
+            head -c 300 /tmp/create.json || true; echo
+            code=$(curl -s -o /tmp/proj.json -w '%{http_code}' \
+              -H "Authorization: Bearer $CF_TOKEN" \
+              "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/${{ matrix.project }}")
+          fi
+          if [ "$code" != "200" ]; then
+            echo "::warning::Cloudflare Pages nije dostupan (HTTP $code) za ${{ matrix.project }}. Provjeri ovlasti tokena (Pages:Edit)."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+
+      - name: Provjera izlaza
+        if: steps.cf.outputs.ready == 'true'
+        shell: bash
+        run: |
+          test -f "sites-out/${{ matrix.slug }}/index.html"
+          test -f "sites-out/${{ matrix.slug }}/sitemap.xml"
+          test -f "sites-out/${{ matrix.slug }}/feed.xml"
+          grep -q 'application/ld+json' "sites-out/${{ matrix.slug }}/index.html"
+          grep -q 'twitter:card' "sites-out/${{ matrix.slug }}/index.html"
+
+      - name: Objavi na Cloudflare Pages
+        if: steps.cf.outputs.ready == 'true'
+        shell: bash
+        run: |
+          npx --yes wrangler@4 pages deploy "sites-out/${{ matrix.slug }}" \
+            --project-name="${{ matrix.project }}" \
+            --branch=main \
+            --commit-dirty=true
+
+      - name: Sažetak
+        if: steps.cf.outputs.ready == 'true'
+        shell: bash
+        run: |
+          {
+            echo "## ${{ matrix.project }} objavljen"
+            echo "- https://${{ matrix.project }}.pages.dev/"
+            echo "- sitemap: https://${{ matrix.project }}.pages.dev/sitemap.xml"
+            echo "- feed: https://${{ matrix.project }}.pages.dev/feed.xml"
+            echo "- okidač: ${{ github.event_name }}"
+          } >> "$GITHUB_STEP_SUMMARY"
