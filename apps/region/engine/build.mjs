@@ -281,6 +281,9 @@ function shell(channel, strings, { title, description, path, keywords = [], json
   const nativeLocale = String(channel.locale || `${channel.lang}-HR`).replace(/-/g, '_');
   const pageLocale = locale || (pageLang === 'en' ? 'en_US' : nativeLocale);
   const alternateLocale = pageLang === 'en' ? nativeLocale : 'en_US';
+  // Hreflang is valid only for equivalent language alternatives, not individual
+  // article pages that merely link to the edition homepage/English overview.
+  const hasLanguageAlternative = path === '' || path === 'en/';
   const altOriginal = `${PUBLIC}/kanal/${channel.id}/`;
   const altEnglish = `${PUBLIC}/kanal/${channel.id}/en/`;
   const canonical = url(channel, path);
@@ -343,9 +346,9 @@ function shell(channel, strings, { title, description, path, keywords = [], json
 <meta name="geo.placename" content="${esc(channel.city)}">
 <meta name="theme-color" content="${palette.bg}">
 <link rel="canonical" href="${canonical}">
-<link rel="alternate" hreflang="${channel.lang}" href="${altOriginal}">
+${hasLanguageAlternative ? `<link rel="alternate" hreflang="${channel.lang}" href="${altOriginal}">
 <link rel="alternate" hreflang="en" href="${altEnglish}">
-<link rel="alternate" hreflang="x-default" href="${altOriginal}">
+<link rel="alternate" hreflang="x-default" href="${altOriginal}">` : ''}
 <link rel="alternate" type="application/rss+xml" title="${esc(channel.title)}" href="${url(channel, 'feed.xml')}">
 <link rel="alternate" type="application/feed+json" title="${esc(channel.title)}" href="${url(channel, 'feed.json')}">
 <link rel="author" href="${PUBLIC}/nermin-sefic/">
