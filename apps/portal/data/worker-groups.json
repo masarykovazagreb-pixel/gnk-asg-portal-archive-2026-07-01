@@ -1,6 +1,6 @@
 {
   "note": "Groups are derived from real workflow files; worker profiles are a modeled catalogue.",
-  "total": 330,
+  "total": 333,
   "groups": [
     {
       "id": "izdanja",
@@ -467,9 +467,9 @@
       "id": "seo",
       "name": "SEO i indeksiranje",
       "nameEn": "SEO and indexing",
-      "automations": 17,
-      "scheduled": 4,
-      "runsPerDay": 9,
+      "automations": 18,
+      "scheduled": 5,
+      "runsPerDay": 13,
       "files": [
         {
           "file": "aeo-ai-visibility.yml",
@@ -553,6 +553,13 @@
           "file": "seo-knowledge-graph-contract.yml",
           "crons": [],
           "perDay": 0
+        },
+        {
+          "file": "seo-meta-machine.yml",
+          "crons": [
+            "23 */6 * * *"
+          ],
+          "perDay": 4
         },
         {
           "file": "seo-news-cycle.yml",
@@ -1804,9 +1811,9 @@
       "id": "ostalo",
       "name": "Ostalo",
       "nameEn": "Other",
-      "automations": 1,
-      "scheduled": 1,
-      "runsPerDay": 4,
+      "automations": 2,
+      "scheduled": 2,
+      "runsPerDay": 28,
       "files": [
         {
           "file": "autonomija-365.yml",
@@ -1814,11 +1821,19 @@
             "23 */6 * * *"
           ],
           "perDay": 4
+        },
+        {
+          "file": "sites-deploy.yml",
+          "crons": [
+            "17 * * * *"
+          ],
+          "perDay": 24
         }
       ]
     }
   ],
   "ungrouped": [
-    "autonomija-365.yml"
+    "autonomija-365.yml",
+    "sites-deploy.yml"
   ]
 }

@@ -1,10 +1,10 @@
 {
   "version": "GNK_ASG_FLEET_STATUS_V1",
-  "generatedAt": "2026-10-21T17:34:31.832Z",
+  "generatedAt": "2026-10-22T07:01:09.943Z",
   "runsCollectedAt": "2026-10-20T14:51:28.272Z",
-  "total": 330,
-  "scheduled": 26,
-  "runsPerDay": 148,
+  "total": 333,
+  "scheduled": 29,
+  "runsPerDay": 200,
   "tracked": 57,
   "groups": [
     {
@@ -35,9 +35,9 @@
       "id": "seo",
       "name": "SEO i indeksiranje",
       "nameEn": "SEO and indexing",
-      "automations": 17,
-      "scheduled": 4,
-      "runsPerDay": 9
+      "automations": 18,
+      "scheduled": 5,
+      "runsPerDay": 13
     },
     {
       "id": "odrzavanje",
@@ -99,12 +99,12 @@
       "id": "ostalo",
       "name": "Ostalo",
       "nameEn": "Other",
-      "automations": 1,
-      "scheduled": 1,
-      "runsPerDay": 4
+      "automations": 2,
+      "scheduled": 2,
+      "runsPerDay": 28
     }
   ],
-  "ungrouped": 1,
+  "ungrouped": 2,
   "failing": [
     {
       "workflow": "workforce-supervisor-agent.yml",
