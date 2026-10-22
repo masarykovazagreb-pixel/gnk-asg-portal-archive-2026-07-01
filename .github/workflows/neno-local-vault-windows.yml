@@ -1,4 +1,4 @@
-name: NENO Local Vault Windows
+name: NENO Local Vault Windows Installer
 on:
   push:
     branches:
@@ -12,13 +12,13 @@ permissions:
   contents: read
 
 concurrency:
-  group: neno-local-vault-${{ github.ref }}
+  group: neno-local-vault-setup-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  windows-build:
+  windows-installer:
     runs-on: windows-latest
-    timeout-minutes: 22
+    timeout-minutes: 25
     defaults:
       run:
         working-directory: tools/neno-local-vault
@@ -27,28 +27,53 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Verify exact source archive and unpack
+      - name: Verify and unpack baseline source
         run: python decode_source.py
-      - name: Install Windows dependencies
+      - name: Verify and apply ChatGPT + installer upgrade
+        run: python apply_upgrade.py
+      - name: Install Python dependencies
         run: python -m pip install -r requirements-build.txt
-      - name: Check package and OCR imports
-        run: python -c "import pypdfium2, pytesseract, PIL, tkinter; import neno_vault.gui; print('imports OK')"
-      - name: Run local regression suite
+      - name: Verify installer and authentication imports
+        run: python -c "import jwt,cryptography,tkinter,neno_vault.chatgpt_auth,neno_vault.gui;print('imports OK')"
+      - name: Run full automated suite
         run: python -m unittest discover -s tests -v
-      - name: Build portable Windows executable
+      - name: Build standalone Windows app
         run: python -m PyInstaller --clean --noconfirm --onefile --windowed --collect-all pypdfium2 --name NenoLocalVault app.py
-      - name: Verify and package portable application
+      - name: Install NSIS installer compiler
+        shell: pwsh
+        run: choco install nsis --yes --no-progress
+      - name: Compile native setup EXE
         shell: pwsh
         run: |
-          if (-not (Test-Path -LiteralPath 'dist/NenoLocalVault.exe')) { throw 'Windows EXE missing' }
-          New-Item -ItemType Directory -Force -Path output | Out-Null
-          Copy-Item dist/NenoLocalVault.exe output/
-          Copy-Item install.ps1 output/
-          Copy-Item README.md output/
-          Get-FileHash -Algorithm SHA256 output/NenoLocalVault.exe | Format-List | Out-String | Set-Content output/SHA256.txt
+          New-Item -ItemType Directory -Force output | Out-Null
+          $compiler = Join-Path ${env:ProgramFiles(x86)} 'NSIS\makensis.exe'
+          if (-not (Test-Path $compiler)) { throw "NSIS compiler missing: $compiler" }
+          & $compiler /V2 /DVERSION=0.3.0 installer.nsi
+          if ($LASTEXITCODE -ne 0) { throw "NSIS build failed" }
+          if (-not (Test-Path 'output/NenoLocalVault-Setup-0.3.0.exe')) { throw "Setup EXE not created" }
+      - name: Silent install and uninstall smoke test
+        shell: pwsh
+        run: |
+          $setup = (Resolve-Path 'output/NenoLocalVault-Setup-0.3.0.exe').Path
+          $p = Start-Process -FilePath $setup -ArgumentList '/S' -Wait -PassThru
+          if ($p.ExitCode -ne 0) { throw "Silent install failed: $($p.ExitCode)" }
+          $installed = Join-Path $env:LOCALAPPDATA 'Programs\Neno Local Vault\NenoLocalVault.exe'
+          if (-not (Test-Path $installed)) { throw 'Installed EXE missing' }
+          $u = Join-Path $env:LOCALAPPDATA 'Programs\Neno Local Vault\Uninstall.exe'
+          $p = Start-Process -FilePath $u -ArgumentList '/S' -Wait -PassThru
+          if ($p.ExitCode -ne 0) { throw "Silent uninstall failed: $($p.ExitCode)" }
+          if (Test-Path $installed) { throw 'Uninstall left executable behind' }
+      - name: Publish installer and hashes
+        shell: pwsh
+        run: |
+          Copy-Item dist/NenoLocalVault.exe output/NenoLocalVault-portable.exe
+          Copy-Item README.md output/README.md
+          Get-ChildItem output -Filter *.exe | ForEach-Object {
+            "$((Get-FileHash $_.FullName -Algorithm SHA256).Hash)  $($_.Name)"
+          } | Set-Content output/SHA256.txt
       - uses: actions/upload-artifact@v4
         with:
-          name: NenoLocalVault-Windows
+          name: NenoLocalVault-Setup-Windows11-v0.3.0
           path: tools/neno-local-vault/output/
           retention-days: 30
           if-no-files-found: error
