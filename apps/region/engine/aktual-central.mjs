@@ -487,7 +487,30 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
 const AKTUAL_BRAND_START = '<!-- AKTUAL-MEDIA-SEO-ENTITY:START -->';
 const AKTUAL_BRAND_END = '<!-- AKTUAL-MEDIA-SEO-ENTITY:END -->';
 const AKTUAL_BRAND_ID = 'https://gnk-asg.hr/gnk-aktual/#news-organization';
-function strengthenAktualBrand(html, lang = 'hr') {
+function strengthenAktualBrand(html, lang = 'hr', collection = null) {
+  // Update the canonical newsroom CollectionPage rather than adding another
+  // conflicting copy in the body on every daily build.
+  const existingScripts = /<script type="application\\/ld\\+json">([\\s\\S]*?)<\\/script>/g;
+  html = html.replace(existingScripts, (block, raw) => {
+    let node;
+    try { node = JSON.parse(raw); } catch { return block; }
+    if (collection && node['@type'] === 'CollectionPage'
+        && node.url === 'https://gnk-asg.hr/gnk-aktual/') {
+      node.publisher = { '@id': AKTUAL_BRAND_ID };
+      node.about = { '@id': AKTUAL_BRAND_ID };
+      node.mainEntity = collection.mainEntity;
+      node.hasPart = collection.hasPart;
+      return '<script type="application/ld+json">' + JSON.stringify(node) + '</script>';
+    }
+    return block;
+  });
+  const hasPublisherEntity = [...html.matchAll(existingScripts)].some((match) => {
+    try {
+      const node = JSON.parse(match[1]);
+      return (node['@graph'] || [node]).some((part) =>
+        part['@type'] === 'NewsMediaOrganization' && part['@id'] === AKTUAL_BRAND_ID);
+    } catch { return false; }
+  });
   const editionUrls = CHANNELS.map((channel) => ({
     '@type': 'ListItem', name: channel.title, url: channel.base
   }));
@@ -524,6 +547,8 @@ function strengthenAktualBrand(html, lang = 'hr') {
       }
     ]
   };
+  if (hasPublisherEntity) entity['@graph'] = entity['@graph'].filter(
+    (part) => part['@type'] !== 'NewsMediaOrganization');
   const snippet = AKTUAL_BRAND_START + '\n' +
     '<script type="application/ld+json">' + JSON.stringify(entity).replace(/</g, '\\u003c') + '</script>\n' +
     '<link rel="sitemap" type="application/xml" href="/izdanja/sitemap.xml">\n' +
@@ -585,7 +610,7 @@ export function buildAktualCentral({ cards = [] } = {}) {
     hasPart: CHANNELS.map((c) => ({ '@type': 'WebPage', name: c.title, url: c.base, inLanguage: c.lang })),
     mainEntity: {
       '@type': 'ItemList',
-      numberOfItems: 15,
+      numberOfItems: CHANNELS.length + 9,
       itemListElement: [
         ...CHANNELS.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.title, url: c.base })),
         ...['sport', 'politika', 'sigurnost', 'biznis', 'tehnologija', 'moda', 'putovanja', 'ljubimci', 'svijet'].map((id, i) => ({ '@type': 'ListItem', position: 9 + i, name: id.toUpperCase(), url: `${HUB}${id}/` }))
@@ -734,7 +759,6 @@ export function buildAktualCentral({ cards = [] } = {}) {
     <p class="amc-note">Urednik i direktor izdanja je <strong>Nermin Sefić</strong>. Za autora se koriste oznake #NerminSefić, #NerminSefic, #SeficNermin i #SEFICNERMIN. Kontakt: <a href="mailto:info@gnk-asg.hr">info@gnk-asg.hr</a>.</p>
   </section>
 </section>
-<script type="application/ld+json">${JSON.stringify(jsonld)}</script>
 ${END}`;
 
   if (html.includes(START) && html.includes(END)) {
@@ -767,7 +791,7 @@ ${END}`;
       html = `${html.slice(0, at)}\n${RS}\n${railHr}\n${RE}${html.slice(at)}`;
     }
   }
-  html = strengthenAktualBrand(addPerf(html), 'hr');
+  html = strengthenAktualBrand(addPerf(html), 'hr', jsonld);
   writeFileSync(FILE, html);
 
   /* Engleska stranica dobiva istu traku krugova, s engleskim natpisima. */
@@ -785,7 +809,7 @@ ${END}`;
         en = `${en.slice(0, at)}\n${RS}\n${rail}\n${RE}${en.slice(at)}`;
       }
     }
-    en = strengthenAktualBrand(addPerf(en), 'en');
+    en = strengthenAktualBrand(addPerf(en), 'en', { ...jsonld, inLanguage: 'en' });
     writeFileSync(EN, en);
   }
 
