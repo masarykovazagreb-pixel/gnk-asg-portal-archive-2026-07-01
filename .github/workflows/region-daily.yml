@@ -104,7 +104,7 @@ jobs:
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          git commit -m "REGION: ciklus $(date +%F) $(date +%H):00 — osam gradskih izdanja i galerija" -m "Automatski sastavljeni osvrti na način izvještavanja iz javnih feedova. Izvornici su povezani, tekstovi nisu preuzeti. Nije pojedinačno urednički pregledano."
+          git commit -m "REGION: ciklus $(date +%F) $(date +%H):00 — sedamnaest gradskih izdanja i galerija" -m "Automatski sastavljeni osvrti na način izvještavanja iz javnih feedova. Izvornici su povezani, tekstovi nisu preuzeti. Nije pojedinačno urednički pregledano."
           echo "changed=true" >> "$GITHUB_OUTPUT"
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
