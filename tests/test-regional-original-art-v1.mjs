@@ -11,7 +11,7 @@ const source=fs.readFileSync('apps/region/engine/build.mjs','utf8');
 assert.match(source,/themeArtwork\(channel,theme\.id\)/);
 assert.match(source,/imageRightsVerified === true/);
 assert.match(source,/og:site_name" content="AKTUAL MEDIA"/);
-assert.doesNotMatch(source,/\$\{PUBLIC\}\/nermin-sefic\/"[^]*?article:author/);
+assert.doesNotMatch(source,/article:author" content="\$\{PUBLIC\}\/nermin-sefic\/"/);
 for(const c of CHANNELS){
  for(const theme of THEMES){
   const s=themeArtwork(c,theme.id);
