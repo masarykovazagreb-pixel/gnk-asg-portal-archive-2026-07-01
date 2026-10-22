@@ -19,6 +19,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { esc, shortDate, truncate, themeFor } from './lib.mjs';
 import { CHANNELS, HUB } from './build.mjs';
+import { logoFor } from './brand.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const APP = join(HERE, '..');
@@ -532,12 +533,31 @@ export function buildAktualCentral({ cards = [] } = {}) {
     itemListElement: destinations.map((item, i) => ({ '@type': 'ListItem', position: i + 1, name: item.name, url: item.url })),
   };
 
+  /* Oba matična znaka stoje u herou: hrvatski i engleski. Čitatelj koji
+     dođe na /gnk-aktual/ prvo vidi kako se kuća potpisuje, a EN znak vodi
+     na englesku stranicu istog sadržaja. */
+  const masterMark = () => {
+    const hr = logoFor('aktual-media-hr');
+    const en = logoFor('aktual-media-en');
+    if (!hr || !en) return '';
+    return `<div class="amc-marks">
+      <a class="amc-mark amc-mark--hr" href="/gnk-aktual/" aria-label="AKTUAL MEDIA — hrvatsko izdanje"><img src="${hr.webp}" alt="${esc(hr.title)} — ${esc(hr.tagline)}" width="420" height="121" loading="eager" decoding="async" fetchpriority="high"></a>
+      <a class="amc-mark amc-mark--en" href="/en/gnk-aktual/" hreflang="en" lang="en" aria-label="AKTUAL MEDIA — world edition"><img src="${en.webp}" alt="${esc(en.title)} — ${esc(en.tagline)}" width="300" height="86" loading="lazy" decoding="async"></a>
+    </div>`;
+  };
+
   const block = `${START}
 <style id="amc-style">
 .am-central{--amc-ink:#f4f7fc;--amc-muted:#a9b8cc;--amc-gold:#e9c66c;--amc-line:rgba(233,198,108,.28);background:radial-gradient(1200px 600px at 12% -10%,rgba(233,198,108,.12),transparent 60%),#050d18;color:var(--amc-ink);border:1px solid rgba(233,198,108,.24);border-radius:26px;padding:clamp(16px,3.2vw,40px);margin:30px 0;font-family:inherit;overflow:hidden}
 .am-central *{box-sizing:border-box}
 .am-central a{color:inherit;text-decoration:none}
 .amc-eyebrow{font:800 11px/1.4 Inter,system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--amc-gold);margin:0}
+.amc-marks{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin:0 0 18px}
+.amc-mark{display:block;border-radius:10px;overflow:hidden;line-height:0;border:1px solid rgba(233,198,108,.3)}
+.amc-mark img{display:block;width:auto;height:auto}
+.amc-mark--hr img{height:92px}
+.amc-mark--en img{height:64px}
+@media(max-width:620px){.amc-mark--hr img{height:64px}.amc-mark--en img{height:46px}}
 .am-central h2{font:700 clamp(28px,3.8vw,48px)/1.04 Georgia,serif;letter-spacing:-.02em;margin:10px 0 14px;max-width:24ch}
 .am-center{text-align:center}
 .amc-hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(16px,3vw,34px);align-items:center}
@@ -600,6 +620,7 @@ export function buildAktualCentral({ cards = [] } = {}) {
 <section class="am-central" id="sve-aktual-media" aria-labelledby="amcTitle">
   <div class="amc-hero">
     <div class="amc-hero-copy">
+      ${masterMark()}
       <p class="amc-eyebrow">AKTUAL MEDIA · sve na jednom mjestu</p>
       <h2 id="amcTitle">Osam zemalja, sva izdanja, ${items.length} tekstova — na jednoj ploči</h2>
       <p class="amc-lead">Svaka pločica je naslovnica izdanja: na njoj piše što se klikom dobije, a klik vodi na glavni link — AKTUAL MEDIA KANAL Zagreb, Beograd, Sarajevo, Budapest, Ljubljana, Roma, Sofija ili București. S tih stranica uvijek se vraćate ovamo, u središte gdje se sve spaja.</p>
@@ -722,6 +743,26 @@ ${END}`;
       if (navClose > 0) {
         const at = navClose + '</nav>'.length;
         en = `${en.slice(0, at)}\n${RS}\n${rail}\n${RE}${en.slice(at)}`;
+      }
+    }
+    /* Engleska stranica ima svoj masthead (drukčiji od hrvatskog bloka), pa
+       znak ide u .am-brand — iznad natpisa "World edition". Isti par znakova
+       kao na HR stranici, samo obrnutim redom: EN je glavni, HR vodi natrag. */
+    const hrLogo = logoFor('aktual-media-hr');
+    const enLogo = logoFor('aktual-media-en');
+    if (hrLogo && enLogo && !en.includes('am-mast-logo')) {
+      const mark = `<a class="am-mast-logo" href="/en/gnk-aktual/" hreflang="en" lang="en" aria-label="AKTUAL MEDIA — world edition">
+        <img src="${enLogo.webp}" alt="${esc(enLogo.title)} — ${esc(enLogo.tagline)}" width="420" height="121" loading="eager" decoding="async" fetchpriority="high">
+      </a>`;
+      const enAt = en.indexOf('<span class="am-brand-kicker">World edition</span>');
+      if (enAt > 0) {
+        en = en.slice(0, enAt) + mark + en.slice(enAt);
+        if (!en.includes('.am-mast-logo{')) {
+          en = en.replace('</style>', `.am-mast-logo{display:block;max-width:420px;margin:0 0 12px;line-height:0;border-radius:10px;overflow:hidden}
+.am-mast-logo img{display:block;width:100%;height:auto}
+@media(max-width:620px){.am-mast-logo{max-width:300px}}
+</style>`);
+        }
       }
     }
     en = addPerf(en);

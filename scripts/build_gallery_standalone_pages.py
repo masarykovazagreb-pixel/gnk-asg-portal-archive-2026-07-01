@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import html, json
+import html, json, re
 from pathlib import Path
 ROOT=Path.cwd()/"apps"/"portal"
 items=json.loads((ROOT/"data/visual_gallery.json").read_text(encoding="utf-8")).get("items",[])
@@ -35,7 +35,22 @@ def page(item,en=False,route="visual-index"):
          "inLanguage":["hr","en"],"publisher":publisher}
     ]}
     meta=json.dumps(schema,ensure_ascii=False).replace("<",r"\u003c")
-    return f'''<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{html.escape(page_title)}</title><meta name="description" content="{html.escape(desc,quote=True)}"><meta name="editor" content="Nermin Sefić"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="{canonical}">{alternates}<meta property="og:type" content="website"><meta property="og:site_name" content="GNK ASG"><meta property="og:title" content="{html.escape(page_title,quote=True)}"><meta property="og:description" content="{html.escape(desc,quote=True)}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{html.escape(image_url,quote=True)}"><meta property="og:image:type" content="{fmt(src)}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="675"><meta property="og:image:alt" content="{html.escape(alt_text,quote=True)}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{html.escape(page_title,quote=True)}"><meta name="twitter:description" content="{html.escape(desc,quote=True)}"><meta name="twitter:image" content="{html.escape(image_url,quote=True)}"><meta name="twitter:image:alt" content="{html.escape(alt_text,quote=True)}"><script type="application/ld+json">{meta}</script><style>body{{margin:0;background:#071426;color:#e8edf3;font-family:Arial,sans-serif}}main{{max-width:1050px;margin:auto;padding:40px 20px}}a{{color:#e0bd69}}article{{background:#0d2038;border:1px solid #31506e;border-radius:16px;padding:24px}}img{{display:block;max-width:100%;height:auto;margin:0 auto 24px;border-radius:10px}}p{{line-height:1.65;color:#cbd5e1}}</style></head><body><main><p><a href="{back}">← {back_label}</a></p><article><img src="{html.escape(src,quote=True)}" alt="{html.escape(alt_text,quote=True)}" width="1200" height="675"><h1>{html.escape(title)}</h1><p>{html.escape(desc)}</p></article></main></body></html>'''
+    # Riječi u meta keywords, oznake u article:tag. Autor se ne stavlja u
+    # keywords — ime urednika stoji u meta editor i u JSON-LD čvoru osobe.
+    topic_words=[str(t) for t in (item.get("topic") or [])]
+    kw_words=[]
+    for w in topic_words+["AKTUAL MEDIA","Aktual mediji","GNK ASG","galerija","vizualni indeks"]:
+        if w.lower() not in [x.lower() for x in kw_words]:
+            kw_words.append(w)
+    tags=[]
+    for t in topic_words:
+        tag="#"+re.sub(r"[^0-9A-Za-zČĆŽŠĐčćžšđ]","",t.replace(" ","").replace("-",""))
+        if len(tag)>2 and tag not in tags: tags.append(tag)
+    for t in ["#AKTUALMEDIA","#AktualMedia","#GNKASG"]:
+        if t not in tags: tags.append(t)
+    keywords_meta=", ".join(kw_words)
+    tag_meta="\n".join(f'<meta property="article:tag" content="{html.escape(t,quote=True)}">' for t in tags)
+    return f'''<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{html.escape(page_title)}</title><meta name="description" content="{html.escape(desc,quote=True)}"><meta name="keywords" content="{html.escape(keywords_meta,quote=True)}"><meta name="editor" content="Nermin Sefić">{tag_meta}<meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="{canonical}">{alternates}<meta property="og:type" content="website"><meta property="og:site_name" content="GNK ASG"><meta property="og:title" content="{html.escape(page_title,quote=True)}"><meta property="og:description" content="{html.escape(desc,quote=True)}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{html.escape(image_url,quote=True)}"><meta property="og:image:type" content="{fmt(src)}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="675"><meta property="og:image:alt" content="{html.escape(alt_text,quote=True)}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{html.escape(page_title,quote=True)}"><meta name="twitter:description" content="{html.escape(desc,quote=True)}"><meta name="twitter:image" content="{html.escape(image_url,quote=True)}"><meta name="twitter:image:alt" content="{html.escape(alt_text,quote=True)}"><script type="application/ld+json">{meta}</script><style>body{{margin:0;background:#071426;color:#e8edf3;font-family:Arial,sans-serif}}main{{max-width:1050px;margin:auto;padding:40px 20px}}a{{color:#e0bd69}}article{{background:#0d2038;border:1px solid #31506e;border-radius:16px;padding:24px}}img{{display:block;max-width:100%;height:auto;margin:0 auto 24px;border-radius:10px}}p{{line-height:1.65;color:#cbd5e1}}</style></head><body><main><p><a href="{back}">← {back_label}</a></p><article><img src="{html.escape(src,quote=True)}" alt="{html.escape(alt_text,quote=True)}" width="1200" height="675"><h1>{html.escape(title)}</h1><p>{html.escape(desc)}</p></article></main></body></html>'''
 
 
 count=0
@@ -95,6 +110,54 @@ gallery_jsonld=json.dumps(gallery_schema,ensure_ascii=False).replace("<", r"\u00
 # HTML template is intentionally kept adjacent to the source gallery manifest,
 # not maintained independently in an untracked front-end worker.
 gallery_css=":root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#071426;color:#edf2f7;font:16px/1.65 system-ui,-apple-system,\"Segoe UI\",Arial,sans-serif}main{max-width:1180px;margin:auto;padding:32px 18px 64px}a{color:#f0cf87}a:focus-visible{outline:3px solid #f7d777;outline-offset:4px}nav{margin-bottom:22px}.lead{max-width:800px;color:#cbd5e1}h1{font-size:clamp(2rem,5vw,3.1rem);line-height:1.2;margin:.3rem 0 1rem}h2{font-size:1.45rem;margin:2rem 0 1rem}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:20px}.tile{overflow:hidden;border-radius:16px;background:#10253c;border:1px solid #37516d;transition:transform .18s ease,border-color .18s ease}.tile:hover{transform:translateY(-3px);border-color:#d4af37}.tile a{color:inherit;text-decoration:none;display:block;height:100%}.tile img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;background:#162c45}.caption{padding:16px}.caption h3{font-size:1.1rem;margin:0 0 .35rem;color:#fff}.caption p{margin:0 0 .75rem;color:#cedae7;font-size:.91rem}.caption span{color:#f0cf87;font-weight:700}.note{margin-top:20px;padding:14px 18px;border-left:3px solid #d4af37;background:#122a43;color:#d7e1eb}.directory{columns:3;column-gap:28px;padding-left:20px}.directory li{break-inside:avoid;margin-bottom:8px}.directory a{text-decoration-thickness:1px;text-underline-offset:2px}@media(max-width:800px){.directory{columns:2}}@media(max-width:520px){main{padding:24px 16px 48px}.directory{columns:1}}@media(prefers-reduced-motion:reduce){.tile{transition:none}.tile:hover{transform:none}}"
+# --- Znakovi kuće AKTUAL MEDIA -------------------------------------------
+# Sekciju piše ovaj generator jer je on jedini vlasnik /galerija/index.html.
+# Podaci dolaze iz istog manifesta koji puni scripts/build-aktual-media-logos-v1.py
+BRAND_START = "<!-- BRAND-GALLERY:START -->"
+BRAND_END = "<!-- BRAND-GALLERY:END -->"
+brand_logos = []
+try:
+    _logos = json.loads((ROOT / "data" / "aktual-logos-v1.json").read_text(encoding="utf-8"))
+    brand_logos = _logos.get("logos", [])
+except Exception:
+    brand_logos = []
+
+_channels = []
+try:
+    _ch = json.loads((Path(__file__).resolve().parents[1] / "apps" / "region" / "channels.json").read_text(encoding="utf-8"))
+    _channels = _ch.get("channels", [])
+except Exception:
+    _channels = []
+
+
+def _tile(slug, image, width, height, caption):
+    """slug je puni naziv rute (znak-... za znakove, izdanje-... za naslovnice),
+    pa link uvijek pokazuje točno na onu stranicu koju generator izgradi."""
+    return (f'<li><a href="/galerija/{esc(slug)}/"><img src="{esc(image)}" alt="{esc(caption)}" '
+            f'width="{width}" height="{height}" loading="lazy" decoding="async"><span>{esc(caption)}</span></a></li>')
+
+
+_logo_tiles = "".join(
+    _tile(f'znak-{l["slug"]}', l["webp"], 1200, 345, l["title"]) for l in brand_logos
+)
+_city_tiles = "".join(
+    _tile(f'izdanje-{c["id"]}', f'/assets/izdanja/{c["id"]}-1200.webp', 1200, 675,
+          f'{c["city"]} — naslovnica izdanja {c["title"]}') for c in _channels
+)
+
+brand_section = f'''{BRAND_START}
+<section aria-labelledby="znakovi" style="margin:40px 0 0">
+  <h2 id="znakovi">Znakovi kuće AKTUAL MEDIA</h2>
+  <p class="lead">Svako izdanje ima svoj znak u istoj familiji: prvi dio imena u navyju, drugi u crvenoj, natpis iznad i slogan ispod. Znakovi su vektorski (SVG) i svaki ima vlastitu stranicu s podacima o upotrebi.</p>
+  <ul style="list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px">{_logo_tiles}</ul>
+</section>
+<section aria-labelledby="naslovnice" style="margin:40px 0 0">
+  <h2 id="naslovnice">Naslovnice gradskih izdanja</h2>
+  <p class="lead">Fotografija koja stoji na kartici i vrhu svakog gradskog izdanja, izdvojena kao samostalna slika s podacima o izvoru i pravu korištenja.</p>
+  <ul style="list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">{_city_tiles}</ul>
+</section>
+{BRAND_END}'''
+
 gallery_html=f'''<!doctype html>
 <html lang="hr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -131,7 +194,8 @@ gallery_html=f'''<!doctype html>
 <p class="note">Ilustracije služe uredničkom prikazu tema. Nisu samostalan dokaz financijskih rezultata, partnerstava, vlasništva ili operativnog statusa.</p>
 <section aria-labelledby="sve"><h2 id="sve">Sve galerijske stranice</h2><ul class="directory">
 {all_links}
-</ul></section></main></body></html>
+</ul></section>
+{brand_section}</main></body></html>
 '''
 (gal_root/"index.html").write_text(gallery_html,encoding="utf-8")
 print(f"Generated safe gallery routes for {count} manifest items")

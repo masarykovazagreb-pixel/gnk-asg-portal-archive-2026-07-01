@@ -52,6 +52,7 @@ const GATES = [
   { name: 'SEO matrica mreže', cmd: ['node', 'tests/test-seo-matrix-v1.mjs'], required: true },
   { name: 'Meta higijena — oznake, autor, entitet', cmd: ['node', 'tests/test-meta-hygiene-v1.mjs'], required: true },
   { name: 'Pokrivenost posrednika slika', cmd: ['node', 'tests/test-image-proxy-coverage-v1.mjs'], required: true },
+  { name: 'Znakovi kuće AKTUAL MEDIA', cmd: ['node', 'tests/test-brand-logos-v1.mjs'], required: true },
 ];
 
 function run(gate) {
