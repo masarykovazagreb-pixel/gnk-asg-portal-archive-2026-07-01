@@ -24,6 +24,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CHANNELS, HUB } from './build.mjs';
+import { logoJsonLd } from './brand.mjs';
 import { esc, safeJson } from './lib.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -671,6 +672,8 @@ function jsonld(desk, lang, canonical, alternate, keywords) {
         name: 'AKTUAL MEDIA d.o.o.',
         alternateName: BRAND_NAMES,
         url: `${SITE}/gnk-aktual/`,
+        /* Znak izdavača: vlastiti wordmark AKTUAL MEDIA, ne znak matičnog društva. */
+        logo: logoJsonLd(lang === 'en' ? 'aktual-media-en' : 'aktual-media-hr', { url: SITE }),
         parentOrganization: { '@type': 'Organization', '@id': `${SITE}/#gnk-asg`, name: 'GNK ASG d.o.o.', url: `${SITE}/` },
         editor: { '@id': `${SITE}/#nermin-sefic` },
       },
@@ -875,7 +878,7 @@ function sectionPage(lang) {
     '@context': 'https://schema.org',
     '@graph': [
       { '@type': 'WebSite', '@id': `${SITE}/#website`, name: 'GNK ASG', url: `${SITE}/`, inLanguage: ['hr', 'en'], publisher: { '@id': `${SITE}/#gnk-asg` } },
-      { '@type': 'NewsMediaOrganization', '@id': BRAND_ID, name: 'AKTUAL MEDIA d.o.o.', alternateName: BRAND_NAMES, url: `${SITE}/gnk-aktual/`, editor: { '@id': `${SITE}/#nermin-sefic` } },
+      { '@type': 'NewsMediaOrganization', '@id': BRAND_ID, name: 'AKTUAL MEDIA d.o.o.', alternateName: BRAND_NAMES, url: `${SITE}/gnk-aktual/`, logo: logoJsonLd(lang === 'en' ? 'aktual-media-en' : 'aktual-media-hr', { url: SITE }), editor: { '@id': `${SITE}/#nermin-sefic` } },
       { '@type': 'Person', '@id': `${SITE}/#nermin-sefic`, name: 'Nermin Sefić', jobTitle: lang === 'en' ? 'Editor and director' : 'Urednik i direktor', url: `${SITE}/nermin-sefic/` },
       {
         '@type': 'CollectionPage',

@@ -107,6 +107,26 @@ for (const [page, slug] of mustHave) {
   }
 }
 
+/* Čvor izdavača na ključnim stranicama mora nositi vlastiti znak AKTUAL
+   MEDIA — ne znak matičnog društva i ne nikakav drugi. */
+const ldBlocks = (html) => [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+  .map((m) => { try { return JSON.parse(m[1]); } catch { return null; } })
+  .filter(Boolean);
+const entityLogo = (html) => {
+  for (const data of ldBlocks(html)) {
+    for (const node of (Array.isArray(data) ? data : (data['@graph'] || [data]))) {
+      if (node && node['@id'] === 'https://gnk-asg.hr/gnk-aktual/#news-organization') return node.logo || null;
+    }
+  }
+  return null;
+};
+for (const page of ['gnk-aktual/index.html', 'izdanja/index.html', 'izdanja/moda/index.html', 'kanal/index.html', 'kanal/zagreb/index.html', 'galerija/index.html']) {
+  const logo = entityLogo(read(page));
+  if (!logo) { fails.push(`${page}: čvor izdavača nema znak`); continue; }
+  const url = typeof logo === 'string' ? logo : (logo.url || logo.contentUrl || '');
+  if (!url.includes('/assets/brand/aktual-media-')) fails.push(`${page}: znak izdavača nije AKTUAL MEDIA (${url})`);
+}
+
 /* Naslovnica galerije nosi istu karticu kao SPT: slika lijevo, tamni panel
    desno, četiri činjenice u dva stupca, tri gumba, pilula i oznaka. */
 {
