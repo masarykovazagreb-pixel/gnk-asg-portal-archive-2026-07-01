@@ -25,7 +25,9 @@ ostaju na gnk-asg.hr — time nema dvostrukog sadržaja među domenama.
 
 Europa je već pokrivena osmim regionalnim izdanjima na matici (Zagreb,
 Beograd, Sarajevo, Budimpešta, Ljubljana, Rim, Sofija, Bukurešt). Ukupno:
-**17 gradskih izdanja na pet kontinenata**.
+**17 gradskih izdanja na šest kontinenata** — Europa, Afrika, Azija, Sjeverna
+Amerika, Južna Amerika i Oceanija. Antarktika nije pokrivena i neće biti:
+nema lokalnih medija koje bi izdanje čitalo.
 
 ## 2. Što svaki portal ima
 
@@ -131,7 +133,8 @@ pa se mreža širi otkrivanjem, a ne kupnjom domena.
    `apps/region/data/<id>.json`.
 2. Dodaj `id` u `WORLD_IDS` i kontinent u `CONTINENTS`
    (`apps/world/lib/registry.mjs`).
-3. Dodaj slug u dvije petlje u `.github/workflows/world-portals-deploy.yml`.
+3. Dodaj projekt u devet objava u `.github/workflows/world-portals-deploy.yml`
+   (guardrail čita popis iz registra, pa popis mora biti potpun).
 4. Pokreni `node apps/world/build.mjs` i `node tests/test-world-portals-v1.mjs`.
 
 Blok mreže, hub, agent i sitemap prate sami — nema ručnog popisa linkova.

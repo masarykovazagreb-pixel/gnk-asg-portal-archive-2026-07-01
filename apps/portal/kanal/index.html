@@ -47,6 +47,15 @@ a{color:inherit;text-decoration:none}
 .kx-foot a{color:#8c2f2f;border-bottom:1px solid rgba(140,47,47,.35);text-decoration:none}
 .kx-foot a:hover{border-color:#8c2f2f}
 .kx-foot span{color:#8a8272;font-weight:700}
+.kx-world{margin:44px 0 0;padding:28px 0 0;border-top:1px solid #e2ddd2}
+.kx-world h2{font:700 clamp(20px,2.4vw,28px)/1.2 Georgia,serif;margin:0 0 8px}
+.kx-world p{margin:0 0 16px;max-width:80ch;color:#3d4753;font-size:14.5px}
+.kx-world code{font:600 12.5px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;background:#fff;border:1px solid #e2ddd2;border-radius:4px;padding:1px 5px}
+.kx-worldgrid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.kx-worldgrid a{display:grid;gap:2px;padding:10px 12px;background:#fff;border:1px solid #e2ddd2;border-radius:10px;text-decoration:none}
+.kx-worldgrid a:hover{border-color:#8c6a1f}
+.kx-worldgrid b{font:700 13px/1.3 system-ui,sans-serif}
+.kx-worldgrid span{font:600 10.5px/1.3 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#8a8272}
 .kx-go{margin-top:4px;font:800 11px/1 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#8c2f2f}
 /* mreža — zajednički blok na svim portalima */
 .mesh{padding:30px 0 34px;border-top:1px solid var(--line,rgba(255,255,255,.12));background:rgba(0,0,0,.16)}
@@ -322,6 +331,11 @@ a{color:inherit;text-decoration:none}
       </a>
       <p class="kx-foot"><a href="/kanal/peking/en/" hreflang="en" lang="en">English overview →</a> <span>30 reviews</span></p>
     </article></div>
+  <section class="kx-world">
+    <h2>Devet svjetskih izdanja na vlastitim adresama</h2>
+    <p>Svako od njih ima i vlastiti portal na <code>gnk-world-&lt;grad&gt;.pages.dev</code> — isti sadržaj, isti urednik, vlastiti sitemap i feed. Portal je ulaz u izdanje; puni osvrti ostaju na gnk-asg.hr.</p>
+    <ul class="kx-worldgrid"><li><a href="https://gnk-world-nairobi.pages.dev/" rel="external noopener" hreflang="en" lang="en"><b>Nairobi</b><span>Kenija · en</span></a></li><li><a href="https://gnk-world-jakarta.pages.dev/" rel="external noopener" hreflang="id" lang="id"><b>Jakarta</b><span>Indonezija · id</span></a></li><li><a href="https://gnk-world-newyork.pages.dev/" rel="external noopener" hreflang="en" lang="en"><b>New York</b><span>Sjedinjene Američke Države · en</span></a></li><li><a href="https://gnk-world-saopaulo.pages.dev/" rel="external noopener" hreflang="pt" lang="pt"><b>São Paulo</b><span>Brazil · pt</span></a></li><li><a href="https://gnk-world-sydney.pages.dev/" rel="external noopener" hreflang="en" lang="en"><b>Sydney</b><span>Australija · en</span></a></li><li><a href="https://gnk-world-singapur.pages.dev/" rel="external noopener" hreflang="en" lang="en"><b>Singapur</b><span>Singapur · en</span></a></li><li><a href="https://gnk-world-kairo.pages.dev/" rel="external noopener" hreflang="ar" lang="ar"><b>Kairo</b><span>Egipat · ar</span></a></li><li><a href="https://gnk-world-tokio.pages.dev/" rel="external noopener" hreflang="ja" lang="ja"><b>Tokio</b><span>Japan · ja</span></a></li><li><a href="https://gnk-world-peking.pages.dev/" rel="external noopener" hreflang="zh" lang="zh"><b>Peking</b><span>Kina · zh</span></a></li></ul>
+  </section>
 </main>
 <nav class="mesh mesh--light" aria-label="Mreža AKTUAL MEDIA" data-mesh="v1">
   <div class="wrap">

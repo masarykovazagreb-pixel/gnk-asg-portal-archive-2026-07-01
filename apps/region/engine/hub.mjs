@@ -18,6 +18,7 @@ import { fileURLToPath } from 'node:url';
 import { esc, longDate, shortDate, stampLocal, scoreFromTitle, truncate, themeFor, safeJson } from './lib.mjs';
 import { CHANNELS, HUB, CONTACT, SOCIAL_IMAGE, CITY_SHORT, CSS as CHANNEL_CSS } from './build.mjs';
 import { meshBlock, MESH_CSS } from '../../satellites/lib/network-v1.mjs';
+import { WORLD_PORTALS } from '../../world/lib/registry.mjs';
 import { ensureDeskTiles, tilePath, variantFor } from './desk-art.mjs';
 import { logoImg, logoFor, logoAlternate, channelLogoSlug, deskLogoSlug, logoJsonLd } from './brand.mjs';
 
@@ -992,6 +993,15 @@ a{color:inherit;text-decoration:none}
 .kx-foot a{color:#8c2f2f;border-bottom:1px solid rgba(140,47,47,.35);text-decoration:none}
 .kx-foot a:hover{border-color:#8c2f2f}
 .kx-foot span{color:#8a8272;font-weight:700}
+.kx-world{margin:44px 0 0;padding:28px 0 0;border-top:1px solid #e2ddd2}
+.kx-world h2{font:700 clamp(20px,2.4vw,28px)/1.2 Georgia,serif;margin:0 0 8px}
+.kx-world p{margin:0 0 16px;max-width:80ch;color:#3d4753;font-size:14.5px}
+.kx-world code{font:600 12.5px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;background:#fff;border:1px solid #e2ddd2;border-radius:4px;padding:1px 5px}
+.kx-worldgrid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.kx-worldgrid a{display:grid;gap:2px;padding:10px 12px;background:#fff;border:1px solid #e2ddd2;border-radius:10px;text-decoration:none}
+.kx-worldgrid a:hover{border-color:#8c6a1f}
+.kx-worldgrid b{font:700 13px/1.3 system-ui,sans-serif}
+.kx-worldgrid span{font:600 10.5px/1.3 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#8a8272}
 .kx-go{margin-top:4px;font:800 11px/1 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#8c2f2f}
 ${MESH_CSS}
 </style>
@@ -1005,6 +1015,11 @@ ${MESH_CSS}
     <p>Svako izdanje ima vlastiti feed, sitemap i arhivu. Osam izdanja pokriva regiju, devet globalnih pokriva pet kontinenata — od Nairobija i Kaira preko Jakarte, Pekinga i Tokija do Sydneya, Singapura, São Paula i New Yorka. Adrese su na gnk-asg.hr/kanal/, pa se sve indeksira kao jedna cjelina, a stari linkovi s pages.dev preusmjeravaju ovamo (301).</p>
   </div>
   <div class="kx-grid">${rows}</div>
+  <section class="kx-world">
+    <h2>Devet svjetskih izdanja na vlastitim adresama</h2>
+    <p>Svako od njih ima i vlastiti portal na <code>gnk-world-&lt;grad&gt;.pages.dev</code> — isti sadržaj, isti urednik, vlastiti sitemap i feed. Portal je ulaz u izdanje; puni osvrti ostaju na gnk-asg.hr.</p>
+    <ul class="kx-worldgrid">${WORLD_PORTALS.map((p) => `<li><a href="${p.base}" rel="external noopener" hreflang="${p.lang}" lang="${p.lang}"><b>${esc(p.city)}</b><span>${esc(p.country)} · ${esc(p.lang)}</span></a></li>`).join('')}</ul>
+  </section>
 </main>
 ${meshBlock({ lang: 'hr', selfUrl: 'https://gnk-asg.hr/kanal/', theme: 'light' })}
 </body>
