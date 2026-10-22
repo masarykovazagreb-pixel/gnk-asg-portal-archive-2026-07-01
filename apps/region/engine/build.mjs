@@ -299,7 +299,7 @@ function shell(channel, strings, { title, description, path, keywords = [], json
       },
       {
         '@type': 'NewsMediaOrganization', '@id': `${PUBLIC}/gnk-aktual/#news-organization`,
-        name: 'AKTUAL MEDIA', alternateName: ['Aktual mediji', 'AKTUAL MEDIA KANAL', channel.title],
+        name: 'AKTUAL MEDIA d.o.o.', alternateName: ['AKTUAL MEDIA', 'Aktual mediji', 'Aktual Media', 'AKTUAL MEDIA KANAL', channel.title],
         legalName: 'AKTUAL MEDIA d.o.o.', url: CENTRAL, email: CONTACT,
         logo: { '@type': 'ImageObject', url: `${PUBLIC}/assets/izdanja/aktual-media-og.jpg` },
         parentOrganization: { '@id': `${PUBLIC}/#gnk-asg` },
