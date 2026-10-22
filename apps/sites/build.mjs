@@ -231,7 +231,7 @@ function siblingBlock(site, lang) {
       ? 'Each edition has its own domain, its own archive and its own editor’s signature — and all of them point back to the same source of record.'
       : 'Svako izdanje ima vlastitu domenu, vlastitu arhivu i vlastiti potpis urednika — i sva vode natrag na isti izvor provjere.'}</p>
     <div class="grid g3">${others.map((item) => `<a class="card" href="${item.base}" rel="external noopener" hreflang="hr" lang="hr" style="border-top:4px solid ${item.accent}">
-      <div class="body"><span class="tag" style="color:${item.accent2}">${esc(item.domain)}</span><h3>${esc(item.name)}</h3><p>${esc(item.tagline.hr)}</p></div>
+      <div class="body"><span class="tag" style="color:${item.accent2}">${esc(item.domain)}</span><h3>${esc(item.name)}</h3><p>${esc(item.tagline[lang])}</p></div>
     </a>`).join('')}</div>
     <p style="margin-top:16px"><a href="${lang === 'en' ? NETWORK_HUB_EN : NETWORK_HUB_HR}">${lang === 'en' ? 'The whole network →' : 'Cijela mreža →'}</a></p>
   </div></section>`;

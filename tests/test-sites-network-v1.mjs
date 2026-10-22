@@ -127,6 +127,14 @@ function checkHtml(file, site, lang, slug) {
   if (!links.some((href) => href.includes('gnk-asg.hr'))) note(`${where}: nema poveznice na gnk-asg.hr`);
   if (!links.some((href) => href === NETWORK_HUB_HR || href === NETWORK_HUB_EN)) note(`${where}: nema poveznice na mrežni hub`);
 
+  /* Jezična čistoća: hrvatska rečenica ne smije procuriti na /en/ stranicu.
+     Provjeravamo zaglavlja kartica, jer su se prijevodi tamo lako zaborave. */
+  if (lang === 'en') {
+    const leaks = ['Borilački sport u Sjedinjenim', 'Košarka bez šuma', 'Kako znanost stvarno nastaje',
+      'Ples, step i pokret kao tehnologija', 'Zdravlje bez čuda', 'Nadzorni desk: što mediji'];
+    for (const leak of leaks) if (html.includes(leak)) note(`${where}: hrvatski tekst na engleskoj stranici ("${leak.slice(0, 30)}…")`);
+  }
+
   const imgs = [...html.matchAll(/<img [^>]*src="([^"]+)"/g)].map((m) => m[1]);
   for (const src of imgs) {
     if (!src.startsWith('/')) { note(`${where}: vanjska slika ${src}`); continue; }
