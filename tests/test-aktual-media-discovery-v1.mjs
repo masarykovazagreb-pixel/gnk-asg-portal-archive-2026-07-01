@@ -1,0 +1,51 @@
+#!/usr/bin/env node
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const ROOT='apps/portal';
+const BRAND='https://gnk-asg.hr/gnk-aktual/#news-organization';
+const locales={zagreb:'hr_HR',beograd:'sr_RS',sarajevo:'bs_BA',budimpesta:'hu_HU',ljubljana:'sl_SI',rim:'it_IT',sofija:'bg_BG',bukurest:'ro_RO'};
+const read=p=>fs.readFileSync(ROOT+'/'+p,'utf8');
+const graph=s=>[...s.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)].flatMap(m=>{const j=JSON.parse(m[1]);return j['@graph']||[j]});
+const assertEntity=s=>assert(graph(s).some(j=>j['@type']==='NewsMediaOrganization'&&j['@id']===BRAND&&j.name==='AKTUAL MEDIA d.o.o.'),'NewsMediaOrganization identity mismatch');
+const loc=s=>[...s.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1]);
+for(const p of ['gnk-aktual/index.html','izdanja/index.html','aktual-media/index.html','radio/index.html']){
+  const s=read(p);assert(s.includes('<link rel="canonical"'),p+' canonical missing');
+  assert(s.includes(BRAND),p+' brand ID missing');
+  assert.match(s,/<meta\b[^>]*name="robots"[^>]*index,follow/i,p+' robots index flag missing');
+}
+const main=read('gnk-aktual/index.html'), mainNodes=graph(main);
+assertEntity(main);
+const newsPages=mainNodes.filter(j=>j['@type']==='CollectionPage'&&j.url==='https://gnk-asg.hr/gnk-aktual/');
+assert.equal(newsPages.length,1,'duplicate newsroom CollectionPage');
+assert.equal(newsPages[0].publisher['@id'],BRAND);
+assert.equal(newsPages[0].mainEntity.numberOfItems,newsPages[0].mainEntity.itemListElement.length);
+const editions=graph(read('izdanja/index.html'));
+const list=editions.find(j=>j['@type']==='ItemList'&&j.name==='Izdanja AKTUAL MEDIA');
+assert.equal(list.numberOfItems,list.itemListElement.length);
+assert(list.numberOfItems>=21,'expected linked media destinations');
+assert(editions.some(j=>j['@type']==='NewsMediaOrganization'&&j['@id']===BRAND));
+const data=graph(read('aktual-media/index.html'));
+assert(data.some(j=>j['@type']==='CollectionPage'&&j.publisher?.['@id']===BRAND));
+const radio=graph(read('radio/index.html'));
+assert(radio.some(j=>j['@type']==='WebPage'&&j.publisher?.['@id']===BRAND));
+assertEntity(read('radio/index.html'));
+let regionalPages=0;
+for(const [city,locale] of Object.entries(locales)){
+  const s=read('kanal/'+city+'/index.html');
+  const og=s.match(/<meta\s+property="og:locale"\s+content="([^"]+)"/i)?.[1];
+  assert.equal(og,locale,city+' wrong Open Graph locale');
+  assert(s.includes('property="og:locale:alternate" content="en_US"'),city+' missing English alternate');
+  assertEntity(s);
+  assert(s.includes('href="https://gnk-asg.hr/gnk-aktual/"')||s.includes('href="/gnk-aktual/"'),city+' backlink to hub missing');
+  const urls=loc(read('kanal/'+city+'/sitemap.xml'));regionalPages+=urls.length;
+  assert(urls.length>400,city+' sitemap unexpectedly small');
+  assert(urls.every(u=>u.startsWith('https://gnk-asg.hr/')),'offhost URL in '+city+' sitemap');
+}
+const editionUrls=loc(read('izdanja/sitemap.xml'));
+for(const u of ['https://gnk-asg.hr/kanal/','https://gnk-asg.hr/radio/'])assert(editionUrls.includes(u),u+' missing in sitemap');
+assert(editionUrls.every(u=>u.startsWith('https://gnk-asg.hr/')),'foreign URL in editions sitemap');
+const rootIndex=read('sitemap-index.xml');
+for(const city of Object.keys(locales))assert(rootIndex.includes('https://gnk-asg.hr/kanal/'+city+'/sitemap.xml'),'root index missing '+city);
+assert(rootIndex.includes('https://gnk-asg.hr/izdanja/sitemap.xml'),'root index missing media editions');
+assert(regionalPages>=3500,'unexpected regional sitemap contraction');
+console.log('PASS: AKTUAL MEDIA — 8 locales, 4 hubs, media entity, interlinking, sitemap coverage ('+regionalPages+' regional URLs)');
