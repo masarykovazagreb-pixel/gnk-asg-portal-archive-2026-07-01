@@ -236,7 +236,7 @@ ${footer(channel, strings)}`;
     },
     {
       '@context': 'https://schema.org', '@type': 'ItemList',
-      name: `${m.title} — ${channel.title}`, numberOfItems: items.length,
+      name: `${m.title} — ${channel.title}`, numberOfItems: Math.min(items.length, 60),
       itemListElement: items.slice(0, 60).map((i, index) => ({ '@type': 'ListItem', position: index + 1, url: url(channel, `clanak/${i.slug}/`), name: i.title }))
     }
   ];
@@ -298,7 +298,7 @@ function shell(channel, strings, { title, description, path, keywords = [], json
         name: 'GNK ASG d.o.o.', url: `${PUBLIC}/`
       },
       {
-        '@type': 'NewsMediaOrganization', '@id': `${PUBLIC}/gnk-aktual/#publisher`,
+        '@type': 'NewsMediaOrganization', '@id': `${PUBLIC}/gnk-aktual/#news-organization`,
         name: 'AKTUAL MEDIA', alternateName: ['Aktual mediji', 'AKTUAL MEDIA KANAL', channel.title],
         legalName: 'AKTUAL MEDIA d.o.o.', url: CENTRAL, email: CONTACT,
         logo: { '@type': 'ImageObject', url: `${PUBLIC}/assets/izdanja/aktual-media-og.jpg` },
@@ -556,7 +556,7 @@ ${footer(channel, strings)}`;
   const jsonld = [
     {
       '@context': 'https://schema.org', '@type': 'ItemList',
-      name: `${channel.title} — ${strings.latest}`, numberOfItems: items.length,
+      name: `${channel.title} — ${strings.latest}`, numberOfItems: Math.min(items.length, 20),
       itemListElement: items.slice(0, 20).map((i, index) => ({
         '@type': 'ListItem', position: index + 1, url: url(channel, `clanak/${i.slug}/`), name: i.title
       }))
@@ -738,12 +738,9 @@ ${footer(channel, strings)}`;
       articleSection: strings.themeNames[theme] || theme,
       keywords: [...new Set([...tags, 'AKTUAL MEDIA', 'media critique'])].join(', '),
       author: { '@type': 'Organization', name: 'AKTUAL MEDIA d.o.o.', url: HUB },
-      editor: { '@type': 'Person', name: 'Nermin Sefić', url: 'https://gnk-asg.hr/nermin-sefic/' },
-      publisher: {
-        '@type': 'NewsMediaOrganization', name: 'AKTUAL MEDIA d.o.o.', url: HUB,
-        logo: { '@type': 'ImageObject', url: 'https://gnk-asg.hr/assets/logo-gnk-asg-canonical.svg' },
-        employee: [{ '@type': 'Person', name: 'Nermin Sefić', jobTitle: 'Direktor', url: 'https://gnk-asg.hr/nermin-sefic/' }]
-      },
+      editor: { '@type': 'Person', '@id': 'https://gnk-asg.hr/#nermin-sefic', name: 'Nermin Sefić', url: 'https://gnk-asg.hr/nermin-sefic/' },
+      publisher: { '@id': 'https://gnk-asg.hr/gnk-aktual/#news-organization' },
+      isPartOf: { '@id': 'https://gnk-asg.hr/#website' },
       citation: { '@type': 'CreativeWork', name: item.title, url: item.url, publisher: { '@type': 'Organization', name: item.sourceName } },
       comment: [{
         '@type': 'Comment', '@id': `${canonical}#komentar-bota`, url: `${canonical}#komentar-bota`,
