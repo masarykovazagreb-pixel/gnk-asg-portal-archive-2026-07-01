@@ -26,7 +26,7 @@ for (const [host, outlet, country] of REGION_IMAGE_HOSTS) {
   if (!/^[A-Z]{2}$/.test(country)) fails.push(`${host}: zemlja nije dvoslovna`);
 }
 
-/* Stvarni hostovi iz podataka osam kanala. */
+/* Stvarni hostovi iz podataka svih gradskih izdanja. */
 const dataDir = join(ROOT, 'apps', 'region', 'data');
 const found = new Map();
 for (const file of readdirSync(dataDir).filter((name) => /^[a-z]+\.json$/.test(name) && !name.startsWith('_') && name !== 'seed.json')) {

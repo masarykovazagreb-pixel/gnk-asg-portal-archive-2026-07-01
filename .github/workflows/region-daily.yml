@@ -1,10 +1,12 @@
 name: REGION — dnevni ciklus izdanja
 
-# Osam gradskih kanala AKTUAL MEDIA (Zagreb, Beograd, Sarajevo, Budimpešta,
-# Ljubljana, Rim, Sofija, Bukurešt): čitanje javnih feedova, osvrti, build,
-# commit na main i deploy — svaka 2 sata, automatski. Ciklus je inkrementalan:
-# novi zapisi ulaze u arhivu, stranice se grade za sve kanale, a commit ide
-# samo ako se sadržaj stvarno promijenio.
+# Sedamnaest gradskih kanala AKTUAL MEDIA — osam regionalnih (Zagreb, Beograd,
+# Sarajevo, Budimpešta, Ljubljana, Rim, Sofija, Bukurešt) i devet svjetskih
+# (Nairobi, Jakarta, New York, São Paulo, Sydney, Singapur, Kairo, Tokio,
+# Peking): čitanje javnih feedova, osvrti, build, commit na main i deploy —
+# svaka 2 sata, automatski. Ciklus je inkrementalan: novi zapisi ulaze u
+# arhivu, stranice se grade za sve kanale, a commit ide samo ako se sadržaj
+# stvarno promijenio.
 #
 # Registrirano u ops/automation-control-v1.json (knownCurrentSchedules) i
 # ops/automation-kill-switches.json (regionPublish).
@@ -81,9 +83,11 @@ jobs:
         run: |-
           set -euo pipefail
           node apps/portal/scripts/album-nermin-sefic-v1.mjs
+          node scripts/build-brand-gallery-v1.mjs || echo "::warning::Galerija znakova nije dovršena — provjeri manifest i naslovnicu."
           node scripts/build-top-teme-v1.mjs
           node scripts/audit-top-teme-v1.mjs
           node apps/region/engine/hub.mjs
+          node scripts/knowledge-center-hr-sync-v1.mjs --apply
           node apps/region/engine/audit.mjs
           node scripts/audit-aktual-brand-indexability-v1.mjs --strict
           test -f apps/portal/izdanja/index.html
@@ -96,13 +100,13 @@ jobs:
           set -euo pipefail
           git config user.name "AKTUAL MEDIA REGION"
           git config user.email "info@gnk-asg.hr"
-          git add apps/region/data apps/region/site apps/portal/kanal apps/portal/usa apps/portal/izdanja apps/portal/gnk-aktual apps/portal/en/gnk-aktual apps/portal/top-teme apps/portal/data/izdanja.json apps/portal/data/izdanja-sport.json apps/portal/data/nermin-sefic-gallery.json apps/portal/data/top-teme.json apps/portal/galerija
+          git add apps/region/data apps/region/site apps/portal/kanal apps/portal/usa apps/portal/izdanja apps/portal/gnk-aktual apps/portal/en/gnk-aktual apps/portal/top-teme apps/portal/data/izdanja.json apps/portal/data/izdanja-sport.json apps/portal/data/nermin-sefic-gallery.json apps/portal/data/top-teme.json apps/portal/galerija apps/portal/aktual-media apps/portal/en/aktual-media apps/portal/knowledge-center apps/portal/data/aktual-data-desk-v1.json apps/portal/data/knowledge-base.json apps/portal/sitemap.xml apps/portal/sitemap-index.xml
           if git diff --cached --quiet; then
             echo "Nema novih zapisa — stanje je već objavljeno."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          git commit -m "REGION: ciklus $(date +%F) $(date +%H):00 — osam gradskih izdanja i galerija" -m "Automatski sastavljeni osvrti na način izvještavanja iz javnih feedova. Izvornici su povezani, tekstovi nisu preuzeti. Nije pojedinačno urednički pregledano."
+          git commit -m "REGION: ciklus $(date +%F) $(date +%H):00 — sedamnaest gradskih izdanja i galerija" -m "Automatski sastavljeni osvrti na način izvještavanja iz javnih feedova. Izvornici su povezani, tekstovi nisu preuzeti. Nije pojedinačno urednički pregledano."
           echo "changed=true" >> "$GITHUB_OUTPUT"
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
@@ -123,13 +127,26 @@ jobs:
           pushed=false
           for attempt in 1 2 3; do
             git fetch origin "$ref" --no-tags
+            # Build regenerira i datoteke koje nisu u commit popisu (index,
+            # mreza, jsonld). Git rebase odbija raditi s necommitanim
+            # promjenama, pa je do 22. 10. 2026. svaki ciklus tiho padao na
+            # prvom rebaseu i izdanje se gubilo. Artifakti se stashaju prije
+            # rebasea; ako se ne vrate, sljedeći ciklus ih ionako ponovno
+            # generira — važnije je da zapis izađe.
+            git stash push -u -m "region-artifacts-$attempt" >/dev/null 2>&1 || true
             if ! git rebase "origin/$ref"; then
               echo "::warning::Rebase na origin/$ref nije prošao (pokušaj $attempt) — izdanje ostaje za sljedeći ciklus."
               git rebase --abort || true
+              git stash drop >/dev/null 2>&1 || true
               break
             fi
-            if git push origin "HEAD:$ref"; then pushed=true; break; fi
+            if git push origin "HEAD:$ref"; then
+              pushed=true
+              git stash drop >/dev/null 2>&1 || true
+              break
+            fi
             echo "::warning::Push odbijen (pokušaj $attempt) — ponavljam nakon rebasea."
+            git stash drop >/dev/null 2>&1 || true
             sleep 5
           done
           echo "pushed=$pushed" >> "$GITHUB_OUTPUT"

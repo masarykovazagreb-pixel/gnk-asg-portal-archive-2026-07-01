@@ -218,13 +218,32 @@ for (const [index, entry] of entries.entries()) {
   created += 1;
 }
 
-// sitemap za galeriju
-const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+/* Sitemap galerije ima više pisaca: album piše portrete, a
+   scripts/build-brand-gallery-v1.mjs znakove kuće i naslovnice izdanja.
+   Zato album mijenja samo svoj označeni blok — ranije je prepisivao cijeli
+   sitemap i tiho brisao sve znakove iz njega. */
+const MAP = path.join(OUT, 'sitemap.xml');
+const ALBUM_START = '<!-- ALBUM-SITEMAP:START -->';
+const ALBUM_END = '<!-- ALBUM-SITEMAP:END -->';
+const albumBlock = `${ALBUM_START}
 ${entries.map((e) => `<url><loc>${BASE}/galerija/${e.slug}/</loc><changefreq>monthly</changefreq><priority>0.5</priority><image:image><image:loc>${BASE}${e.src}</image:loc><image:title>${esc(`Nermin Sefić — ${e.title}`)}</image:title><image:caption>${esc(e.alt)}</image:caption></image:image></url>`).join('\n')}
-</urlset>
-`;
-fs.writeFileSync(path.join(OUT, 'sitemap.xml'), sitemap);
+${ALBUM_END}`;
+let mapXml = fs.existsSync(MAP)
+  ? fs.readFileSync(MAP, 'utf8')
+  : `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n</urlset>\n`;
+if (!mapXml.includes('xmlns:image')) {
+  mapXml = mapXml.replace('<urlset ', '<urlset xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" ');
+}
+if (mapXml.includes(ALBUM_START) && mapXml.includes(ALBUM_END)) {
+  mapXml = mapXml.replace(new RegExp(`${ALBUM_START}[\\s\\S]*?${ALBUM_END}`), () => albumBlock);
+} else {
+  const open = mapXml.match(/<urlset[^>]*>/)[0];
+  const body = mapXml.slice(mapXml.indexOf(open) + open.length, mapXml.indexOf('</urlset>'))
+    .replace(/<url>[\s\S]*?<\/url>/g, (url) => (/\/galerija\/nermin-sefic-/.test(url) ? '' : url))
+    .trim();
+  mapXml = `${mapXml.slice(0, mapXml.indexOf(open) + open.length)}\n${body ? `${body}\n` : ''}${albumBlock}\n</urlset>\n`;
+}
+fs.writeFileSync(MAP, mapXml);
 
 fs.writeFileSync(path.join(ROOT, 'data', 'nermin-sefic-gallery.json'), `${JSON.stringify({
   version: 'GNK_ASG_NERMIN_SEFIC_GALLERY_V1_20261019',

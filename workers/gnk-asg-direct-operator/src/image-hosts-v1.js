@@ -1,7 +1,7 @@
 // GNK ASG — dopušteni hostovi slika za regionalna izdanja.
 //
 // Zašto zaseban popis: matična stranica (AKTUAL MEDIA svijet) ima svoj popis
-// u image-proxy-v1.js, a osam gradskih izdanja i devet deskova služe slike iz
+// u image-proxy-v1.js, a gradska izdanja i devet deskova služe slike iz
 // medija koje taj popis nikad nije sadržavao. Bez ovog popisa svaka je
 // minijatura na /izdanja/* vraćala 403 i stranica je izgledala prazno.
 //
@@ -58,6 +58,34 @@ export const REGION_IMAGE_HOSTS = [
   ['s.iw.ro', 'Impact / iw.ro', 'RO'],
   ['storage0.dms.mpinteractiv.ro', 'HotNews / MP Interactiv', 'RO'],
   ['i0.1616.ro', '1616.ro', 'RO'],
+  // Afrika
+  ['nation.africa', 'Daily Nation', 'KE'],
+  ['capitalfm.africa', 'Capital FM', 'KE'],
+  ['www.kbc.co.ke', 'KBC', 'KE'],
+  ['www.madamasr.com', 'Mada Masr', 'EG'],
+  ['images.dailynewsegypt.com', 'Daily News Egypt', 'EG'],
+  // Azija i Pacifik
+  ['img.antaranews.com', 'ANTARA', 'ID'],
+  ['static.republika.co.id', 'Republika', 'ID'],
+  ['dam.mediacorp.sg', 'CNA / Mediacorp', 'SG'],
+  ['images.skynewsarabia.com', 'Sky News Arabia', 'AE'],
+  ['cdn.i-scmp.com', 'South China Morning Post', 'HK'],
+  ['image5.sixthtone.com', 'Sixth Tone', 'CN'],
+  ['www.japantimes.co.jp', 'The Japan Times', 'JP'],
+  // Amerika
+  ['static01.nyt.com', 'The New York Times', 'US'],
+  ['s.abcnews.com', 'ABC News', 'US'],
+  ['platform.theverge.com', 'The Verge', 'US'],
+  ['npr.brightspotcdn.com', 'NPR', 'US'],
+  ['media.npr.org', 'NPR', 'US'],
+  ['www.propublica.org', 'ProPublica', 'US'],
+  ['conteudo.imguol.com.br', 'UOL', 'BR'],
+  ['s2-g1.glbimg.com', 'G1 / Globo', 'BR'],
+  ['veja.abril.com.br', 'Veja', 'BR'],
+  ['agenciabrasil.ebc.com.br', 'Agência Brasil', 'BR'],
+  // Ujedinjeno Kraljevstvo
+  ['i.guim.co.uk', 'The Guardian', 'GB'],
+  ['ichef.bbci.co.uk', 'BBC', 'GB'],
 ];
 
 export const REGION_IMAGE_HOST_LIST = REGION_IMAGE_HOSTS.map(([host]) => host);

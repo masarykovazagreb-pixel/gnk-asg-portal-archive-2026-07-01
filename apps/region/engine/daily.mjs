@@ -115,7 +115,10 @@ export async function runChannel(channel, { dry = false, report = {} } = {}) {
         categories: item.categories || [],
         author: item.author || '',
         theme,
-        image: /^https:\/\//.test(item.image || '') ? item.image : '',
+        /* SVG se ne poslužuje kroz posrednik slika (CSP i provjera sadržaja ga
+           odbijaju), pa takav URL ne ulazi u zapis — bolje bez slike nego sa
+           slomljenom minijaturom. */
+        image: /^https:\/\//.test(item.image || '') && !/\.svg(?:[?#]|$)/i.test(item.image) ? item.image : '',
         imageAlt: (item.imageAlt || item.title || '').slice(0, 180),
         addedAt: new Date().toISOString()
       };

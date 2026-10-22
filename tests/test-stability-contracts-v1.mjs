@@ -63,7 +63,9 @@ if (!/--max-age 3/.test(wf('gnk-news-refresh-v2.yml'))) fails.push('news ciklus 
 const region = wf('region-daily.yml');
 if (!/id: push/.test(region)) fails.push('region-daily: push korak nema id — deploy se ne može vezati na stvarni zapis');
 if (!region.includes('git rebase "origin/$ref"')) fails.push('region-daily: nema rebase na svježi main (izdanje se odbacuje kad se main pomakne)');
-if (!/if git push origin "HEAD:\$ref"; then pushed=true/.test(region)) fails.push('region-daily: push nema provjeru uspjeha');
+/* Push smije biti i višeredan (stash prije rebasea), ali uspjeh se mora
+   provjeriti u istom koraku i vezati na 'pushed'. */
+if (!/if git push origin "HEAD:\$ref"; then[\s\S]{0,120}pushed=true/.test(region)) fails.push('region-daily: push nema provjeru uspjeha');
 if (!/steps\.push\.outputs\.pushed == 'true'/.test(region)) fails.push('region-daily: deploy nije vezan na uspješan push (može objaviti nezapisano izdanje)');
 if (!/gh workflow run region-daily\.yml/.test(region)) fails.push('region-daily: nema samoobnavljanja kad zapis ne prođe');
 
