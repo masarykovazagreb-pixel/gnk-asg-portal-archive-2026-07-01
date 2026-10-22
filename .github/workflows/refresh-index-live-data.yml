@@ -29,7 +29,11 @@ permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.event_name == 'pull_request' && format('refresh-index-live-data-{0}', github.event_name) || 'gnk-asg-main-mutation' }}
+  # Ovaj posao samo čita i provjerava podatke (contents: read). Dok je bio u
+  # grupi gnk-asg-main-mutation s cancel-in-progress: true, svaki njegov start
+  # ubio je tekući ciklus izdanja — 4-6 minuta rada nestalo bi u sekundi.
+  # Zato ima vlastitu grupu i više ne dira pisce sadržaja.
+  group: ${{ github.event_name == 'pull_request' && format('refresh-index-live-data-{0}', github.event_name) || 'gnk-asg-index-refresh' }}
   cancel-in-progress: true
 
 jobs:

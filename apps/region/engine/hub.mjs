@@ -15,7 +15,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { esc, longDate, shortDate, scoreFromTitle, truncate, themeFor, safeJson } from './lib.mjs';
+import { esc, longDate, shortDate, stampLocal, scoreFromTitle, truncate, themeFor, safeJson } from './lib.mjs';
 import { CHANNELS, HUB, CONTACT, SOCIAL_IMAGE, CITY_SHORT, CSS as CHANNEL_CSS } from './build.mjs';
 import { ensureDeskTiles, tilePath, variantFor } from './desk-art.mjs';
 import { logoImg, logoFor, logoAlternate, channelLogoSlug, deskLogoSlug, logoJsonLd } from './brand.mjs';
@@ -444,7 +444,7 @@ const portalFooter = () => `${netStrip()}<footer class="iz-foot"><div class="iz-
   <p class="iz-hastags" aria-label="Oznake"><span>Oznake</span> <a href="/nermin-sefic/">#NerminSefić</a> <a href="/nermin-sefic/">#NerminSefic</a> <a href="/autorske-objave/">#SeficNermin</a> <a href="/autorske-objave/">#SEFICNERMIN</a> <a href="/nermin-sefic/">#UrednikNerminSefić</a> <a href="/gnk-aktual/">#AKTUALMEDIA</a> <a href="/kanal/">#GNKASG</a></p>
   <p><strong>AKTUAL MEDIA d.o.o.</strong> · Urednik: Nermin Sefić · <a href="mailto:${CONTACT}">${CONTACT}</a></p>
   <p class="iz-small">Sva izdanja objavljuju osvrte na način izvještavanja. Izvornici su uvijek povezani, a tvrdnje izvornika nisu tvrdnje redakcije. Automatski sastavljeni dijelovi nisu pojedinačno urednički pregledani.</p>
-  <p class="iz-small"><a href="/izdanja/sitemap.xml">Sitemap izdanja</a> · <a href="/gnk-aktual/">AKTUAL MEDIA</a> · <a href="/autonomija/">Autonomija 365</a> · <a href="/zdravlje/">Zdravlje</a> · <a href="https://gnk-asg.hr/">gnk-asg.hr</a></p>
+  <p class="iz-small"><a href="/status/">Status ažurnosti</a> · <a href="/izdanja/sitemap.xml">Sitemap izdanja</a> · <a href="/gnk-aktual/">AKTUAL MEDIA</a> · <a href="/autonomija/">Autonomija 365</a> · <a href="/zdravlje/">Zdravlje</a> · <a href="https://gnk-asg.hr/">gnk-asg.hr</a></p>
 </div></footer>`;
 
 const latestFor = (channel, count = 2) => channelData(channel.id).items.slice(0, count);
@@ -455,7 +455,10 @@ function cardFor(channel, { lead = false } = {}) {
   const meta = EDITION_META[channel.id] || {};
   const data = channelData(channel.id);
   const latest = data.items.slice(0, 2);
-  const updated = data.updatedAt ? shortDate(data.updatedAt.slice(0, 10)) : '—';
+  /* Kartica izdanja pokazuje i sat: „22. 10.” ne razlikuje svježe izdanje od
+     onoga koje stoji od jutros. */
+  const stamp = data.updatedAt ? stampLocal(data.updatedAt, CHANNELS.find((c) => c.id === channel.id)?.lang, channel.timezone) : null;
+  const updated = stamp ? stamp.stamp : '—';
   return `<article class="iz-card${lead ? ' iz-card--lead' : ''}">
     <img class="iz-cover" src="/assets/izdanja/${channel.id}-440.webp" alt="${esc(channel.city)}, ${esc(channel.country)}" width="440" height="248" loading="lazy" decoding="async">
     <span class="flag">${esc(meta.kicker || `${channel.country} · ${channel.city}`)} · ${esc(meta.langLabel || channel.lang)}</span>

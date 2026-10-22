@@ -8,7 +8,10 @@ permissions:
 
 concurrency:
   group: gnk-asg-main-mutation
-  cancel-in-progress: true
+  # Piše u main, pa mora biti serijaliziran s ostalim piscima — ali ne smije
+  # PREKIDATI njihov rad. S true je svaki start galerije ubijao tekući ciklus
+  # izdanja (viđeno 22. 10.: run #14 prekinut nakon 32 s, #15 nakon 11 s).
+  cancel-in-progress: false
 
 jobs:
   sync-gallery:

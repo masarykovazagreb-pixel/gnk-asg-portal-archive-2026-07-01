@@ -85,6 +85,8 @@ jobs:
       - name: Commit refreshed news data
         id: commit
         if: steps.control.outputs.should_run == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           expected_base="$(git rev-parse HEAD)"
@@ -111,6 +113,15 @@ jobs:
             current_main="$(git rev-parse origin/main)"
             if [ "$current_main" != "$expected_base" ]; then
               echo "Main moved during news generation: expected $expected_base, found $current_main. Deferring without rebase/push."
+              # 22. 10. 2026.: odgoda je značila čekanje puna četiri sata na
+              # sljedeći termin, pa je AKTUAL bio "mrtav" i po šest sati.
+              # Umjesto toga: jedan svjež ciklus odmah (samo za scheduled run,
+              # da se ne petlja). Novi run gradi iz novog maina — nema rebasea
+              # generiranog stanja, pa exact-SHA fence ostaje netaknut.
+              if [ "${{ github.event_name }}" = "schedule" ]; then
+                echo "::warning::Main se pomaknuo — pokrećem svjež ciklus odmah, bez čekanja sljedećeg termina."
+                gh workflow run gnk-news-refresh-v2.yml --repo "$GITHUB_REPOSITORY" --ref main || true
+              fi
               exit 75
             fi
 
@@ -142,14 +153,14 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -uo pipefail
-          out=$(node scripts/check-aktual-freshness.mjs --max-age 5)
+          out=$(node scripts/check-aktual-freshness.mjs --max-age 3)
           echo "$out" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const r=JSON.parse(s);console.log('News:',r.news.ageHours+'h','Kanali zastarjeli:',r.staleChannels.join(',')||'—')})"
           if echo "$out" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>process.exit(JSON.parse(s).anyStale?0:1))"; then
             echo "Regionalna izdanja su zastarjela — pokrećem REGION ciklus."
             gh workflow run region-daily.yml --repo "$GITHUB_REPOSITORY" --ref main || \
               echo "::warning::REGION ciklus nije bilo moguće pokrenuti (dozvole)."
           else
-            echo "Svi izvori su unutar praga od 5 h."
+            echo "Svi izvori su unutar praga od 3 h."
           fi
 
 # P0 2026-09-16: retrigger canonical producer after stale-output incident; no parallel fallback writer.

@@ -188,6 +188,32 @@ export function shortDate(day, lang = 'hr') {
   return `${d}. ${m}.`;
 }
 
+/**
+ * Vrijeme objave u zoni izdanja.
+ *
+ * Dan bez sata ne kazuje je li izdanje svježe ili stalo — a upravo to čitatelj
+ * i tražilica trebaju znati. Vraća datum, sat i strojni ISO zapis.
+ */
+export function stampLocal(iso, lang = 'hr', timeZone = 'Europe/Zagreb') {
+  const t = Date.parse(iso || '');
+  if (!Number.isFinite(t)) return null;
+  const d = new Date(t);
+  let date;
+  try {
+    date = d.toLocaleDateString('hr-HR', { day: 'numeric', month: 'numeric', timeZone });
+  } catch {
+    date = d.toLocaleDateString('hr-HR', { day: 'numeric', month: 'numeric', timeZone: 'Europe/Zagreb' });
+  }
+  let time;
+  try {
+    time = d.toLocaleTimeString('hr-HR', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone });
+  } catch {
+    time = d.toLocaleTimeString('hr-HR', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Europe/Zagreb' });
+  }
+  const day = new Intl.DateTimeFormat('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone }).format(d);
+  return { date, time, day, iso: d.toISOString(), stamp: `${date} · ${time}` };
+}
+
 export function isoWeek(day) {
   const date = new Date(`${day}T00:00:00Z`);
   const target = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
