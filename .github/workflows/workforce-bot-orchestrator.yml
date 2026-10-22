@@ -13,6 +13,10 @@ on:
       - 'config/control-plane/**'
       - 'scripts/workforce-bot-orchestrator-v1.mjs'
       - 'scripts/worker-agent-swarm-v1.mjs'
+      - 'scripts/aktual-world-agent-factory-v1.mjs'
+      - 'scripts/aktual-agent-task-scheduler-v1.mjs'
+      - 'tests/test-aktual-world-agent-factory-v1.mjs'
+      - 'tests/test-aktual-agent-task-scheduler-v1.mjs'
       - 'scripts/aktual-review-window-gate-v1.mjs'
       - 'tests/test-aktual-review-window-gate-v1.mjs'
       - 'ops/aktual-editor-priorities-v1.json'
@@ -37,6 +41,10 @@ on:
       - 'config/control-plane/**'
       - 'scripts/workforce-bot-orchestrator-v1.mjs'
       - 'scripts/worker-agent-swarm-v1.mjs'
+      - 'scripts/aktual-world-agent-factory-v1.mjs'
+      - 'scripts/aktual-agent-task-scheduler-v1.mjs'
+      - 'tests/test-aktual-world-agent-factory-v1.mjs'
+      - 'tests/test-aktual-agent-task-scheduler-v1.mjs'
       - 'scripts/aktual-review-window-gate-v1.mjs'
       - 'tests/test-aktual-review-window-gate-v1.mjs'
       - 'ops/aktual-editor-priorities-v1.json'
@@ -88,6 +96,15 @@ jobs:
           node --test tests/test-aktual-existing-portals-daily-weekly-v1.mjs
       - name: Enforce 30-minute editorial delivery and release decision safety
         run: node --test tests/test-aktual-review-window-gate-v1.mjs
+      - name: Execute 150 free scoped agents and allocate prioritized tasks
+        env:
+          ASG_MONITOR_PUBLIC_FEEDS: '0'
+          ASG_AGENT_TASK_BUDGET: '150'
+        run: |
+          node scripts/aktual-world-agent-factory-v1.mjs
+          node --test tests/test-aktual-world-agent-factory-v1.mjs
+          node scripts/aktual-agent-task-scheduler-v1.mjs
+          node --test tests/test-aktual-agent-task-scheduler-v1.mjs
       - name: Confirm paid editorial APIs remain disabled
         run: |
           echo "Free-tier-only: 0 Exa/OpenAI requests, existing 4h cron, no public publishing."
@@ -102,6 +119,12 @@ jobs:
         if: always()
         shell: bash
         run: |
+          if [ -f artifacts/aktual-agent-task-scheduler/summary.md ]; then
+            cat artifacts/aktual-agent-task-scheduler/summary.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ -f artifacts/aktual-world-agent-factory/summary.md ]; then
+            cat artifacts/aktual-world-agent-factory/summary.md >> "$GITHUB_STEP_SUMMARY"
+          fi
           if [ -f artifacts/master-asg-agent-network/summary.md ]; then
             cat artifacts/master-asg-agent-network/summary.md >> "$GITHUB_STEP_SUMMARY"
           fi
@@ -130,5 +153,8 @@ jobs:
             artifacts/worker-agent-swarm/
             artifacts/master-asg-agent-network/
             artifacts/aktual-editorial-network/
+            artifacts/aktual-world-agent-factory/
+            artifacts/aktual-agent-task-scheduler/
+            apps/global-free/sites/
           if-no-files-found: warn
           retention-days: 14
