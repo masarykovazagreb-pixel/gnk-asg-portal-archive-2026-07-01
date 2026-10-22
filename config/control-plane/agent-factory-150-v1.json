@@ -1,0 +1,50 @@
+{
+  "version": "GNK_ASG_150_AGENT_FACTORY_V1",
+  "totalAgentRoles": 150,
+  "mode": "deterministic-checks-free-tier-no-independent-LLM-processes",
+  "regional": {
+    "count": 8,
+    "rolesPerEdition": 12,
+    "roles": [
+      "source-health",
+      "source-freshness",
+      "provenance",
+      "duplicates",
+      "source-claims",
+      "draft-source-packet",
+      "local-language",
+      "seo-head",
+      "visual-rights",
+      "cross-links",
+      "release-preflight",
+      "quality-report"
+    ]
+  },
+  "world": {
+    "count": 12,
+    "rolesPerPortal": 4,
+    "roles": [
+      "market-research",
+      "local-language-draft",
+      "seo-visual",
+      "portal-health"
+    ]
+  },
+  "supervisors": [
+    "governance",
+    "security",
+    "budget",
+    "brand-seo",
+    "editorial-review",
+    "release-proof"
+  ],
+  "constraints": {
+    "paidApiCalls": 0,
+    "newScheduledWorkflows": 0,
+    "autoDeploy": false,
+    "externalPublishing": false,
+    "workflows": "reuse workforce-bot-orchestrator.yml 4-hour schedule",
+    "monthlyGithubActionsWorkingCeilingMinutes": 1000
+  },
+  "editor": "Nermin Sefić"
+}
