@@ -226,7 +226,8 @@ const MEDIA_ENTITY_NODE = {
     'AKTUAL MEDIA KANAL ZAGREB'
   ],
   url: 'https://gnk-asg.hr/gnk-aktual/',
-  logo: 'https://gnk-asg.hr/assets/logo-gnk-asg-gold.svg',
+  /* Znak izdavača je znak AKTUAL MEDIA, ne znak matičnog društva GNK ASG. */
+  logo: logoJsonLd('aktual-media-hr', { url: 'https://gnk-asg.hr' }),
   parentOrganization: {
     '@type': 'Organization',
     '@id': 'https://gnk-asg.hr/#gnk-asg',

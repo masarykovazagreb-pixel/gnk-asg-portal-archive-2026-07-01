@@ -53,6 +53,7 @@ const GATES = [
   { name: 'Meta higijena — oznake, autor, entitet', cmd: ['node', 'tests/test-meta-hygiene-v1.mjs'], required: true },
   { name: 'Pokrivenost posrednika slika', cmd: ['node', 'tests/test-image-proxy-coverage-v1.mjs'], required: true },
   { name: 'Znakovi kuće AKTUAL MEDIA', cmd: ['node', 'tests/test-brand-logos-v1.mjs'], required: true },
+  { name: 'Znak u čvoru izdavača', cmd: ['node', 'scripts/backfill-brand-entity-logo-v1.mjs', '--check'], required: true },
 ];
 
 function run(gate) {
