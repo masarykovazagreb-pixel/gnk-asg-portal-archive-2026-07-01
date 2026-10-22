@@ -432,6 +432,25 @@ function radioBand() {
   </section>`;
 }
 
+/* Mreža neovisnih izdanja: šest stranica s vlastitim hostingom. Traka je
+   namjerno kratka — popis, jedna rečenica i poveznica na hub, da /izdanja/
+   ostane popis izdanja, a ne druga naslovnica. */
+function networkBand() {
+  let sites = [];
+  try {
+    const data = JSON.parse(readFileSync(join(PORTAL, 'data', 'mreza-v1.json'), 'utf8'));
+    sites = data.sites || [];
+  } catch { sites = []; }
+  if (!sites.length) return '';
+  const items = sites.map((site) => `<li><a href="${site.url}" rel="external noopener" hreflang="hr" lang="hr"><b>${esc(site.name)}</b><span>${esc(site.tagline.hr.split(':')[0])}</span></a></li>`).join('');
+  return `<section class="iz-band iz-mreza" aria-labelledby="mrezaTitle">
+    <h2 id="mrezaTitle">Mreža neovisnih izdanja <span>${sites.length} stranica · vlastiti hosting · isti urednik</span></h2>
+    <p class="iz-small" style="margin:0 0 12px">Teme koje su na matičnoj stranici bile prekratko obrađene dobile su vlastite domene: borilački sport u SAD-u, košarka, scena znanosti, ples i pokret, zdravlje — i privremeni desk za izbore u Srbiji. Svaka stranica ima svoj sitemap, feed i metodologiju, a sve vode natrag na gnk-asg.hr.</p>
+    <ul class="iz-datacards">${items}</ul>
+    <p class="iz-small" style="margin:12px 0 0"><a href="/mreza/">Cijela mreža →</a> · <a href="/en/network/" hreflang="en" lang="en">Network (EN)</a> · <a href="/data/mreza-v1.json">JSON</a></p>
+  </section>`;
+}
+
 function hubPage() {
   const cards = CHANNELS.map((c, i) => cardFor(c, { lead: i === 0 })).join('\n');
   const items = CHANNELS.flatMap((c) => latestFor(c, 3).map((i) => ({ ...i, channel: c })))
@@ -444,6 +463,7 @@ function hubPage() {
     <h2>Najnovije iz svih izdanja</h2>
     <ul class="iz-list">${items.map((i) => `<li><time datetime="${esc(i.date)}">${esc(shortDate(i.date.slice(0, 10)))}</time><a href="${i.channel.base}clanak/${i.slug}/" rel="external noopener">${esc(i.title)}</a><span class="src">${esc(i.channel.title)}</span></li>`).join('') || '<li>Prva izdanja se pune dnevnim ciklusom.</li>'}</ul>
   </section>
+  ${networkBand()}
   <section class="iz-band iz-data-desk" aria-labelledby="ddTitle">
     <h2 id="ddTitle">Podatkovni desk — redakcija, izmjereno</h2>
     <p class="iz-small" style="margin:0 0 12px">Četiri stranice na kojima AKTUAL MEDIA mjeri vlastitu arhivu: noćna smjena, koncentracija izvora, pauze u objavljivanju i zajednički rječnik osam gradova. Brojke se računaju iz arhive pri svakoj gradnji, bez procjena.</p>
