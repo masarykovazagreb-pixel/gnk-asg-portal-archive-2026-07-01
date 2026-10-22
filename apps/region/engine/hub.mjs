@@ -1187,7 +1187,10 @@ function injectBand(cards, lang = 'hr') {
   const start = '<!-- IZDANJA-BAND:START -->';
   const end = '<!-- IZDANJA-BAND:END -->';
   const picks = cards.filter((c) => ['zagreb', 'beograd', 'sarajevo', 'budimpesta', 'ljubljana', 'rim', 'sofija', 'bukurest'].includes(c.id));
-  const lis = picks.map((c, i) => `<li class="izdanja-item"><span class="izdanja-num">${String(i + 1).padStart(2, '0')}</span><div><h3><a href="${c.url}" target="_blank" rel="external noopener">${esc(c.name)}</a></h3><p>${esc(c.lang)} · ${esc(c.city)} · ${c.count} ${en ? 'reviews' : 'osvrta'}</p></div></li>`).join('');
+  const CITY_EN = { zagreb: 'Zagreb', beograd: 'Belgrade', sarajevo: 'Sarajevo', budimpesta: 'Budapest', ljubljana: 'Ljubljana', rim: 'Rome', sofija: 'Sofia', bukurest: 'Bucharest' };
+  const CITY_EN_UPPER = { zagreb: 'ZAGREB', beograd: 'BELGRADE', sarajevo: 'SARAJEVO', budimpesta: 'BUDAPEST', ljubljana: 'LJUBLJANA', rim: 'ROMA', sofija: 'SOFIJA', bukurest: 'BUCUREȘTI' };
+  const cityName = (c) => (en ? `AKTUAL MEDIA KANAL ${CITY_EN_UPPER[c.id] || esc(c.city).toUpperCase()}` : esc(c.name));
+  const lis = picks.map((c, i) => `<li class="izdanja-item"><span class="izdanja-num">${String(i + 1).padStart(2, '0')}</span><div><h3><a href="${c.url}" target="_blank" rel="external noopener">${cityName(c)}</a></h3><p>${esc(c.lang)} · ${en ? (CITY_EN[c.id] || esc(c.city)) : esc(c.city)} · ${c.count} ${en ? 'reviews' : 'osvrta'}</p></div></li>`).join('');
   const title = en ? 'Our editions in the region' : 'Naša izdanja u regiji';
   const sub = en
     ? 'Eight city channels in eight languages, a business weekly and nine desks. Every edition has its own link and its own feed — and everything returns to AKTUAL MEDIA.'
