@@ -48,8 +48,8 @@ assert(generator.includes("publisher: { '@id': 'https://gnk-asg.hr/gnk-aktual/#n
 assert(generator.includes("editor: { '@type': 'Person'"));
 assert(generator.includes('item.sourceName'),'source attribution must be retained');
 const hubSource=get('apps/region/engine/hub.mjs');
-assert(hubSource.includes('AKTUAL_MEDIA_ID')&&hubSource.includes('NewsMediaOrganization'));
-assert(hubSource.includes("numberOfItems: Math.min(items.length, 20)"));
+assert(hubSource.includes('MEDIA_ENTITY_NODE')&&hubSource.includes('NewsMediaOrganization'));
+assert(hubSource.includes("numberOfItems: Math.min(20, items.length)"));
 const dataSource=get('apps/region/engine/data-desk.mjs');
 assert(dataSource.includes('/gnk-aktual/#news-organization'),'data desk publisher must match');
 const central=get('apps/region/engine/aktual-central.mjs');
