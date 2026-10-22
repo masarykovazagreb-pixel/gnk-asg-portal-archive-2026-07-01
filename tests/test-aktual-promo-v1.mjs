@@ -70,6 +70,20 @@ for (const [page, lang] of [['gnk-aktual/index.html', 'hr'], ['en/gnk-aktual/ind
   }
 }
 
+/* ---------- masthead: JEDAN naslov, bez drugog „loga" ---------- */
+for (const page of ['gnk-aktual/index.html', 'en/gnk-aktual/index.html']) {
+  const html = read(page);
+  const mast = html.slice(html.indexOf('<section class="am-masthead"'), html.indexOf('</section>', html.indexOf('<section class="am-masthead"')));
+  const titles = (mast.match(/<h1\b/g) || []).length;
+  if (titles !== 1) fails.push(`${page}: masthead ima ${titles} naslova (mora biti 1)`);
+  if (mast.includes('am-mast-logo')) fails.push(`${page}: masthead još nosi znak uz tekstni naslov (dvostruki naslov)`);
+  if (!mast.includes('class="am-brand-kicker"') || !mast.includes('class="am-brand-sub"')) {
+    fails.push(`${page}: masthead nema isti tekstni sklop kao druga jezična verzija`);
+  }
+}
+if ((read('gnk-aktual/index.html').match(/<h1\b/g) || []).length !== 1) fails.push('HR stranica: više od jednog <h1>');
+if ((read('en/gnk-aktual/index.html').match(/<h1\b/g) || []).length !== 1) fails.push('EN stranica: više od jednog <h1>');
+
 /* Vanjski asseti i njihovo ponašanje. */
 const cssPath = 'assets/aktual-promo-v1.css';
 const jsPath = 'assets/aktual-promo-v1.js';

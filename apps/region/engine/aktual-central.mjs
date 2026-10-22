@@ -937,27 +937,27 @@ ${END}`;
         en = `${en.slice(0, at)}\n${RS}\n${rail}\n${RE}${en.slice(at)}`;
       }
     }
-    /* Engleska stranica ima svoj masthead (drukčiji od hrvatskog bloka), pa
-       znak ide u .am-brand — iznad natpisa "World edition". Isti par znakova
-       kao na HR stranici, samo obrnutim redom: EN je glavni, HR vodi natrag. */
-    const hrLogo = logoFor('aktual-media-hr');
-    const enLogo = logoFor('aktual-media-en');
-    if (hrLogo && enLogo && !en.includes('am-mast-logo')) {
-      const mark = `<a class="am-mast-logo" href="/en/gnk-aktual/" hreflang="en" lang="en" aria-label="AKTUAL MEDIA — world edition">
-        <img src="${enLogo.webp}" alt="${esc(enLogo.title)} — ${esc(enLogo.tagline)}" width="420" height="121" loading="eager" decoding="async" fetchpriority="high">
-      </a>`;
-      const enAt = en.indexOf('<span class="am-brand-kicker">World edition</span>');
-      if (enAt > 0) {
-        en = en.slice(0, enAt) + mark + en.slice(enAt);
-        if (!en.includes('.am-mast-logo{')) {
-          en = en.replace('</style>', `.am-mast-logo{display:block;max-width:420px;margin:0 0 12px;line-height:0;border-radius:10px;overflow:hidden}
-.am-mast-logo img{display:block;width:100%;height:auto}
-@media(max-width:620px){.am-mast-logo{max-width:300px}}
-</style>`);
-        }
-      }
-    }
-    en = withPromo(en, 'en');
+    /* EN masthead mora izgledati isto kao hrvatski: JEDAN naslov.
+       22. 10. 2026. engleska je stranica imala i znak (sliku) i tekstni <h1>,
+       pa se isti naslov vidio dvaput — dvije „logo" verzije. Sada se znak
+       uklanja iz mastheada, a vraća se isti tekstni blok koji nosi HR
+       stranica. Znakovi kuće ostaju u JSON-LD-u, galeriji i amc-sekciji. */
+    const normalizeEnBrand = (page) => {
+      if (!page.includes('<div class="am-brand">')) return page;
+      const brand = `<span class="am-brand-kicker">World edition</span>
+      <h1 id="amMasthead">AKTUAL <span>MEDIA</span></h1>
+      <p class="am-brand-sub">News · context · sources</p>`;
+      return page.replace(/(<div class="am-brand">)[\s\S]*?(<\/div>)/, (_m, open, close) => `${open}\n      ${brand}\n    ${close}`);
+    };
+    en = normalizeEnBrand(en);
+    /* Ukloni ostatke prijašnjeg znaka iz mastheada (CSS i pomoćna klasa)
+       kako stranica ne bi nosila mrtva pravila. */
+    en = en
+      .replace(/<style>\.am-sr-only\{[^<]*<\/style>\n?/g, '')
+      .replace(/\.am-mast-logo\{[^}]*\}\n?/g, '')
+      .replace(/\.am-mast-logo img\{[^}]*\}\n?/g, '')
+      .replace(/@media\(max-width:620px\)\{\.am-mast-logo\{max-width:300px\}\}\n?/g, '')
+      .replace(/<a class="am-mast-logo"[\s\S]*?<\/a>/g, '');
     en = addPerf(addLogoAlternates(en, ['aktual-media-en', 'aktual-media-hr']));
     en = strengthenAktualBrand(en, 'en', jsonld);
     writeFileSync(EN, en);
