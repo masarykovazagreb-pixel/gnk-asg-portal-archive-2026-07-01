@@ -55,6 +55,8 @@ const processDecisions=(entries)=>{
     if(d.rejectedAt || d.status==='rejected' || d.decision==='rejected'){event.status='rejected';return event;}
     if(d.status==='cancelled' || d.status==='revoked'){event.status='cancelled';return event;}
     if(d.risk!=='low'){event.reason='explicit-human-approval-required';return event;}
+    // Defense in depth: risk labels alone cannot downgrade protected public/external actions.
+    if(/\b(deploy|publish|publication|payment|pay|wire|transfer|secrets?|credentials?|permissions?|dns|smtp|email|mail|legal|lawsuit|lawsuits|financial|finance|external|production|live release|objav|placan|plaćan|uplata|isplata|tajne|zapork|sud|tužb|financ|produkcij|dozvol|pristup)\b/i.test(String(d.action||''))){event.reason='protected-action-requires-explicit-review';return event;}
     if(d.status!=='proposed'){event.reason='not-active-proposal';return event;}
     const stamp=Date.parse(d.notifiedAt),delivered=Date.parse(d.deliveryEvidence?.deliveryConfirmedAt);
     if(!d.notifiedAt||!d.deliveryEvidence?.messageId||!Number.isFinite(stamp)||!Number.isFinite(delivered)){
@@ -131,6 +133,43 @@ async function createDraft(research){
     return {status:'draft-created-held-for-substantive-human-review',file:'editorial-draft.md',sourceCount:research.sources.length};
   }catch(e){return {status:'model-error',reason:truncate(e.message)};}
 }
+function localRoleChecks(){
+  const out=[];
+  const add=(role,name,state,detail)=>out.push({role,check:name,state,detail});
+  // Backend agents do real syntax verification without starting or deploying Workers.
+  const mainWorker='workers/gnk-asg-direct-operator/src/index-digital-workforce-v1.js';
+  if(fs.existsSync(mainWorker)){
+    try{execFileSync(process.execPath,['--check',mainWorker],{cwd:ROOT,timeout:12000,stdio:'pipe'});
+      add('backend','active-worker-syntax','pass',mainWorker);
+    }catch(e){add('backend','active-worker-syntax','fail',truncate(e.stderr||e.message));}
+  }else add('backend','active-worker-syntax','missing','active Worker entry not found; no deployment claim');
+  // Frontend agent inspects actual source HTML; it does not claim a visual browser check.
+  for(const relative of ['apps/portal/index.html','apps/portal/en/index.html']){
+    try{
+      const html=fs.readFileSync(relative,'utf8');
+      const checks={title:/<title>[^<]+<\/title>/i.test(html),
+        description:/<meta[^>]+name=["']description["']/i.test(html),
+        canonical:/<link[^>]+rel=["']canonical["']/i.test(html),
+        viewport:/<meta[^>]+name=["']viewport["']/i.test(html)};
+      add('frontend','static-head-'+relative,Object.values(checks).every(Boolean)?'pass':'warn',checks);
+    }catch(e){add('frontend','static-head-'+relative,'missing',truncate(e.message));}
+  }
+  for(const p of ['apps/portal/sitemap.xml','apps/portal/editorial-sitemap.xml','apps/portal/image-sitemap.xml']){
+    try{
+      const xml=fs.readFileSync(p,'utf8');
+      const locs=[...xml.matchAll(/<loc>/g)].length;
+      add('seo','sitemap-'+p,locs?'pass':'warn',{locs,bytes:xml.length});
+    }catch(e){add('seo','sitemap-'+p,'missing',truncate(e.message));}
+  }
+  try{
+    const manifest=read('apps/portal/data/editorial-plan/manifest.json');
+    const packages=manifest.packages||[];
+    const counts={total:packages.length,held:packages.filter(x=>/hold|review|draft/i.test(x.status||'')).length};
+    add('editor','editorial-queue-truth','observed',counts);
+  }catch(e){add('editor','editorial-queue-truth','missing',truncate(e.message));}
+  return out;
+}
+const roleChecks=localRoleChecks();
 const [issues,runs,branch,live,research]=await Promise.all([
   readGitHub('/issues?state=open&per_page=30'),
   readGitHub('/actions/runs?per_page=30'),
@@ -159,7 +198,7 @@ const outcome={
   autonomousWorkerAgents:bots.length,workerDirectories:workerDirs.length,governanceMissingWorkers:missing,
   orphanRegistryWorkers:orphan,roleAgents:roles,assignmentStatus:missing.length||orphan.length||uncovered.length?'needs-governance':'complete',
   assignments,taskboard:{open:openTasks.length,uncovered,prioritized:openTasks.slice(0,20).map(t=>({id:t.id,priority:t.priority,status:t.status,owner:t.ownerBot,title:t.title}))},
-  decisions:processDecisions(decisions.decisions),liveProbes:live,
+  decisions:processDecisions(decisions.decisions),roleChecks,liveProbes:live,
   github:{issuesAvailable:issues.ok,issuesReason:issues.ok?null:issues.reason,
     runsAvailable:runs.ok,runsReason:runs.ok?null:runs.reason,recentIssues:issueItems,recentRuns:workflowItems,
     failedRuns:failures},
@@ -173,6 +212,7 @@ const summary=['# MASTER ASG — Agent Network V2','',
   '- Open taskboard tasks: '+openTasks.length,
   '- GitHub runs read: '+(runs.ok?'yes':'NO ('+runs.reason+')'),
   '- Public routes HTTP-verified: '+live.filter(x=>x.status==='http-verified').length+'/'+live.length,
+  '- Static role checks executed: '+roleChecks.length+' (not live visual proof)',
   '- Exa research: '+research.status,
   '- AI newsroom: '+draft.status,
   '- Decisions eligible after verified 30-minute notice: '+outcome.decisions.filter(d=>d.status==='eligible-for-safe-internal-action').length,
