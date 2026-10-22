@@ -490,7 +490,7 @@ const AKTUAL_BRAND_ID = 'https://gnk-asg.hr/gnk-aktual/#news-organization';
 function strengthenAktualBrand(html, lang = 'hr', collection = null) {
   // Update the canonical newsroom CollectionPage rather than adding another
   // conflicting copy in the body on every daily build.
-  const existingScripts = /<script type="application\\/ld\\+json">([\\s\\S]*?)<\\/script>/g;
+  const existingScripts = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/g;
   html = html.replace(existingScripts, (block, raw) => {
     let node;
     try { node = JSON.parse(raw); } catch { return block; }
