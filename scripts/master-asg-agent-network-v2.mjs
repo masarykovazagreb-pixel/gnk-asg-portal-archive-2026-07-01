@@ -135,7 +135,7 @@ const [issues,runs,branch,live,research]=await Promise.all([
   readGitHub('/issues?state=open&per_page=30'),
   readGitHub('/actions/runs?per_page=30'),
   readGitHub('/branches/main'),
-  Promise.all(config.publicEndpoints.map(publicProbe)),
+  process.env.ASG_SKIP_LIVE==='1' ? Promise.resolve(config.publicEndpoints.map(url=>({url,status:'skipped-test-mode'}))) : Promise.all(config.publicEndpoints.map(publicProbe)),
   researchExa()
 ]);
 const draft=await createDraft(research);
