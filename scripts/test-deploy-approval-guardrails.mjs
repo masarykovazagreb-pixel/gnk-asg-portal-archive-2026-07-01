@@ -38,7 +38,8 @@ const externalDistributionWorkflows=[
  ['blog-mirror-publish.yml',blogMirrorWorkflow],
  ['objavi-devto-sada.yml',read('.github/workflows/objavi-devto-sada.yml')],
  ['objavi-tumblr-sada.yml',read('.github/workflows/objavi-tumblr-sada.yml')],
- ['social-distribution.yml',read('.github/workflows/social-distribution.yml')]
+ ['social-distribution.yml',read('.github/workflows/social-distribution.yml')],
+ ['global-free-distribution.yml',read('.github/workflows/global-free-distribution.yml')]
 ];
 for(const [name,source] of externalDistributionWorkflows){
  const triggers=source.match(/^on:\s*\n([\s\S]*?)^(?:permissions|concurrency|jobs):/m)?.[1]||'';
