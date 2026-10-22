@@ -77,7 +77,9 @@ ga `tests/test-network-mesh-v1.mjs` — 20 ulaza, bez self-linka, bez `nofollow`
 svi linkovi apsolutni https, bez duplikata.
 
 Hub `/mreza/` prikazuje 15 kartica (6 tematskih + 9 svjetskih), a
-`data/mreza-v1.json` uz `sites` nosi i `world` s devet portala.
+`data/mreza-v1.json` uz `sites` nosi i `world` s devet portala. Hub `/kanal/`
+ispod 17 izdanja ima i traku „Devet svjetskih izdanja na vlastitim adresama",
+pa se do portala stiže i s najposjećenije podstranice mreže.
 
 ## 5. Agenti
 
@@ -152,3 +154,43 @@ node scripts/test-all-v1.mjs              # 38/38
 
 Očekivani izlaz testa portala: `"ok": true`, `portals: 9`,
 `continents: ["Afrika","Azija","Južna Amerika","Oceanija","Sjeverna Amerika"]`.
+
+## 10. Živi portali
+
+Objavljeni su na Cloudflare Pagesu, svaki na svom projektu. Provjera jednim
+potezom (status, canonical i blok mreže):
+
+| Portal | Adresa |
+| --- | --- |
+| Nairobi | <https://gnk-world-nairobi.pages.dev/> |
+| Jakarta | <https://gnk-world-jakarta.pages.dev/> |
+| New York | <https://gnk-world-newyork.pages.dev/> |
+| São Paulo | <https://gnk-world-saopaulo.pages.dev/> |
+| Sydney | <https://gnk-world-sydney.pages.dev/> |
+| Singapur | <https://gnk-world-singapur.pages.dev/> |
+| Kairo | <https://gnk-world-kairo.pages.dev/> |
+| Tokio | <https://gnk-world-tokio.pages.dev/> |
+| Peking | <https://gnk-world-peking.pages.dev/> |
+
+Prvi deploy kreirao je devet Pages projekata; svaki sljedeći push na
+`apps/world/**` ili dnevna promjena podataka izdanja objavljuje svjež izlaz.
+
+## 11. Sljedeći val (kad se otvori)
+
+Cilj „sve zemlje na svim kontinentima" ne ide odjednom: 190 portala u jednom
+potezu značilo bi 190 praznih ulaza. Val 2 bira po jednu zemlju s kojom
+izdanje već ima stvarne izvore, i to u četiri koraka:
+
+1. **Izvor i izdanje** — zemlja ulazi u `channels.json` tek kad ima barem tri
+   stvarna medija i dnevni ciklus koji ih čita.
+2. **Podaci** — `apps/region/data/<id>.json` mora imati zapise; prazan feed se
+   ne objavljuje kao portal.
+3. **Registar** — `id` u `WORLD_IDS`, kontinent u `CONTINENTS`, domena
+   `gnk-world-<id>.pages.dev`.
+4. **Objava i agent** — novi projekt u `world-portals-deploy.yml`, novi
+   `world-<id>-agent`; gateovi moraju ostati zeleni prije nego portal krene.
+
+Kandidati za val 2 (redoslijed po postojećim izvorima, ne po veličini tržišta):
+Lagos (Afrika), Mumbai (Azija), Istanbul (Azija/Europa), Mexico City (Sjeverna
+Amerika), Buenos Aires (Južna Amerika), Auckland (Oceanija). Svaki kandidat
+prolazi iste provjere; nijedan se ne dodaje „na papiru".
