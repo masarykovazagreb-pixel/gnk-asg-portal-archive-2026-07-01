@@ -1,0 +1,126 @@
+{
+  "version": "GNK_ASG_WORKER_AGENT_SWARM_V1",
+  "primaryRepository": "masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01",
+  "execution": "repo-local-evidence-only",
+  "policy": {
+    "prFirst": true,
+    "writeToMain": false,
+    "deploy": false,
+    "sendMail": false,
+    "publishExternally": false,
+    "editorialHumanApprovalRequired": true,
+    "unansweredDecisionMinutes": 30,
+    "unansweredDecisionScope": "low-risk-proposal-only; never substitutes for required explicit authorization",
+    "productionTruth": "exact-SHA deployment and independent public verification"
+  },
+  "agents": [
+    {
+      "id": "AG-SUPERVISOR",
+      "bot": "BOT-AI-ASSIST",
+      "role": "task-supervisor",
+      "action": "taskboard"
+    },
+    {
+      "id": "AG-RESEARCHER",
+      "bot": "BOT-NEWSROOM",
+      "role": "news-researcher",
+      "action": "news-review"
+    },
+    {
+      "id": "AG-JOURNALIST",
+      "bot": "BOT-NEWSROOM",
+      "role": "journalist",
+      "action": "draft"
+    },
+    {
+      "id": "AG-BACKEND",
+      "bot": "BOT-APP-API",
+      "role": "backend-engineer",
+      "action": "worker-check"
+    },
+    {
+      "id": "AG-SEO",
+      "bot": "BOT-PUBLIC-CLEAN",
+      "role": "seo-engineer",
+      "action": "seo-check"
+    },
+    {
+      "id": "AG-EDITOR",
+      "bot": "BOT-AUTO-EDITOR",
+      "role": "editorial-controller",
+      "action": "editorial-hold"
+    },
+    {
+      "id": "AG-FACTCHECK",
+      "bot": "BOT-AUTO-EDITOR",
+      "role": "source-factchecker",
+      "action": "source-check"
+    },
+    {
+      "id": "AG-SECURITY",
+      "bot": "BOT-CONTACT",
+      "role": "security-auditor",
+      "action": "worker-check"
+    },
+    {
+      "id": "AG-OPERATOR",
+      "bot": "BOT-OPERATOR",
+      "role": "task-planner",
+      "action": "taskboard"
+    },
+    {
+      "id": "AG-ROUTES",
+      "bot": "BOT-EMERGENCY-ROUTER",
+      "role": "route-integrity",
+      "action": "worker-check"
+    },
+    {
+      "id": "AG-IMAGES",
+      "bot": "BOT-IMAGE-PROXY",
+      "role": "visual-accessibility",
+      "action": "image-check"
+    },
+    {
+      "id": "AG-MAIL-HEALTH",
+      "bot": "BOT-MAIL-CENTER",
+      "role": "mail-health-observer",
+      "action": "worker-check"
+    },
+    {
+      "id": "AG-NEWS-LIVE",
+      "bot": "BOT-NEWS-LIVE",
+      "role": "news-freshness-auditor",
+      "action": "news-review"
+    },
+    {
+      "id": "AG-FRONTEND",
+      "bot": "BOT-OPERATOR-CENTER",
+      "role": "frontend-engineer",
+      "action": "frontend-check"
+    },
+    {
+      "id": "AG-UX",
+      "bot": "BOT-OPERATOR-CENTER",
+      "role": "accessibility-engineer",
+      "action": "frontend-check"
+    },
+    {
+      "id": "AG-NAVIGATION",
+      "bot": "BOT-NAVIGATION",
+      "role": "navigation-engineer",
+      "action": "links-check"
+    },
+    {
+      "id": "AG-RELEASE",
+      "bot": "BOT-PUBLISH",
+      "role": "release-manager",
+      "action": "release-gate"
+    },
+    {
+      "id": "AG-MAIL-SCHEDULE",
+      "bot": "BOT-SCHEDULED-MAIL",
+      "role": "mail-scheduler-observer",
+      "action": "worker-check"
+    }
+  ]
+}
