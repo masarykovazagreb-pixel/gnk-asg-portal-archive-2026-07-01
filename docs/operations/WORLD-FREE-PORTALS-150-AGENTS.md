@@ -22,7 +22,7 @@ Svaki portal ima lokalizirani uvod, SEO opis, Open Graph, Twitter i identitet, s
 ## Besplatan hosting i troškovne ograde
 Primarni kandidat je Cloudflare Pages Free s projektom po kanalu i `pages.dev` adresom tek nakon uspješnog provisioninga. Ne rezerviramo niti objavljujemo izmišljene URL-ove. GitHub Pages na besplatnom planu zahtijeva javni repozitorij, te nije dobar izvor za skriveni portal.
 
-Održati najviše 1000 Actions minuta mjesečno na postojećim kontrolama; ne stvarati novi cron. Uključivanje vanjskih projektnih lokacija ne zaobilazi provjere sadržaja, prava na slike, editor review, zaštitu tajni ni production release. Predviđeni kasniji deployment je manual-only na besplatne projekte uz zaseban release gate.
+Za GitHub Actions ne postoji dodatni interni limit minuta: koristiti sve besplatne minute dostupne prema stvarnom planu/vrsti repozitorija, bez aktivacije naplate ili plaćenih runnera. Ne stvarati suvišne nove rasporede. Uključivanje vanjskih projektnih lokacija ne zaobilazi provjere sadržaja, prava na slike, editor review, zaštitu tajni ni production release. Predviđeni kasniji deployment je manual-only na besplatne projekte uz zaseban release gate.
 
 ## Infocentar i 30 minuta
 Sva redakcijska priprema stvara source packet s predloženim naslovima/URL-ovima i statusom HOLD. Dostava obavijesti korisniku mora biti potvrđena, sve izmjene zamrznute hashom i odbijanje mora odmah zaustaviti proces. Nakon 30 minuta bez prigovora mogu se odobriti samo niskorizične interne pripreme. Objavljivanje provjerene, dopuštene uredničke građe zahtijeva da neovisne sigurnosne, ljudske uredničke i produkcijske kontrole stvarno budu zadovoljene. Sama šutnja nije provjera činjenica.
