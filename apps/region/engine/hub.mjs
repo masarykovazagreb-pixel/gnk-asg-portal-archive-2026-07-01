@@ -17,6 +17,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { esc, longDate, shortDate, scoreFromTitle, truncate, themeFor, safeJson } from './lib.mjs';
 import { CHANNELS, HUB, CONTACT, SOCIAL_IMAGE, CITY_SHORT, CSS as CHANNEL_CSS } from './build.mjs';
+import { ensureDeskTiles, tilePath, variantFor } from './desk-art.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const APP = join(HERE, '..');
@@ -212,8 +213,28 @@ const MEDIA_ENTITY_NODE = {
   '@type': 'NewsMediaOrganization',
   '@id': MEDIA_ID,
   name: 'AKTUAL MEDIA d.o.o.',
-  alternateName: ['AKTUAL MEDIA', 'Aktual mediji', 'AKTUAL MEDIA KANAL'],
-  url: 'https://gnk-asg.hr/gnk-aktual/'
+  /* Inačice imena koje ljudi stvarno upisuju u tražilicu. Bez njih Google
+     "Aktual mediji" i "Aktual Media" ne povezuje s istim izdavačem. */
+  alternateName: [
+    'AKTUAL MEDIA',
+    'Aktual Media',
+    'Aktual mediji',
+    'Aktual medija',
+    'Aktual Media d.o.o.',
+    'AKTUAL MEDIA KANAL',
+    'AKTUAL MEDIA KANAL ZAGREB'
+  ],
+  url: 'https://gnk-asg.hr/gnk-aktual/',
+  logo: 'https://gnk-asg.hr/assets/logo-gnk-asg-gold.svg',
+  parentOrganization: {
+    '@type': 'Organization',
+    '@id': 'https://gnk-asg.hr/#gnk-asg',
+    name: 'GNK ASG d.o.o.',
+    url: 'https://gnk-asg.hr/'
+  },
+  /* Izdanja su dio istog entiteta — popis je u mediaItems(), pa se ne
+     održava ručno na dva mjesta. */
+  publishingPrinciples: 'https://gnk-asg.hr/gnk-aktual/metodologija/'
 };
 const MEDIA_EXTRA_DESTINATIONS = [
   { name: 'BUSINESS TJEDNIK', url: 'https://gnk-asg-tjednik.pages.dev/' },
@@ -229,8 +250,18 @@ const mediaItems = () => [
 ];
 const isWebsiteNode = (node) => (Array.isArray(node?.['@type']) ? node['@type'] : [node?.['@type']]).includes('WebSite');
 
-function portalShell({ title, description, path, keywords, jsonld = [], body, cssExtra = '' }) {
+function portalShell({ title, description, path, keywords, tags = [], jsonld = [], body, cssExtra = '', image = SOCIAL_IMAGE, imageAlt = 'AKTUAL MEDIA' }) {
   const canonical = `${HUB}${path}`;
+  /* HUB je /izdanja/, a plohe i naslovnice žive u korijenu portala, pa se
+     apsolutna adresa gradi iz ishodišta, ne iz putanje huba. */
+  const ORIGIN = new URL(HUB).origin;
+  const shareImage = /^https?:/.test(image) ? image : `${ORIGIN}${image}`;
+  /* Ključne riječi: bez dvostrukih unosa i bez imena urednika — autorstvo
+     stoji u author/editor metama i u JSON-LD-u, ne u popisu pojmova. */
+  const keywordList = [...new Map(keywords
+    .map((word) => String(word).trim())
+    .filter((word) => word && !/nermin|sefi[cć]/i.test(word))
+    .map((word) => [word.toLowerCase(), word])).values()];
   const graph = [WEBSITE_NODE, MEDIA_ENTITY_NODE, ...jsonld.filter((node) => !isWebsiteNode(node)).map((node) =>
     node['@type'] === 'CollectionPage'
       ? { ...node, publisher: { '@id': MEDIA_ID }, about: { '@id': MEDIA_ID } }
@@ -246,18 +277,21 @@ function portalShell({ title, description, path, keywords, jsonld = [], body, cs
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="author" content="AKTUAL MEDIA d.o.o.">
 <meta name="editor" content="Nermin Sefić">
-<meta name="keywords" content="${esc(keywords.join(', '))}">
+<meta name="keywords" content="${esc(keywordList.join(', '))}">
+${[...new Map(tags.filter((t) => String(t).startsWith('#')).map((t) => [String(t).toLowerCase(), String(t)])).values()].map((t) => `<meta property="article:tag" content="${esc(t)}">`).join('\n')}
+<meta property="og:image:alt" content="${esc(imageAlt)}">
 <link rel="canonical" href="${canonical}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AKTUAL MEDIA">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(truncate(description, 300))}">
 <meta property="og:url" content="${canonical}">
-<meta property="og:image" content="${SOCIAL_IMAGE}">
+<meta property="og:image" content="${shareImage}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(truncate(description, 200))}">
-<meta name="twitter:image" content="${SOCIAL_IMAGE}">
+<meta name="twitter:image" content="${shareImage}">
+<meta name="twitter:image:alt" content="${esc(imageAlt)}">
 <link rel="sitemap" type="application/xml" href="/izdanja/sitemap.xml">
 ${graph.map((n) => `<script type="application/ld+json">${safeJson(n)}</script>`).join('\n')}
 <style>
@@ -512,6 +546,7 @@ ${radioBand()}${portalFooter()}`;
     title: 'Naša izdanja — AKTUAL MEDIA · osam gradskih kanala AKTUAL MEDIA KANAL, tjednik i deskovi',
     description: 'Sva izdanja AKTUAL MEDIA na jednom mjestu: osam regionalnih kanala, BUSINESS TJEDNIK, devet tematskih deskova, radio, galerija i podatkovni desk.',
     path: '',
+    tags: ['#AKTUALMEDIA', '#AktualMedia', '#Našaizdanja', '#GNKASG'],
     keywords: ['AKTUAL MEDIA', 'Aktual mediji', 'izdanja', 'AKTUAL MEDIA KANAL ZAGREB', 'AKTUAL MEDIA KANAL BEOGRAD', 'AKTUAL MEDIA KANAL SARAJEVO', 'AKTUAL MEDIA KANAL BUDAPEST', 'AKTUAL MEDIA KANAL LJUBLJANA', 'AKTUAL MEDIA KANAL ROMA', 'AKTUAL MEDIA KANAL SOFIJA', 'AKTUAL MEDIA KANAL BUCUREȘTI', 'BUSINESS TJEDNIK', 'GNK ASG'],
     jsonld: [
       { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Naša izdanja — AKTUAL MEDIA', url: HUB, inLanguage: 'hr', isPartOf: { '@id': 'https://gnk-asg.hr/#website' } },
@@ -573,8 +608,25 @@ function collect(theme, filter = null) {
 }
 
 /* Slika iz izvora ide kroz naš posrednik: izdavač ne vidi čitatelja,
-   a slika se kešira na rubu. Ako slike nema, ne lijepimo zamjensku. */
+   a slika se kešira na rubu. Popis dopuštenih hostova je u Workeru
+   (workers/gnk-asg-direct-operator/src/image-hosts-v1.js) i pokriva sve
+   izvore iz apps/region/data/*.json. */
 const proxied = (src) => (src ? `/api/img?u=${encodeURIComponent(String(src))}&w=480` : '');
+
+/* Minijatura u popisu osvrta.
+   Stvarna slika izvora nosi alt s naslovom i imenom izvora — to je jedino
+   mjesto gdje čitatelj (i tražilica) iz slike može saznati o čemu je.
+   Zamjenska ploha je dekoracija: ponavlja se uz svaki zapis bez slike, pa
+   nosi prazan alt i aria-hidden da je čitač ekrana preskoči umjesto da
+   izgovara istu rečenicu četrdeset puta. */
+function deskThumb(item, deskId) {
+  const alt = `${item.title} — ${item.sourceName || item.channel.title}`;
+  if (item.image) {
+    return `<img class="iz-thumb" src="${esc(proxied(item.image))}" alt="${esc(alt)}" width="86" height="58" loading="lazy" decoding="async" referrerpolicy="no-referrer">`;
+  }
+  const tile = tilePath(deskId, variantFor(item.slug || item.url || item.title));
+  return `<img class="iz-thumb iz-thumb-art" src="${esc(tile)}" alt="" aria-hidden="true" width="86" height="58" loading="lazy" decoding="async">`;
+}
 
 const cityCircles = () => `<ul class="iz-city" aria-label="Osam gradskih izdanja AKTUAL MEDIA">${
   CHANNELS.map((c) => `<li><a href="${c.base}" rel="external noopener" title="${esc(c.title)}"><img src="/assets/izdanja/${c.id}-240.webp" alt="${esc(c.city)}" width="96" height="96" loading="lazy" decoding="async"><span>${esc(c.city)}</span></a></li>`).join('')
@@ -608,7 +660,25 @@ function deskPage(id, desk) {
 
   <section class="iz-band">
     <h2>Osvrti</h2>
-    <ul class="iz-list">${items.slice(0, 40).map((i) => `<li><span class="iz-cell">${i.image ? `<img class="iz-thumb" src="${esc(proxied(i.image))}" alt="" width="86" height="58" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : ''}<time datetime="${esc(i.date)}">${esc(shortDate(i.date.slice(0, 10)))}</time></span><a href="${i.channel.base}clanak/${i.slug}/" rel="external noopener">${esc(i.title)}</a><span class="src">${esc(i.channel.title)}</span></li>`).join('') || '<li>Prvi ciklus još nije zapisao tekstove za ovaj desk.</li>'}</ul>
+    <ul class="iz-list">${items.slice(0, 40).map((i) => `<li><span class="iz-cell">${deskThumb(i, id)}<time datetime="${esc(i.date)}">${esc(shortDate(i.date.slice(0, 10)))}</time></span><a href="${i.channel.base}clanak/${i.slug}/" rel="external noopener">${esc(i.title)}</a><span class="src">${esc(i.channel.title)}</span></li>`).join('') || '<li>Prvi ciklus još nije zapisao tekstove za ovaj desk.</li>'}</ul>
+  </section>
+
+  <section class="iz-band iz-aktual" aria-labelledby="aktualTitle">
+    <h2 id="aktualTitle">AKTUAL MEDIA <span>izdavač ovog deska</span></h2>
+    <p class="iz-small" style="margin:0 0 12px">Ovaj desk je dio AKTUAL MEDIA — kuće koja pod istim imenom vodi osam gradskih kanala, devet tematskih deskova, business tjednik, radio, galeriju i podatkovni desk. Isti izdavač, isti urednik i ista metodologija vrijede za svaku stranicu, pa se svaki tekst može provjeriti do izvornika.</p>
+    <ul class="iz-datacards">
+      <li><a href="/gnk-aktual/"><b>AKTUAL MEDIA</b><span>središte kuće</span></a></li>
+      <li><a href="/izdanja/"><b>Sva izdanja</b><span>8 kanala · 9 deskova</span></a></li>
+      <li><a href="/gnk-aktual/mreza/"><b>Mreža izdanja</b><span>vlastiti hosting</span></a></li>
+      <li><a href="/aktual-media/"><b>Podatkovni desk</b><span>redakcija, izmjereno</span></a></li>
+      <li><a href="https://gnk-asg-tjednik.pages.dev/" rel="external noopener"><b>BUSINESS TJEDNIK</b><span>tjedni pregled</span></a></li>
+      <li><a href="/en/gnk-aktual/" hreflang="en" lang="en"><b>AKTUAL MEDIA (EN)</b><span>English entry point</span></a></li>
+    </ul>
+  </section>
+
+  <section class="iz-band">
+    <h2>Ostali deskovi</h2>
+    <ul class="iz-list">${Object.entries(DESKS).filter(([other]) => other !== id).map(([other, d]) => `<li><time>desk</time><a href="/izdanja/${other}/">${esc(d.title)}</a><span class="src">${esc(d.hashtags[0] || '')}</span></li>`).join('')}</ul>
   </section>
 
   <section class="iz-band">
@@ -619,13 +689,22 @@ function deskPage(id, desk) {
 ${portalFooter()}
 ${id === 'sport' ? `<script>(()=>{const box=document.getElementById('izResults');if(!box)return;const esc=(s)=>String(s).replace(/[&<>"']/g,(c)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const render=(rows)=>{if(!rows.length)return;box.innerHTML=rows.slice(0,12).map((r)=>'<div class="iz-score"><span>'+esc(r.title)+'<small>'+esc(r.source)+' · '+esc(r.channel)+'</small></span><b>'+esc(r.score)+'</b></div>').join('')};const load=()=>fetch('/data/izdanja-sport.json',{cache:'no-store'}).then((r)=>r.ok?r.json():null).then((d)=>d&&d.results&&render(d.results)).catch(()=>{});load();setInterval(load,300000)})();</script>` : ''}`;
 
+  /* Naslovnica je rasterska (webp) jer društvene mreže ne prikazuju SVG;
+     SVG plohe ostaju u popisu osvrta gdje nema vanjskog dijeljenja. */
+  const cover = `/assets/izdanja/${id}-tile.webp`;
+  const artCover = tilePath(id, 0);
+  const withImages = items.filter((i) => i.image).length;
   return portalShell({
     title: `${desk.title} | AKTUAL MEDIA`,
     description: desk.description,
     path: `${id}/`,
-    keywords: [...desk.hashtags, 'AKTUAL MEDIA', 'GNK ASG', 'regija'],
+    /* Oznake idu u article:tag, a u keywords ostaju samo riječi. */
+    keywords: [...desk.hashtags.map((t) => t.replace(/^#/, '')), 'AKTUAL MEDIA', 'Aktual mediji', 'GNK ASG', 'regija', desk.nav],
+    tags: [...desk.hashtags, '#AktualMedia', '#GNKASG'],
+    image: cover,
+    imageAlt: `${desk.title} — AKTUAL MEDIA`,
     jsonld: [
-      { '@context': 'https://schema.org', '@type': 'CollectionPage', name: desk.title, url: `${HUB}${id}/`, inLanguage: 'hr', description: desk.description },
+      { '@context': 'https://schema.org', '@type': 'CollectionPage', name: desk.title, url: `${HUB}${id}/`, inLanguage: 'hr', description: desk.description, primaryImageOfPage: { '@type': 'ImageObject', url: `${new URL(HUB).origin}${cover}`, caption: `${desk.title} — AKTUAL MEDIA` }, image: [`${new URL(HUB).origin}${cover}`, `${new URL(HUB).origin}${artCover}`], publisher: { '@id': MEDIA_ID }, isPartOf: { '@id': `${HUB}#website` } },
       { '@context': 'https://schema.org', '@type': 'ItemList', name: desk.title, numberOfItems: Math.min(20, items.length), itemListElement: items.slice(0, 20).map((i, n) => ({ '@type': 'ListItem', position: n + 1, name: i.title, url: `${i.channel.base}clanak/${i.slug}/` })) }
     ],
     body
@@ -642,6 +721,7 @@ const writePage = (path, html) => {
 
 export async function buildHub() {
   mkdirSync(OUT, { recursive: true });
+  ensureDeskTiles(PORTAL, Object.keys(DESKS));
   writePage('', hubPage());
   for (const [id, desk] of Object.entries(DESKS)) writePage(id, deskPage(id, desk));
 
@@ -925,6 +1005,7 @@ export function usaPage() {
 <meta name="twitter:title" content="GNK DINAMO Ltd. — Boulder, Colorado, USA">
 <meta name="twitter:description" content="Matična tvrtka grupe i ishodište mreže AKTUAL MEDIA.">
 <meta name="twitter:image" content="${SOCIAL_IMAGE}">
+
 <link rel="alternate" hreflang="hr" href="${USA}">
 <link rel="alternate" hreflang="x-default" href="${USA}">
 <script type="application/ld+json">${safeJson(jsonld)}</script>

@@ -290,6 +290,8 @@ function shell(channel, strings, { title, description, path, keywords = [], json
   /* Ime autora se NE stavlja u meta keywords (pravilo repoa i CI gate);
      ono ide u JSON-LD i u vidljive hashtagove. */
   const tags = [...new Set(keywords.filter((k) => !/nermin|sefi[cć]/i.test(k)))].slice(0, 18);
+/* Isti popis bez oznake # — za meta keywords i news_keywords. */
+const plainTags = [...new Map(tags.map((t) => String(t).replace(/^#/, '')).filter(Boolean).map((t) => [t.toLowerCase(), t])).values()].join(', ');
   const ogImage = image || `${PUBLIC}/assets/izdanja/${channel.id}-og.jpg`;
   const hero = `${PUBLIC}/assets/izdanja/${channel.id}-1200.webp`;
 
@@ -298,9 +300,14 @@ function shell(channel, strings, { title, description, path, keywords = [], json
     '@graph': [
       {
         '@type': 'NewsMediaOrganization', '@id': AKTUAL_NEWS_ENTITY_ID,
-        name: 'AKTUAL MEDIA d.o.o.', alternateName: ['AKTUAL MEDIA', 'Aktual mediji', 'AKTUAL MEDIA KANAL'],
+        name: 'AKTUAL MEDIA d.o.o.',
+        /* Iste inačice imena kao na /izdanja/ — jedan izdavač, jedno ime za
+           tražilicu, bez obzira na to koju stranicu čitatelj prvi otvori. */
+        alternateName: ['AKTUAL MEDIA', 'Aktual Media', 'Aktual mediji', 'Aktual medija', 'Aktual Media d.o.o.', 'AKTUAL MEDIA KANAL', 'AKTUAL MEDIA KANAL ZAGREB'],
         url: CENTRAL,
-        editor: { '@id': `${PUBLIC}/#nermin-sefic` }
+        editor: { '@id': `${PUBLIC}/#nermin-sefic` },
+        parentOrganization: { '@type': 'Organization', name: 'GNK ASG d.o.o.', url: PUBLIC },
+        publishingPrinciples: `${CENTRAL}metodologija/`,
       },
       {
         '@type': 'Person', '@id': `${PUBLIC}/#nermin-sefic`,
@@ -324,7 +331,13 @@ function shell(channel, strings, { title, description, path, keywords = [], json
           ...(path ? [{ '@type': 'ListItem', position: 4, name: title, item: canonical }] : [])
         ]
       },
-      ...jsonld.filter((node) => !(Array.isArray(node['@type']) ? node['@type'] : [node['@type']]).includes('WebSite'))
+      /* Shell već nosi WebSite i BreadcrumbList. Ako ih je stranica poslala
+         još jedanput, graf bi imao dva ista čvora — Google tada bira jedan,
+         a mi ne znamo koji. Zato se duplikati ovdje ispuštaju. */
+      ...jsonld.filter((node) => {
+        const types = Array.isArray(node['@type']) ? node['@type'] : [node['@type']];
+        return !types.includes('WebSite') && !types.includes('BreadcrumbList');
+      })
     ]
   };
   const ld = `<script type="application/ld+json">${safeJson(graph)}</script>`;
@@ -340,8 +353,9 @@ function shell(channel, strings, { title, description, path, keywords = [], json
 <meta name="author" content="AKTUAL MEDIA d.o.o.">
 <meta name="editor" content="Nermin Sefić">
 <meta name="publisher" content="AKTUAL MEDIA d.o.o.">
-<meta name="keywords" content="${esc(tags.join(', '))}">
-<meta name="news_keywords" content="${esc(tags.join(', '))}">
+<meta name="keywords" content="${esc(plainTags)}">
+<meta name="news_keywords" content="${esc(plainTags)}">
+${tags.filter((t) => String(t).startsWith('#')).map((t) => `<meta property="article:tag" content="${esc(t)}">`).join('\n')}
 <meta name="geo.region" content="${esc(channel.country)}">
 <meta name="geo.placename" content="${esc(channel.city)}">
 <meta name="theme-color" content="${palette.bg}">
@@ -437,7 +451,7 @@ function footer(channel, strings, extra = '') {
       <img src="/assets/izdanja/${c.id}-tile.webp" alt="${esc(c.title)} — ${esc(c.country)} — otvori izdanje" width="880" height="587" loading="lazy" decoding="async">
     </a></li>`).join('');
   const desks = [['sport', 'Sport'], ['politika', 'Politika'], ['sigurnost', 'Sigurnost'], ['biznis', 'Business'], ['tehnologija', 'Tehnologija'], ['moda', 'Tjednik Mode'], ['putovanja', 'Putovanja'], ['ljubimci', 'Ljubimci'], ['svijet', 'Svijet']]
-    .map(([id, label]) => `<a href="/izdanja/${id}/">${esc(label)}</a>`).join('') + '<a href="/radio/">Radio</a><a href="/galerija/">Galerija</a><a href="/usa/">Colorado · USA</a><a href="/kanal/">Svi kanali</a><a href="/aktual-media/">Podatkovni desk</a><a href="/tehnologija-buducnosti/">Tehnologija budućnosti</a><a href="/digital-workforce/knjiga/">Knjiga radnika</a><a href="https://gnk-asg-tjednik.pages.dev/tjednik/2026-W43/" rel="external noopener">Tjednik W43 ↗</a>';
+    .map(([id, label]) => `<a href="/izdanja/${id}/">${esc(label)}</a>`).join('') + '<a href="/radio/">Radio</a><a href="/galerija/">Galerija</a><a href="/usa/">Colorado · USA</a><a href="/kanal/">Svi kanali</a><a href="/aktual-media/">Podatkovni desk</a><a href="/gnk-aktual/mreza/">Mreža izdanja</a><a href="/en/gnk-aktual/" hreflang="en" lang="en">AKTUAL MEDIA (EN)</a><a href="/tehnologija-buducnosti/">Tehnologija budućnosti</a><a href="/digital-workforce/knjiga/">Knjiga radnika</a><a href="https://gnk-asg-tjednik.pages.dev/tjednik/2026-W43/" rel="external noopener">Tjednik W43 ↗</a>';
   return `<footer class="foot">
   <section class="xf" aria-label="Ostala izdanja AKTUAL MEDIA">
     <div class="xf-head"><h2>Ostala izdanja — klik vodi na izdanje</h2><a href="${CENTRAL}#izdanja-po-zemljama" rel="external noopener">Sva izdanja →</a></div>
@@ -452,6 +466,7 @@ function footer(channel, strings, extra = '') {
     <div>
       <h2>${esc(strings.publisher)}</h2>
       <p>AKTUAL MEDIA d.o.o. · GNK ASG<br>${esc(strings.editor)}: Nermin Sefić<br><a href="mailto:${CONTACT}">${CONTACT}</a></p>
+      <p class="iz-small">AKTUAL MEDIA vodi osam gradskih kanala, devet deskova, business tjednik, radio i podatkovni desk pod istim imenom i istom metodologijom. <a href="${CENTRAL}">AKTUAL MEDIA — sve na jednom mjestu →</a></p>
     </div>
     <div>
       <h2>${esc(strings.hashtags)}</h2>
