@@ -10,8 +10,13 @@ import path from 'node:path';
 
 const root = path.resolve('apps/portal');
 const host = 'https://gnk-asg.hr';
-const channels = ['zagreb', 'beograd', 'sarajevo', 'budimpesta',
-  'ljubljana', 'rim', 'sofija', 'bukurest'];
+/* Popis izdanja se čita s diska, ne upisuje rukom: kad se doda novo
+   izdanje, audit ga mora provjeriti bez izmjene ovog skripta. */
+const channels = fs.existsSync(path.join(root, 'kanal'))
+  ? fs.readdirSync(path.join(root, 'kanal'), { withFileTypes: true })
+    .filter((e) => e.isDirectory() && fs.existsSync(path.join(root, 'kanal', e.name, 'sitemap.xml')))
+    .map((e) => e.name).sort()
+  : [];
 const extractLocs = (xml) => [...xml.matchAll(/<loc>\s*([^<]+)\s*<\/loc>/gi)]
   .map((match) => match[1].trim());
 const isArticle = (url) => /\/clanak\/[^/]+\/$/.test(url);

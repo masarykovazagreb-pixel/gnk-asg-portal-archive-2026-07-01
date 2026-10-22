@@ -186,7 +186,7 @@ if _master:
   <div class="bf-media"><img src="{esc(_master['webp'])}" alt="{esc(_master['title'])} — {esc(_master.get('tagline',''))}" width="1200" height="345" loading="eager" decoding="async"></div>
   <div class="bf-body">
     <p class="bf-kicker">AKTUAL MEDIA · svjetsko izdanje</p>
-    <h3 id="bf-title">Jedan znak, devetnaest izdanja</h3>
+    <h3 id="bf-title">Jedan znak, {len(_channels)} izdanja</h3>
     <ul class="bf-spec">
       <li>{len(brand_logos)} znakova u familiji</li>
       <li>SVG vektor + WebP 1200×345</li>

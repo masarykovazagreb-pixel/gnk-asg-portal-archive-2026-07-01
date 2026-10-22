@@ -20,7 +20,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const REGION = join(ROOT, 'apps', 'region', 'data');
 const NEWS = join(ROOT, 'apps', 'portal', 'data', 'news.json');
-const CHANNELS = ['zagreb', 'beograd', 'sarajevo', 'budimpesta', 'ljubljana', 'rim', 'sofija', 'bukurest'];
+const CHANNELS = JSON.parse(readFileSync(join(ROOT, 'apps', 'region', 'channels.json'), 'utf8')).channels.map((c) => c.id);
 
 const arg = (name, fallback) => {
   const i = process.argv.indexOf(name);
@@ -48,17 +48,22 @@ const newest = (items, key) => items.reduce((best, item) => {
 const news = readJSON(NEWS, []);
 const newsNewest = Array.isArray(news) ? newest(news, 'published_at') : '';
 
+/* Izdanje koje još nema nijedan zapis nije „zastarjelo" nego „u pripremi":
+   arhiva mu se puni backfillom. Miješati to dvoje značilo bi da svaki novi
+   grad zauvijek pali alarm svježine i pokreće ciklus bez razloga. */
 const channels = CHANNELS.map((id) => {
   const data = readJSON(join(REGION, `${id}.json`), null);
   const items = Array.isArray(data?.items) ? data.items : [];
   const latest = newest(items, 'date');
   const ageHours = hoursSince(latest);
+  const state = items.length === 0 ? 'pending' : (ageHours === null || ageHours > MAX_AGE_HOURS ? 'stale' : 'fresh');
   return {
     id,
     items: items.length,
     newest: latest || null,
     ageHours,
-    stale: ageHours === null ? true : ageHours > MAX_AGE_HOURS,
+    state,
+    stale: state === 'stale',
   };
 });
 
@@ -75,6 +80,8 @@ const report = {
   },
   channels,
   staleChannels: channels.filter((c) => c.stale).map((c) => c.id),
+  pendingChannels: channels.filter((c) => c.state === 'pending').map((c) => c.id),
+  /* Novi kanal ne broji se kao kvar dok ne dobije prvi zapis. */
   anyStale: newsAge === null || newsAge > MAX_AGE_HOURS || channels.some((c) => c.stale),
 };
 

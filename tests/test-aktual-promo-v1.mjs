@@ -87,15 +87,19 @@ const countH2 = (html) => (html.match(/<h2\b/g) || []).length;
 if (countH2(hrPage) !== countH2(enPage)) {
   fails.push(`EN ima ${countH2(enPage)} naslova druge razine, HR ${countH2(hrPage)} — EN je opet kraća`);
 }
+/* Naslovi se ne prepisuju u test: broj gradova i jezika raste s mrežom, pa se
+   provjerava oblik natpisa (engleski, s brojevima iz kanala), ne stari tekst. */
+if (!/cities,\s+[a-z]+ languages/i.test(enPage) && !enPage.includes('languages,')) {
+  fails.push('EN: nema engleski naslov ploče s gradovima i jezicima');
+}
 for (const [needle, label] of [
-  ['Eight countries, every edition', 'engleski naslov ploče'],
-  ['Our editions in the region', 'engleska traka izdanja'],
+  ['five continents, one newsroom', 'engleska traka izdanja'],
   ['From the GNK ASG channel', 'engleska traka kanala'],
   ['Edition hashtags', 'engleske oznake']
 ]) {
   if (!enPage.includes(needle)) fails.push(`EN: nema ${label} (${needle})`);
 }
-for (const croatian of ['Osam zemalja, sva izdanja', 'Naša izdanja u regiji', 'Iz GNK ASG KANALA', 'Hashtagovi izdanja']) {
+for (const croatian of ['Sedamnaest gradova', 'Naša izdanja — pet kontinenata', 'Iz GNK ASG KANALA', 'Hashtagovi izdanja']) {
   if (enPage.includes(croatian)) fails.push(`EN: hrvatski naslov ${croatian} na engleskoj stranici`);
 }
 

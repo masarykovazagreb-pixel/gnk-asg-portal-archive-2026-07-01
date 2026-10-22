@@ -33,7 +33,7 @@ const readJSON = (path, fallback) => {
 };
 const channelData = (id) => readJSON(join(DATA, `${id}.json`), { items: [], updatedAt: '' });
 
-export const EDITION_META = {
+const REGION_META = {
   zagreb: {
     name: 'AKTUAL MEDIA KANAL ZAGREB',
     url: 'https://gnk-asg-kanal.pages.dev/',
@@ -47,7 +47,7 @@ export const EDITION_META = {
     url: 'https://gnk-asg-kanal-beograd.pages.dev/',
     langLabel: 'srpski',
     kicker: 'Srbija · Beograd',
-    description: 'Srpsko izdanje AKTUAL MEDIA čita N1 Srbija, Danas, Nova.rs i Politiku i od svakog pronađenog teksta pravi osvrt na način izveštavanja. Cilj nije prepričati vest, već pokazati kako je naslovljena, šta je u sažetku ostalo neimenovano i šta treba proveriti pre zaključka. Svaki zapis nosi direktan link na izvornik i datum objave, a čitava arhiva je pretraživa kroz teme: politika, privreda, bezbednost i kibernetika, rat i eskalacije, energija i sport. Izdanje ima svoj feed, sitemap i stranicu metodologije, pa se može pratiti i mašinski i ljudski. Jezik je srpski, a grad u zaglavlju je Beograd — kanal ostaje jedan od osam gradskih kanala iste matične kuće. Kada izvor nije dostupan, izdanje to kaže i ne popunjava prazninu izmišljenim sadržajem.',
+    description: 'Srpsko izdanje AKTUAL MEDIA čita N1 Srbija, Danas, Nova.rs i Politiku i od svakog pronađenog teksta pravi osvrt na način izveštavanja. Cilj nije prepričati vest, već pokazati kako je naslovljena, šta je u sažetku ostalo neimenovano i šta treba proveriti pre zaključka. Svaki zapis nosi direktan link na izvornik i datum objave, a čitava arhiva je pretraživa kroz teme: politika, privreda, bezbednost i kibernetika, rat i eskalacije, energija i sport. Izdanje ima svoj feed, sitemap i stranicu metodologije, pa se može pratiti i mašinski i ljudski. Jezik je srpski, a grad u zaglavlju je Beograd — kanal ostaje jedan od gradskih kanala iste matične kuće. Kada izvor nije dostupan, izdanje to kaže i ne popunjava prazninu izmišljenim sadržajem.',
     hashtags: ['#KanalBeograd', '#Srbija', '#Beograd', '#N1', '#Danas', '#AktualMedia']
   },
   sarajevo: {
@@ -100,6 +100,59 @@ export const EDITION_META = {
   }
 };
 
+/* Globalna izdanja: pet kontinenata izvan regije. Opisi su pisani za svako
+   izdanje pojedinačno — govore što se čita i što se od toga radi, bez ocjena
+   o zemljama i bez tvrdnji koje izdanje ne može držati. */
+const GLOBAL_META = {
+  nairobi: {
+    langLabel: 'engleski', kicker: 'Kenija · Nairobi',
+    description: 'Kenijsko izdanje AKTUAL MEDIA čita Daily Nation, The Standard, Capital FM i KBC te od svakog pronađenog teksta gradi osvrt na način izvještavanja. Fokus je na istočnoj Africi: trgovina, tehnologija plaćanja, sigurnost i javne financije. Svaki zapis nosi izravnu poveznicu na izvornik i datum, a izdanje ima vlastiti feed, sitemap i stranicu metodologije. Kada izvor nije dostupan, izdanje to kaže umjesto da popuni prazninu.',
+    hashtags: ['#KanalNairobi', '#Kenya', '#Nairobi', '#EastAfrica', '#AktualMedia']
+  },
+  jakarta: {
+    langLabel: 'indonezijski', kicker: 'Indonezija · Jakarta',
+    description: 'Indonezijsko izdanje AKTUAL MEDIA prati ANTARA, Kompas, Detik i Tempo. Cilj nije prepričati vijest, već pokazati kako je naslovljena, što je u sažetku ostalo neimenovano i što treba provjeriti prije zaključka. Teme su politika, gospodarstvo, energetika i kibernetička sigurnost, s naglaskom na odluke koje se tiču cijelog arhipelaga. Izdanje ima vlastiti feed, sitemap i metodologiju, a svaki osvrt vodi natrag na izvornik.',
+    hashtags: ['#KanalJakarta', '#Indonesia', '#Jakarta', '#AktualMedia']
+  },
+  newyork: {
+    langLabel: 'engleski', kicker: 'Sjedinjene Američke Države · New York',
+    description: 'Američko izdanje AKTUAL MEDIA čita The New York Times, NPR, The Wall Street Journal i Bloomberg. Osvrt se bavi načinom izvještavanja: kojim se dokumentom potkrepljuje brojka, je li tvrdnja pripisana imenovanom izvoru i što je u tekstu ostalo bez konteksta. Izdanje pokriva tržišta, politiku i tehnologiju, a svaki zapis nosi poveznicu na izvornik i datum objave. Vlastiti feed i sitemap čine ga upotrebljivim i za strojno praćenje.',
+    hashtags: ['#KanalNewYork', '#USA', '#NewYork', '#AktualMedia']
+  },
+  saopaulo: {
+    langLabel: 'portugalski', kicker: 'Brazil · São Paulo',
+    description: 'Brazilsko izdanje AKTUAL MEDIA čita Folha de S.Paulo, G1, UOL i Exame. Osvrt opisuje kako je tekst naslovljen i što čitatelj treba provjeriti prije zaključka, uz izravnu poveznicu na izvornik i datum objave. Teme su gospodarstvo, javne politike, sigurnost i tehnologija, s naglaskom na odluke koje se osjete izvan velikih gradova. Izdanje ima vlastiti feed, sitemap i stranicu metodologije na portugalskom.',
+    hashtags: ['#KanalSaoPaulo', '#Brasil', '#SaoPaulo', '#AktualMedia']
+  },
+  sydney: {
+    langLabel: 'engleski', kicker: 'Australija · Sydney',
+    description: 'Australsko izdanje AKTUAL MEDIA prati ABC, The Sydney Morning Herald, Guardian Australia i news.com.au. Osvrt se zadržava na tome kako je priča ispričana: koja je brojka potkrijepljena dokumentom, koji je izvor imenovan i što nedostaje. Teme su Pacifik, tržišta, klima i javna politika, uz vlastiti feed, sitemap i metodologiju. Svaki zapis vodi na izvornik i ne prenosi tvrdnje izvora kao svoje.',
+    hashtags: ['#KanalSydney', '#Australia', '#Sydney', '#AktualMedia']
+  },
+  singapur: {
+    langLabel: 'engleski', kicker: 'Singapur · Singapur',
+    description: 'Singapursko izdanje AKTUAL MEDIA čita CNA, The Straits Times, The Business Times i Mothership. Fokus je na trgovini, financijama, lučkoj i tehnološkoj infrastrukturi te na odlukama koje se tiču cijele regije. Osvrt ne prepričava vijest, nego provjerava kako je izvor došao do brojke i što je ostalo neimenovano. Izdanje ima vlastiti feed, sitemap i metodologiju, a svaki zapis nosi poveznicu na izvornik.',
+    hashtags: ['#KanalSingapur', '#Singapore', '#AktualMedia']
+  },
+  kairo: {
+    langLabel: 'arapski', kicker: 'Egipat · Kairo',
+    description: 'Egipatsko izdanje AKTUAL MEDIA čita Mada Masr, Youm7 i Al-Masry Al-Youm te prati arapsko izvještavanje o regiji. Osvrt se piše na arapskom i bavi se načinom izvještavanja: kako je naslovljeno, koja je brojka ostala bez dokumenta i koji izvor nije imenovan. Svaki zapis nosi izravnu poveznicu na izvornik i datum objave, a izdanje ima vlastiti feed, sitemap i stranicu metodologije.',
+    hashtags: ['#KanalKairo', '#Egypt', '#Cairo', '#AktualMedia']
+  },
+  tokio: {
+    langLabel: 'japanski', kicker: 'Japan · Tokio',
+    description: 'Japansko izdanje AKTUAL MEDIA prati NHK, Asahi Shimbun, Mainichi i ITmedia. Osvrt se piše na japanskom i provjerava kako je priča izložena: koji je dokument iza brojke, je li izvor imenovan i što tekst ne kaže. Teme su gospodarstvo, tehnologija, sigurnosna politika i društvo, uz vlastiti feed, sitemap i metodologiju. Engleska verzija svake stranice objašnjava izdanje bez prevođenja samih tekstova.',
+    hashtags: ['#KanalTokio', '#Japan', '#Tokyo', '#AktualMedia']
+  },
+  peking: {
+    langLabel: 'kineski', kicker: 'Kina · Peking',
+    description: 'Kinesko izdanje AKTUAL MEDIA čita kineske redakcije međunarodnih kuća — BBC 中文, DW 中文, 纽约时报中文网 — te 中国新闻网. Osvrt se piše na kineskom i bavi se načinom izvještavanja, a ne prepričavanjem vijesti: koja je brojka bez dokumenta, koji izvor nije imenovan i što čitatelj treba sam provjeriti. Izdanje ima vlastiti feed, sitemap i stranicu metodologije te engleski ulaz u svaku temu.',
+    hashtags: ['#KanalPeking', '#China', '#Beijing', '#AktualMedia']
+  }
+};
+
+export const EDITION_META = { ...REGION_META, ...GLOBAL_META };
+
 const DESKS = {
   sport: {
     name: 'SPORT — AKTUAL MEDIA',
@@ -125,7 +178,7 @@ const DESKS = {
     title: 'Business desk: tržišta, bilance i kapital regije',
     lang: 'hr',
     theme: 'ekonomija',
-    description: 'Business desk skuplja poslovne tekstove iz svih gradskih kanala AKTUAL MEDIA i pokazuje što je stvarno objavljeno, a što je najavljeno. Prate se tržišta, bilance, investicije, kamate i koncentracija kapitala u osam zemalja regije. Svaki zapis nosi izvor, datum i poveznicu na izvornik, a osvrt se bavi time kako je brojka iz naslova objašnjena u tijelu teksta. Stranica ne daje investicijske preporuke i ne ocjenjuje tvrtke; daje pitanja koja treba postaviti prije odluke. Ažurira se iz istih dnevnih podataka kao i gradski kanali.',
+    description: 'Business desk skuplja poslovne tekstove iz svih gradskih kanala AKTUAL MEDIA i pokazuje što je stvarno objavljeno, a što je najavljeno. Prate se tržišta, bilance, investicije, kamate i koncentracija kapitala u zemljama mreže. Svaki zapis nosi izvor, datum i poveznicu na izvornik, a osvrt se bavi time kako je brojka iz naslova objašnjena u tijelu teksta. Stranica ne daje investicijske preporuke i ne ocjenjuje tvrtke; daje pitanja koja treba postaviti prije odluke. Ažurira se iz istih dnevnih podataka kao i gradski kanali.',
     hashtags: ['#Business', '#Trzista', '#Bilance', '#AktualMedia', '#GNKASG']
   },
   tehnologija: {
@@ -164,7 +217,7 @@ const DESKS = {
     lang: 'hr',
     theme: '*',
     filter: /svijet|svet\b|global|europ|\beu\b|nato|kijev|ukrajin|gaza|izrael|iran|\bsad\b|amerik|kina|kinesk|rusij|moskv|trump|putin|migracij|klim|opec|naft|tarif|carin|un\b|vijeće sigurnosti/i,
-    description: 'Desk Svijet povezuje vanjske teme s lokalnim posljedicama: energetiku, trgovinske mjere, migracije, sigurnost i klimu. Ne donosi stavove o sukobima i ne prenosi tvrdnje bez izvora; bilježi kako je pojedini događaj naslovljen u osam zemalja regije i što se od toga može provjeriti. Uz svaki zapis stoje izvor, datum i poveznica na izvornik, a brojke se ne zaokružuju bez konteksta. Desk služi kao okvir za razumijevanje lokalnih odluka, ne kao komentar svjetske politike. Ažurira se iz dnevnih podataka gradskih kanala.',
+    description: 'Desk Svijet povezuje vanjske teme s lokalnim posljedicama: energetiku, trgovinske mjere, migracije, sigurnost i klimu. Ne donosi stavove o sukobima i ne prenosi tvrdnje bez izvora; bilježi kako je pojedini događaj naslovljen u zemljama mreže i što se od toga može provjeriti. Uz svaki zapis stoje izvor, datum i poveznica na izvornik, a brojke se ne zaokružuju bez konteksta. Desk služi kao okvir za razumijevanje lokalnih odluka, ne kao komentar svjetske politike. Ažurira se iz dnevnih podataka gradskih kanala.',
     hashtags: ['#Svijet', '#Globalno', '#Sigurnost', '#AktualMedia', '#GNKASG']
   },
   moda: {
@@ -402,7 +455,7 @@ const portalHeader = (active, { h1 = true } = {}) => `<div class="iz-top"><div c
 <header class="iz-head"><div class="iz-wrap">
   <p class="k">GNK ASG · AKTUAL MEDIA · regionalna izdanja</p>
   ${h1 ? `<h1>Naša izdanja</h1>
-  <p>Osam gradskih kanala, poslovni tjednik i devet deskova — sport, politika, sigurnost, business, tehnologija, moda, putovanja, ljubimci i svijet. Svako izdanje ima vlastiti link, svoj jezik, svoj feed i svoju metodologiju, a sve se vraća ovamo.</p>`
+  <p>${CHANNELS.length} gradskih kanala, poslovni tjednik i devet deskova — sport, politika, sigurnost, business, tehnologija, moda, putovanja, ljubimci i svijet. Svako izdanje ima vlastiti link, svoj jezik, svoj feed i svoju metodologiju, a sve se vraća ovamo.</p>`
     : `<p class="iz-home-h1"><a href="/izdanja/">Naša izdanja</a> <span aria-hidden="true">·</span> desk</p>`}
   <nav class="iz-nav" aria-label="Izdanja"><a href="/izdanja/"${active === '' ? ' aria-current="page"' : ''}>Sva izdanja</a>${Object.entries(DESKS).map(([id, d]) => `<a href="/izdanja/${id}/"${active === `${id}/` ? ' aria-current="page"' : ''}>${esc(d.nav)}</a>`).join('')}<a href="/radio/">Radio</a><a href="/galerija/">Galerija</a><a href="/aktual-media/">Podaci</a><a href="/kanal/">Kanali</a><a href="/gnk-aktual/">AKTUAL MEDIA</a></nav>
 </div></header>`;
@@ -572,12 +625,12 @@ function hubPage() {
   ${networkBand()}
   <section class="iz-band iz-data-desk" aria-labelledby="ddTitle">
     <h2 id="ddTitle">Podatkovni desk — redakcija, izmjereno</h2>
-    <p class="iz-small" style="margin:0 0 12px">Četiri stranice na kojima AKTUAL MEDIA mjeri vlastitu arhivu: noćna smjena, koncentracija izvora, pauze u objavljivanju i zajednički rječnik osam gradova. Brojke se računaju iz arhive pri svakoj gradnji, bez procjena.</p>
+    <p class="iz-small" style="margin:0 0 12px">Četiri stranice na kojima AKTUAL MEDIA mjeri vlastitu arhivu: noćna smjena, koncentracija izvora, pauze u objavljivanju i zajednički rječnik gradova. Brojke se računaju iz arhive pri svakoj gradnji, bez procjena.</p>
     <ul class="iz-datacards">
       <li><a href="/aktual-media/nocna-smjena/"><b>Noćna smjena</b><span>što izlazi dok grad spava</span></a></li>
       <li><a href="/aktual-media/jedan-glas/"><b>Jedan glas</b><span>koliko je izdanje pluralno</span></a></li>
       <li><a href="/aktual-media/karta-tisine/"><b>Karta tišine</b><span>najdulja pauza po gradu</span></a></li>
-      <li><a href="/aktual-media/osam-jezika/"><b>Osam jezika</b><span>riječi koje dijele gradovi</span></a></li>
+      <li><a href="/aktual-media/osam-jezika/"><b>Jezici mreže</b><span>riječi koje dijele gradovi</span></a></li>
       <li><a href="/en/aktual-media/" hreflang="en" lang="en"><b>Data desk (EN)</b><span>the same four measurements</span></a></li>
     </ul>
   </section>
@@ -590,12 +643,12 @@ function hubPage() {
 ${radioBand()}${portalFooter()}`;
 
   return portalShell({
-    title: 'Naša izdanja — AKTUAL MEDIA · osam gradskih kanala AKTUAL MEDIA KANAL, tjednik i deskovi',
-    description: 'Sva izdanja AKTUAL MEDIA na jednom mjestu: osam regionalnih kanala, BUSINESS TJEDNIK, devet tematskih deskova, radio, galerija i podatkovni desk.',
+    title: 'Naša izdanja — AKTUAL MEDIA · 17 gradskih kanala na pet kontinenata, tjednik i deskovi',
+    description: 'Sva izdanja AKTUAL MEDIA na jednom mjestu: osam regionalnih i devet globalnih gradskih kanala, BUSINESS TJEDNIK, devet tematskih deskova, radio, galerija i podatkovni desk.',
     path: '',
     tags: ['#AKTUALMEDIA', '#AktualMedia', '#Našaizdanja', '#GNKASG'],
     logos: ['aktual-media-hr', 'aktual-media-en'],
-    keywords: ['AKTUAL MEDIA', 'Aktual mediji', 'izdanja', 'AKTUAL MEDIA KANAL ZAGREB', 'AKTUAL MEDIA KANAL BEOGRAD', 'AKTUAL MEDIA KANAL SARAJEVO', 'AKTUAL MEDIA KANAL BUDAPEST', 'AKTUAL MEDIA KANAL LJUBLJANA', 'AKTUAL MEDIA KANAL ROMA', 'AKTUAL MEDIA KANAL SOFIJA', 'AKTUAL MEDIA KANAL BUCUREȘTI', 'BUSINESS TJEDNIK', 'GNK ASG'],
+    keywords: [...CHANNELS.map((c) => c.title), 'BUSINESS TJEDNIK', 'GNK ASG', 'izdanja'],
     jsonld: [
       { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Naša izdanja — AKTUAL MEDIA', url: HUB, inLanguage: 'hr', isPartOf: { '@id': 'https://gnk-asg.hr/#website' } },
       { '@context': 'https://schema.org', '@type': 'ItemList', '@id': 'https://gnk-asg.hr/izdanja/#all-editions', name: 'Izdanja AKTUAL MEDIA', numberOfItems: mediaItems().length, itemListElement: mediaItems().map((item, i) => ({ '@type': 'ListItem', position: i + 1, name: item.name, url: item.url })) },
@@ -622,7 +675,7 @@ const PLATFORMS = [
     url: '/radio/',
     cta: 'Otvori radio →',
     tags: ['#AktualMediaRadio', '#AktualMedia', '#GNKASG'],
-    description: 'AKTUAL MEDIA RADIO je diskretni player u kutu stranice: preklopljen je dok ga čitatelj ne otvori i ne prekriva sadržaj. Nudi šest glazbenih streamova te popis javnih radijskih kuća osam zemalja koje portal prati. Stanice se ne reemitiraju; svaka poveznica vodi na službeni player te kuće, uz atribuciju. Player pamti je li zatvoren i može se otvoriti kao stalni prozor ili instalirati kao aplikacija. Ima vlastite kontrole glasnoće i reprodukcije, a stanice se biraju izravno u panelu. Kartica vodi na stranicu s playerom i popisom stanica.',
+    description: 'AKTUAL MEDIA RADIO je diskretni player u kutu stranice: preklopljen je dok ga čitatelj ne otvori i ne prekriva sadržaj. Nudi šest glazbenih streamova te popis javnih radijskih kuća svih zemalja koje portal prati. Stanice se ne reemitiraju; svaka poveznica vodi na službeni player te kuće, uz atribuciju. Player pamti je li zatvoren i može se otvoriti kao stalni prozor ili instalirati kao aplikacija. Ima vlastite kontrole glasnoće i reprodukcije, a stanice se biraju izravno u panelu. Kartica vodi na stranicu s playerom i popisom stanica.',
   },
   {
     id: 'knowledge-center',
@@ -676,7 +729,7 @@ function deskThumb(item, deskId) {
   return `<img class="iz-thumb iz-thumb-art" src="${esc(tile)}" alt="" aria-hidden="true" width="86" height="58" loading="lazy" decoding="async">`;
 }
 
-const cityCircles = () => `<ul class="iz-city" aria-label="Osam gradskih izdanja AKTUAL MEDIA">${
+const cityCircles = () => `<ul class="iz-city" aria-label="Gradska izdanja AKTUAL MEDIA">${
   CHANNELS.map((c) => `<li><a href="${c.base}" rel="external noopener" title="${esc(c.title)}"><img src="/assets/izdanja/${c.id}-240.webp" alt="${esc(c.city)}" width="96" height="96" loading="lazy" decoding="async"><span>${esc(c.city)}</span></a></li>`).join('')
 }</ul>`;
 
@@ -807,6 +860,8 @@ ${entries.map((e) => `<url><loc>${e.loc}</loc><changefreq>daily</changefreq><pri
   const cards = [
     ...CHANNELS.map((c) => ({
       id: c.id, name: c.title, url: c.base, lang: c.lang, city: c.city, country: c.country,
+      nameEn: c.lang === 'en' || /CHANNEL|CANAL/.test(c.title) ? c.title : undefined,
+      native: c.nativeTitle || '',
       description: (EDITION_META[c.id] || {}).description || '', hashtags: (EDITION_META[c.id] || {}).hashtags || c.hashtags,
       count: channelData(c.id).items.length,
       lastItemAt: channelData(c.id).items[0]?.date || channelData(c.id).updatedAt || ''
@@ -875,7 +930,7 @@ function kanalIndex(cards) {
           <span class="kx-go">Otvori izdanje →</span>
         </div>
       </a>
-      <p class="kx-foot"><a href="/kanal/${c.id}/en/" hreflang="en" lang="en">English overview →</a> <span>${card.count || 0} reviews</span></p>
+      <p class="kx-foot">${c.lang === 'en' ? '<span>English edition</span>' : `<a href="/kanal/${c.id}/en/" hreflang="en" lang="en">English overview →</a>`} <span>${card.count || 0} reviews</span></p>
     </article>`;
   }).join('');
 
@@ -885,7 +940,7 @@ function kanalIndex(cards) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AKTUAL MEDIA KANAL — sva izdanja pod gnk-asg.hr</title>
-<meta name="description" content="Osam gradskih izdanja AKTUAL MEDIA na jednoj domeni: Zagreb, Beograd, Sarajevo, Budimpešta, Ljubljana, Rim, Sofija i Bukurešt. Svako ima svoj feed, sitemap i arhivu od više stotina tekstova.">
+<meta name="description" content="${esc(`${CHANNELS.length} gradskih izdanja AKTUAL MEDIA na jednoj domeni: ${CHANNELS.map((c) => c.city).join(', ')}. Svako ima svoj feed, sitemap i arhivu.`)}">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <link rel="canonical" href="https://gnk-asg.hr/kanal/">
 ${logoAlternate('aktual-media-hr')}
@@ -894,7 +949,7 @@ ${logoAlternate('aktual-media-hr')}
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AKTUAL MEDIA">
 <meta property="og:title" content="AKTUAL MEDIA KANAL — sva izdanja">
-<meta property="og:description" content="Osam gradskih izdanja na jednoj domeni, s vlastitim feedom i arhivom.">
+<meta property="og:description" content="${esc(`${CHANNELS.length} gradskih izdanja na jednoj domeni, s vlastitim feedom i arhivom.`)}">
 <meta property="og:url" content="https://gnk-asg.hr/kanal/">
 <meta property="og:image" content="https://gnk-asg.hr/assets/izdanja/aktual-media-og.jpg">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
@@ -944,8 +999,8 @@ a{color:inherit;text-decoration:none}
 <div class="kx-top"><strong>AKTUAL MEDIA KANAL</strong><span><a href="/gnk-aktual/">← AKTUAL MEDIA</a> · <a href="/izdanja/">Sva izdanja i deskovi</a> · <a href="/aktual-media/">Podatkovni desk</a> · <a href="/usa/">Colorado · USA</a> · <a href="/radio/">Radio</a> · <a href="/digital-workforce/knjiga/">Knjiga radnika</a></span></div>
 <main id="sadrzaj" tabindex="-1" class="kx-wrap">
   <div class="kx-head">
-    <h1>Osam gradova, osam jezika — pod jednom domenom</h1>
-    <p>Svako izdanje ima vlastiti feed, sitemap i arhivu od više stotina osvrta. Adrese su sada na gnk-asg.hr/kanal/, pa se sve izdaje indeksira kao jedna cjelina, a stari linkovi s pages.dev preusmjeravaju ovamo (301).</p>
+    <h1>Sedamnaest gradova, trinaest jezika — pod jednom domenom</h1>
+    <p>Svako izdanje ima vlastiti feed, sitemap i arhivu. Osam izdanja pokriva regiju, devet globalnih pokriva pet kontinenata — od Nairobija i Kaira preko Jakarte, Pekinga i Tokija do Sydneya, Singapura, São Paula i New Yorka. Adrese su na gnk-asg.hr/kanal/, pa se sve indeksira kao jedna cjelina, a stari linkovi s pages.dev preusmjeravaju ovamo (301).</p>
   </div>
   <div class="kx-grid">${rows}</div>
 </main>
@@ -1186,17 +1241,21 @@ function injectBand(cards, lang = 'hr') {
   let html = readFileSync(file, 'utf8');
   const start = '<!-- IZDANJA-BAND:START -->';
   const end = '<!-- IZDANJA-BAND:END -->';
-  const picks = cards.filter((c) => ['zagreb', 'beograd', 'sarajevo', 'budimpesta', 'ljubljana', 'rim', 'sofija', 'bukurest'].includes(c.id));
-  const CITY_EN = { zagreb: 'Zagreb', beograd: 'Belgrade', sarajevo: 'Sarajevo', budimpesta: 'Budapest', ljubljana: 'Ljubljana', rim: 'Rome', sofija: 'Sofia', bukurest: 'Bucharest' };
+  const picks = cards.filter((c) => CHANNELS.some((ch) => ch.id === c.id));
+  const CITY_EN = { zagreb: 'Zagreb', beograd: 'Belgrade', sarajevo: 'Sarajevo', budimpesta: 'Budapest', ljubljana: 'Ljubljana', rim: 'Rome', sofija: 'Sofia', bukurest: 'Bucharest',
+    nairobi: 'Nairobi', jakarta: 'Jakarta', newyork: 'New York', saopaulo: 'São Paulo', sydney: 'Sydney', singapur: 'Singapore', kairo: 'Cairo', tokio: 'Tokyo', peking: 'Beijing' };
   // Na engleskom je 'CHANNEL', a gradovi nose engleska imena (Rome, Sofia),
   // jer je 'KANAL' hrvatska riječ i ne smije stajati u EN naslovu.
-  const CITY_EN_UPPER = { zagreb: 'ZAGREB', beograd: 'BELGRADE', sarajevo: 'SARAJEVO', budimpesta: 'BUDAPEST', ljubljana: 'LJUBLJANA', rim: 'ROME', sofija: 'SOFIA', bukurest: 'BUCUREȘTI' };
-  const cityName = (c) => (en ? `AKTUAL MEDIA CHANNEL ${CITY_EN_UPPER[c.id] || esc(c.city).toUpperCase()}` : esc(c.name));
+  const CITY_EN_UPPER = { zagreb: 'ZAGREB', beograd: 'BELGRADE', sarajevo: 'SARAJEVO', budimpesta: 'BUDAPEST', ljubljana: 'LJUBLJANA', rim: 'ROME', sofija: 'SOFIA', bukurest: 'BUCUREȘTI',
+    nairobi: 'NAIROBI', jakarta: 'JAKARTA', newyork: 'NEW YORK', saopaulo: 'SÃO PAULO', sydney: 'SYDNEY', singapur: 'SINGAPORE', kairo: 'CAIRO', tokio: 'TOKYO', peking: 'BEIJING' };
+  /* Ime izdanja dolazi iz zapisa kanala (tamo je i jezična inačica), pa
+     engleska traka ne mora prekrajati ono što već postoji. */
+  const cityName = (c) => (en ? (c.nameEn || `AKTUAL MEDIA CHANNEL ${CITY_EN_UPPER[c.id] || esc(c.city).toUpperCase()}`) : esc(c.name));
   const lis = picks.map((c, i) => `<li class="izdanja-item"><span class="izdanja-num">${String(i + 1).padStart(2, '0')}</span><div><h3><a href="${c.url}" target="_blank" rel="external noopener">${cityName(c)}</a></h3><p>${esc(c.lang)} · ${en ? (CITY_EN[c.id] || esc(c.city)) : esc(c.city)} · ${c.count} ${en ? 'reviews' : 'osvrta'}</p></div></li>`).join('');
-  const title = en ? 'Our editions in the region' : 'Naša izdanja u regiji';
+  const title = en ? 'Our editions — five continents, one newsroom' : 'Naša izdanja — pet kontinenata, jedno uredništvo';
   const sub = en
-    ? 'Eight city channels in eight languages, a business weekly and nine desks. Every edition has its own link and its own feed — and everything returns to AKTUAL MEDIA.'
-    : 'Osam gradskih kanala na osam jezika, poslovni tjednik i devet deskova. Svako izdanje ima svoj link i svoj feed — a sve se vraća na AKTUAL MEDIA.';
+    ? `${picks.length} city editions in thirteen languages: eight in the region, nine across Africa, Asia, the Americas and Oceania. Every edition has its own link and its own feed — and everything returns to AKTUAL MEDIA.`
+    : `${picks.length} gradskih izdanja na trinaest jezika: osam u regiji, devet na pet kontinenata. Svako izdanje ima svoj link i svoj feed — a sve se vraća na AKTUAL MEDIA.`;
   const all = en ? 'All editions →' : 'Sva izdanja →';
   const block = `${start}
   <section class="izdanja-band" aria-labelledby="izdanjaBandTitle">

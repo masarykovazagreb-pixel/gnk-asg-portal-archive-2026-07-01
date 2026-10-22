@@ -1,5 +1,5 @@
 {
-  "version": "AKTUAL_MEDIA_REGION_CHANNELS_V1_20261019",
+  "version": "AKTUAL_MEDIA_REGION_CHANNELS_V2_20261023",
   "publisher": "AKTUAL MEDIA d.o.o.",
   "editorInChief": "Nermin Sefić",
   "parent": "https://gnk-asg.hr/gnk-aktual/",
@@ -14,8 +14,10 @@
       "lang": "hr",
       "locale": "hr-HR",
       "country": "Hrvatska",
+      "countryEn": "Croatia",
       "countryCode": "HR",
       "city": "Zagreb",
+      "cityEn": "Zagreb",
       "cityLocative": "Zagrebu",
       "cityAdjective": "zagrebački",
       "project": "gnk-asg-kanal-zagreb",
@@ -122,8 +124,10 @@
       "lang": "sr",
       "locale": "sr-RS",
       "country": "Srbija",
+      "countryEn": "Serbia",
       "countryCode": "RS",
       "city": "Beograd",
+      "cityEn": "Belgrade",
       "cityLocative": "Beogradu",
       "cityAdjective": "beogradski",
       "project": "gnk-asg-kanal-beograd",
@@ -220,8 +224,10 @@
       "lang": "bs",
       "locale": "bs-BA",
       "country": "Bosna i Hercegovina",
+      "countryEn": "Bosnia and Herzegovina",
       "countryCode": "BA",
       "city": "Sarajevo",
+      "cityEn": "Sarajevo",
       "cityLocative": "Sarajevu",
       "cityAdjective": "sarajevski",
       "project": "gnk-asg-kanal-sarajevo",
@@ -340,8 +346,10 @@
       "lang": "hu",
       "locale": "hu-HU",
       "country": "Mađarska",
+      "countryEn": "Hungary",
       "countryCode": "HU",
       "city": "Budimpešta",
+      "cityEn": "Budapest",
       "cityLocative": "Budimpešti",
       "cityAdjective": "budimpeštanski",
       "project": "gnk-asg-kanal-budimpesta",
@@ -451,8 +459,10 @@
       "lang": "sl",
       "locale": "sl-SI",
       "country": "Slovenija",
+      "countryEn": "Slovenia",
       "countryCode": "SI",
       "city": "Ljubljana",
+      "cityEn": "Ljubljana",
       "cityLocative": "Ljubljani",
       "cityAdjective": "ljubljanski",
       "project": "gnk-asg-kanal-ljubljana",
@@ -624,8 +634,10 @@
       "lang": "it",
       "locale": "it-IT",
       "country": "Italija",
+      "countryEn": "Italy",
       "countryCode": "IT",
       "city": "Rim",
+      "cityEn": "Rome",
       "cityLocative": "Rimu",
       "cityAdjective": "rimski",
       "project": "gnk-asg-kanal-rim",
@@ -751,8 +763,10 @@
       "lang": "bg",
       "locale": "bg-BG",
       "country": "Bugarska",
+      "countryEn": "Bulgaria",
       "countryCode": "BG",
       "city": "Sofija",
+      "cityEn": "Sofia",
       "cityLocative": "Sofiji",
       "cityAdjective": "sofijski",
       "project": "gnk-asg-kanal-sofija",
@@ -872,8 +886,10 @@
       "lang": "ro",
       "locale": "ro-RO",
       "country": "Rumunjska",
+      "countryEn": "Romania",
       "countryCode": "RO",
       "city": "Bukurešt",
+      "cityEn": "Bucharest",
       "cityLocative": "Bukureštu",
       "cityAdjective": "bukureštanski",
       "project": "gnk-asg-kanal-bukurest",
@@ -977,6 +993,1112 @@
       ],
       "legacyBase": "https://gnk-asg-kanal-bukurest.pages.dev/",
       "timezone": "Europe/Bucharest"
+    },
+    {
+      "id": "nairobi",
+      "lang": "en",
+      "locale": "en-KE",
+      "country": "Kenija",
+      "countryEn": "Kenya",
+      "countryCode": "KE",
+      "city": "Nairobi",
+      "cityEn": "Nairobi",
+      "cityLocative": "Nairobiju",
+      "cityAdjective": "nairobiški",
+      "project": "gnk-asg-kanal-nairobi",
+      "base": "https://gnk-asg.hr/kanal/nairobi/",
+      "title": "AKTUAL MEDIA CHANNEL NAIROBI",
+      "palette": {
+        "bg": "#08160f",
+        "surface": "#0e2418",
+        "accent": "#e2b857",
+        "accent2": "#7fe0a6",
+        "ink": "#eef3f8"
+      },
+      "hashtags": [
+        "#KanalNairobi",
+        "#Kenya",
+        "#Nairobi",
+        "#EastAfrica",
+        "#AktualMedia",
+        "#GNKASG"
+      ],
+      "radio": [
+        {
+          "name": "Capital FM Kenya",
+          "url": "https://capitalfm.africa/"
+        },
+        {
+          "name": "Radio Jambo",
+          "url": "https://www.radiojambo.co.ke/"
+        }
+      ],
+      "sources": [
+        {
+          "id": "capitalfm",
+          "name": "Capital FM Kenya",
+          "type": "rss",
+          "cap": 6,
+          "urls": [
+            "https://capitalfm.africa/news/feed/"
+          ]
+        },
+        {
+          "id": "nation",
+          "name": "Daily Nation",
+          "type": "rss",
+          "cap": 6,
+          "urls": [
+            "https://nation.africa/kenya/rss",
+            "https://nation.africa/kenya/rss.xml"
+          ]
+        },
+        {
+          "id": "standard",
+          "name": "The Standard",
+          "type": "rss",
+          "cap": 5,
+          "urls": [
+            "https://www.standardmedia.co.ke/rss"
+          ]
+        },
+        {
+          "id": "star",
+          "name": "The Star Kenya",
+          "type": "rss",
+          "cap": 5,
+          "optional": true,
+          "urls": [
+            "https://www.the-star.co.ke/rss"
+          ]
+        },
+        {
+          "id": "businessdaily",
+          "name": "Business Daily",
+          "type": "rss",
+          "cap": 5,
+          "optional": true,
+          "urls": [
+            "https://www.businessdailyafrica.com/rss"
+          ]
+        },
+        {
+          "id": "citizen",
+          "name": "Citizen Digital",
+          "type": "rss",
+          "cap": 5,
+          "optional": true,
+          "urls": [
+            "https://www.citizen.digital/rss"
+          ]
+        },
+        {
+          "id": "kbc",
+          "name": "KBC",
+          "type": "rss",
+          "cap": 5,
+          "optional": true,
+          "urls": [
+            "https://www.kbc.co.ke/feed/"
+          ]
+        },
+        {
+          "id": "eastafrican",
+          "name": "The East African",
+          "type": "rss",
+          "cap": 5,
+          "optional": true,
+          "urls": [
+            "https://www.theeastafrican.co.ke/rss"
+          ]
+        }
+      ],
+      "legacyBase": "https://gnk-asg-kanal-nairobi.pages.dev/",
+      "timezone": "Africa/Nairobi",
+      "nativeTitle": "AKTUAL MEDIA CHANNEL NAIROBI",
+      "cityNative": "Nairobi",
+      "countryNative": "Kenya"
+    },
+    {
+      "id": "jakarta",
+      "lang": "id",
+      "locale": "id-ID",
+      "country": "Indonezija",
+      "countryEn": "Indonesia",
+      "countryCode": "ID",
+      "city": "Jakarta",
+      "cityEn": "Jakarta",
+      "cityLocative": "Jakarti",
+      "cityAdjective": "jakartanski",
+      "project": "gnk-asg-kanal-jakarta",
+      "base": "https://gnk-asg.hr/kanal/jakarta/",
+      "title": "AKTUAL MEDIA KANAL JAKARTA",
+      "palette": {
+        "bg": "#0b1220",
+        "surface": "#131d33",
+        "accent": "#e2b857",
+        "accent2": "#79c7ff",
+        "ink": "#eef3f8"
+      },
+      "hashtags": [
+        "#KanalJakarta",
+        "#Indonesia",
+        "#Jakarta",
+        "#AktualMedia",
+        "#GNKASG"
+      ],
+      "radio": [
+        {
+          "name": "RRI (Radio Republik Indonesia)",
+          "url": "https://rri.co.id/"
+        },
+        {
+          "name": "Elshinta",
+          "url": "https://elshinta.com/"
+        }
+      ],
+      "sources": [
+        {
+          "id": "antara",
+          "name": "ANTARA",
+          "type": "rss",
+          "cap": 6,
+          "urls": [
+            "https://www.antaranews.com/rss/terkini.xml"
+          ]
+        },
+        {
+          "id": "kompas",
+          "name": "Kompas",
+          "type": "rss",
+          "cap": 5,
+          "urls": [
+            "https://www.kompas.com/rss",
+            "https://nasional.kompas.com/rss"
+          ]
+        },
+        {
+          "id": "detik",
+          "name": "Detik.com",
+          "type": "rss",
+          "cap": 5,
+          "urls": [
+            "https://rss.detik.com/index.php/detikcom"
+          ]
+        },
+        {
+          "id": "tempo",
+          "name": "Tempo",
+          "type": "rss",
+          "cap": 5,
+          "optional": true,
+          "urls": [
+            "https://www.tempo.co/rss"
+          ]
+        },
+        {
+          "id": "cnnindonesia",
+          "name": "CNN Indonesia",
+          "type": "rss",
+          "cap": 5,
+          "optional": true,
+          "urls": [
+            "https://www.cnnindonesia.com/rss"
+          ]
+        },
+        {
+          "id": "republika",
+          "name": "Republika",
+          "type": "rss",
+          "cap": 5,
+          "optional": true,
+          "urls": [
+            "https://www.republika.co.id/rss"
+          ]
+        },
+        {
+          "id": "cnbcindonesia",
+          "name": "CNBC Indonesia",
+          "type": "rss",
+          "cap": 5,
+          "optional": true,
+          "urls": [
+            "https://www.cnbcindonesia.com/rss"
+          ]
+        },
+        {
+          "id": "kumparan",
+          "name": "Kumparan",
+          "type": "rss",
+          "cap": 5,
+          "optional": true,
+          "urls": [
+            "https://kumparan.com/feed"
+          ]
+        }
+      ],
+      "legacyBase": "https://gnk-asg-kanal-jakarta.pages.dev/",
+      "timezone": "Asia/Jakarta",
+      "nativeTitle": "AKTUAL MEDIA KANAL JAKARTA",
+      "cityNative": "Jakarta",
+      "countryNative": "Indonesia"
+    },
+    {
+      "id": "newyork",
+      "lang": "en",
+      "locale": "en-US",
+      "country": "Sjedinjene Američke Države",
+      "countryEn": "United States",
+      "countryCode": "US",
+      "city": "New York",
+      "cityEn": "New York",
+      "cityLocative": "New Yorku",
+      "cityAdjective": "njujorški",
+      "project": "gnk-asg-kanal-newyork",
+      "base": "https://gnk-asg.hr/kanal/newyork/",
+      "title": "AKTUAL MEDIA CHANNEL NEW YORK",
+      "palette": {
+        "bg": "#08131c",
+        "surface": "#0f2233",
+        "accent": "#e2b857",
+        "accent2": "#8ab4ff",
+        "ink": "#eef3f8"
+      },
+      "hashtags": [
+        "#KanalNewYork",
+        "#USA",
+        "#NewYork",
+        "#AktualMedia",
+        "#GNKASG"
+      ],
+      "radio": [
+        {
+          "name": "WNYC",
+          "url": "https://www.wnyc.org/"
+        },
+        {
+          "name": "NPR",
+          "url": "https://www.npr.org/"
+        }
+      ],
+      "sources": [
+        {
+          "id": "nyt",
+          "name": "The New York Times",
+          "type": "rss",
+          "cap": 6,
+          "urls": [
+            "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml"
+          ]
+        },
+        {
+          "id": "npr",
+          "name": "NPR",
+          "type": "rss",
+          "cap": 5,
+          "urls": [
+            "https://feeds.npr.org/1001/rss.xml"
+          ]
+        },
+        {
+          "id": "wsj",
+          "name": "The Wall Street Journal",
+          "type": "rss",
+          "cap": 5,
+          "urls": [
+            "https://feeds.a.dj.com/rss/RSSWorldNews.xml"
+          ]
+        },
+        {
+          "id": "bloomberg",
+          "name": "Bloomberg",
+          "type": "rss",
+          "cap": 5,
+          "urls": [
+            "https://feeds.bloomberg.com/markets/news.rss"
+          ]
+        },
+        {
+          "id": "verge",
+          "name": "The Verge",
+          "type": "rss",
+          "cap": 4,
+          "optional": true,
+          "urls": [
+            "https://www.theverge.com/rss/index.xml"
+          ]
+        },
+        {
+          "id": "politico",
+          "name": "Politico",
+          "type": "rss",
+          "cap": 4,
+          "optional": true,
+          "urls": [
+            "https://www.politico.com/rss/politicopicks.xml"
+          ]
+        },
+        {
+          "id": "abcnews",
+          "name": "ABC News",
+          "type": "rss",
+          "cap": 4,
+          "optional": true,
+          "urls": [
+            "https://abcnews.go.com/abcnews/topstories"
+          ]
+        },
+        {
+          "id": "propublica",
+          "name": "ProPublica",
+          "type": "rss",
+          "cap": 4,
+          "optional": true,
+          "urls": [
+            "https://www.propublica.org/feeds/propublica/main"
+          ]
+        }
+      ],
+      "legacyBase": "https://gnk-asg-kanal-newyork.pages.dev/",
+      "timezone": "America/New_York",
+      "nativeTitle": "AKTUAL MEDIA CHANNEL NEW YORK",
+      "cityNative": "New York",
+      "countryNative": "United States"
+    },
+    {
+      "id": "saopaulo",
+      "lang": "pt",
+      "locale": "pt-BR",
+      "country": "Brazil",
+      "countryEn": "Brazil",
+      "countryCode": "BR",
+      "city": "São Paulo",
+      "cityEn": "São Paulo",
+      "cityLocative": "São Paulu",
+      "cityAdjective": "saopaulski",
+      "project": "gnk-asg-kanal-saopaulo",
+      "base": "https://gnk-asg.hr/kanal/saopaulo/",
+      "title": "AKTUAL MEDIA CANAL SÃO PAULO",
+      "palette": {
+        "bg": "#0d1410",
+        "surface": "#17251b",
+        "accent": "#e2b857",
+        "accent2": "#8ddf8d",
+        "ink": "#eef3f8"
+      },
+      "hashtags": [
+        "#KanalSaoPaulo",
+        "#Brasil",
+        "#SaoPaulo",
+        "#AktualMedia",
+        "#GNKASG"
+      ],
+      "radio": [
+        {
+          "name": "Rádio CBN São Paulo",
+          "url": "https://cbn.globo.com/"
+        },
+        {
+          "name": "Jovem Pan",
+          "url": "https://jovempan.com.br/"
+        }
+      ],
+      "sources": [
+        {
+          "id": "g1",
+          "name": "G1",
+          "type": "rss",
+          "cap": 6,
+          "urls": [
+            "https://g1.globo.com/rss/g1/"
+          ]
+        },
+        {
+          "id": "folha",
+          "name": "Folha de S.Paulo",
+          "type": "rss",
+          "cap": 6,
+          "urls": [
+            "https://feeds.folha.uol.com.br/emcimadahora/rss091.xml"
+          ]
+        },
+        {
+          "id": "uol",
+          "name": "UOL",
+          "type": "rss",
+          "cap": 5,
+          "urls": [
+            "https://rss.uol.com.br/feed/noticias.xml"
+          ]
+        },
+        {
+          "id": "exame",
+          "name": "Exame",
+          "type": "rss",
+          "cap": 4,
+          "urls": [
+            "https://exame.com/feed/"
+          ]
+        },
+        {
+          "id": "agenciabrasil",
+          "name": "Agência Brasil",
+          "type": "rss",
+          "cap": 5,
+          "urls": [
+            "https://agenciabrasil.ebc.com.br/rss/geral/feed.xml"
+          ]
+        },
+        {
+          "id": "estadao",
+          "name": "Estadão",
+          "type": "rss",
+          "cap": 4,
+          "optional": true,
+          "urls": [
+            "https://www.estadao.com.br/rss/"
+          ]
+        },
+        {
+          "id": "valor",
+          "name": "Valor Econômico",
+          "type": "rss",
+          "cap": 4,
+          "optional": true,
+          "urls": [
+            "https://valor.globo.com/rss/"
+          ]
+        },
+        {
+          "id": "veja",
+          "name": "Veja",
+          "type": "rss",
+          "cap": 4,
+          "optional": true,
+          "urls": [
+            "https://veja.abril.com.br/rss"
+          ]
+        }
+      ],
+      "legacyBase": "https://gnk-asg-kanal-saopaulo.pages.dev/",
+      "timezone": "America/Sao_Paulo",
+      "nativeTitle": "AKTUAL MEDIA CANAL SÃO PAULO",
+      "cityNative": "São Paulo",
+      "countryNative": "Brasil"
+    },
+    {
+      "id": "sydney",
+      "lang": "en",
+      "locale": "en-AU",
+      "country": "Australija",
+      "countryEn": "Australia",
+      "countryCode": "AU",
+      "city": "Sydney",
+      "cityEn": "Sydney",
+      "cityLocative": "Sydneyju",
+      "cityAdjective": "sidnejski",
+      "project": "gnk-asg-kanal-sydney",
+      "base": "https://gnk-asg.hr/kanal/sydney/",
+      "title": "AKTUAL MEDIA CHANNEL SYDNEY",
+      "palette": {
+        "bg": "#0a1420",
+        "surface": "#122234",
+        "accent": "#e2b857",
+        "accent2": "#74d9e0",
+        "ink": "#eef3f8"
+      },
+      "hashtags": [
+        "#KanalSydney",
+        "#Australia",
+        "#Sydney",
+        "#AktualMedia",
+        "#GNKASG"
+      ],
+      "radio": [
+        {
+          "name": "ABC Radio Sydney",
+          "url": "https://www.abc.net.au/sydney/"
+        },
+        {
+          "name": "2GB",
+          "url": "https://www.2gb.com/"
+        }
+      ],
+      "sources": [
+        {
+          "id": "abc",
+          "name": "ABC News",
+          "type": "rss",
+          "cap": 6,
+          "urls": [
+            "https://www.abc.net.au/news/feed/51120/rss.xml"
+          ]
+        },
+        {
+          "id": "smh",
+          "name": "The Sydney Morning Herald",
+          "type": "rss",
+          "cap": 6,
+          "urls": [
+            "https://www.smh.com.au/rss/feed.xml"
+          ]
+        },
+        {
+          "id": "guardianau",
+          "name": "The Guardian Australia",
+          "type": "rss",
+          "cap": 5,
+          "urls": [
+            "https://www.theguardian.com/au/rss"
+          ]
+        },
+        {
+          "id": "newscomau",
+          "name": "news.com.au",
+          "type": "rss",
+          "cap": 5,
+          "urls": [
+            "https://www.news.com.au/content-feeds/latest-news-national/"
+          ]
+        },
+        {
+          "id": "sbs",
+          "name": "SBS News",
+          "type": "rss",
+          "cap": 4,
+          "urls": [
+            "https://www.sbs.com.au/news/feed"
+          ]
+        },
+        {
+          "id": "afr",
+          "name": "The Australian Financial Review",
+          "type": "rss",
+          "cap": 4,
+          "optional": true,
+          "urls": [
+            "https://www.afr.com/rss"
+          ]
+        },
+        {
+          "id": "theaustralian",
+          "name": "The Australian",
+          "type": "rss",
+          "cap": 4,
+          "optional": true,
+          "urls": [
+            "https://www.theaustralian.com.au/feed/"
+          ]
+        },
+        {
+          "id": "9news",
+          "name": "9News",
+          "type": "rss",
+          "cap": 4,
+          "optional": true,
+          "urls": [
+            "https://www.9news.com.au/rss"
+          ]
+        }
+      ],
+      "legacyBase": "https://gnk-asg-kanal-sydney.pages.dev/",
+      "timezone": "Australia/Sydney",
+      "nativeTitle": "AKTUAL MEDIA CHANNEL SYDNEY",
+      "cityNative": "Sydney",
+      "countryNative": "Australia"
+    },
+    {
+      "id": "singapur",
+      "lang": "en",
+      "locale": "en-SG",
+      "country": "Singapur",
+      "countryEn": "Singapore",
+      "countryCode": "SG",
+      "city": "Singapur",
+      "cityEn": "Singapore",
+      "cityLocative": "Singapuru",
+      "cityAdjective": "singapurski",
+      "project": "gnk-asg-kanal-singapur",
+      "base": "https://gnk-asg.hr/kanal/singapur/",
+      "title": "AKTUAL MEDIA CHANNEL SINGAPUR",
+      "palette": {
+        "bg": "#0a1520",
+        "surface": "#122436",
+        "accent": "#e2b857",
+        "accent2": "#79e0c8",
+        "ink": "#eef3f8"
+      },
+      "hashtags": [
+        "#KanalSingapur",
+        "#Singapore",
+        "#Singapur",
+        "#AktualMedia",
+        "#GNKASG"
+      ],
+      "radio": [
+        {
+          "name": "CNA938",
+          "url": "https://www.channelnewsasia.com/cna938"
+        },
+        {
+          "name": "Class 95",
+          "url": "https://www.melisten.sg/radio/class-95"
+        }
+      ],
+      "sources": [
+        {
+          "id": "cna",
+          "name": "CNA",
+          "type": "rss",
+          "cap": 6,
+          "urls": [
+            "https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml"
+          ]
+        },
+        {
+          "id": "straitstimes",
+          "name": "The Straits Times",
+          "type": "rss",
+          "cap": 6,
+          "urls": [
+            "https://www.straitstimes.com/news/singapore/rss.xml"
+          ]
+        },
+        {
+          "id": "businesstimes",
+          "name": "The Business Times",
+          "type": "rss",
+          "cap": 5,
+          "optional": true,
+          "urls": [
+            "https://www.businesstimes.com.sg/rss"
+          ]
+        },
+        {
+          "id": "mothership",
+          "name": "Mothership",
+          "type": "rss",
+          "cap": 5,
+          "optional": true,
+          "urls": [
+            "https://mothership.sg/rss"
+          ]
+        },
+        {
+          "id": "today",
+          "name": "TODAY",
+          "type": "rss",
+          "cap": 5,
+          "optional": true,
+          "urls": [
+            "https://www.todayonline.com/rss"
+          ]
+        },
+        {
+          "id": "onlinecitizen",
+          "name": "The Online Citizen",
+          "type": "rss",
+          "cap": 4,
+          "optional": true,
+          "urls": [
+            "https://www.theonlinecitizen.com/feed/"
+          ]
+        },
+        {
+          "id": "zaobao",
+          "name": "Lianhe Zaobao",
+          "type": "rss",
+          "cap": 4,
+          "optional": true,
+          "urls": [
+            "https://www.zaobao.com.sg/rss.xml"
+          ]
+        },
+        {
+          "id": "stworld",
+          "name": "The Straits Times — World",
+          "type": "rss",
+          "cap": 4,
+          "optional": true,
+          "urls": [
+            "https://www.straitstimes.com/world/rss.xml"
+          ]
+        }
+      ],
+      "legacyBase": "https://gnk-asg-kanal-singapur.pages.dev/",
+      "timezone": "Asia/Singapore",
+      "nativeTitle": "AKTUAL MEDIA CHANNEL SINGAPORE",
+      "cityNative": "Singapore",
+      "countryNative": "Singapore"
+    },
+    {
+      "id": "kairo",
+      "lang": "ar",
+      "locale": "ar-EG",
+      "country": "Egipat",
+      "countryEn": "Egypt",
+      "countryCode": "EG",
+      "city": "Kairo",
+      "cityEn": "Cairo",
+      "cityLocative": "Kairu",
+      "cityAdjective": "kairski",
+      "project": "gnk-asg-kanal-kairo",
+      "base": "https://gnk-asg.hr/kanal/kairo/",
+      "title": "AKTUAL MEDIA KANAL KAIRO",
+      "palette": {
+        "bg": "#12100a",
+        "surface": "#221c12",
+        "accent": "#e2b857",
+        "accent2": "#f0b27a",
+        "ink": "#eef3f8"
+      },
+      "hashtags": [
+        "#KanalKairo",
+        "#Egypt",
+        "#Cairo",
+        "#AktualMedia",
+        "#GNKASG"
+      ],
+      "radio": [
+        {
+          "name": "Radio Cairo (ERTU)",
+          "url": "https://www.ertu.org/"
+        },
+        {
+          "name": "Nogoum FM",
+          "url": "https://nogoumfm.net/"
+        }
+      ],
+      "sources": [
+        {
+          "id": "madamasr",
+          "name": "Mada Masr",
+          "type": "rss",
+          "cap": 6,
+          "urls": [
+            "https://www.madamasr.com/ar/feed/"
+          ]
+        },
+        {
+          "id": "youm7",
+          "name": "Youm7",
+          "type": "rss",
+          "cap": 5,
+          "urls": [
+            "https://www.youm7.com/rss"
+          ]
+        },
+        {
+          "id": "almasryalyoum",
+          "name": "Al-Masry Al-Youm",
+          "type": "rss",
+          "cap": 5,
+          "optional": true,
+          "urls": [
+            "https://www.almasryalyoum.com/rss/"
+          ]
+        },
+        {
+          "id": "aljazeera",
+          "name": "Al Jazeera Arabic",
+          "type": "rss",
+          "cap": 5,
+          "optional": true,
+          "urls": [
+            "https://www.aljazeera.net/aljazeera/rss/ar",
+            "https://www.aljazeera.net/aljazeera/rss/all"
+          ]
+        },
+        {
+          "id": "skynewsarabia",
+          "name": "Sky News Arabia",
+          "type": "rss",
+          "cap": 5,
+          "optional": true,
+          "urls": [
+            "https://www.skynewsarabia.com/rss"
+          ]
+        },
+        {
+          "id": "ahram",
+          "name": "Al-Ahram",
+          "type": "rss",
+          "cap": 4,
+          "optional": true,
+          "urls": [
+            "https://gate.ahram.org.eg/rss"
+          ]
+        },
+        {
+          "id": "ahramonline",
+          "name": "Ahram Online (English)",
+          "type": "rss",
+          "cap": 4,
+          "optional": true,
+          "urls": [
+            "https://english.ahram.org.eg/rss.aspx"
+          ]
+        },
+        {
+          "id": "dailynewsegypt",
+          "name": "Daily News Egypt (English)",
+          "type": "rss",
+          "cap": 4,
+          "optional": true,
+          "urls": [
+            "https://www.dailynewsegypt.com/feed/"
+          ]
+        }
+      ],
+      "legacyBase": "https://gnk-asg-kanal-kairo.pages.dev/",
+      "timezone": "Africa/Cairo",
+      "nativeTitle": "AKTUAL MEDIA KANAL KAIRO · قناة أكتوال ميديا القاهرة",
+      "cityNative": "القاهرة",
+      "countryNative": "مصر"
+    },
+    {
+      "id": "tokio",
+      "lang": "ja",
+      "locale": "ja-JP",
+      "country": "Japan",
+      "countryEn": "Japan",
+      "countryCode": "JP",
+      "city": "Tokio",
+      "cityEn": "Tokyo",
+      "cityLocative": "Tokiju",
+      "cityAdjective": "tokijski",
+      "project": "gnk-asg-kanal-tokio",
+      "base": "https://gnk-asg.hr/kanal/tokio/",
+      "title": "AKTUAL MEDIA KANAL TOKIO",
+      "palette": {
+        "bg": "#0d0f1a",
+        "surface": "#161a2b",
+        "accent": "#e2b857",
+        "accent2": "#f2a0c0",
+        "ink": "#eef3f8"
+      },
+      "hashtags": [
+        "#KanalTokio",
+        "#Japan",
+        "#Tokyo",
+        "#AktualMedia",
+        "#GNKASG"
+      ],
+      "radio": [
+        {
+          "name": "NHK Radio",
+          "url": "https://www.nhk.or.jp/radio/"
+        },
+        {
+          "name": "J-WAVE",
+          "url": "https://www.j-wave.co.jp/"
+        }
+      ],
+      "sources": [
+        {
+          "id": "nhk",
+          "name": "NHK",
+          "type": "rss",
+          "cap": 6,
+          "urls": [
+            "https://www.nhk.or.jp/rss/news/cat0.xml"
+          ]
+        },
+        {
+          "id": "asahi",
+          "name": "Asahi Shimbun",
+          "type": "rss",
+          "cap": 6,
+          "urls": [
+            "https://www.asahi.com/rss/asahi/newsheadlines.rdf"
+          ]
+        },
+        {
+          "id": "mainichi",
+          "name": "Mainichi Shimbun",
+          "type": "rss",
+          "cap": 5,
+          "urls": [
+            "https://mainichi.jp/rss/etc/mainichi-flash.rss"
+          ]
+        },
+        {
+          "id": "itmedia",
+          "name": "ITmedia",
+          "type": "rss",
+          "cap": 5,
+          "urls": [
+            "https://rss.itmedia.co.jp/rss/2.0/itmedia_all.xml"
+          ]
+        },
+        {
+          "id": "japantimes",
+          "name": "The Japan Times (English)",
+          "type": "rss",
+          "cap": 5,
+          "optional": true,
+          "urls": [
+            "https://www.japantimes.co.jp/feed/"
+          ]
+        },
+        {
+          "id": "kyodo",
+          "name": "Kyodo News (English)",
+          "type": "rss",
+          "cap": 4,
+          "optional": true,
+          "urls": [
+            "https://english.kyodonews.net/rss/news.xml"
+          ]
+        },
+        {
+          "id": "tokyoweekender",
+          "name": "Tokyo Weekender (English)",
+          "type": "rss",
+          "cap": 4,
+          "optional": true,
+          "urls": [
+            "https://www.tokyoweekender.com/feed/"
+          ]
+        },
+        {
+          "id": "nikkei",
+          "name": "Nikkei",
+          "type": "rss",
+          "cap": 4,
+          "optional": true,
+          "urls": [
+            "https://www.nikkei.com/rss/"
+          ]
+        }
+      ],
+      "legacyBase": "https://gnk-asg-kanal-tokio.pages.dev/",
+      "timezone": "Asia/Tokyo",
+      "nativeTitle": "AKTUAL MEDIA KANAL TOKIO · アクチュアルメディア 東京",
+      "cityNative": "東京",
+      "countryNative": "日本"
+    },
+    {
+      "id": "peking",
+      "lang": "zh",
+      "locale": "zh-CN",
+      "country": "Kina",
+      "countryEn": "China",
+      "countryCode": "CN",
+      "city": "Peking",
+      "cityEn": "Beijing",
+      "cityLocative": "Pekingu",
+      "cityAdjective": "pekinški",
+      "project": "gnk-asg-kanal-peking",
+      "base": "https://gnk-asg.hr/kanal/peking/",
+      "title": "AKTUAL MEDIA KANAL PEKING",
+      "palette": {
+        "bg": "#140b10",
+        "surface": "#24141c",
+        "accent": "#e2b857",
+        "accent2": "#f08a8a",
+        "ink": "#eef3f8"
+      },
+      "hashtags": [
+        "#KanalPeking",
+        "#China",
+        "#Beijing",
+        "#AktualMedia",
+        "#GNKASG"
+      ],
+      "radio": [
+        {
+          "name": "CNR 中国之声",
+          "url": "http://www.cnr.cn/"
+        },
+        {
+          "name": "Beijing Radio (RBC)",
+          "url": "https://www.rbc.cn/"
+        }
+      ],
+      "sources": [
+        {
+          "id": "bbczh",
+          "name": "BBC 中文",
+          "type": "rss",
+          "cap": 6,
+          "urls": [
+            "https://feeds.bbci.co.uk/zhongwen/simp/rss.xml"
+          ]
+        },
+        {
+          "id": "dwzh",
+          "name": "DW 中文",
+          "type": "rss",
+          "cap": 6,
+          "urls": [
+            "https://rss.dw.com/rdf/rss-chi-all"
+          ]
+        },
+        {
+          "id": "nytimeszh",
+          "name": "纽约时报中文网",
+          "type": "rss",
+          "cap": 5,
+          "urls": [
+            "https://cn.nytimes.com/rss/"
+          ]
+        },
+        {
+          "id": "chinanews",
+          "name": "中国新闻网",
+          "type": "rss",
+          "cap": 5,
+          "urls": [
+            "https://www.chinanews.com.cn/rss/scroll-news.xml"
+          ]
+        },
+        {
+          "id": "zaobaozh",
+          "name": "联合早报",
+          "type": "rss",
+          "cap": 4,
+          "optional": true,
+          "urls": [
+            "https://www.zaobao.com.sg/rss.xml"
+          ]
+        },
+        {
+          "id": "sixthtone",
+          "name": "Sixth Tone (English)",
+          "type": "rss",
+          "cap": 4,
+          "optional": true,
+          "urls": [
+            "https://www.sixthtone.com/rss"
+          ]
+        },
+        {
+          "id": "scmp",
+          "name": "South China Morning Post (English)",
+          "type": "rss",
+          "cap": 4,
+          "optional": true,
+          "urls": [
+            "https://www.scmp.com/rss/91/feed"
+          ]
+        },
+        {
+          "id": "chinadaily",
+          "name": "China Daily (English)",
+          "type": "rss",
+          "cap": 4,
+          "optional": true,
+          "urls": [
+            "https://www.chinadaily.com.cn/rss/china_rss.xml"
+          ]
+        }
+      ],
+      "legacyBase": "https://gnk-asg-kanal-peking.pages.dev/",
+      "timezone": "Asia/Shanghai",
+      "nativeTitle": "AKTUAL MEDIA KANAL PEKING · 实时媒体 北京",
+      "cityNative": "北京",
+      "countryNative": "中国"
     }
   ]
 }

@@ -24,7 +24,9 @@ const PLAN_FILE = path.join(ROOT, 'ops/AUTONOMY-365.json');
 const CHECK = process.argv.includes('--check');
 const STRICT = process.argv.includes('--strict');
 
-const CITY_IDS = ['zagreb', 'beograd', 'sarajevo', 'budimpesta', 'ljubljana', 'rim', 'sofija', 'bukurest'];
+/* Popis izdanja dolazi iz channels.json: dashboard ne smije ostati na osam
+   gradova kad se doda novo izdanje. */
+const CITY_IDS = JSON.parse(fs.readFileSync(path.join(ROOT, 'apps', 'region', 'channels.json'), 'utf8')).channels.map((c) => c.id);
 const DESK_IDS = ['sport', 'politika', 'biznis', 'tehnologija', 'putovanja', 'ljubimci', 'svijet', 'moda', 'sigurnost'];
 
 const plan = JSON.parse(fs.readFileSync(PLAN_FILE, 'utf8'));

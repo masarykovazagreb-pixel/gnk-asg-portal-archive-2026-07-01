@@ -42,10 +42,10 @@ const CARDS = [
     left: 'AKTUAL',
     right: 'ARHIVA',
     kicker: 'AKTUAL MEDIA · SAMOSTALNI PORTAL',
-    tagline: '3.360 tekstova · osam gradova · svaki s izvornikom',
+    tagline: '3.360 tekstova · svaki s izvornikom',
     host: 'gnk-asg-arhiva.pages.dev',
     active: 1,
-    alt: 'Kartica AKTUAL ARHIVA: navy AKTUAL, crvena ARHIVA, linija s tri čvora i natpis 3.360 tekstova osam gradova.',
+    alt: 'Kartica AKTUAL ARHIVA: navy AKTUAL, crvena ARHIVA, linija s tri čvora i natpis 3.360 tekstova, svaki s izvornikom.',
   },
   {
     slug: 'aktual-dnevnik',
@@ -53,10 +53,10 @@ const CARDS = [
     left: 'AKTUAL',
     right: 'DNEVNIK',
     kicker: 'AKTUAL MEDIA · SAMOSTALNI PORTAL',
-    tagline: 'jedan dan · osam gradova · sve po satima',
+    tagline: 'jedan dan · svi gradovi · sve po satima',
     host: 'gnk-asg-dnevnik.pages.dev',
     active: 2,
-    alt: 'Kartica AKTUAL DNEVNIK: navy AKTUAL, crvena DNEVNIK, linija s tri čvora i natpis jedan dan osam gradova.',
+    alt: 'Kartica AKTUAL DNEVNIK: navy AKTUAL, crvena DNEVNIK, linija s tri čvora i natpis jedan dan, svi gradovi, sve po satima.',
   },
 ];
 

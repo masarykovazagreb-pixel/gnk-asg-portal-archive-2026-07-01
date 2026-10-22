@@ -20,6 +20,10 @@ const ROOT = process.cwd();
 const HR = path.join(ROOT, 'apps/portal/index.html');
 const EN = path.join(ROOT, 'apps/portal/en/index.html');
 const DATA = path.join(ROOT, 'apps/portal/data/izdanja.json');
+const CHANNELS_FILE = path.join(ROOT, 'apps/region/channels.json');
+/* Engleska imena gradova za krugove: izdanje na engleskom zadržava svoje ime,
+   a hrvatski grad dobiva engleski oblik (Rome, Sofia, Beijing…). */
+const CITY_EN = { zagreb: 'Zagreb', beograd: 'Belgrade', sarajevo: 'Sarajevo', budimpesta: 'Budapest', ljubljana: 'Ljubljana', rim: 'Rome', sofija: 'Sofia', bukurest: 'Bucharest', nairobi: 'Nairobi', jakarta: 'Jakarta', newyork: 'New York', saopaulo: 'São Paulo', sydney: 'Sydney', singapur: 'Singapore', kairo: 'Cairo', tokio: 'Tokyo', peking: 'Beijing' };
 
 const checkOnly = process.argv.includes('--check');
 
@@ -45,17 +49,24 @@ const esc = (v) => String(v ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').
 function cards() {
   const data = JSON.parse(fs.readFileSync(DATA, 'utf8'));
   const list = Array.isArray(data.cards) ? data.cards : [];
-  const CHANNELS = ['zagreb', 'beograd', 'sarajevo', 'budimpesta', 'ljubljana', 'rim', 'sofija', 'bukurest'];
-  const out = CHANNELS.map((id) => list.find((c) => c && c.id === id)).filter(Boolean);
-  if (out.length !== 8) throw new Error(`Ocekivano 8 izdanja, dobiveno ${out.length}`);
+  const ids = JSON.parse(fs.readFileSync(CHANNELS_FILE, 'utf8')).channels.map((c) => c.id);
+  const out = ids.map((id) => list.find((c) => c && c.id === id)).filter(Boolean);
+  if (out.length !== ids.length) throw new Error(`Ocekivano ${ids.length} izdanja, dobiveno ${out.length}`);
   return out;
 }
 
 function circle(c, lang) {
   const en = lang === 'en';
-  const href = en ? `/kanal/${c.id}/en/` : `/kanal/${c.id}/`;
-  const label = en ? `AKTUAL MEDIA CHANNEL ${String(c.city).toUpperCase()} — ${esc(c.city)}` : `AKTUAL MEDIA KANAL ${String(c.city).toUpperCase()} — ${esc(c.city)}`;
-  return `<li class="amz-i"><a href="${href}" aria-label="${label}"><span class="amz-img"><img src="/assets/izdanja/${c.id}-440.webp" srcset="/assets/izdanja/${c.id}-240.webp 240w, /assets/izdanja/${c.id}-440.webp 440w" sizes="(max-width:980px) 92px, (max-width:1240px) 12vw, 160px" alt="${label}" width="440" height="296" loading="lazy" decoding="async"></span><b>${esc(c.city)}</b><small>${esc(c.lang)}</small></a></li>`;
+  /* Izdanje koje je već na engleskom nema zaseban /en/ članak — tamo stoji
+     kratka stranica s noindex. Zato krug vodi ravno na izdanje. */
+  const href = en && c.lang !== 'en' ? `/kanal/${c.id}/en/` : `/kanal/${c.id}/`;
+  const city = en ? (CITY_EN[c.id] || c.city) : c.city;
+  /* Na engleskoj stranici svaki kanal nosi engleski natpis CHANNEL, bez
+     obzira na jezik izdanja; hrvatski natpis KANAL ostaje na HR stranici. */
+  const label = en
+    ? `AKTUAL MEDIA CHANNEL ${String(city).toUpperCase()} — ${esc(city)}`
+    : `AKTUAL MEDIA KANAL ${String(city).toUpperCase()} — ${esc(city)}`;
+  return `<li class="amz-i"><a href="${href}" aria-label="${label}"${c.lang === 'en' ? ' hreflang="en"' : ''}><span class="amz-img"><img src="/assets/izdanja/${c.id}-440.webp" srcset="/assets/izdanja/${c.id}-240.webp 240w, /assets/izdanja/${c.id}-440.webp 440w" sizes="(max-width:980px) 92px, (max-width:1240px) 12vw, 160px" alt="${label}" width="440" height="296" loading="lazy" decoding="async"></span><b>${esc(city)}</b><small>${esc(c.lang)}</small></a></li>`;
 }
 
 /* Dva samostalna portala: iste pločice kao kanali, ali vanjska domena.
@@ -63,8 +74,8 @@ function circle(c, lang) {
 function portalTiles(lang) {
   const en = lang === 'en';
   const items = [
-    { id: 'arhiva', url: `https://gnk-asg-arhiva.pages.dev/${en ? 'en/' : ''}`, label: en ? 'AKTUAL ARCHIVE — 3,360 stories from eight cities, with originals. Opens the archive portal.' : 'AKTUAL ARHIVA — 3.360 tekstova osam gradova, s izvornikom. Otvara arhivu na zasebnoj domeni.', name: en ? 'ARCHIVE' : 'ARHIVA', lang: en ? 'en' : 'hr' },
-    { id: 'dnevnik', url: `https://gnk-asg-dnevnik.pages.dev/${en ? 'en/' : ''}`, label: en ? 'AKTUAL DAILY — one day, eight cities, hour by hour. Opens the daily portal.' : 'AKTUAL DNEVNIK — jedan dan, osam gradova, po satima. Otvara dnevnik na zasebnoj domeni.', name: en ? 'DAILY' : 'DNEVNIK', lang: en ? 'en' : 'hr' },
+    { id: 'arhiva', url: `https://gnk-asg-arhiva.pages.dev/${en ? 'en/' : ''}`, label: en ? 'AKTUAL ARCHIVE — 3,360 stories from the city editions, with originals. Opens the archive portal.' : 'AKTUAL ARHIVA — 3.360 tekstova gradskih izdanja, s izvornikom. Otvara arhivu na zasebnoj domeni.', name: en ? 'ARCHIVE' : 'ARHIVA', lang: en ? 'en' : 'hr' },
+    { id: 'dnevnik', url: `https://gnk-asg-dnevnik.pages.dev/${en ? 'en/' : ''}`, label: en ? 'AKTUAL DAILY — one day, every city that published, hour by hour. Opens the daily portal.' : 'AKTUAL DNEVNIK — jedan dan, svi gradovi koji su objavili, po satima. Otvara dnevnik na zasebnoj domeni.', name: en ? 'DAILY' : 'DNEVNIK', lang: en ? 'en' : 'hr' },
   ];
   return items.map((p) => `<li class="amz-i amz-i--portal"><a href="${p.url}" rel="external noopener" aria-label="${esc(p.label)}"><span class="amz-img"><img src="/assets/izdanja/${p.id}-440.webp" srcset="/assets/izdanja/${p.id}-240.webp 240w, /assets/izdanja/${p.id}-440.webp 440w" sizes="(max-width:980px) 92px, (max-width:1240px) 12vw, 160px" alt="${esc(p.label)}" width="440" height="294" loading="lazy" decoding="async"></span><b>${esc(p.name)}</b><small>${esc(p.lang)}</small></a></li>`).join('');
 }
@@ -76,7 +87,8 @@ function deskStrip(lang) {
     ? `<li><a class="is-radio" href="/en/radio/"><b>AKTUAL MEDIA RADIO</b><span>player</span></a></li>`
     : `<li><a class="is-radio" href="/radio/"><b>AKTUAL MEDIA RADIO</b><span>player</span></a></li>`;
   const gallery = `<li><a href="/galerija/"><b>${en ? 'Gallery' : 'Galerija'}</b><span>${en ? 'photo' : 'foto'}</span></a></li>`;
-  const channels = `<li><a href="/kanal/"><b>${en ? 'All channels' : 'Svi kanali'}</b><span>${en ? '8 editions' : '8 izdanja'}</span></a></li>`;
+  const total = JSON.parse(fs.readFileSync(CHANNELS_FILE, 'utf8')).channels.length;
+  const channels = `<li><a href="/kanal/"><b>${en ? 'All channels' : 'Svi kanali'}</b><span>${total} ${en ? 'editions' : 'izdanja'}</span></a></li>`;
   const tjednik = `<li><a href="https://gnk-asg-tjednik.pages.dev/" rel="external noopener"><b>Business Tjednik</b><span>${en ? 'weekly' : 'tjednik'}</span></a></li>`;
   const hub = `<li><a href="${en ? '/en/gnk-aktual/' : '/gnk-aktual/'}"><b>AKTUAL MEDIA</b><span>${en ? 'hub' : 'središte'}</span></a></li>`;
   const satellites = `<li><a href="https://gnk-asg-arhiva.pages.dev/${en ? 'en/' : ''}" rel="external noopener"><b>${en ? 'AKTUAL ARCHIVE' : 'AKTUAL ARHIVA'}</b><span>${en ? 'portal' : 'portal'}</span></a></li><li><a href="https://gnk-asg-dnevnik.pages.dev/${en ? 'en/' : ''}" rel="external noopener"><b>${en ? 'AKTUAL DAILY' : 'AKTUAL DNEVNIK'}</b><span>${en ? 'portal' : 'portal'}</span></a></li>`;
@@ -183,14 +195,16 @@ function main() {
   const hr = stats(next[HR]);
   const en = stats(next[EN]);
   const problems = [];
-  // 8 gradskih izdanja + 2 samostalna portala (ARHIVA, DNEVNIK) = 10 pločica.
-  // Portalne pločice nose vlastite 240/440 slike, ali nisu /kanal/<id>/en/ linkovi.
-  // 8 gradskih krugova; portalne pločice imaju dodatnu klasu amz-i--portal.
-  if (hr.circles !== 8 || en.circles !== 8) problems.push(`krugovi HR=${hr.circles} EN=${en.circles}`);
-  if (hr.photos !== 10 || en.photos !== 10) problems.push(`fotografije HR=${hr.photos} EN=${en.photos}`);
-  if (hr.srcset !== 10 || en.srcset !== 10) problems.push(`srcset HR=${hr.srcset} EN=${en.srcset}`);
+  // Gradski krugovi + 2 samostalna portala (ARHIVA, DNEVNIK). Broj krugova se
+  // čita iz channels.json, pa novo izdanje ne ruši paritet — nego ga proširuje.
+  const expected = JSON.parse(fs.readFileSync(CHANNELS_FILE, 'utf8')).channels.length;
+  const englishChannelCount = JSON.parse(fs.readFileSync(CHANNELS_FILE, 'utf8')).channels.filter((c) => c.lang === 'en').length;
+  if (hr.circles !== expected || en.circles !== expected) problems.push(`krugovi HR=${hr.circles} EN=${en.circles} (očekivano ${expected})`);
+  if (hr.photos !== expected + 2 || en.photos !== expected + 2) problems.push(`fotografije HR=${hr.photos} EN=${en.photos}`);
+  if (hr.srcset !== expected + 2 || en.srcset !== expected + 2) problems.push(`srcset HR=${hr.srcset} EN=${en.srcset}`);
   if (hr.tiles || en.tiles) problems.push(`tile slike HR=${hr.tiles} EN=${en.tiles}`);
-  if (en.circlesEn !== 8) problems.push(`EN linkovi na /en/=${en.circlesEn}`);
+  // /en/ pregled postoji samo za izdanja koja nisu na engleskom.
+  if (en.circlesEn !== expected - englishChannelCount) problems.push(`EN linkovi na /en/=${en.circlesEn} (očekivano ${expected - englishChannelCount})`);
   // 17 = 9 deskovi + radio + galerija + svi kanali + tjednik + hub + ARHIVA + DNEVNIK + tjednik W43
   if (hr.desks !== 17 || en.desks !== 17) problems.push(`deskovi HR=${hr.desks} EN=${en.desks}`);
   if (hr.tags !== 1 || en.tags !== 1) problems.push(`hashtag red HR=${hr.tags} EN=${en.tags}`);

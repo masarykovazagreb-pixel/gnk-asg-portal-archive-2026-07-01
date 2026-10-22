@@ -20,6 +20,7 @@ export const IMAGE_PROXY_PATH = '/api/img';
 /* Hostovi iz apps/portal/data/news.json — jedini koje portal stvarno
    prikazuje. Novi izvor se dodaje ovdje, namjerno, a ne automatski. */
 const ALLOWED_HOSTS = new Set([
+  'img.youtube.com',
   'i.guim.co.uk',
   'ichef.bbci.co.uk',
   'static01.nyt.com',

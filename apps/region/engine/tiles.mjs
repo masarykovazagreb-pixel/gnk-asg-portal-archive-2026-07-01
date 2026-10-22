@@ -44,15 +44,30 @@ const SPEC = {
   rim: { title: 'KANAL ROMA', sub: 'Italija · talijanski', line: 'ANSA, la Repubblica, Il Post i Il Sole 24 Ore — tržišta i EU.' },
   sofija: { title: 'KANAL SOFIJA', sub: 'Bugarska · bugarski', line: 'BTA, Capital, Mediapool i Dnevnik — energetika i fondovi.' },
   bukurest: { title: 'KANAL BUCUREȘTI', sub: 'Rumunjska · rumunjski', line: 'Agerpres, HotNews, Ziarul Financiar i Profit.ro — ekonomija.' },
+  /* Globalna izdanja. Ime izdanja i imena medija u slici su latinica — to su
+     stvarni latinični nazivi tih kuća (NHK, Asahi Shimbun, Mada Masr). Puni
+     natpis na jeziku izdanja stoji u HTML-u i u alt atributu, jer slika smije
+     nositi samo ono što se u njoj doista vidi. Zato je i poziv u slici na
+     latinici: font u generatoru nema kineska, japanska ni arapska slova, pa bi
+     takav natpis u pločici ostao prazan pravokutnik. */
+  nairobi: { title: 'CHANNEL NAIROBI', sub: 'Kenya · English', line: 'Daily Nation, The Standard, Capital FM, KBC — East Africa, business, security.', cta: 'CLICK → OPENS THE EDITION' },
+  jakarta: { title: 'KANAL JAKARTA', sub: 'Indonesia · Bahasa Indonesia', line: 'ANTARA, Kompas, Detik, Tempo — politik, ekonomi, keamanan siber.', cta: 'CLICK → OPENS THE EDITION' },
+  newyork: { title: 'CHANNEL NEW YORK', sub: 'United States · English', line: 'The New York Times, NPR, WSJ, Bloomberg — markets, politics and technology.', cta: 'CLICK → OPENS THE EDITION' },
+  saopaulo: { title: 'CANAL SÃO PAULO', sub: 'Brasil · Português', line: 'Folha, G1, UOL, Exame — economia, política e segurança pública.', cta: 'CLICK → OPENS THE EDITION' },
+  sydney: { title: 'CHANNEL SYDNEY', sub: 'Australia · English', line: 'ABC, SMH, Guardian Australia, news.com.au — Pacific, markets and climate.', cta: 'CLICK → OPENS THE EDITION' },
+  singapur: { title: 'CHANNEL SINGAPUR', sub: 'Singapore · English', line: 'CNA, The Straits Times, Business Times, Mothership — trade, finance, region.', cta: 'CLICK → OPENS THE EDITION' },
+  kairo: { title: 'KANAL KAIRO', sub: 'Egypt · Arabic', line: 'Mada Masr, Youm7, Al-Masry Al-Youm — economy, politics and security.', cta: 'CLICK → OPENS THE EDITION' },
+  tokio: { title: 'KANAL TOKIO', sub: 'Japan · Japanese', line: 'NHK, Asahi Shimbun, Mainichi, ITmedia — economy, politics, technology.', cta: 'CLICK → OPENS THE EDITION' },
+  peking: { title: 'KANAL PEKING', sub: 'China · Chinese', line: 'BBC Chinese, DW Chinese, NYT Chinese, China News — economy, politics, tech.', cta: 'CLICK → OPENS THE EDITION' },
 };
 
 const DESK = [
-  { id: 'sport', title: 'SPORT', kicker: 'DESK · REZULTATI I OSVRTI', line: 'Sportske tekstove iz svih osam kanala na jednom mjestu.', cta: 'Klik → otvara se sportski desk' },
-  { id: 'politika', title: 'POLITIKA', kicker: 'DESK · ODLUKE I IZBORI', line: 'Ista odluka u osam zemalja ne izgleda jednako.', cta: 'Klik → otvara se politički desk' },
-  { id: 'sigurnost', title: 'SIGURNOST', kicker: 'DESK · KIBERNETIKA I PREUZIMANJA', line: 'Obavještajne teme, incidenti i spajanja tvrtki.', cta: 'Klik → otvara se sigurnosni desk' },
-  { id: 'biznis', title: 'BUSINESS', kicker: 'DESK · TRŽIŠTA I BILANCE', line: 'Tržišta, bilance i kapital iz osam zemalja regije.', cta: 'Klik → otvara se business desk' },
-  { id: 'tehnologija', title: 'TEHNOLOGIJA', kicker: 'DESK · AI I INFRASTRUKTURA', line: 'Umjetna inteligencija, platforme i podatkovni centri.', cta: 'Klik → otvara se tehnološki desk' },
-  { id: 'moda', title: 'TJEDNIK MODE', kicker: 'DESK · STIL I DIZAJN', line: 'Kolekcije, brendovi i poslovni modeli iza njih.', cta: 'Klik → otvara se modni desk' }
+  { id: 'sport', title: 'SPORT', kicker: 'DESK · REZULTATI I OSVRTI', line: 'Sportske tekstove iz svih osam kanala na jednom mjestu.', cta: 'CLICK → OPENS THE EDITION' },
+  { id: 'politika', title: 'POLITIKA', kicker: 'DESK · ODLUKE I IZBORI', line: 'Ista odluka u osam zemalja ne izgleda jednako.', cta: 'CLICK → OPENS THE EDITION' },
+  { id: 'sigurnost', title: 'SIGURNOST', kicker: 'DESK · KIBERNETIKA I PREUZIMANJA', line: 'Obavještajne teme, incidenti i spajanja tvrtki.', cta: 'CLICK → OPENS THE EDITION' },
+  { id: 'biznis', title: 'BUSINESS', kicker: 'DESK · TRŽIŠTA I BILANCE', line: 'Tržišta, bilance i kapital iz osam zemalja regije.', cta: 'CLICK → OPENS THE EDITION' },
+  { id: 'tehnologija', title: 'TEHNOLOGIJA', kicker: 'DESK · AI I INFRASTRUKTURA', line: 'Umjetna inteligencija, platforme i podatkovni centri.', cta: 'CLICK → OPENS THE EDITION' },
+  { id: 'moda', title: 'TJEDNIK MODE', kicker: 'DESK · STIL I DIZAJN', line: 'Kolekcije, brendovi i poslovni modeli iza njih.', cta: 'CLICK → OPENS THE EDITION' }
 ];
 
 const run = (args) => execFileSync('convert', args, { stdio: 'pipe' });
@@ -125,7 +140,7 @@ function bakeCity(id, spec, photo) {
     '-font', font(false, false), '-pointsize', '19', '-kerning', '0', '-fill', '#dfe8f4',
     ...lines.map((l, i) => ['-annotate', `+44+${bodyFirst + i * 26}`, l]).flat(),
     '-font', font(true, false), '-pointsize', '15', '-kerning', '1', '-fill', '#e9c66c',
-    '-annotate', `+44+${ctaY}`, 'KLIK → OTVARA SE IZDANJE',
+    '-annotate', `+44+${ctaY}`, spec.cta || 'KLIK → OTVARA SE IZDANJE',
     '-quality', '84', '-strip',
     join(OUT, `${id}-tile.webp`)
   ]);
@@ -206,9 +221,9 @@ function main() {
   }
 
   const extras = [
-    { id: 'galerija', kicker: 'Vizuali · vlastite stranice', title: 'GALERIJA', line: 'Portreti, događanja i tematski vizuali Nermina Sefića.', cta: 'Klik → otvara se galerija' },
-    { id: 'radio', kicker: 'Radio · diskretni player', title: 'RADIO', line: 'Šest streamova i javne radijske kuće osam zemalja.', cta: 'Klik → otvara se radio' },
-    { id: 'znanje', kicker: 'Centar znanja', title: 'ZNANJE', line: 'Odgovori o grupi, projektima, financijama i kontaktima.', cta: 'Klik → otvara se centar znanja' }
+    { id: 'galerija', kicker: 'Vizuali · vlastite stranice', title: 'GALERIJA', line: 'Portreti, događanja i tematski vizuali Nermina Sefića.', cta: 'CLICK → OPENS THE EDITION' },
+    { id: 'radio', kicker: 'Radio · diskretni player', title: 'RADIO', line: 'Šest streamova i javne radijske kuće osam zemalja.', cta: 'CLICK → OPENS THE EDITION' },
+    { id: 'znanje', kicker: 'Centar znanja', title: 'ZNANJE', line: 'Odgovori o grupi, projektima, financijama i kontaktima.', cta: 'CLICK → OPENS THE EDITION' }
   ];
   for (const x of extras) {
     bakeDesk({ id: x.id, title: x.title, kicker: x.kicker, line: x.line, cta: x.cta });
@@ -216,8 +231,8 @@ function main() {
   }
 
   const features = [
-    { id: 'tjednik', kicker: 'Tjednik · kritički osvrti', title: 'BUSINESS TJEDNIK', line: 'Lider, Jutarnji, Poslovni i Forbes kroz tjednu kritiku.', cta: 'Klik → otvara se tjednik', photo: 'tjednik-880.webp' },
-    { id: 'aktual-media', kicker: 'Središnje mjesto', title: 'AKTUAL MEDIA', line: 'Sve što imamo: izdanja, deskovi, tjednik, galerija, radio.', cta: 'Klik → otvara se pregled', photo: 'aktual-media-880.webp', lead: true }
+    { id: 'tjednik', kicker: 'Tjednik · kritički osvrti', title: 'BUSINESS TJEDNIK', line: 'Lider, Jutarnji, Poslovni i Forbes kroz tjednu kritiku.', cta: 'CLICK → OPENS THE EDITION', photo: 'tjednik-880.webp' },
+    { id: 'aktual-media', kicker: 'Središnje mjesto', title: 'AKTUAL MEDIA', line: 'Sve što imamo: izdanja, deskovi, tjednik, galerija, radio.', cta: 'CLICK → OPENS THE EDITION', photo: 'aktual-media-880.webp', lead: true }
   ];
   for (const f of features) {
     const photo = join(OUT, f.photo);

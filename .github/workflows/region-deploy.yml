@@ -50,7 +50,10 @@ jobs:
           test -f apps/portal/izdanja/index.html
           test -f apps/portal/kanal/index.html
           test -f apps/portal/kanal/zagreb/sitemap.xml
-          for id in zagreb beograd sarajevo budimpesta ljubljana rim sofija bukurest; do
+          # Popis izdanja se čita iz channels.json — novo izdanje ne smije
+          # proći deploy bez svoje stranice, a ni gate ne smije ostati na
+          # starom popisu od osam gradova.
+          for id in $(node -e "console.log(JSON.parse(require('fs').readFileSync('apps/region/channels.json','utf8')).channels.map(c=>c.id).join(' '))"); do
             test -f "apps/portal/kanal/$id/index.html" || { echo "::error::nedostaje kanal $id"; exit 1; }
           done
           node -e "const fs=require('fs');const d=JSON.parse(fs.readFileSync('apps/portal/kanal/zagreb/feed.json','utf8'));console.log('feed items:',d.items.length)"

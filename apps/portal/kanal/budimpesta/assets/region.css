@@ -1,6 +1,10 @@
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:#f6f4ef;color:#15191f;font:16px/1.62 Georgia,"Times New Roman",serif}
+html[lang="ja"] body,html[lang="zh"] body{font-family:"Hiragino Sans","Yu Gothic","Noto Sans JP","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;line-height:1.75}
+html[lang="ar"] body{font-family:"Geeza Pro","Noto Naskh Arabic","Noto Sans Arabic",Tahoma,system-ui,sans-serif;line-height:1.85}
+html[lang="ja"] h1,html[lang="zh"] h1,html[lang="ja"] h2,html[lang="zh"] h2{line-height:1.35}
+html[dir="rtl"] .hastag-line{direction:rtl}
 a{color:inherit;text-decoration:none}
 a:hover{text-decoration:underline}
 img{max-width:100%;height:auto}

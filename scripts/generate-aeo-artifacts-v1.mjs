@@ -75,8 +75,8 @@ const llms = `# GNK ASG — corporate and editorial reference
 - Cite the specific canonical page and, where relevant, the linked public register or original publisher.
 
 ## Independent portals on their own domains
-- AKTUAL ARHIVA — searchable archive of 3,360 stories from the eight city editions (HR and EN): https://gnk-asg-arhiva.pages.dev/
-- AKTUAL DNEVNIK — one day, eight cities, posts ordered by hour (HR and EN): https://gnk-asg-dnevnik.pages.dev/
+- AKTUAL ARHIVA — searchable archive of 3,360 stories from the city editions that already have an archive (HR and EN): https://gnk-asg-arhiva.pages.dev/
+- AKTUAL DNEVNIK — one day, the cities that published, posts ordered by hour (HR and EN): https://gnk-asg-dnevnik.pages.dev/
 - Both are standalone: each has its own sitemap.xml, feed.xml, robots.txt and llms.txt, and both are linked from the AKTUAL MEDIA hub at ${SITE}/gnk-aktual/.
 
 ## Editorial and machine-readable endpoints

@@ -29,6 +29,9 @@ const walk = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((entry) 
 const errors = [];
 const warnings = [];
 const report = [];
+/* Jezik izdanja: engleski kanal nema /en/ prijevod, pa ni hreflang par. */
+const CHANNELS = JSON.parse(readFileSync(join(APP, 'channels.json'), 'utf8')).channels;
+const LANG_OF = new Map(CHANNELS.map((c) => [c.id, c.lang]));
 
 for (const channel of readdirSync(SITE).filter((d) => statSync(join(SITE, d)).isDirectory())) {
   const root = join(SITE, channel);
@@ -54,7 +57,11 @@ for (const channel of readdirSync(SITE).filter((d) => statSync(join(SITE, d)).is
     // not claim that their channel homepage is a language alternate.
     const hasLanguagePair = rel === '/index.html' || rel === '/en/index.html';
     const declaresHreflang = /rel="alternate" hreflang=/.test(html);
-    if (hasLanguagePair && !declaresHreflang) errors.push(`${channel}${rel}: nema hreflang para za naslovnicu`);
+    /* Englesko izdanje je već na engleskom: /en/ mu nije prijevod, nego ista
+       stranica, pa se par ne ispisuje i ne traži. Za ostala izdanja vrijedi
+       pravilo: par na naslovnicama, nigdje drugdje. */
+    const englishEdition = LANG_OF.get(channel) === 'en';
+    if (hasLanguagePair && !englishEdition && !declaresHreflang) errors.push(`${channel}${rel}: nema hreflang para za naslovnicu`);
     if (!hasLanguagePair && declaresHreflang) errors.push(`${channel}${rel}: nepostojeći prijevod u hreflang`);
     if (/property="og:locale" content="(?:undefined|null|)"/i.test(html)) errors.push(`${channel}${rel}: neispravan og:locale`);
 

@@ -18,6 +18,13 @@ const fails = [];
 const read = (p) => readFileSync(join(PORTAL, p), 'utf8');
 const has = (p) => existsSync(join(PORTAL, p));
 
+/* Broj izdanja nije fiksan: popis dolazi iz channels.json, pa novo izdanje
+   proširuje katalog bez prepisivanja testa. */
+const CITIES = JSON.parse(readFileSync(join(ROOT, 'apps', 'region', 'channels.json'), 'utf8')).channels.map((c) => c.id);
+const DESKS = ['sport', 'politika', 'sigurnost', 'biznis', 'tehnologija', 'moda', 'putovanja', 'ljubimci', 'svijet'];
+const PLATFORMS = 8;
+const PRODUCTS = CITIES.length + DESKS.length + PLATFORMS;
+
 const PAGES = [
   { page: 'aktual-media/proizvodi/index.html', lang: 'hr', canonical: `${SITE}/aktual-media/proizvodi/`, alternate: `${SITE}/en/aktual-media/proizvodi/` },
   { page: 'en/aktual-media/proizvodi/index.html', lang: 'en', canonical: `${SITE}/en/aktual-media/proizvodi/`, alternate: `${SITE}/aktual-media/proizvodi/` }
@@ -74,13 +81,13 @@ for (const { page, lang, canonical, alternate } of PAGES) {
     if (!candidates.some((p) => existsSync(p))) fails.push(`${page}: poveznica vodi na nepostojeću rutu ${href}`);
   }
 
-  /* Sadržaj: osam gradova, devet deskova, osam platformi (dvije su samostalni portali). */
+  /* Sadržaj: sva gradska izdanja, devet deskova, osam platformi (dvije su samostalni portali). */
   const cards = (html.match(/class="pr-card"/g) || []).length;
-  if (cards !== 25) fails.push(`${page}: ${cards} kartica (mora biti 25: 8 gradova + 9 deskova + 8 platformi)`);
-  for (const city of ['zagreb', 'beograd', 'sarajevo', 'budimpesta', 'ljubljana', 'rim', 'sofija', 'bukurest']) {
+  if (cards !== PRODUCTS) fails.push(`${page}: ${cards} kartica (mora biti ${PRODUCTS}: ${CITIES.length} gradova + ${DESKS.length} deskova + ${PLATFORMS} platformi)`);
+  for (const city of CITIES) {
     if (!html.includes(`href="/kanal/${city}/"`)) fails.push(`${page}: nema grada ${city}`);
   }
-  for (const desk of ['sport', 'politika', 'sigurnost', 'biznis', 'tehnologija', 'moda', 'putovanja', 'ljubimci', 'svijet']) {
+  for (const desk of DESKS) {
     if (!html.includes(`href="/izdanja/${desk}/"`)) fails.push(`${page}: nema deska ${desk}`);
   }
   if (!html.includes('rel="external noopener"')) fails.push(`${page}: vanjske poveznice bez rel="external noopener"`);
@@ -123,10 +130,10 @@ else {
     for (const portal of ['https://gnk-asg-arhiva.pages.dev/', 'https://gnk-asg-dnevnik.pages.dev/']) {
       if (!urls.includes(portal)) errors.push(`katalog ne sadrži samostalni portal ${portal}`);
     }
-    if (!cat.counts || cat.counts.cities !== 8 || cat.counts.desks !== 9 || cat.counts.platforms !== 8) {
+    if (!cat.counts || cat.counts.cities !== CITIES.length || cat.counts.desks !== 9 || cat.counts.platforms !== PLATFORMS) {
       fails.push(`${catalogPath}: krivi brojevi (${JSON.stringify(cat.counts)})`);
     }
-    if (!Array.isArray(cat.products) || cat.products.length !== 25) fails.push(`${catalogPath}: nema 25 proizvoda`);
+    if (!Array.isArray(cat.products) || cat.products.length !== PRODUCTS) fails.push(`${catalogPath}: ${cat.products?.length} proizvoda (mora biti ${PRODUCTS})`);
     if (cat.pages?.hr !== `${SITE}/aktual-media/proizvodi/` || cat.pages?.en !== `${SITE}/en/aktual-media/proizvodi/`) {
       fails.push(`${catalogPath}: krive stranice`);
     }

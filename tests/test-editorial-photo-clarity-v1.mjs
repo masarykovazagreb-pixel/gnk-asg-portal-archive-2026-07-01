@@ -47,11 +47,14 @@ for (const [name, css, selector] of [
   assert.ok(Number(stops[stops.length - 1][1]) >= 0.75, `${name}: text at the bottom keeps contrast`);
 }
 
-/* ---------- 2. Gradski kanali: osam jednakih kopija, film pada na nulu ---------- */
+/* ---------- 2. Gradski kanali: svaka kopija ista, film pada na nulu ---------- */
 
 const kanalDir = 'apps/portal/kanal';
 const channels = readdirSync(kanalDir).filter((name) => existsSync(path.join(kanalDir, name, 'assets/region.css')));
-assert.equal(channels.length, 8, 'expected eight city channels');
+/* Broj kanala dolazi iz channels.json: novo izdanje mora proći isti test,
+   a ne srušiti prag na starom broju od osam. */
+const expectedChannels = JSON.parse(read('apps/region/channels.json')).channels.length;
+assert.equal(channels.length, expectedChannels, `expected ${expectedChannels} city channels, found ${channels.length}`);
 
 let reference = null;
 for (const channel of channels) {
@@ -106,4 +109,4 @@ for (const [file, page_html, stem] of [
   assert.equal(css, js, `${file}: CSS and JS must share one cache-busting token`);
 }
 
-console.log('Fotografije: pune slike na AKTUAL MEDIA, regijama i svih osam gradskih kanala — PASS');
+console.log(`Fotografije: pune slike na AKTUAL MEDIA, regijama i svih ${expectedChannels} gradskih kanala — PASS`);

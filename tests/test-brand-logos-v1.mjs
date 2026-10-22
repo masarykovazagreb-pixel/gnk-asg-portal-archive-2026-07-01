@@ -28,7 +28,10 @@ const has = (rel) => existsSync(join(PORTAL, rel));
 if (manifest.version !== 'GNK_ASG_AKTUAL_MEDIA_LOGOS_V1_20261022') fails.push(`neočekivana verzija ${manifest.version}`);
 if (manifest.palette?.primary !== '#19233B') fails.push('primarna boja nije navy #19233B');
 if (manifest.palette?.accent !== '#D9384D') fails.push('akcent nije crvena #D9384D');
-if (manifest.logos.length !== 19) fails.push(`znakova ${manifest.logos.length}, očekivano 19`);
+/* Znakova je onoliko koliko je kanala + dva znaka kuće (HR/EN) + devet deskova.
+   Broj se čita iz channels.json, da novo izdanje ne pada na zastarjelom pragu. */
+const EXPECTED_LOGOS = channels.length + 2 + 9;
+if (manifest.logos.length !== EXPECTED_LOGOS) fails.push(`znakova ${manifest.logos.length}, očekivano ${EXPECTED_LOGOS}`);
 
 for (const logo of manifest.logos) {
   for (const key of ['svg', 'webp', 'og', 'square']) {

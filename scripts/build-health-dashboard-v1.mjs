@@ -2,7 +2,7 @@
 // GNK ASG — javna ploča zdravlja (/zdravlje/ i /en/zdravlje/).
 //
 // Čita SAMO datoteke iz repozitorija i iz njih računa stanje:
-//   - svježinu svakog od osam gradskih kanala (iz feed.json),
+//   - svježinu svakog gradskog kanala iz channels.json (iz feed.json),
 //   - svježinu središnjeg feeda portala (news.json),
 //   - stanje flote automatizacija (worker-groups.json + workflow-runs.json),
 //   - popis automatizacija koje su posljednji put pale (s linkom na run).
@@ -22,7 +22,9 @@ const PORTAL = path.join(ROOT, 'apps/portal');
 const CHECK_ONLY = process.argv.includes('--check');
 const SITE = 'https://gnk-asg.hr';
 
-const CITY_IDS = ['zagreb', 'beograd', 'sarajevo', 'budimpesta', 'ljubljana', 'rim', 'sofija', 'bukurest'];
+/* Popis izdanja dolazi iz channels.json: dashboard ne smije ostati na osam
+   gradova kad se doda novo izdanje. */
+const CITY_IDS = JSON.parse(fs.readFileSync(path.join(ROOT, 'apps', 'region', 'channels.json'), 'utf8')).channels.map((c) => c.id);
 const FRESH_HOURS = 6;
 const WARN_HOURS = 24;
 
@@ -135,7 +137,7 @@ const COPY = {
   hr: {
     lang: 'hr',
     title: 'Zdravlje sustava — svježina kanala i stanje automatizacija | GNK ASG',
-    description: 'Javna ploča zdravlja GNK ASG portala: svježina osam gradskih kanala, središnji feed i stanje automatizacija, izračunato iz repozitorija.',
+    description: `Javna ploča zdravlja GNK ASG portala: svježina ${CITY_IDS.length} gradskih kanala, središnji feed i stanje automatizacija, izračunato iz repozitorija.`,
     eyebrow: 'Javni snimak stanja',
     h1: 'Zdravlje sustava',
     lead: 'Sve na ovoj stranici izračunato je iz datoteka u repozitoriju u trenutku gradnje. Nema živih proba dostupnosti i nema izmišljenih brojeva: svaki redak pokazuje odakle dolazi.',

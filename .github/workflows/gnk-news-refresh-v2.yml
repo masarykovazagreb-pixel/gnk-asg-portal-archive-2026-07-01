@@ -145,7 +145,8 @@ jobs:
             -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
             -f approved_sha="$APPROVED_SHA"
 
-      # Ako regionalna izdanja (osam gradova) nisu svježa, pokreni njihov ciklus.
+      # Ako izdanja mreže nisu svježa, pokreni njihov ciklus. Izdanja koja još
+      # nemaju nijedan zapis ne broje se kao zastarjela (check-aktual-freshness).
       # Ne piše sadržaj sam — samo poziva vlasnika posla, koji ima svoj fence.
       - name: Pokreni regionalni ciklus ako su izdanja zastarjela
         if: steps.control.outputs.should_run == 'true'
