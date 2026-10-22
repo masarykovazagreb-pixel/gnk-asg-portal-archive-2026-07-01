@@ -106,23 +106,41 @@ jobs:
           echo "changed=true" >> "$GITHUB_OUTPUT"
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
-      - name: Push na granu iz koje je pokrenut (uz provjeru pomaka)
+      # 22. 10. 2026.: ciklus je izgrađen na 9d93455, a main se u međuvremenu
+      # pomaknuo na 07628d2a (merge PR-a #339) — stari kod je tada samo ispisao
+      # upozorenje i ODBACIO gotovo izdanje. Zato sada: rebase na svježi main i
+      # do tri pokušaja pusha. Ako rebase ne prođe (netko je dirao iste datoteke),
+      # izdanje se ne gubi tiho — pokreće se novi ciklus odmah, ne za dva sata.
+      - name: Push na granu iz koje je pokrenut (rebase, do tri pokušaja)
+        id: push
         if: steps.commit.outputs.changed == 'true'
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |-
-          set -euo pipefail
-          expected="${{ steps.base.outputs.sha }}"
+          set -uo pipefail
           ref="${{ github.ref_name }}"
-          git fetch origin "$ref" --no-tags
-          current=$(git rev-parse "origin/$ref")
-          if [ "$current" != "$expected" ]; then
-            echo "::warning::$ref se pomaknuo tijekom izrade izdanja (očekivano $expected, stvarno $current). Izdanje ostaje za sljedeći ciklus."
-            exit 0
+          pushed=false
+          for attempt in 1 2 3; do
+            git fetch origin "$ref" --no-tags
+            if ! git rebase "origin/$ref"; then
+              echo "::warning::Rebase na origin/$ref nije prošao (pokušaj $attempt) — izdanje ostaje za sljedeći ciklus."
+              git rebase --abort || true
+              break
+            fi
+            if git push origin "HEAD:$ref"; then pushed=true; break; fi
+            echo "::warning::Push odbijen (pokušaj $attempt) — ponavljam nakon rebasea."
+            sleep 5
+          done
+          echo "pushed=$pushed" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          if [ "$pushed" != "true" ] && [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "::warning::Izdanje nije zapisano — pokrećem novi ciklus odmah."
+            gh workflow run region-daily.yml --repo "$GITHUB_REPOSITORY" --ref "$ref" || true
           fi
-          git push origin "HEAD:$ref"
 
       - name: Deploy na Cloudflare Pages (svaki kanal svoj projekt)
-        if: steps.commit.outputs.changed == 'true' && github.ref == 'refs/heads/main'
+        if: steps.push.outputs.pushed == 'true' && github.ref == 'refs/heads/main'
         shell: bash
         env:
           CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -148,10 +166,10 @@ jobs:
           done
 
       - name: Objavi AKTUAL MEDIA (točan SHA)
-        if: steps.commit.outputs.changed == 'true' && github.ref == 'refs/heads/main' && vars.REGION_PORTAL_DEPLOY != 'false'
+        if: steps.push.outputs.pushed == 'true' && github.ref == 'refs/heads/main' && vars.REGION_PORTAL_DEPLOY != 'false'
         env:
           GH_TOKEN: ${{ github.token }}
-          APPROVED_SHA: ${{ steps.commit.outputs.sha }}
+          APPROVED_SHA: ${{ steps.push.outputs.sha }}
         run: |-
           set -euo pipefail
           gh workflow run deploy-admin-auth-v6.yml \
@@ -162,7 +180,7 @@ jobs:
             -f notify_search_engines=false
 
       - name: Provjeri javni hub
-        if: steps.commit.outputs.changed == 'true' && github.ref == 'refs/heads/main'
+        if: steps.push.outputs.pushed == 'true' && github.ref == 'refs/heads/main'
         shell: bash
         run: |-
           set -uo pipefail
@@ -184,6 +202,7 @@ jobs:
             echo "## REGION — dnevni ciklus"
             echo "- Datum: $(date +%F)"
             echo "- Promjena: ${{ steps.commit.outputs.changed }}"
+            echo "- Zapis na main: ${{ steps.push.outputs.pushed || 'nije bilo promjene' }}"
             echo "- Hub: https://gnk-asg.hr/izdanja/"
             echo "- Izdanja: Zagreb, Beograd, Sarajevo, Budimpešta, Ljubljana, Rim, Sofija, Bukurešt"
             echo "- Galerija: https://gnk-asg.hr/galerija/"

@@ -13,7 +13,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, rmSync, copyFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { esc, longDate, shortDate, slugify, isoWeek, themeFor, scoreFromTitle, truncate, safeJson } from './lib.mjs';
+import { esc, longDate, shortDate, stampLocal, slugify, isoWeek, themeFor, scoreFromTitle, truncate, safeJson } from './lib.mjs';
 import { t, ANALYSIS } from '../src/strings.mjs';
 import { logoFor, logoAlternate, channelLogoSlug, LOGO_W, LOGO_H } from './brand.mjs';
 
@@ -465,7 +465,7 @@ function footer(channel, strings, extra = '') {
       <img src="/assets/izdanja/${c.id}-tile.webp" alt="${esc(c.title)} — ${esc(c.country)} — otvori izdanje" width="880" height="587" loading="lazy" decoding="async">
     </a></li>`).join('');
   const desks = [['sport', 'Sport'], ['politika', 'Politika'], ['sigurnost', 'Sigurnost'], ['biznis', 'Business'], ['tehnologija', 'Tehnologija'], ['moda', 'Tjednik Mode'], ['putovanja', 'Putovanja'], ['ljubimci', 'Ljubimci'], ['svijet', 'Svijet']]
-    .map(([id, label]) => `<a href="/izdanja/${id}/">${esc(label)}</a>`).join('') + '<a href="/radio/">Radio</a><a href="/galerija/">Galerija</a><a href="/usa/">Colorado · USA</a><a href="/kanal/">Svi kanali</a><a href="/aktual-media/">Podatkovni desk</a><a href="/gnk-aktual/mreza/">Mreža izdanja</a><a href="/en/gnk-aktual/" hreflang="en" lang="en">AKTUAL MEDIA (EN)</a><a href="/tehnologija-buducnosti/">Tehnologija budućnosti</a><a href="/digital-workforce/knjiga/">Knjiga radnika</a><a href="https://gnk-asg-tjednik.pages.dev/tjednik/2026-W43/" rel="external noopener">Tjednik W43 ↗</a>';
+    .map(([id, label]) => `<a href="/izdanja/${id}/">${esc(label)}</a>`).join('') + '<a href="/radio/">Radio</a><a href="/galerija/">Galerija</a><a href="/usa/">Colorado · USA</a><a href="/kanal/">Svi kanali</a><a href="/aktual-media/">Podatkovni desk</a><a href="/status/">Status ažurnosti</a><a href="/gnk-aktual/mreza/">Mreža izdanja</a><a href="/en/gnk-aktual/" hreflang="en" lang="en">AKTUAL MEDIA (EN)</a><a href="/tehnologija-buducnosti/">Tehnologija budućnosti</a><a href="/digital-workforce/knjiga/">Knjiga radnika</a><a href="https://gnk-asg-tjednik.pages.dev/tjednik/2026-W43/" rel="external noopener">Tjednik W43 ↗</a>';
   return `<footer class="foot">
   <section class="xf" aria-label="Ostala izdanja AKTUAL MEDIA">
     <div class="xf-head"><h2>Ostala izdanja — klik vodi na izdanje</h2><a href="${CENTRAL}#izdanja-po-zemljama" rel="external noopener">Sva izdanja →</a></div>
@@ -508,6 +508,7 @@ function card(channel, strings, item, { lead = false, root = '' } = {}) {
 /* ---------- stranice ---------- */
 
 function homePage(channel, strings, data) {
+  const CHANNEL_TZ = channel.timezone || 'Europe/Zagreb';
   const items = data.items;
   const lead = items[0];
   const rest = items.slice(1, 13);
@@ -521,10 +522,10 @@ function homePage(channel, strings, data) {
   <section class="intro intro--hero">
     <img class="heroimg" src="/assets/izdanja/${channel.id}-1200.webp" srcset="/assets/izdanja/${channel.id}-800.webp 800w, /assets/izdanja/${channel.id}-1200.webp 1200w" sizes="(max-width:760px) 100vw, 1200px" alt="${esc(channel.title)} — ${esc(channel.city)}, ${esc(channel.country)}" width="1200" height="675" fetchpriority="high" decoding="async">
     <div class="intro-main">
-      <p class="dateline">${esc(strings.daily)} · ${esc(longDate(new Date().toISOString().slice(0, 10), channel.lang))}${data.updatedAt ? ` · ${esc(strings.updated)} ${esc(shortDate(data.updatedAt.slice(0, 10), channel.lang))}` : ''}</p>
+      <p class="dateline">${esc(strings.daily)} · ${esc(longDate(new Date().toISOString().slice(0, 10), channel.lang))}${data.updatedAt ? (() => { const st = stampLocal(data.updatedAt, channel.lang, CHANNEL_TZ); return st ? ` · ${esc(strings.updated)} <time datetime="${esc(st.iso)}">${esc(st.stamp)}</time>` : ''; })() : ''}</p>
       <h1>${esc(channel.title)}</h1>
       <p class="intro-text">${esc(strings.aboutText)}</p>
-      <p class="live"><span class="live-n"><b>${items.length}</b> ${esc(strings.latest).toLowerCase()}</span><span class="live-sep">·</span><span class="live-t"><time datetime="${esc((items[0]?.date || data.updatedAt || '').slice(0, 10))}">${esc(strings.updated)} ${esc(shortDate((items[0]?.date || data.updatedAt || '').slice(0, 10), channel.lang))}</time></span></p>
+      <p class="live"><span class="live-n"><b>${items.length}</b> ${esc(strings.latest).toLowerCase()}</span><span class="live-sep">·</span><span class="live-t"><time datetime="${esc(data.updatedAt || items[0]?.date || '')}">${esc(strings.updated)} ${esc((stampLocal(data.updatedAt || items[0]?.date, channel.lang, CHANNEL_TZ) || {}).stamp || shortDate((items[0]?.date || '').slice(0, 10), channel.lang))}</time></span></p>
       <p class="intro-tags">${channel.hashtags.map((h) => `<span class="tag">${esc(h)}</span>`).join(' ')}</p>
       <p class="hero-tags">Oznake izdanja: <a href="/nermin-sefic/">#NerminSefić</a> · <a href="/nermin-sefic/">#NerminSefic</a> · <a href="/autorske-objave/">#SeficNermin</a> · <a href="/autorske-objave/">#SEFICNERMIN</a> · <a href="/nermin-sefic/">#UrednikNerminSefić</a> · #AKTUALMEDIA · #GNKASG · ${esc(channel.hashtags[0] || '')}</p>
     </div>
@@ -583,6 +584,9 @@ ${footer(channel, strings)}`;
     description: `${channel.title}: ${strings.aboutText}`,
     publisher: { '@id': AKTUAL_NEWS_ENTITY_ID },
     editor: { '@id': `${PUBLIC}/#nermin-sefic` },
+    /* Kad je izdanje stvarno obnovljeno — tražilica i čitatelj vide isti podatak. */
+    dateModified: data.updatedAt || undefined,
+    datePublished: data.updatedAt || undefined,
     isPartOf: { '@id': `${PUBLIC}/gnk-aktual/#webpage` },
     about: { '@type': 'Place', name: channel.city,
       address: { '@type': 'PostalAddress', addressLocality: channel.city, addressCountry: channel.country } },
