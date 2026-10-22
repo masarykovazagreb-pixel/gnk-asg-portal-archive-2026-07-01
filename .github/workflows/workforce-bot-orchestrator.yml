@@ -13,6 +13,8 @@ on:
       - 'config/control-plane/**'
       - 'scripts/workforce-bot-orchestrator-v1.mjs'
       - 'scripts/worker-agent-swarm-v1.mjs'
+      - 'scripts/aktual-world-agent-factory-v1.mjs'
+      - 'tests/test-aktual-world-agent-factory-v1.mjs'
       - 'ops/aktual-editor-priorities-v1.json'
       - 'scripts/master-asg-agent-network-v2.mjs'
       - 'scripts/swarm-public-research-draft-v1.mjs'
@@ -35,6 +37,8 @@ on:
       - 'config/control-plane/**'
       - 'scripts/workforce-bot-orchestrator-v1.mjs'
       - 'scripts/worker-agent-swarm-v1.mjs'
+      - 'scripts/aktual-world-agent-factory-v1.mjs'
+      - 'tests/test-aktual-world-agent-factory-v1.mjs'
       - 'ops/aktual-editor-priorities-v1.json'
       - 'scripts/swarm-public-research-draft-v1.mjs'
       - 'scripts/aktual-free-editorial-network-v1.mjs'
@@ -82,6 +86,12 @@ jobs:
         run: |
           node scripts/aktual-existing-portals-daily-weekly-v1.mjs
           node --test tests/test-aktual-existing-portals-daily-weekly-v1.mjs
+      - name: Execute 150 shared-free-tier agent roles and build 12 global STAGING previews
+        env:
+          ASG_MONITOR_PUBLIC_FEEDS: ${{ github.event_name == 'schedule' && '1' || '0' }}
+        run: |
+          node scripts/aktual-world-agent-factory-v1.mjs
+          node --test tests/test-aktual-world-agent-factory-v1.mjs
       - name: Confirm paid editorial APIs remain disabled
         run: |
           echo "Free-tier-only: 0 Exa/OpenAI requests, existing 4h cron, no public publishing."
@@ -98,6 +108,9 @@ jobs:
         run: |
           if [ -f artifacts/master-asg-agent-network/summary.md ]; then
             cat artifacts/master-asg-agent-network/summary.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ -f artifacts/aktual-world-agent-factory/summary.md ]; then
+            cat artifacts/aktual-world-agent-factory/summary.md >> "$GITHUB_STEP_SUMMARY"
           fi
           if [ -f artifacts/aktual-editorial-network/daily-weekly-brief.md ]; then
             cat artifacts/aktual-editorial-network/daily-weekly-brief.md >> "$GITHUB_STEP_SUMMARY"
@@ -124,5 +137,7 @@ jobs:
             artifacts/worker-agent-swarm/
             artifacts/master-asg-agent-network/
             artifacts/aktual-editorial-network/
+            artifacts/aktual-world-agent-factory/
+            apps/global-free/sites/
           if-no-files-found: warn
           retention-days: 14
