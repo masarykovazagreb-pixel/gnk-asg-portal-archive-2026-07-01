@@ -79,19 +79,19 @@ jobs:
           node --test tests/test-aktual-world-agent-factory-v1.mjs
       - name: Confirm paid editorial APIs remain disabled
         run: echo "Free-tier-only: 0 Exa/OpenAI requests, existing 4h cron, no public publishing."
-      - name: Test 13 independent world portal previews without external API calls
-        run: node tests/test-world-network-free-v1.mjs
-      - name: Generate 13 original artwork and free static sites (PREVIEW, NO DEPLOY)
-        run: node apps/world-network/engine/build.mjs
-      - name: Execute all 150 zero-cost supervisory agent roles
-        run: node scripts/global-free-agent-supervisor-v1.mjs
+      - name: Test 12 release-candidate world sites and 150-role safety invariants
+        run: node tests/test-agent-factory-150-v1.mjs
+      - name: Observe canonical MASTER ASG V2 CI and public route evidence
+        if: github.event_name != 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          ENABLE_PUBLIC_RESEARCH: '0'
+          ENABLE_AI_WRITING: '0'
+        run: node scripts/master-asg-agent-network-v2.mjs
       - name: Summarize agent evidence
         if: always()
         shell: bash
         run: |
-          if [ -f artifacts/agent-factory-150/summary.md ]; then
-            cat artifacts/agent-factory-150/summary.md >> "$GITHUB_STEP_SUMMARY"
-          fi
           if [ -f artifacts/master-asg-agent-network/summary.md ]; then
             cat artifacts/master-asg-agent-network/summary.md >> "$GITHUB_STEP_SUMMARY"
           fi
@@ -100,9 +100,6 @@ jobs:
           fi
           if [ -f artifacts/aktual-editorial-network/summary.md ]; then
             cat artifacts/aktual-editorial-network/summary.md >> "$GITHUB_STEP_SUMMARY"
-          fi
-          if [ -f artifacts/global-free-network/summary.md ]; then
-            cat artifacts/global-free-network/summary.md >> "$GITHUB_STEP_SUMMARY"
           fi
           if [ -f artifacts/worker-agent-swarm/summary.md ]; then
             cat artifacts/worker-agent-swarm/summary.md >> "$GITHUB_STEP_SUMMARY"
@@ -122,9 +119,6 @@ jobs:
             artifacts/workforce-bot-orchestrator/assignment.json
             artifacts/worker-agent-swarm/
             artifacts/master-asg-agent-network/
-            artifacts/global-free-network/
-            apps/world-network/site/
-            artifacts/agent-factory-150/
             artifacts/aktual-editorial-network/
             artifacts/aktual-world-agent-factory/
             apps/global-free/sites/
