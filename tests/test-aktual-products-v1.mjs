@@ -112,6 +112,43 @@ for (const [page, needle] of [
   if (!read(page).includes(needle)) fails.push(`${page}: ne vodi na ${needle}`);
 }
 
+/* Strojno čitljiv katalog: /data/aktual-products-v1.json */
+const catalogPath = 'data/aktual-products-v1.json';
+if (!has(catalogPath)) fails.push(`${catalogPath}: nema kataloga`);
+else {
+  let cat;
+  try { cat = JSON.parse(read(catalogPath)); } catch (e) { fails.push(`${catalogPath}: nije valjan JSON (${e.message})`); }
+  if (cat) {
+    if (!cat.counts || cat.counts.cities !== 8 || cat.counts.desks !== 9 || cat.counts.platforms !== 6) {
+      fails.push(`${catalogPath}: krivi brojevi (${JSON.stringify(cat.counts)})`);
+    }
+    if (!Array.isArray(cat.products) || cat.products.length !== 23) fails.push(`${catalogPath}: nema 23 proizvoda`);
+    if (cat.pages?.hr !== `${SITE}/aktual-media/proizvodi/` || cat.pages?.en !== `${SITE}/en/aktual-media/proizvodi/`) {
+      fails.push(`${catalogPath}: krive stranice`);
+    }
+    for (const prod of cat.products || []) {
+      if (!/^https:\/\//.test(prod.url || '')) { fails.push(`${catalogPath}: ${prod.name} nema apsolutni URL`); continue; }
+      if (prod.url.startsWith(SITE)) {
+        const rel = prod.url.slice(SITE.length + 1).replace(/\/$/, '');
+        if (!existsSync(join(PORTAL, rel)) && !existsSync(join(PORTAL, rel, 'index.html'))) {
+          fails.push(`${catalogPath}: ${prod.name} vodi na nepostojeću rutu ${prod.url}`);
+        }
+      }
+    }
+  }
+}
+
+/* llms.txt / llms-full.txt: točno jedan marker-blok s istim dvjema stranicama. */
+for (const name of ['llms.txt', 'llms-full.txt']) {
+  if (!has(name)) { fails.push(`${name}: nema datoteke`); continue; }
+  const txt = read(name);
+  const blocks = (txt.match(/<!-- AKTUAL-PRODUCTS-LLMS:START -->/g) || []).length;
+  if (blocks !== 1) fails.push(`${name}: ${blocks} blokova o proizvodima (mora biti 1)`);
+  if (!txt.includes(`${SITE}/aktual-media/proizvodi/`)) fails.push(`${name}: nema HR popisa`);
+  if (!txt.includes(`${SITE}/en/aktual-media/proizvodi/`)) fails.push(`${name}: nema EN popisa`);
+  if (!txt.includes(`${SITE}/data/aktual-products-v1.json`)) fails.push(`${name}: nema kataloga`);
+}
+
 /* Generator mora biti deterministički: CSS i stranice se pišu iz skripte. */
 if (!has('assets/aktual-products-v1.css')) fails.push('assets/aktual-products-v1.css: nema datoteke');
 if (!existsSync(join(ROOT, 'scripts', 'build-aktual-products-v1.mjs'))) fails.push('scripts/build-aktual-products-v1.mjs: nema generatora');

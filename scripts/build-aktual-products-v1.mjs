@@ -200,6 +200,7 @@ function page(lang) {
 <link rel="alternate" hreflang="en" href="${SITE}/en/aktual-media/proizvodi/">
 <link rel="alternate" hreflang="x-default" href="${SITE}/aktual-media/proizvodi/">
 <link rel="alternate" type="image/svg+xml" href="/assets/brand/aktual-media-hr.svg" title="AKTUAL MEDIA — svjetsko izdanje">
+<link rel="alternate" type="application/json" href="/data/aktual-products-v1.json" title="${hr ? 'Strojno čitljiv popis proizvoda' : 'Machine-readable product catalogue'}">
 <link rel="stylesheet" href="/assets/aktual-products-v1.css?v=${V}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AKTUAL MEDIA">
@@ -256,7 +257,7 @@ function page(lang) {
 </main>
 <footer class="pr-foot"><div class="pr-wrap">
   <p><strong>AKTUAL MEDIA</strong> · ${T.foot}</p>
-  <p><a href="mailto:info@gnk-asg.hr">info@gnk-asg.hr</a> · <a href="/gnk-aktual/">AKTUAL MEDIA</a> · <a href="/izdanja/sitemap.xml">Sitemap izdanja</a> · <a href="/status/">${T.status}</a></p>
+  <p><a href="mailto:info@gnk-asg.hr">info@gnk-asg.hr</a> · <a href="/gnk-aktual/">AKTUAL MEDIA</a> · <a href="/izdanja/sitemap.xml">Sitemap izdanja</a> · <a href="/status/">${T.status}</a> · <a href="/data/aktual-products-v1.json">${hr ? 'Strojno čitljiv popis' : 'Machine-readable list'}</a> · <a href="/llms.txt">llms.txt</a></p>
 </div></footer>
 </body>
 </html>
@@ -295,6 +296,49 @@ if (existsSync(sitemapFile)) {
   writeFileSync(sitemapFile, xml);
 }
 
+/* ---------- strojno čitljiv popis proizvoda ---------- */
+const catalog = {
+  version: 'GNK_ASG_PRODUCTS_HUB_V1_20261022',
+  publisher: {
+    name: 'AKTUAL MEDIA d.o.o.',
+    url: `${SITE}/gnk-aktual/`,
+    editor: 'Nermin Sefić',
+    editorUrl: `${SITE}/nermin-sefic/`
+  },
+  generatedFor: new Date().toISOString().slice(0, 10),
+  counts: { cities: channels.length, desks: DESKS.length, platforms: PLATFORMS.length, items: channels.reduce((a, c) => a + itemsFor(c.id), 0) },
+  products: [
+    ...channels.map((c) => ({ type: 'city-edition', id: c.id, language: c.lang, name: `${(CITY_COPY[c.id] || [c.id])[0]}`, url: `${SITE}/kanal/${c.id}/`, items: itemsFor(c.id) })),
+    ...DESKS.map(([slug, name]) => ({ type: 'desk', id: slug, name, url: `${SITE}/izdanja/${slug}/` })),
+    ...PLATFORMS.map(([url, name]) => ({ type: 'platform', name, url: url.startsWith('http') ? url : `${SITE}${url}` }))
+  ],
+  pages: {
+    hr: `${SITE}/aktual-media/proizvodi/`,
+    en: `${SITE}/en/aktual-media/proizvodi/`
+  }
+};
+mkdirSync(join(PORTAL, 'data'), { recursive: true });
+writeFileSync(join(PORTAL, 'data', 'aktual-products-v1.json'), `${JSON.stringify(catalog, null, 2)}\n`);
+
+/* ---------- llms.txt: jedan marker-blok, uvijek isti sadržaj ---------- */
+const llmsBlock = `<!-- AKTUAL-PRODUCTS-LLMS:START -->
+## AKTUAL MEDIA — products
+- One page listing every product: ${SITE}/aktual-media/proizvodi/ (HR) · ${SITE}/en/aktual-media/proizvodi/ (EN)
+- ${channels.length} city editions in ${new Set(channels.map((c) => c.lang)).size} languages, ${DESKS.length} desks, ${PLATFORMS.length} platforms; ${catalog.counts.items} archived stories.
+- Machine-readable catalogue: ${SITE}/data/aktual-products-v1.json
+- Freshness of every edition, measured from the archive: ${SITE}/status/
+- City editions are listed at ${SITE}/kanal/ and linked from the index above; each edition keeps its own language, domain, sitemap and feed.
+<!-- AKTUAL-PRODUCTS-LLMS:END -->`;
+for (const name of ['llms.txt', 'llms-full.txt']) {
+  const file = join(PORTAL, name);
+  if (!existsSync(file)) continue;
+  let txt = readFileSync(file, 'utf8');
+  const re = /<!-- AKTUAL-PRODUCTS-LLMS:START -->[\s\S]*?<!-- AKTUAL-PRODUCTS-LLMS:END -->/;
+  if (re.test(txt)) txt = txt.replace(re, llmsBlock);
+  else txt = `${txt.replace(/\s+$/, '')}\n\n${llmsBlock}\n`;
+  writeFileSync(file, txt);
+}
+
 console.log(JSON.stringify({
   ok: true,
   version: 'GNK_ASG_PRODUCTS_HUB_V1_20261022',
@@ -302,5 +346,6 @@ console.log(JSON.stringify({
   desks: DESKS.length,
   platforms: PLATFORMS.length,
   items: channels.reduce((a, c) => a + itemsFor(c.id), 0),
-  sitemapChanged
+  sitemapChanged,
+  catalogProducts: catalog.products.length
 }, null, 2));
