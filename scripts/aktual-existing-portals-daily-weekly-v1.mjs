@@ -41,6 +41,27 @@ for(const packet of packets){
   if(age<=DAY)daily.push(record);
  }
 }
+// Weekly edition must see the actual previous seven days, not only the 48-hour
+// live-scanner packet window. Only existing attributed archive headlines are used.
+for(const region of regions.channels){
+ let archive;try{archive=JSON.parse(fs.readFileSync(path.join(root,'apps/region/data',region.id+'.json'),'utf8'))}catch{continue}
+ for(const item of (archive.items||[])){
+  const d=new Date(item.date||item.addedAt);
+  if(!Number.isFinite(+d)||+d>+now+3600000||+now-(+d)>7*DAY)continue;
+  let u;try{u=new URL(item.url)}catch{continue}
+  if(u.protocol!=='https:'||!item.title)continue;
+  const headline=norm(item.title).slice(0,190);
+  const summary=norm(item.summary).slice(0,200);
+  const risk=/(?:optuž|uboj|sud|prijevar|korup|silovan|rat\b|election|crime|lawsuit|fraud|murder|medical|terror|war\b)/i.test(headline+' '+summary);
+  weekly.push({id:key(region.id+'|'+u.href),edition:region.id,language:region.lang,
+   sourcePublisher:norm(item.sourceName||item.source),sourceUrl:u.href,sourceHeadline:headline,
+   sourcePublishedAt:d.toISOString(),sourceSnippet:summary,
+   editorialAngle:'Source-linked local analysis; independently verify the primary facts before writing.',
+   priorityScore:14+Math.max(0,12-Math.floor((+now-(+d))/DAY)*2)+Math.min(10,Math.floor(summary.length/20))-(risk?10:0),
+   riskReviewRequired:risk,factCheck:'PENDING',originalCopy:'NOT_YET_WRITTEN',status:'HOLD',
+   publisher:'AKTUAL MEDIA',editor:'editorial desk (not a byline)',personalAuthor:null});
+ }
+}
 function select(items,limit){
  const seen=new Set(),countEdition=new Map();
  return items.sort((a,b)=>b.priorityScore-a.priorityScore||b.sourcePublishedAt.localeCompare(a.sourcePublishedAt))
