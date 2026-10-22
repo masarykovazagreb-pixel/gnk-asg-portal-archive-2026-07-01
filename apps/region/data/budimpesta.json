@@ -4,16 +4,22 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-10-22T19:56:33.815Z",
+  "updatedAt": "2026-10-22T23:14:47.129Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": true,
-      "fetched": 50,
-      "errors": [],
-      "checkedAt": "2026-10-22T19:56:30.386Z"
+      "ok": false,
+      "fetched": 0,
+      "errors": [
+        "https://telex.hu/rss: HTTP 403",
+        "https://telex.hu/rss/belfold: HTTP 403",
+        "https://telex.hu/rss/kulfold: HTTP 403",
+        "https://telex.hu/rss/gazdasag: HTTP 403",
+        "https://telex.hu/rss/sport: HTTP 403"
+      ],
+      "checkedAt": "2026-10-22T23:14:43.038Z"
     },
     {
       "id": "444",
@@ -22,7 +28,7 @@
       "ok": true,
       "fetched": 30,
       "errors": [],
-      "checkedAt": "2026-10-22T19:56:30.548Z"
+      "checkedAt": "2026-10-22T23:14:43.259Z"
     },
     {
       "id": "hvg",
@@ -31,7 +37,7 @@
       "ok": true,
       "fetched": 60,
       "errors": [],
-      "checkedAt": "2026-10-22T19:56:30.831Z"
+      "checkedAt": "2026-10-22T23:14:43.600Z"
     },
     {
       "id": "portfolio",
@@ -40,7 +46,7 @@
       "ok": true,
       "fetched": 20,
       "errors": [],
-      "checkedAt": "2026-10-22T19:56:31.362Z"
+      "checkedAt": "2026-10-22T23:14:44.303Z"
     },
     {
       "id": "index",
@@ -51,7 +57,7 @@
       "errors": [
         "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-22T19:56:33.016Z"
+      "checkedAt": "2026-10-22T23:14:45.912Z"
     },
     {
       "id": "24hu",
@@ -60,7 +66,7 @@
       "ok": true,
       "fetched": 10,
       "errors": [],
-      "checkedAt": "2026-10-22T19:56:33.152Z"
+      "checkedAt": "2026-10-22T23:14:46.249Z"
     },
     {
       "id": "mandiner",
@@ -69,10 +75,84 @@
       "ok": true,
       "fetched": 50,
       "errors": [],
-      "checkedAt": "2026-10-22T19:56:33.814Z"
+      "checkedAt": "2026-10-22T23:14:47.129Z"
     }
   ],
   "items": [
+    {
+      "slug": "budimpesta-2026-10-22-24hu-arcon-csapta-ellenfelet-egybol-piros-lapot-bc5a83",
+      "title": "Arcon csapta ellenfelét, egyből piros lapot kapott az AC Milan kapusa",
+      "summary": "Nem volt jó napjuk az olasz csapatoknak az Európa Ligában. The post Arcon csapta ellenfelét, egyből piros lapot kapott az AC Milan kapusa first appeared on 24.hu .",
+      "date": "2026-10-22T21:15:57.000Z",
+      "url": "https://24.hu/sport/foci/2026/10/22/europa-liga-ac-milan-piros-lap-mike-maignan-bournemouth/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Foci",
+        "európa liga",
+        "ac milan",
+        "piros lap"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/10/maignan-1024x576.jpg",
+      "imageAlt": "Arcon csapta ellenfelét, egyből piros lapot kapott az AC Milan kapusa",
+      "addedAt": "2026-10-22T23:14:46.250Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-22-portfolio-minimalber-megtudtuk-hogy-nagyon-messze-3a92d5",
+      "title": "Minimálbér: megtudtuk, hogy nagyon messze vannak egymástól a felek",
+      "summary": "A vállalatok hallani sem szeretnének arról, hogy jelentősen emelkedik jövőre a minimálbér. A munkavállalói oldal képviselői viszont kétszámjegyű béremelést szeretnének. A Versenyszféra és a Kormány Állandó Konzultációs Fórumának (VKF) e heti találkozóján olyan messze voltak az álláspontok, mint Makó Jeruzsálemtől.",
+      "date": "2026-10-22T21:14:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261022/minimalber-megtudtuk-hogy-nagyon-messze-vannak-egymastol-a-felek-871620",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://pcdn.hu/articles/images-xl/i/p/a/ipar-termeles-worker-dolgozo-gyartosor-berek-keresetek-507151.jpg",
+      "imageAlt": "Minimálbér: megtudtuk, hogy nagyon messze vannak egymástól a felek",
+      "addedAt": "2026-10-22T23:14:44.304Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-22-portfolio-csunya-minuszokkal-zartak-az-amerikai-edfbca",
+      "title": "Csúnya mínuszokkal zártak az amerikai tőzsdék",
+      "summary": "A tegnapi felpattanás után ismét eladási hullám söpört végig a tőzsdéken, Amerikában a technológiai részvények, azon belül pedig a Meta vezeték az esést. A közösségimédia-vállalat árfolyama 7 százalékkal került lejjebb. Más nagy tech részvények, mint az Nvidia és az Amazon szintén több százalékos mínuszt könyvelhettek ma el. A főbb részvényindexek közül a Nasdaq 2,6, az S&P 1,2 százalékos mínuszban van. A hangulatot az AI-beruházások megtérülésével kapcsolatos aggodalmak mellett a közel-keleti konfliktus és az öthavi csúcsra ugró olajár is rontotta, Európában pedig a bankpapírokat helyezi különösen nagy nyomás alá a francia adósságpiaci feszültség. A magyar tőzsde reggel nagyobb eséssel…",
+      "date": "2026-10-22T20:02:00.000Z",
+      "url": "https://www.portfolio.hu/uzlet/20261022/csunya-minuszokkal-zartak-az-amerikai-tozsdek-871370",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Üzlet"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://pcdn.hu/articles/images-xl/a/m/e/amerikai-nasdaq-tozsde-reszveny-technologia-ai-szektor-wall-street-864124.jpg",
+      "imageAlt": "Csúnya mínuszokkal zártak az amerikai tőzsdék",
+      "addedAt": "2026-10-22T23:14:44.304Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-22-444-bezar-a-bioware-akik-olyan-jo-jatekokat-8bcc00",
+      "title": "Bezár a BioWare, akik olyan jó játékokat csináltak, hogy nem is érdekelt miattuk, amikor 2010-ben Orbán lett a miniszterelnök",
+      "summary": "Gyászol az egész videojáték-ipar.",
+      "date": "2026-10-22T19:58:46.000Z",
+      "url": "https://444.hu/2026/10/22/bezar-a-bioware-akik-olyan-jo-jatekokat-csinaltak-hogy-nem-is-erdekelt-miattuk-amikor-2010-ben-orban-lett-a-miniszterelnok?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "bioware",
+        "mass effect",
+        "studió",
+        "ea"
+      ],
+      "author": "Mohos Máté",
+      "theme": "politika",
+      "image": "https://assets.4cdn.hu/kraken/8PGubUDh7H16UyHQs.jpeg",
+      "imageAlt": "Bezár a BioWare, akik olyan jó játékokat csináltak, hogy nem is érdekelt miattuk, amikor 2010-ben Orbán lett a miniszterelnök",
+      "addedAt": "2026-10-22T23:14:43.259Z"
+    },
     {
       "slug": "budimpesta-2026-10-22-hvg-atvilagitja-a-kormany-az-elmult-evekben-b9e0ee",
       "title": "Átvilágítja a kormány az elmúlt években rendezett nagy sporteseményeket",
@@ -7476,73 +7556,6 @@
       "author": "",
       "theme": "sigurnost",
       "addedAt": "2026-10-19T20:53:32.671Z",
-      "backfilled": true
-    },
-    {
-      "slug": "budimpesta-2026-10-19-hvg-adotanacsadok-a-vagyonado-tervezete-serti-a-08a72d",
-      "title": "Adótanácsadók: A vagyonadó tervezete sérti a visszamenőleges jogalkotás tilalmát",
-      "summary": "Számos problémát talált a vagyonadó tervezetében az Adótanácsadók Egyesülete. A szabályozás visszamenőleges hatályú, mert a vagyonadó bevezetésének „köztudomásúvá válásától” szankcionál bizonyos tranzakciókat. Több ponton aggályos a külföldiek és a külföldi ingatlanok adóztatása, a luxus „használati tárgyak” kihagyása, a gyerekek vagyonának elszámolása.",
-      "date": "2026-10-19T10:23:23.000Z",
-      "url": "https://hvg.hu/kkv/20261019_adotanacsadok-egyesulete-vagyonado-kritikak",
-      "source": "hvg",
-      "sourceName": "HVG",
-      "categories": [
-        "Vállalkozás",
-        "gazdaság",
-        "vagyonadó",
-        "Adótanácsadók Egyesülete"
-      ],
-      "author": "szerzo@hvg.hu (Kovács Gábor)",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T20:53:35.526Z",
-      "backfilled": true
-    },
-    {
-      "slug": "budimpesta-2026-10-19-telex-hogyan-lehet-tulelni-egy-abszurd-megis-15be8c",
-      "title": "Hogyan lehet túlélni egy abszurd, mégis létező diktatúrát?",
-      "summary": "A legfiatalabb Nobel-díjas legismertebb műve újból magyarul, egy véres gellérthegyi terrorakció és a rendszerváltással érkező szabadságvágy, ami gyorsan fakul. Ajánlatunk a friss könyvmegjelenések közül.",
-      "date": "2026-10-19T10:22:50.000Z",
-      "url": "https://telex.hu/karakter/konyvespolc/2026/10/19/vida-gabor-kondor-vilmos-rudyard-kipling-friss-konyvmegjelenesek",
-      "source": "telex",
-      "sourceName": "Telex",
-      "categories": [
-        "Könyvespolc"
-      ],
-      "author": "Vass Norbert",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:18:40.949Z",
-      "backfilled": true
-    },
-    {
-      "slug": "budimpesta-2026-10-19-telex-a-fidesz-sok-szent-tehenet-hagyott-hatra-686cd0",
-      "title": "A Fidesz sok szent tehenet hagyott hátra – élőben értékeljük a költségvetési javaslatot",
-      "summary": "Magyar Péter hétfőn bemutatta a költségvetés tervezetét, 16 éve az elsőt, amit nem Orbán Viktor és miniszterei készítettek. A miniszterelnök a parlamentben mondta el a főbb számokat.",
-      "date": "2026-10-19T10:21:24.000Z",
-      "url": "https://telex.hu/video/2026/10/19/parlament-elo-magyar-peter-koltsegvetes-rona-daniel",
-      "source": "telex",
-      "sourceName": "Telex",
-      "categories": [
-        "Videó"
-      ],
-      "author": "Rédli Balázs",
-      "theme": "politika",
-      "addedAt": "2026-10-19T21:18:40.949Z",
-      "backfilled": true
-    },
-    {
-      "slug": "budimpesta-2026-10-19-telex-von-der-leyen-is-budapestre-jon-oktober-23-df0791",
-      "title": "Von der Leyen is Budapestre jön október 23-án",
-      "summary": "Az Európai Bizottság elnöke is beszédet mond az 1956-os forradalom 70. évfordulójára szervezett megemlékezésen.",
-      "date": "2026-10-19T10:20:27.000Z",
-      "url": "https://telex.hu/kulfold/2026/10/19/eu-europai-bizottsag-befagyasztas-feloldas-javaslat",
-      "source": "telex",
-      "sourceName": "Telex",
-      "categories": [
-        "Külföld"
-      ],
-      "author": "Márton Balázs",
-      "theme": "ai",
-      "addedAt": "2026-10-19T21:18:40.949Z",
       "backfilled": true
     }
   ]
