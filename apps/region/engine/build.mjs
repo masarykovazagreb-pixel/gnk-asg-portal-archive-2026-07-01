@@ -562,6 +562,25 @@ ${footer(channel, strings)}`;
       }))
     },
     {
+      '@context': 'https://schema.org', '@type': 'CollectionPage',
+      '@id': `${channel.base}#edition`,
+      name: channel.title,
+      alternateName: `AKTUAL MEDIA · ${channel.city} · ${channel.country}`,
+      url: channel.base,
+      inLanguage: channel.lang,
+      description: `${channel.title}: ${strings.aboutText}`,
+      publisher: { '@id': `${PUBLIC}/gnk-aktual/#news-organization` },
+      editor: { '@id': `${PUBLIC}/#nermin-sefic` },
+      isPartOf: { '@id': `${PUBLIC}/gnk-aktual/#webpage` },
+      about: { '@type': 'Place', name: channel.city,
+        address: { '@type': 'PostalAddress', addressLocality: channel.city, addressCountry: channel.country } },
+      hasPart: [
+        { '@type': 'WebPage', url: url(channel, 'mravinjak/'), name: `${channel.title} — arhiva` },
+        { '@type': 'WebPage', url: url(channel, 'izvori/'), name: `${channel.title} — izvori` },
+        { '@type': 'WebPage', url: url(channel, 'metodologija/'), name: `${channel.title} — metodologija` }
+      ]
+    },
+    {
       '@context': 'https://schema.org', '@type': 'BreadcrumbList',
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'AKTUAL MEDIA', item: HUB },
@@ -740,7 +759,9 @@ ${footer(channel, strings)}`;
       author: { '@type': 'Organization', name: 'AKTUAL MEDIA d.o.o.', url: HUB },
       editor: { '@type': 'Person', '@id': 'https://gnk-asg.hr/#nermin-sefic', name: 'Nermin Sefić', url: 'https://gnk-asg.hr/nermin-sefic/' },
       publisher: { '@id': 'https://gnk-asg.hr/gnk-aktual/#news-organization' },
-      isPartOf: { '@id': 'https://gnk-asg.hr/#website' },
+      isPartOf: { '@id': `${channel.base}#edition` },
+      about: { '@type': 'Place', name: channel.city,
+        address: { '@type': 'PostalAddress', addressLocality: channel.city, addressCountry: channel.country } },
       citation: { '@type': 'CreativeWork', name: item.title, url: item.url, publisher: { '@type': 'Organization', name: item.sourceName } },
       comment: [{
         '@type': 'Comment', '@id': `${canonical}#komentar-bota`, url: `${canonical}#komentar-bota`,
