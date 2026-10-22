@@ -1,0 +1,254 @@
+{
+  "version": "AKTUAL_GLOBAL_DISTRIBUTION_V1",
+  "owner": "AKTUAL MEDIA",
+  "canonicalRoot": "https://gnk-asg.hr/gnk-aktual/",
+  "corporateIdentity": "GNK ASG d.o.o.",
+  "editor": "Nermin Sefić",
+  "mediaIdentity": "https://gnk-asg.hr/gnk-aktual/#news-organization",
+  "distributionRule": "Promotional excerpts and owned licensed images only. Source canonical remains on gnk-asg.hr. Personal authorship never inferred from editor.",
+  "existingFour": [
+    {
+      "id": "blogger",
+      "uri": "https://nermin-sefic.blogspot.com/",
+      "status": "existing-owned-automation"
+    },
+    {
+      "id": "devto",
+      "uri": "https://dev.to/",
+      "status": "existing-owned-automation; technology topics only"
+    },
+    {
+      "id": "tumblr",
+      "uri": "https://nermin-sefic.tumblr.com/",
+      "status": "existing-owned-automation"
+    },
+    {
+      "id": "telegraph",
+      "uri": "https://telegra.ph/",
+      "status": "existing-owned-automation"
+    }
+  ],
+  "newChannels": [
+    {
+      "id": "bluesky",
+      "continentReach": [
+        "Europe",
+        "North America",
+        "South America",
+        "Asia",
+        "Africa",
+        "Oceania"
+      ],
+      "automatic": true,
+      "requiresAccount": true,
+      "requiresSecret": [
+        "BSKY_HANDLE",
+        "BSKY_APP_PASSWORD"
+      ],
+      "image": true
+    },
+    {
+      "id": "mastodon",
+      "continentReach": [
+        "Europe",
+        "North America",
+        "South America",
+        "Asia",
+        "Africa",
+        "Oceania"
+      ],
+      "automatic": true,
+      "requiresAccount": true,
+      "requiresSecret": [
+        "MASTODON_INSTANCE",
+        "MASTODON_TOKEN"
+      ],
+      "image": true
+    },
+    {
+      "id": "pixelfed",
+      "continentReach": [
+        "Europe",
+        "North America",
+        "South America",
+        "Asia",
+        "Africa",
+        "Oceania"
+      ],
+      "automatic": true,
+      "requiresAccount": true,
+      "requiresSecret": [
+        "PIXELFED_INSTANCE",
+        "PIXELFED_TOKEN"
+      ],
+      "image": true,
+      "requiresImage": true
+    },
+    {
+      "id": "wordpress",
+      "continentReach": [
+        "Europe",
+        "North America",
+        "South America",
+        "Asia",
+        "Africa",
+        "Oceania"
+      ],
+      "automatic": true,
+      "requiresAccount": true,
+      "requiresSecret": [
+        "WORDPRESS_SITE_ID",
+        "WORDPRESS_ACCESS_TOKEN"
+      ],
+      "image": true
+    },
+    {
+      "id": "substack",
+      "continentReach": [
+        "Europe",
+        "North America",
+        "South America",
+        "Asia",
+        "Africa",
+        "Oceania"
+      ],
+      "automatic": false,
+      "requiresAccount": true,
+      "manualReason": "Free editorial publishing; no verified supported unattended publishing API"
+    },
+    {
+      "id": "medium",
+      "continentReach": [
+        "Europe",
+        "North America",
+        "South America",
+        "Asia",
+        "Africa",
+        "Oceania"
+      ],
+      "automatic": false,
+      "requiresAccount": true,
+      "manualReason": "New official API integrations unavailable"
+    }
+  ],
+  "languages": {
+    "hr": {
+      "name": "Hrvatski",
+      "region": "Hrvatska",
+      "lead": "Novo na AKTUAL MEDIA",
+      "read": "Izvorni članak",
+      "edition": "Zagreb"
+    },
+    "sr": {
+      "name": "Srpski",
+      "region": "Srbija",
+      "lead": "Novo na AKTUAL MEDIA",
+      "read": "Izvorni tekst",
+      "edition": "Beograd"
+    },
+    "bs": {
+      "name": "Bosanski",
+      "region": "Bosna i Hercegovina",
+      "lead": "Novo na AKTUAL MEDIA",
+      "read": "Izvorni tekst",
+      "edition": "Sarajevo"
+    },
+    "hu": {
+      "name": "Magyar",
+      "region": "Magyarország",
+      "lead": "Újdonság az AKTUAL MEDIA oldalán",
+      "read": "Eredeti cikk",
+      "edition": "Budapest"
+    },
+    "sl": {
+      "name": "Slovenščina",
+      "region": "Slovenija",
+      "lead": "Novo na AKTUAL MEDIA",
+      "read": "Izvirni članek",
+      "edition": "Ljubljana"
+    },
+    "it": {
+      "name": "Italiano",
+      "region": "Italia",
+      "lead": "Novità su AKTUAL MEDIA",
+      "read": "Articolo originale",
+      "edition": "Roma"
+    },
+    "bg": {
+      "name": "Български",
+      "region": "България",
+      "lead": "Ново в AKTUAL MEDIA",
+      "read": "Оригинална статия",
+      "edition": "София"
+    },
+    "ro": {
+      "name": "Română",
+      "region": "România",
+      "lead": "Nou la AKTUAL MEDIA",
+      "read": "Articolul original",
+      "edition": "București"
+    },
+    "en": {
+      "name": "English",
+      "region": "Global",
+      "lead": "From AKTUAL MEDIA",
+      "read": "Original article",
+      "edition": "International"
+    },
+    "de": {
+      "name": "Deutsch",
+      "region": "DACH",
+      "lead": "Neu bei AKTUAL MEDIA",
+      "read": "Originalartikel",
+      "edition": "International"
+    },
+    "fr": {
+      "name": "Français",
+      "region": "France, Canada, Afrique",
+      "lead": "À découvrir sur AKTUAL MEDIA",
+      "read": "Article original",
+      "edition": "International"
+    },
+    "es": {
+      "name": "Español",
+      "region": "España y América Latina",
+      "lead": "Novedades de AKTUAL MEDIA",
+      "read": "Artículo original",
+      "edition": "International"
+    },
+    "pt": {
+      "name": "Português",
+      "region": "Portugal, Brasil e África",
+      "lead": "Novidades da AKTUAL MEDIA",
+      "read": "Artigo original",
+      "edition": "International"
+    },
+    "tr": {
+      "name": "Türkçe",
+      "region": "Türkiye",
+      "lead": "AKTUAL MEDIA'dan yeni içerik",
+      "read": "Orijinal makale",
+      "edition": "International"
+    },
+    "ja": {
+      "name": "日本語",
+      "region": "日本",
+      "lead": "AKTUAL MEDIA の新着記事",
+      "read": "元の記事",
+      "edition": "International"
+    }
+  },
+  "publisherGuard": {
+    "manualRunConfirmation": true,
+    "repositoryVariable": "GNK_ASG_EXTERNAL_DISTRIBUTION",
+    "allowBlogMirrorsToContinueUnchanged": true,
+    "requireOwnedOriginalArticle": true,
+    "requirePublicCanonical": true,
+    "requireValidImageRights": true,
+    "forbidBulkSpam": true,
+    "requireReceiptPerPlatformLanguage": true,
+    "maxPublicationsPerRun": 3,
+    "allowUnverifiedTranslation": false
+  },
+  "freePlanDisclaimer": "Free accounts may require registration, verification, server rules and platform limits. No service guarantees search indexing, reach or unlimited automated posting."
+}

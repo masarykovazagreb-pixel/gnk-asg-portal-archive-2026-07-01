@@ -65,7 +65,8 @@ export function selectCandidates({featured={items:[]},registry={items:[]},region
     // At most two original-language items per edition per plan; source pictures
     // cannot be rehosted without rights — use owned editorial covers only.
     for(const item of [...items].sort((a,b)=>Date.parse(b.date||0)-Date.parse(a.date||0)).slice(0,2)){
-      accept({...item,path:'/kanal/'+id+'/clanak/'+item.slug+'/',
+      accept({...item,url:ORIGIN+'/kanal/'+id+'/clanak/'+item.slug+'/',
+        path:'/kanal/'+id+'/clanak/'+item.slug+'/',
         image:ORIGIN+'/assets/izdanja/'+id+'-1200.webp',
         edition:'AKTUAL MEDIA KANAL '+city,language:lang,reviewMode:true,publishedAt:item.date});
     }
@@ -81,8 +82,16 @@ export function buildCopy(item,targetLanguage=item.lang,limit=500){
   const source=item.sourceName?' • '+item.sourceName:'';
   const tags=TOPIC_TAGS.join(' ');
   const fixed=[BRAND+' | '+label,short(item.title,150),short(item.edition,65)+source,item.canonical,tags];
-  let text=fixed.join('\n');
-  while([...text].length>limit && fixed[1].length>28){fixed[1]=short(fixed[1],Math.max(28,[...fixed[1]].length-14));text=fixed.join('\n');}
+  const render=()=>fixed.filter(Boolean).join('\n');
+  let text=render();
+  while([...text].length>limit && [...fixed[1]].length>28){fixed[1]=short(fixed[1],Math.max(28,[...fixed[1]].length-14));text=render();}
+  // Long regional slugs must retain the complete canonical. Remove optional
+  // promotional context before shortening the actual headline further.
+  for(const index of [2,0,4]){
+    if([...text].length<=limit)break;
+    fixed[index]=index===0?BRAND:'';text=render();
+  }
+  while([...text].length>limit && [...fixed[1]].length>8){fixed[1]=short(fixed[1],Math.max(8,[...fixed[1]].length-8));text=render();}
   if([...text].length>limit)throw new Error('Cannot fit canonical into post');
   return {text,lang:targetLanguage,canonical:item.canonical,alt:short(item.title+' — AKTUAL MEDIA, '+item.edition,260),image:item.image||null,
     sourceLanguage:item.lang,translatedArticle:false,disclosure:item.reviewMode?'Automatski osvrt na način izvještavanja; navodi izvornika nisu neovisno potvrđeni.':null};

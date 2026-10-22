@@ -26,7 +26,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: aktual-global-free-distribution-state
+  group: aktual-media-global-writer
   cancel-in-progress: false
 
 jobs:
@@ -88,33 +88,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git fetch origin main --no-tags
-          test "$(git rev-parse origin/main)" = "$GITHUB_SHA" || {
-            echo '::error::Main changed after approval — no external publication.'
-            exit 1
-          }
           git config user.name "aktual-global-distribution-bot"
           git config user.email "actions@github.com"
-          state_branch=automation/global-distribution-state
-          if git ls-remote --exit-code --heads origin "$state_branch" >/dev/null 2>&1; then
-            git fetch origin "$state_branch:refs/remotes/origin/$state_branch" --no-tags
-            old="$(git rev-parse "refs/remotes/origin/$state_branch")"
-            echo "remote_sha=$old" >> "$GITHUB_OUTPUT"
-          else
-            echo "remote_sha=" >> "$GITHUB_OUTPUT"
-          fi
-          git checkout -B "$state_branch" origin/main
-          file=apps/portal/data/global-distribution/published.json
-          mkdir -p "$(dirname "$file")"
-          if [ -n "${old:-}" ]; then
-            git show "refs/remotes/origin/$state_branch:$file" > /tmp/aktual-global-state.json || {
-              echo '::error::Existing state branch has no distribution state — fail closed.'
-              exit 1
-            }
-            node -e "const x=require('/tmp/aktual-global-state.json');if(!x.posted||Array.isArray(x.posted))process.exit(1)"
-            cp /tmp/aktual-global-state.json "$file"
-          fi
-          echo "ready=true" >> "$GITHUB_OUTPUT"
+          bash scripts/restore-distribution-state-v1.sh automation/global-distribution-state \
+            apps/portal/data/global-distribution/published.json "$GITHUB_SHA"
       - name: Publish only verified canonical pages to connected global channels
         id: external
         if: steps.state.outputs.ready == 'true'

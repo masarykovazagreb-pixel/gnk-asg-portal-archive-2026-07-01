@@ -5,6 +5,7 @@
 import {readFileSync,writeFileSync,mkdirSync,existsSync} from 'node:fs';
 import {dirname} from 'node:path';
 import {selectCandidates,buildCopy,postKey,publicUrl,ORIGIN,EDITIONS,INTRO,short} from './global-distribution-core-v1.mjs';
+import {readDistributionState,waitForMedia} from './distribution-safety-v1.mjs';
 
 const LIVE=process.argv.includes('--live');
 const STATE='apps/portal/data/global-distribution/published.json';
@@ -41,7 +42,7 @@ const plan={
     text:v.copy.text,image:v.copy.image,alt:v.copy.alt,translatedArticle:false,disclosure:v.copy.disclosure}))
 };
 save(PLAN,plan);
-const state=read(STATE,{version:'AKTUAL_GLOBAL_FREE_DISTRIBUTION_V1',posted:{}});
+const state=readDistributionState(STATE,{allowMissing:!LIVE,version:'AKTUAL_GLOBAL_FREE_DISTRIBUTION_V1'});
 if(typeof state.posted!=='object'||Array.isArray(state.posted)||state.posted===null)throw new Error('Invalid durable distribution state');
 const report={version:'AKTUAL_GLOBAL_DISTRIBUTION_RUN_V1',mode:LIVE?'live':'preview',createdAt:new Date().toISOString(),
   candidateArticles:candidates.length,packages:variants.length,platforms:{},verifiedUrls:[],errors:[]};
@@ -93,7 +94,7 @@ const bskyGet=async(rkey)=>{
   if(res.status===404)return null;
   return json(res,'Bluesky record verification');
 };
-const bskyPublish=async(copy,key)=>{
+const bskyPublish=async(copy,key,onSubmitted)=>{
   const ses=await loginBsky();
   const rkey='am'+key.slice(0,20);
   const human='https://bsky.app/profile/'+encodeURIComponent(ses.did)+'/post/'+rkey;
@@ -107,12 +108,14 @@ const bskyPublish=async(copy,key)=>{
       features:[{$type:'app.bsky.richtext.facet#link',uri:copy.canonical}]}];
   }
   const photo=await mediaBytes(copy.image,1000000);
+  if(copy.image&&!photo)throw new Error('Required source image could not be loaded');
   if(photo){
     const r=await request('https://bsky.social/xrpc/com.atproto.repo.uploadBlob',{method:'POST',headers:{Authorization:'Bearer '+ses.accessJwt,'Content-Type':photo.mime},body:photo.bytes});
     const uploaded=await json(r,'Bluesky image');
     if(uploaded.blob)payload.embed={$type:'app.bsky.embed.images',images:[{alt:copy.alt,image:uploaded.blob}]};
   }
   const posted=await bskyCall('POST','com.atproto.repo.createRecord',{repo:ses.did,collection:'app.bsky.feed.post',rkey,record:payload},ses.accessJwt);
+  onSubmitted({id:posted.uri,url:human,image:Boolean(payload.embed)});
   return {id:posted.uri,url:human,verified:Boolean(await bskyGet(rkey)),image:Boolean(payload.embed)};
 };
 const mastoGet=async(host,id)=>{
@@ -120,9 +123,10 @@ const mastoGet=async(host,id)=>{
   if(r.status===404)return null;
   return json(r,'Mastodon status verification');
 };
-const mastoPublish=async(copy,key)=>{
+const mastoPublish=async(copy,key,onSubmitted)=>{
   const host=mastoHost();
   const media=await mediaBytes(copy.image,8000000);
+  if(copy.image&&!media)throw new Error('Required source image could not be loaded');
   let attachment;
   if(media){
     const form=new FormData();
@@ -130,11 +134,7 @@ const mastoPublish=async(copy,key)=>{
     form.append('description',copy.alt);
     const upload=await request(host+'/api/v2/media',{method:'POST',headers:{Authorization:'Bearer '+mastoCfg.token},body:form});
     attachment=await json(upload,'Mastodon media upload');
-    if(upload.status===202){
-      for(let i=0;i<3;i++){await new Promise(resolve=>setTimeout(resolve,1100));const status=await request(host+'/api/v1/media/'+encodeURIComponent(attachment.id),{headers:{Authorization:'Bearer '+mastoCfg.token}});
-        if(status.ok){const p=await status.json();if(p.url){attachment=p;break;}}}
-      if(!attachment.url)attachment=null;
-    }
+    attachment=await waitForMedia({request,site:host,headers:{Authorization:'Bearer '+mastoCfg.token},upload:attachment});
   }
   const form=new URLSearchParams({status:copy.text,visibility:'public',language:copy.sourceLanguage});
   if(attachment?.id)form.append('media_ids[]',String(attachment.id));
@@ -142,6 +142,7 @@ const mastoPublish=async(copy,key)=>{
     headers:{Authorization:'Bearer '+mastoCfg.token,'Content-Type':'application/x-www-form-urlencoded','Idempotency-Key':key.slice(0,64)},body:form});
   const post=await json(submitted,'Mastodon status publish');
   if(!post.id||!publicUrl(post.url)||post.visibility!=='public')throw new Error('Mastodon response missing public post metadata');
+  onSubmitted({id:post.id,url:post.url,image:Boolean(attachment)});
   const checked=await mastoGet(host,post.id);
   return {id:post.id,url:post.url,verified:Boolean(checked&&checked.id===post.id),image:Boolean(attachment)};
 };
@@ -166,7 +167,15 @@ for(const target of platforms){
     if(!(await preflight(v.item.canonical))){skipped++;continue;}
     attempted++;
     try{
-      const result=await target.publish(v.copy,key);
+      // A timeout may occur after the provider accepted a write. Record intent
+      // before sending, then save the returned object before any read-back.
+      const pending={platform:target.name,canonical:v.item.canonical,language:v.language,
+        status:'submission_pending',createdAt:new Date().toISOString()};
+      state.posted[key]=pending;save(STATE,state);
+      const result=await target.publish(v.copy,key,submitted=>{
+        state.posted[key]={...pending,...submitted,status:'pending_verification'};
+        save(STATE,state);
+      });
       const url=publicUrl(result.url);
       if(!url||!result.id)throw new Error('External publisher did not return a verifiable object and URL');
       state.posted[key]={platform:target.name,canonical:v.item.canonical,language:v.language,

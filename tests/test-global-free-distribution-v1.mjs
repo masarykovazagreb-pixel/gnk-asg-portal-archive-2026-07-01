@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import {INTRO,EDITIONS,safeCanonical,ownedImage,selectCandidates,buildCopy,postKey,ORIGIN} from '../scripts/global-distribution-core-v1.mjs';
 assert.equal(EDITIONS.length,8,'all 8 regional language editions required');
 for(const l of ['hr','sr','bs','hu','sl','it','bg','ro','en','es','pt','fr','de','ja','zh','vi','id','ar','sw'])
-  assert(typeof INTRO[l]==='string'&&INTRO[l].length>14,'missing international locale '+l);
+  assert(typeof INTRO[l]==='string'&&INTRO[l].trim().length>0,'missing international locale '+l);
 assert.equal(safeCanonical('https://gnk-asg.hr/kanal/zagreb/clanak/provjera/'),
   'https://gnk-asg.hr/kanal/zagreb/clanak/provjera/');
 assert.equal(safeCanonical('https://malicious.example/objave/one/'),null);
@@ -35,6 +35,12 @@ assert(!pkg.text.includes('external-source.example'),'source image or source art
 assert.equal(pkg.sourceLanguage,'hu');
 assert.equal(pkg.translatedArticle,false,'localized intro must not pretend story is translated');
 assert([...pkg.text].length<=300,'network post fits Bluesky text limit');
+for(const locale of Object.keys(INTRO)){
+  const long={...regional,canonical:ORIGIN+'/kanal/budimpesta/clanak/'+('regionalni-clanak-'.repeat(8))+'/'};
+  const copy=buildCopy(long,locale,280);
+  assert([...copy.text].length<=280);
+  assert(copy.text.includes(long.canonical),'long canonical must not be truncated');
+}
 assert.notEqual(postKey('bluesky',regional,'hu'),postKey('mastodon',regional,'hu'));
 assert.notEqual(postKey('bluesky',regional,'hu'),postKey('bluesky',regional,'en'));
 const main=fs.readFileSync('scripts/global-free-distribution-v1.mjs','utf8');

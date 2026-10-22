@@ -12,7 +12,9 @@
 // portal stvarno koristi u feedu, sadržaj mora biti slika, veličina je
 // ograničena. Sve ostalo vraća 403 bez dohvaćanja.
 
-export const IMAGE_PROXY_VERSION = 'GNK_ASG_IMAGE_PROXY_V1_20261021';
+import { REGION_IMAGE_HOST_LIST } from './image-hosts-v1.js';
+
+export const IMAGE_PROXY_VERSION = 'GNK_ASG_IMAGE_PROXY_V1_20261022';
 export const IMAGE_PROXY_PATH = '/api/img';
 
 /* Hostovi iz apps/portal/data/news.json — jedini koje portal stvarno
@@ -47,6 +49,10 @@ const ALLOWED_HOSTS = new Set([
   'www.netokracija.com',
   'www.esa.int',
   'www.nasa.gov',
+  /* Osam gradskih izdanja i devet deskova — popis s obrazloženjem po mediju
+     stoji u image-hosts-v1.js; test coverage pada ako se podaci i popis
+     raziđu, pa host ne može ući neopaženo. */
+  ...REGION_IMAGE_HOST_LIST,
 ]);
 
 const MAX_BYTES = 8 * 1024 * 1024;

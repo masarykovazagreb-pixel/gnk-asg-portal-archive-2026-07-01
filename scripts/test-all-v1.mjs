@@ -34,6 +34,7 @@ const GATES = [
   { name: 'AKTUAL MEDIA — sve stranice', cmd: ['node', 'scripts/audit-aktual-all-pages-v2.mjs'], required: true, slow: true },
   { name: 'AKTUAL MEDIA — izdavač, 22 medijske cjeline i sitemapovi', cmd: ['node', 'tests/test-aktual-media-discovery-v1.mjs'], required: true },
   { name: 'AKTUAL MEDIA — besplatni međunarodni kanali i zaštita objave', cmd: ['node', 'tests/test-global-free-distribution-v1.mjs'], required: true },
+  { name: 'Distribucija — evidencija, obrada slika i oporavak', cmd: ['node', 'tests/test-distribution-reliability-v1.mjs'], required: true },
   { name: 'WebSite JSON-LD', cmd: ['node', 'scripts/test-website-jsonld-v1.mjs'], required: true },
   { name: 'AKTUAL urednički desk', cmd: ['node', 'scripts/build-aktual-entity-desks-v1.mjs', '--check'], required: true },
   { name: 'S+Chat agent', cmd: ['node', 'tests/test-s-chat-static-v1.mjs'], required: true },
@@ -49,6 +50,12 @@ const GATES = [
   { name: 'S+Chat — pitanja s ove stranice', cmd: ['node', 'tests/test-s-chat-context-suggest-v1.mjs'], required: true },
   { name: 'Podatkovni desk', cmd: ['node', 'tests/test-data-desk-v1.mjs'], required: true },
   { name: 'Tehnologija budućnosti', cmd: ['node', 'tests/test-future-tech-v1.mjs'], required: true },
+  { name: 'Mreža neovisnih izdanja', cmd: ['node', 'tests/test-sites-network-v1.mjs'], required: true },
+  { name: 'SEO matrica mreže', cmd: ['node', 'tests/test-seo-matrix-v1.mjs'], required: true },
+  { name: 'Meta higijena — oznake, autor, entitet', cmd: ['node', 'tests/test-meta-hygiene-v1.mjs'], required: true },
+  { name: 'Pokrivenost posrednika slika', cmd: ['node', 'tests/test-image-proxy-coverage-v1.mjs'], required: true },
+  { name: 'Znakovi kuće AKTUAL MEDIA', cmd: ['node', 'tests/test-brand-logos-v1.mjs'], required: true },
+  { name: 'Znak u čvoru izdavača', cmd: ['node', 'scripts/backfill-brand-entity-logo-v1.mjs', '--check'], required: true },
 ];
 
 function run(gate) {
