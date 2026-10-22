@@ -1,54 +1,49 @@
-# NENO LOCAL VAULT (v0.1.0)
+# NENO LOCAL VAULT — v0.2.0
 
-**Osobna, lokalna aplikacija za Windows 11.** Ne ovisi o GNK ASG portalu, GitHubu ili internetu pri običnoj pretrazi. Aplikacija ne šalje dokumente na mrežu bez odabira AI načina i potvrde za oblak. Originale samo čita.
+**Privatna Windows 11 aplikacija** za lokalno pretraživanje diskova, USB-ova, dokumenata i prethodno izvezene korespondencije. Datoteke koje korisnik odabere indeksiraju se u SQLite bazu na njegovom računalu. Za običnu pretragu nisu potrebni internet, račun ni AI ključ. Izvornike samo čita; sadržaj baze nije objavljen na GitHubu.
 
-## Što sada radi
+## Mogućnosti
 
-- Ručni izbor mapa, lokalnih diskova i priključenih USB diskova; ne pokreće automatski pretraživanje cijelog C: diska.
-- Inkrementalno indeksiranje uz mogućnost prekida, lokalna SQLite FTS5 baza; pamti sadržaj i kad se USB odspoji.
-- Pretraga po riječi, dijelu riječi, imenima i oblicima (npr. **Sanela**/**Saneli**), sadržaju, nazivu, putanji i uz filtar mape/tipa.
-- PDF (samo tekstualni), DOCX, XLSX/XLSM, ODT, RTF, EML, TXT, CSV, HTML, JSON, kôd i ostale navedene vrste.
-- Pregled izvornog teksta, otvaranje originala, kopiranje putanje, izvoz rezultata u CSV.
-- Povijest upita, spremljene analize s putanjama izvora, detekcija jednakog ekstrahiranog teksta.
-- Bez AI-ja izrađuje provjerljiv dokazni pregled; opcijski lokalna Ollama ili OpenAI API uz svjesnu odluku korisnika.
+- Indeksiranje odabranih mapa, diskova i USB-ova, s prekidom i inkrementalnim nastavkom. Ranije pronađeni tekst ostaje dostupan nakon iskopčavanja USB-a.
+- Pretraživanje na hrvatskom (npr. `što sam pisao o Saneli`), filtriranje po mapi i vrsti, pregled teksta, otvaranje izvornika i izvoz CSV-a.
+- Nova kartica **Komunikacija** za lokalne `.eml` poruke: pošiljatelj, primatelji, predmet, datum iz zaglavlja, putanja i pregled sadržaja. Poruke treba prethodno izvesti: ovo nije neposredan Outlook/Gmail pristup.
+- Oznake `aktualan` / `izmijenjen` / `nedostupan` za izvore, zasebna provjera SHA-256 izvornika, izvoz dokaznog CSV-a sa zapisanim SHA-256 vrijednostima.
+- Ručna sigurnosna kopija baze putem SQLite backup mehanizma, povijest upita, pohranjene analize i pretraga jednakog izvučenog teksta.
+- AI analiza koristeći relevantne izvatke iz cijelog indeksiranog teksta (najviše 12 dokumenata, do 4500 znakova iz svakog). Način `Offline pregled` radi bez AI-ja; lokalna Ollama radi bez oblaka; OpenAI API zahtijeva posebnu potvrdu prije svakog slanja.
+- OCR za slike i skenirane PDF-ove ako je instaliran vanjski Tesseract OCR. Podržava `.png`, `.jpg`, `.jpeg`, `.tif`, `.tiff`, `.bmp`, a OCR skeniranog PDF-a ograničen je na prvih 25 stranica.
+- Pri neuspjelom ponovnom čitanju **čuva prethodno indeksirani tekst**. Postoji ručno `Ukloni iz indeksa` koje ne briše original s diska.
 
-## Windows instalacija
+## Instalacija za Windows 11
 
-1. U repozitoriju pronađi **Actions → NENO Local Vault Windows → najnoviji uspješni run → Artifacts** i preuzmi `NenoLocalVault-Windows.zip`.
-2. Raspakiraj ZIP. Pokreni `NenoLocalVault.exe` iz tog foldera; ne treba instaliran Python.
-3. Ako želiš prečac u Start izborniku: u istoj mapi desni klik `install.ps1` → Run with PowerShell, ili u PowerShellu `powershell -ExecutionPolicy Bypass -File .\install.ps1`. Ne pokreći skripte koje nisi prethodno pregledao.
-4. U kartici **Diskovi i USB** dodaj izvore i klikni **Pokreni indeksiranje**. Zatim upiši npr. `što sam pisao o Saneli` u pretragu.
+**Za korisnike:** na GitHub razvojnoj grani Masarikove otvori Actions > `NENO Local Vault Windows` > **uspješno završeno** pokretanje > Artifacts > `NenoLocalVault-Windows`. Raspakiraj. Pokreni `NenoLocalVault.exe` ili `install.ps1` iz iste mape za korisničku Start prečicu. **Dok nije potvrđen uspješan Windows Actions build, ne može se tvrditi da je `.exe` dostupan.**
 
-SQLite baza i povijest: `%LOCALAPPDATA%\NenoLocalVault\vault.sqlite3` (obični lokalni sadržaj bez enkripcije). Preporučeno koristiti BitLocker i zaštitu Windows računa. **NE** spremati bazu u javni GitHub.
-
-### Opcionalni lokalni AI
-
-1. Instaliraj Ollama na Windows računalo, preuzmi željeni model, npr. `ollama pull llama3.2`.
-2. Izaberi **Lokalni Ollama** u aplikaciji. Bez poslužitelja i modela dobit ćeš jasnu grešku, ali pretraga i dalje radi.
-3. Model se može promijeniti kroz korisničku varijablu `NENO_OLLAMA_MODEL`. AI odgovori nisu dokaz; uvijek provjeri navedeni izvor.
-
-### Opcionalni cloud AI
-
-OpenAI API je zasebno naplativ od pretplate na ChatGPT. Za korištenje postavi `OPENAI_API_KEY` u Windows korisničke varijable okruženja, ponovno pokreni aplikaciju i izaberi **OpenAI API (oblak)**. Aplikacija će *za svaki upit* tražiti potvrdu slanja izvadaka do 12 pronađenih datoteka. Nikad ne postavljaj API ključ u repozitorij.
-
-## Tehničke granice — ne obećavamo ono što ne radi
-
-- Skenirani PDF-ovi/slike zahtijevaju OCR (još nije implementiran); .PST/.MSG/.DOC/.XLS nisu podržani u ovoj verziji.
-- Nema pregleda Outlooka, Gmaila, ChatGPT razgovora ili WhatsAppa bez prethodnog lokalnog izvoza u podržanu vrstu datoteke.
-- Pretraga je leksička (FTS5 s proširenjem nastavaka riječi), ne stvarno semantička. Generativna analiza zahtijeva Ollama model ili OpenAI API.
-- Prikaz AI-ju ograničen je na prvih 12 rezultata i 4.500 znakova po dokumentu; zaključci nisu potpuna analiza velikog arhiva.
-- Indeksiranje može čitati povjerljive informacije koje korisnik odabere; lokalna SQLite baza po zadanim postavkama nije šifrirana. Izvorni diskovi se ne mijenjaju.
-- Ne briše indeks za odspojene USB-ove. Obrisane lokalne datoteke također ostaju u indeksu do budućeg upravljanja arhivom; provjeri postoje li originali prije pozivanja na njih.
-- Ograničenje veličine izvornog dokumenta: 16 MiB; izvučeni tekst reže se na 350.000 znakova. Za opsežne arhive rezultat može biti nepotpun.
-
-## Lokalni razvoj i testiranje
+**Za razvoj / ručno stvaranje `.exe`:**
 
 ```powershell
 py -3.12 -m venv .venv
 .\.venv\Scripts\python -m pip install -r requirements-build.txt
 .\.venv\Scripts\python -m unittest discover -s tests -v
 .\.venv\Scripts\python app.py
-.\.venv\Scripts\python -m PyInstaller --onefile --windowed --name NenoLocalVault app.py
+.\.venv\Scripts\python -m PyInstaller --clean --noconfirm --onefile --windowed --collect-all pypdfium2 --name NenoLocalVault app.py
 ```
 
-**Privatnost i razgraničenje**: repozitorij sadrži samo aplikacijski kod, nikada korisničke dokumente ni indeks. Windows build je GitHub Actions artefakt; to NIJE live Cloudflare/GNK ASG deploy. Neovisne provjere aplikacije na stvarnom Windows 11 računalu ostaju potrebne.
+**OCR:** odvojeno instaliraj Tesseract, provjeri da je `tesseract.exe` u Windows PATH-u te po potrebi instaliraj hrvatski jezični paket i postavi `NENO_OCR_LANG=hrv+eng`. Bez Tesseracta normalna pretraga PDF/DOCX/TXT i ostalih tekstualnih formata i dalje radi; pogreške OCR-a evidentiraju se u indeksu.
+
+**Ollama:** odvojeno instaliraj Ollama i model, npr. `ollama pull llama3.2`, pa u aplikaciji odaberi Lokalni Ollama. Model se bira varijablom `NENO_OLLAMA_MODEL`.
+
+**OpenAI:** postavi vlastiti `OPENAI_API_KEY` u korisničke varijable okruženja; OpenAI API naplaćuje se zasebno od ChatGPT pretplate. Prije svakog slanja prikazuje se potvrda. Privatne pravne i poslovne spise ne šalji u oblak bez zasebne procjene rizika.
+
+## Sigurnost i granice
+
+- Indeks sadrži **nešifrirani tekst** u `%LOCALAPPDATA%\NenoLocalVault\vault.sqlite3`; preporučeni su BitLocker, zaštićen Windows korisnički račun i sigurna lokacija backup kopija. Lokalna baza se nikad ne stavlja u GitHub.
+- SHA-256 omogućuje utvrditi je li original identičan indeksiranoj verziji, ali sam po sebi **ne dokazuje autentičnost, autora ni valjanost pravnog dokumenta**. Datum `.eml` zaglavlja sam po sebi ne dokazuje primitak.
+- Ne podržava automatski Outlook `.pst/.msg/.ost`, stare binarne Word `.doc`/Excel `.xls` dokumente, WhatsApp baze, sadržaj poruka skriven u aplikacijama, ni govor/video bez izvezenog teksta. Ti su formati predmet zasebne nadogradnje.
+- Izvučeni tekst ograničen je na 350.000 znakova po dokumentu; sirove datoteke do 16 MiB; PDF tekstualni prolaz do 400 stranica; OCR 25 PDF stranica. Za iznimno velike arhive treba daljnja optimizacija i provjera.
+- Indeksiranje ne ulazi automatski u Windows sistemske/skrivene cache foldere; ručno odaberi relevantnu mapu. Izbrisana ili odspojena datoteka ne uklanja automatski ranije pohranjeni indeks.
+- OCR i AI podložni su pogreškama; svaku važnu pravnu/financijsku tvrdnju provjeri iz originala. Testovi ne dokazuju da je Windows `.exe` gotov dok Windows Actions ne prođe.
+
+## Razvoj i kontrola
+
+Provjera: `python -m unittest discover -s tests -v` (12 testova, uključujući email kronologiju, migraciju baze v0.1, backup, hash, offline USB, relevantan AI izvadak i čuvanje podataka nakon neuspjelog ponovnog čitanja). GUI smoke-test također je proveden u virtualnom Linux prikazu; Windows 11 zahtijeva neovisan test.
+
+**Razgraničenje:** sve se razvija na izdvojenoj grani GitHuba Masarikova i ne mijenja produkciju GNK ASG portala ni Cloudflare Workere.
