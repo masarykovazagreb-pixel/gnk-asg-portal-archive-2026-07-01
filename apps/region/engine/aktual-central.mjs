@@ -1046,7 +1046,7 @@ export function buildAktualCentral({ cards = [] } = {}) {
   <section class="amc-sec" id="mravinjak" aria-labelledby="amcSec3">
     <div class="amc-sec-head">
       <div><span class="amc-sec-num">${T('03 · MRAVINJAK · 3 × 19', '03 · ANTHILL · 3 × 19')}</span><h3 id="amcSec3">${T('Vijesti koje vučemo k sebi', 'Stories we pull toward us')}</h3></div>
-      <span class="amc-dim">${items.length} ${T('tekstova', 'stories')} ${T('iz', 'from')} ${sources.size} ${T('medija', 'media')} · 8 ${T('jezika', 'languages')}</span>
+      <span class="amc-dim">${items.length} ${T('tekstova', 'stories')} ${T('iz', 'from')} ${sources.size} ${T('medija', 'media')} · ${new Set(CHANNELS.map((c) => c.lang)).size} ${T('jezika', 'languages')}</span>
     </div>
     <div class="amc-river">${columns.map(riverColumn).join('')}</div>
     <p class="amc-note">${T(
