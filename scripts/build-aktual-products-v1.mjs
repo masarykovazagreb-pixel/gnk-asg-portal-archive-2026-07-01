@@ -355,6 +355,7 @@ const llmsBlock = `<!-- AKTUAL-PRODUCTS-LLMS:START -->
 - Machine-readable catalogue: ${SITE}/data/aktual-products-v1.json
 - Freshness of every edition, measured from the archive: ${SITE}/status/
 - City editions are listed at ${SITE}/kanal/ and linked from the index above; each edition keeps its own language, domain, sitemap and feed.
+- Where every text of ours is republished across the network, with a link to each copy: ${SITE}/prenos/ (HR) · ${SITE}/en/prenos/ (EN); machine-readable matrix: ${SITE}/data/prenos-network-v1.json
 <!-- AKTUAL-PRODUCTS-LLMS:END -->`;
 for (const name of ['llms.txt', 'llms-full.txt']) {
   const file = join(PORTAL, name);
