@@ -7,7 +7,7 @@ jedan izvor i jedan test.
 
 ---
 
-## 1. Atlas grafika — jedna familija, deset ilustracija
+## 1. Atlas grafika — jedna familija, trinaest ilustracija
 
 **Zašto ilustracije, a ne fotografije:** regionalna izdanja imaju stvarne
 fotografije gradova (Zagreb, Beograd, Sarajevo…). Za devet svjetskih izdanja
@@ -54,6 +54,12 @@ node scripts/apply-atlas-art-v1.mjs --check
 # 3. pločice s tekstom (880×587 + 192)
 node apps/region/engine/tiles.mjs --only tokio
 ```
+
+U familiji je **trinaest ilustracija**: devet svjetskih izdanja, atlas mreže i
+tri prijestolnice koje izdanje još čekaju — **Washington, D.C., Brasília i
+Canberra**. Te tri ne zamjenjuju izdanje: stoje na stranici prijestolnice uz
+potpis „Ilustracija prijestolnice. Izdanja ovdje još nema, pa slika prikazuje
+grad — ne objavljeni sadržaj."
 
 Manifest je `apps/portal/data/atlas-art-v1.json`: slug, naslov, alt na
 hrvatskom i engleskom, napomena, putanje, dimenzije i veličina datoteke.

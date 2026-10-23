@@ -1125,12 +1125,11 @@ function capitalsPage(lang = 'hr') {
 
   const cardFor = (c) => {
     const channel = c.edition ? channelBy(c.edition) : null;
-    const seat = !channel && c.seats ? channelBy(c.seats) : null;
-    const artId = channel ? channel.id : seat ? seat.id : null;
+    const artId = channel ? channel.id : c.slug;
     const name = en ? esc(c.capitalEn || c.capital) : esc(c.capital);
     const alt = channel
       ? `${esc(c.capital)}, ${esc(en ? c.countryEn : c.country)} — ${en ? 'cover artwork of the edition' : 'naslovna grafika izdanja'}`
-      : `${esc(seat ? seat.city : c.capital)} — ${en ? 'cover artwork of the edition that covers this country today' : 'naslovna grafika izdanja koje ovu zemlju pokriva danas'}`;
+      : `${esc(c.capital)} — ${en ? 'illustration of the capital' : 'ilustracija prijestolnice'}`;
     const state = c.status !== 'live' ? ` · ${en ? 'in preparation' : 'u pripremi'}` : '';
     return `<li><a href="${en ? '/en/capitals' : '/glavni-gradovi'}/${esc(c.slug)}/">
       ${artId ? `<img src="/assets/izdanja/${esc(artId)}-440.webp" alt="${alt}" width="440" height="248" loading="lazy" decoding="async">` : ''}

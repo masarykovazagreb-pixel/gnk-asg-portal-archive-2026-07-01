@@ -100,21 +100,21 @@ export function buildCapitalPage(capital, ctx) {
   const data = channel ? channelData(channel.id) : { items: [], updatedAt: '' };
   const sources = channel && Array.isArray(channel.sources) ? channel.sources : [];
   const items = (data.items || []).slice(0, 4);
-  const artId = channel ? channel.id : seats ? seats.id : null;
+  const artId = channel ? channel.id : capital.slug;
   const artAlt = channel
     ? (en
       ? `${city}, ${country} — cover artwork of the edition`
       : `${city}, ${country} — naslovna grafika izdanja`)
     : (en
-      ? `${seats.city} — cover artwork of the edition that covers ${country} today`
-      : `${seats.city} — naslovna grafika izdanja koje danas pokriva ${country}`);
+      ? `${city} — illustration of the capital`
+      : `${city} — ilustracija prijestolnice`);
   const artCaption = channel
     ? (en
       ? `Cover artwork of the ${channel.city} edition. Illustration for the edition, not a documentary photograph.`
       : `Naslovna grafika izdanja ${channel.city}. Grafika za izdanje, ne dokumentarna fotografija.`)
     : (en
-      ? `Illustration of ${seats.city} — the edition that covers ${country} while the capital has no verified source list of its own.`
-      : `Ilustracija ${seats.city} — izdanja koje pokriva ${country} dok prijestolnica nema vlastitu, provjerenu listu izvora.`);
+      ? `Illustration of the capital. There is no edition here yet, so the image shows the city — not published content.`
+      : `Ilustracija prijestolnice. Izdanja ovdje još nema, pa slika prikazuje grad — ne objavljeni sadržaj.`);
 
   const stats = [
     [en ? 'Country' : 'Zemlja', country],
