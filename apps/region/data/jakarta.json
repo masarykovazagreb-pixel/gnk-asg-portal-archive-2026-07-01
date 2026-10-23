@@ -4,19 +4,17 @@
   "lang": "id",
   "city": "Jakarta",
   "country": "Indonezija",
-  "updatedAt": "2026-10-23T11:33:22.492Z",
+  "updatedAt": "2026-10-23T14:19:17.464Z",
   "sources": [
     {
       "id": "antara",
       "name": "ANTARA",
       "url": "https://www.antaranews.com/rss/terkini.xml",
-      "ok": false,
-      "fetched": 0,
+      "ok": true,
+      "fetched": 50,
       "corrupt": 0,
-      "errors": [
-        "https://www.antaranews.com/rss/terkini.xml: fetch failed"
-      ],
-      "checkedAt": "2026-10-23T11:33:13.820Z"
+      "errors": [],
+      "checkedAt": "2026-10-23T14:18:55.413Z"
     },
     {
       "id": "kompas",
@@ -26,10 +24,10 @@
       "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.kompas.com/rss: empty response",
-        "https://nasional.kompas.com/rss: empty response"
+        "https://www.kompas.com/rss: HTTP 404",
+        "https://nasional.kompas.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-23T11:33:15.451Z"
+      "checkedAt": "2026-10-23T14:19:01.106Z"
     },
     {
       "id": "detik",
@@ -41,7 +39,7 @@
       "errors": [
         "https://rss.detik.com/index.php/detikcom: fetch failed"
       ],
-      "checkedAt": "2026-10-23T11:33:17.705Z"
+      "checkedAt": "2026-10-23T14:19:12.658Z"
     },
     {
       "id": "tempo",
@@ -53,7 +51,7 @@
       "errors": [
         "https://www.tempo.co/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-23T11:33:18.525Z"
+      "checkedAt": "2026-10-23T14:19:13.478Z"
     },
     {
       "id": "cnnindonesia",
@@ -65,7 +63,7 @@
       "errors": [
         "https://www.cnnindonesia.com/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-23T11:33:19.303Z"
+      "checkedAt": "2026-10-23T14:19:14.298Z"
     },
     {
       "id": "republika",
@@ -75,7 +73,7 @@
       "fetched": 15,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-23T11:33:19.957Z"
+      "checkedAt": "2026-10-23T14:19:15.008Z"
     },
     {
       "id": "cnbcindonesia",
@@ -87,7 +85,7 @@
       "errors": [
         "https://www.cnbcindonesia.com/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-23T11:33:20.767Z"
+      "checkedAt": "2026-10-23T14:19:15.824Z"
     },
     {
       "id": "kumparan",
@@ -99,10 +97,185 @@
       "errors": [
         "https://kumparan.com/feed: HTTP 403"
       ],
-      "checkedAt": "2026-10-23T11:33:22.492Z"
+      "checkedAt": "2026-10-23T14:19:17.464Z"
     }
   ],
   "items": [
+    {
+      "slug": "jakarta-2026-10-23-antara-ramah-lingkungan-lampu-tenaga-surya-disebut-443408",
+      "title": "Ramah lingkungan, lampu tenaga surya disebut jadi pilihan kekinian",
+      "summary": "Lampu bertenaga surya atau solar panel menjadi pilihan kekinian bagi masyarakat perkotaan maupun pedesaan yang menyatu ...",
+      "date": "2026-10-23T14:17:54.000Z",
+      "url": "https://www.antaranews.com/berita/5808263/ramah-lingkungan-lampu-tenaga-surya-disebut-jadi-pilihan-kekinian",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/23/WhatsApp-Image-2026-10-23-at-18.56.04.jpeg",
+      "imageAlt": "Ramah lingkungan, lampu tenaga surya disebut jadi pilihan kekinian",
+      "addedAt": "2026-10-23T14:18:55.413Z"
+    },
+    {
+      "slug": "jakarta-2026-10-23-antara-program-ayam-petelur-perkuat-usaha-peternak-c2d867",
+      "title": "Program ayam petelur perkuat usaha peternak rakyat (bagian 2)",
+      "summary": "ANTARA - Upaya mewujudkan ketahanan pangan sekaligus meningkatkan konsumsi protein hewani melalui program ayam petelur ...",
+      "date": "2026-10-23T14:17:22.000Z",
+      "url": "https://www.antaranews.com/video/5807611/program-ayam-petelur-perkuat-usaha-peternak-rakyat-bagian-2",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/AYAM-MERAH-PUTIH_2.jpg",
+      "imageAlt": "Program ayam petelur perkuat usaha peternak rakyat (bagian 2)",
+      "addedAt": "2026-10-23T14:18:55.413Z"
+    },
+    {
+      "slug": "jakarta-2026-10-23-antara-program-ayam-petelur-perkuat-usaha-peternak-c8b34b",
+      "title": "Program ayam petelur perkuat usaha peternak rakyat (bagian 3)",
+      "summary": "ANTARA - Di Desa Cingcin, Kecamatan Soreang, Kabupaten Bandung Jawa Barat, kelompok tani Motekar mengembangkan usaha ...",
+      "date": "2026-10-23T14:12:11.000Z",
+      "url": "https://www.antaranews.com/video/5807615/program-ayam-petelur-perkuat-usaha-peternak-rakyat-bagian-3",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/AYAM-MERAH-PUTIH_1.jpg",
+      "imageAlt": "Program ayam petelur perkuat usaha peternak rakyat (bagian 3)",
+      "addedAt": "2026-10-23T14:18:55.413Z"
+    },
+    {
+      "slug": "jakarta-2026-10-23-republika-mendiktisaintek-ungkap-pentingnya-perkuat-b6c96d",
+      "title": "Mendiktisaintek Ungkap Pentingnya Perkuat Kepemimpinan Kampus",
+      "summary": "JAKARTA -- Menteri Pendidikan Tinggi, Sains, dan Teknologi (Mendiktisaintek) Brian Yuliarto mendorong penguatan kepemimpinan dan pertukaran praktik antar perguruan tinggi. Penguatan itu menjadi bagian penting meningkatkan kualitas pengelolaan perguruan...",
+      "date": "2026-10-23T14:11:53.000Z",
+      "url": "https://news.republika.co.id/berita/tnd63t490/mendiktisaintek-ungkap-pentingnya-perkuat-kepemimpinan-kampus",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Pendidikan"
+      ],
+      "author": "Ahmad Fikri Noor",
+      "theme": "politika",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/092779400-1780417126-830-556.jpg",
+      "imageAlt": "Mendiktisaintek Ungkap Pentingnya Perkuat Kepemimpinan Kampus",
+      "addedAt": "2026-10-23T14:19:15.008Z"
+    },
+    {
+      "slug": "jakarta-2026-10-23-antara-djp-sulselbartra-serahkan-tersangka-e2c2c9",
+      "title": "DJP Sulselbartra serahkan tersangka penggelapan pajak ke kejaksaan",
+      "summary": "Kantor Wilayah Direktorat Jenderal Pajak Sulawesi Selatan, Barat, dan Tenggara (Kanwil DJP Sulselbartra) bekerja sama ...",
+      "date": "2026-10-23T14:08:08.000Z",
+      "url": "https://www.antaranews.com/berita/5808247/djp-sulselbartra-serahkan-tersangka-penggelapan-pajak-ke-kejaksaan",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/23/ImgResizer_Crop_IMG-20261023-WA0025.jpg",
+      "imageAlt": "DJP Sulselbartra serahkan tersangka penggelapan pajak ke kejaksaan",
+      "addedAt": "2026-10-23T14:18:55.413Z"
+    },
+    {
+      "slug": "jakarta-2026-10-23-antara-polda-metro-jaya-ringkus-12-orang-tersangka-d9dde4",
+      "title": "Polda Metro Jaya ringkus 12 orang tersangka kasus sumber daya alam",
+      "summary": "Polda Metro Jaya meringkus 12 orang tersangka yang berkaitan dengan lima perkara terkait sumber daya alam, barang ...",
+      "date": "2026-10-23T14:05:55.000Z",
+      "url": "https://www.antaranews.com/berita/5808243/polda-metro-jaya-ringkus-12-orang-tersangka-kasus-sumber-daya-alam",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/23/IMG_20261023_203812.v1.jpg",
+      "imageAlt": "Polda Metro Jaya ringkus 12 orang tersangka kasus sumber daya alam",
+      "addedAt": "2026-10-23T14:18:55.413Z"
+    },
+    {
+      "slug": "jakarta-2026-10-23-antara-program-ayam-petelur-perkuat-usaha-peternak-382a72",
+      "title": "Program ayam petelur perkuat usaha peternak rakyat (bagian 1)",
+      "summary": "ANTARA - Pengembangan peternakan ayam petelur telah menyentuh kelompok peternak di berbagai daerah, terutama di daerah ...",
+      "date": "2026-10-23T14:05:37.000Z",
+      "url": "https://www.antaranews.com/video/5807607/program-ayam-petelur-perkuat-usaha-peternak-rakyat-bagian-1",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/AYAM-MERAH-PUTIH.jpg",
+      "imageAlt": "Program ayam petelur perkuat usaha peternak rakyat (bagian 1)",
+      "addedAt": "2026-10-23T14:18:55.413Z"
+    },
+    {
+      "slug": "jakarta-2026-10-23-republika-ky-sanksi-hakim-tipikor-dalam-perkara-d44f76",
+      "title": "KY Sanksi Hakim Tipikor dalam Perkara Bengawan Kamto, Ini Respons Kuasa Hukum",
+      "summary": "REPUBLIKA.CO.ID, JAKARTA — Komisi Yudisial (KY) Republik Indonesia menjatuhkan sanksi etik berupa teguran tertulis kepada Hakim Ad Hoc Tindak Pidana Korupsi (Tipikor) Pengadilan Negeri Jambi, Alfretty Marojahan Butar Butar. Sanksi...",
+      "date": "2026-10-23T14:00:00.000Z",
+      "url": "https://news.republika.co.id/berita/tnd41h320/ky-sanksi-hakim-tipikor-dalam-perkara-bengawan-kamto-ini-respons-kuasa-hukum",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Nasional News"
+      ],
+      "author": "Nashih Nashrullah",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/komisi-yudisial-ilustrasi-_140617130153-970.jpg",
+      "imageAlt": "KY Sanksi Hakim Tipikor dalam Perkara Bengawan Kamto, Ini Respons Kuasa Hukum",
+      "addedAt": "2026-10-23T14:19:15.008Z"
+    },
+    {
+      "slug": "jakarta-2026-10-23-republika-jenna-ortega-didiagnosis-ocd-gejalanya-3ac30c",
+      "title": "Jenna Ortega Didiagnosis OCD, Gejalanya Sudah Muncul Sejak Usia 7 Tahun",
+      "summary": "JAKARTA -- Aktris Hollywood Jenna Ortega mengungkap perjalanan panjangnya menghadapi gangguan obsesif-kompulsif (OCD). Pemain serial \"Wednesday\" tersebut mengaku mengalami gejala OCD sejak usia 7 tahun dan kondisi tersebut masih...",
+      "date": "2026-10-23T13:55:37.000Z",
+      "url": "https://ameera.republika.co.id/berita/tnd5cp425/jenna-ortega-didiagnosis-ocd-gejalanya-sudah-muncul-sejak-usia-7-tahun",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Happening"
+      ],
+      "author": "Qommarria Rostanti",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/aktris-jenna-ortega-sutradara-asli-twilight-2008-catherine-hardwicke_231128085035-235.jpeg",
+      "imageAlt": "Jenna Ortega Didiagnosis OCD, Gejalanya Sudah Muncul Sejak Usia 7 Tahun",
+      "addedAt": "2026-10-23T14:19:15.008Z"
+    },
+    {
+      "slug": "jakarta-2026-10-23-republika-puluhan-agen-travel-mancanegara-sambangi-ab50d2",
+      "title": "Puluhan Agen Travel Mancanegara Sambangi Bukit Peramun Belitung dan Desa Wukirsari DIY, Ada Apa?",
+      "summary": "REPUBLIKA.CO.ID; JAKARTA — Sebanyak 50 orang agen travel dan operator tur mancanegara mengikuti Mega Famtrip ke Bukit Peramun Belitung dan Wisata Wayang Desa Wukirsari, Yogyakarta. Mereka mendapatkan pengalaman berwisata...",
+      "date": "2026-10-23T13:55:23.000Z",
+      "url": "https://daerah.republika.co.id/berita/tnd5cb483/puluhan-agen-travel-mancanegara-sambangi-bukit-peramun-belitung-dan-desa-wukirsari-diy-ada-apa",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Nusantara"
+      ],
+      "author": "A.Syalaby Ichsan",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/para-agen-travel-mancanegara-berfoto-di-bukit-perimun_261023205307-348.jpeg",
+      "imageAlt": "Puluhan Agen Travel Mancanegara Sambangi Bukit Peramun Belitung dan Desa Wukirsari DIY, Ada Apa?",
+      "addedAt": "2026-10-23T14:19:15.008Z"
+    },
+    {
+      "slug": "jakarta-2026-10-23-republika-pln-kembangkan-solusi-layanan-kelistrikan-794d81",
+      "title": "PLN Kembangkan Solusi Layanan Kelistrikan Terintegrasi untuk Rumah Tangga hingga Dunia Usaha",
+      "summary": "JAKARTA - PT PLN (Persero) memperluas kolaborasi pengembangan produk dan layanan kelistrikan kepada masyarakat melalui penandatanganan sejumlah nota kesepahaman (Memorandum of Understanding/MoU) dan perjanjian kerja sama (PKS) dengan lebih...",
+      "date": "2026-10-23T13:52:00.000Z",
+      "url": "https://ekonomi.republika.co.id/berita/tnd56o490/pln-kembangkan-solusi-layanan-kelistrikan-terintegrasi-untuk-rumah-tangga-hingga-dunia-usaha",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Bisnis"
+      ],
+      "author": "Ahmad Fikri Noor",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/_261023205106-505.png",
+      "imageAlt": "PLN Kembangkan Solusi Layanan Kelistrikan Terintegrasi untuk Rumah Tangga hingga Dunia Usaha",
+      "addedAt": "2026-10-23T14:19:15.009Z"
+    },
     {
       "slug": "jakarta-2026-10-23-republika-unm-akan-gelar-seminar-kewirausahaan-2026-9dd3ed",
       "title": "UNM akan Gelar Seminar Kewirausahaan 2026, Dorong Mahasiswa Ciptakan Peluang Bisnis Digital",
