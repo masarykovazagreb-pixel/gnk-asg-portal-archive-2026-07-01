@@ -66,11 +66,135 @@ footer{border-top:1px solid var(--line);margin-top:20px;padding:22px 0 40px;font
 .card i{display:block;margin-top:10px;font:700 10.5px/1 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;font-style:normal;color:var(--accent2)}
 @media(max-width:560px){.body p{font-size:17.5px}.dek{font-size:17.5px}}
 </style>
+<style>
+/* ---------- KUĆNI STIL v1 ---------- */
+:root{
+  --am-gold:#c9a227;--am-gold-soft:#e4c877;
+  --am-line:color-mix(in srgb,currentColor 14%,transparent);
+  --am-line-soft:color-mix(in srgb,currentColor 8%,transparent);
+  --am-muted:color-mix(in srgb,currentColor 62%,transparent);
+  --am-radius:16px;--am-radius-sm:10px;
+  --am-shadow:0 18px 44px -28px rgba(0,0,0,.55);
+  --am-gutter:clamp(18px,4vw,40px);
+  --am-measure:1180px;
+  --am-ease:cubic-bezier(.22,.61,.36,1);
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-size:clamp(16.5px,.55vw + 15px,17.5px);
+  line-height:1.68;
+  letter-spacing:.002em;
+  text-rendering:optimizeLegibility;
+}
+::selection{background:color-mix(in srgb,var(--accent2,var(--am-gold)) 38%,transparent);color:inherit}
+:focus-visible{outline:2px solid var(--accent2,var(--am-gold));outline-offset:3px;border-radius:4px}
+
+/* naslovi: jedan ritam kroz cijelu mrežu */
+h1,h2,h3,h4{font-family:Georgia,"Iowan Old Style","Times New Roman",serif;font-weight:700;letter-spacing:-.014em;text-wrap:balance}
+h1{font-size:clamp(2rem,1.2rem + 2.6vw,3.35rem);line-height:1.08;margin:0 0 .5em}
+h2{font-size:clamp(1.35rem,1rem + 1.1vw,1.95rem);line-height:1.18;margin:2.4em 0 .7em;padding-top:.15em;border-top:1px solid var(--am-line-soft)}
+h3{font-size:clamp(1.08rem,.95rem + .5vw,1.3rem);line-height:1.28;margin:0 0 .45em}
+h2:first-child,h1+h2{border-top:0;margin-top:0;padding-top:0}
+p{margin:0 0 1.05em;text-wrap:pretty}
+p:last-child{margin-bottom:0}
+.lead,main>p:first-of-type{font-size:clamp(1.05rem,.98rem + .4vw,1.2rem);line-height:1.6;color:var(--am-muted)}
+small,.cap,.meta,.dateline,.kicker,.k{letter-spacing:.06em}
+.kicker,.k,.dateline{text-transform:uppercase;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:700;font-size:.72rem;letter-spacing:.14em;color:var(--am-muted)}
+
+/* poveznice: zlatna nit, bez podcrtavanja cijelog teksta */
+a{color:inherit;text-decoration-color:color-mix(in srgb,var(--accent2,var(--am-gold)) 70%,transparent);text-underline-offset:.22em;text-decoration-thickness:1px;transition:color .18s var(--am-ease),opacity .18s var(--am-ease)}
+a:hover{color:var(--accent2,var(--am-gold))}
+a:has(img){text-decoration:none}
+
+/* sadržaj: ista mjera, isti razmak */
+main,.wrap,.page{padding-left:var(--am-gutter);padding-right:var(--am-gutter)}
+main,.wrap{max-width:var(--am-measure);margin-inline:auto}
+section{margin-block:clamp(2rem,3vw,3.4rem)}
+hr{border:0;border-top:1px solid var(--am-line-soft);margin:2.2rem 0}
+
+/* slike: uvijek uokvirene, nikad rastegnute */
+img{max-width:100%;height:auto}
+figure{margin:1.6rem 0}
+figure img,main>img,article>img,.hero,.heroimg{border-radius:var(--am-radius);box-shadow:var(--am-shadow);display:block}
+figure figcaption,.cap{font-size:.8rem;color:var(--am-muted);margin-top:.6rem;line-height:1.5}
+
+/* kartice: jedna visina tona, jedan obrub, jedan pokret */
+.card,.iz-card,.amw-card,.amm-card,.ed-card,.entry,.post{
+  border:1px solid var(--am-line);border-radius:var(--am-radius);
+  background:color-mix(in srgb,currentColor 3%,transparent);
+  transition:transform .22s var(--am-ease),border-color .22s var(--am-ease),box-shadow .22s var(--am-ease);
+  overflow:hidden;
+}
+.card:hover,.iz-card:hover,.amw-card:hover,.ed-card:hover,.entry:hover{
+  transform:translateY(-3px);border-color:color-mix(in srgb,var(--accent2,var(--am-gold)) 55%,transparent);
+  box-shadow:var(--am-shadow);
+}
+.card img,.iz-card img,.ed-card img{aspect-ratio:16/9;object-fit:cover;width:100%}
+
+/* gumbi i oznake */
+.btn,.more,.amm-card-go,button,a.btn{
+  display:inline-flex;align-items:center;gap:.5em;
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:700;
+  font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;
+  border:1px solid color-mix(in srgb,var(--accent2,var(--am-gold)) 55%,transparent);
+  border-radius:999px;padding:.72em 1.15em;text-decoration:none;
+  transition:background .2s var(--am-ease),color .2s var(--am-ease),transform .2s var(--am-ease);
+}
+.btn:hover,.more:hover{background:color-mix(in srgb,var(--accent2,var(--am-gold)) 18%,transparent);transform:translateY(-1px)}
+.tag,.chip,.hashtag,.iz-tags a,.ne-hash a{
+  display:inline-block;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:.72rem;font-weight:600;letter-spacing:.04em;padding:.32em .68em;margin:0 .35em .35em 0;
+  border:1px solid var(--am-line);border-radius:999px;text-decoration:none;opacity:.9;
+}
+
+/* zaglavlje: znak kuće stoji uvijek na istom mjestu i iste visine */
+.top,.topbar,.masthead,.brand,header.site-header{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.top{border-bottom:1px solid var(--am-line)}
+.masthead,.brand{gap:.9rem}
+.brand img,.ed-logo img,header img.logo,a.logo img{height:clamp(34px,3.2vw,46px);width:auto;max-width:none;border-radius:0;box-shadow:none}
+.brand,.logo{letter-spacing:.16em;text-transform:uppercase;font-weight:800}
+nav a{text-decoration:none}
+nav a[aria-current="page"]{color:var(--accent2,var(--am-gold))}
+
+/* podnožje: mirno, pregledno, s istim redom */
+footer{border-top:1px solid var(--am-line);margin-top:clamp(2.4rem,4vw,4rem);padding-block:clamp(1.6rem,3vw,2.6rem);font-size:.86rem;color:var(--am-muted)}
+footer h3,footer .k{color:inherit;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;margin:0 0 .55em}
+footer ul{list-style:none;margin:0;padding:0;display:grid;gap:.35em}
+footer a{text-decoration:none}
+footer a:hover{color:var(--accent2,var(--am-gold))}
+
+/* preskok sadržaja: vidljiv samo na fokus */
+.skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--bg,#08111c);color:inherit;padding:.8em 1.2em;border-radius:0 0 12px 0;font-family:system-ui,sans-serif;font-weight:700}
+.skip:focus{left:0}
+
+/* sitnice koje dizajn čine mirnijim */
+table{border-collapse:collapse;width:100%}
+th,td{padding:.6em .7em;border-bottom:1px solid var(--am-line-soft);text-align:left}
+blockquote{margin:1.8rem 0;padding:.2rem 0 .2rem 1.2rem;border-left:3px solid var(--accent2,var(--am-gold));font-size:1.08rem;color:var(--am-muted)}
+code,kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;padding:.1em .35em;border-radius:6px;background:color-mix(in srgb,currentColor 8%,transparent)}
+
+/* traka kuće: ista na svakoj domeni — znak, ime, izdanje i veza na maticu */
+.am-ribbon{display:flex;align-items:center;gap:clamp(.6rem,1.4vw,1.1rem);flex-wrap:wrap;
+  max-width:var(--am-measure);margin:0 auto;padding:.55rem clamp(1rem,3vw,2rem);
+  border-bottom:1px solid var(--am-line);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:.74rem;letter-spacing:.14em;text-transform:uppercase}
+.am-ribbon-brand{display:inline-flex;align-items:center;gap:.6rem;text-decoration:none;color:inherit;font-weight:800}
+.am-ribbon-brand img{height:clamp(22px,2.1vw,30px);width:auto;max-width:none;border-radius:0;box-shadow:none}
+.am-ribbon-ed{margin-left:auto;color:var(--am-muted);letter-spacing:.1em}
+.am-ribbon-ed b{color:inherit;font-weight:700}
+.am-ribbon a:hover{color:var(--accent2,var(--am-gold))}
+@media (max-width:520px){.am-ribbon-ed{width:100%;margin-left:0}}
+@media print{.am-ribbon{display:none!important}}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+@media print{.top,footer,.skip,nav{display:none!important}body{background:#fff;color:#000}}
+</style>
 <style>:root{--bg:#0b0704;--ink:#f2eee6;--line:rgba(255,255,255,.16);--panel:rgba(255,255,255,.04);--accent:#ef7a1e;--accent2:#f7d27a}body{background:var(--bg);color:var(--ink)}</style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Kad se slučajno svi slažemo","description":"Postoji trenutak na sastanku koji sam naučio tretirati sa sumnjom umjesto olakšanjem - trenutak kad se prijedlog iznese, i svi u prostoriji odmah, bez rasprave…","datePublished":"2026-08-18T09:00:00+02:00","inLanguage":"hr","isBasedOn":"https://gnk-asg.hr/gnk-aktual/kolumne/kad-se-slucajno-slozimo/","author":{"@id":"https://gnk-asg.hr/#nermin-sefic"},"editor":{"@id":"https://gnk-asg.hr/#nermin-sefic"},"publisher":{"@id":"https://gnk-asg.hr/#gnk-asg"},"isAccessibleForFree":true,"keywords":"AKTUAL MEDIA, GNK ASG, Nermin Sefić, #AKTUALMEDIA, #GNKASG"}</script>
 <script type="application/ld+json" id="network-entity-v1">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://gnk-asg.hr/#gnk-asg","name":"GNK ASG d.o.o.","url":"https://gnk-asg.hr/","parentOrganization":{"@id":"https://gnk-asg.hr/#gnk-dinamo-ltd"},"founder":{"@id":"https://gnk-asg.hr/#nermin-sefic"}},{"@type":"Organization","@id":"https://gnk-asg.hr/#gnk-dinamo-ltd","name":"GNK DINAMO Ltd.","url":"https://gnk-asg.hr/pojasnjenje-gnk-asg-i-gnk-dinamo-ltd/"},{"@type":"NewsMediaOrganization","@id":"https://gnk-asg.hr/gnk-aktual/#aktual-media","name":"AKTUAL MEDIA","alternateName":["AKTUAL MEDIA d.o.o.","Aktual Media","Aktual medija"],"url":"https://gnk-asg.hr/gnk-aktual/","parentOrganization":{"@id":"https://gnk-asg.hr/#gnk-asg"},"editor":{"@id":"https://gnk-asg.hr/#nermin-sefic"}},{"@type":"Person","@id":"https://gnk-asg.hr/#nermin-sefic","name":"Nermin Sefić","alternateName":["Nermin Sefic","Sefic Nermin","Sefić Nermin"],"jobTitle":"Glavni urednik AKTUAL MEDIA, direktor GNK ASG d.o.o.","url":"https://gnk-asg.hr/nermin-sefic/","worksFor":[{"@id":"https://gnk-asg.hr/#gnk-asg"},{"@id":"https://gnk-asg.hr/gnk-aktual/#aktual-media"}],"affiliation":{"@id":"https://gnk-asg.hr/#gnk-dinamo-ltd"}}]}</script>
 </head>
 <body>
+<div class="am-ribbon"><a class="am-ribbon-brand" href="https://gnk-asg.hr/" rel="external noopener" aria-label="AKTUAL MEDIA — matična mreža"><img src="/assets/brand/aktual-media-mark.svg" alt="AKTUAL MEDIA — znak mreže" width="72" height="72" loading="lazy" decoding="async"><span>AKTUAL MEDIA</span></a><span class="am-ribbon-ed"><b>KOŠARKA 360</b> · izdanje AKTUAL MEDIA</span></div>
 <div class="wrap">
   <nav class="top">
     <a class="brand" href="https://gnk-kosarka.pages.dev/">KOŠARKA 360</a>

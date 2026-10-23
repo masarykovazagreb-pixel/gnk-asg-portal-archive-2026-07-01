@@ -28,6 +28,7 @@ import { join } from 'node:path';
 import { SITES } from './registry.mjs';
 import { entityGraphJson } from '../../../scripts/lib/entity-graph-v1.mjs';
 import { readColumns, columnImagePath } from '../../../scripts/lib/kolumne-source-v1.mjs';
+import { HOUSE_CSS, houseRibbon } from '../../satellites/lib/house-style-v1.mjs';
 import { authorPortrait } from '../../../scripts/lib/corpus-v1.mjs';
 
 const MAX_ITEMS = 60;
@@ -121,11 +122,13 @@ ${published ? `<meta property="article:published_time" content="${esc(published)
 ${image ? `<meta name="twitter:image" content="${esc(image)}">
 <meta name="twitter:image:alt" content="${esc(title)}">` : ''}
 <style>${CSS}</style>
+<style>${HOUSE_CSS}</style>
 <style>:root{${themeVars(site)}}body{background:var(--bg);color:var(--ink)}</style>
 ${extraGraph}
 <script type="application/ld+json" id="network-entity-v1">${graph}</script>
 </head>
 <body>
+${houseRibbon({ lang: site.lang, edition: site.name })}
 <div class="wrap">
   <nav class="top">
     <a class="brand" href="${site.base || '/'}">${esc(site.name)}</a>

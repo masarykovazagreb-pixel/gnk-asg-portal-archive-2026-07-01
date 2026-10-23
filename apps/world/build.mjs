@@ -30,6 +30,7 @@ import { chromeOf } from '../region/src/chrome.mjs';
 import { CSS } from '../region/engine/build.mjs';
 import { logoFor, channelLogoSlug } from '../region/engine/brand.mjs';
 import { meshBlock, MESH_CSS } from '../satellites/lib/network-v1.mjs';
+import { HOUSE_CSS, houseRibbon } from '../satellites/lib/house-style-v1.mjs';
 import { spiderWeb, SPIDER_CSS } from '../satellites/lib/spiderweb-v1.mjs';
 import { WORLD_PORTALS, WORLD_BY_ID, portalBase, portalUrl, reviewUrl, HUB_HR, HUB_EN, MAIN, AKTUAL } from './lib/registry.mjs';
 import { writeColumns, columnsNavLabel, columnUrls, linkFromHome } from './lib/kolumne.mjs';
@@ -434,6 +435,7 @@ function shell(portal, { title, description, path = '', body, robots = 'index,fo
 </head>
 <body data-channel="${portal.id}" data-lang="${portal.lang}">
 <a class="skip" href="#sadrzaj">${esc(chrome(portal).skip)}</a>
+${houseRibbon({ lang: portal.lang, edition: `${portal.city} · ${portal.country}` })}
 ${body}
 </body>
 </html>`;
@@ -753,8 +755,13 @@ function writeStatics(portal, data, themes) {
     const source = join(ROOT, 'apps', 'portal', logo.webp.replace(/^\//, ''));
     if (existsSync(source)) copyFileSync(source, join(dir, 'assets', 'brand.webp'));
   }
+  const houseMark = join(ROOT, 'apps', 'portal', 'assets', 'brand', 'aktual-media-mark.svg');
+  if (existsSync(houseMark)) {
+    mkdirSync(join(dir, 'assets', 'brand'), { recursive: true });
+    copyFileSync(houseMark, join(dir, 'assets', 'brand', 'aktual-media-mark.svg'));
+  }
 
-  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}\n${SPIDER_CSS}\n${WORLD_CSS}`);
+  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}\n${SPIDER_CSS}\n${WORLD_CSS}\n${HOUSE_CSS}`);
   writeSitemap(portal, data, themes);
 }
 

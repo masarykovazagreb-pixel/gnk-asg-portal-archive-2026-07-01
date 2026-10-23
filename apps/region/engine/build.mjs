@@ -19,6 +19,7 @@ import { logoFor, logoAlternate, channelLogoSlug, LOGO_W, LOGO_H } from './brand
 import { chromeOf, desksOf, extraOf, editionsUi } from '../src/chrome.mjs';
 import { spiderWeb, SPIDER_CSS, SPIDER_JS } from '../../satellites/lib/spiderweb-v1.mjs';
 import { meshBlock, MESH_CSS } from '../../satellites/lib/network-v1.mjs';
+import { HOUSE_CSS, houseRibbon } from '../../satellites/lib/house-style-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const APP = join(HERE, '..');
@@ -508,6 +509,7 @@ ${ld}
 </head>
 <body data-channel="${channel.id}" data-lang="${channel.lang}">
 <a class="skip" href="#sadrzaj">${esc(chromeOf(pageLang).skip)}</a>
+${houseRibbon({ lang: pageLang, edition: channel.city || channel.title })}
 ${body}
 <a class="hublink" href="${CENTRAL}#izdanja-po-zemljama" rel="external noopener" aria-label="${esc(chromeOf(pageLang).hubAria)}"><span aria-hidden="true">←</span> AKTUAL MEDIA</a>
 ${miniRail(channel)}
@@ -1377,7 +1379,7 @@ ${footer(channel, strings)}`;
     jsonld: [], root: '', body: `${header(channel, strings)}<main id="sadrzaj" class="page"><h1>404</h1><p class="lead">${esc(strings.emptyText)}</p><p><a href="/">← ${esc(strings.back)}</a></p></main>${footer(channel, strings)}`
   }));
 
-  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}\n${SPIDER_CSS}`);
+  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}\n${SPIDER_CSS}\n${HOUSE_CSS}`);
   writeFileSync(join(dir, 'assets', 'spiderweb-v1.js'), SPIDER_JS);
 
   writeLegacyRedirect(channel);

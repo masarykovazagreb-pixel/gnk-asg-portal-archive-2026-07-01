@@ -27,6 +27,7 @@ import { join } from 'node:path';
 import { readCorpus, corpusImage, authorPortrait, KIND_LABEL } from './corpus-v1.mjs';
 import { entityGraphJson } from './entity-graph-v1.mjs';
 import { meshBlock } from '../../apps/satellites/lib/network-v1.mjs';
+import { HOUSE_CSS, houseRibbon } from '../../apps/satellites/lib/house-style-v1.mjs';
 
 const MAX_ITEMS = 90;
 
@@ -191,12 +192,14 @@ ${(image || target.ogImage) ? `<meta name="twitter:image" content="${esc(image |
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
 a{color:inherit}
-${CSS}</style>
+${CSS}
+${HOUSE_CSS}</style>
 ${graphScript()}
 ${jsonld}
 </head>
 <body>
 <a class="skip" href="#sadrzaj">${esc(LABEL(target.lang).skip || 'Skip to content')}</a>
+${houseRibbon({ lang: target.lang, edition: target.name })}
 ${meshBlock({ lang: target.lang, selfUrl: target.base, theme: 'dark' })}
 <main id="sadrzaj">
 <div class="pn">

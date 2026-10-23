@@ -21,6 +21,7 @@ import { SATELLITE_ART } from './lib/satellite-art.mjs';
 import { buildElectionDesk } from './lib/elections.mjs';
 import { buildSyndication } from './lib/sindikacija.mjs';
 import { writePrenos, prenosUrls, appendSitemap, linkPrenosOnHome } from '../../scripts/lib/prenos-v1.mjs';
+import { houseRibbon } from '../satellites/lib/house-style-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..', '..');
@@ -298,6 +299,7 @@ ${head({ site, lang, page: page.slug === '' ? 'home' : 'page', title, descriptio
 </head>
 <body>
 <a class="skip" href="#main">${lang === 'en' ? 'Skip to content' : 'Preskoči na sadržaj'}</a>
+${houseRibbon({ lang, edition: site.name })}
 ${networkBar(site, lang)}
 ${siteHeader(site, lang, pages, page.slug)}
 <main id="main" tabindex="-1">
@@ -386,6 +388,10 @@ async function buildSite(site) {
     const og = join(ROOT, 'apps', 'portal', 'assets', 'mreza', `${site.slug}-og.jpg`);
     if (existsSync(og)) copyFileSync(og, join(dist, 'img', `${site.slug}-og.jpg`));
   }
+  /* Znak kuće: ista datoteka na svakoj domeni, pa se logo ne može razlikovati. */
+  const houseMark = join(ROOT, 'apps', 'portal', 'assets', 'brand', 'aktual-media-mark.svg');
+  if (existsSync(houseMark)) write(join(dist, 'assets', 'brand', 'aktual-media-mark.svg'), readFileSync(houseMark));
+
   write(join(dist, 'img', 'icon-192.png'), ogPng({ seed: `${site.slug}-icon`, bg: site.bg, accent: site.accent, accent2: site.accent2, variant: 2, width: 192, height: 192 }));
   write(join(dist, 'img', 'icon-512.png'), ogPng({ seed: `${site.slug}-icon`, bg: site.bg, accent: site.accent, accent2: site.accent2, variant: 2, width: 512, height: 512 }));
 
