@@ -1,0 +1,64 @@
+name: Verify AKTUAL Public Live URLs
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/verify-aktual-public-live-urls.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-url-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout exact deployed production artifact
+        uses: actions/checkout@v4
+        with:
+          ref: 0b33afa66bd902292f98948d8c2bdbbfae0757e0
+          persist-credentials: false
+      - name: Independently compare public premium WebP to exact production bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          file='apps/portal/assets/editorial/generated/komentari-roto-dinamic-apfel-prijava-nije-odobrenje-7974bfa5.webp'
+          url='https://gnk-asg.hr/assets/editorial/generated/komentari-roto-dinamic-apfel-prijava-nije-odobrenje-7974bfa5.webp'
+          test -s "$file"
+          output="$(mktemp)"
+          code="$(curl --location --silent --show-error --retry 3 --retry-delay 1 --max-time 35 -H 'Cache-Control: no-cache' -o "$output" -w '%{http_code}' "$url")"
+          echo "Premium image public GET -> HTTP $code"
+          test "$code" = 200 || { echo "::error::Premium image is not HTTP 200"; exit 1; }
+          test "$(head -c 4 "$output")" = 'RIFF'
+          test "$(dd if="$output" bs=1 skip=8 count=4 status=none)" = 'WEBP'
+          sha256sum "$file" "$output"
+          cmp "$file" "$output" || { echo "::error::Public image differs from exact deployed production commit"; exit 1; }
+          rm -f "$output"
+          echo 'Verified byte-for-byte premium WebP under exact production SHA.'
+      - name: Verify exact public article, gallery and weekly URLs
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Independent public-route verification at $(date -u +%FT%TZ)"
+          while IFS='|' read -r path marker; do
+            [ -n "$path" ] || continue
+            url="https://gnk-asg.hr$path"
+            output="$(mktemp)"
+            code="$(curl --silent --show-error --retry 3 --retry-delay 1 --max-time 35 -A 'GNK-ASG-AKTUAL-Live-Check/1.0' -o "$output" -w '%{http_code}' "$url")"
+            printf '%s -> HTTP %s\n' "$url" "$code"
+            test "$code" = 200 || { echo "::error::Expected HTTP 200 for $url"; exit 1; }
+            grep -Fq "$marker" "$output" || { echo "::error::Expected public marker missing on $url"; exit 1; }
+            rm -f "$output"
+          done <<'ROUTES'
+          /komentari/roto-dinamic-apfel-prijava-nije-odobrenje/|Roto Dinamic i Apfel
+          /galerija/roto-apfel-logistika-koncept/|Originalna
+          /assets/editorial/roto-apfel-logistics-concept-20261019.svg|<svg
+          /visual-index/roto-apfel-logistika-koncept/|Logistika
+          /en/visual-index/roto-apfel-logistika-koncept/|Logistics
+          /gnk-aktual/tjedni/2026-10-19/|AKTUAL
+          /en/gnk-aktual/weekly/2026-10-19/|AKTUAL
+          /gnk-aktual/|roto-dinamic-apfel-prijava-nije-odobrenje
+          /komentari/|roto-dinamic-apfel-prijava-nije-odobrenje
+          ROUTES
+          echo 'Verified all requested public editorial routes with HTTP 200 and route-specific markers.'
