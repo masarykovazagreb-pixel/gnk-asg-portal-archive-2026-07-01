@@ -130,6 +130,19 @@ else {
   if (count !== capList.length * 2) fail(`sitemap: ${count} adresa, očekivano ${capList.length * 2}`);
 }
 
+/* Skokovi na kontinent moraju imati cilj — inače je navigacija mrtva. */
+for (const rel of ['apps/portal/glavni-gradovi/index.html', 'apps/portal/en/capitals/index.html']) {
+  const file = join(ROOT, rel);
+  if (!existsSync(file)) continue;
+  const html = readFileSync(file, 'utf8');
+  const targets = [...html.matchAll(/href="#([^"]+)"/g)].map((match) => match[1]);
+  for (const target of new Set(targets)) {
+    if (!html.includes(`id="${target}"`)) fail(`${rel}: skok #${target} nema cilj`);
+  }
+  const continents = [...html.matchAll(/id="cgc-([^"]+)"/g)].map((match) => match[1]);
+  if (continents.length < 6) fail(`${rel}: ${continents.length} kontinenata, očekivano 6`);
+}
+
 const llmsFile = join(ROOT, 'apps', 'portal', 'glavni-gradovi', 'llms.txt');
 if (!existsSync(llmsFile)) fail('glavni-gradovi/llms.txt nedostaje — pokreni node apps/region/engine/hub.mjs');
 else {

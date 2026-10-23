@@ -1105,6 +1105,9 @@ const CAPITAL_CSS = `.cg-hero{padding:8px 0 4px}
 .cg-box ol,.cg-box ul{margin:0;padding-left:18px;display:grid;gap:7px;font-size:14px;color:#bccbdb}
 .cg-box li::marker{color:#e0bd69;font-weight:700}
 .cg-small{font-size:13px;color:#94a8bd;margin:10px 0 0}
+.cg-jump{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}
+.cg-jump a{font:700 10px/1 system-ui;letter-spacing:.1em;text-transform:uppercase;color:#cdd8e5;border:1px solid #25435f;border-radius:999px;padding:7px 11px;text-decoration:none}
+.cg-jump a:hover{border-color:#e0bd69;color:#e0bd69}
 .cg-cont-grid{display:grid;gap:20px;margin:10px 0 0}
 .cg-cont{border-top:1px solid #16304a;padding-top:12px}
 .cg-h3{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;font:700 15px/1.3 Georgia,serif;color:#f2f6fb;margin:0 0 10px}
@@ -1132,8 +1135,7 @@ function capitalsPage(lang = 'hr') {
       ? `${esc(c.capital)}, ${esc(en ? c.countryEn : c.country)} — ${en ? 'cover artwork of the edition' : 'naslovna grafika izdanja'}`
       : `${esc(c.capital)} — ${en ? 'illustration of the capital' : 'ilustracija prijestolnice'}`;
     const state = c.status !== 'live' ? ` · ${en ? 'in preparation' : 'u pripremi'}` : '';
-    const contSlug = String(c.continent).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z]+/g, '-');
-    return `<li data-c="${esc(contSlug)}"><a href="${en ? '/en/capitals' : '/glavni-gradovi'}/${esc(c.slug)}/">
+    return `<li data-c="${esc(contSlug(c.continent))}"><a href="${en ? '/en/capitals' : '/glavni-gradovi'}/${esc(c.slug)}/">
       ${artId ? `<img src="/assets/izdanja/${esc(artId)}-440.webp" alt="${alt}" width="440" height="248" loading="lazy" decoding="async">` : ''}
       <span class="b"><span class="n">${name}</span><span class="c">${esc(en ? c.countryEn : c.country)} · ${esc(c.lang)}${state}</span></span>
     </a></li>`;
@@ -1144,14 +1146,19 @@ function capitalsPage(lang = 'hr') {
     'Sjeverna Amerika': 'North America', 'Južna Amerika': 'South America', Oceanija: 'Oceania'
   };
   const continents = [...new Set(all.map((c) => c.continent))];
+  /* Jedan slug za kontinent: koristi se za id sekcije, skok i boju kartice,
+     pa se „Južna Amerika" ne može razlikovati u tri zapisa. */
+  const contSlug = (name) => String(name).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z]+/g, '-');
   const grouped = continents.map((continent) => {
     const group = all.filter((c) => c.continent === continent);
     const liveCount = group.filter((c) => c.status === 'live').length;
-    return `<section class="cg-cont" aria-labelledby="cgc-${esc(continent.replace(/\s+/g, '-'))}">
-      <h3 id="cgc-${esc(continent.replace(/\s+/g, '-'))}" class="cg-h3">${esc(en ? CONTINENT_EN[continent] || continent : continent)} <span>${group.length}</span><small>${liveCount}/${group.length} ${en ? 'live' : 'aktivno'}</small></h3>
+    return `<section class="cg-cont" aria-labelledby="cgc-${contSlug(continent)}">
+      <h3 id="cgc-${contSlug(continent)}" class="cg-h3">${esc(en ? CONTINENT_EN[continent] || continent : continent)} <span>${group.length}</span><small>${liveCount}/${group.length} ${en ? 'live' : 'aktivno'}</small></h3>
       <ul class="cp-cards">${group.map(cardFor).join('')}</ul>
     </section>`;
   }).join('');
+
+  const jump = `<nav class="cg-jump" aria-label="${en ? 'Jump to continent' : 'Skok na kontinent'}">${continents.map((continent) => `<a href="#cgc-${contSlug(continent)}">${esc(en ? CONTINENT_EN[continent] || continent : continent)}</a>`).join('')}</nav>`;
 
   const rows = all.map((c) => {
     const channel = c.edition ? channelBy(c.edition) : null;
@@ -1193,10 +1200,12 @@ function capitalsPage(lang = 'hr') {
       <li><b>${soon.length}</b><span>${en ? 'capitals in preparation' : 'prijestolnice u pripremi'}</span></li>
       <li><b>${langs}</b><span>${en ? 'languages in the capitals' : 'jezika u prijestolnicama'}</span></li>
     </ul>
+    <p class="cg-small">${en ? 'Page data refreshed' : 'Podaci stranice osvježeni'}: ${esc(new Date().toISOString().slice(0, 10).split('-').reverse().join('. '))}.</p>
   </section>
 
   <section aria-labelledby="cgCardsTitle">
     <h2 id="cgCardsTitle" class="cg-h2">${en ? 'One page for every capital' : 'Jedna stranica za svaki glavni grad'}</h2>
+    ${jump}
     <p class="cg-small">${en ? 'Grouped by continent. Every card opens the page of that capital: language, sources, latest records and its place in the network.' : 'Poredano po kontinentu. Svaka kartica vodi na stranicu tog glavnog grada: jezik, izvori, najnoviji zapisi i mjesto u mreži.'}</p>
     <div class="cg-cont-grid">${grouped}</div>
   </section>

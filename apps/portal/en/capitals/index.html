@@ -201,6 +201,9 @@
 .cg-box ol,.cg-box ul{margin:0;padding-left:18px;display:grid;gap:7px;font-size:14px;color:#bccbdb}
 .cg-box li::marker{color:#e0bd69;font-weight:700}
 .cg-small{font-size:13px;color:#94a8bd;margin:10px 0 0}
+.cg-jump{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}
+.cg-jump a{font:700 10px/1 system-ui;letter-spacing:.1em;text-transform:uppercase;color:#cdd8e5;border:1px solid #25435f;border-radius:999px;padding:7px 11px;text-decoration:none}
+.cg-jump a:hover{border-color:#e0bd69;color:#e0bd69}
 .cg-cont-grid{display:grid;gap:20px;margin:10px 0 0}
 .cg-cont{border-top:1px solid #16304a;padding-top:12px}
 .cg-h3{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;font:700 15px/1.3 Georgia,serif;color:#f2f6fb;margin:0 0 10px}
@@ -285,13 +288,15 @@
       <li><b>3</b><span>capitals in preparation</span></li>
       <li><b>13</b><span>languages in the capitals</span></li>
     </ul>
+    <p class="cg-small">Page data refreshed: 23. 10. 2026.</p>
   </section>
 
   <section aria-labelledby="cgCardsTitle">
     <h2 id="cgCardsTitle" class="cg-h2">One page for every capital</h2>
+    <nav class="cg-jump" aria-label="Jump to continent"><a href="#cgc-europa">Europe</a><a href="#cgc-afrika">Africa</a><a href="#cgc-azija">Asia</a><a href="#cgc-sjeverna-amerika">North America</a><a href="#cgc-juzna-amerika">South America</a><a href="#cgc-oceanija">Oceania</a></nav>
     <p class="cg-small">Grouped by continent. Every card opens the page of that capital: language, sources, latest records and its place in the network.</p>
-    <div class="cg-cont-grid"><section class="cg-cont" aria-labelledby="cgc-Europa">
-      <h3 id="cgc-Europa" class="cg-h3">Europe <span>8</span><small>8/8 live</small></h3>
+    <div class="cg-cont-grid"><section class="cg-cont" aria-labelledby="cgc-europa">
+      <h3 id="cgc-europa" class="cg-h3">Europe <span>8</span><small>8/8 live</small></h3>
       <ul class="cp-cards"><li data-c="europa"><a href="/en/capitals/zagreb/">
       <img src="/assets/izdanja/zagreb-440.webp" alt="Zagreb, Croatia — cover artwork of the edition" width="440" height="248" loading="lazy" decoding="async">
       <span class="b"><span class="n">Zagreb</span><span class="c">Croatia · hr</span></span>
@@ -317,8 +322,8 @@
       <img src="/assets/izdanja/bukurest-440.webp" alt="Bukurešt, Romania — cover artwork of the edition" width="440" height="248" loading="lazy" decoding="async">
       <span class="b"><span class="n">Bucharest</span><span class="c">Romania · ro</span></span>
     </a></li></ul>
-    </section><section class="cg-cont" aria-labelledby="cgc-Afrika">
-      <h3 id="cgc-Afrika" class="cg-h3">Africa <span>2</span><small>2/2 live</small></h3>
+    </section><section class="cg-cont" aria-labelledby="cgc-afrika">
+      <h3 id="cgc-afrika" class="cg-h3">Africa <span>2</span><small>2/2 live</small></h3>
       <ul class="cp-cards"><li data-c="afrika"><a href="/en/capitals/nairobi/">
       <img src="/assets/izdanja/nairobi-440.webp" alt="Nairobi, Kenya — cover artwork of the edition" width="440" height="248" loading="lazy" decoding="async">
       <span class="b"><span class="n">Nairobi</span><span class="c">Kenya · en</span></span>
@@ -326,8 +331,8 @@
       <img src="/assets/izdanja/kairo-440.webp" alt="Kairo, Egypt — cover artwork of the edition" width="440" height="248" loading="lazy" decoding="async">
       <span class="b"><span class="n">Cairo</span><span class="c">Egypt · ar</span></span>
     </a></li></ul>
-    </section><section class="cg-cont" aria-labelledby="cgc-Azija">
-      <h3 id="cgc-Azija" class="cg-h3">Asia <span>4</span><small>4/4 live</small></h3>
+    </section><section class="cg-cont" aria-labelledby="cgc-azija">
+      <h3 id="cgc-azija" class="cg-h3">Asia <span>4</span><small>4/4 live</small></h3>
       <ul class="cp-cards"><li data-c="azija"><a href="/en/capitals/jakarta/">
       <img src="/assets/izdanja/jakarta-440.webp" alt="Jakarta, Indonesia — cover artwork of the edition" width="440" height="248" loading="lazy" decoding="async">
       <span class="b"><span class="n">Jakarta</span><span class="c">Indonesia · id</span></span>
@@ -341,20 +346,20 @@
       <img src="/assets/izdanja/peking-440.webp" alt="Peking, China — cover artwork of the edition" width="440" height="248" loading="lazy" decoding="async">
       <span class="b"><span class="n">Beijing</span><span class="c">China · zh</span></span>
     </a></li></ul>
-    </section><section class="cg-cont" aria-labelledby="cgc-Sjeverna-Amerika">
-      <h3 id="cgc-Sjeverna-Amerika" class="cg-h3">North America <span>1</span><small>0/1 live</small></h3>
+    </section><section class="cg-cont" aria-labelledby="cgc-sjeverna-amerika">
+      <h3 id="cgc-sjeverna-amerika" class="cg-h3">North America <span>1</span><small>0/1 live</small></h3>
       <ul class="cp-cards"><li data-c="sjeverna-amerika"><a href="/en/capitals/washington/">
       <img src="/assets/izdanja/washington-440.webp" alt="Washington — illustration of the capital" width="440" height="248" loading="lazy" decoding="async">
       <span class="b"><span class="n">Washington, D.C.</span><span class="c">United States · en · in preparation</span></span>
     </a></li></ul>
-    </section><section class="cg-cont" aria-labelledby="cgc-Južna-Amerika">
-      <h3 id="cgc-Južna-Amerika" class="cg-h3">South America <span>1</span><small>0/1 live</small></h3>
+    </section><section class="cg-cont" aria-labelledby="cgc-juzna-amerika">
+      <h3 id="cgc-juzna-amerika" class="cg-h3">South America <span>1</span><small>0/1 live</small></h3>
       <ul class="cp-cards"><li data-c="juzna-amerika"><a href="/en/capitals/brasilia/">
       <img src="/assets/izdanja/brasilia-440.webp" alt="Brasília — illustration of the capital" width="440" height="248" loading="lazy" decoding="async">
       <span class="b"><span class="n">Brasília</span><span class="c">Brazil · pt · in preparation</span></span>
     </a></li></ul>
-    </section><section class="cg-cont" aria-labelledby="cgc-Oceanija">
-      <h3 id="cgc-Oceanija" class="cg-h3">Oceania <span>1</span><small>0/1 live</small></h3>
+    </section><section class="cg-cont" aria-labelledby="cgc-oceanija">
+      <h3 id="cgc-oceanija" class="cg-h3">Oceania <span>1</span><small>0/1 live</small></h3>
       <ul class="cp-cards"><li data-c="oceanija"><a href="/en/capitals/canberra/">
       <img src="/assets/izdanja/canberra-440.webp" alt="Canberra — illustration of the capital" width="440" height="248" loading="lazy" decoding="async">
       <span class="b"><span class="n">Canberra</span><span class="c">Australia · en · in preparation</span></span>
