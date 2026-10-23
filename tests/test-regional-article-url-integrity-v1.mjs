@@ -22,6 +22,15 @@ test('Two different original sources cannot overwrite one regional article path'
   assert.deepEqual(rows.map(x=>x.slug),Array(3).fill('saopaulo-2026-10-23-uol-headline-7a1ea5'),
     'Do not mutate archived source records');
 });
+test('Oldest article keeps its original canonical URL after a newer feed collision',()=>{
+  const older=record('stable-original-slug','https://news.example.org/old','2026-10-21T12:00:00Z','Original story');
+  const newer=record('stable-original-slug','https://news.example.org/new','2026-10-23T12:00:00Z','Later story');
+  const a=normalizeRegionalArticles([newer,older]);
+  const byUrl=new Map(a.items.map(x=>[x.url,x]));
+  assert.equal(byUrl.get(older.url).slug,'stable-original-slug');
+  assert.match(byUrl.get(newer.url).slug,/^stable-original-slug-[a-f0-9]{12}$/);
+  assert.equal(a.items[0].url,newer.url,'Output remains newest-first for newsroom readers');
+});
 test('Same source URL repeated in RSS is one page, one sitemap entry',()=>{
   const a=normalizeRegionalArticles([
     record('article-1','https://news.example.org/a#top','2026-10-22T06:00:00Z'),
