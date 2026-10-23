@@ -377,6 +377,9 @@ ${graph.map((n) => `<script type="application/ld+json">${safeJson(n)}</script>`)
 .iz-top{background:#04101d;border-bottom:1px solid #1b3550;font:600 11px/1.4 system-ui;letter-spacing:.16em;text-transform:uppercase;color:#8fa3ba}
 .iz-top .iz-wrap{display:flex;justify-content:space-between;gap:12px;padding-top:10px;padding-bottom:10px}
 .iz-top a{color:var(--gold)}
+.iz-house{display:inline-flex;align-items:center;gap:9px;min-width:0}
+.iz-house img{height:22px;width:auto;max-width:120px;border-radius:2px;flex:none}
+@media(max-width:560px){.iz-house img{height:18px}}
 .iz-head{padding:clamp(26px,5vw,54px) 0 22px;border-bottom:1px solid #1b3550}
 .iz-head .k{font:600 11px/1.4 system-ui;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
 .iz-head h1{font:700 clamp(30px,5vw,52px)/1.04 Georgia,"Times New Roman",serif;margin:8px 0 10px;letter-spacing:-.01em}
@@ -479,7 +482,7 @@ ${body}
 </html>`;
 }
 
-const portalHeader = (active, { h1 = true } = {}) => `<div class="iz-top"><div class="iz-wrap"><span>AKTUAL MEDIA d.o.o. · Naša izdanja</span><a href="/gnk-aktual/">← AKTUAL MEDIA · sve na jednom mjestu</a></div></div>
+const portalHeader = (active, { h1 = true } = {}) => `<div class="iz-top"><div class="iz-wrap"><span class="iz-house"><img src="/assets/brand/aktual-media-en-1200.webp" alt="AKTUAL MEDIA d.o.o." width="167" height="48" decoding="async"><span>Naša izdanja</span></span><a href="/gnk-aktual/">← AKTUAL MEDIA · sve na jednom mjestu</a></div></div>
 <header class="iz-head"><div class="iz-wrap">
   <p class="k">GNK ASG · AKTUAL MEDIA · regionalna izdanja</p>
   ${h1 ? `<h1>Naša izdanja</h1>
