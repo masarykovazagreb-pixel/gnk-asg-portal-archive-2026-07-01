@@ -16,6 +16,7 @@
  *   node scripts/apply-house-ribbon-v1.mjs [--check]
  */
 import { readFileSync, writeFileSync, readdirSync, statSync, existsSync } from 'node:fs';
+import { applyHouseRibbon } from './lib/house-ribbon-v1.mjs';
 import { join, relative, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -31,9 +32,6 @@ const SKIP = new Set([
   'digital-headquarters', 'media-registration-admin', 'podijeli', 'api', 'assets',
   'data', '__preview'
 ]);
-
-const esc = (value) => String(value == null ? '' : value)
-  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 const walk = (dir, out = []) => {
   for (const name of readdirSync(dir)) {
@@ -66,17 +64,10 @@ for (const file of walk(PORTAL)) {
   scanned += 1;
   let html = readFileSync(file, 'utf8');
   if (html.includes(MARK)) { skipped += 1; continue; }
-  if (/http-equiv=["']refresh["']/i.test(html) || /name=["']robots["'][^>]*\bnoindex\b/i.test(html)) { skipped += 1; continue; }
-  const headerEnd = html.indexOf('</header>');
-  if (headerEnd < 0) { skipped += 1; continue; }
 
-  const lang = (html.match(/<html[^>]*\blang=["']([a-z]{2})/i) || [])[1] || 'hr';
-  const insertAt = headerEnd + '</header>'.length;
-  let inject = `\n${ribbon(lang)}`;
-  if (!html.includes('house-ribbon-v1.css')) {
-    inject += `\n<link rel="stylesheet" href="${CSS_HREF}">`;
-  }
-  html = `${html.slice(0, insertAt)}${inject}${html.slice(insertAt)}`;
+  const applied = applyHouseRibbon(html);
+  if (!applied.changed) { skipped += 1; continue; }
+  html = applied.html;
   added += 1;
   changed.push(relative(ROOT, file).split(/[\\/]/).join('/'));
   if (!CHECK) writeFileSync(file, html);

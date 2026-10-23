@@ -90,6 +90,7 @@ jobs:
           node scripts/plan-world-expansion-v1.mjs
           node scripts/build-coverage-page-v1.mjs
           node scripts/apply-network-entity-v1.mjs
+          node scripts/apply-house-ribbon-v1.mjs
           node scripts/prune-image-sitemap-v1.mjs
           node scripts/knowledge-center-hr-sync-v1.mjs --apply
           node apps/region/engine/audit.mjs
