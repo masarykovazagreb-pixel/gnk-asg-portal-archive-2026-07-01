@@ -29,3 +29,11 @@ Main CI failure: https://github.com/masarykovazagreb-pixel/gnk-asg-portal-archiv
 Raniji uspješan PR Workforce check (nije trenutačni head): https://github.com/masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01/actions/runs/39840139846
 
 Ne slati noćnu rutinsku obavijest; čuvati zapis za dnevni pregled.
+
+## CI dodatak — 23.10.2026. 06:20 Zagreb
+
+- PR #349: test fixture za `aktual-review-window-gate-v1.mjs` usklađen s parametrima `trustedReceipt` i `verifyEntry` (commit `a3d4aa1fcdb83583d3cef488165c6e7c0503c4c7`).
+- Izolirana provjera logike: 14/14 prolaza; još nema potvrde novog GitHub Actions Node CI-ja.
+- Main SHA: `cdb9c221798232012b3f6a9aeddb936fefff0a33`; PR ostaje draft i nije mergeable.
+- Main run 39879315940: 12 zastarjelih generiranih stranica `izbori-srbija`; run 39875268543: nedovoljno neovisnih izvora za neke `top-teme`.
+- Sljedeće: potvrditi Node CI, sačuvati prag kvalitete izvora, razriješiti konflikt PR-a; bez deploya i bez dodatnih rasporeda.
