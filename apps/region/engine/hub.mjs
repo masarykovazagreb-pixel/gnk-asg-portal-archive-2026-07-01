@@ -809,13 +809,14 @@ function deskThumb(item, deskId) {
   }
   /* Bez slike iz izvora: krop naslovne ilustracije deska. Isti zapis uvijek
      dobiva isti krop (varijanta iz sluga), pa se minijature ne trepere.
-     Alt je prazan jer je slika dekorativna — opis nosi naslov uz nju. */
+     Alt nije prazan: pravilo mreže je da svaka slika ima opis, a čitač
+     ekrana koji preskoči sliku ipak čuje naslov uz nju. */
   if (deskArt(deskId)) {
     const variant = variantFor(item.slug || item.url || item.title);
     return `<img class="iz-thumb iz-thumb-p${variant + 1}" src="${esc(deskArtPath(deskId, '240'))}" alt="${esc(alt)}" width="86" height="58" loading="lazy" decoding="async">`;
   }
   const tile = tilePath(deskId, variantFor(item.slug || item.url || item.title));
-  return `<img class="iz-thumb iz-thumb-art" src="${esc(tile)}" alt="" aria-hidden="true" width="86" height="58" loading="lazy" decoding="async">`;
+  return `<img class="iz-thumb iz-thumb-art" src="${esc(tile)}" alt="${esc(alt)} — ilustracija" width="86" height="58" loading="lazy" decoding="async">`;
 }
 
 const cityCircles = () => `<ul class="iz-city" aria-label="Gradska izdanja AKTUAL MEDIA">${
