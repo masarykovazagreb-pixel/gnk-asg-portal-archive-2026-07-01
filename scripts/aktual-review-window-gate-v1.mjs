@@ -7,7 +7,8 @@ import {fileURLToPath} from 'node:url';
 const ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 export const VERSION='AKTUAL_REVIEW_WINDOW_GATE_V1_20261022';
 export const REVIEW_MS=30*60*1000;
-export const CLOCK_SKEW_MS=90*1000;
+// No future receipt verification: even one millisecond ahead is not evidence.
+export const CLOCK_SKEW_MS=0;
 // Reject local-time strings and date-only values: receipt times must carry a timezone.
 const validDate=x=>typeof x==='string'&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+-]\d{2}:\d{2})$/.test(x)?Date.parse(x):Number.NaN;
 const safeHash=x=>typeof x==='string'&&/^[a-f0-9]{64}$/i.test(x);
