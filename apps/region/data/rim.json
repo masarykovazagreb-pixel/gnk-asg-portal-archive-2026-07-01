@@ -4,7 +4,7 @@
   "lang": "it",
   "city": "Rim",
   "country": "Italija",
-  "updatedAt": "2026-10-23T16:59:00.955Z",
+  "updatedAt": "2026-10-23T19:35:42.297Z",
   "sources": [
     {
       "id": "ansa",
@@ -14,22 +14,17 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-23T16:58:51.147Z"
+      "checkedAt": "2026-10-23T19:35:35.514Z"
     },
     {
       "id": "repubblica",
       "name": "la Repubblica",
       "url": "https://www.repubblica.it/rss/homepage/rss2.0.xml",
-      "ok": false,
-      "fetched": 0,
+      "ok": true,
+      "fetched": 30,
       "corrupt": 0,
-      "errors": [
-        "https://www.repubblica.it/rss/homepage/rss2.0.xml: HTTP 403",
-        "https://www.repubblica.it/rss/politica/rss2.0.xml: HTTP 403",
-        "https://www.repubblica.it/rss/economia/rss2.0.xml: HTTP 403",
-        "https://www.repubblica.it/rss/sport/rss2.0.xml: HTTP 403"
-      ],
-      "checkedAt": "2026-10-23T16:58:54.234Z"
+      "errors": [],
+      "checkedAt": "2026-10-23T19:35:35.777Z"
     },
     {
       "id": "ilpost",
@@ -41,7 +36,7 @@
       "errors": [
         "https://www.ilpost.it/feed/: HTTP 403"
       ],
-      "checkedAt": "2026-10-23T16:58:56.125Z"
+      "checkedAt": "2026-10-23T19:35:37.359Z"
     },
     {
       "id": "sole24",
@@ -51,7 +46,7 @@
       "fetched": 36,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-23T16:58:56.993Z"
+      "checkedAt": "2026-10-23T19:35:38.386Z"
     },
     {
       "id": "corriere",
@@ -61,19 +56,17 @@
       "fetched": 69,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-23T16:58:57.703Z"
+      "checkedAt": "2026-10-23T19:35:39.197Z"
     },
     {
       "id": "lastampa",
       "name": "La Stampa",
       "url": "https://www.lastampa.it/rss",
-      "ok": false,
-      "fetched": 0,
+      "ok": true,
+      "fetched": 50,
       "corrupt": 0,
-      "errors": [
-        "https://www.lastampa.it/rss: HTTP 403"
-      ],
-      "checkedAt": "2026-10-23T16:58:58.614Z"
+      "errors": [],
+      "checkedAt": "2026-10-23T19:35:39.940Z"
     },
     {
       "id": "fanpage",
@@ -85,7 +78,7 @@
       "errors": [
         "https://www.fanpage.it/feed/: HTTP 403"
       ],
-      "checkedAt": "2026-10-23T16:58:59.738Z"
+      "checkedAt": "2026-10-23T19:35:41.074Z"
     },
     {
       "id": "adnkronos",
@@ -97,10 +90,168 @@
       "errors": [
         "https://www.adnkronos.com/rss: nije feed"
       ],
-      "checkedAt": "2026-10-23T16:59:00.955Z"
+      "checkedAt": "2026-10-23T19:35:42.297Z"
     }
   ],
   "items": [
+    {
+      "slug": "rim-2026-10-23-repubblica-guerra-in-ucraina-tregua-umanitaria-a-385f46",
+      "title": "Guerra in Ucraina, tregua umanitaria a Oleshky. Melania Trump: “È merito mio”",
+      "summary": "Previsti aiuti alla città e un corridoio di fuga per gli abitanti intrappolati dai combattimenti. Il cessate il fuoco entrerà in vigore dall’alba di martedì 27. Russia e Ucraina confermano",
+      "date": "2026-10-23T19:18:26.000Z",
+      "url": "https://www.repubblica.it/esteri/2026/10/23/news/guerra_in_ucraina_tregua_umanitaria_a_oleshky_melania_trump_e_merito_mio-425671261/",
+      "source": "repubblica",
+      "sourceName": "la Repubblica",
+      "categories": [
+        "Esteri"
+      ],
+      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Guerra in Ucraina, tregua umanitaria a Oleshky. Melania Trump: “È merito mio”",
+      "addedAt": "2026-10-23T19:35:35.777Z"
+    },
+    {
+      "slug": "rim-2026-10-23-repubblica-maignan-valanga-di-odio-social-dopo-26c897",
+      "title": "Maignan, valanga di odio social dopo Bournemouth. Il Milan: “Insulti inaccettabili”",
+      "summary": "Il portiere oggetto di messaggi di stampo razzista dopo l’espulsione in Europa League",
+      "date": "2026-10-23T18:58:32.000Z",
+      "url": "https://www.repubblica.it/sport/calcio/2026/10/23/news/maignan_odio_social_bournemouth_razzismo_milan_condanna-425671203/",
+      "source": "repubblica",
+      "sourceName": "la Repubblica",
+      "categories": [
+        "Calcio"
+      ],
+      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Maignan, valanga di odio social dopo Bournemouth. Il Milan: “Insulti inaccettabili”",
+      "addedAt": "2026-10-23T19:35:35.777Z"
+    },
+    {
+      "slug": "rim-2026-10-23-ansa-burnham-sente-trump-ucraina-abbia-pieno-b748d7",
+      "title": "Burnham sente Trump, Ucraina abbia pieno accesso a Starlink",
+      "summary": "Premier Gb elogia azione del presidente Usa per 'portare Putin al tavolo negoziale'",
+      "date": "2026-10-23T18:42:45.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/10/23/burnham-sente-trump-ucraina-abbia-pieno-accesso-a-starlink_6f4bada4-486d-4c64-8500-78e774fae57e.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Burnham sente Trump, Ucraina abbia pieno accesso a Starlink",
+      "addedAt": "2026-10-23T19:35:35.514Z"
+    },
+    {
+      "slug": "rim-2026-10-23-ansa-tajani-previsto-domattina-rientro-in-italia-608c2a",
+      "title": "Tajani, previsto domattina rientro in Italia delle 5 attiviste fermate in Israele",
+      "summary": "Hanno ricevuto visita consolare all'aeroporto di Tel Aviv",
+      "date": "2026-10-23T18:31:11.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/10/23/tajani-previsto-domattina-rientro-in-italia-delle-5-attiviste-fermate-in-israele_3c4a021e-371b-482d-b5d4-cbda4bfb4718.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Tajani, previsto domattina rientro in Italia delle 5 attiviste fermate in Israele",
+      "addedAt": "2026-10-23T19:35:35.514Z"
+    },
+    {
+      "slug": "rim-2026-10-23-ansa-leonor-ai-premi-principessa-asturie-la-54f79d",
+      "title": "Leonor ai Premi Principessa Asturie, 'la speranza contro il caos e gli estremismi'",
+      "summary": "Dall'astronauta Kock, a Patti Smith a Lionel Messi, 8 riconoscimenti nel segno del dialogo",
+      "date": "2026-10-23T18:07:32.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/10/23/leonor-ai-premi-principessa-asturie-la-speranza-contro-il-caos-e-gli-estremismi_ea62a7c2-6e4e-456d-b9ab-e322dc0d003e.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Leonor ai Premi Principessa Asturie, 'la speranza contro il caos e gli estremismi'",
+      "addedAt": "2026-10-23T19:35:35.514Z"
+    },
+    {
+      "slug": "rim-2026-10-23-ansa-conte-agli-alleati-il-confronto-sul-956730",
+      "title": "Conte agli alleati, 'il confronto sul programma il prima possibile'",
+      "summary": "'Primarie aperte a tutti, chi sono io per limitarle a due?'",
+      "date": "2026-10-23T17:51:43.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/10/23/conte-agli-alleati-il-confronto-sul-programma-il-prima-possibile_4b005fca-fef6-4edf-8167-69fe9b347705.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Conte agli alleati, 'il confronto sul programma il prima possibile'",
+      "addedAt": "2026-10-23T19:35:35.514Z"
+    },
+    {
+      "slug": "rim-2026-10-23-ansa-franceschini-orlando-speranza-lanciano-i-5a2b5c",
+      "title": "Franceschini-Orlando-Speranza lanciano i comitati per l'alternativa verso il 2027",
+      "summary": "Documento Montepulciano:'Avviare percorso di coinvolgimento e mobilitazione nei territori'",
+      "date": "2026-10-23T17:50:07.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/10/23/franceschini-orlando-speranza-lanciano-i-comitati-per-lalternativa-verso-il-2027_f9c14860-166a-46b7-9776-4013b3eeb939.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Franceschini-Orlando-Speranza lanciano i comitati per l'alternativa verso il 2027",
+      "addedAt": "2026-10-23T19:35:35.514Z"
+    },
+    {
+      "slug": "rim-2026-10-23-ansa-onorato-schlein-parlo-anche-con-lei-salis-c0cadf",
+      "title": "Onorato, 'Schlein? Parlo anche con lei, Salis una risorsa fondamentale'",
+      "summary": "'Con la sindaca di Genova amici da anni. Non ho nulla contro Renzi'",
+      "date": "2026-10-23T17:48:55.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/10/23/onorato-schlein-parlo-anche-con-lei-salis-una-risorsa-fondamentale_205d0468-902c-47c5-989d-5903b5d360fd.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Onorato, 'Schlein? Parlo anche con lei, Salis una risorsa fondamentale'",
+      "addedAt": "2026-10-23T19:35:35.515Z"
+    },
+    {
+      "slug": "rim-2026-10-23-repubblica-motogp-i-piloti-vogliono-piano-di-2a32f6",
+      "title": "Motogp, i piloti vogliono piano di evacuazione e di rimpatrio per la gara in Qatar: chiedono garanzie scritte",
+      "summary": "Gli atleti si sono riuniti per discutere di sicurezza per il gp sul circuito di Losail, già rimandato ad aprile",
+      "date": "2026-10-23T17:45:15.000Z",
+      "url": "https://www.repubblica.it/sport/moto-gp/2026/10/23/news/motogp_piloti_qatar_garanzie-425671002/",
+      "source": "repubblica",
+      "sourceName": "la Repubblica",
+      "categories": [
+        "Moto GP"
+      ],
+      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Motogp, i piloti vogliono piano di evacuazione e di rimpatrio per la gara in Qatar: chiedono garanzie scritte",
+      "addedAt": "2026-10-23T19:35:35.778Z"
+    },
+    {
+      "slug": "rim-2026-10-23-lastampa-gp-usa-leclerc-vola-nelle-libere-incidente-52764e",
+      "title": "Gp Usa: Leclerc vola nelle libere. Incidente per il figlio di Wolff nei kart",
+      "summary": "Charles davanti a Verstappen, Antonelli quinto. Alle 23 la seconda sessione. Spavento per il team principal Mercedes: «Per fortuna Jack sta bene, ma dobbiamo innalzare il livello di sicurezzaZ",
+      "date": "2026-10-23T17:04:00.000Z",
+      "url": "https://www.lastampa.it/sport/2026/10/23/news/gp_usa_leclerc_vola_nelle_libere_incidente_per_il_figlio_di_wolff_nei_kart-15775444/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/sport"
+      ],
+      "author": "dal nostro inviato Jacopo D'orsi",
+      "theme": "sigurnost",
+      "image": "https://www.gedistatic.it/content/gnn/img/lastampa/2026/10/23/210442114-c01eb990-7969-4e81-afc7-ffc2c12cf831.jpg",
+      "imageAlt": "Gp Usa: Leclerc vola nelle libere. Incidente per il figlio di Wolff nei kart",
+      "addedAt": "2026-10-23T19:35:39.941Z"
+    },
     {
       "slug": "rim-2026-10-23-ansa-il-prezzo-del-gas-sale-a-93-21-euro-al-c6a523",
       "title": "Il prezzo del gas sale a 93,21 euro al megawattora",
@@ -117,6 +268,40 @@
       "addedAt": "2026-10-23T16:58:51.147Z"
     },
     {
+      "slug": "rim-2026-10-23-repubblica-accuse-shock-di-pedopornografia-al-papa-di-6b831f",
+      "title": "Accuse shock di pedopornografia al papà di Meghan Markle. I tabloid: “Ora dovremmo scusarci con lei”",
+      "summary": "Clamorose rivelazioni sull’82enne Thomas, che potrebbero ribaltare la versione dell’uomo “abbandonato dalla figlia dopo esser diventata famosa”. La duchessa: “Invece lo sapevo dal 2018, dovevo proteggere i miei figli”. Il ruolo del fratellastro e il mea culpa del “Sun”",
+      "date": "2026-10-23T16:31:13.000Z",
+      "url": "https://www.repubblica.it/esteri/2026/10/23/news/meghan_markle_accuse_di_pedopornografia_al_papa_royal_family-425670810/",
+      "source": "repubblica",
+      "sourceName": "la Repubblica",
+      "categories": [
+        "Esteri"
+      ],
+      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Accuse shock di pedopornografia al papà di Meghan Markle. I tabloid: “Ora dovremmo scusarci con lei”",
+      "addedAt": "2026-10-23T19:35:35.778Z"
+    },
+    {
+      "slug": "rim-2026-10-23-lastampa-gino-cecchettin-spero-che-il-film-su-giulia-d476ec",
+      "title": "Gino Cecchettin: “Spero che il film su Giulia apra un percorso di salvezza”",
+      "summary": "«Se domani non torno» sul femminicidio del 2023 è in anteprima alla Festa di Roma con Alice nella città. Dal 5 novembre sarà in sala",
+      "date": "2026-10-23T16:26:00.000Z",
+      "url": "https://www.lastampa.it/spettacoli/2026/10/23/news/gino_cecchettin_film_giulia_se_domani_non_torno-15775411/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/spettacoli"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "drustvo",
+      "image": "https://www.gedistatic.it/content/gnn/img/lastampa/2026/10/23/202637186-3cb4afee-e57b-45e1-b915-de5e550b121d.jpg",
+      "imageAlt": "Gino Cecchettin: “Spero che il film su Giulia apra un percorso di salvezza”",
+      "addedAt": "2026-10-23T19:35:39.941Z"
+    },
+    {
       "slug": "rim-2026-10-23-ansa-mosca-cessate-il-fuoco-a-oleshky-dal-27-b4d4a2",
       "title": "Mosca, cessate il fuoco a Oleshky dal 27 ottobre",
       "summary": "Lo ha detto il capo di Stato maggiore, Valery Gerasimov",
@@ -130,6 +315,23 @@
       "image": "",
       "imageAlt": "Mosca, cessate il fuoco a Oleshky dal 27 ottobre",
       "addedAt": "2026-10-23T16:58:51.147Z"
+    },
+    {
+      "slug": "rim-2026-10-23-repubblica-sismi-in-sicilia-vicini-a-una-catena-di-c32108",
+      "title": "Sismi in Sicilia vicini a una catena di vulcani sottomarini. Ma l’Ingv esclude il rischio eruzione",
+      "summary": "Gli epicentri a metà strada tra il gigantesco Marsili, che si trova al centro del Tirreno, e l’arco vulcanico delle Eolie, che comprende altri tre crateri poco monitorati",
+      "date": "2026-10-23T16:15:01.000Z",
+      "url": "https://www.repubblica.it/cronaca/2026/10/23/news/sequenza_sismica_palermo_vulcani_sottomarini_marsili-425670739/",
+      "source": "repubblica",
+      "sourceName": "la Repubblica",
+      "categories": [
+        "Cronaca"
+      ],
+      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Sismi in Sicilia vicini a una catena di vulcani sottomarini. Ma l’Ingv esclude il rischio eruzione",
+      "addedAt": "2026-10-23T19:35:35.778Z"
     },
     {
       "slug": "rim-2026-10-23-ansa-lo-spread-tra-btp-e-bund-chiude-in-calo-a-6b2e1c",
@@ -162,6 +364,23 @@
       "addedAt": "2026-10-23T16:58:51.148Z"
     },
     {
+      "slug": "rim-2026-10-23-repubblica-kompany-in-ospedale-collasso-in-campo-d059f5",
+      "title": "Kompany in ospedale, collasso in campo durante l’allenamento per il tecnico del Bayern Monaco",
+      "summary": "L’allenatore del club tedesco è stato trasportato in ambulanza. Un elicottero era atterrato per il primo soccorso",
+      "date": "2026-10-23T15:51:51.000Z",
+      "url": "https://www.repubblica.it/sport/calcio/esteri/2026/10/23/news/kompany_bayern_monaco_collasso_ospedale-425670668/",
+      "source": "repubblica",
+      "sourceName": "la Repubblica",
+      "categories": [
+        "Esteri"
+      ],
+      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Kompany in ospedale, collasso in campo durante l’allenamento per il tecnico del Bayern Monaco",
+      "addedAt": "2026-10-23T19:35:35.778Z"
+    },
+    {
       "slug": "rim-2026-10-23-ansa-borsa-l-europa-chiude-debole-timori-per-ad7f2d",
       "title": "Borsa: l'Europa chiude debole, timori per inflazione e Ia",
       "summary": "Francoforte (-0,75%), Parigi (-0,36%) e Londra (-0,32%)",
@@ -192,6 +411,57 @@
       "addedAt": "2026-10-23T16:58:51.148Z"
     },
     {
+      "slug": "rim-2026-10-23-lastampa-eni-proroga-il-tetto-ai-prezzi-di-benzina-e-61724c",
+      "title": "Eni proroga il tetto ai prezzi di benzina e diesel fino a fine anno. Livelli valutati ogni mese",
+      "summary": "È l'annuncio fatto dall'amministratore delegato di Eni Claudio Descalzi, dopo un colloquio telefonico con alcuni quotidiani. L’ad: «Giusto fare degli sforzi per andare incontro ai nostri clienti»",
+      "date": "2026-10-23T14:52:00.000Z",
+      "url": "https://www.lastampa.it/economia/2026/10/23/news/eni_proroga_il_tetto_ai_prezzi_di_benzina_e_diesel_fino_a_fine_anno_livelli_valutati_ogni_mese-15775268/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/economia"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "ai",
+      "image": "https://www.gedistatic.it/content/gnn/img/lastampa/2026/10/23/185205175-338318f2-bf67-4e19-9f94-74a2cca56f16.jpg",
+      "imageAlt": "Eni proroga il tetto ai prezzi di benzina e diesel fino a fine anno. Livelli valutati ogni mese",
+      "addedAt": "2026-10-23T19:35:39.941Z"
+    },
+    {
+      "slug": "rim-2026-10-23-lastampa-grimaldi-avs-incontra-i-tre-minorenni-667c77",
+      "title": "Grimaldi (Avs) incontra i tre minorenni fermati con le molotov: \"Non volevano fare male a nessuno\"",
+      "summary": "Il vicecapogruppo di Alleanza Verdi e Sinistra alla Camera, Marco Grimaldi, ha incontrato al Ferrante Aporti i tre ragazzi tra i 15 e i 17 anni fermati durante il corteo contro il caro vita: secondo l’accusa, avevano materiale per confezionare bottiglie incendiarie e un ordigno già pronto. “Mi sono sembrati molto giovani e fragili, sentono di avere deluso le famiglie e sperano in un’altra possibilità”, racconta il deputato, precisando che il procedimento è ancora in corso. Grimaldi respinge inoltre l’idea che avessero “un disegno eversivo” e critica chi invoca la “remigrazione”: “Sono nati e cresciuti qui, dove volete mandarli?”. I fermi sono stati convalidati e per i tre è stato disposto…",
+      "date": "2026-10-23T14:34:00.000Z",
+      "url": "https://www.lastampa.it/torino/2026/10/23/video/grimaldi_avs_incontra_i_tre_minorenni_fermati_con_le_molotov_non_volevano_fare_male_a_nessuno-15775222/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/torino"
+      ],
+      "author": "Giulia Ricci",
+      "theme": "drustvo",
+      "image": "https://www.gedistatic.it/content/gnn/img/lastampa/2026/10/23/183400096-139e6b7b-91eb-48e1-8f03-b6524c1df4a3.jpg",
+      "imageAlt": "Grimaldi (Avs) incontra i tre minorenni fermati con le molotov: \"Non volevano fare male a nessuno\"",
+      "addedAt": "2026-10-23T19:35:39.941Z"
+    },
+    {
+      "slug": "rim-2026-10-23-lastampa-kompany-collassa-durante-l-allenamento-del-5133df",
+      "title": "Kompany collassa durante l’allenamento del Bayern per un’infezione virale: trasferito in ospedale",
+      "summary": "I medici avevano già consigliato nei giorni scorsi al tecnico belga di fermarsi, ma tra Bundesliga e Champions aveva continuato a lavorare con la squadra",
+      "date": "2026-10-23T14:31:00.000Z",
+      "url": "https://www.lastampa.it/sport/2026/10/23/news/kompany_allenatore_collassa_ricovero_ospedale_infezione_virale-15775218/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/sport"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "drustvo",
+      "image": "https://www.gedistatic.it/content/gnn/img/lastampa/2026/10/23/183123806-03ca99d9-e298-411d-9535-5aee2cfcfbe3.jpg",
+      "imageAlt": "Kompany collassa durante l’allenamento del Bayern per un’infezione virale: trasferito in ospedale",
+      "addedAt": "2026-10-23T19:35:39.941Z"
+    },
+    {
       "slug": "rim-2026-10-23-ansa-tajani-inaccettabile-fermo-delle-italiane-5a38dd",
       "title": "Tajani, 'inaccettabile fermo delle italiane dall'Idf, non hanno commesso reati'",
       "summary": "'Ne chiediamo la liberazione immediata'",
@@ -220,6 +490,23 @@
       "image": "",
       "imageAlt": "Tajani, 'non è colpendo popolazione palestinese che Israele avrà sicurezza'",
       "addedAt": "2026-10-23T14:16:18.253Z"
+    },
+    {
+      "slug": "rim-2026-10-23-lastampa-l-eurodeputata-vi-indignate-per-un-ffe7e3",
+      "title": "L'eurodeputata : \"Vi indignate per un cassonetto che brucia, non per chi distrugge la vita delle persone\"",
+      "summary": "L’eurodeputata spagnola di Podemos Irene Montero interviene sulle proteste contro il caro vita in Italia e Spagna, accusando la politica di indignarsi per “un cassonetto bruciato” o “un sampietrino rotto” e di ignorare il disagio sociale. “Chiedete il pugno duro anche contro banche, grandi imprese e aziende energetiche che distruggono la vita delle persone. Siete parte del problema”, afferma Montero.",
+      "date": "2026-10-23T13:58:00.000Z",
+      "url": "https://www.lastampa.it/cronaca/2026/10/23/video/leurodeputata__vi_indignate_per_un_cassonetto_che_brucia_non_per_chi_distrugge_la_vita_delle_persone-15775193/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/cronaca"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "energija",
+      "image": "https://www.gedistatic.it/content/gnn/img/lastampa/2026/10/23/175845755-c4463d0d-2a1a-4470-ac19-59cdb620de04.jpg",
+      "imageAlt": "L'eurodeputata : \"Vi indignate per un cassonetto che brucia, non per chi distrugge la vita delle persone\"",
+      "addedAt": "2026-10-23T19:35:39.941Z"
     },
     {
       "slug": "rim-2026-10-23-repubblica-uomo-spara-tra-la-folla-alla-periferia-di-07f12f",
@@ -6305,294 +6592,6 @@
       "author": "Caterina Stamin",
       "theme": "drustvo",
       "addedAt": "2026-10-19T21:12:25.333Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-repubblica-samanta-e-mariam-in-casa-la-fatica-e-513ec6",
-      "title": "Samanta e Mariam: “In casa la fatica è arrivare a fine mese, abbiamo promosso noi Bologna in piazza”",
-      "summary": "Le ragazze, 17 e 21 anni, raccontano la manifestazione contro il carovita poi “presa” da collettivi e giovani di seconda generazione: “Ci siamo messe in mezzo a questi violenti per cercare di difendere i partecipanti e la città. La polizia non ci ha aiutato”",
-      "date": "2026-10-19T11:32:32.000Z",
-      "url": "https://bologna.repubblica.it/cronaca/2026/10/19/news/bologna_in_piazza_samanta_mariam_ragazze_manifestazione_chi_sono-425657434/?rss",
-      "source": "repubblica",
-      "sourceName": "la Repubblica",
-      "categories": [
-        "cronaca"
-      ],
-      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
-      "theme": "ai",
-      "addedAt": "2026-10-19T20:54:35.272Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-repubblica-milano-salvini-qualcuno-cercava-il-morto-e-d69e33",
-      "title": "Milano, Salvini: “Qualcuno cercava il morto”. E chiede di accelerare sulla stretta alla cittadinanza",
-      "summary": "Il leader della Lega a via Bellerio con Silvia Sardone e Igor Iezzi",
-      "date": "2026-10-19T11:31:50.000Z",
-      "url": "https://www.repubblica.it/politica/2026/10/19/news/milano_violenze_salvini_stretta_cittadinanza_maranza-425658064/?rss",
-      "source": "repubblica",
-      "sourceName": "la Repubblica",
-      "categories": [
-        "politica"
-      ],
-      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T20:54:35.272Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-sole24-vitaliano-borromeo-arese-chi-era-il-9fbac9",
-      "title": "Vitaliano Borromeo Arese, chi era il principe che ha rilanciato le Terre Borromeo",
-      "summary": "Le Terre Borromeo dicono addio a una delle persone che più hanno investito nella valorizzazione del patrimonio storico, artistico e naturalistico della nobile famiglia che ha legato la sua storia...",
-      "date": "2026-10-19T11:18:05.000Z",
-      "url": "https://www.ilsole24ore.com/art/vitaliano-borromeo-arese-chi-era-principe-che-ha-rilanciato-terre-borromeo-AJpn78nB",
-      "source": "sole24",
-      "sourceName": "Il Sole 24 Ore",
-      "categories": [
-        "Italia"
-      ],
-      "author": "di Vittoria Belluschi",
-      "theme": "sigurnost",
-      "addedAt": "2026-10-19T20:54:47.232Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-lastampa-il-latinorum-di-littizzetto-nella-letterina-fd04bf",
-      "title": "Il latinorum di Littizzetto nella letterina a Papa Leone: \"Ora et riposa, impegna mollamus\"",
-      "summary": "Dopo l’intervento al polmone subito da Papa Leone XIV, Luciana Littizzetto gli dedica la sua letterina a “Che tempo che fa”. Tra auguri per la riuscita dell’operazione ed esortazioni a riposare e a ridurre gli impegni, la comica si rivolge al Pontefice in un latino tutto suo: “Mi raccomandum, ora et riposa. Et impegna mollamus”.",
-      "date": "2026-10-19T11:17:00.000Z",
-      "url": "https://www.lastampa.it/spettacoli/2026/10/19/video/littizzetto_letterina_papa_leone_latinorum-15770935/",
-      "source": "lastampa",
-      "sourceName": "La Stampa",
-      "categories": [
-        "/lastampa/spettacoli"
-      ],
-      "author": "(Redazione La Stampa)",
-      "theme": "sigurnost",
-      "addedAt": "2026-10-19T21:12:25.334Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-lastampa-tullio-de-piscopo-mio-padre-mi-disse-che-57d7ae",
-      "title": "Tullio De Piscopo: \"Mio padre mi disse che Pino Daniele aveva avuto più coraggio di me\"",
-      "summary": "«Mio padre mi disse che Pino Daniele aveva avuto più coraggio di me». Tullio De Piscopo, intervistato al Teatro Colosseo di Torino durante il tour che celebra i suoi 80 anni, ripercorre una carriera lunga oltre sessant'anni, dagli esordi nei locali di Napoli alle collaborazioni con alcuni dei più grandi nomi della musica italiana. Tra i ricordi più forti c'è il primo incontro con Pino Daniele, dopo che il padre gli aveva parlato di un giovane cantante capace di raccontare Napoli senza paura. LEGGI ANCHE “La musica non mi stanca come va il mondo sì” | Tullio De Piscopo: “Con Andamento Lento comprai casa. A 80 anni i giovani mi danno ossigeno” | De Piscopo: con Pino Daniele scattò immediata…",
-      "date": "2026-10-19T11:12:00.000Z",
-      "url": "https://www.lastampa.it/spettacoli/2026/10/19/video/tullio_de_piscopo_ricordo_pino_daniele_aneddoto_padre_coraggio-15770931/",
-      "source": "lastampa",
-      "sourceName": "La Stampa",
-      "categories": [
-        "/lastampa/spettacoli"
-      ],
-      "author": "DAVIDE CAVALLERI",
-      "theme": "ai",
-      "addedAt": "2026-10-19T21:12:25.334Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-lastampa-dall-uovo-artificiale-al-chip-piu-piccolo-1a2283",
-      "title": "Dall’uovo artificiale al chip più piccolo, le 300 invenzioni più originali del 2026",
-      "summary": "Ci sono anche la protesi per il ginocchio stampata in 3D, un tablet tattile per i tifosi non vedenti, una vernice per pareti che regola l’umidità ambientale e un robot agricolo",
-      "date": "2026-10-19T11:10:00.000Z",
-      "url": "https://www.lastampa.it/cronaca/2026/10/19/news/dall_uovo_artificiale_al_chip_piu_piccolo_le_300_invenzioni_piu_originali_del_2026-15770926/",
-      "source": "lastampa",
-      "sourceName": "La Stampa",
-      "categories": [
-        "/lastampa/cronaca"
-      ],
-      "author": "(Redazione La Stampa)",
-      "theme": "ai",
-      "addedAt": "2026-10-19T21:12:25.334Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-repubblica-maire-con-node-arriva-la-fabbrica-di-a757e7",
-      "title": "Maire, con Node arriva la fabbrica di tecnologie per la transizione",
-      "summary": "Nextchem (Maire) lancia il nuovo centro a Roma: laboratori e impianti pilota. Di Amato: “Bene il nucleare, dà stabilità, ma serve un mix con le rinnovabili”",
-      "date": "2026-10-19T10:37:58.000Z",
-      "url": "https://www.repubblica.it/economia/2026/10/19/news/maire_con_node_arriva_la_fabbrica_di_tecnologie_per_la_transizione-425657952/?rss",
-      "source": "repubblica",
-      "sourceName": "la Repubblica",
-      "categories": [
-        "economia"
-      ],
-      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
-      "theme": "ai",
-      "addedAt": "2026-10-19T20:54:35.274Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-lastampa-juve-fiducia-a-spalletti-ma-a-tempo-c1b622",
-      "title": "Juve, fiducia a Spalletti ma a tempo",
-      "summary": "I dirigenti confidano che il tecnico possa riprendere le redini della situazione. Però i risultati devono arrivare in fretta. Dopo il ko con la Lazio l’ex ct si rimette in gioco e prova a coinvolgere senatori e spogliatoio. Deve riconquistare anche i tifosi: la piazza invoca Conte. Sullo sfondo c’è Pioli",
-      "date": "2026-10-19T10:26:00.000Z",
-      "url": "https://www.lastampa.it/sport/2026/10/19/news/juve_fiducia_a_spalletti_ma_a_tempo-15770906/",
-      "source": "lastampa",
-      "sourceName": "La Stampa",
-      "categories": [
-        "/lastampa/sport"
-      ],
-      "author": "Fabio Riva, Nicola Balice",
-      "theme": "sigurnost",
-      "addedAt": "2026-10-19T21:12:25.334Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-lastampa-parigi-giovani-incappucciati-soccorrono-un-3d3768",
-      "title": "Parigi, giovani incappucciati soccorrono un anziano in difficoltà tra i lacrimogeni",
-      "summary": "Nel pieno della manifestazione del 17 ottobre a Parigi, alcuni giovani con il volto coperto si fermano ad aiutare un anziano in difficoltà: lo sorreggono e lo accompagnano lontano dai lacrimogeni. La scena, pubblicata dal fotografo Johnny “Albatros” Faundez come uno dei “gesti invisibili” del corteo, mostra un volto diverso della mobilitazione raccontata soprattutto per gli scontri, gli incendi e i saccheggi. In tutta la Francia centinaia di migliaia di persone erano scese in piazza contro il caro vita e il deterioramento dei servizi pubblici.",
-      "date": "2026-10-19T10:25:00.000Z",
-      "url": "https://www.lastampa.it/esteri/2026/10/19/video/proteste_parigi_lacrimogeni_giovani_soccorrono_anziano-15770903/",
-      "source": "lastampa",
-      "sourceName": "La Stampa",
-      "categories": [
-        "/lastampa/esteri"
-      ],
-      "author": "(Redazione La Stampa)",
-      "theme": "ai",
-      "addedAt": "2026-10-19T21:12:25.333Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-repubblica-costumi-da-eroi-meme-e-saccheggi-per-f882cf",
-      "title": "“Costumi da eroi, meme e saccheggi per emulare la Francia. La protesta è anche content per i social”",
-      "summary": "Intervista a Leonardo Bianchi, esperto di mobilitazioni e cultura digitale: “I giovanissimi si autoconvocano su TikTok. Si muovono in piccoli gruppi fuori dalle organizzazioni tradizionali. S’ispirano alle manifestazioni estere e pensano le pratiche politiche come trend virali”",
-      "date": "2026-10-19T10:19:19.000Z",
-      "url": "https://www.repubblica.it/politica/2026/10/19/news/bianchi_meme_saccheggi_francia_protesta_italia_social-425657584/?rss",
-      "source": "repubblica",
-      "sourceName": "la Repubblica",
-      "categories": [
-        "politica"
-      ],
-      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
-      "theme": "sigurnost",
-      "addedAt": "2026-10-19T20:54:35.272Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-sole24-tir-la-protesta-mette-sotto-pressione-le-ad6b16",
-      "title": "Tir, la protesta mette sotto pressione le filiere del Sud: merci ferme e scaffali vuoti",
-      "summary": "Blocchi e rallentamenti sulle autostrade campane, presidi dalla Calabria al Molise. Coldiretti Puglia: celle piene e prodotti deperibili a rischio. In Sicilia apertura al trasporto dell’ortofrutta",
-      "date": "2026-10-19T09:56:00.000Z",
-      "url": "https://www.ilsole24ore.com/art/tir-protesta-mette-sotto-pressione-filiere-sud-merci-ferme-e-scaffali-vuoti-AJyn15nB",
-      "source": "sole24",
-      "sourceName": "Il Sole 24 Ore",
-      "categories": [
-        "Economia"
-      ],
-      "author": "di Nino Amadore",
-      "theme": "sport",
-      "addedAt": "2026-10-19T20:54:47.233Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-repubblica-verso-plebiscito-contro-le-ops-di-lovaglio-77dcfd",
-      "title": "Verso plebiscito contro le Ops di Lovaglio, che prova a salvare la fusione Mps-Mediobanca",
-      "summary": "A Siena esplode il caso Coppini, resa dei conti con il presidente della Fondazione",
-      "date": "2026-10-19T09:53:47.000Z",
-      "url": "https://www.repubblica.it/economia/2026/10/19/news/verso_plebiscito_contro_le_ops_di_lovaglio_che_prova_a_salvare_la_fusione_mps-mediobanca-425657855/?rss",
-      "source": "repubblica",
-      "sourceName": "la Repubblica",
-      "categories": [
-        "economia"
-      ],
-      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T20:54:35.274Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-repubblica-viaggi-per-nove-italiani-su-dieci-la-2f5266",
-      "title": "Viaggi: per nove italiani su dieci la connessione a internet è fondamentale per sentirsi al sicuro",
-      "summary": "Lo rivela un’indagine di YouGov: tra gli strumenti più utilizzati, le app da viaggio e quelle di traduzione, oltre ai sistemi di geolocalizzazione",
-      "date": "2026-10-19T09:40:21.000Z",
-      "url": "https://www.repubblica.it/economia/rapporti/osserva-italia/osserva-viaggi/2026/10/19/news/viaggi_per_nove_italiani_su_dieci_la_connessione_a_internet_e_fondamentale_per_sentirsi_al_sicuro-425657821/?rss",
-      "source": "repubblica",
-      "sourceName": "la Repubblica",
-      "categories": [
-        "economia/rapporti/osserva-italia/osserva-viaggi"
-      ],
-      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
-      "theme": "ai",
-      "addedAt": "2026-10-19T20:54:35.274Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-repubblica-morte-di-david-rossi-la-commissione-a9496a",
-      "title": "Morte di David Rossi, la commissione parlamentare d’inchiesta: “Mussari mandante dell’intimidazione”",
-      "summary": "E’ stato individuato anche un militante del calcio storico fiorentino tra i responsabili oltre all’allora presidente del Monte dei Paschi. “Non ho nulla a che fare con questa vicenda”",
-      "date": "2026-10-19T09:29:07.000Z",
-      "url": "https://firenze.repubblica.it/cronaca/2026/10/19/news/morte_david_rossi_commissione_parlamentare_inchiesta_mussari_mandante-425657784/",
-      "source": "repubblica",
-      "sourceName": "la Repubblica",
-      "categories": [
-        "Cronaca"
-      ],
-      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
-      "theme": "politika",
-      "addedAt": "2026-10-19T20:54:35.271Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-lastampa-cortei-trump-anche-in-italia-proteste-390cc1",
-      "title": "Cortei, Trump: “Anche in Italia proteste dovute all'immigrazione”. A Milano in arrivo 500 soldati",
-      "summary": "Il presidente Usa: «Anche in Italia le proteste hanno a che fare con l'immigrazione»",
-      "date": "2026-10-19T09:20:00.000Z",
-      "url": "https://www.lastampa.it/politica/2026/10/19/news/cortei_in_corso_a_palazzo_chigi_il_vertice_sull_ordine_pubblico_presieduto_da_meloni-15770857/",
-      "source": "lastampa",
-      "sourceName": "La Stampa",
-      "categories": [
-        "/lastampa/politica"
-      ],
-      "author": "(Redazione La Stampa)",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:12:25.332Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-lastampa-proteste-in-albania-rama-incolpa-le-0ec093",
-      "title": "Proteste in Albania, Rama incolpa le “interferenze russe”. E promette un premio ai poliziotti",
-      "summary": "Dopo una settimana di pesanti scontri, il premier albanese Edi Rama in un video ribadisce di non volersi dimettere. Se la prende con le famiglie degli studenti in piazza: «Non proteggete i minori, pagherete voi». Agli agenti in prima fila, 2500 euro di bonus",
-      "date": "2026-10-19T09:18:00.000Z",
-      "url": "https://www.lastampa.it/esteri/2026/10/19/news/proteste_in_albania_rama_invoca_le_interferenze_russe_e_promette_un_premio_ai_poliziotti-15770855/",
-      "source": "lastampa",
-      "sourceName": "La Stampa",
-      "categories": [
-        "/lastampa/esteri"
-      ],
-      "author": "Letizia Tortello",
-      "theme": "ai",
-      "addedAt": "2026-10-19T21:12:25.333Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-repubblica-scontri-a-milano-i-genitori-fuori-dalla-26a91e",
-      "title": "Scontri a Milano, i genitori fuori dalla Questura: “Ero contento se ti spaccavano la testa”",
-      "summary": "Tra preoccupazione e rabbia, le voci di chi è andato a recuperare i figli: “Lui appartiene al gruppo dei pirla, si ferma a guardare e… Oggi aveva il colloquio di lavoro”. “Dopo trent’anni in Italia mi vergogno a venire qui per colpa sua”",
-      "date": "2026-10-19T09:17:59.000Z",
-      "url": "https://milano.repubblica.it/cronaca/2026/10/19/news/scontri_milano_genitori_fuori_questura_prendere_figli-425657753/",
-      "source": "repubblica",
-      "sourceName": "la Repubblica",
-      "categories": [
-        "Cronaca"
-      ],
-      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
-      "theme": "sigurnost",
-      "addedAt": "2026-10-19T20:54:35.271Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-repubblica-panetta-i-danni-del-clima-oltre-i-200-7f1a9b",
-      "title": "Panetta: “I danni del clima oltre i 200 miliardi, raddoppiati da inizio anni”",
-      "summary": "Per il governatore della Banca d’Italia la mancanza di copertura assicurativa espone famiglie e imprese a gravi difficoltà finanziarie e costringe i governi a intervenire dopo i disastri, con oneri considerevoli per le finanze pubbliche",
-      "date": "2026-10-19T09:15:08.000Z",
-      "url": "https://www.repubblica.it/economia/2026/10/19/news/panetta_i_danni_del_clima_oltre_i_200_miliardi_raddoppiati_da_inizio_anni-425657735/?rss",
-      "source": "repubblica",
-      "sourceName": "la Repubblica",
-      "categories": [
-        "economia"
-      ],
-      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
-      "theme": "sigurnost",
-      "addedAt": "2026-10-19T20:54:35.274Z",
       "backfilled": true
     }
   ]
