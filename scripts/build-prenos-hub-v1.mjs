@@ -42,6 +42,7 @@ const LANG_LABEL = {
 const TARGETS = [
   ...SITES.map((site) => ({
     key: site.slug,
+    region: 'site',
     name: site.name,
     base: site.base,
     lang: site.lang || 'hr',
@@ -49,6 +50,7 @@ const TARGETS = [
   })),
   ...WORLD_PORTALS.map((portal) => ({
     key: portal.id,
+    region: 'world',
     name: portal.name,
     base: portal.base,
     lang: portal.lang,
@@ -56,23 +58,41 @@ const TARGETS = [
   }))
 ];
 
-/* Kopija postoji ili je nema — provjerava se na disku, ne u registru. */
+/* Adresa kopije je ugovor generatora, ne stanje na disku: `writePrenos`
+   objavljuje svaki tekst iz korpusa na svakoj adresi mreže, a kolumne idu u
+   vlastitu sekciju (/kolumna/ na samostalnim stranicama, /kolumne/ na
+   svjetskim izdanjima). Tako je popis isti u repozitoriju i u CI-ju, gdje
+   se izlaz svjetskih portala ne čuva (apps/world/site je u .gitignore). */
 function copyUrl(target, item) {
-  const candidates = [`prenos/${item.slug}`, `kolumna/${item.slug}`, `kolumne/${item.slug}`];
-  for (const candidate of candidates) {
-    if (existsSync(join(target.dir, candidate, 'index.html'))) {
-      return `${target.base}${candidate}/`;
-    }
+  const base = target.base;
+  if (item.kind === 'kolumna') {
+    return target.region === 'world' ? `${base}kolumne/${item.slug}/` : `${base}kolumna/${item.slug}/`;
   }
-  return null;
+  return `${base}prenos/${item.slug}/`;
 }
 
+/* Provjera stvarnosti tamo gdje je izlaz u repozitoriju: samostalne stranice
+   se čuvaju, pa se svaka najavljena kopija mora naći na disku. Svjetska
+   izdanja se grade u objavi, pa se za njih provjerava samo ugovor. */
+function missingCopy(target, item) {
+  if (target.region === 'world' || !existsSync(target.dir)) return null;
+  const relative = copyUrl(target, item).slice(target.base.length);
+  return existsSync(join(target.dir, relative, 'index.html')) ? null : relative;
+}
+
+const absent = [];
 const items = readCorpus(ROOT).map((item) => {
-  const copies = TARGETS
-    .map((target) => ({ target, url: copyUrl(target, item) }))
-    .filter((entry) => entry.url);
+  const copies = TARGETS.map((target) => {
+    const missing = missingCopy(target, item);
+    if (missing) absent.push(`${target.key}: ${missing}`);
+    return { target, url: copyUrl(target, item) };
+  });
   return { ...item, copies };
 }).filter((item) => item.copies.length > 0);
+
+if (absent.length) {
+  console.error(`::warning::Najavljena kopija ne postoji na disku (${absent.length}): ${absent.slice(0, 5).join(', ')}`);
+}
 
 const addresses = TARGETS.map((target) => ({
   target,
