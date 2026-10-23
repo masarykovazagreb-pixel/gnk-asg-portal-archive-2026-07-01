@@ -21,6 +21,7 @@ on:
       - 'tests/test-aktual-agent-task-scheduler-v1.mjs'
       - 'scripts/aktual-review-window-gate-v1.mjs'
       - 'tests/test-aktual-review-window-gate-v1.mjs'
+      - 'tests/test-infocentar-verified-delivery-timer-v1.mjs'
       - 'ops/aktual-editor-priorities-v1.json'
       - 'scripts/master-asg-agent-network-v2.mjs'
       - 'scripts/swarm-public-research-draft-v1.mjs'
@@ -107,6 +108,8 @@ jobs:
           node --test tests/test-aktual-existing-portals-daily-weekly-v1.mjs
       - name: Enforce 30-minute editorial delivery and release decision safety
         run: node --test tests/test-aktual-review-window-gate-v1.mjs
+      - name: Fail closed on unverified Infocentar delivery and incorrect 30-minute deadlines
+        run: node --test tests/test-infocentar-verified-delivery-timer-v1.mjs
       - name: Execute 150 free scoped agents and allocate prioritized tasks
         env:
           ASG_MONITOR_PUBLIC_FEEDS: '0'
