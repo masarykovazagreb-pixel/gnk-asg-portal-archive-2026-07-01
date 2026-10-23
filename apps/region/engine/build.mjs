@@ -874,7 +874,11 @@ function articlePage(channel, strings, item, items) {
   const heroImage = /^https:\/\//.test(item.image || '')
     ? `${PUBLIC}/api/img?u=${encodeURIComponent(item.image)}&w=1200`
     : artId ? `/assets/desk/art/${artId}-1200.webp` : '';
-  const ogImage = heroImage || `${PUBLIC}/assets/izdanja/${channel.id}-og.jpg`;
+  /* OG slika mora biti ista slika koju čitatelj vidi na stranici: fotografija
+     izvora ili ilustracija teme, nikad gradska grafika druge namjene. */
+  const ogImage = item.image
+    ? heroImage
+    : artId ? `${PUBLIC}/assets/desk/art/${artId}-og.jpg` : `${PUBLIC}/assets/izdanja/${channel.id}-og.jpg`;
   const body = `${header(channel, strings, '', root)}
 <main id="sadrzaj" class="article">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="${root}">${esc(channel.title)}</a> <span>›</span> <a href="${root}izvor/${item.source}/">${esc(item.sourceName)}</a> <span>›</span> <span>${esc(strings.analysis)}</span></nav>
@@ -977,7 +981,7 @@ ${footer(channel, strings)}`;
     type: 'article',
     published: item.date,
     modified: item.date,
-    ogAlt: item.imageAlt || item.title,
+    ogAlt: item.image ? (item.imageAlt || item.title) : `${strings.themeNames[artThemeOf(item)] || strings.themeNames[theme] || theme} — ${captionFor(channel.lang, 'artAlt')}`,
     image: ogImage,
     root
   });

@@ -806,7 +806,7 @@ function deskThumb(item, deskId) {
 }
 
 const cityCircles = () => `<ul class="iz-city" aria-label="Gradska izdanja AKTUAL MEDIA">${
-  CHANNELS.map((c) => `<li><a href="${c.base}" rel="external noopener" title="${esc(c.title)}"><img src="/assets/izdanja/${c.id}-240.webp" alt="${esc(c.city)}" width="96" height="96" loading="lazy" decoding="async"><span>${esc(c.city)}</span></a></li>`).join('')
+  CHANNELS.map((c) => `<li><a href="${c.base}" rel="external noopener" title="${esc(c.title)}"><img src="/assets/izdanja/${c.id}-240.webp" alt="${esc(c.city)}, ${esc(c.country)} — ${esc(c.title)}" width="96" height="96" loading="lazy" decoding="async"><span>${esc(c.city)}</span></a></li>`).join('')
 }</ul>`;
 
 function deskPage(id, desk) {
