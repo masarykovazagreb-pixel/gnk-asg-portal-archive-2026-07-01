@@ -25,7 +25,12 @@ const AUTHOR = /Nermin\s+Sefi[cć]|Sefi[cć]\s+Nermin/i;
 /* Proizvodi koje ovaj generator sada piše. Starije, zasebno generirane
    stranice (spt/, publications/ …) imaju svoje testove i svoj red čišćenja;
    ovdje se čuva pravilo za kanale, deskove, podatkovni desk i mrežu. */
-const SCOPE = ['kanal', 'izdanja', 'aktual-media', 'gnk-aktual', 'mreza', 'galerija'];
+const SCOPE = [
+  'kanal', 'izdanja', 'aktual-media', 'gnk-aktual', 'mreza', 'galerija',
+  /* Tehnologija budućnosti je dosad bila izvan opsega i zato je generator
+     godinama pisao hashtagove u meta keywords. Pravilo vrijedi za sve. */
+  'tehnologija-buducnosti', join('en', 'future-technology')
+];
 const HTML = [];
 const walk = (dir) => {
   for (const name of readdirSync(dir)) {

@@ -21,6 +21,7 @@ import { execFileSync } from 'node:child_process';
 import {
   BASE_DEFAULT, dayKey, decode, hash, isoDate, numberIn, slugify, stripTags, themeFor, CHECKS, UNIVERSAL_CHECKS
 } from './lib.mjs';
+import { decodeBody } from '../../region/engine/lib.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const APP = join(HERE, '..');
@@ -74,7 +75,7 @@ const fetchText = async (url, timeoutMs = 20000) => {
       headers: { 'user-agent': UA, accept: 'text/html,application/rss+xml,application/atom+xml,application/xml;q=0.9,*/*;q=0.8' }
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return await res.text();
+    return decodeBody(await res.arrayBuffer(), res);
   } finally {
     clearTimeout(timer);
   }
