@@ -92,6 +92,9 @@ export const PORTALS = [
     id: `world-${portal.id}`,
     url: portal.base,
     name: portal.city.toUpperCase(),
+    world: true,
+    country: portal.country,
+    countryEn: portal.countryEn,
     note: {
       hr: `svjetski portal · ${portal.country}`,
       en: `world portal · ${portal.countryEn}`
@@ -100,6 +103,133 @@ export const PORTALS = [
 ];
 
 const KEY = (url) => String(url || '').replace(/\/+$/, '').toLowerCase();
+
+/**
+ * Natpisi bloka mreže po jeziku izdanja. Imena izdanja i portala se ne
+ * prevode — prevodi se samo okvir (naslov, objašnjenje, "ovdje ste").
+ * Nepoznat jezik dobiva engleski, nikada hrvatski: hrvatski okvir na
+ * japanskoj stranici bio bi upravo greška koju ovaj modul sprječava.
+ */
+const MESH_TEXT = {
+  hr: {
+    aria: 'Mreža AKTUAL MEDIA', title: 'Mreža AKTUAL MEDIA',
+    lead: (n) => `${n} ulaza pod jednim izdavačem. Svaka stranica vodi na svaku drugu; nijedan link nije slijepa ulica.`,
+    self: 'ovdje ste', portals: 'Samostalni portali',
+    foot: 'Svaki portal ima vlastitu domenu, sitemap i feed, i istog urednika. Veze su obostrane: ova stranica vodi tamo, a ona vraća ovamo.',
+    worldPortal: 'svjetski portal'
+  },
+  sr: {
+    aria: 'Mreža AKTUAL MEDIA', title: 'Mreža AKTUAL MEDIA',
+    lead: (n) => `${n} ulaza pod jednim izdavačem. Svaka stranica vodi na svaku drugu; nijedan link nije slepa ulica.`,
+    self: 'ovde ste', portals: 'Samostalni portali',
+    foot: 'Svaki portal ima sopstveni domen, sitemap i feed, i istog urednika. Veze su obostrane: ova stranica vodi tamo, a ona vraća ovamo.',
+    worldPortal: 'svetski portal'
+  },
+  bs: {
+    aria: 'Mreža AKTUAL MEDIA', title: 'Mreža AKTUAL MEDIA',
+    lead: (n) => `${n} ulaza pod jednim izdavačem. Svaka stranica vodi na svaku drugu; nijedan link nije slijepa ulica.`,
+    self: 'ovdje ste', portals: 'Samostalni portali',
+    foot: 'Svaki portal ima vlastitu domenu, sitemap i feed, i istog urednika. Veze su obostrane: ova stranica vodi tamo, a ona vraća ovamo.',
+    worldPortal: 'svjetski portal'
+  },
+  hu: {
+    aria: 'AKTUAL MEDIA hálózat', title: 'Az AKTUAL MEDIA hálózata',
+    lead: (n) => `${n} belépő egy kiadónál. Minden oldal minden másikra vezet; egyetlen hivatkozás sem zsákutca.`,
+    self: 'itt van', portals: 'Önálló portálok',
+    foot: 'Minden portálnak saját domainje, sitemapje és feedje van, és ugyanaz a szerkesztő. A hivatkozások kölcsönösek: ez az oldal odavezet, az pedig vissza.',
+    worldPortal: 'világportál'
+  },
+  sl: {
+    aria: 'Mreža AKTUAL MEDIA', title: 'Mreža AKTUAL MEDIA',
+    lead: (n) => `${n} vhodov pri enem založniku. Vsaka stran povezuje na vsako drugo; nobena povezava ni slepa ulica.`,
+    self: 'tukaj ste', portals: 'Samostojni portali',
+    foot: 'Vsak portal ima svojo domeno, sitemap in feed ter istega urednika. Povezave so vzajemne: ta stran vodi tja, tista pa vrača sem.',
+    worldPortal: 'svetovni portal'
+  },
+  it: {
+    aria: 'Rete AKTUAL MEDIA', title: 'La rete AKTUAL MEDIA',
+    lead: (n) => `${n} ingressi sotto un solo editore. Ogni pagina porta a ogni altra; nessun link è un vicolo cieco.`,
+    self: 'sei qui', portals: 'Portali indipendenti',
+    foot: 'Ogni portale ha il proprio dominio, sitemap e feed, e lo stesso direttore. I link sono reciproci: questa pagina porta lì, quella riporta qui.',
+    worldPortal: 'portale mondiale'
+  },
+  bg: {
+    aria: 'Мрежа на AKTUAL MEDIA', title: 'Мрежата на AKTUAL MEDIA',
+    lead: (n) => `${n} входа при един издател. Всяка страница води към всяка друга; нито един линк не е задънена улица.`,
+    self: 'вие сте тук', portals: 'Самостоятелни портали',
+    foot: 'Всеки портал има собствен домейн, sitemap и feed и същия редактор. Връзките са взаимни: тази страница води там, а онази връща обратно.',
+    worldPortal: 'световен портал'
+  },
+  ro: {
+    aria: 'Rețeaua AKTUAL MEDIA', title: 'Rețeaua AKTUAL MEDIA',
+    lead: (n) => `${n} intrări sub un singur editor. Fiecare pagină duce către oricare alta; niciun link nu este o fundătură.`,
+    self: 'sunteți aici', portals: 'Portaluri independente',
+    foot: 'Fiecare portal are propriul domeniu, sitemap și feed, și același editor. Legăturile sunt reciproce: această pagină duce acolo, iar aceea revine aici.',
+    worldPortal: 'portal mondial'
+  },
+  en: {
+    aria: 'AKTUAL MEDIA network', title: 'The AKTUAL MEDIA network',
+    lead: (n) => `${n} entrances under one publisher. Every page links to every other; nothing here is a dead end.`,
+    self: 'you are here', portals: 'Independent portals',
+    foot: 'Every portal keeps its own domain, sitemap and feed, and the same editor. The links are mutual: this page points there, and that page points back.',
+    worldPortal: 'world portal'
+  },
+  id: {
+    aria: 'Jaringan AKTUAL MEDIA', title: 'Jaringan AKTUAL MEDIA',
+    lead: (n) => `${n} pintu masuk di bawah satu penerbit. Setiap halaman menaut ke semua halaman lain; tidak ada tautan buntu.`,
+    self: 'Anda di sini', portals: 'Portal mandiri',
+    foot: 'Setiap portal punya domain, sitemap, dan feed sendiri, serta editor yang sama. Tautannya timbal balik: halaman ini menaut ke sana, dan halaman itu menaut kembali.',
+    worldPortal: 'portal dunia'
+  },
+  pt: {
+    aria: 'Rede AKTUAL MEDIA', title: 'A rede AKTUAL MEDIA',
+    lead: (n) => `${n} entradas sob um só editor. Cada página leva a todas as outras; nenhum link é um beco sem saída.`,
+    self: 'você está aqui', portals: 'Portais independentes',
+    foot: 'Cada portal tem o seu próprio domínio, sitemap e feed, e o mesmo editor. Os links são mútuos: esta página aponta para lá, e aquela aponta de volta para cá.',
+    worldPortal: 'portal mundial'
+  },
+  ar: {
+    aria: 'شبكة أكتوال ميديا', title: 'شبكة أكتوال ميديا',
+    lead: (n) => `${n} مدخلًا تحت ناشر واحد. كل صفحة تصل إلى كل صفحة أخرى؛ ولا رابط يؤدي إلى طريق مسدود.`,
+    self: 'أنت هنا', portals: 'بوابات مستقلة',
+    foot: 'لكل بوابة نطاقها وخريطة موقعها وتغذيتها، والمحرر نفسه. الروابط متبادلة: هذه الصفحة تشير إلى هناك، وتلك تعود إلى هنا.',
+    worldPortal: 'بوابة عالمية'
+  },
+  ja: {
+    aria: 'AKTUAL MEDIA ネットワーク', title: 'AKTUAL MEDIA ネットワーク',
+    lead: (n) => `ひとつの発行者による ${n} の入口。どのページからも他のすべてのページへ移動でき、行き止まりのリンクはありません。`,
+    self: '現在地', portals: '独立ポータル',
+    foot: '各ポータルは独自のドメイン、サイトマップ、フィードを持ち、編集者は同じです。リンクは相互的で、このページはあちらへ、あちらはこちらへ戻ります。',
+    worldPortal: '世界ポータル'
+  },
+  zh: {
+    aria: 'AKTUAL MEDIA 网络', title: 'AKTUAL MEDIA 网络',
+    lead: (n) => `同一出版者下的 ${n} 个入口。每个页面都通向其他所有页面，没有死链。`,
+    self: '当前位置', portals: '独立门户',
+    foot: '每个门户都有自己的域名、网站地图和订阅源，编辑也是同一人。链接是双向的：本页指向那边，那边指回这里。',
+    worldPortal: '世界门户'
+  }
+};
+
+/** Kratke napomene za tri središnja ulaza: izdavač, arhiva, dnevnik. */
+const CORE_NOTE = {
+  hr: ['izdavač', 'svi zapisi', 'jedan dan'],
+  sr: ['izdavač', 'svi zapisi', 'jedan dan'],
+  bs: ['izdavač', 'svi zapisi', 'jedan dan'],
+  hu: ['kiadó', 'minden rekord', 'egy nap'],
+  sl: ['založnik', 'vsi zapisi', 'en dan'],
+  it: ['editore', 'tutti i record', 'un giorno'],
+  bg: ['издател', 'всички записи', 'един ден'],
+  ro: ['editor', 'toate înregistrările', 'o zi'],
+  en: ['publisher', 'all records', 'one day'],
+  id: ['penerbit', 'semua catatan', 'satu hari'],
+  pt: ['editor', 'todos os registos', 'um dia'],
+  ar: ['الناشر', 'كل السجلات', 'يوم واحد'],
+  ja: ['発行者', 'すべての記録', '一日'],
+  zh: ['出版者', '全部记录', '一天']
+};
+
+const meshText = (lang) => MESH_TEXT[lang] || MESH_TEXT.en;
 
 /** Dvadeset ulaza u maticu: AKTUAL MEDIA, arhiva, dnevnik i 17 izdanja. */
 export function coreTargets(lang = 'hr') {
@@ -144,29 +274,49 @@ const link = (target, note) => [
  * @param {{lang?: 'hr'|'en', selfUrl?: string}} options
  */
 export function meshBlock({ lang = 'hr', selfUrl = '', theme = '' } = {}) {
-  const en = lang === 'en';
+  const text = meshText(lang);
   const self = KEY(selfUrl);
   const core = coreTargets(lang);
   const portals = portalTargets(selfUrl);
 
+  /* Napomena uz portal: vlastiti prijevod ako postoji, inače engleski —
+     nikada hrvatski na stranici koja nije hrvatska. */
+  const noteOf = (portal) => {
+    if (portal.note && portal.note[lang]) return portal.note[lang];
+    if (portal.world) {
+      const country = lang === 'hr' ? portal.country : (portal.countryEn || portal.country);
+      return `${text.worldPortal} · ${country}`;
+    }
+    return (portal.note && (portal.note.en || portal.note.hr)) || '';
+  };
+
+  const coreNote = CORE_NOTE[lang] || CORE_NOTE.en;
+  const coreNoteOf = (target) => {
+    if (target.id === 'aktual-media') return coreNote[0];
+    if (target.id === 'arhiva') return coreNote[1];
+    if (target.id === 'dnevnik') return coreNote[2];
+    const edition = EDITIONS.find((e) => KEY(e.url) === KEY(target.url));
+    if (!edition) return target.note;
+    const country = lang === 'hr' ? edition.country : (edition.countryEn || edition.country);
+    return `${country} · ${edition.lang}`;
+  };
+
   const coreItems = core.map((target) => (KEY(target.url) === self
-    ? `<li class="is-self" data-mesh-item="${esc(target.id)}"><span aria-current="page"><b>${esc(target.name)}</b><span>${esc(en ? 'you are here' : 'ovdje ste')}</span></span></li>`
-    : `<li data-mesh-item="${esc(target.id)}">${link(target, target.note)}</li>`)).join('');
+    ? `<li class="is-self" data-mesh-item="${esc(target.id)}"><span aria-current="page"><b>${esc(target.name)}</b><span>${esc(text.self)}</span></span></li>`
+    : `<li data-mesh-item="${esc(target.id)}">${link(target, coreNoteOf(target))}</li>`)).join('');
 
-  const portalItems = portals.map((portal) => `<li data-mesh-item="${esc(portal.id)}">${link(portal, portal.note[lang] || portal.note.hr)}</li>`).join('');
+  const portalItems = portals.map((portal) => `<li data-mesh-item="${esc(portal.id)}">${link(portal, noteOf(portal))}</li>`).join('');
 
-  return `<nav class="mesh${theme === 'light' ? ' mesh--light' : ''}" aria-label="${en ? 'AKTUAL MEDIA network' : 'Mreža AKTUAL MEDIA'}" data-mesh="v1">
+  return `<nav class="mesh${theme === 'light' ? ' mesh--light' : ''}" aria-label="${esc(text.aria)}" data-mesh="v1">
   <div class="wrap">
     <div class="mesh-head">
-      <h2>${en ? 'The AKTUAL MEDIA network' : 'Mreža AKTUAL MEDIA'}</h2>
-      <p>${en ? `${core.length} entrances under one publisher. Every page links to every other; nothing here is a dead end.` : `${core.length} ulaza pod jednim izdavačem. Svaka stranica vodi na svaku drugu; nijedan link nije slijepa ulica.`}</p>
+      <h2>${esc(text.title)}</h2>
+      <p>${esc(text.lead(core.length))}</p>
     </div>
     <ul class="mesh-grid mesh-core" data-mesh-group="core">${coreItems}</ul>
-    <p class="mesh-k">${en ? 'Independent portals' : 'Samostalni portali'}</p>
+    <p class="mesh-k">${esc(text.portals)}</p>
     <ul class="mesh-grid mesh-sites" data-mesh-group="portals">${portalItems}</ul>
-    <p class="mesh-foot">${en
-      ? 'Every portal keeps its own domain, sitemap and feed, and the same editor. The links are mutual: this page points there, and that page points back.'
-      : 'Svaki portal ima vlastitu domenu, sitemap i feed, i istog urednika. Veze su obostrane: ova stranica vodi tamo, a ona vraća ovamo.'}</p>
+    <p class="mesh-foot">${esc(text.foot)}</p>
   </div>
 </nav>`;
 }

@@ -15,6 +15,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { archiveCount, hrCount, enCount } from './lib/archive-count.mjs';
 
 const ROOT = process.cwd();
 const HR = path.join(ROOT, 'apps/portal/index.html');
@@ -74,7 +75,7 @@ function circle(c, lang) {
 function portalTiles(lang) {
   const en = lang === 'en';
   const items = [
-    { id: 'arhiva', url: `https://gnk-asg-arhiva.pages.dev/${en ? 'en/' : ''}`, label: en ? 'AKTUAL ARCHIVE — 3,360 stories from the city editions, with originals. Opens the archive portal.' : 'AKTUAL ARHIVA — 3.360 tekstova gradskih izdanja, s izvornikom. Otvara arhivu na zasebnoj domeni.', name: en ? 'ARCHIVE' : 'ARHIVA', lang: en ? 'en' : 'hr' },
+    { id: 'arhiva', url: `https://gnk-asg-arhiva.pages.dev/${en ? 'en/' : ''}`, label: en ? `AKTUAL ARCHIVE — ${enCount(archiveCount())} stories from the city editions, with originals. Opens the archive portal.` : `AKTUAL ARHIVA — ${hrCount(archiveCount())} tekstova gradskih izdanja, s izvornikom. Otvara arhivu na zasebnoj domeni.`, name: en ? 'ARCHIVE' : 'ARHIVA', lang: en ? 'en' : 'hr' },
     { id: 'dnevnik', url: `https://gnk-asg-dnevnik.pages.dev/${en ? 'en/' : ''}`, label: en ? 'AKTUAL DAILY — one day, every city that published, hour by hour. Opens the daily portal.' : 'AKTUAL DNEVNIK — jedan dan, svi gradovi koji su objavili, po satima. Otvara dnevnik na zasebnoj domeni.', name: en ? 'DAILY' : 'DNEVNIK', lang: en ? 'en' : 'hr' },
   ];
   return items.map((p) => `<li class="amz-i amz-i--portal"><a href="${p.url}" rel="external noopener" aria-label="${esc(p.label)}"><span class="amz-img"><img src="/assets/izdanja/${p.id}-440.webp" srcset="/assets/izdanja/${p.id}-240.webp 240w, /assets/izdanja/${p.id}-440.webp 440w" sizes="(max-width:980px) 92px, (max-width:1240px) 12vw, 160px" alt="${esc(p.label)}" width="440" height="294" loading="lazy" decoding="async"></span><b>${esc(p.name)}</b><small>${esc(p.lang)}</small></a></li>`).join('');

@@ -22,6 +22,12 @@ import { WORLD_PORTALS } from '../../world/lib/registry.mjs';
 import { ensureDeskTiles, tilePath, variantFor } from './desk-art.mjs';
 import { logoImg, logoFor, logoAlternate, channelLogoSlug, deskLogoSlug, logoJsonLd } from './brand.mjs';
 
+/* Brojevi u naslovima se računaju iz podataka: 17 gradova, 14 jezika, 9 portala. */
+const LANG_COUNT = new Set(CHANNELS.map((c) => c.lang)).size;
+const HR_SMALL = { 5: 'pet', 6: 'šest', 7: 'sedam', 8: 'osam', 9: 'devet', 10: 'deset', 11: 'jedanaest', 12: 'dvanaest', 13: 'trinaest', 14: 'četrnaest', 15: 'petnaest', 16: 'šesnaest', 17: 'sedamnaest', 18: 'osamnaest', 19: 'devetnaest', 20: 'dvadeset' };
+const hrCount = (n) => HR_SMALL[n] || String(n);
+const cap = (word) => word[0].toUpperCase() + word.slice(1);
+
 const HERE = dirname(fileURLToPath(import.meta.url));
 const APP = join(HERE, '..');
 const ROOT = join(APP, '..', '..');
@@ -302,6 +308,7 @@ const MEDIA_EXTRA_DESTINATIONS = [
 ];
 const mediaItems = () => [
   ...CHANNELS.map((c) => ({ name: c.title, url: c.base })),
+  ...WORLD_PORTALS.map((p) => ({ name: p.name, url: p.base })),
   ...Object.entries(DESKS).map(([id, d]) => ({ name: d.name, url: `https://gnk-asg.hr/izdanja/${id}/` })),
   ...MEDIA_EXTRA_DESTINATIONS
 ];
@@ -569,6 +576,19 @@ function radioBand() {
 /* Mreža neovisnih izdanja: šest stranica s vlastitim hostingom. Traka je
    namjerno kratka — popis, jedna rečenica i poveznica na hub, da /izdanja/
    ostane popis izdanja, a ne druga naslovnica. */
+/* Devet svjetskih portala dosad su bila na /kanal/ i /mreza/, ali ne na
+   popisu izdanja — čitatelj koji traži „sva izdanja" nije vidio Tokio ni
+   São Paulo. Blok ih vraća na jedno mjesto, s jezikom i kontinentom. */
+function worldBand() {
+  const items = WORLD_PORTALS.map((p) => `<li><a href="${p.base}" rel="external noopener" hreflang="${p.lang}" lang="${p.lang}"><b>${esc(p.city)}</b><span>${esc(p.country)} · ${esc(p.lang)} · ${esc(p.continent.hr)}</span></a></li>`).join('');
+  return `<section class="iz-band iz-world" aria-labelledby="worldTitle">
+    <h2 id="worldTitle">Devet svjetskih izdanja <span>${WORLD_PORTALS.length} portala · vlastite domene · isti standard</span></h2>
+    <p class="iz-small" style="margin:0 0 12px">Uz osam regionalnih gradova, devet svjetskih izdanja pokriva pet kontinenata izvan Europe: Nairobi i Kairo, Jakarta i Singapur, Tokio i Peking, New York, São Paulo i Sydney. Svaki portal ima vlastitu domenu, sitemap, feed, manifest i sigurnosna zaglavlja, a svaki vodi natrag na AKTUAL MEDIA. S cijelom mrežom — 17 gradskih izdanja i 9 portala — pokriveno je šest nastanjenih kontinenata.</p>
+    <ul class="iz-datacards">${items}</ul>
+    <p class="iz-small" style="margin:12px 0 0"><a href="/mreza/">Cijela mreža →</a> · <a href="/en/network/" hreflang="en" lang="en">Network (EN)</a> · <a href="/kanal/">Svi kanali →</a></p>
+  </section>`;
+}
+
 function networkBand() {
   let sites = [];
   try {
@@ -624,6 +644,7 @@ function hubPage() {
     <h2>Najnovije iz svih izdanja</h2>
     <ul class="iz-list">${items.map((i) => `<li><time datetime="${esc(i.date)}">${esc(shortDate(i.date.slice(0, 10)))}</time><a href="${i.channel.base}clanak/${i.slug}/" rel="external noopener">${esc(i.title)}</a><span class="src">${esc(i.channel.title)}</span></li>`).join('') || '<li>Prva izdanja se pune dnevnim ciklusom.</li>'}</ul>
   </section>
+  ${worldBand()}
   ${networkBand()}
   <section class="iz-band iz-data-desk" aria-labelledby="ddTitle">
     <h2 id="ddTitle">Podatkovni desk — redakcija, izmjereno</h2>
@@ -645,8 +666,8 @@ function hubPage() {
 ${radioBand()}${portalFooter()}`;
 
   return portalShell({
-    title: 'Naša izdanja — AKTUAL MEDIA · 17 gradskih kanala na pet kontinenata, tjednik i deskovi',
-    description: 'Sva izdanja AKTUAL MEDIA na jednom mjestu: osam regionalnih i devet globalnih gradskih kanala, BUSINESS TJEDNIK, devet tematskih deskova, radio, galerija i podatkovni desk.',
+    title: 'Naša izdanja — AKTUAL MEDIA · 17 gradskih kanala i devet svjetskih portala, tjednik i deskovi',
+    description: 'Sva izdanja AKTUAL MEDIA na jednom mjestu: osam regionalnih i devet svjetskih gradskih kanala, devet svjetskih portala na vlastitim domenama, BUSINESS TJEDNIK, tematski deskovi, radio i podatkovni desk.',
     path: '',
     tags: ['#AKTUALMEDIA', '#AktualMedia', '#Našaizdanja', '#GNKASG'],
     logos: ['aktual-media-hr', 'aktual-media-en'],
@@ -872,7 +893,16 @@ ${entries.map((e) => `<url><loc>${e.loc}</loc><changefreq>daily</changefreq><pri
     { id: 'sport', name: 'SPORT', url: '/izdanja/sport/', lang: 'hr', city: 'Regija', country: 'AKTUAL MEDIA', description: DESKS.sport.description, hashtags: DESKS.sport.hashtags, count: collect('sport').length },
     { id: 'politika', name: 'POLITIKA', url: '/izdanja/politika/', lang: 'hr', city: 'Regija', country: 'AKTUAL MEDIA', description: DESKS.politika.description, hashtags: DESKS.politika.hashtags, count: collect('politika').length },
     { id: 'sigurnost', name: 'SIGURNOST I KIBERNETIKA', url: '/izdanja/sigurnost/', lang: 'hr', city: 'Regija', country: 'AKTUAL MEDIA', description: DESKS.sigurnost.description, hashtags: DESKS.sigurnost.hashtags, count: collect('sigurnost').length },
-    { id: 'galerija', name: 'GALERIJA NERMINA SEFIĆA', url: 'https://gnk-asg.hr/galerija/', lang: 'hr', city: 'Zagreb', country: 'Hrvatska', description: 'Službeni portreti, fotografije s događanja i tematski vizuali, svaki s vlastitom stranicom i podacima o korištenju.', hashtags: ['#NerminSefić', '#Galerija'], count: 0 }
+    { id: 'galerija', name: 'GALERIJA NERMINA SEFIĆA', url: 'https://gnk-asg.hr/galerija/', lang: 'hr', city: 'Zagreb', country: 'Hrvatska', description: 'Službeni portreti, fotografije s događanja i tematski vizuali, svaki s vlastitom stranicom i podacima o korištenju.', hashtags: ['#NerminSefić', '#Galerija'], count: 0 },
+    /* Svjetski portali su dio popisa izdanja, ne samo mreže: kartica nosi
+       jezik, kontinent i vlastitu domenu, a count dolazi iz portala. */
+    ...WORLD_PORTALS.map((p) => ({
+      id: `world-${p.id}`, name: p.name, url: p.base, lang: p.lang,
+      city: p.city, country: p.country, continent: p.continent.hr, world: true,
+      description: `Svjetski portal ${p.city} (${p.country}) — ${p.continent.hr}, jezik ${p.lang}; vlastita domena, sitemap i feed.`,
+      hashtags: [`#${p.city.replace(/\s+/g, '')}`, '#AKTUALMEDIA', '#GNKASG'],
+      count: 0
+    }))
   ];
   writeFileSync(join(PORTAL, 'data', 'izdanja.json'), `${JSON.stringify({ version: 1, updatedAt: new Date().toISOString(), sourceOfTruth: HUB, cards }, null, 2)}\n`);
 
@@ -1011,7 +1041,7 @@ ${MESH_CSS}
 <div class="kx-top"><strong>AKTUAL MEDIA KANAL</strong><span><a href="/gnk-aktual/">← AKTUAL MEDIA</a> · <a href="/izdanja/">Sva izdanja i deskovi</a> · <a href="/aktual-media/">Podatkovni desk</a> · <a href="/usa/">Colorado · USA</a> · <a href="/radio/">Radio</a> · <a href="/digital-workforce/knjiga/">Knjiga radnika</a></span></div>
 <main id="sadrzaj" tabindex="-1" class="kx-wrap">
   <div class="kx-head">
-    <h1>Sedamnaest gradova, trinaest jezika — pod jednom domenom</h1>
+    <h1>${cap(hrCount(CHANNELS.length))} gradova, ${hrCount(LANG_COUNT)} jezika — pod jednom domenom</h1>
     <p>Svako izdanje ima vlastiti feed, sitemap i arhivu. Osam izdanja pokriva regiju, devet globalnih pokriva pet kontinenata — od Nairobija i Kaira preko Jakarte, Pekinga i Tokija do Sydneya, Singapura, São Paula i New Yorka. Adrese su na gnk-asg.hr/kanal/, pa se sve indeksira kao jedna cjelina, a stari linkovi s pages.dev preusmjeravaju ovamo (301).</p>
   </div>
   <div class="kx-grid">${rows}</div>
@@ -1273,7 +1303,7 @@ function injectBand(cards, lang = 'hr') {
   const title = en ? 'Our editions — five continents, one newsroom' : 'Naša izdanja — pet kontinenata, jedno uredništvo';
   const sub = en
     ? `${picks.length} city editions in thirteen languages: eight in the region, nine across Africa, Asia, the Americas and Oceania. Every edition has its own link and its own feed — and everything returns to AKTUAL MEDIA.`
-    : `${picks.length} gradskih izdanja na trinaest jezika: osam u regiji, devet na pet kontinenata. Svako izdanje ima svoj link i svoj feed — a sve se vraća na AKTUAL MEDIA.`;
+    : `${picks.length} gradskih izdanja na ${hrCount(LANG_COUNT)} jezika: osam u regiji, devet na pet kontinenata. Svako izdanje ima svoj link i svoj feed — a sve se vraća na AKTUAL MEDIA.`;
   const all = en ? 'All editions →' : 'Sva izdanja →';
   const block = `${start}
   <section class="izdanja-band" aria-labelledby="izdanjaBandTitle">

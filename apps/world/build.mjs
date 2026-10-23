@@ -424,7 +424,7 @@ function homePage(portal, data) {
   </section>
   <p class="note">${esc(wl(portal, 'portalNote'))}</p>
 </main>
-${meshBlock({ lang: 'en', selfUrl: portalBase(portal), theme: 'light' })}
+${meshBlock({ lang: portal.lang, selfUrl: portalBase(portal), theme: 'light' })}
 ${footer(portal)}`;
 
   const jsonld = [{
@@ -455,7 +455,7 @@ function themePage(portal, data, themeId, items) {
   <div class="grid">${cards(portal, items)}</div>
   <p class="backlink"><a href="./">← ${esc(wl(portal, 'backHome'))}</a></p>
 </main>
-${meshBlock({ lang: 'en', selfUrl: portalBase(portal), theme: 'light' })}
+${meshBlock({ lang: portal.lang, selfUrl: portalBase(portal), theme: 'light' })}
 ${footer(portal)}`;
   return shell(portal, {
     title: `${label} — ${displayCity(portal)} · AKTUAL MEDIA`,
@@ -476,7 +476,7 @@ function sourcePage(portal, data, source, items) {
   ${items.length ? `<div class="grid">${cards(portal, items)}</div>` : `<p class="empty">${esc(wl(portal, 'noRecords'))}</p>`}
   <p class="backlink"><a href="izvori/">← ${esc(words.sources)}</a></p>
 </main>
-${meshBlock({ lang: 'en', selfUrl: portalBase(portal), theme: 'light' })}
+${meshBlock({ lang: portal.lang, selfUrl: portalBase(portal), theme: 'light' })}
 ${footer(portal)}`;
   return shell(portal, {
     title: `${source.name} — ${displayCity(portal)} · AKTUAL MEDIA`,
@@ -502,7 +502,7 @@ function sourcesPage(portal, data) {
   <p>${esc(words.methodLead)}</p>
   <p class="backlink"><a href="metodologija/">${esc(words.methodology)} →</a> · <a href="./">← ${esc(wl(portal, 'backHome'))}</a></p>
 </main>
-${meshBlock({ lang: 'en', selfUrl: portalBase(portal), theme: 'light' })}
+${meshBlock({ lang: portal.lang, selfUrl: portalBase(portal), theme: 'light' })}
 ${footer(portal)}`;
   return shell(portal, {
     title: `${words.sources} — ${displayCity(portal)} · AKTUAL MEDIA`,
@@ -526,7 +526,7 @@ function methodPage(portal, data) {
   <p class="small">${esc(words.autoNote)}</p>
   <p class="backlink"><a href="./">← ${esc(wl(portal, 'backHome'))}</a></p>
 </main>
-${meshBlock({ lang: 'en', selfUrl: portalBase(portal), theme: 'light' })}
+${meshBlock({ lang: portal.lang, selfUrl: portalBase(portal), theme: 'light' })}
 ${footer(portal)}`;
   return shell(portal, {
     title: `${words.methodology} — ${displayCity(portal)} · AKTUAL MEDIA`,
@@ -543,7 +543,7 @@ function networkPage(portal) {
 <main id="sadrzaj" class="page">
   <h1>${esc(wl(portal, 'network'))}</h1>
   <p class="lead">${esc(wl(portal, 'worldNote'))}</p>
-  ${meshBlock({ lang: 'en', selfUrl: portalBase(portal), theme: 'light' })}
+  ${meshBlock({ lang: portal.lang, selfUrl: portalBase(portal), theme: 'light' })}
   <p class="backlink"><a href="${portal.lang === 'en' ? HUB_EN : HUB_HR}" rel="external noopener">${esc(wl(portal, 'allNetwork'))} ↗</a> · <a href="./">← ${esc(wl(portal, 'backHome'))}</a></p>
 </main>
 ${footer(portal)}`;
@@ -563,7 +563,7 @@ function notFound(portal) {
   <p class="lead">${esc(words.emptyText)}</p>
   <p><a href="/">← ${esc(wl(portal, 'backHome'))}</a></p>
 </main>
-${meshBlock({ lang: 'en', selfUrl: portalBase(portal), theme: 'light' })}
+${meshBlock({ lang: portal.lang, selfUrl: portalBase(portal), theme: 'light' })}
 ${footer(portal)}`;
   return shell(portal, {
     title: `404 — ${portal.name}`,

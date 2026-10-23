@@ -12,6 +12,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { archiveCount, hrCount, enCount } from './lib/archive-count.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const PORTAL = join(ROOT, 'apps', 'portal');
@@ -69,10 +70,10 @@ const PLATFORMS = [
   ['https://gnk-asg-tjednik.pages.dev/', 'Business Tjednik', 'Tjedni poslovni pregled W43'],
   ['/galerija/', 'Galerija znakova', '63 stranice znakova kuće'],
   ['/radio/', 'Radio', 'Šest stanica, jedan player'],
-  ['/gnk-aktual/mreza/', 'Mreža izdanja', '17 gradova i 13 jezika na jednoj karti'],
+  ['/gnk-aktual/mreza/', 'Mreža izdanja', '17 gradova i 14 jezika na jednoj karti'],
   ['/status/', 'Status ažurnosti', 'Javno mjerenje svježine svakog izdanja'],
   ['/aktual-media/', 'Podatkovni desk', 'Četiri mjerenja vlastite arhive'],
-  ['https://gnk-asg-arhiva.pages.dev/', 'AKTUAL ARHIVA', 'Samostalan portal: 3.360 tekstova u pretraživoj arhivi'],
+  [`https://gnk-asg-arhiva.pages.dev/`, 'AKTUAL ARHIVA', `Samostalan portal: ${hrCount(archiveCount())} tekstova u pretraživoj arhivi`],
   ['https://gnk-asg-dnevnik.pages.dev/', 'AKTUAL DNEVNIK', 'Samostalan portal: jedan dan, svi gradovi koji objave, po satima']
 ];
 
@@ -129,16 +130,18 @@ const deskCards = (lang) => DESKS.map(([slug, hr, note]) => {
 
 const platformCards = (lang) => PLATFORMS.map(([url, hr, note]) => {
   const label = lang === 'hr' ? hr : ({ 'Business Tjednik': 'Business Weekly', 'Galerija znakova': 'Brand gallery', 'Radio': 'Radio', 'Mreža izdanja': 'Edition network', 'Status ažurnosti': 'Freshness status', 'Podatkovni desk': 'Data desk' }[hr] || hr);
-  const noteEn = {
+  const noteEn = Object.assign({}, {
+    [`Samostalan portal: ${hrCount(archiveCount())} tekstova u pretraživoj arhivi`]: `Standalone portal: ${enCount(archiveCount())} stories in a searchable archive`,
+  }, {
     'Tjedni poslovni pregled W43': 'Weekly business review W43',
     '63 stranice znakova kuće': '63 pages of house brand marks',
     'Šest stanica, jedan player': 'Six stations, one player',
+    '17 gradova i 14 jezika na jednoj karti': '17 cities and 14 languages on one map',
     '8 gradova i 8 jezika na jednoj karti': '8 cities and 8 languages on one map',
     'Javno mjerenje svježine svakog izdanja': 'Public freshness measurement for every edition',
     'Četiri mjerenja vlastite arhive': 'Four measurements of our own archive',
-    'Samostalan portal: 3.360 tekstova u pretraživoj arhivi': 'Standalone portal: 3,360 stories in a searchable archive',
     'Samostalan portal: jedan dan, svi gradovi koji objave, po satima': 'Standalone portal: one day, every city that published, hour by hour'
-  }[note] || note;
+  })[note] || note;
   return `<li><a class="pr-card" href="${url}"${/^https?:/.test(url) ? ' rel="external noopener"' : ''}><b>${label}</b><span>${lang === 'hr' ? note : noteEn}</span></a></li>`;
 }).join('');
 

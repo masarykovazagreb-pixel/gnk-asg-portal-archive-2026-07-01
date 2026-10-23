@@ -54,6 +54,7 @@ const GATES = [
   { name: 'Paukova mreža — 20 ulaza', cmd: ['node', 'tests/test-network-mesh-v1.mjs'], required: true },
   { name: 'Svjetska izdanja — devet portala', cmd: ['node', 'tests/test-world-portals-v1.mjs'], required: true },
   { name: 'Kodiranje izvora — bez U+FFFD', cmd: ['node', 'tests/test-region-encoding-v1.mjs'], required: true },
+  { name: 'Jednak standard izdanja i portala', cmd: ['node', 'tests/test-editions-parity-v1.mjs'], required: true },
   { name: 'SEO matrica mreže', cmd: ['node', 'tests/test-seo-matrix-v1.mjs'], required: true },
   { name: 'Meta higijena — oznake, autor, entitet', cmd: ['node', 'tests/test-meta-hygiene-v1.mjs'], required: true },
   { name: 'Pokrivenost posrednika slika', cmd: ['node', 'tests/test-image-proxy-coverage-v1.mjs'], required: true },

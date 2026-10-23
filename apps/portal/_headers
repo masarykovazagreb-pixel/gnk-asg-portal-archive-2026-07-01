@@ -29,6 +29,17 @@
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
 
+# Gradska izdanja (/kanal/<grad>/) — isti sigurnosni standard kao devet
+# svjetskih portala: bez umetnutih skripti, bez okvira s drugih domena.
+# Jedina skripta je /assets/aktual-radio-mini-v1.js (radio i mini traka),
+# pa script-src ostaje 'self' bez 'unsafe-inline'.
+/kanal/*
+  Content-Security-Policy: default-src 'self'; img-src 'self' data: https://gnk-asg.hr; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; connect-src 'self'; media-src https:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  Cache-Control: public, max-age=0, must-revalidate
+
+/kanal/*/manifest.webmanifest
+  Cache-Control: public, max-age=3600
+
 /gnk-aktual/*
   Cache-Control: public, max-age=0, must-revalidate
 
