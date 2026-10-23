@@ -79,6 +79,93 @@ rmSync(tmp, { recursive: true, force: true });
 const attr = (html, re) => (html.match(re) || [])[1] || '';
 const count = (html, re) => (html.match(re) || []).length;
 
+/* Preneseni tekstovi imaju drugi ugovor od vlastitih stranica: canonical
+   pokazuje na izvornik (kopija ne otima adresu), ali sve ostalo — naslov,
+   opis, slika s alt tekstom, jedan h1, linkovi koji postoje — vrijedi isto.
+   Bez ovog odjeljka test bi tražio da kopija bude “vlastita” stranica, što je
+   upravo ono što sindikacija ne smije raditi. */
+function checkSyndicated(file, site, lang, slug) {
+  const html = readFileSync(file, 'utf8');
+  const where = `${site.slug}/${relative(join(SITE, site.slug), file)}`;
+  const title = attr(html, /<title>([^<]+)<\/title>/);
+  if (title.length < 15 || title.length > 140) note(`${where}: title ima ${title.length} znakova`);
+  const description = attr(html, /<meta name="description" content="([^"]*)">/);
+  if (description.length < 41 || description.length > 340) note(`${where}: description ima ${description.length} znakova`);
+  const canonical = attr(html, /<link rel="canonical" href="([^"]+)">/);
+  if (!/^https:\/\/(gnk-asg\.hr|gnk-asg-kanal\.pages\.dev)\//.test(canonical)) note(`${where}: canonical kopije ne vodi na naš izvornik (${canonical})`);
+  if (!/name="robots" content="index, follow/.test(html)) note(`${where}: nema robots index, follow`);
+  if (!/name="editor" content="Nermin Sefić"/.test(html)) note(`${where}: nema editor Nermin Sefić`);
+  if (count(html, /<h1[\s>]/g) !== 1) note(`${where}: mora imati točno jedan h1`);
+  for (const [label, re] of [
+    ['og:image', /property="og:image" content="[^"]+"/], ['og:image:alt', /property="og:image:alt" content="[^"]+"/],
+    ['og:description', /property="og:description" content="[^"]+"/], ['og:url', /property="og:url" content="[^"]+"/],
+    ['twitter:card', /name="twitter:card" content="summary_large_image"/], ['twitter:image', /name="twitter:image" content="[^"]+"/]
+  ]) if (!re.test(html)) note(`${where}: nedostaje ${label}`);
+  if (!/article:tag" content="#AKTUALMEDIA"/.test(html)) note(`${where}: nema #AKTUALMEDIA oznake`);
+  const ld = (html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/) || [])[1];
+  if (!ld) note(`${where}: nema JSON-LD`);
+  else { try { JSON.parse(ld); } catch { note(`${where}: JSON-LD se ne parsira`); } }
+
+  const links = [...html.matchAll(/<a [^>]*href="([^"]+)"/g)].map((m) => m[1]);
+  if (links.length < 6) note(`${where}: samo ${links.length} poveznica (minimum 6)`);
+  if (!links.some((href) => href.includes('gnk-asg.hr'))) note(`${where}: nema poveznice na gnk-asg.hr`);
+
+  for (const src of [...html.matchAll(/<img [^>]*src="([^"]+)"/g)].map((m) => m[1])) {
+    if (!src.startsWith('/')) { note(`${where}: vanjska slika ${src}`); continue; }
+    if (!existsSync(join(SITE, site.slug, src.replace(/^\//, '')))) note(`${where}: slika ne postoji ${src}`);
+  }
+  for (const href of links) {
+    if (/^https?:\/\//.test(href) || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('/kolumna/')) continue;
+    const target = href.split('#')[0].split('?')[0];
+    if (!target.startsWith('/')) continue;
+    const rel = target.replace(/^\//, '');
+    const ok = target.endsWith('/') ? existsSync(join(SITE, site.slug, rel, 'index.html')) : existsSync(join(SITE, site.slug, rel));
+    if (!ok) note(`${where}: unutarnji link ne postoji ${href}`);
+  }
+  return html;
+}
+
+/* Popis prenesenih tekstova nije članak: nema jednog datuma ni tijela, pa
+   ne smije nositi article:* oznake. Ostaje vlastita stranica mreže — svoj
+   canonical, svoj opis, svoje poveznice — i mora voditi na svaki preneseni
+   tekst. */
+function checkListPage(file, site, lang, slug) {
+  const html = readFileSync(file, 'utf8');
+  const where = `${site.slug}/${relative(join(SITE, site.slug), file)}`;
+  const title = attr(html, /<title>([^<]+)<\/title>/);
+  if (title.length < 15 || title.length > 140) note(`${where}: title ima ${title.length} znakova`);
+  const description = attr(html, /<meta name="description" content="([^"]*)">/);
+  if (description.length < 60 || description.length > 340) note(`${where}: description ima ${description.length} znakova`);
+  const canonical = attr(html, /<link rel="canonical" href="([^"]+)">/);
+  if (canonical !== `${siteBase(site)}/${slug.replace(/^en\//, '').replace(/^\//, '')}/`) note(`${where}: canonical nije vlastita adresa (${canonical})`);
+  if (!/name="robots" content="index, follow/.test(html)) note(`${where}: nema robots index, follow`);
+  if (!/name="editor" content="Nermin Sefić"/.test(html)) note(`${where}: nema editor Nermin Sefić`);
+  if (count(html, /<h1[\s>]/g) !== 1) note(`${where}: mora imati točno jedan h1`);
+  for (const [label, re] of [
+    ['og:title', /property="og:title" content="[^"]+"/], ['og:description', /property="og:description" content="[^"]+"/],
+    ['og:image', /property="og:image" content="[^"]+"/], ['og:image:alt', /property="og:image:alt" content="[^"]+"/],
+    ['twitter:card', /name="twitter:card" content="summary_large_image"/]
+  ]) if (!re.test(html)) note(`${where}: nedostaje ${label}`);
+  if (/property="article:published_time"/.test(html)) note(`${where}: popis ne smije nositi article:published_time`);
+
+  const links = [...html.matchAll(/<a [^>]*href="([^"]+)"/g)].map((m) => m[1]);
+  if (links.length < 6) note(`${where}: samo ${links.length} poveznica (minimum 6)`);
+  if (!links.some((href) => href.includes('gnk-asg.hr'))) note(`${where}: nema poveznice na gnk-asg.hr`);
+  for (const src of [...html.matchAll(/<img [^>]*src="([^"]+)"/g)].map((m) => m[1])) {
+    if (!src.startsWith('/')) { note(`${where}: vanjska slika ${src}`); continue; }
+    if (!existsSync(join(SITE, site.slug, src.replace(/^\//, '')))) note(`${where}: slika ne postoji ${src}`);
+  }
+  for (const href of links) {
+    if (/^https?:\/\//.test(href) || href.startsWith('#') || href.startsWith('mailto:')) continue;
+    const target = href.split('#')[0].split('?')[0];
+    if (!target.startsWith('/')) continue;
+    const rel = target.replace(/^\//, '');
+    const ok = target.endsWith('/') ? existsSync(join(SITE, site.slug, rel, 'index.html')) : existsSync(join(SITE, site.slug, rel));
+    if (!ok) note(`${where}: unutarnji link ne postoji ${href}`);
+  }
+  return html;
+}
+
 function checkHtml(file, site, lang, slug) {
   const html = readFileSync(file, 'utf8');
   const where = `${site.slug}/${relative(join(SITE, site.slug), file)}`;
@@ -181,7 +268,13 @@ for (const site of SITES) {
     const lang = file.startsWith('en/') || file === 'en' ? 'en' : 'hr';
     const rel = file.replace(/index\.html$/, '').replace(/\/$/, '');
     const slug = rel === 'en' ? '' : rel.replace(/^en\//, '');
-    checkHtml(join(dir, file), site, lang, slug);
+    /* Popisi (/kolumna/, /prenos/) su vlastite stranice mreže i drže vlastiti
+       canonical; preneseni su samo pojedinačni tekstovi ispod njih. */
+    const parts = rel.replace(/^en\//, '').split('/').filter(Boolean);
+    const meshList = parts.length === 1 && (parts[0] === 'kolumna' || parts[0] === 'prenos');
+    if (meshList) checkListPage(join(dir, file), site, lang, slug);
+    else if ((parts[0] === 'kolumna' || parts[0] === 'prenos')) checkSyndicated(join(dir, file), site, lang, slug);
+    else checkHtml(join(dir, file), site, lang, slug);
     pageCount += 1;
   }
   for (const required of ['sitemap.xml', 'robots.txt', 'feed.xml', 'manifest.webmanifest', '404.html', '_headers']) {
@@ -198,7 +291,13 @@ for (const site of SITES) {
 
   const feed = readFileSync(join(dir, 'feed.xml'), 'utf8');
   if (!feed.includes('<feed xmlns="http://www.w3.org/2005/Atom">')) note(`${site.slug}: feed nije Atom`);
-  if (count(feed, /<entry>/g) !== htmlFiles.length / 2) note(`${site.slug}: feed ima ${count(feed, /<entry>/g)} zapisa, stranica ${htmlFiles.length / 2}`);
+  const entries = [...feed.matchAll(/<entry>[\s\S]*?<\/entry>/g)].map((m) => m[0]);
+  if (!entries.length) note(`${site.slug}: feed je prazan`);
+  for (const entry of entries) {
+    const href = attr(entry, /<link href="([^"]+)">/);
+    const rel = href.replace(siteBase(site), '').replace(/^\//, '');
+    if (!existsSync(join(dir, rel, 'index.html'))) note(`${site.slug}: feed vodi na nepostojeću stranicu ${href}`);
+  }
 
   try { JSON.parse(readFileSync(join(dir, 'manifest.webmanifest'), 'utf8')); }
   catch { note(`${site.slug}: manifest nije JSON`); }

@@ -23,64 +23,18 @@
  *
  * Test: tests/test-sindikacija-v1.mjs
  */
-import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync, copyFileSync, statSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, copyFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { SITES } from './registry.mjs';
 import { entityGraphJson } from '../../../scripts/lib/entity-graph-v1.mjs';
+import { readColumns, columnImagePath } from '../../../scripts/lib/kolumne-source-v1.mjs';
+import { authorPortrait } from '../../../scripts/lib/corpus-v1.mjs';
 
 const MAX_ITEMS = 60;
-const EXCERPT_PARAGRAPHS = 3;
-
-const strip = (value) => String(value || '')
-  .replace(/<script[\s\S]*?<\/script>/gi, ' ')
-  .replace(/<[^>]+>/g, ' ')
-  .replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&quot;/g, '"')
-  .replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>')
-  .replace(/\s+/g, ' ').trim();
 
 const esc = (value) => String(value == null ? '' : value)
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
   .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-
-const attr = (html, re) => {
-  const m = html.match(re);
-  return m ? m[1] : '';
-};
-
-/** Pročitaj jednu izvornu kolumnu sa portala. */
-function readColumn(dir) {
-  const file = join(dir, 'index.html');
-  if (!existsSync(file)) return null;
-  const html = readFileSync(file, 'utf8');
-
-  const canonical = attr(html, /<link rel="canonical" href="([^"]+)"/i);
-  const title = strip(attr(html, /<h1[^>]*>([\s\S]*?)<\/h1>/i));
-  if (!canonical || !title) return null;
-
-  const description = strip(attr(html, /<meta name="description" content="([^"]*)"/i)).slice(0, 300);
-  const published = attr(html, /<meta property="article:published_time" content="([^"]+)"/i)
-    || attr(html, /<time[^>]*datetime="([^"]+)"/i);
-  const image = attr(html, /<meta property="og:image" content="([^"]+)"/i);
-  const tags = [...html.matchAll(/<meta property="article:tag" content="([^"]+)"/gi)].map((m) => m[1]);
-
-  /* Tijelo: prvi odlomci unutar <article>, bez navigacije i potpisa. */
-  const article = (html.match(/<article[\s\S]*?<\/article>/i) || [html])[0];
-  const paragraphs = [...article.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
-    .map((m) => strip(m[1]))
-    .filter((text) => text.length >= 90 && !/^(Foto|Ilustracija|Izvor|Pročitajte|Ovo je tekst)/i.test(text))
-    .slice(0, EXCERPT_PARAGRAPHS);
-
-  return {
-    slug: dir.split('/').pop(),
-    canonical,
-    title,
-    description,
-    published,
-    image,
-    tags: [...new Set(tags)].slice(0, 8),
-    paragraphs
-  };
-}
 
 /** Uvodni red koji svaka stranica dobiva svoj — bez izmišljenih tvrdnji. */
 function localLead(site, column) {
@@ -114,6 +68,11 @@ h1{font:400 clamp(30px,4.4vw,46px)/1.12 Georgia,serif;margin:0 0 14px;letter-spa
 .body p:first-of-type::first-letter{float:left;font-size:58px;line-height:.9;padding:6px 10px 0 0;color:var(--accent2)}
 .more{display:inline-block;margin:6px 0 30px;padding:12px 18px;border:1px solid var(--accent2);border-radius:999px;text-decoration:none;font:800 11px/1 system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--accent2)}
 .hash{font:400 13px/1.7 system-ui,sans-serif;opacity:.7;margin:0 0 34px;word-break:break-word}
+.authorx{display:flex;gap:13px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:11px 14px;background:var(--panel);margin:0 0 22px}
+.authorx img{width:54px;height:54px;border-radius:50%;object-fit:cover;flex:0 0 auto}
+.authorx b{display:block;font:800 14.5px/1.3 system-ui,sans-serif}
+.authorx b a{text-decoration:none}
+.authorx span{display:block;font:400 12px/1.45 system-ui,sans-serif;opacity:.7}
 footer{border-top:1px solid var(--line);margin-top:20px;padding:22px 0 40px;font:400 13px/1.6 system-ui,sans-serif;opacity:.7}
 .grid{display:grid;gap:18px;margin:26px 0 40px}
 .card{display:block;text-decoration:none;border:1px solid var(--line);border-radius:14px;padding:18px 20px;background:var(--panel)}
@@ -146,7 +105,10 @@ function head({ site, title, description, canonical, image, published, extraGrap
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${esc(canonical)}">
-${image ? `<meta property="og:image" content="${esc(image)}">` : ''}
+${image ? `<meta property="og:image" content="${esc(image)}">
+<meta property="og:image:alt" content="${esc(title)}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">` : ''}
 <meta property="og:locale" content="${site.lang === 'en' ? 'en_GB' : 'hr_HR'}">
 <meta property="article:author" content="Nermin Sefić">
 <meta property="article:tag" content="#AKTUALMEDIA">
@@ -156,7 +118,8 @@ ${published ? `<meta property="article:published_time" content="${esc(published)
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(description)}">
-${image ? `<meta name="twitter:image" content="${esc(image)}">` : ''}
+${image ? `<meta name="twitter:image" content="${esc(image)}">
+<meta name="twitter:image:alt" content="${esc(title)}">` : ''}
 <style>${CSS}</style>
 <style>:root{${themeVars(site)}}body{background:var(--bg);color:var(--ink)}</style>
 ${extraGraph}
@@ -181,7 +144,7 @@ const foot = (site) => `  </main>
 </html>
 `;
 
-function itemPage(site, column, localImage, localCaption = false) {
+function itemPage(site, column, localImage, localCaption = false, portrait = false) {
   const date = column.published
     ? new Date(column.published).toLocaleDateString(site.lang === 'en' ? 'en-GB' : 'hr-HR', { day: 'numeric', month: 'long', year: 'numeric' })
     : '';
@@ -206,7 +169,7 @@ function itemPage(site, column, localImage, localCaption = false) {
     title: `${column.title} — ${site.name}`,
     description: column.description || column.paragraphs[0] || column.title,
     canonical: column.canonical,
-    image: column.image,
+    image: localImage.startsWith('/') ? `${site.base}${localImage.slice(1)}` : `${site.base}kolumna/${column.slug}/${localImage}`,
     published: column.published,
     extraGraph: articleGraph
   }) + `
@@ -221,7 +184,7 @@ function itemPage(site, column, localImage, localCaption = false) {
       <a href="${esc(column.canonical)}" rel="noopener">${esc(column.canonical)}</a>
     </div>
 
-    ${localImage ? `<img class="hero" src="${esc(localImage)}" alt="${esc(column.title)}" loading="eager" fetchpriority="high" decoding="async">` : ''}
+    ${localImage ? `<img class="hero" src="${esc(localImage.startsWith('/') ? localImage : `/kolumna/${column.slug}/${localImage}`)}" alt="${esc(column.title)}" loading="eager" fetchpriority="high" decoding="async">` : ''}
     <p class="cap">${localCaption
       ? (site.lang === 'en' ? `Illustration: ${site.name}.` : `Ilustracija: ${site.name}.`)
       : (site.lang === 'en' ? 'Image from the source column, AKTUAL MEDIA.' : 'Slika iz izvorne kolumne, AKTUAL MEDIA.')}</p>
@@ -230,13 +193,21 @@ function itemPage(site, column, localImage, localCaption = false) {
       ${body}
     </div>
 
+    <div class="authorx">
+      ${portrait ? `<img src="/kolumna/img/nermin-sefic.webp" alt="Nermin Sefić" width="54" height="54" loading="lazy" decoding="async">` : ''}
+      <div>
+        <b><a href="https://gnk-asg.hr/nermin-sefic/">Nermin Sefić</a></b>
+        <span>${site.lang === 'en' ? 'Editor-in-chief' : 'Glavni urednik'} · AKTUAL MEDIA · GNK ASG d.o.o.</span>
+      </div>
+    </div>
+
     <a class="more" href="${esc(column.canonical)}" rel="noopener">${site.lang === 'en' ? 'Read the full text at the source' : 'Pročitaj cijeli tekst na izvoru'}</a>
 
     <p class="hash">${['#AKTUALMEDIA', '#GNKASG', '#NerminSefić', ...column.tags.map((t) => `#${String(t).replace(/[^\p{L}\p{N}]+/gu, '')}`)].filter(Boolean).join(' · ')}</p>
 ` + foot(site);
 }
 
-function indexPage(site, columns) {
+function indexPage(site, columns, portrait = false) {
   const list = columns.map((column) => {
     const date = column.published ? new Date(column.published).toISOString().slice(0, 10) : '';
     return `      <a class="card" href="/kolumna/${esc(column.slug)}/">
@@ -252,13 +223,21 @@ function indexPage(site, columns) {
     description: site.lang === 'en'
       ? `Every column Nermin Sefić publishes in Croatian on AKTUAL MEDIA is republished here as a separate post, with the source link.`
       : `Svaka kolumna koju Nermin Sefić objavi na hrvatskom na AKTUAL MEDIA prenosi se ovdje kao zasebna objava, s linkom na izvor.`,
-    canonical: `${site.base}kolumna/`
+    canonical: `${site.base}kolumna/`,
+    image: `${site.base}img/${site.slug}-og.png`
   }) + `
     <p class="kicker">${site.lang === 'en' ? 'Columns · AKTUAL MEDIA network' : 'Kolumne · mreža AKTUAL MEDIA'}</p>
     <h1>${site.lang === 'en' ? 'Columns by Nermin Sefić' : 'Kolumne Nermina Sefića'}</h1>
     <p class="dek">${site.lang === 'en'
       ? 'Each text is first published on AKTUAL MEDIA and republished here automatically, with the source link and the original date.'
       : 'Svaki tekst prvi objavljuje AKTUAL MEDIA, a ovdje se prenosi automatski — s linkom na izvor i izvornim datumom.'}</p>
+    <div class="authorx">
+      ${portrait ? `<img src="/kolumna/img/nermin-sefic.webp" alt="Nermin Sefić" width="54" height="54" loading="lazy" decoding="async">` : ''}
+      <div>
+        <b><a href="https://gnk-asg.hr/nermin-sefic/">Nermin Sefić</a></b>
+        <span>${site.lang === 'en' ? 'Editor-in-chief' : 'Glavni urednik'} · AKTUAL MEDIA · GNK ASG d.o.o.</span>
+      </div>
+    </div>
     <div class="grid">
 ${list}
     </div>
@@ -270,16 +249,7 @@ ${list}
  * Vraća brojke za izvještaj.
  */
 export function buildSyndication({ root, outRoot, dryRun = false }) {
-  const sourceDir = join(root, 'apps', 'portal', 'gnk-aktual', 'kolumne');
-  if (!existsSync(sourceDir)) return { ok: false, reason: 'nema izvornih kolumni', items: 0, pages: 0 };
-
-  const columns = readdirSync(sourceDir)
-    .map((name) => join(sourceDir, name))
-    .filter((dir) => statSync(dir).isDirectory())
-    .map(readColumn)
-    .filter(Boolean)
-    .sort((a, b) => String(b.published).localeCompare(String(a.published)))
-    .slice(0, MAX_ITEMS);
+  const columns = readColumns(root, { max: MAX_ITEMS });
 
   if (!columns.length) return { ok: false, reason: 'nijedna kolumna nije pročitana', items: 0, pages: 0 };
 
@@ -296,7 +266,17 @@ export function buildSyndication({ root, outRoot, dryRun = false }) {
       pages += 1;
     };
 
-    write(join(dist, 'kolumna', 'index.html'), indexPage(site, columns));
+    /* Slika autora: ista na svakoj domeni, lokalno kopirana (CSP). */
+    const portraitSource = authorPortrait(root);
+    let portrait = false;
+    if (portraitSource) {
+      mkdirSync(join(dist, 'kolumna', 'img'), { recursive: true });
+      if (!dryRun) copyFileSync(portraitSource, join(dist, 'kolumna', 'img', 'nermin-sefic.webp'));
+      portrait = true;
+      images += 1;
+    }
+
+    write(join(dist, 'kolumna', 'index.html'), indexPage(site, columns, portrait));
 
     for (const column of columns) {
       const dir = join(dist, 'kolumna', column.slug);
@@ -307,22 +287,19 @@ export function buildSyndication({ root, outRoot, dryRun = false }) {
          koristi ilustracija same stranice. */
       let localImage = '';
       let localCaption = false;
-      if (column.image && !/gnk-asg-social-card/.test(column.image)) {
-        const rel = column.image.replace(/^https:\/\/gnk-asg\.hr\//, '');
-        const found = join(root, 'apps', 'portal', rel);
-        if (existsSync(found)) {
-          const ext = found.slice(found.lastIndexOf('.')).toLowerCase();
-          if (!dryRun) copyFileSync(found, join(dir, `slika${ext}`));
-          localImage = `slika${ext}`;
-          images += 1;
-        }
+      const found = columnImagePath(root, column);
+      if (found) {
+        const ext = found.slice(found.lastIndexOf('.')).toLowerCase();
+        if (!dryRun) copyFileSync(found, join(dir, `slika${ext}`));
+        localImage = `slika${ext}`;
+        images += 1;
       }
       if (!localImage) {
         localImage = `/img/${site.slug}-art-1.svg`;
         localCaption = true;
       }
 
-      write(join(dir, 'index.html'), itemPage(site, column, localImage, localCaption));
+      write(join(dir, 'index.html'), itemPage(site, column, localImage, localCaption, portrait));
     }
 
     /* Sitemap: dodaj nove adrese, bez duplikata. */
@@ -354,12 +331,4 @@ export function buildSyndication({ root, outRoot, dryRun = false }) {
   return { ok: true, items: columns.length, pages, images };
 }
 
-export const SYNDICATION_COLUMNS = () => {
-  const sourceDir = join(process.cwd(), 'apps', 'portal', 'gnk-aktual', 'kolumne');
-  if (!existsSync(sourceDir)) return [];
-  return readdirSync(sourceDir)
-    .map((name) => join(sourceDir, name))
-    .filter((dir) => statSync(dir).isDirectory())
-    .map(readColumn)
-    .filter(Boolean);
-};
+export const SYNDICATION_COLUMNS = (root) => readColumns(root);

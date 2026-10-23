@@ -1,0 +1,214 @@
+{
+  "version": "WORLD_EXPANSION_V1_20261023",
+  "generatedAt": "2026-10-23T17:40:55.844Z",
+  "live": {
+    "editions": 17,
+    "countries": 17,
+    "languages": 14,
+    "continents": 6,
+    "ids": [
+      "zagreb",
+      "beograd",
+      "sarajevo",
+      "budimpesta",
+      "ljubljana",
+      "rim",
+      "sofija",
+      "bukurest",
+      "nairobi",
+      "jakarta",
+      "newyork",
+      "saopaulo",
+      "sydney",
+      "singapur",
+      "kairo",
+      "tokio",
+      "peking"
+    ],
+    "continentNames": [
+      "Africa",
+      "Asia",
+      "Europe",
+      "North America",
+      "Oceania",
+      "South America"
+    ]
+  },
+  "planned": {
+    "cities": 94,
+    "countries": 94,
+    "newCountries": 91,
+    "continents": 6,
+    "languages": 41,
+    "waves": [
+      {
+        "id": "wave-1",
+        "name": "Prvi val — regija i prve svjetske prijestolnice",
+        "status": "live",
+        "cities": 0
+      },
+      {
+        "id": "wave-2",
+        "name": "Drugi val — Europa bez naše regije",
+        "status": "planned",
+        "cities": 27
+      },
+      {
+        "id": "wave-3",
+        "name": "Treći val — Amerike",
+        "status": "planned",
+        "cities": 19
+      },
+      {
+        "id": "wave-4",
+        "name": "Četvrti val — Afrika",
+        "status": "planned",
+        "cities": 21
+      },
+      {
+        "id": "wave-5",
+        "name": "Peti val — Azija i Oceanija",
+        "status": "planned",
+        "cities": 27
+      }
+    ]
+  },
+  "total": {
+    "countries": 108,
+    "editions": 111
+  },
+  "byContinent": {
+    "Europe": {
+      "planned": 27,
+      "live": 8
+    },
+    "North America": {
+      "planned": 9,
+      "live": 1
+    },
+    "South America": {
+      "planned": 10,
+      "live": 1
+    },
+    "Africa": {
+      "planned": 21,
+      "live": 2
+    },
+    "Asia": {
+      "planned": 23,
+      "live": 4
+    },
+    "Oceania": {
+      "planned": 4,
+      "live": 1
+    }
+  },
+  "requirements": [
+    {
+      "id": "sources",
+      "hr": "provjereni izvori s RSS adresama (najmanje tri)",
+      "en": "verified sources with RSS feeds (at least three)"
+    },
+    {
+      "id": "art",
+      "hr": "scena grada u assets/global-src (16:9)",
+      "en": "city scene in assets/global-src (16:9)"
+    },
+    {
+      "id": "strings",
+      "hr": "nazivi sučelja na jeziku zemlje",
+      "en": "interface strings in the country language"
+    },
+    {
+      "id": "items",
+      "hr": "najmanje jedan stvarni zapis u arhivi",
+      "en": "at least one real record in the archive"
+    }
+  ],
+  "next": [
+    {
+      "id": "berlin",
+      "city": "Berlin",
+      "country": "Njemačka",
+      "lang": "de",
+      "wave": "wave-2"
+    },
+    {
+      "id": "paris",
+      "city": "Pariz",
+      "country": "Francuska",
+      "lang": "fr",
+      "wave": "wave-2"
+    },
+    {
+      "id": "madrid",
+      "city": "Madrid",
+      "country": "Španjolska",
+      "lang": "es",
+      "wave": "wave-2"
+    },
+    {
+      "id": "amsterdam",
+      "city": "Amsterdam",
+      "country": "Nizozemska",
+      "lang": "nl",
+      "wave": "wave-2"
+    },
+    {
+      "id": "bruxelles",
+      "city": "Bruxelles",
+      "country": "Belgija",
+      "lang": "fr",
+      "wave": "wave-2"
+    },
+    {
+      "id": "bern",
+      "city": "Bern",
+      "country": "Švicarska",
+      "lang": "de",
+      "wave": "wave-2"
+    },
+    {
+      "id": "wien",
+      "city": "Beč",
+      "country": "Austrija",
+      "lang": "de",
+      "wave": "wave-2"
+    },
+    {
+      "id": "stockholm",
+      "city": "Stockholm",
+      "country": "Švedska",
+      "lang": "sv",
+      "wave": "wave-2"
+    },
+    {
+      "id": "oslo",
+      "city": "Oslo",
+      "country": "Norveška",
+      "lang": "no",
+      "wave": "wave-2"
+    },
+    {
+      "id": "kjbenhavn",
+      "city": "Kopenhagen",
+      "country": "Danska",
+      "lang": "da",
+      "wave": "wave-2"
+    },
+    {
+      "id": "helsinki",
+      "city": "Helsinki",
+      "country": "Finska",
+      "lang": "fi",
+      "wave": "wave-2"
+    },
+    {
+      "id": "reykjavik",
+      "city": "Reykjavík",
+      "country": "Island",
+      "lang": "is",
+      "wave": "wave-2"
+    }
+  ]
+}

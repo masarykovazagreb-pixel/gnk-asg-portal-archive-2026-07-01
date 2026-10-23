@@ -342,6 +342,27 @@
         "--check"
       ],
       "checks": "Broji javne stranice bez entitetskog grafa i meta urednika. Savjetodavan: ne blokira deploy, ali pokazuje koliko je posla ostalo."
+    },
+    {
+      "id": "prenos-agent",
+      "name": "Prenos — svi tekstovi na svih 15 domena",
+      "required": true,
+      "cmd": [
+        "node",
+        "tests/test-prenos-v1.mjs"
+      ],
+      "checks": "Svaki naš tekst (kolumne, autorski tekstovi, pojašnjenja) postoji na šest stranica mreže i devet svjetskih izdanja, s canonicalom na izvornik, slikom autora i oznakama."
+    },
+    {
+      "id": "coverage-agent",
+      "name": "Pokrivenost — plan do 108 zemalja",
+      "required": true,
+      "cmd": [
+        "node",
+        "scripts/plan-world-expansion-v1.mjs",
+        "--check"
+      ],
+      "checks": "Plan valova i stvarna izdanja se poklapaju; nijedno izdanje ne postoji izvan plana i nijedan grad nema dvostruki unos."
     }
   ]
 }

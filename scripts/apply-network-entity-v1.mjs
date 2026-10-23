@@ -27,6 +27,7 @@ import { entityGraphJson, HASHTAGS, PERSON, ORG_AKTUAL, ORG_ASG, ORG_DINAMO, EXP
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
 
+const PORTAL = join(ROOT, 'apps', 'portal');
 const CHECK = process.argv.includes('--check');
 const arg = (name, fallback = '') => {
   const i = process.argv.indexOf(name);
@@ -38,6 +39,33 @@ const MARK_GRAPH = '<!-- entity:v1 -->';
 const MARK_FOOT = '<!-- entity-foot:v1 -->';
 const CLOSE = '<!-- /entity:v1 -->';
 const EDITOR = 'Nermin Sefić';
+
+/* Popis odobrenih stranica za autorski hashtag. Pravilo je starije od ove
+   skripte i ne mijenja se: ime autora u oznaci stoji samo na stranicama koje
+   su za to odobrene (kolumne, autorski tekstovi, analize). Na ostalim
+   stranicama ostaju entitetski graf i `meta editor` — dovoljno za SEO, bez
+   tvrdnje da je tekst njegov. */
+function approvedRoutes() {
+  const file = join(ROOT, 'apps', 'portal', 'data', 'approved_mentions.json');
+  if (!existsSync(file)) return new Set();
+  try {
+    const data = JSON.parse(readFileSync(file, 'utf8'));
+    const norm = (value) => {
+      try {
+        const raw = String(value || '').trim();
+        const pathname = /^https?:\/\//i.test(raw) ? new URL(raw).pathname : raw;
+        return pathname.replace(/\/+$/, '') + '/';
+      } catch { return ''; }
+    };
+    return new Set([...(data.approved_urls || []), ...(data.approved_items || [])]
+      .map((entry) => norm(typeof entry === 'string' ? entry : entry?.url || entry?.route || ''))
+      .filter(Boolean));
+  } catch { return new Set(); }
+}
+
+const APPROVED = approvedRoutes();
+const AUTHOR_HASHTAG = '#NerminSefić';
+const isApproved = (route) => APPROVED.has(route.endsWith('/') ? route : `${route}/`);
 
 /* Stranice koje ne dobivaju blok: alati, administracija, API i datoteke
    koje nisu stranice. */
@@ -54,7 +82,7 @@ function entityBlocks({ full }) {
 ${CLOSE}`;
 }
 
-function footBlock() {
+function footBlock(allowAuthorTag = true) {
   return `${MARK_FOOT}
 <nav class="ne-tags" aria-label="Mreža AKTUAL MEDIA">
   <p class="ne-label">AKTUAL MEDIA · GNK ASG d.o.o. · urednik Nermin Sefić</p>
@@ -66,7 +94,7 @@ function footBlock() {
     <li><a href="${url('/mreza/')}">Mreža</a></li>
     <li><a href="${EXPLAINER}">GNK ASG i GNK DINAMO Ltd.</a></li>
   </ul>
-  <p class="ne-hash">${HASHTAGS.map((tag) => `<a href="${url('/nermin-sefic/')}">${tag}</a>`).join(' · ')}</p>
+  <p class="ne-hash">${HASHTAGS.filter((tag) => allowAuthorTag || tag !== AUTHOR_HASHTAG).map((tag) => `<a href="${url('/nermin-sefic/')}">${tag}</a>`).join(' · ')}</p>
 </nav>
 <!-- /entity-foot:v1 -->`;
 }
@@ -104,7 +132,10 @@ const walk = (dir, out = []) => {
   return out;
 };
 
-const APPS = ONLY ? [ONLY] : ['apps/portal', 'apps/kanal', 'apps/world', 'apps/sites', 'apps/tjednik', 'apps/arhiva', 'apps/dnevnik', 'apps/satellites'];
+/* Samo rukom pisane stranice portala. Generatori (sites, world, kanal, arhiva,
+   dnevnik) sami ispisuju entitetski graf — da bi izlaz bio reproducibilan i da
+   ponovna gradnja ne bi izgledala kao „zastario izlaz" u testu svježine. */
+const APPS = ONLY ? [ONLY] : ['apps/portal'];
 
 /* Stranice koje dobivaju puni opis entiteta — s njih tražilica uči tko je tko. */
 const FULL = new Set([
@@ -145,18 +176,27 @@ for (const file of files) {
     html = html.replace('</head>', `<link rel="author" href="${url('/nermin-sefic/')}">\n</head>`);
   }
 
-  /* Stalne oznake u article:tag — bez njih hashtag postoji samo vizualno. */
+  /* Stalne oznake u article:tag — bez njih hashtag postoji samo vizualno.
+     Autorski hashtag samo na odobrenim stranicama; ostale nose #AKTUALMEDIA
+     i #GNKASG, koji nisu tvrdnja o autorstvu. */
+  const route = `/${relative(PORTAL, dirname(file)).split('\\').join('/')}/`;
+  const allowAuthorTag = isApproved(route) || !file.startsWith(PORTAL);
   for (const tag of HASHTAGS) {
+    if (tag === AUTHOR_HASHTAG && !allowAuthorTag) continue;
     if (!has(html, `content="${tag}"`)) {
       html = html.replace('</head>', `<meta property="article:tag" content="${tag}">\n</head>`);
     }
   }
+  if (!allowAuthorTag) {
+    /* Ukloni ranije dodanu oznaku, da ponovno pokretanje ne ostavi zaostatak. */
+    html = html.replace(/<meta property="article:tag" content="#NerminSefić">\n?/g, '');
+  }
 
   /* Vidljivi red oznaka: samo ako stranica nema svoj blok s #AKTUALMEDIA. */
   if (has(html, MARK_FOOT)) {
-    html = html.replace(new RegExp(`${MARK_FOOT}[\\s\\S]*?<!-- /entity-foot:v1 -->`), footBlock());
+    html = html.replace(new RegExp(`${MARK_FOOT}[\\s\\S]*?<!-- /entity-foot:v1 -->`), footBlock(allowAuthorTag));
   } else if (!has(html, '#AKTUALMEDIA') && has(html, '</body>')) {
-    html = html.replace('</body>', `${footBlock()}\n</body>`);
+    html = html.replace('</body>', `${footBlock(allowAuthorTag)}\n</body>`);
     if (!has(original, 'id="network-entity-css"')) html = html.replace('</head>', `${CSS}\n</head>`);
   }
 

@@ -32,6 +32,8 @@ import { logoFor, channelLogoSlug } from '../region/engine/brand.mjs';
 import { meshBlock, MESH_CSS } from '../satellites/lib/network-v1.mjs';
 import { spiderWeb, SPIDER_CSS } from '../satellites/lib/spiderweb-v1.mjs';
 import { WORLD_PORTALS, WORLD_BY_ID, portalBase, portalUrl, reviewUrl, HUB_HR, HUB_EN, MAIN, AKTUAL } from './lib/registry.mjs';
+import { writeColumns, columnsNavLabel, columnUrls, linkFromHome } from './lib/kolumne.mjs';
+import { writePrenos, prenosUrls, appendSitemap, linkPrenosOnHome } from '../../scripts/lib/prenos-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..', '..');
@@ -265,7 +267,8 @@ function header(portal, active = '') {
     ['', words.latest],
     ['izvori/', words.sources],
     ['metodologija/', words.methodology],
-    ['mreza/', wl(portal, 'network')]
+    ['mreza/', wl(portal, 'network')],
+    ['kolumne/', columnsNavLabel(portal)]
   ].map(([href, label]) => `<a href="${href}"${href === active ? ' aria-current="page"' : ''}>${esc(label)}</a>`).join('');
 
   return `<header class="top">
@@ -393,7 +396,20 @@ function shell(portal, { title, description, path = '', body, robots = 'index,fo
 <meta name="publisher" content="AKTUAL MEDIA d.o.o.">
 <meta name="keywords" content="${esc(keywords)}">
 <meta name="theme-color" content="${esc(portal.palette.bg)}">
+<link rel="author" href="https://gnk-asg.hr/nermin-sefic/">
 <link rel="canonical" href="${canonical}">
+<script type="application/ld+json" id="network-entity-v1">${JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': [
+        { '@type': 'Organization', '@id': 'https://gnk-asg.hr/#gnk-asg', name: 'GNK ASG d.o.o.', url: 'https://gnk-asg.hr/', parentOrganization: { '@id': 'https://gnk-asg.hr/#gnk-dinamo-ltd' }, founder: { '@id': 'https://gnk-asg.hr/#nermin-sefic' } },
+        { '@type': 'Organization', '@id': 'https://gnk-asg.hr/#gnk-dinamo-ltd', name: 'GNK DINAMO Ltd.', url: 'https://gnk-asg.hr/pojasnjenje-gnk-asg-i-gnk-dinamo-ltd/' },
+        { '@type': 'NewsMediaOrganization', '@id': 'https://gnk-asg.hr/gnk-aktual/#aktual-media', name: 'AKTUAL MEDIA', url: 'https://gnk-asg.hr/gnk-aktual/', parentOrganization: { '@id': 'https://gnk-asg.hr/#gnk-asg' }, editor: { '@id': 'https://gnk-asg.hr/#nermin-sefic' } },
+        { '@type': 'Person', '@id': 'https://gnk-asg.hr/#nermin-sefic', name: 'Nermin Sefić', alternateName: ['Nermin Sefic', 'Sefic Nermin'], jobTitle: 'Glavni urednik AKTUAL MEDIA, direktor GNK ASG d.o.o.', url: 'https://gnk-asg.hr/nermin-sefic/', worksFor: [{ '@id': 'https://gnk-asg.hr/#gnk-asg' }, { '@id': 'https://gnk-asg.hr/gnk-aktual/#aktual-media' }], affiliation: { '@id': 'https://gnk-asg.hr/#gnk-dinamo-ltd' } }
+      ]
+    }).replace(/</g, '\\u003c')}</script>
+<meta property="article:tag" content="#AKTUALMEDIA">
+<meta property="article:tag" content="#GNKASG">
+<meta property="article:tag" content="#NerminSefić">
 <link rel="alternate" type="application/rss+xml" title="${esc(portal.name)}" href="${base}/feed.xml">
 <link rel="alternate" type="application/feed+json" title="${esc(portal.name)}" href="${base}/feed.json">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -685,7 +701,13 @@ function writeSitemap(portal, data, themes) {
     { loc: portalUrl(portal, 'metodologija/'), priority: '0.5', changefreq: 'monthly' },
     { loc: portalUrl(portal, 'mreza/'), priority: '0.7', changefreq: 'weekly' },
     ...[...themes.keys()].map((id) => ({ loc: portalUrl(portal, `tema/${id}/`), priority: '0.6', changefreq: 'daily' })),
-    ...(portal.sources || []).map((source) => ({ loc: portalUrl(portal, `izvor/${source.id}/`), priority: '0.4', changefreq: 'daily' }))
+    ...(portal.sources || []).map((source) => ({ loc: portalUrl(portal, `izvor/${source.id}/`), priority: '0.4', changefreq: 'daily' })),
+    /* Kolumne: popis i svaka objava zasebno. Bez ovoga preneseni tekst
+       postoji, ali tražilica za njega ne zna. */
+    ...[
+      { loc: portalUrl(portal, 'kolumne/'), priority: '0.6', changefreq: 'daily' },
+      ...columnUrls(ROOT, portal).map((entry) => ({ loc: entry.loc, priority: '0.5', changefreq: 'monthly' }))
+    ]
   ];
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -780,10 +802,49 @@ export function buildPortal(portal) {
   writePage('mreza/index.html', networkPage(portal));
   writePage('404.html', notFound(portal));
 
+  /* Kolumne: Sefićev tekst s matice, u izvornom hrvatskom, s uvodom na jeziku
+     izdanja i linkom na izvor. Pišu se nakon ostalih stranica da im shell
+     (navigacija, podnožje, graf) bude isti kao na cijelom izdanju. */
+  const columns = writeColumns(portal, {
+    root: ROOT,
+    shell,
+    header,
+    footer,
+    writePage,
+    style: `:root{--bg:${portal.palette.bg};--surface:${portal.palette.surface};--accent:${portal.palette.accent};--accent2:${portal.palette.accent2};--ink:${portal.palette.ink}}`
+  });
+  linkFromHome(portal, join(dir, 'index.html'), columnsNavLabel(portal));
+
+  /* Prenos na svjetsko izdanje: svi naši tekstovi, sa slikom autora i
+     linkom na izvornik. Kolumne ostaju u /kolumne/, ostalo ide u /prenos/. */
+  const prenos = writePrenos({
+    root: ROOT,
+    target: {
+      key: portal.id,
+      name: portal.name,
+      base: portal.base,
+      lang: portal.lang,
+      outDir: dir,
+      palette: portal.palette,
+      ogImage: `https://gnk-asg.hr/assets/izdanja/${portal.id}-og.jpg`
+    },
+    columnBase: '/kolumne/'
+  });
+  if (prenos.ok) {
+    appendSitemap(join(dir, 'sitemap.xml'), prenosUrls(ROOT, { base: portal.base }, '/kolumne/'));
+  }
+  linkPrenosOnHome({ homeFile: join(dir, 'index.html'), lang: portal.lang });
+
   writeFeeds(portal, data);
   writeStatics(portal, data, themes);
 
-  return { portal: portal.id, pages: 5 + themes.size + portal.sources.length, items: data.items.length };
+  return {
+    portal: portal.id,
+    pages: 5 + themes.size + portal.sources.length + (columns.count ? 1 + columns.count : 0) + (prenos.ok ? prenos.pages : 0),
+    columns: columns.count,
+    prenos: prenos.ok ? prenos.pages : 0,
+    items: data.items.length
+  };
 }
 
 /* Gradi samo kad je OVA datoteka ulazna točka (uvoz iz testa ne piše ništa). */

@@ -217,6 +217,19 @@ export function siteHeader(site, lang, pages, current) {
 
 /* ---------- head ---------- */
 
+/* Entitetski graf mreže: isti čvorovi i isti @id na svakoj domeni, pa se
+   GNK ASG, GNK DINAMO Ltd., AKTUAL MEDIA i urednik spajaju u jedan entitet
+   bez obzira na to s koje je adrese čitatelj došao. */
+const ENTITY_GRAPH = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'Organization', '@id': 'https://gnk-asg.hr/#gnk-asg', name: 'GNK ASG d.o.o.', url: 'https://gnk-asg.hr/', parentOrganization: { '@id': 'https://gnk-asg.hr/#gnk-dinamo-ltd' }, founder: { '@id': 'https://gnk-asg.hr/#nermin-sefic' } },
+    { '@type': 'Organization', '@id': 'https://gnk-asg.hr/#gnk-dinamo-ltd', name: 'GNK DINAMO Ltd.', url: 'https://gnk-asg.hr/pojasnjenje-gnk-asg-i-gnk-dinamo-ltd/' },
+    { '@type': 'NewsMediaOrganization', '@id': 'https://gnk-asg.hr/gnk-aktual/#aktual-media', name: 'AKTUAL MEDIA', url: 'https://gnk-asg.hr/gnk-aktual/', parentOrganization: { '@id': 'https://gnk-asg.hr/#gnk-asg' }, editor: { '@id': 'https://gnk-asg.hr/#nermin-sefic' } },
+    { '@type': 'Person', '@id': 'https://gnk-asg.hr/#nermin-sefic', name: 'Nermin Sefić', alternateName: ['Nermin Sefic', 'Sefic Nermin'], jobTitle: 'Glavni urednik AKTUAL MEDIA, direktor GNK ASG d.o.o.', url: 'https://gnk-asg.hr/nermin-sefic/', worksFor: [{ '@id': 'https://gnk-asg.hr/#gnk-asg' }, { '@id': 'https://gnk-asg.hr/gnk-aktual/#aktual-media' }], affiliation: { '@id': 'https://gnk-asg.hr/#gnk-dinamo-ltd' } }
+  ]
+}).replace(/</g, '\\u003c');
+
 export function head({ site, lang, page, title, description, canonical, alternate, image, imageW = 1200, imageH = 800, keywords, jsonld, hashtags = [], section = '', published = '2026-10-22', modified = published, extra = '' }) {
   const locale = lang === 'en' ? 'en_GB' : 'hr_HR';
   const articleTags = page === 'home' ? '' : hashtags.map((tag) => `<meta property="article:tag" content="${esc(tag)}">`).join('\n');
@@ -233,7 +246,12 @@ export function head({ site, lang, page, title, description, canonical, alternat
 <meta name="news_keywords" content="${esc(keywords)}">
 <meta name="hashtags" content="${esc(hashtags.join(' '))}">
 <meta name="theme-color" content="${site.bg}">
+<link rel="author" href="https://gnk-asg.hr/nermin-sefic/">
 <link rel="canonical" href="${canonical}">
+<script type="application/ld+json" id="network-entity-v1">${ENTITY_GRAPH}</script>
+<meta property="article:tag" content="#AKTUALMEDIA">
+<meta property="article:tag" content="#GNKASG">
+<meta property="article:tag" content="#NerminSefić">
 <link rel="alternate" hreflang="${lang}" href="${canonical}">
 <link rel="alternate" hreflang="${lang === 'en' ? 'hr' : 'en'}" href="${alternate}">
 <link rel="alternate" hreflang="x-default" href="${lang === 'en' ? alternate : canonical}">

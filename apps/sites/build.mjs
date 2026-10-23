@@ -20,6 +20,7 @@ import { ogPng } from './lib/png.mjs';
 import { SATELLITE_ART } from './lib/satellite-art.mjs';
 import { buildElectionDesk } from './lib/elections.mjs';
 import { buildSyndication } from './lib/sindikacija.mjs';
+import { writePrenos, prenosUrls, appendSitemap, linkPrenosOnHome } from '../../scripts/lib/prenos-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..', '..');
@@ -473,6 +474,32 @@ buildNetwork()
     /* Srednji sloj mreže: svaka Sefićeva kolumna s portala dobiva vlastitu
        stranicu na svakoj povezanoj domeni. Bez ovog koraka kolumna postoji
        samo na matici, a mreža nema što prenijeti. */
+    /* Prenos: svi naši tekstovi — kolumne, autorski tekstovi i pojašnjenja —
+       na svakoj stranici mreže, sa slikom autora i linkom na izvornik. */
+    let prenosPages = 0;
+    for (const site of SITES) {
+      const outDir = join(OUT, site.slug);
+      const result = writePrenos({
+        root: ROOT,
+        target: {
+          key: site.slug,
+          name: site.name,
+          base: site.base,
+          lang: site.lang || 'hr',
+          outDir,
+          palette: { bg: site.bg, accent: site.accent, accent2: site.accent2 },
+          ogImage: `${site.base}img/${site.slug}-og.png`
+        },
+        columnBase: '/kolumna/'
+      });
+      if (result.ok) {
+        prenosPages += result.pages;
+        appendSitemap(join(outDir, 'sitemap.xml'), prenosUrls(ROOT, { base: site.base }), false);
+        linkPrenosOnHome({ homeFile: join(outDir, 'index.html'), lang: site.lang || 'hr' });
+      }
+    }
+    console.log(`Prenos — ${prenosPages} stranica na ${SITES.length} stranica mreže.`);
+
     const syn = buildSyndication({ root: ROOT, outRoot: OUT });
     if (syn.ok) {
       console.log(`Sindikacija — ${syn.items} kolumni × ${SITES.length} stranica, ${syn.pages} novih adresa, ${syn.images} lokalnih slika.`);

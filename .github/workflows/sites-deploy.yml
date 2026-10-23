@@ -19,6 +19,12 @@ on:
     branches: [main, 'arena/**']
     paths:
       - 'apps/sites/**'
+      - 'apps/portal/gnk-aktual/kolumne/**'
+      - 'apps/portal/autorske-objave/**'
+      - 'apps/kanal/src/articles/**'
+      - 'apps/portal/assets/people/**'
+      - 'scripts/lib/**'
+      - 'scripts/build-sindikacija-v1.mjs'
       - '.github/workflows/sites-deploy.yml'
   schedule:
     - cron: '17 * * * *'
