@@ -441,3 +441,14 @@ figure>figcaption:empty{display:none}
 .am-x-list a:hover{color:var(--accent2,var(--am-gold));text-decoration:underline;text-underline-offset:.18em}
 .am-x-src{font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--am-muted)}
 @media print{.am-exchange{display:none!important}}
+
+
+.am-our{max-width:var(--am-measure);margin:clamp(2.4rem,3.6vw,3.6rem) auto;padding-top:clamp(1.2rem,2vw,1.8rem);
+  border-top:1px solid var(--am-line);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.am-our h2{margin:0 0 .3em;font-size:clamp(1.1rem,1.5vw,1.4rem)}
+.am-our-lead{margin:0 0 1em;color:var(--am-muted);font-size:.92rem;max-width:62ch}
+.am-our-list{list-style:none;margin:0;padding:0;display:grid;gap:.7rem}
+.am-our-list li{display:grid;gap:.15rem;padding-bottom:.7rem;border-bottom:1px solid var(--am-line-soft)}
+.am-our-list a{font-weight:600;line-height:1.35;text-decoration:none}
+.am-our-list a:hover{color:var(--accent2,var(--am-gold));text-decoration:underline;text-underline-offset:.18em}
+.am-our-meta{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--am-muted)}

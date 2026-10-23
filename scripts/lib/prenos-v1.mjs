@@ -397,6 +397,46 @@ export function linkPrenosOnHome({ homeFile, lang, dryRun = false }) {
 /** Stil za putokaz, ako ga stranica još nema. */
 export const PRENOS_LINK_CSS = '.column-link{display:block;max-width:1100px;margin:0 auto 26px;padding:14px 18px;border:1px solid rgba(255,255,255,.16);border-radius:12px;text-decoration:none;color:inherit;font:700 13px/1.4 system-ui,sans-serif;background:rgba(255,255,255,.04)}.column-link b{color:var(--accent2)}';
 
+
+/**
+ * Popis naših tekstova kao veze na kanonske adrese — za domene na kojima se
+ * puni prenos ne isplati. Gradska izdanja žive na istoj domeni kao i izvornik,
+ * pa bi puna kopija bila dvostruki sadržaj; ovdje stoji naslov, datum i veza
+ * na izvornik. Čitatelj dobiva isti popis, a tražilica samo jednu adresu.
+ */
+export function editorialIndexBlock({ root, lang = 'hr', limit = 8, headingId = 'nasi-tekstovi' } = {}) {
+  const items = readCorpus(root).slice(0, limit);
+  if (!items.length) return '';
+  const en = lang === 'en';
+  const heading = en ? 'Our latest texts' : 'Najnoviji naši tekstovi';
+  const lead = en
+    ? 'Columns, authored texts and explainers published by AKTUAL MEDIA. Every title opens its canonical page at the source.'
+    : 'Kolumne, autorski tekstovi i pojašnjenja AKTUAL MEDIA. Svaki naslov vodi na kanonsku stranicu izvornika.';
+  const rows = items.map((item) => `<li>
+      <a href="${esc(item.canonical)}" rel="external noopener">${esc(item.title)}</a>
+      <span class="am-our-meta">${esc(KIND_LABEL[item.kind]?.[en ? 'en' : 'hr'] || '')}${item.published ? ` · <time datetime="${esc(item.published)}">${esc(item.published)}</time>` : ''}</span>
+    </li>`).join('\n    ');
+  return `<section class="am-our" aria-labelledby="${esc(headingId)}">
+  <h2 id="${esc(headingId)}">${esc(heading)}</h2>
+  <p class="am-our-lead">${esc(lead)}</p>
+  <ul class="am-our-list">
+    ${rows}
+  </ul>
+</section>`;
+}
+
+export const EDITORIAL_INDEX_CSS = `
+.am-our{max-width:var(--am-measure);margin:clamp(2.4rem,3.6vw,3.6rem) auto;padding-top:clamp(1.2rem,2vw,1.8rem);
+  border-top:1px solid var(--am-line);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.am-our h2{margin:0 0 .3em;font-size:clamp(1.1rem,1.5vw,1.4rem)}
+.am-our-lead{margin:0 0 1em;color:var(--am-muted);font-size:.92rem;max-width:62ch}
+.am-our-list{list-style:none;margin:0;padding:0;display:grid;gap:.7rem}
+.am-our-list li{display:grid;gap:.15rem;padding-bottom:.7rem;border-bottom:1px solid var(--am-line-soft)}
+.am-our-list a{font-weight:600;line-height:1.35;text-decoration:none}
+.am-our-list a:hover{color:var(--accent2,var(--am-gold));text-decoration:underline;text-underline-offset:.18em}
+.am-our-meta{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--am-muted)}
+`;
+
 export { LABELS as PRENOS_LABELS };
 
 /** Dodaj adrese u sitemap cilja bez duplikata. */
