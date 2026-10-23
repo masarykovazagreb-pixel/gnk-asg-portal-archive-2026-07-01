@@ -18,6 +18,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { deskHashtags, tagSlug } from '../lib/seo.mjs';
 import { entityGraphJson } from '../../../scripts/lib/entity-graph-v1.mjs';
+import { HOUSE_CSS, houseRibbon } from '../../satellites/lib/house-style-v1.mjs';
 import { join, dirname } from 'node:path';
 
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -305,7 +306,7 @@ function deskPage(lang, { sites, pages }) {
 <meta name="twitter:description" content="${esc(t.description)}">
 <meta name="twitter:image" content="${OG}">
 <meta name="twitter:image:alt" content="AKTUAL MEDIA — mreža izdanja">
-<style>${CSS}</style>
+<style>${CSS}\n${HOUSE_CSS}</style>
 <script type="application/ld+json">${JSON.stringify(jsonld)}</script>
 <meta name="editor" content="Nermin Sefić">
 <meta property="article:tag" content="#AKTUALMEDIA">
@@ -315,6 +316,7 @@ function deskPage(lang, { sites, pages }) {
 </head>
 <body>
 <a class="skip" href="#main">${lang === 'en' ? 'Skip to content' : 'Preskoči na sadržaj'}</a>
+${houseRibbon({ lang })}
 <div class="top"><div class="wrap"><span>AKTUAL MEDIA d.o.o. · ${esc(t.kicker)}</span><span><a href="${AKTUAL}">${esc(t.desk)}</a> · <a href="${HUB_HR}">${esc(t.backHub)}</a> · <a href="/izdanja/">${esc(t.editionsLink)}</a> · <a href="${alternate}" hreflang="${t.other}" lang="${t.other}">${lang === 'en' ? 'Hrvatski' : 'English'}</a></span></div></div>
 <main id="main">
 <div class="hero"><div class="wrap">
@@ -476,7 +478,7 @@ function editionPage(lang, site, { sites, pages }) {
 <meta name="twitter:description" content="${esc(description)}">
 <meta name="twitter:image" content="${OG}">
 <meta name="twitter:image:alt" content="${esc(`${site.name} — AKTUAL MEDIA`)}">
-<style>${CSS}</style>
+<style>${CSS}\n${HOUSE_CSS}</style>
 <script type="application/ld+json">${JSON.stringify(jsonld)}</script>
 <meta name="editor" content="Nermin Sefić">
 <meta property="article:tag" content="#AKTUALMEDIA">
@@ -486,6 +488,7 @@ function editionPage(lang, site, { sites, pages }) {
 </head>
 <body>
 <a class="skip" href="#main">${lang === 'en' ? 'Skip to content' : 'Preskoči na sadržaj'}</a>
+${houseRibbon({ lang })}
 <div class="top"><div class="wrap"><span>AKTUAL MEDIA d.o.o. · ${esc(site.name)}</span><span><a href="${AKTUAL}">${esc(t.desk)}</a> · <a href="${desk}">${lang === 'en' ? 'Edition network' : 'Mreža izdanja'}</a> · <a href="${alternate}" hreflang="${t.other}" lang="${t.other}">${lang === 'en' ? 'Hrvatski' : 'English'}</a></span></div></div>
 <main id="main">
 <div class="hero"><div class="wrap">
@@ -676,7 +679,7 @@ function tagsPage(lang, { sites, pages }) {
 <meta name="twitter:description" content="${esc(description)}">
 <meta name="twitter:image" content="${OG}">
 <meta name="twitter:image:alt" content="AKTUAL MEDIA — ${lang === 'en' ? 'hashtags of the network' : 'oznake mreže'}">
-<style>${CSS}</style>
+<style>${CSS}\n${HOUSE_CSS}</style>
 <script type="application/ld+json">${JSON.stringify(jsonld)}</script>
 <meta name="editor" content="Nermin Sefić">
 <meta property="article:tag" content="#AKTUALMEDIA">
@@ -686,6 +689,7 @@ function tagsPage(lang, { sites, pages }) {
 </head>
 <body>
 <a class="skip" href="#main">${lang === 'en' ? 'Skip to content' : 'Preskoči na sadržaj'}</a>
+${houseRibbon({ lang })}
 <div class="top"><div class="wrap"><span>AKTUAL MEDIA d.o.o. · ${esc(t.kicker)}</span><span><a href="${AKTUAL}">${esc(t.desk)}</a> · <a href="${desk}">${lang === 'en' ? 'Edition network' : 'Mreža izdanja'}</a> · <a href="${alternate}" hreflang="${t.other}" lang="${t.other}">${lang === 'en' ? 'Hrvatski' : 'English'}</a></span></div></div>
 <main id="main">
 <div class="hero"><div class="wrap">

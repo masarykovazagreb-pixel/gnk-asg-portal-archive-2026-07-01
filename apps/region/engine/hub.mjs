@@ -18,6 +18,7 @@ import { fileURLToPath } from 'node:url';
 import { esc, longDate, shortDate, stampLocal, scoreFromTitle, truncate, themeFor, safeJson } from './lib.mjs';
 import { CHANNELS, HUB, CONTACT, SOCIAL_IMAGE, CITY_SHORT, CSS as CHANNEL_CSS } from './build.mjs';
 import { meshBlock, MESH_CSS } from '../../satellites/lib/network-v1.mjs';
+import { HOUSE_CSS, houseRibbon } from '../../satellites/lib/house-style-v1.mjs';
 import { spiderWeb, SPIDER_CSS } from '../../satellites/lib/spiderweb-v1.mjs';
 import { WORLD_PORTALS } from '../../world/lib/registry.mjs';
 import { ensureDeskTiles, tilePath, variantFor, deskArt, deskArtPath, deskArtSrcset } from './desk-art.mjs';
@@ -493,6 +494,7 @@ ${cssExtra}
 </head>
 <body class="iz">
 <a class="skip-to-content" href="#sadrzaj">Preskoči na sadržaj</a><style>.skip-to-content{position:absolute;left:-9999px;top:0;z-index:9999;background:#e9c66c;color:#08131f;font:800 13px/1 system-ui,sans-serif;letter-spacing:.02em;padding:12px 18px;border-radius:0 0 12px 0;text-decoration:none}.skip-to-content:focus{left:0}main:focus{outline:none}main:focus-visible{outline:3px solid #e9c66c;outline-offset:4px}a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:3px solid #e9c66c;outline-offset:3px;border-radius:4px}</style>
+${houseRibbon({ lang: 'hr', edition: '' })}
 ${body}
 <script src="/assets/public-unified-menu-v6.js?v=20261019-izdanja" defer></script>
 <script src="/assets/public-contrast-hardening-v1.js?v=20261019-izdanja" defer></script>
@@ -1117,10 +1119,13 @@ a{color:inherit;text-decoration:none}
 .kx-worldgrid span{font:600 10.5px/1.3 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#8a8272}
 .kx-go{margin-top:4px;font:800 11px/1 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#8c2f2f}
 ${MESH_CSS}
+${HOUSE_CSS}
+<style>.am-ribbon{background:rgba(255,255,255,.02)}</style>
 </style>
 </head>
 <body>
 <a class="skip-to-content" href="#sadrzaj">Preskoči na sadržaj</a><style>.skip-to-content{position:absolute;left:-9999px;top:0;z-index:9999;background:#e9c66c;color:#08131f;font:800 13px/1 system-ui,sans-serif;letter-spacing:.02em;padding:12px 18px;border-radius:0 0 12px 0;text-decoration:none}.skip-to-content:focus{left:0}main:focus{outline:none}main:focus-visible{outline:3px solid #e9c66c;outline-offset:4px}a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:3px solid #e9c66c;outline-offset:3px;border-radius:4px}</style>
+${houseRibbon({ lang: 'hr', edition: '' })}
 <div class="kx-top"><strong>AKTUAL MEDIA KANAL</strong><span><a href="/gnk-aktual/">← AKTUAL MEDIA</a> · <a href="/glavni-gradovi/">Glavni gradovi</a> · <a href="/izdanja/">Sva izdanja i deskovi</a> · <a href="/aktual-media/">Podatkovni desk</a> · <a href="/usa/">Colorado · USA</a> · <a href="/radio/">Radio</a> · <a href="/digital-workforce/knjiga/">Knjiga radnika</a></span></div>
 <main id="sadrzaj" tabindex="-1" class="kx-wrap">
   <div class="kx-head">
@@ -1321,7 +1326,7 @@ ${portalFooter()}`;
       { hreflang: 'en', href: 'https://gnk-asg.hr/en/capitals/' },
       { hreflang: 'x-default', href: 'https://gnk-asg.hr/glavni-gradovi/' }
     ],
-    cssExtra: `${SPIDER_CSS}\n${CAPITAL_CSS}\n${CAPITAL_DETAIL_CSS}`,
+    cssExtra: `${SPIDER_CSS}\n${CAPITAL_CSS}\n${CAPITAL_DETAIL_CSS}\n${HOUSE_CSS}`,
     jsonld: [
       { '@context': 'https://schema.org', '@type': 'CollectionPage', name: title, url: canonical, inLanguage: lang, isPartOf: { '@id': 'https://gnk-asg.hr/#website' }, publisher: { '@id': MEDIA_ID }, about: { '@id': MEDIA_ID } },
       { '@context': 'https://schema.org', '@type': 'ItemList', '@id': `${canonical}#capitals`, name: en ? 'Capitals of covered countries' : 'Glavni gradovi pokrivenih zemalja', numberOfItems: all.length, itemListElement: all.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: `${c.capital}, ${c.country}`, url: c.edition ? (channelBy(c.edition) || {}).base : canonical })) },
@@ -1689,6 +1694,7 @@ a{color:inherit;text-decoration:none}a:hover{text-decoration:underline}
 </head>
 <body>
 <a class="skip-to-content" href="#sadrzaj">Preskoči na sadržaj</a><style>.skip-to-content{position:absolute;left:-9999px;top:0;z-index:9999;background:#e9c66c;color:#08131f;font:800 13px/1 system-ui,sans-serif;letter-spacing:.02em;padding:12px 18px;border-radius:0 0 12px 0;text-decoration:none}.skip-to-content:focus{left:0}main:focus{outline:none}main:focus-visible{outline:3px solid #e9c66c;outline-offset:4px}a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:3px solid #e9c66c;outline-offset:3px;border-radius:4px}</style>
+${houseRibbon({ lang: 'hr', edition: '' })}
 <div class="us-top"><strong>GNK DINAMO Ltd. · Boulder, Colorado</strong><span><a href="/gnk-aktual/">← AKTUAL MEDIA</a> · <a href="/izdanja/">Sva izdanja</a> · <a href="/aktual-media/">Podatkovni desk</a> · <a href="/kanal/">Kanali</a> · <a href="/radio/">Radio</a></span></div>
 <main id="sadrzaj" tabindex="-1">
   <section class="us-hero"><div class="us-wrap">

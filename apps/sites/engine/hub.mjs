@@ -21,6 +21,7 @@ import { WORLD_PORTALS } from '../../world/lib/registry.mjs';
 import { artSvg } from '../lib/kit.mjs';
 import { SATELLITE_ART } from '../lib/satellite-art.mjs';
 import { spiderWeb, SPIDER_CSS, SPIDER_JS } from '../../satellites/lib/spiderweb-v1.mjs';
+import { HOUSE_CSS, houseRibbon } from '../../satellites/lib/house-style-v1.mjs';
 import { buildElectionDesk } from '../lib/elections.mjs';
 import { buildAktualNetwork } from './aktual-network.mjs';
 import { buildSeoMatrix } from './seo-matrix.mjs';
@@ -301,7 +302,7 @@ function page(lang) {
 <meta name="twitter:description" content="${esc(t.description)}">
 <meta name="twitter:image" content="${OG}">
 <meta name="twitter:image:alt" content="GNK ASG mreža">
-<style>${CSS}\n${SPIDER_CSS}</style>
+<style>${CSS}\n${SPIDER_CSS}\n${HOUSE_CSS}</style>
 <script type="application/ld+json">${JSON.stringify(jsonld)}</script>
 <meta name="editor" content="Nermin Sefić">
 <meta property="article:tag" content="#AKTUALMEDIA">
@@ -311,6 +312,7 @@ function page(lang) {
 </head>
 <body>
 <a class="skip" href="#main">${lang === 'en' ? 'Skip to content' : 'Preskoči na sadržaj'}</a>
+${houseRibbon({ lang })}
 <div class="top"><div class="wrap"><span>AKTUAL MEDIA · ${esc(t.kicker)}</span><span><a href="https://gnk-asg.hr/">gnk-asg.hr</a> · <a href="/izdanja/">${lang === 'en' ? 'Our editions' : 'Naša izdanja'}</a> · <a href="/gnk-aktual/">AKTUAL MEDIA</a> · <a href="${alternate}" hreflang="${t.other}" lang="${t.other}">${lang === 'en' ? 'Hrvatski' : 'English'}</a></span></div></div>
 <main id="main">
 <div class="hero"><div class="wrap">

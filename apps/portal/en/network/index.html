@@ -140,7 +140,149 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
   .sw-svg{max-width:none}
   .sw-lists{grid-template-columns:1fr}
 }
-@media (prefers-reduced-motion:reduce){.sw *{transition:none!important}}</style>
+@media (prefers-reduced-motion:reduce){.sw *{transition:none!important}}
+
+/* ---------- KUĆNI STIL v1 ---------- */
+:root{
+  --am-gold:#c9a227;--am-gold-soft:#e4c877;
+  --am-line:color-mix(in srgb,currentColor 14%,transparent);
+  --am-line-soft:color-mix(in srgb,currentColor 8%,transparent);
+  --am-muted:color-mix(in srgb,currentColor 62%,transparent);
+  --am-radius:16px;--am-radius-sm:10px;
+  --am-shadow:0 18px 44px -28px rgba(0,0,0,.55);
+  --am-gutter:clamp(18px,4vw,40px);
+  --am-measure:1180px;
+  --am-ease:cubic-bezier(.22,.61,.36,1);
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-size:clamp(16.5px,.55vw + 15px,17.5px);
+  line-height:1.68;
+  letter-spacing:.002em;
+  text-rendering:optimizeLegibility;
+}
+::selection{background:color-mix(in srgb,var(--accent2,var(--am-gold)) 38%,transparent);color:inherit}
+:focus-visible{outline:2px solid var(--accent2,var(--am-gold));outline-offset:3px;border-radius:4px}
+
+/* naslovi: jedan ritam kroz cijelu mrežu */
+h1,h2,h3,h4{font-family:Georgia,"Iowan Old Style","Times New Roman",serif;font-weight:700;letter-spacing:-.014em;text-wrap:balance}
+h1{font-size:clamp(2rem,1.2rem + 2.6vw,3.35rem);line-height:1.08;margin:0 0 .5em}
+h2{font-size:clamp(1.35rem,1rem + 1.1vw,1.95rem);line-height:1.18;margin:2.4em 0 .7em;padding-top:.15em;border-top:1px solid var(--am-line-soft)}
+h3{font-size:clamp(1.08rem,.95rem + .5vw,1.3rem);line-height:1.28;margin:0 0 .45em}
+h2:first-child,h1+h2{border-top:0;margin-top:0;padding-top:0}
+p{margin:0 0 1.05em;text-wrap:pretty}
+p:last-child{margin-bottom:0}
+.lead,main>p:first-of-type{font-size:clamp(1.05rem,.98rem + .4vw,1.2rem);line-height:1.6;color:var(--am-muted)}
+small,.cap,.meta,.dateline,.kicker,.k{letter-spacing:.06em}
+.kicker,.k,.dateline{text-transform:uppercase;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:700;font-size:.72rem;letter-spacing:.14em;color:var(--am-muted)}
+
+/* poveznice: zlatna nit, bez podcrtavanja cijelog teksta */
+a{color:inherit;text-decoration-color:color-mix(in srgb,var(--accent2,var(--am-gold)) 70%,transparent);text-underline-offset:.22em;text-decoration-thickness:1px;transition:color .18s var(--am-ease),opacity .18s var(--am-ease)}
+a:hover{color:var(--accent2,var(--am-gold))}
+a:has(img){text-decoration:none}
+
+/* sadržaj: ista mjera, isti razmak */
+main,.wrap,.page{padding-left:var(--am-gutter);padding-right:var(--am-gutter)}
+main,.wrap{max-width:var(--am-measure);margin-inline:auto}
+section{margin-block:clamp(2rem,3vw,3.4rem)}
+hr{border:0;border-top:1px solid var(--am-line-soft);margin:2.2rem 0}
+
+/* slike: uvijek uokvirene, nikad rastegnute */
+img{max-width:100%;height:auto}
+figure{margin:1.6rem 0}
+figure img,main>img,article>img,.hero,.heroimg{border-radius:var(--am-radius);box-shadow:var(--am-shadow);display:block}
+figure figcaption,.cap{font-size:.8rem;color:var(--am-muted);margin-top:.6rem;line-height:1.5}
+
+/* kartice: jedna visina tona, jedan obrub, jedan pokret */
+.card,.iz-card,.amw-card,.amm-card,.ed-card,.entry,.post{
+  border:1px solid var(--am-line);border-radius:var(--am-radius);
+  background:color-mix(in srgb,currentColor 3%,transparent);
+  transition:transform .22s var(--am-ease),border-color .22s var(--am-ease),box-shadow .22s var(--am-ease);
+  overflow:hidden;
+}
+.card:hover,.iz-card:hover,.amw-card:hover,.ed-card:hover,.entry:hover{
+  transform:translateY(-3px);border-color:color-mix(in srgb,var(--accent2,var(--am-gold)) 55%,transparent);
+  box-shadow:var(--am-shadow);
+}
+.card img,.iz-card img,.ed-card img{aspect-ratio:16/9;object-fit:cover;width:100%}
+
+/* gumbi i oznake */
+.btn,.more,.amm-card-go,button,a.btn{
+  display:inline-flex;align-items:center;gap:.5em;
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:700;
+  font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;
+  border:1px solid color-mix(in srgb,var(--accent2,var(--am-gold)) 55%,transparent);
+  border-radius:999px;padding:.72em 1.15em;text-decoration:none;
+  transition:background .2s var(--am-ease),color .2s var(--am-ease),transform .2s var(--am-ease);
+}
+.btn:hover,.more:hover{background:color-mix(in srgb,var(--accent2,var(--am-gold)) 18%,transparent);transform:translateY(-1px)}
+.tag,.chip,.hashtag,.iz-tags a,.ne-hash a{
+  display:inline-block;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:.72rem;font-weight:600;letter-spacing:.04em;padding:.32em .68em;margin:0 .35em .35em 0;
+  border:1px solid var(--am-line);border-radius:999px;text-decoration:none;opacity:.9;
+}
+
+/* zaglavlje: znak kuće stoji uvijek na istom mjestu i iste visine */
+.top,.topbar,.masthead,.brand,header.site-header{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.top{border-bottom:1px solid var(--am-line)}
+.masthead,.brand{gap:.9rem}
+.brand img,.ed-logo img,header img.logo,a.logo img{height:clamp(34px,3.2vw,46px);width:auto;max-width:none;border-radius:0;box-shadow:none}
+.brand,.logo{letter-spacing:.16em;text-transform:uppercase;font-weight:800}
+nav a{text-decoration:none}
+nav a[aria-current="page"]{color:var(--accent2,var(--am-gold))}
+
+/* podnožje: mirno, pregledno, s istim redom */
+footer{border-top:1px solid var(--am-line);margin-top:clamp(2.4rem,4vw,4rem);padding-block:clamp(1.6rem,3vw,2.6rem);font-size:.86rem;color:var(--am-muted)}
+footer h3,footer .k{color:inherit;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;margin:0 0 .55em}
+footer ul{list-style:none;margin:0;padding:0;display:grid;gap:.35em}
+footer a{text-decoration:none}
+footer a:hover{color:var(--accent2,var(--am-gold))}
+
+/* preskok sadržaja: vidljiv samo na fokus */
+.skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--bg,#08111c);color:inherit;padding:.8em 1.2em;border-radius:0 0 12px 0;font-family:system-ui,sans-serif;font-weight:700}
+.skip:focus{left:0}
+
+/* sitnice koje dizajn čine mirnijim */
+table{border-collapse:collapse;width:100%}
+th,td{padding:.6em .7em;border-bottom:1px solid var(--am-line-soft);text-align:left}
+blockquote{margin:1.8rem 0;padding:.2rem 0 .2rem 1.2rem;border-left:3px solid var(--accent2,var(--am-gold));font-size:1.08rem;color:var(--am-muted)}
+code,kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;padding:.1em .35em;border-radius:6px;background:color-mix(in srgb,currentColor 8%,transparent)}
+
+/* traka kuće: ista na svakoj domeni — znak, ime, izdanje i veza na maticu */
+.am-ribbon{display:flex;align-items:center;gap:clamp(.6rem,1.4vw,1.1rem);flex-wrap:wrap;
+  max-width:var(--am-measure);margin:0 auto;padding:.55rem clamp(1rem,3vw,2rem);
+  border-bottom:1px solid var(--am-line);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:.74rem;letter-spacing:.14em;text-transform:uppercase}
+.am-ribbon-brand{display:inline-flex;align-items:center;gap:.6rem;text-decoration:none;color:inherit;font-weight:800}
+.am-ribbon-brand img{height:clamp(22px,2.1vw,30px);width:auto;max-width:none;border-radius:0;box-shadow:none}
+.am-ribbon-ed{margin-left:auto;color:var(--am-muted);letter-spacing:.1em}
+.am-ribbon-ed b{color:inherit;font-weight:700}
+.am-ribbon a:hover{color:var(--accent2,var(--am-gold))}
+@media (max-width:520px){.am-ribbon-ed{width:100%;margin-left:0}}
+@media print{.am-ribbon{display:none!important}}
+
+
+/* članak: mjera za čitanje, prvi odlomak kao uvod, izvori mirni */
+.article,.article-body,.entry-content,.post-body,.prose{max-width:70ch}
+.article>p,.article-body>p,.entry-content>p,.post-body>p,.prose>p{font-size:1.02rem;line-height:1.72}
+.article>p:first-of-type,.article-body>p:first-of-type,.entry-content>p:first-of-type{font-size:1.12rem;line-height:1.62;color:var(--am-muted)}
+.article ul,.article ol,.article-body ul,.article-body ol,.prose ul,.prose ol{padding-left:1.15em;margin:0 0 1.1em}
+.article li,.article-body li,.prose li{margin-bottom:.45em}
+.article h2,.article-body h2,.prose h2{margin-top:1.9em}
+.article figure,.article-body figure,.prose figure{margin:1.9rem 0}
+.article figure img,.article-body figure img{width:100%}
+.src,.source,.sources,.izvori,.izvor{font-size:.82rem;color:var(--am-muted);line-height:1.55}
+.src a,.source a,.sources a{text-decoration-color:var(--am-line)}
+.article .tag,.article-body .tag,.article .hashtag{margin-top:.5em}
+.article time,.dateline time{font-variant-numeric:tabular-nums}
+/* galerija pločica ispod članka: uredan raster, bez šuma */
+.eds,.eds-row,.xf-tile{--am-tile:clamp(120px,14vw,168px)}
+.eds-row{display:grid;gap:clamp(.7rem,1.2vw,1rem)}
+figure>figcaption:empty{display:none}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+@media print{.top,footer,.skip,nav{display:none!important}body{background:#fff;color:#000}}
+</style>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://gnk-asg.hr/#website","name":"GNK ASG","url":"https://gnk-asg.hr/","inLanguage":["hr","en"],"publisher":{"@id":"https://gnk-asg.hr/#gnk-asg"}},{"@type":"Organization","@id":"https://gnk-asg.hr/#gnk-asg","name":"GNK ASG d.o.o.","url":"https://gnk-asg.hr/"},{"@type":"NewsMediaOrganization","@id":"https://gnk-asg.hr/#aktual-media","name":"AKTUAL MEDIA d.o.o.","url":"https://gnk-asg.hr/gnk-aktual/","parentOrganization":{"@id":"https://gnk-asg.hr/#gnk-asg"},"editor":{"@id":"https://gnk-asg.hr/#nermin-sefic"}},{"@type":"Person","@id":"https://gnk-asg.hr/#nermin-sefic","name":"Nermin Sefić","jobTitle":"Editor and director","url":"https://gnk-asg.hr/nermin-sefic/","worksFor":{"@id":"https://gnk-asg.hr/#aktual-media"}},{"@type":"CollectionPage","@id":"https://gnk-asg.hr/en/network/#page","url":"https://gnk-asg.hr/en/network/","name":"AKTUAL MEDIA network — 32 addresses, one source of record | GNK ASG","headline":"Thirty-two addresses. One source of record.","description":"The GNK ASG and AKTUAL MEDIA network: six standalone topical sites, nine world portals and 17 city editions across six continents. Every address has a sitemap and feed.","inLanguage":"en","datePublished":"2026-10-22","dateModified":"2026-10-23","isPartOf":{"@id":"https://gnk-asg.hr/#website"},"author":{"@id":"https://gnk-asg.hr/#aktual-media"},"editor":{"@id":"https://gnk-asg.hr/#nermin-sefic"},"publisher":{"@id":"https://gnk-asg.hr/#aktual-media"},"image":{"@type":"ImageObject","url":"https://gnk-asg.hr/assets/izdanja/aktual-media-og.jpg","width":1200,"height":630},"mainEntity":{"@id":"https://gnk-asg.hr/en/network/#lista"}},{"@type":"ItemList","@id":"https://gnk-asg.hr/en/network/#lista","name":"Standalone sites","numberOfItems":32,"itemListElement":[{"@type":"ListItem","position":1,"name":"BOR USA","url":"https://gnk-bor-usa.pages.dev/","description":"Combat sports in the United States: regulation, safety and how to read a fight."},{"@type":"ListItem","position":2,"name":"KOŠARKA 360","url":"https://gnk-kosarka.pages.dev/","description":"Basketball without noise: how to read a season, what the numbers count, and why the regional league matters."},{"@type":"ListItem","position":3,"name":"SCENA ZNANOSTI","url":"https://gnk-scena-znanosti.pages.dev/","description":"How science actually happens: peer review, preprints, corrections, and what never gets published."},{"@type":"ListItem","position":4,"name":"STEP BUDUĆNOSTI","url":"https://gnk-step-buducnosti.pages.dev/","description":"Dance, step and movement as technology: sport, injury, motion capture and the stage."},{"@type":"ListItem","position":5,"name":"ZDRAVLJE 360","url":"https://gnk-zdravlje.pages.dev/","description":"Health without miracles: prevention, sleep, movement, and how to read a medical study."},{"@type":"ListItem","position":6,"name":"IZBORI U SRBIJI","url":"https://gnk-izbori-srbija.pages.dev/","description":"A monitoring desk: what media in Serbia, Croatia, Bosnia and the US publish about the election — with source and date."},{"@type":"ListItem","position":7,"name":"AKTUAL MEDIA CHANNEL NAIROBI — world portal","url":"https://gnk-world-nairobi.pages.dev/","description":"World edition · Kenya"},{"@type":"ListItem","position":8,"name":"AKTUAL MEDIA KANAL JAKARTA — world portal","url":"https://gnk-world-jakarta.pages.dev/","description":"World edition · Indonesia"},{"@type":"ListItem","position":9,"name":"AKTUAL MEDIA CHANNEL NEW YORK — world portal","url":"https://gnk-world-newyork.pages.dev/","description":"World edition · United States"},{"@type":"ListItem","position":10,"name":"AKTUAL MEDIA CANAL SÃO PAULO — world portal","url":"https://gnk-world-saopaulo.pages.dev/","description":"World edition · Brazil"},{"@type":"ListItem","position":11,"name":"AKTUAL MEDIA CHANNEL SYDNEY — world portal","url":"https://gnk-world-sydney.pages.dev/","description":"World edition · Australia"},{"@type":"ListItem","position":12,"name":"AKTUAL MEDIA CHANNEL SINGAPUR — world portal","url":"https://gnk-world-singapur.pages.dev/","description":"World edition · Singapore"},{"@type":"ListItem","position":13,"name":"AKTUAL MEDIA KANAL KAIRO — world portal","url":"https://gnk-world-kairo.pages.dev/","description":"World edition · Egypt"},{"@type":"ListItem","position":14,"name":"AKTUAL MEDIA KANAL TOKIO — world portal","url":"https://gnk-world-tokio.pages.dev/","description":"World edition · Japan"},{"@type":"ListItem","position":15,"name":"AKTUAL MEDIA KANAL PEKING — world portal","url":"https://gnk-world-peking.pages.dev/","description":"World edition · China"},{"@type":"ListItem","position":16,"name":"AKTUAL MEDIA KANAL ZAGREB — city edition","url":"https://gnk-asg.hr/kanal/zagreb/","description":"Zagreb, Hrvatska · hr"},{"@type":"ListItem","position":17,"name":"AKTUAL MEDIA KANAL BEOGRAD — city edition","url":"https://gnk-asg.hr/kanal/beograd/","description":"Beograd, Srbija · sr"},{"@type":"ListItem","position":18,"name":"AKTUAL MEDIA KANAL SARAJEVO — city edition","url":"https://gnk-asg.hr/kanal/sarajevo/","description":"Sarajevo, Bosna i Hercegovina · bs"},{"@type":"ListItem","position":19,"name":"AKTUAL MEDIA KANAL BUDAPEST — city edition","url":"https://gnk-asg.hr/kanal/budimpesta/","description":"Budimpešta, Mađarska · hu"},{"@type":"ListItem","position":20,"name":"AKTUAL MEDIA KANAL LJUBLJANA — city edition","url":"https://gnk-asg.hr/kanal/ljubljana/","description":"Ljubljana, Slovenija · sl"},{"@type":"ListItem","position":21,"name":"AKTUAL MEDIA KANAL ROMA — city edition","url":"https://gnk-asg.hr/kanal/rim/","description":"Rim, Italija · it"},{"@type":"ListItem","position":22,"name":"AKTUAL MEDIA KANAL SOFIJA — city edition","url":"https://gnk-asg.hr/kanal/sofija/","description":"Sofija, Bugarska · bg"},{"@type":"ListItem","position":23,"name":"AKTUAL MEDIA KANAL BUCUREȘTI — city edition","url":"https://gnk-asg.hr/kanal/bukurest/","description":"Bukurešt, Rumunjska · ro"},{"@type":"ListItem","position":24,"name":"AKTUAL MEDIA CHANNEL NAIROBI — city edition","url":"https://gnk-asg.hr/kanal/nairobi/","description":"Nairobi, Kenija · en"},{"@type":"ListItem","position":25,"name":"AKTUAL MEDIA KANAL JAKARTA — city edition","url":"https://gnk-asg.hr/kanal/jakarta/","description":"Jakarta, Indonezija · id"},{"@type":"ListItem","position":26,"name":"AKTUAL MEDIA CHANNEL NEW YORK — city edition","url":"https://gnk-asg.hr/kanal/newyork/","description":"New York, Sjedinjene Američke Države · en"},{"@type":"ListItem","position":27,"name":"AKTUAL MEDIA CANAL SÃO PAULO — city edition","url":"https://gnk-asg.hr/kanal/saopaulo/","description":"São Paulo, Brazil · pt"},{"@type":"ListItem","position":28,"name":"AKTUAL MEDIA CHANNEL SYDNEY — city edition","url":"https://gnk-asg.hr/kanal/sydney/","description":"Sydney, Australija · en"},{"@type":"ListItem","position":29,"name":"AKTUAL MEDIA CHANNEL SINGAPUR — city edition","url":"https://gnk-asg.hr/kanal/singapur/","description":"Singapur, Singapur · en"},{"@type":"ListItem","position":30,"name":"AKTUAL MEDIA KANAL KAIRO — city edition","url":"https://gnk-asg.hr/kanal/kairo/","description":"Kairo, Egipat · ar"},{"@type":"ListItem","position":31,"name":"AKTUAL MEDIA KANAL TOKIO — city edition","url":"https://gnk-asg.hr/kanal/tokio/","description":"Tokio, Japan · ja"},{"@type":"ListItem","position":32,"name":"AKTUAL MEDIA KANAL PEKING — city edition","url":"https://gnk-asg.hr/kanal/peking/","description":"Peking, Kina · zh"}]},{"@type":"BreadcrumbList","@id":"https://gnk-asg.hr/en/network/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"GNK ASG","item":"https://gnk-asg.hr/"},{"@type":"ListItem","position":2,"name":"Network","item":"https://gnk-asg.hr/en/network/"}]}]}</script>
 <meta name="editor" content="Nermin Sefić">
 <meta property="article:tag" content="#AKTUALMEDIA">
@@ -150,6 +292,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
+<div class="am-ribbon"><a class="am-ribbon-brand" href="https://gnk-asg.hr/" rel="external noopener" aria-label="AKTUAL MEDIA — network home"><img src="/assets/brand/aktual-media-mark.svg" alt="AKTUAL MEDIA — network mark" width="72" height="72" loading="lazy" decoding="async"><span>AKTUAL MEDIA</span></a><span class="am-ribbon-ed">AKTUAL MEDIA network</span></div>
 <div class="top"><div class="wrap"><span>AKTUAL MEDIA · GNK ASG · network</span><span><a href="https://gnk-asg.hr/">gnk-asg.hr</a> · <a href="/izdanja/">Our editions</a> · <a href="/gnk-aktual/">AKTUAL MEDIA</a> · <a href="https://gnk-asg.hr/mreza/" hreflang="hr" lang="hr">Hrvatski</a></span></div></div>
 <main id="main">
 <div class="hero"><div class="wrap">
