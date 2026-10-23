@@ -307,6 +307,9 @@ function deskPage(lang, { sites, pages }) {
 <meta name="twitter:image:alt" content="AKTUAL MEDIA — mreža izdanja">
 <style>${CSS}</style>
 <script type="application/ld+json">${JSON.stringify(jsonld)}</script>
+<meta name="editor" content="Nermin Sefić">
+<meta property="article:tag" content="#AKTUALMEDIA">
+<meta property="article:tag" content="#GNKASG">
 <script type="application/ld+json" id="network-entity-v1">${entityGraphJson()}</script>
 <link rel="author" href="https://gnk-asg.hr/nermin-sefic/">
 </head>
@@ -362,6 +365,7 @@ function deskPage(lang, { sites, pages }) {
 </main>
 <footer><div class="wrap">
   <p>${esc(t.footer)}</p>
+  <p class="iz-tags"><a href="/gnk-aktual/">#AKTUALMEDIA</a> · <a href="/gnk-aktual/">#GNKASG</a></p>
   <p>© 2026 AKTUAL MEDIA d.o.o. · <a href="/nermin-sefic/">Nermin Sefić</a> · ${lang === 'en' ? 'Editor and director' : 'Urednik i direktor'} · <a href="${HUB_HR}">${esc(t.backHub)}</a></p>
 </div></footer>
 </body>
@@ -474,6 +478,9 @@ function editionPage(lang, site, { sites, pages }) {
 <meta name="twitter:image:alt" content="${esc(`${site.name} — AKTUAL MEDIA`)}">
 <style>${CSS}</style>
 <script type="application/ld+json">${JSON.stringify(jsonld)}</script>
+<meta name="editor" content="Nermin Sefić">
+<meta property="article:tag" content="#AKTUALMEDIA">
+<meta property="article:tag" content="#GNKASG">
 <script type="application/ld+json" id="network-entity-v1">${entityGraphJson()}</script>
 <link rel="author" href="https://gnk-asg.hr/nermin-sefic/">
 </head>
@@ -524,6 +531,7 @@ function editionPage(lang, site, { sites, pages }) {
 </main>
 <footer><div class="wrap">
   <p>${esc(t.footer)}</p>
+  <p class="iz-tags"><a href="/gnk-aktual/">#AKTUALMEDIA</a> · <a href="/gnk-aktual/">#GNKASG</a></p>
   <p>© 2026 AKTUAL MEDIA d.o.o. · <a href="/nermin-sefic/">Nermin Sefić</a> · ${lang === 'en' ? 'Editor and director' : 'Urednik i direktor'} · <a href="${desk}">${lang === 'en' ? 'Network index' : 'Popis mreže'}</a></p>
 </div></footer>
 </body>
@@ -670,6 +678,9 @@ function tagsPage(lang, { sites, pages }) {
 <meta name="twitter:image:alt" content="AKTUAL MEDIA — ${lang === 'en' ? 'hashtags of the network' : 'oznake mreže'}">
 <style>${CSS}</style>
 <script type="application/ld+json">${JSON.stringify(jsonld)}</script>
+<meta name="editor" content="Nermin Sefić">
+<meta property="article:tag" content="#AKTUALMEDIA">
+<meta property="article:tag" content="#GNKASG">
 <script type="application/ld+json" id="network-entity-v1">${entityGraphJson()}</script>
 <link rel="author" href="https://gnk-asg.hr/nermin-sefic/">
 </head>
@@ -694,6 +705,7 @@ ${blocks}
 </main>
 <footer><div class="wrap">
   <p>${esc(t.footer)}</p>
+  <p class="iz-tags"><a href="/gnk-aktual/">#AKTUALMEDIA</a> · <a href="/gnk-aktual/">#GNKASG</a></p>
   <p>© 2026 AKTUAL MEDIA d.o.o. · <a href="/nermin-sefic/">Nermin Sefić</a> · ${lang === 'en' ? 'Editor and director' : 'Urednik i direktor'} · <a href="${desk}">${lang === 'en' ? 'Network index' : 'Popis mreže'}</a></p>
 </div></footer>
 </body>

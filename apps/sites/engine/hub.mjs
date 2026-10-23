@@ -303,6 +303,9 @@ function page(lang) {
 <meta name="twitter:image:alt" content="GNK ASG mreža">
 <style>${CSS}\n${SPIDER_CSS}</style>
 <script type="application/ld+json">${JSON.stringify(jsonld)}</script>
+<meta name="editor" content="Nermin Sefić">
+<meta property="article:tag" content="#AKTUALMEDIA">
+<meta property="article:tag" content="#GNKASG">
 <script type="application/ld+json" id="network-entity-v1">${entityGraphJson()}</script>
 <link rel="author" href="https://gnk-asg.hr/nermin-sefic/">
 </head>
@@ -388,6 +391,7 @@ function page(lang) {
       <li><a href="/legal/">${lang === 'en' ? 'Legal notices' : 'Pravne napomene'}</a></li>
     </ul></div>
   </div>
+  <p class="iz-tags"><a href="/gnk-aktual/">#AKTUALMEDIA</a> · <a href="/gnk-aktual/">#GNKASG</a></p>
   <p style="margin-top:22px;border-top:1px solid #132840;padding-top:16px">© 2026 AKTUAL MEDIA d.o.o. · ${esc(t.editorTitle)}: <a href="/nermin-sefic/">Nermin Sefić</a> · ${lang === 'en' ? 'Every claim carries a source; every source has a date.' : 'Svaka tvrdnja nosi izvor; svaki izvor ima datum.'}</p>
 </div></footer>
 <script src="/assets/spiderweb-v1.js" defer></script>
