@@ -37,3 +37,7 @@ Ne slati noćnu rutinsku obavijest; čuvati zapis za dnevni pregled.
 - Main SHA: `cdb9c221798232012b3f6a9aeddb936fefff0a33`; PR ostaje draft i nije mergeable.
 - Main run 39879315940: 12 zastarjelih generiranih stranica `izbori-srbija`; run 39875268543: nedovoljno neovisnih izvora za neke `top-teme`.
 - Sljedeće: potvrditi Node CI, sačuvati prag kvalitete izvora, razriješiti konflikt PR-a; bez deploya i bez dodatnih rasporeda.
+
+### Preciziranje testiranja (06:25 Zagreb)
+
+Ponovno su izvršena **točna postojeća tijela sedam testova** protiv aktualnog modula u izoliranom JS izvršavanju: **6/7 prolazi, 1/7 pada**. Razlog: `CLOCK_SKEW_MS=90000` dopušta da `verifiedAt` bude 5 sekundi u budućnosti; postojeći test zahtijeva odbijanje takve potvrde. Prethodnih 14/14 bile su zasebne ciljane provjere, **ne** puni postojeći test-suite. Nije uklonjena ili ublažena kontrola; potrebno je uskladiti pravilo vremenske potvrde sa strožim dokazom dostave prije zelenog CI-ja. Pokušaj izmjene zaustavljen je, pa ovo ostaje otvorena stavka.
