@@ -48,6 +48,17 @@ const channelData = (id) => readJSON(join(DATA, `${id}.json`), { items: [], upda
    Jedan izvor za stranicu, JSON i test — da se broj „17 zemalja, 14 izdanja"
    nikad ne prepisuje rukom. */
 const CAPITALS = readJSON(join(ROOT, 'apps', 'region', 'capitals.json'), { capitals: [], standard: [] });
+
+/* Alt tekstovi atlasa (specifični: kupola, obelisk, jezero) koriste se i na
+   karticama prijestolnica, da opis slike ne bude generički. */
+const ATLAS_ART = (() => {
+  try {
+    return JSON.parse(readFileSync(join(PORTAL, 'data', 'atlas-art-v1.json'), 'utf8')).images || [];
+  } catch {
+    return [];
+  }
+})();
+const atlasArt = (slug) => ATLAS_ART.find((image) => image.slug === slug) || null;
 const channelById = (id) => CHANNELS.find((channel) => channel.id === id) || null;
 
 const REGION_META = {
@@ -1163,9 +1174,11 @@ function capitalsPage(lang = 'hr') {
     const channel = c.edition ? channelBy(c.edition) : null;
     const artId = channel ? channel.id : c.slug;
     const name = en ? esc(c.capitalEn || c.capital) : esc(c.capital);
-    const alt = channel
-      ? `${esc(c.capital)}, ${esc(en ? c.countryEn : c.country)} — ${en ? 'cover artwork of the edition' : 'naslovna grafika izdanja'}`
-      : `${esc(c.capital)} — ${en ? 'illustration of the capital' : 'ilustracija prijestolnice'}`;
+    const artMeta = atlasArt(artId);
+    const alt = (artMeta && artMeta.alt && esc(artMeta.alt[lang === 'en' ? 'en' : 'hr']))
+      || (channel
+        ? `${esc(c.capital)}, ${esc(en ? c.countryEn : c.country)} — ${en ? 'cover artwork of the edition' : 'naslovna grafika izdanja'}`
+        : `${esc(c.capital)} — ${en ? 'illustration of the capital' : 'ilustracija prijestolnice'}`);
     const state = c.status !== 'live' ? ` · ${en ? 'in preparation' : 'u pripremi'}` : '';
     return `<li data-c="${esc(contSlug(c.continent))}"><a href="${en ? '/en/capitals' : '/glavni-gradovi'}/${esc(c.slug)}/">
       ${artId ? `<img src="/assets/izdanja/${esc(artId)}-440.webp" alt="${alt}" width="440" height="248" loading="lazy" decoding="async">` : ''}
@@ -1306,6 +1319,8 @@ export function writeCapitals() {
         ? join(PORTAL, 'en', 'capitals', capital.slug)
         : join(PORTAL, 'glavni-gradovi', capital.slug);
       mkdirSync(dir, { recursive: true });
+      const artId = capital.edition || capital.slug;
+      const artMeta = atlasArt(artId);
       writeFileSync(join(dir, 'index.html'), buildCapitalPage(capital, {
         lang,
         capitals: CAPITALS.capitals || [],
@@ -1315,7 +1330,8 @@ export function writeCapitals() {
         portalShell,
         portalHeader,
         portalFooter,
-        MEDIA_ID
+        MEDIA_ID,
+        artAlt: artMeta ? artMeta.alt : null
       }));
       pages.push(lang === 'en' ? `/en/capitals/${capital.slug}/` : `/glavni-gradovi/${capital.slug}/`);
     }
@@ -1601,6 +1617,7 @@ function writeAtlas() {
       capitals,
       channels: CHANNELS,
       counts,
+      artMeta: atlasArt,
       standard: CAPITALS.standard || [],
       shell: portalShell,
       header: portalHeader,

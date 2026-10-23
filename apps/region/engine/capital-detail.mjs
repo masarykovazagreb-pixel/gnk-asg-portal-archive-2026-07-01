@@ -95,7 +95,7 @@ const initials = (text) => String(text || '').replace(/[^A-Za-z0-9]/g, '').slice
 
 export function buildCapitalPage(capital, ctx) {
   const {
-    lang = 'hr', capitals = [], channelBy, channelData, portalShell, portalHeader, portalFooter, MEDIA_ID
+    lang = 'hr', capitals = [], channelBy, channelData, portalShell, portalHeader, portalFooter, MEDIA_ID, artAlt: artAltByLang
   } = ctx;
   const en = lang === 'en';
   const channel = capital.edition ? channelBy(capital.edition) : null;
@@ -114,13 +114,16 @@ export function buildCapitalPage(capital, ctx) {
   const sources = channel && Array.isArray(channel.sources) ? channel.sources : [];
   const items = (data.items || []).slice(0, 4);
   const artId = channel ? channel.id : capital.slug;
-  const artAlt = channel
-    ? (en
-      ? `${city}, ${country} — cover artwork of the edition`
-      : `${city}, ${country} — naslovna grafika izdanja`)
-    : (en
-      ? `${city} — illustration of the capital`
-      : `${city} — ilustracija prijestolnice`);
+  /* Alt iz atlasa je specifičan (kupola, obelisk, jezero), pa ima prednost
+     pred generičkim opisom; generički ostaje kad grafike nema u manifestu. */
+  const artAlt = (artAltByLang && artAltByLang[lang])
+    || (channel
+      ? (en
+        ? `${city}, ${country} — cover artwork of the edition`
+        : `${city}, ${country} — naslovna grafika izdanja`)
+      : (en
+        ? `${city} — illustration of the capital`
+        : `${city} — ilustracija prijestolnice`));
   const artCaption = channel
     ? (en
       ? `Cover artwork of the ${channel.city} edition. Illustration for the edition, not a documentary photograph.`

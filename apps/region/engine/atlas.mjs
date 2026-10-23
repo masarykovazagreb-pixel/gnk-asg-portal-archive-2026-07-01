@@ -75,7 +75,7 @@ export const ATLAS_CSS = `
 @media (max-width:520px){.at-grid{grid-template-columns:1fr}}
 `;
 
-export function buildAtlasPage({ lang, capitals, channels, counts, standard, shell, header, footer }) {
+export function buildAtlasPage({ lang, capitals, channels, counts, artMeta, standard, shell, header, footer }) {
   const en = lang === 'en';
   const base = en ? '/en/atlas/' : '/atlas/';
   const all = capitals.filter((c) => c.slug);
@@ -93,7 +93,9 @@ export function buildAtlasPage({ lang, capitals, channels, counts, standard, she
     const artId = channel ? channel.id : seat ? seat.id : c.slug;
     const name = en ? c.capitalEn || c.capital : c.capital;
     const country = en ? c.countryEn || c.country : c.country;
-    const alt = `${name}, ${country} — ${en ? 'cover artwork of the edition' : 'naslovna grafika izdanja'}`;
+    const meta = artMeta ? artMeta(artId) : null;
+    const alt = (meta && meta.alt && meta.alt[lang === 'en' ? 'en' : 'hr'])
+      || `${name}, ${country} — ${en ? 'cover artwork of the edition' : 'naslovna grafika izdanja'}`;
     const state = channel
       ? `${en ? 'edition' : 'izdanje'} · <em>${countFor(channel.id)}</em> ${en ? 'stories' : 'zapisa'}`
       : `${en ? 'in preparation' : 'u pripremi'} · ${en ? 'covered today from' : 'danas pokriva'} <em>${esc(seat ? seat.city : '—')}</em>`;

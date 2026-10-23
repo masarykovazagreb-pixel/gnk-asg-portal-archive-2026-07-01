@@ -27,8 +27,11 @@ const MANIFEST = JSON.parse(readFileSync(join(ROOT, 'apps', 'portal', 'data', 'a
 const CHECK = process.argv.includes('--check');
 
 /* Devet svjetskih izdanja. Regionalna izdanja imaju stvarne fotografije
-   gradova i njih ovaj skript ne dira. */
-const TARGETS = ['nairobi', 'jakarta', 'newyork', 'saopaulo', 'sydney', 'singapur', 'kairo', 'tokio', 'peking'];
+   gradova i njih ovaj skript ne dira. Tri prijestolnice koje još nemaju
+   izdanje (Washington, Brasília, Canberra) dijele istu grafiku s atlasom,
+   pa se i one primjenjuju — stranica prijestolnice ne smije ostati na
+   staroj plohi kad se atlas promijeni. */
+const TARGETS = ['nairobi', 'jakarta', 'newyork', 'saopaulo', 'sydney', 'singapur', 'kairo', 'tokio', 'peking', 'washington', 'brasilia', 'canberra'];
 
 /* Izlazna imena i dimenzije koje portal očekuje. */
 const CONTRACT = [
@@ -82,6 +85,6 @@ console.log(JSON.stringify({
   mode: CHECK ? 'check' : 'apply',
   editions: TARGETS.length,
   files: CHECK ? applied.filter((file) => existsSync(file)).length : applied.length,
-  note: 'Regionalna izdanja zadržavaju fotografije; atlas mijenja samo devet svjetskih izdanja.',
+  note: 'Regionalna izdanja zadržavaju fotografije; atlas mijenja devet svjetskih izdanja i tri prijestolnice u pripremi.',
   sample: applied.slice(0, 3).map((file) => file.replace(ROOT + '/', '') + ` (${statSync(file).size} B)`)
 }, null, 2));

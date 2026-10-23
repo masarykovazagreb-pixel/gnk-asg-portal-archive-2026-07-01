@@ -65,26 +65,26 @@ const META = {
     }
   },
   washington: {
-    title: { hr: 'Washington, D.C. — noćna silueta', en: 'Washington, D.C. — night skyline' },
+    title: { hr: 'Washington, D.C. — Kapitol noću', en: 'Washington, D.C. — the Capitol at night' },
     alt: {
-      hr: 'Ilustracija: silueta Washingtona noću, kupola Kapitola, obelisk Washington Monuments i niski savezni blokovi, zlatna svjetla prozora i meridijani u plavoj izmaglici.',
-      en: 'Illustration: the Washington, D.C. skyline at night, the Capitol dome, the Washington Monument obelisk and low federal blocks, gold window lights and meridians in blue haze.'
+      hr: 'Ilustracija: Kapitol s bijelom kupolom noću, odraz u bazenu National Malla, obelisk Washington Monuments u daljini i tamna stabla u prvom planu.',
+      en: 'Illustration: the Capitol with its white dome at night, reflected in the National Mall pool, the Washington Monument obelisk in the distance and dark trees in the foreground.'
     },
     note: { hr: 'Generirana ilustracija prijestolnice, ne fotografija. Bez teksta u slici.', en: 'Generated illustration of the capital, not a photograph. No text inside the image.' }
   },
   brasilia: {
-    title: { hr: 'Brasília — noćna os', en: 'Brasília — night axis' },
+    title: { hr: 'Brasília — Kongres u sumrak', en: 'Brasília — Congress at dusk' },
     alt: {
-      hr: 'Ilustracija: silueta Brasílie noću, dva tornja Kongresa, kupola i zdjela, kruna katedrale i duga niska ministarstva, zlatna svjetla u zelenoj izmaglici.',
-      en: 'Illustration: the Brasília skyline at night, the two Congress towers, the dome and the bowl, the cathedral crown and long low ministries, gold lights in green haze.'
+      hr: 'Ilustracija: Kongres Brazila u sumrak, dva tornja između kupole i zdjele, duga ministarstva duž Monumentalne osi i odraz u vodi, narančasta pruga na horizontu.',
+      en: 'Illustration: the National Congress of Brazil at dusk, the twin towers between the dome and the bowl, long ministries along the Monumental Axis, reflected in water under an orange horizon.'
     },
     note: { hr: 'Generirana ilustracija prijestolnice, ne fotografija. Bez teksta u slici.', en: 'Generated illustration of the capital, not a photograph. No text inside the image.' }
   },
   canberra: {
-    title: { hr: 'Canberra — noćno jezero', en: 'Canberra — night lake' },
+    title: { hr: 'Canberra — parlament nad jezerom', en: 'Canberra — Parliament above the lake' },
     alt: {
-      hr: 'Ilustracija: silueta Canberre noću, zgrada parlamenta u brežuljku s visokim jarbolom, jezero s odsjajem i mostom, eukaliptusi uz obalu.',
-      en: 'Illustration: the Canberra skyline at night, Parliament House set into a hill with a tall flag mast, a lake with reflection and a bridge, eucalyptus trees along the shore.'
+      hr: 'Ilustracija: zgrada australskog parlamenta u brežuljku s visokim jarbolom, jezero s odsjajem svjetla i mostom, eukaliptusi u prvom planu.',
+      en: 'Illustration: Parliament House set into a hill with a tall flag mast, the lake reflecting lights with a low bridge, eucalyptus trees in the foreground.'
     },
     note: { hr: 'Generirana ilustracija prijestolnice, ne fotografija. Bez teksta u slici.', en: 'Generated illustration of the capital, not a photograph. No text inside the image.' }
   },
