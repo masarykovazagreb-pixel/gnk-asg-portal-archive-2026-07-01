@@ -98,6 +98,7 @@ const html=`<!doctype html>
 <meta name="twitter:title" content="FAQ and AI Knowledge Center | GNK ASG">
 <meta name="twitter:description" content="GNK ASG public English knowledge center generated from the shared public knowledge base.">
 <meta name="twitter:image" content="https://gnk-asg.hr/assets/gnk-asg-social-card.png">
+<meta name="twitter:image:alt" content="AKTUAL MEDIA — GNK ASG network: knowledge center, verification and editorial standards">
 <script type="application/ld+json">${jsonLd}</script>
 <link rel="stylesheet" href="/assets/style.css?v=20260723-dark-gold-theme-v1">
 <link rel="stylesheet" href="/assets/public-sections-v1.css?v=20260721-header-fulltransparent-v1">
