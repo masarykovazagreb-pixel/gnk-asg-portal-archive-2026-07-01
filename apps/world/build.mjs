@@ -35,6 +35,13 @@ import { WORLD_PORTALS, WORLD_BY_ID, portalBase, portalUrl, reviewUrl, HUB_HR, H
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..', '..');
+/* Svaki svjetski portal pripada zemlji; zemlja se pokriva iz svoje
+   prijestolnice (ili iz grada koji je pokriva dok prijestolnica čeka izvore).
+   Veza ide na stranicu prijestolnice, na jeziku portala kad ta stranica
+   postoji — inače na hrvatsku. */
+const CAPITALS = JSON.parse(readFileSync(join(ROOT, 'apps', 'region', 'capitals.json'), 'utf8')).capitals || [];
+const CAPITAL_LABEL = { hr: 'Glavni grad', en: 'Capital', pt: 'Capital', id: 'Ibu kota', ar: 'العاصمة', ja: '首都', zh: '首都', sw: 'Mji mkuu' };
+const capitalForPortal = (portal) => CAPITALS.find((c) => c.edition === portal.id) || CAPITALS.find((c) => c.seats === portal.id) || null;
 const DATA = join(ROOT, 'apps', 'region', 'data');
 const BRAND = join(ROOT, 'apps', 'portal', 'assets', 'brand');
 const OUT = process.env.WORLD_OUT ? resolve(process.env.WORLD_OUT) : join(HERE, 'site');
@@ -286,11 +293,19 @@ function footer(portal) {
   const others = WORLD_PORTALS.filter((item) => item.id !== portal.id);
   const links = others.map((item) => `<a href="${portalBase(item)}/" rel="external noopener" hreflang="${item.lang}" lang="${item.lang}">${esc(item.label[portal.lang === 'hr' ? 'hr' : 'en'])}</a>`).join('');
   const tags = [...new Set([...portal.hashtags, '#AktualMedia', '#GNKASG'])].map((tag) => `<li class="tag">${esc(tag)}</li>`).join('');
+  const capital = capitalForPortal(portal);
+  const capitalEn = portal.lang === 'en';
+  const capitalHref = capital
+    ? `https://gnk-asg.hr/${capitalEn ? 'en/capitals' : 'glavni-gradovi'}/${capital.slug}/`
+    : '';
+  const capitalLink = capital
+    ? `<a href="${capitalHref}" rel="external noopener" hreflang="${capitalEn ? 'en' : 'hr'}">${esc(CAPITAL_LABEL[portal.lang] || CAPITAL_LABEL.en)}: ${esc(portal.lang === 'en' ? capital.capitalEn || capital.capital : capital.capital)}</a>`
+    : '';
   return `<footer class="foot">
   <div class="footgrid">
     <div>
       <h2>${esc(wl(portal, 'portalsTitle'))}</h2>
-      <p class="footlinks">${links}<a href="${portal.lang === 'en' ? HUB_EN : HUB_HR}">${esc(words.hub)} →</a></p>
+      <p class="footlinks">${links}${capitalLink}<a href="${portal.lang === 'en' ? HUB_EN : HUB_HR}">${esc(words.hub)} →</a></p>
     </div>
     <div>
       <h2>${esc(words.publisher)}</h2>

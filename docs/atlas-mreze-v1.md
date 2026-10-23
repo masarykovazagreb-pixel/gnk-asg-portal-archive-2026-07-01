@@ -151,7 +151,14 @@ grafika tog izdanja, s potpisom koji to kaže — nikad se ne tvrdi da je
 prijestolnica već dobila svoju.
 
 Vlastiti sitemap: `/glavni-gradovi/sitemap.xml` (34 adrese), uključen u
-`sitemap-index.xml`. Stranice u pripremi imaju niži prioritet (0.5–0.6) od
+`sitemap-index.xml`.
+
+**Veza je obostrana.** Svako gradsko izdanje u navigaciji nosi
+„Glavni grad: <ime>" („Capital: …", „Főváros: …", „首都: …") s ciljem na
+stranicu svoje prijestolnice, a svaki svjetski portal isto u podnožju. Grad
+koji zemlju pokriva umjesto prijestolnice — New York, São Paulo, Sydney — vodi
+na stranicu prijestolnice koja se čeka. `hreflang` kazuje jezik **odredišne**
+stranice (hr ili en), ne jezik izdanja. Stranice u pripremi imaju niži prioritet (0.5–0.6) od
 aktivnih (0.7–0.8).
 
 ### Kako se dodaje novi glavni grad

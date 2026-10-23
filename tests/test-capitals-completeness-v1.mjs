@@ -85,6 +85,22 @@ for (const channel of CHANNELS) {
   if (!cap) fail(`${channel.id}: izdanje pokriva ${channel.countryCode}, a te zemlje nema na popisu prijestolnica`);
 }
 
+/* ---------- 3b. veza mora biti obostrana ---------- */
+
+/* Stranica prijestolnice vodi na izdanje; izdanje mora voditi natrag na
+   stranicu prijestolnice. Jednosmjerna veza je slijepa ulica. */
+for (const cap of capList) {
+  const channel = cap.edition ? channelBy(cap.edition) : cap.seats ? channelBy(cap.seats) : null;
+  if (!channel) continue;
+  const rel = `apps/portal/kanal/${channel.id}/index.html`;
+  const file = join(ROOT, rel);
+  if (!existsSync(file)) { fail(`${rel}: nedostaje`); continue; }
+  const html = readFileSync(file, 'utf8');
+  const target = channel.lang === 'en' ? `/en/capitals/${cap.slug}/` : `/glavni-gradovi/${cap.slug}/`;
+  if (!html.includes(target)) fail(`${rel}: ne vodi na stranicu prijestolnice ${target}`);
+  if (!/hreflang="(en|hr)">(?:[^<]*): /.test(html)) fail(`${rel}: veza na prijestolnicu nema hreflang`);
+}
+
 /* ---------- 4. stranice i sitemap ---------- */
 
 const dataFile = join(ROOT, 'apps', 'portal', 'data', 'glavni-gradovi-v1.json');

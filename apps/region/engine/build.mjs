@@ -28,6 +28,22 @@ const SITE = join(ROOT, 'apps', 'portal', 'kanal');
 const LEGACY = join(APP, 'site');
 
 export const CHANNELS = JSON.parse(readFileSync(join(APP, 'channels.json'), 'utf8')).channels;
+/* Prijestolnica svakog izdanja: izdanje u glavnom gradu dobiva svoju stranicu
+   u /glavni-gradovi/<slug>/, a grad koji zemlju pokriva umjesto prijestolnice
+   (New York, São Paulo, Sydney) vodi na stranicu prijestolnice koju čeka. */
+const CAPITALS = JSON.parse(readFileSync(join(APP, 'capitals.json'), 'utf8')).capitals || [];
+export const capitalForChannel = (id) => CAPITALS.find((c) => c.edition === id) || CAPITALS.find((c) => c.seats === id) || null;
+
+function capitalNav(channel, chrome) {
+  const capital = capitalForChannel(channel.id);
+  if (!capital || !capital.slug) return '';
+  const en = channel.lang === 'en';
+  const href = en ? `/en/capitals/${capital.slug}/` : `/glavni-gradovi/${capital.slug}/`;
+  const name = en ? capital.capitalEn || capital.capital : capital.capital;
+  /* hreflang kazuje jezik odredišne stranice, ne jezik izdanja: stranica
+     prijestolnice postoji na hrvatskom i engleskom. */
+  return `<a href="${href}" hreflang="${en ? 'en' : 'hr'}">${esc(chrome.capital)}: ${esc(name)}</a>`;
+}
 export const HUB = 'https://gnk-asg.hr/izdanja/';
 export const CENTRAL = 'https://gnk-asg.hr/gnk-aktual/';
 export const CONTACT = 'info@gnk-asg.hr';
@@ -530,7 +546,7 @@ function header(channel, strings, active = '', root = '') {
     <li><span>${esc(channel.hashtags[0] || '')}</span></li>
   </ul>
   ${editionsStrip(channel)}
-  <nav class="mainnav" aria-label="${esc(strings.latest)}">${nav}<a href="${CENTRAL}#izdanja-po-zemljama" rel="external">${esc(strings.hub)} ↗</a>${channel.lang === 'en' ? '' : `<a class="langswitch" href="${root}en/" hreflang="en" lang="en" aria-label="${esc(chrome.langSwitch)}">EN — English</a>`}</nav>
+  <nav class="mainnav" aria-label="${esc(strings.latest)}">${nav}<a href="${CENTRAL}#izdanja-po-zemljama" rel="external">${esc(strings.hub)} ↗</a>${capitalNav(channel, chrome)}${channel.lang === 'en' ? '' : `<a class="langswitch" href="${root}en/" hreflang="en" lang="en" aria-label="${esc(chrome.langSwitch)}">EN — English</a>`}</nav>
 </header>`;
 }
 
@@ -1096,7 +1112,7 @@ function englishPage(channel, strings, data) {
     <a href="/nermin-sefic/">#SEFICNERMIN</a>
     <span>#AKTUALMEDIA</span><span>#GNKASG</span><span>#EnglishOverview</span>
   </p>
-  <nav class="mainnav" aria-label="Sections"><a href="${root}" hreflang="${channel.lang}" lang="${channel.lang}">${esc(strings.latest)} (${esc(channel.langName)})</a><a href="${root}mravinjak/" hreflang="${channel.lang}" lang="${channel.lang}">${esc(mrvStrings(channel.lang).nav)}</a><a href="${root}metodologija/" hreflang="${channel.lang}" lang="${channel.lang}">${esc(strings.methodology)}</a><a href="${CENTRAL}" rel="external">AKTUAL MEDIA</a><a class="langswitch" href="${root}">${esc(channel.langName)}</a></nav>
+  <nav class="mainnav" aria-label="Sections"><a href="${root}" hreflang="${channel.lang}" lang="${channel.lang}">${esc(strings.latest)} (${esc(channel.langName)})</a><a href="${root}mravinjak/" hreflang="${channel.lang}" lang="${channel.lang}">${esc(mrvStrings(channel.lang).nav)}</a><a href="${root}metodologija/" hreflang="${channel.lang}" lang="${channel.lang}">${esc(strings.methodology)}</a><a href="${CENTRAL}" rel="external">AKTUAL MEDIA</a>${capitalNav(channel, chromeOf('en'))}<a class="langswitch" href="${root}">${esc(channel.langName)}</a></nav>
 </header>
 <main id="sadrzaj" class="page">
   <h1>${esc(title)}</h1>
