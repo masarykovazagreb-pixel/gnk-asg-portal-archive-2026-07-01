@@ -1,6 +1,6 @@
 {
   "version": "GNK_ASG_DATA_DESK_V1_20261021",
-  "generatedAt": "2026-10-23T21:14:04.000Z",
+  "generatedAt": "2026-10-24T00:03:03.000Z",
   "channels": 8,
   "channelIds": [
     "zagreb",
@@ -15,9 +15,9 @@
   "items": 3360,
   "night": {
     "totals": {
-      "items": 501,
+      "items": 503,
       "all": 3360,
-      "share": 14.9
+      "share": 15
     },
     "rows": [
       {
@@ -77,10 +77,15 @@
         "title": "AKTUAL MEDIA KANAL SOFIJA",
         "city": "Sofija",
         "base": "https://gnk-asg.hr/kanal/sofija/",
-        "count": 68,
+        "count": 69,
         "total": 420,
-        "share": 16.2,
+        "share": 16.4,
         "samples": [
+          {
+            "title": "Спортът по телевизията - 24 октомври",
+            "slug": "sofija-2026-10-24-sega-sport-t-po-televizi-ta-24-oktomvri-7e36f1",
+            "date": "2026-10-24T00:03:03.000Z"
+          },
           {
             "title": "Фирма на фаворитка за член на ВСС е имала бизнес с… ВСС",
             "slug": "sofija-2026-10-23-mediapool-firma-na-favoritka-za-clen-na-vss-e-imala-1f1f22",
@@ -90,11 +95,6 @@
             "title": "В сянката на джуджетата: Прокуратурата гласува за следващ ВСС",
             "slug": "sofija-2026-10-23-mediapool-v-s-nkata-na-dzudzetata-prokuraturata-127acf",
             "date": "2026-10-23T05:16:00.000Z"
-          },
-          {
-            "title": "Първан Симеонов: Най-интересното остава за балотажа, Гюров не е невъзможна изненада",
-            "slug": "sofija-2026-10-23-mediapool-p-rvan-simeonov-na-interesnoto-ostava-za-9bda82",
-            "date": "2026-10-23T05:14:00.000Z"
           }
         ]
       },
@@ -177,6 +177,32 @@
         ]
       },
       {
+        "id": "sarajevo",
+        "title": "AKTUAL MEDIA KANAL SARAJEVO",
+        "city": "Sarajevo",
+        "base": "https://gnk-asg.hr/kanal/sarajevo/",
+        "count": 46,
+        "total": 420,
+        "share": 11,
+        "samples": [
+          {
+            "title": "Iran tvrdi da su dva supertankera naletjela na morske mine u Hormuškom moreuzu: Eksplozije onesposobile brodove s 4,5 miliona barela nafte",
+            "slug": "sarajevo-2026-10-23-avaz-iran-tvrdi-da-su-dva-supertankera-naletjela-c5cbb3",
+            "date": "2026-10-23T22:11:54.000Z"
+          },
+          {
+            "title": "Sead Šabanadžović: Svjetski, a naš",
+            "slug": "sarajevo-2026-10-23-avaz-sead-sabanadzovic-svjetski-a-nas-e0a48a",
+            "date": "2026-10-23T05:15:11.000Z"
+          },
+          {
+            "title": "Kad bi bilo malo stida",
+            "slug": "sarajevo-2026-10-23-avaz-kad-bi-bilo-malo-stida-577eb3",
+            "date": "2026-10-23T05:10:36.000Z"
+          }
+        ]
+      },
+      {
         "id": "rim",
         "title": "AKTUAL MEDIA KANAL ROMA",
         "city": "Rim",
@@ -201,32 +227,6 @@
             "date": "2026-10-23T04:00:00.000Z"
           }
         ]
-      },
-      {
-        "id": "sarajevo",
-        "title": "AKTUAL MEDIA KANAL SARAJEVO",
-        "city": "Sarajevo",
-        "base": "https://gnk-asg.hr/kanal/sarajevo/",
-        "count": 45,
-        "total": 420,
-        "share": 10.7,
-        "samples": [
-          {
-            "title": "Sead Šabanadžović: Svjetski, a naš",
-            "slug": "sarajevo-2026-10-23-avaz-sead-sabanadzovic-svjetski-a-nas-e0a48a",
-            "date": "2026-10-23T05:15:11.000Z"
-          },
-          {
-            "title": "Kad bi bilo malo stida",
-            "slug": "sarajevo-2026-10-23-avaz-kad-bi-bilo-malo-stida-577eb3",
-            "date": "2026-10-23T05:10:36.000Z"
-          },
-          {
-            "title": "U današnjem \"Dnevnom avazu\" čitajte: Crna Gora sve bilže Evropi, a BiH još daleko",
-            "slug": "sarajevo-2026-10-23-avaz-u-danasnjem-dnevnom-avazu-citajte-crna-gora-7087a8",
-            "date": "2026-10-23T04:56:57.000Z"
-          }
-        ]
       }
     ]
   },
@@ -240,14 +240,14 @@
         "sources": 6,
         "total": 420,
         "lead": "Actualno.com",
-        "leadCount": 139,
-        "leadShare": 33.1,
-        "top3Share": 70.7,
+        "leadCount": 138,
+        "leadShare": 32.9,
+        "top3Share": 71,
         "list": [
           {
             "name": "Actualno.com",
-            "count": 139,
-            "share": 33.1
+            "count": 138,
+            "share": 32.9
           },
           {
             "name": "Dnevnik",
@@ -256,13 +256,13 @@
           },
           {
             "name": "Sega.bg",
-            "count": 65,
-            "share": 15.5
+            "count": 67,
+            "share": 16
           },
           {
             "name": "Mediapool",
-            "count": 64,
-            "share": 15.2
+            "count": 63,
+            "share": 15
           },
           {
             "name": "Capital",
@@ -273,40 +273,6 @@
             "name": "Novinite.com",
             "count": 2,
             "share": 0.5
-          }
-        ]
-      },
-      {
-        "id": "beograd",
-        "title": "AKTUAL MEDIA KANAL BEOGRAD",
-        "city": "Beograd",
-        "base": "https://gnk-asg.hr/kanal/beograd/",
-        "sources": 4,
-        "total": 420,
-        "lead": "Danas",
-        "leadCount": 115,
-        "leadShare": 27.4,
-        "top3Share": 78.6,
-        "list": [
-          {
-            "name": "Danas",
-            "count": 115,
-            "share": 27.4
-          },
-          {
-            "name": "N1 Srbija",
-            "count": 114,
-            "share": 27.1
-          },
-          {
-            "name": "Nova.rs",
-            "count": 101,
-            "share": 24
-          },
-          {
-            "name": "Politika",
-            "count": 90,
-            "share": 21.4
           }
         ]
       },
@@ -329,13 +295,13 @@
           },
           {
             "name": "ANSA",
-            "count": 99,
-            "share": 23.6
+            "count": 100,
+            "share": 23.8
           },
           {
             "name": "Adnkronos",
-            "count": 96,
-            "share": 22.9
+            "count": 95,
+            "share": 22.6
           },
           {
             "name": "La Stampa",
@@ -350,6 +316,40 @@
         ]
       },
       {
+        "id": "beograd",
+        "title": "AKTUAL MEDIA KANAL BEOGRAD",
+        "city": "Beograd",
+        "base": "https://gnk-asg.hr/kanal/beograd/",
+        "sources": 4,
+        "total": 420,
+        "lead": "Danas",
+        "leadCount": 110,
+        "leadShare": 26.2,
+        "top3Share": 77.4,
+        "list": [
+          {
+            "name": "Danas",
+            "count": 110,
+            "share": 26.2
+          },
+          {
+            "name": "N1 Srbija",
+            "count": 110,
+            "share": 26.2
+          },
+          {
+            "name": "Nova.rs",
+            "count": 105,
+            "share": 25
+          },
+          {
+            "name": "Politika",
+            "count": 95,
+            "share": 22.6
+          }
+        ]
+      },
+      {
         "id": "sarajevo",
         "title": "AKTUAL MEDIA KANAL SARAJEVO",
         "city": "Sarajevo",
@@ -357,24 +357,24 @@
         "sources": 6,
         "total": 420,
         "lead": "Klix",
-        "leadCount": 105,
-        "leadShare": 25,
-        "top3Share": 68.8,
+        "leadCount": 104,
+        "leadShare": 24.8,
+        "top3Share": 70.5,
         "list": [
           {
             "name": "Klix",
-            "count": 105,
-            "share": 25
-          },
-          {
-            "name": "N1 BiH",
-            "count": 92,
-            "share": 21.9
+            "count": 104,
+            "share": 24.8
           },
           {
             "name": "Radio Sarajevo",
-            "count": 92,
-            "share": 21.9
+            "count": 98,
+            "share": 23.3
+          },
+          {
+            "name": "N1 BiH",
+            "count": 94,
+            "share": 22.4
           },
           {
             "name": "Avaz",
@@ -383,13 +383,13 @@
           },
           {
             "name": "Buka",
-            "count": 31,
-            "share": 7.4
+            "count": 26,
+            "share": 6.2
           },
           {
             "name": "Detektor",
-            "count": 16,
-            "share": 3.8
+            "count": 14,
+            "share": 3.3
           }
         ]
       },
@@ -403,7 +403,7 @@
         "lead": "24.hu",
         "leadCount": 103,
         "leadShare": 24.5,
-        "top3Share": 66.2,
+        "top3Share": 66.7,
         "list": [
           {
             "name": "24.hu",
@@ -412,28 +412,28 @@
           },
           {
             "name": "HVG",
-            "count": 96,
-            "share": 22.9
+            "count": 97,
+            "share": 23.1
           },
           {
             "name": "Portfolio",
-            "count": 79,
-            "share": 18.8
+            "count": 80,
+            "share": 19
           },
           {
             "name": "444",
-            "count": 70,
-            "share": 16.7
+            "count": 71,
+            "share": 16.9
           },
           {
             "name": "Telex",
-            "count": 61,
-            "share": 14.5
+            "count": 60,
+            "share": 14.3
           },
           {
             "name": "Index.hu",
-            "count": 11,
-            "share": 2.6
+            "count": 9,
+            "share": 2.1
           }
         ]
       },
@@ -484,14 +484,14 @@
         "sources": 6,
         "total": 420,
         "lead": "Jutarnji list",
-        "leadCount": 82,
-        "leadShare": 19.5,
-        "top3Share": 55.7,
+        "leadCount": 83,
+        "leadShare": 19.8,
+        "top3Share": 56.2,
         "list": [
           {
             "name": "Jutarnji list",
-            "count": 82,
-            "share": 19.5
+            "count": 83,
+            "share": 19.8
           },
           {
             "name": "Index.hr",
@@ -500,18 +500,18 @@
           },
           {
             "name": "Telegram.hr",
-            "count": 71,
-            "share": 16.9
-          },
-          {
-            "name": "N1 Hrvatska",
-            "count": 71,
-            "share": 16.9
+            "count": 72,
+            "share": 17.1
           },
           {
             "name": "tportal",
-            "count": 69,
-            "share": 16.4
+            "count": 70,
+            "share": 16.7
+          },
+          {
+            "name": "N1 Hrvatska",
+            "count": 68,
+            "share": 16.2
           },
           {
             "name": "Poslovni dnevnik",
@@ -528,44 +528,44 @@
         "sources": 7,
         "total": 420,
         "lead": "News.ro",
-        "leadCount": 73,
-        "leadShare": 17.4,
-        "top3Share": 49.3,
+        "leadCount": 78,
+        "leadShare": 18.6,
+        "top3Share": 48.8,
         "list": [
           {
             "name": "News.ro",
-            "count": 73,
-            "share": 17.4
+            "count": 78,
+            "share": 18.6
           },
           {
             "name": "HotNews",
-            "count": 69,
-            "share": 16.4
+            "count": 66,
+            "share": 15.7
           },
           {
             "name": "Digi24",
-            "count": 65,
-            "share": 15.5
+            "count": 61,
+            "share": 14.5
           },
           {
             "name": "G4Media",
-            "count": 65,
-            "share": 15.5
+            "count": 60,
+            "share": 14.3
           },
           {
             "name": "Ziarul Financiar",
-            "count": 56,
-            "share": 13.3
+            "count": 58,
+            "share": 13.8
           },
           {
             "name": "Profit.ro",
-            "count": 56,
-            "share": 13.3
+            "count": 55,
+            "share": 13.1
           },
           {
             "name": "Agerpres",
-            "count": 36,
-            "share": 8.6
+            "count": 42,
+            "share": 10
           }
         ]
       }
@@ -584,9 +584,9 @@
         "gapEnd": 1792501038000,
         "longGaps": 4,
         "oldest": 0,
-        "oldestAgeHours": 98,
-        "newestAgeHours": 0.8,
-        "span": 97.2
+        "oldestAgeHours": 99.4,
+        "newestAgeHours": 2.8,
+        "span": 96.6
       },
       {
         "id": "budimpesta",
@@ -598,9 +598,9 @@
         "gapEnd": 1792496393000,
         "longGaps": 2,
         "oldest": 0,
-        "oldestAgeHours": 99.5,
-        "newestAgeHours": 1.2,
-        "span": 98.3
+        "oldestAgeHours": 102,
+        "newestAgeHours": 3.1,
+        "span": 98.9
       },
       {
         "id": "sofija",
@@ -612,9 +612,9 @@
         "gapEnd": 1792489620000,
         "longGaps": 3,
         "oldest": 0,
-        "oldestAgeHours": 101.4,
-        "newestAgeHours": 0.9,
-        "span": 100.5
+        "oldestAgeHours": 104.1,
+        "newestAgeHours": 0,
+        "span": 104.1
       },
       {
         "id": "ljubljana",
@@ -626,9 +626,9 @@
         "gapEnd": 1792689120000,
         "longGaps": 2,
         "oldest": 0,
-        "oldestAgeHours": 74.6,
-        "newestAgeHours": 0.8,
-        "span": 73.8
+        "oldestAgeHours": 77.1,
+        "newestAgeHours": 3.2,
+        "span": 73.9
       },
       {
         "id": "bukurest",
@@ -640,9 +640,9 @@
         "gapEnd": 1792689000000,
         "longGaps": 1,
         "oldest": 0,
-        "oldestAgeHours": 52.2,
-        "newestAgeHours": 0.8,
-        "span": 51.4
+        "oldestAgeHours": 51.2,
+        "newestAgeHours": 2.7,
+        "span": 48.5
       },
       {
         "id": "zagreb",
@@ -654,9 +654,9 @@
         "gapEnd": 1792684800000,
         "longGaps": 1,
         "oldest": 0,
-        "oldestAgeHours": 52.8,
-        "newestAgeHours": 0.8,
-        "span": 51.9
+        "oldestAgeHours": 55,
+        "newestAgeHours": 2.7,
+        "span": 52.3
       },
       {
         "id": "rim",
@@ -668,9 +668,9 @@
         "gapEnd": 1792479360000,
         "longGaps": 2,
         "oldest": 0,
-        "oldestAgeHours": 104.7,
-        "newestAgeHours": 1.2,
-        "span": 103.5
+        "oldestAgeHours": 107.4,
+        "newestAgeHours": 2.8,
+        "span": 104.5
       },
       {
         "id": "sarajevo",
@@ -682,18 +682,18 @@
         "gapEnd": 1792646520000,
         "longGaps": 1,
         "oldest": 0,
-        "oldestAgeHours": 80.1,
-        "newestAgeHours": 0,
-        "span": 80.1
+        "oldestAgeHours": 76.5,
+        "newestAgeHours": 1.9,
+        "span": 74.7
       }
     ],
-    "newestOverall": 1792790044000
+    "newestOverall": 1792800183000
   },
   "vocabulary": [
     {
       "token": "Trump",
       "cities": 6,
-      "total": 82,
+      "total": 83,
       "name": true,
       "perCity": [
         {
@@ -709,12 +709,12 @@
           "count": 18
         },
         {
-          "id": "ljubljana",
+          "id": "zagreb",
           "count": 6
         },
         {
-          "id": "zagreb",
-          "count": 5
+          "id": "ljubljana",
+          "count": 6
         },
         {
           "id": "sarajevo",
@@ -724,14 +724,14 @@
       "examples": [
         {
           "city": "zagreb",
-          "title": "Bijela kuća: ‘Melania Trump dogovorila je primirje u Oleškiju‘",
-          "slug": "zagreb-2026-10-23-jutarnji-bijela-kuca-melania-trump-dogovorila-je-fff88f",
+          "title": "Trump iznenada popušta Kanadi: Ukida dio carina od 50 posto, ali uvodi nove",
+          "slug": "zagreb-2026-10-23-tportal-trump-iznenada-popusta-kanadi-ukida-dio-2a0ec6",
           "base": "https://gnk-asg.hr/kanal/zagreb/"
         },
         {
           "city": "zagreb",
-          "title": "Trump je pitao Google da preimenuje Atlantski ocean u Trumpov ocean",
-          "slug": "zagreb-2026-10-23-telegram-trump-je-pitao-google-da-preimenuje-6fb369",
+          "title": "Bijela kuća: ‘Melania Trump dogovorila je primirje u Oleškiju‘",
+          "slug": "zagreb-2026-10-23-jutarnji-bijela-kuca-melania-trump-dogovorila-je-fff88f",
           "base": "https://gnk-asg.hr/kanal/zagreb/"
         }
       ]
@@ -739,12 +739,12 @@
     {
       "token": "Starlink",
       "cities": 6,
-      "total": 22,
+      "total": 21,
       "name": true,
       "perCity": [
         {
           "id": "sofija",
-          "count": 13
+          "count": 12
         },
         {
           "id": "bukurest",
@@ -785,15 +785,15 @@
     {
       "token": "Vučić",
       "cities": 6,
-      "total": 15,
+      "total": 13,
       "name": true,
       "perCity": [
         {
-          "id": "beograd",
-          "count": 5
+          "id": "zagreb",
+          "count": 3
         },
         {
-          "id": "zagreb",
+          "id": "beograd",
           "count": 3
         },
         {
@@ -1093,48 +1093,6 @@
       ]
     },
     {
-      "token": "študenti",
-      "cities": 5,
-      "total": 11,
-      "name": true,
-      "perCity": [
-        {
-          "id": "sarajevo",
-          "count": 3
-        },
-        {
-          "id": "rim",
-          "count": 3
-        },
-        {
-          "id": "beograd",
-          "count": 2
-        },
-        {
-          "id": "ljubljana",
-          "count": 2
-        },
-        {
-          "id": "zagreb",
-          "count": 1
-        }
-      ],
-      "examples": [
-        {
-          "city": "zagreb",
-          "title": "VIDEO Studenti danima pješačili prema Beogradu, dočekuju ih uz pjesmu i crveni tepih",
-          "slug": "zagreb-2026-10-21-index-video-studenti-danima-pjesacili-prema-9300c5",
-          "base": "https://gnk-asg.hr/kanal/zagreb/"
-        },
-        {
-          "city": "beograd",
-          "title": "SNS-ova \"crna kutija\" ukrašena nalepnicama \"Studenti pobeđuju\": Policajci čuvaju naprednjačku propagandnu instalaciju FOTO VIDEO",
-          "slug": "beograd-2026-10-21-nova-sns-ova-crna-kutija-ukrasena-nalepnicama-b66e41",
-          "base": "https://gnk-asg.hr/kanal/beograd/"
-        }
-      ]
-    },
-    {
       "token": "Meghan",
       "cities": 5,
       "total": 10,
@@ -1215,6 +1173,48 @@
           "title": "Meghan Markle o svom ocu kod kojeg je pronađena dječija pornografija: Nisam mu dozvolila da upozna moju djecu",
           "slug": "sarajevo-2026-10-23-klix-meghan-markle-o-svom-ocu-kod-kojeg-je-6cbf5d",
           "base": "https://gnk-asg.hr/kanal/sarajevo/"
+        }
+      ]
+    },
+    {
+      "token": "študenti",
+      "cities": 5,
+      "total": 9,
+      "name": true,
+      "perCity": [
+        {
+          "id": "sarajevo",
+          "count": 3
+        },
+        {
+          "id": "ljubljana",
+          "count": 2
+        },
+        {
+          "id": "rim",
+          "count": 2
+        },
+        {
+          "id": "zagreb",
+          "count": 1
+        },
+        {
+          "id": "beograd",
+          "count": 1
+        }
+      ],
+      "examples": [
+        {
+          "city": "zagreb",
+          "title": "VIDEO Studenti danima pješačili prema Beogradu, dočekuju ih uz pjesmu i crveni tepih",
+          "slug": "zagreb-2026-10-21-index-video-studenti-danima-pjesacili-prema-9300c5",
+          "base": "https://gnk-asg.hr/kanal/zagreb/"
+        },
+        {
+          "city": "beograd",
+          "title": "SNS-ova \"crna kutija\" ukrašena nalepnicama \"Studenti pobeđuju\": Policajci čuvaju naprednjačku propagandnu instalaciju FOTO VIDEO",
+          "slug": "beograd-2026-10-21-nova-sns-ova-crna-kutija-ukrasena-nalepnicama-b66e41",
+          "base": "https://gnk-asg.hr/kanal/beograd/"
         }
       ]
     },
@@ -1377,16 +1377,16 @@
     {
       "token": "Pariza",
       "cities": 4,
-      "total": 15,
+      "total": 16,
       "name": true,
       "perCity": [
         {
-          "id": "beograd",
-          "count": 6
+          "id": "zagreb",
+          "count": 5
         },
         {
-          "id": "zagreb",
-          "count": 4
+          "id": "beograd",
+          "count": 5
         },
         {
           "id": "ljubljana",
@@ -1394,20 +1394,20 @@
         },
         {
           "id": "sarajevo",
-          "count": 1
+          "count": 2
         }
       ],
       "examples": [
         {
           "city": "zagreb",
-          "title": "Macron nakon terorističkog napada u predgrađu Pariza: ‘Kažem vam, ovo je prijelomni trenutak‘",
-          "slug": "zagreb-2026-10-23-jutarnji-macron-nakon-teroristickog-napada-u-f74ffc",
+          "title": "Stravičan zločin kod Pariza, među ranjenima i 12-godišnja curica. Macron: ‘Ovo je teroristički čin’",
+          "slug": "zagreb-2026-10-23-telegram-stravican-zlocin-kod-pariza-medu-ranjenima-bf4c3d",
           "base": "https://gnk-asg.hr/kanal/zagreb/"
         },
         {
           "city": "zagreb",
-          "title": "Macron nakon strašnog napada kod Pariza: 'Ovo je prijelomni trenutak'",
-          "slug": "zagreb-2026-10-23-tportal-macron-nakon-strasnog-napada-kod-pariza-ovo-f23d8e",
+          "title": "Macron nakon terorističkog napada u predgrađu Pariza: ‘Kažem vam, ovo je prijelomni trenutak‘",
+          "slug": "zagreb-2026-10-23-jutarnji-macron-nakon-teroristickog-napada-u-f74ffc",
           "base": "https://gnk-asg.hr/kanal/zagreb/"
         }
       ]
@@ -1415,12 +1415,12 @@
     {
       "token": "Beogradu",
       "cities": 4,
-      "total": 15,
+      "total": 14,
       "name": true,
       "perCity": [
         {
           "id": "beograd",
-          "count": 9
+          "count": 8
         },
         {
           "id": "zagreb",
@@ -1451,14 +1451,52 @@
       ]
     },
     {
-      "token": "Papa",
+      "token": "Iran",
       "cities": 4,
-      "total": 12,
+      "total": 11,
       "name": true,
       "perCity": [
         {
-          "id": "rim",
+          "id": "sarajevo",
           "count": 6
+        },
+        {
+          "id": "rim",
+          "count": 3
+        },
+        {
+          "id": "zagreb",
+          "count": 1
+        },
+        {
+          "id": "bukurest",
+          "count": 1
+        }
+      ],
+      "examples": [
+        {
+          "city": "zagreb",
+          "title": "Iran: Dva supertankera naletjela na mine u Hormuškom tjesnacu",
+          "slug": "zagreb-2026-10-23-index-iran-dva-supertankera-naletjela-na-mine-u-430981",
+          "base": "https://gnk-asg.hr/kanal/zagreb/"
+        },
+        {
+          "city": "sarajevo",
+          "title": "Iran tvrdi da su dva supertankera naletjela na morske mine u Hormuškom moreuzu: Eksplozije onesposobile brodove s 4,5 miliona barela nafte",
+          "slug": "sarajevo-2026-10-23-avaz-iran-tvrdi-da-su-dva-supertankera-naletjela-c5cbb3",
+          "base": "https://gnk-asg.hr/kanal/sarajevo/"
+        }
+      ]
+    },
+    {
+      "token": "Macron",
+      "cities": 4,
+      "total": 10,
+      "name": true,
+      "perCity": [
+        {
+          "id": "zagreb",
+          "count": 4
         },
         {
           "id": "bukurest",
@@ -1469,22 +1507,22 @@
           "count": 2
         },
         {
-          "id": "zagreb",
+          "id": "rim",
           "count": 1
         }
       ],
       "examples": [
         {
           "city": "zagreb",
-          "title": "Odlične vijesti iz Vatikana: Papa Lav neće trebati daljnju terapiju, tumor se nije proširio",
-          "slug": "zagreb-2026-10-21-jutarnji-odlicne-vijesti-iz-vatikana-papa-lav-nece-e36d3f",
+          "title": "Stravičan zločin kod Pariza, među ranjenima i 12-godišnja curica. Macron: ‘Ovo je teroristički čin’",
+          "slug": "zagreb-2026-10-23-telegram-stravican-zlocin-kod-pariza-medu-ranjenima-bf4c3d",
           "base": "https://gnk-asg.hr/kanal/zagreb/"
         },
         {
-          "city": "sarajevo",
-          "title": "Dobre vijesti iz Vatikana: Ljekari potvrdili da papa Lav ne treba daljnje liječenje nakon operacije",
-          "slug": "sarajevo-2026-10-22-radiosarajevo-dobre-vijesti-iz-vatikana-ljekari-potvrdili-ebb9cf",
-          "base": "https://gnk-asg.hr/kanal/sarajevo/"
+          "city": "zagreb",
+          "title": "Macron nakon terorističkog napada u predgrađu Pariza: ‘Kažem vam, ovo je prijelomni trenutak‘",
+          "slug": "zagreb-2026-10-23-jutarnji-macron-nakon-teroristickog-napada-u-f74ffc",
+          "base": "https://gnk-asg.hr/kanal/zagreb/"
         }
       ]
     },
@@ -1565,6 +1603,44 @@
       ]
     },
     {
+      "token": "Papa",
+      "cities": 4,
+      "total": 10,
+      "name": true,
+      "perCity": [
+        {
+          "id": "rim",
+          "count": 6
+        },
+        {
+          "id": "sarajevo",
+          "count": 2
+        },
+        {
+          "id": "zagreb",
+          "count": 1
+        },
+        {
+          "id": "bukurest",
+          "count": 1
+        }
+      ],
+      "examples": [
+        {
+          "city": "zagreb",
+          "title": "Odlične vijesti iz Vatikana: Papa Lav neće trebati daljnju terapiju, tumor se nije proširio",
+          "slug": "zagreb-2026-10-21-jutarnji-odlicne-vijesti-iz-vatikana-papa-lav-nece-e36d3f",
+          "base": "https://gnk-asg.hr/kanal/zagreb/"
+        },
+        {
+          "city": "sarajevo",
+          "title": "Dobre vijesti iz Vatikana: Ljekari potvrdili da papa Lav ne treba daljnje liječenje nakon operacije",
+          "slug": "sarajevo-2026-10-22-radiosarajevo-dobre-vijesti-iz-vatikana-ljekari-potvrdili-ebb9cf",
+          "base": "https://gnk-asg.hr/kanal/sarajevo/"
+        }
+      ]
+    },
+    {
       "token": "Dinamo",
       "cities": 4,
       "total": 9,
@@ -1590,14 +1666,14 @@
       "examples": [
         {
           "city": "zagreb",
-          "title": "Zadar pobijedio Dinamo i ostao savršen u prvenstvu",
-          "slug": "zagreb-2026-10-23-index-zadar-pobijedio-dinamo-i-ostao-savrsen-u-33e693",
+          "title": "U Maksimiru su dobro znali koga dovode! Trojac je opravdao dolazak u Dinamo, ali tek trebaju postati pojačanja",
+          "slug": "zagreb-2026-10-23-jutarnji-u-maksimiru-su-dobro-znali-koga-dovode-2c1b72",
           "base": "https://gnk-asg.hr/kanal/zagreb/"
         },
         {
           "city": "zagreb",
-          "title": "Zadar ostao savršen u prvenstvu, a uspio je dati i šansu 17-godišnjaku. Dinamo bez šansi na Višnjiku",
-          "slug": "zagreb-2026-10-23-telegram-zadar-ostao-savrsen-u-prvenstvu-a-uspio-je-30ba2c",
+          "title": "Zadar pobijedio Dinamo i ostao savršen u prvenstvu",
+          "slug": "zagreb-2026-10-23-index-zadar-pobijedio-dinamo-i-ostao-savrsen-u-33e693",
           "base": "https://gnk-asg.hr/kanal/zagreb/"
         }
       ]
@@ -1641,44 +1717,6 @@
       ]
     },
     {
-      "token": "Macron",
-      "cities": 4,
-      "total": 8,
-      "name": true,
-      "perCity": [
-        {
-          "id": "zagreb",
-          "count": 3
-        },
-        {
-          "id": "bukurest",
-          "count": 3
-        },
-        {
-          "id": "sarajevo",
-          "count": 1
-        },
-        {
-          "id": "rim",
-          "count": 1
-        }
-      ],
-      "examples": [
-        {
-          "city": "zagreb",
-          "title": "Macron nakon terorističkog napada u predgrađu Pariza: ‘Kažem vam, ovo je prijelomni trenutak‘",
-          "slug": "zagreb-2026-10-23-jutarnji-macron-nakon-teroristickog-napada-u-f74ffc",
-          "base": "https://gnk-asg.hr/kanal/zagreb/"
-        },
-        {
-          "city": "zagreb",
-          "title": "Macron nakon strašnog napada kod Pariza: 'Ovo je prijelomni trenutak'",
-          "slug": "zagreb-2026-10-23-tportal-macron-nakon-strasnog-napada-kod-pariza-ovo-f23d8e",
-          "base": "https://gnk-asg.hr/kanal/zagreb/"
-        }
-      ]
-    },
-    {
       "token": "Kompany",
       "cities": 4,
       "total": 8,
@@ -1712,82 +1750,6 @@
           "city": "zagreb",
           "title": "Zabrinjavajuće vijesti iz Münchena. Kompany se srušio nakon Bayernova treninga, odmah je prevezen u bolnicu",
           "slug": "zagreb-2026-10-23-telegram-zabrinjavajuce-vijesti-iz-munchena-kompany-d79730",
-          "base": "https://gnk-asg.hr/kanal/zagreb/"
-        }
-      ]
-    },
-    {
-      "token": "Koga",
-      "cities": 4,
-      "total": 8,
-      "name": true,
-      "perCity": [
-        {
-          "id": "ljubljana",
-          "count": 4
-        },
-        {
-          "id": "beograd",
-          "count": 2
-        },
-        {
-          "id": "zagreb",
-          "count": 1
-        },
-        {
-          "id": "sarajevo",
-          "count": 1
-        }
-      ],
-      "examples": [
-        {
-          "city": "zagreb",
-          "title": "Na koga se naljutio Zvonimir Boban?",
-          "slug": "zagreb-2026-10-23-index-na-koga-se-naljutio-zvonimir-boban-b032a9",
-          "base": "https://gnk-asg.hr/kanal/zagreb/"
-        },
-        {
-          "city": "beograd",
-          "title": "Milan Marić, Andrija Milošević, Viktor Savić, Dragan Bjelogrlić i Vesna Trivalić pozivaju da izađete na izbore: \"Neko koga voliš u nedelju računa na tebe i tvoj glas\"",
-          "slug": "beograd-2026-10-23-nova-milan-maric-andrija-milosevic-viktor-savic-8c7724",
-          "base": "https://gnk-asg.hr/kanal/beograd/"
-        }
-      ]
-    },
-    {
-      "token": "Manchester",
-      "cities": 4,
-      "total": 8,
-      "name": true,
-      "perCity": [
-        {
-          "id": "rim",
-          "count": 3
-        },
-        {
-          "id": "zagreb",
-          "count": 2
-        },
-        {
-          "id": "ljubljana",
-          "count": 2
-        },
-        {
-          "id": "budimpesta",
-          "count": 1
-        }
-      ],
-      "examples": [
-        {
-          "city": "zagreb",
-          "title": "Video. Liga prvaka uživo: Baturina vodi protiv Manchester Uniteda, Galatasaray i Lille sjajno otvorili susret",
-          "slug": "zagreb-2026-10-21-telegram-video-liga-prvaka-uzivo-baturina-vodi-88389a",
-          "base": "https://gnk-asg.hr/kanal/zagreb/"
-        },
-        {
-          "city": "zagreb",
-          "title": "UŽIVO Como poveo golčinom protiv Manchester Uniteda. Baturina igra od prve minute",
-          "slug": "zagreb-2026-10-21-index-uzivo-como-poveo-golcinom-protiv-manchester-755269",
           "base": "https://gnk-asg.hr/kanal/zagreb/"
         }
       ]
@@ -1865,6 +1827,44 @@
           "title": "Zelenski podržao američki prijedlog za pregovore s Rusijom: Evo kada bi se mogli održati",
           "slug": "sarajevo-2026-10-21-avaz-zelenski-podrzao-americki-prijedlog-za-b07bb8",
           "base": "https://gnk-asg.hr/kanal/sarajevo/"
+        }
+      ]
+    },
+    {
+      "token": "Manchester",
+      "cities": 4,
+      "total": 7,
+      "name": true,
+      "perCity": [
+        {
+          "id": "rim",
+          "count": 3
+        },
+        {
+          "id": "ljubljana",
+          "count": 2
+        },
+        {
+          "id": "zagreb",
+          "count": 1
+        },
+        {
+          "id": "budimpesta",
+          "count": 1
+        }
+      ],
+      "examples": [
+        {
+          "city": "zagreb",
+          "title": "Video. Liga prvaka uživo: Baturina vodi protiv Manchester Uniteda, Galatasaray i Lille sjajno otvorili susret",
+          "slug": "zagreb-2026-10-21-telegram-video-liga-prvaka-uzivo-baturina-vodi-88389a",
+          "base": "https://gnk-asg.hr/kanal/zagreb/"
+        },
+        {
+          "city": "budimpesta",
+          "title": "A Manchester United edzője leült az újságírók elé, majd többperces monológba kezdett",
+          "slug": "budimpesta-2026-10-23-24hu-a-manchester-united-edzoje-leult-az-f4e774",
+          "base": "https://gnk-asg.hr/kanal/budimpesta/"
         }
       ]
     },
@@ -2309,17 +2309,17 @@
     "Musk",
     "Melania",
     "Meta",
-    "študenti",
     "Meghan",
     "Markle",
+    "študenti",
     "Real",
     "Srbiji",
     "Putin",
     "Meloni",
     "Pariza",
     "Beogradu",
-    "Papa",
-    "Študentske"
+    "Iran",
+    "Macron"
   ],
   "vocabularyWords": [
     "film",
@@ -2329,18 +2329,18 @@
     "policija",
     "nato",
     "pravila",
-    "studente",
-    "treba",
     "mrtvih",
+    "treba",
+    "studente",
+    "koga",
+    "raste",
     "drama",
     "knjiga",
-    "raste",
     "nagrade",
-    "igra",
     "gola",
-    "treningu",
-    "show",
+    "poraz",
     "dobro",
-    "poraz"
+    "treningu",
+    "show"
   ]
 }
