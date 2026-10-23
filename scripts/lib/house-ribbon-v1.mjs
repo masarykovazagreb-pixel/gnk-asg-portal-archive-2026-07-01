@@ -22,15 +22,43 @@ export function houseRibbonHtml(lang = 'hr') {
 }
 
 export function applyHouseRibbon(html) {
-  if (typeof html !== 'string' || html.includes(HOUSE_RIBBON_MARK)) return { html, changed: false };
+  if (typeof html !== 'string') return { html, changed: false };
   if (/http-equiv=["']refresh["']/i.test(html) || /name=["']robots["'][^>]*\bnoindex\b/i.test(html)) {
     return { html, changed: false };
   }
-  const headerEnd = html.indexOf('</header>');
-  if (headerEnd < 0) return { html, changed: false };
+  const bodyMatch = html.match(/<body\b[^>]*>/i);
   const lang = (html.match(/<html[^>]*\blang=["']([a-z]{2})/i) || [])[1] || 'hr';
-  const at = headerEnd + '</header>'.length;
+
+  /* Traka stoji na vrhu tijela, iznad zaglavlja — nikad unutar <main>, jer bi
+     ondje ulazila u mjeru članka i u brojanje riječi. */
+  if (!bodyMatch) {
+    if (html.includes(HOUSE_RIBBON_MARK)) return { html, changed: false };
+    const headerEnd = html.indexOf('</header>');
+    if (headerEnd < 0) return { html, changed: false };
+    const at = headerEnd + '</header>'.length;
+    let inject = `\n${houseRibbonHtml(lang)}`;
+    if (!html.includes('house-ribbon-v1.css')) inject += `\n<link rel="stylesheet" href="${HOUSE_RIBBON_CSS}">`;
+    return { html: `${html.slice(0, at)}${inject}${html.slice(at)}`, changed: true };
+  }
+
+  const bodyEnd = bodyMatch.index + bodyMatch[0].length;
+  const head = html.slice(0, bodyEnd);
+  let tail = html.slice(bodyEnd);
+  /* Ispravno mjesto je prije prvog <main>; traka pronađena dublje u tijelu
+     (unutar članka) smatra se pogrešno postavljenom i premješta se. */
+  const firstMark = tail.indexOf(HOUSE_RIBBON_MARK);
+  const firstMain = tail.search(/<main\b/i);
+  const hadRibbon = firstMark >= 0 && firstMark < 400 && (firstMain < 0 || firstMark < firstMain);
+
+  /* Stariji prolaz mogao je traku ostaviti dublje u dokumentu (nakon
+     zaglavlja, unutar <main>). Takva se traka uklanja i postavlja na vrh. */
+  if (!hadRibbon && tail.includes(HOUSE_RIBBON_MARK)) {
+    tail = tail.replace(/<div class="am-ribbon">[\s\S]*?<\/div>\s*/g, '');
+    tail = tail.replace(/<link rel="stylesheet" href="\/assets\/house-ribbon-v1\.css[^"]*">\s*/g, '');
+  }
+  if (hadRibbon) return { html, changed: false };
+
   let inject = `\n${houseRibbonHtml(lang)}`;
-  if (!html.includes('house-ribbon-v1.css')) inject += `\n<link rel="stylesheet" href="${HOUSE_RIBBON_CSS}">`;
-  return { html: `${html.slice(0, at)}${inject}${html.slice(at)}`, changed: true };
+  if (!head.includes('house-ribbon-v1.css')) inject += `\n<link rel="stylesheet" href="${HOUSE_RIBBON_CSS}">`;
+  return { html: `${head}${inject}${tail}`, changed: true };
 }
