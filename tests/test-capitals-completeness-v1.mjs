@@ -158,6 +158,42 @@ else if (!readFileSync(indexFile, 'utf8').includes('https://gnk-asg.hr/glavni-gr
   fail('sitemap-index.xml ne navodi glavni-gradovi/sitemap.xml');
 }
 
+/* ---------- 4b. atlas mreže ---------- */
+
+/* Atlas je slikovni ulaz u isti ugovor: svaka prijestolnica mora imati
+   karticu sa slikom i link, a stranica svoj kanonski par. Kartica bez slike
+   je upravo ono što ovaj test ne smije propustiti. */
+for (const [rel, canonical, hreflangs] of [
+  ['apps/portal/atlas/index.html', 'https://gnk-asg.hr/atlas/', ['hr', 'en', 'x-default']],
+  ['apps/portal/en/atlas/index.html', 'https://gnk-asg.hr/en/atlas/', ['hr', 'en', 'x-default']]
+]) {
+  const file = join(ROOT, rel);
+  if (!existsSync(file)) { fail(`${rel}: nedostaje — pokreni node apps/region/engine/hub.mjs`); continue; }
+  const html = readFileSync(file, 'utf8');
+  if (!html.includes(`<link rel="canonical" href="${canonical}">`)) fail(`${rel}: canonical nije ${canonical}`);
+  for (const hl of hreflangs) if (!html.includes(`hreflang="${hl}"`)) fail(`${rel}: nema hreflang ${hl}`);
+  if ((html.match(/<h1[ >]/g) || []).length !== 1) fail(`${rel}: h1 nije točno jedan`);
+  for (const img of html.matchAll(/<img\b[^>]*>/g)) {
+    if (!/\balt="[^"]+"/.test(img[0])) fail(`${rel}: slika bez alt teksta`);
+    if (!/\bsrc="[^"]+"/.test(img[0])) fail(`${rel}: slika bez izvora`);
+  }
+  for (const cap of capList) {
+    const target = rel.includes('/en/') ? `/en/capitals/${cap.slug}/` : `/glavni-gradovi/${cap.slug}/`;
+    if (!html.includes(`href="${target}"`)) fail(`${rel}: nema karticu za ${cap.slug}`);
+  }
+  if ((html.match(/class="at-card"/g) || []).length !== capList.length) fail(`${rel}: ${(html.match(/class="at-card"/g) || []).length} kartica, očekivano ${capList.length}`);
+}
+
+const atlasSitemap = join(ROOT, 'apps', 'portal', 'atlas', 'sitemap.xml');
+if (!existsSync(atlasSitemap)) fail('atlas/sitemap.xml nedostaje');
+else {
+  const xml = readFileSync(atlasSitemap, 'utf8');
+  if ((xml.match(/<loc>/g) || []).length !== 2) fail('atlas/sitemap.xml: očekivane dvije adrese');
+  if (!xml.includes('<loc>https://gnk-asg.hr/atlas/</loc>')) fail('atlas/sitemap.xml: nema /atlas/');
+  if (!xml.includes('<loc>https://gnk-asg.hr/en/atlas/</loc>')) fail('atlas/sitemap.xml: nema /en/atlas/');
+  if (!readFileSync(join(ROOT, 'apps', 'portal', 'sitemap-index.xml'), 'utf8').includes('https://gnk-asg.hr/atlas/sitemap.xml')) fail('sitemap-index.xml ne navodi atlas/sitemap.xml');
+}
+
 /* ---------- 5. brojke ---------- */
 
 const continents = [...new Set(capList.map((c) => c.continent))];

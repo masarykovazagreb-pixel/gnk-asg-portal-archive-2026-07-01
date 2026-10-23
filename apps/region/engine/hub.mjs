@@ -23,6 +23,7 @@ import { WORLD_PORTALS } from '../../world/lib/registry.mjs';
 import { ensureDeskTiles, tilePath, variantFor, deskArt, deskArtPath, deskArtSrcset } from './desk-art.mjs';
 import { logoImg, logoFor, logoAlternate, channelLogoSlug, deskLogoSlug, logoJsonLd } from './brand.mjs';
 import { buildCapitalPage, CAPITAL_CSS as CAPITAL_DETAIL_CSS, CONTINENT_COLOR } from './capital-detail.mjs';
+import { buildAtlasPage, ATLAS_CSS } from './atlas.mjs';
 
 /* Brojevi u naslovima se računaju iz podataka: 17 gradova, 14 jezika, 9 portala. */
 const LANG_COUNT = new Set(CHANNELS.map((c) => c.lang)).size;
@@ -484,7 +485,7 @@ const portalHeader = (active, { h1 = true } = {}) => `<div class="iz-top"><div c
   ${h1 ? `<h1>Naša izdanja</h1>
   <p>${CHANNELS.length} gradskih kanala, poslovni tjednik i devet deskova — sport, politika, sigurnost, business, tehnologija, moda, putovanja, ljubimci i svijet. Svako izdanje ima vlastiti link, svoj jezik, svoj feed i svoju metodologiju, a sve se vraća ovamo.</p>`
     : `<p class="iz-home-h1"><a href="/izdanja/">Naša izdanja</a> <span aria-hidden="true">·</span> desk</p>`}
-  <nav class="iz-nav" aria-label="Izdanja"><a href="/izdanja/"${active === '' ? ' aria-current="page"' : ''}>Sva izdanja</a>${Object.entries(DESKS).map(([id, d]) => `<a href="/izdanja/${id}/"${active === `${id}/` ? ' aria-current="page"' : ''}>${esc(d.nav)}</a>`).join('')}<a href="/radio/">Radio</a><a href="/galerija/">Galerija</a><a href="/aktual-media/">Podaci</a><a href="/kanal/">Kanali</a><a href="/glavni-gradovi/">Glavni gradovi</a><a href="/gnk-aktual/">AKTUAL MEDIA</a></nav>
+  <nav class="iz-nav" aria-label="Izdanja"><a href="/izdanja/"${active === '' ? ' aria-current="page"' : ''}>Sva izdanja</a>${Object.entries(DESKS).map(([id, d]) => `<a href="/izdanja/${id}/"${active === `${id}/` ? ' aria-current="page"' : ''}>${esc(d.nav)}</a>`).join('')}<a href="/radio/">Radio</a><a href="/galerija/">Galerija</a><a href="/aktual-media/">Podaci</a><a href="/kanal/">Kanali</a><a href="/glavni-gradovi/">Glavni gradovi</a><a href="/atlas/">Atlas</a><a href="/gnk-aktual/">AKTUAL MEDIA</a></nav>
 </div></header>`;
 
 
@@ -498,6 +499,7 @@ function netStrip() {
     ['/radio/', 'Radio', 'player'],
     ['/galerija/', 'Galerija', 'foto'],
     ['/kanal/', 'Kanali', `${CHANNELS.length} izdanja`],
+    ['/atlas/', 'Atlas mreže', `${(CAPITALS.capitals || []).length} prijestolnica`],
     ['/gnk-aktual/', 'AKTUAL MEDIA', 'središte'],
     ['/izdanja/', 'Sva izdanja', 'popis'],
     ['/digital-workforce/', 'Radna snaga', 'simulacija'],
@@ -1228,6 +1230,7 @@ function capitalsPage(lang = 'hr') {
       <li><b>${langs}</b><span>${en ? 'languages in the capitals' : 'jezika u prijestolnicama'}</span></li>
     </ul>
     <p class="cg-small">${en ? 'Page data refreshed' : 'Podaci stranice osvježeni'}: ${esc(new Date().toISOString().slice(0, 10).split('-').reverse().join('. '))}.</p>
+    <p class="cg-small"><a class="btn ghost" href="/atlas/">${en ? 'Picture atlas of the network →' : 'Slikovni atlas mreže →'}</a> <a class="btn ghost" href="/data/glavni-gradovi-v1.json">${en ? 'JSON data' : 'JSON podaci'}</a></p>
   </section>
 
   <section aria-labelledby="cgCardsTitle">
@@ -1343,6 +1346,9 @@ ${capUrls.map((u) => `  <url><loc>${u.loc}</loc><lastmod>${today}</lastmod><chan
     '',
     '## Ugovor',
     ...(CAPITALS.standard || []).map((line) => `- ${line}`),
+    '',
+    '## Atlas',
+    '- Slikovni atlas: https://gnk-asg.hr/atlas/ (hr) · https://gnk-asg.hr/en/atlas/ (en)',
     '',
     '## Poveznice',
     '- https://gnk-asg.hr/glavni-gradovi/',
@@ -1579,6 +1585,38 @@ a{color:inherit;text-decoration:none}a:hover{text-decoration:underline}
 
 /* ---------- sitemap-index: jedan ulaz, svi sitemapi ---------- */
 
+function writeAtlas() {
+  const counts = {};
+  for (const channel of CHANNELS) counts[channel.id] = channelData(channel.id).items.length;
+  const capitals = CAPITALS.capitals || [];
+  const today = new Date().toISOString().slice(0, 10);
+  for (const lang of ['hr', 'en']) {
+    const dir = lang === 'en' ? join(PORTAL, 'en', 'atlas') : join(PORTAL, 'atlas');
+    mkdirSync(dir, { recursive: true });
+    writeFileSync(join(dir, 'index.html'), buildAtlasPage({
+      lang,
+      capitals,
+      channels: CHANNELS,
+      counts,
+      standard: CAPITALS.standard || [],
+      shell: portalShell,
+      header: portalHeader,
+      footer: portalFooter
+    }));
+  }
+  /* Atlas ima vlastiti sitemap: dvije adrese, isti ugovor kao i gradovi. */
+  const urls = [
+    { loc: 'https://gnk-asg.hr/atlas/', priority: '0.8' },
+    { loc: 'https://gnk-asg.hr/en/atlas/', priority: '0.7' }
+  ];
+  writeFileSync(join(PORTAL, 'atlas', 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.map((u) => `  <url><loc>${u.loc}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>${u.priority}</priority></url>`).join('\n')}
+</urlset>
+`);
+  return { pages: 2, cards: capitals.length };
+}
+
 function writeSitemapIndex() {
   const today = new Date().toISOString().slice(0, 10);
   const core = [
@@ -1587,7 +1625,7 @@ function writeSitemapIndex() {
     ['image-sitemap.xml', '2026-10-12'], ['world-topics-image-sitemap.xml', '2026-08-26'],
     ['spt-sitemap.xml', '2026-10-12'], ['izdanja/sitemap.xml', today], ['galerija/sitemap.xml', today],
     ['aktual-media/sitemap.xml', today], ['tehnologija-buducnosti/sitemap.xml', today],
-    ['glavni-gradovi/sitemap.xml', today], ['mreza/sitemap.xml', today],
+    ['glavni-gradovi/sitemap.xml', today], ['atlas/sitemap.xml', today], ['mreza/sitemap.xml', today],
     ['gnk-aktual/mreza/sitemap.xml', today]
   ];
   const channels = CHANNELS.map((c) => [`kanal/${c.id}/sitemap.xml`, today]);
@@ -1657,6 +1695,7 @@ if (process.argv[1] && /hub\.mjs$/.test(process.argv[1])) {
     mkdirSync(join(PORTAL, 'usa'), { recursive: true });
     writeFileSync(join(PORTAL, 'usa', 'index.html'), usaPage());
     const capitals = writeCapitals();
+    const atlas = writeAtlas();
     const sitemaps = writeSitemapIndex();
     /* /kanal/ i /usa/ su upravo prepisani, pa traku tehnologije vraćamo
        nakon njih — inače bi nestala do sljedećeg ciklusa. */
@@ -1671,6 +1710,6 @@ if (process.argv[1] && /hub\.mjs$/.test(process.argv[1])) {
     } catch (error) {
       network = `preskočeno: ${error.message.split('\n')[0]}`;
     }
-    console.log(JSON.stringify({ ok: true, ...hub, kanalIndex: true, capitals, sitemaps, techBands, network }, null, 2));
+    console.log(JSON.stringify({ ok: true, ...hub, kanalIndex: true, capitals, atlas, sitemaps, techBands, network }, null, 2));
   });
 }

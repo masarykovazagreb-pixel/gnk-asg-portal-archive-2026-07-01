@@ -189,7 +189,8 @@ Redoslijed je obavezan: **izvori → dizajn → stranice → testovi → objava.
 | --- | --- |
 | `tests/test-network-atlas-v1.mjs` | atlas (šest veličina, alt, napomena), paukova mreža (32 čvora na 48 stranica, bez preklapanja natpisa), glavni gradovi (17 redaka, 34 stranice, canonical i hreflang) |
 | `tests/test-capitals-completeness-v1.mjs` | ugovor prijestolnica: slugovi, jezik/kontinent/zona izdanja, priprema s gradom koji pokriva zemlju, 34 adrese u sitemapu i `llms.txt`, obostrana veza s izdanjima |
-| `tests/test-sitemap-integrity-v1.mjs` | 32 sitemapa, 17.210 adresa: svaka vodi na stvarnu datoteku, svaki sitemap je u indeksu |
+| `tests/test-desk-art-v1.mjs` | devet naslovnih ilustracija: sedam veličina i stvarne dimenzije, alt HR/EN, hero s preloadom, OG, kartice i mreža |
+| `tests/test-sitemap-integrity-v1.mjs` | 33 sitemapa, 17.213 adresa: svaka vodi na stvarnu datoteku, svaki sitemap je u indeksu |
 | `tests/test-hreflang-reciprocity-v1.mjs` | 73 stranice, 200 parova: svaki hreflang ima povratni hreflang i isti canonical |
 | `tests/test-internal-links-v1.mjs` | 7.041 stranica, 239.146 veza: nijedan interni link ne vodi na nepostojeću datoteku |
 | `tests/test-editions-parity-v1.mjs` | jednak standard 17 izdanja i 9 portala |
@@ -201,5 +202,9 @@ Redoslijed je obavezan: **izvori → dizajn → stranice → testovi → objava.
 deploy pada ako manifest i datoteke nisu usklađeni.
 
 Ukupno: **46 provjera** u `scripts/test-all-v1.mjs` i **28 agenata** u
-`ops/network-agents-v1.json`. Sitemap-index pokriva svih 32 sitemapa —
-uključujući `mreza/` i `gnk-aktual/mreza/`, koje indeks prije nije navodio.
+`ops/network-agents-v1.json`. Sitemap-index pokriva svih 33 sitemapa —
+uključujući `mreza/`, `gnk-aktual/mreza/` i `atlas/`, koje indeks prije nije navodio.
+
+Slikovni atlas mreže živi na `/atlas/` i `/en/atlas/`: 17 kartica po kontinentima,
+svaka sa svojom grafikom, statusom i linkom na stranicu grada. Kartice se grade iz
+`capitals.json`, pa atlas ne može pokazati grad kojeg nema na popisu.

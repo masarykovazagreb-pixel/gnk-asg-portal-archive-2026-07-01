@@ -84,8 +84,9 @@ izvještaj ide u `artifacts/network-agents-v1.json`.
 | `edition-parity-agent` | šest stranica, hub HR/EN, sitemapi i JSON indeks |
 | `network-standard-agent` | 17 gradova i 9 portala: vlastita slika i znak, jezik zemlje, manifest i CSP, blok mreže, svjež feed, sinkronizacija popisa |
 | `network-atlas-agent` | atlas grafika (šest veličina, alt na jeziku izdanja), paukova mreža sa 32 čvora na 48 stranica, glavni gradovi usklađeni s `channels.json`, 34 stranice prijestolnica |
-| `capital-pages-agent` | ugovor prijestolnica: 17 zemalja, 14 aktivnih izdanja, 3 u pripremi s gradom koji ih pokriva, vlastiti `glavni-gradovi/sitemap.xml` s 34 adrese, `llms.txt`, obostrana veza s izdanjima |
-| `sitemap-integrity-agent` | 32 sitemapa i 17.210 adresa: svaka adresa ima datoteku, svaki sitemap je u `sitemap-index.xml`, svaki unos indeksa postoji |
+| `capital-pages-agent` | ugovor prijestolnica i atlasa: 17 kartica atlasa s alt tekstom, 17 zemalja, 14 aktivnih izdanja, 3 u pripremi s gradom koji ih pokriva, vlastiti `glavni-gradovi/sitemap.xml` s 34 adrese, `llms.txt`, obostrana veza s izdanjima |
+| `desk-art-agent` | devet naslovnih ilustracija: sedam veličina, stvarne dimenzije WebP-a, alt HR/EN, hero s preloadom i OG slikom, kartice, pločice i sličice u mreži |
+| `sitemap-integrity-agent` | 33 sitemapa i 17.213 adresa: svaka adresa ima datoteku, svaki sitemap je u `sitemap-index.xml`, svaki unos indeksa postoji |
 | `hreflang-reciprocity-agent` | 73 mrežne stranice, 200 hreflang parova: prijevod postoji, canonical se slaže, povratni hreflang pokazuje na izvor |
 | `internal-links-agent` | 7.041 stranica i 239.146 veza: nijedan interni link ne vodi u prazno |
 | `seo-matrix-agent` | title, description, canonical, hreflang, OG |
