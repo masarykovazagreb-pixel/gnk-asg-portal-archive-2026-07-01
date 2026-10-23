@@ -37,12 +37,15 @@ jobs:
           node --check workers/gnk-asg-direct-operator/src/campaign-mailer-shell-v2.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
           node --check workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
-          for file in apps/portal/campaign-mailer/runtime-v1.js apps/portal/campaign-mailer/dashboard-render-v1.js apps/portal/campaign-mailer/dashboard-data-v1.js apps/portal/campaign-mailer/control-v2.js apps/portal/campaign-mailer/contacts-v1.js apps/portal/campaign-mailer/import-v1.js apps/portal/campaign-mailer/editor-v1.js apps/portal/campaign-mailer/mailbox-v2.js apps/portal/campaign-mailer/app.js; do node --check "$file"; done
+          node --check apps/portal/assets/protected-operations-v1.js
       - name: Validate required integration points
         run: |
           set -euo pipefail
           test -f apps/portal/campaign-mailer/index.html
-          test -f apps/portal/campaign-mailer/styles.css
+          test -s apps/portal/assets/protected-operations-v1.css
+          grep -q '/assets/protected-operations-v1.css' apps/portal/campaign-mailer/index.html
+          grep -q '/assets/protected-operations-v1.js' apps/portal/campaign-mailer/index.html
+          grep -q 'ZAKLJUČANO' apps/portal/campaign-mailer/index.html
           grep -q "index-final-admin-gateway-v2" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v1.js
           grep -q "campaign-mailer-shell-v2" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
           grep -q "handleCampaignMailer" workers/gnk-asg-direct-operator/src/index-final-admin-gateway-v2.js
