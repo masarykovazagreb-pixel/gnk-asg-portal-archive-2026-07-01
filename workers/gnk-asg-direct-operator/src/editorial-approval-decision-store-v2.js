@@ -69,17 +69,34 @@ function checkSourceItem(item){
  if(!Array.isArray(g.verified_facts)||!g.verified_facts.length||!g.verified_facts.every(s))errors.push('unverified_source_facts');
  return errors;
 }
+// Only a server-verified delivery receipt can start the low-risk internal timer.
+// A browser/ledger boolean or a notification timestamp is not delivery evidence.
+// This function NEVER authorizes public editorial publication or deployment.
+const verifiedIsoTime=x=>typeof x==='string'&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+-]\d{2}:\d{2})$/.test(x)?Date.parse(x):Number.NaN;
 export function eligibleAfter30Minutes({
  risk,actionKind,notifiedAt,deliveryEvidence,contentSha256,currentHash,rejectedAt,changedAt
-},now=new Date()){
+},now=new Date(),{trustedReceipt=null}={}){
  if(risk!=='low'||actionKind!=='internal-operation')return {eligible:false,reason:'requires_affirmative_authorization'};
- if(!deliveryEvidence||deliveryEvidence.verified!==true||
-    !val(deliveryEvidence.receiptId)||deliveryEvidence.contentSha256!==currentHash||
-    contentSha256!==currentHash)return {eligible:false,reason:'verified_delivery_and_unchanged_content_required'};
- const delivered=Date.parse(notifiedAt),current=now.getTime();
- if(!Number.isFinite(delivered)||!Number.isFinite(current)||delivered>current)return {eligible:false,reason:'invalid_delivery_time'};
+ const hashOk=x=>typeof x==='string'&&/^[a-f0-9]{64}$/i.test(x);
+ if(!hashOk(contentSha256)||contentSha256!==currentHash)return {eligible:false,reason:'verified_delivery_and_unchanged_content_required'};
+ const evidence=deliveryEvidence||{},trusted=trustedReceipt||{};
+ if(evidence.status!=='delivered'||evidence.verified!==true||!val(evidence.receiptId)
+   ||evidence.contentSha256!==currentHash||trusted.status!=='delivered'||trusted.verified!==true
+   ||trusted.receiptId!==evidence.receiptId||trusted.contentSha256!==contentSha256
+   ||trusted.deliveredAt!==evidence.deliveredAt||trusted.verifiedAt!==evidence.verifiedAt){
+  return {eligible:false,reason:'trusted_delivery_receipt_required'};
+ }
+ const notified=verifiedIsoTime(notifiedAt),delivered=verifiedIsoTime(evidence.deliveredAt);
+ const verified=verifiedIsoTime(evidence.verifiedAt),current=now instanceof Date?now.getTime():Number.NaN;
+ if(!Number.isFinite(notified)||!Number.isFinite(delivered)||!Number.isFinite(verified)
+   ||!Number.isFinite(current)||notified>delivered||delivered>verified||verified>current){
+  return {eligible:false,reason:'invalid_delivery_time'};
+ }
  if(rejectedAt)return {eligible:false,reason:'rejected'};
- if(changedAt&&Date.parse(changedAt)>delivered)return {eligible:false,reason:'changed_after_delivery'};
+ if(changedAt){
+  const changed=verifiedIsoTime(changedAt);
+  if(!Number.isFinite(changed)||changed>notified)return {eligible:false,reason:'changed_after_notification'};
+ }
  const due=delivered+30*60*1000;
  return current<due?{eligible:false,reason:'review_window_open',deadline:new Date(due).toISOString()}
   :{eligible:true,reason:'low_risk_internal_no_objection',deadline:new Date(due).toISOString()};
