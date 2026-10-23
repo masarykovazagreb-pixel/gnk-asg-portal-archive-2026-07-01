@@ -4,7 +4,7 @@
   "lang": "it",
   "city": "Rim",
   "country": "Italija",
-  "updatedAt": "2026-10-23T14:16:25.137Z",
+  "updatedAt": "2026-10-23T16:59:00.955Z",
   "sources": [
     {
       "id": "ansa",
@@ -14,17 +14,22 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-23T14:16:18.253Z"
+      "checkedAt": "2026-10-23T16:58:51.147Z"
     },
     {
       "id": "repubblica",
       "name": "la Repubblica",
       "url": "https://www.repubblica.it/rss/homepage/rss2.0.xml",
-      "ok": true,
-      "fetched": 30,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-10-23T14:16:18.693Z"
+      "errors": [
+        "https://www.repubblica.it/rss/homepage/rss2.0.xml: HTTP 403",
+        "https://www.repubblica.it/rss/politica/rss2.0.xml: HTTP 403",
+        "https://www.repubblica.it/rss/economia/rss2.0.xml: HTTP 403",
+        "https://www.repubblica.it/rss/sport/rss2.0.xml: HTTP 403"
+      ],
+      "checkedAt": "2026-10-23T16:58:54.234Z"
     },
     {
       "id": "ilpost",
@@ -36,7 +41,7 @@
       "errors": [
         "https://www.ilpost.it/feed/: HTTP 403"
       ],
-      "checkedAt": "2026-10-23T14:16:20.568Z"
+      "checkedAt": "2026-10-23T16:58:56.125Z"
     },
     {
       "id": "sole24",
@@ -46,7 +51,7 @@
       "fetched": 36,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-23T14:16:21.465Z"
+      "checkedAt": "2026-10-23T16:58:56.993Z"
     },
     {
       "id": "corriere",
@@ -56,17 +61,19 @@
       "fetched": 69,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-23T14:16:22.206Z"
+      "checkedAt": "2026-10-23T16:58:57.703Z"
     },
     {
       "id": "lastampa",
       "name": "La Stampa",
       "url": "https://www.lastampa.it/rss",
-      "ok": true,
-      "fetched": 73,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-10-23T14:16:22.997Z"
+      "errors": [
+        "https://www.lastampa.it/rss: HTTP 403"
+      ],
+      "checkedAt": "2026-10-23T16:58:58.614Z"
     },
     {
       "id": "fanpage",
@@ -78,7 +85,7 @@
       "errors": [
         "https://www.fanpage.it/feed/: HTTP 403"
       ],
-      "checkedAt": "2026-10-23T14:16:23.994Z"
+      "checkedAt": "2026-10-23T16:58:59.738Z"
     },
     {
       "id": "adnkronos",
@@ -90,10 +97,100 @@
       "errors": [
         "https://www.adnkronos.com/rss: nije feed"
       ],
-      "checkedAt": "2026-10-23T14:16:25.137Z"
+      "checkedAt": "2026-10-23T16:59:00.955Z"
     }
   ],
   "items": [
+    {
+      "slug": "rim-2026-10-23-ansa-il-prezzo-del-gas-sale-a-93-21-euro-al-c6a523",
+      "title": "Il prezzo del gas sale a 93,21 euro al megawattora",
+      "summary": "Ad Amsterdam le quotazioni del Ttf guadagnano il 3,5%",
+      "date": "2026-10-23T16:51:24.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/10/23/il-prezzo-del-gas-sale-a-9321-euro-al-megawattora_fbc20d87-5e52-4292-9334-a63533727b54.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "image": "",
+      "imageAlt": "Il prezzo del gas sale a 93,21 euro al megawattora",
+      "addedAt": "2026-10-23T16:58:51.147Z"
+    },
+    {
+      "slug": "rim-2026-10-23-ansa-mosca-cessate-il-fuoco-a-oleshky-dal-27-b4d4a2",
+      "title": "Mosca, cessate il fuoco a Oleshky dal 27 ottobre",
+      "summary": "Lo ha detto il capo di Stato maggiore, Valery Gerasimov",
+      "date": "2026-10-23T16:24:47.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/10/23/mosca-cessate-il-fuoco-a-oleshky-dal-27-ottobre_0acfc6be-cd82-44bf-a9a8-d4be7a289e73.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Mosca, cessate il fuoco a Oleshky dal 27 ottobre",
+      "addedAt": "2026-10-23T16:58:51.147Z"
+    },
+    {
+      "slug": "rim-2026-10-23-ansa-lo-spread-tra-btp-e-bund-chiude-in-calo-a-6b2e1c",
+      "title": "Lo spread tra Btp e Bund chiude in calo a 122 punti",
+      "summary": "Il rendimento del decennale italiano scende al 4,56%",
+      "date": "2026-10-23T16:14:51.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/10/23/lo-spread-tra-btp-e-bund-chiude-in-calo-a-122-punti_3af67cb2-449f-43e2-877d-9c6de5e85cd4.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Lo spread tra Btp e Bund chiude in calo a 122 punti",
+      "addedAt": "2026-10-23T16:58:51.147Z"
+    },
+    {
+      "slug": "rim-2026-10-23-ansa-hit-parade-geolier-senza-rivali-primo-con-48f0bf",
+      "title": "Hit parade, Geolier senza rivali, primo con il nuovo Tutto è possibile - Atto II",
+      "summary": "Altre due new entry sul podio, con i Fonaines D.C., secondi, e Giorgia, terza",
+      "date": "2026-10-23T16:02:20.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/10/23/hit-parade-geolier-senza-rivali-primo-con-il-nuovo-tutto-e-possibile_8e345dcd-612b-432a-97c0-5c7f4be67cea.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Hit parade, Geolier senza rivali, primo con il nuovo Tutto è possibile - Atto II",
+      "addedAt": "2026-10-23T16:58:51.148Z"
+    },
+    {
+      "slug": "rim-2026-10-23-ansa-borsa-l-europa-chiude-debole-timori-per-ad7f2d",
+      "title": "Borsa: l'Europa chiude debole, timori per inflazione e Ia",
+      "summary": "Francoforte (-0,75%), Parigi (-0,36%) e Londra (-0,32%)",
+      "date": "2026-10-23T15:49:46.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/10/23/borsa-leuropa-chiude-debole-timori-per-inflazione-e-ia_eb9bcf51-4fdf-43ab-8b55-c24604fdf15c.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "",
+      "imageAlt": "Borsa: l'Europa chiude debole, timori per inflazione e Ia",
+      "addedAt": "2026-10-23T16:58:51.148Z"
+    },
+    {
+      "slug": "rim-2026-10-23-ansa-borsa-milano-chiude-in-rialzo-dello-0-36-4ae104",
+      "title": "Borsa: Milano chiude in rialzo dello 0,36%",
+      "summary": "L'ultimo indice Ftse Mib a 48.558 punti",
+      "date": "2026-10-23T15:45:52.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/10/23/borsa-milano-chiude-in-rialzo-dello-036_519675cf-47a7-4a14-8749-97d92ad421df.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Borsa: Milano chiude in rialzo dello 0,36%",
+      "addedAt": "2026-10-23T16:58:51.148Z"
+    },
     {
       "slug": "rim-2026-10-23-ansa-tajani-inaccettabile-fermo-delle-italiane-5a38dd",
       "title": "Tajani, 'inaccettabile fermo delle italiane dall'Idf, non hanno commesso reati'",
@@ -6496,102 +6593,6 @@
       "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
       "theme": "sigurnost",
       "addedAt": "2026-10-19T20:54:35.274Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-repubblica-basel-adra-in-cisgiordania-piu-violenza-e-7e0138",
-      "title": "Basel Adra: “In Cisgiordania più violenza e impunità, non cambierà nulla con il voto in Israele”",
-      "summary": "L’intervista al regista di “No Other Land”: “La realtà è che l’opposizione israeliana, come il governo, appoggia gli insediamenti. Solo quando tutta l’Europa insieme prenderà provvedimenti simili a quelli britannici, gli israeliani potrebbero forse invertire rotta”",
-      "date": "2026-10-19T09:14:26.000Z",
-      "url": "https://www.repubblica.it/esteri/2026/10/19/news/basel_adra_intervista_cisgiordania_violenza_impunita_coloni_europa_elezioni_israele-425657748/",
-      "source": "repubblica",
-      "sourceName": "la Repubblica",
-      "categories": [
-        "Esteri"
-      ],
-      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
-      "theme": "politika",
-      "addedAt": "2026-10-19T20:54:35.271Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-lastampa-ex-ilva-il-commissario-quaranta-promette-l-355aba",
-      "title": "Ex Ilva, il commissario Quaranta promette: “L’impianto di Novi Ligure riapre a febbraio”",
-      "summary": "L’incontro in Prefettura oggi, lunedì 19 ottobre: il confronto tra lavoratori, sindacati e commissario di Acciaierie d’Italia. Il deputato Fornaro alla Camera: “Rispetto per gli operai”",
-      "date": "2026-10-19T08:57:00.000Z",
-      "url": "https://www.lastampa.it/alessandria/2026/10/19/news/ex_ilva_novi_ligure_incontro_prefettura_alessandria_commissario_ripresa_impianto_febbraio-15770846/",
-      "source": "lastampa",
-      "sourceName": "La Stampa",
-      "categories": [
-        "/lastampa/alessandria"
-      ],
-      "author": "MAURIZIO IAPPINI",
-      "theme": "ai",
-      "addedAt": "2026-10-19T21:12:25.337Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-lastampa-gabanelli-su-ranucci-fazio-e-vero-che-ti-7dfc12",
-      "title": "Gabanelli su Ranucci, Fazio: \"È vero che ti hanno chiesto di condurre di nuovo Report?\"",
-      "summary": "«Il conduttore è il volto, ma la forza è la squadra», Milena Gabanelli, ospite di Che Tempo Che Fa sul Nove, torna sul futuro della trasmissione d'inchiesta di Rai 3, Reportm dopo l’uscita di Sigfrido Ranucci dalla conduzione. «Sono convinta che si possa sopravvivere anche alla sparizione dei capi. Me lo auguro con tutto il cuore», spiega la giornalista, sottolineando il ruolo della redazione e degli inviati che negli anni hanno costruito il programma. LEGGI ANCHE Ranucci, il tribunale respinge il ricorso contro la Rai: niente reintegro alla guida di Report | Gabanelli: “Me l’hanno chiesto ma a Report non torno, niente riesumazioni” | GUARDA ANCHE Ranucci fa gli scatoloni e lascia redazione…",
-      "date": "2026-10-19T08:53:00.000Z",
-      "url": "https://www.lastampa.it/cronaca/2026/10/19/video/report_gabanelli_fazio_intervista-15770838/",
-      "source": "lastampa",
-      "sourceName": "La Stampa",
-      "categories": [
-        "/lastampa/cronaca"
-      ],
-      "author": "(Redazione La Stampa)",
-      "theme": "ai",
-      "addedAt": "2026-10-19T21:12:25.334Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-sole24-tirana-brucia-e-rama-accusa-dietro-le-723d5e",
-      "title": "Tirana brucia e Rama accusa: «Dietro le proteste Mosca e Teheran»",
-      "summary": "Proseguono ormai da una settimana le proteste, a Tirana, contro il governo del primo ministro Edi Rama. O meglio, da una settimana per le strade dell’Albania le proteste si sono...",
-      "date": "2026-10-19T08:39:00.000Z",
-      "url": "https://www.ilsole24ore.com/art/tirana-brucia-e-rama-accusa-dietro-proteste-mosca-e-teheran-AJvgyynB",
-      "source": "sole24",
-      "sourceName": "Il Sole 24 Ore",
-      "categories": [
-        "Mondo"
-      ],
-      "author": "di Giulia Riva",
-      "theme": "ai",
-      "addedAt": "2026-10-19T20:54:47.233Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-repubblica-pesta-il-maranza-svastiche-e-scritte-abaa7c",
-      "title": "“Pesta il maranza”: svastiche e scritte neofasciste all’Università di Bari. “Offesi i nostri valori”",
-      "summary": "All'esterno del Palazzo Ateneo e in più punti di piazza Cesare Battisti, ignoti hanno disegnato con vernice nera simboli riconducibili ad ambienti estremisti di destra e scritto slogan inneggianti alla remigrazione. Presa di posizione del rettore ma per ora la questura non starebbe indagando",
-      "date": "2026-10-19T08:38:54.000Z",
-      "url": "https://bari.repubblica.it/cronaca/2026/10/19/news/pesta_il_maranza_svastiche_e_scritte_neofasciste_all_universita_di_bari_gli_studenti_rosicano-425657672/",
-      "source": "repubblica",
-      "sourceName": "la Repubblica",
-      "categories": [
-        "Cronaca"
-      ],
-      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
-      "theme": "sigurnost",
-      "addedAt": "2026-10-19T20:54:35.271Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-sole24-ex-ilva-i-lavoratori-di-cornigliano-tolgono-81e0cc",
-      "title": "Ex Ilva, i lavoratori di Cornigliano tolgono il presidio all’aeroporto di Genova: incontro il 27 a Palazzo Chigi",
-      "summary": "Fino al 27 non ci saranno variazioni nella cassa integrazione straordinaria, che resterà per 280 dipendenti e non sarà estesa a 870",
-      "date": "2026-10-19T08:38:00.000Z",
-      "url": "https://www.ilsole24ore.com/art/ex-ilva-lavoratori-cornigliano-occpuano-aeroporto-genova-AJrBt1nB",
-      "source": "sole24",
-      "sourceName": "Il Sole 24 Ore",
-      "categories": [
-        "Economia"
-      ],
-      "author": "",
-      "theme": "rat",
-      "addedAt": "2026-10-19T20:54:47.233Z",
       "backfilled": true
     }
   ]
