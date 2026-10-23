@@ -141,7 +141,13 @@ const KIND_HEADING = (lang) => ({
   objava: LABEL(lang).company
 });
 
-const hashtags = (item) => ['#AKTUALMEDIA', '#GNKASG', '#NerminSefić', ...(item.tags || [])]
+const hashtags = (item) => [
+  '#AKTUALMEDIA',
+  '#GNKASG',
+  ...(/gnk\s*dinamo/i.test(`${item.title} ${item.description}`) ? ['#GNKDINAMOLtd'] : []),
+  '#NerminSefić',
+  ...(item.tags || [])
+]
   .map((tag) => String(tag).startsWith('#') ? tag : `#${String(tag).replace(/[^\p{L}\p{N}]+/gu, '')}`)
   .filter((tag, index, list) => tag.length > 2 && list.indexOf(tag) === index)
   .slice(0, 9).join(' · ');
