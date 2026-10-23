@@ -1163,6 +1163,11 @@ ${END}`;
      Beograd je prvi jer je srpsko izdanje novo; uz njega idu i ostali
      proizvodi AKTUAL MEDIA (tjednik, moda, galerija, status). Sve je u
      vanjskim datotekama da radi i pod strogim CSP-om. */
+  /* Broj izvora se računa iz stvarnih zapisa tog izdanja — nikad se ne
+     upisuje napamet. Beograd trenutačno ima četiri medija, ne osam. */
+  const beograd = items.filter((i) => i.channel.id === 'beograd');
+  const beogradSources = new Set(beograd.map((i) => i.sourceName)).size;
+  const beogradCount = beograd.length || 0;
   const promoBlock = (lang) => {
     const hr = lang !== 'en';
     const t = hr ? {
@@ -1172,9 +1177,9 @@ ${END}`;
       status: 'Status ažurnosti', radio: 'Radio',
       eyebrow: 'AKTUAL MEDIA · mreža izdanja',
       title: 'Beograd je sada u fokusu',
-      lead: 'Novo gradsko izdanje za Srbiju: 420 tekstova, osam izvora i dnevni ritam. Uz njega idu poslovni tjednik, moda, galerija i javni status ažurnosti — sve na jednom mjestu.',
+      lead: `Novo gradsko izdanje za Srbiju: ${beogradCount} tekstova, ${beogradSources} izvora i dnevni ritam. Uz njega idu poslovni tjednik, moda, galerija i javni status ažurnosti — sve na jednom mjestu.`,
       tiles: [
-        ['/kanal/beograd/', 'Beograd', 'Srbija · 420 tekstova', 'Novo'],
+        ['/kanal/beograd/', 'Beograd', `Srbija · ${beogradCount} tekstova`, 'Novo'],
         ['/kanal/zagreb/', 'Zagreb', 'Hrvatska · 420 tekstova', ''],
         ['/kanal/sarajevo/', 'Sarajevo', 'Bosna i Hercegovina', ''],
         ['https://gnk-asg-tjednik.pages.dev/', 'Business Tjednik', 'Tjednik W43', ''],
@@ -1194,9 +1199,9 @@ ${END}`;
       status: 'Freshness status', radio: 'Radio',
       eyebrow: 'AKTUAL MEDIA · edition network',
       title: 'Belgrade is now in focus',
-      lead: 'A new city edition for Serbia: 420 stories, eight sources and a daily rhythm. Alongside it: the business weekly, mode, gallery and a public freshness status — all in one place.',
+      lead: `A new city edition for Serbia: ${beogradCount} stories, ${beogradSources} sources and a daily rhythm. Alongside it: the business weekly, mode, gallery and a public freshness status — all in one place.`,
       tiles: [
-        ['/kanal/beograd/', 'Belgrade', 'Serbia · 420 stories', 'New'],
+        ['/kanal/beograd/', 'Belgrade', `Serbia · ${beogradCount} stories`, 'New'],
         ['/kanal/zagreb/', 'Zagreb', 'Croatia · 420 stories', ''],
         ['/kanal/sarajevo/', 'Sarajevo', 'Bosnia and Herzegovina', ''],
         ['https://gnk-asg-tjednik.pages.dev/', 'Business Weekly', 'Week W43', ''],
@@ -1230,11 +1235,11 @@ ${END}`;
   <ul class="am-win-grid">${win.map(([url, slug, title, note]) => `<li class="am-win"><a href="${url}"${/^https?:/.test(url) ? ' rel="external noopener"' : ''}><span class="am-win-bar" aria-hidden="true"><i></i><i></i><i></i><b>${esc(slug)}</b></span><span class="am-win-body"><strong>${esc(title)}</strong><span>${esc(note)}</span></span></a></li>`).join('')}</ul>
 </nav>`;
     const adCopy = hr ? [
-      ['/kanal/beograd/', 'Beograd je otvoren', '420 tekstova, osam izvora i dnevni ritam — novo izdanje za Srbiju.', 'Otvori Beograd →'],
+      ['/kanal/beograd/', 'Beograd je otvoren', `${beogradCount} tekstova, ${beogradSources} izvora i dnevni ritam — novo izdanje za Srbiju.`, 'Otvori Beograd →'],
       ['https://gnk-asg-tjednik.pages.dev/', 'Business Tjednik', 'W43: brojevi, odluke i kontekst za poslovni tjedan.', 'Otvori tjednik ↗'],
       ['/status/', 'Status ažurnosti', 'Vidi kada je koje izdanje zadnji put obnovljeno — bez procjena.', 'Pogledaj status →']
     ] : [
-      ['/kanal/beograd/', 'Belgrade is live', '420 stories, eight sources and a daily rhythm — a new edition for Serbia.', 'Open Belgrade →'],
+      ['/kanal/beograd/', 'Belgrade is live', `${beogradCount} stories, ${beogradSources} sources and a daily rhythm — a new edition for Serbia.`, 'Open Belgrade →'],
       ['https://gnk-asg-tjednik.pages.dev/', 'Business Weekly', 'Week W43: numbers, decisions and context for the business week.', 'Open weekly ↗'],
       ['/en/status/', 'Freshness status', 'See when each edition was last refreshed — measured, not estimated.', 'View status →']
     ];
