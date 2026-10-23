@@ -45,7 +45,7 @@ test('Reject missing, forged, future and temporally impossible delivery',()=>{
   {...evidence,deliveredAt:'2026-10-23 08:20:00'},
   {...evidence,deliveredAt:'2026-10-23T07:59:59Z'}
  ]){
-  assert.equal(assess({...entry,deliveryEvidence:proof},now).eligible,false);
+  assert.equal(assess({...entry,deliveryEvidence:proof},now,proof).eligible,false);
  }
 });
 
