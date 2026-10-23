@@ -498,6 +498,7 @@ ${published ? `<meta property="article:author" content="${PUBLIC}/nermin-sefic/"
 <meta name="twitter:description" content="${esc(truncate(description, 200))}">
 <meta name="twitter:image" content="${ogImage}">
 <meta name="twitter:image:alt" content="${esc(ogAlt || title)}">
+<meta name="twitter:image:alt" content="${esc(ogAlt || title)}">
 <meta name="twitter:site" content="@aktualmedia">
 <style>:root{--bg:${palette.bg};--surface:${palette.surface};--accent:${palette.accent};--accent2:${palette.accent2};--ink:${palette.ink}}</style>
 <link rel="stylesheet" href="${root}assets/region.css?v=20261021-focus-ring">

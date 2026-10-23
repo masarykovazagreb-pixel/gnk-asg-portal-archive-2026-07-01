@@ -355,14 +355,24 @@
     },
     {
       "id": "coverage-agent",
-      "name": "Pokrivenost — plan do 108 zemalja",
+      "name": "Pokrivenost — plan do svih 195 zemalja",
       "required": true,
       "cmd": [
         "node",
         "scripts/plan-world-expansion-v1.mjs",
         "--check"
       ],
-      "checks": "Plan valova i stvarna izdanja se poklapaju; nijedno izdanje ne postoji izvan plana i nijedan grad nema dvostruki unos."
+      "checks": "Plan valova i stvarna izdanja se poklapaju; nijedno izdanje ne postoji izvan plana, nijedan grad nema dvostruki unos i plan zatvara krug na svih 195 država (193 članice UN-a te Sveta Stolica i Palestina)."
+    },
+    {
+      "id": "world-expansion-agent",
+      "name": "Širenje — što stoji na putu do sljedeće države",
+      "required": false,
+      "cmd": [
+        "node",
+        "scripts/world-expansion-audit-v1.mjs"
+      ],
+      "checks": "Za svaki planirani grad mjeri četiri uvjeta (izvori, scena, sučelje, zapis) i imenuje što nedostaje. Savjetodavan: ne blokira deploy, ali svaki dan pokazuje koliko je gradova spremno i koji su najbliži."
     }
   ]
 }

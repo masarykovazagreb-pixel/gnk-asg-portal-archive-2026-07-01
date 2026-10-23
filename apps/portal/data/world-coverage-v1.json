@@ -1,6 +1,6 @@
 {
-  "version": "WORLD_EXPANSION_V1_20261023",
-  "generatedAt": "2026-10-23T17:57:47.259Z",
+  "version": "WORLD_EXPANSION_V2_20261023",
+  "generatedAt": "2026-10-23T19:53:55.048Z",
   "live": {
     "editions": 17,
     "countries": 17,
@@ -35,11 +35,11 @@
     ]
   },
   "planned": {
-    "cities": 94,
-    "countries": 94,
-    "newCountries": 91,
+    "cities": 181,
+    "countries": 181,
+    "newCountries": 178,
     "continents": 6,
-    "languages": 41,
+    "languages": 65,
     "waves": [
       {
         "id": "wave-1",
@@ -70,36 +70,66 @@
         "name": "Peti val — Azija i Oceanija",
         "status": "planned",
         "cities": 27
+      },
+      {
+        "id": "wave-6",
+        "name": "Šesti val — Europa do zadnje države",
+        "status": "planned",
+        "cities": 11
+      },
+      {
+        "id": "wave-7",
+        "name": "Sedmi val — Amerika do zadnje države",
+        "status": "planned",
+        "cities": 16
+      },
+      {
+        "id": "wave-8",
+        "name": "Osmi val — Afrika do zadnje države",
+        "status": "planned",
+        "cities": 31
+      },
+      {
+        "id": "wave-9",
+        "name": "Deveti val — Azija do zadnje države",
+        "status": "planned",
+        "cities": 19
+      },
+      {
+        "id": "wave-10",
+        "name": "Deseti val — Oceanija do zadnje države",
+        "status": "planned",
+        "cities": 10
       }
     ]
   },
   "total": {
-    "countries": 108,
-    "editions": 111
+    "countries": 195,
+    "editions": 198
   },
   "byContinent": {
     "Europe": {
-      "planned": 27,
+      "planned": 38,
       "live": 8
     },
     "North America": {
-      "planned": 9,
+      "planned": 23,
       "live": 1
     },
     "South America": {
-      "planned": 10,
+      "planned": 12,
       "live": 1
     },
     "Africa": {
-      "planned": 21,
+      "planned": 52,
       "live": 2
     },
     "Asia": {
-      "planned": 23,
+      "planned": 42,
       "live": 4
     },
     "Oceania": {
-      "planned": 4,
+      "planned": 14,
       "live": 1
     }
   },
@@ -124,6 +154,11 @@
       "hr": "najmanje jedan stvarni zapis u arhivi",
       "en": "at least one real record in the archive"
     }
+  ],
+  "multiCityCountries": [
+    "AU",
+    "BR",
+    "US"
   ],
   "next": [
     {

@@ -379,10 +379,12 @@ ${logos.map((slug) => logoAlternate(slug)).filter(Boolean).join('\n')}
 <meta property="og:description" content="${esc(truncate(description, 300))}">
 <meta property="og:url" content="${canonical}">
 <meta property="og:image" content="${shareImage}">
+<meta property="og:image:alt" content="${esc(title)}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(truncate(description, 200))}">
 <meta name="twitter:image" content="${shareImage}">
+<meta name="twitter:image:alt" content="${esc(title)}">
 <meta name="twitter:image:alt" content="${esc(imageAlt)}">
 <link rel="sitemap" type="application/xml" href="/izdanja/sitemap.xml">
 ${graph.map((n) => `<script type="application/ld+json">${safeJson(n)}</script>`).join('\n')}
@@ -1062,10 +1064,12 @@ ${logoAlternate('aktual-media-hr')}
 <meta property="og:description" content="${esc(`${CHANNELS.length} gradskih izdanja na jednoj domeni, s vlastitim feedom i arhivom.`)}">
 <meta property="og:url" content="https://gnk-asg.hr/kanal/">
 <meta property="og:image" content="https://gnk-asg.hr/assets/izdanja/aktual-media-og.jpg">
+<meta property="og:image:alt" content="AKTUAL MEDIA KANAL — sva izdanja">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AKTUAL MEDIA KANAL — sva izdanja">
 <meta name="twitter:image" content="https://gnk-asg.hr/assets/izdanja/aktual-media-og.jpg">
+<meta name="twitter:image:alt" content="AKTUAL MEDIA KANAL — sva izdanja">
 <script type="application/ld+json">${safeJson(WEBSITE_NODE)}</script>
 <script type="application/ld+json">${safeJson(MEDIA_ENTITY_NODE)}</script>
 <script type="application/ld+json">${safeJson({
@@ -1625,11 +1629,13 @@ export function usaPage() {
 <meta property="og:description" content="Ishodište projekta i mreže AKTUAL MEDIA: GNK DINAMO Ltd., Boulder, Colorado, USA, Entity ID 20238180649.">
 <meta property="og:url" content="${USA}">
 <meta property="og:image" content="${SOCIAL_IMAGE}">
+<meta property="og:image:alt" content="GNK DINAMO Ltd. — Boulder, Colorado, USA">
 <meta property="og:locale" content="hr_HR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="GNK DINAMO Ltd. — Boulder, Colorado, USA">
 <meta name="twitter:description" content="Matična tvrtka grupe i ishodište mreže AKTUAL MEDIA.">
 <meta name="twitter:image" content="${SOCIAL_IMAGE}">
+<meta name="twitter:image:alt" content="GNK DINAMO Ltd. — Boulder, Colorado, USA">
 
 <link rel="alternate" hreflang="hr" href="${USA}">
 <link rel="alternate" hreflang="x-default" href="${USA}">

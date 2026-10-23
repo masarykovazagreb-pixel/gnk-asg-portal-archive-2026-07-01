@@ -1,0 +1,4465 @@
+{
+  "version": "WORLD_EXPANSION_READINESS_V1_20261023",
+  "generatedAt": "2026-10-23T19:55:15.498Z",
+  "liveEditions": 17,
+  "liveCountries": 17,
+  "plannedCities": 181,
+  "plannedCountries": 181,
+  "worldCodes": 195,
+  "ready": 0,
+  "byWave": {
+    "wave-2": {
+      "cities": 27,
+      "ready": 0
+    },
+    "wave-3": {
+      "cities": 19,
+      "ready": 0
+    },
+    "wave-4": {
+      "cities": 21,
+      "ready": 0
+    },
+    "wave-5": {
+      "cities": 27,
+      "ready": 0
+    },
+    "wave-6": {
+      "cities": 11,
+      "ready": 0
+    },
+    "wave-7": {
+      "cities": 16,
+      "ready": 0
+    },
+    "wave-8": {
+      "cities": 31,
+      "ready": 0
+    },
+    "wave-9": {
+      "cities": 19,
+      "ready": 0
+    },
+    "wave-10": {
+      "cities": 10,
+      "ready": 0
+    }
+  },
+  "languagesWithoutChrome": [
+    "am",
+    "az",
+    "be",
+    "bi",
+    "bn",
+    "ca",
+    "cs",
+    "da",
+    "de",
+    "dv",
+    "dz",
+    "el",
+    "es",
+    "et",
+    "fa",
+    "fi",
+    "fr",
+    "he",
+    "hi",
+    "hy",
+    "is",
+    "ka",
+    "kk",
+    "km",
+    "ko",
+    "ky",
+    "lo",
+    "lt",
+    "lv",
+    "mg",
+    "mk",
+    "mn",
+    "ms",
+    "mt",
+    "my",
+    "ne",
+    "nl",
+    "no",
+    "pl",
+    "ru",
+    "rw",
+    "si",
+    "sk",
+    "sm",
+    "so",
+    "sq",
+    "sv",
+    "sw",
+    "tg",
+    "th",
+    "ti",
+    "tk",
+    "to",
+    "tr",
+    "tv",
+    "uk",
+    "ur",
+    "uz",
+    "vi"
+  ],
+  "next": [
+    {
+      "id": "washington",
+      "city": "Washington",
+      "country": "Sjedinjene Američke Države",
+      "wave": "wave-3",
+      "missing": [
+        "sources",
+        "items"
+      ]
+    },
+    {
+      "id": "brasilia",
+      "city": "Brasília",
+      "country": "Brazil",
+      "wave": "wave-3",
+      "missing": [
+        "sources",
+        "items"
+      ]
+    },
+    {
+      "id": "canberra",
+      "city": "Canberra",
+      "country": "Australija",
+      "wave": "wave-5",
+      "missing": [
+        "sources",
+        "items"
+      ]
+    },
+    {
+      "id": "palikir",
+      "city": "Palikir",
+      "country": "Mikronezija",
+      "wave": "wave-10",
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ]
+    },
+    {
+      "id": "south-tarawa",
+      "city": "South Tarawa",
+      "country": "Kiribati",
+      "wave": "wave-10",
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ]
+    },
+    {
+      "id": "majuro",
+      "city": "Majuro",
+      "country": "Maršalovi Otoci",
+      "wave": "wave-10",
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ]
+    },
+    {
+      "id": "yaren",
+      "city": "Yaren",
+      "country": "Nauru",
+      "wave": "wave-10",
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ]
+    },
+    {
+      "id": "ngerulmud",
+      "city": "Ngerulmud",
+      "country": "Palau",
+      "wave": "wave-10",
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ]
+    }
+  ],
+  "cities": [
+    {
+      "id": "berlin",
+      "city": "Berlin",
+      "country": "Njemačka",
+      "countryCode": "DE",
+      "lang": "de",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "paris",
+      "city": "Pariz",
+      "country": "Francuska",
+      "countryCode": "FR",
+      "lang": "fr",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "madrid",
+      "city": "Madrid",
+      "country": "Španjolska",
+      "countryCode": "ES",
+      "lang": "es",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "amsterdam",
+      "city": "Amsterdam",
+      "country": "Nizozemska",
+      "countryCode": "NL",
+      "lang": "nl",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "bruxelles",
+      "city": "Bruxelles",
+      "country": "Belgija",
+      "countryCode": "BE",
+      "lang": "fr",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "bern",
+      "city": "Bern",
+      "country": "Švicarska",
+      "countryCode": "CH",
+      "lang": "de",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "wien",
+      "city": "Beč",
+      "country": "Austrija",
+      "countryCode": "AT",
+      "lang": "de",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "stockholm",
+      "city": "Stockholm",
+      "country": "Švedska",
+      "countryCode": "SE",
+      "lang": "sv",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "oslo",
+      "city": "Oslo",
+      "country": "Norveška",
+      "countryCode": "NO",
+      "lang": "no",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "kjbenhavn",
+      "city": "Kopenhagen",
+      "country": "Danska",
+      "countryCode": "DK",
+      "lang": "da",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "helsinki",
+      "city": "Helsinki",
+      "country": "Finska",
+      "countryCode": "FI",
+      "lang": "fi",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "reykjavik",
+      "city": "Reykjavík",
+      "country": "Island",
+      "countryCode": "IS",
+      "lang": "is",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "dublin",
+      "city": "Dublin",
+      "country": "Irska",
+      "countryCode": "IE",
+      "lang": "en",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "lisboa",
+      "city": "Lisabon",
+      "country": "Portugal",
+      "countryCode": "PT",
+      "lang": "pt",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "warszawa",
+      "city": "Varšava",
+      "country": "Poljska",
+      "countryCode": "PL",
+      "lang": "pl",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "praha",
+      "city": "Prag",
+      "country": "Češka",
+      "countryCode": "CZ",
+      "lang": "cs",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "bratislava",
+      "city": "Bratislava",
+      "country": "Slovačka",
+      "countryCode": "SK",
+      "lang": "sk",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "tallinn",
+      "city": "Tallinn",
+      "country": "Estonija",
+      "countryCode": "EE",
+      "lang": "et",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "riga",
+      "city": "Riga",
+      "country": "Latvija",
+      "countryCode": "LV",
+      "lang": "lv",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "vilnius",
+      "city": "Vilnius",
+      "country": "Litva",
+      "countryCode": "LT",
+      "lang": "lt",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "athina",
+      "city": "Atena",
+      "country": "Grčka",
+      "countryCode": "GR",
+      "lang": "el",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "valletta",
+      "city": "Valletta",
+      "country": "Malta",
+      "countryCode": "MT",
+      "lang": "mt",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "luxembourg",
+      "city": "Luxembourg",
+      "country": "Luksemburg",
+      "countryCode": "LU",
+      "lang": "fr",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "nikozija",
+      "city": "Nikozija",
+      "country": "Cipar",
+      "countryCode": "CY",
+      "lang": "el",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "kyiv",
+      "city": "Kijev",
+      "country": "Ukrajina",
+      "countryCode": "UA",
+      "lang": "uk",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "chisinau",
+      "city": "Kišinjev",
+      "country": "Moldavija",
+      "countryCode": "MD",
+      "lang": "ro",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "ankara",
+      "city": "Ankara",
+      "country": "Turska",
+      "countryCode": "TR",
+      "lang": "tr",
+      "wave": "wave-2",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "washington",
+      "city": "Washington",
+      "country": "Sjedinjene Američke Države",
+      "countryCode": "US",
+      "lang": "en",
+      "wave": "wave-3",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": true,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "ottawa",
+      "city": "Ottawa",
+      "country": "Kanada",
+      "countryCode": "CA",
+      "lang": "en",
+      "wave": "wave-3",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "ciudad-de-mexico",
+      "city": "Ciudad de México",
+      "country": "Meksiko",
+      "countryCode": "MX",
+      "lang": "es",
+      "wave": "wave-3",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "guatemala",
+      "city": "Ciudad de Guatemala",
+      "country": "Gvatemala",
+      "countryCode": "GT",
+      "lang": "es",
+      "wave": "wave-3",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "san-jose",
+      "city": "San José",
+      "country": "Kostarika",
+      "countryCode": "CR",
+      "lang": "es",
+      "wave": "wave-3",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "panama",
+      "city": "Ciudad de Panamá",
+      "country": "Panama",
+      "countryCode": "PA",
+      "lang": "es",
+      "wave": "wave-3",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "santo-domingo",
+      "city": "Santo Domingo",
+      "country": "Dominikanska Republika",
+      "countryCode": "DO",
+      "lang": "es",
+      "wave": "wave-3",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "la-habana",
+      "city": "La Habana",
+      "country": "Kuba",
+      "countryCode": "CU",
+      "lang": "es",
+      "wave": "wave-3",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "kingston",
+      "city": "Kingston",
+      "country": "Jamajka",
+      "countryCode": "JM",
+      "lang": "en",
+      "wave": "wave-3",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "brasilia",
+      "city": "Brasília",
+      "country": "Brazil",
+      "countryCode": "BR",
+      "lang": "pt",
+      "wave": "wave-3",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": true,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "buenos-aires",
+      "city": "Buenos Aires",
+      "country": "Argentina",
+      "countryCode": "AR",
+      "lang": "es",
+      "wave": "wave-3",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "santiago",
+      "city": "Santiago",
+      "country": "Čile",
+      "countryCode": "CL",
+      "lang": "es",
+      "wave": "wave-3",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "lima",
+      "city": "Lima",
+      "country": "Peru",
+      "countryCode": "PE",
+      "lang": "es",
+      "wave": "wave-3",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "bogota",
+      "city": "Bogotá",
+      "country": "Kolumbija",
+      "countryCode": "CO",
+      "lang": "es",
+      "wave": "wave-3",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "caracas",
+      "city": "Caracas",
+      "country": "Venezuela",
+      "countryCode": "VE",
+      "lang": "es",
+      "wave": "wave-3",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "quito",
+      "city": "Quito",
+      "country": "Ekvador",
+      "countryCode": "EC",
+      "lang": "es",
+      "wave": "wave-3",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "la-paz",
+      "city": "La Paz",
+      "country": "Bolivija",
+      "countryCode": "BO",
+      "lang": "es",
+      "wave": "wave-3",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "asuncion",
+      "city": "Asunción",
+      "country": "Paragvaj",
+      "countryCode": "PY",
+      "lang": "es",
+      "wave": "wave-3",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "montevideo",
+      "city": "Montevideo",
+      "country": "Urugvaj",
+      "countryCode": "UY",
+      "lang": "es",
+      "wave": "wave-3",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "abuja",
+      "city": "Abuja",
+      "country": "Nigerija",
+      "countryCode": "NG",
+      "lang": "en",
+      "wave": "wave-4",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "accra",
+      "city": "Accra",
+      "country": "Gana",
+      "countryCode": "GH",
+      "lang": "en",
+      "wave": "wave-4",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "pretoria",
+      "city": "Pretoria",
+      "country": "Južnoafrička Republika",
+      "countryCode": "ZA",
+      "lang": "en",
+      "wave": "wave-4",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "dakar",
+      "city": "Dakar",
+      "country": "Senegal",
+      "countryCode": "SN",
+      "lang": "fr",
+      "wave": "wave-4",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "yamoussoukro",
+      "city": "Yamoussoukro",
+      "country": "Obala Bjelokosti",
+      "countryCode": "CI",
+      "lang": "fr",
+      "wave": "wave-4",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "rabat",
+      "city": "Rabat",
+      "country": "Maroko",
+      "countryCode": "MA",
+      "lang": "ar",
+      "wave": "wave-4",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "tunis",
+      "city": "Tunis",
+      "country": "Tunis",
+      "countryCode": "TN",
+      "lang": "ar",
+      "wave": "wave-4",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "alger",
+      "city": "Alžir",
+      "country": "Alžir",
+      "countryCode": "DZ",
+      "lang": "ar",
+      "wave": "wave-4",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "addis-abeba",
+      "city": "Addis Abeba",
+      "country": "Etiopija",
+      "countryCode": "ET",
+      "lang": "am",
+      "wave": "wave-4",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "dodoma",
+      "city": "Dodoma",
+      "country": "Tanzanija",
+      "countryCode": "TZ",
+      "lang": "sw",
+      "wave": "wave-4",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "kampala",
+      "city": "Kampala",
+      "country": "Uganda",
+      "countryCode": "UG",
+      "lang": "en",
+      "wave": "wave-4",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "kigali",
+      "city": "Kigali",
+      "country": "Ruanda",
+      "countryCode": "RW",
+      "lang": "rw",
+      "wave": "wave-4",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "lusaka",
+      "city": "Lusaka",
+      "country": "Zambija",
+      "countryCode": "ZM",
+      "lang": "en",
+      "wave": "wave-4",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "harare",
+      "city": "Harare",
+      "country": "Zimbabve",
+      "countryCode": "ZW",
+      "lang": "en",
+      "wave": "wave-4",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "gaborone",
+      "city": "Gaborone",
+      "country": "Bocvana",
+      "countryCode": "BW",
+      "lang": "en",
+      "wave": "wave-4",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "windhoek",
+      "city": "Windhoek",
+      "country": "Namibija",
+      "countryCode": "NA",
+      "lang": "en",
+      "wave": "wave-4",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "maputo",
+      "city": "Maputo",
+      "country": "Mozambik",
+      "countryCode": "MZ",
+      "lang": "pt",
+      "wave": "wave-4",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "luanda",
+      "city": "Luanda",
+      "country": "Angola",
+      "countryCode": "AO",
+      "lang": "pt",
+      "wave": "wave-4",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "kinshasa",
+      "city": "Kinshasa",
+      "country": "DR Kongo",
+      "countryCode": "CD",
+      "lang": "fr",
+      "wave": "wave-4",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "yaounde",
+      "city": "Yaoundé",
+      "country": "Kamerun",
+      "countryCode": "CM",
+      "lang": "fr",
+      "wave": "wave-4",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "khartoum",
+      "city": "Kartum",
+      "country": "Sudan",
+      "countryCode": "SD",
+      "lang": "ar",
+      "wave": "wave-4",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "new-delhi",
+      "city": "New Delhi",
+      "country": "Indija",
+      "countryCode": "IN",
+      "lang": "hi",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "islamabad",
+      "city": "Islamabad",
+      "country": "Pakistan",
+      "countryCode": "PK",
+      "lang": "ur",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "dhaka",
+      "city": "Dhaka",
+      "country": "Bangladeš",
+      "countryCode": "BD",
+      "lang": "bn",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "colombo",
+      "city": "Colombo",
+      "country": "Šri Lanka",
+      "countryCode": "LK",
+      "lang": "si",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "kathmandu",
+      "city": "Katmandu",
+      "country": "Nepal",
+      "countryCode": "NP",
+      "lang": "ne",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "bangkok",
+      "city": "Bangkok",
+      "country": "Tajland",
+      "countryCode": "TH",
+      "lang": "th",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "hanoi",
+      "city": "Hanoi",
+      "country": "Vijetnam",
+      "countryCode": "VN",
+      "lang": "vi",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "manila",
+      "city": "Manila",
+      "country": "Filipini",
+      "countryCode": "PH",
+      "lang": "en",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "kuala-lumpur",
+      "city": "Kuala Lumpur",
+      "country": "Malezija",
+      "countryCode": "MY",
+      "lang": "ms",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "seoul",
+      "city": "Seul",
+      "country": "Južna Koreja",
+      "countryCode": "KR",
+      "lang": "ko",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "riyadh",
+      "city": "Rijad",
+      "country": "Saudijska Arabija",
+      "countryCode": "SA",
+      "lang": "ar",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "abu-dhabi",
+      "city": "Abu Dhabi",
+      "country": "Ujedinjeni Arapski Emirati",
+      "countryCode": "AE",
+      "lang": "ar",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "doha",
+      "city": "Doha",
+      "country": "Katar",
+      "countryCode": "QA",
+      "lang": "ar",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "kuwait",
+      "city": "Kuvajt",
+      "country": "Kuvajt",
+      "countryCode": "KW",
+      "lang": "ar",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "amman",
+      "city": "Aman",
+      "country": "Jordan",
+      "countryCode": "JO",
+      "lang": "ar",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "beirut",
+      "city": "Bejrut",
+      "country": "Libanon",
+      "countryCode": "LB",
+      "lang": "ar",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "bagdad",
+      "city": "Bagdad",
+      "country": "Irak",
+      "countryCode": "IQ",
+      "lang": "ar",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "teheran",
+      "city": "Teheran",
+      "country": "Iran",
+      "countryCode": "IR",
+      "lang": "fa",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "tashkent",
+      "city": "Taškent",
+      "country": "Uzbekistan",
+      "countryCode": "UZ",
+      "lang": "uz",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "astana",
+      "city": "Astana",
+      "country": "Kazahstan",
+      "countryCode": "KZ",
+      "lang": "kk",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "baku",
+      "city": "Baku",
+      "country": "Azerbajdžan",
+      "countryCode": "AZ",
+      "lang": "az",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "tbilisi",
+      "city": "Tbilisi",
+      "country": "Gruzija",
+      "countryCode": "GE",
+      "lang": "ka",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "yerevan",
+      "city": "Erevan",
+      "country": "Armenija",
+      "countryCode": "AM",
+      "lang": "hy",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "canberra",
+      "city": "Canberra",
+      "country": "Australija",
+      "countryCode": "AU",
+      "lang": "en",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": true,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "wellington",
+      "city": "Wellington",
+      "country": "Novi Zeland",
+      "countryCode": "NZ",
+      "lang": "en",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "suva",
+      "city": "Suva",
+      "country": "Fidži",
+      "countryCode": "FJ",
+      "lang": "en",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "port-moresby",
+      "city": "Port Moresby",
+      "country": "Papua Nova Gvineja",
+      "countryCode": "PG",
+      "lang": "en",
+      "wave": "wave-5",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "tirana",
+      "city": "Tirana",
+      "country": "Albanija",
+      "countryCode": "AL",
+      "lang": "sq",
+      "wave": "wave-6",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "andorra-la-vella",
+      "city": "Andora la Vella",
+      "country": "Andora",
+      "countryCode": "AD",
+      "lang": "ca",
+      "wave": "wave-6",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "minsk",
+      "city": "Minsk",
+      "country": "Bjelorusija",
+      "countryCode": "BY",
+      "lang": "be",
+      "wave": "wave-6",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "london",
+      "city": "London",
+      "country": "Ujedinjeno Kraljevstvo",
+      "countryCode": "GB",
+      "lang": "en",
+      "wave": "wave-6",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "vaduz",
+      "city": "Vaduz",
+      "country": "Lihtenštajn",
+      "countryCode": "LI",
+      "lang": "de",
+      "wave": "wave-6",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "monako",
+      "city": "Monako",
+      "country": "Monako",
+      "countryCode": "MC",
+      "lang": "fr",
+      "wave": "wave-6",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "podgorica",
+      "city": "Podgorica",
+      "country": "Crna Gora",
+      "countryCode": "ME",
+      "lang": "sr",
+      "wave": "wave-6",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "skoplje",
+      "city": "Skoplje",
+      "country": "Sjeverna Makedonija",
+      "countryCode": "MK",
+      "lang": "mk",
+      "wave": "wave-6",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "moskva",
+      "city": "Moskva",
+      "country": "Rusija",
+      "countryCode": "RU",
+      "lang": "ru",
+      "wave": "wave-6",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "san-marino",
+      "city": "San Marino",
+      "country": "San Marino",
+      "countryCode": "SM",
+      "lang": "it",
+      "wave": "wave-6",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "vatikan",
+      "city": "Vatikan",
+      "country": "Vatikan",
+      "countryCode": "VA",
+      "lang": "it",
+      "wave": "wave-6",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "saint-johns",
+      "city": "Saint John's",
+      "country": "Antigva i Barbuda",
+      "countryCode": "AG",
+      "lang": "en",
+      "wave": "wave-7",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "nassau",
+      "city": "Nassau",
+      "country": "Bahami",
+      "countryCode": "BS",
+      "lang": "en",
+      "wave": "wave-7",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "bridgetown",
+      "city": "Bridgetown",
+      "country": "Barbados",
+      "countryCode": "BB",
+      "lang": "en",
+      "wave": "wave-7",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "belmopan",
+      "city": "Belmopan",
+      "country": "Belize",
+      "countryCode": "BZ",
+      "lang": "en",
+      "wave": "wave-7",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "roseau",
+      "city": "Roseau",
+      "country": "Dominika",
+      "countryCode": "DM",
+      "lang": "en",
+      "wave": "wave-7",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "st-georges",
+      "city": "St. George's",
+      "country": "Grenada",
+      "countryCode": "GD",
+      "lang": "en",
+      "wave": "wave-7",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "tegucigalpa",
+      "city": "Tegucigalpa",
+      "country": "Honduras",
+      "countryCode": "HN",
+      "lang": "es",
+      "wave": "wave-7",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "port-au-prince",
+      "city": "Port-au-Prince",
+      "country": "Haiti",
+      "countryCode": "HT",
+      "lang": "fr",
+      "wave": "wave-7",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "managua",
+      "city": "Managua",
+      "country": "Nikaragva",
+      "countryCode": "NI",
+      "lang": "es",
+      "wave": "wave-7",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "basseterre",
+      "city": "Basseterre",
+      "country": "Sveti Kristofor i Nevis",
+      "countryCode": "KN",
+      "lang": "en",
+      "wave": "wave-7",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "castries",
+      "city": "Castries",
+      "country": "Sveta Lucija",
+      "countryCode": "LC",
+      "lang": "en",
+      "wave": "wave-7",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "kingstown",
+      "city": "Kingstown",
+      "country": "Sveti Vincent i Grenadini",
+      "countryCode": "VC",
+      "lang": "en",
+      "wave": "wave-7",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "san-salvador",
+      "city": "San Salvador",
+      "country": "Salvador",
+      "countryCode": "SV",
+      "lang": "es",
+      "wave": "wave-7",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "port-of-spain",
+      "city": "Port of Spain",
+      "country": "Trinidad i Tobago",
+      "countryCode": "TT",
+      "lang": "en",
+      "wave": "wave-7",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "georgetown",
+      "city": "Georgetown",
+      "country": "Gvajana",
+      "countryCode": "GY",
+      "lang": "en",
+      "wave": "wave-7",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "paramaribo",
+      "city": "Paramaribo",
+      "country": "Surinam",
+      "countryCode": "SR",
+      "lang": "nl",
+      "wave": "wave-7",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "ouagadougou",
+      "city": "Ouagadougou",
+      "country": "Burkina Faso",
+      "countryCode": "BF",
+      "lang": "fr",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "gitega",
+      "city": "Gitega",
+      "country": "Burundi",
+      "countryCode": "BI",
+      "lang": "fr",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "porto-novo",
+      "city": "Porto-Novo",
+      "country": "Benin",
+      "countryCode": "BJ",
+      "lang": "fr",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "praia",
+      "city": "Praia",
+      "country": "Zelenortska Republika",
+      "countryCode": "CV",
+      "lang": "pt",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "bangui",
+      "city": "Bangui",
+      "country": "Srednjoafrička Republika",
+      "countryCode": "CF",
+      "lang": "fr",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "brazzaville",
+      "city": "Brazzaville",
+      "country": "Kongo",
+      "countryCode": "CG",
+      "lang": "fr",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "dzibuti",
+      "city": "Džibuti",
+      "country": "Džibuti",
+      "countryCode": "DJ",
+      "lang": "fr",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "asmara",
+      "city": "Asmara",
+      "country": "Eritreja",
+      "countryCode": "ER",
+      "lang": "ti",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "malabo",
+      "city": "Malabo",
+      "country": "Ekvatorska Gvineja",
+      "countryCode": "GQ",
+      "lang": "es",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "mbabane",
+      "city": "Mbabane",
+      "country": "Esvatini",
+      "countryCode": "SZ",
+      "lang": "en",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "libreville",
+      "city": "Libreville",
+      "country": "Gabon",
+      "countryCode": "GA",
+      "lang": "fr",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "banjul",
+      "city": "Banjul",
+      "country": "Gambija",
+      "countryCode": "GM",
+      "lang": "en",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "conakry",
+      "city": "Conakry",
+      "country": "Gvineja",
+      "countryCode": "GN",
+      "lang": "fr",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "bissau",
+      "city": "Bissau",
+      "country": "Gvineja Bisau",
+      "countryCode": "GW",
+      "lang": "pt",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "moroni",
+      "city": "Moroni",
+      "country": "Komori",
+      "countryCode": "KM",
+      "lang": "ar",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "maseru",
+      "city": "Maseru",
+      "country": "Lesoto",
+      "countryCode": "LS",
+      "lang": "en",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "monrovia",
+      "city": "Monrovia",
+      "country": "Liberija",
+      "countryCode": "LR",
+      "lang": "en",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "tripoli",
+      "city": "Tripoli",
+      "country": "Libija",
+      "countryCode": "LY",
+      "lang": "ar",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "antananarivo",
+      "city": "Antananarivo",
+      "country": "Madagaskar",
+      "countryCode": "MG",
+      "lang": "mg",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "lilongwe",
+      "city": "Lilongwe",
+      "country": "Malavi",
+      "countryCode": "MW",
+      "lang": "en",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "bamako",
+      "city": "Bamako",
+      "country": "Mali",
+      "countryCode": "ML",
+      "lang": "fr",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "nouakchott",
+      "city": "Nouakchott",
+      "country": "Mauritanija",
+      "countryCode": "MR",
+      "lang": "ar",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "port-louis",
+      "city": "Port Louis",
+      "country": "Mauricijus",
+      "countryCode": "MU",
+      "lang": "en",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "niamey",
+      "city": "Niamey",
+      "country": "Niger",
+      "countryCode": "NE",
+      "lang": "fr",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "sao-tome",
+      "city": "São Tomé",
+      "country": "Sveti Toma i Princip",
+      "countryCode": "ST",
+      "lang": "pt",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "victoria",
+      "city": "Victoria",
+      "country": "Sejšeli",
+      "countryCode": "SC",
+      "lang": "fr",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "freetown",
+      "city": "Freetown",
+      "country": "Sijera Leone",
+      "countryCode": "SL",
+      "lang": "en",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "mogadishu",
+      "city": "Mogadishu",
+      "country": "Somalija",
+      "countryCode": "SO",
+      "lang": "so",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "juba",
+      "city": "Juba",
+      "country": "Južni Sudan",
+      "countryCode": "SS",
+      "lang": "en",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "ndjamena",
+      "city": "N'Djamena",
+      "country": "Čad",
+      "countryCode": "TD",
+      "lang": "fr",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "lome",
+      "city": "Lomé",
+      "country": "Togo",
+      "countryCode": "TG",
+      "lang": "fr",
+      "wave": "wave-8",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "kabul",
+      "city": "Kabul",
+      "country": "Afganistan",
+      "countryCode": "AF",
+      "lang": "fa",
+      "wave": "wave-9",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "manama",
+      "city": "Manama",
+      "country": "Bahrein",
+      "countryCode": "BH",
+      "lang": "ar",
+      "wave": "wave-9",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "bandar-seri-begawan",
+      "city": "Bandar Seri Begawan",
+      "country": "Brunej",
+      "countryCode": "BN",
+      "lang": "ms",
+      "wave": "wave-9",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "thimphu",
+      "city": "Thimphu",
+      "country": "Butan",
+      "countryCode": "BT",
+      "lang": "dz",
+      "wave": "wave-9",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "jeruzalem",
+      "city": "Jeruzalem",
+      "country": "Izrael",
+      "countryCode": "IL",
+      "lang": "he",
+      "wave": "wave-9",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "biskek",
+      "city": "Biškek",
+      "country": "Kirgistan",
+      "countryCode": "KG",
+      "lang": "ky",
+      "wave": "wave-9",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "phnom-penh",
+      "city": "Phnom Penh",
+      "country": "Kambodža",
+      "countryCode": "KH",
+      "lang": "km",
+      "wave": "wave-9",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "pyongyang",
+      "city": "Pjongjang",
+      "country": "Sjeverna Koreja",
+      "countryCode": "KP",
+      "lang": "ko",
+      "wave": "wave-9",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "vientiane",
+      "city": "Vientiane",
+      "country": "Laos",
+      "countryCode": "LA",
+      "lang": "lo",
+      "wave": "wave-9",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "male",
+      "city": "Malé",
+      "country": "Maldivi",
+      "countryCode": "MV",
+      "lang": "dv",
+      "wave": "wave-9",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "naypyidaw",
+      "city": "Naypyidaw",
+      "country": "Mjanmar",
+      "countryCode": "MM",
+      "lang": "my",
+      "wave": "wave-9",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "ulaanbaatar",
+      "city": "Ulaanbaatar",
+      "country": "Mongolija",
+      "countryCode": "MN",
+      "lang": "mn",
+      "wave": "wave-9",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "muscat",
+      "city": "Muscat",
+      "country": "Oman",
+      "countryCode": "OM",
+      "lang": "ar",
+      "wave": "wave-9",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "ramallah",
+      "city": "Ramallah",
+      "country": "Palestina",
+      "countryCode": "PS",
+      "lang": "ar",
+      "wave": "wave-9",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "damask",
+      "city": "Damask",
+      "country": "Sirija",
+      "countryCode": "SY",
+      "lang": "ar",
+      "wave": "wave-9",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "dusanbe",
+      "city": "Dušanbe",
+      "country": "Tadžikistan",
+      "countryCode": "TJ",
+      "lang": "tg",
+      "wave": "wave-9",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "dili",
+      "city": "Dili",
+      "country": "Timor-Leste",
+      "countryCode": "TL",
+      "lang": "pt",
+      "wave": "wave-9",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "asgabat",
+      "city": "Ašgabat",
+      "country": "Turkmenistan",
+      "countryCode": "TM",
+      "lang": "tk",
+      "wave": "wave-9",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "sanaa",
+      "city": "Sana'a",
+      "country": "Jemen",
+      "countryCode": "YE",
+      "lang": "ar",
+      "wave": "wave-9",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "palikir",
+      "city": "Palikir",
+      "country": "Mikronezija",
+      "countryCode": "FM",
+      "lang": "en",
+      "wave": "wave-10",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "south-tarawa",
+      "city": "South Tarawa",
+      "country": "Kiribati",
+      "countryCode": "KI",
+      "lang": "en",
+      "wave": "wave-10",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "majuro",
+      "city": "Majuro",
+      "country": "Maršalovi Otoci",
+      "countryCode": "MH",
+      "lang": "en",
+      "wave": "wave-10",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "yaren",
+      "city": "Yaren",
+      "country": "Nauru",
+      "countryCode": "NR",
+      "lang": "en",
+      "wave": "wave-10",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "ngerulmud",
+      "city": "Ngerulmud",
+      "country": "Palau",
+      "countryCode": "PW",
+      "lang": "en",
+      "wave": "wave-10",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "honiara",
+      "city": "Honiara",
+      "country": "Salomonovi Otoci",
+      "countryCode": "SB",
+      "lang": "en",
+      "wave": "wave-10",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": true,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "nukualofa",
+      "city": "Nuku'alofa",
+      "country": "Tonga",
+      "countryCode": "TO",
+      "lang": "to",
+      "wave": "wave-10",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "funafuti",
+      "city": "Funafuti",
+      "country": "Tuvalu",
+      "countryCode": "TV",
+      "lang": "tv",
+      "wave": "wave-10",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "port-vila",
+      "city": "Port Vila",
+      "country": "Vanuatu",
+      "countryCode": "VU",
+      "lang": "bi",
+      "wave": "wave-10",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    },
+    {
+      "id": "apia",
+      "city": "Apia",
+      "country": "Samoa",
+      "countryCode": "WS",
+      "lang": "sm",
+      "wave": "wave-10",
+      "live": false,
+      "sources": 0,
+      "records": 0,
+      "checks": {
+        "sources": false,
+        "art": false,
+        "strings": false,
+        "items": false
+      },
+      "missing": [
+        "sources",
+        "art",
+        "strings",
+        "items"
+      ],
+      "ready": false
+    }
+  ]
+}

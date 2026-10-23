@@ -363,6 +363,22 @@ const GEO = {
   sofija: [23.32, 42.70], bukurest: [26.10, 44.43]
 };
 
+/* ---------- svjetska izdanja: pet kontinenata ---------- */
+
+const CONTINENTS = [
+  { id: 'afrika', hr: 'Afrika', en: 'Africa', cities: ['kairo', 'nairobi'],
+    hrNote: 'dva izdanja: arapski i engleski', enNote: 'two editions: Arabic and English' },
+  { id: 'azija', hr: 'Azija', en: 'Asia', cities: ['jakarta', 'singapur', 'tokio', 'peking'],
+    hrNote: 'četiri izdanja: indonezijski, engleski, japanski, kineski', enNote: 'four editions: Indonesian, English, Japanese, Chinese' },
+  { id: 'sjeverna-amerika', hr: 'Sjeverna Amerika', en: 'North America', cities: ['newyork'],
+    hrNote: 'jedno izdanje: engleski', enNote: 'one edition: English' },
+  { id: 'juzna-amerika', hr: 'Južna Amerika', en: 'South America', cities: ['saopaulo'],
+    hrNote: 'jedno izdanje: portugalski', enNote: 'one edition: Portuguese' },
+  { id: 'oceanija', hr: 'Oceanija', en: 'Oceania', cities: ['sydney'],
+    hrNote: 'jedno izdanje: engleski', enNote: 'one edition: English' }
+];
+
+
 const AMM_C = {
   zagreb: '#e9c66c', beograd: '#7fb2ff', sarajevo: '#7ee0a1', budimpesta: '#ff9f6e',
   ljubljana: '#c79bff', rim: '#ff7d7d', sofija: '#6fe0d6', bukurest: '#f2a8d0',
@@ -430,7 +446,13 @@ function networkPodium(circles, cards, lang = 'hr') {
 
   const rainbow = counted.map(({ c }) => color(c)).join(',');
   const label = EN ? 'Network map — pick a city' : 'Karta mreže — odaberi grad';
-  const cityCount = counted.filter((x) => x.count).length;
+  const cityCount = counted.length;
+  /* Brojke u traci moraju opisivati cijelu mrežu, ne samo gradove koje karta
+     stigne nacrtati. Prije je pisalo „8 gradova · 8 jezika" iako mreža ima
+     sedamnaest izdanja na šest kontinenata — karta je bila manja od mreže, a
+     brojka je to skrivala. */
+  const editionLangs = new Set(CHANNELS.map((c) => c.lang)).size;
+  const editionContinents = 1 + CONTINENTS.filter((k) => k.cities.some((id) => CHANNELS.some((c) => c.id === id))).length;
 
   return `<div class="amx-podium">
   <ul class="amx-row">${circles}</ul>
@@ -439,7 +461,7 @@ function networkPodium(circles, cards, lang = 'hr') {
     <span class="amm-rainbow" aria-hidden="true"></span>
     <div class="amm-top">
       <span class="amm-flag">${EN ? 'Network' : 'Karta mreže'}</span>
-      <p class="amm-count"><b>${nf(total)}</b> ${EN ? 'stories' : 'tekstova'} <span>·</span> <b>${cityCount}</b> ${EN ? 'European cities on the map' : 'europskih gradova na karti'} <span>·</span> <b>${mapped.length}</b> ${EN ? 'languages on the map' : 'jezika na karti'} <span>·</span> <b>${CHANNELS.length}</b> ${EN ? 'editions in total' : 'izdanja ukupno'}</p>
+      <p class="amm-count"><b>${nf(total)}</b> ${EN ? 'stories' : 'tekstova'} <span>·</span> <b>${cityCount}</b> ${EN ? 'European cities drawn here' : 'europskih gradova na karti'} <span>·</span> <b>${CHANNELS.length}</b> ${EN ? 'editions in total' : 'izdanja ukupno'} <span>·</span> <b>${editionLangs}</b> ${EN ? 'languages' : 'jezika'} <span>·</span> <b>${editionContinents}</b> ${EN ? 'continents' : 'kontinenata'}</p>
       <a class="amm-origin" href="/usa/"><span class="amm-gem" aria-hidden="true"></span>${EN ? 'Origin: GNK DINAMO Ltd. · Colorado, USA' : 'Ishodište: GNK DINAMO Ltd. · Colorado, USA'} <b>→</b></a>
     </div>
     <figure class="amm-route">
@@ -649,21 +671,6 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
   <div class="amx-platforms"><span class="amx-plabel">${esc(T.platforms)}</span>${platforms}</div>
 </section>`;
 }
-
-/* ---------- svjetska izdanja: pet kontinenata ---------- */
-
-const CONTINENTS = [
-  { id: 'afrika', hr: 'Afrika', en: 'Africa', cities: ['kairo', 'nairobi'],
-    hrNote: 'dva izdanja: arapski i engleski', enNote: 'two editions: Arabic and English' },
-  { id: 'azija', hr: 'Azija', en: 'Asia', cities: ['jakarta', 'singapur', 'tokio', 'peking'],
-    hrNote: 'četiri izdanja: indonezijski, engleski, japanski, kineski', enNote: 'four editions: Indonesian, English, Japanese, Chinese' },
-  { id: 'sjeverna-amerika', hr: 'Sjeverna Amerika', en: 'North America', cities: ['newyork'],
-    hrNote: 'jedno izdanje: engleski', enNote: 'one edition: English' },
-  { id: 'juzna-amerika', hr: 'Južna Amerika', en: 'South America', cities: ['saopaulo'],
-    hrNote: 'jedno izdanje: portugalski', enNote: 'one edition: Portuguese' },
-  { id: 'oceanija', hr: 'Oceanija', en: 'Oceania', cities: ['sydney'],
-    hrNote: 'jedno izdanje: engleski', enNote: 'one edition: English' }
-];
 
 function worldPodium(cards, lang = 'hr') {
   const EN = lang === 'en';

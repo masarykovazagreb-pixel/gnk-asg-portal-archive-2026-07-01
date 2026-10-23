@@ -19,7 +19,9 @@
  * (hr, sr, bs, hu, sl, it, bg, ro, en, id, pt, ar, ja, zh), zatim novi.
  */
 
-export const PLAN_VERSION = 'WORLD_EXPANSION_V1_20261023';
+import { REST_WAVES } from './expansion-plan-rest.mjs';
+
+export const PLAN_VERSION = 'WORLD_EXPANSION_V2_20261023';
 
 /** Izdanja koja su već javna — moraju se poklapati s channels.json. */
 export const LIVE_IDS = [
@@ -165,8 +167,20 @@ export const WAVES = [
       city('suva', 'Suva', 'Suva', 'Fidži', 'Fiji', 'FJ', 'en', 'Pacific/Fiji', 'Oceanija'),
       city('port-moresby', 'Port Moresby', 'Port Moresby', 'Papua Nova Gvineja', 'Papua New Guinea', 'PG', 'en', 'Pacific/Port_Moresby', 'Oceanija')
     ]
-  }
+  },
+  /* Ostalih 87 država — vidi expansion-plan-rest.mjs. S ovim valovima plan
+     zatvara krug: svih 195 država ima grad, jezik, zonu i val. */
+  ...REST_WAVES
 ];
+
+/**
+ * SVIH 195 DRŽAVA — mjerilo prema kojem se plan zatvara.
+ *
+ * 193 države članice Ujedinjenih naroda te Sveta Stolica (VA) i Palestina
+ * (PS). Popis je ovdje da bi gate mogao dokazati tvrdnju "sve države": ako
+ * neka oznaka nedostaje u planu, test pada i imenuje je.
+ */
+export const WORLD_CODES = `AF AL DZ AD AO AG AR AM AU AT AZ BS BH BD BB BY BE BZ BJ BT BO BA BW BR BN BG BF BI CV KH CM CA CF TD CL CN CO KM CG CD CR CI HR CU CY CZ DK DJ DM DO EC EG SV GQ ER EE SZ ET FJ FI FR GA GM GE DE GH GR GD GT GN GW GY HT HN HU IS IN ID IR IQ IE IL IT JM JP JO KZ KE KI KP KR KW KG LA LV LB LS LR LY LI LT LU MG MW MY MV ML MT MH MR MU MX FM MD MC MN ME MA MZ MM NA NR NP NL NZ NI NE NG MK NO OM PK PW PA PG PY PE PH PL PT QA RO RU RW KN LC VC WS SM ST SA SN RS SC SL SG SK SI SB SO ZA SS ES LK SD SR SE CH SY TJ TZ TH TL TG TO TT TN TR TM TV UG UA AE GB US UY UZ VU VE VN YE ZM ZW VA PS`.split(/\s+/);
 
 /** Ravni popis svih gradova iz plana, s oznakom vala. */
 export const PLANNED = WAVES.flatMap((wave) => wave.cities.map((entry) => ({ ...entry, wave: wave.id })));

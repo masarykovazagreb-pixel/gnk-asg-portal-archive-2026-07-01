@@ -570,6 +570,7 @@ function page(lang) {
 <meta name="twitter:title" content="${esc(t.title)}">
 <meta name="twitter:description" content="${esc(t.sub)}">
 <meta name="twitter:image" content="${SITE}/assets/izdanja/aktual-media-og.jpg">
+<meta name="twitter:image:alt" content="${lang === 'en' ? 'AKTUAL MEDIA — future technology' : 'AKTUAL MEDIA — tehnologija budućnosti'}">
 <script type="application/ld+json">${JSON.stringify(jsonld(lang))}</script>
 <style>${CSS}</style>
 </head>

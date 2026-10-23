@@ -20,7 +20,7 @@
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { PLANNED, LIVE_IDS, WAVES, REQUIREMENTS, PLAN_VERSION } from '../apps/world/lib/expansion-plan.mjs';
+import { PLANNED, LIVE_IDS, WAVES, REQUIREMENTS, PLAN_VERSION, WORLD_CODES } from '../apps/world/lib/expansion-plan.mjs';
 import { CONTINENTS } from '../apps/world/lib/registry.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -61,8 +61,25 @@ for (const entry of PLANNED) {
     if (!entry[field]) fails.push(`${entry.id}: nedostaje ${field}`);
   }
   if (!/^[A-Z]{2}$/.test(entry.countryCode)) fails.push(`${entry.id}: countryCode nije ISO 3166-1 alpha-2 (${entry.countryCode})`);
-  if (!/^[A-Za-z_]+(?:\/[A-Za-z_]+){1,2}$/.test(entry.timezone)) fails.push(`${entry.id}: vremenska zona nije u obliku Kontinent/Grad (${entry.timezone})`);
+  if (!/^[A-Za-z][A-Za-z_-]*(?:\/[A-Za-z][A-Za-z_-]*){1,2}$/.test(entry.timezone)) fails.push(`${entry.id}: vremenska zona nije u obliku Kontinent/Grad (${entry.timezone})`);
 }
+
+/* 2b. Plan mora zatvoriti krug: svaka od 195 država ima točno jedno izdanje
+   (javno ili planirano). Ako neka nedostaje, gate je imenuje — "sve države"
+   je tvrdnja koja se provjerava, ne izgovara. */
+const plannedCodes = new Set(PLANNED.map((entry) => entry.countryCode));
+const liveCodes = new Set(channels.map((channel) => channel.countryCode));
+const uncovered = WORLD_CODES.filter((code) => !plannedCodes.has(code) && !liveCodes.has(code));
+if (uncovered.length) fails.push(`plan ne pokriva ${uncovered.length} država: ${uncovered.join(' ')}`);
+const unknown = [...new Set([...plannedCodes, ...liveCodes])].filter((code) => !WORLD_CODES.includes(code));
+if (unknown.length) fails.push(`plan ima oznake koje nisu države: ${unknown.join(' ')}`);
+/* Neke države imaju dva grada (New York i Washington, Sydney i Canberra,
+   São Paulo i Brasília). To nije greška — ali se broji, da se ne bi činilo
+   da plan ima više država nego što ih stvarno ima. */
+const multiCity = WORLD_CODES.filter((code) => (
+  PLANNED.filter((entry) => entry.countryCode === code).length
+  + channels.filter((channel) => channel.countryCode === code).length
+) > 1);
 
 /* 3. Pokrivenost — računa se iz podataka, ne upisuje. */
 const liveChannels = channels.filter((channel) => live.includes(channel.id));
@@ -111,6 +128,7 @@ const coverage = {
   },
   byContinent,
   requirements: REQUIREMENTS,
+  multiCityCountries: multiCity,
   next: PLANNED.slice(0, 12).map((entry) => ({
     id: entry.id, city: entry.city, country: entry.country, lang: entry.lang, wave: entry.wave
   }))
@@ -137,5 +155,5 @@ if (NEXT) {
 }
 
 console.log(CHECK
-  ? `POKRIVENOST — plan i stanje se poklapaju: ${liveChannels.length} javnih izdanja, ${allCountries.size} zemalja u planu.`
+  ? `POKRIVENOST — plan i stanje se poklapaju: ${liveChannels.length} javnih izdanja, ${allCountries.size} od ${WORLD_CODES.length} država u planu.`
   : `POKRIVENOST — javno ${liveChannels.length} izdanja u ${liveCountries.size} zemalja na ${liveLangs.size} jezika; plan pokriva ${allCountries.size} zemalja (${PLANNED.length} gradova u ${WAVES.length} valova).`);

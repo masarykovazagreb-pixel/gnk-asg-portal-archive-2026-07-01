@@ -808,10 +808,12 @@ ${tagMetas(keywords)}
 <meta property="og:url" content="${canonical}">
 <meta property="og:locale" content="${lang === 'en' ? 'en_GB' : 'hr_HR'}">
 <meta property="og:image" content="${SITE}/assets/izdanja/aktual-media-og.jpg">
+<meta property="og:image:alt" content="${esc(copy.title)}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(copy.title)}">
 <meta name="twitter:description" content="${esc(copy.description)}">
 <meta name="twitter:image" content="${SITE}/assets/izdanja/aktual-media-og.jpg">
+<meta name="twitter:image:alt" content="${esc(copy.title)}">
 <script type="application/ld+json">${safeJson(jsonld(desk, lang, canonical, alternate, keywords))}</script>
 <style>${CSS}</style>
 </head>
@@ -946,10 +948,12 @@ ${tagMetas(keywords)}
 <meta property="og:url" content="${canonical}">
 <meta property="og:locale" content="${lang === 'en' ? 'en_GB' : 'hr_HR'}">
 <meta property="og:image" content="${SITE}/assets/izdanja/aktual-media-og.jpg">
+<meta property="og:image:alt" content="${esc(copy.title)}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(copy.title)}">
 <meta name="twitter:description" content="${esc(copy.description)}">
 <meta name="twitter:image" content="${SITE}/assets/izdanja/aktual-media-og.jpg">
+<meta name="twitter:image:alt" content="${esc(copy.title)}">
 <script type="application/ld+json">${safeJson(graph)}</script>
 <style>${CSS}
 .dd-card i{display:block;margin-top:8px;font:800 12px/1 system-ui;letter-spacing:.06em;text-transform:uppercase;color:#e0bd69;font-style:normal}
