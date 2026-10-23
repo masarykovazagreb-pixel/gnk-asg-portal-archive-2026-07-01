@@ -4,7 +4,7 @@
   "lang": "it",
   "city": "Rim",
   "country": "Italija",
-  "updatedAt": "2026-10-23T04:37:02.167Z",
+  "updatedAt": "2026-10-23T07:27:29.109Z",
   "sources": [
     {
       "id": "ansa",
@@ -12,17 +12,24 @@
       "url": "https://www.ansa.it/sito/notizie/topnews/topnews_rss.xml",
       "ok": true,
       "fetched": 10,
+      "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-23T04:36:54.268Z"
+      "checkedAt": "2026-10-23T07:27:18.986Z"
     },
     {
       "id": "repubblica",
       "name": "la Repubblica",
       "url": "https://www.repubblica.it/rss/homepage/rss2.0.xml",
-      "ok": true,
-      "fetched": 30,
-      "errors": [],
-      "checkedAt": "2026-10-23T04:36:54.754Z"
+      "ok": false,
+      "fetched": 0,
+      "corrupt": 0,
+      "errors": [
+        "https://www.repubblica.it/rss/homepage/rss2.0.xml: HTTP 403",
+        "https://www.repubblica.it/rss/politica/rss2.0.xml: HTTP 403",
+        "https://www.repubblica.it/rss/economia/rss2.0.xml: HTTP 403",
+        "https://www.repubblica.it/rss/sport/rss2.0.xml: HTTP 403"
+      ],
+      "checkedAt": "2026-10-23T07:27:22.147Z"
     },
     {
       "id": "ilpost",
@@ -30,10 +37,11 @@
       "url": "https://www.ilpost.it/feed/",
       "ok": false,
       "fetched": 0,
+      "corrupt": 0,
       "errors": [
         "https://www.ilpost.it/feed/: HTTP 403"
       ],
-      "checkedAt": "2026-10-23T04:36:56.742Z"
+      "checkedAt": "2026-10-23T07:27:23.713Z"
     },
     {
       "id": "sole24",
@@ -41,8 +49,9 @@
       "url": "https://www.ilsole24ore.com/rss/italia--politica.xml",
       "ok": true,
       "fetched": 36,
+      "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-23T04:36:57.775Z"
+      "checkedAt": "2026-10-23T07:27:24.978Z"
     },
     {
       "id": "corriere",
@@ -50,17 +59,21 @@
       "url": "https://www.corriere.it/rss/homepage.xml",
       "ok": true,
       "fetched": 69,
+      "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-23T04:36:58.477Z"
+      "checkedAt": "2026-10-23T07:27:25.665Z"
     },
     {
       "id": "lastampa",
       "name": "La Stampa",
       "url": "https://www.lastampa.it/rss",
-      "ok": true,
-      "fetched": 88,
-      "errors": [],
-      "checkedAt": "2026-10-23T04:36:59.629Z"
+      "ok": false,
+      "fetched": 0,
+      "corrupt": 0,
+      "errors": [
+        "https://www.lastampa.it/rss: HTTP 403"
+      ],
+      "checkedAt": "2026-10-23T07:27:26.653Z"
     },
     {
       "id": "fanpage",
@@ -68,10 +81,11 @@
       "url": "https://www.fanpage.it/feed/",
       "ok": false,
       "fetched": 0,
+      "corrupt": 0,
       "errors": [
         "https://www.fanpage.it/feed/: HTTP 403"
       ],
-      "checkedAt": "2026-10-23T04:37:00.797Z"
+      "checkedAt": "2026-10-23T07:27:27.977Z"
     },
     {
       "id": "adnkronos",
@@ -79,13 +93,121 @@
       "url": "https://www.adnkronos.com/rss",
       "ok": false,
       "fetched": 0,
+      "corrupt": 0,
       "errors": [
         "https://www.adnkronos.com/rss: nije feed"
       ],
-      "checkedAt": "2026-10-23T04:37:02.167Z"
+      "checkedAt": "2026-10-23T07:27:29.108Z"
     }
   ],
   "items": [
+    {
+      "slug": "rim-2026-10-23-ansa-mimit-prezzi-dei-carburanti-stabili-gasolio-988513",
+      "title": "Mimit, prezzi dei carburanti stabili, gasolio a 2,3 euro in autostrada",
+      "summary": "Sulla rete stradale 2,022 euro al litro per la benzina e 2,260 per il gasolio.",
+      "date": "2026-10-23T07:18:06.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/10/23/mimit-prezzi-dei-carburanti-stabili-gasolio-a-23-euro-in-autostrada_e7c57fed-667b-4a70-85fa-606eef89542c.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "image": "",
+      "imageAlt": "Mimit, prezzi dei carburanti stabili, gasolio a 2,3 euro in autostrada",
+      "addedAt": "2026-10-23T07:27:18.986Z"
+    },
+    {
+      "slug": "rim-2026-10-23-ansa-borsa-l-europa-apre-poco-mossa-guarda-a-933755",
+      "title": "Borsa: l'Europa apre poco mossa, guarda a tecnologici e Hormuz",
+      "summary": "Parigi -0,01%, Francoforte -0,18%, Londra invariata",
+      "date": "2026-10-23T07:14:47.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/10/23/borsa-leuropa-apre-poco-mossa-guarda-a-tecnologici-e-hormuz_a8b138bf-9adc-44cf-82a2-06402e6b5502.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Borsa: l'Europa apre poco mossa, guarda a tecnologici e Hormuz",
+      "addedAt": "2026-10-23T07:27:18.987Z"
+    },
+    {
+      "slug": "rim-2026-10-23-ansa-protesta-tir-rimossi-i-mezzi-dai-presidi-d4d94b",
+      "title": "Protesta Tir, rimossi i mezzi dai presidi nel Crotonese",
+      "summary": "Mobilitazione sospesa in attesa dell'incontro del 27 ottobre",
+      "date": "2026-10-23T07:08:49.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/10/23/protesta-tir-rimossi-i-mezzi-dai-presidi-nel-crotonese_7aa0190d-adc6-4538-9746-ebf7ec8b34cf.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Protesta Tir, rimossi i mezzi dai presidi nel Crotonese",
+      "addedAt": "2026-10-23T07:27:18.987Z"
+    },
+    {
+      "slug": "rim-2026-10-23-ansa-borsa-milano-in-avvio-0-4-in-testa-eni-e-8385ec",
+      "title": "Borsa: Milano in avvio +0,4%, in testa Eni e Saipem",
+      "summary": "Ftse Mib a 48.577 punti. Vendite su Stellantis, Moncler, Cucinelli",
+      "date": "2026-10-23T07:08:32.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/10/23/borsa-milano-in-avvio-04-in-testa-eni-e-saipem_8879b25b-af01-427c-811a-c76f5eb3150a.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Borsa: Milano in avvio +0,4%, in testa Eni e Saipem",
+      "addedAt": "2026-10-23T07:27:18.987Z"
+    },
+    {
+      "slug": "rim-2026-10-23-ansa-borsa-l-asia-in-ordine-sparso-con-lente-sul-ad89b8",
+      "title": "Borsa: l'Asia in ordine sparso con lente sul tech, Europa attesa positiva",
+      "summary": "In recupero le Piazze cinesi e Seul. Mista anche Wall Street",
+      "date": "2026-10-23T06:42:16.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/10/23/borsa-lasia-in-ordine-sparso-con-lente-sul-tech-europa-attesa_e44c6e82-459d-46b7-a4cd-7474276ae8c1.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Borsa: l'Asia in ordine sparso con lente sul tech, Europa attesa positiva",
+      "addedAt": "2026-10-23T07:27:18.987Z"
+    },
+    {
+      "slug": "rim-2026-10-23-ansa-volvo-cars-licenzia-2-500-dipendenti-d50ca5",
+      "title": "Volvo Cars licenzia 2.500 dipendenti",
+      "summary": "In Svezia meno 2.000 posti di lavoro. Uscite volontarie",
+      "date": "2026-10-23T06:41:29.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/10/23/volvo-cars-licenzia-2.500-dipendenti_8dd5fbc3-102f-46eb-96a9-5c35aa942092.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Volvo Cars licenzia 2.500 dipendenti",
+      "addedAt": "2026-10-23T07:27:18.987Z"
+    },
+    {
+      "slug": "rim-2026-10-23-sole24-renzi-tabacci-ruffini-onorato-e-gli-altri-fa5096",
+      "title": "Renzi, Tabacci, Ruffini, Onorato e gli altri: tre centri per un solo podio",
+      "summary": "La nave, solida, resta quella di Matteo Renzi: con la sua Italia Viva/Casa riformista che ha due gruppi in Parlamento oltre che una rete sul territorio è il...",
+      "date": "2026-10-23T06:01:40.000Z",
+      "url": "https://www.ilsole24ore.com/art/renzi-tabacci-ruffini-onorato-e-altri-tre-centri-un-solo-podio-AJPpfprB",
+      "source": "sole24",
+      "sourceName": "Il Sole 24 Ore",
+      "categories": [
+        "Italia/Politica"
+      ],
+      "author": "di Emilia Patta",
+      "theme": "politika",
+      "image": "https://i2.res.24o.it/images2010/S24/Documenti/2026/10/23/Immagini/Ritagli/Imagoeconomica_2814595-Collage-U84637165870Qpq-U46183251043BdL-1440x752@IlSole24Ore-Web.JPEG",
+      "imageAlt": "Renzi, Tabacci, Ruffini, Onorato e gli altri: tre centri per un solo podio",
+      "addedAt": "2026-10-23T07:27:24.979Z"
+    },
     {
       "slug": "rim-2026-10-23-repubblica-how-pope-leo-s-church-is-pushing-back-7ace94",
       "title": "How Pope Leo’s Church is pushing back against the global far right",
@@ -6438,104 +6560,6 @@
       "categories": [],
       "author": "",
       "theme": "ai",
-      "addedAt": "2026-10-19T20:54:38.005Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-ilpost-che-fara-simone-biles-ed86c9",
-      "title": "Che farà Simone Biles?",
-      "summary": "",
-      "date": "2026-10-19T00:00:00.000Z",
-      "url": "https://www.ilpost.it/2026/10/19/simone-biles-mondiali-ginnastica-artistica-olimpiadi-los-angeles-2028/",
-      "source": "ilpost",
-      "sourceName": "Il Post",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T20:54:38.005Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-ilpost-l-importanza-della-bbc-in-lingue-che-non-81e06b",
-      "title": "L'importanza della BBC in lingue che non sono l'inglese",
-      "summary": "",
-      "date": "2026-10-19T00:00:00.000Z",
-      "url": "https://www.ilpost.it/2026/10/19/servizio-bbc-world-service-altre-lingue/",
-      "source": "ilpost",
-      "sourceName": "Il Post",
-      "categories": [],
-      "author": "",
-      "theme": "politika",
-      "addedAt": "2026-10-19T20:54:38.005Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-ilpost-alcuni-lavoratori-dell-ex-ilva-hanno-482a97",
-      "title": "Alcuni lavoratori dell'ex Ilva hanno occupato una parte dell'aeroporto di Genova per protestare contro la cassa integrazione",
-      "summary": "",
-      "date": "2026-10-19T00:00:00.000Z",
-      "url": "https://www.ilpost.it/2026/10/19/genova-ex-ilva-protesta-occupazione-aeroporto/",
-      "source": "ilpost",
-      "sourceName": "Il Post",
-      "categories": [],
-      "author": "",
-      "theme": "rat",
-      "addedAt": "2026-10-19T20:54:38.005Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-ilpost-il-governo-francese-ha-detto-di-aver-perso-a93aef",
-      "title": "Il governo francese ha detto di aver «perso il controllo» delle proteste di sabato",
-      "summary": "",
-      "date": "2026-10-19T00:00:00.000Z",
-      "url": "https://www.ilpost.it/2026/10/19/francia-proteste-governo-perso-controllo/",
-      "source": "ilpost",
-      "sourceName": "Il Post",
-      "categories": [],
-      "author": "",
-      "theme": "politika",
-      "addedAt": "2026-10-19T20:54:38.005Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-ilpost-al-sud-continuano-i-blocchi-stradali-9cc7e0",
-      "title": "Al Sud continuano i blocchi stradali",
-      "summary": "",
-      "date": "2026-10-19T00:00:00.000Z",
-      "url": "https://www.ilpost.it/2026/10/19/continuano-blocchi-stradali-proteste-sud-italia/",
-      "source": "ilpost",
-      "sourceName": "Il Post",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T20:54:38.005Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-ilpost-il-mandato-di-elly-schlein-da-segretaria-f44e80",
-      "title": "Il mandato di Elly Schlein da segretaria del PD è stato prolungato fino a dopo le elezioni politiche",
-      "summary": "",
-      "date": "2026-10-19T00:00:00.000Z",
-      "url": "https://www.ilpost.it/2026/10/19/schlein-segretaria-dopo-elezioni/",
-      "source": "ilpost",
-      "sourceName": "Il Post",
-      "categories": [],
-      "author": "",
-      "theme": "politika",
-      "addedAt": "2026-10-19T20:54:38.005Z",
-      "backfilled": true
-    },
-    {
-      "slug": "rim-2026-10-19-ilpost-i-video-dei-disordini-in-centro-a-milano-2e83fb",
-      "title": "I video dei disordini in centro a Milano",
-      "summary": "",
-      "date": "2026-10-19T00:00:00.000Z",
-      "url": "https://www.ilpost.it/2026/10/19/video-proteste-saccheggi-milano/",
-      "source": "ilpost",
-      "sourceName": "Il Post",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
       "addedAt": "2026-10-19T20:54:38.005Z",
       "backfilled": true
     }

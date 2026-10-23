@@ -4,7 +4,7 @@
   "lang": "en",
   "city": "Nairobi",
   "country": "Kenija",
-  "updatedAt": "2026-10-23T04:38:51.436Z",
+  "updatedAt": "2026-10-23T07:29:49.487Z",
   "sources": [
     {
       "id": "capitalfm",
@@ -12,19 +12,22 @@
       "url": "https://capitalfm.africa/news/feed/",
       "ok": true,
       "fetched": 10,
+      "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-23T04:38:27.753Z"
+      "checkedAt": "2026-10-23T07:29:29.382Z"
     },
     {
       "id": "nation",
       "name": "Daily Nation",
-      "url": "https://nation.africa/kenya/rss.xml",
-      "ok": true,
-      "fetched": 25,
+      "url": "https://nation.africa/kenya/rss",
+      "ok": false,
+      "fetched": 0,
+      "corrupt": 0,
       "errors": [
-        "https://nation.africa/kenya/rss: HTTP 403"
+        "https://nation.africa/kenya/rss: HTTP 403",
+        "https://nation.africa/kenya/rss.xml: HTTP 404"
       ],
-      "checkedAt": "2026-10-23T04:38:28.695Z"
+      "checkedAt": "2026-10-23T07:29:31.106Z"
     },
     {
       "id": "standard",
@@ -32,10 +35,11 @@
       "url": "https://www.standardmedia.co.ke/rss",
       "ok": false,
       "fetched": 0,
+      "corrupt": 0,
       "errors": [
         "https://www.standardmedia.co.ke/rss: nije feed"
       ],
-      "checkedAt": "2026-10-23T04:38:29.831Z"
+      "checkedAt": "2026-10-23T07:29:32.606Z"
     },
     {
       "id": "star",
@@ -43,10 +47,11 @@
       "url": "https://www.the-star.co.ke/rss",
       "ok": false,
       "fetched": 0,
+      "corrupt": 0,
       "errors": [
         "https://www.the-star.co.ke/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-23T04:38:31.780Z"
+      "checkedAt": "2026-10-23T07:29:34.870Z"
     },
     {
       "id": "businessdaily",
@@ -54,10 +59,11 @@
       "url": "https://www.businessdailyafrica.com/rss",
       "ok": false,
       "fetched": 0,
+      "corrupt": 0,
       "errors": [
         "https://www.businessdailyafrica.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-23T04:38:32.657Z"
+      "checkedAt": "2026-10-23T07:29:35.843Z"
     },
     {
       "id": "citizen",
@@ -65,10 +71,11 @@
       "url": "https://www.citizen.digital/rss",
       "ok": false,
       "fetched": 0,
+      "corrupt": 0,
       "errors": [
         "https://www.citizen.digital/rss: HTTP 400"
       ],
-      "checkedAt": "2026-10-23T04:38:43.567Z"
+      "checkedAt": "2026-10-23T07:29:46.489Z"
     },
     {
       "id": "kbc",
@@ -76,8 +83,9 @@
       "url": "https://www.kbc.co.ke/feed/",
       "ok": true,
       "fetched": 10,
+      "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-23T04:38:50.137Z"
+      "checkedAt": "2026-10-23T07:29:48.429Z"
     },
     {
       "id": "eastafrican",
@@ -85,13 +93,233 @@
       "url": "https://www.theeastafrican.co.ke/rss",
       "ok": false,
       "fetched": 0,
+      "corrupt": 0,
       "errors": [
         "https://www.theeastafrican.co.ke/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-23T04:38:51.436Z"
+      "checkedAt": "2026-10-23T07:29:49.487Z"
     }
   ],
   "items": [
+    {
+      "slug": "nairobi-2026-10-23-kbc-koome-public-trust-in-judiciary-must-be-88ebc5",
+      "title": "Koome: Public trust in Judiciary must be earned through everyday justice",
+      "summary": "Koome says public trust depends on citizens’ everyday experiences with the courts. The post Koome: Public trust in Judiciary must be earned through everyday justice appeared first on KBC Digital .",
+      "date": "2026-10-23T07:23:28.000Z",
+      "url": "https://www.kbc.co.ke/koome-public-trust-in-judiciary-must-be-earned-through-everyday-justice/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "Local News",
+        "CJ Martha Koome",
+        "Judiciary"
+      ],
+      "author": "Prudence Wanza",
+      "theme": "drustvo",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/10/Koome.jpeg",
+      "imageAlt": "Koome: Public trust in Judiciary must be earned through everyday justice",
+      "addedAt": "2026-10-23T07:29:48.429Z"
+    },
+    {
+      "slug": "nairobi-2026-10-23-kbc-man-extradited-to-us-to-face-sentencing-2d4d14",
+      "title": "Man extradited to US to face sentencing over crash that killed 16-year-old",
+      "summary": "A Kenyan man who evaded sentencing in the United States for 13 years following his conviction over a fatal drunk-driving crash has been extradited to California to face justice. The Director of Public Prosecutions (DPP) facilitated the extradition of Sancho Kibutu, who was convicted of gross vehicular manslaughter while intoxicated by the Superior Court of […] The post Man extradited to US to face sentencing over crash that killed 16-year-old appeared first on KBC Digital .",
+      "date": "2026-10-23T07:06:36.000Z",
+      "url": "https://www.kbc.co.ke/man-extradited-to-us-to-face-sentencing-over-crash-that-killed-16-year-old/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "County News",
+        "DPP",
+        "Extradition",
+        "Sancho Kibutu"
+      ],
+      "author": "Prudence Wanza",
+      "theme": "drustvo",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/10/kibutu-e1792739189275.jpeg",
+      "imageAlt": "Man extradited to US to face sentencing over crash that killed 16-year-old",
+      "addedAt": "2026-10-23T07:29:48.429Z"
+    },
+    {
+      "slug": "nairobi-2026-10-23-kbc-kenya-hosts-workshop-to-boost-organic-a4bac4",
+      "title": "Kenya hosts workshop to boost organic agriculture markets",
+      "summary": "Kenya’s organic agriculture sector is seeking to expand market access and strengthen food systems as stakeholders meet in Nairobi for the 4th Kenya National Participatory Guarantee Systems (PGS) Workshop. The two-day workshop, hosted by the Kenya Organic Agriculture Network (KOAN) has brought together more than 50 participants to discuss the role of community-based certification in […] The post Kenya hosts workshop to boost organic agriculture markets appeared first on KBC Digital .",
+      "date": "2026-10-23T06:57:47.000Z",
+      "url": "https://www.kbc.co.ke/kenya-hosts-workshop-to-boost-organic-agriculture-markets/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "Agriculture",
+        "Agroecology",
+        "Food security",
+        "KOAN"
+      ],
+      "author": "KBC Digital",
+      "theme": "ekonomija",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/10/Untitled.jpg",
+      "imageAlt": "Kenya hosts workshop to boost organic agriculture markets",
+      "addedAt": "2026-10-23T07:29:48.430Z"
+    },
+    {
+      "slug": "nairobi-2026-10-23-kbc-nba-reaffirms-commitment-to-biosafety-94e789",
+      "title": "NBA reaffirms commitment to biosafety, environmental protection",
+      "summary": "NBA Chairman David Wamatsi says Africa must help shape global policies on biodiversity, biosafety and sustainable development. The post NBA reaffirms commitment to biosafety, environmental protection appeared first on KBC Digital .",
+      "date": "2026-10-23T06:56:08.000Z",
+      "url": "https://www.kbc.co.ke/nba-reaffirms-commitment-to-biosafety-environmental-protection/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "County News",
+        "More",
+        "CBD COP17",
+        "National Bio-safety Authority"
+      ],
+      "author": "KBC Digital",
+      "theme": "drustvo",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/10/NBA.jpeg",
+      "imageAlt": "NBA reaffirms commitment to biosafety, environmental protection",
+      "addedAt": "2026-10-23T07:29:48.430Z"
+    },
+    {
+      "slug": "nairobi-2026-10-23-kbc-former-nupea-accountant-fined-ksh130-000-d507b7",
+      "title": "Former NuPEA accountant fined Ksh130,000 for falsifying KCSE certificate",
+      "summary": "A former accountant at the Nuclear Power and Energy Agency (NuPEA) has been convicted and fined Ksh130,000 for falsifying academic documents to secure employment. In a judgment delivered on October 19, 2026, Milimani Anti-Corruption Court Magistrate Rose Ndombi convicted Lilian Mweche Muyumba on two counts of uttering a false document and presenting a forged certificate […] The post Former NuPEA accountant fined Ksh130,000 for falsifying KCSE certificate appeared first on KBC Digital .",
+      "date": "2026-10-23T06:44:47.000Z",
+      "url": "https://www.kbc.co.ke/former-nupea-accountant-fined-ksh130000-for-falsifying-kcse-certificate/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "County News",
+        "EACC",
+        "forgery",
+        "NuPEA"
+      ],
+      "author": "KBC Digital",
+      "theme": "sigurnost",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/09/hammer-1.jpeg",
+      "imageAlt": "Former NuPEA accountant fined Ksh130,000 for falsifying KCSE certificate",
+      "addedAt": "2026-10-23T07:29:48.430Z"
+    },
+    {
+      "slug": "nairobi-2026-10-23-capitalfm-kenya-four-neighbours-targeted-in-unesco-ba4906",
+      "title": "Kenya, Four Neighbours Targeted in UNESCO $30m Climate Resilience Plan",
+      "summary": "The programme, titled Transboundary Ecosystem-Based Climate Resilience and Disaster Risk Reduction in Eastern Africa Countries, is expected to be submitted to the Adaptation Fund for consideration after participating countries refine and validate the proposal.",
+      "date": "2026-10-23T06:30:00.000Z",
+      "url": "https://capitalfm.africa/kenya-four-neighbours-targeted-in-unesco-30m-climate-resilience-plan/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "NATIONAL NEWS",
+        "News",
+        "kenya",
+        "Lake Victoria Basin Commission"
+      ],
+      "author": "OJWANG JOE",
+      "theme": "potres",
+      "image": "https://capitalfm.africa/wp-content/uploads/news/2024/09/unesco.jpg",
+      "imageAlt": "Kenya, Four Neighbours Targeted in UNESCO $30m Climate Resilience Plan",
+      "addedAt": "2026-10-23T07:29:29.382Z"
+    },
+    {
+      "slug": "nairobi-2026-10-23-capitalfm-two-men-lynched-by-mob-in-borabu-over-cd7365",
+      "title": "Two Men Lynched By Mob In Borabu Over Alleged Land Sale Dispute",
+      "summary": "NAIROBI, Kenya Oct 23 – Police in Borabu are investigating a mob lynching incident in which two men were killed yesterday following an alleged land sale dispute in Nyansiongo Village,Borabu…",
+      "date": "2026-10-23T06:05:52.000Z",
+      "url": "https://capitalfm.africa/two-men-lynched-by-mob-in-borabu-over-alleged-land-sale-dispute/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "crime",
+        "CRIME PREVENTION",
+        "NATIONAL NEWS",
+        "News"
+      ],
+      "author": "ROSEMARY ONCHARI",
+      "theme": "drustvo",
+      "image": "https://capitalfm.africa/wp-content/uploads/news/2025/12/crime-scene-1-scaled.jpeg",
+      "imageAlt": "Two Men Lynched By Mob In Borabu Over Alleged Land Sale Dispute",
+      "addedAt": "2026-10-23T07:29:29.382Z"
+    },
+    {
+      "slug": "nairobi-2026-10-23-capitalfm-kenyan-fugitive-extradited-to-the-us-over-061999",
+      "title": "Kenyan fugitive Extradited to the US Over 2013 Manslaughter Conviction",
+      "summary": "Court records indicate that Kibutu, then aged 32, was driving along Golden State Boulevard when he crossed a double yellow line and collided with another vehicle. The crash killed a 16-year-old passenger and left the driver and two other occupants of the vehicle injured.",
+      "date": "2026-10-23T05:52:55.000Z",
+      "url": "https://capitalfm.africa/kenyan-fugitive-extradited-to-the-us-over-2013-manslaughter-conviction/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "crime",
+        "KENYA US RELATIONS",
+        "NATIONAL NEWS",
+        "News"
+      ],
+      "author": "LABAN WANAMBISI",
+      "theme": "sport",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/10/Extraditon-of-Sancho-Kibutu-526x630.jpg",
+      "imageAlt": "Kenyan fugitive Extradited to the US Over 2013 Manslaughter Conviction",
+      "addedAt": "2026-10-23T07:29:29.382Z"
+    },
+    {
+      "slug": "nairobi-2026-10-23-capitalfm-kenya-s-pathologist-ahmed-kalebi-inducted-840119",
+      "title": "Kenya’s Pathologist Ahmed Kalebi Inducted into Global Hall of Fame",
+      "summary": "“Africa has exceptional talent in pathology, science and laboratory medicine. We must create more opportunities for that expertise to be recognised and celebrated internationally, while continuing to build the diagnostic capabilities, institutions and professional capacity that our healthcare systems urgently need at home,” he said.",
+      "date": "2026-10-23T05:08:00.000Z",
+      "url": "https://capitalfm.africa/kenyas-pathologist-ahmed-kalebi-inducted-into-global-hall-of-fame/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "Capital Health",
+        "Health",
+        "NATIONAL NEWS",
+        "News"
+      ],
+      "author": "Spencer Walela",
+      "theme": "drustvo",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/10/WhatsApp-Image-2026-10-21-at-13.28.50-1200x630.jpeg",
+      "imageAlt": "Kenya’s Pathologist Ahmed Kalebi Inducted into Global Hall of Fame",
+      "addedAt": "2026-10-23T07:29:29.382Z"
+    },
+    {
+      "slug": "nairobi-2026-10-23-capitalfm-ethekon-pledges-transparency-and-public-e606ab",
+      "title": "Ethekon pledges Transparency and Public Participation Ahead of 2027 Election",
+      "summary": "“Public trust in electoral institutions is built not only through the conduct of elections but also through transparent processes, access to reliable information, accountability in decision-making and meaningful engagement with citizens,” Ethekon said.",
+      "date": "2026-10-23T03:45:00.000Z",
+      "url": "https://capitalfm.africa/ethekon-pledges-for-transparency-and-public-participation-ahead-of-2027-election/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "NATIONAL NEWS",
+        "News",
+        "Politics",
+        "inaugural Global Trust Summit 2026"
+      ],
+      "author": "CORRESPONDENT",
+      "theme": "politika",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/07/EDUNG-ETHEKON.jpg",
+      "imageAlt": "Ethekon pledges Transparency and Public Participation Ahead of 2027 Election",
+      "addedAt": "2026-10-23T07:29:29.383Z"
+    },
+    {
+      "slug": "nairobi-2026-10-23-capitalfm-koskei-urge-greater-accountability-to-07492d",
+      "title": "Koskei Urge Greater Accountability to Rebuild Public Trust Ahead of 2027 Polls",
+      "summary": "In a keynote address titled “Rebuilding Trust from the Frontline: Challenges, Prospects, and Opportunities,” Koskei said efforts to restore trust must lead to practical action that addresses people’s everyday concerns and demonstrates that public institutions serve the public interest.",
+      "date": "2026-10-23T03:07:00.000Z",
+      "url": "https://capitalfm.africa/koskei-urge-greater-accountability-to-rebuild-public-trust-ahead-of-2027-polls/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "NATIONAL NEWS",
+        "News",
+        "Head of Public Service Felix Koskei",
+        "national"
+      ],
+      "author": "CORRESPONDENT",
+      "theme": "rat",
+      "image": "https://capitalfm.africa/wp-content/uploads/news/2024/03/Felix-Koskei.jpg",
+      "imageAlt": "Koskei Urge Greater Accountability to Rebuild Public Trust Ahead of 2027 Polls",
+      "addedAt": "2026-10-23T07:29:29.383Z"
+    },
     {
       "slug": "nairobi-2026-10-22-nation-curb-fake-exam-papers-racket-agony-for-b580fb",
       "title": "Curb fake exam papers’ racket agony for parents",

@@ -4,7 +4,7 @@
   "lang": "en",
   "city": "Singapur",
   "country": "Singapur",
-  "updatedAt": "2026-10-23T04:39:33.015Z",
+  "updatedAt": "2026-10-23T07:30:27.722Z",
   "sources": [
     {
       "id": "cna",
@@ -12,8 +12,9 @@
       "url": "https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml",
       "ok": true,
       "fetched": 20,
+      "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-23T04:39:24.053Z"
+      "checkedAt": "2026-10-23T07:30:18.543Z"
     },
     {
       "id": "straitstimes",
@@ -21,8 +22,9 @@
       "url": "https://www.straitstimes.com/news/singapore/rss.xml",
       "ok": true,
       "fetched": 50,
+      "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-23T04:39:24.516Z"
+      "checkedAt": "2026-10-23T07:30:18.920Z"
     },
     {
       "id": "businesstimes",
@@ -30,10 +32,11 @@
       "url": "https://www.businesstimes.com.sg/rss",
       "ok": false,
       "fetched": 0,
+      "corrupt": 0,
       "errors": [
         "https://www.businesstimes.com.sg/rss: nije feed"
       ],
-      "checkedAt": "2026-10-23T04:39:25.700Z"
+      "checkedAt": "2026-10-23T07:30:19.882Z"
     },
     {
       "id": "mothership",
@@ -41,10 +44,11 @@
       "url": "https://mothership.sg/rss",
       "ok": false,
       "fetched": 0,
+      "corrupt": 0,
       "errors": [
         "https://mothership.sg/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-23T04:39:27.435Z"
+      "checkedAt": "2026-10-23T07:30:21.620Z"
     },
     {
       "id": "today",
@@ -52,10 +56,11 @@
       "url": "https://www.todayonline.com/rss",
       "ok": false,
       "fetched": 0,
+      "corrupt": 0,
       "errors": [
-        "https://www.todayonline.com/rss: HTTP 404"
+        "https://www.todayonline.com/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-23T04:39:29.255Z"
+      "checkedAt": "2026-10-23T07:30:23.505Z"
     },
     {
       "id": "onlinecitizen",
@@ -63,10 +68,11 @@
       "url": "https://www.theonlinecitizen.com/feed/",
       "ok": false,
       "fetched": 0,
+      "corrupt": 0,
       "errors": [
         "https://www.theonlinecitizen.com/feed/: HTTP 404"
       ],
-      "checkedAt": "2026-10-23T04:39:30.722Z"
+      "checkedAt": "2026-10-23T07:30:25.245Z"
     },
     {
       "id": "zaobao",
@@ -74,10 +80,11 @@
       "url": "https://www.zaobao.com.sg/rss.xml",
       "ok": false,
       "fetched": 0,
+      "corrupt": 0,
       "errors": [
         "https://www.zaobao.com.sg/rss.xml: HTTP 404"
       ],
-      "checkedAt": "2026-10-23T04:39:31.901Z"
+      "checkedAt": "2026-10-23T07:30:26.471Z"
     },
     {
       "id": "stworld",
@@ -85,13 +92,191 @@
       "url": "https://www.straitstimes.com/world/rss.xml",
       "ok": false,
       "fetched": 0,
+      "corrupt": 0,
       "errors": [
         "https://www.straitstimes.com/world/rss.xml: HTTP 404"
       ],
-      "checkedAt": "2026-10-23T04:39:33.015Z"
+      "checkedAt": "2026-10-23T07:30:27.722Z"
     }
   ],
   "items": [
+    {
+      "slug": "singapur-2026-10-23-cna-malaysia-opposition-bloc-pn-survives-dffd3b",
+      "title": "Malaysia opposition bloc PN survives deregistration for now, but internal rifts cloud political future: Analysts",
+      "summary": "Perikatan Nasional can now contest next month’s Melaka election under its own name and symbol, after securing a temporary legal reprieve from deregistration.",
+      "date": "2026-10-23T07:26:50.000Z",
+      "url": "https://www.channelnewsasia.com/asia/malaysia-perikatan-nasional-deregistration-opposition-elections-political-future-6478011",
+      "source": "cna",
+      "sourceName": "CNA",
+      "categories": [
+        "Asia"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://dam.mediacorp.sg/image/upload/s--GR4aG4xQ--/fl_relative,g_south_east,l_mediacorp:cna:watermark:2021-08:cna,w_0.1/f_auto,q_auto/c_fill,g_auto,h_468,w_830/v1/mediacorp/cna/image/2022/11/20/fdz_4778.jpg?itok=6l56Ev6h",
+      "imageAlt": "Malaysia opposition bloc PN survives deregistration for now, but internal rifts cloud political future: Analysts",
+      "addedAt": "2026-10-23T07:30:18.543Z"
+    },
+    {
+      "slug": "singapur-2026-10-23-cna-indonesia-seeks-to-rev-up-domestic-ev-43d158",
+      "title": "Indonesia seeks to rev up domestic EV production amid rising demand",
+      "summary": "Indonesia is the world's leading nickel producer, giving it an advantage in developing a local EV battery supply chain and expanding manufacturing.",
+      "date": "2026-10-23T07:26:03.000Z",
+      "url": "https://www.channelnewsasia.com/asia/indonesia-electric-vehicles-ev-motorcycles-nickel-boost-domestic-manufacturing-6485601",
+      "source": "cna",
+      "sourceName": "CNA",
+      "categories": [
+        "Asia"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://dam.mediacorp.sg/image/upload/s--rZ-_A7yP--/fl_relative,g_south_east,l_mediacorp:cna:watermark:2021-08:cna,w_0.1/f_auto,q_auto/c_fill,g_auto,h_468,w_830/v1/mediacorp/cna/image/2026/03/10/dsc_7755.jpg?itok=3NgvagjH",
+      "imageAlt": "Indonesia seeks to rev up domestic EV production amid rising demand",
+      "addedAt": "2026-10-23T07:30:18.543Z"
+    },
+    {
+      "slug": "singapur-2026-10-23-cna-ambani-s-us-3-2-billion-jio-indian-ipo-0bbeb1",
+      "title": "Ambani's US$3.2 billion Jio Indian IPO lures investors as bids surge on final day",
+      "summary": "Jio Platforms', India's largest ever, is being closely watched as a test of investor appetite for large listings at a time when AI-linked stocks are facing increased scrutiny.",
+      "date": "2026-10-23T07:21:00.000Z",
+      "url": "https://www.channelnewsasia.com/business/mukesh-ambani-jio-ipo-india-investors-6485616",
+      "source": "cna",
+      "sourceName": "CNA",
+      "categories": [
+        "Business ,Asia"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://dam.mediacorp.sg/image/upload/s--TX5v991k--/fl_relative,g_south_east,l_mediacorp:cna:watermark:2024-04:reuters_1,w_0.1/f_auto,q_auto/c_fill,g_auto,h_468,w_830/v1/one-cms/core/2026-10-21T160313Z_3_LYNXMPEM9K01W_RTROPTP_3_RELIANCE-JIO-IPO.JPG?itok=w5zjSCOZ",
+      "imageAlt": "Ambani's US$3.2 billion Jio Indian IPO lures investors as bids surge on final day",
+      "addedAt": "2026-10-23T07:30:18.543Z"
+    },
+    {
+      "slug": "singapur-2026-10-23-straitstimes-over-500k-n95-masks-to-be-distributed-to-d7fec1",
+      "title": "Over 500k N95 masks to be distributed to vulnerable seniors, migrant workers in $1m DBS initiative",
+      "summary": "DBS will also give air purifiers to selected social agency partners and seniors.",
+      "date": "2026-10-23T07:18:50.000Z",
+      "url": "https://www.straitstimes.com/singapore/over-500k-n95-masks-to-be-distributed-to-vulnerable-seniors-migrant-workers-in-1m-dbs-initiative",
+      "source": "straitstimes",
+      "sourceName": "The Straits Times",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Over 500k N95 masks to be distributed to vulnerable seniors, migrant workers in $1m DBS initiative",
+      "addedAt": "2026-10-23T07:30:18.920Z"
+    },
+    {
+      "slug": "singapur-2026-10-23-cna-why-is-indonesia-facing-a-rare-msci-e4ab0a",
+      "title": "Why is Indonesia facing a rare MSCI downgrade and what's at stake?",
+      "summary": "Only three other markets have faced a double MSCI downgrade from emerging market to “standalone” status since 1997.",
+      "date": "2026-10-23T07:02:00.000Z",
+      "url": "https://www.channelnewsasia.com/asia/indonesia-msci-stock-market-downgrade-jakarta-composite-6482001",
+      "source": "cna",
+      "sourceName": "CNA",
+      "categories": [
+        "Asia ,Business"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://dam.mediacorp.sg/image/upload/s--61zfXmu8--/f_auto,q_auto/c_fill,g_auto,h_468,w_830/v1/mediacorp/cna/image/2026/10/23/ap26289240079521.jpg?itok=Pta3TRMK",
+      "imageAlt": "Why is Indonesia facing a rare MSCI downgrade and what's at stake?",
+      "addedAt": "2026-10-23T07:30:18.544Z"
+    },
+    {
+      "slug": "singapur-2026-10-23-cna-ocbc-customers-report-issues-with-internet-e48b9a",
+      "title": "OCBC customers report issues with internet and mobile banking services",
+      "summary": "Some customers reported on the bank's Facebook page that they were unable to use payment methods such as PayNow with the OCBC app.",
+      "date": "2026-10-23T06:55:00.000Z",
+      "url": "https://www.channelnewsasia.com/singapore/ocbc-down-internet-mobile-banking-app-outage-downdetector-6485511",
+      "source": "cna",
+      "sourceName": "CNA",
+      "categories": [
+        "Singapore"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://dam.mediacorp.sg/image/upload/s--OLi6DzBQ--/f_auto,q_auto/c_fill,g_auto,h_468,w_830/v1/mediacorp/cna/image/2026/08/07/2026-08-06t225454z_1807154605_rc2hrhantvj6_rtrmadp_3_ocbc-results.jpg?itok=SI4GSAO3",
+      "imageAlt": "OCBC customers report issues with internet and mobile banking services",
+      "addedAt": "2026-10-23T07:30:18.544Z"
+    },
+    {
+      "slug": "singapur-2026-10-23-straitstimes-ocbc-mobile-internet-banking-services-85e336",
+      "title": "OCBC mobile, internet banking services restored after disruption: Spokesperson",
+      "summary": "No customer data was compromised, the bank said.",
+      "date": "2026-10-23T06:52:04.000Z",
+      "url": "https://www.straitstimes.com/singapore/ocbc-customers-facing-difficulties-accessing-app-internet-banking-services",
+      "source": "straitstimes",
+      "sourceName": "The Straits Times",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "OCBC mobile, internet banking services restored after disruption: Spokesperson",
+      "addedAt": "2026-10-23T07:30:18.920Z"
+    },
+    {
+      "slug": "singapur-2026-10-23-cna-fiji-pitches-pride-over-money-in-bid-to-9e2ccd",
+      "title": "Fiji pitches pride over money in bid to lure Nawaqanitawase",
+      "summary": "",
+      "date": "2026-10-23T06:40:17.000Z",
+      "url": "https://www.channelnewsasia.com/sport/fiji-pitches-pride-over-money-in-bid-lure-nawaqanitawase-6485536",
+      "source": "cna",
+      "sourceName": "CNA",
+      "categories": [
+        "Sport"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://dam.mediacorp.sg/image/upload/s--RmXxkK2e--/fl_relative,g_south_east,l_mediacorp:cna:watermark:2024-04:reuters_1,w_0.1/f_auto,q_auto/c_fill,g_auto,h_468,w_830/v1/one-cms/core/2026-10-23T064017Z_1_LYNXMPEM9M0EV_RTROPTP_3_RUGBY-UNION-WORLDCUP-AUS-POR.JPG?itok=oyRcG0RM",
+      "imageAlt": "Fiji pitches pride over money in bid to lure Nawaqanitawase",
+      "addedAt": "2026-10-23T07:30:18.544Z"
+    },
+    {
+      "slug": "singapur-2026-10-23-straitstimes-man-charged-with-cheating-friend-out-of-112-7d0e9d",
+      "title": "Man charged with cheating friend out of $112,500 after learning he was a scam victim",
+      "summary": "He allegedly deceived the elderly man by claiming he could help recover his scam losses.",
+      "date": "2026-10-23T06:08:35.000Z",
+      "url": "https://www.straitstimes.com/singapore/courts-crime/man-charged-with-cheating-friend-out-of-112500-after-learning-he-was-a-scam-victim",
+      "source": "straitstimes",
+      "sourceName": "The Straits Times",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Man charged with cheating friend out of $112,500 after learning he was a scam victim",
+      "addedAt": "2026-10-23T07:30:18.920Z"
+    },
+    {
+      "slug": "singapur-2026-10-23-straitstimes-pickleball-to-be-limited-to-9-courts-under-f93a8c",
+      "title": "Pickleball to be limited to 9 courts under Sengkang Town Council after residents’ survey",
+      "summary": "Play is permitted at the 9 approved courts from 10am to 7.30pm.",
+      "date": "2026-10-23T05:32:58.000Z",
+      "url": "https://www.straitstimes.com/singapore/pickleball-to-be-limited-to-9-courts-under-sengkang-town-council-after-residents-survey",
+      "source": "straitstimes",
+      "sourceName": "The Straits Times",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Pickleball to be limited to 9 courts under Sengkang Town Council after residents’ survey",
+      "addedAt": "2026-10-23T07:30:18.920Z"
+    },
+    {
+      "slug": "singapur-2026-10-23-straitstimes-armed-intruder-drill-puts-bukit-batok-f9d27d",
+      "title": "Armed intruder drill puts Bukit Batok Secondary School students, staff to the test",
+      "summary": "The “armed intruder” was part of an emergency drill involving about 1,100 students and 160 staff.",
+      "date": "2026-10-23T05:00:00.000Z",
+      "url": "https://www.straitstimes.com/singapore/parenting-education/armed-intruder-drill-puts-bukit-batok-secondary-school-students-staff-to-the-test",
+      "source": "straitstimes",
+      "sourceName": "The Straits Times",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Armed intruder drill puts Bukit Batok Secondary School students, staff to the test",
+      "addedAt": "2026-10-23T07:30:18.920Z"
+    },
     {
       "slug": "singapur-2026-10-23-cna-new-zealand-s-top-military-officer-resigns-4125a4",
       "title": "New Zealand's top military officer resigns over 'inappropriate relationship'",
