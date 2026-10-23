@@ -7,7 +7,9 @@ const prepared=new Date(delivered.getTime()-60000).toISOString();
 const base={id:'EDITORIAL-TEST-1',sourceUrl:'https://gnk-asg.hr/gnk-aktual/',sha256:SHA,currentSha256:SHA,preparedAt:prepared,
  proofOfDelivery:{status:'delivered',verified:true,contentSha256:SHA,receiptId:'smtp-provider-confirmation-123',deliveredAt:delivered.toISOString(),verifiedAt:delivered.toISOString()},
  sourceVerified:true,action:'internal-seo-check',scope:'low-risk-internal',decision:{type:'none'}};
-const assess=(entry,offset)=>assessReview(entry,{verifiedDigest:entry.currentSha256,now:new Date(delivered.getTime()+offset)});
+const trustedReceipt=entry=>({entryId:entry.id,...entry.proofOfDelivery});
+const assess=(entry,offset)=>assessReview(entry,{verifiedDigest:entry.currentSha256,
+ trustedReceipt:trustedReceipt(entry),now:new Date(delivered.getTime()+offset)});
 test('Cannot silently approve before confirmed delivery',()=>{
  assert.equal(assess({...base,proofOfDelivery:{status:'sent',receiptId:'a',deliveredAt:delivered.toISOString()}},REVIEW_MS).status,'HOLD');
  assert.equal(assess({...base,proofOfDelivery:{}},REVIEW_MS).mayProceedInternally,false);
@@ -34,7 +36,8 @@ test('Frozen content, source and receipt must remain verified',()=>{
 });
 test('No future-delivery approval, and ledger always denies publishing',()=>{
  assert.equal(assess(base,-100000).status,'HOLD');
- const ledger=evaluateLedger({entries:[base]},{now:new Date(delivered.getTime()+REVIEW_MS)});
+ const ledger=evaluateLedger({entries:[base]},{now:new Date(delivered.getTime()+REVIEW_MS),
+  verifyEntry:id=>id===base.id?{payloadSha256:SHA,receipt:trustedReceipt(base)}:null});
  assert.equal(ledger.decisions.length,1);
  assert.equal(ledger.decisions[0].mayPublish,false);
 });
