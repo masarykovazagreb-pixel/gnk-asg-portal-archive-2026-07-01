@@ -21,6 +21,12 @@ import { esc, shortDate, truncate, themeFor } from './lib.mjs';
 import { CHANNELS, HUB } from './build.mjs';
 import { logoFor, logoAlternate, logoJsonLd } from './brand.mjs';
 
+/* Broj jezika se računa iz channels.json, ne prepisuje u tekst: kad se doda
+   izdanje na novom jeziku, naslov i opis ne smiju ostati na starom broju. */
+const LANG_COUNT = new Set(CHANNELS.map((c) => c.lang)).size;
+const HR_SMALL = { 5: 'pet', 6: 'šest', 7: 'sedam', 8: 'osam', 9: 'devet', 10: 'deset', 11: 'jedanaest', 12: 'dvanaest', 13: 'trinaest', 14: 'četrnaest', 15: 'petnaest', 16: 'šesnaest', 17: 'sedamnaest', 18: 'osamnaest', 19: 'devetnaest', 20: 'dvadeset' };
+const hrCount = (n) => HR_SMALL[n] || String(n);
+
 const HERE = dirname(fileURLToPath(import.meta.url));
 const APP = join(HERE, '..');
 const ROOT = join(APP, '..', '..');
@@ -894,8 +900,8 @@ export function buildAktualCentral({ cards = [] } = {}) {
     <div class="amc-hero-copy">
       ${masterMark(lang)}
       <p class="amc-eyebrow">${T('AKTUAL MEDIA · sve na jednom mjestu', 'AKTUAL MEDIA · everything in one place')}</p>
-      <h2 id="amcTitle">${T('Sedamnaest gradova', 'Seventeen cities')}, ${T('trinaest jezika', 'thirteen languages')}, ${items.length.toLocaleString(en ? 'en-US' : 'hr-HR')} ${T('tekstova', 'stories')} — ${T('na jednoj ploči', 'on one board')}</h2>
-      <p class="amc-lead">${T('Svaka pločica je naslovnica izdanja: na njoj piše što se klikom dobije, a klik vodi na glavni link. Osam izdanja pokriva regiju — Zagreb, Beograd, Sarajevo, Budimpešta, Ljubljana, Rim, Sofija i Bukurešt — a devet svjetskih pokriva pet kontinenata: Kairo i Nairobi, Jakarta, Singapur, Tokio i Peking, New York, São Paulo i Sydney. S tih stranica uvijek se vraćate ovamo, u središte gdje se sve spaja.', 'Every tile is the cover of an edition: it says what a click gets you, and the click opens the main link. Eight editions cover the region — Zagreb, Belgrade, Sarajevo, Budapest, Ljubljana, Rome, Sofia and Bucharest — and nine world editions cover five continents: Cairo and Nairobi, Jakarta, Singapore, Tokyo and Beijing, New York, São Paulo and Sydney. From those pages you always come back here, to the centre where everything connects.')}</p>
+      <h2 id="amcTitle">${T(`${hrCount(CHANNELS.length)[0].toUpperCase()}${hrCount(CHANNELS.length).slice(1)} gradova`, `${CHANNELS.length} cities`)}, ${T(`${hrCount(LANG_COUNT)} jezika`, `${LANG_COUNT} languages`)}, ${items.length.toLocaleString(en ? 'en-US' : 'hr-HR')} ${T('tekstova', 'stories')} — ${T('na jednoj ploči', 'on one board')}</h2>
+      <p class="amc-lead">${T('Svaka pločica je naslovnica izdanja: na njoj piše što se klikom dobije, a klik vodi na glavni link. Osam izdanja pokriva regiju — Zagreb, Beograd, Sarajevo, Budimpešta, Ljubljana, Rim, Sofija i Bukurešt — a devet svjetskih pokriva pet kontinenata: Kairo i Nairobi, Jakarta, Singapur, Tokio i Peking, New York, São Paulo i Sydney. S tih stranica uvijek se vraćate ovamo, u središte gdje se sve spaja. S regijom, mreža pokriva šest nastanjenih kontinenata — Europe, Afrike, Azije, Sjeverne i Južne Amerike te Oceanije — a svaka pločica nosi jezik izdanja i vlastiti feed.', 'Every tile is the cover of an edition: it says what a click gets you, and the click opens the main link. Eight editions cover the region — Zagreb, Belgrade, Sarajevo, Budapest, Ljubljana, Rome, Sofia and Bucharest — and nine world editions cover five continents: Cairo and Nairobi, Jakarta, Singapore, Tokyo and Beijing, New York, São Paulo and Sydney. From those pages you always come back here, to the centre where everything connects. With the region included, the network covers six inhabited continents — Europe, Africa, Asia, North and South America and Oceania — and every tile names the edition’s language and its own feed.')}</p>
       <div class="amc-hero-cta">
         <a class="amc-btn amc-btn--solid" href="#izdanja-po-zemljama">${T('Izdanja 3 × 3 ↓', 'Editions 3 × 3 ↓')}</a>
         <a class="amc-btn" href="#mravinjak">${T('Mravinjak vijesti ↓', 'News anthill ↓')}</a>
@@ -1019,9 +1025,18 @@ ${END}`;
     html = html.replace(anchor, `${anchor}\n${block}`);
   }
 
-  const desc = `AKTUAL MEDIA na jednoj ploči: ${CHANNELS.length} gradskih izdanja na trinaest jezika — osam u regiji i devet na pet kontinenata — ${items.length} tekstova iz ${sources.size} medija, devet deskova, poslovni tjednik, moda, galerija i radio. Urednik i direktor: Nermin Sefić.`;
-  html = html.replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${esc(truncate(desc, 300))}">`);
-  html = html.replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${esc(truncate(desc, 300))}">`);
+  const desc = `AKTUAL MEDIA na jednoj ploči: ${CHANNELS.length} gradskih izdanja na ${hrCount(LANG_COUNT)} jezika — osam u regiji i devet na pet kontinenata — ${items.length} tekstova iz ${sources.size} medija, devet deskova, poslovni tjednik, moda, galerija i radio. Urednik i direktor: Nermin Sefić.`;
+  /* Opis se mijenja na svakom ciklusu, pa se mora zamijeniti na svim trima
+     mjestima — dosad je twitter:description ostajao na starom broju tekstova
+     i medija i nije se slagao s og:description. */
+  const safeDesc = esc(truncate(desc, 300));
+  html = html.replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${safeDesc}">`);
+  html = html.replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${safeDesc}">`);
+  html = html.replace(/<meta name="twitter:description" content="[^"]*">/, `<meta name="twitter:description" content="${safeDesc}">`);
+  /* JSON-LD čvorovi (CollectionPage i hasPart po izdanju) nose stari opis
+     „8 gradskih izdanja na 8 jezika, 3360 tekstova". Opis se mijenja, pa se
+     u graf upisuje isti, svježi tekst — jedan izvor za sve čvorove. */
+  html = html.replace(/AKTUAL MEDIA na jednoj ploči: [^"\\]*?Nermin Sefić\./g, desc);
 
   const PERF = `<link rel="preload" as="image" href="${IMG}/zagreb-440.webp" imagesrcset="${IMG}/zagreb-240.webp 240w, ${IMG}/zagreb-440.webp 440w" imagesizes="(max-width:620px) 84px,(max-width:1040px) 22vw,11vw" fetchpriority="high">\n<style id="aktual-perf">.amc-river,.amc-tiles,.amm-grid,.amx-platforms{content-visibility:auto;contain-intrinsic-size:auto 640px}@media(prefers-reduced-motion:reduce){.amx-ring,.amm-card,.amm-home{transition:none}}</style>\n</head>`;
   const addPerf = (page) => page.includes('id="aktual-perf"') ? page : page.replace('</head>', PERF);

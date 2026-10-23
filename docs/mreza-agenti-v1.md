@@ -1,4 +1,4 @@
-# Mreža AKTUAL MEDIA — 20 ulaza, 18 portala, 21 agent
+# Mreža AKTUAL MEDIA — 20 ulaza, 18 portala, 22 agenta
 
 Ovaj dokument objašnjava kako je mreža povezana, odakle koja stranica dobiva
 linkove, tko njome upravlja i koji agent što provjerava. Ako se nešto ovdje
@@ -23,7 +23,9 @@ Pravila bloka:
   `nofollow`** — mreža ne skriva veze;
 - ista adresa ne pojavljuje se dvaput na istoj stranici (arhiva i dnevnik su
   u jezgri, pa se u sloju portala ne ponavljaju);
-- hrvatski i engleski ulaz imaju **isti skup adresa**, samo prevedene natpise.
+- svih 14 jezika ima **isti skup adresa**, samo prevedene natpise: blok mreže i okvir
+  izdanja (oznake, povratni link, podnožje) na jeziku su izdanja, a imena izdanja,
+  ljudi i tvrtki se ne prevode.
 
 Blok se ne piše ručno ni u jednu stranicu. Jedini izvor je
 `apps/satellites/lib/network-v1.mjs`, a ugrađuju ga:
@@ -80,6 +82,7 @@ izvještaj ide u `artifacts/network-agents-v1.json`.
 | --- | --- |
 | `mesh-link-agent` | 20 ulaza na svakoj stranici, apsolutni https, bez self-linka i nofollowa |
 | `edition-parity-agent` | šest stranica, hub HR/EN, sitemapi i JSON indeks |
+| `network-standard-agent` | 17 gradova i 9 portala: vlastita slika i znak, jezik zemlje, manifest i CSP, blok mreže, svjež feed, sinkronizacija popisa |
 | `seo-matrix-agent` | title, description, canonical, hreflang, OG |
 | `meta-hygiene-agent` | meta keywords bez `#` i autora; hashtagovi u `article:tag` |
 | `brand-logo-agent` | svaki znak ima datoteku, stranicu, sitemap i alt |
@@ -100,7 +103,7 @@ node scripts/network-agents-v1.mjs --only mesh-link-agent,seo-matrix-agent
 node scripts/network-sync-v1.mjs
 ```
 
-Workflow `MREŽA — agenti i sinkronizacija` radi svaki dan u 04:40 UTC (21 agent) i na
+Workflow `MREŽA — agenti i sinkronizacija` radi svaki dan u 04:40 UTC (22 agenta) i na
 svaku promjenu bloka, graditelja ili registra agenata. Posao je **samo za
 čitanje** (`contents: read`): gradi u radnom prostoru runnera i sprema
 izvještaj kao artifact, pa ne može pomaknuti `main`.

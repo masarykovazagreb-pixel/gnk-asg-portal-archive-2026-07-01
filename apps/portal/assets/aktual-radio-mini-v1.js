@@ -180,3 +180,22 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount);
   else mount();
 })();
+
+/* MINI TRAKA IZDANJA — pojavi se tek kad glavno zaglavlje izađe iz vidnog polja.
+ * Bila je umetnuta u svaku stranicu; premještena je ovamo kako bi stranice
+ * izdanja mogle nositi CSP bez 'unsafe-inline' za skripte. */
+(function () {
+  'use strict';
+  function initEditionRail() {
+    var rail = document.getElementById('edmini');
+    if (!rail) return;
+    var head = document.querySelector('.masthead');
+    if (!head) return;
+    if (!('IntersectionObserver' in window)) { rail.hidden = false; return; }
+    new IntersectionObserver(function (entries) {
+      rail.hidden = entries[0].isIntersecting;
+    }, { rootMargin: '-60px 0px 0px 0px' }).observe(head);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initEditionRail);
+  else initEditionRail();
+})();

@@ -16,6 +16,7 @@ import { fileURLToPath } from 'node:url';
 import { esc, longDate, shortDate, stampLocal, slugify, isoWeek, themeFor, scoreFromTitle, truncate, safeJson } from './lib.mjs';
 import { t, ANALYSIS } from '../src/strings.mjs';
 import { logoFor, logoAlternate, channelLogoSlug, LOGO_W, LOGO_H } from './brand.mjs';
+import { chromeOf, desksOf, extraOf, editionsUi } from '../src/chrome.mjs';
 import { meshBlock, MESH_CSS } from '../../satellites/lib/network-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -60,14 +61,15 @@ export const CITY_SHORT = {
 };
 
 function editionsStrip(channel) {
+  const [navLabel, isCurrent, openEdition] = editionsUi(channel.lang);
   const items = CHANNELS.map((c) => {
     const current = c.id === channel.id;
-    return `<li class="eds-i${current ? ' is-current' : ''}"><a href="${c.base}"${current ? ' aria-current="page"' : ' rel="external noopener"'} aria-label="${esc(c.title)}${current ? ' — ovo izdanje' : ' — otvori izdanje'}">
+    return `<li class="eds-i${current ? ' is-current' : ''}"><a href="${c.base}"${current ? ' aria-current="page"' : ' rel="external noopener"'} aria-label="${esc(c.title)}${current ? ` — ${esc(isCurrent)}` : ` — ${esc(openEdition)}`}">
       <span class="eds-img"><img src="/assets/izdanja/${c.id}-240.webp" alt="" width="96" height="64" loading="lazy" decoding="async"></span>
       <span class="eds-city">${esc(CITY_SHORT[c.id] || c.city)}</span>
     </a></li>`;
   }).join('');
-  return `<nav class="eds" aria-label="AKTUAL MEDIA izdanja">
+  return `<nav class="eds" aria-label="${esc(navLabel)}">
   <a class="eds-home" href="${CENTRAL}#izdanja-po-zemljama" rel="external noopener"><span aria-hidden="true">←</span> AKTUAL MEDIA</a>
   <ul class="eds-row">${items}</ul>
 </nav>`;
@@ -76,16 +78,17 @@ function editionsStrip(channel) {
 /* ---------- MINI TRAKA: 8 izdanja uvijek na dohvat, pojavi se nakon skrola ---------- */
 
 function miniRail(channel) {
+  const [navLabel, isCurrent, openEdition] = editionsUi(channel.lang);
   const items = CHANNELS.map((c) => {
     const cur = c.id === channel.id;
-    return `<a href="${c.base}"${cur ? ' aria-current="page"' : ''} title="${esc(c.title)}" aria-label="${esc(c.title)}${cur ? ' — ovo izdanje' : ' — otvori izdanje'}"><img src="/assets/izdanja/${c.id}-440.webp" alt="" width="34" height="34" loading="lazy" decoding="async"><span>${esc(CITY_SHORT[c.id] || c.city)}</span></a>`;
+    return `<a href="${c.base}"${cur ? ' aria-current="page"' : ''} title="${esc(c.title)}" aria-label="${esc(c.title)}${cur ? ` — ${esc(isCurrent)}` : ` — ${esc(openEdition)}`}"><img src="/assets/izdanja/${c.id}-440.webp" alt="" width="34" height="34" loading="lazy" decoding="async"><span>${esc(CITY_SHORT[c.id] || c.city)}</span></a>`;
   }).join('');
-  return `<nav class="edmini" id="edmini" aria-label="AKTUAL MEDIA izdanja" hidden>
+  /* Ponašanje mini trake premješteno je u vanjski /assets/aktual-radio-mini-v1.js
+     (funkcija initEditionRail), pa stranica nema nijednu umetnutu skriptu i
+     CSP može ostati script-src 'self'. */
+  return `<nav class="edmini" id="edmini" aria-label="${esc(navLabel)}" hidden>
   <a class="edmini-home" href="${CENTRAL}#izdanja-po-zemljama">AKTUAL</a>${items}
-</nav>
-<script>(function(){var n=document.getElementById('edmini');if(!n)return;var h=document.querySelector('.masthead');if(!h)return;
-if(!('IntersectionObserver' in window)){n.hidden=false;return}
-new IntersectionObserver(function(e){n.hidden=e[0].isIntersecting},{rootMargin:'-60px 0px 0px 0px'}).observe(h)})();</script>`;
+</nav>`;
 }
 
 /* ---------- MRAVINJAK: gusti klaster naslova unutar izdanja ---------- */
@@ -464,14 +467,16 @@ ${published ? `<meta property="article:author" content="${PUBLIC}/nermin-sefic/"
 <meta name="twitter:site" content="@aktualmedia">
 <style>:root{--bg:${palette.bg};--surface:${palette.surface};--accent:${palette.accent};--accent2:${palette.accent2};--ink:${palette.ink}}</style>
 <link rel="stylesheet" href="${root}assets/region.css?v=20261021-focus-ring">
+<link rel="manifest" href="${root}manifest.webmanifest">
+<link rel="apple-touch-icon" href="/assets/brand/kanal-${channel.id}-1200.webp">
 ${ld}
 </head>
 <body data-channel="${channel.id}" data-lang="${channel.lang}">
-<a class="skip" href="#sadrzaj">Sadržaj</a>
+<a class="skip" href="#sadrzaj">${esc(chromeOf(pageLang).skip)}</a>
 ${body}
-<a class="hublink" href="${CENTRAL}#izdanja-po-zemljama" rel="external noopener" aria-label="Vrati se u AKTUAL MEDIA — sva izdanja"><span aria-hidden="true">←</span> AKTUAL MEDIA</a>
+<a class="hublink" href="${CENTRAL}#izdanja-po-zemljama" rel="external noopener" aria-label="${esc(chromeOf(pageLang).hubAria)}"><span aria-hidden="true">←</span> AKTUAL MEDIA</a>
 ${miniRail(channel)}
-<script src="/assets/aktual-radio-mini-v1.js?v=20261020-radio-mini" defer></script>
+<script src="/assets/aktual-radio-mini-v1.js?v=20261023-edmini" defer></script>
 </body>
 </html>`;
 }
@@ -487,6 +492,7 @@ function editionLogo(channel, root) {
 }
 
 function header(channel, strings, active = '', root = '') {
+  const chrome = chromeOf(channel.lang);
   const mrvLabel = mrvStrings(channel.lang).nav;
   const nav = [
     ['', strings.latest],
@@ -495,7 +501,7 @@ function header(channel, strings, active = '', root = '') {
     ['metodologija/', strings.methodology]
   ].map(([href, label]) => `<a href="${root}${href}"${href === active ? ' aria-current="page"' : ''}>${esc(label)}</a>`).join('');
   return `<header class="top">
-  <div class="topbar"><span>${esc(strings.editionOf)}</span><a class="topback" href="${CENTRAL}#izdanja-po-zemljama" rel="external noopener">← AKTUAL MEDIA · sva izdanja</a></div>
+  <div class="topbar"><span>${esc(strings.editionOf)}</span><a class="topback" href="${CENTRAL}#izdanja-po-zemljama" rel="external noopener">${esc(chrome.back)}</a></div>
   <div class="masthead">
     <div class="brand">
       ${editionLogo(channel, root)}
@@ -509,8 +515,8 @@ function header(channel, strings, active = '', root = '') {
       <span>${esc(strings.publisher)}: AKTUAL MEDIA d.o.o.</span>
     </div>
   </div>
-  <ul class="hastag-line" aria-label="Oznake izdanja">
-    <li class="hastag-k">Oznake</li>
+  <ul class="hastag-line" aria-label="${esc(chrome.tagsEdition)}">
+    <li class="hastag-k">${esc(chrome.tags)}</li>
     <li><a href="/nermin-sefic/">#NerminSefić</a></li>
     <li><a href="/nermin-sefic/">#NerminSefic</a></li>
     <li><a href="/autorske-objave/">#SeficNermin</a></li>
@@ -521,11 +527,12 @@ function header(channel, strings, active = '', root = '') {
     <li><span>${esc(channel.hashtags[0] || '')}</span></li>
   </ul>
   ${editionsStrip(channel)}
-  <nav class="mainnav" aria-label="${esc(strings.latest)}">${nav}<a href="${CENTRAL}#izdanja-po-zemljama" rel="external">${esc(strings.hub)} ↗</a><a class="langswitch" href="${root}en/" hreflang="en" lang="en" aria-label="Read this edition in English">EN — English</a></nav>
+  <nav class="mainnav" aria-label="${esc(strings.latest)}">${nav}<a href="${CENTRAL}#izdanja-po-zemljama" rel="external">${esc(strings.hub)} ↗</a><a class="langswitch" href="${root}en/" hreflang="en" lang="en" aria-label="${esc(chrome.langSwitch)}">EN — English</a></nav>
 </header>`;
 }
 
 function footer(channel, strings, extra = '') {
+  const chrome = chromeOf(channel.lang);
   const others = CHANNELS.filter((c) => c.id !== channel.id);
   const links = others.map((c) => `<a href="${c.base}" rel="external noopener">${esc(c.title)}</a>`).join('');
   const tags = [...new Set([...channel.hashtags, '#AktualMedia', '#AKTUALMEDIA', '#GNKASG', '#NerminSefić', '#NerminSefic', '#SeficNermin', '#SEFICNERMIN', '#UrednikNerminSefić'])].map((x) => `<li class="tag">${esc(x)}</li>`).join('');
@@ -533,13 +540,19 @@ function footer(channel, strings, extra = '') {
   const tiles = [...others, channel].map((c) => `<li class="xf-tile"><a href="${c.base}" rel="external noopener">
       <img src="/assets/izdanja/${c.id}-tile.webp" alt="${esc(c.title)} — ${esc(c.country)} — otvori izdanje" width="880" height="587" loading="lazy" decoding="async">
     </a></li>`).join('');
-  const desks = [['sport', 'Sport'], ['politika', 'Politika'], ['sigurnost', 'Sigurnost'], ['biznis', 'Business'], ['tehnologija', 'Tehnologija'], ['moda', 'Tjednik Mode'], ['putovanja', 'Putovanja'], ['ljubimci', 'Ljubimci'], ['svijet', 'Svijet']]
-    .map(([id, label]) => `<a href="/izdanja/${id}/">${esc(label)}</a>`).join('') + '<a href="/radio/">Radio</a><a href="/galerija/">Galerija</a><a href="/usa/">Colorado · USA</a><a href="/kanal/">Svi kanali</a><a href="/aktual-media/">Podatkovni desk</a><a href="/status/">Status ažurnosti</a><a href="/gnk-aktual/mreza/">Mreža izdanja</a><a href="/en/gnk-aktual/" hreflang="en" lang="en">AKTUAL MEDIA (EN)</a><a href="/tehnologija-buducnosti/">Tehnologija budućnosti</a><a href="/digital-workforce/knjiga/">Knjiga radnika</a><a href="https://gnk-asg-tjednik.pages.dev/tjednik/2026-W43/" rel="external noopener">Tjednik W43 ↗</a>';
+  /* Natpisi su na jeziku izdanja; adrese ostaju matične (jedan sadržaj,
+     jedan link) i na njih se uvijek ide izrijekom, bez prijevoda URL-a. */
+  const desks = desksOf(channel.lang)
+    .map(([id, label]) => `<a href="/izdanja/${id}/">${esc(label)}</a>`).join('')
+    + extraOf(channel.lang).map(([href, label]) => (href.startsWith('http')
+      ? `<a href="${href}" rel="external noopener">${esc(label)}</a>`
+      : `<a href="${href}">${esc(label)}</a>`)).join('')
+    + `<a href="/en/gnk-aktual/" hreflang="en" lang="en">AKTUAL MEDIA (EN)</a><a href="${CENTRAL}" hreflang="hr" lang="hr">AKTUAL MEDIA (HR)</a>`;
   return `<footer class="foot">
-  <section class="xf" aria-label="Ostala izdanja AKTUAL MEDIA">
-    <div class="xf-head"><h2>Ostala izdanja — klik vodi na izdanje</h2><a href="${CENTRAL}#izdanja-po-zemljama" rel="external noopener">Sva izdanja →</a></div>
+  <section class="xf" aria-label="${esc(chrome.otherAria)}">
+    <div class="xf-head"><h2>${esc(chrome.otherTitle)}</h2><a href="${CENTRAL}#izdanja-po-zemljama" rel="external noopener">${esc(chrome.allArrow)}</a></div>
     <ul class="xf-grid">${tiles}</ul>
-    <div class="xf-desks">${desks}<a href="https://gnk-asg-tjednik.pages.dev/" rel="external noopener">BUSINESS TJEDNIK ↗</a><a href="https://gnk-asg.hr/gnk-aktual/" rel="external noopener">AKTUAL MEDIA — sve na jednom mjestu ↗</a><a href="/izdanja/">Sva izdanja</a></div>
+    <div class="xf-desks">${desks}<a href="https://gnk-asg-tjednik.pages.dev/" rel="external noopener">BUSINESS TJEDNIK ↗</a><a href="${CENTRAL}" rel="external noopener">${esc(chrome.onePlace)} ↗</a><a href="/izdanja/">${esc(chrome.allEditions)}</a></div>
   </section>
   <div class="footgrid">
     <div>
@@ -549,7 +562,7 @@ function footer(channel, strings, extra = '') {
     <div>
       <h2>${esc(strings.publisher)}</h2>
       <p>AKTUAL MEDIA d.o.o. · GNK ASG<br>${esc(strings.editor)}: Nermin Sefić<br><a href="mailto:${CONTACT}">${CONTACT}</a></p>
-      <p class="iz-small">AKTUAL MEDIA vodi ${CHANNELS.length} gradskih kanala, devet deskova, business tjednik, radio i podatkovni desk pod istim imenom i istom metodologijom. <a href="${CENTRAL}">AKTUAL MEDIA — sve na jednom mjestu →</a></p>
+      <p class="iz-small">${esc(chrome.network(CHANNELS.length))} <a href="${CENTRAL}">${esc(chrome.onePlace)} →</a></p>
     </div>
     <div>
       <h2>${esc(strings.hashtags)}</h2>
@@ -596,7 +609,7 @@ function homePage(channel, strings, data) {
       <p class="intro-text">${esc(strings.aboutText)}</p>
       <p class="live"><span class="live-n"><b>${items.length}</b> ${esc(strings.latest).toLowerCase()}</span><span class="live-sep">·</span><span class="live-t"><time datetime="${esc(data.updatedAt || items[0]?.date || BUILD_ISO)}">${esc(strings.updated)} ${esc((stampLocal(data.updatedAt || items[0]?.date || BUILD_ISO, channel.lang, CHANNEL_TZ) || {}).stamp || shortDate((items[0]?.date || BUILD_ISO).slice(0, 10), channel.lang))}</time></span></p>
       <p class="intro-tags">${channel.hashtags.map((h) => `<span class="tag">${esc(h)}</span>`).join(' ')}</p>
-      <p class="hero-tags">Oznake izdanja: <a href="/nermin-sefic/">#NerminSefić</a> · <a href="/nermin-sefic/">#NerminSefic</a> · <a href="/autorske-objave/">#SeficNermin</a> · <a href="/autorske-objave/">#SEFICNERMIN</a> · <a href="/nermin-sefic/">#UrednikNerminSefić</a> · #AKTUALMEDIA · #GNKASG · ${esc(channel.hashtags[0] || '')}</p>
+      <p class="hero-tags">${esc(chromeOf(channel.lang).tagsLead)} <a href="/nermin-sefic/">#NerminSefić</a> · <a href="/nermin-sefic/">#NerminSefic</a> · <a href="/autorske-objave/">#SeficNermin</a> · <a href="/autorske-objave/">#SEFICNERMIN</a> · <a href="/nermin-sefic/">#UrednikNerminSefić</a> · #AKTUALMEDIA · #GNKASG · ${esc(channel.hashtags[0] || '')}</p>
     </div>
     <aside class="intro-side">
       <h2>${esc(strings.radio)}</h2>
@@ -642,7 +655,7 @@ function homePage(channel, strings, data) {
 
   ${items.length ? '' : `<section class="band empty"><h2>${esc(strings.emptyTitle)}</h2><p>${esc(strings.emptyText)}</p></section>`}
 </main>
-${meshBlock({ lang: channel.lang === 'hr' ? 'hr' : 'en', selfUrl: channel.base, theme: 'light' })}
+${meshBlock({ lang: channel.lang, selfUrl: channel.base, theme: 'light' })}
 ${footer(channel, strings)}`;
 
   /* The named edition has its own identity without stealing the site's
@@ -822,8 +835,8 @@ function articlePage(channel, strings, item, items) {
       <p class="small">${esc(strings.autoNote)}</p>
     </section>
 
-    <ul class="hastag-line" aria-label="Oznake teksta">
-      <li class="hastag-k">Oznake</li>
+    <ul class="hastag-line" aria-label="${esc(chromeOf(channel.lang).tagsText)}">
+      <li class="hastag-k">${esc(chromeOf(channel.lang).tags)}</li>
       <li><a href="/nermin-sefic/">#NerminSefić</a></li>
       <li><a href="/nermin-sefic/">#NerminSefic</a></li>
       <li><a href="/autorske-objave/">#SeficNermin</a></li>
@@ -1182,7 +1195,7 @@ export function buildChannel(channel) {
     const list = data.items.filter((i) => i.source === source.id);
     write(`izvor/${source.id}/index.html`, listPage(channel, strings, {
       title: `${source.name} — ${channel.title}`,
-      description: `Osvrti na tekstove izvora ${source.name} u izdanju ${channel.title}.`,
+      description: chromeOf(channel.lang).sourceDesc(source.name, channel.title),
       path: `izvor/${source.id}/`, items: list,
       lead: `${source.name} · ${list.length}`
     }));
@@ -1239,6 +1252,25 @@ ${footer(channel, strings)}`;
 
   writeLegacyRedirect(channel);
   writeFileSync(join(dir, 'assets', 'favicon.svg'), favicon(channel));
+  /* Manifest po izdanju: instalirana ikona vodi na to izdanje, na njegovu
+     adresu i u njegovu boju — isto pravilo kao na devet svjetskih portala. */
+  writeFileSync(join(dir, 'manifest.webmanifest'), safeJson({
+    id: `/kanal/${channel.id}/`,
+    name: `${channel.title} — AKTUAL MEDIA`,
+    short_name: channel.city,
+    description: strings.aboutText,
+    lang: channel.lang,
+    start_url: `/kanal/${channel.id}/`,
+    scope: `/kanal/${channel.id}/`,
+    display: 'standalone',
+    orientation: 'portrait-primary',
+    background_color: channel.palette.bg,
+    theme_color: channel.palette.bg,
+    icons: [
+      { src: 'assets/favicon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' },
+      { src: 'assets/favicon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'maskable' }
+    ]
+  }));
   writeFeed(channel, strings, data);
   writeSitemap(channel, data);
 

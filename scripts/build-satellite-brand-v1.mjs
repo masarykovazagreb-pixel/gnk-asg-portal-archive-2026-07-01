@@ -21,6 +21,7 @@ import { execFileSync } from 'node:child_process';
 import { mkdirSync, existsSync, statSync, writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { archiveCount, hrCount } from './lib/archive-count.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(ROOT, 'apps/satellites/assets');
@@ -42,10 +43,10 @@ const CARDS = [
     left: 'AKTUAL',
     right: 'ARHIVA',
     kicker: 'AKTUAL MEDIA · SAMOSTALNI PORTAL',
-    tagline: '3.360 tekstova · svaki s izvornikom',
+    tagline: `${hrCount(archiveCount())} tekstova · svaki s izvornikom`,
     host: 'gnk-asg-arhiva.pages.dev',
     active: 1,
-    alt: 'Kartica AKTUAL ARHIVA: navy AKTUAL, crvena ARHIVA, linija s tri čvora i natpis 3.360 tekstova, svaki s izvornikom.',
+    alt: `Kartica AKTUAL ARHIVA: navy AKTUAL, crvena ARHIVA, linija s tri čvora i natpis ${hrCount(archiveCount())} tekstova, svaki s izvornikom.`,
   },
   {
     slug: 'aktual-dnevnik',
