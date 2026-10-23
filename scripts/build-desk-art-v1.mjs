@@ -142,6 +142,18 @@ for (const id of sources) {
   });
 }
 
+/* `--only` ne smije obrisati ostale grafike iz manifesta: učitaj postojeći
+   popis i zamijeni samo traženi desk. Inače bi jedan popravak slike tiho
+   uklonio osam zapisa i test bi pao tek na sljedećem build-u. */
+if (ONLY) {
+  const merged = new Map();
+  if (existsSync(MANIFEST)) {
+    for (const image of (JSON.parse(readFileSync(MANIFEST, 'utf8')).images || [])) merged.set(image.id, image);
+  }
+  for (const image of manifest.images) merged.set(image.id, image);
+  manifest.images = Object.keys(META).map((id) => merged.get(id)).filter(Boolean);
+}
+
 const payload = JSON.stringify(manifest, null, 2) + '\n';
 if (CHECK) {
   const current = existsSync(MANIFEST) ? readFileSync(MANIFEST, 'utf8') : '';

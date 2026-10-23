@@ -101,10 +101,10 @@ export const DESK_ART = {
     }
   },
   sigurnost: {
-    title: { hr: 'Sigurnost — nadzorna soba', en: 'Security — the control room' },
+    title: { hr: 'Sigurnost — noćna soba', en: 'Security — the night room' },
     alt: {
-      hr: 'Ilustracija: mračna nadzorna soba, štit i lokot od svjetla nad mapom, siluete za konzolama.',
-      en: 'Illustration: a dark control room, a shield and lock of light over a map, silhouettes at the consoles.'
+      hr: 'Ilustracija: noćna soba u staroj zgradi, papirnata karta, radio i lampa na drvenom stolu, kroz gotičke prozore nazire se grad.',
+      en: 'Illustration: a night room in an old building, a paper map, a radio and a lamp on a wooden table, the city faintly visible through gothic windows.'
     }
   }
 };
