@@ -634,14 +634,14 @@ function cardMedia(channel, item, theme, labels, { lead = false, root = '' } = {
   const art = DESK_ART_BY_THEME[artThemeOf(item)];
   if (/^https:\/\//.test(item.image || '')) {
     const width = lead ? 1200 : 800;
-    return `<a class="cardmedia" href="${href}" tabindex="-1" aria-hidden="true"><img src="${PUBLIC}/api/img?u=${encodeURIComponent(item.image)}&w=${width}" alt="${esc(item.imageAlt || item.title)}" width="${width}" height="${Math.round((width * 9) / 16)}" loading="lazy" decoding="async" referrerpolicy="no-referrer"></a>`;
+    return `<a class="cardmedia" href="${href}" tabindex="-1" aria-hidden="true"><img src="${PUBLIC}/api/img?u=${encodeURIComponent(item.image)}&w=${width}" alt="${esc(item.imageAlt || item.title)}" width="${width}" height="${Math.round((width * 9) / 16)}" loading="${lead ? 'eager' : 'lazy'}"${lead ? ' fetchpriority="high"' : ''} decoding="async" referrerpolicy="no-referrer"></a>`;
   }
   if (!art) return '';
   const artTheme = artThemeOf(item);
   const label = labels[artTheme] || labels[theme] || theme;
   const kind = captionFor(channel.lang, 'artAlt');
   const badge = captionFor(channel.lang, 'art');
-  return `<a class="cardmedia cardmedia--art" data-label="${esc(badge)}" href="${href}" tabindex="-1" aria-hidden="true"><img src="/assets/desk/art/${art}-440.webp" srcset="/assets/desk/art/${art}-440.webp 440w, /assets/desk/art/${art}-640.webp 640w" sizes="(max-width:760px) 100vw, 240px" alt="${esc(`${label} — ${kind}, AKTUAL MEDIA`)}" width="640" height="360" loading="lazy" decoding="async"></a>`;
+  return `<a class="cardmedia cardmedia--art" data-label="${esc(badge)}" href="${href}" tabindex="-1" aria-hidden="true"><img src="/assets/desk/art/${art}-${lead ? '1200' : '440'}.webp" srcset="/assets/desk/art/${art}-440.webp 440w, /assets/desk/art/${art}-640.webp 640w${lead ? `, /assets/desk/art/${art}-1200.webp 1200w` : ''}" sizes="${lead ? '(max-width:760px) 100vw, 720px' : '(max-width:760px) 100vw, 240px'}" alt="${esc(`${label} — ${kind}, AKTUAL MEDIA`)}" width="${lead ? 1200 : 640}" height="${lead ? 675 : 360}" loading="${lead ? 'eager' : 'lazy'}"${lead ? ' fetchpriority="high"' : ''} decoding="async"></a>`;
 }
 
 function card(channel, strings, item, { lead = false, root = '' } = {}) {
