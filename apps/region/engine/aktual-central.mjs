@@ -20,6 +20,7 @@ import { fileURLToPath } from 'node:url';
 import { esc, shortDate, truncate, themeFor } from './lib.mjs';
 import { CHANNELS, HUB } from './build.mjs';
 import { logoFor, logoAlternate, logoJsonLd } from './brand.mjs';
+import { deskArt, deskArtPath } from './desk-art.mjs';
 import { chromeOf } from '../src/chrome.mjs';
 
 /* Broj jezika se računa iz channels.json, ne prepisuje u tekst: kad se doda
@@ -108,7 +109,7 @@ function tile({ href, img, alt, external = false, badge = '', small = false, sub
     : '';
   return `<li class="amc-tile${small ? ' amc-tile--small' : ''}">
     <a class="amc-tile-link" href="${esc(href)}"${rel} aria-label="${esc(alt)}">
-      <img class="amc-tile-img" src="${IMG}/${esc(img)}" alt="${esc(alt)}" width="880" height="587" loading="lazy" decoding="async">
+      <img class="amc-tile-img" src="${/^(?:https?:)?\//.test(img) ? esc(img) : `${IMG}/${esc(img)}`}" alt="${esc(alt)}" width="880" height="587" loading="lazy" decoding="async">
       ${badge ? `<span class="amc-tile-badge">${esc(badge)}</span>` : ''}
       <span class="amc-tile-go" aria-hidden="true">→</span>
     </a>
@@ -176,7 +177,9 @@ function deskTiles(items, gallery, lang = 'hr') {
     svijet: 'World — an AKTUAL MEDIA desk: the global frame for local decisions, from energy to migration. Click opens the world desk.'
   };
   const desks = ['sport', 'politika', 'sigurnost', 'biznis', 'tehnologija', 'moda', 'putovanja', 'ljubimci', 'svijet'].map((id) => tile({
-    href: `/izdanja/${id}/`, img: `${id}-tile.webp`, alt: en ? DESK_ALT_EN[id] : DESK_ALT[id],
+    /* Naslovnica deska je ilustracija iz /assets/desk/art/ — ista slika kao
+       na /izdanja/ i u heroju deska, pa se izdanje prepoznaje na svakom ulazu. */
+    href: `/izdanja/${id}/`, img: deskArt(id) ? deskArtPath(id, '800') : `${id}-tile.webp`, alt: en ? DESK_ALT_EN[id] : DESK_ALT[id],
     badge: `${count(id)} ${en ? 'stories' : 'tekstova'}`
   })).join('');
   const extra = [

@@ -253,6 +253,16 @@
       "checks": "Atlas grafika: svako izdanje ima vlastitu ilustraciju u šest veličina, alt na jeziku izdanja i napomenu da nije fotografija. Paukova mreža: 32 čvora na 48 stranica, svaki čvor je pravi link, matica jednom, SVG s role=img. Glavni gradovi: capitals.json se slaže s channels.json, nijedno izdanje nije najavljeno prije izvora, /glavni-gradovi/ i /en/capitals/ imaju 17 redaka i ItemList."
     },
     {
+      "id": "desk-art-agent",
+      "name": "Desk grafike — devet ilustracija",
+      "required": true,
+      "cmd": [
+        "node",
+        "tests/test-desk-art-v1.mjs"
+      ],
+      "checks": "Svaki desk ima naslovnu ilustraciju u sedam veličina, alt na HR i EN, hero s preloadom, OG sliku i sličicu u mreži na dnu."
+    },
+    {
       "id": "capital-pages-agent",
       "name": "Prijestolnice — ugovor, adrese i sitemap",
       "required": true,

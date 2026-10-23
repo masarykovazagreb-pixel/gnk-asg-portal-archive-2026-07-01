@@ -20,7 +20,7 @@ import { CHANNELS, HUB, CONTACT, SOCIAL_IMAGE, CITY_SHORT, CSS as CHANNEL_CSS } 
 import { meshBlock, MESH_CSS } from '../../satellites/lib/network-v1.mjs';
 import { spiderWeb, SPIDER_CSS } from '../../satellites/lib/spiderweb-v1.mjs';
 import { WORLD_PORTALS } from '../../world/lib/registry.mjs';
-import { ensureDeskTiles, tilePath, variantFor } from './desk-art.mjs';
+import { ensureDeskTiles, tilePath, variantFor, deskArt, deskArtPath, deskArtSrcset } from './desk-art.mjs';
 import { logoImg, logoFor, logoAlternate, channelLogoSlug, deskLogoSlug, logoJsonLd } from './brand.mjs';
 import { buildCapitalPage, CAPITAL_CSS as CAPITAL_DETAIL_CSS, CONTINENT_COLOR } from './capital-detail.mjs';
 
@@ -389,7 +389,15 @@ ${graph.map((n) => `<script type="application/ld+json">${safeJson(n)}</script>`)
 .iz-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;padding:26px 0 10px}
 .iz-card{display:flex;flex-direction:column;gap:10px;background:#0b1d31;border:1px solid #1e3b58;border-radius:14px;padding:20px;overflow:hidden}
 .iz-cover{display:block;width:calc(100% + 40px);margin:-20px -20px 6px;aspect-ratio:16/9;object-fit:cover;object-position:center 40%;background:#12283d}
-.iz-card--lead{grid-column:span 2}
+.iz-hero{margin:22px 0 0;padding:0}
+.iz-hero picture,.iz-hero img{display:block;width:100%}
+.iz-hero img{aspect-ratio:16/9;height:auto;object-fit:cover;border-radius:16px;border:1px solid #1e3b58;background:#12283d}
+.iz-hero figcaption{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;margin:10px 2px 0;font:600 11px/1.5 system-ui;letter-spacing:.04em;color:#8296ad}
+.iz-hero figcaption b{color:var(--gold);font:700 11px/1.5 system-ui;letter-spacing:.16em;text-transform:uppercase}
+.iz-hero figcaption span{max-width:80ch}
+.iz-net-g a img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:6px;background:#0e2237;margin-bottom:3px}
+.iz-thumb-p1{object-position:50% 50%}.iz-thumb-p2{object-position:18% 32%}.iz-thumb-p3{object-position:82% 32%}
+.iz-thumb-p4{object-position:50% 20%}.iz-thumb-p5{object-position:30% 78%}.iz-thumb-p6{object-position:72% 76%}.iz-card--lead{grid-column:span 2}
 .iz-card .flag{display:flex;align-items:center;gap:8px;font:600 10px/1.4 system-ui;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
 .iz-card h2{font:700 22px/1.2 Georgia,serif;margin:0}
 .iz-card p{margin:0;color:#c3cede;font-size:14.5px}
@@ -483,8 +491,8 @@ const portalHeader = (active, { h1 = true } = {}) => `<div class="iz-top"><div c
 /* ---------- mreža: svaka stranica nudi najmanje šest drugih ulaza ---------- */
 
 function netStrip() {
-  const editions = CHANNELS.map((c) => `<a href="${c.base}" rel="external noopener"><b>${esc(CITY_SHORT[c.id] || c.city)}</b><span>${esc(c.country)}</span></a>`).join('');
-  const desks = Object.entries(DESKS).map(([id, d]) => `<a href="/izdanja/${id}/"><b>${esc(d.nav)}</b><span>desk</span></a>`).join('');
+  const editions = CHANNELS.map((c) => `<a href="${c.base}" rel="external noopener"><img src="/assets/izdanja/${c.id}-240.webp" alt="${esc(c.city)}, ${esc(c.country)} — AKTUAL MEDIA" width="120" height="68" loading="lazy" decoding="async"><b>${esc(CITY_SHORT[c.id] || c.city)}</b><span>${esc(c.country)}</span></a>`).join('');
+  const desks = Object.entries(DESKS).map(([id, d]) => `<a href="/izdanja/${id}/"><img src="${deskArtPath(id, '240')}" alt="${esc(d.nav)} — desk AKTUAL MEDIA" width="120" height="68" loading="lazy" decoding="async"><b>${esc(d.nav)}</b><span>desk</span></a>`).join('');
   const more = [
     ['/usa/', 'Colorado · USA', 'ishodište projekta'],
     ['/radio/', 'Radio', 'player'],
@@ -563,7 +571,9 @@ function extraCards() {
     `<article class="iz-card"><img class="iz-cover" src="/assets/izdanja/galerija-tile.webp" alt="GALERIJA NERMINA SEFIĆA" width="640" height="360" loading="lazy" decoding="async"><span class="flag">${esc(galerija.kicker)}</span><h2><a href="${galerija.url}" rel="external noopener">${esc(galerija.name)}</a></h2><p>${esc(galerija.desc)}</p><ul class="iz-tags">${galerija.tags.map((x) => `<li>${esc(x)}</li>`).join('')}</ul><div class="acts"><a class="btn" href="${galerija.url}" rel="external noopener">Otvori galeriju ↗</a><a class="btn ghost" href="/galerija/sitemap.xml" rel="external noopener">Sitemap</a></div></article>`
   ];
   for (const [id, desk] of Object.entries(DESKS)) {
-    cards.push(`<article class="iz-card"><img class="iz-cover" src="/assets/izdanja/${id}-tile.webp" alt="${esc(desk.name)}" width="640" height="360" loading="lazy" decoding="async"><span class="flag">Desk · AKTUAL MEDIA</span><h2><a href="/izdanja/${id}/">${esc(desk.name)}</a></h2><p>${esc(desk.description)}</p><ul class="iz-tags">${desk.hashtags.map((x) => `<li>${esc(x)}</li>`).join('')}</ul><div class="acts"><a class="btn" href="/izdanja/${id}/">Otvori desk →</a></div></article>`);
+    const deskArtInfo = deskArt(id);
+    const deskArtUrl = deskArtInfo ? deskArtPath(id, '640') : `/assets/izdanja/${id}-tile.webp`;
+    cards.push(`<article class="iz-card"><img class="iz-cover" src="${deskArtUrl}"${deskArtInfo ? ` srcset="${deskArtSrcset(id, ['440', '640', '1200'])}" sizes="(max-width:700px) 100vw, 560px"` : ''} alt="${esc(deskArtInfo ? deskArtInfo.alt.hr : desk.name)}" width="640" height="360" loading="lazy" decoding="async"><span class="flag">Desk · AKTUAL MEDIA</span><h2><a href="/izdanja/${id}/">${esc(desk.name)}</a></h2><p>${esc(desk.description)}</p><ul class="iz-tags">${desk.hashtags.map((x) => `<li>${esc(x)}</li>`).join('')}</ul><div class="acts"><a class="btn" href="/izdanja/${id}/">Otvori desk →</a></div></article>`);
   }
   for (const p of PLATFORMS) {
     cards.push(`<article class="iz-card"><span class="flag">Platforma · GNK ASG</span><h2><a href="${p.url}"${p.external ? ' rel="external noopener"' : ''}>${esc(p.name)}</a></h2><p>${esc(p.description)}</p><ul class="iz-tags">${p.tags.map((x) => `<li>${esc(x)}</li>`).join('')}</ul><div class="acts"><a class="btn" href="${p.url}"${p.external ? ' rel="external noopener"' : ''}>${esc(p.cta)}</a></div></article>`);
@@ -763,6 +773,13 @@ function deskThumb(item, deskId) {
   if (item.image) {
     return `<img class="iz-thumb" src="${esc(proxied(item.image))}" alt="${esc(alt)}" width="86" height="58" loading="lazy" decoding="async" referrerpolicy="no-referrer">`;
   }
+  /* Bez slike iz izvora: krop naslovne ilustracije deska. Isti zapis uvijek
+     dobiva isti krop (varijanta iz sluga), pa se minijature ne trepere.
+     Alt je prazan jer je slika dekorativna — opis nosi naslov uz nju. */
+  if (deskArt(deskId)) {
+    const variant = variantFor(item.slug || item.url || item.title);
+    return `<img class="iz-thumb iz-thumb-p${variant + 1}" src="${esc(deskArtPath(deskId, '240'))}" alt="${esc(alt)}" width="86" height="58" loading="lazy" decoding="async">`;
+  }
   const tile = tilePath(deskId, variantFor(item.slug || item.url || item.title));
   return `<img class="iz-thumb iz-thumb-art" src="${esc(tile)}" alt="" aria-hidden="true" width="86" height="58" loading="lazy" decoding="async">`;
 }
@@ -781,8 +798,17 @@ function deskPage(id, desk) {
     bySource.get(key).push(item);
   }
 
+  const art = deskArt(id);
+  const heroArt = art ? `<figure class="iz-hero">
+    <picture>
+      <source type="image/webp" srcset="${deskArtSrcset(id)}" sizes="(max-width:760px) 100vw, 1120px">
+      <img src="${deskArtPath(id, '1200')}" alt="${esc(art.alt.hr)}" width="1200" height="675" fetchpriority="high" decoding="async">
+    </picture>
+    <figcaption><b>Naslovna ilustracija</b><span>Generirana grafika, nije fotografija događaja · AKTUAL MEDIA</span></figcaption>
+  </figure>` : '';
   const body = `${portalHeader(id + '/', { h1: false })}
 <main id="sadrzaj" tabindex="-1" class="iz-wrap">
+  ${heroArt}
   <section class="iz-head" style="border-bottom:0;padding-top:26px">
     ${logoImg(deskLogoSlug(id), { href: '/izdanja/', size: 56, cls: 'iz-desk-logo', priority: true })}
     <p class="k">${esc(desk.name)}</p>
@@ -831,8 +857,8 @@ ${id === 'sport' ? `<script>(()=>{const box=document.getElementById('izResults')
 
   /* Naslovnica je rasterska (webp) jer društvene mreže ne prikazuju SVG;
      SVG plohe ostaju u popisu osvrta gdje nema vanjskog dijeljenja. */
-  const cover = `/assets/izdanja/${id}-tile.webp`;
-  const artCover = tilePath(id, 0);
+  const cover = art ? deskArtPath(id, 'og', 'jpg') : `/assets/izdanja/${id}-tile.webp`;
+  const artCover = art ? deskArtPath(id, '1200') : tilePath(id, 0);
   const withImages = items.filter((i) => i.image).length;
   return portalShell({
     title: `${desk.title} | AKTUAL MEDIA`,
@@ -842,8 +868,9 @@ ${id === 'sport' ? `<script>(()=>{const box=document.getElementById('izResults')
     keywords: [...desk.hashtags.map((t) => t.replace(/^#/, '')), 'AKTUAL MEDIA', 'Aktual mediji', 'GNK ASG', 'regija', desk.nav],
     tags: [...desk.hashtags, '#AktualMedia', '#GNKASG'],
     logos: [deskLogoSlug(id)],
+    preload: art ? { href: deskArtPath(id, '1200'), imagesrcset: deskArtSrcset(id, ['640', '800', '1200', '1600']), imagesizes: '(max-width:760px) 100vw, 1120px' } : null,
     image: cover,
-    imageAlt: `${desk.title} — AKTUAL MEDIA`,
+    imageAlt: art ? art.alt.hr : `${desk.title} — AKTUAL MEDIA`,
     jsonld: [
       { '@context': 'https://schema.org', '@type': 'NewsMediaOrganization', '@id': `${HUB}${id}/#organization`, name: desk.name, url: `${HUB}${id}/`, inLanguage: 'hr', logo: logoJsonLd(deskLogoSlug(id), { url: 'https://gnk-asg.hr' }), parentOrganization: { '@id': MEDIA_ID } },
       { '@context': 'https://schema.org', '@type': 'CollectionPage', name: desk.title, url: `${HUB}${id}/`, inLanguage: 'hr', description: desk.description, publisher: { '@id': `${HUB}${id}/#organization` }, primaryImageOfPage: { '@type': 'ImageObject', url: `${new URL(HUB).origin}${cover}`, caption: `${desk.title} — AKTUAL MEDIA` }, image: [`${new URL(HUB).origin}${cover}`, `${new URL(HUB).origin}${artCover}`], publisher: { '@id': MEDIA_ID }, isPartOf: { '@id': `${HUB}#website` } },

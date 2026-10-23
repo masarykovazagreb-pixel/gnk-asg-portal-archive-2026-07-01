@@ -195,11 +195,11 @@ Redoslijed je obavezan: **izvori → dizajn → stranice → testovi → objava.
 | `tests/test-editions-parity-v1.mjs` | jednak standard 17 izdanja i 9 portala |
 | `tests/test-network-mesh-v1.mjs` | blok od 20 ulaza na svakoj stranici |
 | `tests/test-seo-matrix-v1.mjs` | title, description, canonical, hreflang, OG |
-| `scripts/network-agents-v1.mjs` | 27 agenata, izvještaj u `artifacts/network-agents-v1.json` |
+| `scripts/network-agents-v1.mjs` | 28 agenata, izvještaj u `artifacts/network-agents-v1.json` |
 
 `region-deploy.yml` prije gradnje pokreće `build-atlas-art-v1.mjs --check`, pa
 deploy pada ako manifest i datoteke nisu usklađeni.
 
-Ukupno: **45 provjera** u `scripts/test-all-v1.mjs` i **27 agenata** u
+Ukupno: **46 provjera** u `scripts/test-all-v1.mjs` i **28 agenata** u
 `ops/network-agents-v1.json`. Sitemap-index pokriva svih 32 sitemapa —
 uključujući `mreza/` i `gnk-aktual/mreza/`, koje indeks prije nije navodio.

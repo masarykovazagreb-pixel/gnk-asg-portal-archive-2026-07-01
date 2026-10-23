@@ -1,4 +1,4 @@
-# Mreža AKTUAL MEDIA — 20 ulaza, 18 portala, 27 agenata
+# Mreža AKTUAL MEDIA — 20 ulaza, 18 portala, 28 agenata
 
 Ovaj dokument objašnjava kako je mreža povezana, odakle koja stranica dobiva
 linkove, tko njome upravlja i koji agent što provjerava. Ako se nešto ovdje
@@ -108,7 +108,7 @@ node scripts/network-agents-v1.mjs --only mesh-link-agent,seo-matrix-agent
 node scripts/network-sync-v1.mjs
 ```
 
-Workflow `MREŽA — agenti i sinkronizacija` radi svaki dan u 04:40 UTC (27 agenata) i na
+Workflow `MREŽA — agenti i sinkronizacija` radi svaki dan u 04:40 UTC (28 agenata) i na
 svaku promjenu bloka, graditelja ili registra agenata. Posao je **samo za
 čitanje** (`contents: read`): gradi u radnom prostoru runnera i sprema
 izvještaj kao artifact, pa ne može pomaknuti `main`.
