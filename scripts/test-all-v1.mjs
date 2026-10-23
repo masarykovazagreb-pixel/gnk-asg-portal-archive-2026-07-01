@@ -36,6 +36,8 @@ const GATES = [
   { name: 'AKTUAL MEDIA — besplatni međunarodni kanali i zaštita objave', cmd: ['node', 'tests/test-global-free-distribution-v1.mjs'], required: true },
   { name: 'Distribucija — evidencija, obrada slika i oporavak', cmd: ['node', 'tests/test-distribution-reliability-v1.mjs'], required: true },
   { name: 'WebSite JSON-LD', cmd: ['node', 'scripts/test-website-jsonld-v1.mjs'], required: true },
+  { name: 'Prijenos mreže — popis i veze na kopije', cmd: ['node', 'scripts/build-prenos-hub-v1.mjs', '--check'], required: true },
+  { name: 'Prijenos mreže — veza na svakom tekstu', cmd: ['node', 'scripts/apply-prenos-crosslinks-v1.mjs', '--check'], required: true },
   { name: 'AKTUAL urednički desk', cmd: ['node', 'scripts/build-aktual-entity-desks-v1.mjs', '--check'], required: true },
   { name: 'S+Chat agent', cmd: ['node', 'tests/test-s-chat-static-v1.mjs'], required: true },
   { name: 'S+Chat evaluacija', cmd: ['node', 'tests/test-s-chat-eval-v1.mjs'], required: true },

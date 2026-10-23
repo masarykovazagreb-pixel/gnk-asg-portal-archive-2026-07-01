@@ -90,6 +90,7 @@ jobs:
           node scripts/plan-world-expansion-v1.mjs
           node scripts/build-coverage-page-v1.mjs
           node scripts/build-prenos-hub-v1.mjs
+          node scripts/apply-prenos-crosslinks-v1.mjs
           node scripts/apply-network-entity-v1.mjs
           node scripts/apply-house-ribbon-v1.mjs
           node scripts/prune-image-sitemap-v1.mjs
