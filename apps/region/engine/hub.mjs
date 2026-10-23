@@ -1217,7 +1217,7 @@ function capitalsPage(lang = 'hr') {
     <section class="cg-box" aria-labelledby="cgSteps"><h2 id="cgSteps">${en ? 'How a new capital is added, step by step' : 'Kako se dodaje novi glavni grad, korak po korak'}</h2><ol>${steps}</ol><p class="cg-small">${en ? 'The order matters: sources first, then design, then pages, then tests. A page without sources would be a promise the newsroom cannot keep.' : 'Redoslijed je važan: prvo izvori, pa dizajn, pa stranice, pa testovi. Stranica bez izvora bila bi obećanje koje redakcija ne može održati.'}</p></section>
   </div>
 
-  <p class="cg-small" style="margin-top:22px">${en ? 'All editions: ' : 'Sva izdanja: '}<a href="/izdanja/">${en ? 'editions and desks' : 'izdanja i deskovi'}</a> · <a href="/mreza/">${en ? 'the whole network' : 'cijela mreža'}</a> · <a href="${esc(en ? '/glavni-gradovi/' : '/en/capitals/')}" hreflang="${en ? 'hr' : 'en'}" lang="${en ? 'hr' : 'en'}">${en ? 'Hrvatski' : 'English'}</a></p>
+  <p class="cg-small" style="margin-top:22px">${en ? 'All editions: ' : 'Sva izdanja: '}<a href="/izdanja/">${en ? 'editions and desks' : 'izdanja i deskovi'}</a> · <a href="/mreza/">${en ? 'the whole network' : 'cijela mreža'}</a> · <a href="${esc(en ? '/glavni-gradovi/' : '/en/capitals/')}" hreflang="${en ? 'hr' : 'en'}" lang="${en ? 'hr' : 'en'}">${en ? 'Hrvatski' : 'English'}</a> · <a href="/data/glavni-gradovi-v1.json">${en ? 'JSON data' : 'JSON podaci'}</a> · <a href="/glavni-gradovi/llms.txt">llms.txt</a></p>
 </main>
 ${portalFooter()}`;
 
@@ -1549,7 +1549,8 @@ function writeSitemapIndex() {
     ['image-sitemap.xml', '2026-10-12'], ['world-topics-image-sitemap.xml', '2026-08-26'],
     ['spt-sitemap.xml', '2026-10-12'], ['izdanja/sitemap.xml', today], ['galerija/sitemap.xml', today],
     ['aktual-media/sitemap.xml', today], ['tehnologija-buducnosti/sitemap.xml', today],
-    ['glavni-gradovi/sitemap.xml', today]
+    ['glavni-gradovi/sitemap.xml', today], ['mreza/sitemap.xml', today],
+    ['gnk-aktual/mreza/sitemap.xml', today]
   ];
   const channels = CHANNELS.map((c) => [`kanal/${c.id}/sitemap.xml`, today]);
   const all = [...core, ...channels];

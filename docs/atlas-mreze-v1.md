@@ -188,11 +188,17 @@ Redoslijed je obavezan: **izvori → dizajn → stranice → testovi → objava.
 | Test | Što čuva |
 | --- | --- |
 | `tests/test-network-atlas-v1.mjs` | atlas (šest veličina, alt, napomena), paukova mreža (32 čvora na 48 stranica, bez preklapanja natpisa), glavni gradovi (17 redaka, 34 stranice, canonical i hreflang) |
-| `tests/test-capitals-completeness-v1.mjs` | ugovor prijestolnica: slugovi, jezik/kontinent/zona izdanja, priprema s gradom koji pokriva zemlju, 34 adrese u sitemapu |
+| `tests/test-capitals-completeness-v1.mjs` | ugovor prijestolnica: slugovi, jezik/kontinent/zona izdanja, priprema s gradom koji pokriva zemlju, 34 adrese u sitemapu i `llms.txt`, obostrana veza s izdanjima |
+| `tests/test-sitemap-integrity-v1.mjs` | 32 sitemapa, 17.210 adresa: svaka vodi na stvarnu datoteku, svaki sitemap je u indeksu |
+| `tests/test-hreflang-reciprocity-v1.mjs` | 73 stranice, 200 parova: svaki hreflang ima povratni hreflang i isti canonical |
 | `tests/test-editions-parity-v1.mjs` | jednak standard 17 izdanja i 9 portala |
 | `tests/test-network-mesh-v1.mjs` | blok od 20 ulaza na svakoj stranici |
 | `tests/test-seo-matrix-v1.mjs` | title, description, canonical, hreflang, OG |
-| `scripts/network-agents-v1.mjs` | 24 agenta, izvještaj u `artifacts/network-agents-v1.json` |
+| `scripts/network-agents-v1.mjs` | 26 agenata, izvještaj u `artifacts/network-agents-v1.json` |
 
 `region-deploy.yml` prije gradnje pokreće `build-atlas-art-v1.mjs --check`, pa
 deploy pada ako manifest i datoteke nisu usklađeni.
+
+Ukupno: **44 provjere** u `scripts/test-all-v1.mjs` i **26 agenata** u
+`ops/network-agents-v1.json`. Sitemap-index pokriva svih 32 sitemapa —
+uključujući `mreza/` i `gnk-aktual/mreza/`, koje indeks prije nije navodio.

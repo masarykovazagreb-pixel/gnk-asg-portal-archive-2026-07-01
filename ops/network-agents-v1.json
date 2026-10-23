@@ -261,6 +261,26 @@
         "tests/test-capitals-completeness-v1.mjs"
       ],
       "checks": "Svaka od 17 prijestolnica ima jedinstven slug, jezik i kontinent; izdanje označeno kao live postoji u channels.json na istom jeziku, kontinentu i u istoj zoni; prijestolnica u pripremi nema izdanje, ali ima grad koji zemlju pokriva danas; svih 34 stranica (17 hrvatskih + 17 engleskih) ima kanonsku adresu u podacima i u vlastitom sitemapu, a sitemap-index ga navodi."
+    },
+    {
+      "id": "sitemap-integrity-agent",
+      "name": "Sitemap integritet — svaka adresa postoji",
+      "required": true,
+      "cmd": [
+        "node",
+        "tests/test-sitemap-integrity-v1.mjs"
+      ],
+      "checks": "Svih 32 sitemapa pod portalom (17.210 adresa) mora biti dobro oblikovano, svaka adresa na gnk-asg.hr mora imati stvarnu datoteku, svaki sitemap mora biti u sitemap-index.xml, a svaki unos indeksa mora postojati. Test je pronašao dva sitemapa koja indeks nije navodio."
+    },
+    {
+      "id": "hreflang-reciprocity-agent",
+      "name": "Hreflang — obostrani prijevodi",
+      "required": true,
+      "cmd": [
+        "node",
+        "tests/test-hreflang-reciprocity-v1.mjs"
+      ],
+      "checks": "73 mrežne stranice i 200 hreflang parova: svaki prijevod mora postojati, canonical se mora slagati s adresom iz hreflanga, a povratni hreflang mora pokazati točno na izvornu stranicu. Stranice prijestolnica moraju imati hr, en i x-default."
     }
   ]
 }
