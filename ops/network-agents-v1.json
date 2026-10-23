@@ -281,6 +281,16 @@
         "tests/test-hreflang-reciprocity-v1.mjs"
       ],
       "checks": "73 mrežne stranice i 200 hreflang parova: svaki prijevod mora postojati, canonical se mora slagati s adresom iz hreflanga, a povratni hreflang mora pokazati točno na izvornu stranicu. Stranice prijestolnica moraju imati hr, en i x-default."
+    },
+    {
+      "id": "internal-links-agent",
+      "name": "Interni linkovi — nijedna veza u prazno",
+      "required": true,
+      "cmd": [
+        "node",
+        "tests/test-internal-links-v1.mjs"
+      ],
+      "checks": "7.041 stranica portala i 239.146 internih veza: svaki href=\"/…\" mora imati stvarnu datoteku. Skripte i stilovi se uklanjaju prije provjere (putanje koje preglednik sastavlja ne broje se), a /api/ je dopušten kao runtime krajnja točka."
     }
   ]
 }
