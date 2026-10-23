@@ -22,7 +22,7 @@ import { spiderWeb, SPIDER_CSS } from '../../satellites/lib/spiderweb-v1.mjs';
 import { WORLD_PORTALS } from '../../world/lib/registry.mjs';
 import { ensureDeskTiles, tilePath, variantFor } from './desk-art.mjs';
 import { logoImg, logoFor, logoAlternate, channelLogoSlug, deskLogoSlug, logoJsonLd } from './brand.mjs';
-import { buildCapitalPage, CAPITAL_CSS as CAPITAL_DETAIL_CSS } from './capital-detail.mjs';
+import { buildCapitalPage, CAPITAL_CSS as CAPITAL_DETAIL_CSS, CONTINENT_COLOR } from './capital-detail.mjs';
 
 /* Brojevi u naslovima se računaju iz podataka: 17 gradova, 14 jezika, 9 portala. */
 const LANG_COUNT = new Set(CHANNELS.map((c) => c.lang)).size;
@@ -322,7 +322,7 @@ const mediaItems = () => [
 ];
 const isWebsiteNode = (node) => (Array.isArray(node?.['@type']) ? node['@type'] : [node?.['@type']]).includes('WebSite');
 
-function portalShell({ title, description, path, keywords, tags = [], jsonld = [], body, cssExtra = '', image = SOCIAL_IMAGE, imageAlt = 'AKTUAL MEDIA', logos = [], canonicalPath = '', lang = 'hr', alternates = [] }) {
+function portalShell({ title, description, path, keywords, tags = [], jsonld = [], body, cssExtra = '', image = SOCIAL_IMAGE, imageAlt = 'AKTUAL MEDIA', logos = [], canonicalPath = '', lang = 'hr', alternates = [], preload = null }) {
   const canonical = canonicalPath || `${HUB}${path}`;
   /* HUB je /izdanja/, a plohe i naslovnice žive u korijenu portala, pa se
      apsolutna adresa gradi iz ishodišta, ne iz putanje huba. */
@@ -354,6 +354,7 @@ ${[...new Map(tags.filter((t) => String(t).startsWith('#')).map((t) => [String(t
 <meta property="og:image:alt" content="${esc(imageAlt)}">
 <link rel="canonical" href="${canonical}">
 ${alternates.map((alt) => `<link rel="alternate" hreflang="${alt.hreflang}" href="${alt.href}">`).join('\n')}
+${preload ? `<link rel="preload" as="image" href="${preload.href}"${preload.imagesrcset ? ` imagesrcset="${preload.imagesrcset}"` : ''}${preload.imagesizes ? ` imagesizes="${preload.imagesizes}"` : ''} fetchpriority="high">` : ''}
 ${logos.map((slug) => logoAlternate(slug)).filter(Boolean).join('\n')}
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AKTUAL MEDIA">
@@ -1131,7 +1132,8 @@ function capitalsPage(lang = 'hr') {
       ? `${esc(c.capital)}, ${esc(en ? c.countryEn : c.country)} — ${en ? 'cover artwork of the edition' : 'naslovna grafika izdanja'}`
       : `${esc(c.capital)} — ${en ? 'illustration of the capital' : 'ilustracija prijestolnice'}`;
     const state = c.status !== 'live' ? ` · ${en ? 'in preparation' : 'u pripremi'}` : '';
-    return `<li><a href="${en ? '/en/capitals' : '/glavni-gradovi'}/${esc(c.slug)}/">
+    const contSlug = String(c.continent).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z]+/g, '-');
+    return `<li data-c="${esc(contSlug)}"><a href="${en ? '/en/capitals' : '/glavni-gradovi'}/${esc(c.slug)}/">
       ${artId ? `<img src="/assets/izdanja/${esc(artId)}-440.webp" alt="${alt}" width="440" height="248" loading="lazy" decoding="async">` : ''}
       <span class="b"><span class="n">${name}</span><span class="c">${esc(en ? c.countryEn : c.country)} · ${esc(c.lang)}${state}</span></span>
     </a></li>`;

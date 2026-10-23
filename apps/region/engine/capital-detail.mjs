@@ -13,9 +13,16 @@
 import { esc, shortDate, stampLocal } from './lib.mjs';
 import { spiderWeb, SPIDER_CSS } from '../../satellites/lib/spiderweb-v1.mjs';
 
+/* Boja kontinenta nije dekoracija: ista boja stoji na kartici i na stranici
+   grada, pa se Europа, Afrika i Azija razlikuju i prije nego se pročita tekst. */
+export const CONTINENT_COLOR = {
+  Europa: '#6ea8ff', Afrika: '#f0b26a', Azija: '#e0bd69',
+  'Sjeverna Amerika': '#7fd1c1', 'Južna Amerika': '#8ddf8d', Oceanija: '#74d9e0'
+};
+
 export const CAPITAL_CSS = `.cp-crumb{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin:0 0 18px;font:600 10.5px/1.6 system-ui;letter-spacing:.12em;text-transform:uppercase;color:#8296ad}
 .cp-crumb a{color:#e0bd69;text-decoration:none;border-bottom:1px solid rgba(224,189,105,.35)}
-.cp-hero{padding:2px 0 10px}
+.cp-hero{padding:2px 0 10px 16px;border-left:3px solid var(--cp,#e0bd69)}
 .cp-kicker{margin:0 0 10px;font:700 10.5px/1.4 system-ui;letter-spacing:.18em;text-transform:uppercase;color:#e0bd69}
 .cp-hero h1{font:700 clamp(30px,5vw,54px)/1.02 Georgia,"Times New Roman",serif;letter-spacing:-.022em;margin:0 0 8px;max-width:22ch;color:#f4f7fb}
 .cp-local{margin:0 0 12px;font:700 15px/1.4 system-ui;color:#a9b6c6}
@@ -61,6 +68,12 @@ export const CAPITAL_CSS = `.cp-crumb{display:flex;flex-wrap:wrap;gap:6px 10px;a
 .cp-cards .b{padding:10px 12px 12px;display:grid;gap:4px}
 .cp-cards .n{font:700 15px/1.25 Georgia,serif;color:#f2f6fb}
 .cp-cards .c{font:600 9.5px/1.3 system-ui;letter-spacing:.1em;text-transform:uppercase;color:#8fa3ba}
+.cp-cards li[data-c="europa"]{border-top:3px solid #6ea8ff}
+.cp-cards li[data-c="afrika"]{border-top:3px solid #f0b26a}
+.cp-cards li[data-c="azija"]{border-top:3px solid #e0bd69}
+.cp-cards li[data-c="sjeverna-amerika"]{border-top:3px solid #7fd1c1}
+.cp-cards li[data-c="juzna-amerika"]{border-top:3px solid #8ddf8d}
+.cp-cards li[data-c="oceanija"]{border-top:3px solid #74d9e0}
 .cp-cards a{text-decoration:none}
 .cp-cards a:hover .n{color:#e0bd69}
 @media(max-width:700px){.cp-items li{grid-template-columns:76px minmax(0,1fr)}.cp-items .s{display:none}}`;
@@ -121,6 +134,7 @@ export function buildCapitalPage(capital, ctx) {
     [en ? 'Continent' : 'Kontinent', capital.continent],
     [en ? 'Language' : 'Jezik', language],
     [en ? 'Time zone' : 'Vremenska zona', capital.timezone],
+    [en ? 'Status' : 'Status', channel ? (en ? 'live' : 'aktivno') : (en ? 'in preparation' : 'u pripremi')],
     ...(channel ? [[en ? 'Sources' : 'Izvora', String(sources.length)], [en ? 'Records stored' : 'Zapisa u arhivi', String((data.items || []).length)]] : [])
   ];
   const badgeList = stats.map(([k, v]) => `<li>${esc(k)}: <b>${esc(v)}</b></li>`).join('');
@@ -189,10 +203,11 @@ export function buildCapitalPage(capital, ctx) {
     return `<a href="${en ? '/en/capitals' : '/glavni-gradovi'}/${esc(entry.slug)}/" rel="${dir === 'prev' ? 'prev' : 'next'}">${dir === 'prev' ? '←' : ''} ${esc(name)}${dir === 'next' ? ' →' : ''}</a>`;
   };
 
+  const continentColor = CONTINENT_COLOR[capital.continent] || '#e0bd69';
   const body = `${portalHeader('glavni-gradovi/', { h1: false })}
 <main id="sadrzaj" tabindex="-1" class="iz-wrap">
   <nav class="cp-crumb" aria-label="${en ? 'Breadcrumb' : 'Putanja'}"><a href="/gnk-aktual/">AKTUAL MEDIA</a><span aria-hidden="true">›</span><a href="${indexHref}">${en ? 'Capitals' : 'Glavni gradovi'}</a><span aria-hidden="true">›</span><span>${esc(city)}</span></nav>
-  <section class="cp-hero">
+  <section class="cp-hero" style="--cp:${continentColor}">
     <p class="cp-kicker">${en ? 'Capital' : 'Glavni grad'} · ${esc(capital.continent)} · ${esc(country)}</p>
     <h1>${esc(city)} — ${esc(country)}</h1>
     ${capital.capitalLocal && capital.capitalLocal !== city ? `<p class="cp-local" lang="${esc(capital.lang)}">${esc(capital.capitalLocal)}</p>` : ''}
@@ -306,6 +321,11 @@ ${portalFooter()}`;
     keywords,
     tags,
     logos: ['aktual-media-hr', 'aktual-media-en'],
+    preload: artId ? {
+      href: `/assets/izdanja/${artId}-1200.webp`,
+      imagesrcset: `/assets/izdanja/${artId}-800.webp 800w, /assets/izdanja/${artId}-1200.webp 1200w`,
+      imagesizes: '(max-width:760px) 100vw, 1100px'
+    } : null,
     cssExtra: `${SPIDER_CSS}\n${CAPITAL_CSS}`,
     image: artId ? `/assets/izdanja/${artId}-og.jpg` : undefined,
     imageAlt: artAlt,
