@@ -14,7 +14,7 @@ const safeHash=x=>typeof x==='string'&&/^[a-f0-9]{64}$/i.test(x);
 const safeSource=x=>{try{const u=new URL(x);return u.protocol==='https:'&&!u.username&&!u.password&&Boolean(u.hostname)}catch{return false}};
 const reject=new Set(['reject','rejected','hold','held','cancel','cancelled','withdraw']);
 const highRisk=new Set(['public-publication','production-deploy','legal','financial','security','secret','dns','sensitive-personal-claim','political-persuasion']);
-export function assessReview(entry,{now=new Date(),verifiedDigest=null}={}){
+export function assessReview(entry,{now=new Date(),verifiedDigest=null,trustedReceipt=null}={}){
  const result={id:entry?.id??null,version:VERSION,status:'HOLD',deadline:null,mayProceedInternally:false,mayPublish:false,issues:[]};
  if(!entry||typeof entry!=='object'){result.issues.push('missing-entry');return result}
  if(!entry.id||!safeHash(entry.sha256)||!safeSource(entry.sourceUrl)){result.issues.push('missing-id-content-hash-or-verified-https-source');return result}
@@ -30,7 +30,15 @@ export function assessReview(entry,{now=new Date(),verifiedDigest=null}={}){
    ||delivered>nowMs||verifiedAt<delivered||verifiedAt>nowMs+CLOCK_SKEW_MS){
   result.issues.push('invalid-or-unverified-delivery-clock');return result
  }
- if(!evidence||proof.status!=='delivered'||proof.verified!==true
+ // Delivery cannot be self-attested by the editable ledger. The caller must
+ // supply a separately verified provider/server receipt for the SAME payload.
+ const attested=trustedReceipt&&typeof trustedReceipt==='object'&&
+   trustedReceipt.entryId===entry.id&&trustedReceipt.receiptId===evidence&&
+   trustedReceipt.contentSha256===entry.sha256&&
+   trustedReceipt.deliveredAt===proof.deliveredAt&&
+   trustedReceipt.verifiedAt===proof.verifiedAt&&
+   trustedReceipt.status==='delivered'&&trustedReceipt.verified===true;
+ if(!attested||!evidence||proof.status!=='delivered'||proof.verified!==true
    ||proof.contentSha256!==entry.sha256){
   result.issues.push('trusted-receipt-and-content-bound-delivery-required');return result
  }
@@ -60,11 +68,19 @@ export function assessReview(entry,{now=new Date(),verifiedDigest=null}={}){
  result.status='SILENT_INTERNAL_APPROVAL';result.mayProceedInternally=true;
  return result
 }
-export function evaluateLedger(ledger,{now=new Date()}={}){
+export function evaluateLedger(ledger,{now=new Date(),verifyEntry=null}={}){
  if(!ledger||!Array.isArray(ledger.entries))throw Error('Invalid review ledger');
+ // A client-supplied currentSha256, receiptId or "verified" flag is NEVER
+ // sufficient. Only a trusted server-side lookup callback can attest both
+ // the immutable payload digest and the delivery provider's receipt.
+ const decisions=ledger.entries.map(e=>{
+  let verified=null;
+  try{if(typeof verifyEntry==='function')verified=verifyEntry(e?.id)}catch{/* fail closed */}
+  return assessReview(e,{now,verifiedDigest:verified?.payloadSha256??null,
+    trustedReceipt:verified?.receipt??null});
+ });
  return {version:VERSION,generatedAt:now.toISOString(),total:ledger.entries.length,
-  decisions:ledger.entries.map(e=>assessReview(e,{now,verifiedDigest:e?.currentSha256})),
-  note:'No public release. Human source validation and separate production gate required.'};
+  decisions,note:'No public release. Without independent payload and receipt verification every entry stays HOLD.'};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
  const file=process.argv[2];
