@@ -112,6 +112,43 @@ function readAutorske(root) {
   }).filter(Boolean);
 }
 
+/* ---------- 3. objave o GNK ASG d.o.o. i GNK DINAMO Ltd. ---------- */
+/* Sve što smo objavili o tim dvjema tvrtkama — i intervjui, i analize, i
+   kronologije — mora putovati mrežom kao i kolumne. Ulazi samo naš tekst:
+   stranica mora imati svoj canonical i barem jedan odlomak. Tuđe vijesti
+   ostaju kod izvornog medija; na njih se samo linka. */
+function readObjave(root) {
+  const dir = join(root, 'apps', 'portal', 'objave');
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir)
+    .map((name) => join(dir, name))
+    .filter((path) => existsSync(join(path, 'index.html')))
+    .map((path) => {
+      const html = readFileSync(join(path, 'index.html'), 'utf8');
+      const canonical = attr(html, /<link rel="canonical" href="([^"]+)"/i);
+      const rawTitle = strip(attr(html, /<title>([\s\S]*?)<\/title>/i));
+      const title = strip(attr(html, /<h1[^>]*>([\s\S]*?)<\/h1>/i)) || rawTitle.replace(/\s*\|\s*GNK ASG\s*$/i, '');
+      if (!canonical || !title) return null;
+      const description = strip(attr(html, /<meta name="description" content="([^"]*)"/i)).slice(0, 300);
+      const blob = `${title} ${description}`;
+      if (!/GNK\s*(ASG|DINAMO)/i.test(blob)) return null;
+      const slug = path.split('/').pop();
+      return {
+        slug: `objava-${slug}`,
+        kind: 'objava',
+        canonical,
+        title,
+        description,
+        published: date10(attr(html, /<meta property="article:published_time" content="([^"]+)"/i)),
+        image: attr(html, /<meta property="og:image" content="([^"]+)"/i),
+        tags: [...html.matchAll(/<meta property="article:tag" content="([^"]+)"/gi)].map((m) => m[1]).slice(0, 8),
+        paragraphs: paragraphsFromHtml(html, 3),
+        sectionPath: 'objave'
+      };
+    })
+    .filter(Boolean);
+}
+
 /* ---------- 3. pojašnjenja i komentari s kanala ---------- */
 function readKanal(root) {
   const dir = join(root, 'apps', 'kanal', 'src', 'articles');
@@ -156,6 +193,7 @@ export function readCorpus(root) {
   const all = [
     ...readKolumne(root),
     ...readAutorske(root),
+    ...readObjave(root),
     ...readKanal(root).slice(0, MAX_PER_KIND)
   ].filter((item) => item.paragraphs.length >= 1);
 
@@ -190,5 +228,6 @@ export function authorPortrait(root) {
 export const KIND_LABEL = {
   kolumna: { hr: 'Kolumna', en: 'Column' },
   autor: { hr: 'Autorski tekst', en: 'Authored text' },
-  kanal: { hr: 'Pojašnjenje', en: 'Explanation' }
+  kanal: { hr: 'Pojašnjenje', en: 'Explanation' },
+  objava: { hr: 'Objava o tvrtkama', en: 'Company post' }
 };

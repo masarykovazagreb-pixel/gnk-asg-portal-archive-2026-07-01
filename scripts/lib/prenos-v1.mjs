@@ -37,7 +37,7 @@ const LABELS = {
     source: 'Izvor i atribucija',
     intro: 'Ovaj tekst prvi je objavljen na izvorniku ispod. Ovdje je prenesen u cijelosti, s linkom na matičnu adresu.',
     read: 'Pročitaj na izvorniku', all: 'Svi tekstovi', columns: 'Kolumne', authored: 'Autorski tekstovi',
-    explanations: 'Pojašnjenja i komentari', author: 'Autor', editor: 'Glavni urednik',
+    explanations: 'Pojašnjenja i komentari', company: 'GNK ASG i GNK DINAMO Ltd.', author: 'Autor', editor: 'Glavni urednik',
     image: 'Slika iz izvorne objave.', fromColumns: 'Kolumna', total: 'tekstova'
   },
   en: {
@@ -46,7 +46,7 @@ const LABELS = {
     source: 'Source and attribution',
     intro: 'This text was first published at the source below. It is republished here in full, with a link to the canonical address.',
     read: 'Read at the source', all: 'All texts', columns: 'Columns', authored: 'Authored texts',
-    explanations: 'Explanations and comments', author: 'Author', editor: 'Editor-in-chief',
+    explanations: 'Explanations and comments', company: 'GNK ASG and GNK DINAMO Ltd.', author: 'Author', editor: 'Editor-in-chief',
     image: 'Image from the original post.', fromColumns: 'Column', total: 'texts'
   },
   id: {
@@ -137,7 +137,8 @@ const CSS = `
 const KIND_HEADING = (lang) => ({
   kolumna: LABEL(lang).columns,
   autor: LABEL(lang).authored,
-  kanal: LABEL(lang).explanations
+  kanal: LABEL(lang).explanations,
+  objava: LABEL(lang).company
 });
 
 const hashtags = (item) => ['#AKTUALMEDIA', '#GNKASG', '#NerminSefić', ...(item.tags || [])]
@@ -275,7 +276,7 @@ function itemPage({ target, item, image, portrait }) {
 function indexPage({ target, items, portrait, columnBase }) {
   const L = LABEL(target.lang);
   const headings = KIND_HEADING(target.lang);
-  const groups = ['kolumna', 'autor', 'kanal']
+  const groups = ['kolumna', 'autor', 'objava', 'kanal']
     .map((kind) => ({ kind, list: items.filter((item) => item.kind === kind) }))
     .filter((group) => group.list.length);
 

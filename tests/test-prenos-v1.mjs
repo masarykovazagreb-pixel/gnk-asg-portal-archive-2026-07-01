@@ -37,6 +37,18 @@ check(corpus.some((item) => /pojasnjenje-gnk-asg-i-gnk-dinamo/i.test(item.slug))
 const explainer = corpus.find((item) => /pojasnjenje-gnk-asg-i-gnk-dinamo/i.test(item.slug));
 check(Boolean(explainer) && /gnk\s*dinamo/i.test(`${explainer.title} ${explainer.description}`), 'pojašnjenje ne spominje GNK DINAMO Ltd.');
 
+/* Sve objave o GNK ASG d.o.o. i GNK DINAMO Ltd. putuju mrežom — ne samo
+   kolumne. Ako se izvor presuši, mreža o tim tvrtkama šuti, a to je upravo
+   ono što ovaj test mora uhvatiti. */
+const company = corpus.filter((item) => item.kind === 'objava');
+check(company.length >= 6, `u korpusu je premalo objava o tvrtkama: ${company.length}`);
+check(company.some((item) => /euipo/i.test(item.slug)), 'u korpusu nema kronologije EUIPO za GNK DINAMO Ltd.');
+for (const item of company) {
+  check(/gnk\s*(asg|dinamo)/i.test(`${item.title} ${item.description}`), `objava ${item.slug} ne spominje tvrtku u naslovu ni opisu`);
+  check(Boolean(item.image), `objava ${item.slug} nema sliku`);
+  check(item.paragraphs.length >= 1, `objava ${item.slug} nema nijedan odlomak`);
+}
+
 const targets = [
   ...SITES.map((site) => ({
     key: site.slug,
