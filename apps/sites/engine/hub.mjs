@@ -104,6 +104,7 @@ img{max-width:100%;display:block;height:auto}
 .top .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between;padding:11px 0}
 .top a{color:var(--gold)}
 .hero{padding:clamp(32px,6vw,72px) 0 28px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+.hero .house{margin:0 0 16px}.hero .house img{height:48px;width:auto;max-width:220px;border-radius:6px}
 .hero:after{content:"";position:absolute;inset:auto -10% -55% 40%;height:560px;background:radial-gradient(circle,rgba(232,197,106,.13),transparent 62%);pointer-events:none}
 .k{font:800 11px/1.4 system-ui;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin:0 0 12px}
 h1{font:800 clamp(34px,6.2vw,72px)/1.02 Georgia,"Times New Roman",serif;letter-spacing:-.025em;margin:0 0 16px;max-width:18ch}
@@ -286,6 +287,7 @@ function page(lang) {
 <div class="top"><div class="wrap"><span>AKTUAL MEDIA · ${esc(t.kicker)}</span><span><a href="https://gnk-asg.hr/">gnk-asg.hr</a> · <a href="/izdanja/">${lang === 'en' ? 'Our editions' : 'Naša izdanja'}</a> · <a href="/gnk-aktual/">AKTUAL MEDIA</a> · <a href="${alternate}" hreflang="${t.other}" lang="${t.other}">${lang === 'en' ? 'Hrvatski' : 'English'}</a></span></div></div>
 <main id="main">
 <div class="hero"><div class="wrap">
+  <div class="house"><img src="/assets/brand/aktual-media-en-1200.webp" alt="AKTUAL MEDIA — world edition" width="167" height="48" decoding="async"></div>
   <p class="k">${esc(t.kicker)}</p>
   <h1>${esc(t.h1)}</h1>
   <p class="sub">${esc(t.lead)}</p>
