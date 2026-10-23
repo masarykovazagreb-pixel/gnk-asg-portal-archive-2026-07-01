@@ -21,8 +21,10 @@ on:
     branches: [main, 'arena/**']
     paths:
       - 'apps/world/**'
-      - 'apps/portal/gnk-aktual/kolumne/**'
+      - 'apps/portal/gnk-aktual/**'
       - 'apps/portal/autorske-objave/**'
+      - 'apps/portal/objave/**'
+      - 'apps/portal/komentari/**'
       - 'apps/kanal/src/articles/**'
       - 'apps/portal/assets/people/**'
       - 'scripts/lib/**'
