@@ -2349,7 +2349,7 @@
       "slot": 1,
       "type": "source-linked-media-commentary",
       "working_topic": "Lider: sigurnost pametnih nadzornih kamera kao mrežnih uređaja",
-      "status": "approved-for-own-site",
+      "status": "published",
       "source_gate": {
         "source_packet_required": true,
         "source_url": "https://lidermedia.hr/biznis-i-politika/ugradili-ste-kamere-za-zastitu-a-hakerima-mozda-otvorili-vrata/",
@@ -2439,6 +2439,16 @@
         ],
         "sourceUrl": "https://lidermedia.hr/biznis-i-politika/ugradili-ste-kamere-za-zastitu-a-hakerima-mozda-otvorili-vrata/",
         "canonicalUrl": "https://gnk-asg.hr/komentari/kamera-cuva-ulaz-ali-mreza-ostaje-rizik/"
+      },
+      "public_url": "https://gnk-asg.hr/komentari/kamera-cuva-ulaz-ali-mreza-ostaje-rizik/",
+      "published_at": "2026-10-18T10:01:09.726Z",
+      "production_verification": {
+        "verified_at": "2026-10-18T19:26:38Z",
+        "production_sha": "43991b1f2273e42aed1d4a47cfee76db7ee14a7c",
+        "deployment_run_url": "https://github.com/masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01/actions/runs/39158666215",
+        "public_url": "https://gnk-asg.hr/komentari/kamera-cuva-ulaz-ali-mreza-ostaje-rizik/",
+        "public_listing": "https://gnk-asg.hr/komentari/",
+        "evidence": "Public comment page and /komentari/ listing served canonical route; deploy log verifies exact-main SHA and HTTP 200 for /komentari/ listing. Individual page accessible via public web content retrieval; independent raw HTTP status not separately recorded."
       }
     },
     {
