@@ -42,7 +42,7 @@ Zaključci s **današnjim** dokazom (2026-09-23), koji PONIŠTAVAJU zastarjele s
 |---|---|---|
 | P1-1 | `content-queue-publish.yml` 07:20/11:20/15:20 vs `editorial-scheduled-publish` 10:20 — **dva objavljivača istog sadržajnog prostora** (B2). | konsolidiraj — vidi C2 niže |
 | P1-2 | EN gap AKTUAL MEDIA (kolumna/stop-tiska/komentari/kuhinja) — treba EN izvor ili JS logiku. | open (R2) — razvoj |
-| P1-3 | 240 "tankih" tekstova čeka proširenje na 450–700+ riječi. | open (R1) — uredništvo |
+| P1-3 | 240 tekstova čeka pojedinačnu provjeru kvalitete, izvora, originalnosti, pravnih rizika i release gatea; duljina teksta nije kriterij niti samostalni razlog za hold. | open (R1) — uredništvo |
 | P1-4 | `btc_chart` konsolidacija tržišne kartice (odluka vlasnika — P0-2). | open |
 | P1-5 | Održavanje sitemap/X-Robots/entity integriteta — GSC 4 "duplikat bez kanonske" + 1 "5xx". | open — vlasnik semafori |
 | P1-6 | `warm-news-v16` — issues:opened čita case-insensitive? (gledati sljedeći ciljani dispatch). | uoči |
