@@ -385,6 +385,7 @@ ${houseRibbon({ lang })}
       <li><a href="/aktual-media/">${lang === 'en' ? 'Data desk' : 'Podatkovni desk'}</a></li>
       <li><a href="/tehnologija-buducnosti/">${lang === 'en' ? 'Future technology' : 'Tehnologija budućnosti'}</a></li>
       <li><a href="${lang === 'en' ? '/en/coverage/' : '/pokrivenost/'}" hreflang="${lang === 'en' ? 'en' : 'hr'}" lang="${lang === 'en' ? 'en' : 'hr'}">${lang === 'en' ? 'Coverage' : 'Pokrivenost mreže'}</a></li>
+      <li><a href="${lang === 'en' ? '/en/prenos/' : '/prenos/'}" hreflang="${lang === 'en' ? 'en' : 'hr'}" lang="${lang === 'en' ? 'en' : 'hr'}">${lang === 'en' ? 'Republication' : 'Prijenos mreže'}</a></li>
     </ul></div>
     <div><h3>${lang === 'en' ? 'Protocol' : 'Protokol'}</h3><ul>
       <li><a href="/mreza/sitemap.xml">Sitemap</a></li>
