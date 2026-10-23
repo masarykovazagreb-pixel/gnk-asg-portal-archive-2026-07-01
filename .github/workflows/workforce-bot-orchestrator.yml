@@ -29,6 +29,9 @@ on:
       - 'tests/test-aktual-existing-portals-daily-weekly-v1.mjs'
       - 'tests/test-aktual-free-editorial-network-v1.mjs'
       - 'tests/test-aktual-regional-seo-identity-v1.mjs'
+      - 'tests/test-regional-article-url-integrity-v1.mjs'
+      - 'apps/region/engine/article-url-integrity.mjs'
+      - 'apps/region/engine/build.mjs'
       - 'scripts/audit-aktual-brand-indexability-v1.mjs'
       - 'tests/test-worker-agent-swarm-v1.mjs'
       - 'apps/region/engine/build.mjs'
@@ -89,6 +92,8 @@ jobs:
         run: node --test tests/test-aktual-world-canonical-release-boundary-v1.mjs
       - name: Validate AKTUAL MEDIA regional SEO and real author/editor attribution
         run: node tests/test-aktual-regional-seo-identity-v1.mjs
+      - name: Prevent duplicate regional article URLs and unsafe sitemap paths
+        run: node --test tests/test-regional-article-url-integrity-v1.mjs
       - name: AKTUAL MEDIA — free-only 8 regional + 15 national editorial desks
         run: node tests/test-aktual-free-editorial-network-v1.mjs
       - name: Observe official national RSS sources on existing four-hour schedule (free, no publication)
