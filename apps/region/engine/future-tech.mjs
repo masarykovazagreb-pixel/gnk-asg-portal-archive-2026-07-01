@@ -510,7 +510,12 @@ function page(lang) {
   const tags = lang === 'en'
     ? [['#FutureTechnology', '/en/future-technology/'], ['#BCI', '/en/future-technology/#misao'], ['#mRNA', '/en/future-technology/#medicina'], ['#WirelessPower', '/en/future-technology/#energija'], ['#QuantumComputing', '/en/future-technology/#racunalo'], ['#AKTUALMEDIA', '/en/gnk-aktual/'], ['#GNKASG', '/kanal/']]
     : [['#TehnologijaBuducnosti', '/tehnologija-buducnosti/'], ['#BCI', '/tehnologija-buducnosti/#misao'], ['#mRNA', '/tehnologija-buducnosti/#medicina'], ['#BezicnaEnergija', '/tehnologija-buducnosti/#energija'], ['#KvantnoRacunanje', '/tehnologija-buducnosti/#racunalo'], ['#AKTUALMEDIA', '/gnk-aktual/'], ['#GNKASG', '/kanal/']];
-  const keywords = `${tags.map(([tag]) => tag).join(', ')}, tehnologija budućnosti, future technology, GNK ASG`;
+  /* Oznake (#BCI, #mRNA …) ostaju vidljive kao linkovi i idu u article:tag,
+     ali NIKAD u meta keywords: tražilica u popisu pojmova traži riječi, a `#`
+     je tamo smeće. Zato su ovdje iste riječi bez oznake. */
+  const keywords = lang === 'en'
+    ? 'future technology, BCI, mRNA, wireless power, quantum computing, AKTUAL MEDIA, GNK ASG'
+    : 'tehnologija budućnosti, BCI, mRNA, bežična energija, kvantno računanje, AKTUAL MEDIA, GNK ASG';
 
   const signal = PILLARS.map((pillar) => `<li><a href="#${pillar.id}"><b>${esc(pillar.big[lang])}</b><span>${esc(pillar.title[lang])} — ${esc(pillar.bigLabel[lang])}</span></a></li>`).join('');
   const meter = PILLARS.map((pillar) => `<li><span>${esc(pillar.title[lang])}</span><span class="bar"><i style="width:${Math.round((pillar.trl / 9) * 100)}%"></i></span><span class="n">${t.trl} ${pillar.trl}</span></li>`).join('');

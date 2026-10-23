@@ -69,6 +69,7 @@ export const REGION_IMAGE_HOSTS = [
   ['static.republika.co.id', 'Republika', 'ID'],
   ['dam.mediacorp.sg', 'CNA / Mediacorp', 'SG'],
   ['images.skynewsarabia.com', 'Sky News Arabia', 'AE'],
+  ['media.skynewsarabia.com', 'Sky News Arabia', 'AE'],
   ['cdn.i-scmp.com', 'South China Morning Post', 'HK'],
   ['image5.sixthtone.com', 'Sixth Tone', 'CN'],
   ['www.japantimes.co.jp', 'The Japan Times', 'JP'],

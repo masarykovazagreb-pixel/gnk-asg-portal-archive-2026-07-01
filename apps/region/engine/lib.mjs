@@ -13,6 +13,53 @@ export const UA = 'AKTUAL-MEDIA-Regional/1.0 (+https://gnk-asg.hr/izdanja/)';
 
 /* ---------- mreža ---------- */
 
+
+/* ---------- kodiranje odgovora ---------- */
+
+/* Dekodiranje bajtova u tekst bez gubitka dijakritika.
+
+   Pravilo je jedno: U+FFFD znači da je odabrano kodiranje pogrešno, pa se
+   nikad ne vraća tekst s njim ako postoji čitanje bez njega. Redoslijed je
+   namjeran — UTF-8 je danas pravilo, a deklarirani charset je često pogrešan
+   (mnogi feedovi tvrde iso-8859-1, a šalju UTF-8). */
+export function decodeBody(buffer, res) {
+  const utf8 = new TextDecoder('utf-8').decode(buffer);
+  if (!utf8.includes('\uFFFD')) return utf8;
+
+  const declared = charsetOf(buffer, res);
+  if (declared && !/^utf-?8$/.test(declared)) {
+    try {
+      const text = new TextDecoder(declared).decode(buffer);
+      if (!text.includes('\uFFFD')) return text;
+    } catch { /* nepoznato kodiranje — probaj sljedeće */ }
+  }
+
+  try {
+    const text = new TextDecoder('windows-1252').decode(buffer);
+    if (!text.includes('\uFFFD')) return text;
+  } catch { /* ostaje UTF-8 */ }
+
+  return utf8;
+}
+
+/* Charset iz zaglavlja, XML deklaracije ili <meta charset>. */
+function charsetOf(buffer, res) {
+  const header = String(res?.headers?.get?.('content-type') || '');
+  const fromHeader = (header.match(/charset=["']?([\w-]+)/i) || [])[1];
+  if (fromHeader) return fromHeader.toLowerCase();
+
+  const head = new TextDecoder('utf-8').decode(buffer.slice(0, 1024));
+  const fromXml = (head.match(/<\?xml[^>]*encoding=["']([\w-]+)["']/i) || [])[1];
+  if (fromXml) return fromXml.toLowerCase();
+
+  const fromMeta = (head.match(/<meta[^>]+charset=["']?([\w-]+)/i) || [])[1];
+  return fromMeta ? fromMeta.toLowerCase() : '';
+}
+
+/* Znak koji se ne smije naći u objavljenom tekstu. Vidi tests/test-region-encoding-v1.mjs. */
+export const CORRUPT = '\uFFFD';
+export const isCorrupt = (value = '') => String(value).includes(CORRUPT);
+
 export async function fetchText(url, { timeout = 15000, tries = 2 } = {}) {
   let lastError;
   for (let i = 0; i < tries; i += 1) {
@@ -25,7 +72,13 @@ export async function fetchText(url, { timeout = 15000, tries = 2 } = {}) {
         headers: { 'user-agent': UA, accept: 'application/rss+xml, application/atom+xml, application/xml, text/xml, application/json, text/html;q=0.8, */*;q=0.5' }
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const text = await res.text();
+      /* Neki feedovi (UOL, dio južnoameričkih i istočnoeuropskih medija)
+         dolaze u ISO-8859-1 ili windows-1252, a `res.text()` uvijek dekodira
+         UTF-8. Tada se svaki dijakritik pretvori u U+FFFD i naslov postane
+         nečitljiv („Minist�rio"). Zato čitamo bajtove i biramo kodiranje:
+         valjani UTF-8 ima prednost, inače deklarirani charset, inače
+         windows-1252. */
+      const text = decodeBody(await res.arrayBuffer(), res);
       if (!text || text.length < 80) throw new Error('empty response');
       return text;
     } catch (error) {

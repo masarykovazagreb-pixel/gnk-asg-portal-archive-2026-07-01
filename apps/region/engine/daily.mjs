@@ -16,7 +16,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { fetchText, hash6, ISO_DAY, parseDate, slugify, themeFor, truncate } from './lib.mjs';
+import { fetchText, hash6, isCorrupt, ISO_DAY, parseDate, slugify, themeFor, truncate } from './lib.mjs';
 import { looksLikeFeed, parseFeed } from './feed.mjs';
 import { buildChannel, CHANNELS } from './build.mjs';
 
@@ -85,14 +85,23 @@ export async function runChannel(channel, { dry = false, report = {} } = {}) {
 
   for (const source of channel.sources) {
     const { url, items, errors } = await readSource(source);
+
+    /* Zaštita na drugom sloju: i kad dekodiranje uspije pogrešno, zapis s
+       U+FFFD se ne objavljuje. Radije praznina koju _status.json vidi nego
+       naslov koji čitatelj ne može pročitati. */
+    const readable = items.filter((item) => !isCorrupt(
+      [item.title, item.summary, item.author, item.imageAlt, ...(item.categories || [])].join(' ')
+    ));
+    const corrupt = items.length - readable.length;
+
     sourceReport.push({
       id: source.id, name: source.name, url: url || (source.urls || [])[0] || '',
-      ok: Boolean(items.length), fetched: items.length, errors,
+      ok: Boolean(items.length), fetched: items.length, corrupt, errors,
       checkedAt: new Date().toISOString()
     });
     if (!items.length) continue;
 
-    const fresh = items
+    const fresh = readable
       .filter((item) => item.title && item.url)
       .filter((item) => isFresh(item.date))
       .sort((a, b) => String(b.date).localeCompare(String(a.date)))
@@ -148,6 +157,9 @@ export async function runChannel(channel, { dry = false, report = {} } = {}) {
     total: merged.length,
     sourcesOk: sourceReport.filter((s) => s.ok).length,
     sourcesTotal: sourceReport.length,
+    /* Koliko je zapisa odbijeno zbog pokvarenog kodiranja — vidi se u
+       _status.json, pa se izvor s trajno krivim charsetom ne može sakriti. */
+    corrupt: sourceReport.reduce((sum, s) => sum + (s.corrupt || 0), 0),
     failed: sourceReport.filter((s) => !s.ok).map((s) => s.id)
   };
   return next;

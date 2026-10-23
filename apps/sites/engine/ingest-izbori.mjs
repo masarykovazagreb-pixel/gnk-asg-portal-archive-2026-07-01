@@ -17,6 +17,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseFeed, looksLikeFeed } from '../../region/engine/feed.mjs';
 import { matchesItem } from '../lib/elections.mjs';
+import { decodeBody } from '../../region/engine/lib.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const APP = join(HERE, '..');
@@ -41,7 +42,7 @@ async function readFeed(feed) {
       redirect: 'follow',
     });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const text = await response.text();
+    const text = decodeBody(await response.arrayBuffer(), response);
     if (!looksLikeFeed(text)) throw new Error('nije feed');
     const items = parseFeed(text, { base: feed.url, sourceId: feed.id, sourceName: feed.name });
     if (!items.length) throw new Error('prazan feed');
