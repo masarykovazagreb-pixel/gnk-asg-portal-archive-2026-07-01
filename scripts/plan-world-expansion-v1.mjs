@@ -17,7 +17,7 @@
  *   node scripts/plan-world-expansion-v1.mjs --check    # provjeri (gate)
  *   node scripts/plan-world-expansion-v1.mjs --next 5   # sljedećih pet
  */
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PLANNED, LIVE_IDS, WAVES, REQUIREMENTS, PLAN_VERSION, WORLD_CODES } from '../apps/world/lib/expansion-plan.mjs';
@@ -143,6 +143,41 @@ if (fails.length) {
   console.error(`POKRIVENOST — ${fails.length} problema:`);
   for (const fail of fails.slice(0, 20)) console.error(`  ✗ ${fail}`);
   process.exit(1);
+}
+
+/* Radni nalozi po valovima: jedan JSON po valu, sa svime što grad mora
+   imati prije objave. Ništa se ne objavljuje samo zato što je nalog zapisan —
+   nalog je popis posla, a ne izdanje. */
+if (!CHECK && !NEXT) {
+  const queueDir = join(ROOT, 'ops', 'expansion-queue');
+  if (existsSync(queueDir) || true) {
+    for (const wave of WAVES) {
+      const cities = PLANNED.filter((entry) => entry.wave === wave.id);
+      if (!cities.length) continue;
+      const order = {
+        version: PLAN_VERSION,
+        wave: wave.id,
+        name: wave.name,
+        status: wave.status,
+        note: wave.note || '',
+        generatedAt: new Date().toISOString(),
+        requirements: REQUIREMENTS,
+        cities: cities.map((entry) => ({
+          id: entry.id,
+          city: entry.city,
+          country: entry.country,
+          countryCode: entry.countryCode,
+          lang: entry.lang,
+          timezone: entry.timezone,
+          continent: entry.continent,
+          note: entry.note || '',
+          ready: false
+        }))
+      };
+      mkdirSync(queueDir, { recursive: true });
+      writeFileSync(join(queueDir, `${wave.id}.json`), `${JSON.stringify(order, null, 2)}\n`);
+    }
+  }
 }
 
 if (NEXT) {

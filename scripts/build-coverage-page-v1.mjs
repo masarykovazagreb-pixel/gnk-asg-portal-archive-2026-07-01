@@ -326,6 +326,8 @@ ${requirements}
     <a href="/gnk-aktual/">AKTUAL MEDIA</a>
     <a href="/nermin-sefic/">Nermin Sefić</a>
     <a href="${other}" hreflang="${hr ? 'en' : 'hr'}">${hr ? 'English' : 'Hrvatski'}</a>
+    <a href="/data/world-coverage-v1.json">${hr ? 'Podaci (JSON)' : 'Data (JSON)'}</a>
+    <a href="https://gnk-asg.hr/llms.txt">llms.txt</a>
   </nav>
 </div>
 </body>
