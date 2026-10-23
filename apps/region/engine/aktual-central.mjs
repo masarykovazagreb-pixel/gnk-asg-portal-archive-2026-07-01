@@ -1217,13 +1217,13 @@ ${END}`;
       ['/kanal/beograd/', 'beograd', 'KANAL BEOGRAD', 'Novo izdanje za Srbiju'],
       ['https://gnk-asg-tjednik.pages.dev/', 'tjednik', 'Business Tjednik', 'W43 · poslovni pregled'],
       ['/galerija/', 'galerija', 'Galerija', '63 stranice znakova'],
-      ['/gnk-aktual/mreza/', 'mreza', 'Mreža izdanja', '8 gradova, 8 jezika']
+      ['/gnk-aktual/mreza/', 'mreza', 'Mreža izdanja', `${CHANNELS.length} gradova, ${new Set(CHANNELS.map((c) => c.lang)).size} jezika`]
     ] : [
       ['/en/status/', 'status', 'Freshness status', 'Public freshness measurement'],
       ['/kanal/beograd/', 'beograd', 'KANAL BEOGRAD', 'New edition for Serbia'],
       ['https://gnk-asg-tjednik.pages.dev/', 'tjednik', 'Business Weekly', 'Week W43 · business review'],
       ['/galerija/', 'galerija', 'Gallery', '63 brand pages'],
-      ['/en/gnk-aktual/network/', 'mreza', 'Edition network', '8 cities, 8 languages']
+      ['/en/gnk-aktual/network/', 'mreza', 'Edition network', `${CHANNELS.length} cities, ${new Set(CHANNELS.map((c) => c.lang)).size} languages`]
     ];
     const windowRow = `<nav class="am-win-row" aria-label="${esc(hr ? 'Nove stranice AKTUAL MEDIA' : 'New AKTUAL MEDIA pages')}">
   <div class="am-win-head"><h2>${esc(hr ? 'Prozorčići · novo u AKTUAL MEDIA' : 'Mini windows · new in AKTUAL MEDIA')}</h2><a href="${hr ? '/aktual-media/proizvodi/' : '/en/aktual-media/proizvodi/'}">${esc(hr ? 'Svi proizvodi →' : 'All products →')}</a></div>
