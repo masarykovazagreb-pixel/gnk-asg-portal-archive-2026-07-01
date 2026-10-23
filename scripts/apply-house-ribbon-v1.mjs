@@ -7,8 +7,10 @@
  * analize, tematske, arhive) imaju samo zaglavlje portala. Ovaj skript ih
  * dopunjuje bez diranja sadržaja:
  *
- *   - umeće traku kuće odmah nakon `</header>` (znak, ime, izdanje, veza na
- *     matičnu mrežu) i jednom `<link>` na /assets/house-ribbon-v1.css;
+ *   - umeće traku kuće na vrh tijela, ispod veze za preskok a iznad zaglavlja
+ *     (znak, ime, izdanje, veza na matičnu mrežu) i jednom `<link>` na
+ *     /assets/house-ribbon-v1.css; nikad unutar <main>, da ne ulazi u mjeru
+ *     članka;
  *   - preskače stranice koje traku već imaju, noindex preusmjerene stranice,
  *     alate i sve što nije javna stranica;
  *   - idempotentan je: drugi prolaz ne mijenja ništa.
@@ -63,8 +65,9 @@ const changed = [];
 for (const file of walk(PORTAL)) {
   scanned += 1;
   let html = readFileSync(file, 'utf8');
-  if (html.includes(MARK)) { skipped += 1; continue; }
-
+  /* applyHouseRibbon sam prepoznaje ispravno mjesto trake; ovdje se ne
+     preskače po pukom postojanju oznake jer traka znade stajati dublje,
+     unutar <main>, gdje ulazi u mjeru članka. */
   const applied = applyHouseRibbon(html);
   if (!applied.changed) { skipped += 1; continue; }
   html = applied.html;

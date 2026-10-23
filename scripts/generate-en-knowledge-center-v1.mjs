@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
+import { applyHouseRibbon } from './lib/house-ribbon-v1.mjs';
 
 const root=path.resolve('apps/portal');
 const kbPath=path.join(root,'data/knowledge-base.json');
@@ -131,5 +132,9 @@ const html=`<!doctype html>
 </html>
 `;
 fs.mkdirSync(path.dirname(outPath),{recursive:true});
-fs.writeFileSync(outPath,html,'utf8');
+/* ZNAK KUĆE: stranica se rađa s trakom mreže, pa je ponovno generiranje
+   uvijek isto što i predana datoteka (Knowledge Center Contract traži
+   `git diff --exit-code` nakon generiranja). */
+const branded = applyHouseRibbon(html).html;
+fs.writeFileSync(outPath,branded,'utf8');
 console.log(`Generated EN Knowledge Center with ${qa.length} questions.`);
