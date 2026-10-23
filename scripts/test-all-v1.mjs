@@ -58,6 +58,8 @@ const GATES = [
   { name: 'Atlas, paukova mreža i glavni gradovi', cmd: ['node', 'tests/test-network-atlas-v1.mjs'], required: true },
   { name: 'Desk grafike — devet ilustracija', cmd: ['node', 'tests/test-desk-art-v1.mjs'], required: true },
   { name: 'Slike — alt, dimenzije i postojeće datoteke', cmd: ['node', 'tests/test-image-alt-v1.mjs'], required: true },
+  { name: 'Društvene kartice — OG i Twitter slika', cmd: ['node', 'tests/test-social-cards-v1.mjs'], required: true },
+  { name: 'Sindikacija — kolumne na svakoj domeni', cmd: ['node', 'tests/test-sindikacija-v1.mjs'], required: true },
   { name: 'Glavni gradovi — ugovor i sitemap', cmd: ['node', 'tests/test-capitals-completeness-v1.mjs'], required: true },
   { name: 'Sitemap integritet — svaka adresa postoji', cmd: ['node', 'tests/test-sitemap-integrity-v1.mjs'], required: true },
   { name: 'Hreflang — obostrani prijevodi', cmd: ['node', 'tests/test-hreflang-reciprocity-v1.mjs'], required: true },

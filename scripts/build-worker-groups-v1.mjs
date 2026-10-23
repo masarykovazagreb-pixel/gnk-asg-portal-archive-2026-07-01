@@ -7,6 +7,7 @@
    radnika ostaju označeni kao model (vidi data/worker-live-reports.json). */
 import { readdirSync, readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { readWorkflowCrons, scheduleOf as cronScheduleOf } from './lib/workflow-crons.mjs';
+import { figureHtml } from './lib/page-art-v1.mjs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -15,11 +16,17 @@ const WF = join(ROOT, '.github', 'workflows');
 const PORTAL = join(ROOT, 'apps', 'portal');
 const REPO = 'masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01';
 
+/* Broj gradskih izdanja se čita, ne pamti: tekst skupine ne smije ostati na
+   starom broju kad mreža naraste. */
+const CHANNELS = JSON.parse(readFileSync(join(ROOT, 'apps', 'region', 'channels.json'), 'utf8')).channels;
+const CITY_COUNT = CHANNELS.length;
+const CITY_LANGS = new Set(CHANNELS.map((c) => c.lang)).size;
+
 const GROUPS = [
   {
     id: 'izdanja',
-    hr: { name: 'Izdanja i sadržaj', lead: 'Osam gradskih kanala, deskovi, tjednik i svjetsko izdanje — prikupljanje, provjera izvora i objava tekstova.' },
-    en: { name: 'Editions and content', lead: 'Eight city channels, desks, the weekly and the world edition — gathering, source checks and publishing.' },
+    hr: { name: 'Izdanja i sadržaj', lead: `${CITY_COUNT} gradskih kanala na ${CITY_LANGS} jezika, deskovi, tjednik i svjetsko izdanje — prikupljanje, provjera izvora i objava tekstova.` },
+    en: { name: 'Editions and content', lead: `${CITY_COUNT} city channels in ${CITY_LANGS} languages, desks, the weekly and the world edition — gathering, source checks and publishing.` },
     re: /^(check-aktual|aktual-|region-|newsroom|editorial|blog|tjednik|moda|desk|world-|kanal-|content-queue|content-source|news-|gnk-news|dohvati-|build-world-cookbook|knowledge-center|digital-workforce)/,
     page: ['/izdanja/', 'Sva izdanja'], pageEn: ['/en/izdanja/', 'All editions']
   },
@@ -222,6 +229,17 @@ function page(lang) {
     <p>${EN ? 'Automations that do not fit a single group; all of them are listed so nothing is hidden.' : 'Automatizacije koje ne pripadaju jednoj skupini; sve su popisane da ništa ne ostane skriveno.'}</p>
     <details class="wg-list" open><summary>${EN ? 'All ungrouped automations' : 'Sve automatizacije izvan skupina'} (${rest.length})</summary><ul class="wg-wf">${restItems}</ul></details></section>` : '';
 
+  const hero = figureHtml({
+    portal: PORTAL,
+    art: 'desk/art/biznis',
+    alt: EN
+      ? 'Business desk illustration: business layers and figures'
+      : 'Ilustracija deska Biznis: poslovni slojevi i brojke',
+    caption: EN
+      ? `${GROUPS.length} working groups, ${TOTAL} real automations; no modeled worker is counted as one.`
+      : `${GROUPS.length} radnih skupina, ${TOTAL} stvarnih automatizacija; nijedan modelirani radnik se ne broji kao automatizacija.`
+  });
+
   return `<!doctype html>
 <html lang="${EN ? 'en' : 'hr'}">
 <head>
@@ -278,6 +296,14 @@ function page(lang) {
 <meta property="og:title" content="${EN ? 'Worker groups and automations' : 'Grupacije radnika i automatizacije'} — GNK ASG">
 <meta property="og:description" content="${EN ? `${GROUPS.length} working groups and the real automations behind them.` : `${GROUPS.length} radnih skupina i stvarne automatizacije koje ih pokreću.`}">
 <meta property="og:locale" content="${EN ? 'en_GB' : 'hr_HR'}">
+<meta property="og:image" content="https://gnk-asg.hr/assets/desk/art/biznis-1200.webp">
+<meta property="og:image:alt" content="${EN ? 'Business desk illustration: business layers and figures' : 'Ilustracija deska Biznis: poslovni slojevi i brojke'}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${EN ? 'Worker groups and automations' : 'Grupacije radnika i automatizacije'} — GNK ASG">
+<meta name="twitter:image" content="https://gnk-asg.hr/assets/desk/art/biznis-1200.webp">
+<meta name="twitter:image:alt" content="${EN ? 'Business desk illustration: business layers and figures' : 'Ilustracija deska Biznis: poslovni slojevi i brojke'}">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/gnk-design-v1.css?v=20261020-fleet">
 <style>
@@ -311,6 +337,7 @@ h1{font:900 clamp(28px,4.6vw,46px)/1.02 Impact,"Arial Black",system-ui,sans-seri
 .wg-foot a{font:800 10.5px/1 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:#8c2f2f}
 @media(max-width:560px){.wg-grid{grid-template-columns:1fr}}
 </style>
+<link rel="stylesheet" href="/assets/page-art-v1.css">
 </head>
 <body>
 <div class="wg-top">
@@ -321,6 +348,8 @@ h1{font:900 clamp(28px,4.6vw,46px)/1.02 Impact,"Arial Black",system-ui,sans-seri
   <p class="wg-lead">${EN
     ? `Digital workers are split into ${GROUPS.length} working groups. Each group carries its own real GitHub Actions automations — the list below links straight to them, and fleet status lives on its own page.`
     : `Digitalni radnici podijeljeni su u ${GROUPS.length} radnih skupina. Svaka skupina ima svoje stvarne GitHub Actions automatizacije — popis ispod vodi izravno na njih, a stanje cijele flote je na zasebnoj stranici.`}</p>
+
+  ${hero}
   <div class="wg-meta">
     <span class="wg-pill"><b>${TOTAL}</b> ${EN ? 'automations' : 'automatizacija'}</span>
     <span class="wg-pill"><b>${SCHEDULED.length}</b> ${EN ? 'on schedule' : 'na rasporedu'}</span>

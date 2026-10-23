@@ -1,14 +1,14 @@
 {
   "note": "Groups are derived from real workflow files; worker profiles are a modeled catalogue.",
-  "total": 342,
+  "total": 343,
   "groups": [
     {
       "id": "izdanja",
       "name": "Izdanja i sadržaj",
       "nameEn": "Editions and content",
-      "automations": 66,
-      "scheduled": 8,
-      "runsPerDay": 39,
+      "automations": 67,
+      "scheduled": 9,
+      "runsPerDay": 43,
       "files": [
         {
           "file": "aktual-ai-governance-candidate-gate.yml",
@@ -348,6 +348,13 @@
           "file": "world-monitor-refresh.yml",
           "crons": [
             "20 1,7,13,19 * * *"
+          ],
+          "perDay": 4
+        },
+        {
+          "file": "world-portals-deploy.yml",
+          "crons": [
+            "17 1,7,13,19 * * *"
           ],
           "perDay": 4
         },

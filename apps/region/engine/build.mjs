@@ -397,16 +397,32 @@ const plainTags = [...new Map(tags.map((t) => String(t).replace(/^#/, '')).filte
         alternateName: ['AKTUAL MEDIA', 'Aktual Media', 'Aktual mediji', 'Aktual medija', 'Aktual Media d.o.o.', 'AKTUAL MEDIA KANAL', 'AKTUAL MEDIA KANAL ZAGREB'],
         url: CENTRAL,
         editor: { '@id': `${PUBLIC}/#nermin-sefic` },
-        parentOrganization: { '@type': 'Organization', name: 'GNK ASG d.o.o.', url: PUBLIC },
+        parentOrganization: { '@type': 'Organization', '@id': `${PUBLIC}/#gnk-asg`, name: 'GNK ASG d.o.o.', url: PUBLIC },
+        sameAs: [`${PUBLIC}/gnk-aktual/`, `${PUBLIC}/mreza/`, 'https://gnk-asg-arhiva.pages.dev/', 'https://gnk-asg-dnevnik.pages.dev/', 'https://gnk-asg-tjednik.pages.dev/'],
         publishingPrinciples: `${CENTRAL}metodologija/`,
       },
       {
         '@type': 'Person', '@id': `${PUBLIC}/#nermin-sefic`,
         name: 'Nermin Sefić',
+        alternateName: ['Nermin Sefic', 'Sefic Nermin'],
         jobTitle: 'Urednik i direktor',
         url: `${PUBLIC}/nermin-sefic/`,
-        worksFor: { '@id': `${PUBLIC}/#gnk-asg` },
+        worksFor: [{ '@id': `${PUBLIC}/#gnk-asg` }, { '@id': `${PUBLIC}/gnk-aktual/#aktual-media` }],
+        affiliation: { '@id': `${PUBLIC}/#gnk-dinamo-ltd` },
+        founder: { '@id': `${PUBLIC}/#gnk-asg` },
         subjectOf: { '@type': 'ItemList', url: `${PUBLIC}/autorske-objave/` }
+      },
+      {
+        /* Matično društvo grupe. Namjerno odvojen čvor: GNK ASG d.o.o. i
+           GNK DINAMO Ltd. su dva pravna lica i ne stapaju se u jedan entitet.
+           Opis isključuje zabunu s nogometnim klubom. */
+        '@type': 'Organization', '@id': `${PUBLIC}/#gnk-dinamo-ltd`,
+        name: 'GNK DINAMO Ltd.',
+        url: `${PUBLIC}/pojasnjenje-gnk-asg-i-gnk-dinamo-ltd/`,
+        address: { '@type': 'PostalAddress', addressLocality: 'Boulder', addressRegion: 'Colorado', addressCountry: 'US' },
+        disambiguatingDescription: 'Matično društvo grupe sa sjedištem u Boulderu, Colorado. Nije nogometni klub i ne objavljuje sportski sadržaj.',
+        employee: { '@id': `${PUBLIC}/#nermin-sefic` },
+        sameAs: [`${PUBLIC}/pojasnjenje-gnk-asg-i-gnk-dinamo-ltd/`]
       },
       {
         '@type': 'WebSite', '@id': `${PUBLIC}/#website`,
@@ -981,7 +997,15 @@ ${footer(channel, strings)}`;
     type: 'article',
     published: item.date,
     modified: item.date,
-    ogAlt: item.image ? (item.imageAlt || item.title) : `${strings.themeNames[artThemeOf(item)] || strings.themeNames[theme] || theme} — ${captionFor(channel.lang, 'artAlt')}`,
+    /* Kratak naslov (jedna riječ) nije dovoljan opis slike za mreže. Tada se
+       dodaje tema i izvor, pa opis ostaje čitljiv i kad je naslov kratak. */
+    ogAlt: (() => {
+      if (!item.image) return `${strings.themeNames[artThemeOf(item)] || strings.themeNames[theme] || theme} — ${captionFor(channel.lang, 'artAlt')}`;
+      const base = (item.imageAlt || item.title || '').trim();
+      if (base.length >= 12) return base;
+      const themeName = strings.themeNames[artThemeOf(item)] || strings.themeNames[theme] || theme;
+      return base ? `${base} — ${themeName}, ${item.sourceName}` : `${item.title} — ${themeName}, ${item.sourceName}`;
+    })(),
     image: ogImage,
     root
   });

@@ -19,6 +19,7 @@ import { esc, artSvg, artPath, css, networkBar, siteHeader, head, jsonLd, footer
 import { ogPng } from './lib/png.mjs';
 import { SATELLITE_ART } from './lib/satellite-art.mjs';
 import { buildElectionDesk } from './lib/elections.mjs';
+import { buildSyndication } from './lib/sindikacija.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..', '..');
@@ -467,7 +468,20 @@ async function buildNetwork() {
   return results;
 }
 
-buildNetwork().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+buildNetwork()
+  .then((results) => {
+    /* Srednji sloj mreže: svaka Sefićeva kolumna s portala dobiva vlastitu
+       stranicu na svakoj povezanoj domeni. Bez ovog koraka kolumna postoji
+       samo na matici, a mreža nema što prenijeti. */
+    const syn = buildSyndication({ root: ROOT, outRoot: OUT });
+    if (syn.ok) {
+      console.log(`Sindikacija — ${syn.items} kolumni × ${SITES.length} stranica, ${syn.pages} novih adresa, ${syn.images} lokalnih slika.`);
+    } else {
+      console.log(`Sindikacija — preskočeno: ${syn.reason}`);
+    }
+    return results;
+  })
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });

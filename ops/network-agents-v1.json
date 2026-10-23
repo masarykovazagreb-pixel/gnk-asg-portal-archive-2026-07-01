@@ -311,6 +311,37 @@
         "tests/test-image-alt-v1.mjs"
       ],
       "checks": "Svaka slika na javnim stranicama ima neprazan alt, width i height te src koji postoji (251.064 slike); svaka novinska kartica i pločica na /kanal/** i oba /gnk-aktual/ ulaza ima sliku (303 kartice)."
+    },
+    {
+      "id": "social-card-agent",
+      "name": "Društvene kartice — OG/Twitter",
+      "required": true,
+      "cmd": [
+        "node",
+        "tests/test-social-cards-v1.mjs"
+      ],
+      "checks": "6134 javne stranice imaju og:image, og:image:alt, twitter:card, twitter:image i twitter:image:alt; lokalna datoteka slike postoji."
+    },
+    {
+      "id": "sindikacija-agent",
+      "name": "Sindikacija — kolumne na svakoj domeni",
+      "required": true,
+      "cmd": [
+        "node",
+        "tests/test-sindikacija-v1.mjs"
+      ],
+      "checks": "Svaka Sefićeva kolumna s portala postoji kao zasebna stranica na svakoj od šest stranica mreže, s canonicalom na izvornik, vidljivim linkom i oznakama."
+    },
+    {
+      "id": "entity-graph-agent",
+      "name": "Entiteti — izvještaj pokrivenosti",
+      "required": false,
+      "cmd": [
+        "node",
+        "scripts/apply-network-entity-v1.mjs",
+        "--check"
+      ],
+      "checks": "Broji javne stranice bez entitetskog grafa i meta urednika. Savjetodavan: ne blokira deploy, ali pokazuje koliko je posla ostalo."
     }
   ]
 }
