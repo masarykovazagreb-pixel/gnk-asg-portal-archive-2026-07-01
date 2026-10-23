@@ -470,9 +470,9 @@ function homePage(portal, data) {
 </main>
 <section class="page" aria-labelledby="swBandTitle">
   <h2 class="band-title" id="swBandTitle">${esc(wl(portal, 'spiderTitle'))}</h2>
-  ${spiderWeb({ lang: portal.lang, selfUrl: portalBase(portal), theme: 'light' })}
+  ${spiderWeb({ lang: portal.lang, selfUrl: portalBase(portal), theme: 'dark' })}
 </section>
-${meshBlock({ lang: portal.lang, selfUrl: portalBase(portal), theme: 'light' })}
+${meshBlock({ lang: portal.lang, selfUrl: portalBase(portal), theme: 'dark' })}
 ${footer(portal)}`;
 
   const jsonld = [{

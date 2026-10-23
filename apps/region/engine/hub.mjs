@@ -668,7 +668,7 @@ function hubPage() {
   </section>
   <section class="iz-band iz-web" aria-labelledby="webTitle">
     <h2 id="webTitle">Sve adrese na jednoj slici</h2>
-    ${spiderWeb({ lang: 'hr', selfUrl: HUB, theme: 'light' })}
+    ${spiderWeb({ lang: 'hr', selfUrl: HUB, theme: 'dark' })}
   </section>
   ${worldBand()}
   ${networkBand()}
@@ -1242,7 +1242,7 @@ function capitalsPage(lang = 'hr') {
 
   <section aria-labelledby="cgWebTitle">
     <h2 id="cgWebTitle" style="margin:26px 0 0">${en ? 'Every capital in the web' : 'Svaka prijestolnica u mreži'}</h2>
-    ${spiderWeb({ lang, selfUrl: `https://gnk-asg.hr/${en ? 'en/capitals/' : 'glavni-gradovi/'}`, theme: 'light' })}
+    ${spiderWeb({ lang, selfUrl: `https://gnk-asg.hr/${en ? 'en/capitals/' : 'glavni-gradovi/'}`, theme: 'dark' })}
   </section>
 
   <section aria-labelledby="cgTableTitle" style="margin:8px 0 0">

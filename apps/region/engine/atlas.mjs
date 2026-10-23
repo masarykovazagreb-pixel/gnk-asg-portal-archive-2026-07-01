@@ -69,6 +69,9 @@ export const ATLAS_CSS = `
 .at-how b{display:block;font:700 13px/1.3 system-ui;color:#f2f6fb;margin-bottom:4px}
 .at-how p{margin:0;font-size:13px;color:#a9b6c6}
 .at-cta{display:flex;flex-wrap:wrap;gap:9px;margin:22px 0 0}
+.at-map{margin:20px 0 0;padding:0}
+.at-map img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:16px;border:1px solid #1e3b58;background:#0a1726}
+.at-map figcaption{margin:9px 2px 0;font:400 12px/1.55 system-ui;color:#8fa3ba;max-width:82ch}
 @media (max-width:520px){.at-grid{grid-template-columns:1fr}}
 `;
 
@@ -133,6 +136,10 @@ export function buildAtlasPage({ lang, capitals, channels, counts, standard, she
       <li><div><b>${live.length}</b><span>${en ? 'live editions' : 'aktivnih izdanja'}</span></div></li>
       <li><div><b>${preparing.length}</b><span>${en ? 'in preparation' : 'u pripremi'}</span></div></li>
     </ul>
+    <figure class="at-map">
+      <img src="/assets/atlas/aktual-media-atlas-1200.webp" srcset="/assets/atlas/aktual-media-atlas-800.webp 800w, /assets/atlas/aktual-media-atlas-1200.webp 1200w, /assets/atlas/aktual-media-atlas-1600.webp 1600w" sizes="(max-width:760px) 100vw, 1120px" alt="${en ? 'Illustration: a night map of the world, golden lines joining the cities of the network.' : 'Ilustracija: noćna karta svijeta, zlatne linije spajaju gradove u mrežu.'}" width="1200" height="675" fetchpriority="high" decoding="async">
+      <figcaption>${en ? 'Every dot is a city with its own address; every line is a two-way link. The drawing shows the network, not real distances.' : 'Svaka točka je grad s vlastitom adresom; svaka linija je obostrana veza. Grafika prikazuje mrežu, ne stvarne udaljenosti.'}</figcaption>
+    </figure>
     <div class="at-cta">
       <a class="btn" href="${en ? '/en/capitals/' : '/glavni-gradovi/'}">${en ? 'Table view and contract →' : 'Tablica i ugovor →'}</a>
       <a class="btn ghost" href="/mreza/">${en ? 'All 32 addresses' : 'Sve 32 adrese'}</a>
@@ -189,6 +196,11 @@ ${footer()}`;
     keywords: [en ? 'atlas' : 'atlas mreže', en ? 'capitals' : 'glavni gradovi', 'AKTUAL MEDIA', 'GNK ASG', ...continents.map((c) => (en ? CONTINENT_EN[c] || c : c))],
     tags: ['#Atlas', '#AktualMedia', '#GNKASG'],
     image: '/assets/atlas/aktual-media-atlas-og.jpg',
+    preload: {
+      href: '/assets/atlas/aktual-media-atlas-1200.webp',
+      imagesrcset: '/assets/atlas/aktual-media-atlas-800.webp 800w, /assets/atlas/aktual-media-atlas-1200.webp 1200w, /assets/atlas/aktual-media-atlas-1600.webp 1600w',
+      imagesizes: '(max-width:760px) 100vw, 1120px'
+    },
     imageAlt: en ? 'Network atlas — AKTUAL MEDIA' : 'Atlas mreže — AKTUAL MEDIA',
     lang,
     canonicalPath: canonical,

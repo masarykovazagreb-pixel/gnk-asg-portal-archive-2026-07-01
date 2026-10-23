@@ -235,7 +235,7 @@ export function buildCapitalPage(capital, ctx) {
 
   <section aria-labelledby="cpWebTitle" style="margin-top:20px">
     <h2 id="cpWebTitle" style="font:700 clamp(19px,2.2vw,24px)/1.25 Georgia,serif;margin:0 0 6px">${en ? 'This capital in the web' : 'Ovaj glavni grad u mreži'}</h2>
-    ${spiderWeb({ lang, selfUrl: canonical, theme: 'light', compact: true })}
+    ${spiderWeb({ lang, selfUrl: canonical, theme: 'dark', compact: true })}
     <p class="cp-note"><a href="/mreza/">${en ? 'The whole web' : 'Cijela mreža'} →</a> · <a href="/kanal/">${en ? 'All channels' : 'Svi kanali'} →</a> · <a href="/izdanja/">${en ? 'All editions' : 'Sva izdanja'} →</a></p>
   </section>
 
