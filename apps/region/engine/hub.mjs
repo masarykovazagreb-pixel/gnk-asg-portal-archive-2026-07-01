@@ -597,7 +597,11 @@ function extraCards() {
     cards.push(`<article class="iz-card"><img class="iz-cover" src="${deskArtUrl}"${deskArtInfo ? ` srcset="${deskArtSrcset(id, ['440', '640', '1200'])}" sizes="(max-width:700px) 100vw, 560px"` : ''} alt="${esc(deskArtInfo ? deskArtInfo.alt.hr : desk.name)}" width="640" height="360" loading="lazy" decoding="async"><span class="flag">Desk · AKTUAL MEDIA</span><h2><a href="/izdanja/${id}/">${esc(desk.name)}</a></h2><p>${esc(desk.description)}</p><ul class="iz-tags">${desk.hashtags.map((x) => `<li>${esc(x)}</li>`).join('')}</ul><div class="acts"><a class="btn" href="/izdanja/${id}/">Otvori desk →</a></div></article>`);
   }
   for (const p of PLATFORMS) {
-    cards.push(`<article class="iz-card"><span class="flag">Platforma · GNK ASG</span><h2><a href="${p.url}"${p.external ? ' rel="external noopener"' : ''}>${esc(p.name)}</a></h2><p>${esc(p.description)}</p><ul class="iz-tags">${p.tags.map((x) => `<li>${esc(x)}</li>`).join('')}</ul><div class="acts"><a class="btn" href="${p.url}"${p.external ? ' rel="external noopener"' : ''}>${esc(p.cta)}</a></div></article>`);
+    const cover = PLATFORM_COVERS[p.id];
+    const coverHtml = cover
+      ? `<img class="iz-cover" src="${cover.src}" alt="${esc(cover.alt.hr)}" width="${cover.w}" height="${cover.h}" loading="lazy" decoding="async">`
+      : '';
+    cards.push(`<article class="iz-card">${coverHtml}<span class="flag">Platforma · GNK ASG</span><h2><a href="${p.url}"${p.external ? ' rel="external noopener"' : ''}>${esc(p.name)}</a></h2><p>${esc(p.description)}</p><ul class="iz-tags">${p.tags.map((x) => `<li>${esc(x)}</li>`).join('')}</ul><div class="acts"><a class="btn" href="${p.url}"${p.external ? ' rel="external noopener"' : ''}>${esc(p.cta)}</a></div></article>`);
   }
   return cards.join('\n');
 }
@@ -729,6 +733,13 @@ ${radioBand()}${portalFooter()}`;
 
 
 /* Platforme koje žive na matičnoj domeni, a ulaze u hub kao zasebne kartice. */
+/* Platforme dobivaju naslovnu sliku kao i svaka druga kartica: radio studio,
+   čitaonica centra znanja i ilustracija digitalne radne snage. */
+const PLATFORM_COVERS = {
+  'digital-workforce': { src: '/assets/editorial/digital-workforce-overview.webp', w: 1600, h: 900, alt: { hr: 'Digitalna radna snaga — ilustracija simulacije', en: 'Digital workforce — simulation illustration' } },
+  radio: { src: '/assets/utility/radio-1200.webp', w: 1200, h: 670, alt: { hr: 'AKTUAL MEDIA RADIO — studio s mikrofonom i miješalicom', en: 'AKTUAL MEDIA RADIO — studio with a microphone and mixing desk' } },
+  'knowledge-center': { src: '/assets/utility/znanje-1200.webp', w: 1200, h: 670, alt: { hr: 'Centar znanja — čitaonica s knjigama i arhivskim kutijama', en: 'Knowledge Center — a reading room with books and archive boxes' } }
+};
 const PLATFORMS = [
   {
     id: 'digital-workforce',
