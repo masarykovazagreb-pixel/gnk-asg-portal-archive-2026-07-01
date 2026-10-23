@@ -595,10 +595,61 @@ function footer(channel, strings, extra = '') {
 
 /* ---------- kartice ---------- */
 
+/* Tema -> ilustracija. Devet desk ilustracija pokriva sve teme kanala, pa
+   nijedna kartica ne ostaje bez slike. Ilustracija je uvijek potpisana kao
+   ilustracija teme — nikad se ne izdaje za fotografiju događaja. */
+/* Naslov je najtočniji signal: sportske riječi u naslovu uvijek vode na
+   sportsku ilustraciju, čak i kad tijelo teksta spomene institucije. */
+const ART_SPORT = /\b(fudbal|nogomet|košark|kosark|rukomet|tenis|odbojk|olimp|utakmic|prvenstv|liga|klub|fifa|uefa|nba|nfl|formul|atletik|sport)/i;
+const artThemeOf = (item) => (ART_SPORT.test(item.title) ? 'sport' : themeOf(item));
+
+/* Potpisi slika na jeziku izdanja. Ista riječ nikad ne smije ostati na
+   hrvatskom u japanskom ili arapskom izdanju. */
+const CAPTIONS = {
+  hr: { photo: 'Foto', art: 'Ilustracija', artAlt: 'ilustracija teme' },
+  sr: { photo: 'Foto', art: 'Ilustracija', artAlt: 'ilustracija teme' },
+  bs: { photo: 'Foto', art: 'Ilustracija', artAlt: 'ilustracija teme' },
+  sl: { photo: 'Foto', art: 'Ilustracija', artAlt: 'ilustracija teme' },
+  hu: { photo: 'Fotó', art: 'Illusztráció', artAlt: 'témaillusztráció' },
+  it: { photo: 'Foto', art: 'Illustrazione', artAlt: 'illustrazione del tema' },
+  bg: { photo: 'Снимка', art: 'Илюстрация', artAlt: 'илюстрация на темата' },
+  ro: { photo: 'Foto', art: 'Ilustrație', artAlt: 'ilustrație tematică' },
+  en: { photo: 'Photo', art: 'Illustration', artAlt: 'topic illustration' },
+  id: { photo: 'Foto', art: 'Ilustrasi', artAlt: 'ilustrasi topik' },
+  pt: { photo: 'Foto', art: 'Ilustração', artAlt: 'ilustração do tema' },
+  ar: { photo: 'صورة', art: 'رسم توضيحي', artAlt: 'رسم توضيحي للموضوع' },
+  ja: { photo: '写真', art: 'イラスト', artAlt: 'テーマのイラスト' },
+  zh: { photo: '图片', art: '插图', artAlt: '主题插图' }
+};
+const captionFor = (lang, key) => (CAPTIONS[lang] || CAPTIONS.hr)[key];
+
+const DESK_ART_BY_THEME = {
+  sport: 'sport', politika: 'politika', sigurnost: 'sigurnost', rat: 'sigurnost',
+  potres: 'sigurnost', ekonomija: 'biznis', energija: 'biznis', ai: 'tehnologija',
+  drustvo: 'svijet'
+};
+
+function cardMedia(channel, item, theme, labels, { lead = false, root = '' } = {}) {
+  const href = `${root}clanak/${item.slug}/`;
+  const art = DESK_ART_BY_THEME[artThemeOf(item)];
+  if (/^https:\/\//.test(item.image || '')) {
+    const width = lead ? 1200 : 800;
+    return `<a class="cardmedia" href="${href}" tabindex="-1" aria-hidden="true"><img src="${PUBLIC}/api/img?u=${encodeURIComponent(item.image)}&w=${width}" alt="${esc(item.imageAlt || item.title)}" width="${width}" height="${Math.round((width * 9) / 16)}" loading="lazy" decoding="async" referrerpolicy="no-referrer"></a>`;
+  }
+  if (!art) return '';
+  const artTheme = artThemeOf(item);
+  const label = labels[artTheme] || labels[theme] || theme;
+  const kind = captionFor(channel.lang, 'artAlt');
+  const badge = captionFor(channel.lang, 'art');
+  return `<a class="cardmedia cardmedia--art" data-label="${esc(badge)}" href="${href}" tabindex="-1" aria-hidden="true"><img src="/assets/desk/art/${art}-440.webp" srcset="/assets/desk/art/${art}-440.webp 440w, /assets/desk/art/${art}-640.webp 640w" sizes="(max-width:760px) 100vw, 240px" alt="${esc(`${label} — ${kind}, AKTUAL MEDIA`)}" width="640" height="360" loading="lazy" decoding="async"></a>`;
+}
+
 function card(channel, strings, item, { lead = false, root = '' } = {}) {
   const theme = themeOf(item);
   const labels = strings.themeNames;
+  const media = cardMedia(channel, item, theme, labels, { lead, root });
   return `<article class="card${lead ? ' card--lead' : ''}">
+  ${media}
   <div class="cardmeta"><span class="src">${esc(item.sourceName)}</span><span class="dot">·</span><span class="theme">${esc(labels[theme] || theme)}</span><span class="dot">·</span><time datetime="${esc(item.date)}">${esc(shortDate(item.date.slice(0, 10), channel.lang))}</time></div>
   <h3 class="cardtitle"><a href="${root}clanak/${item.slug}/">${esc(item.title)}</a></h3>
   ${item.summary ? `<p class="cardsum">${esc(truncate(item.summary, lead ? 320 : 170))}</p>` : ''}
@@ -817,11 +868,12 @@ function articlePage(channel, strings, item, items) {
 
   const root = '../../';
   /* Slika ide kroz naš posrednik: izdavač ne vidi čitatelja, a slika je
-     keširana na rubu. Ako je nema, članak ostaje bez slike — ne lijepimo
-     zamjensku koja glumi fotografiju. */
+     keširana na rubu. Ako fotografije nema, članak dobiva ilustraciju teme
+     koja je u podpisu jasno označena kao ilustracija — nikad kao fotografija. */
+  const artId = DESK_ART_BY_THEME[artThemeOf(item)];
   const heroImage = /^https:\/\//.test(item.image || '')
     ? `${PUBLIC}/api/img?u=${encodeURIComponent(item.image)}&w=1200`
-    : '';
+    : artId ? `/assets/desk/art/${artId}-1200.webp` : '';
   const ogImage = heroImage || `${PUBLIC}/assets/izdanja/${channel.id}-og.jpg`;
   const body = `${header(channel, strings, '', root)}
 <main id="sadrzaj" class="article">
@@ -833,7 +885,7 @@ function articlePage(channel, strings, item, items) {
       <p class="artmeta"><time datetime="${esc(item.date)}">${esc(longDate(day, channel.lang))}</time> · ${esc(strings.source)}: <a href="${item.url}" target="_blank" rel="external noopener nofollow">${esc(item.sourceName)} ↗</a></p>
     </header>
 
-    ${heroImage ? `<figure class="artimg"><img src="${esc(heroImage)}" alt="${esc(item.imageAlt || item.title)}" width="1200" height="675" loading="eager" decoding="async" referrerpolicy="no-referrer">${item.sourceName ? `<figcaption>${esc(strings.photoFrom || 'Foto')}: ${esc(item.sourceName)}</figcaption>` : ''}</figure>` : ''}
+    ${heroImage ? `<figure class="artimg"><img src="${esc(heroImage)}" alt="${esc(item.image ? (item.imageAlt || item.title) : `${strings.themeNames[artThemeOf(item)] || strings.themeNames[theme] || theme} — ${captionFor(channel.lang, 'artAlt')}`)}" width="1200" height="675" loading="eager" decoding="async" ${item.image ? 'referrerpolicy="no-referrer"' : ''}><figcaption>${esc(item.image ? captionFor(channel.lang, 'photo') : captionFor(channel.lang, 'art'))}: ${esc(item.image ? item.sourceName : 'AKTUAL MEDIA')}</figcaption></figure>` : ''}
 
     ${score ? `<div class="scorebox"><span class="scorelabel">${esc(strings.source)}</span><strong class="score">${esc(score.label)}</strong><span class="small">${esc(item.title)}</span></div>` : ''}
 
@@ -1450,6 +1502,11 @@ main{max-width:1180px;margin:0 auto;padding:clamp(20px,4vw,44px) clamp(16px,4vw,
 .card{border-top:3px solid var(--bg);padding-top:12px;display:grid;gap:6px;align-content:start}
 .card--lead{border-top-width:6px}
 .card--lead .cardtitle{font:700 clamp(26px,3.2vw,40px)/1.1 Georgia,serif;letter-spacing:-.01em}
+.cardmedia{position:relative;display:block;margin:0 0 12px;border-radius:14px;overflow:hidden;aspect-ratio:16/9;background:#0b1a2b;border:1px solid rgba(212,175,55,.22)}
+.cardmedia img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.card:hover .cardmedia img{transform:scale(1.035)}
+.cardmedia--art::after{content:attr(data-label);text-transform:uppercase;position:absolute;right:8px;bottom:8px;font:800 8.5px/1 system-ui,sans-serif;letter-spacing:.14em;color:#0b1a2b;background:rgba(233,198,108,.94);padding:5px 7px;border-radius:5px}
+.card--lead .cardmedia{margin-bottom:16px}
 .cardmeta{display:flex;flex-wrap:wrap;gap:6px;font:600 11px/1.4 system-ui,sans-serif;color:#7a6a4b;letter-spacing:.04em;text-transform:uppercase}
 .cardmeta .src{color:#8c2f2f}
 .cardtitle{font:700 20px/1.25 Georgia,serif;margin:0}

@@ -117,6 +117,26 @@ function tile({ href, img, alt, external = false, badge = '', small = false, sub
   </li>`;
 }
 
+/* Medijska pločica: galerija, radio i centar znanja imaju pravu sliku, ne
+   samo tekst na obojenoj plohi. WebP sa srcsetom i alt u punoj rečenici. */
+function mediaTile({ href, base, alt, badge, name, text, external = false }) {
+  const widths = [440, 800, 1200].filter((w) => existsSync(join(PORTAL, 'assets', 'utility', `${base}-${w}.webp`)));
+  const srcset = widths.map((w) => `/assets/utility/${base}-${w}.webp ${w}w`).join(', ');
+  const src = `/assets/utility/${base}-${widths[widths.length - 1] || 800}.webp`;
+  const rel = external ? ' rel="external noopener"' : '';
+  return `<li class="amc-tile amc-tile--small">
+    <a class="amc-tile-link amc-tile-link--media" href="${esc(href)}"${rel} aria-label="${esc(alt)}">
+      <img class="amc-tile-img" src="${src}"${srcset ? ` srcset="${srcset}" sizes="(max-width:760px) 100vw, 360px"` : ''} alt="${esc(alt)}" width="800" height="447" loading="lazy" decoding="async">
+      <span class="amc-tile-cap">
+        <span class="amc-tile-kicker">AKTUAL MEDIA</span>
+        <span class="amc-tile-name">${esc(name)}</span>
+        <span class="amc-tile-text">${esc(text)}</span>
+      </span>
+      <span class="amc-tile-badge">${esc(badge)}</span>
+    </a>
+  </li>`;
+}
+
 const CITY_ALT_EN = {
   zagreb: 'AKTUAL MEDIA KANAL ZAGREB — Croatia, Croatian. A daily review of domestic media and ten verifiable stories. Click opens the edition.',
   beograd: 'AKTUAL MEDIA KANAL BELGRADE — Serbia, Serbian. N1, Danas, Nova and Politika, reviews with a link to the original. Click opens the edition.',
@@ -183,18 +203,35 @@ function deskTiles(items, gallery, lang = 'hr') {
     badge: `${count(id)} ${en ? 'stories' : 'tekstova'}`
   })).join('');
   const extra = [
-    { href: '/galerija/', img: 'galerija-tile.webp', alt: en ? `Nermin Sefić gallery — ${gallery.count || 63} pages of portraits and visuals. Click opens the gallery.` : `Galerija Nermina Sefića — ${gallery.count || 63} stranica s portretima i vizualima. Klik otvara galeriju.`, badge: `${gallery.count || 63} ${en ? 'pages' : 'stranica'}` },
-    { href: '/radio/', img: 'radio-tile.webp', alt: en ? `AKTUAL MEDIA RADIO — a discreet player and a list of public radio stations from ${CHANNELS.length} countries. Click opens the radio.` : `AKTUAL MEDIA RADIO — diskretni player i popis javnih radijskih kuća ${CHANNELS.length} zemalja. Klik otvara radio.`, badge: en ? `${CHANNELS.length} countries` : `${CHANNELS.length} zemalja` },
-    { href: '/knowledge-center/', img: 'znanje-tile.webp', alt: en ? 'Knowledge Center — answers about the group, projects and finances with a link to the document. Click opens the Knowledge Center.' : 'Centar znanja — odgovori o grupi, projektima i financijama s poveznicom na dokument. Klik otvara centar znanja.', badge: en ? 'answers' : 'odgovori' }
-  ].map((x) => `<li class="amc-tile amc-tile--small">
-      <a class="amc-tile-link amc-tile-link--text" href="${esc(x.href)}" aria-label="${esc(x.alt)}">
-        <span class="amc-tile-kicker">AKTUAL MEDIA</span>
-        <span class="amc-tile-name">${esc(x.alt.split(' — ')[0])}</span>
-        <span class="amc-tile-text">${esc(x.alt.split(' — ')[1] || '')}</span>
-        <span class="amc-tile-badge">${esc(x.badge)}</span>
-        <span class="amc-tile-go" aria-hidden="true">→</span>
-      </a>
-    </li>`).join('');
+    mediaTile({
+      href: '/galerija/', base: 'galerija',
+      alt: en
+        ? `Nermin Sefić gallery — ${gallery.count || 63} pages of portraits and visuals, at night, under gallery light. Click opens the gallery.`
+        : `Galerija Nermina Sefića — ${gallery.count || 63} stranica s portretima i vizualima, noću, pod galerijskim svjetlom. Klik otvara galeriju.`,
+      badge: `${gallery.count || 63} ${en ? 'pages' : 'stranica'}`,
+      name: en ? 'Gallery' : 'Galerija',
+      text: en ? 'Portraits, scenes and archive visuals.' : 'Portreti, scene i vizuali iz arhive.'
+    }),
+    mediaTile({
+      href: '/radio/', base: 'radio',
+      alt: en
+        ? `AKTUAL MEDIA RADIO — a studio microphone and mixing console late at night, a discreet player and public radio stations from ${CHANNELS.length} countries. Click opens the radio.`
+        : `AKTUAL MEDIA RADIO — studio s mikrofonom i miješalicom kasno navečer, diskretni player i javne radijske kuće ${CHANNELS.length} zemalja. Klik otvara radio.`,
+      badge: en ? `${CHANNELS.length} countries` : `${CHANNELS.length} zemalja`,
+      name: 'Radio',
+      text: en ? 'Listen without leaving the page.' : 'Slušajte bez napuštanja stranice.'
+    }),
+    mediaTile({
+      href: '/knowledge-center/', base: 'znanje',
+      alt: en
+        ? 'Knowledge Center — a dark reading room with bound volumes and archive boxes, answers about the group, projects and finances with a link to the document. Click opens the Knowledge Center.'
+        : 'Centar znanja — tamna čitaonica s uvezanim knjigama i arhivskim kutijama, odgovori o grupi, projektima i financijama s poveznicom na dokument. Klik otvara centar znanja.',
+      badge: en ? 'answers' : 'odgovori',
+      name: en ? 'Knowledge Center' : 'Centar znanja',
+      text: en ? 'Every answer links to its document.' : 'Svaki odgovor vodi na dokument.'
+    })
+  ].join('');
+
   return desks + extra;
 }
 
@@ -920,6 +957,9 @@ export function buildAktualCentral({ cards = [] } = {}) {
 .amc-tile:hover .amc-tile-go,.amc-tile:focus-within .amc-tile-go{opacity:1;transform:translateX(0)}
 .amc-tile-link--text{display:flex;flex-direction:column;gap:7px;min-height:100%;padding:18px 18px 20px;background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.015));aspect-ratio:880/587}
 .amc-tile--small .amc-tile-link--text{aspect-ratio:auto}
+.amc-tile-link--media{display:block;position:relative;background:#08131f}
+.amc-tile-cap{display:flex;flex-direction:column;gap:5px;padding:13px 15px 15px}
+.amc-tile--small .amc-tile-link--media .amc-tile-badge{position:absolute;left:12px;top:12px;margin:0}
 .amc-tile-kicker{font:800 10px/1.4 Inter,system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--amc-gold)}
 .amc-tile-name{font:700 clamp(17px,1.6vw,21px)/1.15 Georgia,serif}
 .amc-tile-text{font-size:12.8px;line-height:1.45;color:#c9d5e6}

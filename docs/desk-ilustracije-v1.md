@@ -67,3 +67,26 @@ se desk pojavljuje.
 
 Ako se promijeni samo opis, dovoljno je 2–4; slike se ne moraju ponovno
 generirati.
+
+## Kartice i članci bez fotografije
+
+Ilustracije nisu samo naslovnice deskova — nose i svaku novinsku karticu koja
+nema fotografiju izvora.
+
+- `DESK_ART_BY_THEME` u `apps/region/engine/build.mjs` preslikava devet tema
+  (politika, sport, sigurnost, rat, potres, ekonomija, energija, ai, društvo)
+  na devet desk ilustracija.
+- `cardMedia()` prvo koristi fotografiju izvora kroz `/api/img` (naša domena,
+  `referrerpolicy="no-referrer"`), a ako je nema, uzima `-440` ilustraciju
+  teme sa `srcset` 440/640.
+- Ilustracija je uvijek potpisana: vizualna oznaka `data-label` s riječi
+  „Ilustracija“ na jeziku izdanja, alt „<Tema> — ilustracija teme, AKTUAL
+  MEDIA“ i `figcaption` na stranici članka („Ilustracija: AKTUAL MEDIA“).
+  Nikad se ne izdaje za fotografiju događaja.
+- Sportske riječi u naslovu (`ART_SPORT`) imaju prednost: tekst o FIFA-i ili
+  ligi dobiva sportsku ilustraciju i kad tijelo teksta spomene institucije.
+- Potpisi su lokalizirani za svih 14 jezika (`CAPTIONS`): Photo/Photo,
+  Fotó/Illusztráció, Снимка/Илюстрация, صورة/رسم توضيحي, 写真/イラスト,
+  图片/插图 itd.
+- `tests/test-image-alt-v1.mjs` traži sliku u svakoj kartici i pločici na
+  `/kanal/**` te na oba `/gnk-aktual/` ulaza — kartica bez slike ruši gate.

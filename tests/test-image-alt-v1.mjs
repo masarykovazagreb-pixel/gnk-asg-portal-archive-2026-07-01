@@ -68,10 +68,27 @@ for (const dir of DIRS) {
   }
 }
 
+/* Nijedna novinska kartica i nijedna pločica na ulazu u AKTUAL MEDIA ne
+   smije ostati bez slike. Provjera je namjerno tvrda: kartica bez slike je
+   kartica koju čitatelj preskače. */
+let cards = 0;
+for (const file of [...walk(join(PORTAL, 'kanal')), join(PORTAL, 'gnk-aktual', 'index.html'), join(PORTAL, 'en', 'gnk-aktual', 'index.html')]) {
+  if (!existsSync(file)) continue;
+  const html = readFileSync(file, 'utf8').replace(/<script[\s\S]*?<\/script>/g, '');
+  for (const match of html.matchAll(/<article class="card[^"]*">([\s\S]*?)<\/article>/g)) {
+    cards += 1;
+    if (!match[1].includes('<img')) fails.push(`${file.slice(ROOT.length + 1)} — kartica bez slike`);
+  }
+  for (const match of html.matchAll(/<li class="amc-tile[^"]*">([\s\S]*?)<\/li>/g)) {
+    cards += 1;
+    if (!match[1].includes('<img')) fails.push(`${file.slice(ROOT.length + 1)} — pločica bez slike`);
+  }
+}
+
 if (fails.length) {
   console.error(`SLIKE — ${fails.length} problema (${images} slika provjereno):`);
   for (const fail of fails.slice(0, 40)) console.error(`  ✗ ${fail}`);
   if (fails.length > 40) console.error(`  … i još ${fails.length - 40}`);
   process.exit(1);
 }
-console.log(`SLIKE — OK: ${images} slika, svaka s alt-om, dimenzijama i postojećom datotekom.`);
+console.log(`SLIKE — OK: ${images} slika i ${cards} kartica/pločica, svaka s alt-om, dimenzijama i postojećom datotekom.`);
