@@ -4,7 +4,7 @@
   "lang": "id",
   "city": "Jakarta",
   "country": "Indonezija",
-  "updatedAt": "2026-10-22T23:17:40.975Z",
+  "updatedAt": "2026-10-23T04:39:03.248Z",
   "sources": [
     {
       "id": "antara",
@@ -13,7 +13,7 @@
       "ok": true,
       "fetched": 50,
       "errors": [],
-      "checkedAt": "2026-10-22T23:17:31.803Z"
+      "checkedAt": "2026-10-23T04:38:52.339Z"
     },
     {
       "id": "kompas",
@@ -22,10 +22,10 @@
       "ok": false,
       "fetched": 0,
       "errors": [
-        "https://www.kompas.com/rss: empty response",
-        "https://nasional.kompas.com/rss: empty response"
+        "https://www.kompas.com/rss: HTTP 404",
+        "https://nasional.kompas.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-22T23:17:33.501Z"
+      "checkedAt": "2026-10-23T04:38:54.909Z"
     },
     {
       "id": "detik",
@@ -36,7 +36,7 @@
       "errors": [
         "https://rss.detik.com/index.php/detikcom: fetch failed"
       ],
-      "checkedAt": "2026-10-22T23:17:36.041Z"
+      "checkedAt": "2026-10-23T04:38:58.396Z"
     },
     {
       "id": "tempo",
@@ -47,7 +47,7 @@
       "errors": [
         "https://www.tempo.co/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-22T23:17:36.889Z"
+      "checkedAt": "2026-10-23T04:38:59.204Z"
     },
     {
       "id": "cnnindonesia",
@@ -58,7 +58,7 @@
       "errors": [
         "https://www.cnnindonesia.com/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-22T23:17:37.711Z"
+      "checkedAt": "2026-10-23T04:39:00.058Z"
     },
     {
       "id": "republika",
@@ -67,7 +67,7 @@
       "ok": true,
       "fetched": 15,
       "errors": [],
-      "checkedAt": "2026-10-22T23:17:38.437Z"
+      "checkedAt": "2026-10-23T04:39:00.761Z"
     },
     {
       "id": "cnbcindonesia",
@@ -78,7 +78,7 @@
       "errors": [
         "https://www.cnbcindonesia.com/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-22T23:17:39.248Z"
+      "checkedAt": "2026-10-23T04:39:01.589Z"
     },
     {
       "id": "kumparan",
@@ -89,10 +89,185 @@
       "errors": [
         "https://kumparan.com/feed: HTTP 403"
       ],
-      "checkedAt": "2026-10-22T23:17:40.975Z"
+      "checkedAt": "2026-10-23T04:39:03.248Z"
     }
   ],
   "items": [
+    {
+      "slug": "jakarta-2026-10-23-antara-di-harvard-jk-tekankan-penguasaan-iptek-0b32d0",
+      "title": "Di Harvard, JK tekankan penguasaan IPTEK atasi dampak dinamika global",
+      "summary": "Wakil Presiden ke-10 dan ke-12 RI Jusuf Kalla menekankan pentingnya daya inovasi dan penguasaan ilmu pengetahuan dalam ...",
+      "date": "2026-10-23T04:37:09.000Z",
+      "url": "https://www.antaranews.com/berita/5806783/di-harvard-jk-tekankan-penguasaan-iptek-atasi-dampak-dinamika-global",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/23/PHOTO-2026-10-23-08-11-53.jpg",
+      "imageAlt": "Di Harvard, JK tekankan penguasaan IPTEK atasi dampak dinamika global",
+      "addedAt": "2026-10-23T04:38:52.339Z"
+    },
+    {
+      "slug": "jakarta-2026-10-23-antara-kemenkes-beri-4-592-beasiswa-di-2024-2026-c922df",
+      "title": "Kemenkes beri 4.592 beasiswa di 2024-2026 percepat pemenuhan spesialis",
+      "summary": "Sepanjang 2024–2026 Kementerian Kesehatan memberi 4.592 beasiswa bagi dokter spesialis, dokter, dokter gigi, dan ...",
+      "date": "2026-10-23T04:33:46.000Z",
+      "url": "https://www.antaranews.com/berita/5806779/kemenkes-beri-4592-beasiswa-di-2024-2026-percepat-pemenuhan-spesialis",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/23/17927121326ada9dc4334d06.11335680.jpg",
+      "imageAlt": "Kemenkes beri 4.592 beasiswa di 2024-2026 percepat pemenuhan spesialis",
+      "addedAt": "2026-10-23T04:38:52.339Z"
+    },
+    {
+      "slug": "jakarta-2026-10-23-antara-bri-consumer-expo-di-surabaya-tawarkan-2e0988",
+      "title": "BRI Consumer Expo di Surabaya tawarkan bunga KPR mulai 0,31 persen",
+      "summary": "Memiliki hunian idaman di Kota Pahlawan dan sekitarnya sering kali menjadi salah satu pencapaian terbesar dalam ...",
+      "date": "2026-10-23T04:30:24.000Z",
+      "url": "https://www.antaranews.com/berita/5806775/bri-consumer-expo-di-surabaya-tawarkan-bunga-kpr-mulai-031-persen",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/23/BRI-Consumer-Expo-Surabaya.jpg",
+      "imageAlt": "BRI Consumer Expo di Surabaya tawarkan bunga KPR mulai 0,31 persen",
+      "addedAt": "2026-10-23T04:38:52.339Z"
+    },
+    {
+      "slug": "jakarta-2026-10-23-republika-hadapi-perubahan-iklim-layanan-paud-perlu-5aaf6e",
+      "title": "Hadapi Perubahan Iklim, Layanan PAUD Perlu Didukung Pendanaan Berkelanjutan",
+      "summary": "REPUBLIKA.CO.ID, JAKARTA -- Layanan pendidikan anak usia dini (PAUD) perlu disiapkan untuk menghadapi tantangan perubahan iklim melalui kebijakan pendidikan dan dukungan pendanaan yang berkelanjutan. Selain itu, pemanfaatan teknologi sesuai usia...",
+      "date": "2026-10-23T04:30:00.000Z",
+      "url": "https://esgnow.republika.co.id/berita/tncc4u416/hadapi-perubahan-iklim-layanan-paud-perlu-didukung-pendanaan-berkelanjutan",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Tata Kelola"
+      ],
+      "author": "Satria K Yudha",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/_261023102356-754.png",
+      "imageAlt": "Hadapi Perubahan Iklim, Layanan PAUD Perlu Didukung Pendanaan Berkelanjutan",
+      "addedAt": "2026-10-23T04:39:00.761Z"
+    },
+    {
+      "slug": "jakarta-2026-10-23-antara-iphone-duo-raksasa-ramaikan-4-apple-store-3a352e",
+      "title": "iPhone Duo \"raksasa\" ramaikan 4 Apple Store di momen penjualan perdana",
+      "summary": "Apple secara serentak memulai penjualan perdana dari iPhone Duo di tanggal 23 Oktober 2026 dan memeriahkan momen ...",
+      "date": "2026-10-23T04:29:45.000Z",
+      "url": "https://www.antaranews.com/berita/5806771/iphone-duo-raksasa-ramaikan-4-apple-store-di-momen-penjualan-perdana",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/23/InShot_20261023_104900147.jpg",
+      "imageAlt": "iPhone Duo \"raksasa\" ramaikan 4 Apple Store di momen penjualan perdana",
+      "addedAt": "2026-10-23T04:38:52.339Z"
+    },
+    {
+      "slug": "jakarta-2026-10-23-antara-kualitas-generasi-muda-kabut-asap-dan-jalan-bb438b",
+      "title": "Kualitas generasi muda, kabut asap dan jalan tengah negara bertetangga",
+      "summary": "Kabut asap kembali menjadi ujian hubungan Indonesia, Malaysia, dan Singapura. Ketika asap kebakaran hutan dan lahan ...",
+      "date": "2026-10-23T04:28:04.000Z",
+      "url": "https://www.antaranews.com/berita/5806767/kualitas-generasi-muda-kabut-asap-dan-jalan-tengah-negara-bertetangga",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "potres",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/22/Kualitas-udara-di-Mahakam-Ulu-tidak-sehat-221026-AP-6.jpg",
+      "imageAlt": "Kualitas generasi muda, kabut asap dan jalan tengah negara bertetangga",
+      "addedAt": "2026-10-23T04:38:52.340Z"
+    },
+    {
+      "slug": "jakarta-2026-10-23-republika-hari-santri-nasional-momentum-pesantren-72899e",
+      "title": "Hari Santri Nasional, Momentum Pesantren untuk Perkuat Literasi Digital Generasi Muda",
+      "summary": "REPUBLIKA.CO.ID, CIREBON -- Peringatan Hari Santri Nasional yang jatuh pada 22 Oktober menjadi momentum penting untuk merefleksikan kembali peran pesantren dalam menjaga keutuhan bangsa. Di tengah maraknya ancaman ekstremisme...",
+      "date": "2026-10-23T04:26:49.000Z",
+      "url": "https://rejogja.republika.co.id/berita/tncf0p291/hari-santri-nasional-momentum-pesantren-untuk-perkuat-literasi-digital-generasi-muda",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Nasional Repjogja"
+      ],
+      "author": "Fernan Rahadi",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/074226100-1792644261-830-556.jpg",
+      "imageAlt": "Hari Santri Nasional, Momentum Pesantren untuk Perkuat Literasi Digital Generasi Muda",
+      "addedAt": "2026-10-23T04:39:00.762Z"
+    },
+    {
+      "slug": "jakarta-2026-10-23-republika-studi-ungkap-remaja-perempuan-lebih-banyak-2a19ca",
+      "title": "Studi Ungkap Remaja Perempuan Lebih Banyak Ngevape daripada Laki-laki",
+      "summary": "REPUBLIKA.CO.ID, JAKARTA -- Sebuah studi menemukan fakta cukup mengejutkan mengenai penggunaan vape di kalangan di remaja. Studi yang dipublikasikan di JAMA Pediatrics ini mengungkapkan bahwa remaja perempuan lebih banyak...",
+      "date": "2026-10-23T04:22:03.000Z",
+      "url": "https://ameera.republika.co.id/berita/tncesr425/studi-ungkap-remaja-perempuan-lebih-banyak-ngevape-daripada-lakilaki",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Health"
+      ],
+      "author": "Qommarria Rostanti",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/081026400-1756109479-830-556.jpg",
+      "imageAlt": "Studi Ungkap Remaja Perempuan Lebih Banyak Ngevape daripada Laki-laki",
+      "addedAt": "2026-10-23T04:39:00.762Z"
+    },
+    {
+      "slug": "jakarta-2026-10-23-republika-polsek-cakung-usut-kasus-pembacokan-ke-eks-5c960e",
+      "title": "Polsek Cakung Usut Kasus Pembacokan ke Eks Anggota Kopassus",
+      "summary": "REPUBLIKA.CO.ID, JAKARTA -- Seorang pria yang merupakan mantan anggota Komando Pasukan Khusus (Kopassus), Muhammad Fahrul (48 tahun), menjadi korban pembacokan. Insiden itu terjadi di kawasan Perumahan Jakarta Garden City,...",
+      "date": "2026-10-23T04:20:03.000Z",
+      "url": "https://news.republika.co.id/berita/tncepf484/polsek-cakung-usut-kasus-pembacokan-ke-eks-anggota-kopassus",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Nasional News"
+      ],
+      "author": "Erik Purnama Putra",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/068905800-1714984783-830-556.jpg",
+      "imageAlt": "Polsek Cakung Usut Kasus Pembacokan ke Eks Anggota Kopassus",
+      "addedAt": "2026-10-23T04:39:00.762Z"
+    },
+    {
+      "slug": "jakarta-2026-10-23-antara-hasil-final-asian-para-games-2026-fredy-8e3d3f",
+      "title": "Hasil final Asian Para Games 2026: Fredy Setiawan raih perak usai duel sengit lawan wakil India",
+      "summary": "Pebulu tangkis tunggal putra Indonesia Fredy Setiawan mengembalikan kok ke arah lawannya pebulu tangkis India Naveen ...",
+      "date": "2026-10-23T04:18:27.000Z",
+      "url": "https://www.antaranews.com/foto/5806763/hasil-final-asian-para-games-2026-fredy-setiawan-raih-perak-usai-duel-sengit-lawan-wakil-india",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/23/Fredy-Setiawan-raih-medali-perak-bulu-tangkis-SL4-Asian-Para-Games-2026-231026-MRH-3.jpg",
+      "imageAlt": "Hasil final Asian Para Games 2026: Fredy Setiawan raih perak usai duel sengit lawan wakil India",
+      "addedAt": "2026-10-23T04:38:52.340Z"
+    },
+    {
+      "slug": "jakarta-2026-10-23-republika-asap-kebakaran-lahan-selimuti-tol-semarang-a3c4bf",
+      "title": "Asap Kebakaran Lahan Selimuti Tol Semarang–Batang, Pengendara Diminta Waspada",
+      "summary": "REPUBLIKA.CO.ID, BATANG -- Asap kebakaran lahan di sekitar KEK Industropolis Batang, Kabupaten Batang, Jawa Tengah, menyelimuti ruas Tol Semarang–Batang KM 377A pada Kamis (22/10/2026). Asap yang terbawa angin hingga ke...",
+      "date": "2026-10-23T04:00:00.000Z",
+      "url": "https://visual.republika.co.id/berita/tncbj4375/asap-kebakaran-lahan-selimuti-tol-semarangbatang-pengendara-diminta-waspada",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Inpicture"
+      ],
+      "author": "Edwin Dwi Putranto",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/024077500-1792724833-830-556.jpg",
+      "imageAlt": "Asap Kebakaran Lahan Selimuti Tol Semarang–Batang, Pengendara Diminta Waspada",
+      "addedAt": "2026-10-23T04:39:00.762Z"
+    },
     {
       "slug": "jakarta-2026-10-22-antara-penelitian-baru-oleh-tourise-dan-lions-e5588d",
       "title": "Penelitian Baru OLeh TOURISE dan LIONS Advisory Mengungkap Bagaimana Kreativitas Menciptakan Keunggulan Komersial Untuk Pertumbuhan Destinasi",
