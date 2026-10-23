@@ -93,6 +93,20 @@ jobs:
             " >> "$GITHUB_STEP_SUMMARY"
           fi
 
+      - name: Označi palog agenta u provjeri
+        if: failure()
+        shell: bash
+        run: |
+          if [ -s "$NETWORK_AGENTS_REPORT" ]; then
+            node -e "
+              const r = require('./' + process.env.NETWORK_AGENTS_REPORT);
+              for (const a of r.agents.filter((x) => !x.ok)) {
+                const tail = String(a.tail || '').replace(/\r?\n/g, ' ').slice(0, 600);
+                console.log('::error::' + a.id + ' — ' + tail);
+              }
+            "
+          fi
+
       - name: Spremi izvještaj agenata
         if: always()
         uses: actions/upload-artifact@v4
