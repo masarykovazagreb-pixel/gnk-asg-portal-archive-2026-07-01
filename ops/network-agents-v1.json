@@ -301,6 +301,16 @@
         "tests/test-internal-links-v1.mjs"
       ],
       "checks": "7.041 stranica portala i 239.146 internih veza: svaki href=\"/…\" mora imati stvarnu datoteku. Skripte i stilovi se uklanjaju prije provjere (putanje koje preglednik sastavlja ne broje se), a /api/ je dopušten kao runtime krajnja točka."
+    },
+    {
+      "id": "image-alt-agent",
+      "name": "Slike — alt, dimenzije, datoteke",
+      "required": true,
+      "cmd": [
+        "node",
+        "tests/test-image-alt-v1.mjs"
+      ],
+      "checks": "Svaka slika na javnim stranicama ima neprazan alt, width i height te src koji postoji; 248.700 slika."
     }
   ]
 }

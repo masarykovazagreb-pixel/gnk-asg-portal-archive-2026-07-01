@@ -22,6 +22,7 @@ import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { SITES, siteBase, pagePath, NETWORK_HUB_HR, NETWORK_HUB_EN } from '../apps/sites/lib/registry.mjs';
+import { SATELLITE_ART } from '../apps/sites/lib/satellite-art.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SITE = join(ROOT, 'apps', 'sites', 'site');
@@ -452,6 +453,26 @@ for (const [file, lang] of [[join(PORTAL, 'mreza', 'index.html'), 'hr'], [join(P
     if (!/srcset="[^"]+\.webp \d+w/.test(body)) note(`${file}: kartica ${index + 1} nema srcset sa širinama`);
     if (body.includes('-art-1.svg')) note(`${file}: kartica ${index + 1} još koristi SVG plohu`);
   }
+}
+
+/* ---------- 3c. naslovnice nose pravu ilustraciju ---------- */
+
+/* Šest samostalnih izdanja ima ilustraciju scene. Naslovnica je mora nositi
+   kao WebP sa srcsetom (ne SVG plohu), a datoteke moraju postojati u izlazu —
+   inače stranica ostaje bez slike na vlastitoj domeni. */
+for (const site of SITES) {
+  const art = SATELLITE_ART[site.slug];
+  if (!art) continue;
+  const home = join(SITE, site.slug, 'index.html');
+  if (!existsSync(home)) { note(`${site.slug}: naslovnica nedostaje`); continue; }
+  const html = readFileSync(home, 'utf8');
+  if (!html.includes(`/img/${site.slug}-hero-1200.webp`)) note(`${site.slug}: naslovnica bez ilustracije`);
+  if (!html.includes(`/img/${site.slug}-hero-440.webp 440w`)) note(`${site.slug}: ilustracija bez srcseta`);
+  if (!/<img[^>]*-hero-1200\.webp[^>]*alt="[^"]{30,}"/.test(html)) note(`${site.slug}: ilustracija bez opisa u altu`);
+  for (const width of [440, 800, 1200]) {
+    if (!existsSync(join(SITE, site.slug, 'img', `${site.slug}-hero-${width}.webp`))) note(`${site.slug}: nema hero-${width}.webp`);
+  }
+  if (!existsSync(join(SITE, site.slug, 'img', `${site.slug}-og.jpg`))) note(`${site.slug}: nema OG fotografije`);
 }
 
 /* ---------- 4. izborni desk ---------- */

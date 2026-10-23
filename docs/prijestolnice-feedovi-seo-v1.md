@@ -71,8 +71,8 @@ Pragovi za izdanja nisu sniženi. Prijestolnice prolaze iste provjere: naslov
 - `node tests/test-capitals-completeness-v1.mjs` — provjerava da feedovi
   postoje, da se JSON i XML parsiraju, da `id` odgovara stvarnoj adresi, da su
   datumi ISO i poredani te da svaka stranica nudi oba feeda.
-- `node scripts/test-all-v1.mjs` — 46/46.
-- `node scripts/network-agents-v1.mjs` — 28/28.
+- `node scripts/test-all-v1.mjs` — 47/47.
+- `node scripts/network-agents-v1.mjs` — 29/29.
 
 ## 4. Kako dodati novu prijestolnicu
 

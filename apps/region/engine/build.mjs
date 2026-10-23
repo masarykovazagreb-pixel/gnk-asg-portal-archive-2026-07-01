@@ -82,7 +82,7 @@ function editionsStrip(channel) {
   const items = CHANNELS.map((c) => {
     const current = c.id === channel.id;
     return `<li class="eds-i${current ? ' is-current' : ''}"><a href="${c.base}"${current ? ' aria-current="page"' : ' rel="external noopener"'} aria-label="${esc(c.title)}${current ? ` — ${esc(isCurrent)}` : ` — ${esc(openEdition)}`}">
-      <span class="eds-img"><img src="/assets/izdanja/${c.id}-240.webp" alt="" width="96" height="64" loading="lazy" decoding="async"></span>
+      <span class="eds-img"><img src="/assets/izdanja/${c.id}-240.webp" alt="${esc(c.city)}, ${esc(c.country)} — ${esc(c.title)}" width="96" height="64" loading="lazy" decoding="async"></span>
       <span class="eds-city">${esc(CITY_SHORT[c.id] || c.city)}</span>
     </a></li>`;
   }).join('');
@@ -98,7 +98,7 @@ function miniRail(channel) {
   const [navLabel, isCurrent, openEdition] = editionsUi(channel.lang);
   const items = CHANNELS.map((c) => {
     const cur = c.id === channel.id;
-    return `<a href="${c.base}"${cur ? ' aria-current="page"' : ''} title="${esc(c.title)}" aria-label="${esc(c.title)}${cur ? ` — ${esc(isCurrent)}` : ` — ${esc(openEdition)}`}"><img src="/assets/izdanja/${c.id}-440.webp" alt="" width="34" height="34" loading="lazy" decoding="async"><span>${esc(CITY_SHORT[c.id] || c.city)}</span></a>`;
+    return `<a href="${c.base}"${cur ? ' aria-current="page"' : ''} title="${esc(c.title)}" aria-label="${esc(c.title)}${cur ? ` — ${esc(isCurrent)}` : ` — ${esc(openEdition)}`}"><img src="/assets/izdanja/${c.id}-440.webp" alt="${esc(c.city)}, ${esc(c.country)} — ${esc(c.title)}" width="34" height="34" loading="lazy" decoding="async"><span>${esc(CITY_SHORT[c.id] || c.city)}</span></a>`;
   }).join('');
   /* Ponašanje mini trake premješteno je u vanjski /assets/aktual-radio-mini-v1.js
      (funkcija initEditionRail), pa stranica nema nijednu umetnutu skriptu i
