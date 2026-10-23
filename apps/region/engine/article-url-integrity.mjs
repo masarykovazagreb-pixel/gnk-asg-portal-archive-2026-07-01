@@ -20,7 +20,7 @@ export function normalizeRegionalArticles(input){
   if(!Array.isArray(input))throw new TypeError('Regional article input must be an array');
   const rows=input.filter(x=>x&&typeof x==='object').sort(stableSort);
   const sourceSeen=new Set(),slugSeen=new Set(),items=[];
-  const stats={input:input.length,accepted:0,invalid:0,duplicateSources:0,slugCollisionsResolved:0};
+  const stats={input:input.length,accepted:0,invalid:input.length-rows.length,duplicateSources:0,slugCollisionsResolved:0};
   for(const row of rows){
     const source=safeUrl(row.url);
     if(!safeSlug(row.slug)||!source||typeof row.title!=='string'||!row.title.trim()){
