@@ -12,6 +12,7 @@
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, rmSync, copyFileSync, existsSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { entityGraphJson } from '../../scripts/lib/entity-graph-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const SRC = join(HERE, 'src');
@@ -23,6 +24,45 @@ const arg = (name, fallback) => {
 };
 const BASE = (arg('--base', process.env.KANAL_BASE || 'https://masarykovazagreb-pixel.github.io/gnk-asg-kanal/')).replace(/\/+$/, '') + '/';
 const SITE = JSON.parse(readFileSync(join(SRC, 'site.json'), 'utf8'));
+
+/* POPIS PRIJENOSA: matica gradi /prenos/ i JSON s matricom kopija. Kanal
+   čita isti zapis, pa svaki tekst na kanalu pokaže gdje još stoji — i time
+   uzvrati vezom onome koji je na njega već stavio atribuciju. Ako zapisa
+   nema (svjež checkout bez portala), blok se jednostavno ne ispisuje. */
+const PRENOS = (() => {
+  const file = join(HERE, '..', 'portal', 'data', 'prenos-network-v1.json');
+  if (!existsSync(file)) return new Map();
+  try {
+    const data = JSON.parse(readFileSync(file, 'utf8'));
+    const map = new Map();
+    for (const item of data.texts) {
+      const path = new URL(item.canonical).pathname.replace(/^\//, '');
+      map.set(path, {
+        copies: item.copies.map((copy) => ({
+          url: copy.url,
+          lang: copy.lang,
+          name: data.targets.find((target) => target.key === copy.key)?.name || copy.key
+        }))
+      });
+    }
+    return map;
+  } catch {
+    return new Map();
+  }
+})();
+
+const PRENOS_MARK = 'data-prenos-crosslinks';
+function prenosBlock(canonical, root) {
+  const entry = PRENOS.get(String(canonical || '').replace(/^\//, ''));
+  if (!entry || !entry.copies.length) return '';
+  const links = entry.copies
+    .map((copy) => `<a href="${esc(copy.url)}" rel="external noopener" hreflang="${esc(copy.lang)}" lang="${esc(copy.lang)}">${esc(copy.name)}</a>`)
+    .join(' · ');
+  return `<aside class="article-meta am-prenos" ${PRENOS_MARK}="v1">
+<p><b>Ovaj tekst objavljen je i na:</b> ${links} — <a href="https://gnk-asg.hr/prenos/">svi prijenosi</a></p>
+</aside>`;
+}
+
 const ENV = { generated: new Date().toISOString(), base: BASE };
 
 /* ---------- pomoćnici ---------- */
@@ -159,6 +199,14 @@ function head({ title, description, canonical, root, og, ogAlt, type = 'website'
 <link rel="apple-touch-icon" href="${root}assets/logo-gnk-asg-gold.svg">
 <link rel="manifest" href="${root}manifest.webmanifest">
 <link rel="stylesheet" href="${root}assets/kanal.css">
+<!-- entity:v1 -->
+<script type="application/ld+json" id="network-entity-v1">${entityGraphJson()}</script>
+<!-- /entity:v1 -->
+<meta name="editor" content="Nermin Sefić">
+<link rel="author" href="https://gnk-asg.hr/nermin-sefic/">
+<meta property="article:tag" content="#AKTUALMEDIA">
+<meta property="article:tag" content="#GNKASG">
+<meta property="article:tag" content="#NerminSefić">
 <meta property="og:site_name" content="${esc(SITE.brandFull)}">
 <meta property="og:locale" content="hr_HR">
 <meta property="og:type" content="${type === 'news' ? 'article' : type}">
@@ -267,6 +315,7 @@ ${header({ active, root })}
 ${disclosure(root, desk)}
 <main id="sadrzaj">
 ${content}
+${prenosBlock(canonical, root)}
 </main>
 ${footer(root)}
 </body>
