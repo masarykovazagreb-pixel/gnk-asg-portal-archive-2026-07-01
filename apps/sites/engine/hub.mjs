@@ -24,6 +24,7 @@ import { spiderWeb, SPIDER_CSS, SPIDER_JS } from '../../satellites/lib/spiderweb
 import { buildElectionDesk } from '../lib/elections.mjs';
 import { buildAktualNetwork } from './aktual-network.mjs';
 import { buildSeoMatrix } from './seo-matrix.mjs';
+import { entityGraphJson } from '../../../scripts/lib/entity-graph-v1.mjs';
 
 /* Gradska izdanja su dio iste mreže, ali žive na gnk-asg.hr/kanal/<grad>/.
    Hub ih mora pokazati; dosad je brojao samo samostalne stranice i portale. */
@@ -302,6 +303,8 @@ function page(lang) {
 <meta name="twitter:image:alt" content="GNK ASG mreža">
 <style>${CSS}\n${SPIDER_CSS}</style>
 <script type="application/ld+json">${JSON.stringify(jsonld)}</script>
+<script type="application/ld+json" id="network-entity-v1">${entityGraphJson()}</script>
+<link rel="author" href="https://gnk-asg.hr/nermin-sefic/">
 </head>
 <body>
 <a class="skip" href="#main">${lang === 'en' ? 'Skip to content' : 'Preskoči na sadržaj'}</a>
@@ -348,6 +351,7 @@ function page(lang) {
       <p style="color:#c6d2df;font-size:13.5px;margin:6px 0 12px">${esc(t.sourcesLead)}</p>
       <ul style="list-style:none;padding:0;margin:0;display:grid;gap:8px;font-size:13.5px">
         <li><a href="/data/mreza-v1.json">${esc(t.dataLink)}</a></li>
+        <li><a href="${lang === 'en' ? '/en/coverage/' : '/pokrivenost/'}" hreflang="${lang === 'en' ? 'en' : 'hr'}" lang="${lang === 'en' ? 'en' : 'hr'}">${lang === 'en' ? 'Coverage: which countries are live' : 'Pokrivenost: koje su zemlje žive'}</a></li>
         <li><a href="/aktual-media/">${lang === 'en' ? 'The data desk' : 'Podatkovni desk'}</a></li>
         <li><a href="/nermin-sefic/">${esc(t.editorTitle)}</a></li>
       </ul>
@@ -375,6 +379,7 @@ function page(lang) {
       <li><a href="/nermin-sefic/">Nermin Sefić</a></li>
       <li><a href="/aktual-media/">${lang === 'en' ? 'Data desk' : 'Podatkovni desk'}</a></li>
       <li><a href="/tehnologija-buducnosti/">${lang === 'en' ? 'Future technology' : 'Tehnologija budućnosti'}</a></li>
+      <li><a href="${lang === 'en' ? '/en/coverage/' : '/pokrivenost/'}" hreflang="${lang === 'en' ? 'en' : 'hr'}" lang="${lang === 'en' ? 'en' : 'hr'}">${lang === 'en' ? 'Coverage' : 'Pokrivenost mreže'}</a></li>
     </ul></div>
     <div><h3>${lang === 'en' ? 'Protocol' : 'Protokol'}</h3><ul>
       <li><a href="/mreza/sitemap.xml">Sitemap</a></li>

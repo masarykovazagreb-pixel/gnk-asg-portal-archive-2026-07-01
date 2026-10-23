@@ -17,6 +17,7 @@
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { deskHashtags, tagSlug } from '../lib/seo.mjs';
+import { entityGraphJson } from '../../../scripts/lib/entity-graph-v1.mjs';
 import { join, dirname } from 'node:path';
 
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -306,6 +307,8 @@ function deskPage(lang, { sites, pages }) {
 <meta name="twitter:image:alt" content="AKTUAL MEDIA — mreža izdanja">
 <style>${CSS}</style>
 <script type="application/ld+json">${JSON.stringify(jsonld)}</script>
+<script type="application/ld+json" id="network-entity-v1">${entityGraphJson()}</script>
+<link rel="author" href="https://gnk-asg.hr/nermin-sefic/">
 </head>
 <body>
 <a class="skip" href="#main">${lang === 'en' ? 'Skip to content' : 'Preskoči na sadržaj'}</a>
@@ -471,6 +474,8 @@ function editionPage(lang, site, { sites, pages }) {
 <meta name="twitter:image:alt" content="${esc(`${site.name} — AKTUAL MEDIA`)}">
 <style>${CSS}</style>
 <script type="application/ld+json">${JSON.stringify(jsonld)}</script>
+<script type="application/ld+json" id="network-entity-v1">${entityGraphJson()}</script>
+<link rel="author" href="https://gnk-asg.hr/nermin-sefic/">
 </head>
 <body>
 <a class="skip" href="#main">${lang === 'en' ? 'Skip to content' : 'Preskoči na sadržaj'}</a>
@@ -665,6 +670,8 @@ function tagsPage(lang, { sites, pages }) {
 <meta name="twitter:image:alt" content="AKTUAL MEDIA — ${lang === 'en' ? 'hashtags of the network' : 'oznake mreže'}">
 <style>${CSS}</style>
 <script type="application/ld+json">${JSON.stringify(jsonld)}</script>
+<script type="application/ld+json" id="network-entity-v1">${entityGraphJson()}</script>
+<link rel="author" href="https://gnk-asg.hr/nermin-sefic/">
 </head>
 <body>
 <a class="skip" href="#main">${lang === 'en' ? 'Skip to content' : 'Preskoči na sadržaj'}</a>

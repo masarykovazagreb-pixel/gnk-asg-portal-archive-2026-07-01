@@ -36,6 +36,10 @@ const arg = (name, fallback = '') => {
 const ONLY = arg('--only', '');
 
 const MARK_GRAPH = '<!-- entity:v1 -->';
+/* Graf prepoznajemo i kad ga je izgenerirala sama stranica (hub, mreža,
+   kolumne) — inače bi applier dodao drugi graf uz postojeći, pa bi stranica
+   nosila dva različita entitetska bloka. */
+const hasGraph = (html) => has(html, '"nermin-sefic"') || /id="network-entity-v1"/.test(html);
 const MARK_FOOT = '<!-- entity-foot:v1 -->';
 const CLOSE = '<!-- /entity:v1 -->';
 const EDITOR = 'Nermin Sefić';
@@ -163,10 +167,10 @@ for (const file of files) {
   const full = FULL.has(rel);
   if (has(html, MARK_GRAPH)) {
     html = html.replace(new RegExp(`${MARK_GRAPH}[\\s\\S]*?${CLOSE}`), entityBlocks({ full }));
-  } else if (!has(html, '"nermin-sefic"') || !has(html, ORG_DINAMO)) {
+  } else if (!hasGraph(html)) {
     if (!has(html, '</head>')) { problems.push(`${rel}: nema </head>`); continue; }
     html = html.replace('</head>', `${entityBlocks({ full })}\n</head>`);
-    if (!has(original, '"nermin-sefic"')) added += 1;
+    added += 1;
   }
 
   /* Meta urednika i autor-link: samo ako nedostaju. */
