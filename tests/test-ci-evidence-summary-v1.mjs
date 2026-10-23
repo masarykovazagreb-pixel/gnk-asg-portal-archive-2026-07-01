@@ -1,0 +1,23 @@
+import assert from 'node:assert/strict';
+import { summarizeRuns, CANONICAL_REPOSITORY } from '../scripts/summarize-ci-evidence-v1.mjs';
+
+const base = { id: 10, run_attempt: 1, repository: { full_name: CANONICAL_REPOSITORY }, path: '.github/workflows/deploy.yml', head_sha: 'a'.repeat(40), status: 'completed', conclusion: 'failure', updated_at: '2026-10-22T12:00:00Z' };
+const run = (patch = {}) => ({ ...base, ...patch });
+assert.equal(summarizeRuns([base])[0].status, 'workflow_failure');
+assert.equal(summarizeRuns([run({ conclusion: 'startup_failure' })])[0].testStatus, 'not_established');
+assert.equal(summarizeRuns([run({ conclusion: 'success' })])[0].productionStatus, 'not_established');
+assert.equal(summarizeRuns([base, base])[0].distinctRuns, 1);
+assert.equal(summarizeRuns([base, run({ id: 11, conclusion: 'success' })])[0].status, 'workflow_success');
+assert.equal(summarizeRuns([run({ run_attempt: 2, status: 'in_progress', conclusion: null }), base])[0].status, 'pending');
+assert.equal(summarizeRuns([run({ conclusion: 'success', updated_at: '2026-10-22T12:01:00Z' }), base])[0].status, 'workflow_success');
+assert.equal(summarizeRuns([base, run({ head_sha: 'b'.repeat(40) })]).length, 2);
+assert.equal(summarizeRuns([base, run({ path: '.github/workflows/test.yml' })]).length, 2);
+assert.equal(summarizeRuns([run({ repository: { full_name: 'beckuphome-gnk/gnk-asg-portal' } })])[0].canonical, false);
+assert.throws(() => summarizeRuns({}));
+assert.throws(() => summarizeRuns([run({ head_sha: 'abc123' })]));
+assert.throws(() => summarizeRuns([run({ repository: undefined })]));
+assert.throws(() => summarizeRuns([run({ run_attempt: 0 })]));
+assert.deepEqual(summarizeRuns({ workflow_runs: [] }), []);
+assert.equal(summarizeRuns([run({ status: 'unexpected' })])[0].status, 'unknown');
+assert.throws(() => summarizeRuns([null]));
+console.log('CI evidence: 17 regression checks passed (offline; no Actions or mail changes).');
