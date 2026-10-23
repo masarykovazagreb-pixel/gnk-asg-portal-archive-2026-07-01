@@ -64,7 +64,7 @@ section>p.lead{color:var(--soft);max-width:80ch;margin:0 0 18px}
 .card h3{font:800 20px/1.2 Georgia,serif;margin:0 0 6px}
 .card p{margin:0;color:var(--soft);font-size:13.5px}
 .card .dom{display:block;color:#7f93ab;font-size:11px;margin-top:10px;letter-spacing:.04em}
-.wband{display:flex;align-items:center;justify-content:center;height:74px;font:800 17px/1 Georgia,serif;letter-spacing:.14em}
+.wmedia{position:relative;display:block;line-height:0}.wband{position:absolute;left:12px;bottom:12px;display:inline-flex;align-items:center;padding:7px 11px;border-radius:8px;background:rgba(4,10,18,.74);border:1px solid rgba(255,255,255,.16);font:800 12px/1 Georgia,serif;letter-spacing:.14em}
 .two{display:grid;grid-template-columns:1.2fr .8fr;gap:26px;align-items:start}
 @media(max-width:820px){.two{grid-template-columns:1fr}}
 .prose p{color:#cbd7e4;margin:0 0 13px;max-width:76ch}
@@ -358,7 +358,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
   <h2>Standalone sites</h2>
   <p class="lead">Every card opens its own domain. The colour is the edition’s identity; the structure is shared.</p>
   <div class="grid"><a class="card" id="bor-usa" href="https://gnk-bor-usa.pages.dev/" rel="external noopener" hreflang="hr" lang="hr">
-    <img src="/assets/mreza/bor-usa-art-1.svg" alt="BOR USA" width="1200" height="675" loading="lazy">
+    <img src="/assets/mreza/bor-usa-800.webp" srcset="/assets/mreza/bor-usa-440.webp 440w, /assets/mreza/bor-usa-800.webp 800w, /assets/mreza/bor-usa-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Illustration: an empty octagon in a dark arena, a shaft of gold light on the canvas and dark crowd silhouettes behind." width="1200" height="670" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#f3c26b">independent edition</span>
       <h3>BOR USA</h3>
@@ -366,7 +366,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-bor-usa.pages.dev · #BorUSA #MMA #Boks #AktualMedia</span>
     </div>
   </a><a class="card" id="kosarka" href="https://gnk-kosarka.pages.dev/" rel="external noopener" hreflang="hr" lang="hr">
-    <img src="/assets/mreza/kosarka-art-1.svg" alt="KOŠARKA 360" width="1200" height="675" loading="lazy">
+    <img src="/assets/mreza/kosarka-800.webp" srcset="/assets/mreza/kosarka-440.webp 440w, /assets/mreza/kosarka-800.webp 800w, /assets/mreza/kosarka-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Illustration: an empty basketball court at night, the hoop and backboard in the foreground, floodlights reflected on the parquet." width="1200" height="670" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#f7d27a">independent edition</span>
       <h3>KOŠARKA 360</h3>
@@ -374,7 +374,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-kosarka.pages.dev · #Kosarka360 #NBA #ABA #AktualMedia</span>
     </div>
   </a><a class="card" id="scena-znanosti" href="https://gnk-scena-znanosti.pages.dev/" rel="external noopener" hreflang="hr" lang="hr">
-    <img src="/assets/mreza/scena-znanosti-art-1.svg" alt="SCENA ZNANOSTI" width="1200" height="675" loading="lazy">
+    <img src="/assets/mreza/scena-znanosti-800.webp" srcset="/assets/mreza/scena-znanosti-440.webp 440w, /assets/mreza/scena-znanosti-800.webp 800w, /assets/mreza/scena-znanosti-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Illustration: a laboratory bench at night — a microscope, glass beakers and pipettes in blue window light and a warm task lamp." width="1200" height="670" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#a7f3d0">independent edition</span>
       <h3>SCENA ZNANOSTI</h3>
@@ -382,7 +382,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-scena-znanosti.pages.dev · #ScenaZnanosti #Znanost #Preprint #AktualMedia</span>
     </div>
   </a><a class="card" id="step-buducnosti" href="https://gnk-step-buducnosti.pages.dev/" rel="external noopener" hreflang="hr" lang="hr">
-    <img src="/assets/mreza/step-buducnosti-art-1.svg" alt="STEP BUDUĆNOSTI" width="1200" height="675" loading="lazy">
+    <img src="/assets/mreza/step-buducnosti-800.webp" srcset="/assets/mreza/step-buducnosti-440.webp 440w, /assets/mreza/step-buducnosti-800.webp 800w, /assets/mreza/step-buducnosti-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Illustration: a workshop with a robotic arm on a wooden bench, cables and tools under a gold task lamp, dark industrial background." width="1200" height="670" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#f472b6">independent edition</span>
       <h3>STEP BUDUĆNOSTI</h3>
@@ -390,7 +390,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-step-buducnosti.pages.dev · #StepBuducnosti #Ples #Pokret #AktualMedia</span>
     </div>
   </a><a class="card" id="zdravlje" href="https://gnk-zdravlje.pages.dev/" rel="external noopener" hreflang="hr" lang="hr">
-    <img src="/assets/mreza/zdravlje-art-1.svg" alt="ZDRAVLJE 360" width="1200" height="675" loading="lazy">
+    <img src="/assets/mreza/zdravlje-800.webp" srcset="/assets/mreza/zdravlje-440.webp 440w, /assets/mreza/zdravlje-800.webp 800w, /assets/mreza/zdravlje-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Illustration: a hospital corridor at night, teal doors and soft light, a nurse station out of focus in the distance." width="1200" height="670" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#e6f5c9">independent edition</span>
       <h3>ZDRAVLJE 360</h3>
@@ -398,7 +398,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-zdravlje.pages.dev · #Zdravlje360 #Prevencija #JavnoZdravlje #AktualMedia</span>
     </div>
   </a><a class="card" id="izbori-srbija" href="https://gnk-izbori-srbija.pages.dev/" rel="external noopener" hreflang="hr" lang="hr">
-    <img src="/assets/mreza/izbori-srbija-art-1.svg" alt="IZBORI U SRBIJI" width="1200" height="675" loading="lazy">
+    <img src="/assets/mreza/izbori-srbija-800.webp" srcset="/assets/mreza/izbori-srbija-440.webp 440w, /assets/mreza/izbori-srbija-800.webp 800w, /assets/mreza/izbori-srbija-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Illustration: a wooden ballot box and folded ballots on a table under a lamp, bunting in the background without any emblem." width="1200" height="670" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#60a5fa">temporary desk</span>
       <h3>IZBORI U SRBIJI</h3>
@@ -409,7 +409,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
   <h2 style="margin-top:34px">World editions</h2>
   <p class="lead">Nine portals cover five continents: Africa, Asia, North America, South America and Oceania. Each is the entrance to its edition — the full reviews stay on gnk-asg.hr, and the portal links back to the parent site.</p>
   <div class="grid"><a class="card wcard" id="world-nairobi" href="https://gnk-world-nairobi.pages.dev/" rel="external noopener" hreflang="en" lang="en">
-    <span class="wband" style="background:linear-gradient(135deg,#08160f,#0e2418);color:#e2b857">NAIROBI</span>
+    <span class="wmedia"><img src="/assets/izdanja/nairobi-1200.webp" srcset="/assets/izdanja/nairobi-440.webp 440w, /assets/izdanja/nairobi-800.webp 800w, /assets/izdanja/nairobi-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Nairobi, Kenya — AKTUAL MEDIA CHANNEL NAIROBI" width="1200" height="675" loading="lazy" decoding="async"><span class="wband" style="color:#7fe0a6">NAIROBI</span></span>
     <div class="b">
       <span class="tag" style="color:#7fe0a6">world edition</span>
       <h3>AKTUAL MEDIA CHANNEL NAIROBI</h3>
@@ -417,7 +417,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-world-nairobi.pages.dev · #KanalNairobi #Kenya #Nairobi #EastAfrica #AktualMedia #GNKASG</span>
     </div>
   </a><a class="card wcard" id="world-jakarta" href="https://gnk-world-jakarta.pages.dev/" rel="external noopener" hreflang="id" lang="id">
-    <span class="wband" style="background:linear-gradient(135deg,#0b1220,#131d33);color:#e2b857">JAKARTA</span>
+    <span class="wmedia"><img src="/assets/izdanja/jakarta-1200.webp" srcset="/assets/izdanja/jakarta-440.webp 440w, /assets/izdanja/jakarta-800.webp 800w, /assets/izdanja/jakarta-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Jakarta, Indonesia — AKTUAL MEDIA KANAL JAKARTA" width="1200" height="675" loading="lazy" decoding="async"><span class="wband" style="color:#79c7ff">JAKARTA</span></span>
     <div class="b">
       <span class="tag" style="color:#79c7ff">world edition</span>
       <h3>AKTUAL MEDIA KANAL JAKARTA</h3>
@@ -425,7 +425,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-world-jakarta.pages.dev · #KanalJakarta #Indonesia #Jakarta #AktualMedia #GNKASG</span>
     </div>
   </a><a class="card wcard" id="world-newyork" href="https://gnk-world-newyork.pages.dev/" rel="external noopener" hreflang="en" lang="en">
-    <span class="wband" style="background:linear-gradient(135deg,#08131c,#0f2233);color:#e2b857">NEW YORK</span>
+    <span class="wmedia"><img src="/assets/izdanja/newyork-1200.webp" srcset="/assets/izdanja/newyork-440.webp 440w, /assets/izdanja/newyork-800.webp 800w, /assets/izdanja/newyork-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="New York, United States — AKTUAL MEDIA CHANNEL NEW YORK" width="1200" height="675" loading="lazy" decoding="async"><span class="wband" style="color:#8ab4ff">NEW YORK</span></span>
     <div class="b">
       <span class="tag" style="color:#8ab4ff">world edition</span>
       <h3>AKTUAL MEDIA CHANNEL NEW YORK</h3>
@@ -433,7 +433,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-world-newyork.pages.dev · #KanalNewYork #USA #NewYork #AktualMedia #GNKASG</span>
     </div>
   </a><a class="card wcard" id="world-saopaulo" href="https://gnk-world-saopaulo.pages.dev/" rel="external noopener" hreflang="pt" lang="pt">
-    <span class="wband" style="background:linear-gradient(135deg,#0d1410,#17251b);color:#e2b857">SÃO PAULO</span>
+    <span class="wmedia"><img src="/assets/izdanja/saopaulo-1200.webp" srcset="/assets/izdanja/saopaulo-440.webp 440w, /assets/izdanja/saopaulo-800.webp 800w, /assets/izdanja/saopaulo-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="São Paulo, Brazil — AKTUAL MEDIA CANAL SÃO PAULO" width="1200" height="675" loading="lazy" decoding="async"><span class="wband" style="color:#8ddf8d">SÃO PAULO</span></span>
     <div class="b">
       <span class="tag" style="color:#8ddf8d">world edition</span>
       <h3>AKTUAL MEDIA CANAL SÃO PAULO</h3>
@@ -441,7 +441,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-world-saopaulo.pages.dev · #KanalSaoPaulo #Brasil #SaoPaulo #AktualMedia #GNKASG</span>
     </div>
   </a><a class="card wcard" id="world-sydney" href="https://gnk-world-sydney.pages.dev/" rel="external noopener" hreflang="en" lang="en">
-    <span class="wband" style="background:linear-gradient(135deg,#0a1420,#122234);color:#e2b857">SYDNEY</span>
+    <span class="wmedia"><img src="/assets/izdanja/sydney-1200.webp" srcset="/assets/izdanja/sydney-440.webp 440w, /assets/izdanja/sydney-800.webp 800w, /assets/izdanja/sydney-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Sydney, Australia — AKTUAL MEDIA CHANNEL SYDNEY" width="1200" height="675" loading="lazy" decoding="async"><span class="wband" style="color:#74d9e0">SYDNEY</span></span>
     <div class="b">
       <span class="tag" style="color:#74d9e0">world edition</span>
       <h3>AKTUAL MEDIA CHANNEL SYDNEY</h3>
@@ -449,7 +449,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-world-sydney.pages.dev · #KanalSydney #Australia #Sydney #AktualMedia #GNKASG</span>
     </div>
   </a><a class="card wcard" id="world-singapur" href="https://gnk-world-singapur.pages.dev/" rel="external noopener" hreflang="en" lang="en">
-    <span class="wband" style="background:linear-gradient(135deg,#0a1520,#122436);color:#e2b857">SINGAPORE</span>
+    <span class="wmedia"><img src="/assets/izdanja/singapur-1200.webp" srcset="/assets/izdanja/singapur-440.webp 440w, /assets/izdanja/singapur-800.webp 800w, /assets/izdanja/singapur-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Singapore, Singapore — AKTUAL MEDIA CHANNEL SINGAPUR" width="1200" height="675" loading="lazy" decoding="async"><span class="wband" style="color:#79e0c8">SINGAPORE</span></span>
     <div class="b">
       <span class="tag" style="color:#79e0c8">world edition</span>
       <h3>AKTUAL MEDIA CHANNEL SINGAPUR</h3>
@@ -457,7 +457,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-world-singapur.pages.dev · #KanalSingapur #Singapore #Singapur #AktualMedia #GNKASG</span>
     </div>
   </a><a class="card wcard" id="world-kairo" href="https://gnk-world-kairo.pages.dev/" rel="external noopener" hreflang="ar" lang="ar">
-    <span class="wband" style="background:linear-gradient(135deg,#12100a,#221c12);color:#e2b857">CAIRO</span>
+    <span class="wmedia"><img src="/assets/izdanja/kairo-1200.webp" srcset="/assets/izdanja/kairo-440.webp 440w, /assets/izdanja/kairo-800.webp 800w, /assets/izdanja/kairo-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Cairo, Egypt — AKTUAL MEDIA KANAL KAIRO" width="1200" height="675" loading="lazy" decoding="async"><span class="wband" style="color:#f0b27a">CAIRO</span></span>
     <div class="b">
       <span class="tag" style="color:#f0b27a">world edition</span>
       <h3>AKTUAL MEDIA KANAL KAIRO</h3>
@@ -465,7 +465,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-world-kairo.pages.dev · #KanalKairo #Egypt #Cairo #AktualMedia #GNKASG</span>
     </div>
   </a><a class="card wcard" id="world-tokio" href="https://gnk-world-tokio.pages.dev/" rel="external noopener" hreflang="ja" lang="ja">
-    <span class="wband" style="background:linear-gradient(135deg,#0d0f1a,#161a2b);color:#e2b857">TOKYO</span>
+    <span class="wmedia"><img src="/assets/izdanja/tokio-1200.webp" srcset="/assets/izdanja/tokio-440.webp 440w, /assets/izdanja/tokio-800.webp 800w, /assets/izdanja/tokio-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Tokyo, Japan — AKTUAL MEDIA KANAL TOKIO" width="1200" height="675" loading="lazy" decoding="async"><span class="wband" style="color:#f2a0c0">TOKYO</span></span>
     <div class="b">
       <span class="tag" style="color:#f2a0c0">world edition</span>
       <h3>AKTUAL MEDIA KANAL TOKIO</h3>
@@ -473,7 +473,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-world-tokio.pages.dev · #KanalTokio #Japan #Tokyo #AktualMedia #GNKASG</span>
     </div>
   </a><a class="card wcard" id="world-peking" href="https://gnk-world-peking.pages.dev/" rel="external noopener" hreflang="zh" lang="zh">
-    <span class="wband" style="background:linear-gradient(135deg,#140b10,#24141c);color:#e2b857">BEIJING</span>
+    <span class="wmedia"><img src="/assets/izdanja/peking-1200.webp" srcset="/assets/izdanja/peking-440.webp 440w, /assets/izdanja/peking-800.webp 800w, /assets/izdanja/peking-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Beijing, China — AKTUAL MEDIA KANAL PEKING" width="1200" height="675" loading="lazy" decoding="async"><span class="wband" style="color:#f08a8a">BEIJING</span></span>
     <div class="b">
       <span class="tag" style="color:#f08a8a">world edition</span>
       <h3>AKTUAL MEDIA KANAL PEKING</h3>
@@ -484,7 +484,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
   <h2 style="margin-top:34px">City editions</h2>
   <p class="lead">Seventeen city editions in fourteen languages live at gnk-asg.hr/kanal/&lt;city&gt;/: eight regional and nine world editions. Same design, same SEO layer, same editor — each with its own sitemap, feed and archive.</p>
   <div class="grid"><a class="card ccard" id="zagreb" href="https://gnk-asg.hr/kanal/zagreb/" hreflang="hr" lang="hr">
-    <img src="/assets/izdanja/zagreb-440.webp" alt="Zagreb, Croatia — AKTUAL MEDIA KANAL ZAGREB" width="440" height="248" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/zagreb-1200.webp" srcset="/assets/izdanja/zagreb-440.webp 440w, /assets/izdanja/zagreb-800.webp 800w, /assets/izdanja/zagreb-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Zagreb, Croatia — AKTUAL MEDIA KANAL ZAGREB" width="1200" height="675" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#e2b857">city edition</span>
       <h3>AKTUAL MEDIA KANAL ZAGREB</h3>
@@ -492,7 +492,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-asg.hr/kanal/zagreb/ · #KanalZagreb #Hrvatska #Zagreb</span>
     </div>
   </a><a class="card ccard" id="beograd" href="https://gnk-asg.hr/kanal/beograd/" hreflang="sr" lang="sr">
-    <img src="/assets/izdanja/beograd-440.webp" alt="Belgrade, Serbia — AKTUAL MEDIA KANAL BEOGRAD" width="440" height="248" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/beograd-1200.webp" srcset="/assets/izdanja/beograd-440.webp 440w, /assets/izdanja/beograd-800.webp 800w, /assets/izdanja/beograd-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Belgrade, Serbia — AKTUAL MEDIA KANAL BEOGRAD" width="1200" height="675" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#e0544a">city edition</span>
       <h3>AKTUAL MEDIA KANAL BEOGRAD</h3>
@@ -500,7 +500,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-asg.hr/kanal/beograd/ · #KanalBeograd #Srbija #Beograd</span>
     </div>
   </a><a class="card ccard" id="sarajevo" href="https://gnk-asg.hr/kanal/sarajevo/" hreflang="bs" lang="bs">
-    <img src="/assets/izdanja/sarajevo-440.webp" alt="Sarajevo, Bosnia and Herzegovina — AKTUAL MEDIA KANAL SARAJEVO" width="440" height="248" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/sarajevo-1200.webp" srcset="/assets/izdanja/sarajevo-440.webp 440w, /assets/izdanja/sarajevo-800.webp 800w, /assets/izdanja/sarajevo-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Sarajevo, Bosnia and Herzegovina — AKTUAL MEDIA KANAL SARAJEVO" width="1200" height="675" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#2f8fe0">city edition</span>
       <h3>AKTUAL MEDIA KANAL SARAJEVO</h3>
@@ -508,7 +508,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-asg.hr/kanal/sarajevo/ · #KanalSarajevo #BosnaiHercegovina #Sarajevo</span>
     </div>
   </a><a class="card ccard" id="budimpesta" href="https://gnk-asg.hr/kanal/budimpesta/" hreflang="hu" lang="hu">
-    <img src="/assets/izdanja/budimpesta-440.webp" alt="Budapest, Hungary — AKTUAL MEDIA KANAL BUDAPEST" width="440" height="248" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/budimpesta-1200.webp" srcset="/assets/izdanja/budimpesta-440.webp 440w, /assets/izdanja/budimpesta-800.webp 800w, /assets/izdanja/budimpesta-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Budapest, Hungary — AKTUAL MEDIA KANAL BUDAPEST" width="1200" height="675" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#28a07f">city edition</span>
       <h3>AKTUAL MEDIA KANAL BUDAPEST</h3>
@@ -516,7 +516,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-asg.hr/kanal/budimpesta/ · #KanalBudimpesta #Magyarorszag #Budapest</span>
     </div>
   </a><a class="card ccard" id="ljubljana" href="https://gnk-asg.hr/kanal/ljubljana/" hreflang="sl" lang="sl">
-    <img src="/assets/izdanja/ljubljana-440.webp" alt="Ljubljana, Slovenia — AKTUAL MEDIA KANAL LJUBLJANA" width="440" height="248" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/ljubljana-1200.webp" srcset="/assets/izdanja/ljubljana-440.webp 440w, /assets/izdanja/ljubljana-800.webp 800w, /assets/izdanja/ljubljana-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Ljubljana, Slovenia — AKTUAL MEDIA KANAL LJUBLJANA" width="1200" height="675" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#1fb2c4">city edition</span>
       <h3>AKTUAL MEDIA KANAL LJUBLJANA</h3>
@@ -524,7 +524,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-asg.hr/kanal/ljubljana/ · #KanalLjubljana #Slovenija #Ljubljana</span>
     </div>
   </a><a class="card ccard" id="rim" href="https://gnk-asg.hr/kanal/rim/" hreflang="it" lang="it">
-    <img src="/assets/izdanja/rim-440.webp" alt="Rome, Italy — AKTUAL MEDIA KANAL ROMA" width="440" height="248" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/rim-1200.webp" srcset="/assets/izdanja/rim-440.webp 440w, /assets/izdanja/rim-800.webp 800w, /assets/izdanja/rim-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Rome, Italy — AKTUAL MEDIA KANAL ROMA" width="1200" height="675" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#cf6a35">city edition</span>
       <h3>AKTUAL MEDIA KANAL ROMA</h3>
@@ -532,7 +532,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-asg.hr/kanal/rim/ · #CanaleRoma #Italia #Roma</span>
     </div>
   </a><a class="card ccard" id="sofija" href="https://gnk-asg.hr/kanal/sofija/" hreflang="bg" lang="bg">
-    <img src="/assets/izdanja/sofija-440.webp" alt="Sofia, Bulgaria — AKTUAL MEDIA KANAL SOFIJA" width="440" height="248" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/sofija-1200.webp" srcset="/assets/izdanja/sofija-440.webp 440w, /assets/izdanja/sofija-800.webp 800w, /assets/izdanja/sofija-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Sofia, Bulgaria — AKTUAL MEDIA KANAL SOFIJA" width="1200" height="675" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#8a6fd0">city edition</span>
       <h3>AKTUAL MEDIA KANAL SOFIJA</h3>
@@ -540,7 +540,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-asg.hr/kanal/sofija/ · #KanalSofija #Bulgaria #Sofia</span>
     </div>
   </a><a class="card ccard" id="bukurest" href="https://gnk-asg.hr/kanal/bukurest/" hreflang="ro" lang="ro">
-    <img src="/assets/izdanja/bukurest-440.webp" alt="Bucharest, Romania — AKTUAL MEDIA KANAL BUCUREȘTI" width="440" height="248" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/bukurest-1200.webp" srcset="/assets/izdanja/bukurest-440.webp 440w, /assets/izdanja/bukurest-800.webp 800w, /assets/izdanja/bukurest-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Bucharest, Romania — AKTUAL MEDIA KANAL BUCUREȘTI" width="1200" height="675" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#4a6cf0">city edition</span>
       <h3>AKTUAL MEDIA KANAL BUCUREȘTI</h3>
@@ -548,7 +548,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-asg.hr/kanal/bukurest/ · #CanalulBucuresti #Romania #Bucuresti</span>
     </div>
   </a><a class="card ccard" id="nairobi" href="https://gnk-asg.hr/kanal/nairobi/" hreflang="en" lang="en">
-    <img src="/assets/izdanja/nairobi-440.webp" alt="Nairobi, Kenya — AKTUAL MEDIA CHANNEL NAIROBI" width="440" height="248" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/nairobi-1200.webp" srcset="/assets/izdanja/nairobi-440.webp 440w, /assets/izdanja/nairobi-800.webp 800w, /assets/izdanja/nairobi-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Nairobi, Kenya — AKTUAL MEDIA CHANNEL NAIROBI" width="1200" height="675" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#e2b857">city edition</span>
       <h3>AKTUAL MEDIA CHANNEL NAIROBI</h3>
@@ -556,7 +556,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-asg.hr/kanal/nairobi/ · #KanalNairobi #Kenya #Nairobi</span>
     </div>
   </a><a class="card ccard" id="jakarta" href="https://gnk-asg.hr/kanal/jakarta/" hreflang="id" lang="id">
-    <img src="/assets/izdanja/jakarta-440.webp" alt="Jakarta, Indonesia — AKTUAL MEDIA KANAL JAKARTA" width="440" height="248" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/jakarta-1200.webp" srcset="/assets/izdanja/jakarta-440.webp 440w, /assets/izdanja/jakarta-800.webp 800w, /assets/izdanja/jakarta-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Jakarta, Indonesia — AKTUAL MEDIA KANAL JAKARTA" width="1200" height="675" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#e2b857">city edition</span>
       <h3>AKTUAL MEDIA KANAL JAKARTA</h3>
@@ -564,7 +564,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-asg.hr/kanal/jakarta/ · #KanalJakarta #Indonesia #Jakarta</span>
     </div>
   </a><a class="card ccard" id="newyork" href="https://gnk-asg.hr/kanal/newyork/" hreflang="en" lang="en">
-    <img src="/assets/izdanja/newyork-440.webp" alt="New York, United States — AKTUAL MEDIA CHANNEL NEW YORK" width="440" height="248" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/newyork-1200.webp" srcset="/assets/izdanja/newyork-440.webp 440w, /assets/izdanja/newyork-800.webp 800w, /assets/izdanja/newyork-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="New York, United States — AKTUAL MEDIA CHANNEL NEW YORK" width="1200" height="675" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#e2b857">city edition</span>
       <h3>AKTUAL MEDIA CHANNEL NEW YORK</h3>
@@ -572,7 +572,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-asg.hr/kanal/newyork/ · #KanalNewYork #USA #NewYork</span>
     </div>
   </a><a class="card ccard" id="saopaulo" href="https://gnk-asg.hr/kanal/saopaulo/" hreflang="pt" lang="pt">
-    <img src="/assets/izdanja/saopaulo-440.webp" alt="São Paulo, Brazil — AKTUAL MEDIA CANAL SÃO PAULO" width="440" height="248" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/saopaulo-1200.webp" srcset="/assets/izdanja/saopaulo-440.webp 440w, /assets/izdanja/saopaulo-800.webp 800w, /assets/izdanja/saopaulo-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="São Paulo, Brazil — AKTUAL MEDIA CANAL SÃO PAULO" width="1200" height="675" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#e2b857">city edition</span>
       <h3>AKTUAL MEDIA CANAL SÃO PAULO</h3>
@@ -580,7 +580,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-asg.hr/kanal/saopaulo/ · #KanalSaoPaulo #Brasil #SaoPaulo</span>
     </div>
   </a><a class="card ccard" id="sydney" href="https://gnk-asg.hr/kanal/sydney/" hreflang="en" lang="en">
-    <img src="/assets/izdanja/sydney-440.webp" alt="Sydney, Australia — AKTUAL MEDIA CHANNEL SYDNEY" width="440" height="248" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/sydney-1200.webp" srcset="/assets/izdanja/sydney-440.webp 440w, /assets/izdanja/sydney-800.webp 800w, /assets/izdanja/sydney-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Sydney, Australia — AKTUAL MEDIA CHANNEL SYDNEY" width="1200" height="675" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#e2b857">city edition</span>
       <h3>AKTUAL MEDIA CHANNEL SYDNEY</h3>
@@ -588,7 +588,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-asg.hr/kanal/sydney/ · #KanalSydney #Australia #Sydney</span>
     </div>
   </a><a class="card ccard" id="singapur" href="https://gnk-asg.hr/kanal/singapur/" hreflang="en" lang="en">
-    <img src="/assets/izdanja/singapur-440.webp" alt="Singapore, Singapore — AKTUAL MEDIA CHANNEL SINGAPUR" width="440" height="248" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/singapur-1200.webp" srcset="/assets/izdanja/singapur-440.webp 440w, /assets/izdanja/singapur-800.webp 800w, /assets/izdanja/singapur-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Singapore, Singapore — AKTUAL MEDIA CHANNEL SINGAPUR" width="1200" height="675" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#e2b857">city edition</span>
       <h3>AKTUAL MEDIA CHANNEL SINGAPUR</h3>
@@ -596,7 +596,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-asg.hr/kanal/singapur/ · #KanalSingapur #Singapore #Singapur</span>
     </div>
   </a><a class="card ccard" id="kairo" href="https://gnk-asg.hr/kanal/kairo/" hreflang="ar" lang="ar">
-    <img src="/assets/izdanja/kairo-440.webp" alt="Cairo, Egypt — AKTUAL MEDIA KANAL KAIRO" width="440" height="248" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/kairo-1200.webp" srcset="/assets/izdanja/kairo-440.webp 440w, /assets/izdanja/kairo-800.webp 800w, /assets/izdanja/kairo-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Cairo, Egypt — AKTUAL MEDIA KANAL KAIRO" width="1200" height="675" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#e2b857">city edition</span>
       <h3>AKTUAL MEDIA KANAL KAIRO</h3>
@@ -604,7 +604,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-asg.hr/kanal/kairo/ · #KanalKairo #Egypt #Cairo</span>
     </div>
   </a><a class="card ccard" id="tokio" href="https://gnk-asg.hr/kanal/tokio/" hreflang="ja" lang="ja">
-    <img src="/assets/izdanja/tokio-440.webp" alt="Tokyo, Japan — AKTUAL MEDIA KANAL TOKIO" width="440" height="248" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/tokio-1200.webp" srcset="/assets/izdanja/tokio-440.webp 440w, /assets/izdanja/tokio-800.webp 800w, /assets/izdanja/tokio-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Tokyo, Japan — AKTUAL MEDIA KANAL TOKIO" width="1200" height="675" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#e2b857">city edition</span>
       <h3>AKTUAL MEDIA KANAL TOKIO</h3>
@@ -612,7 +612,7 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
       <span class="dom">gnk-asg.hr/kanal/tokio/ · #KanalTokio #Japan #Tokyo</span>
     </div>
   </a><a class="card ccard" id="peking" href="https://gnk-asg.hr/kanal/peking/" hreflang="zh" lang="zh">
-    <img src="/assets/izdanja/peking-440.webp" alt="Beijing, China — AKTUAL MEDIA KANAL PEKING" width="440" height="248" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/peking-1200.webp" srcset="/assets/izdanja/peking-440.webp 440w, /assets/izdanja/peking-800.webp 800w, /assets/izdanja/peking-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Beijing, China — AKTUAL MEDIA KANAL PEKING" width="1200" height="675" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#e2b857">city edition</span>
       <h3>AKTUAL MEDIA KANAL PEKING</h3>

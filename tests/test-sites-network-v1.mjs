@@ -433,6 +433,27 @@ for (const [file, lang] of [[join(PORTAL, 'gnk-aktual/mreza/index.md'), 'hr'], [
   if (!md.includes('Nermin Sefić')) note(`${where}: nema urednika`);
 }
 
+/* ---------- 3b. svaka kartica mreže ima pravu sliku ---------- */
+
+/* Mrežna stranica je popis od 32 adrese. Kartica bez slike je prazna kućica;
+   kartica sa SVG plohom je „samo boja”. Svaka kartica mora nositi WebP
+   fotografiju s alt tekstom, a SVG ploha smije ostati samo kao rezerva za
+   novo izdanje (zato se ovdje traži da je nema). */
+for (const [file, lang] of [[join(PORTAL, 'mreza', 'index.html'), 'hr'], [join(PORTAL, 'en', 'network', 'index.html'), 'en']]) {
+  if (!existsSync(file)) { note(`${file}: mrežna stranica nedostaje`); continue; }
+  const html = readFileSync(file, 'utf8');
+  const cards = [...html.matchAll(/<a class="card[^"]*"[^>]*>([\s\S]*?)<\/a>/g)].map((match) => match[1]);
+  if (cards.length !== 32) note(`${file}: ${cards.length} kartica (očekivano 32)`);
+  for (const [index, body] of cards.entries()) {
+    const image = body.match(/<img[^>]*src="([^"]+)"[^>]*alt="([^"]*)"[^>]*>/);
+    if (!image) { note(`${file}: kartica ${index + 1} bez slike`); continue; }
+    if (!/\.webp$/.test(image[1])) note(`${file}: kartica ${index + 1} nema WebP sliku (${image[1]})`);
+    if (!image[2].trim()) note(`${file}: kartica ${index + 1} ima prazan alt`);
+    if (!/srcset="[^"]+\.webp \d+w/.test(body)) note(`${file}: kartica ${index + 1} nema srcset sa širinama`);
+    if (body.includes('-art-1.svg')) note(`${file}: kartica ${index + 1} još koristi SVG plohu`);
+  }
+}
+
 /* ---------- 4. izborni desk ---------- */
 const election = join(SITE, 'izbori-srbija');
 if (existsSync(election)) {

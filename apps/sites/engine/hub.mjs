@@ -125,7 +125,7 @@ section>p.lead{color:var(--soft);max-width:80ch;margin:0 0 18px}
 .card h3{font:800 20px/1.2 Georgia,serif;margin:0 0 6px}
 .card p{margin:0;color:var(--soft);font-size:13.5px}
 .card .dom{display:block;color:#7f93ab;font-size:11px;margin-top:10px;letter-spacing:.04em}
-.wband{display:flex;align-items:center;justify-content:center;height:74px;font:800 17px/1 Georgia,serif;letter-spacing:.14em}
+.wmedia{position:relative;display:block;line-height:0}.wband{position:absolute;left:12px;bottom:12px;display:inline-flex;align-items:center;padding:7px 11px;border-radius:8px;background:rgba(4,10,18,.74);border:1px solid rgba(255,255,255,.16);font:800 12px/1 Georgia,serif;letter-spacing:.14em}
 .two{display:grid;grid-template-columns:1.2fr .8fr;gap:26px;align-items:start}
 @media(max-width:820px){.two{grid-template-columns:1fr}}
 .prose p{color:#cbd7e4;margin:0 0 13px;max-width:76ch}
@@ -154,9 +154,43 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
 :focus-visible{outline:3px solid #74b6ff;outline-offset:3px}
 `;
 
+/* Šest samostalnih izdanja ima pravu ilustraciju scene. Alt opisuje samo
+   ono što je na slici i kaže da je ilustracija; SVG ploha ostaje rezerva za
+   novo izdanje koje još nema grafiku. */
+const SATELLITE_ART = {
+  'bor-usa': {
+    hr: 'Ilustracija: prazan oktogon u mračnoj areni, snop zlatnog svjetla na platnu i tamne siluete publike u pozadini.',
+    en: 'Illustration: an empty octagon in a dark arena, a shaft of gold light on the canvas and dark crowd silhouettes behind.'
+  },
+  kosarka: {
+    hr: 'Ilustracija: prazan košarkaški parket noću, obruč i ploča u prvom planu, reflektori se odražavaju na parketu.',
+    en: 'Illustration: an empty basketball court at night, the hoop and backboard in the foreground, floodlights reflected on the parquet.'
+  },
+  'scena-znanosti': {
+    hr: 'Ilustracija: laboratorijski stol noću — mikroskop, staklene čaše i pipete uz plavo svjetlo prozora i toplu radnu lampu.',
+    en: 'Illustration: a laboratory bench at night — a microscope, glass beakers and pipettes in blue window light and a warm task lamp.'
+  },
+  'step-buducnosti': {
+    hr: 'Ilustracija: radionica s robotskom rukom na drvenom stolu, kabeli i alat pod zlatnom radnom lampom, tamna industrijska pozadina.',
+    en: 'Illustration: a workshop with a robotic arm on a wooden bench, cables and tools under a gold task lamp, dark industrial background.'
+  },
+  zdravlje: {
+    hr: 'Ilustracija: bolnički hodnik noću, tirkizna vrata i meko svjetlo, pult u daljini izvan fokusa.',
+    en: 'Illustration: a hospital corridor at night, teal doors and soft light, a nurse station out of focus in the distance.'
+  },
+  'izbori-srbija': {
+    hr: 'Ilustracija: drvena glasačka kutija i presavijeni listići na stolu pod lampom, zastavice u pozadini bez grba.',
+    en: 'Illustration: a wooden ballot box and folded ballots on a table under a lamp, bunting in the background without any emblem.'
+  }
+};
+
 function card(site, lang) {
+  const art = SATELLITE_ART[site.slug];
+  const image = art
+    ? `<img src="/assets/mreza/${site.slug}-800.webp" srcset="/assets/mreza/${site.slug}-440.webp 440w, /assets/mreza/${site.slug}-800.webp 800w, /assets/mreza/${site.slug}-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="${esc(art[lang] || art.hr)}" width="1200" height="670" loading="lazy" decoding="async">`
+    : `<img src="/assets/mreza/${site.slug}-art-1.svg" alt="${esc(site.name)}" width="1200" height="675" loading="lazy">`;
   return `<a class="card" id="${site.slug}" href="${siteBase(site)}/" rel="external noopener" hreflang="${site.lang}" lang="${site.lang}">
-    <img src="/assets/mreza/${site.slug}-art-1.svg" alt="${esc(site.name)}" width="1200" height="675" loading="lazy">
+    ${image}
     <div class="b">
       <span class="tag" style="color:${site.accent2}">${site.temporary ? (lang === 'en' ? 'temporary desk' : 'privremeni desk') : (lang === 'en' ? 'independent edition' : 'neovisno izdanje')}</span>
       <h3>${esc(site.name)}</h3>
@@ -166,11 +200,25 @@ function card(site, lang) {
   </a>`;
 }
 
+/* Kartica grada nudi sve širine koje postoje. Nema izmišljanja veće
+   slike: ako izdanje ima samo 440, srcset ima samo 440. */
+function editionImage(id) {
+  const widths = [440, 800, 1200].filter((width) => existsSync(join(PORTAL, 'assets', 'izdanja', `${id}-${width}.webp`)));
+  const widest = widths[widths.length - 1] || 440;
+  return {
+    src: `/assets/izdanja/${id}-${widest}.webp`,
+    srcset: widths.map((width) => `/assets/izdanja/${id}-${width}.webp ${width}w`).join(', '),
+    width: widest,
+    height: Math.round((widest * 9) / 16)
+  };
+}
+
 function cityCard(channel, lang) {
   const city = lang === 'en' ? (channel.cityEn || channel.city) : channel.city;
   const country = lang === 'en' ? (channel.countryEn || channel.country) : channel.country;
+  const image = editionImage(channel.id);
   return `<a class="card ccard" id="${channel.id}" href="${channel.base}" hreflang="${channel.lang}" lang="${channel.lang}">
-    <img src="/assets/izdanja/${channel.id}-440.webp" alt="${esc(city)}, ${esc(country)} — ${esc(channel.title)}" width="440" height="248" loading="lazy" decoding="async">
+    <img src="${image.src}" srcset="${image.srcset}" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="${esc(city)}, ${esc(country)} — ${esc(channel.title)}" width="${image.width}" height="${image.height}" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:${channel.palette.accent}">${lang === 'en' ? 'city edition' : 'gradsko izdanje'}</span>
       <h3>${esc(channel.title)}</h3>
@@ -182,9 +230,11 @@ function cityCard(channel, lang) {
 
 function worldCard(portal, lang) {
   const city = lang === 'en' ? portal.cityEn : portal.city;
+  const country = lang === 'en' ? portal.countryEn : portal.country;
   const note = lang === 'en' ? portal.note.en : portal.note.hr;
+  const image = editionImage(portal.id);
   return `<a class="card wcard" id="world-${portal.id}" href="${portal.base}" rel="external noopener" hreflang="${portal.lang}" lang="${portal.lang}">
-    <span class="wband" style="background:linear-gradient(135deg,${portal.palette.bg},${portal.palette.surface});color:${portal.palette.accent}">${esc(city.toUpperCase())}</span>
+    <span class="wmedia"><img src="${image.src}" srcset="${image.srcset}" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="${esc(city)}, ${esc(country)} — ${esc(portal.name)}" width="${image.width}" height="${image.height}" loading="lazy" decoding="async"><span class="wband" style="color:${portal.palette.accent2}">${esc(city.toUpperCase())}</span></span>
     <div class="b">
       <span class="tag" style="color:${portal.palette.accent2}">${lang === 'en' ? 'world edition' : 'svjetsko izdanje'}</span>
       <h3>${esc(portal.name)}</h3>

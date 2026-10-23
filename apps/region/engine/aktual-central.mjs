@@ -349,6 +349,7 @@ function networkPodium(circles, cards, lang = 'hr') {
      izdanja imaju svoj blok ispod — karta koja bi ih nacrtala preko Europe
      lagala bi o zemljopisu. */
   const mapped = CHANNELS.filter((c) => GEO[c.id]);
+  const offMap = CHANNELS.filter((c) => !GEO[c.id]).map((c) => CITY_SHORT[c.id] || c.city);
   const counted = mapped.map((c) => ({ c, count: (cards.find((x) => x.id === c.id) || {}).count || 0 }));
   const total = counted.reduce((sum, x) => sum + x.count, 0);
   const max = Math.max(1, ...counted.map((x) => x.count));
@@ -401,7 +402,7 @@ function networkPodium(circles, cards, lang = 'hr') {
     <span class="amm-rainbow" aria-hidden="true"></span>
     <div class="amm-top">
       <span class="amm-flag">${EN ? 'Network' : 'Karta mreže'}</span>
-      <p class="amm-count"><b>${nf(total)}</b> ${EN ? 'stories' : 'tekstova'} <span>·</span> <b>${cityCount}</b> ${EN ? 'cities' : 'gradova'} <span>·</span> <b>${mapped.length}</b> ${EN ? 'languages' : 'jezika'} <span>·</span> <b>${CHANNELS.length}</b> ${EN ? 'editions in total' : 'izdanja ukupno'}</p>
+      <p class="amm-count"><b>${nf(total)}</b> ${EN ? 'stories' : 'tekstova'} <span>·</span> <b>${cityCount}</b> ${EN ? 'European cities on the map' : 'europskih gradova na karti'} <span>·</span> <b>${mapped.length}</b> ${EN ? 'languages on the map' : 'jezika na karti'} <span>·</span> <b>${CHANNELS.length}</b> ${EN ? 'editions in total' : 'izdanja ukupno'}</p>
       <a class="amm-origin" href="/usa/"><span class="amm-gem" aria-hidden="true"></span>${EN ? 'Origin: GNK DINAMO Ltd. · Colorado, USA' : 'Ishodište: GNK DINAMO Ltd. · Colorado, USA'} <b>→</b></a>
     </div>
     <figure class="amm-route">
@@ -431,8 +432,8 @@ function networkPodium(circles, cards, lang = 'hr') {
         <span class="amm-home-go">${EN ? 'Open origin page' : 'Otvori stranicu ishodišta'} →</span>
       </a>
       <p class="amm-note">${EN
-        ? `${mapped.length} cities on the map, ${CHANNELS.length} editions in the network. Every card opens the edition; every edition returns here.`
-        : `${mapped.length} gradova na karti, ${CHANNELS.length} izdanja u mreži. Svaka kartica otvara izdanje, a svako izdanje vraća ovamo.`}</p>
+        ? `${mapped.length} European cities are drawn on this map; the other ${offMap.length} editions — ${offMap.join(', ')} — have their own blocks below. Every card opens the edition; every edition returns here.`
+        : `${mapped.length} europskih gradova nacrtano je na ovoj karti; ostalih ${offMap.length} izdanja — ${offMap.join(', ')} — imaju vlastite blokove ispod. Svaka kartica otvara izdanje, a svako izdanje vraća ovamo.`}</p>
     </div>
     <div class="amm-foot">
       <a href="/kanal/">${EN ? 'All channels' : 'Svi kanali'} (${CHANNELS.length}) →</a>
