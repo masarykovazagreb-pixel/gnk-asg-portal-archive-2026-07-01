@@ -347,6 +347,8 @@ function deskPage(lang, { sites, pages }) {
     <a href="/data/mreza-pages-v1.json">mreza-pages-v1.json</a>
     <a href="/data/mreza-v1.json">mreza-v1.json</a>
     <a href="/data/seo-matrix-v1.json">seo-matrix-v1.json</a>
+    <a href="/glavni-gradovi/feed.json">prijestolnice · feed.json</a>
+    <a href="/glavni-gradovi/feed.xml">prijestolnice · feed.xml</a>
     <a href="/mreza/sitemap.xml">sitemap.xml</a>
     <a href="/mreza/feed.xml">feed.xml</a>
     <a href="/mreza/feeds.opml">feeds.opml</a>
@@ -868,6 +870,8 @@ export function buildAktualNetwork(portalRoot, { sites, pages, today }) {
   <head><title>AKTUAL MEDIA — mreža izdanja</title><ownerName>AKTUAL MEDIA d.o.o.</ownerName></head>
   <body>
     <outline text="AKTUAL MEDIA — sve stranice mreže" title="AKTUAL MEDIA — sve stranice mreže" type="rss" xmlUrl="${SITE}/mreza/feed.xml" htmlUrl="${DESK_HR}"/>
+    <outline text="Glavni gradovi" title="Glavni gradovi" type="rss" xmlUrl="${SITE}/glavni-gradovi/feed.xml" htmlUrl="${SITE}/glavni-gradovi/"/>
+    <outline text="Capitals (EN)" title="Capitals (EN)" type="rss" xmlUrl="${SITE}/en/capitals/feed.xml" htmlUrl="${SITE}/en/capitals/"/>
 ${sites.map((site) => `    <outline text="${esc(site.name)}" title="${esc(site.name)}" type="rss" xmlUrl="${site.outputs.feed}" htmlUrl="${site.url}/"/>
     <outline text="${esc(site.name)} (EN)" title="${esc(site.name)} (EN)" type="rss" xmlUrl="${site.outputs.feedEn || `${site.url}/en/feed.xml`}" htmlUrl="${site.url}/en/"/>`).join('\n')}
   </body>

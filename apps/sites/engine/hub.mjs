@@ -499,6 +499,34 @@ function build() {
         file: join(PORTAL, lang === 'en' ? `en/gnk-aktual/network/${site.slug}/index.html` : `gnk-aktual/mreza/${site.slug}/index.html`),
         kind: 'edition-desk', edition: site.slug, editionName: site.name, lang,
       }))),
+      /* Prijestolnice su javne stranice kao i sve druge: prolaze isti popis
+         provjera. Popis dolazi iz istog capitals.json iz kojeg ih gradi
+         regionalni hub, pa matrica ne može zaostati za stvarnim stranicama. */
+      ...(() => {
+        const list = JSON.parse(readFileSync(join(HERE, '..', '..', 'region', 'capitals.json'), 'utf8')).capitals || [];
+        const rows = [];
+        for (const capital of list) {
+          rows.push({
+            url: `https://gnk-asg.hr/glavni-gradovi/${capital.slug}/`,
+            file: join(PORTAL, 'glavni-gradovi', capital.slug, 'index.html'),
+            kind: 'capital', edition: null, editionName: `${capital.capital}, ${capital.country}`, lang: 'hr',
+          });
+          rows.push({
+            url: `https://gnk-asg.hr/en/capitals/${capital.slug}/`,
+            file: join(PORTAL, 'en', 'capitals', capital.slug, 'index.html'),
+            kind: 'capital', edition: null, editionName: `${capital.capitalEn || capital.capital}, ${capital.countryEn || capital.country}`, lang: 'en',
+          });
+        }
+        for (const [url, file, lang] of [
+          ['https://gnk-asg.hr/glavni-gradovi/', join(PORTAL, 'glavni-gradovi', 'index.html'), 'hr'],
+          ['https://gnk-asg.hr/en/capitals/', join(PORTAL, 'en', 'capitals', 'index.html'), 'en'],
+          ['https://gnk-asg.hr/atlas/', join(PORTAL, 'atlas', 'index.html'), 'hr'],
+          ['https://gnk-asg.hr/en/atlas/', join(PORTAL, 'en', 'atlas', 'index.html'), 'en'],
+        ]) {
+          rows.push({ url, file, kind: 'capital-index', edition: null, editionName: 'AKTUAL MEDIA', lang });
+        }
+        return rows;
+      })(),
     ];
     seoMatrix = buildSeoMatrix(PORTAL, { routes, sites: siteList, today: TODAY });
   } catch (error) {

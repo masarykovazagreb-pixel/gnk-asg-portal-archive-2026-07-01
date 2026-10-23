@@ -1,82 +1,69 @@
-# Desk ilustracije — devet naslovnih grafika
+# Ilustracije deskova
 
-Dokument opisuje kako nastaje naslovna slika tematskog deska, gdje se sve
-pojavljuje i što se mora održati da stranica ne bi ostala bez slike.
+Datum: 23. 10. 2026.
 
-Kod: `scripts/build-desk-art-v1.mjs` · metapodaci: `apps/region/engine/desk-art.mjs`
-· izlaz: `apps/portal/assets/desk/art/` · manifest: `apps/portal/data/desk-art-v1.json`
-· ugovor: `tests/test-desk-art-v1.mjs`.
+Devet tematskih deskova (`sport`, `politika`, `sigurnost`, `business`,
+`tehnologija`, `moda`, `putovanja`, `ljubimci`, `svijet`) prije je na
+naslovnicama imalo tipografske plohe — boju, naziv i uzorak. Ploha nije
+fotografija i čitatelju ne kaže o čemu desk govori. Sada svaki desk ima pravu
+ilustraciju scene, iz jedne obitelji grafike, i koristi se na svim mjestima gdje
+se desk pojavljuje.
 
-## Zašto postoji
+## Izvor i obrada
 
-Kartice deskova na `/izdanja/` bile su tipografske ploče u boji, a stranica
-deska (`/izdanja/politika/` itd.) nije imala nijednu veliku sliku. Za čitatelja
-je to izgledalo kao prazna kućica — boja umjesto slike. Rješenje je jedna
-ilustracija po desku, ista na svakom ulazu: kartica, hero, OG slika i sličica
-u mreži na dnu stranice.
+- Izvor: `assets/desk/src/<desk>.webp`, 1376×768, bez teksta i bez logotipa.
+- Skripta: `scripts/build-desk-art-v1.mjs` (opcije `--check`, `--only <desk>`).
+- Definicije scena, naslova i alt teksta: `apps/region/engine/desk-art.mjs`
+  (`DESK_ART`). Skripta uvozi isti objekt — opis se ne piše dvaput.
+- Izlaz: `apps/portal/assets/desk/art/<desk>-{240,440,640,800,1200,1600}.webp`
+  i `<desk>-og.jpg` (1200×630).
+- Manifest: `apps/portal/data/desk-art-v1.json` (`sizes`, `width`, `height`,
+  `alt.hr`, `alt.en`, `title.hr`, `title.en`, `generatedAt`).
 
-## Izvor i pravila
+`--only` spaja novi zapis s postojećim manifestom; ne briše ostalih osam.
 
-- Izvor je `assets/desk/src/<id>.png` (16:9, najmanje 1200×675).
-- Grafika je **ilustracija scene**, ne fotografija događaja. Zato svaki alt
-  počinje riječju „Ilustracija", a potpis pod herojem kaže: *Generirana
-  grafika, nije fotografija događaja*.
-- U rasteru nema teksta. Ime deska, potpis i kontekst nose HTML i `alt`, pa se
-  slika može prevesti bez ponovnog renderiranja.
-- Alt postoji na hrvatskom i engleskom (`DESK_ART[id].alt`), dug je 40–220
-  znakova i opisuje samo ono što se na slici vidi.
+## Gdje se slika koristi
 
-## Veličine
-
-| Datoteka | Dimenzije | Namjena |
+| mjesto | veličina | napomena |
 | --- | --- | --- |
-| `<id>-240.webp` | 240×160 | sličica u mreži i u popisu bez stvarne slike izvora |
-| `<id>-440.webp` | 440×248 | uske kolone |
-| `<id>-640.webp` | 640×360 | kartica na `/izdanja/` |
-| `<id>-800.webp` | 800×450 | pločica na `/gnk-aktual/` |
-| `<id>-1200.webp` | 1200×675 | hero na stranici deska, preload |
-| `<id>-1600.webp` | 1600×900 | široki zaslon |
-| `<id>-og.jpg` | 1200×630 | Open Graph i Twitter |
+| `/izdanja/<desk>/` | 1200 (+ srcset 640/800/1200) | hero `figure.iz-hero`, `fetchpriority="high"`, preload |
+| OG/Twitter kartica | 1200×630 JPEG | `image` u shellu |
+| `/izdanja/` popis | 640 | kartica izdanja |
+| `/gnk-aktual/` pločice | 800 | središnja stranica |
+| mrežna traka (svaka stranica) | 240 | devet deskova |
 
-Sve izvedenice imaju `width` i `height` u HTML-u, a hero ima
-`aspect-ratio:16/9` u CSS-u, pa se sadržaj ne pomiče dok se slika učitava.
+## Alt tekst
 
-## Gradnja
+- Alt opisuje **samo ono što je na slici**; nema štitova, lokota, silueta ni
+  drugih simbola kojih na grafiki nema.
+- Piše se na hrvatskom i engleskom (`alt.hr`, `alt.en`), 40–220 znakova.
+- Sadrži riječ „ilustracija” odnosno „illustration”, pa je jasno da nije
+  fotografija događaja.
+- Na karticama i pločicama alt je puni opis, ne prazan `alt=""` — prazan alt
+  na informativnoj slici je propust, ne dekoracija.
 
-```bash
-node scripts/build-desk-art-v1.mjs              # sve deskove
-node scripts/build-desk-art-v1.mjs --only moda  # jedan desk
-node scripts/build-desk-art-v1.mjs --check      # provjeri manifest
-```
+## Provjere
 
-Skripta traži ImageMagick 6 (`convert`, `identify`). Ako za neki desk nema
-unosa u `DESK_ART`, skripta staje — alt se ne izmišlja naknadno.
+`tests/test-desk-art-v1.mjs` (uključen u `scripts/test-all-v1.mjs`):
 
-Redoslijed u dnevnom ciklusu: `build-desk-art-v1.mjs` → `apps/region/engine/hub.mjs`
-(hero, kartice, mreža) → `apps/sites/engine/hub.mjs` (SEO matrica).
+1. manifest postoji i ima točno devet deskova;
+2. svaki desk ima sedam veličina + OG, sve datoteke postoje i nisu prazne;
+3. WebP header daje stvarne dimenzije (240 → 240, 1200 → 1200, 1600 → 1600);
+4. alt HR/EN postoji, ima 40–220 znakova i spominje ilustraciju;
+5. hero na `/izdanja/<desk>/` nosi `figure class="iz-hero"`, 1200, preload s
+   `imagesrcset`, `fetchpriority="high"`, OG sliku i potpis s napomenom da je
+   ilustracija;
+6. kartice popisa koriste 640, pločice 800, mrežna traka 240 za svih devet
+   deskova i za svih 17 gradskih kanala;
+7. CSS ima varijante kadra `.iz-thumb-p1`–`.iz-thumb-p6` (kad ista ilustracija
+   služi kao pozadina retka, kadar se mijenja da se ne ponavlja ista slika).
 
-## Gdje se slika pojavljuje
+## Kako dodati ili promijeniti desk
 
-| Mjesto | Element | Veličina |
-| --- | --- | --- |
-| `/izdanja/<desk>/` | `<figure class="iz-hero">` s `<picture>` i preloadom | 1200, srcset 440–1600 |
-| `/izdanja/` | `img.iz-cover` na kartici deska | 640, srcset 440–1200 |
-| `/gnk-aktual/` | pločica deska | 800 |
-| svaka stranica | mreža na dnu (`netStrip`) | 240 |
-| stranica deska | minijatura zapisa bez slike izvora | 240, krop `iz-thumb-p1…p6` |
-| dijeljenje | `og:image`, `twitter:image` | `-og.jpg` |
+1. Ilustraciju spremi kao `assets/desk/src/<desk>.webp` (bez teksta).
+2. U `apps/region/engine/desk-art.mjs` upiši `title` i `alt` na oba jezika.
+3. `node scripts/build-desk-art-v1.mjs` (ili `--only <desk>`).
+4. `node apps/region/engine/hub.mjs`, pa `node scripts/test-all-v1.mjs`.
 
-## Pravilo za minijature
-
-Stvarna slika izvora uvijek ima prednost. Ako je nema, prikazuje se krop
-naslovne ilustracije deska — šest fiksnih kadrova (`object-position`), isti
-kadrovi za isti slug na svakom build-u. Time nijedna ćelija popisa nije
-prazna, a ponovni posjet ne mijenja raspored.
-
-## Što test čuva
-
-`tests/test-desk-art-v1.mjs` provjerava: svih devet deskova u manifestu, sve
-veličine i stvarne dimenzije WebP-a, alt na HR i EN, hero s preloadom i
-`fetchpriority`, OG sliku, kartice na `/izdanja/`, pločice na `/gnk-aktual/`,
-sličice u mreži i CSS za šest kadrova. Ako slika nedostaje, test pada prije
-objave — prazna kućica se ne može vratiti neopaženo.
+Ako se promijeni samo opis, dovoljno je 2–4; slike se ne moraju ponovno
+generirati.

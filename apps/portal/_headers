@@ -54,6 +54,25 @@
 /en/aktual-media/proizvodi/*
   Cache-Control: public, max-age=0, must-revalidate
 
+# Feedovi mreže. JSON Feed 1.1 ima propisani tip application/feed+json;
+# Atom application/atom+xml. Bez ovoga Cloudflare posluži JSON kao
+# application/json i čitači ga ne prepoznaju kao feed.
+/glavni-gradovi/feed.json
+  Content-Type: application/feed+json; charset=utf-8
+  Cache-Control: public, max-age=900
+
+/en/capitals/feed.json
+  Content-Type: application/feed+json; charset=utf-8
+  Cache-Control: public, max-age=900
+
+/glavni-gradovi/feed.xml
+  Content-Type: application/atom+xml; charset=utf-8
+  Cache-Control: public, max-age=900
+
+/en/capitals/feed.xml
+  Content-Type: application/atom+xml; charset=utf-8
+  Cache-Control: public, max-age=900
+
 /data/*
   Cache-Control: public, max-age=0, must-revalidate
 

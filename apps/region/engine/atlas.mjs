@@ -75,7 +75,7 @@ export const ATLAS_CSS = `
 @media (max-width:520px){.at-grid{grid-template-columns:1fr}}
 `;
 
-export function buildAtlasPage({ lang, capitals, channels, counts, artMeta, standard, shell, header, footer }) {
+export function buildAtlasPage({ lang, capitals, channels, counts, artMeta, standard, shell, header, footer, feeds = [] }) {
   const en = lang === 'en';
   const base = en ? '/en/atlas/' : '/atlas/';
   const all = capitals.filter((c) => c.slug);
@@ -186,6 +186,15 @@ ${footer()}`;
         name: `${c.capital}, ${c.country}`,
         url: `https://gnk-asg.hr${en ? '/en/capitals' : '/glavni-gradovi'}/${c.slug}/`
       }))
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'AKTUAL MEDIA', item: 'https://gnk-asg.hr/gnk-aktual/' },
+        { '@type': 'ListItem', position: 2, name: en ? 'Capitals' : 'Glavni gradovi', item: `https://gnk-asg.hr${en ? '/en/capitals/' : '/glavni-gradovi/'}` },
+        { '@type': 'ListItem', position: 3, name: en ? 'Atlas' : 'Atlas', item: canonical }
+      ]
     }
   ];
 
@@ -195,8 +204,16 @@ ${footer()}`;
       ? `All ${all.length} countries the network covers, from ${all.length} capitals: ${live.length} live editions and ${preparing.length} in preparation. Artwork, language, status and the link to each capital page.`
       : `Sve zemlje koje mreža pokriva — ${all.length} prijestolnica, ${live.length} aktivnih izdanja i ${preparing.length} u pripremi. Grafika, jezik, status i veza na stranicu svakog grada.`,
     path: en ? 'en/atlas/' : 'atlas/',
-    keywords: [en ? 'atlas' : 'atlas mreže', en ? 'capitals' : 'glavni gradovi', 'AKTUAL MEDIA', 'GNK ASG', ...continents.map((c) => (en ? CONTINENT_EN[c] || c : c))],
+    keywords: [
+      en ? 'atlas' : 'atlas mreže', en ? 'capitals' : 'glavni gradovi', 'AKTUAL MEDIA', 'Aktual Media', 'GNK ASG',
+      en ? 'capital cities' : 'prijestolnice', en ? 'countries' : 'zemlje', en ? 'media network' : 'medijska mreža',
+      en ? 'map of the network' : 'karta mreže', en ? 'edition status' : 'status izdanja', 'feed', 'sitemap',
+      ...continents.map((c) => (en ? CONTINENT_EN[c] || c : c)),
+      ...all.map((c) => (en ? c.capitalEn || c.capital : c.capital)),
+      ...all.map((c) => (en ? c.countryEn || c.country : c.country))
+    ],
     tags: ['#Atlas', '#AktualMedia', '#GNKASG'],
+    feeds,
     image: '/assets/atlas/aktual-media-atlas-og.jpg',
     preload: {
       href: '/assets/atlas/aktual-media-atlas-1200.webp',

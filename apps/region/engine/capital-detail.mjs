@@ -95,7 +95,7 @@ const initials = (text) => String(text || '').replace(/[^A-Za-z0-9]/g, '').slice
 
 export function buildCapitalPage(capital, ctx) {
   const {
-    lang = 'hr', capitals = [], channelBy, channelData, portalShell, portalHeader, portalFooter, MEDIA_ID, artAlt: artAltByLang
+    lang = 'hr', capitals = [], channelBy, channelData, portalShell, portalHeader, portalFooter, MEDIA_ID, artAlt: artAltByLang, feeds = []
   } = ctx;
   const en = lang === 'en';
   const channel = capital.edition ? channelBy(capital.edition) : null;
@@ -267,10 +267,18 @@ ${portalFooter()}`;
     ? `${city}, ${country} — capital edition | AKTUAL MEDIA`
     : `${city} — glavni grad · ${country} | AKTUAL MEDIA`;
 
+  /* Ključne riječi moraju opisati mjesto, izdanje i vrstu stranice — dvadeset
+     pojmova je prag SEO matrice, a ne ukras. */
   const keywords = [
-    city, capital.capitalLocal, country, capital.continent, capital.lang, language,
-    channel ? channel.title : '', channel ? channel.city : '', seats ? seats.title : '',
-    'AKTUAL MEDIA', 'glavni gradovi', 'capitals', 'GNK ASG'
+    city, capital.capitalLocal, capital.capitalEn, country, capital.countryEn, capital.continent,
+    capital.lang, language, capital.countryCode,
+    channel ? channel.title : '', channel ? channel.city : '', channel ? channel.country : '',
+    seats ? seats.title : '', seats ? seats.city : '',
+    en ? 'capital' : 'glavni grad', en ? 'capital city' : 'prijestolnica',
+    en ? 'news' : 'vijesti', en ? 'sources' : 'izvori', en ? 'verification' : 'provjera',
+    en ? 'edition' : 'izdanje', en ? 'media network' : 'medijska mreža',
+    'AKTUAL MEDIA', 'Aktual Media', 'glavni gradovi', 'capitals', 'GNK ASG',
+    en ? 'feed' : 'feed', 'sitemap', 'atlas'
   ].filter(Boolean);
 
   const tags = [`#${initials(capital.capitalEn || capital.capital)}`, `#${initials(capital.countryEn || capital.country)}`, '#GlavniGradovi', '#AktualMedia', '#GNKASG'];
@@ -323,7 +331,9 @@ ${portalFooter()}`;
     ],
     keywords,
     tags,
+    geo: { placename: city, country: capital.countryCode },
     logos: ['aktual-media-hr', 'aktual-media-en'],
+    feeds,
     preload: artId ? {
       href: `/assets/izdanja/${artId}-1200.webp`,
       imagesrcset: `/assets/izdanja/${artId}-800.webp 800w, /assets/izdanja/${artId}-1200.webp 1200w`,

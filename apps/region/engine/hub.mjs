@@ -334,7 +334,7 @@ const mediaItems = () => [
 ];
 const isWebsiteNode = (node) => (Array.isArray(node?.['@type']) ? node['@type'] : [node?.['@type']]).includes('WebSite');
 
-function portalShell({ title, description, path, keywords, tags = [], jsonld = [], body, cssExtra = '', image = SOCIAL_IMAGE, imageAlt = 'AKTUAL MEDIA', logos = [], canonicalPath = '', lang = 'hr', alternates = [], preload = null }) {
+function portalShell({ title, description, path, keywords, tags = [], jsonld = [], body, cssExtra = '', image = SOCIAL_IMAGE, imageAlt = 'AKTUAL MEDIA', logos = [], canonicalPath = '', lang = 'hr', alternates = [], preload = null, feeds = [], geo = null }) {
   const canonical = canonicalPath || `${HUB}${path}`;
   /* HUB je /izdanja/, a plohe i naslovnice žive u korijenu portala, pa se
      apsolutna adresa gradi iz ishodišta, ne iz putanje huba. */
@@ -361,12 +361,17 @@ function portalShell({ title, description, path, keywords, tags = [], jsonld = [
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="author" content="AKTUAL MEDIA d.o.o.">
 <meta name="editor" content="Nermin Sefić">
+<meta name="publisher" content="AKTUAL MEDIA d.o.o.">
+${geo ? `<meta name="geo.placename" content="${esc(geo.placename)}">
+${geo.country ? `<meta name="geo.country" content="${esc(geo.country)}">\n` : ''}` : ''}
+<meta name="hashtags" content="${esc([...new Set(tags.filter((t) => String(t).startsWith('#')).map((t) => String(t)))].join(' '))}">
 <meta name="keywords" content="${esc(keywordList.join(', '))}">
 ${[...new Map(tags.filter((t) => String(t).startsWith('#')).map((t) => [String(t).toLowerCase(), String(t)])).values()].map((t) => `<meta property="article:tag" content="${esc(t)}">`).join('\n')}
 <meta property="og:image:alt" content="${esc(imageAlt)}">
 <link rel="canonical" href="${canonical}">
 ${alternates.map((alt) => `<link rel="alternate" hreflang="${alt.hreflang}" href="${alt.href}">`).join('\n')}
 ${preload ? `<link rel="preload" as="image" href="${preload.href}"${preload.imagesrcset ? ` imagesrcset="${preload.imagesrcset}"` : ''}${preload.imagesizes ? ` imagesizes="${preload.imagesizes}"` : ''} fetchpriority="high">` : ''}
+${feeds.map((feed) => `<link rel="alternate" type="${feed.type}" title="${esc(feed.title)}" href="${feed.href}">`).join('\n')}
 ${logos.map((slug) => logoAlternate(slug)).filter(Boolean).join('\n')}
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AKTUAL MEDIA">
@@ -1282,9 +1287,16 @@ ${portalFooter()}`;
   return portalShell({
     title: en ? 'Capitals — 17 countries, one standard | AKTUAL MEDIA' : 'Glavni gradovi — 17 zemalja, isti standard | AKTUAL MEDIA',
     description,
+    feeds: capitalFeeds(lang),
     path: '',
     canonicalPath: canonical,
-    keywords: [...all.map((c) => c.capital), 'AKTUAL MEDIA', 'glavni gradovi', 'capitals', 'GNK ASG'],
+    keywords: [
+      ...all.map((c) => (en ? c.capitalEn || c.capital : c.capital)),
+      ...all.map((c) => (en ? c.countryEn || c.country : c.country)),
+      'AKTUAL MEDIA', 'Aktual Media', 'glavni gradovi', 'capitals', 'GNK ASG',
+      en ? 'capital cities' : 'prijestolnice', en ? 'countries' : 'zemlje',
+      en ? 'media network' : 'medijska mreža', 'atlas', 'feed', 'sitemap'
+    ],
     tags: ['#GlavniGradovi', '#AKTUALMEDIA', '#GNKASG'],
     logos: ['aktual-media-hr', 'aktual-media-en'],
     lang,
@@ -1303,6 +1315,105 @@ ${portalFooter()}`;
   });
 }
 
+/* Feed prijestolnica: JSON Feed 1.1 i Atom, na oba jezika. Feed nosi istu
+   adresu kao stranica i datum zadnjeg zapisa izdanja — ne izmišlja svježinu. */
+function capitalFeeds(lang) {
+  const en = lang === 'en';
+  const base = en ? '/en/capitals/' : '/glavni-gradovi/';
+  return [
+    { type: 'application/feed+json', title: en ? 'AKTUAL MEDIA — capitals (JSON Feed)' : 'AKTUAL MEDIA — glavni gradovi (JSON Feed)', href: `${base}feed.json` },
+    { type: 'application/atom+xml', title: en ? 'AKTUAL MEDIA — capitals (Atom)' : 'AKTUAL MEDIA — glavni gradovi (Atom)', href: `${base}feed.xml` }
+  ];
+}
+
+function capitalFeedItems(lang) {
+  const en = lang === 'en';
+  const iso = (value) => {
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? null : date.toISOString();
+  };
+  const rows = [];
+  for (const capital of CAPITALS.capitals || []) {
+    if (!capital.slug) continue;
+    const channel = capital.edition ? channelById(capital.edition) : capital.seats ? channelById(capital.seats) : null;
+    const data = channel ? channelData(channel.id) : { items: [], updatedAt: '' };
+    const items = data.items || [];
+    const artId = channel && capital.edition ? channel.id : capital.slug;
+    const city = en ? capital.capitalEn || capital.capital : capital.capital;
+    const country = en ? capital.countryEn || capital.country : capital.country;
+    const sources = channel && Array.isArray(channel.sources) ? channel.sources.length : 0;
+    const url = `https://gnk-asg.hr${en ? '/en/capitals' : '/glavni-gradovi'}/${capital.slug}/`;
+    const summary = capital.status === 'live'
+      ? (en
+        ? `${city}, ${country}: ${items.length} records from ${sources} sources, each linked to the original.`
+        : `${city}, ${country}: ${items.length} zapisa iz ${sources} izvora, svaki s vezom na izvornik.`)
+      : (en
+        ? `${city}, ${country}: the capital is in preparation; the country is covered today by the ${channel ? channel.city : '—'} edition.`
+        : `${city}, ${country}: prijestolnica je u pripremi; zemlju danas pokriva izdanje ${channel ? channel.city : '—'}.`);
+    rows.push({
+      id: url,
+      url,
+      title: `${city} — ${country}`,
+      summary,
+      date_modified: iso(items[0]?.date || data.updatedAt || ''),
+      image: `https://gnk-asg.hr/assets/izdanja/${artId}-1200.webp`,
+      tags: [capital.continent, capital.lang, capital.status === 'live' ? 'live' : 'preparing']
+    });
+  }
+  return rows.sort((a, b) => String(b.date_modified || '').localeCompare(String(a.date_modified || '')));
+}
+
+function writeCapitalFeeds() {
+  const written = [];
+  for (const lang of ['hr', 'en']) {
+    const en = lang === 'en';
+    const dir = en ? join(PORTAL, 'en', 'capitals') : join(PORTAL, 'glavni-gradovi');
+    const items = capitalFeedItems(lang);
+    const home = en ? 'https://gnk-asg.hr/en/capitals/' : 'https://gnk-asg.hr/glavni-gradovi/';
+    const self = `${home}feed.json`;
+    const updated = items.map((item) => item.date_modified).filter(Boolean).sort().pop() || new Date().toISOString();
+    const json = {
+      version: 'https://jsonfeed.org/version/1.1',
+      title: en ? 'AKTUAL MEDIA — capitals' : 'AKTUAL MEDIA — glavni gradovi',
+      home_page_url: home,
+      feed_url: self,
+      description: en
+        ? 'One entry per capital: status, language, sources and the link to the capital page. 17 countries, one standard.'
+        : 'Jedan zapis po prijestolnici: status, jezik, izvori i veza na stranicu grada. 17 zemalja, isti standard.',
+      language: lang,
+      icon: 'https://gnk-asg.hr/assets/brand/aktual-media-en-512.webp',
+      favicon: 'https://gnk-asg.hr/assets/brand/aktual-media-en-512.webp',
+      authors: [{ name: 'AKTUAL MEDIA d.o.o.', url: 'https://gnk-asg.hr/gnk-aktual/' }],
+      items
+    };
+    writeFileSync(join(dir, 'feed.json'), `${JSON.stringify(json, null, 2)}\n`);
+
+    const atom = `<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="${lang}">
+  <title>${esc(json.title)}</title>
+  <subtitle>${esc(json.description)}</subtitle>
+  <link href="${home}"/>
+  <link rel="self" type="application/atom+xml" href="${home}feed.xml"/>
+  <id>${home}</id>
+  <updated>${updated}</updated>
+  <author><name>AKTUAL MEDIA d.o.o.</name><uri>https://gnk-asg.hr/gnk-aktual/</uri></author>
+${items.map((item) => `  <entry>
+    <title>${esc(item.title)}</title>
+    <link href="${item.url}"/>
+    <id>${item.id}</id>
+    <updated>${item.date_modified || updated}</updated>
+    <summary>${esc(item.summary)}</summary>
+    <category term="${esc(item.tags[0])}"/>
+    <category term="${esc(item.tags[1])}"/>
+  </entry>`).join('\n')}
+</feed>
+`;
+    writeFileSync(join(dir, 'feed.xml'), atom);
+    written.push(`${en ? 'en/capitals' : 'glavni-gradovi'}/feed.{json,xml} · ${items.length}`);
+  }
+  return written;
+}
+
 export function writeCapitals() {
   mkdirSync(join(PORTAL, 'glavni-gradovi'), { recursive: true });
   mkdirSync(join(PORTAL, 'en', 'capitals'), { recursive: true });
@@ -1311,6 +1422,7 @@ export function writeCapitals() {
 
   /* Jedna stranica po prijestolnici, na hrvatskom i na engleskom. Stranica se
      gradi iz istog ugovora kao popis, pa se nova prijestolnica ne piše ručno. */
+  const feedsWritten = writeCapitalFeeds();
   const pages = [];
   for (const capital of CAPITALS.capitals || []) {
     if (!capital.slug) continue;
@@ -1331,7 +1443,8 @@ export function writeCapitals() {
         portalHeader,
         portalFooter,
         MEDIA_ID,
-        artAlt: artMeta ? artMeta.alt : null
+        artAlt: artMeta ? artMeta.alt : null,
+        feeds: capitalFeeds(lang)
       }));
       pages.push(lang === 'en' ? `/en/capitals/${capital.slug}/` : `/glavni-gradovi/${capital.slug}/`);
     }
@@ -1397,7 +1510,7 @@ ${capUrls.map((u) => `  <url><loc>${u.loc}</loc><lastmod>${today}</lastmod><chan
     }))
   };
   writeFileSync(join(PORTAL, 'data', 'glavni-gradovi-v1.json'), `${JSON.stringify(data, null, 2)}\n`);
-  return { countries: data.countries, live: data.live, preparing: data.preparing, pages: pages.length, sitemap: capUrls.length };
+  return { countries: data.countries, live: data.live, preparing: data.preparing, pages: pages.length, sitemap: capUrls.length, feeds: feedsWritten };
 }
 
 /* ---------- /usa/: ishodište projekta, GNK DINAMO Ltd., Boulder, Colorado ---------- */
@@ -1618,6 +1731,7 @@ function writeAtlas() {
       channels: CHANNELS,
       counts,
       artMeta: atlasArt,
+      feeds: capitalFeeds(lang),
       standard: CAPITALS.standard || [],
       shell: portalShell,
       header: portalHeader,

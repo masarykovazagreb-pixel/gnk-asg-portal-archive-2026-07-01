@@ -330,7 +330,13 @@ else {
   const opml = readFileSync(opmlFile, 'utf8');
   if (!/^<\?xml version="1\.0" encoding="UTF-8"\?>/.test(opml)) note('feeds.opml nema XML zaglavlje');
   const outlines = count(opml, /<outline /g);
-  if (outlines !== 1 + SITES.length * 2) note(`feeds.opml ima ${outlines} stavki (očekivano ${1 + SITES.length * 2})`);
+  /* Mrežni feed + HR/EN feed svakog izdanja + dva feeda prijestolnica
+     (/glavni-gradovi/ i /en/capitals/). Prijestolnice su u OPML-u jer se
+     čitaju istim čitačem kao izdanja. */
+  const expectedOutlines = 1 + SITES.length * 2 + 2;
+  if (outlines !== expectedOutlines) note(`feeds.opml ima ${outlines} stavki (očekivano ${expectedOutlines})`);
+  if (!opml.includes('/glavni-gradovi/feed.xml')) note('feeds.opml ne nudi feed prijestolnica');
+  if (!opml.includes('/en/capitals/feed.xml')) note('feeds.opml ne nudi EN feed prijestolnica');
   if (!opml.includes('<opml version="2.0">')) note('feeds.opml nije OPML 2.0');
 }
 

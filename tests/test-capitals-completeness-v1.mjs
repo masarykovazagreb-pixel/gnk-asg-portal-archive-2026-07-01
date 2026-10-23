@@ -194,6 +194,55 @@ else {
   if (!readFileSync(join(ROOT, 'apps', 'portal', 'sitemap-index.xml'), 'utf8').includes('https://gnk-asg.hr/atlas/sitemap.xml')) fail('sitemap-index.xml ne navodi atlas/sitemap.xml');
 }
 
+/* ---------- 4c. feedovi prijestolnica ---------- */
+
+/* Feed je obećanje strojnim čitateljima: ista adresa kao stranica, stvarni
+   datum zadnjeg zapisa i veza na izvornik. Ako feed izostane ili nosi
+   izmišljen datum, preglednik i agent čitaju nešto što ne postoji. */
+for (const [lang, dir] of [['hr', 'glavni-gradovi'], ['en', 'en/capitals']]) {
+  const jsonFile = join(ROOT, 'apps', 'portal', dir, 'feed.json');
+  const xmlFile = join(ROOT, 'apps', 'portal', dir, 'feed.xml');
+  if (!existsSync(jsonFile)) { fail(`${dir}/feed.json nedostaje`); continue; }
+  if (!existsSync(xmlFile)) { fail(`${dir}/feed.xml nedostaje`); continue; }
+
+  let feed = null;
+  try { feed = JSON.parse(readFileSync(jsonFile, 'utf8')); } catch { fail(`${dir}/feed.json se ne parsira`); }
+  if (feed) {
+    if (feed.version !== 'https://jsonfeed.org/version/1.1') fail(`${dir}/feed.json: verzija nije JSON Feed 1.1`);
+    if (feed.language !== lang) fail(`${dir}/feed.json: jezik ${feed.language}, očekivano ${lang}`);
+    if (!Array.isArray(feed.items) || feed.items.length !== capList.length) fail(`${dir}/feed.json: ${(feed.items || []).length} stavki, očekivano ${capList.length}`);
+    const ids = new Set((feed.items || []).map((item) => item.id));
+    if (ids.size !== capList.length) fail(`${dir}/feed.json: dvostruki id`);
+    for (const cap of capList) {
+      const expected = lang === 'en'
+        ? `https://gnk-asg.hr/en/capitals/${cap.slug}/`
+        : `https://gnk-asg.hr/glavni-gradovi/${cap.slug}/`;
+      if (!ids.has(expected)) fail(`${dir}/feed.json: nema ${cap.slug}`);
+    }
+    for (const item of feed.items || []) {
+      if (item.date_modified && Number.isNaN(new Date(item.date_modified).getTime())) fail(`${dir}/feed.json: datum nije ISO (${item.date_modified})`);
+      if (!/^https:\/\/gnk-asg\.hr\/assets\/izdanja\//.test(item.image || '')) fail(`${dir}/feed.json: slika nije s naše domene`);
+    }
+    const dates = (feed.items || []).map((item) => item.date_modified || '').filter(Boolean);
+    if (dates.some((date, i) => i > 0 && date > dates[i - 1])) fail(`${dir}/feed.json: datumi nisu poredani od novijeg`);
+  }
+
+  const xml = readFileSync(xmlFile, 'utf8');
+  if (!/<feed xmlns="http:\/\/www\.w3\.org\/2005\/Atom"/.test(xml)) fail(`${dir}/feed.xml: nije Atom`);
+  const entries = (xml.match(/<entry>/g) || []).length;
+  if (entries !== capList.length) fail(`${dir}/feed.xml: ${entries} zapisa, očekivano ${capList.length}`);
+  if ((xml.match(/<link href="https:\/\/gnk-asg\.hr\//g) || []).length < capList.length) fail(`${dir}/feed.xml: nema vezu na svaku prijestolnicu`);
+}
+
+/* Stranice moraju objaviti feed, inače ga nitko neće naći. */
+for (const rel of ['apps/portal/glavni-gradovi/index.html', 'apps/portal/en/capitals/index.html', 'apps/portal/glavni-gradovi/zagreb/index.html', 'apps/portal/en/capitals/zagreb/index.html', 'apps/portal/atlas/index.html']) {
+  const file = join(ROOT, rel);
+  if (!existsSync(file)) continue;
+  const html = readFileSync(file, 'utf8');
+  if (!html.includes('rel="alternate" type="application/feed+json"')) fail(`${rel}: ne nudi JSON feed`);
+  if (!html.includes('rel="alternate" type="application/atom+xml"')) fail(`${rel}: ne nudi Atom feed`);
+}
+
 /* ---------- 5. brojke ---------- */
 
 const continents = [...new Set(capList.map((c) => c.continent))];
