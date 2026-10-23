@@ -1,13 +1,13 @@
 {
   "version": "GNK_ALL_PAGES_DETAILED_AUDIT_V4_RUNTIME_DIRS_EXCLUDED",
-  "generatedAt": "2026-10-23T22:57:07.598Z",
+  "generatedAt": "2026-10-23T23:06:06.787Z",
   "summary": {
-    "pages": 7634,
+    "pages": 7636,
     "menuRoutes": 106,
     "missingMenuRoutes": 0,
     "errors": 0,
     "warnings": 0,
-    "pagesWithStaticContrastRisks": 4942,
+    "pagesWithStaticContrastRisks": 4944,
     "pagesWithLegacyLogoSources": 15,
     "legacyLogosNormalizedAtEdge": 18,
     "pagesWithForms": 19
@@ -7058,6 +7058,31 @@
       "logoRefs": [],
       "nonCanonicalLogoRefs": [],
       "contrastRisks": [],
+      "formIssues": [],
+      "edgeNormalizedLegacyLogos": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "route": "/en/prenos/",
+      "file": "apps/portal/en/prenos/index.html",
+      "protected": false,
+      "lang": "en",
+      "title": "Network republication — where every text of ours is published | AKTUAL MEDIA",
+      "viewport": true,
+      "robots": "index, follow, max-image-preview:large",
+      "broken": [],
+      "logoRefs": [],
+      "nonCanonicalLogoRefs": [],
+      "contrastRisks": [
+        {
+          "selector": ".pn-table th",
+          "foreground": "#6a7688",
+          "background": "#fbfaf6",
+          "ratio": 4.41,
+          "file": "apps/portal/en/prenos/index.html"
+        }
+      ],
       "formIssues": [],
       "edgeNormalizedLegacyLogos": [],
       "errors": [],
@@ -158554,6 +158579,31 @@
           "background": "#fafcff",
           "ratio": 4.48,
           "file": "apps/portal/pokrivenost/index.html"
+        }
+      ],
+      "formIssues": [],
+      "edgeNormalizedLegacyLogos": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "route": "/prenos/",
+      "file": "apps/portal/prenos/index.html",
+      "protected": false,
+      "lang": "hr",
+      "title": "Prijenos mreže — gdje je svaki naš tekst objavljen | AKTUAL MEDIA",
+      "viewport": true,
+      "robots": "index, follow, max-image-preview:large",
+      "broken": [],
+      "logoRefs": [],
+      "nonCanonicalLogoRefs": [],
+      "contrastRisks": [
+        {
+          "selector": ".pn-table th",
+          "foreground": "#6a7688",
+          "background": "#fbfaf6",
+          "ratio": 4.41,
+          "file": "apps/portal/prenos/index.html"
         }
       ],
       "formIssues": [],

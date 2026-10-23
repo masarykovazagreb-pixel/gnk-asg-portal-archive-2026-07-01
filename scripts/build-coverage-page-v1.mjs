@@ -18,6 +18,7 @@ import { entityGraphJson } from './lib/entity-graph-v1.mjs';
 import { PLANNED, WAVES } from '../apps/world/lib/expansion-plan.mjs';
 import { CONTINENTS as WORLD_CONTINENTS } from '../apps/world/lib/registry.mjs';
 import { langName } from '../apps/world/lib/language-names.mjs';
+import { applyHouseRibbon } from './lib/house-ribbon-v1.mjs';
 
 /* Plan piše kontinente na hrvatskom, tablica ih grupira na engleskom — isti
    ključevi koje koristi `world-coverage-v1.json`. */
@@ -323,6 +324,7 @@ ${requirements}
   <nav class="cv-links">
     <a href="/izdanja/">${hr ? 'Sva izdanja' : 'All editions'}</a>
     <a href="/mreza/">${hr ? 'Mreža' : 'Network'}</a>
+    <a href="${hr ? '/prenos/' : '/en/prenos/'}">${hr ? 'Prijenos mreže' : 'Republication'}</a>
     <a href="/gnk-aktual/">AKTUAL MEDIA</a>
     <a href="/nermin-sefic/">Nermin Sefić</a>
     <a href="${other}" hreflang="${hr ? 'en' : 'hr'}">${hr ? 'English' : 'Hrvatski'}</a>
@@ -358,7 +360,9 @@ for (const [file, html] of outputs) {
     continue;
   }
   mkdirSync(dirname(file), { recursive: true });
-  writeFileSync(file, artStylesheet(html));
+  /* Stranica se rađa s trakom kuće, pa je ponovno generiranje jednako
+     predanoj datoteci (apply-house-ribbon --check mora ostati na nuli). */
+  writeFileSync(file, applyHouseRibbon(artStylesheet(html)).html);
 }
 
 console.log(CHECK
