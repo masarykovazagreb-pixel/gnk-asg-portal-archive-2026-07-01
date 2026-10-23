@@ -130,6 +130,15 @@ else {
   if (count !== capList.length * 2) fail(`sitemap: ${count} adresa, očekivano ${capList.length * 2}`);
 }
 
+const llmsFile = join(ROOT, 'apps', 'portal', 'glavni-gradovi', 'llms.txt');
+if (!existsSync(llmsFile)) fail('glavni-gradovi/llms.txt nedostaje — pokreni node apps/region/engine/hub.mjs');
+else {
+  const text = readFileSync(llmsFile, 'utf8');
+  for (const cap of capList) if (!text.includes(`https://gnk-asg.hr/glavni-gradovi/${cap.slug}/`)) fail(`llms.txt: nema ${cap.slug}`);
+  const listed = (text.match(/^- /gm) || []).length;
+  if (listed < capList.length) fail(`llms.txt: ${listed} stavki, očekivano najmanje ${capList.length}`);
+}
+
 const indexFile = join(ROOT, 'apps', 'portal', 'sitemap-index.xml');
 if (!existsSync(indexFile)) fail('sitemap-index.xml nedostaje');
 else if (!readFileSync(indexFile, 'utf8').includes('https://gnk-asg.hr/glavni-gradovi/sitemap.xml')) {

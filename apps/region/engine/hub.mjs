@@ -1289,6 +1289,34 @@ ${capUrls.map((u) => `  <url><loc>${u.loc}</loc><lastmod>${today}</lastmod><chan
 </urlset>
 `);
 
+  /* llms.txt: kratki strojni opis popisa — isti standard kao na kanalima. */
+  const llms = [
+    '# Glavni gradovi — AKTUAL MEDIA',
+    '',
+    '> Popis zemalja koje mreža pokriva i prijestolnice iz koje se pokrivaju. Svaka prijestolnica ima vlastitu stranicu na hrvatskom i engleskom; izdanje u prijestolnici otvara se tek kad ima provjerenu listu izvora.',
+    '',
+    `- Zemalja: ${(CAPITALS.capitals || []).length}`,
+    `- Izdanja u glavnom gradu: ${(CAPITALS.capitals || []).filter((c) => c.status === 'live').length}`,
+    `- Prijestolnica u pripremi: ${(CAPITALS.capitals || []).filter((c) => c.status !== 'live').length}`,
+    `- Stranica: ${pages.length} (17 hrvatskih + 17 engleskih)`,
+    '',
+    '## Prijestolnice',
+    ...(CAPITALS.capitals || []).map((c) => `- ${c.capital}, ${c.country} (${c.lang}) — https://gnk-asg.hr/glavni-gradovi/${c.slug}/ · ${c.status === 'live' ? `izdanje ${c.edition}` : `u pripremi; zemlju pokriva ${c.seats || '—'}`}`),
+    '',
+    '## Ugovor',
+    ...(CAPITALS.standard || []).map((line) => `- ${line}`),
+    '',
+    '## Poveznice',
+    '- https://gnk-asg.hr/glavni-gradovi/',
+    '- https://gnk-asg.hr/glavni-gradovi/sitemap.xml',
+    '- https://gnk-asg.hr/en/capitals/',
+    '- https://gnk-asg.hr/mreza/',
+    '- https://gnk-asg.hr/izdanja/',
+    `- ${CONTACT}`,
+    ''
+  ].join('\n');
+  writeFileSync(join(PORTAL, 'glavni-gradovi', 'llms.txt'), llms);
+
   const data = {
     version: CAPITALS.version,
     updatedAt: new Date().toISOString(),

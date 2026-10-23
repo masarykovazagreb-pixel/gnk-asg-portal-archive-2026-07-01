@@ -157,7 +157,8 @@ grafika tog izdanja, s potpisom koji to kaže — nikad se ne tvrdi da je
 prijestolnica već dobila svoju.
 
 Vlastiti sitemap: `/glavni-gradovi/sitemap.xml` (34 adrese), uključen u
-`sitemap-index.xml`.
+`sitemap-index.xml`, i `/glavni-gradovi/llms.txt` s istim popisom u tekstualnom
+obliku za strojno čitanje.
 
 **Veza je obostrana.** Svako gradsko izdanje u navigaciji nosi
 „Glavni grad: <ime>" („Capital: …", „Főváros: …", „首都: …") s ciljem na
