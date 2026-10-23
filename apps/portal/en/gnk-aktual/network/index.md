@@ -1,6 +1,6 @@
 # AKTUAL MEDIA — network of editions
 
-> AKTUAL MEDIA runs six independent editions on their own domains: BOR USA, KOŠARKA 360, SCENA ZNANOSTI, STEP BUDUĆNOSTI, ZDRAVLJE 360 and the temporary IZBORI U SRBIJI desk. Every page listed in Croatian and English, with source and editor.
+> Six independent AKTUAL MEDIA editions on their own domains — BOR USA, KOŠARKA 360, SCENA ZNANOSTI, STEP BUDUĆNOSTI, ZDRAVLJE 360 and IZBORI U SRBIJI — every page with its source.
 
 - Publisher: AKTUAL MEDIA d.o.o. — https://gnk-asg.hr/gnk-aktual/
 - Editor and director: Nermin Sefić — https://gnk-asg.hr/nermin-sefic/

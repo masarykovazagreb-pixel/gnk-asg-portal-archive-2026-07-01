@@ -41,8 +41,8 @@ const MARK_END = '<!-- AKTUAL-MREZA-BAND:END -->';
 const T = {
   hr: {
     lang: 'hr', other: 'en',
-    title: 'AKTUAL MEDIA — mreža izdanja: svi tekstovi pod jednim izdavačem | GNK ASG',
-    description: 'AKTUAL MEDIA vodi šest neovisnih izdanja na vlastitim domenama: BOR USA, KOŠARKA 360, SCENA ZNANOSTI, STEP BUDUĆNOSTI, ZDRAVLJE 360 i privremeni desk IZBORI U SRBIJI. Popis svake stranice na hrvatskom i engleskom, s izvorom i urednikom.',
+    title: 'AKTUAL MEDIA — mreža izdanja pod jednim izdavačem | GNK ASG',
+    description: 'Šest neovisnih izdanja AKTUAL MEDIA na vlastitim domenama — BOR USA, KOŠARKA 360, SCENA ZNANOSTI, STEP BUDUĆNOSTI, ZDRAVLJE 360 i IZBORI U SRBIJI — sa svakom stranicom i izvorom.',
     kicker: 'AKTUAL MEDIA · mreža izdanja',
     h1: 'Svi tekstovi mreže, pod jednim izdavačem',
     lead: 'Šest neovisnih izdanja ima vlastite domene, vlastite sitemape i vlastite arhive — ali istog izdavača, istog urednika i isti standard: izvor za svaku brojku, datum za svaki izvor, ispravak na mjestu pogreške. Ovdje je popis svake stranice, da se svaki tekst može naći s matične domene.',
@@ -69,8 +69,8 @@ const T = {
   },
   en: {
     lang: 'en', other: 'hr',
-    title: 'AKTUAL MEDIA — network of editions: every text under one publisher | GNK ASG',
-    description: 'AKTUAL MEDIA runs six independent editions on their own domains: BOR USA, KOŠARKA 360, SCENA ZNANOSTI, STEP BUDUĆNOSTI, ZDRAVLJE 360 and the temporary IZBORI U SRBIJI desk. Every page listed in Croatian and English, with source and editor.',
+    title: 'AKTUAL MEDIA — the network, one publisher | GNK ASG',
+    description: 'Six independent AKTUAL MEDIA editions on their own domains — BOR USA, KOŠARKA 360, SCENA ZNANOSTI, STEP BUDUĆNOSTI, ZDRAVLJE 360 and IZBORI U SRBIJI — every page with its source.',
     kicker: 'AKTUAL MEDIA · network of editions',
     h1: 'Every text in the network, under one publisher',
     lead: 'Six independent editions have their own domains, sitemaps and archives — but one publisher, one editor and one standard: a source for every figure, a date for every source, a correction where the error was made. Here is every page, so any text can be found from the parent domain.',
@@ -388,12 +388,14 @@ function editionPage(lang, site, { sites, pages }) {
   const hashtags = deskHashtags(sites, site.slug);
   const hashtagWords = hashtags.map((tag) => tag.replace('#', ''));
   const title = lang === 'en'
-    ? `${site.name} — every page of the edition under AKTUAL MEDIA | GNK ASG`
-    : `${site.name} — sve stranice izdanja pod AKTUAL MEDIA | GNK ASG`;
+    ? `${site.name} — every page of the edition | AKTUAL MEDIA`
+    : `${site.name} — sve stranice izdanja | AKTUAL MEDIA`;
   const tail = lang === 'en'
-    ? `All ${list.length} pages of this edition in English, plus the Croatian twin, under one publisher: AKTUAL MEDIA d.o.o. Editor and director: Nermin Sefić.`
-    : `Svih ${list.length} stranica ovog izdanja na hrvatskom, uz engleski par, pod jednim izdavačem: AKTUAL MEDIA d.o.o. Urednik i direktor: Nermin Sefić.`;
-  const description = short(`${tagline} ${tail}`, 315);
+    ? `All ${list.length} pages in English, plus the Croatian twin, under one publisher: AKTUAL MEDIA d.o.o.`
+    : `Svih ${list.length} stranica na hrvatskom, uz engleski par, pod jednim izdavačem: AKTUAL MEDIA d.o.o.`;
+  /* Opis mora ostati u granici koju audit mjeri (70–180), pa se rez skraćuje
+     od repa prema taglineu, a ne obrnuto. */
+  const description = short(`${tagline} ${tail}`, 178);
   const siblings = sites.filter((item) => item.slug !== site.slug);
   const rows = list.map((page) => pageRow(page, lang)).join('');
   const siblingRows = siblings.map((item) => `<li><a href="${editionDesk(lang, item.slug)}" style="border-left:3px solid ${item.accent}">
@@ -590,11 +592,11 @@ function tagsPage(lang, { sites, pages }) {
   const hashtags = [...new Set([...deskHashtags(sites), ...ordered.map(([tag]) => tag)])].slice(0, 20);
   const hashtagWords = hashtags.map((tag) => tag.replace('#', ''));
   const title = lang === 'en'
-    ? `All hashtags of the network — every AKTUAL MEDIA edition | GNK ASG`
-    : `Sve oznake mreže — hashtagovi svih izdanja AKTUAL MEDIA | GNK ASG`;
+    ? `Every AKTUAL MEDIA hashtag, edition by edition | GNK ASG`
+    : `Sve oznake mreže AKTUAL MEDIA, izdanje po izdanje | GNK ASG`;
   const description = lang === 'en'
-    ? `All ${ordered.length} hashtags used across the six editions of the AKTUAL MEDIA network, with every page that carries them. One publisher, one editor, two languages: every tag opens the exact texts it marks.`
-    : `Svih ${ordered.length} oznaka koje koristi šest izdanja mreže AKTUAL MEDIA, uz svaku stranicu koja ih nosi. Jedan izdavač, jedan urednik, dva jezika: svaka oznaka vodi na točno one tekstove koje označava.`;
+    ? `All hashtags used across the six editions of the AKTUAL MEDIA network, with every page that carries them — one publisher, one editor, two languages.`
+    : `Sve oznake koje koristi šest izdanja mreže AKTUAL MEDIA, uz svaku stranicu koja ih nosi — jedan izdavač, jedan urednik, dva jezika.`;
   const jsonld = {
     '@context': 'https://schema.org',
     '@graph': [

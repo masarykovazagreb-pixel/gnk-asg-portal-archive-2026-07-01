@@ -67,9 +67,42 @@ function approvedRoutes() {
   } catch { return new Set(); }
 }
 
+/* Provjereno autorstvo iz uredničkog registra ima prednost pred starijim
+   popisom odobrenih stranica: registar zna i autora i vrstu teksta, pa se
+   autorski link ne stavlja na objavu koja nije njegova. */
+function verifiedAuthorRoutes() {
+  const file = join(ROOT, 'apps', 'portal', 'data', 'editorial-registry.json');
+  if (!existsSync(file)) return null;
+  try {
+    const data = JSON.parse(readFileSync(file, 'utf8'));
+    const rows = Array.isArray(data) ? data : (data.items || data.entries || []);
+    const set = new Set();
+    for (const item of rows) {
+      if (!item || item.author !== 'Nermin Sefić' || item.authorSchemaVerified !== true) continue;
+      if (!['komentar', 'kolumna', 'analiza'].includes(item.type)) continue;
+      const raw = String(item.path || item.route || item.url || '').trim();
+      if (!raw) continue;
+      const pathname = /^https?:\/\//i.test(raw) ? new URL(raw).pathname : raw;
+      set.add(pathname.replace(/\/+$/, '') + '/');
+    }
+    return set;
+  } catch { return null; }
+}
+
 const APPROVED = approvedRoutes();
+const VERIFIED = verifiedAuthorRoutes();
 const AUTHOR_HASHTAG = '#NerminSefić';
-const isApproved = (route) => APPROVED.has(route.endsWith('/') ? route : `${route}/`);
+/* Autor-link (`rel=author`) traži potvrđeno autorstvo u registru.
+   #NerminSefić traži i drugo odobrenje — popis odobrenih stranica.
+   Presjek je jedini skup koji prolazi i audit cjelovitosti objava i audit
+   AKTUAL MEDIA stranica; sam registar je preširok za hashtag. */
+const normRoute = (route) => (route.endsWith('/') ? route : `${route}/`);
+const isVerified = (route) => (VERIFIED ? VERIFIED.has(normRoute(route)) : APPROVED.has(normRoute(route)));
+const isApproved = (route) => {
+  const normalized = normRoute(route);
+  if (!APPROVED.has(normalized)) return false;
+  return VERIFIED ? VERIFIED.has(normalized) : true;
+};
 
 /* Stranice koje ne dobivaju blok: alati, administracija, API i datoteke
    koje nisu stranice. */
@@ -173,18 +206,27 @@ for (const file of files) {
     added += 1;
   }
 
-  /* Meta urednika i autor-link: samo ako nedostaju. */
+  /* Urednička uloga (meta editor) nije tvrdnja o autorstvu, pa stoji svugdje.
+     Autor-link i autorska oznaka idu samo na odobrene stranice: urednik nije
+     autor svakog teksta, a provjera cjelovitosti to strogo razlikuje. */
+  const route = `/${relative(PORTAL, dirname(file)).split('\\').join('/')}/`;
+  const allowAuthorTag = isApproved(route) || !file.startsWith(PORTAL);
+  const allowAuthorLink = isVerified(route) || !file.startsWith(PORTAL);
   if (!/name="editor"/i.test(html)) {
-    html = html.replace('</head>', `<meta name="editor" content="${EDITOR}">\n<link rel="author" href="${url('/nermin-sefic/')}">\n</head>`);
-  } else if (!/rel="author"/i.test(html)) {
-    html = html.replace('</head>', `<link rel="author" href="${url('/nermin-sefic/')}">\n</head>`);
+    html = html.replace('</head>', `<meta name="editor" content="${EDITOR}">\n</head>`);
+  }
+  if (allowAuthorLink) {
+    if (!/rel="author"/i.test(html)) {
+      html = html.replace('</head>', `<link rel="author" href="${url('/nermin-sefic/')}">\n</head>`);
+    }
+  } else {
+    /* Zaostatak ranijih prolaza: autor-link na tekstu koji nije njegov. */
+    html = html.replace(/<link rel="author" href="[^"]*\/nermin-sefic\/"[^>]*>\n?/gi, '');
   }
 
   /* Stalne oznake u article:tag — bez njih hashtag postoji samo vizualno.
      Autorski hashtag samo na odobrenim stranicama; ostale nose #AKTUALMEDIA
      i #GNKASG, koji nisu tvrdnja o autorstvu. */
-  const route = `/${relative(PORTAL, dirname(file)).split('\\').join('/')}/`;
-  const allowAuthorTag = isApproved(route) || !file.startsWith(PORTAL);
   for (const tag of HASHTAGS) {
     if (tag === AUTHOR_HASHTAG && !allowAuthorTag) continue;
     if (!has(html, `content="${tag}"`)) {

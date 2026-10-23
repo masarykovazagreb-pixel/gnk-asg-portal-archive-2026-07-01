@@ -16,7 +16,7 @@ export const HOUSE_RIBBON_CSS = '/assets/house-ribbon-v1.css?v=20261024';
 const RIBBON_DIV = '<div class="am-ribbon">';
 const RIBBON_BLOCK = /<div class="am-ribbon">[\s\S]*?<\/div>\s*/g;
 const RIBBON_LINK = /<link rel="stylesheet" href="\/assets\/house-ribbon-v1\.css[^"]*">\s*/g;
-const SKIP_LINK = /<a[^>]*class="(?:skip-to-content|skip)"[^>]*>[\s\S]*?<\/a>/i;
+const SKIP_LINK = /<a[^>]*class="[^"]*\bskip[^"]*"[^>]*>[\s\S]*?<\/a>/i;
 
 const esc = (value) => String(value == null ? '' : value)
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -35,10 +35,11 @@ function placementOk(tail) {
   if (mark < 0) return false;
   const mainAt = tail.search(/<main\b/i);
   if (mainAt >= 0 && mark > mainAt) return false;
+  /* Preskok mora ostati prva veza u tijelu; traka ide iza njega. Ako stranica
+     preskoka nema, dovoljno je da traka stoji izvan <main>. */
   const skip = tail.match(SKIP_LINK);
-  if (skip && skip.index < mark) return true;
-  if (skip && skip.index > mark) return false;
-  return mark < 400;
+  if (skip) return skip.index < mark;
+  return true;
 }
 
 /* Mjesto umetanja: odmah nakon veze za preskok ako postoji, inače na početak

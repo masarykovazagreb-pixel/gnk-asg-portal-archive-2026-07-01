@@ -1,6 +1,6 @@
 {
   "version": "GNK_ASG_AUTONOMY_365_V1_20261021",
-  "generatedAt": "2026-10-23T21:29:35Z",
+  "generatedAt": "2026-10-23T23:46:35Z",
   "horizon": {
     "starts": "2026-10-21",
     "ends": "2027-10-21",
@@ -28,7 +28,7 @@
       "id": "kanali-svjezina",
       "state": "ok",
       "severity": "watch",
-      "actual": "1.1 h",
+      "actual": "3.4 h",
       "target": "48 h",
       "owner": "region-daily.yml",
       "route": "/kanal/",
@@ -37,8 +37,8 @@
         "en": "The newest story in every channel is no older than 48 h"
       },
       "note": {
-        "hr": "zagreb 0.2 h · beograd 0.3 h · sarajevo 0 h · budimpesta 0.5 h · ljubljana 0.6 h · rim 0.3 h · sofija 0 h · bukurest 0.1 h · nairobi 1.1 h · jakarta 0 h · newyork 0.4 h · saopaulo 0.1 h · sydney 0.1 h · singapur 1.1 h · kairo 0.4 h · tokio 0.2 h · peking 0.2 h",
-        "en": "zagreb 0.2 h · beograd 0.3 h · sarajevo 0 h · budimpesta 0.5 h · ljubljana 0.6 h · rim 0.3 h · sofija 0 h · bukurest 0.1 h · nairobi 1.1 h · jakarta 0 h · newyork 0.4 h · saopaulo 0.1 h · sydney 0.1 h · singapur 1.1 h · kairo 0.4 h · tokio 0.2 h · peking 0.2 h"
+        "hr": "zagreb 2.5 h · beograd 2.6 h · sarajevo 1.6 h · budimpesta 2.8 h · ljubljana 2.9 h · rim 2.6 h · sofija 0 h · bukurest 2.4 h · nairobi 3.3 h · jakarta 1.4 h · newyork 2.7 h · saopaulo 2.4 h · sydney 2.4 h · singapur 3.4 h · kairo 2.7 h · tokio 2.5 h · peking 2.5 h",
+        "en": "zagreb 2.5 h · beograd 2.6 h · sarajevo 1.6 h · budimpesta 2.8 h · ljubljana 2.9 h · rim 2.6 h · sofija 0 h · bukurest 2.4 h · nairobi 3.3 h · jakarta 1.4 h · newyork 2.7 h · saopaulo 2.4 h · sydney 2.4 h · singapur 3.4 h · kairo 2.7 h · tokio 2.5 h · peking 2.5 h"
       }
     },
     {
@@ -62,7 +62,7 @@
       "id": "proxy-popis",
       "state": "fail",
       "severity": "hard",
-      "actual": "80 / 30",
+      "actual": "81 / 30",
       "target": null,
       "owner": "tests/test-image-proxy-v1.mjs",
       "route": "/gnk-aktual/",
@@ -71,8 +71,8 @@
         "en": "The proxy allow-list matches the hosts actually present in the feed"
       },
       "note": {
-        "hr": "nedostaje: — · višak: media.jutarnji.hr, bucket.index.hr, n1info.hr, www.telegram.hr, i2.res.24o.it, www.danas.rs, nova.rs, n1info.rs, www.politika.rs, static.klix.ba, n1info.ba, storage.radiosarajevo.ba, gale-s3-bucket.s3.eu-central-1.amazonaws.com, images.24ur.com, n1info.si, slovenskenovice.delo.si, www.delo.si, iasstorage.vecer.com, img.hvg.hu, s.24.hu, pcdn.hu, assets.4cdn.hu, assets.telex.hu, www.gedistatic.it, img.dnevnik.bg, www.segabg.com, cdn.actualno.eu, www.g4media.ro, s.iw.ro, storage0.dms.mpinteractiv.ro, i0.1616.ro, nation.africa, capitalfm.africa, www.kbc.co.ke, www.madamasr.com, images.dailynewsegypt.com, img.antaranews.com, static.republika.co.id, images.skynewsarabia.com, media.skynewsarabia.com, image5.sixthtone.com, s.abcnews.com, platform.theverge.com, npr.brightspotcdn.com, media.npr.org, www.propublica.org, conteudo.imguol.com.br, s2-g1.glbimg.com, veja.abril.com.br, agenciabrasil.ebc.com.br",
-        "en": "missing: — · extra: media.jutarnji.hr, bucket.index.hr, n1info.hr, www.telegram.hr, i2.res.24o.it, www.danas.rs, nova.rs, n1info.rs, www.politika.rs, static.klix.ba, n1info.ba, storage.radiosarajevo.ba, gale-s3-bucket.s3.eu-central-1.amazonaws.com, images.24ur.com, n1info.si, slovenskenovice.delo.si, www.delo.si, iasstorage.vecer.com, img.hvg.hu, s.24.hu, pcdn.hu, assets.4cdn.hu, assets.telex.hu, www.gedistatic.it, img.dnevnik.bg, www.segabg.com, cdn.actualno.eu, www.g4media.ro, s.iw.ro, storage0.dms.mpinteractiv.ro, i0.1616.ro, nation.africa, capitalfm.africa, www.kbc.co.ke, www.madamasr.com, images.dailynewsegypt.com, img.antaranews.com, static.republika.co.id, images.skynewsarabia.com, media.skynewsarabia.com, image5.sixthtone.com, s.abcnews.com, platform.theverge.com, npr.brightspotcdn.com, media.npr.org, www.propublica.org, conteudo.imguol.com.br, s2-g1.glbimg.com, veja.abril.com.br, agenciabrasil.ebc.com.br"
+        "hr": "nedostaje: — · višak: media.jutarnji.hr, bucket.index.hr, n1info.hr, www.telegram.hr, i2.res.24o.it, www.danas.rs, nova.rs, n1info.rs, www.politika.rs, static.klix.ba, n1info.ba, storage.radiosarajevo.ba, gale-s3-bucket.s3.eu-central-1.amazonaws.com, images.24ur.com, n1info.si, slovenskenovice.delo.si, www.delo.si, iasstorage.vecer.com, img.hvg.hu, s.24.hu, pcdn.hu, assets.4cdn.hu, assets.telex.hu, www.gedistatic.it, img.dnevnik.bg, www.segabg.com, cdn.actualno.eu, www.g4media.ro, s.iw.ro, storage0.dms.mpinteractiv.ro, i0.1616.ro, nation.africa, capitalfm.africa, www.kbc.co.ke, www.madamasr.com, images.dailynewsegypt.com, img.antaranews.com, static.republika.co.id, images.skynewsarabia.com, media.skynewsarabia.com, image5.sixthtone.com, s.abcnews.com, platform.theverge.com, npr.brightspotcdn.com, media.npr.org, www.propublica.org, conteudo.imguol.com.br, f.i.uol.com.br, s2-g1.glbimg.com, veja.abril.com.br, agenciabrasil.ebc.com.br",
+        "en": "missing: — · extra: media.jutarnji.hr, bucket.index.hr, n1info.hr, www.telegram.hr, i2.res.24o.it, www.danas.rs, nova.rs, n1info.rs, www.politika.rs, static.klix.ba, n1info.ba, storage.radiosarajevo.ba, gale-s3-bucket.s3.eu-central-1.amazonaws.com, images.24ur.com, n1info.si, slovenskenovice.delo.si, www.delo.si, iasstorage.vecer.com, img.hvg.hu, s.24.hu, pcdn.hu, assets.4cdn.hu, assets.telex.hu, www.gedistatic.it, img.dnevnik.bg, www.segabg.com, cdn.actualno.eu, www.g4media.ro, s.iw.ro, storage0.dms.mpinteractiv.ro, i0.1616.ro, nation.africa, capitalfm.africa, www.kbc.co.ke, www.madamasr.com, images.dailynewsegypt.com, img.antaranews.com, static.republika.co.id, images.skynewsarabia.com, media.skynewsarabia.com, image5.sixthtone.com, s.abcnews.com, platform.theverge.com, npr.brightspotcdn.com, media.npr.org, www.propublica.org, conteudo.imguol.com.br, f.i.uol.com.br, s2-g1.glbimg.com, veja.abril.com.br, agenciabrasil.ebc.com.br"
       }
     },
     {
@@ -96,7 +96,7 @@
       "id": "news-svjezina",
       "state": "ok",
       "severity": "watch",
-      "actual": "1.1 h",
+      "actual": "3.4 h",
       "target": "6 h",
       "owner": "gnk-news-refresh-v2.yml",
       "route": "/gnk-aktual/",
@@ -156,37 +156,37 @@
         "id": "zagreb",
         "items": 420,
         "newest": "2026-10-23T21:19:33.000Z",
-        "ageHours": 0.2
+        "ageHours": 2.5
       },
       {
         "id": "beograd",
         "items": 420,
         "newest": "2026-10-23T21:13:30.000Z",
-        "ageHours": 0.3
+        "ageHours": 2.6
       },
       {
         "id": "sarajevo",
         "items": 420,
         "newest": "2026-10-23T22:11:54.000Z",
-        "ageHours": 0
+        "ageHours": 1.6
       },
       {
         "id": "budimpesta",
         "items": 420,
         "newest": "2026-10-23T20:58:21.000Z",
-        "ageHours": 0.5
+        "ageHours": 2.8
       },
       {
         "id": "ljubljana",
         "items": 420,
         "newest": "2026-10-23T20:54:00.000Z",
-        "ageHours": 0.6
+        "ageHours": 2.9
       },
       {
         "id": "rim",
         "items": 420,
         "newest": "2026-10-23T21:12:44.000Z",
-        "ageHours": 0.3
+        "ageHours": 2.6
       },
       {
         "id": "sofija",
@@ -198,70 +198,70 @@
         "id": "bukurest",
         "items": 420,
         "newest": "2026-10-23T21:23:37.683Z",
-        "ageHours": 0.1
+        "ageHours": 2.4
       },
       {
         "id": "nairobi",
         "items": 99,
         "newest": "2026-10-23T20:25:37.000Z",
-        "ageHours": 1.1
+        "ageHours": 3.3
       },
       {
         "id": "jakarta",
         "items": 103,
         "newest": "2026-10-23T22:21:00.000Z",
-        "ageHours": 0
+        "ageHours": 1.4
       },
       {
         "id": "newyork",
         "items": 173,
         "newest": "2026-10-23T21:07:28.000Z",
-        "ageHours": 0.4
+        "ageHours": 2.7
       },
       {
         "id": "saopaulo",
         "items": 241,
         "newest": "2026-10-23T21:24:56.056Z",
-        "ageHours": 0.1
+        "ageHours": 2.4
       },
       {
         "id": "sydney",
         "items": 142,
         "newest": "2026-10-23T21:22:58.000Z",
-        "ageHours": 0.1
+        "ageHours": 2.4
       },
       {
         "id": "singapur",
         "items": 94,
         "newest": "2026-10-23T20:24:18.000Z",
-        "ageHours": 1.1
+        "ageHours": 3.4
       },
       {
         "id": "kairo",
         "items": 63,
         "newest": "2026-10-23T21:05:52.000Z",
-        "ageHours": 0.4
+        "ageHours": 2.7
       },
       {
         "id": "tokio",
         "items": 173,
         "newest": "2026-10-23T21:18:20.000Z",
-        "ageHours": 0.2
+        "ageHours": 2.5
       },
       {
         "id": "peking",
         "items": 122,
         "newest": "2026-10-23T21:19:15.000Z",
-        "ageHours": 0.2
+        "ageHours": 2.5
       }
     ],
     "news": {
       "items": 300,
       "newest": "2026-10-23T20:24:27.000Z",
-      "ageHours": 1.1
+      "ageHours": 3.4
     },
     "proxies": {
-      "allowed": 80,
+      "allowed": 81,
       "feedHosts": 30
     },
     "desks": {

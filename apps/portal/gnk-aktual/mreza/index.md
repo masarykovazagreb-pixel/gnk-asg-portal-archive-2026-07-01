@@ -1,6 +1,6 @@
 # AKTUAL MEDIA — mreža izdanja
 
-> AKTUAL MEDIA vodi šest neovisnih izdanja na vlastitim domenama: BOR USA, KOŠARKA 360, SCENA ZNANOSTI, STEP BUDUĆNOSTI, ZDRAVLJE 360 i privremeni desk IZBORI U SRBIJI. Popis svake stranice na hrvatskom i engleskom, s izvorom i urednikom.
+> Šest neovisnih izdanja AKTUAL MEDIA na vlastitim domenama — BOR USA, KOŠARKA 360, SCENA ZNANOSTI, STEP BUDUĆNOSTI, ZDRAVLJE 360 i IZBORI U SRBIJI — sa svakom stranicom i izvorom.
 
 - Izdavač: AKTUAL MEDIA d.o.o. — https://gnk-asg.hr/gnk-aktual/
 - Urednik i direktor: Nermin Sefić — https://gnk-asg.hr/nermin-sefic/

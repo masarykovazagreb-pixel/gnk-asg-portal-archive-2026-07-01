@@ -1141,11 +1141,11 @@ ${END}`;
     html = html.replace(anchor, `${anchor}\n${block}`);
   }
 
-  const desc = `AKTUAL MEDIA na jednoj ploči: ${CHANNELS.length} gradskih izdanja na ${hrCount(LANG_COUNT)} jezika — osam u regiji i devet na pet kontinenata — ${items.length} tekstova iz ${sources.size} medija, devet deskova, poslovni tjednik, moda, galerija i radio. Urednik i direktor: Nermin Sefić.`;
+  const desc = `AKTUAL MEDIA na jednoj ploči: ${CHANNELS.length} gradskih izdanja na ${hrCount(LANG_COUNT)} jezika, ${items.length} tekstova iz ${sources.size} medija, devet deskova, poslovni tjednik, moda, galerija i radio. Urednik: Nermin Sefić.`;
   /* Opis se mijenja na svakom ciklusu, pa se mora zamijeniti na svim trima
      mjestima — dosad je twitter:description ostajao na starom broju tekstova
      i medija i nije se slagao s og:description. */
-  const safeDesc = esc(truncate(desc, 300));
+  const safeDesc = esc(truncate(desc, 178));
   html = html.replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${safeDesc}">`);
   html = html.replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${safeDesc}">`);
   html = html.replace(/<meta name="twitter:description" content="[^"]*">/, `<meta name="twitter:description" content="${safeDesc}">`);
