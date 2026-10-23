@@ -26,9 +26,11 @@ import { fileURLToPath } from 'node:url';
 
 import { esc, longDate, shortDate, truncate, safeJson } from '../region/engine/lib.mjs';
 import { t } from '../region/src/strings.mjs';
+import { chromeOf } from '../region/src/chrome.mjs';
 import { CSS } from '../region/engine/build.mjs';
 import { logoFor, channelLogoSlug } from '../region/engine/brand.mjs';
 import { meshBlock, MESH_CSS } from '../satellites/lib/network-v1.mjs';
+import { spiderWeb, SPIDER_CSS } from '../satellites/lib/spiderweb-v1.mjs';
 import { WORLD_PORTALS, WORLD_BY_ID, portalBase, portalUrl, reviewUrl, HUB_HR, HUB_EN, MAIN, AKTUAL } from './lib/registry.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -39,6 +41,25 @@ const OUT = process.env.WORLD_OUT ? resolve(process.env.WORLD_OUT) : join(HERE, 
 const TODAY = new Date().toISOString().slice(0, 10);
 const RTL = new Set(['ar', 'he', 'fa', 'ur']);
 const CONTACT = 'info@gnk-asg.hr';
+
+/* Atlas grafika: jedna ilustracija po izdanju, s alt tekstom koji je dio
+   manifesta (nikad izmišljen u šabloni). Ako grafike nema, hero je izostavljen
+   — portalu je bolje bez slike nego sa slikom bez opisa. */
+const ATLAS = JSON.parse(readFileSync(join(ROOT, 'apps', 'portal', 'data', 'atlas-art-v1.json'), 'utf8'));
+const atlasFor = (id) => ATLAS.images.find((image) => image.slug === id) || null;
+const atlasEdition = (portal) => {
+  const image = atlasFor(portal.id);
+  if (!image) return '';
+  /* Alt na jeziku izdanja: ime grada dolazi iz registra, opis iz jezičnog
+     paketa. Manifest nosi hrvatski i engleski opis kao rezervu. */
+  const chrome = chromeOf(portal.lang);
+  const alt = chrome.artAlt ? chrome.artAlt(displayCity(portal)) : (image.alt[portal.lang] || image.alt.en);
+  const note = chrome.artNote || (image.note && (image.note[portal.lang] || image.note.en)) || '';
+  return `<figure class="hero-art">
+    <img src="https://gnk-asg.hr${image.src}" srcset="https://gnk-asg.hr${image.src.replace('-1600', '-800')} 800w, https://gnk-asg.hr${image.src} 1600w" sizes="(max-width: 760px) 100vw, 1080px" alt="${esc(alt)}" width="${image.width}" height="${image.height}" loading="eager" decoding="async" fetchpriority="high">
+    <figcaption>${esc(note)}</figcaption>
+  </figure>`;
+};
 
 /* Portal-specifican tekst. Opći natpisi dolaze iz apps/region/src/strings.mjs
    (isti prijevodi koje koristi izdanje), a ovo su rečenice koje postoje samo
@@ -63,7 +84,8 @@ const W = {
     feedsTitle: 'Pretplatite se',
     feedNote: 'RSS i JSON feed nose iste zapise kao stranica; svaki vodi na osvrt na gnk-asg.hr.',
     worldNote: 'Devet svjetskih izdanja pokriva pet kontinenata: Afriku, Aziju, Sjevernu Ameriku, Južnu Ameriku i Oceaniju. Svako ima vlastitu adresu, sitemap i feed, a sva vraćaju link na maticu.',
-    language: 'Jezik izdanja'
+    language: 'Jezik izdanja',
+    spiderTitle: 'Paukova mreža'
   },
   en: {
     kicker: 'AKTUAL MEDIA · world editions',
@@ -83,7 +105,8 @@ const W = {
     feedsTitle: 'Subscribe',
     feedNote: 'The RSS and JSON feeds carry the same records as the page; each one leads to the review on gnk-asg.hr.',
     worldNote: 'Nine world editions cover five continents: Africa, Asia, North America, South America and Oceania. Each has its own address, sitemap and feed, and every one links back to the parent site.',
-    language: 'Edition language'
+    language: 'Edition language',
+    spiderTitle: 'The spider web'
   },
   id: {
     kicker: 'AKTUAL MEDIA · edisi dunia',
@@ -103,7 +126,8 @@ const W = {
     feedsTitle: 'Berlangganan',
     feedNote: 'Feed RSS dan JSON membawa catatan yang sama seperti halaman; setiap catatan menuju tinjauan di gnk-asg.hr.',
     worldNote: 'Sembilan edisi dunia mencakup lima benua: Afrika, Asia, Amerika Utara, Amerika Selatan dan Oseania. Setiap edisi punya alamat, sitemap dan feed sendiri, dan semuanya menautkan kembali ke situs induk.',
-    language: 'Bahasa edisi'
+    language: 'Bahasa edisi',
+    spiderTitle: 'Jaring laba-laba'
   },
   pt: {
     kicker: 'AKTUAL MEDIA · edições mundiais',
@@ -123,7 +147,8 @@ const W = {
     feedsTitle: 'Subscrever',
     feedNote: 'Os feeds RSS e JSON trazem os mesmos registos da página; cada um leva à análise em gnk-asg.hr.',
     worldNote: 'Nove edições mundiais cobrem cinco continentes: África, Ásia, América do Norte, América do Sul e Oceânia. Cada uma tem endereço, sitemap e feed próprios, e todas ligam de volta ao site principal.',
-    language: 'Idioma da edição'
+    language: 'Idioma da edição',
+    spiderTitle: 'A teia'
   },
   ar: {
     kicker: 'AKTUAL MEDIA · طبعات عالمية',
@@ -143,7 +168,8 @@ const W = {
     feedsTitle: 'الاشتراك',
     feedNote: 'تغذيتا RSS وJSON تحملان السجلات نفسها؛ كل سجل يقود إلى المراجعة على gnk-asg.hr.',
     worldNote: 'تغطي تسع طبعات عالمية خمس قارات: أفريقيا وآسيا وأمريكا الشمالية وأمريكا الجنوبية وأوقيانوسيا. لكل طبعة عنوانها وخريطة موقعها وتغذيتها، وكلها تعود بالرابط إلى الموقع الأم.',
-    language: 'لغة الطبعة'
+    language: 'لغة الطبعة',
+    spiderTitle: 'شبكة العنكبوت'
   },
   ja: {
     kicker: 'AKTUAL MEDIA · 世界版',
@@ -163,7 +189,8 @@ const W = {
     feedsTitle: '購読',
     feedNote: 'RSS と JSON のフィードはページと同じ記録を配信し、それぞれが gnk-asg.hr のレビューへ導きます。',
     worldNote: '9つの世界版が5つの大陸をカバーします。アフリカ、アジア、北アメリカ、南アメリカ、オセアニア。各版は独自のアドレス、サイトマップ、フィードを持ち、すべてが親サイトへリンクします。',
-    language: '版の言語'
+    language: '版の言語',
+    spiderTitle: '蜘蛛の巣'
   },
   zh: {
     kicker: 'AKTUAL MEDIA · 世界版',
@@ -183,7 +210,8 @@ const W = {
     feedsTitle: '订阅',
     feedNote: 'RSS 和 JSON 订阅与页面内容一致，每条都通往 gnk-asg.hr 上的评论。',
     worldNote: '九个世界版覆盖五大洲：非洲、亚洲、北美洲、南美洲和大洋洲。每个版本都有自己的地址、站点地图和订阅源，并全部链接回主站。',
-    language: '版本语言'
+    language: '版本语言',
+    spiderTitle: '蛛网'
   }
 };
 
@@ -398,6 +426,7 @@ function homePage(portal, data) {
   <p class="dateline">${esc(wl(portal, 'worldEdition'))} · ${esc(continentName(portal))} · <time datetime="${TODAY}">${esc(longDate(TODAY, portal.lang))}</time></p>
   <h1>${esc(displayCity(portal))}</h1>
   <p class="lead">${esc(words.aboutText)}</p>
+  ${atlasEdition(portal)}
   ${themeChips(portal, items)}
   ${lead ? `<section class="band">
     <div class="bandhead"><h2>${esc(wl(portal, 'leadLabel'))}</h2><span class="count">${esc(shortDate(new Date(lead.date).toISOString().slice(0, 10), portal.lang))}</span></div>
@@ -424,6 +453,10 @@ function homePage(portal, data) {
   </section>
   <p class="note">${esc(wl(portal, 'portalNote'))}</p>
 </main>
+<section class="page" aria-labelledby="swBandTitle">
+  <h2 class="band-title" id="swBandTitle">${esc(wl(portal, 'spiderTitle'))}</h2>
+  ${spiderWeb({ lang: portal.lang, selfUrl: portalBase(portal), theme: 'light' })}
+</section>
 ${meshBlock({ lang: portal.lang, selfUrl: portalBase(portal), theme: 'light' })}
 ${footer(portal)}`;
 
@@ -684,7 +717,7 @@ function writeStatics(portal, data, themes) {
     if (existsSync(source)) copyFileSync(source, join(dir, 'assets', 'brand.webp'));
   }
 
-  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}\n${WORLD_CSS}`);
+  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}\n${SPIDER_CSS}\n${WORLD_CSS}`);
   writeSitemap(portal, data, themes);
 }
 
@@ -695,6 +728,11 @@ const WORLD_CSS = `.crumbs{font:600 11px/1.6 system-ui,sans-serif;letter-spacing
 .card--lead .cardtitle{font-size:clamp(24px,3vw,34px)}
 .grid{gap:26px 28px}
 .mesh{margin-top:0}
+.page > .sw{margin-top:8px}
+.hero-art{margin:20px 0 0;border-radius:14px;overflow:hidden;background:#08131c}
+.hero-art img{width:100%;height:auto;display:block}
+.hero-art figcaption{padding:8px 12px;background:#0d1622;color:#8fa3ba;font-size:11px;letter-spacing:.02em}
+.band-title{margin:34px 0 0}
 `;
 
 /* ---------- jedan portal ---------- */

@@ -17,6 +17,7 @@ import { esc, longDate, shortDate, stampLocal, slugify, isoWeek, themeFor, score
 import { t, ANALYSIS } from '../src/strings.mjs';
 import { logoFor, logoAlternate, channelLogoSlug, LOGO_W, LOGO_H } from './brand.mjs';
 import { chromeOf, desksOf, extraOf, editionsUi } from '../src/chrome.mjs';
+import { spiderWeb, SPIDER_CSS, SPIDER_JS } from '../../satellites/lib/spiderweb-v1.mjs';
 import { meshBlock, MESH_CSS } from '../../satellites/lib/network-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -436,7 +437,8 @@ ${tags.filter((t) => String(t).startsWith('#')).map((t) => `<meta property="arti
 <link rel="canonical" href="${canonical}">
 ${hasLanguageAlternative ? `<link rel="alternate" hreflang="${channel.lang}" href="${altOriginal}">
 <link rel="alternate" hreflang="en" href="${altEnglish}">
-<link rel="alternate" hreflang="x-default" href="${altOriginal}">` : ''}
+<link rel="alternate" hreflang="x-default" href="${altOriginal}">` : (path === '' ? `<link rel="alternate" hreflang="${channel.lang}" href="${altOriginal}">
+<link rel="alternate" hreflang="x-default" href="${altOriginal}">` : '')}
 ${logoAlternate(channelLogoSlug(channel.id))}
 <link rel="alternate" type="application/rss+xml" title="${esc(channel.title)}" href="${url(channel, 'feed.xml')}">
 <link rel="alternate" type="application/feed+json" title="${esc(channel.title)}" href="${url(channel, 'feed.json')}">
@@ -477,6 +479,7 @@ ${body}
 <a class="hublink" href="${CENTRAL}#izdanja-po-zemljama" rel="external noopener" aria-label="${esc(chromeOf(pageLang).hubAria)}"><span aria-hidden="true">←</span> AKTUAL MEDIA</a>
 ${miniRail(channel)}
 <script src="/assets/aktual-radio-mini-v1.js?v=20261023-edmini" defer></script>
+<script src="${root}assets/spiderweb-v1.js?v=20261023" defer></script>
 </body>
 </html>`;
 }
@@ -527,7 +530,7 @@ function header(channel, strings, active = '', root = '') {
     <li><span>${esc(channel.hashtags[0] || '')}</span></li>
   </ul>
   ${editionsStrip(channel)}
-  <nav class="mainnav" aria-label="${esc(strings.latest)}">${nav}<a href="${CENTRAL}#izdanja-po-zemljama" rel="external">${esc(strings.hub)} ↗</a><a class="langswitch" href="${root}en/" hreflang="en" lang="en" aria-label="${esc(chrome.langSwitch)}">EN — English</a></nav>
+  <nav class="mainnav" aria-label="${esc(strings.latest)}">${nav}<a href="${CENTRAL}#izdanja-po-zemljama" rel="external">${esc(strings.hub)} ↗</a>${channel.lang === 'en' ? '' : `<a class="langswitch" href="${root}en/" hreflang="en" lang="en" aria-label="${esc(chrome.langSwitch)}">EN — English</a>`}</nav>
 </header>`;
 }
 
@@ -655,6 +658,11 @@ function homePage(channel, strings, data) {
 
   ${items.length ? '' : `<section class="band empty"><h2>${esc(strings.emptyTitle)}</h2><p>${esc(strings.emptyText)}</p></section>`}
 </main>
+<section class="page" aria-labelledby="edWebTitle">
+  <h2 id="edWebTitle">${esc(chromeOf(channel.lang).webTitle || strings.otherChannels)}</h2>
+  ${spiderWeb({ lang: channel.lang, selfUrl: channel.base, theme: 'light', compact: true })}
+  <p class="small"><a href="mreza/">${esc(chromeOf(channel.lang).allEditions || strings.hub)} →</a></p>
+</section>
 ${meshBlock({ lang: channel.lang, selfUrl: channel.base, theme: 'light' })}
 ${footer(channel, strings)}`;
 
@@ -1229,6 +1237,30 @@ export function buildChannel(channel) {
   <p><a href="../">← ${esc(strings.back)}</a></p>
 </main>
 ${footer(channel, strings)}`;
+  /* Mreža izdanja: paukova mreža svih 32 adrese, na jeziku izdanja.
+     Dopunjuje blok mreže u podnožju — tamo je popis, ovdje je oblik. */
+  const webBody = `${header(channel, strings, 'mreza/', '../')}
+<main id="sadrzaj" class="page">
+  <h1>${esc(chromeOf(channel.lang).webTitle || strings.otherChannels)}</h1>
+  <p class="lead">${esc(chromeOf(channel.lang).webLead || strings.aboutText)}</p>
+  ${spiderWeb({ lang: channel.lang, selfUrl: channel.base, theme: 'light' })}
+  <p class="small"><a href="../">← ${esc(strings.back)}</a></p>
+</main>
+${footer(channel, strings)}`;
+  write('mreza/index.html', shell(channel, strings, {
+    title: `${chromeOf(channel.lang).webTitle || strings.otherChannels} — ${channel.title}`,
+    description: chromeOf(channel.lang).webLead || strings.aboutText,
+    path: 'mreza/',
+    keywords: [...channel.hashtags, 'mreža', 'network'],
+    jsonld: [{
+      '@context': 'https://schema.org', '@type': 'CollectionPage',
+      url: url(channel, 'mreza/'), name: chromeOf(channel.lang).webTitle || strings.otherChannels,
+      inLanguage: channel.lang, isPartOf: { '@id': `${PUBLIC}/#website` }
+    }],
+    body: webBody,
+    root: '../'
+  }));
+
   write('metodologija/index.html', shell(channel, strings, {
     title: `${strings.methodology} — ${channel.title}`,
     description: strings.methodLead,
@@ -1248,7 +1280,8 @@ ${footer(channel, strings)}`;
     jsonld: [], root: '', body: `${header(channel, strings)}<main id="sadrzaj" class="page"><h1>404</h1><p class="lead">${esc(strings.emptyText)}</p><p><a href="/">← ${esc(strings.back)}</a></p></main>${footer(channel, strings)}`
   }));
 
-  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}`);
+  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}\n${SPIDER_CSS}`);
+  writeFileSync(join(dir, 'assets', 'spiderweb-v1.js'), SPIDER_JS);
 
   writeLegacyRedirect(channel);
   writeFileSync(join(dir, 'assets', 'favicon.svg'), favicon(channel));

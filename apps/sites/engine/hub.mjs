@@ -19,6 +19,7 @@ import { fileURLToPath } from 'node:url';
 import { SITES, NETWORK_HUB_HR, NETWORK_HUB_EN, siteBase, siteBySlug, pagePath } from '../lib/registry.mjs';
 import { WORLD_PORTALS } from '../../world/lib/registry.mjs';
 import { artSvg } from '../lib/kit.mjs';
+import { spiderWeb, SPIDER_CSS, SPIDER_JS } from '../../satellites/lib/spiderweb-v1.mjs';
 import { buildElectionDesk } from '../lib/elections.mjs';
 import { buildAktualNetwork } from './aktual-network.mjs';
 import { buildSeoMatrix } from './seo-matrix.mjs';
@@ -277,7 +278,7 @@ function page(lang) {
 <meta name="twitter:description" content="${esc(t.description)}">
 <meta name="twitter:image" content="${OG}">
 <meta name="twitter:image:alt" content="GNK ASG mreža">
-<style>${CSS}</style>
+<style>${CSS}\n${SPIDER_CSS}</style>
 <script type="application/ld+json">${JSON.stringify(jsonld)}</script>
 </head>
 <body>
@@ -291,6 +292,10 @@ function page(lang) {
   <ul class="stats">${t.meta.map(([n, l]) => `<li><div><b>${esc(n)}</b><span>${esc(l)}</span></div></li>`).join('')}</ul>
 </div></div>
 
+<section class="wrap sw-band" aria-labelledby="swTitle">
+  ${spiderWeb({ lang, selfUrl: canonical, theme: 'dark' })}
+</section>
+
 <section><div class="wrap">
   <h2>${esc(t.cardsTitle)}</h2>
   <p class="lead">${esc(t.cardsLead)}</p>
@@ -301,6 +306,9 @@ function page(lang) {
   <h2 style="margin-top:34px">${esc(t.cityTitle)}</h2>
   <p class="lead">${esc(t.cityLead)}</p>
   <div class="grid">${cityCards}</div>
+  <p class="lead" style="margin-top:16px">${lang === 'en'
+    ? 'The network follows one rule: a country is covered from its capital. <a href="/en/capitals/">See the capitals, country by country</a> — including the three still in preparation.'
+    : 'Mreža slijedi jedno pravilo: zemlja se pokriva iz svoje prijestolnice. <a href="/glavni-gradovi/">Pogledajte glavne gradove, zemlja po zemlja</a> — uključujući tri koja su još u pripremi.'}</p>
   <div class="note">${lang === 'en' ? 'Each edition’s protocol is <code>https://&lt;edition&gt;/sitemap.xml</code> and <code>/feed.xml</code>. The machine-readable list of all 32 addresses is' : 'Svaka adresa ima svoj <code>/sitemap.xml</code> i <code>/feed.xml</code>. Strojni popis svih 32 adresa je'} <a href="/data/mreza-v1.json">/data/mreza-v1.json</a>.</div>
 </div></section>
 
@@ -354,6 +362,7 @@ function page(lang) {
   </div>
   <p style="margin-top:22px;border-top:1px solid #132840;padding-top:16px">© 2026 AKTUAL MEDIA d.o.o. · ${esc(t.editorTitle)}: <a href="/nermin-sefic/">Nermin Sefić</a> · ${lang === 'en' ? 'Every claim carries a source; every source has a date.' : 'Svaka tvrdnja nosi izvor; svaki izvor ima datum.'}</p>
 </div></footer>
+<script src="/assets/spiderweb-v1.js" defer></script>
 </body>
 </html>`;
 }
@@ -409,6 +418,7 @@ function build() {
   write(join(PORTAL, 'mreza/index.html'), page('hr'));
   write(join(PORTAL, 'en/network/index.html'), page('en'));
   write(join(PORTAL, 'mreza/sitemap.xml'), sitemap());
+  write(join(PORTAL, 'assets/spiderweb-v1.js'), SPIDER_JS);
 
   for (const site of SITES) {
     write(join(PORTAL, 'assets/mreza', `${site.slug}-art-1.svg`), artSvg({ seed: site.slug, accent: site.accent, accent2: site.accent2, bg: site.bg, variant: 1 }));

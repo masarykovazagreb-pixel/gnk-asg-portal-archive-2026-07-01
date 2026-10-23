@@ -233,3 +233,52 @@ body.mrv-wall main.page{max-width:none}
 .mesh--light{--ink:#15191f;--muted:#4a5158;--line:#ddd6c8;--panel:#fff;--gold:#8c6a1f;background:#efece4}
 .mesh--light .mesh-head h2{color:#15191f}
 @media (max-width:520px){.mesh-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}}
+/* paukova mreža — jedna grafika, sve adrese */
+.sw{--sw-ink:#15191f;--sw-muted:#4a5158;--sw-line:rgba(21,25,31,.16);--sw-panel:#fff;--sw-gold:#8c6a1f;
+  padding:clamp(26px,4vw,46px) clamp(14px,3vw,28px);border:1px solid var(--sw-line);border-radius:18px;background:var(--sw-panel);margin:clamp(26px,4vw,44px) 0}
+.sw--dark{--sw-ink:#eef3f8;--sw-muted:#a9bad0;--sw-line:rgba(255,255,255,.14);--sw-panel:rgba(255,255,255,.035);--sw-gold:#e0bd69}
+.sw-head{max-width:74ch;margin:0 auto clamp(10px,2vw,18px)}
+.sw-k{margin:0 0 6px;font:800 10.5px/1.4 system-ui;letter-spacing:.2em;text-transform:uppercase;color:var(--sw-gold)}
+.sw-head h2{margin:0 0 8px;font:800 clamp(22px,3.2vw,34px)/1.1 Georgia,"Times New Roman",serif;letter-spacing:-.02em;color:var(--sw-ink)}
+.sw-lead{margin:0;color:var(--sw-muted);font-size:clamp(13px,1.4vw,15px);line-height:1.6}
+.sw-fig{margin:0}
+.sw-svg{display:block;width:100%;height:auto;max-width:820px;margin:0 auto;overflow:visible}
+.sw-orbit{fill:none;stroke:var(--sw-line);stroke-width:1;stroke-dasharray:2 6}
+.sw-thread,.sw-ring,.sw-bridge{fill:none;stroke:var(--sw-gold);stroke-opacity:.30;stroke-width:1.1;transition:stroke-opacity .18s ease,stroke-width .18s ease}
+.sw-ring{stroke-opacity:.17}
+.sw-bridge{stroke-opacity:.22;stroke-dasharray:3 5}
+.sw-thread.is-on,.sw-ring.is-on,.sw-bridge.is-on{stroke-opacity:.95;stroke-width:1.9}
+.sw-node{color:var(--c,var(--sw-gold));text-decoration:none}
+.sw-node .sw-dot{fill:currentColor;stroke:var(--sw-panel);stroke-width:1.4;transition:r .18s ease}
+.sw-node .sw-halo{fill:currentColor;fill-opacity:0;stroke:currentColor;stroke-width:1.2;stroke-opacity:.55;transition:fill-opacity .18s ease}
+.sw-node .sw-label{fill:var(--sw-ink);font:600 12px/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;letter-spacing:.01em;paint-order:stroke;stroke:var(--sw-panel);stroke-width:3px;stroke-linejoin:round}
+.sw-node .sw-suffix{fill:var(--sw-muted);font-weight:500;font-size:10.5px}
+.sw-node:hover .sw-halo,.sw-node:focus-visible .sw-halo{fill-opacity:.22}
+.sw-node:hover .sw-dot,.sw-node:focus-visible .sw-dot{r:8.5}
+.sw-node:focus-visible{outline:none}
+.sw-node.is-self .sw-dot{stroke-dasharray:2 2;stroke-width:2.4}
+.sw-hub{color:var(--sw-gold);text-decoration:none}
+.sw-hub-disc{fill:var(--sw-panel);stroke:var(--sw-gold);stroke-width:1.6}
+.sw-hub-ring{fill:none;stroke:var(--sw-gold);stroke-opacity:.45;stroke-width:1;stroke-dasharray:3 5}
+.sw-hub-a,.sw-hub-b{font:800 21px/1 Georgia,"Times New Roman",serif;letter-spacing:.04em;fill:var(--sw-ink)}
+.sw-hub-b{fill:var(--sw-gold)}
+.sw-hub-s{font:700 9.5px/1 system-ui;letter-spacing:.18em;text-transform:uppercase;fill:var(--sw-muted)}
+.sw-hub:hover .sw-hub-ring,.sw-hub:focus-visible .sw-hub-ring{stroke-opacity:.9}
+.sw-fig figcaption{text-align:center;margin:6px 0 0}
+.sw-hint{color:var(--sw-muted);font-size:12px}
+.sw-lists{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px 26px;margin:clamp(14px,2.4vw,22px) auto 0;max-width:1000px}
+.sw-list-block h3{margin:0 0 8px;font:800 11px/1.4 system-ui;letter-spacing:.14em;text-transform:uppercase;color:var(--sw-gold)}
+.sw-list-block h3 span{color:var(--sw-muted);font-weight:700}
+.sw-list-block ul{list-style:none;margin:0;padding:0;display:grid;gap:3px}
+.sw-list-block a{display:flex;justify-content:space-between;gap:8px;align-items:baseline;padding:4px 7px;border-radius:7px;color:var(--sw-ink);font-size:13px;text-decoration:none}
+.sw-list-block a span{color:var(--sw-muted);font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:52%}
+.sw-list-block a:hover,.sw-list-block a:focus-visible{background:rgba(140,106,31,.1)}
+.sw-list-block a[aria-current="page"]{font-weight:700;background:rgba(140,106,31,.08)}
+.sw--compact .sw-svg{max-width:560px}
+@media (max-width:640px){
+  .sw{padding:18px 10px;border-radius:14px}
+  .sw-node .sw-label{font-size:14px}
+  .sw-svg{max-width:none}
+  .sw-lists{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){.sw *{transition:none!important}}

@@ -20,6 +20,7 @@ import { fileURLToPath } from 'node:url';
 import { esc, shortDate, truncate, themeFor } from './lib.mjs';
 import { CHANNELS, HUB } from './build.mjs';
 import { logoFor, logoAlternate, logoJsonLd } from './brand.mjs';
+import { chromeOf } from '../src/chrome.mjs';
 
 /* Broj jezika se računa iz channels.json, ne prepisuje u tekst: kad se doda
    izdanje na novom jeziku, naslov i opis ne smiju ostati na starom broju. */
@@ -236,6 +237,70 @@ const RAIL_TEXT = {
   }
 };
 
+
+
+/* ---------- ATLAS: naslovna grafika mreže ---------- */
+/* Jedna ilustracija za cijelu maticu: noćni atlas svijeta sa zlatnim
+   meridijanima. Stoji odmah ispod mastheada, prije navigacije rubrika, jer
+   objašnjava što stranica jest prije nego što traži prvi klik. Alt i natpis
+   dolaze iz jezičnog paketa (chrome.artAlt/artNote) — nikad se ne pišu u
+   šabloni na jednom jeziku. */
+
+const ATLAS_ART = (() => {
+  try {
+    return JSON.parse(readFileSync(join(PORTAL, 'data', 'atlas-art-v1.json'), 'utf8'));
+  } catch { return null; }
+})();
+
+function withAtlas(page, lang) {
+  const image = ATLAS_ART && ATLAS_ART.images.find((item) => item.slug === 'aktual-media-atlas');
+  if (!image) return page;
+  const chrome = chromeOf(lang);
+  const en = lang === 'en';
+  const alt = (image.alt && (image.alt[lang] || image.alt.en)) || '';
+  const note = chrome.artNote || '';
+  const block = `<!-- ATLAS:START -->
+  <section class="am-atlas" aria-label="${en ? 'The network atlas' : 'Atlas mreže'}">
+    <figure>
+      <img src="${image.src}" srcset="${image.src.replace('-1600', '-800')} 800w, ${image.src} 1600w" sizes="(max-width: 900px) 100vw, 1280px" alt="${esc(alt)}" width="${image.width}" height="${image.height}" loading="eager" decoding="async" fetchpriority="high">
+      <figcaption>
+        <span class="am-atlas-k">${en ? 'One centre, every address' : 'Jedno središte, sve adrese'}</span>
+        <span class="am-atlas-t">${esc(note)}</span>
+        <span class="am-atlas-l"><a href="/mreza/">${en ? 'The spider web' : 'Paukova mreža'} →</a> · <a href="${en ? '/en/capitals/' : '/glavni-gradovi/'}">${en ? 'Capitals' : 'Glavni gradovi'} →</a> · <a href="/izdanja/">${en ? 'All editions' : 'Sva izdanja'} →</a></span>
+      </figcaption>
+    </figure>
+  </section>
+  <!-- ATLAS:END -->`;
+  const css = `<style>/* atlas mreže */
+.am-atlas{margin:0;padding:0;background:#04080f}
+.am-atlas figure{margin:0;position:relative}
+.am-atlas img{display:block;width:100%;height:auto;max-height:min(58vh,520px);object-fit:cover;object-position:center 42%}
+.am-atlas figcaption{position:relative;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;justify-content:space-between;padding:10px clamp(14px,4vw,44px);background:linear-gradient(180deg,#04080f,rgba(4,8,15,.92));color:#e7ecf3;font:600 11.5px/1.5 system-ui,sans-serif}
+.am-atlas-k{font:800 10.5px/1 system-ui;letter-spacing:.2em;text-transform:uppercase;color:#e0bd69}
+.am-atlas-t{color:#9aabbf;font-weight:500;max-width:56ch}
+.am-atlas-l a{color:#e0bd69;text-decoration:none;border-bottom:1px solid rgba(224,189,105,.35)}
+.am-atlas-l a:hover{border-color:#e0bd69}
+@media (max-width:620px){.am-atlas img{max-height:240px}.am-atlas-t{display:none}}</style>`;
+  let out = page;
+  if (out.includes('<!-- ATLAS:START -->')) {
+    out = out.replace(/<!-- ATLAS:START -->[\s\S]*?<!-- ATLAS:END -->/, block);
+  } else {
+    const at = out.indexOf('<nav class="am-sectionnav"');
+    if (at > 0) out = `${out.slice(0, at)}${block}\n\n  ${out.slice(at)}`;
+  }
+  /* Navigacija rubrika dobiva put do prijestolnica — jednom, bez duplikata. */
+  const capHref = en ? '/en/capitals/' : '/glavni-gradovi/';
+  if (!out.includes(`href="${capHref}"`) && out.includes('<nav class="am-sectionnav"')) {
+    const navRe = en
+      ? /(<a href="\/en\/gnk-aktual\/network\/">[^<]*<\/a>)/
+      : /(<a href="\/gnk-aktual\/mreza\/">[^<]*<\/a>)/;
+    out = out.replace(navRe, `$1<a href="${capHref}">${en ? 'Capitals' : 'Glavni gradovi'}</a>`);
+  }
+  if (!out.includes('.am-atlas figcaption')) {
+    out = out.includes('</head>') ? out.replace('</head>', `${css}\n</head>`) : `${css}\n${out}`;
+  }
+  return out;
+}
 
 /* ---------- "prije X" iz stvarnog datuma objave ---------- */
 
@@ -1188,6 +1253,7 @@ ${adHtml}
     }
   }
   html = withPromo(html, 'hr');
+  html = withAtlas(html, 'hr');
   html = addPerf(addLogoAlternates(html, ['aktual-media-hr']));
   html = strengthenAktualBrand(html, 'hr', jsonld);
   writeFileSync(FILE, html);
@@ -1240,6 +1306,7 @@ ${adHtml}
       en = en.replace('<!-- AKTUAL-MREZA-BAND:START -->', `${enBlock}\n<!-- AKTUAL-MREZA-BAND:START -->`);
     }
     en = withPromo(en, 'en');
+    en = withAtlas(en, 'en');
     en = addPerf(addLogoAlternates(en, ['aktual-media-en', 'aktual-media-hr']));
     en = strengthenAktualBrand(en, 'en', jsonld);
     writeFileSync(EN, en);

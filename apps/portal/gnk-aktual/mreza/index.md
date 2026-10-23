@@ -64,10 +64,10 @@ gnk-zdravlje.pages.dev · https://gnk-zdravlje.pages.dev/ · 5 stranica
 
 gnk-izbori-srbija.pages.dev · https://gnk-izbori-srbija.pages.dev/ · 6 stranica
 
-- [Izbori u Srbiji: 33 zapisa iz 9 medija](https://gnk-izbori-srbija.pages.dev/) — Ovaj desk prati što mediji u Srbiji, Hrvatskoj, Bosni i Hercegovini i Sjedinjenim Državama objavljuju o izborima — i to ne prepisuje, nego broji i povezuje. Svaki zapis ima medij, grad, datum i poveznicu na izvornik.
-- [Svi zapisi: 33 objava](https://gnk-izbori-srbija.pages.dev/pregled/) — Cijeli popis, poredan po vremenu objave. Bez filtriranja po političkoj opciji i bez izostavljanja neugodnih zapisa.
+- [Izbori u Srbiji: 31 zapisa iz 9 medija](https://gnk-izbori-srbija.pages.dev/) — Ovaj desk prati što mediji u Srbiji, Hrvatskoj, Bosni i Hercegovini i Sjedinjenim Državama objavljuju o izborima — i to ne prepisuje, nego broji i povezuje. Svaki zapis ima medij, grad, datum i poveznicu na izvornik.
+- [Svi zapisi: 31 objava](https://gnk-izbori-srbija.pages.dev/pregled/) — Cijeli popis, poredan po vremenu objave. Bez filtriranja po političkoj opciji i bez izostavljanja neugodnih zapisa.
 - [Tko piše i koliko: mediji, gradovi, dani](https://gnk-izbori-srbija.pages.dev/statistika/) — Tablica pokazuje samo jedno: koliko je zapisa koji zadovoljavaju kriterij iz metodologije. Ne pokazuje naklonost, ne pokazuje doseg i ne pokazuje istinitost.
-- [Incidenti i napetost: 5 zapisa](https://gnk-izbori-srbija.pages.dev/sigurnost/) — Ovaj popis nije popis incidenata — to je popis objava koje spominju incident. Razlika je važna i zato stoji u prvoj rečenici.
+- [Incidenti i napetost: 4 zapisa](https://gnk-izbori-srbija.pages.dev/sigurnost/) — Ovaj popis nije popis incidenata — to je popis objava koje spominju incident. Razlika je važna i zato stoji u prvoj rečenici.
 - [Mediji koje desk čita](https://gnk-izbori-srbija.pages.dev/izvori/) — Desk ne bira medije po naklonosti. U arhivu ulazi sve što osam gradskih izdanja preuzme, a javni feedovi se čitaju po fiksnom popisu. Oba popisa su javna i mijenjaju se kad se promijeni izvor.
 - [Kako desk broji i gdje su granice](https://gnk-izbori-srbija.pages.dev/metodologija/) — Metoda je kratka i provjerljiva: arhiva, kriterij, brojanje. Sve ostalo je interpretacija koja se ne objavljuje.
 

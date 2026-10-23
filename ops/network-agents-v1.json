@@ -1,5 +1,5 @@
 {
-  "version": "GNK_ASG_NETWORK_AGENTS_V1_20261022",
+  "version": "GNK_ASG_NETWORK_AGENTS_V1_20261023",
   "policy": "Svaki agent radi jednu stvar, čita javne datoteke i ne piše u produkciju. Agent koji padne ruši izvještaj; agent koji je savjetodavan (required=false) ostaje vidljiv, ali ne blokira.",
   "owner": "AKTUAL MEDIA d.o.o. · urednik Nermin Sefić",
   "report": "artifacts/network-agents-v1.json",
@@ -241,6 +241,26 @@
         "tests/test-editions-parity-v1.mjs"
       ],
       "checks": "Svako izdanje ima vlastitu sliku, znak i OG, jezik zemlje u okviru stranice, manifest i CSP, jedan blok mreže, svjež sitemap i feed, a popis /izdanja/ i mreza-v1.json nose sve gradove i sve portale."
+    },
+    {
+      "id": "network-atlas-agent",
+      "name": "Atlas, paukova mreža i glavni gradovi",
+      "required": true,
+      "cmd": [
+        "node",
+        "tests/test-network-atlas-v1.mjs"
+      ],
+      "checks": "Atlas grafika: svako izdanje ima vlastitu ilustraciju u šest veličina, alt na jeziku izdanja i napomenu da nije fotografija. Paukova mreža: 32 čvora na 48 stranica, svaki čvor je pravi link, matica jednom, SVG s role=img. Glavni gradovi: capitals.json se slaže s channels.json, nijedno izdanje nije najavljeno prije izvora, /glavni-gradovi/ i /en/capitals/ imaju 17 redaka i ItemList."
+    },
+    {
+      "id": "capital-pages-agent",
+      "name": "Prijestolnice — ugovor, adrese i sitemap",
+      "required": true,
+      "cmd": [
+        "node",
+        "tests/test-capitals-completeness-v1.mjs"
+      ],
+      "checks": "Svaka od 17 prijestolnica ima jedinstven slug, jezik i kontinent; izdanje označeno kao live postoji u channels.json na istom jeziku, kontinentu i u istoj zoni; prijestolnica u pripremi nema izdanje, ali ima grad koji zemlju pokriva danas; svih 34 stranica (17 hrvatskih + 17 engleskih) ima kanonsku adresu u podacima i u vlastitom sitemapu, a sitemap-index ga navodi."
     }
   ]
 }
