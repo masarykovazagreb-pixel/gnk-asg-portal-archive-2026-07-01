@@ -17,6 +17,7 @@ import { esc, longDate, shortDate, stampLocal, slugify, isoWeek, themeFor, score
 import { t, ANALYSIS } from '../src/strings.mjs';
 import { logoFor, logoAlternate, channelLogoSlug, LOGO_W, LOGO_H } from './brand.mjs';
 import { themeArtwork } from './theme-art.mjs';
+import { normalizeRegionalArticles } from './article-url-integrity.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const APP = join(HERE, '..');
@@ -1052,9 +1053,13 @@ ${footer(channel, strings)}`;
 export function buildChannel(channel) {
   const strings = t(channel.lang).ui;
   const data = loadChannel(channel);
-  data.items = [...data.items]
-    .filter((i) => i && i.slug && i.title && i.url)
-    .sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  // One canonical URL per source story, one unique slug per generated article.
+  // Previously duplicate slugs overwrote article HTML and repeated sitemap <loc>.
+  const normalized = normalizeRegionalArticles(data.items);
+  data.items = normalized.items;
+  if (normalized.stats.invalid || normalized.stats.duplicateSources || normalized.stats.slugCollisionsResolved) {
+    console.warn('[AKTUAL REGION] URL integrity', JSON.stringify({channel:channel.id,...normalized.stats}));
+  }
   // Dopunski izvori (optional) dobivaju stranicu i chip tek kada stvarno daju zapise.
   channel = {
     ...channel,
@@ -1150,7 +1155,7 @@ ${footer(channel, strings)}`;
   writeFeed(channel, strings, data);
   writeSitemap(channel, data);
 
-  return { channel: channel.id, pages: 4 + data.items.length + byTheme.size + channel.sources.length, items: data.items.length };
+  return { channel: channel.id, pages: 4 + data.items.length + byTheme.size + channel.sources.length, items: data.items.length, urlIntegrity: normalized.stats };
 }
 
 const favicon = (channel) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="${channel.palette.bg}"/><text x="32" y="42" font-family="Georgia,serif" font-size="30" font-weight="700" text-anchor="middle" fill="${channel.palette.accent}">${esc(channel.title.split(' ').pop().slice(0, 1))}</text></svg>`;
