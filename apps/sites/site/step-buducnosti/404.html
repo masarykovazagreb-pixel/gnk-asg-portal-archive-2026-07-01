@@ -224,6 +224,25 @@ code,kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;
 @media (max-width:520px){.am-ribbon-ed{width:100%;margin-left:0}}
 @media print{.am-ribbon{display:none!important}}
 
+
+/* članak: mjera za čitanje, prvi odlomak kao uvod, izvori mirni */
+.article,.article-body,.entry-content,.post-body,.prose{max-width:70ch}
+.article>p,.article-body>p,.entry-content>p,.post-body>p,.prose>p{font-size:1.02rem;line-height:1.72}
+.article>p:first-of-type,.article-body>p:first-of-type,.entry-content>p:first-of-type{font-size:1.12rem;line-height:1.62;color:var(--am-muted)}
+.article ul,.article ol,.article-body ul,.article-body ol,.prose ul,.prose ol{padding-left:1.15em;margin:0 0 1.1em}
+.article li,.article-body li,.prose li{margin-bottom:.45em}
+.article h2,.article-body h2,.prose h2{margin-top:1.9em}
+.article figure,.article-body figure,.prose figure{margin:1.9rem 0}
+.article figure img,.article-body figure img{width:100%}
+.src,.source,.sources,.izvori,.izvor{font-size:.82rem;color:var(--am-muted);line-height:1.55}
+.src a,.source a,.sources a{text-decoration-color:var(--am-line)}
+.article .tag,.article-body .tag,.article .hashtag{margin-top:.5em}
+.article time,.dateline time{font-variant-numeric:tabular-nums}
+/* galerija pločica ispod članka: uredan raster, bez šuma */
+.eds,.eds-row,.xf-tile{--am-tile:clamp(120px,14vw,168px)}
+.eds-row{display:grid;gap:clamp(.7rem,1.2vw,1rem)}
+figure>figcaption:empty{display:none}
+
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 @media print{.top,footer,.skip,nav{display:none!important}body{background:#fff;color:#000}}
 </style></head>

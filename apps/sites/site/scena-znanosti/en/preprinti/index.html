@@ -279,8 +279,40 @@ code,kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;
 @media (max-width:520px){.am-ribbon-ed{width:100%;margin-left:0}}
 @media print{.am-ribbon{display:none!important}}
 
+
+/* članak: mjera za čitanje, prvi odlomak kao uvod, izvori mirni */
+.article,.article-body,.entry-content,.post-body,.prose{max-width:70ch}
+.article>p,.article-body>p,.entry-content>p,.post-body>p,.prose>p{font-size:1.02rem;line-height:1.72}
+.article>p:first-of-type,.article-body>p:first-of-type,.entry-content>p:first-of-type{font-size:1.12rem;line-height:1.62;color:var(--am-muted)}
+.article ul,.article ol,.article-body ul,.article-body ol,.prose ul,.prose ol{padding-left:1.15em;margin:0 0 1.1em}
+.article li,.article-body li,.prose li{margin-bottom:.45em}
+.article h2,.article-body h2,.prose h2{margin-top:1.9em}
+.article figure,.article-body figure,.prose figure{margin:1.9rem 0}
+.article figure img,.article-body figure img{width:100%}
+.src,.source,.sources,.izvori,.izvor{font-size:.82rem;color:var(--am-muted);line-height:1.55}
+.src a,.source a,.sources a{text-decoration-color:var(--am-line)}
+.article .tag,.article-body .tag,.article .hashtag{margin-top:.5em}
+.article time,.dateline time{font-variant-numeric:tabular-nums}
+/* galerija pločica ispod članka: uredan raster, bez šuma */
+.eds,.eds-row,.xf-tile{--am-tile:clamp(120px,14vw,168px)}
+.eds-row{display:grid;gap:clamp(.7rem,1.2vw,1rem)}
+figure>figcaption:empty{display:none}
+
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 @media print{.top,footer,.skip,nav{display:none!important}body{background:#fff;color:#000}}
+</style>
+<style>
+.am-exchange{max-width:var(--am-measure);margin:clamp(2.6rem,4vw,4.2rem) auto;padding:clamp(1.4rem,2.4vw,2rem);
+  border:1px solid var(--am-line);border-radius:var(--am-radius);background:color-mix(in srgb,currentColor 3%,transparent);
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.am-exchange h2{margin:0 0 .35em;font-size:clamp(1.15rem,1.6vw,1.5rem);letter-spacing:-.01em}
+.am-x-lead{margin:0 0 1.1em;color:var(--am-muted);font-size:.92rem;line-height:1.55;max-width:62ch}
+.am-x-list{list-style:none;margin:0;padding:0;display:grid;gap:.85rem;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.am-x-list li{display:grid;gap:.3rem;padding-top:.85rem;border-top:1px solid var(--am-line-soft)}
+.am-x-list a{font-weight:600;line-height:1.35;text-decoration:none}
+.am-x-list a:hover{color:var(--accent2,var(--am-gold));text-decoration:underline;text-underline-offset:.18em}
+.am-x-src{font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--am-muted)}
+@media print{.am-exchange{display:none!important}}
 </style>
 </head>
 <body>
@@ -346,6 +378,36 @@ code,kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;
     </a></div>
     <p style="margin-top:16px"><a href="https://gnk-asg.hr/en/network/">The whole network →</a></p>
   </div></section>
+<section class="am-exchange" aria-labelledby="razmjena">
+  <h2 id="razmjena">News exchange across the network</h2>
+  <p class="am-x-lead">The newest headline from each other AKTUAL MEDIA edition. Every link opens the original domain; the edition and date are always stated.</p>
+  <ul class="am-x-list">
+    <li>
+      <a href="https://gnk-asg.hr/kanal/jakarta/clanak/jakarta-2026-10-23-republika-periklindo-dorong-pemerintah-berikan-c1c579/" rel="external noopener">Tinjauan: Periklindo Dorong Pemerintah Berikan Insentif Kendaraan Listrik Komersial</a>
+      <span class="am-x-src">Jakarta · <time datetime="2026-10-23T22:21:00.000Z">23 Oct 2026</time></span>
+    </li>
+    <li>
+      <a href="https://gnk-asg.hr/kanal/sarajevo/clanak/sarajevo-2026-10-23-avaz-ministri-osam-islamskih-i-evropskih-zemalja-e4c874/" rel="external noopener">Osvrt: Ministri osam islamskih i evropskih zemalja u Istanbulu upozorili SAD i Izrael: Novi napad na Iran proširio bi rat i povećao cijene nafte</a>
+      <span class="am-x-src">Sarajevo · <time datetime="2026-10-23T20:24:19.000Z">23 Oct 2026</time></span>
+    </li>
+    <li>
+      <a href="https://gnk-asg.hr/kanal/saopaulo/clanak/saopaulo-2026-10-23-uol-eua-poderia-atacar-ira-neste-fim-de-semana-e8cd64/" rel="external noopener">Revisão: EUA poderia atacar Irã neste fim de semana, afirma diplomata americano</a>
+      <span class="am-x-src">São Paulo · <time datetime="2026-10-23T19:38:01.858Z">23 Oct 2026</time></span>
+    </li>
+    <li>
+      <a href="https://gnk-asg.hr/kanal/kairo/clanak/kairo-2026-10-23-skynewsarabia-osvrt-0b2684/" rel="external noopener">مراجعة: حاولت سؤال رئيسة البرلمان.. فانتهت على الأرض</a>
+      <span class="am-x-src">Kairo · <time datetime="2026-10-23T19:37:39.000Z">23 Oct 2026</time></span>
+    </li>
+    <li>
+      <a href="https://gnk-asg.hr/kanal/bukurest/clanak/bukurest-2026-10-23-agerpres-video-sua-fosti-oficiali-fbi-acuzati-ca-au-8ba8bf/" rel="external noopener">Analiză: VIDEO SUA: Foști oficiali FBI, acuzați că au mințit în Congres cu privire la anchetele care îl vizau pe Hunter Biden</a>
+      <span class="am-x-src">București · <time datetime="2026-10-23T19:36:38.810Z">23 Oct 2026</time></span>
+    </li>
+    <li>
+      <a href="https://gnk-asg.hr/kanal/sydney/clanak/sydney-2026-10-23-smh-deadly-shooting-outside-paris-a-terrorist-fd27ad/" rel="external noopener">Review: Deadly shooting outside Paris a ‘terrorist attack’, say police</a>
+      <span class="am-x-src">Sydney · <time datetime="2026-10-23T19:34:41.000Z">23 Oct 2026</time></span>
+    </li>
+  </ul>
+</section>
 </main>
 <nav class="mesh" aria-label="AKTUAL MEDIA network" data-mesh="v1">
   <div class="wrap">

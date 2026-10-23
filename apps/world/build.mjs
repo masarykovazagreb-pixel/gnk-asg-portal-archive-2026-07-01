@@ -31,6 +31,7 @@ import { CSS } from '../region/engine/build.mjs';
 import { logoFor, channelLogoSlug } from '../region/engine/brand.mjs';
 import { meshBlock, MESH_CSS } from '../satellites/lib/network-v1.mjs';
 import { HOUSE_CSS, houseRibbon } from '../satellites/lib/house-style-v1.mjs';
+import { exchangeBlock, writeExchangeJson, EXCHANGE_CSS } from '../satellites/lib/razmjena-v1.mjs';
 import { spiderWeb, SPIDER_CSS } from '../satellites/lib/spiderweb-v1.mjs';
 import { WORLD_PORTALS, WORLD_BY_ID, portalBase, portalUrl, reviewUrl, HUB_HR, HUB_EN, MAIN, AKTUAL } from './lib/registry.mjs';
 import { writeColumns, columnsNavLabel, columnUrls, linkFromHome } from './lib/kolumne.mjs';
@@ -437,6 +438,7 @@ function shell(portal, { title, description, path = '', body, robots = 'index,fo
 <a class="skip" href="#sadrzaj">${esc(chrome(portal).skip)}</a>
 ${houseRibbon({ lang: portal.lang, edition: `${portal.city} · ${portal.country}` })}
 ${body}
+${exchangeBlock({ root: ROOT, lang: portal.lang, selfHome: portalBase(portal), limit: 6, skipPaths: ['/clanak/'] })}
 </body>
 </html>`;
 }
@@ -668,6 +670,7 @@ function writeFeeds(portal, data) {
     items: items.map(({ _original, ...rest }) => rest)
   };
   writeFileSync(join(dir, 'feed.json'), `${JSON.stringify(json, null, 2)}\n`);
+  writeExchangeJson(dir, { root: ROOT, selfHome: portalBase(portal), limit: 12 });
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
@@ -761,7 +764,7 @@ function writeStatics(portal, data, themes) {
     copyFileSync(houseMark, join(dir, 'assets', 'brand', 'aktual-media-mark.svg'));
   }
 
-  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}\n${SPIDER_CSS}\n${WORLD_CSS}\n${HOUSE_CSS}`);
+  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}\n${SPIDER_CSS}\n${WORLD_CSS}\n${HOUSE_CSS}\n${EXCHANGE_CSS}`);
   writeSitemap(portal, data, themes);
 }
 

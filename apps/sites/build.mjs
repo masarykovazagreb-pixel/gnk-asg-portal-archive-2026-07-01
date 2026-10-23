@@ -21,7 +21,8 @@ import { SATELLITE_ART } from './lib/satellite-art.mjs';
 import { buildElectionDesk } from './lib/elections.mjs';
 import { buildSyndication } from './lib/sindikacija.mjs';
 import { writePrenos, prenosUrls, appendSitemap, linkPrenosOnHome } from '../../scripts/lib/prenos-v1.mjs';
-import { houseRibbon } from '../satellites/lib/house-style-v1.mjs';
+import { houseRibbon, HOUSE_CSS } from '../satellites/lib/house-style-v1.mjs';
+import { exchangeBlock, writeExchangeJson, EXCHANGE_CSS } from '../satellites/lib/razmjena-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..', '..');
@@ -295,7 +296,7 @@ function renderPage(site, content, pages, page, lang, base) {
   return `<!doctype html>
 <html lang="${lang}">
 <head>
-${head({ site, lang, page: page.slug === '' ? 'home' : 'page', title, description, canonical, alternate, image, imageW: 1200, imageH: 630, keywords, jsonld, hashtags, section: page.nav[lang], published: updated, modified: updated, extra: `<meta name="format-detection" content="telephone=no">\n<style>${css(site)}</style>` })}
+${head({ site, lang, page: page.slug === '' ? 'home' : 'page', title, description, canonical, alternate, image, imageW: 1200, imageH: 630, keywords, jsonld, hashtags, section: page.nav[lang], published: updated, modified: updated, extra: `<meta name="format-detection" content="telephone=no">\n<style>${css(site)}</style>\n<style>${EXCHANGE_CSS}</style>` })}
 </head>
 <body>
 <a class="skip" href="#main">${lang === 'en' ? 'Skip to content' : 'Preskoči na sadržaj'}</a>
@@ -312,6 +313,7 @@ ${faqBlock(page, lang)}
 ${sourcesBlock(content, lang, page)}
 ${back}
 ${siblingBlock(site, lang)}
+${exchangeBlock({ root: ROOT, lang, selfHome: base, limit: 6 })}
 </main>
 ${footer(site, lang, pages)}
 </body>
@@ -408,6 +410,7 @@ async function buildSite(site) {
 
   write(join(dist, 'sitemap.xml'), sitemap(site, pages.map((page) => ({ ...page, images: imageList(site, page) }))));
   write(join(dist, 'robots.txt'), robots(site));
+  writeExchangeJson(dist, { root: ROOT, selfHome: base, limit: 12 });
   write(join(dist, 'feed.xml'), feed(site, pages, 'hr'));
   write(join(dist, 'en', 'feed.xml'), feed(site, pages, 'en'));
   write(join(dist, 'manifest.webmanifest'), manifest(site));
