@@ -81,6 +81,7 @@ export const REGION_IMAGE_HOSTS = [
   ['media.npr.org', 'NPR', 'US'],
   ['www.propublica.org', 'ProPublica', 'US'],
   ['conteudo.imguol.com.br', 'UOL', 'BR'],
+  ['f.i.uol.com.br', 'UOL (Folha)', 'BR'],
   ['s2-g1.glbimg.com', 'G1 / Globo', 'BR'],
   ['veja.abril.com.br', 'Veja', 'BR'],
   ['agenciabrasil.ebc.com.br', 'Agência Brasil', 'BR'],
