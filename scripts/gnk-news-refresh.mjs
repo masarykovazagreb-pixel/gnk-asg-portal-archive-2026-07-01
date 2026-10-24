@@ -136,7 +136,8 @@ const FEEDS = [
   { source: 'Bon Appetit', group: 'turizam', category: 'food', url: 'https://www.bonappetit.com/feed/rss' },
 
   // --- Klima i energija ---------------------------------------------
-  { source: 'Reuters Sustainability', group: 'okolis', category: 'climate', url: 'https://www.euronews.com/rss?format=mrss&level=theme&name=green' },
+  // Verified against the publisher's official RSS widgets: the Earth vertical belongs to Euronews, not Reuters.
+  { source: 'Euronews Earth', group: 'okolis', category: 'climate', url: 'https://www.euronews.com/rss?format=mrss&level=vertical&name=earth' },
   { source: 'The Guardian Climate Crisis', group: 'okolis', category: 'climate', url: 'https://www.theguardian.com/environment/climate-crisis/rss' },
   { source: 'Grist', group: 'okolis', category: 'climate', url: 'https://grist.org/feed/' },
 
