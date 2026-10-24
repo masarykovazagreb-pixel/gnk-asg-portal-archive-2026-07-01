@@ -25,15 +25,23 @@ import { buildSyndication } from './lib/sindikacija.mjs';
 import { writePrenos, prenosUrls, appendSitemap, linkPrenosOnHome } from '../../scripts/lib/prenos-v1.mjs';
 import { houseRibbon, HOUSE_CSS } from '../satellites/lib/house-style-v1.mjs';
 import { exchangeBlock, writeExchangeJson, EXCHANGE_CSS } from '../satellites/lib/razmjena-v1.mjs';
+import { refreshTag, ensureRefreshModule } from '../shared/refresh-tag-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..', '..');
 const OUT = process.env.SITES_OUT ? resolve(process.env.SITES_OUT) : join(HERE, 'site');
 const ART = 6;
 
+/* Jedno mjesto gdje svaka stranica dobiva modul osvježavanja. Postoji zato
+   što web ima više predložaka (članak, popis prijenosa, kolumna, stranica) i
+   ručno dodavanje u svaki od njih znači da će jedan ostati bez modula —
+   upravo se to dogodilo s popisom prijenosa. */
 const write = (file, body) => {
   mkdirSync(dirname(file), { recursive: true });
-  writeFileSync(file, body);
+  const html = file.endsWith('.html') && /<\/body>/i.test(body) && !body.includes('data-am-netday')
+    ? body.replace(/<\/body>/i, `${refreshTag('/')}</body>`)
+    : body;
+  writeFileSync(file, html);
 };
 
 const paragraph = (value, lang) => {
@@ -398,6 +406,8 @@ async function buildSite(site) {
   /* Favicon i znak su isti na svih šest webova — jedan crtež, jedan izvor. */
   write(join(dist, 'assets', 'favicon.svg'), FAVICON_SVG);
   write(join(dist, 'assets', 'aktual-media-mark.svg'), MARK_SVG);
+  /* Modul osvježavanja mora fizički postojati na svakoj domeni. */
+  ensureRefreshModule(dist);
 
   write(join(dist, 'img', 'icon-192.png'), ogPng({ seed: `${site.slug}-icon`, bg: site.bg, accent: site.accent, accent2: site.accent2, variant: 2, width: 192, height: 192 }));
   write(join(dist, 'img', 'icon-512.png'), ogPng({ seed: `${site.slug}-icon`, bg: site.bg, accent: site.accent, accent2: site.accent2, variant: 2, width: 512, height: 512 }));

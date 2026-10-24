@@ -940,6 +940,7 @@ export async function buildHub() {
     // The external tjednik is linked from the hub and structured media graph, not submitted as our domain's sitemap URL.
     { loc: 'https://gnk-asg.hr/galerija/', priority: '0.6' },
     { loc: 'https://gnk-asg.hr/kanal/', priority: '0.9' },
+    { loc: 'https://gnk-asg.hr/sve-stranice/', priority: '0.7' },
     { loc: 'https://gnk-asg.hr/glavni-gradovi/', priority: '0.9' },
     { loc: 'https://gnk-asg.hr/en/capitals/', priority: '0.8' },
     ...(CAPITALS.capitals || []).filter((c) => c.slug).map((c) => ({ loc: `https://gnk-asg.hr/glavni-gradovi/${c.slug}/`, priority: c.status === 'live' ? '0.8' : '0.6' })),

@@ -29,6 +29,7 @@ import { readCorpus, corpusImage, authorPortrait, KIND_LABEL } from './corpus-v1
 import { entityGraphJson } from './entity-graph-v1.mjs';
 import { meshBlock } from '../../apps/satellites/lib/network-v1.mjs';
 import { HOUSE_CSS, houseRibbon } from '../../apps/satellites/lib/house-style-v1.mjs';
+import { refreshTag } from '../../apps/shared/refresh-tag-v1.mjs';
 
 const MAX_ITEMS = 90;
 
@@ -213,6 +214,7 @@ ${meshBlock({ lang: target.lang, selfUrl: target.base, theme: 'dark' })}
   ${body}
 </div>
 </main>
+${refreshTag()}
 </body>
 </html>
 `;

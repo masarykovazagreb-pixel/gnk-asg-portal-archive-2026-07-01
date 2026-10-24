@@ -32,6 +32,8 @@ import { HOUSE_CSS, houseRibbon } from '../../satellites/lib/house-style-v1.mjs'
 import { designTokensCss } from '../../shared/design-system-v1.mjs';
 import { authorPortrait } from '../../../scripts/lib/corpus-v1.mjs';
 
+import { refreshTag } from '../../shared/refresh-tag-v1.mjs';
+
 const MAX_ITEMS = 60;
 
 const esc = (value) => String(value == null ? '' : value)
@@ -146,6 +148,7 @@ const foot = (site) => `  </main>
     <p>#AKTUALMEDIA · #GNKASG · #NerminSefić</p>
   </footer>
 </div>
+${refreshTag('/')}
 </body>
 </html>
 `;

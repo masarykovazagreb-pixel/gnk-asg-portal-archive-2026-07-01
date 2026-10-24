@@ -16,6 +16,7 @@ import { readFileSync, writeFileSync, readdirSync, mkdirSync, rmSync, copyFileSy
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { entityGraphJson } from '../../scripts/lib/entity-graph-v1.mjs';
+import { refreshTag, ensureRefreshModule } from '../shared/refresh-tag-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..', '..');
@@ -268,11 +269,11 @@ function header({ active = '', root }) {
 <header class="masthead">
   <div class="wrap mast-top">
     <a class="brand" href="${root}" aria-label="${esc(SITE.brandFull)} — naslovnica">
-      <img src="${root}assets/logo-gnk-asg-gold.svg" alt="" width="42" height="42">
+      <img src="${root}assets/logo-gnk-asg-gold.svg" alt="GNK ASG" width="42" height="42">
       <span class="brand-word"><b>${esc(SITE.brand)}</b><span>GNK ASG · Zagreb</span></span>
     </a>
     <div class="mast-tools">
-      <span class="mast-date">${new Intl.DateTimeFormat('hr-HR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Zagreb' }).format(new Date())}</span>
+      <span class="mast-date">${new Intl.DateTimeFormat('hr-HR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(LATEST))}</span>
       <button class="icon-btn" type="button" data-theme-toggle aria-label="Promijeni temu">☾</button>
     </div>
   </div>
@@ -319,7 +320,7 @@ function networkList() {
 }
 
 function footer(root) {
-  const year = new Date().getFullYear();
+  const year = new Date(LATEST).getUTCFullYear();
   return `<footer>
   <div class="wrap foot-grid">
     <div class="foot-brand">
@@ -371,6 +372,7 @@ ${content}
 ${prenosBlock(canonical, root)}
 </main>
 ${footer(root)}
+${refreshTag('/')}
 </body>
 </html>`;
 }
@@ -393,7 +395,7 @@ const kicker = (section, root, kind) => {
 function articleCard(a, root, opts = {}) {
   const img = a.og || a.image;
   return `<article class="card" data-card="${esc([a.title, a.dek, SECTIONS[a.section]?.label, ...(a.tags || [])].join(' '))}">
-  <a class="card-media" href="${root}${a.slug}/" tabindex="-1" aria-hidden="true"><img src="${root}${img}" alt="" width="1200" height="630" loading="lazy" decoding="async"></a>
+  <a class="card-media" href="${root}${a.slug}/" tabindex="-1" aria-hidden="true"><img src="${root}${img}" alt="${esc(a.title)}" width="1200" height="630" loading="lazy" decoding="async"></a>
   <div class="card-body">
     ${kicker(a.section, root, a.kind)}
     <h3><a href="${root}${a.slug}/">${esc(a.title)}</a></h3>
@@ -406,7 +408,7 @@ function articleCard(a, root, opts = {}) {
 function articleListRow(a, root) {
   const img = a.og || a.image;
   return `<article data-card="${esc([a.title, a.dek, SECTIONS[a.section]?.label, ...(a.tags || [])].join(' '))}">
-  <a href="${root}${a.slug}/" tabindex="-1" aria-hidden="true"><img src="${root}${img}" alt="" width="1200" height="630" loading="lazy"></a>
+  <a href="${root}${a.slug}/" tabindex="-1" aria-hidden="true"><img src="${root}${img}" alt="${esc(a.title)}" width="1200" height="630" loading="lazy"></a>
   <div>
     ${kicker(a.section, root, a.kind)}
     <h2><a href="${root}${a.slug}/">${esc(a.title)}</a></h2>
@@ -844,9 +846,9 @@ function buildFeeds() {
 <atom:link href="${abs('feed.xml')}" rel="self" type="application/rss+xml"/>
 <description>${esc(SITE.description)}</description>
 <language>hr-hr</language>
-<lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+<lastBuildDate>${new Date(LATEST).toUTCString()}</lastBuildDate>
 <managingEditor>${esc(SITE.contact.email)} (Nermin Sefić)</managingEditor>
-<copyright>© ${new Date().getFullYear()} GNK ASG d.o.o.</copyright>
+<copyright>© ${new Date(LATEST).getUTCFullYear()} GNK ASG d.o.o.</copyright>
 <image><url>${abs('assets/logo-gnk-asg-gold.svg')}</url><title>${esc(SITE.brandFull)}</title><link>${BASE}</link></image>
 ${items.map((a) => `<item>
   <title>${esc(a.title)}</title>
@@ -1047,6 +1049,8 @@ const copyTree = (from, to) => {
   }
 };
 copyTree(assetSrc, join(OUT, 'assets'));
+/* Isti modul osvježavanja kao na portalu — bez njega natpis vodi u 404. */
+ensureRefreshModule(OUT);
 /* Znak mreže za sve kanale — isto kao na svakom drugom webu. */
 write('assets/favicon.svg', FAVICON_SVG);
 

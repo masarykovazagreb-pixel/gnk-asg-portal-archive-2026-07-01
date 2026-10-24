@@ -10,6 +10,7 @@ import { exchangeBlock, EXCHANGE_CSS } from './razmjena-v1.mjs';
 import { designTokensCss } from '../../shared/design-system-v1.mjs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { refreshTag } from '../../shared/refresh-tag-v1.mjs';
 
 export const MAIN = 'https://gnk-asg.hr';
 export const ARHIVA = 'https://gnk-asg-arhiva.pages.dev';
@@ -226,6 +227,7 @@ ${meshBlock({ lang, selfUrl: siteUrl })}
     : `Automatically assembled from public sources of the ${EDITIONS.length} AKTUAL MEDIA city editions. Every record links to the original; claims from sources are not the claims of the newsroom.`}</p>
   <p>AKTUAL MEDIA d.o.o. · ${lang === 'hr' ? 'Urednik i direktor' : 'Editor and director'}: Nermin Sefić · <a href="${MAIN}/nermin-sefic/">${lang === 'hr' ? 'profil' : 'profile'}</a></p>
 </div></footer>
+${refreshTag()}
 </body>
 </html>`;
 }

@@ -206,10 +206,10 @@ zapis; nijedan broj ne nedostaje u nizu.
 zapis u izvještaju gradnje, a nijedna uklonjena ruta ne visi.
 **Provjera:** `tests/test-deploy-parity-v1.mjs`.
 
-### 35. ⬜ Brojke se ne razilaze
+### 35. ✅ Brojke se ne razilaze
 **Cilj:** isti broj tekstova, gradova, jezika i izdanja na svakoj stranici koja
 ga navodi — jedan izvor brojeva.
-**Ishod:** `apps/portal/data/network-counts-v1.json` + gate.
+**Ishod:** `scripts/build-network-counts-v1.mjs` → `apps/portal/data/network-counts-v1.json` (4.031 tekst, 17 gradova, 14 jezika, 134 izvora, podatkovni dan 2026-10-23); ploča, /kanal/, /sve-stranice/, meta opis i Data desk čitaju iz njega. 
 **Provjera:** `tests/test-counts-consistency-v1.mjs`.
 
 ### 36. ⬜ Jezična parnost
@@ -236,3 +236,19 @@ webu, s istim podacima izdavača.
 naredba iz knjige postoji i `--help` joj radi.
 **Ishod:** `docs/operacija-v1.md`.
 **Provjera:** `tests/test-runbook-v1.mjs`.
+
+---
+
+## G. Zadaci iz ovog kruga (ugradnja u mrežu)
+
+### 31. ✅ Popis svih stranica i izvještaj
+**Cilj:** na pitanje „što imamo“ odgovara mjerenje, ne sjećanje.
+**Ishod:** `scripts/build-pages-inventory-v1.mjs` → `/sve-stranice/` (10.183 stranice na 7 webova) i `docs/izvjestaj-inventure-v1.md`. **Provjera:** `tests/test-counts-consistency-v1.mjs` (postojanje) + vlastiti `--check`.
+
+### 32. ✅ Osvježavanje na svakoj stranici
+**Cilj:** čitatelj na svakoj stranici vidi podatkovni dan i može osvježiti.
+**Ishod:** `apps/portal/assets/am-refresh-v1.js` + `scripts/apply-refresh-v1.mjs`; modul učitan na 10.217 javnih stranica svih šest webova, datum dolazi iz podataka. **Provjera:** `tests/test-refresh-layer-v1.mjs`.
+
+### 33. ✅ Slike izdanja umjesto crnih krugova
+**Cilj:** nijedno izdanje nije prazna ploha; svaka pločica nosi grad.
+**Ishod:** `scripts/build-edition-photos-v1.mjs` (9 izvora → 54 datoteke, `-og.jpg`, zapis podrijetla), `apps/region/engine/tiles.mjs` ponovno ispekao pločice. **Provjera:** `tests/test-image-alt-v1.mjs` + `tests/test-image-provenance-v1.mjs` (zadatak 29).

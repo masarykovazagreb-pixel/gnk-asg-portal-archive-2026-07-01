@@ -142,7 +142,15 @@ function auditPortal(portal) {
     }
     check(html.includes('id="sadrzaj"'), `${portal.id}/${relative}: nema glavne regije #sadrzaj`);
     check(/class="skip"/.test(html), `${portal.id}/${relative}: nema preskoka sadržaja`);
-    check(!/<script\b(?![^>]*type="application\/ld\+json")/i.test(html), `${portal.id}/${relative}: stranica nosi skriptu (CSP je zaključan)`);
+    /* Svjetski portali su namjerno bez skripti — jedina dopuštena iznimka je
+       zajednički modul osvježavanja (`/assets/am-refresh-v1.js`), koji je
+       isti na cijeloj mreži i učitava se s vlastitog hosta. Skripta iz bilo
+       kojeg drugog izvora ruši portal na istom pravilu kao i dosad. */
+    const scripts = [...html.matchAll(/<script\b[^>]*>/gi)].map((match) => match[0])
+      .filter((tag) => !/type="application\/ld\+json"/i.test(tag));
+    const foreign = scripts.filter((tag) => !/src="\/assets\/am-refresh-v1\.js/i.test(tag));
+    check(foreign.length === 0, `${portal.id}/${relative}: stranica nosi stranu skriptu (CSP je zaključan)`);
+    check(scripts.length <= 1, `${portal.id}/${relative}: više od jedne skripte`);
   }
 
   /* 6. Sitemap: samo vlastite stranice, bez članaka (nema dvostrukog sadržaja). */

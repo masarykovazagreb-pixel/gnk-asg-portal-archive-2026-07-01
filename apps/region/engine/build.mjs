@@ -24,6 +24,7 @@ import { meshBlock, MESH_CSS } from '../../satellites/lib/network-v1.mjs';
 import { HOUSE_CSS, houseRibbon } from '../../satellites/lib/house-style-v1.mjs';
 import { exchangeBlock, writeExchangeJson, EXCHANGE_CSS } from '../../satellites/lib/razmjena-v1.mjs';
 import { editorialIndexBlock, EDITORIAL_INDEX_CSS } from '../../../scripts/lib/prenos-v1.mjs';
+import { refreshTag } from '../../shared/refresh-tag-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const APP = join(HERE, '..');
@@ -528,6 +529,7 @@ ${exchangeBlock({ root: ROOT, lang: pageLang, selfHome: channel.base, selfNames:
 ${miniRail(channel)}
 <script src="/assets/aktual-radio-mini-v1.js?v=20261023-edmini" defer></script>
 <script src="${root}assets/spiderweb-v1.js?v=20261023" defer></script>
+${refreshTag('/')}
 </body>
 </html>`;
 }
@@ -1189,7 +1191,7 @@ function writeLegacyRedirect(channel) {
 <meta name="robots" content="noindex,follow">
 <meta http-equiv="refresh" content="0; url=${channel.base}">
 </head>
-<body><p>Ovo izdanje je na novoj adresi: <a href="${channel.base}">${esc(channel.title)}</a>.</p></body>
+<body><p>Ovo izdanje je na novoj adresi: <a href="${channel.base}">${esc(channel.title)}</a>.</p>${refreshTag('/')}</body>
 </html>`);
 }
 

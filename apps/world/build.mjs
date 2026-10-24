@@ -38,6 +38,7 @@ import { spiderWeb, SPIDER_CSS } from '../satellites/lib/spiderweb-v1.mjs';
 import { WORLD_PORTALS, WORLD_BY_ID, portalBase, portalUrl, reviewUrl, HUB_HR, HUB_EN, MAIN, AKTUAL } from './lib/registry.mjs';
 import { writeColumns, columnsNavLabel, columnUrls, linkFromHome } from './lib/kolumne.mjs';
 import { writePrenos, prenosUrls, appendSitemap, linkPrenosOnHome } from '../../scripts/lib/prenos-v1.mjs';
+import { refreshTag } from '../shared/refresh-tag-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..', '..');
@@ -443,6 +444,7 @@ ${designTokensCss()}
 ${houseRibbon({ lang: portal.lang, edition: `${portal.city} · ${portal.country}` })}
 ${body}
 ${exchangeBlock({ root: ROOT, lang: portal.lang, selfHome: portalBase(portal), selfNames: [portal.city, portal.cityEn].filter(Boolean), limit: 6 })}
+${refreshTag('/')}
 </body>
 </html>`;
 }

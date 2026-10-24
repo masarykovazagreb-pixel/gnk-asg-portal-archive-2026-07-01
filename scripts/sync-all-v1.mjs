@@ -74,6 +74,12 @@ export const STEPS = [
   { id: 'social-cards', group: 'layers', file: 'scripts/apply-social-card-meta-v1.mjs', why: 'OG/Twitter kartice' },
   { id: 'image-sitemap', group: 'layers', file: 'scripts/prune-image-sitemap-v1.mjs', why: 'sitemap bez mrtvih slika' },
   { id: 'knowledge-sync', group: 'layers', file: 'scripts/knowledge-center-hr-sync-v1.mjs', args: ['--apply'], why: 'HR/EN knowledge center u paru' },
+  /* Brojevi i osvježavanje idu prije provjera: brojevi zato što ih svaki
+     generator čita, osvježavanje zato što prepisuje svaku stranicu i mora
+     biti zadnji sloj. */
+  { id: 'network-counts', group: 'layers', file: 'scripts/build-network-counts-v1.mjs', check: ['--check'], why: 'jedan izvor brojeva' },
+  { id: 'pages-inventory', group: 'layers', file: 'scripts/build-pages-inventory-v1.mjs', check: ['--check'], why: 'popis svih stranica + izvještaj' },
+  { id: 'refresh', group: 'layers', file: 'scripts/apply-refresh-v1.mjs', check: ['--check'], why: 'osvježavanje na svakoj stranici' },
 
   /* ---------- 3. PROVJERE ---------- */
   { id: 'region-audit', group: 'audit', file: 'apps/region/engine/audit.mjs', why: 'izdanja — unutrašnja dosljednost' },
