@@ -4,7 +4,7 @@
   "lang": "bg",
   "city": "Sofija",
   "country": "Bugarska",
-  "updatedAt": "2026-10-24T11:37:57.433Z",
+  "updatedAt": "2026-10-24T14:31:39.445Z",
   "sources": [
     {
       "id": "bta",
@@ -17,7 +17,7 @@
         "https://www.bta.bg/bg/rss: HTTP 404",
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-24T11:37:45.466Z"
+      "checkedAt": "2026-10-24T14:31:31.044Z"
     },
     {
       "id": "capital",
@@ -27,7 +27,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T11:37:46.490Z"
+      "checkedAt": "2026-10-24T14:31:32.016Z"
     },
     {
       "id": "mediapool",
@@ -37,20 +37,19 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T11:37:50.184Z"
+      "checkedAt": "2026-10-24T14:31:33.148Z"
     },
     {
       "id": "dnevnikbg",
       "name": "Dnevnik",
-      "url": "https://www.dnevnik.bg/rss",
-      "ok": false,
-      "fetched": 0,
+      "url": "https://www.dnevnik.bg/rss/",
+      "ok": true,
+      "fetched": 30,
       "corrupt": 0,
       "errors": [
-        "https://www.dnevnik.bg/rss: HTTP 403",
-        "https://www.dnevnik.bg/rss/: HTTP 500"
+        "https://www.dnevnik.bg/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-24T11:37:52.366Z"
+      "checkedAt": "2026-10-24T14:31:34.431Z"
     },
     {
       "id": "actualno",
@@ -60,17 +59,17 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T11:37:53.497Z"
+      "checkedAt": "2026-10-24T14:31:35.830Z"
     },
     {
       "id": "sega",
       "name": "Sega.bg",
       "url": "https://www.segabg.com/rss",
       "ok": true,
-      "fetched": 91,
+      "fetched": 95,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T11:37:53.937Z"
+      "checkedAt": "2026-10-24T14:31:36.193Z"
     },
     {
       "id": "novinite",
@@ -82,7 +81,7 @@
       "errors": [
         "https://www.novinite.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-24T11:37:55.568Z"
+      "checkedAt": "2026-10-24T14:31:37.680Z"
     },
     {
       "id": "btaen",
@@ -94,10 +93,324 @@
       "errors": [
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-24T11:37:57.432Z"
+      "checkedAt": "2026-10-24T14:31:39.445Z"
     }
   ],
   "items": [
+    {
+      "slug": "sofija-2026-10-24-dnevnikbg-ras-al-ha-ma-zatvori-plazovete-si-zaradi-5745b3",
+      "title": "Рас ал Хайма затвори плажовете си заради петролен разлив наблизо",
+      "summary": "Всички плажове в Рас ал Хайма ще са затворени до второ нареждане. Обединените арабски емирства съобщиха за решението ден след като разлив на петрол затвори плажовете в съседните региони, съобщи \"Ройтерс\". Властите не са...",
+      "date": "2026-10-24T14:23:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/10/24/4970913_ras_al_haima_zatvori_plajovete_si_zaradi_petrolen/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4970910.jpg",
+      "imageAlt": "Рас ал Хайма затвори плажовете си заради петролен разлив наблизо",
+      "addedAt": "2026-10-24T14:31:34.431Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-sega-135-dusi-sa-arestuvani-na-protestite-v-v-d9a873",
+      "title": "135 души са арестувани на протестите във Франция",
+      "summary": "",
+      "date": "2026-10-24T14:20:12.000Z",
+      "url": "https://www.segabg.com/hot/category-foreign-country/135-dushi-sa-arestuvani-na-protestite-vuv-franciya",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/10/8baa1cf8-b0f4-495e-936b-c2719ebc6866.jpeg",
+      "imageAlt": "135 души са арестувани на протестите във Франция",
+      "addedAt": "2026-10-24T14:31:36.193Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-actualno-c-rkoven-praznik-na-25-oktomvri-kakvo-se-7c27a6",
+      "title": "Църковен празник на 25 октомври: Какво се прави утре?",
+      "summary": "25 октомври е празникът на мъчениците Маркиан и Мартирий в православния календар. Ето какви са традициите, обичаите и за...",
+      "date": "2026-10-24T14:17:00.000Z",
+      "url": "https://www.actualno.com/celebrate/cyrkoven-praznik-na-25-oktomvri-kakvo-se-pravi-utre-news_2654152.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Празници"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://cdn.actualno.eu/actualno_2013/upload/news/2026/10/24/396ff11e4e5f3895852a06d17a1e7f6d_2654152_1920x1080.jpg",
+      "imageAlt": "Църковен празник на 25 октомври: Какво се прави утре?",
+      "addedAt": "2026-10-24T14:31:35.831Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-actualno-kim-cen-un-e-bil-v-kita-polucil-e-pozdravi-21e2c7",
+      "title": "Ким Чен Ун е бил в Китай: Получил е поздрави от Си Дзинпин",
+      "summary": "Севернокорейският лидер Ким Чен Ун е бил на еднодневна екскурзия до китайския граничен град Дандун, предаде \"Ал Джаз...",
+      "date": "2026-10-24T14:15:00.000Z",
+      "url": "https://www.actualno.com/asia/kim-chen-un-e-bil-v-kitaj-poluchil-e-pozdravi-ot-si-dzinpin-news_2654168.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Азия"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://cdn.actualno.eu/actualno_2013/upload/news/2026/10/24/b6e8b973f079ed18e3b803d25aadf3b4_2654168_1920x1080.jpg",
+      "imageAlt": "Ким Чен Ун е бил в Китай: Получил е поздрави от Си Дзинпин",
+      "addedAt": "2026-10-24T14:31:35.831Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-actualno-pone-200-mlrd-rubli-a-vero-tno-i-o-e-18a779",
+      "title": "Поне 200 млрд. рубли, а вероятно и още: Загубите за Русия заради затворени от украински дронове летища",
+      "summary": "Руските летища затварят 4,5 пъти по-често поради атаки с дронове. Това значи, че пред авиокомпаниите в Русия се очертава...",
+      "date": "2026-10-24T14:04:00.000Z",
+      "url": "https://www.actualno.com/europe/pone-200-mlrd-rubli-a-verojatno-i-oshte-zagubite-za-rusija-zaradi-zatvoreni-ot-ukrainski-dronove-letishta-news_2654165.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://cdn.actualno.eu/actualno_2013/upload/news/2026/10/24/06bf592679052ad132ec96460f8ad36b_2654165_1920x1080.jpg",
+      "imageAlt": "Поне 200 млрд. рубли, а вероятно и още: Загубите за Русия заради затворени от украински дронове летища",
+      "addedAt": "2026-10-24T14:31:35.831Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-actualno-v-den-za-razmis-l-spr-ha-n-kolko-satiricni-e6cb86",
+      "title": "В деня за размисъл: Спряха няколко сатирични страници във \"Фейсбук\", сред тях са \"Копейкин\" и \"Пуйло\"",
+      "summary": "Сатиричните страници \"Копейкин\", \"Пуйло\" и BG Elves във \"Фейсбук\" са били спрени преди около час, сигнализират от опозиц...",
+      "date": "2026-10-24T14:02:00.000Z",
+      "url": "https://www.actualno.com/society/v-denja-za-razmisyl-sprjaha-njakolko-satirichni-stranici-vyv-fejsbuk-sred-tjah-sa-kopejkin-i-pujlo-news_2654164.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Общество"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://cdn.actualno.eu/actualno_2013/upload/news/2026/10/24/7921b122c7968174509e6dc7b1cc1e99_2654164_1920x1080.jpg",
+      "imageAlt": "В деня за размисъл: Спряха няколко сатирични страници във \"Фейсбук\", сред тях са \"Копейкин\" и \"Пуйло\"",
+      "addedAt": "2026-10-24T14:31:35.831Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-mediapool-samolet-padna-v-dvora-na-k-a-kra-pleven-faae2d",
+      "title": "Самолет падна в двора на къща край Плевен, пилотът е загинал",
+      "summary": "Малък самолет Cessna 150 е паднал в двора на къща в плевенското село Бохот. Сигналът е подаден на тел. 112 малко преди 16 часа в събота…",
+      "date": "2026-10-24T13:59:55.000Z",
+      "url": "https://www.mediapool.bg/bulgaria/samolet-padna-v-dvora-na-kashta-krai-pleven-pilotat-e-zaginal/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "България",
+        "катастрофа",
+        "Чесна",
+        "Плевен"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Самолет падна в двора на къща край Плевен, пилотът е загинал",
+      "addedAt": "2026-10-24T14:31:33.148Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-actualno-ruski-t-voennopromislen-kompleks-stava-vse-584e76",
+      "title": "Руският военнопромишлен комплекс става все повече китайски: Бъдещето вещае проблеми за Кремъл",
+      "summary": "Руският военно-промишлен комплекс изглежда почва все по-устойчиво да се премества в Китай, въпреки опасенията за индустр...",
+      "date": "2026-10-24T13:56:00.000Z",
+      "url": "https://www.actualno.com/europe/ruskijat-voennopromishlen-kompleks-stava-vse-poveche-kitajski-bydeshteto-veshtae-problemi-za-kremyl-news_2654160.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://cdn.actualno.eu/actualno_2013/upload/news/2026/10/24/ecd3e5111eee16d2ab74795d645a7090_2654160_1920x1080.jpg",
+      "imageAlt": "Руският военнопромишлен комплекс става все повече китайски: Бъдещето вещае проблеми за Кремъл",
+      "addedAt": "2026-10-24T14:31:35.831Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-actualno-podrobnosti-za-strelbata-v-pariz-strelec-t-1ca29e",
+      "title": "Подробности за стрелбата в Париж: Стрелецът отмъщавал за разрушените магазини при протестите",
+      "summary": "След като вчера мъж откри огън по случайни минувачи, вследствие на което загина един човек, а бяха ранени петима други, ...",
+      "date": "2026-10-24T13:52:00.000Z",
+      "url": "https://www.actualno.com/europe/podrobnosti-za-strelbata-v-parij-strelecyt-otmyshtaval-za-razrushenite-magazini-pri-protestite-news_2654159.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://cdn.actualno.eu/actualno_2013/upload/news/2026/10/24/011a29f2392dac53203e3e897ca8e6ba_2654159_1920x1080.jpg",
+      "imageAlt": "Подробности за стрелбата в Париж: Стрелецът отмъщавал за разрушените магазини при протестите",
+      "addedAt": "2026-10-24T14:31:35.831Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-mediapool-fe-sbuk-svali-stranicite-na-kope-kin-pu-lo-421ab5",
+      "title": "Фейсбук свали страниците на \"Копейкин\", \"Пуйло\" и \"Елфите\"",
+      "summary": "Социалната мрежа Фейсбук е изтрила наведнъж трите много популярни сред дясната и либералната общност сатирични страници \"Копейкин\", \"Пуйло\" и \"BG Elves\". Новината първо беше съобщена от “Капутин“, който бързо успя да възстанови профила си, защото е имал готови резервни профили. МВР публикува специално съобщение, с което твърди, че няма нищо общо с този опит за цензура…",
+      "date": "2026-10-24T13:50:36.000Z",
+      "url": "https://www.mediapool.bg/bulgaria/feisbuk-svali-stranitsite-na-kopeikin-puilo-i-elfite/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "България",
+        "Фейсбук",
+        "Копейкин",
+        "Елфите"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Фейсбук свали страниците на \"Копейкин\", \"Пуйло\" и \"Елфите\"",
+      "addedAt": "2026-10-24T14:31:33.148Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-dnevnikbg-gug-l-moze-da-polzva-danni-ot-gmail-i-0a61d2",
+      "title": "\"Гугъл\" може да ползва данни от Gmail и Photos за AI и таргетирани реклами",
+      "summary": "\"Гугъл\" може да ползва данни от Gmail и Photos за целеви реклами. Компанията обнови политиката си за поверителност по-рано този месец. Промените включват по-широк достъп до личните данни на потребителите, които използват определени функции с...",
+      "date": "2026-10-24T13:49:00.000Z",
+      "url": "https://www.dnevnik.bg/izkustven-intelekt/2026/10/24/4970905_gugul_moje_da_polzva_danni_ot_gmail_i_photos_za_ai_i/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5014"
+      ],
+      "author": "Мартина Тонева",
+      "theme": "ai",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4853767.jpg",
+      "imageAlt": "\"Гугъл\" може да ползва данни от Gmail и Photos за AI и таргетирани реклами",
+      "addedAt": "2026-10-24T14:31:34.431Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-dnevnikbg-iva-lo-mircev-s-ob-i-za-svaleni-satiricni-dca95a",
+      "title": "Ивайло Мирчев съобщи за свалени сатирични страници от \"Фейсбук\"",
+      "summary": "Три сатирични страници - \"Копейкин\", \"Пуйло\" и \"BG Elves\", са едновременно свалени от \"Фейсбук\". Това написа в Х съпредседателят на \"Да, България\" Ивайло Мирчев. На мястото на свалените страници вече има създадени нови, които за кратко време са...",
+      "date": "2026-10-24T13:48:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/10/24/4970908_ivailo_mirchev_suobshti_za_svaleni_satirichni_stranici/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4970907.jpg",
+      "imageAlt": "Ивайло Мирчев съобщи за свалени сатирични страници от \"Фейсбук\"",
+      "addedAt": "2026-10-24T14:31:34.431Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-dnevnikbg-mal-k-samolet-se-e-razbil-v-dvora-na-k-a-v-014d1a",
+      "title": "Малък самолет се е разбил в двора на къща в плевенско",
+      "summary": "Малък самолет Cessna 150 падна в двора на къща в плевенското село Бохот. Сигналът е подаден на тел. 112 малко преди 16:00 часа днес, съобщи Би Ти Ви. По неофициална информация при инцидента е загинал пилотът на самолета. Той е бил млад...",
+      "date": "2026-10-24T13:41:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/10/24/4970904_maluk_samolet_se_e_razbil_v_dvora_na_kushta_v_plevensko/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4970903.jpg",
+      "imageAlt": "Малък самолет се е разбил в двора на къща в плевенско",
+      "addedAt": "2026-10-24T14:31:34.431Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-sega-fe-sbuk-svali-tri-satiricni-stranici-osmiva-daa8bf",
+      "title": "\"Фейсбук\" свали три сатирични страници, осмиващи властта",
+      "summary": "",
+      "date": "2026-10-24T13:27:09.000Z",
+      "url": "https://www.segabg.com/hot/category-bulgaria/feysbuk-svali-tri-satirichni-stranici-osmivashti-vlastta",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/10/roszie-read-out-7371170.png",
+      "imageAlt": "\"Фейсбук\" свали три сатирични страници, осмиващи властта",
+      "addedAt": "2026-10-24T14:31:36.193Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-sega-ne-samo-krim-a-i-drugi-okupirani-teritorii-782f1e",
+      "title": "Не само Крим, а и други окупирани територии са без ток",
+      "summary": "",
+      "date": "2026-10-24T13:20:13.000Z",
+      "url": "https://www.segabg.com/hot/category-the-war/ne-samo-krim-i-drugi-okupirani-teritorii-sa-bez-tok",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/10/wmremove-transformed_0.jpeg",
+      "imageAlt": "Не само Крим, а и други окупирани територии са без ток",
+      "addedAt": "2026-10-24T14:31:36.193Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-dnevnikbg-v-nsni-t-minist-r-za-vi-s-zdavaneto-na-h-b-855102",
+      "title": "Външният министър заяви създаването на хъб за сигурност",
+      "summary": "Черноморски хъб за сигурност ще бъде обособен във Варна и Констанца. Това обяви външният министър Велислава Петрова. при посещението си във Висшето военноморско училище заедно с френския си колега Жан-Ноел Баро. ...",
+      "date": "2026-10-24T13:16:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/10/24/4970900_vunshniiat_ministur_zaiavi_suzdavaneto_na_hub_za/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "sigurnost",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4970899.jpg",
+      "imageAlt": "Външният министър заяви създаването на хъб за сигурност",
+      "addedAt": "2026-10-24T14:31:34.431Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-mediapool-pozar-e-uni-ozil-bivsata-nacistkata-hiza-03d914",
+      "title": "Пожар е унищожил бившата нацистката хижа \"Орлово гнездо\"",
+      "summary": "Баварската резиденция „Келщайнхаус“, известна още като „Орловото гнездо“, която е използвана от Адолф Хитлер, е почти напълно унищожена от пожар, съобщи днес полицията, предаде ДПА. Сигналът за пожара е подаден в петък късно вечерта, като рано тази сутрин огънят все още е горял, уточниха органите на реда. Според полицията е възможно пожарът да е предизвикан умишлено…",
+      "date": "2026-10-24T12:57:14.000Z",
+      "url": "https://www.mediapool.bg/svyat/pozhar-e-unishtozhil-bivshata-natsistkata-hizha-orlovo-gnezdo/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Свят"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Пожар е унищожил бившата нацистката хижа \"Орлово гнездо\"",
+      "addedAt": "2026-10-24T14:31:33.148Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-mediapool-avari-na-centralnata-gara-v-sofi-spr-c21a9f",
+      "title": "Авария на Централната гара в София спря влакове за Перник",
+      "summary": "Движението на влаковете през Централната гара в София е спряно заради счупване на електрическо съоръжение при преместването на локомотив. Това доведе до прекъсване на напрежението в контактната мрежа, съобщиха от Национална компания \"Железопътна инфраструктура\". Докато аварийните екипи отстраняват повредата, са отменени мотрисните електрически влакове от София до Перник и от София до Костенец…",
+      "date": "2026-10-24T12:38:06.000Z",
+      "url": "https://www.mediapool.bg/bulgaria/avariya-na-tsentralnata-gara-v-sofiya-sprya-vlakove-za-pernik/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "България",
+        "София",
+        "централна гара"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Авария на Централната гара в София спря влакове за Перник",
+      "addedAt": "2026-10-24T14:31:33.149Z"
+    },
     {
       "slug": "sofija-2026-10-24-mediapool-tr-mp-korabite-na-sa-e-minat-prez-kuba-na-47b759",
       "title": "Тръмп: Корабите на САЩ ще минат през Куба на връщане от Иран",
@@ -6999,282 +7312,6 @@
       "author": "reklama@webground.bg (Actualno.com)",
       "theme": "politika",
       "addedAt": "2026-10-20T13:19:21.302Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-dnevnikbg-vlastite-razsledvat-zloupotrebi-s-ob-612a2c",
-      "title": "Властите разследват злоупотреби с обществени поръчки в Сунгурларе",
-      "summary": "Полицейски служители провеждат акция в общината на Сунгурларе. Властите са иззели документи и разследват нередности с обществени поръчки, съобщи БНТ. Според полицията има данни за отклонени големи суми от бюджета. Проверява...",
-      "date": "2026-10-20T12:50:00.000Z",
-      "url": "https://www.dnevnik.bg/bulgaria/2026/10/20/4968901_vlastite_razsledvat_zloupotrebi_s_obshtestveni/?ref=rss",
-      "source": "dnevnikbg",
-      "sourceName": "Dnevnik",
-      "categories": [
-        "5026"
-      ],
-      "author": "Дневник",
-      "theme": "drustvo",
-      "addedAt": "2026-10-20T13:19:19.866Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-actualno-les-itinerantes-s-p-rvi-koncert-v-sofi-na-626ded",
-      "title": "Les Itinérantes с първи концерт в София на 23 октомври",
-      "summary": "Gotobeat и емблематичният клуб \"Строежа\" ще представят изключителна музикална вечер, изпълнена с акапелна магия, полифон...",
-      "date": "2026-10-20T12:36:00.000Z",
-      "url": "https://www.actualno.com/music/les-itinrantes-s-pyrvi-koncert-v-sofija-na-23-oktomvri-news_2652459.html",
-      "source": "actualno",
-      "sourceName": "Actualno.com",
-      "categories": [
-        "Музика"
-      ],
-      "author": "reklama@webground.bg (Actualno.com)",
-      "theme": "drustvo",
-      "addedAt": "2026-10-20T13:19:21.302Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-dnevnikbg-poslanik-t-na-b-lgari-v-obedinenite-arabski-bbd8c2",
-      "title": "Посланикът на България в Обединените арабски емирства е освободен от длъжност",
-      "summary": "Посланикът на България в Обединените арабски емирства е освободен от длъжност. Иван Илиянов Йорданов вече не изпълнява длъжността след указ на президента Илияна Йотова, обнародван в Държавен вестник днес. На 18 септември министърът на...",
-      "date": "2026-10-20T12:25:00.000Z",
-      "url": "https://www.dnevnik.bg/politika/2026/10/20/4968879_poslanikut_na_bulgariia_v_obedinenite_arabski_emirstva/?ref=rss",
-      "source": "dnevnikbg",
-      "sourceName": "Dnevnik",
-      "categories": [
-        "4047"
-      ],
-      "author": "Георги Василев",
-      "theme": "drustvo",
-      "addedAt": "2026-10-20T13:19:19.866Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-dnevnikbg-pri-t-t-v-gorni-bogrov-vremenno-spira-da-aee1a5",
-      "title": "Приютът в Горни Богров временно спира да приема бездомни кучета",
-      "summary": "Спира се приемът на бездомни кучета в общинския приют в с. Горни Богров. Заповедта е на Областната дирекция по безопасност на храните (ОДБХ) -София-град и важи за срок до шест месеца, считано от 16 октомври. Забранява се и достъпът на доброволци,...",
-      "date": "2026-10-20T12:25:00.000Z",
-      "url": "https://www.dnevnik.bg/gradska_sreda/2026/10/20/4968880_prijutut_v_gorni_bogrov_vremenno_spira_da_priema/?ref=rss",
-      "source": "dnevnikbg",
-      "sourceName": "Dnevnik",
-      "categories": [
-        "2714"
-      ],
-      "author": "Максим Караджов",
-      "theme": "drustvo",
-      "addedAt": "2026-10-20T13:19:19.866Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-sega-na-udareni-korab-celsi-3-sa-namereni-1d23c4",
-      "title": "На ударения кораб \"Челси 3\" са намерени останки",
-      "summary": "",
-      "date": "2026-10-20T12:15:00.000Z",
-      "url": "https://www.segabg.com/hot/category-bulgaria/na-udareniya-korab-chelsi-3-sa-namereni-ostanki",
-      "source": "sega",
-      "sourceName": "Sega.bg",
-      "categories": [
-        "Водещи новини"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-20T13:19:21.573Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-sega-radev-obvini-vo-nata-v-ukra-na-za-814b40",
-      "title": "Радев обвини войната в Украйна за протестите в Западна Европа",
-      "summary": "",
-      "date": "2026-10-20T12:03:00.000Z",
-      "url": "https://www.segabg.com/hot/category-bulgaria/radev-obvini-voynata-ukrayna-za-protestite-zapadna-evropa",
-      "source": "sega",
-      "sourceName": "Sega.bg",
-      "categories": [
-        "Водещи новини"
-      ],
-      "author": "",
-      "theme": "rat",
-      "addedAt": "2026-10-20T13:19:21.573Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-capital-kak-biznes-t-moze-da-nakara-mladite-da-56d288",
-      "title": "Как бизнесът може да накара младите да останат в България",
-      "summary": "Инициативата \"20 под 20\" е организирана от Младежкия съвет на американския посланик в България и \"Капитал\". Тя отличава 20 млади таланти под 20-годишна възраст в областта на науката и технологиите, бизнеса, изкуствата, спорта и гражданския активизъм. Целта е да се даде гласност на младите хора, чиито идеи и проекти допринасят за развитието на средата, в която живеем. Историите на отличените във випуск 2026 ще бъдат разказани от \"Капитал\" и събрани в специално печатно издание през февруари 202...",
-      "date": "2026-10-20T11:27:00.000Z",
-      "url": "https://www.capital.bg/politika_i_ikonomika/pazar-na-truda/2026/10/20/4968763_kak_biznesut_moje_da_nakara_mladite_da_ostanat_v/?ref=rss",
-      "source": "capital",
-      "sourceName": "Capital",
-      "categories": [
-        "4908"
-      ],
-      "author": "Валерия Терзиева",
-      "theme": "drustvo",
-      "addedAt": "2026-10-20T13:19:16.997Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-capital-proektozakon-t-za-lekarstvata-e-zabavi-1cd07a",
-      "title": "Проектозаконът за лекарствата ще забави снабдяването с тях",
-      "summary": "В България всяка година се продават около 160 млн. опаковки с лекарства. На ден през аптеките и през болниците минават общо около 400 хиляди. В част от случаите обаче определени лекарства липсват и различните екипи на здравните институции предлагат всевъзможни начини да се справят с недостига. Здравното министерство от две години обсъжда промени в лекарствения закон, които да решат проблема. Внезапно проектозаконът за изменение на Закона за лекарствените продукти в хуманната медицина (ЗЛПХМ) вле...",
-      "date": "2026-10-20T11:04:00.000Z",
-      "url": "https://www.capital.bg/politika_i_ikonomika/zdraveopazvane/2026/10/20/4968820_proektozakonut_za_lekarstvata_shte_zabavi/?ref=rss",
-      "source": "capital",
-      "sourceName": "Capital",
-      "categories": [
-        "4913"
-      ],
-      "author": "Десислава Николова",
-      "theme": "drustvo",
-      "addedAt": "2026-10-20T13:19:16.997Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-capital-biznes-globus-ryanair-ocakva-rekorden-r-st-fbfa19",
-      "title": "Бизнес глобус: Ryanair очаква рекорден ръст на цените на билетите; Anthropic може да сключи сделка за $45 млрд. долара с Nscale",
-      "summary": "Ryanair предупреждава за рекордно високи цени на самолетните билети Самолетните билети в Европа може да поскъпнат с до 20% през следващата година заради по-високите цени на петрола, подхранвани от войната в Близкия изток, прогнозира главният изпълнителен директор на Ryanair Майкъл О'Лиъри. Според него поскъпването може да се окаже недостатъчно, за да компенсира нарасналите разходи за гориво, което ще свие печалбите на авиокомпаниите. Допълнителен натиск оказват по-високите данъци, ограниченият к...",
-      "date": "2026-10-20T10:47:00.000Z",
-      "url": "https://www.capital.bg/politika_i_ikonomika/sviat/biznes-globus/2026/10/20/4968813_biznes_globus_ryanair_ochakva_rekorden_rust_na_cenite/?ref=rss",
-      "source": "capital",
-      "sourceName": "Capital",
-      "categories": [
-        "5060"
-      ],
-      "author": "Александър Куколев",
-      "theme": "rat",
-      "addedAt": "2026-10-20T13:19:16.997Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-capital-solun-deb-tira-v-gida-mislen-s-20-000aa0",
-      "title": "Солун дебютира в гида \"Мишлен\" с 20 ресторанта, засега без звезда",
-      "summary": "На фона на все още незатихналите съвсем вълнения около безрезултатния засега първи одит на световно известния кулинарен гид \"Мишлен\" в София във вторник (20 октомври) близкият Солун дебютира в гурмеводителя с общо 20 ресторанта. Засега на нито един от тях не е присъдена звезда, като 15 ресторанта са в селекцията \"препоръчани\", а още 5 са в секцията Bib Gourmand, която отличава вкусни, но достъпни места. Дебютът на Солун идва след почти двегодишно чакане, като градът бе задвижил процеса малко пр...",
-      "date": "2026-10-20T10:37:00.000Z",
-      "url": "https://www.capital.bg/light/mesta/2026/10/20/4968812_solun_debjutira_v_gida_mishlen_s_20_restoranta_zasega/?ref=rss",
-      "source": "capital",
-      "sourceName": "Capital",
-      "categories": [
-        "2281"
-      ],
-      "author": "Ани Коджаиванова",
-      "theme": "drustvo",
-      "addedAt": "2026-10-20T13:19:16.997Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-capital-alb-rta-ostava-v-kanada-podkrepenite-ot-tr-2188c0",
-      "title": "Албърта остава в Канада: Подкрепените от Тръмп сепаратисти не успяха да убедят избирателите",
-      "summary": "Албърта отхвърли пътя към отцепване от Канада. Според неофициалните резултати около 76% от гласувалите са за оставане в страната, а около 23% са за започване на процес, който би могъл да доведе до отделяне. Тези данни са от преброяването на над милион бюлетини. Окончателните резултати предстои да бъдат обявени. Местни медии съобщиха, че преди изборите в столицата на провинцията Едмънтън, е нямало дълги опашки пред секциите, но интересът е необичайно висок. Над 1.35 млн. души, около 43% от избира...",
-      "date": "2026-10-20T10:17:00.000Z",
-      "url": "https://www.capital.bg/politika_i_ikonomika/sviat/2026/10/20/4968586_alburta_ostava_v_kanada_podkrepenite_ot_trump/?ref=rss",
-      "source": "capital",
-      "sourceName": "Capital",
-      "categories": [
-        "2253"
-      ],
-      "author": "Руслан Трад",
-      "theme": "politika",
-      "addedAt": "2026-10-20T13:19:16.997Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-capital-evrope-skite-telekomi-obmisl-t-alternativa-bb728f",
-      "title": "Европейските телекоми обмислят алтернатива на Starlink след забавянето на интернет връзката в Украйна",
-      "summary": "Най-големите телекомуникационни компании в Европа обединяват усилията си за създаването на нова сателитна мобилна компания, която да оспори доминиращата позиция на Starlink на Илън Мъск. Deutsche Telekom, Orange, Telefónica и Vodafone проучват възможността за създаване на съвместно предприятие, което да осигури необходимия мобилен радиочестотен спектър за предаване на сигнали към мобилните телефони в Европа от сателити в орбита. Инициативата идва на фона на нарастващите опасения в Европа относно...",
-      "date": "2026-10-20T09:47:00.000Z",
-      "url": "https://www.capital.bg/politika_i_ikonomika/sviat/2026/10/20/4968577_evropeiskite_telekomi_obmisliat_alternativa_na/?ref=rss",
-      "source": "capital",
-      "sourceName": "Capital",
-      "categories": [
-        "2253"
-      ],
-      "author": "Кирил Кирчев",
-      "theme": "drustvo",
-      "addedAt": "2026-10-20T13:19:16.997Z"
-    },
-    {
-      "slug": "sofija-2026-10-19-sega-sluhove-pratiha-kim-cen-un-v-kita-ska-f92e57",
-      "title": "Слухове пратиха Ким Чен Ун в китайска болница",
-      "summary": "",
-      "date": "2026-10-19T21:04:44.000Z",
-      "url": "https://www.segabg.com/hot/category-foreign-country/sluhove-pratiha-kim-chen-un-kitayska-bolnica",
-      "source": "sega",
-      "sourceName": "Sega.bg",
-      "categories": [
-        "Водещи новини"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:13:22.440Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sofija-2026-10-19-actualno-sestima-zaginali-sred-t-h-bebe-ma-ka-mu-i-dc5d35",
-      "title": "Шестима загинали, сред тях бебе, майка му и 11-годишно момиче, след руска атака срещу парк в Харковска област",
-      "summary": "Две момичета на 1 и 11 години, три жени и един мъж загинаха при удар на руски дрон по парк в Нова Водолага, Харковска об...",
-      "date": "2026-10-19T20:30:00.000Z",
-      "url": "https://www.actualno.com/europe/shestima-zaginali-sred-tjah-bebe-majka-mu-i-11-godishno-momiche-sled-ruska-ataka-sreshtu-park-v-harkovska-oblast-news_2652251.html",
-      "source": "actualno",
-      "sourceName": "Actualno.com",
-      "categories": [
-        "Европа"
-      ],
-      "author": "reklama@webground.bg (Actualno.com)",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:13:17.652Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sofija-2026-10-19-actualno-prognoza-za-vremeto-20-oktomvri-2026-g-db086f",
-      "title": "Прогноза за времето - 20 октомври 2026 г. (вторник)",
-      "summary": "През нощта над по-голямата част от страната ще бъде предимно ясно. Над Източна България облачността ще е предимно значит...",
-      "date": "2026-10-19T20:13:00.000Z",
-      "url": "https://www.actualno.com/society/prognoza-za-vremeto-20-oktomvri-2026-g-vtornik-news_2652248.html",
-      "source": "actualno",
-      "sourceName": "Actualno.com",
-      "categories": [
-        "Общество"
-      ],
-      "author": "reklama@webground.bg (Actualno.com)",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:13:17.652Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sofija-2026-10-19-dnevnikbg-tr-mp-podnovi-natiska-zelenski-da-se-7c238e",
-      "title": "Тръмп поднови натиска Зеленски да се оттегли",
-      "summary": "Доналд Тръмп отново намекна за оттегляне на Зеленски като условие за мирни преговори за Украйна. Той каза, че \"може би е време Зеленски да намери някой друг да преговаря\". Според него Русия се държи нормално и \"не правят кой знае какво\" в...",
-      "date": "2026-10-19T20:04:00.000Z",
-      "url": "https://www.dnevnik.bg/burzi-novini/2026/10/19/4968484_trump_podnovi_natiska_zelenski_da_se_ottegli/?ref=rss",
-      "source": "dnevnikbg",
-      "sourceName": "Dnevnik",
-      "categories": [
-        "5026"
-      ],
-      "author": "Дневник",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T20:55:42.670Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sofija-2026-10-19-actualno-b-lgarski-s-d-e-izdal-evrope-ska-zapoved-za-49c781",
-      "title": "Български съд е издал европейска заповед за арест за двама, заподозрени в палежа на антените на Starlink",
-      "summary": "Български съд одобри издаването на европейска заповед за арест на двама германски граждани, обвинени в запалване на анте...",
-      "date": "2026-10-19T20:01:00.000Z",
-      "url": "https://www.actualno.com/europe/bylgarski-syd-e-izdal-evropejska-zapoved-za-arest-za-dvama-zapodozreni-v-paleja-na-antenite-na-starlink-news_2652245.html",
-      "source": "actualno",
-      "sourceName": "Actualno.com",
-      "categories": [
-        "Европа"
-      ],
-      "author": "reklama@webground.bg (Actualno.com)",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:13:17.652Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sofija-2026-10-19-actualno-radar-za-ikonomika-na-vaznite-novini-na-19-d2b4e4",
-      "title": "Радар за икономика: Най-важните новини на 19 октомври 2026 г.",
-      "summary": "Редакционният екип Ви представя най-важните икономически новини от изминалия ден, 19 октомври 2026 г. Задава се тежка...",
-      "date": "2026-10-19T20:00:00.000Z",
-      "url": "https://www.actualno.com/economy/radar-za-ikonomika-naj-vajnite-novini-na-19-oktomvri-2026-g-news_2652141.html",
-      "source": "actualno",
-      "sourceName": "Actualno.com",
-      "categories": [
-        "Икономика"
-      ],
-      "author": "reklama@webground.bg (Actualno.com)",
-      "theme": "ekonomija",
-      "addedAt": "2026-10-19T21:13:17.652Z",
-      "backfilled": true
     }
   ]
 }
