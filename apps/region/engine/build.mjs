@@ -243,7 +243,7 @@ function anthillList(channel, strings, items, { root = '' } = {}) {
   }).join('');
 }
 
-function mravinjakSection(channel, strings, data) {
+function mravinjakSection(channel, strings, data, { root = '' } = {}) {
   if (!data.items.length) return '';
   const m = mrvStrings(channel.lang);
   const dense = anthill(data.items, 64);
@@ -254,9 +254,9 @@ function mravinjakSection(channel, strings, data) {
         <span class="mrv-count">${dense.length} / ${data.items.length}</span>
       </div>
       <p class="mrv-lead">${esc(m.lead(dense.length))}</p>
-      <div class="mrv-cols">${anthillList(channel, strings, dense)}</div>
+      <div class="mrv-cols">${anthillList(channel, strings, dense, { root })}</div>
       <div class="mrv-foot">
-        <a href="mravinjak/">${esc(m.all)} — ${data.items.length} →</a>
+        <a href="${root}mravinjak/">${esc(m.all)} — ${data.items.length} →</a>
         <a href="https://gnk-asg.hr/gnk-aktual/#mravinjak" rel="external noopener">${esc(m.cross)} ↗</a>
       </div>
     </div>
@@ -888,12 +888,16 @@ const BOT = {
    podataka, bez novog upita i bez ijedne izmišljene brojke. */
 function innerFrame(channel, strings, data, { root = '../', themes = true } = {}) {
   const chrome = chromeOf(channel.lang);
-  const themesBand = themes ? `<section class="band">
+  /* Samo teme koje ovo izdanje stvarno ima — tema bez ijednog zapisa nema
+     svoju stranicu, pa bi veza vodila u prazno (audit je našao 968 takvih
+     veza). Popis se izvodi iz istih vijesti koje nosi naslovnica. */
+  const present = [...new Set((data.items || []).map(themeOf))];
+  const themesBand = themes && present.length ? `<section class="band">
     <div class="bandhead"><h2>${esc(strings.themes)}</h2></div>
-    <p class="chips">${Object.entries(strings.themeNames).map(([id, label]) => `<a class="chip" href="${root}tema/${id}/">${esc(label)}</a>`).join('')}</p>
+    <p class="chips">${present.map((id) => `<a class="chip" href="${root}tema/${id}/">${esc(strings.themeNames[id] || id)}</a>`).join('')}</p>
   </section>` : '';
   return `${themesBand}
-${mravinjakSection(channel, strings, data)}
+${mravinjakSection(channel, strings, data, { root })}
 <section class="page" aria-labelledby="edWebTitle">
   <h2 id="edWebTitle">${esc(chrome.webTitle || strings.otherChannels)}</h2>
   ${spiderWeb({ lang: channel.lang, selfUrl: channel.base, theme: 'light', compact: true })}
@@ -1387,7 +1391,7 @@ ${footer(channel, strings)}`;
 <main id="sadrzaj" class="page">
   <h1>${esc(chromeOf(channel.lang).webTitle || strings.otherChannels)}</h1>
   <p class="lead">${esc(chromeOf(channel.lang).webLead || strings.aboutText)}</p>
-  <p class="chips">${Object.entries(strings.themeNames).map(([id, label]) => `<a class="chip" href="../tema/${id}/">${esc(label)}</a>`).join('')}</p>
+  <p class="chips">${[...new Set(data.items.map(themeOf))].map((id) => `<a class="chip" href="../tema/${id}/">${esc(strings.themeNames[id] || id)}</a>`).join('')}</p>
   ${spiderWeb({ lang: channel.lang, selfUrl: channel.base, theme: 'light' })}
   <p class="small"><a href="../">← ${esc(strings.back)}</a></p>
 </main>
