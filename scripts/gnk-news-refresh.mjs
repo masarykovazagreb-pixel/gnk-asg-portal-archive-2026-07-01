@@ -107,7 +107,7 @@ const FEEDS = [
   { source: 'Medical News Today', group: 'zdravlje', category: 'health', url: 'https://www.medicalnewstoday.com/newsfeeds/rss/medical_all.xml' },
 
   // --- Kultura i umjetnost ------------------------------------------
-  { source: 'BBC Culture', group: 'kultura', category: 'culture', url: 'https://feeds.bbci.co.uk/culture/feed.rss' },
+  { source: 'BBC News Entertainment & Arts', group: 'kultura', category: 'culture', url: 'https://feeds.bbci.co.uk/news/entertainment_and_arts/rss.xml' },
   { source: 'The Guardian Culture', group: 'kultura', category: 'culture', url: 'https://www.theguardian.com/culture/rss' },
   { source: 'The New York Times Arts', group: 'kultura', category: 'culture', url: 'https://rss.nytimes.com/services/xml/rss/nyt/Arts.xml' },
   { source: 'Smithsonian Magazine', group: 'kultura', category: 'culture', url: 'https://www.smithsonianmag.com/rss/latest_articles/' },
@@ -120,7 +120,7 @@ const FEEDS = [
   // --- Priroda, zivotinje, okolis -----------------------------------
   { source: 'National Geographic Animals', group: 'ljubimci', category: 'animals', url: 'https://feeds.feedburner.com/ng/News/News_Main' },
   { source: 'BBC Nature', group: 'ljubimci', category: 'nature', url: 'https://feeds.bbci.co.uk/news/science_and_environment/rss.xml' },
-  { source: 'The Guardian Animals', group: 'ljubimci', category: 'animals', url: 'https://www.theguardian.com/environment/animals/rss' },
+  { source: 'The Guardian Wildlife', group: 'ljubimci', category: 'animals', url: 'https://www.theguardian.com/environment/wildlife/rss' },
   { source: 'The Guardian Environment', group: 'ljubimci', category: 'environment', url: 'https://www.theguardian.com/environment/rss' },
   { source: 'Mongabay', group: 'ljubimci', category: 'environment', url: 'https://news.mongabay.com/feed/' },
 
