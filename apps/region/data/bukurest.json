@@ -4,20 +4,19 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-10-24T07:15:55.670Z",
+  "updatedAt": "2026-10-24T11:38:49.471Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
-      "url": "https://www.agerpres.ro/rss",
-      "ok": false,
-      "fetched": 0,
+      "url": "https://www.agerpres.ro/rss/",
+      "ok": true,
+      "fetched": 20,
       "corrupt": 0,
       "errors": [
-        "https://www.agerpres.ro/rss: This operation was aborted",
-        "https://www.agerpres.ro/rss/: This operation was aborted"
+        "https://www.agerpres.ro/rss: HTTP 408"
       ],
-      "checkedAt": "2026-10-24T07:15:45.891Z"
+      "checkedAt": "2026-10-24T11:38:43.067Z"
     },
     {
       "id": "hotnews",
@@ -27,7 +26,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T07:15:46.444Z"
+      "checkedAt": "2026-10-24T11:38:43.716Z"
     },
     {
       "id": "zf",
@@ -37,7 +36,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T07:15:48.258Z"
+      "checkedAt": "2026-10-24T11:38:45.413Z"
     },
     {
       "id": "profit",
@@ -47,27 +46,29 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T07:15:48.472Z"
+      "checkedAt": "2026-10-24T11:38:45.705Z"
     },
     {
       "id": "digi24",
       "name": "Digi24",
       "url": "https://www.digi24.ro/rss",
       "ok": true,
-      "fetched": 245,
+      "fetched": 225,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T07:15:51.363Z"
+      "checkedAt": "2026-10-24T11:38:47.427Z"
     },
     {
       "id": "g4media",
       "name": "G4Media",
       "url": "https://www.g4media.ro/feed/",
-      "ok": true,
-      "fetched": 30,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-10-24T07:15:55.261Z"
+      "errors": [
+        "https://www.g4media.ro/feed/: HTTP 403"
+      ],
+      "checkedAt": "2026-10-24T11:38:48.557Z"
     },
     {
       "id": "newsro",
@@ -77,10 +78,556 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T07:15:55.668Z"
+      "checkedAt": "2026-10-24T11:38:49.468Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-10-24-agerpres-israelul-a-inchis-punctele-de-acces-catre-dbceba",
+      "title": "Israelul a închis punctele de acces către Hebron și a strămutat forțat aproape 500 de familii ca represalii",
+      "summary": "",
+      "date": "2026-10-24T11:38:43.067Z",
+      "url": "https://agerpres.ro/politic-extern/2026/10/24/israelul-a-inchis-punctele-de-acces-catre-hebron-si-a-stramutat-fortat-aproape-500-de-familii-ca-rep--1606457",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Israelul a închis punctele de acces către Hebron și a strămutat forțat aproape 500 de familii ca represalii",
+      "addedAt": "2026-10-24T11:38:43.067Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-agerpres-imobil-cu-fisuri-irinel-precup-isubif-s-au-809560",
+      "title": "Imobil cu fisuri/ Irinel Precup (ISUBIF): S-au constatat mișcări la fațada blocului; 65 de persoane au fost evacuate",
+      "summary": "",
+      "date": "2026-10-24T11:38:43.067Z",
+      "url": "https://agerpres.ro/social/2026/10/24/imobil-cu-fisuri-irinel-precup-isubif-s-au-constatat-miscari-la-fatada-blocului-65-de-persoane-au-fo--1606456",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Imobil cu fisuri/ Irinel Precup (ISUBIF): S-au constatat mișcări la fațada blocului; 65 de persoane au fost evacuate",
+      "addedAt": "2026-10-24T11:38:43.067Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-agerpres-muzicianul-jean-michel-jarre-optimist-prin-a60c06",
+      "title": "Muzicianul Jean-Michel Jarre, ''optimist prin subversiune'' în fața evoluției inteligenței artificiale",
+      "summary": "",
+      "date": "2026-10-24T11:38:43.067Z",
+      "url": "https://agerpres.ro/cultura/2026/10/24/muzicianul-jean-michel-jarre-optimist-prin-subversiune-in-fata-evolutiei-inteligentei-artificiale--1606455",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Muzicianul Jean-Michel Jarre, ''optimist prin subversiune'' în fața evoluției inteligenței artificiale",
+      "addedAt": "2026-10-24T11:38:43.067Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-agerpres-franta-mii-de-persoane-protesteaza-la-1e63a0",
+      "title": "Franța: Mii de persoane protestează la Orleans împotriva extremei drepte înaintea congresului lui Marine Le Pen (GALERIE FOTO)",
+      "summary": "",
+      "date": "2026-10-24T11:38:43.067Z",
+      "url": "https://agerpres.ro/social-extern/2026/10/24/franta-mii-de-persoane-protesteaza-la-orleans-impotriva-extremei-drepte-inaintea-congresului-lui-mar--1606453",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Franța: Mii de persoane protestează la Orleans împotriva extremei drepte înaintea congresului lui Marine Le Pen (GALERIE FOTO)",
+      "addedAt": "2026-10-24T11:38:43.067Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-agerpres-fotbal-alexandru-mitrita-si-alexandru-caa13a",
+      "title": "Fotbal: Alexandru Mitriță și Alexandru Cîmpanu au marcat în campionatul Chinei",
+      "summary": "",
+      "date": "2026-10-24T11:38:43.067Z",
+      "url": "https://agerpres.ro/sport-extern/2026/10/24/fotbal-alexandru-mitrita-si-alexandru-cimpanu-au-marcat-in-campionatul-chinei--1606452",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Fotbal: Alexandru Mitriță și Alexandru Cîmpanu au marcat în campionatul Chinei",
+      "addedAt": "2026-10-24T11:38:43.067Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-agerpres-inhga-debitul-dunarii-la-intrarea-in-tara-b7ca80",
+      "title": "INHGA: Debitul Dunării la intrarea în țară, în creștere ușoară până la 1.400 mc/s",
+      "summary": "",
+      "date": "2026-10-24T11:38:43.067Z",
+      "url": "https://agerpres.ro/social/2026/10/24/inhga-debitul-dunarii-la-intrarea-in-tara-in-crestere-usoara-pana-la-1-400-mc-s--1606449",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "INHGA: Debitul Dunării la intrarea în țară, în creștere ușoară până la 1.400 mc/s",
+      "addedAt": "2026-10-24T11:38:43.067Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-hotnews-interviu-cum-se-pregateste-republica-2f196e",
+      "title": "INTERVIU. Cum se pregătește Republica Moldova pentru situații de criză: „Analizăm și ce am văzut în Ucraina. Vrem ca fiecare cetățean să se simtă parte a acestui proces”",
+      "summary": "Republica Moldova va lansa în noiembrie programul „Moldova Pregătită”, care să-i ajute pe cetățeni, cu instrucțiuni și sprijin concret pentru a face față unei situații de criză. „Oamenii vor afla ce materiale trebuie să aibă pregătite, inclusiv ce trebuie să conțină așa-numitul rucsac de urgență. Vom explica și cum ne găsim unii pe alții, cum …",
+      "date": "2026-10-24T11:38:17.000Z",
+      "url": "https://hotnews.ro/interviu-cum-se-pregateste-republica-moldova-pentru-situatii-de-criza-analizam-si-ce-am-vazut-in-ucraina-vrem-ca-fiecare-cetatean-sa-se-simta-parte-a-acestui-proces-2376960",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "hnpremium",
+        "programul „Moldova pregătită”"
+      ],
+      "author": "Gabriel Bejan",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "INTERVIU. Cum se pregătește Republica Moldova pentru situații de criză: „Analizăm și ce am văzut în Ucraina. Vrem ca fiecare cetățean să se simtă parte a acestui proces”",
+      "addedAt": "2026-10-24T11:38:43.716Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-digi24-descoperire-neasteptata-in-epavele-din-al-d6fc5b",
+      "title": "Descoperire neașteptată în epavele din Al Doilea Război Mondial, scufundate în Pacific. Ce trăiește în combustibilul toxic",
+      "summary": "Oamenii de știință au descoperit comunități surprinzător de diverse de bacterii în combustibilul toxic care se scurge din două nave japoneze scufundate în Oceanul Pacific în timpul celui de-Al Doilea Război Mondial. Unele dintre microorganismele identificate aparțin unor grupuri cunoscute pentru capacitatea de a descompune hidrocarburile din petrol, iar cercetătorii consideră că descoperirea ar putea contribui la dezvoltarea unor noi metode de combatere a poluării marine, relatează Science Alert.",
+      "date": "2026-10-24T11:38:07.000Z",
+      "url": "https://www.digi24.ro/stiri/sci-tech/descoperiri/descoperire-neasteptata-in-epavele-din-al-doilea-razboi-mondial-scufundate-in-pacific-ce-traieste-in-combustibilul-toxic-4005979",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjIzJTJGMzAyNzcwM18zMDI3/NzAzX3Byb2ZpbWVkaWEtMDgxNjI0MzY3/OS5qcGcmaGFzaD1hNTY5OTIwNjRjZDVjN2UxN2E1Yzk5YWI2MzFmYTQwOQ==.jpg",
+      "imageAlt": "Descoperire neașteptată în epavele din Al Doilea Război Mondial, scufundate în Pacific. Ce trăiește în combustibilul toxic",
+      "addedAt": "2026-10-24T11:38:47.427Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-newsro-salvamont-brasov-temperaturile-negative-e0fd8e",
+      "title": "Salvamont Braşov: Temperaturile negative încep să îşi facă simţită prezenţa în zona montană / Diferenţele de temperatură şi de condiţii meteorologice dintre zonele joase şi cele…",
+      "summary": "Salvamontiştii din Braşov atrag atenţia că la munte vremea este capricioasă, fiind înregistrate temperaturi negative şi ninsori, ceea ce impune echipament adecvat pentru turişti. În plus, ei avertizează că diferenţele de temperatură şi de condiţii meteorologice dintre zonele joase şi cele de altitudine pot fi semnificative.",
+      "date": "2026-10-24T11:36:02.000Z",
+      "url": "https://www.news.ro/eveniment/salvamont-brasov-temperaturile-negative-incep-isi-faca-simtita-prezenta-zona-montana-diferentele-temperatura-conditii-meteorologice-dintre-zonele-joase-cele-altitudine-pot-semnificative-recomandari-1922403624022026101422880104",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Salvamont Braşov: Temperaturile negative încep să îşi facă simţită prezenţa în zona montană / Diferenţele de temperatură şi de condiţii meteorologice dintre zonele joase şi cele de",
+      "addedAt": "2026-10-24T11:38:49.469Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-digi24-seful-isu-bucuresti-ilfov-explica-ce-au-57a7f1",
+      "title": "Șeful ISU București-Ilfov explică ce au descoperit pompierii în blocul fisurat din Sectorul 6. Au fost evacuate 65 de persoane",
+      "summary": "Un număr de 65 de persoane au fost evacuate dintr-un bloc de locuințe din Sectorul 6 al Capitalei, după ce pompierii au constatat deplasări ale unor elemente ale fațadei și fisuri inclusiv în apartamente. Inspectorul-șef al ISU București-Ilfov, Irinel-Alexandru Precup, a precizat că evacuarea este o măsură temporară, luată din motive de siguranță. Autoritățile urmează să stabilească măsurile necesare în cadrul unei ședințe a Comitetului pentru Situații de Urgență.",
+      "date": "2026-10-24T11:33:18.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/evenimente/seful-isu-bucuresti-ilfov-explica-ce-au-descoperit-pompierii-in-blocul-fisurat-din-sectorul-6-au-fost-evacuate-65-de-persoane-4007079",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjI0JTJGMzAyODU0OV8zMDI4/NTQ5X0lEMjcwNzY0LUlOUVVBTS1QSE9U/T1MtQk9HREFOLUJVREEuanBnJmhhc2g9/MmE3YzAwNDNlNzU2MjUzMDY3OGVmMWE4OTU1MjU4ZTY=.jpg",
+      "imageAlt": "Șeful ISU București-Ilfov explică ce au descoperit pompierii în blocul fisurat din Sectorul 6. Au fost evacuate 65 de persoane",
+      "addedAt": "2026-10-24T11:38:47.427Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-hotnews-calcul-cat-costa-acelasi-cos-cu-18-produse-51cbf9",
+      "title": "Calcul. Cât costă același coș cu 18 produse în România față de restul țărilor din Europa. Datele de la noi arată ceva surprinzător",
+      "summary": "România este țara din UE cu cele mai mici prețuri la produsele alimentare, prețurile fiind cu 33,3% sub media Uniunii, arată o analiză Euronews, citată de Antena 3 CNN. Lucrurile se schimbă puțin atunci când comparația se extinde la nivelul întregii Europe. Potrivit datelor publicate de Euronews, cea mai scumpă țară din Europa (nu doar …",
+      "date": "2026-10-24T11:31:46.000Z",
+      "url": "https://hotnews.ro/calcul-cat-costa-acelasi-cos-cu-18-produse-in-romania-fata-de-restul-tarilor-din-europa-datele-arata-ceva-surprinzator-2385418",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Dan Duca",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Calcul. Cât costă același coș cu 18 produse în România față de restul țărilor din Europa. Datele de la noi arată ceva surprinzător",
+      "addedAt": "2026-10-24T11:38:43.716Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-newsro-atacurile-rusesti-au-provocat-moartea-a-4-8ce559",
+      "title": "Atacurile ruseşti au provocat moartea a 4 persoane şi rănirea a 78 în toată Ucraina în ultima zi, în timp ce o dronă a lovit o clădire rezidenţială din Kiev în cursul dimineţii de…",
+      "summary": "Atacurile ruseşti din ultima zi s-au soldat cu patru morţi şi 78 de răniţi în Ucraina, în timp ce Moscova a lansat noi lovituri asupra Kievului în dimineaţa zilei de 24 octombrie, au anunţat autorităţile locale, citate de kyivindependent.com.",
+      "date": "2026-10-24T11:25:42.000Z",
+      "url": "https://www.news.ro/externe/atacurile-rusesti-au-provocat-moartea-a-4-persoane-si-ranirea-a-78-in-toata-ucraina-in-ultima-zi-in-timp-ce-o-drona-a-lovit-o-cladire-rezidentiala-din-kiev-in-cursul-diminetii-de-sambata-1922402524422026101422880043",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "",
+      "imageAlt": "Atacurile ruseşti au provocat moartea a 4 persoane şi rănirea a 78 în toată Ucraina în ultima zi, în timp ce o dronă a lovit o clădire rezidenţială din Kiev în cursul dimineţii de ",
+      "addedAt": "2026-10-24T11:38:49.469Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-hotnews-astronomii-cred-ca-au-elucidat-misterul-din-542266",
+      "title": "Astronomii cred că au elucidat misterul din spatele tabloului „Noaptea înstelată” de Van Gogh",
+      "summary": "Timp de mai bine de un secol, s-a crezut că tabloul „Noaptea înstelată” al lui Vincent van Gogh era rodul imaginației, al altor desene și al amintirilor despre peisajele pe care le văzuse prin fereastra cu gratii a camerei sale din azilul din Franța, relatează CNN. Un grup de oameni de știință din Coreea de …",
+      "date": "2026-10-24T11:25:14.000Z",
+      "url": "https://hotnews.ro/astronomii-cred-ca-au-elucidat-misterul-din-spatele-tabloului-noaptea-instelata-de-van-gogh-2385399",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Ramona Ciobanu",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "Astronomii cred că au elucidat misterul din spatele tabloului „Noaptea înstelată” de Van Gogh",
+      "addedAt": "2026-10-24T11:38:43.717Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-hotnews-atac-masiv-cu-drone-asupra-rusiei-care-24cc49",
+      "title": "Atac masiv cu drone asupra Rusiei, care spune că a doborât 1.300 de drone. Ce a lovit Ucraina",
+      "summary": "Mai multe instalații industriale au fost avariate în urma unui atac cu drone asupra orașului rus Togliatti ce au avut loc sâmbătă, au declarat autoritățile locale, potrivit Reuters. Ucraina a afirmat că a lovit o importantă fabrică petrochimică din acea zonă. Primarul orașului Togliatti, Ilya Sukhikh, a spus că rapoartele preliminare nu indică victime sau …",
+      "date": "2026-10-24T11:21:04.000Z",
+      "url": "https://hotnews.ro/atac-masiv-cu-drone-asupra-rusiei-care-spune-ca-a-doborat-1-300-de-drone-ce-spune-ucraina-ca-a-lovit-2385437",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International",
+        "Război în Ucraina"
+      ],
+      "author": "George Sîrbu",
+      "theme": "rat",
+      "image": "",
+      "imageAlt": "Atac masiv cu drone asupra Rusiei, care spune că a doborât 1.300 de drone. Ce a lovit Ucraina",
+      "addedAt": "2026-10-24T11:38:43.717Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-digi24-comitet-pentru-situatii-de-urgenta-la-590ec2",
+      "title": "Comitet pentru Situaţii de Urgenţă la Bucureşti pentru analizarea situaţiei blocului din Drumul Taberei",
+      "summary": "Comitetul pentru Situaţii de Urgenţă al Municipiului Bucureşti se reuneşte, sâmbătă, de la ora 14.30, pentru analizarea situaţiei blocului din Drumul Taberei pe fațada căruia a apărut o crăpătură.",
+      "date": "2026-10-24T11:17:02.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/social/comitet-pentru-situatii-de-urgenta-la-bucuresti-pentru-analizarea-situatiei-blocului-din-drumul-taberei-4007085",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjI0JTJGMzAyODU1MF8zMDI4/NTUwX2Jsb2MuanBnJmhhc2g9YjBkYTAz/MWI4ZDUzMDJmNTYwMzY3ZjhiNGJmYTYxZmY=.jpg",
+      "imageAlt": "Comitet pentru Situaţii de Urgenţă la Bucureşti pentru analizarea situaţiei blocului din Drumul Taberei",
+      "addedAt": "2026-10-24T11:38:47.427Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-newsro-a-marcat-cristiano-ronaldo-cu-adevarat-3b143c",
+      "title": "A marcat Cristiano Ronaldo cu adevărat? „Golul fantomă” al portughezului stârneşte polemici",
+      "summary": "Cristiano Ronaldo a marcat, vineri, al 982-lea gol din carieră, în meciul câştigat de Al-Nassr, scor 3-1, cu Al-Faisaly, în campionatul Arabiei Saudite. Totuşi, reuşita sa ridică semne de întrebare: imaginile nu permit să se stabilească cu certitudine dacă portughezul a atins mingea sau dacă Andrei Girotto a deviat-o în propria poartă.",
+      "date": "2026-10-24T11:11:00.000Z",
+      "url": "https://www.news.ro/sport/a-marcat-cristiano-ronaldo-cu-adevarat-golul-fantoma-al-portughezului-starneste-polemici-1922401124002026101422879563",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "A marcat Cristiano Ronaldo cu adevărat? „Golul fantomă” al portughezului stârneşte polemici",
+      "addedAt": "2026-10-24T11:38:49.470Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-profit-foto-bataie-pe-telefoane-apple-creste-baf3fd",
+      "title": "FOTO Bătaie pe telefoane. Apple crește producția de iPhone Duo",
+      "summary": "Pe fondul cererii foarte mari observate în timpul precomenzilor, Apple a decis să comande partenerilor creșterea producției cu mai mult de 40%, susțin surse din cadrul lanțului de aprovizionare creat de compania americană.",
+      "date": "2026-10-24T11:09:00.000Z",
+      "url": "https://www.profit.ro/romania-conectata/foto-bataie-pe-telefoane-apple-creste-productia-de-iphone-duo-22879003?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "România Conectată"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/41186/22879003/1/iphone-duo-lansare-2026-4.jpg?width=800",
+      "imageAlt": "FOTO Bătaie pe telefoane. Apple crește producția de iPhone Duo",
+      "addedAt": "2026-10-24T11:38:45.705Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-zf-impozitarea-locuintelor-la-valoarea-de-d96e94",
+      "title": "Impozitarea locuinţelor la valoarea de piaţă se amână deocamdată, dar calculele arată ce ar urma: de 27 de ori mai mult pentru o casă din Bucureşti, de zece ori mai mult la Piatra…",
+      "summary": "",
+      "date": "2026-10-24T11:08:00.000Z",
+      "url": "https://www.zf.ro/business-construct/impozitarea-locuintelor-valoarea-piata-amana-deocamdata-calculele-arata-ar-urma-27-ori-mult-casa-bucuresti-zece-ori-mult-piatra-neamt-capitala-23265730",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Business Construct"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21328/23265730/1/2765126-publimedia-shutterstock.jpg?width=700",
+      "imageAlt": "Impozitarea locuinţelor la valoarea de piaţă se amână deocamdată, dar calculele arată ce ar urma: de 27 de ori mai mult pentru o casă din Bucureşti, de zece ori mai mult la Piatra ",
+      "addedAt": "2026-10-24T11:38:45.413Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-digi24-cine-conduce-guvernul-sorin-grindeanu-sau-48a0c2",
+      "title": "Cine conduce Guvernul: Sorin Grindeanu sau Luca Niculescu? Răspunsul lui Florin Manole",
+      "summary": "Ministrul Muncii, Florin Manole, a fost întrebat, în cadrul emisiunii „În fața ta” de la Digi24, dacă Guvernul este condus de premierul Luca Niculescu sau dacă liderul PSD, Sorin Grindeanu, are influența decisivă asupra Executivului. Discuția a pornit de la o imagine surprinsă în Parlament după votul de învestitură, în care Grindeanu apărea în fața mai multor miniștri. Manole a declarat că Niculescu este premierul și a susținut că experiența sa profesională și diplomatică îi confirmă rolul în fruntea Guvernului.",
+      "date": "2026-10-24T11:05:11.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/cine-conduce-guvernul-sorin-grindeanu-sau-luca-niculescu-raspunsul-lui-florin-manole-4003745",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjIwJTJGMzAyMjUyMF8zMDIy/NTIwXzIwMjYtMTAtMjAtMjU0Mi5qcGcm/aGFzaD0wOTgzODA3MjA1ODg5MDI4MGVmMDgxMGY4OTFhY2EwMQ==.jpg",
+      "imageAlt": "Cine conduce Guvernul: Sorin Grindeanu sau Luca Niculescu? Răspunsul lui Florin Manole",
+      "addedAt": "2026-10-24T11:38:47.428Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-digi24-cand-si-in-ce-conditii-ar-putea-creste-f6a8b7",
+      "title": "Când și în ce condiții ar putea crește salariile bugetarilor. Explicațiile noului ministru al Muncii despre legea salarizării",
+      "summary": "Adoptarea noii legi a salarizării depinde de deciziile privind bugetul și de angajamentele României pentru controlul deficitului, a declarat ministrul Muncii, Florin Manole, la emisiunea „În fața ta”, de la Digi24. Oficialul spune că, deși estimările bugetare prevăd cheltuieli cu salariile de 166 de miliarde de lei în 2026 și 174 de miliarde în 2027, aceste cifre nu reprezintă angajamente privind majorarea cheltuielilor.",
+      "date": "2026-10-24T11:00:15.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/cand-si-in-ce-conditii-ar-putea-creste-salariile-bugetarilor-explicatiile-noului-ministru-al-muncii-despre-legea-salarizarii-4003699",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjUl/MkYwOSUyRjEwJTJGMjM0ODUwNV8yMzQ4/NTA1X2Zsb3Jpbi1tYW5vbGUuanBnJmhh/c2g9NDViMWFlN2U0OTU4NDNlYjRjODA0MDUzMDcxZjhlYzE=.jpg",
+      "imageAlt": "Când și în ce condiții ar putea crește salariile bugetarilor. Explicațiile noului ministru al Muncii despre legea salarizării",
+      "addedAt": "2026-10-24T11:38:47.428Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-digi24-oameni-evacuati-de-urgenta-dintr-un-bloc-7a47e6",
+      "title": "Oameni evacuați de urgență dintr-un bloc din Capitală după ce pe fațada clădirii a apărut o crăpătură uriașă. Pericol de prăbușire",
+      "summary": "Zeci de oameni au fost evacuați dintr-un bloc din Sectorul 6 al Capitalei după ce fațada clădirii s-a fisurat. Salvatorii iau în calcul riscul ca o parte din clădire să se prăbușească. Este posibil ca această crăpătură să fi apărut, după cutremurul de la începutul săptămânii.",
+      "date": "2026-10-24T10:54:12.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/oameni-evacuati-de-urgenta-dintr-un-bloc-din-capitala-dupa-ce-pe-fatada-sa-a-aparut-din-senin-o-crapatura-uriasa-pericol-de-prabusire-4007031",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "potres",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjI0JTJGMzAyODUyNV8zMDI4/NTI1X2Jsb2MtZXZhY3VhdC5qcGcmaGFz/aD05ZDkwOTQwMDNjYWI0ZjRkN2EzMTMxZjUwZWQwOWM2OA==.jpg",
+      "imageAlt": "Oameni evacuați de urgență dintr-un bloc din Capitală după ce pe fațada clădirii a apărut o crăpătură uriașă. Pericol de prăbușire",
+      "addedAt": "2026-10-24T11:38:47.428Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-newsro-alexandru-muraru-pnl-psd-si-a-gasit-nasul-65a119",
+      "title": "Alexandru Muraru (PNL): PSD şi-a găsit naşul. Ilie Bolojan e cel care va înjumătăţi numărul de parlamentari ai fostului partid comunist. Va fi coşmarul PSD în anii care urmează",
+      "summary": "Vicepreşedintele PNL, Alexandru Muraru, susţine că Ilie Bolojan va fi coşmarul PSD în anii care urmează şi că liderul PNL va ajunge liderul opoziţiei şi va înjumătăţi numărul de parlamentari ai PSD.",
+      "date": "2026-10-24T10:54:00.000Z",
+      "url": "https://www.news.ro/politic-intern/alexandru-muraru-pnl-psd-si-a-gasit-nasul-ilie-bolojan-e-cel-care-va-injumatati-numarul-de-parlamentari-ai-fostului-partid-comunist-va-fi-cosmarul-psd-in-anii-care-urmeaza-1922405424002026101322879986",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Alexandru Muraru (PNL): PSD şi-a găsit naşul. Ilie Bolojan e cel care va înjumătăţi numărul de parlamentari ai fostului partid comunist. Va fi coşmarul PSD în anii care urmează",
+      "addedAt": "2026-10-24T11:38:49.470Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-zf-ucraina-are-din-nou-conexiune-stabila-la-9ace6f",
+      "title": "Ucraina are din nou „conexiune stabilă” la Starlink şi Starshield, după o săptămână de limitări",
+      "summary": "Ministerul ucrainean al Apărării a anunţat, sâmbătă, faptul că sistemul de comunicaţii prin Starlink şi Starshield, versiunea sa militară, funcţionează din nou la viteze de peste 400 de kilometri/oră, după mai bine de o săptămână de restricţii de serviciu.",
+      "date": "2026-10-24T10:49:10.000Z",
+      "url": "https://www.zf.ro/business-international/ucraina-are-din-nou-conexiune-stabila-la-starlink-si-starshield-dupa-o-saptamana-de-limitari-23267128",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Business Internaţional"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21450/23267128/1/2-volodimir-zelenski.jpg?width=700",
+      "imageAlt": "Ucraina are din nou „conexiune stabilă” la Starlink şi Starshield, după o săptămână de limitări",
+      "addedAt": "2026-10-24T11:38:45.413Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-newsro-comitet-pentru-situatii-de-urgenta-la-ac6ce9",
+      "title": "Comitet pentru Situaţii de Urgenţă, la Bucureşti, pentru analizarea situaţiei blocului din Drumul Taberei",
+      "summary": "Comitetul pentru Situaţii de Urgenţă al Municipiului Bucureşti se reuneşte, sâmbătă, de la ora 14.30, pentru analizarea situaţiei blocului din Drumul Taberei.",
+      "date": "2026-10-24T10:48:00.000Z",
+      "url": "https://www.news.ro/eveniment/comitet-pentru-situatii-de-urgenta-la-bucuresti-pentru-analizarea-situatiei-blocului-din-drumul-taberei-1922404824002026101322879964",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Comitet pentru Situaţii de Urgenţă, la Bucureşti, pentru analizarea situaţiei blocului din Drumul Taberei",
+      "addedAt": "2026-10-24T11:38:49.470Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-profit-contrabanda-350-de-mii-de-cartuse-de-tigari-4cbd48",
+      "title": "Contrabandă. 350 de mii de cartușe de țigări și 9,8 tone de tutun - confiscate în 9 luni",
+      "summary": "3,5 milioane pachete de țigări și 9,8 tone de tutun de contrabandă au fost confiscate și distruse în primele 9 luni ale anului 2026, fiind aplicate 1.135 de sancțiuni contravenționale, în valoare de 8 milioane de lei.",
+      "date": "2026-10-24T10:47:00.000Z",
+      "url": "https://www.profit.ro/stiri/social/contrabanda-350-de-mii-de-cartuse-de-tigari-si-9-8-tone-de-tutun-confiscate-in-9-luni-22879585?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Social"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33239/22879585/1/untitled-design-32.png?width=800",
+      "imageAlt": "Contrabandă. 350 de mii de cartușe de țigări și 9,8 tone de tutun - confiscate în 9 luni",
+      "addedAt": "2026-10-24T11:38:45.705Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-profit-ultima-ora-foto-bloc-evacuat-in-capitala-in-ca35e6",
+      "title": "ULTIMA ORĂ FOTO Bloc evacuat în capitală în urma apariției unei crăpături între 2 scări. Legătura cu recentul cutremur, încă incertă. Arafat: Evacuarea poate deveni obligatorie",
+      "summary": "O crăpătură apărută între 2 scări ale unui bloc cu risc seismic din sectorul 6 al capitalei, de la etajul 5 până la etajul 8, a condus la evacuarea acestuia. Nu este clar dacă respectiva crăpătura a apărut în urma cutremurului de săptămâna trecută.",
+      "date": "2026-10-24T10:34:00.000Z",
+      "url": "https://www.profit.ro/stiri/social/ultima-ora-foto-bloc-evacuat-in-capitala-in-urma-aparitiei-unei-crapaturi-intre-2-scari-legatura-cu-recentul-cutremur-inca-incerta-arafat-evacuarea-poate-deveni-obligatorie-22879903?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Social"
+      ],
+      "author": "",
+      "theme": "potres",
+      "image": "https://i0.1616.ro/media/2/2621/33239/22879903/12/cutremur.jpg?width=800",
+      "imageAlt": "ULTIMA ORĂ FOTO Bloc evacuat în capitală în urma apariției unei crăpături între 2 scări. Legătura cu recentul cutremur, încă incertă. Arafat: Evacuarea poate deveni obligatorie",
+      "addedAt": "2026-10-24T11:38:45.705Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-zf-conf-univ-dr-catalina-crisan-ceo-ubb-b6fde2",
+      "title": "Conf. univ. dr. Cătălina Crişan, CEO UBB Student i-Lab: Vrem să îi echipăm pe studenţii noştri cu competenţe care să îi ajute în activităţile pe care le vor desfăşura în viitor…",
+      "summary": "",
+      "date": "2026-10-24T10:30:00.000Z",
+      "url": "https://www.zf.ro/zf-gen-z/conf-univ-dr-catalina-crisan-ceo-ubb-student-i-lab-vrem-ii-echipam-studentii-nostri-competente-ii-ajute-activitatile-le-vor-desfasura-viitor-gandirea-critica-public-speaking-elemente-cheie-23267097",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "ZF Gen Z"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/41446/23267097/1/catalina-crisan.png?width=700",
+      "imageAlt": "Conf. univ. dr. Cătălina Crişan, CEO UBB Student i-Lab: Vrem să îi echipăm pe studenţii noştri cu competenţe care să îi ajute în activităţile pe care le vor desfăşura în viitor. Gâ",
+      "addedAt": "2026-10-24T11:38:45.413Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-newsro-taifunul-champi-in-taiwan-56-000-de-220e94",
+      "title": "Taifunul Champi în Taiwan: 56.000 de gospodării fără electricitate, un mort şi mii de persoane evacuate",
+      "summary": "Echipele de urgenţă s-au mobilizat, sâmbătă, pentru a restabili alimentarea cu energie electrică în aproximativ 56.000 de gospodării rămase fără curent în Taiwan, ţară lovită de taifunul Champi, care se îndreaptă acum spre China şi Japonia, relatează AFP.",
+      "date": "2026-10-24T10:21:09.000Z",
+      "url": "https://www.news.ro/externe/taifunul-champi-in-taiwan-56-000-de-gospodarii-fara-electricitate-un-mort-si-mii-de-persoane-evacuate-1922402124092026101322879888",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "image": "",
+      "imageAlt": "Taifunul Champi în Taiwan: 56.000 de gospodării fără electricitate, un mort şi mii de persoane evacuate",
+      "addedAt": "2026-10-24T11:38:49.471Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-hotnews-bloc-cu-bulina-din-bucuresti-evacuat-abfa06",
+      "title": "Bloc cu bulină din București, evacuat. „Crăpătură pe trei etaje”. Nu e clar dacă s-a produs la seismul de acum cateva zile, spun autoritățile",
+      "summary": "Zeci de oameni sunt evacuați sâmbătă de pompieri dintr-o scară de bloc din Drumul Taberei, Sectorul 6 al Capitalei. Măsura vine după ce localnicii au avertizat autoritățile că a apărut o fisură în clădire, anunță ISUBIF. „Intervenim pe Drumul Taberei nr. 30, Sector 6, București, ca urmare a unui apel realizat prin numărul unic de …",
+      "date": "2026-10-24T10:11:09.000Z",
+      "url": "https://hotnews.ro/bloc-cu-bulina-din-bucuresti-evacuat-crapatura-pe-trei-etaje-nu-este-clar-daca-s-a-produs-la-seismul-de-acum-cateva-zile-spun-autoritatile-2385350",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Ramona Ciobanu",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Bloc cu bulină din București, evacuat. „Crăpătură pe trei etaje”. Nu e clar dacă s-a produs la seismul de acum cateva zile, spun autoritățile",
+      "addedAt": "2026-10-24T11:38:43.717Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-hotnews-snoop-noi-mesaje-dezvaluie-relatia-lui-438826",
+      "title": "Snoop: Noi mesaje dezvăluie relația lui Simion cu consultanții israelieni și ce l-a speriat pe liderul AUR. „Sper să nu ne afecteze colaborarea”",
+      "summary": "AUR neagă colaborarea cu consultanții israelieni apropiați lui Netanyahu și susține că nu există niciun contract cu aceștia. Noi mesaje obținute de site-ul de investigații Snoop arată cum George Simion le-a transmis, în septembrie, celor doi întrebările primite de la o publicație din România despre relația cu Srulik Einhorn. Noi mesaje intrate în posesia Snoop …",
+      "date": "2026-10-24T09:52:16.000Z",
+      "url": "https://hotnews.ro/snoop-noi-mesaje-dezvaluie-relatia-lui-simion-cu-consultantii-israelieni-si-ce-l-a-speriat-pe-liderul-aur-sper-sa-nu-ne-afecteze-colaborarea-2385319",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Ioana Vochin",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Snoop: Noi mesaje dezvăluie relația lui Simion cu consultanții israelieni și ce l-a speriat pe liderul AUR. „Sper să nu ne afecteze colaborarea”",
+      "addedAt": "2026-10-24T11:38:43.717Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-zf-zf-live-noua-economie-a-spatiului-cosmic-9721f1",
+      "title": "ZF Live. Noua economie a spaţiului cosmic. Care sunt obiectivele Europei în spaţiu? O discuţie cu Kai-UWE SCHROGL, consilier special, European Space Agency",
+      "summary": "",
+      "date": "2026-10-24T09:50:28.000Z",
+      "url": "https://www.zf.ro/eveniment/zf-live-noua-economie-a-spatiului-cosmic-care-sunt-obiectivele-europei-in-spatiu-o-discutie-cu-kai-uwe-schrogl-consilier-special-european-space-agency-23267121",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Eveniment"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10386/23267121/2/untitled.png?width=700",
+      "imageAlt": "ZF Live. Noua economie a spaţiului cosmic. Care sunt obiectivele Europei în spaţiu? O discuţie cu Kai-UWE SCHROGL, consilier special, European Space Agency",
+      "addedAt": "2026-10-24T11:38:45.413Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-zf-conf-univ-dr-razvan-v-mustata-decan-ubb-5caded",
+      "title": "Conf. univ. dr. Răzvan V. Mustaţă, decan, UBB FSEGA: Mirajul corporaţiilor a trecut. Orientarea către antreprenoriat a tinerilor de azi este mult mai puternică decât către un job…",
+      "summary": "",
+      "date": "2026-10-24T09:45:00.000Z",
+      "url": "https://www.zf.ro/zf-gen-z/conf-univ-dr-razvan-v-mustata-decan-ubb-fsega-mirajul-corporatiilor-a-trecut-orientarea-catre-antreprenoriat-a-tinerilor-de-azi-este-mult-mai-puternica-decat-catre-un-job-in-corporatie-23267095",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "ZF Gen Z"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/41446/23267095/1/razvan-mustata.png?width=700",
+      "imageAlt": "Conf. univ. dr. Răzvan V. Mustaţă, decan, UBB FSEGA: Mirajul corporaţiilor a trecut. Orientarea către antreprenoriat a tinerilor de azi este mult mai puternică decât către un job î",
+      "addedAt": "2026-10-24T11:38:45.413Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-profit-openai-va-antrena-modelele-de-top-fara-debf12",
+      "title": "OpenAI va antrena modelele de top fără acces la internet",
+      "summary": "Antrenarea celor mai performante modele de inteligență artificială dezvoltate de OpenAI se va face fără acces la internet, a anunțat compania.",
+      "date": "2026-10-24T09:37:00.000Z",
+      "url": "https://www.profit.ro/romania-conectata/openai-va-antrena-modelele-de-top-fara-acces-la-internet-22878986?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "România Conectată"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://i0.1616.ro/media/2/2621/41186/22878986/1/chatgpt-1.jpg?width=800",
+      "imageAlt": "OpenAI va antrena modelele de top fără acces la internet",
+      "addedAt": "2026-10-24T11:38:45.705Z"
+    },
+    {
+      "slug": "bukurest-2026-10-24-profit-schimbare-importanta-la-google-maps-pe-6f92ca",
+      "title": "Schimbare importantă la Google Maps, pe anumite mașini",
+      "summary": "Șoferii care folosesc iPhone și Apple CarPlay vor putea discuta cu inteligența artificială Gemini direct din Google Maps, deoarece Google extinde asistentul AI în sistemul de navigație al mașinilor compatibile, astfel încât utilizatorii să poată căuta restaurante, benzinării sau trasee alternative fără să mai introducă manual informațiile pe ecran.",
+      "date": "2026-10-24T09:09:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/auto-transporturi/schimbare-importanta-la-google-maps-pe-anumite-masini-22878903?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Auto/Transporturi"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://i0.1616.ro/media/2/2621/33217/22878903/1/pexels-vahapdmr-12671359.jpg?width=800",
+      "imageAlt": "Schimbare importantă la Google Maps, pe anumite mașini",
+      "addedAt": "2026-10-24T11:38:45.706Z"
+    },
     {
       "slug": "bukurest-2026-10-24-hotnews-apel-extraordinar-al-lui-kim-jong-un-catre-4102a3",
       "title": "Apel extraordinar al lui Kim Jong Un către armata nord-coreeană: „Forțe de luptă perfecte”",
@@ -6469,583 +7016,6 @@
       "image": "",
       "imageAlt": "PNL, replică pentru social-democraţi pe tema deficitului: PSD minte şi falsifică fără ruşine semnificaţia datelor Eurostat / Compară mere cu pere / Deficitul pe primele 6 luni din ",
       "addedAt": "2026-10-22T19:59:18.637Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-g4media-trump-i-a-cerut-lui-musk-sa-ridice-080041",
-      "title": "Trump i-a cerut lui Musk să ridice restricțiile asupra utilizării Starlink în Ucraina",
-      "summary": "Președintele american Donald Trump i-a cerut lui Elon Musk să ridice restricțiile asupra utilizării sistemului Starlink în Ucraina. Terminalele folosite de militarii ucraineni au început să funcționeze mai rapid, dar nu au revenit la viteză inițială, arată primele informații de pe front, transmite Mediafax. Donald Trump i-a cerut proprietarului SpaceX să ridice restricțiile asupra utilizării […] © G4Media.ro .",
-      "date": "2026-10-22T19:24:30.000Z",
-      "url": "https://www.g4media.ro/trump-i-a-cerut-lui-musk-sa-ridice-restrictiile-asupra-utilizarii-starlink-in-ucraina.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Analize",
-        "donald trump",
-        "elon musk",
-        "starlink"
-      ],
-      "author": "Redacția",
-      "theme": "rat",
-      "image": "https://www.g4media.ro//wp-content/uploads/2025/04/MuskTrump-e1743583144161.jpg",
-      "imageAlt": "Trump i-a cerut lui Musk să ridice restricțiile asupra utilizării Starlink în Ucraina",
-      "addedAt": "2026-10-22T19:59:18.357Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-g4media-ilie-bolojan-dupa-decizia-cedo-privind-e5322f",
-      "title": "Ilie Bolojan, după decizia CEDO privind restanțele salariale ale magistraților: „Guvernul va avea de ales pe cine servește: România sau aristocrația bugetară”",
-      "summary": "Președintele PNL, Ilie Bolojan, susține că decizia de joi a Curții Europene a Drepturilor Omului (CEDO), prin care au fost respinse cererile a cinci judecători nemulțumiți de eșalonarea restanțelor salariale, confirmă poziția Guvernului în disputa privind plata acestor drepturi. Bolojan afirmă că Executivul primește astfel un argument pentru a rezolva problema fără să afecteze echilibrul […] © G4Media.ro .",
-      "date": "2026-10-22T19:24:16.000Z",
-      "url": "https://www.g4media.ro/ilie-bolojan-dupa-decizia-cedo-privind-restantele-salariale-ale-magistratilor-guvernul-va-avea-de-ales-pe-cine-serveste-romania-sau-aristocratia-bugetara.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Articole",
-        "decizie cedo",
-        "ilie bolojan",
-        "restante salarii magistrati"
-      ],
-      "author": "Ștefan Munteanu",
-      "theme": "politika",
-      "image": "https://www.g4media.ro//wp-content/uploads/2026/10/Dan-Motreanu-si-Ilie-Bolojan.jpg",
-      "imageAlt": "Ilie Bolojan, după decizia CEDO privind restanțele salariale ale magistraților: „Guvernul va avea de ales pe cine servește: România sau aristocrația bugetară”",
-      "addedAt": "2026-10-22T19:59:18.357Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-digi24-conference-league-prima-victorie-in-grupa-7ee0eb",
-      "title": "Conference League. Prima victorie în grupă - Universitatea Craiova a învins pe Inter D’Escaldes. Ce meci urmează pentru olteni",
-      "summary": "Echipa campioană României, Universitatea Craiova a învins joi, în deplasare, scor 3-1, formaţia Inter D’Escaldes, din Andorra, în a doua etapă a grupei Conference League.",
-      "date": "2026-10-22T19:22:34.000Z",
-      "url": "https://www.digi24.ro/stiri/sport/fotbal/conference-league-prima-victorie-in-grupa-universitatea-craiova-a-invins-pe-inter-descaldes-ce-meci-urmeaza-pentru-olteni-4004967",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "sport",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjIyJTJGMzAyNjk0NV8zMDI2/OTQ1X3VuaXYtY3JhaW92YS1wcm9maW1l/ZGlhLTExNDU3MTU2NjcucG5nJmhhc2g9/Mzc5NDE4NGQ4ODMwMjExOTBhYThiYzRkMzdiOWNhNGI=.png",
-      "imageAlt": "Conference League. Prima victorie în grupă - Universitatea Craiova a învins pe Inter D’Escaldes. Ce meci urmează pentru olteni",
-      "addedAt": "2026-10-22T19:59:14.688Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-g4media-netanyahu-neaga-ca-trump-ar-fi-blocat-un-3503ac",
-      "title": "Netanyahu neagă că Trump ar fi blocat un nou atac israelian asupra Iranului",
-      "summary": "Premierul israelian Benjamin Netanyahu a respins joi informațiile potrivit cărora președintele american Donald Trump ar fi împiedicat Israelul să lanseze un nou atac asupra Iranului, planificat pentru weekendul 10-11 octombrie. Potrivit presei britanice, armata israeliană pregătise lovituri asupra unor obiective nucleare și energetice iraniene, însă Washingtonul s-ar fi opus reluării confruntărilor înaintea alegerilor pentru Congresul […] © G4Media.ro .",
-      "date": "2026-10-22T19:20:59.000Z",
-      "url": "https://www.g4media.ro/netanyahu-neaga-ca-trump-ar-fi-blocat-un-nou-atac-israelian-asupra-iranului.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Analize",
-        "atac Israel iran",
-        "benjamin netanyahu",
-        "donald trump"
-      ],
-      "author": "Ștefan Munteanu",
-      "theme": "energija",
-      "image": "https://www.g4media.ro//wp-content/uploads/2025/10/profimedia-1045163832.jpg",
-      "imageAlt": "Netanyahu neagă că Trump ar fi blocat un nou atac israelian asupra Iranului",
-      "addedAt": "2026-10-22T19:59:18.357Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-g4media-pnl-denunta-o-campanie-de-dezinformare-a-c01078",
-      "title": "PNL denunță o campanie de dezinformare a PSD privind deficitul bugetar: „PSD minte și falsifică fără rușine semnificația datelor Eurostat”",
-      "summary": "Partidul Național Liberal denunță o campanie de dezinformare lansată de PSD în legătură cu datele Eurostat privind deficitul bugetar al României. „PSD minte și falsifică fără rușine semnificația datelor Eurostat. Deficitul bugetar al României pe primele 6 luni din acest an a fost 2% din PIB”, se arată într-un comunicat de presă transmis, joi seara, […] © G4Media.ro .",
-      "date": "2026-10-22T19:19:03.000Z",
-      "url": "https://www.g4media.ro/pnl-denunta-o-campanie-de-dezinformare-a-psd-privind-deficitul-bugetar-psd-minte-si-falsifica-fara-rusine-semnificatia-datelor-eurostat.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Analize",
-        "deficit bugetar",
-        "PNL",
-        "PSD"
-      ],
-      "author": "Andrei Dan",
-      "theme": "sigurnost",
-      "image": "https://www.g4media.ro//wp-content/uploads/2024/11/bani-lei-bancnote-cash-numerar-Sursa-foto-Inquam-Photos-Octav-Ganea-6.jpg",
-      "imageAlt": "PNL denunță o campanie de dezinformare a PSD privind deficitul bugetar: „PSD minte și falsifică fără rușine semnificația datelor Eurostat”",
-      "addedAt": "2026-10-22T19:59:18.357Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-digi24-dragos-pislaru-fac-parte-dintr-un-val-care-33a4c0",
-      "title": "Dragoş Pîslaru: Fac parte dintr-un val care vine şi aduce un pic de reformă. PNL dă în continuare semne că îşi doreşte această reformă",
-      "summary": "Dragoş Pîslaru, fost ministru al Investiţiilor şi Proiectelor Europene şi fost ministru interimar al Muncii, consideră că este nevoie de o reformă internă în PNL, după ruperea coaliţiei cu PSD şi intrarea partidului în opoziţie.",
-      "date": "2026-10-22T19:17:30.000Z",
-      "url": "https://www.digi24.ro/stiri/actualitate/politica/dragos-pislaru-fac-parte-dintr-un-val-care-vine-si-aduce-un-pic-de-reforma-pnl-da-in-continuare-semne-ca-isi-doreste-aceasta-reforma-4004987",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwOSUyRjE1JTJGMjk2MDIzN18yOTYw/MjM3X2RyYWdvcy1waXNsYXJ1LWlucXVh/bS1vY3Rhdi1nYW5lYS5qcGcmaGFzaD1k/NTFkYWE2Mzc5YjMzYjYxMjE1ZTc5NDZmZGY2ZDEwMA==.jpg",
-      "imageAlt": "Dragoş Pîslaru: Fac parte dintr-un val care vine şi aduce un pic de reformă. PNL dă în continuare semne că îşi doreşte această reformă",
-      "addedAt": "2026-10-22T19:59:14.688Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-newsro-ilie-bolojan-decizia-de-astazi-a-cedo-arata-8ca9d0",
-      "title": "Ilie Bolojan: Decizia de astăzi a CEDO arată că am avut dreptate în ceea ce priveşte plata restanţelor salariale către magistraţi / Actualul Guvern va avea de ales pe cine…",
-      "summary": "Preşedintele PNL, fostul premier Ilie Bolojan, afirmă, joi seară, că decizia CEDO referitoare la plata restanţelor salariale către magistraţi dă dreptate guvernului pe care l-a condus: ”Într-o situaţie economică dificilă, este imoral ca statul să fie obligat să plătească imediat sume uriaşe”. În plus, afirmă Bolojan, CEDO pune sub semnul întrebării şi unele hotărâri luate în România, pentru că există suspiciuni că judecătorii care le-au dat s-ar fi aflat într-un conflict de interese.",
-      "date": "2026-10-22T19:12:00.000Z",
-      "url": "https://www.news.ro/politic-intern/ilie-bolojan-decizia-astazi-cedo-arata-avut-dreptate-ceea-priveste-plata-restantelor-salariale-catre-magistrati-actualul-guvern-avea-ales-serveste-romania-aristocratia-bugetara-1922401222002026102222873028",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "politika",
-      "image": "",
-      "imageAlt": "Ilie Bolojan: Decizia de astăzi a CEDO arată că am avut dreptate în ceea ce priveşte plata restanţelor salariale către magistraţi / Actualul Guvern va avea de ales pe cine serveşte",
-      "addedAt": "2026-10-22T19:59:18.637Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-digi24-ministerul-energiei-anunta-masuri-privind-5366de",
-      "title": "Ministerul Energiei anunţă măsuri privind nemulțumirile salariale ale minerilor de la Vulcan",
-      "summary": "Ministerul Energiei anunţă termene clare pentru soluţionarea revendicărilor salariale ale minerilor de la Vulcan, în urma discuţiilor secretarului de stat Marius Poşa cu reprezentanţii angajaţilor.",
-      "date": "2026-10-22T19:07:41.000Z",
-      "url": "https://www.digi24.ro/stiri/actualitate/politica/ministerul-energiei-anunta-masuri-privind-nemultumirile-salariale-ale-minerilor-de-la-vulcan-4004969",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "energija",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjE5JTJGMzAyMDM0NV8zMDIw/MzQ1XzIwMjYtMTAtMTktOTE4Ni5qcGcm/aGFzaD00NWJlNTBhN2EzNDViNmU3ZTM5NjAyYjJkYThmNTNiMg==.jpg",
-      "imageAlt": "Ministerul Energiei anunţă măsuri privind nemulțumirile salariale ale minerilor de la Vulcan",
-      "addedAt": "2026-10-22T19:59:14.689Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-hotnews-a-fost-o-ambuscada-cunoscut-politolog-bbb044",
-      "title": "„A fost o ambuscadă”. Cunoscut politolog, despre „capcana” întinsă de PSD și Nicușor Dan lui Ilie Bolojan",
-      "summary": "Stelian Tănase, politolog și scriitor, consideră că liderul PNL, Ilie Bolojan, a căzut într-o „capcană” a PSD și a președintelui Nicușor Dan prin „șederea neașteptat de lungă” la Palatul Victoria, ca premier interimar, după ce a fost demis prin moțiune de cenzură. Guvernul Bolojan a fost demis printr-o moțiune de cenzură PSD-AUR pe 5 mai, …",
-      "date": "2026-10-22T19:03:27.000Z",
-      "url": "https://hotnews.ro/capcana-pe-care-spune-stelian-tanase-ca-i-au-intins-o-psd-si-nicusor-dan-lui-ilie-bolojan-va-fi-supus-unor-atacuri-concentrate-2383887",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "Actualitate",
-        "Nicusor Dan",
-        "psd",
-        "stelian tanase"
-      ],
-      "author": "Vladimir Ionescu",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "„A fost o ambuscadă”. Cunoscut politolog, despre „capcana” întinsă de PSD și Nicușor Dan lui Ilie Bolojan",
-      "addedAt": "2026-10-22T19:59:11.804Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-newsro-rusia-isi-continua-diplomatia-ostaticilor-20b63f",
-      "title": "Rusia îşi continuă ”diplomaţia ostaticilor” şi arestează un german",
-      "summary": "Rusia îşi continuă ”diplomaţia ostaticilor” prin arestarea unui cetăţean german, relatează RFI.",
-      "date": "2026-10-22T19:02:16.000Z",
-      "url": "https://www.news.ro/externe/rusia-isi-continua-diplomatia-ostaticilor-si-aresteaza-un-german-1922400222162026102222872884",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Rusia îşi continuă ”diplomaţia ostaticilor” şi arestează un german",
-      "addedAt": "2026-10-22T19:59:18.637Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-profit-agentul-ai-muse-trece-de-10-milioane-de-301700",
-      "title": "Agentul AI Muse trece de 10 milioane de utilizatori",
-      "summary": "Meta a anunțat, cu ocazia conferinței cu investitorii pentru anunțarea celor mai recente rezultate financiare, că agentul de inteligență artificială Muse este folosit de peste 10 milioane de oameni.",
-      "date": "2026-10-22T19:00:00.000Z",
-      "url": "https://www.profit.ro/romania-conectata/agentul-ai-muse-trece-de-10-milioane-de-utilizatori-22869663?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
-      "source": "profit",
-      "sourceName": "Profit.ro",
-      "categories": [
-        "România Conectată"
-      ],
-      "author": "",
-      "theme": "sigurnost",
-      "image": "https://i0.1616.ro/media/2/2621/41186/22869663/1/meta-facebook-1.jpg?width=800",
-      "imageAlt": "Agentul AI Muse trece de 10 milioane de utilizatori",
-      "addedAt": "2026-10-22T19:59:13.201Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-g4media-aroganta-pura-google-provoaca-indignare-in-867ca2",
-      "title": "„Aroganță pură”: Google provoacă indignare în Finlanda, după ce a defrișat ilegal sute de mii de copaci pentru centre de date",
-      "summary": "Google a defrișat aproximativ 250.000 de copaci pe o suprafață de 330 de hectare în apropierea orașului Muhos, din nordul Finlandei, pentru construirea unui centru de date, fără să finalizeze în prealabil evaluările de impact asupra mediului, relatează The Guardian. Compania a fost obligată să suspende temporar lucrările, după ce autoritățile au constatat încălcări ale […] © G4Media.ro .",
-      "date": "2026-10-22T18:50:31.000Z",
-      "url": "https://www.g4media.ro/aroganta-pura-google-provoaca-indignare-in-finlanda-dupa-ce-a-defrisat-ilegal-sute-de-mii-de-copaci-pentru-centre-de-date.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Analize",
-        "defrisare copaci",
-        "google finlanda"
-      ],
-      "author": "Ștefan Munteanu",
-      "theme": "sport",
-      "image": "https://www.g4media.ro//wp-content/uploads/2026/10/profimedia-1140425940-scaled.jpg",
-      "imageAlt": "„Aroganță pură”: Google provoacă indignare în Finlanda, după ce a defrișat ilegal sute de mii de copaci pentru centre de date",
-      "addedAt": "2026-10-22T19:59:18.358Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-zf-editia-23-octombrie-2026-epaper-66fee1",
-      "title": "Ediţia 23 octombrie 2026 epaper",
-      "summary": "",
-      "date": "2026-10-22T18:44:15.000Z",
-      "url": "https://www.zf.ro/auxiliar/editia-23-octombrie-2026-epaper-23266004",
-      "source": "zf",
-      "sourceName": "Ziarul Financiar",
-      "categories": [
-        "(auxiliar)"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Ediţia 23 octombrie 2026 epaper",
-      "addedAt": "2026-10-22T19:59:13.032Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-hotnews-ministrul-sanatatii-anunta-realocarea-de-435f70",
-      "title": "Ministrul Sănătății anunță realocarea de fonduri pentru UPU și Ambulanță: „Am identificat proiecte pentru care anumite mecanisme pot fi amânate”",
-      "summary": "Ministrul Sănătății, Alexandru Rogobete, a anunțat realocarea a 150 de milioane de lei pentru finanțarea Unităților de Primiri Urgențe și a serviciilor de ambulanță. Oficialul a precizat că este vorba despre o redistribuire a unor fonduri alocate pentru alte proiecte. „Am identificat proiecte pentru care anumite mecanisme pot fi amânate cu 30–40 de zile, până …",
-      "date": "2026-10-22T18:42:33.000Z",
-      "url": "https://hotnews.ro/ministrul-sanatatii-anunta-realocarea-de-fonduri-pentru-upu-si-ambulanta-am-identificat-proiecte-pentru-care-anumite-mecanisme-pot-fi-amanate-2383868",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "Actualitate",
-        "Alexandru Rogobete",
-        "Ministerul Sanatatii"
-      ],
-      "author": "Vladimir Ionescu",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Ministrul Sănătății anunță realocarea de fonduri pentru UPU și Ambulanță: „Am identificat proiecte pentru care anumite mecanisme pot fi amânate”",
-      "addedAt": "2026-10-22T19:59:11.804Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-profit-construirea-viitorului-amazing-abundence-07e12f",
-      "title": "„Construirea viitorului Amazing Abundence” începe la Tesla cu scăderea veniturilor și profitului în trimestrul 3",
-      "summary": "Tesla a publicat rezultatele financiare pentru trimestrul al treilea al anului cu cifre în linie cu așteptările analiștilor. Potrivit cifrelor analizate de Profit.ro, veniruturile din sectorul auto au scăzut cu 3 procente, chiar dacă veniturile totale au rămas la un nivel constant.",
-      "date": "2026-10-22T18:40:00.000Z",
-      "url": "https://www.profit.ro/povesti-cu-profit/auto-transporturi/construirea-viitorului-amazing-abundence-incepe-la-tesla-cu-scaderea-veniturilor-si-profitului-in-trimestrul-3-22869206?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
-      "source": "profit",
-      "sourceName": "Profit.ro",
-      "categories": [
-        "Auto/Transporturi"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://i0.1616.ro/media/2/2621/33217/22869206/2/captura-de-ecran-2023-09-01-191657.jpg?width=800",
-      "imageAlt": "„Construirea viitorului Amazing Abundence” începe la Tesla cu scăderea veniturilor și profitului în trimestrul 3",
-      "addedAt": "2026-10-22T19:59:13.201Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-hotnews-presedintele-lui-dinamo-clarificari-despre-c7659c",
-      "title": "Președintele lui Dinamo, clarificări despre contractele lui Alaa Bellaarouch și Alberto Soro",
-      "summary": "Andrei Nicolescu a oferit noi detalii despre situația contractuală a lui Alaa Bellaarouch și Alberto Soro, doi dintre jucătorii importanți de la Dinamo. Oficialul alb-roșilor a explicat că în cazul ambilor fotbaliști există înțelegeri privind contractele, însă mai sunt aspecte de clarificat. Alaa Bellaarouch este împrumutat de la Braga, iar Dinamo are o opțiune de …",
-      "date": "2026-10-22T18:27:35.000Z",
-      "url": "https://hotnews.ro/presedintele-lui-dinamo-clarificari-despre-contractele-lui-alaa-bellaarouch-si-alberto-soro-2383879",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "SuperLiga"
-      ],
-      "author": "Vladimir Ionescu",
-      "theme": "sport",
-      "image": "",
-      "imageAlt": "Președintele lui Dinamo, clarificări despre contractele lui Alaa Bellaarouch și Alberto Soro",
-      "addedAt": "2026-10-22T19:59:11.805Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-hotnews-decizie-in-favoarea-antenei-1-in-disputa-cu-fe9990",
-      "title": "Decizie în favoarea Antenei 1 în disputa cu Cancan pe tema dezvăluirilor din „Insula Iubirii”. Ce a hotărât Tribunalul București",
-      "summary": "Tribunalul Bucureşti a admis joi cererea Antenei 1 de a opri publicarea de către Cancan a informaţiilor despre episoadele nedifuzate din sezonul 10 al emisiunii Insula Iubirii, potrivit Pagina de Media. Decizia nu este definitivă şi poate fi atacată la Curtea de Apel. Decizia instanței obligă publicaţia să elimine materialele care dezvăluie informaţii din episoadele …",
-      "date": "2026-10-22T18:26:17.000Z",
-      "url": "https://hotnews.ro/decizie-in-favoarea-antenei-1-in-disputa-cu-cancan-pe-tema-dezvaluirilor-din-insula-iubirii-ce-a-hotarat-tribunalul-bucuresti-2383869",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "Actualitate",
-        "Antena 1",
-        "cancan",
-        "Insula iubirii"
-      ],
-      "author": "Ana Teșcan",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Decizie în favoarea Antenei 1 în disputa cu Cancan pe tema dezvăluirilor din „Insula Iubirii”. Ce a hotărât Tribunalul București",
-      "addedAt": "2026-10-22T19:59:11.805Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-zf-cine-este-stefan-radu-oprea-ministrul-2467ba",
-      "title": "Cine este Ştefan-Radu Oprea, ministrul apărării din noul guvern",
-      "summary": "",
-      "date": "2026-10-22T17:40:00.000Z",
-      "url": "https://www.zf.ro/eveniment/cine-este-stefan-radu-oprea-ministrul-apararii-din-noul-guvern-23265925",
-      "source": "zf",
-      "sourceName": "Ziarul Financiar",
-      "categories": [
-        "Eveniment"
-      ],
-      "author": "",
-      "theme": "politika",
-      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21333/23265925/1/whatsapp-image-2026-10-22-at-19-55-56.jpg?width=700",
-      "imageAlt": "Cine este Ştefan-Radu Oprea, ministrul apărării din noul guvern",
-      "addedAt": "2026-10-22T19:59:13.032Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-zf-tensiunile-internationale-si-cresterea-34955c",
-      "title": "Tensiunile internaţionale şi creşterea preţului petrolului îi readuc pe investitori către titlurile de stat americane. Randamentul titlurilor pe 10 ani coboară sub pragul de 5%…",
-      "summary": "",
-      "date": "2026-10-22T17:36:21.000Z",
-      "url": "https://www.zf.ro/business-international/tensiunile-internationale-cresterea-pretului-petrolului-ii-readuc-investitori-catre-titlurile-stat-americane-randamentul-titlurilor-10-ani-coboara-pragul-5-atingand-cel-scazut-nivel-ultima-luna-23265949",
-      "source": "zf",
-      "sourceName": "Ziarul Financiar",
-      "categories": [
-        "Business Internaţional"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10368/23265949/1/wall-street-afp.jpg?width=700",
-      "imageAlt": "Tensiunile internaţionale şi creşterea preţului petrolului îi readuc pe investitori către titlurile de stat americane. Randamentul titlurilor pe 10 ani coboară sub pragul de 5%, at",
-      "addedAt": "2026-10-22T19:59:13.032Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-zf-ce-teme-a-pus-pe-masa-presedintele-nicusor-cbc699",
-      "title": "Ce teme a pus pe masă preşedintele Nicuşor Dan în şedinţa CSAT de joi? Dronele ruseşti care ajung în România şi lovirea navelor comerciale în Marea Neagră. „Aceste evoluţii, de o…",
-      "summary": "",
-      "date": "2026-10-22T17:11:15.000Z",
-      "url": "https://www.zf.ro/eveniment/teme-pus-masa-presedintele-nicusor-dan-sedinta-csat-joi-dronele-rusesti-ajung-romania-lovirea-navelor-comerciale-marea-neagra-aceste-evolutii-gravitate-deosebita-consecinte-directe-agresiunii-23265936",
-      "source": "zf",
-      "sourceName": "Ziarul Financiar",
-      "categories": [
-        "Eveniment"
-      ],
-      "author": "",
-      "theme": "rat",
-      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21333/23265936/1/big-csat-22-oct-2026-4.jpg?width=700",
-      "imageAlt": "Ce teme a pus pe masă preşedintele Nicuşor Dan în şedinţa CSAT de joi? Dronele ruseşti care ajung în România şi lovirea navelor comerciale în Marea Neagră. „Aceste evoluţii, de o g",
-      "addedAt": "2026-10-22T19:59:13.033Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-zf-cine-este-radu-marinescu-ministrul-d32770",
-      "title": "Cine este Radu Marinescu, ministrul justiţiei din cabinetul lui Luca Niculescu?",
-      "summary": "",
-      "date": "2026-10-22T17:10:00.000Z",
-      "url": "https://www.zf.ro/eveniment/cine-este-radu-marinescu-ministrul-justitiei-din-cabinetul-lui-luca-niculescu-23265921",
-      "source": "zf",
-      "sourceName": "Ziarul Financiar",
-      "categories": [
-        "Eveniment"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21333/23265921/1/whatsapp-image-2026-10-22-at-19-50-26.jpg?width=700",
-      "imageAlt": "Cine este Radu Marinescu, ministrul justiţiei din cabinetul lui Luca Niculescu?",
-      "addedAt": "2026-10-22T19:59:13.033Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-agerpres-nato-isi-pune-sistemul-de-achizitii-la-1c37b4",
-      "title": "NATO își pune sistemul de achiziții la dispoziția Ucrainei (presă)",
-      "summary": "",
-      "date": "2026-10-22T06:09:47.794Z",
-      "url": "https://agerpres.ro/politic-extern/2026/10/22/nato-isi-pune-sistemul-de-achizitii-la-dispozitia-ucrainei-presa--1605581",
-      "source": "agerpres",
-      "sourceName": "Agerpres",
-      "categories": [],
-      "author": "",
-      "theme": "sigurnost",
-      "image": "",
-      "imageAlt": "NATO își pune sistemul de achiziții la dispoziția Ucrainei (presă)",
-      "addedAt": "2026-10-22T06:09:47.794Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-agerpres-sua-si-israelul-pregatesc-o-ofensiva-90f8d3",
-      "title": "SUA și Israelul pregătesc o ofensivă militară împotriva Iranului după alegerile legislative americane din 3 noiembrie (media)",
-      "summary": "",
-      "date": "2026-10-22T06:09:47.794Z",
-      "url": "https://agerpres.ro/politic-extern/2026/10/22/sua-si-israelul-pregatesc-o-ofensiva-militara-impotriva-iranului-dupa-alegerile-legislative-american--1605576",
-      "source": "agerpres",
-      "sourceName": "Agerpres",
-      "categories": [],
-      "author": "",
-      "theme": "politika",
-      "image": "",
-      "imageAlt": "SUA și Israelul pregătesc o ofensivă militară împotriva Iranului după alegerile legislative americane din 3 noiembrie (media)",
-      "addedAt": "2026-10-22T06:09:47.794Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-agerpres-cea-de-a-viii-a-editie-a-festivalului-8db074",
-      "title": "Cea de-a VIII-a ediție a Festivalului 'Dumitru Fărcaș' (22-24 octombrie)",
-      "summary": "",
-      "date": "2026-10-22T06:09:47.793Z",
-      "url": "https://agerpres.ro/documentare/2026/10/22/cea-de-a-viii-a-editie-a-festivalului-dumitru-farcas-22-24-octombrie--1605556",
-      "source": "agerpres",
-      "sourceName": "Agerpres",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Cea de-a VIII-a ediție a Festivalului 'Dumitru Fărcaș' (22-24 octombrie)",
-      "addedAt": "2026-10-22T06:09:47.793Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-agerpres-acord-de-infratire-bucuresti-kiev-pe-4f0a53",
-      "title": "Acord de înfrățire București - Kiev, pe ordinea de zi a ședinței Consiliului General",
-      "summary": "",
-      "date": "2026-10-22T06:09:47.793Z",
-      "url": "https://agerpres.ro/administratie/2026/10/22/acord-de-infratire-bucuresti---kiev-pe-ordinea-de-zi-a-sedintei-consiliului-general--1605582",
-      "source": "agerpres",
-      "sourceName": "Agerpres",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Acord de înfrățire București - Kiev, pe ordinea de zi a ședinței Consiliului General",
-      "addedAt": "2026-10-22T06:09:47.793Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-agerpres-gimnastica-artistica-china-a-castigat-7383bf",
-      "title": "Gimnastică artistică: China a câștigat concursul feminin pe echipe la Mondialele de la Rotterdam",
-      "summary": "",
-      "date": "2026-10-22T06:09:47.793Z",
-      "url": "https://agerpres.ro/sport-extern/2026/10/22/gimnastica-artistica-china-a-castigat-concursul-feminin-pe-echipe-la-mondialele-de-la-rotterdam--1605577",
-      "source": "agerpres",
-      "sourceName": "Agerpres",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Gimnastică artistică: China a câștigat concursul feminin pe echipe la Mondialele de la Rotterdam",
-      "addedAt": "2026-10-22T06:09:47.793Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-agerpres-cel-putin-trei-morti-in-urma-furtunii-adam-631160",
-      "title": "Cel puțin trei morți în urma furtunii Adam care a lovit sudul Franței",
-      "summary": "",
-      "date": "2026-10-22T06:09:47.793Z",
-      "url": "https://agerpres.ro/planeta/2026/10/22/cel-putin-trei-morti-in-urma-furtunii-adam-care-a-lovit-sudul-frantei--1605583",
-      "source": "agerpres",
-      "sourceName": "Agerpres",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Cel puțin trei morți în urma furtunii Adam care a lovit sudul Franței",
-      "addedAt": "2026-10-22T06:09:47.793Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-hotnews-marea-actrita-judi-dench-nu-mai-pot-juca-6baa74",
-      "title": "Marea actriță Judi Dench: „Nu mai pot juca într-o piesă de teatru sau într-un film și nu mai pot citi”",
-      "summary": "Actrița premiată cu Oscar, în vârstă de 91 de ani, a vorbit deschis despre modul în care afecțiunea de care suferă i-a transformat viața cotidiană și activitatea profesională. Dame Judi Dench a fost diagnosticată în 2012 cu degenerescență maculară legată de vârstă, care cauzează pierderea graduală a vederii. Într-un interviu recent actrița a dezăluit că …",
-      "date": "2026-10-22T06:08:51.000Z",
-      "url": "https://hotnews.ro/marea-actrita-judi-dench-nu-mai-pot-juca-intr-o-piesa-de-teatru-sau-intr-un-film-si-nu-mai-pot-citi-2383031",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "Actualitate",
-        "International"
-      ],
-      "author": "Cristina Stoian",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Marea actriță Judi Dench: „Nu mai pot juca într-o piesă de teatru sau într-un film și nu mai pot citi”",
-      "addedAt": "2026-10-22T06:09:48.610Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-digi24-acord-de-infratire-bucuresti-kiev-pe-d55817",
-      "title": "Acord de înfrăţire Bucureşti - Kiev, pe ordinea de zi a şedinţei Consiliului General",
-      "summary": "Consilierii generali ai Capitalei vor dezbate în şedinţa de marţi, 27 octombrie, încheierea unui acord de înfrăţire între Bucureşti şi Kiev.",
-      "date": "2026-10-22T06:07:03.000Z",
-      "url": "https://www.digi24.ro/stiri/acord-de-infratire-bucuresti-kiev-pe-ordinea-de-zi-a-sedintei-consiliului-general-4003611",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "ai",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjIyJTJGMzAyNTYwOV8zMDI1/NjA5X0lEMjc1MTAyLUlOUVVBTS1QSE9U/T1MtR0VPUkdFLUNBTElOLmpwZyZoYXNo/PTJjNzQ3OTk3YmE3ZWI2YjMyNDU3NWMzNTk2YTAwYWE5.jpg",
-      "imageAlt": "Acord de înfrăţire Bucureşti - Kiev, pe ordinea de zi a şedinţei Consiliului General",
-      "addedAt": "2026-10-22T06:09:53.152Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-g4media-epidemia-de-ebola-se-extinde-in-africa-de-afe1e9",
-      "title": "Epidemia de Ebola se extinde în Africa de Vest, după peste 4.600 de decese",
-      "summary": "Epidemia de Ebola care a provocat peste 4.600 de decese în Africa a ajuns și în Nigeria, cea mai populată țară de pe continent, transmite Mediafax. Autoritățile au confirmat primul caz de infectare după mai bine de un deceniu și au identificat 44 de persoane care ar fi putut fi expuse virusului. Cazul a fost […] © G4Media.ro .",
-      "date": "2026-10-22T06:01:59.000Z",
-      "url": "https://www.g4media.ro/epidemia-de-ebola-se-extinde-in-africa-de-vest-dupa-peste-4-600-de-decese.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Articole",
-        "Ebola",
-        "ebola africa",
-        "epidemie ebola"
-      ],
-      "author": "Redacția",
-      "theme": "drustvo",
-      "image": "https://www.g4media.ro//wp-content/uploads/2024/05/Captura-de-ecran-din-2024-05-04-la-11.35.54-e1714811886479.png",
-      "imageAlt": "Epidemia de Ebola se extinde în Africa de Vest, după peste 4.600 de decese",
-      "addedAt": "2026-10-22T06:09:57.208Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-g4media-cm-gimnastica-china-campioana-mondiala-la-55d1d7",
-      "title": "CM Gimnastică: China, campioană mondială la echipe feminin – România nu a prins finala",
-      "summary": "China a câștigat medaliile de aur în finala feminină pe echipe de la Campionatul Mondial de gimnastică. Podiumul a fost completat de SUA și Japonia. A fost o finală tristă pentru delegația României: fetele noastre nu au obținut calificarea. China, SUA și Japonia nu doar că au urcat pe podium, dar au obținut și calificarea […] © G4Media.ro .",
-      "date": "2026-10-22T06:01:20.000Z",
-      "url": "https://www.g4media.ro/cm-gimnastica-china-campioana-mondiala-la-echipe-feminin-romania-nu-a-prins-finala.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Sportz",
-        "campionatul mondial de gimnastica"
-      ],
-      "author": "Adrian Ilincescu",
-      "theme": "sport",
-      "image": "https://www.g4media.ro//wp-content/uploads/2024/07/gimnastica.jpg",
-      "imageAlt": "CM Gimnastică: China, campioană mondială la echipe feminin – România nu a prins finala",
-      "addedAt": "2026-10-22T06:09:57.208Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-digi24-rezultate-loto-joi-22-octombrie-2026-peste-7fa1e7",
-      "title": "Rezultate LOTO - Joi, 22 octombrie 2026: Peste 3,19 milioane de euro sunt în joc la 6/49. Fond de câștiguri suplimentat la Joker",
-      "summary": "Joi, 22 octombrie 2026, au loc noi trageri Loto 6/49, Noroc, Joker, Noroc Plus, Loto 5/40 și Super Noroc. În urma câștigării premiului de categoria I la tragerea Joker de duminică, 18 octombrie, Loteria Română a suplimentat fondul de câștiguri al categoriei I cu 300.000 de lei pentru tragerea de astăzi.",
-      "date": "2026-10-22T06:00:32.000Z",
-      "url": "https://www.digi24.ro/stiri/actualitate/social/rezultate-loto-joi-22-octombrie-2026-peste-319-milioane-de-euro-sunt-in-joc-la-6-49-fond-de-castiguri-suplimentat-la-joker-4003103",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwNCUyRjIyJTJGMjY5NDk3M18yNjk0/OTczX0xPVE8uanBnJmhhc2g9OTRhNDM5/YjJiMDVkOGNjYWU3NjQzOGQ4MWQwZGE2OGE=.jpg",
-      "imageAlt": "Rezultate LOTO - Joi, 22 octombrie 2026: Peste 3,19 milioane de euro sunt în joc la 6/49. Fond de câștiguri suplimentat la Joker",
-      "addedAt": "2026-10-22T06:09:53.153Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-digi24-trei-oameni-au-murit-in-urma-inundatiilor-623f5b",
-      "title": "Trei oameni au murit în urma inundațiilor din sud-estul Franței. Ploile torențiale au provocat viituri",
-      "summary": "Trei persoane au murit și una a fost rănită în urma inundațiilor provocate de ploile torențiale în departamentul Bouches-du-Rhone, din sud-estul Franței. Două femei, de 26 și 86 de ani, au fost găsite într-o pivniță inundată din Lançon-Provence, iar un bărbat de 75 de ani a fost găsit mort la Istres, după ce a fost luat de ape, potrivit autorităților franceze.",
-      "date": "2026-10-22T06:00:22.000Z",
-      "url": "https://www.digi24.ro/stiri/externe/ue/trei-oameni-au-murit-in-urma-inundatiilor-din-sud-estul-frantei-ploile-torentiale-au-provocat-viituri-4003585",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjQl/MkYxMCUyRjIwJTJGMjEwNzExNV8yMTA3/MTE1X2ZyYW50YS5qcGcmaGFzaD1iNWRi/YTIyZmY0NzQ3ZmMzN2Y2NTQzYjg2OTYyYTFiNA==.jpg",
-      "imageAlt": "Trei oameni au murit în urma inundațiilor din sud-estul Franței. Ploile torențiale au provocat viituri",
-      "addedAt": "2026-10-22T06:09:53.153Z"
-    },
-    {
-      "slug": "bukurest-2026-10-22-zf-reprezentantii-franklin-templeton-fidelity-62590d",
-      "title": "Reprezentanţii Franklin Templeton, Fidelity şi Amundi văd România pe drumul parcurs de Polonia şi Cehia: banii merg masiv în fondurile de acţiuni, iar piaţa, încă mică, are…",
-      "summary": "Piaţa românească a fondurilor de investiţii urmează drumul parcurs de Polonia şi Cehia şi are în continuare potenţial de creştere, pe măsură ce interesul românilor pentru fondurile de acţiuni se intensifică, au spus reprezentanţii Franklin Templeton, Fidelity International şi Amundi la summitul AAF de la Bucureşti.",
-      "date": "2026-10-22T06:00:00.000Z",
-      "url": "https://www.zf.ro/burse-fonduri-mutuale/reprezentantii-franklin-templeton-fidelity-amundi-vad-romania-drumul-parcurs-polonia-cehia-banii-merg-masiv-fondurile-actiuni-iar-piata-mica-potential-mare-intareste-clasa-mijloc-23265085",
-      "source": "zf",
-      "sourceName": "Ziarul Financiar",
-      "categories": [
-        "Burse - Fonduri mutuale"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/22467/23265085/1/4-summit-asociatia-administratorilor-de-fonduri.jpg?width=700",
-      "imageAlt": "Reprezentanţii Franklin Templeton, Fidelity şi Amundi văd România pe drumul parcurs de Polonia şi Cehia: banii merg masiv în fondurile de acţiuni, iar piaţa, încă mică, are potenţi",
-      "addedAt": "2026-10-22T06:09:50.418Z"
     }
   ]
 }

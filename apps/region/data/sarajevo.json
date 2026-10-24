@@ -4,7 +4,7 @@
   "lang": "bs",
   "city": "Sarajevo",
   "country": "Bosna i Hercegovina",
-  "updatedAt": "2026-10-24T07:12:29.988Z",
+  "updatedAt": "2026-10-24T11:36:03.549Z",
   "sources": [
     {
       "id": "n1ba",
@@ -14,17 +14,20 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T07:12:11.739Z"
+      "checkedAt": "2026-10-24T11:35:50.380Z"
     },
     {
       "id": "klix",
       "name": "Klix",
       "url": "https://www.klix.ba/rss",
-      "ok": true,
-      "fetched": 30,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-10-24T07:12:12.154Z"
+      "errors": [
+        "https://www.klix.ba/rss: HTTP 403",
+        "https://www.klix.ba/rss/naslovnica: HTTP 403"
+      ],
+      "checkedAt": "2026-10-24T11:35:53.026Z"
     },
     {
       "id": "oslobodjenje",
@@ -37,7 +40,7 @@
         "https://www.oslobodjenje.ba/feed: HTTP 404",
         "https://www.oslobodjenje.ba/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-24T07:12:16.123Z"
+      "checkedAt": "2026-10-24T11:35:56.645Z"
     },
     {
       "id": "avaz",
@@ -49,7 +52,7 @@
       "errors": [
         "https://avaz.ba/feed: HTTP 404"
       ],
-      "checkedAt": "2026-10-24T07:12:20.242Z"
+      "checkedAt": "2026-10-24T11:35:58.467Z"
     },
     {
       "id": "radiosarajevo",
@@ -59,7 +62,7 @@
       "fetched": 25,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T07:12:20.486Z"
+      "checkedAt": "2026-10-24T11:35:58.942Z"
     },
     {
       "id": "hayat",
@@ -71,7 +74,7 @@
       "errors": [
         "https://hayat.ba/feed/: HTTP 403"
       ],
-      "checkedAt": "2026-10-24T07:12:25.478Z"
+      "checkedAt": "2026-10-24T11:36:00.827Z"
     },
     {
       "id": "buka",
@@ -81,7 +84,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T07:12:27.629Z"
+      "checkedAt": "2026-10-24T11:36:02.557Z"
     },
     {
       "id": "detektor",
@@ -91,10 +94,417 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T07:12:29.988Z"
+      "checkedAt": "2026-10-24T11:36:03.549Z"
     }
   ],
   "items": [
+    {
+      "slug": "sarajevo-2026-10-24-avaz-cijene-litra-dizela-razlikuju-se-i-vise-od-2d882a",
+      "title": "Cijene litra dizela razlikuju se i više od 40 feninga: Stiže li skuplja nafta u BiH brže od jeftinije",
+      "summary": "Cijene litra dizela razlikuju se i više od 40 feninga: Stiže li skuplja nafta u BiH brže od jeftinije - Niža cijena po litru sama po sebi ne znači i povoljniju ponudu za kupca, istakli su iz HIFA Petrola",
+      "date": "2026-10-24T12:16:57.000Z",
+      "url": "https://avaz.ba/vijesti/biznis/1082599/cijene-litra-dizela-razlikuju-se-i-vise-od-40-feninga-stize-li-skuplja-nafta-u-bih-brze-od-jeftinije",
+      "source": "avaz",
+      "sourceName": "Avaz",
+      "categories": [
+        "tržište"
+      ],
+      "author": "Dnevni avaz",
+      "theme": "energija",
+      "image": "https://gale-s3-bucket.s3.eu-central-1.amazonaws.com/89083afe-6b26-4a13-b03a-50b25d155196.jpeg",
+      "imageAlt": "Cijene litra dizela razlikuju se i više od 40 feninga: Stiže li skuplja nafta u BiH brže od jeftinije",
+      "addedAt": "2026-10-24T11:35:58.468Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-24-avaz-knjiga-o-ratnom-stradanju-focanke-zehre-a44ade",
+      "title": "Knjiga o ratnom stradanju Fočanke Zehre Murguz predstavljena u Livnu",
+      "summary": "Knjiga o ratnom stradanju Fočanke Zehre Murguz predstavljena u Livnu - Njezin suprug odveden je u logor, nakon čega mu se izgubio svaki trag, a tokom agresije na BiH ubijen joj je i otac",
+      "date": "2026-10-24T12:14:55.000Z",
+      "url": "https://avaz.ba/vijesti/kultura/1082597/knjiga-o-ratnom-stradanju-focanke-zehre-murguz-predstavljena-u-livnu",
+      "source": "avaz",
+      "sourceName": "Avaz",
+      "categories": [
+        "BOLNA svjedočenja"
+      ],
+      "author": "Dnevni avaz",
+      "theme": "rat",
+      "image": "https://gale-s3-bucket.s3.eu-central-1.amazonaws.com/103e33a1-78eb-4af1-a8d4-36df9d1c84e1.jpeg",
+      "imageAlt": "Knjiga o ratnom stradanju Fočanke Zehre Murguz predstavljena u Livnu",
+      "addedAt": "2026-10-24T11:35:58.468Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-24-avaz-video-vjetar-nosi-ljude-talasi-gutaju-obalu-4bedb5",
+      "title": "Video / Vjetar nosi ljude, talasi gutaju obalu: Tajfun poharao Tajvan, jedna osoba poginula",
+      "summary": "Video / Vjetar nosi ljude, talasi gutaju obalu: Tajfun poharao Tajvan, jedna osoba poginula - Udari vjetra dostizali su 162 km/h, talasi osam metara, a u nevremenu je jedna osoba poginula i 94 su povrijeđene",
+      "date": "2026-10-24T12:09:53.000Z",
+      "url": "https://avaz.ba/vijesti/globus/1082596/video-vjetar-nosi-ljude-talasi-gutaju-obalu-tajfun-poharao-tajvan-jedna-osoba-poginula",
+      "source": "avaz",
+      "sourceName": "Avaz",
+      "categories": [
+        "dramatične scene"
+      ],
+      "author": "Dnevni avaz",
+      "theme": "energija",
+      "image": "https://gale-s3-bucket.s3.eu-central-1.amazonaws.com/7cbcce40-89ad-4f7c-847f-7d357efd1e78.jpeg",
+      "imageAlt": "Video / Vjetar nosi ljude, talasi gutaju obalu: Tajfun poharao Tajvan, jedna osoba poginula",
+      "addedAt": "2026-10-24T11:35:58.468Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-24-avaz-oluja-austen-pogodila-njemacku-dvoje-tesko-e09fac",
+      "title": "Oluja Austen pogodila Njemačku: Dvoje teško povrijeđenih, nevrijeme blokiralo željezničke pruge",
+      "summary": "Oluja Austen pogodila Njemačku: Dvoje teško povrijeđenih, nevrijeme blokiralo željezničke pruge - Prema informacijama policije, jedna od povrijeđenih osoba helikopterom je prevezena u bolnicu",
+      "date": "2026-10-24T12:02:07.000Z",
+      "url": "https://avaz.ba/vijesti/globus/1082594/oluja-austen-pogodila-njemacku-dvoje-tesko-povrijedjenih-nevrijeme-blokiralo-zeljeznicke-pruge",
+      "source": "avaz",
+      "sourceName": "Avaz",
+      "categories": [
+        "Snažni udari"
+      ],
+      "author": "Dnevni avaz",
+      "theme": "potres",
+      "image": "https://gale-s3-bucket.s3.eu-central-1.amazonaws.com/b8dc082b-ff3d-4ec7-aea0-4e7b829a3635.jpeg",
+      "imageAlt": "Oluja Austen pogodila Njemačku: Dvoje teško povrijeđenih, nevrijeme blokiralo željezničke pruge",
+      "addedAt": "2026-10-24T11:35:58.468Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-24-avaz-hakerski-potres-u-afd-u-procurilo-420-000-e-fa0a5d",
+      "title": "Hakerski potres u AfD-u: Procurilo 420.000 e-mailova, u fokusu donacije, sumnjive isplate i Alis Vajdel",
+      "summary": "Hakerski potres u AfD-u: Procurilo 420.000 e-mailova, u fokusu donacije, sumnjive isplate i Alis Vajdel - Ako bi se sumnje potvrdile, mogle bi dovesti do dodatnih istraga i ozbiljno opteretiti stranku",
+      "date": "2026-10-24T11:51:51.000Z",
+      "url": "https://avaz.ba/vijesti/globus/1082592/hakerski-potres-u-afd-u-procurilo-420-000-e-mailova-u-fokusu-donacije-sumnjive-isplate-i-alis-vajdel",
+      "source": "avaz",
+      "sourceName": "Avaz",
+      "categories": [
+        "Tajni dokumenti"
+      ],
+      "author": "Dnevni avaz",
+      "theme": "sigurnost",
+      "image": "https://gale-s3-bucket.s3.eu-central-1.amazonaws.com/36402025-2453-4a66-b662-4765c2bfc216.jpeg",
+      "imageAlt": "Hakerski potres u AfD-u: Procurilo 420.000 e-mailova, u fokusu donacije, sumnjive isplate i Alis Vajdel",
+      "addedAt": "2026-10-24T11:35:58.468Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-24-buka-rusija-i-ukrajina-pristale-na-primirje-evo-c31da5",
+      "title": "Rusija i Ukrajina pristale na primirje: Evo šta slijedi?",
+      "summary": "Rusija i Ukrajina dogovorile su privremeni prekid vatre u ukrajinskom gradu Oleškiju, koji se nalazi pod ruskom kontrolom, kako bi se omogućili dostavljanje humanitarne pomoći i evakuacija civila. Primirje bi trebalo da stupi na snagu 27. oktobra, a dogovor je postignut uz učešće prve dame SAD Melanije Tramp, u trenutku kada Vašington pokušava da pokrene",
+      "date": "2026-10-24T11:28:43.000Z",
+      "url": "https://6yka.com/svijet/rusija-i-ukrajina-pristale-na-primirje-evo-sta-slijedi/",
+      "source": "buka",
+      "sourceName": "Buka",
+      "categories": [
+        "Svijet",
+        "primirje",
+        "rusija",
+        "sukob"
+      ],
+      "author": "Nikola Dukic",
+      "theme": "rat",
+      "image": "",
+      "imageAlt": "Rusija i Ukrajina pristale na primirje: Evo šta slijedi?",
+      "addedAt": "2026-10-24T11:36:02.557Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-24-n1ba-tuzilastvo-trazi-pritvor-za-ibrahima-293a51",
+      "title": "Tužilaštvo traži pritvor za Ibrahima Handanovića: Policiji pobjegao Touaregom, pronađen kilogram droge",
+      "summary": "",
+      "date": "2026-10-24T11:19:03.000Z",
+      "url": "https://n1info.ba/vijesti/tuzilastvo-trazi-pritvor-za-ibrahima-handanovica-policiji-pobjegao-touaregom-pronadjen-kilogram-droge/",
+      "source": "n1ba",
+      "sourceName": "N1 BiH",
+      "categories": [
+        "Vijesti",
+        "ibrahim handanović"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://n1info.ba/media/images/2026/10/24/1792840682_handanovic2.width-1200.jpg",
+      "imageAlt": "Tužilaštvo traži pritvor za Ibrahima Handanovića: Policiji pobjegao Touaregom, pronađen kilogram droge",
+      "addedAt": "2026-10-24T11:35:50.380Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-24-buka-vize-su-tu-ali-ih-ne-mozemo-koristiti-6d4f01",
+      "title": "„Vize su tu, ali ih ne možemo koristiti“: Vozači iz BiH i dalje čekaju rješenje za pravilo 90/180",
+      "summary": "Hrvatska je počela izdavati dugotrajne vize profesionalnim vozačima iz BiH, ali prvi korisnici još ne mogu da ih koriste. Dok prevoznici čekaju da vize stupe na snagu, ključno pitanje – kako riješiti ograničenje boravka u Šengenu po pravilu 90/180 – i dalje je bez odgovora. Iz Konzorcijuma „Logistika BiH“ ocjenjuju da je odluka Hrvatske važan",
+      "date": "2026-10-24T11:16:39.000Z",
+      "url": "https://6yka.com/bih/vize-su-tu-ali-ih-ne-mozemo-koristiti-vozaci-iz-bih-i-dalje-cekaju-rjesenje-za-pravilo-90-180/",
+      "source": "buka",
+      "sourceName": "Buka",
+      "categories": [
+        "BiH",
+        "EU",
+        "prevoznici",
+        "šengen"
+      ],
+      "author": "Nikola Dukic",
+      "theme": "ekonomija",
+      "image": "",
+      "imageAlt": "„Vize su tu, ali ih ne možemo koristiti“: Vozači iz BiH i dalje čekaju rješenje za pravilo 90/180",
+      "addedAt": "2026-10-24T11:36:02.557Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-24-n1ba-rusija-izvela-masovne-napade-sirom-ukrajine-622eec",
+      "title": "Rusija izvela masovne napade širom Ukrajine: Najmanje četvero mrtvih, deseci ranjenih",
+      "summary": "Najmanje četiri osobe su poginule, a 78 je povrijeđeno u ruskim napadima širom Ukrajine tokom protekla 24 sata, prema podacima lokalnih vlasti. Među p",
+      "date": "2026-10-24T11:12:37.000Z",
+      "url": "https://n1info.ba/svijet/rusija-izvela-masovne-napade-sirom-ukrajine-najmanje-cetvero-mrtvih-deseci-ranjenih/",
+      "source": "n1ba",
+      "sourceName": "N1 BiH",
+      "categories": [
+        "Svijet",
+        "rat u ukrajini"
+      ],
+      "author": "",
+      "theme": "rat",
+      "image": "https://n1info.ba/media/original_images/2026/10/24/1792840303_0127c01a-6d6a-4b15-b8a9-c763e2b7a610.webp",
+      "imageAlt": "Rusija izvela masovne napade širom Ukrajine: Najmanje četvero mrtvih, deseci ranjenih",
+      "addedAt": "2026-10-24T11:35:50.380Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-24-radiosarajevo-najveci-izazov-za-vucica-od-2012-godine-52d11c",
+      "title": "Najveći izazov za Vučića od 2012. godine: Kako su studenti i profesori uzdrmali Srbiju",
+      "summary": "",
+      "date": "2026-10-24T11:12:00.000Z",
+      "url": "https://radiosarajevo.ba/vijesti/regija/izazov-za-vucica-studenti-i-profesori-uzdrmali-srbiju/658043",
+      "source": "radiosarajevo",
+      "sourceName": "Radio Sarajevo",
+      "categories": [],
+      "author": "RSA",
+      "theme": "drustvo",
+      "image": "https://storage.radiosarajevo.ba/article/658043/871x540/aleksandar-vucic-august-2026-epaefe.jpg?v1792840264",
+      "imageAlt": "Najveći izazov za Vučića od 2012. godine: Kako su studenti i profesori uzdrmali Srbiju",
+      "addedAt": "2026-10-24T11:35:58.942Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-24-n1ba-marko-bojkovic-pred-najvecom-borbom-84bb0d",
+      "title": "Marko Bojković pred najvećom borbom karijere: U Skoplju napada FNC pojas",
+      "summary": "Marko Bojković, jedan od najprepoznatljivijih boraca FNC-a, u Skoplju će dobiti priliku za najveći uspjeh dosadašnje karijere. Srpski MMA borac borit",
+      "date": "2026-10-24T11:08:24.000Z",
+      "url": "https://n1info.ba/sport/mma/marko-bojkovic-pred-najvecom-borbom-karijere-u-skoplju-napada-fnc-pojas/",
+      "source": "n1ba",
+      "sourceName": "N1 BiH",
+      "categories": [
+        "MMA",
+        "marko bojković",
+        "fnc skoplje"
+      ],
+      "author": "",
+      "theme": "rat",
+      "image": "https://n1info.ba/media/images/2025/5/1748092958-Marko-Bojkovic.width-1200.jpg",
+      "imageAlt": "Marko Bojković pred najvećom borbom karijere: U Skoplju napada FNC pojas",
+      "addedAt": "2026-10-24T11:35:50.380Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-24-buka-struja-poskupljuje-termoelektrane-u-a7166e",
+      "title": "Struja poskupljuje, termoelektrane u problemu, a vlast diže 300 miliona KM kredita za Kongresni centar!",
+      "summary": "Dok se termoelektrane u Ugljeviku i Gacku suočavaju sa ozbiljnim problemima, a građani istočne Republike Srpske čekaju bolje puteve i sigurnije snabdijevanje energijom, vlast planira novo višemilionsko zaduženje za reprezentativni projekat u Trebinju. Član Predsjedništva Srpske demokratske stranke (SDS) Marinko Božović oštro je kritikovao prioritete vlasti u Republici Srpskoj, tvrdeći da se javni novac usmjerava",
+      "date": "2026-10-24T11:03:00.000Z",
+      "url": "https://6yka.com/bih/struja-poskupljuje-termoelektrane-tonu-a-vlast-dize-300-miliona-km-kredita-za-kongresni-centar/",
+      "source": "buka",
+      "sourceName": "Buka",
+      "categories": [
+        "BiH",
+        "kongresni centar",
+        "Marinko Božović",
+        "rite gacko"
+      ],
+      "author": "Nikola Dukic",
+      "theme": "energija",
+      "image": "",
+      "imageAlt": "Struja poskupljuje, termoelektrane u problemu, a vlast diže 300 miliona KM kredita za Kongresni centar!",
+      "addedAt": "2026-10-24T11:36:02.557Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-24-radiosarajevo-masovna-tucnjava-ispred-lokala-u-doboju-1778da",
+      "title": "Masovna tučnjava ispred lokala u Doboju: Šest osoba uhapšeno, troje u bolnici",
+      "summary": "",
+      "date": "2026-10-24T10:54:00.000Z",
+      "url": "https://radiosarajevo.ba/vijesti/crna-hronika/masovna-tuca-ispred-lokala-u-doboju-sest-osoba-uhapseno/658042",
+      "source": "radiosarajevo",
+      "sourceName": "Radio Sarajevo",
+      "categories": [],
+      "author": "RSA",
+      "theme": "drustvo",
+      "image": "https://storage.radiosarajevo.ba/article/658042/871x540/policija-doboj-mup-rs-novembar-2025-ringier.jpg?v1792839193",
+      "imageAlt": "Masovna tučnjava ispred lokala u Doboju: Šest osoba uhapšeno, troje u bolnici",
+      "addedAt": "2026-10-24T11:35:58.942Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-24-buka-zrs-tonu-u-minus-75-miliona-km-gubitka-31a8a2",
+      "title": "ŽRS tonu u minus: 75 miliona KM gubitka, radnici odlaze, a poslovi se ugovaraju „od mjeseca do mjeseca“",
+      "summary": "„Željeznice Republike Srpske“ ulaze u novi period sa ozbiljnim finansijskim problemima. Prema projekcijama uprave, ovo javno preduzeće bi u naredne tri godine trebalo da zabilježi ukupni gubitak od čak 75,44 miliona KM. Istovremeno, ŽRS ostaju bez radnika, dok se novi poslovi ugovaraju kratkoročno i bez garancije da će biti nastavljeni. Plan poslovanja za period od",
+      "date": "2026-10-24T10:52:30.000Z",
+      "url": "https://6yka.com/bih/zrs-tonu-u-minus-75-miliona-km-gubitka-radnici-odlaze-a-poslovi-se-ugovaraju-od-mjeseca-do-mjeseca/",
+      "source": "buka",
+      "sourceName": "Buka",
+      "categories": [
+        "BiH",
+        "Željeznice RS"
+      ],
+      "author": "Nikola Dukic",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "ŽRS tonu u minus: 75 miliona KM gubitka, radnici odlaze, a poslovi se ugovaraju „od mjeseca do mjeseca“",
+      "addedAt": "2026-10-24T11:36:02.558Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-24-radiosarajevo-jezivi-prizori-iz-kenije-urusio-se-neboder-0b815c",
+      "title": "Jezivi prizori iz Kenije: Urušio se neboder, mnogi ostali zarobljeni pod ruševinama",
+      "summary": "",
+      "date": "2026-10-24T10:51:00.000Z",
+      "url": "https://radiosarajevo.ba/vijesti/svijet/urusavanje-nebodera-u-najrobiju-spasavanje-zarobljenih/658041",
+      "source": "radiosarajevo",
+      "sourceName": "Radio Sarajevo",
+      "categories": [],
+      "author": "RSA",
+      "theme": "drustvo",
+      "image": "https://storage.radiosarajevo.ba/article/658041/871x540/zgrada-urusavanje-nairobi-kenija-x-24oktobar2026.jpg?v1792839105",
+      "imageAlt": "Jezivi prizori iz Kenije: Urušio se neboder, mnogi ostali zarobljeni pod ruševinama",
+      "addedAt": "2026-10-24T11:35:58.942Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-24-buka-ogrev-pred-zimom-sve-skuplji-drva-i-ugalj-461205",
+      "title": "Ogrev pred zimom sve skuplji: Drva i ugalj miruju, pelet i briket „podivljali“, građani strahuju od novih poskupljenja",
+      "summary": "Približavanjem hladnijih dana i početkom grijne sezone, građane širom BiH dočekuju različite cijene ogreva. Dok su drva i ugalj uglavnom zadržali prošlogodišnje nivoe, pelet i briket bilježe snažan rast cijena, a trgovci upozoravaju da bi dolazak lošijih vremenskih prilika mogao dodatno zakomplikovati snabdijevanje. Trenutne cijene, prema podacima prodavaca, izgledaju ovako: Sve navedene cijene uključuju PDV.",
+      "date": "2026-10-24T10:45:34.000Z",
+      "url": "https://6yka.com/bih/ogrev-pred-zimom-sve-skuplji-drva-i-ugalj-miruju-pelet-i-briket-podivljali-gradjani-strahuju-od-novih-poskupljenja/",
+      "source": "buka",
+      "sourceName": "Buka",
+      "categories": [
+        "BiH",
+        "cijene ogreva",
+        "ogrev",
+        "zima"
+      ],
+      "author": "Nikola Dukic",
+      "theme": "energija",
+      "image": "",
+      "imageAlt": "Ogrev pred zimom sve skuplji: Drva i ugalj miruju, pelet i briket „podivljali“, građani strahuju od novih poskupljenja",
+      "addedAt": "2026-10-24T11:36:02.558Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-24-n1ba-sta-znaci-altmanovo-upozorenje-sef-openai-e836ca",
+      "title": "Šta znači Altmanovo upozorenje: Šef OpenAI-ja kaže da sigurnosne propuste više neće biti moguće samo krpiti",
+      "summary": "Izvršni direktor OpenAI-ja Sam Altman rekao je studentima na Stanfordu da više ne misli da će se svi sigurnosni propusti moći jednostavno zakrpiti. Ka",
+      "date": "2026-10-24T10:43:22.000Z",
+      "url": "https://n1info.ba/magazin/tehnologija/sta-znaci-altmanovo-upozorenje-sef-openai-ja-kaze-da-sigurnosne-propuste-vise-nece-biti-moguce-samo-krpiti/",
+      "source": "n1ba",
+      "sourceName": "N1 BiH",
+      "categories": [
+        "Tehnologija",
+        "sam altman",
+        "sigurnost",
+        "opan ai"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://n1info.ba/media/images/1736346275-2025-01-08T131105Z_1457789710_RC2NE4A1WW2J_RTRMADP_3_PEOPLE-ALT.width-1200.JPG",
+      "imageAlt": "Šta znači Altmanovo upozorenje: Šef OpenAI-ja kaže da sigurnosne propuste više neće biti moguće samo krpiti",
+      "addedAt": "2026-10-24T11:35:50.381Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-24-buka-ko-uzima-kljucna-ministarstva-u-novom-591a6d",
+      "title": "Ko uzima ključna ministarstva u novom Savjetu ministara BiH? Evo šta bi moglo pripasti Srbima, Hrvatima i Bošnjacima",
+      "summary": "Formiranje novog Savjeta ministara BiH još nije ni počelo, ali se već uveliko licitira funkcijama i raspodjelom ministarskih resora. Ono što je za sada izvjesno jeste da će na čelu Savjeta ministara biti kadar bošnjačke nacionalnosti, što bi značilo da bi dva ključna resora – Ministarstvo spoljnih poslova i Ministarstvo finansija i trezora BiH –",
+      "date": "2026-10-24T10:39:36.000Z",
+      "url": "https://6yka.com/bih/ko-uzima-kljucna-ministarstva-u-novom-savjetu-ministara-bih-evo-sta-bi-moglo-pripasti-srbima-hrvatima-i-bosnjacima/",
+      "source": "buka",
+      "sourceName": "Buka",
+      "categories": [
+        "BiH",
+        "formiranje vlasti",
+        "savjet ministara"
+      ],
+      "author": "Nikola Dukic",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Ko uzima ključna ministarstva u novom Savjetu ministara BiH? Evo šta bi moglo pripasti Srbima, Hrvatima i Bošnjacima",
+      "addedAt": "2026-10-24T11:36:02.558Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-24-radiosarajevo-rudari-tri-rudnika-najavili-proteste-zbog-144132",
+      "title": "Rudari tri rudnika najavili proteste zbog neuplaćenih doprinosa za zdravstveno osiguranje",
+      "summary": "",
+      "date": "2026-10-24T10:36:00.000Z",
+      "url": "https://radiosarajevo.ba/vijesti/bosna-i-hercegovina/rudari-najavili-proteste-zbog-neuplacenih-doprinosa/658040",
+      "source": "radiosarajevo",
+      "sourceName": "Radio Sarajevo",
+      "categories": [],
+      "author": "RSA",
+      "theme": "drustvo",
+      "image": "https://storage.radiosarajevo.ba/article/658040/871x540/kreka.jpg?v1792839158",
+      "imageAlt": "Rudari tri rudnika najavili proteste zbog neuplaćenih doprinosa za zdravstveno osiguranje",
+      "addedAt": "2026-10-24T11:35:58.942Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-24-radiosarajevo-tragedija-na-autocesti-a1-jedna-osoba-4b43c4",
+      "title": "Tragedija na autocesti A1: Jedna osoba poginula, pet povrijeđenih prevezeno u zadarsku bolnicu",
+      "summary": "",
+      "date": "2026-10-24T10:28:00.000Z",
+      "url": "https://radiosarajevo.ba/vijesti/regija/tragedija-na-autocesti-a1-jedna-osoba-poginula-pet-povrijedjenih/658039",
+      "source": "radiosarajevo",
+      "sourceName": "Radio Sarajevo",
+      "categories": [],
+      "author": "RSA",
+      "theme": "drustvo",
+      "image": "https://storage.radiosarajevo.ba/article/658039/871x540/zadar-nesreca-rsa-1.jpg?v1792837702",
+      "imageAlt": "Tragedija na autocesti A1: Jedna osoba poginula, pet povrijeđenih prevezeno u zadarsku bolnicu",
+      "addedAt": "2026-10-24T11:35:58.942Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-24-radiosarajevo-zapalio-se-automobil-na-bradini-vatrogasci-1c4c2f",
+      "title": "Zapalio se automobil na Bradini: Vatrogasci na vrijeme intervenisali, ali pričinjena velika šteta",
+      "summary": "",
+      "date": "2026-10-24T10:21:00.000Z",
+      "url": "https://radiosarajevo.ba/vijesti/crna-hronika/zapalio-se-automobil-na-bradini-vatrogasci-intervenisali/658038",
+      "source": "radiosarajevo",
+      "sourceName": "Radio Sarajevo",
+      "categories": [],
+      "author": "RSA",
+      "theme": "drustvo",
+      "image": "https://storage.radiosarajevo.ba/article/658038/871x540/pozar-vatra-automobil-bradina-konjic-24oktobar2026.jpg?v1792837292",
+      "imageAlt": "Zapalio se automobil na Bradini: Vatrogasci na vrijeme intervenisali, ali pričinjena velika šteta",
+      "addedAt": "2026-10-24T11:35:58.943Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-24-n1ba-nevjerovatan-pad-nekadasnje-zvijezde-9dc8c3",
+      "title": "Nevjerovatan pad nekadašnje zvijezde: Zarađivao milione i igrao s Haalandom, sada mu nude deset puta manje",
+      "summary": "Prije samo nekoliko godina Jadon Sancho bio je jedan od najpoželjnijih mladih fudbalera Evrope, a danas, sa svega 26 godina, pokušava pronaći klub u k",
+      "date": "2026-10-24T09:31:00.000Z",
+      "url": "https://n1info.ba/sport/nogomet/nevjerovatan-pad-nekadasnje-zvijezde-zaradjivao-milione-i-igrao-s-haalandom-sada-mu-nude-deset-puta-manje/",
+      "source": "n1ba",
+      "sourceName": "N1 BiH",
+      "categories": [
+        "Nogomet",
+        "nogomet",
+        "jadon sancho",
+        "sport"
+      ],
+      "author": "",
+      "theme": "sport",
+      "image": "https://n1info.ba/media/images/2025/6/1749019677_000_469P8AD.width-1200.jpg",
+      "imageAlt": "Nevjerovatan pad nekadašnje zvijezde: Zarađivao milione i igrao s Haalandom, sada mu nude deset puta manje",
+      "addedAt": "2026-10-24T11:35:50.381Z"
+    },
+    {
+      "slug": "sarajevo-2026-10-24-n1ba-samo-trecina-maski-i-jastucica-za-oci-15889c",
+      "title": "Samo trećina maski i jastučića za oči sadrži djelotvoran retinol: Njemački test od 94 proizvoda pokazao velike razlike",
+      "summary": "Njemački laboratorij analizirao je 94 proizvoda za njegu lica koji na deklaraciji imaju vitamin A ili retinol. Kod približno trećine krema količina je",
+      "date": "2026-10-24T09:26:36.000Z",
+      "url": "https://n1info.ba/magazin/lifestyle/samo-trecina-maski-i-jastucica-za-oci-sadrzi-djelotvoran-retinol-njemacki-test-od-94-proizvoda-pokazao-velike-razlike/",
+      "source": "n1ba",
+      "sourceName": "N1 BiH",
+      "categories": [
+        "Lifestyle",
+        "podočnjaci",
+        "retinol",
+        "koja je najbolja maska za lice"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://n1info.ba/media/images/2026/10/24/1792833950_jastucici-za-podocnjake.width-1200.jpg",
+      "imageAlt": "Samo trećina maski i jastučića za oči sadrži djelotvoran retinol: Njemački test od 94 proizvoda pokazao velike razlike",
+      "addedAt": "2026-10-24T11:35:50.381Z"
+    },
     {
       "slug": "sarajevo-2026-10-24-avaz-lazni-identitet-pred-kamerama-izraelac-se-32cde4",
       "title": "Lažni identitet pred kamerama: Izraelac se predstavio kao Iračanin i napao demonstrante",
@@ -6941,423 +7351,6 @@
       "image": "https://storage.radiosarajevo.ba/article/657694/871x540/vladimir-susak-bhrt-printscreen.jpg?v1792600336",
       "imageAlt": "Misija OSCE-a u BiH podržala novinara Šuška kojeg je Dodik brutalno vrijeđao",
       "addedAt": "2026-10-21T17:05:33.466Z"
-    },
-    {
-      "slug": "sarajevo-2026-10-21-radiosarajevo-policija-u-sad-u-ubila-djecaka-od-godinu-ced005",
-      "title": "Policija u SAD-u ubila dječaka od godinu dana, tužilaštvo zaključilo: Pucnjava bila opravdana",
-      "summary": "",
-      "date": "2026-10-21T16:19:00.000Z",
-      "url": "https://radiosarajevo.ba/vijesti/svijet/policija-u-sad-u-ubila-djecaka-jedan-godinu-tuzilastvo/657693",
-      "source": "radiosarajevo",
-      "sourceName": "Radio Sarajevo",
-      "categories": [],
-      "author": "RSA",
-      "theme": "drustvo",
-      "image": "https://storage.radiosarajevo.ba/article/657693/871x540/amerika-pucnjava-sad-ilustracija-epa-27august23.jpg?v1792600255",
-      "imageAlt": "Policija u SAD-u ubila dječaka od godinu dana, tužilaštvo zaključilo: Pucnjava bila opravdana",
-      "addedAt": "2026-10-21T17:05:33.466Z"
-    },
-    {
-      "slug": "sarajevo-2026-10-21-n1ba-vinicius-mogao-napustiti-real-madrid-0b2bd6",
-      "title": "Vinicius mogao napustiti Real Madrid: Dvojica agenata otkrila detalje pregovora i razlog ostanka",
-      "summary": "Brazilski reprezentativac Vinicius Junior (26) tokom ljetnog prijelaznog roka ozbiljno je razmatrao mogućnost odlaska iz Real Madrida. Jedan od najveć",
-      "date": "2026-10-21T16:05:00.000Z",
-      "url": "https://n1info.ba/sport/nogomet/vinicius-mogao-napustiti-real-madrid-dvojica-agenata-otkrila-detalje-pregovora-i-razlog-ostanka/",
-      "source": "n1ba",
-      "sourceName": "N1 BiH",
-      "categories": [
-        "Nogomet",
-        "nogomet",
-        "sport",
-        "vinicius junior"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://n1info.ba/media/images/1778446054_2026-05-10T203846Z_1891563753_UP1EM5A1LCK1F_RTRMADP_3.width-1200.JPG",
-      "imageAlt": "Vinicius mogao napustiti Real Madrid: Dvojica agenata otkrila detalje pregovora i razlog ostanka",
-      "addedAt": "2026-10-21T17:05:28.593Z"
-    },
-    {
-      "slug": "sarajevo-2026-10-21-buka-ukinute-sankcije-prvi-tanker-iz-rusije-sa-65320d",
-      "title": "Ukinute sankcije: Prvi tanker iz Rusije sa dizelom sutra kreće za Ameriku",
-      "summary": "Prvi tanker sa 40.000 tona ruskog dizel-goriva krenuće sutra u SAD, a potpisivanje ugovora je u završnoj fazi, izjavio je zamjenik ruskog premijera Aleksandar Novak. “Prvi tanker bi trebao da napusti luku sutra”, rekao je Novak novinarima. On je naglasio da će Rusija zadovoljiti potrebe SAD u okviru svojih mogućnosti. Prema njegovim riječima, snabdijevanje drugih",
-      "date": "2026-10-21T16:00:00.000Z",
-      "url": "https://6yka.com/svijet/ukinute-sankcije-prvi-tanker-iz-rusije-sa-dizelom-sutra-krece-za-ameriku/",
-      "source": "buka",
-      "sourceName": "Buka",
-      "categories": [
-        "Svijet",
-        "nafta",
-        "rusija",
-        "SAD"
-      ],
-      "author": "Nikola Dukic",
-      "theme": "politika",
-      "image": "",
-      "imageAlt": "Ukinute sankcije: Prvi tanker iz Rusije sa dizelom sutra kreće za Ameriku",
-      "addedAt": "2026-10-21T17:05:35.796Z"
-    },
-    {
-      "slug": "sarajevo-2026-10-21-n1ba-vlada-fbih-na-odlasku-poskupljuje-plin-b38a6e",
-      "title": "Vlada FBiH na odlasku poskupljuje plin, mogući novi ministar energetike poručuje: \"Pljačkaju nas i prave budalama\"",
-      "summary": "Vlada Federacije Bosne i Hercegovine odobrila je novo poskupljenje prirodnog plina, četvrto od početka godine. Veleprodajna cijena povećana je za 12 p",
-      "date": "2026-10-21T15:59:47.000Z",
-      "url": "https://n1info.ba/vijesti/vlada-fbih-na-odlasku-poskupljuje-plin-moguci-ministar-energetike-u-novoj-vlasti-porucuje-pljackaju-nas-i-prave-budalama/",
-      "source": "n1ba",
-      "sourceName": "N1 BiH",
-      "categories": [
-        "Vijesti",
-        "plin",
-        "visoko",
-        "cijena plina"
-      ],
-      "author": "",
-      "theme": "politika",
-      "image": "https://n1info.ba/media/images/1657883192-almir-becarevic.width-1200.jpg",
-      "imageAlt": "Vlada FBiH na odlasku poskupljuje plin, mogući novi ministar energetike poručuje: \"Pljačkaju nas i prave budalama\"",
-      "addedAt": "2026-10-21T17:05:28.593Z"
-    },
-    {
-      "slug": "sarajevo-2026-10-21-buka-dodik-najavio-dokic-potvrdio-ko-se-grije-na-758f24",
-      "title": "Dodik najavio, Đokić potvrdio: Ko se grije na struju uskoro bi mogao plaćati mnogo više",
-      "summary": "Građani Republike Srpske koji koriste električnu energiju za grijanje mogli bi uskoro plaćati znatno veće račune. Nakon najave Milorada Dodika da će oni koji se griju na struju „morati debelo da plate“, ministar energetike i rudarstva Petar Đokić potvrdio je da se priprema promjena postojećeg sistema tarifiranja. Đokić je rekao da se u pojedinim dijelovima",
-      "date": "2026-10-21T15:40:55.000Z",
-      "url": "https://6yka.com/bih/dodik-najavio-djokic-potvrdio-ko-se-grije-na-struju-uskoro-bi-mogao-placati-mnogo-vise/",
-      "source": "buka",
-      "sourceName": "Buka",
-      "categories": [
-        "BiH",
-        "poskupljenje",
-        "struja"
-      ],
-      "author": "Nikola Dukic",
-      "theme": "ekonomija",
-      "image": "",
-      "imageAlt": "Dodik najavio, Đokić potvrdio: Ko se grije na struju uskoro bi mogao plaćati mnogo više",
-      "addedAt": "2026-10-21T17:05:35.796Z"
-    },
-    {
-      "slug": "sarajevo-2026-10-21-buka-20-milijardi-razloga-za-interes-zasto-dodik-471f06",
-      "title": "20 milijardi razloga za interes: Zašto Dodik i Čović žele veću kontrolu nad Centralnom bankom BiH?",
-      "summary": "Nakon sastanka Milorada Dodika i Dragana Čovića ponovo je u prvi plan dospjela Centralna banka Bosne i Hercegovine – institucija koja čuva monetarnu stabilnost zemlje i upravlja deviznim rezervama koje su ove godine dostigle gotovo 20 milijardi KM. Dodik je nakon razgovora sa liderom HDZ-a BiH poručio da će Centralna banka biti među prioritetima nakon",
-      "date": "2026-10-21T15:20:48.000Z",
-      "url": "https://6yka.com/bih/20-milijardi-razloga-za-interes-zasto-dodik-i-covic-zele-vecu-kontrolu-nad-centralnom-bankom-bih/",
-      "source": "buka",
-      "sourceName": "Buka",
-      "categories": [
-        "BiH",
-        "centralna banka",
-        "devizne rezerve",
-        "Dragan Čović"
-      ],
-      "author": "Nikola Dukic",
-      "theme": "ekonomija",
-      "image": "",
-      "imageAlt": "20 milijardi razloga za interes: Zašto Dodik i Čović žele veću kontrolu nad Centralnom bankom BiH?",
-      "addedAt": "2026-10-21T17:05:35.796Z"
-    },
-    {
-      "slug": "sarajevo-2026-10-21-buka-sa-murala-u-istocnom-novom-sarajevu-716b83",
-      "title": "Sa murala u Istočnom Novom Sarajevu uklonjen natpis „genocidaši“",
-      "summary": "Natpis „genocidaši“ uklonjen je danas, 21. oktobra, sa murala srpske trobojke na stambenoj zgradi u Istočnom Novom Sarajevu, nakon što je policija prethodno uhapsila osobu osumnjičenu da ga je ispisala. Policijskoj stanici Istočno Novo Sarajevo juče ujutro, oko 8 časova, prijavljeno je da je nepoznata osoba oštetila mural sa zastavom Republike Srpske. Policija je potom",
-      "date": "2026-10-21T15:12:57.000Z",
-      "url": "https://6yka.com/bih/sa-murala-u-istocnom-novom-sarajevu-uklonjen-natpis-genocidasi/",
-      "source": "buka",
-      "sourceName": "Buka",
-      "categories": [
-        "BiH",
-        "Mural"
-      ],
-      "author": "Nikola Dukic",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Sa murala u Istočnom Novom Sarajevu uklonjen natpis „genocidaši“",
-      "addedAt": "2026-10-21T17:05:35.796Z"
-    },
-    {
-      "slug": "sarajevo-2026-10-21-avaz-fondacija-hind-rajab-identifikovala-9f62e4",
-      "title": "Fondacija Hind Rajab identifikovala navodnog ubicu palestinske djevojčice: Evo o kome se radi",
-      "summary": "Fondacija Hind Rajab identifikovala navodnog ubicu palestinske djevojčice: Evo o kome se radi - HRF tvrdi da je Šon Glas najvjerovatnije naredio otvaranje vatre na vozilo u kojem je bila djevojčica",
-      "date": "2026-10-21T12:29:35.000Z",
-      "url": "https://avaz.ba/vijesti/globus/1081866/fondacija-hind-rajab-identifikovala-navodnog-ubicu-palestinske-djevojcice-evo-o-kome-se-radi",
-      "source": "avaz",
-      "sourceName": "Avaz",
-      "categories": [
-        "boravi u sad-u"
-      ],
-      "author": "Dnevni avaz",
-      "theme": "drustvo",
-      "image": "https://gale-s3-bucket.s3.eu-central-1.amazonaws.com/8b6a9f74-7f35-49ae-b4eb-04a05f1163ce.jpeg",
-      "imageAlt": "Fondacija Hind Rajab identifikovala navodnog ubicu palestinske djevojčice: Evo o kome se radi",
-      "addedAt": "2026-10-21T11:39:28.615Z"
-    },
-    {
-      "slug": "sarajevo-2026-10-21-avaz-test-zimskih-guma-za-sezonu-pred-nama-f09d93",
-      "title": "Test zimskih guma za sezonu pred nama: Budite oprezni pri izboru, samo šest modela zaslužilo preporuku",
-      "summary": "Test zimskih guma za sezonu pred nama: Budite oprezni pri izboru, samo šest modela zaslužilo preporuku - Među najbolje ocijenjenim gumama izdvajaju se Continental WinterContact TS 870 i Pirelli Cinturato Winter 3",
-      "date": "2026-10-21T12:25:54.000Z",
-      "url": "https://avaz.ba/vijesti/1081865/test-zimskih-guma-za-sezonu-pred-nama-budite-oprezni-pri-izboru-samo-sest-modela-zasluzilo-preporuku",
-      "source": "avaz",
-      "sourceName": "Avaz",
-      "categories": [
-        "ADAC"
-      ],
-      "author": "Dnevni avaz",
-      "theme": "politika",
-      "image": "https://gale-s3-bucket.s3.eu-central-1.amazonaws.com/29c8f32b-2331-4b27-a853-7925763e16dd.jpeg",
-      "imageAlt": "Test zimskih guma za sezonu pred nama: Budite oprezni pri izboru, samo šest modela zaslužilo preporuku",
-      "addedAt": "2026-10-21T11:39:28.615Z"
-    },
-    {
-      "slug": "sarajevo-2026-10-21-avaz-ostavljam-te-luda-zeno-adnan-babajic-8d76b0",
-      "title": "\"Ostavljam te, luda ženo\": Adnan Babajić objavio poruku koja je pokrenula lavinu pitanja",
-      "summary": "\"Ostavljam te, luda ženo\": Adnan Babajić objavio poruku koja je pokrenula lavinu pitanja - Pjevač, poznat po tome što privatni život drži daleko od javnosti, iznenadio je pratioce objavom koja je izazvala brojne reakcije i nagađanja",
-      "date": "2026-10-21T12:13:09.000Z",
-      "url": "https://avaz.ba/showbiz/jet-set/1081864/ostavljam-te-luda-zeno-adnan-babajic-objavio-poruku-koja-je-pokrenula-lavinu-pitanja",
-      "source": "avaz",
-      "sourceName": "Avaz",
-      "categories": [
-        "Zagonetna objava"
-      ],
-      "author": "Dnevni avaz",
-      "theme": "drustvo",
-      "image": "https://gale-s3-bucket.s3.eu-central-1.amazonaws.com/603e7fdc-de07-4b54-82b9-988eb4e924ac.jpeg",
-      "imageAlt": "\"Ostavljam te, luda ženo\": Adnan Babajić objavio poruku koja je pokrenula lavinu pitanja",
-      "addedAt": "2026-10-21T11:39:28.615Z"
-    },
-    {
-      "slug": "sarajevo-2026-10-21-avaz-mol-potpisao-ugovor-o-preuzimanju-nis-a-aa70b9",
-      "title": "MOL potpisao ugovor o preuzimanju NIS-a: Mali tvrdi da je dogovor postignut, čeka se i saglasnost iz BiH",
-      "summary": "MOL potpisao ugovor o preuzimanju NIS-a: Mali tvrdi da je dogovor postignut, čeka se i saglasnost iz BiH - Transakcija se odnosi na većinski ruski udio, a zbog poslovanja obje kompanije na bh. tržištu potrebno je i odobrenje Konkurencijskog vijeća BiH",
-      "date": "2026-10-21T12:11:40.000Z",
-      "url": "https://avaz.ba/vijesti/biznis/1081862/mol-potpisao-ugovor-o-preuzimanju-nis-a-mali-tvrdi-da-je-dogovor-postignut-ceka-se-i-saglasnost-iz-bih",
-      "source": "avaz",
-      "sourceName": "Avaz",
-      "categories": [
-        "naftna industrija"
-      ],
-      "author": "Dnevni avaz",
-      "theme": "ekonomija",
-      "image": "https://gale-s3-bucket.s3.eu-central-1.amazonaws.com/8eea9b37-2067-4ef5-84a8-f61fe9b592f8.jpeg",
-      "imageAlt": "MOL potpisao ugovor o preuzimanju NIS-a: Mali tvrdi da je dogovor postignut, čeka se i saglasnost iz BiH",
-      "addedAt": "2026-10-21T11:39:28.616Z"
-    },
-    {
-      "slug": "sarajevo-2026-10-21-avaz-mina-kostic-progovorila-o-najtezem-periodu-327d65",
-      "title": "Mina Kostić progovorila o najtežem periodu: \"Nisam imala odakle plaćati račune\"",
-      "summary": "Mina Kostić progovorila o najtežem periodu: \"Nisam imala odakle plaćati račune\" - Pjevačica je tokom pandemije ostala bez nastupa i redovnih prihoda, a nagomilani troškovi donijeli su joj brige s kakvima se ranije nije suočavala",
-      "date": "2026-10-21T11:59:54.000Z",
-      "url": "https://avaz.ba/showbiz/jet-set/1081859/mina-kostic-progovorila-o-najtezem-periodu-nisam-imala-odakle-placati-racune",
-      "source": "avaz",
-      "sourceName": "Avaz",
-      "categories": [
-        "Finansijski slom"
-      ],
-      "author": "Dnevni avaz",
-      "theme": "ekonomija",
-      "image": "https://gale-s3-bucket.s3.eu-central-1.amazonaws.com/20f739a7-3bd9-4ccf-97d6-29c07e174a23.jpeg",
-      "imageAlt": "Mina Kostić progovorila o najtežem periodu: \"Nisam imala odakle plaćati račune\"",
-      "addedAt": "2026-10-21T11:39:28.616Z"
-    },
-    {
-      "slug": "sarajevo-2026-10-21-detektor-debevec-i-ostali-nastavljeno-sudenje-bez-07a248",
-      "title": "Debevec i ostali: Nastavljeno suđenje bez prisustva javnosti",
-      "summary": "Suđenje bivšem predsjedniku Suda Bosne i Hercegovine Ranku Debevcu i drugima optuženim za zloupotrebe dužnosti nastavljeno je bez prisustva javnosti. The post Debevec i ostali: Nastavljeno suđenje bez prisustva javnosti appeared first on Detektor .",
-      "date": "2026-10-21T11:53:47.000Z",
-      "url": "https://detektor.ba/2026/10/21/debevec-i-ostali-nastavljeno-sudjenje-bez-prisustva-javnosti/",
-      "source": "detektor",
-      "sourceName": "Detektor",
-      "categories": [
-        "Vijesti"
-      ],
-      "author": "Marija Taušan",
-      "theme": "politika",
-      "image": "",
-      "imageAlt": "Debevec i ostali: Nastavljeno suđenje bez prisustva javnosti",
-      "addedAt": "2026-10-21T21:34:26.522Z"
-    },
-    {
-      "slug": "sarajevo-2026-10-21-klix-brisel-istrazuje-booking-lazni-apartmani-27f483",
-      "title": "Brisel istražuje Booking: Lažni apartmani, krađa podataka i skrivene reklame",
-      "summary": "Evropska komisija pokrenula je u srijedu formalni postupak protiv platforme Booking.com. Postupkom treba utvrditi je li Booking prekršio Akt o digitalnim uslugama (DSA) tako što nije pažljivo procijenio ni efikasno umanjio rizike od lažnih oglasa za smještaj i phishing prevara.",
-      "date": "2026-10-21T11:37:00.000Z",
-      "url": "https://www.klix.ba/biznis/ekonomija/brisel-istrazuje-booking-lazni-apartmani-krada-podataka-i-skrivene-reklame/261021195",
-      "source": "klix",
-      "sourceName": "Klix",
-      "categories": [
-        "Ekonomija"
-      ],
-      "author": "Piše: M. G.",
-      "theme": "politika",
-      "image": "https://static.klix.ba/media/images/vijesti/img32_261021195.jpg",
-      "imageAlt": "Brisel istražuje Booking: Lažni apartmani, krađa podataka i skrivene reklame",
-      "addedAt": "2026-10-21T11:39:24.547Z"
-    },
-    {
-      "slug": "sarajevo-2026-10-21-buka-rusija-sutra-salje-prvi-tanker-s-dizelom-u-462d76",
-      "title": "Rusija sutra šalje prvi tanker s dizelom u SAD",
-      "summary": "Rusija će u četvrtak poslati svoj prvi tanker s dizel gorivom u Sjedinjene Države, izjavio je potpredsjednik vlade Aleksandar Novak – kako prenosi list Vedomosti – nakon postizanja dogovora s američkim predsjednikom Donaldom Trumpom. Rusija je 9. oktobra ukinula vlastitu zabranu izvoza dizela – uvedenu radi rješavanja nestašica na domaćem tržištu uzrokovanih ukrajinskim napadima dronovima",
-      "date": "2026-10-21T11:36:22.000Z",
-      "url": "https://6yka.com/svijet/rusija-sutra-salje-prvi-tanker-s-dizelom-u-sad/",
-      "source": "buka",
-      "sourceName": "Buka",
-      "categories": [
-        "Svijet",
-        "dizel",
-        "rusija",
-        "SAD"
-      ],
-      "author": "Milica Plavsic",
-      "theme": "rat",
-      "image": "",
-      "imageAlt": "Rusija sutra šalje prvi tanker s dizelom u SAD",
-      "addedAt": "2026-10-21T11:39:30.855Z"
-    },
-    {
-      "slug": "sarajevo-2026-10-21-radiosarajevo-sarajevski-aerodrom-na-original-nacin-d2a8c6",
-      "title": "Sarajevski aerodrom na original način najavio predstojeći derbi na Koševu",
-      "summary": "",
-      "date": "2026-10-21T11:36:00.000Z",
-      "url": "https://radiosarajevo.ba/sport/nogomet/sarajevski-aerodrom-najavio-derbi-sarajevo-zeljeznicar/657646",
-      "source": "radiosarajevo",
-      "sourceName": "Radio Sarajevo",
-      "categories": [],
-      "author": "RSA",
-      "theme": "sport",
-      "image": "https://storage.radiosarajevo.ba/article/657646/871x540/screenshot-4.jpg?v1792582576",
-      "imageAlt": "Sarajevski aerodrom na original način najavio predstojeći derbi na Koševu",
-      "addedAt": "2026-10-21T11:39:28.928Z"
-    },
-    {
-      "slug": "sarajevo-2026-10-21-klix-dzudasica-aleksandra-samardzic-iz-borse-8b47aa",
-      "title": "Džudašica Aleksandra Samardžić iz Borse otišla na posudbu u francuski klub RSC Montreuil, nastupat će u Ligi prvaka",
-      "summary": "Bosanskohercegovačka džudašica Aleksandra Samardžić, članica Judo kluba Borsa iz Mostara, nastupit će u Judo Ligi prvaka kao pojačanje francuskog kluba RSC Montreuil iz Pariza.",
-      "date": "2026-10-21T11:34:00.000Z",
-      "url": "https://www.klix.ba/sport/borilacki-sportovi/dzudasica-aleksandra-samardzic-iz-borse-otisla-na-posudbu-u-francuski-klub-rsc-montreuil-nastupat-ce-u-ligi-prvaka/261021189",
-      "source": "klix",
-      "sourceName": "Klix",
-      "categories": [
-        "Borilački sportovi"
-      ],
-      "author": "Piše: E. B.",
-      "theme": "sport",
-      "image": "https://static.klix.ba/media/images/vijesti/img32_261021189.jpg",
-      "imageAlt": "Džudašica Aleksandra Samardžić iz Borse otišla na posudbu u francuski klub RSC Montreuil, nastupat će u Ligi prvaka",
-      "addedAt": "2026-10-21T11:39:24.547Z"
-    },
-    {
-      "slug": "sarajevo-2026-10-21-n1ba-bhrt-i-federalna-televizija-potpisali-e83249",
-      "title": "BHRT i Federalna televizija potpisali ugovor s Elektroprivredom BiH o naplati RTV takse za 2027.",
-      "summary": "Vršilac dužnosti generalnog direktora Radio-televizije Bosne i Hercegovine (BHRT) Belmin Karamehmedović i generalni direktor Radio-televizije Federaci",
-      "date": "2026-10-21T11:33:58.000Z",
-      "url": "https://n1info.ba/vijesti/bhrt-i-federalna-televizija-potpisali-ugovor-s-elektroprivredom-bih-o-naplati-rtv-takse-za-2027/",
-      "source": "n1ba",
-      "sourceName": "N1 BiH",
-      "categories": [
-        "Vijesti",
-        "ftv",
-        "elektroprivreda bih",
-        "bht"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://n1info.ba/media/images/1705496363-bhrt-ftv.width-1200.jpg",
-      "imageAlt": "BHRT i Federalna televizija potpisali ugovor s Elektroprivredom BiH o naplati RTV takse za 2027.",
-      "addedAt": "2026-10-21T11:39:24.375Z"
-    },
-    {
-      "slug": "sarajevo-2026-10-21-n1ba-sta-se-dogada-sa-psima-koje-odvedu-s-ulica-4c0ef5",
-      "title": "Šta se događa sa psima koje odvedu s ulica Sarajeva? Aktivisti iznijeli uznemirujuće tvrdnje, traže hitnu istragu",
-      "summary": "Neformalna građanska inicijativa \"Glas građana za zaštitu životinja – Inicijativa za humano i odgovorno društvo\" uputila je hitan apel zbog, kako navo",
-      "date": "2026-10-21T11:31:46.000Z",
-      "url": "https://n1info.ba/vijesti/sta-se-dogadja-sa-psima-koje-odvedu-s-ulica-sarajeva-aktivisti-iznijeli-uznemirujuce-tvrdnje-traze-hitnu-istragu/",
-      "source": "n1ba",
-      "sourceName": "N1 BiH",
-      "categories": [
-        "Vijesti",
-        "aktivisti",
-        "higijenski servis za hvatanje pasa",
-        "zaštita životinja"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://n1info.ba/media/original_images/2026/10/21/1792582161_psi-33933.format-avif.width-1200.avif",
-      "imageAlt": "Šta se događa sa psima koje odvedu s ulica Sarajeva? Aktivisti iznijeli uznemirujuće tvrdnje, traže hitnu istragu",
-      "addedAt": "2026-10-21T11:39:24.375Z"
-    },
-    {
-      "slug": "sarajevo-2026-10-21-klix-povecanje-plata-drzavnim-sluzbenicima-u-0f4307",
-      "title": "Povećanje plata državnim službenicima u 2027. moglo bi koštati budžet BiH 150 miliona KM",
-      "summary": "U Parlamentarnoj skupštini Bosne i Hercegovine je ove godine usvojena izmjena i dopuna Zakona o platama i naknadama u institucijama BiH čime je osigurano povećanje osnovice za plate državnih službenika, bez obzira na to da li je budžet BiH usvojen.",
-      "date": "2026-10-21T11:30:00.000Z",
-      "url": "https://www.klix.ba/biznis/finansije/povecanje-plata-drzavnim-sluzbenicima-u-2027-moglo-bi-kostati-budzet-bih-150-miliona-km/261021058",
-      "source": "klix",
-      "sourceName": "Klix",
-      "categories": [
-        "Finansije"
-      ],
-      "author": "Piše: N. Ž.",
-      "theme": "politika",
-      "image": "https://static.klix.ba/media/images/vijesti/img32_261021058.jpg",
-      "imageAlt": "Povećanje plata državnim službenicima u 2027. moglo bi koštati budžet BiH 150 miliona KM",
-      "addedAt": "2026-10-21T11:39:24.547Z"
-    },
-    {
-      "slug": "sarajevo-2026-10-21-klix-nba-privodi-kraju-dogovore-s-klubovima-za-141963",
-      "title": "NBA privodi kraju dogovore s klubovima za evropsku ligu, imena stižu uskoro",
-      "summary": "NBA je blizu finaliziranja ugovora s klubovima za početnu fazu svoje evropske lige i planira ih uskoro objaviti, rekao je u utorak zamjenik komesara NBA lige Mark Tatum, dodajući da vrata za dogovor s Euroligom ostaju otvorena.",
-      "date": "2026-10-21T11:29:00.000Z",
-      "url": "https://www.klix.ba/sport/kosarka/nba-privodi-kraju-dogovore-s-klubovima-za-evropsku-ligu-imena-stizu-uskoro/261021186",
-      "source": "klix",
-      "sourceName": "Klix",
-      "categories": [
-        "Košarka"
-      ],
-      "author": "Piše: A. T.",
-      "theme": "sport",
-      "image": "https://static.klix.ba/media/images/vijesti/img32_261021186.jpg",
-      "imageAlt": "NBA privodi kraju dogovore s klubovima za evropsku ligu, imena stižu uskoro",
-      "addedAt": "2026-10-21T11:39:24.547Z"
-    },
-    {
-      "slug": "sarajevo-2026-10-21-buka-poskupila-dostava-vode-domacinstvima-bez-3fae68",
-      "title": "Poskupila dostava vode domaćinstvima bez vodovodne mreže u Banjaluci",
-      "summary": "Stanovnici banjalučkih prigradskih naselja koja nemaju vodovodnu mrežu obaviješteni su putem svojih mjesnih zajednica da je došlo do povećanja cijene vode koja im se doprema cisternama. Dostavljanje vode domaćinstvima koja nemaju pristup vodovodnoj mreži u nadležnosti je Grada Banjaluka, a isporuku obavlja Civilna zaštita. Nakon što su nam se obratili mještani nezadovoljni poskupljenjem, uputili smo",
-      "date": "2026-10-21T11:28:42.000Z",
-      "url": "https://6yka.com/bih/poskupila-dostava-vode-domacinstvima-bez-vodovodne-mreze-u-banjaluci/",
-      "source": "buka",
-      "sourceName": "Buka",
-      "categories": [
-        "BiH",
-        "Izdvojeno",
-        "banjaluka",
-        "poskupljenje"
-      ],
-      "author": "Milica Plavsic",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Poskupila dostava vode domaćinstvima bez vodovodne mreže u Banjaluci",
-      "addedAt": "2026-10-21T11:39:30.855Z"
-    },
-    {
-      "slug": "sarajevo-2026-10-21-buka-u-samo-jednom-naselju-u-banjaluci-otkriveno-6c81d4",
-      "title": "U samo jednom naselju u Banjaluci otkriveno 5.000 nekretnina više nego u registrima institucija!?",
-      "summary": "U katastarskoj opštini Nova Varoš u Banjaluci otkriveno je nekoliko hiljada više nekretnina nego u evidencijama institucija. U ovom dijelu grada Poreska uprava evidentirala je oko 12.000 nepokretnosti, Geodetska uprava oko 14.000, dok je na terenu utvrđeno da ih ima više od 17.000. Dragan Stanković, direktor Republičke uprave za geodetske i imovinsko-pravne poslove, istakao je",
-      "date": "2026-10-21T11:27:34.000Z",
-      "url": "https://6yka.com/bih/u-samo-jednom-naselju-u-banjaluci-otkriveno-5-000-nekretnina-vise-nego-u-registrima-institucija/",
-      "source": "buka",
-      "sourceName": "Buka",
-      "categories": [
-        "BiH",
-        "Dragan Stanković",
-        "katastar Banja Luka",
-        "nekretnine Banja Luka"
-      ],
-      "author": "Tatjana Calic",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "U samo jednom naselju u Banjaluci otkriveno 5.000 nekretnina više nego u registrima institucija!?",
-      "addedAt": "2026-10-21T11:39:30.855Z"
     }
   ]
 }

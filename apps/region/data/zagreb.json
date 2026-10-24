@@ -4,17 +4,20 @@
   "lang": "hr",
   "city": "Zagreb",
   "country": "Hrvatska",
-  "updatedAt": "2026-10-24T07:11:28.310Z",
+  "updatedAt": "2026-10-24T11:35:13.555Z",
   "sources": [
     {
       "id": "index",
       "name": "Index.hr",
       "url": "https://www.index.hr/rss",
-      "ok": true,
-      "fetched": 150,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-10-24T07:11:22.408Z"
+      "errors": [
+        "https://www.index.hr/rss: HTTP 403",
+        "https://www.index.hr/rss/vijesti: HTTP 403"
+      ],
+      "checkedAt": "2026-10-24T11:35:07.068Z"
     },
     {
       "id": "jutarnji",
@@ -24,7 +27,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T07:11:23.036Z"
+      "checkedAt": "2026-10-24T11:35:08.076Z"
     },
     {
       "id": "poslovni",
@@ -34,7 +37,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T07:11:23.903Z"
+      "checkedAt": "2026-10-24T11:35:08.982Z"
     },
     {
       "id": "tportal",
@@ -44,7 +47,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T07:11:25.281Z"
+      "checkedAt": "2026-10-24T11:35:10.580Z"
     },
     {
       "id": "hrt",
@@ -56,7 +59,7 @@
       "errors": [
         "https://vijesti.hrt.hr/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-24T07:11:26.821Z"
+      "checkedAt": "2026-10-24T11:35:12.133Z"
     },
     {
       "id": "n1hr",
@@ -66,7 +69,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T07:11:27.405Z"
+      "checkedAt": "2026-10-24T11:35:12.746Z"
     },
     {
       "id": "telegram",
@@ -76,10 +79,534 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T07:11:28.309Z"
+      "checkedAt": "2026-10-24T11:35:13.554Z"
     }
   ],
   "items": [
+    {
+      "slug": "zagreb-2026-10-24-telegram-barcelonin-prvi-golman-nahvalio-dominika-a97f40",
+      "title": "Barcelonin prvi golman nahvalio Dominika Livakovića: ‘Riječ je o sjajnom momku’",
+      "summary": "García je zadovoljan Vatrenim",
+      "date": "2026-10-24T11:25:19.000Z",
+      "url": "https://www.telegram.hr/telesport/na-prvu/barcelonin-prvi-golman-nahvalio-dominika-livakovica-rijec-je-o-sjajnom-momku/",
+      "source": "telegram",
+      "sourceName": "Telegram.hr",
+      "categories": [
+        "Na prvu",
+        "Telesport",
+        "fc barcelona",
+        "Dominik Livaković"
+      ],
+      "author": "Telesport",
+      "theme": "sport",
+      "image": "https://www.telegram.hr/wp-content/uploads/2026/09/dominik-livakovic-150x150.jpg",
+      "imageAlt": "Barcelonin prvi golman nahvalio Dominika Livakovića: ‘Riječ je o sjajnom momku’",
+      "addedAt": "2026-10-24T11:35:13.554Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-n1hr-simboli-na-pecnici-koje-mnogi-brkaju-jedan-2ec534",
+      "title": "Simboli na pećnici koje mnogi brkaju: Jedan može odlučiti hoće li jelo biti sočno i dobro pečeno",
+      "summary": "Ventilator s krugom i bez njega ne znače isto. Saznajte što predstavljaju simboli na pećnici i kako odabrati odgovarajući program pečenja.",
+      "date": "2026-10-24T11:24:41.000Z",
+      "url": "https://n1info.hr/magazin/lifestyle/simboli-na-pecnici-koje-mnogi-brkaju-jedan-moze-odluciti-hoce-li-jelo-biti-socno-i-dobro-peceno/",
+      "source": "n1hr",
+      "sourceName": "N1 Hrvatska",
+      "categories": [
+        "Lifestyle",
+        "upute za pećnicu",
+        "kružni grijač",
+        "simboli na pećnici"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://n1info.hr/media/images/pexels-photomix-company-213162.width-1200.jpg",
+      "imageAlt": "Simboli na pećnici koje mnogi brkaju: Jedan može odlučiti hoće li jelo biti sočno i dobro pečeno",
+      "addedAt": "2026-10-24T11:35:12.746Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-jutarnji-pojavila-se-nova-teorija-o-slavnoj-van-1d28fd",
+      "title": "Pojavila se nova teorija o slavnoj Van Goghovoj slici. I poprilično je zanimljiva",
+      "summary": "Teorija da je slika Zvjezdana noć Vincenta van Gogha nastala kao plod mašte, ranijih crteža i sjećanja na prizore koje je umjetnik promatrao kroz prozor svoje sobe u psihijatrijskoj ustanovi u Francuskoj, stara više od stoljeća, sada je dobila obrat. Znanstvenici iz Južne Koreje tvrde da je ovo djel...",
+      "date": "2026-10-24T11:24:00.000Z",
+      "url": "https://www.jutarnji.hr/kultura/art/pojavila-se-nova-teorija-o-slavnoj-van-goghovoj-slici-i-poprilicno-je-zanimljiva-15758951",
+      "source": "jutarnji",
+      "sourceName": "Jutarnji list",
+      "categories": [
+        "Art"
+      ],
+      "author": "redakcija@jutarnji.hr",
+      "theme": "ai",
+      "image": "https://media.jutarnji.hr/images/slike/2026/10/24/f_39831490_1280.jpg?1792841609",
+      "imageAlt": "Pojavila se nova teorija o slavnoj Van Goghovoj slici. I poprilično je zanimljiva",
+      "addedAt": "2026-10-24T11:35:08.091Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-telegram-vandeliceva-stranka-se-ujedinila-s-fokusom-b887f4",
+      "title": "Vanđelićeva stranka se ujedinila s Fokusom: ‘Građanima ćemo ponuditi red, rad i blagostanje’",
+      "summary": "Uz Vanđelića, zamjenica predsjednika bit će i gradonačelnica Samobora Petra Škrobot",
+      "date": "2026-10-24T11:20:16.000Z",
+      "url": "https://www.telegram.hr/politika-kriminal/vandeliceva-stranka-se-ujedinila-s-fokusom-gradanima-cemo-ponuditi-red-rad-i-blagostanje/",
+      "source": "telegram",
+      "sourceName": "Telegram.hr",
+      "categories": [
+        "Politika & Kriminal",
+        "Aleksandar Saša Novković",
+        "Damir Vanđelić",
+        "fokus"
+      ],
+      "author": "Telegram, Hina",
+      "theme": "politika",
+      "image": "https://www.telegram.hr/wp-content/uploads/2026/10/pxl-241026-161131494-150x150.jpg",
+      "imageAlt": "Vanđelićeva stranka se ujedinila s Fokusom: ‘Građanima ćemo ponuditi red, rad i blagostanje’",
+      "addedAt": "2026-10-24T11:35:13.554Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-jutarnji-uzivo-moze-li-zrinka-ljutic-do-postolja-204cc1",
+      "title": "UŽIVO: Može li Zrinka Ljutić do postolja? Shiffrin vodeća, 16 skijašica unutar sekunde i pol",
+      "summary": "Sölden, veleslalom (Ž) Druga vožnja: 1. V. Kasper (ŠVI) 2:17.61 Rezultati prve vožnje: 1. M. Shiffrin (SAD) 1:07.27 2. S. Hector (ŠVE) +0.14 3. C. Rast (ŠVI) +0.37 ... 12. Z. Ljutić (HRV) +1.34 ► Prva se u drugom laufu stazom spustila Vanessa Kasper i vožnju završila s ukupnim vremenom 2:17.61. Poče...",
+      "date": "2026-10-24T11:20:00.000Z",
+      "url": "https://www.jutarnji.hr/sportske/sport-mix/skijanje/uzivo-zrinka-ljutic-sa-startnim-brojem-devet-otvara-novu-skijasku-sezonu-15758880",
+      "source": "jutarnji",
+      "sourceName": "Jutarnji list",
+      "categories": [
+        "Skijanje"
+      ],
+      "author": "redakcija@jutarnji.hr",
+      "theme": "ekonomija",
+      "image": "https://media.jutarnji.hr/images/slike/2026/10/24/f_39831203_1280.jpg?1792841609",
+      "imageAlt": "UŽIVO: Može li Zrinka Ljutić do postolja? Shiffrin vodeća, 16 skijašica unutar sekunde i pol",
+      "addedAt": "2026-10-24T11:35:08.091Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-tportal-velika-promjena-za-fokus-ujedinili-se-s-372577",
+      "title": "Velika promjena za Fokus: Ujedinili se s jednom strankom, iznijeli su i planove",
+      "summary": "Sporazum o ujedinjenju stranaka Fokus i Republika potpisan je u subotu u Zagrebu, a ujedinjena stranka zadržat će ime Fokus i predsjednika Gabrijela Deaka, dok će dosadašnji čelnik stranke Republika Damir Vanđelić biti njegov zamjenik",
+      "date": "2026-10-24T11:19:00.000Z",
+      "url": "https://www.tportal.hr/vijesti/clanak/velika-promjena-za-fokus-ujedinili-se-s-jednom-strankom-iznijeli-su-i-planove-20261024",
+      "source": "tportal",
+      "sourceName": "tportal",
+      "categories": [
+        "Vijesti"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://www.tportal.hr/media/thumbnail/500x300/2816052.jpeg?cropId=0",
+      "imageAlt": "Velika promjena za Fokus: Ujedinili se s jednom strankom, iznijeli su i planove",
+      "addedAt": "2026-10-24T11:35:10.580Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-tportal-novi-volkswagen-trebao-je-vratiti-nijemce-u-d1fc6c",
+      "title": "Novi Volkswagen trebao je vratiti Nijemce u igru u Kini: Prodaje se deset puta slabije od plana",
+      "summary": "Volkswagen je ID. UNYX 08 razvio za manje od dvije godine i predstavio ga kao simbol svoje nove kineske strategije. Prvi prodajni rezultati ipak su daleko od očekivanja.",
+      "date": "2026-10-24T11:15:00.000Z",
+      "url": "https://www.tportal.hr/autozona/clanak/novi-volkswagen-trebao-je-vratiti-nijemce-u-igru-u-kini-prodaje-se-deset-puta-slabije-od-plana-20261024",
+      "source": "tportal",
+      "sourceName": "tportal",
+      "categories": [
+        "Autozona"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.tportal.hr/media/thumbnail/500x300/2816050.png?cropId=4316724",
+      "imageAlt": "Novi Volkswagen trebao je vratiti Nijemce u igru u Kini: Prodaje se deset puta slabije od plana",
+      "addedAt": "2026-10-24T11:35:10.580Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-tportal-livakovic-zbog-njega-ne-brani-a-on-odusevio-b76e70",
+      "title": "Livaković zbog njega ne brani, a on oduševio izjavom: Otkrio što Hrvat radi na treninzima",
+      "summary": "Prvi čuvar mreže Barcelone, 25-godišnji Joan García, osvrnuo se na hrvatskog reprezentativnog vratara Dominika Livakovića te njegov utjecaj na zaoštravanje konkurencije u svlačionici katalonskog diva.",
+      "date": "2026-10-24T11:14:00.000Z",
+      "url": "https://www.tportal.hr/sport/clanak/livakovic-zbog-njega-ne-brani-a-on-odusevio-izjavom-otkrio-sto-hrvat-radi-na-treninzima-20261024",
+      "source": "tportal",
+      "sourceName": "tportal",
+      "categories": [
+        "Sport"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.tportal.hr/media/thumbnail/500x300/2816049.jpeg?cropId=0",
+      "imageAlt": "Livaković zbog njega ne brani, a on oduševio izjavom: Otkrio što Hrvat radi na treninzima",
+      "addedAt": "2026-10-24T11:35:10.580Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-tportal-baby-lasagna-pisu-mi-da-sam-se-prodao-i-59c383",
+      "title": "Baby Lasagna: 'Pišu mi da sam se prodao i poludio, a ja se osjećam sretniji i smireniji nego na Eurosongu'",
+      "summary": "Nakon što je prije dvije godine izazvao neviđenu nacionalnu i europsku euforiju, Marko Purišić poznatiji kao Baby Lasagna, objavio je svoj drugi studijski album 'End the Party'. Novo izdanje donosi zamjetan povratak čvrstim rock i metal korijenima, no usprkos činjenici da mu se život iz temelja promijenio, glazbenik ističe kako je u suštini ostao isti onaj dečko iz Istre",
+      "date": "2026-10-24T11:14:00.000Z",
+      "url": "https://www.tportal.hr/showtime/clanak/baby-lasagna-pisu-mi-da-sam-se-prodao-i-poludio-a-ja-se-osjecam-sretniji-i-smireniji-nego-na-eurosongu-20261024",
+      "source": "tportal",
+      "sourceName": "tportal",
+      "categories": [
+        "Showtime"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.tportal.hr/media/thumbnail/500x300/2816047.jpeg?cropId=4316711",
+      "imageAlt": "Baby Lasagna: 'Pišu mi da sam se prodao i poludio, a ja se osjećam sretniji i smireniji nego na Eurosongu'",
+      "addedAt": "2026-10-24T11:35:10.580Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-jutarnji-video-pogledajte-krvnicki-start-zbog-kojeg-2cc962",
+      "title": "VIDEO: Pogledajte krvnički start zbog kojeg navijači zazivaju doživotnu zabranu",
+      "summary": "Svijet sporta je potresla snimka krničkog starta u velškom ragbiju. Neki navijači na društvenim mrežama traže i doživotnu zabranu nastupa za velškog igrača koji je na potpuno nesportski način startao na suparničkog igrača, s čistom namjerom da ga ozlijedi. Ne može se drugačije opisati ono što se dog...",
+      "date": "2026-10-24T11:12:14.000Z",
+      "url": "https://www.jutarnji.hr/sportske/sport-mix/ostali-sportovi/video-pogledajte-krvnicki-start-zbog-kojeg-navijaci-zazivaju-dozivotnu-zabranu-15758947",
+      "source": "jutarnji",
+      "sourceName": "Jutarnji list",
+      "categories": [
+        "Ostali sportovi 2. razina"
+      ],
+      "author": "daniel.vinkovic@sportskenovosti.hr (Daniel Vinković)",
+      "theme": "sport",
+      "image": "https://media.jutarnji.hr/images/slike/2026/10/24/f_39831445_1280.jpg?1792841609",
+      "imageAlt": "VIDEO: Pogledajte krvnički start zbog kojeg navijači zazivaju doživotnu zabranu",
+      "addedAt": "2026-10-24T11:35:08.091Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-jutarnji-vraca-se-bend-ryana-goslinga-8dec8b",
+      "title": "Vraća se bend Ryana Goslinga",
+      "summary": "Indie rock bend Ryana Goslinga, ‘Dead Man‘s Bones‘, najavio je povratak na glazbenu scenu nakon 17 godina stanke i jedinog albuma koji je ovaj dvojac dosad izdao. Nova glazba benda bit će objavljena u utorak, 27. listopada, stoji u videozapisu koji je na Instagramu podijelila Goslingova supruga, glu...",
+      "date": "2026-10-24T11:11:00.000Z",
+      "url": "https://www.jutarnji.hr/scena/strane-zvijezde/vraca-se-bend-ryana-goslinga-15758946",
+      "source": "jutarnji",
+      "sourceName": "Jutarnji list",
+      "categories": [
+        "Strane zvijezde"
+      ],
+      "author": "redakcija@jutarnji.hr",
+      "theme": "drustvo",
+      "image": "https://media.jutarnji.hr/images/slike/2026/10/24/f_39347139_1280.jpg?1792841609",
+      "imageAlt": "Vraća se bend Ryana Goslinga",
+      "addedAt": "2026-10-24T11:35:08.092Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-tportal-sto-se-dogada-u-sloveniji-broj-trazitelja-8f7623",
+      "title": "Što se događa u Sloveniji? Broj tražitelja azila debelo premašuje prosjek EU-a",
+      "summary": "U srpnju je u Europskoj uniji prvi zahtjev za azil podnijelo 34.145 osoba, gotovo 40 posto manje nego godinu ranije, a najviše zahtjeva zaprimila je Francuska, dok je susjedna Slovenija imala najveći broj tražitelja azila u odnosu na broj stanovnika, podaci su Eurostata",
+      "date": "2026-10-24T11:03:00.000Z",
+      "url": "https://www.tportal.hr/vijesti/clanak/sto-se-dogada-u-sloveniji-broj-trazitelja-azila-debelo-premasuje-prosjek-eu-a-20261024",
+      "source": "tportal",
+      "sourceName": "tportal",
+      "categories": [
+        "Vijesti"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.tportal.hr/media/thumbnail/500x300/2703752.jpeg?cropId=0",
+      "imageAlt": "Što se događa u Sloveniji? Broj tražitelja azila debelo premašuje prosjek EU-a",
+      "addedAt": "2026-10-24T11:35:10.581Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-n1hr-policija-usred-nastupa-prekinula-koncert-e73a7e",
+      "title": "Policija usred nastupa prekinula koncert EKV tribute benda, glazbenici završili u postaji",
+      "summary": "Koncert tribute benda EKV Krug, koji je u petak navečer nastupao u splitskom BackBaru Plana B, prekinula je policija zbog nedostatka potrebnih potvrda",
+      "date": "2026-10-24T11:02:33.000Z",
+      "url": "https://n1info.hr/crna-kronika/policija-usred-nastupa-prekinula-koncert-ekv-tribute-benda-glazbenici-zavrsili-u-postaji/",
+      "source": "n1hr",
+      "sourceName": "N1 Hrvatska",
+      "categories": [
+        "Crna kronika",
+        "Kultura",
+        "srbija",
+        "političke bizarnosti"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://n1info.hr/media/images/2026/10/24/1792839470_PXL_141026_160466396.width-1200.jpg",
+      "imageAlt": "Policija usred nastupa prekinula koncert EKV tribute benda, glazbenici završili u postaji",
+      "addedAt": "2026-10-24T11:35:12.747Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-telegram-ovih-dana-mozete-isprobati-recept-za-a40b3a",
+      "title": "Ovih dana možete isprobati recept za mileram tortu s nadjevom o jabuka i ganacheom od bijele čokolade",
+      "summary": "Recept nam je dala Irena Gavran (@pregacha)",
+      "date": "2026-10-24T11:00:34.000Z",
+      "url": "https://www.telegram.hr/super1/recepti/mileram-torta-recept/",
+      "source": "telegram",
+      "sourceName": "Telegram.hr",
+      "categories": [
+        "Recepti",
+        "vikend recept"
+      ],
+      "author": "Ivana Vranešić",
+      "theme": "drustvo",
+      "image": "https://www.telegram.hr/wp-content/uploads/2026/10/cake-1024-150x150.jpg",
+      "imageAlt": "Ovih dana možete isprobati recept za mileram tortu s nadjevom o jabuka i ganacheom od bijele čokolade",
+      "addedAt": "2026-10-24T11:35:13.554Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-poslovni-u-hitnom-glasanju-progurali-reformu-javnih-dd9f24",
+      "title": "U hitnom glasanju progurali reformu javnih medija",
+      "summary": "Vlada navodi da ukida mjesečnu pretplatu za kućanstva od 205 kruna (9 eura) kako bi smanjila troškove potrošačima.",
+      "date": "2026-10-24T11:00:00.000Z",
+      "url": "https://www.poslovni.hr/vijesti/ubrzali-postupak-donosenja-zakona-o-ukidanju-pretplate-za-javne-medije-4560950",
+      "source": "poslovni",
+      "sourceName": "Poslovni dnevnik",
+      "categories": [
+        "Vijesti",
+        "Češka",
+        "javni mediji",
+        "televizija"
+      ],
+      "author": "Poslovni.hr/Hina",
+      "theme": "politika",
+      "image": "https://www.poslovni.hr/wp-content/uploads/2026/10/hpgruesen-telecommunication-tower-3064834-800x500.jpg",
+      "imageAlt": "U hitnom glasanju progurali reformu javnih medija",
+      "addedAt": "2026-10-24T11:35:08.982Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-jutarnji-foto-pojavile-se-prve-fotografije-spaljenog-9fb960",
+      "title": "FOTO Pojavile se prve fotografije spaljenog Hitlerovog ‘Orlovog gnijezda‘: ‘Teško će ga spasiti‘",
+      "summary": "U petak navečer izbio je veliki požar u poznatom planinskom objektu Kehlsteinhaus u njemačkom Berchtesgadenu, u saveznoj pokrajini Bavarskoj. Kehlsteinhaus, poznat i kao Orlovo gnijezdo nalazi se na 1834 metra nadmorske visine iznad Berchtesgadena i jedno je od najpoznatijih turističkih odredišta u...",
+      "date": "2026-10-24T10:55:00.000Z",
+      "url": "https://www.jutarnji.hr/vijesti/svijet/foto-pojavile-se-prve-fotografije-spaljenog-hitlerovog-orlovog-gnijezda-tesko-ce-ga-spasiti-15758943",
+      "source": "jutarnji",
+      "sourceName": "Jutarnji list",
+      "categories": [
+        "Svijet"
+      ],
+      "author": "lukafisic1985@gmail.com (Luka Fišić)",
+      "theme": "potres",
+      "image": "https://media.jutarnji.hr/images/slike/2026/10/24/f_39831276_1280.jpg?1792841609",
+      "imageAlt": "FOTO Pojavile se prve fotografije spaljenog Hitlerovog ‘Orlovog gnijezda‘: ‘Teško će ga spasiti‘",
+      "addedAt": "2026-10-24T11:35:08.092Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-jutarnji-jose-mourinho-uoci-el-clasica-uvijek-e87336",
+      "title": "Jose Mourinho uoči El Clasica. Uvijek zanimljivo štivo",
+      "summary": "Real Madrid ulazi u prvi El Clásico sezone u sjajnom raspoloženju nakon uvjerljive pobjede 4:1 protiv Leipziga na Santiago Bernabéuu. Sljedeći izazov momčadi Josea Mourinha donosi gostovanje na Camp Nouu, gdje će se sudariti s Barcelonom u jednom od najiščekivanijih susreta sezone. Prvi je to El Clá...",
+      "date": "2026-10-24T10:54:28.000Z",
+      "url": "https://www.jutarnji.hr/sportske/nogomet/jose-mourinho-uoci-el-clasica-uvijek-zanimljivo-stivo-15758942",
+      "source": "jutarnji",
+      "sourceName": "Jutarnji list",
+      "categories": [
+        "Nogomet"
+      ],
+      "author": "marinodurdov7@gmail.com (Marino Durdov)",
+      "theme": "sport",
+      "image": "https://media.jutarnji.hr/images/slike/2026/10/24/f_39816107_1280.jpg?1792841609",
+      "imageAlt": "Jose Mourinho uoči El Clasica. Uvijek zanimljivo štivo",
+      "addedAt": "2026-10-24T11:35:08.092Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-telegram-trener-u-prvoj-nl-opleo-po-sucu-lovricu-i-927606",
+      "title": "Trener u Prvoj NL opleo po sucu Lovriću i predsjedniku Hrvaca: ‘Sramotno i poražavajuće’",
+      "summary": "Rac je bio ljut nakon remija",
+      "date": "2026-10-24T10:52:55.000Z",
+      "url": "https://www.telegram.hr/telesport/na-prvu/trener-u-prvoj-nl-opleo-po-sucu-lovricu-i-predsjedniku-hrvaca-sramotno-i-porazavajuce/",
+      "source": "telegram",
+      "sourceName": "Telegram.hr",
+      "categories": [
+        "Na prvu",
+        "Telesport",
+        "mario rac",
+        "NK Sesvete"
+      ],
+      "author": "Telesport",
+      "theme": "sport",
+      "image": "https://www.telegram.hr/wp-content/uploads/2025/03/mario-rac-150x150.jpg",
+      "imageAlt": "Trener u Prvoj NL opleo po sucu Lovriću i predsjedniku Hrvaca: ‘Sramotno i poražavajuće’",
+      "addedAt": "2026-10-24T11:35:13.555Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-n1hr-preokret-za-ukrajinu-starlink-vracen-na-a43c5a",
+      "title": "Preokret za Ukrajinu: Starlink vraćen na preko 400 km/h nakon Trumpove objave",
+      "summary": "Ukrajina je u subotu objavila da je ponovno uspostavila \"stabilnu vezu\" sa SpaceX-ovim sustavom Starlink, ključnim za njezinu vojsku, nakon nekoliko d",
+      "date": "2026-10-24T10:43:59.000Z",
+      "url": "https://n1info.hr/svijet/preokret-za-ukrajinu-starlink-vracen-na-preko-400-kmh-nakon-trumpove-objave/",
+      "source": "n1hr",
+      "sourceName": "N1 Hrvatska",
+      "categories": [
+        "Svijet",
+        "sad",
+        "ukrajina",
+        "elon musk"
+      ],
+      "author": "",
+      "theme": "rat",
+      "image": "https://n1info.hr/media/images/2025/7/1753388086_000_33U346X.width-1200.jpg",
+      "imageAlt": "Preokret za Ukrajinu: Starlink vraćen na preko 400 km/h nakon Trumpove objave",
+      "addedAt": "2026-10-24T11:35:12.747Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-telegram-vatra-progutala-nekadasnje-hitlerovo-16fd30",
+      "title": "Vatra progutala nekadašnje Hitlerovo utočište u Bavarskoj: ‘Orlovo gnijezdo ne može se spasiti’",
+      "summary": "Napore u gašenju požara zakomplicirala udaljena lokacija zgrade, na samom vrhu planine Kehlstein",
+      "date": "2026-10-24T10:36:51.000Z",
+      "url": "https://www.telegram.hr/vijesti/vatra-progutala-nekadasnje-hitlerovo-utociste-u-bavarskoj-orlovo-gnijezdo-ne-moze-se-spasiti/",
+      "source": "telegram",
+      "sourceName": "Telegram.hr",
+      "categories": [
+        "Vijesti",
+        "Adolf Hitler",
+        "Bavarska",
+        "Njemačka"
+      ],
+      "author": "Valentina Pavlica, Hina",
+      "theme": "potres",
+      "image": "https://www.telegram.hr/wp-content/uploads/2026/10/afp-20261024-d4ab46n-v2-midres-topshotgermanyhistorypolicefirehitler-150x150.jpg",
+      "imageAlt": "Vatra progutala nekadašnje Hitlerovo utočište u Bavarskoj: ‘Orlovo gnijezdo ne može se spasiti’",
+      "addedAt": "2026-10-24T11:35:13.555Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-telegram-bayern-otkrio-nove-informacije-o-kompanyju-d2bb91",
+      "title": "Bayern otkrio nove informacije o Kompanyju, ekipa će nekoliko tjedana biti bez trenera",
+      "summary": "Sportski direktor izašao je pred novinare i donio novosti",
+      "date": "2026-10-24T10:29:18.000Z",
+      "url": "https://www.telegram.hr/telesport/na-prvu/bayern-otkrio-nove-informacije-o-kompanyju-ekipa-ce-nekoliko-tjedana-biti-bez-trenera/",
+      "source": "telegram",
+      "sourceName": "Telegram.hr",
+      "categories": [
+        "Na prvu",
+        "Telesport",
+        "Bayern Munchen",
+        "Vincent Kompany"
+      ],
+      "author": "Telesport, Hina",
+      "theme": "sport",
+      "image": "https://www.telegram.hr/wp-content/uploads/2025/05/rene-maric-i-kompany-150x150.jpg",
+      "imageAlt": "Bayern otkrio nove informacije o Kompanyju, ekipa će nekoliko tjedana biti bez trenera",
+      "addedAt": "2026-10-24T11:35:13.555Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-n1hr-uhicen-glavni-tajnik-torcide-sumnjice-ga-za-1c42a6",
+      "title": "Uhićen glavni tajnik Torcide? Sumnjiče ga za prijetnje jedanaestorici novinara i političkom analitičaru",
+      "summary": "Splitsko-dalmatinska policija dovršila je kriminalističko istraživanje nad 29-godišnjim hrvatskim državljaninom kojeg sumnjiči da je putem društvenih",
+      "date": "2026-10-24T10:25:48.000Z",
+      "url": "https://n1info.hr/crna-kronika/uhicen-glavni-tajnik-torcide-sumnjice-ga-za-prijetnje-jedanaestorici-novinara-i-politickom-analiticaru/",
+      "source": "n1hr",
+      "sourceName": "N1 Hrvatska",
+      "categories": [
+        "Crna kronika",
+        "split",
+        "uhićenja",
+        "torcida"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://n1info.hr/media/images/2026/10/24/1792840489_PXL_151026_160541685_1.width-1200.jpg",
+      "imageAlt": "Uhićen glavni tajnik Torcide? Sumnjiče ga za prijetnje jedanaestorici novinara i političkom analitičaru",
+      "addedAt": "2026-10-24T11:35:12.747Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-n1hr-video-jedna-oluja-jos-nije-prosla-a-vec-c925c9",
+      "title": "VIDEO / Jedna oluja još nije prošla, a već stiže druga: Izdana upozorenja na opasnost za život",
+      "summary": "Tisuće kućanstava na jugozapadu Engleske ostale su bez električne energije nakon naleta oluje Austen, dok se sjever zemlje već priprema za dolazak dru",
+      "date": "2026-10-24T10:13:44.000Z",
+      "url": "https://n1info.hr/svijet/video-jedna-oluja-jos-nije-prosla-a-vec-stize-druga-izdana-upozorenja-na-opasnost-za-zivot/",
+      "source": "n1hr",
+      "sourceName": "N1 Hrvatska",
+      "categories": [
+        "Svijet",
+        "oluja austen",
+        "oluja boelo",
+        "klimatske promjene"
+      ],
+      "author": "",
+      "theme": "potres",
+      "image": "https://n1info.hr/media/images/2026/10/24/1792836672_b47qd3.width-1200.gif",
+      "imageAlt": "VIDEO / Jedna oluja još nije prošla, a već stiže druga: Izdana upozorenja na opasnost za život",
+      "addedAt": "2026-10-24T11:35:12.747Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-poslovni-istarski-prsut-tinjan-i-svjetski-rekord-za-373ef9",
+      "title": "Istarski pršut, Tinjan i svjetski rekord – za Guinnessa – koji će se pamtiti",
+      "summary": "U samo dvije minute trebalo je pokazati vještinu, preciznost i iskustvo te narezati najmanje pet feta pršuta debljine od 0,5 do 1,5 milimetara.",
+      "date": "2026-10-24T10:01:00.000Z",
+      "url": "https://www.poslovni.hr/after5/istarski-prsut-tinjan-i-svjetski-rekord-za-guinnessa-koji-ce-se-pamtiti-4560695",
+      "source": "poslovni",
+      "sourceName": "Poslovni dnevnik",
+      "categories": [
+        "After 5",
+        "autohtoni proizvodi",
+        "Guinness World Records",
+        "istarski pršut"
+      ],
+      "author": "Siniša Malus",
+      "theme": "drustvo",
+      "image": "https://www.poslovni.hr/wp-content/uploads/2026/10/44prsut-800x500.jpg",
+      "imageAlt": "Istarski pršut, Tinjan i svjetski rekord – za Guinnessa – koji će se pamtiti",
+      "addedAt": "2026-10-24T11:35:08.982Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-n1hr-strasna-nesreca-na-a1-jedna-osoba-poginula-f0bcca",
+      "title": "Strašna nesreća na A1: Jedna osoba poginula, petero ljudi završilo u bolnici",
+      "summary": "Jedna osoba smrtno je stradala, a petero ih je prevezeno u bolnicu nakon teške prometne nesreće koja se u subotu ujutro dogodila na autocesti A1, u bl",
+      "date": "2026-10-24T09:53:40.000Z",
+      "url": "https://n1info.hr/crna-kronika/strasna-nesreca-na-a1-jedna-osoba-poginula-petero-ljudi-zavrsilo-u-bolnici/",
+      "source": "n1hr",
+      "sourceName": "N1 Hrvatska",
+      "categories": [
+        "Crna kronika",
+        "a1",
+        "zadar",
+        "prometna nesreća"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://n1info.hr/media/images/2026/10/24/1792835523_PXL_250525_133372832.width-1200.jpg",
+      "imageAlt": "Strašna nesreća na A1: Jedna osoba poginula, petero ljudi završilo u bolnici",
+      "addedAt": "2026-10-24T11:35:12.747Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-poslovni-evo-tko-ima-pravo-dobiti-i-do-143-39-eura-a0334e",
+      "title": "Evo tko ima pravo dobiti i do 143,39 eura mjesečno, HZMO isplaćuje ovu naknadu",
+      "summary": "Za novo ostvarivanje prava prema sadašnjim pravilima presudan je i uzrok oštećenja.",
+      "date": "2026-10-24T09:00:00.000Z",
+      "url": "https://www.poslovni.hr/vijesti/evo-tko-ima-pravo-na-do-14339-eura-mjesecno-hzmo-isplacuje-i-ovu-naknadu-2-4560535",
+      "source": "poslovni",
+      "sourceName": "Poslovni dnevnik",
+      "categories": [
+        "Vijesti",
+        "Hrvatski zavod za mirovinsko osiguranje HZMO",
+        "isplata naknade"
+      ],
+      "author": "Poslovni.hr",
+      "theme": "drustvo",
+      "image": "https://www.poslovni.hr/wp-content/uploads/2026/04/image-2026-04-08T120350.590-800x500.jpg",
+      "imageAlt": "Evo tko ima pravo dobiti i do 143,39 eura mjesečno, HZMO isplaćuje ovu naknadu",
+      "addedAt": "2026-10-24T11:35:08.982Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-poslovni-hrvatski-mirovinski-sustav-medu-boljima-u-1f3e3f",
+      "title": "Hrvatski mirovinski sustav među boljima u Europi: Evo koje su zemlje ispred nas",
+      "summary": "Istraživanje je obuhvatilo 55 mirovinskih sustava koji zajedno pokrivaju približno 66 posto svjetskog stanovništva.",
+      "date": "2026-10-24T08:30:00.000Z",
+      "url": "https://www.poslovni.hr/vijesti/hrvatski-mirovinski-sustav-medu-boljima-u-europi-evo-koje-su-zemlje-ispred-nas-4560971",
+      "source": "poslovni",
+      "sourceName": "Poslovni dnevnik",
+      "categories": [
+        "Vijesti",
+        "Europska unija",
+        "Mirovinski sustav u RH",
+        "umirovljenici"
+      ],
+      "author": "Poslovni.hr",
+      "theme": "drustvo",
+      "image": "https://www.poslovni.hr/wp-content/uploads/2024/12/3umirovljenici-800x500.jpg",
+      "imageAlt": "Hrvatski mirovinski sustav među boljima u Europi: Evo koje su zemlje ispred nas",
+      "addedAt": "2026-10-24T11:35:08.982Z"
+    },
+    {
+      "slug": "zagreb-2026-10-24-poslovni-sad-ukida-carine-na-odredene-kanadske-01365f",
+      "title": "SAD ukida carine na određene kanadske proizvode",
+      "summary": "No carine će se uvesti na druge proizvode, poput određenih tipova ventila, tepihe i proizvode izrađene od otpada.",
+      "date": "2026-10-24T08:00:00.000Z",
+      "url": "https://www.poslovni.hr/vijesti/sad-ukida-carine-na-odredene-kanadske-proizvode-4560956",
+      "source": "poslovni",
+      "sourceName": "Poslovni dnevnik",
+      "categories": [
+        "Vijesti",
+        "carine",
+        "Donald Trump",
+        "Kanada"
+      ],
+      "author": "Poslovni.hr/Hina",
+      "theme": "drustvo",
+      "image": "https://www.poslovni.hr/wp-content/uploads/2026/10/2026-10-23T174346Z_183989089_RC257HAIWD8B_RTRMADP_3_USA-TRUMP-CANADA-TRADE-800x500.jpg",
+      "imageAlt": "SAD ukida carine na određene kanadske proizvode",
+      "addedAt": "2026-10-24T11:35:08.983Z"
+    },
     {
       "slug": "zagreb-2026-10-24-jutarnji-bablje-ljeto-doslo-je-kraju-ali-ne-i-ako-0bee15",
       "title": "Bablje ljeto došlo je kraju, ali ne i ako pitate ove hrvatske glazbenike",
@@ -7214,526 +7741,6 @@
       "image": "https://n1info.hr/media/images/1792698221_2026-10-22T082518Z_751391589_RC278OAAKWPP_RTRMADP_3_.width-1200.JPG",
       "imageAlt": "Plenković: Slijedi ozbiljniji razgovor s DP-om",
       "addedAt": "2026-10-22T19:55:20.051Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-index-pogledajte-kako-je-hajduk-poveo-protiv-6d1787",
-      "title": "Pogledajte kako je Hajduk poveo protiv Thuna",
-      "summary": "POGLEDAJTE snimku.",
-      "date": "2026-10-22T19:44:00.000Z",
-      "url": "https://www.index.hr/sport/clanak/pogledajte-kako-je-hajduk-poveo-protiv-thuna/2848733.aspx",
-      "source": "index",
-      "sourceName": "Index.hr",
-      "categories": [
-        "Sport"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://bucket.index.hr/b/index/601a6d05-8891-4a5d-97f7-d0cbb0295dd4.png",
-      "imageAlt": "Pogledajte kako je Hajduk poveo protiv Thuna",
-      "addedAt": "2026-10-22T19:55:15.735Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-tportal-bivsi-hajdukovac-otkrio-recept-nec-a-za-e87fe2",
-      "title": "Bivši hajdukovac otkrio recept NEC-a za pobjedu nad Dinamom: Između sebe smo odlučili...",
-      "summary": "U ogledu 3. kola Europske lige Dinamo je na stadionu Maksimir izgubio od NEC Nijmegena 2:4 upisavši prvi poraz, dok je nizozemski sastav ubilježio prvu pobjedu.",
-      "date": "2026-10-22T19:43:00.000Z",
-      "url": "https://www.tportal.hr/sport/clanak/bivsi-hajdukovac-otkrio-recept-nec-a-za-pobjedu-nad-dinamom-izmedu-sebe-smo-odlucili-20261022",
-      "source": "tportal",
-      "sourceName": "tportal",
-      "categories": [
-        "Sport"
-      ],
-      "author": "",
-      "theme": "sport",
-      "image": "https://www.tportal.hr/media/thumbnail/500x300/2815322.jpeg?cropId=4314857",
-      "imageAlt": "Bivši hajdukovac otkrio recept NEC-a za pobjedu nad Dinamom: Između sebe smo odlučili...",
-      "addedAt": "2026-10-22T19:55:18.278Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-index-feric-pustio-sam-15-godisnjacima-535a75",
-      "title": "Ferić: Pustio sam 15-godišnjacima Schindlerovu listu. Mnogi nisu znali za holokaust",
-      "summary": "KNJIŽEVNIK Zoran Ferić upozorio je na zabrinjavajuće nepoznavanje holokausta među mladima.",
-      "date": "2026-10-22T19:42:00.000Z",
-      "url": "https://www.index.hr/vijesti/clanak/feric-pustio-sam-15godisnjacima-schindlerovu-listu-mnogi-nisu-znali-za-holokaust/2848731.aspx",
-      "source": "index",
-      "sourceName": "Index.hr",
-      "categories": [
-        "Vijesti"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://bucket.index.hr/b/index/9eaddb8e-8034-408e-83a3-50586749f7c4.png",
-      "imageAlt": "Ferić: Pustio sam 15-godišnjacima Schindlerovu listu. Mnogi nisu znali za holokaust",
-      "addedAt": "2026-10-22T19:55:15.735Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-telegram-koliko-je-plenkovic-slab-kad-sve-ovo-00a7d4",
-      "title": "Koliko je Plenković slab kad sve ovo tolerira? Penava opet na TV-u grubo napada policiju",
-      "summary": "Na pitanje novinarke zašto ne izađe iz vladajuće koalicije, kazao je: 'Pravo i pravdu ću braniti do kraja'",
-      "date": "2026-10-22T19:40:58.000Z",
-      "url": "https://www.telegram.hr/politika-kriminal/koliko-je-plenkovic-slab-kad-sve-ovo-tolerira-penava-opet-na-tv-u-grubo-napada-policiju/",
-      "source": "telegram",
-      "sourceName": "Telegram.hr",
-      "categories": [
-        "Politika & Kriminal",
-        "Domovinski pokret",
-        "ivan penava",
-        "Davor Božinović"
-      ],
-      "author": "Katarina Škaro",
-      "theme": "politika",
-      "image": "https://www.telegram.hr/wp-content/uploads/2026/10/penavvva-150x150.jpg",
-      "imageAlt": "Koliko je Plenković slab kad sve ovo tolerira? Penava opet na TV-u grubo napada policiju",
-      "addedAt": "2026-10-22T19:55:20.618Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-telegram-nec-ov-trener-otkrio-sto-misli-nakon-7d28b2",
-      "title": "NEC-ov trener otkrio što misli nakon pobjede protiv Dinama: ‘Nisam iznenađen time što možemo zabijati golove’",
-      "summary": "‘Iznenađen sam onime što se događalo posljednjih nekoliko tjedana’, dodao je strateg nizozemske momčadi",
-      "date": "2026-10-22T19:40:10.000Z",
-      "url": "https://www.telegram.hr/telesport/na-prvu/nec-ov-trener-otkrio-sto-misli-nakon-pobjede-protiv-dinama-nisam-iznenaden-time-sto-mozemo-zabijati-golove/",
-      "source": "telegram",
-      "sourceName": "Telegram.hr",
-      "categories": [
-        "Na prvu",
-        "Telesport",
-        "Dick Schreuder",
-        "Dinamo"
-      ],
-      "author": "Telesport",
-      "theme": "sport",
-      "image": "https://www.telegram.hr/wp-content/uploads/2026/10/dick-schreuder-150x150.jpg",
-      "imageAlt": "NEC-ov trener otkrio što misli nakon pobjede protiv Dinama: ‘Nisam iznenađen time što možemo zabijati golove’",
-      "addedAt": "2026-10-22T19:55:20.618Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-tportal-messi-stigao-na-prestiznu-dodjelu-nagrada-a-0b0c32",
-      "title": "Messi stigao na prestižnu dodjelu nagrada, a njegova Antonela ukrala pozornost",
-      "summary": "Lionel Messi i njegova supruga Antonela Roccuzzo stigli su u španjolski Oviedo, gdje će slavni nogometaš primiti prestižnu nagradu Princeze od Asturije za sport",
-      "date": "2026-10-22T19:39:00.000Z",
-      "url": "https://www.tportal.hr/showtime/clanak/messi-stigao-na-prestiznu-dodjelu-nagrada-a-njegova-antonela-ukrala-pozornost-20261022",
-      "source": "tportal",
-      "sourceName": "tportal",
-      "categories": [
-        "Showtime"
-      ],
-      "author": "",
-      "theme": "sport",
-      "image": "https://www.tportal.hr/media/thumbnail/500x300/2815317.jpeg?cropId=4314830",
-      "imageAlt": "Messi stigao na prestižnu dodjelu nagrada, a njegova Antonela ukrala pozornost",
-      "addedAt": "2026-10-22T19:55:18.278Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-jutarnji-plenkovic-o-potezima-hdz-ovog-koalicijskog-c485d6",
-      "title": "Plenković o potezima HDZ-ovog koalicijskog partnera: Slijedi ozbiljniji razgovor s DP-om",
-      "summary": "Premijer Andrej Plenković rekao je u četvrtak da cijela tema vezana uz smjenu državnog tajnika Tomislava Bilandžića zahtijeva \"ozbiljniji razgovor\" te da će o tome još razgovarati s kolegama iz Domovinskog pokreta i vidjeti kako dalje. Upitan hoće li državni tajnik u Ministarstvu unutarnjih poslova...",
-      "date": "2026-10-22T19:38:00.000Z",
-      "url": "https://www.jutarnji.hr/vijesti/hrvatska/plenkovic-o-potezima-hdz-ovog-koalicijskog-partnera-slijedi-ozbiljniji-razgovor-s-dp-om-15758415",
-      "source": "jutarnji",
-      "sourceName": "Jutarnji list",
-      "categories": [
-        "Hrvatska"
-      ],
-      "author": "redakcija@jutarnji.hr",
-      "theme": "politika",
-      "image": "https://media.jutarnji.hr/images/slike/2026/10/22/f_39809172_1280.jpg?1792698694",
-      "imageAlt": "Plenković o potezima HDZ-ovog koalicijskog partnera: Slijedi ozbiljniji razgovor s DP-om",
-      "addedAt": "2026-10-22T19:55:16.025Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-jutarnji-beljo-im-zabio-dva-gola-a-onda-bivsi-97db5d",
-      "title": "Beljo im zabio dva gola, a onda... Bivši hajdukovac otkrio: ‘Mi, igrači, složili smo taktiku kako ga zaustaviti‘",
-      "summary": "Dion Drena Beljo bio je enigma i za obranu NEC-a, zabio je jedan od najubojitijih igrača svijeta u ovom trenutku dva gola i Nizozemcima. Ali, nije bio nerješiva enigma. Otkrio je to za Arenasport bivši igrač Hajduka i Osijeka Darko Nejašmić, koji je odigrao cijeli susret za NEC: - Dva mjeseca čekali...",
-      "date": "2026-10-22T19:37:00.000Z",
-      "url": "https://www.jutarnji.hr/sportske/nogomet/europska-liga/nejasmic-otkriva-takticki-plan-nec-a-za-zaustavljanje-belje-i-prekid-lose-serije-15758414",
-      "source": "jutarnji",
-      "sourceName": "Jutarnji list",
-      "categories": [
-        "Europska liga"
-      ],
-      "author": "ante.buskulic@sportskenovosti.hr (Ante Buškulić)",
-      "theme": "sport",
-      "image": "https://media.jutarnji.hr/images/slike/2026/10/22/f_39821550_1280.jpg?1792698694",
-      "imageAlt": "Beljo im zabio dva gola, a onda... Bivši hajdukovac otkrio: ‘Mi, igrači, složili smo taktiku kako ga zaustaviti‘",
-      "addedAt": "2026-10-22T19:55:16.025Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-tportal-poznate-maksimalne-cijene-za-advent-nema-4e96ea",
-      "title": "Poznate maksimalne cijene za Advent, nema deranja na fritulama, kuhanom vinu...",
-      "summary": "Pula je odlučila stati na kraj divljanju cijena na adventskim kućicama, pa će najpopularniji i najprodavaniji 'okusi blagdana' ovog će adventa imati ograničene cijene",
-      "date": "2026-10-22T19:37:00.000Z",
-      "url": "https://www.tportal.hr/vijesti/clanak/poznate-maksimalne-cijene-za-advent-nema-deranja-na-fritulama-kuhanom-vinu-20261022",
-      "source": "tportal",
-      "sourceName": "tportal",
-      "categories": [
-        "Vijesti"
-      ],
-      "author": "",
-      "theme": "energija",
-      "image": "https://www.tportal.hr/media/thumbnail/500x300/2815321.jpeg?cropId=0",
-      "imageAlt": "Poznate maksimalne cijene za Advent, nema deranja na fritulama, kuhanom vinu...",
-      "addedAt": "2026-10-22T19:55:18.278Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-n1hr-hrvatski-grad-staje-na-kraj-divljanju-dfa022",
-      "title": "Hrvatski grad staje na kraj divljanju cijena na Adventu: Nema više kobasica od 10 eura",
-      "summary": "Pula je odlučila zaključati maksimalne iznose za omiljenu gastroponudu, tako da su već danas poznate cijene fritula i kuhanog vina.",
-      "date": "2026-10-22T19:36:40.000Z",
-      "url": "https://n1info.hr/vijesti/hrvatski-grad-staje-na-kraj-divljanju-cijena-na-adventu-nema-vise-kobasica-od-10-eura/",
-      "source": "n1hr",
-      "sourceName": "N1 Hrvatska",
-      "categories": [
-        "Vijesti",
-        "božić",
-        "pula",
-        "cijene"
-      ],
-      "author": "",
-      "theme": "energija",
-      "image": "https://n1info.hr/media/images/2026/10/22/1792697634_PXL_191125_142130824.width-1200.jpg",
-      "imageAlt": "Hrvatski grad staje na kraj divljanju cijena na Adventu: Nema više kobasica od 10 eura",
-      "addedAt": "2026-10-22T19:55:20.051Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-tportal-junak-nec-a-otkrio-kljucni-detalj-velike-7c710a",
-      "title": "Junak NEC-a otkrio ključni detalj velike pobjede protiv Dinama: 'Više nisu znali što napraviti'",
-      "summary": "Dinamo je na Maksimiru doživio težak poraz od NEC-a (2:4) u trećem kolu Europske lige, a jedan od junaka nizozemske momčadi, 38-godišnji Tjaronn Chery, otkrio je što je presudilo utakmicu.",
-      "date": "2026-10-22T19:34:00.000Z",
-      "url": "https://www.tportal.hr/sport/clanak/junak-nec-a-otkrio-kljucni-detalj-velike-pobjede-protiv-dinama-vise-nisu-znali-sto-napraviti-20261022",
-      "source": "tportal",
-      "sourceName": "tportal",
-      "categories": [
-        "Sport"
-      ],
-      "author": "",
-      "theme": "sport",
-      "image": "https://www.tportal.hr/media/thumbnail/500x300/2815319.jpeg?cropId=0",
-      "imageAlt": "Junak NEC-a otkrio ključni detalj velike pobjede protiv Dinama: 'Više nisu znali što napraviti'",
-      "addedAt": "2026-10-22T19:55:18.278Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-tportal-dinamo-dozivio-debakl-a-onda-je-isplivao-845323",
-      "title": "Dinamo doživio debakl, a onda je isplivao nevjerojatan podatak: Posljednji put to se dogodilo protiv Barcelone prije 43 godine",
-      "summary": "Dinamo je protiv NEC-a doživio težak europski debakl, a nakon četiri primljena pogotka na Maksimiru pojavio se podatak koji poraz Modrih čini još neugodnijim. Nizozemska momčad, koja u Zagreb nije stigla s osobito dobrom formom, ponovila je nešto što joj u europskim natjecanjima nije uspjelo pune 43 godine. Posljednji put takav je pothvat ostvarila protiv slavne Barcelone, u utakmici iz 1983. godine koja je ostala upisana u povijest kluba iz Nijmegena.",
-      "date": "2026-10-22T19:34:00.000Z",
-      "url": "https://www.tportal.hr/sport/clanak/dinamo-dozivio-debakl-a-onda-je-isplivao-nevjerojatan-podatak-posljednji-put-to-se-dogodilo-protiv-barcelone-prije-43-godine-20261022",
-      "source": "tportal",
-      "sourceName": "tportal",
-      "categories": [
-        "Sport"
-      ],
-      "author": "",
-      "theme": "sport",
-      "image": "https://www.tportal.hr/media/thumbnail/500x300/2815320.jpeg?cropId=0",
-      "imageAlt": "Dinamo doživio debakl, a onda je isplivao nevjerojatan podatak: Posljednji put to se dogodilo protiv Barcelone prije 43 godine",
-      "addedAt": "2026-10-22T19:55:18.279Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-jutarnji-video-pogledajte-sjajan-pogodak-junaka-8c4d54",
-      "title": "VIDEO Pogledajte sjajan pogodak junaka Bijelih vanjskim dijelom kopačke za euforiju u Švicarskoj",
-      "summary": "Nakon senzacionalnog povratka u grupnu fazu europskih natjecanja Hajduk je stigao u Švicarsku u nadi da će nastaviti euforiju s Poljuda. Prije tjedan dana je u Split stigao nizozemski velikan Ajax, a Bijeli su upisali pobjedu 2:1. Utakmica u Thunu nije mogla bolje započeti niti u snovima Hajdukovih...",
-      "date": "2026-10-22T19:32:22.000Z",
-      "url": "https://www.jutarnji.hr/sportske/nogomet/video-pogledajte-sjajan-pogodak-junaka-bijelih-vanjskim-dijelom-kopacke-za-euforiju-u-svicarskoj-15758411",
-      "source": "jutarnji",
-      "sourceName": "Jutarnji list",
-      "categories": [
-        "Nogomet"
-      ],
-      "author": "daniel.vinkovic@sportskenovosti.hr (Daniel Vinković)",
-      "theme": "sport",
-      "image": "https://media.jutarnji.hr/images/slike/2026/10/22/f_39460376_1280.jpg?1792698694",
-      "imageAlt": "VIDEO Pogledajte sjajan pogodak junaka Bijelih vanjskim dijelom kopačke za euforiju u Švicarskoj",
-      "addedAt": "2026-10-22T19:55:16.025Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-telegram-nastavak-hajdukove-bajke-pogledajte-kako-je-e728c2",
-      "title": "Nastavak Hajdukove bajke? Pogledajte kako je Dalisson zabio za vodstvo Bijelih u Švicarskoj",
-      "summary": "Sjajna završnica brazilskog veznjaka",
-      "date": "2026-10-22T19:29:24.000Z",
-      "url": "https://www.telegram.hr/telesport/na-prvu/nastavak-hajdukove-bajke-pogledajte-kako-je-dalisson-zabio-za-vodstvo-bijelih-u-svicarskoj/",
-      "source": "telegram",
-      "sourceName": "Telegram.hr",
-      "categories": [
-        "Na prvu",
-        "Telesport",
-        "Dalisson de Almeida",
-        "FC Thun"
-      ],
-      "author": "Telesport",
-      "theme": "drustvo",
-      "image": "https://www.telegram.hr/wp-content/uploads/2026/10/pxl-221026-161041111-150x150.jpg",
-      "imageAlt": "Nastavak Hajdukove bajke? Pogledajte kako je Dalisson zabio za vodstvo Bijelih u Švicarskoj",
-      "addedAt": "2026-10-22T19:55:20.618Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-jutarnji-bec-50-000-ljudi-na-prosvjedu-protiv-948ee0",
-      "title": "Beč: 50.000 ljudi na prosvjedu protiv nedovoljnog financiranja austrijskih sveučilištaa",
-      "summary": "Oko 50.000 studenata, sveučilišnih zaposlenika, nastavnika i znanstvenika okupilo se u četvrtak u Beču na velikom prosvjedu protiv nedovoljnog financiranja austrijskih javnih sveučilišta, prema procjeni organizatora, Austrijske studentske unije ÖH. Prosvjed pod nazivom „Alarmstufe Rot – #UnisRetten!...",
-      "date": "2026-10-22T19:29:00.000Z",
-      "url": "https://www.jutarnji.hr/vijesti/svijet/bec-50-000-ljudi-na-prosvjedu-protv-nedovoljnog-financiranja-austrijskih-sveucilistaa-15758409",
-      "source": "jutarnji",
-      "sourceName": "Jutarnji list",
-      "categories": [
-        "Svijet"
-      ],
-      "author": "redakcija@jutarnji.hr",
-      "theme": "drustvo",
-      "image": "https://media.jutarnji.hr/images/slike/2026/10/22/f_39820697_1280.jpg?1792698694",
-      "imageAlt": "Beč: 50.000 ljudi na prosvjedu protiv nedovoljnog financiranja austrijskih sveučilištaa",
-      "addedAt": "2026-10-22T19:55:16.025Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-poslovni-zavjet-sutnje-o-postupku-pokrenutom-prije-04551a",
-      "title": "Zavjet šutnje o postupku pokrenutom prije tri godine",
-      "summary": "Agencija za zaštitu osobnih podataka (AZOP) pokrenula je postupak po tom pitanju još u svibnju 2023. godine, no do danas nije poznat epilog.",
-      "date": "2026-10-22T19:22:42.000Z",
-      "url": "https://www.poslovni.hr/vijesti/zavjet-sutnje-o-postupku-pokrenutom-prije-tri-godine-4560799",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [
-        "Vijesti",
-        "AZOP (Agencija za zaštitu osobnih podataka)",
-        "Marko Rakar",
-        "Vuk Vuković"
-      ],
-      "author": "Poslovni.hr",
-      "theme": "drustvo",
-      "image": "https://www.poslovni.hr/wp-content/uploads/2026/10/PXL_150222_92013607-800x500.jpg",
-      "imageAlt": "Zavjet šutnje o postupku pokrenutom prije tri godine",
-      "addedAt": "2026-10-22T19:55:16.827Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-jutarnji-u-zagrebu-pocela-velika-paneuropska-70a101",
-      "title": "U Zagrebu počela velika paneuropska konferencija ‘Ujedinjeni za Europu mira‘",
-      "summary": "Više od 100 sudionika iz 13 europskih zemalja okupilo se večeras u Hrvatskom državnom arhivu u Zagrebu na početku trodnevne međunarodne konferencije „Ujedinjeni za Europu mira”, koja se do 24. listopada održava u Zagrebu i Karlovcu. Konferenciju organizira Hrvatska paneuropska unija u suradnji s Međ...",
-      "date": "2026-10-22T19:19:48.000Z",
-      "url": "https://www.jutarnji.hr/vijesti/hrvatska/u-zagrebu-pocela-velika-paneuropska-konferencija-ujedinjeni-za-europu-mira-15758407",
-      "source": "jutarnji",
-      "sourceName": "Jutarnji list",
-      "categories": [
-        "Hrvatska"
-      ],
-      "author": "redakcija@jutarnji.hr",
-      "theme": "drustvo",
-      "image": "https://media.jutarnji.hr/images/slike/2026/10/22/f_39821972_1280.jpg?1792698694",
-      "imageAlt": "U Zagrebu počela velika paneuropska konferencija ‘Ujedinjeni za Europu mira‘",
-      "addedAt": "2026-10-22T19:55:16.026Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-telegram-kovacevicu-nije-dobro-sjeo-poraz-od-nec-a-f2c3ab",
-      "title": "Kovačeviću nije dobro sjeo poraz od NEC-a na Maksimiru: ‘Ne možemo tako igrati u Europi’",
-      "summary": "‘Ja sam glavni krivac’, dodao je Dinamov strateg",
-      "date": "2026-10-22T19:19:29.000Z",
-      "url": "https://www.telegram.hr/telesport/na-prvu/kovacevicu-nije-dobro-sjeo-poraz-od-nec-a-na-maksimiru-ne-mozemo-tako-igrati-u-europi/",
-      "source": "telegram",
-      "sourceName": "Telegram.hr",
-      "categories": [
-        "Na prvu",
-        "Telesport",
-        "Dinamo",
-        "Mario Kovačević"
-      ],
-      "author": "Telesport",
-      "theme": "sport",
-      "image": "https://www.telegram.hr/wp-content/uploads/2026/10/mario-kovacevic-2-150x150.jpg",
-      "imageAlt": "Kovačeviću nije dobro sjeo poraz od NEC-a na Maksimiru: ‘Ne možemo tako igrati u Europi’",
-      "addedAt": "2026-10-22T19:55:20.619Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-n1hr-foto-video-tisuce-ljudi-na-zavrsnom-skupu-488ab4",
-      "title": "FOTO, VIDEO / Tisuće ljudi na završnom skupu Studentske liste: \"Slavijo, bila si veličanstvena!\"",
-      "summary": "U Beogradu se danas na Trgu Slavija održao završni predizborni skup Studentske liste pod nazivom \"Pobjeda zove\", koji je počeo u 18 sati. Na skup su p",
-      "date": "2026-10-22T19:12:23.000Z",
-      "url": "https://n1info.hr/regija/foto-nepregledne-kolone-gradjana-u-beogradu-tisuce-ljudi-na-zavrsnom-skupu-studentske-liste/",
-      "source": "n1hr",
-      "sourceName": "N1 Hrvatska",
-      "categories": [
-        "Regija",
-        "izbori",
-        "srbija",
-        "studentska lista"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://n1info.hr/media/images/1792688291_2026-10-22T161039Z_478426052_RC2G8OAAP768_RTRMADP_3_.width-1200.JPG",
-      "imageAlt": "FOTO, VIDEO / Tisuće ljudi na završnom skupu Studentske liste: \"Slavijo, bila si veličanstvena!\"",
-      "addedAt": "2026-10-22T19:55:20.051Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-n1hr-feric-sokiralo-me-kada-sam-shvatio-da-7272f6",
-      "title": "Ferić: \"Šokiralo me kada sam shvatio da učenici s 15 godina prvi put čuju za Holokaust\"",
-      "summary": "Književnik i bivši profesor hrvatskog jezika Zoran Ferić komentirao je antisemitske povike u Splitu te upozorio na zabrinjavajuće nepoznavanje Holokau",
-      "date": "2026-10-22T19:09:14.000Z",
-      "url": "https://n1info.hr/vijesti/feric-sokiralo-me-kada-sam-ucenicima-pustio-schindlerovu-listu-i-shvatio-da-prvi-put-cuju-za-holokaust/",
-      "source": "n1hr",
-      "sourceName": "N1 Hrvatska",
-      "categories": [
-        "Vijesti",
-        "obrazovanje",
-        "obrazovanje mladih",
-        "prošlost"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://n1info.hr/media/images/2026/10/22/1792695924_anne_frank.width-1200.jpg",
-      "imageAlt": "Ferić: \"Šokiralo me kada sam shvatio da učenici s 15 godina prvi put čuju za Holokaust\"",
-      "addedAt": "2026-10-22T19:55:20.051Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-poslovni-sve-veci-iznosi-ulaganja-zaostravaju-utrku-c33536",
-      "title": "Sve veći iznosi ulaganja zaoštravaju utrku najvećih AI kompanija za ‘isti’ kapital",
-      "summary": "OpenAI održao je sastanke s investicijskim fondovima, dok je Anthropic organizirao dan za ulagače.",
-      "date": "2026-10-22T19:00:00.000Z",
-      "url": "https://www.poslovni.hr/financije/sve-veci-iznosi-ulaganja-zaostravaju-utrku-najvecih-ai-kompanija-za-isti-kapital-4560572",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [
-        "Financije",
-        "Anthropic",
-        "OpenAI",
-        "umjetna inteligencija AI/UI"
-      ],
-      "author": "Edita Vlahović Žuvela",
-      "theme": "ai",
-      "image": "https://www.poslovni.hr/wp-content/uploads/2026/10/19open-800x500.jpg",
-      "imageAlt": "Sve veći iznosi ulaganja zaoštravaju utrku najvećih AI kompanija za ‘isti’ kapital",
-      "addedAt": "2026-10-22T19:55:16.827Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-n1hr-plenkovic-o-uhicenjima-u-srbiji-to-sto-302220",
-      "title": "Plenković o uhićenjima u Srbiji: To što netko ima hrvatsku putovnicu ne znači da ima veze s državom",
-      "summary": "To što netko ima hrvatske putovnice ne znači da ima ikakve veze s hrvatskom državom, rekao je premijer Andrej Plenković u četvrtak u kontekstu uhićenj",
-      "date": "2026-10-22T18:45:34.000Z",
-      "url": "https://n1info.hr/vijesti/plenkovic-o-uhicenjima-u-srbiji-to-sto-netko-ima-hrvatsku-putovnicu-ne-znaci-da-ima-veze-s-drzavom/",
-      "source": "n1hr",
-      "sourceName": "N1 Hrvatska",
-      "categories": [
-        "Vijesti",
-        "parlamentarni izbori u srbiji",
-        "srbija",
-        "andrej plenković"
-      ],
-      "author": "",
-      "theme": "politika",
-      "image": "https://n1info.hr/media/images/2026/10/22/1792694673_PXL_201026_160904795.width-1200.jpg",
-      "imageAlt": "Plenković o uhićenjima u Srbiji: To što netko ima hrvatsku putovnicu ne znači da ima veze s državom",
-      "addedAt": "2026-10-22T19:55:20.051Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-poslovni-hrvatski-it-raste-ali-mnoge-tvrtke-gube-2587a8",
-      "title": "Hrvatski IT raste, ali mnoge tvrtke gube prihode: Je li vrijeme za konsolidaciju?",
-      "summary": "Hrvatski IT sektor i dalje raste, ali sve nejednakije: dok nekolicina kompanija nosi velik dio rasta, brojne tvrtke bilježe pad prihoda i marži. Istodobno AI mijenja način rada, naplate i zapošljavanja, a sve glasnije otvara se i pitanje povezivanja manjih igrača.",
-      "date": "2026-10-22T17:59:04.000Z",
-      "url": "https://www.poslovni.hr/tech-ai/hrvatski-it-raste-ali-mnoge-tvrtke-gube-prihode-je-li-vrijeme-za-konsolidaciju-4560792",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [
-        "Tech/AI",
-        "Tržišta",
-        "IT sektor",
-        "umjetna inteligencija"
-      ],
-      "author": "Poslovni.hr",
-      "theme": "ekonomija",
-      "image": "https://www.poslovni.hr/wp-content/uploads/2026/10/20261021_Unit_045-800x500.jpg",
-      "imageAlt": "Hrvatski IT raste, ali mnoge tvrtke gube prihode: Je li vrijeme za konsolidaciju?",
-      "addedAt": "2026-10-22T19:55:16.827Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-poslovni-slovenija-dobila-novi-najveci-kompleks-5ba8e8",
-      "title": "Slovenija dobila novi najveći kompleks solarnih elektrana",
-      "summary": "Sve tri solarne elektrane u hidroelektrani Brežice proizvodit će 17.355 megavatsati električne energije godišnje.",
-      "date": "2026-10-22T17:00:00.000Z",
-      "url": "https://www.poslovni.hr/kompanije/slovenija-u-brezicama-dobila-novi-najveci-kompleks-solarnih-elektrana-4560559",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [
-        "Kompanije",
-        "hess",
-        "obnovljivi izvori energije",
-        "Republika Slovenija"
-      ],
-      "author": "Siniša Malus",
-      "theme": "energija",
-      "image": "https://www.poslovni.hr/wp-content/uploads/2026/10/13slove-1-800x500.jpg",
-      "imageAlt": "Slovenija dobila novi najveći kompleks solarnih elektrana",
-      "addedAt": "2026-10-22T19:55:16.827Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-poslovni-njemacka-gotovo-udvostrucila-kapacitete-df4232",
-      "title": "Njemačka gotovo udvostručila kapacitete baterijskih sustava",
-      "summary": "Do 12. listopada evidentirano je oko 493.000 novih sustava, izračunali su u BSW-Solaru.",
-      "date": "2026-10-22T16:00:00.000Z",
-      "url": "https://www.poslovni.hr/tech-ai/njemacka-gotovo-udvostrucila-kapacitete-baterijskih-sustava-4560664",
-      "source": "poslovni",
-      "sourceName": "Poslovni dnevnik",
-      "categories": [
-        "Tech/AI",
-        "baterije",
-        "baterijski sustavi",
-        "Njemačka"
-      ],
-      "author": "Poslovni.hr/Hina",
-      "theme": "energija",
-      "image": "https://www.poslovni.hr/wp-content/uploads/2026/10/2026-10-06T080054Z_1319586780_RC2QZLA94WJ2_RTRMADP_3_AI-SPAIN-DATACENTRES-800x500.jpg",
-      "imageAlt": "Njemačka gotovo udvostručila kapacitete baterijskih sustava",
-      "addedAt": "2026-10-22T19:55:16.827Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-n1hr-vance-ne-podrzava-netanyahua-podrzao-sam-aec736",
-      "title": "Vance ne podržava Netanyahua: \"Podržao sam samo jednog stranog kandidata, nije dobro završilo\"",
-      "summary": "Američki potpredsjednik JD Vance poručio je da neće podržati izraelskog premijera Benjamina Netanyahua na predstojećim izborima, istaknuvši da se želi",
-      "date": "2026-10-22T06:03:10.000Z",
-      "url": "https://n1info.hr/svijet/vance-ne-podrzava-netanyahua-podrzao-sam-samo-jednog-stranog-kandidata-nije-dobro-zavrsilo/",
-      "source": "n1hr",
-      "sourceName": "N1 Hrvatska",
-      "categories": [
-        "Svijet",
-        "viktor orban",
-        "jd vance",
-        "izrael"
-      ],
-      "author": "",
-      "theme": "politika",
-      "image": "https://n1info.hr/media/images/2026/10/22/1792648957_vance_netanyahu.width-1200.jpg",
-      "imageAlt": "Vance ne podržava Netanyahua: \"Podržao sam samo jednog stranog kandidata, nije dobro završilo\"",
-      "addedAt": "2026-10-22T06:07:02.498Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-telegram-ovaj-stan-u-centru-splita-prekrasno-spaja-baf96f",
-      "title": "Ovaj stan u centru Splita prekrasno spaja mid-century stil i pariški chic",
-      "summary": "Projekt potpisuje Mijić Haklička Studio",
-      "date": "2026-10-22T06:00:19.000Z",
-      "url": "https://www.telegram.hr/super1/design/stan-split-mijic-haklicka-studio-interijer/",
-      "source": "telegram",
-      "sourceName": "Telegram.hr",
-      "categories": [
-        "Design",
-        "dizajn",
-        "dizajn i arhitektura"
-      ],
-      "author": "Super1",
-      "theme": "drustvo",
-      "image": "https://www.telegram.hr/wp-content/uploads/2026/10/1-15-150x150.jpg",
-      "imageAlt": "Ovaj stan u centru Splita prekrasno spaja mid-century stil i pariški chic",
-      "addedAt": "2026-10-22T06:07:03.219Z"
-    },
-    {
-      "slug": "zagreb-2026-10-22-jutarnji-najmanje-troje-mrtvih-u-poplavama-u-juznoj-1e4df4",
-      "title": "Najmanje troje mrtvih u poplavama u južnoj Francuskoj",
-      "summary": "Obilna kiša u južnoj Francuskoj dovela je do znatnih poplava, pri čemu je poginulo najmanje troje ljudi, a tisuće su domova ostale bez električne energije. Regionalne vlasti priopćile su u srijedu da su zbog oluje vodostaji porasli na \"nezabilježene\" razine. Navodi se da su u oluji tri osobe smrtno...",
-      "date": "2026-10-22T05:57:00.000Z",
-      "url": "https://www.jutarnji.hr/vijesti/svijet/najmanje-troje-mrtvih-u-poplavama-u-juznoj-francuskoj-15758100",
-      "source": "jutarnji",
-      "sourceName": "Jutarnji list",
-      "categories": [
-        "Svijet"
-      ],
-      "author": "redakcija@jutarnji.hr",
-      "theme": "potres",
-      "image": "https://media.jutarnji.hr/images/slike/2026/10/22/f_39808269_1280.jpg?1792648681",
-      "imageAlt": "Najmanje troje mrtvih u poplavama u južnoj Francuskoj",
-      "addedAt": "2026-10-22T06:06:56.933Z"
     }
   ]
 }
