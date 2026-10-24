@@ -449,7 +449,9 @@ async function buildNetwork() {
   const pageIndex = results.flatMap((result) => result.pageIndex || []);
   const network = {
     version: 2,
-    updatedAt: new Date().toISOString(),
+    /* Vrijeme iz podataka, ne iz sata: dvije gradnje istog dana moraju dati
+       iste bajtove, inače test svježine izlaza pada bez ijedne promjene. */
+    updatedAt: pageIndex.map((page) => page.modified).filter(Boolean).sort().pop() || '2026-10-22',
     pageCount: pageIndex.length,
     editor: { name: 'Nermin Sefić', url: 'https://gnk-asg.hr/nermin-sefic/', role: 'Urednik i direktor' },
     publisher: { name: 'AKTUAL MEDIA d.o.o.', url: 'https://gnk-asg.hr/gnk-aktual/' },

@@ -1,0 +1,761 @@
+{
+  "version": "AKTUAL_MEDIA_SYNC_STATUS_V1",
+  "generatedFrom": "datoteke u repozitoriju",
+  "steps": [
+    {
+      "id": "region-channels",
+      "group": "generate",
+      "file": "apps/region/engine/build.mjs",
+      "why": "stranice 17 gradskih izdanja",
+      "slow": true,
+      "optional": false
+    },
+    {
+      "id": "region-hub",
+      "group": "generate",
+      "file": "apps/region/engine/hub.mjs",
+      "why": "središnja ploča AKTUAL MEDIA (HR/EN)",
+      "slow": false,
+      "optional": false
+    },
+    {
+      "id": "world-portals",
+      "group": "generate",
+      "file": "apps/world/build.mjs",
+      "why": "devet svjetskih portala",
+      "slow": false,
+      "optional": false
+    },
+    {
+      "id": "sites-network",
+      "group": "generate",
+      "file": "apps/sites/build.mjs",
+      "why": "šest samostalnih webova",
+      "slow": false,
+      "optional": false
+    },
+    {
+      "id": "arhiva",
+      "group": "generate",
+      "file": "apps/arhiva/engine/build.mjs",
+      "why": "arhiva AKTUAL",
+      "slow": false,
+      "optional": false
+    },
+    {
+      "id": "dnevnik",
+      "group": "generate",
+      "file": "apps/dnevnik/engine/build.mjs",
+      "why": "dnevnik AKTUAL",
+      "slow": false,
+      "optional": false
+    },
+    {
+      "id": "kanal",
+      "group": "generate",
+      "file": "apps/kanal/build.mjs",
+      "why": "KANAL — dnevni pregled",
+      "slow": false,
+      "optional": false
+    },
+    {
+      "id": "prenos-hub",
+      "group": "generate",
+      "file": "scripts/build-prenos-hub-v1.mjs",
+      "why": "popis prijenosa HR/EN",
+      "slow": false,
+      "optional": false
+    },
+    {
+      "id": "prenos-crosslinks",
+      "group": "generate",
+      "file": "scripts/apply-prenos-crosslinks-v1.mjs",
+      "why": "veza na izvornik u svakom prenosu",
+      "slow": false,
+      "optional": false
+    },
+    {
+      "id": "top-teme",
+      "group": "generate",
+      "file": "scripts/build-top-teme-v1.mjs",
+      "why": "najčitanije teme",
+      "slow": false,
+      "optional": false
+    },
+    {
+      "id": "coverage",
+      "group": "generate",
+      "file": "scripts/build-coverage-page-v1.mjs",
+      "why": "pokrivenost svijeta",
+      "slow": false,
+      "optional": false
+    },
+    {
+      "id": "status-page",
+      "group": "generate",
+      "file": "scripts/build-status-page-v1.mjs",
+      "why": "status ažurnosti",
+      "slow": false,
+      "optional": false
+    },
+    {
+      "id": "status-snapshot",
+      "group": "generate",
+      "file": "scripts/public-status-snapshot-v1.mjs",
+      "why": "javni zapis statusa",
+      "slow": false,
+      "optional": false
+    },
+    {
+      "id": "products",
+      "group": "generate",
+      "file": "scripts/build-aktual-products-v1.mjs",
+      "why": "popis proizvoda AKTUAL MEDIA",
+      "slow": false,
+      "optional": false
+    },
+    {
+      "id": "sync-status",
+      "group": "generate",
+      "file": "scripts/build-sync-status-v1.mjs",
+      "why": "nadzorna ploča sinkronizacije",
+      "slow": false,
+      "optional": false
+    },
+    {
+      "id": "satellite-brand",
+      "group": "generate",
+      "file": "scripts/build-satellite-brand-v1.mjs",
+      "why": "znakovi satelita",
+      "slow": false,
+      "optional": true
+    },
+    {
+      "id": "knowledge-en",
+      "group": "generate",
+      "file": "scripts/generate-en-knowledge-center-v1.mjs",
+      "why": "EN knowledge center",
+      "slow": false,
+      "optional": true
+    },
+    {
+      "id": "world-expansion",
+      "group": "generate",
+      "file": "scripts/plan-world-expansion-v1.mjs",
+      "why": "plan novih zemalja",
+      "slow": false,
+      "optional": true
+    },
+    {
+      "id": "brand-gallery",
+      "group": "generate",
+      "file": "scripts/build-brand-gallery-v1.mjs",
+      "why": "galerija znakova",
+      "slow": false,
+      "optional": true
+    },
+    {
+      "id": "entity",
+      "group": "layers",
+      "file": "scripts/apply-network-entity-v1.mjs",
+      "why": "entity:v1 graf na svakoj stranici",
+      "slow": false,
+      "optional": false
+    },
+    {
+      "id": "ribbon",
+      "group": "layers",
+      "file": "scripts/apply-house-ribbon-v1.mjs",
+      "why": "traka kuće",
+      "slow": false,
+      "optional": false
+    },
+    {
+      "id": "brand-mark",
+      "group": "layers",
+      "file": "scripts/apply-brand-mark-v1.mjs",
+      "why": "jedan znak i ikona",
+      "slow": false,
+      "optional": false
+    },
+    {
+      "id": "design-tokens",
+      "group": "layers",
+      "file": "scripts/apply-design-tokens-v1.mjs",
+      "why": "jedan dizajn sustav",
+      "slow": false,
+      "optional": false
+    },
+    {
+      "id": "social-cards",
+      "group": "layers",
+      "file": "scripts/apply-social-card-meta-v1.mjs",
+      "why": "OG/Twitter kartice",
+      "slow": false,
+      "optional": false
+    },
+    {
+      "id": "image-sitemap",
+      "group": "layers",
+      "file": "scripts/prune-image-sitemap-v1.mjs",
+      "why": "sitemap bez mrtvih slika",
+      "slow": false,
+      "optional": false
+    },
+    {
+      "id": "knowledge-sync",
+      "group": "layers",
+      "file": "scripts/knowledge-center-hr-sync-v1.mjs",
+      "why": "HR/EN knowledge center u paru",
+      "slow": false,
+      "optional": false
+    },
+    {
+      "id": "region-audit",
+      "group": "audit",
+      "file": "apps/region/engine/audit.mjs",
+      "why": "izdanja — unutrašnja dosljednost",
+      "slow": false,
+      "optional": false
+    },
+    {
+      "id": "brand-indexability",
+      "group": "audit",
+      "file": "scripts/audit-aktual-brand-indexability-v1.mjs",
+      "why": "brend i indeksiranje",
+      "slow": false,
+      "optional": false
+    },
+    {
+      "id": "brand-contract",
+      "group": "audit",
+      "file": "scripts/audit-brand-contract-v1.mjs",
+      "why": "jedno ime, jedan znak, jedan izdavač",
+      "slow": false,
+      "optional": false
+    },
+    {
+      "id": "top-teme-audit",
+      "group": "audit",
+      "file": "scripts/audit-top-teme-v1.mjs",
+      "why": "teme bez praznih veza",
+      "slow": false,
+      "optional": false
+    }
+  ],
+  "schedules": [
+    {
+      "file": "aeo-ai-visibility.yml",
+      "name": "AEO / AI Visibility Boost",
+      "crons": [
+        "26 2,8,14,20 * * *"
+      ],
+      "writes": true
+    },
+    {
+      "file": "arhiva-deploy.yml",
+      "name": "ARHIVA — deploy",
+      "crons": [
+        "35 1,7,13,19 * * *"
+      ],
+      "writes": false
+    },
+    {
+      "file": "auto-deploy-main-v1.yml",
+      "name": "Auto deploy main",
+      "crons": [
+        "37 0,2,4,6,8,10,12,14,16,18,20,22 * * *"
+      ],
+      "writes": false
+    },
+    {
+      "file": "autonomija-365.yml",
+      "name": "AUTONOMIJA 365 — mjerenje sustava",
+      "crons": [
+        "23 */6 * * *"
+      ],
+      "writes": true
+    },
+    {
+      "file": "content-queue-publish.yml",
+      "name": "Content Queue Publish",
+      "crons": [
+        "38 7,8,9,10,11,12,13,14,15,16,17,18,19 * * *"
+      ],
+      "writes": true
+    },
+    {
+      "file": "devto-mirror-publish.yml",
+      "name": "Dev.to Mirror Preview",
+      "crons": [
+        "45 * * * *"
+      ],
+      "writes": false
+    },
+    {
+      "file": "dnevnik-deploy.yml",
+      "name": "DNEVNIK — deploy",
+      "crons": [
+        "45 1,7,13,19 * * *"
+      ],
+      "writes": false
+    },
+    {
+      "file": "editorial-scheduled-publish.yml",
+      "name": "Publish Scheduled Editorial Content",
+      "crons": [
+        "44 8 * * *"
+      ],
+      "writes": true
+    },
+    {
+      "file": "entity-visibility-campaign-monitor.yml",
+      "name": "Entity Visibility Campaign Monitor",
+      "crons": [
+        "15 6,7,8,9,10,11,12,13,14,15 * * *"
+      ],
+      "writes": false
+    },
+    {
+      "file": "generate-digital-workforce-newsroom-pages.yml",
+      "name": "Generate Digital Workforce Newsroom Pages",
+      "crons": [
+        "0 6 * * *"
+      ],
+      "writes": false
+    },
+    {
+      "file": "gnk-news-refresh-v2.yml",
+      "name": "GNK News Refresh V2",
+      "crons": [
+        "12 1,5,9,13,17,21 * * *"
+      ],
+      "writes": true
+    },
+    {
+      "file": "gnk-seo-nightly-audit.yml",
+      "name": "GNK ASG Nightly SEO, Meta, Backlink and IndexNow Audit",
+      "crons": [
+        "15 1 * * *"
+      ],
+      "writes": false
+    },
+    {
+      "file": "image-health-scan.yml",
+      "name": "Image Health Scan",
+      "crons": [
+        "15 3 * * 0"
+      ],
+      "writes": true
+    },
+    {
+      "file": "kanal-daily.yml",
+      "name": "KANAL — dnevni stroj (10 objava)",
+      "crons": [
+        "0 5,11,17 * * *"
+      ],
+      "writes": true
+    },
+    {
+      "file": "macro-market-refresh.yml",
+      "name": "Macro Market Data Refresh",
+      "crons": [
+        "25 6,14 * * *"
+      ],
+      "writes": true
+    },
+    {
+      "file": "market-pulse-refresh.yml",
+      "name": "Market Pulse Refresh",
+      "crons": [
+        "10 6,14 * * *"
+      ],
+      "writes": true
+    },
+    {
+      "file": "network-agents-daily.yml",
+      "name": "MREŽA — agenti i sinkronizacija",
+      "crons": [
+        "40 4 * * *"
+      ],
+      "writes": false
+    },
+    {
+      "file": "ops-automation-sla-watchdog.yml",
+      "name": "GNK ASG Automation SLA Watchdog",
+      "crons": [
+        "12 * * * *",
+        "42 * * * *"
+      ],
+      "writes": false
+    },
+    {
+      "file": "refresh-gnkc-index.yml",
+      "name": "Refresh GNKC Index",
+      "crons": [
+        "20 6,14 * * *"
+      ],
+      "writes": false
+    },
+    {
+      "file": "refresh-index-live-data.yml",
+      "name": "Refresh index live data",
+      "crons": [
+        "5 7,15 * * *"
+      ],
+      "writes": true
+    },
+    {
+      "file": "region-daily.yml",
+      "name": "REGION — dnevni ciklus izdanja",
+      "crons": [
+        "7 */2 * * *"
+      ],
+      "writes": true
+    },
+    {
+      "file": "seo-meta-machine.yml",
+      "name": "seo-meta-machine",
+      "crons": [
+        "23 */6 * * *"
+      ],
+      "writes": false
+    },
+    {
+      "file": "site-health-check-v1.yml",
+      "name": "Site Health Check (2x daily Zagreb)",
+      "crons": [
+        "0 0,12 * * *"
+      ],
+      "writes": false
+    },
+    {
+      "file": "sites-deploy.yml",
+      "name": "sites-deploy",
+      "crons": [
+        "17 * * * *"
+      ],
+      "writes": false
+    },
+    {
+      "file": "sync-webshop-products.yml",
+      "name": "Sync Webshop Products",
+      "crons": [
+        "35 5 * * *"
+      ],
+      "writes": false
+    },
+    {
+      "file": "tjednik-daily.yml",
+      "name": "TJEDNIK — dnevni dodatak i tjedna promjena",
+      "crons": [
+        "20 6 * * *"
+      ],
+      "writes": true
+    },
+    {
+      "file": "weather-refresh.yml",
+      "name": "Weather Refresh (Zagreb)",
+      "crons": [
+        "5 2,8,14,20 * * *"
+      ],
+      "writes": true
+    },
+    {
+      "file": "workforce-bot-orchestrator.yml",
+      "name": "Workforce Bot Orchestrator",
+      "crons": [
+        "17 */4 * * *"
+      ],
+      "writes": false
+    },
+    {
+      "file": "workforce-supervisor-agent.yml",
+      "name": "Workforce Supervisor Agent",
+      "crons": [
+        "50 2,8,14,20 * * *"
+      ],
+      "writes": false
+    },
+    {
+      "file": "world-monitor-refresh.yml",
+      "name": "World Monitor Data Refresh (free sources)",
+      "crons": [
+        "20 1,7,13,19 * * *"
+      ],
+      "writes": true
+    },
+    {
+      "file": "world-portals-deploy.yml",
+      "name": "world-portals-deploy",
+      "crons": [
+        "17 1,7,13,19 * * *"
+      ],
+      "writes": false
+    }
+  ],
+  "webs": [
+    {
+      "id": "arhiva",
+      "kind": "portal",
+      "url": "",
+      "newest": "2026-10-24T12:51:16.676Z",
+      "pages": 12
+    },
+    {
+      "id": "beograd",
+      "kind": "izdanje",
+      "url": "https://gnk-asg.hr/kanal/beograd/",
+      "newest": "2026-10-24T14:52:22.754Z",
+      "pages": 18
+    },
+    {
+      "id": "bor-usa",
+      "kind": "web",
+      "url": "",
+      "newest": "2026-10-24T14:52:49.310Z",
+      "pages": 19
+    },
+    {
+      "id": "budimpesta",
+      "kind": "izdanje",
+      "url": "https://gnk-asg.hr/kanal/budimpesta/",
+      "newest": "2026-10-24T14:52:23.258Z",
+      "pages": 18
+    },
+    {
+      "id": "bukurest",
+      "kind": "izdanje",
+      "url": "https://gnk-asg.hr/kanal/bukurest/",
+      "newest": "2026-10-24T14:52:23.838Z",
+      "pages": 18
+    },
+    {
+      "id": "dnevnik",
+      "kind": "portal",
+      "url": "",
+      "newest": "2026-10-24T12:51:18.228Z",
+      "pages": 12
+    },
+    {
+      "id": "izbori-srbija",
+      "kind": "web",
+      "url": "",
+      "newest": "2026-10-24T14:52:49.382Z",
+      "pages": 20
+    },
+    {
+      "id": "jakarta",
+      "kind": "izdanje",
+      "url": "https://gnk-asg.hr/kanal/jakarta/",
+      "newest": "2026-10-24T14:52:24.026Z",
+      "pages": 18
+    },
+    {
+      "id": "jakarta",
+      "kind": "svijet",
+      "url": "",
+      "newest": "2026-10-24T12:49:37.735Z",
+      "pages": 18
+    },
+    {
+      "id": "kairo",
+      "kind": "izdanje",
+      "url": "https://gnk-asg.hr/kanal/kairo/",
+      "newest": "2026-10-24T14:52:24.146Z",
+      "pages": 18
+    },
+    {
+      "id": "kairo",
+      "kind": "svijet",
+      "url": "",
+      "newest": "2026-10-24T12:49:37.759Z",
+      "pages": 18
+    },
+    {
+      "id": "kanal",
+      "kind": "portal",
+      "url": "",
+      "newest": "2026-10-24T12:39:49.204Z",
+      "pages": 97
+    },
+    {
+      "id": "kosarka",
+      "kind": "web",
+      "url": "",
+      "newest": "2026-10-24T14:52:49.322Z",
+      "pages": 19
+    },
+    {
+      "id": "ljubljana",
+      "kind": "izdanje",
+      "url": "https://gnk-asg.hr/kanal/ljubljana/",
+      "newest": "2026-10-24T14:52:24.634Z",
+      "pages": 18
+    },
+    {
+      "id": "nairobi",
+      "kind": "izdanje",
+      "url": "https://gnk-asg.hr/kanal/nairobi/",
+      "newest": "2026-10-24T14:52:24.782Z",
+      "pages": 18
+    },
+    {
+      "id": "nairobi",
+      "kind": "svijet",
+      "url": "",
+      "newest": "2026-10-24T12:49:37.787Z",
+      "pages": 18
+    },
+    {
+      "id": "newyork",
+      "kind": "izdanje",
+      "url": "https://gnk-asg.hr/kanal/newyork/",
+      "newest": "2026-10-24T14:52:25.054Z",
+      "pages": 18
+    },
+    {
+      "id": "newyork",
+      "kind": "svijet",
+      "url": "",
+      "newest": "2026-10-24T12:49:37.815Z",
+      "pages": 18
+    },
+    {
+      "id": "peking",
+      "kind": "izdanje",
+      "url": "https://gnk-asg.hr/kanal/peking/",
+      "newest": "2026-10-24T14:52:25.246Z",
+      "pages": 18
+    },
+    {
+      "id": "peking",
+      "kind": "svijet",
+      "url": "",
+      "newest": "2026-10-24T12:49:37.847Z",
+      "pages": 18
+    },
+    {
+      "id": "rim",
+      "kind": "izdanje",
+      "url": "https://gnk-asg.hr/kanal/rim/",
+      "newest": "2026-10-24T14:52:25.766Z",
+      "pages": 18
+    },
+    {
+      "id": "saopaulo",
+      "kind": "izdanje",
+      "url": "https://gnk-asg.hr/kanal/saopaulo/",
+      "newest": "2026-10-24T14:52:26.182Z",
+      "pages": 18
+    },
+    {
+      "id": "saopaulo",
+      "kind": "svijet",
+      "url": "",
+      "newest": "2026-10-24T12:49:37.879Z",
+      "pages": 18
+    },
+    {
+      "id": "sarajevo",
+      "kind": "izdanje",
+      "url": "https://gnk-asg.hr/kanal/sarajevo/",
+      "newest": "2026-10-24T14:52:26.726Z",
+      "pages": 18
+    },
+    {
+      "id": "scena-znanosti",
+      "kind": "web",
+      "url": "",
+      "newest": "2026-10-24T14:52:49.338Z",
+      "pages": 19
+    },
+    {
+      "id": "singapur",
+      "kind": "izdanje",
+      "url": "https://gnk-asg.hr/kanal/singapur/",
+      "newest": "2026-10-24T14:52:26.882Z",
+      "pages": 18
+    },
+    {
+      "id": "singapur",
+      "kind": "svijet",
+      "url": "",
+      "newest": "2026-10-24T12:49:37.907Z",
+      "pages": 18
+    },
+    {
+      "id": "sofija",
+      "kind": "izdanje",
+      "url": "https://gnk-asg.hr/kanal/sofija/",
+      "newest": "2026-10-24T14:52:27.558Z",
+      "pages": 18
+    },
+    {
+      "id": "step-buducnosti",
+      "kind": "web",
+      "url": "",
+      "newest": "2026-10-24T14:52:49.354Z",
+      "pages": 19
+    },
+    {
+      "id": "sydney",
+      "kind": "izdanje",
+      "url": "https://gnk-asg.hr/kanal/sydney/",
+      "newest": "2026-10-24T14:52:27.826Z",
+      "pages": 18
+    },
+    {
+      "id": "sydney",
+      "kind": "svijet",
+      "url": "",
+      "newest": "2026-10-24T12:49:37.935Z",
+      "pages": 18
+    },
+    {
+      "id": "tjednik",
+      "kind": "portal",
+      "url": "",
+      "newest": "2026-10-24T12:23:09.387Z",
+      "pages": 13
+    },
+    {
+      "id": "tokio",
+      "kind": "izdanje",
+      "url": "https://gnk-asg.hr/kanal/tokio/",
+      "newest": "2026-10-24T14:52:28.150Z",
+      "pages": 18
+    },
+    {
+      "id": "tokio",
+      "kind": "svijet",
+      "url": "",
+      "newest": "2026-10-24T12:49:37.967Z",
+      "pages": 18
+    },
+    {
+      "id": "zagreb",
+      "kind": "izdanje",
+      "url": "https://gnk-asg.hr/kanal/zagreb/",
+      "newest": "2026-10-24T14:52:28.646Z",
+      "pages": 18
+    },
+    {
+      "id": "zdravlje",
+      "kind": "web",
+      "url": "",
+      "newest": "2026-10-24T14:52:49.366Z",
+      "pages": 19
+    }
+  ],
+  "counts": {
+    "steps": 30,
+    "generators": 19,
+    "layers": 7,
+    "checks": 4,
+    "schedules": 31,
+    "writingSchedules": 14,
+    "webs": 36
+  },
+  "generatedAt": "2026-10-24T15:09:44.156Z"
+}

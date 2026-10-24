@@ -60,6 +60,7 @@ export const STEPS = [
   { id: 'status-page', group: 'generate', file: 'scripts/build-status-page-v1.mjs', why: 'status ažurnosti' },
   { id: 'status-snapshot', group: 'generate', file: 'scripts/public-status-snapshot-v1.mjs', why: 'javni zapis statusa' },
   { id: 'products', group: 'generate', file: 'scripts/build-aktual-products-v1.mjs', why: 'popis proizvoda AKTUAL MEDIA' },
+  { id: 'sync-status', group: 'generate', file: 'scripts/build-sync-status-v1.mjs', check: ['--check'], why: 'nadzorna ploča sinkronizacije' },
   { id: 'satellite-brand', group: 'generate', file: 'scripts/build-satellite-brand-v1.mjs', optional: true, why: 'znakovi satelita' },
   { id: 'knowledge-en', group: 'generate', file: 'scripts/generate-en-knowledge-center-v1.mjs', optional: true, why: 'EN knowledge center' },
   { id: 'world-expansion', group: 'generate', file: 'scripts/plan-world-expansion-v1.mjs', optional: true, why: 'plan novih zemalja' },

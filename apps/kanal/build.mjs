@@ -18,7 +18,9 @@ import { entityGraphJson } from '../../scripts/lib/entity-graph-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const SRC = join(HERE, 'src');
-const OUT = join(HERE, 'site');
+/* KANAL_OUT pušta test determinizma da gradi u privremenu mapu i usporedi
+   bajtove dviju gradnji — ista ulaza moraju dati isti izlaz. */
+const OUT = process.env.KANAL_OUT ? resolve(process.env.KANAL_OUT) : join(HERE, 'site');
 
 const arg = (name, fallback) => {
   const i = process.argv.indexOf(name);
@@ -69,7 +71,9 @@ function prenosBlock(canonical, root) {
 </aside>`;
 }
 
-const ENV = { generated: new Date().toISOString(), base: BASE };
+/* Vrijeme gradnje ne ulazi u izlaz. Umjesto sata uzima se datum najnovije
+   objave — isti podaci moraju dati iste bajtove pri svakoj gradnji. */
+const ENV = { base: BASE, get generated() { return LATEST; } };
 
 /* ---------- pomoćnici ---------- */
 const esc = (s = '') => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -108,6 +112,9 @@ const readAll = (dir) =>
 const ARTICLES = readAll('articles')
   .map((a) => ({ ...a, readingTime: readingTime(a.body), words: words(a.body) }))
   .sort((a, b) => (a.date === b.date ? (b.priority || 0) - (a.priority || 0) : b.date.localeCompare(a.date)));
+
+/* Najnoviji datum u podacima — jedini dopušteni izvor vremena u izlazu. */
+const LATEST = ARTICLES.map((a) => a.updated || a.date).filter(Boolean).sort().pop() || '2026-01-01T00:00:00.000Z';
 const PAGES = readAll('pages');
 const SECTIONS = SITE.sections;
 
@@ -823,7 +830,7 @@ ${items.map((a) => `<item>
 <link href="${BASE}" rel="alternate"/>
 <link href="${abs('atom.xml')}" rel="self"/>
 <id>${BASE}</id>
-<updated>${new Date().toISOString()}</updated>
+<updated>${ENV.generated}</updated>
 <author><name>GNK ASG KANAL</name><uri>${BASE}</uri></author>
 ${items.map((a) => `<entry>
   <title>${esc(a.title)}</title>

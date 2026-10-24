@@ -95,7 +95,7 @@
     {
       "resource": "apps/portal/objave|komentari|analize (+editorial-sitemap.xml; EN parovi)",
       "canonicalWriter": "editorial-scheduled-publish.yml",
-      "cadence": "1x dnevno (20 8 * * * UTC)",
+      "cadence": "1x dnevno (44 8 * * * UTC)",
       "coWriters": [
         "content-queue-publish.yml (3x dnevno)"
       ],
@@ -116,7 +116,7 @@
     {
       "resource": "AEO artefakti (llms.txt, entity.jsonld, /ai/, slike)",
       "canonicalWriter": "aeo-ai-visibility.yml",
-      "cadence": "4x dnevno (20 2,8,14,20 * * * UTC)"
+      "cadence": "4x dnevno (26 2,8,14,20 * * * UTC)"
     },
     {
       "resource": "image-health seo-audit + editorial-registry ažuriranja",
