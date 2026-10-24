@@ -12,7 +12,9 @@ on:
   schedule:
     # Canonical AKTUAL owner: refresh six times daily, every four hours.
     # Operational watchdog separately verifies the result and can redispatch this writer.
-    - cron: '12 1,5,9,13,17,21 * * *'
+    # Offset :37 avoids the :12 watchdog burst and exact-SHA deploy queues.
+    # Six runs/day are retained; do not increase Actions budget or add writers.
+    - cron: '37 1,5,9,13,17,21 * * *'
 
 permissions:
   contents: write
