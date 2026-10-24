@@ -293,6 +293,12 @@ function mravinjakPage(channel, strings, data) {
   </section>
   <p class="small">${esc(strings.autoNote)}</p>
   <p><a href="../">← ${esc(strings.back)}</a></p>
+  <section class="page" aria-labelledby="edWebTitle">
+    <h2 id="edWebTitle">${esc(chromeOf(channel.lang).webTitle || strings.otherChannels)}</h2>
+    ${spiderWeb({ lang: channel.lang, selfUrl: channel.base, theme: 'light', compact: true })}
+    <p class="small"><a href="../mreza/">${esc(chromeOf(channel.lang).allEditions || strings.hub)} →</a></p>
+  </section>
+  ${meshBlock({ lang: channel.lang, selfUrl: channel.base, theme: 'light' })}
 </main>
 <script>(function(){var c=document.getElementById('mrvwall');if(!c)return;
 var k='mrv-wall';try{if(localStorage.getItem('mrv-wall')==='1'){document.body.classList.add(k);c.checked=true}}catch(e){}
@@ -867,6 +873,35 @@ const BOT = {
   }
 };
 
+/* ---------- OKVIR UNUTRAŠNJOSTI ----------
+   Do 24. 10. 2026. naslovnica izdanja imala je jedanaest sekcija, a stranica
+   članka tri: tekst, popis provjera i povezane vijesti. Čitatelj koji je došao
+   iz tražilice na tekst nije vidio ni mrežu izdanja, ni atlas, ni teme — pa je
+   izdanje iznutra izgledalo kao puka kopija tuđe vijesti.
+
+   Ovaj okvir vraća isti ritam kao naslovnica: teme, atlas (mravinjak), paukova
+   mreža svih adresa i blok mreže AKTUAL MEDIA. Sve četiri sekcije postoje na
+   svakoj unutrašnjoj stranici, s istim razredima i istim CSS-om, pa se
+   unutrašnjost i naslovnica ne mogu razíći.
+
+   `data` je isti skup vijesti izdanja koji nosi naslovnicu — bez novog izvora
+   podataka, bez novog upita i bez ijedne izmišljene brojke. */
+function innerFrame(channel, strings, data, { root = '../', themes = true } = {}) {
+  const chrome = chromeOf(channel.lang);
+  const themesBand = themes ? `<section class="band">
+    <div class="bandhead"><h2>${esc(strings.themes)}</h2></div>
+    <p class="chips">${Object.entries(strings.themeNames).map(([id, label]) => `<a class="chip" href="${root}tema/${id}/">${esc(label)}</a>`).join('')}</p>
+  </section>` : '';
+  return `${themesBand}
+${mravinjakSection(channel, strings, data)}
+<section class="page" aria-labelledby="edWebTitle">
+  <h2 id="edWebTitle">${esc(chrome.webTitle || strings.otherChannels)}</h2>
+  ${spiderWeb({ lang: channel.lang, selfUrl: channel.base, theme: 'light', compact: true })}
+  <p class="small"><a href="${root}mreza/">${esc(chrome.allEditions || strings.hub)} →</a></p>
+</section>
+${meshBlock({ lang: channel.lang, selfUrl: channel.base, theme: 'light' })}`;
+}
+
 function articlePage(channel, strings, item, items) {
   const theme = themeOf(item);
   const a = ANALYSIS[channel.lang] || ANALYSIS.hr;
@@ -957,6 +992,7 @@ function articlePage(channel, strings, item, items) {
 
     <p class="backlink"><a href="${root}">← ${esc(strings.back)}</a></p>
   </article>
+  ${innerFrame(channel, strings, { items }, { root })}
 </main>
 ${footer(channel, strings)}`;
 
@@ -1029,6 +1065,7 @@ function listPage(channel, strings, { title, description, path, items, lead }) {
   <p class="lead">${esc(lead)}</p>
   ${items.length ? `<ul class="list big">${items.map((i) => `<li><time datetime="${esc(i.date)}">${esc(shortDate(i.date.slice(0, 10), channel.lang))}</time><a href="${root}clanak/${i.slug}/">${esc(i.title)}</a><span class="src">${esc(i.sourceName)}</span></li>`).join('')}</ul>` : `<p class="empty">${esc(strings.emptyText)}</p>`}
   <p><a href="${root}">← ${esc(strings.back)}</a></p>
+  ${innerFrame(channel, strings, { items }, { root })}
 </main>
 ${footer(channel, strings)}`;
 
@@ -1341,6 +1378,7 @@ export function buildChannel(channel) {
   <p><a href="mailto:${CONTACT}">${CONTACT}</a> · AKTUAL MEDIA d.o.o. · ${esc(strings.editor)}: Nermin Sefić</p>
   <p class="small">${esc(strings.autoNote)}</p>
   <p><a href="../">← ${esc(strings.back)}</a></p>
+  ${innerFrame(channel, strings, data, { root: '../' })}
 </main>
 ${footer(channel, strings)}`;
   /* Mreža izdanja: paukova mreža svih 32 adrese, na jeziku izdanja.
@@ -1349,9 +1387,11 @@ ${footer(channel, strings)}`;
 <main id="sadrzaj" class="page">
   <h1>${esc(chromeOf(channel.lang).webTitle || strings.otherChannels)}</h1>
   <p class="lead">${esc(chromeOf(channel.lang).webLead || strings.aboutText)}</p>
+  <p class="chips">${Object.entries(strings.themeNames).map(([id, label]) => `<a class="chip" href="../tema/${id}/">${esc(label)}</a>`).join('')}</p>
   ${spiderWeb({ lang: channel.lang, selfUrl: channel.base, theme: 'light' })}
   <p class="small"><a href="../">← ${esc(strings.back)}</a></p>
 </main>
+${meshBlock({ lang: channel.lang, selfUrl: channel.base, theme: 'light' })}
 ${footer(channel, strings)}`;
   write('mreza/index.html', shell(channel, strings, {
     title: `${chromeOf(channel.lang).webTitle || strings.otherChannels} — ${channel.title}`,

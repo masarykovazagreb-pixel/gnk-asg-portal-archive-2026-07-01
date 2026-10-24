@@ -62,6 +62,7 @@ const GATES = [
   { name: 'Ugovor o brendu — jedno ime, jedan znak, jedan izdavač', cmd: ['node', 'scripts/audit-brand-contract-v1.mjs'], required: true },
   { name: 'Kodiranje izvora — bez U+FFFD', cmd: ['node', 'tests/test-region-encoding-v1.mjs'], required: true },
   { name: 'Jednak standard izdanja i portala', cmd: ['node', 'tests/test-editions-parity-v1.mjs'], required: true },
+  { name: 'Unutrašnjost izdanja — isti okvir kao naslovnica', cmd: ['node', 'tests/test-edition-inner-parity-v1.mjs'], required: true },
   { name: 'Atlas, paukova mreža i glavni gradovi', cmd: ['node', 'tests/test-network-atlas-v1.mjs'], required: true },
   { name: 'Desk grafike — devet ilustracija', cmd: ['node', 'tests/test-desk-art-v1.mjs'], required: true },
   { name: 'Slike — alt, dimenzije i postojeće datoteke', cmd: ['node', 'tests/test-image-alt-v1.mjs'], required: true },
