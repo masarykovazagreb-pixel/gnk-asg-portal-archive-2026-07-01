@@ -17,6 +17,7 @@ import { fileURLToPath } from 'node:url';
 import { SITES, siteBySlug, siteBase, pagePath, NETWORK_HUB_HR, NETWORK_HUB_EN, MAIN_SITE } from './lib/registry.mjs';
 import { esc, artSvg, artPath, css, networkBar, siteHeader, head, jsonLd, footer, sitemap, robots, feed } from './lib/kit.mjs';
 import { designTokensCss } from '../shared/design-system-v1.mjs';
+import { FAVICON_SVG, MARK_SVG } from '../shared/brand/brand-mark-v1.mjs';
 import { ogPng } from './lib/png.mjs';
 import { SATELLITE_ART } from './lib/satellite-art.mjs';
 import { buildElectionDesk } from './lib/elections.mjs';
@@ -341,7 +342,7 @@ function manifest(site) {
 
 function notFound(site) {
   return `<!doctype html>
-<html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <title>404 — ${esc(site.name)}</title><meta name="robots" content="noindex"><link rel="canonical" href="${siteBase(site)}/">
 <style>${css(site)}</style>${designTokensCss()}</head>
 <body><main id="main"><div class="hero"><div class="wrap">
@@ -394,6 +395,9 @@ async function buildSite(site) {
   /* Znak kuće: ista datoteka na svakoj domeni, pa se logo ne može razlikovati. */
   const houseMark = join(ROOT, 'apps', 'portal', 'assets', 'brand', 'aktual-media-mark.svg');
   if (existsSync(houseMark)) write(join(dist, 'assets', 'brand', 'aktual-media-mark.svg'), readFileSync(houseMark));
+  /* Favicon i znak su isti na svih šest webova — jedan crtež, jedan izvor. */
+  write(join(dist, 'assets', 'favicon.svg'), FAVICON_SVG);
+  write(join(dist, 'assets', 'aktual-media-mark.svg'), MARK_SVG);
 
   write(join(dist, 'img', 'icon-192.png'), ogPng({ seed: `${site.slug}-icon`, bg: site.bg, accent: site.accent, accent2: site.accent2, variant: 2, width: 192, height: 192 }));
   write(join(dist, 'img', 'icon-512.png'), ogPng({ seed: `${site.slug}-icon`, bg: site.bg, accent: site.accent, accent2: site.accent2, variant: 2, width: 512, height: 512 }));

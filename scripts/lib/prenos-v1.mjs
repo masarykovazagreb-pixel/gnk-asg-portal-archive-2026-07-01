@@ -168,6 +168,7 @@ function shell({ target, title, description, canonical, image, body, jsonld = ''
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="${esc(home)}assets/favicon.svg" type="image/svg+xml">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
 <meta name="robots" content="index, follow, max-image-preview:large">

@@ -95,6 +95,7 @@ function head({ site, title, description, canonical, image, published, extraGrap
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
 <meta name="author" content="Nermin Sefić">

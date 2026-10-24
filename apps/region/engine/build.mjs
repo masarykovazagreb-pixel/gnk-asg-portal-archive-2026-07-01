@@ -11,6 +11,7 @@
  * izvještavanja, a činjenice ostaju kod izvora.
  */
 import { designTokensCss } from '../../shared/design-system-v1.mjs';
+import { FAVICON_SVG } from '../../shared/brand/brand-mark-v1.mjs';
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, rmSync, copyFileSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -1389,7 +1390,7 @@ ${footer(channel, strings)}`;
   writeFileSync(join(dir, 'assets', 'spiderweb-v1.js'), SPIDER_JS);
 
   writeLegacyRedirect(channel);
-  writeFileSync(join(dir, 'assets', 'favicon.svg'), favicon(channel));
+  writeFileSync(join(dir, 'assets', 'favicon.svg'), favicon());
   /* Manifest po izdanju: instalirana ikona vodi na to izdanje, na njegovu
      adresu i u njegovu boju — isto pravilo kao na devet svjetskih portala. */
   writeFileSync(join(dir, 'manifest.webmanifest'), safeJson({
@@ -1423,7 +1424,10 @@ ${footer(channel, strings)}`;
   return { channel: channel.id, pages: 4 + data.items.length + byTheme.size + channel.sources.length, items: data.items.length };
 }
 
-const favicon = (channel) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="${channel.palette.bg}"/><text x="32" y="42" font-family="Georgia,serif" font-size="30" font-weight="700" text-anchor="middle" fill="${channel.palette.accent}">${esc(channel.title.split(' ').pop().slice(0, 1))}</text></svg>`;
+/* Znak mreže, ne slovo izdanja. Prije je svaki grad crtao svoje inicijalno
+   slovo u svojoj boji, pa je ista mreža na karticama preglednika izgledala kao
+   trideset različitih webova. Ime izdanja nosi naslov, znak je zajednički. */
+const favicon = () => FAVICON_SVG;
 
 export const CSS = `*,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}

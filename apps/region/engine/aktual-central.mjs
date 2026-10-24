@@ -827,6 +827,18 @@ export function strengthenAktualBrand(html, lang = 'hr', collection = null) {
   return html;
 }
 
+/* Ime izdavača je jedno: AKTUAL MEDIA d.o.o. HR i EN stranica moraju ga
+   nositi isto, a dosad HR nije imao `publisher` meta, EN nije imao sidro na
+   koje bi se oslonio. Zato jedan pomoćnik radi oboje, bez obzira na jezik. */
+function withPublisher(html) {
+  if (/<meta name="publisher"/.test(html)) {
+    return html.replace(/<meta name="publisher" content="[^"]*">/, '<meta name="publisher" content="AKTUAL MEDIA d.o.o.">');
+  }
+  const at = html.match(/<meta name="author"[^>]*>/) || html.match(/<meta name="theme-color"[^>]*>/) || html.match(/<meta name="robots"[^>]*>/);
+  if (!at) return html;
+  return html.replace(at[0], `${at[0]}\n<meta name="publisher" content="AKTUAL MEDIA d.o.o.">`);
+}
+
 export function buildAktualCentral({ cards = [] } = {}) {
   if (!existsSync(FILE)) return { ok: false, reason: 'nema gnk-aktual/index.html' };
   let html = readFileSync(FILE, 'utf8');
@@ -1149,6 +1161,7 @@ ${END}`;
   /* Opis se mijenja na svakom ciklusu, pa se mora zamijeniti na svim trima
      mjestima — dosad je twitter:description ostajao na starom broju tekstova
      i medija i nije se slagao s og:description. */
+
   const safeDesc = esc(truncate(desc, 178));
   html = html.replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${safeDesc}">`);
   html = html.replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${safeDesc}">`);
@@ -1325,7 +1338,7 @@ ${adHtml}
   html = withAtlas(html, 'hr');
   html = addPerf(addLogoAlternates(html, ['aktual-media-hr']));
   html = strengthenAktualBrand(html, 'hr', jsonld);
-  writeFileSync(FILE, html);
+  writeFileSync(FILE, withPublisher(html));
 
   /* Engleska stranica dobiva istu traku krugova, s engleskim natpisima. */
   const EN = join(PORTAL, 'en', 'gnk-aktual', 'index.html');
@@ -1378,7 +1391,7 @@ ${adHtml}
     en = withAtlas(en, 'en');
     en = addPerf(addLogoAlternates(en, ['aktual-media-en', 'aktual-media-hr']));
     en = strengthenAktualBrand(en, 'en', jsonld);
-    writeFileSync(EN, en);
+    writeFileSync(EN, withPublisher(en));
   }
 
   return { ok: true, items: items.length, sources: sources.size, channels: CHANNELS.length, tiles: 15, river: river.length, moda };

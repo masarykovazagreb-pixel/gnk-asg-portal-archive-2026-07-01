@@ -22,6 +22,7 @@ import { mkdirSync, existsSync, statSync, writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { archiveCount, hrCount } from './lib/archive-count.mjs';
+import { FAVICON_SVG } from '../apps/shared/brand/brand-mark-v1.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(ROOT, 'apps/satellites/assets');
@@ -145,12 +146,8 @@ const svg = (card) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200
 </svg>
 `;
 
-const favicon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="AKTUAL MEDIA">
-<rect width="64" height="64" rx="12" fill="${NAVY}"/>
-<path d="M14 46 L32 18 L50 46 Z" fill="none" stroke="${CREAM}" stroke-width="5" stroke-linejoin="round"/>
-<circle cx="32" cy="46" r="5" fill="${RED}"/>
-</svg>
-`;
+/* Znak mreže iz jednog izvora — ne crta se ovdje. */
+const favicon = FAVICON_SVG;
 
 const check = process.argv.includes('--check');
 const results = CARDS.map((c) => render(c, { check }));

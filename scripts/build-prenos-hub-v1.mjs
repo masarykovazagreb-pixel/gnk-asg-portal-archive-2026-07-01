@@ -252,6 +252,7 @@ function head(page) {
 <title>${esc(page.title)}</title>
 <meta name="description" content="${esc(page.description)}">
 <meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="publisher" content="AKTUAL MEDIA d.o.o.">
 <meta name="theme-color" content="#f7f4ec">
 <link rel="canonical" href="${SITE}${page.path}">
 <link rel="alternate" hreflang="${page.lang}" href="${SITE}${page.path}">
@@ -273,7 +274,7 @@ function head(page) {
 <meta property="article:tag" content="#AKTUALMEDIA">
 <meta property="article:tag" content="#GNKASG">
 <meta property="article:tag" content="#PrijenosMreze">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 ${jsonLd(page)}
 <link rel="stylesheet" href="/assets/am-design-v1.css?v=20261024" data-am-design="v1">
 <style>${CSS}</style>

@@ -30,6 +30,7 @@ import { chromeOf } from '../region/src/chrome.mjs';
 import { CSS } from '../region/engine/build.mjs';
 import { logoFor, channelLogoSlug } from '../region/engine/brand.mjs';
 import { designTokensCss } from '../shared/design-system-v1.mjs';
+import { FAVICON_SVG } from '../shared/brand/brand-mark-v1.mjs';
 import { meshBlock, MESH_CSS } from '../satellites/lib/network-v1.mjs';
 import { HOUSE_CSS, houseRibbon } from '../satellites/lib/house-style-v1.mjs';
 import { exchangeBlock, writeExchangeJson, EXCHANGE_CSS } from '../satellites/lib/razmjena-v1.mjs';
@@ -751,7 +752,7 @@ function writeStatics(portal, data, themes) {
     icons: [{ src: '/assets/icon.svg', sizes: 'any', type: 'image/svg+xml' }]
   }, null, 2)}\n`);
 
-  const icon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="${portal.palette.bg}"/><text x="32" y="43" font-family="Georgia,serif" font-size="30" font-weight="700" text-anchor="middle" fill="${portal.palette.accent}">${esc(portal.city.slice(0, 1))}</text></svg>`;
+  const icon = FAVICON_SVG;
   writeFileSync(join(dir, 'assets', 'favicon.svg'), icon);
   writeFileSync(join(dir, 'assets', 'icon.svg'), icon);
 

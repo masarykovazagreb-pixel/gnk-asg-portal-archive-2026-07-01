@@ -237,6 +237,7 @@ export function head({ site, lang, page, title, description, canonical, alternat
   const articleTags = page === 'home' ? '' : hashtags.map((tag) => `<meta property="article:tag" content="${esc(tag)}">`).join('\n');
   return `<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">

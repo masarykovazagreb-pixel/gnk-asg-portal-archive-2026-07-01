@@ -10,6 +10,7 @@
  *   node apps/kanal/build.mjs --base https://gnk-asg-kanal.pages.dev/
  */
 import { designTokensCss } from '../shared/design-system-v1.mjs';
+import { FAVICON_SVG } from '../shared/brand/brand-mark-v1.mjs';
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, rmSync, copyFileSync, existsSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -231,6 +232,7 @@ function head({ title, description, canonical, root, og, ogAlt, type = 'website'
 <meta name="twitter:data1" content="${esc(authorName)}">
 ${published ? `<meta name="twitter:label2" content="Objavljeno">\n<meta name="twitter:data2" content="${hrDate(published)}">` : ''}
 <meta name="format-detection" content="telephone=no">
+<meta name="publisher" content="AKTUAL MEDIA d.o.o.">
 <link rel="dns-prefetch" href="//gnk-asg.hr">
 <script type="application/ld+json">${jsonld({ '@context': 'https://schema.org', '@graph': graph })}</script>
 ${designTokensCss()}
@@ -280,7 +282,8 @@ function footer(root) {
   return `<footer>
   <div class="wrap foot-grid">
     <div class="foot-brand">
-      <b>${esc(SITE.brand)}</b><span>GNK ASG KANAL</span>
+      <img src="${root}assets/aktual-media-mark.svg" alt="AKTUAL MEDIA" width="34" height="34" loading="lazy" decoding="async">
+      <b>${esc(SITE.brand)}</b><span>GNK ASG KANAL · AKTUAL MEDIA d.o.o.</span>
       <p>${esc(SITE.tagline)}</p>
       <p class="fine-print">Glavni urednik: Nermin Sefić · ${esc(SITE.publisher.address)}</p>
     </div>
@@ -1000,7 +1003,8 @@ const copyTree = (from, to) => {
   }
 };
 copyTree(assetSrc, join(OUT, 'assets'));
-write('assets/favicon.svg', `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="6" fill="#101114"/><text x="32" y="43" font-family="Georgia,serif" font-size="30" font-weight="700" fill="#d8b25a" text-anchor="middle">K</text></svg>`);
+/* Znak mreže za sve kanale — isto kao na svakom drugom webu. */
+write('assets/favicon.svg', FAVICON_SVG);
 
 /* komentari */
 for (const slug of new Set([...ARTICLES.map((a) => a.slug), ...PAGES.map((p) => p.slug)])) {
