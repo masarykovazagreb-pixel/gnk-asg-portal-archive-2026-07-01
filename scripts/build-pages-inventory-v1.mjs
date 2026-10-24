@@ -21,6 +21,8 @@
 import { readFileSync, writeFileSync, existsSync, readdirSync, statSync, mkdirSync } from 'node:fs';
 import { join, dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { refreshTag } from '../apps/shared/refresh-tag-v1.mjs';
+import { designTokensCss } from '../apps/shared/design-system-v1.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const CHECK = process.argv.includes('--check');
@@ -162,8 +164,10 @@ h1{font:700 clamp(30px,4.4vw,52px)/1.05 Georgia,serif;letter-spacing:-.02em;marg
   a[href]::after{content:" (" attr(href) ")";font-size:10px;color:#555}
 }
 </style>
+${designTokensCss()}
 </head>
 <body>
+<a class="skip" href="#sadrzaj">Sadržaj</a>
 <main class="inv-wrap" id="sadrzaj">
   <p class="inv-eyebrow">AKTUAL MEDIA · inventura</p>
   <h1>Sve stranice mreže, izmjerene — ne prepisane</h1>
@@ -182,6 +186,7 @@ ${rows}
   <p class="inv-note">Popis se ne uređuje ručno. Ako web nije izgrađen, ovdje piše „nije izgrađen“ — praznina se vidi, ne skriva. Detaljan izvještaj s tipovima stranica i zaostatkom stoji u <code>docs/izvjestaj-inventure-v1.md</code>.</p>
   <p class="inv-foot">GNK ASG d.o.o. · AKTUAL MEDIA · urednik i direktor Nermin Sefić</p>
 </main>
+${refreshTag('/')}
 </body>
 </html>
 `;

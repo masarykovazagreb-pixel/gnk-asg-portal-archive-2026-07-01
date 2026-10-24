@@ -16,6 +16,7 @@ import {
   breadcrumb, websiteNode, publisherNode, ARHIVA, DNEVNIK, MAIN, SITE_CSS
 } from '../../satellites/lib/shell.mjs';
 import { writeExchangeJson } from '../../satellites/lib/razmjena-v1.mjs';
+import { refreshTag, ensureRefreshModule } from '../../shared/refresh-tag-v1.mjs';
 import { designTokensCss } from '../../shared/design-system-v1.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
@@ -62,6 +63,7 @@ const write = (rel, content) => {
 rmSync(SITE, { recursive: true, force: true });
 mkdirSync(SITE, { recursive: true });
 cpSync(join(ROOT, 'apps', 'satellites', 'assets'), join(SITE, 'assets', 'brand'), { recursive: true });
+ensureRefreshModule(SITE);
 
 const nav = (lang) => {
   const hr = lang === 'hr';
@@ -305,9 +307,10 @@ function about(lang) {
 }
 
 write('404.html', `<!doctype html><html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="${SITE_URL}/assets/brand/favicon.svg" type="image/svg+xml">
 <title>Stranica nije pronađena — AKTUAL DNEVNIK</title><meta name="robots" content="noindex"><link rel="stylesheet" href="/assets/site.css?v=20261022"></head>
-<body><main class="wrap" style="padding:60px 0"><p class="kicker">404</p><h1>Nema te stranice</h1>
-<p class="lead">Dani su ovdje:</p><div class="row"><a class="btn solid" href="/">Dnevnik</a><a class="btn" href="${ARHIVA}/">Arhiva</a><a class="btn" href="${MAIN}/gnk-aktual/">AKTUAL MEDIA</a></div></main></body></html>`);
+<body><a class="skip" href="#sadrzaj">Sadržaj</a><main id="sadrzaj" class="wrap" style="padding:60px 0"><p class="kicker">404</p><h1>Nema te stranice</h1>
+<p class="lead">Dani su ovdje:</p><div class="row"><a class="btn solid" href="/">Dnevnik</a><a class="btn" href="${ARHIVA}/">Arhiva</a><a class="btn" href="${MAIN}/gnk-aktual/">AKTUAL MEDIA</a></div></main>${refreshTag('/')}</body></html>`);
 
 write('assets/site.css', SITE_CSS);
 write('robots.txt', robots(SITE_URL));

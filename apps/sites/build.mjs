@@ -352,8 +352,8 @@ function notFound(site) {
   return `<!doctype html>
 <html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <title>404 — ${esc(site.name)}</title><meta name="robots" content="noindex"><link rel="canonical" href="${siteBase(site)}/">
-<style>${css(site)}</style>${designTokensCss()}</head>
-<body><main id="main"><div class="hero"><div class="wrap">
+<style>${css(site)}.skip{position:absolute;left:-9999px;top:0;background:#111614;color:#fff;padding:.7rem 1rem;z-index:9999;border-radius:0 0 .45rem 0;font-weight:600;text-decoration:none}.skip:focus,.skip:focus-visible{left:8px;top:8px;outline:2px solid #fff;outline-offset:2px}</style>${designTokensCss()}</head>
+<body><a class="skip" href="#main">Sadržaj</a><main id="main"><div class="hero"><div class="wrap">
 <p class="kicker">404</p><h2>Ove stranice nema.</h2>
 <p class="lead">Možda je poveznica stara ili je stranica premještena. Naslovnica je ovdje, a popis svih izdanja na <a href="${NETWORK_HUB_HR}">gnk-asg.hr/mreza</a>.</p>
 <p><a href="/" style="border:1px solid var(--accent);border-radius:999px;padding:10px 16px;font:800 12px/1 system-ui;letter-spacing:.1em;text-transform:uppercase">${esc(site.name)} →</a></p>

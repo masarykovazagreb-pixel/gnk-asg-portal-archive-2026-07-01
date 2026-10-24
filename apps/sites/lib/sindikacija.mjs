@@ -50,6 +50,7 @@ function localLead(site, column) {
 }
 
 const CSS = `
+.skip{position:absolute;left:-9999px;top:0;background:#111614;color:#fff;padding:.7rem 1rem;z-index:9999;border-radius:0 0 .45rem 0;font-weight:600;text-decoration:none}.skip:focus,.skip:focus-visible{left:8px;top:8px;outline:2px solid #fff;outline-offset:2px}
 :root{color-scheme:dark}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.65 Georgia,"Times New Roman",serif}
@@ -133,13 +134,14 @@ ${extraGraph}
 ${designTokensCss()}
 </head>
 <body>
+<a class="skip" href="#sadrzaj">${site.lang === 'en' ? 'Skip to content' : 'Sadržaj'}</a>
 ${houseRibbon({ lang: site.lang, edition: site.name })}
 <div class="wrap">
   <nav class="top">
     <a class="brand" href="${site.base || '/'}">${esc(site.name)}</a>
     <span><a href="/kolumna/">${site.lang === 'en' ? 'Columns' : 'Kolumne'}</a> · <a href="https://gnk-asg.hr/gnk-aktual/">AKTUAL MEDIA</a> · <a href="https://gnk-asg.hr/nermin-sefic/">Nermin Sefić</a></span>
   </nav>
-  <main>`;
+  <main id="sadrzaj" tabindex="-1">`;
 }
 
 const foot = (site) => `  </main>

@@ -18,6 +18,7 @@
 import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync, statSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { refreshTag } from '../apps/shared/refresh-tag-v1.mjs';
 import { STEPS } from './sync-all-v1.mjs';
 import { designTokensCss } from '../apps/shared/design-system-v1.mjs';
 
@@ -159,6 +160,8 @@ p.lead{color:var(--amd-muted,#59606a)}
 ${designTokensCss()}
 </head>
 <body>
+<a class="skip" href="#sadrzaj">Sadržaj</a>
+<main id="sadrzaj">
 <h1>Sinkronizacija mreže</h1>
 <p class="lead">${payload.counts.schedules} rasporeda (${payload.counts.writingSchedules} piše u git), ${payload.counts.steps} koraka sinkronizacije (${payload.counts.generators} generatora, ${payload.counts.layers} sloja, ${payload.counts.checks} provjere) i ${payload.counts.webs} webova. Sve je izvedeno iz datoteka repozitorija, ne iz prethodnog izvještaja.</p>
 <p class="lead">Strojni zapis: <a href="/status/sync.json">/status/sync.json</a>.</p>
@@ -173,6 +176,8 @@ ${designTokensCss()}
 <table><thead><tr><th>Web</th><th>Vrsta</th><th>Stavki u korijenu</th><th>Zadnja izmjena</th></tr></thead><tbody>${webRows}</tbody></table>
 
 <p class="lead">Zapis sastavljen ${esc(now.toISOString().slice(0, 16).replace('T', ' '))} UTC.</p>
+</main>
+${refreshTag('/')}
 </body>
 </html>
 `;
