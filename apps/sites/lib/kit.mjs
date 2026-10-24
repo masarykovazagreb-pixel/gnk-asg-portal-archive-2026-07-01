@@ -192,7 +192,7 @@ export function networkBar(site, lang) {
     .map((item) => `<a href="${item.base}" hreflang="hr" lang="hr" rel="external noopener">${esc(item.name)}</a>`)
     .join(' · ');
   return `<div class="net"><div class="wrap">
-    <span>GNK ASG MREŽA · <b>${esc(site.name)}</b> · ${lang === 'en' ? 'independent edition' : 'neovisno izdanje'}</span>
+    <span>${lang === 'en' ? 'AKTUAL MEDIA network' : 'AKTUAL MEDIA MREŽA'} · <b>${esc(site.name)}</b> · ${lang === 'en' ? 'independent edition' : 'neovisno izdanje'}</span>
     <span><a href="${MAIN_SITE}" rel="external noopener">gnk-asg.hr</a> · <a href="https://gnk-asg.hr/gnk-aktual/" rel="external noopener">AKTUAL MEDIA</a> · <a href="${hub}"${lang === 'en' ? ' hreflang="en"' : ''}>${lang === 'en' ? 'Network' : 'Mreža'}</a> · ${siblings}</span>
   </div></div>`;
 }

@@ -57,6 +57,7 @@ const GATES = [
   { name: 'Mreža neovisnih izdanja', cmd: ['node', 'tests/test-sites-network-v1.mjs'], required: true },
   { name: 'Paukova mreža — 20 ulaza', cmd: ['node', 'tests/test-network-mesh-v1.mjs'], required: true },
   { name: 'Svjetska izdanja — devet portala', cmd: ['node', 'tests/test-world-portals-v1.mjs'], required: true },
+  { name: 'Razmjena vijesti — svaki web nosi tuđe naslove', cmd: ['node', 'tests/test-exchange-block-v1.mjs'], required: true },
   { name: 'Kodiranje izvora — bez U+FFFD', cmd: ['node', 'tests/test-region-encoding-v1.mjs'], required: true },
   { name: 'Jednak standard izdanja i portala', cmd: ['node', 'tests/test-editions-parity-v1.mjs'], required: true },
   { name: 'Atlas, paukova mreža i glavni gradovi', cmd: ['node', 'tests/test-network-atlas-v1.mjs'], required: true },

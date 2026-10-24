@@ -93,11 +93,16 @@ export function collectFeeds(root) {
 }
 
 /** Najsvježiji naslovi drugih webova, bez vlastitog. */
-export function pickExchange(root, { selfHome = '', limit = 6, skipPaths = [] } = {}) {
+export function pickExchange(root, { selfHome = '', selfNames = [], limit = 6, skipPaths = [] } = {}) {
   const self = String(selfHome).replace(/\/$/, '');
+  /* Grad ima dva weba: gradski kanal na gnk-asg.hr i svjetski portal na
+     vlastitoj domeni. Oba nose isto ime izdanja, pa filter po adresi nije
+     dovoljan — bez ovoga bi vlastiti grad iskočio u tuđoj razmjeni. */
+  const own = new Set(selfNames.map((name) => String(name || '').trim().toLowerCase()).filter(Boolean));
   const seen = new Set();
   return collectFeeds(root)
     .filter((feed) => feed.home !== self)
+    .filter((feed) => !own.has(String(feed.name).toLowerCase()))
     .filter((feed) => !skipPaths.some((part) => feed.url.includes(part)))
     .sort((a, b) => String(b.date).localeCompare(String(a.date)))
     /* Isto izdanje može imati gradsko izdanje i svjetski portal; u popisu se
@@ -112,8 +117,8 @@ export function pickExchange(root, { selfHome = '', limit = 6, skipPaths = [] } 
 }
 
 /** HTML blok razmjene: naslov, kratko objašnjenje i popis s atribucijom. */
-export function exchangeBlock({ root, lang = 'hr', selfHome = '', limit = 6, headingId = 'razmjena', skipPaths = [] } = {}) {
-  const picks = pickExchange(root, { selfHome, limit, skipPaths });
+export function exchangeBlock({ root, lang = 'hr', selfHome = '', selfNames = [], limit = 6, headingId = 'razmjena', skipPaths = [] } = {}) {
+  const picks = pickExchange(root, { selfHome, selfNames, limit, skipPaths });
   if (!picks.length) return '';
   const en = lang === 'en';
   const heading = en ? 'News exchange across the network' : 'Razmjena vijesti s drugih webova mreže';
@@ -134,8 +139,8 @@ export function exchangeBlock({ root, lang = 'hr', selfHome = '', limit = 6, hea
 }
 
 /** Strojno čitljiv zapis razmjene: isti popis koji stranica prikazuje. */
-export function writeExchangeJson(dir, { root, selfHome = '', limit = 6 }) {
-  const picks = pickExchange(root, { selfHome, limit: Math.max(limit, 12) });
+export function writeExchangeJson(dir, { root, selfHome = '', selfNames = [], limit = 6 }) {
+  const picks = pickExchange(root, { selfHome, selfNames, limit: Math.max(limit, 12) });
   if (!picks.length) return;
   const payload = {
     version: 1,
@@ -154,15 +159,21 @@ export function writeExchangeJson(dir, { root, selfHome = '', limit = 6 }) {
 }
 
 export const EXCHANGE_CSS = `
-.am-exchange{max-width:var(--am-measure);margin:clamp(2.6rem,4vw,4.2rem) auto;padding:clamp(1.4rem,2.4vw,2rem);
-  border:1px solid var(--am-line);border-radius:var(--am-radius);background:color-mix(in srgb,currentColor 3%,transparent);
+/* Blok razmjene stoji na svakom webu mreže, a svaki web ima svoju paletu.
+   Zato boje i mjere imaju vlastite, neutralne vrijednosti: ako stranica ne
+   definira --am-line, --am-muted ili --am-measure, blok se svejedno vidi kao
+   kartica s obrubom, a ne kao goli tekst bez okvira. */
+.am-exchange{--am-x-line:color-mix(in srgb,currentColor 18%,transparent);--am-x-soft:color-mix(in srgb,currentColor 11%,transparent);--am-x-muted:color-mix(in srgb,currentColor 62%,transparent);
+  max-width:var(--am-measure,1120px);margin:clamp(2.6rem,4vw,4.2rem) auto;padding:clamp(1.4rem,2.4vw,2rem);
+  border:1px solid var(--am-line,var(--am-x-line));border-radius:var(--am-radius,16px);background:color-mix(in srgb,currentColor 3%,transparent);
   font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
 .am-exchange h2{margin:0 0 .35em;font-size:clamp(1.15rem,1.6vw,1.5rem);letter-spacing:-.01em}
-.am-x-lead{margin:0 0 1.1em;color:var(--am-muted);font-size:.92rem;line-height:1.55;max-width:62ch}
+.am-x-lead{margin:0 0 1.1em;color:var(--am-muted,var(--am-x-muted));font-size:.92rem;line-height:1.55;max-width:62ch}
 .am-x-list{list-style:none;margin:0;padding:0;display:grid;gap:.85rem;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
-.am-x-list li{display:grid;gap:.3rem;padding-top:.85rem;border-top:1px solid var(--am-line-soft)}
+.am-x-list li{display:grid;gap:.3rem;padding-top:.85rem;border-top:1px solid var(--am-line-soft,var(--am-x-soft))}
 .am-x-list a{font-weight:600;line-height:1.35;text-decoration:none}
-.am-x-list a:hover{color:var(--accent2,var(--am-gold));text-decoration:underline;text-underline-offset:.18em}
-.am-x-src{font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--am-muted)}
+.am-x-list a:hover{color:var(--accent2,var(--am-gold,#e2b857));text-decoration:underline;text-underline-offset:.18em}
+.am-x-src{font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--am-muted,var(--am-x-muted))}
+.am-exchange:focus-within{border-color:var(--am-line,var(--am-x-line))}
 @media print{.am-exchange{display:none!important}}
 `;

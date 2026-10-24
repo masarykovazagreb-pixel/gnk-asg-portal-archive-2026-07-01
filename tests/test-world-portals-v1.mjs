@@ -92,9 +92,13 @@ function auditPortal(portal) {
     check(hrefs.has(norm(target.url)), `${portal.id}: naslovnica ne vodi na portal ${target.url}`);
   }
 
-  /* 3. Svaki osvrt vodi na kanonsku adresu pod gnk-asg.hr. */
+  /* 3. Svaki vlastiti osvrt vodi na kanonsku adresu pod gnk-asg.hr.
+     Blok razmjene namjerno nosi naslove DRUGIH izdanja — i oni su /clanak/
+     adrese, ali tuđe. Zato se razmjena promatra zasebno (svoj gate), a ovdje
+     ostaje pravilo za vlastite tekstove portala. */
   const articlePrefix = `${portal.sourceBase}clanak/`;
-  const articleLinks = links(first).filter((link) => link.href.includes('/clanak/'));
+  const withoutExchange = first.replace(/<section class="am-exchange"[\s\S]*?<\/section>/g, '');
+  const articleLinks = links(withoutExchange).filter((link) => link.href.includes('/clanak/'));
   check(articleLinks.length >= 5, `${portal.id}: premalo linkova na osvrte (${articleLinks.length})`);
   for (const link of articleLinks) {
     check(link.href.startsWith(articlePrefix), `${portal.id}: osvrt ne vodi na ${articlePrefix} (${link.href})`);

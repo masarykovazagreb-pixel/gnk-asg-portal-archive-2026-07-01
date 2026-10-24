@@ -301,16 +301,22 @@ figure>figcaption:empty{display:none}
 @media print{.top,footer,.skip,nav{display:none!important}body{background:#fff;color:#000}}
 </style>
 <style>
-.am-exchange{max-width:var(--am-measure);margin:clamp(2.6rem,4vw,4.2rem) auto;padding:clamp(1.4rem,2.4vw,2rem);
-  border:1px solid var(--am-line);border-radius:var(--am-radius);background:color-mix(in srgb,currentColor 3%,transparent);
+/* Blok razmjene stoji na svakom webu mreže, a svaki web ima svoju paletu.
+   Zato boje i mjere imaju vlastite, neutralne vrijednosti: ako stranica ne
+   definira --am-line, --am-muted ili --am-measure, blok se svejedno vidi kao
+   kartica s obrubom, a ne kao goli tekst bez okvira. */
+.am-exchange{--am-x-line:color-mix(in srgb,currentColor 18%,transparent);--am-x-soft:color-mix(in srgb,currentColor 11%,transparent);--am-x-muted:color-mix(in srgb,currentColor 62%,transparent);
+  max-width:var(--am-measure,1120px);margin:clamp(2.6rem,4vw,4.2rem) auto;padding:clamp(1.4rem,2.4vw,2rem);
+  border:1px solid var(--am-line,var(--am-x-line));border-radius:var(--am-radius,16px);background:color-mix(in srgb,currentColor 3%,transparent);
   font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
 .am-exchange h2{margin:0 0 .35em;font-size:clamp(1.15rem,1.6vw,1.5rem);letter-spacing:-.01em}
-.am-x-lead{margin:0 0 1.1em;color:var(--am-muted);font-size:.92rem;line-height:1.55;max-width:62ch}
+.am-x-lead{margin:0 0 1.1em;color:var(--am-muted,var(--am-x-muted));font-size:.92rem;line-height:1.55;max-width:62ch}
 .am-x-list{list-style:none;margin:0;padding:0;display:grid;gap:.85rem;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
-.am-x-list li{display:grid;gap:.3rem;padding-top:.85rem;border-top:1px solid var(--am-line-soft)}
+.am-x-list li{display:grid;gap:.3rem;padding-top:.85rem;border-top:1px solid var(--am-line-soft,var(--am-x-soft))}
 .am-x-list a{font-weight:600;line-height:1.35;text-decoration:none}
-.am-x-list a:hover{color:var(--accent2,var(--am-gold));text-decoration:underline;text-underline-offset:.18em}
-.am-x-src{font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--am-muted)}
+.am-x-list a:hover{color:var(--accent2,var(--am-gold,#e2b857));text-decoration:underline;text-underline-offset:.18em}
+.am-x-src{font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--am-muted,var(--am-x-muted))}
+.am-exchange:focus-within{border-color:var(--am-line,var(--am-x-line))}
 @media print{.am-exchange{display:none!important}}
 </style>
 </head>
@@ -318,7 +324,7 @@ figure>figcaption:empty{display:none}
 <a class="skip" href="#main">Preskoči na sadržaj</a>
 <div class="am-ribbon"><a class="am-ribbon-brand" href="https://gnk-asg.hr/" rel="external noopener" aria-label="AKTUAL MEDIA — matična mreža"><img src="/assets/brand/aktual-media-mark.svg" alt="AKTUAL MEDIA — znak mreže" width="72" height="72" loading="lazy" decoding="async"><span>AKTUAL MEDIA</span></a><span class="am-ribbon-ed"><b>ZDRAVLJE 360</b> · izdanje AKTUAL MEDIA</span></div>
 <div class="net"><div class="wrap">
-    <span>GNK ASG MREŽA · <b>ZDRAVLJE 360</b> · neovisno izdanje</span>
+    <span>AKTUAL MEDIA MREŽA · <b>ZDRAVLJE 360</b> · neovisno izdanje</span>
     <span><a href="https://gnk-asg.hr/" rel="external noopener">gnk-asg.hr</a> · <a href="https://gnk-asg.hr/gnk-aktual/" rel="external noopener">AKTUAL MEDIA</a> · <a href="https://gnk-asg.hr/mreza/">Mreža</a> · <a href="https://gnk-bor-usa.pages.dev/" hreflang="hr" lang="hr" rel="external noopener">BOR USA</a> · <a href="https://gnk-kosarka.pages.dev/" hreflang="hr" lang="hr" rel="external noopener">KOŠARKA 360</a> · <a href="https://gnk-scena-znanosti.pages.dev/" hreflang="hr" lang="hr" rel="external noopener">SCENA ZNANOSTI</a> · <a href="https://gnk-step-buducnosti.pages.dev/" hreflang="hr" lang="hr" rel="external noopener">STEP BUDUĆNOSTI</a> · <a href="https://gnk-izbori-srbija.pages.dev/" hreflang="hr" lang="hr" rel="external noopener">IZBORI U SRBIJI</a></span>
   </div></div>
 <header class="site"><div class="wrap">

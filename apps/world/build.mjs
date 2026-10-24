@@ -438,7 +438,7 @@ function shell(portal, { title, description, path = '', body, robots = 'index,fo
 <a class="skip" href="#sadrzaj">${esc(chrome(portal).skip)}</a>
 ${houseRibbon({ lang: portal.lang, edition: `${portal.city} · ${portal.country}` })}
 ${body}
-${exchangeBlock({ root: ROOT, lang: portal.lang, selfHome: portalBase(portal), limit: 6, skipPaths: ['/clanak/'] })}
+${exchangeBlock({ root: ROOT, lang: portal.lang, selfHome: portalBase(portal), selfNames: [portal.city, portal.cityEn].filter(Boolean), limit: 6 })}
 </body>
 </html>`;
 }

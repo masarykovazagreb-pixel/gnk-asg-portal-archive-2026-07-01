@@ -514,7 +514,7 @@ ${ld}
 ${houseRibbon({ lang: pageLang, edition: channel.city || channel.title })}
 ${body}
 ${editorialIndexBlock({ root: ROOT, lang: pageLang, limit: 6 })}
-${exchangeBlock({ root: ROOT, lang: pageLang, selfHome: channel.base, limit: 6 })}
+${exchangeBlock({ root: ROOT, lang: pageLang, selfHome: channel.base, selfNames: [channel.city, channel.cityEn].filter(Boolean), limit: 6 })}
 <a class="hublink" href="${CENTRAL}#izdanja-po-zemljama" rel="external noopener" aria-label="${esc(chromeOf(pageLang).hubAria)}"><span aria-hidden="true">←</span> AKTUAL MEDIA</a>
 ${miniRail(channel)}
 <script src="/assets/aktual-radio-mini-v1.js?v=20261023-edmini" defer></script>
