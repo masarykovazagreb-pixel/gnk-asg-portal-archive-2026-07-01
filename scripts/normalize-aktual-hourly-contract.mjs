@@ -7,7 +7,7 @@ const hrHomePath = 'apps/portal/index.html';
 const enHomePath = 'apps/portal/en/index.html';
 
 const status = JSON.parse(await readFile(statusPath, 'utf8'));
-status.cadence = 'six times daily at 01:12, 05:12, 09:12, 13:12, 17:12 and 21:12 UTC; watchdog recovery if stale';
+status.cadence = 'six times daily at 01:37, 05:37, 09:37, 13:37, 17:37 and 21:37 UTC; watchdog recovery if stale';
 status.scheduled_interval_hours = 4;
 status.freshness_sla_minutes = 290;
 status.watchdog = '.github/workflows/ops-automation-sla-watchdog.yml';
