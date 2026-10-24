@@ -110,6 +110,7 @@ jobs:
           # tako je /status/ i EN /status/ ostao bez znaka kuće.
           node scripts/apply-network-entity-v1.mjs
           node scripts/apply-house-ribbon-v1.mjs
+          node scripts/apply-design-tokens-v1.mjs
           node scripts/apply-social-card-meta-v1.mjs
           node scripts/prune-image-sitemap-v1.mjs
           node scripts/knowledge-center-hr-sync-v1.mjs --apply

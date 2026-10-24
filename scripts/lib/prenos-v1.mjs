@@ -22,6 +22,7 @@
  * Kolumne se ne pišu dvaput: gdje već postoji /kolumna/<slug>/, popis vodi
  * tamo, a ovdje nastaje samo unos. Sve ostalo dobiva /prenos/<slug>/.
  */
+import { designTokensCss } from '../../apps/shared/design-system-v1.mjs';
 import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { readCorpus, corpusImage, authorPortrait, KIND_LABEL } from './corpus-v1.mjs';
@@ -196,6 +197,7 @@ ${CSS}
 ${HOUSE_CSS}</style>
 ${graphScript()}
 ${jsonld}
+${designTokensCss()}
 </head>
 <body>
 <a class="skip" href="#sadrzaj">${esc(LABEL(target.lang).skip || 'Skip to content')}</a>

@@ -29,6 +29,7 @@ import { SITES } from './registry.mjs';
 import { entityGraphJson } from '../../../scripts/lib/entity-graph-v1.mjs';
 import { readColumns, columnImagePath } from '../../../scripts/lib/kolumne-source-v1.mjs';
 import { HOUSE_CSS, houseRibbon } from '../../satellites/lib/house-style-v1.mjs';
+import { designTokensCss } from '../../shared/design-system-v1.mjs';
 import { authorPortrait } from '../../../scripts/lib/corpus-v1.mjs';
 
 const MAX_ITEMS = 60;
@@ -126,6 +127,7 @@ ${image ? `<meta name="twitter:image" content="${esc(image)}">
 <style>:root{${themeVars(site)}}body{background:var(--bg);color:var(--ink)}</style>
 ${extraGraph}
 <script type="application/ld+json" id="network-entity-v1">${graph}</script>
+${designTokensCss()}
 </head>
 <body>
 ${houseRibbon({ lang: site.lang, edition: site.name })}

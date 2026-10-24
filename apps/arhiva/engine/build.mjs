@@ -16,6 +16,7 @@ import {
   breadcrumb, websiteNode, publisherNode, ARHIVA, DNEVNIK, MAIN, SITE_CSS
 } from '../../satellites/lib/shell.mjs';
 import { writeExchangeJson } from '../../satellites/lib/razmjena-v1.mjs';
+import { designTokensCss } from '../../shared/design-system-v1.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const SITE = join(ROOT, 'apps', 'arhiva', 'site');

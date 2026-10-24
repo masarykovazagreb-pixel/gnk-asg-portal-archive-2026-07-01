@@ -29,6 +29,7 @@ import { t } from '../region/src/strings.mjs';
 import { chromeOf } from '../region/src/chrome.mjs';
 import { CSS } from '../region/engine/build.mjs';
 import { logoFor, channelLogoSlug } from '../region/engine/brand.mjs';
+import { designTokensCss } from '../shared/design-system-v1.mjs';
 import { meshBlock, MESH_CSS } from '../satellites/lib/network-v1.mjs';
 import { HOUSE_CSS, houseRibbon } from '../satellites/lib/house-style-v1.mjs';
 import { exchangeBlock, writeExchangeJson, EXCHANGE_CSS } from '../satellites/lib/razmjena-v1.mjs';
@@ -433,6 +434,7 @@ function shell(portal, { title, description, path = '', body, robots = 'index,fo
 <script type="application/ld+json">${safeJson(graph)}</script>
 <style>:root{--bg:${portal.palette.bg};--surface:${portal.palette.surface};--accent:${portal.palette.accent};--accent2:${portal.palette.accent2};--ink:${portal.palette.ink}}</style>
 <link rel="stylesheet" href="/assets/region.css">
+${designTokensCss()}
 </head>
 <body data-channel="${portal.id}" data-lang="${portal.lang}">
 <a class="skip" href="#sadrzaj">${esc(chrome(portal).skip)}</a>

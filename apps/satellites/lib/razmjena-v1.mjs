@@ -174,9 +174,9 @@ export const EXCHANGE_CSS = `
    Zato boje i mjere imaju vlastite, neutralne vrijednosti: ako stranica ne
    definira --am-line, --am-muted ili --am-measure, blok se svejedno vidi kao
    kartica s obrubom, a ne kao goli tekst bez okvira. */
-.am-exchange{--am-x-line:color-mix(in srgb,currentColor 18%,transparent);--am-x-soft:color-mix(in srgb,currentColor 11%,transparent);--am-x-muted:color-mix(in srgb,currentColor 62%,transparent);
-  max-width:var(--am-measure,1120px);margin:clamp(2.6rem,4vw,4.2rem) auto;padding:clamp(1.4rem,2.4vw,2rem);
-  border:1px solid var(--am-line,var(--am-x-line));border-radius:var(--am-radius,16px);background:color-mix(in srgb,currentColor 3%,transparent);
+.am-exchange{--am-x-line:var(--amd-line,color-mix(in srgb,currentColor 18%,transparent));--am-x-soft:color-mix(in srgb,currentColor 11%,transparent);--am-x-muted:var(--amd-muted,color-mix(in srgb,currentColor 62%,transparent));
+  max-width:var(--am-measure,var(--amd-measure,86ch));margin:clamp(2.6rem,4vw,4.2rem) auto;padding:clamp(1.4rem,2.4vw,2rem);
+  border:1px solid var(--am-line,var(--am-x-line));border-radius:var(--am-radius,var(--amd-radius,16px));background:color-mix(in srgb,currentColor 3%,transparent);
   font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
 .am-exchange h2{display:flex;align-items:center;gap:.55em;margin:0 0 .35em;font-size:clamp(1.15rem,1.6vw,1.5rem);letter-spacing:-.01em}
 .am-x-mark{width:24px;height:24px;border-radius:6px;flex:0 0 auto}

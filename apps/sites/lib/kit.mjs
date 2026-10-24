@@ -11,6 +11,7 @@
  *   JSON-LD (WebSite, Organization, Person, Article/CollectionPage,
  *   BreadcrumbList, FAQPage), vlastiti sitemap.xml, robots.txt i feed.xml.
  */
+import { designTokensCss } from '../../shared/design-system-v1.mjs';
 import { SITES, MAIN_SITE, NETWORK_HUB_HR, NETWORK_HUB_EN, pagePath, siteBase } from './registry.mjs';
 import { meshBlock, MESH_CSS } from '../../satellites/lib/network-v1.mjs';
 import { HOUSE_CSS } from '../../satellites/lib/house-style-v1.mjs';
@@ -281,6 +282,7 @@ export function head({ site, lang, page, title, description, canonical, alternat
 <meta name="twitter:url" content="${canonical}">
 ${articleTags}${articleTags && section ? '\n' : ''}${page === 'home' ? '' : `<meta property="article:section" content="${esc(section)}">\n<meta property="article:published_time" content="${esc(published)}T07:00:00+02:00">\n<meta property="article:modified_time" content="${esc(modified)}T07:00:00+02:00">`}
 <script type="application/ld+json">${JSON.stringify(jsonld)}</script>
+${designTokensCss()}
 ${extra}`;
 }
 

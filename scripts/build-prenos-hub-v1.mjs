@@ -22,6 +22,7 @@ import { readCorpus, KIND_LABEL } from './lib/corpus-v1.mjs';
 import { SITES } from '../apps/sites/lib/registry.mjs';
 import { WORLD_PORTALS } from '../apps/world/lib/registry.mjs';
 import { houseRibbonHtml, HOUSE_RIBBON_CSS } from './lib/house-ribbon-v1.mjs';
+import { DESIGN_ID } from '../apps/shared/design-system-v1.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const PORTAL = join(ROOT, 'apps', 'portal');
@@ -274,6 +275,7 @@ function head(page) {
 <meta property="article:tag" content="#PrijenosMreze">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 ${jsonLd(page)}
+<link rel="stylesheet" href="/assets/am-design-v1.css?v=20261024" data-am-design="v1">
 <style>${CSS}</style>
 </head>`;
 }

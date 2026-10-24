@@ -7,6 +7,7 @@
  */
 import { meshBlock, MESH_CSS, EDITIONS } from './network-v1.mjs';
 import { exchangeBlock, EXCHANGE_CSS } from './razmjena-v1.mjs';
+import { designTokensCss } from '../../shared/design-system-v1.mjs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -194,6 +195,7 @@ ${alternateLinks}
 <meta name="twitter:image" content="${ogImage}">
 <meta name="twitter:image:alt" content="${esc(ogImageAlt || title)}">
 ${ld}
+${designTokensCss()}
 </head>
 <body>
 <a class="skip" href="#sadrzaj">${lang === 'hr' ? 'Preskoči na sadržaj' : 'Skip to content'}</a>

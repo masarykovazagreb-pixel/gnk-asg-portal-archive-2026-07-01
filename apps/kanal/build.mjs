@@ -9,6 +9,7 @@
  *   node apps/kanal/build.mjs
  *   node apps/kanal/build.mjs --base https://gnk-asg-kanal.pages.dev/
  */
+import { designTokensCss } from '../shared/design-system-v1.mjs';
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, rmSync, copyFileSync, existsSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -22,7 +23,11 @@ const arg = (name, fallback) => {
   const i = process.argv.indexOf(name);
   return i > -1 && process.argv[i + 1] ? process.argv[i + 1] : fallback;
 };
-const BASE = (arg('--base', process.env.KANAL_BASE || 'https://masarykovazagreb-pixel.github.io/gnk-asg-kanal/')).replace(/\/+$/, '') + '/';
+/* Kanonska adresa KANALA je Cloudflare Pages. GitHub Pages je zrcalo za
+   arhivu starih adresa i nikad nije kanonski host — dosad je bio zadana
+   vrijednost, pa je lokalni build pisao `canonical` na tuđi host, a svaki
+   prenos na mreži preuzimao je tu grešku kao "izvornik". */
+const BASE = (arg('--base', process.env.KANAL_BASE || 'https://gnk-asg-kanal.pages.dev/')).replace(/\/+$/, '') + '/';
 const SITE = JSON.parse(readFileSync(join(SRC, 'site.json'), 'utf8'));
 
 /* POPIS PRIJENOSA: matica gradi /prenos/ i JSON s matricom kopija. Kanal
@@ -228,6 +233,7 @@ ${published ? `<meta name="twitter:label2" content="Objavljeno">\n<meta name="tw
 <meta name="format-detection" content="telephone=no">
 <link rel="dns-prefetch" href="//gnk-asg.hr">
 <script type="application/ld+json">${jsonld({ '@context': 'https://schema.org', '@graph': graph })}</script>
+${designTokensCss()}
 </head>`;
 }
 

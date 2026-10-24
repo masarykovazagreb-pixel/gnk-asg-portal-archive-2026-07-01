@@ -10,6 +10,7 @@
  * izvornik. Nema izmišljenih tvrdnji: tekst osvrta govori o načinu
  * izvještavanja, a činjenice ostaju kod izvora.
  */
+import { designTokensCss } from '../../shared/design-system-v1.mjs';
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, rmSync, copyFileSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -508,6 +509,7 @@ ${published ? `<meta property="article:author" content="${PUBLIC}/nermin-sefic/"
 <link rel="manifest" href="${root}manifest.webmanifest">
 <link rel="apple-touch-icon" href="/assets/brand/kanal-${channel.id}-1200.webp">
 ${ld}
+${designTokensCss()}
 </head>
 <body data-channel="${channel.id}" data-lang="${channel.lang}">
 <a class="skip" href="#sadrzaj">${esc(chromeOf(pageLang).skip)}</a>

@@ -16,6 +16,7 @@ import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { SITES, siteBySlug, siteBase, pagePath, NETWORK_HUB_HR, NETWORK_HUB_EN, MAIN_SITE } from './lib/registry.mjs';
 import { esc, artSvg, artPath, css, networkBar, siteHeader, head, jsonLd, footer, sitemap, robots, feed } from './lib/kit.mjs';
+import { designTokensCss } from '../shared/design-system-v1.mjs';
 import { ogPng } from './lib/png.mjs';
 import { SATELLITE_ART } from './lib/satellite-art.mjs';
 import { buildElectionDesk } from './lib/elections.mjs';
@@ -342,7 +343,7 @@ function notFound(site) {
   return `<!doctype html>
 <html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>404 — ${esc(site.name)}</title><meta name="robots" content="noindex"><link rel="canonical" href="${siteBase(site)}/">
-<style>${css(site)}</style></head>
+<style>${css(site)}</style>${designTokensCss()}</head>
 <body><main id="main"><div class="hero"><div class="wrap">
 <p class="kicker">404</p><h2>Ove stranice nema.</h2>
 <p class="lead">Možda je poveznica stara ili je stranica premještena. Naslovnica je ovdje, a popis svih izdanja na <a href="${NETWORK_HUB_HR}">gnk-asg.hr/mreza</a>.</p>
