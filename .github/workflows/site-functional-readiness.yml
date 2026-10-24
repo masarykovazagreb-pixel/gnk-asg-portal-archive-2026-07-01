@@ -115,6 +115,13 @@ jobs:
           node scripts/test-deploy-approval-guardrails.mjs
           node scripts/audit-worker-route-ownership.mjs
 
+      - name: Image sitemap Cloudflare asset-size regression
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/test-partition-image-sitemap-v1.py
+          bash -n scripts/deploy-direct-operator-with-retry-v1.sh
+
       - name: SEO integrity
         run: node scripts/audit-seo-entity-integrity-v1.mjs
 
