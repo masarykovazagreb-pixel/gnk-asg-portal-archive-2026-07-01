@@ -1,0 +1,37 @@
+name: Repair PR generated outputs 20261024
+on:
+  push:
+    branches: ['fix/image-sitemap-chunks-20261024']
+    paths:
+      - '.github/workflows/repair-pr-generated-output-20261024.yml'
+permissions:
+  contents: write
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/image-sitemap-chunks-20261024
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Rebuild existing generators, validate, and commit only generated paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/build-index-parity.mjs
+          node apps/sites/build.mjs
+          node scripts/build-index-parity.mjs --check
+          node tests/test-sites-network-v1.mjs
+          git add apps/portal/index.html apps/portal/en/index.html apps/sites/site/izbori-srbija/
+          if git diff --cached --quiet; then
+            echo 'Generated outputs are already synchronized.'
+            exit 0
+          fi
+          git config user.name gnk-asg-repair-bot
+          git config user.email actions@users.noreply.github.com
+          git commit -m 'fix: synchronize generated HR/EN index and election network pages'
+          git push origin HEAD:fix/image-sitemap-chunks-20261024
