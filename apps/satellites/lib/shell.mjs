@@ -214,6 +214,8 @@ ${meshBlock({ lang, selfUrl: siteUrl })}
     <li><a href="${MAIN}/">GNK ASG</a></li>
     <li><a href="${ARHIVA}/">${lang === 'hr' ? 'ARHIVA' : 'ARCHIVE'}</a></li>
     <li><a href="${DNEVNIK}/">${lang === 'hr' ? 'DNEVNIK' : 'DAILY'}</a></li>
+    <li><a href="https://gnk-asg-kanal.pages.dev/">KANAL — ${lang === 'hr' ? 'dnevni pregled' : 'daily brief'}</a></li>
+    <li><a href="https://gnk-asg-tjednik.pages.dev/">BUSINESS ${lang === 'hr' ? 'TJEDNIK' : 'WEEKLY'}</a></li>
     <li><a href="${MAIN}/status/">${lang === 'hr' ? 'Status ažurnosti' : 'Freshness status'}</a></li>
     <li><a href="/sitemap.xml">Sitemap</a></li>
     <li><a href="/feed.xml">Feed</a></li>

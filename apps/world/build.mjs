@@ -27,7 +27,7 @@ import { fileURLToPath } from 'node:url';
 import { esc, longDate, shortDate, truncate, safeJson } from '../region/engine/lib.mjs';
 import { t } from '../region/src/strings.mjs';
 import { chromeOf } from '../region/src/chrome.mjs';
-import { CSS } from '../region/engine/build.mjs';
+import { NETWORK_PRODUCTS } from '../shared/network-products-v1.mjs';import { CSS } from '../region/engine/build.mjs';
 import { logoFor, channelLogoSlug } from '../region/engine/brand.mjs';
 import { designTokensCss } from '../shared/design-system-v1.mjs';
 import { FAVICON_SVG } from '../shared/brand/brand-mark-v1.mjs';
@@ -312,7 +312,8 @@ function footer(portal) {
   <div class="footgrid">
     <div>
       <h2>${esc(wl(portal, 'portalsTitle'))}</h2>
-      <p class="footlinks">${links}${capitalLink}<a href="${portal.lang === 'en' ? HUB_EN : HUB_HR}">${esc(words.hub)} →</a></p>
+      <p class="footlinks">${links}${capitalLink}<a href="${portal.lang === 'en' ? HUB_EN : HUB_HR}">${esc(words.hub)} →</a>
+        ${NETWORK_PRODUCTS.map((product) => `<a href="${product.url}" rel="external noopener">${esc(product[portal.lang === 'en' ? 'en' : 'hr'])}</a>`).join('')}</p>
     </div>
     <div>
       <h2>${esc(words.publisher)}</h2>

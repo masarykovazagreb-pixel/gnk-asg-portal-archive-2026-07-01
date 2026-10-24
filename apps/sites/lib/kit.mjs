@@ -13,6 +13,7 @@
  */
 import { designTokensCss } from '../../shared/design-system-v1.mjs';
 import { SITES, MAIN_SITE, NETWORK_HUB_HR, NETWORK_HUB_EN, pagePath, siteBase } from './registry.mjs';
+import { NETWORK_PRODUCTS } from '../../shared/network-products-v1.mjs';
 import { meshBlock, MESH_CSS } from '../../satellites/lib/network-v1.mjs';
 import { HOUSE_CSS } from '../../satellites/lib/house-style-v1.mjs';
 
@@ -371,6 +372,7 @@ export function footer(site, lang, pages) {
           <li><a href="https://gnk-asg.hr/aktual-media/" rel="external noopener" hreflang="hr" lang="hr">Podatkovni desk</a></li>
           <li><a href="https://gnk-asg.hr/radio/" rel="external noopener" hreflang="hr" lang="hr">Radio</a></li>
           <li><a href="https://gnk-asg.hr/nermin-sefic/" rel="external noopener">Nermin Sefić</a></li>
+          ${NETWORK_PRODUCTS.map((product) => `<li><a href="${product.url}" rel="external noopener">${esc(product[lang === 'en' ? 'en' : 'hr'])}</a></li>`).join('')}
         </ul>
       </div>
       <div>

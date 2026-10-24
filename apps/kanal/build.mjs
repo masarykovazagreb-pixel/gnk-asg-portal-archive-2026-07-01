@@ -11,16 +11,27 @@
  */
 import { designTokensCss } from '../shared/design-system-v1.mjs';
 import { FAVICON_SVG } from '../shared/brand/brand-mark-v1.mjs';
+import { NETWORK_PRODUCTS } from '../shared/network-products-v1.mjs';
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, rmSync, copyFileSync, existsSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { entityGraphJson } from '../../scripts/lib/entity-graph-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
+const ROOT = join(HERE, '..', '..');
 const SRC = join(HERE, 'src');
 /* KANAL_OUT pušta test determinizma da gradi u privremenu mapu i usporedi
    bajtove dviju gradnji — ista ulaza moraju dati isti izlaz. */
 const OUT = process.env.KANAL_OUT ? resolve(process.env.KANAL_OUT) : join(HERE, 'site');
+
+/* Registar mreže drži jedini popis svih adresa; KANAL ga čita, ne prepisuje. */
+const NETWORK = (() => {
+  try {
+    return JSON.parse(readFileSync(join(ROOT, 'apps/portal/data/mreza-v1.json'), 'utf8'));
+  } catch {
+    return { editions: [], world: [], sites: [] };
+  }
+})();
 
 const arg = (name, fallback) => {
   const i = process.argv.indexOf(name);
@@ -284,6 +295,29 @@ function ticker(items, root) {
   return `<div class="ticker" aria-label="Najnovije"><div class="wrap"><span class="ticker-label">Najnovije</span><div class="ticker-track">${one}${one}</div></div></div>`;
 }
 
+/* Mreža iz jednog registra: svih 17 izdanja, 9 svjetskih portala, 6 webova i
+   proizvodi koji nisu izdanja. Do 24. 10. 2026. KANAL nije vodio ni na jedno
+   izdanje — čitatelj koji je došao na dnevni pregled nije imao kamo dalje, a
+   izdanja nisu vodila na KANAL. */
+function networkList() {
+  const items = [];
+  const seen = new Set();
+  for (const webs of Object.values(NETWORK)) {
+    if (!Array.isArray(webs)) continue;
+    for (const web of webs) {
+      if (!web || !web.url || seen.has(web.url)) continue;
+      seen.add(web.url);
+      items.push(`<li><a href="${esc(web.url)}" rel="external noopener">${esc(web.name || web.id)}</a></li>`);
+    }
+  }
+  for (const product of NETWORK_PRODUCTS) {
+    if (seen.has(product.url)) continue;
+    seen.add(product.url);
+    items.push(`<li><a href="${esc(product.url)}" rel="external noopener">${esc(product.hr)}</a></li>`);
+  }
+  return items.join('\n      ');
+}
+
 function footer(root) {
   const year = new Date().getFullYear();
   return `<footer>
@@ -303,6 +337,9 @@ function footer(root) {
       <li><a href="${root}pojasnjenja/">Pojašnjenja</a></li>
       <li><a href="${root}metodologija/">Metodologija i ispravci</a></li>
       <li><a href="${root}objave/">Sve objave</a></li>
+    </ul></div>
+    <div><h3>Mreža AKTUAL MEDIA</h3><ul>
+      ${networkList()}
     </ul></div>
     <div><h3>Vanjski linkovi</h3><ul>
       ${(SITE.partners || []).map((p) => `<li><a href="${esc(p.url)}" rel="external noopener">${esc(p.name)}</a> <span class="fine-print">— ${esc(p.role)}</span></li>`).join('')}

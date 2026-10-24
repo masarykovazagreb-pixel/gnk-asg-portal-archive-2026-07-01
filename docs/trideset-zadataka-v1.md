@@ -19,62 +19,62 @@ workflow ga zove, `--check` i `--group=` rade.
 **Provjera:** `tests/test-sync-pipeline-v1.mjs` — 29 koraka, redoslijed, bez
 dvostrukih id-eva, workflow i popis se ne razilaze.
 
-### 2. ⬜ Determinizam izlaza
+### 2. ✅ Determinizam izlaza
 **Cilj:** isti ulaz daje iste bajtove; nema vremenskih žigova koji se mijenjaju
 između dvije gradnje.
 **Ishod:** dvostruki build u dvije privremene mape daje identičan izlaz.
-**Provjera:** `tests/test-build-determinism-v1.mjs`.
+**Provjera:** `tests/test-build-determinism-v1.mjs` — 3 weba, 2 939 datoteka, 0 razlika. Vrijeme se čita iz podataka, nikad iz sata.
 
-### 3. ⬜ Idempotentnost slojeva
+### 3. ✅ Idempotentnost slojeva
 **Cilj:** svaki `apply-*` dvaput zaredom ne mijenja ništa drugi put.
 **Ishod:** nijedan sloj ne "šeta" datoteke između dva pokretanja.
-**Provjera:** `tests/test-layer-idempotency-v1.mjs`.
+**Provjera:** `tests/test-layer-idempotency-v1.mjs` — 5 slojeva, drugo pokretanje 0 promjena.
 
-### 4. ⬜ Workflow higijena
+### 4. ✅ Workflow higijena
 **Cilj:** svaki raspored ima najmanja dopuštenja, vremensko ograničenje i
 concurrency.
 **Ishod:** 31 raspored bez iznimke.
-**Provjera:** `tests/test-workflow-hygiene-v1.mjs`.
+**Provjera:** `tests/test-workflow-hygiene-v1.mjs` — 337 provjera, 0 padova; `::add-mask::` jedina dopuštena iznimka.
 
-### 5. ⬜ Cron bez kolizija
+### 5. ✅ Cron bez kolizija
 **Cilj:** dva posla koja pišu u iste putanje ne idu u istu minutu.
 **Ishod:** tablica minuta po putanji; nijedan sudar.
-**Provjera:** `tests/test-cron-collisions-v1.mjs`.
+**Provjera:** `tests/test-cron-collisions-v1.mjs` — 14 parova, 0 sudara. `aeo 26 2,8,14,20`, `content-queue 38 7…19`, `editorial 44 8`; popis u `ops/production-workflow-allowlist-v2.json` i `ops/CONTROL-PLANE.json`.
 
-### 6. ⬜ Nadzorna ploča sinkronizacije
+### 6. ✅ Nadzorna ploča sinkronizacije
 **Cilj:** stanje svih automatizacija vidljivo bez otvaranja Actionsa.
 **Ishod:** `apps/portal/status/sync.json` + prikaz na `/status/`.
-**Provjera:** gate da zapis postoji, da je svjež i da se slaže s workflowima.
+**Provjera:** `tests/test-sync-status-v1.mjs` — 30 koraka, 31 raspored, 36 putanja, 0 padova. WebSite čvor ploče: `GNK ASG`, `hr`+`en`, `publisher #gnk-asg`.
 
 ---
 
 ## B. Mreža i razmjena
 
-### 7. ⬜ Uzvratnost A↔B
+### 7. ✅ Uzvratnost A↔B
 **Cilj:** svaki web vodi na svaki drugi i to se vidi u izlazu.
 **Ishod:** matrica 32×32 bez slijepe ulice.
-**Provjera:** `tests/test-network-reciprocity-v1.mjs`.
+**Provjera:** `tests/test-network-reciprocity-v1.mjs` — 35 webova, 1 172 para, 1 172 uzvratna.
 
-### 8. ⬜ Najmanje 20 izlaznih veza po webu
+### 8. ✅ Najmanje 20 izlaznih veza po webu
 **Cilj:** nijedan web nije otok.
-**Provjera:** isti gate, prag po webu.
+**Provjera:** isti gate — prag 20 izlaznih veza po webu, mjereno na izlazu.
 
-### 9. ⬜ `exchange.json` — schema i validator
+### 9. ✅ `exchange.json` — schema i validator
 **Cilj:** strojni zapis razmjene isti na svakom webu.
 **Ishod:** schema v1 + validator na svih 32 weba.
-**Provjera:** `tests/test-exchange-schema-v1.mjs`.
+**Provjera:** `tests/test-exchange-schema-v1.mjs` — ugovor v1 (`version`, `generated`, `note`, `items[]` s `edition/home/url/title/lang/published`); 33 zapisa, 396 stavki.
 
-### 10. ⬜ Feedovi valjani
+### 10. ✅ Feedovi valjani
 **Cilj:** RSS, Atom i JSON Feed parsiraju se i nose iste zapise.
-**Provjera:** `tests/test-feeds-valid-v1.mjs`.
+**Provjera:** `tests/test-feeds-valid-v1.mjs` — 34 weba; izdanja pišu RSS 2.0, samostalni webovi Atom u `feed.xml`, svi i `feed.json`, s istim naslovima.
 
-### 11. ⬜ Atribucija na svakoj kopiji
+### 11. ✅ Atribucija na svakoj kopiji
 **Cilj:** svaki preneseni tekst ima izvor, autora, datum i canonical.
-**Provjera:** `tests/test-attribution-v1.mjs`.
+**Provjera:** `tests/test-attribution-v1.mjs` — 492 prenesene stranice, svaka s blokom izvora, vezom na izvornik i autorom.
 
-### 12. ⬜ Bez dvostrukog sadržaja bez atribucije
+### 12. ✅ Bez dvostrukog sadržaja bez atribucije
 **Cilj:** isti naslov na dva weba znači preneseni tekst s izvorom.
-**Provjera:** `tests/test-syndication-dup-v1.mjs`.
+**Provjera:** `tests/test-no-duplicate-content-v1.mjs` — 566 stranica, 492 kopije; nijedna kopija ne kanonizira sebe, nijedan web nema dvije iste kanonske adrese ni dva ista tijela.
 
 ---
 
