@@ -447,6 +447,10 @@ function networkPodium(circles, cards, lang = 'hr') {
   const rainbow = counted.map(({ c }) => color(c)).join(',');
   const label = EN ? 'Network map — pick a city' : 'Karta mreže — odaberi grad';
   const cityCount = counted.length;
+  /* Brojka uz kartu mora biti zbroj cijele mreže, ne samo gradova koje karta
+     stigne nacrtati: prije je pisalo 3.360 tekstova (osam europskih gradova)
+     pored "17 izdanja ukupno", pa je traka sama sebi proturječila. */
+  const networkTotal = CHANNELS.reduce((sum, c) => sum + ((cards.find((x) => x.id === c.id) || {}).count || 0), 0);
   /* Brojke u traci moraju opisivati cijelu mrežu, ne samo gradove koje karta
      stigne nacrtati. Prije je pisalo „8 gradova · 8 jezika" iako mreža ima
      sedamnaest izdanja na šest kontinenata — karta je bila manja od mreže, a
@@ -461,7 +465,7 @@ function networkPodium(circles, cards, lang = 'hr') {
     <span class="amm-rainbow" aria-hidden="true"></span>
     <div class="amm-top">
       <span class="amm-flag">${EN ? 'Network' : 'Karta mreže'}</span>
-      <p class="amm-count"><b>${nf(total)}</b> ${EN ? 'stories' : 'tekstova'} <span>·</span> <b>${cityCount}</b> ${EN ? 'European cities drawn here' : 'europskih gradova na karti'} <span>·</span> <b>${CHANNELS.length}</b> ${EN ? 'editions in total' : 'izdanja ukupno'} <span>·</span> <b>${editionLangs}</b> ${EN ? 'languages' : 'jezika'} <span>·</span> <b>${editionContinents}</b> ${EN ? 'continents' : 'kontinenata'}</p>
+      <p class="amm-count"><b>${nf(networkTotal)}</b> ${EN ? 'stories across the network' : 'tekstova u cijeloj mreži'} <span>·</span> <b>${cityCount}</b> ${EN ? 'European cities drawn here' : 'europskih gradova na karti'} <span>·</span> <b>${CHANNELS.length}</b> ${EN ? 'editions in total' : 'izdanja ukupno'} <span>·</span> <b>${editionLangs}</b> ${EN ? 'languages' : 'jezika'} <span>·</span> <b>${editionContinents}</b> ${EN ? 'continents' : 'kontinenata'}</p>
       <a class="amm-origin" href="/usa/"><span class="amm-gem" aria-hidden="true"></span>${EN ? 'Origin: GNK DINAMO Ltd. · Colorado, USA' : 'Ishodište: GNK DINAMO Ltd. · Colorado, USA'} <b>→</b></a>
     </div>
     <figure class="amm-route">
