@@ -43,6 +43,9 @@ jobs:
           ! grep -Eq '^[[:space:]]*\[\[(kv_namespaces|d1_databases|r2_buckets|send_email|routes)\]\]' "$config"
           ! grep -Eq '^[[:space:]]*(route|routes|zone_name|account_id)[[:space:]]*=' "$config"
           ! grep -Eq 'gnk-asg\.hr/\*|database_id|bucket_name|namespace_id' "$config"
+      - name: Prepare Cloudflare-safe image sitemap for dry-run
+        run: python3 ../../scripts/partition-image-sitemap-v1.py ../../apps/portal
+
       - name: Compile route-less Worker preview bundle
         run: |
           set -euxo pipefail
