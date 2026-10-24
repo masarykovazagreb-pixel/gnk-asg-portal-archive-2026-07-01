@@ -1157,6 +1157,15 @@ ${END}`;
      „8 gradskih izdanja na 8 jezika, 3360 tekstova". Opis se mijenja, pa se
      u graf upisuje isti, svježi tekst — jedan izvor za sve čvorove. */
   html = html.replace(/AKTUAL MEDIA na jednoj ploči: [^"\\]*?Nermin Sefić\./g, desc);
+  /* Oznake na središnjoj ploči: stranica je čvorište mreže, pa uz vidljive
+     oznake nosi i iste oznake u `article:tag` — bez `#` u meta keywords, kako
+     traži pravilo meta higijene. Jednom upisano, ne dodaje se dvaput. */
+  if (!/property="article:tag"/.test(html)) {
+    const hubTags = ['#AKTUALMEDIA', '#GNKASG', '#AKTUALMEDIAMREZA', '#NerminSefić', '#AktualMedia'];
+    const tags = hubTags.map((tag) => `<meta property="article:tag" content="${tag}">`).join('\n');
+    const anchor = html.match(/<meta name="twitter:image:alt"[^>]*>/);
+    if (anchor) html = html.replace(anchor[0], `${anchor[0]}\n${tags}`);
+  }
 
   const PERF = `<link rel="preload" as="image" href="${IMG}/zagreb-440.webp" imagesrcset="${IMG}/zagreb-240.webp 240w, ${IMG}/zagreb-440.webp 440w" imagesizes="(max-width:620px) 84px,(max-width:1040px) 22vw,11vw" fetchpriority="high">\n<style id="aktual-perf">.amc-river,.amc-tiles,.amm-grid,.amx-platforms{content-visibility:auto;contain-intrinsic-size:auto 640px}@media(prefers-reduced-motion:reduce){.amx-ring,.amm-card,.amm-home{transition:none}}</style>\n</head>`;
   const addPerf = (page) => page.includes('id="aktual-perf"') ? page : page.replace('</head>', PERF);
