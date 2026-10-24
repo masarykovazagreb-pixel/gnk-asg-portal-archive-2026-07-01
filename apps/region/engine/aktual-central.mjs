@@ -454,6 +454,7 @@ function networkPodium(circles, cards, lang = 'hr') {
     const city = CITY_SHORT[c.id] || c.city;
     const bar = Math.round((count / max) * 100);
     return `<a class="amm-card" href="${esc(c.base)}" style="--c:${color(c)}" aria-label="${esc(c.title)} — ${count} ${EN ? 'stories' : 'tekstova'} — ${EN ? 'open edition' : 'otvori izdanje'}">
+      <span class="amm-card-img" aria-hidden="true" style="background-image:url('/assets/izdanja/${esc(c.id)}-440.webp')"></span>
       <span class="amm-card-k">${rank(i)}</span>
       <b>${esc(city)}</b>
       <span class="amm-card-c">${nf(count)}</span>
@@ -630,6 +631,7 @@ box-shadow:0 24px 50px rgba(31,38,48,.14)}
 .amm-stations li::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--c);border:2px solid #fffdf8;box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 24%,transparent)}
 .amm-stations li span{font:800 8px/1 system-ui,sans-serif;letter-spacing:.12em;color:#8a7f68}
 .amm-grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;padding:10px 18px 14px}
+.amm-card-img{display:block;aspect-ratio:16/10;border-radius:8px;background-size:cover;background-position:center;background-color:color-mix(in srgb,var(--c) 28%,#f3ecdd);margin:-2px -2px 4px}
 .amm-card{display:grid;gap:3px;padding:9px 9px 8px;border-radius:12px;text-decoration:none;color:#171b21;background:#fff;border:1px solid #e8dfcc;border-top:3px solid var(--c);transition:transform .16s ease,box-shadow .16s ease,background .16s ease}
 .amm-card:hover,.amm-card:focus-visible{transform:translateY(-2px);box-shadow:0 10px 20px rgba(31,38,48,.12);background:color-mix(in srgb,var(--c) 9%,#fff)}
 .amm-card-k{font:800 7.5px/1 system-ui,sans-serif;letter-spacing:.18em;color:#786f5d}

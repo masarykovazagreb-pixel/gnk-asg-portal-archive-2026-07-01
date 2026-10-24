@@ -20,9 +20,16 @@ import { deskHashtags, tagSlug } from '../lib/seo.mjs';
 import { entityGraphJson } from '../../../scripts/lib/entity-graph-v1.mjs';
 import { HOUSE_CSS, houseRibbon } from '../../satellites/lib/house-style-v1.mjs';
 import { join, dirname } from 'node:path';
+import { refreshTag } from '../../../apps/shared/refresh-tag-v1.mjs';
 
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const write = (file, body) => { mkdirSync(dirname(file), { recursive: true }); writeFileSync(file, body); };
+const write = (file, body) => {
+  mkdirSync(dirname(file), { recursive: true });
+  const html = file.endsWith('.html') && /<\/body>/i.test(body) && !body.includes('data-am-netday')
+    ? body.replace(/<\/body>/i, `${refreshTag('/')}</body>`)
+    : body;
+  writeFileSync(file, html);
+};
 
 const SITE = 'https://gnk-asg.hr';
 const DESK_HR = `${SITE}/gnk-aktual/mreza/`;

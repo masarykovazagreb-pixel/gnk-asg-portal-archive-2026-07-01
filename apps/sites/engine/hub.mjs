@@ -19,6 +19,7 @@ import { fileURLToPath } from 'node:url';
 import { SITES, NETWORK_HUB_HR, NETWORK_HUB_EN, siteBase, siteBySlug, pagePath } from '../lib/registry.mjs';
 import { WORLD_PORTALS } from '../../world/lib/registry.mjs';
 import { artSvg } from '../lib/kit.mjs';
+import { refreshTag } from '../../../apps/shared/refresh-tag-v1.mjs';
 import { SATELLITE_ART } from '../lib/satellite-art.mjs';
 import { spiderWeb, SPIDER_CSS, SPIDER_JS } from '../../satellites/lib/spiderweb-v1.mjs';
 import { HOUSE_CSS, houseRibbon } from '../../satellites/lib/house-style-v1.mjs';
@@ -39,7 +40,14 @@ const TODAY = new Date().toISOString().slice(0, 10);
 const OG = 'https://gnk-asg.hr/assets/izdanja/aktual-media-og.jpg';
 
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const write = (file, body) => { mkdirSync(dirname(file), { recursive: true }); writeFileSync(file, body); };
+const write = (file, body) => {
+  mkdirSync(dirname(file), { recursive: true });
+  /* Ista zaštita kao u ostatku mreže: modul osvježavanja nastaje u generatoru. */
+  const html = file.endsWith('.html') && /<\/body>/i.test(body) && !body.includes('data-am-netday')
+    ? body.replace(/<\/body>/i, `${refreshTag('/')}</body>`)
+    : body;
+  writeFileSync(file, html);
+};
 
 const T = {
   hr: {

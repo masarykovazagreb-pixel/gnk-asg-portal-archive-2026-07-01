@@ -23,6 +23,7 @@ import { HOUSE_CSS, houseRibbon } from '../../satellites/lib/house-style-v1.mjs'
 import { spiderWeb, SPIDER_CSS } from '../../satellites/lib/spiderweb-v1.mjs';
 import { WORLD_PORTALS } from '../../world/lib/registry.mjs';
 import { ensureDeskTiles, tilePath, variantFor, deskArt, deskArtPath, deskArtSrcset } from './desk-art.mjs';
+import { refreshTag } from '../../shared/refresh-tag-v1.mjs';
 import { logoImg, logoFor, logoAlternate, channelLogoSlug, deskLogoSlug, logoJsonLd } from './brand.mjs';
 import { buildCapitalPage, CAPITAL_CSS as CAPITAL_DETAIL_CSS, CONTINENT_COLOR } from './capital-detail.mjs';
 import { buildAtlasPage, ATLAS_CSS } from './atlas.mjs';
@@ -923,7 +924,13 @@ ${id === 'sport' ? `<script>(()=>{const box=document.getElementById('izResults')
 const writePage = (path, html) => {
   const target = join(OUT, path, 'index.html');
   mkdirSync(dirname(target), { recursive: true });
-  writeFileSync(target, html);
+  /* Sloj osvježavanja se ubacuje ovdje, a ne u svaki predložak pojedinačno:
+     hub prepisuje i rukom pisane stranice (atlas, en/…), pa bi bez ovoga
+     modul nestajao pri svakoj gradnji i test svježine bi padao. */
+  const withRefresh = /<\/body>/i.test(html) && !html.includes('data-am-netday')
+    ? html.replace(/<\/body>/i, `${refreshTag('/')}</body>`)
+    : html;
+  writeFileSync(target, withRefresh);
 };
 
 export async function buildHub() {
@@ -1909,6 +1916,33 @@ function injectBand(cards, lang = 'hr') {
   writeFileSync(file, html);
 }
 
+
+/* Završni prolaz: nakon što hub prepiše stranice (atlas, en/…, kanal), svaka
+   HTML datoteka portala mora imati modul osvježavanja. Bez ovog prolaza
+   test svježine pada na stranicama koje hub piše izvan `writePage`. */
+function ensureRefreshTags(root) {
+  let added = 0;
+  const skip = new Set(['assets', 'data', 'api', '__preview', 'app']);
+  const walkDir = (dir, depth) => {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      if (entry.name.startsWith('.')) continue;
+      const full = join(dir, entry.name);
+      if (entry.isDirectory()) {
+        if (!skip.has(entry.name) && depth < 8) walkDir(full, depth + 1);
+        continue;
+      }
+      if (!entry.name.endsWith('.html')) continue;
+      const html = readFileSync(full, 'utf8');
+      if (!/<!doctype html/i.test(html) || html.includes('data-am-netday')) continue;
+      if (!/<\/body>/i.test(html)) continue;
+      writeFileSync(full, html.replace(/<\/body>/i, `${refreshTag('/')}</body>`));
+      added += 1;
+    }
+  };
+  walkDir(root, 0);
+  return added;
+}
+
 if (process.argv[1] && /hub\.mjs$/.test(process.argv[1])) {
   buildHub().then(async (hub) => {
     const cards = JSON.parse(readFileSync(join(PORTAL, 'data', 'izdanja.json'), 'utf8')).cards || [];
@@ -1923,6 +1957,7 @@ if (process.argv[1] && /hub\.mjs$/.test(process.argv[1])) {
        nakon njih — inače bi nestala do sljedećeg ciklusa. */
     const { injectFutureTechBands } = await import('./future-tech.mjs');
     const techBands = injectFutureTechBands();
+    const refreshTags = ensureRefreshTags(PORTAL);
     /* Mreža neovisnih izdanja: hub /mreza/ i /en/network/ nose brojke
        izbornog deska, pa se pregraddе u istom ciklusu kao i ostatak portala. */
     let network = null;
@@ -1932,6 +1967,6 @@ if (process.argv[1] && /hub\.mjs$/.test(process.argv[1])) {
     } catch (error) {
       network = `preskočeno: ${error.message.split('\n')[0]}`;
     }
-    console.log(JSON.stringify({ ok: true, ...hub, kanalIndex: true, capitals, atlas, sitemaps, techBands, network }, null, 2));
+    console.log(JSON.stringify({ ok: true, ...hub, kanalIndex: true, capitals, atlas, sitemaps, techBands, refreshTags, network }, null, 2));
   });
 }
