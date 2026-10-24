@@ -51,6 +51,7 @@ if (!fs.existsSync(canonicalPath)) {
   for (const required of [
     'scripts/gnk-news-refresh.mjs',
     'scripts/normalize-aktual-hourly-contract.mjs',
+    'branches: [main]', // Non-main pushes must not acquire the shared production queue.
     'group: gnk-asg-main-mutation',
     'contents: write',
     'git push origin HEAD:main'
