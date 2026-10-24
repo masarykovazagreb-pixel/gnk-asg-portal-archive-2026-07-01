@@ -17,7 +17,11 @@ import { esc, longDate, shortDate, stampLocal, slugify, isoWeek, themeFor, score
 import { t, ANALYSIS } from '../src/strings.mjs';
 import { logoFor, logoAlternate, channelLogoSlug, LOGO_W, LOGO_H } from './brand.mjs';
 import { chromeOf, desksOf, extraOf, editionsUi } from '../src/chrome.mjs';
+import { spiderWeb, SPIDER_CSS, SPIDER_JS } from '../../satellites/lib/spiderweb-v1.mjs';
 import { meshBlock, MESH_CSS } from '../../satellites/lib/network-v1.mjs';
+import { HOUSE_CSS, houseRibbon } from '../../satellites/lib/house-style-v1.mjs';
+import { exchangeBlock, writeExchangeJson, EXCHANGE_CSS } from '../../satellites/lib/razmjena-v1.mjs';
+import { editorialIndexBlock, EDITORIAL_INDEX_CSS } from '../../../scripts/lib/prenos-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const APP = join(HERE, '..');
@@ -27,6 +31,22 @@ const SITE = join(ROOT, 'apps', 'portal', 'kanal');
 const LEGACY = join(APP, 'site');
 
 export const CHANNELS = JSON.parse(readFileSync(join(APP, 'channels.json'), 'utf8')).channels;
+/* Prijestolnica svakog izdanja: izdanje u glavnom gradu dobiva svoju stranicu
+   u /glavni-gradovi/<slug>/, a grad koji zemlju pokriva umjesto prijestolnice
+   (New York, São Paulo, Sydney) vodi na stranicu prijestolnice koju čeka. */
+const CAPITALS = JSON.parse(readFileSync(join(APP, 'capitals.json'), 'utf8')).capitals || [];
+export const capitalForChannel = (id) => CAPITALS.find((c) => c.edition === id) || CAPITALS.find((c) => c.seats === id) || null;
+
+function capitalNav(channel, chrome) {
+  const capital = capitalForChannel(channel.id);
+  if (!capital || !capital.slug) return '';
+  const en = channel.lang === 'en';
+  const href = en ? `/en/capitals/${capital.slug}/` : `/glavni-gradovi/${capital.slug}/`;
+  const name = en ? capital.capitalEn || capital.capital : capital.capital;
+  /* hreflang kazuje jezik odredišne stranice, ne jezik izdanja: stranica
+     prijestolnice postoji na hrvatskom i engleskom. */
+  return `<a href="${href}" hreflang="${en ? 'en' : 'hr'}">${esc(chrome.capital)}: ${esc(name)}</a>`;
+}
 export const HUB = 'https://gnk-asg.hr/izdanja/';
 export const CENTRAL = 'https://gnk-asg.hr/gnk-aktual/';
 export const CONTACT = 'info@gnk-asg.hr';
@@ -65,7 +85,7 @@ function editionsStrip(channel) {
   const items = CHANNELS.map((c) => {
     const current = c.id === channel.id;
     return `<li class="eds-i${current ? ' is-current' : ''}"><a href="${c.base}"${current ? ' aria-current="page"' : ' rel="external noopener"'} aria-label="${esc(c.title)}${current ? ` — ${esc(isCurrent)}` : ` — ${esc(openEdition)}`}">
-      <span class="eds-img"><img src="/assets/izdanja/${c.id}-240.webp" alt="" width="96" height="64" loading="lazy" decoding="async"></span>
+      <span class="eds-img"><img src="/assets/izdanja/${c.id}-240.webp" alt="${esc(c.city)}, ${esc(c.country)} — ${esc(c.title)}" width="96" height="64" loading="lazy" decoding="async"></span>
       <span class="eds-city">${esc(CITY_SHORT[c.id] || c.city)}</span>
     </a></li>`;
   }).join('');
@@ -81,7 +101,7 @@ function miniRail(channel) {
   const [navLabel, isCurrent, openEdition] = editionsUi(channel.lang);
   const items = CHANNELS.map((c) => {
     const cur = c.id === channel.id;
-    return `<a href="${c.base}"${cur ? ' aria-current="page"' : ''} title="${esc(c.title)}" aria-label="${esc(c.title)}${cur ? ` — ${esc(isCurrent)}` : ` — ${esc(openEdition)}`}"><img src="/assets/izdanja/${c.id}-440.webp" alt="" width="34" height="34" loading="lazy" decoding="async"><span>${esc(CITY_SHORT[c.id] || c.city)}</span></a>`;
+    return `<a href="${c.base}"${cur ? ' aria-current="page"' : ''} title="${esc(c.title)}" aria-label="${esc(c.title)}${cur ? ` — ${esc(isCurrent)}` : ` — ${esc(openEdition)}`}"><img src="/assets/izdanja/${c.id}-440.webp" alt="${esc(c.city)}, ${esc(c.country)} — ${esc(c.title)}" width="34" height="34" loading="lazy" decoding="async"><span>${esc(CITY_SHORT[c.id] || c.city)}</span></a>`;
   }).join('');
   /* Ponašanje mini trake premješteno je u vanjski /assets/aktual-radio-mini-v1.js
      (funkcija initEditionRail), pa stranica nema nijednu umetnutu skriptu i
@@ -380,16 +400,32 @@ const plainTags = [...new Map(tags.map((t) => String(t).replace(/^#/, '')).filte
         alternateName: ['AKTUAL MEDIA', 'Aktual Media', 'Aktual mediji', 'Aktual medija', 'Aktual Media d.o.o.', 'AKTUAL MEDIA KANAL', 'AKTUAL MEDIA KANAL ZAGREB'],
         url: CENTRAL,
         editor: { '@id': `${PUBLIC}/#nermin-sefic` },
-        parentOrganization: { '@type': 'Organization', name: 'GNK ASG d.o.o.', url: PUBLIC },
+        parentOrganization: { '@type': 'Organization', '@id': `${PUBLIC}/#gnk-asg`, name: 'GNK ASG d.o.o.', url: PUBLIC },
+        sameAs: [`${PUBLIC}/gnk-aktual/`, `${PUBLIC}/mreza/`, 'https://gnk-asg-arhiva.pages.dev/', 'https://gnk-asg-dnevnik.pages.dev/', 'https://gnk-asg-tjednik.pages.dev/'],
         publishingPrinciples: `${CENTRAL}metodologija/`,
       },
       {
         '@type': 'Person', '@id': `${PUBLIC}/#nermin-sefic`,
         name: 'Nermin Sefić',
+        alternateName: ['Nermin Sefic', 'Sefic Nermin'],
         jobTitle: 'Urednik i direktor',
         url: `${PUBLIC}/nermin-sefic/`,
-        worksFor: { '@id': `${PUBLIC}/#gnk-asg` },
+        worksFor: [{ '@id': `${PUBLIC}/#gnk-asg` }, { '@id': `${PUBLIC}/gnk-aktual/#aktual-media` }],
+        affiliation: { '@id': `${PUBLIC}/#gnk-dinamo-ltd` },
+        founder: { '@id': `${PUBLIC}/#gnk-asg` },
         subjectOf: { '@type': 'ItemList', url: `${PUBLIC}/autorske-objave/` }
+      },
+      {
+        /* Matično društvo grupe. Namjerno odvojen čvor: GNK ASG d.o.o. i
+           GNK DINAMO Ltd. su dva pravna lica i ne stapaju se u jedan entitet.
+           Opis isključuje zabunu s nogometnim klubom. */
+        '@type': 'Organization', '@id': `${PUBLIC}/#gnk-dinamo-ltd`,
+        name: 'GNK DINAMO Ltd.',
+        url: `${PUBLIC}/pojasnjenje-gnk-asg-i-gnk-dinamo-ltd/`,
+        address: { '@type': 'PostalAddress', addressLocality: 'Boulder', addressRegion: 'Colorado', addressCountry: 'US' },
+        disambiguatingDescription: 'Matično društvo grupe sa sjedištem u Boulderu, Colorado. Nije nogometni klub i ne objavljuje sportski sadržaj.',
+        employee: { '@id': `${PUBLIC}/#nermin-sefic` },
+        sameAs: [`${PUBLIC}/pojasnjenje-gnk-asg-i-gnk-dinamo-ltd/`]
       },
       {
         '@type': 'WebSite', '@id': `${PUBLIC}/#website`,
@@ -436,7 +472,8 @@ ${tags.filter((t) => String(t).startsWith('#')).map((t) => `<meta property="arti
 <link rel="canonical" href="${canonical}">
 ${hasLanguageAlternative ? `<link rel="alternate" hreflang="${channel.lang}" href="${altOriginal}">
 <link rel="alternate" hreflang="en" href="${altEnglish}">
-<link rel="alternate" hreflang="x-default" href="${altOriginal}">` : ''}
+<link rel="alternate" hreflang="x-default" href="${altOriginal}">` : (path === '' ? `<link rel="alternate" hreflang="${channel.lang}" href="${altOriginal}">
+<link rel="alternate" hreflang="x-default" href="${altOriginal}">` : '')}
 ${logoAlternate(channelLogoSlug(channel.id))}
 <link rel="alternate" type="application/rss+xml" title="${esc(channel.title)}" href="${url(channel, 'feed.xml')}">
 <link rel="alternate" type="application/feed+json" title="${esc(channel.title)}" href="${url(channel, 'feed.json')}">
@@ -464,6 +501,7 @@ ${published ? `<meta property="article:author" content="${PUBLIC}/nermin-sefic/"
 <meta name="twitter:description" content="${esc(truncate(description, 200))}">
 <meta name="twitter:image" content="${ogImage}">
 <meta name="twitter:image:alt" content="${esc(ogAlt || title)}">
+<meta name="twitter:image:alt" content="${esc(ogAlt || title)}">
 <meta name="twitter:site" content="@aktualmedia">
 <style>:root{--bg:${palette.bg};--surface:${palette.surface};--accent:${palette.accent};--accent2:${palette.accent2};--ink:${palette.ink}}</style>
 <link rel="stylesheet" href="${root}assets/region.css?v=20261021-focus-ring">
@@ -473,10 +511,14 @@ ${ld}
 </head>
 <body data-channel="${channel.id}" data-lang="${channel.lang}">
 <a class="skip" href="#sadrzaj">${esc(chromeOf(pageLang).skip)}</a>
+${houseRibbon({ lang: pageLang, edition: channel.city || channel.title })}
 ${body}
+${editorialIndexBlock({ root: ROOT, lang: pageLang, limit: 6 })}
+${exchangeBlock({ root: ROOT, lang: pageLang, selfHome: channel.base, selfNames: [channel.city, channel.cityEn].filter(Boolean), limit: 6 })}
 <a class="hublink" href="${CENTRAL}#izdanja-po-zemljama" rel="external noopener" aria-label="${esc(chromeOf(pageLang).hubAria)}"><span aria-hidden="true">←</span> AKTUAL MEDIA</a>
 ${miniRail(channel)}
 <script src="/assets/aktual-radio-mini-v1.js?v=20261023-edmini" defer></script>
+<script src="${root}assets/spiderweb-v1.js?v=20261023" defer></script>
 </body>
 </html>`;
 }
@@ -527,7 +569,7 @@ function header(channel, strings, active = '', root = '') {
     <li><span>${esc(channel.hashtags[0] || '')}</span></li>
   </ul>
   ${editionsStrip(channel)}
-  <nav class="mainnav" aria-label="${esc(strings.latest)}">${nav}<a href="${CENTRAL}#izdanja-po-zemljama" rel="external">${esc(strings.hub)} ↗</a><a class="langswitch" href="${root}en/" hreflang="en" lang="en" aria-label="${esc(chrome.langSwitch)}">EN — English</a></nav>
+  <nav class="mainnav" aria-label="${esc(strings.latest)}">${nav}<a href="${CENTRAL}#izdanja-po-zemljama" rel="external">${esc(strings.hub)} ↗</a>${capitalNav(channel, chrome)}${channel.lang === 'en' ? '' : `<a class="langswitch" href="${root}en/" hreflang="en" lang="en" aria-label="${esc(chrome.langSwitch)}">EN — English</a>`}</nav>
 </header>`;
 }
 
@@ -576,10 +618,61 @@ function footer(channel, strings, extra = '') {
 
 /* ---------- kartice ---------- */
 
+/* Tema -> ilustracija. Devet desk ilustracija pokriva sve teme kanala, pa
+   nijedna kartica ne ostaje bez slike. Ilustracija je uvijek potpisana kao
+   ilustracija teme — nikad se ne izdaje za fotografiju događaja. */
+/* Naslov je najtočniji signal: sportske riječi u naslovu uvijek vode na
+   sportsku ilustraciju, čak i kad tijelo teksta spomene institucije. */
+const ART_SPORT = /\b(fudbal|nogomet|košark|kosark|rukomet|tenis|odbojk|olimp|utakmic|prvenstv|liga|klub|fifa|uefa|nba|nfl|formul|atletik|sport)/i;
+const artThemeOf = (item) => (ART_SPORT.test(item.title) ? 'sport' : themeOf(item));
+
+/* Potpisi slika na jeziku izdanja. Ista riječ nikad ne smije ostati na
+   hrvatskom u japanskom ili arapskom izdanju. */
+const CAPTIONS = {
+  hr: { photo: 'Foto', art: 'Ilustracija', artAlt: 'ilustracija teme' },
+  sr: { photo: 'Foto', art: 'Ilustracija', artAlt: 'ilustracija teme' },
+  bs: { photo: 'Foto', art: 'Ilustracija', artAlt: 'ilustracija teme' },
+  sl: { photo: 'Foto', art: 'Ilustracija', artAlt: 'ilustracija teme' },
+  hu: { photo: 'Fotó', art: 'Illusztráció', artAlt: 'témaillusztráció' },
+  it: { photo: 'Foto', art: 'Illustrazione', artAlt: 'illustrazione del tema' },
+  bg: { photo: 'Снимка', art: 'Илюстрация', artAlt: 'илюстрация на темата' },
+  ro: { photo: 'Foto', art: 'Ilustrație', artAlt: 'ilustrație tematică' },
+  en: { photo: 'Photo', art: 'Illustration', artAlt: 'topic illustration' },
+  id: { photo: 'Foto', art: 'Ilustrasi', artAlt: 'ilustrasi topik' },
+  pt: { photo: 'Foto', art: 'Ilustração', artAlt: 'ilustração do tema' },
+  ar: { photo: 'صورة', art: 'رسم توضيحي', artAlt: 'رسم توضيحي للموضوع' },
+  ja: { photo: '写真', art: 'イラスト', artAlt: 'テーマのイラスト' },
+  zh: { photo: '图片', art: '插图', artAlt: '主题插图' }
+};
+const captionFor = (lang, key) => (CAPTIONS[lang] || CAPTIONS.hr)[key];
+
+const DESK_ART_BY_THEME = {
+  sport: 'sport', politika: 'politika', sigurnost: 'sigurnost', rat: 'sigurnost',
+  potres: 'sigurnost', ekonomija: 'biznis', energija: 'biznis', ai: 'tehnologija',
+  drustvo: 'svijet'
+};
+
+function cardMedia(channel, item, theme, labels, { lead = false, root = '' } = {}) {
+  const href = `${root}clanak/${item.slug}/`;
+  const art = DESK_ART_BY_THEME[artThemeOf(item)];
+  if (/^https:\/\//.test(item.image || '')) {
+    const width = lead ? 1200 : 800;
+    return `<a class="cardmedia" href="${href}" tabindex="-1" aria-hidden="true"><img src="${PUBLIC}/api/img?u=${encodeURIComponent(item.image)}&w=${width}" alt="${esc(item.imageAlt || item.title)}" width="${width}" height="${Math.round((width * 9) / 16)}" loading="${lead ? 'eager' : 'lazy'}"${lead ? ' fetchpriority="high"' : ''} decoding="async" referrerpolicy="no-referrer"></a>`;
+  }
+  if (!art) return '';
+  const artTheme = artThemeOf(item);
+  const label = labels[artTheme] || labels[theme] || theme;
+  const kind = captionFor(channel.lang, 'artAlt');
+  const badge = captionFor(channel.lang, 'art');
+  return `<a class="cardmedia cardmedia--art" data-label="${esc(badge)}" href="${href}" tabindex="-1" aria-hidden="true"><img src="/assets/desk/art/${art}-${lead ? '1200' : '440'}.webp" srcset="/assets/desk/art/${art}-440.webp 440w, /assets/desk/art/${art}-640.webp 640w${lead ? `, /assets/desk/art/${art}-1200.webp 1200w` : ''}" sizes="${lead ? '(max-width:760px) 100vw, 720px' : '(max-width:760px) 100vw, 240px'}" alt="${esc(`${label} — ${kind}, AKTUAL MEDIA`)}" width="${lead ? 1200 : 640}" height="${lead ? 675 : 360}" loading="${lead ? 'eager' : 'lazy'}"${lead ? ' fetchpriority="high"' : ''} decoding="async"></a>`;
+}
+
 function card(channel, strings, item, { lead = false, root = '' } = {}) {
   const theme = themeOf(item);
   const labels = strings.themeNames;
+  const media = cardMedia(channel, item, theme, labels, { lead, root });
   return `<article class="card${lead ? ' card--lead' : ''}">
+  ${media}
   <div class="cardmeta"><span class="src">${esc(item.sourceName)}</span><span class="dot">·</span><span class="theme">${esc(labels[theme] || theme)}</span><span class="dot">·</span><time datetime="${esc(item.date)}">${esc(shortDate(item.date.slice(0, 10), channel.lang))}</time></div>
   <h3 class="cardtitle"><a href="${root}clanak/${item.slug}/">${esc(item.title)}</a></h3>
   ${item.summary ? `<p class="cardsum">${esc(truncate(item.summary, lead ? 320 : 170))}</p>` : ''}
@@ -655,6 +748,11 @@ function homePage(channel, strings, data) {
 
   ${items.length ? '' : `<section class="band empty"><h2>${esc(strings.emptyTitle)}</h2><p>${esc(strings.emptyText)}</p></section>`}
 </main>
+<section class="page" aria-labelledby="edWebTitle">
+  <h2 id="edWebTitle">${esc(chromeOf(channel.lang).webTitle || strings.otherChannels)}</h2>
+  ${spiderWeb({ lang: channel.lang, selfUrl: channel.base, theme: 'light', compact: true })}
+  <p class="small"><a href="mreza/">${esc(chromeOf(channel.lang).allEditions || strings.hub)} →</a></p>
+</section>
 ${meshBlock({ lang: channel.lang, selfUrl: channel.base, theme: 'light' })}
 ${footer(channel, strings)}`;
 
@@ -793,12 +891,17 @@ function articlePage(channel, strings, item, items) {
 
   const root = '../../';
   /* Slika ide kroz naš posrednik: izdavač ne vidi čitatelja, a slika je
-     keširana na rubu. Ako je nema, članak ostaje bez slike — ne lijepimo
-     zamjensku koja glumi fotografiju. */
+     keširana na rubu. Ako fotografije nema, članak dobiva ilustraciju teme
+     koja je u podpisu jasno označena kao ilustracija — nikad kao fotografija. */
+  const artId = DESK_ART_BY_THEME[artThemeOf(item)];
   const heroImage = /^https:\/\//.test(item.image || '')
     ? `${PUBLIC}/api/img?u=${encodeURIComponent(item.image)}&w=1200`
-    : '';
-  const ogImage = heroImage || `${PUBLIC}/assets/izdanja/${channel.id}-og.jpg`;
+    : artId ? `/assets/desk/art/${artId}-1200.webp` : '';
+  /* OG slika mora biti ista slika koju čitatelj vidi na stranici: fotografija
+     izvora ili ilustracija teme, nikad gradska grafika druge namjene. */
+  const ogImage = item.image
+    ? heroImage
+    : artId ? `${PUBLIC}/assets/desk/art/${artId}-og.jpg` : `${PUBLIC}/assets/izdanja/${channel.id}-og.jpg`;
   const body = `${header(channel, strings, '', root)}
 <main id="sadrzaj" class="article">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="${root}">${esc(channel.title)}</a> <span>›</span> <a href="${root}izvor/${item.source}/">${esc(item.sourceName)}</a> <span>›</span> <span>${esc(strings.analysis)}</span></nav>
@@ -809,7 +912,7 @@ function articlePage(channel, strings, item, items) {
       <p class="artmeta"><time datetime="${esc(item.date)}">${esc(longDate(day, channel.lang))}</time> · ${esc(strings.source)}: <a href="${item.url}" target="_blank" rel="external noopener nofollow">${esc(item.sourceName)} ↗</a></p>
     </header>
 
-    ${heroImage ? `<figure class="artimg"><img src="${esc(heroImage)}" alt="${esc(item.imageAlt || item.title)}" width="1200" height="675" loading="eager" decoding="async" referrerpolicy="no-referrer">${item.sourceName ? `<figcaption>${esc(strings.photoFrom || 'Foto')}: ${esc(item.sourceName)}</figcaption>` : ''}</figure>` : ''}
+    ${heroImage ? `<figure class="artimg"><img src="${esc(heroImage)}" alt="${esc(item.image ? (item.imageAlt || item.title) : `${strings.themeNames[artThemeOf(item)] || strings.themeNames[theme] || theme} — ${captionFor(channel.lang, 'artAlt')}`)}" width="1200" height="675" loading="eager" decoding="async" ${item.image ? 'referrerpolicy="no-referrer"' : ''}><figcaption>${esc(item.image ? captionFor(channel.lang, 'photo') : captionFor(channel.lang, 'art'))}: ${esc(item.image ? item.sourceName : 'AKTUAL MEDIA')}</figcaption></figure>` : ''}
 
     ${score ? `<div class="scorebox"><span class="scorelabel">${esc(strings.source)}</span><strong class="score">${esc(score.label)}</strong><span class="small">${esc(item.title)}</span></div>` : ''}
 
@@ -901,7 +1004,15 @@ ${footer(channel, strings)}`;
     type: 'article',
     published: item.date,
     modified: item.date,
-    ogAlt: item.imageAlt || item.title,
+    /* Kratak naslov (jedna riječ) nije dovoljan opis slike za mreže. Tada se
+       dodaje tema i izvor, pa opis ostaje čitljiv i kad je naslov kratak. */
+    ogAlt: (() => {
+      if (!item.image) return `${strings.themeNames[artThemeOf(item)] || strings.themeNames[theme] || theme} — ${captionFor(channel.lang, 'artAlt')}`;
+      const base = (item.imageAlt || item.title || '').trim();
+      if (base.length >= 12) return base;
+      const themeName = strings.themeNames[artThemeOf(item)] || strings.themeNames[theme] || theme;
+      return base ? `${base} — ${themeName}, ${item.sourceName}` : `${item.title} — ${themeName}, ${item.sourceName}`;
+    })(),
     image: ogImage,
     root
   });
@@ -989,7 +1100,7 @@ ${i.tags.map((tg) => `<category>${esc(tg)}</category>`).join('\n')}
 
   writeFileSync(join(dir, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${url(channel, 'sitemap.xml')}\n`);
 
-  writeFileSync(join(dir, 'llms.txt'), `# ${channel.title}\n\n> ${strings.aboutText}\n\nIzdavač: AKTUAL MEDIA d.o.o. · Urednik: Nermin Sefić · Direktor: Nermin Sefić · Kontakt: ${CONTACT}\nJezik: ${channel.lang} · Zemlja: ${channel.country} · Grad: ${channel.city}\nStatus: automatski sastavljeni osvrti na način izvještavanja; izvornici su povezani.\n\n## Izvori\n${channel.sources.map((s) => `- ${s.name}`).join('\n')}\n\n## Stranice\n- ${channel.base}\n- ${url(channel, 'mravinjak/')}\n- ${url(channel, 'izvori/')}\n- ${url(channel, 'metodologija/')}\n- ${url(channel, 'en/')} (English overview)\n- ${url(channel, 'feed.json')}\n- ${url(channel, 'sitemap.xml')}\n- ${HUB}\n`);
+  writeFileSync(join(dir, 'llms.txt'), `# ${channel.title}\n\n> ${strings.aboutText}\n\nIzdavač: AKTUAL MEDIA d.o.o. · Urednik: Nermin Sefić · Direktor: Nermin Sefić · Kontakt: ${CONTACT}\nJezik: ${channel.lang} · Zemlja: ${channel.country} · Grad: ${channel.city}\nStatus: automatski sastavljeni osvrti na način izvještavanja; izvornici su povezani.\n\n## Izvori\n${channel.sources.map((s) => `- ${s.name}`).join('\n')}\n\n## Stranice\n- ${channel.base}\n- ${url(channel, 'mravinjak/')}\n- ${url(channel, 'izvori/')}\n- ${url(channel, 'metodologija/')}\n- ${url(channel, 'en/')} (English overview)\n- ${url(channel, 'feed.json')}\n- ${url(channel, 'exchange.json')} (razmjena naslova s drugih webova mreže)\n- ${url(channel, 'sitemap.xml')}\n- ${HUB}\n`);
 }
 
 function writeSitemap(channel, data) {
@@ -1088,7 +1199,7 @@ function englishPage(channel, strings, data) {
     <a href="/nermin-sefic/">#SEFICNERMIN</a>
     <span>#AKTUALMEDIA</span><span>#GNKASG</span><span>#EnglishOverview</span>
   </p>
-  <nav class="mainnav" aria-label="Sections"><a href="${root}" hreflang="${channel.lang}" lang="${channel.lang}">${esc(strings.latest)} (${esc(channel.langName)})</a><a href="${root}mravinjak/" hreflang="${channel.lang}" lang="${channel.lang}">${esc(mrvStrings(channel.lang).nav)}</a><a href="${root}metodologija/" hreflang="${channel.lang}" lang="${channel.lang}">${esc(strings.methodology)}</a><a href="${CENTRAL}" rel="external">AKTUAL MEDIA</a><a class="langswitch" href="${root}">${esc(channel.langName)}</a></nav>
+  <nav class="mainnav" aria-label="Sections"><a href="${root}" hreflang="${channel.lang}" lang="${channel.lang}">${esc(strings.latest)} (${esc(channel.langName)})</a><a href="${root}mravinjak/" hreflang="${channel.lang}" lang="${channel.lang}">${esc(mrvStrings(channel.lang).nav)}</a><a href="${root}metodologija/" hreflang="${channel.lang}" lang="${channel.lang}">${esc(strings.methodology)}</a><a href="${CENTRAL}" rel="external">AKTUAL MEDIA</a>${capitalNav(channel, chromeOf('en'))}<a class="langswitch" href="${root}">${esc(channel.langName)}</a></nav>
 </header>
 <main id="sadrzaj" class="page">
   <h1>${esc(title)}</h1>
@@ -1229,6 +1340,30 @@ export function buildChannel(channel) {
   <p><a href="../">← ${esc(strings.back)}</a></p>
 </main>
 ${footer(channel, strings)}`;
+  /* Mreža izdanja: paukova mreža svih 32 adrese, na jeziku izdanja.
+     Dopunjuje blok mreže u podnožju — tamo je popis, ovdje je oblik. */
+  const webBody = `${header(channel, strings, 'mreza/', '../')}
+<main id="sadrzaj" class="page">
+  <h1>${esc(chromeOf(channel.lang).webTitle || strings.otherChannels)}</h1>
+  <p class="lead">${esc(chromeOf(channel.lang).webLead || strings.aboutText)}</p>
+  ${spiderWeb({ lang: channel.lang, selfUrl: channel.base, theme: 'light' })}
+  <p class="small"><a href="../">← ${esc(strings.back)}</a></p>
+</main>
+${footer(channel, strings)}`;
+  write('mreza/index.html', shell(channel, strings, {
+    title: `${chromeOf(channel.lang).webTitle || strings.otherChannels} — ${channel.title}`,
+    description: chromeOf(channel.lang).webLead || strings.aboutText,
+    path: 'mreza/',
+    keywords: [...channel.hashtags, 'mreža', 'network'],
+    jsonld: [{
+      '@context': 'https://schema.org', '@type': 'CollectionPage',
+      url: url(channel, 'mreza/'), name: chromeOf(channel.lang).webTitle || strings.otherChannels,
+      inLanguage: channel.lang, isPartOf: { '@id': `${PUBLIC}/#website` }
+    }],
+    body: webBody,
+    root: '../'
+  }));
+
   write('metodologija/index.html', shell(channel, strings, {
     title: `${strings.methodology} — ${channel.title}`,
     description: strings.methodLead,
@@ -1248,7 +1383,8 @@ ${footer(channel, strings)}`;
     jsonld: [], root: '', body: `${header(channel, strings)}<main id="sadrzaj" class="page"><h1>404</h1><p class="lead">${esc(strings.emptyText)}</p><p><a href="/">← ${esc(strings.back)}</a></p></main>${footer(channel, strings)}`
   }));
 
-  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}`);
+  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}\n${SPIDER_CSS}\n${HOUSE_CSS}\n${EXCHANGE_CSS}\n${EDITORIAL_INDEX_CSS}`);
+  writeFileSync(join(dir, 'assets', 'spiderweb-v1.js'), SPIDER_JS);
 
   writeLegacyRedirect(channel);
   writeFileSync(join(dir, 'assets', 'favicon.svg'), favicon(channel));
@@ -1273,6 +1409,14 @@ ${footer(channel, strings)}`;
   }));
   writeFeed(channel, strings, data);
   writeSitemap(channel, data);
+  /* Razmjena je i strojno čitljiva: svaki kanal uz stranicu nosi isti popis
+     tuđih naslova koji prikazuje, pa ga drugi webovi mogu čitati i onda kad
+     HTML nije dostupan. */
+  writeExchangeJson(join(SITE, channel.id), {
+    root: ROOT,
+    selfHome: channel.base,
+    selfNames: [channel.city, channel.cityEn].filter(Boolean)
+  });
 
   return { channel: channel.id, pages: 4 + data.items.length + byTheme.size + channel.sources.length, items: data.items.length };
 }
@@ -1401,6 +1545,11 @@ main{max-width:1180px;margin:0 auto;padding:clamp(20px,4vw,44px) clamp(16px,4vw,
 .card{border-top:3px solid var(--bg);padding-top:12px;display:grid;gap:6px;align-content:start}
 .card--lead{border-top-width:6px}
 .card--lead .cardtitle{font:700 clamp(26px,3.2vw,40px)/1.1 Georgia,serif;letter-spacing:-.01em}
+.cardmedia{position:relative;display:block;margin:0 0 12px;border-radius:14px;overflow:hidden;aspect-ratio:16/9;background:#0b1a2b;border:1px solid rgba(212,175,55,.22)}
+.cardmedia img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.card:hover .cardmedia img{transform:scale(1.035)}
+.cardmedia--art::after{content:attr(data-label);text-transform:uppercase;position:absolute;right:8px;bottom:8px;font:800 8.5px/1 system-ui,sans-serif;letter-spacing:.14em;color:#0b1a2b;background:rgba(233,198,108,.94);padding:5px 7px;border-radius:5px}
+.card--lead .cardmedia{margin-bottom:16px}
 .cardmeta{display:flex;flex-wrap:wrap;gap:6px;font:600 11px/1.4 system-ui,sans-serif;color:#7a6a4b;letter-spacing:.04em;text-transform:uppercase}
 .cardmeta .src{color:#8c2f2f}
 .cardtitle{font:700 20px/1.25 Georgia,serif;margin:0}

@@ -6,6 +6,9 @@
  * JSON-LD graf, opis u granicama i alt na svakoj slici.
  */
 import { meshBlock, MESH_CSS, EDITIONS } from './network-v1.mjs';
+import { exchangeBlock, EXCHANGE_CSS } from './razmjena-v1.mjs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 export const MAIN = 'https://gnk-asg.hr';
 export const ARHIVA = 'https://gnk-asg-arhiva.pages.dev';
@@ -17,6 +20,9 @@ export const esc = (s = '') => String(s)
   .replace(/</g, '&lt;')
   .replace(/>/g, '&gt;')
   .replace(/"/g, '&quot;');
+
+/* Razmjena čita feedove s diska; ljuska zna gdje je korijen repozitorija. */
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 
 const pad = (n) => String(n).padStart(2, '0');
 
@@ -57,7 +63,9 @@ img{max-width:100%;height:auto;display:block}
 .skip:focus{left:8px;top:8px;z-index:99;background:var(--gold);color:#06111f;padding:10px 14px;border-radius:8px}
 .top{border-bottom:1px solid var(--line);background:#08131f;font-size:12.5px}
 .top .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;justify-content:space-between;padding:12px 0}
-.brand{font:800 11px/1 system-ui;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.brand{display:inline-flex;align-items:center;gap:9px;font:800 11px/1 system-ui;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);text-decoration:none}
+.brand img{display:block;width:30px;height:30px;border-radius:7px;flex:0 0 auto}
+.brand:hover{color:#fff}
 .nav{display:flex;flex-wrap:wrap;gap:6px 14px}
 .nav a{color:#cfe0f2;border-bottom:1px solid transparent;padding:2px 0}
 .nav a:hover,.nav a:focus-visible{border-bottom-color:var(--gold);text-decoration:none}
@@ -116,6 +124,7 @@ footer a{color:#cfe0f2}
 @media (prefers-reduced-motion:reduce){.card{transition:none}.card:hover{transform:none}}
 @media print{.top,.nav,.btn,.search{display:none}body{background:#fff;color:#000}}
 ${MESH_CSS}
+${EXCHANGE_CSS}
 `;
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -189,12 +198,13 @@ ${ld}
 <body>
 <a class="skip" href="#sadrzaj">${lang === 'hr' ? 'Preskoči na sadržaj' : 'Skip to content'}</a>
 <div class="top"><div class="wrap">
-  <a class="brand" href="/">${esc(siteName)}</a>
+  <a class="brand" href="/"><img src="/assets/brand/aktual-media-mark.svg" alt="AKTUAL MEDIA" width="30" height="30" loading="eager" decoding="async"><span>${esc(siteName)}</span></a>
   <nav class="nav" aria-label="${lang === 'hr' ? 'Glavna navigacija' : 'Main navigation'}">${navHtml}</nav>
 </div></div>
 <main id="sadrzaj" class="wrap">
 ${body}
 </main>
+${exchangeBlock({ root: ROOT, lang, selfHome: siteUrl, selfNames: [siteName], limit: 6 })}
 ${meshBlock({ lang, selfUrl: siteUrl })}
 <footer><div class="wrap">
   <ul class="footlinks">

@@ -35,7 +35,16 @@ const rows = items.map((item) => {
 });
 const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${rows.join('\n')}\n</urlset>\n`;
 writeFileSync(sitemapPath, xml, 'utf8');
-const corpusLastmod = items.reduce((latest, item) => date(item) > latest ? date(item) : latest, '1970-01-01');
+/* Datum korpusa računa se iz stvarnih datuma objave (UTC), ne iz najvećeg
+   zapisanog lastmoda: zapis može nositi lokalni datum nastanka, a validator
+   (i tražilice) čitaju UTC. Bez ovoga indeks i korpus znaju se razići za
+   jedan dan kad se objava dogodi nakon ponoći po zagrebačkom vremenu. */
+const corpusLastmod = items.reduce((latest, item) => {
+  const explicit = item.modifiedAt || item.dateModified || item.publishedAt || item.datePublished || null;
+  const parsed = explicit ? new Date(explicit) : null;
+  const value = parsed && !Number.isNaN(parsed.getTime()) ? parsed.toISOString().slice(0, 10) : date(item);
+  return value > latest ? value : latest;
+}, '1970-01-01');
 let index = readFileSync(indexPath, 'utf8');
 index = index.replace(/(<loc>https:\/\/gnk-asg\.hr\/editorial-sitemap\.xml<\/loc>\s*<lastmod>)[^<]+(<\/lastmod>)/, `$1${corpusLastmod}$2`);
 writeFileSync(indexPath, index, 'utf8');

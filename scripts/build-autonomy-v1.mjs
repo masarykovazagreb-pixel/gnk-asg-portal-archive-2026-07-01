@@ -68,13 +68,30 @@ const newsNewest = newsItems.map((i) => i.published_at || i.publishedAt || i.dat
 const newsAge = newsNewest ? hoursBetween(newsNewest) : null;
 
 const portalJs = readText(path.join(PORTAL, 'assets/aktual-media-world-v1.js'));
-const feedHosts = new Set(
-  newsItems
+/* Hostovi "u feedu" nisu samo 300 najnovijih zapisa: arhiva svakog od 17
+   izdanja je dio istog feeda, a posrednik mora pokriti sve izvore iz kojih
+   slike dolaze. Mjerenje je zato unija news.json i svih arhiva kanala — inače
+   kriterij trajno pada zbog hostova koji u trenutnom izvatku nisu prisutni. */
+const archiveHosts = new Set();
+for (const channel of CITY_IDS) {
+  const data = readJson(path.join(ROOT, `apps/region/data/${channel}.json`));
+  for (const item of itemsOf(data)) {
+    const candidates = [item.image, item.imageUrl, item.img, item.thumbnail];
+    for (const source of (item.sources || [])) candidates.push(source.image, source.url);
+    for (const value of candidates) {
+      if (!/^https:\/\//i.test(String(value || ''))) continue;
+      try { archiveHosts.add(new URL(value).hostname.toLowerCase()); } catch { /* ignore */ }
+    }
+  }
+}
+const feedHosts = new Set([
+  ...archiveHosts,
+  ...newsItems
     .map((i) => String(i.image || ''))
     .filter((u) => /^https:\/\//i.test(u))
     .map((u) => { try { return new URL(u).hostname.toLowerCase(); } catch { return ''; } })
     .filter(Boolean)
-);
+]);
 const allow = new Set(allowedImageHosts().map((h) => h.toLowerCase()));
 const hostsMissing = [...feedHosts].filter((h) => !allow.has(h));
 const hostsExtra = [...allow].filter((h) => !feedHosts.has(h));

@@ -502,3 +502,9 @@ footer li a:hover{color:var(--ink);text-decoration:underline;text-decoration-col
 .article-body p{hyphens:auto;overflow-wrap:break-word}
 @media(max-width:699px){.card-body{padding:18px}.nav a{padding:12px 11px}.wrap{padding-inline:17px}}
 @media(prefers-reduced-motion:reduce){.card,.card-media img,.lead-media img{transition:none!important;transform:none!important}}
+
+/* Veza izvor → kopije u mreži. Blok je metapodatak uz članak, ne dio teksta. */
+.am-prenos{margin:26px 0 8px;padding:14px 16px;border:1px solid rgba(255,255,255,.16);border-left:4px solid #c8963c;border-radius:10px;background:rgba(255,255,255,.04);font:400 14px/1.6 system-ui,sans-serif;color:inherit}
+.am-prenos p{margin:0}
+.am-prenos a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(200,150,60,.5)}
+.am-prenos a:hover,.am-prenos a:focus-visible{border-bottom-color:#c8963c}

@@ -22,6 +22,7 @@ import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { SITES, siteBase, pagePath, NETWORK_HUB_HR, NETWORK_HUB_EN } from '../apps/sites/lib/registry.mjs';
+import { SATELLITE_ART } from '../apps/sites/lib/satellite-art.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SITE = join(ROOT, 'apps', 'sites', 'site');
@@ -77,6 +78,93 @@ rmSync(tmp, { recursive: true, force: true });
 /* ---------- 2. SEO ugovor po stranici ---------- */
 const attr = (html, re) => (html.match(re) || [])[1] || '';
 const count = (html, re) => (html.match(re) || []).length;
+
+/* Preneseni tekstovi imaju drugi ugovor od vlastitih stranica: canonical
+   pokazuje na izvornik (kopija ne otima adresu), ali sve ostalo — naslov,
+   opis, slika s alt tekstom, jedan h1, linkovi koji postoje — vrijedi isto.
+   Bez ovog odjeljka test bi tražio da kopija bude “vlastita” stranica, što je
+   upravo ono što sindikacija ne smije raditi. */
+function checkSyndicated(file, site, lang, slug) {
+  const html = readFileSync(file, 'utf8');
+  const where = `${site.slug}/${relative(join(SITE, site.slug), file)}`;
+  const title = attr(html, /<title>([^<]+)<\/title>/);
+  if (title.length < 15 || title.length > 140) note(`${where}: title ima ${title.length} znakova`);
+  const description = attr(html, /<meta name="description" content="([^"]*)">/);
+  if (description.length < 41 || description.length > 340) note(`${where}: description ima ${description.length} znakova`);
+  const canonical = attr(html, /<link rel="canonical" href="([^"]+)">/);
+  if (!/^https:\/\/(gnk-asg\.hr|gnk-asg-kanal\.pages\.dev)\//.test(canonical)) note(`${where}: canonical kopije ne vodi na naš izvornik (${canonical})`);
+  if (!/name="robots" content="index, follow/.test(html)) note(`${where}: nema robots index, follow`);
+  if (!/name="editor" content="Nermin Sefić"/.test(html)) note(`${where}: nema editor Nermin Sefić`);
+  if (count(html, /<h1[\s>]/g) !== 1) note(`${where}: mora imati točno jedan h1`);
+  for (const [label, re] of [
+    ['og:image', /property="og:image" content="[^"]+"/], ['og:image:alt', /property="og:image:alt" content="[^"]+"/],
+    ['og:description', /property="og:description" content="[^"]+"/], ['og:url', /property="og:url" content="[^"]+"/],
+    ['twitter:card', /name="twitter:card" content="summary_large_image"/], ['twitter:image', /name="twitter:image" content="[^"]+"/]
+  ]) if (!re.test(html)) note(`${where}: nedostaje ${label}`);
+  if (!/article:tag" content="#AKTUALMEDIA"/.test(html)) note(`${where}: nema #AKTUALMEDIA oznake`);
+  const ld = (html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/) || [])[1];
+  if (!ld) note(`${where}: nema JSON-LD`);
+  else { try { JSON.parse(ld); } catch { note(`${where}: JSON-LD se ne parsira`); } }
+
+  const links = [...html.matchAll(/<a [^>]*href="([^"]+)"/g)].map((m) => m[1]);
+  if (links.length < 6) note(`${where}: samo ${links.length} poveznica (minimum 6)`);
+  if (!links.some((href) => href.includes('gnk-asg.hr'))) note(`${where}: nema poveznice na gnk-asg.hr`);
+
+  for (const src of [...html.matchAll(/<img [^>]*src="([^"]+)"/g)].map((m) => m[1])) {
+    if (!src.startsWith('/')) { note(`${where}: vanjska slika ${src}`); continue; }
+    if (!existsSync(join(SITE, site.slug, src.replace(/^\//, '')))) note(`${where}: slika ne postoji ${src}`);
+  }
+  for (const href of links) {
+    if (/^https?:\/\//.test(href) || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('/kolumna/')) continue;
+    const target = href.split('#')[0].split('?')[0];
+    if (!target.startsWith('/')) continue;
+    const rel = target.replace(/^\//, '');
+    const ok = target.endsWith('/') ? existsSync(join(SITE, site.slug, rel, 'index.html')) : existsSync(join(SITE, site.slug, rel));
+    if (!ok) note(`${where}: unutarnji link ne postoji ${href}`);
+  }
+  return html;
+}
+
+/* Popis prenesenih tekstova nije članak: nema jednog datuma ni tijela, pa
+   ne smije nositi article:* oznake. Ostaje vlastita stranica mreže — svoj
+   canonical, svoj opis, svoje poveznice — i mora voditi na svaki preneseni
+   tekst. */
+function checkListPage(file, site, lang, slug) {
+  const html = readFileSync(file, 'utf8');
+  const where = `${site.slug}/${relative(join(SITE, site.slug), file)}`;
+  const title = attr(html, /<title>([^<]+)<\/title>/);
+  if (title.length < 15 || title.length > 140) note(`${where}: title ima ${title.length} znakova`);
+  const description = attr(html, /<meta name="description" content="([^"]*)">/);
+  if (description.length < 60 || description.length > 340) note(`${where}: description ima ${description.length} znakova`);
+  const canonical = attr(html, /<link rel="canonical" href="([^"]+)">/);
+  if (canonical !== `${siteBase(site)}/${slug.replace(/^en\//, '').replace(/^\//, '')}/`) note(`${where}: canonical nije vlastita adresa (${canonical})`);
+  if (!/name="robots" content="index, follow/.test(html)) note(`${where}: nema robots index, follow`);
+  if (!/name="editor" content="Nermin Sefić"/.test(html)) note(`${where}: nema editor Nermin Sefić`);
+  if (count(html, /<h1[\s>]/g) !== 1) note(`${where}: mora imati točno jedan h1`);
+  for (const [label, re] of [
+    ['og:title', /property="og:title" content="[^"]+"/], ['og:description', /property="og:description" content="[^"]+"/],
+    ['og:image', /property="og:image" content="[^"]+"/], ['og:image:alt', /property="og:image:alt" content="[^"]+"/],
+    ['twitter:card', /name="twitter:card" content="summary_large_image"/]
+  ]) if (!re.test(html)) note(`${where}: nedostaje ${label}`);
+  if (/property="article:published_time"/.test(html)) note(`${where}: popis ne smije nositi article:published_time`);
+
+  const links = [...html.matchAll(/<a [^>]*href="([^"]+)"/g)].map((m) => m[1]);
+  if (links.length < 6) note(`${where}: samo ${links.length} poveznica (minimum 6)`);
+  if (!links.some((href) => href.includes('gnk-asg.hr'))) note(`${where}: nema poveznice na gnk-asg.hr`);
+  for (const src of [...html.matchAll(/<img [^>]*src="([^"]+)"/g)].map((m) => m[1])) {
+    if (!src.startsWith('/')) { note(`${where}: vanjska slika ${src}`); continue; }
+    if (!existsSync(join(SITE, site.slug, src.replace(/^\//, '')))) note(`${where}: slika ne postoji ${src}`);
+  }
+  for (const href of links) {
+    if (/^https?:\/\//.test(href) || href.startsWith('#') || href.startsWith('mailto:')) continue;
+    const target = href.split('#')[0].split('?')[0];
+    if (!target.startsWith('/')) continue;
+    const rel = target.replace(/^\//, '');
+    const ok = target.endsWith('/') ? existsSync(join(SITE, site.slug, rel, 'index.html')) : existsSync(join(SITE, site.slug, rel));
+    if (!ok) note(`${where}: unutarnji link ne postoji ${href}`);
+  }
+  return html;
+}
 
 function checkHtml(file, site, lang, slug) {
   const html = readFileSync(file, 'utf8');
@@ -180,7 +268,13 @@ for (const site of SITES) {
     const lang = file.startsWith('en/') || file === 'en' ? 'en' : 'hr';
     const rel = file.replace(/index\.html$/, '').replace(/\/$/, '');
     const slug = rel === 'en' ? '' : rel.replace(/^en\//, '');
-    checkHtml(join(dir, file), site, lang, slug);
+    /* Popisi (/kolumna/, /prenos/) su vlastite stranice mreže i drže vlastiti
+       canonical; preneseni su samo pojedinačni tekstovi ispod njih. */
+    const parts = rel.replace(/^en\//, '').split('/').filter(Boolean);
+    const meshList = parts.length === 1 && (parts[0] === 'kolumna' || parts[0] === 'prenos');
+    if (meshList) checkListPage(join(dir, file), site, lang, slug);
+    else if ((parts[0] === 'kolumna' || parts[0] === 'prenos')) checkSyndicated(join(dir, file), site, lang, slug);
+    else checkHtml(join(dir, file), site, lang, slug);
     pageCount += 1;
   }
   for (const required of ['sitemap.xml', 'robots.txt', 'feed.xml', 'manifest.webmanifest', '404.html', '_headers']) {
@@ -197,7 +291,13 @@ for (const site of SITES) {
 
   const feed = readFileSync(join(dir, 'feed.xml'), 'utf8');
   if (!feed.includes('<feed xmlns="http://www.w3.org/2005/Atom">')) note(`${site.slug}: feed nije Atom`);
-  if (count(feed, /<entry>/g) !== htmlFiles.length / 2) note(`${site.slug}: feed ima ${count(feed, /<entry>/g)} zapisa, stranica ${htmlFiles.length / 2}`);
+  const entries = [...feed.matchAll(/<entry>[\s\S]*?<\/entry>/g)].map((m) => m[0]);
+  if (!entries.length) note(`${site.slug}: feed je prazan`);
+  for (const entry of entries) {
+    const href = attr(entry, /<link href="([^"]+)">/);
+    const rel = href.replace(siteBase(site), '').replace(/^\//, '');
+    if (!existsSync(join(dir, rel, 'index.html'))) note(`${site.slug}: feed vodi na nepostojeću stranicu ${href}`);
+  }
 
   try { JSON.parse(readFileSync(join(dir, 'manifest.webmanifest'), 'utf8')); }
   catch { note(`${site.slug}: manifest nije JSON`); }
@@ -330,7 +430,13 @@ else {
   const opml = readFileSync(opmlFile, 'utf8');
   if (!/^<\?xml version="1\.0" encoding="UTF-8"\?>/.test(opml)) note('feeds.opml nema XML zaglavlje');
   const outlines = count(opml, /<outline /g);
-  if (outlines !== 1 + SITES.length * 2) note(`feeds.opml ima ${outlines} stavki (očekivano ${1 + SITES.length * 2})`);
+  /* Mrežni feed + HR/EN feed svakog izdanja + dva feeda prijestolnica
+     (/glavni-gradovi/ i /en/capitals/). Prijestolnice su u OPML-u jer se
+     čitaju istim čitačem kao izdanja. */
+  const expectedOutlines = 1 + SITES.length * 2 + 2;
+  if (outlines !== expectedOutlines) note(`feeds.opml ima ${outlines} stavki (očekivano ${expectedOutlines})`);
+  if (!opml.includes('/glavni-gradovi/feed.xml')) note('feeds.opml ne nudi feed prijestolnica');
+  if (!opml.includes('/en/capitals/feed.xml')) note('feeds.opml ne nudi EN feed prijestolnica');
   if (!opml.includes('<opml version="2.0">')) note('feeds.opml nije OPML 2.0');
 }
 
@@ -425,6 +531,47 @@ for (const [file, lang] of [[join(PORTAL, 'gnk-aktual/mreza/index.md'), 'hr'], [
   if (linked < 31) note(`${where}: samo ${linked} poveznica na tekstove`);
   if (!md.includes(lang === 'en' ? 'Publisher: AKTUAL MEDIA' : 'Izdavač: AKTUAL MEDIA')) note(`${where}: nema izdavača`);
   if (!md.includes('Nermin Sefić')) note(`${where}: nema urednika`);
+}
+
+/* ---------- 3b. svaka kartica mreže ima pravu sliku ---------- */
+
+/* Mrežna stranica je popis od 32 adrese. Kartica bez slike je prazna kućica;
+   kartica sa SVG plohom je „samo boja”. Svaka kartica mora nositi WebP
+   fotografiju s alt tekstom, a SVG ploha smije ostati samo kao rezerva za
+   novo izdanje (zato se ovdje traži da je nema). */
+for (const [file, lang] of [[join(PORTAL, 'mreza', 'index.html'), 'hr'], [join(PORTAL, 'en', 'network', 'index.html'), 'en']]) {
+  if (!existsSync(file)) { note(`${file}: mrežna stranica nedostaje`); continue; }
+  const html = readFileSync(file, 'utf8');
+  const cards = [...html.matchAll(/<a class="card[^"]*"[^>]*>([\s\S]*?)<\/a>/g)].map((match) => match[1]);
+  if (cards.length !== 32) note(`${file}: ${cards.length} kartica (očekivano 32)`);
+  for (const [index, body] of cards.entries()) {
+    const image = body.match(/<img[^>]*src="([^"]+)"[^>]*alt="([^"]*)"[^>]*>/);
+    if (!image) { note(`${file}: kartica ${index + 1} bez slike`); continue; }
+    if (!/\.webp$/.test(image[1])) note(`${file}: kartica ${index + 1} nema WebP sliku (${image[1]})`);
+    if (!image[2].trim()) note(`${file}: kartica ${index + 1} ima prazan alt`);
+    if (!/srcset="[^"]+\.webp \d+w/.test(body)) note(`${file}: kartica ${index + 1} nema srcset sa širinama`);
+    if (body.includes('-art-1.svg')) note(`${file}: kartica ${index + 1} još koristi SVG plohu`);
+  }
+}
+
+/* ---------- 3c. naslovnice nose pravu ilustraciju ---------- */
+
+/* Šest samostalnih izdanja ima ilustraciju scene. Naslovnica je mora nositi
+   kao WebP sa srcsetom (ne SVG plohu), a datoteke moraju postojati u izlazu —
+   inače stranica ostaje bez slike na vlastitoj domeni. */
+for (const site of SITES) {
+  const art = SATELLITE_ART[site.slug];
+  if (!art) continue;
+  const home = join(SITE, site.slug, 'index.html');
+  if (!existsSync(home)) { note(`${site.slug}: naslovnica nedostaje`); continue; }
+  const html = readFileSync(home, 'utf8');
+  if (!html.includes(`/img/${site.slug}-hero-1200.webp`)) note(`${site.slug}: naslovnica bez ilustracije`);
+  if (!html.includes(`/img/${site.slug}-hero-440.webp 440w`)) note(`${site.slug}: ilustracija bez srcseta`);
+  if (!/<img[^>]*-hero-1200\.webp[^>]*alt="[^"]{30,}"/.test(html)) note(`${site.slug}: ilustracija bez opisa u altu`);
+  for (const width of [440, 800, 1200]) {
+    if (!existsSync(join(SITE, site.slug, 'img', `${site.slug}-hero-${width}.webp`))) note(`${site.slug}: nema hero-${width}.webp`);
+  }
+  if (!existsSync(join(SITE, site.slug, 'img', `${site.slug}-og.jpg`))) note(`${site.slug}: nema OG fotografije`);
 }
 
 /* ---------- 4. izborni desk ---------- */

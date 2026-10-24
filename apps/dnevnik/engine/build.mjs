@@ -15,6 +15,7 @@ import {
   page, esc, fmtDate, fmtDay, fmtNum, storyRow, sitemap, robots, rss,
   breadcrumb, websiteNode, publisherNode, ARHIVA, DNEVNIK, MAIN, SITE_CSS
 } from '../../satellites/lib/shell.mjs';
+import { writeExchangeJson } from '../../satellites/lib/razmjena-v1.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const SITE = join(ROOT, 'apps', 'dnevnik', 'site');
@@ -309,6 +310,8 @@ write('404.html', `<!doctype html><html lang="hr"><head><meta charset="utf-8"><m
 
 write('assets/site.css', SITE_CSS);
 write('robots.txt', robots(SITE_URL));
+/* Isti popis razmjene koji stranica prikazuje, u strojnom obliku. */
+writeExchangeJson(SITE, { root: ROOT, selfHome: `${SITE_URL}/`, selfNames: ['AKTUAL DNEVNIK'] });
 write('feed.xml', rss({
   siteUrl: SITE_URL, siteName: 'AKTUAL DNEVNIK',
   desc: 'Dnevni presjek gradskih izdanja AKTUAL MEDIA',

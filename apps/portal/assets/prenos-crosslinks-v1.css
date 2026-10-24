@@ -1,0 +1,7 @@
+/* Veza izvor → kopije. Blok je metapodatak uz članak, ne dio teksta. */
+.am-prenos{margin:26px 0 8px;padding:14px 16px;border:1px solid #e3e8f0;border-left:4px solid #8a6a1f;border-radius:10px;background:#fbfaf6;font:400 14px/1.6 system-ui,sans-serif;color:#33404f}
+.am-prenos p{margin:0}
+.am-prenos b{color:#12233a}
+.am-prenos a{color:#0f4c81;text-decoration:none;border-bottom:1px solid rgba(15,76,129,.28)}
+.am-prenos a:hover,.am-prenos a:focus-visible{border-bottom-color:#0f4c81}
+@media (prefers-color-scheme:dark){.am-prenos{background:#12171f;border-color:#243040;border-left-color:#c8963c;color:#dfe6ef}.am-prenos b{color:#f4f7fb}.am-prenos a{color:#9cc7f0;border-bottom-color:rgba(156,199,240,.35)}}

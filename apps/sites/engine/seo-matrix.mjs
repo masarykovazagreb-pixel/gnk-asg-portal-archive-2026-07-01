@@ -39,10 +39,20 @@ function audit(route) {
     .filter((name) => has(html, new RegExp(`<meta name="${name}" content="[^"]+"`)));
   const hreflang = [...html.matchAll(/<link rel="alternate" hreflang="([^"]+)"/g)].map((match) => match[1]);
 
-  let jsonld = null;
-  const raw = (html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/) || [])[1];
-  try { jsonld = raw ? JSON.parse(raw) : null; } catch { issues.push('JSON-LD se ne parsira'); }
-  const types = (jsonld?.['@graph'] || []).map((node) => node['@type']);
+  /* Stranica smije nositi više JSON-LD blokova (portal ih piše odvojeno za
+     WebSite, izdavača, BreadcrumbList i samu stranicu). Matrica čita sve
+     blokove i ravna @graph, inače bi vidjela samo prvi i lažno prijavila
+     da nema BreadcrumbList. */
+  const types = [];
+  for (const block of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
+    let parsed = null;
+    try { parsed = JSON.parse(block[1]); } catch { issues.push('JSON-LD se ne parsira'); continue; }
+    const nodes = [parsed, ...(Array.isArray(parsed) ? parsed : []), ...(parsed?.['@graph'] || [])];
+    for (const node of nodes) {
+      if (!node || typeof node !== 'object') continue;
+      for (const type of (Array.isArray(node['@type']) ? node['@type'] : [node['@type']])) if (type) types.push(type);
+    }
+  }
 
   const articleTags = [...html.matchAll(/<meta property="article:tag" content="([^"]+)"/g)].map((match) => match[1]);
   const isArticle = route.kind === 'article';
@@ -64,7 +74,7 @@ function audit(route) {
   if (og.length !== 5) issues.push(`OG oznake ${og.length}/5`);
   if (twitter.length !== 4) issues.push(`Twitter oznake ${twitter.length}/4`);
   if (!has(html, /<meta name="twitter:card" content="summary_large_image">/)) issues.push('twitter kartica nije summary_large_image');
-  if (!jsonld) issues.push('nema JSON-LD');
+  if (!types.length) issues.push('nema JSON-LD');
   else {
     for (const type of ['WebSite', 'BreadcrumbList']) if (!types.includes(type)) issues.push(`JSON-LD bez ${type}`);
     if (isArticle && !types.includes('Article')) issues.push('JSON-LD bez Article');
@@ -79,8 +89,14 @@ function audit(route) {
     if (!has(html, /<meta property="article:modified_time" content="[^"]+">/)) issues.push('nema article:modified_time');
   }
   if (isDesk && !has(html, /<meta name="copyright" content="AKTUAL MEDIA d\.o\.o\.">/)) issues.push('nema copyright');
+  /* Prijestolnica je mjesto, ne članak: uz zajednički ugovor mora nositi i
+     strojni opis grada (City), inače tražilica ne zna koji grad stranica
+     opisuje. */
+  const isCapital = route.kind === 'capital';
+  if (isCapital && !types.includes('City')) issues.push('JSON-LD bez City');
+  if (isCapital && !has(html, /<meta name="geo\.placename" content="[^"]+">/)) issues.push('nema geo.placename');
 
-  const checks = 20 + (isArticle ? 4 : 0) + (isDesk ? 1 : 0);
+  const checks = 20 + (isArticle ? 4 : 0) + (isDesk ? 1 : 0) + (isCapital ? 2 : 0);
   const score = issues.length ? Math.min(99, Math.max(0, Math.round(((checks - issues.length) / checks) * 100))) : 100;
   return {
     url: route.url, file: relative(route.root, route.file), kind: route.kind,

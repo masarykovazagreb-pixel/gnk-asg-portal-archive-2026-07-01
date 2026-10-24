@@ -17,7 +17,9 @@ h1{margin:0 0 12px;font-family:Georgia,"Times New Roman",serif;font-size:clamp(3
 .pr-sec h2{margin:0 0 6px;font-family:Georgia,serif;font-size:clamp(22px,2.6vw,30px)}
 .pr-sec p{margin:0 0 14px;color:#9fb3c8;max-width:70ch}
 .pr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;list-style:none;margin:0;padding:0}
-.pr-card{display:block;height:100%;padding:13px 15px;border:1px solid #23405a;border-radius:12px;background:#0b1a29;transition:border-color .18s ease,transform .18s ease}
+.pr-card{display:block;height:100%;padding:0 0 13px;overflow:hidden;border:1px solid #23405a;border-radius:12px;background:#0b1a29;transition:border-color .18s ease,transform .18s ease}
+.pr-card img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;background:#0d2136;margin:0 0 10px}
+.pr-card b,.pr-card span,.pr-card em{margin-left:15px;margin-right:15px}
 .pr-card:hover,.pr-card:focus-visible{border-color:#e9c66c;transform:translateY(-2px);text-decoration:none}
 .pr-card b{display:block;font-size:15px;line-height:1.2;margin:0 0 3px}
 .pr-card span{display:block;font-size:12px;color:#93a6bb;line-height:1.4}

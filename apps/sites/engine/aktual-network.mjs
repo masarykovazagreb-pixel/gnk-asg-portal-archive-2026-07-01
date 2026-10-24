@@ -17,6 +17,8 @@
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { deskHashtags, tagSlug } from '../lib/seo.mjs';
+import { entityGraphJson } from '../../../scripts/lib/entity-graph-v1.mjs';
+import { HOUSE_CSS, houseRibbon } from '../../satellites/lib/house-style-v1.mjs';
 import { join, dirname } from 'node:path';
 
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -39,8 +41,8 @@ const MARK_END = '<!-- AKTUAL-MREZA-BAND:END -->';
 const T = {
   hr: {
     lang: 'hr', other: 'en',
-    title: 'AKTUAL MEDIA — mreža izdanja: svi tekstovi pod jednim izdavačem | GNK ASG',
-    description: 'AKTUAL MEDIA vodi šest neovisnih izdanja na vlastitim domenama: BOR USA, KOŠARKA 360, SCENA ZNANOSTI, STEP BUDUĆNOSTI, ZDRAVLJE 360 i privremeni desk IZBORI U SRBIJI. Popis svake stranice na hrvatskom i engleskom, s izvorom i urednikom.',
+    title: 'AKTUAL MEDIA — mreža izdanja pod jednim izdavačem | GNK ASG',
+    description: 'Šest neovisnih izdanja AKTUAL MEDIA na vlastitim domenama — BOR USA, KOŠARKA 360, SCENA ZNANOSTI, STEP BUDUĆNOSTI, ZDRAVLJE 360 i IZBORI U SRBIJI — sa svakom stranicom i izvorom.',
     kicker: 'AKTUAL MEDIA · mreža izdanja',
     h1: 'Svi tekstovi mreže, pod jednim izdavačem',
     lead: 'Šest neovisnih izdanja ima vlastite domene, vlastite sitemape i vlastite arhive — ali istog izdavača, istog urednika i isti standard: izvor za svaku brojku, datum za svaki izvor, ispravak na mjestu pogreške. Ovdje je popis svake stranice, da se svaki tekst može naći s matične domene.',
@@ -67,8 +69,8 @@ const T = {
   },
   en: {
     lang: 'en', other: 'hr',
-    title: 'AKTUAL MEDIA — network of editions: every text under one publisher | GNK ASG',
-    description: 'AKTUAL MEDIA runs six independent editions on their own domains: BOR USA, KOŠARKA 360, SCENA ZNANOSTI, STEP BUDUĆNOSTI, ZDRAVLJE 360 and the temporary IZBORI U SRBIJI desk. Every page listed in Croatian and English, with source and editor.',
+    title: 'AKTUAL MEDIA — the network, one publisher | GNK ASG',
+    description: 'Six independent AKTUAL MEDIA editions on their own domains — BOR USA, KOŠARKA 360, SCENA ZNANOSTI, STEP BUDUĆNOSTI, ZDRAVLJE 360 and IZBORI U SRBIJI — every page with its source.',
     kicker: 'AKTUAL MEDIA · network of editions',
     h1: 'Every text in the network, under one publisher',
     lead: 'Six independent editions have their own domains, sitemaps and archives — but one publisher, one editor and one standard: a source for every figure, a date for every source, a correction where the error was made. Here is every page, so any text can be found from the parent domain.',
@@ -106,6 +108,7 @@ img{max-width:100%;display:block;height:auto}
 .top .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between;padding:11px 0}
 .top a{color:var(--gold)}
 .hero{padding:clamp(32px,6vw,72px) 0 28px;border-bottom:1px solid var(--line)}
+.hero .house{margin:0 0 16px}.hero .house img{height:48px;width:auto;max-width:220px;border-radius:6px}
 .k{font:800 11px/1.4 system-ui;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin:0 0 12px}
 h1{font:800 clamp(32px,5.6vw,64px)/1.04 Georgia,"Times New Roman",serif;letter-spacing:-.025em;margin:0 0 16px;max-width:20ch}
 .sub{max-width:74ch;color:#c3d0e0;font-size:clamp(15px,1.5vw,18px);margin:0 0 22px}
@@ -303,14 +306,21 @@ function deskPage(lang, { sites, pages }) {
 <meta name="twitter:description" content="${esc(t.description)}">
 <meta name="twitter:image" content="${OG}">
 <meta name="twitter:image:alt" content="AKTUAL MEDIA — mreža izdanja">
-<style>${CSS}</style>
+<style>${CSS}\n${HOUSE_CSS}</style>
 <script type="application/ld+json">${JSON.stringify(jsonld)}</script>
+<meta name="editor" content="Nermin Sefić">
+<meta property="article:tag" content="#AKTUALMEDIA">
+<meta property="article:tag" content="#GNKASG">
+<script type="application/ld+json" id="network-entity-v1">${entityGraphJson()}</script>
+<link rel="author" href="https://gnk-asg.hr/nermin-sefic/">
 </head>
 <body>
 <a class="skip" href="#main">${lang === 'en' ? 'Skip to content' : 'Preskoči na sadržaj'}</a>
+${houseRibbon({ lang })}
 <div class="top"><div class="wrap"><span>AKTUAL MEDIA d.o.o. · ${esc(t.kicker)}</span><span><a href="${AKTUAL}">${esc(t.desk)}</a> · <a href="${HUB_HR}">${esc(t.backHub)}</a> · <a href="/izdanja/">${esc(t.editionsLink)}</a> · <a href="${alternate}" hreflang="${t.other}" lang="${t.other}">${lang === 'en' ? 'Hrvatski' : 'English'}</a></span></div></div>
 <main id="main">
 <div class="hero"><div class="wrap">
+  <div class="house"><img src="/assets/brand/aktual-media-en-1200.webp" alt="AKTUAL MEDIA — world edition" width="167" height="48" decoding="async"></div>
   <p class="k">${esc(t.kicker)}</p>
   <h1>${esc(t.h1)}</h1>
   <p class="sub">${esc(t.lead)}</p>
@@ -345,6 +355,8 @@ function deskPage(lang, { sites, pages }) {
     <a href="/data/mreza-pages-v1.json">mreza-pages-v1.json</a>
     <a href="/data/mreza-v1.json">mreza-v1.json</a>
     <a href="/data/seo-matrix-v1.json">seo-matrix-v1.json</a>
+    <a href="/glavni-gradovi/feed.json">prijestolnice · feed.json</a>
+    <a href="/glavni-gradovi/feed.xml">prijestolnice · feed.xml</a>
     <a href="/mreza/sitemap.xml">sitemap.xml</a>
     <a href="/mreza/feed.xml">feed.xml</a>
     <a href="/mreza/feeds.opml">feeds.opml</a>
@@ -355,6 +367,7 @@ function deskPage(lang, { sites, pages }) {
 </main>
 <footer><div class="wrap">
   <p>${esc(t.footer)}</p>
+  <p class="iz-tags"><a href="/gnk-aktual/">#AKTUALMEDIA</a> · <a href="/gnk-aktual/">#GNKASG</a></p>
   <p>© 2026 AKTUAL MEDIA d.o.o. · <a href="/nermin-sefic/">Nermin Sefić</a> · ${lang === 'en' ? 'Editor and director' : 'Urednik i direktor'} · <a href="${HUB_HR}">${esc(t.backHub)}</a></p>
 </div></footer>
 </body>
@@ -375,12 +388,14 @@ function editionPage(lang, site, { sites, pages }) {
   const hashtags = deskHashtags(sites, site.slug);
   const hashtagWords = hashtags.map((tag) => tag.replace('#', ''));
   const title = lang === 'en'
-    ? `${site.name} — every page of the edition under AKTUAL MEDIA | GNK ASG`
-    : `${site.name} — sve stranice izdanja pod AKTUAL MEDIA | GNK ASG`;
+    ? `${site.name} — every page of the edition | AKTUAL MEDIA`
+    : `${site.name} — sve stranice izdanja | AKTUAL MEDIA`;
   const tail = lang === 'en'
-    ? `All ${list.length} pages of this edition in English, plus the Croatian twin, under one publisher: AKTUAL MEDIA d.o.o. Editor and director: Nermin Sefić.`
-    : `Svih ${list.length} stranica ovog izdanja na hrvatskom, uz engleski par, pod jednim izdavačem: AKTUAL MEDIA d.o.o. Urednik i direktor: Nermin Sefić.`;
-  const description = short(`${tagline} ${tail}`, 315);
+    ? `All ${list.length} pages in English, plus the Croatian twin, under one publisher: AKTUAL MEDIA d.o.o.`
+    : `Svih ${list.length} stranica na hrvatskom, uz engleski par, pod jednim izdavačem: AKTUAL MEDIA d.o.o.`;
+  /* Opis mora ostati u granici koju audit mjeri (70–180), pa se rez skraćuje
+     od repa prema taglineu, a ne obrnuto. */
+  const description = short(`${tagline} ${tail}`, 178);
   const siblings = sites.filter((item) => item.slug !== site.slug);
   const rows = list.map((page) => pageRow(page, lang)).join('');
   const siblingRows = siblings.map((item) => `<li><a href="${editionDesk(lang, item.slug)}" style="border-left:3px solid ${item.accent}">
@@ -465,14 +480,21 @@ function editionPage(lang, site, { sites, pages }) {
 <meta name="twitter:description" content="${esc(description)}">
 <meta name="twitter:image" content="${OG}">
 <meta name="twitter:image:alt" content="${esc(`${site.name} — AKTUAL MEDIA`)}">
-<style>${CSS}</style>
+<style>${CSS}\n${HOUSE_CSS}</style>
 <script type="application/ld+json">${JSON.stringify(jsonld)}</script>
+<meta name="editor" content="Nermin Sefić">
+<meta property="article:tag" content="#AKTUALMEDIA">
+<meta property="article:tag" content="#GNKASG">
+<script type="application/ld+json" id="network-entity-v1">${entityGraphJson()}</script>
+<link rel="author" href="https://gnk-asg.hr/nermin-sefic/">
 </head>
 <body>
 <a class="skip" href="#main">${lang === 'en' ? 'Skip to content' : 'Preskoči na sadržaj'}</a>
+${houseRibbon({ lang })}
 <div class="top"><div class="wrap"><span>AKTUAL MEDIA d.o.o. · ${esc(site.name)}</span><span><a href="${AKTUAL}">${esc(t.desk)}</a> · <a href="${desk}">${lang === 'en' ? 'Edition network' : 'Mreža izdanja'}</a> · <a href="${alternate}" hreflang="${t.other}" lang="${t.other}">${lang === 'en' ? 'Hrvatski' : 'English'}</a></span></div></div>
 <main id="main">
 <div class="hero"><div class="wrap">
+  <div class="house"><img src="/assets/brand/aktual-media-en-1200.webp" alt="AKTUAL MEDIA — world edition" width="167" height="48" decoding="async"></div>
   <p class="k">${esc(t.kicker)} · ${esc(site.name)}</p>
   <h1>${esc(site.name)} — ${lang === 'en' ? 'every page under AKTUAL MEDIA' : 'sve stranice pod AKTUAL MEDIA'}</h1>
   <p class="sub">${esc(tagline)}</p>
@@ -514,6 +536,7 @@ function editionPage(lang, site, { sites, pages }) {
 </main>
 <footer><div class="wrap">
   <p>${esc(t.footer)}</p>
+  <p class="iz-tags"><a href="/gnk-aktual/">#AKTUALMEDIA</a> · <a href="/gnk-aktual/">#GNKASG</a></p>
   <p>© 2026 AKTUAL MEDIA d.o.o. · <a href="/nermin-sefic/">Nermin Sefić</a> · ${lang === 'en' ? 'Editor and director' : 'Urednik i direktor'} · <a href="${desk}">${lang === 'en' ? 'Network index' : 'Popis mreže'}</a></p>
 </div></footer>
 </body>
@@ -569,11 +592,11 @@ function tagsPage(lang, { sites, pages }) {
   const hashtags = [...new Set([...deskHashtags(sites), ...ordered.map(([tag]) => tag)])].slice(0, 20);
   const hashtagWords = hashtags.map((tag) => tag.replace('#', ''));
   const title = lang === 'en'
-    ? `All hashtags of the network — every AKTUAL MEDIA edition | GNK ASG`
-    : `Sve oznake mreže — hashtagovi svih izdanja AKTUAL MEDIA | GNK ASG`;
+    ? `Every AKTUAL MEDIA hashtag, edition by edition | GNK ASG`
+    : `Sve oznake mreže AKTUAL MEDIA, izdanje po izdanje | GNK ASG`;
   const description = lang === 'en'
-    ? `All ${ordered.length} hashtags used across the six editions of the AKTUAL MEDIA network, with every page that carries them. One publisher, one editor, two languages: every tag opens the exact texts it marks.`
-    : `Svih ${ordered.length} oznaka koje koristi šest izdanja mreže AKTUAL MEDIA, uz svaku stranicu koja ih nosi. Jedan izdavač, jedan urednik, dva jezika: svaka oznaka vodi na točno one tekstove koje označava.`;
+    ? `All hashtags used across the six editions of the AKTUAL MEDIA network, with every page that carries them — one publisher, one editor, two languages.`
+    : `Sve oznake koje koristi šest izdanja mreže AKTUAL MEDIA, uz svaku stranicu koja ih nosi — jedan izdavač, jedan urednik, dva jezika.`;
   const jsonld = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -658,14 +681,21 @@ function tagsPage(lang, { sites, pages }) {
 <meta name="twitter:description" content="${esc(description)}">
 <meta name="twitter:image" content="${OG}">
 <meta name="twitter:image:alt" content="AKTUAL MEDIA — ${lang === 'en' ? 'hashtags of the network' : 'oznake mreže'}">
-<style>${CSS}</style>
+<style>${CSS}\n${HOUSE_CSS}</style>
 <script type="application/ld+json">${JSON.stringify(jsonld)}</script>
+<meta name="editor" content="Nermin Sefić">
+<meta property="article:tag" content="#AKTUALMEDIA">
+<meta property="article:tag" content="#GNKASG">
+<script type="application/ld+json" id="network-entity-v1">${entityGraphJson()}</script>
+<link rel="author" href="https://gnk-asg.hr/nermin-sefic/">
 </head>
 <body>
 <a class="skip" href="#main">${lang === 'en' ? 'Skip to content' : 'Preskoči na sadržaj'}</a>
+${houseRibbon({ lang })}
 <div class="top"><div class="wrap"><span>AKTUAL MEDIA d.o.o. · ${esc(t.kicker)}</span><span><a href="${AKTUAL}">${esc(t.desk)}</a> · <a href="${desk}">${lang === 'en' ? 'Edition network' : 'Mreža izdanja'}</a> · <a href="${alternate}" hreflang="${t.other}" lang="${t.other}">${lang === 'en' ? 'Hrvatski' : 'English'}</a></span></div></div>
 <main id="main">
 <div class="hero"><div class="wrap">
+  <div class="house"><img src="/assets/brand/aktual-media-en-1200.webp" alt="AKTUAL MEDIA — world edition" width="167" height="48" decoding="async"></div>
   <p class="k">${esc(t.kicker)} · ${lang === 'en' ? 'hashtags' : 'oznake'}</p>
   <h1>${lang === 'en' ? 'All hashtags of the network' : 'Sve oznake mreže'}</h1>
   <p class="sub">${esc(description)}</p>
@@ -681,6 +711,7 @@ ${blocks}
 </main>
 <footer><div class="wrap">
   <p>${esc(t.footer)}</p>
+  <p class="iz-tags"><a href="/gnk-aktual/">#AKTUALMEDIA</a> · <a href="/gnk-aktual/">#GNKASG</a></p>
   <p>© 2026 AKTUAL MEDIA d.o.o. · <a href="/nermin-sefic/">Nermin Sefić</a> · ${lang === 'en' ? 'Editor and director' : 'Urednik i direktor'} · <a href="${desk}">${lang === 'en' ? 'Network index' : 'Popis mreže'}</a></p>
 </div></footer>
 </body>
@@ -864,6 +895,8 @@ export function buildAktualNetwork(portalRoot, { sites, pages, today }) {
   <head><title>AKTUAL MEDIA — mreža izdanja</title><ownerName>AKTUAL MEDIA d.o.o.</ownerName></head>
   <body>
     <outline text="AKTUAL MEDIA — sve stranice mreže" title="AKTUAL MEDIA — sve stranice mreže" type="rss" xmlUrl="${SITE}/mreza/feed.xml" htmlUrl="${DESK_HR}"/>
+    <outline text="Glavni gradovi" title="Glavni gradovi" type="rss" xmlUrl="${SITE}/glavni-gradovi/feed.xml" htmlUrl="${SITE}/glavni-gradovi/"/>
+    <outline text="Capitals (EN)" title="Capitals (EN)" type="rss" xmlUrl="${SITE}/en/capitals/feed.xml" htmlUrl="${SITE}/en/capitals/"/>
 ${sites.map((site) => `    <outline text="${esc(site.name)}" title="${esc(site.name)}" type="rss" xmlUrl="${site.outputs.feed}" htmlUrl="${site.url}/"/>
     <outline text="${esc(site.name)} (EN)" title="${esc(site.name)} (EN)" type="rss" xmlUrl="${site.outputs.feedEn || `${site.url}/en/feed.xml`}" htmlUrl="${site.url}/en/"/>`).join('\n')}
   </body>

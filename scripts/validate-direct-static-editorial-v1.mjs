@@ -38,6 +38,18 @@ const CANONICAL_ALIAS_TARGETS = new Map([
     canonical: 'https://gnk-asg.hr/autorske-objave/hrvatski-softver-izvoz-nevidljivi-lider.html',
     targetFile: 'apps/portal/autorske-objave/hrvatski-softver-izvoz-nevidljivi-lider.html',
   }],
+  /* Dvije putanje istog izvještaja o prihodima: kanonska je /aktual/…, a
+     /objave/ i /komentari/ su namjerno noindex-preslike (svaka nosi samo
+     naslov i vezu dalje). Bez ovog upisa validator bi ih mjerio kao zasebne
+     članke i tražio im tijelo, slike i unutarnje veze kojih u preslici nema. */
+  ['apps/portal/objave/gnk-asg-504-milijuna-eura-prihoda/index.html', {
+    canonical: 'https://gnk-asg.hr/aktual/gnk-asg-504-milijuna-eura-prihoda/',
+    targetFile: 'apps/portal/aktual/gnk-asg-504-milijuna-eura-prihoda/index.html',
+  }],
+  ['apps/portal/komentari/gnk-asg-504-milijuna-eura-prihoda/index.html', {
+    canonical: 'https://gnk-asg.hr/aktual/gnk-asg-504-milijuna-eura-prihoda/',
+    targetFile: 'apps/portal/aktual/gnk-asg-504-milijuna-eura-prihoda/index.html',
+  }],
 ]);
 const segmenter = typeof Intl.Segmenter === 'function'
   ? new Intl.Segmenter('hr', { granularity: 'word' })
@@ -307,9 +319,14 @@ function validate(file) {
   if (h1Count !== 1) errors.push(`expected exactly one H1 inside article/main; found ${h1Count}`);
   // A technical publication refresh must not force an artificial rewrite of an
   // unchanged legacy article. New or text-edited copy still has to meet the floor.
-  if (!copyUnchanged && wordCount < minimumWords) errors.push(`visible article body has ${wordCount} words; minimum is ${minimumWords}`);
-  if (internalLinks.size < MIN_INTERNAL_LINKS) errors.push(`article has ${internalLinks.size} unique internal links; minimum is ${MIN_INTERNAL_LINKS}`);
-  if (!localImages.length) errors.push('article has no local image');
+  if (!canonicalAlias && !copyUnchanged && wordCount < minimumWords) errors.push(`visible article body has ${wordCount} words; minimum is ${minimumWords}`);
+  /* Preslika (registered alias) nije članak: ona nosi naslov, opis i vezu na
+     kanonski tekst. Zato se od nje ne traži tijelo, slike ni unutarnje veze —
+     ali se i dalje traži točan kanon, jedan H1 i ispravne meta oznake. */
+  if (!canonicalAlias) {
+    if (internalLinks.size < MIN_INTERNAL_LINKS) errors.push(`article has ${internalLinks.size} unique internal links; minimum is ${MIN_INTERNAL_LINKS}`);
+    if (!localImages.length) errors.push('article has no local image');
+  }
 
   const requiredMeta = [
     ['og:title', metaContent(html, 'og:title', 'property')],

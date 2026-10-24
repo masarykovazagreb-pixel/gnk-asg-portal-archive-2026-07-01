@@ -1,0 +1,266 @@
+#!/usr/bin/env node
+/**
+ * GLAVNI GRADOVI — ugovor, ne popis želja.
+ *
+ * Ovaj test ne provjerava izgled stranice (to radi test-network-atlas-v1), nego
+ * ugovor između tri popisa:
+ *
+ *   capitals.json  — koje zemlje pokrivamo i iz koje prijestolnice
+ *   channels.json  — koja izdanja stvarno postoje, na kojem jeziku i kontinentu
+ *   sitemap.xml    — koje su adrese javno objavljene
+ *
+ * Pravila:
+ *   • svaka zemlja ima točno jedan glavni grad i jedinstven slug;
+ *   • izdanje označeno kao „live" mora postojati u channels.json, na istom
+ *     jeziku, kontinentu i u istoj vremenskoj zoni;
+ *   • prijestolnica u pripremi ne smije imati izdanje, ali mora imati grad
+ *     koji tu zemlju pokriva danas („seats") — inače čitatelj ostaje bez puta;
+ *   • sve 34 adrese (17 hrvatskih + 17 engleskih) moraju biti u sitemapu.
+ *
+ * Test ne piše ništa i ne pristupa mreži.
+ */
+import { existsSync, readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const HERE = dirname(fileURLToPath(import.meta.url));
+const ROOT = join(HERE, '..');
+const readJson = (path) => JSON.parse(readFileSync(path, 'utf8'));
+
+const CAPITALS = readJson(join(ROOT, 'apps', 'region', 'capitals.json'));
+const CHANNELS = readJson(join(ROOT, 'apps', 'region', 'channels.json')).channels;
+const capList = CAPITALS.capitals || [];
+const channelBy = (id) => CHANNELS.find((channel) => channel.id === id) || null;
+
+const failures = [];
+const notes = [];
+const fail = (message) => failures.push(message);
+
+/* ---------- 1. popis ---------- */
+
+const seenSlugs = new Set();
+const seenCountries = new Set();
+for (const cap of capList) {
+  for (const field of ['countryCode', 'country', 'capital', 'capitalEn', 'lang', 'continent', 'timezone', 'slug', 'status']) {
+    if (!cap[field]) fail(`${cap.capital || cap.countryCode}: nedostaje polje ${field}`);
+  }
+  if (seenSlugs.has(cap.slug)) fail(`${cap.slug}: dvostruki slug`);
+  seenSlugs.add(cap.slug);
+  if (seenCountries.has(cap.countryCode)) fail(`${cap.countryCode}: dvije prijestolnice za istu zemlju`);
+  seenCountries.add(cap.countryCode);
+  if (!['live', 'preparing'].includes(cap.status)) fail(`${cap.slug}: status "${cap.status}" nije ni live ni preparing`);
+}
+
+const live = capList.filter((c) => c.status === 'live');
+const preparing = capList.filter((c) => c.status !== 'live');
+
+/* ---------- 2. živa prijestolnica = stvarno izdanje ---------- */
+
+for (const cap of live) {
+  if (!cap.edition) { fail(`${cap.slug}: status live, ali nema izdanja`); continue; }
+  const channel = channelBy(cap.edition);
+  if (!channel) { fail(`${cap.slug}: izdanje ${cap.edition} ne postoji u channels.json`); continue; }
+  if (channel.lang !== cap.lang) fail(`${cap.slug}: izdanje je na ${channel.lang}, popis kaže ${cap.lang}`);
+  if (channel.countryCode !== cap.countryCode) fail(`${cap.slug}: izdanje pokriva ${channel.countryCode}, popis kaže ${cap.countryCode}`);
+  if (channel.continent !== cap.continent) fail(`${cap.slug}: kontinent izdanja ${channel.continent} ≠ ${cap.continent}`);
+  if (channel.timezone !== cap.timezone) fail(`${cap.slug}: zona izdanja ${channel.timezone} ≠ ${cap.timezone}`);
+  if (!Array.isArray(channel.sources) || channel.sources.length < 4) fail(`${cap.slug}: izdanje ima manje od četiri izvora`);
+}
+
+/* ---------- 3. prijestolnica u pripremi ima put do izdanja ---------- */
+
+for (const cap of preparing) {
+  if (cap.edition) fail(`${cap.slug}: status preparing, ali ima izdanje ${cap.edition}`);
+  const seats = cap.seats ? channelBy(cap.seats) : null;
+  if (!seats) { fail(`${cap.slug}: priprema bez polja seats — čitatelj ne zna gdje je zemlja danas`); continue; }
+  if (seats.countryCode !== cap.countryCode) fail(`${cap.slug}: seats ${cap.seats} pokriva ${seats.countryCode}, ne ${cap.countryCode}`);
+  if (!cap.note || cap.note.length < 40) fail(`${cap.slug}: priprema bez objašnjenja (note)`);
+  if (channelBy(cap.slug)) fail(`${cap.slug}: grad već ima kanal, ali popis ga vodi kao pripremu`);
+}
+
+/* Zanimljivost koju test čuva: zemlja može biti pokrivena iz grada koji nije
+   glavni — tada prijestolnica mora biti na popisu, makar u pripremi. */
+for (const channel of CHANNELS) {
+  const cap = capList.find((c) => c.countryCode === channel.countryCode);
+  if (!cap) fail(`${channel.id}: izdanje pokriva ${channel.countryCode}, a te zemlje nema na popisu prijestolnica`);
+}
+
+/* ---------- 3b. veza mora biti obostrana ---------- */
+
+/* Stranica prijestolnice vodi na izdanje; izdanje mora voditi natrag na
+   stranicu prijestolnice. Jednosmjerna veza je slijepa ulica. */
+for (const cap of capList) {
+  const channel = cap.edition ? channelBy(cap.edition) : cap.seats ? channelBy(cap.seats) : null;
+  if (!channel) continue;
+  const rel = `apps/portal/kanal/${channel.id}/index.html`;
+  const file = join(ROOT, rel);
+  if (!existsSync(file)) { fail(`${rel}: nedostaje`); continue; }
+  const html = readFileSync(file, 'utf8');
+  const target = channel.lang === 'en' ? `/en/capitals/${cap.slug}/` : `/glavni-gradovi/${cap.slug}/`;
+  if (!html.includes(target)) fail(`${rel}: ne vodi na stranicu prijestolnice ${target}`);
+  if (!/hreflang="(en|hr)">(?:[^<]*): /.test(html)) fail(`${rel}: veza na prijestolnicu nema hreflang`);
+}
+
+/* ---------- 4. stranice i sitemap ---------- */
+
+const dataFile = join(ROOT, 'apps', 'portal', 'data', 'glavni-gradovi-v1.json');
+if (!existsSync(dataFile)) fail('data/glavni-gradovi-v1.json nedostaje — pokreni node apps/region/engine/hub.mjs');
+else {
+  const data = readJson(dataFile);
+  if (data.pages !== capList.length * 2) fail(`data: ${data.pages} stranica, očekivano ${capList.length * 2}`);
+  for (const cap of capList) {
+    const entry = (data.capitals || []).find((c) => c.slug === cap.slug);
+    if (!entry) { fail(`${cap.slug}: nema zapisa u glavni-gradovi-v1.json`); continue; }
+    if (entry.page !== `https://gnk-asg.hr/glavni-gradovi/${cap.slug}/`) fail(`${cap.slug}: page adresa nije kanonska`);
+    if (entry.pageEn !== `https://gnk-asg.hr/en/capitals/${cap.slug}/`) fail(`${cap.slug}: pageEn adresa nije kanonska`);
+    if (cap.status === 'live' && entry.portal !== `https://gnk-world-${cap.edition}.pages.dev/`) fail(`${cap.slug}: portal ne odgovara izdanju`);
+    if (cap.status !== 'live' && entry.portal !== null) fail(`${cap.slug}: priprema ne smije imati portal`);
+  }
+}
+
+const sitemapFile = join(ROOT, 'apps', 'portal', 'glavni-gradovi', 'sitemap.xml');
+if (!existsSync(sitemapFile)) fail('glavni-gradovi/sitemap.xml nedostaje — pokreni node apps/region/engine/hub.mjs');
+else {
+  const xml = readFileSync(sitemapFile, 'utf8');
+  for (const cap of capList) {
+    if (!xml.includes(`<loc>https://gnk-asg.hr/glavni-gradovi/${cap.slug}/</loc>`)) fail(`sitemap: nema /glavni-gradovi/${cap.slug}/`);
+    if (!xml.includes(`<loc>https://gnk-asg.hr/en/capitals/${cap.slug}/</loc>`)) fail(`sitemap: nema /en/capitals/${cap.slug}/`);
+  }
+  const count = (xml.match(/<loc>/g) || []).length;
+  if (count !== capList.length * 2) fail(`sitemap: ${count} adresa, očekivano ${capList.length * 2}`);
+}
+
+/* Skokovi na kontinent moraju imati cilj — inače je navigacija mrtva. */
+for (const rel of ['apps/portal/glavni-gradovi/index.html', 'apps/portal/en/capitals/index.html']) {
+  const file = join(ROOT, rel);
+  if (!existsSync(file)) continue;
+  const html = readFileSync(file, 'utf8');
+  const targets = [...html.matchAll(/href="#([^"]+)"/g)].map((match) => match[1]);
+  for (const target of new Set(targets)) {
+    if (!html.includes(`id="${target}"`)) fail(`${rel}: skok #${target} nema cilj`);
+  }
+  const continents = [...html.matchAll(/id="cgc-([^"]+)"/g)].map((match) => match[1]);
+  if (continents.length < 6) fail(`${rel}: ${continents.length} kontinenata, očekivano 6`);
+}
+
+const llmsFile = join(ROOT, 'apps', 'portal', 'glavni-gradovi', 'llms.txt');
+if (!existsSync(llmsFile)) fail('glavni-gradovi/llms.txt nedostaje — pokreni node apps/region/engine/hub.mjs');
+else {
+  const text = readFileSync(llmsFile, 'utf8');
+  for (const cap of capList) if (!text.includes(`https://gnk-asg.hr/glavni-gradovi/${cap.slug}/`)) fail(`llms.txt: nema ${cap.slug}`);
+  const listed = (text.match(/^- /gm) || []).length;
+  if (listed < capList.length) fail(`llms.txt: ${listed} stavki, očekivano najmanje ${capList.length}`);
+}
+
+const indexFile = join(ROOT, 'apps', 'portal', 'sitemap-index.xml');
+if (!existsSync(indexFile)) fail('sitemap-index.xml nedostaje');
+else if (!readFileSync(indexFile, 'utf8').includes('https://gnk-asg.hr/glavni-gradovi/sitemap.xml')) {
+  fail('sitemap-index.xml ne navodi glavni-gradovi/sitemap.xml');
+}
+
+/* ---------- 4b. atlas mreže ---------- */
+
+/* Atlas je slikovni ulaz u isti ugovor: svaka prijestolnica mora imati
+   karticu sa slikom i link, a stranica svoj kanonski par. Kartica bez slike
+   je upravo ono što ovaj test ne smije propustiti. */
+for (const [rel, canonical, hreflangs] of [
+  ['apps/portal/atlas/index.html', 'https://gnk-asg.hr/atlas/', ['hr', 'en', 'x-default']],
+  ['apps/portal/en/atlas/index.html', 'https://gnk-asg.hr/en/atlas/', ['hr', 'en', 'x-default']]
+]) {
+  const file = join(ROOT, rel);
+  if (!existsSync(file)) { fail(`${rel}: nedostaje — pokreni node apps/region/engine/hub.mjs`); continue; }
+  const html = readFileSync(file, 'utf8');
+  if (!html.includes(`<link rel="canonical" href="${canonical}">`)) fail(`${rel}: canonical nije ${canonical}`);
+  for (const hl of hreflangs) if (!html.includes(`hreflang="${hl}"`)) fail(`${rel}: nema hreflang ${hl}`);
+  if ((html.match(/<h1[ >]/g) || []).length !== 1) fail(`${rel}: h1 nije točno jedan`);
+  for (const img of html.matchAll(/<img\b[^>]*>/g)) {
+    if (!/\balt="[^"]+"/.test(img[0])) fail(`${rel}: slika bez alt teksta`);
+    if (!/\bsrc="[^"]+"/.test(img[0])) fail(`${rel}: slika bez izvora`);
+  }
+  for (const cap of capList) {
+    const target = rel.includes('/en/') ? `/en/capitals/${cap.slug}/` : `/glavni-gradovi/${cap.slug}/`;
+    if (!html.includes(`href="${target}"`)) fail(`${rel}: nema karticu za ${cap.slug}`);
+  }
+  if ((html.match(/class="at-card"/g) || []).length !== capList.length) fail(`${rel}: ${(html.match(/class="at-card"/g) || []).length} kartica, očekivano ${capList.length}`);
+}
+
+const atlasSitemap = join(ROOT, 'apps', 'portal', 'atlas', 'sitemap.xml');
+if (!existsSync(atlasSitemap)) fail('atlas/sitemap.xml nedostaje');
+else {
+  const xml = readFileSync(atlasSitemap, 'utf8');
+  if ((xml.match(/<loc>/g) || []).length !== 2) fail('atlas/sitemap.xml: očekivane dvije adrese');
+  if (!xml.includes('<loc>https://gnk-asg.hr/atlas/</loc>')) fail('atlas/sitemap.xml: nema /atlas/');
+  if (!xml.includes('<loc>https://gnk-asg.hr/en/atlas/</loc>')) fail('atlas/sitemap.xml: nema /en/atlas/');
+  if (!readFileSync(join(ROOT, 'apps', 'portal', 'sitemap-index.xml'), 'utf8').includes('https://gnk-asg.hr/atlas/sitemap.xml')) fail('sitemap-index.xml ne navodi atlas/sitemap.xml');
+}
+
+/* ---------- 4c. feedovi prijestolnica ---------- */
+
+/* Feed je obećanje strojnim čitateljima: ista adresa kao stranica, stvarni
+   datum zadnjeg zapisa i veza na izvornik. Ako feed izostane ili nosi
+   izmišljen datum, preglednik i agent čitaju nešto što ne postoji. */
+for (const [lang, dir] of [['hr', 'glavni-gradovi'], ['en', 'en/capitals']]) {
+  const jsonFile = join(ROOT, 'apps', 'portal', dir, 'feed.json');
+  const xmlFile = join(ROOT, 'apps', 'portal', dir, 'feed.xml');
+  if (!existsSync(jsonFile)) { fail(`${dir}/feed.json nedostaje`); continue; }
+  if (!existsSync(xmlFile)) { fail(`${dir}/feed.xml nedostaje`); continue; }
+
+  let feed = null;
+  try { feed = JSON.parse(readFileSync(jsonFile, 'utf8')); } catch { fail(`${dir}/feed.json se ne parsira`); }
+  if (feed) {
+    if (feed.version !== 'https://jsonfeed.org/version/1.1') fail(`${dir}/feed.json: verzija nije JSON Feed 1.1`);
+    if (feed.language !== lang) fail(`${dir}/feed.json: jezik ${feed.language}, očekivano ${lang}`);
+    if (!Array.isArray(feed.items) || feed.items.length !== capList.length) fail(`${dir}/feed.json: ${(feed.items || []).length} stavki, očekivano ${capList.length}`);
+    const ids = new Set((feed.items || []).map((item) => item.id));
+    if (ids.size !== capList.length) fail(`${dir}/feed.json: dvostruki id`);
+    for (const cap of capList) {
+      const expected = lang === 'en'
+        ? `https://gnk-asg.hr/en/capitals/${cap.slug}/`
+        : `https://gnk-asg.hr/glavni-gradovi/${cap.slug}/`;
+      if (!ids.has(expected)) fail(`${dir}/feed.json: nema ${cap.slug}`);
+    }
+    for (const item of feed.items || []) {
+      if (item.date_modified && Number.isNaN(new Date(item.date_modified).getTime())) fail(`${dir}/feed.json: datum nije ISO (${item.date_modified})`);
+      if (!/^https:\/\/gnk-asg\.hr\/assets\/izdanja\//.test(item.image || '')) fail(`${dir}/feed.json: slika nije s naše domene`);
+    }
+    const dates = (feed.items || []).map((item) => item.date_modified || '').filter(Boolean);
+    if (dates.some((date, i) => i > 0 && date > dates[i - 1])) fail(`${dir}/feed.json: datumi nisu poredani od novijeg`);
+  }
+
+  const xml = readFileSync(xmlFile, 'utf8');
+  if (!/<feed xmlns="http:\/\/www\.w3\.org\/2005\/Atom"/.test(xml)) fail(`${dir}/feed.xml: nije Atom`);
+  const entries = (xml.match(/<entry>/g) || []).length;
+  if (entries !== capList.length) fail(`${dir}/feed.xml: ${entries} zapisa, očekivano ${capList.length}`);
+  if ((xml.match(/<link href="https:\/\/gnk-asg\.hr\//g) || []).length < capList.length) fail(`${dir}/feed.xml: nema vezu na svaku prijestolnicu`);
+}
+
+/* Stranice moraju objaviti feed, inače ga nitko neće naći. */
+for (const rel of ['apps/portal/glavni-gradovi/index.html', 'apps/portal/en/capitals/index.html', 'apps/portal/glavni-gradovi/zagreb/index.html', 'apps/portal/en/capitals/zagreb/index.html', 'apps/portal/atlas/index.html']) {
+  const file = join(ROOT, rel);
+  if (!existsSync(file)) continue;
+  const html = readFileSync(file, 'utf8');
+  if (!html.includes('rel="alternate" type="application/feed+json"')) fail(`${rel}: ne nudi JSON feed`);
+  if (!html.includes('rel="alternate" type="application/atom+xml"')) fail(`${rel}: ne nudi Atom feed`);
+}
+
+/* ---------- 5. brojke ---------- */
+
+const continents = [...new Set(capList.map((c) => c.continent))];
+const languages = [...new Set(live.map((c) => c.lang))];
+if (continents.length < 6) notes.push(`pokriveno ${continents.length} kontinenata`);
+if (preparing.length !== 3) notes.push(`${preparing.length} prijestolnica u pripremi`);
+
+const result = {
+  ok: failures.length === 0,
+  version: 'GNK_ASG_CAPITALS_COMPLETENESS_V1_20261023',
+  capitals: capList.length,
+  live: live.length,
+  preparing: preparing.length,
+  pages: capList.length * 2,
+  continents: continents.length,
+  languages: languages.length,
+  notes,
+  failures
+};
+console.log(JSON.stringify(result, null, 2));
+if (!result.ok) process.exit(1);

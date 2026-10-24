@@ -92,9 +92,13 @@ function auditPortal(portal) {
     check(hrefs.has(norm(target.url)), `${portal.id}: naslovnica ne vodi na portal ${target.url}`);
   }
 
-  /* 3. Svaki osvrt vodi na kanonsku adresu pod gnk-asg.hr. */
+  /* 3. Svaki vlastiti osvrt vodi na kanonsku adresu pod gnk-asg.hr.
+     Blok razmjene namjerno nosi naslove DRUGIH izdanja — i oni su /clanak/
+     adrese, ali tuđe. Zato se razmjena promatra zasebno (svoj gate), a ovdje
+     ostaje pravilo za vlastite tekstove portala. */
   const articlePrefix = `${portal.sourceBase}clanak/`;
-  const articleLinks = links(first).filter((link) => link.href.includes('/clanak/'));
+  const withoutExchange = first.replace(/<section class="am-exchange"[\s\S]*?<\/section>/g, '');
+  const articleLinks = links(withoutExchange).filter((link) => link.href.includes('/clanak/'));
   check(articleLinks.length >= 5, `${portal.id}: premalo linkova na osvrte (${articleLinks.length})`);
   for (const link of articleLinks) {
     check(link.href.startsWith(articlePrefix), `${portal.id}: osvrt ne vodi na ${articlePrefix} (${link.href})`);
@@ -117,7 +121,19 @@ function auditPortal(portal) {
     const relative = file.slice(dir.length + 1).replace(/index\.html$/, '');
     const canonical = (html.match(/<link rel="canonical" href="([^"]+)"/) || [])[1] || '';
     check(Boolean(canonical), `${portal.id}/${relative}: nema canonical`);
-    check(canonical.startsWith(`${base}/`) || canonical === base, `${portal.id}/${relative}: canonical izvan portala (${canonical})`);
+    /* Preneseni tekstovi (kolumne i prenos) svjesno pokazuju na izvornik:
+       kopija ne smije preuzeti matičnu adresu, inače devet domena konkurira
+       jedna drugoj za isti tekst. Sve ostale stranice portala ostaju
+       isključivo vlastite. */
+    const syndicated = ((relative.startsWith('kolumne/') || relative.startsWith('prenos/'))
+      && relative.replace(/\/+$/, '').split('/').length >= 2);
+    if (syndicated) {
+      check(/^https:\/\/gnk-asg\.hr\/|^https:\/\/gnk-asg-kanal\.pages\.dev\//.test(canonical),
+        `${portal.id}/${relative}: canonical prenesenog teksta ne vodi na naš izvornik (${canonical})`);
+    } else {
+      check(canonical.startsWith(`${base}/`) || canonical === base, `${portal.id}/${relative}: canonical izvan portala (${canonical})`);
+    }
+
     check(!canonicals.has(canonical), `${portal.id}/${relative}: duplikat canonicala (${canonical})`);
     canonicals.add(canonical);
     check((html.match(/data-mesh="v1"/g) || []).length === 1, `${portal.id}/${relative}: blok mreže nije točno jedan`);

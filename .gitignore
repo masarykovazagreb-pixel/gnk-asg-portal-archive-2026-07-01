@@ -13,6 +13,9 @@
 .wrangler/
 build/
 coverage/
+# Engleska stranica pokrivenosti ima rutu /en/coverage/ — to je javna
+# stranica, ne izvještaj o pokrivenosti koda. Pravilo iznad je za alate.
+!apps/portal/en/coverage/
 dist/
 node_modules/
 reports/

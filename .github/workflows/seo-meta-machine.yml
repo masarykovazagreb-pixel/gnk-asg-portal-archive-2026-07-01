@@ -48,6 +48,7 @@ jobs:
         run: |
           node apps/sites/build.mjs
           node apps/sites/engine/hub.mjs
+          node scripts/apply-network-entity-v1.mjs
 
       - name: Mrežni gate (svježi izlaz)
         shell: bash

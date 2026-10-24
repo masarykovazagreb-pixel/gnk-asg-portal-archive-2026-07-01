@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { isProtectedEditorialRoute as protectedPath } from './lib/editorial-route-protection-v1.mjs';
 import { limitSeoDescription } from './lib/seo-description-v1.mjs';
+import { applyHouseRibbon } from './lib/house-ribbon-v1.mjs';
 import {
   SITE as CANONICAL_SITE,
   PERSON_URL,
@@ -466,6 +467,8 @@ for (const item of registry.items || []) {
   }
   html = patchBody(html, item, image);
   html = patchJsonLd(html, image, item, canonical, isNermin(item));
+  /* Svaka nova objava rađa se sa znakom kuće — ne čeka noćni prolaz. */
+  html = applyHouseRibbon(html).html;
   if (html !== before) {
     changed++;
     changedRoutes.push(item.path);

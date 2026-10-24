@@ -3,7 +3,8 @@
  * SEO MATRICA — gate za meta sloj cijele mreže.
  *
  * Matricu gradi `apps/sites/engine/hub.mjs` iz stvarnih datoteka. Ovaj test
- * provjerava da je zapis potpun (76 ruta), da nijedna ruta nema otvoren
+ * provjerava da je zapis potpun (116 ruta: izdanja, mrežni deskovi,
+ * 17 prijestolnica na dva jezika i dva atlasa), da nijedna ruta nema otvoren
  * problem i da svaka nosi hashtagove, keywords i meta ugovor.
  *
  * Test ne pristupa mreži. Ako padne, popravlja se generator ili matrica —
@@ -24,12 +25,31 @@ const matrix = JSON.parse(readFileSync(FILE, 'utf8'));
 if (matrix.version !== 'GNK_ASG_SEO_MATRIX_V1_20261022') fails.push(`neočekivana verzija ${matrix.version}`);
 if (matrix.publisher?.name !== 'AKTUAL MEDIA d.o.o.') fails.push('izdavač nije AKTUAL MEDIA');
 if (matrix.editor?.name !== 'Nermin Sefić') fails.push('nema urednika');
-if (matrix.totals?.routes !== 78) fails.push(`ruta ${matrix.totals?.routes} (očekivano 78)`);
-if (matrix.totals?.ok !== 78) fails.push(`čistih ruta ${matrix.totals?.ok}/78`);
+if (matrix.totals?.routes !== 116) fails.push(`ruta ${matrix.totals?.routes} (očekivano 116)`);
+if (matrix.totals?.ok !== 116) fails.push(`čistih ruta ${matrix.totals?.ok}/116`);
 if (matrix.totals?.issues !== 0) fails.push(`otvorenih problema ${matrix.totals?.issues}`);
 if (matrix.totals?.score !== 100) fails.push(`prosječna ocjena ${matrix.totals?.score}`);
 if ((matrix.issues || []).length) fails.push(`matrica ima problema: ${matrix.issues.slice(0, 5).join(' | ')}`);
 if (matrix.totals?.hashtags < 30) fails.push(`samo ${matrix.totals?.hashtags} različitih hashtagova`);
+
+/* Prijestolnice moraju biti u matrici s oba jezika: 17 gradova × 2 rute,
+   plus indeks i atlas na svakom jeziku. Ako se stranica izgradi a matrica je
+   ne vidi, SEO sloj tiho zaostaje — zato je ovo zaseban tvrdi uvjet. */
+const capitalsFile = JSON.parse(readFileSync(join(ROOT, 'apps', 'region', 'capitals.json'), 'utf8'));
+const capitalSlugs = (capitalsFile.capitals || []).map((capital) => capital.slug);
+const capitalRoutes = (matrix.routes || []).filter((route) => route.kind === 'capital');
+if (capitalRoutes.length !== capitalSlugs.length * 2) fails.push(`prijestolnica u matrici ${capitalRoutes.length}/${capitalSlugs.length * 2}`);
+for (const slug of capitalSlugs) {
+  for (const url of [`https://gnk-asg.hr/glavni-gradovi/${slug}/`, `https://gnk-asg.hr/en/capitals/${slug}/`]) {
+    const route = capitalRoutes.find((item) => item.url === url);
+    if (!route) { fails.push(`${url}: nije u matrici`); continue; }
+    if (!(route.jsonld || []).includes('City')) fails.push(`${url}: JSON-LD bez City`);
+    if ((route.keywords || 0) < 20) fails.push(`${url}: samo ${route.keywords} ključnih riječi`);
+  }
+}
+for (const url of ['https://gnk-asg.hr/glavni-gradovi/', 'https://gnk-asg.hr/en/capitals/', 'https://gnk-asg.hr/atlas/', 'https://gnk-asg.hr/en/atlas/']) {
+  if (!(matrix.routes || []).some((route) => route.url === url && route.kind === 'capital-index')) fails.push(`${url}: indeks nije u matrici`);
+}
 
 const editions = new Map((matrix.editions || []).map((edition) => [edition.slug, edition]));
 if (editions.size !== 6) fails.push(`izdanja ${editions.size}/6`);

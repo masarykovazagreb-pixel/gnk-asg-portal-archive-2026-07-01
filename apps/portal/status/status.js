@@ -15,7 +15,7 @@
     return tr;
   }
 
-  var STATE_LABEL = { operational: 'Operativno', degraded: 'Smanjena kvaliteta', fresh: 'Ažurno', stale: 'Zastarjelo', unknown: 'Nepoznato' };
+  var STATE_LABEL = { operational: 'Operativno', degraded: 'Smanjena kvaliteta', fresh: 'Ažurno', stale: 'Zastarjelo', manual: 'Ručna provjera', unknown: 'Nepoznato' };
   function label(s) { return STATE_LABEL[s] || s; }
 
   function render(data) {

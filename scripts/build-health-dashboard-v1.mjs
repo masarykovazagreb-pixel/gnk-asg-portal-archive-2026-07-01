@@ -16,6 +16,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { figureHtml, artStylesheet } from './lib/page-art-v1.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PORTAL = path.join(ROOT, 'apps/portal');
@@ -24,7 +25,10 @@ const SITE = 'https://gnk-asg.hr';
 
 /* Popis izdanja dolazi iz channels.json: dashboard ne smije ostati na osam
    gradova kad se doda novo izdanje. */
-const CITY_IDS = JSON.parse(fs.readFileSync(path.join(ROOT, 'apps', 'region', 'channels.json'), 'utf8')).channels.map((c) => c.id);
+const CHANNELS = JSON.parse(fs.readFileSync(path.join(ROOT, 'apps', 'region', 'channels.json'), 'utf8')).channels;
+const CITY_IDS = CHANNELS.map((c) => c.id);
+const CITY_COUNT = CITY_IDS.length;
+const CITY_LANGS = new Set(CHANNELS.map((c) => c.lang)).size;
 const FRESH_HOURS = 6;
 const WARN_HOURS = 24;
 
@@ -142,7 +146,7 @@ const COPY = {
     h1: 'Zdravlje sustava',
     lead: 'Sve na ovoj stranici izračunato je iz datoteka u repozitoriju u trenutku gradnje. Nema živih proba dostupnosti i nema izmišljenih brojeva: svaki redak pokazuje odakle dolazi.',
     generated: 'Izračunato',
-    secChannels: 'Osam gradskih kanala',
+    secChannels: `${CITY_COUNT} gradskih kanala na ${CITY_LANGS} jezika`,
     colChannel: 'Kanal',
     colItems: 'Stavke',
     colNewest: 'Najnovije',
@@ -164,7 +168,7 @@ const COPY = {
       ['Indeks HR/EN', 'Dnevna provjera pariteta; ako se raziđu, otvara se popravak uz zelene provjere.', '/workers/grupacije/'],
       ['Flota', 'Popis svih automatizacija, rasporeda i zadnjih ishoda.', '/automation-status/flota/'],
       ['Svježina', 'Prag: 6 h je svježe, do 24 h kasni, nakon toga zastarjelo.', '/status/'],
-      ['Izdanja', 'Osam gradskih kanala, deset provjerljivih tekstova dnevno.', '/izdanja/'],
+      ['Izdanja', `${CITY_COUNT} gradskih kanala na ${CITY_LANGS} jezika; svaki tekst nosi izvor i vrijeme objave.`, '/izdanja/'],
     ],
     nav: [['Početna', '/'], ['Izdanja', '/izdanja/'], ['AKTUAL MEDIA', '/gnk-aktual/'], ['Flota', '/automation-status/flota/'], ['Status', '/status/']],
     tags: ['#AKTUALMEDIA', '#GNKASG', '#Transparentnost', '#Automatizacija'],
@@ -175,12 +179,12 @@ const COPY = {
   en: {
     lang: 'en',
     title: 'System health — channel freshness and automation status | GNK ASG',
-    description: 'Public health board for the GNK ASG portal: freshness of eight city channels, the central feed and automation status, computed from the repository.',
+    description: `Public health board for the GNK ASG portal: freshness of ${CITY_COUNT} city channels in ${CITY_LANGS} languages, the central feed and automation status, computed from the repository.`,
     eyebrow: 'Public snapshot',
     h1: 'System health',
     lead: 'Everything on this page is computed from repository files at build time. There are no live uptime probes and no invented numbers: every row shows where it comes from.',
     generated: 'Computed',
-    secChannels: 'Eight city channels',
+    secChannels: `${CITY_COUNT} city channels in ${CITY_LANGS} languages`,
     colChannel: 'Channel',
     colItems: 'Items',
     colNewest: 'Newest',
@@ -281,6 +285,17 @@ function page(lang) {
     },
   ].map((o) => `<script type="application/ld+json">${JSON.stringify(o)}</script>`).join('\n');
 
+  const hero = figureHtml({
+    portal: PORTAL,
+    art: 'desk/art/svijet',
+    alt: lang === 'hr'
+      ? 'Ilustracija deska Svijet: zemljovid i slojevi'
+      : 'World desk illustration: map and layers',
+    caption: lang === 'hr'
+      ? 'Ploča zdravlja računa se iz datoteka u repozitoriju pri svakoj gradnji.'
+      : 'The health board is computed from repository files on every build.'
+  });
+
   return `<!doctype html>
 <html lang="${lang}">
 <head>
@@ -302,13 +317,17 @@ function page(lang) {
 <meta property="og:url" content="${canonical}">
 <meta property="og:site_name" content="GNK ASG">
 <meta property="og:locale" content="${lang === 'hr' ? 'hr_HR' : 'en_GB'}">
-<meta property="og:image" content="${SITE}/assets/gnk-asg-social-card.png">
+<meta property="og:image" content="${SITE}/assets/desk/art/svijet-1200.webp">
+<meta property="og:image:alt" content="${lang === 'hr' ? 'Ilustracija deska Svijet: zemljovid i slojevi' : 'World desk illustration: map and layers'}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(t.title)}">
 <meta name="twitter:description" content="${esc(t.description)}">
+<meta name="twitter:image" content="${SITE}/assets/desk/art/svijet-1200.webp">
+<meta name="twitter:image:alt" content="${lang === 'hr' ? 'Ilustracija deska Svijet: zemljovid i slojevi' : 'World desk illustration: map and layers'}">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any">
 <link rel="stylesheet" href="/assets/gnk-design-v1.css?v=20261020-health">
 <link rel="stylesheet" href="/assets/zdravlje-v1.css?v=20261020-health">
+<link rel="stylesheet" href="/assets/page-art-v1.css">
 ${jsonld}
 </head>
 <body class="gnk-page">
@@ -324,6 +343,8 @@ ${jsonld}
   <p class="gnk-eyebrow">${esc(t.eyebrow)}</p>
   <h1 class="gnk-h1">${esc(t.h1)}</h1>
   <p class="gnk-lead">${esc(t.lead)}</p>
+
+  ${hero}
 
   <div class="hz-hero hz-hero-${overall}">
     <div class="hz-ring" role="img" aria-label="${esc(t.overall[overall])}"><span>${attention}</span></div>

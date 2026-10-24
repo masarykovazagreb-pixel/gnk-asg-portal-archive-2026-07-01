@@ -85,6 +85,7 @@ try {
     'scripts/lib/editorial-route-protection-v1.mjs',
     'scripts/lib/editorial-attribution-v1.mjs',
     'scripts/lib/seo-description-v1.mjs',
+    'scripts/lib/house-ribbon-v1.mjs',
   ]) {
     write(relative, fs.readFileSync(relative, 'utf8'));
   }
