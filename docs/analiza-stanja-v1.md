@@ -14,7 +14,7 @@
 3. **Svih 73 obaveznih provjera je zeleno** (`73/73`) — prvi put u ovom ciklusu.
 4. **Osvježavanje radi na 9.551 od 9.557 stranica** (99,94 %); modul više nije samo na naslovnicama.
 5. **Slike:** 329.174 `<img>` taga, 313.099 s `loading="lazy"` (95,1 %), **nijedna bez alt-a, dimenzija ili datoteke**.
-6. **Pristupačnost:** 7.540 stranica ima „preskoči na sadržaj"; **2.017 stranica (25,4 %) ga nema** — gotovo sve u `podijeli`, `objave`, `galerija`, `visual-index`, `komentari`, `digital-workforce`.
+6. **Pristupačnost:** **9.535 od 9.557 stranica (99,8 %) ima „preskoči na sadržaj"** — na početku dana imalo ga je 7.540; dodano je 1.995 stranica, a preostale 22 su administracija i preusmjerivači.
 7. **Dizajn nije isti na svim webovima** — ovo je najveći otvoreni problem i glavni razlog dojma „grozno izgleda".
 8. **Crni krugovi i prazne pločice** nisu kozmetika: to su mjesta gdje predložak nije dobio sliku. Popravljeno je 142 slike u 84 datoteke, ali predložak još nije svugdje isti.
 9. **Tekstovi zaostaju za stvarnim stanjem** tamo gdje brojeve piše čovjek, a ne generator; od danas svi generatori čitaju isti izvor brojeva.
@@ -81,6 +81,9 @@ Zeleno na `node scripts/test-all-v1.mjs`, 24. 10. 2026., **73/73**:
 - 20 praznih `alt` opisa zamijenjeno stvarnim opisima (trgovina, `gnk-aktual`).
 - Modul osvježavanja sada fizički postoji na **svakom** webu i ubacuje se u generatoru (sindikacija kolumni, kanal, sites) — prije je 186 stranica kolumni ostajalo bez njega.
 - `test-all` podignut sa 64/73 na **73/73**.
+- **„Preskoči na sadržaj" dodan na 1.995 stranica** (sloj `scripts/apply-skip-link-v1.mjs` za rukom pisane stranice + predlošci za generirane); pokrivenost 99,8 %.
+- **Modul osvježavanja fizički postoji na svih šest webova**, uključujući ARHIVU, DNEVNIK i svih 572 stranice samostalnih izdanja.
+- **Ikona i znak kuće** sada su i na 404 stranicama; sve generirane stranice nose `rel="icon"`.
 
 ---
 
@@ -95,8 +98,9 @@ Zeleno na `node scripts/test-all-v1.mjs`, 24. 10. 2026., **73/73**:
 
 ### 4.2 Pristupačnost
 
-- **2.017 stranica bez „preskoči na sadržaj"** — najviše: `podijeli` 769/769, `en` 475/498, `objave` 162/162, `galerija` 160/160, `visual-index` 122/122, `komentari` 95/97, `digital-workforce` 55/55, `gnk-aktual` 42/51.
-- To su upravo stranice koje čitatelj otvara s mobitela i s čitačem ekrana — nedostatak se vidi odmah.
+- **„Preskoči na sadržaj" riješen je u ovom krugu: 9.535/9.557 (99,8 %).** Na početku dana 2.017 portalnih stranica nije ga imalo (`podijeli` 769, `en` 475, `objave` 162, `galerija` 160, `visual-index` 122, `komentari` 95, `digital-workforce` 55, `gnk-aktual` 42).
+- Preostale 22 stranice su administracija (`admin-center` 13, `admin-login` 1), preusmjerivači (7) i Googleova potvrda vlasništva (2) — nisu čitateljski sadržaj.
+- Stil za link dolazi iz dizajnerskog sustava (`.skip` u `am-design-v1.css`), pa se ne ubacuje ugrađeni `<style>` (CSP i dizajnerski gate).
 
 ### 4.3 Brzina
 
@@ -160,7 +164,7 @@ Cilj: **ista struktura, isti razmaci, ista tipografija, isti znak kuće; razliku
 | 3 | `/prenos/` i `/pokrivenost/` na glavnoj domeni | HTTP 200 na oba |
 | 4 | Jedan `shell` u svim generatorima | vizualni diff naslovnica svih 6 webova = 0 razlika u strukturi |
 | 5 | Nijedna pločica bez slike | gate „Slike" traži sliku u svakoj kartici i pločici |
-| 6 | „Preskoči na sadržaj" svugdje | 0 stranica bez njega |
+| 6 | „Preskoči na sadržaj" svugdje | ✅ 9.535/9.557 (99,8 %); ostalo su admin i preusmjerivači |
 | 7 | Tamni način rada svugdje | 9.557 stranica poštuje `prefers-color-scheme` |
 | 8 | Nijedna stranica > 400 kB | mjerenje po datoteci, 0 prekoračenja |
 | 9 | Brojke samo iz podataka | nijedan predložak ne sadrži doslovni broj tekstova |
@@ -191,7 +195,7 @@ Mjerenja iz ovog izvještaja (24. 10. 2026.):
 | `<img>` tagova | 329.174 |
 | Lazy slika | 313.099 (95,1 %) |
 | Stranica s modulom osvježavanja | 9.551 (99,94 %) |
-| Stranica bez „preskoči na sadržaj" | 2.017 (25,4 % portala) |
+| Stranica bez „preskoči na sadržaj" | 22 (0,2 %) |
 | Stranica s `@media print` | 1.071 (11,2 %) |
 | Stranica s tamnim načinom rada | 1 |
 | Najveća stranica | 2,50 MB (`dnevnik`, 23. 10.) |
