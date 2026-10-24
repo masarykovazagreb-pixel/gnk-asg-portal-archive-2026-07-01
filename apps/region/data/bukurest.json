@@ -4,19 +4,20 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-10-23T21:23:46.026Z",
+  "updatedAt": "2026-10-24T00:33:03.915Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
-      "url": "https://www.agerpres.ro/rss/",
-      "ok": true,
-      "fetched": 20,
+      "url": "https://www.agerpres.ro/rss",
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.agerpres.ro/rss: This operation was aborted"
+        "https://www.agerpres.ro/rss: HTTP 500",
+        "https://www.agerpres.ro/rss/: HTTP 408"
       ],
-      "checkedAt": "2026-10-23T21:23:37.683Z"
+      "checkedAt": "2026-10-24T00:32:54.639Z"
     },
     {
       "id": "hotnews",
@@ -26,7 +27,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-23T21:23:38.037Z"
+      "checkedAt": "2026-10-24T00:32:54.812Z"
     },
     {
       "id": "zf",
@@ -36,7 +37,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-23T21:23:39.621Z"
+      "checkedAt": "2026-10-24T00:32:56.767Z"
     },
     {
       "id": "profit",
@@ -46,7 +47,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-23T21:23:39.784Z"
+      "checkedAt": "2026-10-24T00:32:57.185Z"
     },
     {
       "id": "digi24",
@@ -56,7 +57,7 @@
       "fetched": 257,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-23T21:23:41.703Z"
+      "checkedAt": "2026-10-24T00:33:00.648Z"
     },
     {
       "id": "g4media",
@@ -66,7 +67,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-23T21:23:45.408Z"
+      "checkedAt": "2026-10-24T00:33:02.941Z"
     },
     {
       "id": "newsro",
@@ -76,10 +77,102 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-23T21:23:46.025Z"
+      "checkedAt": "2026-10-24T00:33:03.914Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-10-23-newsro-o-drona-s-a-prabusit-in-republica-moldova-9ca4f0",
+      "title": "O dronă s-a prăbuşit în Republica Moldova la circa 100 de metri de o locuinţă. MAE de la Chişinău anunţă expulzarea unui diplomat rus. Maia Sandu: Războiul Rusiei pune în pericol…",
+      "summary": "O dronă de atac rusească s-a prăbuşit vineri în Republica Moldova la o distanţă de până la 100 de metri de o locuinţă din satul Chiştelniţa, în raionul Teleneşti, aflat la mai puţin de 100 de km de Chişinău. Ca urmare a acestui incident, Ministerul de Externe a anunţat că va expulza un angajat al Ambasadei Federaţiei Ruse.",
+      "date": "2026-10-23T23:53:33.000Z",
+      "url": "https://www.news.ro/externe/drona-s-prabusit-republica-moldova-circa-100-metri-locuinta-mae-chisinau-anunta-expulzarea-unui-diplomat-rus-maia-sandu-razboiul-rusiei-pune-pericol-vietilor-moldovenilor-reactia-ucrainei-1922405324332026100222878523",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "",
+      "imageAlt": "O dronă s-a prăbuşit în Republica Moldova la circa 100 de metri de o locuinţă. MAE de la Chişinău anunţă expulzarea unui diplomat rus. Maia Sandu: Războiul Rusiei pune în pericol v",
+      "addedAt": "2026-10-24T00:33:03.915Z"
+    },
+    {
+      "slug": "bukurest-2026-10-23-profit-tarom-renunta-de-astazi-la-o-ruta-istorica-c1be94",
+      "title": "TAROM renunță de astăzi la o rută istorică, după 16 ani. Traseul spre Belgrad va mai fi asigurat doar prin Air Serbia",
+      "summary": "Compania națională de transport aerian TAROM întrerupe de astăzi zborurile către Belgrad, după 16 ani.",
+      "date": "2026-10-23T23:26:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/auto-transporturi/tarom-renunta-de-astazi-la-o-ruta-istorica-dupa-16-ani-traseul-spre-belgrad-va-mai-fi-asigurat-doar-prin-air-serbia-22878623?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Auto/Transporturi"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://i0.1616.ro/media/2/2621/33217/22878623/1/tarom.jpg?width=800",
+      "imageAlt": "TAROM renunță de astăzi la o rută istorică, după 16 ani. Traseul spre Belgrad va mai fi asigurat doar prin Air Serbia",
+      "addedAt": "2026-10-24T00:32:57.186Z"
+    },
+    {
+      "slug": "bukurest-2026-10-23-newsro-moody-s-lasa-situatia-sa-se-clarifice-197642",
+      "title": "Moody's lasă situaţia să se clarifice înainte să se pronunţe asupra ratingului Franţei, care rămâne Aa3 cu perspectivă negativă",
+      "summary": "Moody's s-a abţinut vineri, contrar aşteptărilor generale, de la orice acţiune cu privire la ratingul datoriei franceze, menţinându-şi de facto ratingul la Aa3 cu o perspectivă negativă, relatează AFP.",
+      "date": "2026-10-23T22:43:24.000Z",
+      "url": "https://www.news.ro/externe/moody-s-lasa-situatia-sa-se-clarifice-inainte-sa-se-pronunte-asupra-ratingului-frantei-care-ramane-aa3-cu-perspectiva-negativa-1922404324242026100122878503",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "",
+      "imageAlt": "Moody's lasă situaţia să se clarifice înainte să se pronunţe asupra ratingului Franţei, care rămâne Aa3 cu perspectivă negativă",
+      "addedAt": "2026-10-24T00:33:03.915Z"
+    },
+    {
+      "slug": "bukurest-2026-10-23-newsro-armata-ucraineana-anunta-ca-urmeaza-sa-afb8bd",
+      "title": "Armata ucraineană anunţă că urmează să respecte un armistiţiu la Oleşkî începând de marţi, după ce Melania Trump anunţă că a obţinut un armistiţiu în oraşul ocupat de ruşi…",
+      "summary": "Armata ucraineană anunţă vineri seara că va respecta - începând de marţi, 27 octombrie - un armistiţiu la Oleşkî, un oraş ocupat de ruşi în regiunea Herson, în vederea desfăşurării unei operaţiuni umanitare, relatează AFP.",
+      "date": "2026-10-23T22:23:15.000Z",
+      "url": "https://www.news.ro/externe/armata-ucraineana-anunta-urmeaza-respecte-armistitiu-oleski-incepand-marti-dupa-melania-trump-anunta-obtinut-armistitiu-orasul-ocupat-rusi-incepand-joi-kremlinul-saluta-eforturile-primei-doamne-sua-1922402324152026100122878465",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Armata ucraineană anunţă că urmează să respecte un armistiţiu la Oleşkî începând de marţi, după ce Melania Trump anunţă că a obţinut un armistiţiu în oraşul ocupat de ruşi începând",
+      "addedAt": "2026-10-24T00:33:03.915Z"
+    },
+    {
+      "slug": "bukurest-2026-10-23-newsro-sua-ar-putea-ataca-iranul-in-acest-weekend-b1c76e",
+      "title": "SUA ar putea ataca Iranul în acest weekend, anunţă emisarul american Tom Barrack",
+      "summary": "Statele Unite ar putea ataca Iranul încă din acest weekend, anunţă vineri emisarul american Tom Barrack, în urma unei multiplicări a ameninţărilor Statelor Unite şi Israelului în acest sens în ultimele zile, relatează AFP.",
+      "date": "2026-10-23T22:06:10.000Z",
+      "url": "https://www.news.ro/externe/sua-ar-putea-ataca-iranul-in-acest-weekend-anunta-emisarul-american-tom-barrack-1922400624102026100122878443",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "SUA ar putea ataca Iranul în acest weekend, anunţă emisarul american Tom Barrack",
+      "addedAt": "2026-10-24T00:33:03.915Z"
+    },
+    {
+      "slug": "bukurest-2026-10-23-newsro-opt-tari-din-europa-si-orientul-mijlociu-13def9",
+      "title": "Opt ţări din Europa şi Orientul Mijlociu pledează, la Istanbul, în favoarea păcii",
+      "summary": "Şefii diplomaţiilor a opt ţări mari din Europa şi Orientul Mijlociu s-au reunit vineri la Istanbul şi au îndemnat unanim beligeranţii - într-un format fără precedent - la încetarea ostilităţilor, relatează AFP.",
+      "date": "2026-10-23T21:50:02.000Z",
+      "url": "https://www.news.ro/externe/opt-tari-din-europa-si-orientul-mijlociu-pledeaza-la-istanbul-in-favoarea-pacii-1922405024022026100022878363",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Opt ţări din Europa şi Orientul Mijlociu pledează, la Istanbul, în favoarea păcii",
+      "addedAt": "2026-10-24T00:33:03.915Z"
+    },
     {
       "slug": "bukurest-2026-10-23-agerpres-atentat-terorist-in-iordania-patriarhul-c1ef07",
       "title": "Atentat terorist în Iordania/ Patriarhul Daniel a transmis un mesaj de solidaritate Patriarhiei Ierusalimului",
@@ -169,6 +262,41 @@
       "image": "",
       "imageAlt": "VIDEO Handbal feminin: România a învins Croația (34-32), în meci amical",
       "addedAt": "2026-10-23T21:23:37.683Z"
+    },
+    {
+      "slug": "bukurest-2026-10-23-profit-asteptarile-antreprenorilor-de-la-noul-a78d35",
+      "title": "Așteptările antreprenorilor de la noul Guvern: Să nu facă nimic! Am fost bine antrenați de statul român să rezistăm la pumn. Nu mai e teamă, vrem doar predictibilitate!",
+      "summary": "Respectarea legii și a obligațiilor către firme, predictibilitatea, reducerea birocrației și promovarea României ca destinație turistică sunt printre așteptările mediului de afaceri de la noul Guvern, potrivit omului de afaceri Dragoș Anastasiu.",
+      "date": "2026-10-23T21:18:00.000Z",
+      "url": "https://www.profit.ro/stiri/economie/asteptarile-antreprenorilor-de-la-noul-guvern-sa-nu-faca-nimic-am-fost-bine-antrenati-de-statul-roman-sa-rezistam-la-pumn-nu-mai-e-teama-vrem-doar-predictibilitate-22878144?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Economie"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://i0.1616.ro/media/2/2621/33237/22878144/1/whatsapp-image-2026-10-23-at-23-27-21.jpg?width=800",
+      "imageAlt": "Așteptările antreprenorilor de la noul Guvern: Să nu facă nimic! Am fost bine antrenați de statul român să rezistăm la pumn. Nu mai e teamă, vrem doar predictibilitate!",
+      "addedAt": "2026-10-24T00:32:57.186Z"
+    },
+    {
+      "slug": "bukurest-2026-10-23-hotnews-moment-neasteptat-la-vocea-romaniei-asta-da-dbec88",
+      "title": "Moment neașteptat la Vocea României. „Asta da surpriză!”",
+      "summary": "Apariție-surpriză la Vocea României 2026. La audițiile pe nevăzute din ediția de vineri seară, o cunoscută vedetă de televiziune a urcat pe scena show-ului muzical în postura de concurent. În ediția de vineri, 23 octombrie 2026, a emisiunii de talente Vocea României de la Pro Tv, au continuat audițiile pe nevăzute, respectiv faza compețiției muzicale …",
+      "date": "2026-10-23T21:11:00.000Z",
+      "url": "https://hotnews.ro/vocea-romaniei-2026-surpriza-cabral-2385092",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "Muzica"
+      ],
+      "author": "Viorela Marin",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Moment neașteptat la Vocea României. „Asta da surpriză!”",
+      "addedAt": "2026-10-24T00:32:54.812Z"
     },
     {
       "slug": "bukurest-2026-10-23-hotnews-moment-neasteptat-la-vocea-romaniei-asta-da-107678",
@@ -6905,137 +7033,6 @@
       "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/25326/23265039/5/9-andrei-popescu.jpg?width=700",
       "imageAlt": "ZF Gen Z. Dacă eşti student şi te gândeşti cât să ceri la primul job, pune-ţi întâi altă întrebare: ce poţi face tu pentru firma care te angajează?",
       "addedAt": "2026-10-21T21:36:05.141Z"
-    },
-    {
-      "slug": "bukurest-2026-10-21-zf-conferinta-de-risc-de-tara-coface-2026-df59eb",
-      "title": "Conferinţa de risc de ţară Coface 2026. România a recuperat în 30 de ani decalaje economice care păreau imposibil de acoperit, dar următoarea etapă cere companii mai mari…",
-      "summary": "România a traversat în ultimii 30 de ani o perioadă de transformare eco­no­mică, de la o economie în care iniţiativa privată avea un rol limitat la o piaţă în care au apărut companii cu ambiţii regionale, sectoare competitive şi un sistem financiar mult mai dezvoltat.",
-      "date": "2026-10-21T21:07:00.000Z",
-      "url": "https://www.zf.ro/companii/conferinta-risc-tara-coface-2026-romania-recuperat-30-ani-decalaje-economice-pareau-imposibil-acoperit-urmatoarea-etapa-cere-companii-mari-investitii-predictibilitate-exista-lume-riscuri-23265050",
-      "source": "zf",
-      "sourceName": "Ziarul Financiar",
-      "categories": [
-        "Companii"
-      ],
-      "author": "",
-      "theme": "ekonomija",
-      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21333/23265050/4/panel-1.jpg?width=700",
-      "imageAlt": "Conferinţa de risc de ţară Coface 2026. România a recuperat în 30 de ani decalaje economice care păreau imposibil de acoperit, dar următoarea etapă cere companii mai mari, investiţ",
-      "addedAt": "2026-10-21T21:36:05.141Z"
-    },
-    {
-      "slug": "bukurest-2026-10-21-hotnews-masurile-anuntate-de-ministrul-educatiei-a7b3ce",
-      "title": "Măsurile anunțate de ministrul Educației după atacul din școala de la Bistrița. „Ne gândim chiar la controlul rucsacului copilului”",
-      "summary": "Noul ministru al Educației, Sorin Costreie, a declarat că își dorește dublarea pedepselor în cazul violențelor asupra profesorilor și că sunt luate în calcul și alte măsuri după incidentul de la școala din Bistrița. Miercuri seară, la Digi24, Sorin Costreie a descris drept „cutremurător” cazul din Bistrița, unde un elev al Școlii gimnaziale „Ștefan cel …",
-      "date": "2026-10-21T21:05:11.000Z",
-      "url": "https://hotnews.ro/masurile-anuntate-de-ministrul-educatiei-dupa-atacul-din-scoala-de-la-bistrita-ne-gandim-chiar-la-controlul-rucsacului-copilului-2382978",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "Actualitate",
-        "ministerul educatiei",
-        "sorin Costreie"
-      ],
-      "author": "Vladimir Ionescu",
-      "theme": "potres",
-      "image": "",
-      "imageAlt": "Măsurile anunțate de ministrul Educației după atacul din școala de la Bistrița. „Ne gândim chiar la controlul rucsacului copilului”",
-      "addedAt": "2026-10-21T21:36:03.287Z"
-    },
-    {
-      "slug": "bukurest-2026-10-21-newsro-liga-campionilor-interul-lui-chivu-a-invins-da72d3",
-      "title": "Liga Campionilor: Interul lui Chivu a învins în inferioritate numerică Şahtior, scor 1-0 / Cu Istvan Kovacs arbitru, Real Madrid a obţinut o victorie în faţa echipei Leipzig",
-      "summary": "Echipa Internazionale Milano, antrenată de Cristian Chivu, a învins, miercuri seară, pe teren propriu, scor 1-0, formaţia Şahtior Doneţk, într-un meci din etapa a treia a grupei Ligii Campionilor.",
-      "date": "2026-10-21T21:02:21.000Z",
-      "url": "https://www.news.ro/sport/liga-campionilor-interul-lui-chivu-a-invins-in-inferioritate-numerica-sahtior-scor-1-0-cu-istvan-kovacs-arbitru-real-madrid-a-obtinut-o-victorie-in-fata-echipei-leipzig-1922400222212026100022869225",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "sport",
-      "image": "",
-      "imageAlt": "Liga Campionilor: Interul lui Chivu a învins în inferioritate numerică Şahtior, scor 1-0 / Cu Istvan Kovacs arbitru, Real Madrid a obţinut o victorie în faţa echipei Leipzig",
-      "addedAt": "2026-10-21T21:36:12.782Z"
-    },
-    {
-      "slug": "bukurest-2026-10-21-newsro-atentionare-de-calatorie-emisa-de-mae-e64ba4",
-      "title": "Atenţionare de călătorie emisă de MAE: Manifestaţii şi acţiuni de blocare, sâmbătă, în Franţa/ Sunt posibile perturbări ale transportului în comun, ale traficului, în special în…",
-      "summary": "Ministerul Afacerilor Externe (MAE) a emis o atenţionare de călătorie pentru Franţa, unde sâmbătă sunt programate mai multe manifestaţii de protest şi acţiuni de blocare. Ca urmare, sunt posibile perturbări ale transportului în comun, ale traficului rutier, feroviar şi aerian, în special în marile oraşe.",
-      "date": "2026-10-21T21:00:55.000Z",
-      "url": "https://www.news.ro/social/atentionare-de-calatorie-emisa-de-mae-manifestatii-si-actiuni-de-blocare-sambata-in-franta-sunt-posibile-perturbari-ale-transportului-in-comun-ale-traficului-in-special-in-marile-orase-1922400022552026100022869210",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Atenţionare de călătorie emisă de MAE: Manifestaţii şi acţiuni de blocare, sâmbătă, în Franţa/ Sunt posibile perturbări ale transportului în comun, ale traficului, în special în ma",
-      "addedAt": "2026-10-21T21:36:12.783Z"
-    },
-    {
-      "slug": "bukurest-2026-10-21-newsro-atentionare-de-calatorie-emisa-de-mae-a4c854",
-      "title": "Atenţionare de călătorie emisă de MAE: Restricţii ale traficului auto în Belgrad, Serbia, din cauza unor evenimente publice",
-      "summary": "Ministerul Afacerilor Externe (MAE) a emis o atenţionare de călătorie pentru Serbia, unde joi vor fi impuse restricţii ale traficului auto, în Belgrad, din cauza unor evenimente publice.",
-      "date": "2026-10-21T20:56:17.000Z",
-      "url": "https://www.news.ro/social/atentionare-de-calatorie-emisa-de-mae-restrictii-ale-traficului-auto-in-belgrad-serbia-din-cauza-unor-evenimente-publice-1922405621172026102322869205",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Atenţionare de călătorie emisă de MAE: Restricţii ale traficului auto în Belgrad, Serbia, din cauza unor evenimente publice",
-      "addedAt": "2026-10-21T21:36:12.783Z"
-    },
-    {
-      "slug": "bukurest-2026-10-21-hotnews-25-000-000-000-de-dolari-compania-lui-mark-35cb4c",
-      "title": "25.000.000.000 de dolari: Compania lui Mark Zuckerberg, cea mai mare amendă de până acum",
-      "summary": "Meta, compania care deține Facebook, Instagram și WhatsApp, a primit cea mai mare amendă aplicată vreodată împotriva ei pentru practicile sale comerciale. Miercuri, un judecător din New Mexico a dispus ca compania lui Mark Zuckerberg să plătească 25 de miliarde de dolari (18,6 miliarde de lire sterline) în urma unui proces de două săptămâni desfășurat …",
-      "date": "2026-10-21T20:54:39.000Z",
-      "url": "https://hotnews.ro/meta-a-fost-amendata-cu-25-de-miliarde-de-dolari-pentru-minciuni-privind-confidentialitatea-datelor-utilizatorilor-2382974",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "Actualitate",
-        "International",
-        "amenda",
-        "facebook"
-      ],
-      "author": "Andrei Stan",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "25.000.000.000 de dolari: Compania lui Mark Zuckerberg, cea mai mare amendă de până acum",
-      "addedAt": "2026-10-21T21:36:03.287Z"
-    },
-    {
-      "slug": "bukurest-2026-10-21-digi24-un-dezvoltator-imobiliar-din-iasi-acuzat-ca-0fd66e",
-      "title": "Un dezvoltator imobiliar din Iași, acuzat că a vândut aceleaşi apartamente mai multor persoane, a fost arestat preventiv",
-      "summary": "Dezvoltatorul imobiliar din Iaşi acuzat că a vândut, într-un bloc, aceleaşi apartamente de mai multe ori către diverse persoane fizice sau juridice a fost arestat preventiv. Decizia a fost luată miercuri seară de magistraţii Tribunalului Iaşi.",
-      "date": "2026-10-21T20:54:16.000Z",
-      "url": "https://www.digi24.ro/stiri/actualitate/justitie/un-dezvoltator-imobiliar-din-iasi-acuzat-ca-a-vandut-aceleasi-apartamente-mai-multor-persoane-a-fost-arestat-preventiv-4003413",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwNiUyRjI5JTJGMjgxMzI2Ml8yODEz/MjYyX0dldHR5SW1hZ2VzLTIyMDQwNzQw/OTUtMS5qcGcmaGFzaD0yODVmMjhkYzNjN2YwMDhkZmJlMDMzMTdkNDI1NDI3MA==.jpg",
-      "imageAlt": "Un dezvoltator imobiliar din Iași, acuzat că a vândut aceleaşi apartamente mai multor persoane, a fost arestat preventiv",
-      "addedAt": "2026-10-21T21:36:07.871Z"
-    },
-    {
-      "slug": "bukurest-2026-10-21-newsro-echipa-nationala-de-cautare-salvare-urbana-799db3",
-      "title": "Echipa naţională de căutare-salvare urbană a României, clasificată internaţional ca având cel mai înalt nivel de capacitate operaţională",
-      "summary": "Echipa naţională de căutare-salvare urbană RO-USAR-01 a României a obţinut clasificarea internaţională ca echipă cu cel mai înalt nivel de capacitate operaţională, aceasta fiind o recunoaştere a capacităţii României de a participa la misiuni internaţionale complexe de căutare şi salvare a persoanelor surprinse sub dărâmături, în urma unor dezastre majore.",
-      "date": "2026-10-21T20:52:36.000Z",
-      "url": "https://www.news.ro/social/echipa-nationala-de-cautare-salvare-urbana-a-romaniei-clasificata-international-ca-avand-cel-mai-inalt-nivel-de-capacitate-operationala-1922405221362026102322869169",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Echipa naţională de căutare-salvare urbană a României, clasificată internaţional ca având cel mai înalt nivel de capacitate operaţională",
-      "addedAt": "2026-10-21T21:36:12.783Z"
     }
   ]
 }
