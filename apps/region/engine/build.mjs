@@ -34,7 +34,7 @@ export const SOCIAL_IMAGE = 'https://gnk-asg.hr/assets/gnk-asg-social-card.png';
 export const PUBLIC = 'https://gnk-asg.hr';
 export const AKTUAL_NEWS_ENTITY_ID = `${CENTRAL}#news-organization`;
 
-const checksFor = (item, strings) => {
+export const checksFor = (item, strings) => {
   const out = [];
   const title = item.title || '';
   const summary = item.summary || '';
@@ -44,7 +44,7 @@ const checksFor = (item, strings) => {
   if (title.includes('?')) out.push(strings.checks.question);
   if (/\b(ekskluziv|otkrivamo|saznajemo|exclusive)\b/i.test(title)) out.push(strings.checks.exclusive);
   if (/[„“”"'][^„“”"']{12,}[„“”"']/.test(summary)) out.push(strings.checks.quote);
-  if (!out.length) out.push(strings.checks.number);
+  // Bez prepoznatog obrasca ne izmišljamo brojčanu provjeru.
   return out.slice(0, 3);
 };
 
@@ -780,7 +780,8 @@ function articlePage(channel, strings, item, items) {
   if (/\b(izvor|izvori|krugovi|neimenovan|anonim|prema saznanjima|saznaje)\b/i.test(`${item.title} ${item.summary}`)) paragraphs.push(a.unnamed(ctx));
   if (a.headline) paragraphs.push(a.headline(ctx));
   if (a.attribution) paragraphs.push(a.attribution(ctx));
-  if (a.verification) paragraphs.push(a.verification(ctx));
+  // Provjera razdoblja brojke ima smisla samo kad naslov stvarno sadrži brojku.
+  if (a.verification && /\d/.test(item.title)) paragraphs.push(a.verification(ctx));
   if (a.counterpoint) paragraphs.push(a.counterpoint(ctx));
   paragraphs.push(a.framing(ctx), a.read(ctx));
   const day = item.date.slice(0, 10);
@@ -829,11 +830,11 @@ function articlePage(channel, strings, item, items) {
       <p>${esc(botText)}</p>
     </section>
 
-    <section class="checks">
+    ${checks.length ? `<section class="checks">
       <h2>${esc(strings.analysis)}</h2>
       <ol>${checks.map((c) => `<li>${esc(c)}</li>`).join('')}</ol>
       <p class="small">${esc(strings.autoNote)}</p>
-    </section>
+    </section>` : ''}
 
     <ul class="hastag-line" aria-label="${esc(chromeOf(channel.lang).tagsText)}">
       <li class="hastag-k">${esc(chromeOf(channel.lang).tags)}</li>

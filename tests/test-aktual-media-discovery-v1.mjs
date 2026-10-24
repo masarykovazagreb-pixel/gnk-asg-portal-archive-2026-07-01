@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import { checksFor } from '../apps/region/engine/build.mjs';
+import { t } from '../apps/region/src/strings.mjs';
 const ROOT='apps/portal';
 const BRAND='https://gnk-asg.hr/gnk-aktual/#news-organization';
 const locales={zagreb:'hr_HR',beograd:'sr_RS',sarajevo:'bs_BA',budimpesta:'hu_HU',ljubljana:'sl_SI',rim:'it_IT',sofija:'bg_BG',bukurest:'ro_RO'};
@@ -59,4 +61,22 @@ assert(!regionalGenerator.includes("const pageLocale = locale || strings.locale"
 const hubGenerator=fs.readFileSync('apps/region/engine/hub.mjs','utf8');
 assert(hubGenerator.includes("MEDIA_ENTITY_NODE"),'editions generator missing publisher entity');
 assert(!hubGenerator.includes("{ loc: 'https://gnk-asg-tjednik.pages.dev/'"),'offsite URL would re-enter local sitemap');
+
+// Urednička regresija: generirana provjera ne smije tvrditi da naslov sadrži
+// broj ako nema znamenki (ni kada je broj naveden samo u sažetku).
+for (const lang of ['hr','sr','bs','en','hu','ja']) {
+  const ui = t(lang).ui;
+  const withoutNumber = checksFor({
+    title: 'Volvo i Nvidia razvijaju autonomna vozila',
+    summary: 'Pilot bi mogao biti gotov do 2030.'
+  }, ui);
+  assert(!withoutNumber.includes(ui.checks.number), lang + ': fabricated numeric check');
+  assert.equal(withoutNumber.length, 0, lang + ': spurious fallback when no trigger');
+  const withNumber = checksFor({
+    title: 'Plan za 2030. godinu',
+    summary: 'Objavljen nacrt'
+  }, ui);
+  assert(withNumber.includes(ui.checks.number), lang + ': real numeric title not checked');
+}
+
 console.log('PASS: AKTUAL MEDIA — 8 locales, 4 hubs, media entity, interlinking, sitemap coverage ('+regionalPages+' regional URLs)');
