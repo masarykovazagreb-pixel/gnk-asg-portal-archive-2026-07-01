@@ -1,52 +1,52 @@
 {
   "schemaVersion": "1.0",
-  "generatedAt": "2026-10-09T10:58:09.454Z",
+  "generatedAt": "2026-10-24T06:25:38.631Z",
   "snapshotType": "repository-snapshot",
-  "overallStatus": "degraded",
+  "overallStatus": "operational",
   "notice": "Repository snapshot, not a live uptime guarantee. Generated from committed files.",
   "services": [
     {
       "id": "portal",
       "name": "GNK ASG portal",
       "status": "operational",
-      "checkedAt": "2026-10-09T10:58:09.454Z"
+      "checkedAt": "2026-10-24T06:25:38.631Z"
     },
     {
       "id": "developer-tools",
       "name": "Developer Tools",
       "status": "operational",
-      "checkedAt": "2026-10-09T10:58:09.454Z"
+      "checkedAt": "2026-10-24T06:25:38.631Z"
     },
     {
       "id": "data-clinic",
       "name": "Data Clinic",
       "status": "operational",
-      "checkedAt": "2026-10-09T10:58:09.454Z"
+      "checkedAt": "2026-10-24T06:25:38.631Z"
     },
     {
       "id": "methodology-library",
       "name": "Javna knjižnica metodologija",
       "status": "operational",
-      "checkedAt": "2026-10-09T10:58:09.454Z"
+      "checkedAt": "2026-10-24T06:25:38.631Z"
     },
     {
       "id": "public-status",
       "name": "Status centar",
       "status": "operational",
-      "checkedAt": "2026-10-09T10:58:09.454Z"
+      "checkedAt": "2026-10-24T06:25:38.631Z"
     }
   ],
   "quality": {
-    "sitemapEntries": 137,
+    "sitemapEntries": 4553,
     "sitemapMissingLocalFiles": 0,
-    "pagesChecked": 1881,
+    "pagesChecked": 7584,
     "jsonLdInvalidPages": 0
   },
   "freshness": {
     "mediaIntelligence": {
-      "status": "stale",
+      "status": "manual",
       "lastUpdateAt": "2026-05-31T19:02:10.000Z",
-      "ageDays": 130
+      "ageDays": 145
     },
     "siteResources": [
       {
@@ -90,6 +90,14 @@
     "Razina dostupnosti i sigurnosni ugovori Adria Pay sandboxa nisu dio ovog snimka."
   ],
   "history": [
+    {
+      "generatedAt": "2026-10-24T06:12:07.120Z",
+      "overallStatus": "operational"
+    },
+    {
+      "generatedAt": "2026-10-24T06:11:46.487Z",
+      "overallStatus": "degraded"
+    },
     {
       "generatedAt": "2026-10-09T10:58:09.454Z",
       "overallStatus": "degraded"

@@ -57,13 +57,23 @@ const listFor = (lang = 'hr') => {
   }).join('\n');
 };
 
-const stamp = new Date().toLocaleString('hr-HR', { timeZone: 'Europe/Zagreb', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+/* Pečat bloka ne smije biti vrijeme gradnje: ako dnevni stroj kasni ili ga
+   GitHub odgodi, stranica bi tvrdila da sinkronizacija nije bila 15 sati, iako
+   je problem u rasporedu, ne u podacima. Zato blok nosi datum najnovije objave
+   (stvarni podatak) i malu skriptu koja na pregledu izračuna koliko je stara.
+   Time je ponovno pokretanje istog izdanja idempotentno — nema lažnih commita. */
+const newestIso = items
+  .map((it) => String(it.date_published || ''))
+  .filter(Boolean)
+  .sort()
+  .pop() || '';
+const fmtDate = (iso, locale) => (iso
+  ? new Date(iso).toLocaleDateString(locale, { timeZone: 'Europe/Zagreb', day: 'numeric', month: 'long', year: 'numeric' })
+  : '');
 
 const bandFor = (lang = 'hr') => {
   const en = lang === 'en';
-  const stampLocal = en
-    ? new Date().toLocaleString('en-GB', { timeZone: 'Europe/Zagreb', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })
-    : stamp;
+  const stampLocal = fmtDate(newestIso, en ? 'en-GB' : 'hr-HR');
   return `${START}
   <section class="kanal-band" aria-labelledby="kanalBandTitle">
     <div class="kanal-band-head">
@@ -79,10 +89,13 @@ const bandFor = (lang = 'hr') => {
 ${listFor(lang)}
     </ol>
     <div class="kanal-foot">
-      <span>${en ? `This block refreshes automatically · last change ${esc(stampLocal)}` : `Blok se osvježava automatski · zadnja izmjena ${esc(stampLocal)}`}</span>
+      <span class="kanal-sync" data-kanal-sync>${en
+        ? `This block refreshes automatically · newest post <time datetime="${esc(newestIso)}">${esc(stampLocal)}</time><em class="kanal-ago" data-kanal-ago></em>`
+        : `Blok se osvježava automatski · najnovija objava <time datetime="${esc(newestIso)}">${esc(stampLocal)}</time><em class="kanal-ago" data-kanal-ago></em>`}</span>
       <span><a href="https://gnk-asg-kanal.pages.dev/dnevnik/" target="_blank" rel="external noopener">${en ? 'Daily desk ↗' : 'Dnevni desk ↗'}</a> · <a href="https://gnk-asg-kanal.pages.dev/feed.json" target="_blank" rel="external noopener">${en ? 'Feed' : 'Feed za preuzimanje'}</a> · <a href="https://gnk-asg-kanal.pages.dev/metodologija/" target="_blank" rel="external noopener">${en ? 'Methodology' : 'Metodologija'}</a></span>
     </div>
   </section>
+  <script>(()=>{const w=document.querySelector('[data-kanal-sync]');if(!w)return;const t=w.querySelector('time[datetime]'),o=w.querySelector('[data-kanal-ago]');if(!t||!o)return;const ms=Date.now()-new Date(t.getAttribute('datetime')).getTime();if(!(ms>=0))return;const h=Math.floor(ms/36e5);const rel=h<1?'prije manje od sata':h<48?'prije '+h+' h':'prije '+Math.floor(h/24)+' d';o.textContent=' ('+rel+')';})();</script>
   ${END}`;
 };
 const band = bandFor('hr');
@@ -90,7 +103,9 @@ const band = bandFor('hr');
 /* 1) podaci za portal */
 const data = {
   version: 'kanal-latest-v1',
-  updatedAt: new Date().toISOString(),
+  /* Vrijeme podataka, ne vrijeme gradnje: isti feed mora dati istu datoteku,
+     inače svaki pokušaj (i svaki odgođeni termin) stvara commit bez promjene. */
+  updatedAt: newestIso || new Date().toISOString(),
   source: 'https://gnk-asg-kanal.pages.dev/',
   feed: 'https://gnk-asg-kanal.pages.dev/feed.json',
   attribution: 'Izvor: GNK ASG KANAL',

@@ -12,11 +12,12 @@
  * Sve kartice imaju 5–6 rečenica opisa, vlastite hashtagove i poveznicu na
  * izdanje. Hub je polazna točka; svako izdanje ostaje na svom linku.
  */
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { esc, longDate, shortDate, stampLocal, scoreFromTitle, truncate, themeFor, safeJson } from './lib.mjs';
 import { CHANNELS, HUB, CONTACT, SOCIAL_IMAGE, CITY_SHORT, CSS as CHANNEL_CSS } from './build.mjs';
+import { publishedItems } from '../../../scripts/lib/publication-gate-v2.mjs';
 import { meshBlock, MESH_CSS } from '../../satellites/lib/network-v1.mjs';
 import { HOUSE_CSS, houseRibbon } from '../../satellites/lib/house-style-v1.mjs';
 import { spiderWeb, SPIDER_CSS } from '../../satellites/lib/spiderweb-v1.mjs';
@@ -1775,27 +1776,89 @@ ${urls.map((u) => `  <url><loc>${u.loc}</loc><lastmod>${today}</lastmod><changef
   return { pages: 2, cards: capitals.length };
 }
 
+/* Zadnji datum koji sitemap stvarno nosi. Sitemap indeks ne smije izmišljati
+   "lastmod": tražilica ga uspoređuje s korpusom i odstupanje je greška.
+   Prije je ovdje stajao fiksni 2026-10-19 za editorial-sitemap.xml, pa je
+   svaki ciklus pregazio datum koji je izračunao generator objava — i provjera
+   registra padala je svakih dva sata. */
+function sitemapLastmod(name) {
+  const file = join(PORTAL, name);
+  if (!existsSync(file)) return null;
+  try {
+    const dates = [...readFileSync(file, 'utf8').matchAll(/<lastmod>(\d{4}-\d{2}-\d{2})<\/lastmod>/g)]
+      .map((m) => m[1]).sort();
+    return dates.length ? dates[dates.length - 1] : null;
+  } catch { return null; }
+}
+
+/* Datum korpusa objava računa se isto kao u generatoru editorial sitemapa:
+   iz eksplicitnih datuma objave/izmjene, u UTC-u, i samo za objavljene
+   stavke. Najveći <lastmod> u datoteci nije isto: on može nositi lokalni
+   datum nastanka (24. 10. u 00:10 po Zagrebu je 23. 10. u UTC-u) i tada
+   indeks i korpus razilaze se za jedan dan. */
+function editorialCorpusLastmod() {
+  const file = join(PORTAL, 'data', 'editorial-registry.json');
+  if (!existsSync(file)) return null;
+  try {
+    const registry = JSON.parse(readFileSync(file, 'utf8'));
+    let latest = '';
+    for (const item of publishedItems(registry)) {
+      const explicit = item.modifiedAt || item.dateModified || item.publishedAt || item.datePublished;
+      const parsed = explicit ? new Date(explicit) : null;
+      if (!parsed || Number.isNaN(parsed.getTime())) continue;
+      const value = parsed.toISOString().slice(0, 10);
+      if (value > latest) latest = value;
+    }
+    return latest || null;
+  } catch { return null; }
+}
+
 function writeSitemapIndex() {
   const today = new Date().toISOString().slice(0, 10);
+  const SITE = 'https://gnk-asg.hr/';
+  /* Redoslijed je ugovor: jezgreni sitemapovi, pa gradski kanali, pa sve
+     ostalo što postoji na disku (npr. dijelovi slikovnog sitemapa). */
   const core = [
-    ['sitemap.xml', '2026-10-12'], ['editorial-sitemap.xml', '2026-10-19'],
+    ['sitemap.xml', '2026-10-12'], ['editorial-sitemap.xml', null],
     ['corporate-editorials-sitemap.xml', '2026-08-30'], ['visual-sitemap.xml', '2026-08-26'],
-    ['image-sitemap.xml', '2026-10-12'], ['world-topics-image-sitemap.xml', '2026-08-26'],
+    ['image-sitemap.xml', null], ['world-topics-image-sitemap.xml', '2026-08-26'],
     ['spt-sitemap.xml', '2026-10-12'], ['izdanja/sitemap.xml', today], ['galerija/sitemap.xml', today],
     ['aktual-media/sitemap.xml', today], ['tehnologija-buducnosti/sitemap.xml', today],
     ['glavni-gradovi/sitemap.xml', today], ['atlas/sitemap.xml', today], ['mreza/sitemap.xml', today],
     ['gnk-aktual/mreza/sitemap.xml', today]
   ];
-  const channels = CHANNELS.map((c) => [`kanal/${c.id}/sitemap.xml`, today]);
-  const all = [...core, ...channels];
-  const seen = new Set();
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${all.filter(([loc]) => (seen.has(loc) ? false : seen.add(loc))).map(([loc, lastmod]) => `  <sitemap>\n    <loc>https://gnk-asg.hr/${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n  </sitemap>`).join('\n')}
-</sitemapindex>
-`;
-  writeFileSync(join(PORTAL, 'sitemap-index.xml'), xml);
-  return all.length;
+  const file = join(PORTAL, 'sitemap-index.xml');
+  const previous = new Map();
+  if (existsSync(file)) {
+    for (const m of readFileSync(file, 'utf8').matchAll(/<sitemap>\s*<loc>([^<]+)<\/loc>\s*<lastmod>([^<]+)<\/lastmod>\s*<\/sitemap>/g)) {
+      previous.set(m[1], m[2]);
+    }
+  }
+  const entries = new Map();
+  for (const [loc, fallback] of core) {
+    const abs = `${SITE}${loc}`;
+    const measured = fallback !== null
+      ? null
+      : (loc === 'editorial-sitemap.xml'
+        ? (editorialCorpusLastmod() || sitemapLastmod(loc))
+        : sitemapLastmod(loc));
+    entries.set(abs, measured || previous.get(abs) || fallback || today);
+  }
+  for (const c of CHANNELS) entries.set(`${SITE}kanal/${c.id}/sitemap.xml`, today);
+  /* Dijelovi slikovnog sitemapa i sve ostalo što je netko drugi dodao u
+     indeks ostaje — inače ciklus briše zapise koje je zapisao alat za dijeljenje. */
+  for (const name of readdirSync(PORTAL)) {
+    if (!/^[\w./-]+\.xml$/.test(name)) continue;
+    if (!name.includes('sitemap')) continue;
+    const abs = `${SITE}${name}`;
+    if (entries.has(abs)) continue;
+    if (!/^image-sitemap-\d+\.xml$/.test(name) && !previous.has(abs)) continue;
+    entries.set(abs, sitemapLastmod(name) || previous.get(abs) || today);
+  }
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${[...entries.entries()]
+    .map(([loc, lastmod]) => `  <sitemap>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n  </sitemap>`).join('\n')}\n</sitemapindex>\n`;
+  writeFileSync(file, xml);
+  return entries.size;
 }
 
 function injectBand(cards, lang = 'hr') {

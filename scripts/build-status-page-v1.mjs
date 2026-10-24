@@ -262,6 +262,7 @@ function page(lang) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; form-action 'none'; base-uri 'self'; frame-ancestors 'none'">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 <meta name="robots" content="index,follow,max-image-preview:large">
@@ -293,7 +294,8 @@ function page(lang) {
 <link rel="stylesheet" href="/assets/status-page-v1.css?v=20261022">
 </head>
 <body>
-<main>
+<a class="dt-skip" href="#main">${hr ? 'Preskoči na sadržaj' : 'Skip to content'}</a>
+<main id="main">
   <p class="crumbs"><a href="${SITE}/">GNK ASG</a> / <a href="${SITE}/gnk-aktual/">AKTUAL MEDIA</a> / ${hr ? 'Status ažurnosti' : 'Freshness status'}</p>
 
   <section class="hero">
@@ -313,7 +315,8 @@ function page(lang) {
 
   <h2>${hr ? 'Središnji feed' : 'Central feed'}</h2>
   <table>
-    <thead><tr><th>${th[0]}</th><th class="num">${th[1]}</th><th class="num">${th[2]}</th><th>${th[3]}</th><th class="num">${th[4]}</th><th>${th[5]}</th></tr></thead>
+    <caption>${hr ? 'Središnji feed AKTUAL MEDIA' : 'AKTUAL MEDIA central feed'}</caption>
+    <thead><tr><th scope="col">${th[0]}</th><th scope="col" class="num">${th[1]}</th><th scope="col" class="num">${th[2]}</th><th scope="col">${th[3]}</th><th scope="col" class="num">${th[4]}</th><th scope="col">${th[5]}</th></tr></thead>
     <tbody>
       <tr class="${centralGrade}">
         <td><span class="brand"><img src="/assets/brand/aktual-media-hr-1200.webp" alt="AKTUAL MEDIA — svjetsko izdanje" width="132" height="38" loading="eager" decoding="async"><a href="${SITE}/gnk-aktual/">AKTUAL MEDIA</a></span></td>
@@ -328,7 +331,8 @@ function page(lang) {
 
   <h2>${hr ? 'Gradska izdanja' : 'City editions'}</h2>
   <table>
-    <thead><tr><th>${th[0]}</th><th class="num">${th[1]}</th><th class="num">${th[2]}</th><th>${th[3]}</th><th class="num">${th[4]}</th><th>${th[5]}</th></tr></thead>
+    <caption>${hr ? 'Gradska izdanja AKTUAL MEDIA' : 'AKTUAL MEDIA city editions'}</caption>
+    <thead><tr><th scope="col">${th[0]}</th><th scope="col" class="num">${th[1]}</th><th scope="col" class="num">${th[2]}</th><th scope="col">${th[3]}</th><th scope="col" class="num">${th[4]}</th><th scope="col">${th[5]}</th></tr></thead>
     <tbody>
       ${editionRows}
     </tbody>
@@ -337,7 +341,8 @@ function page(lang) {
   <h2>${hr ? 'Deskovi' : 'Desks'}</h2>
   <p class="muted">${hr ? 'Deskovi se grade iz istog ciklusa kao i gradska izdanja, pa nose isti zapis.' : 'Desks are built from the same cycle as the city editions, so they carry the same timestamp.'}</p>
   <table>
-    <thead><tr><th>${th[0]}</th><th class="num">${th[1]}</th><th class="num">${th[2]}</th><th>${th[3]}</th><th class="num">${th[4]}</th><th>${th[5]}</th></tr></thead>
+    <caption>${hr ? 'Deskovi AKTUAL MEDIA' : 'AKTUAL MEDIA desks'}</caption>
+    <thead><tr><th scope="col">${th[0]}</th><th scope="col" class="num">${th[1]}</th><th scope="col" class="num">${th[2]}</th><th scope="col">${th[3]}</th><th scope="col" class="num">${th[4]}</th><th scope="col">${th[5]}</th></tr></thead>
     <tbody>
       ${deskRows}
     </tbody>
