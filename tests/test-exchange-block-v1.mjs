@@ -61,7 +61,10 @@ function audit(file, { label, own = [] }) {
   check(items.length >= 4, `${file}: razmjena ima ${items.length} stavki (najmanje 4)`);
   check(/class="am-x-src"/.test(block), `${file}: razmjena ne navodi izvor`);
 
-  const links = [...block.matchAll(/<a href="([^"]+)"([^>]*)>/g)].map((m) => ({ href: m[1], attrs: m[2] }));
+  /* Veze se broje unutar popisa; veza na matičnu mrežu ispod popisa ima
+     svoje pravilo i ne ulazi u ovaj zbroj. */
+  const list = (block.match(/<ul class="am-x-list">[\s\S]*?<\/ul>/) || [''])[0];
+  const links = [...list.matchAll(/<a href="([^"]+)"([^>]*)>/g)].map((m) => ({ href: m[1], attrs: m[2] }));
   check(links.length === items.length, `${file}: broj veza (${links.length}) nije jednak broju stavki (${items.length})`);
   for (const link of links) {
     check(/^https:\/\//.test(link.href), `${file}: veza nije apsolutna https (${link.href})`);
@@ -79,6 +82,11 @@ function audit(file, { label, own = [] }) {
   /* Datum je dio ugovora: čitatelj mora znati kad je naslov objavljen. */
   const dated = (block.match(/<time datetime="/g) || []).length;
   check(dated >= items.length - 1, `${file}: ${items.length - dated} stavki bez datuma`);
+
+  /* Blok nosi znak kuće i put natrag na matičnu mrežu. */
+  check(/class="am-x-mark"/.test(block), `${file}: razmjena nema znak kuće`);
+  const hub = (block.match(/class="am-x-more"><a href="([^"]+)"/) || [])[1] || '';
+  check(/^https:\/\/gnk-asg\.hr\/(en\/)?gnk-aktual\//.test(hub), `${file}: razmjena ne vodi na matičnu mrežu (${hub})`);
 }
 
 for (const channel of CHANNELS) {

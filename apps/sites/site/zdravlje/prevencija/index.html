@@ -309,7 +309,11 @@ figure>figcaption:empty{display:none}
   max-width:var(--am-measure,1120px);margin:clamp(2.6rem,4vw,4.2rem) auto;padding:clamp(1.4rem,2.4vw,2rem);
   border:1px solid var(--am-line,var(--am-x-line));border-radius:var(--am-radius,16px);background:color-mix(in srgb,currentColor 3%,transparent);
   font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
-.am-exchange h2{margin:0 0 .35em;font-size:clamp(1.15rem,1.6vw,1.5rem);letter-spacing:-.01em}
+.am-exchange h2{display:flex;align-items:center;gap:.55em;margin:0 0 .35em;font-size:clamp(1.15rem,1.6vw,1.5rem);letter-spacing:-.01em}
+.am-x-mark{width:24px;height:24px;border-radius:6px;flex:0 0 auto}
+.am-x-more{margin:1.1em 0 0;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase}
+.am-x-more a{color:var(--accent2,var(--am-gold,#e2b857));text-decoration:none}
+.am-x-more a:hover{text-decoration:underline;text-underline-offset:.18em}
 .am-x-lead{margin:0 0 1.1em;color:var(--am-muted,var(--am-x-muted));font-size:.92rem;line-height:1.55;max-width:62ch}
 .am-x-list{list-style:none;margin:0;padding:0;display:grid;gap:.85rem;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
 .am-x-list li{display:grid;gap:.3rem;padding-top:.85rem;border-top:1px solid var(--am-line-soft,var(--am-x-soft))}
@@ -384,7 +388,7 @@ figure>figcaption:empty{display:none}
     <p style="margin-top:16px"><a href="https://gnk-asg.hr/mreza/">Cijela mreža →</a></p>
   </div></section>
 <section class="am-exchange" aria-labelledby="razmjena">
-  <h2 id="razmjena">Razmjena vijesti s drugih webova mreže</h2>
+  <h2 id="razmjena"><img class="am-x-mark" src="/assets/brand/aktual-media-mark.svg" alt="AKTUAL MEDIA" width="24" height="24" loading="lazy" decoding="async">Razmjena vijesti s drugih webova mreže</h2>
   <p class="am-x-lead">Najsvježi naslov svakog drugog izdanja AKTUAL MEDIA. Svaka veza vodi na izvornu domenu, uz navedeno izdanje i datum.</p>
   <ul class="am-x-list">
     <li>
@@ -412,6 +416,7 @@ figure>figcaption:empty{display:none}
       <span class="am-x-src">Sydney · <time datetime="2026-10-23T21:22:58.000Z">23. 10. 2026.</time></span>
     </li>
   </ul>
+  <p class="am-x-more"><a href="https://gnk-asg.hr/gnk-aktual/#izdanja-po-zemljama" rel="external noopener">Sva izdanja AKTUAL MEDIA →</a></p>
 </section>
 </main>
 <nav class="mesh" aria-label="Mreža AKTUAL MEDIA" data-mesh="v1">

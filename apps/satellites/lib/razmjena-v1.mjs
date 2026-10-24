@@ -120,7 +120,10 @@ export function pickExchange(root, { selfHome = '', selfNames = [], limit = 6, s
 export function exchangeBlock({ root, lang = 'hr', selfHome = '', selfNames = [], limit = 6, headingId = 'razmjena', skipPaths = [] } = {}) {
   const picks = pickExchange(root, { selfHome, selfNames, limit, skipPaths });
   if (!picks.length) return '';
-  const en = lang === 'en';
+  /* Mreža piše na jeziku izdanja kad ga ima (hr/en), a na svim ostalim
+     jezicima koristi engleski — hrvatski okvir na japanskom izdanju nije
+     prijevod nego šum. */
+  const en = lang !== 'hr';
   const heading = en ? 'News exchange across the network' : 'Razmjena vijesti s drugih webova mreže';
   const lead = en
     ? 'The newest headline from each other AKTUAL MEDIA edition. Every link opens the original domain; the edition and date are always stated.'
@@ -129,12 +132,20 @@ export function exchangeBlock({ root, lang = 'hr', selfHome = '', selfNames = []
       <a href="${esc(pick.url)}" rel="external noopener">${esc(pick.title)}</a>
       <span class="am-x-src">${esc(pick.name)}${pick.date ? ` · <time datetime="${esc(pick.date)}">${esc(dateLabel(pick.date, lang))}</time>` : ''}</span>
     </li>`).join('\n    ');
+  /* Veza na matičnu mrežu stoji u svakom bloku: čitatelj koji je došao na
+     jedan web vidi gdje su svi ostali, a mreža dobiva stalan povratni link
+     sa svake domene — bez skrivenih ili napumpanih veza. */
+  const hub = en
+    ? 'https://gnk-asg.hr/en/gnk-aktual/#izdanja-po-zemljama'
+    : 'https://gnk-asg.hr/gnk-aktual/#izdanja-po-zemljama';
+  const more = en ? 'All AKTUAL MEDIA editions' : 'Sva izdanja AKTUAL MEDIA';
   return `<section class="am-exchange" aria-labelledby="${esc(headingId)}">
-  <h2 id="${esc(headingId)}">${esc(heading)}</h2>
+  <h2 id="${esc(headingId)}"><img class="am-x-mark" src="/assets/brand/aktual-media-mark.svg" alt="AKTUAL MEDIA" width="24" height="24" loading="lazy" decoding="async">${esc(heading)}</h2>
   <p class="am-x-lead">${esc(lead)}</p>
   <ul class="am-x-list">
     ${items}
   </ul>
+  <p class="am-x-more"><a href="${hub}" rel="external noopener">${esc(more)} →</a></p>
 </section>`;
 }
 
@@ -167,7 +178,11 @@ export const EXCHANGE_CSS = `
   max-width:var(--am-measure,1120px);margin:clamp(2.6rem,4vw,4.2rem) auto;padding:clamp(1.4rem,2.4vw,2rem);
   border:1px solid var(--am-line,var(--am-x-line));border-radius:var(--am-radius,16px);background:color-mix(in srgb,currentColor 3%,transparent);
   font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
-.am-exchange h2{margin:0 0 .35em;font-size:clamp(1.15rem,1.6vw,1.5rem);letter-spacing:-.01em}
+.am-exchange h2{display:flex;align-items:center;gap:.55em;margin:0 0 .35em;font-size:clamp(1.15rem,1.6vw,1.5rem);letter-spacing:-.01em}
+.am-x-mark{width:24px;height:24px;border-radius:6px;flex:0 0 auto}
+.am-x-more{margin:1.1em 0 0;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase}
+.am-x-more a{color:var(--accent2,var(--am-gold,#e2b857));text-decoration:none}
+.am-x-more a:hover{text-decoration:underline;text-underline-offset:.18em}
 .am-x-lead{margin:0 0 1.1em;color:var(--am-muted,var(--am-x-muted));font-size:.92rem;line-height:1.55;max-width:62ch}
 .am-x-list{list-style:none;margin:0;padding:0;display:grid;gap:.85rem;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
 .am-x-list li{display:grid;gap:.3rem;padding-top:.85rem;border-top:1px solid var(--am-line-soft,var(--am-x-soft))}
