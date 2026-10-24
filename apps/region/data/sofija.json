@@ -4,7 +4,7 @@
   "lang": "bg",
   "city": "Sofija",
   "country": "Bugarska",
-  "updatedAt": "2026-10-24T00:31:53.707Z",
+  "updatedAt": "2026-10-24T05:49:30.483Z",
   "sources": [
     {
       "id": "bta",
@@ -17,7 +17,7 @@
         "https://www.bta.bg/bg/rss: HTTP 404",
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-24T00:31:44.881Z"
+      "checkedAt": "2026-10-24T05:49:21.403Z"
     },
     {
       "id": "capital",
@@ -27,7 +27,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T00:31:46.042Z"
+      "checkedAt": "2026-10-24T05:49:22.304Z"
     },
     {
       "id": "mediapool",
@@ -37,19 +37,20 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T00:31:46.950Z"
+      "checkedAt": "2026-10-24T05:49:23.736Z"
     },
     {
       "id": "dnevnikbg",
       "name": "Dnevnik",
-      "url": "https://www.dnevnik.bg/rss/",
-      "ok": true,
-      "fetched": 30,
+      "url": "https://www.dnevnik.bg/rss",
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.dnevnik.bg/rss: HTTP 403"
+        "https://www.dnevnik.bg/rss: HTTP 403",
+        "https://www.dnevnik.bg/rss/: HTTP 500"
       ],
-      "checkedAt": "2026-10-24T00:31:48.564Z"
+      "checkedAt": "2026-10-24T05:49:25.695Z"
     },
     {
       "id": "actualno",
@@ -59,17 +60,17 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T00:31:50.094Z"
+      "checkedAt": "2026-10-24T05:49:26.997Z"
     },
     {
       "id": "sega",
       "name": "Sega.bg",
       "url": "https://www.segabg.com/rss",
       "ok": true,
-      "fetched": 95,
+      "fetched": 91,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T00:31:50.238Z"
+      "checkedAt": "2026-10-24T05:49:27.231Z"
     },
     {
       "id": "novinite",
@@ -81,7 +82,7 @@
       "errors": [
         "https://www.novinite.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-24T00:31:51.857Z"
+      "checkedAt": "2026-10-24T05:49:28.714Z"
     },
     {
       "id": "btaen",
@@ -93,10 +94,253 @@
       "errors": [
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-24T00:31:53.707Z"
+      "checkedAt": "2026-10-24T05:49:30.482Z"
     }
   ],
   "items": [
+    {
+      "slug": "sofija-2026-10-24-mediapool-kandidat-za-clen-na-vss-n-mam-nikakva-vr-e674df",
+      "title": "Кандидат за член на ВСС: Нямам никаква връзка с Цацаров",
+      "summary": "Не познавам лично г-н Сотир Цацаров, никога не съм била негов процесуален представител по дело, по което той да е бил страна, заяви в отговор на въпросите на Mediapool адв. Силвия Цанова, която е кандидат за член на Висшия съдебен съвет, припознат и подкрепен от “Прогресивна България“. Тя допълва, че не е получавала персонална покана от народен представител за участие в процедурата по избор на членове на ВСС, а кандидатурата ѝ е резултат от предложение от неправителствения сектор…",
+      "date": "2026-10-24T05:40:21.000Z",
+      "url": "https://www.mediapool.bg/bulgaria/kandidat-za-chlen-na-vss-nyamam-nikakva-vrazka-s-tsatsarov/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "България",
+        "ВСС",
+        "Избори"
+      ],
+      "author": "Екип на Mediapool",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Кандидат за член на ВСС: Нямам никаква връзка с Цацаров",
+      "addedAt": "2026-10-24T05:49:23.736Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-actualno-ai-zamen-sluziteli-v-britanski-vestnik-the-cbd43e",
+      "title": "AI заменя служители в британския вестник \"The Telegraph\"",
+      "summary": "Британският в. \"The Telegraph\" ще съкрати част от персонала си в рамките на новите си планове за превръщането на вестник...",
+      "date": "2026-10-24T05:40:00.000Z",
+      "url": "https://www.actualno.com/europe/ai-zamenja-slujiteli-v-britanskija-vestnik-the-telegraph-news_2654036.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "ai",
+      "image": "https://cdn.actualno.eu/actualno_2013/upload/news/2026/10/24/22d11f7e4da80e0a10e97f2eefb6e3d8_2654036_1920x1080.jpg",
+      "imageAlt": "AI заменя служители в британския вестник \"The Telegraph\"",
+      "addedAt": "2026-10-24T05:49:26.997Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-actualno-spravedlivi-li-sa-masovite-protesti-v-v-3b3f3f",
+      "title": "Справедливи ли са масовите протести във Франция? Анкетата на Actualno",
+      "summary": "Ситуациятата с протестите във Франция е драматична: от изразяване на ученическо недоволство бунтовете масово прераснаха ...",
+      "date": "2026-10-24T05:38:00.000Z",
+      "url": "https://www.actualno.com/actualno/spravedlivi-li-sa-masovite-protesti-vyv-francija-anketata-na-actualno-news_2652817.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Актуално коментира"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://cdn.actualno.eu/actualno_2013/upload/news/2026/10/21/60580491519ee5a40209f1f87e1f096c_2652817_1920x1080.jpg",
+      "imageAlt": "Справедливи ли са масовите протести във Франция? Анкетата на Actualno",
+      "addedAt": "2026-10-24T05:49:26.997Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-capital-med-t-i-ziloto-na-fondovete-za-casten-d4b6c6",
+      "title": "Медът и жилото на фондовете за частен капитал",
+      "summary": "Последните години все повече фондове за частни инвестиции се отвориха за индивидуални инвеститори, което на теория трябва да осигури достъп на физически лица до перспективни бизнеси преди излизането им на борсата. През август Revolut също започна да предлага на българските си потребители възможност да инвестират в три фонда на водещи управляващи дружества. Отделно в България физически лица могат да купуват и продават акции на няколко публични компании за частен капитал, листнати на БФБ. Таймингъ...",
+      "date": "2026-10-24T05:30:00.000Z",
+      "url": "https://www.capital.bg/moiat_capital/investments/2026/10/23/4964104_medut_i_jiloto_na_fondovete_za_chasten_kapital/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "4919"
+      ],
+      "author": "Славчо Кузмов",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Медът и жилото на фондовете за частен капитал",
+      "addedAt": "2026-10-24T05:49:22.305Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-actualno-ko-iska-mir-i-ko-kapitulaci-humanist-t-42d0f4",
+      "title": "Кой иска мир и кой - капитулация: \"Хуманистът\" Путин говори за военна победа, Мъск в ролята на негов агент, а Тръмп с нова нелепа идея (ОБЗОР - ВИДЕО)",
+      "summary": "Малко след като американският пратеник Стив Уиткоф се срещна с Владимир Путин в Санкт Петербург и го нарече \"голям хум...",
+      "date": "2026-10-24T05:30:00.000Z",
+      "url": "https://www.actualno.com/europe/koj-iska-mir-i-koj-kapitulacija-humanistyt-putin-govori-za-voenna-pobeda-mysk-v-roljata-na-negov-agent-a-trymp-s-nova-nelepa-ideja-obzor-video-news_2653996.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://cdn.actualno.eu/actualno_2013/upload/news/2026/10/24/a074bca43b6fe40fc5ba3015d3ae20cb_2653996_1920x1080.jpg",
+      "imageAlt": "Кой иска мир и кой - капитулация: \"Хуманистът\" Путин говори за военна победа, Мъск в ролята на негов агент, а Тръмп с нова нелепа идея (ОБЗОР - ВИДЕО)",
+      "addedAt": "2026-10-24T05:49:26.997Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-actualno-prokurorite-v-stranata-izbirat-cetirima-ae4318",
+      "title": "Прокурорите в страната избират четирима членове на новия ВСС",
+      "summary": "Прокурорите в страната гласуват за избора на четирима членове на Висшия съдебен съвет (ВСС) от професионалната квота. Пр...",
+      "date": "2026-10-24T05:25:00.000Z",
+      "url": "https://www.actualno.com/crime/prokurorite-v-stranata-izbirat-chetirima-chlenove-na-novija-vss-news_2654032.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Крими"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://cdn.actualno.eu/actualno_2013/upload/news/2026/10/24/dede4038786fa0b918cdefc472ae45f7_2654032_1920x1080.jpg",
+      "imageAlt": "Прокурорите в страната избират четирима членове на новия ВСС",
+      "addedAt": "2026-10-24T05:49:26.997Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-actualno-gori-ruski-himiceski-zavod-v-tol-ti-udar-po-56c219",
+      "title": "Гори руски химически завод в Толяти, удар по подстанция спря тока в окупирания Крим (ВИДЕО)",
+      "summary": "Украинските сили, изглежда, са извършили нападение срещу химическия завод \"Толятикаучук\" в руския град Толяти в Самарска...",
+      "date": "2026-10-24T05:18:00.000Z",
+      "url": "https://www.actualno.com/europe/gori-ruski-himicheski-zavod-v-toljati-udar-po-podstancija-sprja-toka-v-okupiranija-krim-video-news_2654033.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://cdn.actualno.eu/actualno_2013/upload/news/2026/10/24/d7a8b897c1572da49dd4f46aa40eac3d_2654033_1920x1080.jpg",
+      "imageAlt": "Гори руски химически завод в Толяти, удар по подстанция спря тока в окупирания Крим (ВИДЕО)",
+      "addedAt": "2026-10-24T05:49:26.997Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-actualno-pentagon-t-ob-vi-institutite-konfuci-za-c76139",
+      "title": "Пентагонът обяви институтите \"Конфуций\" за заплаха за сигурността на САЩ (ВИДЕО)",
+      "summary": "Пентагонът определи финансираните от Китай културни центрове в университетските кампуси, познати като институти \"Конфуци...",
+      "date": "2026-10-24T05:15:00.000Z",
+      "url": "https://www.actualno.com/america/pentagonyt-objavi-institutite-konfucij-za-zaplaha-za-sigurnostta-na-sasht-video-news_2654028.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Америка"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "sigurnost",
+      "image": "https://cdn.actualno.eu/actualno_2013/upload/news/2026/10/24/be6e13cf5d833bc8a2cbcadf51305622_2654028_1920x1080.jpg",
+      "imageAlt": "Пентагонът обяви институтите \"Конфуций\" за заплаха за сигурността на САЩ (ВИДЕО)",
+      "addedAt": "2026-10-24T05:49:26.997Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-mediapool-p-tuva-i-t-cirk-na-il-ziite-i-kopneza-9156ca",
+      "title": "Пътуващият цирк на илюзиите и копнежа",
+      "summary": "„Хищници“, Мелиса да Коста, превод Росица Ташева, издателство „Колибри“ Мелиса да Коста встъпи в сърцата на българските читатели с дебютния си роман „Цялата небесна синева“, в който се говори за смъртта, но истинската тема е прославата на живота. Писателката е родена през 1990, щедрият й талант бързо я превръща в най-четената френска авторка за последните пет години, а „Хищници“ е седмото й, най-ново произведение, което завладява света. Този път Мелиса да Коста ни отвежда в живописния и екзотичен свят на пътуващите циркови артисти…",
+      "date": "2026-10-24T05:08:15.000Z",
+      "url": "https://www.mediapool.bg/procheti-tova/patuvashtiyat-tsirk-na-ilyuziite-i-kopnezha/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Прочети това"
+      ],
+      "author": "Мария Донева",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Пътуващият цирк на илюзиите и копнежа",
+      "addedAt": "2026-10-24T05:49:23.736Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-mediapool-d-lgo-ili-dobre-plateno-ma-cinstvo-modelite-0979ad",
+      "title": "Дълго или добре платено майчинство? Моделите в Европа са за гъвкаво връщане на работа",
+      "summary": "Дълго или добре платено майчинство? Моделите в Европа са за гъвкаво връщане на работа Няма държава от ЕС, която да не дава финансови стимули за родителството, макар че е известно, че те сами по себе си не са достатъчни, за да обърнат демографските тенденции. България предоставя добра подкрепа в сравнителен план - дълго майчинство, което е добре платено през първата година на детето, а през втората година жената получава 50% от обезщетението, дори да се върне на работа на непълен работен ден…",
+      "date": "2026-10-24T05:04:27.000Z",
+      "url": "https://www.mediapool.bg/pulse/dalgo-ili-dobre-plateno-maichinstvo-modelite-v-evropa-sa-za-gavkavo-vrashtane-na-rabota/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "PULSE",
+        "обезщетение",
+        "социални помощи",
+        "майчинство"
+      ],
+      "author": "Mediapool, Der Standard, HotNews.ro, H-Alter, EUrologus",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Дълго или добре платено майчинство? Моделите в Европа са за гъвкаво връщане на работа",
+      "addedAt": "2026-10-24T05:49:23.736Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-capital-n-zlet-r-represi-sre-u-zurnalistka-i-ne-g-n-59feef",
+      "title": "Нюзлетър | Репресия срещу журналистка и не, г-н Христов, Германия не е в рецесия: ПБ е на ръба на истерията",
+      "summary": "Как да се ориентираме в хаоса? Това е авторският нюзлетър на Александър Андреев за случилото се в България и по света през изминалата седмица - с личните и субективни акценти на автора, който се опитва да подреди новините, да ги свърже с историята, а да види и смешното в тях. Ако искате да го получавате всяка събота в електронната си поща, може да се абонирате тук Управляващата партия ПБ на Румен Радев изглежда стресирана, объркана и на крачка от истерията. Репресията срещу журналистката С...",
+      "date": "2026-10-24T05:00:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/bulgaria/2026/10/24/4969922_njuzletur_ne_g-n_hristov_germaniia_ne_e_v_recesiia/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2249"
+      ],
+      "author": "Александър Андреев",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Нюзлетър | Репресия срещу журналистка и не, г-н Христов, Германия не е в рецесия: ПБ е на ръба на истерията",
+      "addedAt": "2026-10-24T05:49:22.305Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-sega-v-pariz-ocakvat-nova-v-lna-ot-bezredici-de75a7",
+      "title": "В Париж очакват нова вълна от безредици днес",
+      "summary": "",
+      "date": "2026-10-24T04:30:12.000Z",
+      "url": "https://www.segabg.com/hot/category-foreign-country/parizh-ochakvat-nova-vulna-bezredici-dnes",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/10/protesti_v_parizh_2.jpg",
+      "imageAlt": "В Париж очакват нова вълна от безредици днес",
+      "addedAt": "2026-10-24T05:49:27.232Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-sega-prokurorite-izbirat-dnes-svoite-cetirima-v-9ee7f3",
+      "title": "Прокурорите избират днес своите четирима във ВСС",
+      "summary": "",
+      "date": "2026-10-24T03:39:45.000Z",
+      "url": "https://www.segabg.com/hot/category-bulgaria/prokurorite-izbirat-dnes-svoite-chetirima-vuv-vss",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/10/fa401370-1a30-4bb7-bfdd-0e0f739c92b6.jpeg",
+      "imageAlt": "Прокурорите избират днес своите четирима във ВСС",
+      "addedAt": "2026-10-24T05:49:27.232Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-sega-b-lgari-izpadna-ot-top-3-na-na-slabo-zadl-215378",
+      "title": "България изпадна от Топ 3 на най-слабо задлъжнелите страни в ЕС",
+      "summary": "",
+      "date": "2026-10-24T03:33:57.000Z",
+      "url": "https://www.segabg.com/hot/category-economy/bulgariya-izpadna-top-3-na-nay-slabo-zadluzhnelite-strani-es",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/10/money-business-coins-currency-6351791.jpg",
+      "imageAlt": "България изпадна от Топ 3 на най-слабо задлъжнелите страни в ЕС",
+      "addedAt": "2026-10-24T05:49:27.232Z"
+    },
     {
       "slug": "sofija-2026-10-24-sega-sport-t-po-televizi-ta-24-oktomvri-7e36f1",
       "title": "Спортът по телевизията - 24 октомври",
@@ -6985,230 +7229,6 @@
       "author": "",
       "theme": "politika",
       "addedAt": "2026-10-19T21:13:28.853Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sofija-2026-10-19-sega-v-gradove-v-severna-franci-e-v-veden-police-c360e2",
-      "title": "В градове в Северна Франция е въведен полицейски час",
-      "summary": "",
-      "date": "2026-10-19T16:43:39.000Z",
-      "url": "https://www.segabg.com/hot/category-foreign-country/gradove-severna-franciya-e-vuveden-policeyski-chas",
-      "source": "sega",
-      "sourceName": "Sega.bg",
-      "categories": [
-        "Водещи новини"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:13:22.440Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sofija-2026-10-19-dnevnikbg-otova-sezira-prokuraturata-za-kazusa-s-702597",
-      "title": "Йотова сезира прокуратурата за казуса с помилвания от нея наркотрафикант",
-      "summary": "Илияна Йотова обяви, че президентството днес е сезирало прокуратурата за казуса с помилвания от нея наркотрафикант. В съобщение до \"Сега\" от президенството уточняват, че президентът и кандидат за президент иска държавното обвинение да провери всички...",
-      "date": "2026-10-19T16:43:00.000Z",
-      "url": "https://www.dnevnik.bg/politika/2026/10/19/4968409_iotova_poiska_ot_prokuraturata_da_proveri_dali_ima/?ref=rss",
-      "source": "dnevnikbg",
-      "sourceName": "Dnevnik",
-      "categories": [
-        "4047"
-      ],
-      "author": "Георги Пауновски",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T20:55:42.670Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sofija-2026-10-19-actualno-kapan-t-s-ruskite-zamrazeni-aktivi-kak-es-9bf6a5",
-      "title": "Капанът с руските замразени активи: Как ЕС да освободи Белгия от огромния риск",
-      "summary": "Какво би се случило, ако САЩ се опитат да поемат контрола върху стотиците милиарди долари руски активи, замразени в межд...",
-      "date": "2026-10-19T16:41:00.000Z",
-      "url": "https://www.actualno.com/europe/kapanyt-s-ruskite-zamrazeni-aktivi-kak-es-da-osvobodi-belgija-ot-ogromnija-risk-news_2652208.html",
-      "source": "actualno",
-      "sourceName": "Actualno.com",
-      "categories": [
-        "Европа"
-      ],
-      "author": "reklama@webground.bg (Actualno.com)",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:13:17.653Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sofija-2026-10-19-actualno-kongres-t-da-razsledva-pomo-ta-ko-to-tr-mp-b62ea4",
-      "title": "\"Конгресът да разследва помощта, която Тръмп оказва на Путин\": Бивш защитник на президента с призив срещу него",
-      "summary": "Бившият федерален прокурор Андрю Маккарти, който преди това защитаваше Доналд Тръмп срещу обвиненията за връзки с Кремъл...",
-      "date": "2026-10-19T16:40:00.000Z",
-      "url": "https://www.actualno.com/america/kongresyt-da-razsledva-pomoshtta-kojato-trymp-okazva-na-putin-bivsh-zashtitnik-na-prezidenta-s-priziv-sreshtu-nego-news_2652207.html",
-      "source": "actualno",
-      "sourceName": "Actualno.com",
-      "categories": [
-        "Америка"
-      ],
-      "author": "reklama@webground.bg (Actualno.com)",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:13:17.653Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sofija-2026-10-19-actualno-prizovaha-za-otlagane-na-psz-barselona-05fe31",
-      "title": "Призоваха за отлагане на ПСЖ - Барселона заради безредиците във Франция",
-      "summary": "Напрежението, свързано със сигурността във Франция през последните дни, постави под съмнение провеждането на дългоочаква...",
-      "date": "2026-10-19T16:33:00.000Z",
-      "url": "https://www.actualno.com/football/prizovaha-za-otlagane-na-psj-barselona-zaradi-bezredicite-vyv-francija-news_2652206.html",
-      "source": "actualno",
-      "sourceName": "Actualno.com",
-      "categories": [
-        "Футбол свят"
-      ],
-      "author": "reklama@webground.bg (Actualno.com)",
-      "theme": "sigurnost",
-      "addedAt": "2026-10-19T21:13:17.653Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sofija-2026-10-19-actualno-satelitni-snimki-pokazvat-cast-ot-etite-v-2f0a9e",
-      "title": "САТЕЛИТНИ СНИМКИ показват част от щетите в Санкт Петербург след голяма украинска атака",
-      "summary": "Какви щети успяха да нанесат украинските далекобойни дронове при атаката на 18 октомври срещу Санкт Петербург, родния гр...",
-      "date": "2026-10-19T16:27:00.000Z",
-      "url": "https://www.actualno.com/europe/satelitni-snimki-pokazvat-chast-ot-shtetite-v-sankt-peterburg-sled-goljama-ukrainska-ataka-news_2652203.html",
-      "source": "actualno",
-      "sourceName": "Actualno.com",
-      "categories": [
-        "Европа"
-      ],
-      "author": "reklama@webground.bg (Actualno.com)",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:13:17.653Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sofija-2026-10-19-dnevnikbg-visse-ucili-e-dogovar-vr-ane-na-66d293",
-      "title": "Висше училище договаря връщане на виетнамските студенти в България",
-      "summary": "Висше училище договаря връщане на виетнамските студенти в България. След годините под комунизъм, когато в България са обучени хиляди, делегация на Висшето училище по телекомуникации и пощи (ВУТП) е подписала три документа и е рекламирала висшето ни...",
-      "date": "2026-10-19T16:26:00.000Z",
-      "url": "https://www.dnevnik.bg/burzi-novini/2026/10/19/4968402_visshe_uchilishte_dogovaria_vrushtane_na_vietnamskite/?ref=rss",
-      "source": "dnevnikbg",
-      "sourceName": "Dnevnik",
-      "categories": [
-        "5026"
-      ],
-      "author": "Дневник",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T20:55:42.670Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sofija-2026-10-19-actualno-zagina-pri-bombardirovka-edva-na-43-b-d2687f",
-      "title": "Загина при бомбардировка едва на 43: Българката, която събу обувките си и промени балета завинаги",
-      "summary": "България има с какво да се гордее, но много често българите или забравяме, или не знаем. В новата ни рубрика \"Невъзпятит...",
-      "date": "2026-10-19T16:25:00.000Z",
-      "url": "https://www.actualno.com/faces/zagina-pri-bombardirovka-edva-na-43-bylgarkata-kojato-sybu-obuvkite-si-i-promeni-baleta-zavinagi-news_2640529.html",
-      "source": "actualno",
-      "sourceName": "Actualno.com",
-      "categories": [
-        "Лица"
-      ],
-      "author": "reklama@webground.bg (Actualno.com)",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:13:17.653Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sofija-2026-10-19-sega-otova-dade-na-prokuraturata-pomilvaneto-na-67520d",
-      "title": "Йотова даде на прокуратурата помилването на Петричкия Ескобар",
-      "summary": "",
-      "date": "2026-10-19T16:24:51.000Z",
-      "url": "https://www.segabg.com/hot/category-bulgaria/yotova-dade-na-prokuraturata-pomilvaneto-na-petrichkiya-eskobar",
-      "source": "sega",
-      "sourceName": "Sega.bg",
-      "categories": [
-        "Водещи новини"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:13:22.440Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sofija-2026-10-19-sega-tunel-t-topli-dol-vece-e-tapa-na-hemus-i-90b002",
-      "title": "Тунелът \"Топли дол\" вече е тапа на \"Хемус\" и така 6 месеца",
-      "summary": "",
-      "date": "2026-10-19T16:20:10.000Z",
-      "url": "https://www.segabg.com/hot/category-economy/tunelut-topli-dol-veche-e-tapa-na-hemus-i-taka-6-meseca",
-      "source": "sega",
-      "sourceName": "Sega.bg",
-      "categories": [
-        "Водещи новини"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:13:22.440Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sofija-2026-10-19-dnevnikbg-ministerstvoto-na-otbranata-zasilva-nabl-623118",
-      "title": "Министерството на отбраната засилва наблюдението по Черноморието с дронове",
-      "summary": "Министерството на отбраната засилва наблюдението по Черноморието с дронове. Това съобщи пресцентърът на ведомството. Дейностите са част от превантивните мерки за повишаване на сигурността и осигуряване на своевременна информация за...",
-      "date": "2026-10-19T16:20:00.000Z",
-      "url": "https://www.dnevnik.bg/burzi-novini/2026/10/19/4968403_ministerstvoto_na_otbranata_zasilva_nabljudenieto_po/?ref=rss",
-      "source": "dnevnikbg",
-      "sourceName": "Dnevnik",
-      "categories": [
-        "5026"
-      ],
-      "author": "Дневник",
-      "theme": "sigurnost",
-      "addedAt": "2026-10-19T20:55:42.670Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sofija-2026-10-19-actualno-samokov-e-domakin-na-evrope-skoto-p-99db34",
-      "title": "Самоков е домакин на Европейското първенство по естетическа групова гимнастика",
-      "summary": "Самоков е домакин на Европейското първенство по естетическа групова гимнастика! С тържествена церемония в спортния комп...",
-      "date": "2026-10-19T16:16:00.000Z",
-      "url": "https://www.actualno.com/sofia/samokov-e-domakin-na-evropejskoto-pyrvenstvo-po-esteticheska-grupova-gimnastika-news_2652199.html",
-      "source": "actualno",
-      "sourceName": "Actualno.com",
-      "categories": [
-        "София"
-      ],
-      "author": "reklama@webground.bg (Actualno.com)",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:13:17.653Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sofija-2026-10-19-novinite-bulgarian-court-approves-arrest-warrants-in-b6db0b",
-      "title": "Bulgarian Court Approves Arrest Warrants in Starlink Antenna Arson Case",
-      "summary": "Bulgaria’s Sofia City Court has authorized European Arrest Warrants for two German nationals suspected of setting fire to Starlink antennas at the Teleport Plana facility near Sofia, BNT reported, as the suspects have left the country and their current whereabouts remain unknown. The two men, Tirpan Beytulla and Zeka Islam, were born in Germany in 2007. The court considered the Prosecutor’s Office request for the warrants during proceedings today. ...",
-      "date": "2026-10-19T16:13:29.000Z",
-      "url": "https://www.novinite.com/view_news.php?id=241139",
-      "source": "novinite",
-      "sourceName": "Novinite.com",
-      "categories": [
-        "Defense"
-      ],
-      "author": "",
-      "theme": "politika",
-      "addedAt": "2026-10-19T21:13:28.853Z",
-      "backfilled": true
-    },
-    {
-      "slug": "sofija-2026-10-19-actualno-kolko-d-lgo-dvizenieto-prez-topli-dol-e-e-afc501",
-      "title": "Колко дълго движението през \"Топли дол\" ще е изпитание: Отговор от министър Шишков",
-      "summary": "Да затворим тунела \"Топли дол\" за ремонт не е каприз, а необходимост, за да не бъдат застрашени хора. Състоянието му беш...",
-      "date": "2026-10-19T16:11:00.000Z",
-      "url": "https://www.actualno.com/society/kolko-dylgo-dvijenieto-prez-topli-dol-shte-e-izpitanie-otgovor-ot-ministyr-shishkov-news_2652195.html",
-      "source": "actualno",
-      "sourceName": "Actualno.com",
-      "categories": [
-        "Общество"
-      ],
-      "author": "reklama@webground.bg (Actualno.com)",
-      "theme": "drustvo",
-      "addedAt": "2026-10-19T21:13:17.653Z",
       "backfilled": true
     }
   ]
