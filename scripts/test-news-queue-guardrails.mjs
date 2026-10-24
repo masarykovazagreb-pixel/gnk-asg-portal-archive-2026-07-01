@@ -21,11 +21,11 @@ assert.match(canonicalPipeline,/const MIN_ITEMS_FLOOR = 200;/);
 assert.match(canonicalPipeline,/const ARCHIVE_MAX_BEFORE_PRUNE = \d+;/);
 assert.match(canonicalPipeline,/const ARCHIVE_KEEP_WHEN_FULL = \d+;/);
 
-// Canonical writer workflow must be the single owner: six runs daily at 01:12,
+// Canonical writer workflow must be the single owner: six runs daily at 01:37,
 // 05:12, 09:12, 13:12, 17:12 and 21:12 UTC, invokes the canonical pipeline script,
 // reads the central release fence, and is the one that commits news.json /
 // news_archive.json only when the control plane authorizes it.
-assert.match(canonicalWriterWorkflow,/cron: '12 1,5,9,13,17,21 \* \* \*'/);
+assert.match(canonicalWriterWorkflow,/cron: '37 1,5,9,13,17,21 \* \* \*'/);
 assert.match(canonicalWriterWorkflow,/node scripts\/gnk-news-refresh\.mjs/);
 assert.match(canonicalWriterWorkflow,/git add[\s\S]{0,120}news\.json[\s\S]{0,120}news_archive\.json/);
 assert.match(canonicalWriterWorkflow,/automation-kill-switches\.json/);
