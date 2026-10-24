@@ -75,12 +75,23 @@ for (const base of SITES) {
 }
 
 for (const dir of targets) {
+  /* Pišemo samo u mapu koja pripada webu (uz nju je `index.html`). Mape s
+     assetima bez stranice — npr. izvorni `src/assets` — imaju svoj život i
+     generator ih sam popunjava. */
+  const webRoot = dirname(dir);
+  const isWebRoot = existsSync(join(webRoot, 'index.html'));
+  if (!isWebRoot) continue;
   const favicon = join(dir, 'favicon.svg');
   const mark = join(dir, 'aktual-media-mark.svg');
   /* Arhiva i dnevnik drže ikonu i pod `assets/brand/` (tako je zove njihov
      `alternate` link). Ako ta putanja postoji, mora nositi isti crtež. */
   const brandIcon = join(dir, 'brand', 'favicon.svg');
-  const pairs = [[favicon, FAVICON], [mark, MARK]];
+  /* Znak (mark) se NE stvara ovdje: njega piše generator svakog weba koji ga
+     koristi u zaglavlju. Sloj samo vraća isti crtež ondje gdje datoteka već
+     postoji — inače bi u mapu ubacio datoteku koju build ne poznaje i test
+     svježine izlaza pao bi bez razloga. */
+  const pairs = [[favicon, FAVICON]];
+  if (existsSync(mark)) pairs.push([mark, MARK]);
   if (existsSync(brandIcon)) pairs.push([brandIcon, FAVICON]);
   for (const [file, content] of pairs) {
     const current = existsSync(file) ? readFileSync(file, 'utf8') : null;

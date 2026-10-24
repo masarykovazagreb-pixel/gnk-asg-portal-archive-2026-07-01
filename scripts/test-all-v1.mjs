@@ -60,6 +60,7 @@ const GATES = [
   { name: 'Razmjena vijesti — svaki web nosi tuđe naslove', cmd: ['node', 'tests/test-exchange-block-v1.mjs'], required: true },
   { name: 'Dizajn sustav — isti tokeni na svakom webu', cmd: ['node', 'tests/test-design-system-v1.mjs'], required: true },
   { name: 'Ugovor o brendu — jedno ime, jedan znak, jedan izdavač', cmd: ['node', 'scripts/audit-brand-contract-v1.mjs'], required: true },
+  { name: 'Sinkronizacija — jedan popis koraka i redoslijed', cmd: ['node', 'tests/test-sync-pipeline-v1.mjs'], required: true },
   { name: 'Kodiranje izvora — bez U+FFFD', cmd: ['node', 'tests/test-region-encoding-v1.mjs'], required: true },
   { name: 'Jednak standard izdanja i portala', cmd: ['node', 'tests/test-editions-parity-v1.mjs'], required: true },
   { name: 'Unutrašnjost izdanja — isti okvir kao naslovnica', cmd: ['node', 'tests/test-edition-inner-parity-v1.mjs'], required: true },

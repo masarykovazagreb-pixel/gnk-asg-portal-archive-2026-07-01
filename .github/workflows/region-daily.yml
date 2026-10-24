@@ -88,34 +88,17 @@ jobs:
           node apps/region/engine/backfill.mjs --below 300 --target 320 --store 420 --days 400 --max-pages 6 --pause 80 \
             || echo "::warning::Dopuna arhive nije dovršena — izdanja ostaju na postojećim zapisima."
 
-      - name: Galerija i matična stranica izdanja
+      # Redoslijed koraka živi u JEDNOM popisu: scripts/sync-all-v1.mjs.
+      # Prije su dvije kopije (workflow i čovjek) znale se razići, pa je
+      # generator prepisao sloj primijenjen prije njega — /status/ je tako
+      # ostao bez znaka kuće, a Knowledge Center bez entity:v1 bloka.
+      # Gate tests/test-sync-pipeline-v1.mjs pada ako se popis raziđe.
+      - name: Sinkronizacija (generatori → slojevi → provjere)
         shell: bash
         run: |-
           set -euo pipefail
           node apps/portal/scripts/album-nermin-sefic-v1.mjs
-          node scripts/build-brand-gallery-v1.mjs || echo "::warning::Galerija znakova nije dovršena — provjeri manifest i naslovnicu."
-          node scripts/build-top-teme-v1.mjs
-          node scripts/audit-top-teme-v1.mjs
-          node apps/region/engine/hub.mjs
-          node scripts/plan-world-expansion-v1.mjs
-          node scripts/build-coverage-page-v1.mjs
-          node scripts/build-prenos-hub-v1.mjs
-          node scripts/apply-prenos-crosslinks-v1.mjs
-          node scripts/build-status-page-v1.mjs
-          node scripts/public-status-snapshot-v1.mjs
-          node apps/sites/build.mjs
-          # Redom: prvo svi generatori, pa tek onda slojevi koji se primjenjuju
-          # na svaku stranicu. Obrnuti redoslijed ostavlja stranicu koju je
-          # generator upravo prepisao bez trake, grafa i društvene kartice —
-          # tako je /status/ i EN /status/ ostao bez znaka kuće.
-          node scripts/apply-network-entity-v1.mjs
-          node scripts/apply-house-ribbon-v1.mjs
-          node scripts/apply-design-tokens-v1.mjs
-          node scripts/apply-social-card-meta-v1.mjs
-          node scripts/prune-image-sitemap-v1.mjs
-          node scripts/knowledge-center-hr-sync-v1.mjs --apply
-          node apps/region/engine/audit.mjs
-          node scripts/audit-aktual-brand-indexability-v1.mjs --strict
+          node scripts/sync-all-v1.mjs
           test -f apps/portal/izdanja/index.html
           test -f apps/portal/data/izdanja.json
 

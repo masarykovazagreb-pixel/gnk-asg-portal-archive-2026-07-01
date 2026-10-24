@@ -67,16 +67,13 @@ for (const file of walk(PORTAL)) {
   scanned += 1;
   if (!/<html[\s>]/i.test(html)) continue;
 
-  /* Stranica koja je prije dobila ugrađeni blok (stariji sloj) vraća se na
-     vanjski list — portal ne nosi stil u HTML-u. */
-  let prepared = html;
-  if (prepared.includes(`id="${DESIGN_ID}"`)) {
-    prepared = prepared.replace(new RegExp(`<style id="${DESIGN_ID}"[\\s\\S]*?</style>\\s*`), '');
-  }
-  if (prepared.includes('data-am-design="v1"')) continue;
+  /* Ugrađeni blok i vanjski list nose isti token skup. Generatori pišu blok
+     sami (izlaz im mora ostati reproducibilan), a rukom pisane stranice i rute
+     sa strogim CSP-om dobivaju list. Nijedna stranica ne nosi oboje. */
+  if (html.includes(`id="${DESIGN_ID}"`) || html.includes('data-am-design="v1"')) continue;
 
-  const next = withDesignTokensLink(prepared);
-  if (next === prepared) continue;
+  const next = withDesignTokensLink(html);
+  if (next === html) continue;
   const rel = relative(ROOT, file);
   if (CHECK) { missing.push(rel); continue; }
   writeFileSync(file, next);
