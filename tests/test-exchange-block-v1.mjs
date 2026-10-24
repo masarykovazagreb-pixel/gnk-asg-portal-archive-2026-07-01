@@ -101,6 +101,30 @@ for (const site of SITES) {
 audit('apps/arhiva/site/index.html', { label: 'arhiva' });
 audit('apps/dnevnik/site/index.html', { label: 'dnevnik' });
 
+/* Isti popis mora postojati i u strojnom obliku — exchange.json uz svaki web. */
+const jsonDirs = [
+  ...CHANNELS.map((channel) => `apps/portal/kanal/${channel.id}`),
+  ...WORLD_PORTALS.map((portal) => `apps/world/site/${portal.id}`),
+  ...SITES.map((site) => `apps/sites/site/${site.slug}`),
+  'apps/arhiva/site',
+  'apps/dnevnik/site'
+];
+for (const dir of jsonDirs) {
+  const file = `${dir}/exchange.json`;
+  check(has(file), `${file}: nema strojnog zapisa razmjene`);
+  if (!has(file)) continue;
+  try {
+    const payload = JSON.parse(read(file));
+    check(Array.isArray(payload.items) && payload.items.length >= 4, `${file}: manje od 4 stavke`);
+    for (const item of (payload.items || []).slice(0, 3)) {
+      check(/^https:\/\//.test(String(item.url || '')), `${file}: stavka bez apsolutne adrese`);
+      check(Boolean(item.edition), `${file}: stavka bez imena izdanja`);
+    }
+  } catch {
+    check(false, `${file}: nije ispravan JSON`);
+  }
+}
+
 /* Engleski par mora nositi isti blok, s engleskim natpisom. */
 for (const site of SITES) {
   const file = `apps/sites/site/${site.slug}/en/index.html`;

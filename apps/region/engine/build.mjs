@@ -20,7 +20,7 @@ import { chromeOf, desksOf, extraOf, editionsUi } from '../src/chrome.mjs';
 import { spiderWeb, SPIDER_CSS, SPIDER_JS } from '../../satellites/lib/spiderweb-v1.mjs';
 import { meshBlock, MESH_CSS } from '../../satellites/lib/network-v1.mjs';
 import { HOUSE_CSS, houseRibbon } from '../../satellites/lib/house-style-v1.mjs';
-import { exchangeBlock, EXCHANGE_CSS } from '../../satellites/lib/razmjena-v1.mjs';
+import { exchangeBlock, writeExchangeJson, EXCHANGE_CSS } from '../../satellites/lib/razmjena-v1.mjs';
 import { editorialIndexBlock, EDITORIAL_INDEX_CSS } from '../../../scripts/lib/prenos-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -1100,7 +1100,7 @@ ${i.tags.map((tg) => `<category>${esc(tg)}</category>`).join('\n')}
 
   writeFileSync(join(dir, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${url(channel, 'sitemap.xml')}\n`);
 
-  writeFileSync(join(dir, 'llms.txt'), `# ${channel.title}\n\n> ${strings.aboutText}\n\nIzdavač: AKTUAL MEDIA d.o.o. · Urednik: Nermin Sefić · Direktor: Nermin Sefić · Kontakt: ${CONTACT}\nJezik: ${channel.lang} · Zemlja: ${channel.country} · Grad: ${channel.city}\nStatus: automatski sastavljeni osvrti na način izvještavanja; izvornici su povezani.\n\n## Izvori\n${channel.sources.map((s) => `- ${s.name}`).join('\n')}\n\n## Stranice\n- ${channel.base}\n- ${url(channel, 'mravinjak/')}\n- ${url(channel, 'izvori/')}\n- ${url(channel, 'metodologija/')}\n- ${url(channel, 'en/')} (English overview)\n- ${url(channel, 'feed.json')}\n- ${url(channel, 'sitemap.xml')}\n- ${HUB}\n`);
+  writeFileSync(join(dir, 'llms.txt'), `# ${channel.title}\n\n> ${strings.aboutText}\n\nIzdavač: AKTUAL MEDIA d.o.o. · Urednik: Nermin Sefić · Direktor: Nermin Sefić · Kontakt: ${CONTACT}\nJezik: ${channel.lang} · Zemlja: ${channel.country} · Grad: ${channel.city}\nStatus: automatski sastavljeni osvrti na način izvještavanja; izvornici su povezani.\n\n## Izvori\n${channel.sources.map((s) => `- ${s.name}`).join('\n')}\n\n## Stranice\n- ${channel.base}\n- ${url(channel, 'mravinjak/')}\n- ${url(channel, 'izvori/')}\n- ${url(channel, 'metodologija/')}\n- ${url(channel, 'en/')} (English overview)\n- ${url(channel, 'feed.json')}\n- ${url(channel, 'exchange.json')} (razmjena naslova s drugih webova mreže)\n- ${url(channel, 'sitemap.xml')}\n- ${HUB}\n`);
 }
 
 function writeSitemap(channel, data) {
@@ -1409,6 +1409,14 @@ ${footer(channel, strings)}`;
   }));
   writeFeed(channel, strings, data);
   writeSitemap(channel, data);
+  /* Razmjena je i strojno čitljiva: svaki kanal uz stranicu nosi isti popis
+     tuđih naslova koji prikazuje, pa ga drugi webovi mogu čitati i onda kad
+     HTML nije dostupan. */
+  writeExchangeJson(join(SITE, channel.id), {
+    root: ROOT,
+    selfHome: channel.base,
+    selfNames: [channel.city, channel.cityEn].filter(Boolean)
+  });
 
   return { channel: channel.id, pages: 4 + data.items.length + byTheme.size + channel.sources.length, items: data.items.length };
 }
