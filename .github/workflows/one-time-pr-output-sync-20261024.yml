@@ -1,0 +1,41 @@
+name: One-time PR output sync 20261024
+on:
+  push:
+    branches: ['fix/aktual-refresh-collision-window-20261024']
+    paths:
+      - '.github/workflows/one-time-pr-output-sync-20261024.yml'
+permissions:
+  contents: write
+concurrency:
+  group: one-time-pr-output-sync-20261024
+  cancel-in-progress: false
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/aktual-refresh-collision-window-20261024
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Regenerate current reviewed outputs from canonical builders
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = 'refs/heads/fix/aktual-refresh-collision-window-20261024'
+          node scripts/build-index-parity.mjs
+          node apps/sites/build.mjs
+          node scripts/build-index-parity.mjs --check
+          node tests/test-sites-network-v1.mjs --no-fresh
+          git add apps/portal/index.html apps/portal/en/index.html apps/sites/site/izbori-srbija/
+          if git diff --cached --quiet; then
+            echo 'Generated outputs are synchronized.'
+            exit 0
+          fi
+          git config user.name gnk-asg-repair-bot
+          git config user.email actions@users.noreply.github.com
+          git commit -m 'fix: synchronize generated index and election site outputs for PR'
+          git push origin HEAD:fix/aktual-refresh-collision-window-20261024
