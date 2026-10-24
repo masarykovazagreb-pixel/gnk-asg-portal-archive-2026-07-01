@@ -1,7 +1,7 @@
 {
   "ok": true,
   "status": "refreshed",
-  "updated_at": "2026-10-24T19:58:27+02:00",
+  "updated_at": "2026-10-24T20:04:01+02:00",
   "engine": "single_publication_engine_v14_github_actions",
   "cadence": "six times daily at 01:37, 05:37, 09:37, 13:37, 17:37 and 21:37 UTC; watchdog recovery if stale",
   "timezone": "Europe/Zagreb",
@@ -61,7 +61,7 @@
     {
       "source": "The Independent Business",
       "ok": true,
-      "items": 1,
+      "items": 0,
       "error": null
     },
     {
@@ -271,7 +271,7 @@
     {
       "source": "France 24",
       "ok": true,
-      "items": 21,
+      "items": 22,
       "error": null
     },
     {
@@ -282,9 +282,9 @@
     },
     {
       "source": "European Commission",
-      "ok": true,
+      "ok": false,
       "items": 0,
-      "error": null
+      "error": "fetch failed"
     },
     {
       "source": "The Guardian Pets",
@@ -319,13 +319,13 @@
     {
       "source": "Poslovni dnevnik",
       "ok": true,
-      "items": 16,
+      "items": 17,
       "error": null
     },
     {
       "source": "tportal",
       "ok": true,
-      "items": 18,
+      "items": 17,
       "error": null
     },
     {
@@ -343,7 +343,7 @@
     {
       "source": "Netokracija",
       "ok": true,
-      "items": 10,
+      "items": 0,
       "error": null
     },
     {
@@ -395,10 +395,10 @@
       "error": "HTTP 403"
     },
     {
-      "source": "BBC Culture",
-      "ok": false,
-      "items": 0,
-      "error": "HTTP 404"
+      "source": "BBC News Entertainment & Arts",
+      "ok": true,
+      "items": 25,
+      "error": null
     },
     {
       "source": "The Guardian Culture",
@@ -449,10 +449,10 @@
       "error": null
     },
     {
-      "source": "The Guardian Animals",
-      "ok": false,
-      "items": 0,
-      "error": "HTTP 404"
+      "source": "The Guardian Wildlife",
+      "ok": true,
+      "items": 20,
+      "error": null
     },
     {
       "source": "The Guardian Environment",
@@ -469,7 +469,7 @@
     {
       "source": "BBC Sport",
       "ok": true,
-      "items": 58,
+      "items": 57,
       "error": null
     },
     {
