@@ -4,7 +4,7 @@
   "lang": "bg",
   "city": "Sofija",
   "country": "Bugarska",
-  "updatedAt": "2026-10-24T20:41:38.866Z",
+  "updatedAt": "2026-10-24T21:14:01.941Z",
   "sources": [
     {
       "id": "bta",
@@ -17,7 +17,7 @@
         "https://www.bta.bg/bg/rss: HTTP 404",
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-24T20:41:29.449Z"
+      "checkedAt": "2026-10-24T21:13:55.342Z"
     },
     {
       "id": "capital",
@@ -27,20 +27,17 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T20:41:30.408Z"
+      "checkedAt": "2026-10-24T21:13:55.846Z"
     },
     {
       "id": "mediapool",
       "name": "Mediapool",
       "url": "https://www.mediapool.bg/rss",
-      "ok": false,
-      "fetched": 0,
+      "ok": true,
+      "fetched": 10,
       "corrupt": 0,
-      "errors": [
-        "https://www.mediapool.bg/rss: nije feed",
-        "https://www.mediapool.bg/rss/: nije feed"
-      ],
-      "checkedAt": "2026-10-24T20:41:31.904Z"
+      "errors": [],
+      "checkedAt": "2026-10-24T21:13:56.788Z"
     },
     {
       "id": "dnevnikbg",
@@ -52,7 +49,7 @@
       "errors": [
         "https://www.dnevnik.bg/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-24T20:41:33.526Z"
+      "checkedAt": "2026-10-24T21:13:58.123Z"
     },
     {
       "id": "actualno",
@@ -62,7 +59,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T20:41:35.185Z"
+      "checkedAt": "2026-10-24T21:13:59.261Z"
     },
     {
       "id": "sega",
@@ -72,7 +69,7 @@
       "fetched": 95,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T20:41:35.428Z"
+      "checkedAt": "2026-10-24T21:13:59.417Z"
     },
     {
       "id": "novinite",
@@ -82,9 +79,9 @@
       "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.novinite.com/rss: HTTP 404"
+        "https://www.novinite.com/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-24T20:41:36.995Z"
+      "checkedAt": "2026-10-24T21:14:00.212Z"
     },
     {
       "id": "btaen",
@@ -96,10 +93,44 @@
       "errors": [
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-24T20:41:38.866Z"
+      "checkedAt": "2026-10-24T21:14:01.941Z"
     }
   ],
   "items": [
+    {
+      "slug": "sofija-2026-10-25-sega-sport-t-po-televizi-ta-25-oktomvri-be34ca",
+      "title": "Спортът по телевизията - 25 октомври",
+      "summary": "",
+      "date": "2026-10-25T01:03:03.000Z",
+      "url": "https://www.segabg.com/category-sport/sportut-po-televiziyata-25-oktomvri",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Спорт"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2020/01/tv_1.jpg",
+      "imageAlt": "Спортът по телевизията - 25 октомври",
+      "addedAt": "2026-10-24T21:13:59.417Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-mediapool-varna-i-konstanca-e-stavat-cernomorski-h-4e8565",
+      "title": "Варна и Констанца ще стават Черноморски хъбове за сигурност",
+      "summary": "Черноморски хъбове за сигурност ще бъдат обособени във Варна и Констанца, каза външният министър на България Велислава Петрова. Тя посети посети Висшето военноморско училище в събота заедно с министъра на външните работи на Франция Жан-Ноел Баро. Черноморският хъб за сигурност е част от стратегическия европейски подход за сигурност в Черно море, допълни Петрова…",
+      "date": "2026-10-24T20:39:09.000Z",
+      "url": "https://www.mediapool.bg/bulgaria/varna-i-konstantsa-shte-stavat-chernomorski-habove-za-sigurnost/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "България"
+      ],
+      "author": "Екип на Medapool",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "Варна и Констанца ще стават Черноморски хъбове за сигурност",
+      "addedAt": "2026-10-24T21:13:56.788Z"
+    },
     {
       "slug": "sofija-2026-10-24-actualno-uceni-otkriha-stranna-povtor-emost-v-nad-59dfa3",
       "title": "Учени откриха странна повторяемост в над 1000 случая на предполагаемо прераждане",
@@ -7319,36 +7350,6 @@
       "author": "reklama@webground.bg (Actualno.com)",
       "theme": "sport",
       "addedAt": "2026-10-20T20:36:30.916Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-actualno-zivotinski-t-helouin-vece-e-tuk-dopamin-za-23556a",
-      "title": "Животинският Хелоуин вече е тук: Допамин за вторник",
-      "summary": "Ориентираме се към край на сериозните новини за днес! Време е за вечерната ни доза допамин – няколко секунди, коит...",
-      "date": "2026-10-20T19:30:00.000Z",
-      "url": "https://www.actualno.com/society/jivotinskijat-helouin-veche-e-tuk-dopamin-za-vtornik-news_2652652.html",
-      "source": "actualno",
-      "sourceName": "Actualno.com",
-      "categories": [
-        "Общество"
-      ],
-      "author": "reklama@webground.bg (Actualno.com)",
-      "theme": "drustvo",
-      "addedAt": "2026-10-20T20:36:30.916Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-dnevnikbg-evroparlament-t-vdigna-letvata-za-za-itata-34d1b9",
-      "title": "Европарламентът вдигна летвата за защитата на пътниците в ЕС",
-      "summary": "Европейският парламент даде зелена светлина за увеличаване на правата на пътниците при провалено пътуване. С гласуване, подкрепено с 652 от максимално възможни 750 гласа във вторник, евродепутатите одобриха нов европейски регламент,...",
-      "date": "2026-10-20T19:19:00.000Z",
-      "url": "https://www.dnevnik.bg/evropa/2026/10/20/4969036_evroparlamentut_vdigna_letvata_za_zashtitata_na/?ref=rss",
-      "source": "dnevnikbg",
-      "sourceName": "Dnevnik",
-      "categories": [
-        "1674"
-      ],
-      "author": "Йовка Димитрова",
-      "theme": "politika",
-      "addedAt": "2026-10-20T20:36:29.591Z"
     }
   ]
 }

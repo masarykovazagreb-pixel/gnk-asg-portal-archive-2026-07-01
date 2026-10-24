@@ -4,17 +4,23 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-10-24T20:40:08.343Z",
+  "updatedAt": "2026-10-24T21:12:43.319Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": true,
-      "fetched": 50,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-10-24T20:40:03.861Z"
+      "errors": [
+        "https://telex.hu/rss: HTTP 403",
+        "https://telex.hu/rss/belfold: HTTP 403",
+        "https://telex.hu/rss/kulfold: HTTP 403",
+        "https://telex.hu/rss/gazdasag: HTTP 403",
+        "https://telex.hu/rss/sport: HTTP 403"
+      ],
+      "checkedAt": "2026-10-24T21:12:39.971Z"
     },
     {
       "id": "444",
@@ -24,7 +30,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T20:40:04.082Z"
+      "checkedAt": "2026-10-24T21:12:40.255Z"
     },
     {
       "id": "hvg",
@@ -34,7 +40,7 @@
       "fetched": 60,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T20:40:04.453Z"
+      "checkedAt": "2026-10-24T21:12:40.411Z"
     },
     {
       "id": "portfolio",
@@ -44,7 +50,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T20:40:05.227Z"
+      "checkedAt": "2026-10-24T21:12:40.976Z"
     },
     {
       "id": "index",
@@ -56,7 +62,7 @@
       "errors": [
         "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-24T20:40:07.207Z"
+      "checkedAt": "2026-10-24T21:12:42.741Z"
     },
     {
       "id": "24hu",
@@ -66,7 +72,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T20:40:07.392Z"
+      "checkedAt": "2026-10-24T21:12:42.932Z"
     },
     {
       "id": "mandiner",
@@ -76,10 +82,30 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T20:40:08.343Z"
+      "checkedAt": "2026-10-24T21:12:43.319Z"
     }
   ],
   "items": [
+    {
+      "slug": "budimpesta-2026-10-24-24hu-gulacsiek-katartikus-gyozelmet-arattak-833f7b",
+      "title": "Gulácsiék katartikus győzelmet arattak",
+      "summary": "A 96. percben jött a csattanó. The post Gulácsiék katartikus győzelmet arattak first appeared on 24.hu .",
+      "date": "2026-10-24T21:04:33.000Z",
+      "url": "https://24.hu/sport/foci/2026/10/24/spanyol-focibajnoksag-valencia-villarreal-gulacsi-peter/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Foci",
+        "gulácsi péter",
+        "villarreal",
+        "valencia"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/10/000_d4br33l-1024x576.jpg",
+      "imageAlt": "Gulácsiék katartikus győzelmet arattak",
+      "addedAt": "2026-10-24T21:12:42.932Z"
+    },
     {
       "slug": "budimpesta-2026-10-24-telex-tobb-hatalmas-viztolcser-is-feltunt-az-aea41e",
       "title": "Több hatalmas víztölcsér is feltűnt az Isztriai-félszigetnél, egyet le is videóztak",
@@ -8051,26 +8077,6 @@
       "image": "https://s.24.hu/app/uploads/2026/10/central-0416035873-1-e1792571798581-1024x577.jpg",
       "imageAlt": "Házkutatást tartottak Matolcsy Györgynél, több eszközt is lefoglaltak a volt jegybankelnöknél",
       "addedAt": "2026-10-21T11:39:44.698Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-21-444-az-orizetbe-vetel-elotti-este-meg-azt-0abc65",
-      "title": "Az őrizetbe vétel előtti este még azt próbálta elmagyarázni Matolcsy György, miért nem kórházat építettek az alapítványok létrehozása helyett",
-      "summary": "És egyébként is, szerinte a kormány is építhetett volna kórházat a jegybank osztalékából.",
-      "date": "2026-10-21T10:56:33.000Z",
-      "url": "https://444.hu/2026/10/21/az-orizetbe-vetel-elotti-este-meg-azt-probalta-elmagyarazni-matolcsy-gyorgy-miert-nem-korhazat-epitettek-az-alapitvanyok-letrehozasa-helyett?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
-      "source": "444",
-      "sourceName": "444",
-      "categories": [
-        "mnb",
-        "mnb-botrány",
-        "osztalék",
-        "magyar nemzeti bank"
-      ],
-      "author": "Székely Sarolta",
-      "theme": "politika",
-      "image": "https://assets.4cdn.hu/kraken/8PEneSG7aAz7IyAus.jpeg",
-      "imageAlt": "Az őrizetbe vétel előtti este még azt próbálta elmagyarázni Matolcsy György, miért nem kórházat építettek az alapítványok létrehozása helyett",
-      "addedAt": "2026-10-21T11:39:41.739Z"
     }
   ]
 }
