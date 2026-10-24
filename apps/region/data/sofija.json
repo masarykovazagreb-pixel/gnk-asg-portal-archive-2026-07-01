@@ -4,7 +4,7 @@
   "lang": "bg",
   "city": "Sofija",
   "country": "Bugarska",
-  "updatedAt": "2026-10-24T21:14:01.941Z",
+  "updatedAt": "2026-10-24T23:46:01.475Z",
   "sources": [
     {
       "id": "bta",
@@ -17,7 +17,7 @@
         "https://www.bta.bg/bg/rss: HTTP 404",
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-24T21:13:55.342Z"
+      "checkedAt": "2026-10-24T23:45:53.659Z"
     },
     {
       "id": "capital",
@@ -27,17 +27,20 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T21:13:55.846Z"
+      "checkedAt": "2026-10-24T23:45:54.123Z"
     },
     {
       "id": "mediapool",
       "name": "Mediapool",
       "url": "https://www.mediapool.bg/rss",
-      "ok": true,
-      "fetched": 10,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-10-24T21:13:56.788Z"
+      "errors": [
+        "https://www.mediapool.bg/rss: HTTP 304",
+        "https://www.mediapool.bg/rss/: HTTP 304"
+      ],
+      "checkedAt": "2026-10-24T23:45:56.048Z"
     },
     {
       "id": "dnevnikbg",
@@ -49,7 +52,7 @@
       "errors": [
         "https://www.dnevnik.bg/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-24T21:13:58.123Z"
+      "checkedAt": "2026-10-24T23:45:57.273Z"
     },
     {
       "id": "actualno",
@@ -59,7 +62,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T21:13:59.261Z"
+      "checkedAt": "2026-10-24T23:45:58.404Z"
     },
     {
       "id": "sega",
@@ -69,7 +72,7 @@
       "fetched": 95,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T21:13:59.417Z"
+      "checkedAt": "2026-10-24T23:45:58.572Z"
     },
     {
       "id": "novinite",
@@ -79,9 +82,9 @@
       "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.novinite.com/rss: HTTP 403"
+        "https://www.novinite.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-24T21:14:00.212Z"
+      "checkedAt": "2026-10-24T23:45:59.858Z"
     },
     {
       "id": "btaen",
@@ -93,7 +96,7 @@
       "errors": [
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-24T21:14:01.941Z"
+      "checkedAt": "2026-10-24T23:46:01.474Z"
     }
   ],
   "items": [
@@ -113,6 +116,23 @@
       "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2020/01/tv_1.jpg",
       "imageAlt": "Спортът по телевизията - 25 октомври",
       "addedAt": "2026-10-24T21:13:59.417Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-sega-prokurorite-ne-izbraha-clenove-na-vss-na-p-3bd7a2",
+      "title": "Прокурорите не избраха членове на ВСС на първи тур",
+      "summary": "",
+      "date": "2026-10-24T21:12:28.000Z",
+      "url": "https://www.segabg.com/hot/category-bulgaria/prokurorite-ne-izbraha-chlenove-na-vss-na-purvi-tur",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/10/bulphoto_744739_338a3878_11e4f4e9.jpg",
+      "imageAlt": "Прокурорите не избраха членове на ВСС на първи тур",
+      "addedAt": "2026-10-24T23:45:58.573Z"
     },
     {
       "slug": "sofija-2026-10-24-mediapool-varna-i-konstanca-e-stavat-cernomorski-h-4e8565",
@@ -7335,21 +7355,6 @@
       "author": "Дневник",
       "theme": "drustvo",
       "addedAt": "2026-10-20T20:36:29.591Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-actualno-fabregas-man-na-ted-e-sb-dnata-mecta-tova-8d9f9b",
-      "title": "Фабрегас: \"Ман Юнайтед е сбъдната мечта, това не беше възможно преди 3 години\"",
-      "summary": "Старши треньорът на Комо Сеск Фабрегас определи като сбъдната мечта предстоящия домакински мач срещу Манчестър Юнайтед в...",
-      "date": "2026-10-20T19:37:00.000Z",
-      "url": "https://www.actualno.com/football/fabregas-man-unajted-e-sbydnata-mechta-tova-ne-beshe-vyzmojno-predi-3-godini-news_2652671.html",
-      "source": "actualno",
-      "sourceName": "Actualno.com",
-      "categories": [
-        "Футбол свят"
-      ],
-      "author": "reklama@webground.bg (Actualno.com)",
-      "theme": "sport",
-      "addedAt": "2026-10-20T20:36:30.916Z"
     }
   ]
 }
