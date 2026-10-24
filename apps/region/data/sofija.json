@@ -4,7 +4,7 @@
   "lang": "bg",
   "city": "Sofija",
   "country": "Bugarska",
-  "updatedAt": "2026-10-24T17:25:27.324Z",
+  "updatedAt": "2026-10-24T20:41:38.866Z",
   "sources": [
     {
       "id": "bta",
@@ -17,7 +17,7 @@
         "https://www.bta.bg/bg/rss: HTTP 404",
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-24T17:25:18.514Z"
+      "checkedAt": "2026-10-24T20:41:29.449Z"
     },
     {
       "id": "capital",
@@ -27,17 +27,20 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T17:25:19.121Z"
+      "checkedAt": "2026-10-24T20:41:30.408Z"
     },
     {
       "id": "mediapool",
       "name": "Mediapool",
       "url": "https://www.mediapool.bg/rss",
-      "ok": true,
-      "fetched": 10,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-10-24T17:25:20.602Z"
+      "errors": [
+        "https://www.mediapool.bg/rss: nije feed",
+        "https://www.mediapool.bg/rss/: nije feed"
+      ],
+      "checkedAt": "2026-10-24T20:41:31.904Z"
     },
     {
       "id": "dnevnikbg",
@@ -49,7 +52,7 @@
       "errors": [
         "https://www.dnevnik.bg/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-24T17:25:21.910Z"
+      "checkedAt": "2026-10-24T20:41:33.526Z"
     },
     {
       "id": "actualno",
@@ -59,7 +62,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T17:25:23.347Z"
+      "checkedAt": "2026-10-24T20:41:35.185Z"
     },
     {
       "id": "sega",
@@ -69,7 +72,7 @@
       "fetched": 95,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-24T17:25:24.389Z"
+      "checkedAt": "2026-10-24T20:41:35.428Z"
     },
     {
       "id": "novinite",
@@ -81,7 +84,7 @@
       "errors": [
         "https://www.novinite.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-24T17:25:25.462Z"
+      "checkedAt": "2026-10-24T20:41:36.995Z"
     },
     {
       "id": "btaen",
@@ -93,10 +96,197 @@
       "errors": [
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-24T17:25:27.324Z"
+      "checkedAt": "2026-10-24T20:41:38.866Z"
     }
   ],
   "items": [
+    {
+      "slug": "sofija-2026-10-24-actualno-uceni-otkriha-stranna-povtor-emost-v-nad-59dfa3",
+      "title": "Учени откриха странна повторяемост в над 1000 случая на предполагаемо прераждане",
+      "summary": "Над 30 процента от американците вярват в концепцията за прераждането – идеята, че хората, които умират, ще се прер...",
+      "date": "2026-10-24T19:32:00.000Z",
+      "url": "https://www.actualno.com/interest/ucheni-otkriha-stranna-povtorjaemost-v-nad-1000-sluchaja-na-predpolagaemo-prerajdane-news_2653880.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Интересно"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://cdn.actualno.eu/actualno_2013/upload/news/2026/10/23/cc72d8c58dbe16efe3621cd8a25d65bc_2653880_1920x1080.jpg",
+      "imageAlt": "Учени откриха странна повторяемост в над 1000 случая на предполагаемо прераждане",
+      "addedAt": "2026-10-24T20:41:35.185Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-actualno-bivs-tren-or-na-ludogorec-domusciev-be-ab33a9",
+      "title": "Бивш треньор на Лудогорец: Домусчиев бе обсебен",
+      "summary": "Бившият помощник-треньор в Лудогорец - Зденек Бечка, направи любопитно изказване за собственика на клуба и престоя си та...",
+      "date": "2026-10-24T19:14:00.000Z",
+      "url": "https://www.actualno.com/bgfootball/bivsh-trenior-na-ludogorec-domuschiev-be-obseben-news_2654254.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Футбол България"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://cdn.actualno.eu/actualno_2013/upload/news/2026/10/24/2e0c5b2b7f5079cbed552093d0beccf6_2654254_1920x1080.jpg",
+      "imageAlt": "Бивш треньор на Лудогорец: Домусчиев бе обсебен",
+      "addedAt": "2026-10-24T20:41:35.185Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-sega-m-sk-na-posle-prizna-ce-to-e-ogranicil-ef9808",
+      "title": "Мъск най-после призна, че той е ограничил Starlink за Украйна",
+      "summary": "",
+      "date": "2026-10-24T19:08:35.000Z",
+      "url": "https://www.segabg.com/hot/category-the-war/musk-nay-posle-prizna-che-toy-e-ogranichil-starlink-za-ukrayna",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/10/img_5008.jpeg",
+      "imageAlt": "Мъск най-после призна, че той е ограничил Starlink за Украйна",
+      "addedAt": "2026-10-24T20:41:35.428Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-actualno-istoricesko-priznanie-za-b-lgari-17-godisna-cbbb06",
+      "title": "Историческо признание за България! 17-годишна атлетка е №1 в Европа",
+      "summary": "Новата звезда на българската лека атлетика получи огромно признание в Европа! Виктория Ангелова записа нова златна стран...",
+      "date": "2026-10-24T19:04:00.000Z",
+      "url": "https://www.actualno.com/moresport/istorichesko-priznanie-za-bylgarija-17-godishna-atletka-e-1-v-evropa-news_2654250.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Още спорт"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://cdn.actualno.eu/actualno_2013/upload/news/2026/10/24/6de26ff476dcc49041c005ff5133bc45_2654250_1920x1080.jpg",
+      "imageAlt": "Историческо признание за България! 17-годишна атлетка е №1 в Европа",
+      "addedAt": "2026-10-24T20:41:35.185Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-sega-v-cehi-protestirat-v-za-ita-na-ob-estvenite-83c72e",
+      "title": "В Чехия протестират в защита на обществените медии",
+      "summary": "",
+      "date": "2026-10-24T18:57:17.000Z",
+      "url": "https://www.segabg.com/category-media/chehiya-protestirat-zashtita-na-obshtestvenite-medii",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Медии"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/10/roszie-read-out-7371170_1.png",
+      "imageAlt": "В Чехия протестират в защита на обществените медии",
+      "addedAt": "2026-10-24T20:41:35.429Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-actualno-uceni-s-preduprezdenie-des-po-malko-plodove-7e7b0e",
+      "title": "Учени с предупреждение: Ядеш по-малко плодове, чака те депресия",
+      "summary": "Консумацията на повече плодове води до по-нисък риск от симптоми на депресия и тревожност при подрастващите, докато по-ч...",
+      "date": "2026-10-24T18:56:00.000Z",
+      "url": "https://www.actualno.com/interest/ucheni-s-preduprejdenie-jadesh-po-malko-plodove-chaka-te-depresija-news_2652406.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Интересно"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://cdn.actualno.eu/actualno_2013/upload/news/2026/10/20/408242a5c501d2882a2e49ddfd27160e_2652406_1920x1080.jpg",
+      "imageAlt": "Учени с предупреждение: Ядеш по-малко плодове, чака те депресия",
+      "addedAt": "2026-10-24T20:41:35.185Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-actualno-barselona-real-madrid-koga-i-k-de-da-8da2fb",
+      "title": "Барселона - Реал Мадрид: Кога и къде да гледаме първото Ел Класико за сезона",
+      "summary": "Испанските грандове Барселона и Реал Мадрид ще се изправят един срещу друг на терена, за да определят първия победител в...",
+      "date": "2026-10-24T18:55:00.000Z",
+      "url": "https://www.actualno.com/football/barselona-real-madrid-koga-i-kyde-da-gledame-pyrvoto-el-klasiko-za-sezona-news_2654249.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Футбол свят"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://cdn.actualno.eu/actualno_2013/upload/news/2026/10/24/85402ef4b6ad6510d96f7624d8453003_2654249_1920x1080.jpg",
+      "imageAlt": "Барселона - Реал Мадрид: Кога и къде да гледаме първото Ел Класико за сезона",
+      "addedAt": "2026-10-24T20:41:35.185Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-actualno-planirate-p-tuvane-za-koleda-eto-koi-82c0a7",
+      "title": "Планирате пътуване за Коледа? Ето кои дестинации поевтиняха и кога е най-евтино да резервирате",
+      "summary": "Празничният сезон наближава, а с него и въпросът как да организираме коледното си бягство, без да изпразним портфейла си...",
+      "date": "2026-10-24T18:44:00.000Z",
+      "url": "https://www.actualno.com/economy/planirate-pytuvane-za-koleda-eto-koi-destinacii-poevtinjaha-i-koga-e-naj-evtino-da-rezervirate-news_2652499.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Икономика"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://cdn.actualno.eu/actualno_2013/upload/news/2026/10/20/6ee5337b77e5ed41961b75529a84c611_2652499_1920x1080.jpg",
+      "imageAlt": "Планирате пътуване за Коледа? Ето кои дестинации поевтиняха и кога е най-евтино да резервирате",
+      "addedAt": "2026-10-24T20:41:35.185Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-sega-sef-t-na-ryanair-predupredi-za-20-po-sk-pi-adec03",
+      "title": "Шефът на Ryanair предупреди за 20% по-скъпи билети през 2027 г.",
+      "summary": "",
+      "date": "2026-10-24T18:28:23.000Z",
+      "url": "https://www.segabg.com/hot/category-economy/shefut-na-ryanair-predupredi-za-20-po-skupi-bileti-prez-2027-g",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/10/o_liuri_jpg_1.jpg",
+      "imageAlt": "Шефът на Ryanair предупреди за 20% по-скъпи билети през 2027 г.",
+      "addedAt": "2026-10-24T20:41:35.429Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-dnevnikbg-hutite-atakuvaha-sauditski-petrolni-s-or-8c3a34",
+      "title": "Хутите атакуваха саудитски петролни съоръжения и летища",
+      "summary": "Свързаните с Иран йеменски хути заявиха, че в събота са предприели атаки срещу саудитски петролни съоръжения и летища. От своя страна, водената от Саудитска Арабия коалиция, която се сражава срещу групировката, съобщи, че е прехванала две ракети,...",
+      "date": "2026-10-24T18:16:00.000Z",
+      "url": "https://www.dnevnik.bg/sviat/2026/10/24/4970963_hutite_atakuvaha_sauditski_petrolni_suorujeniia_i/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "1658"
+      ],
+      "author": "Ройтерс",
+      "theme": "drustvo",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4970962.jpg",
+      "imageAlt": "Хутите атакуваха саудитски петролни съоръжения и летища",
+      "addedAt": "2026-10-24T20:41:33.526Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-sega-bo-ko-kadinov-predstav-arhitekturata-v-809aa7",
+      "title": "Бойко Кадинов представя „Архитектурата – възможно(то) изкуство“ в САМСИ",
+      "summary": "",
+      "date": "2026-10-24T17:45:10.000Z",
+      "url": "https://www.segabg.com/category-culture/boyko-kadinov-predstavya-arhitekturata-vuzmozhnoto-izkustvo-samsi",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Култура"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/10/snimka_za_izlozhba.jpg",
+      "imageAlt": "Бойко Кадинов представя „Архитектурата – възможно(то) изкуство“ в САМСИ",
+      "addedAt": "2026-10-24T20:41:35.429Z"
+    },
     {
       "slug": "sofija-2026-10-24-actualno-masov-vot-za-prokurorska-kvota-v-v-vss-95e117",
       "title": "Масов вот за прокурорска квота във ВСС: Гласуването приключи, в момента броят",
@@ -322,6 +512,23 @@
       "image": "https://img.dnevnik.bg/shimg/zx350c_4970940.jpg",
       "imageAlt": "Киев удари тока в Крим и окупираните зони",
       "addedAt": "2026-10-24T17:25:21.910Z"
+    },
+    {
+      "slug": "sofija-2026-10-24-dnevnikbg-zad-rzanite-za-ubi-stvoto-na-slavi-binev-sa-e020c2",
+      "title": "Задържаните за убийството на Слави Бинев са вече в СДВР (видео)",
+      "summary": "В късния следобед арестуваните за убийството на убития в събота сутрин Слави Бинев бяха докарани в СДВР. По-рано те бяха арестувани близо до тунела \"Траянови врата\" на автомагистрала \"Тракия\". Според директора на ведомството...",
+      "date": "2026-10-24T15:29:00.000Z",
+      "url": "https://www.dnevnik.bg/bulgaria/2026/10/24/4970945_zadurjanite_za_ubiistvoto_na_banev_sa_veche_v_sdvr/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "1657"
+      ],
+      "author": "Татяна Димитрова",
+      "theme": "drustvo",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4970942.jpg",
+      "imageAlt": "Задържаните за убийството на Слави Бинев са вече в СДВР (видео)",
+      "addedAt": "2026-10-24T20:41:33.527Z"
     },
     {
       "slug": "sofija-2026-10-24-sega-p-rva-liga-hii-kr-g-rezultati-i-klasirane-5e40e7",
@@ -7142,201 +7349,6 @@
       "author": "Йовка Димитрова",
       "theme": "politika",
       "addedAt": "2026-10-20T20:36:29.591Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-sega-bbc-s-kra-ava-nad-100-dusi-i-zakriva-kanali-4682b9",
-      "title": "BBC съкращава над 100 души и закрива канали",
-      "summary": "",
-      "date": "2026-10-20T19:15:07.000Z",
-      "url": "https://www.segabg.com/category-media/bbc-sukrashtava-nad-100-dushi-i-zakriva-kanali",
-      "source": "sega",
-      "sourceName": "Sega.bg",
-      "categories": [
-        "Медии"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-20T20:36:31.183Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-mediapool-rum-ni-ima-novo-pravitelstvo-kra-na-6-194c53",
-      "title": "Румъния има ново правителство, край на 6-месечния блокаж",
-      "summary": "Румънският парламент одобри във вторник правителството, предложено от независимия дипломат Лука Никулеску, с 280 гласа \"за\" при необходими най-малко 233 гласа, слагайки край на продължила близо шест месеца политическа криза след свалянето с вот на недоверие на десноцентристкия кабинет на Илие Боложан в началото на май, съобщиха местните медии и световните агенции, цитирани от БТА. 55-годишният Никулеску, бивш журналист, бивш посланик във Франция и досегашен заместник-външен министър, получи вот на доверие за правителство на малцинството, включващо представители на Социалдемократическата партия (СДП) - най-голямата парламентарна сила, и технократи, след като беше номиниран от центристкия…",
-      "date": "2026-10-20T19:13:23.000Z",
-      "url": "https://www.mediapool.bg/evropa/rumaniya-ima-novo-pravitelstvo-krai-na-6-mesechniya-blokazh/",
-      "source": "mediapool",
-      "sourceName": "Mediapool",
-      "categories": [
-        "Европа",
-        "правителство",
-        "Румъния",
-        "премиер"
-      ],
-      "author": "",
-      "theme": "politika",
-      "addedAt": "2026-10-20T20:36:28.257Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-mediapool-zelenski-i-uitkof-zapocnaha-razgovorite-si-5e1ac5",
-      "title": "Зеленски и Уиткоф започнаха разговорите си в Осло",
-      "summary": "Украинският президент Володимир Зеленски пристигна в Норвегия. Очаква се там той да разговаря с американските специални пратеници в момент, когато отношенията между Киев и Вашингтон са се влошили значително, предаде Франс прес, като се позова на снимки на Норвежкото телеграфно бюро. В Осло Зеленски ще се срещне със специалния пратеник на американския президент Стив Уиткоф и с неговия колега Джаред Къшнър, който ще участва дистанционно…",
-      "date": "2026-10-20T19:03:39.000Z",
-      "url": "https://www.mediapool.bg/voina-v-ukraina/zelenski-i-uitkof-zapochnaha-razgovorite-si-v-oslo/",
-      "source": "mediapool",
-      "sourceName": "Mediapool",
-      "categories": [
-        "Война в Украйна",
-        "Къшнър",
-        "Зеленски",
-        "Осло"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-20T20:36:28.257Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-mediapool-nato-e-zasili-nabl-denieto-i-razuznavaneto-02235e",
-      "title": "НАТО ще засили наблюдението и разузнаването в Черно море",
-      "summary": "НАТО ще изпрати още самолети за морско наблюдение, радарни системи и дронове в Черно море, заяви днес алиансът след поредица от смъртоносни атаки с дронове срещу кораби в региона, свързани с войната на Русия в Украйна, предаде Ройтерс. До обявяването на мерките се стигна, след като главният изпълнителен орган на пакта - Северноатлантическият съвет, обсъди сигурността в Черно море в централата на алианса в Брюксел. Освен самолети, дронове и радарни системи държавите членки на НАТО изпратиха или ще изпратят членове или екипи от разузнаването си, които да извършат криминалистична оценка на експлозивите, каза военният говорител на НАТО - американският полковник Мартин О'Донъл…",
-      "date": "2026-10-20T18:55:43.000Z",
-      "url": "https://www.mediapool.bg/evropa/nato-shte-zasili-nablyudenieto-i-razuznavaneto-v-cherno-more/",
-      "source": "mediapool",
-      "sourceName": "Mediapool",
-      "categories": [
-        "Европа",
-        "НАТО",
-        "Черно море",
-        "дронове"
-      ],
-      "author": "",
-      "theme": "sigurnost",
-      "addedAt": "2026-10-20T20:36:28.257Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-dnevnikbg-revol-t-v-zstanovi-rabota-633deb",
-      "title": "\"Револют\" възстанови работа",
-      "summary": "Уебсайтът на \"Револют\" съобщи, че услугите на приложението вече са достъпни. Това е станало малко преди 21 часа българско време във вторник. Срив на облачната платформа Google Cloud по-рано днес засегна редица финансови компании и...",
-      "date": "2026-10-20T18:52:00.000Z",
-      "url": "https://www.dnevnik.bg/burzi-novini/2026/10/20/4969038_revoljut_vuzstanovi_rabota/?ref=rss",
-      "source": "dnevnikbg",
-      "sourceName": "Dnevnik",
-      "categories": [
-        "5026"
-      ],
-      "author": "Дневник",
-      "theme": "drustvo",
-      "addedAt": "2026-10-20T20:36:29.591Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-sega-nato-pra-a-dop-lnitelni-sili-i-specialisti-63d73c",
-      "title": "НАТО праща допълнителни сили и специалисти към Черно море",
-      "summary": "",
-      "date": "2026-10-20T18:17:28.000Z",
-      "url": "https://www.segabg.com/hot/category-foreign-country/nato-prashta-dopulnitelni-sili-i-specialisti-kum-cherno-more",
-      "source": "sega",
-      "sourceName": "Sega.bg",
-      "categories": [
-        "Водещи новини"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-20T20:36:31.183Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-dnevnikbg-sled-oslo-zelenski-e-gotov-za-pregovori-s-5e6773",
-      "title": "След Осло: Зеленски е готов за преговори с Путин, Уиткоф лети за Русия",
-      "summary": "Украинският президент Володимир Зеленски заяви, че е готов за преки преговори с Русия и САЩ за край на войната. Той направи изявлението след продължили няколко часа разговори в Осло с американския специален пратеник Стив Уиткоф и с президента на...",
-      "date": "2026-10-20T17:59:00.000Z",
-      "url": "https://www.dnevnik.bg/sviat/voinata_v_ukraina/2026/10/20/4969028_sled_pregovorite_v_oslo_zelenski_e_gotov_za_pregovori/?ref=rss",
-      "source": "dnevnikbg",
-      "sourceName": "Dnevnik",
-      "categories": [
-        "4992"
-      ],
-      "author": "Йовка Димитрова",
-      "theme": "rat",
-      "addedAt": "2026-10-20T20:36:29.592Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-dnevnikbg-fotogaleri-pravitelstvoto-n-ma-nito-den-bez-eaf9c8",
-      "title": "Фотогалерия: Правителството няма нито ден без гаф - два протеста се проведоха в София",
-      "summary": "",
-      "date": "2026-10-20T17:43:00.000Z",
-      "url": "https://www.dnevnik.bg/photos/2026/10/20/4969029_fotogaleriia_pravitelstvoto_niama_nito_den_bez_gaf_-/?ref=rss",
-      "source": "dnevnikbg",
-      "sourceName": "Dnevnik",
-      "categories": [
-        "1707"
-      ],
-      "author": "Йорданка Веселинова, Антон Чалъков",
-      "theme": "politika",
-      "addedAt": "2026-10-20T20:36:29.592Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-mediapool-protest-v-sofi-sre-u-kabineta-radev-vasi-t-9efcce",
-      "title": "Протест в София срещу кабинета \"Радев\": \"Вашият \"мир\" е капитулация\" (видео)",
-      "summary": "Стотици граждани се събраха във вторник вечерта на протест в София срещу управлението на правителството на Румен Радев. Събитието е под надслов \"Вашият \"мир\" е капитулация! Вашата \"дипломация\" – изолация!\"…",
-      "date": "2026-10-20T17:29:32.000Z",
-      "url": "https://www.mediapool.bg/bulgaria/protest-v-sofiya-sreshtu-kabineta-radev-vashiyat-mir-e-kapitulatsiya-video/",
-      "source": "mediapool",
-      "sourceName": "Mediapool",
-      "categories": [
-        "България",
-        "протест",
-        "Румен Радев",
-        "млади лекари"
-      ],
-      "author": "Екип на Mediapool",
-      "theme": "politika",
-      "addedAt": "2026-10-20T20:36:28.257Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-mediapool-haos-t-na-centralnata-zp-gara-v-sofi-e-prod-61a03a",
-      "title": "Хаосът на Централната жп гара в София ще продължи до 2028 г.",
-      "summary": "Хаосът на Централната жп гара в София скоро няма да приключи и ще продължи и през 2027 г. Причината е ремонтът на коловозното движение на гарата, който официално започна през 2021 г. от фирми, свързани с бизнесмена Христо Ковачки, и изгледи да приключи скоро няма…",
-      "date": "2026-10-20T15:39:24.000Z",
-      "url": "https://www.mediapool.bg/bulgaria/haosat-na-tsentralnata-zhp-gara-v-sofiya-shte-prodalzhi-do-2028-g/",
-      "source": "mediapool",
-      "sourceName": "Mediapool",
-      "categories": [
-        "България",
-        "коловози",
-        "София",
-        "ремонт"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "addedAt": "2026-10-20T20:36:28.257Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-capital-snimka-na-den-prezident-t-makron-zapocna-614080",
-      "title": "Снимка на деня: Президентът Макрон започна обиколка в страните от Персийския залив",
-      "summary": "",
-      "date": "2026-10-20T14:15:00.000Z",
-      "url": "https://www.capital.bg/politika_i_ikonomika/sedmicata/2026/10/20/4968526_snimka_na_denia_prezidentut_makron_zapochna_obikolka_v/?ref=rss",
-      "source": "capital",
-      "sourceName": "Capital",
-      "categories": [
-        "2260"
-      ],
-      "author": "Капитал",
-      "theme": "drustvo",
-      "addedAt": "2026-10-20T20:36:27.260Z"
-    },
-    {
-      "slug": "sofija-2026-10-20-capital-b-lgarskata-ikonomika-e-rast-la-malko-po-3a6aee",
-      "title": "Българската икономика е растяла малко по-бавно през последните години, показа ревизия на НСИ",
-      "summary": "Българската икономика е растяла малко по-бавно през последните осем години, отколкото се смяташе досега - това показват данните след мащабна ревизия на Националния статистически институт (НСИ). Средният годишен ръст на реалния брутен вътрешен продукт (БВП) за периода 2018 - 2025 г. всъщност възлиза на 2.6% вместо на 2.9%. Номинално обаче размерът на икономиката се оказва по-голям, като общо за периода са добавени около 2.1 млрд. евро, става ясно от новите данни. Конкретно за 2025 г. ръстът също ...",
-      "date": "2026-10-20T13:40:00.000Z",
-      "url": "https://www.capital.bg/politika_i_ikonomika/ikonomika/2026/10/20/4968878_bulgarskata_ikonomika_e_rastiala_malko_po-bavno_prez/?ref=rss",
-      "source": "capital",
-      "sourceName": "Capital",
-      "categories": [
-        "3087"
-      ],
-      "author": "Васил Минков",
-      "theme": "ekonomija",
-      "addedAt": "2026-10-20T20:36:27.260Z"
     }
   ]
 }
