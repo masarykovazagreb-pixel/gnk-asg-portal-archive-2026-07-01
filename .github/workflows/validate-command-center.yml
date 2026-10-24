@@ -50,6 +50,9 @@ jobs:
         working-directory: workers/gnk-asg-direct-operator
         run: npm ci --ignore-scripts --no-audit --no-fund
 
+      - name: Prepare Cloudflare-safe sitemap assets
+        run: python3 scripts/partition-image-sitemap-v1.py apps/portal
+
       - name: Wrangler dry run
         working-directory: workers/gnk-asg-direct-operator
         shell: bash
