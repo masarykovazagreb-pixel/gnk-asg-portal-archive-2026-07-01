@@ -18,6 +18,11 @@ const legacyRecoveryWorkflow=fs.readFileSync('.github/workflows/news-refresh.yml
 const indexRefreshPolicy=fs.readFileSync('scripts/refresh_index_live_data.py','utf8');
 const indexRefreshWorkflow=fs.readFileSync('.github/workflows/refresh-index-live-data.yml','utf8');
 
+// Public RSS publisher/section integrity: do not silently point old editorial labels at dead feeds.
+assert.doesNotMatch(canonicalPipeline, /feeds\.bbci\.co\.uk\/culture\/feed\.rss|theguardian\.com\/environment\/animals\/rss/, 'Retired 404 section RSS URLs must remain retired');
+assert.match(canonicalPipeline, /source: 'BBC News Entertainment & Arts'[^\n]*feeds\.bbci\.co\.uk\/news\/entertainment_and_arts\/rss\.xml/, 'BBC entertainment RSS requires matching source name');
+assert.match(canonicalPipeline, /source: 'The Guardian Wildlife'[^\n]*theguardian\.com\/environment\/wildlife\/rss/, 'Guardian Wildlife must use publisher wildlife RSS');
+
 // Retention constants live in the canonical JS pipeline, not a retired Python file.
 assert.match(canonicalPipeline,/const PUBLIC_TARGET = \d+;/);
 assert.match(canonicalPipeline,/const MIN_ITEMS_FLOOR = 200;/);
