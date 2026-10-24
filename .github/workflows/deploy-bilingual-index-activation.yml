@@ -34,6 +34,9 @@ jobs:
           test -s workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v23.js
           node scripts/test-deploy-approval-guardrails.mjs
+      - name: Prepare Cloudflare-safe sitemap assets
+        run: python3 scripts/partition-image-sitemap-v1.py apps/portal
+
       - name: Dry-run bilingual index Worker package
         working-directory: workers/gnk-asg-direct-operator
         run: npx --yes wrangler@4 deploy --dry-run --config wrangler.toml --name gnk-asg-direct-operator
