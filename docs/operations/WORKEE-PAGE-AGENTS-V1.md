@@ -11,3 +11,5 @@ Izlaz: `artifacts/workforce-supervisor/page-agents.json`. Postojeći Workforce S
 Tijek: agentov nalaz ili ideja → Workee izvještaj → urednik bira i provjerava izvore/prava → zaseban zadatak i PR → postojeće provjere → odobrena objava i exact-SHA provjera. Agent ne mijenja HTML, ne objavljuje komentare, ne dodaje lažno autorstvo i ne preuzima uredničko odobrenje.
 
 Pokrivenost znači pronađene lokalne HTML datoteke, ne sve dinamičke rute i ne dokaz dostupnosti produkcije. Nepostojeći build direktoriji navedeni su u `scope.missingRoots`; ne prikazuju se kao provjereni. Izvještaj se obnavlja pri svakom ciklusu; ne glumi trajnu bazu prihvaćenih odluka. Stabilni ID-jevi omogućuju povezivanje s kasnijim zadacima bez ponovnog proglašavanja starog prijedloga novim.
+
+Supervisor prije pregleda lokalno izgradi svjetske portale, arhivu i dnevnik jer njihovi izlazi nisu svi spremljeni u Git. Izgradnja ne objavljuje stranice. Nedostajući korijen nakon te izgradnje ruši provjeru, umjesto lažnog izvještaja o potpunoj mreži.

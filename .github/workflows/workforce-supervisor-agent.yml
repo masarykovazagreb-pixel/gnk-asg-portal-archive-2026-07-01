@@ -36,7 +36,11 @@ jobs:
       - name: Workee — inspect every available page and propose development tasks
         run: |
           node tests/test-workee-page-agents-v1.mjs
+          node apps/world/build.mjs
+          node apps/arhiva/engine/build.mjs
+          node apps/dnevnik/engine/build.mjs
           node scripts/workee-page-agents-v1.mjs
+          node -e "const r=require('./artifacts/workforce-supervisor/page-agents.json');if(r.scope.missingRoots.length)throw new Error('Missing page roots: '+r.scope.missingRoots.join(', '))"
       - name: Verify production Workforce and public editorial surface
         shell: bash
         run: |

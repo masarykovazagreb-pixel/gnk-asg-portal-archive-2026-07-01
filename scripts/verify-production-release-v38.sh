@@ -49,6 +49,12 @@ verify_release_marker() {
 verify_release_marker home "${base}/" 'index-editorial-order-v6.js?v=20260715-source-links-v2' 18
 verify_release_marker home-en "${base}/en/" 'index-editorial-order-v6.js?v=20260715-source-links-v2'
 verify_release_marker news-runtime "${base}/assets/index-editorial-order-v6.js" 'item.sourceUrl||item.url||item.href||item.share_url'
+verify_release_marker news-automation-status "${base}/data/news-automation-status.json" 'x-gnk-news-status-source: github-single-writer-asset'
+jq -e '.updated_at | type == "string" and length > 0' "$out/news-automation-status.body" >/dev/null
+if ! jq -e --slurpfile expected apps/portal/data/news-automation-status.json '. == $expected[0]' "$out/news-automation-status.body" >/dev/null; then
+  echo 'News automation status does not match the exact deployed source asset.' >&2
+  exit 1
+fi
 verify_release_marker objave "${base}/objave/" 'href="/objave/kapitalna-disciplina-geopoliticki-energetski-sokovi/"'
 verify_release_marker komentari "${base}/komentari/" 'href="/komentari/ai-ne-smije-pisati-konacnu-odluku/"'
 verify_release_marker contact-page "${base}/contact/" 'id="contactForm"'
