@@ -1,0 +1,30 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import {inspectPage,buildReport} from '../scripts/workee-page-agents-v1.mjs';
+const root=fs.mkdtempSync(path.join(os.tmpdir(),'workee-test-'));
+try{
+  fs.mkdirSync(path.join(root,'pages/en'),{recursive:true});
+  const good='<title>Science</title><meta content="Context" name="description"><link href="https://example.org/" rel="canonical"><meta property="og:image" content="/science.jpg"><meta name="twitter:card" content="summary_large_image"><img src="/image.jpg" alt="">';
+  fs.writeFileSync(path.join(root,'pages/index.html'),good);
+  fs.writeFileSync(path.join(root,'pages/en/index.html'),'<title>New page</title><img src="/x.jpg">');
+  fs.symlinkSync(root,path.join(root,'pages/loop'));
+  const first=buildReport(root,['pages']);
+  assert.equal(first.total,2);
+  assert.equal(new Set(first.agents.map(a=>a.id)).size,2);
+  assert.equal(first.agents.find(a=>a.title==='Science').findings.length,0);
+  assert.ok(first.agents.find(a=>a.title==='New page').findings.some(f=>f.code==='image-alt'));
+  assert.ok(first.agents.every(a=>a.proposals.some(p=>p.kind==='development')));
+  assert.ok(first.agents.every(a=>a.proposals.every(p=>p.humanReviewRequired&&!p.autoPublish)));
+  const before=inspectPage('pages/index.html',good),changed=inspectPage('pages/index.html',good+'<p>Changed</p>');
+  assert.equal(before.id,changed.id);assert.notEqual(before.contentHash,changed.contentHash);
+  assert.deepEqual(before.proposals.map(p=>p.id),changed.proposals.map(p=>p.id));
+  fs.writeFileSync(path.join(root,'pages/new.html'),'<title>Third</title>');
+  const second=buildReport(root,['pages']);assert.equal(second.total,3);
+  assert.deepEqual(first.agents.map(a=>a.id),second.agents.filter(a=>a.title!=='Third').map(a=>a.id));
+  assert.equal(second.coordinator.liveHealthVerified,false);
+  const internal=inspectPage('pages/admin/index.html','<title>Admin</title><meta name="robots" content="noindex">');
+  assert.equal(internal.indexable,false);assert.equal(internal.findings.length,0);
+  console.log('WORKEE_PAGE_AGENTS_OK: discovery, per-page identity, evidence, stable proposal IDs, safe review gate');
+}finally{fs.rmSync(root,{recursive:true,force:true});}

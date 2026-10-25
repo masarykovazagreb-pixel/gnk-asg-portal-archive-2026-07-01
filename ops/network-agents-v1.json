@@ -5,6 +5,13 @@
   "report": "artifacts/network-agents-v1.json",
   "agents": [
     {
+      "id": "workee-page-agents",
+      "name": "Workee — agent i razvojni prijedlog za svaku HTML stranicu",
+      "required": true,
+      "cmd": ["node", "scripts/workee-page-agents-v1.mjs"],
+      "checks": "Automatski otkriva postojeće i nove HTML stranice, daje stabilan ID po putanji, provjerava SEO i slike te stvara odvojene prijedloge za urednički pregled. Ne objavljuje i ne deploya."
+    },
+    {
       "id": "mesh-link-agent",
       "name": "Paukova mreža — 20 ulaza",
       "required": true,
