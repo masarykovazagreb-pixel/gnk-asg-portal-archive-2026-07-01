@@ -146,13 +146,21 @@ const FEEDS = [
 // Koliko vijesti jedan medij smije zauzeti u objavljenom skupu.
 const MAX_PER_SOURCE = 6;
 
-function nowIsoZagreb() {
+function nowIsoZagreb(now = new Date()) {
   const parts = new Intl.DateTimeFormat('sv-SE', {
     timeZone: TZ,
     year: 'numeric', month: '2-digit', day: '2-digit',
     hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
-  }).formatToParts(new Date()).reduce((acc, part) => (acc[part.type] = part.value, acc), {});
-  return `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}:${parts.second}+02:00`;
+  }).formatToParts(now).reduce((acc, part) => (acc[part.type] = part.value, acc), {});
+  // Zagreb switches between CET (+01:00) and CEST (+02:00). Never hard-code the offset:
+  // a wrong offset makes the SLA watchdog see a refresh as one hour older in winter.
+  const offset = new Intl.DateTimeFormat('en-GB', {
+    timeZone: TZ, timeZoneName: 'longOffset'
+  }).formatToParts(now).find(part => part.type === 'timeZoneName')?.value?.replace(/^GMT/, '');
+  if (!/^[+-]\\d{2}:\\d{2}$/.test(offset)) {
+    throw new Error(`Cannot determine the UTC offset for ${TZ}: ${offset}`);
+  }
+  return `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}:${parts.second}${offset}`;
 }
 
 function decode(value = '') {
