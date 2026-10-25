@@ -4,7 +4,7 @@
   "lang": "en",
   "city": "Nairobi",
   "country": "Kenija",
-  "updatedAt": "2026-10-25T06:08:13.586Z",
+  "updatedAt": "2026-10-25T12:52:59.077Z",
   "sources": [
     {
       "id": "capitalfm",
@@ -14,7 +14,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T06:07:52.995Z"
+      "checkedAt": "2026-10-25T12:52:20.321Z"
     },
     {
       "id": "nation",
@@ -26,7 +26,7 @@
       "errors": [
         "https://nation.africa/kenya/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-25T06:07:53.815Z"
+      "checkedAt": "2026-10-25T12:52:21.205Z"
     },
     {
       "id": "standard",
@@ -38,7 +38,7 @@
       "errors": [
         "https://www.standardmedia.co.ke/rss: nije feed"
       ],
-      "checkedAt": "2026-10-25T06:07:54.290Z"
+      "checkedAt": "2026-10-25T12:52:21.986Z"
     },
     {
       "id": "star",
@@ -50,7 +50,7 @@
       "errors": [
         "https://www.the-star.co.ke/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-25T06:07:55.898Z"
+      "checkedAt": "2026-10-25T12:52:23.936Z"
     },
     {
       "id": "businessdaily",
@@ -62,7 +62,7 @@
       "errors": [
         "https://www.businessdailyafrica.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-25T06:07:56.763Z"
+      "checkedAt": "2026-10-25T12:52:24.798Z"
     },
     {
       "id": "citizen",
@@ -74,17 +74,19 @@
       "errors": [
         "https://www.citizen.digital/rss: HTTP 400"
       ],
-      "checkedAt": "2026-10-25T06:08:07.971Z"
+      "checkedAt": "2026-10-25T12:52:36.132Z"
     },
     {
       "id": "kbc",
       "name": "KBC",
       "url": "https://www.kbc.co.ke/feed/",
-      "ok": true,
-      "fetched": 10,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-10-25T06:08:12.601Z"
+      "errors": [
+        "https://www.kbc.co.ke/feed/: fetch failed"
+      ],
+      "checkedAt": "2026-10-25T12:52:57.821Z"
     },
     {
       "id": "eastafrican",
@@ -96,10 +98,220 @@
       "errors": [
         "https://www.theeastafrican.co.ke/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-25T06:08:13.586Z"
+      "checkedAt": "2026-10-25T12:52:59.077Z"
     }
   ],
   "items": [
+    {
+      "slug": "nairobi-2026-10-25-nation-nairobi-county-loses-bid-to-reopen-sh311m-0dd3c5",
+      "title": "Nairobi County loses bid to reopen Sh311m debt case",
+      "summary": "Nairobi City County suffers setback in bid to reopen case involving debt owed to technology firm.",
+      "date": "2026-10-25T12:04:05.000Z",
+      "url": "https://nation.africa/kenya/counties/nairobi/nairobi-county-loses-bid-to-reopen-sh311m-debt-case--5645068",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://nation.africa/resource/image/5617402/landscape_ratio16x9/1600/900/57ed577a1c84256602e0b6bcad533991/fw/city-hall.jpg",
+      "imageAlt": "Nairobi County loses bid to reopen Sh311m debt case",
+      "addedAt": "2026-10-25T12:52:21.206Z"
+    },
+    {
+      "slug": "nairobi-2026-10-25-nation-cs-wandayi-dangote-s-kpc-stake-signals-af1ef3",
+      "title": "CS Wandayi: Dangote’s KPC stake signals confidence in Kenya’s economy",
+      "summary": "Energy Cabinet Secretary says there is a good reason why Kenya is attracting major investments.",
+      "date": "2026-10-25T11:33:34.000Z",
+      "url": "https://nation.africa/kenya/business/wandayi-dangote-kpc-stake-signals-confidence-kenya-economy-5645060",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://nation.africa/resource/image/5523056/landscape_ratio16x9/1600/900/6a9c4e1d66d5becd932600e340b6f216/ka/wandayi-2.jpg",
+      "imageAlt": "CS Wandayi: Dangote’s KPC stake signals confidence in Kenya’s economy",
+      "addedAt": "2026-10-25T12:52:21.206Z"
+    },
+    {
+      "slug": "nairobi-2026-10-25-nation-sheila-wegesha-odoyo-murder-suspect-jackson-07e24c",
+      "title": "Sheila 'Wegesha' Odoyo murder suspect Jackson Bambo arrested in Tanzania",
+      "summary": "The deceased’s husband and was arrested in Kirongwe, Shirati District, where he was reportedly...",
+      "date": "2026-10-25T11:22:12.000Z",
+      "url": "https://nation.africa/kenya/news/sheila-wegesha-odoyo-murder-suspect-jackson-bambo-arrested-in-tanzania-5644946",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://nation.africa/resource/image/5645004/landscape_ratio16x9/1600/900/618d8386ea401a6750c8f6577f81839d/NJ/bambo.jpg",
+      "imageAlt": "Sheila 'Wegesha' Odoyo murder suspect Jackson Bambo arrested in Tanzania",
+      "addedAt": "2026-10-25T12:52:21.206Z"
+    },
+    {
+      "slug": "nairobi-2026-10-25-capitalfm-malalah-to-meet-kalonzo-to-rally-support-8e760a",
+      "title": "Malalah to Meet Kalonzo to Rally Support for Sifuna’s 2027 Presidential Bid",
+      "summary": "Malalah said the meeting is part of ongoing efforts to build a broader opposition alliance behind Sifuna as political leaders intensify consultations on a common candidate to challenge President William Ruto.",
+      "date": "2026-10-25T10:42:06.000Z",
+      "url": "https://capitalfm.africa/malalah-to-meet-kalonzo-to-rally-support-for-sifunas-2027-presidential-bid/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "NATIONAL NEWS",
+        "News",
+        "2027 General Election Kenya",
+        "Cleophas Malalah"
+      ],
+      "author": "CORRESPONDENT",
+      "theme": "politika",
+      "image": "https://capitalfm.africa/wp-content/uploads/news/2023/06/FrQrck8WYAEic-5.jpg",
+      "imageAlt": "Malalah to Meet Kalonzo to Rally Support for Sifuna’s 2027 Presidential Bid",
+      "addedAt": "2026-10-25T12:52:20.321Z"
+    },
+    {
+      "slug": "nairobi-2026-10-25-capitalfm-president-ruto-defends-dangote-s-25-kpc-ca6c51",
+      "title": "President Ruto Defends Dangote’s 25% KPC Stake Amid Public Outcry",
+      "summary": "NAIROBI, Kenya Oct 24 – President William Ruto has defended Nigerian billionaire Aliko Dangote’s acquisition of a 25 per cent stake in the Kenya Pipeline Company (KPC) amid public outcry…",
+      "date": "2026-10-25T10:28:51.000Z",
+      "url": "https://capitalfm.africa/president-ruto-defends-dangotes-25-kpc-stake-amid-public-outcry/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "NATIONAL NEWS",
+        "News",
+        "24% stake in Kenya Pipeline",
+        "Aliko Dangote"
+      ],
+      "author": "CORRESPONDENT",
+      "theme": "politika",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/10/Screenshot-2026-10-25-132817-1200x630.png",
+      "imageAlt": "President Ruto Defends Dangote’s 25% KPC Stake Amid Public Outcry",
+      "addedAt": "2026-10-25T12:52:20.321Z"
+    },
+    {
+      "slug": "nairobi-2026-10-25-nation-37-year-old-abraham-kiptum-wins-men-s-42km-77796b",
+      "title": "37-year-old Abraham Kiptum wins men’s 42km race at Standard Chartered Nairobi Marathon 2026",
+      "summary": "",
+      "date": "2026-10-25T10:24:33.000Z",
+      "url": "https://nation.africa/kenya/sports/athletics/37-year-old-abraham-kiptum-wins-men-s-42km-race-at-standard-chartered-nairobi-marathon-2026-5644870",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://nation.africa/resource/image/5644926/landscape_ratio16x9/1600/900/d85c37ea61bbc29e0a2a9fc889c01331/TH/kiptum.jpg",
+      "imageAlt": "37-year-old Abraham Kiptum wins men’s 42km race at Standard Chartered Nairobi Marathon 2026",
+      "addedAt": "2026-10-25T12:52:21.206Z"
+    },
+    {
+      "slug": "nairobi-2026-10-25-nation-kandie-wins-standard-chartered-nairobi-b0c26c",
+      "title": "Kandie wins Standard Chartered Nairobi Marathon, hopes for global breakthrough",
+      "summary": "She has attributed her success to hard work and training in the hilly part of Iten.",
+      "date": "2026-10-25T10:09:25.000Z",
+      "url": "https://nation.africa/kenya/sports/athletics/kandie-wins-standard-chartered-nairobi-marathon-hopes-for-global-breakthrough--5644924",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://nation.africa/resource/image/5644928/landscape_ratio16x9/1600/900/cd8661e5df42bfa1d5fcfe28e91da9e7/RE/mercy-kandie.jpg",
+      "imageAlt": "Kandie wins Standard Chartered Nairobi Marathon, hopes for global breakthrough",
+      "addedAt": "2026-10-25T12:52:21.206Z"
+    },
+    {
+      "slug": "nairobi-2026-10-25-nation-kiptum-bounces-back-from-doping-ban-to-win-c90356",
+      "title": "Kiptum bounces back from doping ban to win men's Standard Chartered Nairobi Marathon",
+      "summary": "Kiptum won the 23rd edition of the Standard Chartered Nairobi Marathon men's race in 2:10:35.",
+      "date": "2026-10-25T10:03:22.000Z",
+      "url": "https://nation.africa/kenya/sports/athletics/kiptum-bounces-back-from-doping-ban-to-win-men-s-standard-chartered-nairobi-marathon-5644866",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://nation.africa/resource/image/5644926/landscape_ratio16x9/1600/900/d85c37ea61bbc29e0a2a9fc889c01331/TH/kiptum.jpg",
+      "imageAlt": "Kiptum bounces back from doping ban to win men's Standard Chartered Nairobi Marathon",
+      "addedAt": "2026-10-25T12:52:21.206Z"
+    },
+    {
+      "slug": "nairobi-2026-10-25-capitalfm-mbadi-over-362-000-more-kenyans-to-be-0f3141",
+      "title": "Mbadi: Over 362,000 More Kenyans to Be Exempted From PAYE Under Proposed Tax Changes",
+      "summary": "The number of salaried workers paying PAYE would consequently fall to about 1.778 million from the current total of 3.468 million people in formal employment.",
+      "date": "2026-10-25T09:44:45.000Z",
+      "url": "https://capitalfm.africa/mbadi-over-362000-more-kenyans-to-be-exempted-from-paye-under-proposed-tax-changes/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "NATIONAL NEWS",
+        "News",
+        "333 tax threshold",
+        "income tax relief Kenya"
+      ],
+      "author": "CORRESPONDENT",
+      "theme": "ekonomija",
+      "image": "https://capitalfm.africa/wp-content/uploads/news/2026/03/National-Treasury-CS-John-Mbadi-before-the-National-Assembly-Budget-Committee-scaled.jpg",
+      "imageAlt": "Mbadi: Over 362,000 More Kenyans to Be Exempted From PAYE Under Proposed Tax Changes",
+      "addedAt": "2026-10-25T12:52:20.321Z"
+    },
+    {
+      "slug": "nairobi-2026-10-25-capitalfm-obama-attacks-trump-as-he-campaigns-for-684c7e",
+      "title": "Obama attacks Trump as he campaigns for Democrats ahead of midterm elections",
+      "summary": "Former US President Barack Obama has attacked the Trump administration over the Iran war and high consumer prices as he hit the campaign trail for Democrats ahead of the US…",
+      "date": "2026-10-25T09:29:57.000Z",
+      "url": "https://capitalfm.africa/obama-attacks-trump-as-he-campaigns-for-democrats-ahead-of-midterm-elections/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "News",
+        "World",
+        "Barack Obama",
+        "cost of living in America"
+      ],
+      "author": "BBC",
+      "theme": "politika",
+      "image": "https://capitalfm.africa/wp-content/uploads/thesauce/2022/03/Obama.jpg",
+      "imageAlt": "Obama attacks Trump as he campaigns for Democrats ahead of midterm elections",
+      "addedAt": "2026-10-25T12:52:20.321Z"
+    },
+    {
+      "slug": "nairobi-2026-10-25-capitalfm-over-2-4mn-learners-to-begin-kpsea-kjsea-10a0dd",
+      "title": "Over 2.4mn Learners to Begin KPSEA, KJSEA Assessments on Monday",
+      "summary": "The five-day national assessment exercise will begin at 8:30am, with candidates in Grade 6 sitting the KPSEA and those in Grade 9 undertaking the KJSEA.",
+      "date": "2026-10-25T09:24:03.000Z",
+      "url": "https://capitalfm.africa/over-2-4mn-learners-to-begin-kpsea-kjsea-assessments-on-monday/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "NATIONAL NEWS",
+        "News",
+        "Grade 6 assessment Kenya",
+        "Kenya national assessments"
+      ],
+      "author": "CORRESPONDENT",
+      "theme": "drustvo",
+      "image": "https://capitalfm.africa/wp-content/uploads/news/2023/10/KCSE-Photos.jpg",
+      "imageAlt": "Over 2.4mn Learners to Begin KPSEA, KJSEA Assessments on Monday",
+      "addedAt": "2026-10-25T12:52:20.321Z"
+    },
+    {
+      "slug": "nairobi-2026-10-25-capitalfm-multi-agency-operation-recovers-445-stolen-993a4b",
+      "title": "Multi-Agency Operation Recovers 445 Stolen Goats and Sheep in Turkana",
+      "summary": "The National Police Service said the operation was launched after the livestock theft, with officers pursuing the suspected perpetrators and forcing them to flee, abandoning some of the animals.",
+      "date": "2026-10-25T09:14:04.000Z",
+      "url": "https://capitalfm.africa/multi-agency-operation-recovers-445-stolen-goats-and-sheep-in-turkana/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "NATIONAL NEWS",
+        "News",
+        "445 sheep and goats recovered",
+        "Kaloriwo Village"
+      ],
+      "author": "CORRESPONDENT",
+      "theme": "drustvo",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/10/Goats-Recovered-1040x630.jpeg",
+      "imageAlt": "Multi-Agency Operation Recovers 445 Stolen Goats and Sheep in Turkana",
+      "addedAt": "2026-10-25T12:52:20.322Z"
+    },
     {
       "slug": "nairobi-2026-10-24-nation-sermon-build-your-spiritual-life-on-rock-d0158a",
       "title": "Sermon: Build your spiritual life on rock",

@@ -4,19 +4,20 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-10-25T06:07:27.454Z",
+  "updatedAt": "2026-10-25T12:51:52.808Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
-      "url": "https://www.agerpres.ro/rss/",
-      "ok": true,
-      "fetched": 20,
+      "url": "https://www.agerpres.ro/rss",
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.agerpres.ro/rss: HTTP 502"
+        "https://www.agerpres.ro/rss: This operation was aborted",
+        "https://www.agerpres.ro/rss/: This operation was aborted"
       ],
-      "checkedAt": "2026-10-25T06:07:18.315Z"
+      "checkedAt": "2026-10-25T12:51:43.402Z"
     },
     {
       "id": "hotnews",
@@ -26,7 +27,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T06:07:18.479Z"
+      "checkedAt": "2026-10-25T12:51:43.604Z"
     },
     {
       "id": "zf",
@@ -36,7 +37,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T06:07:19.936Z"
+      "checkedAt": "2026-10-25T12:51:45.290Z"
     },
     {
       "id": "profit",
@@ -46,17 +47,17 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T06:07:20.278Z"
+      "checkedAt": "2026-10-25T12:51:45.601Z"
     },
     {
       "id": "digi24",
       "name": "Digi24",
       "url": "https://www.digi24.ro/rss",
       "ok": true,
-      "fetched": 200,
+      "fetched": 173,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T06:07:22.973Z"
+      "checkedAt": "2026-10-25T12:51:47.718Z"
     },
     {
       "id": "g4media",
@@ -66,7 +67,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T06:07:27.126Z"
+      "checkedAt": "2026-10-25T12:51:52.027Z"
     },
     {
       "id": "newsro",
@@ -76,10 +77,583 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T06:07:27.453Z"
+      "checkedAt": "2026-10-25T12:51:52.807Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-10-25-hotnews-semnal-important-transmis-de-kremlin-492bb3",
+      "title": "Semnal important transmis de Kremlin: „Trebuie să discutăm cu întreaga Europă. Ce s-a încercat până acum nu a funcționat”",
+      "summary": "Europa ar trebui să fie inclusă în discuțiile privind un acord de pace în Ucraina, deoarece poziția sa ar putea fi crucială, a declarat duminică principalul consilier de politică externă de la Kremlin, iuri Ușakov, potrivit Reuters. Statele Unite nu au reușit să exercite presiuni asupra Kievului pentru a accepta un acord de pace, a …",
+      "date": "2026-10-25T12:44:18.000Z",
+      "url": "https://hotnews.ro/semnal-important-transmis-de-kremlin-trebuie-sa-discutam-cu-intreaga-europa-ce-s-a-incercat-pana-acum-nu-a-functionat-2386060",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International",
+        "Război în Ucraina"
+      ],
+      "author": "George Sîrbu",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Semnal important transmis de Kremlin: „Trebuie să discutăm cu întreaga Europă. Ce s-a încercat până acum nu a funcționat”",
+      "addedAt": "2026-10-25T12:51:43.604Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-zf-nici-cel-mai-mare-investitor-din-lume-nu-fff221",
+      "title": "Nici cel mai mare investitor din lume nu este imun la turbulenţele pieţelor. Fondul suveran al Norvegiei a pierdut aproape 30 de miliarde de dolari în trimestrul al treilea",
+      "summary": "",
+      "date": "2026-10-25T12:43:00.000Z",
+      "url": "https://www.zf.ro/business-international/nici-cel-mai-mare-investitor-din-lume-nu-este-imun-la-turbulentele-pietelor-fondul-suveran-al-norvegiei-a-pierdut-aproape-30-de-miliarde-de-dolari-in-trimestrul-al-treilea-23265802",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Business Internaţional"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10368/23265802/1/hepta-4070545.jpg?width=700",
+      "imageAlt": "Nici cel mai mare investitor din lume nu este imun la turbulenţele pieţelor. Fondul suveran al Norvegiei a pierdut aproape 30 de miliarde de dolari în trimestrul al treilea",
+      "addedAt": "2026-10-25T12:51:45.291Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-newsro-zeci-de-zboruri-au-fost-anulate-la-2c051b",
+      "title": "Zeci de zboruri au fost anulate la aeroportul din Amsterdam din cauza vânturilor puternice",
+      "summary": "Aeroportul Schiphol din Amsterdam, unul dintre principalele noduri aeriene europene, a anulat zeci de zboruri duminică din cauza vânturilor puternice provocate de furtuna Boelo.",
+      "date": "2026-10-25T12:42:00.000Z",
+      "url": "https://www.news.ro/externe/zeci-de-zboruri-au-fost-anulate-la-aeroportul-din-amsterdam-din-cauza-vanturilor-puternice-1922404225002026101422883604",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Zeci de zboruri au fost anulate la aeroportul din Amsterdam din cauza vânturilor puternice",
+      "addedAt": "2026-10-25T12:51:52.807Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-digi24-roberto-vannacci-masculul-alfa-al-politicii-6e3182",
+      "title": "Roberto Vannacci, „masculul alfa” al politicii italiene: cum vrea să câștige votul manosferei promovând „patriarhatul mediteranean”",
+      "summary": "Fostul parașutist nonconformist reprezintă acum o adevărată bătaie de cap pentru Giorgia Meloni, care trebuie să decidă dacă acesta este un atu sau o povară pentru coaliția sa, scrie Politico într-un articol dedicat lui Roberto Vannacci.",
+      "date": "2026-10-25T12:39:02.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/ue/un-general-italian-de-extrema-dreapta-vaneaza-voturile-din-manosfera-4004329",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjIyJTJGMzAyNjM2Nl8zMDI2/MzY2X3Byb2ZpbWVkaWEtMTEzOTQ0OTYx/NC5qcGcmaGFzaD0xMDJjZGU5MzMxNzllMzFjMzc4ZDM2ZGIzYjhkZWE1Mg==.jpg",
+      "imageAlt": "Roberto Vannacci, „masculul alfa” al politicii italiene: cum vrea să câștige votul manosferei promovând „patriarhatul mediteranean”",
+      "addedAt": "2026-10-25T12:51:47.719Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-digi24-titluri-alarmiste-pe-facebook-despre-armata-9ea51a",
+      "title": "Titluri alarmiste pe Facebook despre Armata României. Ministerul Apărării: Şeful Statului Major nu a emis nicio „alertă națională”",
+      "summary": "Ministerul Apărării a avertizat, duminică după-amiază, asupra unor postări alarmiste, care atribuie şefului Statului Major al Apărării declaraţii scoase din context. Declaraţiile au fost făcute anterior, în diferite contexte, dar sunt prezentate acum cu titlul alarmiste. „Şeful Statului Major al Apărării nu a emis nicio «alertă naţională»”, atrage atenția Ministerul Apărării.",
+      "date": "2026-10-25T12:37:56.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/titluri-alarmiste-pe-facebook-despre-armata-romaniei-ministerul-apararii-seful-statului-major-nu-a-emis-nicio-alerta-nationala-4008023",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjQl/MkYxMiUyRjA2JTJGMjE0NDY5MF8yMTQ0/NjkwX3NvbGRhdGktYXJtYXRhLXJvbWFu/YS1zaHV0dGVyc3RvY2tfMTE3MjMxNDYy/Ny1zY2FsZWQtMS5qcGcmaGFzaD02NjUy/ODljM2I2NDNmNGJlMjJmNDIxNTQ0NGNkNjE3Yw==.jpg",
+      "imageAlt": "Titluri alarmiste pe Facebook despre Armata României. Ministerul Apărării: Şeful Statului Major nu a emis nicio „alertă națională”",
+      "addedAt": "2026-10-25T12:51:47.719Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-profit-video-republica-moldova-interesata-sa-a1c84d",
+      "title": "VIDEO Republica Moldova - interesată să producă drone cu tehnologie ucraineană. Un nou acord între cele 2 state",
+      "summary": "Republica Moldova și Ucraina urmează să semneze un nou acord de cooperare în domeniul tehnologiei, care ar putea crea premisele producerii de drone de către Chișinău.",
+      "date": "2026-10-25T12:33:00.000Z",
+      "url": "https://www.profit.ro/stiri/politic/video-republica-moldova-interesata-sa-produca-drone-cu-tehnologie-ucraineana-un-nou-acord-intre-cele-2-state-22883364?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Politic"
+      ],
+      "author": "",
+      "theme": "rat",
+      "image": "https://i0.1616.ro/media/2/2621/33238/22883364/1/image-6483441-13.jpg?width=800",
+      "imageAlt": "VIDEO Republica Moldova - interesată să producă drone cu tehnologie ucraineană. Un nou acord între cele 2 state",
+      "addedAt": "2026-10-25T12:51:45.602Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-zf-ce-inseamna-schimbarea-de-generatie-pentru-31a291",
+      "title": "Ce înseamnă schimbarea de generaţie pentru un fondator, pentru noul lider, pentru echipă? Cum s-a făcut trecerea către a doua generaţie în cazul reţelei Lemet, un business în…",
+      "summary": "",
+      "date": "2026-10-25T12:31:00.000Z",
+      "url": "https://www.zf.ro/profesii/inseamna-schimbarea-generatie-fondator-noul-lider-echipa-s-facut-trecerea-catre-doua-generatie-cazul-retelei-lemet-business-industria-mobilei-190-milioane-lei-adina-rizea-director-general-lemet-cred-23267473",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Profesii"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10382/23267473/1/mare-f.jpg?width=700",
+      "imageAlt": "Ce înseamnă schimbarea de generaţie pentru un fondator, pentru noul lider, pentru echipă? Cum s-a făcut trecerea către a doua generaţie în cazul reţelei Lemet, un business în indus",
+      "addedAt": "2026-10-25T12:51:45.291Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-newsro-ebola-sua-introduc-o-noua-obligatie-de-7f3b2b",
+      "title": "Ebola: SUA introduc o nouă obligaţie de călătorie pentru toţi pasagerii zborurilor internaţionale, inclusiv pentru cei care pleacă din România",
+      "summary": "Autorităţile americane introduc o nouă măsură de sănătate publică pentru prevenirea răspândirii Ebola. Începând din 3 noiembrie, toţi pasagerii zborurilor internaţionale cu destinaţia Statele Unite vor trebui să semneze o declaraţie prin care confirmă că nu au fost în Republica Democratică Congo (RDC) în ultimele 21 de zile. Obligaţia se aplică indiferent de ţara de plecare, inclusiv persoanelor care călătoresc din România.",
+      "date": "2026-10-25T12:30:00.000Z",
+      "url": "https://www.news.ro/social/sanatate/ebola-sua-introduc-o-noua-obligatie-de-calatorie-pentru-toti-pasagerii-zborurilor-internationale-inclusiv-pentru-cei-care-pleaca-din-romania-1922403025002026101422883009",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Ebola: SUA introduc o nouă obligaţie de călătorie pentru toţi pasagerii zborurilor internaţionale, inclusiv pentru cei care pleacă din România",
+      "addedAt": "2026-10-25T12:51:52.808Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-newsro-el-clasico-portarul-thibaut-courtois-990bf9",
+      "title": "El Clasico: Portarul Thibaut Courtois, absenţă de ultim moment la Real Madrid. Care este motivul",
+      "summary": "Portarul echipei Real Madrid, Thibaut Courtois, a fost nevoit să se retragă cu doar câteva ore înainte de meciul cu FC Barcelona, duminică (ora 22:00), din cauza unei „stări asemănătoare gripei”, a anunţat clubul său duminică.",
+      "date": "2026-10-25T12:22:00.000Z",
+      "url": "https://www.news.ro/sport/el-clasico-portarul-thibaut-courtois-absenta-de-ultim-moment-la-real-madrid-care-este-motivul-1922402225002026101422883504",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "El Clasico: Portarul Thibaut Courtois, absenţă de ultim moment la Real Madrid. Care este motivul",
+      "addedAt": "2026-10-25T12:51:52.808Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-newsro-avertisment-al-ministerului-apararii-26e80d",
+      "title": "Avertisment al Ministerului Apărării: Postări alarmiste care atribuie şefului Statului Major al Apărării declaraţii scoase din context / Şeful Statului Major al Apărării nu a emis…",
+      "summary": "Ministerul Apărării avertizează, duminică după-amiază, asupra unor postări alarmiste, care atribuie şefului Statului Major al Apărării declaraţii scoase din context. Declaraţiile au fost făcute anterior, în diferite contexte, dar sunt prezentate acum cu titlul alarmiste. ”Şeful Statului Major al Apărării nu a emis nicio «alertă naţională»”, arată Ministerul Apărării.",
+      "date": "2026-10-25T12:19:14.000Z",
+      "url": "https://www.news.ro/social/avertisment-ministerului-apararii-postari-alarmiste-atribuie-sefului-statului-major-apararii-declaratii-scoase-context-seful-statului-major-apararii-emis-nicio-alerta-nationala-1922401925142026101422883545",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Avertisment al Ministerului Apărării: Postări alarmiste care atribuie şefului Statului Major al Apărării declaraţii scoase din context / Şeful Statului Major al Apărării nu a emis ",
+      "addedAt": "2026-10-25T12:51:52.808Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-hotnews-bill-gates-prezice-ca-urmeaza-20-de-ani-f4e144",
+      "title": "Bill Gates prezice că urmează 20 de ani agitați înainte ca AI să ne aducă „adevărata abundență”",
+      "summary": "Bill Gates spune că inteligența artificială va crea în 20 de ani „adevărata abundență”, dar până la realizarea acestui obiectiv, va fi „o perioadă la fel de tumultoasă ca oricare alta din istoria omenirii”, relatează Business Insider. „Marea mea îngrijorare o reprezintă această perioadă de tranziție de 20 de ani, în care vor exista câștigători …",
+      "date": "2026-10-25T12:14:05.000Z",
+      "url": "https://hotnews.ro/bill-gates-prezice-ca-urmeaza-20-de-ani-agitati-inainte-ca-ai-sa-ne-aduca-adevarata-abundenta-2386042",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Ramona Ciobanu",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Bill Gates prezice că urmează 20 de ani agitați înainte ca AI să ne aducă „adevărata abundență”",
+      "addedAt": "2026-10-25T12:51:43.604Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-hotnews-fenomenul-trenurilor-oprite-la-intrarea-in-7b412e",
+      "title": "Fenomenul trenurilor oprite la intrarea în Gara de Nord. De ce sunt puse să aștepte și 20 de minute când ajung în cea mai mare gară din țară",
+      "summary": "În fiecare zi în Gara de Nord ajung aproape 500 de trenuri, iar o parte dintre ele sunt ținute la semnalele de la intrarea în stație. Unele trenuri pot ajunge să aștepte chiar și până la 20 de minute ca să poată intra la peroanele celei mai mari gări din România. La solicitarea HotNews, CFR …",
+      "date": "2026-10-25T12:07:39.000Z",
+      "url": "https://hotnews.ro/fenomenul-trenurilor-oprite-la-intrarea-in-gara-de-nord-de-ce-sunt-puse-sa-astepte-chiar-si-20-de-minute-unele-trenuri-cand-ajung-in-cea-mai-mare-gara-din-tara-2384626",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "Industrie Feroviara"
+      ],
+      "author": "Victor Cozmei",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Fenomenul trenurilor oprite la intrarea în Gara de Nord. De ce sunt puse să aștepte și 20 de minute când ajung în cea mai mare gară din țară",
+      "addedAt": "2026-10-25T12:51:43.605Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-hotnews-premierul-marii-britanii-cere-o-discutie-ab768c",
+      "title": "Premierul Marii Britanii cere o discuție sinceră despre libera circulație în UE: „Ceva s-a schimbat, nu-i așa?”",
+      "summary": "Premierul Regatului Unit, Andy Burnham, s-a declarat deschis la reintroducerea normelor privind libera circulație ale Uniunii Europene în cadrul viitoarelor relații dintre Regatul Unit și UE, potrivit ziarului britanic Sunday Times și AFP. Liderul Partidului Laburist s-a angajat să prezinte diferite opțiuni pentru relații mai strânse cu Europa, înaintea foarte așteptatului summit între Regatul Unit …",
+      "date": "2026-10-25T12:03:18.000Z",
+      "url": "https://hotnews.ro/premierul-marii-britanii-cere-o-discutie-sincera-despre-libera-circulatie-in-ue-ceva-s-a-schimbat-nu-i-asa-2386039",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "George Sîrbu",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Premierul Marii Britanii cere o discuție sinceră despre libera circulație în UE: „Ceva s-a schimbat, nu-i așa?”",
+      "addedAt": "2026-10-25T12:51:43.605Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-newsro-alegerile-prezidentiale-din-brazilia-s-au-3df6e9",
+      "title": "Alegerile prezidenţiale din Brazilia: S-au deschis secţiile de votare pentru turul al doilea între Lula şi Bolsonaro",
+      "summary": "Brazilienii au început să voteze duminică în turul al doilea al alegerilor prezidenţiale, care îi opune pe preşedintele în exerciţiu de stânga, Lula, şi pe senatorul conservator Flavio Bolsonaro, au constatat jurnaliştii AFP.",
+      "date": "2026-10-25T12:00:00.000Z",
+      "url": "https://www.news.ro/externe/alegerile-prezidentiale-din-brazilia-s-au-deschis-sectiile-de-votare-pentru-turul-al-doilea-intre-lula-si-bolsonaro-1922400025002026101422883445",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Alegerile prezidenţiale din Brazilia: S-au deschis secţiile de votare pentru turul al doilea între Lula şi Bolsonaro",
+      "addedAt": "2026-10-25T12:51:52.808Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-digi24-cazul-de-la-bistrita-pune-presiune-pe-82592a",
+      "title": "Cazul de la Bistrița pune presiune pe Educație. Sorin Costreie anunță inițiative legislative și campanii în premieră",
+      "summary": "Ministrul Educației Sorin Costreie s-a arătat îngrijorat de faptul că vârsta violențelor în rândul tinerilor scade, după cazul băiatului de 13 ani care a atacat cu un briceag o profesoară și un coleg, într-o școală din Bistrița. Ministrul a vorbit în cadrul emisiunii „În fața ta” de la Digi24 și de o inițiativă și o campanie concentrată pe protejarea profesorilor și a elevilor, care să redea încrederea în personalul didactic.",
+      "date": "2026-10-25T11:59:52.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/educatie/cazul-de-la-bistrita-pune-presiune-pe-educatie-sorin-costreie-anunta-initiative-legislative-si-campanii-in-premiera-4006957",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjIxJTJGMzAyNTM3N18zMDI1/Mzc3X3NvcmluLWNvc3RyZWllLWRpZ2ky/NC5wbmcmaGFzaD03OTA1ZTc1NTY4NzdkMDhiZjFiMWMzZmY3ZTQ2YTgzZA==.png",
+      "imageAlt": "Cazul de la Bistrița pune presiune pe Educație. Sorin Costreie anunță inițiative legislative și campanii în premieră",
+      "addedAt": "2026-10-25T12:51:47.719Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-digi24-criza-de-gaze-in-iran-inaintea-iernii-cine-bec05a",
+      "title": "Criză de gaze în Iran înaintea iernii. Cine reduce consumul primește bani, promit autoritățile",
+      "summary": "Autoritățile iraniene le cer cetățenilor să reducă consumul de gaze cu cel puțin 10% înaintea iernii și promit recompense financiare celor care fac economii. Apelul vine în contextul unei crize energetice agravate de atacurile asupra infrastructurii de gaze în timpul războiului cu Israelul și Statele Unite. Iranul estimează că deficitul zilnic de gaze ar putea ajunge la 250 de milioane de metri cubi în sezonul rece.",
+      "date": "2026-10-25T11:59:38.000Z",
+      "url": "https://www.digi24.ro/stiri/economie/criza-de-gaze-in-iran-inaintea-iernii-cine-reduce-consumul-primeste-bani-promit-autoritatile-4008009",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjI1JTJGMzAyOTQxOF8zMDI5/NDE4X3Byb2ZpbWVkaWEtMTA4MDIxMTM3/MS5qcGcmaGFzaD04ZGU1MzJiNzliMzI2MzY1ZGUwZGQ5NTJiYmNkYmNhNQ==.jpg",
+      "imageAlt": "Criză de gaze în Iran înaintea iernii. Cine reduce consumul primește bani, promit autoritățile",
+      "addedAt": "2026-10-25T12:51:47.720Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-g4media-bbc-reclame-electorale-cu-informatii-false-c3d740",
+      "title": "BBC | Reclame electorale cu informații false înaintea alegerilor parlamentare din Serbia / E implicată o firmă din Craiova care a făcut, în trecut, campanie pentru Victor Ponta",
+      "summary": "BBC a identificat zeci de pagini de pe platforma Facebook care difuzează reclame politice ce vizează mișcarea de opoziție și conțin afirmații nedovedite, înainte de alegerile parlamentare din acest weekend, scrie publicația. Reclamele nu au fost difuzate alături de informații care să identifice cine a plătit pentru ele, în ciuda cerințelor companiei Meta ca publicitatea […] © G4Media.ro .",
+      "date": "2026-10-25T11:58:01.000Z",
+      "url": "https://www.g4media.ro/bbc-reclame-electorale-cu-informatii-false-inaintea-alegerilor-parlamentare-din-serbia-e-implicata-o-firma-din-craiova-care-a-facut-in-trecut-campanie-pentru-victor-ponta.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole"
+      ],
+      "author": "Teodora Stroe",
+      "theme": "politika",
+      "image": "https://www.g4media.ro//wp-content/uploads/2026/10/Screenshot_JPG_facebook.com_2026-10-25_13-57-29.jpg",
+      "imageAlt": "BBC | Reclame electorale cu informații false înaintea alegerilor parlamentare din Serbia / E implicată o firmă din Craiova care a făcut, în trecut, campanie pentru Victor Ponta",
+      "addedAt": "2026-10-25T12:51:52.027Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-newsro-un-autoturism-si-un-microbuz-implicate-in-4a8e22",
+      "title": "Un autoturism şi un microbuz, implicate în accident rutier în judeţul Satu Mare / Patru persoane au fost transportate la spital",
+      "summary": "Patru persoane au fost rănite, duminică, într-un accident rutier produs în judeţul Satu Mare, după ce un autoturism şi un microbuz s-au ciocnit.",
+      "date": "2026-10-25T11:57:48.000Z",
+      "url": "https://www.news.ro/eveniment/un-autoturism-si-un-microbuz-implicate-in-accident-rutier-in-judetul-satu-mare-patru-persoane-au-fost-transportate-la-spital-1922405725482026101322883449",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Un autoturism şi un microbuz, implicate în accident rutier în judeţul Satu Mare / Patru persoane au fost transportate la spital",
+      "addedAt": "2026-10-25T12:51:52.808Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-g4media-suspectul-atacului-cu-un-mort-si-cinci-cfc2cb",
+      "title": "Suspectul atacului cu un mort și cinci răniți de lângă Paris, transferat pentru observație psihiatrică / Audierile au fost suspendate",
+      "summary": "Arestul preventiv al suspectului care a ucis o persoană și a rănit alte cinci în apropiere de Paris a fost ridicat duminică după o expertiză psihiatrică, transmite Mediafax. Arestul preventiv al suspectului care a ucis o persoană și a rănit alte cinci în regiunea pariziană, vineri, a fost ridicat din motive psihiatrice, a anunțat duminică […] © G4Media.ro .",
+      "date": "2026-10-25T11:54:41.000Z",
+      "url": "https://www.g4media.ro/atac-armat-paris-suspect-observatie-psihiatrica.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "anchetă antiteroristă",
+        "atac armat",
+        "Franța"
+      ],
+      "author": "Redacția",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro//wp-content/uploads/2026/10/profimedia-1145878822-scaled.jpg",
+      "imageAlt": "Suspectul atacului cu un mort și cinci răniți de lângă Paris, transferat pentru observație psihiatrică / Audierile au fost suspendate",
+      "addedAt": "2026-10-25T12:51:52.027Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-profit-ultima-ora-noua-nava-atacata-de-drone-3f2891",
+      "title": "ULTIMA ORĂ Nouă navă atacată de drone rusești în Marea Neagră",
+      "summary": "O navă care se îndrepta spre portul ucrainean Cernomorsk a fost lovită duminică în Marea Neagră de drone rusești, a anunțat Ministerul Apărării din Rusia.",
+      "date": "2026-10-25T11:53:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/vecini/ultima-ora-noua-nava-atacata-de-drone-rusesti-in-marea-neagra-22883203?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "VECINI"
+      ],
+      "author": "",
+      "theme": "rat",
+      "image": "https://i0.1616.ro/media/2/2621/35706/22883203/1/drona-constanta-explozie.jpg?width=800",
+      "imageAlt": "ULTIMA ORĂ Nouă navă atacată de drone rusești în Marea Neagră",
+      "addedAt": "2026-10-25T12:51:45.602Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-zf-analiza-zf-piata-de-produse-pentru-fa2a11",
+      "title": "Analiză ZF. Piaţa de produse pentru îngrijirea pielii aproape s-a dublat din 2020, la un pas de 3 mld. lei. Segmentul e însă dominat de mărci străine care nu au decât import în…",
+      "summary": "Mi-a rămas în minte un citat dintr-o carte pe care o citeam acum câţiva ani. L-am şi salvat. „Mama ne-a învăţat să cheltuim bani pe cărţi, pe produse de îngrijrie a pielii şi pe lenjerie intimă de calitate. E trilogia luxului“, spune autoarea.",
+      "date": "2026-10-25T11:52:00.000Z",
+      "url": "https://www.zf.ro/companii/retail-agrobusiness/analiza-zf-piata-produse-ingrijirea-pielii-aproape-s-dublat-2020-pas-3-mld-lei-segmentul-e-insa-dominat-marci-straine-au-import-romania-farmec-singurul-brand-mare-autohton-23263320",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Retail&Agrobusiness"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21335/23263320/2/cosmetice-bio.jpg?width=700",
+      "imageAlt": "Analiză ZF. Piaţa de produse pentru îngrijirea pielii aproape s-a dublat din 2020, la un pas de 3 mld. lei. Segmentul e însă dominat de mărci străine care nu au decât import în Rom",
+      "addedAt": "2026-10-25T12:51:45.291Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-zf-vara-a-adus-o-revigorare-a-creditelor-de-6c4adf",
+      "title": "Vara a adus o revigorare a creditelor de consum. În iulie a fost un maxim istoric lunar al finanţărilor de consum noi, de circa 5,5 mld. lei. În perioada iunie-august s-au acordat…",
+      "summary": "Românii au continuat să apeleze la finanţări bancare în primele opt luni din acest an, iar apetitul pentru creditele de consum s-a revigorat în special în lunile de vară, după ce fusese mai temperat în prima parte a anului, volumele lunare ale finanţărilor noi în lei de acest tip fiind în jurul nivelului de 5 mld. lei.",
+      "date": "2026-10-25T11:51:00.000Z",
+      "url": "https://www.zf.ro/banci-si-asigurari/vara-adus-revigorare-creditelor-consum-iulie-maxim-istoric-lunar-finantarilor-consum-circa-5-5-mld-lei-perioada-iunie-august-s-au-acordat-finantari-15-mld-lei-adica-peste-40-totalul-creditelor-23263444",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Bănci și Asigurări"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/22466/23263444/2/1-bani-lei-salariu1.jpg?width=700",
+      "imageAlt": "Vara a adus o revigorare a creditelor de consum. În iulie a fost un maxim istoric lunar al finanţărilor de consum noi, de circa 5,5 mld. lei. În perioada iunie-august s-au acordat ",
+      "addedAt": "2026-10-25T12:51:45.292Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-zf-romanii-au-peste-12-miliarde-de-euro-in-ee46e8",
+      "title": "Românii au peste 12 miliarde de euro în criptoactive şi probabil că tot atâta în investiţii pe bursele externe. Din păcate de cea mai mare acumulare financiară din istoria…",
+      "summary": "",
+      "date": "2026-10-25T11:50:00.000Z",
+      "url": "https://www.zf.ro/opinii/romanii-au-peste-12-miliarde-euro-criptoactive-probabil-tot-atata-investitii-bursele-externe-pacate-cea-mare-acumulare-financiara-istoria-romaniei-catre-romani-beneficiaza-romania-ci-sua-piete-23262693",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Opinii"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/22467/23262693/1/fini-nou-2a.jpg?width=700",
+      "imageAlt": "Românii au peste 12 miliarde de euro în criptoactive şi probabil că tot atâta în investiţii pe bursele externe. Din păcate de cea mai mare acumulare financiară din istoria României",
+      "addedAt": "2026-10-25T12:51:45.292Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-g4media-vitrine-acoperite-cu-panouri-din-lemn-in-dbfd6c",
+      "title": "Vitrine acoperite cu panouri din lemn în centrul Bruxelles-ului, de teama unor noi jafuri / De la Prada și Versace la magazine mici și restaurante",
+      "summary": "Magazinele din centrul Bruxelles-ului și-au baricadat vitrinele cu panouri din lemn de teama unor noi jafuri, după violențele din 17 octombrie, transmite Mediafax. Magazinele de lux și cele comerciale din centrul Bruxelles-ului și-au acoperit vitrinele cu panouri din lemn pentru a se proteja de posibile jafuri, din cauza îngrijorărilor privind protestele, potrivit Euronews. Sâmbătă, magazinele […] © G4Media.ro .",
+      "date": "2026-10-25T11:44:27.000Z",
+      "url": "https://www.g4media.ro/magazine-baricadate-bruxelles-vitrine-panouri-lemn-jafuri.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "Belgia",
+        "Bruxelles",
+        "jafuri"
+      ],
+      "author": "Florina Adam",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro//wp-content/uploads/2026/10/profimedia-1146405148.jpg",
+      "imageAlt": "Vitrine acoperite cu panouri din lemn în centrul Bruxelles-ului, de teama unor noi jafuri / De la Prada și Versace la magazine mici și restaurante",
+      "addedAt": "2026-10-25T12:51:52.028Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-digi24-ucraina-a-lansat-un-atac-masiv-cu-drone-0a72cf",
+      "title": "Ucraina a lansat un atac masiv cu drone asupra orașului rusesc Belgorod: doi morți și distrugeri de amploare",
+      "summary": "Doi bărbaţi au fost ucişi şi 13 persoane au fost rănite în noaptea de sâmbătă spre duminică într-un atac masiv cu drone al Ucrainei asupra oraşului Belgorod din Rusia, situat în apropierea graniţei, au anunţat, duminică, autorităţile ruse, conform AFP.",
+      "date": "2026-10-25T11:32:55.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/rusia/ucraina-a-lansat-un-atac-masiv-cu-drone-asupra-orasului-rusesc-belgorod-doi-morti-si-distrugeri-de-amploare-4007987",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjI1JTJGMzAyOTM4OV8zMDI5/Mzg5X3Byb2ZpbWVkaWEtMTE0NjQzNDUx/My5qcGcmaGFzaD04MTYxMWJjNjEyZjZkYjY5Y2I5YTMyZjZhYWYwZGZhYg==.jpg",
+      "imageAlt": "Ucraina a lansat un atac masiv cu drone asupra orașului rusesc Belgorod: doi morți și distrugeri de amploare",
+      "addedAt": "2026-10-25T12:51:47.720Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-profit-premierul-britanic-pledeaza-pentru-277989",
+      "title": "Premierul britanic pledează pentru rediscutarea liberei circulație a forței de muncă după modelul UE",
+      "summary": "Premierul britanic Andy Burnham pare a fi adeptul reinstaurării politicii Uniunii Europene privind libera circulație în Regatul Unit, susținând că este necesară o ”discuție sinceră” pe această temă.",
+      "date": "2026-10-25T11:24:00.000Z",
+      "url": "https://www.profit.ro/perspective/premierul-britanic-pledeaza-pentru-rediscutarea-liberei-circulatie-a-fortei-de-munca-dupa-modelul-ue-22883043?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Perspective"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://i0.1616.ro/media/2/2621/33242/22883043/1/british-flag-1907933-1280.jpg?width=800",
+      "imageAlt": "Premierul britanic pledează pentru rediscutarea liberei circulație a forței de muncă după modelul UE",
+      "addedAt": "2026-10-25T12:51:45.602Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-hotnews-intr-un-mesaj-care-va-fi-sters-in-trei-ore-d7eb21",
+      "title": "Într-un mesaj „care va fi șters în trei ore”, Tudorel Toader atacă o avocată că „a motivat” studentele care l-au acuzat pe fiul său arestat preventiv pentru viol și agresiuni…",
+      "summary": "Fostul ministru al Justiției a scris pe Facebook că în spatele acuzațiilor făcute de mai multe studente la adresa fiului său se află o avocată, despre care spune că are probleme penale. Tudorel Toader a reluat acuzațiile făcute la scurt timp după ce fiul său a fost reținut. Atunci, el a spus: „este un atac …",
+      "date": "2026-10-25T11:22:56.000Z",
+      "url": "https://hotnews.ro/intr-un-mesaj-care-va-fi-sters-in-trei-ore-tudorel-toader-ataca-avocata-studentelor-care-l-au-acuzat-pe-fiul-sau-arestat-preventiv-pentru-viol-si-agresiuni-sexuale-2386005",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "Tudorel Toader"
+      ],
+      "author": "Ioana Vochin",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Într-un mesaj „care va fi șters în trei ore”, Tudorel Toader atacă o avocată că „a motivat” studentele care l-au acuzat pe fiul său arestat preventiv pentru viol și agresiuni sexua",
+      "addedAt": "2026-10-25T12:51:43.605Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-hotnews-saorma-de-13-dolari-care-a-impartit-o-tara-075517",
+      "title": "Șaorma de 13 dolari care a împărțit o țară în două: „Avem o clasă care trăiește și o clasă care așteaptă să moară”",
+      "summary": "La șapte ani de la criza financiară devastatoare din Liban, o dezbatere pe tema unui sandviș cu pui a scos la iveală o prăpastie din ce în ce mai adâncă între cei care încă își pot permite să cheltuiască fără restricții și cei care abia reușesc să se descurce, scrie Reuters. Un restaurant la modă, …",
+      "date": "2026-10-25T11:13:55.000Z",
+      "url": "https://hotnews.ro/saorma-de-13-dolari-care-a-impartit-o-tara-in-doua-avem-o-clasa-care-traieste-si-o-clasa-care-asteapta-sa-moara-2386020",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "George Sîrbu",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Șaorma de 13 dolari care a împărțit o țară în două: „Avem o clasă care trăiește și o clasă care așteaptă să moară”",
+      "addedAt": "2026-10-25T12:51:43.605Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-profit-noi-atacuri-ale-rebelilor-houthi-asupra-2a8443",
+      "title": "Noi atacuri ale rebelilor houthi asupra Riadului. Redeschiderea aeroportului - incertă",
+      "summary": "Redeschiderea aeroportului internațional din Riad este incertă, după ce duminică dimineață, capitala Arabiei Saudite a fost lovită de noi atacuri ale rebelilor houthi din Yemen, iar autoritățile au emis mesaje de alertă.",
+      "date": "2026-10-25T11:13:00.000Z",
+      "url": "https://www.profit.ro/stiri/noi-atacuri-ale-rebelilor-houthi-asupra-riadului-redeschiderea-aeroportului-incerta-22883063?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Știri"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33206/22883063/1/apriltan18-riyadh-2197496.jpg?width=800",
+      "imageAlt": "Noi atacuri ale rebelilor houthi asupra Riadului. Redeschiderea aeroportului - incertă",
+      "addedAt": "2026-10-25T12:51:45.602Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-digi24-pavel-popescu-atac-la-adresa-lui-bolojan-ceab6f",
+      "title": "Pavel Popescu, atac la adresa lui Bolojan după ce a afirmat că ANCOM se pregătea să „spargă” 200.000 de euro: „Ipocrizie halucinantă”",
+      "summary": "Vicepreședintele ANCOM Pavel Popescu a lansat o replică acidă la adresa lui Ilie Bolojan. Fostul deputat liberal îi răspunde liderului PNL după ce acesta a afirmat într-un interviu la Digi24 că în ultima ședință de guvern a blocat un proiect prin care ANCOM se pregătea „să spargă” 200.000 de euro pe protocol.",
+      "date": "2026-10-25T11:11:51.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/pavel-popescu-atac-la-adresa-lui-bolojan-dupa-ce-a-afirmat-ca-ancom-se-pregatea-sa-sparga-200-000-de-euro-ipocrizie-halucinanta-4007931",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjQl/MkYwMSUyRjE3JTJGMTg4MjQ4Nl8xODgy/NDg2X3BhdmVsLXBvcGVzY3UuanBnJmhh/c2g9MzJkMTkwY2I4OTVhNjU2OWQ2YzllYTZjZWYzYjkyMDI=.jpg",
+      "imageAlt": "Pavel Popescu, atac la adresa lui Bolojan după ce a afirmat că ANCOM se pregătea să „spargă” 200.000 de euro: „Ipocrizie halucinantă”",
+      "addedAt": "2026-10-25T12:51:47.720Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-g4media-rusia-sustine-ca-a-atacat-cu-drone-o-nava-4c05cc",
+      "title": "Rusia susține că a atacat cu drone o navă de mărfuri care se îndrepta spre un port ucrainean din Marea Neagră",
+      "summary": "Rusia afirmă că a lovit, în cursul nopții, o navă de mărfuri în Marea Neagră și centre logistice din Ucraina, în timp ce atacurile ucrainene asupra regiunii rusești Belgorod s-au soldat cu trei morți și 14 răniți. Ministerul rus al Apărării a anunțat duminică dimineață faptul că dronele rusești au lovit, în cursul nopții, o […] © G4Media.ro .",
+      "date": "2026-10-25T11:11:29.000Z",
+      "url": "https://www.g4media.ro/rusia-atac-drone-nava-marfuri-marea-neagra-ciornomorsk.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "atac cu drone",
+        "Ciornomorsk",
+        "marea neagră"
+      ],
+      "author": "Redacția",
+      "theme": "rat",
+      "image": "https://www.g4media.ro//wp-content/uploads/2023/10/explozie-isaccea-bombardamente-drone-rusesti-drone-vama-orlovka.jpeg",
+      "imageAlt": "Rusia susține că a atacat cu drone o navă de mărfuri care se îndrepta spre un port ucrainean din Marea Neagră",
+      "addedAt": "2026-10-25T12:51:52.028Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-profit-lista-de-black-friday-care-te-ajuta-sa-a02e54",
+      "title": "Lista de Black Friday care te ajută să separi nevoile de cumpărăturile de moment",
+      "summary": "O listă lungă de produse salvate poate face alegerea mai grea, nu mai ușoară, mai ales că, atunci când toate par importante, o reducere neașteptată ajunge să decidă în locul tău.",
+      "date": "2026-10-25T11:00:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/retail/lista-de-black-friday-care-te-ajuta-sa-separi-nevoile-de-cumparaturile-de-moment-22873925?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Retail"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33215/22873925/1/pexels-max-fischer-5872181.jpg?width=800",
+      "imageAlt": "Lista de Black Friday care te ajută să separi nevoile de cumpărăturile de moment",
+      "addedAt": "2026-10-25T12:51:45.602Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-g4media-peste-12-000-de-beneficiari-de-pensii-de-7e99fc",
+      "title": "Peste 12.000 de beneficiari de pensii de serviciu în septembrie / Magistrații au cea mai mare pensie medie: 25.682 de lei",
+      "summary": "Numărul beneficiarilor de pensii de serviciu a fost, în luna septembrie a acestui an, de 12.003 de persoane, cu opt mai multe față de luna precedentă, din care 7.934 de beneficiari cu pensie din Bugetul Asigurărilor Sociale de Stat – BASS (contributivitate), conform datelor centralizate de Casa Națională de Pensii Publice (CNPP) citate de Agerpses. […] © G4Media.ro .",
+      "date": "2026-10-25T10:48:22.000Z",
+      "url": "https://www.g4media.ro/pensii-serviciu-septembrie-2026-cnpp-magistrati.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "bugetul de stat",
+        "cnpp",
+        "judecători"
+      ],
+      "author": "Florina Adam",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro//wp-content/uploads/2025/10/Pensii-magistrati-bani-euro-ciocanel.jpg",
+      "imageAlt": "Peste 12.000 de beneficiari de pensii de serviciu în septembrie / Magistrații au cea mai mare pensie medie: 25.682 de lei",
+      "addedAt": "2026-10-25T12:51:52.028Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-g4media-umar-la-umar-pe-flancul-estic-al-nato-604a11",
+      "title": "„Umăr la umăr” pe flancul estic al NATO, „Stronger Together”: mesajul Ambasadei SUA de Ziua Armatei României",
+      "summary": "Ambasada SUA la București a transmis un mesaj de Ziua Armatei României, în care a anunțat că militarii români și americani colaborează pentru apărarea flancului estic al NATO, transmite Mediafax. Ambasada Statelor Unite ale Americii la București a transmis duminică un mesaj cu prilejul Zilei Armatei României, în care a salutat militarii români și parteneriatul […] © G4Media.ro .",
+      "date": "2026-10-25T10:33:46.000Z",
+      "url": "https://www.g4media.ro/ambasada-sua-ziua-armatei-romaniei-militari-flancul-estic-nato.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "ambasada sua",
+        "flancul estic",
+        "militari americani"
+      ],
+      "author": "Florina Adam",
+      "theme": "sigurnost",
+      "image": "https://www.g4media.ro//wp-content/uploads/2026/03/noul-ambasador-american-scaled.jpg",
+      "imageAlt": "„Umăr la umăr” pe flancul estic al NATO, „Stronger Together”: mesajul Ambasadei SUA de Ziua Armatei României",
+      "addedAt": "2026-10-25T12:51:52.028Z"
+    },
     {
       "slug": "bukurest-2026-10-25-agerpres-25-octombrie-ziua-armatei-romane-3453d6",
       "title": "25 octombrie - Ziua Armatei Române",
@@ -6414,580 +6988,6 @@
       "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21337/23266730/1/image002.jpg?width=700",
       "imageAlt": "Grupul hotelier Accor, care operează 26 de hoteluri în România, şi-a îmbunătăţit estimările pentru 2026, după venituri de 1,5 mld. euro în T3, în creştere cu 7,7% an/an",
       "addedAt": "2026-10-23T14:18:03.719Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-zf-investitorii-pun-frana-ambitiilor-openai-692016",
-      "title": "Investitorii pun frână ambiţiilor OpenAI, compania din spatele ChatGPT: grupul reduce cu 150 mld. dolari ţinta de evaluare înaintea listării la bursă",
-      "summary": "",
-      "date": "2026-10-23T13:36:36.000Z",
-      "url": "https://www.zf.ro/burse-fonduri-mutuale/investitorii-pun-frana-ambitiilor-openai-compania-din-spatele-chatgpt-grupul-reduce-cu-150-mld-dolari-tinta-de-evaluare-inaintea-listarii-la-bursa-23266728",
-      "source": "zf",
-      "sourceName": "Ziarul Financiar",
-      "categories": [
-        "Burse - Fonduri mutuale"
-      ],
-      "author": "",
-      "theme": "ai",
-      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10366/23266728/1/hepta-8412626.jpg?width=700",
-      "imageAlt": "Investitorii pun frână ambiţiilor OpenAI, compania din spatele ChatGPT: grupul reduce cu 150 mld. dolari ţinta de evaluare înaintea listării la bursă",
-      "addedAt": "2026-10-23T14:18:03.720Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-g4media-imagini-false-cu-jandarmi-care-485778",
-      "title": "Imagini false cu jandarmi care îngenunchează în fața mulțimii adunate în fața Curții de Apel București la judecarea contestației lui Călin Georgescu, distribuite online",
-      "summary": "Jandarmeria a precizat vineri că în mediul online circulă imagini false cu jandarmi care înge îngenunchează în fața mulțimii adunate în fața Curții de Apel București la judecarea contestației lui Călin Georgescu. „În mediul online circulă imagini FALSE în care apar mai multe persoane îmbrăcate într-o ținută care imită uniforma de jandarmerie și care sunt […] © G4Media.ro .",
-      "date": "2026-10-23T13:35:49.000Z",
-      "url": "https://www.g4media.ro/imagini-false-cu-jandarmi-care-ingenuncheaza-in-fata-multimii-adunate-in-fata-curtii-de-apel-bucuresti-la-judecarea-contestatiei-lui-calin-georgescu-distribuite-online.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "București",
-        "imagini false",
-        "jandarmi"
-      ],
-      "author": "Damian Matei",
-      "theme": "drustvo",
-      "image": "https://www.g4media.ro//wp-content/uploads/2026/10/inagine-falsa-jandarmi.jpeg",
-      "imageAlt": "Imagini false cu jandarmi care îngenunchează în fața mulțimii adunate în fața Curții de Apel București la judecarea contestației lui Călin Georgescu, distribuite online",
-      "addedAt": "2026-10-23T14:18:11.785Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-profit-decizie-primele-masuri-dupa-violentele-din-d026ef",
-      "title": "DECIZIE Primele măsuri după violențele din Bistrița și din Pitești. Mai mulți paznici și consilieri psihologici în școli, sancțiuni mai mari pentru violențe împotriva elevilor și…",
-      "summary": "Guvernul condus de premierul Luca Niculescu a stabilit un set de măsuri urgente ca răspuns la incidentele grave petrecute în ultimele zile în școlile din Bistrița și din Pitești.",
-      "date": "2026-10-23T13:22:00.000Z",
-      "url": "https://www.profit.ro/stiri/social/decizie-primele-masuri-dupa-violentele-din-bistrita-si-din-pitesti-mai-multi-paznici-si-consilieri-psihologici-in-scoli-sanctiuni-mai-mari-pentru-violente-impotriva-elevilor-si-profesorilor-22876044?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
-      "source": "profit",
-      "sourceName": "Profit.ro",
-      "categories": [
-        "Social"
-      ],
-      "author": "",
-      "theme": "politika",
-      "image": "https://i0.1616.ro/media/2/2621/33239/22876044/2/decizii-la-guvern.jpg?width=800",
-      "imageAlt": "DECIZIE Primele măsuri după violențele din Bistrița și din Pitești. Mai mulți paznici și consilieri psihologici în școli, sancțiuni mai mari pentru violențe împotriva elevilor și p",
-      "addedAt": "2026-10-23T14:18:03.955Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-g4media-bolojan-in-toate-partidele-sunt-oameni-31b542",
-      "title": "Bolojan: În toate partidele sunt oameni raționali cu care se poate lucra. Cu golanii e greu să faci treabă",
-      "summary": "Președintele PNL, Ilie Bolojan, a afirmat, vineri, la Sinaia, că în toate partidele sunt oameni raționali cu care se poate lucra, arătând că, dimpotrivă, cu ‘golanii’ este greu să faci treabă, scrie Agerpres. ‘Cu cât mai mulți oameni normali intră în politică la toate partidele, cu atâta densitatea acestora de normalitate va fi mai mare […] © G4Media.ro .",
-      "date": "2026-10-23T13:21:09.000Z",
-      "url": "https://www.g4media.ro/bolojan-in-toate-partidele-sunt-oameni-rationali-cu-care-se-poate-lucra-cu-golanii-e-greu-sa-faci-treaba.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Articole",
-        "bolojan"
-      ],
-      "author": "Rareș Constantin",
-      "theme": "sport",
-      "image": "https://www.g4media.ro//wp-content/uploads/2025/09/INSTANT_GUVERN_CONF_BOLOJAN_006_INQUAM_Photos_Octav_Ganea.jpg",
-      "imageAlt": "Bolojan: În toate partidele sunt oameni raționali cu care se poate lucra. Cu golanii e greu să faci treabă",
-      "addedAt": "2026-10-23T14:18:11.785Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-hotnews-laszlo-balint-pe-radarul-mai-multor-echipe-abde16",
-      "title": "Laszlo Balint, pe radarul mai multor echipe din SuperLiga. Ce spune antrenorul despre negocierile purtate",
-      "summary": "Tehnicianul Laszlo Balint (47 de ani) se află în discuții avansate pentru a prelua o echipă din străinătate, dar a purtat tatonări și cu formații din prima ligă a României, printre care și Csikszereda. Fostul antrenor al celor de la Universitatea Craiova, UTA sau Oțelul Galați a dezvăluit că reprezentanții săi negociază în prezent oportunități …",
-      "date": "2026-10-23T13:14:41.000Z",
-      "url": "https://hotnews.ro/laszlo-balint-pe-radarul-mai-multor-echipe-din-superliga-ce-spune-antrenorul-despre-negocierile-purtate-2384713",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "SuperLiga"
-      ],
-      "author": "Adrian Ilie",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Laszlo Balint, pe radarul mai multor echipe din SuperLiga. Ce spune antrenorul despre negocierile purtate",
-      "addedAt": "2026-10-23T14:18:01.829Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-hotnews-dan-carbunaru-revine-ca-purtator-de-cuvant-e74684",
-      "title": "Dan Cărbunaru revine ca purtător de cuvânt al Guvernului",
-      "summary": "Dan Cărbunaru, care a mai fost purtător de cuvânt al Guvernului Ciucă, devine de astăzi purtătorul de cuvânt al Guvernului condus de Luca Niculescu, au transmis vineri reprezentanții Executivului. Decizia nu a fost încă publicată în Monitorul Oficial. „Purtătorul de cuvânt al Guvernului Luca Niculescu va fi, începând de astăzi, Dan Cărbunaru”, au transmis reprezentanții …",
-      "date": "2026-10-23T13:06:22.000Z",
-      "url": "https://hotnews.ro/dan-carbunaru-revine-ca-purtator-de-cuvant-al-guvernului-2384672",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "Actualitate"
-      ],
-      "author": "Rebecca Popescu",
-      "theme": "politika",
-      "image": "",
-      "imageAlt": "Dan Cărbunaru revine ca purtător de cuvânt al Guvernului",
-      "addedAt": "2026-10-23T14:18:01.829Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-hotnews-ce-spune-kremlinul-despre-o-noua-ialta-cu-380699",
-      "title": "Ce spune Kremlinul despre o „nouă Ialta”, cu Putin, Trump și Xi",
-      "summary": "Dmitri Peskov, purtătorul de cuvânt al Kremlinului, a negat vineri că apropiatul summit între președinții Vladimir Putin, Donald Trump și Xi Jinping, ar reprezenta o „nouă Ialta”, o referință la întâlnirea din 1945 în cadrul căruia Iosif Stalin, Franklin D. Roosevelt și Winston Churchill au convenit asupra noii ordini geopolitice de după cel de-al Doilea …",
-      "date": "2026-10-23T12:54:58.000Z",
-      "url": "https://hotnews.ro/ce-spune-kremlinul-despre-o-noua-ialta-cu-putin-trump-si-xi-2384684",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "Actualitate",
-        "International",
-        "dmitri peskov",
-        "donald trump"
-      ],
-      "author": "Sebastian Jucan",
-      "theme": "politika",
-      "image": "",
-      "imageAlt": "Ce spune Kremlinul despre o „nouă Ialta”, cu Putin, Trump și Xi",
-      "addedAt": "2026-10-23T14:18:01.829Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-profit-decizie-hidroelectrica-lovita-puternic-de-4be58c",
-      "title": "DECIZIE Hidroelectrica, lovită puternic de secetă. Schimbă bugetul și taie din ținta de profit",
-      "summary": "Hidroelectrica, cel mai mare producător și furnizor de energie electrică din România, a decis reducerea cu peste 16% ținta de profit net fixată pentru acest an, la 3 miliarde lei, compania fiind afectată de seceta prelungită.",
-      "date": "2026-10-23T12:54:00.000Z",
-      "url": "https://www.profit.ro/povesti-cu-profit/energie/decizie-hidroelectrica-lovita-puternic-de-seceta-schimba-bugetul-si-taie-din-tinta-de-profit-22876243?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
-      "source": "profit",
-      "sourceName": "Profit.ro",
-      "categories": [
-        "Energie"
-      ],
-      "author": "",
-      "theme": "energija",
-      "image": "https://i0.1616.ro/media/2/2621/33214/22876243/1/hidro.jpg?width=800",
-      "imageAlt": "DECIZIE Hidroelectrica, lovită puternic de secetă. Schimbă bugetul și taie din ținta de profit",
-      "addedAt": "2026-10-23T14:18:03.955Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-g4media-microsoft-dezvolta-un-instrument-ai-care-9c4272",
-      "title": "Microsoft dezvoltă un instrument AI care pune diagnostice și depășește performanța medicilor generaliști în teste",
-      "summary": "Microsoft dezvoltă un instrument de inteligență artificială care stabilește diagnostice medicale printr-un proces etapizat, asemănător celui folosit de medici. Într-un studiu publicat joi în revista Science, sistemul a demonstrat o precizie de peste două ori mai mare decât cea a medicilor generaliști în rezolvarea unor cazuri medicale complexe, relatează Reuters. Spre deosebire de modelele medicale […] © G4Media.ro .",
-      "date": "2026-10-23T11:32:12.000Z",
-      "url": "https://www.g4media.ro/microsoft-dezvolta-un-instrument-ai-care-pune-diagnostice-si-depaseste-performanta-medicilor-generalisti-in-teste.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Analize",
-        "instrument intelgienta artificiala",
-        "Microsoft AI"
-      ],
-      "author": "Ștefan Munteanu",
-      "theme": "ai",
-      "image": "https://www.g4media.ro//wp-content/uploads/2025/06/admin-ajax-18.jpeg",
-      "imageAlt": "Microsoft dezvoltă un instrument AI care pune diagnostice și depășește performanța medicilor generaliști în teste",
-      "addedAt": "2026-10-23T11:32:26.158Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-newsro-iasi-microbuz-scolar-in-care-se-aflau-14-efc31d",
-      "title": "Iaşi: Microbuz şcolar în care se aflau 14 copii, implicat într-un accident rutier. Unul dintre elevi a primit îngrijiri medicale după ce a suferit un atac de panică",
-      "summary": "Un microbuz şcolar în care se aflau 14 copii a fost implicat, vineri într-un accident rutier produs pe o şosea din judeţul Iaşi. Unul dintre elevi a primit îngrijiri medicale după ce a suferit un atac de panică. O a doua persoană, şoferul unui autoturism care a lovit din spate microbuzul, a fost rănit.",
-      "date": "2026-10-23T11:30:33.000Z",
-      "url": "https://www.news.ro/social/iasi-microbuz-scolar-in-care-se-aflau-14-copii-implicat-intr-un-accident-rutier-unul-dintre-elevi-a-primit-ingrijiri-medicale-dupa-ce-a-suferit-un-atac-de-panica-1922403023332026101422875784",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Iaşi: Microbuz şcolar în care se aflau 14 copii, implicat într-un accident rutier. Unul dintre elevi a primit îngrijiri medicale după ce a suferit un atac de panică",
-      "addedAt": "2026-10-23T11:32:26.497Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-digi24-acuzatii-grave-la-adresa-tatalui-lui-meghan-89c6db",
-      "title": "Acuzații grave la adresa tatălui lui Meghan Markle. Ducesa spune că a păstrat distanța față de acesta pentru a-și proteja copiii",
-      "summary": "Meghan, ducesa de Sussex, afirmă că a fost informată încă din 2018 despre acuzații tulburătoare la adresa tatălui său, Thomas Markle, după ce o scrisoare în care erau prezentate acestea a fost trimisă Poliției Metropolitane. Declarația sa vine după apariția unor informații potrivit cărora la fosta locuință a tatălui său din Filipine ar fi fost găsite imagini cu abuzuri sexuale asupra copiilor. Thomas Markle a negat acuzațiile, anunță BBC.",
-      "date": "2026-10-23T11:29:21.000Z",
-      "url": "https://www.digi24.ro/stiri/externe/ue/acuzatii-grave-la-adresa-tatalui-lui-meghan-markle-ducesa-spune-ca-a-pastrat-distanta-fata-de-acesta-pentru-a-si-proteja-copiii-4006019",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjIl/MkYxMSUyRjMwJTJGMTYzMTc5NV8xNjMx/Nzk1X3Byb2ZpbWVkaWEtMDcyMTQ2NDY4/NC5qcGcmaGFzaD02MTk2NWU4OTJmOTNjZDU0Yzc3Y2QyMGI1M2FlZjBlNQ==.jpg",
-      "imageAlt": "Acuzații grave la adresa tatălui lui Meghan Markle. Ducesa spune că a păstrat distanța față de acesta pentru a-și proteja copiii",
-      "addedAt": "2026-10-23T11:32:23.509Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-g4media-fotogalerie-insula-lacul-morii-locuintele-4040df",
-      "title": "FOTOGALERIE | Insula Lacul Morii, locuințele sociale din Mociur și restaurarea de la Mănăstirea Slatina, premiate la Anuala de Arhitectură București 2026 / Arhitectul danez Mads…",
-      "summary": "Amenajarea Insulei Lacul Morii – finalizată recent în București, soluție selectată în urma unui concurs internațional – proiectul de locuințe sociale din Mociur și restaurarea fostei reședințe domnești de la Mănăstirea Slatina, din Bucovina, ctitorie a domnitorului Alexandru Lăpușneanu, se numără printre proiectele premiate joi, 22 octombrie, la Anuala de Arhitectură București 2026, ediție la […] © G4Media.ro .",
-      "date": "2026-10-23T11:28:52.000Z",
-      "url": "https://www.g4media.ro/anuala-arhitectura-bucuresti-2026-premii-insula-lacul-morii-mociur-slatina.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Articole",
-        "București",
-        "Green News",
-        "Anuala de Arhitectură București 2026"
-      ],
-      "author": "Alina Mihai",
-      "theme": "ai",
-      "image": "https://www.g4media.ro//wp-content/uploads/2026/10/WhatsApp-Image-2026-10-23-at-10.41.393-scaled.jpeg",
-      "imageAlt": "FOTOGALERIE | Insula Lacul Morii, locuințele sociale din Mociur și restaurarea de la Mănăstirea Slatina, premiate la Anuala de Arhitectură București 2026 / Arhitectul danez Mads Bi",
-      "addedAt": "2026-10-23T11:32:26.158Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-newsro-consiliul-concurentei-posibil-abuz-de-45888d",
-      "title": "Consiliul Concurenţei: Posibil abuz de poziţie dominantă al grupului Merck Sharp & Dohme pe piaţa farmaceutică",
-      "summary": "Consiliul Concurenţei anunţă că investighează un posibil abuz de poziţie dominantă al grupului Merck Sharp & Dohme, după refuzul de a colabora direct cu DONA. Logistica SA pentru distribuţia unor medicamente pe piaţa din România.",
-      "date": "2026-10-23T11:27:47.000Z",
-      "url": "https://www.news.ro/economic/consiliul-concurentei-posibil-abuz-de-pozitie-dominanta-al-grupului-merck-sharp-dohme-pe-piata-farmaceutica-1922402723472026101422875764",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "sigurnost",
-      "image": "",
-      "imageAlt": "Consiliul Concurenţei: Posibil abuz de poziţie dominantă al grupului Merck Sharp & Dohme pe piaţa farmaceutică",
-      "addedAt": "2026-10-23T11:32:26.497Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-digi24-nicusor-dan-interviu-pentru-bloomberg-rusii-680368",
-      "title": "Nicușor Dan, interviu pentru Bloomberg: Ruşii încearcă să provoace ţările europene, nu trebuie să intrăm în acest proces de escaladare",
-      "summary": "Rusia pare mai degrabă înclinată să intensifice războiul din Ucraina decât să îl încheie, a declarat preşedintele Nicuşor Dan pentru Bloomberg, invocând numărul tot mai mare de provocări ale Kremlinului pe teritoriul Uniunii Europene.",
-      "date": "2026-10-23T11:27:43.000Z",
-      "url": "https://www.digi24.ro/stiri/actualitate/nicusor-dan-interviu-pentru-bloomberg-rusii-incearca-sa-provoace-tarile-europene-nu-trebuie-sa-intram-in-acest-proces-de-escaladare-4005193",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "rat",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwNyUyRjA5JTJGMjg0MDgyM18yODQw/ODIzX25hdG8tbmljdXNvci1kYW4uanBn/Jmhhc2g9MDU2NGJkZDY2MWE2YTcyOGM1OGM2ZjAwYTU1YTUwYzQ=.jpg",
-      "imageAlt": "Nicușor Dan, interviu pentru Bloomberg: Ruşii încearcă să provoace ţările europene, nu trebuie să intrăm în acest proces de escaladare",
-      "addedAt": "2026-10-23T11:32:23.510Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-hotnews-de-ce-cea-mai-mare-fuziune-de-companii-din-208bed",
-      "title": "De ce cea mai mare fuziune de companii din istorie este practic inevitabilă: „Ar pune totul în comun”",
-      "summary": "Wall Street consideră acum că cea mai mare fuziune din istorie între SpaceX și Tesla este practic inevitabilă, motivată atât de prezența unui singur șef, Elon Musk, cât și de convergența celor două grupuri către inteligența artificială (AI), notează AFP. Inițial, Tesla era doar un producător de automobile, iar SpaceX o companie aerospațială specializată în …",
-      "date": "2026-10-23T11:27:26.000Z",
-      "url": "https://hotnews.ro/de-ce-cea-mai-mare-fuziune-de-companii-din-istorie-este-practic-inevitabila-ar-pune-totul-in-comun-2384561",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "Actualitate",
-        "International"
-      ],
-      "author": "George Sîrbu",
-      "theme": "ai",
-      "image": "",
-      "imageAlt": "De ce cea mai mare fuziune de companii din istorie este practic inevitabilă: „Ar pune totul în comun”",
-      "addedAt": "2026-10-23T11:32:18.990Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-newsro-austria-expulzeaza-patru-diplomati-rusi-din-29d293",
-      "title": "Austria expulzează patru diplomaţi ruşi din motive de securitate. România se numără printre ţările care au luat în ultimele luni măsuri similare",
-      "summary": "Ministerul austriac de Externe a anunţat vineri că expulzează patru diplomaţi ruşi cu sediul la Viena pentru „activităţi incompatibile cu statutul lor diplomatic”, un termen folosit de obicei pentru a desemna spionajul, relatează Reuters.",
-      "date": "2026-10-23T11:26:55.000Z",
-      "url": "https://www.news.ro/externe/austria-expulzeaza-patru-diplomati-rusi-din-motive-de-securitate-romania-se-numara-printre-tarile-care-au-luat-in-ultimele-luni-masuri-similare-1922402623552026101422875704",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "sigurnost",
-      "image": "",
-      "imageAlt": "Austria expulzează patru diplomaţi ruşi din motive de securitate. România se numără printre ţările care au luat în ultimele luni măsuri similare",
-      "addedAt": "2026-10-23T11:32:26.497Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-g4media-vladimir-putin-sustine-invocand-cele-mai-1dc9ad",
-      "title": "Vladimir Putin susține, invocând “cele mai recente studii genetice”, că “rușii și ucrainenii sunt, de fapt, un singur popor”",
-      "summary": "Dictatorul de la Kremlin, Vladimir Putin, a susținut, invocând “cele mai recente studii genetice”, dar fără a preciza care sunt acestea și unde au fost publicate, că “rușii și ucrainenii sunt, de fapt, un singur popor”. În seara zilei de joi, corespondentul VGTRK, Pavel Zarubin, l-a întrebat pe președintele rus Vladimir Putin care era „starea […] © G4Media.ro .",
-      "date": "2026-10-23T11:26:23.000Z",
-      "url": "https://www.g4media.ro/vladimir-putin-sustine-invocand-cele-mai-recente-studii-genetice-ca-rusii-si-ucrainenii-sunt-de-fapt-un-singur-popor.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Articole",
-        "negocieri pace ucraina",
-        "studii genetice",
-        "Vladimir Putin"
-      ],
-      "author": "Florin Marinescu",
-      "theme": "politika",
-      "image": "https://www.g4media.ro//wp-content/uploads/2022/09/5kltS22KhBoUFFFe1izl36RaatViqAl7-e1662470045832.jpg",
-      "imageAlt": "Vladimir Putin susține, invocând “cele mai recente studii genetice”, că “rușii și ucrainenii sunt, de fapt, un singur popor”",
-      "addedAt": "2026-10-23T11:32:26.158Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-digi24-ce-a-spus-noul-sef-de-la-aparare-despre-bd849b",
-      "title": "Ce a spus noul șef de la Apărare despre atacurile cu drone. Radu Oprea: „Am avut miniștri înainte care trebuiau să se ocupe”",
-      "summary": "Ministrul Apărării, Ștefan Radu Oprea, nu a oferit răspunsuri clare vineri despre pregătirea României în fața amenințării tot mai mari ale dronelor care lovesc nave în Marea Neagră. „Am avut miniștri înainte care trebuiau să se ocupe de acest lucru”, a spus acesta. „Sunt lucruri de schimbat multe pe foarte multe domenii, de la cariera militară, viață, faptul că astăzi, când vorbim despre voluntari, trebuie să vină cu un ritm accelerat hotărârile de guvern și normele de aplicare ale legislației, pentru că ați văzut că lucrurile n-au funcționat cum trebuie”, a mai spus Oprea legat de legislația pe care o pregătește.",
-      "date": "2026-10-23T11:24:49.000Z",
-      "url": "https://www.digi24.ro/stiri/actualitate/politica/ce-a-raspuns-noul-ministru-al-apararii-despre-atacurile-cu-drone-am-avut-ministri-inainte-care-trebuiau-sa-se-ocupe-4005955",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "rat",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjIzJTJGMzAyNzY2N18zMDI3/NjY3X1NjcmVlbnNob3QtMjAyNi0xMC0y/My0xNDAwMTUucG5nJmhhc2g9ZGQ4YTc3/OTIyOTAyMzBlNTcxY2I0ZTE1ODRlZTMzZWE=.png",
-      "imageAlt": "Ce a spus noul șef de la Apărare despre atacurile cu drone. Radu Oprea: „Am avut miniștri înainte care trebuiau să se ocupe”",
-      "addedAt": "2026-10-23T11:32:23.510Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-digi24-aur-propune-eliminarea-pragului-electoral-6b3414",
-      "title": "AUR propune eliminarea pragului electoral alternativ pentru alegerile parlamentare. Ce condiție ar trebui să îndeplinească partidele",
-      "summary": "AUR a depus un proiect de lege prin care propune eliminarea pragului electoral alternativ de 20% din voturi în cel puțin patru circumscripții electorale și menținerea exclusivă a pragului național de 5% pentru repartizarea mandatelor parlamentare. Inițiativa îi aparține liderului senatorilor AUR, Petrișor Peiu, și urmărește simplificarea regulilor electorale.",
-      "date": "2026-10-23T11:19:05.000Z",
-      "url": "https://www.digi24.ro/stiri/actualitate/politica/aur-propune-eliminarea-pragului-electoral-alternativ-pentru-alegerile-parlamentare-ce-conditie-ar-trebui-sa-indeplineasca-partidele-4006013",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "politika",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwOCUyRjI5JTJGMjkyOTg2NV8yOTI5/ODY1X3BldHJpc29yLXBlaXUtaW5xdWFt/LWdlb3JnZS1jYWxpbi5qcGcmaGFzaD03/YTVkYzJhZTZkNjZiZGRkMGI1ZThmODU2MzEzOWFkNQ==.jpg",
-      "imageAlt": "AUR propune eliminarea pragului electoral alternativ pentru alegerile parlamentare. Ce condiție ar trebui să îndeplinească partidele",
-      "addedAt": "2026-10-23T11:32:23.510Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-profit-consiliul-concurentei-investigheaza-un-b4780e",
-      "title": "Consiliul Concurenței investighează un posibil abuz de poziție dominantă al Grupului Merck Sharp & Dohme pe piața farmaceutică",
-      "summary": "Consiliul Concurenței a declanșat o investigație privind un posibil abuz de poziție dominantă al companiilor Merck Sharp & Dohme BV Olanda, Merck Sharp & Dohme Limited UK și Merck Sharp & Dohme România SRL (MSD), constând în refuzul de a colabora direct cu DONA. Logistica SA pentru distribuția unor medicamente pe piața din România.",
-      "date": "2026-10-23T11:18:00.000Z",
-      "url": "https://www.profit.ro/povesti-cu-profit/farma/consiliul-concurentei-investigheaza-un-posibil-abuz-de-pozitie-dominanta-al-grupului-merck-sharp-dohme-pe-piata-farmaceutica-22875724?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
-      "source": "profit",
-      "sourceName": "Profit.ro",
-      "categories": [
-        "Farma"
-      ],
-      "author": "",
-      "theme": "sigurnost",
-      "image": "https://i0.1616.ro/media/2/2621/33221/22875724/2/medications-257336-1280.jpg?width=800",
-      "imageAlt": "Consiliul Concurenței investighează un posibil abuz de poziție dominantă al Grupului Merck Sharp & Dohme pe piața farmaceutică",
-      "addedAt": "2026-10-23T11:32:20.878Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-digi24-nicusor-dan-mesaj-pentru-rusia-dupa-atacul-90cc85",
-      "title": "Nicușor Dan, mesaj pentru Rusia, după atacul din Marea Neagră: „Este timpul să ia în serios inițiativele de pace ale SUA și Europei”",
-      "summary": "Președintele Nicușor Dan consideră că atacul asupra navei Khoryv, în urma căruia un marinar a murit și alți trei sunt dispăruți, este un nou „exemplu al consecințelor tragice ale” războiului Rusiei împotriva Ucrainei. Șeful statului declară că „este timpul ca Rusia să ia în serios inițiativele de pace ale Statelor Unite și Europei, să accepte propunerile de armistițiu și să pună capăt războiului”.",
-      "date": "2026-10-23T11:13:12.000Z",
-      "url": "https://www.digi24.ro/stiri/actualitate/nicusor-dan-mesaj-pentru-rusia-dupa-atacul-din-marea-neagra-este-timpul-sa-ia-in-serios-initiativele-de-pace-ale-sua-si-europei-4005949",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwOSUyRjIzJTJGMjk3Mzg3M18yOTcz/ODczX25pY3Vzb3ItZGFuLWxhLW9udS1w/cm9maW1lZGlhLTExMzc1MDAxOTQuanBn/Jmhhc2g9NTEwYmEwOGEwOWIyYzdhNzMxNTc4ZTk4YzRhMGVlOGU=.jpg",
-      "imageAlt": "Nicușor Dan, mesaj pentru Rusia, după atacul din Marea Neagră: „Este timpul să ia în serios inițiativele de pace ale SUA și Europei”",
-      "addedAt": "2026-10-23T11:32:23.511Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-newsro-bihor-septuagenar-retinut-pentru-distrugere-3b9df6",
-      "title": "Bihor: Septuagenar reţinut pentru distrugere prin incendiere, după ce a dat foc unui autoturism. Flăcările s-au extins la o a doua maşină şi la un imobil",
-      "summary": "Un septuagenar din judeţul Bihor a fost reţinut şi este anchetat pentru infracţiunea de distrugere prin incendiere, după ce a dat foc unui autoturism, iar flăcările s-au extins şi la un al doilea autovehicul şi la faţada şi acoperişul unui imobil. Valoarea prejudiciului cauzat este de aproximativ 70.000 de lei.",
-      "date": "2026-10-23T11:13:11.000Z",
-      "url": "https://www.news.ro/eveniment/bihor-septuagenar-retinut-pentru-distrugere-prin-incendiere-dupa-ce-a-dat-foc-unui-autoturism-flacarile-s-au-extins-la-o-a-doua-masina-si-la-un-imobil-1922401323112026101422875685",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Bihor: Septuagenar reţinut pentru distrugere prin incendiere, după ce a dat foc unui autoturism. Flăcările s-au extins la o a doua maşină şi la un imobil",
-      "addedAt": "2026-10-23T11:32:26.498Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-g4media-graniceri-ucraineni-retinuti-in-republica-1fa08c",
-      "title": "Grăniceri ucraineni, reținuți în Republica Moldova pentru trecerea ilegală a graniței / Ambasadorul Ucrainei cere investigarea incidentelor",
-      "summary": "Ucraina respectă integritatea teritorială și suveranitatea Republicii Moldova, iar recentele incidente în care grăniceri ucraineni au ajuns pe teritoriul Republicii Moldova, traversând râul Nistru, trebuie investigate de autoritățile competente, a declarat joi Paun Rohovei, ambasadorul Ucrainei în Republica Moldova, în cadrul emisiunii ”FORUM” de la Vocea Basarabiei, potrivit Agerpres. Doi grăniceri ucraineni au fost reținuți […] © G4Media.ro .",
-      "date": "2026-10-23T11:11:37.000Z",
-      "url": "https://www.g4media.ro/graniceri-ucraineni-retinuti-in-republica-moldova-pentru-trecerea-ilegala-a-granitei-ambasadorul-ucrainei-cere-investigarea-incidentelor.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Articole",
-        "graniceri ucraineni",
-        "Republica Moldova",
-        "trecere ilegală a graniței"
-      ],
-      "author": "Rareș Constantin",
-      "theme": "drustvo",
-      "image": "https://www.g4media.ro//wp-content/uploads/2023/02/harta-moldova-transnistriaucraina.jpg",
-      "imageAlt": "Grăniceri ucraineni, reținuți în Republica Moldova pentru trecerea ilegală a graniței / Ambasadorul Ucrainei cere investigarea incidentelor",
-      "addedAt": "2026-10-23T11:32:26.158Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-profit-paypoint-o-retea-cu-ajutorul-careia-dcac5b",
-      "title": "PayPoint: O rețea cu ajutorul căreia comercianții parteneri își dezvoltă afacerea",
-      "summary": "Orice comerciant care administrează o afacere cu punct de vânzare fizic, indiferent de domeniul de activitate, poate deveni partener PayPoint. Parteneriatul oferă acces la servicii și produse care generează venituri din comisioane, atrag clienți noi în locație și contribuie la fidelizarea acestora, precum și la soluții de finanțare pentru dezvoltarea afacerii.",
-      "date": "2026-10-23T11:10:15.000Z",
-      "url": "https://www.profit.ro/povesti-cu-profit/paypoint-o-retea-cu-ajutorul-careia-comerciantii-parteneri-isi-dezvolta-afacerea-22875703?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
-      "source": "profit",
-      "sourceName": "Profit.ro",
-      "categories": [
-        "Povești cu Profit"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://i0.1616.ro/media/2/2621/33209/22875703/1/paypoint-articol-g1-explozie-servicii-v2.png?width=800",
-      "imageAlt": "PayPoint: O rețea cu ajutorul căreia comercianții parteneri își dezvoltă afacerea",
-      "addedAt": "2026-10-23T11:32:20.878Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-zf-tbi-bank-incheie-un-parteneriat-cu-lepas-209335",
-      "title": "tbi bank încheie un parteneriat cu LEPAS pentru finanţarea achiziţiilor de autoturisme",
-      "summary": "",
-      "date": "2026-10-23T11:10:14.000Z",
-      "url": "https://www.zf.ro/banci-si-asigurari/tbi-bank-incheie-un-parteneriat-cu-lepas-pentru-finantarea-achizitiilor-de-autoturisme-23266638",
-      "source": "zf",
-      "sourceName": "Ziarul Financiar",
-      "categories": [
-        "Bănci și Asigurări"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/22466/23266638/1/ionut-sabadac-tbi-jpg.jpg?width=700",
-      "imageAlt": "tbi bank încheie un parteneriat cu LEPAS pentru finanţarea achiziţiilor de autoturisme",
-      "addedAt": "2026-10-23T11:32:20.541Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-digi24-barbat-de-28-de-ani-anchetat-dupa-ce-ar-fi-b34393",
-      "title": "Bărbat de 28 de ani, anchetat după ce ar fi profesat ca medic fără studii, în Bragadiru. Sute de mii de lei, găsite la percheziţii",
-      "summary": "Un bărbat în vârstă de 28 de ani este anchetat pentru comiterea infracţiunii de exercitare fără drept a unei profesii sau activităţi, fiind suspectat că, în ultimii trei ani, a profesat ca medic, fără a avea studii în acest sens. Poliţiştii şi procurorii au găsit sute de mii de lei, în timpul unei percheziţii făcute la adrese din Bucureşti şi Bragadiru.",
-      "date": "2026-10-23T11:09:09.000Z",
-      "url": "https://www.digi24.ro/stiri/actualitate/evenimente/barbat-de-28-de-ani-anchetat-dupa-ce-ar-fi-profesat-ca-medic-fara-studii-in-bragadiru-sute-de-mii-de-lei-gasite-la-perchezitii-4005961",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjIzJTJGMzAyNzY3OF8zMDI3/Njc4X3Byb2ZpbWVkaWEtMDQ4NTIxODUx/MS5qcGcmaGFzaD03Njg3Y2U3Y2VlZmVkNTJjODE5MjVlMzg0OTgwYmE0YQ==.jpg",
-      "imageAlt": "Bărbat de 28 de ani, anchetat după ce ar fi profesat ca medic fără studii, în Bragadiru. Sute de mii de lei, găsite la percheziţii",
-      "addedAt": "2026-10-23T11:32:23.511Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-newsro-doi-consilieri-politici-ai-lui-trump-au-70fe93",
-      "title": "Doi consilieri politici ai lui Trump au donat bibliotecii prezidenţiale onorariul primit pentru activitatea desfăşurată în numele unui guvern prorus, după ce preşedintele a…",
-      "summary": "Doi consilierii politici importanţi ai preşedintelui Donald Trump, James Blair şi Chris LaCivita, au donat bibliotecii prezidenţiale a preşedintelui Donald Trump banii pe care i-au câştigat la începutul acestei luni în Balcani pentru servicii oferite unui guvern pro-rus, relatează CNN.",
-      "date": "2026-10-23T11:08:34.000Z",
-      "url": "https://www.news.ro/externe/doi-consilieri-politici-trump-au-donat-bibliotecii-prezidentiale-onorariul-primit-activitatea-desfasurata-numele-unui-guvern-prorus-dupa-presedintele-sugerat-i-ar-putea-concedia-1922400823342026101422874345",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "ai",
-      "image": "",
-      "imageAlt": "Doi consilieri politici ai lui Trump au donat bibliotecii prezidenţiale onorariul primit pentru activitatea desfăşurată în numele unui guvern prorus, după ce preşedintele a sugerat",
-      "addedAt": "2026-10-23T11:32:26.498Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-hotnews-otel-recuperat-dupa-scufundarea-titanicului-d81a99",
-      "title": "Oțel recuperat după scufundarea Titanicului, într-un ceas celebru, în licitație la Artmark",
-      "summary": "Un ceas care încorporează oțel recuperat de pe epava Titanicului și o sticlă de vin roșu din Burgundia – unul dintre cele mai prestigioase și căutate vinuri din lume, produs în cantități foarte mici – sunt vedetele licitației „A Matter of Time & Taste” – Licitația de Ceasuri de Colecție și Băuturi Rare de la …",
-      "date": "2026-10-23T11:05:45.000Z",
-      "url": "https://hotnews.ro/otel-recuperat-dupa-scufundarea-titanicului-intr-un-ceas-celebru-in-licitatie-la-artmark-2384573",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "Consumator"
-      ],
-      "author": "Zero Georgiana",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Oțel recuperat după scufundarea Titanicului, într-un ceas celebru, în licitație la Artmark",
-      "addedAt": "2026-10-23T11:32:18.990Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-zf-reactie-de-la-cotroceni-dupa-atacul-cu-a7c34b",
-      "title": "Reacţie de la Cotroceni după atacul cu drone din Marea Neagră: Nicuşor Dan acuză Rusia de escaladare şi anunţă echipamente suplimentare pentru România",
-      "summary": "",
-      "date": "2026-10-23T11:05:12.000Z",
-      "url": "https://www.zf.ro/eveniment/reactie-de-la-cotroceni-dupa-atacul-cu-drone-din-marea-neagra-nicusor-dan-acuza-rusia-de-escaladare-si-anunta-echipamente-suplimentare-pentru-romania-23266526",
-      "source": "zf",
-      "sourceName": "Ziarul Financiar",
-      "categories": [
-        "Eveniment"
-      ],
-      "author": "",
-      "theme": "rat",
-      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21448/23266526/1/3-nic.jpg?width=700",
-      "imageAlt": "Reacţie de la Cotroceni după atacul cu drone din Marea Neagră: Nicuşor Dan acuză Rusia de escaladare şi anunţă echipamente suplimentare pentru România",
-      "addedAt": "2026-10-23T11:32:20.541Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-profit-despagubirile-platite-in-baza-asigurarilor-d77ec3",
-      "title": "Despăgubirile plătite în baza asigurărilor facultative de locuință au depășit 90 de milioane de lei",
-      "summary": "Despăgubiri de peste 90 de milioane de lei au fost plătite în baza asigurărilor facultative de locuință, în primul semestru din 2026, cu 14% peste nivelul din 2025.",
-      "date": "2026-10-23T11:05:00.000Z",
-      "url": "https://www.profit.ro/profitul-tau/despagubirile-platite-in-baza-asigurarilor-facultative-de-locuinta-au-depasit-90-de-milioane-de-lei-22875166?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
-      "source": "profit",
-      "sourceName": "Profit.ro",
-      "categories": [
-        "Profitul tău"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://i0.1616.ro/media/2/2621/33223/22875166/1/pexels-sergey-mart-289676164-13497906.jpg?width=800",
-      "imageAlt": "Despăgubirile plătite în baza asigurărilor facultative de locuință au depășit 90 de milioane de lei",
-      "addedAt": "2026-10-23T11:32:20.878Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-g4media-inspector-la-administratiei-fondului-pentru-8d9afa",
-      "title": "Inspector la Administrației Fondului pentru Mediu, reținut pentru luare de mită / Ar fi cerut 45.000 de lei administratorului unei firme pentru a-i „rezolva” neregulile constatate…",
-      "summary": "Un inspector al Administrației Fondului pentru Mediu a fost reținut vineri de procurorii anticorupție din Cluj sub acuzația de luare de mită. Procurorii din cadrul Direcției Naționale Anticorupție – Serviciul Teritorial Cluj au dispus punerea în mișcare a acțiunii penale și reținerea pentru 24 de ore, începând cu data de 23 octombrie 2026, față de […] © G4Media.ro .",
-      "date": "2026-10-23T11:04:11.000Z",
-      "url": "https://www.g4media.ro/inspector-la-administratiei-fondului-pentru-mediu-retinut-pentru-luare-de-mita-ar-fi-cerut-45-000-de-lei-administratorului-unei-firme-pentru-a-i-rezolva-neregulile-constatate-in-u.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Cluj",
-        "inspector Administrația Fondului pentru Mediu",
-        "mită"
-      ],
-      "author": "Alin Ionescu",
-      "theme": "drustvo",
-      "image": "https://www.g4media.ro//wp-content/uploads/2023/12/FB1A0510.jpg",
-      "imageAlt": "Inspector la Administrației Fondului pentru Mediu, reținut pentru luare de mită / Ar fi cerut 45.000 de lei administratorului unei firme pentru a-i „rezolva” neregulile constatate ",
-      "addedAt": "2026-10-23T11:32:26.158Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-zf-breaking-o-nava-ar-fi-fost-lovita-de-drone-30a43b",
-      "title": "BREAKING. O navă ar fi fost lovită de drone în Marea Neagră, la 24 km de Constanţa. Echipele de salvare se îndreaptă spre zonă pentru a recupera marinarii aflaţi în pericol. Este…",
-      "summary": "",
-      "date": "2026-10-23T11:02:50.000Z",
-      "url": "https://www.zf.ro/eveniment/breaking-nava-ar-lovita-drone-marea-neagra-24-km-constanta-echipele-salvare-indreapta-spre-zona-recupera-marinarii-aflati-pericol-treilea-incident-grav-raportat-octombrie-23266461",
-      "source": "zf",
-      "sourceName": "Ziarul Financiar",
-      "categories": [
-        "Eveniment"
-      ],
-      "author": "",
-      "theme": "rat",
-      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21449/23266461/1/2-screenshot-2026-10-05-135457.jpg?width=700",
-      "imageAlt": "BREAKING. O navă ar fi fost lovită de drone în Marea Neagră, la 24 km de Constanţa. Echipele de salvare se îndreaptă spre zonă pentru a recupera marinarii aflaţi în pericol. Este a",
-      "addedAt": "2026-10-23T11:32:20.541Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-zf-petrolul-brent-a-urcat-la-113-dolari-pe-3fe326",
-      "title": "Petrolul Brent a urcat la 113 dolari pe baril, cel mai ridicat nivel din ultimele cinci luni. Iranul spune că este pregătit pentru război, iar tensiunile din Strâmtoarea Ormuz…",
-      "summary": "",
-      "date": "2026-10-23T10:58:53.000Z",
-      "url": "https://www.zf.ro/companii/energie/petrolul-brent-urcat-113-dolari-baril-cel-ridicat-nivel-ultimele-cinci-luni-iranul-spune-pregatit-razboi-iar-tensiunile-stramtoarea-ormuz-sporesc-temerile-privind-aprovizionarea-globala-titei-23266617",
-      "source": "zf",
-      "sourceName": "Ziarul Financiar",
-      "categories": [
-        "Energie"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21330/23266617/1/sonde-ss.jpg?width=700",
-      "imageAlt": "Petrolul Brent a urcat la 113 dolari pe baril, cel mai ridicat nivel din ultimele cinci luni. Iranul spune că este pregătit pentru război, iar tensiunile din Strâmtoarea Ormuz spor",
-      "addedAt": "2026-10-23T11:32:20.542Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-newsro-parteneriat-strategic-kawasaki-transgaz-cc57a3",
-      "title": "Parteneriat strategic Kawasaki - Transgaz pentru transportul hidrogenului/ Anunţul a fost făcut la Forumul de Inovare România-Japonia 2026",
-      "summary": "Grupul japonez Kawasaki Heavy Industries anunţă semnarea unui memorandum de înţelegere privind un parteneriat strategic cu Transgaz, operatorul sistemului de transport al gazelor naturale din România, pentru transportul terestru al hidrogenului. Cele două companii vor colabora pentru a implementa transportul la scară largă al hidrogenului gazos prin conducte terestre – un proiect Transgaz pentru regiunea Europei Centrale şi de Est. Anunţul a fost făcut în cadrul Forumului de Inovare România-Japonia 2026, desfăşurat la Tokyo în perioada 20-23 octombrie.",
-      "date": "2026-10-23T10:58:41.000Z",
-      "url": "https://www.news.ro/economic/parteneriat-strategic-kawasaki-transgaz-pentru-transportul-hidrogenului-anuntul-a-fost-facut-la-forumul-de-inovare-romania-japonia-2026-1922405823412026101322875608",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "energija",
-      "image": "",
-      "imageAlt": "Parteneriat strategic Kawasaki - Transgaz pentru transportul hidrogenului/ Anunţul a fost făcut la Forumul de Inovare România-Japonia 2026",
-      "addedAt": "2026-10-23T11:32:26.498Z"
     }
   ]
 }
