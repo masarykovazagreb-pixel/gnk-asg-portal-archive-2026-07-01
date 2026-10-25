@@ -302,7 +302,16 @@ figure>figcaption:empty{display:none}
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 @media print{.top,footer,.skip,nav{display:none!important}body{background:#fff;color:#000}}
-</style>
+
+.am-author{margin:26px auto 0;max-width:1100px;padding:18px 20px;border:1px solid rgba(128,128,128,.24);border-radius:14px;display:grid;grid-template-columns:72px minmax(0,1fr);gap:16px;align-items:center;background:rgba(127,127,127,.05)}
+.am-author img{width:72px;height:72px;border-radius:50%;object-fit:cover}
+.am-author-k{font:800 10px/1 system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.66}
+.am-author b{display:block;font:800 17px/1.25 Georgia,serif;margin:5px 0 3px}
+.am-author p{margin:0;font-size:13px;opacity:.8;max-width:60ch}
+.am-author nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px}
+.am-author nav a{font:700 11px/1 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;border:1px solid rgba(128,128,128,.4);border-radius:999px;padding:7px 11px;text-decoration:none;color:inherit}
+.am-author nav a:hover{border-color:currentColor}
+@media(max-width:640px){.am-author{grid-template-columns:56px minmax(0,1fr)}.am-author img{width:56px;height:56px}.am-author nav{grid-column:1/-1}}</style>
 <style>
 /* Blok razmjene stoji na svakom webu mreže, a svaki web ima svoju paletu.
    Zato boje i mjere imaju vlastite, neutralne vrijednosti: ako stranica ne
@@ -326,6 +335,7 @@ figure>figcaption:empty{display:none}
 .am-exchange:focus-within{border-color:var(--am-line,var(--am-x-line))}
 @media print{.am-exchange{display:none!important}}
 </style>
+<link rel="stylesheet" href="/assets/author-band-v1.css?v=20261025">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -474,6 +484,30 @@ figure>figcaption:empty{display:none}
       © 2026 AKTUAL MEDIA d.o.o. · Editor and director: <a href="https://gnk-asg.hr/nermin-sefic/" rel="external noopener">Nermin Sefić</a> ·
       Every claim carries a source; every source has a date.
     </p>
-  </div></footer>
-<script src="/assets/am-refresh-v1.js?v=2026-10-24" data-am-netday="2026-10-24" defer></script></body>
+  </div><section class="am-author" aria-label="Nermin Sefić" data-am-author="v1" data-am-lang="en">
+  <img src="/assets/people/nermin-sefic.webp" alt="Nermin Sefić, director of GNK ASG d.o.o. and editor-in-chief of AKTUAL MEDIA" width="72" height="72" loading="lazy" decoding="async">
+  <div>
+    <span class="am-author-k">Editor of this site</span>
+    <b>Nermin Sefić</b>
+    <p>director of GNK ASG d.o.o. and editor-in-chief of AKTUAL MEDIA · <a href="mailto:info@gnk-asg.hr">info@gnk-asg.hr</a></p>
+    <nav>
+      <a href="https://gnk-asg.hr/gnk-aktual/kolumne/">Columns →</a>
+      <a href="https://gnk-asg.hr/autorske-objave/">Authored texts →</a>
+      <a href="https://gnk-asg.hr/nermin-sefic/">Profile →</a>
+    </nav>
+  </div>
+</section><section class="am-impressum" aria-label="Publisher and contact" data-am-impressum="v1">
+  <h2 class="am-impressum-h">Publisher and contact</h2>
+  <ul class="am-impressum-list">
+    <li><b>Holder:</b> GNK ASG d.o.o.</li>
+    <li><b>Founder:</b> GNK DINAMO Ltd, USA</li>
+    <li><b>Publisher:</b> AKTUAL MEDIA d.o.o.</li>
+    <li><b>Director and editor-in-chief:</b> <a href="https://gnk-asg.hr/nermin-sefic/">Nermin Sefić — director and editor-in-chief</a></li>
+    <li><b>Contact:</b> <a href="mailto:info@gnk-asg.hr">info@gnk-asg.hr</a></li>
+  </ul>
+  <p class="am-impressum-note">Content follows the same editorial policy on every site of the network; every syndicated text carries its source and a link to the original.</p>
+  <p class="am-impressum-links"><a href="https://gnk-asg.hr/en/network/">Network →</a></p>
+</section></footer>
+<script src="/assets/am-refresh-v1.js?v=2026-10-24" data-am-netday="2026-10-24" defer></script>
+</body>
 </html>

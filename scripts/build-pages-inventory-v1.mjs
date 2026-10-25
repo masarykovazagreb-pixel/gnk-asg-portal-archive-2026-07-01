@@ -124,6 +124,7 @@ const html = `<!doctype html>
 <link rel="alternate" hreflang="hr" href="https://gnk-asg.hr/sve-stranice/">
 <link rel="alternate" hreflang="x-default" href="https://gnk-asg.hr/sve-stranice/">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://gnk-asg.hr/#website","name":"GNK ASG","url":"https://gnk-asg.hr/","inLanguage":["hr","en"],"publisher":{"@id":"https://gnk-asg.hr/#gnk-asg"}},{"@type":"CollectionPage","@id":"https://gnk-asg.hr/sve-stranice/#webpage","url":"https://gnk-asg.hr/sve-stranice/","name":"Sve stranice mreže","inLanguage":"hr","isPartOf":{"@id":"https://gnk-asg.hr/#website"},"publisher":{"@id":"https://gnk-asg.hr/#gnk-asg"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"GNK ASG","item":"https://gnk-asg.hr/"},{"@type":"ListItem","position":2,"name":"Sve stranice","item":"https://gnk-asg.hr/sve-stranice/"}]}]}</script>
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/am-design-v1.css">
 <style>
 :root{color-scheme:light dark}

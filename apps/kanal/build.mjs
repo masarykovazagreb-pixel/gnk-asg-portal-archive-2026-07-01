@@ -17,6 +17,8 @@ import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { entityGraphJson } from '../../scripts/lib/entity-graph-v1.mjs';
 import { refreshTag, ensureRefreshModule } from '../shared/refresh-tag-v1.mjs';
+import { authorBand, AUTHOR_BAND_CSS, ensureAuthorPortrait, AUTHOR_PORTRAIT } from '../shared/author-band-v1.mjs';
+import { impressumBlock, IMPRESSUM_CSS } from '../shared/impressum-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..', '..');
@@ -372,6 +374,8 @@ ${content}
 ${prenosBlock(canonical, root)}
 </main>
 ${footer(root)}
+${authorBand('hr', null, { portrait: '/assets/nermin-sefic-portrait.webp' })}
+${impressumBlock('hr')}
 ${refreshTag('/')}
 </body>
 </html>`;

@@ -49,6 +49,7 @@ body{background:#f5f8fc;color:#10253f}.topics-header{position:sticky;top:0;z-ind
 <meta property="article:tag" content="#AKTUALMEDIA">
 <meta property="article:tag" content="#GNKASG">
 <link rel="stylesheet" href="/assets/am-design-v1.css?v=20261024" data-am-design="v1">
+<link rel="stylesheet" href="/assets/author-band-v1.css?v=20261025">
 </head>
 <body><a class="skip" href="#sadrzaj">Skip to content</a>
 <div class="am-ribbon"><a class="am-ribbon-brand" href="https://gnk-asg.hr/" rel="external noopener" aria-label="AKTUAL MEDIA — network home"><img src="/assets/brand/aktual-media-mark.svg" alt="AKTUAL MEDIA — network mark" width="72" height="72" loading="lazy" decoding="async"><span>AKTUAL MEDIA</span></a><span class="am-ribbon-ed"><b>AKTUAL MEDIA network</b></span></div>
@@ -76,10 +77,35 @@ body{background:#f5f8fc;color:#10253f}.topics-header{position:sticky;top:0;z-ind
 <a class="source" target="_blank" rel="noopener" href="https://www.rimac-automobili.com/nevera/"><em>Vehicles</em><strong>Rimac Nevera</strong><span>Official vehicle showcase ↗</span></a>
 </div></section>
 <section class="internal"><div><small class="eyebrow">Related content</small><h2>Portal Data</h2><p>Corporate, financial and market views are kept separate from thematic monitoring and are available through their own public modules.</p></div><div class="actions"><a href="/en/finance/"><strong>Financial Profile FY 2025</strong><span>Audited GNK ASG d.o.o. indicators →</span></a><a href="/en/markets/"><strong>Market Intelligence</strong><span>Digital assets and indices →</span></a><a href="/en/technology/"><strong>Technology &amp; AI</strong><span>Software, AI and sports technology →</span></a><a href="/en/registries/"><strong>Public Registries &amp; Sources</strong><span>FINA, Colorado, EUIPO, ECB and ENISA →</span></a></div></section>
-</div></section></main><footer class="topics-footer"><div class="container"><span>© 2026 GNK ASG d.o.o. · GNK DINAMO Ltd. · Nermin Sefić · Public Thematic Portal</span><a href="/en/">Back to the corporate portal →</a></div><p class="seo-profile-link">Related public profile: <a href="/en/nermin-sefic/">Nermin Sefić</a> (Nermin Sefic; Sefić Nermin; Sefic Nermin).</p></footer>
+</div></section></main><footer class="topics-footer"><div class="container"><span>© 2026 GNK ASG d.o.o. · GNK DINAMO Ltd. · Nermin Sefić · Public Thematic Portal</span><a href="/en/">Back to the corporate portal →</a></div><p class="seo-profile-link">Related public profile: <a href="/en/nermin-sefic/">Nermin Sefić</a> (Nermin Sefic; Sefić Nermin; Sefic Nermin).</p><section class="am-author" aria-label="Nermin Sefić" data-am-author="v1" data-am-lang="en">
+  <img src="/assets/people/nermin-sefic/nermin-sefic-01-official-desk-portrait.webp" alt="Nermin Sefić, director of GNK ASG d.o.o. and editor-in-chief of AKTUAL MEDIA" width="72" height="72" loading="lazy" decoding="async">
+  <div>
+    <span class="am-author-k">Editor of this site</span>
+    <b>Nermin Sefić</b>
+    <p>director of GNK ASG d.o.o. and editor-in-chief of AKTUAL MEDIA · <a href="mailto:info@gnk-asg.hr">info@gnk-asg.hr</a></p>
+    <nav>
+      <a href="https://gnk-asg.hr/gnk-aktual/kolumne/">Columns →</a>
+      <a href="https://gnk-asg.hr/autorske-objave/">Authored texts →</a>
+      <a href="https://gnk-asg.hr/nermin-sefic/">Profile →</a>
+    </nav>
+  </div>
+</section>
+</footer>
 <script>
 (function(){'use strict';var items=[],filter='all',q='';var list=document.getElementById('topicItems'),count=document.getElementById('topicCount'),buttons=[].slice.call(document.querySelectorAll('.filter'));function esc(v){return String(v||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}function type(item){var c=(item.category||'').toLowerCase(),g=(item.group||'').toLowerCase();if(filter==='all')return true;if(filter==='economy')return c==='economy'||c==='business';if(filter==='sport')return ['sport','basketball','tennis','federations'].indexOf(c)>-1||g==='sport';if(filter==='mobility')return c==='automotive'||g==='mobilnost'||g==='automotive';if(filter==='technology')return c==='technology'||g==='technology';if(filter==='markets')return c==='digital-assets'||g==='digital-assets';return g==='bih';}function date(v){var d=new Date(v);return isNaN(d.getTime())?'':d.toLocaleDateString('hr-HR');}function draw(){var term=q.trim().toLowerCase();var result=items.filter(type).filter(function(a){return !term||[a.title,a.summary,a.source,a.group,a.category].join(' ').toLowerCase().indexOf(term)>-1;}).sort(function(a,b){return Date.parse(b.published_at||0)-Date.parse(a.published_at||0);}).slice(0,12);count.textContent=result.length+' items shown';if(!result.length){list.innerHTML='<div class="empty">No news for the selected filter or search term.</div>';return;}list.innerHTML=result.map(function(a){return '<article class="news-item"><span class="meta">'+esc(a.source)+' · '+esc(date(a.published_at))+'</span><h3>'+esc(a.title)+'</h3><p>'+esc(a.summary||'Open the source for the full content of this item.')+'</p><a target="_blank" rel="noopener nofollow" href="'+esc(a.url)+'">Otvori izvor →</a></article>';}).join('');}function select(next){filter=next;buttons.forEach(function(b){b.classList.toggle('active',b.dataset.filter===next);});draw();document.getElementById('aktualno').scrollIntoView({behavior:'smooth',block:'start'});}buttons.forEach(function(b){b.onclick=function(){select(b.dataset.filter);};});document.querySelectorAll('[data-topic]').forEach(function(b){b.onclick=function(){select(b.dataset.topic);};});document.getElementById('topicSearch').addEventListener('input',function(){q=this.value;draw();});fetch('../data/news.json?v='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():[];}).then(function(data){items=Array.isArray(data)?data:[];draw();}).catch(function(){list.innerHTML='<div class="empty">Current news cannot be fetched right now. Open the official source links below.</div>';count.textContent='Data unavailable';});if('serviceWorker' in navigator){navigator.serviceWorker.register('../sw.js?v=20260527-topics03').catch(function(){});}}());
 </script>
 <script src="/assets/public-tools.js?v=20260527-asg-bpp-share-unique03" defer></script><script src="/assets/app.js?v=20260728-remove-tech-radar-more-sources-v1" defer></script>
 <script src="/assets/am-refresh-v1.js?v=2026-10-24" data-am-netday="2026-10-24" defer></script>
+<section class="am-impressum" aria-label="Publisher and contact" data-am-impressum="v1">
+  <h2 class="am-impressum-h">Publisher and contact</h2>
+  <ul class="am-impressum-list">
+    <li><b>Holder:</b> GNK ASG d.o.o.</li>
+    <li><b>Founder:</b> GNK DINAMO Ltd, USA</li>
+    <li><b>Publisher:</b> AKTUAL MEDIA d.o.o.</li>
+    <li><b>Director and editor-in-chief:</b> <a href="https://gnk-asg.hr/nermin-sefic/">Nermin Sefić — director and editor-in-chief</a></li>
+    <li><b>Contact:</b> <a href="mailto:info@gnk-asg.hr">info@gnk-asg.hr</a></li>
+  </ul>
+  <p class="am-impressum-note">Content follows the same editorial policy on every site of the network; every syndicated text carries its source and a link to the original.</p>
+  <p class="am-impressum-links"><a href="https://gnk-asg.hr/en/network/">Network →</a></p>
+</section>
 </body></html>

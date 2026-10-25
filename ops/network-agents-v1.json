@@ -373,6 +373,318 @@
         "scripts/world-expansion-audit-v1.mjs"
       ],
       "checks": "Za svaki planirani grad mjeri četiri uvjeta (izvori, scena, sučelje, zapis) i imenuje što nedostaje. Savjetodavan: ne blokira deploy, ali svaki dan pokazuje koliko je gradova spremno i koji su najbliži."
+    },
+    {
+      "id": "portal-agent",
+      "name": "Matični web — AKTUAL MEDIA (HR jezgra)",
+      "web": "https://gnk-asg.hr/",
+      "required": true,
+      "cmd": [
+        "node",
+        "scripts/web-agent-v1.mjs",
+        "--web",
+        "portal"
+      ],
+      "checks": "Web portal: 100 % osvježavanje, impressum i ikona na svakoj stranici, sitemap, robots i feed, autorska traka s portretom urednika."
+    },
+    {
+      "id": "world-agent",
+      "name": "Svjetski portali — devet gradova",
+      "web": "https://gnk-asg-world.pages.dev/",
+      "required": true,
+      "cmd": [
+        "node",
+        "scripts/web-agent-v1.mjs",
+        "--web",
+        "world"
+      ],
+      "checks": "Web world: 100 % osvježavanje, impressum i ikona na svakoj stranici, sitemap, robots i feed, autorska traka s portretom urednika."
+    },
+    {
+      "id": "kanal-agent",
+      "name": "KANAL — dnevni pregled",
+      "web": "https://gnk-asg-kanal.pages.dev/",
+      "required": true,
+      "cmd": [
+        "node",
+        "scripts/web-agent-v1.mjs",
+        "--web",
+        "kanal"
+      ],
+      "checks": "Web kanal: 100 % osvježavanje, impressum i ikona na svakoj stranici, sitemap, robots i feed, autorska traka s portretom urednika."
+    },
+    {
+      "id": "arhiva-agent",
+      "name": "ARHIVA — arhiva izdanja",
+      "web": "https://gnk-asg-arhiva.pages.dev/",
+      "required": true,
+      "cmd": [
+        "node",
+        "scripts/web-agent-v1.mjs",
+        "--web",
+        "arhiva"
+      ],
+      "checks": "Web arhiva: 100 % osvježavanje, impressum i ikona na svakoj stranici, sitemap, robots i feed, autorska traka s portretom urednika."
+    },
+    {
+      "id": "dnevnik-agent",
+      "name": "DNEVNIK — dnevni zapis",
+      "web": "https://gnk-asg-dnevnik.pages.dev/",
+      "required": true,
+      "cmd": [
+        "node",
+        "scripts/web-agent-v1.mjs",
+        "--web",
+        "dnevnik"
+      ],
+      "checks": "Web dnevnik: 100 % osvježavanje, impressum i ikona na svakoj stranici, sitemap, robots i feed, autorska traka s portretom urednika."
+    },
+    {
+      "id": "sites-agent",
+      "name": "Samostalne stranice — šest portala",
+      "web": "https://gnk-bor-usa.pages.dev/",
+      "required": true,
+      "cmd": [
+        "node",
+        "scripts/web-agent-v1.mjs",
+        "--web",
+        "sites"
+      ],
+      "checks": "Web sites: 100 % osvježavanje, impressum i ikona na svakoj stranici, sitemap, robots i feed, autorska traka s portretom urednika."
+    },
+    {
+      "id": "tjednik-agent",
+      "name": "BUSINESS TJEDNIK — tjedni pregled",
+      "web": "https://gnk-asg-tjednik.pages.dev/",
+      "required": true,
+      "cmd": [
+        "node",
+        "scripts/web-agent-v1.mjs",
+        "--web",
+        "tjednik"
+      ],
+      "checks": "Web tjednik: 100 % osvježavanje, impressum i ikona na svakoj stranici, sitemap, robots i feed, autorska traka s portretom urednika."
+    },
+    {
+      "id": "edition-zagreb-agent",
+      "name": "Gradsko izdanje — Zagreb (hr)",
+      "web": "https://gnk-asg.hr/kanal/zagreb/",
+      "required": true,
+      "cmd": [
+        "node",
+        "scripts/web-agent-v1.mjs",
+        "--web",
+        "portal"
+      ],
+      "checks": "Izdanje zagreb: impressum i autorska traka na jeziku hr, portret urednika, sitemap i feed izdanja."
+    },
+    {
+      "id": "edition-beograd-agent",
+      "name": "Gradsko izdanje — Beograd (sr)",
+      "web": "https://gnk-asg.hr/kanal/beograd/",
+      "required": true,
+      "cmd": [
+        "node",
+        "scripts/web-agent-v1.mjs",
+        "--web",
+        "portal"
+      ],
+      "checks": "Izdanje beograd: impressum i autorska traka na jeziku sr, portret urednika, sitemap i feed izdanja."
+    },
+    {
+      "id": "edition-sarajevo-agent",
+      "name": "Gradsko izdanje — Sarajevo (bs)",
+      "web": "https://gnk-asg.hr/kanal/sarajevo/",
+      "required": true,
+      "cmd": [
+        "node",
+        "scripts/web-agent-v1.mjs",
+        "--web",
+        "portal"
+      ],
+      "checks": "Izdanje sarajevo: impressum i autorska traka na jeziku bs, portret urednika, sitemap i feed izdanja."
+    },
+    {
+      "id": "edition-budimpesta-agent",
+      "name": "Gradsko izdanje — Budimpešta (hu)",
+      "web": "https://gnk-asg.hr/kanal/budimpesta/",
+      "required": true,
+      "cmd": [
+        "node",
+        "scripts/web-agent-v1.mjs",
+        "--web",
+        "portal"
+      ],
+      "checks": "Izdanje budimpesta: impressum i autorska traka na jeziku hu, portret urednika, sitemap i feed izdanja."
+    },
+    {
+      "id": "edition-ljubljana-agent",
+      "name": "Gradsko izdanje — Ljubljana (sl)",
+      "web": "https://gnk-asg.hr/kanal/ljubljana/",
+      "required": true,
+      "cmd": [
+        "node",
+        "scripts/web-agent-v1.mjs",
+        "--web",
+        "portal"
+      ],
+      "checks": "Izdanje ljubljana: impressum i autorska traka na jeziku sl, portret urednika, sitemap i feed izdanja."
+    },
+    {
+      "id": "edition-rim-agent",
+      "name": "Gradsko izdanje — Rim (it)",
+      "web": "https://gnk-asg.hr/kanal/rim/",
+      "required": true,
+      "cmd": [
+        "node",
+        "scripts/web-agent-v1.mjs",
+        "--web",
+        "portal"
+      ],
+      "checks": "Izdanje rim: impressum i autorska traka na jeziku it, portret urednika, sitemap i feed izdanja."
+    },
+    {
+      "id": "edition-sofija-agent",
+      "name": "Gradsko izdanje — Sofija (bg)",
+      "web": "https://gnk-asg.hr/kanal/sofija/",
+      "required": true,
+      "cmd": [
+        "node",
+        "scripts/web-agent-v1.mjs",
+        "--web",
+        "portal"
+      ],
+      "checks": "Izdanje sofija: impressum i autorska traka na jeziku bg, portret urednika, sitemap i feed izdanja."
+    },
+    {
+      "id": "edition-bukurest-agent",
+      "name": "Gradsko izdanje — Bukurešt (ro)",
+      "web": "https://gnk-asg.hr/kanal/bukurest/",
+      "required": true,
+      "cmd": [
+        "node",
+        "scripts/web-agent-v1.mjs",
+        "--web",
+        "portal"
+      ],
+      "checks": "Izdanje bukurest: impressum i autorska traka na jeziku ro, portret urednika, sitemap i feed izdanja."
+    },
+    {
+      "id": "edition-nairobi-agent",
+      "name": "Gradsko izdanje — Nairobi (en)",
+      "web": "https://gnk-asg.hr/kanal/nairobi/",
+      "required": true,
+      "cmd": [
+        "node",
+        "scripts/web-agent-v1.mjs",
+        "--web",
+        "portal"
+      ],
+      "checks": "Izdanje nairobi: impressum i autorska traka na jeziku en, portret urednika, sitemap i feed izdanja."
+    },
+    {
+      "id": "edition-jakarta-agent",
+      "name": "Gradsko izdanje — Jakarta (id)",
+      "web": "https://gnk-asg.hr/kanal/jakarta/",
+      "required": true,
+      "cmd": [
+        "node",
+        "scripts/web-agent-v1.mjs",
+        "--web",
+        "portal"
+      ],
+      "checks": "Izdanje jakarta: impressum i autorska traka na jeziku id, portret urednika, sitemap i feed izdanja."
+    },
+    {
+      "id": "edition-newyork-agent",
+      "name": "Gradsko izdanje — New York (en)",
+      "web": "https://gnk-asg.hr/kanal/newyork/",
+      "required": true,
+      "cmd": [
+        "node",
+        "scripts/web-agent-v1.mjs",
+        "--web",
+        "portal"
+      ],
+      "checks": "Izdanje newyork: impressum i autorska traka na jeziku en, portret urednika, sitemap i feed izdanja."
+    },
+    {
+      "id": "edition-saopaulo-agent",
+      "name": "Gradsko izdanje — São Paulo (pt)",
+      "web": "https://gnk-asg.hr/kanal/saopaulo/",
+      "required": true,
+      "cmd": [
+        "node",
+        "scripts/web-agent-v1.mjs",
+        "--web",
+        "portal"
+      ],
+      "checks": "Izdanje saopaulo: impressum i autorska traka na jeziku pt, portret urednika, sitemap i feed izdanja."
+    },
+    {
+      "id": "edition-sydney-agent",
+      "name": "Gradsko izdanje — Sydney (en)",
+      "web": "https://gnk-asg.hr/kanal/sydney/",
+      "required": true,
+      "cmd": [
+        "node",
+        "scripts/web-agent-v1.mjs",
+        "--web",
+        "portal"
+      ],
+      "checks": "Izdanje sydney: impressum i autorska traka na jeziku en, portret urednika, sitemap i feed izdanja."
+    },
+    {
+      "id": "edition-singapur-agent",
+      "name": "Gradsko izdanje — Singapur (en)",
+      "web": "https://gnk-asg.hr/kanal/singapur/",
+      "required": true,
+      "cmd": [
+        "node",
+        "scripts/web-agent-v1.mjs",
+        "--web",
+        "portal"
+      ],
+      "checks": "Izdanje singapur: impressum i autorska traka na jeziku en, portret urednika, sitemap i feed izdanja."
+    },
+    {
+      "id": "edition-kairo-agent",
+      "name": "Gradsko izdanje — Kairo (ar)",
+      "web": "https://gnk-asg.hr/kanal/kairo/",
+      "required": true,
+      "cmd": [
+        "node",
+        "scripts/web-agent-v1.mjs",
+        "--web",
+        "portal"
+      ],
+      "checks": "Izdanje kairo: impressum i autorska traka na jeziku ar, portret urednika, sitemap i feed izdanja."
+    },
+    {
+      "id": "edition-tokio-agent",
+      "name": "Gradsko izdanje — Tokio (ja)",
+      "web": "https://gnk-asg.hr/kanal/tokio/",
+      "required": true,
+      "cmd": [
+        "node",
+        "scripts/web-agent-v1.mjs",
+        "--web",
+        "portal"
+      ],
+      "checks": "Izdanje tokio: impressum i autorska traka na jeziku ja, portret urednika, sitemap i feed izdanja."
+    },
+    {
+      "id": "edition-peking-agent",
+      "name": "Gradsko izdanje — Peking (zh)",
+      "web": "https://gnk-asg.hr/kanal/peking/",
+      "required": true,
+      "cmd": [
+        "node",
+        "scripts/web-agent-v1.mjs",
+        "--web",
+        "portal"
+      ],
+      "checks": "Izdanje peking: impressum i autorska traka na jeziku zh, portret urednika, sitemap i feed izdanja."
     }
   ]
 }

@@ -19,6 +19,8 @@ import { esc, longDate, shortDate, stampLocal, slugify, isoWeek, themeFor, score
 import { t, ANALYSIS } from '../src/strings.mjs';
 import { logoFor, logoAlternate, channelLogoSlug, LOGO_W, LOGO_H } from './brand.mjs';
 import { chromeOf, desksOf, extraOf, editionsUi } from '../src/chrome.mjs';
+import { impressumBlock, IMPRESSUM_CSS } from '../../shared/impressum-v1.mjs';
+import { authorBand, AUTHOR_BAND_CSS, ensureAuthorPortrait, AUTHOR_PORTRAIT } from '../../shared/author-band-v1.mjs';
 import { spiderWeb, SPIDER_CSS, SPIDER_JS } from '../../satellites/lib/spiderweb-v1.mjs';
 import { meshBlock, MESH_CSS } from '../../satellites/lib/network-v1.mjs';
 import { HOUSE_CSS, houseRibbon } from '../../satellites/lib/house-style-v1.mjs';
@@ -623,6 +625,8 @@ function footer(channel, strings, extra = '') {
     </div>
   </div>
   <p class="disclaimer">${esc(strings.autoNote)}</p>
+  ${authorBand(channel.lang, channel.id)}
+  ${impressumBlock(channel.lang)}
   ${extra}
 </footer>`;
 }
@@ -1432,7 +1436,8 @@ ${footer(channel, strings)}`;
     jsonld: [], root: '', body: `${header(channel, strings)}<main id="sadrzaj" class="page"><h1>404</h1><p class="lead">${esc(strings.emptyText)}</p><p><a href="/">← ${esc(strings.back)}</a></p></main>${footer(channel, strings)}`
   }));
 
-  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}\n${SPIDER_CSS}\n${HOUSE_CSS}\n${EXCHANGE_CSS}\n${EDITORIAL_INDEX_CSS}`);
+  ensureAuthorPortrait(AUTHOR_PORTRAIT, dir);
+  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}\n${SPIDER_CSS}\n${HOUSE_CSS}\n${EXCHANGE_CSS}\n${EDITORIAL_INDEX_CSS}\n${IMPRESSUM_CSS}\n${AUTHOR_BAND_CSS}`);
   writeFileSync(join(dir, 'assets', 'spiderweb-v1.js'), SPIDER_JS);
 
   writeLegacyRedirect(channel);

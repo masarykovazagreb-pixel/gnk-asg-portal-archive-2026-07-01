@@ -1,3 +1,5 @@
+import { impressumBlock, IMPRESSUM_CSS } from '../../../apps/shared/impressum-v1.mjs';
+import { authorBand, AUTHOR_BAND_CSS, ensureAuthorPortrait, AUTHOR_PORTRAIT } from '../../../apps/shared/author-band-v1.mjs';
 /**
  * Zajednički sloj neovisnih stranica GNK ASG mreže.
  *
@@ -182,7 +184,7 @@ main:focus{outline:none}
 .mosaic a:nth-child(1){grid-column:span 2;grid-row:span 2}
 .mosaic a:nth-child(1) img{aspect-ratio:auto;height:100%}
 @media(max-width:760px){.mosaic{grid-template-columns:repeat(2,1fr)}.mosaic a:nth-child(1){grid-column:span 2;grid-row:auto}}
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto}}\n${MESH_CSS}\n${HOUSE_CSS}`;
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto}}\n${MESH_CSS}\n${HOUSE_CSS}\n${AUTHOR_BAND_CSS}`;
 }
 
 /* ---------- mrežna traka i navigacija ---------- */
@@ -384,7 +386,7 @@ export function footer(site, lang, pages) {
       © 2026 AKTUAL MEDIA d.o.o. · ${lang === 'en' ? 'Editor and director' : 'Urednik i direktor'}: <a href="https://gnk-asg.hr/nermin-sefic/" rel="external noopener">Nermin Sefić</a> ·
       ${lang === 'en' ? 'Every claim carries a source; every source has a date.' : 'Svaka tvrdnja nosi izvor; svaki izvor ima datum.'}
     </p>
-  </div></footer>`;
+  </div>${authorBand(lang === 'en' ? 'en' : 'hr')}${impressumBlock(lang === 'en' ? 'en' : 'hr')}</footer>`;
 }
 
 /* ---------- sitemap, robots, feed ---------- */

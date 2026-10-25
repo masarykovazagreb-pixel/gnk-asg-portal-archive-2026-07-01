@@ -97,6 +97,7 @@ const GATES = [
   { name: 'AKTUAL MEDIA — popis svih proizvoda', cmd: ['node', 'tests/test-aktual-products-v1.mjs'], required: true },
   { name: 'Samostalni portali — ARHIVA i DNEVNIK', cmd: ['node', 'tests/test-satellites-v1.mjs'], required: true },
   { name: 'Znak u čvoru izdavača', cmd: ['node', 'scripts/backfill-brand-entity-logo-v1.mjs', '--check'], required: true },
+  { name: 'Standard svakog weba — osvježavanje, impressum, ikona, traka', cmd: ['node', 'tests/test-web-standard-v1.mjs'], required: true },
 ];
 
 function run(gate) {

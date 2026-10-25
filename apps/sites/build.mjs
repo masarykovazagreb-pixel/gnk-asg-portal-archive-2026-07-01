@@ -26,6 +26,8 @@ import { writePrenos, prenosUrls, appendSitemap, linkPrenosOnHome } from '../../
 import { houseRibbon, HOUSE_CSS } from '../satellites/lib/house-style-v1.mjs';
 import { exchangeBlock, writeExchangeJson, EXCHANGE_CSS } from '../satellites/lib/razmjena-v1.mjs';
 import { refreshTag, ensureRefreshModule } from '../shared/refresh-tag-v1.mjs';
+import { ensureAuthorPortrait, AUTHOR_PORTRAIT } from '../shared/author-band-v1.mjs';
+import { impressumBlock } from '../shared/impressum-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..', '..');
@@ -36,11 +38,22 @@ const ART = 6;
    što web ima više predložaka (članak, popis prijenosa, kolumna, stranica) i
    ručno dodavanje u svaki od njih znači da će jedan ostati bez modula —
    upravo se to dogodilo s popisom prijenosa. */
+const langOf = (html) => (/<html[^>]+lang="([a-z]{2})"/i.exec(html)?.[1] || 'hr').toLowerCase();
 const write = (file, body) => {
   mkdirSync(dirname(file), { recursive: true });
-  const html = file.endsWith('.html') && /<\/body>/i.test(body) && !body.includes('data-am-netday')
-    ? body.replace(/<\/body>/i, `${refreshTag('/')}</body>`)
-    : body;
+  let html = body;
+  if (file.endsWith('.html') && /<\/body>/i.test(html)) {
+    /* Impressum i modul osvježavanja pišu se ovdje, na jednom mjestu, istim
+       redoslijedom kojim ih slaže i `scripts/apply-impressum-v1.mjs`. Kad bi
+       ih slagao samo poslije builda, svaki rebuild bi izbacio blok i test
+       „zastario izlaz" bio bi u pravu. */
+    if (!html.includes('data-am-impressum')) {
+      html = html.replace(/<\/body>/i, `${impressumBlock(langOf(html))}\n</body>`);
+    }
+    if (!html.includes('data-am-netday')) {
+      html = html.replace(/<\/body>/i, `${refreshTag('/')}\n</body>`);
+    }
+  }
   writeFileSync(file, html);
 };
 
@@ -385,6 +398,9 @@ async function buildSite(site) {
   const base = siteBase(site);
   const dist = join(OUT, site.slug);
   rmSync(dist, { recursive: true, force: true });
+  ensureAuthorPortrait(AUTHOR_PORTRAIT, dist);
+  ensureRefreshModule(dist);
+  ensureRefreshModule(OUT);
 
   // grafike
   for (let i = 0; i < ART; i += 1) {

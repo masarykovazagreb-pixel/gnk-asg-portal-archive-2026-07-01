@@ -39,6 +39,9 @@ import { WORLD_PORTALS, WORLD_BY_ID, portalBase, portalUrl, reviewUrl, HUB_HR, H
 import { writeColumns, columnsNavLabel, columnUrls, linkFromHome } from './lib/kolumne.mjs';
 import { writePrenos, prenosUrls, appendSitemap, linkPrenosOnHome } from '../../scripts/lib/prenos-v1.mjs';
 import { refreshTag } from '../shared/refresh-tag-v1.mjs';
+import { impressumBlock, IMPRESSUM_CSS } from '../shared/impressum-v1.mjs';
+import { authorBand, AUTHOR_BAND_CSS, ensureAuthorPortrait, AUTHOR_PORTRAIT } from '../shared/author-band-v1.mjs';
+import { ensureRefreshModule } from '../shared/refresh-tag-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..', '..');
@@ -444,6 +447,8 @@ ${designTokensCss()}
 ${houseRibbon({ lang: portal.lang, edition: `${portal.city} · ${portal.country}` })}
 ${body}
 ${exchangeBlock({ root: ROOT, lang: portal.lang, selfHome: portalBase(portal), selfNames: [portal.city, portal.cityEn].filter(Boolean), limit: 6 })}
+${authorBand(portal.lang)}
+${impressumBlock(portal.lang)}
 ${refreshTag('/')}
 </body>
 </html>`;
@@ -770,7 +775,10 @@ function writeStatics(portal, data, themes) {
     copyFileSync(houseMark, join(dir, 'assets', 'brand', 'aktual-media-mark.svg'));
   }
 
-  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}\n${SPIDER_CSS}\n${WORLD_CSS}\n${HOUSE_CSS}\n${EXCHANGE_CSS}`);
+  ensureAuthorPortrait(AUTHOR_PORTRAIT, dir);
+  ensureRefreshModule(dir);
+  ensureRefreshModule(OUT);
+  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}\n${SPIDER_CSS}\n${WORLD_CSS}\n${HOUSE_CSS}\n${EXCHANGE_CSS}\n${IMPRESSUM_CSS}\n${AUTHOR_BAND_CSS}`);
   writeSitemap(portal, data, themes);
 }
 

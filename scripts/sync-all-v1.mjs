@@ -79,13 +79,17 @@ export const STEPS = [
      biti zadnji sloj. */
   { id: 'network-counts', group: 'layers', file: 'scripts/build-network-counts-v1.mjs', check: ['--check'], why: 'jedan izvor brojeva' },
   { id: 'pages-inventory', group: 'layers', file: 'scripts/build-pages-inventory-v1.mjs', check: ['--check'], why: 'popis svih stranica + izvještaj' },
+  { id: 'author-band', group: 'layers', file: 'scripts/apply-author-band-v1.mjs', check: ['--check'], why: 'autorska traka urednika na svakoj rukom pisanoj stranici' },
+  { id: 'impressum', group: 'layers', file: 'scripts/apply-impressum-v1.mjs', args: ['--all', '--icon', '--refresh'], why: 'impressum i ikona na svakoj rukom pisanoj stranici' },
+  { id: 'agents-page', group: 'layers', file: 'scripts/build-agents-page-v1.mjs', why: 'javna ploča agenata' },
   { id: 'refresh', group: 'layers', file: 'scripts/apply-refresh-v1.mjs', check: ['--check'], why: 'osvježavanje na svakoj stranici' },
 
   /* ---------- 3. PROVJERE ---------- */
   { id: 'region-audit', group: 'audit', file: 'apps/region/engine/audit.mjs', why: 'izdanja — unutrašnja dosljednost' },
   { id: 'brand-indexability', group: 'audit', file: 'scripts/audit-aktual-brand-indexability-v1.mjs', args: ['--strict'], why: 'brend i indeksiranje' },
   { id: 'brand-contract', group: 'audit', file: 'scripts/audit-brand-contract-v1.mjs', why: 'jedno ime, jedan znak, jedan izdavač' },
-  { id: 'top-teme-audit', group: 'audit', file: 'scripts/audit-top-teme-v1.mjs', why: 'teme bez praznih veza' }
+  { id: 'top-teme-audit', group: 'audit', file: 'scripts/audit-top-teme-v1.mjs', why: 'teme bez praznih veza' },
+  { id: 'web-standard', group: 'audit', file: 'tests/test-web-standard-v1.mjs', why: 'standard svakog weba: osvježavanje, impressum, ikona, traka' }
 ];
 
 const groups = groupArg === 'all' ? ['generate', 'layers', 'audit'] : groupArg.split(',');

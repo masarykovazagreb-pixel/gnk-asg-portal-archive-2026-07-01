@@ -33,6 +33,7 @@ import { designTokensCss } from '../../shared/design-system-v1.mjs';
 import { authorPortrait } from '../../../scripts/lib/corpus-v1.mjs';
 
 import { refreshTag } from '../../shared/refresh-tag-v1.mjs';
+import { impressumBlock } from '../../shared/impressum-v1.mjs';
 
 const MAX_ITEMS = 60;
 
@@ -151,6 +152,7 @@ const foot = (site) => `  </main>
   </footer>
 </div>
 ${refreshTag('/')}
+${impressumBlock(site.lang)}
 </body>
 </html>
 `;
@@ -273,7 +275,14 @@ export function buildSyndication({ root, outRoot, dryRun = false }) {
 
     const write = (file, body) => {
       mkdirSync(join(file, '..'), { recursive: true });
-      if (!dryRun) writeFileSync(file, body);
+      /* Isti redoslijed kao `foot()` i `scripts/apply-impressum-v1.mjs`:
+         modul osvježavanja pa impressum, oba prije `</body>`. */
+      let html = body;
+      if (file.endsWith('.html') && /<\/body>/i.test(html)) {
+        if (!html.includes('data-am-impressum')) html = html.replace(/<\/body>/i, `${impressumBlock(site.lang)}\n</body>`);
+        if (!html.includes('data-am-netday')) html = html.replace(/<\/body>/i, `${refreshTag('/')}\n</body>`);
+      }
+      if (!dryRun) writeFileSync(file, html);
       pages += 1;
     };
 

@@ -9,6 +9,10 @@
  *   node apps/tjednik/build.mjs
  *   node apps/tjednik/build.mjs --base https://gnk-asg-tjednik.pages.dev/
  */
+import { refreshTag, ensureRefreshModule } from '../shared/refresh-tag-v1.mjs';
+import { impressumBlock, IMPRESSUM_CSS } from '../shared/impressum-v1.mjs';
+import { authorBand, AUTHOR_BAND_CSS, ensureAuthorPortrait, AUTHOR_PORTRAIT } from '../shared/author-band-v1.mjs';
+
 import { readFileSync, writeFileSync, existsSync, mkdirSync, rmSync, readdirSync, copyFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -200,6 +204,9 @@ ${header(active, root)}
 ${content}
 </main>
 ${footer(root)}
+${authorBand('hr')}
+${impressumBlock('hr')}
+${refreshTag('/')}
 </body>
 </html>`;
 
@@ -731,6 +738,8 @@ ${CONTACT}
 const ASSETS = join(SRC, 'assets');
 const OUT_ASSETS = join(OUT, 'assets');
 mkdirSync(OUT_ASSETS, { recursive: true });
+ensureAuthorPortrait(AUTHOR_PORTRAIT, OUT);
+ensureRefreshModule(OUT);
 for (const f of existsSync(ASSETS) ? readdirSync(ASSETS) : []) {
   const from = join(ASSETS, f);
   const to = join(OUT_ASSETS, f);

@@ -1,3 +1,5 @@
+import { impressumBlock, IMPRESSUM_CSS } from '../../shared/impressum-v1.mjs';
+import { authorBand, AUTHOR_BAND_CSS, ensureAuthorPortrait, AUTHOR_PORTRAIT } from '../../shared/author-band-v1.mjs';
 /**
  * Zajednička ljuska za samostalne portale AKTUAL MEDIA.
  *
@@ -53,7 +55,7 @@ export function fmtDay(iso, lang = 'hr') {
 
 export const proxyImg = (url) => `${MAIN}/api/img?u=${encodeURIComponent(url)}`;
 
-export const SITE_CSS = `*,*::before,*::after{box-sizing:border-box}
+export const SITE_CSS = `${IMPRESSUM_CSS}${AUTHOR_BAND_CSS}*,*::before,*::after{box-sizing:border-box}
 :root{--bg:#050d18;--panel:#0a1725;--line:#1d3a55;--ink:#e9f0f8;--muted:#9fb2c8;--gold:#e9c66c}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
@@ -226,7 +228,7 @@ ${meshBlock({ lang, selfUrl: siteUrl })}
     ? `Automatski sastavljeno iz javnih izvora ${EDITIONS.length} gradskih izdanja AKTUAL MEDIA. Svaki zapis vodi na izvornik; tvrdnje izvora nisu tvrdnje redakcije.`
     : `Automatically assembled from public sources of the ${EDITIONS.length} AKTUAL MEDIA city editions. Every record links to the original; claims from sources are not the claims of the newsroom.`}</p>
   <p>AKTUAL MEDIA d.o.o. · ${lang === 'hr' ? 'Urednik i direktor' : 'Editor and director'}: Nermin Sefić · <a href="${MAIN}/nermin-sefic/">${lang === 'hr' ? 'profil' : 'profile'}</a></p>
-</div></footer>
+</div>${authorBand(lang === 'hr' ? 'hr' : 'en')}${impressumBlock(lang === 'hr' ? 'hr' : 'en')}
 ${refreshTag()}
 </body>
 </html>`;

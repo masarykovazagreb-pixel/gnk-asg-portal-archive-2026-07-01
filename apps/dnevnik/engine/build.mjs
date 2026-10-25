@@ -17,6 +17,8 @@ import {
 } from '../../satellites/lib/shell.mjs';
 import { writeExchangeJson } from '../../satellites/lib/razmjena-v1.mjs';
 import { refreshTag, ensureRefreshModule } from '../../shared/refresh-tag-v1.mjs';
+import { impressumBlock } from '../../shared/impressum-v1.mjs';
+import { authorBand, ensureAuthorPortrait, AUTHOR_PORTRAIT } from '../../shared/author-band-v1.mjs';
 import { designTokensCss } from '../../shared/design-system-v1.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
@@ -310,9 +312,10 @@ write('404.html', `<!doctype html><html lang="hr"><head><meta charset="utf-8"><m
 <link rel="icon" href="${SITE_URL}/assets/brand/favicon.svg" type="image/svg+xml">
 <title>Stranica nije pronađena — AKTUAL DNEVNIK</title><meta name="robots" content="noindex"><link rel="stylesheet" href="/assets/site.css?v=20261022"></head>
 <body><a class="skip" href="#sadrzaj">Sadržaj</a><main id="sadrzaj" class="wrap" style="padding:60px 0"><p class="kicker">404</p><h1>Nema te stranice</h1>
-<p class="lead">Dani su ovdje:</p><div class="row"><a class="btn solid" href="/">Dnevnik</a><a class="btn" href="${ARHIVA}/">Arhiva</a><a class="btn" href="${MAIN}/gnk-aktual/">AKTUAL MEDIA</a></div></main>${refreshTag('/')}</body></html>`);
+<p class="lead">Dani su ovdje:</p><div class="row"><a class="btn solid" href="/">Dnevnik</a><a class="btn" href="${ARHIVA}/">Arhiva</a><a class="btn" href="${MAIN}/gnk-aktual/">AKTUAL MEDIA</a></div></main>${authorBand('hr')}${impressumBlock('hr')}${refreshTag('/')}</body></html>`);
 
 write('assets/site.css', SITE_CSS);
+ensureAuthorPortrait(AUTHOR_PORTRAIT, resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', 'site'));
 write('robots.txt', robots(SITE_URL));
 /* Isti popis razmjene koji stranica prikazuje, u strojnom obliku. */
 writeExchangeJson(SITE, { root: ROOT, selfHome: `${SITE_URL}/`, selfNames: ['AKTUAL DNEVNIK'] });
