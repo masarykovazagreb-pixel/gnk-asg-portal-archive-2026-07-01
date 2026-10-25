@@ -24,6 +24,7 @@ const FAST = args.has('--fast');
 const JSON_OUT = args.has('--json');
 
 const GATES = [
+  { name: 'Vijesti — javni status aktivnog izvora', cmd: ['node', 'tests/test-news-status-static-v1.mjs'], required: true },
   { name: 'Workee — agent po stranici', cmd: ['node', 'tests/test-workee-page-agents-v1.mjs'], required: true },
   { name: 'Vijesti — Zagreb zimsko/ljetno vrijeme', cmd: ['node', 'tests/test-news-zagreb-offset-v1.mjs'], required: true },
   { name: 'Vlasništvo automatizacija', cmd: ['node', 'scripts/audit-bot-ownership-v1.mjs'], required: true },
