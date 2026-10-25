@@ -4,23 +4,17 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-10-25T17:36:58.506Z",
+  "updatedAt": "2026-10-25T19:59:06.402Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": false,
-      "fetched": 0,
+      "ok": true,
+      "fetched": 50,
       "corrupt": 0,
-      "errors": [
-        "https://telex.hu/rss: HTTP 403",
-        "https://telex.hu/rss/belfold: HTTP 403",
-        "https://telex.hu/rss/kulfold: HTTP 403",
-        "https://telex.hu/rss/gazdasag: HTTP 403",
-        "https://telex.hu/rss/sport: HTTP 403"
-      ],
-      "checkedAt": "2026-10-25T17:36:53.941Z"
+      "errors": [],
+      "checkedAt": "2026-10-25T19:59:01.759Z"
     },
     {
       "id": "444",
@@ -30,7 +24,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T17:36:54.653Z"
+      "checkedAt": "2026-10-25T19:59:02.558Z"
     },
     {
       "id": "hvg",
@@ -40,7 +34,7 @@
       "fetched": 60,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T17:36:54.993Z"
+      "checkedAt": "2026-10-25T19:59:02.895Z"
     },
     {
       "id": "portfolio",
@@ -50,7 +44,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T17:36:55.752Z"
+      "checkedAt": "2026-10-25T19:59:03.643Z"
     },
     {
       "id": "index",
@@ -62,7 +56,7 @@
       "errors": [
         "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-25T17:36:57.602Z"
+      "checkedAt": "2026-10-25T19:59:05.377Z"
     },
     {
       "id": "24hu",
@@ -72,7 +66,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T17:36:57.736Z"
+      "checkedAt": "2026-10-25T19:59:05.627Z"
     },
     {
       "id": "mandiner",
@@ -82,10 +76,514 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T17:36:58.505Z"
+      "checkedAt": "2026-10-25T19:59:06.402Z"
     }
   ],
   "items": [
+    {
+      "slug": "budimpesta-2026-10-25-telex-eletmento-eszkozt-loptak-el-a-lovoi-c4faaa",
+      "title": "Életmentő eszközt loptak el a lövői önkéntes tűzoltóktól",
+      "summary": "A tolvajok belógtak a szertárba, egy tűzoltóautóról vitték el az akkumulátoros feszítővágót, amit balesetek sérültjeinek mentésére használnak a tűzoltók.",
+      "date": "2026-10-25T19:50:51.000Z",
+      "url": "https://telex.hu/belfold/2026/10/25/mentoeszkoz-lopas-lovoi-tuzoltok-gyor-moson-sopron-megye",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "Nádor András",
+      "theme": "drustvo",
+      "image": "https://assets.telex.hu/images/20261025/1792957247-temp-aum6ln2uerl53pibohc_cimlap-normal.jpg",
+      "imageAlt": "Életmentő eszközt loptak el a lövői önkéntes tűzoltóktól",
+      "addedAt": "2026-10-25T19:59:01.759Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-portfolio-lezarult-a-feszult-valasztas-szerbiaban-6131be",
+      "title": "Lezárult a feszült választás Szerbiában: sokan járultak az urnákhoz",
+      "summary": "Lezárult az előrehozott parlamenti választás Szerbiában, ahol vasárnap este 8 órakor bezártak a szavazóhelyiségek. A Köztársasági Választási Bizottság adatai szerint 18 óráig a választásra jogosultak 64,89 százaléka szavazott, ami jóval meghaladja a 2023 decemberi választáson mért 51,93 százalékot. Az Ipsos és a CeSID becslése szerint 19 óráig a részvétel már elérte a 67,6 százalékot. A választási bizottság elnöke szerint a voksolás a legtöbb helyen rendben zajlott, a megfigyelők ugyanakkor számos szabálytalanságot jeleztek, köztük a választókra gyakorolt nyomást és munkájuk akadályozását.",
+      "date": "2026-10-25T19:50:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261025/lezarult-a-feszult-valasztas-szerbiaban-sokan-jarultak-az-urnakhoz-871916",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://pcdn.hu/articles/images-xl/g/e/t/gettyimages-2301481541-864340.jpg",
+      "imageAlt": "Lezárult a feszült választás Szerbiában: sokan járultak az urnákhoz",
+      "addedAt": "2026-10-25T19:59:03.643Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-telex-a-kormany-lep-mentesseget-kaphatnak-az-0bdde3",
+      "title": "A kormány lép, mentességet kaphatnak az ügyelet alól a kisgyermeket nevelő vagy az egészségkárosodással élő háziorvosok",
+      "summary": "Az Egészségügyi Minisztérium alapellátásért felelős államtitkára mondta el a terveket az RTL Híradójának.",
+      "date": "2026-10-25T19:45:29.000Z",
+      "url": "https://telex.hu/belfold/2026/10/25/haziorvos-ugyelet-mentesseg-kisgyermekes-beteg-porpaczy-krisztina-allamtitkar",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "Joób Sándor",
+      "theme": "politika",
+      "image": "https://assets.telex.hu/images/20261025/1792957515-temp-ng0n7vs2mtj8cgankfo_cimlap-normal.jpg",
+      "imageAlt": "A kormány lép, mentességet kaphatnak az ügyelet alól a kisgyermeket nevelő vagy az egészségkárosodással élő háziorvosok",
+      "addedAt": "2026-10-25T19:59:01.759Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-444-tizezrek-vonultak-az-utcara-pragaban-mert-3823b9",
+      "title": "Tízezrek vonultak az utcára Prágában, mert ezután nem közvetlenül a lakosság, hanem az állam finanszírozná a közmédiát",
+      "summary": "A havi előfizetési díjak helyett ezentúl az állam közvetlenül finanszírozná a közmédiát, 15 százalékkal olcsóbban. A csehek ezt nem hagyhatják.",
+      "date": "2026-10-25T19:44:58.000Z",
+      "url": "https://444.hu/2026/10/25/tizezrek-vonultak-az-utcara-pragaban-mert-ezutan-nem-kozvetlenul-a-lakossag-hanem-az-allam-finanszirozna-a-kozmediat?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "tüntetés",
+        "csehország",
+        "finanszírozás",
+        "közmédia"
+      ],
+      "author": "Mohos Máté",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8PLY7hrggBftGWB0s.jpeg",
+      "imageAlt": "Tízezrek vonultak az utcára Prágában, mert ezután nem közvetlenül a lakosság, hanem az állam finanszírozná a közmédiát",
+      "addedAt": "2026-10-25T19:59:02.558Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-hvg-orban-viktor-ellopta-a-showt-matolcsy-1155f5",
+      "title": "Orbán Viktor ellopta a showt Matolcsy György és Matolcsy Ádám elől, pedig ő csak az utcán ült le",
+      "summary": "Orbán Viktort október 23-án Párizsban fotózták le, azonnal meg is ihlette a mémgyárosokat.",
+      "date": "2026-10-25T19:44:34.000Z",
+      "url": "https://hvg.hu/tudomany/20261025_orban-viktor-memek-parizs-oktober-23",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Tech",
+        "tech",
+        "Orbán Viktor",
+        "mém"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/d061ebc4-7482-4cc2-8c8a-47a79a86f5db.jpg",
+      "imageAlt": "Orbán Viktor ellopta a showt Matolcsy György és Matolcsy Ádám elől, pedig ő csak az utcán ült le",
+      "addedAt": "2026-10-25T19:59:02.895Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-24hu-a-nap-legfontosabb-hirei-2026-oktober-25-ea78e3",
+      "title": "A nap legfontosabb hírei – 2026. október 25.",
+      "summary": "Választás Szerbiában, Magyar-Toroczkai csörte. The post A nap legfontosabb hírei – 2026. október 25. first appeared on 24.hu .",
+      "date": "2026-10-25T19:39:17.000Z",
+      "url": "https://24.hu/belfold/2026/10/25/a-nap-legfontosabb-hirei-2026-oktober-25/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "a nap legfontosabb hírei",
+        "hírösszefoglaló"
+      ],
+      "author": "D. Kovács Ildikó",
+      "theme": "politika",
+      "image": "https://s.24.hu/app/uploads/2026/10/000_d4d89g3-e1792957120788-1024x575.jpg",
+      "imageAlt": "A nap legfontosabb hírei – 2026. október 25.",
+      "addedAt": "2026-10-25T19:59:05.627Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-24hu-felmentenek-a-sulyos-betegsegben-szenvedo-42bd74",
+      "title": "Felmentenék a súlyos betegségben szenvedő vagy várandós háziorvosokat a közelező ügyelet alól",
+      "summary": "Módosítana a kormány a háziorvosok kötelező ügyeleti rendszerén, amit négy éve, a szakmai tiltakozás ellenére alakított át a Fidesz-kormány. The post Felmentenék a súlyos betegségben szenvedő vagy várandós háziorvosokat a közelező ügyelet alól first appeared on 24.hu .",
+      "date": "2026-10-25T19:38:35.000Z",
+      "url": "https://24.hu/belfold/2026/10/25/haziorvosok-kotelezo-ugyeleti-rendszere-modositas/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "háziorvosok",
+        "orvosi ügyelet",
+        "takács péter"
+      ],
+      "author": "Varga Zsuzsa",
+      "theme": "politika",
+      "image": "https://s.24.hu/app/uploads/2026/10/central-0845829238-e1792957001878-1024x577.jpg",
+      "imageAlt": "Felmentenék a súlyos betegségben szenvedő vagy várandós háziorvosokat a közelező ügyelet alól",
+      "addedAt": "2026-10-25T19:59:05.627Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-telex-visszatert-szamuzetesebol-a-nobel-bekedijas-495941",
+      "title": "Visszatért száműzetéséből a Nobel-békedíjas venezuelai ellenzéki vezető",
+      "summary": "María Corina Machado álruhában hagyta el az országot 2025 végén, hogy átvehesse a díjat, azóta nem térhetett vissza hazájába.",
+      "date": "2026-10-25T19:35:46.000Z",
+      "url": "https://telex.hu/kulfold/2026/10/25/venezuela-maria-corina-machado-szamuzetes-egyesult-allamok",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Külföld"
+      ],
+      "author": "Mizsur András",
+      "theme": "drustvo",
+      "image": "https://assets.telex.hu/images/20261025/1792956338-temp-nm7u3gnl6vod5anhcem_cimlap-normal.jpg",
+      "imageAlt": "Visszatért száműzetéséből a Nobel-békedíjas venezuelai ellenzéki vezető",
+      "addedAt": "2026-10-25T19:59:01.759Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-hvg-rekordszamu-magyar-nyaralt-horvatorszagban-8591f2",
+      "title": "Rekordszámú magyar nyaralt Horvátországban, a hazai turizmus bezuhant",
+      "summary": "A forint árfolyamának változása is kedvezőtlenül hatott a hazai turizmusra, amelynek szereplői már nem tudják tovább a vendégekre hárítani a költségek emelkedését.",
+      "date": "2026-10-25T19:35:00.000Z",
+      "url": "https://hvg.hu/itthon/20261025_turizmus-horvatorszag-tengerpart-nyaralas",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "itthon",
+        "turizmus",
+        "Horvátország"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/2e642c56-69ab-4431-b59d-b1830c02dd90.jpg",
+      "imageAlt": "Rekordszámú magyar nyaralt Horvátországban, a hazai turizmus bezuhant",
+      "addedAt": "2026-10-25T19:59:02.895Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-telex-tiz-eve-meg-cigarettat-csempesztek-a-205780",
+      "title": "Tíz éve még cigarettát csempésztek a drónjaikkal, most egy sebesült katonát mentettek ki vakmerően a frontról",
+      "summary": "Az ukránok már másfél éve használnak szárazföldi drónokat a sebesültek evakuálására, de most szintet léptek. A héten bejelentett esetnél egy hatalmas teherszállító drónt vetettek be, de már csőben vannak a kifejezetten a kockázatos mentésekre kifejlesztett repülő eszközök is.",
+      "date": "2026-10-25T19:29:12.000Z",
+      "url": "https://telex.hu/kulfold/2026/10/25/orosz-ukran-haboru-sebesultek-evakualas-dronok",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Külföld"
+      ],
+      "author": "Ignácz Péter",
+      "theme": "rat",
+      "image": "https://assets.telex.hu/images/20261021/1792598124-temp-1g4qn78ri67v1mgofdi_cimlap-normal.jpg",
+      "imageAlt": "Tíz éve még cigarettát csempésztek a drónjaikkal, most egy sebesült katonát mentettek ki vakmerően a frontról",
+      "addedAt": "2026-10-25T19:59:01.759Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-portfolio-tisza-kormany-megepulhet-a-diakvaros-8d80f4",
+      "title": "Tisza-kormány: megépülhet a diákváros, Matolcsy Ádám felszívódott",
+      "summary": "Vitézy Dávid közlekedési miniszter szombat este jelentette be, hogy dolgoznak a ferencvárosi Diákváros megépítéséhez szükséges források elkülönítésén, Matolcsy Ádám hollétéről pedig továbbra sincs információ. Herczku György miniszteri biztosként segíti az MFB, az Exim és a Gazdasági és Energetikai Minisztériumhoz tartozó további pénzügyi intézmények működésének összehangolását. A Tisza-kormány módosítaná a háziorvosok kötelező ügyeleti rendszerét: bizonyos élethelyzetekben mentességet lehetne kérni, és az ügyeleti óradíj emelését is tervezik. Társadalmi vitára került egy 36 oldalas törvénytervezet is, amely felső korlátot szabna az egyedi méltányossági gyógyszertámogatásoknak: egy beteg…",
+      "date": "2026-10-25T19:25:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261025/tisza-kormany-megepulhet-a-diakvaros-matolcsy-adam-felszivodott-871844",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://pcdn.hu/articles/images-xl/g/e/t/gettyimages-2249091524-barnamezos-terulet-rozsdaovezet-gyar-ipari-ingatlan-ipar-ingatlan-epule-800553.jpg",
+      "imageAlt": "Tisza-kormány: megépülhet a diákváros, Matolcsy Ádám felszívódott",
+      "addedAt": "2026-10-25T19:59:03.643Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-portfolio-kozel-a-politikai-foldindulas-a-nemetek-9dffc1",
+      "title": "Közel a politikai földindulás: a németek szerint nem húzza ki végig Merz",
+      "summary": "A németek többsége nem hisz abban, hogy Friedrich Merz kancellár kormánya kitölti a ciklust. A YouGov által a dpa megbízásából készített felmérés szerint a megkérdezettek mindössze 23 százaléka gondolja úgy, hogy a CDU/CSU és az SPD koalíciója a 2029 elején esedékes Bundestag-választásig hivatalban marad. A válaszadók 13 százaléka még idén, 44 százaléka pedig a következő egy-két évben várja a koalíció felbomlását, amelyet a reformok, a költségvetés, valamint az AfD-hez és a Baloldalhoz való viszony körüli viták is terhelnek. A bizalom a kormánypártok saját szavazói körében is gyengül, hiszen az uniópártok támogatóinak 53, az SPD híveinek 46 százaléka tartja valószínűnek az idő előtti…",
+      "date": "2026-10-25T19:25:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261025/kozel-a-politikai-foldindulas-a-nemetek-szerint-nem-huzza-ki-vegig-merz-871910",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://pcdn.hu/articles/images-xl/p/0/6/p066772-142339-757319.jpg",
+      "imageAlt": "Közel a politikai földindulás: a németek szerint nem húzza ki végig Merz",
+      "addedAt": "2026-10-25T19:59:03.644Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-portfolio-mi-tartja-majd-ossze-a-tiszat-torok-gabor-aef8ea",
+      "title": "Mi tartja majd össze a Tiszát? Török Gábor öt kulcstényezőt azonosított",
+      "summary": "A Tisza Párt jelenlegi erejét öt, egymást erősítő jellemző adja, ezek azonban idővel a párt korlátaivá is válhatnak – írta Török Gábor politológus a Facebookon. Elemzése szerint a Tisza leginkább vezérközpontú gyűjtőpártként írható le, amelynek működésében a protesztjelleg, a valenciaalapú politizálás és a platformpárti szerveződés is meghatározó.",
+      "date": "2026-10-25T19:25:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261025/mi-tartja-majd-ossze-a-tiszat-torok-gabor-ot-kulcstenyezot-azonositott-871914",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://pcdn.hu/articles/images-xl/g/e/t/gettyimages-591412028-budapest-orszaghaz-lanchid-duna-parlament-magyarorszag-varoskep-fovar-858152.jpg",
+      "imageAlt": "Mi tartja majd össze a Tiszát? Török Gábor öt kulcstényezőt azonosított",
+      "addedAt": "2026-10-25T19:59:03.644Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-hvg-megbukik-orban-szovetsegese-szerbiaban-5a7e4e",
+      "title": "Megbukik Orbán szövetségese Szerbiában? Elszabadulhat az erőszak? - Élőben jelentkezünk Belgrádból",
+      "summary": "Valóban reális esélye van annak, hogy Aleksandar Vucic rendszerét megdöntik és elzavarják a szerb egyetemisták? Mennyit számít a magyar tapasztalat, ha választási csalásokat kell lefülelni? Földes András és Németh András Belgrádból jelentkeznek.",
+      "date": "2026-10-25T19:13:33.000Z",
+      "url": "https://hvg.hu/vilag/20261025_szerbia-valaszt-mi-pedig-eloben-jelentkezunk-belgradbol",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Világ",
+        "videó",
+        "Szerbia",
+        "leválasztás"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/09d56546-8859-4003-912d-83545d0166a9.jpg",
+      "imageAlt": "Megbukik Orbán szövetségese Szerbiában? Elszabadulhat az erőszak? - Élőben jelentkezünk Belgrádból",
+      "addedAt": "2026-10-25T19:59:02.895Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-portfolio-exit-poll-a-hivatalban-levo-allamfo-02e2fd",
+      "title": "Exit Poll: a hivatalban lévő államfő szerezte a legtöbb szavazatot a bolgár elnökválasztáson, de második fordulót kell tartani",
+      "summary": "Második fordulóban dől el, ki lesz Bulgária elnöke, mivel a vasárnapi első fordulóban egyik jelölt sem szerezte meg a szavazatok több mint felét. Az Alpha Research exit poll-felmérése szerint a hivatalban lévő államfő, Ilijana Jotova végzett az élen a voksok 35,3 százalékával. Szorosan mögötte a legfőbb kihívója, Andrej Gjurov korábbi kormányfő következik 32,4 százalékkal. A harmadik helyen a nacionalista Kosztadin Kosztadonov zárt, aki a szavazatok 12,6 százalékát kaphatta.",
+      "date": "2026-10-25T19:10:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261025/exit-poll-a-hivatalban-levo-allamfo-szerezte-a-legtobb-szavazatot-a-bolgar-elnokvalasztason-de-masodik-fordulot-kell-tartani-871912",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "Exit Poll: a hivatalban lévő államfő szerezte a legtöbb szavazatot a bolgár elnökválasztáson, de második fordulót kell tartani",
+      "addedAt": "2026-10-25T19:59:03.644Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-24hu-borbely-balazs-elso-hazai-gyozelme-az-mtk-80b369",
+      "title": "Borbély Balázs első hazai győzelme az MTK-nak volt nagy pofon",
+      "summary": "Már az első félidőben eldőlt a győzelem. The post Borbély Balázs első hazai győzelme az MTK-nak volt nagy pofon first appeared on 24.hu .",
+      "date": "2026-10-25T19:08:04.000Z",
+      "url": "https://24.hu/sport/foci/2026/10/25/nb1-ferencvaros-elso-hazai-gyozelem-mtk/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Foci",
+        "sport",
+        "foci",
+        "labdarúgás"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/10/d__hr20261025039-e1792954843725-1024x575.jpg",
+      "imageAlt": "Borbély Balázs első hazai győzelme az MTK-nak volt nagy pofon",
+      "addedAt": "2026-10-25T19:59:05.627Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-telex-tobb-ezren-tiltakoztak-praga-foteren-az-a8cb37",
+      "title": "Több ezren tiltakoztak Prága főterén az ellen, hogy a cseh közmédiát az állami költségvetésből finanszírozzák",
+      "summary": "A cseh közszolgálati televízió és rádió finanszírozása előfizetéses rendszerben működik. A tüntetők megtöltötték a prágai Óváros teret.",
+      "date": "2026-10-25T19:05:49.000Z",
+      "url": "https://telex.hu/kulfold/2026/10/25/praga-ovaros-ter-tuntetes-kozmedia-finanszirozas",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Külföld"
+      ],
+      "author": "Nádor András",
+      "theme": "drustvo",
+      "image": "https://assets.telex.hu/images/20261025/1792954351-temp-h6thom6er8gb7jjfajj_cimlap-normal.jpg",
+      "imageAlt": "Több ezren tiltakoztak Prága főterén az ellen, hogy a cseh közmédiát az állami költségvetésből finanszírozzák",
+      "addedAt": "2026-10-25T19:59:01.759Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-444-ukrajna-lerohanasa-ota-eloszor-szervezhet-dd1dbd",
+      "title": "Ukrajna lerohanása óta először szervezhet világbajnokságot Oroszország bármilyen sportágban",
+      "summary": "A Nemzetközi Súlyemelő Szövetség Moszkvát választotta a 2030-as világbajnokság helyszínéül. A szövetség négy hónapja engedte vissza az orosz sportolókat az eseményeire.",
+      "date": "2026-10-25T19:03:05.000Z",
+      "url": "https://444.hu/2026/10/25/ukrajna-invazioja-ota-eloszor-szervezhet-vilagbajnoksagot-oroszorszag-barmilyen-sportagban?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "világbajnokság",
+        "sportolók",
+        "oroszország",
+        "orosz-ukrán háború"
+      ],
+      "author": "Mohos Máté",
+      "theme": "sport",
+      "image": "https://assets.4cdn.hu/kraken/8PLYUGWp9dRaGWB0s.jpeg",
+      "imageAlt": "Ukrajna lerohanása óta először szervezhet világbajnokságot Oroszország bármilyen sportágban",
+      "addedAt": "2026-10-25T19:59:02.558Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-24hu-bojar-gabor-a-vagyonadorol-nekem-megerte-eab704",
+      "title": "Bojár Gábor a vagyonadóról: Nekem megérte, hogy Magyar Péternek végre sikerült elsöpörnie ezt a gazdasági károkat okozó rendszert",
+      "summary": "A Graphisoft alapítójával beszéltük át, lehet-e a NER-elit lefejezésével és a milliárdosokat érintő vagyonadóval békésebb, igazságosabb társadalmat építeni. The post Bojár Gábor a vagyonadóról: Nekem megérte, hogy Magyar Péternek végre sikerült elsöpörnie ezt a gazdasági károkat okozó rendszert first appeared on 24.hu .",
+      "date": "2026-10-25T18:57:49.000Z",
+      "url": "https://24.hu/fn/gazdasag/2026/10/25/bojar-gabor-vagyonado-uzleti-elet-interju/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Gazdaság",
+        "bojár gábor",
+        "forbes lista",
+        "leggazdagabb magyarok"
+      ],
+      "author": "Ősze András",
+      "theme": "ekonomija",
+      "image": "https://s.24.hu/app/uploads/2026/10/ill24_videos_bg-1024x576.jpg",
+      "imageAlt": "Bojár Gábor a vagyonadóról: Nekem megérte, hogy Magyar Péternek végre sikerült elsöpörnie ezt a gazdasági károkat okozó rendszert",
+      "addedAt": "2026-10-25T19:59:05.627Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-hvg-holtan-talaltak-meg-a-hetekkel-ezelott-3c2559",
+      "title": "Holtan találták meg a hetekkel ezelőtt eltűnt budapesti gimnazistát",
+      "summary": "A 18 éves fiú, a BVSC teniszezője Zuglóból tűnt el még október 6-án, a holttestét most Tökölön, a HÉV-átjárónál találták meg.",
+      "date": "2026-10-25T18:50:00.000Z",
+      "url": "https://hvg.hu/itthon/20261025_holtan-talaltak-meg-a-hetekkel-ezelott-eltunt-budapesti-gimnazistat",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "itthon",
+        "haláleset",
+        "eltűnés"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "sport",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/53578854-48d7-44fe-b80c-d6f9024475ac.jpg",
+      "imageAlt": "Holtan találták meg a hetekkel ezelőtt eltűnt budapesti gimnazistát",
+      "addedAt": "2026-10-25T19:59:02.895Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-telex-kulfoldon-is-kigyozo-sorokban-alltak-az-2b693c",
+      "title": "Külföldön is kígyózó sorokban álltak az emberek, hogy szavazhassanak a szerbiai választáson",
+      "summary": "Szerbiában is magas a részvétel, de olvasóink fotói és beszámolói alapján rengetegen adták le a voksukat a külképviseleteken is.",
+      "date": "2026-10-25T18:33:54.000Z",
+      "url": "https://telex.hu/kulfold/2026/10/25/szerbia-kulkepviseletek-szavazas-vucic-sns-egyetemista-lista-sl",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Külföld"
+      ],
+      "author": "Nádor András",
+      "theme": "politika",
+      "image": "https://assets.telex.hu/images/20261025/1792949210-temp-pkjuqjcsnmi9bpgfpab_cimlap-normal.jpg",
+      "imageAlt": "Külföldön is kígyózó sorokban álltak az emberek, hogy szavazhassanak a szerbiai választáson",
+      "addedAt": "2026-10-25T19:59:01.759Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-24hu-ketharmadhoz-kozel-a-reszvetel-sulyos-vadak-d6bf5b",
+      "title": "Kétharmadhoz közel a részvétel, súlyos vádak kísérik a szavazást Szerbiában",
+      "summary": "Délután hat óráig a választópolgárok 64,8 százaléka szavazott a szerbiai parlamenti választáson. A magas részvétel mellett a megfigyelők számos szabálytalanságot is jelentettek. The post Kétharmadhoz közel a részvétel, súlyos vádak kísérik a szavazást Szerbiában first appeared on 24.hu .",
+      "date": "2026-10-25T18:15:25.000Z",
+      "url": "https://24.hu/kulfold/2026/10/25/szerbia-valasztas-64-8-szazalek-reszvetel-szabalytalansagok/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Nagyvilág",
+        "szerbia",
+        "választás"
+      ],
+      "author": "D. Kovács Ildikó",
+      "theme": "politika",
+      "image": "https://s.24.hu/app/uploads/2026/10/000_d4d96we-e1792952077733-1024x575.jpg",
+      "imageAlt": "Kétharmadhoz közel a részvétel, súlyos vádak kísérik a szavazást Szerbiában",
+      "addedAt": "2026-10-25T19:59:05.627Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-hvg-milyen-erzes-a-vilag-egy-kisbaba-szamara-1df7c9",
+      "title": "Milyen érzés a világ egy kisbaba számára?",
+      "summary": "Amikor egy baba megszületik, még annyira fejletlen, hogy a világot egyszerű ingerek révén tapasztalja meg, amelyek az öt érzékszerven keresztül az alsó agyterületekbe jutnak. Szerkesztett részlet a Mi jár a kisbabám fejében? című könyvből.",
+      "date": "2026-10-25T18:15:00.000Z",
+      "url": "https://hvg.hu/hvgkonyvek/20261025_milyen-erzes-a-vilag-egy-kisbaba-szamara",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "HVG Könyvek",
+        "pszichológia",
+        "újszülött"
+      ],
+      "author": "szerzo@hvg.hu (HVG Könyvek)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/9ec9b479-ed6e-4b85-9942-7f1e994a8e79.jpg",
+      "imageAlt": "Milyen érzés a világ egy kisbaba számára?",
+      "addedAt": "2026-10-25T19:59:02.895Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-24hu-a-nagy-korkulonbseg-miatt-kert-intimitas-45ca0b",
+      "title": "A nagy korkülönbség miatt kért intimitás-koordinátort Emily Osment Az ifjú Sheldon forgatásán",
+      "summary": "Emily Osmentnek kellemetlen volt, hogy a nála tizenkét évvel fiatalabb Montana Jordannel kellett The post A nagy korkülönbség miatt kért intimitás-koordinátort Emily Osment Az ifjú Sheldon forgatásán first appeared on 24.hu .",
+      "date": "2026-10-25T18:11:23.000Z",
+      "url": "https://24.hu/kultura/2026/10/25/a-nagy-korkulonbseg-miatt-kert-intimitas-koordinatort-emily-osment-az-ifju-sheldon-forgatasan/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Kultúra",
+        "az ifjú sheldon",
+        "filmtv",
+        "intimitás-koordinátor"
+      ],
+      "author": "Varga Zsuzsa",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/10/063_2146981708-e1792951319941.jpg",
+      "imageAlt": "A nagy korkülönbség miatt kért intimitás-koordinátort Emily Osment Az ifjú Sheldon forgatásán",
+      "addedAt": "2026-10-25T19:59:05.627Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-444-inkubator-olyan-magyarorszagot-epitettek-f77ebc",
+      "title": "Inkubátor: Olyan Magyarországot építettek Amerikában, ami otthon már nem létezik",
+      "summary": "Amerikában születtek, magyaroknak nevelték őket – de hol van igazán otthon az 1956-os menekültek második generációja? Erről szól többek között Pigniczky Réka Inkubátor című dokumentumfilme.",
+      "date": "2026-10-25T18:01:25.000Z",
+      "url": "https://444.hu/2026/10/25/inkubator-olyan-magyarorszagot-epitettek-amerikaban-ami-otthon-mar-nem-letezik?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "Pigniczky Réka",
+        "dokumentumfilm",
+        "madoke",
+        "Egyesült Államok"
+      ],
+      "author": "Fődi Kitti",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8PGVCS07fjh7UyHQs.jpeg",
+      "imageAlt": "Inkubátor: Olyan Magyarországot építettek Amerikában, ami otthon már nem létezik",
+      "addedAt": "2026-10-25T19:59:02.558Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-hvg-szoboszlai-serult-de-nelkule-is-nyerni-dae236",
+      "title": "Szoboszlai sérült, de nélküle is nyerni tudott a Liverpool",
+      "summary": "Szoboszlai Dominik és Kerkez Milos klubja, a Liverpool otthon 2-0-ra legyőzte a harmadik helyen álló és remek formában lévő Brighton csapatát az angol labdarúgó-bajnokság nyolcadik fordulójában, vasárnap.",
+      "date": "2026-10-25T17:57:25.000Z",
+      "url": "https://hvg.hu/sport/20261025_szoboszlai-serult-de-nelkule-is-nyerni-tudott-a-liverpool",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Sport",
+        "sport",
+        "Liverpool",
+        "Szoboszlai Dominik"
+      ],
+      "author": "szerzo@hvg.hu (MTI)",
+      "theme": "sigurnost",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/e48f0134-1c9b-47dd-aa19-f65c31143439.jpg",
+      "imageAlt": "Szoboszlai sérült, de nélküle is nyerni tudott a Liverpool",
+      "addedAt": "2026-10-25T19:59:02.895Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-444-utcan-szaladgalo-javorszarvas-szinesitette-c3a7a3",
+      "title": "Utcán szaladgáló jávorszarvas színesítette a debreceniek vasárnap reggelét",
+      "summary": "Lehet, hogy a lassan csituló bőgési időszak kangörcsét futkározta le az eltévedt állat, ami évszázadok óta nem őshonos Magyarországon.",
+      "date": "2026-10-25T17:45:36.000Z",
+      "url": "https://444.hu/2026/10/25/utcan-szaladgalo-javorszarvas-szinesitette-a-debreceniek-vasarnap-reggelet?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "szarvas",
+        "jávorszarvas",
+        "debrecen",
+        "szarvasbőgés"
+      ],
+      "author": "Mohos Máté",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8PLQlgxVlDkBWuMks.png",
+      "imageAlt": "Utcán szaladgáló jávorszarvas színesítette a debreceniek vasárnap reggelét",
+      "addedAt": "2026-10-25T19:59:02.558Z"
+    },
     {
       "slug": "budimpesta-2026-10-25-portfolio-16-oraig-tobb-mint-56-szazalek-szavazott-3ea3eb",
       "title": "16 óráig több mint 56 százalék szavazott Szerbiában",
@@ -7553,509 +8051,6 @@
       "image": "https://s.24.hu/app/uploads/2026/10/central-0499908181-5-e1792697956829-1024x577.jpg",
       "imageAlt": "Hatos lottó: itt vannak az október 22-i nyerőszámok",
       "addedAt": "2026-10-22T19:56:33.152Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-444-ronai-egon-tavozik-az-atv-tol-6563ef",
-      "title": "Rónai Egon távozik az ATV-től",
-      "summary": "A 24 úgy tudja, hogy a műsorvezető a Network4 Media Groupnál folytatja.",
-      "date": "2026-10-22T19:39:15.000Z",
-      "url": "https://444.hu/2026/10/22/ronai-egon-tavozik-az-atv-tol?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
-      "source": "444",
-      "sourceName": "444",
-      "categories": [
-        "network4",
-        "kontroll",
-        "magyar márton",
-        "rónai egon"
-      ],
-      "author": "Herczeg Márk",
-      "theme": "drustvo",
-      "image": "https://assets.4cdn.hu/kraken/8GeDTwGL5KuL1KhwHs.jpeg",
-      "imageAlt": "Rónai Egon távozik az ATV-től",
-      "addedAt": "2026-10-22T19:56:30.548Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-hvg-tavozik-az-atv-tol-ronai-egon-a77309",
-      "title": "Távozik az ATV-től Rónai Egon",
-      "summary": "A műsorvezető 2011-óta dolgozott a csatornánál.",
-      "date": "2026-10-22T19:38:25.000Z",
-      "url": "https://hvg.hu/itthon/20261022_tavozik-az-atv-tol-ronai-egon",
-      "source": "hvg",
-      "sourceName": "HVG",
-      "categories": [
-        "Itthon",
-        "média",
-        "Rónai Egon",
-        "távozás"
-      ],
-      "author": "szerzo@hvg.hu (HVG)",
-      "theme": "drustvo",
-      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/4a80765f-7825-4c28-a1bd-d2decf2c4105.jpg",
-      "imageAlt": "Távozik az ATV-től Rónai Egon",
-      "addedAt": "2026-10-22T19:56:30.831Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-24hu-szinpompas-borzongas-mexikoi-halloweeni-856416",
-      "title": "Színpompás borzongás: mexikói halloweeni varázslat vár a Familyparkban",
-      "summary": "Színpompás koponyák, különleges karakterek, fergeteges show-műsorok és hamisítatlan halloweeni varázslat: idén ősszel a Familypark újra lenyűgöző családi élményvilággá alakul. The post Színpompás borzongás: mexikói halloweeni varázslat vár a Familyparkban first appeared on 24.hu .",
-      "date": "2026-10-22T19:37:07.000Z",
-      "url": "https://24.hu/kultura/2026/10/22/familypark-halloween-elmeny-ausztria/",
-      "source": "24hu",
-      "sourceName": "24.hu",
-      "categories": [
-        "Kultúra",
-        "familypark",
-        "halloween"
-      ],
-      "author": "Szponzorált tartalom",
-      "theme": "drustvo",
-      "image": "https://s.24.hu/app/uploads/2026/10/fp_halloween-parade-cpayer_1140-e1791477000472-1024x576.jpg",
-      "imageAlt": "Színpompás borzongás: mexikói halloweeni varázslat vár a Familyparkban",
-      "addedAt": "2026-10-22T19:56:33.152Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-24hu-putyin-moszkva-keszen-all-a-haromoldalu-04ad61",
-      "title": "Putyin: Moszkva készen áll a háromoldalú tárgyalások felújítására",
-      "summary": "Moszkva figyelni fogja, hogyan alakul a helyzet a konfliktus rendezése ügyében az elkövetkező napokban. Megismételte, hogy Oroszország nem készül háborúra Európával. The post Putyin: Moszkva készen áll a háromoldalú tárgyalások felújítására first appeared on 24.hu .",
-      "date": "2026-10-22T19:35:20.000Z",
-      "url": "https://24.hu/kulfold/2026/10/22/vlagyimir-putyin-orosz-ukran-haboru-haromoldalu-targyalasok/",
-      "source": "24hu",
-      "sourceName": "24.hu",
-      "categories": [
-        "Nagyvilág",
-        "oroszország",
-        "ukrajna",
-        "orosz-ukrán háború"
-      ],
-      "author": "Vaskor Máté",
-      "theme": "rat",
-      "image": "https://s.24.hu/app/uploads/2026/10/000_d46a7w9-e1792697703137.jpg",
-      "imageAlt": "Putyin: Moszkva készen áll a háromoldalú tárgyalások felújítására",
-      "addedAt": "2026-10-22T19:56:33.153Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-telex-ronai-egon-otthagyja-az-atv-t-e5ad8b",
-      "title": "Rónai Egon otthagyja az ATV-t",
-      "summary": "A csatorna egyik arcának számító Rónai több mint tizenöt év után távozik.",
-      "date": "2026-10-22T19:34:57.000Z",
-      "url": "https://telex.hu/after/2026/10/22/ronai-egon-otthagyja-az-atv-t",
-      "source": "telex",
-      "sourceName": "Telex",
-      "categories": [
-        "After"
-      ],
-      "author": "Fehér János",
-      "theme": "drustvo",
-      "image": "https://assets.telex.hu/images/20261022/1792697571-temp-j0cr2dlcdmad8bcngaj_cimlap-normal.jpg",
-      "imageAlt": "Rónai Egon otthagyja az ATV-t",
-      "addedAt": "2026-10-22T19:56:30.386Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-portfolio-teruleteket-adna-fel-ukrajna-ujra-elokerult-4df4da",
-      "title": "Területeket adna fel Ukrajna, újra előkerült a béketárgyalás lehetősége - Híreink az orosz-ukrán háborúból csütörtökön",
-      "summary": "Vologyimir Zelenszkij ukrán elnök bejelentette, hogy Kijev hajlandó lenne a jelenlegi frontvonalak mentén befagyasztani a harcokat - bár erre Moszkva részéről kevés hajlandóság mutatkozik -. A szentpétervári, Ukrajna meghívása nélkül rendezett békecsúcs Kijev számára nem igazán hozott eredményt, de Moszkva szerint elképzelhető, hogy november közepén a háromoldalú találkozók is megindulhatnak. A frontvonalakon továbbra is csigalassúságú az orosz előretörés, Ukrajnának viszont egyre nagyobb gondot okoznak a sugárhajtású Gerány-4-es drónok. Cikkünk folyamatosan frissül az orosz-ukrán háború legfontosabb híreivel.",
-      "date": "2026-10-22T19:31:00.000Z",
-      "url": "https://www.portfolio.hu/global/20261022/teruleteket-adna-fel-ukrajna-ujra-elokerult-a-beketargyalas-lehetosege-hireink-az-orosz-ukran-haborubol-csutortokon-871350",
-      "source": "portfolio",
-      "sourceName": "Portfolio",
-      "categories": [
-        "Globál"
-      ],
-      "author": "",
-      "theme": "rat",
-      "image": "https://pcdn.hu/articles/images-xl/g/e/t/gettyimages-2260784910-863846.jpg",
-      "imageAlt": "Területeket adna fel Ukrajna, újra előkerült a béketárgyalás lehetősége - Híreink az orosz-ukrán háborúból csütörtökön",
-      "addedAt": "2026-10-22T19:56:31.363Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-portfolio-beszoritottak-a-forintot-estere-8a5323",
-      "title": "Beszorították a forintot estére",
-      "summary": "Harmadik napja gyengül a forint az euróval szemben, reggel az euró 365,7, a dollár pedig 325 forint körül állt. A befektetők egyre idegesebbek a francia kötvénypiac helyzete miatt, és az olajpiacon is nő a feszültség. Egyes elemzők szerint az ERM-2-be való belépés időpontja körüli bizonytalanság is hozzájárulhat a forint gyengüléséhez. A mai nap az olajárak emelkedése mellett a tőzsdék esése ami mozgatja a nemzetközi hangulatot. Ilyen helyzetben a forintnak sincsen könnyű dolga és ezért gynegül az euróval és a dollárral szemben is.",
-      "date": "2026-10-22T19:31:00.000Z",
-      "url": "https://www.portfolio.hu/deviza/20261022/beszoritottak-a-forintot-estere-871372",
-      "source": "portfolio",
-      "sourceName": "Portfolio",
-      "categories": [
-        "Deviza"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://pcdn.hu/articles/images-xl/f/o/r/forint-keszpenz-arfolyam-610123.jpg",
-      "imageAlt": "Beszorították a forintot estére",
-      "addedAt": "2026-10-22T19:56:31.363Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-portfolio-szemelyesen-trump-kerte-meg-elon-muskot-3bf096",
-      "title": "Személyesen Trump kérte meg Elon Muskot, hogy állítsa helyre Ukrajna kritikus infrastruktúráját",
-      "summary": "Donald Trump személyesen hívta fel Elon Muskot, kérve a Starlink műholdas internetszolgáltatás ukrajnai korlátozásainak feloldását, írja a Reuters, a Wall Street Journal amerikai tisztségviselőktől származó értesülései nyomán.",
-      "date": "2026-10-22T19:31:00.000Z",
-      "url": "https://www.portfolio.hu/global/20261022/szemelyesen-trump-kerte-meg-elon-muskot-hogy-allitsa-helyre-ukrajna-kritikus-infrastrukturajat-871644",
-      "source": "portfolio",
-      "sourceName": "Portfolio",
-      "categories": [
-        "Globál"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://pcdn.hu/articles/images-xl/g/e/t/gettyimages-2259661332-864170.jpg",
-      "imageAlt": "Személyesen Trump kérte meg Elon Muskot, hogy állítsa helyre Ukrajna kritikus infrastruktúráját",
-      "addedAt": "2026-10-22T19:56:31.363Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-444-tanuvallomasra-kotelezne-a-birosag-trumpot-43bb44",
-      "title": "Tanúvallomásra kötelezné a bíróság Trumpot: figyelmeztették, hogy vegye komolyan a pert, ha már egyszer elindította",
-      "summary": "Az amerikai elnök 10 milliárd dollárra perli a BBC-t. A bíróság most figyelmeztette, hogy komolyabban kéne dolgoznia a bizonyítékok összegyűjtésén.",
-      "date": "2026-10-22T19:25:29.000Z",
-      "url": "https://444.hu/2026/10/22/tanuvallomasra-kotelezne-a-birosag-trumpot-figyelmeztettek-hogy-vegye-komolyan-a-pert-ha-mar-egyszer-elinditotta?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
-      "source": "444",
-      "sourceName": "444",
-      "categories": [
-        "bíróság",
-        "bizonyíték",
-        "bbc",
-        "tanúvallomás"
-      ],
-      "author": "Mohos Máté",
-      "theme": "drustvo",
-      "image": "https://assets.4cdn.hu/kraken/8OxMYi3CQStL1Ym12Ws.jpeg",
-      "imageAlt": "Tanúvallomásra kötelezné a bíróság Trumpot: figyelmeztették, hogy vegye komolyan a pert, ha már egyszer elindította",
-      "addedAt": "2026-10-22T19:56:30.548Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-hvg-elbocsatasok-kezdodtek-az-ivancsai-d48b6a",
-      "title": "Elbocsátások kezdődtek az iváncsai akkugyárban",
-      "summary": "A vállalat szerint „az aktuális üzleti feltételekhez” való igazodás miatt „elkerülhetetlen” volt a lépés.",
-      "date": "2026-10-22T19:25:00.000Z",
-      "url": "https://hvg.hu/kkv/20261022_ivancsa-sk-on-hungary-akkumulatorgyar-elbocsatasok",
-      "source": "hvg",
-      "sourceName": "HVG",
-      "categories": [
-        "Vállalkozás",
-        "ipar",
-        "SK On Hungary",
-        "iváncsai akkumulátorgyár"
-      ],
-      "author": "szerzo@hvg.hu (MTI)",
-      "theme": "drustvo",
-      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/d4d0c658-2963-4df3-aef3-ffc2b9426ceb.jpg",
-      "imageAlt": "Elbocsátások kezdődtek az iváncsai akkugyárban",
-      "addedAt": "2026-10-22T19:56:30.831Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-telex-varatlanul-tobb-magyar-munkavallalot-6688c2",
-      "title": "Váratlanul több magyar munkavállalót elbocsátottak az iváncsai akkumulátorgyárból",
-      "summary": "Dolgozók szerint további leépítések várhatók az SK On Hungarynél.",
-      "date": "2026-10-22T19:23:36.000Z",
-      "url": "https://telex.hu/gazdasag/2026/10/22/tobb-magyar-munkavallalot-elbocsatottak-az-ivancsai-akkumulatorgyarbol",
-      "source": "telex",
-      "sourceName": "Telex",
-      "categories": [
-        "Gazdaság"
-      ],
-      "author": "Fehér János",
-      "theme": "drustvo",
-      "image": "https://assets.telex.hu/images/20261022/1792696958-temp-soe43n9jdlutcfkhccj_cimlap-normal.jpg",
-      "imageAlt": "Váratlanul több magyar munkavállalót elbocsátottak az iváncsai akkumulátorgyárból",
-      "addedAt": "2026-10-22T19:56:30.386Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-24hu-ronai-egon-tavozik-az-atv-tol-0bbc94",
-      "title": "Rónai Egon távozik az ATV-től",
-      "summary": "Rónai Egon távozik az ATV-től. A műsorvezető 2011 óta dolgozik a csatornánál, politikai-közéleti és portréműsorokat is vezetett. The post Rónai Egon távozik az ATV-től first appeared on 24.hu .",
-      "date": "2026-10-22T19:18:50.000Z",
-      "url": "https://24.hu/kultura/2026/10/22/ronai-egon-tavozas-atv/",
-      "source": "24hu",
-      "sourceName": "24.hu",
-      "categories": [
-        "Kultúra",
-        "rónai egon",
-        "atv",
-        "távozás"
-      ],
-      "author": "Besenyei Balázs",
-      "theme": "politika",
-      "image": "https://s.24.hu/app/uploads/2026/10/central-0680618827-e1792695582722-1024x576.jpg",
-      "imageAlt": "Rónai Egon távozik az ATV-től",
-      "addedAt": "2026-10-22T19:56:33.153Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-24hu-fidesz-szijjarto-peter-orban-anita-22-552-0-16ef89",
-      "title": "Fidesz: Szijjártó Péter–Orbán Anita 22 552–0",
-      "summary": "Megérkezett a válasz arra, hogy a jelenlegi külügyminiszter kevesebbet költ az utazásaira, mint az elődje. The post Fidesz: Szijjártó Péter–Orbán Anita 22 552–0 first appeared on 24.hu .",
-      "date": "2026-10-22T19:13:40.000Z",
-      "url": "https://24.hu/fn/gazdasag/2026/10/22/orban-anita-szijjarto-peter-utazas-koltsegek-fidesz-frakcio-reakcio/",
-      "source": "24hu",
-      "sourceName": "24.hu",
-      "categories": [
-        "Gazdaság",
-        "fidesz",
-        "orbán anita",
-        "szijjártó péter"
-      ],
-      "author": "Vaskor Máté",
-      "theme": "drustvo",
-      "image": "https://s.24.hu/app/uploads/2026/10/d_noe20261005002-e1792696367480-1024x577.jpg",
-      "imageAlt": "Fidesz: Szijjártó Péter–Orbán Anita 22 552–0",
-      "addedAt": "2026-10-22T19:56:33.153Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-telex-trump-megcsorgette-a-google-7b3c1d",
-      "title": "Trump megcsörgette a Google vezérigazgatóját, hogy át kellene nevezni az Atlanti-óceánt",
-      "summary": "Az amerikai elnök szerint Sundar Pichainak nem tetszett az ötlet.",
-      "date": "2026-10-22T19:12:00.000Z",
-      "url": "https://telex.hu/kulfold/2026/10/22/donald-trump-atlanti-ocean-atnevezes-google-maps-sundar-pichai",
-      "source": "telex",
-      "sourceName": "Telex",
-      "categories": [
-        "Külföld"
-      ],
-      "author": "Szántó-Nagy Bálint",
-      "theme": "drustvo",
-      "image": "https://assets.telex.hu/images/20261022/1792696086-temp-dm01mmmho3v3aeebddj_cimlap-normal.jpg",
-      "imageAlt": "Trump megcsörgette a Google vezérigazgatóját, hogy át kellene nevezni az Atlanti-óceánt",
-      "addedAt": "2026-10-22T19:56:30.386Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-hvg-harmadik-meccset-is-megnyerte-a-ferencvaros-fb076f",
-      "title": "Harmadik meccsét is megnyerte a Ferencváros az Európa-liga főtábláján",
-      "summary": "A zöld-fehérek a portugál másodosztályú Torreensét győzték le.",
-      "date": "2026-10-22T19:10:00.000Z",
-      "url": "https://hvg.hu/sport/20261022_labdarugas-europa-liga-fotabla-ferencvaros-torreense",
-      "source": "hvg",
-      "sourceName": "HVG",
-      "categories": [
-        "Sport",
-        "foci",
-        "Ferencvárosi TC",
-        "Európa Liga"
-      ],
-      "author": "szerzo@hvg.hu (MTI)",
-      "theme": "sport",
-      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/449e7cad-2111-45b8-8315-d7ce7947ac17.jpg",
-      "imageAlt": "Harmadik meccsét is megnyerte a Ferencváros az Európa-liga főtábláján",
-      "addedAt": "2026-10-22T19:56:30.832Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-hvg-annyira-fel-a-ner-elit-a-pegasustol-hogy-b68979",
-      "title": "Annyira fél a NER-elit a Pegasustól, hogy elkezdtek amerikai telefonszámokat igényelni maguknak",
-      "summary": "A megfigyelőprogram mögött álló cég, az NSO Group ugyanis nem engedélyezi az ügyfeleinek, hogy amerikai hívószámmal bíró telefonokra telepítsék.",
-      "date": "2026-10-22T18:50:04.000Z",
-      "url": "https://hvg.hu/tudomany/20261022_amerikai-orszagkod-telefonszam-ner-elit-felelem-pegasus",
-      "source": "hvg",
-      "sourceName": "HVG",
-      "categories": [
-        "Tech",
-        "politika",
-        "Pegasus-ügy",
-        "megfigyelés"
-      ],
-      "author": "szerzo@hvg.hu (HVG)",
-      "theme": "drustvo",
-      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/9d59472c-4a3d-4c8a-9533-58dd8d5b54a8.jpg",
-      "imageAlt": "Annyira fél a NER-elit a Pegasustól, hogy elkezdtek amerikai telefonszámokat igényelni maguknak",
-      "addedAt": "2026-10-22T19:56:30.832Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-444-harmadik-meccset-is-megnyerte-a-fradi-az-4fb534",
-      "title": "Harmadik meccsét is megnyerte a Fradi az Európa-ligában",
-      "summary": "A portugál másodosztályú Torreensét verték 4-1-re, a következő körben az AC Milannal játszik az FTC.",
-      "date": "2026-10-22T18:46:59.000Z",
-      "url": "https://444.hu/2026/10/22/harmadik-meccset-is-megnyerte-a-fradi-az-europa-ligaban?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
-      "source": "444",
-      "sourceName": "444",
-      "categories": [
-        "európa liga",
-        "Ferencváros",
-        "ftc",
-        "Torreense"
-      ],
-      "author": "Haszán Zoltán",
-      "theme": "drustvo",
-      "image": "https://assets.4cdn.hu/kraken/8PGrwsKYeNfKx4dPs.jpeg",
-      "imageAlt": "Harmadik meccsét is megnyerte a Fradi az Európa-ligában",
-      "addedAt": "2026-10-22T19:56:30.548Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-telex-a-fradi-4-1-re-verte-a-portugal-torreenset-da8522",
-      "title": "A Fradi 4-1-re verte a portugál Torreensét az Európa-liga harmadik fordulójában",
-      "summary": "Szárnyal a Fradi az El-ben, a rangsor második helyén áll Borbély csapata.",
-      "date": "2026-10-22T18:35:07.000Z",
-      "url": "https://telex.hu/sport/2026/10/22/ferencvaros-europa-liga-torreense",
-      "source": "telex",
-      "sourceName": "Telex",
-      "categories": [
-        "Sport"
-      ],
-      "author": "Ághassi Attila",
-      "theme": "sport",
-      "image": "https://assets.telex.hu/images/20261022/1792693085-temp-h26cqps8s3njcibabno_cimlap-normal.jpg",
-      "imageAlt": "A Fradi 4-1-re verte a portugál Torreensét az Európa-liga harmadik fordulójában",
-      "addedAt": "2026-10-22T19:56:30.386Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-telex-tizezrek-tuntettek-becsben-az-egyetemek-c55e95",
-      "title": "Tízezrek tüntettek Bécsben az egyetemek költségvetésének megvágása miatt",
-      "summary": "Legalább kétmilliárd euró hiányzik az egyetemekről, ami létszámcsökkentésekkel járhat, az orvosképzésre is hatással lehet.",
-      "date": "2026-10-22T18:30:25.000Z",
-      "url": "https://telex.hu/kulfold/2026/10/22/tobb-tizezer-egyetemista-tuntet-becsben-egyetemi-koltsegvetes",
-      "source": "telex",
-      "sourceName": "Telex",
-      "categories": [
-        "Külföld"
-      ],
-      "author": "Fehér János",
-      "theme": "drustvo",
-      "image": "https://assets.telex.hu/images/20261022/1792692855-temp-9arakadtv1nj1hapbkp_cimlap-normal.jpg",
-      "imageAlt": "Tízezrek tüntettek Bécsben az egyetemek költségvetésének megvágása miatt",
-      "addedAt": "2026-10-22T19:56:30.386Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-telex-rendkivul-sulyosak-a-serulekenysegek-amik-cccf5d",
-      "title": "Rendkívül súlyosak a sérülékenységek, amik miatt a magyarorszag.hu-t is lelőtték, de már van megoldás",
-      "summary": "A PHP programnyelv régóta ismert hibájáról derítették ki mesterséges intelligencia segítségével, hogyan lehet kihasználni, és észrevétlenül, hitelesítés nélkül bejutni webszerverekre, ahol aztán már bármit meg lehet tenni. A kiskaput mostanra bezárták, de a folyamat nem volt túl gördülékeny, ezért lett belőle ekkora ügy.",
-      "date": "2026-10-22T18:26:39.000Z",
-      "url": "https://telex.hu/techtud/2026/10/22/serulekenyseg-php-kiberbiztonsag-openai-wiz-mesterseges-intelligencia-javitas",
-      "source": "telex",
-      "sourceName": "Telex",
-      "categories": [
-        "Techtud"
-      ],
-      "author": "Flachner Balázs",
-      "theme": "ai",
-      "image": "https://assets.telex.hu/images/20261022/1792676295-temp-un9l1sv38pu54nfilnk_cimlap-normal.jpg",
-      "imageAlt": "Rendkívül súlyosak a sérülékenységek, amik miatt a magyarorszag.hu-t is lelőtték, de már van megoldás",
-      "addedAt": "2026-10-22T19:56:30.386Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-portfolio-irani-bankot-kapcsoltak-le-nemetorszagban-30db6c",
-      "title": "Iráni bankot kapcsoltak le Németországban",
-      "summary": "A BaFin német pénzügyi felügyelet csütörtökön bejelentette, hogy a szankciók nyomán visszavonta az iráni Bank Saderat hamburgi fiókjának működési engedélyét, és elrendelte a pénzintézet felszámolását - írja a Reuters.",
-      "date": "2026-10-22T06:05:00.000Z",
-      "url": "https://www.portfolio.hu/bank/20261022/irani-bankot-kapcsoltak-le-nemetorszagban-871366",
-      "source": "portfolio",
-      "sourceName": "Portfolio",
-      "categories": [
-        "Bank"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://pcdn.hu/articles/images-lg/t/o/v/tovabb-nott-a-nemetorszagban-elo-magyarok-szama-311049.jpg",
-      "imageAlt": "Iráni bankot kapcsoltak le Németországban",
-      "addedAt": "2026-10-22T06:08:01.915Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-hvg-a-durva-aszaly-utan-visszavett-novekedesi-ec2c7f",
-      "title": "A durva aszály után visszavett növekedési előrejelzéséből a Kopint-Tárki",
-      "summary": "Két százalékponttal lefelé módosították a prognózist, az . Az árak idén 1,8, jövőre 2,7 százalékkal emelkedhetnek a kutatók szerint.",
-      "date": "2026-10-22T06:04:42.000Z",
-      "url": "https://hvg.hu/gazdasag/20261022_konjunkturajelentes-kopint-tarki-kozgazdasag-gazdasag-gdp-novekedes-aremelkedes-prognozis",
-      "source": "hvg",
-      "sourceName": "HVG",
-      "categories": [
-        "Gazdaság",
-        "gazdaságpolitika",
-        "Kopint-Tárki",
-        "konjunktúra"
-      ],
-      "author": "szerzo@hvg.hu (HVG)",
-      "theme": "drustvo",
-      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/a9ce97f1-1bc7-4dee-80ca-f902199fb7a8.jpg",
-      "imageAlt": "A durva aszály után visszavett növekedési előrejelzéséből a Kopint-Tárki",
-      "addedAt": "2026-10-22T06:08:00.877Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-hvg-teljesen-veletlenul-jott-ra-nehany-magyar-0a5df0",
-      "title": "Teljesen véletlenül jött rá néhány magyar tudós valamire, ami átírhatja a gyógyszerek világát",
-      "summary": "Új fehérjejelölési eljárást dolgoztak ki a HUN-REN Természettudományi Kutatóközpont (TTK) kutatói. Szokatlan módon tulajdonképpen véletlenül. Az eljárás új lehetőségeket teremt a biológiai folyamatok és a gyógyszercélpontok vizsgálatában.",
-      "date": "2026-10-22T06:03:00.000Z",
-      "url": "https://hvg.hu/tudomany/20261022_feherjejelolesi-eljaras-hun-ren-gyogyszerfejlesztes",
-      "source": "hvg",
-      "sourceName": "HVG",
-      "categories": [
-        "Tech",
-        "tudomány",
-        "biológia",
-        "fehérje"
-      ],
-      "author": "szerzo@hvg.hu (HVG)",
-      "theme": "sigurnost",
-      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/21f12d24-1849-49ee-9ad7-37c1cf8a3acf.jpg",
-      "imageAlt": "Teljesen véletlenül jött rá néhány magyar tudós valamire, ami átírhatja a gyógyszerek világát",
-      "addedAt": "2026-10-22T06:08:00.877Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-hvg-gergely-marton-jaj-a-gyozteseknek-2f3c4a",
-      "title": "Gergely Márton: Jaj a győzteseknek!",
-      "summary": "Az áprilisi választás után eljöttek a gyötrelmes hétköznapok: obstruált ügyészségi nyomozások kibogozása, a Szőlő utca botrány utóélete, kormányzati birkózás az energetika területén, a magyar-ukrán viszony rendezése. Az 1956-os forradalom évfordulója más fénytörésbe helyezi az Európa- és világszerte dühös fiatalok lázadását. Ez a Fülszöveg, az e heti HVG ajánlója.",
-      "date": "2026-10-22T06:00:00.000Z",
-      "url": "https://hvg.hu/360/20261022_hvg-gergely-marton-jaj-agyozteseknek-fulszoveg-lapajanlo",
-      "source": "hvg",
-      "sourceName": "HVG",
-      "categories": [
-        "hvg360",
-        "vélemény",
-        "fülszöveg",
-        "lapajánló"
-      ],
-      "author": "szerzo@hvg.hu (Gergely Márton)",
-      "theme": "politika",
-      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/e3b34886-156b-4afa-bddd-df7800f73b42.jpg",
-      "imageAlt": "Gergely Márton: Jaj a győzteseknek!",
-      "addedAt": "2026-10-22T06:08:00.877Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-hvg-rendszam-nelkuli-akar-2000-loeros-alcazott-6d870c",
-      "title": "Rendszám nélküli, akár 2000 lóerős álcázott BYD sportkocsiba botlottunk Budapesten",
-      "summary": "Az összkerék-hajtású elektromos Denza Z sportkupét egy nyilvános töltőn kaptuk lencsevégre.",
-      "date": "2026-10-22T05:59:00.000Z",
-      "url": "https://hvg.hu/cegauto/20261022_rendszam-nelkuli-akar-2000-loeros-alcazott-byd-denza-z-sportkocsi-budapest",
-      "source": "hvg",
-      "sourceName": "HVG",
-      "categories": [
-        "Autó",
-        "autó",
-        "BYD",
-        "Denza"
-      ],
-      "author": "szerzo@hvg.hu (HVG)",
-      "theme": "sport",
-      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/a2728a8a-8c6f-4008-8bae-6bd2446e6eb7.jpg",
-      "imageAlt": "Rendszám nélküli, akár 2000 lóerős álcázott BYD sportkocsiba botlottunk Budapesten",
-      "addedAt": "2026-10-22T06:08:00.877Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-portfolio-megszunik-egy-ismert-tevecsatorna-949309",
-      "title": "Megszűnik egy ismert tévécsatorna Magyarországon",
-      "summary": "Közel tizennyolc év működés után megszűnik a Muzsika TV, helyét pedig az RTL Magyarország új szórakoztató csatornája, a PRIZMA veszi át - tudósított a Kreatív .",
-      "date": "2026-10-22T05:56:00.000Z",
-      "url": "https://www.portfolio.hu/uzlet/20261022/megszunik-egy-ismert-tevecsatorna-magyarorszagon-871362",
-      "source": "portfolio",
-      "sourceName": "Portfolio",
-      "categories": [
-        "Üzlet"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://pcdn.hu/articles/images-xl/g/e/t/gettyimages-2165025633-streaming-netflix-televizio-teve-film-sorozat-otthon-pihenes-szabadido-842572.jpg",
-      "imageAlt": "Megszűnik egy ismert tévécsatorna Magyarországon",
-      "addedAt": "2026-10-22T06:08:01.915Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-portfolio-elestek-a-bankok-azonnal-magyarazatot-113c9d",
-      "title": "Elestek a bankok, azonnal magyarázatot követelnek a Google-től a pénzügyi szektort megbénító leállás miatt",
-      "summary": "Az európai pénzügyi felügyeletek magyarázatot várnak a Google-tól, miután a Google Cloud keddi leállása órákra megbénította több nagybank digitális szolgáltatásait, így több millió ügyfél maradt hozzáférés nélkül. November 10-én erről a témáról is szó lesz a Portfolio Banking Technology konferenciáján. Regisztráció és részletek itt!",
-      "date": "2026-10-22T05:46:00.000Z",
-      "url": "https://www.portfolio.hu/bank/20261022/elestek-a-bankok-azonnal-magyarazatot-kovetelnek-a-google-tol-a-penzugyi-szektort-megbenito-leallas-miatt-871360",
-      "source": "portfolio",
-      "sourceName": "Portfolio",
-      "categories": [
-        "Bank"
-      ],
-      "author": "",
-      "theme": "sigurnost",
-      "image": "https://pcdn.hu/articles/images-xl/g/o/o/google-play-android-hacker-kiberbiztonsag-malware-689143.jpg",
-      "imageAlt": "Elestek a bankok, azonnal magyarázatot követelnek a Google-től a pénzügyi szektort megbénító leállás miatt",
-      "addedAt": "2026-10-22T06:08:01.915Z"
     }
   ]
 }

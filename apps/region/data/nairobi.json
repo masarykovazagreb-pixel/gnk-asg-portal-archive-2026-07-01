@@ -4,7 +4,7 @@
   "lang": "en",
   "city": "Nairobi",
   "country": "Kenija",
-  "updatedAt": "2026-10-25T17:40:18.769Z",
+  "updatedAt": "2026-10-25T20:02:34.841Z",
   "sources": [
     {
       "id": "capitalfm",
@@ -14,20 +14,19 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T17:39:40.387Z"
+      "checkedAt": "2026-10-25T20:01:54.730Z"
     },
     {
       "id": "nation",
       "name": "Daily Nation",
-      "url": "https://nation.africa/kenya/rss",
-      "ok": false,
-      "fetched": 0,
+      "url": "https://nation.africa/kenya/rss.xml",
+      "ok": true,
+      "fetched": 25,
       "corrupt": 0,
       "errors": [
-        "https://nation.africa/kenya/rss: HTTP 403",
-        "https://nation.africa/kenya/rss.xml: HTTP 404"
+        "https://nation.africa/kenya/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-25T17:39:42.095Z"
+      "checkedAt": "2026-10-25T20:01:55.618Z"
     },
     {
       "id": "standard",
@@ -39,7 +38,7 @@
       "errors": [
         "https://www.standardmedia.co.ke/rss: nije feed"
       ],
-      "checkedAt": "2026-10-25T17:39:42.911Z"
+      "checkedAt": "2026-10-25T20:01:56.452Z"
     },
     {
       "id": "star",
@@ -51,7 +50,7 @@
       "errors": [
         "https://www.the-star.co.ke/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-25T17:39:44.781Z"
+      "checkedAt": "2026-10-25T20:01:58.185Z"
     },
     {
       "id": "businessdaily",
@@ -63,7 +62,7 @@
       "errors": [
         "https://www.businessdailyafrica.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-25T17:39:45.764Z"
+      "checkedAt": "2026-10-25T20:01:59.185Z"
     },
     {
       "id": "citizen",
@@ -75,7 +74,7 @@
       "errors": [
         "https://www.citizen.digital/rss: HTTP 400"
       ],
-      "checkedAt": "2026-10-25T17:39:55.796Z"
+      "checkedAt": "2026-10-25T20:02:12.082Z"
     },
     {
       "id": "kbc",
@@ -87,7 +86,7 @@
       "errors": [
         "https://www.kbc.co.ke/feed/: fetch failed"
       ],
-      "checkedAt": "2026-10-25T17:40:17.483Z"
+      "checkedAt": "2026-10-25T20:02:33.770Z"
     },
     {
       "id": "eastafrican",
@@ -99,10 +98,50 @@
       "errors": [
         "https://www.theeastafrican.co.ke/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-25T17:40:18.769Z"
+      "checkedAt": "2026-10-25T20:02:34.841Z"
     }
   ],
   "items": [
+    {
+      "slug": "nairobi-2026-10-25-capitalfm-cs-mutua-appoints-atwoli-to-national-board-dd5528",
+      "title": "CS Mutua Appoints Atwoli to National Board for Social Protection",
+      "summary": "NAIROBI, Kenya Oct 25 – Labour and Social Protection Cabinet Secretary Alfred Mutua has appointed Central Organisation of Trade Unions (COTU) Secretary-General Francis Atwoli to the National Board for Social…",
+      "date": "2026-10-25T19:22:00.000Z",
+      "url": "https://capitalfm.africa/cs-mutua-appoints-atwoli-to-national-board-for-social-protection/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "NATIONAL NEWS",
+        "News",
+        "Alfred Mutua",
+        "Atwoli appointment"
+      ],
+      "author": "CORRESPONDENT",
+      "theme": "ekonomija",
+      "image": "https://capitalfm.africa/wp-content/uploads/news/2025/11/FRANCIS-ATWOLI-scaled.jpg",
+      "imageAlt": "CS Mutua Appoints Atwoli to National Board for Social Protection",
+      "addedAt": "2026-10-25T20:01:54.730Z"
+    },
+    {
+      "slug": "nairobi-2026-10-25-capitalfm-muturi-calls-for-binding-livestreaming-d58cda",
+      "title": "Muturi calls for binding livestreaming rules ahead of 2027 polls",
+      "summary": "Muturi wants the IEBC, media, political parties and the government to agree on binding livestreaming rules ahead of the 2027 elections, including safeguards against arbitrary interruptions and technical failures.",
+      "date": "2026-10-25T17:41:34.000Z",
+      "url": "https://capitalfm.africa/muturi-calls-for-binding-livestreaming-rules-ahead-of-2027-polls/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "News",
+        "2027 General Election",
+        "Aurelia Rono",
+        "Bomas of Kenya"
+      ],
+      "author": "CORRESPONDENT",
+      "theme": "politika",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/10/7E93B068-ED54-491F-A5A0-0D95B3B1AB90.jpeg",
+      "imageAlt": "Muturi calls for binding livestreaming rules ahead of 2027 polls",
+      "addedAt": "2026-10-25T20:01:54.730Z"
+    },
     {
       "slug": "nairobi-2026-10-25-capitalfm-ntsa-links-improper-overtaking-to-fatal-d44cbb",
       "title": "NTSA Links Improper Overtaking to Fatal Kanga Crash on Mombasa Highway",
@@ -202,6 +241,36 @@
       "addedAt": "2026-10-25T16:16:17.635Z"
     },
     {
+      "slug": "nairobi-2026-10-25-nation-deadly-road-one-month-three-accidents-and-fe904c",
+      "title": "Deadly road: One month, three accidents and 41 killed in Nairobi-Mombasa highway crashes",
+      "summary": "Fatal road crashes expose the dangers facing motorists on the busy transport corridor.",
+      "date": "2026-10-25T14:40:26.000Z",
+      "url": "https://nation.africa/kenya/news/deadly-road-three-accidents-41-killed-nairobi-mombasa-highway-5645186",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://nation.africa/resource/image/5645272/landscape_ratio16x9/1600/900/854a9b53139a7f18a1a4ac4d40862362/TX/bus-wreckage.jpg",
+      "imageAlt": "Deadly road: One month, three accidents and 41 killed in Nairobi-Mombasa highway crashes",
+      "addedAt": "2026-10-25T20:01:55.618Z"
+    },
+    {
+      "slug": "nairobi-2026-10-25-nation-ruto-dismisses-claims-of-ban-on-live-aa8ab0",
+      "title": "Ruto dismisses claims of ban on live-streaming 2027 election results",
+      "summary": "Ruto accuses opposition leaders of spreading propaganda to mobilise political support.",
+      "date": "2026-10-25T14:38:28.000Z",
+      "url": "https://nation.africa/kenya/news/politics/ruto-dismisses-claims-ban-live-streaming-2027-election-results-5645294",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://nation.africa/resource/image/5645350/landscape_ratio16x9/1600/900/3b987483014b1386d523034c921e4237/uZ/ruto.png",
+      "imageAlt": "Ruto dismisses claims of ban on live-streaming 2027 election results",
+      "addedAt": "2026-10-25T20:01:55.618Z"
+    },
+    {
       "slug": "nairobi-2026-10-25-capitalfm-city-hall-officials-lead-flag-off-and-2347f4",
       "title": "City Hall officials lead flag off and awards presentation at 2026 Standard Chartered Nairobi Marathon",
       "summary": "​NAIROBI, Kenya Oct 25— The Nairobi County Government reaffirmed its strong commitment to sports development, health and economic growth as top county officials graced the annual Standard Chartered Nairobi Marathon.…",
@@ -240,6 +309,36 @@
       "image": "https://capitalfm.africa/wp-content/uploads/2026/10/IMG-20261025-WA0015-1200x630.jpg",
       "imageAlt": "Tourists, Travelers Stranded as Herdsmen Block Narok–Suswa Highway Over Alleged Cattle Theft",
       "addedAt": "2026-10-25T16:16:17.636Z"
+    },
+    {
+      "slug": "nairobi-2026-10-25-nation-former-old-mutual-worker-accused-of-a9af25",
+      "title": "Former Old Mutual worker accused of stealing Sh89.5m while preaching motivation online",
+      "summary": "Former employee charged with siphoning millions of shillings in a fraud scheme that spanned...",
+      "date": "2026-10-25T13:21:55.000Z",
+      "url": "https://nation.africa/kenya/news/old-mutual-worker-stealing-sh89-5m-preaching-motivation-online-5645182",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://nation.africa/resource/image/5645242/landscape_ratio16x9/1600/900/a891d7b1b9458f539ab1ea1982a5fbcc/Rr/old-mutual.jpg",
+      "imageAlt": "Former Old Mutual worker accused of stealing Sh89.5m while preaching motivation online",
+      "addedAt": "2026-10-25T20:01:55.619Z"
+    },
+    {
+      "slug": "nairobi-2026-10-25-nation-kisumu-youth-turn-invasive-waterweed-into-a-17d13b",
+      "title": "Kisumu youth turn invasive waterweed into a cash cow",
+      "summary": "Enterprising youth mix the noxious hyacinth weed with kitchen waste to produce biogas energy.",
+      "date": "2026-10-25T13:05:49.000Z",
+      "url": "https://nation.africa/kenya/counties/kisumu/kisumu-youth-turn-invasive-waterweed-into-a-cash-cow-4921502",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "",
+      "imageAlt": "Kisumu youth turn invasive waterweed into a cash cow",
+      "addedAt": "2026-10-25T20:01:55.619Z"
     },
     {
       "slug": "nairobi-2026-10-25-nation-nairobi-county-loses-bid-to-reopen-sh311m-0dd3c5",

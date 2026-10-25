@@ -4,7 +4,7 @@
   "lang": "id",
   "city": "Jakarta",
   "country": "Indonezija",
-  "updatedAt": "2026-10-25T17:40:51.207Z",
+  "updatedAt": "2026-10-25T20:02:47.419Z",
   "sources": [
     {
       "id": "antara",
@@ -14,7 +14,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T17:40:22.107Z"
+      "checkedAt": "2026-10-25T20:02:38.468Z"
     },
     {
       "id": "kompas",
@@ -24,10 +24,10 @@
       "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.kompas.com/rss: HTTP 404",
-        "https://nasional.kompas.com/rss: HTTP 404"
+        "https://www.kompas.com/rss: empty response",
+        "https://nasional.kompas.com/rss: empty response"
       ],
-      "checkedAt": "2026-10-25T17:40:25.268Z"
+      "checkedAt": "2026-10-25T20:02:40.199Z"
     },
     {
       "id": "detik",
@@ -39,7 +39,7 @@
       "errors": [
         "https://rss.detik.com/index.php/detikcom: fetch failed"
       ],
-      "checkedAt": "2026-10-25T17:40:46.332Z"
+      "checkedAt": "2026-10-25T20:02:42.584Z"
     },
     {
       "id": "tempo",
@@ -51,7 +51,7 @@
       "errors": [
         "https://www.tempo.co/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-25T17:40:47.178Z"
+      "checkedAt": "2026-10-25T20:02:43.404Z"
     },
     {
       "id": "cnnindonesia",
@@ -63,7 +63,7 @@
       "errors": [
         "https://www.cnnindonesia.com/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-25T17:40:48.019Z"
+      "checkedAt": "2026-10-25T20:02:44.241Z"
     },
     {
       "id": "republika",
@@ -73,7 +73,7 @@
       "fetched": 15,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T17:40:48.653Z"
+      "checkedAt": "2026-10-25T20:02:44.772Z"
     },
     {
       "id": "cnbcindonesia",
@@ -85,7 +85,7 @@
       "errors": [
         "https://www.cnbcindonesia.com/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-25T17:40:49.468Z"
+      "checkedAt": "2026-10-25T20:02:45.589Z"
     },
     {
       "id": "kumparan",
@@ -97,10 +97,185 @@
       "errors": [
         "https://kumparan.com/feed: HTTP 403"
       ],
-      "checkedAt": "2026-10-25T17:40:51.207Z"
+      "checkedAt": "2026-10-25T20:02:47.419Z"
     }
   ],
   "items": [
+    {
+      "slug": "jakarta-2026-10-25-republika-liverpool-kalahkan-brighton-2-0-di-anfield-121119",
+      "title": "Liverpool Kalahkan Brighton 2-0 di Anfield, Naik ke Peringkat Empat Klasemen",
+      "summary": "REPUBLIKA.CO.ID, JAKARTA, – Liverpool berhasil mengamankan tiga poin penting setelah menaklukkan Brighton and Hove Albion dengan skor 2-0 dalam lanjutan matchday kedelapan Liga Inggris 2026/27. Pertandingan yang digelar di...",
+      "date": "2026-10-25T20:00:18.000Z",
+      "url": "https://news.republika.co.id/berita/tnhbki2030000/liverpool-kalahkan-brighton-20-di-anfield-naik-ke-peringkat-empat-klasemen",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Nasional"
+      ],
+      "author": "antara",
+      "theme": "sport",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/098471500-1792958418-1000076339jpg.jpg",
+      "imageAlt": "Liverpool Kalahkan Brighton 2-0 di Anfield, Naik ke Peringkat Empat Klasemen",
+      "addedAt": "2026-10-25T20:02:44.772Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-antara-liverpool-taklukkan-brighton-dan-hove-67208d",
+      "title": "Liverpool taklukkan Brighton dan Hove Albion 2-0 di Stadion Anfield",
+      "summary": "Liverpool berhasil menaklukkan Brighton dan Hove Albion 2-0 dalam lanjutan matchday kedelapan Liga Inggris 2026/27 di ...",
+      "date": "2026-10-25T19:52:14.000Z",
+      "url": "https://www.antaranews.com/berita/5811151/liverpool-taklukkan-brighton-dan-hove-albion-2-0-di-stadion-anfield",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/26/1000076339.jpg",
+      "imageAlt": "Liverpool taklukkan Brighton dan Hove Albion 2-0 di Stadion Anfield",
+      "addedAt": "2026-10-25T20:02:38.468Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-republika-dedikasi-hingga-28-tahun-tujuh-kader-pkk-1057f5",
+      "title": "Dedikasi Hingga 28 Tahun, Tujuh Kader PKK Makassar Raih Penghargaan Adibakti",
+      "summary": "REPUBLIKA.CO.ID, MAKASSAR, – Sebanyak tujuh kader Pemberdayaan dan Kesejahteraan Keluarga (PKK) Kota Makassar menerima penghargaan Adibakti atas dedikasi panjang mereka. Penghargaan ini diberikan langsung oleh Ketua Tim Penggerak (TP)...",
+      "date": "2026-10-25T19:47:22.000Z",
+      "url": "https://news.republika.co.id/berita/tnhayy8630000/dedikasi-hingga-28-tahun-tujuh-kader-pkk-makassar-raih-penghargaan-adibakti",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Nasional"
+      ],
+      "author": "antara",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/082671400-1792957642-1003244054jpg.jpg",
+      "imageAlt": "Dedikasi Hingga 28 Tahun, Tujuh Kader PKK Makassar Raih Penghargaan Adibakti",
+      "addedAt": "2026-10-25T20:02:44.773Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-republika-pemkab-bogor-salurkan-bantuan-sarana-3e9ebf",
+      "title": "Pemkab Bogor Salurkan Bantuan Sarana Pertanian untuk Perkuat Ketahanan Pangan",
+      "summary": "REPUBLIKA.CO.ID, CIBINONG, – Pemerintah Kabupaten (Pemkab) Bogor, Jawa Barat, menyalurkan bantuan sarana pertanian kepada sejumlah kelompok tani. Langkah ini diambil untuk meningkatkan pengolahan dan produktivitas hasil panen sekaligus memperkuat...",
+      "date": "2026-10-25T19:32:03.000Z",
+      "url": "https://news.republika.co.id/berita/tnha9f7530000/pemkab-bogor-salurkan-bantuan-sarana-pertanian-untuk-perkuat-ketahanan-pangan",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Nasional"
+      ],
+      "author": "antara",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/081047900-1792956723-1003505937jpg.jpg",
+      "imageAlt": "Pemkab Bogor Salurkan Bantuan Sarana Pertanian untuk Perkuat Ketahanan Pangan",
+      "addedAt": "2026-10-25T20:02:44.773Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-republika-pemkab-bogor-ajak-warga-manfaatkan-pangan-17aaab",
+      "title": "Pemkab Bogor Ajak Warga Manfaatkan Pangan Lokal Alternatif Beras dan Terigu",
+      "summary": "REPUBLIKA.CO.ID, CIBINONG, – Pemerintah Kabupaten Bogor, Jawa Barat, mengajak masyarakat untuk memanfaatkan sumber pangan lokal sebagai alternatif beras dan terigu. Langkah ini bertujuan meningkatkan keberagaman konsumsi sekaligus memperkuat ketahanan...",
+      "date": "2026-10-25T19:17:03.000Z",
+      "url": "https://news.republika.co.id/berita/tnh9kf9830000/pemkab-bogor-ajak-warga-manfaatkan-pangan-lokal-alternatif-beras-dan-terigu",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Nasional"
+      ],
+      "author": "antara",
+      "theme": "rat",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/015022600-1792955823-1003505932jpg.jpg",
+      "imageAlt": "Pemkab Bogor Ajak Warga Manfaatkan Pangan Lokal Alternatif Beras dan Terigu",
+      "addedAt": "2026-10-25T20:02:44.773Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-antara-pdip-serukan-moratorium-hutan-dan-reboisasi-c3d4ea",
+      "title": "PDIP serukan moratorium hutan dan reboisasi untuk atasi karhutla",
+      "summary": "ANTARA - Sekretaris Jenderal PDIP Hasto Kristiyanto mendorong pemerintah segera melakukan penataan ekologis secara ...",
+      "date": "2026-10-25T19:04:32.000Z",
+      "url": "https://www.antaranews.com/video/5811147/pdip-serukan-moratorium-hutan-dan-reboisasi-untuk-atasi-karhutla",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/PDIP-SERUKAN-MORATORIUM-HUTAN-DAN-REBOISASI-UNTUK-ATASI-KARHUTLA.jpg",
+      "imageAlt": "PDIP serukan moratorium hutan dan reboisasi untuk atasi karhutla",
+      "addedAt": "2026-10-25T20:02:38.468Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-republika-sumsel-targetkan-bedah-6-525-rumah-tak-a4f2ad",
+      "title": "Sumsel Targetkan Bedah 6.525 Rumah Tak Layak Huni pada 2025",
+      "summary": "REPUBLIKA.CO.ID, PALEMBANG, – Pemerintah Provinsi (Pemprov) Sumatera Selatan menargetkan perbaikan terhadap 6.525 unit rumah tidak layak huni (RTLH) di seluruh wilayahnya pada tahun ini. Program bedah rumah ini menjadi...",
+      "date": "2026-10-25T19:01:27.000Z",
+      "url": "https://news.republika.co.id/berita/tnh8uf6630000/sumsel-targetkan-bedah-6525-rumah-tak-layak-huni-pada-2025",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Nasional"
+      ],
+      "author": "antara",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/061806200-1792954887-20231222_144349jpg.jpg",
+      "imageAlt": "Sumsel Targetkan Bedah 6.525 Rumah Tak Layak Huni pada 2025",
+      "addedAt": "2026-10-25T20:02:44.774Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-antara-megawati-ajak-generasi-muda-kuasai-iptek-580c52",
+      "title": "Megawati ajak generasi muda kuasai iptek dan perkuat karakter bangsa",
+      "summary": "ANTARA - Presiden ke-5 RI Megawati Soekarnoputri mengajak generasi muda Indonesia untuk mempersiapkan diri ...",
+      "date": "2026-10-25T18:48:21.000Z",
+      "url": "https://www.antaranews.com/video/5811143/megawati-ajak-generasi-muda-kuasai-iptek-dan-perkuat-karakter-bangsa",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/MEGAWATI-AJAK-GENERASI-MUDA-KUASAI-IPTEK-DAN-PERKUAT-KARAKTER-BANGSA_1.jpg",
+      "imageAlt": "Megawati ajak generasi muda kuasai iptek dan perkuat karakter bangsa",
+      "addedAt": "2026-10-25T20:02:38.468Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-antara-kontingen-indonesia-boyong-15-emas-asian-3b8c40",
+      "title": "Kontingen Indonesia boyong 15 emas Asian Para Games 2026",
+      "summary": "ANTARA - Kontingen Indonesia menuntaskan Asian Para Games Aichi-Nagoya 2026 di Jepang dengan membawa pulang 15 medali ...",
+      "date": "2026-10-25T18:43:56.000Z",
+      "url": "https://www.antaranews.com/video/5811139/kontingen-indonesia-boyong-15-emas-asian-para-games-2026",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/KONTINGEN-INDONESIA-BOYONG-15-EMAS-ASIAN-PARA-GAMES-2026.jpg",
+      "imageAlt": "Kontingen Indonesia boyong 15 emas Asian Para Games 2026",
+      "addedAt": "2026-10-25T20:02:38.468Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-antara-wamendagri-dukung-bundo-kanduang-lestarikan-729a37",
+      "title": "Wamendagri dukung \"Bundo Kanduang\" lestarikan adat Minangkabau",
+      "summary": "Wakil Menteri Dalam Negeri (Wamendagri) Bima Arya Sugiarto mendukung Perkumpulan Bundo Kanduang untuk terus ...",
+      "date": "2026-10-25T18:03:51.000Z",
+      "url": "https://www.antaranews.com/berita/5811135/wamendagri-dukung-bundo-kanduang-lestarikan-adat-minangkabau",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/26/WhatsApp-Image-2026-10-25-at-16.01.52.jpeg",
+      "imageAlt": "Wamendagri dukung \"Bundo Kanduang\" lestarikan adat Minangkabau",
+      "addedAt": "2026-10-25T20:02:38.469Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-antara-ojk-sulteng-tingkatkan-akses-keuangan-c14249",
+      "title": "OJK Sulteng tingkatkan akses keuangan masyarakat melalui BIK 2026",
+      "summary": "Otoritas Jasa Keuangan (OJK) Provinsi Sulawesi Tengah meningkatkan akses masyarakat terhadap produk dan layanan ...",
+      "date": "2026-10-25T17:44:02.000Z",
+      "url": "https://www.antaranews.com/berita/5811131/ojk-sulteng-tingkatkan-akses-keuangan-masyarakat-melalui-bik-2026",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/25/IMG-20261025-WA0021.jpg",
+      "imageAlt": "OJK Sulteng tingkatkan akses keuangan masyarakat melalui BIK 2026",
+      "addedAt": "2026-10-25T20:02:38.469Z"
+    },
     {
       "slug": "jakarta-2026-10-25-republika-wakil-ketua-kpk-usul-rampas-aset-pejabat-fa48ec",
       "title": "Wakil Ketua KPK Usul Rampas Aset Pejabat yang Tak Tercantum di LHKPN",
