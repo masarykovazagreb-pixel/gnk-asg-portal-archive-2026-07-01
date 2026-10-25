@@ -157,7 +157,7 @@ function nowIsoZagreb(now = new Date()) {
   const offset = new Intl.DateTimeFormat('en-GB', {
     timeZone: TZ, timeZoneName: 'longOffset'
   }).formatToParts(now).find(part => part.type === 'timeZoneName')?.value?.replace(/^GMT/, '');
-  if (!/^[+-]\\d{2}:\\d{2}$/.test(offset)) {
+  if (!/^[+-][0-9]{2}:[0-9]{2}$/.test(offset)) {
     throw new Error(`Cannot determine the UTC offset for ${TZ}: ${offset}`);
   }
   return `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}:${parts.second}${offset}`;
