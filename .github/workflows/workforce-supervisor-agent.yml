@@ -7,6 +7,8 @@ on:
     paths:
       - '.github/workflows/workforce-supervisor-agent.yml'
       - 'scripts/workforce-supervisor-agent-v1.mjs'
+      - 'scripts/workee-page-agents-v1.mjs'
+      - 'tests/test-workee-page-agents-v1.mjs'
       - 'workers/gnk-asg-direct-operator/src/digital-workforce-public-read-v1.js'
       - 'apps/portal/data/editorial-plan/manifest.json'
       - 'apps/portal/data/editorial-plan/publication-holds.json'
@@ -31,6 +33,10 @@ jobs:
           node-version: '22'
       - name: Build supervisor report
         run: node scripts/workforce-supervisor-agent-v1.mjs
+      - name: Workee — inspect every available page and propose development tasks
+        run: |
+          node tests/test-workee-page-agents-v1.mjs
+          node scripts/workee-page-agents-v1.mjs
       - name: Verify production Workforce and public editorial surface
         shell: bash
         run: |
@@ -71,9 +77,13 @@ jobs:
           console.log('- Coverage through: **'+(r.editorial.coverageThrough||'none')+'**');
           console.log('- Active quality holds: **'+r.editorial.activeHolds+'**');
           console.log('- Publication registry items: **'+r.publication.registryItems+'**');
+          const pages=JSON.parse(fs.readFileSync('artifacts/workforce-supervisor/page-agents.json','utf8'));
+          console.log('- Workee page agents inspected: **'+pages.total+'**');
+          console.log('- Development and repair proposals for review: **'+pages.proposalCount+'**');
+          console.log('- Source inspection only; no autonomous publication or live-health claim.');
           NODE
       - uses: actions/upload-artifact@v4
         with:
           name: workforce-supervisor-${{ github.run_id }}
-          path: artifacts/workforce-supervisor/report.json
+          path: artifacts/workforce-supervisor/
           retention-days: 7
