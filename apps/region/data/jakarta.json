@@ -4,7 +4,7 @@
   "lang": "id",
   "city": "Jakarta",
   "country": "Indonezija",
-  "updatedAt": "2026-10-25T06:08:36.236Z",
+  "updatedAt": "2026-10-25T16:17:27.787Z",
   "sources": [
     {
       "id": "antara",
@@ -14,7 +14,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T06:08:17.364Z"
+      "checkedAt": "2026-10-25T16:16:59.556Z"
     },
     {
       "id": "kompas",
@@ -24,10 +24,10 @@
       "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.kompas.com/rss: empty response",
-        "https://nasional.kompas.com/rss: empty response"
+        "https://www.kompas.com/rss: HTTP 404",
+        "https://nasional.kompas.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-25T06:08:18.864Z"
+      "checkedAt": "2026-10-25T16:17:01.641Z"
     },
     {
       "id": "detik",
@@ -39,7 +39,7 @@
       "errors": [
         "https://rss.detik.com/index.php/detikcom: fetch failed"
       ],
-      "checkedAt": "2026-10-25T06:08:31.571Z"
+      "checkedAt": "2026-10-25T16:17:22.686Z"
     },
     {
       "id": "tempo",
@@ -51,7 +51,7 @@
       "errors": [
         "https://www.tempo.co/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-25T06:08:32.368Z"
+      "checkedAt": "2026-10-25T16:17:23.482Z"
     },
     {
       "id": "cnnindonesia",
@@ -63,7 +63,7 @@
       "errors": [
         "https://www.cnnindonesia.com/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-25T06:08:33.117Z"
+      "checkedAt": "2026-10-25T16:17:24.281Z"
     },
     {
       "id": "republika",
@@ -73,7 +73,7 @@
       "fetched": 15,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T06:08:33.693Z"
+      "checkedAt": "2026-10-25T16:17:25.322Z"
     },
     {
       "id": "cnbcindonesia",
@@ -85,7 +85,7 @@
       "errors": [
         "https://www.cnbcindonesia.com/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-25T06:08:34.472Z"
+      "checkedAt": "2026-10-25T16:17:26.101Z"
     },
     {
       "id": "kumparan",
@@ -97,10 +97,360 @@
       "errors": [
         "https://kumparan.com/feed: HTTP 403"
       ],
-      "checkedAt": "2026-10-25T06:08:36.236Z"
+      "checkedAt": "2026-10-25T16:17:27.787Z"
     }
   ],
   "items": [
+    {
+      "slug": "jakarta-2026-10-25-republika-lps-161-bank-dilikuidasi-termasuk-3-bpr-di-b90250",
+      "title": "LPS: 161 Bank Dilikuidasi Termasuk 3 BPR di DIY, Penyebabnya dari Fraud Hingga Kalah Bersaing",
+      "summary": "SLEMAN - Lemahnya tata kelola, fraud hingga ketidakmampuan menghadapi persaingan usaha menjadi sejumlah faktor yang menyebabkan bank gagal bertahan dan berujung pada likuidasi. Lembaga Penjamin Simpanan (LPS) mencatat sebanyak 161...",
+      "date": "2026-10-25T16:09:00.000Z",
+      "url": "https://rejogja.republika.co.id/berita/tngzzn282/lps-161-bank-dilikuidasi-termasuk-3-bpr-di-diy-penyebabnya-dari-fraud-hingga-kalah-bersaing",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Kabar Jogja"
+      ],
+      "author": "Karta Raharja Ucu",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/kepala-divisi-kehumasan-group-kesekretariatan-lps-rhein-valleno-oktoriansyah_261025224937-671.jpeg",
+      "imageAlt": "LPS: 161 Bank Dilikuidasi Termasuk 3 BPR di DIY, Penyebabnya dari Fraud Hingga Kalah Bersaing",
+      "addedAt": "2026-10-25T16:17:25.322Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-antara-kjri-melbourne-jembatani-pelaku-usaha-ri-3fd087",
+      "title": "KJRI Melbourne jembatani pelaku usaha RI-Australia dalam forum bisnis",
+      "summary": "Konsulat Jenderal Republik Indonesia di Melbourne (KJRI Melbourne), Australia, mengadakan business matching dan ...",
+      "date": "2026-10-25T16:02:45.000Z",
+      "url": "https://www.antaranews.com/berita/5811103/kjri-melbourne-jembatani-pelaku-usaha-ri-australia-dalam-forum-bisnis",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/25/IMG_2771-1.jpg",
+      "imageAlt": "KJRI Melbourne jembatani pelaku usaha RI-Australia dalam forum bisnis",
+      "addedAt": "2026-10-25T16:16:59.556Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-antara-hornbills-manfaatkan-kuarter-keempat-untuk-f00dab",
+      "title": "Hornbills manfaatkan kuarter keempat untuk tekuk Rajawali",
+      "summary": "Bogor Hornbills memanfaatkan penurunan performa Rajawali Medan pada kuarter keempat untuk meraih kemenangan 73-47 dalam ...",
+      "date": "2026-10-25T16:01:23.000Z",
+      "url": "https://www.antaranews.com/berita/5811099/hornbills-manfaatkan-kuarter-keempat-untuk-tekuk-rajawali",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/25/upscalemedia-transformed-25.jpeg",
+      "imageAlt": "Hornbills manfaatkan kuarter keempat untuk tekuk Rajawali",
+      "addedAt": "2026-10-25T16:16:59.556Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-republika-jalan-jalan-di-atas-rel-odgj-bikin-repot-3e5d50",
+      "title": "Jalan-Jalan di Atas Rel, ODGJ Bikin Repot Warga dan KAI",
+      "summary": "SLEMAN -- Orang dengan gangguan jiwa (ODGJ) masuk ke jalur aktif kereta api (KA) di Stasiun Maguwo, Sleman, Ahad (4/10/2026). Kejadian tersebut diunggah akun Instagram @yogyakarta_josjis. Dalam unggahannya, akun...",
+      "date": "2026-10-25T16:01:00.000Z",
+      "url": "https://rejogja.republika.co.id/berita/tngzrl282/jalanjalan-di-atas-rel-odgj-bikin-repot-warga-dan-kai",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Kabar Jogja"
+      ],
+      "author": "Karta Raharja Ucu",
+      "theme": "rat",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/tangkapan-layar-yang-menampilkan-seorang-odgj-masuk-ke-jalur_261025224332-468.jpeg",
+      "imageAlt": "Jalan-Jalan di Atas Rel, ODGJ Bikin Repot Warga dan KAI",
+      "addedAt": "2026-10-25T16:17:25.322Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-republika-potret-perkampungan-suku-bajo-sangkuang-di-ad60ad",
+      "title": "Potret Perkampungan Suku Bajo Sangkuang di Halmahera Selatan",
+      "summary": "HALMAHERA SELATAN -- Hamparan rumah warga terlihat dari udara di Perkampungan Bajo Sangkuang, Kecamatan Botang Lomang, Kabupaten Halmahera Selatan, Maluku Utara, Ahad (25/10/2026). Permukiman ini menjadi tempat tinggal masyarakat...",
+      "date": "2026-10-25T16:00:00.000Z",
+      "url": "https://visual.republika.co.id/berita/tngvwu375/potret-perkampungan-suku-bajo-sangkuang-di-halmahera-selatan",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Inpicture"
+      ],
+      "author": "Edwin Dwi Putranto",
+      "theme": "rat",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/043040700-1792937371-830-556.jpg",
+      "imageAlt": "Potret Perkampungan Suku Bajo Sangkuang di Halmahera Selatan",
+      "addedAt": "2026-10-25T16:17:25.322Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-antara-kementerian-umkm-puji-bank-sumut-dukung-0733a6",
+      "title": "Kementerian UMKM puji Bank Sumut dukung pemulihan usaha pascabencana",
+      "summary": "Kementerian Usaha Mikro, Kecil, dan Menengah (UMKM) memuji peran PT Bank Sumut (Perseroda) dalam mendukung pemulihan ...",
+      "date": "2026-10-25T15:59:55.000Z",
+      "url": "https://www.antaranews.com/berita/5811095/kementerian-umkm-puji-bank-sumut-dukung-pemulihan-usaha-pascabencana",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/25/1001151256.jpg",
+      "imageAlt": "Kementerian UMKM puji Bank Sumut dukung pemulihan usaha pascabencana",
+      "addedAt": "2026-10-25T16:16:59.556Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-republika-hampir-265-ribu-wna-gunakan-kereta-api-di-b646f0",
+      "title": "Hampir 265 Ribu WNA Gunakan Kereta Api di Daop 6 Yogyakarta Hingga September 2026",
+      "summary": "YOGYAKARTA -- Kereta api menjadi salah satu pilihan transportasi wisatawan mancanegara untuk menjangkau berbagai destinasi di wilayah Yogyakarta, Solo, dan sekitarnya. PT Kereta Api Indonesia Daop 6 Yogyakarta mencatat...",
+      "date": "2026-10-25T15:52:00.000Z",
+      "url": "https://rejogja.republika.co.id/berita/tngzfg282/hampir-265-ribu-wna-gunakan-kereta-api-di-daop-6-yogyakarta-hingga-september-2026",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Kabar Jogja"
+      ],
+      "author": "Karta Raharja Ucu",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/potret-wisatawan-mancanegara-yang-naik-kereta-api-dari-stasiun_261025223624-660.jpeg",
+      "imageAlt": "Hampir 265 Ribu WNA Gunakan Kereta Api di Daop 6 Yogyakarta Hingga September 2026",
+      "addedAt": "2026-10-25T16:17:25.322Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-antara-komisi-iii-dpr-minta-kapolri-terus-gas-pol-83d596",
+      "title": "Komisi III DPR minta Kapolri terus \"gas pol\" perangi narkoba",
+      "summary": "Ketua Komisi III DPR RI Habiburokhman meminta Kepala Kepolisian Negara Republik Indonesia (Kapolri) Jenderal Polisi ...",
+      "date": "2026-10-25T15:51:35.000Z",
+      "url": "https://www.antaranews.com/berita/5811091/komisi-iii-dpr-minta-kapolri-terus-gas-pol-perangi-narkoba",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "https://img.antaranews.com/cache/800x533/2026/07/11/1001506875.jpg",
+      "imageAlt": "Komisi III DPR minta Kapolri terus \"gas pol\" perangi narkoba",
+      "addedAt": "2026-10-25T16:16:59.556Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-antara-esdm-aktivitas-gunung-lokon-didominasi-9b9dfc",
+      "title": "ESDM: Aktivitas Gunung Lokon didominasi gempa vulkanik dangkal",
+      "summary": "Kementerian Energi dan Sumber Daya Mineral (ESDM) menyatakan bahwa aktivitas Gunung Lokon di Kota Tomohon, Sulawesi ...",
+      "date": "2026-10-25T15:47:59.000Z",
+      "url": "https://www.antaranews.com/berita/5811087/esdm-aktivitas-gunung-lokon-didominasi-gempa-vulkanik-dangkal",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "potres",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/25/1002141059.jpg",
+      "imageAlt": "ESDM: Aktivitas Gunung Lokon didominasi gempa vulkanik dangkal",
+      "addedAt": "2026-10-25T16:16:59.556Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-antara-reda-sebut-prestasi-asian-para-games-2026-9b7a8a",
+      "title": "Reda sebut prestasi Asian Para Games 2026 sejalan dengan Asta Cita",
+      "summary": "Chef de Mission (CdM) kontingen Indonesia Reda Manthovani mengatakan keberhasilan meraih 15 medali emas pada Asian Para ...",
+      "date": "2026-10-25T15:45:58.000Z",
+      "url": "https://www.antaranews.com/berita/5811083/reda-sebut-prestasi-asian-para-games-2026-sejalan-dengan-asta-cita",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/25/20261024_Nagoya_AW_Kepulangan-Kontingen_004.jpg",
+      "imageAlt": "Reda sebut prestasi Asian Para Games 2026 sejalan dengan Asta Cita",
+      "addedAt": "2026-10-25T16:16:59.556Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-republika-daripada-pinjol-gen-z-didorong-pinjam-uang-28c1f3",
+      "title": "Daripada Pinjol, Gen Z Didorong Pinjam Uang ke Koperasi untuk Kembangkan Usaha",
+      "summary": "YOGYAKARTA - Alih-alih terus bergantung pada pinjaman online (pinjol), generasi muda, khususnya Generasi Z dan milenial didorong memanfaatkan koperasi untuk mengembangkan usaha dan memperluas peluang ekonomi. Melalui bisnis yang...",
+      "date": "2026-10-25T15:44:00.000Z",
+      "url": "https://rejogja.republika.co.id/berita/tngz5i282/daripada-pinjol-gen-z-didorong-pinjam-uang-ke-koperasi-untuk-kembangkan-usaha",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Kabar Jogja"
+      ],
+      "author": "Karta Raharja Ucu",
+      "theme": "ekonomija",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/direktur-umum-dan-hukum-lpdb-koperasi-deva-rachman-saat_261025223023-855.jpeg",
+      "imageAlt": "Daripada Pinjol, Gen Z Didorong Pinjam Uang ke Koperasi untuk Kembangkan Usaha",
+      "addedAt": "2026-10-25T16:17:25.322Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-antara-kbri-yangon-siap-gelar-indonesia-expo-2026-519896",
+      "title": "KBRI Yangon siap gelar Indonesia Expo 2026 perkuat hubungan bilateral",
+      "summary": "KBRI Yangon akan menyelenggarakan Indonesia Expo 2026 pada 30–31 Oktober mendatang di ibu kota Myanmar, guna ...",
+      "date": "2026-10-25T12:52:05.000Z",
+      "url": "https://www.antaranews.com/berita/5810839/kbri-yangon-siap-gelar-indonesia-expo-2026-perkuat-hubungan-bilateral",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2025/09/27/WhatsApp-Image-2025-09-27-at-08.02.55-1_1.jpeg",
+      "imageAlt": "KBRI Yangon siap gelar Indonesia Expo 2026 perkuat hubungan bilateral",
+      "addedAt": "2026-10-25T12:53:03.300Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-antara-saingi-china-pabrik-mobil-jepang-pangkas-b4a8cb",
+      "title": "Saingi China, pabrik mobil Jepang pangkas masa pengembangan model baru",
+      "summary": "Produsen mobil Jepang semakin gencar berupaya memangkas waktu pengembangan produk mereka untuk mengejar ketertinggalan ...",
+      "date": "2026-10-25T12:47:00.000Z",
+      "url": "https://www.antaranews.com/berita/5810835/saingi-china-pabrik-mobil-jepang-pangkas-masa-pengembangan-model-baru",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "https://img.antaranews.com/cache/800x533/2025/10/29/20251029-land-cruiser-fj-02.jpg",
+      "imageAlt": "Saingi China, pabrik mobil Jepang pangkas masa pengembangan model baru",
+      "addedAt": "2026-10-25T12:53:03.300Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-antara-polres-rejang-lebong-ungkap-penimbunan-3-3-d124f6",
+      "title": "Polres Rejang Lebong ungkap penimbunan 3,3 ton BBM bersubsidi",
+      "summary": "Kepolisian Resor (Polres) Rejang Lebong, Bengkulu, mengungkap kasus dugaan penimbunan bahan bakar minyak (BBM) ...",
+      "date": "2026-10-25T12:46:54.000Z",
+      "url": "https://www.antaranews.com/berita/5810831/polres-rejang-lebong-ungkap-penimbunan-33-ton-bbm-bersubsidi",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/25/IMG_20261025_183045.jpg",
+      "imageAlt": "Polres Rejang Lebong ungkap penimbunan 3,3 ton BBM bersubsidi",
+      "addedAt": "2026-10-25T12:53:03.300Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-antara-dispertan-garut-sebut-estimasi-panen-padi-3345ce",
+      "title": "Dispertan Garut sebut estimasi panen padi pada Oktober 7.869 hektare",
+      "summary": "Dinas Pertanian (Dispertan) Kabupaten Garut, Jawa Barat menyampaikan estimasi luas lahan panen padi pada Oktober ...",
+      "date": "2026-10-25T12:40:43.000Z",
+      "url": "https://www.antaranews.com/berita/5810827/dispertan-garut-sebut-estimasi-panen-padi-pada-oktober-7869-hektare",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/25/1001069174.jpg",
+      "imageAlt": "Dispertan Garut sebut estimasi panen padi pada Oktober 7.869 hektare",
+      "addedAt": "2026-10-25T12:53:03.300Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-antara-mlsc-jakarta-jaya-digelar-untuk-wadahi-d983dc",
+      "title": "MLSC Jakarta Jaya digelar untuk wadahi antusiasme siswi SD dan MI",
+      "summary": "Program Director MilkLife Soccer Challenge Teddy Tjahjono mengatakan MilkLife Soccer Challenge Jakarta Jaya Seri 1 ...",
+      "date": "2026-10-25T12:40:05.000Z",
+      "url": "https://www.antaranews.com/berita/5810823/mlsc-jakarta-jaya-digelar-untuk-wadahi-antusiasme-siswi-sd-dan-mi",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/25/image-2026-10-25T192454.885.jpg",
+      "imageAlt": "MLSC Jakarta Jaya digelar untuk wadahi antusiasme siswi SD dan MI",
+      "addedAt": "2026-10-25T12:53:03.300Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-republika-creativillage-2026-ruang-menjelajahi-ide-aaa955",
+      "title": "Creativillage 2026, Ruang Menjelajahi Ide dan Karya Ekonomi Kreatif",
+      "summary": "JAKARTA -- Creativillage 2026 menghadirkan cara berbeda untuk mengenal ekonomi kreatif. Tak hanya melihat produk yang dipamerkan, pengunjung juga dapat mencoba langsung berbagai aktivitas di stan yang hadir di Village...",
+      "date": "2026-10-25T12:38:48.000Z",
+      "url": "https://visual.republika.co.id/berita/tngr4o375/creativillage-2026-ruang-menjelajahi-ide-dan-karya-ekonomi-kreatif",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Inpicture"
+      ],
+      "author": "Edwin Dwi Putranto",
+      "theme": "ekonomija",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/027381100-1792927131-830-556.jpg",
+      "imageAlt": "Creativillage 2026, Ruang Menjelajahi Ide dan Karya Ekonomi Kreatif",
+      "addedAt": "2026-10-25T12:53:20.007Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-antara-pdip-dukung-revisi-uu-peradilan-militer-3f81c1",
+      "title": "PDIP dukung revisi UU Peradilan Militer pascaputusan MK",
+      "summary": "Partai Demokrasi Indonesia Perjuangan (PDIP) menyatakan dukungan penuh terhadap putusan Mahkamah Konstitusi (MK) RI ...",
+      "date": "2026-10-25T12:38:38.000Z",
+      "url": "https://www.antaranews.com/berita/5810819/pdip-dukung-revisi-uu-peradilan-militer-pascaputusan-mk",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/25/1002041790.jpg",
+      "imageAlt": "PDIP dukung revisi UU Peradilan Militer pascaputusan MK",
+      "addedAt": "2026-10-25T12:53:03.300Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-republika-tabola-bale-di-wcce-2026-teuku-riefky-ingin-c8f77f",
+      "title": "Tabola Bale di WCCE 2026, Teuku Riefky Ingin Kreator Sejahtera",
+      "summary": "JAKARTA — Lagu \"Tabola Bale\" berkumandang dari panggung World Conference on Creative Economy (WCCE) 2026. Para tamu mancanegara terlihat menggoyangkan badan mengikuti irama musik tersebut. Lagu yang dipopulerkan Silet...",
+      "date": "2026-10-25T12:38:00.000Z",
+      "url": "https://ameera.republika.co.id/berita/tngdcu370/tabola-bale-di-wcce-2026-teuku-riefky-ingin-kreator-sejahtera",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Happening"
+      ],
+      "author": "Friska Yolandha",
+      "theme": "ekonomija",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/menteri-ekonomi-kreatif-teuku-riefky-harsya-menegaskan-bahwa-pertumbuhan_261025144037-794.jpg",
+      "imageAlt": "Tabola Bale di WCCE 2026, Teuku Riefky Ingin Kreator Sejahtera",
+      "addedAt": "2026-10-25T12:53:20.007Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-republika-gelar-wcce-2026-indonesia-rumuskan-cetak-8d9689",
+      "title": "Gelar WCCE 2026, Indonesia Rumuskan Cetak Biru Ekonomi Kreatif",
+      "summary": "JAKARTA — Gelaran The 5th World Conference on Creative Economy (WCCE) 2026 di SCBD Jakarta menjadi momentum krusial bagi kebangkitan sektor kreatif global yang inklusif. Menghadirkan beragam narasumber untuk...",
+      "date": "2026-10-25T12:09:00.000Z",
+      "url": "https://ekonomi.republika.co.id/berita/tngp6a423/gelar-wcce-2026-indonesia-rumuskan-cetak-biru-ekonomi-kreatif",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Bisnis"
+      ],
+      "author": "Gita Amanda",
+      "theme": "ekonomija",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/_261025185511-406.png",
+      "imageAlt": "Gelar WCCE 2026, Indonesia Rumuskan Cetak Biru Ekonomi Kreatif",
+      "addedAt": "2026-10-25T12:53:20.007Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-republika-kelaparan-kembali-mengancam-warga-gaza-apa-3ad1b8",
+      "title": "Kelaparan Kembali Mengancam, Warga Gaza: Apa yang akan Kita Makan Hari Ini?",
+      "summary": "GAZA — Saat berjalan menyusuri tenda-tenda pengungsian di Jalur Gaza, tak butuh waktu lama untuk mendengar pertanyaan yang membebani hati para orang tua: \"Apa yang akan kita makan hari...",
+      "date": "2026-10-25T12:03:53.000Z",
+      "url": "https://news.republika.co.id/berita/tngpih483/kelaparan-kembali-mengancam-warga-gaza-apa-yang-akan-kita-makan-hari-ini",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Internasional"
+      ],
+      "author": "A.Syalaby Ichsan",
+      "theme": "rat",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/084255000-1753090407-830-556.jpg",
+      "imageAlt": "Kelaparan Kembali Mengancam, Warga Gaza: Apa yang akan Kita Makan Hari Ini?",
+      "addedAt": "2026-10-25T12:53:20.007Z"
+    },
+    {
+      "slug": "jakarta-2026-10-25-republika-indonesia-kurangi-ekspor-gas-singapura-cari-ad694d",
+      "title": "Indonesia Kurangi Ekspor Gas, Singapura Cari Alternatif Pasokan LNG",
+      "summary": "Laporan Jurnalis Republika Lintar Satria dari Singapura. SINGAPURA -- Singapura menyiapkan alternatif pasokan gas alam cair (liquefied natural gas/LNG) dari pasar internasional menyusul keputusan Indonesia mengurangi ekspor gas untuk memenuhi...",
+      "date": "2026-10-25T12:01:18.000Z",
+      "url": "https://ekonomi.republika.co.id/berita/tngpcv416/indonesia-kurangi-ekspor-gas-singapura-cari-alternatif-pasokan-lng",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Energi"
+      ],
+      "author": "Satria K Yudha",
+      "theme": "energija",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/_261025185709-483.png",
+      "imageAlt": "Indonesia Kurangi Ekspor Gas, Singapura Cari Alternatif Pasokan LNG",
+      "addedAt": "2026-10-25T12:53:20.007Z"
+    },
     {
       "slug": "jakarta-2026-10-25-republika-sekda-herman-lepas-3-000-mahasiswa-kkn-477d3d",
       "title": "Sekda Herman Lepas 3.000 Mahasiswa KKN Tematik Pengelolaan Sampah",
