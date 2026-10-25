@@ -4,17 +4,23 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-10-25T19:59:06.402Z",
+  "updatedAt": "2026-10-25T20:46:40.243Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": true,
-      "fetched": 50,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-10-25T19:59:01.759Z"
+      "errors": [
+        "https://telex.hu/rss: HTTP 403",
+        "https://telex.hu/rss/belfold: HTTP 403",
+        "https://telex.hu/rss/kulfold: HTTP 403",
+        "https://telex.hu/rss/gazdasag: HTTP 403",
+        "https://telex.hu/rss/sport: HTTP 403"
+      ],
+      "checkedAt": "2026-10-25T20:46:35.487Z"
     },
     {
       "id": "444",
@@ -24,7 +30,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T19:59:02.558Z"
+      "checkedAt": "2026-10-25T20:46:36.195Z"
     },
     {
       "id": "hvg",
@@ -34,7 +40,7 @@
       "fetched": 60,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T19:59:02.895Z"
+      "checkedAt": "2026-10-25T20:46:36.534Z"
     },
     {
       "id": "portfolio",
@@ -44,7 +50,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T19:59:03.643Z"
+      "checkedAt": "2026-10-25T20:46:37.408Z"
     },
     {
       "id": "index",
@@ -56,7 +62,7 @@
       "errors": [
         "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-25T19:59:05.377Z"
+      "checkedAt": "2026-10-25T20:46:39.246Z"
     },
     {
       "id": "24hu",
@@ -66,7 +72,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T19:59:05.627Z"
+      "checkedAt": "2026-10-25T20:46:39.463Z"
     },
     {
       "id": "mandiner",
@@ -76,10 +82,254 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T19:59:06.402Z"
+      "checkedAt": "2026-10-25T20:46:40.243Z"
     }
   ],
   "items": [
+    {
+      "slug": "budimpesta-2026-10-25-portfolio-aleksandar-vucic-elismerte-vereseget-5c3fe5",
+      "title": "Aleksandar Vucic elismerte vereségét",
+      "summary": "Aleksandar Vučić szerb elnök elismerte, hogy pártja, a Szerb Haladó Párt elvesztette parlamenti többségét a vasárnapi választáson. A vereséget a diáktüntetésekből kinőtt ellenzéki erő mérte rá, amely hónapokon át tartó tömeges megmozdulásokkal rázta meg a szerb belpolitikát. A tiltakozáshullám a 2024. novemberi újvidéki tragédia után indult el, amikor az állomás előtetőjének leomlása több ember halálát okozta. A több mint egy évtizede hatalmon lévő Vučić ezzel pályafutása legsúlyosabb kudarcát szenvedte el, a diákmozgalom győzelme pedig történelmi fordulatot jelent a szerb demokráciában.",
+      "date": "2026-10-25T20:42:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261025/aleksandar-vucic-elismerte-vereseget-871926",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://pcdn.hu/articles/images-xl/g/e/t/gettyimages-2301472716-864346.jpg",
+      "imageAlt": "Aleksandar Vucic elismerte vereségét",
+      "addedAt": "2026-10-25T20:46:37.408Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-portfolio-a-kormany-25-milliard-forint-ad-a-magyar-2ceb69",
+      "title": "A kormány 25 milliárd forint ad a magyar vállalkozások külföldi terjeszkedésére",
+      "summary": "Huszonötmilliárd forintot fordít a kormány a hazai vállalkozások exportfejlesztésére, jelentette be vasárnap Kapitány István gazdasági és energetikai miniszter. A tárcavezető szerint az exportbevételek túlnyomó része ma még külföldi tulajdonú cégeknél keletkezik, a hazai kis- és középvállalkozásoknak pedig csak körülbelül öt százaléka exportál. Az új stratégia több mint kétszáz magyar vállalat tapasztalatai alapján készült, megvalósításán pedig többek között a HEPA és az EXIM bank dolgozik. A támogatás a képességfejlesztést, a külpiaci értékesítési hálózat kiépítését és a piacra lépést segíti. A miniszter szerint a cél az, hogy Magyarország ne csak összeszereljen, hanem tudásintenzív…",
+      "date": "2026-10-25T20:38:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261025/a-kormany-25-milliard-forint-ad-a-magyar-vallalkozasok-kulfoldi-terjeszkedesere-871924",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "A kormány 25 milliárd forint ad a magyar vállalkozások külföldi terjeszkedésére",
+      "addedAt": "2026-10-25T20:46:37.409Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-444-a-magyarorszagi-rendszervaltas-nekunk-is-fe306a",
+      "title": "„A magyarországi rendszerváltás nekünk is erőt adott” – nagyon optimistán várja a szerb választás eredményét a közgazdász, aki Szerbia következő miniszterelnöke lehet",
+      "summary": "Dejan Šoškić szerint a szerbiai társadalmi hangulat a magyarországi rendszerváltás előtti időszakra emlékeztet. A volt jegybankelnök a 444-nek a békés hatalomátadás esélyeiről és az az uniós csatlakozásról is beszélt.",
+      "date": "2026-10-25T20:36:32.000Z",
+      "url": "https://444.hu/2026/10/25/a-magyarorszagi-rendszervaltas-nekunk-is-erot-adott-nagyon-optimistan-varja-a-szerb-valasztas-eredmenyet-a-kozgazdasz-aki-szerbia-kovetkezo-miniszterelnoke-lehet?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "dejan soskic",
+        "szerb választás",
+        "Egyetemista Lista",
+        "aleksandar vucic"
+      ],
+      "author": "Kolozsi Ádám",
+      "theme": "politika",
+      "image": "https://assets.4cdn.hu/kraken/8PLanujtoT02mOWHs.jpeg",
+      "imageAlt": "„A magyarországi rendszerváltás nekünk is erőt adott” – nagyon optimistán várja a szerb választás eredményét a közgazdász, aki Szerbia következő miniszterelnöke lehet",
+      "addedAt": "2026-10-25T20:46:36.196Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-hvg-hetfotol-felfordulas-az-m1-m7-kozos-ecd736",
+      "title": "Hétfőtől felfordulás az M1-M7 közös szakaszán: burkolatjavítás kezdődik",
+      "summary": "A munkálatok november harmadik hetéig tartanak majd.",
+      "date": "2026-10-25T20:34:00.000Z",
+      "url": "https://hvg.hu/itthon/20261025_m1-m7-autopalya-felujitas-utburkolat",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "közlekedés",
+        "M1-es autópálya",
+        "M7-es autópálya"
+      ],
+      "author": "szerzo@hvg.hu (MTI)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/0de39d2d-3f41-43fe-9974-ab60bfe9cc1a.jpg",
+      "imageAlt": "Hétfőtől felfordulás az M1-M7 közös szakaszán: burkolatjavítás kezdődik",
+      "addedAt": "2026-10-25T20:46:36.534Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-24hu-25-milliard-forintos-exporttamogatasi-6c29e7",
+      "title": "25 milliárd forintos exporttámogatási programot jelentett be Kapitány István",
+      "summary": "A gazdasági miniszter szerint a cél az, hogy Magyarország ne csak összeszerelő üzem legyen. The post 25 milliárd forintos exporttámogatási programot jelentett be Kapitány István first appeared on 24.hu .",
+      "date": "2026-10-25T20:29:21.000Z",
+      "url": "https://24.hu/fn/gazdasag/2026/10/25/25-milliard-forintos-exporttamogatasi-programot-jelentett-be-kapitany-istvan/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Gazdaság",
+        "kapitány istván",
+        "kkv-k",
+        "támogatás"
+      ],
+      "author": "D. Kovács Ildikó",
+      "theme": "politika",
+      "image": "https://s.24.hu/app/uploads/2026/10/dkatt20260925029-1024x683.jpg",
+      "imageAlt": "25 milliárd forintos exporttámogatási programot jelentett be Kapitány István",
+      "addedAt": "2026-10-25T20:46:39.463Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-portfolio-feszult-hangulatban-zajlik-a-brazil-04dfd6",
+      "title": "Feszült hangulatban zajlik a brazil elnökválasztás, meghosszabbították a voksolást",
+      "summary": "Brazíliában vasárnap feszült hangulatban zajlik az elnökválasztás szoros második fordulója, amelyben a baloldali Luiz Inácio Lula da Silva elnök és a jobboldali Flávio Bolsonaro szenátor, a korábban elítélt volt elnök, Jair Bolsonaro fia méri össze az erejét. A választás eredménye az egész régió politikai irányvonalát meghatározhatja.",
+      "date": "2026-10-25T20:28:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261025/feszult-hangulatban-zajlik-a-brazil-elnokvalasztas-meghosszabbitottak-a-voksolast-871922",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://pcdn.hu/articles/images-xl/g/e/t/gettyimages-2301542570-864344.jpg",
+      "imageAlt": "Feszült hangulatban zajlik a brazil elnökválasztás, meghosszabbították a voksolást",
+      "addedAt": "2026-10-25T20:46:37.409Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-24hu-rekordszamu-magyar-nyaralt-horvatorszagban-b65535",
+      "title": "Rekordszámú magyar nyaralt Horvátországban, a hazai vendéglátóiparnak viszont betett az erős forint",
+      "summary": "Idehaza 7 százalékkal visszaesett a turisták száma tavalyhoz képest, főleg külföldiekből érkezett kevesebb hazánkba: 13 százalékkal csökkent a számuk. The post Rekordszámú magyar nyaralt Horvátországban, a hazai vendéglátóiparnak viszont betett az erős forint first appeared on 24.hu .",
+      "date": "2026-10-25T20:18:27.000Z",
+      "url": "https://24.hu/belfold/2026/10/25/horvatorszag-nyaralas-forint-arfolyam-vendeglatoipar/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "horvátország",
+        "forint",
+        "turizmus"
+      ],
+      "author": "Varga Zsuzsa",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/10/central-0877307868-e1792958879928-1024x577.jpg",
+      "imageAlt": "Rekordszámú magyar nyaralt Horvátországban, a hazai vendéglátóiparnak viszont betett az erős forint",
+      "addedAt": "2026-10-25T20:46:39.463Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-portfolio-kiadtak-a-figyelmeztetest-a-kutatok-1f7df0",
+      "title": "Kiadták a figyelmeztetést a kutatók: összeomlás fenyegeti a tengeri élővilág negyedének otthont adó zátonyokat",
+      "summary": "Ausztrália valamennyi sekélyvízi korallzátony-ökoszisztémáját a teljes összeomlás rendkívül magas kockázata fenyegeti 2075-re az óceánok felmelegedése miatt – derül ki a Természetvédelmi Világszövetség (IUCN) és a Melbourne-i Egyetem koordinálásával, több mint 250 kutató részvételével készült globális elemzésből. A felmérés rámutat, hogy a világ korallzátonyainak 96 százaléka ma már a kritikusan veszélyeztetett kategóriába tartozik az IUCN Ökoszisztémák Vörös Listáján - közölte a Phys.org .",
+      "date": "2026-10-25T20:18:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261025/kiadtak-a-figyelmeztetest-a-kutatok-osszeomlas-fenyegeti-a-tengeri-elovilag-negyedenek-otthont-ado-zatonyokat-871920",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://pcdn.hu/articles/images-xl/s/z/i/sziget-klimavaltozas-ocean-klima-globalis-felmelegedes-arviz-zold-607974.jpg",
+      "imageAlt": "Kiadták a figyelmeztetést a kutatók: összeomlás fenyegeti a tengeri élővilág negyedének otthont adó zátonyokat",
+      "addedAt": "2026-10-25T20:46:37.409Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-24hu-forsthoffer-agnes-kiakadt-kover-laszlo-1956-f9a8f7",
+      "title": "Forsthoffer Ágnes kiakadt Kövér László 1956-os kijelentésén",
+      "summary": "A parlamenti elnök arra kérte követőit, hogy ellensúlyozzák a gyűlöletkeltést azzal, hogy valami kedveset tesznek egy ismeretlennel. The post Forsthoffer Ágnes kiakadt Kövér László 1956-os kijelentésén first appeared on 24.hu .",
+      "date": "2026-10-25T20:14:28.000Z",
+      "url": "https://24.hu/belfold/2026/10/25/forsthoffer-agnes-kover-laszlo-bengali-tigris-1956/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "forsthoffer ágnes",
+        "kövér lászló",
+        "1956"
+      ],
+      "author": "D. Kovács Ildikó",
+      "theme": "politika",
+      "image": "https://s.24.hu/app/uploads/2026/10/central-1109063741-3-e1792959209750-1024x575.jpg",
+      "imageAlt": "Forsthoffer Ágnes kiakadt Kövér László 1956-os kijelentésén",
+      "addedAt": "2026-10-25T20:46:39.463Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-444-bezuhant-a-hazai-turizmus-horvatorszagban-46208e",
+      "title": "Bezuhant a hazai turizmus, Horvátországban viszont minden eddiginél szívesebben nyaraltak a magyarok",
+      "summary": "Az erős forint nem segített a hazai turizmusnak, Horvátországban viszont rekordszámú, 834 ezer magyar nyaralt szeptember végéig.",
+      "date": "2026-10-25T20:06:07.000Z",
+      "url": "https://444.hu/2026/10/25/bezuhant-a-hazai-turizmus-horvatorszagban-viszont-minden-eddiginel-szivesebben-nyaraltak-a-magyarok?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "turizmus",
+        "infláció",
+        "árelőny",
+        "balaton"
+      ],
+      "author": "Mohos Máté",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8Nb6YN5Gk2Ec1U8176s.jpeg",
+      "imageAlt": "Bezuhant a hazai turizmus, Horvátországban viszont minden eddiginél szívesebben nyaraltak a magyarok",
+      "addedAt": "2026-10-25T20:46:36.196Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-hvg-kubatov-szijjarto-es-deutsch-is-tavozhat-az-51dfc0",
+      "title": "Kubatov, Szijjártó és Deutsch is távozhat az általuk vezetett sportklub éléről",
+      "summary": "A Tisza-kormány törvénytervezete a sportszövetségekre is vonatkozik.",
+      "date": "2026-10-25T20:02:00.000Z",
+      "url": "https://hvg.hu/itthon/20261025_kubatov-gabor-szijjarto-peter-deutsch-tamas-sport-osszeferhetetlenseg",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "politika",
+        "Ruff Bálint",
+        "Kubatov Gábor"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "sport",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/6aee5a73-5e6a-4944-8bf5-08013d232a7f.jpg",
+      "imageAlt": "Kubatov, Szijjártó és Deutsch is távozhat az általuk vezetett sportklub éléről",
+      "addedAt": "2026-10-25T20:46:36.534Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-portfolio-megszolalt-zelenszkij-ujra-teljes-a7cee7",
+      "title": "Megszólalt Zelenszkij: újra teljes kapacitással működik a létfontosságú védelmi rendszer",
+      "summary": "Volodimir Zelenszkij ukrán elnök bejelentette, hogy Washington teljes mértékben helyreállította az orosz ballisztikusrakéta-csapásokra vonatkozó korai előrejelzések továbbítását Kijevnek, miután az elmúlt időszakban fennakadások voltak ezen a téren.",
+      "date": "2026-10-25T19:58:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261025/megszolalt-zelenszkij-ujra-teljes-kapacitassal-mukodik-a-letfontossagu-vedelmi-rendszer-871918",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://pcdn.hu/articles/images-xl/g/e/t/gettyimages-2300429659-864342.jpg",
+      "imageAlt": "Megszólalt Zelenszkij: újra teljes kapacitással működik a létfontosságú védelmi rendszer",
+      "addedAt": "2026-10-25T20:46:37.409Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-25-24hu-rendorsegi-keszultseg-kozepette-nyugalomra-b7478c",
+      "title": "Rendőrségi készültség közepette nyugalomra kérik a belgrádiakat a diákok – galéria",
+      "summary": "A belgrádi diákmozgalom arra kérte a polgárokat, hogy ne gyülekezzenek a fokozott rendőri jelenléttel érintett helyszíneken. The post Rendőrségi készültség közepette nyugalomra kérik a belgrádiakat a diákok – galéria first appeared on 24.hu .",
+      "date": "2026-10-25T19:57:01.000Z",
+      "url": "https://24.hu/kulfold/2026/10/25/szerbia-belgrad-diakok-rendori-jelenlet-valasztas/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Nagyvilág",
+        "szerbia",
+        "választások"
+      ],
+      "author": "D. Kovács Ildikó",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/10/dsc8063-e1792957861549-1024x575.jpeg",
+      "imageAlt": "Rendőrségi készültség közepette nyugalomra kérik a belgrádiakat a diákok – galéria",
+      "addedAt": "2026-10-25T20:46:39.463Z"
+    },
     {
       "slug": "budimpesta-2026-10-25-telex-eletmento-eszkozt-loptak-el-a-lovoi-c4faaa",
       "title": "Életmentő eszközt loptak el a lövői önkéntes tűzoltóktól",
@@ -7809,248 +8059,6 @@
       "image": "https://s.24.hu/app/uploads/2026/10/maignan-1024x576.jpg",
       "imageAlt": "Arcon csapta ellenfelét, egyből piros lapot kapott az AC Milan kapusa",
       "addedAt": "2026-10-22T23:14:46.250Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-portfolio-minimalber-megtudtuk-hogy-nagyon-messze-3a92d5",
-      "title": "Minimálbér: megtudtuk, hogy nagyon messze vannak egymástól a felek",
-      "summary": "A vállalatok hallani sem szeretnének arról, hogy jelentősen emelkedik jövőre a minimálbér. A munkavállalói oldal képviselői viszont kétszámjegyű béremelést szeretnének. A Versenyszféra és a Kormány Állandó Konzultációs Fórumának (VKF) e heti találkozóján olyan messze voltak az álláspontok, mint Makó Jeruzsálemtől.",
-      "date": "2026-10-22T21:14:00.000Z",
-      "url": "https://www.portfolio.hu/gazdasag/20261022/minimalber-megtudtuk-hogy-nagyon-messze-vannak-egymastol-a-felek-871620",
-      "source": "portfolio",
-      "sourceName": "Portfolio",
-      "categories": [
-        "Gazdaság"
-      ],
-      "author": "",
-      "theme": "politika",
-      "image": "https://pcdn.hu/articles/images-xl/i/p/a/ipar-termeles-worker-dolgozo-gyartosor-berek-keresetek-507151.jpg",
-      "imageAlt": "Minimálbér: megtudtuk, hogy nagyon messze vannak egymástól a felek",
-      "addedAt": "2026-10-22T23:14:44.304Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-telex-magam-is-nap-mint-nap-lattam-a-jogtiprast-933647",
-      "title": "Magam is nap mint nap láttam a jogtiprást, ebben a korábbi elnök járt élen – a szerb egyetemista mozgalom listavezetője a Telexnek",
-      "summary": "Ilija Srdanović újvidéki kardiológus lesz Aleksandar Vučić kihívója a vasárnapi választáson, ő vezeti a tizennégy éve kormányzó Szerb Haladó Párt ellen induló ellenzéki párt listáját. Ha győznek, ő lehet az ország következő miniszterelnöke. Újvidéken beszélgettünk vele arról, miért vállalta a felkérést, és mik lennének az első teendőik, ha kormányt alakítanának.",
-      "date": "2026-10-22T20:40:45.000Z",
-      "url": "https://telex.hu/kulfold/2026/10/22/magam-is-nap-mint-nap-lattam-a-jogtiprast-interju-a-szerb-egyetemista-mozgalom-listavezetojevel",
-      "source": "telex",
-      "sourceName": "Telex",
-      "categories": [
-        "Külföld"
-      ],
-      "author": "Horváth Kávai Andrea",
-      "theme": "politika",
-      "image": "https://assets.telex.hu/images/20261022/1792650166-temp-q77213ipj9p58chhahj_cimlap-normal.jpg",
-      "imageAlt": "Magam is nap mint nap láttam a jogtiprást, ebben a korábbi elnök járt élen – a szerb egyetemista mozgalom listavezetője a Telexnek",
-      "addedAt": "2026-10-23T04:35:55.548Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-telex-meghalt-tom-skerritt-a-top-gun-es-az-alien-861c9c",
-      "title": "Meghalt Tom Skerritt, a Top Gun és az Alien színésze",
-      "summary": "93 éves volt.",
-      "date": "2026-10-22T20:37:51.000Z",
-      "url": "https://telex.hu/after/2026/10/22/tom-skerritt-meghalt-93-evesen-alien-top-gun",
-      "source": "telex",
-      "sourceName": "Telex",
-      "categories": [
-        "After"
-      ],
-      "author": "Szántó-Nagy Bálint",
-      "theme": "drustvo",
-      "image": "https://assets.telex.hu/images/20261022/1792701280-temp-2prn4dc387dn1jgkkha_cimlap-normal.jpg",
-      "imageAlt": "Meghalt Tom Skerritt, a Top Gun és az Alien színésze",
-      "addedAt": "2026-10-23T04:35:55.548Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-portfolio-csunya-minuszokkal-zartak-az-amerikai-edfbca",
-      "title": "Csúnya mínuszokkal zártak az amerikai tőzsdék",
-      "summary": "A tegnapi felpattanás után ismét eladási hullám söpört végig a tőzsdéken, Amerikában a technológiai részvények, azon belül pedig a Meta vezeték az esést. A közösségimédia-vállalat árfolyama 7 százalékkal került lejjebb. Más nagy tech részvények, mint az Nvidia és az Amazon szintén több százalékos mínuszt könyvelhettek ma el. A főbb részvényindexek közül a Nasdaq 2,6, az S&P 1,2 százalékos mínuszban van. A hangulatot az AI-beruházások megtérülésével kapcsolatos aggodalmak mellett a közel-keleti konfliktus és az öthavi csúcsra ugró olajár is rontotta, Európában pedig a bankpapírokat helyezi különösen nagy nyomás alá a francia adósságpiaci feszültség. A magyar tőzsde reggel nagyobb eséssel…",
-      "date": "2026-10-22T20:02:00.000Z",
-      "url": "https://www.portfolio.hu/uzlet/20261022/csunya-minuszokkal-zartak-az-amerikai-tozsdek-871370",
-      "source": "portfolio",
-      "sourceName": "Portfolio",
-      "categories": [
-        "Üzlet"
-      ],
-      "author": "",
-      "theme": "ai",
-      "image": "https://pcdn.hu/articles/images-xl/a/m/e/amerikai-nasdaq-tozsde-reszveny-technologia-ai-szektor-wall-street-864124.jpg",
-      "imageAlt": "Csúnya mínuszokkal zártak az amerikai tőzsdék",
-      "addedAt": "2026-10-22T23:14:44.304Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-444-bezar-a-bioware-akik-olyan-jo-jatekokat-8bcc00",
-      "title": "Bezár a BioWare, akik olyan jó játékokat csináltak, hogy nem is érdekelt miattuk, amikor 2010-ben Orbán lett a miniszterelnök",
-      "summary": "Gyászol az egész videojáték-ipar.",
-      "date": "2026-10-22T19:58:46.000Z",
-      "url": "https://444.hu/2026/10/22/bezar-a-bioware-akik-olyan-jo-jatekokat-csinaltak-hogy-nem-is-erdekelt-miattuk-amikor-2010-ben-orban-lett-a-miniszterelnok?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
-      "source": "444",
-      "sourceName": "444",
-      "categories": [
-        "bioware",
-        "mass effect",
-        "studió",
-        "ea"
-      ],
-      "author": "Mohos Máté",
-      "theme": "politika",
-      "image": "https://assets.4cdn.hu/kraken/8PGubUDh7H16UyHQs.jpeg",
-      "imageAlt": "Bezár a BioWare, akik olyan jó játékokat csináltak, hogy nem is érdekelt miattuk, amikor 2010-ben Orbán lett a miniszterelnök",
-      "addedAt": "2026-10-22T23:14:43.259Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-hvg-atvilagitja-a-kormany-az-elmult-evekben-b9e0ee",
-      "title": "Átvilágítja a kormány az elmúlt években rendezett nagy sporteseményeket",
-      "summary": "A lista élén a 2023-as budapesti atlétikai világbajnokság áll 50,1 milliárd forintos rendezési költségével.",
-      "date": "2026-10-22T19:55:00.000Z",
-      "url": "https://hvg.hu/itthon/20261022_magyar-kozlony-sportesemenyek-atvilagitas-kormany",
-      "source": "hvg",
-      "sourceName": "HVG",
-      "categories": [
-        "Itthon",
-        "belpolitika",
-        "sportesemények",
-        "átvilágítás"
-      ],
-      "author": "szerzo@hvg.hu (MTI)",
-      "theme": "sport",
-      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/51e8cfc4-2bef-40d0-9965-9df9dd56f28b.jpg",
-      "imageAlt": "Átvilágítja a kormány az elmúlt években rendezett nagy sporteseményeket",
-      "addedAt": "2026-10-22T19:56:30.831Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-portfolio-jelentettek-a-francia-titkosszolagatok-6a7870",
-      "title": "Jelentettek a francia titkosszolágatok: váratlan szövetség robbantotta ki a pusztító zavargásokat",
-      "summary": "Szervezett radikális csoportok, politikailag elkötelezett diákok és fosztogatásra készülő külvárosi fiatalok alkalmi együttműködése állhatott az október 17-i franciaországi zavargások mögött – derül ki a L'Express oknyomozó cikkéből. A francia hírszerzés mintegy ötezer, erőszakra is kész szélsőbaloldali aktivistát tart számon, ám a rendbontásokban ennél jóval szélesebb kör vett részt, és a hatóságok alábecsülték a megmozdulás méreteit. A limoges-i városháza felgyújtása miatt őrizetbe vettek egy 34 éves, a radikális környezetvédő Soulèvements de la Terre mozgalomhoz köthető férfit, a legtapasztaltabb résztvevők közül azonban sokan még szabadlábon vannak. Az első értékelések szerint Jean-Luc…",
-      "date": "2026-10-22T19:53:00.000Z",
-      "url": "https://www.portfolio.hu/global/20261022/jelentettek-a-francia-titkosszolagatok-varatlan-szovetseg-robbantotta-ki-a-pusztito-zavargasokat-871648",
-      "source": "portfolio",
-      "sourceName": "Portfolio",
-      "categories": [
-        "Globál"
-      ],
-      "author": "",
-      "theme": "sigurnost",
-      "image": "https://pcdn.hu/articles/images-xl/f/r/a/francia-zavargasok-864176.jpg",
-      "imageAlt": "Jelentettek a francia titkosszolágatok: váratlan szövetség robbantotta ki a pusztító zavargásokat",
-      "addedAt": "2026-10-22T19:56:31.363Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-444-az-elso-egyben-a-valaha-volt-legrosszabb-41bd91",
-      "title": "Az első, egyben a valaha volt legrosszabb film 1956-ról",
-      "summary": "Az 1958-as, A budapesti rém című amerikai „thriller”, amiben szinte semmi sem emlékeztet Magyarországra, direkt sem tudna olyan rossz lenni, mint amilyen véletlenül lett. (Az a dél-amerikai diktátort idéző férfi a címlapképen egy ÁVH-s ezredes akar lenni.)",
-      "date": "2026-10-22T19:49:27.000Z",
-      "url": "https://444.hu/jo/2026/10/22/az-elso-egyben-a-valaha-volt-legrosszabb-film-1956-rol?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
-      "source": "444",
-      "sourceName": "444",
-      "categories": [
-        "1956",
-        "a budapesti rém",
-        "usa",
-        "the beast of budapest"
-      ],
-      "author": "Herczeg Márk",
-      "theme": "drustvo",
-      "image": "https://assets.4cdn.hu/kraken/8PDYhvGNwHTsEk8Us.jpeg",
-      "imageAlt": "Az első, egyben a valaha volt legrosszabb film 1956-ról",
-      "addedAt": "2026-10-22T19:56:30.548Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-444-az-orbanista-influenszer-es-a-fuggetlen-a2ce80",
-      "title": "Az orbánista influenszer és a független közéleti blogger kettőse először kinyírta Vona Gábort, majd megnyerte Az Árulókat",
-      "summary": "Az RTL gyilkosos játékrealityje végén Árpa Attila tett egy megjegyzést a műsor jövőjével kapcsolatban.",
-      "date": "2026-10-22T19:49:05.000Z",
-      "url": "https://444.hu/2026/10/22/az-orbanista-influenszer-es-a-fuggetlen-kozeleti-blogger-kettose-eloszor-kinyirta-vona-gabort-majd-megnyerte-az-arulokat?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
-      "source": "444",
-      "sourceName": "444",
-      "categories": [
-        "Sapkás Piréz",
-        "vona gábor",
-        "tévé",
-        "reality"
-      ],
-      "author": "Mészáros Juli",
-      "theme": "drustvo",
-      "image": "https://assets.4cdn.hu/kraken/8PFxPVsJXSabWWM9s.jpeg",
-      "imageAlt": "Az orbánista influenszer és a független közéleti blogger kettőse először kinyírta Vona Gábort, majd megnyerte Az Árulókat",
-      "addedAt": "2026-10-22T19:56:30.548Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-portfolio-trump-mar-megint-atirna-a-vilagterkepet-d98514",
-      "title": "Trump már megint átírná a világtérképet: ezúttal egy óceánban gondolkodik",
-      "summary": "Donald Trump elárulta, hogy megpróbálta átneveztetni az Atlanti-óceánt, de a Google ezúttal nemet mondott az amerikai elnöknek - számolt be a The Guardian .",
-      "date": "2026-10-22T19:48:00.000Z",
-      "url": "https://www.portfolio.hu/global/20261022/trump-mar-megint-atirna-a-vilagterkepet-ezuttal-egy-oceanban-gondolkodik-871646",
-      "source": "portfolio",
-      "sourceName": "Portfolio",
-      "categories": [
-        "Globál"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://pcdn.hu/articles/images-xl/d/o/n/donald-trump-864172.jpg",
-      "imageAlt": "Trump már megint átírná a világtérképet: ezúttal egy óceánban gondolkodik",
-      "addedAt": "2026-10-22T19:56:31.363Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-24hu-borbely-balazs-a-fradi-el-sikererol-nottek-e29fb9",
-      "title": "Borbély Balázs a Fradi EL-sikeréről: Nőttek a továbbjutási esélyeink, de még semmi sem dőlt el",
-      "summary": "Nagy Ádám szerint kontrolláltuk a Torreense elleni mérkőzést, Mariano Gomez megérdemelt győzelemről beszélt. The post Borbély Balázs a Fradi EL-sikeréről: Nőttek a továbbjutási esélyeink, de még semmi sem dőlt el first appeared on 24.hu .",
-      "date": "2026-10-22T19:46:09.000Z",
-      "url": "https://24.hu/sport/foci/2026/10/22/europa-liga-ftc-torreense-borbely-balazs-nyilatkozat/",
-      "source": "24hu",
-      "sourceName": "24.hu",
-      "categories": [
-        "Foci",
-        "európa liga",
-        "ferencváros",
-        "foci"
-      ],
-      "author": "24.hu",
-      "theme": "drustvo",
-      "image": "https://s.24.hu/app/uploads/2026/10/ftc-3-1024x576.jpg",
-      "imageAlt": "Borbély Balázs a Fradi EL-sikeréről: Nőttek a továbbjutási esélyeink, de még semmi sem dőlt el",
-      "addedAt": "2026-10-22T19:56:33.152Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-hvg-zelenszkij-a-starlink-standard-sebessege-a4891b",
-      "title": "Zelenszkij: a Starlink standard sebessége még mindig nem állt helyre",
-      "summary": "Az ukrán elnök arról is beszélt, hogy Kijev kész tárgyalni a békéről a legnagyobb felzárkózó gazdaságokat tömörítő G20 országcsoport decemberi egyesült államokbeli csúcstalálkozóján.",
-      "date": "2026-10-22T19:40:00.000Z",
-      "url": "https://hvg.hu/vilag/20261022_zelenszkij-starlink-sebesseg-usa-trump-targyalasok",
-      "source": "hvg",
-      "sourceName": "HVG",
-      "categories": [
-        "Világ",
-        "nemzetközi konfliktusok",
-        "orosz-ukrán háború",
-        "Volodimir Zelenszkij"
-      ],
-      "author": "szerzo@hvg.hu (MTI)",
-      "theme": "ekonomija",
-      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/0fa1f3d3-74f5-4f9e-a788-a8366eef94a4.jpg",
-      "imageAlt": "Zelenszkij: a Starlink standard sebessége még mindig nem állt helyre",
-      "addedAt": "2026-10-22T19:56:30.831Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-22-24hu-hatos-lotto-itt-vannak-az-oktober-22-i-839020",
-      "title": "Hatos lottó: itt vannak az október 22-i nyerőszámok",
-      "summary": "A 26-os volt a legkisebb szám, amit kihúztak. Mutatjuk a nyeremények is: három találattal már több mint négyezer forintot lehetett nyerni. The post Hatos lottó: itt vannak az október 22-i nyerőszámok first appeared on 24.hu .",
-      "date": "2026-10-22T19:39:28.000Z",
-      "url": "https://24.hu/fn/gazdasag/2026/10/22/hatos-lotto-oktober-22-nyeroszamok/",
-      "source": "24hu",
-      "sourceName": "24.hu",
-      "categories": [
-        "Gazdaság",
-        "hatos lottó",
-        "lottó",
-        "lottósorsolás"
-      ],
-      "author": "Vaskor Máté",
-      "theme": "drustvo",
-      "image": "https://s.24.hu/app/uploads/2026/10/central-0499908181-5-e1792697956829-1024x577.jpg",
-      "imageAlt": "Hatos lottó: itt vannak az október 22-i nyerőszámok",
-      "addedAt": "2026-10-22T19:56:33.152Z"
     }
   ]
 }

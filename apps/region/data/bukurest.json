@@ -4,19 +4,20 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-10-25T20:01:34.808Z",
+  "updatedAt": "2026-10-25T20:49:22.523Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
-      "url": "https://www.agerpres.ro/rss/",
-      "ok": true,
-      "fetched": 20,
+      "url": "https://www.agerpres.ro/rss",
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.agerpres.ro/rss: This operation was aborted"
+        "https://www.agerpres.ro/rss: This operation was aborted",
+        "https://www.agerpres.ro/rss/: This operation was aborted"
       ],
-      "checkedAt": "2026-10-25T20:01:25.011Z"
+      "checkedAt": "2026-10-25T20:49:14.990Z"
     },
     {
       "id": "hotnews",
@@ -26,7 +27,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T20:01:25.208Z"
+      "checkedAt": "2026-10-25T20:49:15.559Z"
     },
     {
       "id": "zf",
@@ -36,7 +37,7 @@
       "fetched": 15,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T20:01:26.866Z"
+      "checkedAt": "2026-10-25T20:49:17.258Z"
     },
     {
       "id": "profit",
@@ -46,17 +47,17 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T20:01:27.154Z"
+      "checkedAt": "2026-10-25T20:49:17.587Z"
     },
     {
       "id": "digi24",
       "name": "Digi24",
       "url": "https://www.digi24.ro/rss",
       "ok": true,
-      "fetched": 148,
+      "fetched": 150,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T20:01:30.135Z"
+      "checkedAt": "2026-10-25T20:49:19.405Z"
     },
     {
       "id": "g4media",
@@ -66,7 +67,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T20:01:34.007Z"
+      "checkedAt": "2026-10-25T20:49:21.699Z"
     },
     {
       "id": "newsro",
@@ -76,10 +77,341 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-25T20:01:34.807Z"
+      "checkedAt": "2026-10-25T20:49:22.522Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-10-25-g4media-noi-proteste-la-tirana-in-ciuda-masurilor-83391b",
+      "title": "Noi proteste la Tirana, în ciuda măsurilor anunțate de premierul Edi Rama pentru oprirea violențelor",
+      "summary": "Protestatarii au ieșit din nou în număr mare pe străzile din Tirana, duminică, la câteva ore după ce premierul albanez Edi Rama a anunțat noi măsuri menite să pună capăt manifestațiilor antiguvernamentale, relatează Reuters. În ciuda ploii, manifestanții s-au adunat în fața Ministerului Educației, după care s-au îndreptat spre biroul premierului. Acolo, unii dintre ei […] © G4Media.ro .",
+      "date": "2026-10-25T20:40:34.000Z",
+      "url": "https://www.g4media.ro/noi-proteste-la-tirana-in-ciuda-masurilor-anuntate-de-premierul-edi-rama-pentru-oprirea-violentelor.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Analize",
+        "edi rama",
+        "proteste tirana"
+      ],
+      "author": "Ștefan Munteanu",
+      "theme": "politika",
+      "image": "https://www.g4media.ro//wp-content/uploads/2026/10/profimedia-1146541746-scaled.jpg",
+      "imageAlt": "Noi proteste la Tirana, în ciuda măsurilor anunțate de premierul Edi Rama pentru oprirea violențelor",
+      "addedAt": "2026-10-25T20:49:21.699Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-newsro-alegeri-in-serbia-prezenta-ridicata-la-vot-8fb1f5",
+      "title": "Alegeri în Serbia: Prezenţă ridicată la vot şi tensiuni. Secţiile de votare s-au închis",
+      "summary": "O prezenţă ridicată la vot şi tensiuni în creştere au marcat alegerile parlamentare extrem de disputate care au avut loc duminică în Serbia, o confruntare decisivă între liderul autoritar al acestei ţări balcanice, Aleksandar Vučić, şi o mişcare a studenţilor care au condus manifestaţii împotriva sa de aproape doi ani, relatează AP.",
+      "date": "2026-10-25T20:39:13.000Z",
+      "url": "https://www.news.ro/externe/alegeri-in-serbia-prezenta-ridicata-la-vot-si-tensiuni-sectiile-de-votare-s-au-inchis-1922403925132026102222885187",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Alegeri în Serbia: Prezenţă ridicată la vot şi tensiuni. Secţiile de votare s-au închis",
+      "addedAt": "2026-10-25T20:49:22.522Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-hotnews-grav-accident-de-autocar-in-spania-83-de-8dcc4a",
+      "title": "Grav accident de autocar în Spania: 83 de răniți. Vehiculul a căzut de la 20 de metri înălțime",
+      "summary": "Cel puțin 83 de persoane au fost rănite, dintre care șapte în stare gravă, după ce un autocar s-a prăbușit de pe un terasament înalt de 20 de metri, în provincia Barcelona din estul Spaniei. Accidentul s-a produs duminică după-amiază, în dreptul localității montane Fogars de Montclús, la aproximativ 60 de kilometri nord de Barcelona, …",
+      "date": "2026-10-25T20:38:49.000Z",
+      "url": "https://hotnews.ro/grav-accident-de-autocar-in-spania-soldat-cu-cel-putin-80-de-raniti-vehiculul-a-cazut-de-la-20-de-metri-inaltime-2386332",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Viorela Marin",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Grav accident de autocar în Spania: 83 de răniți. Vehiculul a căzut de la 20 de metri înălțime",
+      "addedAt": "2026-10-25T20:49:15.559Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-digi24-accident-grav-in-apropierea-barcelonei-un-ede787",
+      "title": "Accident grav în apropierea Barcelonei: Un autobuz cu peste 100 de persoane a căzut într-o prăpastie",
+      "summary": "Cel puțin 83 de persoane sunt rănite, dintre care 7 în stare foarte gravă și 23 în stare gravă, în urma unui accident în care un autobuz a intrat în coliziune cu o mașină, la 70 de km nord de orașul spaniol Barcelona. Autocarul cu peste 100 de pasageri a ieșit de pe șosea și a căzut într-o prăpastie, ceea ce a declanșat o operațiune de salvare de urgență.",
+      "date": "2026-10-25T20:38:45.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/accident-grav-in-apropierea-barcelonei-un-autobuz-cu-peste-100-de-persoane-a-cazut-intr-o-prapastie-4008507",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjI1JTJGMzAyOTc0MV8zMDI5/NzQxX0hWZnhaTVNXY0FBc3A1by5qcGcm/aGFzaD04Njg1YjE4ODE3NTRhNDRiMjcwNzk3YTdjYjQxMDVmNw==.jpg",
+      "imageAlt": "Accident grav în apropierea Barcelonei: Un autobuz cu peste 100 de persoane a căzut într-o prăpastie",
+      "addedAt": "2026-10-25T20:49:19.406Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-newsro-isu-arges-pompieri-agresati-in-timp-ce-96caa5",
+      "title": "ISU Argeş: Pompieri agresaţi în timp ce interveneau la stingerea unui incendiu, în oraşul Ştefăneşti / Unul dintre salvatori a fost rănit, a fost transportat la spital pentru…",
+      "summary": "ISU Argeş anunţă că pompierii chemaţi să intervină la stingerea unui incendiu, în oraşul Ştefăneşti, au fost agresaţi de persoanele aflate la faţa locului. Unul dintre salvatori a fost rănit, a fost transportat la spital pentru investigaţii de specialitate.",
+      "date": "2026-10-25T20:37:07.000Z",
+      "url": "https://www.news.ro/eveniment/isu-arges-pompieri-agresati-in-timp-ce-interveneau-la-stingerea-unui-incendiu-in-orasul-stefanesti-unul-dintre-salvatori-a-fost-ranit-a-fost-transportat-la-spital-pentru-investigatii-de-specialitate-1922403725072026102222885207",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "ISU Argeş: Pompieri agresaţi în timp ce interveneau la stingerea unui incendiu, în oraşul Ştefăneşti / Unul dintre salvatori a fost rănit, a fost transportat la spital pentru inves",
+      "addedAt": "2026-10-25T20:49:22.523Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-profit-ultima-ora-anunt-oficial-despre-impozitarea-282d38",
+      "title": "ULTIMA ORĂ ANUNȚ OFICIAL despre impozitarea locuințelor la valoarea de piață: Nu există pentru 2027 un plan în acest sens. Foarte clar, ca să știe toată lumea - ministrul…",
+      "summary": "Locuințele nu vor fi impozitate anul viitor la valoarea de piață, anunță oficial ministrul Finanțelor, Alexandru Nazare.",
+      "date": "2026-10-25T20:36:00.000Z",
+      "url": "https://www.profit.ro/taxe-si-consultanta/ultima-ora-anunt-oficial-despre-impozitarea-locuintelor-la-valoarea-de-piata-nu-exista-pentru-2027-un-plan-in-acest-sens-foarte-clar-ca-sa-stie-toata-lumea-ministrul-finantelor-22885191?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Taxe și Consultanță"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33243/22885191/2/the-level-faza-4.jpg?width=800",
+      "imageAlt": "ULTIMA ORĂ ANUNȚ OFICIAL despre impozitarea locuințelor la valoarea de piață: Nu există pentru 2027 un plan în acest sens. Foarte clar, ca să știe toată lumea - ministrul Finanțelo",
+      "addedAt": "2026-10-25T20:49:17.587Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-zf-romania-nu-se-lupta-cu-o-criza-economica-d7968d",
+      "title": "România nu se luptă cu o criză economică reală, ci cu o criză zugrăvită de TikTok",
+      "summary": "",
+      "date": "2026-10-25T20:32:57.000Z",
+      "url": "https://www.zf.ro/opinii/romania-nu-se-lupta-cu-o-criza-economica-reala-ci-cu-o-criza-zugravita-de-tiktok-23267720",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Opinii"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10369/23267720/1/66-fini-fini-nou-2.jpg?width=700",
+      "imageAlt": "România nu se luptă cu o criză economică reală, ci cu o criză zugrăvită de TikTok",
+      "addedAt": "2026-10-25T20:49:17.258Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-g4media-alegeri-parlamentare-in-serbia-lista-aa8239",
+      "title": "Alegeri parlamentare în Serbia: „Lista Studenților” câștigă cu o majoritate zdrobitoare, indică primele estimări / Vučić recunoaște înfrângerea / Cea mai mare prezență la vot din…",
+      "summary": "UPDATE 22:44 Proiecție Ipsos/CeSID: „Lista Studenților” ar obține majoritatea parlamentară, în timp ce lista lui Vučić este estimată la 39,3% „Lista Studenților” conduce cu 52% din voturi, potrivit primei proiecții Ipsos/CeSID, în timp ce lista susținută de Aleksandar Vučić este estimată la 39,3%, relatează postul de televiziune N1, citat de The Guardian. Conform proiecției, „Lista […] © G4Media.ro .",
+      "date": "2026-10-25T20:30:59.000Z",
+      "url": "https://www.g4media.ro/alegeri-parlamentare-in-serbia-prezenta-la-vot-a-ajuns-la-676-pana-la-ora-1900-cozi-de-ore-intregi-la-sectiile-de-votare.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Analize",
+        "alegeri parlamentare serbia",
+        "alexandar vucic",
+        "prezenta vot"
+      ],
+      "author": "Ștefan Munteanu",
+      "theme": "politika",
+      "image": "https://www.g4media.ro//wp-content/uploads/2026/10/profimedia-1146439721-scaled.jpg",
+      "imageAlt": "Alegeri parlamentare în Serbia: „Lista Studenților” câștigă cu o majoritate zdrobitoare, indică primele estimări / Vučić recunoaște înfrângerea / Cea mai mare prezență la vot din 1",
+      "addedAt": "2026-10-25T20:49:21.699Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-newsro-traian-basescu-bolojan-va-trebui-sa-rezolve-cb0835",
+      "title": "Traian Băsescu: Bolojan va trebui să rezolve întâi problemele în interiorul partidului şi pe urmă să aspire la titlul de lider al opoziţiei / Nici PNL, nici USR nu au un lider de…",
+      "summary": "Fostul preşedinte Traian Băsescu a declarat, duminică, despre preşedintele PNL, Ilie Bolojan, că va trebui să rezolve întâi problemele în interiorul partidului şi pe urmă să aspire la titlul de lider al opoziţiei. Potrivit acestuia, nici PNL, nici USR nu au un lider de tracţiune şi înccă nu-l vede pe Bolojan să tracteze o alianţă.",
+      "date": "2026-10-25T20:30:33.000Z",
+      "url": "https://www.news.ro/politic-intern/traian-basescu-bolojan-trebui-rezolve-intai-problemele-interiorul-partidului-urma-aspire-titlul-lider-opozitiei-nici-pnl-nici-usr-au-lider-tractiune-l-vad-bolojan-tracteze-alianta-1922403025332026102222885186",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Traian Băsescu: Bolojan va trebui să rezolve întâi problemele în interiorul partidului şi pe urmă să aspire la titlul de lider al opoziţiei / Nici PNL, nici USR nu au un lider de t",
+      "addedAt": "2026-10-25T20:49:22.523Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-digi24-basescu-despre-indexarea-pensiilor-nu-cred-0a6f18",
+      "title": "Băsescu, despre indexarea pensiilor: „Nu cred că au resurse”. Soluția propusă de fostul președinte pentru persoanele vulnerabile",
+      "summary": "Traian Băsescu se îndoiește că Guvernul va avea bani pentru indexarea pensiilor și consideră că sprijinul financiar acordat persoanelor vulnerabile ar putea fi o soluție, fără a dezechilibra sistemul public de pensii. Invitat la Digi24, fostul președinte a afirmat că Executivul nu controlează suficient cheltuielile și activitatea administrației publice și a avertizat că o indexare diferențiată în funcție de valoarea pensiei ar putea crea inechități între pensionari.",
+      "date": "2026-10-25T20:27:19.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/social/basescu-despre-indexarea-pensiilor-nu-cred-ca-au-resurse-solutia-propusa-de-fostul-presedinte-pentru-persoanele-vulnerabile-4008437",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjQl/MkYwOSUyRjE3JTJGMjA3NzYwNF8yMDc3/NjA0X3BlbnNpaS5qcGcmaGFzaD1kNjRk/YzU2ZmI5YWQ0ZGRlMzFlNGI2OWRjZTgyMDhjYg==.jpg",
+      "imageAlt": "Băsescu, despre indexarea pensiilor: „Nu cred că au resurse”. Soluția propusă de fostul președinte pentru persoanele vulnerabile",
+      "addedAt": "2026-10-25T20:49:19.406Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-digi24-basescu-il-critica-pe-bolojan-a-marit-0f4f9e",
+      "title": "Băsescu îl critică pe Bolojan: A mărit taxele și n-a reuşit decât să frâneze economia şi creşterea economică",
+      "summary": "Fostul preşedinte Traian Băsescu a declarat duminică, la Digi24, despre fostul premier Ilie Bolojan, că nu a făcut ce a trebuit pentru că a mers exact pe scheme de gen FMI, cu măriri de taxe şi astfel nu a reuşit decât să frâneze economia şi creşterea economică.",
+      "date": "2026-10-25T20:21:02.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/basescu-il-critica-pe-bolojan-a-marit-taxele-si-n-a-reusit-decat-sa-franeze-economia-si-cresterea-economica-4008517",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjE2JTJGMzAxNzYzNV8zMDE3/NjM1X2lsaWUtYm9sb2phbi1pbnF1YW0t/Z2VvcmdlLWNhbGluLmpwZyZoYXNoPWQ0/ODM1MTM4YzI0YmVlYmUzZDg1OGUyZGIzNWFhNjNj.jpg",
+      "imageAlt": "Băsescu îl critică pe Bolojan: A mărit taxele și n-a reuşit decât să frâneze economia şi creşterea economică",
+      "addedAt": "2026-10-25T20:49:19.406Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-g4media-ministrul-sanatatii-trimite-inspectia-bd7499",
+      "title": "Ministrul Sănătății trimite Inspecția Sanitară de Stat în control la Institutul de Psihiatrie Socola, după apariția informațiilor despre ploșnițe",
+      "summary": "Ministrul Sănătății, Alexandru Rogobete, a anunțat că va trimite Inspecția Sanitară de Stat la Institutul de Psihiatrie „Socola” din Iași, pentru a verifica respectarea normelor sanitare și a măsurilor de prevenție, după apariția unor informații privind infestarea cu ploșnițe a unui pavilion. Ministrul a precizat, într-o postare publicată duminică seara pe Facebook, că a vizitat […] © G4Media.ro .",
+      "date": "2026-10-25T20:20:56.000Z",
+      "url": "https://www.g4media.ro/ministrul-sanatatii-trimite-inspectia-sanitara-de-stat-in-control-la-institutul-de-psihiatrie-socola-dupa-aparitia-informatiilor-despre-plosnite.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "alexandru rogobete",
+        "aparitie plosnite",
+        "Inspecția Sanitară de Stat"
+      ],
+      "author": "Ștefan Munteanu",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro//wp-content/uploads/2020/03/socola.jpg",
+      "imageAlt": "Ministrul Sănătății trimite Inspecția Sanitară de Stat în control la Institutul de Psihiatrie Socola, după apariția informațiilor despre ploșnițe",
+      "addedAt": "2026-10-25T20:49:21.700Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-newsro-in-tara-asta-guvernul-nu-are-control-pe-b62cf0",
+      "title": "În ţara asta, guvernul nu are control pe cheltuieli. Eu nu cred că au resurse pentru indexarea pensiilor / Să dea Dumnezeu să aibă. Şi eu sunt pensionar, vreau să îmi indexeze…",
+      "summary": "Fostul preşedinte Traian Băsescu a declarat, duminică, despre situaţia bugetară a ţării, că guvernul nu are control pe cheltuieli, el exprimându-şi îndoială că are resurse pentru indexarea pensiilor. ”Să dea Dumnezeu să aibă. Şi eu sunt pensionar, vreau să îmi indexeze pensia”, a mai spus Băsescu.",
+      "date": "2026-10-25T20:16:43.000Z",
+      "url": "https://www.news.ro/politic-intern/in-tara-asta-guvernul-nu-are-control-pe-cheltuieli-eu-nu-cred-ca-au-resurse-pentru-indexarea-pensiilor-sa-dea-dumnezeu-sa-aiba-si-eu-sunt-pensionar-vreau-sa-imi-indexeze-pensia-1922401625432026102222885168",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "În ţara asta, guvernul nu are control pe cheltuieli. Eu nu cred că au resurse pentru indexarea pensiilor / Să dea Dumnezeu să aibă. Şi eu sunt pensionar, vreau să îmi indexeze pens",
+      "addedAt": "2026-10-25T20:49:22.523Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-newsro-le-pen-si-a-lansat-campania-prezidentiala-7e7385",
+      "title": "Le Pen şi-a lansat campania prezidenţială în Franţa, pe fondul protestelor care zguduie naţiunea",
+      "summary": "Lidera de extremă dreapta Marine Le Pen, favorită în cursa pentru alegerile prezidenţiale din Franţa de anul viitor, şi-a lansat oficial campania duminică, promiţând să restabilească ordinea şi încrederea naţională, relatează Reuters.",
+      "date": "2026-10-25T20:13:11.000Z",
+      "url": "https://www.news.ro/externe/le-pen-si-a-lansat-campania-prezidentiala-in-franta-pe-fondul-protestelor-care-zguduie-natiunea-1922401325112026102222885103",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Le Pen şi-a lansat campania prezidenţială în Franţa, pe fondul protestelor care zguduie naţiunea",
+      "addedAt": "2026-10-25T20:49:22.523Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-profit-alianta-premiera-orange-vodafone-deutsche-cd8859",
+      "title": "Alianță premieră: Orange, Vodafone, Deutsche Telekom și Telefonica se pregătesc să liciteze în comun pentru spectru în Europa",
+      "summary": "Deutsche Telekom, Orange, Telefónica și Vodafone se pregătesc să liciteze în comun pentru spectrul european prin satelit, cu scopul de a oferi clienților servicii mobile către telefoane obișnuite direct de pe orbită.",
+      "date": "2026-10-25T20:12:00.000Z",
+      "url": "https://www.profit.ro/romania-conectata/alianta-premiera-orange-vodafone-deutsche-telekom-si-telefonica-se-pregatesc-sa-liciteze-in-comun-pentru-spectru-in-europa-22885123?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "România Conectată"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/41186/22885123/1/ast-satelit.jpg?width=800",
+      "imageAlt": "Alianță premieră: Orange, Vodafone, Deutsche Telekom și Telefonica se pregătesc să liciteze în comun pentru spectru în Europa",
+      "addedAt": "2026-10-25T20:49:17.587Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-g4media-o-intalnire-trilaterala-intre-ucraina-rusia-051093",
+      "title": "O întâlnire trilaterală între Ucraina, Rusia și SUA va avea loc în noiembrie, anunță Zelenski",
+      "summary": "Președintele ucrainean Volodimir Zelenski a anunțat că o întâlnire trilaterală între Ucraina, Rusia și Statele Unite ar putea avea loc în noiembrie, relatează Sky News. Liderul de la Kiev a precizat că țara sa este pregătită să participe la discuții tehnice, dar a exclus posibilitatea unei întâlniri cu Vladimir Putin în condițiile ridicării tuturor sancțiunilor […] © G4Media.ro .",
+      "date": "2026-10-25T20:10:28.000Z",
+      "url": "https://www.g4media.ro/o-intalnire-trilaterala-intre-ucraina-rusia-si-sua-va-avea-loc-in-noiembrie-anunta-zelenski.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Analize",
+        "intalnire trilaterala",
+        "ucraina rusia sua",
+        "Volodimir Zelenski"
+      ],
+      "author": "Ștefan Munteanu",
+      "theme": "politika",
+      "image": "https://www.g4media.ro//wp-content/uploads/2026/10/profimedia-1076788754.jpg",
+      "imageAlt": "O întâlnire trilaterală între Ucraina, Rusia și SUA va avea loc în noiembrie, anunță Zelenski",
+      "addedAt": "2026-10-25T20:49:21.700Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-digi24-alexandru-nazare-despre-auditul-cerut-de-3226c9",
+      "title": "Alexandru Nazare, despre auditul cerut de Sorin Grindeanu la Ministerul Finanțelor pe care tot el l-a condus: „E chiar o bucurie”",
+      "summary": "Ministrul Finanţelor, Alexandru Nazare, a declarat, în cadrul unui interviu pentru Digi24, despre auditul anunţat de Sorin Grindeanu la toate ministerele, că nu este absolut nicio problemă, ci e chiar o bucurie, pentru că au ocazia să prezinte situaţia finanţelor publice la zi.",
+      "date": "2026-10-25T20:07:38.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/alexandru-nazare-despre-auditul-cerut-de-sorin-grindeanu-la-ministerul-finantelor-pe-care-tot-el-l-a-condus-e-chiar-o-bucurie-4008457",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjI1JTJGMzAyOTczNV8zMDI5/NzM1X1NjcmVlbnNob3QtMjAyNi0xMC0y/NS0yMjA3MjcucG5nJmhhc2g9YjNiMzkz/Yzk3Yzc0YTJhMDA3ZTQ5ZWIxNWYyNmIwNDY=.png",
+      "imageAlt": "Alexandru Nazare, despre auditul cerut de Sorin Grindeanu la Ministerul Finanțelor pe care tot el l-a condus: „E chiar o bucurie”",
+      "addedAt": "2026-10-25T20:49:19.406Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-newsro-traian-basescu-bolojan-nu-a-facut-ce-a-63a5d2",
+      "title": "Traian Băsescu: Bolojan nu a făcut ce a trebuit. A mers exact pe scheme de gen FMI, mărim taxele. N-a reuşit decât să frâneze economia şi creşterea economică / Trebuie să se ducă…",
+      "summary": "Fostul preşedinte Traian Băsescu a declarat, duminică, despre fostul premier Ilie Bolojan, că nu a făcut ce a trebuit pentru că a mers exact pe scheme de gen FMI, cu măriri de taxe şi astfel nu a reuşit decât să frâneze economia şi creşterea economică. El a mai afirmat că trebuie să se ducă pe reducerea de cheltuieli, desfiinţate sporurile şi făcută legea salarizării.",
+      "date": "2026-10-25T20:07:00.000Z",
+      "url": "https://www.news.ro/politic-intern/traian-basescu-bolojan-facut-trebuit-mers-exact-scheme-gen-fmi-marim-taxele-n-reusit-franeze-economia-cresterea-economica-duca-reducerea-cheltuieli-desfiintate-sporurile-1922400725002026102222885105",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "",
+      "imageAlt": "Traian Băsescu: Bolojan nu a făcut ce a trebuit. A mers exact pe scheme de gen FMI, mărim taxele. N-a reuşit decât să frâneze economia şi creşterea economică / Trebuie să se ducă p",
+      "addedAt": "2026-10-25T20:49:22.523Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-hotnews-traian-basescu-despre-o-eventuala-065a3d",
+      "title": "Traian Băsescu, despre o eventuală suspendare a lui Nicușor Dan: „Niciun partid nu face cadouri la nesfârșit”",
+      "summary": "Fostul președinte Traian Băsescu a afirmat, la Digi24, că președintele Nicușor Dan s-a pus la adăpost de o suspendare din funcție prin instalarea guvernului Niculescu, însă înțelegerea cu PSD nu este una care să dureze. În primul rând, fostul președinte crede că Grindeanu și-a asigurat controlul asupra Guvernului, chiar dacă nu este membru în cabinet. …",
+      "date": "2026-10-25T20:01:51.000Z",
+      "url": "https://hotnews.ro/traian-basescu-despre-o-eventuala-suspendare-a-lui-nicusor-dan-niciun-partid-nu-face-cadouri-la-nesfarsit-2386289",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "Politic"
+      ],
+      "author": "Adrian Ilie",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Traian Băsescu, despre o eventuală suspendare a lui Nicușor Dan: „Niciun partid nu face cadouri la nesfârșit”",
+      "addedAt": "2026-10-25T20:49:15.559Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-digi24-basescu-spune-ca-nicusor-dan-si-a-dorit-un-dcabdb",
+      "title": "Băsescu spune că „Nicușor Dan și-a dorit un Guvern PSD”, dar îl avertizează că „niciun partid nu face cadouri la nesfârșit”",
+      "summary": "Fostul președinte Traian Băsescu a declarat duminică seară, în emisiunea Briefing de la Digi24, că președintele Nicușor Dan „și-a dorit un Guvern PSD”, pentru că avea nevoie de un aliat în contextul în care„ riscul suspendării sale era destul de mare”. Cu toate acestea, Băsescu consideră că „la un moment dat se va rupe lanțul de iubire” între aceștia.",
+      "date": "2026-10-25T20:01:38.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/basescu-spune-ca-nicusor-dan-si-a-dorit-un-guvern-psd-dar-il-avertizeaza-ca-niciun-partid-nu-face-cadouri-la-nesfarsit-4008423",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjA0JTJGMjk5NzcyOV8yOTk3/NzI5X0lOU1RBTlRfQ09OU1VMVEFSSV9Q/U0RfNjdfSU5RVUFNX1Bob3Rvc19PY3Rh/dl9HYW5lYS1zY2FsZWQtMS5qcGcmaGFz/aD0zNzk2ZDY3ZWMyM2ViYWViMTgyZGQwZjdhMTFiYjFkYQ==.jpg",
+      "imageAlt": "Băsescu spune că „Nicușor Dan și-a dorit un Guvern PSD”, dar îl avertizează că „niciun partid nu face cadouri la nesfârșit”",
+      "addedAt": "2026-10-25T20:49:19.406Z"
+    },
     {
       "slug": "bukurest-2026-10-25-agerpres-auto-jerome-france-a-castigat-trofeul-ae67f9",
       "title": "Auto: Jerome France a câștigat Trofeul Poiana Brașov, ultima etapă a sezonului de viteză în coastă",
@@ -207,6 +539,26 @@
       "image": "",
       "imageAlt": "Ploşniţe și la Spitalul „Socola” din Iași. Ministrul Sănătăţii trimite Inspecţia Sanitară în control",
       "addedAt": "2026-10-25T20:01:25.208Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-g4media-ministrul-nazare-nu-exclude-noi-taxe-si-9f060c",
+      "title": "Ministrul Nazare nu exclude noi taxe și impozite în 2027: „Nu îmi doresc, dar avem nevoie de sustenabilitate”",
+      "summary": "Ministrul Finanțelor, Alexandru Nazare, nu exclude introducerea unor taxe și impozite noi în 2027, în condițiile în care orice program nou de cheltuieli trebuie să aibă o sursă de finanțare. Într-un interviu acordat Digi24, oficialul a afirmat că România trebuie să adopte un buget sustenabil și credibil pentru agențiile internaționale de rating, avertizând că pierderea […] © G4Media.ro .",
+      "date": "2026-10-25T19:41:04.000Z",
+      "url": "https://www.g4media.ro/ministrul-nazare-nu-exclude-noi-taxe-si-impozite-in-2027-nu-imi-doresc-dar-avem-nevoie-de-sustenabilitate.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Analize",
+        "alexandru nazare",
+        "ministrul Finanţelor",
+        "taxe impozite 2027"
+      ],
+      "author": "Ștefan Munteanu",
+      "theme": "ekonomija",
+      "image": "https://www.g4media.ro//wp-content/uploads/2025/08/INSTANT_ALEXANDRU_NAZARE_007_INQUAM_Photos_Octav_Ganea.jpg",
+      "imageAlt": "Ministrul Nazare nu exclude noi taxe și impozite în 2027: „Nu îmi doresc, dar avem nevoie de sustenabilitate”",
+      "addedAt": "2026-10-25T20:49:21.700Z"
     },
     {
       "slug": "bukurest-2026-10-25-g4media-un-tablou-de-nicolae-grigorescu-evaluat-la-407a98",
@@ -827,6 +1179,23 @@
       "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjI1JTJGMzAyOTYyNF8zMDI5/NjI0X0V2YWx1YXJlYS1OYXRpb25hbGEt/bGEtbGltYmEtbWF0ZXJuYV8tRm90by1H/ZXR0eS1JbWFnZXMuanBnJmhhc2g9NjJl/Yjc0NmJiMGM2OTU4NDk5ZjA2NGUwYTQzY2QwZjE=.jpg",
       "imageAlt": "Examenul de Evaluare Națională ar putea fi modificat. Ministrul Sorin Costreie: „Aş mai aduce în joc o probă care să devină relevantă”",
       "addedAt": "2026-10-25T17:39:16.951Z"
+    },
+    {
+      "slug": "bukurest-2026-10-25-profit-ultima-ora-sa-fiscalizam-meditatiile-un-25518e",
+      "title": "ULTIMA ORĂ Să fiscalizăm meditațiile! Un fenomen de amploarea la care au ajuns meditațiile arată că școala românească are mari probleme, spune ministru al Educației",
+      "summary": "Un fenomen de amploarea la care au ajuns meditațiile arată că școala românească are mari probleme și ar trebui fiscalizat, a declarat noul ministru al educației, Sorin Costreie.",
+      "date": "2026-10-25T17:11:00.000Z",
+      "url": "https://www.profit.ro/stiri/social/ultima-ora-sa-fiscalizam-meditatiile-un-fenomen-de-amploarea-la-care-au-ajuns-meditatiile-arata-ca-scoala-romaneasca-are-mari-probleme-spune-ministru-al-educatiei-22884404?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Social"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33239/22884404/2/laptop-3196481-1280-1.jpg?width=800",
+      "imageAlt": "ULTIMA ORĂ Să fiscalizăm meditațiile! Un fenomen de amploarea la care au ajuns meditațiile arată că școala românească are mari probleme, spune ministru al Educației",
+      "addedAt": "2026-10-25T20:49:17.587Z"
     },
     {
       "slug": "bukurest-2026-10-25-profit-noul-ministru-al-educatiei-meditatiile-ar-ac475e",
@@ -6657,362 +7026,6 @@
       "image": "",
       "imageAlt": "Serie A: Torino – Monza 3-2",
       "addedAt": "2026-10-23T21:23:46.026Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-newsro-meciul-corvinul-u-cluj-jovo-lukic-am-crezut-9d055c",
-      "title": "Meciul Corvinul-U Cluj: Jovo Lukic – Am crezut la un moment dat că jucăm contra Barcelonei",
-      "summary": "Jovo Lukic, golgeterul echipei Universitatea Cluj, a reuşit primul său hat-trick în acest sezon şi a adus victoria clujenilor în meciul cu Corvinul, scor 3-0.",
-      "date": "2026-10-23T20:39:16.000Z",
-      "url": "https://www.news.ro/sport/meciul-corvinul-u-cluj-jovo-lukic-am-crezut-la-un-moment-dat-ca-jucam-contra-barcelonei-1922403923162026102322878208",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "sport",
-      "image": "",
-      "imageAlt": "Meciul Corvinul-U Cluj: Jovo Lukic – Am crezut la un moment dat că jucăm contra Barcelonei",
-      "addedAt": "2026-10-23T21:23:46.026Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-newsro-bundesliga-vfb-stutgart-borussia-bdf317",
-      "title": "Bundesliga: VfB Stutgart – Borussia Monchengladbach 2-3",
-      "summary": "Echipa germană Borussia Monchengladbach a învins, vineri seara, în deplasare, scor 3-2, gruparea VfB Stuttgart, în etapa a 7-a din Bundesliga.",
-      "date": "2026-10-23T20:36:53.000Z",
-      "url": "https://www.news.ro/sport/bundesliga-vfb-stutgart-borussia-monchengladbach-2-3-1922403623532026102322878203",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "sigurnost",
-      "image": "",
-      "imageAlt": "Bundesliga: VfB Stutgart – Borussia Monchengladbach 2-3",
-      "addedAt": "2026-10-23T21:23:46.026Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-g4media-wsj-statele-unite-vor-elimina-tarifele-de-973dd5",
-      "title": "WSJ: Statele Unite vor elimina tarifele de 50% pentru unele produse canadiene, pentru a-i ajuta pe republicani în alegerile de la jumătatea mandatului",
-      "summary": "Se preconizează că administrația americană ar urma să elimine tarifele de 50% care sunt aplicate anumitor produse agricole și forestiere canadiene, în încercarea de a o ajuta pe senatoarea din Maine, Susan Collins, dar și pe alți republicani din statele din nordul SUA în cadrul viitoarelor alegeri de la jumătatea mandatului, a relatat vineri The Wall […] © G4Media.ro .",
-      "date": "2026-10-23T20:35:16.000Z",
-      "url": "https://www.g4media.ro/wsj-statele-unite-vor-elimina-tarifele-de-50-pentru-unele-produse-canadiene-pentru-a-i-ajuta-pe-republicani-in-alegerile-de-la-jumatatea-mandatului.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Articole"
-      ],
-      "author": "Redacția",
-      "theme": "politika",
-      "image": "https://www.g4media.ro//wp-content/uploads/2026/08/chapay-canadian-2711155_1920-e1787374681116.jpg",
-      "imageAlt": "WSJ: Statele Unite vor elimina tarifele de 50% pentru unele produse canadiene, pentru a-i ajuta pe republicani în alegerile de la jumătatea mandatului",
-      "addedAt": "2026-10-23T21:23:45.408Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-digi24-china-condamna-noile-restrictii-propuse-de-ecc341",
-      "title": "China condamnă noile restricţii propuse de Statele Unite: „Nu este în interesul nimănui”",
-      "summary": "Beijingul a condamnat vineri propunerea SUA de a restricţiona investiţiile în companiile chineze de biotehnologie, avertizând că această iniţiativă „nu este în interesul nimănui”, relatează AFP, potrivit Agerpres.",
-      "date": "2026-10-23T20:33:21.000Z",
-      "url": "https://www.digi24.ro/stiri/externe/china-condamna-noile-restrictii-propuse-de-statele-unite-nu-este-in-interesul-nimanui-4006767",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjQl/MkYwNiUyRjAzJTJGMTk5MDQzMF8xOTkw/NDMwX3Byb2ZpbWVkaWEtMDc5MjAwMzQy/Mi5qcGcmaGFzaD1hYmYyNGMxNGE4YzJlMDNkM2E4ZDZmZGZhYzYyZDQyYg==.jpg",
-      "imageAlt": "China condamnă noile restricţii propuse de Statele Unite: „Nu este în interesul nimănui”",
-      "addedAt": "2026-10-23T21:23:41.703Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-g4media-complexul-sportiv-care-se-construieste-la-4ea5b4",
-      "title": "Complexul sportiv care se construiește la Craiova, finanțat inițial de Consiliul Județean Dolj, a trecut pe fonduri europene nerambursabile / Construcția de 75 de milioane de euro…",
-      "summary": "Ministrul Investițiilor și Proiectelor Europene, Mihai Ghigiu (PSD), a mers în vizită pe șantierul de la Craiova. Proiectul a fost mutat vineri pe o finanțare europeană nerambursabilă, după ce a fost finanțat inițial de Consiliul Județean Dolj, potrivit MEDIAFAX. Lucrările la complexul multifuncțional în valoare de 75 de milioane de euro sunt executate de compania […] © G4Media.ro .",
-      "date": "2026-10-23T20:32:38.000Z",
-      "url": "https://www.g4media.ro/complexul-sportiv-care-se-construieste-la-craiova-finantat-initial-de-consiliul-judetean-dolj-a-trecut-pe-fonduri-europene-nerambursabile-constructia-de-75-de-milioane-de-euro-este-realizata-de-ss.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Articole"
-      ],
-      "author": "Redacția",
-      "theme": "sport",
-      "image": "https://www.g4media.ro//wp-content/uploads/2026/10/santier-complex-sportiv-Craiova.jpg",
-      "imageAlt": "Complexul sportiv care se construiește la Craiova, finanțat inițial de Consiliul Județean Dolj, a trecut pe fonduri europene nerambursabile / Construcția de 75 de milioane de euro ",
-      "addedAt": "2026-10-23T21:23:45.409Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-hotnews-ungaria-nu-e-o-tara-feribot-poporul-a-facut-e50300",
-      "title": "„Ungaria nu e o ţară feribot. Poporul a făcut o alegere clară”. Peter Magyar, la comemorarea Revoluţiei ungare din 1956",
-      "summary": "Premierul ungar Peter Magyar a declarat vineri că ţara sa depune eforturi să fie un aliat de încredere în Uniunea Europeană, în încercarea de a recâştiga încrederea partenerilor săi europeni după cei cei 16 ani la putere ai lui Viktor Orban, relatează agențiile France Presse și Agerpres. Discursul său, rostit în ziua în care Ungaria …",
-      "date": "2026-10-23T20:24:52.000Z",
-      "url": "https://hotnews.ro/ungaria-nu-e-o-tara-feribot-poporul-a-facut-o-alegere-clara-peter-magyar-la-comemorarea-revolutiei-ungare-din-1956-2385071",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "Actualitate",
-        "International"
-      ],
-      "author": "Viorela Marin",
-      "theme": "ai",
-      "image": "",
-      "imageAlt": "„Ungaria nu e o ţară feribot. Poporul a făcut o alegere clară”. Peter Magyar, la comemorarea Revoluţiei ungare din 1956",
-      "addedAt": "2026-10-23T20:31:06.870Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-newsro-primarul-din-trappes-denunta-atacul-armat-10a643",
-      "title": "Primarul din Trappes denunţă atacul armat din Yvelines drept ”un atentat cu conotaţie rasistă, probabil islamofobă”",
-      "summary": "Atacul armat în Yvelines, vineri, soldat cu un mort şi cinci răniţi - trei grav - este ”în mod obiectiv un atentat cu conotaţie rasistă, probabil islamofobă”, afirmă primarul Trappes, Ali Rabeh, care îndeamnă la ”concordie republicană”, relatează AFP.",
-      "date": "2026-10-23T20:17:51.000Z",
-      "url": "https://www.news.ro/externe/primarul-din-trappes-denunta-atacul-armat-din-yvelines-drept-un-atentat-cu-conotatie-rasista-probabil-islamofoba-1922401723512026102322878046",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Primarul din Trappes denunţă atacul armat din Yvelines drept ”un atentat cu conotaţie rasistă, probabil islamofobă”",
-      "addedAt": "2026-10-23T20:31:14.358Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-newsro-horatiu-fesnic-arbitreaza-confruntarea-fcsb-53cc5b",
-      "title": "Horaţiu Feşnic arbitrează confruntarea FCSB – Rapid, de sâmbătă, din Superligă",
-      "summary": "Arbitrul Horaţiu Feşnic va conduce la centru partida FCSB – Rapid, care se va disputa sâmbătă, de la ora 21:00, în etapa a 13-a a Superligii.",
-      "date": "2026-10-23T20:16:55.000Z",
-      "url": "https://www.news.ro/sport/horatiu-fesnic-arbitreaza-confruntarea-fcsb-rapid-de-sambata-din-superliga-1922401623552026102322878126",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Horaţiu Feşnic arbitrează confruntarea FCSB – Rapid, de sâmbătă, din Superligă",
-      "addedAt": "2026-10-23T20:31:14.358Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-newsro-70-de-ani-de-la-revolutia-maghiara-din-1956-4770c4",
-      "title": "70 de ani de la Revoluţia Maghiară din 1956, comemoraţi la Satu Mare – Marş în centrul oraşului / Primar: Un moment istoric pe care trebuie să îl păstrăm în memorie ca pe o lecţie…",
-      "summary": "Mii de persoane au participat, vineri seară, la Satu Mare, la comemorarea a 70 de ani de la Revoluţia Maghiară din 1956. Primarul Kereskényi Gábor a distribuit imagini de la eveniment şi a apreciat că momentul 1956 trebuie păstrat în memorie ca o lecţie despre curaj, libertate şi demnitate.",
-      "date": "2026-10-23T20:09:11.000Z",
-      "url": "https://www.news.ro/eveniment/70-ani-revolutia-maghiara-1956-comemorati-satu-mare-mars-centrul-orasului-primar-moment-istoric-il-pastram-memorie-lectie-curaj-libertate-demnitate-1922400923112026102322878084",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "70 de ani de la Revoluţia Maghiară din 1956, comemoraţi la Satu Mare – Marş în centrul oraşului / Primar: Un moment istoric pe care trebuie să îl păstrăm în memorie ca pe o lecţie ",
-      "addedAt": "2026-10-23T20:31:14.358Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-digi24-fiica-prietenilor-mei-are-nevoie-de-votul-740397",
-      "title": "„Fiica prietenilor mei are nevoie de votul tău într-un concurs”. O nouă înşelătorie face victime pe WhatsApp",
-      "summary": "Un nou val de tentative de escrocherie se răspândeşte în Franţa pe WhatsApp, numeroşi utilizatori semnalând că au primit un mesaj de la un număr deja înregistrat în agendă care îi îndemna să voteze online pentru o anumită „Sophie” sau „Eliska”. Această metodă de escrocherie online intenţionează să preia controlul asupra conturilor WhatsApp, pentru a încerca apoi să comită fraude financiare asupra contactelor din agenda unui utilizator. Pe lângă Franţa, ar putea fi afectate şi alte ţări, cazuri similare fiind semnalate şi de presa din Spania şi Belgia.",
-      "date": "2026-10-23T20:08:12.000Z",
-      "url": "https://www.digi24.ro/stiri/sci-tech/lumea-digitala/fiica-prietenilor-mei-are-nevoie-de-votul-tau-intr-un-concurs-o-noua-inselatorie-face-victime-pe-whatsapp-4006763",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwOSUyRjA5JTJGMjk1Mjg3NV8yOTUy/ODc1X3RlbGVmb24td2hhdHNhcHAtcHJv/ZmltZWRpYS5qcGcmaGFzaD1hMjczYzdk/YzlmNWJiMzEyYmQ0YTliNTkyYjQzZjAwZA==.jpg",
-      "imageAlt": "„Fiica prietenilor mei are nevoie de votul tău într-un concurs”. O nouă înşelătorie face victime pe WhatsApp",
-      "addedAt": "2026-10-23T20:31:10.919Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-hotnews-un-atac-al-sua-asupra-iranului-este-posibil-005323",
-      "title": "Un atac al SUA asupra Iranului este posibil în acest weekend, susține un diplomat american",
-      "summary": "Statele Unite ar putea ataca Iranul chiar în acest weekend, a declarat vineri emisarul american Tom Barrack, după ameninţările tot mai dese ale Washingtonului şi Israelului din ultimele zile, relatează AFP, preluată de Agerpres. „Ar putea avea loc un atac în acest weekend? Absolut”, a spus Tom Barrack, ambasador al SUA la Ankara şi emisar …",
-      "date": "2026-10-23T20:02:21.000Z",
-      "url": "https://hotnews.ro/un-atac-al-sua-asupra-iranului-este-posibil-in-acest-weekend-sustine-un-diplomat-american-2385065",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "Actualitate",
-        "International"
-      ],
-      "author": "Adrian Ilie",
-      "theme": "politika",
-      "image": "",
-      "imageAlt": "Un atac al SUA asupra Iranului este posibil în acest weekend, susține un diplomat american",
-      "addedAt": "2026-10-23T20:31:06.870Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-g4media-statele-unite-ar-putea-ataca-iranul-in-d7f331",
-      "title": "Statele Unite ar putea ataca Iranul în acest weekend, afirmă emisarul american Tom Barrack",
-      "summary": "Statele Unite ar putea ataca Iranul chiar în acest weekend, a declarat vineri emisarul american Tom Barrack, după ameninţările tot mai dese ale Washingtonului şi Israelului din ultimele zile, relatează AFP preluată de Agerpres. „Ar putea avea loc un atac în acest weekend? Absolut”, a spus Tom Barrack, ambasador al SUA la Ankara şi emisar […] © G4Media.ro .",
-      "date": "2026-10-23T20:00:29.000Z",
-      "url": "https://www.g4media.ro/statele-unite-ar-putea-ataca-iranul-in-acest-weekend-afirma-emisarul-american-tom-barrack.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Articole"
-      ],
-      "author": "Redacția",
-      "theme": "drustvo",
-      "image": "https://www.g4media.ro//wp-content/uploads/2026/09/profimedia-0559377151-scaled.jpg",
-      "imageAlt": "Statele Unite ar putea ataca Iranul în acest weekend, afirmă emisarul american Tom Barrack",
-      "addedAt": "2026-10-23T20:31:13.551Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-newsro-superliga-tripla-lui-lukic-a-adus-victoria-aaab18",
-      "title": "Superliga: Tripla lui Lukic a adus victoria Universităţii Cluj, 3-0 cu Corvinul Hunedoara",
-      "summary": "Echipa Universitatea Cluj a învins vineri seara, în deplasare, scor 3-0, formaţia Corvinul Hunedoara, în etapa a 13-a din Superligă. Jovo Lukic a reuşit un hat-trick",
-      "date": "2026-10-23T19:55:46.000Z",
-      "url": "https://www.news.ro/sport/superliga-tripla-lui-lukic-a-adus-victoria-universitatii-cluj-3-0-cu-corvinul-hunedoara-1922405523462026102222878063",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Superliga: Tripla lui Lukic a adus victoria Universităţii Cluj, 3-0 cu Corvinul Hunedoara",
-      "addedAt": "2026-10-23T20:31:14.358Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-g4media-larisa-mezinu-balan-vicepresedinte-cnas-fc5e24",
-      "title": "Larisa Mezinu-Bălan, vicepreședinte CNAS, exercită atribuțiile președintelui instituției până la o nouă numire",
-      "summary": "Vicepreședintele Casei Naționale de Asigurări de Sănătate Larisa Mezinu-Bălan va exercita atribuțiile președintelui CNAS până la numirea conducătorului instituției, după plecarea lui Horațiu Moldovan (PNL), transmite Agerpres. Decizia a fost publicată vineri în Monitorul Oficial. ”Începând cu data intrării în vigoare a acestei decizii, doamna Larisa Mezinu-Bălan, vicepreședinte al Casei Naționale de Asigurări de Sănătate, […] © G4Media.ro .",
-      "date": "2026-10-23T19:52:51.000Z",
-      "url": "https://www.g4media.ro/larisa-mezinu-balan-vicepresedinte-cnas-exercita-atributiile-presedintelui-institutiei-pana-la-o-noua-numire.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Articole",
-        "Larisa Mezinu Bălan",
-        "presedinte CNAS"
-      ],
-      "author": "Redacția",
-      "theme": "drustvo",
-      "image": "https://www.g4media.ro//wp-content/uploads/2026/10/Larisa-Mezinu-Balan.jpg",
-      "imageAlt": "Larisa Mezinu-Bălan, vicepreședinte CNAS, exercită atribuțiile președintelui instituției până la o nouă numire",
-      "addedAt": "2026-10-23T20:31:13.551Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-g4media-atacul-palestinian-impotriva-militarilor-d62e4c",
-      "title": "Atacul palestinian împotriva militarilor israelieni de la Hebron cu patru zile înainte de alegerile din Israel poate favoriza dreapta naționalistă și cea extremă",
-      "summary": "Reacția premierului și liderului partidului Likud (dreapta naționalistă), Benjamin Netayahu, a fost promptă și dură: el a ordonat armatei israeliene (IDF) să se pregătească pentru o blocadă a întregii Cisiordanii (numită de evrei Iudeea și Samaria) în urma atacului a doi teroriști palestinieni la un baraj IDF lângă Hebron, în care doi militari au fost […] © G4Media.ro .",
-      "date": "2026-10-23T19:49:53.000Z",
-      "url": "https://www.g4media.ro/atacul-palestinian-impotriva-militarilor-israelieni-de-la-hebron-cu-patru-zile-inainte-de-alegerile-din-israel-poate-favoriza-dreapta-nationalista-si-cea-extrema.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Articole",
-        "alegeri israel 2026",
-        "atac cisiordania",
-        "benjamin netanyahu"
-      ],
-      "author": "Petru Clej",
-      "theme": "politika",
-      "image": "https://www.g4media.ro//wp-content/uploads/2026/10/Netanyahu-Ben-Gvir-Smotrich.jpg",
-      "imageAlt": "Atacul palestinian împotriva militarilor israelieni de la Hebron cu patru zile înainte de alegerile din Israel poate favoriza dreapta naționalistă și cea extremă",
-      "addedAt": "2026-10-23T20:31:13.551Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-digi24-un-emisar-american-spune-ca-statele-unite-1f9a97",
-      "title": "Un emisar american spune că Statele Unite ar putea ataca Iranul chiar în acest weekend",
-      "summary": "Statele Unite ar putea ataca Iranul chiar în acest weekend, a declarat vineri emisarul american Tom Barrack, după ameninţările tot mai dese ale Washingtonului şi Israelului din ultimele zile.",
-      "date": "2026-10-23T19:46:11.000Z",
-      "url": "https://www.digi24.ro/stiri/externe/un-emisar-american-spune-ca-statele-unite-ar-putea-ataca-iranul-chiar-in-acest-weekend-4006745",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjIzJTJGMzAyODI3N18zMDI4/Mjc3X0dldHR5SW1hZ2VzLTEyMzE3NDIy/NTcuanBnJmhhc2g9ZDI5ZmE4NWQxYjE0YmEwMjFlYzhiZTk2MGNkZTFkYmM=.jpg",
-      "imageAlt": "Un emisar american spune că Statele Unite ar putea ataca Iranul chiar în acest weekend",
-      "addedAt": "2026-10-23T20:31:10.919Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-hotnews-ilie-bolojan-marturisiri-despre-relatia-cu-3a2d87",
-      "title": "Ilie Bolojan, mărturisiri despre relația cu președintele Dan: „I-am mai spus unele lucruri”",
-      "summary": "Fostul premier Ilie Bolojan a afirmat, într-un interviu pentru Digi24, că în relația sa cu președintele Nicușor Dan i-a spus „unele lucruri”, însă liberalul spune că nu vrea să transfere în spațiul public discuții private. Întrebat ce are să-i reproșeze președintelui Nicușor Dan, Ilie Bolojan a răspuns: „Dacă o să am ceva să-i spun, o …",
-      "date": "2026-10-23T19:44:41.000Z",
-      "url": "https://hotnews.ro/ilie-bolojan-marturisiri-despre-relatia-cu-presedintele-dan-i-am-mai-spus-unele-lucruri-2385053",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "Actualitate",
-        "Politic"
-      ],
-      "author": "Adrian Ilie",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Ilie Bolojan, mărturisiri despre relația cu președintele Dan: „I-am mai spus unele lucruri”",
-      "addedAt": "2026-10-23T20:31:06.871Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-digi24-peter-magyar-ungaria-nu-s-a-indepartat-eb9eee",
-      "title": "Peter Magyar: „Ungaria nu s-a îndepărtat niciodată de UE, guvernul nostru a făcut-o. În sfârşit ne-am regăsit ţara”",
-      "summary": "Premierul ungar Peter Magyar a declarat, vineri, că ţara sa depune eforturi să fie un aliat de încredere în Uniunea Europeană, în încercarea de a recâştiga încrederea partenerilor săi europeni după cei cei 16 ani la putere ai lui Viktor Orban, relatează AFP, potrivit Agerpres.",
-      "date": "2026-10-23T19:43:09.000Z",
-      "url": "https://www.digi24.ro/stiri/externe/peter-magyar-ungaria-nu-s-a-indepartat-niciodata-de-ue-guvernul-nostru-a-facut-o-in-sfarsit-ne-am-regasit-tara-4006749",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "politika",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwOSUyRjAzJTJGMjk0NjE1Nl8yOTQ2/MTU2X3BldGVyLW1hZ3lhci1wcm9maW1l/ZGlhLmpwZyZoYXNoPTFhMmVmYTA0MjMxNjQ5ZWYzM2JmZWYzMjlhZWVjZmIz.jpg",
-      "imageAlt": "Peter Magyar: „Ungaria nu s-a îndepărtat niciodată de UE, guvernul nostru a făcut-o. În sfârşit ne-am regăsit ţara”",
-      "addedAt": "2026-10-23T20:31:10.919Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-hotnews-seful-jandarmeriei-bucuresti-trecut-in-01f5cf",
-      "title": "Șeful Jandarmeriei Bucureşti, trecut în rezervă",
-      "summary": "Preşedintele Nicuşor Dan a semnat vineri decretul prin care l-a trecut în rezervă pe generalul de brigadă Constantin Marius-Cezar Toma, din Ministerul Afacerilor Interne. Decizia se va aplica de la data de 25 octombrie, potrivit decretului semnat de Nicuşor Dan, precizează Agerpres. Pe 31 octombrie 2025, Marius Cezar Toma a fost împuternicit să ocupe funcţia …",
-      "date": "2026-10-23T19:41:00.000Z",
-      "url": "https://hotnews.ro/seful-jandarmeriei-bucuresti-trecut-in-rezerva-2385054",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "Actualitate"
-      ],
-      "author": "Viorela Marin",
-      "theme": "politika",
-      "image": "",
-      "imageAlt": "Șeful Jandarmeriei Bucureşti, trecut în rezervă",
-      "addedAt": "2026-10-23T20:31:06.871Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-agerpres-video-sua-fosti-oficiali-fbi-acuzati-ca-au-8ba8bf",
-      "title": "VIDEO SUA: Foști oficiali FBI, acuzați că au mințit în Congres cu privire la anchetele care îl vizau pe Hunter Biden",
-      "summary": "",
-      "date": "2026-10-23T19:36:38.810Z",
-      "url": "https://agerpres.ro/politic-extern/2026/10/23/video-sua-fosti-oficiali-fbi-acuzati-ca-au-mintit-in-congres-cu-privire-la-anchetele-care-il-vizau-p--1606381",
-      "source": "agerpres",
-      "sourceName": "Agerpres",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "VIDEO SUA: Foști oficiali FBI, acuzați că au mințit în Congres cu privire la anchetele care îl vizau pe Hunter Biden",
-      "addedAt": "2026-10-23T19:36:38.810Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-agerpres-incident-in-marea-neagra-neacsu-in-situatii-2a9726",
-      "title": "Incident în Marea Neagră/Neacșu: În situații critice, profesionalismul și experiența pot face diferența dintre viață și moarte",
-      "summary": "",
-      "date": "2026-10-23T19:36:38.810Z",
-      "url": "https://agerpres.ro/politic/2026/10/23/incident-in-marea-neagra-neacsu-in-situatii-critice-profesionalismul-si-experienta-pot-face-diferent--1606380",
-      "source": "agerpres",
-      "sourceName": "Agerpres",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Incident în Marea Neagră/Neacșu: În situații critice, profesionalismul și experiența pot face diferența dintre viață și moarte",
-      "addedAt": "2026-10-23T19:36:38.810Z"
-    },
-    {
-      "slug": "bukurest-2026-10-23-agerpres-taifunul-champi-in-taiwan-un-mort-peste-350-a6047a",
-      "title": "Taifunul Champi în Taiwan: Un mort, peste 350 de persoane rănite",
-      "summary": "",
-      "date": "2026-10-23T19:36:38.810Z",
-      "url": "https://agerpres.ro/planeta/2026/10/23/taifunul-champi-in-taiwan-un-mort-peste-350-de-persoane-ranite--1606379",
-      "source": "agerpres",
-      "sourceName": "Agerpres",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Taifunul Champi în Taiwan: Un mort, peste 350 de persoane rănite",
-      "addedAt": "2026-10-23T19:36:38.810Z"
     }
   ]
 }
