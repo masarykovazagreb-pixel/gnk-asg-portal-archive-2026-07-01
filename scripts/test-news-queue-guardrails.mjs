@@ -11,9 +11,17 @@ const source=fs.readFileSync('workers/gnk-asg-direct-operator/src/news-auto-publ
 // MUST NOT re-embed a second parser/archive/writer implementation.
 const canonicalPipeline=fs.readFileSync('scripts/gnk-news-refresh.mjs','utf8');
 const canonicalWriterWorkflow=fs.readFileSync('.github/workflows/gnk-news-refresh-v2.yml','utf8');
+// Publisher provenance is non-negotiable: never label a Euronews RSS item as Reuters.
+assert.doesNotMatch(canonicalPipeline,/source:\s*['"]Reuters[^'"]*['"][^\n]*url:\s*['"]https:\/\/www\.euronews\.com\//, 'Euronews items must not be attributed to Reuters');
+assert.match(canonicalPipeline,/source:\s*['"]Euronews Earth['"][^\n]*url:\s*['"]https:\/\/www\.euronews\.com\/rss\?format=mrss&level=vertical&name=earth['"]/, 'Euronews Earth official feed expected');
 const legacyRecoveryWorkflow=fs.readFileSync('.github/workflows/news-refresh.yml','utf8');
 const indexRefreshPolicy=fs.readFileSync('scripts/refresh_index_live_data.py','utf8');
 const indexRefreshWorkflow=fs.readFileSync('.github/workflows/refresh-index-live-data.yml','utf8');
+
+// Public RSS publisher/section integrity: do not silently point old editorial labels at dead feeds.
+assert.doesNotMatch(canonicalPipeline, /feeds\.bbci\.co\.uk\/culture\/feed\.rss|theguardian\.com\/environment\/animals\/rss/, 'Retired 404 section RSS URLs must remain retired');
+assert.match(canonicalPipeline, /source: 'BBC News Entertainment & Arts'[^\n]*feeds\.bbci\.co\.uk\/news\/entertainment_and_arts\/rss\.xml/, 'BBC entertainment RSS requires matching source name');
+assert.match(canonicalPipeline, /source: 'The Guardian Wildlife'[^\n]*theguardian\.com\/environment\/wildlife\/rss/, 'Guardian Wildlife must use publisher wildlife RSS');
 
 // Retention constants live in the canonical JS pipeline, not a retired Python file.
 assert.match(canonicalPipeline,/const PUBLIC_TARGET = \d+;/);
@@ -21,11 +29,11 @@ assert.match(canonicalPipeline,/const MIN_ITEMS_FLOOR = 200;/);
 assert.match(canonicalPipeline,/const ARCHIVE_MAX_BEFORE_PRUNE = \d+;/);
 assert.match(canonicalPipeline,/const ARCHIVE_KEEP_WHEN_FULL = \d+;/);
 
-// Canonical writer workflow must be the single owner: six runs daily at 01:12,
-// 05:12, 09:12, 13:12, 17:12 and 21:12 UTC, invokes the canonical pipeline script,
+// Canonical writer workflow must be the single owner: six runs daily at 01:37,
+// 05:37, 09:37, 13:37, 17:37 and 21:37 UTC, invokes the canonical pipeline script,
 // reads the central release fence, and is the one that commits news.json /
 // news_archive.json only when the control plane authorizes it.
-assert.match(canonicalWriterWorkflow,/cron: '12 1,5,9,13,17,21 \* \* \*'/);
+assert.match(canonicalWriterWorkflow,/cron: '37 1,5,9,13,17,21 \* \* \*'/);
 assert.match(canonicalWriterWorkflow,/node scripts\/gnk-news-refresh\.mjs/);
 assert.match(canonicalWriterWorkflow,/git add[\s\S]{0,120}news\.json[\s\S]{0,120}news_archive\.json/);
 assert.match(canonicalWriterWorkflow,/automation-kill-switches\.json/);

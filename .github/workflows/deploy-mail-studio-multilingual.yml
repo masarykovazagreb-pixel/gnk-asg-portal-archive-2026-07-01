@@ -127,6 +127,7 @@ jobs:
           grep -q 'main = "src/index-final-admin-gateway-v2.js"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
           grep -q 'MEDIA_OUTREACH_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
           grep -q 'MEDIA_OUTREACH_SCHEDULED_LIVE = "false"' workers/gnk-asg-direct-operator/wrangler.runtime.toml
+          python3 scripts/partition-image-sitemap-v1.py apps/portal
           cd workers/gnk-asg-direct-operator
           npx wrangler deploy --dry-run --config wrangler.runtime.toml --name gnk-asg-direct-operator
       - name: Confirm validation-only pull request behavior

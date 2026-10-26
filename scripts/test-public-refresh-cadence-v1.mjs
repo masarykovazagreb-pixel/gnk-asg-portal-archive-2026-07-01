@@ -34,6 +34,17 @@ const marketRuns = scheduleCount('.github/workflows/market-pulse-refresh.yml');
 const macroRuns = scheduleCount('.github/workflows/macro-market-refresh.yml');
 
 if (newsRuns !== 6) fail(`AKTUAL producer cadence expected 6/day, got ${newsRuns}`);
+// Protect public refresh-status copy from drifting away from the canonical cron.
+const cronExpression = [...read('.github/workflows/gnk-news-refresh-v2.yml').matchAll(/cron:\s*['"]([^'"]+)['"]/g)][0]?.[1] || '';
+const [cronMinute, cronHours] = cronExpression.split(/\s+/);
+const expectedTimes = /^\d+$/.test(cronMinute) && /^\d+(,\d+)*$/.test(cronHours || '')
+  ? cronHours.split(',').map(h => `${String(h).padStart(2, '0')}:${cronMinute.padStart(2, '0')}`)
+  : [];
+const declaredCadence = read('scripts/normalize-aktual-hourly-contract.mjs').match(/^status\.cadence\s*=\s*'([^']+)'/m)?.[1] || '';
+const listedTimes = declaredCadence.match(/\b\d{2}:\d{2}\b/g) || [];
+if (expectedTimes.length !== 6 || JSON.stringify(expectedTimes) !== JSON.stringify(listedTimes)) {
+  fail(`AKTUAL canonical cron/status mismatch: expected [${expectedTimes}], declared [${listedTimes}]`);
+}
 if (!aktualHr.includes('Ažurira se šest puta dnevno') || !aktualHr.includes('osvježava šest puta dnevno')) {
   fail('HR AKTUAL public copy does not match six-refresh daily producer cadence');
 }

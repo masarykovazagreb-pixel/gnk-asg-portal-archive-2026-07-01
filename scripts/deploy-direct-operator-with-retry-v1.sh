@@ -14,6 +14,11 @@ grep -Fq 'main = "src/index-digital-workforce-v1.js"' "$CONFIG_FILE"
 node --check src/index-digital-workforce-v1.js
 node --check src/digital-workforce-public-read-v1.js
 
+# Deterministic deployment-only sitemap partition: preserve all image URLs,
+# but prevent one oversized XML asset from blocking the Cloudflare release.
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+python3 "$REPO_ROOT/scripts/partition-image-sitemap-v1.py" "$REPO_ROOT/apps/portal"
+
 sanitize_logs() {
   local dir="$1"
   [ -d "$dir" ] || return 0

@@ -3,6 +3,9 @@ name: GNK News Refresh V2
 on:
   workflow_dispatch:
   push:
+    # Only main may enqueue the canonical writer into the production mutation queue.
+    # PR branch pushes otherwise cancel queued main/production work before any job runs.
+    branches: [main]
     paths:
       - '.github/workflows/gnk-news-refresh-v2.yml'
       - 'scripts/gnk-news-refresh.mjs'
@@ -12,7 +15,9 @@ on:
   schedule:
     # Canonical AKTUAL owner: refresh six times daily, every four hours.
     # Operational watchdog separately verifies the result and can redispatch this writer.
-    - cron: '12 1,5,9,13,17,21 * * *'
+    # Offset :37 avoids the :12 watchdog burst and exact-SHA deploy queues.
+    # Six runs/day are retained; do not increase Actions budget or add writers.
+    - cron: '37 1,5,9,13,17,21 * * *'
 
 permissions:
   contents: write
