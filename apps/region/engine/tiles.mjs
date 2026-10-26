@@ -89,9 +89,10 @@ function wrap(text, max) {
 function shade(base, out) {
   run([
     base, '-resize', `${W}x${H}^`, '-gravity', 'center', '-extent', `${W}x${H}`,
-    '(', '-size', `${W}x${H}`, 'gradient:rgba(4,11,22,0)-rgba(4,11,22,0.95)', ')',
+    '-gamma', '1.3',
+    '(', '-size', `${W}x${H}`, 'gradient:rgba(4,11,22,0)-rgba(4,11,22,0.70)', ')',
     '-compose', 'over', '-composite',
-    '(', '-size', `${W}x${H}`, 'xc:rgba(4,11,22,0.28)', ')', '-compose', 'over', '-composite',
+    '(', '-size', `${W}x${H}`, 'xc:rgba(4,11,22,0.04)', ')', '-compose', 'over', '-composite',
     out
   ]);
 }
@@ -99,9 +100,7 @@ function shade(base, out) {
 /* Tekstualna pločica bez fotografije (za deskove): tamna podloga i zlatne linije. */
 function poster(out, kicker) {
   run([
-    '-size', `${W}x${H}`, 'xc:#071322',
-    '-fill', '#0b1d33', '-draw', `rectangle 0,0 ${W},${Math.round(H * 0.62)}`,
-    '-fill', '#050d18', '-draw', `rectangle 0,${Math.round(H * 0.62)} ${W},${H}`,
+    '-size', `${W}x${H}`, 'gradient:#2b5d8a-#0f2f4f',
     '-stroke', '#e9c66c', '-strokewidth', '1', '-fill', 'none',
     '-draw', `circle ${W - 120},120 ${W - 40},120`,
     '-draw', `line 0,${Math.round(H * 0.62)} ${W},${Math.round(H * 0.62)}`,
@@ -149,7 +148,10 @@ function bakeCity(id, spec, photo) {
 
 function bakeDesk(desk) {
   const tmp = join(OUT, `.tmp-${desk.id}.png`);
-  poster(tmp, desk.kicker);
+  /* Desk s fotografijom dobiva isti gradijent kao gradovi; bez nje ostaje tekstualna pločica. */
+  const photo = join(OUT, `${desk.id}-880.webp`);
+  if (existsSync(photo)) shade(photo, tmp);
+  else poster(tmp, desk.kicker);
   const lines = wrap(desk.line, 42);
   const ctaY = H - 34;
   const bodyLast = ctaY - 44;

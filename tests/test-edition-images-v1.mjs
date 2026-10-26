@@ -12,14 +12,16 @@
  * s rezervom s obje strane.
  */
 import { execFileSync } from 'node:child_process';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DIR = join(ROOT, 'apps', 'portal', 'assets', 'izdanja');
 const ATLAS = join(ROOT, 'apps', 'portal', 'assets', 'atlas');
-const MIN_MEAN = 0.15;
+const MIN_MEAN = 0.18;
+/* Pločice na stranicama (naslovnica, izdanja) — sve, ne samo 17 gradova. */
+const TILE_MIN = 0.18;
 const SETS = ['240.webp', '440.webp', '800.webp', '880.webp', '1200.webp', 'og.jpg'];
 
 const ids = JSON.parse(readFileSync(join(ROOT, 'apps', 'region', 'channels.json'), 'utf8')).channels.map((c) => c.id);
@@ -31,6 +33,11 @@ const mean = (file) => {
   return Number(out.trim());
 };
 
+// Svaka pločica na stranicama (uključujući deskove i posebne kartice) mora biti svijetla.
+for (const f of readdirSync(DIR).filter((n) => n.endsWith('-tile.webp')).sort()) {
+  const m = mean(join(DIR, f));
+  if (m < TILE_MIN) fails.push(`${f}: tamna pločica (prosjek ${m.toFixed(3)} < ${TILE_MIN}) — crni krug`);
+}
 for (const id of ids) {
   const missing = SETS.filter((suffix) => !existsSync(join(DIR, `${id}-${suffix}`)));
   if (missing.length) {
