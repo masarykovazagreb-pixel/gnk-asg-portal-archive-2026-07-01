@@ -273,13 +273,16 @@ Sitemap: ${siteUrl}/sitemap.xml
 }
 
 export function rss({ siteUrl, siteName, desc, items, lang = 'hr' }) {
+  // Feed mora imati apsolutne https poveznice (tests/test-satellites-v1.mjs).
+  // Izvorni RSS nekih izvora daje http://; isti članak se otvara i preko https.
+  const secure = (u) => String(u || '').replace(/^http:\/\//i, 'https://');
   const rows = items.map((it) => `    <item>
       <title>${esc(it.title)}</title>
-      <link>${esc(it.url)}</link>
+      <link>${esc(secure(it.url))}</link>
       <guid isPermaLink="false">${esc(it.slug)}</guid>
       <pubDate>${new Date(it.date).toUTCString()}</pubDate>
       <description>${esc(it.summary || '')}</description>
-      <source url="${esc(it.url)}">${esc(it.sourceName || it.source)}</source>
+      <source url="${esc(secure(it.url))}">${esc(it.sourceName || it.source)}</source>
     </item>`).join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
