@@ -84,6 +84,7 @@ export const REGION_IMAGE_HOSTS = [
   ['conteudo.imguol.com.br', 'UOL', 'BR'],
   ['f.i.uol.com.br', 'UOL (Folha)', 'BR'],
   ['cdn.portfolio.hu', 'Portfolio', 'HU'],
+  ['www.lastampastatic.it', 'La Stampa', 'IT'],
   ['s2-g1.glbimg.com', 'G1 / Globo', 'BR'],
   ['veja.abril.com.br', 'Veja', 'BR'],
   ['agenciabrasil.ebc.com.br', 'Agência Brasil', 'BR'],
