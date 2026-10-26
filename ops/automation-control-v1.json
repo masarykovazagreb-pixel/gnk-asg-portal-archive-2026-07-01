@@ -140,8 +140,8 @@
     {
       "job": "KANAL — dnevni stroj (10 objava)",
       "workflow": ".github/workflows/kanal-daily.yml",
-      "frequency": "daily-plus-two-catch-up-slots",
-      "cron": "0 5,11,17 * * * (Europe/Zagreb 07/09, 13/14, 19/20:00)",
+      "frequency": "daily",
+      "cron": "0 5 * * * (Europe/Zagreb 06/07:00)",
       "budgetMinutesPerRunEstimate": 6,
       "writes": [
         "apps/kanal/src/articles",

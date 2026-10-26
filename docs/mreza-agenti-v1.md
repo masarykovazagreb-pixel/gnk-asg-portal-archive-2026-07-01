@@ -1,4 +1,4 @@
-# Mreža AKTUAL MEDIA — 20 ulaza, 18 portala, 29 agenata
+# Mreža AKTUAL MEDIA — 20 ulaza, 18 portala, 22 agenta
 
 Ovaj dokument objašnjava kako je mreža povezana, odakle koja stranica dobiva
 linkove, tko njome upravlja i koji agent što provjerava. Ako se nešto ovdje
@@ -83,12 +83,6 @@ izvještaj ide u `artifacts/network-agents-v1.json`.
 | `mesh-link-agent` | 20 ulaza na svakoj stranici, apsolutni https, bez self-linka i nofollowa |
 | `edition-parity-agent` | šest stranica, hub HR/EN, sitemapi i JSON indeks |
 | `network-standard-agent` | 17 gradova i 9 portala: vlastita slika i znak, jezik zemlje, manifest i CSP, blok mreže, svjež feed, sinkronizacija popisa |
-| `network-atlas-agent` | atlas grafika (šest veličina, alt na jeziku izdanja), paukova mreža sa 32 čvora na 48 stranica, glavni gradovi usklađeni s `channels.json`, 34 stranice prijestolnica |
-| `capital-pages-agent` | ugovor prijestolnica i atlasa: 17 kartica atlasa s alt tekstom, 17 zemalja, 14 aktivnih izdanja, 3 u pripremi s gradom koji ih pokriva, vlastiti `glavni-gradovi/sitemap.xml` s 34 adrese, `llms.txt`, obostrana veza s izdanjima |
-| `desk-art-agent` | devet naslovnih ilustracija: sedam veličina, stvarne dimenzije WebP-a, alt HR/EN, hero s preloadom i OG slikom, kartice, pločice i sličice u mreži |
-| `sitemap-integrity-agent` | 33 sitemapa i 17.213 adresa: svaka adresa ima datoteku, svaki sitemap je u `sitemap-index.xml`, svaki unos indeksa postoji |
-| `hreflang-reciprocity-agent` | 73 mrežne stranice, 200 hreflang parova: prijevod postoji, canonical se slaže, povratni hreflang pokazuje na izvor |
-| `internal-links-agent` | 7.041 stranica i 239.146 veza: nijedan interni link ne vodi u prazno |
 | `seo-matrix-agent` | title, description, canonical, hreflang, OG |
 | `meta-hygiene-agent` | meta keywords bez `#` i autora; hashtagovi u `article:tag` |
 | `brand-logo-agent` | svaki znak ima datoteku, stranicu, sitemap i alt |
@@ -109,7 +103,7 @@ node scripts/network-agents-v1.mjs --only mesh-link-agent,seo-matrix-agent
 node scripts/network-sync-v1.mjs
 ```
 
-Workflow `MREŽA — agenti i sinkronizacija` radi svaki dan u 04:40 UTC (29 agenata) i na
+Workflow `MREŽA — agenti i sinkronizacija` radi svaki dan u 04:40 UTC (22 agenta) i na
 svaku promjenu bloka, graditelja ili registra agenata. Posao je **samo za
 čitanje** (`contents: read`): gradi u radnom prostoru runnera i sprema
 izvještaj kao artifact, pa ne može pomaknuti `main`.

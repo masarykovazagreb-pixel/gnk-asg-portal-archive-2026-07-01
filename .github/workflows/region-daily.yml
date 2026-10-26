@@ -78,27 +78,18 @@ jobs:
           test -f apps/portal/kanal/zagreb/index.html
           node -e "const fs=require('fs');const f=JSON.parse(fs.readFileSync('apps/region/data/_status.json','utf8'));const r=f.lastRun;console.log('kanala:',Object.keys(r.channels).length);const ok=Object.values(r.channels).reduce((a,c)=>a+c.sourcesOk,0);const all=Object.values(r.channels).reduce((a,c)=>a+c.sourcesTotal,0);console.log('izvori:',ok+'/'+all);if(!Object.keys(r.channels).length)process.exit(1)"
 
-      # Arhiva svjetskih izdanja zaostaje za regionalnima jer dnevni ciklus
-      # uzima samo nekoliko najnovijih zapisa po izvoru. Ovaj korak dopunjuje
-      # samo kanale ispod 300 tekstova, dok ostali nisu dirani.
-      - name: Dopuni arhivu izdanja ispod cilja (300 tekstova)
-        shell: bash
-        run: |-
-          set -uo pipefail
-          node apps/region/engine/backfill.mjs --below 300 --target 320 --store 420 --days 400 --max-pages 6 --pause 80 \
-            || echo "::warning::Dopuna arhive nije dovršena — izdanja ostaju na postojećim zapisima."
-
-      # Redoslijed koraka živi u JEDNOM popisu: scripts/sync-all-v1.mjs.
-      # Prije su dvije kopije (workflow i čovjek) znale se razići, pa je
-      # generator prepisao sloj primijenjen prije njega — /status/ je tako
-      # ostao bez znaka kuće, a Knowledge Center bez entity:v1 bloka.
-      # Gate tests/test-sync-pipeline-v1.mjs pada ako se popis raziđe.
-      - name: Sinkronizacija (generatori → slojevi → provjere)
+      - name: Galerija i matična stranica izdanja
         shell: bash
         run: |-
           set -euo pipefail
           node apps/portal/scripts/album-nermin-sefic-v1.mjs
-          node scripts/sync-all-v1.mjs
+          node scripts/build-brand-gallery-v1.mjs || echo "::warning::Galerija znakova nije dovršena — provjeri manifest i naslovnicu."
+          node scripts/build-top-teme-v1.mjs
+          node scripts/audit-top-teme-v1.mjs
+          node apps/region/engine/hub.mjs
+          node scripts/knowledge-center-hr-sync-v1.mjs --apply
+          node apps/region/engine/audit.mjs
+          node scripts/audit-aktual-brand-indexability-v1.mjs --strict
           test -f apps/portal/izdanja/index.html
           test -f apps/portal/data/izdanja.json
 
@@ -109,12 +100,7 @@ jobs:
           set -euo pipefail
           git config user.name "AKTUAL MEDIA REGION"
           git config user.email "info@gnk-asg.hr"
-          # Ciklus regenerira cijeli javni sloj portala, mreže i izdanja. Popis
-          # pojedinih datoteka ostavljao je zaostatak: generator je mijenjao
-          # stranicu koju commit nije uključivao, pa su gateovi na mainu padali
-          # (sites-deploy, društvene kartice, meta higijena). Zato se dodaje
-          # sve što ciklus izgradi — u tri stabla koja su njegovo vlasništvo.
-          git add -A apps/portal apps/sites apps/region
+          git add apps/region/data apps/region/site apps/portal/kanal apps/portal/usa apps/portal/izdanja apps/portal/gnk-aktual apps/portal/en/gnk-aktual apps/portal/top-teme apps/portal/data/izdanja.json apps/portal/data/izdanja-sport.json apps/portal/data/nermin-sefic-gallery.json apps/portal/data/top-teme.json apps/portal/galerija apps/portal/aktual-media apps/portal/en/aktual-media apps/portal/knowledge-center apps/portal/data/aktual-data-desk-v1.json apps/portal/data/knowledge-base.json apps/portal/sitemap.xml apps/portal/sitemap-index.xml
           if git diff --cached --quiet; then
             echo "Nema novih zapisa — stanje je već objavljeno."
             echo "changed=false" >> "$GITHUB_OUTPUT"

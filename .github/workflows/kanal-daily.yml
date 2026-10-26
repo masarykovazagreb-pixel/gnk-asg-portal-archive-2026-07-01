@@ -10,13 +10,8 @@ name: KANAL — dnevni stroj (10 objava)
 
 on:
   schedule:
-    # Tri pokušaja dnevno (05:00, 11:00, 17:00 UTC). GitHub raspored često
-    # odgodi i po nekoliko sati — 23. i 24. 10. jutarnji ciklus nije pokrenut,
-    # pa je blok na AKTUAL MEDIA ostao na jučerašnjem izdanju. Izdanje je
-    # idempotentno: ako je današnje već sastavljeno, poslije podneva nema
-    # promjene i nema commita. Time kasni ili propušten termin ne ostavlja
-    # stranicu bez svježeg izdanja do sljedećeg dana.
-    - cron: '0 5,11,17 * * *'
+    # 05:00 UTC = 07:00 ljeti / 06:00 zimi po Europe/Zagreb.
+    - cron: '0 5 * * *'
   workflow_dispatch:
     inputs:
       date:

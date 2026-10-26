@@ -54,25 +54,6 @@
 /en/aktual-media/proizvodi/*
   Cache-Control: public, max-age=0, must-revalidate
 
-# Feedovi mreže. JSON Feed 1.1 ima propisani tip application/feed+json;
-# Atom application/atom+xml. Bez ovoga Cloudflare posluži JSON kao
-# application/json i čitači ga ne prepoznaju kao feed.
-/glavni-gradovi/feed.json
-  Content-Type: application/feed+json; charset=utf-8
-  Cache-Control: public, max-age=900
-
-/en/capitals/feed.json
-  Content-Type: application/feed+json; charset=utf-8
-  Cache-Control: public, max-age=900
-
-/glavni-gradovi/feed.xml
-  Content-Type: application/atom+xml; charset=utf-8
-  Cache-Control: public, max-age=900
-
-/en/capitals/feed.xml
-  Content-Type: application/atom+xml; charset=utf-8
-  Cache-Control: public, max-age=900
-
 /data/*
   Cache-Control: public, max-age=0, must-revalidate
 
@@ -111,29 +92,6 @@
 
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
-
-# Devet svjetskih izdanja: apstraktna grafika zamijenjena je gradskim scenama
-# (23. 10. 2026.). Putanje su iste, pa te datoteke ne smiju ostati godinu dana
-# u kešu kod čitatelja koji su staru verziju već vidjeli.
-
-/assets/izdanja/nairobi-*
-  Cache-Control: public, max-age=600, must-revalidate
-/assets/izdanja/jakarta-*
-  Cache-Control: public, max-age=600, must-revalidate
-/assets/izdanja/newyork-*
-  Cache-Control: public, max-age=600, must-revalidate
-/assets/izdanja/saopaulo-*
-  Cache-Control: public, max-age=600, must-revalidate
-/assets/izdanja/sydney-*
-  Cache-Control: public, max-age=600, must-revalidate
-/assets/izdanja/singapur-*
-  Cache-Control: public, max-age=600, must-revalidate
-/assets/izdanja/kairo-*
-  Cache-Control: public, max-age=600, must-revalidate
-/assets/izdanja/tokio-*
-  Cache-Control: public, max-age=600, must-revalidate
-/assets/izdanja/peking-*
-  Cache-Control: public, max-age=600, must-revalidate
 
 # GNK ASG Developer Tools: strogi CSP i zabrana ugradnje u tuđe frameove.
 /developer-tools/*

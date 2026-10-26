@@ -3,7 +3,6 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <title>Mreža AKTUAL MEDIA — 32 adrese, jedan izvor | GNK ASG</title>
 <meta name="description" content="Mreža GNK ASG i AKTUAL MEDIA: šest samostalnih tematskih stranica, devet svjetskih portala i 17 gradskih izdanja na šest kontinenata. Svaka adresa ima sitemap i feed.">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
@@ -19,7 +18,7 @@
 <link rel="alternate" hreflang="x-default" href="https://gnk-asg.hr/mreza/">
 <link rel="alternate" type="application/json" title="Mreža" href="/data/mreza-v1.json">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="GNK ASG · Mreža">
+<meta property="og:site_name" content="GNK ASG">
 <meta property="og:title" content="Mreža AKTUAL MEDIA — 32 adrese, jedan izvor | GNK ASG">
 <meta property="og:description" content="Mreža GNK ASG i AKTUAL MEDIA: šest samostalnih tematskih stranica, devet svjetskih portala i 17 gradskih izdanja na šest kontinenata. Svaka adresa ima sitemap i feed.">
 <meta property="og:url" content="https://gnk-asg.hr/mreza/">
@@ -44,7 +43,6 @@ img{max-width:100%;display:block;height:auto}
 .top .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between;padding:11px 0}
 .top a{color:var(--gold)}
 .hero{padding:clamp(32px,6vw,72px) 0 28px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
-.hero .house{margin:0 0 16px}.hero .house img{height:48px;width:auto;max-width:220px;border-radius:6px}
 .hero:after{content:"";position:absolute;inset:auto -10% -55% 40%;height:560px;background:radial-gradient(circle,rgba(232,197,106,.13),transparent 62%);pointer-events:none}
 .k{font:800 11px/1.4 system-ui;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin:0 0 12px}
 h1{font:800 clamp(34px,6.2vw,72px)/1.02 Georgia,"Times New Roman",serif;letter-spacing:-.025em;margin:0 0 16px;max-width:18ch}
@@ -65,7 +63,7 @@ section>p.lead{color:var(--soft);max-width:80ch;margin:0 0 18px}
 .card h3{font:800 20px/1.2 Georgia,serif;margin:0 0 6px}
 .card p{margin:0;color:var(--soft);font-size:13.5px}
 .card .dom{display:block;color:#7f93ab;font-size:11px;margin-top:10px;letter-spacing:.04em}
-.wmedia{position:relative;display:block;line-height:0}.wband{position:absolute;left:12px;bottom:12px;display:inline-flex;align-items:center;padding:7px 11px;border-radius:8px;background:rgba(4,10,18,.74);border:1px solid rgba(255,255,255,.16);font:800 12px/1 Georgia,serif;letter-spacing:.14em}
+.wband{display:flex;align-items:center;justify-content:center;height:74px;font:800 17px/1 Georgia,serif;letter-spacing:.14em}
 .two{display:grid;grid-template-columns:1.2fr .8fr;gap:26px;align-items:start}
 @media(max-width:820px){.two{grid-template-columns:1fr}}
 .prose p{color:#cbd7e4;margin:0 0 13px;max-width:76ch}
@@ -92,423 +90,25 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
 .skip{position:absolute;left:-9999px;top:0;background:var(--gold);color:#08090c;font:800 13px/1 system-ui;padding:12px 18px}
 .skip:focus{left:0}
 :focus-visible{outline:3px solid #74b6ff;outline-offset:3px}
-
-/* paukova mreža — jedna grafika, sve adrese */
-.sw{--sw-ink:#15191f;--sw-muted:#4a5158;--sw-line:rgba(21,25,31,.16);--sw-panel:#fff;--sw-gold:#8c6a1f;
-  padding:clamp(26px,4vw,46px) clamp(14px,3vw,28px);border:1px solid var(--sw-line);border-radius:18px;background:var(--sw-panel);margin:clamp(26px,4vw,44px) 0}
-.sw--dark{--sw-ink:#eef3f8;--sw-muted:#a9bad0;--sw-line:rgba(255,255,255,.14);--sw-panel:rgba(255,255,255,.035);--sw-gold:#e0bd69}
-.sw-head{max-width:74ch;margin:0 auto clamp(10px,2vw,18px)}
-.sw-k{margin:0 0 6px;font:800 10.5px/1.4 system-ui;letter-spacing:.2em;text-transform:uppercase;color:var(--sw-gold)}
-.sw-head h2{margin:0 0 8px;font:800 clamp(22px,3.2vw,34px)/1.1 Georgia,"Times New Roman",serif;letter-spacing:-.02em;color:var(--sw-ink)}
-.sw-lead{margin:0;color:var(--sw-muted);font-size:clamp(13px,1.4vw,15px);line-height:1.6}
-.sw-fig{margin:0}
-.sw-svg{display:block;width:100%;height:auto;max-width:820px;margin:0 auto;overflow:visible}
-.sw-orbit{fill:none;stroke:var(--sw-line);stroke-width:1;stroke-dasharray:2 6}
-.sw-thread,.sw-ring,.sw-bridge{fill:none;stroke:var(--sw-gold);stroke-opacity:.30;stroke-width:1.1;transition:stroke-opacity .18s ease,stroke-width .18s ease}
-.sw-ring{stroke-opacity:.17}
-.sw-bridge{stroke-opacity:.22;stroke-dasharray:3 5}
-.sw-thread.is-on,.sw-ring.is-on,.sw-bridge.is-on{stroke-opacity:.95;stroke-width:1.9}
-.sw-node{color:var(--c,var(--sw-gold));text-decoration:none}
-.sw-node .sw-dot{fill:currentColor;stroke:var(--sw-panel);stroke-width:1.4;transition:r .18s ease}
-.sw-node .sw-halo{fill:currentColor;fill-opacity:0;stroke:currentColor;stroke-width:1.2;stroke-opacity:.55;transition:fill-opacity .18s ease}
-.sw-node .sw-label{fill:var(--sw-ink);font:600 12px/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;letter-spacing:.01em;paint-order:stroke;stroke:var(--sw-panel);stroke-width:3px;stroke-linejoin:round}
-.sw-node .sw-suffix{fill:var(--sw-muted);font-weight:500;font-size:10.5px}
-.sw-node:hover .sw-halo,.sw-node:focus-visible .sw-halo{fill-opacity:.22}
-.sw-node:hover .sw-dot,.sw-node:focus-visible .sw-dot{r:8.5}
-.sw-node:focus-visible{outline:none}
-.sw-node.is-self .sw-dot{stroke-dasharray:2 2;stroke-width:2.4}
-.sw-hub{color:var(--sw-gold);text-decoration:none}
-.sw-hub-disc{fill:var(--sw-panel);stroke:var(--sw-gold);stroke-width:1.6}
-.sw-hub-ring{fill:none;stroke:var(--sw-gold);stroke-opacity:.45;stroke-width:1;stroke-dasharray:3 5}
-.sw-hub-a,.sw-hub-b{font:800 21px/1 Georgia,"Times New Roman",serif;letter-spacing:.04em;fill:var(--sw-ink)}
-.sw-hub-b{fill:var(--sw-gold)}
-.sw-hub-s{font:700 9.5px/1 system-ui;letter-spacing:.18em;text-transform:uppercase;fill:var(--sw-muted)}
-.sw-hub:hover .sw-hub-ring,.sw-hub:focus-visible .sw-hub-ring{stroke-opacity:.9}
-.sw-fig figcaption{text-align:center;margin:6px 0 0}
-.sw-hint{color:var(--sw-muted);font-size:12px}
-.sw-lists{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px 26px;margin:clamp(14px,2.4vw,22px) auto 0;max-width:1000px}
-.sw-list-block h3{margin:0 0 8px;font:800 11px/1.4 system-ui;letter-spacing:.14em;text-transform:uppercase;color:var(--sw-gold)}
-.sw-list-block h3 span{color:var(--sw-muted);font-weight:700}
-.sw-list-block ul{list-style:none;margin:0;padding:0;display:grid;gap:3px}
-.sw-list-block a{display:flex;justify-content:space-between;gap:8px;align-items:baseline;padding:4px 7px;border-radius:7px;color:var(--sw-ink);font-size:13px;text-decoration:none}
-.sw-list-block a span{color:var(--sw-muted);font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:52%}
-.sw-list-block a:hover,.sw-list-block a:focus-visible{background:rgba(140,106,31,.1)}
-.sw-list-block a[aria-current="page"]{font-weight:700;background:rgba(140,106,31,.08)}
-.sw--compact .sw-svg{max-width:560px}
-@media (max-width:640px){
-  .sw{padding:18px 10px;border-radius:14px}
-  .sw-node .sw-label{font-size:14px}
-  .sw-svg{max-width:none}
-  .sw-lists{grid-template-columns:1fr}
-}
-@media (prefers-reduced-motion:reduce){.sw *{transition:none!important}}
-
-/* ---------- KUĆNI STIL v1 ---------- */
-:root{
-  --am-gold:#c9a227;--am-gold-soft:#e4c877;
-  --am-line:color-mix(in srgb,currentColor 14%,transparent);
-  --am-line-soft:color-mix(in srgb,currentColor 8%,transparent);
-  --am-muted:color-mix(in srgb,currentColor 62%,transparent);
-  --am-radius:16px;--am-radius-sm:10px;
-  --am-shadow:0 18px 44px -28px rgba(0,0,0,.55);
-  --am-gutter:clamp(18px,4vw,40px);
-  --am-measure:1180px;
-  --am-ease:cubic-bezier(.22,.61,.36,1);
-}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{
-  font-size:clamp(16.5px,.55vw + 15px,17.5px);
-  line-height:1.68;
-  letter-spacing:.002em;
-  text-rendering:optimizeLegibility;
-}
-::selection{background:color-mix(in srgb,var(--accent2,var(--am-gold)) 38%,transparent);color:inherit}
-:focus-visible{outline:2px solid var(--accent2,var(--am-gold));outline-offset:3px;border-radius:4px}
-
-/* naslovi: jedan ritam kroz cijelu mrežu */
-h1,h2,h3,h4{font-family:Georgia,"Iowan Old Style","Times New Roman",serif;font-weight:700;letter-spacing:-.014em;text-wrap:balance}
-h1{font-size:clamp(2rem,1.2rem + 2.6vw,3.35rem);line-height:1.08;margin:0 0 .5em}
-h2{font-size:clamp(1.35rem,1rem + 1.1vw,1.95rem);line-height:1.18;margin:2.4em 0 .7em;padding-top:.15em;border-top:1px solid var(--am-line-soft)}
-h3{font-size:clamp(1.08rem,.95rem + .5vw,1.3rem);line-height:1.28;margin:0 0 .45em}
-h2:first-child,h1+h2{border-top:0;margin-top:0;padding-top:0}
-p{margin:0 0 1.05em;text-wrap:pretty}
-p:last-child{margin-bottom:0}
-.lead,main>p:first-of-type{font-size:clamp(1.05rem,.98rem + .4vw,1.2rem);line-height:1.6;color:var(--am-muted)}
-small,.cap,.meta,.dateline,.kicker,.k{letter-spacing:.06em}
-.kicker,.k,.dateline{text-transform:uppercase;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:700;font-size:.72rem;letter-spacing:.14em;color:var(--am-muted)}
-
-/* poveznice: zlatna nit, bez podcrtavanja cijelog teksta */
-a{color:inherit;text-decoration-color:color-mix(in srgb,var(--accent2,var(--am-gold)) 70%,transparent);text-underline-offset:.22em;text-decoration-thickness:1px;transition:color .18s var(--am-ease),opacity .18s var(--am-ease)}
-a:hover{color:var(--accent2,var(--am-gold))}
-a:has(img){text-decoration:none}
-
-/* sadržaj: ista mjera, isti razmak */
-main,.wrap,.page{padding-left:var(--am-gutter);padding-right:var(--am-gutter)}
-main,.wrap{max-width:var(--am-measure);margin-inline:auto}
-section{margin-block:clamp(2rem,3vw,3.4rem)}
-hr{border:0;border-top:1px solid var(--am-line-soft);margin:2.2rem 0}
-
-/* slike: uvijek uokvirene, nikad rastegnute */
-img{max-width:100%;height:auto}
-figure{margin:1.6rem 0}
-figure img,main>img,article>img,.hero,.heroimg{border-radius:var(--am-radius);box-shadow:var(--am-shadow);display:block}
-figure figcaption,.cap{font-size:.8rem;color:var(--am-muted);margin-top:.6rem;line-height:1.5}
-
-/* kartice: jedna visina tona, jedan obrub, jedan pokret */
-.card,.iz-card,.amw-card,.amm-card,.ed-card,.entry,.post{
-  border:1px solid var(--am-line);border-radius:var(--am-radius);
-  background:color-mix(in srgb,currentColor 3%,transparent);
-  transition:transform .22s var(--am-ease),border-color .22s var(--am-ease),box-shadow .22s var(--am-ease);
-  overflow:hidden;
-}
-.card:hover,.iz-card:hover,.amw-card:hover,.ed-card:hover,.entry:hover{
-  transform:translateY(-3px);border-color:color-mix(in srgb,var(--accent2,var(--am-gold)) 55%,transparent);
-  box-shadow:var(--am-shadow);
-}
-.card img,.iz-card img,.ed-card img{aspect-ratio:16/9;object-fit:cover;width:100%}
-
-/* gumbi i oznake */
-.btn,.more,.amm-card-go,button,a.btn{
-  display:inline-flex;align-items:center;gap:.5em;
-  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:700;
-  font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;
-  border:1px solid color-mix(in srgb,var(--accent2,var(--am-gold)) 55%,transparent);
-  border-radius:999px;padding:.72em 1.15em;text-decoration:none;
-  transition:background .2s var(--am-ease),color .2s var(--am-ease),transform .2s var(--am-ease);
-}
-.btn:hover,.more:hover{background:color-mix(in srgb,var(--accent2,var(--am-gold)) 18%,transparent);transform:translateY(-1px)}
-.tag,.chip,.hashtag,.iz-tags a,.ne-hash a{
-  display:inline-block;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
-  font-size:.72rem;font-weight:600;letter-spacing:.04em;padding:.32em .68em;margin:0 .35em .35em 0;
-  border:1px solid var(--am-line);border-radius:999px;text-decoration:none;opacity:.9;
-}
-
-/* zaglavlje: znak kuće stoji uvijek na istom mjestu i iste visine */
-.top,.topbar,.masthead,.brand,header.site-header{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
-.top{border-bottom:1px solid var(--am-line)}
-.masthead,.brand{gap:.9rem}
-.brand img,.ed-logo img,header img.logo,a.logo img{height:clamp(34px,3.2vw,46px);width:auto;max-width:none;border-radius:0;box-shadow:none}
-.brand,.logo{letter-spacing:.16em;text-transform:uppercase;font-weight:800}
-nav a{text-decoration:none}
-nav a[aria-current="page"]{color:var(--accent2,var(--am-gold))}
-
-/* podnožje: mirno, pregledno, s istim redom */
-footer{border-top:1px solid var(--am-line);margin-top:clamp(2.4rem,4vw,4rem);padding-block:clamp(1.6rem,3vw,2.6rem);font-size:.86rem;color:var(--am-muted)}
-footer h3,footer .k{color:inherit;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;margin:0 0 .55em}
-footer ul{list-style:none;margin:0;padding:0;display:grid;gap:.35em}
-footer a{text-decoration:none}
-footer a:hover{color:var(--accent2,var(--am-gold))}
-
-/* preskok sadržaja: vidljiv samo na fokus */
-.skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--bg,#08111c);color:inherit;padding:.8em 1.2em;border-radius:0 0 12px 0;font-family:system-ui,sans-serif;font-weight:700}
-.skip:focus{left:0}
-
-/* sitnice koje dizajn čine mirnijim */
-table{border-collapse:collapse;width:100%}
-th,td{padding:.6em .7em;border-bottom:1px solid var(--am-line-soft);text-align:left}
-blockquote{margin:1.8rem 0;padding:.2rem 0 .2rem 1.2rem;border-left:3px solid var(--accent2,var(--am-gold));font-size:1.08rem;color:var(--am-muted)}
-code,kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;padding:.1em .35em;border-radius:6px;background:color-mix(in srgb,currentColor 8%,transparent)}
-
-/* traka kuće: ista na svakoj domeni — znak, ime, izdanje i veza na maticu */
-.am-ribbon{display:flex;align-items:center;gap:clamp(.6rem,1.4vw,1.1rem);flex-wrap:wrap;
-  max-width:var(--am-measure);margin:0 auto;padding:.55rem clamp(1rem,3vw,2rem);
-  border-bottom:1px solid var(--am-line);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
-  font-size:.74rem;letter-spacing:.14em;text-transform:uppercase}
-.am-ribbon-brand{display:inline-flex;align-items:center;gap:.6rem;text-decoration:none;color:inherit;font-weight:800}
-.am-ribbon-brand img{height:clamp(22px,2.1vw,30px);width:auto;max-width:none;border-radius:0;box-shadow:none}
-.am-ribbon-ed{margin-left:auto;color:var(--am-muted);letter-spacing:.1em}
-.am-ribbon-ed b{color:inherit;font-weight:700}
-.am-ribbon a:hover{color:var(--accent2,var(--am-gold))}
-@media (max-width:520px){.am-ribbon-ed{width:100%;margin-left:0}}
-@media print{.am-ribbon{display:none!important}}
-
-
-/* članak: mjera za čitanje, prvi odlomak kao uvod, izvori mirni */
-.article,.article-body,.entry-content,.post-body,.prose{max-width:70ch}
-.article>p,.article-body>p,.entry-content>p,.post-body>p,.prose>p{font-size:1.02rem;line-height:1.72}
-.article>p:first-of-type,.article-body>p:first-of-type,.entry-content>p:first-of-type{font-size:1.12rem;line-height:1.62;color:var(--am-muted)}
-.article ul,.article ol,.article-body ul,.article-body ol,.prose ul,.prose ol{padding-left:1.15em;margin:0 0 1.1em}
-.article li,.article-body li,.prose li{margin-bottom:.45em}
-.article h2,.article-body h2,.prose h2{margin-top:1.9em}
-.article figure,.article-body figure,.prose figure{margin:1.9rem 0}
-.article figure img,.article-body figure img{width:100%}
-.src,.source,.sources,.izvori,.izvor{font-size:.82rem;color:var(--am-muted);line-height:1.55}
-.src a,.source a,.sources a{text-decoration-color:var(--am-line)}
-.article .tag,.article-body .tag,.article .hashtag{margin-top:.5em}
-.article time,.dateline time{font-variant-numeric:tabular-nums}
-/* galerija pločica ispod članka: uredan raster, bez šuma */
-.eds,.eds-row,.xf-tile{--am-tile:clamp(120px,14vw,168px)}
-.eds-row{display:grid;gap:clamp(.7rem,1.2vw,1rem)}
-figure>figcaption:empty{display:none}
-
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
-@media print{.top,footer,.skip,nav{display:none!important}body{background:#fff;color:#000}}
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://gnk-asg.hr/#website","name":"GNK ASG","url":"https://gnk-asg.hr/","inLanguage":["hr","en"],"publisher":{"@id":"https://gnk-asg.hr/#gnk-asg"}},{"@type":"Organization","@id":"https://gnk-asg.hr/#gnk-asg","name":"GNK ASG d.o.o.","url":"https://gnk-asg.hr/"},{"@type":"NewsMediaOrganization","@id":"https://gnk-asg.hr/#aktual-media","name":"AKTUAL MEDIA d.o.o.","url":"https://gnk-asg.hr/gnk-aktual/","parentOrganization":{"@id":"https://gnk-asg.hr/#gnk-asg"},"editor":{"@id":"https://gnk-asg.hr/#nermin-sefic"}},{"@type":"Person","@id":"https://gnk-asg.hr/#nermin-sefic","name":"Nermin Sefić","jobTitle":"Urednik i direktor","url":"https://gnk-asg.hr/nermin-sefic/","worksFor":{"@id":"https://gnk-asg.hr/#aktual-media"}},{"@type":"CollectionPage","@id":"https://gnk-asg.hr/mreza/#page","url":"https://gnk-asg.hr/mreza/","name":"Mreža AKTUAL MEDIA — 32 adrese, jedan izvor | GNK ASG","headline":"Trideset i dvije adrese. Jedan izvor provjere.","description":"Mreža GNK ASG i AKTUAL MEDIA: šest samostalnih tematskih stranica, devet svjetskih portala i 17 gradskih izdanja na šest kontinenata. Svaka adresa ima sitemap i feed.","inLanguage":"hr","datePublished":"2026-10-22","dateModified":"2026-10-26","isPartOf":{"@id":"https://gnk-asg.hr/#website"},"author":{"@id":"https://gnk-asg.hr/#aktual-media"},"editor":{"@id":"https://gnk-asg.hr/#nermin-sefic"},"publisher":{"@id":"https://gnk-asg.hr/#aktual-media"},"image":{"@type":"ImageObject","url":"https://gnk-asg.hr/assets/izdanja/aktual-media-og.jpg","width":1200,"height":630},"mainEntity":{"@id":"https://gnk-asg.hr/mreza/#lista"}},{"@type":"ItemList","@id":"https://gnk-asg.hr/mreza/#lista","name":"Samostalne stranice","numberOfItems":32,"itemListElement":[{"@type":"ListItem","position":1,"name":"BOR USA","url":"https://gnk-bor-usa.pages.dev/","description":"Borilački sport u Sjedinjenim Državama: regulativa, sigurnost i kako se čita borba."},{"@type":"ListItem","position":2,"name":"KOŠARKA 360","url":"https://gnk-kosarka.pages.dev/","description":"Košarka bez šuma: kako se čita sezona, što broje brojke i zašto regionalna liga nije mala."},{"@type":"ListItem","position":3,"name":"SCENA ZNANOSTI","url":"https://gnk-scena-znanosti.pages.dev/","description":"Kako znanost stvarno nastaje: recenzija, preprints, ispravci i ono što se ne objavi."},{"@type":"ListItem","position":4,"name":"STEP BUDUĆNOSTI","url":"https://gnk-step-buducnosti.pages.dev/","description":"Ples, step i pokret kao tehnologija: sport, ozljede, snimanje pokreta i pozornica."},{"@type":"ListItem","position":5,"name":"ZDRAVLJE 360","url":"https://gnk-zdravlje.pages.dev/","description":"Zdravlje bez čuda: prevencija, san, kretanje i kako se čita medicinska studija."},{"@type":"ListItem","position":6,"name":"IZBORI U SRBIJI","url":"https://gnk-izbori-srbija.pages.dev/","description":"Nadzorni desk: što mediji u Srbiji, Hrvatskoj, BiH i SAD-u objavljuju o izborima — s izvorom i datumom."},{"@type":"ListItem","position":7,"name":"AKTUAL MEDIA CHANNEL NAIROBI — svjetski portal","url":"https://gnk-world-nairobi.pages.dev/","description":"Svjetsko izdanje · Kenija"},{"@type":"ListItem","position":8,"name":"AKTUAL MEDIA KANAL JAKARTA — svjetski portal","url":"https://gnk-world-jakarta.pages.dev/","description":"Svjetsko izdanje · Indonezija"},{"@type":"ListItem","position":9,"name":"AKTUAL MEDIA CHANNEL NEW YORK — svjetski portal","url":"https://gnk-world-newyork.pages.dev/","description":"Svjetsko izdanje · Sjedinjene Američke Države"},{"@type":"ListItem","position":10,"name":"AKTUAL MEDIA CANAL SÃO PAULO — svjetski portal","url":"https://gnk-world-saopaulo.pages.dev/","description":"Svjetsko izdanje · Brazil"},{"@type":"ListItem","position":11,"name":"AKTUAL MEDIA CHANNEL SYDNEY — svjetski portal","url":"https://gnk-world-sydney.pages.dev/","description":"Svjetsko izdanje · Australija"},{"@type":"ListItem","position":12,"name":"AKTUAL MEDIA CHANNEL SINGAPUR — svjetski portal","url":"https://gnk-world-singapur.pages.dev/","description":"Svjetsko izdanje · Singapur"},{"@type":"ListItem","position":13,"name":"AKTUAL MEDIA KANAL KAIRO — svjetski portal","url":"https://gnk-world-kairo.pages.dev/","description":"Svjetsko izdanje · Egipat"},{"@type":"ListItem","position":14,"name":"AKTUAL MEDIA KANAL TOKIO — svjetski portal","url":"https://gnk-world-tokio.pages.dev/","description":"Svjetsko izdanje · Japan"},{"@type":"ListItem","position":15,"name":"AKTUAL MEDIA KANAL PEKING — svjetski portal","url":"https://gnk-world-peking.pages.dev/","description":"Svjetsko izdanje · Kina"},{"@type":"ListItem","position":16,"name":"AKTUAL MEDIA KANAL ZAGREB — gradsko izdanje","url":"https://gnk-asg.hr/kanal/zagreb/","description":"Zagreb, Hrvatska · hr"},{"@type":"ListItem","position":17,"name":"AKTUAL MEDIA KANAL BEOGRAD — gradsko izdanje","url":"https://gnk-asg.hr/kanal/beograd/","description":"Beograd, Srbija · sr"},{"@type":"ListItem","position":18,"name":"AKTUAL MEDIA KANAL SARAJEVO — gradsko izdanje","url":"https://gnk-asg.hr/kanal/sarajevo/","description":"Sarajevo, Bosna i Hercegovina · bs"},{"@type":"ListItem","position":19,"name":"AKTUAL MEDIA KANAL BUDAPEST — gradsko izdanje","url":"https://gnk-asg.hr/kanal/budimpesta/","description":"Budimpešta, Mađarska · hu"},{"@type":"ListItem","position":20,"name":"AKTUAL MEDIA KANAL LJUBLJANA — gradsko izdanje","url":"https://gnk-asg.hr/kanal/ljubljana/","description":"Ljubljana, Slovenija · sl"},{"@type":"ListItem","position":21,"name":"AKTUAL MEDIA KANAL ROMA — gradsko izdanje","url":"https://gnk-asg.hr/kanal/rim/","description":"Rim, Italija · it"},{"@type":"ListItem","position":22,"name":"AKTUAL MEDIA KANAL SOFIJA — gradsko izdanje","url":"https://gnk-asg.hr/kanal/sofija/","description":"Sofija, Bugarska · bg"},{"@type":"ListItem","position":23,"name":"AKTUAL MEDIA KANAL BUCUREȘTI — gradsko izdanje","url":"https://gnk-asg.hr/kanal/bukurest/","description":"Bukurešt, Rumunjska · ro"},{"@type":"ListItem","position":24,"name":"AKTUAL MEDIA CHANNEL NAIROBI — gradsko izdanje","url":"https://gnk-asg.hr/kanal/nairobi/","description":"Nairobi, Kenija · en"},{"@type":"ListItem","position":25,"name":"AKTUAL MEDIA KANAL JAKARTA — gradsko izdanje","url":"https://gnk-asg.hr/kanal/jakarta/","description":"Jakarta, Indonezija · id"},{"@type":"ListItem","position":26,"name":"AKTUAL MEDIA CHANNEL NEW YORK — gradsko izdanje","url":"https://gnk-asg.hr/kanal/newyork/","description":"New York, Sjedinjene Američke Države · en"},{"@type":"ListItem","position":27,"name":"AKTUAL MEDIA CANAL SÃO PAULO — gradsko izdanje","url":"https://gnk-asg.hr/kanal/saopaulo/","description":"São Paulo, Brazil · pt"},{"@type":"ListItem","position":28,"name":"AKTUAL MEDIA CHANNEL SYDNEY — gradsko izdanje","url":"https://gnk-asg.hr/kanal/sydney/","description":"Sydney, Australija · en"},{"@type":"ListItem","position":29,"name":"AKTUAL MEDIA CHANNEL SINGAPUR — gradsko izdanje","url":"https://gnk-asg.hr/kanal/singapur/","description":"Singapur, Singapur · en"},{"@type":"ListItem","position":30,"name":"AKTUAL MEDIA KANAL KAIRO — gradsko izdanje","url":"https://gnk-asg.hr/kanal/kairo/","description":"Kairo, Egipat · ar"},{"@type":"ListItem","position":31,"name":"AKTUAL MEDIA KANAL TOKIO — gradsko izdanje","url":"https://gnk-asg.hr/kanal/tokio/","description":"Tokio, Japan · ja"},{"@type":"ListItem","position":32,"name":"AKTUAL MEDIA KANAL PEKING — gradsko izdanje","url":"https://gnk-asg.hr/kanal/peking/","description":"Peking, Kina · zh"}]},{"@type":"BreadcrumbList","@id":"https://gnk-asg.hr/mreza/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"GNK ASG","item":"https://gnk-asg.hr/"},{"@type":"ListItem","position":2,"name":"Mreža","item":"https://gnk-asg.hr/mreza/"}]}]}</script>
-<meta name="editor" content="Nermin Sefić">
-<meta property="article:tag" content="#AKTUALMEDIA">
-<meta property="article:tag" content="#GNKASG">
-<script type="application/ld+json" id="network-entity-v1">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://gnk-asg.hr/#gnk-asg","name":"GNK ASG d.o.o.","url":"https://gnk-asg.hr/","parentOrganization":{"@id":"https://gnk-asg.hr/#gnk-dinamo-ltd"},"founder":{"@id":"https://gnk-asg.hr/#nermin-sefic"}},{"@type":"Organization","@id":"https://gnk-asg.hr/#gnk-dinamo-ltd","name":"GNK DINAMO Ltd.","url":"https://gnk-asg.hr/pojasnjenje-gnk-asg-i-gnk-dinamo-ltd/"},{"@type":"NewsMediaOrganization","@id":"https://gnk-asg.hr/gnk-aktual/#aktual-media","name":"AKTUAL MEDIA","alternateName":["AKTUAL MEDIA d.o.o.","Aktual Media","Aktual medija"],"url":"https://gnk-asg.hr/gnk-aktual/","parentOrganization":{"@id":"https://gnk-asg.hr/#gnk-asg"},"editor":{"@id":"https://gnk-asg.hr/#nermin-sefic"}},{"@type":"Person","@id":"https://gnk-asg.hr/#nermin-sefic","name":"Nermin Sefić","alternateName":["Nermin Sefic","Sefic Nermin","Sefić Nermin"],"jobTitle":"Glavni urednik AKTUAL MEDIA, direktor GNK ASG d.o.o.","url":"https://gnk-asg.hr/nermin-sefic/","worksFor":[{"@id":"https://gnk-asg.hr/#gnk-asg"},{"@id":"https://gnk-asg.hr/gnk-aktual/#aktual-media"}],"affiliation":{"@id":"https://gnk-asg.hr/#gnk-dinamo-ltd"}}]}</script>
-<link rel="stylesheet" href="/assets/am-design-v1.css?v=20261024" data-am-design="v1">
-<link rel="stylesheet" href="/assets/author-band-v1.css?v=20261025">
-</head>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://gnk-asg.hr/#website","name":"GNK ASG","url":"https://gnk-asg.hr/","inLanguage":["hr","en"],"publisher":{"@type":"Organization","@id":"https://gnk-asg.hr/#gnk-asg","name":"GNK ASG d.o.o.","url":"https://gnk-asg.hr/"}},{"@type":"Organization","@id":"https://gnk-asg.hr/#gnk-asg","name":"GNK ASG d.o.o.","url":"https://gnk-asg.hr/"},{"@type":"NewsMediaOrganization","@id":"https://gnk-asg.hr/#aktual-media","name":"AKTUAL MEDIA d.o.o.","url":"https://gnk-asg.hr/gnk-aktual/","parentOrganization":{"@id":"https://gnk-asg.hr/#gnk-asg"},"editor":{"@id":"https://gnk-asg.hr/#nermin-sefic"}},{"@type":"Person","@id":"https://gnk-asg.hr/#nermin-sefic","name":"Nermin Sefić","jobTitle":"Urednik i direktor","url":"https://gnk-asg.hr/nermin-sefic/","worksFor":{"@id":"https://gnk-asg.hr/#aktual-media"}},{"@type":"CollectionPage","@id":"https://gnk-asg.hr/mreza/#page","url":"https://gnk-asg.hr/mreza/","name":"Mreža AKTUAL MEDIA — 32 adrese, jedan izvor | GNK ASG","headline":"Trideset i dvije adrese. Jedan izvor provjere.","description":"Mreža GNK ASG i AKTUAL MEDIA: šest samostalnih tematskih stranica, devet svjetskih portala i 17 gradskih izdanja na šest kontinenata. Svaka adresa ima sitemap i feed.","inLanguage":"hr","datePublished":"2026-10-22","dateModified":"2026-10-23","isPartOf":{"@id":"https://gnk-asg.hr/#website"},"author":{"@id":"https://gnk-asg.hr/#aktual-media"},"editor":{"@type":"Person","@id":"https://gnk-asg.hr/#nermin-sefic","name":"Nermin Sefić","url":"https://gnk-asg.hr/nermin-sefic/"},"publisher":{"@id":"https://gnk-asg.hr/#aktual-media"},"image":{"@type":"ImageObject","url":"https://gnk-asg.hr/assets/izdanja/aktual-media-og.jpg","width":1200,"height":630},"mainEntity":{"@id":"https://gnk-asg.hr/mreza/#lista"}},{"@type":"ItemList","@id":"https://gnk-asg.hr/mreza/#lista","name":"Samostalne stranice","numberOfItems":32,"itemListElement":[{"@type":"ListItem","position":1,"name":"BOR USA","url":"https://gnk-bor-usa.pages.dev/","description":"Borilački sport u Sjedinjenim Državama: regulativa, sigurnost i kako se čita borba."},{"@type":"ListItem","position":2,"name":"KOŠARKA 360","url":"https://gnk-kosarka.pages.dev/","description":"Košarka bez šuma: kako se čita sezona, što broje brojke i zašto regionalna liga nije mala."},{"@type":"ListItem","position":3,"name":"SCENA ZNANOSTI","url":"https://gnk-scena-znanosti.pages.dev/","description":"Kako znanost stvarno nastaje: recenzija, preprints, ispravci i ono što se ne objavi."},{"@type":"ListItem","position":4,"name":"STEP BUDUĆNOSTI","url":"https://gnk-step-buducnosti.pages.dev/","description":"Ples, step i pokret kao tehnologija: sport, ozljede, snimanje pokreta i pozornica."},{"@type":"ListItem","position":5,"name":"ZDRAVLJE 360","url":"https://gnk-zdravlje.pages.dev/","description":"Zdravlje bez čuda: prevencija, san, kretanje i kako se čita medicinska studija."},{"@type":"ListItem","position":6,"name":"IZBORI U SRBIJI","url":"https://gnk-izbori-srbija.pages.dev/","description":"Nadzorni desk: što mediji u Srbiji, Hrvatskoj, BiH i SAD-u objavljuju o izborima — s izvorom i datumom."},{"@type":"ListItem","position":7,"name":"AKTUAL MEDIA CHANNEL NAIROBI — svjetski portal","url":"https://gnk-world-nairobi.pages.dev/","description":"Svjetsko izdanje · Kenija"},{"@type":"ListItem","position":8,"name":"AKTUAL MEDIA KANAL JAKARTA — svjetski portal","url":"https://gnk-world-jakarta.pages.dev/","description":"Svjetsko izdanje · Indonezija"},{"@type":"ListItem","position":9,"name":"AKTUAL MEDIA CHANNEL NEW YORK — svjetski portal","url":"https://gnk-world-newyork.pages.dev/","description":"Svjetsko izdanje · Sjedinjene Američke Države"},{"@type":"ListItem","position":10,"name":"AKTUAL MEDIA CANAL SÃO PAULO — svjetski portal","url":"https://gnk-world-saopaulo.pages.dev/","description":"Svjetsko izdanje · Brazil"},{"@type":"ListItem","position":11,"name":"AKTUAL MEDIA CHANNEL SYDNEY — svjetski portal","url":"https://gnk-world-sydney.pages.dev/","description":"Svjetsko izdanje · Australija"},{"@type":"ListItem","position":12,"name":"AKTUAL MEDIA CHANNEL SINGAPUR — svjetski portal","url":"https://gnk-world-singapur.pages.dev/","description":"Svjetsko izdanje · Singapur"},{"@type":"ListItem","position":13,"name":"AKTUAL MEDIA KANAL KAIRO — svjetski portal","url":"https://gnk-world-kairo.pages.dev/","description":"Svjetsko izdanje · Egipat"},{"@type":"ListItem","position":14,"name":"AKTUAL MEDIA KANAL TOKIO — svjetski portal","url":"https://gnk-world-tokio.pages.dev/","description":"Svjetsko izdanje · Japan"},{"@type":"ListItem","position":15,"name":"AKTUAL MEDIA KANAL PEKING — svjetski portal","url":"https://gnk-world-peking.pages.dev/","description":"Svjetsko izdanje · Kina"},{"@type":"ListItem","position":16,"name":"AKTUAL MEDIA KANAL ZAGREB — gradsko izdanje","url":"https://gnk-asg.hr/kanal/zagreb/","description":"Zagreb, Hrvatska · hr"},{"@type":"ListItem","position":17,"name":"AKTUAL MEDIA KANAL BEOGRAD — gradsko izdanje","url":"https://gnk-asg.hr/kanal/beograd/","description":"Beograd, Srbija · sr"},{"@type":"ListItem","position":18,"name":"AKTUAL MEDIA KANAL SARAJEVO — gradsko izdanje","url":"https://gnk-asg.hr/kanal/sarajevo/","description":"Sarajevo, Bosna i Hercegovina · bs"},{"@type":"ListItem","position":19,"name":"AKTUAL MEDIA KANAL BUDAPEST — gradsko izdanje","url":"https://gnk-asg.hr/kanal/budimpesta/","description":"Budimpešta, Mađarska · hu"},{"@type":"ListItem","position":20,"name":"AKTUAL MEDIA KANAL LJUBLJANA — gradsko izdanje","url":"https://gnk-asg.hr/kanal/ljubljana/","description":"Ljubljana, Slovenija · sl"},{"@type":"ListItem","position":21,"name":"AKTUAL MEDIA KANAL ROMA — gradsko izdanje","url":"https://gnk-asg.hr/kanal/rim/","description":"Rim, Italija · it"},{"@type":"ListItem","position":22,"name":"AKTUAL MEDIA KANAL SOFIJA — gradsko izdanje","url":"https://gnk-asg.hr/kanal/sofija/","description":"Sofija, Bugarska · bg"},{"@type":"ListItem","position":23,"name":"AKTUAL MEDIA KANAL BUCUREȘTI — gradsko izdanje","url":"https://gnk-asg.hr/kanal/bukurest/","description":"Bukurešt, Rumunjska · ro"},{"@type":"ListItem","position":24,"name":"AKTUAL MEDIA CHANNEL NAIROBI — gradsko izdanje","url":"https://gnk-asg.hr/kanal/nairobi/","description":"Nairobi, Kenija · en"},{"@type":"ListItem","position":25,"name":"AKTUAL MEDIA KANAL JAKARTA — gradsko izdanje","url":"https://gnk-asg.hr/kanal/jakarta/","description":"Jakarta, Indonezija · id"},{"@type":"ListItem","position":26,"name":"AKTUAL MEDIA CHANNEL NEW YORK — gradsko izdanje","url":"https://gnk-asg.hr/kanal/newyork/","description":"New York, Sjedinjene Američke Države · en"},{"@type":"ListItem","position":27,"name":"AKTUAL MEDIA CANAL SÃO PAULO — gradsko izdanje","url":"https://gnk-asg.hr/kanal/saopaulo/","description":"São Paulo, Brazil · pt"},{"@type":"ListItem","position":28,"name":"AKTUAL MEDIA CHANNEL SYDNEY — gradsko izdanje","url":"https://gnk-asg.hr/kanal/sydney/","description":"Sydney, Australija · en"},{"@type":"ListItem","position":29,"name":"AKTUAL MEDIA CHANNEL SINGAPUR — gradsko izdanje","url":"https://gnk-asg.hr/kanal/singapur/","description":"Singapur, Singapur · en"},{"@type":"ListItem","position":30,"name":"AKTUAL MEDIA KANAL KAIRO — gradsko izdanje","url":"https://gnk-asg.hr/kanal/kairo/","description":"Kairo, Egipat · ar"},{"@type":"ListItem","position":31,"name":"AKTUAL MEDIA KANAL TOKIO — gradsko izdanje","url":"https://gnk-asg.hr/kanal/tokio/","description":"Tokio, Japan · ja"},{"@type":"ListItem","position":32,"name":"AKTUAL MEDIA KANAL PEKING — gradsko izdanje","url":"https://gnk-asg.hr/kanal/peking/","description":"Peking, Kina · zh"}]},{"@type":"BreadcrumbList","@id":"https://gnk-asg.hr/mreza/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"GNK ASG","item":"https://gnk-asg.hr/"},{"@type":"ListItem","position":2,"name":"Mreža","item":"https://gnk-asg.hr/mreza/"}]}]}</script>
+<link rel="alternate" type="application/rss+xml" title="GNK ASG RSS" href="/feed.xml"><link rel="alternate" type="application/atom+xml" title="GNK ASG Atom" href="/atom.xml"></head>
 <body>
 <a class="skip" href="#main">Preskoči na sadržaj</a>
-<div class="am-ribbon"><a class="am-ribbon-brand" href="https://gnk-asg.hr/" rel="external noopener" aria-label="AKTUAL MEDIA — matična mreža"><img src="/assets/brand/aktual-media-mark.svg" alt="AKTUAL MEDIA — znak mreže" width="72" height="72" loading="lazy" decoding="async"><span>AKTUAL MEDIA</span></a><span class="am-ribbon-ed">mreža AKTUAL MEDIA</span></div>
 <div class="top"><div class="wrap"><span>AKTUAL MEDIA · GNK ASG · mreža</span><span><a href="https://gnk-asg.hr/">gnk-asg.hr</a> · <a href="/izdanja/">Naša izdanja</a> · <a href="/gnk-aktual/">AKTUAL MEDIA</a> · <a href="https://gnk-asg.hr/en/network/" hreflang="en" lang="en">English</a></span></div></div>
 <main id="main">
 <div class="hero"><div class="wrap">
-  <div class="house"><img src="/assets/brand/aktual-media-en-1200.webp" alt="AKTUAL MEDIA — world edition" width="167" height="48" decoding="async"></div>
   <p class="k">GNK ASG · mreža</p>
   <h1>Trideset i dvije adrese. Jedan izvor provjere.</h1>
   <p class="sub">Mreža neovisnih izdanja nastala je zato što su neke teme na matičnoj stranici bile prekratko obrađene: borilački sport u SAD-u, košarka, način na koji znanost nastaje, ples i pokret, svakodnevno zdravlje — i izbori u Srbiji, koji se prate samo dok traju.</p>
   <ul class="stats"><li><div><b>32</b><span>adrese u mreži</span></div></li><li><div><b>6</b><span>kontinenata</span></div></li><li><div><b>1</b><span>uredništvo</span></div></li></ul>
 </div></div>
 
-<section class="wrap sw-band" aria-labelledby="swTitle">
-  <div class="sw sw--dark" data-spiderweb data-lang="hr"><div class="sw-head">
-      <p class="sw-k">Mreža AKTUAL MEDIA</p>
-      <h2>Paukova mreža — sve adrese na jednoj slici</h2>
-      <p class="sw-lead">17 gradskih izdanja, 9 svjetskih portala i 6 samostalnih stranica oko jedne matice. Svaki čvor je link; nit vodi od izdanja do matice i natrag.</p>
-    </div><figure class="sw-fig">
-    <svg class="sw-svg" viewBox="0 0 1240 1000" role="img" aria-labelledby="swTitle swDesc">
-      <title id="swTitle">Paukova mreža — sve adrese na jednoj slici</title>
-      <desc id="swDesc">17 gradskih izdanja, 9 svjetskih portala i 6 samostalnih stranica oko jedne matice. Svaki čvor je link; nit vodi od izdanja do matice i natrag.</desc>
-      <defs>
-        <radialGradient id="swGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#e0bd69" stop-opacity=".28"></stop>
-          <stop offset="60%" stop-color="#e0bd69" stop-opacity=".06"></stop>
-          <stop offset="100%" stop-color="#e0bd69" stop-opacity="0"></stop>
-        </radialGradient>
-      </defs>
-      <circle cx="620" cy="500" r="470" fill="url(#swGlow)"></circle>
-      <circle class="sw-orbit" cx="620" cy="500" r="226"></circle>
-      <circle class="sw-orbit" cx="620" cy="500" r="330"></circle>
-      <circle class="sw-orbit" cx="620" cy="500" r="420"></circle>
-      <g class="sw-lines"><path class="sw-thread" data-a="hub" data-b="zagreb" d="M620,500 Q641.6,387.0 620.0,274.0"></path><path class="sw-thread" data-a="hub" data-b="beograd" d="M620,500 Q681.0,402.4 701.6,289.3"></path><path class="sw-thread" data-a="hub" data-b="sarajevo" d="M620,500 Q712.1,431.0 772.3,333.0"></path><path class="sw-thread" data-a="hub" data-b="budimpesta" d="M620,500 Q730.8,469.0 822.3,399.3"></path><path class="sw-thread" data-a="hub" data-b="ljubljana" d="M620,500 Q734.5,511.1 845.0,479.1"></path><path class="sw-thread" data-a="hub" data-b="rim" d="M620,500 Q722.8,551.7 837.4,561.8"></path><path class="sw-thread" data-a="hub" data-b="sofija" d="M620,500 Q697.2,585.3 800.4,636.2"></path><path class="sw-thread" data-a="hub" data-b="bukurest" d="M620,500 Q661.1,607.4 739.0,692.1"></path><path class="sw-thread" data-a="hub" data-b="nairobi" d="M620,500 Q619.5,615.0 661.5,722.2"></path><path class="sw-thread" data-a="hub" data-b="jakarta" d="M620,500 Q578.0,607.1 578.5,722.2"></path><path class="sw-thread" data-a="hub" data-b="newyork" d="M620,500 Q542.1,584.7 501.0,692.1"></path><path class="sw-thread" data-a="hub" data-b="saopaulo" d="M620,500 Q516.8,550.9 439.6,636.2"></path><path class="sw-thread" data-a="hub" data-b="sydney" d="M620,500 Q505.4,510.1 402.6,561.8"></path><path class="sw-thread" data-a="hub" data-b="singapur" d="M620,500 Q509.5,468.1 395.0,479.1"></path><path class="sw-thread" data-a="hub" data-b="kairo" d="M620,500 Q528.5,430.3 417.7,399.3"></path><path class="sw-thread" data-a="hub" data-b="tokio" d="M620,500 Q559.8,401.9 467.7,333.0"></path><path class="sw-thread" data-a="hub" data-b="peking" d="M620,500 Q599.3,386.8 538.4,289.3"></path><path class="sw-thread" data-a="hub" data-b="world-nairobi" d="M620,500 Q641.6,335.0 620.0,170.0"></path><path class="sw-thread" data-a="hub" data-b="world-jakarta" d="M620,500 Q742.6,387.5 832.1,247.2"></path><path class="sw-thread" data-a="hub" data-b="world-newyork" d="M620,500 Q786.2,492.6 945.0,442.7"></path><path class="sw-thread" data-a="hub" data-b="world-saopaulo" d="M620,500 Q752.1,601.2 905.8,665.0"></path><path class="sw-thread" data-a="hub" data-b="world-sydney" d="M620,500 Q656.1,662.4 732.9,810.1"></path><path class="sw-thread" data-a="hub" data-b="world-singapur" d="M620,500 Q543.3,647.7 507.1,810.1"></path><path class="sw-thread" data-a="hub" data-b="world-kairo" d="M620,500 Q466.3,563.8 334.2,665.0"></path><path class="sw-thread" data-a="hub" data-b="world-tokio" d="M620,500 Q461.3,450.1 295.0,442.7"></path><path class="sw-thread" data-a="hub" data-b="world-peking" d="M620,500 Q530.5,359.7 407.9,247.2"></path><path class="sw-thread" data-a="hub" data-b="bor-usa" d="M620,500 Q641.6,290.0 620.0,80.0"></path><path class="sw-thread" data-a="hub" data-b="kosarka" d="M620,500 Q812.7,413.7 983.7,290.0"></path><path class="sw-thread" data-a="hub" data-b="scena-znanosti" d="M620,500 Q791.1,623.7 983.7,710.0"></path><path class="sw-thread" data-a="hub" data-b="step-buducnosti" d="M620,500 Q598.4,710.0 620.0,920.0"></path><path class="sw-thread" data-a="hub" data-b="zdravlje" d="M620,500 Q427.3,586.3 256.3,710.0"></path><path class="sw-thread" data-a="hub" data-b="izbori-srbija" d="M620,500 Q448.9,376.3 256.3,290.0"></path><path class="sw-ring" data-a="zagreb" data-b="beograd" d="M620.0,274.0 Q665.6,256.1 701.6,289.3"></path><path class="sw-ring" data-a="beograd" data-b="sarajevo" d="M701.6,289.3 Q750.6,289.0 772.3,333.0"></path><path class="sw-ring" data-a="sarajevo" data-b="budimpesta" d="M772.3,333.0 Q818.0,350.5 822.3,399.3"></path><path class="sw-ring" data-a="budimpesta" data-b="ljubljana" d="M822.3,399.3 Q858.7,432.1 845.0,479.1"></path><path class="sw-ring" data-a="ljubljana" data-b="rim" d="M845.0,479.1 Q867.1,522.9 837.4,561.8"></path><path class="sw-ring" data-a="rim" data-b="sofija" d="M837.4,561.8 Q842.1,610.6 800.4,636.2"></path><path class="sw-ring" data-a="sofija" data-b="bukurest" d="M800.4,636.2 Q787.2,683.4 739.0,692.1"></path><path class="sw-ring" data-a="bukurest" data-b="nairobi" d="M739.0,692.1 Q709.6,731.4 661.5,722.2"></path><path class="sw-ring" data-a="nairobi" data-b="jakarta" d="M661.5,722.2 Q620.0,748.2 578.5,722.2"></path><path class="sw-ring" data-a="jakarta" data-b="newyork" d="M578.5,722.2 Q530.4,731.4 501.0,692.1"></path><path class="sw-ring" data-a="newyork" data-b="saopaulo" d="M501.0,692.1 Q452.8,683.4 439.6,636.2"></path><path class="sw-ring" data-a="saopaulo" data-b="sydney" d="M439.6,636.2 Q397.9,610.6 402.6,561.8"></path><path class="sw-ring" data-a="sydney" data-b="singapur" d="M402.6,561.8 Q372.9,522.9 395.0,479.1"></path><path class="sw-ring" data-a="singapur" data-b="kairo" d="M395.0,479.1 Q381.3,432.1 417.7,399.3"></path><path class="sw-ring" data-a="kairo" data-b="tokio" d="M417.7,399.3 Q422.0,350.5 467.7,333.0"></path><path class="sw-ring" data-a="tokio" data-b="peking" d="M467.7,333.0 Q489.4,289.0 538.4,289.3"></path><path class="sw-ring" data-a="peking" data-b="zagreb" d="M538.4,289.3 Q574.4,256.1 620.0,274.0"></path><path class="sw-ring" data-a="world-nairobi" data-b="world-jakarta" d="M620.0,170.0 Q735.0,184.2 832.1,247.2"></path><path class="sw-ring" data-a="world-jakarta" data-b="world-newyork" d="M832.1,247.2 Q911.1,332.0 945.0,442.7"></path><path class="sw-ring" data-a="world-newyork" data-b="world-saopaulo" d="M945.0,442.7 Q951.0,558.4 905.8,665.0"></path><path class="sw-ring" data-a="world-saopaulo" data-b="world-sydney" d="M905.8,665.0 Q836.0,757.5 732.9,810.1"></path><path class="sw-ring" data-a="world-sydney" data-b="world-singapur" d="M732.9,810.1 Q620.0,836.1 507.1,810.1"></path><path class="sw-ring" data-a="world-singapur" data-b="world-kairo" d="M507.1,810.1 Q404.0,757.5 334.2,665.0"></path><path class="sw-ring" data-a="world-kairo" data-b="world-tokio" d="M334.2,665.0 Q289.0,558.4 295.0,442.7"></path><path class="sw-ring" data-a="world-tokio" data-b="world-peking" d="M295.0,442.7 Q328.9,332.0 407.9,247.2"></path><path class="sw-ring" data-a="world-peking" data-b="world-nairobi" d="M407.9,247.2 Q505.0,184.2 620.0,170.0"></path><path class="sw-ring" data-a="bor-usa" data-b="kosarka" d="M620.0,80.0 Q814.9,162.5 983.7,290.0"></path><path class="sw-ring" data-a="kosarka" data-b="scena-znanosti" d="M983.7,290.0 Q1009.7,500.0 983.7,710.0"></path><path class="sw-ring" data-a="scena-znanosti" data-b="step-buducnosti" d="M983.7,710.0 Q814.9,837.5 620.0,920.0"></path><path class="sw-ring" data-a="step-buducnosti" data-b="zdravlje" d="M620.0,920.0 Q425.1,837.5 256.3,710.0"></path><path class="sw-ring" data-a="zdravlje" data-b="izbori-srbija" d="M256.3,710.0 Q230.3,500.0 256.3,290.0"></path><path class="sw-ring" data-a="izbori-srbija" data-b="bor-usa" d="M256.3,290.0 Q425.1,162.5 620.0,80.0"></path><path class="sw-bridge" data-a="nairobi" data-b="kairo" d="M661.5,722.2 Q557.3,547.4 417.7,399.3"></path><path class="sw-bridge" data-a="jakarta" data-b="singapur" d="M578.5,722.2 Q516.0,578.5 395.0,479.1"></path><path class="sw-bridge" data-a="tokio" data-b="peking" d="M467.7,333.0 Q528.8,352.7 538.4,289.3"></path><path class="sw-bridge" data-a="newyork" data-b="saopaulo" d="M501.0,692.1 Q503.3,628.1 439.6,636.2"></path></g>
-      <g class="sw-nodes"><a class="sw-node" href="https://gnk-asg.hr/kanal/zagreb/" data-node="zagreb" style="--c:#74b6ff">
-      <title>Zagreb — otvori izdanje</title>
-      <circle class="sw-halo" cx="620.0" cy="274.0" r="15"></circle>
-      <circle class="sw-dot" cx="620.0" cy="274.0" r="6.5"></circle>
-      <text class="sw-label" x="620.0" y="256.0" text-anchor="middle">Zagreb</text>
-    </a><a class="sw-node" href="https://gnk-asg.hr/kanal/beograd/" data-node="beograd" style="--c:#f0c26a">
-      <title>Beograd — otvori izdanje</title>
-      <circle class="sw-halo" cx="701.6" cy="289.3" r="15"></circle>
-      <circle class="sw-dot" cx="701.6" cy="289.3" r="6.5"></circle>
-      <text class="sw-label" x="717.6" y="293.3" text-anchor="start">Beograd</text>
-    </a><a class="sw-node" href="https://gnk-asg.hr/kanal/sarajevo/" data-node="sarajevo" style="--c:#f2c14e">
-      <title>Sarajevo — otvori izdanje</title>
-      <circle class="sw-halo" cx="772.3" cy="333.0" r="15"></circle>
-      <circle class="sw-dot" cx="772.3" cy="333.0" r="6.5"></circle>
-      <text class="sw-label" x="788.3" y="337.0" text-anchor="start">Sarajevo</text>
-    </a><a class="sw-node" href="https://gnk-asg.hr/kanal/budimpesta/" data-node="budimpesta" style="--c:#d9a24a">
-      <title>Budimpešta — otvori izdanje</title>
-      <circle class="sw-halo" cx="822.3" cy="399.3" r="15"></circle>
-      <circle class="sw-dot" cx="822.3" cy="399.3" r="6.5"></circle>
-      <text class="sw-label" x="838.3" y="403.3" text-anchor="start">Budimpešta</text>
-    </a><a class="sw-node" href="https://gnk-asg.hr/kanal/ljubljana/" data-node="ljubljana" style="--c:#b8d94a">
-      <title>Ljubljana — otvori izdanje</title>
-      <circle class="sw-halo" cx="845.0" cy="479.1" r="15"></circle>
-      <circle class="sw-dot" cx="845.0" cy="479.1" r="6.5"></circle>
-      <text class="sw-label" x="861.0" y="483.1" text-anchor="start">Ljubljana</text>
-    </a><a class="sw-node" href="https://gnk-asg.hr/kanal/rim/" data-node="rim" style="--c:#e9c98d">
-      <title>Rim — otvori izdanje</title>
-      <circle class="sw-halo" cx="837.4" cy="561.8" r="15"></circle>
-      <circle class="sw-dot" cx="837.4" cy="561.8" r="6.5"></circle>
-      <text class="sw-label" x="853.4" y="565.8" text-anchor="start">Rim</text>
-    </a><a class="sw-node" href="https://gnk-asg.hr/kanal/sofija/" data-node="sofija" style="--c:#e3c05a">
-      <title>Sofija — otvori izdanje</title>
-      <circle class="sw-halo" cx="800.4" cy="636.2" r="15"></circle>
-      <circle class="sw-dot" cx="800.4" cy="636.2" r="6.5"></circle>
-      <text class="sw-label" x="816.4" y="640.2" text-anchor="start">Sofija</text>
-    </a><a class="sw-node" href="https://gnk-asg.hr/kanal/bukurest/" data-node="bukurest" style="--c:#e8a33d">
-      <title>Bukurešt — otvori izdanje</title>
-      <circle class="sw-halo" cx="739.0" cy="692.1" r="15"></circle>
-      <circle class="sw-dot" cx="739.0" cy="692.1" r="6.5"></circle>
-      <text class="sw-label" x="755.0" y="696.1" text-anchor="start">Bukurešt</text>
-    </a><a class="sw-node" href="https://gnk-asg.hr/kanal/nairobi/" data-node="nairobi" style="--c:#7fe0a6">
-      <title>Nairobi — otvori izdanje</title>
-      <circle class="sw-halo" cx="661.5" cy="722.2" r="15"></circle>
-      <circle class="sw-dot" cx="661.5" cy="722.2" r="6.5"></circle>
-      <text class="sw-label" x="677.5" y="726.2" text-anchor="start">Nairobi</text>
-    </a><a class="sw-node" href="https://gnk-asg.hr/kanal/jakarta/" data-node="jakarta" style="--c:#79c7ff">
-      <title>Jakarta — otvori izdanje</title>
-      <circle class="sw-halo" cx="578.5" cy="722.2" r="15"></circle>
-      <circle class="sw-dot" cx="578.5" cy="722.2" r="6.5"></circle>
-      <text class="sw-label" x="562.5" y="726.2" text-anchor="end">Jakarta</text>
-    </a><a class="sw-node" href="https://gnk-asg.hr/kanal/newyork/" data-node="newyork" style="--c:#8ab4ff">
-      <title>New York — otvori izdanje</title>
-      <circle class="sw-halo" cx="501.0" cy="692.1" r="15"></circle>
-      <circle class="sw-dot" cx="501.0" cy="692.1" r="6.5"></circle>
-      <text class="sw-label" x="485.0" y="696.1" text-anchor="end">New York</text>
-    </a><a class="sw-node" href="https://gnk-asg.hr/kanal/saopaulo/" data-node="saopaulo" style="--c:#8ddf8d">
-      <title>São Paulo — otvori izdanje</title>
-      <circle class="sw-halo" cx="439.6" cy="636.2" r="15"></circle>
-      <circle class="sw-dot" cx="439.6" cy="636.2" r="6.5"></circle>
-      <text class="sw-label" x="423.6" y="640.2" text-anchor="end">São Paulo</text>
-    </a><a class="sw-node" href="https://gnk-asg.hr/kanal/sydney/" data-node="sydney" style="--c:#74d9e0">
-      <title>Sydney — otvori izdanje</title>
-      <circle class="sw-halo" cx="402.6" cy="561.8" r="15"></circle>
-      <circle class="sw-dot" cx="402.6" cy="561.8" r="6.5"></circle>
-      <text class="sw-label" x="386.6" y="565.8" text-anchor="end">Sydney</text>
-    </a><a class="sw-node" href="https://gnk-asg.hr/kanal/singapur/" data-node="singapur" style="--c:#79e0c8">
-      <title>Singapur — otvori izdanje</title>
-      <circle class="sw-halo" cx="395.0" cy="479.1" r="15"></circle>
-      <circle class="sw-dot" cx="395.0" cy="479.1" r="6.5"></circle>
-      <text class="sw-label" x="379.0" y="483.1" text-anchor="end">Singapur</text>
-    </a><a class="sw-node" href="https://gnk-asg.hr/kanal/kairo/" data-node="kairo" style="--c:#f0b27a">
-      <title>Kairo — otvori izdanje</title>
-      <circle class="sw-halo" cx="417.7" cy="399.3" r="15"></circle>
-      <circle class="sw-dot" cx="417.7" cy="399.3" r="6.5"></circle>
-      <text class="sw-label" x="401.7" y="403.3" text-anchor="end">Kairo</text>
-    </a><a class="sw-node" href="https://gnk-asg.hr/kanal/tokio/" data-node="tokio" style="--c:#f2a0c0">
-      <title>Tokio — otvori izdanje</title>
-      <circle class="sw-halo" cx="467.7" cy="333.0" r="15"></circle>
-      <circle class="sw-dot" cx="467.7" cy="333.0" r="6.5"></circle>
-      <text class="sw-label" x="451.7" y="337.0" text-anchor="end">Tokio</text>
-    </a><a class="sw-node" href="https://gnk-asg.hr/kanal/peking/" data-node="peking" style="--c:#f08a8a">
-      <title>Peking — otvori izdanje</title>
-      <circle class="sw-halo" cx="538.4" cy="289.3" r="15"></circle>
-      <circle class="sw-dot" cx="538.4" cy="289.3" r="6.5"></circle>
-      <text class="sw-label" x="522.4" y="293.3" text-anchor="end">Peking</text>
-    </a><a class="sw-node" href="https://gnk-world-nairobi.pages.dev/" data-node="world-nairobi" style="--c:#7fe0a6">
-      <title>Nairobi — otvori izdanje</title>
-      <circle class="sw-halo" cx="620.0" cy="170.0" r="15"></circle>
-      <circle class="sw-dot" cx="620.0" cy="170.0" r="6.5"></circle>
-      <text class="sw-label" x="620.0" y="152.0" text-anchor="middle">Nairobi<tspan class="sw-suffix" dx="2"> · portal</tspan></text>
-    </a><a class="sw-node" href="https://gnk-world-jakarta.pages.dev/" data-node="world-jakarta" style="--c:#79c7ff">
-      <title>Jakarta — otvori izdanje</title>
-      <circle class="sw-halo" cx="832.1" cy="247.2" r="15"></circle>
-      <circle class="sw-dot" cx="832.1" cy="247.2" r="6.5"></circle>
-      <text class="sw-label" x="848.1" y="251.2" text-anchor="start">Jakarta<tspan class="sw-suffix" dx="2"> · portal</tspan></text>
-    </a><a class="sw-node" href="https://gnk-world-newyork.pages.dev/" data-node="world-newyork" style="--c:#8ab4ff">
-      <title>New York — otvori izdanje</title>
-      <circle class="sw-halo" cx="945.0" cy="442.7" r="15"></circle>
-      <circle class="sw-dot" cx="945.0" cy="442.7" r="6.5"></circle>
-      <text class="sw-label" x="961.0" y="446.7" text-anchor="start">New York<tspan class="sw-suffix" dx="2"> · portal</tspan></text>
-    </a><a class="sw-node" href="https://gnk-world-saopaulo.pages.dev/" data-node="world-saopaulo" style="--c:#8ddf8d">
-      <title>São Paulo — otvori izdanje</title>
-      <circle class="sw-halo" cx="905.8" cy="665.0" r="15"></circle>
-      <circle class="sw-dot" cx="905.8" cy="665.0" r="6.5"></circle>
-      <text class="sw-label" x="921.8" y="669.0" text-anchor="start">São Paulo<tspan class="sw-suffix" dx="2"> · portal</tspan></text>
-    </a><a class="sw-node" href="https://gnk-world-sydney.pages.dev/" data-node="world-sydney" style="--c:#74d9e0">
-      <title>Sydney — otvori izdanje</title>
-      <circle class="sw-halo" cx="732.9" cy="810.1" r="15"></circle>
-      <circle class="sw-dot" cx="732.9" cy="810.1" r="6.5"></circle>
-      <text class="sw-label" x="748.9" y="814.1" text-anchor="start">Sydney<tspan class="sw-suffix" dx="2"> · portal</tspan></text>
-    </a><a class="sw-node" href="https://gnk-world-singapur.pages.dev/" data-node="world-singapur" style="--c:#79e0c8">
-      <title>Singapur — otvori izdanje</title>
-      <circle class="sw-halo" cx="507.1" cy="810.1" r="15"></circle>
-      <circle class="sw-dot" cx="507.1" cy="810.1" r="6.5"></circle>
-      <text class="sw-label" x="491.1" y="814.1" text-anchor="end">Singapur<tspan class="sw-suffix" dx="2"> · portal</tspan></text>
-    </a><a class="sw-node" href="https://gnk-world-kairo.pages.dev/" data-node="world-kairo" style="--c:#f0b27a">
-      <title>Kairo — otvori izdanje</title>
-      <circle class="sw-halo" cx="334.2" cy="665.0" r="15"></circle>
-      <circle class="sw-dot" cx="334.2" cy="665.0" r="6.5"></circle>
-      <text class="sw-label" x="318.2" y="669.0" text-anchor="end">Kairo<tspan class="sw-suffix" dx="2"> · portal</tspan></text>
-    </a><a class="sw-node" href="https://gnk-world-tokio.pages.dev/" data-node="world-tokio" style="--c:#f2a0c0">
-      <title>Tokio — otvori izdanje</title>
-      <circle class="sw-halo" cx="295.0" cy="442.7" r="15"></circle>
-      <circle class="sw-dot" cx="295.0" cy="442.7" r="6.5"></circle>
-      <text class="sw-label" x="279.0" y="446.7" text-anchor="end">Tokio<tspan class="sw-suffix" dx="2"> · portal</tspan></text>
-    </a><a class="sw-node" href="https://gnk-world-peking.pages.dev/" data-node="world-peking" style="--c:#f08a8a">
-      <title>Peking — otvori izdanje</title>
-      <circle class="sw-halo" cx="407.9" cy="247.2" r="15"></circle>
-      <circle class="sw-dot" cx="407.9" cy="247.2" r="6.5"></circle>
-      <text class="sw-label" x="391.9" y="251.2" text-anchor="end">Peking<tspan class="sw-suffix" dx="2"> · portal</tspan></text>
-    </a><a class="sw-node" href="https://gnk-bor-usa.pages.dev/" data-node="bor-usa" style="--c:#e2836a">
-      <title>BOR USA — otvori izdanje</title>
-      <circle class="sw-halo" cx="620.0" cy="80.0" r="15"></circle>
-      <circle class="sw-dot" cx="620.0" cy="80.0" r="6.5"></circle>
-      <text class="sw-label" x="620.0" y="62.0" text-anchor="middle">BOR USA</text>
-    </a><a class="sw-node" href="https://gnk-kosarka.pages.dev/" data-node="kosarka" style="--c:#e8a24a">
-      <title>KOŠARKA 360 — otvori izdanje</title>
-      <circle class="sw-halo" cx="983.7" cy="290.0" r="15"></circle>
-      <circle class="sw-dot" cx="983.7" cy="290.0" r="6.5"></circle>
-      <text class="sw-label" x="983.7" y="272.0" text-anchor="middle">KOŠARKA 360</text>
-    </a><a class="sw-node" href="https://gnk-scena-znanosti.pages.dev/" data-node="scena-znanosti" style="--c:#7cc6e8">
-      <title>SCENA ZNANOSTI — otvori izdanje</title>
-      <circle class="sw-halo" cx="983.7" cy="710.0" r="15"></circle>
-      <circle class="sw-dot" cx="983.7" cy="710.0" r="6.5"></circle>
-      <text class="sw-label" x="983.7" y="738.0" text-anchor="middle">SCENA ZNANOSTI</text>
-    </a><a class="sw-node" href="https://gnk-step-buducnosti.pages.dev/" data-node="step-buducnosti" style="--c:#c79bff">
-      <title>STEP BUDUĆNOSTI — otvori izdanje</title>
-      <circle class="sw-halo" cx="620.0" cy="920.0" r="15"></circle>
-      <circle class="sw-dot" cx="620.0" cy="920.0" r="6.5"></circle>
-      <text class="sw-label" x="620.0" y="948.0" text-anchor="middle">STEP BUDUĆNOSTI</text>
-    </a><a class="sw-node" href="https://gnk-zdravlje.pages.dev/" data-node="zdravlje" style="--c:#7ed6a8">
-      <title>ZDRAVLJE 360 — otvori izdanje</title>
-      <circle class="sw-halo" cx="256.3" cy="710.0" r="15"></circle>
-      <circle class="sw-dot" cx="256.3" cy="710.0" r="6.5"></circle>
-      <text class="sw-label" x="256.3" y="738.0" text-anchor="middle">ZDRAVLJE 360</text>
-    </a><a class="sw-node" href="https://gnk-izbori-srbija.pages.dev/" data-node="izbori-srbija" style="--c:#e0bd69">
-      <title>IZBORI U SRBIJI — otvori izdanje</title>
-      <circle class="sw-halo" cx="256.3" cy="290.0" r="15"></circle>
-      <circle class="sw-dot" cx="256.3" cy="290.0" r="6.5"></circle>
-      <text class="sw-label" x="256.3" y="272.0" text-anchor="middle">IZBORI U SRBIJI</text>
-    </a></g>
-      <a class="sw-hub" href="https://gnk-asg.hr/gnk-aktual/" data-node="hub">
-        <title>AKTUAL MEDIA — matica</title>
-        <circle class="sw-hub-disc" cx="620" cy="500" r="72"></circle>
-        <circle class="sw-hub-ring" cx="620" cy="500" r="86"></circle>
-        <text class="sw-hub-a" x="620" y="492" text-anchor="middle">AKTUAL</text>
-        <text class="sw-hub-b" x="620" y="522" text-anchor="middle">MEDIA</text>
-        <text class="sw-hub-s" x="620" y="550" text-anchor="middle">matica</text>
-      </a>
-    </svg>
-    <figcaption><span class="sw-hint">Prijeđite mišem preko čvora ili ga otvorite tipkom Enter — niti se osvijetle.</span></figcaption>
-  </figure><div class="sw-lists">
-    <div class="sw-list-block"><h3>gradska izdanja <span>17</span></h3><ul><li><a href="https://gnk-asg.hr/kanal/zagreb/">Zagreb <span>hr · Hrvatska</span></a></li><li><a href="https://gnk-asg.hr/kanal/beograd/">Beograd <span>sr · Srbija</span></a></li><li><a href="https://gnk-asg.hr/kanal/sarajevo/">Sarajevo <span>bs · Bosna i Hercegovina</span></a></li><li><a href="https://gnk-asg.hr/kanal/budimpesta/">Budimpešta <span>hu · Mađarska</span></a></li><li><a href="https://gnk-asg.hr/kanal/ljubljana/">Ljubljana <span>sl · Slovenija</span></a></li><li><a href="https://gnk-asg.hr/kanal/rim/">Rim <span>it · Italija</span></a></li><li><a href="https://gnk-asg.hr/kanal/sofija/">Sofija <span>bg · Bugarska</span></a></li><li><a href="https://gnk-asg.hr/kanal/bukurest/">Bukurešt <span>ro · Rumunjska</span></a></li><li><a href="https://gnk-asg.hr/kanal/nairobi/">Nairobi <span>en · Kenija</span></a></li><li><a href="https://gnk-asg.hr/kanal/jakarta/">Jakarta <span>id · Indonezija</span></a></li><li><a href="https://gnk-asg.hr/kanal/newyork/">New York <span>en · Sjedinjene Američke Države</span></a></li><li><a href="https://gnk-asg.hr/kanal/saopaulo/">São Paulo <span>pt · Brazil</span></a></li><li><a href="https://gnk-asg.hr/kanal/sydney/">Sydney <span>en · Australija</span></a></li><li><a href="https://gnk-asg.hr/kanal/singapur/">Singapur <span>en · Singapur</span></a></li><li><a href="https://gnk-asg.hr/kanal/kairo/">Kairo <span>ar · Egipat</span></a></li><li><a href="https://gnk-asg.hr/kanal/tokio/">Tokio <span>ja · Japan</span></a></li><li><a href="https://gnk-asg.hr/kanal/peking/">Peking <span>zh · Kina</span></a></li></ul></div>
-    <div class="sw-list-block"><h3>svjetski portali <span>9</span></h3><ul><li><a href="https://gnk-world-nairobi.pages.dev/">Nairobi <span>en · Kenya</span></a></li><li><a href="https://gnk-world-jakarta.pages.dev/">Jakarta <span>id · Indonesia</span></a></li><li><a href="https://gnk-world-newyork.pages.dev/">New York <span>en · United States</span></a></li><li><a href="https://gnk-world-saopaulo.pages.dev/">São Paulo <span>pt · Brazil</span></a></li><li><a href="https://gnk-world-sydney.pages.dev/">Sydney <span>en · Australia</span></a></li><li><a href="https://gnk-world-singapur.pages.dev/">Singapur <span>en · Singapore</span></a></li><li><a href="https://gnk-world-kairo.pages.dev/">Kairo <span>ar · Egypt</span></a></li><li><a href="https://gnk-world-tokio.pages.dev/">Tokio <span>ja · Japan</span></a></li><li><a href="https://gnk-world-peking.pages.dev/">Peking <span>zh · China</span></a></li></ul></div>
-    <div class="sw-list-block"><h3>samostalne stranice <span>6</span></h3><ul><li><a href="https://gnk-bor-usa.pages.dev/">BOR USA <span>Borilački sport u Sjedinjenim Državama: regulativa, sigurnost i kako se čita borba.</span></a></li><li><a href="https://gnk-kosarka.pages.dev/">KOŠARKA 360 <span>Košarka bez šuma: kako se čita sezona, što broje brojke i zašto regionalna liga nije mala.</span></a></li><li><a href="https://gnk-scena-znanosti.pages.dev/">SCENA ZNANOSTI <span>Kako znanost stvarno nastaje: recenzija, preprints, ispravci i ono što se ne objavi.</span></a></li><li><a href="https://gnk-step-buducnosti.pages.dev/">STEP BUDUĆNOSTI <span>Ples, step i pokret kao tehnologija: sport, ozljede, snimanje pokreta i pozornica.</span></a></li><li><a href="https://gnk-zdravlje.pages.dev/">ZDRAVLJE 360 <span>Zdravlje bez čuda: prevencija, san, kretanje i kako se čita medicinska studija.</span></a></li><li><a href="https://gnk-izbori-srbija.pages.dev/">IZBORI U SRBIJI <span>Nadzorni desk: što mediji u Srbiji, Hrvatskoj, BiH i SAD-u objavljuju o izborima — s izvorom i datumom.</span></a></li></ul></div>
-  </div></div>
-</section>
-
 <section><div class="wrap">
   <h2>Samostalne stranice</h2>
   <p class="lead">Svaka kartica vodi na vlastitu domenu. Boja je identitet izdanja, struktura je zajednička.</p>
   <div class="grid"><a class="card" id="bor-usa" href="https://gnk-bor-usa.pages.dev/" rel="external noopener" hreflang="hr" lang="hr">
-    <img src="/assets/mreza/bor-usa-800.webp" srcset="/assets/mreza/bor-usa-440.webp 440w, /assets/mreza/bor-usa-800.webp 800w, /assets/mreza/bor-usa-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Ilustracija: prazan oktogon u mračnoj areni, snop zlatnog svjetla na platnu i tamne siluete publike u pozadini." width="1200" height="670" loading="lazy" decoding="async">
+    <img src="/assets/mreza/bor-usa-art-1.svg" alt="BOR USA" width="1200" height="675" loading="lazy">
     <div class="b">
       <span class="tag" style="color:#f3c26b">neovisno izdanje</span>
       <h3>BOR USA</h3>
@@ -516,7 +116,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-bor-usa.pages.dev · #BorUSA #MMA #Boks #AktualMedia</span>
     </div>
   </a><a class="card" id="kosarka" href="https://gnk-kosarka.pages.dev/" rel="external noopener" hreflang="hr" lang="hr">
-    <img src="/assets/mreza/kosarka-800.webp" srcset="/assets/mreza/kosarka-440.webp 440w, /assets/mreza/kosarka-800.webp 800w, /assets/mreza/kosarka-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Ilustracija: prazan košarkaški parket noću, obruč i ploča u prvom planu, reflektori se odražavaju na parketu." width="1200" height="670" loading="lazy" decoding="async">
+    <img src="/assets/mreza/kosarka-art-1.svg" alt="KOŠARKA 360" width="1200" height="675" loading="lazy">
     <div class="b">
       <span class="tag" style="color:#f7d27a">neovisno izdanje</span>
       <h3>KOŠARKA 360</h3>
@@ -524,7 +124,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-kosarka.pages.dev · #Kosarka360 #NBA #ABA #AktualMedia</span>
     </div>
   </a><a class="card" id="scena-znanosti" href="https://gnk-scena-znanosti.pages.dev/" rel="external noopener" hreflang="hr" lang="hr">
-    <img src="/assets/mreza/scena-znanosti-800.webp" srcset="/assets/mreza/scena-znanosti-440.webp 440w, /assets/mreza/scena-znanosti-800.webp 800w, /assets/mreza/scena-znanosti-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Ilustracija: laboratorijski stol noću — mikroskop, staklene čaše i pipete uz plavo svjetlo prozora i toplu radnu lampu." width="1200" height="670" loading="lazy" decoding="async">
+    <img src="/assets/mreza/scena-znanosti-art-1.svg" alt="SCENA ZNANOSTI" width="1200" height="675" loading="lazy">
     <div class="b">
       <span class="tag" style="color:#a7f3d0">neovisno izdanje</span>
       <h3>SCENA ZNANOSTI</h3>
@@ -532,7 +132,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-scena-znanosti.pages.dev · #ScenaZnanosti #Znanost #Preprint #AktualMedia</span>
     </div>
   </a><a class="card" id="step-buducnosti" href="https://gnk-step-buducnosti.pages.dev/" rel="external noopener" hreflang="hr" lang="hr">
-    <img src="/assets/mreza/step-buducnosti-800.webp" srcset="/assets/mreza/step-buducnosti-440.webp 440w, /assets/mreza/step-buducnosti-800.webp 800w, /assets/mreza/step-buducnosti-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Ilustracija: radionica s robotskom rukom na drvenom stolu, kabeli i alat pod zlatnom radnom lampom, tamna industrijska pozadina." width="1200" height="670" loading="lazy" decoding="async">
+    <img src="/assets/mreza/step-buducnosti-art-1.svg" alt="STEP BUDUĆNOSTI" width="1200" height="675" loading="lazy">
     <div class="b">
       <span class="tag" style="color:#f472b6">neovisno izdanje</span>
       <h3>STEP BUDUĆNOSTI</h3>
@@ -540,7 +140,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-step-buducnosti.pages.dev · #StepBuducnosti #Ples #Pokret #AktualMedia</span>
     </div>
   </a><a class="card" id="zdravlje" href="https://gnk-zdravlje.pages.dev/" rel="external noopener" hreflang="hr" lang="hr">
-    <img src="/assets/mreza/zdravlje-800.webp" srcset="/assets/mreza/zdravlje-440.webp 440w, /assets/mreza/zdravlje-800.webp 800w, /assets/mreza/zdravlje-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Ilustracija: bolnički hodnik noću, tirkizna vrata i meko svjetlo, pult u daljini izvan fokusa." width="1200" height="670" loading="lazy" decoding="async">
+    <img src="/assets/mreza/zdravlje-art-1.svg" alt="ZDRAVLJE 360" width="1200" height="675" loading="lazy">
     <div class="b">
       <span class="tag" style="color:#e6f5c9">neovisno izdanje</span>
       <h3>ZDRAVLJE 360</h3>
@@ -548,7 +148,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-zdravlje.pages.dev · #Zdravlje360 #Prevencija #JavnoZdravlje #AktualMedia</span>
     </div>
   </a><a class="card" id="izbori-srbija" href="https://gnk-izbori-srbija.pages.dev/" rel="external noopener" hreflang="hr" lang="hr">
-    <img src="/assets/mreza/izbori-srbija-800.webp" srcset="/assets/mreza/izbori-srbija-440.webp 440w, /assets/mreza/izbori-srbija-800.webp 800w, /assets/mreza/izbori-srbija-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Ilustracija: drvena glasačka kutija i presavijeni listići na stolu pod lampom, zastavice u pozadini bez grba." width="1200" height="670" loading="lazy" decoding="async">
+    <img src="/assets/mreza/izbori-srbija-art-1.svg" alt="IZBORI U SRBIJI" width="1200" height="675" loading="lazy">
     <div class="b">
       <span class="tag" style="color:#60a5fa">privremeni desk</span>
       <h3>IZBORI U SRBIJI</h3>
@@ -559,7 +159,7 @@ figure>figcaption:empty{display:none}
   <h2 style="margin-top:34px">Svjetska izdanja</h2>
   <p class="lead">Devet portala pokriva pet kontinenata: Afriku, Aziju, Sjevernu Ameriku, Južnu Ameriku i Oceaniju. Svaki je ulaz u svoje izdanje — puni osvrti ostaju na gnk-asg.hr, a portal vraća link na maticu.</p>
   <div class="grid"><a class="card wcard" id="world-nairobi" href="https://gnk-world-nairobi.pages.dev/" rel="external noopener" hreflang="en" lang="en">
-    <span class="wmedia"><img src="/assets/izdanja/nairobi-1200.webp" srcset="/assets/izdanja/nairobi-440.webp 440w, /assets/izdanja/nairobi-800.webp 800w, /assets/izdanja/nairobi-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Nairobi, Kenija — AKTUAL MEDIA CHANNEL NAIROBI" width="1200" height="675" loading="lazy" decoding="async"><span class="wband" style="color:#7fe0a6">NAIROBI</span></span>
+    <span class="wband" style="background:linear-gradient(135deg,#08160f,#0e2418);color:#e2b857">NAIROBI</span>
     <div class="b">
       <span class="tag" style="color:#7fe0a6">svjetsko izdanje</span>
       <h3>AKTUAL MEDIA CHANNEL NAIROBI</h3>
@@ -567,7 +167,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-world-nairobi.pages.dev · #KanalNairobi #Kenya #Nairobi #EastAfrica #AktualMedia #GNKASG</span>
     </div>
   </a><a class="card wcard" id="world-jakarta" href="https://gnk-world-jakarta.pages.dev/" rel="external noopener" hreflang="id" lang="id">
-    <span class="wmedia"><img src="/assets/izdanja/jakarta-1200.webp" srcset="/assets/izdanja/jakarta-440.webp 440w, /assets/izdanja/jakarta-800.webp 800w, /assets/izdanja/jakarta-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Jakarta, Indonezija — AKTUAL MEDIA KANAL JAKARTA" width="1200" height="675" loading="lazy" decoding="async"><span class="wband" style="color:#79c7ff">JAKARTA</span></span>
+    <span class="wband" style="background:linear-gradient(135deg,#0b1220,#131d33);color:#e2b857">JAKARTA</span>
     <div class="b">
       <span class="tag" style="color:#79c7ff">svjetsko izdanje</span>
       <h3>AKTUAL MEDIA KANAL JAKARTA</h3>
@@ -575,7 +175,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-world-jakarta.pages.dev · #KanalJakarta #Indonesia #Jakarta #AktualMedia #GNKASG</span>
     </div>
   </a><a class="card wcard" id="world-newyork" href="https://gnk-world-newyork.pages.dev/" rel="external noopener" hreflang="en" lang="en">
-    <span class="wmedia"><img src="/assets/izdanja/newyork-1200.webp" srcset="/assets/izdanja/newyork-440.webp 440w, /assets/izdanja/newyork-800.webp 800w, /assets/izdanja/newyork-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="New York, Sjedinjene Američke Države — AKTUAL MEDIA CHANNEL NEW YORK" width="1200" height="675" loading="lazy" decoding="async"><span class="wband" style="color:#8ab4ff">NEW YORK</span></span>
+    <span class="wband" style="background:linear-gradient(135deg,#08131c,#0f2233);color:#e2b857">NEW YORK</span>
     <div class="b">
       <span class="tag" style="color:#8ab4ff">svjetsko izdanje</span>
       <h3>AKTUAL MEDIA CHANNEL NEW YORK</h3>
@@ -583,7 +183,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-world-newyork.pages.dev · #KanalNewYork #USA #NewYork #AktualMedia #GNKASG</span>
     </div>
   </a><a class="card wcard" id="world-saopaulo" href="https://gnk-world-saopaulo.pages.dev/" rel="external noopener" hreflang="pt" lang="pt">
-    <span class="wmedia"><img src="/assets/izdanja/saopaulo-1200.webp" srcset="/assets/izdanja/saopaulo-440.webp 440w, /assets/izdanja/saopaulo-800.webp 800w, /assets/izdanja/saopaulo-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="São Paulo, Brazil — AKTUAL MEDIA CANAL SÃO PAULO" width="1200" height="675" loading="lazy" decoding="async"><span class="wband" style="color:#8ddf8d">SÃO PAULO</span></span>
+    <span class="wband" style="background:linear-gradient(135deg,#0d1410,#17251b);color:#e2b857">SÃO PAULO</span>
     <div class="b">
       <span class="tag" style="color:#8ddf8d">svjetsko izdanje</span>
       <h3>AKTUAL MEDIA CANAL SÃO PAULO</h3>
@@ -591,7 +191,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-world-saopaulo.pages.dev · #KanalSaoPaulo #Brasil #SaoPaulo #AktualMedia #GNKASG</span>
     </div>
   </a><a class="card wcard" id="world-sydney" href="https://gnk-world-sydney.pages.dev/" rel="external noopener" hreflang="en" lang="en">
-    <span class="wmedia"><img src="/assets/izdanja/sydney-1200.webp" srcset="/assets/izdanja/sydney-440.webp 440w, /assets/izdanja/sydney-800.webp 800w, /assets/izdanja/sydney-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Sydney, Australija — AKTUAL MEDIA CHANNEL SYDNEY" width="1200" height="675" loading="lazy" decoding="async"><span class="wband" style="color:#74d9e0">SYDNEY</span></span>
+    <span class="wband" style="background:linear-gradient(135deg,#0a1420,#122234);color:#e2b857">SYDNEY</span>
     <div class="b">
       <span class="tag" style="color:#74d9e0">svjetsko izdanje</span>
       <h3>AKTUAL MEDIA CHANNEL SYDNEY</h3>
@@ -599,7 +199,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-world-sydney.pages.dev · #KanalSydney #Australia #Sydney #AktualMedia #GNKASG</span>
     </div>
   </a><a class="card wcard" id="world-singapur" href="https://gnk-world-singapur.pages.dev/" rel="external noopener" hreflang="en" lang="en">
-    <span class="wmedia"><img src="/assets/izdanja/singapur-1200.webp" srcset="/assets/izdanja/singapur-440.webp 440w, /assets/izdanja/singapur-800.webp 800w, /assets/izdanja/singapur-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Singapur, Singapur — AKTUAL MEDIA CHANNEL SINGAPUR" width="1200" height="675" loading="lazy" decoding="async"><span class="wband" style="color:#79e0c8">SINGAPUR</span></span>
+    <span class="wband" style="background:linear-gradient(135deg,#0a1520,#122436);color:#e2b857">SINGAPUR</span>
     <div class="b">
       <span class="tag" style="color:#79e0c8">svjetsko izdanje</span>
       <h3>AKTUAL MEDIA CHANNEL SINGAPUR</h3>
@@ -607,7 +207,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-world-singapur.pages.dev · #KanalSingapur #Singapore #Singapur #AktualMedia #GNKASG</span>
     </div>
   </a><a class="card wcard" id="world-kairo" href="https://gnk-world-kairo.pages.dev/" rel="external noopener" hreflang="ar" lang="ar">
-    <span class="wmedia"><img src="/assets/izdanja/kairo-1200.webp" srcset="/assets/izdanja/kairo-440.webp 440w, /assets/izdanja/kairo-800.webp 800w, /assets/izdanja/kairo-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Kairo, Egipat — AKTUAL MEDIA KANAL KAIRO" width="1200" height="675" loading="lazy" decoding="async"><span class="wband" style="color:#f0b27a">KAIRO</span></span>
+    <span class="wband" style="background:linear-gradient(135deg,#12100a,#221c12);color:#e2b857">KAIRO</span>
     <div class="b">
       <span class="tag" style="color:#f0b27a">svjetsko izdanje</span>
       <h3>AKTUAL MEDIA KANAL KAIRO</h3>
@@ -615,7 +215,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-world-kairo.pages.dev · #KanalKairo #Egypt #Cairo #AktualMedia #GNKASG</span>
     </div>
   </a><a class="card wcard" id="world-tokio" href="https://gnk-world-tokio.pages.dev/" rel="external noopener" hreflang="ja" lang="ja">
-    <span class="wmedia"><img src="/assets/izdanja/tokio-1200.webp" srcset="/assets/izdanja/tokio-440.webp 440w, /assets/izdanja/tokio-800.webp 800w, /assets/izdanja/tokio-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Tokio, Japan — AKTUAL MEDIA KANAL TOKIO" width="1200" height="675" loading="lazy" decoding="async"><span class="wband" style="color:#f2a0c0">TOKIO</span></span>
+    <span class="wband" style="background:linear-gradient(135deg,#0d0f1a,#161a2b);color:#e2b857">TOKIO</span>
     <div class="b">
       <span class="tag" style="color:#f2a0c0">svjetsko izdanje</span>
       <h3>AKTUAL MEDIA KANAL TOKIO</h3>
@@ -623,7 +223,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-world-tokio.pages.dev · #KanalTokio #Japan #Tokyo #AktualMedia #GNKASG</span>
     </div>
   </a><a class="card wcard" id="world-peking" href="https://gnk-world-peking.pages.dev/" rel="external noopener" hreflang="zh" lang="zh">
-    <span class="wmedia"><img src="/assets/izdanja/peking-1200.webp" srcset="/assets/izdanja/peking-440.webp 440w, /assets/izdanja/peking-800.webp 800w, /assets/izdanja/peking-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Peking, Kina — AKTUAL MEDIA KANAL PEKING" width="1200" height="675" loading="lazy" decoding="async"><span class="wband" style="color:#f08a8a">PEKING</span></span>
+    <span class="wband" style="background:linear-gradient(135deg,#140b10,#24141c);color:#e2b857">PEKING</span>
     <div class="b">
       <span class="tag" style="color:#f08a8a">svjetsko izdanje</span>
       <h3>AKTUAL MEDIA KANAL PEKING</h3>
@@ -634,7 +234,7 @@ figure>figcaption:empty{display:none}
   <h2 style="margin-top:34px">Gradska izdanja</h2>
   <p class="lead">Sedamnaest gradskih izdanja na četrnaest jezika živi na gnk-asg.hr/kanal/&lt;grad&gt;/: osam regionalnih i devet svjetskih. Isti dizajn, isti SEO sloj, isti urednik — svako sa svojim sitemapom, feedom i arhivom.</p>
   <div class="grid"><a class="card ccard" id="zagreb" href="https://gnk-asg.hr/kanal/zagreb/" hreflang="hr" lang="hr">
-    <img src="/assets/izdanja/zagreb-1200.webp" srcset="/assets/izdanja/zagreb-440.webp 440w, /assets/izdanja/zagreb-800.webp 800w, /assets/izdanja/zagreb-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Zagreb, Hrvatska — AKTUAL MEDIA KANAL ZAGREB" width="1200" height="675" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/zagreb-440.webp" alt="Zagreb, Hrvatska — AKTUAL MEDIA KANAL ZAGREB" width="440" height="248" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#e2b857">gradsko izdanje</span>
       <h3>AKTUAL MEDIA KANAL ZAGREB</h3>
@@ -642,7 +242,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-asg.hr/kanal/zagreb/ · #KanalZagreb #Hrvatska #Zagreb</span>
     </div>
   </a><a class="card ccard" id="beograd" href="https://gnk-asg.hr/kanal/beograd/" hreflang="sr" lang="sr">
-    <img src="/assets/izdanja/beograd-1200.webp" srcset="/assets/izdanja/beograd-440.webp 440w, /assets/izdanja/beograd-800.webp 800w, /assets/izdanja/beograd-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Beograd, Srbija — AKTUAL MEDIA KANAL BEOGRAD" width="1200" height="675" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/beograd-440.webp" alt="Beograd, Srbija — AKTUAL MEDIA KANAL BEOGRAD" width="440" height="248" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#e0544a">gradsko izdanje</span>
       <h3>AKTUAL MEDIA KANAL BEOGRAD</h3>
@@ -650,7 +250,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-asg.hr/kanal/beograd/ · #KanalBeograd #Srbija #Beograd</span>
     </div>
   </a><a class="card ccard" id="sarajevo" href="https://gnk-asg.hr/kanal/sarajevo/" hreflang="bs" lang="bs">
-    <img src="/assets/izdanja/sarajevo-1200.webp" srcset="/assets/izdanja/sarajevo-440.webp 440w, /assets/izdanja/sarajevo-800.webp 800w, /assets/izdanja/sarajevo-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Sarajevo, Bosna i Hercegovina — AKTUAL MEDIA KANAL SARAJEVO" width="1200" height="675" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/sarajevo-440.webp" alt="Sarajevo, Bosna i Hercegovina — AKTUAL MEDIA KANAL SARAJEVO" width="440" height="248" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#2f8fe0">gradsko izdanje</span>
       <h3>AKTUAL MEDIA KANAL SARAJEVO</h3>
@@ -658,7 +258,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-asg.hr/kanal/sarajevo/ · #KanalSarajevo #BosnaiHercegovina #Sarajevo</span>
     </div>
   </a><a class="card ccard" id="budimpesta" href="https://gnk-asg.hr/kanal/budimpesta/" hreflang="hu" lang="hu">
-    <img src="/assets/izdanja/budimpesta-1200.webp" srcset="/assets/izdanja/budimpesta-440.webp 440w, /assets/izdanja/budimpesta-800.webp 800w, /assets/izdanja/budimpesta-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Budimpešta, Mađarska — AKTUAL MEDIA KANAL BUDAPEST" width="1200" height="675" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/budimpesta-440.webp" alt="Budimpešta, Mađarska — AKTUAL MEDIA KANAL BUDAPEST" width="440" height="248" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#28a07f">gradsko izdanje</span>
       <h3>AKTUAL MEDIA KANAL BUDAPEST</h3>
@@ -666,7 +266,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-asg.hr/kanal/budimpesta/ · #KanalBudimpesta #Magyarorszag #Budapest</span>
     </div>
   </a><a class="card ccard" id="ljubljana" href="https://gnk-asg.hr/kanal/ljubljana/" hreflang="sl" lang="sl">
-    <img src="/assets/izdanja/ljubljana-1200.webp" srcset="/assets/izdanja/ljubljana-440.webp 440w, /assets/izdanja/ljubljana-800.webp 800w, /assets/izdanja/ljubljana-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Ljubljana, Slovenija — AKTUAL MEDIA KANAL LJUBLJANA" width="1200" height="675" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/ljubljana-440.webp" alt="Ljubljana, Slovenija — AKTUAL MEDIA KANAL LJUBLJANA" width="440" height="248" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#1fb2c4">gradsko izdanje</span>
       <h3>AKTUAL MEDIA KANAL LJUBLJANA</h3>
@@ -674,7 +274,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-asg.hr/kanal/ljubljana/ · #KanalLjubljana #Slovenija #Ljubljana</span>
     </div>
   </a><a class="card ccard" id="rim" href="https://gnk-asg.hr/kanal/rim/" hreflang="it" lang="it">
-    <img src="/assets/izdanja/rim-1200.webp" srcset="/assets/izdanja/rim-440.webp 440w, /assets/izdanja/rim-800.webp 800w, /assets/izdanja/rim-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Rim, Italija — AKTUAL MEDIA KANAL ROMA" width="1200" height="675" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/rim-440.webp" alt="Rim, Italija — AKTUAL MEDIA KANAL ROMA" width="440" height="248" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#cf6a35">gradsko izdanje</span>
       <h3>AKTUAL MEDIA KANAL ROMA</h3>
@@ -682,7 +282,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-asg.hr/kanal/rim/ · #CanaleRoma #Italia #Roma</span>
     </div>
   </a><a class="card ccard" id="sofija" href="https://gnk-asg.hr/kanal/sofija/" hreflang="bg" lang="bg">
-    <img src="/assets/izdanja/sofija-1200.webp" srcset="/assets/izdanja/sofija-440.webp 440w, /assets/izdanja/sofija-800.webp 800w, /assets/izdanja/sofija-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Sofija, Bugarska — AKTUAL MEDIA KANAL SOFIJA" width="1200" height="675" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/sofija-440.webp" alt="Sofija, Bugarska — AKTUAL MEDIA KANAL SOFIJA" width="440" height="248" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#8a6fd0">gradsko izdanje</span>
       <h3>AKTUAL MEDIA KANAL SOFIJA</h3>
@@ -690,7 +290,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-asg.hr/kanal/sofija/ · #KanalSofija #Bulgaria #Sofia</span>
     </div>
   </a><a class="card ccard" id="bukurest" href="https://gnk-asg.hr/kanal/bukurest/" hreflang="ro" lang="ro">
-    <img src="/assets/izdanja/bukurest-1200.webp" srcset="/assets/izdanja/bukurest-440.webp 440w, /assets/izdanja/bukurest-800.webp 800w, /assets/izdanja/bukurest-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Bukurešt, Rumunjska — AKTUAL MEDIA KANAL BUCUREȘTI" width="1200" height="675" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/bukurest-440.webp" alt="Bukurešt, Rumunjska — AKTUAL MEDIA KANAL BUCUREȘTI" width="440" height="248" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#4a6cf0">gradsko izdanje</span>
       <h3>AKTUAL MEDIA KANAL BUCUREȘTI</h3>
@@ -698,7 +298,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-asg.hr/kanal/bukurest/ · #CanalulBucuresti #Romania #Bucuresti</span>
     </div>
   </a><a class="card ccard" id="nairobi" href="https://gnk-asg.hr/kanal/nairobi/" hreflang="en" lang="en">
-    <img src="/assets/izdanja/nairobi-1200.webp" srcset="/assets/izdanja/nairobi-440.webp 440w, /assets/izdanja/nairobi-800.webp 800w, /assets/izdanja/nairobi-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Nairobi, Kenija — AKTUAL MEDIA CHANNEL NAIROBI" width="1200" height="675" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/nairobi-440.webp" alt="Nairobi, Kenija — AKTUAL MEDIA CHANNEL NAIROBI" width="440" height="248" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#e2b857">gradsko izdanje</span>
       <h3>AKTUAL MEDIA CHANNEL NAIROBI</h3>
@@ -706,7 +306,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-asg.hr/kanal/nairobi/ · #KanalNairobi #Kenya #Nairobi</span>
     </div>
   </a><a class="card ccard" id="jakarta" href="https://gnk-asg.hr/kanal/jakarta/" hreflang="id" lang="id">
-    <img src="/assets/izdanja/jakarta-1200.webp" srcset="/assets/izdanja/jakarta-440.webp 440w, /assets/izdanja/jakarta-800.webp 800w, /assets/izdanja/jakarta-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Jakarta, Indonezija — AKTUAL MEDIA KANAL JAKARTA" width="1200" height="675" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/jakarta-440.webp" alt="Jakarta, Indonezija — AKTUAL MEDIA KANAL JAKARTA" width="440" height="248" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#e2b857">gradsko izdanje</span>
       <h3>AKTUAL MEDIA KANAL JAKARTA</h3>
@@ -714,7 +314,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-asg.hr/kanal/jakarta/ · #KanalJakarta #Indonesia #Jakarta</span>
     </div>
   </a><a class="card ccard" id="newyork" href="https://gnk-asg.hr/kanal/newyork/" hreflang="en" lang="en">
-    <img src="/assets/izdanja/newyork-1200.webp" srcset="/assets/izdanja/newyork-440.webp 440w, /assets/izdanja/newyork-800.webp 800w, /assets/izdanja/newyork-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="New York, Sjedinjene Američke Države — AKTUAL MEDIA CHANNEL NEW YORK" width="1200" height="675" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/newyork-440.webp" alt="New York, Sjedinjene Američke Države — AKTUAL MEDIA CHANNEL NEW YORK" width="440" height="248" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#e2b857">gradsko izdanje</span>
       <h3>AKTUAL MEDIA CHANNEL NEW YORK</h3>
@@ -722,7 +322,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-asg.hr/kanal/newyork/ · #KanalNewYork #USA #NewYork</span>
     </div>
   </a><a class="card ccard" id="saopaulo" href="https://gnk-asg.hr/kanal/saopaulo/" hreflang="pt" lang="pt">
-    <img src="/assets/izdanja/saopaulo-1200.webp" srcset="/assets/izdanja/saopaulo-440.webp 440w, /assets/izdanja/saopaulo-800.webp 800w, /assets/izdanja/saopaulo-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="São Paulo, Brazil — AKTUAL MEDIA CANAL SÃO PAULO" width="1200" height="675" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/saopaulo-440.webp" alt="São Paulo, Brazil — AKTUAL MEDIA CANAL SÃO PAULO" width="440" height="248" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#e2b857">gradsko izdanje</span>
       <h3>AKTUAL MEDIA CANAL SÃO PAULO</h3>
@@ -730,7 +330,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-asg.hr/kanal/saopaulo/ · #KanalSaoPaulo #Brasil #SaoPaulo</span>
     </div>
   </a><a class="card ccard" id="sydney" href="https://gnk-asg.hr/kanal/sydney/" hreflang="en" lang="en">
-    <img src="/assets/izdanja/sydney-1200.webp" srcset="/assets/izdanja/sydney-440.webp 440w, /assets/izdanja/sydney-800.webp 800w, /assets/izdanja/sydney-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Sydney, Australija — AKTUAL MEDIA CHANNEL SYDNEY" width="1200" height="675" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/sydney-440.webp" alt="Sydney, Australija — AKTUAL MEDIA CHANNEL SYDNEY" width="440" height="248" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#e2b857">gradsko izdanje</span>
       <h3>AKTUAL MEDIA CHANNEL SYDNEY</h3>
@@ -738,7 +338,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-asg.hr/kanal/sydney/ · #KanalSydney #Australia #Sydney</span>
     </div>
   </a><a class="card ccard" id="singapur" href="https://gnk-asg.hr/kanal/singapur/" hreflang="en" lang="en">
-    <img src="/assets/izdanja/singapur-1200.webp" srcset="/assets/izdanja/singapur-440.webp 440w, /assets/izdanja/singapur-800.webp 800w, /assets/izdanja/singapur-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Singapur, Singapur — AKTUAL MEDIA CHANNEL SINGAPUR" width="1200" height="675" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/singapur-440.webp" alt="Singapur, Singapur — AKTUAL MEDIA CHANNEL SINGAPUR" width="440" height="248" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#e2b857">gradsko izdanje</span>
       <h3>AKTUAL MEDIA CHANNEL SINGAPUR</h3>
@@ -746,7 +346,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-asg.hr/kanal/singapur/ · #KanalSingapur #Singapore #Singapur</span>
     </div>
   </a><a class="card ccard" id="kairo" href="https://gnk-asg.hr/kanal/kairo/" hreflang="ar" lang="ar">
-    <img src="/assets/izdanja/kairo-1200.webp" srcset="/assets/izdanja/kairo-440.webp 440w, /assets/izdanja/kairo-800.webp 800w, /assets/izdanja/kairo-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Kairo, Egipat — AKTUAL MEDIA KANAL KAIRO" width="1200" height="675" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/kairo-440.webp" alt="Kairo, Egipat — AKTUAL MEDIA KANAL KAIRO" width="440" height="248" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#e2b857">gradsko izdanje</span>
       <h3>AKTUAL MEDIA KANAL KAIRO</h3>
@@ -754,7 +354,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-asg.hr/kanal/kairo/ · #KanalKairo #Egypt #Cairo</span>
     </div>
   </a><a class="card ccard" id="tokio" href="https://gnk-asg.hr/kanal/tokio/" hreflang="ja" lang="ja">
-    <img src="/assets/izdanja/tokio-1200.webp" srcset="/assets/izdanja/tokio-440.webp 440w, /assets/izdanja/tokio-800.webp 800w, /assets/izdanja/tokio-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Tokio, Japan — AKTUAL MEDIA KANAL TOKIO" width="1200" height="675" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/tokio-440.webp" alt="Tokio, Japan — AKTUAL MEDIA KANAL TOKIO" width="440" height="248" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#e2b857">gradsko izdanje</span>
       <h3>AKTUAL MEDIA KANAL TOKIO</h3>
@@ -762,7 +362,7 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-asg.hr/kanal/tokio/ · #KanalTokio #Japan #Tokyo</span>
     </div>
   </a><a class="card ccard" id="peking" href="https://gnk-asg.hr/kanal/peking/" hreflang="zh" lang="zh">
-    <img src="/assets/izdanja/peking-1200.webp" srcset="/assets/izdanja/peking-440.webp 440w, /assets/izdanja/peking-800.webp 800w, /assets/izdanja/peking-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="Peking, Kina — AKTUAL MEDIA KANAL PEKING" width="1200" height="675" loading="lazy" decoding="async">
+    <img src="/assets/izdanja/peking-440.webp" alt="Peking, Kina — AKTUAL MEDIA KANAL PEKING" width="440" height="248" loading="lazy" decoding="async">
     <div class="b">
       <span class="tag" style="color:#e2b857">gradsko izdanje</span>
       <h3>AKTUAL MEDIA KANAL PEKING</h3>
@@ -770,7 +370,6 @@ figure>figcaption:empty{display:none}
       <span class="dom">gnk-asg.hr/kanal/peking/ · #KanalPeking #China #Beijing</span>
     </div>
   </a></div>
-  <p class="lead" style="margin-top:16px">Mreža slijedi jedno pravilo: zemlja se pokriva iz svoje prijestolnice. <a href="/glavni-gradovi/">Pogledajte glavne gradove, zemlja po zemlja</a> — uključujući tri koja su još u pripremi.</p>
   <div class="note">Svaka adresa ima svoj <code>/sitemap.xml</code> i <code>/feed.xml</code>. Strojni popis svih 32 adresa je <a href="/data/mreza-v1.json">/data/mreza-v1.json</a>.</div>
 </div></section>
 
@@ -787,7 +386,6 @@ figure>figcaption:empty{display:none}
       <p style="color:#c6d2df;font-size:13.5px;margin:6px 0 12px">Svaka stranica ima popis izvora i stranicu metodologije. Ovdje su dva zajednička dokumenta.</p>
       <ul style="list-style:none;padding:0;margin:0;display:grid;gap:8px;font-size:13.5px">
         <li><a href="/data/mreza-v1.json">Strojni popis mreže (JSON)</a></li>
-        <li><a href="/pokrivenost/" hreflang="hr" lang="hr">Pokrivenost: koje su zemlje žive</a></li>
         <li><a href="/aktual-media/">Podatkovni desk</a></li>
         <li><a href="/nermin-sefic/">Urednik i direktor</a></li>
       </ul>
@@ -797,7 +395,7 @@ figure>figcaption:empty{display:none}
       <h3 style="font:800 19px/1.25 Georgia,serif;margin:10px 0 4px">Privremeni desk: izbori u Srbiji</h3>
       <div class="live-card">
       <span class="live"><i></i>uživo · privremeno</span>
-      <b class="n">102</b><span class="l">zapisa iz 13 medija, 12 spominje incident</span>
+      <b class="n">33</b><span class="l">zapisa iz 9 medija, 5 spominje incident</span>
       <p style="color:#d8c2be;font-size:13.5px;margin:12px 0 0">Jedino izdanje s rokom trajanja. Prati što mediji u Srbiji, Hrvatskoj, BiH, Britaniji, SAD-u i drugdje objavljuju o izborima — broji objave, ne glasove, i svaki zapis povezuje na izvornik.</p>
       <a class="btn" href="https://gnk-izbori-srbija.pages.dev/">Otvori desk →</a>
     </div>
@@ -820,8 +418,6 @@ figure>figcaption:empty{display:none}
       <li><a href="/nermin-sefic/">Nermin Sefić</a></li>
       <li><a href="/aktual-media/">Podatkovni desk</a></li>
       <li><a href="/tehnologija-buducnosti/">Tehnologija budućnosti</a></li>
-      <li><a href="/pokrivenost/" hreflang="hr" lang="hr">Pokrivenost mreže</a></li>
-      <li><a href="/prenos/" hreflang="hr" lang="hr">Prijenos mreže</a></li>
     </ul></div>
     <div><h3>Protokol</h3><ul>
       <li><a href="/mreza/sitemap.xml">Sitemap</a></li>
@@ -830,34 +426,7 @@ figure>figcaption:empty{display:none}
       <li><a href="/legal/">Pravne napomene</a></li>
     </ul></div>
   </div>
-  <p class="iz-tags"><a href="/gnk-aktual/">#AKTUALMEDIA</a> · <a href="/gnk-aktual/">#GNKASG</a></p>
   <p style="margin-top:22px;border-top:1px solid #132840;padding-top:16px">© 2026 AKTUAL MEDIA d.o.o. · Urednik i direktor: <a href="/nermin-sefic/">Nermin Sefić</a> · Svaka tvrdnja nosi izvor; svaki izvor ima datum.</p>
-</div><section class="am-author" aria-label="Nermin Sefić" data-am-author="v1" data-am-lang="hr">
-  <img src="/assets/people/nermin-sefic/nermin-sefic-01-official-desk-portrait.webp" alt="Nermin Sefić, direktor GNK ASG d.o.o. i glavni urednik AKTUAL MEDIA" width="72" height="72" loading="lazy" decoding="async">
-  <div>
-    <span class="am-author-k">Urednik ovog weba</span>
-    <b>Nermin Sefić</b>
-    <p>direktor GNK ASG d.o.o. i glavni urednik AKTUAL MEDIA · <a href="mailto:info@gnk-asg.hr">info@gnk-asg.hr</a></p>
-    <nav>
-      <a href="https://gnk-asg.hr/gnk-aktual/kolumne/">Kolumne →</a>
-      <a href="https://gnk-asg.hr/autorske-objave/">Autorske objave →</a>
-      <a href="https://gnk-asg.hr/nermin-sefic/">Profil →</a>
-    </nav>
-  </div>
-</section>
-</footer>
-<script src="/assets/spiderweb-v1.js" defer></script>
-<script src="/assets/am-refresh-v1.js?v=2026-10-26" data-am-netday="2026-10-26" defer></script><section class="am-impressum" aria-label="Izdavač i kontakt" data-am-impressum="v1">
-  <h2 class="am-impressum-h">Izdavač i kontakt</h2>
-  <ul class="am-impressum-list">
-    <li><b>Nositelj:</b> GNK ASG d.o.o.</li>
-    <li><b>Osnivač:</b> GNK DINAMO Ltd, SAD</li>
-    <li><b>Izdavač:</b> AKTUAL MEDIA d.o.o.</li>
-    <li><b>Direktor i glavni urednik:</b> <a href="https://gnk-asg.hr/nermin-sefic/">Nermin Sefić — direktor i glavni urednik</a></li>
-    <li><b>Kontakt:</b> <a href="mailto:info@gnk-asg.hr">info@gnk-asg.hr</a></li>
-  </ul>
-  <p class="am-impressum-note">Sadržaj se objavljuje po istoj uredničkoj politici na svakom webu mreže; svaki preuzeti tekst nosi izvor i poveznicu na matičnu objavu.</p>
-  <p class="am-impressum-links"><a href="https://gnk-asg.hr/mreza/">Mreža →</a></p>
-</section>
+</div></footer>
 </body>
 </html>

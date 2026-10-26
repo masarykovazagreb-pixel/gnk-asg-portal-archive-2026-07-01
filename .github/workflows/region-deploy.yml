@@ -40,9 +40,6 @@ jobs:
         shell: bash
         run: |-
           set -euo pipefail
-          # Atlas grafika prije gradnje: devet svjetskih izdanja crta se iz
-          # istog izvora, pa se dimenzije ne mogu razići između heroja i pločice.
-          node scripts/build-atlas-art-v1.mjs --check
           node apps/region/engine/build.mjs
           node apps/region/engine/hub.mjs
           node apps/region/engine/audit.mjs

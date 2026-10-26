@@ -6,7 +6,7 @@ name: AEO / AI Visibility Boost
 on:
   workflow_dispatch:
   schedule:
-    - cron: '26 2,8,14,20 * * *'   # 4x dnevno UTC; budget-aware staggered cadence
+    - cron: '20 2,8,14,20 * * *'   # 4x dnevno UTC; budget-aware staggered cadence
 
 permissions:
   contents: write

@@ -4,16 +4,16 @@
   "policy": "Every workflow containing an Actions schedule trigger must appear here with the exact cron expression. All other workflows are manual, event-scoped validation, or retired.",
   "scheduledProductionOwners": {
     "aeo-ai-visibility.yml": [
-      "26 2,8,14,20 * * *"
+      "20 2,8,14,20 * * *"
     ],
     "content-queue-publish.yml": [
-      "38 7,8,9,10,11,12,13,14,15,16,17,18,19 * * *"
+      "20 7,8,9,10,11,12,13,14,15,16,17,18,19 * * *"
     ],
     "devto-mirror-publish.yml": [
       "45 * * * *"
     ],
     "editorial-scheduled-publish.yml": [
-      "44 8 * * *"
+      "20 8 * * *"
     ],
     "entity-visibility-campaign-monitor.yml": [
       "15 6,7,8,9,10,11,12,13,14,15 * * *"
@@ -65,7 +65,7 @@
       "20 1,7,13,19 * * *"
     ],
     "kanal-daily.yml": [
-      "0 5,11,17 * * *"
+      "0 5 * * *"
     ],
     "tjednik-daily.yml": [
       "20 6 * * *"

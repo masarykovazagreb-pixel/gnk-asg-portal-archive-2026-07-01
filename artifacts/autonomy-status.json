@@ -1,6 +1,6 @@
 {
   "version": "GNK_ASG_AUTONOMY_365_V1_20261021",
-  "generatedAt": "2026-10-26T16:10:57Z",
+  "generatedAt": "2026-10-26T13:14:20Z",
   "horizon": {
     "starts": "2026-10-21",
     "ends": "2027-10-21",
@@ -28,7 +28,7 @@
       "id": "kanali-svjezina",
       "state": "ok",
       "severity": "watch",
-      "actual": "4.1 h",
+      "actual": "1.1 h",
       "target": "48 h",
       "owner": "region-daily.yml",
       "route": "/kanal/",
@@ -37,8 +37,8 @@
         "en": "The newest story in every channel is no older than 48 h"
       },
       "note": {
-        "hr": "zagreb 3.5 h · beograd 3.4 h · sarajevo 3.5 h · budimpesta 3.5 h · ljubljana 3.5 h · rim 3.8 h · sofija 3.4 h · bukurest 3.3 h · nairobi 3.6 h · jakarta 3.3 h · newyork 3.5 h · saopaulo 3.3 h · sydney 3.4 h · singapur 4.1 h · kairo 4.1 h · tokio 3.4 h · peking 3.4 h",
-        "en": "zagreb 3.5 h · beograd 3.4 h · sarajevo 3.5 h · budimpesta 3.5 h · ljubljana 3.5 h · rim 3.8 h · sofija 3.4 h · bukurest 3.3 h · nairobi 3.6 h · jakarta 3.3 h · newyork 3.5 h · saopaulo 3.3 h · sydney 3.4 h · singapur 4.1 h · kairo 4.1 h · tokio 3.4 h · peking 3.4 h"
+        "hr": "zagreb 0.5 h · beograd 0.5 h · sarajevo 0.5 h · budimpesta 0.5 h · ljubljana 0.6 h · rim 0.8 h · sofija 0.4 h · bukurest 0.4 h · nairobi 0.6 h · jakarta 0.4 h · newyork 0.6 h · saopaulo 0.4 h · sydney 0.5 h · singapur 1.1 h · kairo 1.1 h · tokio 0.4 h · peking 0.4 h",
+        "en": "zagreb 0.5 h · beograd 0.5 h · sarajevo 0.5 h · budimpesta 0.5 h · ljubljana 0.6 h · rim 0.8 h · sofija 0.4 h · bukurest 0.4 h · nairobi 0.6 h · jakarta 0.4 h · newyork 0.6 h · saopaulo 0.4 h · sydney 0.5 h · singapur 1.1 h · kairo 1.1 h · tokio 0.4 h · peking 0.4 h"
       }
     },
     {
@@ -62,7 +62,7 @@
       "id": "proxy-popis",
       "state": "fail",
       "severity": "hard",
-      "actual": "81 / 81",
+      "actual": "81 / 29",
       "target": null,
       "owner": "tests/test-image-proxy-v1.mjs",
       "route": "/gnk-aktual/",
@@ -71,8 +71,8 @@
         "en": "The proxy allow-list matches the hosts actually present in the feed"
       },
       "note": {
-        "hr": "nedostaje: cdn.portfolio.hu, nation.africahttps · višak: f.i.uol.com.br, agenciabrasil.ebc.com.br",
-        "en": "missing: cdn.portfolio.hu, nation.africahttps · extra: f.i.uol.com.br, agenciabrasil.ebc.com.br"
+        "hr": "nedostaje: — · višak: img.youtube.com, media.jutarnji.hr, bucket.index.hr, n1info.hr, www.telegram.hr, i2.res.24o.it, www.danas.rs, nova.rs, n1info.rs, www.politika.rs, static.klix.ba, n1info.ba, storage.radiosarajevo.ba, gale-s3-bucket.s3.eu-central-1.amazonaws.com, images.24ur.com, n1info.si, slovenskenovice.delo.si, www.delo.si, iasstorage.vecer.com, img.hvg.hu, s.24.hu, pcdn.hu, assets.4cdn.hu, assets.telex.hu, www.gedistatic.it, img.dnevnik.bg, www.segabg.com, cdn.actualno.eu, www.g4media.ro, s.iw.ro, storage0.dms.mpinteractiv.ro, i0.1616.ro, nation.africa, capitalfm.africa, www.kbc.co.ke, www.madamasr.com, images.dailynewsegypt.com, img.antaranews.com, static.republika.co.id, images.skynewsarabia.com, media.skynewsarabia.com, image5.sixthtone.com, s.abcnews.com, platform.theverge.com, npr.brightspotcdn.com, media.npr.org, www.propublica.org, conteudo.imguol.com.br, f.i.uol.com.br, s2-g1.glbimg.com, veja.abril.com.br, agenciabrasil.ebc.com.br",
+        "en": "missing: — · extra: img.youtube.com, media.jutarnji.hr, bucket.index.hr, n1info.hr, www.telegram.hr, i2.res.24o.it, www.danas.rs, nova.rs, n1info.rs, www.politika.rs, static.klix.ba, n1info.ba, storage.radiosarajevo.ba, gale-s3-bucket.s3.eu-central-1.amazonaws.com, images.24ur.com, n1info.si, slovenskenovice.delo.si, www.delo.si, iasstorage.vecer.com, img.hvg.hu, s.24.hu, pcdn.hu, assets.4cdn.hu, assets.telex.hu, www.gedistatic.it, img.dnevnik.bg, www.segabg.com, cdn.actualno.eu, www.g4media.ro, s.iw.ro, storage0.dms.mpinteractiv.ro, i0.1616.ro, nation.africa, capitalfm.africa, www.kbc.co.ke, www.madamasr.com, images.dailynewsegypt.com, img.antaranews.com, static.republika.co.id, images.skynewsarabia.com, media.skynewsarabia.com, image5.sixthtone.com, s.abcnews.com, platform.theverge.com, npr.brightspotcdn.com, media.npr.org, www.propublica.org, conteudo.imguol.com.br, f.i.uol.com.br, s2-g1.glbimg.com, veja.abril.com.br, agenciabrasil.ebc.com.br"
       }
     },
     {
@@ -94,9 +94,9 @@
     },
     {
       "id": "news-svjezina",
-      "state": "ok",
+      "state": "watch",
       "severity": "watch",
-      "actual": "1.7 h",
+      "actual": "6.3 h",
       "target": "6 h",
       "owner": "gnk-news-refresh-v2.yml",
       "route": "/gnk-aktual/",
@@ -105,8 +105,8 @@
         "en": "The central feed is no older than 6 h"
       },
       "note": {
-        "hr": "300 zapisa · najnoviji 2026-10-26T14:30:53.000Z",
-        "en": "300 items · newest 2026-10-26T14:30:53.000Z"
+        "hr": "300 zapisa · najnoviji 2026-10-26T06:54:06.000Z",
+        "en": "300 items · newest 2026-10-26T06:54:06.000Z"
       }
     },
     {
@@ -146,8 +146,8 @@
   ],
   "totals": {
     "all": 8,
-    "ok": 6,
-    "watch": 0,
+    "ok": 5,
+    "watch": 1,
     "fail": 2
   },
   "measured": {
@@ -156,113 +156,113 @@
         "id": "zagreb",
         "items": 420,
         "newest": "2026-10-26T12:43:00.000Z",
-        "ageHours": 3.5
+        "ageHours": 0.5
       },
       {
         "id": "beograd",
         "items": 420,
         "newest": "2026-10-26T12:46:50.000Z",
-        "ageHours": 3.4
+        "ageHours": 0.5
       },
       {
         "id": "sarajevo",
         "items": 420,
         "newest": "2026-10-26T12:42:00.000Z",
-        "ageHours": 3.5
+        "ageHours": 0.5
       },
       {
         "id": "budimpesta",
         "items": 420,
         "newest": "2026-10-26T12:43:14.000Z",
-        "ageHours": 3.5
+        "ageHours": 0.5
       },
       {
         "id": "ljubljana",
         "items": 420,
         "newest": "2026-10-26T12:40:00.000Z",
-        "ageHours": 3.5
+        "ageHours": 0.6
       },
       {
         "id": "rim",
         "items": 420,
         "newest": "2026-10-26T12:25:12.000Z",
-        "ageHours": 3.8
+        "ageHours": 0.8
       },
       {
         "id": "sofija",
         "items": 420,
         "newest": "2026-10-26T12:48:30.000Z",
-        "ageHours": 3.4
+        "ageHours": 0.4
       },
       {
         "id": "bukurest",
         "items": 420,
         "newest": "2026-10-26T12:50:23.000Z",
-        "ageHours": 3.3
+        "ageHours": 0.4
       },
       {
         "id": "nairobi",
         "items": 231,
         "newest": "2026-10-26T12:37:31.000Z",
-        "ageHours": 3.6
+        "ageHours": 0.6
       },
       {
         "id": "jakarta",
         "items": 300,
         "newest": "2026-10-26T12:51:52.000Z",
-        "ageHours": 3.3
+        "ageHours": 0.4
       },
       {
         "id": "newyork",
         "items": 375,
         "newest": "2026-10-26T12:38:56.000Z",
-        "ageHours": 3.5
+        "ageHours": 0.6
       },
       {
         "id": "saopaulo",
         "items": 420,
         "newest": "2026-10-26T12:53:19.425Z",
-        "ageHours": 3.3
+        "ageHours": 0.4
       },
       {
         "id": "sydney",
         "items": 365,
         "newest": "2026-10-26T12:46:29.000Z",
-        "ageHours": 3.4
+        "ageHours": 0.5
       },
       {
         "id": "singapur",
         "items": 253,
         "newest": "2026-10-26T12:07:34.000Z",
-        "ageHours": 4.1
+        "ageHours": 1.1
       },
       {
         "id": "kairo",
         "items": 167,
         "newest": "2026-10-26T12:05:45.000Z",
-        "ageHours": 4.1
+        "ageHours": 1.1
       },
       {
         "id": "tokio",
         "items": 420,
         "newest": "2026-10-26T12:47:49.000Z",
-        "ageHours": 3.4
+        "ageHours": 0.4
       },
       {
         "id": "peking",
         "items": 282,
         "newest": "2026-10-26T12:48:25.000Z",
-        "ageHours": 3.4
+        "ageHours": 0.4
       }
     ],
     "news": {
       "items": 300,
-      "newest": "2026-10-26T14:30:53.000Z",
-      "ageHours": 1.7
+      "newest": "2026-10-26T06:54:06.000Z",
+      "ageHours": 6.3
     },
     "proxies": {
       "allowed": 81,
-      "feedHosts": 81
+      "feedHosts": 29
     },
     "desks": {
       "withImages": 9,

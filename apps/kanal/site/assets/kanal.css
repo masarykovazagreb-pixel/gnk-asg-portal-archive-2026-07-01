@@ -502,19 +502,3 @@ footer li a:hover{color:var(--ink);text-decoration:underline;text-decoration-col
 .article-body p{hyphens:auto;overflow-wrap:break-word}
 @media(max-width:699px){.card-body{padding:18px}.nav a{padding:12px 11px}.wrap{padding-inline:17px}}
 @media(prefers-reduced-motion:reduce){.card,.card-media img,.lead-media img{transition:none!important;transform:none!important}}
-
-/* Veza izvor → kopije u mreži. Blok je metapodatak uz članak, ne dio teksta. */
-.am-prenos{margin:26px 0 8px;padding:14px 16px;border:1px solid rgba(255,255,255,.16);border-left:4px solid #c8963c;border-radius:10px;background:rgba(255,255,255,.04);font:400 14px/1.6 system-ui,sans-serif;color:inherit}
-.am-prenos p{margin:0}
-.am-prenos a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(200,150,60,.5)}
-.am-prenos a:hover,.am-prenos a:focus-visible{border-bottom-color:#c8963c}
-/* Autorska traka — Nermin Sefić */
-.am-author{margin:26px auto 0;max-width:1100px;padding:18px 20px;border:1px solid rgba(128,128,128,.24);border-radius:14px;display:grid;grid-template-columns:72px minmax(0,1fr);gap:16px;align-items:center;background:rgba(127,127,127,.05)}
-.am-author img{width:72px;height:72px;border-radius:50%;object-fit:cover}
-.am-author-k{font:800 10px/1 system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.66}
-.am-author b{display:block;font:800 17px/1.25 Georgia,serif;margin:5px 0 3px}
-.am-author p{margin:0;font-size:13px;opacity:.8;max-width:60ch}
-.am-author nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px}
-.am-author nav a{font:700 11px/1 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;border:1px solid rgba(128,128,128,.4);border-radius:999px;padding:7px 11px;text-decoration:none;color:inherit}
-.am-author nav a:hover{border-color:currentColor}
-@media(max-width:640px){.am-author{grid-template-columns:56px minmax(0,1fr)}.am-author img{width:56px;height:56px}.am-author nav{grid-column:1/-1}}
