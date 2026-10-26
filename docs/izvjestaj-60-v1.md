@@ -25,8 +25,8 @@ dnevnik 17); 9735 su javne stranice, a
 | modul osvježavanja | 9741/9741 stranica (uključivo preusmjerenja) |
 | ikona kuće | 9741/9741 stranica |
 | jezici s impressumom | 29 (ar, bg, bs, cs, da, de, el, en, es, fi, fr, hr, hu, id, it, ja, nl, no, pl, pt, ro, ru, sk, sl, sr, sv, tr, uk, zh) |
-| `article:tag` | 8244 stranica |
-| ≥6 unutarnjih veza | 7532 stranica |
+| `article:tag` | 8713 stranica |
+| ≥6 unutarnjih veza | 7534 stranica |
 | portreti urednika | 211 kopija |
 
 ### A. Sinkronizacija i jezgra (8/8)
@@ -65,8 +65,8 @@ dnevnik 17); 9735 su javne stranice, a
 | --- | --- | --- | --- |
 | 21 | Četiri ciljna upita | četiri stranice: /nermin-sefic/, /gnk-asg/, /aktual-media/, /gnk-dinamo-ltd-usa/ | ✅ |
 | 22 | Svaki web nosi Organization + Person čvor | test-website-jsonld OK | ✅ |
-| 23 | Hashtagovi i article:tag na svakom tekstu | 8244 stranica s article:tag | ✅ |
-| 24 | Najmanje 6 unutarnjih linkova po tekstu | 7532/9741 stranica s ≥6 unutarnjih veza | ✅ |
+| 23 | Hashtagovi i article:tag na svakom tekstu | 8713 stranica s article:tag | ✅ |
+| 24 | Najmanje 6 unutarnjih linkova po tekstu | 7534/9741 stranica s ≥6 unutarnjih veza | ✅ |
 | 25 | Sitemap svugdje | 7/7 webova | ✅ |
 | 26 | robots.txt svugdje | 7/7 webova | ✅ |
 | 27 | Feed svugdje | 7/7 webova | ✅ |
@@ -124,19 +124,19 @@ dnevnik 17); 9735 su javne stranice, a
 
 | gate | ishod | trajanje |
 | --- | --- | --- |
-| web-standard | OK | 4.0 s |
-| design | OK | 3.7 s |
-| brand | OK | 4.5 s |
-| sync-status | OK | 0.1 s |
+| web-standard | OK | 4.3 s |
+| design | OK | 3.9 s |
+| brand | OK | 4.8 s |
+| sync-status | OK | 0.0 s |
 | sync-pipeline | OK | 0.0 s |
-| prenos-check | OK | 0.1 s |
-| jsonld | OK | 6.1 s |
+| prenos-check | OK | 0.2 s |
+| jsonld | OK | 5.9 s |
 | links | OK | 6.4 s |
 | attribution | OK | 0.1 s |
-| a11y | OK | 2.9 s |
-| meta | OK | 6.8 s |
+| a11y | OK | 2.7 s |
+| meta | OK | 6.5 s |
 | products | OK | 0.0 s |
-| images | OK | 9.6 s |
+| images | OK | 9.8 s |
 | security | OK | 0.0 s |
 | mesh | OK | 0.1 s |
 | satellites | OK | 0.3 s |
@@ -158,7 +158,7 @@ node scripts/audit-style-blocks-v1.mjs          # cenzus <style> blokova
 
 ## Ograničenja
 
-- Cenzus stilova (9775 stranica, 15929 blokova)
+- Cenzus stilova (9775 stranica, 15919 blokova)
   mjeri, ali ne prepisuje ugrađene blokove — oni su dio postojećih generatora i
   marker-sekcija; popravak ide po generatoru, ne po stranici.
 - Mreža se ne mjeri preko mreže (nema vanjskog HTTP-a iz ovog okruženja), nego

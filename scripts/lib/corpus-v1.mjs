@@ -22,7 +22,13 @@ import { join } from 'node:path';
 
 const MAX_PER_KIND = 80;
 
+/* Markdown podebljanje (`**tekst**`) u izvornicima je značilo naglasak, a u
+   kopiji je izlazilo kao dvije zvjezdice pred čitateljem. Ovdje se uklanja
+   prije skidanja oznaka; kopija tako nosi čist tekst, a izvornik zadržava
+   svoj `<strong>`. */
 export const strip = (value) => String(value || '')
+  .replace(/\*\*([^*]+?)\*\*/g, '$1')
+  .replace(/__([^_]+?)__/g, '$1')
   .replace(/<script[\s\S]*?<\/script>/gi, ' ')
   .replace(/<style[\s\S]*?<\/style>/gi, ' ')
   .replace(/<[^>]+>/g, ' ')

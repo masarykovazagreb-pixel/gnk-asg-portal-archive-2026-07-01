@@ -67,7 +67,6 @@ export const STEPS = [
   { id: 'brand-gallery', group: 'generate', file: 'scripts/build-brand-gallery-v1.mjs', optional: true, why: 'galerija znakova' },
 
   /* ---------- 2. SLOJEVI ---------- */
-  { id: 'entity', group: 'layers', file: 'scripts/apply-network-entity-v1.mjs', why: 'entity:v1 graf na svakoj stranici' },
   { id: 'ribbon', group: 'layers', file: 'scripts/apply-house-ribbon-v1.mjs', why: 'traka kuće' },
   { id: 'brand-mark', group: 'layers', file: 'scripts/apply-brand-mark-v1.mjs', check: ['--check'], why: 'jedan znak i ikona' },
   { id: 'design-tokens', group: 'layers', file: 'scripts/apply-design-tokens-v1.mjs', check: ['--check'], why: 'jedan dizajn sustav' },
@@ -85,6 +84,7 @@ export const STEPS = [
   { id: 'listing-shell', group: 'layers', file: 'scripts/fix-editorial-listing-shell-v1.mjs', check: ['--check'], why: 'popisi bez </body> dobivaju zatvoren dokument, impressum i traku' },
   { id: 'agents-page', group: 'layers', file: 'scripts/build-agents-page-v1.mjs', why: 'javna ploča agenata' },
   { id: 'refresh', group: 'layers', file: 'scripts/apply-refresh-v1.mjs', check: ['--check'], why: 'osvježavanje na svakoj stranici' },
+  { id: 'entity', group: 'layers', file: 'scripts/apply-network-entity-v1.mjs', why: 'entity:v1 graf na svakoj stranici' },
 
   /* ---------- 3. PROVJERE ---------- */
   { id: 'region-audit', group: 'audit', file: 'apps/region/engine/audit.mjs', why: 'izdanja — unutrašnja dosljednost' },

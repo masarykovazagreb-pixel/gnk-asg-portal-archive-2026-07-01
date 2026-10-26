@@ -1,6 +1,6 @@
 # Izvještaj: što mreža ima
 
-Izmjereno iz izlaznih stabala, ne iz sjećanja. Datum zapisa: 2026-10-25.
+Izmjereno iz izlaznih stabala, ne iz sjećanja. Datum zapisa: 2026-10-26.
 Podatkovni dan: 2026-10-24.
 
 ## Ukupno
@@ -21,7 +21,7 @@ Podatkovni dan: 2026-10-24.
 | Web | Stranica | Tipovi | Zadnji datum |
 | --- | --- | --- | --- |
 | GNK ASG (glavna domena) | 2.676 | stranica 2079, engleska inačica 532, pregled 63, izvor 1, naslovnica 1 | 2026-10-24 |
-| GNK World — svjetski portali | 924 | prenos 477, stranica 306, tema 80, izvor 52, pregled 9 | 2026-10-25 |
+| GNK World — svjetski portali | 924 | prenos 477, stranica 306, tema 80, izvor 52, pregled 9 | 2026-10-26 |
 | GNK ASG KANAL | 88 | stranica 81, tema 6, naslovnica 1 | 2026-10-24 |
 | AKTUAL ARHIVA | 38 | engleska inačica 19, stranica 18, naslovnica 1 | 2026-10-24 |
 | AKTUAL DNEVNIK | 16 | engleska inačica 8, stranica 7, naslovnica 1 | 2026-10-24 |
@@ -31,7 +31,7 @@ Podatkovni dan: 2026-10-24.
 ## Što iz brojeva slijedi
 
 - Svi webovi imaju izlaz; nijedan link u mreži ne vodi u prazno.
-- Podatkovni dan je **2026-10-24**, a zapis je napravljen **2026-10-25**. Ako se ta dva datuma raziđu, sadržaj zaostaje za podacima i to se vidi na ploči `/status/`, ne u tekstu.
+- Podatkovni dan je **2026-10-24**, a zapis je napravljen **2026-10-26**. Ako se ta dva datuma raziđu, sadržaj zaostaje za podacima i to se vidi na ploči `/status/`, ne u tekstu.
 - Brojevi se ne prepisuju: svi generatori čitaju `apps/portal/data/network-counts-v1.json`, pa ne mogu pokazivati tri različita zbroja.
 - Popis svih stranica je i javna stranica `/sve-stranice/` — dostupna bez prijave, s istim brojevima.
 

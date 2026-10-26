@@ -191,17 +191,20 @@ const files = APPS.flatMap((app) => {
   return existsSync(dir) ? walk(dir) : [];
 }).sort();
 
-for (const file of files) {
-  if (!isPublic(file)) continue;
-  let html = readFileSync(file, 'utf8');
+/* Sloj kao čista funkcija: ulaz HTML i datoteka, izlaz HTML (ili null ako
+   stranica nema </head>). Generatori koji sami pišu stranice (npr. prijenos)
+   pozivaju je da njihov izlaz bude isti kao izlaz sloja — inače provjera
+   svježine vidi razliku koju nitko nije napravio. */
+export function entityHtml(input, file) {
   const rel = relative(ROOT, file).split('\\').join('/');
+  let html = input;
   const original = html;
 
   const full = FULL.has(rel);
   if (has(html, MARK_GRAPH)) {
     html = html.replace(new RegExp(`${MARK_GRAPH}[\\s\\S]*?${CLOSE}`), entityBlocks({ full }));
   } else if (!hasGraph(html)) {
-    if (!has(html, '</head>')) { problems.push(`${rel}: nema </head>`); continue; }
+    if (!has(html, '</head>')) { problems.push(`${rel}: nema </head>`); return null; }
     html = html.replace('</head>', `${entityBlocks({ full })}\n</head>`);
     added += 1;
   }
@@ -246,9 +249,19 @@ for (const file of files) {
     if (!has(original, 'id="network-entity-css"')) html = html.replace('</head>', `${CSS}\n</head>`);
   }
 
-  if (html === original) continue;
+  return html;
+}
+
+const RUN = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
+if (RUN) {
+for (const file of files) {
+  if (!isPublic(file)) continue;
+  const input = readFileSync(file, 'utf8');
+  const html = entityHtml(input, file);
+  if (html === null || html === input) continue;
   if (!CHECK) writeFileSync(file, html);
   changed += 1;
+  if (CHECK && changed <= 5) console.log(`  · ${relative(ROOT, file)}`);
 }
 
 /* Provjera karte: stranice koje moraju nositi puni graf. */
@@ -264,3 +277,4 @@ if (problems.length) {
 console.log(CHECK
   ? `network-entity — provjera: ${changed} stranica treba dopunu (${added} bez entitetskog grafa).`
   : `network-entity — gotovo: ${changed} stranica dopunjeno (${added} dobilo graf).`);
+}

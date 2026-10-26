@@ -21,6 +21,7 @@ import { fileURLToPath } from 'node:url';
 import { readCorpus, KIND_LABEL } from './lib/corpus-v1.mjs';
 import { SITES } from '../apps/sites/lib/registry.mjs';
 import { refreshTag } from '../apps/shared/refresh-tag-v1.mjs';
+import { entityHtml } from './apply-network-entity-v1.mjs';
 import { impressumBlock } from '../apps/shared/impressum-v1.mjs';
 import { authorBand } from '../apps/shared/author-band-v1.mjs';
 import { WORLD_PORTALS } from '../apps/world/lib/registry.mjs';
@@ -364,9 +365,18 @@ const data = {
   totals: { texts: items.length, addresses: addresses.length, copies: copyCount, languages: languages.length }
 };
 
+/* Entitetski sloj (graf, meta editor, oznake) nije dio ovog generatora, ali
+   se na ove stranice nanosi u svakom ciklusu. Izlaz prolazi kroz isti sloj
+   pa je provjera `--check` ista kao stanje nakon sinkronizacije. */
+const withEntity = (html, file) => {
+  const out = entityHtml(html, file);
+  return out === null ? html : out;
+};
+const HR_PAGE = join(PORTAL, 'prenos', 'index.html');
+const EN_PAGE = join(PORTAL, 'en', 'prenos', 'index.html');
 const outputs = [
-  [join(PORTAL, 'prenos', 'index.html'), pageHtml(copy.hr)],
-  [join(PORTAL, 'en', 'prenos', 'index.html'), pageHtml(copy.en)],
+  [HR_PAGE, withEntity(pageHtml(copy.hr), HR_PAGE)],
+  [EN_PAGE, withEntity(pageHtml(copy.en), EN_PAGE)],
   [join(PORTAL, 'data', 'prenos-network-v1.json'), `${JSON.stringify(data, null, 2)}\n`]
 ];
 

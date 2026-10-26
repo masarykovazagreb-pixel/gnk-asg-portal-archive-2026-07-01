@@ -1031,6 +1031,17 @@ ${entries.map((e) => `<url><loc>${e.loc}</loc><changefreq>daily</changefreq><pri
     console.log(`::warning::Središnji blok nije izgrađen: ${error.message}`);
   }
 
+  /* Trake rubrika (tehnologija, dnevni pregled, događaji, mreža) nose svoj CSS
+     u tijelu dokumenta. Na kraju gradnje idu u jedan vanjski list — stranica je
+     lakša, stil se predmemorira, a popravak je na jednom mjestu. */
+  try {
+    const { foldSectionStyles } = await import('./section-sheet.mjs');
+    const folded = foldSectionStyles();
+    console.log(`[section-css] ${JSON.stringify(folded)}`);
+  } catch (error) {
+    console.log(`::warning::Trake rubrika nisu spojene: ${error.message}`);
+  }
+
   return { channels: CHANNELS.length, sport: collect('sport').length, politics: collect('politika').length, security: collect('sigurnost').length, biznis: collect('ekonomija').length, tehnologija: collect('ai').length, moda: collect('*', DESKS.moda.filter).length, putovanja: collect('*', DESKS.putovanja.filter).length, ljubimci: collect('*', DESKS.ljubimci.filter).length, svijet: collect('*', DESKS.svijet.filter).length };
 }
 
@@ -1967,6 +1978,10 @@ if (process.argv[1] && /hub\.mjs$/.test(process.argv[1])) {
     } catch (error) {
       network = `preskočeno: ${error.message.split('\n')[0]}`;
     }
-    console.log(JSON.stringify({ ok: true, ...hub, kanalIndex: true, capitals, atlas, sitemaps, techBands, refreshTags, network }, null, 2));
+    /* Trake rubrika (tehnologija, mreža) ubacuju se do sada, pa se njihov CSS
+       vadi tek na kraju ciklusa — iza svih koraka koji pišu u stranicu. */
+    const { foldSectionStyles } = await import('./section-sheet.mjs');
+    const sectionCss = foldSectionStyles();
+    console.log(JSON.stringify({ ok: true, ...hub, kanalIndex: true, capitals, atlas, sitemaps, techBands, sectionCss, refreshTags, network }, null, 2));
   });
 }
