@@ -113,9 +113,18 @@ const render = (card, { check = false } = {}) => {
 };
 
 /** Pločica za gnk-asg.hr: ista grafika, bez rezanja teksta (dodaje se navy pojas). */
+/* Pločice arhive i dnevnika drže svijetlu grafiku izdanja (crni krugovi su
+   bili razlog zamjene). OG kartica je navy po brandu i tamna (~0,15), pa je
+   ne smijemo pretvoriti u pločicu — inače test-edition-images pada. */
+const KEEP_TILE = new Set(['aktual-arhiva', 'aktual-dnevnik']);
+
 const makeTile = (card) => {
   const src = join(OUT, `${card.slug}-og.jpg`);
   const out = join(TILES, `${card.slug.replace('aktual-', '')}-tile.webp`);
+  if (KEEP_TILE.has(card.slug)) {
+    if (!existsSync(out)) throw new Error(`nema ${out}`);
+    return { ok: true, file: out, bytes: statSync(out).size, kept: true };
+  }
   if (process.argv.includes('--check')) {
     if (!existsSync(out)) throw new Error(`nema ${out}`);
     return { ok: true, file: out, bytes: statSync(out).size };

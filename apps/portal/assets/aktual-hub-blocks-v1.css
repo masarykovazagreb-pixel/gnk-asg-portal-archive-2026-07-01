@@ -23,6 +23,24 @@
 .dd-band b{display:block;font:700 14px/1.25 Georgia,serif;margin-bottom:3px}
 .dd-band span{display:block;color:#8fa3ba;font-size:11.5px;line-height:1.4}
 
+/* ---- events ---- */
+.evd-desk{margin:26px 0 0;padding:20px 22px;background:#fffdf8;border:1px solid #d8d3c7;border-left:6px solid #c8963c;border-radius:10px}
+.evd-desk h2{margin:4px 0 10px;font-size:22px;line-height:1.25;color:#14181e}
+.evd-desk h3{margin:18px 0 8px;font-size:15px;letter-spacing:.02em;color:#14181e}
+.evd-desk p{margin:6px 0;line-height:1.55;color:#2a2f36}
+.evd-kicker{font:800 11px/1 system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#8a6415}
+.evd-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.evd-panel{background:#fff;border:1px solid #e3ddd0;border-radius:9px;padding:14px 16px}
+.evd-panel h3{margin-top:0}
+.evd-muted{color:#5d636b;font-size:13.5px}
+.evd-tags{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0;padding:0;list-style:none}
+.evd-tags span{display:inline-block;padding:4px 9px;border-radius:999px;background:#f4ead2;color:#6d4f0e;font:800 10.5px/1.6 system-ui,sans-serif;letter-spacing:.06em}
+.evd-entities ul{display:grid;gap:6px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin:6px 0 0;padding:0;list-style:none}
+.evd-entities li{padding:8px 10px;background:#fff;border:1px solid #e3ddd0;border-radius:7px;font-size:14px;line-height:1.45}
+.evd-entities a{color:#14181e;text-decoration:none;border-bottom:1px solid #c8963c}
+.evd-entities a:hover{color:#8a6415}
+.evd-boundary{margin-top:12px;padding:10px 12px;background:#f6efe0;border-left:4px solid #8c2f2f;border-radius:6px;font-size:14px}
+
 /* ---- netband ---- */
 .am-netband{--nb-gold:#e8c56a;--nb-line:rgba(232,197,106,.24);margin:26px 0;padding:clamp(16px,2.6vw,28px);border:1px solid var(--nb-line);border-radius:20px;background:linear-gradient(160deg,rgba(232,197,106,.07),rgba(6,14,24,.6));color:#eef3f9}
 .am-netband h2{font:800 clamp(20px,2.6vw,28px)/1.15 Georgia,serif;margin:0 0 8px;color:#f4f7fb}

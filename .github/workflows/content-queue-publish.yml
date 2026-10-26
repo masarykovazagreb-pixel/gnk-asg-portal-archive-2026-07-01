@@ -15,7 +15,7 @@ on:
   schedule:
     # Hourly daytime checks in UTC (08:20–20:20 CET / 09:20–21:20 CEST).
     # A run with no approved due items remains read-only; release fences and exact-SHA checks stay mandatory.
-    - cron: '20 7,8,9,10,11,12,13,14,15,16,17,18,19 * * *'
+    - cron: '38 7,8,9,10,11,12,13,14,15,16,17,18,19 * * *'
 
 permissions:
   contents: write

@@ -48,7 +48,7 @@ const TEXTS = {
     langs: 'jezika',
     sources: 'izvora',
     queries: 'Tražite nekoga ili nešto?',
-    chip: [['nermin sefić', '/nermin-sefic/'], ['gnk asg', '/gnk-asg/'], ['aktual media', '/aktual-media/'], ['gnk dinamo ltd usa', '/gnk-dinamo-ltd-usa/']],
+    chip: [['nermin sefić', '/nermin-sefic/'], ['gnk asg', '/'], ['aktual media', '/aktual-media/'], ['gnk dinamo ltd usa', '/about/']],
     cta: 'Sva izdanja →',
     cta2: 'Agenti mreže →',
     editors: `Urednik: Nermin Sefić · ${HOUSE.email}`
@@ -59,7 +59,7 @@ const TEXTS = {
     langs: 'languages',
     sources: 'sources',
     queries: 'Looking for a name or a company?',
-    chip: [['nermin sefić', '/en/nermin-sefic/'], ['gnk asg', '/gnk-asg/'], ['aktual media', '/en/aktual-media/'], ['gnk dinamo ltd usa', '/gnk-dinamo-ltd-usa/']],
+    chip: [['nermin sefić', '/en/nermin-sefic/'], ['gnk asg', '/en/'], ['aktual media', '/en/aktual-media/'], ['gnk dinamo ltd usa', '/en/about/']],
     cta: 'All editions →',
     cta2: 'Network agents →',
     editors: `Editor: Nermin Sefić · ${HOUSE.email}`
