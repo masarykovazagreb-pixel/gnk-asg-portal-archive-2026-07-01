@@ -4,7 +4,7 @@
   "lang": "bg",
   "city": "Sofija",
   "country": "Bugarska",
-  "updatedAt": "2026-10-26T19:58:30.572Z",
+  "updatedAt": "2026-10-26T22:00:52.867Z",
   "sources": [
     {
       "id": "bta",
@@ -17,7 +17,7 @@
         "https://www.bta.bg/bg/rss: HTTP 404",
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-26T19:58:22.654Z"
+      "checkedAt": "2026-10-26T22:00:42.988Z"
     },
     {
       "id": "capital",
@@ -27,17 +27,20 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-26T19:58:23.275Z"
+      "checkedAt": "2026-10-26T22:00:43.987Z"
     },
     {
       "id": "mediapool",
       "name": "Mediapool",
       "url": "https://www.mediapool.bg/rss",
-      "ok": true,
-      "fetched": 10,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-10-26T19:58:24.260Z"
+      "errors": [
+        "https://www.mediapool.bg/rss: HTTP 304",
+        "https://www.mediapool.bg/rss/: HTTP 304"
+      ],
+      "checkedAt": "2026-10-26T22:00:46.061Z"
     },
     {
       "id": "dnevnikbg",
@@ -49,7 +52,7 @@
       "errors": [
         "https://www.dnevnik.bg/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-26T19:58:25.866Z"
+      "checkedAt": "2026-10-26T22:00:47.256Z"
     },
     {
       "id": "actualno",
@@ -59,7 +62,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-26T19:58:27.055Z"
+      "checkedAt": "2026-10-26T22:00:48.859Z"
     },
     {
       "id": "sega",
@@ -69,7 +72,7 @@
       "fetched": 95,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-26T19:58:27.908Z"
+      "checkedAt": "2026-10-26T22:00:49.113Z"
     },
     {
       "id": "novinite",
@@ -81,7 +84,7 @@
       "errors": [
         "https://www.novinite.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-26T19:58:28.858Z"
+      "checkedAt": "2026-10-26T22:00:50.705Z"
     },
     {
       "id": "btaen",
@@ -93,10 +96,163 @@
       "errors": [
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-26T19:58:30.571Z"
+      "checkedAt": "2026-10-26T22:00:52.867Z"
     }
   ],
   "items": [
+    {
+      "slug": "sofija-2026-10-26-actualno-otkriha-m-rt-v-p-rvi-bratovced-na-princ-630b3e",
+      "title": "Откриха мъртъв първия братовчед на принц Албер II",
+      "summary": "Антоан дьо Маси, който беше първи братовчед на принц Албер II, почина на 29-годишна възраст, съобщиха от двореца в Монак...",
+      "date": "2026-10-26T21:40:00.000Z",
+      "url": "https://www.actualno.com/europe/otkriha-myrtyv-pyrvija-bratovched-na-princ-alber-ii-news_2655083.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://cdn.actualno.eu/actualno_2013/upload/news/2026/10/26/3d1c1393aea66a732399193e8a7d3d56_2655083_1920x1080.jpg",
+      "imageAlt": "Откриха мъртъв първия братовчед на принц Албер II",
+      "addedAt": "2026-10-26T22:00:48.859Z"
+    },
+    {
+      "slug": "sofija-2026-10-26-actualno-zarazena-s-ebola-zena-e-na-lecenie-v-sve-ad3a37",
+      "title": "Заразена с ебола жена е на лечение в Швейцария, мъжът й е в изолация",
+      "summary": "Жена, заразена с вируса ебола в Нигерия, и съпругът ѝ, който е швейцарски дипломат, са приети в две университетски болни...",
+      "date": "2026-10-26T21:20:00.000Z",
+      "url": "https://www.actualno.com/europe/zarazena-s-ebola-jena-e-na-lechenie-v-shvejcarija-myjyt-j-e-v-izolacija-news_2655081.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://cdn.actualno.eu/actualno_2013/upload/news/2026/10/26/9ca87356359e6a7d23b719975de69508_2655081_1920x1080.jpg",
+      "imageAlt": "Заразена с ебола жена е на лечение в Швейцария, мъжът й е в изолация",
+      "addedAt": "2026-10-26T22:00:48.859Z"
+    },
+    {
+      "slug": "sofija-2026-10-26-dnevnikbg-pravitelstvoto-podgotv-pet-reseni-za-da-139c55",
+      "title": "Правителството подготвя пет решения, за да гарантира работата на АЕЦ \"Козлодуй\"",
+      "summary": "Министерството на енергетиката подготвя пет технически решения, за да гарантира работата на АЕЦ \"Козлодуй\". Причина за действията са сушите и критично ниските нива на река Дунав. Това съобщи министърът на енергетиката Ива Петрова по време на...",
+      "date": "2026-10-26T21:06:00.000Z",
+      "url": "https://www.dnevnik.bg/bulgaria/2026/10/26/4972117_pravitelstvoto_podgotvia_pet_resheniia_za_da_garantira/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "1657"
+      ],
+      "author": "Дневник",
+      "theme": "energija",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4963728.jpg",
+      "imageAlt": "Правителството подготвя пет решения, за да гарантира работата на АЕЦ \"Козлодуй\"",
+      "addedAt": "2026-10-26T22:00:47.256Z"
+    },
+    {
+      "slug": "sofija-2026-10-26-actualno-na-mnogo-suhi-mrezi-v-p-rva-liga-za-sezon-002328",
+      "title": "Най-много \"сухи мрежи\" в Първа лига за сезон 2026/27 - Лапоухов изравни Вуцов, но друг е №1",
+      "summary": "Надпреварата между вратарите за най-много \"сухи мрежи\" в Първа лига през сезон 2026/27 вече започна. Начело в подр...",
+      "date": "2026-10-26T21:04:00.000Z",
+      "url": "https://www.actualno.com/bgfootball/naj-mnogo-suhi-mreji-v-pyrva-liga-za-sezon-202627-lapouhov-izravni-vucov-no-drug-e-1-news_2625729.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Футбол България"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://cdn.actualno.eu/actualno_2013/upload/news/2026/08/05/bbc89268974bb7c0cd591a4630eb890d_2625729_1920x1080.jpg",
+      "imageAlt": "Най-много \"сухи мрежи\" в Първа лига за сезон 2026/27 - Лапоухов изравни Вуцов, но друг е №1",
+      "addedAt": "2026-10-26T22:00:48.859Z"
+    },
+    {
+      "slug": "sofija-2026-10-26-sega-rum-ni-razkri-mreza-za-sabotazi-c807b4",
+      "title": "Румъния разкри мрежа за саботажи, координирана от Русия",
+      "summary": "",
+      "date": "2026-10-26T21:00:57.000Z",
+      "url": "https://www.segabg.com/hot/category-foreign-country/rumuniya-razkri-mrezha-za-sabotazhi-koordinirana-rusiya",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/10/a26386fb-dce4-4f4b-a02c-b4f518cd0a9c_1.jpeg",
+      "imageAlt": "Румъния разкри мрежа за саботажи, координирана от Русия",
+      "addedAt": "2026-10-26T22:00:49.113Z"
+    },
+    {
+      "slug": "sofija-2026-10-26-actualno-radar-za-ikonomika-na-vaznite-novini-na-26-9c3515",
+      "title": "Радар за икономика: Най-важните новини на 26 октомври 2026 г.",
+      "summary": "Редакционният екип Ви представя най-важните икономически новини от изминалия ден, 26 октомври 2026 г. Бюджет 2027 идв...",
+      "date": "2026-10-26T21:00:00.000Z",
+      "url": "https://www.actualno.com/economy/radar-za-ikonomika-naj-vajnite-novini-na-26-oktomvri-2026-g-news_2655020.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Икономика"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "ekonomija",
+      "image": "https://cdn.actualno.eu/actualno_2013/upload/news/2026/10/26/8c767d4658fff4720beff89aeab8ee78_2655020_1920x1080.jpg",
+      "imageAlt": "Радар за икономика: Най-важните новини на 26 октомври 2026 г.",
+      "addedAt": "2026-10-26T22:00:48.860Z"
+    },
+    {
+      "slug": "sofija-2026-10-26-actualno-klasirane-na-golma-storite-v-p-rva-liga-c1bbb6",
+      "title": "Класиране на голмайсторите в Първа лига 2026/27 - Годой гони Питас (ОБНОВЕНА)",
+      "summary": "Битката за голмайсторския приз в Първа лига през сезон 2026/27 вече започна, а първите кръгове очертаха няколко основни ...",
+      "date": "2026-10-26T20:59:00.000Z",
+      "url": "https://www.actualno.com/bgfootball/klasirane-na-golmajstorite-v-pyrva-liga-202627-godoj-goni-pitas-obnovena-news_2625725.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Футбол България"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://cdn.actualno.eu/actualno_2013/upload/news/2026/08/31/e108cf82511fe6b7d67c9daf0d6c38da_2625725_1920x1080.jpg",
+      "imageAlt": "Класиране на голмайсторите в Първа лига 2026/27 - Годой гони Питас (ОБНОВЕНА)",
+      "addedAt": "2026-10-26T22:00:48.860Z"
+    },
+    {
+      "slug": "sofija-2026-10-26-actualno-p-lni-rezultati-na-vsicki-macove-v-p-rva-951657",
+      "title": "Пълни резултати на всички мачове в Първа лига през сезон 2026/27 (ОБНОВЕНА)",
+      "summary": "След 14-годишна хегемония на Лудогорец, българският футбол доживя да види друг шампион! Левски размести пластовете през ...",
+      "date": "2026-10-26T20:55:00.000Z",
+      "url": "https://www.actualno.com/bgfootball/pylni-rezultati-na-vsichki-machove-v-pyrva-liga-prez-sezon-202627-obnovena-news_2618915.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Футбол България"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "sport",
+      "image": "https://cdn.actualno.eu/actualno_2013/upload/news/2026/07/16/8159753255a97500e8279b9aee30eb50_2618915_1920x1080.jpg",
+      "imageAlt": "Пълни резултати на всички мачове в Първа лига през сезон 2026/27 (ОБНОВЕНА)",
+      "addedAt": "2026-10-26T22:00:48.860Z"
+    },
+    {
+      "slug": "sofija-2026-10-26-dnevnikbg-tr-mp-predlozi-premi-za-danni-za-izborni-8e2d99",
+      "title": "Тръмп предложи премия за данни за изборни измами",
+      "summary": "Доналд Тръмп предложи 1 млн. долара за информация, водеща до осъдителни присъди за изборни измами. Става дума за минали избори или за предстоящите междинни избори на 3 ноември, написа президентът на САЩ в платформата Truth Social. ...",
+      "date": "2026-10-26T20:17:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/10/26/4972108_trump_predloji_premiia_za_danni_za_izborni_izmami/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "politika",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4972109.jpg",
+      "imageAlt": "Тръмп предложи премия за данни за изборни измами",
+      "addedAt": "2026-10-26T22:00:47.257Z"
+    },
     {
       "slug": "sofija-2026-10-26-actualno-zaradi-prisvo-vaneto-na-ukrainskata-68bb29",
       "title": "Заради присвояването на украинската \"Нафтогаз\": Финландия и Австрия конфискуваха руски активи за 500 млн. долара",
@@ -7260,168 +7416,6 @@
       "image": "",
       "imageAlt": "ПИБ изкупува обратно до 3 млн. акции, за да възнагради дългогодишните си мениджъри",
       "addedAt": "2026-10-23T14:16:43.722Z"
-    },
-    {
-      "slug": "sofija-2026-10-23-capital-distanci-ta-znacitelno-se-sk-s-va-kakvo-f099a9",
-      "title": "Дистанцията значително се скъсява: какво показват проучванията на финала преди президентския вот",
-      "summary": "Два дни преди изборите за президент на България основните социологически агенции вече публикуваха данните от финалните си изследвания и всички те показват, че първоначално голямата дистанция между фаворита Илияна Йотова и претендента Андрей Гюров се свива значително. От 21-23 процентни пункта преднина за Йотова в началото на кампанията до 18 пункта - според \"Тренд\", 17 пункта - според \"Маркет линкс\", 15 пункта - според \"Мяра\", и под 13 пункта - според последното изследване на \"Алфа рисърч\". То е...",
-      "date": "2026-10-23T11:36:00.000Z",
-      "url": "https://www.capital.bg/politika_i_ikonomika/bulgaria/2026/10/23/4970282_distanciiata_znachitelno_se_skusiava_kakvo_pokazvat/?ref=rss",
-      "source": "capital",
-      "sourceName": "Capital",
-      "categories": [
-        "2249"
-      ],
-      "author": "Ани Коджаиванова",
-      "theme": "politika",
-      "image": "",
-      "imageAlt": "Дистанцията значително се скъсява: какво показват проучванията на финала преди президентския вот",
-      "addedAt": "2026-10-23T14:16:43.722Z"
-    },
-    {
-      "slug": "sofija-2026-10-23-mediapool-stroez-t-na-terminal-3-na-sofi-skoto-leti-e-5914f5",
-      "title": "Строежът на Терминал 3 на софийското летище започна с местене на подземна инфраструктура",
-      "summary": "Изграждането на нов терминал на софийското летище „Васил Левски“, в близост до сегашния терминал 2, започна в петък с преместване на сегашната подземна инфраструктура, оформането на предтерминалния площад и строежа на нов транспортен център, които са подготовката на същинското изпълнение на проекта, който е част от концесионните задължеия на оператора на летището „СОФ Кънект“. В церемонията участваха главният изпълнителен директор на „СОФ Кънект“ Хесус Кабайеро, кметът на София Васил Терзиев и Емил Ангелов - главен директор и заместник-председател на борда на „Главболгарстрой Холдинг“, който е изпълнител на проекта Емил Ангелов. Специални гости бяха Тервел и Малена Замфирови, лица на…",
-      "date": "2026-10-23T11:28:20.000Z",
-      "url": "https://www.mediapool.bg/biznes/stroezhat-na-terminal-3-na-sofiyskoto-letishte-zapochna-s-mestene-na-podzemna-infrastruktura/",
-      "source": "mediapool",
-      "sourceName": "Mediapool",
-      "categories": [
-        "Бизнес",
-        "строеж",
-        "концесионер",
-        "Соф Кънект"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Строежът на Терминал 3 на софийското летище започна с местене на подземна инфраструктура",
-      "addedAt": "2026-10-23T11:31:06.395Z"
-    },
-    {
-      "slug": "sofija-2026-10-23-actualno-nito-duma-za-sr-bski-poslanik-velislava-734c8d",
-      "title": "Нито дума за сръбския посланик: Велислава Петрова се срещна с недопуснатите българи в Сърбия",
-      "summary": "След недопусксането на българи в Сърбия българският външен министър Велислава Петрова - Чамова е уверила потърпевшите до...",
-      "date": "2026-10-23T11:24:00.000Z",
-      "url": "https://www.actualno.com/balkani/nito-duma-za-srybskija-poslanik-velislava-petrova-se-sreshtna-s-nedopusnatite-bylgari-v-syrbija-news_2653808.html",
-      "source": "actualno",
-      "sourceName": "Actualno.com",
-      "categories": [
-        "Балкани"
-      ],
-      "author": "reklama@webground.bg (Actualno.com)",
-      "theme": "drustvo",
-      "image": "https://cdn.actualno.eu/actualno_2013/upload/news/2026/10/23/1ae2fc06dc8f6504e1edadb4b2c444c8_2653808_1920x1080.jpg",
-      "imageAlt": "Нито дума за сръбския посланик: Велислава Петрова се срещна с недопуснатите българи в Сърбия",
-      "addedAt": "2026-10-23T11:31:09.055Z"
-    },
-    {
-      "slug": "sofija-2026-10-23-sega-ucastnicite-v-v-vota-nabraha-1-36-mln-evro-cd46e1",
-      "title": "Участниците във вота набраха 1.36 млн. евро за кампаниите си",
-      "summary": "",
-      "date": "2026-10-23T11:22:29.000Z",
-      "url": "https://www.segabg.com/hot/category-bulgaria/uchastnicite-vuv-vota-nabraha-136-mln-evro-za-kampaniite-si",
-      "source": "sega",
-      "sourceName": "Sega.bg",
-      "categories": [
-        "Водещи новини"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/10/b53ab4b8-1d5c-4089-9bfd-22cd500b4dfb.jpeg",
-      "imageAlt": "Участниците във вота набраха 1.36 млн. евро за кампаниите си",
-      "addedAt": "2026-10-23T11:31:09.387Z"
-    },
-    {
-      "slug": "sofija-2026-10-23-dnevnikbg-dsb-ob-vi-podkrepa-za-sval-neto-na-docova-439482",
-      "title": "ДСБ обяви подкрепа за свалянето на Доцова",
-      "summary": "ДСБ обяви подкрепа за свалянето на председателя на парламента Михаела Доцова. Според формацията случилото се пред централата на \"Прогресивна България\" е \"логично продължение на кампанията на противопоставяне и насаждане на страх и разделение\"....",
-      "date": "2026-10-23T11:22:00.000Z",
-      "url": "https://www.dnevnik.bg/politika/2026/10/23/4970272_dsb_obiavi_podkrepa_za_svalianeto_na_docova/?ref=rss",
-      "source": "dnevnikbg",
-      "sourceName": "Dnevnik",
-      "categories": [
-        "4047"
-      ],
-      "author": "Йорданка Веселинова",
-      "theme": "politika",
-      "image": "https://img.dnevnik.bg/shimg/zx350c_4970270.jpg",
-      "imageAlt": "ДСБ обяви подкрепа за свалянето на Доцова",
-      "addedAt": "2026-10-23T11:31:07.670Z"
-    },
-    {
-      "slug": "sofija-2026-10-23-mediapool-pb-iskani-ta-za-ostavka-na-docova-sa-8bc46b",
-      "title": "ПБ: Исканията за оставка на Доцова са неадекватни, показват възкръсване на \"сглобката\"",
-      "summary": "\"Няма да допуснем случая със Соня Колтуклиева да се използва за реабилитация на сглобката\", се казва в писмена позиция на управляващите от \"Прогресивна България\" (ПБ) по повод скандала с просването на земята Соня Колтуклиева от сайта ПИК. Това е първата позиция на формацията по темата. Тя идва часове, след като кадрите на които се вижда как служител на НСО, охраняващ председателят на парламента Михаела Доцова от ПБ, бутна Колтуклиева и тя падна на земята…",
-      "date": "2026-10-23T11:19:36.000Z",
-      "url": "https://www.mediapool.bg/bulgaria/pb-iskaniyata-za-ostavka-na-dotsova-sa-neadekvatni-pokazvat-vazkrasvane-na-sglobkata/",
-      "source": "mediapool",
-      "sourceName": "Mediapool",
-      "categories": [
-        "България",
-        "НСО",
-        "Михаела Доцова",
-        "Соня Колтуклиева"
-      ],
-      "author": "",
-      "theme": "politika",
-      "image": "",
-      "imageAlt": "ПБ: Исканията за оставка на Доцова са неадекватни, показват възкръсване на \"сглобката\"",
-      "addedAt": "2026-10-23T11:31:06.395Z"
-    },
-    {
-      "slug": "sofija-2026-10-23-sega-upravl-va-ite-otkazaha-da-dadat-ostavkata-63797e",
-      "title": "Управляващите отказаха да дадат оставката на Доцова",
-      "summary": "",
-      "date": "2026-10-23T11:15:00.000Z",
-      "url": "https://www.segabg.com/hot/category-bulgaria/upravlyavashtite-otkazaha-da-dadat-ostavkata-na-docova",
-      "source": "sega",
-      "sourceName": "Sega.bg",
-      "categories": [
-        "Водещи новини"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/10/035f5fd3-cf79-4458-85c5-39fd585f0bfd.jpeg",
-      "imageAlt": "Управляващите отказаха да дадат оставката на Доцова",
-      "addedAt": "2026-10-23T11:31:09.387Z"
-    },
-    {
-      "slug": "sofija-2026-10-23-sega-izbor-t-na-nov-agent-007-e-na-finalnata-1b1db1",
-      "title": "Изборът на нов агент 007 е на финалната права",
-      "summary": "",
-      "date": "2026-10-23T11:14:02.000Z",
-      "url": "https://www.segabg.com/category-culture/izborut-na-nov-agent-007-e-na-finalnata-prava",
-      "source": "sega",
-      "sourceName": "Sega.bg",
-      "categories": [
-        "Култура"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2021/09/f1cce2af-198d-43da-8174-5bcaee521802_0.jpeg",
-      "imageAlt": "Изборът на нов агент 007 е на финалната права",
-      "addedAt": "2026-10-23T11:31:09.387Z"
-    },
-    {
-      "slug": "sofija-2026-10-23-mediapool-tr-mp-za-vi-ce-m-sk-e-v-zstanovil-dost-pa-98923f",
-      "title": "Тръмп заяви, че Мъск е възстановил достъпа на Украйна до военната версия на Starlink",
-      "summary": "Ръководителят на SpaceX Илон Мъск е възстановил достъпа на Въоръжените сили на Украйна (ВСУ) до военната версия на сателитната система Starlink - Starshield. Това заяви президентът на САЩ Доналд Тръмп.Той отказа да уточни дали лично се е обаждал на Мъск по този въпрос.„Не искам да коментирам това. Знаете ли, дали съм му се обаждал аз или някой друг — няма значение…",
-      "date": "2026-10-23T11:13:41.000Z",
-      "url": "https://www.mediapool.bg/voina-v-ukraina/tramp-zayavi-che-mask-e-vazstanovil-dostapa-na-ukraina-do-voennata-versiya-na-starlink/",
-      "source": "mediapool",
-      "sourceName": "Mediapool",
-      "categories": [
-        "Война в Украйна",
-        "Украйна",
-        "Тръмп",
-        "Мъск"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Тръмп заяви, че Мъск е възстановил достъпа на Украйна до военната версия на Starlink",
-      "addedAt": "2026-10-23T11:31:06.395Z"
     }
   ]
 }
