@@ -22,6 +22,7 @@ import { readCorpus, KIND_LABEL } from './lib/corpus-v1.mjs';
 import { SITES } from '../apps/sites/lib/registry.mjs';
 import { refreshTag } from '../apps/shared/refresh-tag-v1.mjs';
 import { impressumBlock } from '../apps/shared/impressum-v1.mjs';
+import { authorBand } from '../apps/shared/author-band-v1.mjs';
 import { WORLD_PORTALS } from '../apps/world/lib/registry.mjs';
 import { houseRibbonHtml, HOUSE_RIBBON_CSS } from './lib/house-ribbon-v1.mjs';
 import { DESIGN_ID } from '../apps/shared/design-system-v1.mjs';
@@ -280,6 +281,7 @@ function head(page) {
 ${jsonLd(page)}
 <link rel="stylesheet" href="/assets/am-design-v1.css?v=20261024" data-am-design="v1">
 <style>${CSS}</style>
+<link rel="stylesheet" href="/assets/author-band-v1.css?v=20261025">
 </head>`;
 }
 
@@ -340,6 +342,7 @@ ${houseRibbonHtml(page.lang)}
 </main>
 ${refreshTag()}
 ${impressumBlock(page.lang)}
+${authorBand(page.lang)}
 </body>
 </html>
 `;

@@ -323,7 +323,7 @@ ${failing.map(([path, run]) => `      <tr>
 <meta name="twitter:title" content="${esc(t.title)}">
 <meta name="twitter:description" content="${esc(t.desc)}">
 <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
-<link rel="icon" href="/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64" type="image/svg+xml">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/gnk-design-v1.css?v=${CSS_VERSION}">
 <link rel="stylesheet" href="/automation-status/flota/fleet.css?v=${CSS_VERSION}">
 </head>

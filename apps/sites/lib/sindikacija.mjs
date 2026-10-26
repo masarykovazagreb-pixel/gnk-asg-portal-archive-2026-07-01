@@ -34,6 +34,7 @@ import { authorPortrait } from '../../../scripts/lib/corpus-v1.mjs';
 
 import { refreshTag } from '../../shared/refresh-tag-v1.mjs';
 import { impressumBlock } from '../../shared/impressum-v1.mjs';
+import { authorBand } from '../../shared/author-band-v1.mjs';
 
 const MAX_ITEMS = 60;
 
@@ -153,6 +154,7 @@ const foot = (site) => `  </main>
 </div>
 ${refreshTag('/')}
 ${impressumBlock(site.lang)}
+${authorBand(site.lang)}
 </body>
 </html>
 `;
@@ -280,6 +282,13 @@ export function buildSyndication({ root, outRoot, dryRun = false }) {
       let html = body;
       if (file.endsWith('.html') && /<\/body>/i.test(html)) {
         if (!html.includes('data-am-impressum')) html = html.replace(/<\/body>/i, `${impressumBlock(site.lang)}\n</body>`);
+        if (!html.includes('data-am-author')) {
+          const bandMarker = /<\/footer>/i.test(html) ? '</footer>' : '</body>';
+          html = html.replace(bandMarker, `${authorBand(site.lang)}\n${bandMarker}`);
+        }
+        if (!html.includes('/assets/author-band-v1.css')) {
+          html = html.replace(/<\/head>/i, `<link rel="stylesheet" href="/assets/author-band-v1.css?v=20261025">\n</head>`);
+        }
         if (!html.includes('data-am-netday')) html = html.replace(/<\/body>/i, `${refreshTag('/')}\n</body>`);
       }
       if (!dryRun) writeFileSync(file, html);

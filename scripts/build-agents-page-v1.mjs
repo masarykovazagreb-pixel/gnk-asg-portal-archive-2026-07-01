@@ -10,7 +10,7 @@
  *
  * Pokretanje: node scripts/build-agents-page-v1.mjs
  */
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, copyFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { refreshTag } from '../apps/shared/refresh-tag-v1.mjs';
@@ -20,6 +20,16 @@ import { entityGraph } from './lib/entity-graph-v1.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(ROOT, 'apps', 'portal', 'agenti');
+
+/* Ikona kuće u vlastitoj mapi `assets/`: brand-audit traži `/assets/favicon.svg`
+   u najbližoj mapi `assets/` uz stranicu. */
+const ICON = join(ROOT, 'apps', 'portal', 'assets', 'favicon.svg');
+const ensureIcon = (dir) => {
+  const assets = join(dir, 'assets');
+  mkdirSync(assets, { recursive: true });
+  const target = join(assets, 'favicon.svg');
+  if (!existsSync(target) && existsSync(ICON)) copyFileSync(ICON, target);
+};
 const PUBLIC = 'https://gnk-asg.hr';
 
 const registry = JSON.parse(readFileSync(join(ROOT, 'ops', 'network-agents-v1.json'), 'utf8'));
@@ -155,6 +165,7 @@ ${refreshTag('/')}
 `;
 
 mkdirSync(OUT, { recursive: true });
+ensureIcon(OUT);
 writeFileSync(join(OUT, 'index.html'), html);
 console.log(JSON.stringify({
   version: 'AKTUAL_MEDIA_AGENTS_PAGE_V1',

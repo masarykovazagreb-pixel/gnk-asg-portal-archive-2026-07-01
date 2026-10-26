@@ -31,6 +31,7 @@ import { meshBlock } from '../../apps/satellites/lib/network-v1.mjs';
 import { HOUSE_CSS, houseRibbon } from '../../apps/satellites/lib/house-style-v1.mjs';
 import { refreshTag } from '../../apps/shared/refresh-tag-v1.mjs';
 import { impressumBlock } from '../../apps/shared/impressum-v1.mjs';
+import { authorBand } from '../../apps/shared/author-band-v1.mjs';
 
 const MAX_ITEMS = 90;
 
@@ -201,6 +202,7 @@ ${HOUSE_CSS}</style>
 ${graphScript()}
 ${jsonld}
 ${designTokensCss()}
+<link rel="stylesheet" href="/assets/author-band-v1.css?v=20261025">
 </head>
 <body>
 <a class="skip" href="#sadrzaj">${esc(LABEL(target.lang).skip || 'Skip to content')}</a>
@@ -217,6 +219,7 @@ ${meshBlock({ lang: target.lang, selfUrl: target.base, theme: 'dark' })}
 </main>
 ${refreshTag()}
 ${impressumBlock(target.lang)}
+${authorBand(target.lang)}
 </body>
 </html>
 `;

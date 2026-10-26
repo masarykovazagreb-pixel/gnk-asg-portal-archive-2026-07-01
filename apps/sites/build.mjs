@@ -26,7 +26,7 @@ import { writePrenos, prenosUrls, appendSitemap, linkPrenosOnHome } from '../../
 import { houseRibbon, HOUSE_CSS } from '../satellites/lib/house-style-v1.mjs';
 import { exchangeBlock, writeExchangeJson, EXCHANGE_CSS } from '../satellites/lib/razmjena-v1.mjs';
 import { refreshTag, ensureRefreshModule } from '../shared/refresh-tag-v1.mjs';
-import { ensureAuthorPortrait, AUTHOR_PORTRAIT } from '../shared/author-band-v1.mjs';
+import { authorBand, ensureAuthorPortrait, AUTHOR_PORTRAIT } from '../shared/author-band-v1.mjs';
 import { impressumBlock } from '../shared/impressum-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -38,6 +38,7 @@ const ART = 6;
    što web ima više predložaka (članak, popis prijenosa, kolumna, stranica) i
    ručno dodavanje u svaki od njih znači da će jedan ostati bez modula —
    upravo se to dogodilo s popisom prijenosa. */
+const AUTHOR_CSS_LINK = '<link rel="stylesheet" href="/assets/author-band-v1.css?v=20261025">';
 const langOf = (html) => (/<html[^>]+lang="([a-z]{2})"/i.exec(html)?.[1] || 'hr').toLowerCase();
 const write = (file, body) => {
   mkdirSync(dirname(file), { recursive: true });
@@ -49,6 +50,13 @@ const write = (file, body) => {
        „zastario izlaz" bio bi u pravu. */
     if (!html.includes('data-am-impressum')) {
       html = html.replace(/<\/body>/i, `${impressumBlock(langOf(html))}\n</body>`);
+    }
+    if (!html.includes('data-am-author')) {
+      const bandMarker = /<\/footer>/i.test(html) ? '</footer>' : '</body>';
+      html = html.replace(bandMarker, `${authorBand(langOf(html))}\n${bandMarker}`);
+    }
+    if (!html.includes('/assets/author-band-v1.css')) {
+      html = html.replace(/<\/head>/i, `${AUTHOR_CSS_LINK}\n</head>`);
     }
     if (!html.includes('data-am-netday')) {
       html = html.replace(/<\/body>/i, `${refreshTag('/')}\n</body>`);

@@ -12,7 +12,7 @@
  *
  * Pokretanje: node scripts/build-query-pages-v1.mjs [--check]
  */
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, copyFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { HOUSE, impressumBlock, IMPRESSUM_CSS } from '../apps/shared/impressum-v1.mjs';
@@ -23,6 +23,16 @@ import { entityGraph } from './lib/entity-graph-v1.mjs';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const PORTAL = join(ROOT, 'apps', 'portal');
 const SITE = 'https://gnk-asg.hr';
+
+/* Ista ikona u svakoj novoj mapi: `/assets/favicon.svg` mora postojati uz
+   stranicu, jer audit traži najbližu mapu `assets/`. */
+const ICON = join(PORTAL, 'assets', 'favicon.svg');
+const ensureIcon = (dir) => {
+  const assets = join(dir, 'assets');
+  mkdirSync(assets, { recursive: true });
+  const target = join(assets, 'favicon.svg');
+  if (!existsSync(target) && existsSync(ICON)) copyFileSync(ICON, target);
+};
 const V = '20261025';
 const CHECK = process.argv.includes('--check');
 const CSS_REL = '/assets/query-pages-v1.css';
@@ -245,6 +255,7 @@ for (const page of PAGES) {
     continue;
   }
   mkdirSync(join(PORTAL, page.slug), { recursive: true });
+  ensureIcon(join(PORTAL, page.slug));
   writeFileSync(file, pageHtml(page));
   written += 1;
 }

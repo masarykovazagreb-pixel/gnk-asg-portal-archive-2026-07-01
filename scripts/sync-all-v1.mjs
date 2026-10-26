@@ -81,6 +81,8 @@ export const STEPS = [
   { id: 'pages-inventory', group: 'layers', file: 'scripts/build-pages-inventory-v1.mjs', check: ['--check'], why: 'popis svih stranica + izvještaj' },
   { id: 'author-band', group: 'layers', file: 'scripts/apply-author-band-v1.mjs', check: ['--check'], why: 'autorska traka urednika na svakoj rukom pisanoj stranici' },
   { id: 'impressum', group: 'layers', file: 'scripts/apply-impressum-v1.mjs', args: ['--all', '--icon', '--refresh'], why: 'impressum i ikona na svakoj rukom pisanoj stranici' },
+  { id: 'house-icons', group: 'layers', file: 'scripts/ensure-house-icons-v1.mjs', check: ['--check'], why: 'ikonа kuće postoji na svakoj adresi na koju stranica pokazuje' },
+  { id: 'listing-shell', group: 'layers', file: 'scripts/fix-editorial-listing-shell-v1.mjs', check: ['--check'], why: 'popisi bez </body> dobivaju zatvoren dokument, impressum i traku' },
   { id: 'agents-page', group: 'layers', file: 'scripts/build-agents-page-v1.mjs', why: 'javna ploča agenata' },
   { id: 'refresh', group: 'layers', file: 'scripts/apply-refresh-v1.mjs', check: ['--check'], why: 'osvježavanje na svakoj stranici' },
 
