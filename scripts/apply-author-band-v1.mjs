@@ -74,14 +74,11 @@ for (const web of WEBS) {
   const dir = join(ROOT, web.dir);
   if (!existsSync(dir)) continue;
   if (!DRY && !CHECK) {
-    /* Portret u svaki podsite i u korijen weba. */
+    /* Portret u korijen weba. Putanja je apsolutna (`/assets/people/…`), pa
+       kopije u podmapama nisu potrebne — a stvarale su tuđe `assets/` mape
+       (npr. `portal/reports/assets`) koje sljedeći sloj pogrešno proglašava
+       korijenom weba. */
     if (ensureAuthorPortrait(AUTHOR_PORTRAIT, dir)) portraits += 1;
-    for (const name of readdirSync(dir)) {
-      const sub = join(dir, name);
-      if (statSync(sub).isDirectory() && !SKIP.has(name) && name !== 'assets') {
-        if (ensureAuthorPortrait(AUTHOR_PORTRAIT, sub)) portraits += 1;
-      }
-    }
   }
   for (const file of walk(dir)) {
     const html = readFileSync(file, 'utf8');

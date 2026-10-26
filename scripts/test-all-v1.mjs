@@ -64,6 +64,7 @@ const GATES = [
   { name: 'Atribucija — svaka kopija nosi izvor i autora', cmd: ['node', 'tests/test-attribution-v1.mjs'], required: true },
   { name: 'Bez dvostrukog sadržaja — jedan tekst, jedan kanonik', cmd: ['node', 'tests/test-no-duplicate-content-v1.mjs'], required: true },
   { name: 'Dizajn sustav — isti tokeni na svakom webu', cmd: ['node', 'tests/test-design-system-v1.mjs'], required: true },
+  { name: 'Slike izdanja — nema crnih krugova', cmd: ['node', 'tests/test-edition-images-v1.mjs'], required: true },
   { name: 'Ugovor o brendu — jedno ime, jedan znak, jedan izdavač', cmd: ['node', 'scripts/audit-brand-contract-v1.mjs'], required: true },
   { name: 'Sinkronizacija — jedan popis koraka i redoslijed', cmd: ['node', 'tests/test-sync-pipeline-v1.mjs'], required: true },
   { name: 'Determinizam — isti ulaz, isti bajtovi', cmd: ['node', 'tests/test-build-determinism-v1.mjs'], required: true },

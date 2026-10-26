@@ -115,6 +115,14 @@ function build(channel) {
   console.log(`[art] ${channel.id} → 240/440/800/1200/880 + og.jpg`);
 }
 
+/* Apstraktna grafika više se ne piše preko scenskih fotografija. Devet globalnih
+   izdanja ima fotografije; ovaj skript bi ih vratio na tamne plohe — upravo ono
+   što čitatelj vidi kao prazan crni krug. Pokreće se samo uz --abstract-legacy,
+   a za fotografije je zadužen build-global-edition-photo-v1.mjs. */
+if (!process.argv.includes('--abstract-legacy')) {
+  console.error('[art] odbijeno: globalna izdanja imaju fotografije (crni krugovi). Vidi scripts/build-global-edition-photo-v1.mjs ili --abstract-legacy.');
+  process.exit(1);
+}
 if (!existsSync(OUT)) mkdirSync(OUT, { recursive: true });
 const targets = CHANNELS.filter((c) => GLOBAL_IDS.includes(c.id)).filter((c) => !ONLY || c.id === ONLY);
 for (const channel of targets) build(channel);
