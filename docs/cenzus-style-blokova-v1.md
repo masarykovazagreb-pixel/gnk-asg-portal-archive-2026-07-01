@@ -1,6 +1,6 @@
 # Cenzus `<style>` blokova
 
-Snimak: **2026-10-25** · alat: `scripts/audit-style-blocks-v1.mjs`
+Snimak: **2026-10-26** · alat: `scripts/audit-style-blocks-v1.mjs`
 
 Jedan list po webu je pravilo; ugrađeni blokovi su iznimka koja se mora znati
 izbrojati. Ovaj cenzus ne mijenja stranice — imenuje mjesta na kojima se
@@ -10,8 +10,8 @@ izgled popravlja teže nego što bi trebalo.
 
 - javnih stranica: **9775**
 - stranica s ugrađenim stilom: **8344**
-- ugrađenih blokova ukupno: **15935**
-- najviše blokova na jednoj stranici: **11**
+- ugrađenih blokova ukupno: **15929**
+- najviše blokova na jednoj stranici: **8**
 
 ## Razdioba (blokova → stranica)
 
@@ -21,13 +21,13 @@ izgled popravlja teže nego što bi trebalo.
 - 3: 354
 - 4: 189
 - 5: 2
-- 11: 2
+- 8: 2
 
 ## Po webu
 
 | web | stranica | blokova | prosjek |
 | --- | --- | --- | --- |
-| apps/portal | 7945 | 12057 | 1.52 |
+| apps/portal | 7945 | 12051 | 1.52 |
 | apps/world/site | 933 | 2145 | 2.3 |
 | apps/sites/site | 578 | 1590 | 2.75 |
 | apps/tjednik/site | 174 | 0 | 0 |
@@ -39,8 +39,8 @@ izgled popravlja teže nego što bi trebalo.
 
 | stranica | blokova | bajtova | imena blokova |
 | --- | --- | --- | --- |
-| `apps/portal/en/gnk-aktual/index.html` | 11 | 36032 | am-spt-style, aktual-perf, amn-style, (bez id), (bez id), (bez id), (bez id), amx-style, amc-style, evd-style, (bez id) |
-| `apps/portal/gnk-aktual/index.html` | 11 | 35696 | am-spt-style, aktual-perf, amn-style, (bez id), (bez id), (bez id), (bez id), amx-style, amc-style, evd-style, (bez id) |
+| `apps/portal/en/gnk-aktual/index.html` | 8 | 10429 | am-spt-style, aktual-perf, amn-style, (bez id), (bez id), (bez id), evd-style, (bez id) |
+| `apps/portal/gnk-aktual/index.html` | 8 | 10093 | am-spt-style, aktual-perf, amn-style, (bez id), (bez id), (bez id), evd-style, (bez id) |
 | `apps/portal/index.html` | 5 | 7369 | (bez id), (bez id), (bez id), (bez id), (bez id) |
 | `apps/portal/animacija/index.html` | 5 | 866 | (bez id), (bez id), (bez id), (bez id), (bez id) |
 | `apps/portal/kanal/index.html` | 4 | 15202 | (bez id), (bez id), (bez id), (bez id) |

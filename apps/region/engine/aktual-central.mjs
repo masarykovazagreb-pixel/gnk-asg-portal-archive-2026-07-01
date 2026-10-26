@@ -14,7 +14,8 @@
  *
  * Blok se ubacuje između markera i ne dira ostatak stranice.
  */
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { esc, shortDate, truncate, themeFor } from './lib.mjs';
@@ -28,6 +29,69 @@ import { chromeOf } from '../src/chrome.mjs';
 const LANG_COUNT = new Set(CHANNELS.map((c) => c.lang)).size;
 const HR_SMALL = { 5: 'pet', 6: 'šest', 7: 'sedam', 8: 'osam', 9: 'devet', 10: 'deset', 11: 'jedanaest', 12: 'dvanaest', 13: 'trinaest', 14: 'četrnaest', 15: 'petnaest', 16: 'šesnaest', 17: 'sedamnaest', 18: 'osamnaest', 19: 'devetnaest', 20: 'dvadeset' };
 const hrCount = (n) => HR_SMALL[n] || String(n);
+
+/* ---------- vanjski list kataloga ----------
+   Tri najveća bloka (atlas, amx pločice izdanja, amc središnja ploča) bila su
+   ugrađena u stranicu: ~27 KB HTML-a po jeziku, bez predmemoriranja i bez
+   mogućnosti da se izgled popravi na jednom mjestu. Sada idu u jedan list
+   `assets/aktual-catalog-v1.css`, a stranica na njihovu mjestu nosi vezu.
+   Redoslijed u listu je isti kao redoslijed blokova u dokumentu, pa se
+   kaskada ne mijenja. */
+/* Put se računa pri pozivu: PORTAL se definira niže u datoteci. */
+const catalogFile = () => join(PORTAL, 'assets', 'aktual-catalog-v1.css');
+const CATALOG_BLOCKS = [
+  ['atlas', /<style>\/\* atlas mreže \*\/([\s\S]*?)<\/style>\n?/],
+  ['amx', /<style id="amx-style">([\s\S]*?)<\/style>\n?/],
+  ['amc', /<style id="amc-style">([\s\S]*?)<\/style>\n?/]
+];
+const CATALOG_MARK = '@@AKTUAL_CATALOG_CSS@@';
+
+/* Vadi blokove iz HTML-a u zajedničku mapu; na mjesto prvog bloka stavlja
+   oznaku koju `catalogLink()` zamijeni vezom kad se izračuna otisak lista. */
+const CATALOG_PARTS = new Map();
+function externalizeCatalogCss(html) {
+  for (const [key, re] of CATALOG_BLOCKS) {
+    const match = html.match(re);
+    if (!match) continue;
+    CATALOG_PARTS.set(key, match[1].trim());
+    let used = false;
+    html = html.replace(re, () => {
+      if (used) return '';
+      used = true;
+      return CATALOG_MARK;
+    });
+  }
+  /* Izvađeni blok ostavljao je po jedan prazan red više u svakoj gradnji, pa
+     se izlaz mijenjao bez promjene sadržaja. Prazni redovi se ovdje svode na
+     najviše jedan — HTML ne mijenja značenje, a gradnja postaje ista u drugom
+     pokretanju. */
+  return html.replace(/\n{3,}/g, '\n\n');
+}
+
+function writeCatalogSheet() {
+  const keys = CATALOG_BLOCKS.map(([k]) => k).filter((k) => CATALOG_PARTS.has(k));
+  if (!keys.length) return null;
+  const css = keys.map((k) => `/* ---- ${k} ---- */\n${CATALOG_PARTS.get(k)}\n`).join('\n');
+  mkdirSync(dirname(catalogFile()), { recursive: true });
+  writeFileSync(catalogFile(), `${css.trim()}\n`);
+  const hash = createHash('sha1').update(css).digest('hex').slice(0, 8);
+  return `<link rel="stylesheet" href="/assets/aktual-catalog-v1.css?v=${hash}">`;
+}
+
+/* Oznaka stoji na mjestu svakog izvađenog bloka; veza ide na mjesto zadnjeg,
+   pa list ulazi u kaskadu točno tamo gdje je prije stajao zadnji ugrađeni
+   blok. Ostale oznake se brišu — isti list se ne učitava tri puta. */
+const withCatalogLink = (html, link) => {
+  /* Stara veza (iz prethodne gradnje) se uklanja prije umetanja nove: inače
+     bi svaki ciklus ostavio po jednu kopiju. */
+  html = html.replace(/<link rel="stylesheet" href="\/assets\/aktual-catalog-v1\.css[^"]*">\n?/g, '');
+  const marks = html.split(CATALOG_MARK).length - 1;
+  let seen = 0;
+  return html.replace(new RegExp(`${CATALOG_MARK}\\n?`, 'g'), () => {
+    seen += 1;
+    return seen === marks ? (link || '') : '';
+  });
+};
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const APP = join(HERE, '..');
@@ -1365,6 +1429,8 @@ ${adHtml}
   html = withPromo(html, 'hr');
   html = withAtlas(html, 'hr');
   html = addPerf(addLogoAlternates(html, ['aktual-media-hr']));
+  html = externalizeCatalogCss(html);
+  html = withCatalogLink(html, writeCatalogSheet());
   html = strengthenAktualBrand(html, 'hr', jsonld);
   writeFileSync(FILE, withPublisher(html));
 
@@ -1418,6 +1484,8 @@ ${adHtml}
     en = withPromo(en, 'en');
     en = withAtlas(en, 'en');
     en = addPerf(addLogoAlternates(en, ['aktual-media-en', 'aktual-media-hr']));
+    en = externalizeCatalogCss(en);
+    en = withCatalogLink(en, writeCatalogSheet());
     en = strengthenAktualBrand(en, 'en', jsonld);
     writeFileSync(EN, withPublisher(en));
   }

@@ -125,26 +125,26 @@ dnevnik 17); 9735 su javne stranice, a
 | gate | ishod | trajanje |
 | --- | --- | --- |
 | web-standard | OK | 4.0 s |
-| design | OK | 3.6 s |
-| brand | OK | 4.6 s |
-| sync-status | OK | 0.0 s |
+| design | OK | 3.7 s |
+| brand | OK | 4.5 s |
+| sync-status | OK | 0.1 s |
 | sync-pipeline | OK | 0.0 s |
 | prenos-check | OK | 0.1 s |
-| jsonld | OK | 5.9 s |
-| links | OK | 6.2 s |
+| jsonld | OK | 6.1 s |
+| links | OK | 6.4 s |
 | attribution | OK | 0.1 s |
-| a11y | OK | 2.7 s |
-| meta | OK | 6.5 s |
+| a11y | OK | 2.9 s |
+| meta | OK | 6.8 s |
 | products | OK | 0.0 s |
-| images | OK | 9.3 s |
-| security | OK | 0.1 s |
+| images | OK | 9.6 s |
+| security | OK | 0.0 s |
 | mesh | OK | 0.1 s |
 | satellites | OK | 0.3 s |
 | exchange | OK | 0.1 s |
 | feeds | OK | 0.1 s |
 | sitemap | OK | 0.4 s |
 | hreflang | OK | 0.1 s |
-| band-check | OK | 3.4 s |
+| band-check | OK | 3.5 s |
 
 ## Kako provjeriti
 
@@ -158,7 +158,7 @@ node scripts/audit-style-blocks-v1.mjs          # cenzus <style> blokova
 
 ## Ograničenja
 
-- Cenzus stilova (9775 stranica, 15935 blokova)
+- Cenzus stilova (9775 stranica, 15929 blokova)
   mjeri, ali ne prepisuje ugrađene blokove — oni su dio postojećih generatora i
   marker-sekcija; popravak ide po generatoru, ne po stranici.
 - Mreža se ne mjeri preko mreže (nema vanjskog HTTP-a iz ovog okruženja), nego
