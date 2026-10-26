@@ -18,6 +18,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DIR = join(ROOT, 'apps', 'portal', 'assets', 'izdanja');
+const ATLAS = join(ROOT, 'apps', 'portal', 'assets', 'atlas');
 const MIN_MEAN = 0.15;
 const SETS = ['240.webp', '440.webp', '800.webp', '880.webp', '1200.webp', 'og.jpg'];
 
@@ -39,6 +40,12 @@ for (const id of ids) {
   const m = mean(join(DIR, `${id}-1200.webp`));
   report.push({ id, mean: Number(m.toFixed(3)) });
   if (m < MIN_MEAN) fails.push(`${id}: tamna slika (prosjek ${m.toFixed(3)} < ${MIN_MEAN}) — crni krug`);
+  /* Atlas (svjetski portali, karta) nosi vlastiti set; i on mora imati scenu. */
+  const atlas = join(ATLAS, `${id}-1600.webp`);
+  if (existsSync(atlas)) {
+    const a = mean(atlas);
+    if (a < MIN_MEAN) fails.push(`${id}: tamna atlas slika (prosjek ${a.toFixed(3)} < ${MIN_MEAN})`);
+  }
 }
 
 const result = {
