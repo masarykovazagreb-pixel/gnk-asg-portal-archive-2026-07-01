@@ -33,7 +33,7 @@ import { refreshTag } from '../../apps/shared/refresh-tag-v1.mjs';
 import { impressumBlock } from '../../apps/shared/impressum-v1.mjs';
 import { authorBand } from '../../apps/shared/author-band-v1.mjs';
 
-const MAX_ITEMS = 90;
+const MAX_ITEMS = 500; /* cijeli korpus; prije je rezalo na 90 pa su zadnji članci nestajali s popisa */
 
 const LABELS = {
   hr: {

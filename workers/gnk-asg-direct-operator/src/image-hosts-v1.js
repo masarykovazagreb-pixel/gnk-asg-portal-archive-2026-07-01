@@ -60,6 +60,7 @@ export const REGION_IMAGE_HOSTS = [
   ['i0.1616.ro', '1616.ro', 'RO'],
   // Afrika
   ['nation.africa', 'Daily Nation', 'KE'],
+  ['www.monitor.co.ug', 'Daily Monitor', 'UG'],
   ['capitalfm.africa', 'Capital FM', 'KE'],
   ['www.kbc.co.ke', 'KBC', 'KE'],
   ['www.madamasr.com', 'Mada Masr', 'EG'],
@@ -82,6 +83,7 @@ export const REGION_IMAGE_HOSTS = [
   ['www.propublica.org', 'ProPublica', 'US'],
   ['conteudo.imguol.com.br', 'UOL', 'BR'],
   ['f.i.uol.com.br', 'UOL (Folha)', 'BR'],
+  ['cdn.portfolio.hu', 'Portfolio', 'HU'],
   ['s2-g1.glbimg.com', 'G1 / Globo', 'BR'],
   ['veja.abril.com.br', 'Veja', 'BR'],
   ['agenciabrasil.ebc.com.br', 'Agência Brasil', 'BR'],

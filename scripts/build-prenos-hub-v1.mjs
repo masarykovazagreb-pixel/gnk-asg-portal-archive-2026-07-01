@@ -32,7 +32,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const PORTAL = join(ROOT, 'apps', 'portal');
 const CHECK = process.argv.includes('--check');
 const SITE = 'https://gnk-asg.hr';
-const LISTED_TEXTS = 24;
+const LISTED_TEXTS = 200; /* cijeli korpus: gate tests/test-prenos-v1 traži svaki članak na popisu */
 
 const esc = (value) => String(value == null ? '' : value)
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
