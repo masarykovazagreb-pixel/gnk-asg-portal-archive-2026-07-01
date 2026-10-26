@@ -1,6 +1,6 @@
 {
   "version": "GNK_ASG_DATA_DESK_V1_20261021",
-  "generatedAt": "2026-10-26T07:00:52.000Z",
+  "generatedAt": "2026-10-26T12:50:23.000Z",
   "channels": 8,
   "channelIds": [
     "zagreb",
@@ -15,9 +15,9 @@
   "items": 3360,
   "night": {
     "totals": {
-      "items": 613,
+      "items": 584,
       "all": 3360,
-      "share": 18.2
+      "share": 17.4
     },
     "rows": [
       {
@@ -99,13 +99,39 @@
         ]
       },
       {
+        "id": "bukurest",
+        "title": "AKTUAL MEDIA KANAL BUCUREȘTI",
+        "city": "Bukurešt",
+        "base": "https://gnk-asg.hr/kanal/bukurest/",
+        "count": 75,
+        "total": 420,
+        "share": 17.9,
+        "samples": [
+          {
+            "title": "SpaceX adună datorii de 40 de miliarde de dolari pentru achiziţionarea de noi cipuri cu IA",
+            "slug": "bukurest-2026-10-26-zf-spacex-aduna-datorii-de-40-de-miliarde-de-f03234",
+            "date": "2026-10-26T05:56:48.000Z"
+          },
+          {
+            "title": "Profit.ro Health.forum Ediția a XVIII-a. Unde a generat investiția privată rezultate măsurabile pentru pacienți, dincolo de valoarea contractelor? Ce modele de finanțare chiar…",
+            "slug": "bukurest-2026-10-26-profit-profit-ro-health-forum-editia-a-xviii-a-ee72df",
+            "date": "2026-10-26T05:52:00.000Z"
+          },
+          {
+            "title": "Lindt recunoaşte că a scumpit excesiv ciocolata şi a pierdut clienţi. Acţiunile companiei au scăzut cu peste 25%, iar directorul general a fost demis",
+            "slug": "bukurest-2026-10-26-newsro-lindt-recunoaste-ca-a-scumpit-excesiv-73d5cf",
+            "date": "2026-10-26T05:48:00.000Z"
+          }
+        ]
+      },
+      {
         "id": "sofija",
         "title": "AKTUAL MEDIA KANAL SOFIJA",
         "city": "Sofija",
         "base": "https://gnk-asg.hr/kanal/sofija/",
-        "count": 77,
+        "count": 67,
         "total": 420,
-        "share": 18.3,
+        "share": 16,
         "samples": [
           {
             "title": "Президентът на Бразилия Лула да Силва спечели нов мандат",
@@ -129,9 +155,9 @@
         "title": "AKTUAL MEDIA KANAL ZAGREB",
         "city": "Zagreb",
         "base": "https://gnk-asg.hr/kanal/zagreb/",
-        "count": 75,
+        "count": 56,
         "total": 420,
-        "share": 17.9,
+        "share": 13.3,
         "samples": [
           {
             "title": "Picula poslao poruku Srbiji nakon pobjede studenata: Spomenuo i put prema EU-u",
@@ -147,32 +173,6 @@
             "title": "VIDEO Nakon Vučićeva pada Srbi krenuli i na čovjeka koji ga je stvorio. Snimka iz Novog Sada širi se po internetu",
             "slug": "zagreb-2026-10-26-jutarnji-video-nakon-vuciceva-pada-srbi-krenuli-i-na-ea8b07",
             "date": "2026-10-26T03:20:44.000Z"
-          }
-        ]
-      },
-      {
-        "id": "bukurest",
-        "title": "AKTUAL MEDIA KANAL BUCUREȘTI",
-        "city": "Bukurešt",
-        "base": "https://gnk-asg.hr/kanal/bukurest/",
-        "count": 75,
-        "total": 420,
-        "share": 17.9,
-        "samples": [
-          {
-            "title": "SpaceX adună datorii de 40 de miliarde de dolari pentru achiziţionarea de noi cipuri cu IA",
-            "slug": "bukurest-2026-10-26-zf-spacex-aduna-datorii-de-40-de-miliarde-de-f03234",
-            "date": "2026-10-26T05:56:48.000Z"
-          },
-          {
-            "title": "Profit.ro Health.forum Ediția a XVIII-a. Unde a generat investiția privată rezultate măsurabile pentru pacienți, dincolo de valoarea contractelor? Ce modele de finanțare chiar…",
-            "slug": "bukurest-2026-10-26-profit-profit-ro-health-forum-editia-a-xviii-a-ee72df",
-            "date": "2026-10-26T05:52:00.000Z"
-          },
-          {
-            "title": "Lindt recunoaşte că a scumpit excesiv ciocolata şi a pierdut clienţi. Acţiunile companiei au scăzut cu peste 25%, iar directorul general a fost demis",
-            "slug": "bukurest-2026-10-26-newsro-lindt-recunoaste-ca-a-scumpit-excesiv-73d5cf",
-            "date": "2026-10-26T05:48:00.000Z"
           }
         ]
       },
@@ -239,25 +239,25 @@
         "base": "https://gnk-asg.hr/kanal/rim/",
         "sources": 4,
         "total": 420,
-        "lead": "La Stampa",
-        "leadCount": 140,
-        "leadShare": 33.3,
+        "lead": "ANSA",
+        "leadCount": 139,
+        "leadShare": 33.1,
         "top3Share": 98.3,
         "list": [
           {
-            "name": "La Stampa",
-            "count": 140,
-            "share": 33.3
+            "name": "ANSA",
+            "count": 139,
+            "share": 33.1
           },
           {
-            "name": "ANSA",
-            "count": 137,
-            "share": 32.6
+            "name": "La Stampa",
+            "count": 139,
+            "share": 33.1
           },
           {
             "name": "la Repubblica",
-            "count": 136,
-            "share": 32.4
+            "count": 135,
+            "share": 32.1
           },
           {
             "name": "Il Sole 24 Ore",
@@ -274,19 +274,19 @@
         "sources": 5,
         "total": 420,
         "lead": "Actualno.com",
-        "leadCount": 134,
-        "leadShare": 31.9,
-        "top3Share": 72.4,
+        "leadCount": 133,
+        "leadShare": 31.7,
+        "top3Share": 71.9,
         "list": [
           {
             "name": "Actualno.com",
-            "count": 134,
-            "share": 31.9
+            "count": 133,
+            "share": 31.7
           },
           {
             "name": "Dnevnik",
-            "count": 88,
-            "share": 21
+            "count": 87,
+            "share": 20.7
           },
           {
             "name": "Mediapool",
@@ -295,8 +295,8 @@
           },
           {
             "name": "Sega.bg",
-            "count": 72,
-            "share": 17.1
+            "count": 74,
+            "share": 17.6
           },
           {
             "name": "Capital",
@@ -313,19 +313,19 @@
         "sources": 5,
         "total": 420,
         "lead": "24.hu",
-        "leadCount": 113,
-        "leadShare": 26.9,
-        "top3Share": 69.8,
+        "leadCount": 115,
+        "leadShare": 27.4,
+        "top3Share": 71,
         "list": [
           {
             "name": "24.hu",
-            "count": 113,
-            "share": 26.9
+            "count": 115,
+            "share": 27.4
           },
           {
             "name": "HVG",
-            "count": 104,
-            "share": 24.8
+            "count": 107,
+            "share": 25.5
           },
           {
             "name": "Portfolio",
@@ -334,13 +334,13 @@
           },
           {
             "name": "444",
-            "count": 75,
-            "share": 17.9
+            "count": 74,
+            "share": 17.6
           },
           {
             "name": "Telex",
-            "count": 52,
-            "share": 12.4
+            "count": 48,
+            "share": 11.4
           }
         ]
       },
@@ -352,73 +352,29 @@
         "sources": 4,
         "total": 420,
         "lead": "N1 Srbija",
-        "leadCount": 112,
-        "leadShare": 26.7,
-        "top3Share": 76.7,
+        "leadCount": 113,
+        "leadShare": 26.9,
+        "top3Share": 76.9,
         "list": [
           {
             "name": "N1 Srbija",
-            "count": 112,
-            "share": 26.7
+            "count": 113,
+            "share": 26.9
           },
           {
             "name": "Nova.rs",
-            "count": 106,
-            "share": 25.2
+            "count": 107,
+            "share": 25.5
           },
           {
             "name": "Politika",
-            "count": 104,
-            "share": 24.8
+            "count": 103,
+            "share": 24.5
           },
           {
             "name": "Danas",
-            "count": 98,
-            "share": 23.3
-          }
-        ]
-      },
-      {
-        "id": "sarajevo",
-        "title": "AKTUAL MEDIA KANAL SARAJEVO",
-        "city": "Sarajevo",
-        "base": "https://gnk-asg.hr/kanal/sarajevo/",
-        "sources": 6,
-        "total": 420,
-        "lead": "Klix",
-        "leadCount": 98,
-        "leadShare": 23.3,
-        "top3Share": 66.7,
-        "list": [
-          {
-            "name": "Klix",
-            "count": 98,
-            "share": 23.3
-          },
-          {
-            "name": "Radio Sarajevo",
-            "count": 93,
-            "share": 22.1
-          },
-          {
-            "name": "Avaz",
-            "count": 89,
-            "share": 21.2
-          },
-          {
-            "name": "N1 BiH",
-            "count": 78,
-            "share": 18.6
-          },
-          {
-            "name": "Buka",
-            "count": 60,
-            "share": 14.3
-          },
-          {
-            "name": "Detektor",
-            "count": 2,
-            "share": 0.5
+            "count": 97,
+            "share": 23.1
           }
         ]
       },
@@ -430,19 +386,19 @@
         "sources": 5,
         "total": 420,
         "lead": "Slovenske novice",
-        "leadCount": 95,
-        "leadShare": 22.6,
-        "top3Share": 64.8,
+        "leadCount": 96,
+        "leadShare": 22.9,
+        "top3Share": 64.3,
         "list": [
           {
             "name": "Slovenske novice",
-            "count": 95,
-            "share": 22.6
+            "count": 96,
+            "share": 22.9
           },
           {
             "name": "Večer",
-            "count": 90,
-            "share": 21.4
+            "count": 87,
+            "share": 20.7
           },
           {
             "name": "Delo",
@@ -450,14 +406,58 @@
             "share": 20.7
           },
           {
-            "name": "N1 Slovenija",
-            "count": 75,
-            "share": 17.9
+            "name": "24ur.com",
+            "count": 76,
+            "share": 18.1
           },
           {
-            "name": "24ur.com",
-            "count": 73,
-            "share": 17.4
+            "name": "N1 Slovenija",
+            "count": 74,
+            "share": 17.6
+          }
+        ]
+      },
+      {
+        "id": "sarajevo",
+        "title": "AKTUAL MEDIA KANAL SARAJEVO",
+        "city": "Sarajevo",
+        "base": "https://gnk-asg.hr/kanal/sarajevo/",
+        "sources": 6,
+        "total": 420,
+        "lead": "Klix",
+        "leadCount": 91,
+        "leadShare": 21.7,
+        "top3Share": 63.6,
+        "list": [
+          {
+            "name": "Klix",
+            "count": 91,
+            "share": 21.7
+          },
+          {
+            "name": "Radio Sarajevo",
+            "count": 90,
+            "share": 21.4
+          },
+          {
+            "name": "Avaz",
+            "count": 86,
+            "share": 20.5
+          },
+          {
+            "name": "N1 BiH",
+            "count": 81,
+            "share": 19.3
+          },
+          {
+            "name": "Buka",
+            "count": 66,
+            "share": 15.7
+          },
+          {
+            "name": "Detektor",
+            "count": 6,
+            "share": 1.4
           }
         ]
       },
@@ -471,7 +471,7 @@
         "lead": "Jutarnji list",
         "leadCount": 83,
         "leadShare": 19.8,
-        "top3Share": 58.3,
+        "top3Share": 57.6,
         "list": [
           {
             "name": "Jutarnji list",
@@ -485,8 +485,8 @@
           },
           {
             "name": "tportal",
-            "count": 81,
-            "share": 19.3
+            "count": 78,
+            "share": 18.6
           },
           {
             "name": "Telegram.hr",
@@ -495,13 +495,13 @@
           },
           {
             "name": "N1 Hrvatska",
-            "count": 61,
-            "share": 14.5
+            "count": 62,
+            "share": 14.8
           },
           {
             "name": "Poslovni dnevnik",
-            "count": 39,
-            "share": 9.3
+            "count": 41,
+            "share": 9.8
           }
         ]
       },
@@ -534,23 +534,23 @@
           },
           {
             "name": "G4Media",
-            "count": 59,
-            "share": 14
+            "count": 64,
+            "share": 15.2
           },
           {
             "name": "Ziarul Financiar",
-            "count": 48,
-            "share": 11.4
-          },
-          {
-            "name": "Agerpres",
-            "count": 48,
-            "share": 11.4
+            "count": 47,
+            "share": 11.2
           },
           {
             "name": "Profit.ro",
-            "count": 43,
-            "share": 10.2
+            "count": 45,
+            "share": 10.7
+          },
+          {
+            "name": "Agerpres",
+            "count": 42,
+            "share": 10
           }
         ]
       }
@@ -569,9 +569,9 @@
         "gapEnd": 1792678981000,
         "longGaps": 1,
         "oldest": 0,
-        "oldestAgeHours": 115.6,
+        "oldestAgeHours": 116.5,
         "newestAgeHours": 0.4,
-        "span": 115.2
+        "span": 116.1
       },
       {
         "id": "zagreb",
@@ -583,9 +583,9 @@
         "gapEnd": 1792905152000,
         "longGaps": 1,
         "oldest": 0,
-        "oldestAgeHours": 49.7,
+        "oldestAgeHours": 53.9,
         "newestAgeHours": 0.1,
-        "span": 49.6
+        "span": 53.8
       },
       {
         "id": "budimpesta",
@@ -597,9 +597,9 @@
         "gapEnd": 1792812600000,
         "longGaps": 1,
         "oldest": 0,
-        "oldestAgeHours": 71.8,
+        "oldestAgeHours": 74.6,
         "newestAgeHours": 0.1,
-        "span": 71.7
+        "span": 74.5
       },
       {
         "id": "sarajevo",
@@ -611,9 +611,9 @@
         "gapEnd": 1792907150000,
         "longGaps": 2,
         "oldest": 0,
-        "oldestAgeHours": 58.7,
+        "oldestAgeHours": 63.2,
         "newestAgeHours": 0.1,
-        "span": 58.7
+        "span": 63
       },
       {
         "id": "beograd",
@@ -625,9 +625,9 @@
         "gapEnd": 1792929606000,
         "longGaps": 0,
         "oldest": 0,
-        "oldestAgeHours": 62.1,
+        "oldestAgeHours": 65.3,
         "newestAgeHours": 0.1,
-        "span": 62.1
+        "span": 65.3
       },
       {
         "id": "ljubljana",
@@ -639,23 +639,23 @@
         "gapEnd": 1792900800000,
         "longGaps": 0,
         "oldest": 0,
-        "oldestAgeHours": 65.2,
-        "newestAgeHours": 0.1,
-        "span": 65.1
+        "oldestAgeHours": 68.7,
+        "newestAgeHours": 0.2,
+        "span": 68.5
       },
       {
         "id": "bukurest",
         "title": "AKTUAL MEDIA KANAL BUCUREȘTI",
         "city": "Bukurešt",
         "base": "https://gnk-asg.hr/kanal/bukurest/",
-        "gap": 4.4,
-        "gapStart": 1792908438315,
-        "gapEnd": 1792924426000,
+        "gap": 4.8,
+        "gapStart": 1792998052000,
+        "gapEnd": 1793015203000,
         "longGaps": 0,
         "oldest": 0,
-        "oldestAgeHours": 45.3,
+        "oldestAgeHours": 48.4,
         "newestAgeHours": 0,
-        "span": 45.3
+        "span": 48.4
       },
       {
         "id": "sofija",
@@ -667,31 +667,31 @@
         "gapEnd": 1792890183000,
         "longGaps": 0,
         "oldest": 0,
-        "oldestAgeHours": 75.1,
-        "newestAgeHours": 0.1,
-        "span": 75
+        "oldestAgeHours": 77.7,
+        "newestAgeHours": 0,
+        "span": 77.7
       }
     ],
-    "newestOverall": 1792998052000
+    "newestOverall": 1793019023000
   },
   "vocabulary": [
     {
       "token": "Vucic",
       "cities": 7,
-      "total": 67,
+      "total": 73,
       "name": true,
       "perCity": [
         {
           "id": "sarajevo",
-          "count": 15
+          "count": 16
         },
         {
           "id": "bukurest",
-          "count": 15
+          "count": 16
         },
         {
           "id": "zagreb",
-          "count": 12
+          "count": 15
         },
         {
           "id": "beograd",
@@ -707,20 +707,20 @@
         },
         {
           "id": "rim",
-          "count": 3
+          "count": 4
         }
       ],
       "examples": [
         {
           "city": "zagreb",
-          "title": "Studenti proglasili pobjedu. Vučić priznao poraz",
-          "slug": "zagreb-2026-10-26-index-studenti-proglasili-pobjedu-vucic-priznao-35e4b1",
+          "title": "SNS je još vodio, a Vučić je već znao da su izgubili: Vučević otkrio što im je rekao",
+          "slug": "zagreb-2026-10-26-n1hr-sns-je-jos-vodio-a-vucic-je-vec-znao-da-su-20c2be",
           "base": "https://gnk-asg.hr/kanal/zagreb/"
         },
         {
           "city": "zagreb",
-          "title": "Povijesni izbori u Srbiji. Aleksandar Vučić priznao poraz: ‘Izgubili smo’",
-          "slug": "zagreb-2026-10-26-telegram-povijesni-izbori-u-srbiji-aleksandar-vucic-b1b88f",
+          "title": "‘Vučić na optuženičkoj klupi? Ne dođemo li do toga, ništa nismo napravili‘",
+          "slug": "zagreb-2026-10-26-jutarnji-vucic-na-optuzenickoj-klupi-ne-dodemo-li-do-8141fe",
           "base": "https://gnk-asg.hr/kanal/zagreb/"
         }
       ]
@@ -778,32 +778,32 @@
     {
       "token": "Trump",
       "cities": 6,
-      "total": 65,
+      "total": 61,
       "name": true,
       "perCity": [
         {
           "id": "budimpesta",
-          "count": 21
+          "count": 22
         },
         {
           "id": "rim",
-          "count": 21
+          "count": 19
         },
         {
           "id": "bukurest",
           "count": 9
         },
         {
-          "id": "zagreb",
-          "count": 6
-        },
-        {
           "id": "ljubljana",
           "count": 5
         },
         {
+          "id": "zagreb",
+          "count": 4
+        },
+        {
           "id": "sarajevo",
-          "count": 3
+          "count": 2
         }
       ],
       "examples": [
@@ -824,7 +824,7 @@
     {
       "token": "Lula",
       "cities": 6,
-      "total": 20,
+      "total": 21,
       "name": true,
       "perCity": [
         {
@@ -832,11 +832,11 @@
           "count": 11
         },
         {
-          "id": "zagreb",
-          "count": 3
+          "id": "bukurest",
+          "count": 4
         },
         {
-          "id": "bukurest",
+          "id": "zagreb",
           "count": 3
         },
         {
@@ -868,55 +868,9 @@
       ]
     },
     {
-      "token": "Starlink",
-      "cities": 6,
-      "total": 19,
-      "name": true,
-      "perCity": [
-        {
-          "id": "sofija",
-          "count": 9
-        },
-        {
-          "id": "bukurest",
-          "count": 4
-        },
-        {
-          "id": "rim",
-          "count": 3
-        },
-        {
-          "id": "zagreb",
-          "count": 1
-        },
-        {
-          "id": "budimpesta",
-          "count": 1
-        },
-        {
-          "id": "ljubljana",
-          "count": 1
-        }
-      ],
-      "examples": [
-        {
-          "city": "zagreb",
-          "title": "Preokret za Ukrajinu: Starlink vraćen na preko 400 km/h nakon Trumpove objave",
-          "slug": "zagreb-2026-10-24-n1hr-preokret-za-ukrajinu-starlink-vracen-na-a43c5a",
-          "base": "https://gnk-asg.hr/kanal/zagreb/"
-        },
-        {
-          "city": "budimpesta",
-          "title": "Az ukránok szerint továbbra is korlátozzák a Starlink hozzáférésüket",
-          "slug": "budimpesta-2026-10-23-24hu-az-ukranok-szerint-tovabbra-is-korlatozzak-05abb7",
-          "base": "https://gnk-asg.hr/kanal/budimpesta/"
-        }
-      ]
-    },
-    {
       "token": "Bolsonaro",
       "cities": 6,
-      "total": 16,
+      "total": 15,
       "name": true,
       "perCity": [
         {
@@ -932,11 +886,11 @@
           "count": 2
         },
         {
-          "id": "ljubljana",
-          "count": 2
+          "id": "zagreb",
+          "count": 1
         },
         {
-          "id": "zagreb",
+          "id": "ljubljana",
           "count": 1
         },
         {
@@ -962,12 +916,12 @@
     {
       "token": "Aleksandar",
       "cities": 6,
-      "total": 14,
+      "total": 15,
       "name": true,
       "perCity": [
         {
           "id": "bukurest",
-          "count": 4
+          "count": 5
         },
         {
           "id": "beograd",
@@ -1008,7 +962,7 @@
     {
       "token": "Manchester",
       "cities": 6,
-      "total": 14,
+      "total": 13,
       "name": true,
       "perCity": [
         {
@@ -1024,15 +978,15 @@
           "count": 3
         },
         {
-          "id": "ljubljana",
-          "count": 2
-        },
-        {
           "id": "bukurest",
           "count": 2
         },
         {
           "id": "sarajevo",
+          "count": 1
+        },
+        {
+          "id": "ljubljana",
           "count": 1
         }
       ],
@@ -1054,12 +1008,12 @@
     {
       "token": "Antonelli",
       "cities": 6,
-      "total": 12,
+      "total": 13,
       "name": true,
       "perCity": [
         {
           "id": "rim",
-          "count": 3
+          "count": 4
         },
         {
           "id": "bukurest",
@@ -1100,7 +1054,7 @@
     {
       "token": "United",
       "cities": 6,
-      "total": 11,
+      "total": 10,
       "name": true,
       "perCity": [
         {
@@ -1109,10 +1063,6 @@
         },
         {
           "id": "budimpesta",
-          "count": 2
-        },
-        {
-          "id": "ljubljana",
           "count": 2
         },
         {
@@ -1125,6 +1075,10 @@
         },
         {
           "id": "sarajevo",
+          "count": 1
+        },
+        {
+          "id": "ljubljana",
           "count": 1
         }
       ],
@@ -1140,6 +1094,48 @@
           "title": "Bournemouth ponizio Manchester United: Liverpool slavio protiv Brigthona , Jakirović uzeo novi bod",
           "slug": "sarajevo-2026-10-25-n1ba-bournemouth-ponizio-manchester-united-cb3844",
           "base": "https://gnk-asg.hr/kanal/sarajevo/"
+        }
+      ]
+    },
+    {
+      "token": "Starlink",
+      "cities": 5,
+      "total": 16,
+      "name": true,
+      "perCity": [
+        {
+          "id": "sofija",
+          "count": 8
+        },
+        {
+          "id": "rim",
+          "count": 3
+        },
+        {
+          "id": "bukurest",
+          "count": 3
+        },
+        {
+          "id": "zagreb",
+          "count": 1
+        },
+        {
+          "id": "ljubljana",
+          "count": 1
+        }
+      ],
+      "examples": [
+        {
+          "city": "zagreb",
+          "title": "Preokret za Ukrajinu: Starlink vraćen na preko 400 km/h nakon Trumpove objave",
+          "slug": "zagreb-2026-10-24-n1hr-preokret-za-ukrajinu-starlink-vracen-na-a43c5a",
+          "base": "https://gnk-asg.hr/kanal/zagreb/"
+        },
+        {
+          "city": "ljubljana",
+          "title": "Kijev išče alternative za ameriški starlink",
+          "slug": "ljubljana-2026-10-23-delo-kijev-isce-alternative-za-ameriski-starlink-820072",
+          "base": "https://gnk-asg.hr/kanal/ljubljana/"
         }
       ]
     },
@@ -1188,6 +1184,48 @@
     {
       "token": "Meghan",
       "cities": 5,
+      "total": 9,
+      "name": true,
+      "perCity": [
+        {
+          "id": "sarajevo",
+          "count": 3
+        },
+        {
+          "id": "ljubljana",
+          "count": 2
+        },
+        {
+          "id": "rim",
+          "count": 2
+        },
+        {
+          "id": "zagreb",
+          "count": 1
+        },
+        {
+          "id": "bukurest",
+          "count": 1
+        }
+      ],
+      "examples": [
+        {
+          "city": "zagreb",
+          "title": "Otac Meghan Markle: ‘Da, plaćao sam prostitutke, ali nikad nisam spavao s maloljetnicama’",
+          "slug": "zagreb-2026-10-25-telegram-otac-meghan-markle-da-placao-sam-fccab6",
+          "base": "https://gnk-asg.hr/kanal/zagreb/"
+        },
+        {
+          "city": "sarajevo",
+          "title": "Filipinske vlasti istražuju oca Meghan Markle: \"Sve ukazuje na to da je seksualni prijestupnik najgore vrste\"",
+          "slug": "sarajevo-2026-10-25-klix-filipinske-vlasti-istrazuju-oca-meghan-fb860b",
+          "base": "https://gnk-asg.hr/kanal/sarajevo/"
+        }
+      ]
+    },
+    {
+      "token": "Markle",
+      "cities": 5,
       "total": 8,
       "name": true,
       "perCity": [
@@ -1224,6 +1262,48 @@
           "title": "Filipinske vlasti istražuju oca Meghan Markle: \"Sve ukazuje na to da je seksualni prijestupnik najgore vrste\"",
           "slug": "sarajevo-2026-10-25-klix-filipinske-vlasti-istrazuju-oca-meghan-fb860b",
           "base": "https://gnk-asg.hr/kanal/sarajevo/"
+        }
+      ]
+    },
+    {
+      "token": "Machado",
+      "cities": 5,
+      "total": 8,
+      "name": true,
+      "perCity": [
+        {
+          "id": "bukurest",
+          "count": 3
+        },
+        {
+          "id": "rim",
+          "count": 2
+        },
+        {
+          "id": "sarajevo",
+          "count": 1
+        },
+        {
+          "id": "budimpesta",
+          "count": 1
+        },
+        {
+          "id": "ljubljana",
+          "count": 1
+        }
+      ],
+      "examples": [
+        {
+          "city": "sarajevo",
+          "title": "María Corina Machado vratila se u Venecuelu nakon deset mjeseci: Desetine hiljada ljudi dočekale je na ulicama",
+          "slug": "sarajevo-2026-10-26-n1ba-maria-corina-machado-vratila-se-u-venecuelu-63c204",
+          "base": "https://gnk-asg.hr/kanal/sarajevo/"
+        },
+        {
+          "city": "budimpesta",
+          "title": "Tavaly motorcsónakban hagyta el Venezuelát, most visszatért Máría Machado ellenzéki vezető",
+          "slug": "budimpesta-2026-10-26-444-tavaly-motorcsonakban-hagyta-el-venezuelat-26398a",
+          "base": "https://gnk-asg.hr/kanal/budimpesta/"
         }
       ]
     },
@@ -1314,37 +1394,37 @@
     {
       "token": "Srbiji",
       "cities": 4,
-      "total": 82,
+      "total": 93,
       "name": true,
       "perCity": [
         {
           "id": "sarajevo",
-          "count": 32
-        },
-        {
-          "id": "zagreb",
-          "count": 21
+          "count": 36
         },
         {
           "id": "beograd",
-          "count": 20
+          "count": 26
+        },
+        {
+          "id": "zagreb",
+          "count": 23
         },
         {
           "id": "ljubljana",
-          "count": 9
+          "count": 8
         }
       ],
       "examples": [
         {
           "city": "zagreb",
-          "title": "Jelena Đoković se oglasila nakon pada Vučića, podijelila snimku slavlja u Srbiji",
-          "slug": "zagreb-2026-10-26-index-jelena-dokovic-se-oglasila-nakon-pada-c1b6bc",
+          "title": "Tonči Glavina prokomentirao izbore u Srbiji: 'Od tamo nam dolazi velik broj radnika'",
+          "slug": "zagreb-2026-10-26-tportal-tonci-glavina-prokomentirao-izbore-u-srbiji-424189",
           "base": "https://gnk-asg.hr/kanal/zagreb/"
         },
         {
           "city": "zagreb",
-          "title": "Baka Prase tvrdi da je uložio 200.000 eura na izbore u Srbiji: Sada se šire snimke njegovih oklada",
-          "slug": "zagreb-2026-10-26-tportal-baka-prase-tvrdi-da-je-ulozio-200-000-eura-ab1d50",
+          "title": "FOTO, VIDEO / Dan nakon povijesnog preokreta u Srbiji: Vučićev pad odjekuje Europom, pljušte reakcije",
+          "slug": "zagreb-2026-10-26-n1hr-foto-video-dan-nakon-povijesnog-preokreta-u-2551ac",
           "base": "https://gnk-asg.hr/kanal/zagreb/"
         }
       ]
@@ -1352,20 +1432,20 @@
     {
       "token": "Srbije",
       "cities": 4,
-      "total": 37,
+      "total": 41,
       "name": true,
       "perCity": [
         {
           "id": "beograd",
-          "count": 17
+          "count": 18
         },
         {
           "id": "sarajevo",
-          "count": 14
+          "count": 16
         },
         {
           "id": "zagreb",
-          "count": 4
+          "count": 5
         },
         {
           "id": "ljubljana",
@@ -1375,14 +1455,14 @@
       "examples": [
         {
           "city": "zagreb",
-          "title": "Jutro nakon Vučićevog pada: neviđeno slavlje na ulicama Srbije, EU nudi studentima suradnju i pomoć u reformama",
-          "slug": "zagreb-2026-10-26-telegram-jutro-nakon-vucicevog-pada-nevideno-slavlje-d10ee2",
+          "title": "Tko je Dejan Šoškić, izgledni kandidat za premijera Srbije? Prije 14 godina odbio Vučića, prati ga velika afera",
+          "slug": "zagreb-2026-10-26-telegram-tko-je-dejan-soskic-izgledni-kandidat-za-94f7c5",
           "base": "https://gnk-asg.hr/kanal/zagreb/"
         },
         {
           "city": "zagreb",
-          "title": "VIDEO I FOTO Ovo je poznati beogradski trg večeras. Slavi se diljem Srbije",
-          "slug": "zagreb-2026-10-26-index-video-i-foto-ovo-je-poznati-beogradski-trg-676b28",
+          "title": "Jutro nakon Vučićevog pada: neviđeno slavlje na ulicama Srbije, EU nudi studentima suradnju i pomoć u reformama",
+          "slug": "zagreb-2026-10-26-telegram-jutro-nakon-vucicevog-pada-nevideno-slavlje-d10ee2",
           "base": "https://gnk-asg.hr/kanal/zagreb/"
         }
       ]
@@ -1466,7 +1546,7 @@
     {
       "token": "Vučića",
       "cities": 4,
-      "total": 16,
+      "total": 17,
       "name": true,
       "perCity": [
         {
@@ -1475,7 +1555,7 @@
         },
         {
           "id": "zagreb",
-          "count": 5
+          "count": 6
         },
         {
           "id": "beograd",
@@ -1489,14 +1569,14 @@
       "examples": [
         {
           "city": "zagreb",
-          "title": "Poznata povjesničarka o padu Vučića: \"Još je puno nepoznanica oko studentskog pokreta\"",
-          "slug": "zagreb-2026-10-26-n1hr-poznata-povjesnicarka-o-padu-vucica-jos-je-9670f4",
+          "title": "Tko je Dejan Šoškić, izgledni kandidat za premijera Srbije? Prije 14 godina odbio Vučića, prati ga velika afera",
+          "slug": "zagreb-2026-10-26-telegram-tko-je-dejan-soskic-izgledni-kandidat-za-94f7c5",
           "base": "https://gnk-asg.hr/kanal/zagreb/"
         },
         {
           "city": "zagreb",
-          "title": "Jelena Đoković se oglasila nakon pada Vučića, podijelila snimku slavlja u Srbiji",
-          "slug": "zagreb-2026-10-26-index-jelena-dokovic-se-oglasila-nakon-pada-c1b6bc",
+          "title": "Poznata povjesničarka o padu Vučića: \"Još je puno nepoznanica oko studentskog pokreta\"",
+          "slug": "zagreb-2026-10-26-n1hr-poznata-povjesnicarka-o-padu-vucica-jos-je-9670f4",
           "base": "https://gnk-asg.hr/kanal/zagreb/"
         }
       ]
@@ -1540,6 +1620,44 @@
       ]
     },
     {
+      "token": "Srbija",
+      "cities": 4,
+      "total": 12,
+      "name": true,
+      "perCity": [
+        {
+          "id": "beograd",
+          "count": 4
+        },
+        {
+          "id": "sarajevo",
+          "count": 4
+        },
+        {
+          "id": "zagreb",
+          "count": 3
+        },
+        {
+          "id": "ljubljana",
+          "count": 1
+        }
+      ],
+      "examples": [
+        {
+          "city": "zagreb",
+          "title": "Hoće li se Srbija napokon pomaknuti?",
+          "slug": "zagreb-2026-10-25-index-hoce-li-se-srbija-napokon-pomaknuti-6b2319",
+          "base": "https://gnk-asg.hr/kanal/zagreb/"
+        },
+        {
+          "city": "zagreb",
+          "title": "VIDEO Dok je Srbija slavila, Novi Sad je na trenutak utihnuo: Prizori koji govore više od riječi",
+          "slug": "zagreb-2026-10-25-tportal-video-dok-je-srbija-slavila-novi-sad-je-na-ff4088",
+          "base": "https://gnk-asg.hr/kanal/zagreb/"
+        }
+      ]
+    },
+    {
       "token": "Madrid",
       "cities": 4,
       "total": 11,
@@ -1578,39 +1696,39 @@
       ]
     },
     {
-      "token": "Ukrajini",
+      "token": "Vučiću",
       "cities": 4,
       "total": 9,
       "name": true,
       "perCity": [
         {
-          "id": "ljubljana",
+          "id": "zagreb",
           "count": 4
         },
         {
-          "id": "zagreb",
-          "count": 2
-        },
-        {
           "id": "beograd",
-          "count": 2
+          "count": 3
         },
         {
           "id": "sarajevo",
+          "count": 1
+        },
+        {
+          "id": "ljubljana",
           "count": 1
         }
       ],
       "examples": [
         {
           "city": "zagreb",
-          "title": "Salvini kritizirao pomoć Ukrajini nakon reizbora za čelnika Lige",
-          "slug": "zagreb-2026-10-25-n1hr-salvini-kritizirao-pomoc-ukrajini-nakon-41d535",
+          "title": "\"Znao je da je gotov\": Oglasio se član biračkog odbora koji je Vučiću uručio glasački listić",
+          "slug": "zagreb-2026-10-26-n1hr-znao-je-da-je-gotov-oglasio-se-clan-b5e0c0",
           "base": "https://gnk-asg.hr/kanal/zagreb/"
         },
         {
           "city": "zagreb",
-          "title": "Ruski olimpijac poginuo u ratu u Ukrajini",
-          "slug": "zagreb-2026-10-24-jutarnji-ruski-olimpijac-poginuo-u-ratu-u-ukrajini-303886",
+          "title": "Zbog kritika Vučiću ostao je bez posla, a sada slavi na ulici: Pogledajte snimku poznatog glumca",
+          "slug": "zagreb-2026-10-26-tportal-zbog-kritika-vucicu-ostao-je-bez-posla-a-13886d",
           "base": "https://gnk-asg.hr/kanal/zagreb/"
         }
       ]
@@ -1692,56 +1810,56 @@
       ]
     },
     {
-      "token": "Pariza",
+      "token": "Ukrajini",
       "cities": 4,
       "total": 8,
       "name": true,
       "perCity": [
         {
-          "id": "sarajevo",
-          "count": 3
-        },
-        {
-          "id": "zagreb",
-          "count": 2
+          "id": "ljubljana",
+          "count": 4
         },
         {
           "id": "beograd",
           "count": 2
         },
         {
-          "id": "ljubljana",
+          "id": "zagreb",
+          "count": 1
+        },
+        {
+          "id": "sarajevo",
           "count": 1
         }
       ],
       "examples": [
         {
           "city": "zagreb",
-          "title": "Teroristički napad kod Pariza bio usmjeren na muslimane?",
-          "slug": "zagreb-2026-10-25-index-teroristicki-napad-kod-pariza-bio-usmjeren-21c705",
+          "title": "Salvini kritizirao pomoć Ukrajini nakon reizbora za čelnika Lige",
+          "slug": "zagreb-2026-10-25-n1hr-salvini-kritizirao-pomoc-ukrajini-nakon-41d535",
           "base": "https://gnk-asg.hr/kanal/zagreb/"
         },
         {
-          "city": "zagreb",
-          "title": "Vojnici na ulicama Pariza i Milana. Zaplijenjeno oružje, trgovine zaštićene daskama",
-          "slug": "zagreb-2026-10-24-index-vojnici-na-ulicama-pariza-i-milana-b27853",
-          "base": "https://gnk-asg.hr/kanal/zagreb/"
+          "city": "beograd",
+          "title": "Ekonomist: SAD pripremaju novi mirovni plan za okončanje rata u Ukrajini",
+          "slug": "beograd-2026-10-24-n1-ekonomist-sad-pripremaju-novi-mirovni-plan-97977b",
+          "base": "https://gnk-asg.hr/kanal/beograd/"
         }
       ]
     },
     {
-      "token": "Melania",
+      "token": "Maria",
       "cities": 4,
       "total": 8,
       "name": true,
       "perCity": [
         {
-          "id": "ljubljana",
-          "count": 3
+          "id": "bukurest",
+          "count": 4
         },
         {
           "id": "rim",
-          "count": 3
+          "count": 2
         },
         {
           "id": "sarajevo",
@@ -1755,14 +1873,14 @@
       "examples": [
         {
           "city": "sarajevo",
-          "title": "Melania Trump dogovorila prekid vatre: Otvara se humanitarni koridor u okupiranom ukrajinskom gradu",
-          "slug": "sarajevo-2026-10-24-radiosarajevo-melania-trump-dogovorila-prekid-vatre-e8d4ef",
+          "title": "María Corina Machado vratila se u Venecuelu nakon deset mjeseci: Desetine hiljada ljudi dočekale je na ulicama",
+          "slug": "sarajevo-2026-10-26-n1ba-maria-corina-machado-vratila-se-u-venecuelu-63c204",
           "base": "https://gnk-asg.hr/kanal/sarajevo/"
         },
         {
           "city": "budimpesta",
-          "title": "Úgy tűnik, Melania Trumpnak sikerült összehoznia egy tűzszünetet egy ukrán városban",
-          "slug": "budimpesta-2026-10-24-444-ugy-tunik-melania-trumpnak-sikerult-761ed1",
+          "title": "Tavaly motorcsónakban hagyta el Venezuelát, most visszatért Máría Machado ellenzéki vezető",
+          "slug": "budimpesta-2026-10-26-444-tavaly-motorcsonakban-hagyta-el-venezuelat-26398a",
           "base": "https://gnk-asg.hr/kanal/budimpesta/"
         }
       ]
@@ -1806,44 +1924,6 @@
       ]
     },
     {
-      "token": "Markle",
-      "cities": 4,
-      "total": 7,
-      "name": true,
-      "perCity": [
-        {
-          "id": "sarajevo",
-          "count": 3
-        },
-        {
-          "id": "rim",
-          "count": 2
-        },
-        {
-          "id": "zagreb",
-          "count": 1
-        },
-        {
-          "id": "bukurest",
-          "count": 1
-        }
-      ],
-      "examples": [
-        {
-          "city": "zagreb",
-          "title": "Otac Meghan Markle: ‘Da, plaćao sam prostitutke, ali nikad nisam spavao s maloljetnicama’",
-          "slug": "zagreb-2026-10-25-telegram-otac-meghan-markle-da-placao-sam-fccab6",
-          "base": "https://gnk-asg.hr/kanal/zagreb/"
-        },
-        {
-          "city": "sarajevo",
-          "title": "Filipinske vlasti istražuju oca Meghan Markle: \"Sve ukazuje na to da je seksualni prijestupnik najgore vrste\"",
-          "slug": "sarajevo-2026-10-25-klix-filipinske-vlasti-istrazuju-oca-meghan-fb860b",
-          "base": "https://gnk-asg.hr/kanal/sarajevo/"
-        }
-      ]
-    },
-    {
       "token": "Obama",
       "cities": 4,
       "total": 7,
@@ -1882,40 +1962,40 @@
       ]
     },
     {
-      "token": "Machado",
+      "token": "Melania",
       "cities": 4,
       "total": 7,
       "name": true,
       "perCity": [
         {
-          "id": "bukurest",
+          "id": "rim",
           "count": 3
         },
         {
-          "id": "rim",
+          "id": "ljubljana",
           "count": 2
         },
         {
-          "id": "budimpesta",
+          "id": "sarajevo",
           "count": 1
         },
         {
-          "id": "ljubljana",
+          "id": "budimpesta",
           "count": 1
         }
       ],
       "examples": [
         {
-          "city": "budimpesta",
-          "title": "Tavaly motorcsónakban hagyta el Venezuelát, most visszatért Máría Machado ellenzéki vezető",
-          "slug": "budimpesta-2026-10-26-444-tavaly-motorcsonakban-hagyta-el-venezuelat-26398a",
-          "base": "https://gnk-asg.hr/kanal/budimpesta/"
+          "city": "sarajevo",
+          "title": "Melania Trump dogovorila prekid vatre: Otvara se humanitarni koridor u okupiranom ukrajinskom gradu",
+          "slug": "sarajevo-2026-10-24-radiosarajevo-melania-trump-dogovorila-prekid-vatre-e8d4ef",
+          "base": "https://gnk-asg.hr/kanal/sarajevo/"
         },
         {
-          "city": "ljubljana",
-          "title": "V Venezuelo se je vrnila opozicijska voditeljica Machado",
-          "slug": "ljubljana-2026-10-25-vecer-v-venezuelo-se-je-vrnila-opozicijska-57d590",
-          "base": "https://gnk-asg.hr/kanal/ljubljana/"
+          "city": "budimpesta",
+          "title": "Úgy tűnik, Melania Trumpnak sikerült összehoznia egy tűzszünetet egy ukrán városban",
+          "slug": "budimpesta-2026-10-24-444-ugy-tunik-melania-trumpnak-sikerult-761ed1",
+          "base": "https://gnk-asg.hr/kanal/budimpesta/"
         }
       ]
     },
@@ -1958,44 +2038,6 @@
       ]
     },
     {
-      "token": "Macron",
-      "cities": 4,
-      "total": 6,
-      "name": true,
-      "perCity": [
-        {
-          "id": "budimpesta",
-          "count": 2
-        },
-        {
-          "id": "rim",
-          "count": 2
-        },
-        {
-          "id": "zagreb",
-          "count": 1
-        },
-        {
-          "id": "sarajevo",
-          "count": 1
-        }
-      ],
-      "examples": [
-        {
-          "city": "zagreb",
-          "title": "Prosvjednici pozivaju na nova okupljanja, Macron suočen s teškim odlukama",
-          "slug": "zagreb-2026-10-25-n1hr-prosvjednici-pozivaju-na-nova-okupljanja-54f447",
-          "base": "https://gnk-asg.hr/kanal/zagreb/"
-        },
-        {
-          "city": "sarajevo",
-          "title": "Macron nakon terorističkog napada u predgrađu Pariza: 'Kažem vam, ovo je prijelomni trenutak'",
-          "slug": "sarajevo-2026-10-23-radiosarajevo-macron-nakon-teroristickog-napada-u-674e28",
-          "base": "https://gnk-asg.hr/kanal/sarajevo/"
-        }
-      ]
-    },
-    {
       "token": "Bayern",
       "cities": 4,
       "total": 6,
@@ -2030,44 +2072,6 @@
           "title": "Kórházba szállították a Bayern München vezetőedzőjét",
           "slug": "budimpesta-2026-10-23-hvg-korhazba-szallitottak-a-bayern-munchen-64b899",
           "base": "https://gnk-asg.hr/kanal/budimpesta/"
-        }
-      ]
-    },
-    {
-      "token": "Flávio",
-      "cities": 4,
-      "total": 6,
-      "name": true,
-      "perCity": [
-        {
-          "id": "beograd",
-          "count": 2
-        },
-        {
-          "id": "budimpesta",
-          "count": 2
-        },
-        {
-          "id": "ljubljana",
-          "count": 1
-        },
-        {
-          "id": "rim",
-          "count": 1
-        }
-      ],
-      "examples": [
-        {
-          "city": "beograd",
-          "title": "Flavio Bolsonaro traži poništenje izbornih rezultata u Brazilu",
-          "slug": "beograd-2026-10-26-nova-flavio-bolsonaro-trazi-ponistenje-izbornih-4858cf",
-          "base": "https://gnk-asg.hr/kanal/beograd/"
-        },
-        {
-          "city": "beograd",
-          "title": "Flavio Bolsonaro traži poništenje izbornih rezultata u Brazilu",
-          "slug": "beograd-2026-10-26-n1-flavio-bolsonaro-trazi-ponistenje-izbornih-a58791",
-          "base": "https://gnk-asg.hr/kanal/beograd/"
         }
       ]
     },
@@ -2148,6 +2152,44 @@
       ]
     },
     {
+      "token": "Večina",
+      "cities": 4,
+      "total": 5,
+      "name": true,
+      "perCity": [
+        {
+          "id": "zagreb",
+          "count": 2
+        },
+        {
+          "id": "beograd",
+          "count": 1
+        },
+        {
+          "id": "sarajevo",
+          "count": 1
+        },
+        {
+          "id": "ljubljana",
+          "count": 1
+        }
+      ],
+      "examples": [
+        {
+          "city": "zagreb",
+          "title": "Većina izdavača odlučila bojkotirati Sajam knjiga u Beogradu. Kao gost najavljen Lordan Zafranović",
+          "slug": "zagreb-2026-10-25-jutarnji-vecina-izdavaca-odlucila-bojkotirati-sajam-486272",
+          "base": "https://gnk-asg.hr/kanal/zagreb/"
+        },
+        {
+          "city": "zagreb",
+          "title": "FOTO Policija upala na car meet u Zagrebu. Većina auta bila tehnički neispravna",
+          "slug": "zagreb-2026-10-24-index-foto-policija-upala-na-car-meet-u-zagrebu-77a54f",
+          "base": "https://gnk-asg.hr/kanal/zagreb/"
+        }
+      ]
+    },
+    {
       "token": "Rezultat",
       "cities": 4,
       "total": 5,
@@ -2186,40 +2228,40 @@
       ]
     },
     {
-      "token": "Hebronu",
+      "token": "Burnham",
       "cities": 4,
-      "total": 5,
+      "total": 4,
       "name": true,
       "perCity": [
-        {
-          "id": "sarajevo",
-          "count": 2
-        },
         {
           "id": "zagreb",
           "count": 1
         },
         {
-          "id": "beograd",
+          "id": "budimpesta",
           "count": 1
         },
         {
-          "id": "ljubljana",
+          "id": "rim",
+          "count": 1
+        },
+        {
+          "id": "bukurest",
           "count": 1
         }
       ],
       "examples": [
         {
           "city": "zagreb",
-          "title": "Izvanredno stanje u Hebronu: Netanyahu povukao radikalan potez uoči ključnih izbora",
-          "slug": "zagreb-2026-10-24-telegram-izvanredno-stanje-u-hebronu-netanyahu-b95826",
+          "title": "Burnham spreman razgovarati o sporazumu o slobodnom kretanju s EU-om",
+          "slug": "zagreb-2026-10-25-poslovni-burnham-spreman-razgovarati-o-sporazumu-o-ff20b1",
           "base": "https://gnk-asg.hr/kanal/zagreb/"
         },
         {
-          "city": "beograd",
-          "title": "Oko 1.200 Palestinaca raseljeno u Hebronu usled izraelske vojne operacije",
-          "slug": "beograd-2026-10-24-n1-oko-1-200-palestinaca-raseljeno-u-hebronu-053668",
-          "base": "https://gnk-asg.hr/kanal/beograd/"
+          "city": "budimpesta",
+          "title": "Andy Burnham elmondta, mikor térhet vissza az Egyesült Királyság az EU-ba",
+          "slug": "budimpesta-2026-10-26-hvg-andy-burnham-elmondta-mikor-terhet-vissza-4f0189",
+          "base": "https://gnk-asg.hr/kanal/budimpesta/"
         }
       ]
     },
@@ -2260,52 +2302,6 @@
           "base": "https://gnk-asg.hr/kanal/sarajevo/"
         }
       ]
-    },
-    {
-      "token": "studenti",
-      "cities": 6,
-      "total": 29,
-      "name": false,
-      "perCity": [
-        {
-          "id": "sarajevo",
-          "count": 10
-        },
-        {
-          "id": "zagreb",
-          "count": 6
-        },
-        {
-          "id": "rim",
-          "count": 6
-        },
-        {
-          "id": "beograd",
-          "count": 4
-        },
-        {
-          "id": "ljubljana",
-          "count": 2
-        },
-        {
-          "id": "bukurest",
-          "count": 1
-        }
-      ],
-      "examples": [
-        {
-          "city": "zagreb",
-          "title": "Studenti proglasili pobjedu. Vučić priznao poraz",
-          "slug": "zagreb-2026-10-26-index-studenti-proglasili-pobjedu-vucic-priznao-35e4b1",
-          "base": "https://gnk-asg.hr/kanal/zagreb/"
-        },
-        {
-          "city": "zagreb",
-          "title": "Reuters: Studenti su pobijedili, ali što sad? Tko će zapravo voditi Srbiju?",
-          "slug": "zagreb-2026-10-26-tportal-reuters-studenti-su-pobijedili-ali-sto-sad-1c55a0",
-          "base": "https://gnk-asg.hr/kanal/zagreb/"
-        }
-      ]
     }
   ],
   "vocabularyNames": [
@@ -2313,22 +2309,22 @@
     "Real",
     "Trump",
     "Lula",
-    "Starlink",
     "Bolsonaro",
     "Aleksandar",
     "Manchester",
     "Antonelli",
     "United",
+    "Starlink",
     "Musk",
     "Meghan",
+    "Markle",
+    "Machado",
     "Milan",
     "Kimi",
     "Srbiji",
     "Srbije",
     "Beogradu",
-    "Meloni",
-    "Vučića",
-    "Putin"
+    "Meloni"
   ],
   "vocabularyWords": [
     "studenti",
@@ -2338,18 +2334,18 @@
     "poraz",
     "liste",
     "proteste",
-    "trener",
-    "derbiju",
     "listi",
     "izgleda",
+    "trener",
+    "derbiju",
     "izgubili",
-    "mandata",
     "rezultate",
-    "napad",
+    "mandata",
     "incident",
-    "ruski",
+    "bivši",
     "mandat",
     "mnogo",
-    "napokon"
+    "napokon",
+    "dobro"
   ]
 }
