@@ -96,7 +96,9 @@ h1{margin:0 0 12px;font-family:Georgia,"Times New Roman",serif;font-size:clamp(3
 .pr-sec h2{margin:0 0 6px;font-family:Georgia,serif;font-size:clamp(22px,2.6vw,30px)}
 .pr-sec p{margin:0 0 14px;color:#9fb3c8;max-width:70ch}
 .pr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;list-style:none;margin:0;padding:0}
-.pr-card{display:block;height:100%;padding:13px 15px;border:1px solid #23405a;border-radius:12px;background:#0b1a29;transition:border-color .18s ease,transform .18s ease}
+.pr-card{display:block;height:100%;padding:0 0 13px;overflow:hidden;border:1px solid #23405a;border-radius:12px;background:#0b1a29;transition:border-color .18s ease,transform .18s ease}
+.pr-card img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;background:#0d2136;margin:0 0 10px}
+.pr-card b,.pr-card span,.pr-card em{margin-left:15px;margin-right:15px}
 .pr-card:hover,.pr-card:focus-visible{border-color:#e9c66c;transform:translateY(-2px);text-decoration:none}
 .pr-card b{display:block;font-size:15px;line-height:1.2;margin:0 0 3px}
 .pr-card span{display:block;font-size:12px;color:#93a6bb;line-height:1.4}
@@ -120,12 +122,16 @@ const cityCards = (lang) => channels.map((c) => {
   const [name, country] = CITY_COPY[c.id] || [c.id, ''];
   const url = `/kanal/${c.id}/`;
   const badge = c.id === 'beograd' ? `<em>${lang === 'hr' ? 'Novo' : 'New'}</em>` : '';
-  return `<li><a class="pr-card" href="${url}"><b>${name}</b><span>${c.lang} · ${country} · ${itemsFor(c.id)} ${lang === 'hr' ? 'tekstova' : 'stories'}</span>${badge}</a></li>`;
+  const alt = lang === 'hr'
+    ? `${name} — gradsko izdanje AKTUAL MEDIA, ${country}`
+    : `${name} — AKTUAL MEDIA city edition, ${country}`;
+  return `<li><a class="pr-card" href="${url}"><img src="/assets/izdanja/${c.id}-440.webp" srcset="/assets/izdanja/${c.id}-240.webp 240w, /assets/izdanja/${c.id}-440.webp 440w" sizes="(max-width:760px) 100vw, 240px" alt="${alt}" width="440" height="248" loading="lazy" decoding="async"><b>${name}</b><span>${c.lang} · ${country} · ${itemsFor(c.id)} ${lang === 'hr' ? 'tekstova' : 'stories'}</span>${badge}</a></li>`;
 }).join('');
 
 const deskCards = (lang) => DESKS.map(([slug, hr, note]) => {
   const label = lang === 'hr' ? hr : ({ sport: 'Sport', politika: 'Politics', sigurnost: 'Security', biznis: 'Business', tehnologija: 'Technology', moda: 'Mode Weekly', putovanja: 'Travel', ljubimci: 'Pets', svijet: 'World' }[slug] || hr);
-  return `<li><a class="pr-card" href="/izdanja/${slug}/"><b>${label}</b><span>${note}</span></a></li>`;
+  const alt = lang === 'hr' ? `${label} — ilustracija deska AKTUAL MEDIA` : `${label} — AKTUAL MEDIA desk illustration`;
+  return `<li><a class="pr-card" href="/izdanja/${slug}/"><img src="/assets/desk/art/${slug}-640.webp" srcset="/assets/desk/art/${slug}-440.webp 440w, /assets/desk/art/${slug}-640.webp 640w" sizes="(max-width:760px) 100vw, 240px" alt="${alt}" width="440" height="248" loading="lazy" decoding="async"><b>${label}</b><span>${note}</span></a></li>`;
 }).join('');
 
 const platformCards = (lang) => PLATFORMS.map(([url, hr, note]) => {
@@ -349,6 +355,7 @@ const llmsBlock = `<!-- AKTUAL-PRODUCTS-LLMS:START -->
 - Machine-readable catalogue: ${SITE}/data/aktual-products-v1.json
 - Freshness of every edition, measured from the archive: ${SITE}/status/
 - City editions are listed at ${SITE}/kanal/ and linked from the index above; each edition keeps its own language, domain, sitemap and feed.
+- Where every text of ours is republished across the network, with a link to each copy: ${SITE}/prenos/ (HR) · ${SITE}/en/prenos/ (EN); machine-readable matrix: ${SITE}/data/prenos-network-v1.json
 <!-- AKTUAL-PRODUCTS-LLMS:END -->`;
 for (const name of ['llms.txt', 'llms-full.txt']) {
   const file = join(PORTAL, name);

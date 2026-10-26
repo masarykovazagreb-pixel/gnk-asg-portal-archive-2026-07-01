@@ -11,22 +11,58 @@
  * ili sadržaj, pa se build ponovno pokrene.
  */
 import { pageHashtags, keywordsFor, tagSlug, INDEXNOW_KEY } from './lib/seo.mjs';
-import { mkdirSync, writeFileSync, rmSync, readFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, rmSync, readFileSync, existsSync, copyFileSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { SITES, siteBySlug, siteBase, pagePath, NETWORK_HUB_HR, NETWORK_HUB_EN, MAIN_SITE } from './lib/registry.mjs';
 import { esc, artSvg, artPath, css, networkBar, siteHeader, head, jsonLd, footer, sitemap, robots, feed } from './lib/kit.mjs';
+import { designTokensCss } from '../shared/design-system-v1.mjs';
+import { FAVICON_SVG, MARK_SVG } from '../shared/brand/brand-mark-v1.mjs';
 import { ogPng } from './lib/png.mjs';
+import { SATELLITE_ART } from './lib/satellite-art.mjs';
 import { buildElectionDesk } from './lib/elections.mjs';
+import { buildSyndication } from './lib/sindikacija.mjs';
+import { writePrenos, prenosUrls, appendSitemap, linkPrenosOnHome } from '../../scripts/lib/prenos-v1.mjs';
+import { houseRibbon, HOUSE_CSS } from '../satellites/lib/house-style-v1.mjs';
+import { exchangeBlock, writeExchangeJson, EXCHANGE_CSS } from '../satellites/lib/razmjena-v1.mjs';
+import { refreshTag, ensureRefreshModule } from '../shared/refresh-tag-v1.mjs';
+import { authorBand, ensureAuthorPortrait, AUTHOR_PORTRAIT } from '../shared/author-band-v1.mjs';
+import { impressumBlock } from '../shared/impressum-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..', '..');
 const OUT = process.env.SITES_OUT ? resolve(process.env.SITES_OUT) : join(HERE, 'site');
 const ART = 6;
 
+/* Jedno mjesto gdje svaka stranica dobiva modul osvježavanja. Postoji zato
+   što web ima više predložaka (članak, popis prijenosa, kolumna, stranica) i
+   ručno dodavanje u svaki od njih znači da će jedan ostati bez modula —
+   upravo se to dogodilo s popisom prijenosa. */
+const AUTHOR_CSS_LINK = '<link rel="stylesheet" href="/assets/author-band-v1.css?v=20261025">';
+const langOf = (html) => (/<html[^>]+lang="([a-z]{2})"/i.exec(html)?.[1] || 'hr').toLowerCase();
 const write = (file, body) => {
   mkdirSync(dirname(file), { recursive: true });
-  writeFileSync(file, body);
+  let html = body;
+  if (file.endsWith('.html') && /<\/body>/i.test(html)) {
+    /* Impressum i modul osvježavanja pišu se ovdje, na jednom mjestu, istim
+       redoslijedom kojim ih slaže i `scripts/apply-impressum-v1.mjs`. Kad bi
+       ih slagao samo poslije builda, svaki rebuild bi izbacio blok i test
+       „zastario izlaz" bio bi u pravu. */
+    if (!html.includes('data-am-impressum')) {
+      html = html.replace(/<\/body>/i, `${impressumBlock(langOf(html))}\n</body>`);
+    }
+    if (!html.includes('data-am-author')) {
+      const bandMarker = /<\/footer>/i.test(html) ? '</footer>' : '</body>';
+      html = html.replace(bandMarker, `${authorBand(langOf(html))}\n${bandMarker}`);
+    }
+    if (!html.includes('/assets/author-band-v1.css')) {
+      html = html.replace(/<\/head>/i, `${AUTHOR_CSS_LINK}\n</head>`);
+    }
+    if (!html.includes('data-am-netday')) {
+      html = html.replace(/<\/body>/i, `${refreshTag('/')}\n</body>`);
+    }
+  }
+  writeFileSync(file, html);
 };
 
 const paragraph = (value, lang) => {
@@ -116,10 +152,20 @@ function normalizePages(content) {
 function imageList(site, page) {
   const list = (page.images && page.images.length ? page.images : [0, 1]).map((entry) =>
     typeof entry === 'number' ? artPath(site.slug, entry) : entry);
+  /* Naslovnica u sitemapu slika mora pokazivati pravu ilustraciju, ne plohu. */
+  if (page.slug === '' && SATELLITE_ART[site.slug]) list.unshift(`/img/${site.slug}-hero-1200.webp`);
   return list;
 }
 
+/* Naslovnica nosi pravu ilustraciju kad postoji; unutrašnje stranice i dalje
+   koriste svoju grafiku. Putanja je lokalna kopija u /img/, jer je svaka
+   stranica samostalna domena i ne smije ovisiti o portalu. */
+function heroPhoto(site) {
+  return SATELLITE_ART[site.slug] ? `/img/${site.slug}-hero-1200.webp` : null;
+}
+
 function heroArt(site, page) {
+  if (page.slug === '' && heroPhoto(site)) return heroPhoto(site);
   return imageList(site, page)[0] || artPath(site.slug, 0);
 }
 
@@ -247,7 +293,8 @@ function renderPage(site, content, pages, page, lang, base) {
   const others = lang === 'en' ? 'hr' : 'en';
   const canonical = `${base}${pagePath(page.slug, lang)}`;
   const alternate = `${base}${pagePath(page.slug, others)}`;
-  const image = `${base}/img/${site.slug}-og.png`;
+  /* OG kartica je prava ilustracija kad postoji; inače generirana ploha. */
+  const image = SATELLITE_ART[site.slug] ? `${base}/img/${site.slug}-og.jpg` : `${base}/img/${site.slug}-og.png`;
   const description = plain(page.lead, lang).replace(/\s+/g, ' ').slice(0, 300);
   const title = page.title[lang].includes(site.name) ? page.title[lang] : `${page.title[lang]} · ${site.name}`;
   const hashtags = pageHashtags(site, page, lang);
@@ -263,7 +310,9 @@ function renderPage(site, content, pages, page, lang, base) {
     <p class="lead">${esc(page.lead[lang])}</p>
     ${chips(site, lang, pages, page)}
     <figure style="margin:26px 0 0;border:1px solid var(--line);border-radius:18px;overflow:hidden">
-      <img src="${heroArt(site, page)}" alt="${esc(site.name)} — ${esc(page.nav[lang])}" width="1200" height="800" fetchpriority="high" style="width:100%">
+      ${page.slug === '' && heroPhoto(site)
+        ? `<img src="${heroPhoto(site)}" srcset="/img/${site.slug}-hero-440.webp 440w, /img/${site.slug}-hero-800.webp 800w, /img/${site.slug}-hero-1200.webp 1200w" sizes="(max-width:760px) 100vw, 1100px" alt="${esc((SATELLITE_ART[site.slug] || {})[lang] || site.name)}" width="1200" height="670" fetchpriority="high" decoding="async" style="width:100%">`
+        : `<img src="${heroArt(site, page)}" alt="${esc(site.name)} — ${esc(page.nav[lang])}" width="1200" height="800" fetchpriority="high" style="width:100%">`}
     </figure>
     ${notice(site, lang, page)}
   </div></div>`;
@@ -278,10 +327,11 @@ function renderPage(site, content, pages, page, lang, base) {
   return `<!doctype html>
 <html lang="${lang}">
 <head>
-${head({ site, lang, page: page.slug === '' ? 'home' : 'page', title, description, canonical, alternate, image, imageW: 1200, imageH: 630, keywords, jsonld, hashtags, section: page.nav[lang], published: updated, modified: updated, extra: `<meta name="format-detection" content="telephone=no">\n<style>${css(site)}</style>` })}
+${head({ site, lang, page: page.slug === '' ? 'home' : 'page', title, description, canonical, alternate, image, imageW: 1200, imageH: 630, keywords, jsonld, hashtags, section: page.nav[lang], published: updated, modified: updated, extra: `<meta name="format-detection" content="telephone=no">\n<style>${css(site)}</style>\n<style>${EXCHANGE_CSS}</style>` })}
 </head>
 <body>
 <a class="skip" href="#main">${lang === 'en' ? 'Skip to content' : 'Preskoči na sadržaj'}</a>
+${houseRibbon({ lang, edition: site.name })}
 ${networkBar(site, lang)}
 ${siteHeader(site, lang, pages, page.slug)}
 <main id="main" tabindex="-1">
@@ -294,6 +344,7 @@ ${faqBlock(page, lang)}
 ${sourcesBlock(content, lang, page)}
 ${back}
 ${siblingBlock(site, lang)}
+${exchangeBlock({ root: ROOT, lang, selfHome: base, limit: 6 })}
 </main>
 ${footer(site, lang, pages)}
 </body>
@@ -320,10 +371,10 @@ function manifest(site) {
 
 function notFound(site) {
   return `<!doctype html>
-<html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <title>404 — ${esc(site.name)}</title><meta name="robots" content="noindex"><link rel="canonical" href="${siteBase(site)}/">
-<style>${css(site)}</style></head>
-<body><main id="main"><div class="hero"><div class="wrap">
+<style>${css(site)}.skip{position:absolute;left:-9999px;top:0;background:#111614;color:#fff;padding:.7rem 1rem;z-index:9999;border-radius:0 0 .45rem 0;font-weight:600;text-decoration:none}.skip:focus,.skip:focus-visible{left:8px;top:8px;outline:2px solid #fff;outline-offset:2px}</style>${designTokensCss()}</head>
+<body><a class="skip" href="#main">Sadržaj</a><main id="main"><div class="hero"><div class="wrap">
 <p class="kicker">404</p><h2>Ove stranice nema.</h2>
 <p class="lead">Možda je poveznica stara ili je stranica premještena. Naslovnica je ovdje, a popis svih izdanja na <a href="${NETWORK_HUB_HR}">gnk-asg.hr/mreza</a>.</p>
 <p><a href="/" style="border:1px solid var(--accent);border-radius:999px;padding:10px 16px;font:800 12px/1 system-ui;letter-spacing:.1em;text-transform:uppercase">${esc(site.name)} →</a></p>
@@ -355,12 +406,33 @@ async function buildSite(site) {
   const base = siteBase(site);
   const dist = join(OUT, site.slug);
   rmSync(dist, { recursive: true, force: true });
+  ensureAuthorPortrait(AUTHOR_PORTRAIT, dist);
+  ensureRefreshModule(dist);
+  ensureRefreshModule(OUT);
 
   // grafike
   for (let i = 0; i < ART; i += 1) {
     write(join(dist, 'img', `${site.slug}-art-${i + 1}.svg`), artSvg({ seed: site.slug, accent: site.accent, accent2: site.accent2, bg: site.bg, variant: i }));
   }
   write(join(dist, 'img', `${site.slug}-og.png`), ogPng({ seed: site.slug, bg: site.bg, accent: site.accent, accent2: site.accent2, variant: 0 }));
+  /* Ilustracija scene putuje sa stranicom: kopija u /img/, tri širine i OG. */
+  if (SATELLITE_ART[site.slug]) {
+    for (const width of [440, 800, 1200]) {
+      const source = join(ROOT, 'apps', 'portal', 'assets', 'mreza', `${site.slug}-${width}.webp`);
+      if (existsSync(source)) copyFileSync(source, join(dist, 'img', `${site.slug}-hero-${width}.webp`));
+    }
+    const og = join(ROOT, 'apps', 'portal', 'assets', 'mreza', `${site.slug}-og.jpg`);
+    if (existsSync(og)) copyFileSync(og, join(dist, 'img', `${site.slug}-og.jpg`));
+  }
+  /* Znak kuće: ista datoteka na svakoj domeni, pa se logo ne može razlikovati. */
+  const houseMark = join(ROOT, 'apps', 'portal', 'assets', 'brand', 'aktual-media-mark.svg');
+  if (existsSync(houseMark)) write(join(dist, 'assets', 'brand', 'aktual-media-mark.svg'), readFileSync(houseMark));
+  /* Favicon i znak su isti na svih šest webova — jedan crtež, jedan izvor. */
+  write(join(dist, 'assets', 'favicon.svg'), FAVICON_SVG);
+  write(join(dist, 'assets', 'aktual-media-mark.svg'), MARK_SVG);
+  /* Modul osvježavanja mora fizički postojati na svakoj domeni. */
+  ensureRefreshModule(dist);
+
   write(join(dist, 'img', 'icon-192.png'), ogPng({ seed: `${site.slug}-icon`, bg: site.bg, accent: site.accent, accent2: site.accent2, variant: 2, width: 192, height: 192 }));
   write(join(dist, 'img', 'icon-512.png'), ogPng({ seed: `${site.slug}-icon`, bg: site.bg, accent: site.accent, accent2: site.accent2, variant: 2, width: 512, height: 512 }));
 
@@ -377,6 +449,7 @@ async function buildSite(site) {
 
   write(join(dist, 'sitemap.xml'), sitemap(site, pages.map((page) => ({ ...page, images: imageList(site, page) }))));
   write(join(dist, 'robots.txt'), robots(site));
+  writeExchangeJson(dist, { root: ROOT, selfHome: base, limit: 12 });
   write(join(dist, 'feed.xml'), feed(site, pages, 'hr'));
   write(join(dist, 'en', 'feed.xml'), feed(site, pages, 'en'));
   write(join(dist, 'manifest.webmanifest'), manifest(site));
@@ -410,7 +483,9 @@ async function buildNetwork() {
   const pageIndex = results.flatMap((result) => result.pageIndex || []);
   const network = {
     version: 2,
-    updatedAt: new Date().toISOString(),
+    /* Vrijeme iz podataka, ne iz sata: dvije gradnje istog dana moraju dati
+       iste bajtove, inače test svježine izlaza pada bez ijedne promjene. */
+    updatedAt: pageIndex.map((page) => page.modified).filter(Boolean).sort().pop() || '2026-10-22',
     pageCount: pageIndex.length,
     editor: { name: 'Nermin Sefić', url: 'https://gnk-asg.hr/nermin-sefic/', role: 'Urednik i direktor' },
     publisher: { name: 'AKTUAL MEDIA d.o.o.', url: 'https://gnk-asg.hr/gnk-aktual/' },
@@ -444,7 +519,46 @@ async function buildNetwork() {
   return results;
 }
 
-buildNetwork().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+buildNetwork()
+  .then((results) => {
+    /* Srednji sloj mreže: svaka Sefićeva kolumna s portala dobiva vlastitu
+       stranicu na svakoj povezanoj domeni. Bez ovog koraka kolumna postoji
+       samo na matici, a mreža nema što prenijeti. */
+    /* Prenos: svi naši tekstovi — kolumne, autorski tekstovi i pojašnjenja —
+       na svakoj stranici mreže, sa slikom autora i linkom na izvornik. */
+    let prenosPages = 0;
+    for (const site of SITES) {
+      const outDir = join(OUT, site.slug);
+      const result = writePrenos({
+        root: ROOT,
+        target: {
+          key: site.slug,
+          name: site.name,
+          base: site.base,
+          lang: site.lang || 'hr',
+          outDir,
+          palette: { bg: site.bg, accent: site.accent, accent2: site.accent2 },
+          ogImage: `${site.base}img/${site.slug}-og.png`
+        },
+        columnBase: '/kolumna/'
+      });
+      if (result.ok) {
+        prenosPages += result.pages;
+        appendSitemap(join(outDir, 'sitemap.xml'), prenosUrls(ROOT, { base: site.base }), false);
+        linkPrenosOnHome({ homeFile: join(outDir, 'index.html'), lang: site.lang || 'hr' });
+      }
+    }
+    console.log(`Prenos — ${prenosPages} stranica na ${SITES.length} stranica mreže.`);
+
+    const syn = buildSyndication({ root: ROOT, outRoot: OUT });
+    if (syn.ok) {
+      console.log(`Sindikacija — ${syn.items} kolumni × ${SITES.length} stranica, ${syn.pages} novih adresa, ${syn.images} lokalnih slika.`);
+    } else {
+      console.log(`Sindikacija — preskočeno: ${syn.reason}`);
+    }
+    return results;
+  })
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });

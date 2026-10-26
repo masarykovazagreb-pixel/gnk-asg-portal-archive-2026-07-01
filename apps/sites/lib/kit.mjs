@@ -1,3 +1,5 @@
+import { impressumBlock, IMPRESSUM_CSS } from '../../../apps/shared/impressum-v1.mjs';
+import { authorBand, AUTHOR_BAND_CSS, ensureAuthorPortrait, AUTHOR_PORTRAIT } from '../../../apps/shared/author-band-v1.mjs';
 /**
  * Zajednički sloj neovisnih stranica GNK ASG mreže.
  *
@@ -11,8 +13,11 @@
  *   JSON-LD (WebSite, Organization, Person, Article/CollectionPage,
  *   BreadcrumbList, FAQPage), vlastiti sitemap.xml, robots.txt i feed.xml.
  */
+import { designTokensCss } from '../../shared/design-system-v1.mjs';
 import { SITES, MAIN_SITE, NETWORK_HUB_HR, NETWORK_HUB_EN, pagePath, siteBase } from './registry.mjs';
+import { NETWORK_PRODUCTS } from '../../shared/network-products-v1.mjs';
 import { meshBlock, MESH_CSS } from '../../satellites/lib/network-v1.mjs';
+import { HOUSE_CSS } from '../../satellites/lib/house-style-v1.mjs';
 
 export const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 export const srDate = (iso) => {
@@ -179,7 +184,7 @@ main:focus{outline:none}
 .mosaic a:nth-child(1){grid-column:span 2;grid-row:span 2}
 .mosaic a:nth-child(1) img{aspect-ratio:auto;height:100%}
 @media(max-width:760px){.mosaic{grid-template-columns:repeat(2,1fr)}.mosaic a:nth-child(1){grid-column:span 2;grid-row:auto}}
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto}}\n${MESH_CSS}`;
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto}}\n${MESH_CSS}\n${HOUSE_CSS}\n${AUTHOR_BAND_CSS}`;
 }
 
 /* ---------- mrežna traka i navigacija ---------- */
@@ -191,7 +196,7 @@ export function networkBar(site, lang) {
     .map((item) => `<a href="${item.base}" hreflang="hr" lang="hr" rel="external noopener">${esc(item.name)}</a>`)
     .join(' · ');
   return `<div class="net"><div class="wrap">
-    <span>GNK ASG MREŽA · <b>${esc(site.name)}</b> · ${lang === 'en' ? 'independent edition' : 'neovisno izdanje'}</span>
+    <span>${lang === 'en' ? 'AKTUAL MEDIA network' : 'AKTUAL MEDIA MREŽA'} · <b>${esc(site.name)}</b> · ${lang === 'en' ? 'independent edition' : 'neovisno izdanje'}</span>
     <span><a href="${MAIN_SITE}" rel="external noopener">gnk-asg.hr</a> · <a href="https://gnk-asg.hr/gnk-aktual/" rel="external noopener">AKTUAL MEDIA</a> · <a href="${hub}"${lang === 'en' ? ' hreflang="en"' : ''}>${lang === 'en' ? 'Network' : 'Mreža'}</a> · ${siblings}</span>
   </div></div>`;
 }
@@ -217,11 +222,25 @@ export function siteHeader(site, lang, pages, current) {
 
 /* ---------- head ---------- */
 
+/* Entitetski graf mreže: isti čvorovi i isti @id na svakoj domeni, pa se
+   GNK ASG, GNK DINAMO Ltd., AKTUAL MEDIA i urednik spajaju u jedan entitet
+   bez obzira na to s koje je adrese čitatelj došao. */
+const ENTITY_GRAPH = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'Organization', '@id': 'https://gnk-asg.hr/#gnk-asg', name: 'GNK ASG d.o.o.', url: 'https://gnk-asg.hr/', parentOrganization: { '@id': 'https://gnk-asg.hr/#gnk-dinamo-ltd' }, founder: { '@id': 'https://gnk-asg.hr/#nermin-sefic' } },
+    { '@type': 'Organization', '@id': 'https://gnk-asg.hr/#gnk-dinamo-ltd', name: 'GNK DINAMO Ltd.', url: 'https://gnk-asg.hr/pojasnjenje-gnk-asg-i-gnk-dinamo-ltd/' },
+    { '@type': 'NewsMediaOrganization', '@id': 'https://gnk-asg.hr/gnk-aktual/#aktual-media', name: 'AKTUAL MEDIA', url: 'https://gnk-asg.hr/gnk-aktual/', parentOrganization: { '@id': 'https://gnk-asg.hr/#gnk-asg' }, editor: { '@id': 'https://gnk-asg.hr/#nermin-sefic' } },
+    { '@type': 'Person', '@id': 'https://gnk-asg.hr/#nermin-sefic', name: 'Nermin Sefić', alternateName: ['Nermin Sefic', 'Sefic Nermin'], jobTitle: 'Glavni urednik AKTUAL MEDIA, direktor GNK ASG d.o.o.', url: 'https://gnk-asg.hr/nermin-sefic/', worksFor: [{ '@id': 'https://gnk-asg.hr/#gnk-asg' }, { '@id': 'https://gnk-asg.hr/gnk-aktual/#aktual-media' }], affiliation: { '@id': 'https://gnk-asg.hr/#gnk-dinamo-ltd' } }
+  ]
+}).replace(/</g, '\\u003c');
+
 export function head({ site, lang, page, title, description, canonical, alternate, image, imageW = 1200, imageH = 800, keywords, jsonld, hashtags = [], section = '', published = '2026-10-22', modified = published, extra = '' }) {
   const locale = lang === 'en' ? 'en_GB' : 'hr_HR';
   const articleTags = page === 'home' ? '' : hashtags.map((tag) => `<meta property="article:tag" content="${esc(tag)}">`).join('\n');
   return `<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
@@ -233,7 +252,12 @@ export function head({ site, lang, page, title, description, canonical, alternat
 <meta name="news_keywords" content="${esc(keywords)}">
 <meta name="hashtags" content="${esc(hashtags.join(' '))}">
 <meta name="theme-color" content="${site.bg}">
+<link rel="author" href="https://gnk-asg.hr/nermin-sefic/">
 <link rel="canonical" href="${canonical}">
+<script type="application/ld+json" id="network-entity-v1">${ENTITY_GRAPH}</script>
+<meta property="article:tag" content="#AKTUALMEDIA">
+<meta property="article:tag" content="#GNKASG">
+<meta property="article:tag" content="#NerminSefić">
 <link rel="alternate" hreflang="${lang}" href="${canonical}">
 <link rel="alternate" hreflang="${lang === 'en' ? 'hr' : 'en'}" href="${alternate}">
 <link rel="alternate" hreflang="x-default" href="${lang === 'en' ? alternate : canonical}">
@@ -262,6 +286,7 @@ export function head({ site, lang, page, title, description, canonical, alternat
 <meta name="twitter:url" content="${canonical}">
 ${articleTags}${articleTags && section ? '\n' : ''}${page === 'home' ? '' : `<meta property="article:section" content="${esc(section)}">\n<meta property="article:published_time" content="${esc(published)}T07:00:00+02:00">\n<meta property="article:modified_time" content="${esc(modified)}T07:00:00+02:00">`}
 <script type="application/ld+json">${JSON.stringify(jsonld)}</script>
+${designTokensCss()}
 ${extra}`;
 }
 
@@ -349,6 +374,7 @@ export function footer(site, lang, pages) {
           <li><a href="https://gnk-asg.hr/aktual-media/" rel="external noopener" hreflang="hr" lang="hr">Podatkovni desk</a></li>
           <li><a href="https://gnk-asg.hr/radio/" rel="external noopener" hreflang="hr" lang="hr">Radio</a></li>
           <li><a href="https://gnk-asg.hr/nermin-sefic/" rel="external noopener">Nermin Sefić</a></li>
+          ${NETWORK_PRODUCTS.map((product) => `<li><a href="${product.url}" rel="external noopener">${esc(product[lang === 'en' ? 'en' : 'hr'])}</a></li>`).join('')}
         </ul>
       </div>
       <div>
@@ -360,7 +386,7 @@ export function footer(site, lang, pages) {
       © 2026 AKTUAL MEDIA d.o.o. · ${lang === 'en' ? 'Editor and director' : 'Urednik i direktor'}: <a href="https://gnk-asg.hr/nermin-sefic/" rel="external noopener">Nermin Sefić</a> ·
       ${lang === 'en' ? 'Every claim carries a source; every source has a date.' : 'Svaka tvrdnja nosi izvor; svaki izvor ima datum.'}
     </p>
-  </div></footer>`;
+  </div>${authorBand(lang === 'en' ? 'en' : 'hr')}${impressumBlock(lang === 'en' ? 'en' : 'hr')}</footer>`;
 }
 
 /* ---------- sitemap, robots, feed ---------- */

@@ -133,8 +133,13 @@ async function buildSnapshot(now) {
     const t = Date.parse(m.updated_at);
     if (!Number.isNaN(t)) {
       const ageDays = Math.floor((now.getTime() - t) / 86400000);
+      /* Rubrika se objavljuje isključivo ručno (public_display_policy
+         manual_approval_only), pa starost snimka nije kvar sustava i ne smije
+         sama oboriti ukupni status na "degraded". Ostaje javno prikazana, s
+         datumom i brojem dana — ništa se ne skriva, samo se ispravno tumači. */
+      const manual = m.public_display_policy === 'manual_approval_only';
       mediaIntel = {
-        status: ageDays <= 7 ? 'fresh' : 'stale',
+        status: manual ? 'manual' : (ageDays <= 7 ? 'fresh' : 'stale'),
         lastUpdateAt: new Date(t).toISOString(),
         ageDays
       };
@@ -151,7 +156,7 @@ async function buildSnapshot(now) {
     }
   }
 
-  const degraded = services.some((s) => s.status !== 'operational') || missing > 0 || jsonLdInvalid > 0 || mediaIntel.status === 'stale';
+  const degraded = services.some((s) => s.status !== 'operational') || missing > 0 || jsonLdInvalid > 0 || mediaIntel.status === 'stale' || mediaIntel.status === 'unknown';
   const overallStatus = degraded ? 'degraded' : 'operational';
 
   return {
@@ -218,7 +223,13 @@ async function main() {
   if (await exists(HISTORY)) {
     try { history = JSON.parse(await readFile(HISTORY, 'utf8')); } catch { history = []; }
   }
-  const nextHistory = [...history, { generatedAt: snapshot.generatedAt, overallStatus: snapshot.overallStatus }].slice(-HISTORY_LIMIT);
+  /* Povijest bilježi promjenu stanja, ne svaki otkucaj: inače svaki ciklus
+     piše isti zapis i povijest prestane biti dokaz promjene. */
+  const previous = history[history.length - 1];
+  const sameState = previous && previous.overallStatus === snapshot.overallStatus;
+  const nextHistory = (sameState
+    ? history
+    : [...history, { generatedAt: snapshot.generatedAt, overallStatus: snapshot.overallStatus }]).slice(-HISTORY_LIMIT);
   snapshot.history = nextHistory.slice().reverse();
 
   const safe = sanitize(snapshot);
@@ -226,7 +237,16 @@ async function main() {
   assertSafe(json);
 
   if (CHECK_ONLY) {
-    console.log(`OK check: overall=${safe.overallStatus}, sitemap=${safe.quality.sitemapEntries}, missing=${safe.quality.sitemapMissingLocalFiles}, jsonLdInvalid=${safe.quality.jsonLdInvalidPages}`);
+    /* Provjera ne smije samo potvrditi da bi se snimak mogao sastaviti — mora
+       potvrditi da je objavljeni snimak stvarno svjež. 48 h je dvostruki
+       dnevni prag; dulje od toga znači da statusna ploča opet laže. */
+    const published = await exists(OUT) ? JSON.parse(await readFile(OUT, 'utf8')) : null;
+    const publishedAt = Date.parse(published?.generatedAt || '');
+    const ageHours = Number.isNaN(publishedAt) ? Infinity : (now.getTime() - publishedAt) / 3600000;
+    if (!(ageHours <= 48)) {
+      throw new Error(`Objavljeni snimak statusa star je ${Number.isFinite(ageHours) ? Math.floor(ageHours) + ' h' : 'nepoznato'} (prag 48 h). Pokreni node scripts/public-status-snapshot-v1.mjs bez --check.`);
+    }
+    console.log(`OK check: overall=${safe.overallStatus}, age=${Math.floor(ageHours)} h, sitemap=${safe.quality.sitemapEntries}, missing=${safe.quality.sitemapMissingLocalFiles}, jsonLdInvalid=${safe.quality.jsonLdInvalidPages}`);
     return;
   }
   await writeFile(OUT, json, 'utf8');

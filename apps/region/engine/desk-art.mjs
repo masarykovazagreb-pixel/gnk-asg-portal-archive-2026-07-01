@@ -36,6 +36,94 @@ const VARIANTS = 6;
 const W = 172;
 const H = 116;
 
+/**
+ * Naslovne ilustracije deskova (scripts/build-desk-art-v1.mjs).
+ *
+ * Alt opisuje ono što se na slici vidi — nikad ne tvrdi da je riječ o
+ * fotografiji događaja. Isti tekst koristi se na kartici, u heroju i u
+ * Open Graph slici, pa se opisi ne mogu razići između stranica.
+ */
+export const DESK_ART = {
+  sport: {
+    title: { hr: 'Sport — noćni stadion', en: 'Sport — night stadium' },
+    alt: {
+      hr: 'Ilustracija: nogometni stadion noću pod reflektorima, prazne tribine, lopta na sredini terena.',
+      en: 'Illustration: a football stadium at night under floodlights, empty stands, the ball on the centre spot.'
+    }
+  },
+  politika: {
+    title: { hr: 'Politika — saborska dvorana', en: 'Politics — the chamber' },
+    alt: {
+      hr: 'Ilustracija: prazna saborska dvorana noću, govornica u snopu svjetla, mikrofoni u prvom planu.',
+      en: 'Illustration: an empty parliamentary chamber at night, a lectern in a shaft of light, microphones in the foreground.'
+    }
+  },
+  biznis: {
+    title: { hr: 'Business — ured prije zore', en: 'Business — before dawn' },
+    alt: {
+      hr: 'Ilustracija: ured na visokom katu prije zore, knjiga i olovka na stolu, grad i burzovni grafikoni kroz staklo.',
+      en: 'Illustration: a high-floor office before dawn, a ledger and pen on the desk, the city and market charts through glass.'
+    }
+  },
+  tehnologija: {
+    title: { hr: 'Tehnologija — niti podataka', en: 'Technology — threads of data' },
+    alt: {
+      hr: 'Ilustracija: tamna server sala, zlatne niti podataka i prozirna mrežasta figura u središtu.',
+      en: 'Illustration: a dark server hall, golden threads of data and a translucent lattice figure at the centre.'
+    }
+  },
+  putovanja: {
+    title: { hr: 'Putovanja — obalni grad', en: 'Travel — the coastal town' },
+    alt: {
+      hr: 'Ilustracija: obalni grad noću, lučka svjetla na rivi i barka na mirnoj vodi pod planinama.',
+      en: 'Illustration: a coastal town at night, harbour lights along the promenade and a boat on calm water beneath mountains.'
+    }
+  },
+  ljubimci: {
+    title: { hr: 'Ljubimci — soba navečer', en: 'Pets — evening room' },
+    alt: {
+      hr: 'Ilustracija: dnevna soba navečer, pas spava u fotelji, mačka na prozorskoj dasci, topla svjetiljka.',
+      en: 'Illustration: a living room in the evening, a dog asleep in an armchair, a cat on the windowsill, a warm lamp.'
+    }
+  },
+  svijet: {
+    title: { hr: 'Svijet — globus u redakciji', en: 'World — the newsroom globe' },
+    alt: {
+      hr: 'Ilustracija: globus na radnom stolu noćne redakcije, zlatne rute preko oceana, naslovi u fokusu.',
+      en: 'Illustration: a globe on a night newsroom desk, golden routes across the oceans, headlines out of focus.'
+    }
+  },
+  moda: {
+    title: { hr: 'Moda — atelje noću', en: 'Fashion — the atelier' },
+    alt: {
+      hr: 'Ilustracija: atelje noću, lutka s drapiranom svilom, konci i škare na tamnom stolu pod svjetlom.',
+      en: 'Illustration: an atelier at night, a dress form draped in silk, threads and scissors on a dark table under light.'
+    }
+  },
+  sigurnost: {
+    title: { hr: 'Sigurnost — noćna soba', en: 'Security — the night room' },
+    alt: {
+      hr: 'Ilustracija: noćna soba u staroj zgradi, papirnata karta, radio i lampa na drvenom stolu, kroz gotičke prozore nazire se grad.',
+      en: 'Illustration: a night room in an old building, a paper map, a radio and a lamp on a wooden table, the city faintly visible through gothic windows.'
+    }
+  }
+};
+
+/** Metapodaci ilustracije; null ako desk još nema svoju sliku. */
+export function deskArt(id) {
+  return DESK_ART[id] || null;
+}
+
+/** Putanja izvedenice: `art: '1200'` → /assets/desk/art/<id>-1200.webp. */
+export function deskArtPath(id, size = '1200', ext = 'webp') {
+  return `/assets/desk/art/${id}-${size}.${ext}`;
+}
+
+/** srcset za <img>/<source> — samo veličine koje skripta stvarno piše. */
+export function deskArtSrcset(id, sizes = ['440', '640', '800', '1200', '1600']) {
+  return sizes.map((size) => `${deskArtPath(id, size)} ${size}w`).join(', ');
+}
+
 /** Stabilan izbor varijante iz sluga — isti zapis, ista ploha. */
 export function variantFor(slug) {
   let hash = 2166136261;

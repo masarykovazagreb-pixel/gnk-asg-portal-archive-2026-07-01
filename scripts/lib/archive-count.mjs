@@ -8,8 +8,10 @@
  * vraća ga već formatiranog, pa se tekst ne može razići s podacima.
  *
  * Redoslijed izvora:
- *   1. apps/arhiva/site/data/arhiva.json  (count koji je arhiva upravo izračunala)
- *   2. zbroj zapisa u apps/region/data/<kanal>.json
+ *   1. zbroj zapisa u apps/region/data/<kanal>.json — jedini ulaz koji je
+ *      u repozitoriju, pa je isti u svakoj kopiji (i na CI-ju, gdje se
+ *      izgrađeni direktoriji ne prenose);
+ *   2. apps/arhiva/site/data/arhiva.json — samo ako zbroja izdanja nema;
  *   3. 0 — pozivatelj tada mora izbjeći tvrdnju o broju
  */
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
@@ -19,24 +21,26 @@ import { fileURLToPath } from 'node:url';
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 export function archiveCount(root = ROOT) {
+  const dir = join(root, 'apps', 'region', 'data');
+  if (existsSync(dir)) {
+    let total = 0;
+    for (const name of readdirSync(dir)) {
+      if (!name.endsWith('.json') || name.startsWith('_')) continue;
+      try {
+        const data = JSON.parse(readFileSync(join(dir, name), 'utf8'));
+        total += (data.items || []).length;
+      } catch { /* jedan neispravan zapis ne ruši zbroj */ }
+    }
+    if (total > 0) return total;
+  }
   const file = join(root, 'apps', 'arhiva', 'site', 'data', 'arhiva.json');
   if (existsSync(file)) {
     try {
       const data = JSON.parse(readFileSync(file, 'utf8'));
       if (Number.isFinite(data.count) && data.count > 0) return data.count;
-    } catch { /* padne li arhiva, ide se na zbroj izdanja */ }
+    } catch { /* i arhiva može biti u izradi */ }
   }
-  const dir = join(root, 'apps', 'region', 'data');
-  if (!existsSync(dir)) return 0;
-  let total = 0;
-  for (const name of readdirSync(dir)) {
-    if (!name.endsWith('.json') || name.startsWith('_')) continue;
-    try {
-      const data = JSON.parse(readFileSync(join(dir, name), 'utf8'));
-      total += (data.items || []).length;
-    } catch { /* jedan neispravan zapis ne ruši zbroj */ }
-  }
-  return total;
+  return 0;
 }
 
 /** Hrvatski zapis tisućica: 3773 → "3.773". */

@@ -1,6 +1,6 @@
 # AKTUAL MEDIA — network of editions
 
-> AKTUAL MEDIA runs six independent editions on their own domains: BOR USA, KOŠARKA 360, SCENA ZNANOSTI, STEP BUDUĆNOSTI, ZDRAVLJE 360 and the temporary IZBORI U SRBIJI desk. Every page listed in Croatian and English, with source and editor.
+> Six independent AKTUAL MEDIA editions on their own domains — BOR USA, KOŠARKA 360, SCENA ZNANOSTI, STEP BUDUĆNOSTI, ZDRAVLJE 360 and IZBORI U SRBIJI — every page with its source.
 
 - Publisher: AKTUAL MEDIA d.o.o. — https://gnk-asg.hr/gnk-aktual/
 - Editor and director: Nermin Sefić — https://gnk-asg.hr/nermin-sefic/
@@ -64,10 +64,10 @@ gnk-zdravlje.pages.dev · https://gnk-zdravlje.pages.dev/ · 5 pages
 
 gnk-izbori-srbija.pages.dev · https://gnk-izbori-srbija.pages.dev/ · 6 pages
 
-- [Serbia’s election: 42 items from 12 outlets](https://gnk-izbori-srbija.pages.dev/en/) — This desk follows what media in Serbia, Croatia, Bosnia and Herzegovina and the United States publish about the election — and it does not copy, it counts and links. Every item has an outlet, a city, a date and a link…
-- [All items: 42 published](https://gnk-izbori-srbija.pages.dev/en/pregled/) — The complete list, ordered by publication time. No filtering by political option and no omission of uncomfortable items.
+- [Serbia’s election: 106 items from 13 outlets](https://gnk-izbori-srbija.pages.dev/en/) — This desk follows what media in Serbia, Croatia, Bosnia and Herzegovina and the United States publish about the election — and it does not copy, it counts and links. Every item has an outlet, a city, a date and a link…
+- [All items: 106 published](https://gnk-izbori-srbija.pages.dev/en/pregled/) — The complete list, ordered by publication time. No filtering by political option and no omission of uncomfortable items.
 - [Who writes and how much: outlets, cities, days](https://gnk-izbori-srbija.pages.dev/en/statistika/) — The table shows one thing only: how many items meet the method’s criterion. It does not show bias, reach or truth.
-- [Incidents and tension: 4 items](https://gnk-izbori-srbija.pages.dev/en/sigurnost/) — This is not a list of incidents — it is a list of items that mention an incident. The difference matters, which is why it is in the first sentence.
+- [Incidents and tension: 12 items](https://gnk-izbori-srbija.pages.dev/en/sigurnost/) — This is not a list of incidents — it is a list of items that mention an incident. The difference matters, which is why it is in the first sentence.
 - [Outlets the desk reads](https://gnk-izbori-srbija.pages.dev/en/izvori/) — The desk does not pick outlets by sympathy. The archive carries whatever the eight city editions ingest, and public feeds are read from a fixed list. Both lists are public and change when the source does.
 - [How the desk counts, and where the limits are](https://gnk-izbori-srbija.pages.dev/en/metodologija/) — The method is short and checkable: archive, criterion, count. Everything else is interpretation we do not publish.
 

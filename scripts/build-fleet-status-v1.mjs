@@ -5,6 +5,9 @@
 import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { readWorkflowCrons, scheduleOf } from './lib/workflow-crons.mjs';
+import { impressumBlock } from '../apps/shared/impressum-v1.mjs';
+import { authorBand } from '../apps/shared/author-band-v1.mjs';
+import { refreshTag } from '../apps/shared/refresh-tag-v1.mjs';
 
 const GROUPS_FILE = 'apps/portal/data/worker-groups.json';
 const RUNS_FILE = 'apps/portal/data/workflow-runs.json';
@@ -323,7 +326,7 @@ ${failing.map(([path, run]) => `      <tr>
 <meta name="twitter:title" content="${esc(t.title)}">
 <meta name="twitter:description" content="${esc(t.desc)}">
 <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
-<link rel="icon" href="/assets/logo-gnk-asg-canonical.svg?v=20260713-standard-64" type="image/svg+xml">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/gnk-design-v1.css?v=${CSS_VERSION}">
 <link rel="stylesheet" href="/automation-status/flota/fleet.css?v=${CSS_VERSION}">
 </head>
@@ -370,10 +373,27 @@ ${ungroupedSection}
 `;
 }
 
+/* Slojevi se pišu ovdje, a ne samo u `sync-all` koraku poslije: kad se ova
+   stranica generira sama (rukom ili testom determinizma), mora izaći ista kao
+   u sinkronizaciji — s impressumom, trakom autora i modulom osvježavanja. */
+const withLayers = (html, lang) => {
+  let out = html;
+  if (!out.includes('/assets/author-band-v1.css')) {
+    out = out.replace(/<\/head>/i, '<link rel="stylesheet" href="/assets/author-band-v1.css?v=20261025">\n</head>');
+  }
+  if (!out.includes('data-am-author')) {
+    const marker = /<\/footer>/i.test(out) ? '</footer>' : '</body>';
+    out = out.replace(marker, `${authorBand(lang)}\n${marker}`);
+  }
+  if (!out.includes('data-am-impressum')) out = out.replace(/<\/body>/i, `${impressumBlock(lang)}\n</body>`);
+  if (!out.includes('data-am-netday')) out = out.replace(/<\/body>/i, `${refreshTag('/')}\n</body>`);
+  return out;
+};
+
 mkdirSync(dirname(OUT_HR), { recursive: true });
 mkdirSync(dirname(OUT_EN), { recursive: true });
-writeFileSync(OUT_HR, page(T.hr, 'en'), 'utf8');
-writeFileSync(OUT_EN, page(T.en, 'hr'), 'utf8');
+writeFileSync(OUT_HR, withLayers(page(T.hr, 'en'), 'hr'), 'utf8');
+writeFileSync(OUT_EN, withLayers(page(T.en, 'hr'), 'en'), 'utf8');
 
 const fleet = {
   version: 'GNK_ASG_FLEET_STATUS_V1',

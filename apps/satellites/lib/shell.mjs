@@ -1,3 +1,5 @@
+import { impressumBlock, IMPRESSUM_CSS } from '../../shared/impressum-v1.mjs';
+import { authorBand, AUTHOR_BAND_CSS, ensureAuthorPortrait, AUTHOR_PORTRAIT } from '../../shared/author-band-v1.mjs';
 /**
  * Zajednička ljuska za samostalne portale AKTUAL MEDIA.
  *
@@ -6,6 +8,11 @@
  * JSON-LD graf, opis u granicama i alt na svakoj slici.
  */
 import { meshBlock, MESH_CSS, EDITIONS } from './network-v1.mjs';
+import { exchangeBlock, EXCHANGE_CSS } from './razmjena-v1.mjs';
+import { designTokensCss } from '../../shared/design-system-v1.mjs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { refreshTag } from '../../shared/refresh-tag-v1.mjs';
 
 export const MAIN = 'https://gnk-asg.hr';
 export const ARHIVA = 'https://gnk-asg-arhiva.pages.dev';
@@ -17,6 +24,9 @@ export const esc = (s = '') => String(s)
   .replace(/</g, '&lt;')
   .replace(/>/g, '&gt;')
   .replace(/"/g, '&quot;');
+
+/* Razmjena čita feedove s diska; ljuska zna gdje je korijen repozitorija. */
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 
 const pad = (n) => String(n).padStart(2, '0');
 
@@ -45,7 +55,7 @@ export function fmtDay(iso, lang = 'hr') {
 
 export const proxyImg = (url) => `${MAIN}/api/img?u=${encodeURIComponent(url)}`;
 
-export const SITE_CSS = `*,*::before,*::after{box-sizing:border-box}
+export const SITE_CSS = `${IMPRESSUM_CSS}${AUTHOR_BAND_CSS}*,*::before,*::after{box-sizing:border-box}
 :root{--bg:#050d18;--panel:#0a1725;--line:#1d3a55;--ink:#e9f0f8;--muted:#9fb2c8;--gold:#e9c66c}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
@@ -57,7 +67,9 @@ img{max-width:100%;height:auto;display:block}
 .skip:focus{left:8px;top:8px;z-index:99;background:var(--gold);color:#06111f;padding:10px 14px;border-radius:8px}
 .top{border-bottom:1px solid var(--line);background:#08131f;font-size:12.5px}
 .top .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;justify-content:space-between;padding:12px 0}
-.brand{font:800 11px/1 system-ui;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.brand{display:inline-flex;align-items:center;gap:9px;font:800 11px/1 system-ui;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);text-decoration:none}
+.brand img{display:block;width:30px;height:30px;border-radius:7px;flex:0 0 auto}
+.brand:hover{color:#fff}
 .nav{display:flex;flex-wrap:wrap;gap:6px 14px}
 .nav a{color:#cfe0f2;border-bottom:1px solid transparent;padding:2px 0}
 .nav a:hover,.nav a:focus-visible{border-bottom-color:var(--gold);text-decoration:none}
@@ -116,6 +128,7 @@ footer a{color:#cfe0f2}
 @media (prefers-reduced-motion:reduce){.card{transition:none}.card:hover{transform:none}}
 @media print{.top,.nav,.btn,.search{display:none}body{background:#fff;color:#000}}
 ${MESH_CSS}
+${EXCHANGE_CSS}
 `;
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -185,16 +198,18 @@ ${alternateLinks}
 <meta name="twitter:image" content="${ogImage}">
 <meta name="twitter:image:alt" content="${esc(ogImageAlt || title)}">
 ${ld}
+${designTokensCss()}
 </head>
 <body>
 <a class="skip" href="#sadrzaj">${lang === 'hr' ? 'Preskoči na sadržaj' : 'Skip to content'}</a>
 <div class="top"><div class="wrap">
-  <a class="brand" href="/">${esc(siteName)}</a>
+  <a class="brand" href="/"><img src="/assets/brand/aktual-media-mark.svg" alt="AKTUAL MEDIA" width="30" height="30" loading="eager" decoding="async"><span>${esc(siteName)}</span></a>
   <nav class="nav" aria-label="${lang === 'hr' ? 'Glavna navigacija' : 'Main navigation'}">${navHtml}</nav>
 </div></div>
 <main id="sadrzaj" class="wrap">
 ${body}
 </main>
+${exchangeBlock({ root: ROOT, lang, selfHome: siteUrl, selfNames: [siteName], limit: 6 })}
 ${meshBlock({ lang, selfUrl: siteUrl })}
 <footer><div class="wrap">
   <ul class="footlinks">
@@ -202,6 +217,8 @@ ${meshBlock({ lang, selfUrl: siteUrl })}
     <li><a href="${MAIN}/">GNK ASG</a></li>
     <li><a href="${ARHIVA}/">${lang === 'hr' ? 'ARHIVA' : 'ARCHIVE'}</a></li>
     <li><a href="${DNEVNIK}/">${lang === 'hr' ? 'DNEVNIK' : 'DAILY'}</a></li>
+    <li><a href="https://gnk-asg-kanal.pages.dev/">KANAL — ${lang === 'hr' ? 'dnevni pregled' : 'daily brief'}</a></li>
+    <li><a href="https://gnk-asg-tjednik.pages.dev/">BUSINESS ${lang === 'hr' ? 'TJEDNIK' : 'WEEKLY'}</a></li>
     <li><a href="${MAIN}/status/">${lang === 'hr' ? 'Status ažurnosti' : 'Freshness status'}</a></li>
     <li><a href="/sitemap.xml">Sitemap</a></li>
     <li><a href="/feed.xml">Feed</a></li>
@@ -211,7 +228,8 @@ ${meshBlock({ lang, selfUrl: siteUrl })}
     ? `Automatski sastavljeno iz javnih izvora ${EDITIONS.length} gradskih izdanja AKTUAL MEDIA. Svaki zapis vodi na izvornik; tvrdnje izvora nisu tvrdnje redakcije.`
     : `Automatically assembled from public sources of the ${EDITIONS.length} AKTUAL MEDIA city editions. Every record links to the original; claims from sources are not the claims of the newsroom.`}</p>
   <p>AKTUAL MEDIA d.o.o. · ${lang === 'hr' ? 'Urednik i direktor' : 'Editor and director'}: Nermin Sefić · <a href="${MAIN}/nermin-sefic/">${lang === 'hr' ? 'profil' : 'profile'}</a></p>
-</div></footer>
+</div>${authorBand(lang === 'hr' ? 'hr' : 'en')}${impressumBlock(lang === 'hr' ? 'hr' : 'en')}
+${refreshTag()}
 </body>
 </html>`;
 }
@@ -255,13 +273,16 @@ Sitemap: ${siteUrl}/sitemap.xml
 }
 
 export function rss({ siteUrl, siteName, desc, items, lang = 'hr' }) {
+  // Feed mora imati apsolutne https poveznice (tests/test-satellites-v1.mjs).
+  // Izvorni RSS nekih izvora daje http://; isti članak se otvara i preko https.
+  const secure = (u) => String(u || '').replace(/^http:\/\//i, 'https://');
   const rows = items.map((it) => `    <item>
       <title>${esc(it.title)}</title>
-      <link>${esc(it.url)}</link>
+      <link>${esc(secure(it.url))}</link>
       <guid isPermaLink="false">${esc(it.slug)}</guid>
       <pubDate>${new Date(it.date).toUTCString()}</pubDate>
       <description>${esc(it.summary || '')}</description>
-      <source url="${esc(it.url)}">${esc(it.sourceName || it.source)}</source>
+      <source url="${esc(secure(it.url))}">${esc(it.sourceName || it.source)}</source>
     </item>`).join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">

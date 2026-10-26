@@ -31,9 +31,15 @@ export const EXTRA_HREFS = [
   '/aktual-media/',
   '/status/',
   '/gnk-aktual/mreza/',
+  '/glavni-gradovi/',
   '/tehnologija-buducnosti/',
   '/digital-workforce/knjiga/',
-  'https://gnk-asg-tjednik.pages.dev/tjednik/2026-W43/'
+  'https://gnk-asg-tjednik.pages.dev/tjednik/2026-W43/',
+  /* Proizvodi koji nisu izdanja — bez njih KANAL, arhiva i dnevnik nisu imali
+     ni jednu dolaznu vezu s izdanja, a uzvratnost je stajala na 18 webova. */
+  'https://gnk-asg-kanal.pages.dev/',
+  'https://gnk-asg-arhiva.pages.dev/',
+  'https://gnk-asg-dnevnik.pages.dev/'
 ];
 
 export const CHROME = {
@@ -51,10 +57,15 @@ export const CHROME = {
     allArrow: 'Sva izdanja →',
     onePlace: 'AKTUAL MEDIA — sve na jednom mjestu',
     langSwitch: 'Pročitajte ovo izdanje na engleskom',
+    capital: 'Glavni grad',
     desks: ['Sport', 'Politika', 'Sigurnost', 'Business', 'Tehnologija', 'Tjednik Mode', 'Putovanja', 'Ljubimci', 'Svijet'],
-    extra: ['Radio', 'Galerija', 'Colorado · USA', 'Svi kanali', 'Podatkovni desk', 'Status ažurnosti', 'Mreža izdanja', 'Tehnologija budućnosti', 'Knjiga radnika', 'BUSINESS TJEDNIK W43 ↗'],
+    extra: ['Radio', 'Galerija', 'Colorado · USA', 'Svi kanali', 'Podatkovni desk', 'Status ažurnosti', 'Mreža izdanja', 'Glavni gradovi', 'Tehnologija budućnosti', 'Knjiga radnika', 'BUSINESS TJEDNIK W43 ↗', 'KANAL — dnevni pregled', 'AKTUAL ARHIVA', 'AKTUAL DNEVNIK'],
     network: (n) => `AKTUAL MEDIA vodi ${n} gradskih kanala, devet deskova, business tjednik, radio i podatkovni desk pod istim imenom i istom metodologijom.`,
-    sourceDesc: (name, title) => `Osvrti na tekstove izvora ${name} u izdanju ${title}.`
+    sourceDesc: (name, title) => `Osvrti na tekstove izvora ${name} u izdanju ${title}.`,
+    artAlt: (city) => `Ilustracija: {city} noću — silueta grada, zlatna svjetla prozora i meridijani u pozadini.`.replace('{city}', city),
+    artNote: 'Generirana ilustracija, ne fotografija.',
+    webTitle: 'Mreža izdanja',
+    webLead: 'Sve 32 adrese mreže na jednom mjestu: sedamnaest gradskih izdanja, devet svjetskih portala i šest samostalnih stranica oko jedne matice AKTUAL MEDIA. Svaki čvor je link, a nit vodi od izdanja do matice i natrag.',
   },
   sr: {
     skip: 'Sadržaj',
@@ -70,10 +81,15 @@ export const CHROME = {
     allArrow: 'Sva izdanja →',
     onePlace: 'AKTUAL MEDIA — sve na jednom mestu',
     langSwitch: 'Pročitajte ovo izdanje na engleskom',
+    capital: 'Glavni grad',
     desks: ['Sport', 'Politika', 'Bezbednost', 'Biznis', 'Tehnologija', 'Tjednik Mode', 'Putovanja', 'Ljubimci', 'Svet'],
-    extra: ['Radio', 'Galerija', 'Kolorado · SAD', 'Svi kanali', 'Podatkovni desk', 'Status ažurnosti', 'Mreža izdanja', 'Tehnologija budućnosti', 'Knjiga radnika', 'BUSINESS TJEDNIK W43 ↗'],
+    extra: ['Radio', 'Galerija', 'Kolorado · SAD', 'Svi kanali', 'Podatkovni desk', 'Status ažurnosti', 'Mreža izdanja', 'Glavni gradovi', 'Tehnologija budućnosti', 'Knjiga radnika', 'BUSINESS TJEDNIK W43 ↗', 'KANAL — dnevni pregled', 'AKTUAL ARHIVA', 'AKTUAL DNEVNIK'],
     network: (n) => `AKTUAL MEDIA vodi ${n} gradskih kanala, devet deskova, business nedeljnik, radio i podatkovni desk pod istim imenom i istom metodologijom.`,
-    sourceDesc: (name, title) => `Osvrti na tekstove izvora ${name} u izdanju ${title}.`
+    sourceDesc: (name, title) => `Osvrti na tekstove izvora ${name} u izdanju ${title}.`,
+    artAlt: (city) => `Ilustracija: {city} noću — silueta grada, zlatna svetla prozora i meridijani u pozadini.`.replace('{city}', city),
+    artNote: 'Generirana ilustracija, nije fotografija.',
+    webTitle: 'Mreža izdanja',
+    webLead: 'Sve 32 adrese mreže na jednom mestu: sedamnaest gradskih izdanja, devet svetskih portala i šest samostalnih stranica oko jedne matice AKTUAL MEDIA. Svaki čvor je link, a nit vodi od izdanja do matice i nazad.',
   },
   bs: {
     skip: 'Sadržaj',
@@ -89,10 +105,15 @@ export const CHROME = {
     allArrow: 'Sva izdanja →',
     onePlace: 'AKTUAL MEDIA — sve na jednom mjestu',
     langSwitch: 'Pročitajte ovo izdanje na engleskom',
+    capital: 'Glavni grad',
     desks: ['Sport', 'Politika', 'Sigurnost', 'Biznis', 'Tehnologija', 'Tjednik Mode', 'Putovanja', 'Kućni ljubimci', 'Svijet'],
-    extra: ['Radio', 'Galerija', 'Colorado · SAD', 'Svi kanali', 'Podatkovni desk', 'Status ažurnosti', 'Mreža izdanja', 'Tehnologija budućnosti', 'Knjiga radnika', 'BUSINESS TJEDNIK W43 ↗'],
+    extra: ['Radio', 'Galerija', 'Colorado · SAD', 'Svi kanali', 'Podatkovni desk', 'Status ažurnosti', 'Mreža izdanja', 'Glavni gradovi', 'Tehnologija budućnosti', 'Knjiga radnika', 'BUSINESS TJEDNIK W43 ↗', 'KANAL — dnevni pregled', 'AKTUAL ARHIVA', 'AKTUAL DNEVNIK'],
     network: (n) => `AKTUAL MEDIA vodi ${n} gradskih kanala, devet deskova, business tjednik, radio i podatkovni desk pod istim imenom i istom metodologijom.`,
-    sourceDesc: (name, title) => `Osvrti na tekstove izvora ${name} u izdanju ${title}.`
+    sourceDesc: (name, title) => `Osvrti na tekstove izvora ${name} u izdanju ${title}.`,
+    artAlt: (city) => `Ilustracija: {city} noću — silueta grada, zlatna svjetla prozora i meridijani u pozadini.`.replace('{city}', city),
+    artNote: 'Generirana ilustracija, nije fotografija.',
+    webTitle: 'Mreža izdanja',
+    webLead: 'Sve 32 adrese mreže na jednom mjestu: sedamnaest gradskih izdanja, devet svjetskih portala i šest samostalnih stranica oko jedne matice AKTUAL MEDIA. Svaki čvor je link, a nit vodi od izdanja do matice i natrag.',
   },
   hu: {
     skip: 'Tartalom',
@@ -108,10 +129,15 @@ export const CHROME = {
     allArrow: 'Minden kiadás →',
     onePlace: 'AKTUAL MEDIA — minden egy helyen',
     langSwitch: 'Olvassa ezt a kiadást angolul',
+    capital: 'Főváros',
     desks: ['Sport', 'Politika', 'Biztonság', 'Business', 'Technológia', 'Tjednik Mode', 'Utazás', 'Háziállatok', 'Világ'],
-    extra: ['Rádió', 'Galéria', 'Colorado · USA', 'Minden csatorna', 'Adatdeszk', 'Frissítési állapot', 'A kiadások hálózata', 'A jövő technológiája', 'A munkás könyve', 'BUSINESS TJEDNIK W43 ↗'],
+    extra: ['Rádió', 'Galéria', 'Colorado · USA', 'Minden csatorna', 'Adatdeszk', 'Frissítési állapot', 'A kiadások hálózata', 'Fővárosok', 'A jövő technológiája', 'A munkás könyve', 'BUSINESS TJEDNIK W43 ↗', 'KANAL — dnevni pregled', 'AKTUAL ARHIVA', 'AKTUAL DNEVNIK'],
     network: (n) => `Az AKTUAL MEDIA ${n} városi csatornát, kilenc deszkot, egy business hetilapot, egy rádiót és egy adatdeszkot visz ugyanazzal a névvel és ugyanazzal a módszertannal.`,
-    sourceDesc: (name, title) => `Elemzések a(z) ${name} szövegeiről a(z) ${title} kiadásban.`
+    sourceDesc: (name, title) => `Elemzések a(z) ${name} szövegeiről a(z) ${title} kiadásban.`,
+    artAlt: (city) => `Illusztráció: {city} éjjel — városi sziluett, arany ablakfények és meridiánok a háttérben.`.replace('{city}', city),
+    artNote: 'Generált illusztráció, nem fénykép.',
+    webTitle: 'A kiadások hálózata',
+    webLead: 'A hálózat mind a 32 címe egy helyen: tizenhét városi kiadás, kilenc világportál és hat önálló oldal az AKTUAL MEDIA egyetlen központja körül. Minden csomópont link, a szál pedig a kiadástól a központhoz vezet és vissza.',
   },
   sl: {
     skip: 'Vsebina',
@@ -127,10 +153,15 @@ export const CHROME = {
     allArrow: 'Vse izdaje →',
     onePlace: 'AKTUAL MEDIA — vse na enem mestu',
     langSwitch: 'Preberite to izdajo v angleščini',
+    capital: 'Glavno mesto',
     desks: ['Šport', 'Politika', 'Varnost', 'Posel', 'Tehnologija', 'Tjednik Mode', 'Potovanja', 'Hišni ljubljenčki', 'Svet'],
-    extra: ['Radio', 'Galerija', 'Colorado · ZDA', 'Vsi kanali', 'Podatkovna miza', 'Stanje osvežitve', 'Mreža izdaj', 'Tehnologija prihodnosti', 'Knjiga delavca', 'BUSINESS TJEDNIK W43 ↗'],
+    extra: ['Radio', 'Galerija', 'Colorado · ZDA', 'Vsi kanali', 'Podatkovna miza', 'Stanje osvežitve', 'Mreža izdaj', 'Glavna mesta', 'Tehnologija prihodnosti', 'Knjiga delavca', 'BUSINESS TJEDNIK W43 ↗', 'KANAL — dnevni pregled', 'AKTUAL ARHIVA', 'AKTUAL DNEVNIK'],
     network: (n) => `AKTUAL MEDIA vodi ${n} mestnih kanalov, devet miz, poslovni tednik, radio in podatkovno mizo pod istim imenom in z isto metodologijo.`,
-    sourceDesc: (name, title) => `Osvrti na besedila vira ${name} v izdaji ${title}.`
+    sourceDesc: (name, title) => `Osvrti na besedila vira ${name} v izdaji ${title}.`,
+    artAlt: (city) => `Ilustracija: {city} ponoči — obris mesta, zlate luči oken in meridiani v ozadju.`.replace('{city}', city),
+    artNote: 'Ustvarjena ilustracija, ne fotografija.',
+    webTitle: 'Mreža izdaj',
+    webLead: 'Vseh 32 naslovov mreže na enem mestu: sedemnajst mestnih izdaj, devet svetovnih portalov in šest samostojnih strani okoli enega središča AKTUAL MEDIA. Vsako vozlišče je povezava, nit pa vodi od izdaje do središča in nazaj.',
   },
   it: {
     skip: 'Contenuto',
@@ -146,10 +177,15 @@ export const CHROME = {
     allArrow: 'Tutte le edizioni →',
     onePlace: 'AKTUAL MEDIA — tutto in un solo posto',
     langSwitch: 'Leggi questa edizione in inglese',
+    capital: 'Capitale',
     desks: ['Sport', 'Politica', 'Sicurezza', 'Business', 'Tecnologia', 'Tjednik Mode', 'Viaggi', 'Animali', 'Mondo'],
-    extra: ['Radio', 'Galleria', 'Colorado · USA', 'Tutti i canali', 'Desk dati', 'Stato di aggiornamento', 'Rete delle edizioni', 'Tecnologia del futuro', 'Il libro del lavoratore', 'BUSINESS TJEDNIK W43 ↗'],
+    extra: ['Radio', 'Galleria', 'Colorado · USA', 'Tutti i canali', 'Desk dati', 'Stato di aggiornamento', 'Rete delle edizioni', 'Capitali', 'Tecnologia del futuro', 'Il libro del lavoratore', 'BUSINESS TJEDNIK W43 ↗', 'KANAL — dnevni pregled', 'AKTUAL ARHIVA', 'AKTUAL DNEVNIK'],
     network: (n) => `AKTUAL MEDIA gestisce ${n} canali cittadini, nove desk, un settimanale economico, una radio e un desk dati con lo stesso nome e la stessa metodologia.`,
-    sourceDesc: (name, title) => `Letture critiche dei testi di ${name} nell'edizione ${title}.`
+    sourceDesc: (name, title) => `Letture critiche dei testi di ${name} nell'edizione ${title}.`,
+    artAlt: (city) => `Illustrazione: {city} di notte — profilo della città, luci dorate alle finestre e meridiani sullo sfondo.`.replace('{city}', city),
+    artNote: 'Illustrazione generata, non una fotografia.',
+    webTitle: 'La rete delle edizioni',
+    webLead: 'Tutti e 32 gli indirizzi della rete in un solo posto: diciassette edizioni cittadine, nove portali mondiali e sei siti indipendenti attorno a un unico centro AKTUAL MEDIA. Ogni nodo è un link e il filo porta dall’edizione al centro e ritorno.',
   },
   bg: {
     skip: 'Съдържание',
@@ -165,10 +201,15 @@ export const CHROME = {
     allArrow: 'Всички издания →',
     onePlace: 'AKTUAL MEDIA — всичко на едно място',
     langSwitch: 'Прочетете това издание на английски',
+    capital: 'Столица',
     desks: ['Спорт', 'Политика', 'Сигурност', 'Бизнес', 'Технологии', 'Tjednik Mode', 'Пътувания', 'Домашни любимци', 'Свят'],
-    extra: ['Радио', 'Галерия', 'Колорадо · САЩ', 'Всички канали', 'Деск за данни', 'Състояние на обновяване', 'Мрежа на изданията', 'Технологии на бъдещето', 'Книга на работника', 'BUSINESS TJEDNIK W43 ↗'],
+    extra: ['Радио', 'Галерия', 'Колорадо · САЩ', 'Всички канали', 'Деск за данни', 'Състояние на обновяване', 'Мрежа на изданията', 'Столици', 'Технологии на бъдещето', 'Книга на работника', 'BUSINESS TJEDNIK W43 ↗', 'KANAL — dnevni pregled', 'AKTUAL ARHIVA', 'AKTUAL DNEVNIK'],
     network: (n) => `AKTUAL MEDIA води ${n} градски канала, девет деска, бизнес седмичник, радио и деск за данни под едно и също име и с една и съща методология.`,
-    sourceDesc: (name, title) => `Оценки на текстовете на източника ${name} в изданието ${title}.`
+    sourceDesc: (name, title) => `Оценки на текстовете на източника ${name} в изданието ${title}.`,
+    artAlt: (city) => `Илюстрация: {city} нощем — силует на града, златни светлини по прозорците и меридиани във фона.`.replace('{city}', city),
+    artNote: 'Генерирана илюстрация, не фотография.',
+    webTitle: 'Мрежа на изданията',
+    webLead: 'Всички 32 адреса на мрежата на едно място: седемнадесет градски издания, девет световни портала и шест самостоятелни страници около един център на AKTUAL MEDIA. Всяко възел е връзка, а нишката води от изданието до центъра и обратно.',
   },
   ro: {
     skip: 'Conținut',
@@ -184,10 +225,15 @@ export const CHROME = {
     allArrow: 'Toate edițiile →',
     onePlace: 'AKTUAL MEDIA — totul într-un singur loc',
     langSwitch: 'Citiți această ediție în engleză',
+    capital: 'Capitala',
     desks: ['Sport', 'Politică', 'Securitate', 'Business', 'Tehnologie', 'Tjednik Mode', 'Călătorii', 'Animale de companie', 'Lume'],
-    extra: ['Radio', 'Galerie', 'Colorado · SUA', 'Toate canalele', 'Biroul de date', 'Starea actualizării', 'Rețeaua edițiilor', 'Tehnologia viitorului', 'Cartea lucrătorului', 'BUSINESS TJEDNIK W43 ↗'],
+    extra: ['Radio', 'Galerie', 'Colorado · SUA', 'Toate canalele', 'Biroul de date', 'Starea actualizării', 'Rețeaua edițiilor', 'Capitale', 'Tehnologia viitorului', 'Cartea lucrătorului', 'BUSINESS TJEDNIK W43 ↗', 'KANAL — dnevni pregled', 'AKTUAL ARHIVA', 'AKTUAL DNEVNIK'],
     network: (n) => `AKTUAL MEDIA conduce ${n} canale urbane, nouă birouri, un săptămânal de business, un radio și un birou de date sub același nume și cu aceeași metodologie.`,
-    sourceDesc: (name, title) => `Lecturi critice ale textelor din ${name} în ediția ${title}.`
+    sourceDesc: (name, title) => `Lecturi critice ale textelor din ${name} în ediția ${title}.`,
+    artAlt: (city) => `Ilustrație: {city} noaptea — silueta orașului, lumini aurii la ferestre și meridiane în fundal.`.replace('{city}', city),
+    artNote: 'Ilustrație generată, nu o fotografie.',
+    webTitle: 'Rețeaua edițiilor',
+    webLead: 'Toate cele 32 de adrese ale rețelei într-un singur loc: șaptesprezece ediții orășenești, nouă portaluri mondiale și șase site-uri independente în jurul unui singur centru AKTUAL MEDIA. Fiecare nod este un link, iar firul duce de la ediție la centru și înapoi.',
   },
   en: {
     skip: 'Content',
@@ -203,10 +249,15 @@ export const CHROME = {
     allArrow: 'All editions →',
     onePlace: 'AKTUAL MEDIA — all in one place',
     langSwitch: 'Read this edition in English',
+    capital: 'Capital',
     desks: ['Sport', 'Politics', 'Security', 'Business', 'Technology', 'Tjednik Mode', 'Travel', 'Pets', 'World'],
-    extra: ['Radio', 'Gallery', 'Colorado · USA', 'All channels', 'Data desk', 'Freshness status', 'Edition network', 'Future technology', "Worker's book", 'BUSINESS TJEDNIK W43 ↗'],
+    extra: ['Radio', 'Gallery', 'Colorado · USA', 'All channels', 'Data desk', 'Freshness status', 'Edition network', 'Capitals', 'Future technology', "Worker's book", 'BUSINESS TJEDNIK W43 ↗', 'KANAL — dnevni pregled', 'AKTUAL ARHIVA', 'AKTUAL DNEVNIK'],
     network: (n) => `AKTUAL MEDIA runs ${n} city channels, nine desks, a business weekly, a radio and a data desk under one name and one methodology.`,
-    sourceDesc: (name, title) => `Readings of ${name} texts in the ${title} edition.`
+    sourceDesc: (name, title) => `Readings of ${name} texts in the ${title} edition.`,
+    artAlt: (city) => `Illustration: {city} at night — a city skyline, gold window lights and meridians behind.`.replace('{city}', city),
+    artNote: 'Generated illustration, not a photograph.',
+    webTitle: 'Edition network',
+    webLead: 'All 32 addresses of the network in one place: seventeen city editions, nine world portals and six standalone sites around a single AKTUAL MEDIA centre. Every node is a link, and the thread runs from the edition to the centre and back.',
   },
   id: {
     skip: 'Konten',
@@ -222,10 +273,15 @@ export const CHROME = {
     allArrow: 'Semua edisi →',
     onePlace: 'AKTUAL MEDIA — semuanya di satu tempat',
     langSwitch: 'Baca edisi ini dalam bahasa Inggris',
+    capital: 'Ibu kota',
     desks: ['Olahraga', 'Politik', 'Keamanan', 'Bisnis', 'Teknologi', 'Tjednik Mode', 'Perjalanan', 'Hewan peliharaan', 'Dunia'],
-    extra: ['Radio', 'Galeri', 'Colorado · AS', 'Semua kanal', 'Meja data', 'Status kebaruan', 'Jaringan edisi', 'Teknologi masa depan', 'Buku pekerja', 'BUSINESS TJEDNIK W43 ↗'],
+    extra: ['Radio', 'Galeri', 'Colorado · AS', 'Semua kanal', 'Meja data', 'Status kebaruan', 'Jaringan edisi', 'Ibu kota', 'Teknologi masa depan', 'Buku pekerja', 'BUSINESS TJEDNIK W43 ↗', 'KANAL — dnevni pregled', 'AKTUAL ARHIVA', 'AKTUAL DNEVNIK'],
     network: (n) => `AKTUAL MEDIA mengelola ${n} kanal kota, sembilan meja, satu mingguan bisnis, radio, dan meja data dengan satu nama dan satu metodologi.`,
-    sourceDesc: (name, title) => `Tinjauan atas teks ${name} dalam edisi ${title}.`
+    sourceDesc: (name, title) => `Tinjauan atas teks ${name} dalam edisi ${title}.`,
+    artAlt: (city) => `Ilustrasi: {city} pada malam hari — siluet kota, cahaya jendela keemasan, dan meridian di latar belakang.`.replace('{city}', city),
+    artNote: 'Ilustrasi yang dihasilkan, bukan foto.',
+    webTitle: 'Jaringan edisi',
+    webLead: 'Ketiga puluh dua alamat jaringan dalam satu tempat: tujuh belas edisi kota, sembilan portal dunia, dan enam situs mandiri di sekitar satu pusat AKTUAL MEDIA. Setiap simpul adalah tautan, dan benangnya berjalan dari edisi ke pusat dan kembali.',
   },
   pt: {
     skip: 'Conteúdo',
@@ -241,10 +297,15 @@ export const CHROME = {
     allArrow: 'Todas as edições →',
     onePlace: 'AKTUAL MEDIA — tudo num só lugar',
     langSwitch: 'Leia esta edição em inglês',
+    capital: 'Capital',
     desks: ['Esporte', 'Política', 'Segurança', 'Negócios', 'Tecnologia', 'Tjednik Mode', 'Viagens', 'Animais', 'Mundo'],
-    extra: ['Rádio', 'Galeria', 'Colorado · EUA', 'Todos os canais', 'Mesa de dados', 'Estado de atualização', 'Rede de edições', 'Tecnologia do futuro', 'Livro do trabalhador', 'BUSINESS TJEDNIK W43 ↗'],
+    extra: ['Rádio', 'Galeria', 'Colorado · EUA', 'Todos os canais', 'Mesa de dados', 'Estado de atualização', 'Rede de edições', 'Capitais', 'Tecnologia do futuro', 'Livro do trabalhador', 'BUSINESS TJEDNIK W43 ↗', 'KANAL — dnevni pregled', 'AKTUAL ARHIVA', 'AKTUAL DNEVNIK'],
     network: (n) => `A AKTUAL MEDIA mantém ${n} canais urbanos, nove mesas, um semanário de negócios, uma rádio e uma mesa de dados com o mesmo nome e a mesma metodologia.`,
-    sourceDesc: (name, title) => `Leituras dos textos de ${name} na edição ${title}.`
+    sourceDesc: (name, title) => `Leituras dos textos de ${name} na edição ${title}.`,
+    artAlt: (city) => `Ilustração: {city} à noite — silhueta da cidade, luzes douradas nas janelas e meridianos ao fundo.`.replace('{city}', city),
+    artNote: 'Ilustração gerada, não uma fotografia.',
+    webTitle: 'Rede de edições',
+    webLead: 'Todos os 32 endereços da rede num só lugar: dezassete edições urbanas, nove portais mundiais e seis sites independentes em torno de um único centro AKTUAL MEDIA. Cada nó é um link, e o fio vai da edição ao centro e de volta.',
   },
   ar: {
     skip: 'المحتوى',
@@ -260,10 +321,15 @@ export const CHROME = {
     allArrow: 'كل الإصدارات ←',
     onePlace: 'أكتوال ميديا — كل شيء في مكان واحد',
     langSwitch: 'اقرأ هذا الإصدار بالإنجليزية',
+    capital: 'العاصمة',
     desks: ['رياضة', 'سياسة', 'أمن', 'أعمال', 'تكنولوجيا', 'Tjednik Mode', 'سفر', 'حيوانات أليفة', 'العالم'],
-    extra: ['راديو', 'معرض الصور', 'كولورادو · الولايات المتحدة', 'كل القنوات', 'مكتب البيانات', 'حالة التحديث', 'شبكة الإصدارات', 'تقنية المستقبل', 'كتاب العامل', 'BUSINESS TJEDNIK W43 ↗'],
+    extra: ['راديو', 'معرض الصور', 'كولورادو · الولايات المتحدة', 'كل القنوات', 'مكتب البيانات', 'حالة التحديث', 'شبكة الإصدارات', 'العواصم', 'تقنية المستقبل', 'كتاب العامل', 'BUSINESS TJEDNIK W43 ↗', 'KANAL — dnevni pregled', 'AKTUAL ARHIVA', 'AKTUAL DNEVNIK'],
     network: (n) => `تدير أكتوال ميديا ${n} قناة مدينية وتسعة مكاتب وأسبوعية اقتصادية وإذاعة ومكتب بيانات باسم واحد ومنهجية واحدة.`,
-    sourceDesc: (name, title) => `قراءات في نصوص ${name} ضمن إصدار ${title}.`
+    sourceDesc: (name, title) => `قراءات في نصوص ${name} ضمن إصدار ${title}.`,
+    artAlt: (city) => `رسم توضيحي: {city} ليلاً — ظل المدينة وأضواء النوافذ الذهبية وخطوط الطول في الخلفية.`.replace('{city}', city),
+    artNote: 'رسم توضيحي مُولَّد، وليس صورة فوتوغرافية.',
+    webTitle: 'شبكة الإصدارات',
+    webLead: 'كل عناوين الشبكة الاثنين والثلاثين في مكان واحد: سبعة عشر إصدارًا مدينيًا، وتسع بوابات عالمية، وستة مواقع مستقلة حول مركز واحد لأكتوال ميديا. كل عقدة رابط، والخيط يمتد من الإصدار إلى المركز ويعود.',
   },
   ja: {
     skip: '本文へ',
@@ -279,10 +345,15 @@ export const CHROME = {
     allArrow: 'すべての版 →',
     onePlace: 'AKTUAL MEDIA — すべてを一か所に',
     langSwitch: 'この版を英語で読む',
+    capital: '首都',
     desks: ['スポーツ', '政治', '安全保障', 'ビジネス', 'テクノロジー', 'Tjednik Mode', '旅行', 'ペット', '世界'],
-    extra: ['ラジオ', 'ギャラリー', 'コロラド · 米国', 'すべてのチャンネル', 'データデスク', '更新状況', '版のネットワーク', '未来技術', '労働者の本', 'BUSINESS TJEDNIK W43 ↗'],
+    extra: ['ラジオ', 'ギャラリー', 'コロラド · 米国', 'すべてのチャンネル', 'データデスク', '更新状況', '版のネットワーク', '首都', '未来技術', '労働者の本', 'BUSINESS TJEDNIK W43 ↗', 'KANAL — dnevni pregled', 'AKTUAL ARHIVA', 'AKTUAL DNEVNIK'],
     network: (n) => `AKTUAL MEDIA は ${n} の都市チャンネル、9 のデスク、週刊ビジネス、ラジオ、データデスクを同じ名前と同じ方法論で運営しています。`,
-    sourceDesc: (name, title) => `${title} 版における ${name} の記事への評価。`
+    sourceDesc: (name, title) => `${title} 版における ${name} の記事への評価。`,
+    artAlt: (city) => `図版：夜の{city} — 街のシルエット、金色の窓明かり、背景の経線。`.replace('{city}', city),
+    artNote: '生成された図版であり、写真ではありません。',
+    webTitle: '版のネットワーク',
+    webLead: 'ネットワークの全32アドレスを一か所に。17の都市版、9つの世界ポータル、6つの独立サイトが、AKTUAL MEDIA のひとつの中心を囲みます。どのノードもリンクで、糸は版から中心へ、そして戻ります。',
   },
   zh: {
     skip: '正文',
@@ -298,10 +369,15 @@ export const CHROME = {
     allArrow: '全部版本 →',
     onePlace: 'AKTUAL MEDIA — 尽在一处',
     langSwitch: '用英语阅读此版本',
+    capital: '首都',
     desks: ['体育', '政治', '安全', '商业', '科技', 'Tjednik Mode', '旅行', '宠物', '世界'],
-    extra: ['广播', '画廊', '科罗拉多 · 美国', '全部频道', '数据台', '更新状态', '版本网络', '未来科技', '工人之书', 'BUSINESS TJEDNIK W43 ↗'],
+    extra: ['广播', '画廊', '科罗拉多 · 美国', '全部频道', '数据台', '更新状态', '版本网络', '首都', '未来科技', '工人之书', 'BUSINESS TJEDNIK W43 ↗', 'KANAL — dnevni pregled', 'AKTUAL ARHIVA', 'AKTUAL DNEVNIK'],
     network: (n) => `AKTUAL MEDIA 以同一名称和同一方法运营 ${n} 个城市频道、九个工作台、一份商业周刊、一个电台和一个数据台。`,
-    sourceDesc: (name, title) => `对 ${title} 版本中 ${name} 文章的评议。`
+    sourceDesc: (name, title) => `对 ${title} 版本中 ${name} 文章的评议。`,
+    artAlt: (city) => `插图：夜间的{city} — 城市剪影、金色窗光和背景经线。`.replace('{city}', city),
+    artNote: '生成的插图，不是照片。',
+    webTitle: '版本网络',
+    webLead: '网络全部 32 个地址汇于一处：17 个城市版、9 个世界门户和 6 个独立站点，围绕 AKTUAL MEDIA 的一个中心。每个节点都是链接，丝线从版本通向中心，再返回。',
   }
 };
 
@@ -312,7 +388,12 @@ export const chromeOf = (lang) => CHROME[lang] || CHROME.en;
 export const desksOf = (lang) => chromeOf(lang).desks.map((label, i) => [DESK_IDS[i], label]);
 
 /** Vanjski linkovi podnožja: ista adresa, natpis na jeziku izdanja. */
-export const extraOf = (lang) => chromeOf(lang).extra.map((label, i) => [EXTRA_HREFS[i], label]);
+/* Englesko izdanje ne šalje čitatelja na hrvatsku stranicu glavnih gradova:
+   /en/capitals/ je ista stranica na jeziku na kojem izdanje izlazi. */
+export const extraOf = (lang) => chromeOf(lang).extra.map((label, i) => {
+  const href = EXTRA_HREFS[i];
+  return [lang === 'en' && href === '/glavni-gradovi/' ? '/en/capitals/' : href, label];
+});
 
 /**
  * Natpisi traka s izdanjima (zaglavlje i mini traka). Imena gradova se ne

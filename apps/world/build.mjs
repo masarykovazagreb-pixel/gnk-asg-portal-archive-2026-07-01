@@ -26,19 +26,57 @@ import { fileURLToPath } from 'node:url';
 
 import { esc, longDate, shortDate, truncate, safeJson } from '../region/engine/lib.mjs';
 import { t } from '../region/src/strings.mjs';
-import { CSS } from '../region/engine/build.mjs';
+import { chromeOf } from '../region/src/chrome.mjs';
+import { NETWORK_PRODUCTS } from '../shared/network-products-v1.mjs';import { CSS } from '../region/engine/build.mjs';
 import { logoFor, channelLogoSlug } from '../region/engine/brand.mjs';
+import { designTokensCss } from '../shared/design-system-v1.mjs';
+import { FAVICON_SVG } from '../shared/brand/brand-mark-v1.mjs';
 import { meshBlock, MESH_CSS } from '../satellites/lib/network-v1.mjs';
+import { HOUSE_CSS, houseRibbon } from '../satellites/lib/house-style-v1.mjs';
+import { exchangeBlock, writeExchangeJson, EXCHANGE_CSS } from '../satellites/lib/razmjena-v1.mjs';
+import { spiderWeb, SPIDER_CSS } from '../satellites/lib/spiderweb-v1.mjs';
 import { WORLD_PORTALS, WORLD_BY_ID, portalBase, portalUrl, reviewUrl, HUB_HR, HUB_EN, MAIN, AKTUAL } from './lib/registry.mjs';
+import { writeColumns, columnsNavLabel, columnUrls, linkFromHome } from './lib/kolumne.mjs';
+import { writePrenos, prenosUrls, appendSitemap, linkPrenosOnHome } from '../../scripts/lib/prenos-v1.mjs';
+import { refreshTag } from '../shared/refresh-tag-v1.mjs';
+import { impressumBlock, IMPRESSUM_CSS } from '../shared/impressum-v1.mjs';
+import { authorBand, AUTHOR_BAND_CSS, ensureAuthorPortrait, AUTHOR_PORTRAIT } from '../shared/author-band-v1.mjs';
+import { ensureRefreshModule } from '../shared/refresh-tag-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..', '..');
+/* Svaki svjetski portal pripada zemlji; zemlja se pokriva iz svoje
+   prijestolnice (ili iz grada koji je pokriva dok prijestolnica čeka izvore).
+   Veza ide na stranicu prijestolnice, na jeziku portala kad ta stranica
+   postoji — inače na hrvatsku. */
+const CAPITALS = JSON.parse(readFileSync(join(ROOT, 'apps', 'region', 'capitals.json'), 'utf8')).capitals || [];
+const CAPITAL_LABEL = { hr: 'Glavni grad', en: 'Capital', pt: 'Capital', id: 'Ibu kota', ar: 'العاصمة', ja: '首都', zh: '首都', sw: 'Mji mkuu' };
+const capitalForPortal = (portal) => CAPITALS.find((c) => c.edition === portal.id) || CAPITALS.find((c) => c.seats === portal.id) || null;
 const DATA = join(ROOT, 'apps', 'region', 'data');
 const BRAND = join(ROOT, 'apps', 'portal', 'assets', 'brand');
 const OUT = process.env.WORLD_OUT ? resolve(process.env.WORLD_OUT) : join(HERE, 'site');
 const TODAY = new Date().toISOString().slice(0, 10);
 const RTL = new Set(['ar', 'he', 'fa', 'ur']);
 const CONTACT = 'info@gnk-asg.hr';
+
+/* Atlas grafika: jedna ilustracija po izdanju, s alt tekstom koji je dio
+   manifesta (nikad izmišljen u šabloni). Ako grafike nema, hero je izostavljen
+   — portalu je bolje bez slike nego sa slikom bez opisa. */
+const ATLAS = JSON.parse(readFileSync(join(ROOT, 'apps', 'portal', 'data', 'atlas-art-v1.json'), 'utf8'));
+const atlasFor = (id) => ATLAS.images.find((image) => image.slug === id) || null;
+const atlasEdition = (portal) => {
+  const image = atlasFor(portal.id);
+  if (!image) return '';
+  /* Alt na jeziku izdanja: ime grada dolazi iz registra, opis iz jezičnog
+     paketa. Manifest nosi hrvatski i engleski opis kao rezervu. */
+  const chrome = chromeOf(portal.lang);
+  const alt = chrome.artAlt ? chrome.artAlt(displayCity(portal)) : (image.alt[portal.lang] || image.alt.en);
+  const note = chrome.artNote || (image.note && (image.note[portal.lang] || image.note.en)) || '';
+  return `<figure class="hero-art">
+    <img src="https://gnk-asg.hr${image.src}" srcset="https://gnk-asg.hr${image.src.replace('-1600', '-800')} 800w, https://gnk-asg.hr${image.src} 1600w" sizes="(max-width: 760px) 100vw, 1080px" alt="${esc(alt)}" width="${image.width}" height="${image.height}" loading="eager" decoding="async" fetchpriority="high">
+    <figcaption>${esc(note)}</figcaption>
+  </figure>`;
+};
 
 /* Portal-specifican tekst. Opći natpisi dolaze iz apps/region/src/strings.mjs
    (isti prijevodi koje koristi izdanje), a ovo su rečenice koje postoje samo
@@ -63,7 +101,8 @@ const W = {
     feedsTitle: 'Pretplatite se',
     feedNote: 'RSS i JSON feed nose iste zapise kao stranica; svaki vodi na osvrt na gnk-asg.hr.',
     worldNote: 'Devet svjetskih izdanja pokriva pet kontinenata: Afriku, Aziju, Sjevernu Ameriku, Južnu Ameriku i Oceaniju. Svako ima vlastitu adresu, sitemap i feed, a sva vraćaju link na maticu.',
-    language: 'Jezik izdanja'
+    language: 'Jezik izdanja',
+    spiderTitle: 'Paukova mreža'
   },
   en: {
     kicker: 'AKTUAL MEDIA · world editions',
@@ -83,7 +122,8 @@ const W = {
     feedsTitle: 'Subscribe',
     feedNote: 'The RSS and JSON feeds carry the same records as the page; each one leads to the review on gnk-asg.hr.',
     worldNote: 'Nine world editions cover five continents: Africa, Asia, North America, South America and Oceania. Each has its own address, sitemap and feed, and every one links back to the parent site.',
-    language: 'Edition language'
+    language: 'Edition language',
+    spiderTitle: 'The spider web'
   },
   id: {
     kicker: 'AKTUAL MEDIA · edisi dunia',
@@ -103,7 +143,8 @@ const W = {
     feedsTitle: 'Berlangganan',
     feedNote: 'Feed RSS dan JSON membawa catatan yang sama seperti halaman; setiap catatan menuju tinjauan di gnk-asg.hr.',
     worldNote: 'Sembilan edisi dunia mencakup lima benua: Afrika, Asia, Amerika Utara, Amerika Selatan dan Oseania. Setiap edisi punya alamat, sitemap dan feed sendiri, dan semuanya menautkan kembali ke situs induk.',
-    language: 'Bahasa edisi'
+    language: 'Bahasa edisi',
+    spiderTitle: 'Jaring laba-laba'
   },
   pt: {
     kicker: 'AKTUAL MEDIA · edições mundiais',
@@ -123,7 +164,8 @@ const W = {
     feedsTitle: 'Subscrever',
     feedNote: 'Os feeds RSS e JSON trazem os mesmos registos da página; cada um leva à análise em gnk-asg.hr.',
     worldNote: 'Nove edições mundiais cobrem cinco continentes: África, Ásia, América do Norte, América do Sul e Oceânia. Cada uma tem endereço, sitemap e feed próprios, e todas ligam de volta ao site principal.',
-    language: 'Idioma da edição'
+    language: 'Idioma da edição',
+    spiderTitle: 'A teia'
   },
   ar: {
     kicker: 'AKTUAL MEDIA · طبعات عالمية',
@@ -143,7 +185,8 @@ const W = {
     feedsTitle: 'الاشتراك',
     feedNote: 'تغذيتا RSS وJSON تحملان السجلات نفسها؛ كل سجل يقود إلى المراجعة على gnk-asg.hr.',
     worldNote: 'تغطي تسع طبعات عالمية خمس قارات: أفريقيا وآسيا وأمريكا الشمالية وأمريكا الجنوبية وأوقيانوسيا. لكل طبعة عنوانها وخريطة موقعها وتغذيتها، وكلها تعود بالرابط إلى الموقع الأم.',
-    language: 'لغة الطبعة'
+    language: 'لغة الطبعة',
+    spiderTitle: 'شبكة العنكبوت'
   },
   ja: {
     kicker: 'AKTUAL MEDIA · 世界版',
@@ -163,7 +206,8 @@ const W = {
     feedsTitle: '購読',
     feedNote: 'RSS と JSON のフィードはページと同じ記録を配信し、それぞれが gnk-asg.hr のレビューへ導きます。',
     worldNote: '9つの世界版が5つの大陸をカバーします。アフリカ、アジア、北アメリカ、南アメリカ、オセアニア。各版は独自のアドレス、サイトマップ、フィードを持ち、すべてが親サイトへリンクします。',
-    language: '版の言語'
+    language: '版の言語',
+    spiderTitle: '蜘蛛の巣'
   },
   zh: {
     kicker: 'AKTUAL MEDIA · 世界版',
@@ -183,7 +227,8 @@ const W = {
     feedsTitle: '订阅',
     feedNote: 'RSS 和 JSON 订阅与页面内容一致，每条都通往 gnk-asg.hr 上的评论。',
     worldNote: '九个世界版覆盖五大洲：非洲、亚洲、北美洲、南美洲和大洋洲。每个版本都有自己的地址、站点地图和订阅源，并全部链接回主站。',
-    language: '版本语言'
+    language: '版本语言',
+    spiderTitle: '蛛网'
   }
 };
 
@@ -230,7 +275,8 @@ function header(portal, active = '') {
     ['', words.latest],
     ['izvori/', words.sources],
     ['metodologija/', words.methodology],
-    ['mreza/', wl(portal, 'network')]
+    ['mreza/', wl(portal, 'network')],
+    ['kolumne/', columnsNavLabel(portal)]
   ].map(([href, label]) => `<a href="${href}"${href === active ? ' aria-current="page"' : ''}>${esc(label)}</a>`).join('');
 
   return `<header class="top">
@@ -258,11 +304,20 @@ function footer(portal) {
   const others = WORLD_PORTALS.filter((item) => item.id !== portal.id);
   const links = others.map((item) => `<a href="${portalBase(item)}/" rel="external noopener" hreflang="${item.lang}" lang="${item.lang}">${esc(item.label[portal.lang === 'hr' ? 'hr' : 'en'])}</a>`).join('');
   const tags = [...new Set([...portal.hashtags, '#AktualMedia', '#GNKASG'])].map((tag) => `<li class="tag">${esc(tag)}</li>`).join('');
+  const capital = capitalForPortal(portal);
+  const capitalEn = portal.lang === 'en';
+  const capitalHref = capital
+    ? `https://gnk-asg.hr/${capitalEn ? 'en/capitals' : 'glavni-gradovi'}/${capital.slug}/`
+    : '';
+  const capitalLink = capital
+    ? `<a href="${capitalHref}" rel="external noopener" hreflang="${capitalEn ? 'en' : 'hr'}">${esc(CAPITAL_LABEL[portal.lang] || CAPITAL_LABEL.en)}: ${esc(portal.lang === 'en' ? capital.capitalEn || capital.capital : capital.capital)}</a>`
+    : '';
   return `<footer class="foot">
   <div class="footgrid">
     <div>
       <h2>${esc(wl(portal, 'portalsTitle'))}</h2>
-      <p class="footlinks">${links}<a href="${portal.lang === 'en' ? HUB_EN : HUB_HR}">${esc(words.hub)} →</a></p>
+      <p class="footlinks">${links}${capitalLink}<a href="${portal.lang === 'en' ? HUB_EN : HUB_HR}">${esc(words.hub)} →</a>
+        ${NETWORK_PRODUCTS.map((product) => `<a href="${product.url}" rel="external noopener">${esc(product[portal.lang === 'en' ? 'en' : 'hr'])}</a>`).join('')}</p>
     </div>
     <div>
       <h2>${esc(words.publisher)}</h2>
@@ -350,7 +405,20 @@ function shell(portal, { title, description, path = '', body, robots = 'index,fo
 <meta name="publisher" content="AKTUAL MEDIA d.o.o.">
 <meta name="keywords" content="${esc(keywords)}">
 <meta name="theme-color" content="${esc(portal.palette.bg)}">
+<link rel="author" href="https://gnk-asg.hr/nermin-sefic/">
 <link rel="canonical" href="${canonical}">
+<script type="application/ld+json" id="network-entity-v1">${JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': [
+        { '@type': 'Organization', '@id': 'https://gnk-asg.hr/#gnk-asg', name: 'GNK ASG d.o.o.', url: 'https://gnk-asg.hr/', parentOrganization: { '@id': 'https://gnk-asg.hr/#gnk-dinamo-ltd' }, founder: { '@id': 'https://gnk-asg.hr/#nermin-sefic' } },
+        { '@type': 'Organization', '@id': 'https://gnk-asg.hr/#gnk-dinamo-ltd', name: 'GNK DINAMO Ltd.', url: 'https://gnk-asg.hr/pojasnjenje-gnk-asg-i-gnk-dinamo-ltd/' },
+        { '@type': 'NewsMediaOrganization', '@id': 'https://gnk-asg.hr/gnk-aktual/#aktual-media', name: 'AKTUAL MEDIA', url: 'https://gnk-asg.hr/gnk-aktual/', parentOrganization: { '@id': 'https://gnk-asg.hr/#gnk-asg' }, editor: { '@id': 'https://gnk-asg.hr/#nermin-sefic' } },
+        { '@type': 'Person', '@id': 'https://gnk-asg.hr/#nermin-sefic', name: 'Nermin Sefić', alternateName: ['Nermin Sefic', 'Sefic Nermin'], jobTitle: 'Glavni urednik AKTUAL MEDIA, direktor GNK ASG d.o.o.', url: 'https://gnk-asg.hr/nermin-sefic/', worksFor: [{ '@id': 'https://gnk-asg.hr/#gnk-asg' }, { '@id': 'https://gnk-asg.hr/gnk-aktual/#aktual-media' }], affiliation: { '@id': 'https://gnk-asg.hr/#gnk-dinamo-ltd' } }
+      ]
+    }).replace(/</g, '\\u003c')}</script>
+<meta property="article:tag" content="#AKTUALMEDIA">
+<meta property="article:tag" content="#GNKASG">
+<meta property="article:tag" content="#NerminSefić">
 <link rel="alternate" type="application/rss+xml" title="${esc(portal.name)}" href="${base}/feed.xml">
 <link rel="alternate" type="application/feed+json" title="${esc(portal.name)}" href="${base}/feed.json">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -372,10 +440,16 @@ function shell(portal, { title, description, path = '', body, robots = 'index,fo
 <script type="application/ld+json">${safeJson(graph)}</script>
 <style>:root{--bg:${portal.palette.bg};--surface:${portal.palette.surface};--accent:${portal.palette.accent};--accent2:${portal.palette.accent2};--ink:${portal.palette.ink}}</style>
 <link rel="stylesheet" href="/assets/region.css">
+${designTokensCss()}
 </head>
 <body data-channel="${portal.id}" data-lang="${portal.lang}">
 <a class="skip" href="#sadrzaj">${esc(chrome(portal).skip)}</a>
+${houseRibbon({ lang: portal.lang, edition: `${portal.city} · ${portal.country}` })}
 ${body}
+${exchangeBlock({ root: ROOT, lang: portal.lang, selfHome: portalBase(portal), selfNames: [portal.city, portal.cityEn].filter(Boolean), limit: 6 })}
+${authorBand(portal.lang)}
+${impressumBlock(portal.lang)}
+${refreshTag('/')}
 </body>
 </html>`;
 }
@@ -398,6 +472,7 @@ function homePage(portal, data) {
   <p class="dateline">${esc(wl(portal, 'worldEdition'))} · ${esc(continentName(portal))} · <time datetime="${TODAY}">${esc(longDate(TODAY, portal.lang))}</time></p>
   <h1>${esc(displayCity(portal))}</h1>
   <p class="lead">${esc(words.aboutText)}</p>
+  ${atlasEdition(portal)}
   ${themeChips(portal, items)}
   ${lead ? `<section class="band">
     <div class="bandhead"><h2>${esc(wl(portal, 'leadLabel'))}</h2><span class="count">${esc(shortDate(new Date(lead.date).toISOString().slice(0, 10), portal.lang))}</span></div>
@@ -424,7 +499,11 @@ function homePage(portal, data) {
   </section>
   <p class="note">${esc(wl(portal, 'portalNote'))}</p>
 </main>
-${meshBlock({ lang: portal.lang, selfUrl: portalBase(portal), theme: 'light' })}
+<section class="page" aria-labelledby="swBandTitle">
+  <h2 class="band-title" id="swBandTitle">${esc(wl(portal, 'spiderTitle'))}</h2>
+  ${spiderWeb({ lang: portal.lang, selfUrl: portalBase(portal), theme: 'dark' })}
+</section>
+${meshBlock({ lang: portal.lang, selfUrl: portalBase(portal), theme: 'dark' })}
 ${footer(portal)}`;
 
   const jsonld = [{
@@ -602,6 +681,7 @@ function writeFeeds(portal, data) {
     items: items.map(({ _original, ...rest }) => rest)
   };
   writeFileSync(join(dir, 'feed.json'), `${JSON.stringify(json, null, 2)}\n`);
+  writeExchangeJson(dir, { root: ROOT, selfHome: portalBase(portal), limit: 12 });
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
@@ -637,7 +717,13 @@ function writeSitemap(portal, data, themes) {
     { loc: portalUrl(portal, 'metodologija/'), priority: '0.5', changefreq: 'monthly' },
     { loc: portalUrl(portal, 'mreza/'), priority: '0.7', changefreq: 'weekly' },
     ...[...themes.keys()].map((id) => ({ loc: portalUrl(portal, `tema/${id}/`), priority: '0.6', changefreq: 'daily' })),
-    ...(portal.sources || []).map((source) => ({ loc: portalUrl(portal, `izvor/${source.id}/`), priority: '0.4', changefreq: 'daily' }))
+    ...(portal.sources || []).map((source) => ({ loc: portalUrl(portal, `izvor/${source.id}/`), priority: '0.4', changefreq: 'daily' })),
+    /* Kolumne: popis i svaka objava zasebno. Bez ovoga preneseni tekst
+       postoji, ali tražilica za njega ne zna. */
+    ...[
+      { loc: portalUrl(portal, 'kolumne/'), priority: '0.6', changefreq: 'daily' },
+      ...columnUrls(ROOT, portal).map((entry) => ({ loc: entry.loc, priority: '0.5', changefreq: 'monthly' }))
+    ]
   ];
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -674,7 +760,7 @@ function writeStatics(portal, data, themes) {
     icons: [{ src: '/assets/icon.svg', sizes: 'any', type: 'image/svg+xml' }]
   }, null, 2)}\n`);
 
-  const icon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="${portal.palette.bg}"/><text x="32" y="43" font-family="Georgia,serif" font-size="30" font-weight="700" text-anchor="middle" fill="${portal.palette.accent}">${esc(portal.city.slice(0, 1))}</text></svg>`;
+  const icon = FAVICON_SVG;
   writeFileSync(join(dir, 'assets', 'favicon.svg'), icon);
   writeFileSync(join(dir, 'assets', 'icon.svg'), icon);
 
@@ -683,8 +769,16 @@ function writeStatics(portal, data, themes) {
     const source = join(ROOT, 'apps', 'portal', logo.webp.replace(/^\//, ''));
     if (existsSync(source)) copyFileSync(source, join(dir, 'assets', 'brand.webp'));
   }
+  const houseMark = join(ROOT, 'apps', 'portal', 'assets', 'brand', 'aktual-media-mark.svg');
+  if (existsSync(houseMark)) {
+    mkdirSync(join(dir, 'assets', 'brand'), { recursive: true });
+    copyFileSync(houseMark, join(dir, 'assets', 'brand', 'aktual-media-mark.svg'));
+  }
 
-  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}\n${WORLD_CSS}`);
+  ensureAuthorPortrait(AUTHOR_PORTRAIT, dir);
+  ensureRefreshModule(dir);
+  ensureRefreshModule(OUT);
+  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}\n${SPIDER_CSS}\n${WORLD_CSS}\n${HOUSE_CSS}\n${EXCHANGE_CSS}\n${IMPRESSUM_CSS}\n${AUTHOR_BAND_CSS}`);
   writeSitemap(portal, data, themes);
 }
 
@@ -695,6 +789,11 @@ const WORLD_CSS = `.crumbs{font:600 11px/1.6 system-ui,sans-serif;letter-spacing
 .card--lead .cardtitle{font-size:clamp(24px,3vw,34px)}
 .grid{gap:26px 28px}
 .mesh{margin-top:0}
+.page > .sw{margin-top:8px}
+.hero-art{margin:20px 0 0;border-radius:14px;overflow:hidden;background:#08131c}
+.hero-art img{width:100%;height:auto;display:block}
+.hero-art figcaption{padding:8px 12px;background:#0d1622;color:#8fa3ba;font-size:11px;letter-spacing:.02em}
+.band-title{margin:34px 0 0}
 `;
 
 /* ---------- jedan portal ---------- */
@@ -727,10 +826,49 @@ export function buildPortal(portal) {
   writePage('mreza/index.html', networkPage(portal));
   writePage('404.html', notFound(portal));
 
+  /* Kolumne: Sefićev tekst s matice, u izvornom hrvatskom, s uvodom na jeziku
+     izdanja i linkom na izvor. Pišu se nakon ostalih stranica da im shell
+     (navigacija, podnožje, graf) bude isti kao na cijelom izdanju. */
+  const columns = writeColumns(portal, {
+    root: ROOT,
+    shell,
+    header,
+    footer,
+    writePage,
+    style: `:root{--bg:${portal.palette.bg};--surface:${portal.palette.surface};--accent:${portal.palette.accent};--accent2:${portal.palette.accent2};--ink:${portal.palette.ink}}`
+  });
+  linkFromHome(portal, join(dir, 'index.html'), columnsNavLabel(portal));
+
+  /* Prenos na svjetsko izdanje: svi naši tekstovi, sa slikom autora i
+     linkom na izvornik. Kolumne ostaju u /kolumne/, ostalo ide u /prenos/. */
+  const prenos = writePrenos({
+    root: ROOT,
+    target: {
+      key: portal.id,
+      name: portal.name,
+      base: portal.base,
+      lang: portal.lang,
+      outDir: dir,
+      palette: portal.palette,
+      ogImage: `https://gnk-asg.hr/assets/izdanja/${portal.id}-og.jpg`
+    },
+    columnBase: '/kolumne/'
+  });
+  if (prenos.ok) {
+    appendSitemap(join(dir, 'sitemap.xml'), prenosUrls(ROOT, { base: portal.base }, '/kolumne/'));
+  }
+  linkPrenosOnHome({ homeFile: join(dir, 'index.html'), lang: portal.lang });
+
   writeFeeds(portal, data);
   writeStatics(portal, data, themes);
 
-  return { portal: portal.id, pages: 5 + themes.size + portal.sources.length, items: data.items.length };
+  return {
+    portal: portal.id,
+    pages: 5 + themes.size + portal.sources.length + (columns.count ? 1 + columns.count : 0) + (prenos.ok ? prenos.pages : 0),
+    columns: columns.count,
+    prenos: prenos.ok ? prenos.pages : 0,
+    items: data.items.length
+  };
 }
 
 /* Gradi samo kad je OVA datoteka ulazna točka (uvoz iz testa ne piše ništa). */

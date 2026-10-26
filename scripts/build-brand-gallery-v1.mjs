@@ -266,6 +266,7 @@ function pageHtml(entry, all) {
 <meta name="editor" content="Nermin Sefić">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
 <link rel="canonical" href="${canonical}">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="alternate" hreflang="${entry.lang}" href="${canonical}">
 <link rel="alternate" hreflang="x-default" href="${canonical}">
 ${entry.kind === 'logo' ? `<link rel="alternate" type="image/svg+xml" href="${entry.svg}" title="${esc(entry.title)}">` : ''}

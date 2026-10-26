@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
+import { applyHouseRibbon } from './lib/house-ribbon-v1.mjs';
 
 const root=path.resolve('apps/portal');
 const kbPath=path.join(root,'data/knowledge-base.json');
@@ -98,6 +99,7 @@ const html=`<!doctype html>
 <meta name="twitter:title" content="FAQ and AI Knowledge Center | GNK ASG">
 <meta name="twitter:description" content="GNK ASG public English knowledge center generated from the shared public knowledge base.">
 <meta name="twitter:image" content="https://gnk-asg.hr/assets/gnk-asg-social-card.png">
+<meta name="twitter:image:alt" content="AKTUAL MEDIA — GNK ASG network: knowledge center, verification and editorial standards">
 <script type="application/ld+json">${jsonLd}</script>
 <link rel="stylesheet" href="/assets/style.css?v=20260723-dark-gold-theme-v1">
 <link rel="stylesheet" href="/assets/public-sections-v1.css?v=20260721-header-fulltransparent-v1">
@@ -130,5 +132,9 @@ const html=`<!doctype html>
 </html>
 `;
 fs.mkdirSync(path.dirname(outPath),{recursive:true});
-fs.writeFileSync(outPath,html,'utf8');
+/* ZNAK KUĆE: stranica se rađa s trakom mreže, pa je ponovno generiranje
+   uvijek isto što i predana datoteka (Knowledge Center Contract traži
+   `git diff --exit-code` nakon generiranja). */
+const branded = applyHouseRibbon(html).html;
+fs.writeFileSync(outPath,branded,'utf8');
 console.log(`Generated EN Knowledge Center with ${qa.length} questions.`);

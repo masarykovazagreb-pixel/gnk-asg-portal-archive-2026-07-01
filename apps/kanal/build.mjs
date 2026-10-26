@@ -9,21 +9,85 @@
  *   node apps/kanal/build.mjs
  *   node apps/kanal/build.mjs --base https://gnk-asg-kanal.pages.dev/
  */
+import { designTokensCss } from '../shared/design-system-v1.mjs';
+import { FAVICON_SVG } from '../shared/brand/brand-mark-v1.mjs';
+import { NETWORK_PRODUCTS } from '../shared/network-products-v1.mjs';
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, rmSync, copyFileSync, existsSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { entityGraphJson } from '../../scripts/lib/entity-graph-v1.mjs';
+import { refreshTag, ensureRefreshModule } from '../shared/refresh-tag-v1.mjs';
+import { authorBand, AUTHOR_BAND_CSS, ensureAuthorPortrait, AUTHOR_PORTRAIT } from '../shared/author-band-v1.mjs';
+import { impressumBlock, IMPRESSUM_CSS } from '../shared/impressum-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
+const ROOT = join(HERE, '..', '..');
 const SRC = join(HERE, 'src');
-const OUT = join(HERE, 'site');
+/* KANAL_OUT pušta test determinizma da gradi u privremenu mapu i usporedi
+   bajtove dviju gradnji — ista ulaza moraju dati isti izlaz. */
+const OUT = process.env.KANAL_OUT ? resolve(process.env.KANAL_OUT) : join(HERE, 'site');
+
+/* Registar mreže drži jedini popis svih adresa; KANAL ga čita, ne prepisuje. */
+const NETWORK = (() => {
+  try {
+    return JSON.parse(readFileSync(join(ROOT, 'apps/portal/data/mreza-v1.json'), 'utf8'));
+  } catch {
+    return { editions: [], world: [], sites: [] };
+  }
+})();
 
 const arg = (name, fallback) => {
   const i = process.argv.indexOf(name);
   return i > -1 && process.argv[i + 1] ? process.argv[i + 1] : fallback;
 };
-const BASE = (arg('--base', process.env.KANAL_BASE || 'https://masarykovazagreb-pixel.github.io/gnk-asg-kanal/')).replace(/\/+$/, '') + '/';
+/* Kanonska adresa KANALA je Cloudflare Pages. GitHub Pages je zrcalo za
+   arhivu starih adresa i nikad nije kanonski host — dosad je bio zadana
+   vrijednost, pa je lokalni build pisao `canonical` na tuđi host, a svaki
+   prenos na mreži preuzimao je tu grešku kao "izvornik". */
+const BASE = (arg('--base', process.env.KANAL_BASE || 'https://gnk-asg-kanal.pages.dev/')).replace(/\/+$/, '') + '/';
 const SITE = JSON.parse(readFileSync(join(SRC, 'site.json'), 'utf8'));
-const ENV = { generated: new Date().toISOString(), base: BASE };
+
+/* POPIS PRIJENOSA: matica gradi /prenos/ i JSON s matricom kopija. Kanal
+   čita isti zapis, pa svaki tekst na kanalu pokaže gdje još stoji — i time
+   uzvrati vezom onome koji je na njega već stavio atribuciju. Ako zapisa
+   nema (svjež checkout bez portala), blok se jednostavno ne ispisuje. */
+const PRENOS = (() => {
+  const file = join(HERE, '..', 'portal', 'data', 'prenos-network-v1.json');
+  if (!existsSync(file)) return new Map();
+  try {
+    const data = JSON.parse(readFileSync(file, 'utf8'));
+    const map = new Map();
+    for (const item of data.texts) {
+      const path = new URL(item.canonical).pathname.replace(/^\//, '');
+      map.set(path, {
+        copies: item.copies.map((copy) => ({
+          url: copy.url,
+          lang: copy.lang,
+          name: data.targets.find((target) => target.key === copy.key)?.name || copy.key
+        }))
+      });
+    }
+    return map;
+  } catch {
+    return new Map();
+  }
+})();
+
+const PRENOS_MARK = 'data-prenos-crosslinks';
+function prenosBlock(canonical, root) {
+  const entry = PRENOS.get(String(canonical || '').replace(/^\//, ''));
+  if (!entry || !entry.copies.length) return '';
+  const links = entry.copies
+    .map((copy) => `<a href="${esc(copy.url)}" rel="external noopener" hreflang="${esc(copy.lang)}" lang="${esc(copy.lang)}">${esc(copy.name)}</a>`)
+    .join(' · ');
+  return `<aside class="article-meta am-prenos" ${PRENOS_MARK}="v1">
+<p><b>Ovaj tekst objavljen je i na:</b> ${links} — <a href="https://gnk-asg.hr/prenos/">svi prijenosi</a></p>
+</aside>`;
+}
+
+/* Vrijeme gradnje ne ulazi u izlaz. Umjesto sata uzima se datum najnovije
+   objave — isti podaci moraju dati iste bajtove pri svakoj gradnji. */
+const ENV = { base: BASE, get generated() { return LATEST; } };
 
 /* ---------- pomoćnici ---------- */
 const esc = (s = '') => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -62,6 +126,9 @@ const readAll = (dir) =>
 const ARTICLES = readAll('articles')
   .map((a) => ({ ...a, readingTime: readingTime(a.body), words: words(a.body) }))
   .sort((a, b) => (a.date === b.date ? (b.priority || 0) - (a.priority || 0) : b.date.localeCompare(a.date)));
+
+/* Najnoviji datum u podacima — jedini dopušteni izvor vremena u izlazu. */
+const LATEST = ARTICLES.map((a) => a.updated || a.date).filter(Boolean).sort().pop() || '2026-01-01T00:00:00.000Z';
 const PAGES = readAll('pages');
 const SECTIONS = SITE.sections;
 
@@ -159,6 +226,14 @@ function head({ title, description, canonical, root, og, ogAlt, type = 'website'
 <link rel="apple-touch-icon" href="${root}assets/logo-gnk-asg-gold.svg">
 <link rel="manifest" href="${root}manifest.webmanifest">
 <link rel="stylesheet" href="${root}assets/kanal.css">
+<!-- entity:v1 -->
+<script type="application/ld+json" id="network-entity-v1">${entityGraphJson()}</script>
+<!-- /entity:v1 -->
+<meta name="editor" content="Nermin Sefić">
+<link rel="author" href="https://gnk-asg.hr/nermin-sefic/">
+<meta property="article:tag" content="#AKTUALMEDIA">
+<meta property="article:tag" content="#GNKASG">
+<meta property="article:tag" content="#NerminSefić">
 <meta property="og:site_name" content="${esc(SITE.brandFull)}">
 <meta property="og:locale" content="hr_HR">
 <meta property="og:type" content="${type === 'news' ? 'article' : type}">
@@ -178,8 +253,10 @@ function head({ title, description, canonical, root, og, ogAlt, type = 'website'
 <meta name="twitter:data1" content="${esc(authorName)}">
 ${published ? `<meta name="twitter:label2" content="Objavljeno">\n<meta name="twitter:data2" content="${hrDate(published)}">` : ''}
 <meta name="format-detection" content="telephone=no">
+<meta name="publisher" content="AKTUAL MEDIA d.o.o.">
 <link rel="dns-prefetch" href="//gnk-asg.hr">
 <script type="application/ld+json">${jsonld({ '@context': 'https://schema.org', '@graph': graph })}</script>
+${designTokensCss()}
 </head>`;
 }
 
@@ -194,11 +271,11 @@ function header({ active = '', root }) {
 <header class="masthead">
   <div class="wrap mast-top">
     <a class="brand" href="${root}" aria-label="${esc(SITE.brandFull)} — naslovnica">
-      <img src="${root}assets/logo-gnk-asg-gold.svg" alt="" width="42" height="42">
+      <img src="${root}assets/logo-gnk-asg-gold.svg" alt="GNK ASG" width="42" height="42">
       <span class="brand-word"><b>${esc(SITE.brand)}</b><span>GNK ASG · Zagreb</span></span>
     </a>
     <div class="mast-tools">
-      <span class="mast-date">${new Intl.DateTimeFormat('hr-HR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Zagreb' }).format(new Date())}</span>
+      <span class="mast-date">${new Intl.DateTimeFormat('hr-HR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(LATEST))}</span>
       <button class="icon-btn" type="button" data-theme-toggle aria-label="Promijeni temu">☾</button>
     </div>
   </div>
@@ -221,12 +298,36 @@ function ticker(items, root) {
   return `<div class="ticker" aria-label="Najnovije"><div class="wrap"><span class="ticker-label">Najnovije</span><div class="ticker-track">${one}${one}</div></div></div>`;
 }
 
+/* Mreža iz jednog registra: svih 17 izdanja, 9 svjetskih portala, 6 webova i
+   proizvodi koji nisu izdanja. Do 24. 10. 2026. KANAL nije vodio ni na jedno
+   izdanje — čitatelj koji je došao na dnevni pregled nije imao kamo dalje, a
+   izdanja nisu vodila na KANAL. */
+function networkList() {
+  const items = [];
+  const seen = new Set();
+  for (const webs of Object.values(NETWORK)) {
+    if (!Array.isArray(webs)) continue;
+    for (const web of webs) {
+      if (!web || !web.url || seen.has(web.url)) continue;
+      seen.add(web.url);
+      items.push(`<li><a href="${esc(web.url)}" rel="external noopener">${esc(web.name || web.id)}</a></li>`);
+    }
+  }
+  for (const product of NETWORK_PRODUCTS) {
+    if (seen.has(product.url)) continue;
+    seen.add(product.url);
+    items.push(`<li><a href="${esc(product.url)}" rel="external noopener">${esc(product.hr)}</a></li>`);
+  }
+  return items.join('\n      ');
+}
+
 function footer(root) {
-  const year = new Date().getFullYear();
+  const year = new Date(LATEST).getUTCFullYear();
   return `<footer>
   <div class="wrap foot-grid">
     <div class="foot-brand">
-      <b>${esc(SITE.brand)}</b><span>GNK ASG KANAL</span>
+      <img src="${root}assets/aktual-media-mark.svg" alt="AKTUAL MEDIA" width="34" height="34" loading="lazy" decoding="async">
+      <b>${esc(SITE.brand)}</b><span>GNK ASG KANAL · AKTUAL MEDIA d.o.o.</span>
       <p>${esc(SITE.tagline)}</p>
       <p class="fine-print">Glavni urednik: Nermin Sefić · ${esc(SITE.publisher.address)}</p>
     </div>
@@ -239,6 +340,9 @@ function footer(root) {
       <li><a href="${root}pojasnjenja/">Pojašnjenja</a></li>
       <li><a href="${root}metodologija/">Metodologija i ispravci</a></li>
       <li><a href="${root}objave/">Sve objave</a></li>
+    </ul></div>
+    <div><h3>Mreža AKTUAL MEDIA</h3><ul>
+      ${networkList()}
     </ul></div>
     <div><h3>Vanjski linkovi</h3><ul>
       ${(SITE.partners || []).map((p) => `<li><a href="${esc(p.url)}" rel="external noopener">${esc(p.name)}</a> <span class="fine-print">— ${esc(p.role)}</span></li>`).join('')}
@@ -267,8 +371,12 @@ ${header({ active, root })}
 ${disclosure(root, desk)}
 <main id="sadrzaj">
 ${content}
+${prenosBlock(canonical, root)}
 </main>
 ${footer(root)}
+${authorBand('hr', null, { portrait: '/assets/nermin-sefic-portrait.webp' })}
+${impressumBlock('hr')}
+${refreshTag('/')}
 </body>
 </html>`;
 }
@@ -291,7 +399,7 @@ const kicker = (section, root, kind) => {
 function articleCard(a, root, opts = {}) {
   const img = a.og || a.image;
   return `<article class="card" data-card="${esc([a.title, a.dek, SECTIONS[a.section]?.label, ...(a.tags || [])].join(' '))}">
-  <a class="card-media" href="${root}${a.slug}/" tabindex="-1" aria-hidden="true"><img src="${root}${img}" alt="" width="1200" height="630" loading="lazy" decoding="async"></a>
+  <a class="card-media" href="${root}${a.slug}/" tabindex="-1" aria-hidden="true"><img src="${root}${img}" alt="${esc(a.title)}" width="1200" height="630" loading="lazy" decoding="async"></a>
   <div class="card-body">
     ${kicker(a.section, root, a.kind)}
     <h3><a href="${root}${a.slug}/">${esc(a.title)}</a></h3>
@@ -304,7 +412,7 @@ function articleCard(a, root, opts = {}) {
 function articleListRow(a, root) {
   const img = a.og || a.image;
   return `<article data-card="${esc([a.title, a.dek, SECTIONS[a.section]?.label, ...(a.tags || [])].join(' '))}">
-  <a href="${root}${a.slug}/" tabindex="-1" aria-hidden="true"><img src="${root}${img}" alt="" width="1200" height="630" loading="lazy"></a>
+  <a href="${root}${a.slug}/" tabindex="-1" aria-hidden="true"><img src="${root}${img}" alt="${esc(a.title)}" width="1200" height="630" loading="lazy"></a>
   <div>
     ${kicker(a.section, root, a.kind)}
     <h2><a href="${root}${a.slug}/">${esc(a.title)}</a></h2>
@@ -742,9 +850,9 @@ function buildFeeds() {
 <atom:link href="${abs('feed.xml')}" rel="self" type="application/rss+xml"/>
 <description>${esc(SITE.description)}</description>
 <language>hr-hr</language>
-<lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+<lastBuildDate>${new Date(LATEST).toUTCString()}</lastBuildDate>
 <managingEditor>${esc(SITE.contact.email)} (Nermin Sefić)</managingEditor>
-<copyright>© ${new Date().getFullYear()} GNK ASG d.o.o.</copyright>
+<copyright>© ${new Date(LATEST).getUTCFullYear()} GNK ASG d.o.o.</copyright>
 <image><url>${abs('assets/logo-gnk-asg-gold.svg')}</url><title>${esc(SITE.brandFull)}</title><link>${BASE}</link></image>
 ${items.map((a) => `<item>
   <title>${esc(a.title)}</title>
@@ -765,7 +873,7 @@ ${items.map((a) => `<item>
 <link href="${BASE}" rel="alternate"/>
 <link href="${abs('atom.xml')}" rel="self"/>
 <id>${BASE}</id>
-<updated>${new Date().toISOString()}</updated>
+<updated>${ENV.generated}</updated>
 <author><name>GNK ASG KANAL</name><uri>${BASE}</uri></author>
 ${items.map((a) => `<entry>
   <title>${esc(a.title)}</title>
@@ -945,7 +1053,10 @@ const copyTree = (from, to) => {
   }
 };
 copyTree(assetSrc, join(OUT, 'assets'));
-write('assets/favicon.svg', `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="6" fill="#101114"/><text x="32" y="43" font-family="Georgia,serif" font-size="30" font-weight="700" fill="#d8b25a" text-anchor="middle">K</text></svg>`);
+/* Isti modul osvježavanja kao na portalu — bez njega natpis vodi u 404. */
+ensureRefreshModule(OUT);
+/* Znak mreže za sve kanale — isto kao na svakom drugom webu. */
+write('assets/favicon.svg', FAVICON_SVG);
 
 /* komentari */
 for (const slug of new Set([...ARTICLES.map((a) => a.slug), ...PAGES.map((p) => p.slug)])) {

@@ -12,15 +12,21 @@
  * Sve kartice imaju 5–6 rečenica opisa, vlastite hashtagove i poveznicu na
  * izdanje. Hub je polazna točka; svako izdanje ostaje na svom linku.
  */
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { esc, longDate, shortDate, stampLocal, scoreFromTitle, truncate, themeFor, safeJson } from './lib.mjs';
 import { CHANNELS, HUB, CONTACT, SOCIAL_IMAGE, CITY_SHORT, CSS as CHANNEL_CSS } from './build.mjs';
+import { publishedItems } from '../../../scripts/lib/publication-gate-v2.mjs';
 import { meshBlock, MESH_CSS } from '../../satellites/lib/network-v1.mjs';
+import { HOUSE_CSS, houseRibbon } from '../../satellites/lib/house-style-v1.mjs';
+import { spiderWeb, SPIDER_CSS } from '../../satellites/lib/spiderweb-v1.mjs';
 import { WORLD_PORTALS } from '../../world/lib/registry.mjs';
-import { ensureDeskTiles, tilePath, variantFor } from './desk-art.mjs';
+import { ensureDeskTiles, tilePath, variantFor, deskArt, deskArtPath, deskArtSrcset } from './desk-art.mjs';
+import { refreshTag } from '../../shared/refresh-tag-v1.mjs';
 import { logoImg, logoFor, logoAlternate, channelLogoSlug, deskLogoSlug, logoJsonLd } from './brand.mjs';
+import { buildCapitalPage, CAPITAL_CSS as CAPITAL_DETAIL_CSS, CONTINENT_COLOR } from './capital-detail.mjs';
+import { buildAtlasPage, ATLAS_CSS } from './atlas.mjs';
 
 /* Brojevi u naslovima se računaju iz podataka: 17 gradova, 14 jezika, 9 portala. */
 const LANG_COUNT = new Set(CHANNELS.map((c) => c.lang)).size;
@@ -40,6 +46,23 @@ const readJSON = (path, fallback) => {
   try { return JSON.parse(readFileSync(path, 'utf8')); } catch { return fallback; }
 };
 const channelData = (id) => readJSON(join(DATA, `${id}.json`), { items: [], updatedAt: '' });
+
+/* Glavni gradovi: popis zemalja koje mreža pokriva i njihovih prijestolnica.
+   Jedan izvor za stranicu, JSON i test — da se broj „17 zemalja, 14 izdanja"
+   nikad ne prepisuje rukom. */
+const CAPITALS = readJSON(join(ROOT, 'apps', 'region', 'capitals.json'), { capitals: [], standard: [] });
+
+/* Alt tekstovi atlasa (specifični: kupola, obelisk, jezero) koriste se i na
+   karticama prijestolnica, da opis slike ne bude generički. */
+const ATLAS_ART = (() => {
+  try {
+    return JSON.parse(readFileSync(join(PORTAL, 'data', 'atlas-art-v1.json'), 'utf8')).images || [];
+  } catch {
+    return [];
+  }
+})();
+const atlasArt = (slug) => ATLAS_ART.find((image) => image.slug === slug) || null;
+const channelById = (id) => CHANNELS.find((channel) => channel.id === id) || null;
 
 const REGION_META = {
   zagreb: {
@@ -314,8 +337,8 @@ const mediaItems = () => [
 ];
 const isWebsiteNode = (node) => (Array.isArray(node?.['@type']) ? node['@type'] : [node?.['@type']]).includes('WebSite');
 
-function portalShell({ title, description, path, keywords, tags = [], jsonld = [], body, cssExtra = '', image = SOCIAL_IMAGE, imageAlt = 'AKTUAL MEDIA', logos = [] }) {
-  const canonical = `${HUB}${path}`;
+function portalShell({ title, description, path, keywords, tags = [], jsonld = [], body, cssExtra = '', image = SOCIAL_IMAGE, imageAlt = 'AKTUAL MEDIA', logos = [], canonicalPath = '', lang = 'hr', alternates = [], preload = null, feeds = [], geo = null }) {
+  const canonical = canonicalPath || `${HUB}${path}`;
   /* HUB je /izdanja/, a plohe i naslovnice žive u korijenu portala, pa se
      apsolutna adresa gradi iz ishodišta, ne iz putanje huba. */
   const ORIGIN = new URL(HUB).origin;
@@ -332,7 +355,7 @@ function portalShell({ title, description, path, keywords, tags = [], jsonld = [
       : node
   )];
   return `<!doctype html>
-<html lang="hr">
+<html lang="${lang}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -341,10 +364,17 @@ function portalShell({ title, description, path, keywords, tags = [], jsonld = [
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="author" content="AKTUAL MEDIA d.o.o.">
 <meta name="editor" content="Nermin Sefić">
+<meta name="publisher" content="AKTUAL MEDIA d.o.o.">
+${geo ? `<meta name="geo.placename" content="${esc(geo.placename)}">
+${geo.country ? `<meta name="geo.country" content="${esc(geo.country)}">\n` : ''}` : ''}
+<meta name="hashtags" content="${esc([...new Set(tags.filter((t) => String(t).startsWith('#')).map((t) => String(t)))].join(' '))}">
 <meta name="keywords" content="${esc(keywordList.join(', '))}">
 ${[...new Map(tags.filter((t) => String(t).startsWith('#')).map((t) => [String(t).toLowerCase(), String(t)])).values()].map((t) => `<meta property="article:tag" content="${esc(t)}">`).join('\n')}
 <meta property="og:image:alt" content="${esc(imageAlt)}">
 <link rel="canonical" href="${canonical}">
+${alternates.map((alt) => `<link rel="alternate" hreflang="${alt.hreflang}" href="${alt.href}">`).join('\n')}
+${preload ? `<link rel="preload" as="image" href="${preload.href}"${preload.imagesrcset ? ` imagesrcset="${preload.imagesrcset}"` : ''}${preload.imagesizes ? ` imagesizes="${preload.imagesizes}"` : ''} fetchpriority="high">` : ''}
+${feeds.map((feed) => `<link rel="alternate" type="${feed.type}" title="${esc(feed.title)}" href="${feed.href}">`).join('\n')}
 ${logos.map((slug) => logoAlternate(slug)).filter(Boolean).join('\n')}
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AKTUAL MEDIA">
@@ -352,10 +382,12 @@ ${logos.map((slug) => logoAlternate(slug)).filter(Boolean).join('\n')}
 <meta property="og:description" content="${esc(truncate(description, 300))}">
 <meta property="og:url" content="${canonical}">
 <meta property="og:image" content="${shareImage}">
+<meta property="og:image:alt" content="${esc(title)}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(truncate(description, 200))}">
 <meta name="twitter:image" content="${shareImage}">
+<meta name="twitter:image:alt" content="${esc(title)}">
 <meta name="twitter:image:alt" content="${esc(imageAlt)}">
 <link rel="sitemap" type="application/xml" href="/izdanja/sitemap.xml">
 ${graph.map((n) => `<script type="application/ld+json">${safeJson(n)}</script>`).join('\n')}
@@ -366,6 +398,9 @@ ${graph.map((n) => `<script type="application/ld+json">${safeJson(n)}</script>`)
 .iz-top{background:#04101d;border-bottom:1px solid #1b3550;font:600 11px/1.4 system-ui;letter-spacing:.16em;text-transform:uppercase;color:#8fa3ba}
 .iz-top .iz-wrap{display:flex;justify-content:space-between;gap:12px;padding-top:10px;padding-bottom:10px}
 .iz-top a{color:var(--gold)}
+.iz-house{display:inline-flex;align-items:center;gap:9px;min-width:0}
+.iz-house img{height:22px;width:auto;max-width:120px;border-radius:2px;flex:none}
+@media(max-width:560px){.iz-house img{height:18px}}
 .iz-head{padding:clamp(26px,5vw,54px) 0 22px;border-bottom:1px solid #1b3550}
 .iz-head .k{font:600 11px/1.4 system-ui;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
 .iz-head h1{font:700 clamp(30px,5vw,52px)/1.04 Georgia,"Times New Roman",serif;margin:8px 0 10px;letter-spacing:-.01em}
@@ -379,7 +414,15 @@ ${graph.map((n) => `<script type="application/ld+json">${safeJson(n)}</script>`)
 .iz-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;padding:26px 0 10px}
 .iz-card{display:flex;flex-direction:column;gap:10px;background:#0b1d31;border:1px solid #1e3b58;border-radius:14px;padding:20px;overflow:hidden}
 .iz-cover{display:block;width:calc(100% + 40px);margin:-20px -20px 6px;aspect-ratio:16/9;object-fit:cover;object-position:center 40%;background:#12283d}
-.iz-card--lead{grid-column:span 2}
+.iz-hero{margin:22px 0 0;padding:0}
+.iz-hero picture,.iz-hero img{display:block;width:100%}
+.iz-hero img{aspect-ratio:16/9;height:auto;object-fit:cover;border-radius:16px;border:1px solid #1e3b58;background:#12283d}
+.iz-hero figcaption{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;margin:10px 2px 0;font:600 11px/1.5 system-ui;letter-spacing:.04em;color:#8296ad}
+.iz-hero figcaption b{color:var(--gold);font:700 11px/1.5 system-ui;letter-spacing:.16em;text-transform:uppercase}
+.iz-hero figcaption span{max-width:80ch}
+.iz-net-g a img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:6px;background:#0e2237;margin-bottom:3px}
+.iz-thumb-p1{object-position:50% 50%}.iz-thumb-p2{object-position:18% 32%}.iz-thumb-p3{object-position:82% 32%}
+.iz-thumb-p4{object-position:50% 20%}.iz-thumb-p5{object-position:30% 78%}.iz-thumb-p6{object-position:72% 76%}.iz-card--lead{grid-column:span 2}
 .iz-card .flag{display:flex;align-items:center;gap:8px;font:600 10px/1.4 system-ui;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
 .iz-card h2{font:700 22px/1.2 Georgia,serif;margin:0}
 .iz-card p{margin:0;color:#c3cede;font-size:14.5px}
@@ -453,6 +496,7 @@ ${cssExtra}
 </head>
 <body class="iz">
 <a class="skip-to-content" href="#sadrzaj">Preskoči na sadržaj</a><style>.skip-to-content{position:absolute;left:-9999px;top:0;z-index:9999;background:#e9c66c;color:#08131f;font:800 13px/1 system-ui,sans-serif;letter-spacing:.02em;padding:12px 18px;border-radius:0 0 12px 0;text-decoration:none}.skip-to-content:focus{left:0}main:focus{outline:none}main:focus-visible{outline:3px solid #e9c66c;outline-offset:4px}a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:3px solid #e9c66c;outline-offset:3px;border-radius:4px}</style>
+${houseRibbon({ lang: 'hr', edition: '' })}
 ${body}
 <script src="/assets/public-unified-menu-v6.js?v=20261019-izdanja" defer></script>
 <script src="/assets/public-contrast-hardening-v1.js?v=20261019-izdanja" defer></script>
@@ -460,26 +504,27 @@ ${body}
 </html>`;
 }
 
-const portalHeader = (active, { h1 = true } = {}) => `<div class="iz-top"><div class="iz-wrap"><span>AKTUAL MEDIA d.o.o. · Naša izdanja</span><a href="/gnk-aktual/">← AKTUAL MEDIA · sve na jednom mjestu</a></div></div>
+const portalHeader = (active, { h1 = true } = {}) => `<div class="iz-top"><div class="iz-wrap"><span class="iz-house"><img src="/assets/brand/aktual-media-en-1200.webp" alt="AKTUAL MEDIA d.o.o." width="167" height="48" decoding="async"><span>Naša izdanja</span></span><a href="/gnk-aktual/">← AKTUAL MEDIA · sve na jednom mjestu</a></div></div>
 <header class="iz-head"><div class="iz-wrap">
   <p class="k">GNK ASG · AKTUAL MEDIA · regionalna izdanja</p>
   ${h1 ? `<h1>Naša izdanja</h1>
   <p>${CHANNELS.length} gradskih kanala, poslovni tjednik i devet deskova — sport, politika, sigurnost, business, tehnologija, moda, putovanja, ljubimci i svijet. Svako izdanje ima vlastiti link, svoj jezik, svoj feed i svoju metodologiju, a sve se vraća ovamo.</p>`
     : `<p class="iz-home-h1"><a href="/izdanja/">Naša izdanja</a> <span aria-hidden="true">·</span> desk</p>`}
-  <nav class="iz-nav" aria-label="Izdanja"><a href="/izdanja/"${active === '' ? ' aria-current="page"' : ''}>Sva izdanja</a>${Object.entries(DESKS).map(([id, d]) => `<a href="/izdanja/${id}/"${active === `${id}/` ? ' aria-current="page"' : ''}>${esc(d.nav)}</a>`).join('')}<a href="/radio/">Radio</a><a href="/galerija/">Galerija</a><a href="/aktual-media/">Podaci</a><a href="/kanal/">Kanali</a><a href="/gnk-aktual/">AKTUAL MEDIA</a></nav>
+  <nav class="iz-nav" aria-label="Izdanja"><a href="/izdanja/"${active === '' ? ' aria-current="page"' : ''}>Sva izdanja</a>${Object.entries(DESKS).map(([id, d]) => `<a href="/izdanja/${id}/"${active === `${id}/` ? ' aria-current="page"' : ''}>${esc(d.nav)}</a>`).join('')}<a href="/radio/">Radio</a><a href="/galerija/">Galerija</a><a href="/aktual-media/">Podaci</a><a href="/kanal/">Kanali</a><a href="/glavni-gradovi/">Glavni gradovi</a><a href="/atlas/">Atlas</a><a href="/gnk-aktual/">AKTUAL MEDIA</a></nav>
 </div></header>`;
 
 
 /* ---------- mreža: svaka stranica nudi najmanje šest drugih ulaza ---------- */
 
 function netStrip() {
-  const editions = CHANNELS.map((c) => `<a href="${c.base}" rel="external noopener"><b>${esc(CITY_SHORT[c.id] || c.city)}</b><span>${esc(c.country)}</span></a>`).join('');
-  const desks = Object.entries(DESKS).map(([id, d]) => `<a href="/izdanja/${id}/"><b>${esc(d.nav)}</b><span>desk</span></a>`).join('');
+  const editions = CHANNELS.map((c) => `<a href="${c.base}" rel="external noopener"><img src="/assets/izdanja/${c.id}-240.webp" alt="${esc(c.city)}, ${esc(c.country)} — AKTUAL MEDIA" width="120" height="68" loading="lazy" decoding="async"><b>${esc(CITY_SHORT[c.id] || c.city)}</b><span>${esc(c.country)}</span></a>`).join('');
+  const desks = Object.entries(DESKS).map(([id, d]) => `<a href="/izdanja/${id}/"><img src="${deskArtPath(id, '240')}" alt="${esc(d.nav)} — desk AKTUAL MEDIA" width="120" height="68" loading="lazy" decoding="async"><b>${esc(d.nav)}</b><span>desk</span></a>`).join('');
   const more = [
     ['/usa/', 'Colorado · USA', 'ishodište projekta'],
     ['/radio/', 'Radio', 'player'],
     ['/galerija/', 'Galerija', 'foto'],
     ['/kanal/', 'Kanali', `${CHANNELS.length} izdanja`],
+    ['/atlas/', 'Atlas mreže', `${(CAPITALS.capitals || []).length} prijestolnica`],
     ['/gnk-aktual/', 'AKTUAL MEDIA', 'središte'],
     ['/izdanja/', 'Sva izdanja', 'popis'],
     ['/digital-workforce/', 'Radna snaga', 'simulacija'],
@@ -553,10 +598,16 @@ function extraCards() {
     `<article class="iz-card"><img class="iz-cover" src="/assets/izdanja/galerija-tile.webp" alt="GALERIJA NERMINA SEFIĆA" width="640" height="360" loading="lazy" decoding="async"><span class="flag">${esc(galerija.kicker)}</span><h2><a href="${galerija.url}" rel="external noopener">${esc(galerija.name)}</a></h2><p>${esc(galerija.desc)}</p><ul class="iz-tags">${galerija.tags.map((x) => `<li>${esc(x)}</li>`).join('')}</ul><div class="acts"><a class="btn" href="${galerija.url}" rel="external noopener">Otvori galeriju ↗</a><a class="btn ghost" href="/galerija/sitemap.xml" rel="external noopener">Sitemap</a></div></article>`
   ];
   for (const [id, desk] of Object.entries(DESKS)) {
-    cards.push(`<article class="iz-card"><img class="iz-cover" src="/assets/izdanja/${id}-tile.webp" alt="${esc(desk.name)}" width="640" height="360" loading="lazy" decoding="async"><span class="flag">Desk · AKTUAL MEDIA</span><h2><a href="/izdanja/${id}/">${esc(desk.name)}</a></h2><p>${esc(desk.description)}</p><ul class="iz-tags">${desk.hashtags.map((x) => `<li>${esc(x)}</li>`).join('')}</ul><div class="acts"><a class="btn" href="/izdanja/${id}/">Otvori desk →</a></div></article>`);
+    const deskArtInfo = deskArt(id);
+    const deskArtUrl = deskArtInfo ? deskArtPath(id, '640') : `/assets/izdanja/${id}-tile.webp`;
+    cards.push(`<article class="iz-card"><img class="iz-cover" src="${deskArtUrl}"${deskArtInfo ? ` srcset="${deskArtSrcset(id, ['440', '640', '1200'])}" sizes="(max-width:700px) 100vw, 560px"` : ''} alt="${esc(deskArtInfo ? deskArtInfo.alt.hr : desk.name)}" width="640" height="360" loading="lazy" decoding="async"><span class="flag">Desk · AKTUAL MEDIA</span><h2><a href="/izdanja/${id}/">${esc(desk.name)}</a></h2><p>${esc(desk.description)}</p><ul class="iz-tags">${desk.hashtags.map((x) => `<li>${esc(x)}</li>`).join('')}</ul><div class="acts"><a class="btn" href="/izdanja/${id}/">Otvori desk →</a></div></article>`);
   }
   for (const p of PLATFORMS) {
-    cards.push(`<article class="iz-card"><span class="flag">Platforma · GNK ASG</span><h2><a href="${p.url}"${p.external ? ' rel="external noopener"' : ''}>${esc(p.name)}</a></h2><p>${esc(p.description)}</p><ul class="iz-tags">${p.tags.map((x) => `<li>${esc(x)}</li>`).join('')}</ul><div class="acts"><a class="btn" href="${p.url}"${p.external ? ' rel="external noopener"' : ''}>${esc(p.cta)}</a></div></article>`);
+    const cover = PLATFORM_COVERS[p.id];
+    const coverHtml = cover
+      ? `<img class="iz-cover" src="${cover.src}" alt="${esc(cover.alt.hr)}" width="${cover.w}" height="${cover.h}" loading="lazy" decoding="async">`
+      : '';
+    cards.push(`<article class="iz-card">${coverHtml}<span class="flag">Platforma · GNK ASG</span><h2><a href="${p.url}"${p.external ? ' rel="external noopener"' : ''}>${esc(p.name)}</a></h2><p>${esc(p.description)}</p><ul class="iz-tags">${p.tags.map((x) => `<li>${esc(x)}</li>`).join('')}</ul><div class="acts"><a class="btn" href="${p.url}"${p.external ? ' rel="external noopener"' : ''}>${esc(p.cta)}</a></div></article>`);
   }
   return cards.join('\n');
 }
@@ -644,6 +695,10 @@ function hubPage() {
     <h2>Najnovije iz svih izdanja</h2>
     <ul class="iz-list">${items.map((i) => `<li><time datetime="${esc(i.date)}">${esc(shortDate(i.date.slice(0, 10)))}</time><a href="${i.channel.base}clanak/${i.slug}/" rel="external noopener">${esc(i.title)}</a><span class="src">${esc(i.channel.title)}</span></li>`).join('') || '<li>Prva izdanja se pune dnevnim ciklusom.</li>'}</ul>
   </section>
+  <section class="iz-band iz-web" aria-labelledby="webTitle">
+    <h2 id="webTitle">Sve adrese na jednoj slici</h2>
+    ${spiderWeb({ lang: 'hr', selfUrl: HUB, theme: 'dark' })}
+  </section>
   ${worldBand()}
   ${networkBand()}
   <section class="iz-band iz-data-desk" aria-labelledby="ddTitle">
@@ -672,6 +727,7 @@ ${radioBand()}${portalFooter()}`;
     tags: ['#AKTUALMEDIA', '#AktualMedia', '#Našaizdanja', '#GNKASG'],
     logos: ['aktual-media-hr', 'aktual-media-en'],
     keywords: [...CHANNELS.map((c) => c.title), 'BUSINESS TJEDNIK', 'GNK ASG', 'izdanja'],
+    cssExtra: SPIDER_CSS,
     jsonld: [
       { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Naša izdanja — AKTUAL MEDIA', url: HUB, inLanguage: 'hr', isPartOf: { '@id': 'https://gnk-asg.hr/#website' } },
       { '@context': 'https://schema.org', '@type': 'ItemList', '@id': 'https://gnk-asg.hr/izdanja/#all-editions', name: 'Izdanja AKTUAL MEDIA', numberOfItems: mediaItems().length, itemListElement: mediaItems().map((item, i) => ({ '@type': 'ListItem', position: i + 1, name: item.name, url: item.url })) },
@@ -683,6 +739,13 @@ ${radioBand()}${portalFooter()}`;
 
 
 /* Platforme koje žive na matičnoj domeni, a ulaze u hub kao zasebne kartice. */
+/* Platforme dobivaju naslovnu sliku kao i svaka druga kartica: radio studio,
+   čitaonica centra znanja i ilustracija digitalne radne snage. */
+const PLATFORM_COVERS = {
+  'digital-workforce': { src: '/assets/editorial/digital-workforce-overview.webp', w: 1600, h: 900, alt: { hr: 'Digitalna radna snaga — ilustracija simulacije', en: 'Digital workforce — simulation illustration' } },
+  radio: { src: '/assets/utility/radio-1200.webp', w: 1200, h: 670, alt: { hr: 'AKTUAL MEDIA RADIO — studio s mikrofonom i miješalicom', en: 'AKTUAL MEDIA RADIO — studio with a microphone and mixing desk' } },
+  'knowledge-center': { src: '/assets/utility/znanje-1200.webp', w: 1200, h: 670, alt: { hr: 'Centar znanja — čitaonica s knjigama i arhivskim kutijama', en: 'Knowledge Center — a reading room with books and archive boxes' } }
+};
 const PLATFORMS = [
   {
     id: 'digital-workforce',
@@ -748,12 +811,20 @@ function deskThumb(item, deskId) {
   if (item.image) {
     return `<img class="iz-thumb" src="${esc(proxied(item.image))}" alt="${esc(alt)}" width="86" height="58" loading="lazy" decoding="async" referrerpolicy="no-referrer">`;
   }
+  /* Bez slike iz izvora: krop naslovne ilustracije deska. Isti zapis uvijek
+     dobiva isti krop (varijanta iz sluga), pa se minijature ne trepere.
+     Alt nije prazan: pravilo mreže je da svaka slika ima opis, a čitač
+     ekrana koji preskoči sliku ipak čuje naslov uz nju. */
+  if (deskArt(deskId)) {
+    const variant = variantFor(item.slug || item.url || item.title);
+    return `<img class="iz-thumb iz-thumb-p${variant + 1}" src="${esc(deskArtPath(deskId, '240'))}" alt="${esc(alt)}" width="86" height="58" loading="lazy" decoding="async">`;
+  }
   const tile = tilePath(deskId, variantFor(item.slug || item.url || item.title));
-  return `<img class="iz-thumb iz-thumb-art" src="${esc(tile)}" alt="" aria-hidden="true" width="86" height="58" loading="lazy" decoding="async">`;
+  return `<img class="iz-thumb iz-thumb-art" src="${esc(tile)}" alt="${esc(alt)} — ilustracija" width="86" height="58" loading="lazy" decoding="async">`;
 }
 
 const cityCircles = () => `<ul class="iz-city" aria-label="Gradska izdanja AKTUAL MEDIA">${
-  CHANNELS.map((c) => `<li><a href="${c.base}" rel="external noopener" title="${esc(c.title)}"><img src="/assets/izdanja/${c.id}-240.webp" alt="${esc(c.city)}" width="96" height="96" loading="lazy" decoding="async"><span>${esc(c.city)}</span></a></li>`).join('')
+  CHANNELS.map((c) => `<li><a href="${c.base}" rel="external noopener" title="${esc(c.title)}"><img src="/assets/izdanja/${c.id}-240.webp" alt="${esc(c.city)}, ${esc(c.country)} — ${esc(c.title)}" width="96" height="96" loading="lazy" decoding="async"><span>${esc(c.city)}</span></a></li>`).join('')
 }</ul>`;
 
 function deskPage(id, desk) {
@@ -766,8 +837,17 @@ function deskPage(id, desk) {
     bySource.get(key).push(item);
   }
 
+  const art = deskArt(id);
+  const heroArt = art ? `<figure class="iz-hero">
+    <picture>
+      <source type="image/webp" srcset="${deskArtSrcset(id)}" sizes="(max-width:760px) 100vw, 1120px">
+      <img src="${deskArtPath(id, '1200')}" alt="${esc(art.alt.hr)}" width="1200" height="675" fetchpriority="high" decoding="async">
+    </picture>
+    <figcaption><b>Naslovna ilustracija</b><span>Generirana grafika, nije fotografija događaja · AKTUAL MEDIA</span></figcaption>
+  </figure>` : '';
   const body = `${portalHeader(id + '/', { h1: false })}
 <main id="sadrzaj" tabindex="-1" class="iz-wrap">
+  ${heroArt}
   <section class="iz-head" style="border-bottom:0;padding-top:26px">
     ${logoImg(deskLogoSlug(id), { href: '/izdanja/', size: 56, cls: 'iz-desk-logo', priority: true })}
     <p class="k">${esc(desk.name)}</p>
@@ -793,7 +873,7 @@ function deskPage(id, desk) {
     <p class="iz-small" style="margin:0 0 12px">Ovaj desk je dio AKTUAL MEDIA — kuće koja pod istim imenom vodi ${CHANNELS.length} gradskih kanala, devet tematskih deskova, business tjednik, radio, galeriju i podatkovni desk. Isti izdavač, isti urednik i ista metodologija vrijede za svaku stranicu, pa se svaki tekst može provjeriti do izvornika.</p>
     <ul class="iz-datacards">
       <li><a href="/gnk-aktual/"><b>AKTUAL MEDIA</b><span>središte kuće</span></a></li>
-      <li><a href="/izdanja/"><b>Sva izdanja</b><span>8 kanala · 9 deskova</span></a></li>
+      <li><a href="/izdanja/"><b>Sva izdanja</b><span>${CHANNELS.length} kanala · ${Object.keys(DESKS).length} deskova</span></a></li>
       <li><a href="/gnk-aktual/mreza/"><b>Mreža izdanja</b><span>vlastiti hosting</span></a></li>
       <li><a href="/aktual-media/"><b>Podatkovni desk</b><span>redakcija, izmjereno</span></a></li>
       <li><a href="https://gnk-asg-tjednik.pages.dev/" rel="external noopener"><b>BUSINESS TJEDNIK</b><span>tjedni pregled</span></a></li>
@@ -816,8 +896,8 @@ ${id === 'sport' ? `<script>(()=>{const box=document.getElementById('izResults')
 
   /* Naslovnica je rasterska (webp) jer društvene mreže ne prikazuju SVG;
      SVG plohe ostaju u popisu osvrta gdje nema vanjskog dijeljenja. */
-  const cover = `/assets/izdanja/${id}-tile.webp`;
-  const artCover = tilePath(id, 0);
+  const cover = art ? deskArtPath(id, 'og', 'jpg') : `/assets/izdanja/${id}-tile.webp`;
+  const artCover = art ? deskArtPath(id, '1200') : tilePath(id, 0);
   const withImages = items.filter((i) => i.image).length;
   return portalShell({
     title: `${desk.title} | AKTUAL MEDIA`,
@@ -827,8 +907,9 @@ ${id === 'sport' ? `<script>(()=>{const box=document.getElementById('izResults')
     keywords: [...desk.hashtags.map((t) => t.replace(/^#/, '')), 'AKTUAL MEDIA', 'Aktual mediji', 'GNK ASG', 'regija', desk.nav],
     tags: [...desk.hashtags, '#AktualMedia', '#GNKASG'],
     logos: [deskLogoSlug(id)],
+    preload: art ? { href: deskArtPath(id, '1200'), imagesrcset: deskArtSrcset(id, ['640', '800', '1200', '1600']), imagesizes: '(max-width:760px) 100vw, 1120px' } : null,
     image: cover,
-    imageAlt: `${desk.title} — AKTUAL MEDIA`,
+    imageAlt: art ? art.alt.hr : `${desk.title} — AKTUAL MEDIA`,
     jsonld: [
       { '@context': 'https://schema.org', '@type': 'NewsMediaOrganization', '@id': `${HUB}${id}/#organization`, name: desk.name, url: `${HUB}${id}/`, inLanguage: 'hr', logo: logoJsonLd(deskLogoSlug(id), { url: 'https://gnk-asg.hr' }), parentOrganization: { '@id': MEDIA_ID } },
       { '@context': 'https://schema.org', '@type': 'CollectionPage', name: desk.title, url: `${HUB}${id}/`, inLanguage: 'hr', description: desk.description, publisher: { '@id': `${HUB}${id}/#organization` }, primaryImageOfPage: { '@type': 'ImageObject', url: `${new URL(HUB).origin}${cover}`, caption: `${desk.title} — AKTUAL MEDIA` }, image: [`${new URL(HUB).origin}${cover}`, `${new URL(HUB).origin}${artCover}`], publisher: { '@id': MEDIA_ID }, isPartOf: { '@id': `${HUB}#website` } },
@@ -843,7 +924,13 @@ ${id === 'sport' ? `<script>(()=>{const box=document.getElementById('izResults')
 const writePage = (path, html) => {
   const target = join(OUT, path, 'index.html');
   mkdirSync(dirname(target), { recursive: true });
-  writeFileSync(target, html);
+  /* Sloj osvježavanja se ubacuje ovdje, a ne u svaki predložak pojedinačno:
+     hub prepisuje i rukom pisane stranice (atlas, en/…), pa bi bez ovoga
+     modul nestajao pri svakoj gradnji i test svježine bi padao. */
+  const withRefresh = /<\/body>/i.test(html) && !html.includes('data-am-netday')
+    ? html.replace(/<\/body>/i, `${refreshTag('/')}</body>`)
+    : html;
+  writeFileSync(target, withRefresh);
 };
 
 export async function buildHub() {
@@ -860,6 +947,11 @@ export async function buildHub() {
     // The external tjednik is linked from the hub and structured media graph, not submitted as our domain's sitemap URL.
     { loc: 'https://gnk-asg.hr/galerija/', priority: '0.6' },
     { loc: 'https://gnk-asg.hr/kanal/', priority: '0.9' },
+    { loc: 'https://gnk-asg.hr/sve-stranice/', priority: '0.7' },
+    { loc: 'https://gnk-asg.hr/glavni-gradovi/', priority: '0.9' },
+    { loc: 'https://gnk-asg.hr/en/capitals/', priority: '0.8' },
+    ...(CAPITALS.capitals || []).filter((c) => c.slug).map((c) => ({ loc: `https://gnk-asg.hr/glavni-gradovi/${c.slug}/`, priority: c.status === 'live' ? '0.8' : '0.6' })),
+    ...(CAPITALS.capitals || []).filter((c) => c.slug).map((c) => ({ loc: `https://gnk-asg.hr/en/capitals/${c.slug}/`, priority: c.status === 'live' ? '0.7' : '0.5' })),
     { loc: 'https://gnk-asg.hr/radio/', priority: '0.9' },
     { loc: 'https://gnk-asg.hr/aktual-media/', priority: '0.8' },
     { loc: 'https://gnk-asg.hr/gnk-aktual/', priority: '1.0' }
@@ -939,6 +1031,17 @@ ${entries.map((e) => `<url><loc>${e.loc}</loc><changefreq>daily</changefreq><pri
     console.log(`::warning::Središnji blok nije izgrađen: ${error.message}`);
   }
 
+  /* Trake rubrika (tehnologija, dnevni pregled, događaji, mreža) nose svoj CSS
+     u tijelu dokumenta. Na kraju gradnje idu u jedan vanjski list — stranica je
+     lakša, stil se predmemorira, a popravak je na jednom mjestu. */
+  try {
+    const { foldSectionStyles } = await import('./section-sheet.mjs');
+    const folded = foldSectionStyles();
+    console.log(`[section-css] ${JSON.stringify(folded)}`);
+  } catch (error) {
+    console.log(`::warning::Trake rubrika nisu spojene: ${error.message}`);
+  }
+
   return { channels: CHANNELS.length, sport: collect('sport').length, politics: collect('politika').length, security: collect('sigurnost').length, biznis: collect('ekonomija').length, tehnologija: collect('ai').length, moda: collect('*', DESKS.moda.filter).length, putovanja: collect('*', DESKS.putovanja.filter).length, ljubimci: collect('*', DESKS.ljubimci.filter).length, svijet: collect('*', DESKS.svijet.filter).length };
 }
 
@@ -984,10 +1087,12 @@ ${logoAlternate('aktual-media-hr')}
 <meta property="og:description" content="${esc(`${CHANNELS.length} gradskih izdanja na jednoj domeni, s vlastitim feedom i arhivom.`)}">
 <meta property="og:url" content="https://gnk-asg.hr/kanal/">
 <meta property="og:image" content="https://gnk-asg.hr/assets/izdanja/aktual-media-og.jpg">
+<meta property="og:image:alt" content="AKTUAL MEDIA KANAL — sva izdanja">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AKTUAL MEDIA KANAL — sva izdanja">
 <meta name="twitter:image" content="https://gnk-asg.hr/assets/izdanja/aktual-media-og.jpg">
+<meta name="twitter:image:alt" content="AKTUAL MEDIA KANAL — sva izdanja">
 <script type="application/ld+json">${safeJson(WEBSITE_NODE)}</script>
 <script type="application/ld+json">${safeJson(MEDIA_ENTITY_NODE)}</script>
 <script type="application/ld+json">${safeJson({
@@ -1034,11 +1139,14 @@ a{color:inherit;text-decoration:none}
 .kx-worldgrid span{font:600 10.5px/1.3 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#8a8272}
 .kx-go{margin-top:4px;font:800 11px/1 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#8c2f2f}
 ${MESH_CSS}
+${HOUSE_CSS}
+<style>.am-ribbon{background:rgba(255,255,255,.02)}</style>
 </style>
 </head>
 <body>
 <a class="skip-to-content" href="#sadrzaj">Preskoči na sadržaj</a><style>.skip-to-content{position:absolute;left:-9999px;top:0;z-index:9999;background:#e9c66c;color:#08131f;font:800 13px/1 system-ui,sans-serif;letter-spacing:.02em;padding:12px 18px;border-radius:0 0 12px 0;text-decoration:none}.skip-to-content:focus{left:0}main:focus{outline:none}main:focus-visible{outline:3px solid #e9c66c;outline-offset:4px}a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:3px solid #e9c66c;outline-offset:3px;border-radius:4px}</style>
-<div class="kx-top"><strong>AKTUAL MEDIA KANAL</strong><span><a href="/gnk-aktual/">← AKTUAL MEDIA</a> · <a href="/izdanja/">Sva izdanja i deskovi</a> · <a href="/aktual-media/">Podatkovni desk</a> · <a href="/usa/">Colorado · USA</a> · <a href="/radio/">Radio</a> · <a href="/digital-workforce/knjiga/">Knjiga radnika</a></span></div>
+${houseRibbon({ lang: 'hr', edition: '' })}
+<div class="kx-top"><strong>AKTUAL MEDIA KANAL</strong><span><a href="/gnk-aktual/">← AKTUAL MEDIA</a> · <a href="/glavni-gradovi/">Glavni gradovi</a> · <a href="/izdanja/">Sva izdanja i deskovi</a> · <a href="/aktual-media/">Podatkovni desk</a> · <a href="/usa/">Colorado · USA</a> · <a href="/radio/">Radio</a> · <a href="/digital-workforce/knjiga/">Knjiga radnika</a></span></div>
 <main id="sadrzaj" tabindex="-1" class="kx-wrap">
   <div class="kx-head">
     <h1>${cap(hrCount(CHANNELS.length))} gradova, ${hrCount(LANG_COUNT)} jezika — pod jednom domenom</h1>
@@ -1056,6 +1164,395 @@ ${meshBlock({ lang: 'hr', selfUrl: 'https://gnk-asg.hr/kanal/', theme: 'light' }
 </html>`;
 }
 
+
+
+/* ---------- /glavni-gradovi/: ista pravila za svaku prijestolnicu ---------- */
+
+const CAPITAL_CSS = `.cg-hero{padding:8px 0 4px}
+.cg-hero h1{font:700 clamp(30px,4.6vw,54px)/1.03 Georgia,serif;letter-spacing:-.022em;margin:0 0 14px;max-width:22ch;color:#f4f7fb}
+.cg-lead{max-width:78ch;color:#bccbdb;font-size:clamp(15px,1.6vw,17.5px);margin:0 0 18px}
+.cg-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;list-style:none;margin:0 0 8px;padding:0}
+.cg-stats li{border:1px solid #1e3b58;border-radius:12px;background:#0b1d31;padding:12px 14px}
+.cg-stats b{display:block;font:800 clamp(22px,2.8vw,30px)/1 Georgia,serif;color:#e0bd69}
+.cg-stats span{display:block;margin-top:6px;font:700 10.5px/1.35 system-ui;letter-spacing:.08em;text-transform:uppercase;color:#8fa3ba}
+.cg-h2{font:700 clamp(19px,2.2vw,24px)/1.25 Georgia,serif;margin:26px 0 4px;color:#f4f7fb}
+.cg-table{width:100%;border-collapse:collapse;margin:14px 0 0;font-size:14.5px}
+.cg-table th{text-align:left;font:800 10.5px/1.3 system-ui;letter-spacing:.1em;text-transform:uppercase;color:#8fa3ba;padding:0 10px 8px;border-bottom:1px solid #1e3b58}
+.cg-table td{padding:10px;border-bottom:1px solid #16304a;vertical-align:top;color:#cdd8e5}
+.cg-table tr:last-child td{border-bottom:0}
+.cg-cap{font:700 16px/1.25 Georgia,serif;color:#f2f6fb}
+.cg-cap a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(224,189,105,.4)}
+.cg-cap a:hover{color:#e0bd69}
+.cg-local{display:block;font:600 12px/1.3 system-ui;color:#94a8bd;margin-top:2px}
+.cg-lang{font:700 10.5px/1 system-ui;letter-spacing:.1em;text-transform:uppercase;color:#e0bd69;white-space:nowrap}
+.cg-live a{color:#e0bd69;font-weight:700;border-bottom:1px solid rgba(224,189,105,.35)}
+.cg-soon{display:inline-block;font:800 9.5px/1 system-ui;letter-spacing:.1em;text-transform:uppercase;color:#f0dfb6;background:#3a2f14;border:1px dashed #8c6a1f;border-radius:999px;padding:5px 9px}
+.cg-note{display:block;margin-top:6px;font-size:12.5px;color:#94a8bd;max-width:52ch}
+.cg-two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px;margin:26px 0 0}
+.cg-box{border:1px solid #1e3b58;border-radius:14px;background:#0b1d31;padding:18px 20px}
+.cg-box h2{font:700 clamp(18px,2vw,22px)/1.25 Georgia,serif;margin:0 0 10px;color:#f2f6fb}
+.cg-box ol,.cg-box ul{margin:0;padding-left:18px;display:grid;gap:7px;font-size:14px;color:#bccbdb}
+.cg-box li::marker{color:#e0bd69;font-weight:700}
+.cg-small{font-size:13px;color:#94a8bd;margin:10px 0 0}
+.cg-jump{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}
+.cg-jump a{font:700 10px/1 system-ui;letter-spacing:.1em;text-transform:uppercase;color:#cdd8e5;border:1px solid #25435f;border-radius:999px;padding:7px 11px;text-decoration:none}
+.cg-jump a:hover{border-color:#e0bd69;color:#e0bd69}
+.cg-cont-grid{display:grid;gap:20px;margin:10px 0 0}
+.cg-cont{border-top:1px solid #16304a;padding-top:12px}
+.cg-h3{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;font:700 15px/1.3 Georgia,serif;color:#f2f6fb;margin:0 0 10px}
+.cg-h3 span{font:800 10px/1 system-ui;letter-spacing:.08em;color:#08131f;background:#e0bd69;border-radius:999px;padding:4px 8px}
+.cg-h3 small{font:600 9.5px/1 system-ui;letter-spacing:.12em;text-transform:uppercase;color:#8296ad}
+@media (max-width:680px){.cg-table thead{display:none}.cg-table tr{display:grid;gap:2px;padding:10px 0;border-bottom:1px solid #16304a}.cg-table td{border:0;padding:0 0 2px}}`;
+
+function capitalsPage(lang = 'hr') {
+  const en = lang === 'en';
+  const all = CAPITALS.capitals || [];
+  const live = all.filter((c) => c.status === 'live' && c.edition);
+  const soon = all.filter((c) => c.status !== 'live');
+  const langs = new Set(live.map((c) => c.lang)).size;
+  const channelBy = (id) => CHANNELS.find((c) => c.id === id) || null;
+  const title = en ? 'Capitals — one standard for every covered country' : 'Glavni gradovi — isti standard za svaku zemlju koju pokrivamo';
+  const description = en
+    ? `${all.length} countries, ${all.length} capitals: ${live.length} already have their own edition in the capital city, ${soon.length} are in preparation. The rule is the same for every capital — own address, own mark, own sitemap and feed, the language of the country, the full SEO layer and a two-way link to the network.`
+    : `${all.length} zemalja, ${all.length} glavnih gradova: ${live.length} već ima vlastito izdanje u prijestolnici, ${soon.length} su u pripremi. Pravilo je za svaki glavni grad isto — vlastita adresa, vlastiti znak, sitemap i feed, jezik zemlje, puni SEO sloj i obostrana veza s mrežom.`;
+
+  const cardFor = (c) => {
+    const channel = c.edition ? channelBy(c.edition) : null;
+    const artId = channel ? channel.id : c.slug;
+    const name = en ? esc(c.capitalEn || c.capital) : esc(c.capital);
+    const artMeta = atlasArt(artId);
+    const alt = (artMeta && artMeta.alt && esc(artMeta.alt[lang === 'en' ? 'en' : 'hr']))
+      || (channel
+        ? `${esc(c.capital)}, ${esc(en ? c.countryEn : c.country)} — ${en ? 'cover artwork of the edition' : 'naslovna grafika izdanja'}`
+        : `${esc(c.capital)} — ${en ? 'illustration of the capital' : 'ilustracija prijestolnice'}`);
+    const state = c.status !== 'live' ? ` · ${en ? 'in preparation' : 'u pripremi'}` : '';
+    return `<li data-c="${esc(contSlug(c.continent))}"><a href="${en ? '/en/capitals' : '/glavni-gradovi'}/${esc(c.slug)}/">
+      ${artId ? `<img src="/assets/izdanja/${esc(artId)}-440.webp" alt="${alt}" width="440" height="248" loading="lazy" decoding="async">` : ''}
+      <span class="b"><span class="n">${name}</span><span class="c">${esc(en ? c.countryEn : c.country)} · ${esc(c.lang)}${state}</span></span>
+    </a></li>`;
+  };
+
+  const CONTINENT_EN = {
+    Europa: 'Europe', Afrika: 'Africa', Azija: 'Asia',
+    'Sjeverna Amerika': 'North America', 'Južna Amerika': 'South America', Oceanija: 'Oceania'
+  };
+  const continents = [...new Set(all.map((c) => c.continent))];
+  /* Jedan slug za kontinent: koristi se za id sekcije, skok i boju kartice,
+     pa se „Južna Amerika" ne može razlikovati u tri zapisa. */
+  const contSlug = (name) => String(name).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z]+/g, '-');
+  const grouped = continents.map((continent) => {
+    const group = all.filter((c) => c.continent === continent);
+    const liveCount = group.filter((c) => c.status === 'live').length;
+    return `<section class="cg-cont" aria-labelledby="cgc-${contSlug(continent)}">
+      <h3 id="cgc-${contSlug(continent)}" class="cg-h3">${esc(en ? CONTINENT_EN[continent] || continent : continent)} <span>${group.length}</span><small>${liveCount}/${group.length} ${en ? 'live' : 'aktivno'}</small></h3>
+      <ul class="cp-cards">${group.map(cardFor).join('')}</ul>
+    </section>`;
+  }).join('');
+
+  const jump = `<nav class="cg-jump" aria-label="${en ? 'Jump to continent' : 'Skok na kontinent'}">${continents.map((continent) => `<a href="#cgc-${contSlug(continent)}">${esc(en ? CONTINENT_EN[continent] || continent : continent)}</a>`).join('')}</nav>`;
+
+  const rows = all.map((c) => {
+    const channel = c.edition ? channelBy(c.edition) : null;
+    const local = c.capitalLocal && c.capitalLocal !== c.capital ? `<span class="cg-local">${esc(c.capitalLocal)}</span>` : '';
+    const name = en ? esc(c.capitalEn || c.capital) : esc(c.capital);
+    const action = channel
+      ? `<a href="${esc(channel.base)}" hreflang="${esc(c.lang)}" lang="${esc(c.lang)}">${en ? 'Open the edition' : 'Otvori izdanje'} →</a>`
+      : `<span class="cg-soon">${en ? 'in preparation' : 'u pripremi'}</span>${c.seats && channelBy(c.seats) ? ` · <a href="${esc(channelBy(c.seats).base)}">${en ? 'country covered from' : 'zemlja pokrivena iz'} ${esc(en ? channelBy(c.seats).cityEn : channelBy(c.seats).city)}</a>` : ''}`;
+    return `<tr>
+      <td><span class="cg-cap"><a href="${en ? '/en/capitals' : '/glavni-gradovi'}/${esc(c.slug)}/">${name}</a></span>${local}</td>
+      <td>${esc(en ? c.countryEn : c.country)}</td>
+      <td><span class="cg-lang">${esc(c.lang)}</span></td>
+      <td>${esc(c.continent)}</td>
+      <td class="cg-live">${action}<span class="cg-note">${esc(c.note || '')}</span></td>
+    </tr>`;
+  }).join('');
+
+  const standard = (CAPITALS.standard || []).map((line) => `<li>${esc(line)}</li>`).join('');
+  const steps = [
+    en ? '1. Add the country and capital to apps/region/capitals.json (this list).' : '1. Dodaj zemlju i glavni grad u apps/region/capitals.json (ovaj popis).',
+    en ? '2. Add the channel to apps/region/channels.json with a verified source list, palette, time zone and continent.' : '2. Dodaj kanal u apps/region/channels.json s provjerenom listom izvora, paletom, vremenskom zonom i kontinentom.',
+    en ? '3. Add the mark to scripts/build-aktual-media-logos-v1.py and run it; add the atlas artwork and run scripts/build-atlas-art-v1.mjs.' : '3. Dodaj znak u scripts/build-aktual-media-logos-v1.py i pokreni ga; dodaj atlas grafiku i pokreni scripts/build-atlas-art-v1.mjs.',
+    en ? '4. Run the region build, hub and audit — the edition gets its pages, manifest, sitemap, feed and network block.' : '4. Pokreni region build, hub i audit — izdanje dobiva stranice, manifest, sitemap, feed i blok mreže.',
+    en ? '5. Run test-editions-parity — the new edition must pass before it is published.' : '5. Pokreni test-editions-parity — novo izdanje mora proći prije objave.',
+    en ? '6. Only then remove the "preparing" status: an edition is never announced before it has sources.' : '6. Tek tada se briše status „u pripremi": izdanje se ne najavljuje prije nego ima izvore.'
+  ].map((line) => `<li>${esc(line)}</li>`).join('');
+
+  const body = `${portalHeader('glavni-gradovi/', { h1: false })}
+<main id="sadrzaj" tabindex="-1" class="iz-wrap">
+  <section class="cg-hero">
+    <p class="iz-small" style="margin:0 0 8px">AKTUAL MEDIA · ${en ? 'capitals' : 'glavni gradovi'}</p>
+    <h1>${esc(title)}</h1>
+    <p class="cg-lead">${esc(en
+      ? 'The network follows one rule: a country is covered from its capital, not from whichever city happens to be biggest. Where the biggest city is not the capital — New York, São Paulo, Sydney — it keeps its own edition, and the capital gets one of its own. Nothing here is announced before it exists: a capital without a verified source list stays marked as in preparation.'
+      : 'Mreža slijedi jedno pravilo: zemlja se pokriva iz svoje prijestolnice, a ne iz grada koji je slučajno najveći. Gdje najveći grad nije glavni — New York, São Paulo, Sydney — on zadržava svoje izdanje, a glavni grad dobiva vlastito. Ništa se ne najavljuje prije nego postoji: prijestolnica bez provjerene liste izvora ostaje označena kao „u pripremi".')}</p>
+    <ul class="cg-stats">
+      <li><b>${all.length}</b><span>${en ? 'countries covered' : 'zemalja u mreži'}</span></li>
+      <li><b>${live.length}</b><span>${en ? 'editions in the capital' : 'izdanja u glavnom gradu'}</span></li>
+      <li><b>${soon.length}</b><span>${en ? 'capitals in preparation' : 'prijestolnice u pripremi'}</span></li>
+      <li><b>${langs}</b><span>${en ? 'languages in the capitals' : 'jezika u prijestolnicama'}</span></li>
+    </ul>
+    <p class="cg-small">${en ? 'Page data refreshed' : 'Podaci stranice osvježeni'}: ${esc(new Date().toISOString().slice(0, 10).split('-').reverse().join('. '))}.</p>
+    <p class="cg-small"><a class="btn ghost" href="/atlas/">${en ? 'Picture atlas of the network →' : 'Slikovni atlas mreže →'}</a> <a class="btn ghost" href="/data/glavni-gradovi-v1.json">${en ? 'JSON data' : 'JSON podaci'}</a></p>
+  </section>
+
+  <section aria-labelledby="cgCardsTitle">
+    <h2 id="cgCardsTitle" class="cg-h2">${en ? 'One page for every capital' : 'Jedna stranica za svaki glavni grad'}</h2>
+    ${jump}
+    <p class="cg-small">${en ? 'Grouped by continent. Every card opens the page of that capital: language, sources, latest records and its place in the network.' : 'Poredano po kontinentu. Svaka kartica vodi na stranicu tog glavnog grada: jezik, izvori, najnoviji zapisi i mjesto u mreži.'}</p>
+    <div class="cg-cont-grid">${grouped}</div>
+  </section>
+
+  <section aria-labelledby="cgWebTitle">
+    <h2 id="cgWebTitle" style="margin:26px 0 0">${en ? 'Every capital in the web' : 'Svaka prijestolnica u mreži'}</h2>
+    ${spiderWeb({ lang, selfUrl: `https://gnk-asg.hr/${en ? 'en/capitals/' : 'glavni-gradovi/'}`, theme: 'dark' })}
+  </section>
+
+  <section aria-labelledby="cgTableTitle" style="margin:8px 0 0">
+    <h2 id="cgTableTitle">${en ? 'The list, country by country' : 'Popis, zemlja po zemlja'}</h2>
+    <table class="cg-table">
+      <thead><tr><th>${en ? 'Capital' : 'Glavni grad'}</th><th>${en ? 'Country' : 'Zemlja'}</th><th>${en ? 'Language' : 'Jezik'}</th><th>${en ? 'Continent' : 'Kontinent'}</th><th>${en ? 'Edition' : 'Izdanje'}</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </section>
+
+  <div class="cg-two">
+    <section class="cg-box" aria-labelledby="cgStd"><h2 id="cgStd">${en ? 'What every capital gets — the same eight things' : 'Što svaki glavni grad dobiva — istih osam stvari'}</h2><ul>${standard}</ul></section>
+    <section class="cg-box" aria-labelledby="cgSteps"><h2 id="cgSteps">${en ? 'How a new capital is added, step by step' : 'Kako se dodaje novi glavni grad, korak po korak'}</h2><ol>${steps}</ol><p class="cg-small">${en ? 'The order matters: sources first, then design, then pages, then tests. A page without sources would be a promise the newsroom cannot keep.' : 'Redoslijed je važan: prvo izvori, pa dizajn, pa stranice, pa testovi. Stranica bez izvora bila bi obećanje koje redakcija ne može održati.'}</p></section>
+  </div>
+
+  <p class="cg-small" style="margin-top:22px">${en ? 'All editions: ' : 'Sva izdanja: '}<a href="/izdanja/">${en ? 'editions and desks' : 'izdanja i deskovi'}</a> · <a href="/mreza/">${en ? 'the whole network' : 'cijela mreža'}</a> · <a href="${esc(en ? '/glavni-gradovi/' : '/en/capitals/')}" hreflang="${en ? 'hr' : 'en'}" lang="${en ? 'hr' : 'en'}">${en ? 'Hrvatski' : 'English'}</a> · <a href="/data/glavni-gradovi-v1.json">${en ? 'JSON data' : 'JSON podaci'}</a> · <a href="/glavni-gradovi/llms.txt">llms.txt</a></p>
+</main>
+${portalFooter()}`;
+
+  const canonical = en ? 'https://gnk-asg.hr/en/capitals/' : 'https://gnk-asg.hr/glavni-gradovi/';
+  return portalShell({
+    title: en ? 'Capitals — 17 countries, one standard | AKTUAL MEDIA' : 'Glavni gradovi — 17 zemalja, isti standard | AKTUAL MEDIA',
+    description,
+    feeds: capitalFeeds(lang),
+    path: '',
+    canonicalPath: canonical,
+    keywords: [
+      ...all.map((c) => (en ? c.capitalEn || c.capital : c.capital)),
+      ...all.map((c) => (en ? c.countryEn || c.country : c.country)),
+      'AKTUAL MEDIA', 'Aktual Media', 'glavni gradovi', 'capitals', 'GNK ASG',
+      en ? 'capital cities' : 'prijestolnice', en ? 'countries' : 'zemlje',
+      en ? 'media network' : 'medijska mreža', 'atlas', 'feed', 'sitemap'
+    ],
+    tags: ['#GlavniGradovi', '#AKTUALMEDIA', '#GNKASG'],
+    logos: ['aktual-media-hr', 'aktual-media-en'],
+    lang,
+    alternates: [
+      { hreflang: 'hr', href: 'https://gnk-asg.hr/glavni-gradovi/' },
+      { hreflang: 'en', href: 'https://gnk-asg.hr/en/capitals/' },
+      { hreflang: 'x-default', href: 'https://gnk-asg.hr/glavni-gradovi/' }
+    ],
+    cssExtra: `${SPIDER_CSS}\n${CAPITAL_CSS}\n${CAPITAL_DETAIL_CSS}\n${HOUSE_CSS}`,
+    jsonld: [
+      { '@context': 'https://schema.org', '@type': 'CollectionPage', name: title, url: canonical, inLanguage: lang, isPartOf: { '@id': 'https://gnk-asg.hr/#website' }, publisher: { '@id': MEDIA_ID }, about: { '@id': MEDIA_ID } },
+      { '@context': 'https://schema.org', '@type': 'ItemList', '@id': `${canonical}#capitals`, name: en ? 'Capitals of covered countries' : 'Glavni gradovi pokrivenih zemalja', numberOfItems: all.length, itemListElement: all.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: `${c.capital}, ${c.country}`, url: c.edition ? (channelBy(c.edition) || {}).base : canonical })) },
+      { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'AKTUAL MEDIA', item: 'https://gnk-asg.hr/gnk-aktual/' }, { '@type': 'ListItem', position: 2, name: en ? 'Capitals' : 'Glavni gradovi', item: canonical }] }
+    ],
+    body
+  });
+}
+
+/* Feed prijestolnica: JSON Feed 1.1 i Atom, na oba jezika. Feed nosi istu
+   adresu kao stranica i datum zadnjeg zapisa izdanja — ne izmišlja svježinu. */
+function capitalFeeds(lang) {
+  const en = lang === 'en';
+  const base = en ? '/en/capitals/' : '/glavni-gradovi/';
+  return [
+    { type: 'application/feed+json', title: en ? 'AKTUAL MEDIA — capitals (JSON Feed)' : 'AKTUAL MEDIA — glavni gradovi (JSON Feed)', href: `${base}feed.json` },
+    { type: 'application/atom+xml', title: en ? 'AKTUAL MEDIA — capitals (Atom)' : 'AKTUAL MEDIA — glavni gradovi (Atom)', href: `${base}feed.xml` }
+  ];
+}
+
+function capitalFeedItems(lang) {
+  const en = lang === 'en';
+  const iso = (value) => {
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? null : date.toISOString();
+  };
+  const rows = [];
+  for (const capital of CAPITALS.capitals || []) {
+    if (!capital.slug) continue;
+    const channel = capital.edition ? channelById(capital.edition) : capital.seats ? channelById(capital.seats) : null;
+    const data = channel ? channelData(channel.id) : { items: [], updatedAt: '' };
+    const items = data.items || [];
+    const artId = channel && capital.edition ? channel.id : capital.slug;
+    const city = en ? capital.capitalEn || capital.capital : capital.capital;
+    const country = en ? capital.countryEn || capital.country : capital.country;
+    const sources = channel && Array.isArray(channel.sources) ? channel.sources.length : 0;
+    const url = `https://gnk-asg.hr${en ? '/en/capitals' : '/glavni-gradovi'}/${capital.slug}/`;
+    const summary = capital.status === 'live'
+      ? (en
+        ? `${city}, ${country}: ${items.length} records from ${sources} sources, each linked to the original.`
+        : `${city}, ${country}: ${items.length} zapisa iz ${sources} izvora, svaki s vezom na izvornik.`)
+      : (en
+        ? `${city}, ${country}: the capital is in preparation; the country is covered today by the ${channel ? channel.city : '—'} edition.`
+        : `${city}, ${country}: prijestolnica je u pripremi; zemlju danas pokriva izdanje ${channel ? channel.city : '—'}.`);
+    rows.push({
+      id: url,
+      url,
+      title: `${city} — ${country}`,
+      summary,
+      date_modified: iso(items[0]?.date || data.updatedAt || ''),
+      image: `https://gnk-asg.hr/assets/izdanja/${artId}-1200.webp`,
+      tags: [capital.continent, capital.lang, capital.status === 'live' ? 'live' : 'preparing']
+    });
+  }
+  return rows.sort((a, b) => String(b.date_modified || '').localeCompare(String(a.date_modified || '')));
+}
+
+function writeCapitalFeeds() {
+  const written = [];
+  for (const lang of ['hr', 'en']) {
+    const en = lang === 'en';
+    const dir = en ? join(PORTAL, 'en', 'capitals') : join(PORTAL, 'glavni-gradovi');
+    const items = capitalFeedItems(lang);
+    const home = en ? 'https://gnk-asg.hr/en/capitals/' : 'https://gnk-asg.hr/glavni-gradovi/';
+    const self = `${home}feed.json`;
+    const updated = items.map((item) => item.date_modified).filter(Boolean).sort().pop() || new Date().toISOString();
+    const json = {
+      version: 'https://jsonfeed.org/version/1.1',
+      title: en ? 'AKTUAL MEDIA — capitals' : 'AKTUAL MEDIA — glavni gradovi',
+      home_page_url: home,
+      feed_url: self,
+      description: en
+        ? 'One entry per capital: status, language, sources and the link to the capital page. 17 countries, one standard.'
+        : 'Jedan zapis po prijestolnici: status, jezik, izvori i veza na stranicu grada. 17 zemalja, isti standard.',
+      language: lang,
+      icon: 'https://gnk-asg.hr/assets/brand/aktual-media-en-512.webp',
+      favicon: 'https://gnk-asg.hr/assets/brand/aktual-media-en-512.webp',
+      authors: [{ name: 'AKTUAL MEDIA d.o.o.', url: 'https://gnk-asg.hr/gnk-aktual/' }],
+      items
+    };
+    writeFileSync(join(dir, 'feed.json'), `${JSON.stringify(json, null, 2)}\n`);
+
+    const atom = `<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="${lang}">
+  <title>${esc(json.title)}</title>
+  <subtitle>${esc(json.description)}</subtitle>
+  <link href="${home}"/>
+  <link rel="self" type="application/atom+xml" href="${home}feed.xml"/>
+  <id>${home}</id>
+  <updated>${updated}</updated>
+  <author><name>AKTUAL MEDIA d.o.o.</name><uri>https://gnk-asg.hr/gnk-aktual/</uri></author>
+${items.map((item) => `  <entry>
+    <title>${esc(item.title)}</title>
+    <link href="${item.url}"/>
+    <id>${item.id}</id>
+    <updated>${item.date_modified || updated}</updated>
+    <summary>${esc(item.summary)}</summary>
+    <category term="${esc(item.tags[0])}"/>
+    <category term="${esc(item.tags[1])}"/>
+  </entry>`).join('\n')}
+</feed>
+`;
+    writeFileSync(join(dir, 'feed.xml'), atom);
+    written.push(`${en ? 'en/capitals' : 'glavni-gradovi'}/feed.{json,xml} · ${items.length}`);
+  }
+  return written;
+}
+
+export function writeCapitals() {
+  mkdirSync(join(PORTAL, 'glavni-gradovi'), { recursive: true });
+  mkdirSync(join(PORTAL, 'en', 'capitals'), { recursive: true });
+  writeFileSync(join(PORTAL, 'glavni-gradovi', 'index.html'), capitalsPage('hr'));
+  writeFileSync(join(PORTAL, 'en', 'capitals', 'index.html'), capitalsPage('en'));
+
+  /* Jedna stranica po prijestolnici, na hrvatskom i na engleskom. Stranica se
+     gradi iz istog ugovora kao popis, pa se nova prijestolnica ne piše ručno. */
+  const feedsWritten = writeCapitalFeeds();
+  const pages = [];
+  for (const capital of CAPITALS.capitals || []) {
+    if (!capital.slug) continue;
+    for (const lang of ['hr', 'en']) {
+      const dir = lang === 'en'
+        ? join(PORTAL, 'en', 'capitals', capital.slug)
+        : join(PORTAL, 'glavni-gradovi', capital.slug);
+      mkdirSync(dir, { recursive: true });
+      const artId = capital.edition || capital.slug;
+      const artMeta = atlasArt(artId);
+      writeFileSync(join(dir, 'index.html'), buildCapitalPage(capital, {
+        lang,
+        capitals: CAPITALS.capitals || [],
+        standard: CAPITALS.standard || [],
+        channelBy: channelById,
+        channelData,
+        portalShell,
+        portalHeader,
+        portalFooter,
+        MEDIA_ID,
+        artAlt: artMeta ? artMeta.alt : null,
+        feeds: capitalFeeds(lang)
+      }));
+      pages.push(lang === 'en' ? `/en/capitals/${capital.slug}/` : `/glavni-gradovi/${capital.slug}/`);
+    }
+  }
+  /* Vlastiti sitemap prijestolnica: 17 hrvatskih i 17 engleskih adresa, s
+     prioritetom koji je niži za prijestolnice koje još nemaju izdanje. */
+  const today = new Date().toISOString().slice(0, 10);
+  const capUrls = (CAPITALS.capitals || []).filter((c) => c.slug).flatMap((c) => [
+    { loc: `https://gnk-asg.hr/glavni-gradovi/${c.slug}/`, priority: c.status === 'live' ? '0.8' : '0.6' },
+    { loc: `https://gnk-asg.hr/en/capitals/${c.slug}/`, priority: c.status === 'live' ? '0.7' : '0.5' }
+  ]);
+  writeFileSync(join(PORTAL, 'glavni-gradovi', 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${capUrls.map((u) => `  <url><loc>${u.loc}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>${u.priority}</priority></url>`).join('\n')}
+</urlset>
+`);
+
+  /* llms.txt: kratki strojni opis popisa — isti standard kao na kanalima. */
+  const llms = [
+    '# Glavni gradovi — AKTUAL MEDIA',
+    '',
+    '> Popis zemalja koje mreža pokriva i prijestolnice iz koje se pokrivaju. Svaka prijestolnica ima vlastitu stranicu na hrvatskom i engleskom; izdanje u prijestolnici otvara se tek kad ima provjerenu listu izvora.',
+    '',
+    `- Zemalja: ${(CAPITALS.capitals || []).length}`,
+    `- Izdanja u glavnom gradu: ${(CAPITALS.capitals || []).filter((c) => c.status === 'live').length}`,
+    `- Prijestolnica u pripremi: ${(CAPITALS.capitals || []).filter((c) => c.status !== 'live').length}`,
+    `- Stranica: ${pages.length} (17 hrvatskih + 17 engleskih)`,
+    '',
+    '## Prijestolnice',
+    ...(CAPITALS.capitals || []).map((c) => `- ${c.capital}, ${c.country} (${c.lang}) — https://gnk-asg.hr/glavni-gradovi/${c.slug}/ · ${c.status === 'live' ? `izdanje ${c.edition}` : `u pripremi; zemlju pokriva ${c.seats || '—'}`}`),
+    '',
+    '## Ugovor',
+    ...(CAPITALS.standard || []).map((line) => `- ${line}`),
+    '',
+    '## Atlas',
+    '- Slikovni atlas: https://gnk-asg.hr/atlas/ (hr) · https://gnk-asg.hr/en/atlas/ (en)',
+    '',
+    '## Poveznice',
+    '- https://gnk-asg.hr/glavni-gradovi/',
+    '- https://gnk-asg.hr/glavni-gradovi/sitemap.xml',
+    '- https://gnk-asg.hr/en/capitals/',
+    '- https://gnk-asg.hr/mreza/',
+    '- https://gnk-asg.hr/izdanja/',
+    `- ${CONTACT}`,
+    ''
+  ].join('\n');
+  writeFileSync(join(PORTAL, 'glavni-gradovi', 'llms.txt'), llms);
+
+  const data = {
+    version: CAPITALS.version,
+    updatedAt: new Date().toISOString(),
+    countries: (CAPITALS.capitals || []).length,
+    live: (CAPITALS.capitals || []).filter((c) => c.status === 'live').length,
+    preparing: (CAPITALS.capitals || []).filter((c) => c.status !== 'live').length,
+    standard: CAPITALS.standard,
+    pages: pages.length,
+    capitals: (CAPITALS.capitals || []).map((c) => ({
+      ...c,
+      url: c.edition ? `https://gnk-asg.hr/kanal/${c.edition}/` : null,
+      portal: c.edition ? `https://gnk-world-${c.edition}.pages.dev/` : null,
+      page: c.slug ? `https://gnk-asg.hr/glavni-gradovi/${c.slug}/` : null,
+      pageEn: c.slug ? `https://gnk-asg.hr/en/capitals/${c.slug}/` : null
+    }))
+  };
+  writeFileSync(join(PORTAL, 'data', 'glavni-gradovi-v1.json'), `${JSON.stringify(data, null, 2)}\n`);
+  return { countries: data.countries, live: data.live, preparing: data.preparing, pages: pages.length, sitemap: capUrls.length, feeds: feedsWritten };
+}
 
 /* ---------- /usa/: ishodište projekta, GNK DINAMO Ltd., Boulder, Colorado ---------- */
 
@@ -1158,11 +1655,13 @@ export function usaPage() {
 <meta property="og:description" content="Ishodište projekta i mreže AKTUAL MEDIA: GNK DINAMO Ltd., Boulder, Colorado, USA, Entity ID 20238180649.">
 <meta property="og:url" content="${USA}">
 <meta property="og:image" content="${SOCIAL_IMAGE}">
+<meta property="og:image:alt" content="GNK DINAMO Ltd. — Boulder, Colorado, USA">
 <meta property="og:locale" content="hr_HR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="GNK DINAMO Ltd. — Boulder, Colorado, USA">
 <meta name="twitter:description" content="Matična tvrtka grupe i ishodište mreže AKTUAL MEDIA.">
 <meta name="twitter:image" content="${SOCIAL_IMAGE}">
+<meta name="twitter:image:alt" content="GNK DINAMO Ltd. — Boulder, Colorado, USA">
 
 <link rel="alternate" hreflang="hr" href="${USA}">
 <link rel="alternate" hreflang="x-default" href="${USA}">
@@ -1215,6 +1714,7 @@ a{color:inherit;text-decoration:none}a:hover{text-decoration:underline}
 </head>
 <body>
 <a class="skip-to-content" href="#sadrzaj">Preskoči na sadržaj</a><style>.skip-to-content{position:absolute;left:-9999px;top:0;z-index:9999;background:#e9c66c;color:#08131f;font:800 13px/1 system-ui,sans-serif;letter-spacing:.02em;padding:12px 18px;border-radius:0 0 12px 0;text-decoration:none}.skip-to-content:focus{left:0}main:focus{outline:none}main:focus-visible{outline:3px solid #e9c66c;outline-offset:4px}a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:3px solid #e9c66c;outline-offset:3px;border-radius:4px}</style>
+${houseRibbon({ lang: 'hr', edition: '' })}
 <div class="us-top"><strong>GNK DINAMO Ltd. · Boulder, Colorado</strong><span><a href="/gnk-aktual/">← AKTUAL MEDIA</a> · <a href="/izdanja/">Sva izdanja</a> · <a href="/aktual-media/">Podatkovni desk</a> · <a href="/kanal/">Kanali</a> · <a href="/radio/">Radio</a></span></div>
 <main id="sadrzaj" tabindex="-1">
   <section class="us-hero"><div class="us-wrap">
@@ -1261,25 +1761,123 @@ a{color:inherit;text-decoration:none}a:hover{text-decoration:underline}
 
 /* ---------- sitemap-index: jedan ulaz, svi sitemapi ---------- */
 
+function writeAtlas() {
+  const counts = {};
+  for (const channel of CHANNELS) counts[channel.id] = channelData(channel.id).items.length;
+  const capitals = CAPITALS.capitals || [];
+  const today = new Date().toISOString().slice(0, 10);
+  for (const lang of ['hr', 'en']) {
+    const dir = lang === 'en' ? join(PORTAL, 'en', 'atlas') : join(PORTAL, 'atlas');
+    mkdirSync(dir, { recursive: true });
+    writeFileSync(join(dir, 'index.html'), buildAtlasPage({
+      lang,
+      capitals,
+      channels: CHANNELS,
+      counts,
+      artMeta: atlasArt,
+      feeds: capitalFeeds(lang),
+      standard: CAPITALS.standard || [],
+      shell: portalShell,
+      header: portalHeader,
+      footer: portalFooter
+    }));
+  }
+  /* Atlas ima vlastiti sitemap: dvije adrese, isti ugovor kao i gradovi. */
+  const urls = [
+    { loc: 'https://gnk-asg.hr/atlas/', priority: '0.8' },
+    { loc: 'https://gnk-asg.hr/en/atlas/', priority: '0.7' }
+  ];
+  writeFileSync(join(PORTAL, 'atlas', 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.map((u) => `  <url><loc>${u.loc}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>${u.priority}</priority></url>`).join('\n')}
+</urlset>
+`);
+  return { pages: 2, cards: capitals.length };
+}
+
+/* Zadnji datum koji sitemap stvarno nosi. Sitemap indeks ne smije izmišljati
+   "lastmod": tražilica ga uspoređuje s korpusom i odstupanje je greška.
+   Prije je ovdje stajao fiksni 2026-10-19 za editorial-sitemap.xml, pa je
+   svaki ciklus pregazio datum koji je izračunao generator objava — i provjera
+   registra padala je svakih dva sata. */
+function sitemapLastmod(name) {
+  const file = join(PORTAL, name);
+  if (!existsSync(file)) return null;
+  try {
+    const dates = [...readFileSync(file, 'utf8').matchAll(/<lastmod>(\d{4}-\d{2}-\d{2})<\/lastmod>/g)]
+      .map((m) => m[1]).sort();
+    return dates.length ? dates[dates.length - 1] : null;
+  } catch { return null; }
+}
+
+/* Datum korpusa objava računa se isto kao u generatoru editorial sitemapa:
+   iz eksplicitnih datuma objave/izmjene, u UTC-u, i samo za objavljene
+   stavke. Najveći <lastmod> u datoteci nije isto: on može nositi lokalni
+   datum nastanka (24. 10. u 00:10 po Zagrebu je 23. 10. u UTC-u) i tada
+   indeks i korpus razilaze se za jedan dan. */
+function editorialCorpusLastmod() {
+  const file = join(PORTAL, 'data', 'editorial-registry.json');
+  if (!existsSync(file)) return null;
+  try {
+    const registry = JSON.parse(readFileSync(file, 'utf8'));
+    let latest = '';
+    for (const item of publishedItems(registry)) {
+      const explicit = item.modifiedAt || item.dateModified || item.publishedAt || item.datePublished;
+      const parsed = explicit ? new Date(explicit) : null;
+      if (!parsed || Number.isNaN(parsed.getTime())) continue;
+      const value = parsed.toISOString().slice(0, 10);
+      if (value > latest) latest = value;
+    }
+    return latest || null;
+  } catch { return null; }
+}
+
 function writeSitemapIndex() {
   const today = new Date().toISOString().slice(0, 10);
+  const SITE = 'https://gnk-asg.hr/';
+  /* Redoslijed je ugovor: jezgreni sitemapovi, pa gradski kanali, pa sve
+     ostalo što postoji na disku (npr. dijelovi slikovnog sitemapa). */
   const core = [
-    ['sitemap.xml', '2026-10-12'], ['editorial-sitemap.xml', '2026-10-19'],
+    ['sitemap.xml', '2026-10-12'], ['editorial-sitemap.xml', null],
     ['corporate-editorials-sitemap.xml', '2026-08-30'], ['visual-sitemap.xml', '2026-08-26'],
-    ['image-sitemap.xml', '2026-10-12'], ['world-topics-image-sitemap.xml', '2026-08-26'],
+    ['image-sitemap.xml', null], ['world-topics-image-sitemap.xml', '2026-08-26'],
     ['spt-sitemap.xml', '2026-10-12'], ['izdanja/sitemap.xml', today], ['galerija/sitemap.xml', today],
-    ['aktual-media/sitemap.xml', today], ['tehnologija-buducnosti/sitemap.xml', today]
+    ['aktual-media/sitemap.xml', today], ['tehnologija-buducnosti/sitemap.xml', today],
+    ['glavni-gradovi/sitemap.xml', today], ['atlas/sitemap.xml', today], ['mreza/sitemap.xml', today],
+    ['gnk-aktual/mreza/sitemap.xml', today]
   ];
-  const channels = CHANNELS.map((c) => [`kanal/${c.id}/sitemap.xml`, today]);
-  const all = [...core, ...channels];
-  const seen = new Set();
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${all.filter(([loc]) => (seen.has(loc) ? false : seen.add(loc))).map(([loc, lastmod]) => `  <sitemap>\n    <loc>https://gnk-asg.hr/${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n  </sitemap>`).join('\n')}
-</sitemapindex>
-`;
-  writeFileSync(join(PORTAL, 'sitemap-index.xml'), xml);
-  return all.length;
+  const file = join(PORTAL, 'sitemap-index.xml');
+  const previous = new Map();
+  if (existsSync(file)) {
+    for (const m of readFileSync(file, 'utf8').matchAll(/<sitemap>\s*<loc>([^<]+)<\/loc>\s*<lastmod>([^<]+)<\/lastmod>\s*<\/sitemap>/g)) {
+      previous.set(m[1], m[2]);
+    }
+  }
+  const entries = new Map();
+  for (const [loc, fallback] of core) {
+    const abs = `${SITE}${loc}`;
+    const measured = fallback !== null
+      ? null
+      : (loc === 'editorial-sitemap.xml'
+        ? (editorialCorpusLastmod() || sitemapLastmod(loc))
+        : sitemapLastmod(loc));
+    entries.set(abs, measured || previous.get(abs) || fallback || today);
+  }
+  for (const c of CHANNELS) entries.set(`${SITE}kanal/${c.id}/sitemap.xml`, today);
+  /* Dijelovi slikovnog sitemapa i sve ostalo što je netko drugi dodao u
+     indeks ostaje — inače ciklus briše zapise koje je zapisao alat za dijeljenje. */
+  for (const name of readdirSync(PORTAL)) {
+    if (!/^[\w./-]+\.xml$/.test(name)) continue;
+    if (!name.includes('sitemap')) continue;
+    const abs = `${SITE}${name}`;
+    if (entries.has(abs)) continue;
+    if (!/^image-sitemap-\d+\.xml$/.test(name) && !previous.has(abs)) continue;
+    entries.set(abs, sitemapLastmod(name) || previous.get(abs) || today);
+  }
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${[...entries.entries()]
+    .map(([loc, lastmod]) => `  <sitemap>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n  </sitemap>`).join('\n')}\n</sitemapindex>\n`;
+  writeFileSync(file, xml);
+  return entries.size;
 }
 
 function injectBand(cards, lang = 'hr') {
@@ -1329,6 +1927,33 @@ function injectBand(cards, lang = 'hr') {
   writeFileSync(file, html);
 }
 
+
+/* Završni prolaz: nakon što hub prepiše stranice (atlas, en/…, kanal), svaka
+   HTML datoteka portala mora imati modul osvježavanja. Bez ovog prolaza
+   test svježine pada na stranicama koje hub piše izvan `writePage`. */
+function ensureRefreshTags(root) {
+  let added = 0;
+  const skip = new Set(['assets', 'data', 'api', '__preview', 'app']);
+  const walkDir = (dir, depth) => {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      if (entry.name.startsWith('.')) continue;
+      const full = join(dir, entry.name);
+      if (entry.isDirectory()) {
+        if (!skip.has(entry.name) && depth < 8) walkDir(full, depth + 1);
+        continue;
+      }
+      if (!entry.name.endsWith('.html')) continue;
+      const html = readFileSync(full, 'utf8');
+      if (!/<!doctype html/i.test(html) || html.includes('data-am-netday')) continue;
+      if (!/<\/body>/i.test(html)) continue;
+      writeFileSync(full, html.replace(/<\/body>/i, `${refreshTag('/')}</body>`));
+      added += 1;
+    }
+  };
+  walkDir(root, 0);
+  return added;
+}
+
 if (process.argv[1] && /hub\.mjs$/.test(process.argv[1])) {
   buildHub().then(async (hub) => {
     const cards = JSON.parse(readFileSync(join(PORTAL, 'data', 'izdanja.json'), 'utf8')).cards || [];
@@ -1336,11 +1961,14 @@ if (process.argv[1] && /hub\.mjs$/.test(process.argv[1])) {
     writeFileSync(join(PORTAL, 'kanal', 'index.html'), kanalIndex(cards));
     mkdirSync(join(PORTAL, 'usa'), { recursive: true });
     writeFileSync(join(PORTAL, 'usa', 'index.html'), usaPage());
+    const capitals = writeCapitals();
+    const atlas = writeAtlas();
     const sitemaps = writeSitemapIndex();
     /* /kanal/ i /usa/ su upravo prepisani, pa traku tehnologije vraćamo
        nakon njih — inače bi nestala do sljedećeg ciklusa. */
     const { injectFutureTechBands } = await import('./future-tech.mjs');
     const techBands = injectFutureTechBands();
+    const refreshTags = ensureRefreshTags(PORTAL);
     /* Mreža neovisnih izdanja: hub /mreza/ i /en/network/ nose brojke
        izbornog deska, pa se pregraddе u istom ciklusu kao i ostatak portala. */
     let network = null;
@@ -1350,6 +1978,10 @@ if (process.argv[1] && /hub\.mjs$/.test(process.argv[1])) {
     } catch (error) {
       network = `preskočeno: ${error.message.split('\n')[0]}`;
     }
-    console.log(JSON.stringify({ ok: true, ...hub, kanalIndex: true, sitemaps, techBands, network }, null, 2));
+    /* Trake rubrika (tehnologija, mreža) ubacuju se do sada, pa se njihov CSS
+       vadi tek na kraju ciklusa — iza svih koraka koji pišu u stranicu. */
+    const { foldSectionStyles } = await import('./section-sheet.mjs');
+    const sectionCss = foldSectionStyles();
+    console.log(JSON.stringify({ ok: true, ...hub, kanalIndex: true, capitals, atlas, sitemaps, techBands, sectionCss, refreshTags, network }, null, 2));
   });
 }

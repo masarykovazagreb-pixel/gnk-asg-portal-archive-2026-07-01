@@ -359,14 +359,14 @@ const T = {
     agent: 'Pitaj asistenta',
     lang: 'English',
     more: 'Ostala mjerenja',
-    cities: 'Osam regionalnih izdanja',
-    citiesNote: 'Svaka brojka na ovoj stranici dolazi iz arhive tih regionalnih izdanja; svjetska izdanja mjere se u arhivi i dnevniku.',
+    cities: `${channels.length} regionalnih izdanja`,
+    citiesNote: `Svaka brojka na ovoj stranici dolazi iz arhive tih ${channels.length} regionalnih izdanja; svjetska izdanja mjere se u arhivi i dnevniku.`,
     measuredEditions: 'mjerenih regionalnih izdanja',
     totalEditions: 'izdanja ukupno',
     method: 'Kako je izmjereno',
-    methodBody: 'Brojke se računaju pri svakoj gradnji stranice iz datoteka arhive osam gradskih izdanja (po 420 zapisa). Ne prepisuju se ručno i ne zaokružuju naviše. Vremena su u UTC-u. Ako se arhiva promijeni, mijenja se i stranica — u istom ciklusu.',
+    methodBody: `Brojke se računaju pri svakoj gradnji stranice iz datoteka arhive ${channels.length} gradskih izdanja — ${allStamps.length.toLocaleString('hr-HR')} zapisa. Ne prepisuju se ručno i ne zaokružuju naviše. Vremena su u UTC-u. Ako se arhiva promijeni, mijenja se i stranica — u istom ciklusu.`,
     measured: 'Mjereno',
-    items: 'zapisa u arhivi',
+    items: 'zapisa u regionalnoj arhivi',
     tags: 'Oznake',
     source: 'Izvor',
     city: 'Grad',
@@ -384,13 +384,13 @@ const T = {
     lang: 'Hrvatski',
     more: 'Other measurements',
     cities: 'The eight regional editions',
-    citiesNote: 'Every number on this page comes from the archive of those regional editions; world editions are measured in the archive and the daily.',
+    citiesNote: `Every number on this page comes from the archive of those ${channels.length} regional editions; world editions are measured in the archive and the daily.`,
     measuredEditions: 'measured regional editions',
     totalEditions: 'editions in total',
     method: 'How this was measured',
     methodBody: 'Numbers are computed on every build from the archive files of the eight city editions (420 records each). Nothing is typed by hand and nothing is rounded up. Times are UTC. When the archive changes, this page changes in the same cycle.',
     measured: 'Measured',
-    items: 'records in the archive',
+    items: 'records in the regional archive',
     tags: 'Tags',
     source: 'Source',
     city: 'City',
@@ -808,10 +808,12 @@ ${tagMetas(keywords)}
 <meta property="og:url" content="${canonical}">
 <meta property="og:locale" content="${lang === 'en' ? 'en_GB' : 'hr_HR'}">
 <meta property="og:image" content="${SITE}/assets/izdanja/aktual-media-og.jpg">
+<meta property="og:image:alt" content="${esc(copy.title)}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(copy.title)}">
 <meta name="twitter:description" content="${esc(copy.description)}">
 <meta name="twitter:image" content="${SITE}/assets/izdanja/aktual-media-og.jpg">
+<meta name="twitter:image:alt" content="${esc(copy.title)}">
 <script type="application/ld+json">${safeJson(jsonld(desk, lang, canonical, alternate, keywords))}</script>
 <style>${CSS}</style>
 </head>
@@ -946,10 +948,12 @@ ${tagMetas(keywords)}
 <meta property="og:url" content="${canonical}">
 <meta property="og:locale" content="${lang === 'en' ? 'en_GB' : 'hr_HR'}">
 <meta property="og:image" content="${SITE}/assets/izdanja/aktual-media-og.jpg">
+<meta property="og:image:alt" content="${esc(copy.title)}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(copy.title)}">
 <meta name="twitter:description" content="${esc(copy.description)}">
 <meta name="twitter:image" content="${SITE}/assets/izdanja/aktual-media-og.jpg">
+<meta name="twitter:image:alt" content="${esc(copy.title)}">
 <script type="application/ld+json">${safeJson(graph)}</script>
 <style>${CSS}
 .dd-card i{display:block;margin-top:8px;font:800 12px/1 system-ui;letter-spacing:.06em;text-transform:uppercase;color:#e0bd69;font-style:normal}

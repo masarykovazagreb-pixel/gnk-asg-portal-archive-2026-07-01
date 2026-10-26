@@ -92,9 +92,13 @@ function auditPortal(portal) {
     check(hrefs.has(norm(target.url)), `${portal.id}: naslovnica ne vodi na portal ${target.url}`);
   }
 
-  /* 3. Svaki osvrt vodi na kanonsku adresu pod gnk-asg.hr. */
+  /* 3. Svaki vlastiti osvrt vodi na kanonsku adresu pod gnk-asg.hr.
+     Blok razmjene namjerno nosi naslove DRUGIH izdanja — i oni su /clanak/
+     adrese, ali tuđe. Zato se razmjena promatra zasebno (svoj gate), a ovdje
+     ostaje pravilo za vlastite tekstove portala. */
   const articlePrefix = `${portal.sourceBase}clanak/`;
-  const articleLinks = links(first).filter((link) => link.href.includes('/clanak/'));
+  const withoutExchange = first.replace(/<section class="am-exchange"[\s\S]*?<\/section>/g, '');
+  const articleLinks = links(withoutExchange).filter((link) => link.href.includes('/clanak/'));
   check(articleLinks.length >= 5, `${portal.id}: premalo linkova na osvrte (${articleLinks.length})`);
   for (const link of articleLinks) {
     check(link.href.startsWith(articlePrefix), `${portal.id}: osvrt ne vodi na ${articlePrefix} (${link.href})`);
@@ -117,7 +121,19 @@ function auditPortal(portal) {
     const relative = file.slice(dir.length + 1).replace(/index\.html$/, '');
     const canonical = (html.match(/<link rel="canonical" href="([^"]+)"/) || [])[1] || '';
     check(Boolean(canonical), `${portal.id}/${relative}: nema canonical`);
-    check(canonical.startsWith(`${base}/`) || canonical === base, `${portal.id}/${relative}: canonical izvan portala (${canonical})`);
+    /* Preneseni tekstovi (kolumne i prenos) svjesno pokazuju na izvornik:
+       kopija ne smije preuzeti matičnu adresu, inače devet domena konkurira
+       jedna drugoj za isti tekst. Sve ostale stranice portala ostaju
+       isključivo vlastite. */
+    const syndicated = ((relative.startsWith('kolumne/') || relative.startsWith('prenos/'))
+      && relative.replace(/\/+$/, '').split('/').length >= 2);
+    if (syndicated) {
+      check(/^https:\/\/gnk-asg\.hr\/|^https:\/\/gnk-asg-kanal\.pages\.dev\//.test(canonical),
+        `${portal.id}/${relative}: canonical prenesenog teksta ne vodi na naš izvornik (${canonical})`);
+    } else {
+      check(canonical.startsWith(`${base}/`) || canonical === base, `${portal.id}/${relative}: canonical izvan portala (${canonical})`);
+    }
+
     check(!canonicals.has(canonical), `${portal.id}/${relative}: duplikat canonicala (${canonical})`);
     canonicals.add(canonical);
     check((html.match(/data-mesh="v1"/g) || []).length === 1, `${portal.id}/${relative}: blok mreže nije točno jedan`);
@@ -126,7 +142,15 @@ function auditPortal(portal) {
     }
     check(html.includes('id="sadrzaj"'), `${portal.id}/${relative}: nema glavne regije #sadrzaj`);
     check(/class="skip"/.test(html), `${portal.id}/${relative}: nema preskoka sadržaja`);
-    check(!/<script\b(?![^>]*type="application\/ld\+json")/i.test(html), `${portal.id}/${relative}: stranica nosi skriptu (CSP je zaključan)`);
+    /* Svjetski portali su namjerno bez skripti — jedina dopuštena iznimka je
+       zajednički modul osvježavanja (`/assets/am-refresh-v1.js`), koji je
+       isti na cijeloj mreži i učitava se s vlastitog hosta. Skripta iz bilo
+       kojeg drugog izvora ruši portal na istom pravilu kao i dosad. */
+    const scripts = [...html.matchAll(/<script\b[^>]*>/gi)].map((match) => match[0])
+      .filter((tag) => !/type="application\/ld\+json"/i.test(tag));
+    const foreign = scripts.filter((tag) => !/src="\/assets\/am-refresh-v1\.js/i.test(tag));
+    check(foreign.length === 0, `${portal.id}/${relative}: stranica nosi stranu skriptu (CSP je zaključan)`);
+    check(scripts.length <= 1, `${portal.id}/${relative}: više od jedne skripte`);
   }
 
   /* 6. Sitemap: samo vlastite stranice, bez članaka (nema dvostrukog sadržaja). */

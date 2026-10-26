@@ -1,0 +1,871 @@
+/* ============================================================================
+   AKTUAL MEDIA — središnja stranica, dizajn v2
+   ----------------------------------------------------------------------------
+   Zašto novi sloj: /gnk-aktual/ je do sada nosio 32 sekcije iz različitih
+   razdoblja — crveni tabloidni akcent, crni "editorial" blok, svijetli panel,
+   zasebni tamni "am-central" i kružne sličice izdanja. Svaka je bila
+   napravljena za sebe, pa je stranica izgledala kao deset webova na jednoj
+   adresi.
+
+   Ovaj list uvodi jedno pravilo: tamna podloga, zlatni akcent, serifni naslovi,
+   kartice s pravokutnom slikom i isti ritam sekcija. Ne dira HTML, ne dodaje
+   skriptu i ne uvodi ni jednu vanjsku datoteku — radi pod postojećim CSP-om.
+
+   Učitava se zadnji u <head> da pobijedi starije listove koji su na stranici.
+   ========================================================================== */
+
+body[data-aktual-view="home"] {
+  --amh-bg: #060b13;
+  --amh-bg-2: #08111c;
+  --amh-panel: #0b1624;
+  --amh-panel-2: #0e1c2d;
+  --amh-ink: #eef3fa;
+  --amh-muted: #a3b4c9;
+  --amh-gold: #e9c66c;
+  --amh-gold-2: #c9a24d;
+  --amh-line: rgba(233, 198, 108, .18);
+  --amh-line-soft: rgba(255, 255, 255, .08);
+  --amh-radius: 16px;
+  --amh-shadow: 0 18px 44px rgba(0, 0, 0, .38);
+  background:
+    radial-gradient(1200px 620px at 12% -8%, rgba(233, 198, 108, .10), transparent 62%),
+    radial-gradient(900px 520px at 92% 4%, rgba(64, 130, 200, .10), transparent 60%),
+    var(--amh-bg);
+  color: var(--amh-ink);
+}
+
+body[data-aktual-view="home"] main.am-shell {
+  display: block;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 clamp(14px, 3vw, 34px) 40px;
+}
+
+/* ---------- 1. tipografija: jedan ritam naslova ---------- */
+
+body[data-aktual-view="home"] main h1,
+body[data-aktual-view="home"] main h2,
+body[data-aktual-view="home"] main h3 {
+  font-family: Georgia, "Times New Roman", serif;
+  letter-spacing: -.015em;
+  text-wrap: balance;
+}
+
+body[data-aktual-view="home"] main h2 {
+  font-size: clamp(22px, 2.6vw, 31px);
+  line-height: 1.14;
+  margin: 0 0 14px;
+}
+
+body[data-aktual-view="home"] main h3 {
+  font-size: clamp(17px, 1.6vw, 20px);
+  line-height: 1.25;
+  margin: 0 0 8px;
+}
+
+body[data-aktual-view="home"] main p,
+body[data-aktual-view="home"] main li {
+  color: var(--amh-muted);
+}
+
+body[data-aktual-view="home"] main a {
+  color: inherit;
+  text-decoration-color: rgba(233, 198, 108, .45);
+  text-underline-offset: 3px;
+}
+
+body[data-aktual-view="home"] main a:hover {
+  text-decoration-color: var(--amh-gold);
+}
+
+/* Svaka sekcija dobiva isti razmak i gornju liniju: stranica više ne izgleda
+   kao niz zalijepljenih blokova različitih proizvođača. */
+body[data-aktual-view="home"] main > section,
+body[data-aktual-view="home"] main > nav,
+body[data-aktual-view="home"] main > div.sec {
+  margin: clamp(30px, 4vw, 54px) 0 0;
+  padding-top: clamp(20px, 2.4vw, 30px);
+  border-top: 1px solid var(--amh-line-soft);
+}
+
+body[data-aktual-view="home"] main > section:first-of-type,
+body[data-aktual-view="home"] main > nav:first-of-type {
+  margin-top: 0;
+  border-top: 0;
+  padding-top: 0;
+}
+
+/* ---------- 2. zaglavlje izdanja (masthead) ---------- */
+
+body[data-aktual-view="home"] .am-masthead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(12px, 3vw, 40px);
+  padding: clamp(26px, 4vw, 46px) clamp(4px, 2vw, 18px) clamp(22px, 3vw, 34px);
+  border-bottom: 1px solid var(--amh-line);
+  text-align: center;
+}
+
+body[data-aktual-view="home"] .am-brand h1 {
+  font-size: clamp(38px, 7.2vw, 88px);
+  line-height: .92;
+  margin: 8px 0 10px;
+  letter-spacing: -.03em;
+  color: var(--amh-ink);
+}
+
+body[data-aktual-view="home"] .am-brand h1 span {
+  color: var(--amh-gold);
+}
+
+body[data-aktual-view="home"] .am-brand-kicker,
+body[data-aktual-view="home"] .am-mast-side {
+  font: 800 10px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--amh-muted);
+}
+
+body[data-aktual-view="home"] .am-brand-sub {
+  margin: 0;
+  font: 600 13px/1.5 system-ui, sans-serif;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--amh-gold);
+}
+
+/* ---------- 3. traka sekcija i prozorčići ---------- */
+
+body[data-aktual-view="home"] .am-sectionnav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 10px 2px;
+  margin: 0 -2px;
+  background: linear-gradient(180deg, rgba(6, 11, 19, .96), rgba(6, 11, 19, .82));
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--amh-line-soft);
+  scrollbar-width: thin;
+}
+
+body[data-aktual-view="home"] .am-sectionnav a {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  padding: 9px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--amh-line-soft);
+  font: 700 11px/1 system-ui, sans-serif;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--amh-muted);
+}
+
+body[data-aktual-view="home"] .am-sectionnav a:hover,
+body[data-aktual-view="home"] .am-sectionnav a[aria-current] {
+  color: #0a1018;
+  background: var(--amh-gold);
+  border-color: var(--amh-gold);
+}
+
+/* ---------- 4. slike: nigdje kružić, nigdje prazan okvir ---------- */
+
+body[data-aktual-view="home"] main img {
+  background: var(--amh-panel-2);
+}
+
+body[data-aktual-view="home"] .amx-ring,
+body[data-aktual-view="home"] .amm-card-img,
+body[data-aktual-view="home"] .amc-tile-img,
+body[data-aktual-view="home"] .amn-lead-media,
+body[data-aktual-view="home"] .am-spt-media {
+  display: block;
+  border-radius: 12px !important;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  background: var(--amh-panel-2);
+}
+
+body[data-aktual-view="home"] .amx-ring img,
+body[data-aktual-view="home"] .amm-card-img img,
+body[data-aktual-view="home"] .amc-tile-img img,
+body[data-aktual-view="home"] .amn-lead-media img,
+body[data-aktual-view="home"] .am-spt-media img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  border-radius: 12px !important;
+  display: block;
+}
+
+/* ---------- 5. kartice izdanja (amx) ---------- */
+
+body[data-aktual-view="home"] .amx-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px 18px;
+  margin-bottom: 18px;
+}
+
+body[data-aktual-view="home"] .amx-flag {
+  font: 800 11px/1 system-ui, sans-serif;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--amh-gold);
+}
+
+body[data-aktual-view="home"] .amx-head p {
+  margin: 0;
+  flex: 1 1 340px;
+  max-width: 72ch;
+  font-size: 14px;
+}
+
+body[data-aktual-view="home"] .amx-all,
+body[data-aktual-view="home"] .amc-btn,
+body[data-aktual-view="home"] .am-panel-cta,
+body[data-aktual-view="home"] .am-spt-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--amh-line);
+  background: rgba(233, 198, 108, .08);
+  color: var(--amh-gold) !important;
+  font: 800 11px/1 system-ui, sans-serif;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+body[data-aktual-view="home"] .amx-all:hover,
+body[data-aktual-view="home"] .amc-btn:hover {
+  background: var(--amh-gold);
+  color: #0a1018 !important;
+}
+
+body[data-aktual-view="home"] .amx-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(178px, 1fr));
+  gap: 14px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+body[data-aktual-view="home"] .amx-item {
+  margin: 0;
+}
+
+body[data-aktual-view="home"] .amx-link {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  height: 100%;
+  padding: 12px;
+  border: 1px solid var(--amh-line-soft);
+  border-radius: var(--amh-radius);
+  background: linear-gradient(180deg, var(--amh-panel), var(--amh-bg-2));
+  text-decoration: none;
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+
+body[data-aktual-view="home"] .amx-link:hover {
+  transform: translateY(-3px);
+  border-color: var(--amh-gold);
+  box-shadow: var(--amh-shadow);
+}
+
+body[data-aktual-view="home"] .amx-ring {
+  position: relative;
+}
+
+body[data-aktual-view="home"] .amx-badge {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: rgba(6, 11, 19, .78);
+  border: 1px solid var(--amh-line);
+  color: var(--amh-gold);
+  font: 800 11px/1 system-ui, sans-serif;
+  letter-spacing: .04em;
+}
+
+body[data-aktual-view="home"] .amx-link b {
+  font: 700 16px/1.25 Georgia, serif;
+  color: var(--amh-ink);
+}
+
+body[data-aktual-view="home"] .amx-link small {
+  font: 600 11px/1.4 system-ui, sans-serif;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--amh-muted);
+}
+
+body[data-aktual-view="home"] .amx-ago {
+  font: 700 11px/1 system-ui, sans-serif;
+  color: var(--amh-gold-2);
+  font-style: normal;
+}
+
+body[data-aktual-view="home"] .amx-line {
+  display: none;
+}
+
+/* ---------- 6. središnja ploča (am-central) ---------- */
+
+body[data-aktual-view="home"] .am-central {
+  background: linear-gradient(180deg, var(--amh-panel), var(--amh-bg-2)) !important;
+  border: 1px solid var(--amh-line) !important;
+  border-radius: 22px !important;
+  padding: clamp(18px, 3vw, 34px) !important;
+  color: var(--amh-ink) !important;
+  box-shadow: var(--amh-shadow);
+}
+
+body[data-aktual-view="home"] .amc-sec {
+  border-top: 1px solid var(--amh-line-soft) !important;
+  margin-top: 30px !important;
+  padding-top: 22px !important;
+}
+
+body[data-aktual-view="home"] .amc-sec-num,
+body[data-aktual-view="home"] .amc-dim,
+body[data-aktual-view="home"] .amc-tile-badge,
+body[data-aktual-view="home"] .amc-river-src {
+  color: var(--amh-gold) !important;
+}
+
+body[data-aktual-view="home"] .amc-tile {
+  background: var(--amh-panel-2) !important;
+  border: 1px solid var(--amh-line-soft) !important;
+  border-radius: 14px !important;
+  overflow: hidden;
+  transition: transform .18s ease, border-color .18s ease;
+}
+
+body[data-aktual-view="home"] .amc-tile:hover {
+  transform: translateY(-3px);
+  border-color: var(--amh-gold) !important;
+}
+
+body[data-aktual-view="home"] .amc-tile-name,
+body[data-aktual-view="home"] .amc-tile-text,
+body[data-aktual-view="home"] .amc-tile-cap {
+  color: var(--amh-ink) !important;
+}
+
+body[data-aktual-view="home"] .amc-tile-text,
+body[data-aktual-view="home"] .amc-tile-cap {
+  color: var(--amh-muted) !important;
+}
+
+/* ---------- 7. vijesti: vodeća priča, lista, rubrike ---------- */
+
+body[data-aktual-view="home"] .am-breaking {
+  border: 1px solid var(--amh-line) !important;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--amh-panel) !important;
+}
+
+body[data-aktual-view="home"] .am-breaking-label {
+  background: var(--amh-gold) !important;
+  color: #0a1018 !important;
+  font-weight: 900;
+}
+
+body[data-aktual-view="home"] .am-leadgrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(280px, .72fr);
+  gap: clamp(16px, 2.4vw, 28px);
+}
+
+body[data-aktual-view="home"] .am-lead,
+body[data-aktual-view="home"] .amn-lead {
+  border: 1px solid var(--amh-line-soft);
+  border-radius: var(--amh-radius);
+  background: var(--amh-panel);
+  overflow: hidden;
+}
+
+body[data-aktual-view="home"] .amn-lead-media img {
+  border-radius: 0 !important;
+}
+
+body[data-aktual-view="home"] .amn-lead-body {
+  padding: 16px 18px 20px;
+}
+
+body[data-aktual-view="home"] .amn-lead-body h3,
+body[data-aktual-view="home"] .am-lead h3 {
+  font-size: clamp(20px, 2.2vw, 27px);
+}
+
+body[data-aktual-view="home"] .amn-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+
+body[data-aktual-view="home"] .amn-list li {
+  padding: 11px 2px;
+  border-bottom: 1px solid var(--amh-line-soft);
+}
+
+body[data-aktual-view="home"] .amn-list li a {
+  font-family: Georgia, serif;
+  font-size: 15px;
+  color: var(--amh-ink);
+  text-decoration: none;
+}
+
+body[data-aktual-view="home"] .amn-source,
+body[data-aktual-view="home"] .amn-note,
+body[data-aktual-view="home"] .amn-kicker {
+  font: 700 10px/1.5 system-ui, sans-serif;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--amh-gold-2) !important;
+}
+
+/* ---------- 8. mreža, karta, kanali ---------- */
+
+body[data-aktual-view="home"] .amm,
+body[data-aktual-view="home"] .amw,
+body[data-aktual-view="home"] .am-netband,
+body[data-aktual-view="home"] .amm-card {
+  background: var(--amh-panel) !important;
+  border: 1px solid var(--amh-line-soft) !important;
+  border-radius: var(--amh-radius) !important;
+  color: var(--amh-ink) !important;
+}
+
+body[data-aktual-view="home"] .amm-card {
+  background: var(--amh-panel-2) !important;
+  overflow: hidden;
+}
+
+body[data-aktual-view="home"] .kanal-list,
+body[data-aktual-view="home"] .izdanja-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+body[data-aktual-view="home"] .kanal-item,
+body[data-aktual-view="home"] .izdanja-item {
+  border: 1px solid var(--amh-line-soft);
+  border-radius: 12px;
+  background: var(--amh-panel-2);
+  padding: 12px 14px;
+}
+
+body[data-aktual-view="home"] .kanal-item a,
+body[data-aktual-view="home"] .izdanja-item a {
+  text-decoration: none;
+  color: var(--amh-ink);
+}
+
+body[data-aktual-view="home"] .kanal-num,
+body[data-aktual-view="home"] .izdanja-num,
+body[data-aktual-view="home"] .amw-num,
+body[data-aktual-view="home"] .amm-count {
+  color: var(--amh-gold) !important;
+  font-weight: 800;
+}
+
+/* ---------- 9. urednički blokovi: panel, sova, editorial ---------- */
+
+body[data-aktual-view="home"] .am-panel,
+body[data-aktual-view="home"] .am-panel.light,
+body[data-aktual-view="home"] .am-sova,
+body[data-aktual-view="home"] .am-editorial,
+body[data-aktual-view="home"] .evd-desk {
+  background: var(--amh-panel) !important;
+  color: var(--amh-ink) !important;
+  border: 1px solid var(--amh-line-soft) !important;
+  border-top: 3px solid var(--amh-gold) !important;
+  border-radius: var(--amh-radius) !important;
+  padding: clamp(16px, 2.4vw, 26px) !important;
+}
+
+body[data-aktual-view="home"] .am-panel h3,
+body[data-aktual-view="home"] .am-sova h2,
+body[data-aktual-view="home"] .am-editorial h2,
+body[data-aktual-view="home"] .evd-desk h3 {
+  font-family: Georgia, serif !important;
+  text-transform: none !important;
+  letter-spacing: -.01em;
+  color: var(--amh-ink) !important;
+}
+
+body[data-aktual-view="home"] .am-editorial p,
+body[data-aktual-view="home"] .am-sova p,
+body[data-aktual-view="home"] .am-panel p {
+  color: var(--amh-muted) !important;
+}
+
+body[data-aktual-view="home"] .am-editorial-links a,
+body[data-aktual-view="home"] .am-editorial-actions a,
+body[data-aktual-view="home"] .am-sova-tabs button {
+  border-color: var(--amh-line-soft) !important;
+  background: var(--amh-panel-2) !important;
+  color: var(--amh-ink) !important;
+  border-radius: 10px;
+}
+
+body[data-aktual-view="home"] .am-editorial-actions a.primary {
+  background: var(--amh-gold) !important;
+  color: #0a1018 !important;
+  border-color: var(--amh-gold) !important;
+}
+
+/* ---------- 10. trake (ft, dd, spt, stripe) ---------- */
+
+body[data-aktual-view="home"] .ft-band,
+body[data-aktual-view="home"] .dd-band,
+body[data-aktual-view="home"] .am-spt,
+body[data-aktual-view="home"] .am-stripe {
+  background: var(--amh-panel) !important;
+  border: 1px solid var(--amh-line-soft) !important;
+  border-radius: var(--amh-radius) !important;
+  padding: clamp(16px, 2.4vw, 26px) !important;
+  color: var(--amh-ink) !important;
+}
+
+body[data-aktual-view="home"] .am-spt {
+  border-left: 3px solid var(--amh-gold) !important;
+}
+
+/* ---------- 11. prozorčići, najava i reklama ---------- */
+
+body[data-aktual-view="home"] .am-win-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 10px;
+}
+
+body[data-aktual-view="home"] .am-win {
+  border: 1px solid var(--amh-line-soft);
+  border-radius: 14px;
+  background: var(--amh-panel);
+  padding: 12px 14px;
+}
+
+body[data-aktual-view="home"] .am-win-bar {
+  font: 800 10px/1.4 system-ui, sans-serif;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--amh-gold);
+}
+
+body[data-aktual-view="home"] .am-promo-top {
+  background: linear-gradient(90deg, rgba(233, 198, 108, .14), rgba(233, 198, 108, .02)) !important;
+  border-bottom: 1px solid var(--amh-line);
+  color: var(--amh-ink);
+}
+
+body[data-aktual-view="home"] .am-ad,
+body[data-aktual-view="home"] .am-promo-card {
+  background: var(--amh-panel) !important;
+  border: 1px solid var(--amh-line) !important;
+  color: var(--amh-ink) !important;
+  border-radius: 14px;
+}
+
+/* ---------- 12. oznake i potpisi ---------- */
+
+body[data-aktual-view="home"] main ul {
+  margin-left: 0;
+}
+
+body[data-aktual-view="home"] main [class*="tags"] li,
+body[data-aktual-view="home"] main [class*="tags"] a {
+  color: var(--amh-muted) !important;
+}
+
+body[data-aktual-view="home"] .am-footer-note,
+body[data-aktual-view="home"] .evd-muted,
+body[data-aktual-view="home"] .amc-note {
+  color: var(--amh-muted) !important;
+}
+
+/* ---------- 13. mali ekrani ---------- */
+
+@media (max-width: 900px) {
+  body[data-aktual-view="home"] .am-masthead {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  body[data-aktual-view="home"] .am-mast-side {
+    display: none;
+  }
+
+  body[data-aktual-view="home"] .am-leadgrid {
+    grid-template-columns: 1fr;
+  }
+
+  body[data-aktual-view="home"] .amx-row {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-aktual-view="home"] .amx-link,
+  body[data-aktual-view="home"] .amc-tile {
+    transition: none !important;
+  }
+}
+
+/* ---------- 14. hero traka: brojevi mreže i četiri upita ---------- */
+
+body[data-aktual-view="home"] .amh-strip {
+  display: grid;
+  gap: clamp(14px, 2vw, 20px);
+  margin: clamp(16px, 2.4vw, 26px) 0 0;
+  padding: clamp(16px, 2.4vw, 26px);
+  border: 1px solid var(--amh-line);
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(233, 198, 108, .10), rgba(10, 18, 30, .9) 46%, rgba(8, 17, 28, .96));
+}
+
+body[data-aktual-view="home"] .amh-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+body[data-aktual-view="home"] .amh-stats li {
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--amh-line-soft);
+  background: rgba(6, 11, 19, .5);
+}
+
+body[data-aktual-view="home"] .amh-stats b {
+  font: 800 clamp(22px, 2.6vw, 30px)/1 Georgia, serif;
+  color: var(--amh-gold);
+  font-variant-numeric: tabular-nums;
+}
+
+body[data-aktual-view="home"] .amh-stats span {
+  font: 700 10px/1.4 system-ui, sans-serif;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--amh-muted);
+}
+
+body[data-aktual-view="home"] .amh-queries {
+  display: grid;
+  gap: 8px;
+}
+
+body[data-aktual-view="home"] .amh-queries > span {
+  font: 800 10px/1 system-ui, sans-serif;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--amh-gold-2);
+}
+
+body[data-aktual-view="home"] .amh-queries nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+body[data-aktual-view="home"] .amh-queries a {
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--amh-line);
+  background: rgba(6, 11, 19, .55);
+  font: 700 12px/1 system-ui, sans-serif;
+  letter-spacing: .02em;
+  text-decoration: none;
+  color: var(--amh-ink);
+}
+
+body[data-aktual-view="home"] .amh-queries a:hover {
+  background: var(--amh-gold);
+  color: #0a1018;
+}
+
+body[data-aktual-view="home"] .amh-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+body[data-aktual-view="home"] .amh-btn {
+  padding: 11px 18px;
+  border-radius: 999px;
+  background: var(--amh-gold);
+  color: #0a1018 !important;
+  font: 800 11px/1 system-ui, sans-serif;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+body[data-aktual-view="home"] .amh-btn--ghost {
+  background: transparent;
+  border: 1px solid var(--amh-line);
+  color: var(--amh-gold) !important;
+}
+
+body[data-aktual-view="home"] .amh-btn:hover {
+  filter: brightness(1.08);
+}
+
+body[data-aktual-view="home"] .amh-editor {
+  font: 600 12px/1.5 system-ui, sans-serif;
+  color: var(--amh-muted);
+}
+
+/* ---------- 15. traka izdanja i atlas ---------- */
+
+body[data-aktual-view="home"] .am-editionbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 18px;
+  margin: 0;
+  padding: 10px 2px 0;
+  font: 700 10px/1.4 system-ui, sans-serif;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--amh-muted);
+  border-bottom: 0;
+}
+
+body[data-aktual-view="home"] .am-editionbar > *:last-child {
+  color: var(--amh-gold-2);
+}
+
+body[data-aktual-view="home"] .am-atlas {
+  margin-top: clamp(16px, 2.4vw, 26px) !important;
+  border-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+body[data-aktual-view="home"] .am-atlas figure {
+  margin: 0;
+  position: relative;
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1px solid var(--amh-line);
+  background: var(--amh-panel);
+}
+
+body[data-aktual-view="home"] .am-atlas img {
+  display: block;
+  width: 100%;
+  height: clamp(220px, 34vw, 420px);
+  object-fit: cover;
+}
+
+body[data-aktual-view="home"] .am-atlas figcaption {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: grid;
+  gap: 4px;
+  padding: clamp(14px, 2.4vw, 26px);
+  background: linear-gradient(0deg, rgba(4, 8, 14, .94) 12%, rgba(4, 8, 14, .55) 55%, transparent);
+}
+
+body[data-aktual-view="home"] .am-atlas-k {
+  font: 800 10px/1.4 system-ui, sans-serif;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--amh-gold);
+}
+
+body[data-aktual-view="home"] .am-atlas-t {
+  font: 700 clamp(16px, 2vw, 22px)/1.2 Georgia, serif;
+  color: var(--amh-ink);
+}
+
+body[data-aktual-view="home"] .am-atlas-l {
+  font: 600 12px/1.6 system-ui, sans-serif;
+  color: var(--amh-muted);
+}
+
+body[data-aktual-view="home"] .am-atlas-l a {
+  color: var(--amh-gold);
+  text-decoration: none;
+}
+
+/* ---------- 16. sličice izdanja: iz kruga u karticu ---------- */
+
+body[data-aktual-view="home"] .amx-ring {
+  padding: 0 !important;
+  aspect-ratio: 16 / 10 !important;
+  border-radius: 14px !important;
+  overflow: hidden;
+  background: var(--amh-panel-2) !important;
+  box-shadow: none !important;
+  border: 1px solid var(--amh-line-soft);
+  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+
+/* Inline stil kataloga crtao je zlatni prsten i bijeli obrub oko kruga. Kad je
+   kartica pravokutna, taj obrub ostaje kao dvostruki okvir, pa ga ovdje
+   gasimo — slika ide do ruba kartice. */
+body[data-aktual-view="home"] .amx-ring img {
+  border: 0 !important;
+  border-radius: 13px !important;
+  transform: none !important;
+}
+
+body[data-aktual-view="home"] .amx-ring::after {
+  display: none !important;
+}
+
+body[data-aktual-view="home"] .amx-link:hover .amx-ring,
+body[data-aktual-view="home"] .amx-link:focus-visible .amx-ring {
+  transform: translateY(-2px) !important;
+  border-color: color-mix(in srgb, var(--amh-gold) 55%, transparent) !important;
+  box-shadow: 0 14px 30px rgba(2, 6, 14, .28) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-aktual-view="home"] .amx-ring,
+  body[data-aktual-view="home"] .amx-link:hover .amx-ring {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+body[data-aktual-view="home"] .amx-podium,
+body[data-aktual-view="home"] .amx-platforms {
+  background: transparent !important;
+  border: 0 !important;
+}
+
+/* Kartica nosi cijelu sliku, naslov ispod — nikad tekst preko lica. */
+body[data-aktual-view="home"] .amx-link > b,
+body[data-aktual-view="home"] .amx-link > small,
+body[data-aktual-view="home"] .amx-link > em {
+  padding-inline: 2px;
+}

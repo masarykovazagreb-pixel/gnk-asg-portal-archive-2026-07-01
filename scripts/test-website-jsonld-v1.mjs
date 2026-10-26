@@ -47,7 +47,8 @@ function collectWebsiteNodes(value, result) {
 function jsonLdBodies(html) {
   const bodies = [];
   const source = String(html || '');
-  const lower = source.toLowerCase();
+  // Samo ASCII malim slovima: toLowerCase() može promijeniti duljinu (npr. turski İ) i pomaknuti indekse.
+  const lower = source.replace(/[A-Z]/g, (c) => c.toLowerCase());
   let cursor = 0;
   while (cursor < source.length) {
     const openStart = lower.indexOf('<script', cursor);

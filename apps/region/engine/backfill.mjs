@@ -35,6 +35,11 @@ const STORE = Math.max(TARGET, Number(arg('--store', '420')));
 const DAYS = Number(arg('--days', '400'));
 const MAX_PAGES = Number(arg('--max-pages', '10'));
 const ONLY = arg('--channel', '');
+/* --below N: puni samo kanale koji imaju manje od N zapisa. Dnevni ciklus
+   uzima nekoliko najnovijih stavki po izvoru, pa svjetska izdanja (otvorena
+   poslije regionalnih) godinama ne bi došla do cilja. Ovako svaki ciklus
+   dopuni samo ono što zaostaje, uz isti tvrdi cilj (300 tekstova u arhivi). */
+const BELOW = Number(arg('--below', '0'));
 const NO_BUILD = flag('--no-build');
 const PAUSE = Number(arg('--pause', '180'));
 
@@ -321,8 +326,17 @@ async function runChannel(channel, report) {
 
 async function main() {
   mkdirSync(DATA, { recursive: true });
-  const targets = CHANNELS.filter((c) => !ONLY || c.id === ONLY);
-  if (!targets.length) throw new Error(`Nepoznat kanal: ${ONLY}`);
+  const stored = (id) => {
+    const data = readJSON(channelFile(id), null);
+    const items = Array.isArray(data) ? data : (data?.items || []);
+    return items.length;
+  };
+  const targets = CHANNELS.filter((c) => (!ONLY || c.id === ONLY) && (!BELOW || stored(c.id) < BELOW));
+  if (!targets.length && ONLY) throw new Error(`Nepoznat kanal: ${ONLY}`);
+  if (!targets.length) {
+    console.log(`Svi kanali imaju najmanje ${BELOW} zapisa — nema što dopuniti.`);
+    return;
+  }
 
   const report = {};
   for (const channel of targets) {
