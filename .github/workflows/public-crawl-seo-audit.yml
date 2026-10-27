@@ -1,0 +1,27 @@
+name: Public crawl and SEO availability audit
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '20 8,16 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: public-crawl-seo-audit
+  cancel-in-progress: false
+
+jobs:
+  audit-public:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate checker syntax
+        run: node --check scripts/check-public-crawl-http-v1.mjs
+      - name: Check public crawl accessibility
+        run: node scripts/check-public-crawl-http-v1.mjs
