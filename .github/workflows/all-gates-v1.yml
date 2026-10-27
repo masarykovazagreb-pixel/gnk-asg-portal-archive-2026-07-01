@@ -47,5 +47,11 @@ jobs:
       - name: Python 3 (za allowlist gate)
         run: python3 --version
 
+      - name: Sastavi samostalne portale za gate (arhiva, dnevnik)
+        run: |
+          set -euo pipefail
+          node apps/arhiva/engine/build.mjs
+          node apps/dnevnik/engine/build.mjs
+
       - name: Sve provjere
         run: node scripts/test-all-v1.mjs

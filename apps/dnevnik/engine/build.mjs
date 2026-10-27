@@ -315,7 +315,7 @@ write('404.html', `<!doctype html><html lang="hr"><head><meta charset="utf-8"><m
 <p class="lead">Dani su ovdje:</p><div class="row"><a class="btn solid" href="/">Dnevnik</a><a class="btn" href="${ARHIVA}/">Arhiva</a><a class="btn" href="${MAIN}/gnk-aktual/">AKTUAL MEDIA</a></div></main>${authorBand('hr')}${impressumBlock('hr')}${refreshTag('/')}</body></html>`);
 
 write('assets/site.css', SITE_CSS);
-ensureAuthorPortrait(AUTHOR_PORTRAIT, resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', 'site'));
+ensureAuthorPortrait(AUTHOR_PORTRAIT, resolve(dirname(fileURLToPath(import.meta.url)), '..', 'site'));
 write('robots.txt', robots(SITE_URL));
 /* Isti popis razmjene koji stranica prikazuje, u strojnom obliku. */
 writeExchangeJson(SITE, { root: ROOT, selfHome: `${SITE_URL}/`, selfNames: ['AKTUAL DNEVNIK'] });
