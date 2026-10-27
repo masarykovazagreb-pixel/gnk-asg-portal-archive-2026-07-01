@@ -4,17 +4,19 @@
   "lang": "id",
   "city": "Jakarta",
   "country": "Indonezija",
-  "updatedAt": "2026-10-27T05:02:21.793Z",
+  "updatedAt": "2026-10-27T10:40:23.103Z",
   "sources": [
     {
       "id": "antara",
       "name": "ANTARA",
       "url": "https://www.antaranews.com/rss/terkini.xml",
-      "ok": true,
-      "fetched": 50,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-10-27T05:02:12.459Z"
+      "errors": [
+        "https://www.antaranews.com/rss/terkini.xml: fetch failed"
+      ],
+      "checkedAt": "2026-10-27T10:40:12.934Z"
     },
     {
       "id": "kompas",
@@ -27,7 +29,7 @@
         "https://www.kompas.com/rss: HTTP 404",
         "https://nasional.kompas.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-27T05:02:15.121Z"
+      "checkedAt": "2026-10-27T10:40:15.818Z"
     },
     {
       "id": "detik",
@@ -39,7 +41,7 @@
       "errors": [
         "https://rss.detik.com/index.php/detikcom: fetch failed"
       ],
-      "checkedAt": "2026-10-27T05:02:16.933Z"
+      "checkedAt": "2026-10-27T10:40:18.190Z"
     },
     {
       "id": "tempo",
@@ -51,7 +53,7 @@
       "errors": [
         "https://www.tempo.co/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-27T05:02:17.753Z"
+      "checkedAt": "2026-10-27T10:40:19.030Z"
     },
     {
       "id": "cnnindonesia",
@@ -63,7 +65,7 @@
       "errors": [
         "https://www.cnnindonesia.com/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-27T05:02:18.539Z"
+      "checkedAt": "2026-10-27T10:40:19.863Z"
     },
     {
       "id": "republika",
@@ -73,7 +75,7 @@
       "fetched": 15,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-27T05:02:19.389Z"
+      "checkedAt": "2026-10-27T10:40:20.551Z"
     },
     {
       "id": "cnbcindonesia",
@@ -85,7 +87,7 @@
       "errors": [
         "https://www.cnbcindonesia.com/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-27T05:02:20.214Z"
+      "checkedAt": "2026-10-27T10:40:21.359Z"
     },
     {
       "id": "kumparan",
@@ -97,10 +99,95 @@
       "errors": [
         "https://kumparan.com/feed: HTTP 403"
       ],
-      "checkedAt": "2026-10-27T05:02:21.793Z"
+      "checkedAt": "2026-10-27T10:40:23.102Z"
     }
   ],
   "items": [
+    {
+      "slug": "jakarta-2026-10-27-republika-revisi-uu-tipikor-yusril-sebut-redefinisi-4d2cec",
+      "title": "Revisi UU Tipikor, Yusril Sebut Redefinisi Korupsi untuk Kepastian Hukum",
+      "summary": "JAKARTA — Menteri Koordinator Bidang Hukum, Hak Asasi Manusia, Imigrasi, dan Pemasyarakatan Yusril Ihza Mahendra menegaskan, rencana redefinisi tindak pidana korupsi tidak akan melemahkan upaya pemberantasan korupsi. Menurut dia,...",
+      "date": "2026-10-27T10:36:39.000Z",
+      "url": "https://news.republika.co.id/berita/tnkat3487/revisi-uu-tipikor-yusril-sebut-redefinisi-korupsi-untuk-kepastian-hukum",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Nasional News"
+      ],
+      "author": "Mas Alamil Huda",
+      "theme": "politika",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/_261027164538-866.png",
+      "imageAlt": "Revisi UU Tipikor, Yusril Sebut Redefinisi Korupsi untuk Kepastian Hukum",
+      "addedAt": "2026-10-27T10:40:20.552Z"
+    },
+    {
+      "slug": "jakarta-2026-10-27-republika-keluarga-yang-diinginkan-alquran-suami-cc3a9f",
+      "title": "Keluarga yang Diinginkan Alquran: Suami Benteng dan Langit, Istri Laksana Bumi Tempat Berpijak",
+      "summary": "JAKARTA—Alquran tidak membiarkan hubungan suami istri berjalan hanya berdasarkan perasaan yang mudah berubah. Sebaliknya, Alquran menjadikan hubungan tersebut sebagai salah satu tanda kebesaran Allah SWTdi alam semesta, sekaligus menetapkan bagi...",
+      "date": "2026-10-27T10:33:04.000Z",
+      "url": "https://khazanah.republika.co.id/berita/tnkan4320/keluarga-yang-diinginkan-alquran-suami-benteng-dan-langit-istri-laksana-bumi-tempat-berpijak",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Kajian Alquran"
+      ],
+      "author": "Nashih Nashrullah",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/menikah-ilustrasi-_130610161722-890.jpg",
+      "imageAlt": "Keluarga yang Diinginkan Alquran: Suami Benteng dan Langit, Istri Laksana Bumi Tempat Berpijak",
+      "addedAt": "2026-10-27T10:40:20.552Z"
+    },
+    {
+      "slug": "jakarta-2026-10-27-republika-begini-risiko-di-selat-malaka-jika-hubungan-2341f3",
+      "title": "Begini Risiko di Selat Malaka jika Hubungan RI-Singapura Memanas",
+      "summary": "Oleh: Fitriyan Zamzami, jurnalis Republika JAKARTA — Posisi geografis Indonesia di jalur pelayaran tersibuk dunia menyimpan daya tawar ekonomi dan geopolitik yang besar. Namun, keunggulan tersebut tidak otomatis menjadi kekuatan...",
+      "date": "2026-10-27T10:32:47.000Z",
+      "url": "https://analisis.republika.co.id/berita/tnkamn393/begini-risiko-di-selat-malaka-jika-hubungan-risingapura-memanas",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "News Analysis"
+      ],
+      "author": "Fitriyan Zamzami",
+      "theme": "ekonomija",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/001670200-1691848460-830-556.jpg",
+      "imageAlt": "Begini Risiko di Selat Malaka jika Hubungan RI-Singapura Memanas",
+      "addedAt": "2026-10-27T10:40:20.552Z"
+    },
+    {
+      "slug": "jakarta-2026-10-27-republika-pertamina-mulai-eksplorasi-di-lapangan-f26381",
+      "title": "Pertamina Mulai Eksplorasi di Lapangan Jambi Merang, Potensi Migas Terbesar di Sumatra",
+      "summary": "JAKARTA — PT Pertamina (Persero) mendorong percepatan eksplorasi migas di wilayah Jambi Merang, Sumatra, yang menyimpan potensi sumber daya besar. Salah satu area yang menjadi perhatian adalah Padang Pancuran,...",
+      "date": "2026-10-27T10:31:30.000Z",
+      "url": "https://ekonomi.republika.co.id/berita/tnkaki522/pertamina-mulai-eksplorasi-di-lapangan-jambi-merang-potensi-migas-terbesar-di-sumatra",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Energi"
+      ],
+      "author": "Intan Pratiwi",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/lapangan-jambi-merang_261027173106-334.jpg",
+      "imageAlt": "Pertamina Mulai Eksplorasi di Lapangan Jambi Merang, Potensi Migas Terbesar di Sumatra",
+      "addedAt": "2026-10-27T10:40:20.552Z"
+    },
+    {
+      "slug": "jakarta-2026-10-27-republika-cendrawasih-karsa-media-cup-2026-digelar-16-98e00e",
+      "title": "Cendrawasih Karsa Media Cup 2026 Digelar, 16 Tim Media Siap Bersaing",
+      "summary": "JAKARTA — PSSI Pers kembali menggelar turnamen mini soccer antarmedia bertajuk Cendrawasih Karsa Media Cup 2026. Memasuki edisi kelima, turnamen yang diikuti 16 tim dari berbagai media nasional ini...",
+      "date": "2026-10-27T10:27:40.000Z",
+      "url": "https://news.republika.co.id/berita/tnkae4348/cendrawasih-karsa-media-cup-2026-digelar-16-tim-media-siap-bersaing",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Sport"
+      ],
+      "author": "Israr Itah",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/konferensi-pers-cendrawasih-karsa-media-cup-2026-di-jakarta_261027172436-592.jpeg",
+      "imageAlt": "Cendrawasih Karsa Media Cup 2026 Digelar, 16 Tim Media Siap Bersaing",
+      "addedAt": "2026-10-27T10:40:20.552Z"
+    },
     {
       "slug": "jakarta-2026-10-27-republika-bea-cukai-lamongan-musnahkan-rokok-ilegal-374ed3",
       "title": "Bea Cukai Lamongan Musnahkan Rokok Ilegal",
