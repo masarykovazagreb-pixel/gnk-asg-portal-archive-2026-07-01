@@ -4,7 +4,7 @@
   "lang": "id",
   "city": "Jakarta",
   "country": "Indonezija",
-  "updatedAt": "2026-10-27T12:13:25.752Z",
+  "updatedAt": "2026-10-27T15:47:18.724Z",
   "sources": [
     {
       "id": "antara",
@@ -14,7 +14,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-27T12:13:07.617Z"
+      "checkedAt": "2026-10-27T15:46:59.952Z"
     },
     {
       "id": "kompas",
@@ -24,10 +24,10 @@
       "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.kompas.com/rss: empty response",
-        "https://nasional.kompas.com/rss: empty response"
+        "https://www.kompas.com/rss: HTTP 404",
+        "https://nasional.kompas.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-27T12:13:09.137Z"
+      "checkedAt": "2026-10-27T15:47:02.224Z"
     },
     {
       "id": "detik",
@@ -39,7 +39,7 @@
       "errors": [
         "https://rss.detik.com/index.php/detikcom: fetch failed"
       ],
-      "checkedAt": "2026-10-27T12:13:21.001Z"
+      "checkedAt": "2026-10-27T15:47:13.974Z"
     },
     {
       "id": "tempo",
@@ -51,7 +51,7 @@
       "errors": [
         "https://www.tempo.co/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-27T12:13:21.788Z"
+      "checkedAt": "2026-10-27T15:47:14.807Z"
     },
     {
       "id": "cnnindonesia",
@@ -63,7 +63,7 @@
       "errors": [
         "https://www.cnnindonesia.com/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-27T12:13:22.533Z"
+      "checkedAt": "2026-10-27T15:47:15.591Z"
     },
     {
       "id": "republika",
@@ -73,7 +73,7 @@
       "fetched": 15,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-27T12:13:23.148Z"
+      "checkedAt": "2026-10-27T15:47:16.066Z"
     },
     {
       "id": "cnbcindonesia",
@@ -85,7 +85,7 @@
       "errors": [
         "https://www.cnbcindonesia.com/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-27T12:13:23.949Z"
+      "checkedAt": "2026-10-27T15:47:16.868Z"
     },
     {
       "id": "kumparan",
@@ -97,10 +97,185 @@
       "errors": [
         "https://kumparan.com/feed: HTTP 403"
       ],
-      "checkedAt": "2026-10-27T12:13:25.752Z"
+      "checkedAt": "2026-10-27T15:47:18.724Z"
     }
   ],
   "items": [
+    {
+      "slug": "jakarta-2026-10-27-antara-menlu-singapura-kebakaran-hutan-dan-lahan-a9b8a4",
+      "title": "Menlu Singapura: Kebakaran hutan dan lahan disebabkan ulah manusia",
+      "summary": "ANTARA - Menteri Luar Negeri Singapura Vivian Balakrishnan menyebut El Nino yang memicu kekeringan merupakan fenomena ...",
+      "date": "2026-10-27T15:45:56.000Z",
+      "url": "https://www.antaranews.com/video/5815839/menlu-singapura-kebakaran-hutan-dan-lahan-disebabkan-ulah-manusia",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "potres",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/AB_MENLU-SINGAPURA-KEBAKARAN-HUTAN-DAN-LAHAN-DISEBABKAN-ULAH-MANUSIA.jpg",
+      "imageAlt": "Menlu Singapura: Kebakaran hutan dan lahan disebabkan ulah manusia",
+      "addedAt": "2026-10-27T15:46:59.952Z"
+    },
+    {
+      "slug": "jakarta-2026-10-27-antara-di-lumbung-pangan-merauke-spbu-khusus-0b5dfa",
+      "title": "Di lumbung pangan Merauke, SPBU khusus petani mempermudah akses energi",
+      "summary": "Sebagai salah satu lumbung pangan Indonesia, Kabupaten Merauke di Papua Selatan memiliki puluhan ribu hektare sawah ...",
+      "date": "2026-10-27T15:45:31.000Z",
+      "url": "https://www.antaranews.com/berita/5815859/di-lumbung-pangan-merauke-spbu-khusus-petani-mempermudah-akses-energi",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/27/1002366717.jpg",
+      "imageAlt": "Di lumbung pangan Merauke, SPBU khusus petani mempermudah akses energi",
+      "addedAt": "2026-10-27T15:46:59.952Z"
+    },
+    {
+      "slug": "jakarta-2026-10-27-antara-mpu-aceh-tengah-berkomitmen-perangi-praktik-5d270e",
+      "title": "MPU Aceh Tengah berkomitmen perangi praktik riba dan rentenir",
+      "summary": "Majelis Pemusyawaratan Ulama (MPU) Kabupaten Aceh Tengah berkomitmen untuk mencegah praktik riba dan rentenir guna ...",
+      "date": "2026-10-27T15:44:56.000Z",
+      "url": "https://www.antaranews.com/berita/5815855/mpu-aceh-tengah-berkomitmen-perangi-praktik-riba-dan-rentenir",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/27/1002381931.jpg",
+      "imageAlt": "MPU Aceh Tengah berkomitmen perangi praktik riba dan rentenir",
+      "addedAt": "2026-10-27T15:46:59.953Z"
+    },
+    {
+      "slug": "jakarta-2026-10-27-antara-itdp-indonesia-harap-integrasi-tarif-bisa-3cd6dd",
+      "title": "ITDP Indonesia harap integrasi tarif bisa berlaku di Bodetabek",
+      "summary": "Institute for Transportation and Development Policy (ITDP) Indonesia berharap integrasi tarif yakni satu sistem ...",
+      "date": "2026-10-27T15:43:26.000Z",
+      "url": "https://ramadhan.antaranews.com/berita/5815851/itdp-indonesia-harap-integrasi-tarif-bisa-berlaku-di-bodetabek",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/27/1000355384.jpg",
+      "imageAlt": "ITDP Indonesia harap integrasi tarif bisa berlaku di Bodetabek",
+      "addedAt": "2026-10-27T15:46:59.953Z"
+    },
+    {
+      "slug": "jakarta-2026-10-27-antara-pelita-jaya-hajar-hangtuah-81-49-di-ibl-all-8d307d",
+      "title": "Pelita Jaya hajar Hangtuah 81-49 di IBL All Indonesian 2026",
+      "summary": "Pelita Jaya Jakarta mengalahkan Hangtuah JG Liem Jakarta dengan skor 81-49 pada pertandingan penyisihan Grup B IBL All ...",
+      "date": "2026-10-27T15:43:13.000Z",
+      "url": "https://www.antaranews.com/berita/5815847/pelita-jaya-hajar-hangtuah-81-49-di-ibl-all-indonesian-2026",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/27/pelita-jaya-jakarta-kalahkan-hangtuah-jakarta-2894323.jpg",
+      "imageAlt": "Pelita Jaya hajar Hangtuah 81-49 di IBL All Indonesian 2026",
+      "addedAt": "2026-10-27T15:46:59.953Z"
+    },
+    {
+      "slug": "jakarta-2026-10-27-republika-indonesia-singapura-perkuat-kerja-sama-9c8af2",
+      "title": "Indonesia-Singapura Perkuat Kerja Sama Penanganan Karhutla, Bahas Satgas Bersama",
+      "summary": "JAKARTA -- Indonesia dan Singapura memperkuat koordinasi dalam menangani kebakaran hutan dan lahan (karhutla) beserta dampaknya. Upaya tersebut dibahas dalam pertemuan bilateral Menteri Luar Negeri RI Arrmanatha Nasir dan...",
+      "date": "2026-10-27T15:43:07.000Z",
+      "url": "https://visual.republika.co.id/berita/tnkozv375/indonesiasingapura-perkuat-kerja-sama-penanganan-karhutla-bahas-satgas-bersama",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Inpicture"
+      ],
+      "author": "Edwin Dwi Putranto",
+      "theme": "potres",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/022442200-1793115250-830-556.jpg",
+      "imageAlt": "Indonesia-Singapura Perkuat Kerja Sama Penanganan Karhutla, Bahas Satgas Bersama",
+      "addedAt": "2026-10-27T15:47:16.067Z"
+    },
+    {
+      "slug": "jakarta-2026-10-27-antara-ri-singapura-bentuk-satuan-tugas-tindak-e82314",
+      "title": "RI-Singapura bentuk satuan tugas tindak perusahaan pembakar hutan",
+      "summary": "ANTARA - Menteri Luar Negeri Republik Indonesia Arrmanatha Nasir dan Menlu Singapura Vivian Balakrishnan melaksanakan ...",
+      "date": "2026-10-27T15:43:05.000Z",
+      "url": "https://www.antaranews.com/video/5815803/ri-singapura-bentuk-satuan-tugas-tindak-perusahaan-pembakar-hutan",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/RI-SINGAPURA-BENTUK-SATUAN-TUGAS-TINDAK-PERUSAHAAN-PEMBAKAR-HUTAN.jpg",
+      "imageAlt": "RI-Singapura bentuk satuan tugas tindak perusahaan pembakar hutan",
+      "addedAt": "2026-10-27T15:46:59.953Z"
+    },
+    {
+      "slug": "jakarta-2026-10-27-republika-ri-gandeng-singapura-bentuk-satuan-tugas-9208cd",
+      "title": "RI Gandeng Singapura Bentuk Satuan Tugas Bersama Atasi Kebakaran Hutan",
+      "summary": "JAKARTA -- Menteri Luar Negeri (Menlu) RI Arrmanatha Nasir mengatakan Indonesia dan Singapura telah menyetujui pembentukan satuan tugas (satgas) untuk memperkuat upaya bersama menangani kebakaran hutan dan lahan (karhutla) serta...",
+      "date": "2026-10-27T15:40:32.000Z",
+      "url": "https://news.republika.co.id/berita/tnkovk475/ri-gandeng-singapura-bentuk-satuan-tugas-bersama-atasi-kebakaran-hutan",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Nasional News"
+      ],
+      "author": "Stevy maradona",
+      "theme": "potres",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/048030700-1793115241-830-556.jpg",
+      "imageAlt": "RI Gandeng Singapura Bentuk Satuan Tugas Bersama Atasi Kebakaran Hutan",
+      "addedAt": "2026-10-27T15:47:16.067Z"
+    },
+    {
+      "slug": "jakarta-2026-10-27-republika-hln-ke-81-pln-perkuat-peran-listrik-sebagai-e039be",
+      "title": "HLN ke-81, PLN Perkuat Peran Listrik sebagai Penggerak Kehidupan dan Kemandirian Bangsa.",
+      "summary": "JAKARTA -- Memperingati Hari Listrik Nasional (HLN) ke-81, PT PLN (Persero) menegaskan komitmennya untuk terus menjadi penggerak kemandirian bangsa dan pemerataan pembangunan melalui penyediaan energi yang berkeadilan. Mengusung tema...",
+      "date": "2026-10-27T15:26:20.000Z",
+      "url": "https://ekonomi.republika.co.id/berita/tnko7w423/hln-ke81-pln-perkuat-peran-listrik-sebagai-penggerak-kehidupan-dan-kemandirian-bangsa",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Energi"
+      ],
+      "author": "Gita Amanda",
+      "theme": "energija",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/ilustrasi-personel-pln-sedang-melakukan-inspeksi-panel-surya-pembangkit_261027222354-159.jpg",
+      "imageAlt": "HLN ke-81, PLN Perkuat Peran Listrik sebagai Penggerak Kehidupan dan Kemandirian Bangsa.",
+      "addedAt": "2026-10-27T15:47:16.067Z"
+    },
+    {
+      "slug": "jakarta-2026-10-27-republika-skema-syariah-mulai-ambil-porsi-besar-di-3fd6f2",
+      "title": "Skema Syariah Mulai Ambil Porsi Besar di Koperasi Gadai Digital",
+      "summary": "BANDUNG -- Pembiayaan berbasis gadai syariah mulai mendapat porsi yang hampir seimbang dengan pembiayaan konvensional pada koperasi pegadaian digital. Sepanjang April-September 2026, pembiayaan syariah tercatat Rp4,38 miliar dari 61...",
+      "date": "2026-10-27T15:00:00.000Z",
+      "url": "https://halalhub.republika.co.id/berita/tnkhz9416/skema-syariah-mulai-ambil-porsi-besar-di-koperasi-gadai-digital",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Keuangan Sharia"
+      ],
+      "author": "Satria K Yudha",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/_261027201032-933.png",
+      "imageAlt": "Skema Syariah Mulai Ambil Porsi Besar di Koperasi Gadai Digital",
+      "addedAt": "2026-10-27T15:47:16.067Z"
+    },
+    {
+      "slug": "jakarta-2026-10-27-republika-2-4-juta-genteng-jatiwangi-disiapkan-untuk-f398a7",
+      "title": "2,4 Juta Genteng Jatiwangi Disiapkan untuk Program Gentengisasi",
+      "summary": "MAJALENGKA -- Pemerintah menyiapkan 2,4 juta keping genteng untuk program gentengisasi nasional. Sentra industri genteng di Kecamatan Jatiwangi, Kabupaten Majalengka pun dipilih sebagai pusat pelaksanaan program tersebut. Sebanyak 34 usaha...",
+      "date": "2026-10-27T14:29:27.000Z",
+      "url": "https://rejabar.republika.co.id/berita/tnkll3282/24-juta-genteng-jatiwangi-disiapkan-untuk-program-gentengisasi",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Kabar Jabar Rejabar"
+      ],
+      "author": "Karta Raharja Ucu",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/buruh-menjemur-genteng-tanah-liat-buatannya-di-sentra-industri_220824130140-865.jpg",
+      "imageAlt": "2,4 Juta Genteng Jatiwangi Disiapkan untuk Program Gentengisasi",
+      "addedAt": "2026-10-27T15:47:16.067Z"
+    },
     {
       "slug": "jakarta-2026-10-27-antara-dki-akan-tindak-lanjuti-keluhan-persija-063e69",
       "title": "DKI akan tindak lanjuti keluhan Persija terkait kondisi rumput di JIS",
