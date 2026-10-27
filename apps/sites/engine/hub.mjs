@@ -166,7 +166,8 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
 `;
 
 function card(site, lang) {
-  const art = SATELLITE_ART[site.slug];
+  /* Kartica ima fotografiju (WebP sa srcsetom) čim ona postoji; SVG plohu nikad. */
+  const art = SATELLITE_ART[site.slug] || existsSync(join(PORTAL, 'assets', 'mreza', `${site.slug}-1200.webp`));
   const image = art
     ? `<img src="/assets/mreza/${site.slug}-800.webp" srcset="/assets/mreza/${site.slug}-440.webp 440w, /assets/mreza/${site.slug}-800.webp 800w, /assets/mreza/${site.slug}-1200.webp 1200w" sizes="(max-width:700px) 100vw, (max-width:1100px) 45vw, 360px" alt="${esc(art[lang] || art.hr)}" width="1200" height="670" loading="lazy" decoding="async">`
     : `<img src="/assets/mreza/${site.slug}-art-1.svg" alt="${esc(site.name)}" width="1200" height="675" loading="lazy">`;
