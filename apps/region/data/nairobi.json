@@ -4,7 +4,7 @@
   "lang": "en",
   "city": "Nairobi",
   "country": "Kenija",
-  "updatedAt": "2026-10-27T18:11:16.085Z",
+  "updatedAt": "2026-10-27T21:28:04.464Z",
   "sources": [
     {
       "id": "capitalfm",
@@ -14,19 +14,20 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-27T18:10:34.935Z"
+      "checkedAt": "2026-10-27T21:27:23.763Z"
     },
     {
       "id": "nation",
       "name": "Daily Nation",
-      "url": "https://nation.africa/kenya/rss.xml",
-      "ok": true,
-      "fetched": 25,
+      "url": "https://nation.africa/kenya/rss",
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://nation.africa/kenya/rss: HTTP 403"
+        "https://nation.africa/kenya/rss: HTTP 403",
+        "https://nation.africa/kenya/rss.xml: HTTP 404"
       ],
-      "checkedAt": "2026-10-27T18:10:35.855Z"
+      "checkedAt": "2026-10-27T21:27:25.449Z"
     },
     {
       "id": "standard",
@@ -38,7 +39,7 @@
       "errors": [
         "https://www.standardmedia.co.ke/rss: nije feed"
       ],
-      "checkedAt": "2026-10-27T18:10:39.558Z"
+      "checkedAt": "2026-10-27T21:27:26.300Z"
     },
     {
       "id": "star",
@@ -50,7 +51,7 @@
       "errors": [
         "https://www.the-star.co.ke/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-27T18:10:41.379Z"
+      "checkedAt": "2026-10-27T21:27:28.286Z"
     },
     {
       "id": "businessdaily",
@@ -62,7 +63,7 @@
       "errors": [
         "https://www.businessdailyafrica.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-27T18:10:42.219Z"
+      "checkedAt": "2026-10-27T21:27:29.264Z"
     },
     {
       "id": "citizen",
@@ -74,7 +75,7 @@
       "errors": [
         "https://www.citizen.digital/rss: HTTP 400"
       ],
-      "checkedAt": "2026-10-27T18:10:52.434Z"
+      "checkedAt": "2026-10-27T21:27:41.506Z"
     },
     {
       "id": "kbc",
@@ -86,7 +87,7 @@
       "errors": [
         "https://www.kbc.co.ke/feed/: fetch failed"
       ],
-      "checkedAt": "2026-10-27T18:11:14.122Z"
+      "checkedAt": "2026-10-27T21:28:03.193Z"
     },
     {
       "id": "eastafrican",
@@ -98,10 +99,29 @@
       "errors": [
         "https://www.theeastafrican.co.ke/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-27T18:11:16.085Z"
+      "checkedAt": "2026-10-27T21:28:04.464Z"
     }
   ],
   "items": [
+    {
+      "slug": "nairobi-2026-10-27-capitalfm-kca-university-opens-5th-innovation-week-1f0a2b",
+      "title": "KCA University opens 5th innovation week and Industry Summit",
+      "summary": "NAIROBI, Kenya, Oct 27 – Industry Principal Secretary Dr Juma Mukhwana and Bidco Africa Chairman Vimal Shah have urged Africa to stop exporting raw materials and start making its own…",
+      "date": "2026-10-27T19:59:15.000Z",
+      "url": "https://capitalfm.africa/kca-university-opens-5th-innovation-week-and-industry-summit/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "EDUCATION",
+        "News",
+        "technology"
+      ],
+      "author": "CORRESPONDENT",
+      "theme": "drustvo",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/10/WhatsApp-Image-2026-10-27-at-22.24.02-1200x630.jpeg",
+      "imageAlt": "KCA University opens 5th innovation week and Industry Summit",
+      "addedAt": "2026-10-27T21:27:23.763Z"
+    },
     {
       "slug": "nairobi-2026-10-27-capitalfm-ruto-heads-to-russia-to-pursue-new-markets-68452b",
       "title": "Ruto heads to Russia to pursue new markets, investment for Kenya",
