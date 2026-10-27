@@ -4,19 +4,17 @@
   "lang": "id",
   "city": "Jakarta",
   "country": "Indonezija",
-  "updatedAt": "2026-10-27T10:40:23.103Z",
+  "updatedAt": "2026-10-27T12:13:25.752Z",
   "sources": [
     {
       "id": "antara",
       "name": "ANTARA",
       "url": "https://www.antaranews.com/rss/terkini.xml",
-      "ok": false,
-      "fetched": 0,
+      "ok": true,
+      "fetched": 50,
       "corrupt": 0,
-      "errors": [
-        "https://www.antaranews.com/rss/terkini.xml: fetch failed"
-      ],
-      "checkedAt": "2026-10-27T10:40:12.934Z"
+      "errors": [],
+      "checkedAt": "2026-10-27T12:13:07.617Z"
     },
     {
       "id": "kompas",
@@ -26,10 +24,10 @@
       "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.kompas.com/rss: HTTP 404",
-        "https://nasional.kompas.com/rss: HTTP 404"
+        "https://www.kompas.com/rss: empty response",
+        "https://nasional.kompas.com/rss: empty response"
       ],
-      "checkedAt": "2026-10-27T10:40:15.818Z"
+      "checkedAt": "2026-10-27T12:13:09.137Z"
     },
     {
       "id": "detik",
@@ -41,7 +39,7 @@
       "errors": [
         "https://rss.detik.com/index.php/detikcom: fetch failed"
       ],
-      "checkedAt": "2026-10-27T10:40:18.190Z"
+      "checkedAt": "2026-10-27T12:13:21.001Z"
     },
     {
       "id": "tempo",
@@ -53,7 +51,7 @@
       "errors": [
         "https://www.tempo.co/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-27T10:40:19.030Z"
+      "checkedAt": "2026-10-27T12:13:21.788Z"
     },
     {
       "id": "cnnindonesia",
@@ -65,7 +63,7 @@
       "errors": [
         "https://www.cnnindonesia.com/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-27T10:40:19.863Z"
+      "checkedAt": "2026-10-27T12:13:22.533Z"
     },
     {
       "id": "republika",
@@ -75,7 +73,7 @@
       "fetched": 15,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-27T10:40:20.551Z"
+      "checkedAt": "2026-10-27T12:13:23.148Z"
     },
     {
       "id": "cnbcindonesia",
@@ -87,7 +85,7 @@
       "errors": [
         "https://www.cnbcindonesia.com/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-27T10:40:21.359Z"
+      "checkedAt": "2026-10-27T12:13:23.949Z"
     },
     {
       "id": "kumparan",
@@ -99,10 +97,185 @@
       "errors": [
         "https://kumparan.com/feed: HTTP 403"
       ],
-      "checkedAt": "2026-10-27T10:40:23.102Z"
+      "checkedAt": "2026-10-27T12:13:25.752Z"
     }
   ],
   "items": [
+    {
+      "slug": "jakarta-2026-10-27-antara-dki-akan-tindak-lanjuti-keluhan-persija-063e69",
+      "title": "DKI akan tindak lanjuti keluhan Persija terkait kondisi rumput di JIS",
+      "summary": "Staf Khusus Gubernur DKI Jakarta Bidang Komunikasi Sosial Chico Hakim mengatakan Pemerintah Provinsi DKI Jakarta akan ...",
+      "date": "2026-10-27T12:11:50.000Z",
+      "url": "https://www.antaranews.com/berita/5815231/dki-akan-tindak-lanjuti-keluhan-persija-terkait-kondisi-rumput-di-jis",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/26/Persija-Jakarta-kalahkan-Persik-Kediri-261026-fzn-15.jpg",
+      "imageAlt": "DKI akan tindak lanjuti keluhan Persija terkait kondisi rumput di JIS",
+      "addedAt": "2026-10-27T12:13:07.617Z"
+    },
+    {
+      "slug": "jakarta-2026-10-27-antara-borneo-fc-tumbangkan-pss-sleman-2-1-di-76e7dc",
+      "title": "Borneo FC tumbangkan PSS Sleman 2-1 di Maguwoharjo",
+      "summary": "Borneo FC Samarinda mengalahkan PSS Sleman dengan skor 2-1 dalam laga pekan ketujuh Super League 2026/2027 di Stadion ...",
+      "date": "2026-10-27T12:10:52.000Z",
+      "url": "https://www.antaranews.com/berita/5815227/borneo-fc-tumbangkan-pss-sleman-2-1-di-maguwoharjo",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/27/189639.jpg",
+      "imageAlt": "Borneo FC tumbangkan PSS Sleman 2-1 di Maguwoharjo",
+      "addedAt": "2026-10-27T12:13:07.617Z"
+    },
+    {
+      "slug": "jakarta-2026-10-27-antara-presiden-minta-brin-dukung-penyelesaian-isu-30e071",
+      "title": "Presiden minta BRIN dukung penyelesaian isu sampah di tingkat desa",
+      "summary": "Kepala Badan Riset dan Inovasi Nasional (BRIN) Arif Satria mengatakan Presiden Prabowo Subianto meminta lembaganya ...",
+      "date": "2026-10-27T12:10:34.000Z",
+      "url": "https://www.antaranews.com/berita/5815223/presiden-minta-brin-dukung-penyelesaian-isu-sampah-di-tingkat-desa",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/27/59d2262d-cd02-4010-a1dc-1f87fd5fcbcf.jpeg",
+      "imageAlt": "Presiden minta BRIN dukung penyelesaian isu sampah di tingkat desa",
+      "addedAt": "2026-10-27T12:13:07.617Z"
+    },
+    {
+      "slug": "jakarta-2026-10-27-antara-bp-bumn-flyover-sitinjau-lauik-tingkatkan-f99a91",
+      "title": "BP BUMN: Flyover Sitinjau Lauik tingkatkan konektivitas di Sumbar",
+      "summary": "Badan Pengaturan Badan Usaha Milik Negara (BP BUMN) menilai pembangunan flyover atau jalan layang di Sitinjau Lauik ...",
+      "date": "2026-10-27T12:09:41.000Z",
+      "url": "https://www.antaranews.com/berita/5815219/bp-bumn-flyover-sitinjau-lauik-tingkatkan-konektivitas-di-sumbar",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/27/26423.jpg",
+      "imageAlt": "BP BUMN: Flyover Sitinjau Lauik tingkatkan konektivitas di Sumbar",
+      "addedAt": "2026-10-27T12:13:07.617Z"
+    },
+    {
+      "slug": "jakarta-2026-10-27-republika-strategi-digital-dongkrak-penjualan-tomat-7361a8",
+      "title": "Strategi Digital Dongkrak Penjualan Tomat Ceri",
+      "summary": "JAKARTA — Pemanfaatan teknologi digital menjadi salah satu strategi AstyFarm untuk memperluas pasar produk tomat ceri lokal. Melalui Tokopedia dan TikTok Shop, perusahaan memanfaatkan video pendek, sesi LIVE Shopping,...",
+      "date": "2026-10-27T12:08:09.000Z",
+      "url": "https://ekonomi.republika.co.id/berita/tnkf1l370/strategi-digital-dongkrak-penjualan-tomat-ceri",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Bisnis"
+      ],
+      "author": "Friska Yolandha",
+      "theme": "ekonomija",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/_261027190800-269.png",
+      "imageAlt": "Strategi Digital Dongkrak Penjualan Tomat Ceri",
+      "addedAt": "2026-10-27T12:13:23.148Z"
+    },
+    {
+      "slug": "jakarta-2026-10-27-antara-wika-rampungkan-underpass-inul-lebih-cepat-98d354",
+      "title": "WIKA Rampungkan Underpass Inul Lebih Cepat, Jalan Warga dan Jalur Tambang di Kutai Timur Kini Terpisah",
+      "summary": "PT Wijaya Karya (Persero) Tbk. (WIKA) merampungkan pembangunan Underpass Inul (Inul Lignite) di Kecamatan Bengalon, ...",
+      "date": "2026-10-27T12:08:00.000Z",
+      "url": "https://www.antaranews.com/berita/5815215/wika-rampungkan-underpass-inul-lebih-cepat-jalan-warga-dan-jalur-tambang-di-kutai-timur-kini-terpisah",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/27/Wika-jembatan-Inul.jpg",
+      "imageAlt": "WIKA Rampungkan Underpass Inul Lebih Cepat, Jalan Warga dan Jalur Tambang di Kutai Timur Kini Terpisah",
+      "addedAt": "2026-10-27T12:13:07.617Z"
+    },
+    {
+      "slug": "jakarta-2026-10-27-antara-psms-vs-persija-jadi-laga-pembuka-league-a48fef",
+      "title": "PSMS vs Persija jadi laga pembuka League Cup 2026/27",
+      "summary": "Direktur Kompetisi I.League Asep Saputra mengungkapkan laga antara PSMS Medan melawan Persija Jakarta di Grup A Zona ...",
+      "date": "2026-10-27T12:06:52.000Z",
+      "url": "https://www.antaranews.com/berita/5815211/psms-vs-persija-jadi-laga-pembuka-league-cup-2026-27",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://img.antaranews.com/cache/800x533/2026/06/19/IMG-20260619-WA0020_1.jpg",
+      "imageAlt": "PSMS vs Persija jadi laga pembuka League Cup 2026/27",
+      "addedAt": "2026-10-27T12:13:07.617Z"
+    },
+    {
+      "slug": "jakarta-2026-10-27-republika-kepada-menlu-singapura-arrmanatha-indonesia-f38d93",
+      "title": "Kepada Menlu Singapura, Arrmanatha: Indonesia Fokus Tangani Karhutla",
+      "summary": "REPUBLIKA.CO.ID, JAKARTA -- Menteri Luar Negeri (Menlu) RI Arrmanatha Christiawan Nasir menegaskan kepada Menlu Singapura Vivian Balakrishnan bahwa Indonesia saat ini memprioritaskan penanganan kebakaran hutan dan lahan (karhutla) yang...",
+      "date": "2026-10-27T12:06:14.000Z",
+      "url": "https://news.republika.co.id/berita/tnkeye484/kepada-menlu-singapura-arrmanatha-indonesia-fokus-tangani-karhutla",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Nasional News"
+      ],
+      "author": "Erik Purnama Putra",
+      "theme": "potres",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/_261027190210-836.png",
+      "imageAlt": "Kepada Menlu Singapura, Arrmanatha: Indonesia Fokus Tangani Karhutla",
+      "addedAt": "2026-10-27T12:13:23.149Z"
+    },
+    {
+      "slug": "jakarta-2026-10-27-republika-ratusan-rumah-warga-di-padalarang-rusak-5402a9",
+      "title": "Ratusan Rumah Warga di Padalarang Rusak Akibat Angin Kecang",
+      "summary": "cuaca ekstrem berupa hujan deras disertai angin puting beliung menyebabkan lebih dari 500 rumah dan fasilitas umum di Kecamatan Padalarang, KBB mengalami kerusakan ringan hingga berat pada Senin (26/10/2026)....",
+      "date": "2026-10-27T12:00:01.000Z",
+      "url": "https://republika.co.id/page/shorts/yt-tnkeo1480704458/ratusan-rumah-warga-di-padalarang-rusak-akibat-angin-kecang",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Dailynews"
+      ],
+      "author": "tim video",
+      "theme": "rat",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/082853100-1793102401-sardefaultjpg.jpg",
+      "imageAlt": "Ratusan Rumah Warga di Padalarang Rusak Akibat Angin Kecang",
+      "addedAt": "2026-10-27T12:13:23.149Z"
+    },
+    {
+      "slug": "jakarta-2026-10-27-republika-hfi-dorong-rumah-ibadah-jadi-bagian-dari-5e19ae",
+      "title": "HFI Dorong Rumah Ibadah Jadi Bagian dari Kesiapsiagaan Bencana",
+      "summary": "JAKARTA -- Humanitarian Forum Indonesia (HFI) mendorong penguatan peran rumah ibadah dalam kesiapsiagaan bencana, mulai dari dukungan logistik hingga layanan psikososial bagi masyarakat terdampak. Peran tersebut dinilai penting untuk...",
+      "date": "2026-10-27T11:57:18.000Z",
+      "url": "https://halalhub.republika.co.id/berita/tnkeji349/hfi-dorong-rumah-ibadah-jadi-bagian-dari-kesiapsiagaan-bencana",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Filantropi Khazanah"
+      ],
+      "author": "Ichsan Emrald Alamsyah",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/seminar-nasional-merawat-umat-menjaga-semesta-gerakan-rumah-ibadah_261027185612-139.jpeg",
+      "imageAlt": "HFI Dorong Rumah Ibadah Jadi Bagian dari Kesiapsiagaan Bencana",
+      "addedAt": "2026-10-27T12:13:23.149Z"
+    },
+    {
+      "slug": "jakarta-2026-10-27-republika-hujan-mulai-turun-wilayah-terdampak-e6a565",
+      "title": "Hujan Mulai Turun, Wilayah Terdampak Karhutla Berkurang Signifikan",
+      "summary": "JAKARTA -- Badan Nasional Penanggulangan Bencana (BNPB) mencatat wilayah yang terdampak kebakaran hutan dan lahan (karhutla) di wilayah Sumatra dan Kalimantan berkurang signifikan pada Selasa (27/10/2026). Kondisi itu disebabkan...",
+      "date": "2026-10-27T11:52:21.000Z",
+      "url": "https://news.republika.co.id/berita/tnkeb9487/hujan-mulai-turun-wilayah-terdampak-karhutla-berkurang-signifikan",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Nasional News"
+      ],
+      "author": "Mas Alamil Huda",
+      "theme": "potres",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/094499800-1792854276-830-556.jpg",
+      "imageAlt": "Hujan Mulai Turun, Wilayah Terdampak Karhutla Berkurang Signifikan",
+      "addedAt": "2026-10-27T12:13:23.149Z"
+    },
     {
       "slug": "jakarta-2026-10-27-republika-revisi-uu-tipikor-yusril-sebut-redefinisi-4d2cec",
       "title": "Revisi UU Tipikor, Yusril Sebut Redefinisi Korupsi untuk Kepastian Hukum",
