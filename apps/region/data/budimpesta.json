@@ -4,23 +4,17 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-10-28T00:51:13.241Z",
+  "updatedAt": "2026-10-28T01:21:51.621Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": false,
-      "fetched": 0,
+      "ok": true,
+      "fetched": 50,
       "corrupt": 0,
-      "errors": [
-        "https://telex.hu/rss: HTTP 403",
-        "https://telex.hu/rss/belfold: HTTP 403",
-        "https://telex.hu/rss/kulfold: HTTP 403",
-        "https://telex.hu/rss/gazdasag: HTTP 403",
-        "https://telex.hu/rss/sport: HTTP 403"
-      ],
-      "checkedAt": "2026-10-28T00:51:08.876Z"
+      "errors": [],
+      "checkedAt": "2026-10-28T01:21:48.219Z"
     },
     {
       "id": "444",
@@ -30,7 +24,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-28T00:51:08.932Z"
+      "checkedAt": "2026-10-28T01:21:48.393Z"
     },
     {
       "id": "hvg",
@@ -40,7 +34,7 @@
       "fetched": 60,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-28T00:51:09.319Z"
+      "checkedAt": "2026-10-28T01:21:48.780Z"
     },
     {
       "id": "portfolio",
@@ -50,7 +44,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-28T00:51:10.195Z"
+      "checkedAt": "2026-10-28T01:21:49.346Z"
     },
     {
       "id": "index",
@@ -62,7 +56,7 @@
       "errors": [
         "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-28T00:51:12.147Z"
+      "checkedAt": "2026-10-28T01:21:50.859Z"
     },
     {
       "id": "24hu",
@@ -72,7 +66,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-28T00:51:12.315Z"
+      "checkedAt": "2026-10-28T01:21:51.001Z"
     },
     {
       "id": "mandiner",
@@ -82,7 +76,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-28T00:51:13.241Z"
+      "checkedAt": "2026-10-28T01:21:51.621Z"
     }
   ],
   "items": [
@@ -124,6 +118,23 @@
       "addedAt": "2026-10-28T00:51:10.195Z"
     },
     {
+      "slug": "budimpesta-2026-10-27-telex-eltunt-a-jeg-szlovenia-legmagasabb-9f964f",
+      "title": "Eltűnt a jég Szlovénia legmagasabb csúcsáról",
+      "summary": "Túl meleg volt idén a Triglav gleccsernek, az utolsó jégdarabok is eltűntek.",
+      "date": "2026-10-27T22:27:34.000Z",
+      "url": "https://telex.hu/techtud/2026/10/27/szlovenia-triglav-gleccser-jeg-olvadas-klimavaltozas-klimazona",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Techtud"
+      ],
+      "author": "Világi Máté",
+      "theme": "drustvo",
+      "image": "https://assets.telex.hu/images/20261027/1793139904-temp-5jsbnapgq4h36ploeeo_cimlap-normal.jpg",
+      "imageAlt": "Eltűnt a jég Szlovénia legmagasabb csúcsáról",
+      "addedAt": "2026-10-28T01:21:48.219Z"
+    },
+    {
       "slug": "budimpesta-2026-10-27-24hu-schafer-andrasek-komoly-pofonba-neztek-bele-e2be7d",
       "title": "Schäfer Andrásék komoly pofonba néztek bele a kupában",
       "summary": "Nem ilyen kupameccsről álmodott az Union Berlin. The post Schäfer Andrásék komoly pofonba néztek bele a kupában first appeared on 24.hu .",
@@ -161,6 +172,23 @@
       "addedAt": "2026-10-27T22:09:37.773Z"
     },
     {
+      "slug": "budimpesta-2026-10-27-telex-tiz-ev-bortont-is-kaphat-egy-amerikai-no-66cc56",
+      "title": "Tíz év börtönt is kaphat egy amerikai nő, akit tinédzserként az apja vitt Szíriába, majd hozzáadták az Iszlám Állam egyik harcosához",
+      "summary": "Az amerikai esküdtszék szerint a nő szabad akaratából vett részt a terrorszervezet kiképzésén.",
+      "date": "2026-10-27T21:55:39.000Z",
+      "url": "https://telex.hu/kulfold/2026/10/27/tiz-ev-bortont-is-kaphat-egy-amerikai-no-akit-tinedzserkent-az-apja-vitt-sziriaba-hogy-hozzaadja-az-iszlam-allam-egyik-harcosahoz",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Külföld"
+      ],
+      "author": "Dévai László",
+      "theme": "drustvo",
+      "image": "https://assets.telex.hu/images/20261027/1793138085-temp-cs71gf6c09ce3ohmikc_cimlap-normal.jpg",
+      "imageAlt": "Tíz év börtönt is kaphat egy amerikai nő, akit tinédzserként az apja vitt Szíriába, majd hozzáadták az Iszlám Állam egyik harcosához",
+      "addedAt": "2026-10-28T01:21:48.219Z"
+    },
+    {
       "slug": "budimpesta-2026-10-27-portfolio-benyujtottak-a-javaslatot-megszunik-az-54b828",
       "title": "Benyújtották a javaslatot: megszűnik az árrésstop!",
       "summary": "Megszüntetné az élelmiszerekre és a drogériai termékekre vonatkozó árréskorlátozást a kormány. A kedden benyújtott törvényjavaslat az inflációs folyamatok normalizálódásával és a forint erősödésével indokolja a lépést.",
@@ -176,6 +204,40 @@
       "image": "https://pcdn.hu/articles/images-xl/i/n/f/inflacio-bolt-bevaraslas-fogyasztas-kisker-567664.jpg",
       "imageAlt": "Benyújtották a javaslatot: megszűnik az árrésstop!",
       "addedAt": "2026-10-27T22:09:37.773Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-27-telex-ted-bundy-olhetett-meg-egy-tobb-mint-otven-2fc0d6",
+      "title": "Ted Bundy ölhetett meg egy több mint ötven éve meggyilkolt, 17 éves lányt",
+      "summary": "Melissa Ann Smith holttestét vadászok találták meg 1974-ben, halálát most DNS-vizsgálattal kötötték a sorozatgyilkoshoz.",
+      "date": "2026-10-27T21:30:51.000Z",
+      "url": "https://telex.hu/kulfold/2026/10/27/egyesult-allamok-ted-bundy-gyilkossag-dns-vizsgalat",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Külföld"
+      ],
+      "author": "Világi Máté",
+      "theme": "drustvo",
+      "image": "https://assets.telex.hu/images/20261027/1793136479-temp-v8ecgtm91t1v1peeckk_cimlap-normal.jpg",
+      "imageAlt": "Ted Bundy ölhetett meg egy több mint ötven éve meggyilkolt, 17 éves lányt",
+      "addedAt": "2026-10-28T01:21:48.219Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-27-telex-macsai-pal-szekely-kriszta-es-saiid-is-hoz-e8e92b",
+      "title": "Mácsai Pál, Székely Kriszta és Saiid is hoz egy számára fontos verset a Karakter fesztiváljára",
+      "summary": "A választott versekhez fűződő személyes történetekről beszélgetünk november 7-én a Trafóban. Az ingyenes programra még lehet regisztrálni.",
+      "date": "2026-10-27T21:26:05.000Z",
+      "url": "https://telex.hu/kozlemeny/2026/10/27/karakter-kortars-minifesztival-hozz-egy-verset",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Közlemény"
+      ],
+      "author": "Telex",
+      "theme": "drustvo",
+      "image": "https://assets.telex.hu/images/20261026/1793019860-temp-c0d435bb0g1i0bdlaga_cimlap-normal.jpg",
+      "imageAlt": "Mácsai Pál, Székely Kriszta és Saiid is hoz egy számára fontos verset a Karakter fesztiváljára",
+      "addedAt": "2026-10-28T01:21:48.219Z"
     },
     {
       "slug": "budimpesta-2026-10-27-hvg-ujabb-aldozatat-azonosithattak-ted-bundynak-a941dd",
@@ -272,6 +334,23 @@
       "addedAt": "2026-10-27T21:22:01.000Z"
     },
     {
+      "slug": "budimpesta-2026-10-27-telex-a-parizsi-klimacel-duplajaval-szamolnak-az-b46931",
+      "title": "A párizsi klímacél duplájával számolnak az EU-ban, jól megtérülne alkalmazkodni hozzá",
+      "summary": "Az Európai Bizottság szerint arra kellene készülni, hogy az átlaghőmérséklet három fokkal túllépné az iparosodás előtti szintet 2100-ra.",
+      "date": "2026-10-27T20:51:48.000Z",
+      "url": "https://telex.hu/gazdasag/2026/10/27/eu-europai-bizottsag-globalis-felmelegedes-alkalmazkodas",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "Márton Balázs",
+      "theme": "drustvo",
+      "image": "https://assets.telex.hu/images/20261027/1793134135-temp-rn41d3ifq040elkphch_cimlap-normal.jpg",
+      "imageAlt": "A párizsi klímacél duplájával számolnak az EU-ban, jól megtérülne alkalmazkodni hozzá",
+      "addedAt": "2026-10-28T01:21:48.220Z"
+    },
+    {
       "slug": "budimpesta-2026-10-27-24hu-ujra-megvalasztottak-a-fradi-elnokenek-b05342",
       "title": "Újra megválasztották a Fradi elnökének Kubatov Gábort",
       "summary": "A közgyűlés tisztújító ülését követően az új elnökség felkérte a munka folytatására az egyesület első emberét. The post Újra megválasztották a Fradi elnökének Kubatov Gábort first appeared on 24.hu .",
@@ -307,6 +386,23 @@
       "image": "https://pcdn.hu/articles/images-xl/d/_/h/d-hr20261022013-864560.jpg",
       "imageAlt": "Tisza-kormány: kiadták a nemzetközi elfogatóparancsot Matolcsy Ádám ellen, új részletek az adócsomagról és a pénzesővel kecsegtető programról",
       "addedAt": "2026-10-27T21:22:02.029Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-27-telex-kubatov-gabort-ismet-fradi-elnoknek-1b6c16",
+      "title": "Kubatov Gábort ismét Fradi-elnöknek választották, de 2027 elején le kell mondania",
+      "summary": "A Fidesz egykori alelnöke újabb négy évre kapott bizalmat az elnökségtől. A nagy kérdés az lesz, mi lesz februártól, amikor Kubatov már nem lehet elnök.",
+      "date": "2026-10-27T20:42:17.000Z",
+      "url": "https://telex.hu/sport/2026/10/27/ferencvaros-tisztujitas-kubatov-gabor-osszeferhetetlenseg",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Sport"
+      ],
+      "author": "Ághassi Attila",
+      "theme": "drustvo",
+      "image": "https://assets.telex.hu/images/20261027/1793118404-temp-4195j87frb3pappgeep_cimlap-normal.jpg",
+      "imageAlt": "Kubatov Gábort ismét Fradi-elnöknek választották, de 2027 elején le kell mondania",
+      "addedAt": "2026-10-28T01:21:48.220Z"
     },
     {
       "slug": "budimpesta-2026-10-27-24hu-exit-poll-az-ellenzeki-blokk-vezet-az-f742a3",
@@ -8002,120 +8098,6 @@
       "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/d1945ef8-9eec-45bc-9fbd-2b47e18d4085.jpg",
       "imageAlt": "A gin és meglepő barátai – 7 tipp túl a gin-tonikon és a Negronin",
       "addedAt": "2026-10-24T14:30:14.279Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-24-portfolio-terdre-kenyszeritik-a-francia-gazdasagot-a-5ca7fe",
-      "title": "Térdre kényszerítik a francia gazdaságot a zavargások?",
-      "summary": "Október közepe óta erőszakhullám söpör végig Franciaországon. A kezdetben diáktüntetésekből kiinduló megmozdulások gyorsan szélesebb társadalmi követelésekké – a megélhetési költségek csökkentésévé és a közszolgáltatások javításává – váltak. A zavargások súlyos gazdasági károkat okozhatnak, miközben az ország amúgy is rendkívül nehéz költségvetési és növekedési helyzetben van - figyelmeztetnek az ING Bank elemzői.",
-      "date": "2026-10-24T14:00:00.000Z",
-      "url": "https://www.portfolio.hu/gazdasag/20261024/terdre-kenyszeritik-a-francia-gazdasagot-a-zavargasok-871446",
-      "source": "portfolio",
-      "sourceName": "Portfolio",
-      "categories": [
-        "Gazdaság"
-      ],
-      "author": "",
-      "theme": "ekonomija",
-      "image": "https://pcdn.hu/articles/images-xl/g/e/t/gettyimages-2300098299-863962.jpg",
-      "imageAlt": "Térdre kényszerítik a francia gazdaságot a zavargások?",
-      "addedAt": "2026-10-24T14:30:14.968Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-24-24hu-nemzeti-pedagogus-kar-vezetoje-nem-0445e2",
-      "title": "Nemzeti Pedagógus Kar vezetője: „Nem feladatunk, hogy tiltakozásra biztassuk a pedagógusokat”",
-      "summary": "Azonkívül, hogy a működésükhöz kaptak költségvetési támogatást, nem volt rájuk befolyással a kormány – erről is beszélt a megbízott elnök. The post Nemzeti Pedagógus Kar vezetője: „Nem feladatunk, hogy tiltakozásra biztassuk a pedagógusokat” first appeared on 24.hu .",
-      "date": "2026-10-24T13:53:29.000Z",
-      "url": "https://24.hu/belfold/2026/10/24/nemzeti-pedagogus-kar-razsi-botond-miklos/",
-      "source": "24hu",
-      "sourceName": "24.hu",
-      "categories": [
-        "Belföld",
-        "nemzeti pedagógus kar",
-        "rázsi botond miklós",
-        "oktatás"
-      ],
-      "author": "Kovács Barna",
-      "theme": "politika",
-      "image": "https://s.24.hu/app/uploads/2026/10/tabla-e1792849944270-1024x577.jpg",
-      "imageAlt": "Nemzeti Pedagógus Kar vezetője: „Nem feladatunk, hogy tiltakozásra biztassuk a pedagógusokat”",
-      "addedAt": "2026-10-24T14:30:16.865Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-24-444-tobb-mint-2-milliard-dollart-keresett-mar-8afb2c",
-      "title": "Több mint 2 milliárd dollárt keresett már Cristiano Ronaldo focistaként",
-      "summary": "Első aktív sportolóként lépte át a kétmilliárdos határt. Felkészül: Lionel Messi.",
-      "date": "2026-10-24T13:49:55.000Z",
-      "url": "https://444.hu/2026/10/24/tobb-mint-2-milliard-dollart-keresett-mar-cristiano-ronaldo-focistakent?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
-      "source": "444",
-      "sourceName": "444",
-      "categories": [
-        "labdarúgás",
-        "cristiano ronaldo",
-        "focista",
-        "rekord"
-      ],
-      "author": "Székely Sarolta",
-      "theme": "sport",
-      "image": "https://assets.4cdn.hu/kraken/8M9H1NqHg9jRlBXds.jpeg",
-      "imageAlt": "Több mint 2 milliárd dollárt keresett már Cristiano Ronaldo focistaként",
-      "addedAt": "2026-10-24T14:30:13.943Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-24-portfolio-ujjaeled-a-regi-szovjet-technika-kulonleges-b5fcb1",
-      "title": "Újjáéled a régi, szovjet technika: különleges feladatot kaptak az elavult Mi-8-as helikopterek",
-      "summary": "Elfogódrónok hordozására és indítására alakítottak át ukrán Mi-8-as helikoptereket – derül ki friss háborús felvételekből.",
-      "date": "2026-10-24T13:48:00.000Z",
-      "url": "https://www.portfolio.hu/global/20261024/ujjaeled-a-regi-szovjet-technika-kulonleges-feladatot-kaptak-az-elavult-mi-8-as-helikopterek-871794",
-      "source": "portfolio",
-      "sourceName": "Portfolio",
-      "categories": [
-        "Globál"
-      ],
-      "author": "",
-      "theme": "sigurnost",
-      "image": "https://pcdn.hu/articles/images-xl/m/i/_/mi-8-harci-helikopter-lengyel-legiero-595204.jpg",
-      "imageAlt": "Újjáéled a régi, szovjet technika: különleges feladatot kaptak az elavult Mi-8-as helikopterek",
-      "addedAt": "2026-10-24T14:30:14.968Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-24-hvg-kina-rajott-hogy-tulajdonkeppen-o-is-bf10b0",
-      "title": "Kína rájött, hogy tulajdonképpen ő is korlátozhat úgy, mint Amerika",
-      "summary": "Egyebek mellett éppen az amerikai exportkorlátozások nyomására jutottak el olyan fejlettségi szintre kínai technológiák, hogy a távol-keleti ország kezében egyre több a kijátszható lap.",
-      "date": "2026-10-24T13:45:00.000Z",
-      "url": "https://hvg.hu/360/20261024_hvg-kinai-technologiak-exportja-korlatozas-usa",
-      "source": "hvg",
-      "sourceName": "HVG",
-      "categories": [
-        "hvg360",
-        "tech",
-        "exportkorlátozás",
-        "Kína"
-      ],
-      "author": "szerzo@hvg.hu (HVG)",
-      "theme": "drustvo",
-      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/6e254850-9524-4da8-bcf8-dff000850f7f.jpg",
-      "imageAlt": "Kína rájött, hogy tulajdonképpen ő is korlátozhat úgy, mint Amerika",
-      "addedAt": "2026-10-24T14:30:14.279Z"
-    },
-    {
-      "slug": "budimpesta-2026-10-24-444-orban-rahel-mar-nem-felel-ferje-cegeinek-0ec06b",
-      "title": "Orbán Ráhel már nem felel férje cégeinek márkaépítéséért",
-      "summary": "Október közepén elhagyta a BDPST Koncept ügyvezetői posztját, így már csak a bababoltjainak igazgatásával foglalkozik a volt miniszterelnök legidősebb lánya.",
-      "date": "2026-10-24T13:37:41.000Z",
-      "url": "https://444.hu/2026/10/24/orban-rahel-mar-nem-felel-ferje-cegeinek-markaepiteseert?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
-      "source": "444",
-      "sourceName": "444",
-      "categories": [
-        "tiborcz istván",
-        "branding",
-        "ügyvezető",
-        "weigert zsanett marianna"
-      ],
-      "author": "Székely Sarolta",
-      "theme": "politika",
-      "image": "https://assets.4cdn.hu/kraken/8AK5eNkD63k1mNWGs.jpeg",
-      "imageAlt": "Orbán Ráhel már nem felel férje cégeinek márkaépítéséért",
-      "addedAt": "2026-10-24T14:30:13.943Z"
     }
   ]
 }
