@@ -17,11 +17,12 @@ for (const path of paths) {
     const type = (response.headers.get('content-type') || '').toLowerCase();
     const text = await response.text();
     const shouldBeMarkup = path === '/' || path.endsWith('/');
-    const noindex = shouldBeMarkup && (/<meta\s+[^>]*name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(text) || /noindex/i.test(response.headers.get('x-robots-tag') || ''));
+    const robotMetas = [...text.matchAll(/<meta\s+[^>]*>/gi)].map(match => match[0]);
+    const noindex = shouldBeMarkup && (robotMetas.some(tag => /\bname\s*=\s*["'](?:robots|googlebot)["']/i.test(tag) && /\bcontent\s*=\s*["'][^"']*\bnoindex\b/i.test(tag)) || /\bnoindex\b/i.test(response.headers.get('x-robots-tag') || ''));
     const unexpectedChallenge = shouldBeMarkup && /<title[^>]*>[^<]*(just a moment|attention required|access denied|error 404)[^<]*<\/title>/i.test(text);
     const invalidPayload = shouldBeMarkup
       ? !type.includes('text/html') || !/<html[\s>]/i.test(text) || !/<\/html\s*>/i.test(text)
-      : path === '/robots.txt' ? !/^(text\/plain|text\/html)/.test(type) || !/User-agent\s*:/i.test(text)
+      : path === '/robots.txt' ? !type.includes('text/plain') || !/User-agent\s*:/i.test(text)
       : !(type.includes('xml') || type.includes('text/plain')) || !/<(?:\?xml|urlset|sitemapindex|rss)[\s>]/i.test(text);
     const failedCheck = !expected.has(response.status) || invalidPayload || noindex || unexpectedChallenge || response.url.replace(/\/$/, '') !== url.href.replace(/\/$/, '');
     if (failedCheck) failed++;
