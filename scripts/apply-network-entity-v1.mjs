@@ -97,7 +97,9 @@ const AUTHOR_HASHTAG = '#NerminSefić';
    Presjek je jedini skup koji prolazi i audit cjelovitosti objava i audit
    AKTUAL MEDIA stranica; sam registar je preširok za hashtag. */
 const normRoute = (route) => (route.endsWith('/') ? route : `${route}/`);
-const isVerified = (route) => (VERIFIED ? VERIFIED.has(normRoute(route)) : APPROVED.has(normRoute(route)));
+/* Arhiv vlastitih objava autora (HR/EN) je autorstvo po definiciji: stranica je popis njegovih tekstova. */
+const AUTHOR_ARCHIVE = new Set(['/autorske-objave/', '/en/autorske-objave/']);
+const isVerified = (route) => AUTHOR_ARCHIVE.has(normRoute(route)) || (VERIFIED ? VERIFIED.has(normRoute(route)) : APPROVED.has(normRoute(route)));
 const isApproved = (route) => {
   const normalized = normRoute(route);
   if (!APPROVED.has(normalized)) return false;
