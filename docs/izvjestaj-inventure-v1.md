@@ -7,9 +7,9 @@ Podatkovni dan: 2026-10-28.
 
 | Što | Broj |
 | --- | --- |
-| Stranica ukupno | 11.777 |
+| Stranica ukupno | 11.786 |
 | Webova | 7 |
-| Tekstova u podacima | 6.863 |
+| Tekstova u podacima | 6.872 |
 | Gradskih izdanja | 17 |
 | Svjetskih izdanja | 9 |
 | Samostalnih webova | 6 |
@@ -26,7 +26,7 @@ Podatkovni dan: 2026-10-28.
 | AKTUAL ARHIVA | 38 | engleska inačica 19, stranica 18, naslovnica 1 | 2026-10-28 |
 | AKTUAL DNEVNIK | 20 | engleska inačica 10, stranica 9, naslovnica 1 | 2026-10-28 |
 | Samostalni webovi (šest izdanja) | 656 | prenos 402, kolumna 180, stranica 42, engleska inačica 31, izvor 1 | 2026-10-28 |
-| Gradska izdanja (17 kanala) | 7.207 | članak 6863, tema 149, izvor 109, stranica 51, engleska inačica 17, pregled 17, naslovnica 1 | 2026-10-28 |
+| Gradska izdanja (17 kanala) | 7.216 | članak 6872, tema 149, izvor 109, stranica 51, engleska inačica 17, pregled 17, naslovnica 1 | 2026-10-28 |
 
 ## Što iz brojeva slijedi
 
