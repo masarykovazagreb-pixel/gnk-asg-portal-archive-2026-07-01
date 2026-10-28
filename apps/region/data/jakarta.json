@@ -4,7 +4,7 @@
   "lang": "id",
   "city": "Jakarta",
   "country": "Indonezija",
-  "updatedAt": "2026-10-28T21:19:03.152Z",
+  "updatedAt": "2026-10-28T22:09:19.954Z",
   "sources": [
     {
       "id": "antara",
@@ -14,7 +14,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-28T21:18:54.425Z"
+      "checkedAt": "2026-10-28T22:08:51.172Z"
     },
     {
       "id": "kompas",
@@ -24,10 +24,10 @@
       "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.kompas.com/rss: empty response",
-        "https://nasional.kompas.com/rss: empty response"
+        "https://www.kompas.com/rss: HTTP 404",
+        "https://nasional.kompas.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-28T21:18:56.056Z"
+      "checkedAt": "2026-10-28T22:08:53.681Z"
     },
     {
       "id": "detik",
@@ -39,7 +39,7 @@
       "errors": [
         "https://rss.detik.com/index.php/detikcom: fetch failed"
       ],
-      "checkedAt": "2026-10-28T21:18:58.610Z"
+      "checkedAt": "2026-10-28T22:09:15.330Z"
     },
     {
       "id": "tempo",
@@ -51,7 +51,7 @@
       "errors": [
         "https://www.tempo.co/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-28T21:18:59.405Z"
+      "checkedAt": "2026-10-28T22:09:16.143Z"
     },
     {
       "id": "cnnindonesia",
@@ -63,7 +63,7 @@
       "errors": [
         "https://www.cnnindonesia.com/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-28T21:19:00.190Z"
+      "checkedAt": "2026-10-28T22:09:16.940Z"
     },
     {
       "id": "republika",
@@ -73,7 +73,7 @@
       "fetched": 15,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-28T21:19:00.583Z"
+      "checkedAt": "2026-10-28T22:09:17.553Z"
     },
     {
       "id": "cnbcindonesia",
@@ -85,7 +85,7 @@
       "errors": [
         "https://www.cnbcindonesia.com/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-28T21:19:01.381Z"
+      "checkedAt": "2026-10-28T22:09:18.352Z"
     },
     {
       "id": "kumparan",
@@ -97,10 +97,72 @@
       "errors": [
         "https://kumparan.com/feed: HTTP 403"
       ],
-      "checkedAt": "2026-10-28T21:19:03.152Z"
+      "checkedAt": "2026-10-28T22:09:19.954Z"
     }
   ],
   "items": [
+    {
+      "slug": "jakarta-2026-10-28-antara-forum-sibf-2026-bidik-investasi-senilai-220558",
+      "title": "Forum SIBF 2026 bidik investasi senilai Rp450 miliar",
+      "summary": "ANTARA - Sulawesi, Maluku dan Papua (SULAMPUA) Investment and Business Forum (SIBF) 2026 membidik nilai investasi dan ...",
+      "date": "2026-10-28T22:04:04.000Z",
+      "url": "https://www.antaranews.com/video/5818235/forum-sibf-2026-bidik-investasi-senilai-rp450-miliar",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/Sequence-13.06_49_22_09.Still744.jpg",
+      "imageAlt": "Forum SIBF 2026 bidik investasi senilai Rp450 miliar",
+      "addedAt": "2026-10-28T22:08:51.172Z"
+    },
+    {
+      "slug": "jakarta-2026-10-28-republika-merawat-jangkar-persatuan-menempa-pemuda-6def2a",
+      "title": "Merawat Jangkar Persatuan, Menempa Pemuda yang Patriotik, Tanggung dan Berempati di Era Polarasisasi",
+      "summary": "HARI ini, kita hidup di era di mana jarak geografis telah dilipat oleh layar gawai, memberikan generasi muda kebebasan berkomunikasi dan akses informasi yang tidak pernah dibayangkan oleh generasi...",
+      "date": "2026-10-28T22:00:46.000Z",
+      "url": "https://opini.republika.co.id/berita/tnm39t377/merawat-jangkar-persatuan-menempa-pemuda-yang-patriotik-tanggung-dan-berempati-di-era-polarasisasi",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Kolom"
+      ],
+      "author": "Teguh Firmansyah",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/015030600-1793168668-830-556.jpg",
+      "imageAlt": "Merawat Jangkar Persatuan, Menempa Pemuda yang Patriotik, Tanggung dan Berempati di Era Polarasisasi",
+      "addedAt": "2026-10-28T22:09:17.554Z"
+    },
+    {
+      "slug": "jakarta-2026-10-28-antara-tiga-gol-di-babak-kedua-buat-ac-milan-kalah-756c2a",
+      "title": "Tiga gol di babak kedua buat AC Milan kalah 2-4 dari Bologna",
+      "summary": "AC Milan harus menelan kekalahan 2-4 dari Bologna pada pekan kesembilan Liga Italia 2026/27 di Stadion San Siro pada ...",
+      "date": "2026-10-28T21:53:04.000Z",
+      "url": "https://www.antaranews.com/berita/5818279/tiga-gol-di-babak-kedua-buat-ac-milan-kalah-2-4-dari-bologna",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/29/1000077630.jpg",
+      "imageAlt": "Tiga gol di babak kedua buat AC Milan kalah 2-4 dari Bologna",
+      "addedAt": "2026-10-28T22:08:51.172Z"
+    },
+    {
+      "slug": "jakarta-2026-10-28-antara-kedekatan-sigi-wimala-dan-chempa-warnai-250160",
+      "title": "Kedekatan Sigi Wimala dan Chempa warnai film Desember Jani di TIFF",
+      "summary": "ANTARA - Aktris Sigi Wimala dan Chempa Puteri menunjukkan kecocokan mereka sebagai ibu dan putrinya dalam diskusi film ...",
+      "date": "2026-10-28T21:49:39.000Z",
+      "url": "https://www.antaranews.com/video/5818211/kedekatan-sigi-wimala-dan-chempa-warnai-film-desember-jani-di-tiff",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/KEDEKATAN-SIGI-WIMALA-DAN-CHEMPA-WARNAI-FILM-DESEMBER-JANI-DI-TIFF.jpg",
+      "imageAlt": "Kedekatan Sigi Wimala dan Chempa warnai film Desember Jani di TIFF",
+      "addedAt": "2026-10-28T22:08:51.172Z"
+    },
     {
       "slug": "jakarta-2026-10-28-republika-pssi-cari-alternatif-uji-coba-timnas-cc7a4a",
       "title": "PSSI Cari Alternatif Uji Coba Timnas Indonesia di Luar Negeri",
@@ -6722,68 +6784,6 @@
       "image": "https://img.antaranews.com/cache/800x533/2026/10/23/ee1129b1-9777-45be-ab77-1a5bd520e3ec.jpeg",
       "imageAlt": "Airlangga nilai laporan MSCI tak cerminkan fundamental ekonomi RI",
       "addedAt": "2026-10-23T07:29:50.464Z"
-    },
-    {
-      "slug": "jakarta-2026-10-23-antara-gekrafs-menggalang-kepedulian-bagi-cd2466",
-      "title": "Gekrafs menggalang kepedulian bagi masyarakat terdampak karhutla",
-      "summary": "Gerakan Ekonomi Kreatif Nasional (Gekrafs) menggalang kepedulian bagi warga masyarakat yang terdampak kebakaran hutan ...",
-      "date": "2026-10-23T07:22:19.000Z",
-      "url": "https://www.antaranews.com/berita/5807115/gekrafs-menggalang-kepedulian-bagi-masyarakat-terdampak-karhutla",
-      "source": "antara",
-      "sourceName": "ANTARA",
-      "categories": [],
-      "author": "",
-      "theme": "rat",
-      "image": "https://img.antaranews.com/cache/800x533/2026/10/23/f3ee5ae1-4f7c-418b-8988-c12427573d1d.jpeg",
-      "imageAlt": "Gekrafs menggalang kepedulian bagi masyarakat terdampak karhutla",
-      "addedAt": "2026-10-23T07:29:50.465Z"
-    },
-    {
-      "slug": "jakarta-2026-10-23-antara-turkiye-kanada-tingkatkan-hubungan-5f67b0",
-      "title": "Turkiye-Kanada tingkatkan hubungan bilateral jadi kemitraan strategis",
-      "summary": "Turkiye dan Kanada pada Kamis (22/10) sepakat untuk meningkatkan hubungan bilateral mereka menjadi kemitraan strategis ...",
-      "date": "2026-10-23T07:20:51.000Z",
-      "url": "https://www.antaranews.com/berita/5807111/turkiye-kanada-tingkatkan-hubungan-bilateral-jadi-kemitraan-strategis",
-      "source": "antara",
-      "sourceName": "ANTARA",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://img.antaranews.com/cache/800x533/2026/10/23/CjkinzN000010_20261023_CBMFN0A001.jpeg",
-      "imageAlt": "Turkiye-Kanada tingkatkan hubungan bilateral jadi kemitraan strategis",
-      "addedAt": "2026-10-23T07:29:50.465Z"
-    },
-    {
-      "slug": "jakarta-2026-10-23-republika-risiko-iklim-jadi-pertimbangan-pembiayaan-291ff5",
-      "title": "Risiko Iklim Jadi Pertimbangan Pembiayaan Infrastruktur, IIF Terapkan Standar Internasional",
-      "summary": "REPUBLIKA.CO.ID, JAKARTA -- Pengelolaan risiko iklim menjadi salah satu aspek dalam pembiayaan proyek infrastruktur seiring meningkatnya tuntutan investor terhadap transparansi dan keberlanjutan. Perusahaan pembiayaan infrastruktur perlu mempertimbangkan risiko iklim fisik...",
-      "date": "2026-10-23T07:20:00.000Z",
-      "url": "https://esgnow.republika.co.id/berita/tncjdc416/risiko-iklim-jadi-pertimbangan-pembiayaan-infrastruktur-iif-terapkan-standar-internasional",
-      "source": "republika",
-      "sourceName": "Republika",
-      "categories": [
-        "Tata Kelola"
-      ],
-      "author": "Satria K Yudha",
-      "theme": "drustvo",
-      "image": "https://static.republika.co.id/uploads/images/detailnews/_261023130003-299.png",
-      "imageAlt": "Risiko Iklim Jadi Pertimbangan Pembiayaan Infrastruktur, IIF Terapkan Standar Internasional",
-      "addedAt": "2026-10-23T07:29:56.722Z"
-    },
-    {
-      "slug": "jakarta-2026-10-23-antara-tesla-catatkan-pertumbuhan-stagnan-pada-8e5f0f",
-      "title": "Tesla catatkan pertumbuhan stagnan pada kuartal III 2026",
-      "summary": "Tesla membukukan pendapatan sebesar 28.05 miliar dolar AS (setara Rp507.2 triliun) pada kuartal III 2026 atau relatif ...",
-      "date": "2026-10-23T07:18:14.000Z",
-      "url": "https://otomotif.antaranews.com/berita/5807107/tesla-catatkan-pertumbuhan-stagnan-pada-kuartal-iii-2026",
-      "source": "antara",
-      "sourceName": "ANTARA",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://img.antaranews.com/cache/800x533/2026/10/16/InShot_20261016_124429862.jpg",
-      "imageAlt": "Tesla catatkan pertumbuhan stagnan pada kuartal III 2026",
-      "addedAt": "2026-10-23T07:29:50.465Z"
     }
   ]
 }
