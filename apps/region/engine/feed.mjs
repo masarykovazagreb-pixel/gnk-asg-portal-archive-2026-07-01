@@ -100,6 +100,8 @@ export function parseFeed(xml, { base = '', sourceId = '', sourceName = '' } = {
     if (!link || !/^https?:/i.test(link)) link = selfLink(node) || attr(node, 'link', 'href') || link;
     if (!link) link = stripTags(firstText(node, ['guid', 'id']));
     link = resolveUrl(link, base);
+    // Članak se veže na https izvor istog hosta; javni izvori podržavaju https (gate: nema http:// linkova).
+    link = link.replace(/^http:\/\//i, 'https://');
     if (!title || !/^https?:/i.test(link)) continue;
 
     const rawSummary = firstText(node, ['description', 'summary', 'content:encoded', 'content']);
