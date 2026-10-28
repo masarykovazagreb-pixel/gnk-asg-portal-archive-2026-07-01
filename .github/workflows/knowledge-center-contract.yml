@@ -33,11 +33,8 @@ jobs:
         run: |
           set -euo pipefail
           node scripts/generate-en-knowledge-center-v1.mjs
-          # Objavljena stranica nosi iste slojeve kao i ostale stranice (dizajn, autor, impresum, osvježavanje).
-          node scripts/apply-design-tokens-v1.mjs
-          node scripts/apply-author-band-v1.mjs
-          node scripts/apply-impressum-v1.mjs --refresh --icon
-          node scripts/apply-refresh-v1.mjs
+          # Objavljena stranica nosi iste slojeve kao i ostale stranice: kanonski redoslijed iz sync-all-v1 (generator, pa slojevi).
+          NODE_OPTIONS=--max-old-space-size=8192 node scripts/sync-all-v1.mjs --group=layers
       - name: Verify generated page is committed
         run: git diff --exit-code -- apps/portal/en/knowledge-center/index.html
       - name: Validate parity, truth and route ownership
