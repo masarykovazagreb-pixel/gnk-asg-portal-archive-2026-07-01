@@ -75,6 +75,7 @@ const GATES = [
   { name: 'Osvježavanje — modul na svakoj stranici', cmd: ['node', 'tests/test-refresh-layer-v1.mjs'], required: true },
   { name: 'Brojke se ne razilaze — jedan zbroj mreže', cmd: ['node', 'tests/test-counts-consistency-v1.mjs'], required: true },
   { name: 'Kodiranje izvora — bez U+FFFD', cmd: ['node', 'tests/test-region-encoding-v1.mjs'], required: true },
+  { name: 'Standard izdanja svjetske mreže — hashtagovi, urednik, brend, slike na karticama', cmd: ['node', 'scripts/test-kanal-standard-v2.mjs'], required: true },
   { name: 'Jednak standard izdanja i portala', cmd: ['node', 'tests/test-editions-parity-v1.mjs'], required: true },
   { name: 'Unutrašnjost izdanja — isti okvir kao naslovnica', cmd: ['node', 'tests/test-edition-inner-parity-v1.mjs'], required: true },
   { name: 'Atlas, paukova mreža i glavni gradovi', cmd: ['node', 'tests/test-network-atlas-v1.mjs'], required: true },
