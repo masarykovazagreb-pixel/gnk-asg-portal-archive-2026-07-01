@@ -1,0 +1,153 @@
+{
+  "version": "WORLD_EXPANSION_V2_20261023",
+  "wave": "wave-6",
+  "name": "Šesti val — Europa do zadnje države",
+  "status": "planned",
+  "note": "Jedanaest europskih država koje još nemaju izdanje: mikrodržave, baltički i slavenski jezici te Ujedinjeno Kraljevstvo i Rusija. Za nove jezike (sq, be, mk, ru, ca) treba prijevod sučelja.",
+  "generatedAt": "2026-10-28T19:10:17.710Z",
+  "requirements": [
+    {
+      "id": "sources",
+      "hr": "provjereni izvori s RSS adresama (najmanje tri)",
+      "en": "verified sources with RSS feeds (at least three)"
+    },
+    {
+      "id": "art",
+      "hr": "scena grada u assets/global-src (16:9)",
+      "en": "city scene in assets/global-src (16:9)"
+    },
+    {
+      "id": "strings",
+      "hr": "nazivi sučelja na jeziku zemlje",
+      "en": "interface strings in the country language"
+    },
+    {
+      "id": "items",
+      "hr": "najmanje jedan stvarni zapis u arhivi",
+      "en": "at least one real record in the archive"
+    }
+  ],
+  "cities": [
+    {
+      "id": "tirana",
+      "city": "Tirana",
+      "country": "Albanija",
+      "countryCode": "AL",
+      "lang": "sq",
+      "timezone": "Europe/Tirane",
+      "continent": "Europa",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "andorra-la-vella",
+      "city": "Andora la Vella",
+      "country": "Andora",
+      "countryCode": "AD",
+      "lang": "ca",
+      "timezone": "Europe/Andorra",
+      "continent": "Europa",
+      "note": "Katalonski je službeni jezik; španjolski i francuski su u svakodnevnoj uporabi.",
+      "ready": false
+    },
+    {
+      "id": "minsk",
+      "city": "Minsk",
+      "country": "Bjelorusija",
+      "countryCode": "BY",
+      "lang": "be",
+      "timezone": "Europe/Minsk",
+      "continent": "Europa",
+      "note": "Bjelorusija ima i ruski kao službeni jezik.",
+      "ready": false
+    },
+    {
+      "id": "london",
+      "city": "London",
+      "country": "Ujedinjeno Kraljevstvo",
+      "countryCode": "GB",
+      "lang": "en",
+      "timezone": "Europe/London",
+      "continent": "Europa",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "vaduz",
+      "city": "Vaduz",
+      "country": "Lihtenštajn",
+      "countryCode": "LI",
+      "lang": "de",
+      "timezone": "Europe/Vaduz",
+      "continent": "Europa",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "monako",
+      "city": "Monako",
+      "country": "Monako",
+      "countryCode": "MC",
+      "lang": "fr",
+      "timezone": "Europe/Monaco",
+      "continent": "Europa",
+      "note": "Jedna od najmanjih država svijeta; izdanje pokriva i frankofonu obalu.",
+      "ready": false
+    },
+    {
+      "id": "podgorica",
+      "city": "Podgorica",
+      "country": "Crna Gora",
+      "countryCode": "ME",
+      "lang": "sr",
+      "timezone": "Europe/Podgorica",
+      "continent": "Europa",
+      "note": "Crnogorski jezik dijeli osnovu sa srpskim; izdanje ide na crnogorskom.",
+      "ready": false
+    },
+    {
+      "id": "skoplje",
+      "city": "Skoplje",
+      "country": "Sjeverna Makedonija",
+      "countryCode": "MK",
+      "lang": "mk",
+      "timezone": "Europe/Skopje",
+      "continent": "Europa",
+      "note": "Albanski je drugi službeni jezik u zemlji.",
+      "ready": false
+    },
+    {
+      "id": "moskva",
+      "city": "Moskva",
+      "country": "Rusija",
+      "countryCode": "RU",
+      "lang": "ru",
+      "timezone": "Europe/Moscow",
+      "continent": "Europa",
+      "note": "Rusija ima jedanaest vremenskih zona; izdanje ide po moskovskom vremenu.",
+      "ready": false
+    },
+    {
+      "id": "san-marino",
+      "city": "San Marino",
+      "country": "San Marino",
+      "countryCode": "SM",
+      "lang": "it",
+      "timezone": "Europe/San_Marino",
+      "continent": "Europa",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "vatikan",
+      "city": "Vatikan",
+      "country": "Vatikan",
+      "countryCode": "VA",
+      "lang": "it",
+      "timezone": "Europe/Vatican",
+      "continent": "Europa",
+      "note": "Najmanja država svijeta; izdanje pokriva Svetu Stolicu i crkvenu scenu Rima.",
+      "ready": false
+    }
+  ]
+}

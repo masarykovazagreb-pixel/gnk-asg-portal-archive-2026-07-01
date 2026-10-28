@@ -1,0 +1,329 @@
+{
+  "version": "WORLD_EXPANSION_V2_20261023",
+  "wave": "wave-5",
+  "name": "Peti val — Azija i Oceanija",
+  "status": "planned",
+  "note": "Najveći val po broju ljudi. Arapski, kineski i japanski su već u mreži; hindski, bengalski, tajlandski, vijetnamski, korejski i perzijski traže nova sučelja.",
+  "generatedAt": "2026-10-28T19:10:17.710Z",
+  "requirements": [
+    {
+      "id": "sources",
+      "hr": "provjereni izvori s RSS adresama (najmanje tri)",
+      "en": "verified sources with RSS feeds (at least three)"
+    },
+    {
+      "id": "art",
+      "hr": "scena grada u assets/global-src (16:9)",
+      "en": "city scene in assets/global-src (16:9)"
+    },
+    {
+      "id": "strings",
+      "hr": "nazivi sučelja na jeziku zemlje",
+      "en": "interface strings in the country language"
+    },
+    {
+      "id": "items",
+      "hr": "najmanje jedan stvarni zapis u arhivi",
+      "en": "at least one real record in the archive"
+    }
+  ],
+  "cities": [
+    {
+      "id": "new-delhi",
+      "city": "New Delhi",
+      "country": "Indija",
+      "countryCode": "IN",
+      "lang": "hi",
+      "timezone": "Asia/Kolkata",
+      "continent": "Azija",
+      "note": "Indija ima 22 službena jezika; izdanje ide na hindskom, engleski je drugi jezik.",
+      "ready": false
+    },
+    {
+      "id": "islamabad",
+      "city": "Islamabad",
+      "country": "Pakistan",
+      "countryCode": "PK",
+      "lang": "ur",
+      "timezone": "Asia/Karachi",
+      "continent": "Azija",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "dhaka",
+      "city": "Dhaka",
+      "country": "Bangladeš",
+      "countryCode": "BD",
+      "lang": "bn",
+      "timezone": "Asia/Dhaka",
+      "continent": "Azija",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "colombo",
+      "city": "Colombo",
+      "country": "Šri Lanka",
+      "countryCode": "LK",
+      "lang": "si",
+      "timezone": "Asia/Colombo",
+      "continent": "Azija",
+      "note": "Službeni glavni grad je Sri Jayawardenepura Kotte; Colombo je medijsko i gospodarsko središte.",
+      "ready": false
+    },
+    {
+      "id": "kathmandu",
+      "city": "Katmandu",
+      "country": "Nepal",
+      "countryCode": "NP",
+      "lang": "ne",
+      "timezone": "Asia/Kathmandu",
+      "continent": "Azija",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "bangkok",
+      "city": "Bangkok",
+      "country": "Tajland",
+      "countryCode": "TH",
+      "lang": "th",
+      "timezone": "Asia/Bangkok",
+      "continent": "Azija",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "hanoi",
+      "city": "Hanoi",
+      "country": "Vijetnam",
+      "countryCode": "VN",
+      "lang": "vi",
+      "timezone": "Asia/Ho_Chi_Minh",
+      "continent": "Azija",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "manila",
+      "city": "Manila",
+      "country": "Filipini",
+      "countryCode": "PH",
+      "lang": "en",
+      "timezone": "Asia/Manila",
+      "continent": "Azija",
+      "note": "Filipini ima i filipinski kao nacionalni jezik.",
+      "ready": false
+    },
+    {
+      "id": "kuala-lumpur",
+      "city": "Kuala Lumpur",
+      "country": "Malezija",
+      "countryCode": "MY",
+      "lang": "ms",
+      "timezone": "Asia/Kuala_Lumpur",
+      "continent": "Azija",
+      "note": "Savezni teritorij Kuala Lumpur je glavni grad; uprava je u Putrajayi.",
+      "ready": false
+    },
+    {
+      "id": "seoul",
+      "city": "Seul",
+      "country": "Južna Koreja",
+      "countryCode": "KR",
+      "lang": "ko",
+      "timezone": "Asia/Seoul",
+      "continent": "Azija",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "riyadh",
+      "city": "Rijad",
+      "country": "Saudijska Arabija",
+      "countryCode": "SA",
+      "lang": "ar",
+      "timezone": "Asia/Riyadh",
+      "continent": "Azija",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "abu-dhabi",
+      "city": "Abu Dhabi",
+      "country": "Ujedinjeni Arapski Emirati",
+      "countryCode": "AE",
+      "lang": "ar",
+      "timezone": "Asia/Dubai",
+      "continent": "Azija",
+      "note": "Glavni grad je Abu Dhabi; Dubai ostaje medijsko središte.",
+      "ready": false
+    },
+    {
+      "id": "doha",
+      "city": "Doha",
+      "country": "Katar",
+      "countryCode": "QA",
+      "lang": "ar",
+      "timezone": "Asia/Qatar",
+      "continent": "Azija",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "kuwait",
+      "city": "Kuvajt",
+      "country": "Kuvajt",
+      "countryCode": "KW",
+      "lang": "ar",
+      "timezone": "Asia/Kuwait",
+      "continent": "Azija",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "amman",
+      "city": "Aman",
+      "country": "Jordan",
+      "countryCode": "JO",
+      "lang": "ar",
+      "timezone": "Asia/Amman",
+      "continent": "Azija",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "beirut",
+      "city": "Bejrut",
+      "country": "Libanon",
+      "countryCode": "LB",
+      "lang": "ar",
+      "timezone": "Asia/Beirut",
+      "continent": "Azija",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "bagdad",
+      "city": "Bagdad",
+      "country": "Irak",
+      "countryCode": "IQ",
+      "lang": "ar",
+      "timezone": "Asia/Baghdad",
+      "continent": "Azija",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "teheran",
+      "city": "Teheran",
+      "country": "Iran",
+      "countryCode": "IR",
+      "lang": "fa",
+      "timezone": "Asia/Tehran",
+      "continent": "Azija",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "tashkent",
+      "city": "Taškent",
+      "country": "Uzbekistan",
+      "countryCode": "UZ",
+      "lang": "uz",
+      "timezone": "Asia/Tashkent",
+      "continent": "Azija",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "astana",
+      "city": "Astana",
+      "country": "Kazahstan",
+      "countryCode": "KZ",
+      "lang": "kk",
+      "timezone": "Asia/Almaty",
+      "continent": "Azija",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "baku",
+      "city": "Baku",
+      "country": "Azerbajdžan",
+      "countryCode": "AZ",
+      "lang": "az",
+      "timezone": "Asia/Baku",
+      "continent": "Azija",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "tbilisi",
+      "city": "Tbilisi",
+      "country": "Gruzija",
+      "countryCode": "GE",
+      "lang": "ka",
+      "timezone": "Asia/Tbilisi",
+      "continent": "Azija",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "yerevan",
+      "city": "Erevan",
+      "country": "Armenija",
+      "countryCode": "AM",
+      "lang": "hy",
+      "timezone": "Asia/Yerevan",
+      "continent": "Azija",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "canberra",
+      "city": "Canberra",
+      "country": "Australija",
+      "countryCode": "AU",
+      "lang": "en",
+      "timezone": "Australia/Sydney",
+      "continent": "Oceanija",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "wellington",
+      "city": "Wellington",
+      "country": "Novi Zeland",
+      "countryCode": "NZ",
+      "lang": "en",
+      "timezone": "Pacific/Auckland",
+      "continent": "Oceanija",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "suva",
+      "city": "Suva",
+      "country": "Fidži",
+      "countryCode": "FJ",
+      "lang": "en",
+      "timezone": "Pacific/Fiji",
+      "continent": "Oceanija",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "port-moresby",
+      "city": "Port Moresby",
+      "country": "Papua Nova Gvineja",
+      "countryCode": "PG",
+      "lang": "en",
+      "timezone": "Pacific/Port_Moresby",
+      "continent": "Oceanija",
+      "note": "",
+      "ready": false
+    }
+  ]
+}

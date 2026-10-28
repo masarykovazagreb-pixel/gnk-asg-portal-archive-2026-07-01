@@ -1,0 +1,142 @@
+{
+  "version": "WORLD_EXPANSION_V2_20261023",
+  "wave": "wave-10",
+  "name": "Deseti val — Oceanija do zadnje države",
+  "status": "planned",
+  "note": "Deset pacifičkih država. Engleski je u mreži; tonški, tuvaluanski, bislama i samoanski traže nova sučelja, a izdanja su mala i čitaju se na telefonu.",
+  "generatedAt": "2026-10-28T19:10:17.710Z",
+  "requirements": [
+    {
+      "id": "sources",
+      "hr": "provjereni izvori s RSS adresama (najmanje tri)",
+      "en": "verified sources with RSS feeds (at least three)"
+    },
+    {
+      "id": "art",
+      "hr": "scena grada u assets/global-src (16:9)",
+      "en": "city scene in assets/global-src (16:9)"
+    },
+    {
+      "id": "strings",
+      "hr": "nazivi sučelja na jeziku zemlje",
+      "en": "interface strings in the country language"
+    },
+    {
+      "id": "items",
+      "hr": "najmanje jedan stvarni zapis u arhivi",
+      "en": "at least one real record in the archive"
+    }
+  ],
+  "cities": [
+    {
+      "id": "palikir",
+      "city": "Palikir",
+      "country": "Mikronezija",
+      "countryCode": "FM",
+      "lang": "en",
+      "timezone": "Pacific/Pohnpei",
+      "continent": "Oceanija",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "south-tarawa",
+      "city": "South Tarawa",
+      "country": "Kiribati",
+      "countryCode": "KI",
+      "lang": "en",
+      "timezone": "Pacific/Tarawa",
+      "continent": "Oceanija",
+      "note": "Gilbertski (kiribati) je nacionalni jezik.",
+      "ready": false
+    },
+    {
+      "id": "majuro",
+      "city": "Majuro",
+      "country": "Maršalovi Otoci",
+      "countryCode": "MH",
+      "lang": "en",
+      "timezone": "Pacific/Majuro",
+      "continent": "Oceanija",
+      "note": "Maršalski je drugi službeni jezik.",
+      "ready": false
+    },
+    {
+      "id": "yaren",
+      "city": "Yaren",
+      "country": "Nauru",
+      "countryCode": "NR",
+      "lang": "en",
+      "timezone": "Pacific/Nauru",
+      "continent": "Oceanija",
+      "note": "Nauru nema službeni glavni grad; Yaren je sjedište vlade.",
+      "ready": false
+    },
+    {
+      "id": "ngerulmud",
+      "city": "Ngerulmud",
+      "country": "Palau",
+      "countryCode": "PW",
+      "lang": "en",
+      "timezone": "Pacific/Palau",
+      "continent": "Oceanija",
+      "note": "Ngerulmud je glavni grad od 2006.; Koror ostaje najveće središte.",
+      "ready": false
+    },
+    {
+      "id": "honiara",
+      "city": "Honiara",
+      "country": "Salomonovi Otoci",
+      "countryCode": "SB",
+      "lang": "en",
+      "timezone": "Pacific/Guadalcanal",
+      "continent": "Oceanija",
+      "note": "Pidžin je lingua franca.",
+      "ready": false
+    },
+    {
+      "id": "nukualofa",
+      "city": "Nuku'alofa",
+      "country": "Tonga",
+      "countryCode": "TO",
+      "lang": "to",
+      "timezone": "Pacific/Tongatapu",
+      "continent": "Oceanija",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "funafuti",
+      "city": "Funafuti",
+      "country": "Tuvalu",
+      "countryCode": "TV",
+      "lang": "tv",
+      "timezone": "Pacific/Funafuti",
+      "continent": "Oceanija",
+      "note": "Tuvaluanski i engleski su službeni jezici.",
+      "ready": false
+    },
+    {
+      "id": "port-vila",
+      "city": "Port Vila",
+      "country": "Vanuatu",
+      "countryCode": "VU",
+      "lang": "bi",
+      "timezone": "Pacific/Efate",
+      "continent": "Oceanija",
+      "note": "Bislama, francuski i engleski su službeni jezici.",
+      "ready": false
+    },
+    {
+      "id": "apia",
+      "city": "Apia",
+      "country": "Samoa",
+      "countryCode": "WS",
+      "lang": "sm",
+      "timezone": "Pacific/Apia",
+      "continent": "Oceanija",
+      "note": "",
+      "ready": false
+    }
+  ]
+}
