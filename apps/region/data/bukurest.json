@@ -4,17 +4,20 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-10-28T07:33:08.946Z",
+  "updatedAt": "2026-10-28T08:30:07.223Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
       "url": "https://www.agerpres.ro/rss",
-      "ok": true,
-      "fetched": 20,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-10-28T07:32:58.052Z"
+      "errors": [
+        "https://www.agerpres.ro/rss: This operation was aborted",
+        "https://www.agerpres.ro/rss/: This operation was aborted"
+      ],
+      "checkedAt": "2026-10-28T08:30:00.110Z"
     },
     {
       "id": "hotnews",
@@ -24,7 +27,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-28T07:32:58.233Z"
+      "checkedAt": "2026-10-28T08:30:00.731Z"
     },
     {
       "id": "zf",
@@ -34,7 +37,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-28T07:32:59.629Z"
+      "checkedAt": "2026-10-28T08:30:02.306Z"
     },
     {
       "id": "profit",
@@ -44,17 +47,17 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-28T07:32:59.863Z"
+      "checkedAt": "2026-10-28T08:30:02.606Z"
     },
     {
       "id": "digi24",
       "name": "Digi24",
       "url": "https://www.digi24.ro/rss",
       "ok": true,
-      "fetched": 262,
+      "fetched": 261,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-28T07:33:03.471Z"
+      "checkedAt": "2026-10-28T08:30:05.735Z"
     },
     {
       "id": "g4media",
@@ -64,7 +67,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-28T07:33:08.540Z"
+      "checkedAt": "2026-10-28T08:30:06.840Z"
     },
     {
       "id": "newsro",
@@ -74,10 +77,529 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-28T07:33:08.944Z"
+      "checkedAt": "2026-10-28T08:30:07.222Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-10-28-g4media-populatia-romaniei-in-functie-de-domiciliu-d29713",
+      "title": "Populaţia României, în funcţie de domiciliu, era de 21,558 milioane de persoane, la 1 iulie 2026, în scădere cu 0,5% faţă de aceeaşi dată a anului precedent",
+      "summary": "Populaţia României, calculată în funcţie de domiciliu, a ajuns la 21,558 milioane de persoane la 1 iulie 2026, în scădere cu 0,5% faţă de aceeaşi dată a anului precedent, arată datele Institutului Naţional de Statistică (INS), publicate miercuri, scrie Agerpres. Statistica oficială relevă faptul că, în mediul urban, populaţia a fost de 11,881 milioane de […] © G4Media.ro .",
+      "date": "2026-10-28T08:27:49.000Z",
+      "url": "https://www.g4media.ro/populatia-romaniei-in-functie-de-domiciliu-era-de-21558-milioane-de-persoane-la-1-iulie-2026-in-scadere-cu-05-fata-de-aceeasi-data-a-anului-precedent.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "populatia romaniei"
+      ],
+      "author": "Rareș Constantin",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro//wp-content/uploads/2025/09/dreamstime_m_21897394.jpg",
+      "imageAlt": "Populaţia României, în funcţie de domiciliu, era de 21,558 milioane de persoane, la 1 iulie 2026, în scădere cu 0,5% faţă de aceeaşi dată a anului precedent",
+      "addedAt": "2026-10-28T08:30:06.840Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-digi24-razboiul-cu-iranul-a-costat-statele-unite-dd7340",
+      "title": "Războiul cu Iranul a costat Statele Unite peste 47 miliarde de dolari, cu 10 miliarde mai mult decât estimarea anterioară (raport)",
+      "summary": "Armata Statelor Unite a cheltuit până acum peste 47 miliarde de dolari în războiul cu Iranul, cu peste 25% mai mult decât estimarea din iulie a Pentagonului, potrivit datelor Departamentului de Război, obţinute de Reuters, dar care nu au fost făcute publice.",
+      "date": "2026-10-28T08:27:46.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/razboiul-cu-iranul-a-costat-statele-unite-peste-47-miliarde-de-dolari-cu-10-miliarde-mai-mult-decat-estimarea-anterioara-raport-4011733",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwNiUyRjEwJTJGMjc3ODE3M18yNzc4/MTczX3Byb2ZpbWVkaWEtMTA5ODY3OTQ5/My5qcGcmaGFzaD1kYzI1MDA3OTUxMGYzNmNmOGU5MTBhNmRjZDU2ZWYwNw==.jpg",
+      "imageAlt": "Războiul cu Iranul a costat Statele Unite peste 47 miliarde de dolari, cu 10 miliarde mai mult decât estimarea anterioară (raport)",
+      "addedAt": "2026-10-28T08:30:05.736Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-newsro-ins-cifra-de-afaceri-din-serviciile-de-dfa4db",
+      "title": "INS: Cifra de afaceri din serviciile de piaţă prestate în principal întreprinderilor, mai mare cu 7,8%, ca serie brută, în august, faţă de luna similară din 2025/Scădere la opt…",
+      "summary": "Cifra de afaceri din serviciile de piaţă prestate în principal întreprinderilor, în luna august 2026, a crescut, ca serie brută, cu 7,8% şi, ca serie ajustată în funcţie de numărul de zile lucrătoare şi de sezonalitate, cu 4,3%, faţă de luna august 2025, anunţă Institutul Naţional de Statistică (INS). Raportat la iulie 2026, cifra de afaceri a scăzut ca serie brută cu 1,1%, dar a crescut ca serie ajustată cu 5,5%. În primele opt luni din 2026, s-a înregistrat o scădere faţă de perioada similară din 2025, atât ca serie brută cu 0,8%, cât şi ca serie ajustată, cu un recul de 1,6%.",
+      "date": "2026-10-28T08:26:43.000Z",
+      "url": "https://www.news.ro/economic/ins-cifra-de-afaceri-din-serviciile-de-piata-prestate-in-principal-intreprinderilor-mai-mare-cu-7-8-ca-serie-bruta-in-august-fata-de-luna-similara-din-2025-scadere-la-opt-luni-1922402628432026101022896455",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "INS: Cifra de afaceri din serviciile de piaţă prestate în principal întreprinderilor, mai mare cu 7,8%, ca serie brută, în august, faţă de luna similară din 2025/Scădere la opt lun",
+      "addedAt": "2026-10-28T08:30:07.222Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-hotnews-romanii-sunt-bogati-in-metri-patrati-dar-d59aeb",
+      "title": "Românii sunt bogați în metri pătrați, dar săraci în bani disponibili, spune un expert",
+      "summary": "În 2025, 93,2% dintre români locuiau într-o locuință proprietate personală, a doua cea mai ridicată pondere din Uniunea Europeană, după Slovacia, și mult peste media UE de 68,5%. Proprietatea nu este specifică doar gospodăriilor cu venituri ridicate: chiar și în rândul persoanelor expuse riscului de sărăcie, 90,2% dintre români dețin locuința în care trăiesc, aproape …",
+      "date": "2026-10-28T08:25:00.000Z",
+      "url": "https://hotnews.ro/romanii-sunt-bogati-in-metri-patrati-dar-saraci-in-bani-disponibili-spune-un-expert-2388483",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Economie"
+      ],
+      "author": "Dan Popa",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Românii sunt bogați în metri pătrați, dar săraci în bani disponibili, spune un expert",
+      "addedAt": "2026-10-28T08:30:00.731Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-zf-fintechul-romanesc-symphopay-anunta-un-75404b",
+      "title": "Fintechul românesc Symphopay anunţă un parteneriat strategic cu Visa pentru a sprijini băncile din Europa Centrală şi de Est să dezvolte infrastructura de procesare a plăţilor…",
+      "summary": "",
+      "date": "2026-10-28T08:24:42.000Z",
+      "url": "https://www.zf.ro/zf-24/fintechul-romanesc-symphopay-anunta-un-parteneriat-strategic-cu-visa-pentru-a-sprijini-bancile-din-europa-centrala-si-de-est-sa-dezvolte-infrastructura-de-procesare-a-platilor-pentru-comercianti-23269463",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "ZF 24"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21332/23269463/1/11-subsol-zfitgen-daniel-nicolescu.jpg?width=700",
+      "imageAlt": "Fintechul românesc Symphopay anunţă un parteneriat strategic cu Visa pentru a sprijini băncile din Europa Centrală şi de Est să dezvolte infrastructura de procesare a plăţilor pent",
+      "addedAt": "2026-10-28T08:30:02.306Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-profit-cec-bank-prelungeste-campania-grija-a91a93",
+      "title": "CEC Bank prelungește campania „Grijă Completă”: dobândă de 4,60% pe an la depozitele cu depuneri ulterioare",
+      "summary": "CEC Bank prelungește campania promoțională dedicată Pachetului „Grijă Completă”, oferind clienților o dobândă de 4,60% pe an pentru depozitele în lei cu depuneri ulterioare constituite în perioada 28 octombrie 2026 – 27 aprilie 2027. Oferta este disponibilă atât clienților care dețin deja Pachetul „Grijă Completă, cât și celor care aleg să îl achiziționeze, în perioada campaniei.",
+      "date": "2026-10-28T08:22:56.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/financiar/cec-bank-prelungeste-campania-grija-completa-dobanda-de-4-60-pe-an-la-depozitele-cu-depuneri-ulterioare-22896453?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Financiar"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33210/22896453/1/cec.jpg?width=800",
+      "imageAlt": "CEC Bank prelungește campania „Grijă Completă”: dobândă de 4,60% pe an la depozitele cu depuneri ulterioare",
+      "addedAt": "2026-10-28T08:30:02.606Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-newsro-tenis-sfarsitul-de-cariera-pentru-stan-fc2ffd",
+      "title": "Tenis: Sfârşitul de carieră pentru Stan Wawrinka, învins la Basel",
+      "summary": "Stan Wawrinka, triplu câştigător de turnee de Grand Slam şi fost numărul 3 mondial, şi-a încheiat marţi, la vârsta de 41 de ani, lunga carieră cu o înfrângere în primul tur al turneului ATP 500 de la Basel.",
+      "date": "2026-10-28T08:22:54.000Z",
+      "url": "https://www.news.ro/sport/tenis-sfarsitul-de-cariera-pentru-stan-wawrinka-invins-la-basel-1922402228542026101022896423",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Tenis: Sfârşitul de carieră pentru Stan Wawrinka, învins la Basel",
+      "addedAt": "2026-10-28T08:30:07.222Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-hotnews-dr-teodor-holhos-in-topul-chirurgilor-802389",
+      "title": "Dr. Teodor Holhoș, în topul chirurgilor oftalmologi din Europa",
+      "summary": "Medicul Teodor Holhoș, unul dintre cei mai experimentați chirurgi oftalmologi din România, a primit de curând două distincții care îl plasează în topurile europene ale acestei profesii. Potrivit certificării oferite dr. Holhoș de grupul german ZEISS, medicul român se numără printre primii zece chirurgi oftalmologi din Europa ca număr de operații de corectare a hipermetropiei …",
+      "date": "2026-10-28T08:21:33.000Z",
+      "url": "https://hotnews.ro/dr-teodor-holhos-in-topul-chirurgilor-oftalmologi-din-europa-2388432",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Esential"
+      ],
+      "author": "Ariana Lazurca",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "Dr. Teodor Holhoș, în topul chirurgilor oftalmologi din Europa",
+      "addedAt": "2026-10-28T08:30:00.731Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-digi24-usr-cere-explicatii-despre-bugetul-romaniei-6266c7",
+      "title": "USR cere explicații despre bugetul României. Alexandru Nazare, chemat la Ora Guvernului pe 2 noiembrie",
+      "summary": "Grupul parlamentar al USR din Camera Deputaților a solicitat conducerii forului legislativ ca ministrul Finanțelor Alexandru Nazare să participe la „Ora Guvernului” din 2 noiembrie pentru a clarifica diferențele dintre datele oficiale privind execuția bugetară și cifrele invocate recent de conducerea PSD.",
+      "date": "2026-10-28T08:20:28.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/usr-cere-explicatii-despre-bugetul-romaniei-alexandru-nazare-chemat-la-ora-guvernului-pe-2-noiembrie-4011729",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwNSUyRjA0JTJGMjcwNzU1N18yNzA3/NTU3X2FsZXhhbmRydS1uYXphcmUtZm90/by1mYi5qcGcmaGFzaD1mOWZlNGJkMDEwMWQ2ZDhkZGM3ZTE3NzQ5MWUyNDRmZQ==.jpg",
+      "imageAlt": "USR cere explicații despre bugetul României. Alexandru Nazare, chemat la Ora Guvernului pe 2 noiembrie",
+      "addedAt": "2026-10-28T08:30:05.736Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-digi24-cat-trebuie-sa-fie-umiditatea-in-casa-2cdc9a",
+      "title": "Cât trebuie să fie umiditatea în casă pentru a preveni mucegaiul. Temperatura recomandată în dormitor, în sezonul rece",
+      "summary": "Umiditatea din locuință poate influența atât confortul, cât și calitatea aerului pe care îl respirăm. Dacă este prea ridicată, favorizează apariția mucegaiului, iar aerul prea uscat poate provoca disconfort la nivelul nasului și al gâtului.",
+      "date": "2026-10-28T08:20:02.000Z",
+      "url": "https://www.digi24.ro/magazin/stil-de-viata/casa-si-gradina/cat-trebuie-sa-fie-umiditatea-in-casa-pentru-a-preveni-mucegaiul-temperatura-recomandata-in-dormitor-in-sezonul-rece-4010901",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjI3JTJGMzAzMzQ3OV8zMDMz/NDc5X1VtaWRpdGF0ZWEtaW4tY2FzYV8t/Rm90by1HZXR0eS1JbWFnZXMuanBnJmhh/c2g9OGZiNWU4NzRmOTk4YWExOTZjODg5NmMzNDFiZmY4NDE=.jpg",
+      "imageAlt": "Cât trebuie să fie umiditatea în casă pentru a preveni mucegaiul. Temperatura recomandată în dormitor, în sezonul rece",
+      "addedAt": "2026-10-28T08:30:05.736Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-hotnews-calin-georgescu-afla-astazi-daca-va-fi-eaeb55",
+      "title": "Călin Georgescu află astăzi dacă va fi eliberat din arest, după ce Tribunalul București a respins cererea de prelungire",
+      "summary": "Curtea de Apel Bucureşti decide miercuri dacă prelungește cu 30 de zile mandatul de arestare preventivă a lui Călin Georgescu în dosarul de înșelăciune sau menține decizia Tribunalului București de a-l elibera sub control judiciar. Pe o vreme ploioasă, în fața CAB s-au adunat deja zeci de susținători ai fostului candidat la prezidențiale, potrivit Antena3. …",
+      "date": "2026-10-28T08:19:55.000Z",
+      "url": "https://hotnews.ro/calin-georgescu-afla-astazi-daca-va-fi-eliberat-din-arest-dupa-ce-tribunalul-bucuresti-a-respins-cererea-de-prelungire-2388470",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Ramona Ciobanu",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Călin Georgescu află astăzi dacă va fi eliberat din arest, după ce Tribunalul București a respins cererea de prelungire",
+      "addedAt": "2026-10-28T08:30:00.732Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-g4media-giorgia-meloni-a-suspendat-livrarea-unui-0e8cc5",
+      "title": "Giorgia Meloni a suspendat livrarea unui nou pachet de ajutor militar pentru Ucraina / Decizia a fost motivată de alegerile de la jumătatea mandatului din SUA",
+      "summary": "Premierul italian Giorgia Meloni a suspendat trimiterea celui de-al 13-lea pachet de ajutor militar al Italiei pentru Ucraina în așteptarea rezultatelor alegerilor de la jumătatea mandatului pentru Congres din SUA. Ultima livrare de arme italiene a ajuns în Ucraina acum 10 luni, scrie Mediafax. Guvernul italian a subliniat că acest lucru nu înseamnă că abandonează […] © G4Media.ro .",
+      "date": "2026-10-28T08:19:39.000Z",
+      "url": "https://www.g4media.ro/giorgia-meloni-a-suspendat-livrarea-unui-nou-pachet-de-ajutor-militar-pentru-ucraina-decizia-a-fost-motivata-de-alegerile-de-la-jumatatea-mandatului-din-sua.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "ajutor militar ucraina",
+        "Giorgia Meloni"
+      ],
+      "author": "Rareș Constantin",
+      "theme": "politika",
+      "image": "https://www.g4media.ro//wp-content/uploads/2020/03/camioane-militare-bergamo-coronavirus.jpg",
+      "imageAlt": "Giorgia Meloni a suspendat livrarea unui nou pachet de ajutor militar pentru Ucraina / Decizia a fost motivată de alegerile de la jumătatea mandatului din SUA",
+      "addedAt": "2026-10-28T08:30:06.841Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-hotnews-rasturnare-de-situatie-si-un-mare-semn-de-1f3506",
+      "title": "Răsturnare de situație și un mare semn de întrebare în Israel. Ce urmează după alegerile dramatice de ieri",
+      "summary": "Rezultatele parțiale ale alegerilor de marți din Israel arată un bloc al premierului Netanyahu mai puternic decât anticipau sondajele, dar tot fără majoritatea necesară pentru formarea guvernului. După numărarea a puțin peste jumătate din voturile exprimate în Israel la alegerile cruciale de marți, câteva lucruri au devenit clare, dar cel mai important element – cine …",
+      "date": "2026-10-28T08:17:34.000Z",
+      "url": "https://hotnews.ro/rasturnare-de-situatie-si-un-mare-semn-de-intrebare-in-israel-ce-urmeaza-dupa-alegerile-dramatice-de-ieri-2388457",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International",
+        "alegeri",
+        "Benjamin Netanyahu"
+      ],
+      "author": "Adrian Cochino",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Răsturnare de situație și un mare semn de întrebare în Israel. Ce urmează după alegerile dramatice de ieri",
+      "addedAt": "2026-10-28T08:30:00.732Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-zf-cec-bank-prelungeste-pana-pe-27-aprilie-63f17e",
+      "title": "CEC Bank prelungeşte până pe 27 aprilie 2027 perioada în care oferă clienţilor o dobândă de 4,60% pe an pentru depozitele în lei cu depuneri ulterioare, faţă de dobânda standard…",
+      "summary": "",
+      "date": "2026-10-28T08:15:40.000Z",
+      "url": "https://www.zf.ro/zf-24/cec-bank-prelungeste-pana-pe-27-aprilie-2027-perioada-in-care-ofera-clientilor-o-dobanda-de-4-60-pe-an-pentru-depozitele-in-lei-cu-depuneri-ulterioare-fata-de-dobanda-standard-de-4-10-23269459",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "ZF 24"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/22466/23269459/1/5-cec-bank-cv-1.jpg?width=700",
+      "imageAlt": "CEC Bank prelungeşte până pe 27 aprilie 2027 perioada în care oferă clienţilor o dobândă de 4,60% pe an pentru depozitele în lei cu depuneri ulterioare, faţă de dobânda standard de",
+      "addedAt": "2026-10-28T08:30:02.306Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-newsro-un-judecator-de-la-curtea-constitutionala-0ea3bb",
+      "title": "Un judecător de la Curtea Constituţională braziliană a ordonat o anchetă cu privire la o presupusă finanţare străină a campaniei lui Bolsonaro, înainte să fugă din ţară",
+      "summary": "Un judecător de la Curtea Supremă braziliană, Flavio Dino, a dispus să se deschidă o anchetă cu privire la o eventuală finanţare străină a campaniei candidatului conservator Flavio Bolsonaro, înfrânt în turul doi al alegerilor prezidenţiale de către Luiz Inacio Lula da Silva, înainte ca acesta să fugă din ţară, relatează AFP.",
+      "date": "2026-10-28T08:14:00.000Z",
+      "url": "https://www.news.ro/externe/un-judecator-de-la-curtea-constitutionala-braziliana-a-ordonat-o-ancheta-cu-privire-la-o-presupusa-finantare-straina-a-campaniei-lui-bolsonaro-inainte-sa-fuga-din-tara-1922401428002026101022896324",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Un judecător de la Curtea Constituţională braziliană a ordonat o anchetă cu privire la o presupusă finanţare străină a campaniei lui Bolsonaro, înainte să fugă din ţară",
+      "addedAt": "2026-10-28T08:30:07.223Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-hotnews-romania-isi-numara-locuitorii-dar-ar-trebui-73acdb",
+      "title": "România își numără locuitorii, dar ar trebui să-și numere generațiile: cine vine după decreței?",
+      "summary": "La 1 iulie 2026, România avea 21.557.600 de locuitori cu domiciliul în țară, conform datelor provizorii publicate de INS. Față de anul trecut sunt cu 113.900 mai puțini, adică o scădere de 0,5%. Pe scurt, într-un singur an a dispărut din statistică populația unui oraș mare de provincie. Populația după domiciliu îi numără pe toți …",
+      "date": "2026-10-28T08:13:13.000Z",
+      "url": "https://hotnews.ro/romania-isi-numara-locuitorii-dar-ar-trebui-sa-si-numere-generatiile-cine-vine-dupa-decretei-2388460",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Economie"
+      ],
+      "author": "Dan Popa",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "România își numără locuitorii, dar ar trebui să-și numere generațiile: cine vine după decreței?",
+      "addedAt": "2026-10-28T08:30:00.732Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-zf-omv-petrom-adauga-130-mw-de-energie-solara-976b49",
+      "title": "OMV Petrom adaugă 130 MW de energie solară în portofoliu, după investiţii de 78 mil. euro în trei parcuri fotovoltaice devenite operaţionale",
+      "summary": "",
+      "date": "2026-10-28T08:12:25.000Z",
+      "url": "https://www.zf.ro/burse-fonduri-mutuale/omv-petrom-adauga-130-mw-de-energie-solara-in-portofoliu-dupa-investitii-de-78-mil-euro-in-trei-parcuri-fotovoltaice-devenite-operationale-23269455",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Burse - Fonduri mutuale"
+      ],
+      "author": "",
+      "theme": "energija",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10366/23269455/1/20231123121656-33118bfb.jpg?width=700",
+      "imageAlt": "OMV Petrom adaugă 130 MW de energie solară în portofoliu, după investiţii de 78 mil. euro în trei parcuri fotovoltaice devenite operaţionale",
+      "addedAt": "2026-10-28T08:30:02.306Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-g4media-untold-electric-castle-guitar-meeting-si-fc7932",
+      "title": "Untold, Electric Castle, Guitar Meeting și Beach, Please, printre nominalizările din România la European Festival Awards / A început votul publicului",
+      "summary": "Untold, Electric Castle și Beach, Please sunt nominalizările din România la categoria ”Best Major Festival”, destinat evenimentelor care adună peste 40 de mii de spectatori pe zi. La categoria ”Best Medium-Sized Festival” România e reprezentată de Codru Festival, Nostalgia Retro/Disco/Future, Summer Well și Vibe Festival. La Best Small Festival, unde intră evenimente cu mai puțin […] © G4Media.ro .",
+      "date": "2026-10-28T08:10:13.000Z",
+      "url": "https://www.g4media.ro/untold-electric-castle-guitar-meeting-si-beach-please-printre-nominalizarile-din-romania-la-european-festival-awards-a-inceput-votul-publicului.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "cand e untold",
+        "cine canta la untold",
+        "concurs de festivaluri"
+      ],
+      "author": "Augustin Majearu",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro//wp-content/uploads/2023/07/WhatsApp-Image-2023-07-23-at-10.20.26.jpeg",
+      "imageAlt": "Untold, Electric Castle, Guitar Meeting și Beach, Please, printre nominalizările din România la European Festival Awards / A început votul publicului",
+      "addedAt": "2026-10-28T08:30:06.841Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-newsro-usr-il-cheama-pe-ministrul-finantelor-266706",
+      "title": "USR îl cheamă pe ministrul Finanţelor, Alexandru Nazare, în Camera Deputaţilor, la Ora Guvernului: „Discuţia despre buget nu se poate purta pe Facebook”",
+      "summary": "Grupul parlamentar USR din Camera Deputaţilor a depus miercuri o solicitare oficială către Biroul Permanent pentru ca ministrul Finanţelor, Alexandru Nazare, să se prezinte la Ora Guvernului din 2 noiembrie. Conform USR, Ministrul Finanţelor trebuie să explice în faţa Parlamentului diferenţele dintre execuţia bugetară reală şi noile cifre vehiculate de PSD.",
+      "date": "2026-10-28T08:07:47.000Z",
+      "url": "https://www.news.ro/economic/usr-il-cheama-pe-ministrul-finantelor-alexandru-nazare-in-camera-deputatilor-la-ora-guvernului-discutia-despre-buget-nu-se-poate-purta-pe-facebook-1922400728472026101022896383",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "USR îl cheamă pe ministrul Finanţelor, Alexandru Nazare, în Camera Deputaţilor, la Ora Guvernului: „Discuţia despre buget nu se poate purta pe Facebook”",
+      "addedAt": "2026-10-28T08:30:07.223Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-hotnews-primii-doi-ani-ai-copilului-extrem-de-da9782",
+      "title": "Primii doi ani ai copilului, extrem de importanți. Medici și pediatri răspund de ce",
+      "summary": "Sâmbătă 31 octombrie, publicația „Totul despre Mame”, din grupul din care face parte și HotNews, organizează conferința „Primii doi ani”, la ARCUB București. Primii doi ani din viața unui copil vin cu bucurie, dar și cu foarte multe întrebări și frici. Ce este normal la un nou-născut? Când trebuie să ne îngrijorăm? Cum îl îngrijim …",
+      "date": "2026-10-28T08:07:32.000Z",
+      "url": "https://hotnews.ro/primii-doi-ani-ai-copilului-extrem-de-importanti-medici-si-pediatri-raspund-de-ce-2387862",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "bebeluș",
+        "nou-nascuti",
+        "părinți cu copiii"
+      ],
+      "author": "liviana.rotaru@mme.ro",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Primii doi ani ai copilului, extrem de importanți. Medici și pediatri răspund de ce",
+      "addedAt": "2026-10-28T08:30:00.732Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-newsro-dolj-un-barbat-a-fost-retinut-pentru-24-de-f0b394",
+      "title": "Dolj: Un bărbat a fost reţinut pentru 24 de ore după ce i-ar fi arătat părţile intime unei fetiţe de şase ani, la un loc de joacă",
+      "summary": "Un bărbat în vârstă de 49 de ani este cercetat de poliţiştii din Dolj după ce i-ar fi arătat părţile intime unei fetiţe în vârstă de şase ani, iar fapta s-ar fi petrecut la un loc de joacă amenajat în spatele unui bloc din Craiova. Bărbatul a fost reţinut pentru 24 de ore.",
+      "date": "2026-10-28T08:05:52.000Z",
+      "url": "https://www.news.ro/eveniment/dolj-un-barbat-a-fost-retinut-pentru-24-de-ore-dupa-ce-i-ar-fi-aratat-partile-intime-unei-fetite-de-sase-ani-la-un-loc-de-joaca-1922400528522026101022896363",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Dolj: Un bărbat a fost reţinut pentru 24 de ore după ce i-ar fi arătat părţile intime unei fetiţe de şase ani, la un loc de joacă",
+      "addedAt": "2026-10-28T08:30:07.223Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-digi24-trump-isi-asuma-meritul-pentru-rezultatul-7d527e",
+      "title": "Trump își asumă meritul pentru rezultatul lui Netanyahu la alegeri. Mesajul transmis după scrutinul strâns din Israel",
+      "summary": "Preşedintele american Donald Trump şi-a atribuit miercuri meritul că premierul israelian Benjamin Netanyahu a evitat o „înfrângere decisivă” în alegerile desfăşurate marţi, la care coaliţia de dreapta condusă de partidul său Likud se află în frunte, conform numărării parţiale a voturilor, dar fără a obţine majoritatea.",
+      "date": "2026-10-28T08:01:53.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/trump-isi-asuma-meritul-pentru-rezultatul-lui-netanyahu-la-alegeri-mesajul-transmis-dupa-scrutinul-strans-din-israel-4011693",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjI4JTJGMzAzNDI5M18zMDM0/MjkzX3Byb2ZpbWVkaWEtMTE0Njc0OTA5/My5qcGcmaGFzaD1kYWQ2Y2NjNmFhMGMzZGMzYTQ1YjY3NjhjMzViZmIwYQ==.jpg",
+      "imageAlt": "Trump își asumă meritul pentru rezultatul lui Netanyahu la alegeri. Mesajul transmis după scrutinul strâns din Israel",
+      "addedAt": "2026-10-28T08:30:05.736Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-zf-mihail-ion-raiffeisen-bank-progresul-unei-f57c6a",
+      "title": "Mihail Ion, Raiffeisen Bank: Progresul unei ţări ar trebui măsurat şi prin încrederea cu care cetăţenii iau decizii financiare",
+      "summary": "",
+      "date": "2026-10-28T08:00:00.000Z",
+      "url": "https://www.zf.ro/info/mihail-ion-raiffeisen-bank-progresul-unei-tari-ar-trebui-masurat-si-prin-increderea-cu-care-cetatenii-iau-decizii-financiare-23268945",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Info"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/401/781/10686/23268945/1/mihai-ion-raiffeisen-bank-1.jpg?width=700",
+      "imageAlt": "Mihail Ion, Raiffeisen Bank: Progresul unei ţări ar trebui măsurat şi prin încrederea cu care cetăţenii iau decizii financiare",
+      "addedAt": "2026-10-28T08:30:02.306Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-zf-volume-reduse-si-prudenta-la-bursa-de-959023",
+      "title": "Volume reduse şi prudenţă la Bursa de Valori. Lucian Isac, Estinvest: Investitorii aşteaptă conturarea bugetului şi rezultatele la T3. Mai multe detalii, în emisiunea ZF…",
+      "summary": "",
+      "date": "2026-10-28T08:00:00.000Z",
+      "url": "https://www.zf.ro/zf-deschiderea-de-astazi/volume-reduse-prudenta-bursa-valori-lucian-isac-estinvest-investitorii-asteapta-conturarea-bugetului-rezultatele-t3-multe-detalii-emisiunea-zf-deschiderea-astazi-28-octombrie-23269093",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "ZF Deschiderea de astăzi"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/40526/23269093/94/promo-bursa-28-oct.png?width=700",
+      "imageAlt": "Volume reduse şi prudenţă la Bursa de Valori. Lucian Isac, Estinvest: Investitorii aşteaptă conturarea bugetului şi rezultatele la T3. Mai multe detalii, în emisiunea ZF Deschidere",
+      "addedAt": "2026-10-28T08:30:02.307Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-newsro-manchester-united-fiul-cel-mare-al-lui-6e69ce",
+      "title": "Manchester United: Fiul cel mare al lui Wayne Rooney a marcat patru goluri pentru echipa U18",
+      "summary": "Kai Rooney, fiul cel mare al lui Wayne Rooney, a marcat marţi patru goluri pentru echipa U18 a clubului Manchester United, în victoria împotriva formaţiei Burnley, scor 6-0.",
+      "date": "2026-10-28T08:00:00.000Z",
+      "url": "https://www.news.ro/sport/manchester-united-fiul-cel-mare-al-lui-wayne-rooney-a-marcat-patru-goluri-pentru-echipa-u18-1922400028002026101022896323",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Manchester United: Fiul cel mare al lui Wayne Rooney a marcat patru goluri pentru echipa U18",
+      "addedAt": "2026-10-28T08:30:07.223Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-g4media-mbappe-si-a-cerut-scuze-dupa-ce-l-a-facut-c264f4",
+      "title": "Mbappe și-a cerut scuze după ce l-a făcut ”dictator” pe fostul conducător chinez criminal Mao Zedong, responsabil de moartea a zeci de milioane de oameni / Fotbalistul a pierdut…",
+      "summary": "Fotbalistul francez Kylian Mbappe și-a cerut scuze după ce l-a făcut ”dictator” pe fostul conducător chinez criminal Mao Zedong, responsabil de moartea a zeci de milioane de oameni. În urma reacțiilor negative care au urmat, inclusiv suspendarea mai multor colaborări în China, Mbappe a spus că declarația sa a fost „prost gândită”, transmite Mediafax. „În […] © G4Media.ro .",
+      "date": "2026-10-28T07:57:46.000Z",
+      "url": "https://www.g4media.ro/mbappe-si-a-cerut-scuze-dupa-ce-l-a-facut-dictator-pe-fostul-conducator-chinez-criminal-mao-zedong-responsabil-de-moartea-a-zeci-de-milioane-de-oameni-fotbalistul-a-pierdut-mai-mu.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "mao zedong"
+      ],
+      "author": "Redacția",
+      "theme": "sport",
+      "image": "https://www.g4media.ro//wp-content/uploads/2026/10/Afis-Mao-Zedong-Revolutia-Culturala.jpg",
+      "imageAlt": "Mbappe și-a cerut scuze după ce l-a făcut ”dictator” pe fostul conducător chinez criminal Mao Zedong, responsabil de moartea a zeci de milioane de oameni / Fotbalistul a pierdut ma",
+      "addedAt": "2026-10-28T08:30:06.841Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-profit-google-lanseaza-un-nou-model-specializat-in-d941a8",
+      "title": "Google lansează un nou model specializat în crearea lumilor virtuale",
+      "summary": "Genie 4, cel mai nou „world model” dezvoltat de Google promite mai mult realism și însoțește lumile virtuale create cu sunet.",
+      "date": "2026-10-28T07:52:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/it-c/google-lanseaza-un-nou-model-specializat-in-crearea-lumilor-virtuale-22895866?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "IT&C"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://i0.1616.ro/media/2/2621/33216/22895866/1/keyboard2.jpg?width=800",
+      "imageAlt": "Google lansează un nou model specializat în crearea lumilor virtuale",
+      "addedAt": "2026-10-28T08:30:02.606Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-digi24-jandarm-atacat-in-fata-ambasadei-israelului-36b698",
+      "title": "Jandarm atacat în faţa ambasadei Israelului din Belgrad, agresorul a fost ucis. Nivelul de alertă teroristă, ridicat la maximum",
+      "summary": "Un agresor a fost împuşcat mortal în noaptea de marţi spre miercuri în faţa ambasadei Israelului la Belgrad, după ce a atacat un jandarm care asigura paza misiunii diplomatice, a declarat ministrul interimar sârb de interne, Ivica Dacic, vorbind despre un „atac terorist”. Nivelul de alertă teroristă a fost ridicat la maximum.",
+      "date": "2026-10-28T07:48:43.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/jandarm-atacat-in-fata-ambasadei-israelului-din-belgrad-agresorul-a-fost-ucis-nivelul-de-alerta-terorista-ridicat-la-maximum-4011679",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjI4JTJGMzAzNDI2OF8zMDM0/MjY4X2F0YWMtYW1iYXNhZGEtaXNyYWVs/LWJlbGdyYWQtcHJvZmltZWRpYS0xMTQ3/MTM1NDkxLmpwZyZoYXNoPTNmZDk0NzkwN2QxYTFlNzQ2MTkzZTNhMmEzN2QxNTg4.jpg",
+      "imageAlt": "Jandarm atacat în faţa ambasadei Israelului din Belgrad, agresorul a fost ucis. Nivelul de alertă teroristă, ridicat la maximum",
+      "addedAt": "2026-10-28T08:30:05.737Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-g4media-verstappen-va-absenta-de-la-prima-sesiune-7800fb",
+      "title": "Verstappen va absenta de la prima sesiune de antrenamente de la Mexico City",
+      "summary": "Max Verstappen nu se va afla la volanul monopostului RB22 în timpul primei sesiuni de antrenamente libere contând pentru Marele Premiu de Formula 1 al Mexicului. Conform GPBlog, multiplul campion mondial va fi înlocuit pe durata FP1. Hamilton vorbește despre un moment „crucial” pentru monopostul Ferrari din 2027 Conform regulamentului, fiecare pilot trebuie să cedeze de […] © G4Media.ro .",
+      "date": "2026-10-28T07:47:39.000Z",
+      "url": "https://www.g4media.ro/verstappen-va-absenta-de-la-prima-sesiune-de-antrenamente-de-la-mexico-city.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Sportz",
+        "Ayumu Iwasa",
+        "formula 1 2026",
+        "Max Verstappen"
+      ],
+      "author": "Adrian Ilincescu",
+      "theme": "sport",
+      "image": "https://www.g4media.ro//wp-content/uploads/2026/05/8059850-Hepta_Mediafax_Foto-ZUMA_Press_Hepta.jpg",
+      "imageAlt": "Verstappen va absenta de la prima sesiune de antrenamente de la Mexico City",
+      "addedAt": "2026-10-28T08:30:06.841Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-digi24-aproape-17-500-de-institutii-din-romania-au-48863d",
+      "title": "Aproape 17.500 de instituţii din România au fost notificate cu privire la vulnerabilitatea informatică PHP2Shell. Reacţia Guvernului",
+      "summary": "17.416 instituţii din sectorul public din România au fost notificate cu privire la o vulnerabilitatea PHP2Shell, care afectează 70% dintre site-uri la nivel global. Neaplicarea măsurilor de securitate poate duce la acces neautorizat, furt de date sensibile, compromiterea site-urilor şi a conturilor. Pentru platformele administrate direct de Secretariatul General al Guvernului, au fost aplicate măsurile de securitate recomandate. La începutul săptămânii mai erau încă site-uri administrate de SGG pe care procesul de actualizare este în desfăşurare, fiind implementate măsuri temporare de securitate pentru reducerea riscurilor, până la finalizarea acestuia, potrivit News.ro.",
+      "date": "2026-10-28T07:43:31.000Z",
+      "url": "https://www.digi24.ro/stiri/sci-tech/lumea-digitala/aproape-17-500-de-institutii-din-romania-au-fost-notificate-cu-privire-la-vulnerabilitatea-informatica-php2shell-reactia-guvernului-4011669",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjUl/MkYxMCUyRjA5JTJGMjM4ODQ1OF8yMzg4/NDU4X2hhY2tlci10ZWxlZm9uLmpwZyZo/YXNoPTk2NGY0MzM2NjVjNDAyN2QxMDEzNTVhNmM0NDljOTA0.jpg",
+      "imageAlt": "Aproape 17.500 de instituţii din România au fost notificate cu privire la vulnerabilitatea informatică PHP2Shell. Reacţia Guvernului",
+      "addedAt": "2026-10-28T08:30:05.737Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-g4media-usr-acuza-coalitia-informala-psd-aur-ca-a-7aacb1",
+      "title": "USR acuză coaliția informală PSD-AUR că a blocat un proiect care le interzice politicienilor să-și rezerve posturile de profesor pe durată nelimitată / Fostul președinte Iohannis…",
+      "summary": "USR acuză senatorii PSD și AUR că au votat împotriva inițiativei legislative care limita posibilitatea ca politicienii care aleg să intre în viața publică să-și poată păstra ocupate posturile de profesor pe perioade nelimitate, potrivit unui comunicat. Inițiativa, depusă de senatorii USR Ștefan Pălărie și Remus Negoi, urmărea să limiteze la maximum 5 ani această […] © G4Media.ro .",
+      "date": "2026-10-28T07:36:51.000Z",
+      "url": "https://www.g4media.ro/usr-acuza-coalitia-informala-psd-aur-ca-a-blocat-un-proiect-care-le-interzice-politicienilor-sa-si-rezerve-posturile-de-profesor-pe-durata-nelimitata-fostul-presedinte-iohannis-si-a-blocat-27-de-ani.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole"
+      ],
+      "author": "Mihai Roman",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro//wp-content/uploads/2018/07/Crin-Antonescu-Klaus-Iohannis-Eddie-Helvig-e1724614146128.jpg",
+      "imageAlt": "USR acuză coaliția informală PSD-AUR că a blocat un proiect care le interzice politicienilor să-și rezerve posturile de profesor pe durată nelimitată / Fostul președinte Iohannis ș",
+      "addedAt": "2026-10-28T08:30:06.842Z"
+    },
     {
       "slug": "bukurest-2026-10-28-agerpres-fotbal-atacantul-yael-trepy-a-jucat-din-nou-f6fbe7",
       "title": "Fotbal: Atacantul Yael Trepy a jucat din nou pentru Cagliari, la două luni după ce a fost în comă",
@@ -216,6 +738,23 @@
       "image": "",
       "imageAlt": "Să ştii materia este important. Să poţi arăta ce ştii în condiţii de examen este o altă provocare",
       "addedAt": "2026-10-28T07:33:08.945Z"
+    },
+    {
+      "slug": "bukurest-2026-10-28-profit-gaze-naturale-cel-mai-mare-producator-din-e30277",
+      "title": "Gaze naturale: Cel mai mare producător din România și-a redus producția cu peste 2% la 9 luni. Înmagazinarea a scăzut cu 15,49%, extracția din depozite a crescut cu 19,25%",
+      "summary": "Compania de stat Romgaz, cel mai mare producător și operator de înmagazinare de gaze naturale din România, a anunțat că și-a redus producția cu peste 2% în primele 9 luni ale anului, față de perioada similară din 2025, de la 3,676 la 3,6 miliarde metri cubi.",
+      "date": "2026-10-28T07:27:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/energie/gaze-naturale-cel-mai-mare-producator-din-romania-si-a-redus-productia-cu-peste-2-la-9-luni-inmagazinarea-a-scazut-cu-15-49-extractia-din-depozite-a-crescut-cu-19-25-22896003?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Energie"
+      ],
+      "author": "",
+      "theme": "energija",
+      "image": "https://i0.1616.ro/media/2/2621/33214/22896003/4/bilciuresti-main.jpg?width=800",
+      "imageAlt": "Gaze naturale: Cel mai mare producător din România și-a redus producția cu peste 2% la 9 luni. Înmagazinarea a scăzut cu 15,49%, extracția din depozite a crescut cu 19,25%",
+      "addedAt": "2026-10-28T08:30:02.607Z"
     },
     {
       "slug": "bukurest-2026-10-28-newsro-caras-severin-politisti-jandarmi-si-e57155",
@@ -6558,535 +7097,6 @@
       "image": "https://www.g4media.ro//wp-content/uploads/2026/03/ID321955_INQUAM_Photos_George_Calin.jpg",
       "imageAlt": "Liderul senatorilor PNL, Daniel Fenechiu: Cred că este sinucidere politică pentru orice guvern să intre în Pilonul 2 de pensii",
       "addedAt": "2026-10-26T12:51:31.643Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-digi24-sorin-grindeanu-ii-aduc-aminte-domnului-d2a162",
-      "title": "Sorin Grindeanu: „Îi aduc aminte domnului Bolojan că a votat acest guvern. Să lase un pic tonul mai jos”",
-      "summary": "Preşedintele PSD, Sorin Grindeanu, i-a transmis luni preşedintelui PNL, Ilie Bolojan, că a votat Guvernul Luca Niculescu şi, prin urmare, „nu poate să fugă de răspundere”.",
-      "date": "2026-10-26T12:45:35.000Z",
-      "url": "https://www.digi24.ro/stiri/actualitate/politica/sorin-grindeanu-ii-aduc-aminte-domnului-bolojan-ca-a-votat-acest-guvern-sa-lase-un-pic-tonul-mai-jos-4009195",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "politika",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwOSUyRjMwJTJGMjk4MzQwNl8yOTgz/NDA2X0NvcHktb2YtVW50aXRsZWQtMzUu/cG5nJmhhc2g9YjdjOWU3ZmMxMDgzMTljYzczNTcwNDkzOTRhMjQ3ZDg=.png",
-      "imageAlt": "Sorin Grindeanu: „Îi aduc aminte domnului Bolojan că a votat acest guvern. Să lase un pic tonul mai jos”",
-      "addedAt": "2026-10-26T12:51:27.509Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-g4media-modelul-ai-claude-a-accesat-date-publice-dd11ef",
-      "title": "Modelul AI Claude a accesat date publice privind alegătorii din statul american Georgia fără autorizare umană",
-      "summary": "Modelul AI dezvoltat de compania Anthropic, Claude, a accesat date publice privind alegătorii din statul american Georgia. Situația este cu atât mai îngrijorătoare cu cât accesul pe site era unul contra cost și nu a existat vreo autorizare umană pentru acest demers, scrie Agerpres. Claude, sistemul dezvoltat de Anthropic, a accesat date publice privind alegătorii […] © G4Media.ro .",
-      "date": "2026-10-26T12:43:48.000Z",
-      "url": "https://www.g4media.ro/modelul-ai-claude-a-accesat-date-publice-privind-alegatorii-din-statul-american-georgia-fara-autorizare-umana.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Articole",
-        "alegători georgia",
-        "model AI Claude"
-      ],
-      "author": "Rareș Constantin",
-      "theme": "ai",
-      "image": "https://www.g4media.ro//wp-content/uploads/2026/07/dreamstime_xl_354316818-scaled-e1782989271104.jpg",
-      "imageAlt": "Modelul AI Claude a accesat date publice privind alegătorii din statul american Georgia fără autorizare umană",
-      "addedAt": "2026-10-26T12:51:31.643Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-digi24-prima-reactie-a-rusiei-dupa-infrangerea-6c2738",
-      "title": "Prima reacție a Rusiei după înfrângerea aliatului său, Aleksandar Vucic, în alegerile din Serbia",
-      "summary": "Rusia a declarat, luni, că doreşte să continue dezvoltarea relaţiilor cu Serbia, în pofida înfrângerii suferite de partidul aliatului său Aleksandar Vucic în alegerile legislative, câştigate de mişcarea studenţească, relatează Reuters.",
-      "date": "2026-10-26T12:41:30.000Z",
-      "url": "https://www.digi24.ro/stiri/externe/prima-reactie-a-rusiei-dupa-infrangerea-aliatului-sau-aleksandar-vucic-in-alegerile-din-serbia-4009135",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "politika",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjI2JTJGMzAzMDk0M18zMDMw/OTQzX3Byb2ZpbWVkaWEtMTAwNDgyNTI1/MS5qcGcmaGFzaD02YzYxZTJkZDU1Y2VhNThiMjBiOTkxNjRhYmI2YmM1YQ==.jpg",
-      "imageAlt": "Prima reacție a Rusiei după înfrângerea aliatului său, Aleksandar Vucic, în alegerile din Serbia",
-      "addedAt": "2026-10-26T12:51:27.509Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-profit-foto-ciucu-anunta-deblocarea-a-12-proiecte-6823b0",
-      "title": "FOTO Ciucu anunță deblocarea a 12 proiecte mari de investiții",
-      "summary": "Primăria capitalei, condusă de Ciprian Ciucu, anunță că 12 proiecte mari de investiții sunt deblocate anul acesta.",
-      "date": "2026-10-26T12:41:00.000Z",
-      "url": "https://www.profit.ro/povesti-cu-profit/auto-transporturi/foto-ciucu-anunta-deblocarea-a-12-proiecte-mari-de-investitii-22887525?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
-      "source": "profit",
-      "sourceName": "Profit.ro",
-      "categories": [
-        "Auto/Transporturi"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://i0.1616.ro/media/2/2621/33217/22887525/19/ciucu.jpg?width=800",
-      "imageAlt": "FOTO Ciucu anunță deblocarea a 12 proiecte mari de investiții",
-      "addedAt": "2026-10-26T12:51:24.727Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-hotnews-chris-brown-scapa-de-inchisoare-la-londra-71445b",
-      "title": "Chris Brown scapă de închisoare la Londra. Decizia instanței în cazul atacului într-un club de lux",
-      "summary": "Rapperul american Chris Brown a scăpat luni, în Marea Britanie, de o pedeapsă cu închisoarea imediată pentru că a atacat un producător muzical cu o sticlă într-un club de noapte din Londra, în 2023. Chris Brown, în vârstă de 37 de ani, a primit o pedeapsă cu suspendare de opt luni la Curtea Crown din …",
-      "date": "2026-10-26T12:38:02.000Z",
-      "url": "https://hotnews.ro/chris-brown-scapa-de-inchisoare-la-londra-decizia-instantei-in-cazul-atacului-intr-un-club-de-lux-2386897",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "Actualitate",
-        "International"
-      ],
-      "author": "Cristina Stoian",
-      "theme": "sport",
-      "image": "",
-      "imageAlt": "Chris Brown scapă de închisoare la Londra. Decizia instanței în cazul atacului într-un club de lux",
-      "addedAt": "2026-10-26T12:51:22.643Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-hotnews-durere-in-gat-la-inghitire-cauze-si-ce-poti-5f7c2e",
-      "title": "Durere în gât la înghițire: cauze și ce poți face",
-      "summary": "Atunci când te doare gâtul, fiecare înghițitură devine un chin, fie că încerci să bei un pahar cu apă, fie că vrei să iei micul dejun. Totuși, corpul fiecăruia dintre noi reacționează diferit: unii se confruntă și cu nas înfundat, tuse sau febră, în timp ce alții nu mai scapă de o senzație supărătoare de …",
-      "date": "2026-10-26T12:37:01.000Z",
-      "url": "https://hotnews.ro/durere-in-gat-la-inghitire-cauze-si-ce-poti-face-2386899",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "Actualitate"
-      ],
-      "author": "codruta.predatu@zyxgroup.ro",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Durere în gât la înghițire: cauze și ce poți face",
-      "addedAt": "2026-10-26T12:51:22.643Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-profit-au-stat-in-tren-nu-mai-putin-de-10-ore-952bf1",
-      "title": "Au stat în tren nu mai puțin de 10 ore pentru a ajunge de la Brașov la Sighișoara. Trenul București – Viena a avut o întârziere de 379 minute",
-      "summary": "Un tren internațional CFR a parcurs distanța dintre Brașov și Sighișoara în nu mai puțin de 10 ore. Trenul București – Viena a avut astfel o întârziere de 379 de minute",
-      "date": "2026-10-26T12:34:00.000Z",
-      "url": "https://www.profit.ro/povesti-cu-profit/auto-transporturi/au-stat-in-tren-nu-mai-putin-de-10-ore-pentru-a-ajunge-de-la-brasov-la-sighisoara-trenul-bucuresti-viena-a-avut-o-intarziere-de-379-minute-22887064?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
-      "source": "profit",
-      "sourceName": "Profit.ro",
-      "categories": [
-        "Auto/Transporturi"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://i0.1616.ro/media/2/2621/33217/22887064/1/pexels-oana-andrei-8459614.jpg?width=800",
-      "imageAlt": "Au stat în tren nu mai puțin de 10 ore pentru a ajunge de la Brașov la Sighișoara. Trenul București – Viena a avut o întârziere de 379 minute",
-      "addedAt": "2026-10-26T12:51:24.727Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-zf-marius-manea-manmar-intermed-fermierul-in-8cd9a0",
-      "title": "Marius Manea, Manmar Intermed: „Fermierul, în general, este un foarte prost gestionar al cash flow-ului. Se vede în toamnă, când încasează mare parte a contravalorii produselor şi…",
-      "summary": "",
-      "date": "2026-10-26T12:32:25.000Z",
-      "url": "https://www.zf.ro/companii/retail-agrobusiness/marius-manea-manmar-intermed-fermierul-general-foarte-prost-gestionar-cash-flow-ului-vede-toamna-incaseaza-mare-parte-contravalorii-produselor-incepe-cheltuiasca-stanga-n-dreapta-masini-apartamente-23268223",
-      "source": "zf",
-      "sourceName": "Ziarul Financiar",
-      "categories": [
-        "Retail&Agrobusiness"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21335/23268223/1/marius-manea.png?width=700",
-      "imageAlt": "Marius Manea, Manmar Intermed: „Fermierul, în general, este un foarte prost gestionar al cash flow-ului. Se vede în toamnă, când încasează mare parte a contravalorii produselor şi ",
-      "addedAt": "2026-10-26T12:51:24.513Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-digi24-fenechiu-asteptam-cu-interes-sa-vedem-cum-d69b38",
-      "title": "Fenechiu: Aşteptăm cu interes să vedem cum le explică Grindeanu primarilor săi că vrea să-i desfiinţeze",
-      "summary": "Liderul senatorilor PNL, Daniel Fenechiu, a spus luni că reforma administrativ-teritorială şi a administraţiei, pentru care PSD cere asumarea răspunderii Guvernului, sunt „lucruri cu care orice om sănătos la cap rezonează pozitiv”, dar ele trebuie discutate cu administraţia şi cu societatea, „altminteri sunt doar cuvinte frumoase”.",
-      "date": "2026-10-26T12:31:04.000Z",
-      "url": "https://www.digi24.ro/stiri/actualitate/politica/fenechiu-asteptam-cu-interes-sa-vedem-cum-le-explica-grindeanu-primarilor-sai-ca-vrea-sa-i-desfiinteze-4009189",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "politika",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjQl/MkYwMSUyRjA5JTJGMTg3NTczMF8xODc1/NzMwX01DWm9QVFEwTUNab1lYTm9QVEJs/T1RRME1Ea3lOelU1TUdZNU4yWTNORFU0/TUdGbE9UVTNOV1ZpWW1aaF90aHVtYl8u/anBnJmhhc2g9MDUzN2JkNDcxMmRhYzkwZTA0YWMwY2Y0YjUwODhjMzM=.jpg",
-      "imageAlt": "Fenechiu: Aşteptăm cu interes să vedem cum le explică Grindeanu primarilor săi că vrea să-i desfiinţeze",
-      "addedAt": "2026-10-26T12:51:27.509Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-g4media-florin-sipos-usr-reforma-administrativ-fd25f1",
-      "title": "Florin Şipoş (USR): Reforma administrativ-teritorială propusă de PSD e o spoială",
-      "summary": "Liderul senatorilor USR, Sorin Şipoş, susţine că reforma administrativ-teritorială trebuie să fie amplă şi să vizeze localităţile cu mai puţin de 5.000 de locuitori. În opinia sa, pragul de 1.500 de locuitori propus de PSD, fără o analiză de impact, reprezintă doar „o spoială”, potrivit Agerpres. Şipoş a declarat că, în cadrul unor dezbateri recente […] © G4Media.ro .",
-      "date": "2026-10-26T12:30:42.000Z",
-      "url": "https://www.g4media.ro/florin-sipos-usr-reforma-administrativ-teritoriala-propusa-de-psd-e-o-spoiala.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Articole"
-      ],
-      "author": "Redacția",
-      "theme": "drustvo",
-      "image": "https://www.g4media.ro//wp-content/uploads/2023/11/harta-afir-crfir-judete-regiuni-fonduri-europene-UE.jpg",
-      "imageAlt": "Florin Şipoş (USR): Reforma administrativ-teritorială propusă de PSD e o spoială",
-      "addedAt": "2026-10-26T12:51:31.643Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-newsro-alexandru-ghigiu-ministrul-investitiilor-si-945ce3",
-      "title": "Alexandru Ghigiu, ministrul Investiţiilor şi Proiectelor Europene: Data de 6 noiembrie este termenul-limită până la care trebuie să închidem toate procedurile administrative…",
-      "summary": "Alexandru Ghigiu, ministrul Investiţiilor şi Proiectelor Europene, anunţă luni că data de 6 noiembrie este termenul-limită până la care trebuie să închidem toate procedurile administrative restante pentru ca banii din PNRR să ajungă în ţară în acest an.",
-      "date": "2026-10-26T12:30:00.000Z",
-      "url": "https://www.news.ro/economic/alexandru-ghigiu-ministrul-investitiilor-proiectelor-europene-data-6-noiembrie-termenul-limita-pana-inchidem-toate-procedurile-administrative-restante-banii-pnrr-ajunga-tara-acest-an-1922403026002026101422887547",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Alexandru Ghigiu, ministrul Investiţiilor şi Proiectelor Europene: Data de 6 noiembrie este termenul-limită până la care trebuie să închidem toate procedurile administrative restan",
-      "addedAt": "2026-10-26T12:51:32.571Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-newsro-cei-patru-apropiati-ai-suspectului-in-f8605a",
-      "title": "Cei patru apropiaţi ai suspectului în atacul cu mitraliera la Paris, eliberaţi. Nuñez: Suspendarea arestului preventiv al lui Kévin T. din motive psihiatrice ”nu schimbă cu nimic…",
-      "summary": "Arestul preventiv al celor patru apropiaţi ai autorului atentatului rasist din Yvelines a fost ridicat, anunţă luni Parchetul Naţional Antiterorist (PNAT), relatează AFP.",
-      "date": "2026-10-26T12:28:35.000Z",
-      "url": "https://www.news.ro/externe/cei-patru-apropiati-suspectului-atacul-mitraliera-paris-eliberati-ez-suspendarea-arestului-preventiv-k-vin-t-motive-psihiatrice-schimba-nimic-faptul-acesta-atentat-rasist-1922402826352026101422887468",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "ai",
-      "image": "",
-      "imageAlt": "Cei patru apropiaţi ai suspectului în atacul cu mitraliera la Paris, eliberaţi. Nuñez: Suspendarea arestului preventiv al lui Kévin T. din motive psihiatrice ”nu schimbă cu nimic f",
-      "addedAt": "2026-10-26T12:51:32.571Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-newsro-ministrul-finantelor-alexandru-nazare-9e3d04",
-      "title": "Ministrul Finanţelor, Alexandru Nazare: Deficitul bugetar s-a redus cu 1,5 puncte procentuale din PIB în primele 9 luni din 2026, de la 5,31%, la 3,81%. Ultimul trimestru din 2026…",
-      "summary": "Ministrul Finanţelor, Alexandru Nazare, anunţă un deficit bugetar de 78,3 miliarde de lei, în primele nouă luni din 2026, faţă de 102,47 miliarde de lei, în aceeaşi perioadă a anului trecut, ceea ce înseamnă o scădere ca pondere în PIB de la 5,31%, în 2025, la 3,81%. Oficialul spune că reducerea deficitului rămâne o prioritate, iar consolidarea fiscală trebuie continuată, astfel încât să fie reduse dezechilibrele fără să fie sacrificate investiţiile care susţin dezvoltarea pe termen lung.",
-      "date": "2026-10-26T12:24:03.000Z",
-      "url": "https://www.news.ro/economic/ministrul-finantelor-alexandru-nazare-deficitul-bugetar-s-a-redus-cu-1-5-puncte-procentuale-din-pib-in-primele-9-luni-din-2026-de-la-5-31-la-3-81-ultimul-trimestru-din-2026-pune-presiune-pe-buget-1922402426032026101422887524",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Ministrul Finanţelor, Alexandru Nazare: Deficitul bugetar s-a redus cu 1,5 puncte procentuale din PIB în primele 9 luni din 2026, de la 5,31%, la 3,81%. Ultimul trimestru din 2026 ",
-      "addedAt": "2026-10-26T12:51:32.571Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-newsro-balonul-de-aur-jucatorul-echipei-psg-23268e",
-      "title": "Balonul de Aur: Jucătorul echipei PSG, Khvicha Kvaratskhelia, aflat printre favoriţi, va lipsi de la ceremonie",
-      "summary": "Printre marii favoriţi la câştigarea Balonului de Aur, trofeu care va fi decernat luni seară, la Londra, jucătorul echipei PSG, Khvicha Kvaratskhelia, va lipsi de la ceremonie, potrivit informaţiilor publicate de L’Équipe şi confirmate de RMC Sport.",
-      "date": "2026-10-26T12:22:31.000Z",
-      "url": "https://www.news.ro/sport/balonul-de-aur-jucatorul-echipei-psg-khvicha-kvaratskhelia-aflat-printre-favoriti-va-lipsi-de-la-ceremonie-1922402226312026101422887287",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "sport",
-      "image": "",
-      "imageAlt": "Balonul de Aur: Jucătorul echipei PSG, Khvicha Kvaratskhelia, aflat printre favoriţi, va lipsi de la ceremonie",
-      "addedAt": "2026-10-26T12:51:32.571Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-zf-ionut-daniel-coleasa-citr-avem-o-crestere-a-ef221e",
-      "title": "Ionuţ Daniel Coleaşă, CITR: „Avem o creştere a numărului de insolvenţe anul acesta de 12%, în primele 9 luni din 2026 versus 9 luni din 2025. Dacă facem un zoom in, în agricultură…",
-      "summary": "",
-      "date": "2026-10-26T12:20:18.000Z",
-      "url": "https://www.zf.ro/companii/retail-agrobusiness/ionut-daniel-coleasa-citr-avem-crestere-numarului-insolvente-anul-acesta-12-primele-9-luni-2026-versus-9-luni-2025-facem-zoom-in-agricultura-sectorul-constructiilor-cea-mare-crestere-anul-acesta-s-23268213",
-      "source": "zf",
-      "sourceName": "Ziarul Financiar",
-      "categories": [
-        "Retail&Agrobusiness"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21335/23268213/1/citr.png?width=700",
-      "imageAlt": "Ionuţ Daniel Coleaşă, CITR: „Avem o creştere a numărului de insolvenţe anul acesta de 12%, în primele 9 luni din 2026 versus 9 luni din 2025. Dacă facem un zoom in, în agricultură ",
-      "addedAt": "2026-10-26T12:51:24.513Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-profit-sighisoara-devine-capitala-halloweenului-9c2256",
-      "title": "Sighișoara devine capitala Halloweenului! Halloween în Cetate revine între 30 octombrie și 1 noiembrie",
-      "summary": "Turnul cu Ceas se trezește la viață, o lună uriașă deschide un portal spre fantastic, iar străduțele medievale se transformă într-un univers al legendelor și al personajelor misterioase. Între 30 octombrie și 1 noiembrie, Sighișoara găzduiește cea de-a doua ediție a festivalului Halloween în Cetate, un eveniment care invită publicul să descopere patrimoniul medieval într-o lumină cu totul nouă.",
-      "date": "2026-10-26T12:20:00.000Z",
-      "url": "https://www.profit.ro/povesti-cu-profit/sighisoara-devine-capitala-halloweenului-halloween-in-cetate-revine-intre-30-octombrie-si-1-noiembrie-22887483?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
-      "source": "profit",
-      "sourceName": "Profit.ro",
-      "categories": [
-        "Povești cu Profit"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://i0.1616.ro/media/2/2621/33209/22887483/1/halloween-in-cetate-poza-1.jpg?width=800",
-      "imageAlt": "Sighișoara devine capitala Halloweenului! Halloween în Cetate revine între 30 octombrie și 1 noiembrie",
-      "addedAt": "2026-10-26T12:51:24.728Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-newsro-liviu-george-maha-rectorul-universitatii-51ca89",
-      "title": "Liviu George Maha, rectorul Universităţii ”Alexandru Ioan Cuza” din Iaşi: Chiar dacă instanţa superioară va anula decizia arestului preventiv şi va decide o altă măsură, Alexandru…",
-      "summary": "Rectorul Universităţii ”Alexandru Ioan Cuza” din Iaşi, Liviu George Maha, a anunţat luni că Alexandru Toader, lector la Facultatea de Drept, arestat pentru viol şi agresiune sexuală asupra a două studente, va avea interdicţia să desfăşoare activităţi didactice şi în situaţia în care măsura arestării preventive va fi anulată. Rectorul Liviu George Maha a precizat că decizia a fost luată de conducerea Facultăţii de Drept din cadrul universităţii. De asemenea, Tudorel Toader, tatăl lui Alexandru Toader, dar şi Andreea Urda, ambii avocaţi în acest caz, nu vor mai desfăşura activităţi cu studenţii de anul patru, ”pentru a evita intrarea în contact cu potenţiale victime sau martori”.",
-      "date": "2026-10-26T12:18:56.000Z",
-      "url": "https://www.news.ro/edu-news/liviu-george-maha-rectorul-universitatii-alexandru-ioan-cuza-iasi-instanta-superioara-anula-decizia-arestului-preventiv-decide-masura-alexandru-toader-intra-ore-decizie-il-vizeaza-tudorel-toader-1922401826562026101422887466",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Liviu George Maha, rectorul Universităţii ”Alexandru Ioan Cuza” din Iaşi: Chiar dacă instanţa superioară va anula decizia arestului preventiv şi va decide o altă măsură, Alexandru ",
-      "addedAt": "2026-10-26T12:51:32.571Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-hotnews-cine-e-norocosul-care-a-castigat-aproape-18-caaf75",
-      "title": "Cine e norocosul care a câștigat aproape 18 milioane de lei la LOTO 6/49. El și-a ridicat premiul",
-      "summary": "Câștigătorul premiului de categoria I la tragerea Loto 6/49 de joi, 22 octombrie 2026, în valoare de peste 17,761 milioane de lei (peste 3,32 milioane de euro), și-a ridicat banii, a informat, luni, Loteria Română, scrie Agerpres. O mare parte din suma câștigată va rămâne la stat, adică aproximativ 40%, sub formă de impozit. După …",
-      "date": "2026-10-26T12:16:22.000Z",
-      "url": "https://hotnews.ro/cine-e-norocosul-care-a-castigat-aproape-18-milioane-de-lei-la-loto-6-49-el-si-a-ridicat-premiul-2386885",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "Actualitate"
-      ],
-      "author": "Maria Ionescu",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Cine e norocosul care a câștigat aproape 18 milioane de lei la LOTO 6/49. El și-a ridicat premiul",
-      "addedAt": "2026-10-26T12:51:22.643Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-profit-aro-palace-cade-la-bursa-transilvania-963a46",
-      "title": "Aro-Palace cade la bursă. Transilvania Investments Alliance începe delistarea companiei care va opera viitorul hotel Hyatt din Brașov. Finalizare a tranzacției încrucișate cu…",
-      "summary": "Procedurile de retragere a acționarilor au fost inițiate la societatea Aro-Palace, la un preț redus cu 2 treuimi față de cotația de pe piața AeRO.",
-      "date": "2026-10-26T12:11:00.000Z",
-      "url": "https://www.profit.ro/povesti-cu-profit/financiar/piata-de-capital/aro-palace-cade-bursa-transilvania-investments-alliance-incepe-delistarea-companiei-opera-viitorul-hotel-hyatt-brasov-finalizare-tranzactiei-incrucisate-vehiculul-financiar-sefului-bancii-22886983?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
-      "source": "profit",
-      "sourceName": "Profit.ro",
-      "categories": [
-        "Piața de capital"
-      ],
-      "author": "",
-      "theme": "sport",
-      "image": "https://i0.1616.ro/media/2/2621/33213/22886983/1/hotel-aro-palace-brasov.jpg?width=800",
-      "imageAlt": "Aro-Palace cade la bursă. Transilvania Investments Alliance începe delistarea companiei care va opera viitorul hotel Hyatt din Brașov. Finalizare a tranzacției încrucișate cu vehic",
-      "addedAt": "2026-10-26T12:51:24.728Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-g4media-calendar-admitere-liceu-2027-ierarhia-4c296c",
-      "title": "Calendar Admitere liceu 2027. Ierarhia absolvenților de clasa a VIII-a va fi anunțată pe 9 iulie și repartizarea computerizată are loc pe 22 iulie",
-      "summary": "Calendarul pentru Admiterea la liceu 2027 a fost publicat în Monitorul Oficial astăzi, 26 octombrie. Repartizarea computerizată la liceu pentru anul școlar 2027-2028 va avea loc pe 22 iulie 2027, iar ierarhia la nivel judeţean/al municipiului Bucureşti a absolvenţilor claselor a VIII-a va fi anunțată pe 9 iulie, conform Ordinului nr. 5.831 al ministrului Educației […] © G4Media.ro .",
-      "date": "2026-10-26T12:08:24.000Z",
-      "url": "https://www.g4media.ro/calendar-admitere-liceu-2027-ierarhia-absolventilor-de-clasa-a-viii-a-va-fi-anuntata-pe-9-iulie-si-repartizarea-computerizata-are-loc-pe-22-iulie.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Articole",
-        "calendar admitere liceu"
-      ],
-      "author": "Redacția",
-      "theme": "drustvo",
-      "image": "https://www.g4media.ro//wp-content/uploads/2022/06/100L7505.jpg",
-      "imageAlt": "Calendar Admitere liceu 2027. Ierarhia absolvenților de clasa a VIII-a va fi anunțată pe 9 iulie și repartizarea computerizată are loc pe 22 iulie",
-      "addedAt": "2026-10-26T12:51:31.643Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-newsro-presedintele-nicusor-dan-il-felicita-pe-3860e1",
-      "title": "Preşedintele Nicuşor Dan îl felicită pe Lula pentru câştigarea alegerilor prezidenţiale în Brazilia: România aşteaptă cu interes continuarea colaborării în ceea ce priveşte…",
-      "summary": "Preşedintele Nicuşor Dan l-a felicitat, luni, pe Luiz Inácio Lula da Silva pentru câştigarea alegerilor prezidenţiale în Brazilia, el arătând că România aşteaptă cu interes continuarea colaborării dintre cele două state, în ceea ce priveşte provocările globale şi consolidarea parteneriatului dintre UE şi America Latină.",
-      "date": "2026-10-26T12:08:00.000Z",
-      "url": "https://www.news.ro/politic-intern/presedintele-nicusor-dan-il-felicita-lula-castigarea-alegerilor-prezidentiale-brazilia-romania-asteapta-interes-continuarea-colaborarii-ceea-priveste-provocarile-globale-consolidarea-parteneriatului-1922400826002026101422887465",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "politika",
-      "image": "",
-      "imageAlt": "Preşedintele Nicuşor Dan îl felicită pe Lula pentru câştigarea alegerilor prezidenţiale în Brazilia: România aşteaptă cu interes continuarea colaborării în ceea ce priveşte provocă",
-      "addedAt": "2026-10-26T12:51:32.572Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-digi24-la-cat-ar-putea-ajunge-euro-in-urmatoarele-b1b33f",
-      "title": "La cât ar putea ajunge euro în următoarele 12 luni și ce se va întâmpla cu inflația. Estimările analiștilor CFA România",
-      "summary": "Analiştii CFA România estimează în continuare o reducere a ratei inflaţiei, dar şi o depreciere a leului până la 5,39 lei pentru un euro în următoarele 12 luni, potrivit preşedintelui organizaţiei, Adrian Codirlaşu.",
-      "date": "2026-10-26T12:04:24.000Z",
-      "url": "https://www.digi24.ro/stiri/economie/la-cat-ar-putea-ajunge-euro-in-urmatoarele-12-luni-si-ce-se-va-intampla-cu-inflatia-estimarile-analistilor-cfa-romania-4008901",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "rat",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA2dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjAl/MkYwOSUyRjI0JTJGMTIzMTQxNl8xMjMx/NDE2X3Byb2ZpbWVkaWEtZXVyby1jdXJz/LXN0YXRpc3RpY2kuanBnJmhhc2g9MTM4/MjZjODVhOTNkZDEyODAyNzVjYmQ1ZGYwYWUyYzM=.jpg",
-      "imageAlt": "La cât ar putea ajunge euro în următoarele 12 luni și ce se va întâmpla cu inflația. Estimările analiștilor CFA România",
-      "addedAt": "2026-10-26T12:51:27.509Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-hotnews-sighisoara-devine-capitala-halloweenului-b8b47f",
-      "title": "Sighișoara devine capitala Halloweenului! Halloween în Cetate revine între 30 octombrie și 1 noiembrie",
-      "summary": "Turnul cu Ceas se trezește la viață, o lună uriașă deschide un portal spre fantastic, iar străduțele medievale se transformă într-un univers al legendelor și al personajelor misterioase. Între 30 octombrie și 1 noiembrie, Sighișoara găzduiește cea de-a doua ediție a festivalului Halloween în Cetate, un eveniment care invită publicul să descopere patrimoniul medieval într-o …",
-      "date": "2026-10-26T12:04:00.000Z",
-      "url": "https://hotnews.ro/sighisoara-devine-capitala-halloweenului-halloween-in-cetate-revine-intre-30-octombrie-si-1-noiembrie-2386864",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "Esential"
-      ],
-      "author": "Novac Dorina",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Sighișoara devine capitala Halloweenului! Halloween în Cetate revine între 30 octombrie și 1 noiembrie",
-      "addedAt": "2026-10-26T12:51:22.644Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-g4media-reuniune-la-bruxelles-intre-sua-nato-si-ue-a58c0e",
-      "title": "Reuniune la Bruxelles între SUA, NATO şi UE asupra garanţiilor de securitate pentru Ucraina",
-      "summary": "Preşedintele ucrainean Volodimir Zelenski a anunţat că reprezentanţi ai Ucrainei, Statelor Unite, Uniunii Europene şi NATO se vor întâlni săptămâna aceasta la Bruxelles pentru a discuta despre garanţiile de securitate pe care le-ar putea primi ţara sa în perioada postbelică, în cazul unui acord de pace cu Rusia, relatează luni agenţia de știri EFE, citată […] © G4Media.ro .",
-      "date": "2026-10-26T12:03:02.000Z",
-      "url": "https://www.g4media.ro/reuniune-la-bruxelles-intre-sua-nato-si-ue-asupra-garantiilor-de-securitate-pentru-ucraina.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Articole",
-        "nato",
-        "SUA",
-        "UE"
-      ],
-      "author": "Rareș Constantin",
-      "theme": "sigurnost",
-      "image": "https://www.g4media.ro//wp-content/uploads/2022/03/a814693e-be55-430b-8ff2-c8b839eb6b72-e1648041650780.jpg",
-      "imageAlt": "Reuniune la Bruxelles între SUA, NATO şi UE asupra garanţiilor de securitate pentru Ucraina",
-      "addedAt": "2026-10-26T12:51:31.643Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-zf-florian-neagu-directorul-directiei-de-0e4ee4",
-      "title": "Florian Neagu, directorul Direcţiei de Stabilitate Financiară, BNR: „Românii sunt atraşi de criptoactive, dar educaţia financiară rămâne în urmă. E firesc ca populaţia să îşi…",
-      "summary": "Românii manifestă un interes ridicat pentru investiţiile în criptoactive, România situându-se pe primul loc între 21 de state ale Uniunii Europene (UE) analizate în ceea ce priveşte preferinţa populaţiei pentru astfel de plasamente, spune Florian Neagu, directorul Direcţiei de Stabilitate Financiară din cadrul BNR. El atrage însă atenţia că investiţiile în criptoactive pot fi riscante pentru cei care nu au suficiente cunoştinţe financiare sau experienţă în domeniul investiţiilor.",
-      "date": "2026-10-26T12:00:00.000Z",
-      "url": "https://www.zf.ro/kruk-summit-of-now/florian-neagu-directorul-directiei-stabilitate-financiara-bnr-romanii-atrasi-criptoactive-educatia-financiara-ramane-urma-e-firesc-populatia-isi-diversifice-investitiile-acest-lucru-facut-echilibrat-23267199",
-      "source": "zf",
-      "sourceName": "Ziarul Financiar",
-      "categories": [
-        "KRUK Summit of Now"
-      ],
-      "author": "",
-      "theme": "politika",
-      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/42766/23267199/1/poza-florian-neagu-conferinta-kruk.jpg?width=700",
-      "imageAlt": "Florian Neagu, directorul Direcţiei de Stabilitate Financiară, BNR: „Românii sunt atraşi de criptoactive, dar educaţia financiară rămâne în urmă. E firesc ca populaţia să îşi diver",
-      "addedAt": "2026-10-26T12:51:24.513Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-zf-cec-bank-pentru-afaceri-romanesti-drone-8950a1",
-      "title": "CEC Bank pentru Afaceri Româneşti. Drone Flight România a investit 300.000 de euro în drone operate de la distanţă şi vizează parcurile industriale. Compania a preluat un model de…",
-      "summary": "Drone Flight România, companie care comercializează şi implementează sisteme de drone pentru securitate şi in­specţii tehnice, a investit până acum circa 300.000 de euro în pregătire, instruirea echipei şi consultanţă.",
-      "date": "2026-10-26T12:00:00.000Z",
-      "url": "https://www.zf.ro/cec-bank-pentru-afaceri-romanesti/cec-bank-afaceri-romanesti-drone-flight-romania-investit-300-000-euro-drone-operate-distanta-vizeaza-parcurile-industriale-compania-preluat-model-business-olanda-opereaza-dronele-distanta-control-23267583",
-      "source": "zf",
-      "sourceName": "Ziarul Financiar",
-      "categories": [
-        "CEC Bank pentru afaceri românești"
-      ],
-      "author": "",
-      "theme": "rat",
-      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21328/23267583/1/7-stefan-ecxarcu-drone-flight-romania.jpg?width=700",
-      "imageAlt": "CEC Bank pentru Afaceri Româneşti. Drone Flight România a investit 300.000 de euro în drone operate de la distanţă şi vizează parcurile industriale. Compania a preluat un model de ",
-      "addedAt": "2026-10-26T12:51:24.513Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-zf-cec-bank-pentru-afaceri-romanesti-tendinte-0f3336",
-      "title": "CEC BANK PENTRU AFACERI ROMÂNEŞTI – Tendinţe în piaţa ambalajelor biodegradabile",
-      "summary": "",
-      "date": "2026-10-26T11:55:03.000Z",
-      "url": "https://www.zf.ro/info/cec-bank-pentru-afaceri-romanesti-tendinte-in-piata-ambalajelor-biodegradabile-23268189",
-      "source": "zf",
-      "sourceName": "Ziarul Financiar",
-      "categories": [
-        "Info"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "CEC BANK PENTRU AFACERI ROMÂNEŞTI – Tendinţe în piaţa ambalajelor biodegradabile",
-      "addedAt": "2026-10-26T12:51:24.513Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-hotnews-tribunalul-bucuresti-a-respins-cererea-342598",
-      "title": "Tribunalul București a respins cererea procurorilor DIICOT și l-a plasat sub control judiciar pe Călin Georgescu. Ce urmează",
-      "summary": "Tribunalul București a decis, luni, ca fostul candidat la alegerile prezidențiale să fie eliberat din arest preventiv și plasat sub control judiciar. Hotărârea instanței nu este definitivă și nici executorie. Instanța a respins ca neîntemeiată cererea procurorilor DIICOT de prelungire cu 30 de zile a arestului preventiv pentru Călin Georgescu, în dosarul în care fostul …",
-      "date": "2026-10-26T11:53:00.000Z",
-      "url": "https://hotnews.ro/calin-georgescu-afla-astazi-daca-ramane-in-arest-preventiv-in-dosarul-de-inselaciune-de-11-milioane-de-euro-2386469",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "Actualitate"
-      ],
-      "author": "Cristina Stoian",
-      "theme": "politika",
-      "image": "",
-      "imageAlt": "Tribunalul București a respins cererea procurorilor DIICOT și l-a plasat sub control judiciar pe Călin Georgescu. Ce urmează",
-      "addedAt": "2026-10-26T12:51:22.644Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-profit-foto-castigatorul-marelui-premiu-la-loto-6-94394d",
-      "title": "FOTO Câștigătorul marelui premiu la Loto 6/49 a venit să își ridice banii. Bilet de doar 24 lei",
-      "summary": "Câștigătorul ultimului mare premiu la Loto 6/49, în valoare de peste 3 milioane de euro, a venit să își ridice banii.",
-      "date": "2026-10-26T11:53:00.000Z",
-      "url": "https://www.profit.ro/povesti-cu-profit/foto-castigatorul-marelui-premiu-la-loto-6-49-a-venit-sa-isi-ridice-banii-bilet-de-doar-24-lei-22887366?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
-      "source": "profit",
-      "sourceName": "Profit.ro",
-      "categories": [
-        "Povești cu Profit"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://i0.1616.ro/media/2/2621/33209/22887366/1/balls-6077901-1280.jpg?width=800",
-      "imageAlt": "FOTO Câștigătorul marelui premiu la Loto 6/49 a venit să își ridice banii. Bilet de doar 24 lei",
-      "addedAt": "2026-10-26T12:51:24.728Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-hotnews-de-la-amintirile-parintilor-la-jocurile-ea739c",
-      "title": "De la amintirile părinților la jocurile copiilor. Cum ajung personajele Ice Age într-o colecție de 22 de figurine la Kaufland",
-      "summary": "Fiecare părinte își dorește, probabil, ca până și cumpărăturile de zi cu zi să devină, măcar uneori, un prilej de joacă pentru copii. Bucuria poate începe cu descoperirea unui personaj preferat, care, pentru cei mici, înseamnă o nouă poveste, iar pentru adulți poate trezi amintiri. Au trecut mai bine de două decenii de la apariția …",
-      "date": "2026-10-26T11:46:43.000Z",
-      "url": "https://hotnews.ro/de-la-amintirile-parintilor-la-jocurile-copiilor-cum-ajung-personajele-ice-age-intr-o-colectie-de-22-de-figurine-la-kaufland-2386837",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "Esential"
-      ],
-      "author": "Novac Dorina",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "De la amintirile părinților la jocurile copiilor. Cum ajung personajele Ice Age într-o colecție de 22 de figurine la Kaufland",
-      "addedAt": "2026-10-26T12:51:22.644Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-digi24-consecinte-grave-pentru-un-mare-producator-94ba3c",
-      "title": "Consecințe grave pentru un mare producător de ciocolată care a scumpit excesiv produsele şi a pierdut clienţi. „Am evaluat greşit”",
-      "summary": "Producătorul elveţian de ciocolată Lindt & Sprüngli a supraestimat capacitatea consumatorilor de a suporta majorările de preţuri, ceea ce a afectat cererea şi rezultatele companiei, a recunoscut preşedintele executiv Ernst Tanner, la câteva zile după înlăturarea directorului general din cauza performanţelor nesatisfăcătoare.",
-      "date": "2026-10-26T07:00:52.000Z",
-      "url": "https://www.digi24.ro/stiri/economie/consecinte-grave-pentru-un-mare-producator-de-ciocolata-care-a-scumpit-excesiv-produsele-si-a-pierdut-clienti-am-evaluat-gresit-4008763",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjMl/MkYwNyUyRjMwJTJGMTc3MzI5N18xNzcz/Mjk3X3Byb2ZpbWVkaWEtMDc5Mjk4NjM3/Ni5qcGcmaGFzaD0wZDQ0NDlkM2E4MGU2ODQ5MjBmN2UyMWM3NDkxM2E4Ng==.jpg",
-      "imageAlt": "Consecințe grave pentru un mare producător de ciocolată care a scumpit excesiv produsele şi a pierdut clienţi. „Am evaluat greşit”",
-      "addedAt": "2026-10-26T07:01:53.153Z"
-    },
-    {
-      "slug": "bukurest-2026-10-26-zf-cea-mai-performanta-actiune-de-la-bursa-in-ca4832",
-      "title": "Cea mai performantă acţiune de la Bursă în acest an: În timp ce bursa scade cu 1%, Rompetrol Rafinare creşte cu 14% şi duce avansul de la început de an la 1.100%. Capitalizare…",
-      "summary": "",
-      "date": "2026-10-26T07:00:00.000Z",
-      "url": "https://www.zf.ro/burse-fonduri-mutuale/cea-performanta-actiune-bursa-acest-an-timp-bursa-scade-1-rompetrol-rafinare-creste-14-duce-avansul-inceput-an-1-100-capitalizare-record-23-mld-lei-mare-majoritatea-companiilor-bet-23266776",
-      "source": "zf",
-      "sourceName": "Ziarul Financiar",
-      "categories": [
-        "Burse - Fonduri mutuale"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10366/23266776/3/telefon-grafic-2.jpg?width=700",
-      "imageAlt": "Cea mai performantă acţiune de la Bursă în acest an: În timp ce bursa scade cu 1%, Rompetrol Rafinare creşte cu 14% şi duce avansul de la început de an la 1.100%. Capitalizare reco",
-      "addedAt": "2026-10-26T07:01:50.194Z"
     }
   ]
 }
