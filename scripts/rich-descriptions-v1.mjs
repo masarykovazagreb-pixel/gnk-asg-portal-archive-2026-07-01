@@ -1,7 +1,7 @@
 // GNK ASG — Rich meta-description boost from real article body.
 // Aditivno: gdje je meta description kraća od 155 znakova ili identična
 // generičnom brand template, zamjenjuje ju **prvim smislenim paragrafom**
-// članka (obrezanim na 250 znakova, s poštivanjem granice riječi).
+// članka (obrezanim na 199 znakova, s poštivanjem granice riječi; gate traži 80–200).
 // Također ažurira og:description i twitter:description ako su prekratki.
 // Ne dira registry (registry description ostaje kratak, za listing kartice).
 // Ne dira stranice gdje je meta description ručno napisan i već >=155 znakova.
@@ -38,7 +38,7 @@ for(const it of registry.items||[]){
   if(!bodyM){stats.skippedNoBody++;continue;}
   const para=firstMeaningfulParagraph(bodyM[1]);
   if(!para){stats.skippedNoBody++;continue;}
-  const rich=trim(para,250);
+  const rich=trim(para,199);
   const richOg=trim(para,300);
   const orig=html;
 

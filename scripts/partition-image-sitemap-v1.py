@@ -15,6 +15,7 @@ ASSET_LIMIT = 25 * 1024 * 1024
 PART_TARGET = 5 * 1024 * 1024
 PART_MAX_URLS = 45000
 PREFIX = 'https://gnk-asg.hr/image-sitemaps/'
+ROOT_PREFIX = 'https://gnk-asg.hr/image-sitemap-'
 URL_ENTRY = re.compile(r'<url(?:\s[^>]*)?>.*?</url>', re.DOTALL)
 
 
@@ -40,9 +41,14 @@ def split_sitemap(portal: Path) -> int:
                 raise RuntimeError('Empty image sitemap index')
             for loc in targets:
                 url = loc.text or ''
-                if not url.startswith(PREFIX):
+                # Dva dopuštena oblika: /image-sitemaps/<dio>.xml (izvorni dogovor) i
+                # /image-sitemap-NN.xml u korijenu portala (već objavljeni dijelovi).
+                if url.startswith(PREFIX):
+                    part = portal / 'image-sitemaps' / url[len(PREFIX):]
+                elif url.startswith(ROOT_PREFIX) and '/' not in url[len(ROOT_PREFIX):]:
+                    part = portal / url[len(ROOT_PREFIX) - len('image-sitemap-'):]
+                else:
                     raise RuntimeError(f'Unexpected sitemap target: {url}')
-                part = portal / 'image-sitemaps' / url[len(PREFIX):]
                 if not part.is_file() or part.stat().st_size > ASSET_LIMIT:
                     raise RuntimeError(f'Image sitemap part missing/oversized: {part}')
                 validate_xml(part)

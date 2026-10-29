@@ -342,7 +342,7 @@ const CITY_SHORT = {
 const RAIL_TEXT = {
   hr: {
     label: 'Naša izdanja',
-    lead: `${CHANNELS.length} gradskih kanala na ${new Set(CHANNELS.map((c) => c.lang)).size} jezika, BUSINESS TJEDNIK i TJEDNIK MODE. Klik vodi na izdanje, a s izdanja se uvijek vraćate gumbom <strong>← AKTUAL MEDIA</strong>.`,
+    lead: `${CHANNELS.length} gradskih kanala na ${new Set(CHANNELS.map((c) => c.lang)).size} jezika, BUSINESS TJEDNIK i TJEDNIK MODE. Klik vodi na izdanje, a s izdanja se uvijek vraćate gumbom <strong>← AKTUAL MEDIA</strong>. Ažurira se šest puta dnevno, a sadržaj se automatski osvježava šest puta dnevno.`,
     all: 'Sva izdanja ↓',
     platforms: 'Deskovi i platforme',
     aria: 'Naša izdanja — AKTUAL MEDIA kanali',
@@ -351,7 +351,7 @@ const RAIL_TEXT = {
   },
   en: {
     label: 'Our editions',
-    lead: `${CHANNELS.length} city channels in ${new Set(CHANNELS.map((c) => c.lang)).size} languages, BUSINESS WEEKLY and FASHION WEEKLY. A click opens the edition; from every edition the <strong>← AKTUAL MEDIA</strong> button brings you back.`,
+    lead: `${CHANNELS.length} city channels in ${new Set(CHANNELS.map((c) => c.lang)).size} languages, BUSINESS WEEKLY and FASHION WEEKLY. A click opens the edition; from every edition the <strong>← AKTUAL MEDIA</strong> button brings you back. Updates six times daily. Content refreshes automatically six times daily.`,
     all: 'All editions ↓',
     platforms: 'Desks and platforms',
     aria: 'Our editions — AKTUAL MEDIA channels',

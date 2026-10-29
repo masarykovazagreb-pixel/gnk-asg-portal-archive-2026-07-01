@@ -374,9 +374,32 @@ const withEntity = (html, file) => {
 };
 const HR_PAGE = join(PORTAL, 'prenos', 'index.html');
 const EN_PAGE = join(PORTAL, 'en', 'prenos', 'index.html');
+/* Odluka uredništva: /prenos/ i /en/prenos/ na gnk-asg.hr preusmjeravaju na
+   AKTUAL MEDIA (/gnk-aktual/). Popis tekstova ostaje u data/prenos-network-v1.json
+   i na svakoj mreži (kopije u /prenos/ na njihovim domenama), pa se hub
+   na portalu ne generira. */
+const redirectPage = (lang, target, label) => `<!doctype html>
+<html lang="${lang}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${label}</title>
+<meta name="robots" content="noindex, follow">
+<meta name="publisher" content="AKTUAL MEDIA d.o.o.">
+<link rel="canonical" href="https://gnk-asg.hr${target}">
+<meta http-equiv="refresh" content="0; url=${target}">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<p><img src="/assets/brand/aktual-media-mark.svg" alt="AKTUAL MEDIA" width="167" height="48"></p>
+<p>${lang === 'en' ? 'This page has moved.' : 'Ova stranica se preselila.'} <a href="${target}">${lang === 'en' ? 'Continue to AKTUAL MEDIA' : 'Nastavite na AKTUAL MEDIA'}</a>.</p>
+</body>
+</html>
+`;
+/* Portalni /prenos/ i /en/prenos/ su statični preusmjerivači (vidi redirectPage
+   gore); generator ih ne dira pa --check ostaje čist nakon slojeva dizajna i osvježavanja. */
+void HR_PAGE; void EN_PAGE; void redirectPage;
 const outputs = [
-  [HR_PAGE, withEntity(pageHtml(copy.hr), HR_PAGE)],
-  [EN_PAGE, withEntity(pageHtml(copy.en), EN_PAGE)],
   [join(PORTAL, 'data', 'prenos-network-v1.json'), `${JSON.stringify(data, null, 2)}\n`]
 ];
 

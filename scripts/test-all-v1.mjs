@@ -75,6 +75,7 @@ const GATES = [
   { name: 'Osvježavanje — modul na svakoj stranici', cmd: ['node', 'tests/test-refresh-layer-v1.mjs'], required: true },
   { name: 'Brojke se ne razilaze — jedan zbroj mreže', cmd: ['node', 'tests/test-counts-consistency-v1.mjs'], required: true },
   { name: 'Kodiranje izvora — bez U+FFFD', cmd: ['node', 'tests/test-region-encoding-v1.mjs'], required: true },
+  { name: 'Standard izdanja svjetske mreže — hashtagovi, urednik, brend, slike na karticama', cmd: ['node', 'scripts/test-kanal-standard-v2.mjs'], required: true },
   { name: 'Jednak standard izdanja i portala', cmd: ['node', 'tests/test-editions-parity-v1.mjs'], required: true },
   { name: 'Unutrašnjost izdanja — isti okvir kao naslovnica', cmd: ['node', 'tests/test-edition-inner-parity-v1.mjs'], required: true },
   { name: 'Atlas, paukova mreža i glavni gradovi', cmd: ['node', 'tests/test-network-atlas-v1.mjs'], required: true },
@@ -132,6 +133,16 @@ const required = results.filter((r) => r.required);
 const failedRequired = required.filter((r) => !r.ok);
 const advisoryFailed = results.filter((r) => !r.required && !r.ok);
 const passed = results.filter((r) => r.ok).length;
+
+// U GitHub Actionsu svaki pali obavezni gate dobiva anotaciju s imenom i
+// zadnjim redovima izlaza, da se uzrok vidi i bez pristupa dnevniku koraka.
+if (process.env.GITHUB_ACTIONS === 'true') {
+  for (const r of failedRequired) {
+    const detail = r.output.split('\n').filter(Boolean).slice(-3).join(' | ')
+      .replace(/[\r\n]/g, ' ').replace(/%/g, '%25').slice(0, 900);
+    console.log(`::error title=Obavezna provjera pala::${r.name} (${r.cmd.join(' ')}) — ${detail}`);
+  }
+}
 
 if (JSON_OUT) {
   console.log(JSON.stringify({

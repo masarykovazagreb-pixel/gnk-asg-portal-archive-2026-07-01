@@ -1,0 +1,263 @@
+{
+  "version": "WORLD_EXPANSION_V2_20261023",
+  "wave": "wave-4",
+  "name": "Četvrti val — Afrika",
+  "status": "planned",
+  "note": "Nairobi i Kairo su prvi; ovaj val pokriva zapadnu, južnu i sjevernu Afriku. Engleski, francuski, portugalski i arapski već postoje.",
+  "generatedAt": "2026-10-28T22:52:53.413Z",
+  "requirements": [
+    {
+      "id": "sources",
+      "hr": "provjereni izvori s RSS adresama (najmanje tri)",
+      "en": "verified sources with RSS feeds (at least three)"
+    },
+    {
+      "id": "art",
+      "hr": "scena grada u assets/global-src (16:9)",
+      "en": "city scene in assets/global-src (16:9)"
+    },
+    {
+      "id": "strings",
+      "hr": "nazivi sučelja na jeziku zemlje",
+      "en": "interface strings in the country language"
+    },
+    {
+      "id": "items",
+      "hr": "najmanje jedan stvarni zapis u arhivi",
+      "en": "at least one real record in the archive"
+    }
+  ],
+  "cities": [
+    {
+      "id": "abuja",
+      "city": "Abuja",
+      "country": "Nigerija",
+      "countryCode": "NG",
+      "lang": "en",
+      "timezone": "Africa/Lagos",
+      "continent": "Afrika",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "accra",
+      "city": "Accra",
+      "country": "Gana",
+      "countryCode": "GH",
+      "lang": "en",
+      "timezone": "Africa/Accra",
+      "continent": "Afrika",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "pretoria",
+      "city": "Pretoria",
+      "country": "Južnoafrička Republika",
+      "countryCode": "ZA",
+      "lang": "en",
+      "timezone": "Africa/Johannesburg",
+      "continent": "Afrika",
+      "note": "Južna Afrika ima tri glavna grada: Pretorija (uprava), Cape Town (parlament), Bloemfontein (sudstvo).",
+      "ready": false
+    },
+    {
+      "id": "dakar",
+      "city": "Dakar",
+      "country": "Senegal",
+      "countryCode": "SN",
+      "lang": "fr",
+      "timezone": "Africa/Dakar",
+      "continent": "Afrika",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "yamoussoukro",
+      "city": "Yamoussoukro",
+      "country": "Obala Bjelokosti",
+      "countryCode": "CI",
+      "lang": "fr",
+      "timezone": "Africa/Abidjan",
+      "continent": "Afrika",
+      "note": "Glavni grad je Yamoussoukro; Abidjan ostaje gospodarsko i medijsko središte.",
+      "ready": false
+    },
+    {
+      "id": "rabat",
+      "city": "Rabat",
+      "country": "Maroko",
+      "countryCode": "MA",
+      "lang": "ar",
+      "timezone": "Africa/Casablanca",
+      "continent": "Afrika",
+      "note": "Glavni grad je Rabat; Casablanca je najveće medijsko središte.",
+      "ready": false
+    },
+    {
+      "id": "tunis",
+      "city": "Tunis",
+      "country": "Tunis",
+      "countryCode": "TN",
+      "lang": "ar",
+      "timezone": "Africa/Tunis",
+      "continent": "Afrika",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "alger",
+      "city": "Alžir",
+      "country": "Alžir",
+      "countryCode": "DZ",
+      "lang": "ar",
+      "timezone": "Africa/Algiers",
+      "continent": "Afrika",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "addis-abeba",
+      "city": "Addis Abeba",
+      "country": "Etiopija",
+      "countryCode": "ET",
+      "lang": "am",
+      "timezone": "Africa/Addis_Ababa",
+      "continent": "Afrika",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "dodoma",
+      "city": "Dodoma",
+      "country": "Tanzanija",
+      "countryCode": "TZ",
+      "lang": "sw",
+      "timezone": "Africa/Dar_es_Salaam",
+      "continent": "Afrika",
+      "note": "Glavni grad je Dodoma; Dar es Salaam ostaje gospodarsko središte.",
+      "ready": false
+    },
+    {
+      "id": "kampala",
+      "city": "Kampala",
+      "country": "Uganda",
+      "countryCode": "UG",
+      "lang": "en",
+      "timezone": "Africa/Kampala",
+      "continent": "Afrika",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "kigali",
+      "city": "Kigali",
+      "country": "Ruanda",
+      "countryCode": "RW",
+      "lang": "rw",
+      "timezone": "Africa/Kigali",
+      "continent": "Afrika",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "lusaka",
+      "city": "Lusaka",
+      "country": "Zambija",
+      "countryCode": "ZM",
+      "lang": "en",
+      "timezone": "Africa/Lusaka",
+      "continent": "Afrika",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "harare",
+      "city": "Harare",
+      "country": "Zimbabve",
+      "countryCode": "ZW",
+      "lang": "en",
+      "timezone": "Africa/Harare",
+      "continent": "Afrika",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "gaborone",
+      "city": "Gaborone",
+      "country": "Bocvana",
+      "countryCode": "BW",
+      "lang": "en",
+      "timezone": "Africa/Gaborone",
+      "continent": "Afrika",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "windhoek",
+      "city": "Windhoek",
+      "country": "Namibija",
+      "countryCode": "NA",
+      "lang": "en",
+      "timezone": "Africa/Windhoek",
+      "continent": "Afrika",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "maputo",
+      "city": "Maputo",
+      "country": "Mozambik",
+      "countryCode": "MZ",
+      "lang": "pt",
+      "timezone": "Africa/Maputo",
+      "continent": "Afrika",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "luanda",
+      "city": "Luanda",
+      "country": "Angola",
+      "countryCode": "AO",
+      "lang": "pt",
+      "timezone": "Africa/Luanda",
+      "continent": "Afrika",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "kinshasa",
+      "city": "Kinshasa",
+      "country": "DR Kongo",
+      "countryCode": "CD",
+      "lang": "fr",
+      "timezone": "Africa/Kinshasa",
+      "continent": "Afrika",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "yaounde",
+      "city": "Yaoundé",
+      "country": "Kamerun",
+      "countryCode": "CM",
+      "lang": "fr",
+      "timezone": "Africa/Douala",
+      "continent": "Afrika",
+      "note": "",
+      "ready": false
+    },
+    {
+      "id": "khartoum",
+      "city": "Kartum",
+      "country": "Sudan",
+      "countryCode": "SD",
+      "lang": "ar",
+      "timezone": "Africa/Khartoum",
+      "continent": "Afrika",
+      "note": "",
+      "ready": false
+    }
+  ]
+}

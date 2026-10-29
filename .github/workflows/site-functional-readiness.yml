@@ -126,6 +126,8 @@ jobs:
         run: node scripts/audit-seo-entity-integrity-v1.mjs
 
       - name: Static page integrity
+        env:
+          NODE_OPTIONS: --max-old-space-size=8192
         run: node scripts/audit-all-pages-detailed-v1.mjs
 
       - name: Public portal audit

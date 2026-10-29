@@ -21,6 +21,7 @@ import { logoFor, logoAlternate, channelLogoSlug, LOGO_W, LOGO_H } from './brand
 import { chromeOf, desksOf, extraOf, editionsUi } from '../src/chrome.mjs';
 import { impressumBlock, IMPRESSUM_CSS } from '../../shared/impressum-v1.mjs';
 import { authorBand, AUTHOR_BAND_CSS, ensureAuthorPortrait, AUTHOR_PORTRAIT } from '../../shared/author-band-v1.mjs';
+import { KANAL_DESIGN_V2_CSS } from './kanal-design-v2.mjs';
 import { spiderWeb, SPIDER_CSS, SPIDER_JS } from '../../satellites/lib/spiderweb-v1.mjs';
 import { meshBlock, MESH_CSS } from '../../satellites/lib/network-v1.mjs';
 import { HOUSE_CSS, houseRibbon } from '../../satellites/lib/house-style-v1.mjs';
@@ -375,6 +376,7 @@ const RTL_LANGS = new Set(['ar', 'he', 'fa', 'ur']);
 
 /* ---------- HTML okvir ---------- */
 
+const STANDARD_HASHTAGS = ['#AKTUALMEDIA', '#GNKASG', '#GNKDINAMO'];
 function shell(channel, strings, { title, description, path, keywords = [], jsonld = [], body, ogAlt = '', type = 'website', published, modified, root = '', image = '', lang = '', locale = '', robots = 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1', canonicalUrl = '' }) {
   const pageLang = lang || channel.lang;
   // The translated UI is t(lang).ui; locale belongs to the channel record, never strings.locale.
@@ -393,7 +395,8 @@ function shell(channel, strings, { title, description, path, keywords = [], json
   const dirAttr = RTL_LANGS.has(pageLang) ? ' dir="rtl"' : '';
   /* Ime autora se NE stavlja u meta keywords (pravilo repoa i CI gate);
      ono ide u JSON-LD i u vidljive hashtagove. */
-  const tags = [...new Set(keywords.filter((k) => !/nermin|sefi[cć]/i.test(k)))].slice(0, 18);
+  /* Standard izdanja: svaka stranica nosi iste tri oznake brenda, uz oznake izdanja. */
+  const tags = [...new Set([...keywords.filter((k) => !/nermin|sefi[cć]/i.test(k)), ...STANDARD_HASHTAGS])].slice(0, 18);
 /* Isti popis bez oznake # — za meta keywords i news_keywords. */
 const plainTags = [...new Map(tags.map((t) => String(t).replace(/^#/, '')).filter(Boolean).map((t) => [t.toLowerCase(), t])).values()].join(', ');
   const ogImage = image || `${PUBLIC}/assets/izdanja/${channel.id}-og.jpg`;
@@ -1437,7 +1440,7 @@ ${footer(channel, strings)}`;
   }));
 
   ensureAuthorPortrait(AUTHOR_PORTRAIT, dir);
-  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}\n${SPIDER_CSS}\n${HOUSE_CSS}\n${EXCHANGE_CSS}\n${EDITORIAL_INDEX_CSS}\n${IMPRESSUM_CSS}\n${AUTHOR_BAND_CSS}`);
+  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}\n${SPIDER_CSS}\n${HOUSE_CSS}\n${EXCHANGE_CSS}\n${EDITORIAL_INDEX_CSS}\n${IMPRESSUM_CSS}\n${AUTHOR_BAND_CSS}\n${KANAL_DESIGN_V2_CSS}`);
   writeFileSync(join(dir, 'assets', 'spiderweb-v1.js'), SPIDER_JS);
 
   writeLegacyRedirect(channel);

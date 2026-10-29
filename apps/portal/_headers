@@ -90,8 +90,11 @@
 /animacija/uploads/*
   Cache-Control: public, max-age=31536000, immutable
 
+# Datoteke pod /assets/ mijenjaju se pod istim imenom (npr. slike izdanja se
+# regeneriraju kao <grad>-440.webp). Immutable na godinu dana držao je stare
+# apstraktne naslovnice u pregledniku i CDN-u; zato kratak TTL uz revalidaciju.
 /assets/*
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=3600, must-revalidate
 
 # GNK ASG Developer Tools: strogi CSP i zabrana ugradnje u tuđe frameove.
 /developer-tools/*
