@@ -40,9 +40,17 @@ const DESKS = [
   { slug: 'svijet', hr: 'Svijet', en: 'World' },
 ];
 
+// Visible entity links, not invented article authorship or meta keywords.
 const TAGS = [
-  '#NerminSefić', '#NerminSefic', '#SeficNermin', '#SEFICNERMIN',
-  '#UrednikNerminSefić', '#AKTUALMEDIA', '#GNKASG',
+  { tag: '#NerminSefić', href: '/nermin-sefic/' },
+  { tag: '#NerminSefic', href: '/nermin-sefic/' },
+  { tag: '#SeficNermin', href: '/nermin-sefic/' },
+  { tag: '#SEFICNERMIN', href: '/nermin-sefic/' },
+  { tag: '#UrednikNerminSefić', href: '/nermin-sefic/' },
+  { tag: '#AKTUALMEDIA', href: '/gnk-aktual/' },
+  { tag: '#AktualMedia', href: '/gnk-aktual/' },
+  { tag: '#GNKASG', href: '/' },
+  { tag: '#GNKDinamoLtd', href: '/group-network/' },
 ];
 
 const esc = (v) => String(v ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -99,7 +107,7 @@ function deskStrip(lang) {
 
 function tagRow(lang) {
   const en = lang === 'en';
-  const list = TAGS.map((t) => `<li><a href="/nermin-sefic/">${t}</a></li>`).join('');
+  const list = TAGS.map(({ tag, href }) => `<li><a href="${href}">${tag}</a></li>`).join('');
   return `<ul class="amz-tags" aria-label="${en ? 'Edition hashtags' : 'Oznake izdanja'}">${list}</ul>`;
 }
 
