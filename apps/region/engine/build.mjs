@@ -20,7 +20,7 @@ import { t, ANALYSIS } from '../src/strings.mjs';
 import { logoFor, logoAlternate, channelLogoSlug, LOGO_W, LOGO_H } from './brand.mjs';
 import { chromeOf, desksOf, extraOf, editionsUi } from '../src/chrome.mjs';
 import { impressumBlock, IMPRESSUM_CSS } from '../../shared/impressum-v1.mjs';
-import { articleMetaDescription } from '../../../scripts/lib/article-meta-v1.mjs';
+import { articleMetaDescription, clip } from '../../../scripts/lib/article-meta-v1.mjs';
 import { authorBand, AUTHOR_BAND_CSS, ensureAuthorPortrait, AUTHOR_PORTRAIT } from '../../shared/author-band-v1.mjs';
 import { KANAL_DESIGN_V2_CSS } from './kanal-design-v2.mjs';
 import { spiderWeb, SPIDER_CSS, SPIDER_JS } from '../../satellites/lib/spiderweb-v1.mjs';
@@ -1350,7 +1350,7 @@ export function buildChannel(channel) {
   for (const [id, list] of byTheme) {
     write(`tema/${id}/index.html`, listPage(channel, strings, {
       title: `${strings.themeNames[id] || id} — ${channel.title}`,
-      description: pageWords(channel.lang).theme(list.length, channel.title),
+      description: clip(`${strings.themeNames[id] || id}: ${pageWords(channel.lang).theme(list.length, channel.title)}. ${list[0] ? list[0].title : ''}`, 200),
       path: `tema/${id}/`, items: list,
       lead: `${strings.themeNames[id] || id} · ${channel.city} · ${list.length}`
     }));
@@ -1360,7 +1360,7 @@ export function buildChannel(channel) {
     const list = data.items.filter((i) => i.source === source.id);
     write(`izvor/${source.id}/index.html`, listPage(channel, strings, {
       title: `${source.name} — ${channel.title}`,
-      description: chromeOf(channel.lang).sourceDesc(source.name, channel.title),
+      description: clip(`${source.name}: ${chromeOf(channel.lang).sourceDesc(source.name, channel.title)}${list[0] ? ' ' + list[0].title : ''}`, 200),
       path: `izvor/${source.id}/`, items: list,
       lead: `${source.name} · ${list.length}`
     }));

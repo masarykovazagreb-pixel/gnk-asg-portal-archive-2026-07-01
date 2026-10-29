@@ -9,15 +9,18 @@
  * od onoga što je na slici vidljivo (dogаđaj, odjeća, scena).
  *
  *   node apps/portal/scripts/album-nermin-sefic-v1.mjs
+ *   node apps/portal/scripts/album-nermin-sefic-v1.mjs --refresh   # ponovno upiše sve stranice
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { clip } from '../../../scripts/lib/article-meta-v1.mjs';
 
 const ROOT = path.resolve('apps/portal');
 const PEOPLE = path.join(ROOT, 'assets/people/nermin-sefic');
 const OG = path.join(PEOPLE, 'og');
 const OUT = path.join(ROOT, 'galerija');
 const BASE = 'https://gnk-asg.hr';
+const REFRESH = process.argv.includes('--refresh');
 const CONTACT = 'info@gnk-asg.hr';
 const SOCIAL = `${BASE}/assets/gnk-asg-social-card.png`;
 
@@ -87,6 +90,8 @@ function page(entry, index) {
   const canonical = `${BASE}/galerija/${entry.slug}/`;
   const title = `Nermin Sefić · ${entry.title} — fotografija ${String(index + 1).padStart(2, '0')} | GNK ASG`;
   const description = `${entry.title}: ${entry.alt}. Službeni urednički materijal GNK ASG-a i izdanja AKTUAL MEDIA. ${entry.type === 'photo' ? 'Fotografija' : 'Tematski vizual'} ${entry.scene}, ${entry.tone}. Podaci o korištenju i atribuciji navedeni su na stranici.`;
+  /* Meta opis je sažetak (80–200 znakova); puni tekst s atribucijom ostaje u tijelu stranice. */
+  const metaDescription = clip(`${entry.title}: ${entry.alt}. ${entry.type === 'photo' ? 'Fotografija' : 'Tematski vizual'} ${entry.scene}. Službeni materijal GNK ASG-a i AKTUAL MEDIA.`, 200);
   const keywords = ['Nermin Sefić', 'GNK ASG', 'AKTUAL MEDIA', entry.title, entry.scene, 'galerija', 'fotografija', 'portret'];
   const image = entry.og ? `${BASE}${entry.og}` : `${BASE}${entry.src}`;
   const width = 1200; const height = 630;
@@ -99,7 +104,7 @@ function page(entry, index) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(title)}</title>
-<meta name="description" content="${esc(description)}">
+<meta name="description" content="${esc(metaDescription)}">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
 <meta name="author" content="AKTUAL MEDIA d.o.o.">
 <meta name="editor" content="Nermin Sefić">
@@ -109,7 +114,7 @@ function page(entry, index) {
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="GNK ASG · AKTUAL MEDIA">
 <meta property="og:title" content="${esc(title)}">
-<meta property="og:description" content="${esc(description)}">
+<meta property="og:description" content="${esc(metaDescription)}">
 <meta property="og:url" content="${canonical}">
 <meta property="og:image" content="${image}">
 <meta property="og:image:width" content="${width}">
@@ -211,7 +216,7 @@ small.note{display:block;color:#8296ad;font:400 12px/1.6 system-ui;margin-top:18
 
 let created = 0;
 for (const [index, entry] of entries.entries()) {
-  if (exist.has(entry.slug)) continue;
+  if (exist.has(entry.slug) && !REFRESH) continue; // --refresh: ponovno upiše postojeće stranice
   const dir = path.join(OUT, entry.slug);
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'index.html'), page(entry, index));

@@ -19,6 +19,7 @@
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
+import { clip } from './lib/article-meta-v1.mjs';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -260,7 +261,7 @@ function pageHtml(entry, all) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(entry.title)} — galerija AKTUAL MEDIA | GNK ASG</title>
-<meta name="description" content="${esc(entry.description)}">
+<meta name="description" content="${esc(clip(entry.description, 200))}">
 <meta name="keywords" content="${esc(keywords.join(', '))}">
 <meta name="author" content="AKTUAL MEDIA d.o.o.">
 <meta name="editor" content="Nermin Sefić">
@@ -274,7 +275,7 @@ ${tagMetas(entry.tags)}
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="AKTUAL MEDIA">
 <meta property="og:title" content="${esc(entry.title)}">
-<meta property="og:description" content="${esc(entry.description)}">
+<meta property="og:description" content="${esc(clip(entry.description, 200))}">
 <meta property="og:url" content="${canonical}">
 <meta property="og:image" content="${imageUrl}">
 <meta property="og:image:width" content="${entry.width}">
