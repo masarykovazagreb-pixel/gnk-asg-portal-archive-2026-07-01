@@ -20,6 +20,7 @@ import { t, ANALYSIS } from '../src/strings.mjs';
 import { logoFor, logoAlternate, channelLogoSlug, LOGO_W, LOGO_H } from './brand.mjs';
 import { chromeOf, desksOf, extraOf, editionsUi } from '../src/chrome.mjs';
 import { impressumBlock, IMPRESSUM_CSS } from '../../shared/impressum-v1.mjs';
+import { articleMetaDescription } from '../../../scripts/lib/article-meta-v1.mjs';
 import { authorBand, AUTHOR_BAND_CSS, ensureAuthorPortrait, AUTHOR_PORTRAIT } from '../../shared/author-band-v1.mjs';
 import { KANAL_DESIGN_V2_CSS } from './kanal-design-v2.mjs';
 import { spiderWeb, SPIDER_CSS, SPIDER_JS } from '../../satellites/lib/spiderweb-v1.mjs';
@@ -1048,7 +1049,7 @@ ${footer(channel, strings)}`;
 
   return shell(channel, strings, {
     title: `${item.title} — ${item.sourceName} | ${channel.title}`,
-    description: item.summary || `${strings.analysis}: ${item.title} (${item.sourceName})`,
+    description: articleMetaDescription({ title: item.title, summary: item.summary, sourceName: item.sourceName, channelTitle: channel.title, date: item.date }),
     path: `clanak/${item.slug}/`,
     keywords: [...tags, item.sourceName],
     jsonld,

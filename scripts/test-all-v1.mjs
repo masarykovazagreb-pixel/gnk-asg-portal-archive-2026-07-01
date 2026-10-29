@@ -104,6 +104,7 @@ const GATES = [
   { name: 'Agenti — red objava i odobrenja kontrolnog agenta', cmd: ['node', 'scripts/validate-agent-editorial-queue-v1.mjs'], required: true },
   { name: 'Agenti — objava odobrenih pregleda (HR/EN, JSON-LD, hreflang)', cmd: ['node', 'tests/test-agent-publish-v1.mjs'], required: true },
   { name: 'Nermin Sefić — oznake, glavni urednik i grupa na svim stranicama', cmd: ['node', 'tests/test-nermin-tags-v1.mjs'], required: true },
+  { name: 'Meta opisi članaka AKTUAL MEDIA KANAL-a (80–200 znakova, bez duplikata prefiksa)', cmd: ['node', 'tests/test-article-meta-v1.mjs'], required: true },
 ];
 
 function run(gate) {
