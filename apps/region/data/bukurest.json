@@ -4,17 +4,20 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-10-29T19:42:15.519Z",
+  "updatedAt": "2026-10-29T23:45:49.037Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
       "url": "https://www.agerpres.ro/rss",
-      "ok": true,
-      "fetched": 20,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-10-29T19:42:09.905Z"
+      "errors": [
+        "https://www.agerpres.ro/rss: This operation was aborted",
+        "https://www.agerpres.ro/rss/: This operation was aborted"
+      ],
+      "checkedAt": "2026-10-29T23:45:43.693Z"
     },
     {
       "id": "hotnews",
@@ -24,17 +27,17 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-29T19:42:10.085Z"
+      "checkedAt": "2026-10-29T23:45:43.826Z"
     },
     {
       "id": "zf",
       "name": "Ziarul Financiar",
       "url": "https://www.zf.ro/rss",
       "ok": true,
-      "fetched": 17,
+      "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-29T19:42:11.775Z"
+      "checkedAt": "2026-10-29T23:45:45.132Z"
     },
     {
       "id": "profit",
@@ -44,17 +47,17 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-29T19:42:12.053Z"
+      "checkedAt": "2026-10-29T23:45:45.640Z"
     },
     {
       "id": "digi24",
       "name": "Digi24",
       "url": "https://www.digi24.ro/rss",
       "ok": true,
-      "fetched": 252,
+      "fetched": 249,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-29T19:42:13.924Z"
+      "checkedAt": "2026-10-29T23:45:47.370Z"
     },
     {
       "id": "g4media",
@@ -64,7 +67,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-29T19:42:15.139Z"
+      "checkedAt": "2026-10-29T23:45:48.394Z"
     },
     {
       "id": "newsro",
@@ -74,10 +77,591 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-29T19:42:15.518Z"
+      "checkedAt": "2026-10-29T23:45:49.036Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-10-29-newsro-comisia-electorala-centrala-publica-0f9d20",
+      "title": "Comisia Electorală Centrală publică rezultatele finale ale alegerilor din Israel. Knessetul va fi învestit pe 10 noiembrie",
+      "summary": "Comisia Electorală Centrală a publicat joi noapte rezultatele finale ale alegerilor naţionale, fără modificări faţă de distribuţia pe partide din actualizarea anterioară, confirmând că Likud-ul lui Benjamin Netanyahu este cel mai mare partid, deţinând 27 de mandate, mai multe decât prognozaseră exit-pollurile, informează The Times of Israel.",
+      "date": "2026-10-29T23:19:56.000Z",
+      "url": "https://www.news.ro/externe/comisia-electorala-centrala-publica-rezultatele-finale-ale-alegerilor-din-israel-knessetul-va-fi-investit-pe-10-noiembrie-1922401930562026100122905923",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Comisia Electorală Centrală publică rezultatele finale ale alegerilor din Israel. Knessetul va fi învestit pe 10 noiembrie",
+      "addedAt": "2026-10-29T23:45:49.036Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-newsro-comisia-europeana-solicita-statelor-membre-3862e9",
+      "title": "Comisia Europeană solicită statelor membre UE să suspende timp de un an interdicţiile naţionale privind reţelele sociale",
+      "summary": "Comisia Europeană solicită capitalelor din întreaga Uniune Europeană să suspende orice legi naţionale care restricţionează accesul minorilor la reţelele sociale, în contextul în care Bruxelles-ul urmăreşte elaborarea unui set de norme la nivelul întregii UE, relatează POLITICO.",
+      "date": "2026-10-29T23:00:03.000Z",
+      "url": "https://www.news.ro/edu-news/comisia-europeana-solicita-statelor-membre-ue-sa-suspende-timp-de-un-an-interdictiile-nationale-privind-retelele-sociale-1922400030032026100122905826",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Comisia Europeană solicită statelor membre UE să suspende timp de un an interdicţiile naţionale privind reţelele sociale",
+      "addedAt": "2026-10-29T23:45:49.036Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-profit-exclusiv-control-pe-santiere-anaf-a-e9a475",
+      "title": "EXCLUSIV Control pe șantiere. ANAF a declanșat o acțiune amplă la firme din construcții. Inspectorii Antifraudă fac verificări și pe șantiere",
+      "summary": "ANAF a declanșat o acțiune amplă de controale pe șantiere, potrivit informațiilor Profit.ro, fiind vizate firme de construcții care folosesc forță de muncă pentru care nu achită la bugetul statului obligațiile fiscale, impozit și contribuții la pensie și sănătate.",
+      "date": "2026-10-29T22:52:00.000Z",
+      "url": "https://www.profit.ro/taxe-si-consultanta/exclusiv-control-pe-santiere-anaf-a-declansat-o-actiune-ampla-la-firme-din-constructii-inspectorii-antifrauda-fac-verificari-si-pe-santiere-22905803?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Taxe și Consultanță"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33243/22905803/1/site-2733678-1280.jpg?width=800",
+      "imageAlt": "EXCLUSIV Control pe șantiere. ANAF a declanșat o acțiune amplă la firme din construcții. Inspectorii Antifraudă fac verificări și pe șantiere",
+      "addedAt": "2026-10-29T23:45:45.640Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-hotnews-rar-anunt-comun-facut-de-rusia-si-ucraina-a6d488",
+      "title": "Rar anunț comun făcut de Rusia și Ucraina",
+      "summary": "Moscova și Kievul au anunțat joi că operațiunile de deminare din jurul orașului Oleșki, aflat sub controlul forțelor ruse și afectat de conflict, din sudul Ucrainei, au fost finalizate și că o operațiune menită să aducă ajutoare în oraș și să le permită locuitorilor să plece este gata să înceapă. „Operațiunile de deminare a rutelor …",
+      "date": "2026-10-29T22:46:00.000Z",
+      "url": "https://hotnews.ro/rusia-si-ucraina-anunta-finalizarea-operatiunilor-de-deminare-din-orasul-oleski-din-herson-pe-fondul-unei-misiuni-umanitare-2390337",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "Război în Ucraina",
+        "armistitiu",
+        "Dmitro Lubinet"
+      ],
+      "author": "Andrei Stan",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Rar anunț comun făcut de Rusia și Ucraina",
+      "addedAt": "2026-10-29T23:45:43.826Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-newsro-guvernatorul-republican-al-statului-alaska-1d0abb",
+      "title": "Guvernatorul republican al statului Alaska solicită o anchetă în privinţa unei candidaturi contestate în alegerile de la jumătatea mandatului prezidenţial",
+      "summary": "Guvernatorul republican al statului Alaska a dispus o anchetă preliminară cu privire la o candidatură considerată suspectă pentru locul de senator pus în joc în acest stat la alegerile intermediare din SUA, care ar putea avantaja democraţii, relatează AFP.",
+      "date": "2026-10-29T22:30:38.000Z",
+      "url": "https://www.news.ro/externe/guvernatorul-republican-al-statului-alaska-solicita-o-ancheta-in-privinta-unei-candidaturi-contestate-in-alegerile-de-la-jumatatea-mandatului-prezidential-1922403030382026100022905563",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Guvernatorul republican al statului Alaska solicită o anchetă în privinţa unei candidaturi contestate în alegerile de la jumătatea mandatului prezidenţial",
+      "addedAt": "2026-10-29T23:45:49.037Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-hotnews-elvetia-vrea-sa-reduca-viteza-maxima-pe-f785e3",
+      "title": "Elveţia vrea să reducă viteza maximă pe autostrăzi la 80 km/h pentru a combate penuria de combustibil",
+      "summary": "Elveţia ia în calcul o reducere temporară a vitezei pe autostrăzi, o măsură care ar veni să completeze măsurile luate deja pentru economisirea de combustibil, potrivit Oficiului Federal pentru Aprovizionarea Economică a Ţării. Elveţia a intrat într-o adevărată alertă roşie privind stocurile de combustibil. De câteva săptămâni, situaţia se agravează până la punctul în care, …",
+      "date": "2026-10-29T22:19:38.000Z",
+      "url": "https://hotnews.ro/elvetia-vrea-sa-reduca-viteza-maxima-pe-autostrazi-la-80-km-h-pentru-a-combate-penuria-de-combustibil-2390323",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Viorela Marin",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Elveţia vrea să reducă viteza maximă pe autostrăzi la 80 km/h pentru a combate penuria de combustibil",
+      "addedAt": "2026-10-29T23:45:43.826Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-digi24-patrick-stewart-a-murit-actorul-faimos-5b60bd",
+      "title": "Patrick Stewart a murit. Actorul faimos pentru rolul căpitanului Jean Luc Picard din „Star Trek - Generația următoare” avea 86 de ani",
+      "summary": "Actorul Patrick Stewart a murit miercuri la reședința sa din Los Angeles, la vârsta de 86 de ani. Decesul, cauzat de boala Alzheimer și de demența cu corpi Lewy, a fost anunțat pe rețelele sociale, scrie The New York Times.",
+      "date": "2026-10-29T22:14:14.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/mapamond/patrick-stewart-a-murit-actorul-faimos-pentru-rolul-capitanului-picard-din-star-trek-avea-86-de-ani-4014495",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjI5JTJGMzAzNjc5NF8zMDM2/Nzk0X0dldHR5SW1hZ2VzLTg4ODY0MTk5/NC5qcGcmaGFzaD0yZWVmZDNhOTcwYjhiMTU1MzcxZDEwMTE2ZDA2OWE4ZQ==.jpg",
+      "imageAlt": "Patrick Stewart a murit. Actorul faimos pentru rolul căpitanului Jean Luc Picard din „Star Trek - Generația următoare” avea 86 de ani",
+      "addedAt": "2026-10-29T23:45:47.370Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-zf-surprize-in-energie-gigantul-american-c84b5d",
+      "title": "Surprize în energie. Gigantul american Carlyle a decis să vândă exploatarea de gaz din Marea Neagră unei firme olandeze, Mazarine Energy, care este asociată cu Gazprom în…",
+      "summary": "„Compania globală de investiţii Carlyle (NASDAQ: CG) şi Banca Europeană pentru Reconstrucţie şi Dez­voltare (BERD) anunţă că au ajuns la un acord pentru vânzarea Black Sea Oil & Gas S.A. şi BSOG Holding Activity S.A. (denumite împreună „BSOG“), cel mai mare producător de gaze naturale offshore din România, către Mazarine Energy B.V. („Mazarine“).",
+      "date": "2026-10-29T22:08:00.000Z",
+      "url": "https://www.zf.ro/companii/energie/surprize-energie-gigantul-american-carlyle-decis-vanda-exploatarea-gaz-marea-neagra-unei-firme-olandeze-mazarine-energy-asociata-gazprom-productia-gaze-carlyle-investit-400-mil-dolari-obtinut-23270654",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Energie"
+      ],
+      "author": "",
+      "theme": "energija",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21330/23270654/1/bitmap-troll-2631-83378800.jpg?width=700",
+      "imageAlt": "Surprize în energie. Gigantul american Carlyle a decis să vândă exploatarea de gaz din Marea Neagră unei firme olandeze, Mazarine Energy, care este asociată cu Gazprom în producţia",
+      "addedAt": "2026-10-29T23:45:45.132Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-profit-exclusiv-tranzactie-majora-cu-proprietarul-f083ba",
+      "title": "EXCLUSIV Tranzacție majoră cu proprietarul PRO TV. EY România discută mutarea celor peste 600 de angajați din sediul central într-o clădire a PPF. Una dintre cele mai mari…",
+      "summary": "EY România, una dintre cele mai mari companii de audit și consultanță, negociază cu grupul ceh PPF închirierea unui nou sediu central în care să își mute cei peste 600 de angajați care lucrează acum într-un spațiu contractat de la Globalworth în clădirea Tower Center International, potrivit surselor Profit.ro din piața imobiliară.",
+      "date": "2026-10-29T22:08:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/real-estate-constructii/exclusiv-tranzactie-majora-cu-proprietarul-pro-tv-ey-romania-discuta-mutarea-celor-peste-600-de-angajati-din-sediul-central-intr-o-cladire-a-ppf-una-dintre-cele-mai-mari-tranzactii-de-preinchiriere-22903544?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Real Estate&Construcții"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://i0.1616.ro/media/2/2621/33219/22903544/1/ey-tci-arc.png?width=800",
+      "imageAlt": "EXCLUSIV Tranzacție majoră cu proprietarul PRO TV. EY România discută mutarea celor peste 600 de angajați din sediul central într-o clădire a PPF. Una dintre cele mai mari tranzacț",
+      "addedAt": "2026-10-29T23:45:45.640Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-zf-pwc-35-de-ani-care-sunt-cele-mai-importante-2fc22a",
+      "title": "PwC, 35 de ani. Care sunt cele mai importante lucruri pe care trebuie să le cunoască un expert în M&A? George Ureche, partener: „Nu poţi să fii un bun profesionist şi să faci…",
+      "summary": "George Ureche, partener, PwC şi lider al practicii de M&A pe plan local a com­paniei de consultanţă şi audit, a venit în Pricewa­terhouseCoopers în urmă cu 26 de ani.",
+      "date": "2026-10-29T22:07:00.000Z",
+      "url": "https://www.zf.ro/pwc-35-de-ani-in-romania/pwc-35-de-ani-care-sunt-cele-mai-importante-lucruri-pe-care-trebuie-sa-le-cunoasca-un-expert-in-m-a-george-ureche-partener-nu-poti-sa-fii-un-bun-profesionist-si-sa-faci-lucrurile-la-intamplare-23270525",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "PwC 35 de ani în România"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21333/23270525/2/7-george-ureche-pwc-romania.jpg?width=700",
+      "imageAlt": "PwC, 35 de ani. Care sunt cele mai importante lucruri pe care trebuie să le cunoască un expert în M&A? George Ureche, partener: „Nu poţi să fii un bun profesionist şi să faci lucru",
+      "addedAt": "2026-10-29T23:45:45.133Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-zf-greco-si-zf-risk-day-horizon-oamenii-devin-51b9f6",
+      "title": "GrECo şi ZF Risk Day HORIZON. Oamenii devin cea mai importantă investiţie a companiilor. De la sănătate şi beneficii personalizate la flexibilitate şi prevenţie, angajatorii…",
+      "summary": "Deficitul de forţă de muncă, îmbătrânirea populaţiei, schim­ba­rea aşteptărilor noilor generaţii şi proble­mele de sănătate ale angajaţilor devin provocări tot mai importante pentru companiile din România, într-un mediu de afaceri în care tehnologia şi inteligenţa artificială nu pot înlocui toate competenţele umane",
+      "date": "2026-10-29T22:07:00.000Z",
+      "url": "https://www.zf.ro/companii/greco-zf-risk-day-horizon-oamenii-devin-cea-importanta-investitie-companiilor-sanatate-beneficii-personalizate-flexibilitate-preventie-angajatorii-gaseasca-solutii-pastra-angajatii-sustine-23270574",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Companii"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/32906/23270574/1/8-stef6165.jpg?width=700",
+      "imageAlt": "GrECo şi ZF Risk Day HORIZON. Oamenii devin cea mai importantă investiţie a companiilor. De la sănătate şi beneficii personalizate la flexibilitate şi prevenţie, angajatorii trebui",
+      "addedAt": "2026-10-29T23:45:45.133Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-zf-inteligenta-artificiala-poate-deveni-cel-cba2b8",
+      "title": "Inteligenţa artificială poate deveni cel mai mare pariu economic din istoria SUA. Dacă americanii îl pierd, şocul va fi simţit de întreaga lume",
+      "summary": "În SUA, inteligenţa artificială este pe cale să devină cel mai mare pariu economic din istoria ţării. Cheltuielile pentru centrele de date sunt mai mari decât cele pentru infrastructura de electricitate şi cea feroviară la un loc. Investiţiile în AI creează locuri de muncă şi avuţie.",
+      "date": "2026-10-29T22:07:00.000Z",
+      "url": "https://www.zf.ro/business-international/inteligenta-artificiala-poate-deveni-cel-mai-mare-pariu-economic-din-istoria-sua-daca-americanii-il-pierd-socul-va-fi-simtit-de-intreaga-lume-23270581",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Business Internaţional"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21332/23270581/1/10-foto-mijloc-image-2d7b0b89.jpg?width=700",
+      "imageAlt": "Inteligenţa artificială poate deveni cel mai mare pariu economic din istoria SUA. Dacă americanii îl pierd, şocul va fi simţit de întreaga lume",
+      "addedAt": "2026-10-29T23:45:45.133Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-zf-business-sportiv-cum-se-imparte-sportul-1c1108",
+      "title": "Business sportiv. Cum se împarte sportul organizat în România? Peste 11.800 de cluburi sportive sunt la nivel naţional, din care o treime se împart în cinci judeţe. Distribuţia…",
+      "summary": "Sportul organizat din România se joacă, în mare parte, în marile oraşe, unde se găsesc cele mai multe cluburi, de la cele dedicate copiilor şi juniorilor până la structurile care pregătesc sportivi de performanţă. La nivel naţional, sunt înregistrate 11.840 de cluburi sportive, potrivit datelor Agenţiei Naţionale pentru Sport. Distribuţia acestora arată cât de mari sunt discrepanţele în judeţele ţării.",
+      "date": "2026-10-29T22:07:00.000Z",
+      "url": "https://www.zf.ro/business-sportiv/business-sportiv-imparte-sportul-organizat-romania-peste-11-800-cluburi-sportive-nivel-national-treime-impart-cinci-judete-distributia-cluburilor-sportive-arata-cat-mari-discrepantele-intre-judetele-23270594",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Business sportiv"
+      ],
+      "author": "",
+      "theme": "sport",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/25326/23270594/1/9-harta.jpg?width=700",
+      "imageAlt": "Business sportiv. Cum se împarte sportul organizat în România? Peste 11.800 de cluburi sportive sunt la nivel naţional, din care o treime se împart în cinci judeţe. Distribuţia clu",
+      "addedAt": "2026-10-29T23:45:45.133Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-profit-ultima-ora-tichetul-de-masa-va-fi-majorat-1362d6",
+      "title": "ULTIMA ORĂ Tichetul de masă va fi majorat de noii guvernanți, pentru un an, cu 5 lei, la cel mult 50 lei. O masă de prânz costa în medie anul trecut 55 lei",
+      "summary": "Valorea nominală maximă a tichetului de masă va crește cu 5 lei, de la 45 la 50 de lei, nivel valabil până în septembrie 2027, conform unui proiect legislativ inițiat de PSD și analizat de Profit.ro.",
+      "date": "2026-10-29T22:06:00.000Z",
+      "url": "https://www.profit.ro/perspective/schimbari-legislative-pentru-firme/ultima-ora-tichetul-de-masa-va-fi-majorat-de-noii-guvernanti-pentru-un-an-cu-5-lei-la-cel-mult-50-lei-o-masa-de-pranz-costa-in-medie-anul-trecut-55-lei-22904133?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Schimbări legislative pentru firme"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://i0.1616.ro/media/2/2621/39746/22904133/1/cardmasa.jpg?width=800",
+      "imageAlt": "ULTIMA ORĂ Tichetul de masă va fi majorat de noii guvernanți, pentru un an, cu 5 lei, la cel mult 50 lei. O masă de prânz costa în medie anul trecut 55 lei",
+      "addedAt": "2026-10-29T23:45:45.640Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-hotnews-cine-sunt-oamenii-care-l-au-ajutat-pe-b940d8",
+      "title": "Cine sunt oamenii care l-au ajutat pe Flavio Bolsonaro să fugă din Brazilia în SUA. „Ordinele” venite de la cel mai înalt nivel",
+      "summary": "Președintele american Donald Trump și consilierii săi l-au ajutat pe senatorul de extremă-dreapta brazilian Flavio Bolsonaro să fugă în Statele Unite și este de așteptat ca acesta să fie sprijinit pentru a obține rezidență permanentă, conform unui articol publicat joi de The New York Times (NYT). Publicația americană, citând surse guvernamentale americane, menționează că Flavio …",
+      "date": "2026-10-29T22:04:36.000Z",
+      "url": "https://hotnews.ro/donald-trump-si-consilierii-sai-l-au-ajutat-pe-flavio-bolsonaro-sa-fuga-din-brazilia-in-sua-scrie-nyt-2390321",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International",
+        "administratia trump",
+        "alegeri brazilia"
+      ],
+      "author": "Andrei Stan",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Cine sunt oamenii care l-au ajutat pe Flavio Bolsonaro să fugă din Brazilia în SUA. „Ordinele” venite de la cel mai înalt nivel",
+      "addedAt": "2026-10-29T23:45:43.826Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-profit-exclusiv-banca-vanduta-in-romania-bnr-si-a-9e558c",
+      "title": "EXCLUSIV Bancă vândută în România: BNR și-a dat OK-ul pentru preluarea Garanti Bank România de către Raiffeisen. La începutul săptămânii viitoare vor intra banii",
+      "summary": "Tranzacția prin care Raiffeisen Bank preia Garanti Bank România a primit undă verde și din partea Băncii Naționale a României, iar la începutul săptămânii viitoare urmează să fie efectuată plata pentru transferul acțiunilor, conform informațiilor Profit.ro.",
+      "date": "2026-10-29T22:04:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/financiar/exclusiv-banca-vanduta-in-romania-bnr-si-a-dat-ok-ul-pentru-preluarea-garanti-bank-romania-de-catre-raiffeisen-la-inceputul-saptamanii-viitoare-vor-intra-banii-22904709?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Financiar"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33210/22904709/1/raiffeisenbank-garantibbva.jpg?width=800",
+      "imageAlt": "EXCLUSIV Bancă vândută în România: BNR și-a dat OK-ul pentru preluarea Garanti Bank România de către Raiffeisen. La începutul săptămânii viitoare vor intra banii",
+      "addedAt": "2026-10-29T23:45:45.641Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-profit-ultima-ora-istorica-romaniafilm-in-faliment-7fc820",
+      "title": "ULTIMA ORĂ Istorica RomâniaFilm, în faliment - DOCUMENTE",
+      "summary": "Regia Autonomă a Distribuției și Exploatării Filmelor (RADEF) RomâniaFilm, înființată la începutul anilor ’50 ai secolului trecut, după naționalizarea cinematografiei românești, și reorganizată ca regie autonomă în 1991, moment când avea un portofoliu de circa 600 de săli de cinematograf în toată țara, precum și mii de angajați, entitate de stat aflată în insolvență de peste 8 ani, a intrat în faliment, conform datelor Profit.ro.",
+      "date": "2026-10-29T22:02:00.000Z",
+      "url": "https://www.profit.ro/stiri/life/ultima-ora-istorica-romaniafilm-in-faliment-documente-22902363?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Life"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://i0.1616.ro/media/2/2621/33240/22902363/1/romaniafilm.jpg?width=800",
+      "imageAlt": "ULTIMA ORĂ Istorica RomâniaFilm, în faliment - DOCUMENTE",
+      "addedAt": "2026-10-29T23:45:45.641Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-newsro-meciul-gloria-bistrita-fcsb-laurentiu-d43828",
+      "title": "Meciul Gloria Bistriţa-FCSB: Laurenţiu Reghecampf – E un rezultat ruşinos, nici n-are rost să discutăm",
+      "summary": "Laurenţiu Reghecampf, antrenorul echipei FCSB, recunoaşte că jucătorii săi nu s-au ridicat la nivelul aşteptat în meciul cu divizionara secundă Gloria Bistriţa, scor 0-1, din Cupa României.",
+      "date": "2026-10-29T22:01:35.000Z",
+      "url": "https://www.news.ro/sport/meciul-gloria-bistrita-fcsb-laurentiu-reghecampf-e-un-rezultat-rusinos-nici-n-are-rost-sa-discutam-1922400130352026100022905744",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Meciul Gloria Bistriţa-FCSB: Laurenţiu Reghecampf – E un rezultat ruşinos, nici n-are rost să discutăm",
+      "addedAt": "2026-10-29T23:45:49.037Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-newsro-kievul-a-fost-din-nou-joi-seara-tinta-432eea",
+      "title": "Kievul a fost din nou joi seara ţinta rachetelor balistice ruseşti: cel puţin un mort",
+      "summary": "Forţele ruse au lansat joi seara un atac asupra Kievului cu rachete balistice, a anunţat pe Telegram primarul capitalei ucrainene, Vitali Kliciko, relatează Reuters.",
+      "date": "2026-10-29T22:00:37.000Z",
+      "url": "https://www.news.ro/externe/kievul-a-fost-din-nou-joi-seara-tinta-rachetelor-balistice-rusesti-cel-putin-un-mort-1922400030372026100022905643",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Kievul a fost din nou joi seara ţinta rachetelor balistice ruseşti: cel puţin un mort",
+      "addedAt": "2026-10-29T23:45:49.037Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-digi24-patrick-stewart-omagiat-de-presedintele-24829d",
+      "title": "Patrick Stewart, omagiat de președintele Marvel Studios. Actorul l-a interpretat pe Charles Xavier în seria „X-Men”",
+      "summary": "Kevin Feige, directorul Marvel Studios, i-a adus un omagiu regretatului Patrick Stewart, care a interpretat rolul profesorului Charles Xavier încă din filmul „X-Men” din 2000.",
+      "date": "2026-10-29T21:59:16.000Z",
+      "url": "https://www.digi24.ro/magazin/timp-liber/divertisment/patrick-stewart-omagiat-de-presedintele-marvel-studios-actorul-l-a-interpretat-pe-chrales-xavier-in-seria-x-men-4014625",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjI5JTJGMzAzNjgwMF8zMDM2/ODAwX0dldHR5SW1hZ2VzLTEwMzEyMDc4/MzAuanBnJmhhc2g9ODA3M2ZiNGI4OWQ5NDBhN2E5ZGUwZThlNGJkODcyYWM=.jpg",
+      "imageAlt": "Patrick Stewart, omagiat de președintele Marvel Studios. Actorul l-a interpretat pe Charles Xavier în seria „X-Men”",
+      "addedAt": "2026-10-29T23:45:47.370Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-newsro-remiza-pentru-dragusin-in-serie-a-ac-6915e6",
+      "title": "Remiză pentru Drăguşin în Serie A: AC Fiorentina – Atalanta 2-2",
+      "summary": "Echipa italiană AC Fiorentina, cu Radu Drăguşin integralist, a încheiat la egalitate joi seara, pe teren propriu, scor 2-2, cu formaţia Atalanta Bergamo, în etapa a 9-a din Serie A.",
+      "date": "2026-10-29T21:54:14.000Z",
+      "url": "https://www.news.ro/sport/remiza-pentru-dragusin-in-serie-a-ac-fiorentina-atalanta-2-2-1922405429142026102322905703",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Remiză pentru Drăguşin în Serie A: AC Fiorentina – Atalanta 2-2",
+      "addedAt": "2026-10-29T23:45:49.037Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-hotnews-noul-ministru-al-apararii-anunta-ca-a-e5395b",
+      "title": "Noul ministru al Apărării anunță că a trimis Corpul de Control să verifice contractele din programul SAFE",
+      "summary": "Ministrul Apărării Naţionale, Ştefan Radu Oprea, a anunţat, joi seară, că a trimis Corpul de Control la Direcţia Generală pentru Armamente (DGARM), structura specializată din cadrul Ministerului Apărării care se ocupă cu achiziţiile echipamentelor, pentru a verifica contractele din SAFE. „Ştirea pe care pot să v-o dau astăzi – şi cred că este în exclusivitate …",
+      "date": "2026-10-29T21:50:44.000Z",
+      "url": "https://hotnews.ro/noul-ministru-al-apararii-anunta-ca-a-trimis-corpul-de-control-sa-verifice-contractele-din-programul-safe-2390308",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Viorela Marin",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Noul ministru al Apărării anunță că a trimis Corpul de Control să verifice contractele din programul SAFE",
+      "addedAt": "2026-10-29T23:45:43.827Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-digi24-gabriel-ciprian-ene-magistrat-asistent-la-917e49",
+      "title": "Gabriel-Ciprian Ene, magistrat-asistent la Înalta Curte de Casaţie şi Justiţie, a fost numit secretar general al Guvernului",
+      "summary": "Gabriel-Ciprian Ene, magistrat-asistent la Înalta Curte de Casaţoe şi Justiţie, a fost numit secretar general al Guvernului, printr-o decizie a premierului Luca Niculescu. Decizia intră în vigoare la 2 noiembrie.",
+      "date": "2026-10-29T21:48:54.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/gabriel-ciprian-ene-magistrat-asistent-la-inalta-curte-de-casatie-si-justitie-a-fost-numit-secretar-general-al-guvernului-4014607",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjIxJTJGMzAyNTM3OV8zMDI1/Mzc5X0dhYnJpZWwtQ2lwcmlhbi1FbmUt/MS5qcGcmaGFzaD1jMWEzN2VjZTgyNTZiYmY0OTcxMTlkN2M1YzIwYjM5Mw==.jpg",
+      "imageAlt": "Gabriel-Ciprian Ene, magistrat-asistent la Înalta Curte de Casaţie şi Justiţie, a fost numit secretar general al Guvernului",
+      "addedAt": "2026-10-29T23:45:47.371Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-digi24-ministrul-apararii-a-trimis-corpul-de-7aa063",
+      "title": "Ministrul Apărării a trimis Corpul de Control la Direcţia care se ocupă cu achiziția de echipamente pentru a verifica contractele SAFE",
+      "summary": "Ministrul Apărării Naţionale, Radu Oprea, a anunţat, joi, că a trimis Corpul de Control la DGARM, structura specializată din cadrul Ministerului Apărării care se ocupă cu achiziţiile echipamentelor, pentru a verifica contractele din SAFE.",
+      "date": "2026-10-29T21:42:02.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/ministrul-apararii-a-trimis-corpul-de-control-la-directia-care-se-ocupa-cu-achizitia-de-echipamente-pentru-a-verifica-contractele-safe-4014603",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjI5JTJGMzAzNjg0OV8zMDM2/ODQ5X3JhZHUtb3ByZWEtaW5xdWFtLWdl/b3JnZS1jYWxpbi0xLmpwZyZoYXNoPTY4/MjM3MWNlOWJkYTBkYzdhZWI2NzE1MzQ5MmM0ZTg1.jpg",
+      "imageAlt": "Ministrul Apărării a trimis Corpul de Control la Direcţia care se ocupă cu achiziția de echipamente pentru a verifica contractele SAFE",
+      "addedAt": "2026-10-29T23:45:47.371Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-hotnews-putin-afirma-ca-rusia-este-pregatita-de-d31873",
+      "title": "Putin afirmă că Rusia este „pregătită” de război cu Europa și transmite un avertisment: „Să nu uite nimeni acest lucru”",
+      "summary": "Președintele Vladimir Putin a făcut joi noi declarații despre relațiile Moscovei cu țările europene, într-o conferință de presă care a urmat summitului Rusia-Africa, în care liderul de la Kremlin a lansat un avertisment la adresa europenilor. Rusia este „pregătită” de război cu Europa, deși nu și-l dorește, a afirmat Putin, adăugând: „Mulți oameni vorbesc constant …",
+      "date": "2026-10-29T21:24:07.000Z",
+      "url": "https://hotnews.ro/putin-afirma-ca-rusia-este-pregatita-de-razboi-cu-europa-si-transmite-un-avertisment-sa-nu-uite-nimeni-acest-lucru-2390302",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International",
+        "abu dhabi",
+        "Alexander Stubb"
+      ],
+      "author": "Andrei Stan",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Putin afirmă că Rusia este „pregătită” de război cu Europa și transmite un avertisment: „Să nu uite nimeni acest lucru”",
+      "addedAt": "2026-10-29T23:45:43.827Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-hotnews-ministrul-pentru-digitalizare-imi-doresc-ca-6f1f36",
+      "title": "Ministrul pentru Digitalizare: Îmi doresc ca toate imprimantele din minister să dispară",
+      "summary": "Ministrul delegat pentru Digitalizare şi Inteligenţă Artificială (AI), Bogdan Dumitru, susţine că doreşte ca toate imprimantele din minister să dispară, după ce, într-o săptămână de la preluarea portofoliului, a văzut aproape un sfert de metru cub de hârtie „pe care trebuia să o şi citească”. „Într-o săptămână, cred că am văzut aproape un sfert de …",
+      "date": "2026-10-29T21:13:00.000Z",
+      "url": "https://hotnews.ro/ministrul-delegat-pentru-digitalizare-imi-doresc-ca-toate-imprimantele-din-minister-sa-dispara-2390294",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "IT"
+      ],
+      "author": "Viorela Marin",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Ministrul pentru Digitalizare: Îmi doresc ca toate imprimantele din minister să dispară",
+      "addedAt": "2026-10-29T23:45:43.827Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-g4media-pro-infrastructura-a10-inchisa-traiasca-dn1-f70cdb",
+      "title": "Pro Infrastructura: A10 închisă, trăiască DN1 și decidenții geniali ai CNAIR",
+      "summary": "Asociația Pro Infrastructura care monitorizează situația lucrărilor și a drumurilor din România informează joi seara că A10 este închisă. „Trăiască DN1 și decidenții geniali ai CNAIR! Așa arăta în urmă cu scurt timp DN1 în zona Unirea. Blocaj, nervi și înjurături. Așa arată incompetența și indolența mai-marilor decidenți ai CNAIR care au închis Autostrada A10 […] © G4Media.ro .",
+      "date": "2026-10-29T21:07:15.000Z",
+      "url": "https://www.g4media.ro/pro-infrastructura-a10-inchisa-traiasca-dn1-si-decidentii-geniali-ai-cnair.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "A10",
+        "alunecari A10",
+        "Asociatia ProInfrastructura"
+      ],
+      "author": "Laura Nițulescu",
+      "theme": "ai",
+      "image": "https://www.g4media.ro//wp-content/uploads/2026/10/860483489_1791113888668680_6604015730189597270_n-e1793307734271.jpeg",
+      "imageAlt": "Pro Infrastructura: A10 închisă, trăiască DN1 și decidenții geniali ai CNAIR",
+      "addedAt": "2026-10-29T23:45:48.394Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-digi24-winter-is-coming-jaime-lannister-a-ales-iar-5d19f7",
+      "title": "„Winter is coming\". Jaime Lannister a ales iar tabăra care luptă pentru viață. Nikolaj Coster-Waldau, vizită surpriză în Kiev",
+      "summary": "Actorul danez Nikolaj Coster-Waldau, care l-a interpretat pe Jaime Lannister în serialul „Game of Thrones”, a mers la Kiev. În seara zilei de 28 octombrie, acesta a fost văzut într-una dintre stațiile de metrou ale capitalei ucrainene, unde actorul s-a adăpostit de amenințarea unui atac rusesc cu rachete și drone.",
+      "date": "2026-10-29T21:03:08.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/ue/winter-is-coming-jaime-lannister-a-ales-iar-tabara-care-lupta-pentru-viata-nikolaj-coster-waldau-vizita-surpriza-in-kiev-4014583",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjI5JTJGMzAzNjgzMl8zMDM2/ODMyX2xhbmlzdGVyLmpwZyZoYXNoPTlh/MGNiNTFhMTUyOTI1ZWU4MTY4Njk1Mzk0MmI0ZDNj.jpg",
+      "imageAlt": "„Winter is coming\". Jaime Lannister a ales iar tabăra care luptă pentru viață. Nikolaj Coster-Waldau, vizită surpriză în Kiev",
+      "addedAt": "2026-10-29T23:45:47.371Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-g4media-primaria-sectorului-1-biblioteca-pe-c2da7c",
+      "title": "Primăria Sectorului 1, bibliotecă pe esplanada de la Piața Matache: Cum funcționează? Vii, alegi o carte și o împrumuți. Sau aduci o carte de acasă, o lași în bibliotecă și alegi…",
+      "summary": "„La Matache, cărțile își găsesc cititori, iar cititorii își găsesc cărți!” – acesta este sloganul care stă la baza inițiativei Primăriei Sectorului 1 de amenaja o bibliotecă în aer liber, pe esplanada de la Piața Matache din Capitală. „Pe 30 octombrie, de la ora 15:00, inaugurăm o bibliotecă în aer liber, un proiect al Asociației […] © G4Media.ro .",
+      "date": "2026-10-29T20:58:02.000Z",
+      "url": "https://www.g4media.ro/primaria-sectorului-1-biblioteca-pe-esplanada-de-la-piata-matache-cum-functioneaza-simplu-vii-alegi-o-carte-si-o-imprumuti-sau-aduci-o-carte-de-acasa-o-lasi-in-biblioteca-si-alegi-alta-in-schim.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "biblioteca in aer liber",
+        "primăria sectorului 1"
+      ],
+      "author": "Laura Nițulescu",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro//wp-content/uploads/2026/10/carti-Sector-1.jpeg",
+      "imageAlt": "Primăria Sectorului 1, bibliotecă pe esplanada de la Piața Matache: Cum funcționează? Vii, alegi o carte și o împrumuți. Sau aduci o carte de acasă, o lași în bibliotecă și alegi a",
+      "addedAt": "2026-10-29T23:45:48.395Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-digi24-elvetia-ia-in-calcul-reducerea-vitezei-b106b3",
+      "title": "Elveţia ia în calcul reducerea vitezei maxime pe autostrăzile sale la 80 km/h. Motivul pentru care s-ar putea lua această decizie",
+      "summary": "Elveţia ia în calcul o reducere temporară a vitezei pe autostrăzi, o măsură care ar veni să „completeze măsurile luate deja pentru economisirea de combustibil, potrivit Oficiului Federal pentru Aprovizionarea Economică a Ţării, relatează Le Figaro.",
+      "date": "2026-10-29T20:54:10.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/ue/elvetia-ia-in-calcul-reducerea-vitezei-maxime-pe-autostrazile-sale-la-80-km-h-motivul-pentru-care-s-ar-putea-lua-aceasta-decizie-4014579",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjI5JTJGMzAzNjgzMF8zMDM2/ODMwX3Byb2ZpbWVkaWEtMTA0MDQ0ODYw/Ny5qcGcmaGFzaD00MDI4ZTMzNTJkYjY3YTcwOGZiMTg4ZmRhOGE5MjVhMA==.jpg",
+      "imageAlt": "Elveţia ia în calcul reducerea vitezei maxime pe autostrăzile sale la 80 km/h. Motivul pentru care s-ar putea lua această decizie",
+      "addedAt": "2026-10-29T23:45:47.371Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-g4media-trump-si-consilierii-sai-l-ar-fi-ajutat-pe-7797b1",
+      "title": "Trump şi consilierii săi l-ar fi ajutat pe Flavio Bolsonaro să fugă în SUA",
+      "summary": "Preşedintele american Donald Trump şi consilierii săi l-au ajutat pe senatorul de extremă dreapta brazilian Flavio Bolsonaro să fugă în Statele Unite şi este de aşteptat ca acesta să fie sprijinit pentru a obţine rezidenţă permanentă, conform unui articol publicat joi de The New York Times (NYT), relatează Agerpres citând EFE. NYT, citând surse guvernamentale […] © G4Media.ro .",
+      "date": "2026-10-29T20:47:48.000Z",
+      "url": "https://www.g4media.ro/trump-si-consilierii-sai-l-ar-fi-ajutat-pe-flavio-bolsonaro-sa-fuga-in-sua.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "alegeri brazilia",
+        "flavio bolsonaro"
+      ],
+      "author": "Redacția",
+      "theme": "politika",
+      "image": "https://www.g4media.ro//wp-content/uploads/2026/10/profimedia-1146877740-scaled.jpg",
+      "imageAlt": "Trump şi consilierii săi l-ar fi ajutat pe Flavio Bolsonaro să fugă în SUA",
+      "addedAt": "2026-10-29T23:45:48.395Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-g4media-misiune-de-salvare-contra-cronometru-in-c37460",
+      "title": "Misiune de salvare contra cronometru în zona Colții Pietrei, din masivul Mehedinți: Două persoane au părăsit traseul turistic și se află într-o zonă greu accesibilă",
+      "summary": "Salvamontiștii din cadrul Serviciului Public Județean Salvamont Gorj, aflat în coordonarea Consiliului Județean Gorj, desfășoară în aceste momente o misiune de salvare contra cronometru în zona Colții Pietrei, din masivul Mehedinți, pentru recuperarea a două persoane surprinse de lăsarea întunericului după ce au părăsit traseul turistic și au ajuns într-o zonă dificilă, din care nu […] © G4Media.ro .",
+      "date": "2026-10-29T20:25:18.000Z",
+      "url": "https://www.g4media.ro/misiune-de-salvare-contra-cronometru-in-zona-coltii-pietrei-din-masivul-mehedinti-doua-persoane-au-parasit-traseul-turistic-si-se-afla-intr-o-zona-greu-accesibila.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "salvamont mehedinti",
+        "traseu munte",
+        "turisti pe munte"
+      ],
+      "author": "Laura Nițulescu",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro//wp-content/uploads/2026/10/Salvamont-Gorj.jpg",
+      "imageAlt": "Misiune de salvare contra cronometru în zona Colții Pietrei, din masivul Mehedinți: Două persoane au părăsit traseul turistic și se află într-o zonă greu accesibilă",
+      "addedAt": "2026-10-29T23:45:48.395Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-g4media-legendarul-actor-din-star-trek-patrick-a21035",
+      "title": "Legendarul actor din „Star Trek”, Patrick Stewart, a încetat din viață la vârsta de 86 de ani",
+      "summary": "Actorul Patrick Stewart a încetat din viață miercuri, la reședința sa din Los Angeles, în urma unei scurte lupte cu boala Alzheimer și demența, relatează BBC citând anunțul echipei actorului. Se spune că s-a aflat „în grija iubitoare a soției sale dragi, Sunny”. Postarea adaugă: „A fost ținut în îmbrățișarea caldă a familiei și a […] © G4Media.ro .",
+      "date": "2026-10-29T20:07:33.000Z",
+      "url": "https://www.g4media.ro/legendarul-actor-din-star-trek-sir-patrick-stewart-a-incetat-din-viata-la-varsta-de-86-de-ani.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "Patrick Stewart",
+        "Sir Patrick Stewart",
+        "star trek"
+      ],
+      "author": "Redacția",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro//wp-content/uploads/2026/10/Star-Trek.jpg",
+      "imageAlt": "Legendarul actor din „Star Trek”, Patrick Stewart, a încetat din viață la vârsta de 86 de ani",
+      "addedAt": "2026-10-29T23:45:48.395Z"
+    },
+    {
+      "slug": "bukurest-2026-10-29-g4media-nicusor-dan-conversatie-cu-printul-bafa00",
+      "title": "Nicușor Dan, conversație cu prințul Moștenitor Mohammed bin Salman al Arabiei Saudite: Am condamnat cu fermitate atacurile grupării Houthi asupra infrastructurii civile",
+      "summary": "Președintele României, Nicușor Dan, anunță că joi a purtat o conversație telefonică cu Prințul Moștenitor Mohammed bin Salman, Prinț Moștenitor și Prim-ministru al Regatului Arabiei Saudite. „Am exprimat solidaritatea României cu Arabia Saudită și cu poporul său și am condamnat cu fermitate atacurile grupării Houthi asupra infrastructurii civile. Susținem eforturile Regatului de a reduce tensiunile”, […] © G4Media.ro .",
+      "date": "2026-10-29T19:59:07.000Z",
+      "url": "https://www.g4media.ro/nicusor-dan-conversatie-cu-printul-mostenitor-mohammed-bin-salman-al-arabiei-saudite-am-condamnat-cu-fermitate-atacurile-gruparii-houthi-asupra-infrastructurii-civile.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "arabia saudita",
+        "houthi",
+        "houthi atacuri"
+      ],
+      "author": "Laura Nițulescu",
+      "theme": "sigurnost",
+      "image": "https://www.g4media.ro//wp-content/uploads/2024/10/profimedia-0916463698.jpg",
+      "imageAlt": "Nicușor Dan, conversație cu prințul Moștenitor Mohammed bin Salman al Arabiei Saudite: Am condamnat cu fermitate atacurile grupării Houthi asupra infrastructurii civile",
+      "addedAt": "2026-10-29T23:45:48.396Z"
+    },
     {
       "slug": "bukurest-2026-10-29-agerpres-cnsp-revizuieste-prognoza-pentru-2026-800373",
       "title": "CNSP revizuiește prognoza pentru 2026: economia României ar urma să scadă cu 0,4%",
@@ -6480,581 +7064,6 @@
       "image": "https://i0.1616.ro/media/2/2621/33215/22894063/1/froo-romania-2-copy.jpg?width=800",
       "imageAlt": "ULTIMA ORĂ Vânzarea magazinelor Froo în România: Mai este doar un pas, 2 condiții din 3 îndeplinite. Cedarea către Couche-Tard, unul dintre cei mai mari operatori de magazine de pr",
       "addedAt": "2026-10-27T21:26:21.538Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-g4media-insinuari-calomnioase-ambasadorul-rusiei-cd802d",
-      "title": "”Insinuări calomnioase” / Ambasadorul Rusiei, reacție după ce a fost convocat la MAE, în legătură cu un incendiul de la Carfil Brașov / Dă vina pe Ucraina",
-      "summary": "Ambasadorul Federației Ruse la București, Vladimir Lipaev, a fost convocat la Ministerul Afacerilor Externe (MAE) al României, unde autoritățile române i-au comunicat suspiciunile privind implicarea Moscovei într-un incendiu produs în luna septembrie la Carfil Brașov. Ambasada Rusiei a reacționat printr-un comunicat publicat pe pagina de Facebook, susținând că acuzațiile sunt nefondate. Conform reprezentanței diplomatice de […] © G4Media.ro .",
-      "date": "2026-10-27T18:02:23.000Z",
-      "url": "https://www.g4media.ro/insinuari-calomnioase-ambasadorul-rusiei-reactie-dupa-ce-a-fost-convocat-la-mae-in-legatura-cu-un-incendiul-de-la-carfil-brasov-da-vina-pe-ucraina.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Articole",
-        "ce spune ambasada rusiei despre incendiul de la carfil brasov",
-        "incendiu la carfil brașov"
-      ],
-      "author": "Augustin Majearu",
-      "theme": "politika",
-      "image": "https://www.g4media.ro//wp-content/uploads/2026/10/lipaev-ambasadorul-rusiei-in-bucuresti.jpeg",
-      "imageAlt": "”Insinuări calomnioase” / Ambasadorul Rusiei, reacție după ce a fost convocat la MAE, în legătură cu un incendiul de la Carfil Brașov / Dă vina pe Ucraina",
-      "addedAt": "2026-10-27T18:09:18.789Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-profit-fondatorii-ben-jerry-s-brand-al-c63b78",
-      "title": "Fondatorii Ben & Jerry’s, brand al proprietarului Betty Ice, vor să desprindă compania de grup",
-      "summary": "Fondatorii Ben & Jerry’s, brand de înghețată aflat în portofoliul Magnum Ice Cream, proprietarul producătorului român Betty Ice, analizează modalități pentru a separa marca de grup.",
-      "date": "2026-10-27T18:00:00.000Z",
-      "url": "https://www.profit.ro/povesti-cu-profit/retail/fondatorii-ben-jerry-s-brand-al-proprietarului-betty-ice-vor-sa-desprinda-compania-de-grup-22891703?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
-      "source": "profit",
-      "sourceName": "Profit.ro",
-      "categories": [
-        "Retail"
-      ],
-      "author": "",
-      "theme": "sigurnost",
-      "image": "https://i0.1616.ro/media/2/2621/33215/22891703/1/screenshot-2025-09-18-073719.jpg?width=800",
-      "imageAlt": "Fondatorii Ben & Jerry’s, brand al proprietarului Betty Ice, vor să desprindă compania de grup",
-      "addedAt": "2026-10-27T18:09:13.437Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-hotnews-flavio-bolsonaro-a-fugit-din-brazilia-dupa-0c3972",
-      "title": "Flavio Bolsonaro a fugit din Brazilia după înfrângerea de la prezidențiale, deși anunțase că i s-a interzis să iasă din țară. Unde se îndreaptă avionul lui",
-      "summary": "Senatorul brazilian Flavio Bolsonaro a refuzat să se conformeze cu ordinul Curții Supreme a Braziliei de a preda pașapoartele și a plecat în Statele Unite, au declarat două surse pentru Reuters. Flavio Bolsonaro, fiul fostului președinte Jair Bolsonaro, a fost învins duminică de actualul șef al statului, Luiz Inacio Lula da Silva, în al doilea …",
-      "date": "2026-10-27T17:58:46.000Z",
-      "url": "https://hotnews.ro/flavio-bolsonaro-a-parasit-brazilia-dupa-infrangerea-de-la-prezidentiale-desi-anuntase-ca-i-s-a-interzis-sa-iasa-din-tara-2388070",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "Actualitate",
-        "International",
-        "brazilia",
-        "flavio bolsonaro"
-      ],
-      "author": "Vladimir Ionescu",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Flavio Bolsonaro a fugit din Brazilia după înfrângerea de la prezidențiale, deși anunțase că i s-a interzis să iasă din țară. Unde se îndreaptă avionul lui",
-      "addedAt": "2026-10-27T18:09:11.932Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-hotnews-combate-simultan-mii-de-drone-si-rachete-3c0a23",
-      "title": "Combate simultan mii de drone și rachete. Sistemul revoluționar de apărare anunțat de un startup european evaluat la 18 miliarde de dolari",
-      "summary": "Startup-ul german Helsing, evaluat la 18 miliarde de dolari, a prezentat un sistem de apărare antiaeriană bazat pe inteligență artificială, despre care susține că poate combate simultan mii de drone și rachete. Noua tehnologie urmărește să rezolve una dintre marile vulnerabilități ale sistemelor tradiționale: atacurile masive, în care un număr copleșitor de arme este lansat …",
-      "date": "2026-10-27T17:56:42.000Z",
-      "url": "https://hotnews.ro/combate-simultan-mii-de-drone-si-rachete-sistemul-revolutionar-de-aparare-anuntat-de-un-startup-european-evaluat-la-18-miliarde-de-dolari-2388063",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "Actualitate",
-        "Companii",
-        "Economie"
-      ],
-      "author": "Ana Teșcan",
-      "theme": "rat",
-      "image": "",
-      "imageAlt": "Combate simultan mii de drone și rachete. Sistemul revoluționar de apărare anunțat de un startup european evaluat la 18 miliarde de dolari",
-      "addedAt": "2026-10-27T18:09:11.932Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-newsro-pui-de-pisica-gasit-dezmembrat-langa-o-a626ff",
-      "title": "Pui de pisică, găsit dezmembrat lângă o piaţă din Ploieşti / Un al doilea animal, găsit mort, fără semne de violenţă / O asociaţie pentru protecţia animalelor cere Poliţiei să îi…",
-      "summary": "Un pui de pisică cu vârsta de apeoximativ trei luni a fost găsit dezmembrat lângă o piaţă din Ploieşti. De asemenea, un al doilea animal a fost găsit în aceeaşi piaţă, mort, fără semne de violenţă. Asociaţia Ramses, care militează pentru protecţia animalelor, cere Poliţiei să îi găsească pe cei care au ucis animalele şi să ia măsurile legale.",
-      "date": "2026-10-27T17:56:00.000Z",
-      "url": "https://www.news.ro/social/pui-pisica-gasit-dezmembrat-langa-piata-ploiesti-doilea-animal-gasit-mort-semne-violenta-asociatie-protectia-animalelor-cere-politiei-ii-gaseasca-cei-au-ucis-animalele-1922405627002026101922893928",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Pui de pisică, găsit dezmembrat lângă o piaţă din Ploieşti / Un al doilea animal, găsit mort, fără semne de violenţă / O asociaţie pentru protecţia animalelor cere Poliţiei să îi g",
-      "addedAt": "2026-10-27T18:09:19.085Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-g4media-fostul-director-al-fbi-james-comey-inculpat-7c9f2f",
-      "title": "Fostul director al FBI James Comey, inculpat din nou în SUA",
-      "summary": "Fostul director al FBI James Comey a fost pus din nou sub acuzare luni, fiind suspectat că ar fi divulgat informații clasificate privind apărarea națională în octombrie 2016, când conducea instituția. Este a treia procedură judiciară îndreptată împotriva fostului oficial american, un critic al președintelui Donald Trump, relatează BBC. Potrivit documentelor judiciare făcute publice luni, […] © G4Media.ro .",
-      "date": "2026-10-27T17:55:34.000Z",
-      "url": "https://www.g4media.ro/fostul-director-al-fbi-james-comey-inculpat-din-nou-in-sua.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Analize",
-        "fost director fbi",
-        "inculpat sua",
-        "James Comey"
-      ],
-      "author": "Ștefan Munteanu",
-      "theme": "drustvo",
-      "image": "https://www.g4media.ro//wp-content/uploads/2026/10/profimedia-0335802886-scaled.jpg",
-      "imageAlt": "Fostul director al FBI James Comey, inculpat din nou în SUA",
-      "addedAt": "2026-10-27T18:09:18.789Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-profit-foto-demolat-acum-aproape-100-de-ani-podul-656a28",
-      "title": "FOTO Demolat acum aproape 100 de ani, Podul Calicilor peste Dâmbovița va fi refăcut. Autoritățile vor începe procedurile de expropriere",
-      "summary": "Autoritățile capitalei vor începe procedurile de expropriere pentru a permite lucrări de amenajare a malurilor Dâmboviței, între Piața Unirii și Podul Izvor și de reconstruire a Podului Calicilor.",
-      "date": "2026-10-27T17:55:00.000Z",
-      "url": "https://www.profit.ro/povesti-cu-profit/real-estate-constructii/foto-demolat-acum-aproape-100-de-ani-podul-calicilor-peste-dambovita-va-fi-refacut-autoritatile-vor-incepe-procedurile-de-expropriere-22893904?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
-      "source": "profit",
-      "sourceName": "Profit.ro",
-      "categories": [
-        "Real Estate&Construcții"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://i0.1616.ro/media/2/2621/33219/22893904/2/podul-calicilor-1.jpg?width=800",
-      "imageAlt": "FOTO Demolat acum aproape 100 de ani, Podul Calicilor peste Dâmbovița va fi refăcut. Autoritățile vor începe procedurile de expropriere",
-      "addedAt": "2026-10-27T18:09:13.437Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-newsro-luca-niculescu-discutii-excelente-cu-941de9",
-      "title": "Luca Niculescu: Discuţii excelente cu preşedintele Parlamentului Republicii Moldova, Igor Grosu / Suntem alături de Republica Moldova şi ne coordonăm pentru a face faţă atacurilor…",
-      "summary": "Premierul Luca Niculescu afirmă că a avut, marţi, în cadrul vizitei oficiale în Republica Moldova, discuţii excelente cu preşedintele Parlamentului Republicii Moldova, Igor Grosu şi transmite că ”suntem alături de Republica Moldova şi ne coordonăm pentru a face faţă atacurilor hibride şi incursiunilor zilnice cu drone”.",
-      "date": "2026-10-27T17:54:34.000Z",
-      "url": "https://www.news.ro/politic-intern/luca-niculescu-discutii-excelente-presedintele-parlamentului-republicii-moldova-igor-grosu-alaturi-republica-moldova-ne-coordonam-face-fata-atacurilor-hibride-incursiunilor-zilnice-drone-1922405427342026101922893908",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "rat",
-      "image": "",
-      "imageAlt": "Luca Niculescu: Discuţii excelente cu preşedintele Parlamentului Republicii Moldova, Igor Grosu / Suntem alături de Republica Moldova şi ne coordonăm pentru a face faţă atacurilor ",
-      "addedAt": "2026-10-27T18:09:19.085Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-hotnews-londra-confirma-ca-se-va-realatura-12102c",
-      "title": "Londra confirmă că se va realătura programului european Erasmus+",
-      "summary": "Guvernul de la Londra a confirmat marți că Regatul Unit se va realătura programului european Erasmus+ de schimburi de studenți începând cu data de 1 ianuarie 2027, relatează dpa, conform Agerpres. În timpul unei audieri în parlament, ministrul Hamish Falconer a afirmat că din noiembrie vor putea fi primite cererile de la tineri britanici care …",
-      "date": "2026-10-27T17:54:31.000Z",
-      "url": "https://hotnews.ro/londra-confirma-ca-se-va-realatura-programului-european-erasmus-2388060",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "Actualitate"
-      ],
-      "author": "Ana Teșcan",
-      "theme": "politika",
-      "image": "",
-      "imageAlt": "Londra confirmă că se va realătura programului european Erasmus+",
-      "addedAt": "2026-10-27T18:09:11.932Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-newsro-sabotaj-la-carfil-brasov-ambasada-rusiei-fbe952",
-      "title": "Sabotaj la CARFIL Braşov – Ambasada Rusiei: Partea română a acuzat fără temei Rusia / Nu au fost prezentate dovezi / Despre atacurile asupra navelor: Tentativele de a pune pe…",
-      "summary": "Ambasada Rusiei în România susţine, marţi seară, după ce ambasadorul Vladimir Lipaev a fost convocat la sediul MAE în legătură cu actul de sabotaj din incinta platformei industriale Carfil din Braşov, că România nu a prezentat niciun fel de dovezi, acuzaţiile la adresa Rusiei fiind ”fără temei”. ”Diplomatul rus a respins categoric insinuările calomnioase pe această temă, subliniind că Federaţia Rusă nu a planificat, nu a coordonat şi nu a desfăşurat niciodată acte de sabotaj pe teritoriul României, la fel ca şi pe teritoriul altor state străine”, arată Ambasada. De asemenea, oficialii ruşi din România s-au referit la ”tentativele de a pune pe seama Rusiei responsabilitatea pentru…",
-      "date": "2026-10-27T17:53:00.000Z",
-      "url": "https://www.news.ro/politic-intern/sabotaj-carfil-brasov-ambasada-rusiei-partea-romana-acuzat-temei-rusia-au-prezentate-dovezi-atacurile-asupra-navelor-tentativele-pune-seama-rusiei-responsabilitatea-manifestari-cinism-politic-1922405327002026101922893910",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "politika",
-      "image": "",
-      "imageAlt": "Sabotaj la CARFIL Braşov – Ambasada Rusiei: Partea română a acuzat fără temei Rusia / Nu au fost prezentate dovezi / Despre atacurile asupra navelor: Tentativele de a pune pe seama",
-      "addedAt": "2026-10-27T18:09:19.086Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-digi24-flavio-bolsonaro-ar-fi-parasit-brazilia-509ddc",
-      "title": "Flavio Bolsonaro ar fi părăsit Brazilia pentru SUA. Pașapoartele sale au fost anulate, după ce acesta nu a predat documentele poliției",
-      "summary": "Poliția din Brazilia a anunțat anularea pașapoartelor candidatului prezidențial de extremă dreapta, Flávio Bolsonaro, după ce acesta nu a respectat ordinul de predare a documentelor. Luni, Curtea Supremă i-a ordonat lui Bolsonaro să predea pașapoartele poliției în termen de 24 de ore, în cadrul unei anchete privind o presupusă spălare de bani, pe care acesta o neagă, potrivit BBC.",
-      "date": "2026-10-27T17:51:56.000Z",
-      "url": "https://www.digi24.ro/stiri/externe/mapamond/flavio-bolosonaro-ar-fi-parasit-brazilia-pentru-sua-pasapoartele-sale-au-fost-anulate-dupa-ce-acesta-nu-a-predat-documentele-politiei-4011247",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjI3JTJGMzAzMzg5MF8zMDMz/ODkwX2ZsYXZpby1ib2xzb25hcm8uanBn/Jmhhc2g9ZmEwMDM1ODliYjY3OGNkY2EyOGJhN2RhZjNmMTExYzM=.jpg",
-      "imageAlt": "Flavio Bolsonaro ar fi părăsit Brazilia pentru SUA. Pașapoartele sale au fost anulate, după ce acesta nu a predat documentele poliției",
-      "addedAt": "2026-10-27T18:09:15.094Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-digi24-problema-racirii-reactoarelor-de-la-7f9330",
-      "title": "Problema răcirii reactoarelor de la Cernavodă. Ministrul Energiei: „Din 2003, de când a fost prima situație, nu s-a întâmplat nimic”",
-      "summary": "Noul ministru al Energiei, Dumitru Chisăliță, a afirmat că acțiunile întreprinse pentru asigurarea alimentării cu apă pentru răcirea reactoarelor nucleare ale Centralei de la Cernavodă nu au avut rezultatele scontate. În cadrul emisiunii „În fața ta”, acesta a explicat că „problema este legată de a devia o parte din apa Dunării către brațul Bala, respectiv pentru a ajunge la gurile de absorbție de la Centrala de la Cernavodă, lucrări care, încă o dată, au un caracter hidrotehnic”. Interviul integral poate fi urmărit sâmbătă, 31 octombrie, de la ora 14:00, la Digi24.",
-      "date": "2026-10-27T17:51:21.000Z",
-      "url": "https://www.digi24.ro/stiri/economie/energie/problema-racirii-reactoarelor-de-la-cernavoda-ministrul-energiei-din-2003-de-cand-a-fost-prima-situatie-nu-s-a-intamplat-nimic-4011251",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "energija",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwOCUyRjA2JTJGMjg5NDk0N18yODk0/OTQ3X0lEMjg3MTA0LUlOUVVBTS1QSE9U/T1MtQUxFWC1OSUNPRElNLmpwZyZoYXNo/PWIwOWQxYmJiNzExZDhkYjFlYjliMDUzMTczY2E4YTA4.jpg",
-      "imageAlt": "Problema răcirii reactoarelor de la Cernavodă. Ministrul Energiei: „Din 2003, de când a fost prima situație, nu s-a întâmplat nimic”",
-      "addedAt": "2026-10-27T18:09:15.095Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-digi24-presedintele-bns-dumitru-costin-a-discutat-d323a0",
-      "title": "Preşedintele BNS, Dumitru Costin, a discutat cu ministrul Muncii despre o nouă lege a salarizării, salariul minim și pensii",
-      "summary": "Preşedintele Blocului Naţional Sindical, Dumitru Costin, a avut marţi o întâlnire cu ministrul Muncii, Florin Manole, în cadrul căreia au fost abordate principalele teme de interes pentru lucrători şi priorităţile care urmează să fie incluse pe agenda viitoarelor discuţii cu ministrul şi echipa sa. Pe agenda discuţiilor s-au aflat elaborarea unei noi legi a salarizării, salariul minim, corectarea legislaţiei pensiilor, reformarea din temelii a Inspecţiei Muncii dar şi elaborarea unui pachet de măsuri pentru reducerea muncii nedeclarate, cu accent pe prevenţie, control şi responsabilizarea angajatorilor.",
-      "date": "2026-10-27T17:46:12.000Z",
-      "url": "https://www.digi24.ro/stiri/actualitate/social/presedintele-bns-dumitru-costin-a-discutat-cu-ministrul-muncii-despre-o-noua-lege-a-salarizarii-salariul-minim-si-pensii-4011243",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjI3JTJGMzAzMzg4M18zMDMz/ODgzX2R1bWl0cnUtY29zdGluLXNpLWZs/b3Jpbi1tYW5vbGUucG5nJmhhc2g9ZDJm/ZDU4ZWI0OTE0MWY2ZjE5ODliZWUxNGFlNWU0NmY=.png",
-      "imageAlt": "Preşedintele BNS, Dumitru Costin, a discutat cu ministrul Muncii despre o nouă lege a salarizării, salariul minim și pensii",
-      "addedAt": "2026-10-27T18:09:15.095Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-g4media-avarie-la-termocentrala-turceni-a-fost-ab814a",
-      "title": "Avarie la Termocentrala Turceni / A fost suspendată temporar producţia de energie electrică / Două grupuri din cadrul CE Oltenia sunt nefuncționale",
-      "summary": "Termocentrala Turceni a fost oprită din nou, după o altă avarie. Defecţiunea a fost constatată marți dimineaţă, iar reparaţiile ar putea fi terminate până la sfârşitul săptămânii, relatează Agenția de presă Rador, care citează Radio Craiova. Grupul 5 are o putere instalată de aproape 300 de megawaţi şi este singura capacitate de producţie rămasă operaţională […] © G4Media.ro .",
-      "date": "2026-10-27T17:45:48.000Z",
-      "url": "https://www.g4media.ro/avarie-la-termocentrala-turceni-a-fost-suspendata-temporar-productia-de-energie-electrica-doua-grupuri-din-cadrul-ce-oltenia-sunt-nefunctionale.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Articole",
-        "de ce s-a oprit Termocentrala Turceni",
-        "s-a oprit Termocentrala Turceni"
-      ],
-      "author": "Augustin Majearu",
-      "theme": "sigurnost",
-      "image": "https://www.g4media.ro//wp-content/uploads/2026/10/termocentrala-turceni.jpg",
-      "imageAlt": "Avarie la Termocentrala Turceni / A fost suspendată temporar producţia de energie electrică / Două grupuri din cadrul CE Oltenia sunt nefuncționale",
-      "addedAt": "2026-10-27T18:09:18.789Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-hotnews-probleme-mari-la-cfr-cluj-marius-sumudica-8d6f8d",
-      "title": "Probleme mari la CFR Cluj. Marius Șumudică amenință cu demisia: „Plec acasă cu primul avion!”",
-      "summary": "Marius Șumudică (55 de ani) a anunțat că va demisiona din funcția de antrenor al formației CFR Cluj în cazul în care clubul va fi depunctat din cauza problemelor financiare. Ardelenii riscă să fie penalizați cu șase puncte din cauza faptului că nu și-au rezolvat problemele legate de datorii până la data limită de 30 …",
-      "date": "2026-10-27T17:43:33.000Z",
-      "url": "https://hotnews.ro/probleme-mari-la-cfr-cluj-marius-sumudica-ameninta-cu-demisia-plec-acasa-cu-primul-avion-2388055",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "SuperLiga"
-      ],
-      "author": "Ana Teșcan",
-      "theme": "sport",
-      "image": "",
-      "imageAlt": "Probleme mari la CFR Cluj. Marius Șumudică amenință cu demisia: „Plec acasă cu primul avion!”",
-      "addedAt": "2026-10-27T18:09:11.932Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-hotnews-polonia-anunta-ca-va-gazdui-singurul-centru-cb2f6a",
-      "title": "Polonia anunță că va găzdui singurul centru de mentenanță pentru rachete Patriot din afara Statelor Unite. „Au concurat patru țări”",
-      "summary": "Un centru de mentenanță pentru rachetele interceptoare Patriot produse de compania americană Lockheed Martin va fi înființat în Polonia, conform anunțului făcut marți de viceministrul apărării, Magdalena Sobkowiak-Czarnecka. Războaiele din Ucraina și din Orientul Mijlociu au pus presiune pe stocurile de rachete interceptoare pentru apărarea antiaeriană și au provocat întârzieri la livrări, determinând țările să …",
-      "date": "2026-10-27T17:42:03.000Z",
-      "url": "https://hotnews.ro/polonia-anunta-ca-va-gazdui-singurul-centru-de-mentenanta-pentru-rachete-patriot-din-afara-statelor-unite-au-concurat-patru-tari-2388051",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "Actualitate",
-        "International",
-        "patriot",
-        "polonia"
-      ],
-      "author": "Vladimir Ionescu",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Polonia anunță că va găzdui singurul centru de mentenanță pentru rachete Patriot din afara Statelor Unite. „Au concurat patru țări”",
-      "addedAt": "2026-10-27T18:09:11.933Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-profit-foto-cel-mai-aglomerat-bulevard-din-2568f5",
-      "title": "FOTO Cel mai aglomerat bulevard din București va fi transformat radical",
-      "summary": "Bucureștiul se înfrățește cu orașul Kiev, pripectul în acest sens fiind avizat de Consiliul General al Primăriei Municipiului.",
-      "date": "2026-10-27T17:42:00.000Z",
-      "url": "https://www.profit.ro/perspective/decizie-bucurestiul-se-infrateste-cu-kievul-22893825?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
-      "source": "profit",
-      "sourceName": "Profit.ro",
-      "categories": [
-        "Perspective"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://i0.1616.ro/media/2/2621/33242/22893825/10/bulevard.jpg?width=800",
-      "imageAlt": "FOTO Cel mai aglomerat bulevard din București va fi transformat radical",
-      "addedAt": "2026-10-27T18:09:13.438Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-newsro-ft-donald-trump-jr-a-fost-la-vanatoare-in-dd83c8",
-      "title": "FT: Donald Trump Jr. a fost la vânătoare în Mongolia, alături de un oligarh cu legături la Kremlin şi un alt rus care e pe lista sancţiunilor americane",
-      "summary": "Donald Trump Jr. a petrecut două zile în august 2026 la vânătoare în Mongolia cu Umar Kremlev, om de afaceri rus apropiat de structurile de securitate ale Kremlinului şi preşedinte al Asociaţiei Internaţionale de Box (IBA). Este acelaşi oligarh care a contribuit la finanţarea festivităţilor de nuntă ale lui Trump Jr., desfăşurate în mai, în Caraibe, deşi Donald Trump a susţinut ulterior că fiul său i-a rambursat banii, scrie Financial Times (FT).",
-      "date": "2026-10-27T17:37:00.000Z",
-      "url": "https://www.news.ro/externe/ft-donald-trump-jr-a-fost-la-vanatoare-in-mongolia-alaturi-de-un-oligarh-cu-legaturi-la-kremlin-si-un-alt-rus-care-e-pe-lista-sanctiunilor-americane-1922403727002026101922893603",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "sigurnost",
-      "image": "",
-      "imageAlt": "FT: Donald Trump Jr. a fost la vânătoare în Mongolia, alături de un oligarh cu legături la Kremlin şi un alt rus care e pe lista sancţiunilor americane",
-      "addedAt": "2026-10-27T18:09:19.086Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-digi24-trei-persoane-trimise-in-judecata-intr-un-136062",
-      "title": "Trei persoane trimise în judecată într-un dosar cu un prejudiciu de 3,5 milioane de euro din fondurile UE pentru fermieri",
-      "summary": "Procurorii Parchetului European au trimis în judecată, la Tribunalul Bucureşti, trei persoane acuzate de fraudă cu fonduri nerambursabile din partea UE, vizând 237 de proiecte destinate sprijinirii micilor ferme şi a tinerilor fermieri. Un consultant ar fi depus documente false şi inexacte la Agenţia pentru Finanţarea Investiţiilor Rurale (AFIR), în numele unor societăţi comerciale şi întreprinderi familiale. 30 de persoane au încheiat acorduri de recunoaştere a vinovăţiei.",
-      "date": "2026-10-27T17:29:43.000Z",
-      "url": "https://www.digi24.ro/stiri/actualitate/justitie/trei-persoane-trimise-in-judecata-intr-un-dosar-cu-un-prejudiciu-de-35-milioane-de-euro-din-fondurile-ue-pentru-fermieri-4011233",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "politika",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjIl/MkYxMCUyRjE0JTJGMTYwMTc5OF8xNjAx/Nzk4X2VwcG8tc2lnbGEtcHJvZmltZWRp/YS0wNjE2MDc3OTE5LmpwZyZoYXNoPTli/NDk5OTQ1NmY3ZjJjZTc3MGRjYjMzZjdhOTNlYmM2.jpg",
-      "imageAlt": "Trei persoane trimise în judecată într-un dosar cu un prejudiciu de 3,5 milioane de euro din fondurile UE pentru fermieri",
-      "addedAt": "2026-10-27T18:09:15.095Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-g4media-profesoara-injunghiata-la-bistrita-a-fost-ee2fb3",
-      "title": "Profesoara înjunghiată la Bistrița a fost externată / Va urma acasă recomandările date de către medici",
-      "summary": "Tânăra în vârstă de 28 de ani, rănită grav în urma atacului violent petrecut în incinta unei unități de învățământ din municipiul Bistrița, a fost externată luni după-amiază, 26 octombrie, de la Spitalul Clinic Județean de Urgență Bistrița, relatează Agenția de presă Rador, care citează Radio Cluj. Medicii au confirmat că evoluția post-operatorie și starea […] © G4Media.ro .",
-      "date": "2026-10-27T17:29:21.000Z",
-      "url": "https://www.g4media.ro/profesoara-injunghiata-la-bistrita-a-fost-externata-va-urma-acasa-recomandarile-date-de-catre-medici.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Articole",
-        "ce face profesoara injunghiată",
-        "profesoara înjunghiată a fost externată"
-      ],
-      "author": "Augustin Majearu",
-      "theme": "drustvo",
-      "image": "https://www.g4media.ro//wp-content/uploads/2025/07/dreamstime_m_360657810.jpg",
-      "imageAlt": "Profesoara înjunghiată la Bistrița a fost externată / Va urma acasă recomandările date de către medici",
-      "addedAt": "2026-10-27T18:09:18.789Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-newsro-orasul-odorheiu-secuiesc-amendat-pentru-79c493",
-      "title": "Oraşul Odorheiu Secuiesc, amendat pentru notificarea cu întârziere a unei modificări contractuale / Proiectul viza reabilitarea infrastructurii rutiere / Preşedinte ANAP…",
-      "summary": "Agenţia Naţională pentru Achiziţii Publice (ANAP) a aplicat oraşului Odorheiu Secuiesc o amendă contravenţională de 5.000 de lei, deoarece municipalitatea a notificat Agenţia cu privire la modificarea unui contract de lucrări după ce actul adiţional fusese deja încheiat şi semnat de părţi. ”Controlul ex ante există pentru a preveni neregulile, nu pentru a le constata după ce s-au produs”, a transmis preşedintele ANAP, Raluca Rogoz, explicând că anunţarea unei modificări după ce ea s-a produs pune autoritatea de control în faţa faptului împlinit şi există riscuri, mai ales în cazul proiectelor derulate din fonduri europene.",
-      "date": "2026-10-27T17:28:00.000Z",
-      "url": "https://www.news.ro/economic/orasul-odorheiu-secuiesc-amendat-notificarea-intarziere-unei-modificari-contractuale-proiectul-viza-reabilitarea-infrastructurii-rutiere-presedinte-anap-controlul-ex-ante-exista-preveni-neregulile-1922402827002026101922893784",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Oraşul Odorheiu Secuiesc, amendat pentru notificarea cu întârziere a unei modificări contractuale / Proiectul viza reabilitarea infrastructurii rutiere / Preşedinte ANAP: Controlul",
-      "addedAt": "2026-10-27T18:09:19.086Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-zf-zf-deschiderea-de-astazi-cum-va-merge-bursa-053258",
-      "title": "ZF DESCHIDEREA DE ASTĂZI. Cum va merge bursa. Urmăriţi o discuţie miercuri, 28 octombrie 2026, ora 09.30 cu Lucian Isac, director general al Estinvest",
-      "summary": "",
-      "date": "2026-10-27T17:25:31.000Z",
-      "url": "https://www.zf.ro/burse-fonduri-mutuale/zf-deschiderea-de-astazi-cum-va-merge-bursa-urmariti-o-discutie-miercuri-28-octombrie-2026-ora-09-30-cu-lucian-isac-director-general-al-estinvest-23269081",
-      "source": "zf",
-      "sourceName": "Ziarul Financiar",
-      "categories": [
-        "Burse - Fonduri mutuale"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/22467/23269081/147/promo-bursa-28-oct.png?width=700",
-      "imageAlt": "ZF DESCHIDEREA DE ASTĂZI. Cum va merge bursa. Urmăriţi o discuţie miercuri, 28 octombrie 2026, ora 09.30 cu Lucian Isac, director general al Estinvest",
-      "addedAt": "2026-10-27T18:09:13.303Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-g4media-15-000-de-turisti-asteptati-la-sighisoara-f06524",
-      "title": "15.000 de turiști așteptați la Sighișoara de Halloween / „Un pretext pentru susținerea economiei locale în extrasezon” / Parohiile a șase culte istorice se opun: ”Bucuria unora nu…",
-      "summary": "Între 30 octombrie și 1 noiembrie, Cetatea Sighișoarei găzduiește cea de-a doua ediție ”Halloween în Cetate”, cu proiecții spectaculoase pe Turnul cu Ceas, instalații multimedia, sute de dovleci luminați, personaje fantastice și activități pentru întreaga familie. Dar nu toată lumea e fericită, notează Agenția de presă Rador, care citează Radio Târgu Mureș. Printre atracții se […] © G4Media.ro .",
-      "date": "2026-10-27T17:23:14.000Z",
-      "url": "https://www.g4media.ro/15-000-de-turisti-asteptati-la-sighisoara-de-halloween-un-pretext-pentru-sustinerea-economiei-locale-in-extrasezon-parohiile-a-sase-culte-istorice-se-opun-bucuria-unora.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Travel",
-        "protest de halloween",
-        "sighisoara de Halloween"
-      ],
-      "author": "Augustin Majearu",
-      "theme": "ekonomija",
-      "image": "https://www.g4media.ro//wp-content/uploads/2026/10/sighisoara-halloween-scaled.jpg",
-      "imageAlt": "15.000 de turiști așteptați la Sighișoara de Halloween / „Un pretext pentru susținerea economiei locale în extrasezon” / Parohiile a șase culte istorice se opun: ”Bucuria unora nu ",
-      "addedAt": "2026-10-27T18:09:18.789Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-hotnews-insula-iubirii-2026-emisiunea-de-la-antena-69072f",
-      "title": "Insula iubirii 2026. Emisiunea de la Antena 1, reclamată din nou la CNA",
-      "summary": "Consiliul Național al Audiovizualului (CNA) a vizionat marți ore întregi de emisiune după ce a primit zeci de reclamaţii de la telespectatori, dar și de la organizaţia „Salvaţi Copiii”, pentru conţinutul nepotrivit promovat de Insula iubirii de pe Antena 1, scrie Pagina de Media. În 2025, CNA a decis ca Insula Iubirii să nu mai …",
-      "date": "2026-10-27T17:22:30.000Z",
-      "url": "https://hotnews.ro/insula-iubirii-2026-emisiunea-de-la-antena-1-reclamata-din-nou-la-cna-2388043",
-      "source": "hotnews",
-      "sourceName": "HotNews",
-      "categories": [
-        "Actualitate"
-      ],
-      "author": "Mona Hera",
-      "theme": "drustvo",
-      "image": "",
-      "imageAlt": "Insula iubirii 2026. Emisiunea de la Antena 1, reclamată din nou la CNA",
-      "addedAt": "2026-10-27T18:09:11.933Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-zf-romania-cumpara-patru-radare-militare-de-la-452f39",
-      "title": "România cumpără patru radare militare de la gigantul francez Thales pentru aproape 400 mil. lei. Sistemele vor putea opera inclusiv în condiţii de război electronic",
-      "summary": "",
-      "date": "2026-10-27T17:22:13.000Z",
-      "url": "https://www.zf.ro/eveniment/romania-cumpara-patru-radare-militare-de-la-gigantul-francez-thales-pentru-aproape-400-mil-lei-sistemele-vor-putea-opera-inclusiv-in-conditii-de-razboi-electronic-23269073",
-      "source": "zf",
-      "sourceName": "Ziarul Financiar",
-      "categories": [
-        "Eveniment"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10386/23269073/1/hepta-8952550.jpg?width=700",
-      "imageAlt": "România cumpără patru radare militare de la gigantul francez Thales pentru aproape 400 mil. lei. Sistemele vor putea opera inclusiv în condiţii de război electronic",
-      "addedAt": "2026-10-27T18:09:13.304Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-digi24-daca-statul-nu-reactioneaza-va-trebui-sa-a7f844",
-      "title": "„Dacă statul nu reacționează, va trebui să luăm propriile decizii”. Aleksandar Vucic, avertisment după violențele din Serbia",
-      "summary": "Fostul președinte sârb Aleksandar Vucic a avertizat marți că Partidul Progresist Sârb ar putea recurge la autoorganizare dacă autoritățile nu intervin împotriva actelor de violență îndreptate împotriva susținătorilor săi. Declarațiile vin după ce mai mulți protestatari au pătruns cu forța în sediul unei televiziuni apropiate de Vucic, în urma alegerilor legislative anticipate câștigate de Lista Studenților, relatează agenția sârbă de presă Tanjug, citată de Agerpres.",
-      "date": "2026-10-27T17:21:39.000Z",
-      "url": "https://www.digi24.ro/stiri/externe/daca-statul-nu-reactioneaza-va-trebui-sa-luam-propriile-decizii-aleksandar-vucic-avertisment-dupa-violentele-din-serbia-4011227",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "politika",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjI1JTJGMzAyOTc4MV8zMDI5/NzgxX3Byb2ZpbWVkaWEtMTE0NjYwMDUw/MC5qcGcmaGFzaD01YzA1ZWVhYTc2Zjg3NThjYTc4MjVkNGVkNGVjOWQ1OA==.jpg",
-      "imageAlt": "„Dacă statul nu reacționează, va trebui să luăm propriile decizii”. Aleksandar Vucic, avertisment după violențele din Serbia",
-      "addedAt": "2026-10-27T18:09:15.095Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-profit-exportatorii-romani-din-industria-8a7121",
-      "title": "Exportatorii români din industria ambalajelor se confruntă cu provocări generate de costurile ridicate de transport. Rottaprint, creștere de 30% a exporturilor în primele nouă…",
-      "summary": "Rottaprint, cea mai mare tipografie flexografică românească producătoare de etichete autoadezive și folii imprimate, a înregistrat o creștere de 30% a exporturilor în primele nouă luni din 2026, față de aceeași perioadă a anului trecut.",
-      "date": "2026-10-27T17:21:00.000Z",
-      "url": "https://www.profit.ro/profitul-tau/exportatorii-romani-din-industria-ambalajelor-se-confrunta-cu-provocari-generate-de-costurile-ridicate-de-transport-rottaprint-crestere-de-30-a-exporturilor-in-primele-noua-luni-din-2026-22892564?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
-      "source": "profit",
-      "sourceName": "Profit.ro",
-      "categories": [
-        "Profitul tău"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://i0.1616.ro/media/2/2621/33223/22892564/1/sunimprof-rottaprint-hq.jpg?width=800",
-      "imageAlt": "Exportatorii români din industria ambalajelor se confruntă cu provocări generate de costurile ridicate de transport. Rottaprint, creștere de 30% a exporturilor în primele nouă luni",
-      "addedAt": "2026-10-27T18:09:13.438Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-zf-gigantul-sony-incearca-sa-i-convinga-pe-184298",
-      "title": "Gigantul Sony încearcă să-i convingă pe utilizatorii camerelor sale video să renunţe la produsele RØDE, DJI sau Hollyland şi să aleagă şi microfoanele din acelaşi ecosistem cu un…",
-      "summary": "Sony, producătorul japonez de camere şi echipamente audio, a anunţat un nou sistem de microfoane fără fir prin care încearcă să-i convingă pe videografii care îi folosesc camerele video să aleagă şi sunetul din acelaşi ecosistem şi să migreze de la soluţiile unor competitori precum DJI, Hollyland (China) sau RØDE (Australia).",
-      "date": "2026-10-27T17:17:27.000Z",
-      "url": "https://www.zf.ro/business-hi-tech/gigantul-sony-incearca-sa-i-convinga-pe-utilizatorii-camerelor-sale-video-sa-renunte-la-produsele-r-de-dji-sau-hollyland-si-sa-aleaga-si-microfoanele-din-acelasi-ecosistem-cu-un-nou-kit-ecm-w5-23269077",
-      "source": "zf",
-      "sourceName": "Ziarul Financiar",
-      "categories": [
-        "Business Hi-Tech"
-      ],
-      "author": "",
-      "theme": "drustvo",
-      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21332/23269077/1/ecm-w5-situation-product.jpg?width=700",
-      "imageAlt": "Gigantul Sony încearcă să-i convingă pe utilizatorii camerelor sale video să renunţe la produsele RØDE, DJI sau Hollyland şi să aleagă şi microfoanele din acelaşi ecosistem cu un n",
-      "addedAt": "2026-10-27T18:09:13.304Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-digi24-ministerul-justitiei-a-demarat-49f50b",
-      "title": "Ministerul Justiției a demarat reorganizarea Administraţiei Naţionale a Penitenciarelor şi a Direcţiei Naţionale de Probaţiune",
-      "summary": "Ministrul Justiţiei, Radu Marinescu, a condus, marţi, o şedinţă de lucru dedicată aplicării măsurilor prevăzute în Programul de guvernare – Secţiunea Justiţie, cu accent pe reorganizarea Administraţiei Naţionale a Penitenciarelor (ANP) şi a Direcţiei Naţionale de Probaţiune (DNP). În cadrul întâlnirii, a fost constituit un grup de lucru pentru analizarea cadrului normativ şi administrativ necesar reorganizării DNP în cadrul ANP, cu misiunea de a identifica modificările legislative şi măsurile administrative necesare şi de a formula propuneri concrete privind cadrul juridic, organizatoric şi funcţional al reorganizării.",
-      "date": "2026-10-27T17:16:42.000Z",
-      "url": "https://www.digi24.ro/stiri/actualitate/justitie/ministerul-justitiei-a-demarat-reorganizarea-administratiei-nationale-a-penitenciarelor-si-a-directiei-nationale-de-probatiune-4011225",
-      "source": "digi24",
-      "sourceName": "Digi24",
-      "categories": [],
-      "author": "",
-      "theme": "politika",
-      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjUl/MkYwMiUyRjI4JTJGMjIwMDg4NV8yMjAw/ODg1X3JhZHUtbWFyaW5lc2N1LWlucXVh/bS1nZW9yZ2UtY2FsaW4uanBnJmhhc2g9/YTk4MTc4NGQ2Y2MzODRjZmM4YWRhN2RlMjA0MDAwZWM=.jpg",
-      "imageAlt": "Ministerul Justiției a demarat reorganizarea Administraţiei Naţionale a Penitenciarelor şi a Direcţiei Naţionale de Probaţiune",
-      "addedAt": "2026-10-27T18:09:15.096Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-newsro-liga-natiunilor-cristiano-ronaldo-se-numara-7e48da",
-      "title": "Liga Naţiunilor: Cristiano Ronaldo se numără printre jucătorii preselectionaţi în lotul Portugaliei",
-      "summary": "Federaţia Portugheză de Fotbal a anunţat, marţi, că Cristiano Ronaldo se numără printre jucătorii preselectaţi pentru următoarele meciuri din Liga Naţiunilor. Anunţul ar putea marca revenirea sa la naţionala Portugaliei, după conflictul cu selecţionerul său, Jorge Jesus.",
-      "date": "2026-10-27T17:15:46.000Z",
-      "url": "https://www.news.ro/sport/liga-natiunilor-cristiano-ronaldo-se-numara-printre-jucatorii-preselectionati-in-lotul-portugaliei-1922401527462026101922892928",
-      "source": "newsro",
-      "sourceName": "News.ro",
-      "categories": [],
-      "author": "",
-      "theme": "sport",
-      "image": "",
-      "imageAlt": "Liga Naţiunilor: Cristiano Ronaldo se numără printre jucătorii preselectionaţi în lotul Portugaliei",
-      "addedAt": "2026-10-27T18:09:19.087Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-g4media-inima-artificiala-creata-la-umf-iasi-tot-a6a6b7",
-      "title": "Inima artificială creată la UMF Iași, tot mai aproape de realitate / Se caută parteneri internaționali și finanțare pentru primele teste pe animale",
-      "summary": "Echipa MAVIS din cadrul Universității de Medicină și Farmacie „Gr. T Popa” din Iași, care lucrează la proiectul inimii artificiale distins cu numeroase premii, se va profesionaliza începând din acest an, relatează Agenția de presă Rador, care citează Radio Iași. Declarația a fost făcută marți, 27 octombrie, de către coordonatorul proiectului, profesorul doctor Alexandru Pleșoianu, […] © G4Media.ro .",
-      "date": "2026-10-27T17:13:50.000Z",
-      "url": "https://www.g4media.ro/inima-artificiala-creata-la-umf-iasi-tot-mai-aproape-de-realitate-se-cauta-parteneri-internationali-si-finantare-pentru-primele-teste-pe-animale.html",
-      "source": "g4media",
-      "sourceName": "G4Media",
-      "categories": [
-        "Articole",
-        "inima artificiala la iasi",
-        "proiectul inimii artificiale"
-      ],
-      "author": "Augustin Majearu",
-      "theme": "ai",
-      "image": "https://www.g4media.ro//wp-content/uploads/2026/08/profimedia-0606245119-scaled.jpg",
-      "imageAlt": "Inima artificială creată la UMF Iași, tot mai aproape de realitate / Se caută parteneri internaționali și finanțare pentru primele teste pe animale",
-      "addedAt": "2026-10-27T18:09:18.790Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-profit-europa-se-incalzeste-la-o-rata-dubla-fata-b34ce2",
-      "title": "Europa se încălzește la o rată dublă față de cea globală. Bruxelles-ul vine cu noi reguli pentru a spori reziliența UE la schimbările climatice",
-      "summary": "Comisia Europeană a prezentat un cadru al UE pentru reziliența la schimbările climatice, inclusiv o propunere de Lege, menite să consolideze capacitatea Europei de a anticipa, de a se pregăti și de a gestiona riscurile climatice.",
-      "date": "2026-10-27T17:06:00.000Z",
-      "url": "https://www.profit.ro/perspective/europa-se-incalzeste-la-o-rata-dubla-fata-de-cea-globala-bruxelles-ul-vine-cu-noi-reguli-pentru-a-spori-rezilienta-ue-la-schimbarile-climatice-22891883?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
-      "source": "profit",
-      "sourceName": "Profit.ro",
-      "categories": [
-        "Perspective"
-      ],
-      "author": "",
-      "theme": "politika",
-      "image": "https://i0.1616.ro/media/2/2621/33242/22891883/1/clay-4496509-1280.jpg?width=800",
-      "imageAlt": "Europa se încălzește la o rată dublă față de cea globală. Bruxelles-ul vine cu noi reguli pentru a spori reziliența UE la schimbările climatice",
-      "addedAt": "2026-10-27T18:09:13.438Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-zf-guvernul-pregateste-noi-masuri-pentru-0a5fa1",
-      "title": "Guvernul pregăteşte noi măsuri pentru companii în 2027. Alexandru Nazare: Rambursări mai rapide de TVA, sprijin pentru transportatori şi 250 mil. euro pentru Banca de Investiţii…",
-      "summary": "",
-      "date": "2026-10-27T17:05:00.000Z",
-      "url": "https://www.zf.ro/eveniment/guvernul-pregateste-noi-masuri-pentru-companii-in-2027-alexandru-nazare-rambursari-mai-rapide-de-tva-sprijin-pentru-transportatori-si-250-mil-euro-pentru-banca-de-investitii-si-dezvoltare-23269066",
-      "source": "zf",
-      "sourceName": "Ziarul Financiar",
-      "categories": [
-        "Eveniment"
-      ],
-      "author": "",
-      "theme": "politika",
-      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10386/23269066/1/8084514-mediafax-foto-alexandru-dobre.jpg?width=700",
-      "imageAlt": "Guvernul pregăteşte noi măsuri pentru companii în 2027. Alexandru Nazare: Rambursări mai rapide de TVA, sprijin pentru transportatori şi 250 mil. euro pentru Banca de Investiţii şi",
-      "addedAt": "2026-10-27T18:09:13.304Z"
-    },
-    {
-      "slug": "bukurest-2026-10-27-zf-ce-inseamna-jobul-de-trezorier-intr-o-784028",
-      "title": "Ce înseamnă jobul de trezorier într-o companie antreprenorială, într-o bancă sau într-o multinaţională? Cum jonglezi cu încasările, plăţile, cash-flow-ul, valutele şi dobânzile…",
-      "summary": "",
-      "date": "2026-10-27T16:59:22.000Z",
-      "url": "https://www.zf.ro/zf-live/inseamna-jobul-trezorier-intr-companie-antreprenoriala-intr-banca-intr-multinationala-jonglezi-incasarile-platile-cash-flow-ul-valutele-dobanzile-imprumuturile-atrase-ratele-platite-urmariti-zf-live-23269064",
-      "source": "zf",
-      "sourceName": "Ziarul Financiar",
-      "categories": [
-        "ZF Live"
-      ],
-      "author": "",
-      "theme": "rat",
-      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/24586/23269064/72/zf-live.jpg?width=700",
-      "imageAlt": "Ce înseamnă jobul de trezorier într-o companie antreprenorială, într-o bancă sau într-o multinaţională? Cum jonglezi cu încasările, plăţile, cash-flow-ul, valutele şi dobânzile, îm",
-      "addedAt": "2026-10-27T18:09:13.305Z"
     }
   ]
 }
