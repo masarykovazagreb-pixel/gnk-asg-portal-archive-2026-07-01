@@ -15,6 +15,7 @@ Checks:
   - internal <a href="/..."> targets that do not resolve
 """
 import collections
+import html as htmlmod
 import json
 import os
 import re
@@ -92,7 +93,7 @@ def main():
         if not m:
             desc["missing"] += 1
         else:
-            n = len(m.group(1))
+            n = len(htmlmod.unescape(m.group(1)))  # displayed length, not attribute length
             if n < 80:
                 desc["short"] += 1
             elif n > 160:

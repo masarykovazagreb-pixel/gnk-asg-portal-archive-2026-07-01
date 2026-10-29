@@ -31,6 +31,26 @@ AKTUAL MEDIA, izdanja, kanali i vanjske stranice) po istim pravilima.
 | Neispravne lokalne slike | 11 | 11 (`/api/img`, vidi dolje) |
 | Neispravne interne poveznice | 2 | 2 (JS predlošci) |
 
+## Faza 2: meta opisi (mjereno)
+
+`scripts/factory/normalize_meta.py` mijenja samo meta opis i njegove `og:`/`twitter:`
+kopije. Predugačke skraćuje na rečenicu ili riječ, bez dodavanja teksta.
+
+| Meta opis | Prije | Poslije |
+|---|---|---|
+| 80–160 znakova | 5.160 | 8.930 |
+| Duži od 160 znakova | 3.773 | 0 |
+| Kraći od 80 znakova | 81 | 84 (ručni pregled) |
+| Nedostaje | 1 | 1 (ručni pregled) |
+
+Dopunjavanje kratkih opisa prvom rečenicom iz teksta je isprobano i odbačeno:
+stvorilo je ponavljajuće predloške (npr. jezične trake, rubni tekst). Kratki
+opisi idu na ručni pregled.
+
+Gate: `scripts/factory/test_factory_v1.py` (u `test-all`). Pada ako nedostaje
+vidljivi redak s nazivima ili autorskim hashtagovima, ako meta opis prelazi
+160 znakova, ili ako neispravne slike/poveznice porastu iznad početnog stanja.
+
 ## Što nije u fazi 1 i zašto
 
 - **Meta opisi i naslovi.** Skraćivanje naslova po pravilu

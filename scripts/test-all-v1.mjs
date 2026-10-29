@@ -66,6 +66,7 @@ const GATES = [
   { name: 'Dizajn sustav — isti tokeni na svakom webu', cmd: ['node', 'tests/test-design-system-v1.mjs'], required: true },
   { name: 'Slike izdanja — nema crnih krugova', cmd: ['node', 'tests/test-edition-images-v1.mjs'], required: true },
   { name: 'Ugovor o brendu — jedno ime, jedan znak, jedan izdavač', cmd: ['node', 'scripts/audit-brand-contract-v1.mjs'], required: true },
+  { name: 'Tvornica — nazivi, hashtagovi, duljina meta opisa', cmd: ['python3', 'scripts/factory/test_factory_v1.py'], required: true },
   { name: 'Sinkronizacija — jedan popis koraka i redoslijed', cmd: ['node', 'tests/test-sync-pipeline-v1.mjs'], required: true },
   { name: 'Determinizam — isti ulaz, isti bajtovi', cmd: ['node', 'tests/test-build-determinism-v1.mjs'], required: true },
   { name: 'Slojevi — drugo pokretanje ne mijenja ništa', cmd: ['node', 'tests/test-layer-idempotency-v1.mjs'], required: true },
