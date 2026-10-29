@@ -61,9 +61,6 @@ jobs:
       - name: Objavi odobrene preglede
         run: node scripts/publish-agent-reviews-v1.mjs
 
-      - name: Osvježi sloj standarda na novim stranicama
-        run: node scripts/sync-all-v1.mjs --group=layers
-
       - name: Spremi red i odluke
         if: always()
         uses: actions/upload-artifact@v4

@@ -26,6 +26,8 @@ import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { killSwitchState, WRITER_ID, APPROVER_ID } from '../apps/agents/lib/policy-v1.mjs';
 import { authorBand, AUTHOR_BAND_CSS, AUTHOR_PORTRAIT, ensureAuthorPortrait } from '../apps/shared/author-band-v1.mjs';
+import { impressumBlock } from '../apps/shared/impressum-v1.mjs';
+import { houseRibbonHtml, HOUSE_RIBBON_CSS } from './lib/house-ribbon-v1.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const PORTAL = join(ROOT, 'apps', 'portal');
@@ -179,10 +181,13 @@ ${articleTags}
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/am-design-v1.css?v=20261024" data-am-design="v1">
 <link rel="stylesheet" href="/assets/author-band-v1.css?v=20261025">
+<link rel="stylesheet" href="${HOUSE_RIBBON_CSS}">
+<script src="/assets/am-refresh-v1.js?v=${item.run_date}" data-am-netday="${item.run_date}" defer></script>
 ${CSS}
 ${jsonLd({ canonical, title, description, lang, item, city, pathHr: HR_PATH(item.id), pathEn: EN_PATH(item.id) })}
 </head>
 <body>
+${houseRibbonHtml(lang)}
 <main class="ag-wrap" data-agent-review="${esc(item.id)}" data-agent-writer="${esc(WRITER_ID)}" data-agent-approver="${esc(APPROVER_ID)}">
 <p class="ag-kicker">${L.kicker} · ${esc(city)} · ${esc(item.run_date)}</p>
 <p class="ag-byline">${isHr ? `Autor: AI agent ${esc(WRITER_ID)} (GNK ASG) · Odobrio: AI kontrolni agent ${esc(APPROVER_ID)} · Urednik: Nermin Sefić, direktor GNK ASG d.o.o. i glavni urednik AKTUAL MEDIA` : `Author: AI agent ${esc(WRITER_ID)} (GNK ASG) · Approved by: AI control agent ${esc(APPROVER_ID)} · Editor: Nermin Sefić, director of GNK ASG d.o.o. and editor-in-chief of AKTUAL MEDIA`}</p>
@@ -204,6 +209,7 @@ ${sourceList}
 <p class="ag-src">${esc(relatedLinks)}</p>
 ${band}
 </main>
+${impressumBlock(lang)}
 </body>
 </html>
 `;
@@ -211,6 +217,7 @@ ${band}
 
 export function renderIndex(items, lang) {
   const isHr = lang === 'hr';
+  const ITEMS_DAY = items.map((i) => i.run_date).sort().pop() || new Date().toISOString().slice(0, 10);
   const canonical = isHr ? `${SITE}/agenti/pregledi/` : `${SITE}/en/agents/reviews/`;
   const title = isHr ? 'AI pregledi aktualnih tema — AKTUAL MEDIA' : 'AI reviews of current topics — AKTUAL MEDIA';
   const description = isHr
@@ -243,6 +250,8 @@ export function renderIndex(items, lang) {
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/am-design-v1.css?v=20261024" data-am-design="v1">
 <link rel="stylesheet" href="/assets/author-band-v1.css?v=20261025">
+<link rel="stylesheet" href="${HOUSE_RIBBON_CSS}">
+<script src="/assets/am-refresh-v1.js?v=${ITEMS_DAY}" data-am-netday="${ITEMS_DAY}" defer></script>
 ${CSS}
 <script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@graph': [
     { '@type': 'CollectionPage', '@id': `${canonical}#page`, name: title, description, url: canonical, inLanguage: isHr ? 'hr' : 'en', publisher: { '@id': `${SITE}/#gnk-asg` }, editor: { '@id': `${SITE}/#nermin-sefic` }, hasPart: items.map((it) => ({ '@type': 'Article', headline: it[lang].title, url: `${SITE}${isHr ? HR_PATH(it.id) : EN_PATH(it.id)}`, datePublished: it.run_date })) },
@@ -251,6 +260,7 @@ ${CSS}
   ] })}</script>
 </head>
 <body>
+${houseRibbonHtml(isHr ? 'hr' : 'en')}
 <main class="ag-wrap">
 <p class="ag-kicker">${isHr ? 'AI agenti · pregledi' : 'AI agents · reviews'}</p>
 <h1>${isHr ? 'AI pregledi aktualnih tema' : 'AI reviews of current topics'}</h1>
@@ -261,6 +271,7 @@ ${cards || `<p>${isHr ? 'Trenutno nema odobrenih pregleda.' : 'There are no appr
 <nav class="ag-nav">${isHr ? '<a href="/agenti/">← Agenti mreže</a>' : ''}<a href="${alt}">${isHr ? 'English' : 'Hrvatski'}</a></nav>
 ${authorBand(lang, undefined, { portrait: '/assets/people/nermin-sefic.webp' })}
 </main>
+${impressumBlock(lang)}
 </body>
 </html>
 `;
