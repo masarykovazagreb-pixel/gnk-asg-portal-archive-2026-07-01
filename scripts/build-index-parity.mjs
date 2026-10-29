@@ -67,7 +67,7 @@ function circle(c, lang) {
   const label = en
     ? `AKTUAL MEDIA CHANNEL ${String(city).toUpperCase()} — ${esc(city)}`
     : `AKTUAL MEDIA KANAL ${String(city).toUpperCase()} — ${esc(city)}`;
-  return `<li class="amz-i"><a href="${href}" aria-label="${label}"${c.lang === 'en' ? ' hreflang="en"' : ''}><span class="amz-img"><img src="/assets/izdanja/${c.id}-440.webp" srcset="/assets/izdanja/${c.id}-240.webp 240w, /assets/izdanja/${c.id}-440.webp 440w" sizes="(max-width:980px) 92px, (max-width:1240px) 12vw, 160px" alt="${label}" width="440" height="296" loading="lazy" decoding="async"></span><b>${esc(city)}</b><small>${esc(c.lang)}</small></a></li>`;
+  return `<li class="amz-i"><a href="${href}" aria-label="${label}"${c.lang === 'en' ? ' hreflang="en"' : ''}><span class="amz-img"><img src="/assets/izdanja/${c.id}-440.webp" srcset="/assets/izdanja/${c.id}-240.webp 240w, /assets/izdanja/${c.id}-440.webp 440w" sizes="(max-width:980px) 92px, (max-width:1240px) 12vw, 160px" alt="${label}" width="440" height="296" decoding="async"></span><b>${esc(city)}</b><small>${esc(c.lang)}</small></a></li>`;
 }
 
 /* Dva samostalna portala: iste pločice kao kanali, ali vanjska domena.
@@ -78,7 +78,7 @@ function portalTiles(lang) {
     { id: 'arhiva', url: `https://gnk-asg-arhiva.pages.dev/${en ? 'en/' : ''}`, label: en ? `AKTUAL ARCHIVE — ${enCount(archiveCount())} stories from the city editions, with originals. Opens the archive portal.` : `AKTUAL ARHIVA — ${hrCount(archiveCount())} tekstova gradskih izdanja, s izvornikom. Otvara arhivu na zasebnoj domeni.`, name: en ? 'ARCHIVE' : 'ARHIVA', lang: en ? 'en' : 'hr' },
     { id: 'dnevnik', url: `https://gnk-asg-dnevnik.pages.dev/${en ? 'en/' : ''}`, label: en ? 'AKTUAL DAILY — one day, every city that published, hour by hour. Opens the daily portal.' : 'AKTUAL DNEVNIK — jedan dan, svi gradovi koji su objavili, po satima. Otvara dnevnik na zasebnoj domeni.', name: en ? 'DAILY' : 'DNEVNIK', lang: en ? 'en' : 'hr' },
   ];
-  return items.map((p) => `<li class="amz-i amz-i--portal"><a href="${p.url}" rel="external noopener" aria-label="${esc(p.label)}"><span class="amz-img"><img src="/assets/izdanja/${p.id}-440.webp" srcset="/assets/izdanja/${p.id}-240.webp 240w, /assets/izdanja/${p.id}-440.webp 440w" sizes="(max-width:980px) 92px, (max-width:1240px) 12vw, 160px" alt="${esc(p.label)}" width="440" height="294" loading="lazy" decoding="async"></span><b>${esc(p.name)}</b><small>${esc(p.lang)}</small></a></li>`).join('');
+  return items.map((p) => `<li class="amz-i amz-i--portal"><a href="${p.url}" rel="external noopener" aria-label="${esc(p.label)}"><span class="amz-img"><img src="/assets/izdanja/${p.id}-440.webp" srcset="/assets/izdanja/${p.id}-240.webp 240w, /assets/izdanja/${p.id}-440.webp 440w" sizes="(max-width:980px) 92px, (max-width:1240px) 12vw, 160px" alt="${esc(p.label)}" width="440" height="294" decoding="async"></span><b>${esc(p.name)}</b><small>${esc(p.lang)}</small></a></li>`).join('');
 }
 
 function deskStrip(lang) {

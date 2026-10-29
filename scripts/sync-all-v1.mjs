@@ -85,6 +85,8 @@ export const STEPS = [
   { id: 'agents-page', group: 'layers', file: 'scripts/build-agents-page-v1.mjs', why: 'javna ploča agenata' },
   { id: 'refresh', group: 'layers', file: 'scripts/apply-refresh-v1.mjs', check: ['--check'], why: 'osvježavanje na svakoj stranici' },
   { id: 'entity', group: 'layers', file: 'scripts/apply-network-entity-v1.mjs', why: 'entity:v1 graf na svakoj stranici' },
+  { id: 'agent-sitemap-index', group: 'layers', file: 'scripts/ensure-agent-sitemap-index-v1.mjs', why: 'sitemap pregleda agenata u sitemap-indeksu' },
+  { id: 'nermin-tags', group: 'layers', file: 'scripts/apply-nermin-tags-v1.mjs', args: ['--all'], why: 'oznake Nermina Sefića: 152 njegove stranice i glavne AKTUAL MEDIA stranice (početna, izdanja, mreža, gradovi)' },
 
   /* ---------- 3. PROVJERE ---------- */
   { id: 'region-audit', group: 'audit', file: 'apps/region/engine/audit.mjs', why: 'izdanja — unutrašnja dosljednost' },
