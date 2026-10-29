@@ -1,0 +1,53 @@
+# Tvornica sadržaja — faza 1 (29. 10. 2026.)
+
+Cilj: jedan centar koji mjeri, popravlja i objavljuje sve stranice (GNK ASG,
+AKTUAL MEDIA, izdanja, kanali i vanjske stranice) po istim pravilima.
+
+## Što je u fazi 1
+
+- `scripts/factory/audit_portal.py`: read-only revizija svih indeksabilnih
+  stranica. Sprema `artifacts/factory/audit.json`. Ne mijenja stranice.
+- Vidljivi redak s nazivima (Nermin Sefić, GNK ASG, AKTUAL MEDIA, GNK DINAMO
+  Ltd) na svim stranicama gdje nedostaje. Dodano na 12 stranica.
+- Vidljivi redak s autorskim hashtagovima (#NerminSefić, #NerminSefic) i
+  zajedničkim hashtagovima (#AktualMedia, #GNKASG, #MrezaIzdanja) na 1.003
+  stranice koje ih nisu imale.
+
+## Stanje nakon faze 1 (mjereno)
+
+| Provjera | Prije | Poslije |
+|---|---|---|
+| Indeksabilne stranice | 9.015 | 9.015 |
+| Nazivi vidljivi na svim stranicama | 9.011 | 9.015 |
+| Vidljivi hashtagovi | 8.556 | 9.015 |
+| Autorski hashtagovi (#NerminSefić / #NerminSefic) | 8.012 | 9.015 |
+| Obrnute varijante imena (#SeficNermin, #SEFICNERMIN) | 7.376 | 7.376 (ostavljeno, odluka vlasnika) |
+| Meta opis 80–160 znakova | 5.160 | 5.160 |
+| Meta opis >160 znakova | 3.773 | 3.773 |
+| Meta opis <80 znakova | 81 | 81 |
+| Meta opis nedostaje | 1 | 1 |
+| Naslov >60 znakova | 7.602 | 7.602 |
+| Ponovljeni odlomci (≥50 stranica) | 276 | 276 |
+| Neispravne lokalne slike | 11 | 11 (`/api/img`, vidi dolje) |
+| Neispravne interne poveznice | 2 | 2 (JS predlošci) |
+
+## Što nije u fazi 1 i zašto
+
+- **Meta opisi i naslovi.** Skraćivanje naslova po pravilu
+  `EDITORIAL-CONTENT-DEPTH-RULE.md` zahtijeva ručni pregled. Prije toga ne
+  mijenjam ih automatski.
+- **Ponovljeni odlomci.** Najčešći je rubni tekst na 6.841 stranici u
+  zajedničkom sidebaru. To je zajednički sloj, pa se mijenja zasebnom fazom.
+- **Vanjske slike u krugovima.** Slike idu kroz `workers/gnk-asg-direct-operator/src/image-proxy-v1.js`
+  (`/api/img`) s popisom dopuštenih hostova. Pločice gradova koriste lokalne
+  slike iz `apps/portal/assets/izdanja/`. Sljedeća faza: proširiti popis
+  hostova i provjeriti da se slike vraćaju za sve države.
+- **Obrnute varijante imena.** Vlasnik je odlučio da se ostave.
+
+## Sljedeće faze (predložene)
+
+1. Dnevni audit kao GitHub workflow, s rezultatom u `artifacts/factory/audit.json`.
+2. Generatori: ugraditi redak s nazivima i hashtagovima u predloške, da se
+   stranice ne vraćaju na staro stanje pri svakom buildu.
+3. Provjera kvalitete slika (rezolucija, duplikati, licenca) s pisanim zapisom.
+4. Proširenje na nove države kroz isti predložak i isti popis izvora.
