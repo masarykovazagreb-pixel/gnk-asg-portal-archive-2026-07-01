@@ -1360,7 +1360,7 @@ export function buildChannel(channel) {
     const list = data.items.filter((i) => i.source === source.id);
     write(`izvor/${source.id}/index.html`, listPage(channel, strings, {
       title: `${source.name} — ${channel.title}`,
-      description: chromeOf(channel.lang).sourceDesc(source.name, channel.title),
+      description: clip(`${source.name}: ${chromeOf(channel.lang).sourceDesc(source.name, channel.title)}${list[0] ? ' ' + list[0].title : ''}`, 200),
       path: `izvor/${source.id}/`, items: list,
       lead: `${source.name} · ${list.length}`
     }));

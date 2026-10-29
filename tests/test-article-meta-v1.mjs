@@ -58,6 +58,8 @@ const extra = [];
 if (existsSync(dir)) for (const city of readdirSync(dir)) {
   const td = join(dir, city, 'tema');
   if (existsSync(td)) for (const t of readdirSync(td)) { const f = join(td, t, 'index.html'); if (existsSync(f)) extra.push(f); }
+  const id = join(dir, city, 'izvor');
+  if (existsSync(id)) for (const t of readdirSync(id)) { const f = join(id, t, 'index.html'); if (existsSync(f)) extra.push(f); }
 }
 const gdir = join(ROOT, 'apps/portal/galerija');
 if (existsSync(gdir)) for (const g of readdirSync(gdir)) { const f = join(gdir, g, 'index.html'); if (existsSync(f)) extra.push(f); }
@@ -77,4 +79,4 @@ if (fails.length) {
   for (const f of fails.slice(0, 20)) console.error('  ✗', f);
   process.exit(1);
 }
-console.log(`PASS test-article-meta-v1 (uzorak ${checked} članaka; tema i galerija ${extraChecked})`);
+console.log(`PASS test-article-meta-v1 (uzorak ${checked} članaka; tema, izvori i galerija ${extraChecked})`);
