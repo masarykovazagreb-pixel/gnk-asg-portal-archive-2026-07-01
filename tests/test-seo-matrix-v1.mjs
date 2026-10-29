@@ -66,7 +66,7 @@ for (const route of matrix.routes || []) {
   seen.add(route.url);
   if (route.score !== 100) fails.push(`${label}: ocjena ${route.score}`);
   if ((route.issues || []).length) fails.push(`${label}: ${route.issues.join(', ')}`);
-  if (route.title.length < 15 || route.title.length > 90) fails.push(`${label}: naslov ${route.title.length}`);
+  if (typeof route.title !== 'string' || route.title.length < 15 || route.title.length > 90) fails.push(`${label}: naslov ${typeof route.title === 'string' ? route.title.length : 'nedostaje'}`);
   if (route.descriptionLength < 80 || route.descriptionLength > 320) fails.push(`${label}: opis ${route.descriptionLength}`);
   if (!/^https:\/\//.test(route.canonical)) fails.push(`${label}: canonical nije https`);
   for (const lang of ['hr', 'en', 'x-default']) if (!(route.hreflang || []).includes(lang)) fails.push(`${label}: nema hreflang ${lang}`);
