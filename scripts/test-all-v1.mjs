@@ -134,6 +134,16 @@ const failedRequired = required.filter((r) => !r.ok);
 const advisoryFailed = results.filter((r) => !r.required && !r.ok);
 const passed = results.filter((r) => r.ok).length;
 
+// U GitHub Actionsu svaki pali obavezni gate dobiva anotaciju s imenom i
+// zadnjim redovima izlaza, da se uzrok vidi i bez pristupa dnevniku koraka.
+if (process.env.GITHUB_ACTIONS === 'true') {
+  for (const r of failedRequired) {
+    const detail = r.output.split('\n').filter(Boolean).slice(-3).join(' | ')
+      .replace(/[\r\n]/g, ' ').replace(/%/g, '%25').slice(0, 900);
+    console.log(`::error title=Obavezna provjera pala::${r.name} (${r.cmd.join(' ')}) — ${detail}`);
+  }
+}
+
 if (JSON_OUT) {
   console.log(JSON.stringify({
     ok: failedRequired.length === 0,
