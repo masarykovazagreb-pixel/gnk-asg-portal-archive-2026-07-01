@@ -7,7 +7,7 @@ Podatkovni dan: 2026-10-29.
 
 | Što | Broj |
 | --- | --- |
-| Stranica ukupno | 11.833 |
+| Stranica ukupno | 11.845 |
 | Webova | 7 |
 | Tekstova u podacima | 6.917 |
 | Gradskih izdanja | 17 |
@@ -20,7 +20,7 @@ Podatkovni dan: 2026-10-29.
 
 | Web | Stranica | Tipovi | Zadnji datum |
 | --- | --- | --- | --- |
-| GNK ASG (glavna domena) | 2.676 | stranica 2077, engleska inačica 533, pregled 64, izvor 1, naslovnica 1 | 2026-10-29 |
+| GNK ASG (glavna domena) | 2.688 | stranica 2083, engleska inačica 539, pregled 64, izvor 1, naslovnica 1 | 2026-10-29 |
 | GNK World — svjetski portali | 1.052 | prenos 603, stranica 306, tema 81, izvor 53, pregled 9 | 2026-10-29 |
 | GNK ASG KANAL | 128 | stranica 121, tema 6, naslovnica 1 | 2026-10-28 |
 | AKTUAL ARHIVA | 38 | engleska inačica 19, stranica 18, naslovnica 1 | 2026-10-29 |
