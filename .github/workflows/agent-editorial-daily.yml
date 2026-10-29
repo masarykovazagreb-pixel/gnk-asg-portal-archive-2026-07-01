@@ -1,0 +1,65 @@
+name: AGENTI — pisac i AI kontrola pregleda
+
+# Svakodnevni pregled aktualnih tema: pisac agent sastavlja HR i EN preglede iz
+# javnih izvora (apps/region/data, sa atribucijom i linkom na izvornik), a AI
+# kontrolni agent (AGENT-KONTROLA-001) odobrava ili odbija svaku objavu.
+# Čovjek ne odobrava objave. Ništa se ne commitа i ne pusha (contents: read);
+# red i odluke dolaze kao artefakt. Vidi apps/agents/lib/policy-v1.mjs.
+#
+# Ručno: Actions → "AGENTI — pisac i AI kontrola pregleda" → Run workflow.
+
+on:
+  schedule:
+    # 05:52 UTC = 07:52 Zagreb: nakon jutarnjeg osvježavanja izvora, prije dnevnog izdanja.
+    - cron: '52 5 * * *'
+  workflow_dispatch:
+  push:
+    paths:
+      - 'apps/agents/**'
+      - 'scripts/validate-agent-editorial-queue-v1.mjs'
+      - 'tests/test-agent-editorial-pipeline-v1.mjs'
+      - '.github/workflows/agent-editorial-daily.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agent-editorial-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pregled:
+    name: Pisac i AI kontrola
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Dohvati granu
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Testovi agenata
+        run: node tests/test-agent-editorial-pipeline-v1.mjs
+
+      - name: Pisac — sastavi preglede iz svježih izvora
+        run: node apps/agents/writer-agent-v1.mjs
+
+      - name: AI kontrola — odobri ili odbij svaku objavu
+        run: node apps/agents/control-agent-v1.mjs
+
+      - name: Validiraj red objava
+        run: node scripts/validate-agent-editorial-queue-v1.mjs
+
+      - name: Spremi red i odluke
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-editorial-${{ github.run_id }}
+          path: artifacts/agent-editorial/
+          if-no-files-found: warn
+          retention-days: 30
