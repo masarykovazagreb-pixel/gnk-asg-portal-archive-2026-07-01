@@ -112,10 +112,16 @@ def main():
                 seen.add(s)
                 para_pages[s] += 1
 
+        # /api/... je ruta workera (slike kroz posrednika), nije datoteka u PORTAL-u.
+        # Predložak u JS-u ('/x/'+id+'/') nije stvarna veza; ne broji se kao slomljena.
         for src in set(re.findall(r'<img[^>]+src="(/[^"?#]+)', html)):
+            if src.startswith("/api/"):
+                continue
             if not os.path.isfile(os.path.join(PORTAL, urllib.parse.unquote(src).lstrip("/"))):
                 broken_img[src] += 1
         for href in set(re.findall(r'<a [^>]*href="(/[^"#?]*)', html)):
+            if "'" in href or "$" in href or "+" in href:
+                continue
             if not resolves(urllib.parse.unquote(href)):
                 broken_href[href] += 1
 

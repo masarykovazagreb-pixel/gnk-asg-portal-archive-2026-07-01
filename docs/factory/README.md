@@ -66,8 +66,30 @@ vidljivi redak s nazivima ili autorskim hashtagovima, ako meta opis prelazi
   (2.440 / 2.150), napomena o automatskom sastavljanju (1.692). To su pravne i
   transparentne oznake pa ih ne mijenjam.
 
+## Faza 4: integracija s dnevnim botom (29. 10. 2026.)
+
+- Bot `region-daily` je na istoj grani commitao puni ciklus (7.608 datoteka) bez
+  naših slojeva. Rebase je prošao bez konflikata; standard i slojevi su vraćeni
+  i `test-all` je 82/82.
+- Uzrok: workflowi su imali vlastite ručne liste koraka (dvije kopije popisa).
+  Sada `region-daily.yml` i `region-deploy.yml` zovu `scripts/sync-all-v1.mjs
+  --group=layers` (jedini popis), a `apply_standard.py` ide prije i poslije slojeva.
+- Dnevni `editorial-scheduled-publish.yml` je nakon generatora tjedne arhive
+  (`build-aktual-media-weekly-archive-v1.mjs --refresh`) brisao slojeve i redak s
+  hashtagovima na 4 tjedne stranice (HR/EN). Sada nakon generatora ide standard i
+  slojevi.
+- U `sync-all` je `social-cards` premješten nakon `agents-page` (koji generira
+  `/agenti/` i `/sve-stranice/`); inače je te stranice gubile `og:image`.
+- Revizor (`audit_portal.py`) je prijavljivao lažne greške: `/api/img` je ruta
+  workera, a `'/visual-index/'+item.id+'/'` je predložak u JS-u. Sada se ne
+  broje. Stvarno stanje: 0 slomljenih slika i veza.
+- Index pločice svjetskih gradova: verzija slike `?v=20261029` u generatoru
+  (`scripts/build-index-parity.mjs`). Uzrok na live stranici nije potvrđen iz
+  sandboxa (gnk-asg.hr nije dostupan); potrebna je provjera u DevTools Network.
+
 ## Što nije u fazi 1 i zašto
 
+- **Naslovi >60 znakova (7.611).** Ručni pregled prema `EDITORIAL-CONTENT-DEPTH-RULE.md`.
 - **Meta opisi i naslovi.** Skraćivanje naslova po pravilu
   `EDITORIAL-CONTENT-DEPTH-RULE.md` zahtijeva ručni pregled. Prije toga ne
   mijenjam ih automatski.
