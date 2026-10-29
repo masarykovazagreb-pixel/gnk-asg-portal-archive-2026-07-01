@@ -28,13 +28,6 @@
 <link rel="stylesheet" href="/assets/gnk-design-v1.css?v=20261020-fleet">
 <link rel="stylesheet" href="/automation-status/flota/fleet.css?v=20261020-fleet">
 <link rel="stylesheet" href="/assets/author-band-v1.css?v=20261025">
-<meta property="og:image" content="https://gnk-asg.hr/assets/gnk-asg-social-card.png"><meta property="og:image:alt" content="Flota automatizacija — sve worker grupe i rasporedi | GNK ASG · AKTUAL MEDIA"><meta name="twitter:image" content="https://gnk-asg.hr/assets/gnk-asg-social-card.png"><meta name="twitter:image:alt" content="Flota automatizacija — sve worker grupe i rasporedi | GNK ASG · AKTUAL MEDIA">
-<!-- entity:v1 -->
-<script type="application/ld+json" id="network-entity-v1">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://gnk-asg.hr/#gnk-asg","name":"GNK ASG d.o.o.","url":"https://gnk-asg.hr/","parentOrganization":{"@id":"https://gnk-asg.hr/#gnk-dinamo-ltd"},"founder":{"@id":"https://gnk-asg.hr/#nermin-sefic"}},{"@type":"Organization","@id":"https://gnk-asg.hr/#gnk-dinamo-ltd","name":"GNK DINAMO Ltd.","url":"https://gnk-asg.hr/pojasnjenje-gnk-asg-i-gnk-dinamo-ltd/"},{"@type":"NewsMediaOrganization","@id":"https://gnk-asg.hr/gnk-aktual/#aktual-media","name":"AKTUAL MEDIA","alternateName":["AKTUAL MEDIA d.o.o.","Aktual Media","Aktual medija"],"url":"https://gnk-asg.hr/gnk-aktual/","parentOrganization":{"@id":"https://gnk-asg.hr/#gnk-asg"},"editor":{"@id":"https://gnk-asg.hr/#nermin-sefic"}},{"@type":"Person","@id":"https://gnk-asg.hr/#nermin-sefic","name":"Nermin Sefić","alternateName":["Nermin Sefic","Sefic Nermin","Sefić Nermin"],"jobTitle":"Glavni urednik AKTUAL MEDIA, direktor GNK ASG d.o.o.","url":"https://gnk-asg.hr/nermin-sefic/","worksFor":[{"@id":"https://gnk-asg.hr/#gnk-asg"},{"@id":"https://gnk-asg.hr/gnk-aktual/#aktual-media"}],"affiliation":{"@id":"https://gnk-asg.hr/#gnk-dinamo-ltd"}}]}</script>
-<!-- /entity:v1 -->
-<meta name="editor" content="Nermin Sefić">
-<meta property="article:tag" content="#AKTUALMEDIA">
-<meta property="article:tag" content="#GNKASG">
 </head>
 <body class="gnk-page">
 <a class="gnk-skip" href="#glavni-sadrzaj">Preskoči na sadržaj</a>
@@ -54,9 +47,9 @@
   <h1 class="gnk-h1">Flota automatizacija</h1>
   <p class="gnk-lead">Svaka automatizacija u repozitoriju, razvrstana u radne skupine. Raspored se čita iz stvarnih cron izraza u workflow datotekama, a ishod iz zadnjeg zabilježenog GitHub Actions runa. Gdje runa nema, stranica to kaže — ništa se ne pretpostavlja.</p>
   <div class="fl-pills">
-    <span class="gnk-pill"><b>342</b> automatizacija</span>
-    <span class="gnk-pill"><b>36</b> na rasporedu</span>
-    <span class="gnk-pill"><b>246</b> pokretanja / dan</span>
+    <span class="gnk-pill"><b>344</b> automatizacija</span>
+    <span class="gnk-pill"><b>38</b> na rasporedu</span>
+    <span class="gnk-pill"><b>248</b> pokretanja / dan</span>
     <span class="gnk-pill"><b>57</b> s poviješću runova</span>
   </div>
   <p class="fl-stamp">Povijest runova prikupljena: <time datetime="2026-10-20T14:51:28.272Z">20. 10. 2026. 14:51 UTC</time></p>
@@ -440,12 +433,19 @@
     <header class="fl-group-head">
       <span class="fl-num-badge">12</span>
       <h2 id="h-ostalo">Ostalo</h2>
-      <p class="fl-stat-line">5 automatizacija · 5 na rasporedu · 37 pokretanja dnevno</p>
+      <p class="fl-stat-line">6 automatizacija · 6 na rasporedu · 38 pokretanja dnevno</p>
     </header>
     <div class="fl-scroll">
     <table class="fl-table">
       <thead><tr><th scope="col">Automatizacija</th><th scope="col">Raspored</th><th scope="col">/ dan</th><th scope="col">Zadnji run</th><th scope="col">Ishod</th></tr></thead>
       <tbody>
+      <tr>
+        <th scope="row"><a class="fl-file" href="https://github.com/masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01/actions/workflows/agent-editorial-daily.yml" rel="noopener" title="Otvori u Actions">agent-editorial-daily.yml</a></th>
+        <td class="fl-mono">52 5 * * *</td>
+        <td class="fl-num">1</td>
+        <td class="fl-mono"><span class="fl-mut">—</span></td>
+        <td><span class="fl-badge fl-mut">Nema zapisa</span></td>
+      </tr>
       <tr>
         <th scope="row"><a class="fl-file" href="https://github.com/masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01/actions/workflows/arhiva-deploy.yml" rel="noopener" title="Otvori u Actions">arhiva-deploy.yml</a></th>
         <td class="fl-mono">35 1,7,13,19 * * *</td>
@@ -493,8 +493,8 @@
       <p class="fl-stat-line">Automatizacije koje ne pripadaju nijednoj radnoj skupini. Popis je potpun, bez izostavljanja.</p>
     </header>
     <details class="fl-details" open>
-      <summary>Izvan skupina <b>5</b></summary>
-      <ul class="fl-list"><li><span class="fl-file">arhiva-deploy.yml</span><span class="fl-badge fl-mut">Nema zapisa</span></li><li><span class="fl-file">autonomija-365.yml</span><span class="fl-badge fl-mut">Nema zapisa</span></li><li><span class="fl-file">dnevnik-deploy.yml</span><span class="fl-badge fl-mut">Nema zapisa</span></li><li><span class="fl-file">network-agents-daily.yml</span><span class="fl-badge fl-mut">Nema zapisa</span></li><li><span class="fl-file">sites-deploy.yml</span><span class="fl-badge fl-mut">Nema zapisa</span></li></ul>
+      <summary>Izvan skupina <b>6</b></summary>
+      <ul class="fl-list"><li><span class="fl-file">agent-editorial-daily.yml</span><span class="fl-badge fl-mut">Nema zapisa</span></li><li><span class="fl-file">arhiva-deploy.yml</span><span class="fl-badge fl-mut">Nema zapisa</span></li><li><span class="fl-file">autonomija-365.yml</span><span class="fl-badge fl-mut">Nema zapisa</span></li><li><span class="fl-file">dnevnik-deploy.yml</span><span class="fl-badge fl-mut">Nema zapisa</span></li><li><span class="fl-file">network-agents-daily.yml</span><span class="fl-badge fl-mut">Nema zapisa</span></li><li><span class="fl-file">sites-deploy.yml</span><span class="fl-badge fl-mut">Nema zapisa</span></li></ul>
     </details>
   </section>
   <section class="fl-links">
