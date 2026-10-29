@@ -103,6 +103,7 @@ const GATES = [
   { name: 'Agenti — pisac i AI kontrola pregleda', cmd: ['node', 'tests/test-agent-editorial-pipeline-v1.mjs'], required: true },
   { name: 'Agenti — red objava i odobrenja kontrolnog agenta', cmd: ['node', 'scripts/validate-agent-editorial-queue-v1.mjs'], required: true },
   { name: 'Agenti — objava odobrenih pregleda (HR/EN, JSON-LD, hreflang)', cmd: ['node', 'tests/test-agent-publish-v1.mjs'], required: true },
+  { name: 'Nermin Sefić — oznake, glavni urednik i grupa na svim stranicama', cmd: ['node', 'tests/test-nermin-tags-v1.mjs'], required: true },
 ];
 
 function run(gate) {
