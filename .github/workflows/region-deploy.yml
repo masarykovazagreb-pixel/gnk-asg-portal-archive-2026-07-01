@@ -42,6 +42,8 @@ jobs:
           set -euo pipefail
           node apps/region/engine/build.mjs
           node apps/region/engine/hub.mjs
+          # Tvornica: standard (nazivi, hashtagovi, meta duljina) nakon generatora
+          python3 scripts/factory/apply_standard.py
           node apps/region/engine/audit.mjs
           node scripts/audit-aktual-brand-indexability-v1.mjs --strict
           # Kanali su sada pod glavnom domenom: apps/portal/kanal/<id>/ ; apps/region/site/<id>/ je samo 301 stub.

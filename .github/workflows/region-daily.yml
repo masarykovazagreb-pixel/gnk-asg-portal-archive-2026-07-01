@@ -87,6 +87,8 @@ jobs:
           node scripts/build-top-teme-v1.mjs
           node scripts/audit-top-teme-v1.mjs
           node apps/region/engine/hub.mjs
+          # Tvornica: standard (nazivi, hashtagovi, meta duljina) nakon generatora
+          python3 scripts/factory/apply_standard.py
           node scripts/knowledge-center-hr-sync-v1.mjs --apply
           node apps/region/engine/audit.mjs
           node scripts/audit-aktual-brand-indexability-v1.mjs --strict

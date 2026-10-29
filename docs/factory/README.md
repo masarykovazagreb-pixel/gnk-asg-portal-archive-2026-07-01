@@ -51,6 +51,21 @@ Gate: `scripts/factory/test_factory_v1.py` (u `test-all`). Pada ako nedostaje
 vidljivi redak s nazivima ili autorskim hashtagovima, ako meta opis prelazi
 160 znakova, ili ako neispravne slike/poveznice porastu iznad početnog stanja.
 
+## Faza 3: standard koji preživi build
+
+- `scripts/factory/apply_standard.py` pokreće se nakon generatora u
+  `region-daily.yml` i `region-deploy.yml` (odmah nakon `hub.mjs`). Dodaje redak s
+  nazivima i hashtagovima ako fale, skraćuje predugačke meta opise i zamjenjuje
+  ponovljenu uvodnu rečenicu mreže s šest formulacija istog značenja (izbor po
+  putanji stranice, stabilno između buildova).
+- Ponovljena uvodna rečenica („The newest headline from each other…”,
+  „Kolumne, autorski tekstovi…”) bila je na 6.841 odnosno 5.576 stranica. Nakon
+  varijanti nijedna formulacija nije iznad ~1.140 stranica.
+- Ostali česti odlomci su namjerni: obavijest o botu za komentare (2.949),
+  autorski okvir s kontaktom (2.440 / 2.150), obavijest o uredničkoj politici
+  (2.440 / 2.150), napomena o automatskom sastavljanju (1.692). To su pravne i
+  transparentne oznake pa ih ne mijenjam.
+
 ## Što nije u fazi 1 i zašto
 
 - **Meta opisi i naslovi.** Skraćivanje naslova po pravilu
