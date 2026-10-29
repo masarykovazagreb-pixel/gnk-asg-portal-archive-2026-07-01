@@ -99,7 +99,9 @@ if (process.argv[1] && process.argv[1] === fileURLToPath(import.meta.url)) {
     return [...fixed, ...cities.map((c) => join('kanal', c, 'index.html'))]
       .map((r) => join(PORTAL, r)).filter((f) => existsSync(f));
   };
-  const files = HUB ? hubFiles() : walk(PORTAL).filter((f) => isNerminPage(relative(PORTAL, f)));
+  const ALL = process.argv.includes('--all');
+  const files = ALL ? [...new Set([...walk(PORTAL).filter((f) => isNerminPage(relative(PORTAL, f))), ...hubFiles()])]
+    : HUB ? hubFiles() : walk(PORTAL).filter((f) => isNerminPage(relative(PORTAL, f)));
   let changed = 0;
   let skipped = 0;
   for (const file of files) {

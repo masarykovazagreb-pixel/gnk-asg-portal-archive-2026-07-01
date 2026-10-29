@@ -275,6 +275,22 @@
       "optional": false
     },
     {
+      "id": "agent-sitemap-index",
+      "group": "layers",
+      "file": "scripts/ensure-agent-sitemap-index-v1.mjs",
+      "why": "sitemap pregleda agenata u sitemap-indeksu",
+      "slow": false,
+      "optional": false
+    },
+    {
+      "id": "nermin-tags",
+      "group": "layers",
+      "file": "scripts/apply-nermin-tags-v1.mjs",
+      "why": "oznake Nermina Sefića: 152 njegove stranice i glavne AKTUAL MEDIA stranice (početna, izdanja, mreža, gradovi)",
+      "slow": false,
+      "optional": false
+    },
+    {
       "id": "region-audit",
       "group": "audit",
       "file": "apps/region/engine/audit.mjs",
@@ -579,7 +595,7 @@
       "id": "arhiva",
       "kind": "portal",
       "url": "",
-      "newest": "2026-10-29T11:04:18.131Z",
+      "newest": "2026-10-29T15:13:51.169Z",
       "pages": 12
     },
     {
@@ -600,256 +616,256 @@
       "id": "beograd",
       "kind": "izdanje",
       "url": "https://gnk-asg.hr/kanal/beograd/",
-      "newest": "2026-10-29T10:46:10.215Z",
+      "newest": "2026-10-29T14:52:40.794Z",
       "pages": 18
     },
     {
       "id": "bor-usa",
       "kind": "web",
       "url": "",
-      "newest": "2026-10-29T11:04:17.787Z",
+      "newest": "2026-10-29T15:13:50.801Z",
       "pages": 19
     },
     {
       "id": "budimpesta",
       "kind": "izdanje",
       "url": "https://gnk-asg.hr/kanal/budimpesta/",
-      "newest": "2026-10-29T10:48:28.559Z",
+      "newest": "2026-10-29T14:55:22.127Z",
       "pages": 18
     },
     {
       "id": "bukurest",
       "kind": "izdanje",
       "url": "https://gnk-asg.hr/kanal/bukurest/",
-      "newest": "2026-10-29T10:52:41.837Z",
+      "newest": "2026-10-29T15:00:20.985Z",
       "pages": 18
     },
     {
       "id": "dnevnik",
       "kind": "portal",
       "url": "",
-      "newest": "2026-10-29T11:04:19.851Z",
+      "newest": "2026-10-29T15:13:53.001Z",
       "pages": 12
     },
     {
       "id": "izbori-srbija",
       "kind": "web",
       "url": "",
-      "newest": "2026-10-29T11:04:17.863Z",
+      "newest": "2026-10-29T15:13:50.881Z",
       "pages": 20
     },
     {
       "id": "jakarta",
       "kind": "izdanje",
       "url": "https://gnk-asg.hr/kanal/jakarta/",
-      "newest": "2026-10-29T10:55:02.653Z",
+      "newest": "2026-10-29T15:03:05.553Z",
       "pages": 18
     },
     {
       "id": "jakarta",
       "kind": "svijet",
       "url": "",
-      "newest": "2026-10-29T11:03:59.847Z",
+      "newest": "2026-10-29T15:13:30.429Z",
       "pages": 18
     },
     {
       "id": "kairo",
       "kind": "izdanje",
       "url": "https://gnk-asg.hr/kanal/kairo/",
-      "newest": "2026-10-29T11:01:02.974Z",
+      "newest": "2026-10-29T15:10:04.928Z",
       "pages": 18
     },
     {
       "id": "kairo",
       "kind": "svijet",
       "url": "",
-      "newest": "2026-10-29T11:04:08.995Z",
+      "newest": "2026-10-29T15:13:41.005Z",
       "pages": 18
     },
     {
       "id": "kanal",
       "kind": "portal",
       "url": "",
-      "newest": "2026-10-29T11:04:20.823Z",
-      "pages": 137
+      "newest": "2026-10-29T15:13:54.093Z",
+      "pages": 147
     },
     {
       "id": "kosarka",
       "kind": "web",
       "url": "",
-      "newest": "2026-10-29T11:04:17.803Z",
+      "newest": "2026-10-29T15:13:50.817Z",
       "pages": 19
     },
     {
       "id": "ljubljana",
       "kind": "izdanje",
       "url": "https://gnk-asg.hr/kanal/ljubljana/",
-      "newest": "2026-10-29T10:49:39.388Z",
+      "newest": "2026-10-29T14:56:45.859Z",
       "pages": 18
     },
     {
       "id": "nairobi",
       "kind": "izdanje",
       "url": "https://gnk-asg.hr/kanal/nairobi/",
-      "newest": "2026-10-29T10:54:11.729Z",
+      "newest": "2026-10-29T15:02:03.913Z",
       "pages": 18
     },
     {
       "id": "nairobi",
       "kind": "svijet",
       "url": "",
-      "newest": "2026-10-29T11:03:58.087Z",
+      "newest": "2026-10-29T15:13:28.385Z",
       "pages": 18
     },
     {
       "id": "newyork",
       "kind": "izdanje",
       "url": "https://gnk-asg.hr/kanal/newyork/",
-      "newest": "2026-10-29T10:56:05.474Z",
+      "newest": "2026-10-29T15:04:22.414Z",
       "pages": 18
     },
     {
       "id": "newyork",
       "kind": "svijet",
       "url": "",
-      "newest": "2026-10-29T11:04:01.783Z",
+      "newest": "2026-10-29T15:13:32.653Z",
       "pages": 18
     },
     {
       "id": "peking",
       "kind": "izdanje",
       "url": "https://gnk-asg.hr/kanal/peking/",
-      "newest": "2026-10-29T11:02:25.763Z",
+      "newest": "2026-10-29T15:11:43.240Z",
       "pages": 18
     },
     {
       "id": "peking",
       "kind": "svijet",
       "url": "",
-      "newest": "2026-10-29T11:04:12.583Z",
+      "newest": "2026-10-29T15:13:45.153Z",
       "pages": 18
     },
     {
       "id": "rim",
       "kind": "izdanje",
       "url": "https://gnk-asg.hr/kanal/rim/",
-      "newest": "2026-10-29T10:50:46.892Z",
+      "newest": "2026-10-29T14:58:04.300Z",
       "pages": 18
     },
     {
       "id": "saopaulo",
       "kind": "izdanje",
       "url": "https://gnk-asg.hr/kanal/saopaulo/",
-      "newest": "2026-10-29T10:57:13.638Z",
+      "newest": "2026-10-29T15:05:46.130Z",
       "pages": 18
     },
     {
       "id": "saopaulo",
       "kind": "svijet",
       "url": "",
-      "newest": "2026-10-29T11:04:03.667Z",
+      "newest": "2026-10-29T15:13:34.749Z",
       "pages": 18
     },
     {
       "id": "sarajevo",
       "kind": "izdanje",
       "url": "https://gnk-asg.hr/kanal/sarajevo/",
-      "newest": "2026-10-29T10:47:16.251Z",
+      "newest": "2026-10-29T14:53:57.535Z",
       "pages": 18
     },
     {
       "id": "scena-znanosti",
       "kind": "web",
       "url": "",
-      "newest": "2026-10-29T11:04:17.815Z",
+      "newest": "2026-10-29T15:13:50.833Z",
       "pages": 19
     },
     {
       "id": "singapur",
       "kind": "izdanje",
       "url": "https://gnk-asg.hr/kanal/singapur/",
-      "newest": "2026-10-29T10:59:55.059Z",
+      "newest": "2026-10-29T15:08:54.595Z",
       "pages": 18
     },
     {
       "id": "singapur",
       "kind": "svijet",
       "url": "",
-      "newest": "2026-10-29T11:04:07.363Z",
+      "newest": "2026-10-29T15:13:38.997Z",
       "pages": 18
     },
     {
       "id": "sofija",
       "kind": "izdanje",
       "url": "https://gnk-asg.hr/kanal/sofija/",
-      "newest": "2026-10-29T10:51:52.356Z",
+      "newest": "2026-10-29T14:59:23.236Z",
       "pages": 18
     },
     {
       "id": "step-buducnosti",
       "kind": "web",
       "url": "",
-      "newest": "2026-10-29T11:04:17.835Z",
+      "newest": "2026-10-29T15:13:50.849Z",
       "pages": 19
     },
     {
       "id": "sydney",
       "kind": "izdanje",
       "url": "https://gnk-asg.hr/kanal/sydney/",
-      "newest": "2026-10-29T10:58:35.810Z",
+      "newest": "2026-10-29T15:07:21.743Z",
       "pages": 18
     },
     {
       "id": "sydney",
       "kind": "svijet",
       "url": "",
-      "newest": "2026-10-29T11:04:05.543Z",
+      "newest": "2026-10-29T15:13:36.933Z",
       "pages": 18
     },
     {
       "id": "tjednik",
       "kind": "portal",
       "url": "",
-      "newest": "2026-10-29T10:40:57.361Z",
+      "newest": "2026-10-29T13:45:50.979Z",
       "pages": 13
     },
     {
       "id": "tokio",
       "kind": "izdanje",
       "url": "https://gnk-asg.hr/kanal/tokio/",
-      "newest": "2026-10-29T11:01:34.011Z",
+      "newest": "2026-10-29T15:10:42.568Z",
       "pages": 18
     },
     {
       "id": "tokio",
       "kind": "svijet",
       "url": "",
-      "newest": "2026-10-29T11:04:10.731Z",
+      "newest": "2026-10-29T15:13:43.109Z",
       "pages": 18
     },
     {
       "id": "zagreb",
       "kind": "izdanje",
       "url": "https://gnk-asg.hr/kanal/zagreb/",
-      "newest": "2026-10-29T10:44:57.674Z",
+      "newest": "2026-10-29T14:51:17.174Z",
       "pages": 18
     },
     {
       "id": "zdravlje",
       "kind": "web",
       "url": "",
-      "newest": "2026-10-29T11:04:17.847Z",
+      "newest": "2026-10-29T15:13:50.865Z",
       "pages": 19
     }
   ],
   "counts": {
-    "steps": 39,
+    "steps": 41,
     "generators": 19,
-    "layers": 15,
+    "layers": 17,
     "checks": 5,
     "schedules": 32,
     "writingSchedules": 14,
     "webs": 38
   },
-  "generatedAt": "2026-10-29T11:04:30.442Z"
+  "generatedAt": "2026-10-29T15:14:05.402Z"
 }

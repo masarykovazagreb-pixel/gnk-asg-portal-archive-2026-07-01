@@ -7,9 +7,9 @@ Podatkovni dan: 2026-10-29.
 
 | Što | Broj |
 | --- | --- |
-| Stranica ukupno | 11.845 |
+| Stranica ukupno | 11.912 |
 | Webova | 7 |
-| Tekstova u podacima | 6.917 |
+| Tekstova u podacima | 6.929 |
 | Gradskih izdanja | 17 |
 | Svjetskih izdanja | 9 |
 | Samostalnih webova | 6 |
@@ -21,12 +21,12 @@ Podatkovni dan: 2026-10-29.
 | Web | Stranica | Tipovi | Zadnji datum |
 | --- | --- | --- | --- |
 | GNK ASG (glavna domena) | 2.688 | stranica 2083, engleska inačica 539, pregled 64, izvor 1, naslovnica 1 | 2026-10-29 |
-| GNK World — svjetski portali | 1.052 | prenos 603, stranica 306, tema 81, izvor 53, pregled 9 | 2026-10-29 |
-| GNK ASG KANAL | 128 | stranica 121, tema 6, naslovnica 1 | 2026-10-28 |
+| GNK World — svjetski portali | 1.079 | prenos 630, stranica 306, tema 81, izvor 53, pregled 9 | 2026-10-29 |
+| GNK ASG KANAL | 138 | stranica 131, tema 6, naslovnica 1 | 2026-10-29 |
 | AKTUAL ARHIVA | 38 | engleska inačica 19, stranica 18, naslovnica 1 | 2026-10-29 |
 | AKTUAL DNEVNIK | 22 | engleska inačica 11, stranica 10, naslovnica 1 | 2026-10-29 |
-| Samostalni webovi (šest izdanja) | 656 | prenos 402, kolumna 180, stranica 42, engleska inačica 31, izvor 1 | 2026-10-29 |
-| Gradska izdanja (17 kanala) | 7.261 | članak 6917, tema 149, izvor 109, stranica 51, engleska inačica 17, pregled 17, naslovnica 1 | 2026-10-29 |
+| Samostalni webovi (šest izdanja) | 674 | prenos 420, kolumna 180, stranica 42, engleska inačica 31, izvor 1 | 2026-10-29 |
+| Gradska izdanja (17 kanala) | 7.273 | članak 6929, tema 149, izvor 109, stranica 51, engleska inačica 17, pregled 17, naslovnica 1 | 2026-10-29 |
 
 ## Što iz brojeva slijedi
 

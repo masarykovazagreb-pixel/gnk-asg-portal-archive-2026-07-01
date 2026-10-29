@@ -1,0 +1,33 @@
+{
+  "slug": "dnevnik-2026-10-29-pojam-csrf-2",
+  "section": "vodic",
+  "kind": "desk",
+  "title": "Pojam dana: CSRF (cross-site request forgery) (ponovljeno izdanje)",
+  "shortTitle": "CSRF (cross-site request forgery)",
+  "seoTitle": "CSRF (cross-site request forgery) — što znači | Dnevni desk",
+  "dek": "Napad u kojem tuđa stranica izvrši radnju u ime prijavljenog korisnika. Ponovljeno izdanje radi dnevnog kontinuiteta.",
+  "description": "CSRF (cross-site request forgery): Napad u kojem tuđa stranica izvrši radnju u ime prijavljenog korisnika.",
+  "date": "2026-10-29",
+  "updated": "2026-10-29",
+  "priority": 1,
+  "og": "assets/og/naslovnica.png",
+  "imageAlt": "CSRF (cross-site request forgery)",
+  "imageCaption": "Ilustracija: GNK ASG KANAL · Dnevni desk",
+  "tags": [
+    "sigurnost",
+    "web",
+    "rizik",
+    "pojmovnik",
+    "dnevni desk"
+  ],
+  "keyFacts": [
+    "Pojam: <strong>CSRF (cross-site request forgery)</strong>",
+    "Napad u kojem tuđa stranica izvrši radnju u ime prijavljenog korisnika."
+  ],
+  "body": "<p><strong>Napad u kojem tuđa stranica izvrši radnju u ime prijavljenog korisnika.</strong></p><p>CSRF je napad u kojem zlonamjerna stranica navede preglednik prijavljenog korisnika da pošalje zahtjev prema drugoj aplikaciji — na primjer da promijeni lozinku ili izvrši plaćanje.</p><p>Obrana se temelji na tokenima koji se vežu uz sesiju, provjeri porijekla zahtjeva i kolačićima koji se ne šalju iz drugih konteksta (SameSite).</p><p>Za javne statičke stranice rizik je manji, ali za svaki obrazac koji šalje podatke treba provjeriti tko može potaknuti zahtjev i što se dogodi ako se pošalje izvana.</p>\n<p>Pojam je dio pojmovnika kanala. Definicija je namjerno kratka i provjerljiva: ne objašnjava kako konkretna tvrtka posluje, nego što pojam znači u financijskom izvještaju ili u propisu.</p>\n<p class=\"note\">Ovo je dnevni pojam izdanja <strong>Dnevnog deska</strong>. Tekst je sastavljen automatski iz strukturiranih podataka i objavljenih izvora. Nije pojedinačno urednički pregledan; status i izvori navedeni su uz tekst.</p>",
+  "sources": [
+    {
+      "label": "Pojmovnik GNK ASG KANALA"
+    }
+  ]
+}
