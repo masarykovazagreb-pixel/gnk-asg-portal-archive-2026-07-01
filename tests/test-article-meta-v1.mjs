@@ -52,9 +52,29 @@ if (existsSync(dir)) {
 }
 ok(checked > 0 || !existsSync(dir), 'nema članaka za provjeru');
 
+// 3. stranice tema kanala i galerije: opis 1–200 znakova (decode entiteta)
+const dec = (v) => v.replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+const extra = [];
+if (existsSync(dir)) for (const city of readdirSync(dir)) {
+  const td = join(dir, city, 'tema');
+  if (existsSync(td)) for (const t of readdirSync(td)) { const f = join(td, t, 'index.html'); if (existsSync(f)) extra.push(f); }
+}
+const gdir = join(ROOT, 'apps/portal/galerija');
+if (existsSync(gdir)) for (const g of readdirSync(gdir)) { const f = join(gdir, g, 'index.html'); if (existsSync(f)) extra.push(f); }
+let extraChecked = 0;
+for (const f of extra) {
+  const h = readFileSync(f, 'utf8');
+  const d = h.match(/<meta name="description" content="([^"]*)"/);
+  if (!d) continue;
+  extraChecked++;
+  const v = dec(d[1]);
+  ok(v.length >= 1 && v.length <= 200, `${f}: opis ${v.length} znakova`);
+}
+ok(extraChecked > 0 || extra.length === 0, 'nema stranica tema/galerije za provjeru');
+
 if (fails.length) {
   console.error('FAIL test-article-meta-v1');
   for (const f of fails.slice(0, 20)) console.error('  ✗', f);
   process.exit(1);
 }
-console.log(`PASS test-article-meta-v1 (uzorak ${checked} članaka)`);
+console.log(`PASS test-article-meta-v1 (uzorak ${checked} članaka; tema i galerija ${extraChecked})`);
