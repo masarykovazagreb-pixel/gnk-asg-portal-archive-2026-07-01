@@ -24,6 +24,12 @@ for (const f of pages) {
   if (!html.includes(block)) fails.push(`${rel}: blok oznaka nije u očekivanom obliku (${lang})`);
 }
 if (!existsSync(join(PORTAL, 'assets', 'am-tags-v1.css'))) fails.push('nema assets/am-tags-v1.css');
+// Glavne AKTUAL MEDIA stranice (početna, gnk-aktual, izdanja, mreža, izdanja gradova) nose iste oznake.
+for (const r of ['index.html', 'en/index.html', 'gnk-aktual/index.html', 'en/gnk-aktual/index.html', 'izdanja/index.html', 'mreza/index.html', 'kanal/beograd/index.html']) {
+  const f = join(PORTAL, r);
+  if (!existsSync(f)) { fails.push(`nema glavne stranice ${r}`); continue; }
+  if (!readFileSync(f, 'utf8').includes('data-am-tags="v1"')) fails.push(`${r}: nema oznaka Nermina Sefića`);
+}
 
 if (fails.length) { console.error('FAIL nermin tags:\n- ' + fails.slice(0, 30).join('\n- ')); process.exit(1); }
 console.log(`PASS nermin tags: ${pages.length} stranica Nermina Sefića ima hashtagove, glavnog urednika i izjavu o GNK DINAMO Ltd grupi.`);
