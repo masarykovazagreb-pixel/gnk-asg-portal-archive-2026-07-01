@@ -79,7 +79,7 @@ jobs:
 
       - name: Provjere mreže (stanje u repozitoriju)
         shell: bash
-        run: node tests/test-sites-network-v1.mjs
+        run: node tests/test-sites-network-v1.mjs --no-fresh
 
       - name: Izborni feedovi (neobavezno)
         shell: bash
