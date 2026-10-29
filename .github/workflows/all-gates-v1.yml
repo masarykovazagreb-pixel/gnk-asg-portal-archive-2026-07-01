@@ -53,5 +53,13 @@ jobs:
           node apps/arhiva/engine/build.mjs
           node apps/dnevnik/engine/build.mjs
 
+      - name: Alati za slike (ImageMagick + WebP delegat, za test slika izdanja)
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq imagemagick webp
+          convert -version | head -1
+          convert -list format | grep -i webp
+
       - name: Sve provjere
         run: node scripts/test-all-v1.mjs
