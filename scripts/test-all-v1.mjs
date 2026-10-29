@@ -100,6 +100,8 @@ const GATES = [
   { name: 'Samostalni portali — ARHIVA i DNEVNIK', cmd: ['node', 'tests/test-satellites-v1.mjs'], required: true },
   { name: 'Znak u čvoru izdavača', cmd: ['node', 'scripts/backfill-brand-entity-logo-v1.mjs', '--check'], required: true },
   { name: 'Standard svakog weba — osvježavanje, impressum, ikona, traka', cmd: ['node', 'tests/test-web-standard-v1.mjs'], required: true },
+  { name: 'Agenti — pisac i AI kontrola pregleda', cmd: ['node', 'tests/test-agent-editorial-pipeline-v1.mjs'], required: true },
+  { name: 'Agenti — red objava i odobrenja kontrolnog agenta', cmd: ['node', 'scripts/validate-agent-editorial-queue-v1.mjs'], required: true },
 ];
 
 function run(gate) {
