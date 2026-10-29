@@ -4,7 +4,7 @@
   "lang": "en",
   "city": "Nairobi",
   "country": "Kenija",
-  "updatedAt": "2026-10-29T16:40:15.059Z",
+  "updatedAt": "2026-10-29T20:49:30.617Z",
   "sources": [
     {
       "id": "capitalfm",
@@ -14,19 +14,20 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-29T16:39:36.330Z"
+      "checkedAt": "2026-10-29T20:48:52.244Z"
     },
     {
       "id": "nation",
       "name": "Daily Nation",
-      "url": "https://nation.africa/kenya/rss.xml",
-      "ok": true,
-      "fetched": 25,
+      "url": "https://nation.africa/kenya/rss",
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://nation.africa/kenya/rss: HTTP 403"
+        "https://nation.africa/kenya/rss: HTTP 403",
+        "https://nation.africa/kenya/rss.xml: HTTP 404"
       ],
-      "checkedAt": "2026-10-29T16:39:37.524Z"
+      "checkedAt": "2026-10-29T20:48:53.855Z"
     },
     {
       "id": "standard",
@@ -38,7 +39,7 @@
       "errors": [
         "https://www.standardmedia.co.ke/rss: nije feed"
       ],
-      "checkedAt": "2026-10-29T16:39:38.782Z"
+      "checkedAt": "2026-10-29T20:48:54.908Z"
     },
     {
       "id": "star",
@@ -50,7 +51,7 @@
       "errors": [
         "https://www.the-star.co.ke/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-29T16:39:40.765Z"
+      "checkedAt": "2026-10-29T20:48:57.147Z"
     },
     {
       "id": "businessdaily",
@@ -62,7 +63,7 @@
       "errors": [
         "https://www.businessdailyafrica.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-29T16:39:41.809Z"
+      "checkedAt": "2026-10-29T20:48:58.202Z"
     },
     {
       "id": "citizen",
@@ -74,7 +75,7 @@
       "errors": [
         "https://www.citizen.digital/rss: HTTP 400"
       ],
-      "checkedAt": "2026-10-29T16:39:52.266Z"
+      "checkedAt": "2026-10-29T20:49:07.810Z"
     },
     {
       "id": "kbc",
@@ -86,7 +87,7 @@
       "errors": [
         "https://www.kbc.co.ke/feed/: fetch failed"
       ],
-      "checkedAt": "2026-10-29T16:40:13.953Z"
+      "checkedAt": "2026-10-29T20:49:29.499Z"
     },
     {
       "id": "eastafrican",
@@ -98,10 +99,30 @@
       "errors": [
         "https://www.theeastafrican.co.ke/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-29T16:40:15.059Z"
+      "checkedAt": "2026-10-29T20:49:30.617Z"
     }
   ],
   "items": [
+    {
+      "slug": "nairobi-2026-10-29-capitalfm-us-uncovers-alleged-200m-ghost-student-cc6b06",
+      "title": "US uncovers alleged $200m ghost student fraud linked to Kenyan network",
+      "summary": "NAIROBI, Kenya, Oct 29— US authorities have seized more than $750,000 (about Sh97 million) in cryptocurrency linked to a transnational student financial aid fraud scheme involving Kenyan nationals, in what…",
+      "date": "2026-10-29T19:39:00.000Z",
+      "url": "https://capitalfm.africa/us-uncovers-alleged-200m-ghost-student-fraud-linked-to-kenyan-network/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "DIPLOMACY",
+        "NATIONAL NEWS",
+        "News",
+        "Top stories"
+      ],
+      "author": "BRUHAN MAKONG",
+      "theme": "ai",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/10/HV0QlNYWQAAS9_t-1-1200x630.jpg",
+      "imageAlt": "US uncovers alleged $200m ghost student fraud linked to Kenyan network",
+      "addedAt": "2026-10-29T20:48:52.244Z"
+    },
     {
       "slug": "nairobi-2026-10-29-capitalfm-africa-s-biodiversity-goals-face-data-b271b0",
       "title": "Africa’s biodiversity goals face data, funding and capacity gaps, experts warn",
