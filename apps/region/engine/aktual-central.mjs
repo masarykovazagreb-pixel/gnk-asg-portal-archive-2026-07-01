@@ -617,7 +617,7 @@ function homeRail(cards, moda, lang = 'hr') {
     const count = card.count || 0;
     return `<li class="amx-item">
       <a class="amx-link" href="${esc(c.base)}" rel="external noopener" aria-label="${esc(c.title)} — ${esc(c.country)} — ${count} ${esc(T.texts)} — ${esc(T.open)}">
-        <span class="amx-ring"><img src="${IMG}/${esc(c.id)}-440.webp" srcset="${IMG}/${esc(c.id)}-240.webp 240w, ${IMG}/${esc(c.id)}-440.webp 440w" sizes="(max-width:620px) 84px,(max-width:1040px) 22vw,11vw" alt="${esc(c.title)} — ${esc(city)}, ${esc(c.country)}" width="440" height="440" loading="${i < 2 ? 'eager' : 'lazy'}" fetchpriority="${i === 0 ? 'high' : 'auto'}" decoding="async">${count ? `<span class="amx-badge">${count}</span>` : ''}</span>
+        <span class="amx-ring"><img src="${IMG}/${esc(c.id)}-440.webp" srcset="${IMG}/${esc(c.id)}-240.webp 240w, ${IMG}/${esc(c.id)}-440.webp 440w" sizes="(max-width:620px) 84px,(max-width:1040px) 22vw,11vw" alt="${esc(c.title)} — ${esc(city)}, ${esc(c.country)}" width="440" height="295" loading="eager" fetchpriority="${i === 0 ? 'high' : 'auto'}" decoding="async">${count ? `<span class="amx-badge">${count}</span>` : ''}</span>
         <b>${esc(city)}</b>
         <span class="amx-line" style="--c:${AMM_C[c.id] || '#e9c66c'}" aria-hidden="true"></span>
         <small>${esc(c.lang)} · ${esc(c.country)}</small>
