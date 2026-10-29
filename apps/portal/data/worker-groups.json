@@ -1,6 +1,6 @@
 {
   "note": "Groups are derived from real workflow files; worker profiles are a modeled catalogue.",
-  "total": 343,
+  "total": 342,
   "groups": [
     {
       "id": "izdanja",
@@ -113,7 +113,7 @@
         {
           "file": "content-queue-publish.yml",
           "crons": [
-            "20 7,8,9,10,11,12,13,14,15,16,17,18,19 * * *"
+            "38 7,8,9,10,11,12,13,14,15,16,17,18,19 * * *"
           ],
           "perDay": 13
         },
@@ -225,7 +225,7 @@
         {
           "file": "editorial-scheduled-publish.yml",
           "crons": [
-            "20 8 * * *"
+            "44 8 * * *"
           ],
           "perDay": 1
         },
@@ -496,7 +496,7 @@
         {
           "file": "aeo-ai-visibility.yml",
           "crons": [
-            "20 2,8,14,20 * * *"
+            "26 2,8,14,20 * * *"
           ],
           "perDay": 4
         },
@@ -1120,7 +1120,7 @@
       "id": "provjere",
       "name": "Provjere i auditi",
       "nameEn": "Checks and audits",
-      "automations": 94,
+      "automations": 93,
       "scheduled": 0,
       "runsPerDay": 0,
       "files": [
@@ -1151,11 +1151,6 @@
         },
         {
           "file": "audit2.yml",
-          "crons": [],
-          "perDay": 0
-        },
-        {
-          "file": "check-admin-center-v2.yml",
           "crons": [],
           "perDay": 0
         },
