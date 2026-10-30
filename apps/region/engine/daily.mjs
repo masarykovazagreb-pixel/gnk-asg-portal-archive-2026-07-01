@@ -36,6 +36,7 @@ const DRY = flag('--dry-run');
 const NO_BUILD = flag('--no-build');
 const ONLY = arg('--channel', '');
 const MAX_AGE_DAYS = Number(arg('--days', '21'));
+const MAX_ITEMS = Number(arg('--max-items', '5000'));
 
 const readJSON = (path, fallback) => {
   try { return JSON.parse(readFileSync(path, 'utf8')); } catch { return fallback; }
@@ -136,9 +137,12 @@ export async function runChannel(channel, { dry = false, report = {} } = {}) {
     }
   }
 
+  /* Zapis se ne smije odbaciti dok njegova stranica postoji: prije je ograničenje
+     na 420 ostavljalo stranice bez zapisa (region-audit) i sitemap bez njih.
+     Vidi scripts/region/recover-items-from-pages-v1.mjs. */
   const merged = [...added, ...data.items]
     .sort((a, b) => String(b.date).localeCompare(String(a.date)))
-    .slice(0, 420);
+    .slice(0, MAX_ITEMS);
 
   const next = {
     version: 1,

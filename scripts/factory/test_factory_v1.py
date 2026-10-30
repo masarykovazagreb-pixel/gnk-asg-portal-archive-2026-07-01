@@ -44,6 +44,11 @@ def main():
                         capture_output=True, text=True)
     if rc.returncode:
         failures.append("nacrti distribucije: predugačak tekst za platformu")
+    # stranice članaka bez zapisa u podacima izdanja (region): nula
+    rc = subprocess.run(["node", os.path.join(ROOT, "scripts", "region", "recover-items-from-pages-v1.mjs"), "--check"],
+                        capture_output=True, text=True)
+    if rc.returncode:
+        failures.append("stranice članaka bez zapisa u podacima izdanja: " + rc.stdout.strip()[:160])
     # kvaliteta slika (faza 5): nečitljive slike ne smiju rasti (početno stanje 5)
     # Zahtijeva Pillow (pip install pillow); bez njega gate mora pasti glasno, ne tiho.
     rc = subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "factory", "image_quality.py")],
