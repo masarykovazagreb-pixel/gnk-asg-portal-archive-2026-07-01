@@ -29,6 +29,18 @@ def main():
         failures.append(f"broken local images rose to {a['broken_local_images']} (baseline 11 = /api/img)")
     if a["broken_internal_links"] > 2:
         failures.append(f"broken internal links rose to {a['broken_internal_links']} (baseline 2)")
+    # radio promo blok (faza 6): idempotentnost na svim stranicama
+    rc = subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "factory", "radio_promo_v1.py"), "--check"],
+                        capture_output=True, text=True)
+    if rc.returncode:
+        failures.append("radio promo block drift: " + rc.stdout.strip()[-200:])
+    # kvaliteta slika (faza 5): nečitljive slike ne smiju rasti (početno stanje 5)
+    subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "factory", "image_quality.py")],
+                   check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    with open(os.path.join(ROOT, "artifacts", "factory", "image-quality.json"), encoding="utf-8") as f:
+        iq = json.load(f)["summary"]["flag_counts"]
+    if iq.get("necitljiva", 0) > 5:
+        failures.append(f"unreadable images rose to {iq.get('necitljiva')} (baseline 5)")
     for f in failures:
         print("FAIL", f)
     print(json.dumps({"indexable": a["indexable_pages"], "failures": failures}, ensure_ascii=False))

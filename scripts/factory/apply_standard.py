@@ -145,8 +145,13 @@ def main():
     if not check:
         cmd.append("--write")
     out = subprocess.run(cmd, check=True, capture_output=True, text=True).stdout.strip()
-    print(f"{'CHECK' if check else 'APPLY'}: standard lines {len(changed)} page(s); meta: {out}")
-    if check and changed:
+    # promotivni blok za radio (vlastiti marker, idempotentno; vidi radio_promo_v1.py)
+    rcmd = [sys.executable, os.path.join(ROOT, "scripts", "factory", "radio_promo_v1.py")]
+    if check:
+        rcmd.append("--check")
+    radio = subprocess.run(rcmd, capture_output=True, text=True)
+    print(f"{'CHECK' if check else 'APPLY'}: standard lines {len(changed)} page(s); meta: {out}; radio: {radio.stdout.strip()}")
+    if check and (changed or radio.returncode):
         for c in changed[:20]:
             print("  drift:", c)
         return 1

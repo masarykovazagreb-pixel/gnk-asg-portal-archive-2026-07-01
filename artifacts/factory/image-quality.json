@@ -1,0 +1,1917 @@
+{
+ "summary": {
+  "version": "IMAGE_QUALITY_V1",
+  "images": 3019,
+  "flagged": 131,
+  "flag_counts": {
+   "premala": 22,
+   "pretezka": 28,
+   "duplikat": 56,
+   "necitljiva": 5,
+   "tamno_provjeri": 20
+  },
+  "duplicate_groups": 26,
+  "thresholds": {
+   "tamno_provjeri": "mean<30 & std<22",
+   "ravna": "std<10",
+   "premala": "min(w,h)<300 (bez responzivnih varijanti)",
+   "pretezka": "bytes>409600"
+  },
+  "flagged_by_folder": {
+   "apps/portal/assets/seo-gallery": 37,
+   "apps/portal/assets/src": 19,
+   "apps/portal/assets/news-preview": 15,
+   "apps/portal/data/linkedin-content/archive": 14,
+   "apps/portal/assets/trgovina": 9,
+   "apps/portal/assets/editorial": 7,
+   "apps/portal/aktual/gnk-asg-504-milijuna-eura-prihoda/img": 6,
+   "apps/portal/app/icons": 4,
+   "apps/portal/objave/dziv-dva-rjesenja-opoziv-verbalnih-zigova-dinamo": 4,
+   "apps/portal/spt/img": 4,
+   "apps/portal/assets/editorial/generated": 2,
+   "apps/portal/assets/editorial/stare-kartice": 2,
+   "apps/portal/assets/world-cookbook/images": 2,
+   "apps/portal/spt/img/og": 2,
+   "apps/portal/app/assets": 1,
+   "apps/portal/assets/editorial/gnk-asg-504m": 1,
+   "apps/portal/assets/gallery": 1,
+   "apps/portal/assets/izdanja": 1
+  }
+ },
+ "duplicate_groups": [
+  {
+   "dir": "apps/portal/assets/editorial/generated",
+   "count": 2,
+   "stems": [
+    "komentari-ulaganje-u-proizvodnju-nije-samo-kupnja-strojeva-441c7bfa",
+    "objave-digitalni-dvojnik-industrijskih-postrojenja-b56c3e7d"
+   ],
+   "files": [
+    "apps/portal/assets/editorial/generated/komentari-ulaganje-u-proizvodnju-nije-samo-kupnja-strojeva-441c7bfa.webp",
+    "apps/portal/assets/editorial/generated/objave-digitalni-dvojnik-industrijskih-postrojenja-b56c3e7d.webp"
+   ]
+  },
+  {
+   "dir": "apps/portal/assets/news-preview",
+   "count": 2,
+   "stems": [
+    "0d6b7dd8d64f720621",
+    "d43789e667fb6f8093"
+   ],
+   "files": [
+    "apps/portal/assets/news-preview/0d6b7dd8d64f720621.png",
+    "apps/portal/assets/news-preview/d43789e667fb6f8093.png"
+   ]
+  },
+  {
+   "dir": "apps/portal/assets/news-preview",
+   "count": 2,
+   "stems": [
+    "1ad8168e8541a37c04",
+    "daffb55e9f1f140a1f"
+   ],
+   "files": [
+    "apps/portal/assets/news-preview/1ad8168e8541a37c04.png",
+    "apps/portal/assets/news-preview/daffb55e9f1f140a1f.png"
+   ]
+  },
+  {
+   "dir": "apps/portal/assets/news-preview",
+   "count": 5,
+   "stems": [
+    "1c2f9f58a85ecd91e9",
+    "26869ad23bd1a90809",
+    "57c4bbc24453ba8949",
+    "b1a13e40191d366cf7",
+    "f323dbe1f86aa2212f"
+   ],
+   "files": [
+    "apps/portal/assets/news-preview/1c2f9f58a85ecd91e9.png",
+    "apps/portal/assets/news-preview/26869ad23bd1a90809.png",
+    "apps/portal/assets/news-preview/57c4bbc24453ba8949.png",
+    "apps/portal/assets/news-preview/b1a13e40191d366cf7.png",
+    "apps/portal/assets/news-preview/f323dbe1f86aa2212f.png"
+   ]
+  },
+  {
+   "dir": "apps/portal/assets/news-preview",
+   "count": 2,
+   "stems": [
+    "2fab65d99200e69426",
+    "c11b5b812b51386bff"
+   ],
+   "files": [
+    "apps/portal/assets/news-preview/2fab65d99200e69426.png",
+    "apps/portal/assets/news-preview/c11b5b812b51386bff.png"
+   ]
+  },
+  {
+   "dir": "apps/portal/assets/news-preview",
+   "count": 2,
+   "stems": [
+    "375415aacdabd28419",
+    "df57c485f1e340c674"
+   ],
+   "files": [
+    "apps/portal/assets/news-preview/375415aacdabd28419.png",
+    "apps/portal/assets/news-preview/df57c485f1e340c674.png"
+   ]
+  },
+  {
+   "dir": "apps/portal/assets/news-preview",
+   "count": 2,
+   "stems": [
+    "6015ff001391e620d5",
+    "74b20fab576d526476"
+   ],
+   "files": [
+    "apps/portal/assets/news-preview/6015ff001391e620d5.png",
+    "apps/portal/assets/news-preview/74b20fab576d526476.png"
+   ]
+  },
+  {
+   "dir": "apps/portal/assets/seo-gallery",
+   "count": 2,
+   "stems": [
+    "gnk-asg-ai-asistent",
+    "gnk-asg-financije-poslovanje"
+   ],
+   "files": [
+    "apps/portal/assets/seo-gallery/gnk-asg-ai-asistent.jpg",
+    "apps/portal/assets/seo-gallery/gnk-asg-financije-poslovanje-004.jpg"
+   ]
+  },
+  {
+   "dir": "apps/portal/assets/seo-gallery",
+   "count": 2,
+   "stems": [
+    "gnk-asg-burze-i-trzista",
+    "gnk-asg-tehnologija-ai"
+   ],
+   "files": [
+    "apps/portal/assets/seo-gallery/gnk-asg-burze-i-trzista.jpg",
+    "apps/portal/assets/seo-gallery/gnk-asg-tehnologija-ai-007.jpg"
+   ]
+  },
+  {
+   "dir": "apps/portal/assets/seo-gallery",
+   "count": 2,
+   "stems": [
+    "gnk-asg-digitalna-imovina-fintech-trzista",
+    "gnk-asg-tehnologija-ai"
+   ],
+   "files": [
+    "apps/portal/assets/seo-gallery/gnk-asg-digitalna-imovina-fintech-trzista-001.jpg",
+    "apps/portal/assets/seo-gallery/gnk-asg-tehnologija-ai-002.jpg"
+   ]
+  },
+  {
+   "dir": "apps/portal/assets/seo-gallery",
+   "count": 2,
+   "stems": [
+    "gnk-asg-financije-poslovanje",
+    "gnk-asg-globalno-poslovanje"
+   ],
+   "files": [
+    "apps/portal/assets/seo-gallery/gnk-asg-financije-poslovanje-002.jpg",
+    "apps/portal/assets/seo-gallery/gnk-asg-globalno-poslovanje-013.jpg"
+   ]
+  },
+  {
+   "dir": "apps/portal/assets/seo-gallery",
+   "count": 2,
+   "stems": [
+    "gnk-asg-financije-poslovanje",
+    "gnk-asg-globalna-mreza"
+   ],
+   "files": [
+    "apps/portal/assets/seo-gallery/gnk-asg-financije-poslovanje-005.jpg",
+    "apps/portal/assets/seo-gallery/gnk-asg-globalna-mreza.jpg"
+   ]
+  },
+  {
+   "dir": "apps/portal/assets/seo-gallery",
+   "count": 2,
+   "stems": [
+    "gnk-asg-financije-poslovanje",
+    "gnk-asg-infrastruktura-sport-odrzivost"
+   ],
+   "files": [
+    "apps/portal/assets/seo-gallery/gnk-asg-financije-poslovanje-006.jpg",
+    "apps/portal/assets/seo-gallery/gnk-asg-infrastruktura-sport-odrzivost-006.jpg"
+   ]
+  },
+  {
+   "dir": "apps/portal/assets/seo-gallery",
+   "count": 3,
+   "stems": [
+    "gnk-asg-financije-poslovanje",
+    "gnk-asg-globalno-poslovanje",
+    "gnk-asg-infrastruktura-sport-odrzivost"
+   ],
+   "files": [
+    "apps/portal/assets/seo-gallery/gnk-asg-financije-poslovanje-007.jpg",
+    "apps/portal/assets/seo-gallery/gnk-asg-globalno-poslovanje-006.jpg",
+    "apps/portal/assets/seo-gallery/gnk-asg-infrastruktura-sport-odrzivost-007.jpg"
+   ]
+  },
+  {
+   "dir": "apps/portal/assets/seo-gallery",
+   "count": 2,
+   "stems": [
+    "gnk-asg-financije-poslovanje",
+    "gnk-asg-infrastruktura-sport-odrzivost"
+   ],
+   "files": [
+    "apps/portal/assets/seo-gallery/gnk-asg-financije-poslovanje-014.jpg",
+    "apps/portal/assets/seo-gallery/gnk-asg-infrastruktura-sport-odrzivost-014.jpg"
+   ]
+  },
+  {
+   "dir": "apps/portal/assets/seo-gallery",
+   "count": 2,
+   "stems": [
+    "gnk-asg-financije-poslovanje",
+    "gnk-asg-globalno-poslovanje"
+   ],
+   "files": [
+    "apps/portal/assets/seo-gallery/gnk-asg-financije-poslovanje-015.jpg",
+    "apps/portal/assets/seo-gallery/gnk-asg-globalno-poslovanje-014.jpg"
+   ]
+  },
+  {
+   "dir": "apps/portal/assets/seo-gallery",
+   "count": 2,
+   "stems": [
+    "gnk-asg-financije-poslovanje",
+    "gnk-asg-globalno-poslovanje"
+   ],
+   "files": [
+    "apps/portal/assets/seo-gallery/gnk-asg-financije-poslovanje-016.jpg",
+    "apps/portal/assets/seo-gallery/gnk-asg-globalno-poslovanje-015.jpg"
+   ]
+  },
+  {
+   "dir": "apps/portal/assets/seo-gallery",
+   "count": 2,
+   "stems": [
+    "gnk-asg-financije-poslovanje",
+    "gnk-asg-infrastruktura-sport-odrzivost"
+   ],
+   "files": [
+    "apps/portal/assets/seo-gallery/gnk-asg-financije-poslovanje-019.jpg",
+    "apps/portal/assets/seo-gallery/gnk-asg-infrastruktura-sport-odrzivost-019.jpg"
+   ]
+  },
+  {
+   "dir": "apps/portal/assets/seo-gallery",
+   "count": 2,
+   "stems": [
+    "gnk-asg-globalno-poslovanje",
+    "gnk-asg-sportska-infrastruktura"
+   ],
+   "files": [
+    "apps/portal/assets/seo-gallery/gnk-asg-globalno-poslovanje-007.jpg",
+    "apps/portal/assets/seo-gallery/gnk-asg-sportska-infrastruktura.jpg"
+   ]
+  },
+  {
+   "dir": "apps/portal/assets/seo-gallery",
+   "count": 2,
+   "stems": [
+    "gnk-asg-globalno-poslovanje",
+    "gnk-asg-infrastruktura-sport-odrzivost"
+   ],
+   "files": [
+    "apps/portal/assets/seo-gallery/gnk-asg-globalno-poslovanje-016.jpg",
+    "apps/portal/assets/seo-gallery/gnk-asg-infrastruktura-sport-odrzivost-017.jpg"
+   ]
+  },
+  {
+   "dir": "apps/portal/assets/seo-gallery",
+   "count": 2,
+   "stems": [
+    "gnk-asg-globalno-poslovanje",
+    "gnk-asg-infrastruktura-sport-odrzivost"
+   ],
+   "files": [
+    "apps/portal/assets/seo-gallery/gnk-asg-globalno-poslovanje-017.jpg",
+    "apps/portal/assets/seo-gallery/gnk-asg-infrastruktura-sport-odrzivost-018.jpg"
+   ]
+  },
+  {
+   "dir": "apps/portal/assets/seo-gallery",
+   "count": 2,
+   "stems": [
+    "gnk-asg-globalno-poslovanje",
+    "gnk-asg-tehnologija-ai"
+   ],
+   "files": [
+    "apps/portal/assets/seo-gallery/gnk-asg-globalno-poslovanje-020.jpg",
+    "apps/portal/assets/seo-gallery/gnk-asg-tehnologija-ai-001.jpg"
+   ]
+  },
+  {
+   "dir": "apps/portal/assets/seo-gallery",
+   "count": 2,
+   "stems": [
+    "gnk-asg-infrastruktura-sport-odrzivost",
+    "gnk-asg-odrziva-buducnost"
+   ],
+   "files": [
+    "apps/portal/assets/seo-gallery/gnk-asg-infrastruktura-sport-odrzivost-011.jpg",
+    "apps/portal/assets/seo-gallery/gnk-asg-odrziva-buducnost.jpg"
+   ]
+  },
+  {
+   "dir": "apps/portal/assets/seo-gallery",
+   "count": 2,
+   "stems": [
+    "gnk-asg-infrastruktura-sport-odrzivost",
+    "gnk-asg-kartice-i-placanja"
+   ],
+   "files": [
+    "apps/portal/assets/seo-gallery/gnk-asg-infrastruktura-sport-odrzivost-012.jpg",
+    "apps/portal/assets/seo-gallery/gnk-asg-kartice-i-placanja.jpg"
+   ]
+  },
+  {
+   "dir": "apps/portal/assets/seo-gallery",
+   "count": 2,
+   "stems": [
+    "gnk-asg-infrastruktura-sport-odrzivost",
+    "gnk-asg-poslovna-zgrada"
+   ],
+   "files": [
+    "apps/portal/assets/seo-gallery/gnk-asg-infrastruktura-sport-odrzivost-013.jpg",
+    "apps/portal/assets/seo-gallery/gnk-asg-poslovna-zgrada.jpg"
+   ]
+  },
+  {
+   "dir": "apps/portal/assets/world-cookbook/images",
+   "count": 2,
+   "stems": [
+    "53296_Sauerkraut_pierogi",
+    "53314_Sauerkraut_pierogii"
+   ],
+   "files": [
+    "apps/portal/assets/world-cookbook/images/53296_Sauerkraut_pierogi.jpg",
+    "apps/portal/assets/world-cookbook/images/53314_Sauerkraut_pierogii.jpg"
+   ]
+  }
+ ],
+ "images": {
+  "apps/portal/aktual/gnk-asg-504-milijuna-eura-prihoda/img/hero.webp": {
+   "bytes": 14256,
+   "flags": [
+    "premala"
+   ],
+   "sha": "8eba87fc54ac5028eec69f778c173d0b5f0b0ff6602d9ea98b774623a883f951",
+   "w": 178,
+   "h": 250,
+   "mean": 112.5,
+   "std": 90.1,
+   "ahash": "60fc783018fbc3fb"
+  },
+  "apps/portal/aktual/gnk-asg-504-milijuna-eura-prihoda/img/ilustracija-1-hero.webp": {
+   "bytes": 457984,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "ad65cb2003afa85332bed04aecac2b7ded1184b5e0e4512d7f58be66c21d416d",
+   "w": 1896,
+   "h": 829,
+   "mean": 126.7,
+   "std": 81.2,
+   "ahash": "98e02103139fefff"
+  },
+  "apps/portal/aktual/gnk-asg-504-milijuna-eura-prihoda/img/ilustracija-4-nadzor.webp": {
+   "bytes": 443416,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "f53f4186cddf0ce200d1a667fb6d65166558c2d5191d72b164ef04051b6e4cba",
+   "w": 1896,
+   "h": 829,
+   "mean": 111.8,
+   "std": 80.2,
+   "ahash": "081830387efff8fc"
+  },
+  "apps/portal/aktual/gnk-asg-504-milijuna-eura-prihoda/img/ilustracija-5-izvoz.webp": {
+   "bytes": 428012,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "02bb2b9610b942e47411bda1eeb517e60a88b416c4c1f6d0bd5aa652810567df",
+   "w": 1896,
+   "h": 829,
+   "mean": 101.4,
+   "std": 73.2,
+   "ahash": "00006062e2f3ffef"
+  },
+  "apps/portal/aktual/gnk-asg-504-milijuna-eura-prihoda/img/ilustracija-7-pozitivni.webp": {
+   "bytes": 450658,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "1b21137aed6292b4d9a4b939a5b121fadcc1bdaec30984075ba6f05c1739bf42",
+   "w": 1896,
+   "h": 829,
+   "mean": 116.2,
+   "std": 77.3,
+   "ahash": "ff0000001c5fdfc3"
+  },
+  "apps/portal/aktual/gnk-asg-504-milijuna-eura-prihoda/img/pocetna-infografika.webp": {
+   "bytes": 435992,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "a4600f4359d334fe95da635d6bf344d1f09e95ccc4561bd131311cf4969d7800",
+   "w": 1024,
+   "h": 1536,
+   "mean": 164.3,
+   "std": 89.1,
+   "ahash": "7f00dbff00fffc80"
+  },
+  "apps/portal/app/assets/gnk-asg-canonical-logo.png": {
+   "bytes": 5549,
+   "flags": [
+    "premala"
+   ],
+   "sha": "3d1768894da0e33733f0bb1c6112f2997399ab71a0db9ef46241fc97520ee786",
+   "w": 117,
+   "h": 120,
+   "mean": 56.3,
+   "std": 80.6,
+   "ahash": "3ce67d183c3c3c1c"
+  },
+  "apps/portal/app/icons/apple-touch-icon.png": {
+   "bytes": 26824,
+   "flags": [
+    "premala"
+   ],
+   "sha": "17b6dd37991041c3128295d02d7361ba153360f080c64cf09838cd2228232bc6",
+   "w": 180,
+   "h": 180,
+   "mean": 36.3,
+   "std": 39.7,
+   "ahash": "003c7e3e3c3c1c08"
+  },
+  "apps/portal/app/icons/favicon-16.png": {
+   "bytes": 902,
+   "flags": [
+    "premala"
+   ],
+   "sha": "728690e5ffab58023089e29f63ca0f1df35cb19058a147a5780e0aa6d17cd341",
+   "w": 16,
+   "h": 16,
+   "mean": 100.7,
+   "std": 75.6,
+   "ahash": "007f7f7f5c7c3c1e"
+  },
+  "apps/portal/app/icons/favicon-32.png": {
+   "bytes": 2459,
+   "flags": [
+    "premala"
+   ],
+   "sha": "555d8629ed668f6442d780bf7739bcf5ade3a155b783497950c842f8c79471bf",
+   "w": 32,
+   "h": 32,
+   "mean": 75.5,
+   "std": 80.8,
+   "ahash": "1c3e7f7e3c3c3c1c"
+  },
+  "apps/portal/app/icons/favicon-48.png": {
+   "bytes": 4680,
+   "flags": [
+    "premala"
+   ],
+   "sha": "077ffaf234a0627ac23b05b1551840eae615d85e338552260f684d42bf45dbf1",
+   "w": 48,
+   "h": 48,
+   "mean": 65.6,
+   "std": 80.6,
+   "ahash": "0c7e7f7e3c3c3c1c"
+  },
+  "apps/portal/assets/editorial/generated/komentari-ulaganje-u-proizvodnju-nije-samo-kupnja-strojeva-441c7bfa.webp": {
+   "bytes": 31818,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "76b0df179f240bbd4938c249c75fd96d0d34f1cdfb6571048f9781ca90330839",
+   "w": 1200,
+   "h": 630,
+   "mean": 63.5,
+   "std": 42.3,
+   "ahash": "4fe3e0f3efe00000"
+  },
+  "apps/portal/assets/editorial/generated/objave-digitalni-dvojnik-industrijskih-postrojenja-b56c3e7d.webp": {
+   "bytes": 31818,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "76b0df179f240bbd4938c249c75fd96d0d34f1cdfb6571048f9781ca90330839",
+   "w": 1200,
+   "h": 630,
+   "mean": 63.5,
+   "std": 42.3,
+   "ahash": "4fe3e0f3efe00000"
+  },
+  "apps/portal/assets/editorial/gnk-asg-504m/pocetna-infografika.webp": {
+   "bytes": 15009,
+   "flags": [
+    "necitljiva"
+   ],
+   "sha": "1e1171eac6132200343891f09d73a08cfe985c1eab9378ac15ddc717b455b193",
+   "error": "could not create decoder object"
+  },
+  "apps/portal/assets/editorial/komentari-card-en-v2.webp": {
+   "bytes": 48284,
+   "flags": [
+    "premala"
+   ],
+   "sha": "ece24b79e81ae283427a979fb85b0d231cba92b679e972bcb9ba8fac98d62f4b",
+   "w": 279,
+   "h": 600,
+   "mean": 30.1,
+   "std": 53.4,
+   "ahash": "00003c3c3c1cffff"
+  },
+  "apps/portal/assets/editorial/komentari-card-v2.webp": {
+   "bytes": 49296,
+   "flags": [
+    "premala"
+   ],
+   "sha": "8b32dd53c94d7afe23f027875369c24483d116b90782a12659b9cbe0c660baa1",
+   "w": 279,
+   "h": 600,
+   "mean": 28.3,
+   "std": 50.8,
+   "ahash": "88007cfc3c1cffff"
+  },
+  "apps/portal/assets/editorial/nermin-sefic-gnk-asg-pravne-prepreke-20261007.webp": {
+   "bytes": 15006,
+   "flags": [
+    "necitljiva"
+   ],
+   "sha": "e07b3aa772bf175f62d796318c6757e24685257672d51d73f092ee118b7f0169",
+   "error": "could not create decoder object"
+  },
+  "apps/portal/assets/editorial/nermin-sefic-gnk-asg-ulaganje-pravne-prepreke-20261006-v2.webp": {
+   "bytes": 14952,
+   "flags": [
+    "necitljiva"
+   ],
+   "sha": "efd95bc919c7bc4c9cf1bee53f83ef35cdd387225ccb3640ddad99f6b7333536",
+   "error": "could not create decoder object"
+  },
+  "apps/portal/assets/editorial/nermin-sefic-gnk-asg-ulaganje-pravne-prepreke-20261006.webp": {
+   "bytes": 14998,
+   "flags": [
+    "necitljiva"
+   ],
+   "sha": "e6ed21f4b2a693d64e1d5e8c46154516de8802ac90860a192431b0b231abe77f",
+   "error": "cannot identify image file '/home/user/gnk-asg-portal-archive-2026-07-01/apps/portal/assets/editorial/nermin-sefic-gnk-a"
+  },
+  "apps/portal/assets/editorial/stare-kartice/komentari-card-en-v2.webp": {
+   "bytes": 48284,
+   "flags": [
+    "premala"
+   ],
+   "sha": "ece24b79e81ae283427a979fb85b0d231cba92b679e972bcb9ba8fac98d62f4b",
+   "w": 279,
+   "h": 600,
+   "mean": 30.1,
+   "std": 53.4,
+   "ahash": "00003c3c3c1cffff"
+  },
+  "apps/portal/assets/editorial/stare-kartice/komentari-card-v2.webp": {
+   "bytes": 49296,
+   "flags": [
+    "premala"
+   ],
+   "sha": "8b32dd53c94d7afe23f027875369c24483d116b90782a12659b9cbe0c660baa1",
+   "w": 279,
+   "h": 600,
+   "mean": 28.3,
+   "std": 50.8,
+   "ahash": "88007cfc3c1cffff"
+  },
+  "apps/portal/assets/editorial/vila-sestine-ilustracija-20261006.webp": {
+   "bytes": 10010,
+   "flags": [
+    "premala"
+   ],
+   "sha": "402205294fefd02c2be307e3693e786019b06ead194c8eeca134f0ef38476724",
+   "w": 400,
+   "h": 225,
+   "mean": 114.9,
+   "std": 65.9,
+   "ahash": "00000000e0fcfcfc"
+  },
+  "apps/portal/assets/editorial/vila-sestine-ugovor-prava-trecih.png": {
+   "bytes": 6286,
+   "flags": [
+    "premala"
+   ],
+   "sha": "44bba3f957f016537f742fa5c592c0803e5709a08c1f67dd63d5ca8a3298176b",
+   "w": 620,
+   "h": 291,
+   "mean": 214.8,
+   "std": 92.9,
+   "ahash": "ff00f9f081ffc381"
+  },
+  "apps/portal/assets/gallery/nermin-sefic-gnk-asg-pravne-prepreke-hero.webp": {
+   "bytes": 15006,
+   "flags": [
+    "necitljiva"
+   ],
+   "sha": "e07b3aa772bf175f62d796318c6757e24685257672d51d73f092ee118b7f0169",
+   "error": "could not create decoder object"
+  },
+  "apps/portal/assets/izdanja/test-text.png": {
+   "bytes": 6217,
+   "flags": [
+    "premala"
+   ],
+   "sha": "f2b98d5a28984ad1530125dfacbcd1f5cdcf20939039337d1cb8e2b203bc696a",
+   "w": 400,
+   "h": 100,
+   "mean": 47.3,
+   "std": 46.1,
+   "ahash": "000000ffff920000"
+  },
+  "apps/portal/assets/news-preview/0d6b7dd8d64f720621.png": {
+   "bytes": 31596,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "a573384a0b4a3adc2208d56f353169f98ee6cd52293da6a9d6df19f946da6ad7",
+   "w": 1200,
+   "h": 630,
+   "mean": 38.5,
+   "std": 36.8,
+   "ahash": "0000000f7fffc0c0"
+  },
+  "apps/portal/assets/news-preview/1ad8168e8541a37c04.png": {
+   "bytes": 33676,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "196f5cfca37e0c7242ff4903ee2ac767f44764673f6885c49d40e15d1623e59a",
+   "w": 1200,
+   "h": 630,
+   "mean": 40.1,
+   "std": 40.5,
+   "ahash": "0000001f7feec0c0"
+  },
+  "apps/portal/assets/news-preview/1c2f9f58a85ecd91e9.png": {
+   "bytes": 47309,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "863f2eee67836fdd9ce47f0ea3a58e74590896c9ab95bfb527854aabee08d680",
+   "w": 1200,
+   "h": 630,
+   "mean": 42.9,
+   "std": 46.6,
+   "ahash": "0000007f7fc2c000"
+  },
+  "apps/portal/assets/news-preview/26869ad23bd1a90809.png": {
+   "bytes": 47309,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "863f2eee67836fdd9ce47f0ea3a58e74590896c9ab95bfb527854aabee08d680",
+   "w": 1200,
+   "h": 630,
+   "mean": 42.9,
+   "std": 46.6,
+   "ahash": "0000007f7fc2c000"
+  },
+  "apps/portal/assets/news-preview/2fab65d99200e69426.png": {
+   "bytes": 29505,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "8c16ec97a255080c570aa57c7e0ba76531b9d7de9133b06e78fbbf1db69523b2",
+   "w": 1200,
+   "h": 630,
+   "mean": 37.6,
+   "std": 34.1,
+   "ahash": "000000077fffc0c0"
+  },
+  "apps/portal/assets/news-preview/375415aacdabd28419.png": {
+   "bytes": 33145,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "b272adfef5893bc2d9cd7854444da112a98f25a080e76721cb0a31ad9c959def",
+   "w": 1200,
+   "h": 630,
+   "mean": 37.2,
+   "std": 32.9,
+   "ahash": "4202000f1fcfc0c0"
+  },
+  "apps/portal/assets/news-preview/57c4bbc24453ba8949.png": {
+   "bytes": 47309,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "863f2eee67836fdd9ce47f0ea3a58e74590896c9ab95bfb527854aabee08d680",
+   "w": 1200,
+   "h": 630,
+   "mean": 42.9,
+   "std": 46.6,
+   "ahash": "0000007f7fc2c000"
+  },
+  "apps/portal/assets/news-preview/6015ff001391e620d5.png": {
+   "bytes": 29283,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "efae94f9a280e59235166f75f4823044f993dbeb15565425cb0736cc913c3d3e",
+   "w": 1200,
+   "h": 630,
+   "mean": 37.5,
+   "std": 33.8,
+   "ahash": "4002000f3fdfc0c0"
+  },
+  "apps/portal/assets/news-preview/74b20fab576d526476.png": {
+   "bytes": 29283,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "efae94f9a280e59235166f75f4823044f993dbeb15565425cb0736cc913c3d3e",
+   "w": 1200,
+   "h": 630,
+   "mean": 37.5,
+   "std": 33.8,
+   "ahash": "4002000f3fdfc0c0"
+  },
+  "apps/portal/assets/news-preview/b1a13e40191d366cf7.png": {
+   "bytes": 47309,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "863f2eee67836fdd9ce47f0ea3a58e74590896c9ab95bfb527854aabee08d680",
+   "w": 1200,
+   "h": 630,
+   "mean": 42.9,
+   "std": 46.6,
+   "ahash": "0000007f7fc2c000"
+  },
+  "apps/portal/assets/news-preview/c11b5b812b51386bff.png": {
+   "bytes": 29505,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "8c16ec97a255080c570aa57c7e0ba76531b9d7de9133b06e78fbbf1db69523b2",
+   "w": 1200,
+   "h": 630,
+   "mean": 37.6,
+   "std": 34.1,
+   "ahash": "000000077fffc0c0"
+  },
+  "apps/portal/assets/news-preview/d43789e667fb6f8093.png": {
+   "bytes": 31596,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "a573384a0b4a3adc2208d56f353169f98ee6cd52293da6a9d6df19f946da6ad7",
+   "w": 1200,
+   "h": 630,
+   "mean": 38.5,
+   "std": 36.8,
+   "ahash": "0000000f7fffc0c0"
+  },
+  "apps/portal/assets/news-preview/daffb55e9f1f140a1f.png": {
+   "bytes": 33676,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "196f5cfca37e0c7242ff4903ee2ac767f44764673f6885c49d40e15d1623e59a",
+   "w": 1200,
+   "h": 630,
+   "mean": 40.1,
+   "std": 40.5,
+   "ahash": "0000001f7feec0c0"
+  },
+  "apps/portal/assets/news-preview/df57c485f1e340c674.png": {
+   "bytes": 33145,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "b272adfef5893bc2d9cd7854444da112a98f25a080e76721cb0a31ad9c959def",
+   "w": 1200,
+   "h": 630,
+   "mean": 37.2,
+   "std": 32.9,
+   "ahash": "4202000f1fcfc0c0"
+  },
+  "apps/portal/assets/news-preview/f323dbe1f86aa2212f.png": {
+   "bytes": 47309,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "863f2eee67836fdd9ce47f0ea3a58e74590896c9ab95bfb527854aabee08d680",
+   "w": 1200,
+   "h": 630,
+   "mean": 42.9,
+   "std": 46.6,
+   "ahash": "0000007f7fc2c000"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-ai-asistent.jpg": {
+   "bytes": 198893,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "72fcdbd8c123495ebeb271543772ede05093f486032035f19fda172bd38051de",
+   "w": 1280,
+   "h": 720,
+   "mean": 116.5,
+   "std": 70.1,
+   "ahash": "f1f1d1e1f0f1f1f8"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-burze-i-trzista.jpg": {
+   "bytes": 153998,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "5df88bd52a1ee3510cddf142f5e6baeabb218e2855757a723931dcc4f46bc047",
+   "w": 1280,
+   "h": 720,
+   "mean": 43.4,
+   "std": 46.5,
+   "ahash": "f1fd1c000303076f"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-digitalna-imovina-fintech-trzista-001.jpg": {
+   "bytes": 164226,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "7640eac65836f59c77b2c4aef03b2b8efdbb7a1392422fad76ff55cdfa2aa8dd",
+   "w": 1280,
+   "h": 720,
+   "mean": 104.3,
+   "std": 60.6,
+   "ahash": "fff0e080dc9e7cfc"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-financije-poslovanje-002.jpg": {
+   "bytes": 180320,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "5e85b19a9c93143567cecd771e1bf3648cc27ffd3beea0effa66d4af4699c45e",
+   "w": 1280,
+   "h": 720,
+   "mean": 94.8,
+   "std": 68.2,
+   "ahash": "707e3e07949cfce7"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-financije-poslovanje-004.jpg": {
+   "bytes": 198893,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "72fcdbd8c123495ebeb271543772ede05093f486032035f19fda172bd38051de",
+   "w": 1280,
+   "h": 720,
+   "mean": 116.5,
+   "std": 70.1,
+   "ahash": "f1f1d1e1f0f1f1f8"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-financije-poslovanje-005.jpg": {
+   "bytes": 116485,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "e556bfd1b6ed18ec100bcbdf1b75c1244d52ab2fbf0120b1c8f972ce3976bc59",
+   "w": 1280,
+   "h": 720,
+   "mean": 138.6,
+   "std": 72.7,
+   "ahash": "03071f3f3c3847ff"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-financije-poslovanje-006.jpg": {
+   "bytes": 147872,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "1d5414b3f9fca1f9235051b2cc2971e62bec63eb8f1ce017c94c220786508f43",
+   "w": 1280,
+   "h": 720,
+   "mean": 106.8,
+   "std": 78.4,
+   "ahash": "0e3f7e3e030f0f0f"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-financije-poslovanje-007.jpg": {
+   "bytes": 150353,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "c014bffd8bf107bc8c13f4e2c244a2fe194522472fc681a4c0045920e39bd4aa",
+   "w": 1280,
+   "h": 720,
+   "mean": 109.2,
+   "std": 78.2,
+   "ahash": "1e7f3e0e030f0e0f"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-financije-poslovanje-014.jpg": {
+   "bytes": 177409,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "aa78d8c704a43b01d8d9b001c8a5a4454c4c21637fcd48aa4981bd8fd3bfd374",
+   "w": 1280,
+   "h": 720,
+   "mean": 95.1,
+   "std": 65.9,
+   "ahash": "707e3e07949cfce7"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-financije-poslovanje-015.jpg": {
+   "bytes": 151393,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "2937a902f58be007bf91cb37189d953eb14f1c429b84b23408b5562a5a646e31",
+   "w": 1280,
+   "h": 720,
+   "mean": 52.0,
+   "std": 56.3,
+   "ahash": "1c18042c060f0f1e"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-financije-poslovanje-016.jpg": {
+   "bytes": 176191,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "f788f7757afdd4c86a226c68d2719ea64a0d57e1691b608fdba4a639f247945f",
+   "w": 1280,
+   "h": 720,
+   "mean": 54.7,
+   "std": 55.6,
+   "ahash": "f8fc5c1e00010307"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-financije-poslovanje-019.jpg": {
+   "bytes": 137876,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "9f05759baf0f1af6f7cb61201f384c2f14fadb4d5a20295b780a64148884b612",
+   "w": 1280,
+   "h": 720,
+   "mean": 65.3,
+   "std": 62.0,
+   "ahash": "001c3c10011f1f17"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-globalna-mreza.jpg": {
+   "bytes": 116485,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "e556bfd1b6ed18ec100bcbdf1b75c1244d52ab2fbf0120b1c8f972ce3976bc59",
+   "w": 1280,
+   "h": 720,
+   "mean": 138.6,
+   "std": 72.7,
+   "ahash": "03071f3f3c3847ff"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-globalno-poslovanje-006.jpg": {
+   "bytes": 150353,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "c014bffd8bf107bc8c13f4e2c244a2fe194522472fc681a4c0045920e39bd4aa",
+   "w": 1280,
+   "h": 720,
+   "mean": 109.2,
+   "std": 78.2,
+   "ahash": "1e7f3e0e030f0e0f"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-globalno-poslovanje-007.jpg": {
+   "bytes": 104496,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "87479598d6877e8a5a6c05799ab266c6a4878c801a3c8b58e52c58f9464a0092",
+   "w": 1280,
+   "h": 720,
+   "mean": 82.1,
+   "std": 59.4,
+   "ahash": "9e9800c0c1c3dfdf"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-globalno-poslovanje-013.jpg": {
+   "bytes": 180320,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "5e85b19a9c93143567cecd771e1bf3648cc27ffd3beea0effa66d4af4699c45e",
+   "w": 1280,
+   "h": 720,
+   "mean": 94.8,
+   "std": 68.2,
+   "ahash": "707e3e07949cfce7"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-globalno-poslovanje-014.jpg": {
+   "bytes": 151393,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "2937a902f58be007bf91cb37189d953eb14f1c429b84b23408b5562a5a646e31",
+   "w": 1280,
+   "h": 720,
+   "mean": 52.0,
+   "std": 56.3,
+   "ahash": "1c18042c060f0f1e"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-globalno-poslovanje-015.jpg": {
+   "bytes": 176191,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "f788f7757afdd4c86a226c68d2719ea64a0d57e1691b608fdba4a639f247945f",
+   "w": 1280,
+   "h": 720,
+   "mean": 54.7,
+   "std": 55.6,
+   "ahash": "f8fc5c1e00010307"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-globalno-poslovanje-016.jpg": {
+   "bytes": 143287,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "3791c73207ecd47c91ec7abf9c334006eeda1347eb430ae9b74203768522ac9d",
+   "w": 1280,
+   "h": 720,
+   "mean": 88.7,
+   "std": 74.7,
+   "ahash": "fcfcfb3300800018"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-globalno-poslovanje-017.jpg": {
+   "bytes": 133893,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "9e5b159e14154c17334adf345def87ec00e0499f7911942e35969df69633de93",
+   "w": 1280,
+   "h": 720,
+   "mean": 88.0,
+   "std": 64.3,
+   "ahash": "ffc0e0e000141efe"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-globalno-poslovanje-020.jpg": {
+   "bytes": 209706,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "2d8cff3e852f289b0a1ee8b0a6110c986261d5fe9b7948f27a2b4108ec4c2f4e",
+   "w": 1280,
+   "h": 720,
+   "mean": 87.3,
+   "std": 80.0,
+   "ahash": "001800007075ffff"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-infrastruktura-sport-odrzivost-006.jpg": {
+   "bytes": 147872,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "1d5414b3f9fca1f9235051b2cc2971e62bec63eb8f1ce017c94c220786508f43",
+   "w": 1280,
+   "h": 720,
+   "mean": 106.8,
+   "std": 78.4,
+   "ahash": "0e3f7e3e030f0f0f"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-infrastruktura-sport-odrzivost-007.jpg": {
+   "bytes": 150353,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "c014bffd8bf107bc8c13f4e2c244a2fe194522472fc681a4c0045920e39bd4aa",
+   "w": 1280,
+   "h": 720,
+   "mean": 109.2,
+   "std": 78.2,
+   "ahash": "1e7f3e0e030f0e0f"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-infrastruktura-sport-odrzivost-011.jpg": {
+   "bytes": 178272,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "42267ebdb705710057b4deb251973b139368c21e40548665643d629b28be48bb",
+   "w": 1280,
+   "h": 720,
+   "mean": 89.3,
+   "std": 64.9,
+   "ahash": "c0f0c080c1e0f0f3"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-infrastruktura-sport-odrzivost-012.jpg": {
+   "bytes": 182252,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "90a76803738061000da346da7a78842b47445f2962546d7c5abbfe3e4a1182a5",
+   "w": 1280,
+   "h": 720,
+   "mean": 91.7,
+   "std": 52.4,
+   "ahash": "00804040e0f0ffff"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-infrastruktura-sport-odrzivost-013.jpg": {
+   "bytes": 144881,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "21ca06c70dee2368c8964fa3d52361dfac15c2d85284977d992e621f24c51213",
+   "w": 1280,
+   "h": 720,
+   "mean": 137.3,
+   "std": 73.1,
+   "ahash": "47670606000f3f7f"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-infrastruktura-sport-odrzivost-014.jpg": {
+   "bytes": 177409,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "aa78d8c704a43b01d8d9b001c8a5a4454c4c21637fcd48aa4981bd8fd3bfd374",
+   "w": 1280,
+   "h": 720,
+   "mean": 95.1,
+   "std": 65.9,
+   "ahash": "707e3e07949cfce7"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-infrastruktura-sport-odrzivost-017.jpg": {
+   "bytes": 143287,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "3791c73207ecd47c91ec7abf9c334006eeda1347eb430ae9b74203768522ac9d",
+   "w": 1280,
+   "h": 720,
+   "mean": 88.7,
+   "std": 74.7,
+   "ahash": "fcfcfb3300800018"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-infrastruktura-sport-odrzivost-018.jpg": {
+   "bytes": 133893,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "9e5b159e14154c17334adf345def87ec00e0499f7911942e35969df69633de93",
+   "w": 1280,
+   "h": 720,
+   "mean": 88.0,
+   "std": 64.3,
+   "ahash": "ffc0e0e000141efe"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-infrastruktura-sport-odrzivost-019.jpg": {
+   "bytes": 137876,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "9f05759baf0f1af6f7cb61201f384c2f14fadb4d5a20295b780a64148884b612",
+   "w": 1280,
+   "h": 720,
+   "mean": 65.3,
+   "std": 62.0,
+   "ahash": "001c3c10011f1f17"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-kartice-i-placanja.jpg": {
+   "bytes": 182252,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "90a76803738061000da346da7a78842b47445f2962546d7c5abbfe3e4a1182a5",
+   "w": 1280,
+   "h": 720,
+   "mean": 91.7,
+   "std": 52.4,
+   "ahash": "00804040e0f0ffff"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-odrziva-buducnost.jpg": {
+   "bytes": 178272,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "42267ebdb705710057b4deb251973b139368c21e40548665643d629b28be48bb",
+   "w": 1280,
+   "h": 720,
+   "mean": 89.3,
+   "std": 64.9,
+   "ahash": "c0f0c080c1e0f0f3"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-poslovna-zgrada.jpg": {
+   "bytes": 144881,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "21ca06c70dee2368c8964fa3d52361dfac15c2d85284977d992e621f24c51213",
+   "w": 1280,
+   "h": 720,
+   "mean": 137.3,
+   "std": 73.1,
+   "ahash": "47670606000f3f7f"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-sportska-infrastruktura.jpg": {
+   "bytes": 104496,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "87479598d6877e8a5a6c05799ab266c6a4878c801a3c8b58e52c58f9464a0092",
+   "w": 1280,
+   "h": 720,
+   "mean": 82.1,
+   "std": 59.4,
+   "ahash": "9e9800c0c1c3dfdf"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-tehnologija-ai-001.jpg": {
+   "bytes": 209706,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "2d8cff3e852f289b0a1ee8b0a6110c986261d5fe9b7948f27a2b4108ec4c2f4e",
+   "w": 1280,
+   "h": 720,
+   "mean": 87.3,
+   "std": 80.0,
+   "ahash": "001800007075ffff"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-tehnologija-ai-002.jpg": {
+   "bytes": 164226,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "7640eac65836f59c77b2c4aef03b2b8efdbb7a1392422fad76ff55cdfa2aa8dd",
+   "w": 1280,
+   "h": 720,
+   "mean": 104.3,
+   "std": 60.6,
+   "ahash": "fff0e080dc9e7cfc"
+  },
+  "apps/portal/assets/seo-gallery/gnk-asg-tehnologija-ai-007.jpg": {
+   "bytes": 153998,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "5df88bd52a1ee3510cddf142f5e6baeabb218e2855757a723931dcc4f46bc047",
+   "w": 1280,
+   "h": 720,
+   "mean": 43.4,
+   "std": 46.5,
+   "ahash": "f1fd1c000303076f"
+  },
+  "apps/portal/assets/src/arhiva-ai.png": {
+   "bytes": 2858566,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "86dcd419e7bbf11e9f54cfe181149fc42ece363a375f5d0a1eecd3c723b3b8ed",
+   "w": 1408,
+   "h": 768,
+   "mean": 64.8,
+   "std": 56.0,
+   "ahash": "0c0cb478f83cfc3c"
+  },
+  "apps/portal/assets/src/biznis-ai.png": {
+   "bytes": 2864666,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "04123e88a3fa5a6c501a3d851b694d8865d1a2fcc136c473c1d75787d150d3df",
+   "w": 1408,
+   "h": 768,
+   "mean": 68.1,
+   "std": 68.5,
+   "ahash": "0cfce24a5f0f47e0"
+  },
+  "apps/portal/assets/src/canberra-ai.png": {
+   "bytes": 2240197,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "463076a3d68b366c67cbd22ece2b4239d5de1b19bfa2a0c998cd13aa8fb1c8ef",
+   "w": 1376,
+   "h": 768,
+   "mean": 103.8,
+   "std": 56.5,
+   "ahash": "00e0f800fcfefcfe"
+  },
+  "apps/portal/assets/src/dnevnik-ai.png": {
+   "bytes": 2341993,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "3d128b59db37e16505e0633b7fc05e41b0f6eb287c3ed2001d63563f51276498",
+   "w": 1376,
+   "h": 768,
+   "mean": 51.0,
+   "std": 55.1,
+   "ahash": "00000083bfdf8f03"
+  },
+  "apps/portal/assets/src/jakarta-ai.png": {
+   "bytes": 2743267,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "94792d742187ccbcd9dd32117675fc0dcbb25ee006ffe82969d134cef4c2d814",
+   "w": 1376,
+   "h": 768,
+   "mean": 78.0,
+   "std": 58.3,
+   "ahash": "041c8402023fff3f"
+  },
+  "apps/portal/assets/src/kairo-ai.png": {
+   "bytes": 2727782,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "a580fa2dd36bf9e204d5197a7dbfd4b4367d976238f3a440d3324d2686d0fb94",
+   "w": 1376,
+   "h": 768,
+   "mean": 122.6,
+   "std": 60.4,
+   "ahash": "3c04030300ffffff"
+  },
+  "apps/portal/assets/src/moda-ai.png": {
+   "bytes": 2713842,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "0a0eaea0a7a97c07ad81fce050fdd79a4401bbe2dcbde67f1cfe770d924ba541",
+   "w": 1376,
+   "h": 768,
+   "mean": 111.9,
+   "std": 67.2,
+   "ahash": "dc180801dfdfff03"
+  },
+  "apps/portal/assets/src/nairobi-ai.png": {
+   "bytes": 2490408,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "e395dbfaffd0ae7541c7730ce701b5b1ec6a21f523626c89bcfffb6a3c4a1e55",
+   "w": 1376,
+   "h": 768,
+   "mean": 85.0,
+   "std": 67.1,
+   "ahash": "00000000feffffff"
+  },
+  "apps/portal/assets/src/newyork-ai.png": {
+   "bytes": 2600488,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "7b19c57220567b19efb60bb6dacf60efa048ba05a29972afb5e9ceb6cd573173",
+   "w": 1408,
+   "h": 768,
+   "mean": 73.3,
+   "std": 52.7,
+   "ahash": "04000101ffff7f3f"
+  },
+  "apps/portal/assets/src/peking-ai.png": {
+   "bytes": 2692553,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "fe9368057bef206a162ccfb43328b67b3e7d255e6948186bd16ac51e6e3bc754",
+   "w": 1376,
+   "h": 768,
+   "mean": 78.7,
+   "std": 58.6,
+   "ahash": "00c060307cfcfcfe"
+  },
+  "apps/portal/assets/src/politika-ai.png": {
+   "bytes": 2720572,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "26edca258e0fb21b07d67cace27395a2754fbdde92808e61a6a45e6fe0589d6a",
+   "w": 1376,
+   "h": 768,
+   "mean": 67.6,
+   "std": 67.4,
+   "ahash": "02810000c3e7c781"
+  },
+  "apps/portal/assets/src/saopaulo-ai.png": {
+   "bytes": 2595713,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "50be91d3c7aaf442abbdd2cf035bd36747c6e0404d8fd6b9f937338ab027d5a2",
+   "w": 1376,
+   "h": 768,
+   "mean": 101.9,
+   "std": 62.6,
+   "ahash": "00000000ecffffff"
+  },
+  "apps/portal/assets/src/sigurnost-ai.png": {
+   "bytes": 2242286,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "0e2618424757b8eefb775e33f01a5532a1225807688144bd43f534a0524bcc33",
+   "w": 1376,
+   "h": 768,
+   "mean": 36.0,
+   "std": 45.6,
+   "ahash": "83818efafe7f6000"
+  },
+  "apps/portal/assets/src/singapur-ai.png": {
+   "bytes": 2477875,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "bdd935d813a66467aa4e3f4d7f6f2247bb812104ace4c7963726a9daf8e57d3a",
+   "w": 1376,
+   "h": 768,
+   "mean": 89.2,
+   "std": 46.4,
+   "ahash": "0000003cfcff7fff"
+  },
+  "apps/portal/assets/src/sport-ai.png": {
+   "bytes": 2452288,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "74490b23ddf8745ce2dd02a31f743bdc7f76dfc888ac078565b38f3aa2a0a9dc",
+   "w": 1376,
+   "h": 768,
+   "mean": 70.9,
+   "std": 49.8,
+   "ahash": "007e7e3c007cfff0"
+  },
+  "apps/portal/assets/src/sydney-ai.png": {
+   "bytes": 2727277,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "4d0c2a0f3135074fa71af0ab8ee11ad9738a53da3bcc54f26730e0e21c6b9c68",
+   "w": 1376,
+   "h": 768,
+   "mean": 92.6,
+   "std": 58.3,
+   "ahash": "000030181efffffe"
+  },
+  "apps/portal/assets/src/tehnologija-ai.png": {
+   "bytes": 2757541,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "acc6f1864ebf114a077f215289ef06ac1f63c6f5063435528153880aa419efe9",
+   "w": 1376,
+   "h": 768,
+   "mean": 60.0,
+   "std": 49.0,
+   "ahash": "3c181818183c7c7e"
+  },
+  "apps/portal/assets/src/tokio-ai.png": {
+   "bytes": 2435355,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "972c7d89e83a34c90dabbb8a4d44154e8512976beb03415808724734b70f3524",
+   "w": 1376,
+   "h": 768,
+   "mean": 65.8,
+   "std": 50.1,
+   "ahash": "07048cf07f3f7f3e"
+  },
+  "apps/portal/assets/src/washington-ai.png": {
+   "bytes": 2477546,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "f34358e234e0f46001c0950a75c0584ef3dbd5a77183ed184d754ca3bbe2b327",
+   "w": 1376,
+   "h": 768,
+   "mean": 91.7,
+   "std": 58.6,
+   "ahash": "18180018fbff7f7f"
+  },
+  "apps/portal/assets/trgovina/knjiga-1.webp": {
+   "bytes": 12280,
+   "flags": [
+    "premala"
+   ],
+   "sha": "926af9c51b70a17ad4ca4a0cd1a56fecab47a993aba272717b6ff00804fce401",
+   "w": 240,
+   "h": 240,
+   "mean": 147.6,
+   "std": 60.3,
+   "ahash": "1c1f0783830787cf"
+  },
+  "apps/portal/assets/trgovina/knjiga-2.webp": {
+   "bytes": 18572,
+   "flags": [
+    "premala"
+   ],
+   "sha": "102dcbd1580cdbf6c45299b83e7de1ea6dbe9991e5e2acfaca97623612e4f0ee",
+   "w": 240,
+   "h": 240,
+   "mean": 86.0,
+   "std": 47.8,
+   "ahash": "c1808004467f7f7f"
+  },
+  "apps/portal/assets/trgovina/knjiga-3.webp": {
+   "bytes": 13964,
+   "flags": [
+    "premala"
+   ],
+   "sha": "dae92fde63a3148d3b171351aae840ec515358b57165e82647ac0480952f39a9",
+   "w": 240,
+   "h": 240,
+   "mean": 121.4,
+   "std": 72.0,
+   "ahash": "100020636ffffdfb"
+  },
+  "apps/portal/assets/trgovina/prehrana-1.webp": {
+   "bytes": 16478,
+   "flags": [
+    "premala"
+   ],
+   "sha": "b9e6ab4b0272644954a71db36fe2494d10813b185f6aeb3b74e490bce5cd1b57",
+   "w": 240,
+   "h": 240,
+   "mean": 94.7,
+   "std": 49.6,
+   "ahash": "01183f7f5f1f2786"
+  },
+  "apps/portal/assets/trgovina/prehrana-2.webp": {
+   "bytes": 6830,
+   "flags": [
+    "premala"
+   ],
+   "sha": "8fef282d43f0074f3ac47033d399d8fe2613c050f583b411e3c17ff655e57763",
+   "w": 240,
+   "h": 240,
+   "mean": 83.3,
+   "std": 64.7,
+   "ahash": "030100c1ffffffff"
+  },
+  "apps/portal/assets/trgovina/prehrana-3.webp": {
+   "bytes": 13948,
+   "flags": [
+    "premala"
+   ],
+   "sha": "4dc2c9fe8c11e650e613a986fd8e5d7d49bb827f319d54bc09eeaebbb97f44cb",
+   "w": 240,
+   "h": 240,
+   "mean": 170.5,
+   "std": 48.2,
+   "ahash": "89810002e0d1ffff"
+  },
+  "apps/portal/assets/trgovina/tehnologija-1.webp": {
+   "bytes": 3314,
+   "flags": [
+    "premala"
+   ],
+   "sha": "876a9d1cd5139aaffbc4a6099b268b0f4ddd38b3f3e1d811e1f5e48fd51fa8e0",
+   "w": 240,
+   "h": 240,
+   "mean": 53.0,
+   "std": 55.3,
+   "ahash": "0040feffffff0000"
+  },
+  "apps/portal/assets/trgovina/tehnologija-2.webp": {
+   "bytes": 2028,
+   "flags": [
+    "premala"
+   ],
+   "sha": "d16ea5c4911e28d7925d292eaed062f33dbb3275cd8ffdb343f238bf3dc64c49",
+   "w": 240,
+   "h": 240,
+   "mean": 74.5,
+   "std": 74.0,
+   "ahash": "00ffffffff800000"
+  },
+  "apps/portal/assets/trgovina/tehnologija-3.webp": {
+   "bytes": 1870,
+   "flags": [
+    "premala"
+   ],
+   "sha": "9d2bdda04772f70143374dbd901113770c8a815f4b3d8db970f38ff151dcfc35",
+   "w": 240,
+   "h": 240,
+   "mean": 79.9,
+   "std": 73.3,
+   "ahash": "00fffffffef00000"
+  },
+  "apps/portal/assets/world-cookbook/images/53296_Sauerkraut_pierogi.jpg": {
+   "bytes": 147848,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "a58a8bf19a37a05288eebcbd64181d335527638afde37efe3517e49310eaadec",
+   "w": 1100,
+   "h": 760,
+   "mean": 120.4,
+   "std": 68.7,
+   "ahash": "5f53070730727e0c"
+  },
+  "apps/portal/assets/world-cookbook/images/53314_Sauerkraut_pierogii.jpg": {
+   "bytes": 147848,
+   "flags": [
+    "duplikat"
+   ],
+   "sha": "a58a8bf19a37a05288eebcbd64181d335527638afde37efe3517e49310eaadec",
+   "w": 1100,
+   "h": 760,
+   "mean": 120.4,
+   "std": 68.7,
+   "ahash": "5f53070730727e0c"
+  },
+  "apps/portal/data/linkedin-content/archive/2026-07-24-puls-trzista.png": {
+   "bytes": 27960,
+   "flags": [
+    "tamno_provjeri"
+   ],
+   "sha": "95e1a36a91b2a5d574a7f167f495c360404037724b12a8cebfb82835ec52cf57",
+   "w": 1200,
+   "h": 1200,
+   "mean": 17.7,
+   "std": 20.8,
+   "ahash": "0f000e0f0f0f0f0f"
+  },
+  "apps/portal/data/linkedin-content/archive/2026-07-25-trzisne-krize.png": {
+   "bytes": 28183,
+   "flags": [
+    "tamno_provjeri"
+   ],
+   "sha": "5a1f9caea6d9d10c48fdafb4a65fd9139166665d0a76e90f6ce617eb9ad27cc2",
+   "w": 1200,
+   "h": 1200,
+   "mean": 17.7,
+   "std": 20.8,
+   "ahash": "0f0006070f0f0f0f"
+  },
+  "apps/portal/data/linkedin-content/archive/2026-07-26-synapse.png": {
+   "bytes": 28327,
+   "flags": [
+    "tamno_provjeri"
+   ],
+   "sha": "3b47ed1c644a84b4a84cdd3d519c67883c64687e9de3f1491b47eb2a69be7e9e",
+   "w": 1200,
+   "h": 1200,
+   "mean": 17.4,
+   "std": 19.2,
+   "ahash": "ff0002070f0f0f0f"
+  },
+  "apps/portal/data/linkedin-content/archive/2026-07-27-nilus-bio.png": {
+   "bytes": 22373,
+   "flags": [
+    "tamno_provjeri"
+   ],
+   "sha": "46fc934e456cd19f3c12b0f9cf12e8f581681089f63d935d700145ba04b4055a",
+   "w": 1200,
+   "h": 1200,
+   "mean": 17.2,
+   "std": 18.2,
+   "ahash": "ff000303070f0f0f"
+  },
+  "apps/portal/data/linkedin-content/archive/2026-07-29-ideje.png": {
+   "bytes": 29147,
+   "flags": [
+    "tamno_provjeri"
+   ],
+   "sha": "f55255729665994430cab48f57af3181df39b06d3fda6f960091b7425100496e",
+   "w": 1200,
+   "h": 1200,
+   "mean": 18.0,
+   "std": 21.0,
+   "ahash": "0f000607070f0f0f"
+  },
+  "apps/portal/data/linkedin-content/archive/2026-07-31-puls-trzista.png": {
+   "bytes": 27638,
+   "flags": [
+    "tamno_provjeri"
+   ],
+   "sha": "f2e921156cbfb22e2baaaedc006001221146aa8c65c34a37d64138809b41ded0",
+   "w": 1200,
+   "h": 1200,
+   "mean": 17.8,
+   "std": 20.8,
+   "ahash": "0f000e0f0f070f0f"
+  },
+  "apps/portal/data/linkedin-content/archive/2026-08-01-trzisne-krize.png": {
+   "bytes": 27265,
+   "flags": [
+    "tamno_provjeri"
+   ],
+   "sha": "2c5bab59ea08d0f97a4e4e04d1bf8c078cca4fba1a890ec5855758765e378d80",
+   "w": 1200,
+   "h": 1200,
+   "mean": 17.8,
+   "std": 20.9,
+   "ahash": "0f0006070f0f0f0f"
+  },
+  "apps/portal/data/linkedin-content/archive/2026-08-02-synapse.png": {
+   "bytes": 25010,
+   "flags": [
+    "tamno_provjeri"
+   ],
+   "sha": "36204cf8b24359e441e3dc481443cb3665a744194487150cfa96b4fc6469e3fe",
+   "w": 1200,
+   "h": 1200,
+   "mean": 17.4,
+   "std": 19.3,
+   "ahash": "ff0002070f0f0f0f"
+  },
+  "apps/portal/data/linkedin-content/archive/2026-08-03-nilus-bio.png": {
+   "bytes": 30505,
+   "flags": [
+    "tamno_provjeri"
+   ],
+   "sha": "6af8cdc55a7eaf6b6fa25b8b5a34e90a6f281cee217897f3754d5311cb242498",
+   "w": 1200,
+   "h": 1200,
+   "mean": 17.2,
+   "std": 18.3,
+   "ahash": "ff0003070f0f0f0f"
+  },
+  "apps/portal/data/linkedin-content/archive/2026-08-05-ideje.png": {
+   "bytes": 32454,
+   "flags": [
+    "tamno_provjeri"
+   ],
+   "sha": "2f260d74e3406bd923ffcefbbe45b25fabc1bac06915543397a6caa7abb8dcfa",
+   "w": 1200,
+   "h": 1200,
+   "mean": 17.8,
+   "std": 21.1,
+   "ahash": "0f000e07070f0f0f"
+  },
+  "apps/portal/data/linkedin-content/archive/2026-08-07-puls-trzista.png": {
+   "bytes": 28205,
+   "flags": [
+    "tamno_provjeri"
+   ],
+   "sha": "4b54b052190202c2273363009056a5fdbc32e6865c9dd8c36391ecc5b74394c9",
+   "w": 1200,
+   "h": 1200,
+   "mean": 17.8,
+   "std": 21.0,
+   "ahash": "0f000e0f0f0f0f0f"
+  },
+  "apps/portal/data/linkedin-content/archive/2026-08-08-trzisne-krize.png": {
+   "bytes": 32020,
+   "flags": [
+    "tamno_provjeri"
+   ],
+   "sha": "e9014f4e2bbd3ad0cc7d5606686d717e24ed4af5b2941a0e738002b0660bc031",
+   "w": 1200,
+   "h": 1200,
+   "mean": 17.8,
+   "std": 20.9,
+   "ahash": "0f0006070f0f0f0f"
+  },
+  "apps/portal/data/linkedin-content/archive/2026-08-09-synapse.png": {
+   "bytes": 27944,
+   "flags": [
+    "tamno_provjeri"
+   ],
+   "sha": "162aafeee55dd5403f9e571e8385c87c0bfc13061fdaa784493c6b81b57ae372",
+   "w": 1200,
+   "h": 1200,
+   "mean": 17.5,
+   "std": 19.3,
+   "ahash": "ff0002070f0f0f0f"
+  },
+  "apps/portal/data/linkedin-content/archive/2026-08-12-ideje.png": {
+   "bytes": 27628,
+   "flags": [
+    "tamno_provjeri"
+   ],
+   "sha": "872c97efefef0c58aa087ce39e33b56dfc6c901d74865f516481410943348132",
+   "w": 1200,
+   "h": 1200,
+   "mean": 18.0,
+   "std": 21.1,
+   "ahash": "0f000607070f0f0f"
+  },
+  "apps/portal/objave/dziv-dva-rjesenja-opoziv-verbalnih-zigova-dinamo/DZIV_rjesenje_stranica_1.jpg": {
+   "bytes": 982702,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "9cde1fddba49e47e34c700649b482e4e56b4e3edc319d1c54ec31a0c04730862",
+   "w": 2100,
+   "h": 2800,
+   "mean": 241.3,
+   "std": 39.8,
+   "ahash": "e6818181e381f9f3"
+  },
+  "apps/portal/objave/dziv-dva-rjesenja-opoziv-verbalnih-zigova-dinamo/DZIV_rjesenje_stranica_2.jpg": {
+   "bytes": 550395,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "78293c4478c69b774771c75f800a97aaad2b62591fafca1154ab4fa93a03390d",
+   "w": 2100,
+   "h": 2800,
+   "mean": 248.0,
+   "std": 22.2,
+   "ahash": "fffffff9f181810d"
+  },
+  "apps/portal/objave/dziv-dva-rjesenja-opoziv-verbalnih-zigova-dinamo/DZIV_rjesenje_stranica_3.jpg": {
+   "bytes": 994929,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "3d6aeccab7629f1841f29730fa597b488fe7f1c57aa017d81d8b3dd41a1ed27f",
+   "w": 2100,
+   "h": 2800,
+   "mean": 242.4,
+   "std": 37.7,
+   "ahash": "e7818181e181fdfb"
+  },
+  "apps/portal/objave/dziv-dva-rjesenja-opoziv-verbalnih-zigova-dinamo/DZIV_rjesenje_stranica_4.jpg": {
+   "bytes": 564713,
+   "flags": [
+    "pretezka"
+   ],
+   "sha": "25de1c15a37ef488b6b7d60bcb6fcf62ca0a7477a25a831cd534195f5b965367",
+   "w": 2100,
+   "h": 2800,
+   "mean": 247.9,
+   "std": 23.5,
+   "ahash": "fffffff1c181017f"
+  },
+  "apps/portal/spt/img/og/vest-back.jpg": {
+   "bytes": 61318,
+   "flags": [
+    "tamno_provjeri"
+   ],
+   "sha": "2d64e66a73b9b224b022aca3aba69638d1720a1e82d7c3beb463491c5dc07e44",
+   "w": 1200,
+   "h": 630,
+   "mean": 24.4,
+   "std": 21.2,
+   "ahash": "0464645a5a5a3c18"
+  },
+  "apps/portal/spt/img/og/vest-front.jpg": {
+   "bytes": 52668,
+   "flags": [
+    "tamno_provjeri"
+   ],
+   "sha": "ed9ae7a2b906fc38fbf9f4ade1f81e2733b8878e524fa2904d554a3bf698aa32",
+   "w": 1200,
+   "h": 630,
+   "mean": 22.7,
+   "std": 20.4,
+   "ahash": "000024243e3c3c3c"
+  },
+  "apps/portal/spt/img/vest_back-720.webp": {
+   "bytes": 10358,
+   "flags": [
+    "tamno_provjeri"
+   ],
+   "sha": "59a9bae1b536012def81ad1746580817762de7e4110a6ed62b9693f12ad5be97",
+   "w": 720,
+   "h": 393,
+   "mean": 24.1,
+   "std": 20.7,
+   "ahash": "2464667a5a5a3c38"
+  },
+  "apps/portal/spt/img/vest_back.webp": {
+   "bytes": 44292,
+   "flags": [
+    "tamno_provjeri"
+   ],
+   "sha": "653ebab65846da13a4a033911e931d589eb7966c76ef86388e5df935af2a52e9",
+   "w": 1408,
+   "h": 768,
+   "mean": 24.1,
+   "std": 21.2,
+   "ahash": "2464667a5a5a3c18"
+  },
+  "apps/portal/spt/img/vest_front-720.webp": {
+   "bytes": 9028,
+   "flags": [
+    "tamno_provjeri"
+   ],
+   "sha": "1f3895427878822fad94f4379f9d0fd15430ec3fe0842fc57b02197d47e96baf",
+   "w": 720,
+   "h": 393,
+   "mean": 22.4,
+   "std": 19.8,
+   "ahash": "000024243e3c3c38"
+  },
+  "apps/portal/spt/img/vest_front.webp": {
+   "bytes": 38602,
+   "flags": [
+    "tamno_provjeri"
+   ],
+   "sha": "f7b0819aa748b62be418e8a0c51969ccb10ee60f265b1604a0cf05bd95688f9a",
+   "w": 1408,
+   "h": 768,
+   "mean": 22.4,
+   "std": 20.1,
+   "ahash": "000024243e3c3c3c"
+  }
+ }
+}
