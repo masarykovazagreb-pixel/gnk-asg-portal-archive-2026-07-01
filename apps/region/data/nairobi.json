@@ -4,7 +4,7 @@
   "lang": "en",
   "city": "Nairobi",
   "country": "Kenija",
-  "updatedAt": "2026-10-29T20:49:30.617Z",
+  "updatedAt": "2026-10-30T21:59:48.020Z",
   "sources": [
     {
       "id": "capitalfm",
@@ -14,20 +14,19 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-29T20:48:52.244Z"
+      "checkedAt": "2026-10-30T21:59:32.760Z"
     },
     {
       "id": "nation",
       "name": "Daily Nation",
-      "url": "https://nation.africa/kenya/rss",
-      "ok": false,
-      "fetched": 0,
+      "url": "https://nation.africa/kenya/rss.xml",
+      "ok": true,
+      "fetched": 25,
       "corrupt": 0,
       "errors": [
-        "https://nation.africa/kenya/rss: HTTP 403",
-        "https://nation.africa/kenya/rss.xml: HTTP 404"
+        "https://nation.africa/kenya/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-29T20:48:53.855Z"
+      "checkedAt": "2026-10-30T21:59:33.816Z"
     },
     {
       "id": "standard",
@@ -39,7 +38,7 @@
       "errors": [
         "https://www.standardmedia.co.ke/rss: nije feed"
       ],
-      "checkedAt": "2026-10-29T20:48:54.908Z"
+      "checkedAt": "2026-10-30T21:59:34.895Z"
     },
     {
       "id": "star",
@@ -51,7 +50,7 @@
       "errors": [
         "https://www.the-star.co.ke/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-29T20:48:57.147Z"
+      "checkedAt": "2026-10-30T21:59:36.962Z"
     },
     {
       "id": "businessdaily",
@@ -63,7 +62,7 @@
       "errors": [
         "https://www.businessdailyafrica.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-29T20:48:58.202Z"
+      "checkedAt": "2026-10-30T21:59:38.016Z"
     },
     {
       "id": "citizen",
@@ -75,19 +74,17 @@
       "errors": [
         "https://www.citizen.digital/rss: HTTP 400"
       ],
-      "checkedAt": "2026-10-29T20:49:07.810Z"
+      "checkedAt": "2026-10-30T21:59:44.855Z"
     },
     {
       "id": "kbc",
       "name": "KBC",
       "url": "https://www.kbc.co.ke/feed/",
-      "ok": false,
-      "fetched": 0,
+      "ok": true,
+      "fetched": 10,
       "corrupt": 0,
-      "errors": [
-        "https://www.kbc.co.ke/feed/: fetch failed"
-      ],
-      "checkedAt": "2026-10-29T20:49:29.499Z"
+      "errors": [],
+      "checkedAt": "2026-10-30T21:59:46.953Z"
     },
     {
       "id": "eastafrican",
@@ -99,10 +96,312 @@
       "errors": [
         "https://www.theeastafrican.co.ke/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-29T20:49:30.617Z"
+      "checkedAt": "2026-10-30T21:59:48.020Z"
     }
   ],
   "items": [
+    {
+      "slug": "nairobi-2026-10-30-kbc-caf-reverts-to-biennial-afcon-afa0c7",
+      "title": "CAF reverts to biennial AFCON",
+      "summary": "After next year’s 36th AFCON, subsequent tournaments will take place in 2028, 2031, and 2033. The post CAF reverts to biennial AFCON appeared first on KBC Digital .",
+      "date": "2026-10-30T21:19:49.000Z",
+      "url": "https://www.kbc.co.ke/caf-reverts-to-biennial-afcon/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "Football",
+        "Sports",
+        "AFCON",
+        "AFCON 2027"
+      ],
+      "author": "Dismas Otuke",
+      "theme": "drustvo",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/10/Screenshot-2026-10-30-at-11.45.20-PM.png",
+      "imageAlt": "CAF reverts to biennial AFCON",
+      "addedAt": "2026-10-30T21:59:46.953Z"
+    },
+    {
+      "slug": "nairobi-2026-10-30-kbc-pope-leo-xiv-becomes-first-pontiff-to-vote-677287",
+      "title": "Pope Leo XIV becomes first pontiff to vote in a US election",
+      "summary": "Pope Leo XIV has submitted his mail-in ballot in Illinois, for the midterm elections, becoming the first-ever pope to vote in a US election. “The Holy Father expresses his belief in the right and the duty of citizens to participate in democratic processes,” the Holy See Press Office said in a statement. The Chicago-born pontiff […] The post Pope Leo XIV becomes first pontiff to vote in a US election appeared first on KBC Digital .",
+      "date": "2026-10-30T20:55:20.000Z",
+      "url": "https://www.kbc.co.ke/pope-leo-xiv-becomes-first-pontiff-to-vote-in-a-us-election/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "International News"
+      ],
+      "author": "BBC",
+      "theme": "politika",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/10/POPE-ELECTIONS.webp",
+      "imageAlt": "Pope Leo XIV becomes first pontiff to vote in a US election",
+      "addedAt": "2026-10-30T21:59:46.954Z"
+    },
+    {
+      "slug": "nairobi-2026-10-30-kbc-murkomen-govt-fully-prepared-to-deliver-641e29",
+      "title": "Murkomen: Govt fully prepared to deliver peaceful, free and fair 2027 elections",
+      "summary": "Interior and National Administration Cabinet Secretary Kipchumba Murkomen has assured Kenyans that the Government is fully prepared to guarantee a free, fair, and peaceful 2027 General Election. He warned that individuals who seek to disrupt political activities through violence will not be tolerated. Speaking in Kamoi, Elgeyo-Marakwet County, the CS said the Government had put […] The post Murkomen: Govt fully prepared to deliver peaceful, free and fair 2027 elections appeared first on KBC Digital .",
+      "date": "2026-10-30T20:52:17.000Z",
+      "url": "https://www.kbc.co.ke/murkomen-govt-fully-prepared-to-deliver-peaceful-free-and-fair-2027-elections/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "Local News"
+      ],
+      "author": "KBC Digital",
+      "theme": "politika",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/10/MURKOMEN-2027-2.jpeg",
+      "imageAlt": "Murkomen: Govt fully prepared to deliver peaceful, free and fair 2027 elections",
+      "addedAt": "2026-10-30T21:59:46.954Z"
+    },
+    {
+      "slug": "nairobi-2026-10-30-kbc-ruto-putin-agree-to-halt-recruitment-of-84b58c",
+      "title": "Ruto, Putin agree to halt recruitment of Kenyans into Russian military",
+      "summary": "The agreement designates Kenya a non-source country for military recruitment, with Nairobi appointing a Defence Attaché to coordinate the repatriation and compensation of affected Kenyans. The post Ruto, Putin agree to halt recruitment of Kenyans into Russian military appeared first on KBC Digital .",
+      "date": "2026-10-30T17:47:17.000Z",
+      "url": "https://www.kbc.co.ke/ruto-putin-agree-to-halt-recruitment-of-kenyans-into-russian-military/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "Local News",
+        "NEWS"
+      ],
+      "author": "KBC Digital",
+      "theme": "drustvo",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/10/RUTO-PUTIN-MEETING-IN-KREMLIN.jpeg",
+      "imageAlt": "Ruto, Putin agree to halt recruitment of Kenyans into Russian military",
+      "addedAt": "2026-10-30T21:59:46.954Z"
+    },
+    {
+      "slug": "nairobi-2026-10-30-nation-eastleigh-collapse-eight-days-later-16-93cfe2",
+      "title": "Eastleigh collapse eight days later: 16 still missing as rescuers recover woman’s body",
+      "summary": "Woman's body recovered eight days after the building collapsed.",
+      "date": "2026-10-30T17:15:31.000Z",
+      "url": "https://nation.africa/kenya/counties/nairobi/eastleigh-collapse-eight-days-later-16-still-missing-as-rescuers-recover-woman-s-body-5652664",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://nation.africa/resource/image/5652886/landscape_ratio16x9/1600/900/510c1eb6703da65940da7c856fdc04a5/Xh/eastleigh-2.jpg",
+      "imageAlt": "Eastleigh collapse eight days later: 16 still missing as rescuers recover woman’s body",
+      "addedAt": "2026-10-30T21:59:33.816Z"
+    },
+    {
+      "slug": "nairobi-2026-10-30-nation-senior-school-placement-knec-puts-1-2m-71c1db",
+      "title": "Senior school placement: KNEC puts 1.2m Grade 9 scripts first in marking queue",
+      "summary": "Knec to prioritise the marking of answer scripts for 1.2 million Grade 9 learners.",
+      "date": "2026-10-30T17:14:25.000Z",
+      "url": "https://nation.africa/kenya/news/education/senior-school-placement-knec-puts-1-2m-grade-9-scripts-first-in-marking-queue-5652822",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://nation.africa/resource/image/5652570/landscape_ratio16x9/1600/900/ef787e0d5bcd383b4bae483a799dd9dc/gc/candidates-3.jpg",
+      "imageAlt": "Senior school placement: KNEC puts 1.2m Grade 9 scripts first in marking queue",
+      "addedAt": "2026-10-30T21:59:33.816Z"
+    },
+    {
+      "slug": "nairobi-2026-10-30-nation-fuel-price-hikes-push-kenya-s-inflation-to-94e1ce",
+      "title": "Fuel price hikes push Kenya’s inflation to 40-month high of 7.3pc",
+      "summary": "Inflation hit 7.3 per cent in October from 6.8 per cent in the previous month.",
+      "date": "2026-10-30T17:06:52.000Z",
+      "url": "https://nation.africa/kenya/business/fuel-price-hikes-push-kenya-inflation-to-40-month-high-of-7-3pc-5652556",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://nation.africa/resource/image/5652622/landscape_ratio16x9/1600/900/7e87728658928fb29a2f37c92e57ec70/dD/fuel.jpg",
+      "imageAlt": "Fuel price hikes push Kenya’s inflation to 40-month high of 7.3pc",
+      "addedAt": "2026-10-30T21:59:33.817Z"
+    },
+    {
+      "slug": "nairobi-2026-10-30-capitalfm-nairobi-police-chief-assures-odm-of-7197e8",
+      "title": "Nairobi Police Chief assures ODM of security ahead of Jacaranda rally",
+      "summary": "Speaking after a meeting with Nairobi security chiefs, Mohamud said police officers would be deployed along the route from Uhuru Park to Jacaranda Grounds to maintain security and ensure the orderly movement of participants",
+      "date": "2026-10-30T16:44:00.000Z",
+      "url": "https://capitalfm.africa/nairobi-police-chief-assures-odm-of-security-ahead-of-jacaranda-rally/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "2027 KENYA ELECTIONS",
+        "County News",
+        "NATIONAL NEWS",
+        "News"
+      ],
+      "author": "CORRESPONDENT",
+      "theme": "sigurnost",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/07/c23ff312-be55-4b4e-972f-dfb3a1e05b0f.png",
+      "imageAlt": "Nairobi Police Chief assures ODM of security ahead of Jacaranda rally",
+      "addedAt": "2026-10-30T21:59:32.761Z"
+    },
+    {
+      "slug": "nairobi-2026-10-30-nation-ruto-secures-putin-deal-to-halt-recruitment-aaa5a6",
+      "title": "Ruto secures Putin deal to halt recruitment of Kenyans into Russian army",
+      "summary": "President Ruto announced the agreement after talks with President Vladimir Putin at the Kremlin.",
+      "date": "2026-10-30T16:39:01.000Z",
+      "url": "https://nation.africa/kenya/news/ruto-secures-putin-deal-halt-recruitment-kenyans-russian-army-5652824",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://nation.africa/resource/image/5652836/landscape_ratio16x9/1600/900/7c86a5168bf0cdc758565e8f39e12f16/Ep/ruto-putin-2.jpg",
+      "imageAlt": "Ruto secures Putin deal to halt recruitment of Kenyans into Russian army",
+      "addedAt": "2026-10-30T21:59:33.817Z"
+    },
+    {
+      "slug": "nairobi-2026-10-30-kbc-russian-african-youth-union-established-in-459530",
+      "title": "Russian–African Youth Union established in Moscow",
+      "summary": "Russia and African countries have established the Russian–African Youth Union to strengthen cooperation among young people through education, cultural exchanges, shared experiences and coordinated youth initiatives. The union was launched at MGIMO University in Moscow on October 28, on the sidelines of the third Russia–Africa Summit. Participants included Stanislav Surovtsev, MGIMO Vice-Rector for Youth Policy, […] The post Russian–African Youth Union established in Moscow appeared first on KBC Digital .",
+      "date": "2026-10-30T16:21:50.000Z",
+      "url": "https://www.kbc.co.ke/russian-african-youth-union-established-in-moscow/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "Africa",
+        "International News",
+        "NEWS",
+        "Dmitry Ivanov"
+      ],
+      "author": "Christine Muchira",
+      "theme": "drustvo",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/10/Russian%E2%80%93African-Youth-Union.jpg",
+      "imageAlt": "Russian–African Youth Union established in Moscow",
+      "addedAt": "2026-10-30T21:59:46.954Z"
+    },
+    {
+      "slug": "nairobi-2026-10-30-capitalfm-babu-owino-urges-peace-ahead-of-broad-based-5c40b5",
+      "title": "Babu Owino urges peace ahead of Broad-Based Jacaranda rally",
+      "summary": "\"To those who will be coming here, I am the elected representative of Jacaranda and Embakasi East Constituency I want to tell you this because we respect human life and have love in our hearts. I want you to come and hold your rally peacefully. We do not want to bury any child in Embakasi East,\" Owino said.",
+      "date": "2026-10-30T16:00:00.000Z",
+      "url": "https://capitalfm.africa/babu-owino-urges-peace-ahead-of-broad-based-jacaranda-rally/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "County News",
+        "NATIONAL NEWS",
+        "News",
+        "Politics"
+      ],
+      "author": "CORRESPONDENT",
+      "theme": "drustvo",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/10/ODM-supporters-during-an-activation-ahead-of-Oct-31-Rally-at-Jacaranda-Grounds-in-Nairobi-1200x630.jpg",
+      "imageAlt": "Babu Owino urges peace ahead of Broad-Based Jacaranda rally",
+      "addedAt": "2026-10-30T21:59:32.761Z"
+    },
+    {
+      "slug": "nairobi-2026-10-30-nation-from-raila-to-matiang-i-and-now-sifuna-b8aca9",
+      "title": "From Raila to Matiang’i and now Sifuna: Richard Onyonka’s political acrobatics",
+      "summary": "Senator Onyonka stands out as a veteran often described as a master of political acrobatics.",
+      "date": "2026-10-30T15:57:15.000Z",
+      "url": "https://nation.africa/kenya/news/politics/raila-to-matiang-i-sifuna-richard-onyonka-political-acrobatics-5652662",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://nation.africa/resource/image/5652682/landscape_ratio16x9/1600/900/6c7359c93cfaebbca68d7df61b3d06bf/pu/onyonka.jpg",
+      "imageAlt": "From Raila to Matiang’i and now Sifuna: Richard Onyonka’s political acrobatics",
+      "addedAt": "2026-10-30T21:59:33.817Z"
+    },
+    {
+      "slug": "nairobi-2026-10-30-nation-sifuna-s-game-plan-after-grand-linda-e3e8ef",
+      "title": "Sifuna’s game plan after grand Linda Mwananchi Movement party rebrand",
+      "summary": "Nairobi Senator assembles leading opposition figures as he launches his political vehicle for...",
+      "date": "2026-10-30T15:57:07.000Z",
+      "url": "https://nation.africa/kenya/news/politics/sifuna-game-plan-grand-linda-mwananchi-movement-party-rebrand-5652684",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://nation.africa/resource/image/5652700/landscape_ratio16x9/1600/900/4ae72381a07bacd8f399fe17d32ec8a0/WP/sifuna-1.jpg",
+      "imageAlt": "Sifuna’s game plan after grand Linda Mwananchi Movement party rebrand",
+      "addedAt": "2026-10-30T21:59:33.817Z"
+    },
+    {
+      "slug": "nairobi-2026-10-30-capitalfm-pope-leo-xiv-becomes-first-pontiff-to-vote-8fa98a",
+      "title": "Pope Leo XIV becomes first pontiff to vote in a US election",
+      "summary": "\"The Holy Father expresses his belief in the right and the duty of citizens to participate in democratic processes,\" the Holy See Press Office said in a statement.",
+      "date": "2026-10-30T15:10:00.000Z",
+      "url": "https://capitalfm.africa/pope-leo-xiv-becomes-first-pontiff-to-vote-in-a-us-election/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "CHURCH & POLITICS",
+        "NATIONAL NEWS",
+        "News",
+        "Politics"
+      ],
+      "author": "BBC",
+      "theme": "politika",
+      "image": "https://capitalfm.africa/wp-content/uploads/news/2026/04/Pope-1.jpg",
+      "imageAlt": "Pope Leo XIV becomes first pontiff to vote in a US election",
+      "addedAt": "2026-10-30T21:59:32.761Z"
+    },
+    {
+      "slug": "nairobi-2026-10-30-capitalfm-46-ebola-contacts-set-for-discharge-from-37d89c",
+      "title": "46 Ebola contacts set for discharge from quarantine on November 3",
+      "summary": "\"We must also be able to complete the full 21 days of followup and every person leaving quarantine must receive the agreed discharge package and support… we must also continue to follow up the nine contacts outside Kenya with the countries concerned,\" she said.",
+      "date": "2026-10-30T15:06:00.000Z",
+      "url": "https://capitalfm.africa/46-ebola-contacts-set-for-discharge-from-quarantine-on-november-3/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "Capital Health",
+        "County News",
+        "NATIONAL NEWS",
+        "News"
+      ],
+      "author": "CORRESPONDENT",
+      "theme": "drustvo",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/06/PS-Mary-Muthoni-during-an-appearance-before-House-Committee.jpg",
+      "imageAlt": "46 Ebola contacts set for discharge from quarantine on November 3",
+      "addedAt": "2026-10-30T21:59:32.761Z"
+    },
+    {
+      "slug": "nairobi-2026-10-30-capitalfm-mark-your-territory-gachagua-challenges-e2b156",
+      "title": "‘Mark your territory’: Gachagua challenges Sifuna over Farouk, Atwoli attacks",
+      "summary": "Gachagua has challenged Nairobi Senator Edwin Sifuna to assert his political influence in Western Kenya and confront critics, including Farouk Kibet and Francis Atwoli, as he pledged to support him if he secures the opposition's 2027 presidential ticket.",
+      "date": "2026-10-30T13:25:33.000Z",
+      "url": "https://capitalfm.africa/mark-your-territory-gachagua-challenges-sifuna-over-farouk-atwoli-attacks/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "News",
+        "2027 General Election",
+        "Edwin Sifuna",
+        "Farouk Kibet"
+      ],
+      "author": "IRENE MWANGI",
+      "theme": "politika",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/10/29db27b8-5d5c-4551-b685-28c0fe4097e4-960x630.jpeg",
+      "imageAlt": "‘Mark your territory’: Gachagua challenges Sifuna over Farouk, Atwoli attacks",
+      "addedAt": "2026-10-30T21:59:32.761Z"
+    },
+    {
+      "slug": "nairobi-2026-10-30-capitalfm-kdf-gardaworld-signs-mou-on-military-dog-0a72bc",
+      "title": "KDF, GardaWorld signs MoU on military dog training and welfare",
+      "summary": "The agreement seeks to enhance specialised canine capabilities through joint training, knowledge exchange and sustainable breeding programmes.",
+      "date": "2026-10-30T12:33:00.000Z",
+      "url": "https://capitalfm.africa/kdf-gardaworld-signs-mou-on-military-dog-training-and-welfare/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "NATIONAL NEWS",
+        "News",
+        "Security operation",
+        "GardaWorld Security Africa"
+      ],
+      "author": "CORRESPONDENT",
+      "theme": "drustvo",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/10/GardaWorld-KDF-seal-partnership-to-enhance-military-dog-performance-1200x630.jpg",
+      "imageAlt": "KDF, GardaWorld signs MoU on military dog training and welfare",
+      "addedAt": "2026-10-30T21:59:32.761Z"
+    },
     {
       "slug": "nairobi-2026-10-29-capitalfm-us-uncovers-alleged-200m-ghost-student-cc6b06",
       "title": "US uncovers alleged $200m ghost student fraud linked to Kenyan network",

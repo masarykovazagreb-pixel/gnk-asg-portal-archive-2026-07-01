@@ -4,17 +4,20 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-10-29T20:47:49.023Z",
+  "updatedAt": "2026-10-30T21:58:19.805Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
       "url": "https://www.agerpres.ro/rss",
-      "ok": true,
-      "fetched": 20,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-10-29T20:47:41.421Z"
+      "errors": [
+        "https://www.agerpres.ro/rss: This operation was aborted",
+        "https://www.agerpres.ro/rss/: HTTP 520"
+      ],
+      "checkedAt": "2026-10-30T21:58:12.500Z"
     },
     {
       "id": "hotnews",
@@ -24,17 +27,17 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-29T20:47:41.644Z"
+      "checkedAt": "2026-10-30T21:58:12.697Z"
     },
     {
       "id": "zf",
       "name": "Ziarul Financiar",
       "url": "https://www.zf.ro/rss",
       "ok": true,
-      "fetched": 17,
+      "fetched": 19,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-29T20:47:43.554Z"
+      "checkedAt": "2026-10-30T21:58:14.210Z"
     },
     {
       "id": "profit",
@@ -44,17 +47,17 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-29T20:47:43.771Z"
+      "checkedAt": "2026-10-30T21:58:14.650Z"
     },
     {
       "id": "digi24",
       "name": "Digi24",
       "url": "https://www.digi24.ro/rss",
       "ok": true,
-      "fetched": 250,
+      "fetched": 221,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-29T20:47:46.747Z"
+      "checkedAt": "2026-10-30T21:58:18.010Z"
     },
     {
       "id": "g4media",
@@ -64,7 +67,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-29T20:47:48.067Z"
+      "checkedAt": "2026-10-30T21:58:19.353Z"
     },
     {
       "id": "newsro",
@@ -74,10 +77,586 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-29T20:47:49.021Z"
+      "checkedAt": "2026-10-30T21:58:19.804Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-10-30-hotnews-presedintele-poloniei-si-a-intrerupt-zborul-1a4fb2",
+      "title": "Președintele Poloniei și-a întrerupt zborul spre Senegal după suspendarea șefului Tribunalului Constituțional, în timp ce la Varșovia au izbucnit proteste",
+      "summary": "Președintele polonez Karol Nawrocki, aflat vineri în avion spre Senegal pentru o vizită programată, a făcut cale-ntoarsă după ce a aflat că poliția a pătruns în sediul celei mai înalte instanțe din Polonia, iar președintele acesteia a fost suspendat din funcție, relatează Reuters. „Într-un astfel de moment, președintele trebuie să fie în Polonia. Îmi întrerup …",
+      "date": "2026-10-30T21:55:34.000Z",
+      "url": "https://hotnews.ro/presedintele-poloniei-si-a-intrerupt-zborul-spre-senegal-dupa-suspendarea-sefului-tribunalului-constitutional-in-timp-ce-la-varsovia-au-izbucnit-proteste-2391115",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Ana Teșcan",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Președintele Poloniei și-a întrerupt zborul spre Senegal după suspendarea șefului Tribunalului Constituțional, în timp ce la Varșovia au izbucnit proteste",
+      "addedAt": "2026-10-30T21:58:12.698Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-newsro-kelemen-hunor-apreciaza-ca-ar-trebui-un-1537f9",
+      "title": "Kelemen Hunor apreciază că ar trebui ”un control parlamentar mult, mult mai serios, mult mai riguros” asupra serviciilor: Nu există un control parlamentar cum ar trebui şi atunci…",
+      "summary": "Preşedintele UDMR, Kelemen Hunor este de părere că ar trebui să existe ”un control parlamentar mult, mult mai serios, mult mai riguros” asupra serviciilor, iar lista acestui control duce la apariţia de ”legende urbane, teorii conspiraţioniste”. În plus, liderul UDMR crede că lipsa raportului privind anularea alegerilor duce la neîncredere. ”E o problemă de democraţie”, afirmă Kelemen Hunor.",
+      "date": "2026-10-30T21:48:00.000Z",
+      "url": "https://www.news.ro/politic-intern/kelemen-hunor-apreciaza-ar-trebui-control-parlamentar-mult-mult-serios-mult-riguros-asupra-serviciilor-exista-control-parlamentar-ar-trebui-nasc-legende-urbane-teorii-conspirationiste-e-problema-1922404830002026102322911525",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Kelemen Hunor apreciază că ar trebui ”un control parlamentar mult, mult mai serios, mult mai riguros” asupra serviciilor: Nu există un control parlamentar cum ar trebui şi atunci s",
+      "addedAt": "2026-10-30T21:58:19.804Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-hotnews-unda-verde-din-sua-pentru-rachete-patriot-3e4d54",
+      "title": "Undă verde din SUA pentru rachete Patriot în valoare de 2,1 miliarde de dolari destinate Ucrainei",
+      "summary": "Departamentul de Stat al SUA a anunțat vineri că a aprobat vânzarea a 500 de rachete Patriot PAC-3 către Ucraina, pentru o sumă estimată la 2,1 miliarde de dolari, potrivit Reuters. Ucraina va plăti rachetele interceptoare din contribuții ale Canadei, Germaniei și Norvegiei, direcționate printr-un program numit US JUMPSTART, precum și din fonduri naționale finanțate …",
+      "date": "2026-10-30T21:43:18.000Z",
+      "url": "https://hotnews.ro/unda-verde-din-sua-pentru-rachete-patriot-in-valoare-de-21-miliarde-de-dolari-destinate-ucrainei-2391109",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International",
+        "rusia",
+        "sua"
+      ],
+      "author": "Vladimir Ionescu",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Undă verde din SUA pentru rachete Patriot în valoare de 2,1 miliarde de dolari destinate Ucrainei",
+      "addedAt": "2026-10-30T21:58:12.698Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-digi24-pericolul-unei-greve-generale-la-oil-587292",
+      "title": "Pericolul unei greve generale la Oil Terminal, eliminat după ce Guvernul a aprobat creșteri salariale",
+      "summary": "Guvernul a aprobat, în şedinţa de vineri, un Memorandum pentru majorarea cheltuielilor salariale ale OIL TERMINAL S.A. cu suma de 1,752 milioane lei.",
+      "date": "2026-10-30T21:41:12.000Z",
+      "url": "https://www.digi24.ro/stiri/economie/companii/pericolul-unei-greve-generale-la-oil-terminal-eliminat-dupa-ce-guvernul-a-aprobat-cresteri-salariale-4015991",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA1dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMTQl/MkYxMiUyRjIyJTJGMzYzOTg2XzM2Mzk4/Nl9vaWxfdGVybWluYWxfcmVwbGljYS5q/cGcmaGFzaD1mOTNmMzYxMTBmNTZkNDMxODczMzg1ZDlmYTcwMDBhMw==.jpg",
+      "imageAlt": "Pericolul unei greve generale la Oil Terminal, eliminat după ce Guvernul a aprobat creșteri salariale",
+      "addedAt": "2026-10-30T21:58:18.010Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-newsro-formula-1-norris-spune-ca-nu-da-niciodata-b108e5",
+      "title": "Formula 1: Norris spune că nu dă niciodată vina pe echipament dacă un coechipier îl învinge",
+      "summary": "Campionul de Formula 1 Lando Norris are o viziune simplă asupra curselor: dacă un coechipier îl învinge, înseamnă că trebuie să se descurce mai bine.Pilotul McLaren a mai declarat că întotdeauna dă vina mai întâi pe el însuşi, niciodată pe echipamentul său, relatează Reuters.",
+      "date": "2026-10-30T21:41:09.000Z",
+      "url": "https://www.news.ro/sport/formula-1-norris-spune-ca-nu-da-niciodata-vina-pe-echipament-daca-un-coechipier-il-invinge-1922404130092026102322911444",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Formula 1: Norris spune că nu dă niciodată vina pe echipament dacă un coechipier îl învinge",
+      "addedAt": "2026-10-30T21:58:19.805Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-profit-foto-exemplu-de-manipulare-pe-tiktok-fiul-2476eb",
+      "title": "FOTO Exemplu de manipulare pe TikTok. \"Fiul lui Călin Georgescu a câștigat Balonul de Aur la fotbal\", o postare falsă generată cu AI a fost privită ca extrem de credibilă de către…",
+      "summary": "O postare tip pamflet pe TikTok, care anunța că fiul lui Călin Georgescu a câștigat Balonul de Aur la fotbal, a fost privită ca fiind extrem de credibilă de către zeci de mii de persoane, care au reacționat cu aprecieri.",
+      "date": "2026-10-30T21:38:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/it-c/foto-exemplu-manipulare-tiktok-fiul-calin-georgescu-castigat-balonul-aur-fotbal-postare-falsa-generata-privita-extrem-credibila-catre-zeci-mii-persoane-au-reactionat-aprecieri-22911443?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "IT&C"
+      ],
+      "author": "",
+      "theme": "sport",
+      "image": "https://i0.1616.ro/media/2/2621/33216/22911443/1/tiktok-2.jpg?width=800",
+      "imageAlt": "FOTO Exemplu de manipulare pe TikTok. \"Fiul lui Călin Georgescu a câștigat Balonul de Aur la fotbal\", o postare falsă generată cu AI a fost privită ca extrem de credibilă de către ",
+      "addedAt": "2026-10-30T21:58:14.650Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-g4media-omagiu-adus-victimelor-incendiului-de-la-a21e54",
+      "title": "Omagiu adus victimelor incendiului de la Clubul Colectiv / Un tânăr a interpretat la chitară pisa ”The Day We Die” / Banner expus de suporterii echipei Dinamo: „Ați fi oferit…",
+      "summary": "Mai multe persoane au ieșit în fața clădirii Pionierul din Capitală pentru a le aduce un omagiu celor 65 de tineri care și-au pierdut viața în tragicul incendiu din fostul Club Colectiv, în seara din 30 octombrie 2015. Față de alți ani, când manifestațiile aveau rol de protest, oamenii s-au adunat vineri în liniște să […] © G4Media.ro .",
+      "date": "2026-10-30T21:25:27.000Z",
+      "url": "https://www.g4media.ro/omagiu-adus-victimelor-incendiului-de-la-clubul-colectiv-un-tanar-a-interpretat-la-chitara-pisa-the-day-we-die-banner-expus-de-suporterii-echipei-dinamo-ati-fi-oferit-t.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "colectiv",
+        "omagiu victime colectiv"
+      ],
+      "author": "Laura Nițulescu",
+      "theme": "sport",
+      "image": "https://www.g4media.ro//wp-content/uploads/2022/10/FB1A8846.jpg",
+      "imageAlt": "Omagiu adus victimelor incendiului de la Clubul Colectiv / Un tânăr a interpretat la chitară pisa ”The Day We Die” / Banner expus de suporterii echipei Dinamo: „Ați fi oferit țării",
+      "addedAt": "2026-10-30T21:58:19.353Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-newsro-sua-renunta-la-fotografia-de-grup-la-g20-02262a",
+      "title": "SUA renunţă la fotografia de grup la G20 după ce diplomaţii europeni s-au opus să fie fotografiaţi alături de Serghei Lavrov",
+      "summary": "Şefii diplomaţiilor din ţările membre ale Grupului celor mai dezvoltate 20 de economii mondiale (G20) au deschis vineri, la Atlanta, o serie de întâlniri de două zile, după ce obiecţiile europene faţă de participarea Rusiei au forţat SUA să anuleze o fotografie de grup a miniştrilor de externe, ceea ce subliniază disensiunile profunde din cadrul grupului cu privire la crizele globale, relatează The Associated Press (AP).",
+      "date": "2026-10-30T21:24:45.000Z",
+      "url": "https://www.news.ro/externe/sua-renunta-la-fotografia-de-grup-la-g20-dupa-ce-diplomatii-europeni-s-au-opus-sa-fie-fotografiati-alaturi-de-serghei-lavrov-1922402430452026102322911083",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "SUA renunţă la fotografia de grup la G20 după ce diplomaţii europeni s-au opus să fie fotografiaţi alături de Serghei Lavrov",
+      "addedAt": "2026-10-30T21:58:19.805Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-digi24-volodimir-zelenski-merge-in-turcia-pentru-b4e456",
+      "title": "Volodimir Zelenski merge în Turcia pentru discuții „importante”: „Să putem trece la formatele despre care se discută de atâta timp”",
+      "summary": "Președintele ucrainean Volodimir Zelenski a declarat vineri că va purta discuții „importante” în Turcia, în cadrul eforturilor diplomatice depuse după mai bine de patru ani și jumătate de război cu Rusia, relatează Reuters.",
+      "date": "2026-10-30T21:20:55.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/ue/volodimir-zelenski-merge-in-turcia-pentru-discutii-importante-sa-putem-trece-la-formatele-despre-care-se-discuta-de-atata-timp-4015979",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwOSUyRjA5JTJGMjk1Mjk5MV8yOTUy/OTkxX2F2aW9uLXplbGVuc2tpLXByb2Zp/bWVkaWEtMTEwNjIxNjgxOC5wbmcmaGFz/aD01NGU0NGQ0ZTBjYTRjMjRkMWUwNzM4MzAzYTYyZDg4MA==.png",
+      "imageAlt": "Volodimir Zelenski merge în Turcia pentru discuții „importante”: „Să putem trece la formatele despre care se discută de atâta timp”",
+      "addedAt": "2026-10-30T21:58:18.010Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-profit-anunt-binance-dupa-probabil-cel-mai-mare-4531e1",
+      "title": "Anunț Binance după probabil cel mai mare furt de crypto: Am acoperit deja aproximativ 80% din suma afectată. Ce am învățat până acum și ce urmează",
+      "summary": "Binance anunță că a alocat deja peste 6,34 miliarde de dolari din fondurile companiei, dintre care 5 miliarde de dolari sunt deținuți chiar în activele (tokenurile) afectate care au fost sustrase – precum USDC, USDT, BTC, ETH, BNB etc.",
+      "date": "2026-10-30T21:18:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/financiar/anunt-binance-dupa-probabil-cel-mai-mare-furt-de-crypto-am-acoperit-deja-aproximativ-80-din-suma-afectata-ce-am-invatat-pana-acum-si-ce-urmeaza-22911303?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Financiar"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33210/22911303/1/4596.jpg?width=800",
+      "imageAlt": "Anunț Binance după probabil cel mai mare furt de crypto: Am acoperit deja aproximativ 80% din suma afectată. Ce am învățat până acum și ce urmează",
+      "addedAt": "2026-10-30T21:58:14.650Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-hotnews-kelemen-hunor-spune-ca-pensiile-si-367282",
+      "title": "Kelemen Hunor spune că pensiile și salariile trebuie indexate de la 1 ianuarie. „Nu există nicio «moștenire grea»”",
+      "summary": "Președintele UDMR, Kelemen Hunor, i-a acuzat pe noii guvernanți că încearcă „să găsească narativul pentru «moștenirea grea»” chiar dacă și PSD a făcut parte din fostul cabinet de la Palatul Victoria până în luna aprilie. Kelemen Hunor a declarat, într-un interviu difuzat vineri seară de B1 TV, că Guvernul Bolojan nu a lăsat „nicio «moștenire …",
+      "date": "2026-10-30T21:17:01.000Z",
+      "url": "https://hotnews.ro/kelemen-hunor-spune-ca-pensiile-si-salariile-trebuie-indexate-de-la-1-ianuarie-nu-exista-nicio-mostenire-grea-2391102",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "Kelemen Hunor",
+        "UDMR"
+      ],
+      "author": "Vladimir Ionescu",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Kelemen Hunor spune că pensiile și salariile trebuie indexate de la 1 ianuarie. „Nu există nicio «moștenire grea»”",
+      "addedAt": "2026-10-30T21:58:12.698Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-digi24-kelemen-hunor-ar-sustine-adoptarea-legii-6ccad0",
+      "title": "Kelemen Hunor ar susține adoptarea Legii salarizării prin asumarea răspunderii Guvernului",
+      "summary": "Preşedintele UDMR, Kelemen Hunor, a anunţat, vineri seară, că ar susţine adoptarea Legii salarizării în sistemul public prin asumarea răspunderii. El afirmă că lege necesită doar „mici ajustări”.",
+      "date": "2026-10-30T21:16:59.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/kelemen-hunor-ar-sustine-adoptarea-legii-salarizarii-prin-asumarea-raspunderii-guvernului-4015973",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjMwJTJGMzAzNzk1NV8zMDM3/OTU1X2d1dmVybnVsLXJvbWFuaWVpLWlu/cXVhbS1vY3Rhdi1nYW5lYS5qcGcmaGFz/aD1jZDNmODFhZDNiNDM4MmM0YjAzNmM5MjkzYzcxYmJlNg==.jpg",
+      "imageAlt": "Kelemen Hunor ar susține adoptarea Legii salarizării prin asumarea răspunderii Guvernului",
+      "addedAt": "2026-10-30T21:58:18.010Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-profit-foto-investitie-in-romania-cel-mai-mare-3045bf",
+      "title": "FOTO Investiție în România. Cel mai mare reseller de sneakerși în ediție limitată din regiune, True to Sole, mai deschide un magazin în București",
+      "summary": "Brandul True to Sole, lansat în Budapesta în pandemie și specializat pe revânzarea de sneakerși în ediție limitată, se extinde în România.",
+      "date": "2026-10-30T21:11:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/retail/foto-investitie-in-romania-cel-mai-mare-reseller-de-sneakersi-in-editie-limitata-din-regiune-true-to-sole-mai-deschide-un-magazin-in-bucuresti-22911244?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Retail"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33215/22911244/1/true-to-sole.jpg?width=800",
+      "imageAlt": "FOTO Investiție în România. Cel mai mare reseller de sneakerși în ediție limitată din regiune, True to Sole, mai deschide un magazin în București",
+      "addedAt": "2026-10-30T21:58:14.650Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-newsro-fotbal-tatal-lui-jude-bellingham-convocat-f77d71",
+      "title": "Fotbal: Tatăl lui Jude Bellingham convocat în echipa Angliei… la categoria peste 50 de ani",
+      "summary": "Un al treilea membru al familiei Bellingham îşi va reprezenta ţara. După Jude, vedeta de la Real Madrid cu 60 de selecţii, şi fratele său mai mic, Jobe (12 selecţii la juniori), a venit rândul tatălui. Numele lui Mark Bellingham figurează pe lista celor 18 jucători ai EVFC (English Veterans Football Club), o asociaţie fondată în 2019 care reuneşte fotbalişti cu vârsta peste 50 şi 60 de ani în două echipe diferite.",
+      "date": "2026-10-30T21:07:52.000Z",
+      "url": "https://www.news.ro/sport/fotbal-tatal-lui-jude-bellingham-convocat-in-echipa-angliei-la-categoria-peste-50-de-ani-1922400730522026102322911163",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Fotbal: Tatăl lui Jude Bellingham convocat în echipa Angliei… la categoria peste 50 de ani",
+      "addedAt": "2026-10-30T21:58:19.805Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-hotnews-operatiunea-umanitara-fara-precedent-de-la-cfd605",
+      "title": "Operațiunea umanitară fără precedent de la Oleşki s-a încheiat, anunță o reprezentantă a Rusiei",
+      "summary": "Evacuările umanitare din Oleşki, oraş din sudul Ucrainei aflat sub ocupaţie rusă, care se confruntă de câteva săptămâni cu penurii şi unde este în vigoare un armistiţiu până duminică, s-au încheiat, a anunţat vineri, comisarul rus pentru drepturile omului, relatează AFP, conform News.ro. „Ne încheiem misiunea umanitară la Oleşki”, a declarat Iana Lantartova, într-un videoclip …",
+      "date": "2026-10-30T21:03:33.000Z",
+      "url": "https://hotnews.ro/operatiunea-umanitara-fara-precedent-de-la-oleski-s-a-incheiat-anunta-o-reprezentanta-a-rusiei-2391098",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Ana Teșcan",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Operațiunea umanitară fără precedent de la Oleşki s-a încheiat, anunță o reprezentantă a Rusiei",
+      "addedAt": "2026-10-30T21:58:12.698Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-digi24-proteste-false-consecinte-reale-cum-a-fost-cfd883",
+      "title": "Proteste false, consecințe reale: cum a fost fabricată o manifestație la Barcelona, care a dus la jafuri și violențe",
+      "summary": "Imaginați-vă că dați peste o postare pe TikTok care vă îndeamnă să protestați pentru îmbunătățirea școlilor publice. Scanați un cod QR pentru a obține mai multe informații și ajungeți într-un chat privat unde instrucțiunile nu se referă la educație sau la organizare politică, ci la jafuri. Asta s-a întâmplat la Barcelona pe 24 octombrie. Aproximativ 20 de conturi de pe TikTok legate de platforma anonimă Blocus promovaseră adunări în toată Spania, invitând tinerii să se mobilizeze, scrie Sara García Santamaría, profesoară asistentă în studii de jurnalism la Universitat de València, pe platforma The Conversation.",
+      "date": "2026-10-30T21:00:44.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/ue/proteste-false-consecinte-reale-cum-a-fost-fabricata-o-manifestatie-la-barcelona-care-a-dus-la-jafuri-si-violente-4015917",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjMwJTJGMzAzNzkzNF8zMDM3/OTM0X3Byb2ZpbWVkaWEtMTE0NjMxMTE1/MS5qcGcmaGFzaD0zNmFiMjQ0YjU1MWRiYWU5NzE4ZmNiMDE5NDcwODI0OA==.jpg",
+      "imageAlt": "Proteste false, consecințe reale: cum a fost fabricată o manifestație la Barcelona, care a dus la jafuri și violențe",
+      "addedAt": "2026-10-30T21:58:18.010Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-digi24-prezidentialele-franceze-o-lupta-in-doi-le-34caca",
+      "title": "Prezidențialele franceze: o luptă în doi, Le Pen vs. Melenchon, devine tot mai probabilă, pe fondul războiului dintre centriști",
+      "summary": "Conflictele interne izbucnite între candidații de centru din cursa prezidențială din Franța au divizat votul electoratului moderat și a crescut probabilitatea unui tur al doilea între Marine Le Pen, de extremă dreaptă, și Jean-Luc Melenchon, de extremă stânga, scrie Reuters. Sondajele de opinie realizate înaintea alegerilor prezidențiale din aprilie arată că Le Pen este aproape sigură că se va califica pentru turul al doilea din mai, iar Melenchon se situează constant în fața candidaților moderați.",
+      "date": "2026-10-30T21:00:35.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/prezidentialele-franceze-o-lupta-in-doi-le-pen-vs-melenchon-devine-tot-mai-probabila-pe-fondul-razboiului-dintre-centristi-4015957",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjMwJTJGMzAzNzk1MF8zMDM3/OTUwX2ZyYW50YTIuanBnJmhhc2g9YTBh/M2VlZjkxODJhZTVjMmMyYTk4N2IyY2NkMTVhZmE=.jpg",
+      "imageAlt": "Prezidențialele franceze: o luptă în doi, Le Pen vs. Melenchon, devine tot mai probabilă, pe fondul războiului dintre centriști",
+      "addedAt": "2026-10-30T21:58:18.011Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-newsro-medicul-psihiatru-joseph-pop-prefit-e8fb56",
+      "title": "Medicul psihiatru Joseph Pop Prefit: Tratamentul dependenţelor este mai degrabă unul de tip maraton, nu este un sprint",
+      "summary": "Joseph Pop Prefit, medic psihiatru la Spitalul Sf. Stelian din Capitală, a declarat că tratamentul dependenţilor de anumite substanţe este unul ”de tip maraton”. După externare, ei revin într-un grup terapeutic, apoi fac teste, participă la discuţii şi fac psihoterapie.",
+      "date": "2026-10-30T20:56:12.000Z",
+      "url": "https://www.news.ro/social/sanatate/medicul-psihiatru-joseph-pop-prefit-tratamentul-dependentelor-este-mai-degraba-unul-de-tip-maraton-nu-este-un-sprint-1922405630122026102222911184",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "Medicul psihiatru Joseph Pop Prefit: Tratamentul dependenţelor este mai degrabă unul de tip maraton, nu este un sprint",
+      "addedAt": "2026-10-30T21:58:19.805Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-g4media-kelemen-hunor-despre-propunerea-psd-de-a-c4bdb4",
+      "title": "Kelemen Hunor, despre propunerea PSD de a comasa localitățile mici: Suntem blestemați să facem reforme fără cap. Lăsăm impresia ca muncim foarte mult",
+      "summary": "Reorganizarea administrativ teritorială care a fost readusă în discuție de PSD, după ce a revenit la guvernare, este un subiect sensibil mai ales pentru UDMR, care reprezintă în special comunitățile maghiare din localitățile din Ardeal cu populație maghiară mult scăzută în ultimii 30 de ani. Într-o emisiune la B1Tv, liderul UDMR Kelemen Hunor a reiterat […] © G4Media.ro .",
+      "date": "2026-10-30T20:54:55.000Z",
+      "url": "https://www.g4media.ro/kelemen-hunor-despre-propunerea-psd-de-a-comasa-localitatile-mici-suntem-blestemati-sa-facem-reforme-fara-cap-lasam-impresia-ca-muncim-foarte-mult.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "comasare localitati",
+        "kelemen hunor"
+      ],
+      "author": "Cosmina Fernoagă",
+      "theme": "politika",
+      "image": "https://www.g4media.ro//wp-content/uploads/2026/03/INSTANT_COALITIE_BUGET_05_INQUAM_Photos_Octav_Ganea.jpg",
+      "imageAlt": "Kelemen Hunor, despre propunerea PSD de a comasa localitățile mici: Suntem blestemați să facem reforme fără cap. Lăsăm impresia ca muncim foarte mult",
+      "addedAt": "2026-10-30T21:58:19.353Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-newsro-presedintele-udmr-despre-actualul-guvern-e491e0",
+      "title": "Preşedintele UDMR, despre actualul guvern: Dar dacă ţinem cont de realitatea din Parlament, atunci chiar are şanse să meargă până în 2028 / Oricum, nu are cine să-l dea jos",
+      "summary": "Preşedintele UDMR, Kelemen Hunor, a declarat, vineri seară, că actualul Guvern al României are şanse să reziste până în anul 2028, având în vedere dinamica din Parlament. Liderul UDMR a subliniat că nu are cine să dea jos acest Guvern, deoarece nu există o majoritate în Parlament pentru acest lucru.",
+      "date": "2026-10-30T20:47:00.000Z",
+      "url": "https://www.news.ro/politic-intern/presedintele-udmr-despre-actualul-guvern-dar-daca-tinem-cont-de-realitatea-din-parlament-atunci-chiar-are-sanse-sa-mearga-pana-in-2028-oricum-nu-are-cine-sa-l-dea-jos-1922404730002026102222911144",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Preşedintele UDMR, despre actualul guvern: Dar dacă ţinem cont de realitatea din Parlament, atunci chiar are şanse să meargă până în 2028 / Oricum, nu are cine să-l dea jos",
+      "addedAt": "2026-10-30T21:58:19.805Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-digi24-kelemen-hunor-trebuie-o-indexare-a-14550a",
+      "title": "Kelemen Hunor: Trebuie o indexare a pensiilor de la 1 ianuarie, nu aprilie, mai, iunie, de la 1 ianuarie",
+      "summary": "Preşedintele UDMR, Kelemen Hunor, a declarat, vineri seară, că nu cunoaşte discuţiile din guvern privind indexarea pensiilor, însă consideră că trebuie făcută o astfel de indezare chiar de la 1 ianuarie 2027.",
+      "date": "2026-10-30T20:39:33.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/kelemen-hunor-trebuie-o-indexare-a-pensiilor-de-la-1-ianuarie-nu-aprilie-mai-iunie-de-la-1-ianuarie-4015947",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjMwJTJGMzAzNzk0M18zMDM3/OTQzX2tlbGVtZW4taHVub3ItaW5xdWFt/LTEuanBnJmhhc2g9NjQzMzc5MWVmZDg2ZmVkZjAyNGYzNjExZDc2NjdhMzc=.jpg",
+      "imageAlt": "Kelemen Hunor: Trebuie o indexare a pensiilor de la 1 ianuarie, nu aprilie, mai, iunie, de la 1 ianuarie",
+      "addedAt": "2026-10-30T21:58:18.011Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-g4media-ministrul-dezvoltarii-le-raspunde-romanilor-47f55d",
+      "title": "Ministrul Dezvoltării le răspunde românilor care și-au închis balcoanele din apartamente și care se tem de sancțiunile prevăzute de noul Cod Urbanistic: „Trebuie să intre în…",
+      "summary": "Noul ministrul al Dezvoltării, Alexandru Stoica, vine cu explicații într-o emisiune la Antena3-CNN, în contextul informațiilor vehiculate pe marginea noului cod urbanistic care prevede sancțiuni pentru lucrările/modificările efectuate în locuințe, fără aprobarea Primăriei, în speță îngrijorarea existând mai ales în rândul proprietarilor de apartamente care și-au închis balcoanele. Reamintim, noul Cod al Amenajării Teritoriului, Urbanismului și […] © G4Media.ro .",
+      "date": "2026-10-30T20:30:38.000Z",
+      "url": "https://www.g4media.ro/ministrul-dezvoltarii-le-raspunde-romanilor-care-si-au-inchis-balcoanele-din-apartamente-si-care-se-tem-de-sanctiunile-prevazute-de-noul-cod-de-urbanism-trebuie-sa-intre-in-legalitate.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "Alexandru Stoica",
+        "cod urbanism",
+        "noul cod de urbanism"
+      ],
+      "author": "Laura Nițulescu",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro//wp-content/uploads/2019/10/balcon-ilegal-sursa-g4-3.jpeg",
+      "imageAlt": "Ministrul Dezvoltării le răspunde românilor care și-au închis balcoanele din apartamente și care se tem de sancțiunile prevăzute de noul Cod Urbanistic: „Trebuie să intre în legali",
+      "addedAt": "2026-10-30T21:58:19.354Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-hotnews-cei-care-si-au-inchis-balconul-fara-792802",
+      "title": "Cei care și-au închis balconul fără autorizație riscă să fie amendați, spune ministrul Dezvoltării: „Obligația va fi să intre în legalitate”",
+      "summary": "Ministrul Dezvoltării, Alexandru Stoica, a declarat că persoanele care și-au închis balconul apartamentului fără un proiect autorizat vor trebui „să intre în legalitate” sau, în caz contrar, vor risca să fie amendate. Întrebat vineri la Antena 3 despre schimbarea pe care o aduce în acest sens Codul Urbanismului, adoptat în vară, oficialul a spus că …",
+      "date": "2026-10-30T20:25:28.000Z",
+      "url": "https://hotnews.ro/cei-care-si-au-inchis-balconul-fara-autorizatie-risca-sa-fie-amendati-spune-ministrul-dezvoltarii-obligatia-va-fi-sa-intre-in-legalitate-2391085",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "Alexandru Stoica",
+        "ministerul dezvoltarii"
+      ],
+      "author": "Vladimir Ionescu",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Cei care și-au închis balconul fără autorizație riscă să fie amendați, spune ministrul Dezvoltării: „Obligația va fi să intre în legalitate”",
+      "addedAt": "2026-10-30T21:58:12.699Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-profit-au-nevoie-de-aceasta-certitudine-acum-e97886",
+      "title": "„Au nevoie de această certitudine acum!”. Producătorii auto europeni cer urgentarea pachetul de măsuri pentru industria auto",
+      "summary": "Companiile auto din Europa au transmis un nou mesaj, prin care cer, de această dată, urgentarea pachetului de măsuri care ar urma să stimuleze și să susțină industria auto europeană.",
+      "date": "2026-10-30T20:16:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/auto-transporturi/au-nevoie-de-aceasta-certitudine-acum-producatorii-auto-europeni-cer-urgentarea-pachetul-de-masuri-pentru-industria-auto-22909388?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Auto/Transporturi"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "„Au nevoie de această certitudine acum!”. Producătorii auto europeni cer urgentarea pachetul de măsuri pentru industria auto",
+      "addedAt": "2026-10-30T21:58:14.650Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-hotnews-angela-merkel-vrea-ca-urmatorul-presedinte-290c6a",
+      "title": "Angela Merkel vrea ca următorul președinte ale Germaniei să fie o femeie",
+      "summary": "Fostul cancelar german Angela Merkel susține ca o femeie trebuie să îi succeadă președintelui Frank-Walter Steinmeier, al cărui al doilea mandat de cinci ani se încheie în martie anul viitor, notează dpa. „În cei 77 de ani de istorie ai Republicii Federale Germania, nu am avut niciodată o femeie în funcția de președinte”, a remarcat …",
+      "date": "2026-10-30T20:07:31.000Z",
+      "url": "https://hotnews.ro/angela-merkel-vrea-ca-urmatorul-presedinte-ale-germaniei-sa-fie-o-femeie-2391071",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Ana Teșcan",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Angela Merkel vrea ca următorul președinte ale Germaniei să fie o femeie",
+      "addedAt": "2026-10-30T21:58:12.699Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-profit-gm-plateste-220-de-milioane-de-dolari-eae759",
+      "title": "GM plătește 220 de milioane de dolari pentru vânzarea ilegală a datelor personale ale șoferilor",
+      "summary": "Constructorul auto american General Motors plătește 220 de milioane de dolari pentru soluționarea acuzațiilor potrivit cărora a vândut ilegal unor terți informații despre comportamentul la volan și localizarea clienților săi, date utilizate ulterior inclusiv pentru stabilirea tarifelor de asigurare.",
+      "date": "2026-10-30T20:00:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/it-c/gm-plateste-220-de-milioane-de-dolari-pentru-vanzarea-ilegala-a-datelor-personale-ale-soferilor-22907746?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "IT&C"
+      ],
+      "author": "",
+      "theme": "sport",
+      "image": "https://i0.1616.ro/media/2/2621/33216/22907746/2/general-motors.jpg?width=800",
+      "imageAlt": "GM plătește 220 de milioane de dolari pentru vânzarea ilegală a datelor personale ale șoferilor",
+      "addedAt": "2026-10-30T21:58:14.650Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-g4media-alegeri-in-sua-la-jumatatea-mandatului-un-e8cfff",
+      "title": "Alegeri în SUA la jumătatea mandatului: Un număr record de aproape 48 de milioane de americani au votat deja",
+      "summary": "Un număr record de 47,9 milioane de americani şi-au exprimat deja votul în cadrul alegerilor de la jumătatea mandatului din SUA, relatează Agerpres, care notează că se observă o creştere semnificativă a prezenţei la urne în mai multe state-cheie, iar printre cei care au votat deja, numărul alegătorilor democraţi este mai mare decât cel al […] © G4Media.ro .",
+      "date": "2026-10-30T19:55:44.000Z",
+      "url": "https://www.g4media.ro/alegeri-in-sua-la-jumatatea-mandatului-un-numar-record-de-aproape-48-de-milioane-de-americani-au-votat-deja.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "alegeri la jumatate de mandat",
+        "alegeri sua"
+      ],
+      "author": "Redacția",
+      "theme": "politika",
+      "image": "https://www.g4media.ro//wp-content/uploads/2024/10/profimedia-0928129513.jpg",
+      "imageAlt": "Alegeri în SUA la jumătatea mandatului: Un număr record de aproape 48 de milioane de americani au votat deja",
+      "addedAt": "2026-10-30T21:58:19.354Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-g4media-presedintele-poloniei-isi-intrerupe-581af2",
+      "title": "Preşedintele Poloniei îşi întrerupe călătoria spre Senegal după suspendarea preşedintelui Tribunalului Constituţional",
+      "summary": "Preşedintele polonez Karol Nawrocki, aflat vineri în avion spre Senegal pentru o vizită programată, a făcut cale-ntoarsă după ce a aflat că poliţia a pătruns în sediul celei mai înalte instanţe din Polonia, iar preşedintele acesteia a fost suspendat din funcţie, relatează Agerpres. „Într-un astfel de moment, preşedintele trebuie să fie în Polonia. Îmi întrerup […] © G4Media.ro .",
+      "date": "2026-10-30T19:34:19.000Z",
+      "url": "https://www.g4media.ro/presedintele-poloniei-isi-intrerupe-calatoria-spre-senegal-dupa-suspendarea-presedintelui-tribunalului-constitutional.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "Karol Nawrocki"
+      ],
+      "author": "Redacția",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro//wp-content/uploads/2024/11/Karol-Nawrocki.jpg",
+      "imageAlt": "Preşedintele Poloniei îşi întrerupe călătoria spre Senegal după suspendarea preşedintelui Tribunalului Constituţional",
+      "addedAt": "2026-10-30T21:58:19.354Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-g4media-canada-ar-putea-deveni-primul-stat-din-c100cd",
+      "title": "Canada ar putea deveni primul stat din afara Europei asociat programului Erasmus+. Roxana Mînzatu va reprezenta UE în negocieri",
+      "summary": "Uniunea Europeană și Canada au început negocierile pentru asocierea statului nord-american la programul Erasmus+. Vicepreședinta Comisiei Europene Roxana Mînzatu spune că va reprezenta UE în discuțiile cu partenerii canadieni. Mînzatu se află la Montreal, unde președinta Comisiei Europene, Ursula von der Leyen, și premierul canadian Mark Carney au anunțat vineri începerea negocierilor, relatează Mediafax. „Aștept […] © G4Media.ro .",
+      "date": "2026-10-30T19:14:08.000Z",
+      "url": "https://www.g4media.ro/canada-ar-putea-deveni-primul-stat-din-afara-europei-asociat-programului-erasmus-roxana-minzatu-va-reprezenta-ue-in-negocieri.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "erasmus",
+        "roxana manzatu"
+      ],
+      "author": "Redacția",
+      "theme": "politika",
+      "image": "https://www.g4media.ro//wp-content/uploads/2026/02/Roxana-Minzatu-Foto-Comisia-Europeana.jpeg",
+      "imageAlt": "Canada ar putea deveni primul stat din afara Europei asociat programului Erasmus+. Roxana Mînzatu va reprezenta UE în negocieri",
+      "addedAt": "2026-10-30T21:58:19.354Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-zf-val-de-vanzari-pe-wall-street-indicele-507cf0",
+      "title": "Val de vânzări pe Wall Street: indicele Nasdaq scade cu peste 3%, spre cea mai slabă şedinţă din iunie, după rezultatele dezamăgitoare ale Amazon şi Intel. Investitorii se mută pe…",
+      "summary": "",
+      "date": "2026-10-30T18:20:45.000Z",
+      "url": "https://www.zf.ro/burse-fonduri-mutuale/val-de-vanzari-pe-wall-street-indicele-nasdaq-scade-cu-peste-3-spre-cea-mai-slaba-sedinta-din-iunie-dupa-rezultatele-dezamagitoare-ale-amazon-si-intel-investitorii-se-muta-pe-actiuni-defensive-23271266",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Burse - Fonduri mutuale"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/22467/23271266/1/wall-street-afp.jpg?width=700",
+      "imageAlt": "Val de vânzări pe Wall Street: indicele Nasdaq scade cu peste 3%, spre cea mai slabă şedinţă din iunie, după rezultatele dezamăgitoare ale Amazon şi Intel. Investitorii se mută pe ",
+      "addedAt": "2026-10-30T21:58:14.210Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-zf-proprietarul-mega-image-face-o-noua-7068a6",
+      "title": "Proprietarul Mega Image face o nouă tranzacţie gigantică, de peste 1 mld. euro, după preluarea Profi. Surpriza? Pariază pe segmentul hipermarketurilor, considerat de mulţi depăşit…",
+      "summary": "",
+      "date": "2026-10-30T18:17:02.000Z",
+      "url": "https://www.zf.ro/companii/retail-agrobusiness/proprietarul-mega-image-face-o-noua-tranzactie-gigantica-de-peste-1-mld-euro-dupa-preluarea-profi-surpriza-pariaza-pe-segmentul-hipermarketurilor-considerat-de-multi-depasit-de-vremuri-23271263",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Retail&Agrobusiness"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21335/23271263/1/mega-image.jpg?width=700",
+      "imageAlt": "Proprietarul Mega Image face o nouă tranzacţie gigantică, de peste 1 mld. euro, după preluarea Profi. Surpriza? Pariază pe segmentul hipermarketurilor, considerat de mulţi depăşit ",
+      "addedAt": "2026-10-30T21:58:14.210Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-zf-cu-revoltele-din-franta-s-ar-putea-sa-bb0d70",
+      "title": "Cu revoltele din Franţa, s-ar putea să descoperim că România nu este o alternativă chiar atât de rea pe cât o zugrăvim noi",
+      "summary": "",
+      "date": "2026-10-30T17:00:00.000Z",
+      "url": "https://www.zf.ro/opinii/cu-revoltele-din-franta-s-ar-putea-sa-descoperim-ca-romania-nu-este-o-alternativa-chiar-atat-de-rea-pe-cat-o-zugravim-noi-23271080",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Opinii"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10369/23271080/1/fini-nou-2a.jpg?width=700",
+      "imageAlt": "Cu revoltele din Franţa, s-ar putea să descoperim că România nu este o alternativă chiar atât de rea pe cât o zugrăvim noi",
+      "addedAt": "2026-10-30T21:58:14.210Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-zf-piata-mica-energie-scumpa-rabla-003a11",
+      "title": "Piaţă mică, energie scumpă, Rabla imprevizibilă: BYD îşi caută fabricile în Europa de Vest. Stella Li, vicepreşedinte executiv BYD: „Când alegem o ţară, ne uităm în principal la…",
+      "summary": "",
+      "date": "2026-10-30T16:47:53.000Z",
+      "url": "https://www.zf.ro/auto/piata-mica-energie-scumpa-rabla-imprevizibila-byd-isi-cauta-fabricile-europa-vest-stella-vicepresedinte-executiv-byd-alegem-tara-ne-uitam-principal-marimea-pietei-costul-energiei-exact-problemele-23271213",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Auto"
+      ],
+      "author": "",
+      "theme": "energija",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21327/23271213/1/whatsapp-image-2026-10-30-at-18-46-19.jpg?width=700",
+      "imageAlt": "Piaţă mică, energie scumpă, Rabla imprevizibilă: BYD îşi caută fabricile în Europa de Vest. Stella Li, vicepreşedinte executiv BYD: „Când alegem o ţară, ne uităm în principal la mă",
+      "addedAt": "2026-10-30T21:58:14.211Z"
+    },
+    {
+      "slug": "bukurest-2026-10-30-zf-ruris-compania-antreprenorului-craiovean-273a5e",
+      "title": "Ruris, compania antreprenorului craiovean Cătălin Stroe, lansează la Indagra un tractor 4x4 care va fi fabricat pe fosta platformă MAT Craiova, într-o fabrică de 10 milioane de…",
+      "summary": "",
+      "date": "2026-10-30T16:45:12.000Z",
+      "url": "https://www.zf.ro/business-construct/ruris-compania-antreprenorului-craiovean-catalin-stroe-lanseaza-la-indagra-un-tractor-4x4-care-va-fi-fabricat-pe-fosta-platforma-mat-craiova-intr-o-fabrica-de-10-milioane-de-euro-23271210",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Business Construct"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21327/23271210/1/tractoare-fabrica-craiova-2026.png?width=700",
+      "imageAlt": "Ruris, compania antreprenorului craiovean Cătălin Stroe, lansează la Indagra un tractor 4x4 care va fi fabricat pe fosta platformă MAT Craiova, într-o fabrică de 10 milioane de eur",
+      "addedAt": "2026-10-30T21:58:14.211Z"
+    },
     {
       "slug": "bukurest-2026-10-29-agerpres-scriitorul-sebastien-lapaque-recompensat-cu-f4a143",
       "title": "Scriitorul Sebastien Lapaque, recompensat cu Marele Premiu pentru Roman al Academiei Franceze",
