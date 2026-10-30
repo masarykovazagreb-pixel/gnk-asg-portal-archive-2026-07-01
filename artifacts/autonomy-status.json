@@ -1,6 +1,6 @@
 {
   "version": "GNK_ASG_AUTONOMY_365_V1_20261021",
-  "generatedAt": "2026-10-29T22:49:52Z",
+  "generatedAt": "2026-10-30T05:57:30Z",
   "horizon": {
     "starts": "2026-10-21",
     "ends": "2027-10-21",
@@ -11,7 +11,7 @@
       "id": "kanali-arhiva",
       "state": "fail",
       "severity": "hard",
-      "actual": "289 / 300",
+      "actual": "294 / 300",
       "target": 300,
       "owner": "region-daily.yml",
       "route": "/kanal/",
@@ -20,15 +20,15 @@
         "en": "Every city channel holds at least 300 archived stories"
       },
       "note": {
-        "hr": "zagreb 420 · beograd 420 · sarajevo 420 · budimpesta 420 · ljubljana 420 · rim 420 · sofija 420 · bukurest 420 · nairobi 364 · jakarta 420 · newyork 420 · saopaulo 420 · sydney 420 · singapur 420 · kairo 289 · tokio 420 · peking 420",
-        "en": "zagreb 420 · beograd 420 · sarajevo 420 · budimpesta 420 · ljubljana 420 · rim 420 · sofija 420 · bukurest 420 · nairobi 364 · jakarta 420 · newyork 420 · saopaulo 420 · sydney 420 · singapur 420 · kairo 289 · tokio 420 · peking 420"
+        "hr": "zagreb 420 · beograd 420 · sarajevo 420 · budimpesta 420 · ljubljana 420 · rim 420 · sofija 420 · bukurest 420 · nairobi 371 · jakarta 420 · newyork 420 · saopaulo 420 · sydney 420 · singapur 420 · kairo 294 · tokio 420 · peking 420",
+        "en": "zagreb 420 · beograd 420 · sarajevo 420 · budimpesta 420 · ljubljana 420 · rim 420 · sofija 420 · bukurest 420 · nairobi 371 · jakarta 420 · newyork 420 · saopaulo 420 · sydney 420 · singapur 420 · kairo 294 · tokio 420 · peking 420"
       }
     },
     {
       "id": "kanali-svjezina",
       "state": "ok",
       "severity": "watch",
-      "actual": "7.3 h",
+      "actual": "8.9 h",
       "target": "48 h",
       "owner": "region-daily.yml",
       "route": "/kanal/",
@@ -37,8 +37,8 @@
         "en": "The newest story in every channel is no older than 48 h"
       },
       "note": {
-        "hr": "zagreb 3.3 h · beograd 3.3 h · sarajevo 3.2 h · budimpesta 3.4 h · ljubljana 3.3 h · rim 3.4 h · sofija 3.2 h · bukurest 3.1 h · nairobi 7.3 h · jakarta 3.3 h · newyork 3.3 h · saopaulo 3 h · sydney 3.1 h · singapur 3.2 h · kairo 3.4 h · tokio 3.2 h · peking 3.1 h",
-        "en": "zagreb 3.3 h · beograd 3.3 h · sarajevo 3.2 h · budimpesta 3.4 h · ljubljana 3.3 h · rim 3.4 h · sofija 3.2 h · bukurest 3.1 h · nairobi 7.3 h · jakarta 3.3 h · newyork 3.3 h · saopaulo 3 h · sydney 3.1 h · singapur 3.2 h · kairo 3.4 h · tokio 3.2 h · peking 3.1 h"
+        "hr": "zagreb 6.9 h · beograd 6.5 h · sarajevo 7.1 h · budimpesta 8.9 h · ljubljana 7 h · rim 8.2 h · sofija 4.9 h · bukurest 6.6 h · nairobi 8.9 h · jakarta 6.2 h · newyork 6.2 h · saopaulo 6.1 h · sydney 6.2 h · singapur 6.4 h · kairo 6.4 h · tokio 6.2 h · peking 6.1 h",
+        "en": "zagreb 6.9 h · beograd 6.5 h · sarajevo 7.1 h · budimpesta 8.9 h · ljubljana 7 h · rim 8.2 h · sofija 4.9 h · bukurest 6.6 h · nairobi 8.9 h · jakarta 6.2 h · newyork 6.2 h · saopaulo 6.1 h · sydney 6.2 h · singapur 6.4 h · kairo 6.4 h · tokio 6.2 h · peking 6.1 h"
       }
     },
     {
@@ -94,9 +94,9 @@
     },
     {
       "id": "news-svjezina",
-      "state": "watch",
+      "state": "ok",
       "severity": "watch",
-      "actual": "6.4 h",
+      "actual": "3.1 h",
       "target": "6 h",
       "owner": "gnk-news-refresh-v2.yml",
       "route": "/gnk-aktual/",
@@ -105,8 +105,8 @@
         "en": "The central feed is no older than 6 h"
       },
       "note": {
-        "hr": "300 zapisa · najnoviji 2026-10-29T16:26:24.000Z",
-        "en": "300 items · newest 2026-10-29T16:26:24.000Z"
+        "hr": "300 zapisa · najnoviji 2026-10-30T02:54:00.000Z",
+        "en": "300 items · newest 2026-10-30T02:54:00.000Z"
       }
     },
     {
@@ -146,8 +146,8 @@
   ],
   "totals": {
     "all": 8,
-    "ok": 5,
-    "watch": 1,
+    "ok": 6,
+    "watch": 0,
     "fail": 2
   },
   "measured": {
@@ -155,110 +155,110 @@
       {
         "id": "zagreb",
         "items": 420,
-        "newest": "2026-10-29T19:33:26.000Z",
-        "ageHours": 3.3
+        "newest": "2026-10-29T23:06:00.000Z",
+        "ageHours": 6.9
       },
       {
         "id": "beograd",
         "items": 420,
-        "newest": "2026-10-29T19:30:00.000Z",
-        "ageHours": 3.3
+        "newest": "2026-10-29T23:26:32.000Z",
+        "ageHours": 6.5
       },
       {
         "id": "sarajevo",
         "items": 420,
-        "newest": "2026-10-29T19:35:07.000Z",
-        "ageHours": 3.2
+        "newest": "2026-10-29T22:53:26.000Z",
+        "ageHours": 7.1
       },
       {
         "id": "budimpesta",
         "items": 420,
-        "newest": "2026-10-29T19:26:00.000Z",
-        "ageHours": 3.4
+        "newest": "2026-10-29T21:01:02.000Z",
+        "ageHours": 8.9
       },
       {
         "id": "ljubljana",
         "items": 420,
-        "newest": "2026-10-29T19:30:00.000Z",
-        "ageHours": 3.3
+        "newest": "2026-10-29T23:00:00.000Z",
+        "ageHours": 7
       },
       {
         "id": "rim",
         "items": 420,
-        "newest": "2026-10-29T19:27:40.000Z",
-        "ageHours": 3.4
+        "newest": "2026-10-29T21:47:44.000Z",
+        "ageHours": 8.2
       },
       {
         "id": "sofija",
         "items": 420,
-        "newest": "2026-10-29T19:40:00.000Z",
-        "ageHours": 3.2
+        "newest": "2026-10-30T01:03:03.000Z",
+        "ageHours": 4.9
       },
       {
         "id": "bukurest",
         "items": 420,
-        "newest": "2026-10-29T19:42:09.906Z",
-        "ageHours": 3.1
+        "newest": "2026-10-29T23:19:56.000Z",
+        "ageHours": 6.6
       },
       {
         "id": "nairobi",
-        "items": 364,
-        "newest": "2026-10-29T15:33:53.000Z",
-        "ageHours": 7.3
+        "items": 371,
+        "newest": "2026-10-29T21:05:00.000Z",
+        "ageHours": 8.9
       },
       {
         "id": "jakarta",
         "items": 420,
-        "newest": "2026-10-29T19:30:37.000Z",
-        "ageHours": 3.3
+        "newest": "2026-10-29T23:43:47.000Z",
+        "ageHours": 6.2
       },
       {
         "id": "newyork",
         "items": 420,
-        "newest": "2026-10-29T19:34:04.000Z",
-        "ageHours": 3.3
+        "newest": "2026-10-29T23:45:27.000Z",
+        "ageHours": 6.2
       },
       {
         "id": "saopaulo",
         "items": 420,
-        "newest": "2026-10-29T19:47:20.390Z",
-        "ageHours": 3
+        "newest": "2026-10-29T23:50:02.778Z",
+        "ageHours": 6.1
       },
       {
         "id": "sydney",
         "items": 420,
-        "newest": "2026-10-29T19:45:10.000Z",
-        "ageHours": 3.1
+        "newest": "2026-10-29T23:46:45.000Z",
+        "ageHours": 6.2
       },
       {
         "id": "singapur",
         "items": 420,
-        "newest": "2026-10-29T19:35:19.000Z",
-        "ageHours": 3.2
+        "newest": "2026-10-29T23:33:07.000Z",
+        "ageHours": 6.4
       },
       {
         "id": "kairo",
-        "items": 289,
-        "newest": "2026-10-29T19:25:57.000Z",
-        "ageHours": 3.4
+        "items": 294,
+        "newest": "2026-10-29T23:33:48.000Z",
+        "ageHours": 6.4
       },
       {
         "id": "tokio",
         "items": 420,
-        "newest": "2026-10-29T19:38:00.000Z",
-        "ageHours": 3.2
+        "newest": "2026-10-29T23:45:12.000Z",
+        "ageHours": 6.2
       },
       {
         "id": "peking",
         "items": 420,
-        "newest": "2026-10-29T19:43:34.000Z",
-        "ageHours": 3.1
+        "newest": "2026-10-29T23:49:39.000Z",
+        "ageHours": 6.1
       }
     ],
     "news": {
       "items": 300,
-      "newest": "2026-10-29T16:26:24.000Z",
-      "ageHours": 6.4
+      "newest": "2026-10-30T02:54:00.000Z",
+      "ageHours": 3.1
     },
     "proxies": {
       "allowed": 85,
