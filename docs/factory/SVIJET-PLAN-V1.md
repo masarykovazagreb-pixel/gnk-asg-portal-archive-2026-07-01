@@ -77,3 +77,26 @@ objava ide kroz postojeće workflowe i ljudski pregled.
   Predlažem promjenu oznake na „stanice trećih strana”.
 - Pločica `radio-tile` tvrdi „javne radijske kuće osam zemalja”, a streamovi nisu javne radijske kuće.
   Treba korekcija teksta na pločici.
+
+## 8. Stanje 30. 10. 2026. (nastavak): W1 i spajanje s main-om
+
+Odluka vlasnika (30. 10.): za izvore novih država vrijedi opcija „naslov + izvadak + poveznica”.
+Kapija K1 (uvjeti korištenja) ostaje obavezna: vlasnikova odluka ne zamjenjuje provjeru uvjeta svakog izvora.
+
+Provjera W1, prvi izvor:
+
+| Država | Izvor | Feed živ | Uvjeti | Ishod |
+|---|---|---|---|---|
+| Austrija | ORF `https://rss.orf.at/news.xml` | da (22 stavke, 30. 10.) | FAQ ORF-a: feed je „za nekomercijalne svrhe” i „iz pravnih razloga” nudi samo naslove | **blokirano** (komercijalni portal, izvadak nije dopušten) |
+| ostalih 6 | nije provjereno | — | — | sljedeći korak |
+
+Obrazac je isti kao u `docs/izvori-provjera-drzave-2026-10-29.md`: većina nacionalnih RSS feedova
+nije dopuštena za komercijalnu objavu. Država ide u javnost tek kad ima izvor s dokazano dopuštenim uvjetima.
+
+Spajanje grane s `main`-om:
+- `main` je ponovno inicijaliziran (korijen `fd0e3e32f` 30. 10. 12:20 UTC, zatim `ad2a2744e`). Nema zajedničkog pretka s granom.
+- Trosmjerno spajanje s bazom `06db7d1a1` (predak naše grane) dalo je spojeno stablo koje ne prolazi `test-all`:
+  `region-audit`: 60 stranica članaka Beograda (26.–27. 10.) na `main`-u nema zapis u `apps/region/data/beograd.json`.
+  Ti članci su objavljeni na `main`-u. Brisanje bi ih maknulo s gnk-asg.hr. Slabljenje audita nije dopušteno (AGENTS.md, pravilo 6).
+- Zato se merge NE gura. Grana ostaje na `d404df9e6` (zelena). PR #380 ostaje otvoren.
+- Potrebna odluka: ili rekonstruirati zapise za tih 60 članaka iz stranica (najčišći put), ili vlasnik potvrdi brisanje.
