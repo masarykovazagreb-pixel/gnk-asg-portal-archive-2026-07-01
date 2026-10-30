@@ -1,0 +1,27 @@
+{
+  "version": "WORLD_SOURCES_V1",
+  "updated": "2026-10-30",
+  "rule": "Izvor je 'approved' tek kad K1 (feed živ + uvjeti dopuštaju prikaz) i K2 (pravna potvrda u approvals-ledger) prođu. Ostalo ostaje 'pending' ili 'blocked'.",
+  "countries": {
+    "AT": {
+      "country": "Austrija",
+      "wave": "W1-susjedi",
+      "sources": [
+        {
+          "name": "ORF news",
+          "url": "https://rss.orf.at/news.xml",
+          "feed_live": "2026-10-30",
+          "terms": "FAQ ORF-a: za nekomercijalne svrhe; iz pravnih razloga samo naslovi",
+          "status": "blocked",
+          "reason": "Komercijalni portal, izvadak nije dopušten."
+        }
+      ]
+    },
+    "AL": {"country": "Albanija", "wave": "W1-susjedi", "sources": [], "status_note": "nije provjereno"},
+    "ME": {"country": "Crna Gora", "wave": "W1-susjedi", "sources": [], "status_note": "nije provjereno"},
+    "GR": {"country": "Grčka", "wave": "W1-susjedi", "sources": [], "status_note": "nije provjereno"},
+    "XK": {"country": "Kosovo", "wave": "W1-susjedi", "sources": [], "status_note": "nije provjereno"},
+    "MK": {"country": "Sjeverna Makedonija", "wave": "W1-susjedi", "sources": [], "status_note": "nije provjereno"},
+    "TR": {"country": "Turska", "wave": "W1-susjedi", "sources": [], "status_note": "nije provjereno"}
+  }
+}

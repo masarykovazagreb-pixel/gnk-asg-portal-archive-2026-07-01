@@ -34,6 +34,16 @@ def main():
                         capture_output=True, text=True)
     if rc.returncode:
         failures.append("radio promo block drift: " + rc.stdout.strip()[-200:])
+    # orkestrator agenata (V1): konfiguracija bez ciklusa i bez nepostojećih ovisnosti
+    rc = subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "factory", "orchestrator_v1.py"), "--check"],
+                        capture_output=True, text=True)
+    if rc.returncode:
+        failures.append("orkestrator: konfiguracija agenata ne valja: " + rc.stdout.strip()[-200:])
+    # nacrti distribucije (A14): nijedan nacrt ne smije biti predugačak za platformu
+    rc = subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "factory", "radio_promo_kit_v1.py"), "--check"],
+                        capture_output=True, text=True)
+    if rc.returncode:
+        failures.append("nacrti distribucije: predugačak tekst za platformu")
     # kvaliteta slika (faza 5): nečitljive slike ne smiju rasti (početno stanje 5)
     subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "factory", "image_quality.py")],
                    check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

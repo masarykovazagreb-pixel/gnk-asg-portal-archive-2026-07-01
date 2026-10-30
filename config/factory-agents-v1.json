@@ -1,0 +1,272 @@
+{
+  "version": "FACTORY_AGENTS_V1",
+  "updated": "2026-10-30",
+  "principles": [
+    "Nema novog crona ni deploy bota (AGENTS.md, pravilo 6). Agenti su skripte ili ljudski zadaci, pokreće ih orkestrator ručno.",
+    "Nema LLM-a u gateovima: svaka kapija je deterministička provjera ili zapisani ljudski odnosno vlasnički odgovor.",
+    "Agent ne objavljuje i ne spaja. Spajanje PR-a samo uz izričit OK vlasnika, zapisan u config/approvals-ledger-v1.json.",
+    "Agent ne briše objavljeni sadržaj i ne slabi gate. Ako je provjera neprolazna, zadatak ide u blokirano s razlogom.",
+    "Ništa ne ide na javni domen bez: uvjeta izvora (K1), licenci (K2), imenovanog urednika (K3) i zelenog test-all na čistom checkoutu (K5)."
+  ],
+  "agents": [
+    {
+      "id": "A00",
+      "name": "Orkestrator",
+      "role": "Čita stanje repozitorija, računa spremne i blokirane zadatke, piše tablu. Ne mijenja sadržaj.",
+      "mode": "script",
+      "depends_on": [],
+      "check": {
+        "type": "file",
+        "path": "scripts/factory/orchestrator_v1.py"
+      },
+      "outputs": [
+        "artifacts/factory/orchestration-board.json",
+        "docs/factory/TABLA-V1.md"
+      ]
+    },
+    {
+      "id": "A01",
+      "name": "Registar država",
+      "role": "Održava config/world-countries-v1.json (195 država, valovi, statusi, projekti).",
+      "mode": "script",
+      "depends_on": [],
+      "check": {
+        "type": "file",
+        "path": "config/world-countries-v1.json"
+      },
+      "outputs": [
+        "config/world-countries-v1.json"
+      ]
+    },
+    {
+      "id": "A02",
+      "name": "Izvori (K1)",
+      "role": "Za svaku državu traži javne RSS/sitemap izvore, provjerava je li feed živ i što kažu uvjeti korištenja. Ishod upisuje u config/world-sources-v1.json.",
+      "mode": "hybrid",
+      "depends_on": [
+        "A01"
+      ],
+      "check": {
+        "type": "world_sources",
+        "min_approved_per_country": 1
+      },
+      "outputs": [
+        "config/world-sources-v1.json"
+      ]
+    },
+    {
+      "id": "A03",
+      "name": "Licence i prava (K2)",
+      "role": "Provjerava je li prikaz naslova, izvadka, poveznice i slika dopušten za svaki izvor. Pravnu potvrdu daje vlasnik ili pravnik, ne agent.",
+      "mode": "human",
+      "depends_on": [
+        "A02"
+      ],
+      "check": {
+        "type": "approval",
+        "id": "licence-w1"
+      },
+      "outputs": [
+        "config/approvals-ledger-v1.json"
+      ]
+    },
+    {
+      "id": "A04",
+      "name": "Predložak kanala",
+      "role": "Gradi kanal za državu (channels.json, capitals.json, podaci) tek kad K1 i K2 prođu.",
+      "mode": "script",
+      "depends_on": [
+        "A02",
+        "A03"
+      ],
+      "check": {
+        "type": "world_sources",
+        "min_approved_per_country": 1,
+        "require_status": "live"
+      },
+      "outputs": [
+        "apps/region/channels.json",
+        "apps/region/capitals.json"
+      ]
+    },
+    {
+      "id": "A05",
+      "name": "Dizajn i funkcije",
+      "role": "Lint indexa i kanala: alt na slikama, dimenzije, poveznice, mobilni prikaz. Ne mijenja dizajn bez odluke.",
+      "mode": "script",
+      "depends_on": [],
+      "check": {
+        "type": "file",
+        "path": "scripts/factory/audit_portal.py"
+      },
+      "outputs": [
+        "artifacts/factory/audit.json"
+      ]
+    },
+    {
+      "id": "A06",
+      "name": "Meta, SEO i hashtagovi",
+      "role": "Meta opisi, og/twitter, hashtagovi (#NerminSefić, #NerminSefic, lokalni), sitemap. Mijenja samo meta redove.",
+      "mode": "script",
+      "depends_on": [],
+      "check": {
+        "type": "json_eq",
+        "path": "artifacts/factory/audit.json",
+        "a": "pages_with_owner_hashtags",
+        "b": "indexable_pages"
+      },
+      "outputs": [
+        "artifacts/factory/audit.json",
+        "scripts/factory/apply_standard.py"
+      ]
+    },
+    {
+      "id": "A07",
+      "name": "Kvaliteta slika",
+      "role": "Mjeri tamne, ravne, premale, duplikate i pretežke slike. Ne briše slike; nalaze šalje na ručni pregled.",
+      "mode": "script",
+      "depends_on": [],
+      "check": {
+        "type": "json_max",
+        "path": "artifacts/factory/image-quality.json",
+        "key": "summary.flag_counts.necitljiva",
+        "max": 5
+      },
+      "outputs": [
+        "artifacts/factory/image-quality.json"
+      ]
+    },
+    {
+      "id": "A08",
+      "name": "Usklađenost AI (Članak 50)",
+      "role": "Za AI-generirani javni tekst provjerava oznaku i zapis ljudskog pregleda. Test metapodataka nije ljudski pregled.",
+      "mode": "hybrid",
+      "depends_on": [],
+      "check": {
+        "type": "file",
+        "path": "scripts/check-ai-act-governance-v1.mjs"
+      },
+      "outputs": [
+        "config/eu-ai-act-governance-v1.json"
+      ]
+    },
+    {
+      "id": "A09",
+      "name": "Vidljivost i sitemap",
+      "role": "Sitemap, indexNow i popis stranica. Ne objavljuje; priprema popis.",
+      "mode": "script",
+      "depends_on": [
+        "A06"
+      ],
+      "check": {
+        "type": "file",
+        "path": "scripts/factory/test_factory_v1.py"
+      },
+      "outputs": [
+        "apps/portal/sitemap.xml"
+      ]
+    },
+    {
+      "id": "A10",
+      "name": "Radio",
+      "role": "Blok AKTUAL MEDIA RADIO na stranicama, oznake stanica (treće strane), tekst pločice.",
+      "mode": "hybrid",
+      "depends_on": [],
+      "check": {
+        "type": "radio_count",
+        "min": 9000
+      },
+      "outputs": [
+        "scripts/factory/radio_promo_v1.py",
+        "apps/portal/assets/izdanja/radio-tile.webp"
+      ]
+    },
+    {
+      "id": "A11",
+      "name": "Pipeline čuvar",
+      "role": "Čist clone, puni pipeline i test-all na commitu prije pusha. Bilježi koji commit je prošao.",
+      "mode": "script",
+      "depends_on": [],
+      "check": {
+        "type": "log_pass",
+        "path": "artifacts/factory/last-testall.txt",
+        "pattern": "Provjere: 82/82"
+      },
+      "outputs": [
+        "artifacts/factory/last-testall.txt"
+      ]
+    },
+    {
+      "id": "A12",
+      "name": "Stanje grane i povijesti",
+      "role": "Provjerava je li grana povezana s main-om (zajednički predak), je li main reinicijaliziran i jesu li lokalne promjene izgubljene.",
+      "mode": "script",
+      "depends_on": [],
+      "check": {
+        "type": "git_ancestor",
+        "base": "origin/main",
+        "head": "HEAD"
+      },
+      "outputs": [
+        "artifacts/factory/git-state.json"
+      ]
+    },
+    {
+      "id": "A13",
+      "name": "Konzistentnost podataka",
+      "role": "Svaka stranica članka mora imati zapis u podacima kanala. Nesklad se rješava rekonstrukcijom zapisa, ne brisanjem ni slabljenjem audita.",
+      "mode": "script",
+      "depends_on": [
+        "A12"
+      ],
+      "check": {
+        "type": "json_max",
+        "path": "artifacts/factory/region-audit.json",
+        "key": "errors_count",
+        "max": 0
+      },
+      "outputs": [
+        "artifacts/factory/region-audit.json"
+      ]
+    },
+    {
+      "id": "A14",
+      "name": "Distribucija (nacrti)",
+      "role": "Priprema nacrte objava za vlastite kanale po platformi, u HR i EN. Ne objavljuje ništa.",
+      "mode": "hybrid",
+      "depends_on": [
+        "A10",
+        "A09"
+      ],
+      "check": {
+        "type": "file",
+        "path": "apps/portal/data/radio-promo-kit.json"
+      },
+      "outputs": [
+        "apps/portal/data/radio-promo-kit.json"
+      ]
+    },
+    {
+      "id": "A15",
+      "name": "Revizor odobrenja",
+      "role": "Vodi evidenciju vlasnikovih odobrenja (spajanje, objava, pravne odluke). Bez zapisa nema radnje.",
+      "mode": "script",
+      "depends_on": [],
+      "check": {
+        "type": "file",
+        "path": "config/approvals-ledger-v1.json"
+      },
+      "outputs": [
+        "config/approvals-ledger-v1.json"
+      ]
+    }
+  ],
+  "gates": {
+    "K1": "Izvor: živ feed i uvjeti korištenja dopuštaju prikaz (naslov, izvadak, poveznica).",
+    "K2": "Licence: pravna potvrda za prikaz i slike, zapisana u ledgeru.",
+    "K3": "Urednik: imenovana osoba za državu.",
+    "K4": "Naziv, glavni grad i jezik provjereni u registru.",
+    "K5": "test-all zelen na čistom checkoutu točnog commita.",
+    "K6": "Samo status live ide na javnu domenu."
+  }
+}

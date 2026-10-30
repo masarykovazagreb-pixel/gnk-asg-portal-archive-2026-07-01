@@ -1,0 +1,78 @@
+{
+  "version": "APPROVALS_LEDGER_V1",
+  "rule": "Svaka radnja koja ovisi o vlasniku ima zapis ovdje. Agent ne tumači odobrenje šire od zapisanog opsega. Spajanje PR-a: samo izričit OK za taj PR.",
+  "entries": [
+    {
+      "id": "merge-pr-379",
+      "date": "2026-10-29",
+      "by": "vlasnik",
+      "scope": "merge PR #379",
+      "decision": "odobreno",
+      "status": "izvršeno",
+      "note": "Spojeno 2026-10-29T19:12:02Z, deploy 40934712500 uspješan."
+    },
+    {
+      "id": "merge-pr-380",
+      "date": "2026-10-30",
+      "by": "vlasnik",
+      "scope": "merge PR #380 (grana arena/af7fc5d1-gnk-asg-portal-archive-2026-07)",
+      "decision": "odobreno",
+      "status": "čeka tehničku prepreku",
+      "note": "Odobreno izričito. Spajanje blokirano jer main nema zajednički predak s granom (vidi A12) i 60 članaka bez zapisa u podacima (vidi A13). Odobrenje ne pokriva brisanje objavljenih članaka."
+    },
+    {
+      "id": "hashtag-scope-all-pages",
+      "date": "2026-10-29",
+      "by": "vlasnik",
+      "scope": "autorski hashtagovi na svakoj stranici",
+      "decision": "odobreno",
+      "status": "izvršeno",
+      "note": "approved_mentions.json hashtag_scope=all_pages. approved_urls i dalje kontroliraju javni prikaz objava koje spominju GNK ASG, GNK DINAMO Ltd. ili Nermina Sefića."
+    },
+    {
+      "id": "reversed-hashtags-keep",
+      "date": "2026-10-29",
+      "by": "vlasnik",
+      "scope": "obrnute varijante (#SeficNermin, #SEFICNERMIN) na 7.376 stranica",
+      "decision": "ostavi kako jest",
+      "status": "izvršeno",
+      "note": "Nema daljnje radnje."
+    },
+    {
+      "id": "external-newspaper-images",
+      "date": "2026-10-29",
+      "by": "vlasnik",
+      "scope": "vanjske slike novina na pločicama",
+      "decision": "dopušteno uz navođenje izvora",
+      "status": "aktivno",
+      "note": "Ograničenje: prikaz u krugovima na pločicama za većinu zemalja."
+    },
+    {
+      "id": "w1-legal-basis",
+      "date": "2026-10-30",
+      "by": "vlasnik",
+      "scope": "izvori za nove države (W1), prikaz",
+      "decision": "naslov + izvadak + poveznica",
+      "status": "odluka zabilježena; pravna potvrda K2 još nije dana",
+      "note": "Kapija K1 (uvjeti izvora) i K2 (licence) ostaju obavezne za svaki izvor. Vlasnikova odluka ne zamjenjuje provjeru uvjeta izdavača."
+    },
+    {
+      "id": "main-history-decision",
+      "date": "2026-10-30",
+      "by": "vlasnik",
+      "scope": "način spajanja s main-om",
+      "decision": "agent odlučuje",
+      "status": "izvršeno djelomično",
+      "note": "Trosmjerno spajanje napravljeno u clone-u, nije gurnuto jer test-all pada (60 članaka bez zapisa). Rekonstrukcija zapisa iz stranica je predloženi put."
+    },
+    {
+      "id": "licence-w1",
+      "date": null,
+      "by": "pravnik ili vlasnik",
+      "scope": "pisana pravna potvrda za prikaz naslova, izvadka i poveznica iz izvora W1",
+      "decision": null,
+      "status": "čeka",
+      "note": "Nije dano. Bez ovoga nijedan izvor W1 ne ide javno."
+    }
+  ]
+}
