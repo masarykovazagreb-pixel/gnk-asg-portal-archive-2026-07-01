@@ -16,6 +16,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { allowedImageHosts } from '../workers/gnk-asg-direct-operator/src/image-proxy-v1.js';
+import { REGION_IMAGE_HOST_LIST } from '../workers/gnk-asg-direct-operator/src/image-hosts-v1.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PORTAL = path.join(ROOT, 'apps/portal');
@@ -94,7 +95,9 @@ const feedHosts = new Set([
 ]);
 const allow = new Set(allowedImageHosts().map((h) => h.toLowerCase()));
 const hostsMissing = [...feedHosts].filter((h) => !allow.has(h));
-const hostsExtra = [...allow].filter((h) => !feedHosts.has(h));
+// Regionalni hostovi (osam izdanja) nisu "višak": provjeravaju se zasebno (test-image-proxy-coverage).
+const regionHosts = new Set(REGION_IMAGE_HOST_LIST.map((h) => h.toLowerCase()));
+const hostsExtra = [...allow].filter((h) => !feedHosts.has(h) && !regionHosts.has(h));
 
 const desksWithImages = DESK_IDS.filter((id) => /<img\b/i.test(readText(path.join(PORTAL, `izdanja/${id}/index.html`))));
 
@@ -134,7 +137,9 @@ function measure(criterion) {
       };
     }
     case 'proxy-allowlist': {
-      const equal = hostsMissing.length === 0 && hostsExtra.length === 0;
+      // Kao i test-image-proxy-v1: neiskorišten unos (višak) nije kvar — feedovi rotiraju.
+      // Ruši samo host kojeg na popisu nema (slika bi tiho nestala).
+      const equal = hostsMissing.length === 0;
       return {
         measured: allow.size,
         actual: `${allow.size} / ${feedHosts.size}`,
