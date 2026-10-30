@@ -70,7 +70,6 @@ export const STEPS = [
   { id: 'ribbon', group: 'layers', file: 'scripts/apply-house-ribbon-v1.mjs', why: 'traka kuće' },
   { id: 'brand-mark', group: 'layers', file: 'scripts/apply-brand-mark-v1.mjs', check: ['--check'], why: 'jedan znak i ikona' },
   { id: 'design-tokens', group: 'layers', file: 'scripts/apply-design-tokens-v1.mjs', check: ['--check'], why: 'jedan dizajn sustav' },
-  { id: 'social-cards', group: 'layers', file: 'scripts/apply-social-card-meta-v1.mjs', why: 'OG/Twitter kartice' },
   { id: 'image-sitemap', group: 'layers', file: 'scripts/prune-image-sitemap-v1.mjs', why: 'sitemap bez mrtvih slika' },
   { id: 'knowledge-sync', group: 'layers', file: 'scripts/knowledge-center-hr-sync-v1.mjs', args: ['--apply'], why: 'HR/EN knowledge center u paru' },
   /* Brojevi i osvježavanje idu prije provjera: brojevi zato što ih svaki
@@ -83,6 +82,7 @@ export const STEPS = [
   { id: 'house-icons', group: 'layers', file: 'scripts/ensure-house-icons-v1.mjs', check: ['--check'], why: 'ikonа kuće postoji na svakoj adresi na koju stranica pokazuje' },
   { id: 'listing-shell', group: 'layers', file: 'scripts/fix-editorial-listing-shell-v1.mjs', check: ['--check'], why: 'popisi bez </body> dobivaju zatvoren dokument, impressum i traku' },
   { id: 'agents-page', group: 'layers', file: 'scripts/build-agents-page-v1.mjs', why: 'javna ploča agenata' },
+  { id: 'social-cards', group: 'layers', file: 'scripts/apply-social-card-meta-v1.mjs', why: 'OG/Twitter kartice (nakon generatora agenti/sve-stranice, prije osvježavanja)' },
   { id: 'refresh', group: 'layers', file: 'scripts/apply-refresh-v1.mjs', check: ['--check'], why: 'osvježavanje na svakoj stranici' },
   { id: 'entity', group: 'layers', file: 'scripts/apply-network-entity-v1.mjs', why: 'entity:v1 graf na svakoj stranici' },
   { id: 'agent-sitemap-index', group: 'layers', file: 'scripts/ensure-agent-sitemap-index-v1.mjs', why: 'sitemap pregleda agenata u sitemap-indeksu' },

@@ -27,6 +27,8 @@ const CHANNELS_FILE = path.join(ROOT, 'apps/region/channels.json');
 const CITY_EN = { zagreb: 'Zagreb', beograd: 'Belgrade', sarajevo: 'Sarajevo', budimpesta: 'Budapest', ljubljana: 'Ljubljana', rim: 'Rome', sofija: 'Sofia', bukurest: 'Bucharest', nairobi: 'Nairobi', jakarta: 'Jakarta', newyork: 'New York', saopaulo: 'São Paulo', sydney: 'Sydney', singapur: 'Singapore', kairo: 'Cairo', tokio: 'Tokyo', peking: 'Beijing' };
 
 const checkOnly = process.argv.includes('--check');
+/* Verzija slika izdanja: novi fajlovi (svjetski gradovi) moraju doći i kroz CDN i kroz cache preglednika. */
+const IMG_V = '?v=20261029';
 
 const DESKS = [
   { slug: 'sport', hr: 'Sport', en: 'Sport' },
@@ -67,7 +69,7 @@ function circle(c, lang) {
   const label = en
     ? `AKTUAL MEDIA CHANNEL ${String(city).toUpperCase()} — ${esc(city)}`
     : `AKTUAL MEDIA KANAL ${String(city).toUpperCase()} — ${esc(city)}`;
-  return `<li class="amz-i"><a href="${href}" aria-label="${label}"${c.lang === 'en' ? ' hreflang="en"' : ''}><span class="amz-img"><img src="/assets/izdanja/${c.id}-440.webp" srcset="/assets/izdanja/${c.id}-240.webp 240w, /assets/izdanja/${c.id}-440.webp 440w" sizes="(max-width:980px) 92px, (max-width:1240px) 12vw, 160px" alt="${label}" width="440" height="296" decoding="async"></span><b>${esc(city)}</b><small>${esc(c.lang)}</small></a></li>`;
+  return `<li class="amz-i"><a href="${href}" aria-label="${label}"${c.lang === 'en' ? ' hreflang="en"' : ''}><span class="amz-img"><img src="/assets/izdanja/${c.id}-440.webp${IMG_V}" srcset="/assets/izdanja/${c.id}-240.webp${IMG_V} 240w, /assets/izdanja/${c.id}-440.webp${IMG_V} 440w" sizes="(max-width:980px) 92px, (max-width:1240px) 12vw, 160px" alt="${label}" width="440" height="296" decoding="async"></span><b>${esc(city)}</b><small>${esc(c.lang)}</small></a></li>`;
 }
 
 /* Dva samostalna portala: iste pločice kao kanali, ali vanjska domena.
@@ -171,7 +173,7 @@ function stats(html) {
     circles: (row.match(/class="amz-i"/g) || []).length,
     circlesEn: (row.match(/\/kanal\/[a-z]+\/en\//g) || []).length,
     tiles: (row.match(/-tile\.webp/g) || []).length,
-    photos: (row.match(/src="[^"]*-440\.webp"/g) || []).length,
+    photos: (row.match(/src="[^"]*-440\.webp(\?v=\d+)?"/g) || []).length,
     srcset: (row.match(/srcset=/g) || []).length,
     desks: netStart < 0 ? 0 : (html.slice(netStart, netEnd).match(/<li>/g) || []).length,
     tags: (html.match(/class="amz-tags"/g) || []).length,

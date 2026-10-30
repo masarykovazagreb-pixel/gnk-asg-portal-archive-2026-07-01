@@ -67,6 +67,16 @@ jobs:
         run: node scripts/build-aktual-media-weekly-v1.mjs
       - name: Materialize bilingual weekly issue and archive pages
         run: node scripts/build-aktual-media-weekly-archive-v1.mjs --refresh
+
+      - name: Tjedni arhiv — standard i slojevi nakon generatora
+        shell: bash
+        run: |-
+          set -euo pipefail
+          # Generator arhive piše stranice bez slojeva i bez retka s hashtagovima;
+          # bez ovoga svako dnevno objavljivanje skida oznake s tjednih stranica.
+          python3 scripts/factory/apply_standard.py
+          node scripts/sync-all-v1.mjs --group=layers
+          python3 scripts/factory/apply_standard.py
       - name: Keep verified author and neutral editor roles separate on columns
         run: node scripts/enforce-nermin-author-seo-v1.mjs --write
       - name: Materialize due editorial pages

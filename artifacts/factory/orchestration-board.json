@@ -1,0 +1,169 @@
+{
+ "version": "FACTORY_ORCHESTRATION_BOARD_V1",
+ "branch": "arena/af7fc5d1-gnk-asg-portal-archive-2026-07",
+ "generatedAt": "2026-10-30T17:30:43Z",
+ "ran_commands": false,
+ "summary": {
+  "done": 11,
+  "ready": 1,
+  "waiting": 3,
+  "human": 1
+ },
+ "agents": [
+  {
+   "id": "A00",
+   "name": "Orkestrator",
+   "mode": "script",
+   "state": "done",
+   "check": "scripts/factory/orchestrator_v1.py postoji",
+   "waiting_on": [],
+   "role": "Čita stanje repozitorija, računa spremne i blokirane zadatke, piše tablu. Ne mijenja sadržaj."
+  },
+  {
+   "id": "A01",
+   "name": "Registar država",
+   "mode": "script",
+   "state": "done",
+   "check": "config/world-countries-v1.json postoji",
+   "waiting_on": [],
+   "role": "Održava config/world-countries-v1.json (195 država, valovi, statusi, projekti)."
+  },
+  {
+   "id": "A02",
+   "name": "Izvori (K1)",
+   "mode": "hybrid",
+   "state": "ready",
+   "check": "W1: 0/7 država s odobrenim izvorom (potrebno 1 po državi)",
+   "waiting_on": [],
+   "role": "Za svaku državu traži javne RSS/sitemap izvore, provjerava je li feed živ i što kažu uvjeti korištenja. Ishod upisuje u config/world-sources-v1.json."
+  },
+  {
+   "id": "A03",
+   "name": "Licence i prava (K2)",
+   "mode": "human",
+   "state": "waiting",
+   "check": "licence-w1: čeka",
+   "waiting_on": [
+    "A02"
+   ],
+   "role": "Provjerava je li prikaz naslova, izvadka, poveznice i slika dopušten za svaki izvor. Pravnu potvrdu daje vlasnik ili pravnik, ne agent."
+  },
+  {
+   "id": "A04",
+   "name": "Predložak kanala",
+   "mode": "script",
+   "state": "waiting",
+   "check": "W1: 0/7 država s odobrenim izvorom (potrebno 1 po državi)",
+   "waiting_on": [
+    "A02",
+    "A03"
+   ],
+   "role": "Gradi kanal za državu (channels.json, capitals.json, podaci) tek kad K1 i K2 prođu."
+  },
+  {
+   "id": "A05",
+   "name": "Dizajn i funkcije",
+   "mode": "script",
+   "state": "done",
+   "check": "scripts/factory/audit_portal.py postoji",
+   "waiting_on": [],
+   "role": "Lint indexa i kanala: alt na slikama, dimenzije, poveznice, mobilni prikaz. Ne mijenja dizajn bez odluke."
+  },
+  {
+   "id": "A06",
+   "name": "Meta, SEO i hashtagovi",
+   "mode": "script",
+   "state": "done",
+   "check": "pages_with_owner_hashtags=9021, indexable_pages=9021",
+   "waiting_on": [],
+   "role": "Meta opisi, og/twitter, hashtagovi (#NerminSefić, #NerminSefic, lokalni), sitemap. Mijenja samo meta redove."
+  },
+  {
+   "id": "A07",
+   "name": "Kvaliteta slika",
+   "mode": "script",
+   "state": "done",
+   "check": "summary.flag_counts.necitljiva=5 (najviše 5)",
+   "waiting_on": [],
+   "role": "Mjeri tamne, ravne, premale, duplikate i pretežke slike. Ne briše slike; nalaze šalje na ručni pregled."
+  },
+  {
+   "id": "A08",
+   "name": "Usklađenost AI (Članak 50)",
+   "mode": "hybrid",
+   "state": "done",
+   "check": "scripts/check-ai-act-governance-v1.mjs postoji",
+   "waiting_on": [],
+   "role": "Za AI-generirani javni tekst provjerava oznaku i zapis ljudskog pregleda. Test metapodataka nije ljudski pregled."
+  },
+  {
+   "id": "A09",
+   "name": "Vidljivost i sitemap",
+   "mode": "script",
+   "state": "done",
+   "check": "scripts/factory/test_factory_v1.py postoji",
+   "waiting_on": [],
+   "role": "Sitemap, indexNow i popis stranica. Ne objavljuje; priprema popis."
+  },
+  {
+   "id": "A10",
+   "name": "Radio",
+   "mode": "hybrid",
+   "state": "done",
+   "check": "stranica s radio blokom: 9067 (najmanje 9000)",
+   "waiting_on": [],
+   "role": "Blok AKTUAL MEDIA RADIO na stranicama, oznake stanica (treće strane), tekst pločice."
+  },
+  {
+   "id": "A11",
+   "name": "Pipeline čuvar",
+   "mode": "script",
+   "state": "done",
+   "check": "uzorak nađen",
+   "waiting_on": [],
+   "role": "Čist clone, puni pipeline i test-all na commitu prije pusha. Bilježi koji commit je prošao."
+  },
+  {
+   "id": "A12",
+   "name": "Stanje grane i povijesti",
+   "mode": "script",
+   "state": "human",
+   "check": "main i grana nemaju zajednički predak; spajanje nije moguće bez odluke vlasnika",
+   "waiting_on": [],
+   "role": "Provjerava je li grana povezana s main-om (zajednički predak), je li main reinicijaliziran i jesu li lokalne promjene izgubljene."
+  },
+  {
+   "id": "A13",
+   "name": "Konzistentnost podataka",
+   "mode": "script",
+   "state": "waiting",
+   "check": "nema izvještaja (agent ga treba proizvesti)",
+   "waiting_on": [
+    "A12"
+   ],
+   "role": "Svaka stranica članka mora imati zapis u podacima kanala. Nesklad se rješava rekonstrukcijom zapisa, ne brisanjem ni slabljenjem audita."
+  },
+  {
+   "id": "A14",
+   "name": "Distribucija (nacrti)",
+   "mode": "hybrid",
+   "state": "done",
+   "check": "apps/portal/data/radio-promo-kit.json postoji",
+   "waiting_on": [],
+   "role": "Priprema nacrte objava za vlastite kanale po platformi, u HR i EN. Ne objavljuje ništa."
+  },
+  {
+   "id": "A15",
+   "name": "Revizor odobrenja",
+   "mode": "script",
+   "state": "done",
+   "check": "config/approvals-ledger-v1.json postoji",
+   "waiting_on": [],
+   "role": "Vodi evidenciju vlasnikovih odobrenja (spajanje, objava, pravne odluke). Bez zapisa nema radnje."
+  }
+ ],
+ "next_actions": [
+  "A02 Izvori (K1): odraditi (W1: 0/7 država s odobrenim izvorom (potrebno 1 po državi))",
+  "A12 Stanje grane i povijesti: čeka vlasnika (main i grana nemaju zajednički predak; spajanje nije moguće bez odluke vlasnika)"
+ ]
+}

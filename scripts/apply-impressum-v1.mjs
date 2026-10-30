@@ -31,7 +31,11 @@ const ALL = process.argv.includes('--all');
 /* Sedam webova mreže — sloj mora pokriti svaki, ne samo maticu. */
 const ROOTS = ['apps/portal', 'apps/world/site', 'apps/sites/site', 'apps/tjednik/site',
   'apps/kanal/site', 'apps/arhiva/site', 'apps/dnevnik/site'];
-const TARGETS = ALL ? ROOTS.map((r) => join(ROOT, r)) : [join(ROOT, arg('--root') || 'apps/portal')];
+// Korijeni "…/site" su generirani izlazi (u .gitignore). Ako generator nije
+// pokrenut u tom koraku (npr. deploy samo region), korijena nema — to nije
+// greška, nema stranica za obraditi.
+const TARGETS = (ALL ? ROOTS.map((r) => join(ROOT, r)) : [join(ROOT, arg('--root') || 'apps/portal')])
+  .filter((t) => existsSync(t));
 const DRY = process.argv.includes('--dry-run');
 const CHECK = process.argv.includes('--check');
 const REFRESH = process.argv.includes('--refresh');
