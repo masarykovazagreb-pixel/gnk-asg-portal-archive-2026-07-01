@@ -1,6 +1,6 @@
 # Tabla tvorničkih agenata (V1)
 
-Grana: `arena/af7fc5d1-gnk-asg-portal-archive-2026-07`. Generirano: 2026-10-30T16:45:07Z. Naredbe pokrenute: False.
+Grana: `arena/af7fc5d1-gnk-asg-portal-archive-2026-07`. Generirano: 2026-10-30T17:30:43Z. Naredbe pokrenute: False.
 
 Stanje: done 11, human 1, ready 1, waiting 3
 

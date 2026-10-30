@@ -73,6 +73,24 @@
       "decision": null,
       "status": "čeka",
       "note": "Nije dano. Bez ovoga nijedan izvor W1 ne ide javno."
+    },
+    {
+      "id": "izdanja-zapisi-iz-stranica",
+      "date": "2026-10-30",
+      "by": "vlasnik (izbor opcije a)",
+      "scope": "1.402 stranice članaka bez zapisa u apps/region/data (15 kanala, Beograd 99): rekonstrukcija zapisa iz stranica, bez brisanja stranica; limit 420 zapisa po kanalu podignut na 5000",
+      "decision": "odobreno: rekonstrukcija (opcija a). Brisanje nije odobreno.",
+      "status": "implementirano u grani (skripta i limit); u spojenom stablu potvrđeno (audit 0 grešaka); čeka spajanje na main",
+      "note": "Ranije zabilježeno kao 60 članaka: to je bio ispis audita (skraćen na 60 grešaka). Stvarni opseg je 1.402."
+    },
+    {
+      "id": "main-reinicijalizacija",
+      "date": "2026-10-30",
+      "by": "vlasnik",
+      "scope": "origin/main ima novu korijensku historiju (ad2a2744e bez roditelja, 13:58); tip main je sada cc6352c97 (4 commita u historiji)",
+      "decision": "odabrano: prvo utvrditi uzrok prije spajanja",
+      "status": "čeka",
+      "note": "Uzrok iz sandboxa nije vidljiv. Spajanje PR #380 s novim tipom main-a tek nakon odluke."
     }
   ]
 }
