@@ -41,6 +41,9 @@ jobs:
           node scripts/apply-impressum-v1.mjs --refresh --icon
           node scripts/apply-refresh-v1.mjs
           node scripts/apply-network-entity-v1.mjs
+          # Tvornički standard (vidljivi nazivi, hashtagovi, radio blok) nakon generatora, kao u sync-all i test-all.
+          python3 scripts/factory/apply_standard.py
+          python3 scripts/factory/radio_promo_v1.py
       - name: Verify generated page is committed
         run: git diff --exit-code -- apps/portal/en/knowledge-center/index.html
       - name: Validate parity, truth and route ownership
