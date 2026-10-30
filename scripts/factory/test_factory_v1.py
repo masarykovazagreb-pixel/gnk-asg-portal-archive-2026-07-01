@@ -45,12 +45,16 @@ def main():
     if rc.returncode:
         failures.append("nacrti distribucije: predugačak tekst za platformu")
     # kvaliteta slika (faza 5): nečitljive slike ne smiju rasti (početno stanje 5)
-    subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "factory", "image_quality.py")],
-                   check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    with open(os.path.join(ROOT, "artifacts", "factory", "image-quality.json"), encoding="utf-8") as f:
-        iq = json.load(f)["summary"]["flag_counts"]
-    if iq.get("necitljiva", 0) > 5:
-        failures.append(f"unreadable images rose to {iq.get('necitljiva')} (baseline 5)")
+    # Zahtijeva Pillow (pip install pillow); bez njega gate mora pasti glasno, ne tiho.
+    rc = subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "factory", "image_quality.py")],
+                        capture_output=True, text=True)
+    if rc.returncode:
+        failures.append("provjera slika ne radi (treba: pip install pillow): " + rc.stderr.strip()[-200:])
+    else:
+        with open(os.path.join(ROOT, "artifacts", "factory", "image-quality.json"), encoding="utf-8") as f:
+            iq = json.load(f)["summary"]["flag_counts"]
+        if iq.get("necitljiva", 0) > 5:
+            failures.append(f"unreadable images rose to {iq.get('necitljiva')} (baseline 5)")
     for f in failures:
         print("FAIL", f)
     print(json.dumps({"indexable": a["indexable_pages"], "failures": failures}, ensure_ascii=False))

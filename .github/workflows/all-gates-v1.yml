@@ -61,5 +61,8 @@ jobs:
           convert -version | head -1
           convert -list format | grep -i webp
 
+      - name: Pillow (za provjeru kvalitete fotografija, tvornica faza 5)
+        run: python3 -m pip install --disable-pip-version-check --quiet pillow
+
       - name: Sve provjere
         run: node scripts/test-all-v1.mjs
