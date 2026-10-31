@@ -53,6 +53,27 @@ python3 scripts/factory/orchestrator_v1.py --run     # uključuje naredbe (sporo
 python3 scripts/factory/radio_promo_kit_v1.py        # A14: nacrti
 ```
 
+## Redoslijed pipelinea (31. 10.)
+
+Redoslijed je važan. Pogrešan redoslijed je već dvaput pokvario generirane stranice (`og:image` nestao, hashtag redak obrisan).
+
+1. `node apps/sites/build.mjs`: sites prije svega ostalog (zastarjeli `exchange.json` i `sitemap.xml` su rušili `sites-deploy`).
+2. Generatori stranica (npr. `build-aktual-media-weekly-archive-v1.mjs --refresh`, `build-agents-page-v1.mjs`, `pages-inventory`). Brišu slojeve i hashtag redak.
+3. `sync-all --group=layers`, zatim `apply_standard.py`. Uvijek nakon generatora.
+4. `social-cards` poslije `agents-page` i `pages-inventory` (inače gubi `og:image`).
+5. `radio_promo_v1.py` i `normalize_meta.py` samo na meta redovima.
+6. `audit_portal.py` i `quality_scan_v1.py` kao provjera, ne kao izmjena.
+
+Dnevni ciklus `region-daily`: `recover-items-from-pages-v1.mjs --check` prije `daily.mjs`. Limit zapisa je 5000 (`--max-items`).
+
+## Stanje (31. 10.)
+
+- Gotovo: A00, A01, A05–A11, A14, A15. Nacrti radija: 10, nijedan nije objavljen.
+- Spremno za rad: A02 (W1). Svi W1 izvori su blokirani ili pending (vidi `config/world-sources-v1.json`, ledger `w1-uvjeti-izvora`).
+- Čeka vlasnika: A03 (pravna potvrda za W1), A12 (`main` nema zajednički predak s granom).
+- Čeka ovisnosti: A04, A13.
+- Izvještaj: `docs/factory/IZVJESTAJ-2026-10-31.md`.
+
 ## Stanje (30. 10.)
 
 - Gotovo: A00, A01, A05, A06, A07, A08, A09, A10, A11, A15 (10 kapija); A14 nacrti zapisani (dodatno).

@@ -1,6 +1,6 @@
 # Tabla tvorničkih agenata (V1)
 
-Grana: `arena/af7fc5d1-gnk-asg-portal-archive-2026-07`. Generirano: 2026-10-30T17:30:43Z. Naredbe pokrenute: False.
+Grana: `arena/af7fc5d1-gnk-asg-portal-archive-2026-07`. Generirano: 2026-10-31T07:15:10Z. Naredbe pokrenute: False.
 
 Stanje: done 11, human 1, ready 1, waiting 3
 
@@ -16,7 +16,7 @@ Stanje: done 11, human 1, ready 1, waiting 3
 | A07 | Kvaliteta slika | ✅ done | summary.flag_counts.necitljiva=5 (najviše 5) |  |
 | A08 | Usklađenost AI (Članak 50) | ✅ done | scripts/check-ai-act-governance-v1.mjs postoji |  |
 | A09 | Vidljivost i sitemap | ✅ done | scripts/factory/test_factory_v1.py postoji |  |
-| A10 | Radio | ✅ done | stranica s radio blokom: 9067 (najmanje 9000) |  |
+| A10 | Radio | ✅ done | stranica s radio blokom: 9065 (najmanje 9000) |  |
 | A11 | Pipeline čuvar | ✅ done | uzorak nađen |  |
 | A12 | Stanje grane i povijesti | 🧑 human | main i grana nemaju zajednički predak; spajanje nije moguće bez odluke vlasnika |  |
 | A13 | Konzistentnost podataka | ⏳ waiting | nema izvještaja (agent ga treba proizvesti) | A12 |

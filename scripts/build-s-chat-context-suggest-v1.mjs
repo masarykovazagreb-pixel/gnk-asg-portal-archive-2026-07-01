@@ -53,9 +53,14 @@ const general = {
   en: ['What is GNK ASG d.o.o.?', 'What are the 2025 financial results?', 'Which portal sections exist?'],
 };
 
+/* generatedFor mijenja se samo kad se sadržaj zaista promijeni. Inače bi svaki
+   dan (ili svaki CI ciklus na drugi dan) pokvario provjeru "committed == generated". */
+const contentOnly = { version: VERSION, maxPerRoute: MAX_PER_ROUTE, general, questions: bank, routes };
+const previous = existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : null;
+const unchanged = previous && JSON.stringify({ version: previous.version, maxPerRoute: previous.maxPerRoute, general: previous.general, questions: previous.questions, routes: previous.routes }) === JSON.stringify(contentOnly);
 const payload = {
   version: VERSION,
-  generatedFor: new Date().toISOString().slice(0, 10),
+  generatedFor: unchanged && previous.generatedFor ? previous.generatedFor : new Date().toISOString().slice(0, 10),
   maxPerRoute: MAX_PER_ROUTE,
   general,
   questions: bank,

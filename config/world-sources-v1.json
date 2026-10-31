@@ -1,6 +1,6 @@
 {
   "version": "WORLD_SOURCES_V1",
-  "updated": "2026-10-30",
+  "updated": "2026-10-31",
   "rule": "Izvor je 'approved' tek kad K1 (feed živ + uvjeti dopuštaju prikaz) i K2 (pravna potvrda u approvals-ledger) prođu. Ostalo ostaje 'pending' ili 'blocked'.",
   "countries": {
     "AT": {
@@ -17,11 +17,94 @@
         }
       ]
     },
-    "AL": {"country": "Albanija", "wave": "W1-susjedi", "sources": [], "status_note": "nije provjereno"},
-    "ME": {"country": "Crna Gora", "wave": "W1-susjedi", "sources": [], "status_note": "nije provjereno"},
-    "GR": {"country": "Grčka", "wave": "W1-susjedi", "sources": [], "status_note": "nije provjereno"},
-    "XK": {"country": "Kosovo", "wave": "W1-susjedi", "sources": [], "status_note": "nije provjereno"},
-    "MK": {"country": "Sjeverna Makedonija", "wave": "W1-susjedi", "sources": [], "status_note": "nije provjereno"},
-    "TR": {"country": "Turska", "wave": "W1-susjedi", "sources": [], "status_note": "nije provjereno"}
+    "AL": {
+      "country": "Albanija",
+      "wave": "W1-susjedi",
+      "sources": [],
+      "status_note": "nije pronađen službeni RSS s javnim uvjetima (provjereno 2026-10-31); Monitor.al feed prijavljen kao neispravan"
+    },
+    "ME": {
+      "country": "Crna Gora",
+      "wave": "W1-susjedi",
+      "sources": [
+        {
+          "name": "RTCG",
+          "url": "https://rtcg.me/",
+          "feed_live": null,
+          "terms": "Javni servis: pravilnik o korištenju arhivskog materijala; YouTube: kopiranje bez pisane dozvole zabranjeno (provjereno 2026-10-31)",
+          "status": "blocked",
+          "reason": "Sadržaj javnog servisa, nema javnog RSS-a s uvjetima za ponovnu objavu."
+        }
+      ],
+      "status_note": "blokirano: javni servis bez javnih uvjeta za RSS"
+    },
+    "GR": {
+      "country": "Grčka",
+      "wave": "W1-susjedi",
+      "sources": [
+        {
+          "name": "Ekathimerini",
+          "url": "https://www.ekathimerini.com/",
+          "feed_live": null,
+          "terms": "Uvjeti: osobna i nekomercijalna upotreba izvadaka; zabranjena baza podataka iz sadržaja (provjereno 2026-10-31)",
+          "status": "blocked",
+          "reason": "Nekomercijalna licenca. Kathimerini RSS nije službeni (feeder.co, neaktivan)."
+        }
+      ],
+      "status_note": "blokirano: uvjeti Ekathimerini isključuju javnu komercijalnu objavu"
+    },
+    "XK": {
+      "country": "Kosovo",
+      "wave": "W1-susjedi",
+      "sources": [
+        {
+          "name": "Balkan Insight (Kosovo)",
+          "url": "https://balkaninsight.com/category/bi/kosovo/feed/",
+          "feed_live": null,
+          "terms": "nije pročitano",
+          "status": "pending",
+          "reason": "Feed postoji u izvoru (RSS stranica BI); uvjeti korištenja nisu pročitani."
+        },
+        {
+          "name": "RFE/RL Kosovo",
+          "url": "https://www.rferl.org/rssfeeds",
+          "feed_live": null,
+          "terms": "nije pročitano",
+          "status": "pending",
+          "reason": "Feed u popisu RFE/RL; uvjeti nisu pročitani."
+        }
+      ],
+      "status_note": "pending: kandidati postoje, uvjeti nisu provjereni"
+    },
+    "MK": {
+      "country": "Sjeverna Makedonija",
+      "wave": "W1-susjedi",
+      "sources": [
+        {
+          "name": "MIA (Media Information Agency)",
+          "url": "https://mia.mk/en",
+          "feed_live": null,
+          "terms": "nije pročitano",
+          "status": "pending",
+          "reason": "Javna agencija; RSS nije pronađen u pretrazi (samo X račun)."
+        }
+      ],
+      "status_note": "pending: nije pronađen službeni RSS"
+    },
+    "TR": {
+      "country": "Turska",
+      "wave": "W1-susjedi",
+      "sources": [
+        {
+          "name": "Anadolu Agency (EN, live)",
+          "url": "https://www.aa.com.tr/en/rss/default?cat=live",
+          "feed_live": null,
+          "terms": "nije pročitano",
+          "status": "pending",
+          "reason": "Feed postoji (feeder.co potvrda); uvjeti agencije nisu pročitani; agencija obično ograničava reprodukciju."
+        }
+      ],
+      "status_note": "pending: kandidat postoji, uvjeti nisu pročitani"
+    }
   }
 }

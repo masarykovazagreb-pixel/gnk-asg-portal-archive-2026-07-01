@@ -91,6 +91,78 @@
       "decision": "odabrano: prvo utvrditi uzrok prije spajanja",
       "status": "čeka",
       "note": "Uzrok iz sandboxa nije vidljiv. Spajanje PR #380 s novim tipom main-a tek nakon odluke."
+    },
+    {
+      "id": "w1-uvjeti-izvora",
+      "date": "2026-10-31",
+      "by": "agent (provjera uvjeta)",
+      "scope": "W1 izvori: Austrija (ORF), Crna Gora (RTCG), Grčka (Ekathimerini) blokirani; Albanija bez pronađenog službenog RSS-a; Kosovo (Balkan Insight, RFE/RL), Sjeverna Makedonija (MIA) i Turska (AA) pending bez pročitanih uvjeta",
+      "decision": "nijedan W1 izvor nije odobren za javnu objavu",
+      "status": "čeka pravnu potvrdu",
+      "note": "Isječci iz pretrage, ne puni uvjeti. Vidi docs/factory/IZVJESTAJ-2026-10-31.md §6."
+    },
+    {
+      "id": "aktualmediaradio-hashtag",
+      "date": "2026-10-31",
+      "by": "agent",
+      "scope": "nacrti radio distribucije (10) nose #AktualMediaRadio, koji nije u popisu odobrenih hashtagova",
+      "decision": "nije mijenjano",
+      "status": "čeka vlasnika",
+      "note": "Zadržati ili maknuti."
+    },
+    {
+      "id": "radio-oznaka-9068",
+      "date": "2026-10-31",
+      "by": "agent",
+      "scope": "oznaka „AKTUAL MEDIA RADIO“ na 9.068 stranica (9.065 zbog našeg promotivnog bloka, aria-label)",
+      "decision": "nije mijenjano",
+      "status": "čeka vlasnika",
+      "note": "Ranija brojka 24 bila je prije promocije."
+    },
+    {
+      "id": "artefakti-animacija-app",
+      "date": "2026-10-31",
+      "by": "agent",
+      "scope": "animacija/index.html (1,5 MB) i app/index.html (400 KB): noindex, bez lang, app bez title, nisu u sitemapu",
+      "decision": "prijedlog: obrisati; nije obrisano",
+      "status": "čeka vlasnika",
+      "note": "Brisanje traži odobrenje."
+    },
+    {
+      "id": "concurrency-region-daily",
+      "date": "2026-10-31",
+      "by": "agent (analiza)",
+      "scope": "23 workflowa dijele concurrency gnk-asg-main-mutation (cancel-in-progress: false); zakazani region-daily se otkazuje",
+      "decision": "nije mijenjano",
+      "status": "čeka vlasnika",
+      "note": "Prijedlog: zasebna grupa za region-daily uz analizu rizika za push na main."
+    },
+    {
+      "id": "naslovi-h1-60",
+      "date": "2026-10-31",
+      "by": "agent",
+      "scope": "5.676 stranica s h1 >60 znakova (podijeli 575, bukurest 405, sarajevo 383)",
+      "decision": "nije mijenjano",
+      "status": "čeka vlasnika",
+      "note": "Politika naslova."
+    },
+    {
+      "id": "preparing-kanali",
+      "date": "2026-10-31",
+      "by": "agent",
+      "scope": "Washington, Brasília, Canberra: nema zapisa u channels.json i nema izvora",
+      "decision": "nije pokrenuto",
+      "status": "čeka vlasnika",
+      "note": "Potrebni: zapis kanala, dva provjerena izvora, urednik."
+    },
+    {
+      "id": "main-pomak-31-10",
+      "date": "2026-10-31",
+      "by": "agent (provjera)",
+      "scope": "origin/main je u međuvremenu na 2870ad749a (AUTONOMIJA 05:00 UTC, World Monitor refresh); nema zajedničkog pretka s granom",
+      "decision": "PR prema main nije otvoren",
+      "status": "čeka vlasnika",
+      "note": "Vidi main-reinicijalizacija."
     }
   ]
 }

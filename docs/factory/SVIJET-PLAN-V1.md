@@ -100,3 +100,19 @@ Spajanje grane s `main`-om:
   Ti članci su objavljeni na `main`-u. Brisanje bi ih maknulo s gnk-asg.hr. Slabljenje audita nije dopušteno (AGENTS.md, pravilo 6).
 - Zato se merge NE gura. Grana ostaje na `d404df9e6` (zelena). PR #380 ostaje otvoren.
 - Potrebna odluka: ili rekonstruirati zapise za tih 60 članaka iz stranica (najčišći put), ili vlasnik potvrdi brisanje.
+
+## 9. Stanje 31. 10. 2026. (W1 uvjeti, provjera izvora)
+
+Izvor svih podataka: `config/world-sources-v1.json` (ažurirano 31. 10.) i `docs/factory/IZVJESTAJ-2026-10-31.md` §6. Provjera je pretraga, ne puni uvjeti.
+
+| Država | Ishod |
+|---|---|
+| Austrija | blokirano (ORF, nekomercijalno) |
+| Crna Gora | blokirano (RTCG, javni servis) |
+| Grčka | blokirano (Ekathimerini, nekomercijalno) |
+| Albanija | nije pronađen službeni RSS s uvjetima |
+| Kosovo | pending (Balkan Insight, RFE/RL) |
+| Sjeverna Makedonija | pending (MIA nema pronađen RSS) |
+| Turska | pending (AA live RSS) |
+
+Nijedna država W1 nije odobrena za javnu objavu. Sljedeći korak je čitanje punih uvjeta za Kosovo, Sjevernu Makedoniju i Tursku, pa pravna potvrda (ledger `w1-uvjeti-izvora`).
