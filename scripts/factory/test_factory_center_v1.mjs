@@ -40,3 +40,9 @@ test('pretraživanje i filtriranje rade nad karticama', () => {
   search.value='orkestrator';events.search();assert.equal(cards[0].hidden,false);assert.equal(cards[1].hidden,true);
   search.value='';filter.value='human';events.filter();assert.equal(cards[0].hidden,true);assert.equal(cards[1].hidden,false);
 });
+test('JSON za plan objave se ne može probiti u HTML', () => {
+  const hostile={countries:[{cca2:'HR',id:'<x>',country:'</script><script>alert(1)</script>',status:'planned'}]};
+  const html=renderFactoryCenter({agents:[]},{agents:[]},hostile);
+  assert.doesNotMatch(html,/<script>alert\(1\)<\/script>/);
+  assert.match(html,/\\u003c\/script\\u003e/);
+});

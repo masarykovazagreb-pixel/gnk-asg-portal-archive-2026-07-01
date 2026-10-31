@@ -26,3 +26,26 @@ test('nema svježih kandidata i nedopušteno odredište',()=>{
   assert.equal(planFallback({target:'zagreb',countries,feeds:{},now}).status,'no_fresh_candidates');
   assert.throws(()=>planFallback({target:'newyork',countries,feeds:{},now}));
 });
+
+test('interaktivni obrazac prikazuje plan HR i svijet bez objavljivanja',async()=>{
+  const {mountPublicationPlan}=await import('../../apps/portal/assets/publication-plan-ui-v1.mjs');
+  const events={};
+  const form={hidden:true,elements:{scope:{value:'hr'},url:{value:url}},addEventListener:(name,fn)=>events[name]=fn};
+  const data={textContent:JSON.stringify(countries)};
+  const result={children:[],replaceChildren(){this.children=[]},append(...x){this.children.push(...x)}};
+  const doc={getElementById:id=>({'factory-publication-plan':form,'factory-plan-countries':data,'factory-plan-result':result}[id]),createElement:tag=>({tag,textContent:'',children:[],append(...x){this.children.push(...x)}})};
+  assert.equal(mountPublicationPlan(doc),true);assert.equal(form.hidden,false);
+  events.submit({preventDefault(){}});
+  assert.match(result.children[0].textContent,/PLAN, NIJE OBJAVLJENO/);
+  assert.equal(result.children[2].children.length,1);
+  form.elements.scope.value='svijet'; events.submit({preventDefault(){}});
+  assert.equal(result.children[2].children.length,3);assert.match(result.children[0].textContent,/2 kandidata/);
+  form.elements.url.value='https://zlonamjerno.test/';events.submit({preventDefault(){}});
+  assert.match(result.children[0].textContent,/Plan nije izrađen/);
+});
+test('neispravan ili nedostajući registar ne aktivira obrazac',async()=>{
+  const {mountPublicationPlan}=await import('../../apps/portal/assets/publication-plan-ui-v1.mjs');
+  const form={hidden:true};
+  const doc={getElementById:id=>({'factory-publication-plan':form,'factory-plan-countries':{textContent:'{}'},'factory-plan-result':{}}[id])};
+  assert.equal(mountPublicationPlan(doc),false);assert.equal(form.hidden,true);
+});

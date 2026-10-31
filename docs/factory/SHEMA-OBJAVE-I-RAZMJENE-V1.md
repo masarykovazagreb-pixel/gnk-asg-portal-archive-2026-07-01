@@ -60,3 +60,14 @@ odbacuju. `candidates_require_review` nije objava. Ako nema kandidata, prikazuje
 - Bez novog crona ili deploy bota; postojeći single-writer i exact-SHA fence.
 - Ako se kasnije uvede AI pisanje, primijeniti `AGENTS.md`, AI oznaku i stvarnu
   ljudsku uredničku odgovornost. Ovdje nema modela ni AI generiranja teksta.
+
+## Vidljivi obrazac
+
+Na `/agenti/#tvornica` nalazi se obrazac **Plan objave: Hrvatska ili svijet**.
+U pregledniku koristi istu čistu logiku kao naredbeni alat i lokalni snimak
+registra. Prikazuje plan po državi, ne šalje URL na poslužitelj i ne objavljuje.
+Ako JavaScript nije dostupan, korisniku se prikazuje objašnjenje. Rezultat ne
+provjerava postoji li uneseni članak niti predstavlja odobrenje sadržaja.
+Stvarno pisanje, odobrenje i objava ostaju zasebni koraci koji ovdje nisu
+implementirani; javne i besplatne Cloudflare projekte treba zasebno stvoriti i
+provjeriti prije nego se smatraju postojećima.
