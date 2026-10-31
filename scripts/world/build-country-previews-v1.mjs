@@ -25,12 +25,16 @@ export function renderCountry(c) {
 <html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow,noarchive"><title>${country} — AKTUAL MEDIA | radni predložak</title>
 <meta name="description" content="Radni predložak budućeg izdanja AKTUAL MEDIA za državu ${country}. Sadržaj i izvori čekaju uredničku provjeru.">
+<meta property="og:type" content="website"><meta property="og:title" content="${country} — AKTUAL MEDIA | radni predložak">
+<meta property="og:description" content="Radni predložak izdanja za ${country}. Izvori, prava i urednički pregled nisu potvrđeni.">
+<meta name="twitter:card" content="summary"><meta name="twitter:title" content="${country} — AKTUAL MEDIA | radni predložak">
+<meta name="twitter:description" content="Radni predložak izdanja za ${country}. Izvori, prava i urednički pregled nisu potvrđeni.">
 <style>:root{color-scheme:dark;font-family:system-ui,sans-serif}*{box-sizing:border-box}body{margin:0;background:#0b1220;color:#f4f6fb;line-height:1.6}a{color:#a6dbff}header,main,footer{max-width:1100px;margin:auto;padding:1.5rem}header{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}.brand{font-weight:800;letter-spacing:.08em}.notice{background:#523715;border:1px solid #ffca7b;border-radius:.6rem;padding:1rem}.hero{padding:3rem 0 2rem}h1{font-size:clamp(2.5rem,8vw,5rem);line-height:1.1;margin:.3em 0}.tag{color:#9ec8ee;font-weight:700}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:1rem}.card{background:#172337;border:1px solid #35465f;border-radius:.8rem;padding:1.4rem}footer{border-top:1px solid #35465f;font-size:.9rem}.hashtags{overflow-wrap:anywhere}</style></head>
 <body><header><span class="brand">AKTUAL MEDIA · KANAL</span><a href="https://gnk-asg.hr/izdanja/">Mreža izdanja</a></header>
 <main><aside class="notice"><strong>RADNI PREDLOŽAK — NIJE JAVNO IZDANJE.</strong> Izvori, prava i urednik nisu potvrđeni. Ova stranica nije vijest i ne sadrži objavljene članke.</aside>
 <section class="hero"><p class="tag">SVIJET · ${wave}</p><h1>${country}</h1><p>Planirano izdanje za ${country}. Glavni grad: ${capital}.</p></section>
 <section class="grid" aria-label="Priprema izdanja"><article class="card"><h2>Vijesti i osvrti</h2><p>U pripremi. Članci će se dodati tek nakon provjere izvora i uredničkog pregleda.</p></article><article class="card"><h2>Izvori i fotografije</h2><p>Izvori i prava uporabe još se provjeravaju. Nisu prikazani tuđi tekstovi ni fotografije.</p></article><article class="card"><h2>O izdanju</h2><p>Predložak koristi zajednički vizualni pristup mreže AKTUAL MEDIA. Lokalna redakcija još nije potvrđena.</p></article></section></main>
-<footer><p>GNK ASG d.o.o. · AKTUAL MEDIA d.o.o. · Nermin Sefić</p><p class="hashtags">#NerminSefić #NerminSefic #AktualMedia #GNKASG</p><p>Radna verzija · bez automatske objave</p></footer></body></html>\n`;
+<footer><p>GNK ASG d.o.o. · AKTUAL MEDIA d.o.o. · Nermin Sefić</p><p class="hashtags">#NerminSefić #NerminSefic #AktualMedia #GNKASG</p><p><a href="https://gnk-asg.hr/">GNK ASG</a> · <a href="https://gnk-asg.hr/gnk-aktual/">AKTUAL MEDIA</a> · <a href="https://gnk-asg.hr/izdanja/">Mreža izdanja</a></p><p>Radna verzija · bez automatske objave</p></footer></body></html>\n`;
 }
 
 export function buildPreviews(countries, out) {

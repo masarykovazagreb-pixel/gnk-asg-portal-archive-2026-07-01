@@ -43,7 +43,8 @@ const factoryBoard = JSON.parse(readFileSync(join(ROOT, 'artifacts', 'factory', 
 const worldRegistry = JSON.parse(readFileSync(join(ROOT, 'config', 'world-countries-v1.json'), 'utf8'));
 const factoryCenter = renderFactoryCenter(factoryConfig, factoryBoard, worldRegistry);
 const worldSources = JSON.parse(readFileSync(join(ROOT, 'config', 'world-sources-v1.json'), 'utf8'));
-const worldDirectory = renderWorldDirectory(worldRegistry, worldSources);
+const channelRegistry = JSON.parse(readFileSync(join(ROOT, 'apps', 'region', 'channels.json'), 'utf8'));
+const worldDirectory = renderWorldDirectory(worldRegistry, worldSources, channelRegistry);
 
 const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 

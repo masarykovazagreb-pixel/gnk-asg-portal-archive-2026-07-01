@@ -121,3 +121,14 @@ projekt postoji. Stanja i datumi prikazani su kao podaci iz registra, ne kao
 provjera dostupnosti uživo. Popis izvora za već postojeće kanale može se nalaziti
 i u `apps/region/channels.json`, pa odsutnost u `world-sources-v1.json` nije dokaz
 da ti kanali nemaju izvore. Novi kanali se i dalje ne objavljuju bez kapija K1–K6.
+
+### Usklađivanje javnog prikaza
+
+`node scripts/factory/sync-factory-view-v1.mjs` osvježava samo dvije označene
+cjeline centra i registra država na postojećoj stranici agenata, bez prepisivanja
+zajedničkih slojeva. Opcija `--check` provjerava stanje bez pisanja. Korak je i
+u `sync-all-v1.mjs`, nakon generatora stranice agenata. Nedostajuće ili ponovljene
+oznake prekidaju rad; provjera je pokrivena testovima. Pregled razlikuje 14
+aktivnih država u registru od tri postojeća gradska kanala u pripremi i prikazuje
+konfigurirane izvore iz `channels.json`; to nije dokaz njihovih licenci ili
+trenutačne dostupnosti. Bez pravne i uredničke provjere nema nove javne objave.

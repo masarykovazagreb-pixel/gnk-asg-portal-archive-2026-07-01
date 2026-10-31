@@ -10,6 +10,9 @@ test('HTML escape, noindex i jasna oznaka pripreme', () => {
   const h = renderCountry(sample);
   assert.match(h, /Test &amp; &lt;script&gt;/); assert.match(h, /noindex,nofollow,noarchive/);
   assert.match(h, /NIJE JAVNO IZDANJE/); assert.match(h, /#NerminSefić #NerminSefic/);
+  assert.match(h, /property="og:title"/); assert.match(h, /name="twitter:description"/);
+  assert.match(h, /https:\/\/gnk-asg\.hr\/gnk-aktual\//);
+  assert.doesNotMatch(h, /property="og:url"|rel="canonical"/);
   assert.doesNotMatch(h, /<script>/);
 });
 test('samo planned, bez feeda i bez brisanja drugih datoteka', () => {

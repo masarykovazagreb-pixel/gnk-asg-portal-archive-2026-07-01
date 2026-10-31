@@ -34,3 +34,7 @@ postojeću stranicu bez oznake generatora. `node scripts/world/test-country-prev
 provjerava zaštite. URL i naziv Cloudflare projekta u registru su plan, a ne dokaz
 postojanja projekta ili domene. Javno izdanje i dalje zahtijeva izvore, prava,
 urednika i postojeće kapije iz `docs/factory/SVIJET-PLAN-V1.md`.
+
+Radni predlošci nose opis, Open Graph i Twitter metapodatke s jasnom oznakom
+pripreme, te poveznice prema GNK ASG-u i AKTUAL MEDIA-i. Namjerno nemaju canonical
+ni og:url prema nepostojećim javnim adresama i zadržavaju noindex/robots zabranu.
