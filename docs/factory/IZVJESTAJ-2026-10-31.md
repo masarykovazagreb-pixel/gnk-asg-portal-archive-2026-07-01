@@ -116,3 +116,9 @@ Još čeka vlasnika:
 6. Radio-oznaka na 9.068 stranica.
 7. Pravna potvrda za W1 izvore (Albanija, Kosovo, Sjeverna Makedonija, Turska).
 8. Kanali za Washington, Brasília, Canberra.
+
+## 11. Pouzdanost skenera metapodataka
+
+Skener `quality_scan_v1.py` sada koristi HTML parser umjesto traženja točno oblikovanih oznaka regularnim izrazima. Prepoznaje različit redoslijed atributa, jednostruke navodnike, HTML entitete i više vrijednosti atributa `rel`; komentari i tekst JavaScripta ne računaju se kao oznake stranice. Prijavljuje nevaljani statični JSON-LD bez obzira na prvi znak. Dodani su regresijski testovi u `test-all`.
+
+Novo mjerenje obuhvaća 10.444 lokalne HTML stranice u `apps/portal` (uključujući neindeksirane); nije provjera živih stranica drugih domena. Pronađeno je 2 stranice bez nepraznog `lang`, 1 bez naslova, 14 bez opisa, 0 indeksiranih bez prepoznatog canonicala i 0 nevaljanih JSON-LD blokova. Broj H1 naslova duljih od 60 znakova je 5.955. Brojke se zbog drugačijeg načina čitanja ne mogu bez ograde uspoređivati sa starijim skeniranjem. Skener je samo alat za inventuru; nije dokaz potpune SEO ispravnosti ni razlog za automatsko skraćivanje naslova.

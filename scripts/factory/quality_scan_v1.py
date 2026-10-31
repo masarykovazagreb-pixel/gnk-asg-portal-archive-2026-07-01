@@ -14,7 +14,7 @@ Zapisuje artifacts/factory/quality-scan.json i ispisuje sažetak.
 Pokretanje: python3 scripts/factory/quality_scan_v1.py
 """
 import collections
-import html as htmlmod
+from html.parser import HTMLParser
 import json
 import os
 import re
@@ -25,16 +25,73 @@ PORTAL = os.path.join(ROOT, "apps", "portal")
 OUT = os.path.join(ROOT, "artifacts", "factory", "quality-scan.json")
 SKIP_DIRS = {"node_modules", ".git", "assets", "data"}
 
-RE_LANG = re.compile(r"<html[^>]*\blang=", re.I)
-RE_TITLE = re.compile(r"<title>([\s\S]*?)</title>", re.I)
-RE_DESC = re.compile(r'<meta\s+name="description"\s+content="([^"]*)"', re.I)
-RE_CANON = re.compile(r'<link\b[^>]*\brel="canonical"', re.I)
-RE_LD = re.compile(r'<script type="application/ld\+json">([\s\S]*?)</script>', re.I)
-RE_H1 = re.compile(r"<h1[^>]*>([\s\S]*?)</h1>", re.I)
-RE_NOINDEX = re.compile(r'<meta\s+name="robots"[^>]*noindex', re.I)
 RE_VERIFY = re.compile(r"^google[0-9a-f]+\.html$", re.I)
-RE_TAGS = re.compile(r"<[^>]+>")
 RADIO = "AKTUAL MEDIA RADIO"
+
+
+class PageMetadata(HTMLParser):
+    """Čita HTML atribute bez ovisnosti o redoslijedu, navodnicima ili komentarima."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.lang = False
+        self.title = ""
+        self.desc = ""
+        self.h1 = ""
+        self.canonical = False
+        self.noindex = False
+        self.bad_ld = 0
+        self._capture = None
+        self._parts = []
+        self._title_seen = False
+        self._h1_seen = False
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if tag == "html":
+            self.lang = bool((attrs.get("lang") or "").strip())
+        elif tag == "meta":
+            name = (attrs.get("name") or "").lower().strip()
+            content = (attrs.get("content") or "").strip()
+            if name == "description" and not self.desc:
+                self.desc = content
+            if name in ("robots", "googlebot") and "noindex" in re.split(r"[,\s]+", content.lower()):
+                self.noindex = True
+        elif tag == "link":
+            if "canonical" in (attrs.get("rel") or "").lower().split():
+                self.canonical = True
+        elif tag == "title" and not self._title_seen and self._capture is None:
+            self._title_seen = True
+            self._capture, self._parts = "title", []
+        elif tag == "h1" and not self._h1_seen and self._capture is None:
+            self._h1_seen = True
+            self._capture, self._parts = "h1", []
+        elif tag == "script" and (attrs.get("type") or "").strip().lower() == "application/ld+json":
+            self._capture, self._parts = "script", []
+
+    def handle_data(self, data):
+        if self._capture:
+            self._parts.append(data)
+
+    def handle_endtag(self, tag):
+        if tag != self._capture:
+            return
+        value = "".join(self._parts).strip()
+        if tag == "script":
+            try:
+                json.loads(value)
+            except ValueError:
+                self.bad_ld += 1
+        else:
+            setattr(self, tag, value)
+        self._capture, self._parts = None, []
+
+
+def parse_metadata(html):
+    parser = PageMetadata()
+    parser.feed(html)
+    parser.close()
+    return parser
 
 
 def pages():
@@ -58,31 +115,18 @@ def main():
         rel = os.path.relpath(path, PORTAL)
         with open(path, encoding="utf-8", errors="replace") as f:
             h = f.read()
-        title = htmlmod.unescape(RE_TITLE.search(h).group(1).strip()) if RE_TITLE.search(h) else ""
-        m = RE_DESC.search(h)
-        desc = htmlmod.unescape(m.group(1)).strip() if m else ""
-        h1m = RE_H1.search(h)
-        h1 = htmlmod.unescape(RE_TAGS.sub("", h1m.group(1))).strip() if h1m else ""
-        bad_ld = 0
-        for block in RE_LD.findall(h):
-            # JSON-LD koji se sastavlja u JavaScriptu (predložak u stringu) nije statički blok.
-            if not block.lstrip().startswith(("{", "[")):
-                continue
-            try:
-                json.loads(block)
-            except ValueError:
-                bad_ld += 1
+        metadata = parse_metadata(h)
         rows.append({
             "verify": bool(RE_VERIFY.match(os.path.basename(path))),
-            "noindex": bool(RE_NOINDEX.search(h)),
+            "noindex": metadata.noindex,
             "page": rel,
             "channel": channel_of(rel),
-            "lang": bool(RE_LANG.search(h)),
-            "title": title,
-            "desc": desc,
-            "h1": h1,
-            "canonical": bool(RE_CANON.search(h)),
-            "bad_ld": bad_ld,
+            "lang": metadata.lang,
+            "title": metadata.title,
+            "desc": metadata.desc,
+            "h1": metadata.h1,
+            "canonical": metadata.canonical,
+            "bad_ld": metadata.bad_ld,
             "radio_label": RADIO in h,
             "radio_promo": "radio-promo-v1" in h,
         })
