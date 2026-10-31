@@ -179,8 +179,8 @@
       "by": "vlasnik (odobrenje) / agent",
       "scope": "Deploy Admin Auth V6 za de9e567",
       "decision": "NIJE pokrenuto",
-      "status": "čeka",
-      "note": "Workflow dopušta samo ref main i puni SHA commita na main-u, plus ručno upisanu frazu DEPLOY_ADMIN_AUTH_V6. de9e567 nije na main-u. Treba odrediti SHA main-a za pregled i frazu upisati ručno."
+      "status": "nije izvršeno za de9e567; zaseban deploy na main-u uspješan",
+      "note": "Za de9e567 nije pokrenuto: commit nije na main-u. Zaseban produkcijski run 41200680780 na main-u uspješno je izvršen; to ne dokazuje da je ova grana spojena."
     },
     {
       "id": "workflow-push-rebase-31-10",
@@ -190,6 +190,15 @@
       "decision": "poništeno (vraćeno na prijašnje stanje)",
       "status": "čeka odluku vlasnika: registrirati pisce u allowlisti ili ostaviti",
       "note": "Gate „Vlasništvo automatizacija“ je pao. Izmjena je vraćena."
+    },
+    {
+      "id": "deploy-admin-auth-v6-run-41200680780",
+      "date": "2026-10-31",
+      "by": "vlasnik / GitHub Actions",
+      "scope": "Deploy Admin Auth V6, produkcijski workflow_dispatch na main-u",
+      "decision": "izvršeno",
+      "status": "uspješno",
+      "note": "Run 41200680780: autorizacija, deploy i provjera produkcijskog izdanja uspješni. headSha workflowa: 29c3e8c837678d74c7005c9db7fd860ebae15d40; headSha ne mora biti odobreni ulazni SHA."
     }
   ]
 }

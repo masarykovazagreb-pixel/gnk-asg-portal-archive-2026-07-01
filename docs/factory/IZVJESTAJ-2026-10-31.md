@@ -17,7 +17,7 @@ Mjerenja su iz `artifacts/factory/quality-scan.json` (`scripts/factory/quality_s
 | `knowledge-center-contract` | pao na PR-u | generator ne proizvodi hashtag redak i radio blok koje dodaje standard | ispravljeno (korak `apply_standard` + radio) |
 | `region-daily` (zakazano) | otkazano 19:08, 23:37, 05:20 | 23 workflowa dijele `concurrency: gnk-asg-main-mutation` s `cancel-in-progress: false`; GitHub drži samo jedan čekajući run, pa se zakazani međusobno otkazuju | **izvršeno (odobreno)**: `region-daily` u grupi `gnk-asg-region-daily`. `gallery-sync` i `worker-groups-sync` nisu mijenjani (gate „Vlasništvo automatizacija“ ih prijavljuje kao neregistrirane pisce; čeka odluku) |
 | `GNK ASG Automation SLA Watchdog` | pao | provjerava živu svježinu na produkciji | blokirano (nema pristupa produkciji iz sandboxa) |
-| `Deploy Admin Auth V6` | pao | gate traži izvršno odobrenje za točan SHA | **odluka vlasnika** |
+| `Deploy Admin Auth V6` | kasniji run [41200680780](https://github.com/masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01/actions/runs/41200680780) uspješan | autorizacija, deploy i produkcijska provjera prošli; run na main-u (`headSha` 29c3e8c837678d74c7005c9db7fd860ebae15d40) | **izvršeno za taj run** |
 | `autonomija-365` | pao | tvrdi kriterij `kanali-arhiva`: Kairo 289 < 300 | djelomično (vidi 3) |
 
 **Prijedlog za concurrency (odluka vlasnika):** zakazani dnevni ciklusi trebaju vlastitu grupu (npr. `gnk-asg-region-daily`), ali to može stvoriti trke pri pushu na `main`. Treba ih najprije uskladiti da svaki push ponovi `pull --rebase`. Ne mijenjam sam, jer utječe na produkciju.
@@ -104,14 +104,13 @@ Riješeno 31. 10. (odobrenje vlasnika):
 - `gallery-sync` i `worker-groups-sync`: push bez rebasea ostaje. Sudar s `region-daily` je moguć. Za promjenu treba registrirati oba workflowa u allowlisti pisaca na `main`-u (odluka vlasnika). `tjednik-daily` ima vlastitu zaštitu.
 
 Nije izvršeno:
-- `Deploy Admin Auth V6` nije pokrenut. Workflow dopušta samo `main` i puni SHA na `main`-u; `de9e567` nije na `main`-u.
+- `Deploy Admin Auth V6` za `de9e567` nije pokrenut jer taj commit nije na `main`-u. U međuvremenu je uspješno izvršen zaseban produkcijski run 41200680780 na `main`-u; to nije dokaz da je ova grana spojena.
 - `animacija/` i `app/` nisu obrisani (žive stranice). Dodavanje `lang` i `title` čeka vaš OK.
 
 Još čeka vlasnika:
 - Radio oznaka „AKTUAL MEDIA RADIO“ (9.484 stranice u zadnjem skeniranju): ostaje kako jest dok ne odlučite.
 
 1. Što s `main`-om (reset 31. 10.) i kako spojiti rad.
-2. `Deploy Admin Auth V6`: treba SHA na `main`-u i ručno upisana fraza.
 4. `animacija/` i `app/`: ispraviti `lang` i `title` ili ostaviti (ne brisati).
 5. Politika naslova (h1 >60 znakova) i kratkih opisa.
 6. Radio-oznaka na 9.068 stranica.
