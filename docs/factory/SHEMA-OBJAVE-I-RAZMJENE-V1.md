@@ -41,7 +41,10 @@ node scripts/factory/publication-plan-v1.mjs razmjena --kanal zagreb
 ```
 
 Prve dvije naredbe vraćaju `plan_only_not_published`. URL je primjer, ne dokaz
-da članak postoji. Razmjena čita lokalne feedove aktivnih kanala, bez mrežnih
+da članak postoji. Kandidati se nude samo ako je točna adresa označena `published`
+u snimku `apps/portal/data/editorial-registry.json`; nedostajući ili neobjavljeni
+zapisi ostaju na čekanju, a nedostupan registar zaustavlja plan. Taj registar ne
+pokriva nužno sve regionalne feedove, pa izostanak nije dokaz da članak ne postoji. Razmjena čita lokalne feedove aktivnih kanala, bez mrežnih
 poziva. Ako je lokalna vijest svježa unutar 48 sati, daje `local_fresh`; inače
 predlaže najnoviju svježu objavu svakog drugog aktivnog kanala s izvornom
 poveznicom i datumom. Budući datumi, zastarjele i neodgovarajuće adrese se
@@ -65,9 +68,10 @@ odbacuju. `candidates_require_review` nije objava. Ako nema kandidata, prikazuje
 
 Na `/agenti/#tvornica` nalazi se obrazac **Plan objave: Hrvatska ili svijet**.
 U pregledniku koristi istu čistu logiku kao naredbeni alat i lokalni snimak
-registra. Prikazuje plan po državi, ne šalje URL na poslužitelj i ne objavljuje.
-Ako JavaScript nije dostupan, korisniku se prikazuje objašnjenje. Rezultat ne
-provjerava postoji li uneseni članak niti predstavlja odobrenje sadržaja.
+registra država i dohvaća urednički registar s iste domene. Prikazuje plan po
+državi, ne šalje URL na poslužitelj i ne objavljuje.
+Ako JavaScript nije dostupan, korisniku se prikazuje objašnjenje. Urednički registar je snimak i rezultat ne provjerava javnu dostupnost uživo niti
+predstavlja odobrenje sadržaja.
 Stvarno pisanje, odobrenje i objava ostaju zasebni koraci koji ovdje nisu
 implementirani; javne i besplatne Cloudflare projekte treba zasebno stvoriti i
 provjeriti prije nego se smatraju postojećima.

@@ -16,7 +16,8 @@ function main() {
     else if (args[1]==='cijeli' && args[2]==='svijet') {scope='svijet';offset=3;}
     else throw new Error('Koristite objavi hr ili objavi cijeli svijet');
     if(args.length!==offset+2 || args[offset]!=='--url') throw new Error('Potreban je --url ADRESA');
-    console.log(JSON.stringify(planPublication({scope,url:args[offset+1],countries}),null,2));
+    const editorialRegistry=JSON.parse(readFileSync(join(ROOT,'apps/portal/data/editorial-registry.json'),'utf8'));
+    console.log(JSON.stringify(planPublication({scope,url:args[offset+1],countries,editorialRegistry}),null,2));
   } else if (args[0]==='razmjena' && args.length===3 && args[1]==='--kanal') {
     const feeds={};
     for (const c of countries.filter(c=>c.status==='live' && c.channelId)) {

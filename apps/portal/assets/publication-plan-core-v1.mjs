@@ -7,20 +7,25 @@ function safeOwnArticle(value) {
     return u.href;
   } catch { return null; }
 }
-export function planPublication({scope, url, countries}) {
+export function planPublication({scope, url, countries, editorialRegistry}) {
   if (!['hr','svijet'].includes(scope)) throw new Error('Odaberite hr ili svijet');
   const canonical=safeOwnArticle(url);
   if (!canonical) throw new Error('Potrebna je vlastita HTTPS adresa članka na gnk-asg.hr bez parametara');
   if (!Array.isArray(countries)) throw new Error('Nedostaje registar država');
+  const records = editorialRegistry?.items;
+  if (!Array.isArray(records)) throw new Error('Urednički registar nije dostupan; plan je zaustavljen');
+  const article = records.find(item => item?.status === 'published' && safeOwnArticle(item.url) === canonical);
   const selected=countries.filter(c=>scope==='svijet' || c.cca2==='HR');
   if (!selected.length) throw new Error('Nema odabranih država u registru');
   return {
     version:'FACTORY_PUBLICATION_PLAN_V1', scope, canonical,
     status:'plan_only_not_published',
+    evidence:article ? 'published_in_editorial_registry' : 'not_found_in_editorial_registry',
+    registryGeneratedAt:editorialRegistry.generatedAt || null,
     notice:'Ovo nije nalog za automatsku objavu. Potrebni su provjera sadržaja, prava, odobrenja spominjanja, urednički pregled i postojeći release postupak.',
     destinations:selected.map(c=>({id:c.id,country:c.country,registryStatus:c.status,
-      decision:c.status==='live' && c.channelId && c.liveUrl ? 'candidate_requires_review' : 'not_available',
-      reason:c.status==='live' && c.channelId && c.liveUrl ? 'Potrebne su provjere sadržaja, prava, urednika i odredišta.' : 'Izdanje nije potvrđeno kao live u registru.'}))
+      decision:c.status==='live' && c.channelId && c.liveUrl ? (article ? 'candidate_requires_review' : 'article_not_in_registry') : 'not_available',
+      reason:c.status!=='live' || !c.channelId || !c.liveUrl ? 'Izdanje nije potvrđeno kao live u registru.' : article ? 'Potrebne su provjere sadržaja, prava, urednika i odredišta.' : 'Objava nije pronađena kao objavljena u uredničkom registru.'}))
   };
 }
 function validFeedItem(item, channelId, nowMs, maxAgeHours) {
