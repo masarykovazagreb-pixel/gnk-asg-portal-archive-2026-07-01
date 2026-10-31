@@ -57,6 +57,8 @@ Napomena: ovo mjeri h1, a ranija brojka 8.440 stranica s naslovom >60 mjerila je
 
 ## 5. Slike (`artifacts/factory/image-quality.json`)
 
+Pillow ne može otvoriti dvije datoteke: `apps/portal/assets/editorial/nermin-sefic-gnk-asg-ulaganje-pravne-prepreke-20261006.webp` i `…-v2.webp` (oko 15 KB, zaglavlje nije WEBP). Nijedna stranica ih ne koristi (0 referenci), pa nisu vidljive. Revizor `audit_portal.py` provjerava samo postojanje datoteke, pa ih nije uhvatio. Prijedlog: obrisati ili zamijeniti originalom (odluka vlasnika).
+
 Označeno 131 slika: premala 22, pretežka 28, duplikat 56, nečitljiva 5, tamno (provjeri) 20. Za zamjenu treba ručni pregled i odluka o izvorima, pa nisu mijenjane.
 
 ## 6. W1 susjedi (uvjeti izvora)

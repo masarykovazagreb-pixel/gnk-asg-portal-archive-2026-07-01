@@ -163,6 +163,15 @@
       "decision": "PR prema main nije otvoren",
       "status": "čeka vlasnika",
       "note": "Vidi main-reinicijalizacija."
+    },
+    {
+      "id": "neispravne-editorial-slike",
+      "date": "2026-10-31",
+      "by": "agent (provjera)",
+      "scope": "dvije datoteke u apps/portal/assets/editorial (…ulaganje-pravne-prepreke-20261006.webp i -v2.webp) nisu valjani WEBP; 0 referenci",
+      "decision": "nije obrisano",
+      "status": "čeka vlasnika",
+      "note": "Revizor provjerava samo postojanje; dodati provjeru dekodiranja."
     }
   ]
 }

@@ -64,6 +64,8 @@ Redoslijed je važan. Pogrešan redoslijed je već dvaput pokvario generirane st
 5. `radio_promo_v1.py` i `normalize_meta.py` samo na meta redovima.
 6. `audit_portal.py` i `quality_scan_v1.py` kao provjera, ne kao izmjena.
 
+Zamka (31. 10.): `sync-all --group=layers` u lokalnom stablu bez prethodnog builda ruši izlaze. `build-pages-inventory-v1.mjs` broji `apps/world/site`; kad taj izlaz nedostaje, objavljena inventura piše „nije izgrađen“. Zato se generirane datoteke (`docs/izvjestaj-inventure-v1.md`, `apps/portal/sve-stranice/`, `apps/portal/data/network-counts-v1.json`) ne commitaju iz stanja bez punog builda. Provjera je `test-all` na čistom clone-u.
+
 Dnevni ciklus `region-daily`: `recover-items-from-pages-v1.mjs --check` prije `daily.mjs`. Limit zapisa je 5000 (`--max-items`).
 
 ## Stanje (31. 10.)
