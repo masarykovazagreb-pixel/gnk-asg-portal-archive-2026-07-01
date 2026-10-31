@@ -46,4 +46,9 @@ jobs:
           git config user.email "aktual-bot@users.noreply.github.com"
           git add $PATHS
           git commit -m "Worker groups: sync s popisom automatizacija i flotom"
-          git push
+          for attempt in 1 2 3; do
+            git push origin HEAD:main && break
+            [ "$attempt" = 3 ] && { echo "::error::Push nije uspio nakon 3 pokušaja."; exit 1; }
+            echo "::warning::Push odbijen (pokušaj $attempt); rebase na origin/main."
+            git pull --rebase origin main || { git rebase --abort || true; echo "::error::Rebase nije prošao."; exit 1; }
+          done
