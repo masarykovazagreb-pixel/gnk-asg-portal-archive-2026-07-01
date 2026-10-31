@@ -135,7 +135,7 @@
       "scope": "23 workflowa dijele concurrency gnk-asg-main-mutation (cancel-in-progress: false); zakazani region-daily se otkazuje",
       "decision": "izdvojeno u vlastitu grupu",
       "status": "odobreno i izvršeno (31. 10.): gnk-asg-region-daily",
-      "note": "Izvršeno: gallery-sync i worker-groups-sync dobili rebase petlju (do 3 pokušaja)."
+      "note": "Rizik: gallery-sync, tjednik-daily i worker-groups-sync push-aju bez rebasea (prva dva bez zaštite). Rebase nije uveden: gate „Vlasništvo automatizacija“ ih prijavljuje kao neregistrirane pisce na main."
     },
     {
       "id": "naslovi-h1-60",
@@ -186,10 +186,10 @@
       "id": "workflow-push-rebase-31-10",
       "date": "2026-10-31",
       "by": "agent",
-      "scope": "gallery-sync.yml i worker-groups-sync.yml: goli git push zamijenjen petljom s rebaseom",
-      "decision": "izvršeno",
-      "status": "gotovo",
-      "note": "tjednik-daily već ima zaštitu; ostali workflowi s push-om imaju rebase."
+      "scope": "gallery-sync.yml i worker-groups-sync.yml: pokušaj uvođenja rebase petlje",
+      "decision": "poništeno (vraćeno na prijašnje stanje)",
+      "status": "čeka odluku vlasnika: registrirati pisce u allowlisti ili ostaviti",
+      "note": "Gate „Vlasništvo automatizacija“ je pao. Izmjena je vraćena."
     }
   ]
 }

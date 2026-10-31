@@ -15,7 +15,7 @@ Mjerenja su iz `artifacts/factory/quality-scan.json` (`scripts/factory/quality_s
 |---|---|---|---|
 | `sites-deploy` | pao | `exchange.json` i `sitemap.xml` zastarjeli u commitanom stanju | ispravljeno (12 datoteka regenerirano) |
 | `knowledge-center-contract` | pao na PR-u | generator ne proizvodi hashtag redak i radio blok koje dodaje standard | ispravljeno (korak `apply_standard` + radio) |
-| `region-daily` (zakazano) | otkazano 19:08, 23:37, 05:20 | 23 workflowa dijele `concurrency: gnk-asg-main-mutation` s `cancel-in-progress: false`; GitHub drži samo jedan čekajući run, pa se zakazani međusobno otkazuju | **izvršeno (odobreno)**: `region-daily` u grupi `gnk-asg-region-daily`; `gallery-sync` i `worker-groups-sync` dobili su rebase + 3 pokušaja pusha |
+| `region-daily` (zakazano) | otkazano 19:08, 23:37, 05:20 | 23 workflowa dijele `concurrency: gnk-asg-main-mutation` s `cancel-in-progress: false`; GitHub drži samo jedan čekajući run, pa se zakazani međusobno otkazuju | **izvršeno (odobreno)**: `region-daily` u grupi `gnk-asg-region-daily`. `gallery-sync` i `worker-groups-sync` nisu mijenjani (gate „Vlasništvo automatizacija“ ih prijavljuje kao neregistrirane pisce; čeka odluku) |
 | `GNK ASG Automation SLA Watchdog` | pao | provjerava živu svježinu na produkciji | blokirano (nema pristupa produkciji iz sandboxa) |
 | `Deploy Admin Auth V6` | pao | gate traži izvršno odobrenje za točan SHA | **odluka vlasnika** |
 | `autonomija-365` | pao | tvrdi kriterij `kanali-arhiva`: Kairo 289 < 300 | djelomično (vidi 3) |
@@ -101,7 +101,7 @@ Riješeno 31. 10. (odobrenje vlasnika):
 - Obrisane dvije neispravne WebP datoteke (0 referenci).
 - `region-daily` izdvojen u grupu `gnk-asg-region-daily`. Rizik: `gallery-sync`, `tjednik-daily` i `worker-groups-sync` push-aju bez rebasea i mogu pasti pri sudaru.
 - `#AktualMediaRadio` zadržan i zabilježen u `approved_mentions.json`.
-- `gallery-sync` i `worker-groups-sync`: push s rebaseom (do 3 pokušaja). `tjednik-daily` ima vlastitu zaštitu (ako se `main` pomakne, izdanje ostaje za sljedeći ciklus).
+- `gallery-sync` i `worker-groups-sync`: push bez rebasea ostaje. Sudar s `region-daily` je moguć. Za promjenu treba registrirati oba workflowa u allowlisti pisaca na `main`-u (odluka vlasnika). `tjednik-daily` ima vlastitu zaštitu.
 
 Nije izvršeno:
 - `Deploy Admin Auth V6` nije pokrenut. Workflow dopušta samo `main` i puni SHA na `main`-u; `de9e567` nije na `main`-u.
