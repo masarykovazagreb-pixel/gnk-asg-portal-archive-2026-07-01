@@ -4,7 +4,7 @@
   "lang": "en",
   "city": "Nairobi",
   "country": "Kenija",
-  "updatedAt": "2026-10-29T20:49:30.617Z",
+  "updatedAt": "2026-10-31T08:12:21.847Z",
   "sources": [
     {
       "id": "capitalfm",
@@ -14,20 +14,19 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-29T20:48:52.244Z"
+      "checkedAt": "2026-10-31T08:12:05.294Z"
     },
     {
       "id": "nation",
       "name": "Daily Nation",
-      "url": "https://nation.africa/kenya/rss",
-      "ok": false,
-      "fetched": 0,
+      "url": "https://nation.africa/kenya/rss.xml",
+      "ok": true,
+      "fetched": 25,
       "corrupt": 0,
       "errors": [
-        "https://nation.africa/kenya/rss: HTTP 403",
-        "https://nation.africa/kenya/rss.xml: HTTP 404"
+        "https://nation.africa/kenya/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-29T20:48:53.855Z"
+      "checkedAt": "2026-10-31T08:12:06.310Z"
     },
     {
       "id": "standard",
@@ -39,7 +38,7 @@
       "errors": [
         "https://www.standardmedia.co.ke/rss: nije feed"
       ],
-      "checkedAt": "2026-10-29T20:48:54.908Z"
+      "checkedAt": "2026-10-31T08:12:07.288Z"
     },
     {
       "id": "star",
@@ -51,7 +50,7 @@
       "errors": [
         "https://www.the-star.co.ke/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-29T20:48:57.147Z"
+      "checkedAt": "2026-10-31T08:12:09.248Z"
     },
     {
       "id": "businessdaily",
@@ -63,7 +62,7 @@
       "errors": [
         "https://www.businessdailyafrica.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-29T20:48:58.202Z"
+      "checkedAt": "2026-10-31T08:12:10.299Z"
     },
     {
       "id": "citizen",
@@ -75,19 +74,17 @@
       "errors": [
         "https://www.citizen.digital/rss: HTTP 400"
       ],
-      "checkedAt": "2026-10-29T20:49:07.810Z"
+      "checkedAt": "2026-10-31T08:12:18.514Z"
     },
     {
       "id": "kbc",
       "name": "KBC",
       "url": "https://www.kbc.co.ke/feed/",
-      "ok": false,
-      "fetched": 0,
+      "ok": true,
+      "fetched": 10,
       "corrupt": 0,
-      "errors": [
-        "https://www.kbc.co.ke/feed/: fetch failed"
-      ],
-      "checkedAt": "2026-10-29T20:49:29.499Z"
+      "errors": [],
+      "checkedAt": "2026-10-31T08:12:20.599Z"
     },
     {
       "id": "eastafrican",
@@ -99,10 +96,318 @@
       "errors": [
         "https://www.theeastafrican.co.ke/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-29T20:49:30.617Z"
+      "checkedAt": "2026-10-31T08:12:21.846Z"
     }
   ],
   "items": [
+    {
+      "slug": "nairobi-2026-10-31-capitalfm-nacada-jericho-raid-nets-over-1-000-rolls-99c938",
+      "title": "NACADA Jericho Raid Nets Over 1,000 Rolls of Bhang, Three in Custody",
+      "summary": "NAIROBI, Kenya Oct 31 – A quiet residential block in Nairobi’s Jericho Estate became the scene of a dramatic drug bust yesterday afternoon. Officers from the National Authority for the…",
+      "date": "2026-10-31T07:54:44.000Z",
+      "url": "https://capitalfm.africa/nacada-jericho-raid-nets-over-1000-rolls-of-bhang-three-in-custody/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "NATIONAL NEWS",
+        "News",
+        "NACADA"
+      ],
+      "author": "CORRESPONDENT",
+      "theme": "drustvo",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/10/IMG-20261031-WA0002-1200x630.jpg",
+      "imageAlt": "NACADA Jericho Raid Nets Over 1,000 Rolls of Bhang, Three in Custody",
+      "addedAt": "2026-10-31T08:12:05.294Z"
+    },
+    {
+      "slug": "nairobi-2026-10-31-kbc-nairobi-three-arrested-as-nacada-seizes-1-048fa1",
+      "title": "Nairobi: Three arrested as NACADA seizes 1,002 rolls of bhang in Jericho",
+      "summary": "Three people have been arrested after anti-narcotics officers seized 1,002 rolls of suspected bhang from a house in Nairobi’s Jericho Estate. According to the National Authority for the Campaign Against Alcohol and Drug Abuse (NACADA), officers raided the two-bedroom house in Buruburu Sub-County on Friday afternoon following an intelligence tip-off. A search of the premises […] The post Nairobi: Three arrested as NACADA seizes 1,002 rolls of bhang in Jericho appeared first on KBC Digital .",
+      "date": "2026-10-31T07:45:19.000Z",
+      "url": "https://www.kbc.co.ke/nairobi-three-arrested-as-nacada-seizes-1002-rolls-of-bhang-in-jericho/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "County News",
+        "Jericho Estate",
+        "NACADA",
+        "War on drugs"
+      ],
+      "author": "KBC Digital",
+      "theme": "sigurnost",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/10/WhatsApp-Image-2026-10-31-at-10.41.50.jpeg",
+      "imageAlt": "Nairobi: Three arrested as NACADA seizes 1,002 rolls of bhang in Jericho",
+      "addedAt": "2026-10-31T08:12:20.600Z"
+    },
+    {
+      "slug": "nairobi-2026-10-31-capitalfm-sifuna-takes-linda-mwananchi-tour-to-kwale-b009f0",
+      "title": "Sifuna takes Linda Mwananchi tour to Kwale",
+      "summary": "NAIROBI, Kenya Oct 31 – Edwin Sifuna’s Linda Mwananchi movement is taking its political message to the Coast a day after the party unveiled its new identity and secretariat. The…",
+      "date": "2026-10-31T07:21:59.000Z",
+      "url": "https://capitalfm.africa/sifuna-takes-linda-mwananchi-tour-to-kwale/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "News",
+        "Politics",
+        "Edwin Sifuna",
+        "Kwale"
+      ],
+      "author": "DAVIS AYEGA",
+      "theme": "drustvo",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/10/HV4AAyUWIAAplMA-1200x630.jpg",
+      "imageAlt": "Sifuna takes Linda Mwananchi tour to Kwale",
+      "addedAt": "2026-10-31T08:12:05.295Z"
+    },
+    {
+      "slug": "nairobi-2026-10-31-kbc-mwingi-west-mp-slams-united-opposition-over-1c2cbc",
+      "title": "Mwingi West MP slams United Opposition over disorganisation, hails Ruto’s development record",
+      "summary": "Mwingi West Member of Parliament Charles Nguna has criticised the United Opposition over what he termed disorganisation, internal supremacy battles and the lack of a clear agenda for Kenyans. The legislator urged Kenyans to prioritise leaders with proven development records rather than populist politicians making promises they may struggle to fulfil. “The opposition is too […] The post Mwingi West MP slams United Opposition over disorganisation, hails Ruto’s development record appeared first on KBC Digital .",
+      "date": "2026-10-31T07:21:58.000Z",
+      "url": "https://www.kbc.co.ke/mwingi-west-mp-slams-united-opposition-over-disorganisation-hails-rutos-development-record/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "County News",
+        "NEWS",
+        "Mwingi West",
+        "United Opposition"
+      ],
+      "author": "KBC Digital",
+      "theme": "politika",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/10/IMG-20261031-WA0008.jpg",
+      "imageAlt": "Mwingi West MP slams United Opposition over disorganisation, hails Ruto’s development record",
+      "addedAt": "2026-10-31T08:12:20.600Z"
+    },
+    {
+      "slug": "nairobi-2026-10-31-capitalfm-two-more-suspects-arrested-over-murder-of-3664a3",
+      "title": "Two more suspects arrested over murder of 65-year-old woman in Meru",
+      "summary": "Detectives have arrested two more suspects, including the deceased's brother, over the murder of 65-year-old Evelyne Mukiri Mbaabu in Meru, allegedly linked to a family land dispute.",
+      "date": "2026-10-31T07:15:00.000Z",
+      "url": "https://capitalfm.africa/two-more-suspects-arrested-over-murder-of-65-year-old-woman-in-meru/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "News",
+        "Beth Muthomi",
+        "Crime News",
+        "DCI"
+      ],
+      "author": "IRENE MWANGI",
+      "theme": "drustvo",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/07/DCI.jpg",
+      "imageAlt": "Two more suspects arrested over murder of 65-year-old woman in Meru",
+      "addedAt": "2026-10-31T08:12:05.295Z"
+    },
+    {
+      "slug": "nairobi-2026-10-31-kbc-beyond-the-cow-how-the-water-buffalo-can-b3fe44",
+      "title": "Beyond the Cow: How the water buffalo can power Kenya’s bottom-up dairy revolution",
+      "summary": "In January 2025, a short notice in the Kenya Gazette opened a new chapter in Kenyan livestock. Gazette Notice No. 977, dated 31 January, declared the domesticated water buffalo (Bubalus bubalis) a food animal under the Meat Control Act. It was a small legal step with a large economic promise. President William Ruto has since […] The post Beyond the Cow: How the water buffalo can power Kenya’s bottom-up dairy revolution appeared first on KBC Digital .",
+      "date": "2026-10-31T07:09:16.000Z",
+      "url": "https://www.kbc.co.ke/beyond-the-cow-how-the-water-buffalo-can-power-kenyas-bottom-up-dairy-revolution/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "OPINIONS",
+        "BETA economic agenda",
+        "Diary sector",
+        "Livestock"
+      ],
+      "author": "Dr. Muchelule Yusuf",
+      "theme": "politika",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/10/water-buffalo.jpg",
+      "imageAlt": "Beyond the Cow: How the water buffalo can power Kenya’s bottom-up dairy revolution",
+      "addedAt": "2026-10-31T08:12:20.601Z"
+    },
+    {
+      "slug": "nairobi-2026-10-31-capitalfm-saudi-arabia-bans-travel-visas-for-kenya-8691eb",
+      "title": "Saudi Arabia bans travel, visas for Kenya over Ebola fears",
+      "summary": "NAIROBI, Kenya Oct 31 – Saudi Arabia has suspended travel by its citizens to Kenya, stopped issuing visas to travellers from the country and imposed an entry ban amid growing…",
+      "date": "2026-10-31T06:51:42.000Z",
+      "url": "https://capitalfm.africa/saudi-arabia-bans-travel-visas-for-kenya-over-ebola-fears/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "News",
+        "World",
+        "Ebola",
+        "Saudi Arabia"
+      ],
+      "author": "DAVIS AYEGA",
+      "theme": "drustvo",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/07/Ebola-EE.webp",
+      "imageAlt": "Saudi Arabia bans travel, visas for Kenya over Ebola fears",
+      "addedAt": "2026-10-31T08:12:05.295Z"
+    },
+    {
+      "slug": "nairobi-2026-10-31-kbc-why-iebc-s-ceo-applicants-list-included-ae0b77",
+      "title": "Why IEBC’s CEO applicants list included foreign nationals",
+      "summary": "The electoral commission says the vacancy was open to all applicants, but Kenyan citizenship was a mandatory requirement for shortlisting. The post Why IEBC’s CEO applicants list included foreign nationals appeared first on KBC Digital .",
+      "date": "2026-10-31T06:51:33.000Z",
+      "url": "https://www.kbc.co.ke/why-iebcs-ceo-applicants-list-included-foreign-nationals/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "Local News",
+        "CEO recruitment",
+        "IEBC"
+      ],
+      "author": "Prudence Wanza",
+      "theme": "drustvo",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/04/IEBC-chairperson-Ethekon.jpg",
+      "imageAlt": "Why IEBC’s CEO applicants list included foreign nationals",
+      "addedAt": "2026-10-31T08:12:20.601Z"
+    },
+    {
+      "slug": "nairobi-2026-10-31-capitalfm-man-jailed-10-years-for-raping-86-year-old-d23b70",
+      "title": "Man jailed 10 years for raping 86-year-old woman in Nyeri",
+      "summary": "A Mukurwe-ini court has sentenced Jairus Githendu Irenyo to 10 years in prison for raping an 86-year-old woman in Nyeri County.",
+      "date": "2026-10-31T06:30:00.000Z",
+      "url": "https://capitalfm.africa/man-jailed-10-years-for-raping-86-year-old-woman-in-nyeri/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "News",
+        "Court News",
+        "DPP",
+        "gender-based violence"
+      ],
+      "author": "IRENE MWANGI",
+      "theme": "drustvo",
+      "image": "https://capitalfm.africa/wp-content/uploads/news/2025/05/ODPP.jpeg",
+      "imageAlt": "Man jailed 10 years for raping 86-year-old woman in Nyeri",
+      "addedAt": "2026-10-31T08:12:05.295Z"
+    },
+    {
+      "slug": "nairobi-2026-10-31-kbc-kenyan-father-turns-personal-journey-into-94fef2",
+      "title": "Kenyan father turns personal journey into advocacy for intersex children’s rights",
+      "summary": "Strengthening legal protections, improving access to healthcare and education, and providing psychosocial support are key to ensuring intersex children grow up with dignity and acceptance. These issues featured during Intersex Awareness Day, convened by Jinsiangu in partnership with the Kenya Intersex Persons Consortium, as advocates called for greater inclusion and protection of intersex persons in […] The post Kenyan father turns personal journey into advocacy for intersex children’s rights appeared first on KBC Digital .",
+      "date": "2026-10-31T06:07:56.000Z",
+      "url": "https://www.kbc.co.ke/kenyan-father-turns-personal-journey-into-advocacy-for-intersex-childrens-rights/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "Features",
+        "NEWS",
+        "Intersex Awareness",
+        "Intersex Awareness Day"
+      ],
+      "author": "KBC Digital",
+      "theme": "drustvo",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/10/Intersex-Awareness-Day.jpg",
+      "imageAlt": "Kenyan father turns personal journey into advocacy for intersex children’s rights",
+      "addedAt": "2026-10-31T08:12:20.601Z"
+    },
+    {
+      "slug": "nairobi-2026-10-31-capitalfm-iebc-defends-ceo-shortlist-amid-questions-4d6522",
+      "title": "IEBC defends CEO shortlist amid questions over foreign applicants",
+      "summary": "IEBC has defended its CEO recruitment, saying all foreign applicants were disqualified after the Maraga-led People's Coalition on Electoral Reforms questioned the nationality of some names on the longlist.",
+      "date": "2026-10-31T06:05:00.000Z",
+      "url": "https://capitalfm.africa/iebc-defends-ceo-shortlist-amid-questions-over-foreign-applicants/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "News",
+        "2027 General Election",
+        "David Maraga",
+        "Electoral Reforms"
+      ],
+      "author": "IRENE MWANGI",
+      "theme": "politika",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/08/G0f7KkNXUAAwy2x.jpg",
+      "imageAlt": "IEBC defends CEO shortlist amid questions over foreign applicants",
+      "addedAt": "2026-10-31T08:12:05.295Z"
+    },
+    {
+      "slug": "nairobi-2026-10-31-nation-kuj-mck-survey-83pc-of-journalists-show-09ba4f",
+      "title": "KUJ, MCK survey: 83pc of journalists show depression symptoms",
+      "summary": "",
+      "date": "2026-10-31T03:26:04.000Z",
+      "url": "https://nation.africa/kenya/videos/kuj-mck-survey-83pc-of-journalists-show-depression-symptoms-5653154",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://nation.africa/resource/image/5616182/landscape_ratio16x9/1600/900/da07abab310c744c23df2c6626079c45/px/media.jpg",
+      "imageAlt": "KUJ, MCK survey: 83pc of journalists show depression symptoms",
+      "addedAt": "2026-10-31T08:12:06.310Z"
+    },
+    {
+      "slug": "nairobi-2026-10-31-nation-russia-to-stop-enlisting-kenyans-following-c3c6e5",
+      "title": "Russia to stop enlisting Kenyans following deal",
+      "summary": "",
+      "date": "2026-10-31T03:24:17.000Z",
+      "url": "https://nation.africa/kenya/videos/russia-to-stop-enlisting-kenyans-following-deal-5653152",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://nation.africa/resource/image/5652834/landscape_ratio16x9/1600/900/ad95714e81ef5708a9787a6034ecc7a3/dr/ruto-putin-1.jpg",
+      "imageAlt": "Russia to stop enlisting Kenyans following deal",
+      "addedAt": "2026-10-31T08:12:06.310Z"
+    },
+    {
+      "slug": "nairobi-2026-10-31-nation-junet-warns-uda-against-undermining-odm-s-74a4a5",
+      "title": "Junet warns UDA against undermining ODM's government role",
+      "summary": "",
+      "date": "2026-10-31T03:23:10.000Z",
+      "url": "https://nation.africa/kenya/videos/junet-warns-uda-against-undermining-odm-s-government-role-5653150",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "https://nation.africa/resource/image/5552184/landscape_ratio16x9/1600/900/3dc7f05282746a5b229659ce4812ee92/Pv/junet.jpg",
+      "imageAlt": "Junet warns UDA against undermining ODM's government role",
+      "addedAt": "2026-10-31T08:12:06.311Z"
+    },
+    {
+      "slug": "nairobi-2026-10-31-nation-eastleigh-building-collapse-woman-s-body-aff1e8",
+      "title": "Eastleigh building collapse: Woman's body retrieved from debris",
+      "summary": "",
+      "date": "2026-10-31T03:19:30.000Z",
+      "url": "https://nation.africa/kenya/videos/eastleigh-building-collapse-woman-s-body-retrieved-from-debris-5653148",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Eastleigh building collapse: Woman's body retrieved from debris",
+      "addedAt": "2026-10-31T08:12:06.311Z"
+    },
+    {
+      "slug": "nairobi-2026-10-31-nation-mccarthy-picks-strongest-kenya-squad-yet-002423",
+      "title": "McCarthy picks strongest Kenya squad yet for Afcon qualifier against South Africa",
+      "summary": "Benni McCarthy names 36-man team for Afcon qualifier against South Africa.",
+      "date": "2026-10-31T03:15:00.000Z",
+      "url": "https://nation.africa/kenya/sports/football/mccarthy-strongest-kenya-squad-for-afcon-qualifier-south-africa-5652984",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://nation.africa/resource/image/5610398/landscape_ratio16x9/1600/900/972cd63ed8d141f9f3faf8585e0c6f6e/of/stars-vs-eritrea-2.jpg",
+      "imageAlt": "McCarthy picks strongest Kenya squad yet for Afcon qualifier against South Africa",
+      "addedAt": "2026-10-31T08:12:06.311Z"
+    },
+    {
+      "slug": "nairobi-2026-10-31-nation-what-it-will-take-to-bring-bayern-and-ajax-2a3b6c",
+      "title": "What it will take to bring Bayern and Ajax to Nairobi",
+      "summary": "Similar trips in the past to Asia by big European clubs have involved payment of appearance...",
+      "date": "2026-10-31T03:00:00.000Z",
+      "url": "https://nation.africa/kenya/sports/football/what-it-will-take-to-bring-bayern-and-ajax-to-nairobi-5652840",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://nation.africa/resource/image/5649704/landscape_ratio16x9/1600/900/f3f678f9a8c2267ff24fd7ae66284808/Ii/img-20261028-wa0096.jpg",
+      "imageAlt": "What it will take to bring Bayern and Ajax to Nairobi",
+      "addedAt": "2026-10-31T08:12:06.311Z"
+    },
     {
       "slug": "nairobi-2026-10-29-capitalfm-us-uncovers-alleged-200m-ghost-student-cc6b06",
       "title": "US uncovers alleged $200m ghost student fraud linked to Kenyan network",
