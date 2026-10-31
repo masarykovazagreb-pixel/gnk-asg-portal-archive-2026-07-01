@@ -96,9 +96,4 @@ jobs:
           git config user.email "beckuphome@gmail.com"
           git add apps/portal scripts/gallery-sync.mjs scripts/gallery-editorial-filter.mjs
           git commit -m "chore(gallery): auto-sync images, SEO catalog and consumers [skip ci]"
-          for attempt in 1 2 3; do
-            git push origin HEAD:main && break
-            [ "$attempt" = 3 ] && { echo "::error::Push nije uspio nakon 3 pokušaja."; exit 1; }
-            echo "::warning::Push odbijen (pokušaj $attempt); rebase na origin/main."
-            git pull --rebase origin main || { git rebase --abort || true; echo "::error::Rebase nije prošao."; exit 1; }
-          done
+          git push
