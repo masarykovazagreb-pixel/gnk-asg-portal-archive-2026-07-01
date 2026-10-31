@@ -124,9 +124,9 @@
       "date": "2026-10-31",
       "by": "agent",
       "scope": "animacija/index.html (1,5 MB) i app/index.html (400 KB): noindex, bez lang, app bez title, nisu u sitemapu",
-      "decision": "NE brisati: /app/ je živa aplikacija (contact, preuzimanja), /animacija/ je linkan s preuzimanja i ima iznimku u validate-visual-contrast",
-      "status": "ne brisati; ispravka u tijeku",
-      "note": "Odobrenje za brisanje bilo je na temelju pogrešne pretpostavke o artefaktima. Dodati lang i title umjesto brisanja (čeka OK)."
+      "decision": "NE brisati: žive stranice",
+      "status": "čeka OK (dodati lang i title)",
+      "note": "Brisanje odbijeno (žive stranice). Dodavanje lang/title nije izvršeno."
     },
     {
       "id": "concurrency-region-daily",
@@ -135,7 +135,7 @@
       "scope": "23 workflowa dijele concurrency gnk-asg-main-mutation (cancel-in-progress: false); zakazani region-daily se otkazuje",
       "decision": "izdvojeno u vlastitu grupu",
       "status": "odobreno i izvršeno (31. 10.): gnk-asg-region-daily",
-      "note": "Rizik: gallery-sync, tjednik-daily i worker-groups-sync push-aju bez rebasea; sudar pusha moguć. Prijedlog: dodati rebase."
+      "note": "Izvršeno: gallery-sync i worker-groups-sync dobili rebase petlju (do 3 pokušaja)."
     },
     {
       "id": "naslovi-h1-60",
@@ -181,6 +181,15 @@
       "decision": "NIJE pokrenuto",
       "status": "čeka",
       "note": "Workflow dopušta samo ref main i puni SHA commita na main-u, plus ručno upisanu frazu DEPLOY_ADMIN_AUTH_V6. de9e567 nije na main-u. Treba odrediti SHA main-a za pregled i frazu upisati ručno."
+    },
+    {
+      "id": "workflow-push-rebase-31-10",
+      "date": "2026-10-31",
+      "by": "agent",
+      "scope": "gallery-sync.yml i worker-groups-sync.yml: goli git push zamijenjen petljom s rebaseom",
+      "decision": "izvršeno",
+      "status": "gotovo",
+      "note": "tjednik-daily već ima zaštitu; ostali workflowi s push-om imaju rebase."
     }
   ]
 }
