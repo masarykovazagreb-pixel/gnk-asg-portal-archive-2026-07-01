@@ -4,23 +4,17 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-10-31T01:11:53.504Z",
+  "updatedAt": "2026-10-31T15:38:48.779Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": false,
-      "fetched": 0,
+      "ok": true,
+      "fetched": 50,
       "corrupt": 0,
-      "errors": [
-        "https://telex.hu/rss: HTTP 403",
-        "https://telex.hu/rss/belfold: HTTP 403",
-        "https://telex.hu/rss/kulfold: HTTP 403",
-        "https://telex.hu/rss/gazdasag: HTTP 403",
-        "https://telex.hu/rss/sport: HTTP 403"
-      ],
-      "checkedAt": "2026-10-31T01:11:49.991Z"
+      "errors": [],
+      "checkedAt": "2026-10-31T15:38:43.927Z"
     },
     {
       "id": "444",
@@ -30,7 +24,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-31T01:11:50.135Z"
+      "checkedAt": "2026-10-31T15:38:44.830Z"
     },
     {
       "id": "hvg",
@@ -40,7 +34,7 @@
       "fetched": 60,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-31T01:11:50.281Z"
+      "checkedAt": "2026-10-31T15:38:45.204Z"
     },
     {
       "id": "portfolio",
@@ -50,7 +44,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-31T01:11:50.850Z"
+      "checkedAt": "2026-10-31T15:38:45.916Z"
     },
     {
       "id": "index",
@@ -62,7 +56,7 @@
       "errors": [
         "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-31T01:11:52.945Z"
+      "checkedAt": "2026-10-31T15:38:47.714Z"
     },
     {
       "id": "24hu",
@@ -72,7 +66,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-31T01:11:53.137Z"
+      "checkedAt": "2026-10-31T15:38:47.967Z"
     },
     {
       "id": "mandiner",
@@ -82,10 +76,537 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-31T01:11:53.504Z"
+      "checkedAt": "2026-10-31T15:38:48.779Z"
     }
   ],
   "items": [
+    {
+      "slug": "budimpesta-2026-10-31-hvg-magyar-peter-az-ideinel-63-milliard-7e879c",
+      "title": "Magyar Péter: Az ideinél 63 milliárd forinttal kevesebbet fordít a 2027-es költségvetésben a kormány a közmédiára",
+      "summary": "A miniszterelnök azt írta, hogy „inkább egészségügyre, oktatásra, építkezésre, biztonságra, adócsökkentésre és béremelésre költünk”.",
+      "date": "2026-10-31T15:37:36.000Z",
+      "url": "https://hvg.hu/gazdasag/20261031_magyar-peter-az-ideinel-63-milliard-forinttal-kevesebbet-fordit-a-2027-es-koltsegvetesben-a-kormany-a-kozmediara",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Gazdaság",
+        "média",
+        "Magyar Péter",
+        "közmédia"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "politika",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/6426adad-c6d8-4fcd-8d4b-1964d0789f45.jpg",
+      "imageAlt": "Magyar Péter: Az ideinél 63 milliárd forinttal kevesebbet fordít a 2027-es költségvetésben a kormány a közmédiára",
+      "addedAt": "2026-10-31T15:38:45.204Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-telex-xiv-leo-leadta-levelszavazatat-az-egyesult-50aa44",
+      "title": "XIV. Leó leadta levélszavazatát az Egyesült Államok félidős választásán",
+      "summary": "Ő az első pápa, aki világi választáson szavaz.",
+      "date": "2026-10-31T15:36:42.000Z",
+      "url": "https://telex.hu/kulfold/2026/10/31/xiv-leo-levelben-szavazott-az-egyesult-allamok-felidos-valasztasan",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Külföld"
+      ],
+      "author": "Kovács Pál",
+      "theme": "politika",
+      "image": "https://assets.telex.hu/images/20261031/1793460944-temp-f1458em6ukqucgimagd_cimlap-normal.jpg",
+      "imageAlt": "XIV. Leó leadta levélszavazatát az Egyesült Államok félidős választásán",
+      "addedAt": "2026-10-31T15:38:43.927Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-hvg-iran-ha-az-orszagot-ujabb-tamadas-eri-a-7eb142",
+      "title": "Irán: Ha az országot újabb támadás éri, a válaszcsapásnak nem lesznek földrajzi korlátai",
+      "summary": "Modzstaba Hamenei, Irán legfőbb vezetője elrendelte, hogy a lehetséges célpontok közé vegyenek fel minden amerikai és izraeli érdekeltséget, amelyet az iráni haderő elérhet.",
+      "date": "2026-10-31T15:26:27.000Z",
+      "url": "https://hvg.hu/vilag/20261031_iran-ha-az-orszagot-ujabb-tamadas-eri-a-valaszcsapasnak-nem-lesznek-foldrajzi-korlatai",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Világ",
+        "háború",
+        "Irán",
+        "Egyesült Államok"
+      ],
+      "author": "szerzo@hvg.hu (MTI)",
+      "theme": "rat",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/1ef2972f-7f98-4238-aad5-83265f9a70ee.jpg",
+      "imageAlt": "Irán: Ha az országot újabb támadás éri, a válaszcsapásnak nem lesznek földrajzi korlátai",
+      "addedAt": "2026-10-31T15:38:45.204Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-telex-megtiltotta-a-birosag-trump-kormanyanak-9dc94f",
+      "title": "Megtiltotta a bíróság Trump kormányának, hogy vizsgálattal fenyegessék a választáson dolgozókat",
+      "summary": "Korábban levélben próbáltak nyomást gyakorolni a választások lebonyolítását segítő tisztségviselőkre, hogy különítsék el az általuk szabálytalannak ítélt szavazatokat.",
+      "date": "2026-10-31T15:18:59.000Z",
+      "url": "https://telex.hu/kulfold/2026/10/31/donald-trump-birosag-igazsagugyi-miniszterium-fenyegetes",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Külföld"
+      ],
+      "author": "Krász Zsombor",
+      "theme": "politika",
+      "image": "https://assets.telex.hu/images/20261031/1793459719-temp-rrj13p79fjinbbjdgdo_cimlap-normal.jpg",
+      "imageAlt": "Megtiltotta a bíróság Trump kormányának, hogy vizsgálattal fenyegessék a választáson dolgozókat",
+      "addedAt": "2026-10-31T15:38:43.927Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-24hu-konnyites-30-milliardot-nem-kell-177a23",
+      "title": "Könnyítés: 30 milliárdot nem kell befizetniük jövőre a magyar önkormányzatoknak",
+      "summary": "Megszüntetik és kivezetik ugyanis az önkormányzatok területfejlesztési alapba történő befizetési kötelezettségét. The post Könnyítés: 30 milliárdot nem kell befizetniük jövőre a magyar önkormányzatoknak first appeared on 24.hu .",
+      "date": "2026-10-31T15:11:44.000Z",
+      "url": "https://24.hu/belfold/2026/10/31/onkormanyzat-koltsegvetes-teruletfejlesztes-kivezetes/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "lőrincz viktória",
+        "minisztérium",
+        "önkormányzat"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/10/central-1078767709-e1793459476496-1024x576.jpg",
+      "imageAlt": "Könnyítés: 30 milliárdot nem kell befizetniük jövőre a magyar önkormányzatoknak",
+      "addedAt": "2026-10-31T15:38:47.967Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-portfolio-tisza-kormany-nagy-atrendezes-jon-a-3b8bf4",
+      "title": "Tisza-kormány: nagy átrendezés jön a költségvetésben, több tízmilliárdos könnyítést kapnak az önkormányzatok",
+      "summary": "Benyújtotta a kormány a 2027-es költségvetés tervezetét, amely jelentősen átrendezné az állami kiadásokat – több minisztérium kerete szűkülne, miközben az egészségügy és az oktatás több forráshoz jutna. Az önkormányzatoknak 30–35 milliárd forintos könnyítést jelenthet a területfejlesztési befizetés megszüntetése, a vagyonvisszaszerzési hivatal pedig több mint tízmilliárd forintból gazdálkodhatna jövőre. A parlament a következő hetekben tárgyalja a Tisza-kormány első, teljes évre szóló büdzséjét.",
+      "date": "2026-10-31T15:10:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261031/tisza-kormany-nagy-atrendezes-jon-a-koltsegvetesben-tobb-tizmilliardos-konnyitest-kapnak-az-onkormanyzatok-873288",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://pcdn.hu/articles/images-xl/d/_/h/d-hr20260921052-1-865752.jpg",
+      "imageAlt": "Tisza-kormány: nagy átrendezés jön a költségvetésben, több tízmilliárdos könnyítést kapnak az önkormányzatok",
+      "addedAt": "2026-10-31T15:38:45.916Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-hvg-nem-hinnem-kommentelte-ismet-magyar-peter-2077e7",
+      "title": "Nem hinném – kommentelte ismét Magyar Péter",
+      "summary": "Ezúttal arra a hírre reagált így, amely szerint a 2027-es költségvetési tervezetben a kormány volt köztársasági elnökök közcélú felajánlásaira különített el forrásokat.",
+      "date": "2026-10-31T15:04:46.000Z",
+      "url": "https://hvg.hu/itthon/20261031_nem-hinnem-kommentelte-ismet-magyar-peter",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "belpolitika",
+        "köztársasági elnök",
+        "Magyar Péter"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "politika",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/2640e98f-8cd9-4a56-8eac-38a0410f5bcb.jpg",
+      "imageAlt": "Nem hinném – kommentelte ismét Magyar Péter",
+      "addedAt": "2026-10-31T15:38:45.204Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-hvg-senkit-sem-fognak-tolvajkent-kezelni-ha-0425b1",
+      "title": "Senkit sem fognak tolvajként kezelni, ha visszavisz egy bontatlan iPhoone-dobozt",
+      "summary": "Úgy nézhetnek bele az Apple-nél az iPhone dobozába, hogy ki sem nyitják azt – foglalható össze az Apple egy sokak számára jól hangzó újítása. Egy olyan, más célokra már használt technológiáról van szó, amellyel úgy próbálják kiszűrni a csalókat, hogy közben az átlagos vásárlónak ne kelljen úgy éreznie, mintha neki kellene bizonyítania az ártatlanságát.",
+      "date": "2026-10-31T15:03:00.000Z",
+      "url": "https://hvg.hu/tudomany/20261031_visszavitt-bontatlan-iphoneok-dobozos-diagnosztika",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Tech",
+        "tech",
+        "Apple",
+        "iPhone"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/b73ad71d-128a-4ab0-b8ce-4269ae9d1328.jpg",
+      "imageAlt": "Senkit sem fognak tolvajként kezelni, ha visszavisz egy bontatlan iPhoone-dobozt",
+      "addedAt": "2026-10-31T15:38:45.205Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-hvg-okoz-e-gazdasagi-kaoszt-az-ai-mielott-0c60c9",
+      "title": "Okoz-e gazdasági káoszt az AI, mielőtt kiirtja az emberiséget?",
+      "summary": "Az elmúlt évszázadok nagy találmányai közül a vasút és az internet megjelenése gazdasági krízishez vezetett, bezzeg az autó vagy a televízió káosz nélkül épült be a mindennapokba. Mi volt a különbség? Lecke az AI előttről.",
+      "date": "2026-10-31T14:56:00.000Z",
+      "url": "https://hvg.hu/360/20261031_hvg-talalmanyok-vasut-internet-auto-televizio-novekedesi-korlat-kockazatok",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "hvg360",
+        "tech",
+        "találmány",
+        "internet"
+      ],
+      "author": "szerzo@hvg.hu (Sztojcsev Iván)",
+      "theme": "ai",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/8241047a-ba86-4550-9331-7a6fab939395.jpg",
+      "imageAlt": "Okoz-e gazdasági káoszt az AI, mielőtt kiirtja az emberiséget?",
+      "addedAt": "2026-10-31T15:38:45.205Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-hvg-michael-douglas-elerulta-mi-az-ami-nelkul-4d0f15",
+      "title": "Michael Douglas elérulta, mi az, ami nélkül nincs jó szexjelenet",
+      "summary": "A Végzetes vonzerő, az Elemi ösztön és a Zaklatás sztárja tapasztalatból beszél.",
+      "date": "2026-10-31T14:52:06.000Z",
+      "url": "https://hvg.hu/kultura/20261031_michael-douglas-szexjelenet",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Kult",
+        "mozi - film - sorozatok",
+        "Michael Douglas",
+        "szexjelenet"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/09b69404-b1b5-48c6-847e-782452699e15.jpg",
+      "imageAlt": "Michael Douglas elérulta, mi az, ami nélkül nincs jó szexjelenet",
+      "addedAt": "2026-10-31T15:38:45.205Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-444-magyar-peter-most-sem-hinne-a900de",
+      "title": "Magyar Péter most sem hinné",
+      "summary": "A miniszterelnök a Telex cikke alá kommentelt, miután a lap megírta, hogy a volt köztársasági elnököknek jövőre is járhat a jótékonysági keret",
+      "date": "2026-10-31T14:51:43.000Z",
+      "url": "https://444.hu/2026/10/31/magyar-peter-most-sem-hinne?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "köztársasági elnök",
+        "magyar péter",
+        "nem hinném",
+        "facebook-komment"
+      ],
+      "author": "Bódog Bálint",
+      "theme": "politika",
+      "image": "https://assets.4cdn.hu/kraken/8PBv0sEgn3remOWHs.jpeg",
+      "imageAlt": "Magyar Péter most sem hinné",
+      "addedAt": "2026-10-31T15:38:44.830Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-24hu-vilagbajnok-vedojenek-ostobasaga-pecsetelte-f07003",
+      "title": "Világbajnok védőjének ostobasága pecsételte meg a MU sorsát a rangadón",
+      "summary": "Martíneznek volt már egy sárga lapja, erre úgy ugrott neki az ellenfélnek, hogy könyökkel el is találta. The post Világbajnok védőjének ostobasága pecsételte meg a MU sorsát a rangadón first appeared on 24.hu .",
+      "date": "2026-10-31T14:49:04.000Z",
+      "url": "https://24.hu/sport/foci/2026/10/31/premier-league-chelsea-manchester-united-lisandro-martinez-kiallitas/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Foci",
+        "premier league",
+        "angol foci",
+        "chelsea"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/10/000_d4zm8p6-1024x576.jpg",
+      "imageAlt": "Világbajnok védőjének ostobasága pecsételte meg a MU sorsát a rangadón",
+      "addedAt": "2026-10-31T15:38:47.967Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-portfolio-evekig-varhat-ukrajna-az-amerikai-raketakra-a09b98",
+      "title": "Évekig várhat Ukrajna az amerikai rakétákra, súlyos viták a G20 találkozóján – Híreink az orosz-ukrán háborúról szombaton",
+      "summary": "Washington jóváhagyta 500 Patriot-elfogórakéta eladását Ukrajnának, a szállítások azonban Zelenszkij szerint csak évek múlva kezdődhetnek meg, ezért Kijev a szövetségesek meglévő készleteiből kér azonnali segítséget a tél előtt. Közben az ukrajnai háború körüli nézeteltérések a G20 külügyminiszteri találkozójára is rányomták bélyegüket, ahol közös zárónyilatkozat és csoportkép sem készül.",
+      "date": "2026-10-31T14:45:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261031/evekig-varhat-ukrajna-az-amerikai-raketakra-sulyos-vitak-a-g20-talalkozojan-hireink-az-orosz-ukran-haborurol-szombaton-873290",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "rat",
+      "image": "https://pcdn.hu/articles/images-xl/r/o/m/roman-patriot-legvedelem-524617.jpg",
+      "imageAlt": "Évekig várhat Ukrajna az amerikai rakétákra, súlyos viták a G20 találkozóján – Híreink az orosz-ukrán háborúról szombaton",
+      "addedAt": "2026-10-31T15:38:45.916Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-portfolio-meghokkento-kepsorok-lengyelorszagbol-az-4ad0b5",
+      "title": "Meghökkentő képsorok Lengyelországból: az elnök szó szerint átverekedte magát a rendőrsorfalon",
+      "summary": "Az alkotmányos rend megsértésének és az alkotmánybíróság erőszakos átvételének nevezte Karol Nawrocki lengyel államfő szombaton a testület vezetőinek előző napi felfüggesztését, és rendkívüli egyeztetésre hívta a parlamenti pártok képviselőit.",
+      "date": "2026-10-31T14:44:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261031/meghokkento-kepsorok-lengyelorszagbol-az-elnok-szo-szerint-atverekedte-magat-a-rendorsorfalon-873326",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://pcdn.hu/articles/images-xl/g/e/t/gettyimages-2302293259-865766.jpg",
+      "imageAlt": "Meghökkentő képsorok Lengyelországból: az elnök szó szerint átverekedte magát a rendőrsorfalon",
+      "addedAt": "2026-10-31T15:38:45.916Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-24hu-nagy-esovel-indul-a-november-mutatjuk-hol-28e549",
+      "title": "Nagy esővel indul a november: mutatjuk, hol várható a legtöbb csapadék",
+      "summary": "Az ország egyes részein nagy mennyiségű csapadék várható, míg az északi-északkeleti területeken sokan teljesen szárazon maradhatnak. The post Nagy esővel indul a november: mutatjuk, hol várható a legtöbb csapadék first appeared on 24.hu .",
+      "date": "2026-10-31T14:43:07.000Z",
+      "url": "https://24.hu/tudomany/2026/10/31/idojaras-elorejelzes-eso-november-1-2-ciklon/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Tudomány",
+        "időjárás",
+        "előrejelzés",
+        "eső"
+      ],
+      "author": "Lányi Örs",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/10/central-0907322990-e1793457776225-1024x577.jpg",
+      "imageAlt": "Nagy esővel indul a november: mutatjuk, hol várható a legtöbb csapadék",
+      "addedAt": "2026-10-31T15:38:47.967Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-24hu-letoltendo-bortonbuntetesre-iteltek-azt-a-6d03bd",
+      "title": "Letöltendő börtönbüntetésre ítélték azt a két mentőst, akik szándékosan sérülést okoztak a később meghalt betegüknek",
+      "summary": "A két férfi a származása miatt szidalmazta és bántalmazta a férfit. The post Letöltendő börtönbüntetésre ítélték azt a két mentőst, akik szándékosan sérülést okoztak a később meghalt betegüknek first appeared on 24.hu .",
+      "date": "2026-10-31T14:25:24.000Z",
+      "url": "https://24.hu/belfold/2026/10/31/mentosok-bortonbuntetes/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "mentős",
+        "országos mentőszolgálat",
+        "börtön"
+      ],
+      "author": "Rugli Tamás",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/10/central-0568576686-e1793456681251-1024x577.jpg",
+      "imageAlt": "Letöltendő börtönbüntetésre ítélték azt a két mentőst, akik szándékosan sérülést okoztak a később meghalt betegüknek",
+      "addedAt": "2026-10-31T15:38:47.968Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-telex-nem-hinnem-kommentelte-magyar-miutan-7f4021",
+      "title": "Nem hinném – kommentelte Magyar, miután megírtuk, hogy a volt köztársasági elnököknek jövőre is járhat jótékonysági keret",
+      "summary": "A miniszterelnök a Telex Facebook-oldalán reagált a hírre. A kommentje alapján nem kizárt, hogy még módosítják a 2027-es költségvetési tervezetet.",
+      "date": "2026-10-31T14:22:26.000Z",
+      "url": "https://telex.hu/belfold/2026/10/31/magyar-peter-nem-hinnem-komment-volt-koztarsasagi-elnokok-jotekonysagi-kerete",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "Cseke Balázs",
+      "theme": "politika",
+      "image": "https://assets.telex.hu/images/20261031/1793455822-temp-t7q5i90cb2827bdkonm_cimlap-normal.jpg",
+      "imageAlt": "Nem hinném – kommentelte Magyar, miután megírtuk, hogy a volt köztársasági elnököknek jövőre is járhat jótékonysági keret",
+      "addedAt": "2026-10-31T15:38:43.927Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-24hu-itt-vannak-a-2027-es-koltsegvetes-reszletei-2d0c51",
+      "title": "Itt vannak a 2027-es költségvetés részletei: több pénz oktatásra, egészségügyre és honvédelemre, kevesebb közmédiára",
+      "summary": "Összefoglaljuk a 2027-es költségvetési javaslat legfontosabb elemeit: az oktatás, az egészségügy, a honvédelem és a környezetvédelem is több forráshoz jut. The post Itt vannak a 2027-es költségvetés részletei: több pénz oktatásra, egészségügyre és honvédelemre, kevesebb közmédiára first appeared on 24.hu .",
+      "date": "2026-10-31T14:21:38.000Z",
+      "url": "https://24.hu/belfold/2026/10/31/2027-koltsegvetes-javaslat-reszletek-oktatas-egeszsegugy-honvedelem/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "költségvetés",
+        "javaslat",
+        "kármán andrás"
+      ],
+      "author": "Lányi Örs",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/10/dbzol20260907010-e1793456366973-1024x577.jpg",
+      "imageAlt": "Itt vannak a 2027-es költségvetés részletei: több pénz oktatásra, egészségügyre és honvédelemre, kevesebb közmédiára",
+      "addedAt": "2026-10-31T15:38:47.968Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-telex-a-duh-kora-reg-nem-latott-elegedetlensegi-d5e0e2",
+      "title": "A düh kora: rég nem látott elégedetlenségi hullám veszélyezteti a középpártokat Európában",
+      "summary": "Oktatás, lakhatás, infláció, megélhetési válság: különböző indokok miatt vonulnak több százezren utcára Európában, közelebbről vizsgálva azonban több közös vonás is kirajzolódik.",
+      "date": "2026-10-31T14:15:18.000Z",
+      "url": "https://telex.hu/kulfold/2026/10/31/zavargasok-europa-tuntetesek-franciaorszag-albania-spanyolorszag-portugalia-gazdasagi-nehezsegek",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Külföld"
+      ],
+      "author": "Ferenci Ármin",
+      "theme": "ekonomija",
+      "image": "https://assets.telex.hu/images/20261021/1792590495-temp-6mei455pdm5oebdmend_cimlap-normal.jpg",
+      "imageAlt": "A düh kora: rég nem látott elégedetlenségi hullám veszélyezteti a középpártokat Európában",
+      "addedAt": "2026-10-31T15:38:43.927Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-24hu-bilincsbe-raktak-orban-viktort-egy-cseh-a0d7f3",
+      "title": "Bilincsbe rakták Orbán Viktort egy cseh politikai magazin címlapján",
+      "summary": "A Reflexben terjedelmes elemzés olvasható a magyar belpolitikai helyzetről. The post Bilincsbe rakták Orbán Viktort egy cseh politikai magazin címlapján first appeared on 24.hu .",
+      "date": "2026-10-31T14:14:04.000Z",
+      "url": "https://24.hu/kozelet/2026/10/31/bilincs-orban-viktor-csehorszag/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Közélet",
+        "bilincs",
+        "orbán viktor",
+        "csehország"
+      ],
+      "author": "24.hu",
+      "theme": "politika",
+      "image": "https://s.24.hu/app/uploads/2026/10/8pt8zwbbmaho13onms-xl-e1793456021873-1024x577.jpeg",
+      "imageAlt": "Bilincsbe rakták Orbán Viktort egy cseh politikai magazin címlapján",
+      "addedAt": "2026-10-31T15:38:47.968Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-444-borizu-hang-292-hosszu-kilencmilliard-5df5e7",
+      "title": "Borízű hang #292 [hosszú]: Kilencmilliárd Kisvárda határában, Harapófogó Dániel elnézést kér Kínától",
+      "summary": "Ki mennyit ülne Orbánért? NER-es csődhullám: Nanushka. Rogán Cili hány pont? Mbappé és a Liga becsicskul Kínának. Vas Gereben, Harapófogó Dániel, Maderspach Károlyné, öngyilkosság mozsárágyúval. A Dschingis Khan Mongóliában. Túl olcsó a benzin.",
+      "date": "2026-10-31T14:00:04.000Z",
+      "url": "https://444.hu/2026/10/31/borizu-hang-292-hosszu-kilencmilliard-kisvarda-hataraban-harapofogo-daniel-elnezest-ker-kinatol?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "borízű hang",
+        "Vas Gereben",
+        "Putyin",
+        "letartóztatás-kritika"
+      ],
+      "author": "Uj Péter",
+      "theme": "sport",
+      "image": "https://assets.4cdn.hu/kraken/8PTokFxChr7cQyFBs.png",
+      "imageAlt": "Borízű hang #292 [hosszú]: Kilencmilliárd Kisvárda határában, Harapófogó Dániel elnézést kér Kínától",
+      "addedAt": "2026-10-31T15:38:44.830Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-telex-toroltek-a-g20-as-csaladi-fotot-mert-tobb-a521ca",
+      "title": "Törölték a G20-as családi fotót, mert több ország sem akart Lavrovval közös képet",
+      "summary": "A résztvevő külügyminiszterek egyharmada fenyegetőzött azzal, hogy kisétálnak a fotózásról.",
+      "date": "2026-10-31T14:00:03.000Z",
+      "url": "https://telex.hu/kulfold/2026/10/31/g20-kulugyminiszterek-kozos-foto-szergej-lavrov",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Külföld"
+      ],
+      "author": "Ignácz Péter",
+      "theme": "drustvo",
+      "image": "https://assets.telex.hu/images/20261031/1793454983-temp-f99svestdj1rcdkgicn_cimlap-normal.jpg",
+      "imageAlt": "Törölték a G20-as családi fotót, mert több ország sem akart Lavrovval közös képet",
+      "addedAt": "2026-10-31T15:38:43.927Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-portfolio-sokat-kapnanak-az-onkormanyzatok-a-2027-es-cafb0a",
+      "title": "Sokat kapnának az önkormányzatok a 2027-es költségvetésből, de nem minden arany, ami fénylik",
+      "summary": "Több mint 500 milliárd forinttal, 12 százalékot meghaladó mértékben növekedhetnek az önkormányzati rendszerbevételei 2027-ben a 2026-os módosított költségvetéshez képest – derül ki a kormány péntek éjjel kiadott tervezetéből. A települések több állami támogatáshoz jutnak, csökken a szolidaritási hozzájárulás, és a beruházásokra is jelentősen több pénz jutna. A forrásbővülés azonban nem jelenti automatikusan a városházák pénzügyi önállóságának erősödését, mert a többlet jelentős része meghatározott közfeladatokhoz és emelkedő működési költségekhez kapcsolódik. A települések vezetői várhatóan elégedetlenek lesznek majd, kérdés, hogy még a parlamenti és bizottsági vitákban milyen módosításokat…",
+      "date": "2026-10-31T14:00:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261031/sokat-kapnanak-az-onkormanyzatok-a-2027-es-koltsegvetesbol-de-nem-minden-arany-ami-fenylik-873320",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://pcdn.hu/articles/images-xl/m/a/g/magyar-gdp-magyarorszag-magyar-gazdasag-588160.jpg",
+      "imageAlt": "Sokat kapnának az önkormányzatok a 2027-es költségvetésből, de nem minden arany, ami fénylik",
+      "addedAt": "2026-10-31T15:38:45.916Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-444-boka-janos-szerint-a-kormany-az-atveres-333fbc",
+      "title": "Bóka János szerint a kormány az átverés költségvetését nyújtotta be",
+      "summary": "A Fidesz frakcióvezetője a költségvetési tervezet visszavonását követeli.",
+      "date": "2026-10-31T13:38:37.000Z",
+      "url": "https://444.hu/2026/10/31/boka-janos-szerint-a-kormany-az-atveres-koltsegveteset-nyujtotta-be?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "fidesz",
+        "bóka jános",
+        "nyugdíj",
+        "Tisza Párt"
+      ],
+      "author": "Bódog Bálint",
+      "theme": "politika",
+      "image": "https://assets.4cdn.hu/kraken/8PIoKJgomg2JWGLWs.jpeg",
+      "imageAlt": "Bóka János szerint a kormány az átverés költségvetését nyújtotta be",
+      "addedAt": "2026-10-31T15:38:44.830Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-portfolio-koltsegvetes-plusz-forrasokhoz-jut-a-164204",
+      "title": "Költségvetés: plusz forrásokhoz jut a honvédség",
+      "summary": "Öt százalékkal, 95 milliárd forinttal nő a Honvédelmi Minisztérium költségvetése 2027-ben, ezen belül a Magyar Honvédség személyi juttatásai 75 milliárd forinttal emelkednek a parlamentnek pénteken benyújtott törvényjavaslat szerint.",
+      "date": "2026-10-31T13:36:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261031/koltsegvetes-plusz-forrasokhoz-jut-a-honvedseg-873324",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://pcdn.hu/articles/images-xl/g/i/d/gidran-mrap-honvedseg-421374.jpg",
+      "imageAlt": "Költségvetés: plusz forrásokhoz jut a honvédség",
+      "addedAt": "2026-10-31T15:38:45.916Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-telex-a-fidesz-azt-koveteli-hogy-a-kormany-vonja-caa78f",
+      "title": "A Fidesz azt követeli, hogy a kormány vonja vissza „az átverés költségvetését”",
+      "summary": "A párt képviselője szerint adóemelésekre és megszorításokra épül a költségvetési tervezet.",
+      "date": "2026-10-31T13:12:38.000Z",
+      "url": "https://telex.hu/gazdasag/2026/10/31/fidesz-koltsegvetes-atveres-vonjak-vissza",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "Cseke Balázs",
+      "theme": "politika",
+      "image": "https://assets.telex.hu/images/20261031/1793452242-temp-7u4375lb07gheohjcim_cimlap-normal.jpg",
+      "imageAlt": "A Fidesz azt követeli, hogy a kormány vonja vissza „az átverés költségvetését”",
+      "addedAt": "2026-10-31T15:38:43.927Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-444-megerkeztek-belaruszba-az-oleski-lakosok-7960b9",
+      "title": "Megérkeztek Belaruszba az oleski lakosok, akiket a Melania Trump által kitárgyalt humanitárius tűzszünet miatt tudtak kimenekíteni",
+      "summary": "Onnan mennek majd tovább Ukrajnába.",
+      "date": "2026-10-31T12:13:42.000Z",
+      "url": "https://444.hu/2026/10/31/megerkeztek-belaruszba-az-oleski-lakosok-akiket-a-melania-trump-altal-kitargyalt-humanitarius-tuzszunet-miatt-tudtak-kimenekiteni?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "oroszország",
+        "humanitárius tűzszünet",
+        "orosz-ukrán háború",
+        "Dmitro Lubinec"
+      ],
+      "author": "Takács Lili",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8PJBDEs9cif42881Q8s.jpeg",
+      "imageAlt": "Megérkeztek Belaruszba az oleski lakosok, akiket a Melania Trump által kitárgyalt humanitárius tűzszünet miatt tudtak kimenekíteni",
+      "addedAt": "2026-10-31T15:38:44.830Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-444-elon-musk-146-milliard-forintot-ontott-a-268407",
+      "title": "Elon Musk 146 milliárd forintot öntött a Republikánus Pártra a félidős választások előtt",
+      "summary": "Ő lett ezzel minden idők legnagyobb politikai adományozója egy választási cikluson belül.",
+      "date": "2026-10-31T11:44:13.000Z",
+      "url": "https://444.hu/2026/10/31/elon-musk-146-milliard-dollart-ontott-a-republikanus-partra-a-felidos-valasztasok-elott?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "Szilícium-völgy",
+        "félidős választások",
+        "Amerika PAC",
+        "republikánus párt"
+      ],
+      "author": "Takács Lili",
+      "theme": "politika",
+      "image": "https://assets.4cdn.hu/kraken/8Mg1yAVWFkOGGWB0s.jpeg",
+      "imageAlt": "Elon Musk 146 milliárd forintot öntött a Republikánus Pártra a félidős választások előtt",
+      "addedAt": "2026-10-31T15:38:44.830Z"
+    },
     {
       "slug": "budimpesta-2026-10-30-portfolio-benyujtotta-a-kormany-a-jovo-evi-3c5c95",
       "title": "Benyújtotta a kormány a jövő évi költségvetést!",
