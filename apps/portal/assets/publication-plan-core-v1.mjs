@@ -42,8 +42,17 @@ export function planPublication({scope, url, countries, editorialRegistry, regio
       reason:c.status!=='live' || !c.channelId || !c.liveUrl ? 'Izdanje nije potvrđeno kao live u registru.' : found ? 'Potrebne su provjere sadržaja, prava, urednika i odredišta.' : 'Objava nije potvrđena u dostupnom uredničkom registru ili regionalnom feedu.'}))
   };
 }
+function externalHttps(value) {
+  try {
+    const u = new URL(value);
+    return u.protocol === 'https:' && !u.username && !u.password && !u.port ? u.href : null;
+  } catch { return null; }
+}
 function validFeedItem(item, channelId, nowMs, maxAgeHours) {
   if (!item?.title || typeof item.title!=='string' || !item.title.trim()) return false;
+  const info = item._region;
+  if (!info || info.channel !== channelId || typeof info.source !== 'string' || !info.source.trim() || !externalHttps(info.sourceUrl)) return false;
+  if (['held','hold','draft','blocked','cancelled'].includes(String(info.status || '').toLowerCase())) return false;
   const url=safeOwnArticle(item.url);
   if (!url || !new URL(url).pathname.startsWith(`/kanal/${channelId}/clanak/`)) return false;
   const date=Date.parse(item.date_published || item.date_modified || '');
@@ -54,13 +63,13 @@ export function planFallback({target, countries, feeds, now, maxAgeHours=48}) {
   if (!Array.isArray(countries) || !feeds || typeof feeds!=='object') throw new Error('Nedostaju podaci');
   const live=countries.filter(c=>c.status==='live' && c.channelId);
   if (!live.some(c=>c.channelId===target)) throw new Error('Odredište nije aktivan kanal u registru');
-  const best=(id)=> (Array.isArray(feeds[id]?.items) ? feeds[id].items : [])
+  const best=(id)=> (feeds[id]?.home_page_url === `https://gnk-asg.hr/kanal/${id}/` && Array.isArray(feeds[id]?.items) ? feeds[id].items : [])
     .filter(i=>validFeedItem(i,id,now,maxAgeHours))
     .sort((a,b)=>Date.parse(b.date_published||b.date_modified)-Date.parse(a.date_published||a.date_modified))[0];
   if (best(target)) return {version:'FACTORY_FALLBACK_PLAN_V1',target,status:'local_fresh',candidates:[]};
   const candidates=live.filter(c=>c.channelId!==target).flatMap(c=>{
-    const item=best(c.channelId); return item ? [{channel:c.channelId,country:c.country,title:item.title,url:item.url,date:item.date_published||item.date_modified}] : [];
+    const item=best(c.channelId); return item ? [{channel:c.channelId,country:c.country,title:item.title,url:item.url,date:item.date_published||item.date_modified,language:String(feeds[c.channelId]?.language || ''),originalSource:item._region.source,originalSourceUrl:externalHttps(item._region.sourceUrl)}] : [];
   }).sort((a,b)=>Date.parse(b.date)-Date.parse(a.date) || a.channel.localeCompare(b.channel));
   return {version:'FACTORY_FALLBACK_PLAN_V1',target,status:candidates.length?'candidates_require_review':'no_fresh_candidates',
-    notice:'Samo kandidati za poveznicu na izvornu objavu; nije kopiranje, prijevod ni objava.',candidates};
+    notice:'Samo kandidati za poveznicu na izvornu objavu; izvor, prava i činjenice nisu automatski provjereni. Nije kopiranje, prijevod ni objava.',candidates};
 }

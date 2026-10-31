@@ -5,7 +5,8 @@ const countries=[{cca2:'HR',id:'zagreb',country:'Hrvatska',channelId:'zagreb',st
 const url='https://gnk-asg.hr/objave/primjer/';
 const editorialRegistry={generatedAt:'2026-10-31',items:[{url,status:'published'}]};
 const now=Date.parse('2026-10-31T12:00:00Z');
-const item=(id,date)=>({title:'Vijest '+id,url:`https://gnk-asg.hr/kanal/${id}/clanak/primjer/`,date_published:date});
+const item=(id,date)=>({title:'Vijest '+id,url:`https://gnk-asg.hr/kanal/${id}/clanak/primjer/`,date_published:date,_region:{channel:id,source:'medij',sourceUrl:'https://news.example/clanak/',status:'auto-critique'}});
+const feed=(id,items)=>({home_page_url:`https://gnk-asg.hr/kanal/${id}/`,language:'hr',items});
 test('HR i svijet su isključivo planovi, uz blokadu nepripremljenih izdanja',()=>{
   const hr=planPublication({scope:'hr',url,countries,editorialRegistry}), world=planPublication({scope:'svijet',url,countries,editorialRegistry});
   assert.equal(hr.destinations.length,1);assert.equal(world.destinations.length,3);
@@ -24,12 +25,12 @@ test('samo objavljeni zapis iz registra postaje kandidat za daljnji pregled',()=
   assert.throws(()=>planPublication({scope:'hr',url,countries}));
 });
 test('kad je lokalni feed svjež ne predlaže zamjenu',()=>{
-  const feeds={zagreb:{items:[item('zagreb','2026-10-31T10:00:00Z')]},rim:{items:[item('rim','2026-10-31T11:00:00Z')]}};
+  const feeds={zagreb:feed('zagreb',[item('zagreb','2026-10-31T10:00:00Z')]),rim:feed('rim',[item('rim','2026-10-31T11:00:00Z')])};
   assert.equal(planFallback({target:'zagreb',countries,feeds,now}).status,'local_fresh');
 });
 test('zamjena bira samo svježe vlastite izvore iz drugih aktivnih kanala',()=>{
-  const feeds={zagreb:{items:[item('zagreb','2026-10-20T10:00:00Z')]},rim:{items:[item('rim','2026-10-31T10:00:00Z'),item('rim','2026-11-01T10:00:00Z')]},newyork:{items:[item('newyork','2026-10-31T11:00:00Z')]}};
-  const p=planFallback({target:'zagreb',countries,feeds,now});assert.equal(p.status,'candidates_require_review');assert.equal(p.candidates.length,1);assert.equal(p.candidates[0].channel,'rim');assert.match(p.notice,/nije kopiranje/);
+  const feeds={zagreb:feed('zagreb',[item('zagreb','2026-10-20T10:00:00Z')]),rim:feed('rim',[item('rim','2026-10-31T10:00:00Z'),item('rim','2026-11-01T10:00:00Z')]),newyork:feed('newyork',[item('newyork','2026-10-31T11:00:00Z')])};
+  const p=planFallback({target:'zagreb',countries,feeds,now});assert.equal(p.status,'candidates_require_review');assert.equal(p.candidates.length,1);assert.equal(p.candidates[0].channel,'rim');assert.equal(p.candidates[0].originalSource,'medij');assert.equal(p.candidates[0].originalSourceUrl,'https://news.example/clanak/');assert.match(p.notice,/Nije kopiranje/);
 });
 test('nema svježih kandidata i nedopušteno odredište',()=>{
   assert.equal(planFallback({target:'zagreb',countries,feeds:{},now}).status,'no_fresh_candidates');
@@ -109,4 +110,17 @@ test('dohvat feeda treće strane, nesigurnih putanja i neaktivnih kanala je zabr
   const {regionalFeedPath}=await import('../../apps/portal/assets/publication-plan-core-v1.mjs');
   assert.equal(regionalFeedPath('https://gnk-asg.hr/kanal/rim/clanak/primjer/',countries),'/kanal/rim/feed.json');
   for (const url of ['https://evil.test/kanal/rim/clanak/a/','https://gnk-asg.hr/kanal/newyork/clanak/a/','https://gnk-asg.hr/kanal/rim/clanak/a/?q=1','https://gnk-asg.hr/kanal/rim/clanak/a%2fb/']) assert.equal(regionalFeedPath(url,countries),null);
+});
+test('rezervna razmjena odbija blokirane i zapise bez provjerljive atribucije',()=>{
+  const base=item('rim','2026-10-31T10:00:00Z');
+  const run=record=>planFallback({target:'zagreb',countries,feeds:{rim:feed('rim',[record])},now});
+  for(const changed of [
+    {...base,_region:{...base._region,status:'blocked'}},
+    {...base,_region:{...base._region,channel:'zagreb'}},
+    {...base,_region:{...base._region,sourceUrl:'javascript:alert(1)'}},
+    {...base,_region:{...base._region,source:''}},
+    {...base,_region:undefined}
+  ]) assert.equal(run(changed).status,'no_fresh_candidates');
+  const wrongHome={...feed('rim',[base]),home_page_url:'https://gnk-asg.hr/kanal/zagreb/'};
+  assert.equal(planFallback({target:'zagreb',countries,feeds:{rim:wrongHome},now}).status,'no_fresh_candidates');
 });

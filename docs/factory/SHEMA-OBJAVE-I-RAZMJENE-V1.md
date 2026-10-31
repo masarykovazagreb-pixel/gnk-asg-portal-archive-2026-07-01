@@ -78,3 +78,20 @@ predstavlja odobrenje sadržaja.
 Stvarno pisanje, odobrenje i objava ostaju zasebni koraci koji ovdje nisu
 implementirani; javne i besplatne Cloudflare projekte treba zasebno stvoriti i
 provjeriti prije nego se smatraju postojećima.
+
+### Izvor i datum u rezervnom izboru
+
+Rezervni izbor sada zahtijeva ispravan `home_page_url` kanala, točno podudaranje
+kanala u zapisu, javnu HTTPS poveznicu i oznaku izvornog medija. Blokirani,
+nacrti i zapisi bez izvora preskaču se. Kandidat nosi i jezik feeda, datum,
+poveznicu na članak izdanja, identifikator izvornog medija i njegovu poveznicu.
+To su podaci iz feeda, ne neovisno provjerene činjenice ili prava za objavu.
+
+Polazišta za daljnje poboljšanje: Google preporučuje jasne vidljive datume i
+usklađene strukturirane datume, uz izbjegavanje umjetnog osvježavanja starih
+članaka ([Google Search Central](https://developers.google.com/search/docs/appearance/publication-dates),
+[smjernice za vijesti](https://developers.google.com/search/blog/2019/01/ways-to-succeed-in-google-news)).
+C2PA izričito navodi da podrijetlo samo po sebi nije presuda o istinitosti
+([C2PA, procjena rizika](https://spec.c2pa.org/specifications/specifications/1.4/security/Harms_Modelling.html)).
+Ovdje nije implementirana ni verificirana C2PA potvrda; za buduće fotografije
+potrebno je posebno provjeriti podrijetlo, licencu i kvalitetu.
