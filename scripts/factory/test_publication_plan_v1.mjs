@@ -81,3 +81,32 @@ test('stariji asinkroni odgovor ne prepisuje noviji zahtjev',async()=>{
   firstResolve({ok:true,json:async()=>editorialRegistry});await first;
   assert.equal(result.children[2].children.length,3);
 });
+test('regionalni feed je samo dokaz zapisa, nikad odobrenje objave',()=>{
+  const regionalUrl='https://gnk-asg.hr/kanal/rim/clanak/primjer/';
+  const regionalItem={url:regionalUrl,title:'Naslov',_region:{channel:'rim',status:'auto-critique'}};
+  const feed={home_page_url:'https://gnk-asg.hr/kanal/rim/',items:[regionalItem]};
+  const args={scope:'hr',url:regionalUrl,countries,editorialRegistry:{items:[]}};
+  const plan=planPublication({...args,regionalFeed:feed});
+  assert.equal(plan.evidence,'listed_in_regional_feed');assert.equal(plan.status,'plan_only_not_published');assert.equal(plan.destinations[0].decision,'candidate_requires_review');
+  assert.equal(planPublication({...args,regionalFeed:{...feed,home_page_url:'https://evil.test/'}}).evidence,'not_found_in_editorial_registry');
+  assert.equal(planPublication({...args,regionalFeed:{...feed,items:[{...regionalItem,_region:{channel:'zagreb'}}]}}).evidence,'not_found_in_editorial_registry');
+  assert.equal(planPublication({...args,regionalFeed:{...feed,items:[{...regionalItem,_region:{channel:'rim',status:'blocked'}}]}}).evidence,'not_found_in_editorial_registry');
+  assert.equal(planPublication({...args,regionalFeed:{...feed,items:[]}}).destinations[0].decision,'article_not_in_registry');
+});
+test('preglednik dohvaća samo lokalni feed aktivnog kanala',async()=>{
+  const {mountPublicationPlan}=await import('../../apps/portal/assets/publication-plan-ui-v1.mjs');
+  const regionalUrl='https://gnk-asg.hr/kanal/rim/clanak/primjer/';
+  let handler;const form={hidden:true,elements:{scope:{value:'hr'},url:{value:regionalUrl}},addEventListener:(_,f)=>handler=f};
+  const result={children:[],replaceChildren(){this.children=[]},append(...x){this.children.push(...x)}};
+  const doc={getElementById:id=>({'factory-publication-plan':form,'factory-plan-countries':{textContent:JSON.stringify(countries)},'factory-plan-result':result}[id]),createElement:tag=>({tag,textContent:'',children:[],append(...x){this.children.push(...x)}})};
+  const paths=[];const fetcher=async path=>{paths.push(path);return {ok:true,json:async()=>path==='/data/editorial-registry.json'?{items:[]}:{home_page_url:'https://gnk-asg.hr/kanal/rim/',items:[{url:regionalUrl,title:'Naslov',_region:{channel:'rim'}}]}}};
+  mountPublicationPlan(doc,fetcher);await handler({preventDefault(){}});
+  assert.deepEqual(paths,['/data/editorial-registry.json','/kanal/rim/feed.json']);
+  assert.match(result.children[1].textContent,/regionalnom feedu/);
+  assert.match(result.children[0].textContent,/NIJE OBJAVLJENO/);
+});
+test('dohvat feeda treće strane, nesigurnih putanja i neaktivnih kanala je zabranjen',async()=>{
+  const {regionalFeedPath}=await import('../../apps/portal/assets/publication-plan-core-v1.mjs');
+  assert.equal(regionalFeedPath('https://gnk-asg.hr/kanal/rim/clanak/primjer/',countries),'/kanal/rim/feed.json');
+  for (const url of ['https://evil.test/kanal/rim/clanak/a/','https://gnk-asg.hr/kanal/newyork/clanak/a/','https://gnk-asg.hr/kanal/rim/clanak/a/?q=1','https://gnk-asg.hr/kanal/rim/clanak/a%2fb/']) assert.equal(regionalFeedPath(url,countries),null);
+});

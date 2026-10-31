@@ -1,4 +1,4 @@
-import { planPublication } from './publication-plan-core-v1.mjs';
+import { planPublication, regionalFeedPath } from './publication-plan-core-v1.mjs';
 
 // Samo lokalni pregled: nema slanja podataka, nema API-ja i nema objave.
 export function mountPublicationPlan(doc, fetchRegistry = globalThis.fetch) {
@@ -21,13 +21,23 @@ export function mountPublicationPlan(doc, fetchRegistry = globalThis.fetch) {
       if (!response.ok) throw new Error('Urednički registar nije dostupan');
       const editorialRegistry = await response.json();
       if (current !== generation) return;
-      const plan=planPublication({scope,url,countries,editorialRegistry});
+      let plan=planPublication({scope,url,countries,editorialRegistry});
+      const feedPath=regionalFeedPath(url,countries);
+      if (plan.evidence === 'not_found_in_editorial_registry' && feedPath) {
+        let regionalFeed;
+        try {
+          const feedResponse=await fetchRegistry(feedPath,{cache:'no-store'});
+          if (feedResponse.ok) regionalFeed=await feedResponse.json();
+        } catch { /* nedostupan feed ne znači da zapis postoji */ }
+        if (current !== generation) return;
+        plan=planPublication({scope,url,countries,editorialRegistry,regionalFeed});
+      }
       result.replaceChildren();
       const candidates=plan.destinations.filter(d=>d.decision==='candidate_requires_review');
       const blocked=plan.destinations.length-candidates.length;
       const summary=doc.createElement('p');
       summary.textContent=`PLAN, NIJE OBJAVLJENO · ${candidates.length} kandidata za uredničku provjeru · ${blocked} stavki na čekanju. ${plan.notice}`;
-      const heading=doc.createElement('p');heading.textContent=`Adresa: ${plan.canonical} · ${plan.evidence === 'published_in_editorial_registry' ? 'pronađena u snimku uredničkog registra' : 'nije pronađena u snimku uredničkog registra'} · datum registra: ${plan.registryGeneratedAt || 'nepoznat'}.`;
+      const heading=doc.createElement('p');heading.textContent=`Adresa: ${plan.canonical} · ${plan.evidence === 'published_in_editorial_registry' ? 'pronađena u snimku uredničkog registra' : plan.evidence === 'listed_in_regional_feed' ? 'pronađena u regionalnom feedu; potrebno dodatno provjeriti' : 'nije potvrđena u dostupnim zapisima'} · datum registra: ${plan.registryGeneratedAt || 'nepoznat'}.`;
       const list=doc.createElement('ul');
       for (const d of plan.destinations) {
         const li=doc.createElement('li');

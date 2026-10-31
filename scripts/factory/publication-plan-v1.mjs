@@ -5,7 +5,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'../..');
-import { planPublication, planFallback } from '../../apps/portal/assets/publication-plan-core-v1.mjs';
+import { planPublication, planFallback, regionalFeedPath } from '../../apps/portal/assets/publication-plan-core-v1.mjs';
 export { planPublication, planFallback } from '../../apps/portal/assets/publication-plan-core-v1.mjs';
 
 function main() {
@@ -17,7 +17,10 @@ function main() {
     else throw new Error('Koristite objavi hr ili objavi cijeli svijet');
     if(args.length!==offset+2 || args[offset]!=='--url') throw new Error('Potreban je --url ADRESA');
     const editorialRegistry=JSON.parse(readFileSync(join(ROOT,'apps/portal/data/editorial-registry.json'),'utf8'));
-    console.log(JSON.stringify(planPublication({scope,url:args[offset+1],countries,editorialRegistry}),null,2));
+    const feedPath=regionalFeedPath(args[offset+1],countries);
+    let regionalFeed;
+    if (feedPath) { try { regionalFeed=JSON.parse(readFileSync(join(ROOT,'apps/portal',feedPath),'utf8')); } catch { /* nedostupno ostaje neprovjereno */ } }
+    console.log(JSON.stringify(planPublication({scope,url:args[offset+1],countries,editorialRegistry,regionalFeed}),null,2));
   } else if (args[0]==='razmjena' && args.length===3 && args[1]==='--kanal') {
     const feeds={};
     for (const c of countries.filter(c=>c.status==='live' && c.channelId)) {
