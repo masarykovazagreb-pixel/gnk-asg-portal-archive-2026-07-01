@@ -24,6 +24,7 @@ const FAST = args.has('--fast');
 const JSON_OUT = args.has('--json');
 
 const GATES = [
+  { name: 'CI — deduplikacija i granice dokaza', cmd: ['node', 'tests/test-ci-evidence-summary-v1.mjs'], required: true },
   { name: 'Vlasništvo automatizacija', cmd: ['node', 'scripts/audit-bot-ownership-v1.mjs'], required: true },
   { name: 'Rasporedi u allowlisti', cmd: ['python3', 'scripts/validate-workflow-schedule-allowlist-v2.py'], required: true },
   { name: 'HR/EN index parity', cmd: ['node', 'scripts/build-index-parity.mjs', '--check'], required: true },
