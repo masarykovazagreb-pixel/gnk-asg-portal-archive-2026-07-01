@@ -73,6 +73,19 @@ def test_missing_field_is_detected():
     assert any("nedostaje polje outputs" in e for e in errs), errs
 
 
+def test_branch_reflects_checkout_and_detached_head():
+    original = orch.git
+    try:
+        orch.git = lambda *args: (0, "radna-grana") if args[0] == "symbolic-ref" else (0, "1234567")
+        assert orch.current_branch() == "radna-grana"
+        orch.git = lambda *args: (1, "") if args[0] == "symbolic-ref" else (0, "1234567")
+        assert orch.current_branch() == "detached:1234567"
+        orch.git = lambda *args: (1, "")
+        assert orch.current_branch() == "nepoznato"
+    finally:
+        orch.git = original
+
+
 def main():
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_") and callable(v)]
     failed = []

@@ -68,6 +68,7 @@ const GATES = [
   { name: 'Ugovor o brendu — jedno ime, jedan znak, jedan izdavač', cmd: ['node', 'scripts/audit-brand-contract-v1.mjs'], required: true },
   { name: 'Tvornica — nazivi, hashtagovi, duljina meta opisa', cmd: ['python3', 'scripts/factory/test_factory_v1.py'], required: true },
   { name: 'Orkestrator V1 — ciklusi, ovisnosti, kapije', cmd: ['python3', 'scripts/factory/test_orchestrator_v1.py'], required: true },
+  { name: 'Tvornica — javni centar agenata', cmd: ['node', 'scripts/factory/test_factory_center_v1.mjs'], required: true },
   { name: 'Tvornica — skener HTML metapodataka', cmd: ['python3', 'scripts/factory/test_quality_scan_v1.py'], required: true },
   { name: 'Svijet — sigurni lokalni predlošci država', cmd: ['node', 'scripts/world/test-country-previews-v1.mjs'], required: true },
   { name: 'Oporavak zapisa iz stranica — parsiranje i izvori', cmd: ['node', 'tests/test-recover-items-v1.mjs'], required: true },

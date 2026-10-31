@@ -30,7 +30,6 @@ BOARD = os.path.join(ROOT, "artifacts", "factory", "orchestration-board.json")
 BOARD_MD = os.path.join(ROOT, "docs", "factory", "TABLA-V1.md")
 LEDGER = os.path.join(ROOT, "config", "approvals-ledger-v1.json")
 SOURCES = os.path.join(ROOT, "config", "world-sources-v1.json")
-BRANCH = "arena/af7fc5d1-gnk-asg-portal-archive-2026-07"
 MODES = {"script", "human", "hybrid"}
 CHECK_TYPES = {"file", "cmd", "log_pass", "json_eq", "json_max", "world_sources", "approval",
                "git_ancestor", "radio_count"}
@@ -86,6 +85,15 @@ def validate(cfg):
 def git(*args):
     p = subprocess.run(["git", "-C", ROOT, *args], capture_output=True, text=True)
     return p.returncode, p.stdout.strip()
+
+
+def current_branch():
+    """Ime stvarnog checkouta, bez pretpostavke da je checkout na stalnoj grani."""
+    rc, branch = git("symbolic-ref", "--quiet", "--short", "HEAD")
+    if rc == 0 and branch:
+        return branch
+    rc, commit = git("rev-parse", "--short", "HEAD")
+    return f"detached:{commit}" if rc == 0 and commit else "nepoznato"
 
 
 def check_git_ancestor(check):
@@ -228,7 +236,7 @@ def write_outputs(cfg, states, run):
         summary[s["state"]] = summary.get(s["state"], 0) + 1
     board = {
         "version": "FACTORY_ORCHESTRATION_BOARD_V1",
-        "branch": BRANCH,
+        "branch": current_branch(),
         "generatedAt": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "ran_commands": run,
         "summary": summary,
@@ -242,7 +250,7 @@ def write_outputs(cfg, states, run):
     lines = [
         "# Tabla tvorničkih agenata (V1)",
         "",
-        f"Grana: `{BRANCH}`. Generirano: {board['generatedAt']}. Naredbe pokrenute: {run}.",
+        f"Grana: `{board['branch']}`. Generirano: {board['generatedAt']}. Naredbe pokrenute: {run}.",
         "",
         "Stanje: " + ", ".join(f"{k} {v}" for k, v in sorted(summary.items())),
         "",

@@ -88,3 +88,19 @@ Dnevni ciklus `region-daily`: `recover-items-from-pages-v1.mjs --check` prije `d
 - Ne piše u javne stranice niti u podatke kanala.
 - Ne odlučuje o pravnim pitanjima. Ta odluka ide u ledger.
 - Ne zaobilazi kapije. Ako kapija padne, zadatak ostaje u tablici.
+
+## Javni centar tvornice
+
+Na `/agenti/#tvornica` nalazi se pregled registra tvorničkih uloga, spremljenog
+snimka kapija i stanja država iz `config/world-countries-v1.json`. Centar je
+statičan, bez izvršnih kontrola, vanjskih poziva, LLM-a ili automatske objave.
+Pretraživanje radi u pregledniku; bez JavaScripta sve kartice ostaju vidljive.
+Datum snimka je prikazan jer rezultat nije provjera uživo. Prolaz kapije nije
+dokaz da je agent izvršio sav svoj posao ili da je sadržaj objavljen.
+
+Pri osvježavanju prvo generirati snimak `python3 scripts/factory/orchestrator_v1.py`,
+zatim stranicu `node scripts/build-agents-page-v1.mjs` i primijeniti standardne
+slojeve prema postojećem redoslijedu pipelinea. Generator stranice može ukloniti
+zajedničke slojeve; prije objave obavezno pokrenuti sinkronizaciju slojeva i
+provjere. Test `node scripts/factory/test_factory_center_v1.mjs` provjerava
+usklađenost snimka, sigurnost ispisa i filtriranje.

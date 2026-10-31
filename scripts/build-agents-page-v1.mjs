@@ -17,6 +17,7 @@ import { refreshTag } from '../apps/shared/refresh-tag-v1.mjs';
 import { impressumBlock } from '../apps/shared/impressum-v1.mjs';
 import { authorBand } from '../apps/shared/author-band-v1.mjs';
 import { entityGraph } from './lib/entity-graph-v1.mjs';
+import { renderFactoryCenter } from './factory/factory-center-v1.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(ROOT, 'apps', 'portal', 'agenti');
@@ -35,6 +36,11 @@ const PUBLIC = 'https://gnk-asg.hr';
 const registry = JSON.parse(readFileSync(join(ROOT, 'ops', 'network-agents-v1.json'), 'utf8'));
 const statusFile = join(ROOT, 'apps', 'portal', 'data', 'agents-status-v1.json');
 const status = existsSync(statusFile) ? JSON.parse(readFileSync(statusFile, 'utf8')) : { results: [], healthy: 0, webs: 0 };
+
+const factoryConfig = JSON.parse(readFileSync(join(ROOT, 'config', 'factory-agents-v1.json'), 'utf8'));
+const factoryBoard = JSON.parse(readFileSync(join(ROOT, 'artifacts', 'factory', 'orchestration-board.json'), 'utf8'));
+const worldRegistry = JSON.parse(readFileSync(join(ROOT, 'config', 'world-countries-v1.json'), 'utf8'));
+const factoryCenter = renderFactoryCenter(factoryConfig, factoryBoard, worldRegistry);
 
 const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
@@ -140,6 +146,7 @@ const html = `<!doctype html>
   <h1>Agenti mreže</h1>
   <p class="ag-lead">${agents.length} agenata održava ${status.webs || 7} webova AKTUAL MEDIA mreže. Ploča se ne uređuje ručno: nastaje iz registra agenata i iz mjerenja koje svaki agent sam pokreće. Ako mjerenje padne, padne i zapis — nema „zelenog" statusa bez dokaza.</p>
   <ul class="ag-facts">${facts}</ul>
+  ${factoryCenter}
 
   <h2 class="ag-h2">Mjerenje po webu</h2>
   <table>
