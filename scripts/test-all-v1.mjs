@@ -71,6 +71,7 @@ const GATES = [
   { name: 'Tvornica — javni centar agenata', cmd: ['node', 'scripts/factory/test_factory_center_v1.mjs'], required: true },
   { name: 'Tvornica — pregled država i izvora', cmd: ['node', 'scripts/factory/test_world_directory_v1.mjs'], required: true },
   { name: 'Tvornica — sinkronizacija javnog prikaza', cmd: ['node', 'scripts/factory/test_sync_factory_view_v1.mjs'], required: true },
+  { name: 'Tvornica — plan objave i razmjene vijesti', cmd: ['node', 'scripts/factory/test_publication_plan_v1.mjs'], required: true },
   { name: 'Tvornica — skener HTML metapodataka', cmd: ['python3', 'scripts/factory/test_quality_scan_v1.py'], required: true },
   { name: 'Svijet — sigurni lokalni predlošci država', cmd: ['node', 'scripts/world/test-country-previews-v1.mjs'], required: true },
   { name: 'Oporavak zapisa iz stranica — parsiranje i izvori', cmd: ['node', 'tests/test-recover-items-v1.mjs'], required: true },

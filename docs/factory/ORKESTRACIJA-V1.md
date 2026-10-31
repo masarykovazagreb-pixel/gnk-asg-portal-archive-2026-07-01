@@ -126,8 +126,8 @@ da ti kanali nemaju izvore. Novi kanali se i dalje ne objavljuju bez kapija K1�
 
 `node scripts/factory/sync-factory-view-v1.mjs` osvježava samo dvije označene
 cjeline centra i registra država na postojećoj stranici agenata, bez prepisivanja
-zajedničkih slojeva. Opcija `--check` provjerava stanje bez pisanja. Korak je i
-u `sync-all-v1.mjs`, nakon generatora stranice agenata. Nedostajuće ili ponovljene
+zajedničkih slojeva. Opcija `--check` provjerava stanje bez pisanja. Potpuna sinkronizacija gradi stranicu agenata iz istih registara; ciljani alat može
+se pokrenuti odvojeno bez ponovnog generiranja cijele stranice. Nedostajuće ili ponovljene
 oznake prekidaju rad; provjera je pokrivena testovima. Pregled razlikuje 14
 aktivnih država u registru od tri postojeća gradska kanala u pripremi i prikazuje
 konfigurirane izvore iz `channels.json`; to nije dokaz njihovih licenci ili

@@ -82,7 +82,6 @@ export const STEPS = [
   { id: 'house-icons', group: 'layers', file: 'scripts/ensure-house-icons-v1.mjs', check: ['--check'], why: 'ikonа kuće postoji na svakoj adresi na koju stranica pokazuje' },
   { id: 'listing-shell', group: 'layers', file: 'scripts/fix-editorial-listing-shell-v1.mjs', check: ['--check'], why: 'popisi bez </body> dobivaju zatvoren dokument, impressum i traku' },
   { id: 'agents-page', group: 'layers', file: 'scripts/build-agents-page-v1.mjs', why: 'javna ploča agenata' },
-  { id: 'factory-view', group: 'layers', file: 'scripts/factory/sync-factory-view-v1.mjs', check: ['--check'], why: 'usklađeni registri tvornice i država bez promjene slojeva' },
   { id: 'social-cards', group: 'layers', file: 'scripts/apply-social-card-meta-v1.mjs', why: 'OG/Twitter kartice (nakon generatora agenti/sve-stranice, prije osvježavanja)' },
   { id: 'refresh', group: 'layers', file: 'scripts/apply-refresh-v1.mjs', check: ['--check'], why: 'osvježavanje na svakoj stranici' },
   { id: 'entity', group: 'layers', file: 'scripts/apply-network-entity-v1.mjs', why: 'entity:v1 graf na svakoj stranici' },
