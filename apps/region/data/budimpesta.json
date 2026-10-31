@@ -4,17 +4,23 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-10-31T15:38:48.779Z",
+  "updatedAt": "2026-10-31T18:32:42.525Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": true,
-      "fetched": 50,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-10-31T15:38:43.927Z"
+      "errors": [
+        "https://telex.hu/rss: HTTP 403",
+        "https://telex.hu/rss/belfold: HTTP 403",
+        "https://telex.hu/rss/kulfold: HTTP 403",
+        "https://telex.hu/rss/gazdasag: HTTP 403",
+        "https://telex.hu/rss/sport: HTTP 403"
+      ],
+      "checkedAt": "2026-10-31T18:32:39.859Z"
     },
     {
       "id": "444",
@@ -24,7 +30,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-31T15:38:44.830Z"
+      "checkedAt": "2026-10-31T18:32:39.910Z"
     },
     {
       "id": "hvg",
@@ -34,7 +40,7 @@
       "fetched": 60,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-31T15:38:45.204Z"
+      "checkedAt": "2026-10-31T18:32:40.037Z"
     },
     {
       "id": "portfolio",
@@ -44,7 +50,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-31T15:38:45.916Z"
+      "checkedAt": "2026-10-31T18:32:40.486Z"
     },
     {
       "id": "index",
@@ -56,7 +62,7 @@
       "errors": [
         "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-31T15:38:47.714Z"
+      "checkedAt": "2026-10-31T18:32:42.059Z"
     },
     {
       "id": "24hu",
@@ -66,7 +72,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-31T15:38:47.967Z"
+      "checkedAt": "2026-10-31T18:32:42.118Z"
     },
     {
       "id": "mandiner",
@@ -76,10 +82,381 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-31T15:38:48.779Z"
+      "checkedAt": "2026-10-31T18:32:42.524Z"
     }
   ],
   "items": [
+    {
+      "slug": "budimpesta-2026-10-31-portfolio-kiderult-ezzel-a-feltetellel-kaphat-38bcf6",
+      "title": "Kiderült: ezzel a feltétellel kaphat Zelenszkij meghívót Trumptól",
+      "summary": "Marco Rubio amerikai külügyminiszter szombaton Atlantában tartott sajtótájékoztatót, amelyen beszélt az Irán elleni esetleges katonai fellépésről, valamint arról, hogy milyen feltételek mellett vehet részt az ukrán elnök a decemberi G20-csúcson - írja a Reuters.",
+      "date": "2026-10-31T18:23:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261031/kiderult-ezzel-a-feltetellel-kaphat-zelenszkij-meghivot-trumptol-873344",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://pcdn.hu/articles/images-xl/m/a/r/marco-rubio-amerikai-kulugyminiszter-847480.jpg",
+      "imageAlt": "Kiderült: ezzel a feltétellel kaphat Zelenszkij meghívót Trumptól",
+      "addedAt": "2026-10-31T18:32:40.486Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-24hu-378-napig-elt-4-onkentes-a-nasa-mars-60ddd5",
+      "title": "378 napig élt 4 önkéntes a NASA Mars-szimulációjában, elzárva a külvilágtól",
+      "summary": "A Mars-misszió szimulációja során a legénység tagjai szimulált űrsétákat végeztek és növényeket termesztettek. De nem ez volt az egyetlen nehézség. The post 378 napig élt 4 önkéntes a NASA Mars-szimulációjában, elzárva a külvilágtól first appeared on 24.hu .",
+      "date": "2026-10-31T18:16:55.000Z",
+      "url": "https://24.hu/tech/2026/10/31/nasa-mars-szimulacio-4-onkentes-378-nap/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Tech",
+        "chapea",
+        "mars",
+        "nasa"
+      ],
+      "author": "Lányi Örs",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/10/nasa-1-e1793470580471-1024x577.png",
+      "imageAlt": "378 napig élt 4 önkéntes a NASA Mars-szimulációjában, elzárva a külvilágtól",
+      "addedAt": "2026-10-31T18:32:42.119Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-hvg-34-nemet-varosban-vonultak-utcara-a-ab7036",
+      "title": "34 német városban vonultak utcára a fiatalok, Hamburgban paprikaspray-vel oszlattak a rendőrök",
+      "summary": "A tüntetők az iskolák jobb finanszírozását, a megélhetési költségek csökkentését, nagyobb társadalmi igazságosságot és erőteljesebb klímavédelmet követelnek.",
+      "date": "2026-10-31T18:16:43.000Z",
+      "url": "https://hvg.hu/vilag/20261031_34-nemet-varosban-vonultak-utcara-a-fiatalok-hamburgban-paprikaspray-vel-oszlattak-a-rendorok",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Világ",
+        "világ",
+        "Németország",
+        "tüntetés"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/a21952e3-e811-4224-85d8-a943a02c8b9c.jpg",
+      "imageAlt": "34 német városban vonultak utcára a fiatalok, Hamburgban paprikaspray-vel oszlattak a rendőrök",
+      "addedAt": "2026-10-31T18:32:40.037Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-portfolio-lezartak-a-legteret-egymas-utan-szalltak-cef1a5",
+      "title": "Lezárták a légteret: egymás után szálltak fel az F-16-os vadászgépek a szomszédos NATO-tagállamban",
+      "summary": "Drónészlelés miatt riasztották szombaton este hat kelet-romániai megye lakosságát, és ideiglenesen felfüggesztették a jászvásári (Iasi) nemzetközi repülőtér járatait - jelentette az Agerpres román hírügynökség.",
+      "date": "2026-10-31T18:12:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261031/lezartak-a-legteret-egymas-utan-szalltak-fel-az-f-16-os-vadaszgepek-a-szomszedos-nato-tagallamban-873342",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://pcdn.hu/articles/images-xl/r/o/m/roman-f-16-vadaszgep-863018.jpg",
+      "imageAlt": "Lezárták a légteret: egymás után szálltak fel az F-16-os vadászgépek a szomszédos NATO-tagállamban",
+      "addedAt": "2026-10-31T18:32:40.487Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-hvg-majdnem-teljesen-fedezte-mar-a-binance-a-ccac46",
+      "title": "Majdnem teljesen fedezte már a Binance a hackertámadás kárát",
+      "summary": "A kriptotőzsde saját forrásból vásárolt újra tokeneket.",
+      "date": "2026-10-31T18:09:30.000Z",
+      "url": "https://hvg.hu/gazdasag/20261031_binance-hackertamadas-kar-token",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Gazdaság",
+        "üzlet",
+        "Binance",
+        "hackertámadás"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "sigurnost",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/b7d60b9a-fde2-4b22-8428-d885b24cbf09.jpg",
+      "imageAlt": "Majdnem teljesen fedezte már a Binance a hackertámadás kárát",
+      "addedAt": "2026-10-31T18:32:40.037Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-portfolio-sokeves-melypont-utan-ujra-no-magyarorszag-3050d2",
+      "title": "Sokéves mélypont után újra nő Magyarország gázétvágya, pedig egyre borsosabb árat fizetünk érte",
+      "summary": "Október közepén érdemben is elkezdődött a hazai fűtési időszak, miután az ősz első felében sokéves rekord alacsonyan alakult a magyarországi földgázfelhasználás, a tavalyi hasonló időszaktól is közel negyedével elmaradva. A felhasználás mértékére az időjárás mellett a legutóbb 2022-ben látott szinteken járó gázárak, a gazdasági aktivitás és az elektrifikáció is erőteljesen hat. A hazai föld alatti gáztárolók töltöttsége a 78%-ot közelíti, meghaladva az uniós átlagot és az egy évvel ezelőtti itthoni szintet, ugyanakkor elmaradva a megelőző évek töltöttségétől; ezzel együtt a gáztartalék, az import és a hazai kitermelés együtt kényelmesen fedezik a téli gázigényt.",
+      "date": "2026-10-31T18:03:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261031/sokeves-melypont-utan-ujra-no-magyarorszag-gazetvagya-pedig-egyre-borsosabb-arat-fizetunk-erte-873338",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://pcdn.hu/articles/images-xl/g/e/t/gettyimages-94819530-865780.jpg",
+      "imageAlt": "Sokéves mélypont után újra nő Magyarország gázétvágya, pedig egyre borsosabb árat fizetünk érte",
+      "addedAt": "2026-10-31T18:32:40.487Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-444-a-nemzetkozi-jegkorong-szovetseg-3c01a6",
+      "title": "A Nemzetközi Jégkorong Szövetség visszavette az oroszokat, több tagország is kiakadt",
+      "summary": "Bojkottról egyelőre ugyan nincs szó, de több ország is jelezte: előfordulhat, hogy egyes játékosok nem lépnek jégre, ha az oroszok is versenyeznek.",
+      "date": "2026-10-31T18:01:45.000Z",
+      "url": "https://444.hu/2026/10/31/a-nemzetkozi-jegkorong-szovetseg-visszavette-az-oroszokat-tobb-tagorszag-is-kiakadt?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "hoki",
+        "oroszország",
+        "Nemzetközi Sportdöntőbíróság",
+        "cas"
+      ],
+      "author": "Bódog Bálint",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8PUpZTHqm60uGWBes.jpeg",
+      "imageAlt": "A Nemzetközi Jégkorong Szövetség visszavette az oroszokat, több tagország is kiakadt",
+      "addedAt": "2026-10-31T18:32:39.910Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-24hu-nem-csupan-az-aranycsapat-esett-szet-a-504c9b",
+      "title": "Nem csupán az Aranycsapat esett szét, a magyar futball jövője is elveszett 1956-ban",
+      "summary": "A forradalom kitörésének, majd a szovjet csapatok bevonulásának hírére rengeteg futballista elhagyta az országot vagy éppen nem tért haza. Eljött a disszidálások, és besúgók kora. The post Nem csupán az Aranycsapat esett szét, a magyar futball jövője is elveszett 1956-ban first appeared on 24.hu .",
+      "date": "2026-10-31T17:58:39.000Z",
+      "url": "https://24.hu/sport/foci/2026/10/31/1956-os-forradalom-magyar-foci-aranycsapat-puskas/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Foci",
+        "1956",
+        "1956-os forradalom",
+        "aranycsapat"
+      ],
+      "author": "Pincési László",
+      "theme": "sigurnost",
+      "image": "https://s.24.hu/app/uploads/2026/09/fortepan_13743-masolat-1024x576.jpg",
+      "imageAlt": "Nem csupán az Aranycsapat esett szét, a magyar futball jövője is elveszett 1956-ban",
+      "addedAt": "2026-10-31T18:32:42.119Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-24hu-terrortamadasra-figyelmezette-oroszorszagot-fd5831",
+      "title": "Terrortámadásra figyelmezette Oroszországot az Egyesült Államok",
+      "summary": "Tömeges áldozatokkal járó támadás készülhetett az orosz fővárosban. The post Terrortámadásra figyelmezette Oroszországot az Egyesült Államok first appeared on 24.hu .",
+      "date": "2026-10-31T17:55:56.000Z",
+      "url": "https://24.hu/kozelet/2026/10/31/terrortamadas-usa-oroszorszag/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Közélet",
+        "moszkva",
+        "terror",
+        "támadás"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/10/vlagyimir-putyin-1024x576-1.jpg",
+      "imageAlt": "Terrortámadásra figyelmezette Oroszországot az Egyesült Államok",
+      "addedAt": "2026-10-31T18:32:42.119Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-hvg-verfurdovel-melegitenek-az-amerikai-934eb3",
+      "title": "Vérfürdővel melegítenek az amerikai techcégek a közelgő választásokra",
+      "summary": "Tetemes eséssel zárták a hetet a tőzsdék az Egyesült Államokban, különösen a technológiai vállalatok húzták lefelé az árfolyamokat. Sokféle magyarázat van, kezdve a jövő heti félidős választásokat övező bizonytalanságoktól egészen addig, hogy most jött el a pillanat, amikorra kipukkadt a mesterséges intelligencia tőzsdei buborékja.",
+      "date": "2026-10-31T17:48:29.000Z",
+      "url": "https://hvg.hu/kkv/20261031_amerika-tozsde-ai-nasdaq-eses",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Vállalkozás",
+        "üzlet",
+        "tőzsde",
+        "Nasdaq"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "politika",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/eea598c9-3959-4a4d-8f1c-44e365e7bc75.jpg",
+      "imageAlt": "Vérfürdővel melegítenek az amerikai techcégek a közelgő választásokra",
+      "addedAt": "2026-10-31T18:32:40.037Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-24hu-az-arsenal-utan-a-manchester-cityt-is-159b8b",
+      "title": "Az Arsenal után a Manchester Cityt is elkapta az idény meglepetéscsapata",
+      "summary": "A Brighton már a Ligakupában is rángatta a City bajszát, de akkor tizenegyesekkel elvérzett. Most viszont összejött a bravúr, kellett hozzá egy City-védő bénázása is. The post Az Arsenal után a Manchester Cityt is elkapta az idény meglepetéscsapata first appeared on 24.hu .",
+      "date": "2026-10-31T17:40:14.000Z",
+      "url": "https://24.hu/sport/foci/2026/10/31/premier-league-manchester-city-brighton/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Foci",
+        "brighton",
+        "manchester city",
+        "premier league"
+      ],
+      "author": "Dajka Balázs",
+      "theme": "sport",
+      "image": "https://s.24.hu/app/uploads/2026/10/000_d6246qr-1024x576.jpg",
+      "imageAlt": "Az Arsenal után a Manchester Cityt is elkapta az idény meglepetéscsapata",
+      "addedAt": "2026-10-31T18:32:42.119Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-hvg-ujabb-tiltakozasok-franciaorszagban-a-46daca",
+      "title": "Újabb tiltakozások Franciaországban, a hatóságok zavargásoktól, a boltosok fosztogatásoktól tartanak",
+      "summary": "Rendőrségi források szerint szombat estére 150 városban 350 demonstrációt jelentettek be, amelyekre mintegy 400 ezer résztvevőt várnak.",
+      "date": "2026-10-31T17:28:26.000Z",
+      "url": "https://hvg.hu/vilag/20261031_ujabb-tiltakozasok-franciaorszagban",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Világ",
+        "világ",
+        "Franciaország",
+        "Párizs"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/d765153f-a477-4e70-8fc2-6571b1279096.jpg",
+      "imageAlt": "Újabb tiltakozások Franciaországban, a hatóságok zavargásoktól, a boltosok fosztogatásoktól tartanak",
+      "addedAt": "2026-10-31T18:32:40.037Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-24hu-mar-latni-hogy-alakul-europa-es-d4a037",
+      "title": "Már látni, hogy alakul Európa és Magyarország időjárása az elkövetkező héten",
+      "summary": "A Középtávú Időjárás-előrejelzések Európai Központjának (ECMWF) legfrissebb előrejelzése szerint pontosan látni, hogy alakul az elkövetkező hét időjárása. The post Már látni, hogy alakul Európa és Magyarország időjárása az elkövetkező héten first appeared on 24.hu .",
+      "date": "2026-10-31T17:23:01.000Z",
+      "url": "https://24.hu/tudomany/2026/10/31/idojaras-elorejelzes-magyarorszag-europa/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Tudomány",
+        "időjárás",
+        "előrejelzés",
+        "lehűlés"
+      ],
+      "author": "Lányi Örs",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/10/gettyimages-93429203-e1793467341365-1024x577.jpg",
+      "imageAlt": "Már látni, hogy alakul Európa és Magyarország időjárása az elkövetkező héten",
+      "addedAt": "2026-10-31T18:32:42.119Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-444-legvedelmi-rendszereket-telepitettek-mar-a-778ebe",
+      "title": "Légvédelmi rendszereket telepítettek Mar-a-Lago közelébe, egyenruhás katonák védik Trumpot az üdülőjében",
+      "summary": "A szolgálatok szerint állandó a fenyegetés a birtok körül.",
+      "date": "2026-10-31T17:16:42.000Z",
+      "url": "https://444.hu/2026/10/31/legvedelmi-rendszereket-telepitettek-mar-a-lago-kozelebe-egyenruhas-katonak-vedik-trumpot-az-udulojeben?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "Egyesült Államok",
+        "mar-a-lago",
+        "avenger",
+        "Donald Trump"
+      ],
+      "author": "Bódog Bálint",
+      "theme": "sigurnost",
+      "image": "https://assets.4cdn.hu/kraken/8PUmY5a9ze7GLIDKs.jpeg",
+      "imageAlt": "Légvédelmi rendszereket telepítettek Mar-a-Lago közelébe, egyenruhás katonák védik Trumpot az üdülőjében",
+      "addedAt": "2026-10-31T18:32:39.910Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-24hu-ujra-tuntetnek-a-francia-varosokban-400-1cbbd6",
+      "title": "Újra tüntetnek a francia városokban, 400 ezren mehetnek utcára",
+      "summary": "Mindeközben a belügyminisztérium 70 ezer rendfenntartót vezényelt az utcákra. The post Újra tüntetnek a francia városokban, 400 ezren mehetnek utcára first appeared on 24.hu .",
+      "date": "2026-10-31T17:11:12.000Z",
+      "url": "https://24.hu/belfold/2026/10/31/franciaorszag-tuntetes-rendor-parizs/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "párizs",
+        "tüntetés",
+        "franciaország"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/10/francia-rendor-e1790661695259.jpg",
+      "imageAlt": "Újra tüntetnek a francia városokban, 400 ezren mehetnek utcára",
+      "addedAt": "2026-10-31T18:32:42.119Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-444-olyan-hangot-kepviselek-amivel-nem-nagyon-7e6111",
+      "title": "„Olyan hangot képviselek, amivel nem nagyon találkozni a tévében”",
+      "summary": "Sapkás Piréz youtuberként találta meg egy kereskedelmi tévés műsor, az Árulók szereplői között. Volt már éles vitája Gulyás Mártonnal és Vona Gáborral is, de miért megengedőbb közben a fideszes influenszer Vasvári Viviennel? Interjú a videóssal, aki szerint a magyar társadalomban még mindig ott vannak azok a dolgok, amik megágyaztak a Fidesznek.",
+      "date": "2026-10-31T17:01:38.000Z",
+      "url": "https://444.hu/2026/10/31/olyan-hangot-kepviselek-amivel-nem-nagyon-talalkozni-a-teveben?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "Sapkás Piréz",
+        "rtl klub",
+        "vona gábor",
+        "gulyás márton"
+      ],
+      "author": "Czinkóczi Sándor",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8PTExC2AQ3X4UyHQs.jpeg",
+      "imageAlt": "„Olyan hangot képviselek, amivel nem nagyon találkozni a tévében”",
+      "addedAt": "2026-10-31T18:32:39.910Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-hvg-kannibal-tyukok-sokkoltak-a-falura-koltozo-d2ed4d",
+      "title": "Kannibál tyúkok sokkolták a falura költöző budapestieket",
+      "summary": "Ki lehet vonulni a nagyvárosból egy idilli faluba? Ez a karrier és a kényelmes élet vége? Mire nem számít az ember? Egy tucat belvárosi néhány éve az apró Szandára költözött. Három évvel első riportunk után visszamentünk, hogy lássuk, hogyan alakult a sorsuk. Kiderül az is, hogy mi az ideális munka falun.",
+      "date": "2026-10-31T17:00:00.000Z",
+      "url": "https://hvg.hu/elet/20261031_szanda-falu-varos-kikoltozes-foldes-andras-riport",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Élet+Stílus",
+        "videó",
+        "Szanda",
+        "Budapest"
+      ],
+      "author": "szerzo@hvg.hu (Földes András)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/21db7c36-cafc-4919-bc53-9535784f7cf3.png",
+      "imageAlt": "Kannibál tyúkok sokkolták a falura költöző budapestieket",
+      "addedAt": "2026-10-31T18:32:40.037Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-hvg-belgradban-targyalt-orban-viktor-271c2a",
+      "title": "Belgrádban tárgyalt Orbán Viktor",
+      "summary": "Pásztor Bálint, a VMSZ vezetője posztolt közös fotót a volt miniszterelnökkel. Közben Vucicot saját pártja szeretné újra elnöknek.",
+      "date": "2026-10-31T16:52:21.000Z",
+      "url": "https://hvg.hu/itthon/20261031_belgradban-targyalt-orban-viktor",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "politika",
+        "VMSZ",
+        "Pásztor Bálint"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/f6db9a90-3545-4845-9c9c-be1d83653cf7.jpg",
+      "imageAlt": "Belgrádban tárgyalt Orbán Viktor",
+      "addedAt": "2026-10-31T18:32:40.038Z"
+    },
+    {
+      "slug": "budimpesta-2026-10-31-444-egy-birosag-megtiltotta-a-trump-b424e5",
+      "title": "Egy bíróság megtiltotta a Trump-kormányzatnak, hogy a választási dolgozókat fenyegesse",
+      "summary": "Az igazságügyi minisztérium illegális szavazókat azonosított, ha pedig a választási dolgozók nem segítenek a szűrésben, a minisztérium szerint törvényt sértenek.",
+      "date": "2026-10-31T16:16:54.000Z",
+      "url": "https://444.hu/2026/10/31/egy-birosag-megtiltotta-a-trump-kormanyzatnak-hogy-a-valasztasi-dolgozokat-fenyegesse?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "szavazás",
+        "félidős választás",
+        "Egyesült Államok",
+        "félidős választások"
+      ],
+      "author": "Bódog Bálint",
+      "theme": "politika",
+      "image": "https://assets.4cdn.hu/kraken/8PUiCR3tiT41GWB0s.jpeg",
+      "imageAlt": "Egy bíróság megtiltotta a Trump-kormányzatnak, hogy a választási dolgozókat fenyegesse",
+      "addedAt": "2026-10-31T18:32:39.910Z"
+    },
     {
       "slug": "budimpesta-2026-10-31-hvg-magyar-peter-az-ideinel-63-milliard-7e879c",
       "title": "Magyar Péter: Az ideinél 63 milliárd forinttal kevesebbet fordít a 2027-es költségvetésben a kormány a közmédiára",
