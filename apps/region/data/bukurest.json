@@ -4,19 +4,20 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-10-31T18:38:05.367Z",
+  "updatedAt": "2026-10-31T20:10:33.559Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
-      "url": "https://www.agerpres.ro/rss/",
-      "ok": true,
-      "fetched": 20,
+      "url": "https://www.agerpres.ro/rss",
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.agerpres.ro/rss: This operation was aborted"
+        "https://www.agerpres.ro/rss: This operation was aborted",
+        "https://www.agerpres.ro/rss/: HTTP 502"
       ],
-      "checkedAt": "2026-10-31T18:38:00.967Z"
+      "checkedAt": "2026-10-31T20:10:25.648Z"
     },
     {
       "id": "hotnews",
@@ -26,7 +27,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-31T18:38:00.984Z"
+      "checkedAt": "2026-10-31T20:10:25.829Z"
     },
     {
       "id": "zf",
@@ -36,7 +37,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-31T18:38:02.884Z"
+      "checkedAt": "2026-10-31T20:10:27.743Z"
     },
     {
       "id": "profit",
@@ -46,17 +47,17 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-31T18:38:03.086Z"
+      "checkedAt": "2026-10-31T20:10:27.964Z"
     },
     {
       "id": "digi24",
       "name": "Digi24",
       "url": "https://www.digi24.ro/rss",
       "ok": true,
-      "fetched": 194,
+      "fetched": 190,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-31T18:38:03.728Z"
+      "checkedAt": "2026-10-31T20:10:30.873Z"
     },
     {
       "id": "g4media",
@@ -66,7 +67,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-31T18:38:05.173Z"
+      "checkedAt": "2026-10-31T20:10:32.609Z"
     },
     {
       "id": "newsro",
@@ -76,10 +77,340 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-31T18:38:05.366Z"
+      "checkedAt": "2026-10-31T20:10:33.558Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-10-31-digi24-ministrul-florin-manole-spune-ca-nu-a-avut-b7ceab",
+      "title": "Ministrul Florin Manole spune că nu a avut nicio discuţie pentru eliminarea impozitării pensiilor peste 3.000 de lei",
+      "summary": "Ministrul Muncii, Florin Manole, spune că nu a avut nicio discuţie pentru eliminarea impozitării pensiilor peste 3.000 de lei. El a adăugat că este membru într-un guvern care reprezintă România şi are nişte angajamente luate privind ţinta de deficit. În plus, spune ministrul, „nu vrea să facă viaţa mai grea” niciunui alt coleg.",
+      "date": "2026-10-31T20:06:12.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/social/ministrul-florin-manole-spune-ca-nu-a-avut-nicio-discutie-pentru-eliminarea-impozitarii-pensiilor-peste-3-000-de-lei-4016773",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjUl/MkYwNyUyRjEwJTJGMjMwMzEzNl8yMzAz/MTM2X2Zsb3Jpbi1tYW5vbGUtSUQzMTEz/NTlfSU5RVUFNX1Bob3Rvc19HZW9yZ2Vf/Q2FsaW4ucG5nJmhhc2g9ZmE0OWZhMThiZjUyMmZiOGNhNTEwY2Q2YTBmYzg3MjQ=.png",
+      "imageAlt": "Ministrul Florin Manole spune că nu a avut nicio discuţie pentru eliminarea impozitării pensiilor peste 3.000 de lei",
+      "addedAt": "2026-10-31T20:10:30.873Z"
+    },
+    {
+      "slug": "bukurest-2026-10-31-g4media-presedintele-cj-iasi-dupa-alerta-aeriana-d51811",
+      "title": "Președintele CJ Iași, după alerta aeriană din județ: PSD a lăsat un județ de graniță fără prefect, cel care conduce Comitetul Județean pentru Situații de Urgență",
+      "summary": "Președintele Consiliului Județean Iași, Costel Alexe, acuză PSD că a lăsat județul fără prefect, cel care conduce și Comitetul Județean pentru Situații de Urgență. Acuzațiile au fost lansate după ce în județul Iași a fost emisă, sâmbătă seara, o alertă aeriană, în urma detectării unor drone de către sistemele radar, scrie Mediafax. Președintele Consiliului Județean […] © G4Media.ro .",
+      "date": "2026-10-31T19:53:55.000Z",
+      "url": "https://www.g4media.ro/presedintele-cj-iasi-dupa-alerta-aeriana-din-judet-psd-a-lasat-un-judet-de-granita-fara-prefect-cel-care-conduce-comitetul-judetean-pentru-situatii-de-urgenta.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "alerta aeriana",
+        "PSD"
+      ],
+      "author": "Rareș Constantin",
+      "theme": "rat",
+      "image": "https://www.g4media.ro//wp-content/uploads/2021/01/costel-Alexe-INQUAM-PHOTOS-OCTAV-GANEA_e-e1609773467151.jpg",
+      "imageAlt": "Președintele CJ Iași, după alerta aeriană din județ: PSD a lăsat un județ de graniță fără prefect, cel care conduce Comitetul Județean pentru Situații de Urgență",
+      "addedAt": "2026-10-31T20:10:32.609Z"
+    },
+    {
+      "slug": "bukurest-2026-10-31-newsro-mures-accident-la-iesirea-de-pe-autostrada-55717b",
+      "title": "Mureş: Accident la ieşirea de pe autostrada A3. Trei persoane, între care un copil, sunt rănite",
+      "summary": "Un accident rutier s-a produs, sâmbătă seară, la ieşirea de pe autostrada A3, în zona oraşului Ungheni din judeţul Mureş. Primele date de la faţa locului arată că trei persoane, între care un copil, primesc îngrijiri medicale.",
+      "date": "2026-10-31T19:52:50.000Z",
+      "url": "https://www.news.ro/eveniment/mures-accident-la-iesirea-de-pe-autostrada-a3-trei-persoane-intre-care-un-copil-sunt-ranite-1922405231502026102122915406",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Mureş: Accident la ieşirea de pe autostrada A3. Trei persoane, între care un copil, sunt rănite",
+      "addedAt": "2026-10-31T20:10:33.558Z"
+    },
+    {
+      "slug": "bukurest-2026-10-31-profit-anumiti-romani-se-pot-pensiona-chiar-si-cu-b83a63",
+      "title": "Anumiți români se pot pensiona chiar și cu 5 ani mai devreme, fără a fi penalizați pentru această decizie",
+      "summary": "Anumiți români se pot pensiona chiar și cu 5 ani mai devreme, fără a fi penalizați pentru această decizie.",
+      "date": "2026-10-31T19:48:00.000Z",
+      "url": "https://www.profit.ro/perspective/anumiti-romani-se-pot-pensiona-chiar-si-cu-5-ani-mai-devreme-fara-a-fi-penalizati-pentru-aceasta-decizie-22915343?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Perspective"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33242/22915343/2/hands-g3f3b3c79a-1280.jpg?width=800",
+      "imageAlt": "Anumiți români se pot pensiona chiar și cu 5 ani mai devreme, fără a fi penalizați pentru această decizie",
+      "addedAt": "2026-10-31T20:10:27.964Z"
+    },
+    {
+      "slug": "bukurest-2026-10-31-digi24-donald-trump-si-vladimir-putin-s-ar-putea-6f518f",
+      "title": "Donald Trump și Vladimir Putin s-ar putea întâlni. Ce au discutat Marco Rubio și Serghei Lavrov la G20",
+      "summary": "Secretarul de stat al SUA, Marco Rubio, a declarat sâmbătă că a discutat cu omologul său rus, Serghei Lavrov, despre posibilitatea unei interacţiuni între preşedintele american Donald Trump şi cel rus Vladimir Putin în timpul viitorului summit APEC, programat pentru jumătatea lunii noiembrie în China.",
+      "date": "2026-10-31T19:44:55.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/donald-trump-si-vladimir-putin-s-ar-putea-intalni-in-china-ce-au-discutat-marco-rubio-si-serghei-lavrov-la-g20-4016755",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjMxJTJGMzAzODcwMl8zMDM4/NzAyX3Byb2ZpbWVkaWEtMTAzNDYxNDQ2/MC0xLmpwZyZoYXNoPTRmNzcyNGJiZDgyNWFmMTgwY2VmZTQxYmRlYjgzZDU2.jpg",
+      "imageAlt": "Donald Trump și Vladimir Putin s-ar putea întâlni. Ce au discutat Marco Rubio și Serghei Lavrov la G20",
+      "addedAt": "2026-10-31T20:10:30.874Z"
+    },
+    {
+      "slug": "bukurest-2026-10-31-hotnews-raspunsul-dat-de-ministrul-muncii-cand-a-a0b383",
+      "title": "Răspunsul dat de ministrul Muncii, când a fost întrebat dacă are pe masă și scenariul unei înghețări a pensiilor în 2027",
+      "summary": "Ministrul Muncii, Florin Manole, a declarat că deocamdată „are un singur scenariu”, acela al unei indexări a pensiilor în 2027, și că nu a purtat nicio discuție despre o eventuală împărțire în tranșe. El a precizat, într-un interviu difuzat sâmbătă de Antena 3, că va veni „cu o propunere legală” pentru indexarea pensiilor și că …",
+      "date": "2026-10-31T19:40:29.000Z",
+      "url": "https://hotnews.ro/raspunsul-dat-de-ministrul-muncii-cand-a-fost-intrebat-daca-are-pe-masa-si-scenariul-unei-inghetari-a-pensiilor-in-2027-2391662",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "Florin Manole",
+        "ministerul muncii"
+      ],
+      "author": "Vladimir Ionescu",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Răspunsul dat de ministrul Muncii, când a fost întrebat dacă are pe masă și scenariul unei înghețări a pensiilor în 2027",
+      "addedAt": "2026-10-31T20:10:25.830Z"
+    },
+    {
+      "slug": "bukurest-2026-10-31-profit-seful-bursei-turce-a-fost-retinut-20d6e4",
+      "title": "Șeful bursei turce a fost reținut",
+      "summary": "Directorul general al bursei turce Borsa Istanbul a fost reținut, fiind acuzat de luare de mită și apartenență la o organizație constituită în scopul săvârșirii de infracțiuni.",
+      "date": "2026-10-31T19:40:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/vecini/seful-bursei-turce-a-fost-retinut-22915224?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "VECINI"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/35706/22915224/1/agerpres-8036909.jpg?width=800",
+      "imageAlt": "Șeful bursei turce a fost reținut",
+      "addedAt": "2026-10-31T20:10:27.964Z"
+    },
+    {
+      "slug": "bukurest-2026-10-31-newsro-florin-manole-trebuie-sa-le-spunem-fb1dfa",
+      "title": "Florin Manole: Trebuie să le spunem pensionarilor că nu este vorba de milioane de pensii greşite, nici în plus, nici în minus / Noua preşedintă a Casei de Pensii, până la mijlocul…",
+      "summary": "Ministrul Muncii, Florin Manole, a declarat sâmbătă că trebuie să li se spună pensionarilor că nu este vorba de milioane de pensii greşite, nici în plus, nici în minus, el arătând că a fost o majoră greşeală de comunicare şi faptul de a fi fost superficial l-a făcut pe preşedintele Casei de Pensii nu doar să plece, dar şi să transmită mesajul ăsta greşit în rândul pensionarilor. Ministrul a mai spus că noua preşedintă a Casei de Pensii, până la mijlocul săptămânii viitoare, va trebui să iasă public şi să explice care este situaţia reală.",
+      "date": "2026-10-31T19:30:00.000Z",
+      "url": "https://www.news.ro/politic-intern/florin-manole-le-spunem-pensionarilor-vorba-milioane-pensii-gresite-nici-plus-nici-minus-presedinta-casei-pensii-pana-mijlocul-saptamanii-viitoare-explice-situatia-reala-1922403031002026102122915228",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Florin Manole: Trebuie să le spunem pensionarilor că nu este vorba de milioane de pensii greşite, nici în plus, nici în minus / Noua preşedintă a Casei de Pensii, până la mijlocul ",
+      "addedAt": "2026-10-31T20:10:33.558Z"
+    },
+    {
+      "slug": "bukurest-2026-10-31-digi24-ministrul-neculaescu-pilotii-fortelor-524aaa",
+      "title": "Ministrul Neculăescu: Piloţii Forțelor Aeriene au reacţionat prompt şi cu profesionalism în cazul dronelor intrate în spațiul aerian",
+      "summary": "Ministrul de Externe Dan Neculăescu a spus sâmbătă, după ce două drone au pătruns neautorizat în spaţiul aerian al României, că piloţii Fortelor Aeriene Române au reacţionat prompt şi cu profesionalism.",
+      "date": "2026-10-31T19:24:44.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/ministrul-neculaescu-pilotii-fortelor-aeriene-au-reactionat-prompt-si-cu-profesionalism-in-cazul-dronelor-intrate-in-spatiul-aerian-4016749",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjIxJTJGMzAyNTM4NF8zMDI1/Mzg0X0lEMjkzNTQ4LUlOUVVBTS1QSE9U/T1MtTUFMSU5BLU5PUk9DRUEuanBnJmhh/c2g9YjhjMTExNzBiZmVjYjg1NTliNzViMjYzNTMwYThlZTk=.jpg",
+      "imageAlt": "Ministrul Neculăescu: Piloţii Forțelor Aeriene au reacţionat prompt şi cu profesionalism în cazul dronelor intrate în spațiul aerian",
+      "addedAt": "2026-10-31T20:10:30.874Z"
+    },
+    {
+      "slug": "bukurest-2026-10-31-newsro-florin-manole-spune-ca-nu-a-avut-nicio-a4f121",
+      "title": "Florin Manole spune că nu a avut nicio discuţie pentru eliminarea impozitării pensiilor peste 3.000 de lei: Sunt membru într-un guvern care reprezintă această ţară şi are nişte…",
+      "summary": "Ministrul Muncii, Florin Manole, spune că nu a avut nicio discuţie pentru eliminarea impozitării pensiilor peste 3.000 de lei, el arătând că este membru într-un guvern care reprezintă această ţară şi are nişte angajamente luate privind ţinta de deficit şi nu vrea să facă viaţa mai grea niciunui alt coleg.",
+      "date": "2026-10-31T19:21:00.000Z",
+      "url": "https://www.news.ro/politic-intern/florin-manole-spune-avut-nicio-discutie-eliminarea-impozitarii-pensiilor-peste-3-000-lei-membru-intr-guvern-reprezinta-aceasta-tara-niste-angajamente-luate-vreau-fac-viata-grea-niciunui-coleg-1922402131002026102122915205",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Florin Manole spune că nu a avut nicio discuţie pentru eliminarea impozitării pensiilor peste 3.000 de lei: Sunt membru într-un guvern care reprezintă această ţară şi are nişte ang",
+      "addedAt": "2026-10-31T20:10:33.558Z"
+    },
+    {
+      "slug": "bukurest-2026-10-31-newsro-serie-a-meci-nebun-la-udine-udinese-as-roma-222e65",
+      "title": "Serie A: Meci nebun la Udine, Udinese – AS Roma 2-5",
+      "summary": "Echipa italiană AS Roma a învins sâmbătă seara, în deplasare, scor 5-2, formaţia Udinese, în etapa a 10-a din Serie A.",
+      "date": "2026-10-31T19:19:56.000Z",
+      "url": "https://www.news.ro/sport/serie-a-meci-nebun-la-udine-udinese-as-roma-2-5-1922401931562026102122915203",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Serie A: Meci nebun la Udine, Udinese – AS Roma 2-5",
+      "addedAt": "2026-10-31T20:10:33.558Z"
+    },
+    {
+      "slug": "bukurest-2026-10-31-g4media-secretarul-de-stat-american-marco-rubio-a-e46b18",
+      "title": "Secretarul de stat american Marco Rubio a discutat cu omologul său rus despre o întâlnire Putin-Trump la următorul summit APEC",
+      "summary": "Secretarul de stat al SUA, Marco Rubio, a declarat sâmbătă că a discutat cu omologul său rus, Serghei Lavrov, despre posibilitatea unei interacţiuni între preşedintele american Donald Trump şi cel rus Vladimir Putin în timpul viitorului summit APEC, programat pentru jumătatea lunii noiembrie în China, informează agenția de știri AFP, citată de Agerpres. „Am abordat […] © G4Media.ro .",
+      "date": "2026-10-31T19:19:20.000Z",
+      "url": "https://www.g4media.ro/secretarul-de-stat-american-marco-rubio-a-discutat-cu-omologul-sau-rus-despre-o-intalnire-putin-trump-la-urmatorul-summit-apec.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "Putin",
+        "trump"
+      ],
+      "author": "Rareș Constantin",
+      "theme": "politika",
+      "image": "https://www.g4media.ro//wp-content/uploads/2025/08/profimedia-1029627387.jpg",
+      "imageAlt": "Secretarul de stat american Marco Rubio a discutat cu omologul său rus despre o întâlnire Putin-Trump la următorul summit APEC",
+      "addedAt": "2026-10-31T20:10:32.609Z"
+    },
+    {
+      "slug": "bukurest-2026-10-31-hotnews-romania-contribuie-concret-la-edificarea-acd6ea",
+      "title": "„România contribuie concret la edificarea NATO 3.0”. Mesajul ministrului de Externe după incursiunea dronelor în spațiul aerian românesc",
+      "summary": "Ministrul Afacerilor Externe, Dan Neculăescu, a transmis, sâmbătă, un mesaj, după ce două drone au pătruns neautorizat în spațiul aerian al României. Neculăescu i-a felicitat pe piloții Forțelor Aeriene Române și a vorbit despre contribuția României la consolidarea apărării NATO. „Două drone au pătruns neautorizat în spațiul aerian al României, în nord-estul țării. Piloții Forțelor …",
+      "date": "2026-10-31T19:18:14.000Z",
+      "url": "https://hotnews.ro/romania-contribuie-concret-la-edificarea-nato-3-0-mesajul-ministrului-de-externe-dupa-incursiunea-dronelor-in-spatiul-aerian-romanesc-2391657",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Ana Teșcan",
+      "theme": "rat",
+      "image": "",
+      "imageAlt": "„România contribuie concret la edificarea NATO 3.0”. Mesajul ministrului de Externe după incursiunea dronelor în spațiul aerian românesc",
+      "addedAt": "2026-10-31T20:10:25.830Z"
+    },
+    {
+      "slug": "bukurest-2026-10-31-profit-video-umbrarescu-pregateste-viitorul-drum-420d83",
+      "title": "VIDEO Umbrărescu pregătește viitorul drum expres din România, Brăila - Galați. A început montarea cablurilor de la hobane pe podul peste Siret",
+      "summary": "Constructorul român UMB a a început montarea cablurilor de la hobane pe podul peste Siret, parte din viitorul drum expres Brăila-Galați.",
+      "date": "2026-10-31T19:17:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/auto-transporturi/video-umbrarescu-pregateste-viitorul-drum-expres-din-romania-braila-galati-a-inceput-montarea-cablurilor-de-la-hobane-pe-podul-peste-siret-22915164?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Auto/Transporturi"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33217/22915164/1/screenshot-2026-07-23-160122.png?width=800",
+      "imageAlt": "VIDEO Umbrărescu pregătește viitorul drum expres din România, Brăila - Galați. A început montarea cablurilor de la hobane pe podul peste Siret",
+      "addedAt": "2026-10-31T20:10:27.964Z"
+    },
+    {
+      "slug": "bukurest-2026-10-31-digi24-sua-analizeaza-propuneri-pentru-deblocarea-b470b4",
+      "title": "SUA analizează propuneri pentru deblocarea transporturilor de cereale prin Marea Neagră. Apelul lui Erdogan către Moscova și Kiev",
+      "summary": "Securitatea navigației în Marea Neagră revine în centrul discuțiilor diplomatice. Marco Rubio spune că SUA analizează propuneri ale Turciei și Indiei pentru deblocarea transporturilor de cereale, în timp ce Recep Tayyip Erdogan condamnă atacurile asupra navelor civile și cere responsabilitate din partea Moscovei și Kievului, transmite Reuters.",
+      "date": "2026-10-31T19:15:44.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/sua/sua-analizeaza-propuneri-pentru-deblocarea-transporturilor-de-cereale-prin-marea-neagra-apelul-lui-erdogan-catre-moscova-si-kiev-4016741",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjE1JTJGMzAxNDc3MV8zMDE0/NzcxX05HRTJNVGN6TXpaa01USmhOMlU1/TUdJNE1XVXhNR05oWXpVeE1UazJOZ190/aHVtYl8uanBnJmhhc2g9MDhmNDM4OTE2YjdhMDc5Yjg0OWI2YzAwMGFmNGU0OTA=.jpg",
+      "imageAlt": "SUA analizează propuneri pentru deblocarea transporturilor de cereale prin Marea Neagră. Apelul lui Erdogan către Moscova și Kiev",
+      "addedAt": "2026-10-31T20:10:30.874Z"
+    },
+    {
+      "slug": "bukurest-2026-10-31-newsro-ministrul-manole-copilul-meu-si-alte-cateva-e3235b",
+      "title": "Ministrul Manole: Copilul meu şi alte câteva zeci de mii de familii care câştigă bine în ţara asta n-ar simţi nicio diferenţă dacă alocaţia creşte cu 20 sau cu 30 de lei. Pentru…",
+      "summary": "Ministrul Muncii, Florin Manole, a declarat sâmbătă, despre o majorare a alocaţiilor, că copilul său şi alte câteva zeci de mii de familii care câştigă bine în ţara asta n-ar simţi nicio diferenţă dacă alocaţia creşte cu 20 sau cu 30 de lei dar pentru alţii, ar fi mult prea puţin şi ar trebui să găsească mecanisme mai bune.",
+      "date": "2026-10-31T19:15:00.000Z",
+      "url": "https://www.news.ro/politic-intern/ministrul-manole-copilul-cateva-zeci-mii-familii-castiga-bine-tara-asta-n-ar-simti-nicio-diferenta-alocatia-creste-20-30-lei-altii-ar-mult-prea-putin-ar-trebui-gasim-mecanisme-bune-1922401531002026102122915166",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Ministrul Manole: Copilul meu şi alte câteva zeci de mii de familii care câştigă bine în ţara asta n-ar simţi nicio diferenţă dacă alocaţia creşte cu 20 sau cu 30 de lei. Pentru al",
+      "addedAt": "2026-10-31T20:10:33.558Z"
+    },
+    {
+      "slug": "bukurest-2026-10-31-newsro-florin-manole-am-avut-o-discutie-cu-a6c00b",
+      "title": "Florin Manole: Am avut o discuţie cu ministrul Energiei că trebuie să facem o reglementare nouă pe zona consumatorului vulnerabil / Beneficiul de 50 de lei s-a dovedit unul…",
+      "summary": "Ministrul Muncii, Florin Manole, a declarat sâmbătă că a avut o discuţie cu ministrul Energiei despre faptul că trebuie să facă o reglementare nouă pe zona consumatorului vulnerabil, dar nu a avut o discuţie pe cuantum şi pe praguri de venit. Manole a mai spus că beneficiul de 50 de lei crede că s-a dovedit unul rezonabil în cursul acestui an.",
+      "date": "2026-10-31T19:08:00.000Z",
+      "url": "https://www.news.ro/politic-intern/florin-manole-avut-discutie-ministrul-energiei-facem-reglementare-zona-consumatorului-vulnerabil-beneficiul-50-lei-s-dovedit-unul-rezonabil-inainte-face-bugetul-viitor-trebui-avem-decizia-1922400831002026102122915124",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "image": "",
+      "imageAlt": "Florin Manole: Am avut o discuţie cu ministrul Energiei că trebuie să facem o reglementare nouă pe zona consumatorului vulnerabil / Beneficiul de 50 de lei s-a dovedit unul rezonab",
+      "addedAt": "2026-10-31T20:10:33.558Z"
+    },
+    {
+      "slug": "bukurest-2026-10-31-hotnews-seful-bursei-din-istanbul-a-fost-retinut-7e189a",
+      "title": "Șeful Bursei din Istanbul a fost reținut, după turbulențele de pe piața de capital din Turcia",
+      "summary": "Directorul general al bursei turce Borsa Istanbul, Korkmaz Enes Ergun, a fost reținut, sâmbătă, în baza unor acuzații de luare de mită și de apartenență la o organizație constituită în scopul săvârșirii de infracțiuni, potrivit Anadolu și Türkiye Today. Ergun a fost reținut în cadrul unor investigații desfășurate de Parchetul General din Istanbul cu privire …",
+      "date": "2026-10-31T19:04:26.000Z",
+      "url": "https://hotnews.ro/seful-bursei-din-istanbul-a-fost-retinut-dupa-turbulentele-de-pe-piata-de-capital-din-turcia-2391650",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International",
+        "turcia"
+      ],
+      "author": "Vladimir Ionescu",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Șeful Bursei din Istanbul a fost reținut, după turbulențele de pe piața de capital din Turcia",
+      "addedAt": "2026-10-31T20:10:25.830Z"
+    },
+    {
+      "slug": "bukurest-2026-10-31-g4media-ministrul-muncii-anunta-majorarea-pensiilor-62867d",
+      "title": "Ministrul Muncii anunță majorarea pensiilor în 2027 și ajutor în decembrie pentru pensionari / Discuțiile despre salariul minim, programate în noiembrie",
+      "summary": "Pensiile vor fi indexate în 2027, potrivit ministrului Muncii, Florin Manole, care susține aplicarea formulei prevăzute de lege. În privința salariului minim, o eventuală majorare urmează să fie discutată în noiembrie, în cadrul consultărilor dintre Guvern, sindicate și patronate, scrie Mediafax. Ministrul Muncii a declarat sâmbătă seara, la Antena 3 CNN, că va înainta premierului […] © G4Media.ro .",
+      "date": "2026-10-31T18:58:15.000Z",
+      "url": "https://www.g4media.ro/ministrul-muncii-anunta-majorarea-pensiilor-in-2027-si-ajutor-in-decembrie-pentru-pensionari-discutiile-despre-salariul-minim-programate-in-noiembrie.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "Majorare pensii",
+        "Ministrul Muncii"
+      ],
+      "author": "Rareș Constantin",
+      "theme": "politika",
+      "image": "https://www.g4media.ro//wp-content/uploads/2022/12/pensie-pensionar-bani-Sursa-foto-Inquam-Photos-Octav-Ganea-2.jpg",
+      "imageAlt": "Ministrul Muncii anunță majorarea pensiilor în 2027 și ajutor în decembrie pentru pensionari / Discuțiile despre salariul minim, programate în noiembrie",
+      "addedAt": "2026-10-31T20:10:32.610Z"
+    },
+    {
+      "slug": "bukurest-2026-10-31-hotnews-bogdan-andone-a-rabufnit-dupa-meciul-cu-1ebfe1",
+      "title": "Bogdan Andone a răbufnit după meciul cu Corvinul: „Nedrept! Nu ne-au pus niciun fel de probleme”",
+      "summary": "Bogdan Andone, antrenorul lui FC Argeș, a declarat că rezultatul partidei pierdute cu 0-2 pe terenul formației Corvinul Hunedoara, în etapa a 14-a din SuperLiga, este unul nedrept. Tehnicianul s-a arătat dezamăgit de numărul uriaș de ocazii irosite de jucătorii săi. Argeșenii rămân astfel fără victorie în campionat din data de 9 august, când s-au …",
+      "date": "2026-10-31T18:41:11.000Z",
+      "url": "https://hotnews.ro/bogdan-andone-a-rabufnit-dupa-meciul-cu-corvinul-nedrept-nu-ne-au-pus-niciun-fel-de-probleme-2391646",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "SuperLiga"
+      ],
+      "author": "Ana Teșcan",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Bogdan Andone a răbufnit după meciul cu Corvinul: „Nedrept! Nu ne-au pus niciun fel de probleme”",
+      "addedAt": "2026-10-31T20:10:25.830Z"
+    },
     {
       "slug": "bukurest-2026-10-31-agerpres-mapn-una-dintre-cele-doua-drone-a-parasit-a3d887",
       "title": "MAPN: Una dintre cele două drone a părăsit spațiul aerian național; alerta aeriană a încetat",
