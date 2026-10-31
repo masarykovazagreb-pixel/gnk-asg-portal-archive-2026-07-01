@@ -34,7 +34,7 @@ Mjerenja su iz `artifacts/factory/quality-scan.json` (`scripts/factory/quality_s
 
 | Mjera | Broj | Napomena |
 |---|---|---|
-| bez `lang` | 2 | `animacija/index.html` (1,5 MB), `app/index.html` (400 KB): noindex, naslov „Bundled Page“, nisu u sitemapu. Vjerojatno build artefakti u javnom stablu. **Prijedlog: obrisati (odluka vlasnika).** |
+| bez `lang` | 2 | `animacija/index.html` (1,5 MB), `app/index.html` (400 KB): noindex, nisu u sitemapu. **Nisu artefakti:** `/app/` je živa aplikacija na koju vode `contact/` i `preuzimanja/`, a `/animacija/` je linkan s `preuzimanja/`. **Nisu obrisani.** Ispravka: dodati `lang` i `title`. |
 | bez `<title>` | 1 | `app/index.html` (isti artefakt) |
 | bez meta opisa | 15 | za pregled |
 | kratki opis (<50 znakova) | 24 | uglavnom 404 i interne stranice kanala |
@@ -57,7 +57,7 @@ Napomena: ovo mjeri h1, a ranija brojka 8.440 stranica s naslovom >60 mjerila je
 
 ## 5. Slike (`artifacts/factory/image-quality.json`)
 
-Pillow ne može otvoriti dvije datoteke: `apps/portal/assets/editorial/nermin-sefic-gnk-asg-ulaganje-pravne-prepreke-20261006.webp` i `…-v2.webp` (oko 15 KB, zaglavlje nije WEBP). Nijedna stranica ih ne koristi (0 referenci), pa nisu vidljive. Revizor `audit_portal.py` provjerava samo postojanje datoteke, pa ih nije uhvatio. Prijedlog: obrisati ili zamijeniti originalom (odluka vlasnika).
+Pillow ne može otvoriti dvije datoteke: `apps/portal/assets/editorial/nermin-sefic-gnk-asg-ulaganje-pravne-prepreke-20261006.webp` i `…-v2.webp` (oko 15 KB, zaglavlje nije WEBP). Nijedna stranica ih ne koristi (0 referenci), pa nisu vidljive. Revizor `audit_portal.py` provjerava samo postojanje datoteke, pa ih nije uhvatio. **Obrisano 31. 10. (odobrenje vlasnika).**
 
 Označeno 131 slika: premala 22, pretežka 28, duplikat 56, nečitljiva 5, tamno (provjeri) 20. Za zamjenu treba ručni pregled i odluka o izvorima, pa nisu mijenjane.
 
@@ -93,13 +93,23 @@ Washington, Brasília, Canberra: nema zapisa u `apps/region/channels.json`, nema
 - `.git` je 3,6 GB. Najveći su povijesni blobovi `image-sitemap.xml` (35–73 MB po verziji) iz vremena prije sharding-a. Trenutni shardovi su ~21 MB (ispod 50 MB), a indeks 464 bajta.
 - Brisanje povijesti zahtijeva force-push, pa nije napravljeno. Preporuka: od sada generirani sitemapovi ne idu u Git (ili u LFS).
 
-## 10. Odluke koje čekaju vlasnika
+## 10. Odluke
+
+Riješeno 31. 10. (odobrenje vlasnika):
+- Obrisane dvije neispravne WebP datoteke (0 referenci).
+- `region-daily` izdvojen u grupu `gnk-asg-region-daily`. Rizik: `gallery-sync`, `tjednik-daily` i `worker-groups-sync` push-aju bez rebasea i mogu pasti pri sudaru.
+- `#AktualMediaRadio` zadržan i zabilježen u `approved_mentions.json`.
+
+Nije izvršeno:
+- `Deploy Admin Auth V6` nije pokrenut. Workflow dopušta samo `main` i puni SHA na `main`-u; `de9e567` nije na `main`-u.
+- `animacija/` i `app/` nisu obrisani (žive stranice).
+
+Još čeka vlasnika:
 
 1. Što s `main`-om (reset 31. 10.) i kako spojiti rad.
-2. `Deploy Admin Auth V6`: izvršno odobrenje za točan SHA.
-3. Concurrency grupa za `region-daily` (vidi 2).
-4. Obrisati dva artefakta `animacija/` i `app/` (vidi 4).
+2. `Deploy Admin Auth V6`: treba SHA na `main`-u i ručno upisana fraza.
+4. `animacija/` i `app/`: ispraviti `lang` i `title` ili ostaviti (ne brisati).
 5. Politika naslova (h1 >60 znakova) i kratkih opisa.
-6. Radio-oznaka na 9.068 stranica i `#AktualMediaRadio`.
+6. Radio-oznaka na 9.068 stranica.
 7. Pravna potvrda za W1 izvore (Albanija, Kosovo, Sjeverna Makedonija, Turska).
 8. Kanali za Washington, Brasília, Canberra.

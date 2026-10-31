@@ -40,7 +40,7 @@ permissions:
   actions: write
 
 concurrency:
-  group: gnk-asg-main-mutation
+  group: gnk-asg-region-daily
   cancel-in-progress: false
 
 jobs:

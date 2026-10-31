@@ -106,8 +106,8 @@
       "date": "2026-10-31",
       "by": "agent",
       "scope": "nacrti radio distribucije (10) nose #AktualMediaRadio, koji nije u popisu odobrenih hashtagova",
-      "decision": "nije mijenjano",
-      "status": "čeka vlasnika",
+      "decision": "zadržati",
+      "status": "odobreno (vlasnik, 31. 10.)",
       "note": "Zadržati ili maknuti."
     },
     {
@@ -124,18 +124,18 @@
       "date": "2026-10-31",
       "by": "agent",
       "scope": "animacija/index.html (1,5 MB) i app/index.html (400 KB): noindex, bez lang, app bez title, nisu u sitemapu",
-      "decision": "prijedlog: obrisati; nije obrisano",
-      "status": "čeka vlasnika",
-      "note": "Brisanje traži odobrenje."
+      "decision": "NE brisati: /app/ je živa aplikacija (contact, preuzimanja), /animacija/ je linkan s preuzimanja i ima iznimku u validate-visual-contrast",
+      "status": "ne brisati; ispravka u tijeku",
+      "note": "Odobrenje za brisanje bilo je na temelju pogrešne pretpostavke o artefaktima. Dodati lang i title umjesto brisanja (čeka OK)."
     },
     {
       "id": "concurrency-region-daily",
       "date": "2026-10-31",
       "by": "agent (analiza)",
       "scope": "23 workflowa dijele concurrency gnk-asg-main-mutation (cancel-in-progress: false); zakazani region-daily se otkazuje",
-      "decision": "nije mijenjano",
-      "status": "čeka vlasnika",
-      "note": "Prijedlog: zasebna grupa za region-daily uz analizu rizika za push na main."
+      "decision": "izdvojeno u vlastitu grupu",
+      "status": "odobreno i izvršeno (31. 10.): gnk-asg-region-daily",
+      "note": "Rizik: gallery-sync, tjednik-daily i worker-groups-sync push-aju bez rebasea; sudar pusha moguć. Prijedlog: dodati rebase."
     },
     {
       "id": "naslovi-h1-60",
@@ -169,9 +169,18 @@
       "date": "2026-10-31",
       "by": "agent (provjera)",
       "scope": "dvije datoteke u apps/portal/assets/editorial (…ulaganje-pravne-prepreke-20261006.webp i -v2.webp) nisu valjani WEBP; 0 referenci",
-      "decision": "nije obrisano",
-      "status": "čeka vlasnika",
+      "decision": "obrisano (0 referenci)",
+      "status": "izvršeno (31. 10.)",
       "note": "Revizor provjerava samo postojanje; dodati provjeru dekodiranja."
+    },
+    {
+      "id": "deploy-admin-auth-v6-de9e567",
+      "date": "2026-10-31",
+      "by": "vlasnik (odobrenje) / agent",
+      "scope": "Deploy Admin Auth V6 za de9e567",
+      "decision": "NIJE pokrenuto",
+      "status": "čeka",
+      "note": "Workflow dopušta samo ref main i puni SHA commita na main-u, plus ručno upisanu frazu DEPLOY_ADMIN_AUTH_V6. de9e567 nije na main-u. Treba odrediti SHA main-a za pregled i frazu upisati ručno."
     }
   ]
 }
