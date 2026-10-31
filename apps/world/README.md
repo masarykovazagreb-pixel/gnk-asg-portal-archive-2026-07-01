@@ -22,3 +22,15 @@ node tests/test-network-mesh-v1.mjs       # mreža: 20 ulaza, 18 portala
 
 Objava: `.github/workflows/world-portals-deploy.yml` (dev9 Cloudflare Pages
 projekata `gnk-world-<grad>`). Dokumentacija: `docs/svijet-portali-v1.md`.
+
+## Lokalni predlošci planiranih država
+
+`node scripts/world/build-country-previews-v1.mjs` generira lokalne, neindeksabilne
+predloške za države statusa `planned` u `apps/world/country-previews/<id>/`.
+Izlaz je ignoriran u Gitu, bez članaka, feedova, slika, sitemapa i deploya.
+Za drugi direktorij: `node scripts/world/build-country-previews-v1.mjs --out /tmp/country-previews`.
+Generator ne obrađuje postojeće `live` i `preparing` kanale te ne prepisuje
+postojeću stranicu bez oznake generatora. `node scripts/world/test-country-previews-v1.mjs`
+provjerava zaštite. URL i naziv Cloudflare projekta u registru su plan, a ne dokaz
+postojanja projekta ili domene. Javno izdanje i dalje zahtijeva izvore, prava,
+urednika i postojeće kapije iz `docs/factory/SVIJET-PLAN-V1.md`.

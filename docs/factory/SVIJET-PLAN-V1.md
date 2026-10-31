@@ -116,3 +116,13 @@ Izvor svih podataka: `config/world-sources-v1.json` (ažurirano 31. 10.) i `docs
 | Turska | pending (AA live RSS) |
 
 Nijedna država W1 nije odobrena za javnu objavu. Sljedeći korak je čitanje punih uvjeta za Kosovo, Sjevernu Makedoniju i Tursku, pa pravna potvrda (ledger `w1-uvjeti-izvora`).
+
+## 10. Lokalni predlošci država
+
+`node scripts/world/build-country-previews-v1.mjs` gradi 178 lokalnih radnih
+predložaka za trenutačne države `planned` u ignoriranu mapu
+`apps/world/country-previews/`. To nisu funkcionalne redakcije niti javne web
+stranice; ne sadrže izvore ni preuzete sadržaje. `robots.txt` i `noindex` su
+mjere opreza, a ne kontrola pristupa. Predloške ne stavljati na javni hosting.
+Postojeći `live` i `preparing` kanali nisu dio te gradnje. Cloudflare projekti
+nisu ovom naredbom stvoreni. Preduvjeti K1–K6 za stvarnu objavu ostaju na snazi.
