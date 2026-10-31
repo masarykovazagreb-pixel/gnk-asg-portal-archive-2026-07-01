@@ -86,6 +86,55 @@ def test_branch_reflects_checkout_and_detached_head():
         orch.git = original
 
 
+def test_dependency_chain_blocks_execution_even_when_check_would_pass():
+    cfg = {"agents": [agent("C", ["B"], "cmd"), agent("B", ["A"]), agent("A")]}
+    calls = []
+    original = orch.run_check
+    try:
+        def fake(a, run):
+            calls.append(a["id"])
+            return (False, "blocked") if a["id"] == "A" else (True, "passed")
+        orch.run_check = fake
+        states = orch.compute(cfg, True)
+        assert calls == ["A"], calls
+        assert states["A"]["state"] == "ready"
+        assert states["B"]["state"] == states["C"]["state"] == "waiting"
+        assert states["C"]["waiting_on"] == ["B"]
+    finally:
+        orch.run_check = original
+
+
+def test_dependencies_run_in_order_once():
+    cfg = {"agents": [agent("B", ["A"]), agent("A"), agent("C", ["A"])]}
+    calls, original = [], orch.run_check
+    try:
+        def fake(a, run):
+            calls.append(a["id"])
+            return True, "ok"
+        orch.run_check = fake
+        states = orch.compute(cfg, True)
+        assert calls == ["A", "B", "C"], calls
+        assert all(s["state"] == "done" for s in states.values())
+    finally:
+        orch.run_check = original
+
+
+def test_source_gate_counts_minimum_and_missing_countries():
+    original = orch.load_json
+    registry = {"countries": [{"cca2":"AA", "wave":"W1", "status":"live"}, {"cca2":"BB", "wave":"W1", "status":"planned"}]}
+    sources = {"countries":{"AA":{"sources":[{"status":"approved"}, {"status":"approved"}]}}}
+    try:
+        orch.load_json = lambda p: sources if p == orch.SOURCES else registry
+        assert not orch.check_world_sources({"min_approved_per_country":2})[0]
+        sources["countries"]["BB"] = {"sources":[{"status":"approved"}]}
+        assert not orch.check_world_sources({"min_approved_per_country":2})[0]
+        assert orch.check_world_sources({"min_approved_per_country":1})[0]
+        assert not orch.check_world_sources({"min_approved_per_country":1, "require_status":"live"})[0]
+        assert not orch.check_world_sources({"min_approved_per_country":0})[0]
+    finally:
+        orch.load_json = original
+
+
 def main():
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_") and callable(v)]
     failed = []

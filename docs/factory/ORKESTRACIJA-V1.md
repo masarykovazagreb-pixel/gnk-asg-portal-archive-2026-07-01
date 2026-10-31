@@ -104,3 +104,20 @@ slojeve prema postojećem redoslijedu pipelinea. Generator stranice može ukloni
 zajedničke slojeve; prije objave obavezno pokrenuti sinkronizaciju slojeva i
 provjere. Test `node scripts/factory/test_factory_center_v1.mjs` provjerava
 usklađenost snimka, sigurnost ispisa i filtriranje.
+
+### Ovisnosti i prikaz država
+
+Orkestrator sada prvo provjerava ovisnosti, uključujući posredne, te ne pokreće
+naredbu agenta dok neka od njih nije u stanju `done`. Stanje kapije i dalje je
+ograničeno kvalitetom dokaza: samo postojanje datoteke ne znači da je urednički
+posao stvarno izvršen. Kapija W1 sada provjerava sve države W1 iz registra,
+minimalni broj odobrenih izvora i traženi status, umjesto da izostavljene države
+ili nedovoljno izvora prođu kao uspjeh.
+
+`/agenti/#svijet-drzave` prikazuje svih 195 registriranih država, oznaku stanja
+iz registra i informacije o zasebnom registru izvora. Veze se nude samo za
+registrirane aktivne kanale na GNK ASG-u; planirana Pages adresa nije dokaz da
+projekt postoji. Stanja i datumi prikazani su kao podaci iz registra, ne kao
+provjera dostupnosti uživo. Popis izvora za već postojeće kanale može se nalaziti
+i u `apps/region/channels.json`, pa odsutnost u `world-sources-v1.json` nije dokaz
+da ti kanali nemaju izvore. Novi kanali se i dalje ne objavljuju bez kapija K1–K6.

@@ -18,6 +18,7 @@ import { impressumBlock } from '../apps/shared/impressum-v1.mjs';
 import { authorBand } from '../apps/shared/author-band-v1.mjs';
 import { entityGraph } from './lib/entity-graph-v1.mjs';
 import { renderFactoryCenter } from './factory/factory-center-v1.mjs';
+import { renderWorldDirectory } from './factory/world-directory-v1.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(ROOT, 'apps', 'portal', 'agenti');
@@ -41,6 +42,8 @@ const factoryConfig = JSON.parse(readFileSync(join(ROOT, 'config', 'factory-agen
 const factoryBoard = JSON.parse(readFileSync(join(ROOT, 'artifacts', 'factory', 'orchestration-board.json'), 'utf8'));
 const worldRegistry = JSON.parse(readFileSync(join(ROOT, 'config', 'world-countries-v1.json'), 'utf8'));
 const factoryCenter = renderFactoryCenter(factoryConfig, factoryBoard, worldRegistry);
+const worldSources = JSON.parse(readFileSync(join(ROOT, 'config', 'world-sources-v1.json'), 'utf8'));
+const worldDirectory = renderWorldDirectory(worldRegistry, worldSources);
 
 const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
@@ -147,6 +150,7 @@ const html = `<!doctype html>
   <p class="ag-lead">${agents.length} agenata održava ${status.webs || 7} webova AKTUAL MEDIA mreže. Ploča se ne uređuje ručno: nastaje iz registra agenata i iz mjerenja koje svaki agent sam pokreće. Ako mjerenje padne, padne i zapis — nema „zelenog" statusa bez dokaza.</p>
   <ul class="ag-facts">${facts}</ul>
   ${factoryCenter}
+  ${worldDirectory}
 
   <h2 class="ag-h2">Mjerenje po webu</h2>
   <table>

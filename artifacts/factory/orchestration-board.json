@@ -1,7 +1,7 @@
 {
  "version": "FACTORY_ORCHESTRATION_BOARD_V1",
- "branch": "arena/af7fc5d1-gnk-asg-portal-archive-2026-07",
- "generatedAt": "2026-10-31T07:15:10Z",
+ "branch": "arena/3c5bc634-gnk-asg-portal-archive-2026-07",
+ "generatedAt": "2026-10-31T16:20:54Z",
  "ran_commands": false,
  "summary": {
   "done": 11,
@@ -33,7 +33,7 @@
    "name": "Izvori (K1)",
    "mode": "hybrid",
    "state": "ready",
-   "check": "W1: 0/7 država s odobrenim izvorom (potrebno 1 po državi)",
+   "check": "W1: 0/7 država ispunjava uvjete (najmanje 1 odobrenih izvora)",
    "waiting_on": [],
    "role": "Za svaku državu traži javne RSS/sitemap izvore, provjerava je li feed živ i što kažu uvjeti korištenja. Ishod upisuje u config/world-sources-v1.json."
   },
@@ -42,7 +42,7 @@
    "name": "Licence i prava (K2)",
    "mode": "human",
    "state": "waiting",
-   "check": "licence-w1: čeka",
+   "check": "provjera nije pokrenuta: čeka ovisnosti",
    "waiting_on": [
     "A02"
    ],
@@ -53,7 +53,7 @@
    "name": "Predložak kanala",
    "mode": "script",
    "state": "waiting",
-   "check": "W1: 0/7 država s odobrenim izvorom (potrebno 1 po državi)",
+   "check": "provjera nije pokrenuta: čeka ovisnosti",
    "waiting_on": [
     "A02",
     "A03"
@@ -110,7 +110,7 @@
    "name": "Radio",
    "mode": "hybrid",
    "state": "done",
-   "check": "stranica s radio blokom: 9065 (najmanje 9000)",
+   "check": "stranica s radio blokom: 9481 (najmanje 9000)",
    "waiting_on": [],
    "role": "Blok AKTUAL MEDIA RADIO na stranicama, oznake stanica (treće strane), tekst pločice."
   },
@@ -137,7 +137,7 @@
    "name": "Konzistentnost podataka",
    "mode": "script",
    "state": "waiting",
-   "check": "nema izvještaja (agent ga treba proizvesti)",
+   "check": "provjera nije pokrenuta: čeka ovisnosti",
    "waiting_on": [
     "A12"
    ],
@@ -163,7 +163,7 @@
   }
  ],
  "next_actions": [
-  "A02 Izvori (K1): odraditi (W1: 0/7 država s odobrenim izvorom (potrebno 1 po državi))",
+  "A02 Izvori (K1): odraditi (W1: 0/7 država ispunjava uvjete (najmanje 1 odobrenih izvora))",
   "A12 Stanje grane i povijesti: čeka vlasnika (main i grana nemaju zajednički predak; spajanje nije moguće bez odluke vlasnika)"
  ]
 }
