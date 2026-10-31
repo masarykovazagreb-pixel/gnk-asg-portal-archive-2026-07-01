@@ -4,7 +4,7 @@
   "lang": "bg",
   "city": "Sofija",
   "country": "Bugarska",
-  "updatedAt": "2026-10-30T23:48:26.219Z",
+  "updatedAt": "2026-10-31T01:15:55.909Z",
   "sources": [
     {
       "id": "bta",
@@ -17,7 +17,7 @@
         "https://www.bta.bg/bg/rss: HTTP 404",
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-30T23:48:18.321Z"
+      "checkedAt": "2026-10-31T01:15:48.237Z"
     },
     {
       "id": "capital",
@@ -27,17 +27,20 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-30T23:48:19.033Z"
+      "checkedAt": "2026-10-31T01:15:48.742Z"
     },
     {
       "id": "mediapool",
       "name": "Mediapool",
       "url": "https://www.mediapool.bg/rss",
-      "ok": true,
-      "fetched": 10,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-10-30T23:48:20.185Z"
+      "errors": [
+        "https://www.mediapool.bg/rss: HTTP 304",
+        "https://www.mediapool.bg/rss/: HTTP 304"
+      ],
+      "checkedAt": "2026-10-31T01:15:50.751Z"
     },
     {
       "id": "dnevnikbg",
@@ -49,7 +52,7 @@
       "errors": [
         "https://www.dnevnik.bg/rss: HTTP 403"
       ],
-      "checkedAt": "2026-10-30T23:48:21.504Z"
+      "checkedAt": "2026-10-31T01:15:51.931Z"
     },
     {
       "id": "actualno",
@@ -59,7 +62,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-30T23:48:23.050Z"
+      "checkedAt": "2026-10-31T01:15:53.011Z"
     },
     {
       "id": "sega",
@@ -69,7 +72,7 @@
       "fetched": 95,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-10-30T23:48:23.273Z"
+      "checkedAt": "2026-10-31T01:15:53.174Z"
     },
     {
       "id": "novinite",
@@ -81,7 +84,7 @@
       "errors": [
         "https://www.novinite.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-30T23:48:24.303Z"
+      "checkedAt": "2026-10-31T01:15:54.083Z"
     },
     {
       "id": "btaen",
@@ -93,7 +96,7 @@
       "errors": [
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-10-30T23:48:26.218Z"
+      "checkedAt": "2026-10-31T01:15:55.909Z"
     }
   ],
   "items": [
@@ -113,6 +116,23 @@
       "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2020/01/tv_1.jpg",
       "imageAlt": "Спортът по телевизията - 31 октомври",
       "addedAt": "2026-10-30T23:48:23.274Z"
+    },
+    {
+      "slug": "sofija-2026-10-31-actualno-zelenski-dostavkite-na-raketi-za-patriot-e-c08004",
+      "title": "Зеленски: Доставките на ракети за Patriot ще отнемат години, имаме нужда от тях сега",
+      "summary": "Украинският президент Володимир Зеленски нарече решението на Държавния департамент на САЩ да позволи на Украйна да закуп...",
+      "date": "2026-10-31T00:00:00.000Z",
+      "url": "https://www.actualno.com/europe/zelenski-dostavkite-na-raketi-za-patriot-shte-otnemat-godini-imame-nujda-ot-tjah-sega-news_2657027.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://cdn.actualno.eu/actualno_2013/upload/news/2026/10/31/331b70866d513d1c9f363275b0c41b16_2657027_1920x1080.jpg",
+      "imageAlt": "Зеленски: Доставките на ракети за Patriot ще отнемат години, имаме нужда от тях сега",
+      "addedAt": "2026-10-31T01:15:53.011Z"
     },
     {
       "slug": "sofija-2026-10-30-actualno-tr-mp-udr-otnovo-iran-vednaga-sled-50a079",
