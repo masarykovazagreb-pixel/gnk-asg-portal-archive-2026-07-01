@@ -4,7 +4,7 @@
   "lang": "it",
   "city": "Rim",
   "country": "Italija",
-  "updatedAt": "2026-11-01T13:19:37.643Z",
+  "updatedAt": "2026-11-01T23:39:28.565Z",
   "sources": [
     {
       "id": "ansa",
@@ -14,22 +14,17 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-01T13:19:27.387Z"
+      "checkedAt": "2026-11-01T23:39:21.189Z"
     },
     {
       "id": "repubblica",
       "name": "la Repubblica",
       "url": "https://www.repubblica.it/rss/homepage/rss2.0.xml",
-      "ok": false,
-      "fetched": 0,
+      "ok": true,
+      "fetched": 30,
       "corrupt": 0,
-      "errors": [
-        "https://www.repubblica.it/rss/homepage/rss2.0.xml: HTTP 403",
-        "https://www.repubblica.it/rss/politica/rss2.0.xml: HTTP 403",
-        "https://www.repubblica.it/rss/economia/rss2.0.xml: HTTP 403",
-        "https://www.repubblica.it/rss/sport/rss2.0.xml: HTTP 403"
-      ],
-      "checkedAt": "2026-11-01T13:19:30.715Z"
+      "errors": [],
+      "checkedAt": "2026-11-01T23:39:21.721Z"
     },
     {
       "id": "ilpost",
@@ -41,7 +36,7 @@
       "errors": [
         "https://www.ilpost.it/feed/: HTTP 403"
       ],
-      "checkedAt": "2026-11-01T13:19:32.258Z"
+      "checkedAt": "2026-11-01T23:39:23.477Z"
     },
     {
       "id": "sole24",
@@ -51,7 +46,7 @@
       "fetched": 37,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-01T13:19:33.486Z"
+      "checkedAt": "2026-11-01T23:39:24.611Z"
     },
     {
       "id": "corriere",
@@ -61,19 +56,17 @@
       "fetched": 69,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-01T13:19:34.302Z"
+      "checkedAt": "2026-11-01T23:39:25.313Z"
     },
     {
       "id": "lastampa",
       "name": "La Stampa",
       "url": "https://www.lastampa.it/rss",
-      "ok": false,
-      "fetched": 0,
+      "ok": true,
+      "fetched": 52,
       "corrupt": 0,
-      "errors": [
-        "https://www.lastampa.it/rss: HTTP 403"
-      ],
-      "checkedAt": "2026-11-01T13:19:35.266Z"
+      "errors": [],
+      "checkedAt": "2026-11-01T23:39:26.205Z"
     },
     {
       "id": "fanpage",
@@ -85,7 +78,7 @@
       "errors": [
         "https://www.fanpage.it/feed/: HTTP 403"
       ],
-      "checkedAt": "2026-11-01T13:19:36.374Z"
+      "checkedAt": "2026-11-01T23:39:27.400Z"
     },
     {
       "id": "adnkronos",
@@ -97,10 +90,304 @@
       "errors": [
         "https://www.adnkronos.com/rss: nije feed"
       ],
-      "checkedAt": "2026-11-01T13:19:37.642Z"
+      "checkedAt": "2026-11-01T23:39:28.565Z"
     }
   ],
   "items": [
+    {
+      "slug": "rim-2026-11-02-repubblica-toto-wolff-abbiamo-creduto-in-kimi-da-18e13f",
+      "title": "Toto Wolff: “Abbiamo creduto in Kimi da bambino, in Ferrari avrebbero avuto dubbi”",
+      "summary": "Intervista al team principal della Mercedes che ha scoperto Antonelli a 12 anni e lo ha ingaggiato quando era ancora bambino",
+      "date": "2026-11-02T00:00:00.000Z",
+      "url": "https://www.repubblica.it/sport/formulauno/2026/11/02/news/toto_wolff_kimi_antonelli_mercedes_f1-425692602/",
+      "source": "repubblica",
+      "sourceName": "la Repubblica",
+      "categories": [
+        "Formula Uno"
+      ],
+      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Toto Wolff: “Abbiamo creduto in Kimi da bambino, in Ferrari avrebbero avuto dubbi”",
+      "addedAt": "2026-11-01T23:39:21.721Z"
+    },
+    {
+      "slug": "rim-2026-11-01-ansa-valentino-rossi-kimi-mi-assomiglia-32193c",
+      "title": "Valentino Rossi' Kimi mi assomiglia, diventerà uno dei piloti più forti storia'",
+      "summary": "Campione MotoGp: mi ha emozionato moltissimo, è stato un grande",
+      "date": "2026-11-01T23:10:33.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/02/valentino-rossi-kimi-mi-assomiglia-diventera-uno-dei-piloti-piu-forti_06267cc9-8c63-4a07-bb3a-6d0dc7b61fe5.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Valentino Rossi' Kimi mi assomiglia, diventerà uno dei piloti più forti storia'",
+      "addedAt": "2026-11-01T23:39:21.189Z"
+    },
+    {
+      "slug": "rim-2026-11-01-repubblica-kimi-o-andy-ritratto-di-un-giovane-italiano-db1581",
+      "title": "Kimi o Andy, ritratto di un giovane italiano più veloce dei suoi sogni",
+      "summary": "Antonelli è il campione del Mondo che il nostro Paese aspettava da 73 anni",
+      "date": "2026-11-01T23:01:00.000Z",
+      "url": "https://www.repubblica.it/sport/formulauno/2026/11/02/news/kimi_antonelli_f1_campione_del_mondo_chi_e-425692571/",
+      "source": "repubblica",
+      "sourceName": "la Repubblica",
+      "categories": [
+        "Formula Uno"
+      ],
+      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Kimi o Andy, ritratto di un giovane italiano più veloce dei suoi sogni",
+      "addedAt": "2026-11-01T23:39:21.721Z"
+    },
+    {
+      "slug": "rim-2026-11-01-repubblica-i-genitori-di-kimi-gli-diamo-la-paghetta-636ff2",
+      "title": "I genitori di Kimi: “Gli diamo la paghetta ogni mese deve farsela bastare. Comprerebbe solo macchine”",
+      "summary": "Il padre Marco lavorava in officina e correva in auto, la madre Veronica lavorava alle Poste. “A lui non interessano la fama e i vestiti, andrebbe a un matrimonio in pantaloncini”",
+      "date": "2026-11-01T23:01:00.000Z",
+      "url": "https://www.repubblica.it/sport/formulauno/2026/11/02/news/famiglia_kimi_antonelli_genitori_marco_veronica-425692576/",
+      "source": "repubblica",
+      "sourceName": "la Repubblica",
+      "categories": [
+        "Formula Uno"
+      ],
+      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "I genitori di Kimi: “Gli diamo la paghetta ogni mese deve farsela bastare. Comprerebbe solo macchine”",
+      "addedAt": "2026-11-01T23:39:21.722Z"
+    },
+    {
+      "slug": "rim-2026-11-01-repubblica-verstappen-vince-in-messico-hamilton-2-e-a0a566",
+      "title": "Verstappen vince in Messico. Hamilton 2° e furioso: “Dobbiamo parlare con Leclerc e la Ferrari”",
+      "summary": "L’olandese approfitta del sorpasso in partenza del monegasco sul compagno di scuderia. Il britannico: “Nel team abbiamo grandi, grandi problemi”",
+      "date": "2026-11-01T23:00:27.000Z",
+      "url": "https://www.repubblica.it/sport/formulauno/2026/11/02/news/ferrari_furia_hamilton_leclerc_verstappen-425692614/",
+      "source": "repubblica",
+      "sourceName": "la Repubblica",
+      "categories": [
+        "Formula Uno"
+      ],
+      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Verstappen vince in Messico. Hamilton 2° e furioso: “Dobbiamo parlare con Leclerc e la Ferrari”",
+      "addedAt": "2026-11-01T23:39:21.722Z"
+    },
+    {
+      "slug": "rim-2026-11-01-ansa-antonelli-campione-mondo-e-in-lacrime-gioia-86c706",
+      "title": "Antonelli campione mondo e in lacrime gioia 'una stagione incredibile'",
+      "summary": "L'italiano della Mercedes: 'pazzesco condividere podio con Hamilton e Verstappen'",
+      "date": "2026-11-01T22:36:33.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/01/antonelli-campione-mondo-e-in-lacrime-gioia-una-stagione-incredibile_f4790e7c-e9c7-4154-a603-6ced7e8d4f14.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Antonelli campione mondo e in lacrime gioia 'una stagione incredibile'",
+      "addedAt": "2026-11-01T23:39:21.189Z"
+    },
+    {
+      "slug": "rim-2026-11-01-ansa-f1-antonelli-campione-la-russa-aci-l-italia-274aa4",
+      "title": "F1:Antonelli campione;La Russa(Aci) 'l'Italia è tornata,celebriamo orgoglio tricolore'",
+      "summary": "Presidente Automobile Club a Città del Messico'è la fine di una lunga attesa, grazie Kimi'",
+      "date": "2026-11-01T22:28:00.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/01/f1antonelli-campionela-russaaci-litalia-e-tornatacelebriamo-orgoglio-tricolore_8bb244b8-1eab-4d44-8583-eb0f5153bb4f.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "F1:Antonelli campione;La Russa(Aci) 'l'Italia è tornata,celebriamo orgoglio tricolore'",
+      "addedAt": "2026-11-01T23:39:21.189Z"
+    },
+    {
+      "slug": "rim-2026-11-01-ansa-verstappen-vince-in-messico-davanti-ad-35e2f0",
+      "title": "Verstappen vince in Messico davanti ad Hamilton, terzo Antonelli",
+      "summary": "Quarto Leclerc, Russell chiude al sesto posto",
+      "date": "2026-11-01T22:25:29.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/01/verstappen-vince-in-messico-davanti-ad-hamilton-terzo-antonelli_d927fc28-605b-4698-a8d1-6d84f1b14d95.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Verstappen vince in Messico davanti ad Hamilton, terzo Antonelli",
+      "addedAt": "2026-11-01T23:39:21.189Z"
+    },
+    {
+      "slug": "rim-2026-11-01-ansa-antonelli-e-campione-del-mondo-di-f1-un-a55a25",
+      "title": "Antonelli è campione del mondo di F1, un italiano 73 anni dopo Ascari",
+      "summary": "Il pilota della Mercedes conquista a 20 anni il titolo iridato",
+      "date": "2026-11-01T22:25:12.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/01/antonelli-e-campione-del-mondo-di-f1-un-italiano-73-anni-dopo-ascari_a9324b3b-909a-4630-8010-ed0eac014cf3.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Antonelli è campione del mondo di F1, un italiano 73 anni dopo Ascari",
+      "addedAt": "2026-11-01T23:39:21.190Z"
+    },
+    {
+      "slug": "rim-2026-11-01-lastampa-kimi-antonelli-momenti-che-vivro-per-sempre-bd2d7b",
+      "title": "Kimi Antonelli: “Momenti che vivrò per sempre. Un orgoglio vincere per l’Italia”",
+      "summary": "Il campione in lacrime: «Scusate, sto cercando di capire cosa è successo»",
+      "date": "2026-11-01T22:01:00.000Z",
+      "url": "https://www.lastampa.it/sport/2026/11/02/news/kimi-antonelli-vittoria-formula-1-orgoglio-italia-emozione-15785109/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/sport"
+      ],
+      "author": "J. D’O.",
+      "theme": "drustvo",
+      "image": "https://www.gedistatic.it/content/gnn/img/lastampa/2026/11/01/235912065-3e67facf-12bb-45d4-98fa-c7b9c1fe5ffd.jpg",
+      "imageAlt": "Kimi Antonelli: “Momenti che vivrò per sempre. Un orgoglio vincere per l’Italia”",
+      "addedAt": "2026-11-01T23:39:26.205Z"
+    },
+    {
+      "slug": "rim-2026-11-01-ansa-kiev-sospetto-hackeraggio-app-allerta-727663",
+      "title": "Kiev, sospetto hackeraggio app allerta attacchi aerei in ucraina",
+      "summary": "Aeronautica militare: 'Air Alert probabilmente esposta a influenze ostili'",
+      "date": "2026-11-01T21:48:48.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/01/kiev-sospetto-hackeraggio-app-allerta-attacchi-aerei-in-ucraina_67b895ca-e0b9-46dc-9452-3bcda6069fe3.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "Kiev, sospetto hackeraggio app allerta attacchi aerei in ucraina",
+      "addedAt": "2026-11-01T23:39:21.190Z"
+    },
+    {
+      "slug": "rim-2026-11-01-lastampa-vasco-rossi-kimi-rock-lo-vedo-bene-alla-bcb403",
+      "title": "Vasco Rossi: “Kimi rock, lo vedo bene alla chitarra. Un giro insieme? Bello ma che paura”",
+      "summary": "La star tra i suoi più grandi tifosi: «Una scossa per l’Italia, smettiamola di tenere i giovani ai box»",
+      "date": "2026-11-01T21:35:00.000Z",
+      "url": "https://www.lastampa.it/sport/2026/11/01/news/vasco_rossi_kimi_rock_lo_vedo_bene_alla_chitarra_un_giro_insieme_bello_ma_che_paura-15785097/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/sport"
+      ],
+      "author": "JACOPO D’ORSI",
+      "theme": "ai",
+      "image": "https://www.gedistatic.it/content/gnn/img/lastampa/2026/11/01/233519373-5fe0416c-e1b0-4d6f-b1d6-60f75927bb04.jpg",
+      "imageAlt": "Vasco Rossi: “Kimi rock, lo vedo bene alla chitarra. Un giro insieme? Bello ma che paura”",
+      "addedAt": "2026-11-01T23:39:26.205Z"
+    },
+    {
+      "slug": "rim-2026-11-01-lastampa-kimi-antonelli-e-campione-del-mondo-il-c7a8ca",
+      "title": "Kimi Antonelli è campione del mondo, il sogno italiano è diventato leggenda",
+      "summary": "È il più giovane della storia: demolito il record che apparteneva a Sebastian Vettel",
+      "date": "2026-11-01T21:25:00.000Z",
+      "url": "https://www.lastampa.it/sport/2026/11/01/news/kimi_antonelli_campione_mondo_20_anni_record_vettel-15785089/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/sport"
+      ],
+      "author": "dal nostro inviato Jacopo D'orsi",
+      "theme": "drustvo",
+      "image": "https://www.gedistatic.it/content/gnn/img/lastampa/2026/11/01/234116119-afd050c7-c721-4546-8354-f2b036e7ea9f.jpg",
+      "imageAlt": "Kimi Antonelli è campione del mondo, il sogno italiano è diventato leggenda",
+      "addedAt": "2026-11-01T23:39:26.205Z"
+    },
+    {
+      "slug": "rim-2026-11-01-lastampa-quando-l-italia-sognava-con-le-vittorie-di-4bd3ce",
+      "title": "Quando l’Italia sognava con le vittorie di Farina e Ascari 60 anni prima di Antonelli",
+      "summary": "Erano loro gli ultimi due piloti italiani ad avere vinto il Mondiale, uno su Alfa Romeo e l’altro su Ferrari. Ma era davvero un altro mondo",
+      "date": "2026-11-01T21:25:00.000Z",
+      "url": "https://www.lastampa.it/sport/2026/11/01/news/farina_ascari_piloti_italiani_campioni_mondo_f1_prima_antonelli-15785087/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/sport"
+      ],
+      "author": "Matteo Aglio",
+      "theme": "drustvo",
+      "image": "https://www.gedistatic.it/content/gnn/img/lastampa/2026/11/01/232454417-f981e47c-43c6-4740-91af-c3ac89b26436.jpg",
+      "imageAlt": "Quando l’Italia sognava con le vittorie di Farina e Ascari 60 anni prima di Antonelli",
+      "addedAt": "2026-11-01T23:39:26.205Z"
+    },
+    {
+      "slug": "rim-2026-11-01-lastampa-i-tributi-a-senna-e-raikkonen-lo-zio-wolff-a67f90",
+      "title": "I tributi a Senna e Raikkonen, lo zio Wolff e la patente: Kimi Antonelli in 12 curiosità",
+      "summary": "CITTÀ DEL MESSICO. IL NUMERO 12 PER SENNA Antonelli ha scelto il numero 12 per la sua avventura in Formula 1: è un omaggio ad Ayrton Senna, da sempre il suo idolo, «mi ...",
+      "date": "2026-11-01T21:25:00.000Z",
+      "url": "https://www.lastampa.it/sport/2026/11/01/news/i_tributi_a_senna_e_raikkonen_lo_zio_wolff_e_la_patente_kimi_antonelli_in_12_curiosita-15785085/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/sport"
+      ],
+      "author": "dal nostro inviato Jacopo d'Orsi",
+      "theme": "sport",
+      "image": "https://www.gedistatic.it/content/gnn/img/lastampa/2026/11/01/232452164-0d17ea09-2e91-41f2-a337-869853a5f9f6.jpg",
+      "imageAlt": "I tributi a Senna e Raikkonen, lo zio Wolff e la patente: Kimi Antonelli in 12 curiosità",
+      "addedAt": "2026-11-01T23:39:26.205Z"
+    },
+    {
+      "slug": "rim-2026-11-01-lastampa-la-juve-si-ritrova-due-capolavori-di-67fe2c",
+      "title": "La Juve si ritrova: due capolavori di Alajbegovic e Boga stendono il Napoli",
+      "summary": "Succede tutto nella ripresa, con l'eurogol di Alajbegovic che sblocca il risultato al 25' prima della magia al 42' di Boga a chiudere la partita",
+      "date": "2026-11-01T20:43:00.000Z",
+      "url": "https://www.lastampa.it/sport/2026/11/01/news/juventus-napoli-vittoria-gol-alajbegovic-boga-capolavori-15785063/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/sport"
+      ],
+      "author": "Fabio Riva",
+      "theme": "sport",
+      "image": "https://www.gedistatic.it/content/gnn/img/lastampa/2026/11/01/224257849-d1ffcfd0-fb90-4f84-a5c7-7c3dc8c958c6.jpg",
+      "imageAlt": "La Juve si ritrova: due capolavori di Alajbegovic e Boga stendono il Napoli",
+      "addedAt": "2026-11-01T23:39:26.205Z"
+    },
+    {
+      "slug": "rim-2026-11-01-repubblica-la-strategia-di-trump-se-perdera-il-566409",
+      "title": "La strategia di Trump se perderà il Congresso alle elezioni di Midterm: “Diventerò Mr. Veto”",
+      "summary": "Alla vigilia del voto il leader in difficoltà programma nuovi comizi. La Casa Bianca prepara il piano per governare anche senza il Senato",
+      "date": "2026-11-01T20:34:08.000Z",
+      "url": "https://www.repubblica.it/esteri/2026/11/01/news/se_trump_perde_le_elezioni_diventero_mr_veto-425692335/",
+      "source": "repubblica",
+      "sourceName": "la Repubblica",
+      "categories": [
+        "Esteri"
+      ],
+      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "La strategia di Trump se perderà il Congresso alle elezioni di Midterm: “Diventerò Mr. Veto”",
+      "addedAt": "2026-11-01T23:39:21.722Z"
+    },
+    {
+      "slug": "rim-2026-11-01-repubblica-l-elicottero-precipitato-in-bosnia-il-6af451",
+      "title": "L’elicottero precipitato in Bosnia, il sopravvissuto: “Un miracolo che sia ancora vivo”",
+      "summary": "Domani il rientro delle quattro salme all’aeroporto di Ciampino. La premier riprende un post dedicato alla sergente Laura Procacci, una delle vittime",
+      "date": "2026-11-01T17:05:57.000Z",
+      "url": "https://www.repubblica.it/cronaca/2026/11/01/news/l_elicottero_precipitato_in_bosnia_il_sopravvissuto_un_miracolo_che_sia_ancora_vivo-425691884/",
+      "source": "repubblica",
+      "sourceName": "la Repubblica",
+      "categories": [
+        "Cronaca"
+      ],
+      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "L’elicottero precipitato in Bosnia, il sopravvissuto: “Un miracolo che sia ancora vivo”",
+      "addedAt": "2026-11-01T23:39:21.722Z"
+    },
     {
       "slug": "rim-2026-11-01-ansa-manovra-per-il-piano-clima-regia-al-mase-e-cc408c",
       "title": "Manovra: per il piano clima regia al Mase e nomine in deroga, modello Pnrr",
