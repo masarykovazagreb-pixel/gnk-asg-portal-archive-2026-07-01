@@ -15,3 +15,7 @@ Run [41310173603](https://github.com/masarykovazagreb-pixel/gnk-asg-portal-archi
 News oporavak [41310214267](https://github.com/masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01/actions/runs/41310214267) bio je otkazan; prethodni uspješni news ciklus [41287390773](https://github.com/masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01/actions/runs/41287390773) završio je u 09:09:52 UTC. U repozitoriju više od 20 workflowa koristi istu `gnk-asg-main-mutation` concurrency grupu; to je rizik zamjene poslova na čekanju, ali bez potpunog loga ne tvrdi se da je uzrok baš ovog otkazivanja. Ne uklanjati zaštitu od konkurentnog pisanja niti forsirati push kao prečac.
 
 [Deploy Admin Auth V6 41312228183](https://github.com/masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01/actions/runs/41312228183) završen je uspješno za `9b8f16f0b945` na mainu. To nije dokaz deploya radne grane niti dokaz naknadne svježine svih sadržaja.
+
+## Poboljšanje nadzora na radnoj grani
+
+Nadzor je prethodno mogao prekinuti izvršavanje ako GitHub odbije zahtjev za pokretanje oporavka, a neki opisi mogli su tvrditi da je oporavak pokrenut prije uspješnog odgovora. Promjena na radnoj grani bilježi neuspjeh zahtjeva bez ispisa osjetljivih detalja, ne tvrdi da je oporavak pokrenut te nastavlja skupljati ostale rezultate. U istom ciklusu ponovljeni zahtjev čuva ishod prvog pokušaja; sljedeći redovni ciklus može ponovno pokušati. Test koristi lažni API i ne pokreće produkcijske poslove. To nije popravak samog uzroka zastarjelih feedova ni potvrda deploya.
