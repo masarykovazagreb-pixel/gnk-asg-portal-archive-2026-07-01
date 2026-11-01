@@ -20,6 +20,7 @@ on:
     - cron: '7 */2 * * *'
   # Ručno osvježavanje: izmjena ove datoteke pokreće ciklus i na grani.
   push:
+    branches: [main]
     paths:
       - '.github/region-refresh-trigger'
       - '.github/workflows/region-daily.yml'
@@ -74,7 +75,7 @@ jobs:
           ARGS=""
           if [ -n "${{ inputs.channel }}" ]; then ARGS="$ARGS --channel ${{ inputs.channel }}"; fi
           if [ "${{ inputs.force }}" = "true" ]; then ARGS="$ARGS --force"; fi
-          node apps/region/engine/daily.mjs $ARGS || echo "::warning::Dio izvora nije dostupan — izdanja se grade iz postojeće arhive."
+          node apps/region/engine/daily.mjs $ARGS
           test -f apps/portal/kanal/zagreb/index.html
           node -e "const fs=require('fs');const f=JSON.parse(fs.readFileSync('apps/region/data/_status.json','utf8'));const r=f.lastRun;console.log('kanala:',Object.keys(r.channels).length);const ok=Object.values(r.channels).reduce((a,c)=>a+c.sourcesOk,0);const all=Object.values(r.channels).reduce((a,c)=>a+c.sourcesTotal,0);console.log('izvori:',ok+'/'+all);if(!Object.keys(r.channels).length)process.exit(1)"
 
@@ -131,6 +132,10 @@ jobs:
         run: |-
           set -uo pipefail
           ref="${{ github.ref_name }}"
+          if [ "$ref" != "main" ]; then
+            echo "::error::REGION canonical writer may only publish on main."
+            exit 1
+          fi
           pushed=false
           for attempt in 1 2 3; do
             git fetch origin "$ref" --no-tags
@@ -161,6 +166,10 @@ jobs:
           if [ "$pushed" != "true" ] && [ "${{ github.event_name }}" = "schedule" ]; then
             echo "::warning::Izdanje nije zapisano — pokrećem novi ciklus odmah."
             gh workflow run region-daily.yml --repo "$GITHUB_REPOSITORY" --ref "$ref" || true
+          fi
+          if [ "$pushed" != "true" ]; then
+            echo "::error::REGION generated content was not pushed; no release is verified."
+            exit 1
           fi
 
       - name: Deploy na Cloudflare Pages (svaki kanal svoj projekt)
