@@ -20,6 +20,7 @@ on:
     - cron: '7 */2 * * *'
   # Ručno osvježavanje: izmjena ove datoteke pokreće ciklus i na grani.
   push:
+    branches: [main]
     paths:
       - '.github/region-refresh-trigger'
       - '.github/workflows/region-daily.yml'
@@ -131,6 +132,10 @@ jobs:
         run: |-
           set -uo pipefail
           ref="${{ github.ref_name }}"
+          if [ "$ref" != "main" ]; then
+            echo "::error::REGION canonical writer may only publish on main."
+            exit 1
+          fi
           pushed=false
           for attempt in 1 2 3; do
             git fetch origin "$ref" --no-tags
