@@ -75,6 +75,7 @@ const GATES = [
   { name: 'Sitemapi — bez izmišljenog datuma izmjene', cmd: ['node', 'scripts/factory/test-sitemap-dates-v1.mjs'], required: true },
   { name: 'Razmjena — stabilan datum podataka', cmd: ['node', 'scripts/factory/test-exchange-day-v1.mjs'], required: true },
   { name: 'Tvornica — skener HTML metapodataka', cmd: ['python3', 'scripts/factory/test_quality_scan_v1.py'], required: true },
+  { name: 'Svijet — integritet registra država i kanala', cmd: ['node', 'scripts/world/test-world-registry-v1.mjs'], required: true },
   { name: 'Svijet — sigurni lokalni predlošci država', cmd: ['node', 'scripts/world/test-country-previews-v1.mjs'], required: true },
   { name: 'Oporavak zapisa iz stranica — parsiranje i izvori', cmd: ['node', 'tests/test-recover-items-v1.mjs'], required: true },
   { name: 'Dnevni ciklus — nema fiksnog limita zapisa', cmd: ['node', 'tests/test-daily-cap-v1.mjs'], required: true },
