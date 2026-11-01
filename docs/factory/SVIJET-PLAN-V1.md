@@ -126,3 +126,7 @@ stranice; ne sadrže izvore ni preuzete sadržaje. `robots.txt` i `noindex` su
 mjere opreza, a ne kontrola pristupa. Predloške ne stavljati na javni hosting.
 Postojeći `live` i `preparing` kanali nisu dio te gradnje. Cloudflare projekti
 nisu ovom naredbom stvoreni. Preduvjeti K1–K6 za stvarnu objavu ostaju na snazi.
+
+### Dvojezični lokalni predlošci
+
+Generator `node scripts/world/build-country-previews-v1.mjs` za svaku od 178 planiranih država izrađuje hrvatsku naslovnicu i povezanu englesku inačicu u `en/`. Nazivi i sadržaj su pripremni, bez članaka i bez tvrdnje o lokalnoj redakciji. Obje inačice imaju odgovarajući `lang`, opis, Open Graph i Twitter meta podatke, vlasničke hashtagove i poveznice prema GNK ASG i AKTUAL MEDIA. Nema izmišljenih canonical adresa; `noindex` i `robots.txt` ostaju uključeni. Ovo je lokalni pregled, ne deployment, a robots pravila nisu kontrola pristupa. Stvarna lokalizacija na druge jezike, uređivanje, prava, objava i produkcijska provjera tek slijede.

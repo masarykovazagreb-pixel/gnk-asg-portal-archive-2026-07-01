@@ -15,6 +15,28 @@ test('HTML escape, noindex i jasna oznaka pripreme', () => {
   assert.doesNotMatch(h, /property="og:url"|rel="canonical"/);
   assert.doesNotMatch(h, /<script>/);
 });
+test('engleska verzija ima ispravan jezik, povezane verzije i sigurne metapodatke', () => {
+  const country = {...sample, countryEn:'Test " & <unsafe>'};
+  const en = renderCountry(country, 'en'), hr = renderCountry(country);
+  assert.match(en, /<html lang="en">/);
+  assert.match(en, /Test &quot; &amp; &lt;unsafe&gt;/);
+  assert.match(en, /WORKING PREVIEW — NOT A PUBLIC EDITION/);
+  assert.match(en, /href="\.\.\/" lang="hr"/);
+  assert.match(hr, /href="en\/" lang="en"/);
+  assert.match(en, /noindex,nofollow,noarchive/);
+  assert.match(en, /#NerminSefić #NerminSefic/);
+  assert.doesNotMatch(en, /rel="canonical"|property="og:url"|<script>/);
+  assert.throws(() => renderCountry(country, 'de'));
+});
+test('engleska stranica bez oznake generatora ne smije se prepisati', () => {
+  const out=mkdtempSync(join(tmpdir(),'country-preview-en-'));
+  try {
+    mkdirSync(join(out,'test-city','en'),{recursive:true});
+    writeFileSync(join(out,'test-city','en','index.html'),'original');
+    assert.throws(() => buildPreviews([sample],out));
+    assert.equal(readFileSync(join(out,'test-city','en','index.html'),'utf8'),'original');
+  } finally {rmSync(out,{recursive:true,force:true});}
+});
 test('samo planned, bez feeda i bez brisanja drugih datoteka', () => {
   const out = mkdtempSync(join(tmpdir(), 'country-preview-'));
   try {
@@ -51,6 +73,11 @@ test('stvarni registar gradi po jedan predložak za svaku planiranu državu', ()
       assert.match(html,/noindex,nofollow,noarchive/);
       assert.match(html,/NIJE JAVNO IZDANJE/);
       assert.doesNotMatch(html,/<link\b[^>]*rel=["']canonical/i);
+      const english=readFileSync(join(out,c.id,'en','index.html'),'utf8');
+      assert.match(english,/<html lang="en">/);
+      assert.match(english,/WORKING PREVIEW — NOT A PUBLIC EDITION/);
+      assert.match(english,/noindex,nofollow,noarchive/);
+      assert.doesNotMatch(english,/<link\b[^>]*rel=["']canonical/i);
       assert.match(readFileSync(join(out,c.id,'robots.txt'),'utf8'),/Disallow: \//);
     }
   } finally { rmSync(out,{recursive:true,force:true}); }
