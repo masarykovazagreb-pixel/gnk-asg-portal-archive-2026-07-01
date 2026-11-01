@@ -4,17 +4,23 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-11-01T02:39:04.914Z",
+  "updatedAt": "2026-11-01T05:55:18.587Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": true,
-      "fetched": 50,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-01T02:39:01.000Z"
+      "errors": [
+        "https://telex.hu/rss: HTTP 403",
+        "https://telex.hu/rss/belfold: HTTP 403",
+        "https://telex.hu/rss/kulfold: HTTP 403",
+        "https://telex.hu/rss/gazdasag: HTTP 403",
+        "https://telex.hu/rss/sport: HTTP 403"
+      ],
+      "checkedAt": "2026-11-01T05:55:14.465Z"
     },
     {
       "id": "444",
@@ -24,7 +30,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-01T02:39:01.222Z"
+      "checkedAt": "2026-11-01T05:55:14.663Z"
     },
     {
       "id": "hvg",
@@ -34,7 +40,7 @@
       "fetched": 60,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-01T02:39:01.569Z"
+      "checkedAt": "2026-11-01T05:55:14.982Z"
     },
     {
       "id": "portfolio",
@@ -44,7 +50,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-01T02:39:02.249Z"
+      "checkedAt": "2026-11-01T05:55:15.638Z"
     },
     {
       "id": "index",
@@ -56,7 +62,7 @@
       "errors": [
         "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-01T02:39:03.942Z"
+      "checkedAt": "2026-11-01T05:55:17.584Z"
     },
     {
       "id": "24hu",
@@ -66,7 +72,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-01T02:39:04.156Z"
+      "checkedAt": "2026-11-01T05:55:17.811Z"
     },
     {
       "id": "mandiner",
@@ -76,10 +82,105 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-01T02:39:04.914Z"
+      "checkedAt": "2026-11-01T05:55:18.586Z"
     }
   ],
   "items": [
+    {
+      "slug": "budimpesta-2026-11-01-24hu-nehez-szavakat-talalni-heidi-klum-idei-d970f9",
+      "title": "Nehéz szavakat találni Heidi Klum idei halloweeni jelmezére",
+      "summary": "Október 31-én New Yorkban rendezte meg 25. éves halloweeni partiját Heidi Klum, ezúttal is ő maga volt az egyik legnagyobb látványosság. The post Nehéz szavakat találni Heidi Klum idei halloweeni jelmezére first appeared on 24.hu .",
+      "date": "2026-11-01T05:44:01.000Z",
+      "url": "https://24.hu/elet-stilus/2026/11/01/heidi-klum-halloweeni-jelmez-new-york/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Kikapcs",
+        "heidi klum",
+        "halloween",
+        "jelmez"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/063_2302934986-e1793510991182-1024x577.jpg",
+      "imageAlt": "Nehéz szavakat találni Heidi Klum idei halloweeni jelmezére",
+      "addedAt": "2026-11-01T05:55:17.811Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-01-24hu-allambiztonsagi-leveltar-az-iratok-f6680c",
+      "title": "Állambiztonsági levéltár: Az iratok hiányosak, tartalmuk nem feltétlenül felel meg a valóságnak",
+      "summary": "ÁBTL főigazgatója szerint körültekintően kell értelmezni a november 4-től nyilvános dokumentumokat. The post Állambiztonsági levéltár: Az iratok hiányosak, tartalmuk nem feltétlenül felel meg a valóságnak first appeared on 24.hu .",
+      "date": "2026-11-01T05:41:44.000Z",
+      "url": "https://24.hu/belfold/2026/11/01/allambiztonsagi-leveltar-ugynokaktak-hianyosak/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "ügynökakták",
+        "ábtl",
+        "állambiztonsági múlt"
+      ],
+      "author": "Kassai Zsigmond",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/dszzs20260929018-1024x576.jpg",
+      "imageAlt": "Állambiztonsági levéltár: Az iratok hiányosak, tartalmuk nem feltétlenül felel meg a valóságnak",
+      "addedAt": "2026-11-01T05:55:17.811Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-01-portfolio-dani-rodrik-nem-az-usa-t-vagy-kinat-kellene-a64d35",
+      "title": "Dani Rodrik: Nem az USA-t vagy Kínát kellene követni a termelékenység növeléséhez",
+      "summary": "Európa termelékenységi válsággal néz szembe. Az elmúlt negyedszázadban a kontinens munkatermelékenysége csupán fele olyan gyorsan nőtt, mint az Egyesült Államoké, ami tovább növelte az amerikai és az európai jövedelmek közötti különbséget. A magasabb állami kiadásoknak, az erősebb munkapiaci intézményeknek és a fejlettebb szociális hálónak köszönhetően az európai gazdasági növekedésből származó haszon egyenletesebben oszlik el. A termelékenység javulása nélkül azonban az európai gazdaságok és demokráciák továbbra is veszélyben lesznek.",
+      "date": "2026-11-01T05:00:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261101/dani-rodrik-nem-az-usa-t-vagy-kinat-kellene-kovetni-a-termelekenyseg-novelesehez-873052",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Portfolio signature"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://pcdn.hu/articles/images-xl/k/i/n/kina-amerikai-egyesult-allamok-chip-felvezeto-kereskedelmi-haboru-technologia-geopolitika-in-855174.jpg",
+      "imageAlt": "Dani Rodrik: Nem az USA-t vagy Kínát kellene követni a termelékenység növeléséhez",
+      "addedAt": "2026-11-01T05:55:15.639Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-01-24hu-egy-eve-ilyenkor-nyolc-magyar-turista-halt-21db11",
+      "title": "Egy éve ilyenkor: nyolc magyar turista halt meg egy kenyai repülőbalesetben",
+      "summary": "Közben kigyulladt egy turistahajó Egyiptomban; Magyarországon pedig kiderült, ki lehet a majdani Tisza-kormány egészségügyi minisztere. A legolvasottabb cikkeink egy évvel ezelőttről. The post Egy éve ilyenkor: nyolc magyar turista halt meg egy kenyai repülőbalesetben first appeared on 24.hu .",
+      "date": "2026-11-01T04:58:28.000Z",
+      "url": "https://24.hu/kulfold/2026/11/01/egy-eve-ilyenkor-nyolc-magyar-turista-halt-meg-egy-kenyai-repulobalesetben/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Nagyvilág",
+        "egy éve ilyenkor"
+      ],
+      "author": "24.hu",
+      "theme": "politika",
+      "image": "https://s.24.hu/app/uploads/2026/10/kenya-repulobaleset-1024x577.jpg",
+      "imageAlt": "Egy éve ilyenkor: nyolc magyar turista halt meg egy kenyai repülőbalesetben",
+      "addedAt": "2026-11-01T05:55:17.812Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-01-24hu-teniszeredmennyel-lett-meg-flick-szazadik-c811e2",
+      "title": "Teniszeredménnyel lett meg Flick századik győzelme a Barcával",
+      "summary": "Nem tartott sokáig, hogy a Barca feltörje az Alavés védelmét, a 8. percben Pedri tette a labdát a The post Teniszeredménnyel lett meg Flick századik győzelme a Barcával first appeared on 24.hu .",
+      "date": "2026-11-01T03:44:03.000Z",
+      "url": "https://24.hu/sport/foci/2026/11/01/barcelona-alaves-hansi-flick-szazadik-gyozelem/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Foci",
+        "fc barcelona",
+        "barcelona",
+        "hansi flick"
+      ],
+      "author": "24.hu",
+      "theme": "sport",
+      "image": "https://s.24.hu/app/uploads/2026/11/000_d62f9uv-1024x576.jpg",
+      "imageAlt": "Teniszeredménnyel lett meg Flick századik győzelme a Barcával",
+      "addedAt": "2026-11-01T05:55:17.812Z"
+    },
     {
       "slug": "budimpesta-2026-11-01-24hu-megvan-hamilton-elso-idomeros-sikere-a-873aa4",
       "title": "Megvan Hamilton első időmérős sikere a Ferrarival",

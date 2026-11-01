@@ -4,17 +4,20 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-11-01T02:44:35.034Z",
+  "updatedAt": "2026-11-01T06:00:53.405Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
       "url": "https://www.agerpres.ro/rss",
-      "ok": true,
-      "fetched": 20,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-01T02:44:29.534Z"
+      "errors": [
+        "https://www.agerpres.ro/rss: This operation was aborted",
+        "https://www.agerpres.ro/rss/: This operation was aborted"
+      ],
+      "checkedAt": "2026-11-01T06:00:46.961Z"
     },
     {
       "id": "hotnews",
@@ -24,7 +27,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-01T02:44:29.619Z"
+      "checkedAt": "2026-11-01T06:00:47.520Z"
     },
     {
       "id": "zf",
@@ -34,7 +37,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-01T02:44:31.169Z"
+      "checkedAt": "2026-11-01T06:00:49.192Z"
     },
     {
       "id": "profit",
@@ -44,17 +47,17 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-01T02:44:31.508Z"
+      "checkedAt": "2026-11-01T06:00:49.410Z"
     },
     {
       "id": "digi24",
       "name": "Digi24",
       "url": "https://www.digi24.ro/rss",
       "ok": true,
-      "fetched": 186,
+      "fetched": 188,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-01T02:44:33.408Z"
+      "checkedAt": "2026-11-01T06:00:51.741Z"
     },
     {
       "id": "g4media",
@@ -64,7 +67,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-01T02:44:34.465Z"
+      "checkedAt": "2026-11-01T06:00:52.762Z"
     },
     {
       "id": "newsro",
@@ -74,10 +77,390 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-01T02:44:35.033Z"
+      "checkedAt": "2026-11-01T06:00:53.404Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-11-01-digi24-chiar-ne-separa-raul-prut-piesa-manifest-f52a05",
+      "title": "„Chiar ne separă râul Prut?” Piesă manifest Satoshi-Căpitănescu, după disputa de la Eurovision. Analiză despre unirea dintre români",
+      "summary": "Subiectul reunirii, la fel ca multe altele sensibile din spațiul nostru, a fost intens exploatat de către politicienii sau așa numiții lideri de opinie vremelnici de pe cele două maluri ale Prutului. În 2026, pentru prima dată de la momentul în care Iliescu ar fi trădat prin refuzarea propunerii premierului Mircea Druc de reunire, subiectul a fost readus în discuție la cel mai înalt nivel, de către Maia Sandu și Nicușor Dan. Un moment în care spiritele s-au reinflamat a fost ediția din 2026 a Eurovision. Cu ocazia acestui scandal, cei doi tineri care au reprezentat spațiul românesc, Satoshi și Alexandra Căpitănescu, au lansat o piesă manifest în care vorbesc franc despre realitățile dure…",
+      "date": "2026-11-01T05:59:33.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/moldova/chiar-ne-separa-raul-prut-piesa-manifest-satoshi-capitanescu-dupa-disputa-de-la-eurovision-analiza-despre-unirea-dintre-romani-4016839",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjAxJTJGMzAzODg2OV8zMDM4/ODY5X2VkLnBuZyZoYXNoPTgyM2UzYjhiZjAzMzdjYzM1ODgzY2Q3ZDk1NWE0MDdi.png",
+      "imageAlt": "„Chiar ne separă râul Prut?” Piesă manifest Satoshi-Căpitănescu, după disputa de la Eurovision. Analiză despre unirea dintre români",
+      "addedAt": "2026-11-01T06:00:51.742Z"
+    },
+    {
+      "slug": "bukurest-2026-11-01-hotnews-alegeri-prezidentiale-in-bulgaria-o-lupta-3a75d8",
+      "title": "Alegeri prezidențiale în Bulgaria. O luptă strânsă între „președinta păcii” și candidatul pro-occidental în cea mai săracă țară din UE",
+      "summary": "Bulgarii au început să voteze duminică în turul al doilea al unor alegeri prezidențiale deosebit de disputate, cu doi candidați care au viziuni diametral opuse asupra războiului din Ucraina și a relațiilor cu Rusia, pe fondul tensiunilor tot mai mari din Marea Neagră, scrie AFP. Scrutinul poate marca o premieră istorică: bulgarii vor decide la …",
+      "date": "2026-11-01T05:59:06.000Z",
+      "url": "https://hotnews.ro/alegeri-prezidentiale-in-bulgaria-o-lupta-stransa-intre-presedinta-pacii-si-candidatul-pro-occidental-in-cea-mai-saraca-tara-din-ue-2391718",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Alexandra Coșlea",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Alegeri prezidențiale în Bulgaria. O luptă strânsă între „președinta păcii” și candidatul pro-occidental în cea mai săracă țară din UE",
+      "addedAt": "2026-11-01T06:00:47.521Z"
+    },
+    {
+      "slug": "bukurest-2026-11-01-hotnews-expat-sau-imigrant-de-ce-conteaza-cati-bani-031b23",
+      "title": "„Expat” sau „imigrant”? De ce contează câți bani ai când ajungi într-o țară străină. Povestea unei regizoare care nu s-a simțit acasă nicăieri",
+      "summary": "În documentarul „Fragments of Belonging”, disponibil pe HBO, regizoarea croată Tatjana Božić explorează, prin propria poveste, sentimentul de a nu aparține niciunui loc, experiența migrației, maternitatea și felul în care identitatea este modelată atât de societate, cât și de propriul trecut. Într-un interviu pentru publicul HotNews, cineasta vorbește deschis despre prejudecățile cu care se confruntă …",
+      "date": "2026-11-01T05:55:55.000Z",
+      "url": "https://hotnews.ro/expat-sau-imigrant-de-ce-conteaza-cati-bani-ai-cand-ajungi-intr-o-tara-straina-povestea-unei-regizoare-care-nu-s-a-simtit-acasa-nicaieri-2389917",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "hnpremium"
+      ],
+      "author": "Gabriel Bejan",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "„Expat” sau „imigrant”? De ce contează câți bani ai când ajungi într-o țară străină. Povestea unei regizoare care nu s-a simțit acasă nicăieri",
+      "addedAt": "2026-11-01T06:00:47.521Z"
+    },
+    {
+      "slug": "bukurest-2026-11-01-g4media-bulgaria-organizeaza-duminica-turul-al-80bebd",
+      "title": "Bulgaria organizează duminică turul al doilea al alegerilor prezidențiale, pe fondul instabilității politice",
+      "summary": "Cetățenii Bulgariei sunt chemați din nou la urne duminică pentru a-și alege președintele, într-un scrutin decisiv între președinta interimară Iliana Yotova și fostul premier interimar Andrey Gyurov, după ce niciunul dintre candidați nu a obținut majoritatea voturilor în primul tur, scrie Mediafax. Iliana Yotova și fostul premier interimar Andrey Gyurov se confruntă în turul decisiv, […] © G4Media.ro .",
+      "date": "2026-11-01T05:51:49.000Z",
+      "url": "https://www.g4media.ro/bulgaria-organizeaza-duminica-turul-al-doilea-al-alegerilor-prezidentiale-pe-fondul-instabilitatii-politice.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "Bulgaria"
+      ],
+      "author": "Rareș Constantin",
+      "theme": "politika",
+      "image": "https://www.g4media.ro//wp-content/uploads/2024/10/AFP__20231212__347Q46T__v1__HighRes__BulgariaHistoryConflictMonument-e1730058411983.jpg",
+      "imageAlt": "Bulgaria organizează duminică turul al doilea al alegerilor prezidențiale, pe fondul instabilității politice",
+      "addedAt": "2026-11-01T06:00:52.762Z"
+    },
+    {
+      "slug": "bukurest-2026-11-01-profit-pe-profit-insider-s-a-salvat-de-la-dezastru-9b1cd1",
+      "title": "Pe Profit Insider: S-a salvat de la dezastru",
+      "summary": "S-a salvat de la dezastru. Detalii pe PROFIT INSIDER, un instrument de business pe bază de abonament prin intermediul căruia sunt furnizate informații exclusive privind modificările fiscale și legislative pregătite de autorități înainte de a fi lansate în dezbatere publică, tranzacții realizate de jucători importanți, decizii de business, rezultate financiare anunțate în premieră, analize de piață exclusive.",
+      "date": "2026-11-01T05:50:53.000Z",
+      "url": "https://www.profit.ro/stiri/economie/pe-profit-insider-s-a-salvat-de-la-dezastru-22911763?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Economie"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33237/22911763/4/screenshot-2025-09-13-081753.jpg?width=800",
+      "imageAlt": "Pe Profit Insider: S-a salvat de la dezastru",
+      "addedAt": "2026-11-01T06:00:49.410Z"
+    },
+    {
+      "slug": "bukurest-2026-11-01-digi24-digistoria-cele-mai-importante-evenimente-24d883",
+      "title": "Digistoria - cele mai importante evenimente petrecute pe 1 noiembrie",
+      "summary": "Cele mai importante evenimente petrecute pe 1 noiembrie.",
+      "date": "2026-11-01T05:47:04.000Z",
+      "url": "https://www.digi24.ro/digistoria/digistoria-cele-mai-importante-evenimente-petrecute-pe-1-noiembrie-3-4016895",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjAxJTJGMzAzODg2Nl8zMDM4/ODY2X3h4eC5wbmcmaGFzaD1mZmIyYjM1/ODQ5MDVjZGY1OGViMjQzYzAzZDk1NmU3Yg==.png",
+      "imageAlt": "Digistoria - cele mai importante evenimente petrecute pe 1 noiembrie",
+      "addedAt": "2026-11-01T06:00:51.742Z"
+    },
+    {
+      "slug": "bukurest-2026-11-01-newsro-premierul-etiopiei-si-a-pus-ministrii-sa-84aa27",
+      "title": "Premierul Etiopiei şi-a pus miniştrii să facă antrenamente militare",
+      "summary": "Prim-ministrul etiopian Abiy Ahmed a supus miniştrii din cabinetul său şi alţi înalţi funcţionari guvernamentali unui antrenament militar, afirmând că disciplina forţelor armate poate contribui la formarea unor lideri mai puternici şi la promovarea dezvoltării ţării, informează BBC.",
+      "date": "2026-11-01T05:46:55.000Z",
+      "url": "https://www.news.ro/externe/premierul-etiopiei-si-a-pus-ministrii-sa-faca-antrenamente-militare-1922404601552026110722916363",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Premierul Etiopiei şi-a pus miniştrii să facă antrenamente militare",
+      "addedAt": "2026-11-01T06:00:53.404Z"
+    },
+    {
+      "slug": "bukurest-2026-11-01-g4media-iranul-ameninta-cu-un-razboi-fara-limite-f9d037",
+      "title": "Iranul amenință cu un război fără limite geografice dacă va fi atacat din nou de SUA și Israel / Liderul suprem Mojtaba Khamenei a ordonat forțelor armate să fie pregătite pentru…",
+      "summary": "Liderul suprem al Iranului, Mojtaba Khamenei, a ordonat forțelor armate să fie pregătite pentru o ripostă imediată, fără restricții geografice, în cazul unor noi atacuri americane sau israeliene, scrie Mediafax. Avertismentul vine într-un moment de maximă tensiune în Orientul Mijlociu, în timp ce Washingtonul analizează posibilitatea reluării operațiunilor militare după alegerile americane din 3 noiembrie, […] © G4Media.ro .",
+      "date": "2026-11-01T05:38:10.000Z",
+      "url": "https://www.g4media.ro/iranul-ameninta-cu-un-razboi-fara-limite-geografice-daca-va-fi-atacat-din-nou-de-sua-si-israel-liderul-suprem-mojtaba-khamenei-a-ordonat-fortelor-armate-sa-fie-pregatite-pentru-o-riposta-imediata.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "iran",
+        "Israel",
+        "razboi"
+      ],
+      "author": "Rareș Constantin",
+      "theme": "politika",
+      "image": "https://www.g4media.ro//wp-content/uploads/2024/02/Zolfaghar_missile.jpg",
+      "imageAlt": "Iranul amenință cu un război fără limite geografice dacă va fi atacat din nou de SUA și Israel / Liderul suprem Mojtaba Khamenei a ordonat forțelor armate să fie pregătite pentru o",
+      "addedAt": "2026-11-01T06:00:52.762Z"
+    },
+    {
+      "slug": "bukurest-2026-11-01-newsro-meta-dezvolta-un-robot-umanoid-impreuna-cu-9ff401",
+      "title": "Meta dezvoltă un robot umanoid împreună cu o companie chineză; primul prototip a fost realizat în trei luni",
+      "summary": "Meta Platforms, compania care deţine Facebook, Instagram şi WhatsApp, a construit un prototip de robot umanoid în colaborare cu producătorul chinez Fourier şi lucrează deja la o a doua versiune, relatează Reuters, citând publicaţia The Information.",
+      "date": "2026-11-01T05:33:00.000Z",
+      "url": "https://www.news.ro/economic/meta-dezvolta-un-robot-umanoid-impreuna-cu-o-companie-chineza-primul-prototip-a-fost-realizat-in-trei-luni-1922403301002026110722915384",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Meta dezvoltă un robot umanoid împreună cu o companie chineză; primul prototip a fost realizat în trei luni",
+      "addedAt": "2026-11-01T06:00:53.404Z"
+    },
+    {
+      "slug": "bukurest-2026-11-01-g4media-elevii-se-intorc-luni-la-cursuri-b9d2e9",
+      "title": "Elevii se întorc luni la cursuri",
+      "summary": "Elevii se întorc luni la cursuri, după o săptămână de vacanţă, potrivit calendarului aprobat de Ministerul Educaţiei şi Cercetării, scrie Agerpres. Anul şcolar are o durată de 36 de săptămâni de cursuri. Pentru clasele a XII-a zi, a XIII-a seral şi frecvenţă redusă, anul şcolar, cu 34 de săptămâni de cursuri, se va încheia pe […] © G4Media.ro .",
+      "date": "2026-11-01T05:31:38.000Z",
+      "url": "https://www.g4media.ro/elevii-se-intorc-luni-la-cursuri.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "elevi cursuri"
+      ],
+      "author": "Rareș Constantin",
+      "theme": "politika",
+      "image": "https://www.g4media.ro//wp-content/uploads/2025/09/INSTANT_SC_50_PRESEDINTE_05_INQUAM_Photos_Octav_Ganea.jpg",
+      "imageAlt": "Elevii se întorc luni la cursuri",
+      "addedAt": "2026-11-01T06:00:52.762Z"
+    },
+    {
+      "slug": "bukurest-2026-11-01-digi24-cum-reuseste-teheranul-sa-aduca-in-tara-5df3d1",
+      "title": "Cum reușește Teheranul să aducă în țară echipamente pentru armată, ocolind blocada SUA: rețeaua ascunsă de agenții militare a Iranului",
+      "summary": "Iranul a creat o rețea secretă de agenții militare cu acoperire globală pentru a importa echipamente, explozivi și camioane de mare tonaj în valoare de cel puțin 2 miliarde de dolari începând din ianuarie 2025, eludând atât blocada navală a SUA, cât și sancțiunile occidentale, potrivit Reuters, care publică o amplă investigație.",
+      "date": "2026-11-01T05:28:41.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/cum-reuseste-teheranul-sa-aduca-in-tara-echipamente-pentru-armata-ocolind-blocada-sua-reteaua-ascunsa-de-agentii-militare-a-iranului-4014379",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjI5JTJGMzAzNjY3M18zMDM2/NjczX3Byb2ZpbWVkaWEtMTEzOTE1ODQ5/NS5qcGcmaGFzaD1lOTUwZTIyZjZjNjNkMGE4NTk3YTgyNWY0NDNiOTQwZg==.jpg",
+      "imageAlt": "Cum reușește Teheranul să aducă în țară echipamente pentru armată, ocolind blocada SUA: rețeaua ascunsă de agenții militare a Iranului",
+      "addedAt": "2026-11-01T06:00:51.742Z"
+    },
+    {
+      "slug": "bukurest-2026-11-01-g4media-magazine-jefuite-cocktailuri-molotov-si-011555",
+      "title": "Magazine jefuite, cocktailuri Molotov și confruntări cu poliția în urma manifestațiilor din Germania",
+      "summary": "Valul protestelor care a zguduit mai multe țări europene a ajuns și în Germania. Zeci de mii de oameni au ieșit sâmbătă, 31 octombrie, pe străzile a peste 30 de orașe, cerând investiții în educație și reducerea costurilor de trai. Manifestațiile, inițial pașnice, au degenerat în violențe în mai multe localități. La Frankfurt, persoane mascate […] © G4Media.ro .",
+      "date": "2026-11-01T05:27:04.000Z",
+      "url": "https://www.g4media.ro/magazine-jefuite-cocktailuri-molotov-si-confruntari-cu-politia-in-urma-manifestatiilor-din-germania.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "Germania"
+      ],
+      "author": "Rareș Constantin",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro//wp-content/uploads/2024/01/Captura-de-ecran-din-2024-01-27-la-21.36.07-e1706384204902.jpg",
+      "imageAlt": "Magazine jefuite, cocktailuri Molotov și confruntări cu poliția în urma manifestațiilor din Germania",
+      "addedAt": "2026-11-01T06:00:52.762Z"
+    },
+    {
+      "slug": "bukurest-2026-11-01-hotnews-orasul-din-romania-care-a-ajuns-de-pe-locul-5dbd7b",
+      "title": "Orașul din România care a ajuns de pe locul 2 la prețurile mici la cea mai mare scumpire a coșului alimentar",
+      "summary": "Un locuitor din Târgoviște plătea pentru un coș de zece alimente de bază 79,3 lei, în august 2022. Mai puțin dădeau doar cei din Târgu Jiu. Patru ani mai târziu, același coș costă în Târgoviște 122,8 lei. Este o creștere de 55%, cea mai mare raportat la cele 41 de municipii reședință de județ pentru …",
+      "date": "2026-11-01T05:25:30.000Z",
+      "url": "https://hotnews.ro/orasul-din-romania-care-a-ajuns-de-pe-locul-2-la-preturile-mici-la-cea-mai-mare-scumpire-a-cosului-alimentar-2388594",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Mona Hera",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Orașul din România care a ajuns de pe locul 2 la prețurile mici la cea mai mare scumpire a coșului alimentar",
+      "addedAt": "2026-11-01T06:00:47.521Z"
+    },
+    {
+      "slug": "bukurest-2026-11-01-newsro-trump-afirma-ca-flavio-bolsonaro-poate-1ad63c",
+      "title": "Trump afirmă că Flavio Bolsonaro poate rămâne în SUA „cât timp doreşte”",
+      "summary": "Preşedintele Donald Trump a declarat că Flevio Bolsonaro, candidatul învins la alegerile prezidenţiale din Brazilia, poate rămâne în Statele Unite pe termen nelimitat.",
+      "date": "2026-11-01T05:11:26.000Z",
+      "url": "https://www.news.ro/externe/trump-afirma-ca-flavio-bolsonaro-poate-ramane-in-sua-cat-timp-doreste-1922401101262026110722916303",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Trump afirmă că Flavio Bolsonaro poate rămâne în SUA „cât timp doreşte”",
+      "addedAt": "2026-11-01T06:00:53.404Z"
+    },
+    {
+      "slug": "bukurest-2026-11-01-digi24-orasul-in-care-merg-rusii-care-vor-sa-7ca239",
+      "title": "Orașul în care merg rușii care vor să descopere cum se trăiește dincolo de graniță: „Nu era greu să obții o viză înainte de 2022”",
+      "summary": "Cu arhitectura sa de basm, castelul construit în stil suedez, parcul peisagistic în stil englezesc și zidurile medievale ale orașului, ai putea fi iertat dacă ai crede că te afli într-o țară nordică, relatează The Moscow Times.",
+      "date": "2026-11-01T05:00:53.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/rusia/orasul-in-care-merg-rusii-care-vor-sa-descopere-cum-se-traieste-dincolo-de-granita-nu-era-greu-sa-obtii-o-viza-inainte-de-2022-4014381",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwOCUyRjE5JTJGMjkxNzMyOF8yOTE3/MzI4X3Byb2ZpbWVkaWEtMDg5NjEzMjg0/OC5qcGcmaGFzaD0yYWU5N2MzYjI5NjZjMDAzNTdkNjhjYTcwMTI1NWEzMQ==.jpg",
+      "imageAlt": "Orașul în care merg rușii care vor să descopere cum se trăiește dincolo de graniță: „Nu era greu să obții o viză înainte de 2022”",
+      "addedAt": "2026-11-01T06:00:51.742Z"
+    },
+    {
+      "slug": "bukurest-2026-11-01-digi24-targuri-de-craciun-in-bucuresti-2026-cand-8e2230",
+      "title": "Târguri de Crăciun în București 2026: Când se deschid, unde sunt organizate și ce atracții sunt anunțate",
+      "summary": "Târgurile de Crăciun din București au primele deschideri anunțate pentru a doua jumătate a lunii noiembrie. Opera Comică pentru Copii va primi vizitatori din 20 noiembrie, iar evenimentul din Piața Constituției va începe pe 27 noiembrie. Accesul publicului va fi gratuit în ambele locații.",
+      "date": "2026-11-01T05:00:52.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/evenimente/targuri-de-craciun-in-bucuresti-2026-cand-se-deschid-unde-sunt-organizate-si-ce-atractii-sunt-anuntate-4015359",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjMwJTJGMzAzNzUyOV8zMDM3/NTI5X1Rhcmd1cmktZGUtQ3JhY2l1bi0y/MDI2Xy1Gb3RvLUdldHR5LUltYWdlcy0x/LmpwZyZoYXNoPTFhZjc5YzcxZWUwMjU5MWU5YWExMDQwNmI4ZTcwZmZk.jpg",
+      "imageAlt": "Târguri de Crăciun în București 2026: Când se deschid, unde sunt organizate și ce atracții sunt anunțate",
+      "addedAt": "2026-11-01T06:00:51.742Z"
+    },
+    {
+      "slug": "bukurest-2026-11-01-digi24-haos-la-pentagon-val-de-demiteri-in-10b3d1",
+      "title": "Haos la Pentagon: val de demiteri în conducerea armatei SUA. Donald Trump, îngrijorat de amploarea epurărilor. Lista capetelor căzute",
+      "summary": "Un nou val de demiteri la vârful armatei americane provoacă tensiuni în administrația de la Washington, în condițiile în care Statele Unite se confruntă cu un conflict militar prelungit cu Iranul. Secretarul Apărării, Pete Hegseth, l-a îndepărtat din funcție pe principalul responsabil cu planificarea militară a Pentagonului, devenit cel mai recent nume de pe o listă lungă de generali și oficiali concediați sau obligați să se retragă. Amploarea schimbărilor l-ar fi îngrijorat chiar și pe președintele Donald Trump, potrivit informațiilor apărute în presa americană.",
+      "date": "2026-11-01T05:00:52.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/sua/haos-la-pentagon-val-de-demiteri-in-conducerea-armatei-sua-donald-trump-ingrijorat-de-amploarea-epurarilor-lista-capetelor-cazute-4014445",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwNCUyRjA4JTJGMjY3NzY3NV8yNjc3/Njc1X3Byb2ZpbWVkaWEtMTA4OTE2NDQ4/MC5qcGcmaGFzaD1kM2JkZmVkODc2MWQxMTM3NjcwY2Y5YzRlZGNhOWQwMQ==.jpg",
+      "imageAlt": "Haos la Pentagon: val de demiteri în conducerea armatei SUA. Donald Trump, îngrijorat de amploarea epurărilor. Lista capetelor căzute",
+      "addedAt": "2026-11-01T06:00:51.742Z"
+    },
+    {
+      "slug": "bukurest-2026-11-01-hotnews-interviu-dana-rogoz-autoritatea-unui-87036c",
+      "title": "INTERVIU Dana Rogoz: „Autoritatea unui părinte poate să includă atât explicații, cât și disponibilitatea de a recunoaște că a greșit”",
+      "summary": "„Olguța și un bunic de milioane”, una dintre cele mai iubite cărți pentru copii din România, a fost ecranizată, iar filmul va apărea anul viitor. Este vorba despre un copil care are curajul de a-și spune părerea, în timp ce adulții învață să-l asculte. Dana Rogoz face parte din distribuție și a acordat un interviu …",
+      "date": "2026-11-01T05:00:22.000Z",
+      "url": "https://hotnews.ro/interviu-dana-rogoz-autoritatea-unui-parinte-poate-sa-includa-atat-explicatii-cat-si-disponibilitatea-de-a-recunoaste-ca-a-gresit-2384796",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Life",
+        "dana rogoz",
+        "hnpremium"
+      ],
+      "author": "Ana Tepșanu",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "INTERVIU Dana Rogoz: „Autoritatea unui părinte poate să includă atât explicații, cât și disponibilitatea de a recunoaște că a greșit”",
+      "addedAt": "2026-11-01T06:00:47.521Z"
+    },
+    {
+      "slug": "bukurest-2026-11-01-hotnews-interviu-liderul-usr-dominic-fritz-cu-ilie-b21486",
+      "title": "INTERVIU. Liderul USR, Dominic Fritz: „Cu Ilie Bolojan construim o alternativă politică pentru 2028”. Ce spune despre posibilitate de a pierde puterea în partid",
+      "summary": "Președintele USR, Dominic Fritz, a acordat, imediat după congresul partidului, un interviu pentru HotNews, în care a vorbit despre locul USR în sondaje, Nicușor Dan și AUR. – Ați făcut la congresul USR o promisiune, că veți fi câinele de pază al cetățenilor. Cu toate astea, am văzut două sondaje în ultimele câteva zile, care …",
+      "date": "2026-11-01T05:00:19.000Z",
+      "url": "https://hotnews.ro/interviu-liderul-usr-dominic-fritz-cu-ilie-bolojan-construim-o-alternativa-politica-pentru-2028-ce-spune-despre-posibilitate-de-a-pierde-puterea-in-partid-2391687",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "Dominic Fritz",
+        "hnpremium",
+        "USR"
+      ],
+      "author": "Raluca Ion",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "INTERVIU. Liderul USR, Dominic Fritz: „Cu Ilie Bolojan construim o alternativă politică pentru 2028”. Ce spune despre posibilitate de a pierde puterea în partid",
+      "addedAt": "2026-11-01T06:00:47.521Z"
+    },
+    {
+      "slug": "bukurest-2026-11-01-newsro-noutati-netflix-in-noiembrie-al-doilea-0633e1",
+      "title": "Noutăţi Netflix în noiembrie - Al doilea sezon „Black Doves” cu Keira Knightley, „Heartland”, thriller cu Jessica Chastain, şi „The Hunchback, Soul of Paris”, cu Vincent Cassel/…",
+      "summary": "Al doilea sezon din „Black Doves”, unde Helen (Keira Knightley) se adaptează la viaţa de soţie a premierului, Sam (Ben Whishaw) primeşte un ultimatum letal, iar un atac asupra lui Reed (Sarah Lancashire) îi atrage într-o căutare disperată de răspunsuri; filmul „Possible Love”, o dramă sud-coreeană creată de îndrăgitul Lee Chang-dong şi premiată la Festivalul Internaţional de Film de la Veneţia, care explorează natura umană şi diferenţele de clasă pe fondul iubirii; filmul „The Mosquito Bowl”, bazat pe romanul omonim scris de Buzz Bissinger, care spune povestea legendarului meci de fotbal american din Ajunul Crăciunului jucat pe fondul celui de-Al Doilea Război Mondial, cu Bill Skarsgård…",
+      "date": "2026-11-01T05:00:00.000Z",
+      "url": "https://www.news.ro/entertainment/noutati-netflix-in-noiembrie-al-doilea-sezon-black-doves-cu-keira-knightley-heartland-thriller-cu-jessica-chastain-si-the-hunchback-soul-of-paris-cu-vincent-cassel-video-1922400001002026110722910846",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Noutăţi Netflix în noiembrie - Al doilea sezon „Black Doves” cu Keira Knightley, „Heartland”, thriller cu Jessica Chastain, şi „The Hunchback, Soul of Paris”, cu Vincent Cassel/ VI",
+      "addedAt": "2026-11-01T06:00:53.405Z"
+    },
+    {
+      "slug": "bukurest-2026-11-01-hotnews-noi-trageri-loto-duminica-1-noiembrie-2026-cd34b4",
+      "title": "Noi trageri LOTO duminică, 1 noiembrie 2026. Cel mai mare premiu, la Loto 6/49",
+      "summary": "Noi trageri loto sunt programate duminică, 1 noiembrie, după ce, la tragerile loto de joi, Loteria Română a acordat acordat 11.787 de câștiguri în valoare totală de peste 1,28 milioane de lei. Extragerea va fi făcută duminică, după ora 18.30, când HotNews va publicat numerele câștigătoare. Rezultate Loto, duminică, 1 noiembrie. Numerele extrase La Loto …",
+      "date": "2026-11-01T04:55:00.000Z",
+      "url": "https://hotnews.ro/rezultate-loto-1-noiembrie-2026-2391465",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Maria Ionescu",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Noi trageri LOTO duminică, 1 noiembrie 2026. Cel mai mare premiu, la Loto 6/49",
+      "addedAt": "2026-11-01T06:00:47.522Z"
+    },
+    {
+      "slug": "bukurest-2026-11-01-newsro-serbia-comemoreaza-tragedia-de-la-novi-sad-70fb4f",
+      "title": "Serbia comemorează tragedia de la Novi Sad care a declanşat mişcarea studenţească şi a dus la răsturnarea regimului Vucic",
+      "summary": "Mii de persoane sunt aşteptate duminică la Novi Sad pentru a aduce un omagiu victimelor catastrofei de la gară, care a declanşat mişcarea antiguvernamentală ce a răsturnat, în urmă cu o săptămână, partidul de dreapta aflat la putere, notează AFP.",
+      "date": "2026-11-01T04:51:00.000Z",
+      "url": "https://www.news.ro/externe/serbia-comemoreaza-tragedia-de-la-novi-sad-care-a-declansat-miscarea-studenteasca-si-a-dus-la-rasturnarea-regimului-vucic-1922405101002026110622916263",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Serbia comemorează tragedia de la Novi Sad care a declanşat mişcarea studenţească şi a dus la răsturnarea regimului Vucic",
+      "addedAt": "2026-11-01T06:00:53.405Z"
+    },
+    {
+      "slug": "bukurest-2026-11-01-newsro-opec-a-convenit-in-principiu-sa-mentina-8c8d5d",
+      "title": "OPEC+ a convenit în principiu să menţină neschimbate ţintele de producţie a petrolului în decembrie, potrivit unor surse",
+      "summary": "Ţările producătoare de petrol din alianţa OPEC+ au ajuns la un acord de principiu pentru menţinerea neschimbată a ţintelor de producţie în luna decembrie, urmând ca decizia să fie discutată la reuniunea de duminică, au declarat pentru Reuters trei surse familiarizate cu negocierile.",
+      "date": "2026-11-01T04:46:00.000Z",
+      "url": "https://www.news.ro/economic/opec-a-convenit-in-principiu-sa-mentina-neschimbate-tintele-de-productie-a-petrolului-in-decembrie-potrivit-unor-surse-1922404601002026110622915365",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "OPEC+ a convenit în principiu să menţină neschimbate ţintele de producţie a petrolului în decembrie, potrivit unor surse",
+      "addedAt": "2026-11-01T06:00:53.405Z"
+    },
     {
       "slug": "bukurest-2026-11-01-agerpres-judo-alex-cret-invins-in-runda-a-doua-la-fe9988",
       "title": "Judo: Alex Creț, învins în runda a doua la turneul Grand Slam de la Abu Dhabi",
