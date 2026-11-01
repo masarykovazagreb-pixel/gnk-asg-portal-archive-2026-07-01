@@ -107,3 +107,13 @@ ako ima svjež zapis, ne dohvaća druge. Tek za ispravan feed bez svježih zapis
 dohvaća ostale aktivne feedove, do četiri istodobno, s vremenskim ograničenjem.
 Prijedlog prikazuje izvorno izdanje, naslov, datum, medij i jezik. Pregled ne
 preuzima tekst niti objavljuje; feed i njegovi podaci nisu dokaz prava ili istine.
+
+## Stabilan dan podataka razmjene
+
+`exchange.json` zadržava postojeće polje `generated` zbog kompatibilnosti, ali
+od sada u njega zapisuje dan najnovijeg datiranog izvora u UTC-u, a ne današnji
+sat gradnje. `generatedMeaning` označava `latest-source-date-utc`; ako nema
+valjanih datuma izvora, koristi se `network-counts-v1.json` i oznaka
+`registered-network-data-day`. Ako ni taj podatak nije valjan, gradnja pada
+umjesto izmišljanja datuma. Ova oznaka nije potvrda svježine uživo. Isti ulazi
+sada daju isti izlaz i nakon promjene kalendarskog dana.
