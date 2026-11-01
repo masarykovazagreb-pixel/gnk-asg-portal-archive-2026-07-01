@@ -4,7 +4,7 @@
   "lang": "it",
   "city": "Rim",
   "country": "Italija",
-  "updatedAt": "2026-11-01T05:57:56.094Z",
+  "updatedAt": "2026-11-01T13:19:37.643Z",
   "sources": [
     {
       "id": "ansa",
@@ -14,17 +14,22 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-01T05:57:49.291Z"
+      "checkedAt": "2026-11-01T13:19:27.387Z"
     },
     {
       "id": "repubblica",
       "name": "la Repubblica",
       "url": "https://www.repubblica.it/rss/homepage/rss2.0.xml",
-      "ok": true,
-      "fetched": 30,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-01T05:57:49.606Z"
+      "errors": [
+        "https://www.repubblica.it/rss/homepage/rss2.0.xml: HTTP 403",
+        "https://www.repubblica.it/rss/politica/rss2.0.xml: HTTP 403",
+        "https://www.repubblica.it/rss/economia/rss2.0.xml: HTTP 403",
+        "https://www.repubblica.it/rss/sport/rss2.0.xml: HTTP 403"
+      ],
+      "checkedAt": "2026-11-01T13:19:30.715Z"
     },
     {
       "id": "ilpost",
@@ -36,7 +41,7 @@
       "errors": [
         "https://www.ilpost.it/feed/: HTTP 403"
       ],
-      "checkedAt": "2026-11-01T05:57:50.969Z"
+      "checkedAt": "2026-11-01T13:19:32.258Z"
     },
     {
       "id": "sole24",
@@ -46,7 +51,7 @@
       "fetched": 37,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-01T05:57:52.136Z"
+      "checkedAt": "2026-11-01T13:19:33.486Z"
     },
     {
       "id": "corriere",
@@ -56,17 +61,19 @@
       "fetched": 69,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-01T05:57:52.852Z"
+      "checkedAt": "2026-11-01T13:19:34.302Z"
     },
     {
       "id": "lastampa",
       "name": "La Stampa",
       "url": "https://www.lastampa.it/rss",
-      "ok": true,
-      "fetched": 67,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-01T05:57:53.578Z"
+      "errors": [
+        "https://www.lastampa.it/rss: HTTP 403"
+      ],
+      "checkedAt": "2026-11-01T13:19:35.266Z"
     },
     {
       "id": "fanpage",
@@ -78,7 +85,7 @@
       "errors": [
         "https://www.fanpage.it/feed/: HTTP 403"
       ],
-      "checkedAt": "2026-11-01T05:57:54.839Z"
+      "checkedAt": "2026-11-01T13:19:36.374Z"
     },
     {
       "id": "adnkronos",
@@ -90,10 +97,117 @@
       "errors": [
         "https://www.adnkronos.com/rss: nije feed"
       ],
-      "checkedAt": "2026-11-01T05:57:56.094Z"
+      "checkedAt": "2026-11-01T13:19:37.642Z"
     }
   ],
   "items": [
+    {
+      "slug": "rim-2026-11-01-ansa-manovra-per-il-piano-clima-regia-al-mase-e-cc408c",
+      "title": "Manovra: per il piano clima regia al Mase e nomine in deroga, modello Pnrr",
+      "summary": "Oltre 6 milioni fino al 2033. Fondi monitorati su ReGiS, revoca per chi non centra target",
+      "date": "2026-11-01T13:09:26.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/01/manovra-per-il-piano-clima-regia-al-mase-e-nomine-in-deroga-modello-pnrr_b0e7678d-862e-44a8-8aa8-d529f279a960.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Manovra: per il piano clima regia al Mase e nomine in deroga, modello Pnrr",
+      "addedAt": "2026-11-01T13:19:27.387Z"
+    },
+    {
+      "slug": "rim-2026-11-01-ansa-al-via-in-ue-le-commissioni-da-2-euro-per-l-5f9f46",
+      "title": "Al via in Ue le commissioni da 2 euro per l'acquisto di pacchi cinesi",
+      "summary": "Nel mirino gli acquisti dalle grandi piattaforme e-commerce di Pechino",
+      "date": "2026-11-01T13:07:54.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/01/al-via-in-ue-le-commissioni-da-2-euro-per-lacquisto-di-pacchi-cinesi_1e5c5c49-9f31-40e0-a693-5b7fc429a322.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Al via in Ue le commissioni da 2 euro per l'acquisto di pacchi cinesi",
+      "addedAt": "2026-11-01T13:19:27.387Z"
+    },
+    {
+      "slug": "rim-2026-11-01-ansa-entro-domani-le-adesioni-al-concordato-18aef7",
+      "title": "Entro domani le adesioni al concordato preventivo biennale",
+      "summary": "Per gli autonomi sul piatto anche il ravvedimento speciale",
+      "date": "2026-11-01T12:53:55.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/01/entro-domani-le-adesioni-al-concordato-preventivo-biennale_5a35611f-c9e6-487f-890b-c112e709dbe1.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Entro domani le adesioni al concordato preventivo biennale",
+      "addedAt": "2026-11-01T13:19:27.387Z"
+    },
+    {
+      "slug": "rim-2026-11-01-ansa-manifestazione-nazionale-usb-il-12-dicembre-86cd98",
+      "title": "Manifestazione nazionale Usb il 12 dicembre contro caro vita e governo Meloni",
+      "summary": "L'annuncio in assemblea. Mobilitazione continua, previsti presidi e cortei fino al 12",
+      "date": "2026-11-01T12:39:49.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/01/manifestazione-nazionale-usb-il-12-dicembre-contro-caro-vita-e-governo-meloni_52069b23-bb09-4802-b2f0-f1484450b2f8.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Manifestazione nazionale Usb il 12 dicembre contro caro vita e governo Meloni",
+      "addedAt": "2026-11-01T13:19:27.387Z"
+    },
+    {
+      "slug": "rim-2026-11-01-ansa-manovra-con-flessibilita-ue-aiuti-all-a37302",
+      "title": "Manovra: con flessibilità Ue aiuti all'energia, per le imprese scatta vincolo green",
+      "summary": "Oltre 6 miliardi di sostegni, investimenti 'almeno pari al 100% dell'aiuto'",
+      "date": "2026-11-01T12:35:25.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/01/manovra-con-flessibilita-ue-aiuti-allenergia-per-le-imprese-scatta-vincolo-green_4137e60a-78dd-4f56-bb8d-13ef45be4a96.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Manovra: con flessibilità Ue aiuti all'energia, per le imprese scatta vincolo green",
+      "addedAt": "2026-11-01T13:19:27.387Z"
+    },
+    {
+      "slug": "rim-2026-11-01-ansa-media-lista-unita-raccomandera-eisenkot-aad722",
+      "title": "Media, 'Lista unita raccomanderà Eisenkot come premier a Herzog'",
+      "summary": "'Si presume che anche l'altro partito arabo Ra'am farà lo stesso'",
+      "date": "2026-11-01T12:05:24.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/01/media-lista-unita-raccomandera-eisenkot-come-premier-a-herzog_f3c39e60-ee52-41c8-a032-41e3cf5766f6.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Media, 'Lista unita raccomanderà Eisenkot come premier a Herzog'",
+      "addedAt": "2026-11-01T13:19:27.388Z"
+    },
+    {
+      "slug": "rim-2026-11-01-sole24-meloni-il-quirinale-non-e-nei-miei-piani-ma-760156",
+      "title": "Meloni: «Il Quirinale non è nei miei piani, ma basta con il monopolio di centrosinistra»",
+      "summary": "«Sono totalmente concentrata a chiudere bene questo mandato e a chiedere agli italiani di confermarmi la loro fiducia per altri cinque anni. Il Quirinale non è nei miei piani. Detto...",
+      "date": "2026-11-01T10:09:00.000Z",
+      "url": "https://www.ilsole24ore.com/art/meloni-il-quirinale-non-e-miei-piani-ma-basta-il-monopolio-centrosinistra-AJIPPz0B",
+      "source": "sole24",
+      "sourceName": "Il Sole 24 Ore",
+      "categories": [
+        "Italia/Politica"
+      ],
+      "author": "di Redazione Roma",
+      "theme": "drustvo",
+      "image": "https://i2.res.24o.it/images2010/S24/Documenti/2026/11/02/Immagini/Ritagli/bc2d4931fe18427812d6de7a3fcd5537-U04806843131kiO-1440x752@IlSole24Ore-Web.jpg",
+      "imageAlt": "Meloni: «Il Quirinale non è nei miei piani, ma basta con il monopolio di centrosinistra»",
+      "addedAt": "2026-11-01T13:19:33.486Z"
+    },
     {
       "slug": "rim-2026-11-01-repubblica-sailor-giovanni-soldini-i-rescue-people-who-05c6f2",
       "title": "Sailor Giovanni Soldini: “I rescue people who brave the sea in search of a future”",
