@@ -455,8 +455,15 @@ export function appendSitemap(sitemapFile, entries, dryRun = false) {
   let xml = readFileSync(sitemapFile, 'utf8');
   const fresh = entries.filter((entry) => !xml.includes(`<loc>${entry.loc}</loc>`));
   if (!fresh.length) return false;
-  const today = new Date().toISOString().slice(0, 10);
-  const block = fresh.map((entry) => `  <url><loc>${entry.loc}</loc><lastmod>${today}</lastmod><changefreq>${entry.changefreq || 'monthly'}</changefreq><priority>${entry.priority || '0.5'}</priority></url>`).join('\n');
+  // Datum gradnje nije dokaz da je sadržaj promijenjen. Ako nemamo pouzdan
+  // datum izmjene, izostavljamo lastmod umjesto umjetnog osvježavanja.
+  const block = fresh.map((entry) => {
+    const value = entry.lastmod || '';
+    const date = /^\d{4}-\d{2}-\d{2}$/.test(value) ? new Date(`${value}T00:00:00Z`) : null;
+    const valid = date && Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === value;
+    const lastmod = valid ? `<lastmod>${value}</lastmod>` : '';
+    return `  <url><loc>${entry.loc}</loc>${lastmod}<changefreq>${entry.changefreq || 'monthly'}</changefreq><priority>${entry.priority || '0.5'}</priority></url>`;
+  }).join('\n');
   if (!dryRun) writeFileSync(sitemapFile, xml.replace('</urlset>', `${block}\n</urlset>`));
   return true;
 }
