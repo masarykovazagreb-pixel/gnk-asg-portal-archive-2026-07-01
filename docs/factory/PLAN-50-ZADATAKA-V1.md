@@ -9,9 +9,9 @@ Redoslijed rada od 1. 11. 2026. Plan nadopunjuje, ne zamjenjuje, `ZADACI-100-SVI
 | 3 | Pregledati nedavne produkcijske workflowe. | gotovo — u trenutku pregleda Admin Auth u tijeku; Autonomija i SLA Watchdog neuspješni; drugi rezultati variraju |
 | 4 | Utvrditi neuspjeli korak Autonomije. | gotovo — run 41311996151, korak „Signal tvrdih kriterija”; detaljni log nedostupan (EOF) |
 | 5 | Utvrditi neuspjeli korak Watchdoga. | gotovo — run 41310173603, provjera svježine/SLA; detaljni log nedostupan (EOF) |
-| 6 | Pribaviti detaljan uzrok i sanirati Autonomiju. | otvoreno — bez dostupnog loga nije utvrđen točan kriterij |
-| 7 | Pribaviti detaljan uzrok i sanirati Watchdog. | otvoreno — bez dostupnog loga nije utvrđen točan uzrok |
-| 8 | Pregledati otkazane redovne workflowe i uzrok. | otvoreno |
+| 6 | Pribaviti detaljan uzrok i sanirati Autonomiju. | u tijeku — `proxy-popis`, nedostaju dva Jakarta hosta; detalji u `DIJAGNOSTIKA-PRODUKCIJE-2026-11-01.md`, prava i sanacija još otvoreni |
+| 7 | Pribaviti detaljan uzrok i sanirati Watchdog. | u tijeku — dokazana zastarjelost news statusa u trenutku provjere; bez loga ostali uzroci i sanacija ostaju otvoreni |
+| 8 | Pregledati otkazane redovne workflowe i uzrok. | u tijeku — zabilježen otkazani news oporavak i rizik zajedničkog reda; uzrok nije potvrđen |
 | 9 | Analizirati pomak i povijest maina prije integracije. | otvoreno |
 | 10 | Izraditi postupak povratka neuspjelog deploya. | otvoreno |
 | 11 | Provjeriti broj država i njihova stanja. | gotovo — validator: 195, 14 live u registru, 3 preparing, 178 planned; nije provjera uživo |
