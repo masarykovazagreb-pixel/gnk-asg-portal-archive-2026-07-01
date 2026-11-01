@@ -1,4 +1,4 @@
-import { planPublication, regionalFeedPath } from './publication-plan-core-v1.mjs';
+import { planPublication, planFallback, regionalFeedPath } from './publication-plan-core-v1.mjs';
 
 // Samo lokalni pregled: nema slanja podataka, nema API-ja i nema objave.
 export function mountPublicationPlan(doc, fetchRegistry = globalThis.fetch) {
@@ -55,3 +55,66 @@ export function mountPublicationPlan(doc, fetchRegistry = globalThis.fetch) {
   return true;
 }
 if (typeof document !== 'undefined') mountPublicationPlan(document);
+
+// Feedovi su javne datoteke na istoj domeni. Ne postoji objava ni slanje URL-a.
+export function mountExchangePreview(doc, fetchFeed = globalThis.fetch, now = () => Date.now()) {
+  const form=doc.getElementById('factory-exchange-form');
+  const data=doc.getElementById('factory-plan-countries');
+  const result=doc.getElementById('factory-exchange-result');
+  if (!form || !data || !result) return false;
+  let countries;
+  try { countries=JSON.parse(data.textContent); if (!Array.isArray(countries)) return false; }
+  catch { return false; }
+  const ids=[...new Set(countries.filter(c=>c.status==='live' && /^[a-z0-9-]+$/.test(c.channelId || '')).map(c=>c.channelId))];
+  if (!ids.length) return false;
+  let generation=0;
+  const get = async id => {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 10000);
+    try {
+      const response=await fetchFeed(`/kanal/${id}/feed.json`,{cache:'no-store',signal:controller.signal});
+      if (!response.ok) return null;
+      return await response.json();
+    } catch { return null; }
+    finally { clearTimeout(timer); }
+  };
+  form.addEventListener('submit',async event=>{
+    event.preventDefault();
+    const current=++generation, target=form.elements.channel.value, feeds={};
+    result.replaceChildren();result.textContent='Provjeravam feedove…';
+    try {
+      if (!ids.includes(target)) throw new Error('Nepoznato izdanje');
+      feeds[target]=await get(target);
+      if (current!==generation) return;
+      let plan=planFallback({target,countries,feeds,now:now()});
+      if (!['local_fresh','local_feed_unavailable'].includes(plan.status)) {
+        const queue=ids.filter(id=>id!==target);
+        const worker=async()=>{while(queue.length && current===generation){const id=queue.shift();feeds[id]=await get(id);}};
+        await Promise.all(Array.from({length:Math.min(4,queue.length)},()=>worker()));
+        if (current!==generation) return;
+        plan=planFallback({target,countries,feeds,now:now()});
+      }
+      result.replaceChildren();
+      const status=doc.createElement('p');
+      const labels={local_fresh:'Lokalno izdanje ima svjež zapis; zamjena nije potrebna.',local_feed_unavailable:'Lokalni feed nije dostupan ili nije ispravan; ne možemo znati ima li novosti.',no_fresh_candidates:'U dostupnim feedovima nema svježih kandidata.',incomplete_feeds:'Dio feedova nije dostupan; rezultat je nepotpun.',candidates_require_review:'Pronađeni su kandidati za urednički pregled. Ništa nije objavljeno.'};
+      status.textContent=labels[plan.status] || 'Provjera nije dovršena.';result.append(status);
+      if (plan.unavailableChannels?.length) {const info=doc.createElement('p');info.textContent=`Nedostupni feedovi: ${plan.unavailableChannels.join(', ')}.`;result.append(info);}
+      if (plan.candidates.length) {
+        const list=doc.createElement('ul');
+        for (const candidate of plan.candidates) {
+          const li=doc.createElement('li'),link=doc.createElement('a');
+          link.href=candidate.url;link.textContent=candidate.title;
+          const info=doc.createElement('span');info.textContent=` — ${candidate.country} · ${candidate.date} · izvor: ${candidate.originalSource} · jezik: ${candidate.language || 'nije naveden'}`;
+          li.append(link,info);list.append(li);
+        }
+        result.append(list);
+      }
+    } catch(error) {
+      if (current!==generation) return;
+      result.replaceChildren();const message=doc.createElement('p');message.textContent=`Provjera nije dovršena: ${error.message}`;result.append(message);
+    }
+  });
+  form.hidden=false;
+  return true;
+}
+if (typeof document !== 'undefined') mountExchangePreview(document);

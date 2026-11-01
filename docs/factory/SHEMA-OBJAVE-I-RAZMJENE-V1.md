@@ -51,7 +51,10 @@ poziva. Ako je lokalna vijest svježa unutar 48 sati, daje `local_fresh`; inače
 predlaže najnoviju svježu objavu svakog drugog aktivnog kanala s izvornom
 poveznicom i datumom. Budući datumi, zastarjele i neodgovarajuće adrese se
 odbacuju. `candidates_require_review` nije objava. Ako nema kandidata, prikazuje
-`no_fresh_candidates`; ne smije se izmišljati vijest.
+`no_fresh_candidates`; ne smije se izmišljati vijest. `local_feed_unavailable`
+označava nedostupan ili neispravan lokalni feed, a ne odsutnost vijesti;
+`incomplete_feeds` označava da nisu svi drugi feedovi dostupni. Kod rezultata
+s kandidatima `unavailableChannels` navodi izostale feedove.
 
 ## Preostalo prije stvarne objave
 
@@ -95,3 +98,12 @@ C2PA izričito navodi da podrijetlo samo po sebi nije presuda o istinitosti
 ([C2PA, procjena rizika](https://spec.c2pa.org/specifications/specifications/1.4/security/Harms_Modelling.html)).
 Ovdje nije implementirana ni verificirana C2PA potvrda; za buduće fotografije
 potrebno je posebno provjeriti podrijetlo, licencu i kvalitetu.
+
+## Vidljivi pregled razmjene
+
+Na `/agenti/#tvornica` nalazi se obrazac za provjeru razmjene. Najprije dohvaća
+lokalni feed s iste domene. Ako taj feed nije dostupan, ne predlaže zamjenu;
+ako ima svjež zapis, ne dohvaća druge. Tek za ispravan feed bez svježih zapisa
+dohvaća ostale aktivne feedove, do četiri istodobno, s vremenskim ograničenjem.
+Prijedlog prikazuje izvorno izdanje, naslov, datum, medij i jezik. Pregled ne
+preuzima tekst niti objavljuje; feed i njegovi podaci nisu dokaz prava ili istine.

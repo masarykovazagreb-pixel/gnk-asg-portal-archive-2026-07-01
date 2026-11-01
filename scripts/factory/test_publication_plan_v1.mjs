@@ -33,7 +33,9 @@ test('zamjena bira samo svježe vlastite izvore iz drugih aktivnih kanala',()=>{
   const p=planFallback({target:'zagreb',countries,feeds,now});assert.equal(p.status,'candidates_require_review');assert.equal(p.candidates.length,1);assert.equal(p.candidates[0].channel,'rim');assert.equal(p.candidates[0].originalSource,'medij');assert.equal(p.candidates[0].originalSourceUrl,'https://news.example/clanak/');assert.match(p.notice,/Nije kopiranje/);
 });
 test('nema svježih kandidata i nedopušteno odredište',()=>{
-  assert.equal(planFallback({target:'zagreb',countries,feeds:{},now}).status,'no_fresh_candidates');
+  assert.equal(planFallback({target:'zagreb',countries,feeds:{},now}).status,'local_feed_unavailable');
+  assert.equal(planFallback({target:'zagreb',countries,feeds:{zagreb:feed('zagreb',[]),rim:feed('rim',[])},now}).status,'no_fresh_candidates');
+  assert.equal(planFallback({target:'zagreb',countries,feeds:{zagreb:feed('zagreb',[])},now}).status,'incomplete_feeds');
   assert.throws(()=>planFallback({target:'newyork',countries,feeds:{},now}));
 });
 
@@ -113,7 +115,7 @@ test('dohvat feeda treće strane, nesigurnih putanja i neaktivnih kanala je zabr
 });
 test('rezervna razmjena odbija blokirane i zapise bez provjerljive atribucije',()=>{
   const base=item('rim','2026-10-31T10:00:00Z');
-  const run=record=>planFallback({target:'zagreb',countries,feeds:{rim:feed('rim',[record])},now});
+  const run=record=>planFallback({target:'zagreb',countries,feeds:{zagreb:feed('zagreb',[]),rim:feed('rim',[record])},now});
   for(const changed of [
     {...base,_region:{...base._region,status:'blocked'}},
     {...base,_region:{...base._region,channel:'zagreb'}},
@@ -122,5 +124,38 @@ test('rezervna razmjena odbija blokirane i zapise bez provjerljive atribucije',(
     {...base,_region:undefined}
   ]) assert.equal(run(changed).status,'no_fresh_candidates');
   const wrongHome={...feed('rim',[base]),home_page_url:'https://gnk-asg.hr/kanal/zagreb/'};
-  assert.equal(planFallback({target:'zagreb',countries,feeds:{rim:wrongHome},now}).status,'no_fresh_candidates');
+  assert.equal(planFallback({target:'zagreb',countries,feeds:{zagreb:feed('zagreb',[]),rim:wrongHome},now}).status,'incomplete_feeds');
+});
+test('nedostupan lokalni feed ne pokreće zamjensku razmjenu',()=>{
+  const remote=feed('rim',[item('rim','2026-10-31T11:00:00Z')]);
+  const result=planFallback({target:'zagreb',countries,feeds:{rim:remote},now});
+  assert.equal(result.status,'local_feed_unavailable');assert.equal(result.candidates.length,0);
+});
+test('nepotpuni vanjski feedovi ostaju vidljivi i kad postoje kandidati',()=>{
+  const extended=[...countries,{cca2:'SI',id:'ljubljana',country:'Slovenija',channelId:'ljubljana',status:'live',liveUrl:'https://gnk-asg.hr/kanal/ljubljana/'}];
+  const feeds={zagreb:feed('zagreb',[]),rim:feed('rim',[item('rim','2026-10-31T11:00:00Z')])};
+  const result=planFallback({target:'zagreb',countries:extended,feeds,now});
+  assert.equal(result.status,'candidates_require_review');assert.deepEqual(result.unavailableChannels,['ljubljana']);
+});
+test('vidljivi pregled razmjene prvo provjerava lokalni feed pa tuđe',async()=>{
+  const {mountExchangePreview}=await import('../../apps/portal/assets/publication-plan-ui-v1.mjs');
+  let handler; const form={hidden:true,elements:{channel:{value:'zagreb'}},addEventListener:(_,fn)=>handler=fn};
+  const result={children:[],replaceChildren(){this.children=[]},append(...x){this.children.push(...x)}};
+  const doc={getElementById:id=>({'factory-exchange-form':form,'factory-plan-countries':{textContent:JSON.stringify(countries)},'factory-exchange-result':result}[id]),createElement:tag=>({tag,textContent:'',children:[],append(...x){this.children.push(...x)}})};
+  const calls=[]; let localFresh=true;
+  const fetcher=async path=>{calls.push(path); const id=path.split('/')[2]; const data=id==='zagreb'?feed(id,localFresh?[item(id,'2026-10-31T10:00:00Z')]:[]):feed(id,[item(id,'2026-10-31T11:00:00Z')]);return {ok:true,json:async()=>data}};
+  assert.equal(mountExchangePreview(doc,fetcher,()=>now),true);assert.equal(form.hidden,false);
+  await handler({preventDefault(){}});assert.deepEqual(calls,['/kanal/zagreb/feed.json']);assert.match(result.children[0].textContent,/svjež zapis/);
+  calls.length=0;localFresh=false;await handler({preventDefault(){}});
+  assert.deepEqual(calls,['/kanal/zagreb/feed.json','/kanal/rim/feed.json']);
+  assert.match(result.children[0].textContent,/Ništa nije objavljeno/);
+  assert.equal(result.children[1].children[0].children[0].href,'https://gnk-asg.hr/kanal/rim/clanak/primjer/');
+});
+test('vidljivi pregled ne pretvara nedostupan lokalni feed u prazne vijesti',async()=>{
+  const {mountExchangePreview}=await import('../../apps/portal/assets/publication-plan-ui-v1.mjs');
+  let handler;const form={hidden:true,elements:{channel:{value:'zagreb'}},addEventListener:(_,fn)=>handler=fn};
+  const result={children:[],replaceChildren(){this.children=[]},append(...x){this.children.push(...x)}};
+  const doc={getElementById:id=>({'factory-exchange-form':form,'factory-plan-countries':{textContent:JSON.stringify(countries)},'factory-exchange-result':result}[id]),createElement:()=>({textContent:''})};
+  let calls=0;mountExchangePreview(doc,async()=>{calls++;return {ok:false}},()=>now);
+  await handler({preventDefault(){}});assert.equal(calls,1);assert.match(result.children[0].textContent,/nije dostupan/);
 });

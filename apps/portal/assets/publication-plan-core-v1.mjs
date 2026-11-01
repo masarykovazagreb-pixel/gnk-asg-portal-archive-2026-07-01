@@ -63,13 +63,16 @@ export function planFallback({target, countries, feeds, now, maxAgeHours=48}) {
   if (!Array.isArray(countries) || !feeds || typeof feeds!=='object') throw new Error('Nedostaju podaci');
   const live=countries.filter(c=>c.status==='live' && c.channelId);
   if (!live.some(c=>c.channelId===target)) throw new Error('Odredište nije aktivan kanal u registru');
-  const best=(id)=> (feeds[id]?.home_page_url === `https://gnk-asg.hr/kanal/${id}/` && Array.isArray(feeds[id]?.items) ? feeds[id].items : [])
+  const usable = id => feeds[id]?.home_page_url === `https://gnk-asg.hr/kanal/${id}/` && Array.isArray(feeds[id]?.items);
+  if (!usable(target)) return {version:'FACTORY_FALLBACK_PLAN_V1',target,status:'local_feed_unavailable',notice:'Lokalni feed nije dostupan ili nije ispravan; nije poznato ima li svježih vijesti.',candidates:[]};
+  const unavailableChannels = live.filter(c => !usable(c.channelId)).map(c => c.channelId);
+  const best=(id)=> (usable(id) ? feeds[id].items : [])
     .filter(i=>validFeedItem(i,id,now,maxAgeHours))
     .sort((a,b)=>Date.parse(b.date_published||b.date_modified)-Date.parse(a.date_published||a.date_modified))[0];
   if (best(target)) return {version:'FACTORY_FALLBACK_PLAN_V1',target,status:'local_fresh',candidates:[]};
   const candidates=live.filter(c=>c.channelId!==target).flatMap(c=>{
     const item=best(c.channelId); return item ? [{channel:c.channelId,country:c.country,title:item.title,url:item.url,date:item.date_published||item.date_modified,language:String(feeds[c.channelId]?.language || ''),originalSource:item._region.source,originalSourceUrl:externalHttps(item._region.sourceUrl)}] : [];
   }).sort((a,b)=>Date.parse(b.date)-Date.parse(a.date) || a.channel.localeCompare(b.channel));
-  return {version:'FACTORY_FALLBACK_PLAN_V1',target,status:candidates.length?'candidates_require_review':'no_fresh_candidates',
-    notice:'Samo kandidati za poveznicu na izvornu objavu; izvor, prava i činjenice nisu automatski provjereni. Nije kopiranje, prijevod ni objava.',candidates};
+  return {version:'FACTORY_FALLBACK_PLAN_V1',target,status:candidates.length?'candidates_require_review':unavailableChannels.length?'incomplete_feeds':'no_fresh_candidates',
+    unavailableChannels, notice:'Samo kandidati za poveznicu na izvornu objavu; izvor, prava i činjenice nisu automatski provjereni. Nije kopiranje, prijevod ni objava.',candidates};
 }
