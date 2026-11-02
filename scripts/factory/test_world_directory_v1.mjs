@@ -18,6 +18,15 @@ test('svaka država u registru prikazana bez izmišljenih veza',()=>{
   assert.ok(readFileSync(new URL('../../apps/portal/agenti/index.html',import.meta.url),'utf8').includes(html));
   assert.match(html,/nisu dokaz da web postoji/);
 });
+test('planirane države prikazuju prepreke, ne izmišljeni deploy ili potvrde',()=>{
+  const html=renderWorldDirectory(registry,sources,channels);
+  assert.equal((html.match(/Što treba za objavu<\/summary>/g)||[]).length,registry.countries.filter(c=>c.status==='planned').length);
+  assert.match(html,/nema evidentiranih izvora/);
+  assert.match(html,/nema odobrenog izvora/);
+  assert.match(html,/treba potvrditi urednika i provjeru sadržaja/);
+  assert.match(html,/Sam broj nije dokaz prava ni spremnosti/);
+  assert.doesNotMatch(html,/pages\.dev/);
+});
 test('escapiranje i samo poznate sigurne live adrese',()=>{
   const html=renderWorldDirectory({countries:[{country:'<img>',capital:'Grad',status:'live',liveUrl:'javascript:alert(1)'},{country:'Plan',status:'planned',liveUrl:'https://gnk-asg.hr/kanal/a/'}]},{});
   assert.match(html,/&lt;img&gt;/);assert.doesNotMatch(html,/<img>|javascript:|Otvori izdanje/);
