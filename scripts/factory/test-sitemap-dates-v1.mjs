@@ -4,6 +4,7 @@ import { mkdtempSync, writeFileSync, readFileSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { appendSitemap } from '../lib/prenos-v1.mjs';
+import { columnSitemapEntries } from '../../apps/sites/lib/sindikacija.mjs';
 test('ne izmišlja lastmod iz dana gradnje i čuva poznat datum',()=>{
   const dir=mkdtempSync(join(tmpdir(),'sitemap-dates-'));
   try {
@@ -16,4 +17,12 @@ test('ne izmišlja lastmod iz dana gradnje i čuva poznat datum',()=>{
     assert.match(xml,/<loc>https:\/\/example\.com\/bad\/<\/loc><changefreq>/);
     assert.equal(appendSitemap(file,entries),false);
   } finally {rmSync(dir,{recursive:true,force:true});}
+});
+
+test('kolumne ne dobijaju izmišljeni lastmod i imaju stabilne adrese', () => {
+  const site={base:'https://example.com/'}, columns=[{slug:'prva',published:'2026-01-01'}, {slug:'druga'}];
+  const first=columnSitemapEntries(site,columns);
+  assert.equal(first,columnSitemapEntries(site,columns));
+  assert.match(first,/<loc>https:\/\/example\.com\/kolumna\/prva\/<\/loc>/);
+  assert.doesNotMatch(first, /<lastmod>/);
 });
