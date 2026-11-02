@@ -130,3 +130,9 @@ nisu ovom naredbom stvoreni. Preduvjeti K1–K6 za stvarnu objavu ostaju na snaz
 ### Dvojezični lokalni predlošci
 
 Generator `node scripts/world/build-country-previews-v1.mjs` za svaku od 178 planiranih država izrađuje hrvatsku naslovnicu i povezanu englesku inačicu u `en/`. Nazivi i sadržaj su pripremni, bez članaka i bez tvrdnje o lokalnoj redakciji. Obje inačice imaju odgovarajući `lang`, opis, Open Graph i Twitter meta podatke, vlasničke hashtagove i poveznice prema GNK ASG i AKTUAL MEDIA. Nema izmišljenih canonical adresa; `noindex` i `robots.txt` ostaju uključeni. Ovo je lokalni pregled, ne deployment, a robots pravila nisu kontrola pristupa. Stvarna lokalizacija na druge jezike, uređivanje, prava, objava i produkcijska provjera tek slijede.
+
+### Priprema stvarne objave
+
+Vlasnik je zatražio stvarni deploy, ne prikaz predložaka. `node scripts/world/release-blockers-v1.mjs` daje trenutačni čitljivi inventar prepreka za sve planirane države; pojedinačno npr. `--country=AL`. Popis je samo pomoć za rad, nije alat za objavu ili dokaz spremnosti. Za svaku državu i dalje treba stvarno utvrditi prava, uredništvo, infrastrukturu i prolaz testova; statična adresa iz registra nije dokaz da projekt postoji. Trenutačni workflow `world-portals-deploy.yml` pokriva samo devet postojećih portala, ne 178 novih država.
+
+Pokušaj ručnog pokretanja tog postojećeg workflowa za radnu granu vratio je GitHub HTTP 403 „Resource not accessible by integration”. Pristup deployu i eventualni Cloudflare kapacitet nisu time potvrđeni. Nije izvršena javna objava novih država.

@@ -77,6 +77,7 @@ const GATES = [
   { name: 'Tvornica — skener HTML metapodataka', cmd: ['python3', 'scripts/factory/test_quality_scan_v1.py'], required: true },
   { name: 'Nadzor — prijava neuspjelog oporavka', cmd: ['python3', 'scripts/factory/test_watchdog_dispatch_v1.py'], required: true },
   { name: 'Tvornica — dijagnostika hostova slika', cmd: ['node', 'scripts/factory/test-image-host-audit-v1.mjs'], required: true },
+  { name: 'Svijet — prepreke produkcijskoj objavi', cmd: ['node', 'scripts/world/test-release-blockers-v1.mjs'], required: true },
   { name: 'Svijet — integritet registra država i kanala', cmd: ['node', 'scripts/world/test-world-registry-v1.mjs'], required: true },
   { name: 'Svijet — sigurni lokalni predlošci država', cmd: ['node', 'scripts/world/test-country-previews-v1.mjs'], required: true },
   { name: 'Oporavak zapisa iz stranica — parsiranje i izvori', cmd: ['node', 'tests/test-recover-items-v1.mjs'], required: true },
