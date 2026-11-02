@@ -86,7 +86,7 @@ test('stariji asinkroni odgovor ne prepisuje noviji zahtjev',async()=>{
 });
 test('regionalni feed je samo dokaz zapisa, nikad odobrenje objave',()=>{
   const regionalUrl='https://gnk-asg.hr/kanal/rim/clanak/primjer/';
-  const regionalItem={url:regionalUrl,title:'Naslov',_region:{channel:'rim',status:'auto-critique'}};
+  const regionalItem={url:regionalUrl,title:'Naslov',_region:{channel:'rim',status:'auto-critique',source:'medij',sourceUrl:'https://news.example/clanak/'}};
   const feed={home_page_url:'https://gnk-asg.hr/kanal/rim/',items:[regionalItem]};
   const args={scope:'hr',url:regionalUrl,countries,editorialRegistry:{items:[]}};
   const plan=planPublication({...args,regionalFeed:feed});
@@ -102,7 +102,7 @@ test('preglednik dohvaća samo lokalni feed aktivnog kanala',async()=>{
   let handler;const form={hidden:true,elements:{scope:{value:'hr'},url:{value:regionalUrl}},addEventListener:(_,f)=>handler=f};
   const result={children:[],replaceChildren(){this.children=[]},append(...x){this.children.push(...x)}};
   const doc={getElementById:id=>({'factory-publication-plan':form,'factory-plan-countries':{textContent:JSON.stringify(countries)},'factory-plan-result':result}[id]),createElement:tag=>({tag,textContent:'',children:[],append(...x){this.children.push(...x)}})};
-  const paths=[];const fetcher=async path=>{paths.push(path);return {ok:true,json:async()=>path==='/data/editorial-registry.json'?{items:[]}:{home_page_url:'https://gnk-asg.hr/kanal/rim/',items:[{url:regionalUrl,title:'Naslov',_region:{channel:'rim'}}]}}};
+  const paths=[];const fetcher=async path=>{paths.push(path);return {ok:true,json:async()=>path==='/data/editorial-registry.json'?{items:[]}:{home_page_url:'https://gnk-asg.hr/kanal/rim/',items:[{url:regionalUrl,title:'Naslov',_region:{channel:'rim',status:'auto-critique',source:'medij',sourceUrl:'https://news.example/clanak/'}}]}}};
   mountPublicationPlan(doc,fetcher);await handler({preventDefault(){}});
   assert.deepEqual(paths,['/data/editorial-registry.json','/kanal/rim/feed.json']);
   assert.match(result.children[1].textContent,/regionalnom feedu/);
@@ -158,4 +158,17 @@ test('vidljivi pregled ne pretvara nedostupan lokalni feed u prazne vijesti',asy
   const doc={getElementById:id=>({'factory-exchange-form':form,'factory-plan-countries':{textContent:JSON.stringify(countries)},'factory-exchange-result':result}[id]),createElement:()=>({textContent:''})};
   let calls=0;mountExchangePreview(doc,async()=>{calls++;return {ok:false}},()=>now);
   await handler({preventDefault(){}});assert.equal(calls,1);assert.match(result.children[0].textContent,/nije dostupan/);
+});
+
+test('nepoznati statusi i sam datum izmjene nisu dokaz objavljene svježe vijesti',()=>{
+  const base=item('rim','2026-10-31T10:00:00Z');
+  const run=record=>planFallback({target:'zagreb',countries,feeds:{zagreb:feed('zagreb',[]),rim:feed('rim',[record])},now});
+  for (const status of ['', 'rejected', 'unknown', 'pending', null]) {
+    assert.equal(run({...base,_region:{...base._region,status}}).status,'no_fresh_candidates');
+  }
+  assert.equal(run({...base,date_published:undefined,date_modified:'2026-10-31T11:00:00Z'}).status,'no_fresh_candidates');
+  const regionalUrl=base.url, args={scope:'hr',url:regionalUrl,countries,editorialRegistry:{items:[]}};
+  for (const region of [{channel:'rim'}, {...base._region,status:'pending'}, {...base._region,source:''}, {...base._region,sourceUrl:'javascript:alert(1)'}]) {
+    assert.equal(planPublication({...args,regionalFeed:feed('rim',[{...base,_region:region}])}).evidence,'not_found_in_editorial_registry');
+  }
 });

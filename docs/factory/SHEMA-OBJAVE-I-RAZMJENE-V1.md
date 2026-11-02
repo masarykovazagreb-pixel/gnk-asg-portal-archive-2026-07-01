@@ -117,3 +117,5 @@ valjanih datuma izvora, koristi se `network-counts-v1.json` i oznaka
 `registered-network-data-day`. Ako ni taj podatak nije valjan, gradnja pada
 umjesto izmišljanja datuma. Ova oznaka nije potvrda svježine uživo. Isti ulazi
 sada daju isti izlaz i nakon promjene kalendarskog dana.
+
+Regionalni feed u planu sada je dokaz zapisa samo ako ima poznat status (`auto-critique` ili `published`), naslov, naziv izvora i sigurnu HTTPS izvornu poveznicu. Kod rezervnih kandidata provjerava se datum **objave**, ne zamjenski datum izmjene; nepoznati status ili nedostajući datum objave ne postaju svježa vijest. Nijedna od ovih strojnih provjera nije dokaz prava, točnosti ili ljudskog pregleda.

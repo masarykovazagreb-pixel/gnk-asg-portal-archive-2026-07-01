@@ -1,4 +1,5 @@
 // Čista logika planiranja; nema mrežnih poziva ni objave.
+const visibleRegionStatus = status => typeof status === 'string' && ['auto-critique', 'published'].includes(status.trim().toLowerCase());
 function safeOwnArticle(value) {
   try {
     const u=new URL(value);
@@ -26,7 +27,7 @@ export function planPublication({scope, url, countries, editorialRegistry, regio
   const channel = feedPath?.split('/')[2];
   const expectedHome = channel ? `https://gnk-asg.hr/kanal/${channel}/` : null;
   const feedItem = feedPath && regionalFeed?.home_page_url === expectedHome && Array.isArray(regionalFeed.items)
-    ? regionalFeed.items.find(item => safeOwnArticle(item?.url) === canonical && item?._region?.channel === channel && !['held','hold','draft','blocked','cancelled'].includes(String(item?._region?.status || '').toLowerCase()) && typeof item.title === 'string' && item.title.trim())
+    ? regionalFeed.items.find(item => safeOwnArticle(item?.url) === canonical && item?._region?.channel === channel && visibleRegionStatus(item?._region?.status) && typeof item?._region?.source === 'string' && item._region.source.trim() && externalHttps(item._region.sourceUrl) && typeof item.title === 'string' && item.title.trim())
     : null;
   const found = Boolean(article || feedItem);
   const selected=countries.filter(c=>scope==='svijet' || c.cca2==='HR');
@@ -52,10 +53,10 @@ function validFeedItem(item, channelId, nowMs, maxAgeHours) {
   if (!item?.title || typeof item.title!=='string' || !item.title.trim()) return false;
   const info = item._region;
   if (!info || info.channel !== channelId || typeof info.source !== 'string' || !info.source.trim() || !externalHttps(info.sourceUrl)) return false;
-  if (['held','hold','draft','blocked','cancelled'].includes(String(info.status || '').toLowerCase())) return false;
+  if (!visibleRegionStatus(info.status)) return false;
   const url=safeOwnArticle(item.url);
   if (!url || !new URL(url).pathname.startsWith(`/kanal/${channelId}/clanak/`)) return false;
-  const date=Date.parse(item.date_published || item.date_modified || '');
+  const date=Date.parse(item.date_published || '');
   return Number.isFinite(date) && date<=nowMs && nowMs-date<=maxAgeHours*3600000;
 }
 export function planFallback({target, countries, feeds, now, maxAgeHours=48}) {
@@ -68,10 +69,10 @@ export function planFallback({target, countries, feeds, now, maxAgeHours=48}) {
   const unavailableChannels = live.filter(c => !usable(c.channelId)).map(c => c.channelId);
   const best=(id)=> (usable(id) ? feeds[id].items : [])
     .filter(i=>validFeedItem(i,id,now,maxAgeHours))
-    .sort((a,b)=>Date.parse(b.date_published||b.date_modified)-Date.parse(a.date_published||a.date_modified))[0];
+    .sort((a,b)=>Date.parse(b.date_published)-Date.parse(a.date_published))[0];
   if (best(target)) return {version:'FACTORY_FALLBACK_PLAN_V1',target,status:'local_fresh',candidates:[]};
   const candidates=live.filter(c=>c.channelId!==target).flatMap(c=>{
-    const item=best(c.channelId); return item ? [{channel:c.channelId,country:c.country,title:item.title,url:item.url,date:item.date_published||item.date_modified,language:String(feeds[c.channelId]?.language || ''),originalSource:item._region.source,originalSourceUrl:externalHttps(item._region.sourceUrl)}] : [];
+    const item=best(c.channelId); return item ? [{channel:c.channelId,country:c.country,title:item.title,url:item.url,date:item.date_published,language:String(feeds[c.channelId]?.language || ''),originalSource:item._region.source,originalSourceUrl:externalHttps(item._region.sourceUrl)}] : [];
   }).sort((a,b)=>Date.parse(b.date)-Date.parse(a.date) || a.channel.localeCompare(b.channel));
   return {version:'FACTORY_FALLBACK_PLAN_V1',target,status:candidates.length?'candidates_require_review':unavailableChannels.length?'incomplete_feeds':'no_fresh_candidates',
     unavailableChannels, notice:'Samo kandidati za poveznicu na izvornu objavu; izvor, prava i činjenice nisu automatski provjereni. Nije kopiranje, prijevod ni objava.',candidates};
