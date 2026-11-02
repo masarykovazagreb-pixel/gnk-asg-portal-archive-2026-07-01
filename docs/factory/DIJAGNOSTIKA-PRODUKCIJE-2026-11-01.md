@@ -19,3 +19,11 @@ News oporavak [41310214267](https://github.com/masarykovazagreb-pixel/gnk-asg-po
 ## Poboljšanje nadzora na radnoj grani
 
 Nadzor je prethodno mogao prekinuti izvršavanje ako GitHub odbije zahtjev za pokretanje oporavka, a neki opisi mogli su tvrditi da je oporavak pokrenut prije uspješnog odgovora. Promjena na radnoj grani bilježi neuspjeh zahtjeva bez ispisa osjetljivih detalja, ne tvrdi da je oporavak pokrenut te nastavlja skupljati ostale rezultate. U istom ciklusu ponovljeni zahtjev čuva ishod prvog pokušaja; sljedeći redovni ciklus može ponovno pokušati. Test koristi lažni API i ne pokreće produkcijske poslove. To nije popravak samog uzroka zastarjelih feedova ni potvrda deploya.
+
+## Usporedba regionalnih arhiva prije integracije (2. 11.)
+
+`node scripts/factory/archive-compare-v1.mjs <puni-main-SHA> <puni-SHA-grane>` samo čita dva git stabla i ispisuje zapise po kanalu; ne mijenja sadržaj niti automatski spaja. Prijavljuje nedostajuće registre/datoteke, neispravne ili ponovljene slugove, slugove jedinstvene za svaku stranu i razlike u poljima `title`, `date`, `url`, `source`, `sourceName`. Isti slug ne jamči jednakost ostalih polja, prava, datoteka stranica ili kvalitete sadržaja.
+
+Za snimke main `fb8c7b2925c2daf6b7815335960645ab4e30a885` i radnu granu `5d314a6da1f4d06a1c935f7315d3bcf2ce87b94a` mjereno je 17 kanala: 9.736 zapisa na mainu i 7.361 na grani, od toga **2.706 slugova samo na mainu**, **331 samo na grani** te šest zajedničkih slugova s razlikom u navedenih pet polja. Primjer Beograda: main 609, grana 443; 189 samo na mainu i 23 samo na grani. Ne smije se jednostavno prepisati jedna strana drugom. Potreban je detaljan pregled podataka i postojećih HTML stranica, osobito različitih zapisa, pa test spojenog stabla. Budući da se main mijenja, rezultate treba ponoviti za aktualne pune SHA-ove.
+
+Izoliranom reprodukcijom na istom main SHA-u `tests/test-sites-network-v1.mjs` prijavio je 88 problema, uključujući nedostajuće novije prenose i zastarjele izlaze razmjene za šest stranica. Puni GitHub log ne može se dohvatiti u sandboxu; reprodukcija ne dokazuje identičan ispis u GitHubu. Popravak mora uskladiti izvore i izlaze bez zaobilaženja gatea i bez brisanja objavljenih sadržaja.
