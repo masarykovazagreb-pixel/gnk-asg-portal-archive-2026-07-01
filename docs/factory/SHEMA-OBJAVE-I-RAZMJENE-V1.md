@@ -119,3 +119,5 @@ umjesto izmišljanja datuma. Ova oznaka nije potvrda svježine uživo. Isti ulaz
 sada daju isti izlaz i nakon promjene kalendarskog dana.
 
 Regionalni feed u planu sada je dokaz zapisa samo ako ima poznat status (`auto-critique` ili `published`), naslov, naziv izvora i sigurnu HTTPS izvornu poveznicu. Kod rezervnih kandidata provjerava se datum **objave**, ne zamjenski datum izmjene; nepoznati status ili nedostajući datum objave ne postaju svježa vijest. Nijedna od ovih strojnih provjera nije dokaz prava, točnosti ili ljudskog pregleda.
+
+Obrasci imaju ograničenje od 10 sekundi po dohvaćanju, uključujući čitanje JSON odgovora. Istek ili neispravan odgovor ne tumače se kao prazan feed ili dokaz objave; plan javlja nedostupan registar, a razmjena nedostupan feed. Istek ne potvrđuje uzrok mrežnog problema i ne pokreće objavu.

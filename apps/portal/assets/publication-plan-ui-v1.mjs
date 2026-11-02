@@ -1,7 +1,26 @@
 import { planPublication, planFallback, regionalFeedPath } from './publication-plan-core-v1.mjs';
 
+// Rok obuhvaća i odgovor i čitanje JSON-a; ne oslanja se samo na to da
+// implementacija fetcha poštuje abort. Na timeout nema pretpostavke o sadržaju.
+async function fetchJsonWithTimeout(fetcher, path, timeoutMs) {
+  const controller = new AbortController();
+  let timer;
+  const timeout = new Promise((_, reject) => {
+    timer = setTimeout(() => { controller.abort(); reject(new Error('Isteklo je vrijeme učitavanja')); }, timeoutMs);
+  });
+  try {
+    return await Promise.race([
+      (async () => {
+        const response = await fetcher(path, {cache:'no-store', signal:controller.signal});
+        if (!response.ok) throw new Error('Podaci nisu dostupni');
+        return await response.json();
+      })(), timeout
+    ]);
+  } finally { clearTimeout(timer); }
+}
+
 // Samo lokalni pregled: nema slanja podataka, nema API-ja i nema objave.
-export function mountPublicationPlan(doc, fetchRegistry = globalThis.fetch) {
+export function mountPublicationPlan(doc, fetchRegistry = globalThis.fetch, timeoutMs = 10000) {
   const form=doc.getElementById('factory-publication-plan');
   const data=doc.getElementById('factory-plan-countries');
   const result=doc.getElementById('factory-plan-result');
@@ -17,17 +36,16 @@ export function mountPublicationPlan(doc, fetchRegistry = globalThis.fetch) {
     result.replaceChildren();
     try {
       result.textContent='Učitavam urednički registar…';
-      const response = await fetchRegistry('/data/editorial-registry.json', {cache:'no-store'});
-      if (!response.ok) throw new Error('Urednički registar nije dostupan');
-      const editorialRegistry = await response.json();
+      let editorialRegistry;
+      try { editorialRegistry = await fetchJsonWithTimeout(fetchRegistry, '/data/editorial-registry.json', timeoutMs); }
+      catch { throw new Error('Urednički registar nije dostupan ili je isteklo vrijeme učitavanja'); }
       if (current !== generation) return;
       let plan=planPublication({scope,url,countries,editorialRegistry});
       const feedPath=regionalFeedPath(url,countries);
       if (plan.evidence === 'not_found_in_editorial_registry' && feedPath) {
         let regionalFeed;
         try {
-          const feedResponse=await fetchRegistry(feedPath,{cache:'no-store'});
-          if (feedResponse.ok) regionalFeed=await feedResponse.json();
+          regionalFeed=await fetchJsonWithTimeout(fetchRegistry,feedPath,timeoutMs);
         } catch { /* nedostupan feed ne znači da zapis postoji */ }
         if (current !== generation) return;
         plan=planPublication({scope,url,countries,editorialRegistry,regionalFeed});
@@ -57,7 +75,7 @@ export function mountPublicationPlan(doc, fetchRegistry = globalThis.fetch) {
 if (typeof document !== 'undefined') mountPublicationPlan(document);
 
 // Feedovi su javne datoteke na istoj domeni. Ne postoji objava ni slanje URL-a.
-export function mountExchangePreview(doc, fetchFeed = globalThis.fetch, now = () => Date.now()) {
+export function mountExchangePreview(doc, fetchFeed = globalThis.fetch, now = () => Date.now(), timeoutMs = 10000) {
   const form=doc.getElementById('factory-exchange-form');
   const data=doc.getElementById('factory-plan-countries');
   const result=doc.getElementById('factory-exchange-result');
@@ -69,14 +87,8 @@ export function mountExchangePreview(doc, fetchFeed = globalThis.fetch, now = ()
   if (!ids.length) return false;
   let generation=0;
   const get = async id => {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 10000);
-    try {
-      const response=await fetchFeed(`/kanal/${id}/feed.json`,{cache:'no-store',signal:controller.signal});
-      if (!response.ok) return null;
-      return await response.json();
-    } catch { return null; }
-    finally { clearTimeout(timer); }
+    try { return await fetchJsonWithTimeout(fetchFeed, `/kanal/${id}/feed.json`, timeoutMs); }
+    catch { return null; }
   };
   form.addEventListener('submit',async event=>{
     event.preventDefault();

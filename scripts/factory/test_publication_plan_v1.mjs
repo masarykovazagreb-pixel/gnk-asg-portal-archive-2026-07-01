@@ -172,3 +172,24 @@ test('nepoznati statusi i sam datum izmjene nisu dokaz objavljene svježe vijest
     assert.equal(planPublication({...args,regionalFeed:feed('rim',[{...base,_region:region}])}).evidence,'not_found_in_editorial_registry');
   }
 });
+
+test('plan objave ne visi kada dohvat registra ili JSON ne završi',async()=>{
+  const {mountPublicationPlan}=await import('../../apps/portal/assets/publication-plan-ui-v1.mjs');
+  for(const fetcher of [()=>new Promise(()=>{}), async()=>({ok:true,json:()=>new Promise(()=>{})})]) {
+    let handler; const form={hidden:true,elements:{scope:{value:'hr'},url:{value:url}},addEventListener:(_,fn)=>handler=fn};
+    const result={children:[],replaceChildren(){this.children=[]},append(...x){this.children.push(...x)}};
+    const doc={getElementById:id=>({'factory-publication-plan':form,'factory-plan-countries':{textContent:JSON.stringify(countries)},'factory-plan-result':result}[id]),createElement:()=>({textContent:''})};
+    mountPublicationPlan(doc,fetcher,10);await handler({preventDefault(){}});
+    assert.match(result.children[0].textContent,/registar nije dostupan ili je isteklo vrijeme/);
+  }
+});
+test('razmjena ne visi kada fetch ignorira abort ili čitanje JSON-a zapne',async()=>{
+  const {mountExchangePreview}=await import('../../apps/portal/assets/publication-plan-ui-v1.mjs');
+  for(const fetcher of [()=>new Promise(()=>{}),async()=>({ok:true,json:()=>new Promise(()=>{})})]) {
+    let handler;const form={hidden:true,elements:{channel:{value:'zagreb'}},addEventListener:(_,fn)=>handler=fn};
+    const result={children:[],replaceChildren(){this.children=[]},append(...x){this.children.push(...x)}};
+    const doc={getElementById:id=>({'factory-exchange-form':form,'factory-plan-countries':{textContent:JSON.stringify(countries)},'factory-exchange-result':result}[id]),createElement:()=>({textContent:''})};
+    mountExchangePreview(doc,fetcher,()=>now,10);await handler({preventDefault(){}});
+    assert.match(result.children[0].textContent,/nije dostupan/);
+  }
+});
