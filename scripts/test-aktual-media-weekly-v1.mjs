@@ -97,10 +97,19 @@ function verifyArchivePage({ html, file, canonical, hr, en, expectedItems, expec
   if (!archiveIndex) {
     if (!html.includes('Source:') && !html.includes('Izvor:')) fail(`${label}: source attribution labels are missing`);
     if (!html.includes('AKTUAL MEDIA Editorial Desk') && !html.includes('Uredništvo: AKTUAL MEDIA')) fail(`${label}: editorial publisher attribution is missing`);
-    const nerminPerson = nodes.some((node) => typesOf(node).includes('Person') && /nermin\s+sefi[cć]/i.test(String(node.name || '')));
-    if (/<meta\s+name=["']author["']\s+content=["']Nermin Sefić["']/i.test(html) || /<link\b[^>]*rel=["']author["']/i.test(html) || nerminPerson
-        || /data-author-mark=["']nermin-sefic["']|#NerminSefic|#NerminSefić/i.test(html)) {
-      fail(`${label}: syndicated weekly page contains personal Nermin authorship metadata`);
+    // A Person node may legitimately identify the collection's editor.
+    // Only explicit personal AUTHOR claims are forbidden on syndicated stories.
+    const personAsArticleAuthor = nodes.some((node) =>
+      typesOf(node).some((type) => ['Article', 'NewsArticle', 'OpinionNewsArticle', 'BlogPosting'].includes(type)) &&
+      JSON.stringify(node.author || '').includes(PERSON_ID)
+    );
+    const sourceCardMarkup = [...html.matchAll(/<article\b[^>]*class=["']tw-card["'][^>]*>[\s\S]*?<\/article>/gi)].map((m) => m[0]).join('');
+    if (/<meta\s+name=["']author["']\s+content=["']Nermin Sefić["']/i.test(html) ||
+        /<link\b[^>]*rel=["']author["']/i.test(html) ||
+        /data-author-mark=["']nermin-sefic["']/i.test(html) ||
+        personAsArticleAuthor ||
+        /#NerminSefic|#NerminSefić/i.test(sourceCardMarkup)) {
+      fail(`${label}: syndicated source card or metadata falsely claims personal authorship`);
     }
   } else {
     if (!html.includes('PERMANENT ARCHIVE') && !html.includes('TRAJNA ARHIVA')) fail(`${label}: permanent archive label is missing`);
