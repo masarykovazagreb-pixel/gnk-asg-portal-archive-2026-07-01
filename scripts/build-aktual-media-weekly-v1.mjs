@@ -7,6 +7,8 @@ const NEWS='apps/portal/data/news.json';
 const OUT='apps/portal/data/aktual-weekly.json';
 const CURATION='apps/portal/data/aktual-weekly-curation.json';
 const CHECK=process.argv.includes('--check');
+// Read-only readiness probe: never publishes or generates an uncurated weekly issue.
+const READINESS=process.argv.includes('--readiness');
 
 const raw=JSON.parse(fs.readFileSync(NEWS,'utf8'));
 const source=Array.isArray(raw)?raw:(raw.items||[]);
@@ -29,6 +31,16 @@ if(fs.existsSync(CURATION)){
     const c=JSON.parse(fs.readFileSync(CURATION,'utf8'));
     if(c&&c.issue_week===issueWeek&&Array.isArray(c.items)){curationDocument=c;curated=c.items;}
   }catch(_){}
+}
+if(READINESS){
+  console.log(JSON.stringify({
+    ready:curated.length>=8,
+    issue_week:issueWeek,
+    curated_count:curated.length,
+    required:8,
+    curation_issue_week:curationDocument?.issue_week||null
+  }));
+  process.exit(0);
 }
 if(curated.length<8){
   throw new Error('AKTUAL MEDIA weekly issue requires a current curated seed with at least 8 source-verified lifestyle items for '+issueWeek);
