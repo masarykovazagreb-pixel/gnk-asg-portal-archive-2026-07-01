@@ -1,18 +1,18 @@
 name: REGION — deploy izdanja
 
-# Objavljuje osam gradskih kanala AKTUAL MEDIA na njihove Cloudflare Pages
-# projekte (gnk-asg-kanal-<id>) i osvježava hub /izdanja/ u portalu.
-# Pokreće se na svaku promjenu apps/region ili galerije, ili ručno.
+# Objavljuje samo Cloudflare Pages preusmjeravanja (gnk-asg-kanal-<id>).
+# Kanonski gradski sadržaj /kanal/<id>/ objavljuje exact-SHA portal deploy.
+# Ne pokreće se na svako ažuriranje regionalne arhive ili galerije.
 
 on:
   push:
-    branches: [main, 'arena/**']
+    branches: [main]
     paths:
-      - 'apps/region/**'
-      - 'apps/portal/scripts/album-nermin-sefic-v1.mjs'
-      - 'apps/portal/galerija/**'
-      - 'apps/portal/assets/people/nermin-sefic/**'
-      - '.github/workflows/region-deploy.yml'
+      # Satellite Cloudflare Pages projects are redirect stubs only.
+      # Feed, archive, gallery and canonical portal changes are deployed
+      # separately by the exact-SHA portal workflow.
+      - 'apps/region/site/**'
+      - 'apps/region/channels.json'
   workflow_dispatch:
 
 permissions:
@@ -73,9 +73,8 @@ jobs:
         run: |-
           set -uo pipefail
           if [ -z "${CF_TOKEN:-}" ] || [ -z "${CF_ACCOUNT:-}" ]; then
-            echo "::warning::Cloudflare secrets nisu dostupni — preskačem deploy."
-            echo "ready=false" >> "$GITHUB_OUTPUT"
-            exit 0
+            echo "::error::Cloudflare credentials unavailable; satellite redirects were NOT deployed."
+            exit 1
           fi
           ready=false
           for dir in apps/region/site/*/; do
@@ -95,19 +94,26 @@ jobs:
           done
           echo "ready=$ready" >> "$GITHUB_OUTPUT"
 
-      - name: Objavi svaki kanal
+      - name: Objavi sve satelitske 301 preusmjerivače
         if: steps.cf.outputs.ready == 'true'
         shell: bash
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |-
-          set -uo pipefail
+          set -euo pipefail
+          failed=0
           for dir in apps/region/site/*/; do
             id=$(basename "$dir")
-            npx --yes wrangler@4 pages deploy "$dir" --project-name="gnk-asg-kanal-$id" --branch=main --commit-dirty=true \
-              || echo "::warning::Deploy projekta gnk-asg-kanal-$id nije uspio."
+            test -f "$dir/_redirects"
+            grep -q '301' "$dir/_redirects"
+            if ! npx --yes wrangler@4 pages deploy "$dir" --project-name="gnk-asg-kanal-$id" --branch=main --commit-dirty=true; then
+              echo "::error::Cloudflare Pages redirect deployment failed: gnk-asg-kanal-$id"
+              failed=$((failed+1))
+            fi
           done
+          echo "Satellite redirect deployment failures: $failed" >> "$GITHUB_STEP_SUMMARY"
+          test "$failed" -eq 0
 
       - name: Sažetak
         if: always()
