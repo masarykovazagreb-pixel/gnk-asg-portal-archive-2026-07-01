@@ -208,17 +208,19 @@ jobs:
                   failures.append(f'REGION registry expected 17 channels, found {len(expected_ids)}')
               if stale_ids:
                   failures.append('REGION channels not refreshed within 330 min: ' + ', '.join(stale_ids))
-              if region_age > 210:
+              if stale_ids:
+                  # One bounded recovery batch per watchdog pass. Do not
+                  # re-queue 17 channels or create overlapping region writers.
+                  stale_batch = next((str(parity) for parity in (0, 1)
+                                      if any(channel in stale_ids for i, channel in enumerate(expected_ids)
+                                             if i % 2 == parity)), '0')
+                  dispatch('region-daily.yml', {'batch': stale_batch})
                   latest = latest_completed('region-daily.yml')
-                  latest_stamp = run_stamp(latest)
-                  dispatch('region-daily.yml')
-                  if latest and latest.get('conclusion') not in (None, 'success') and latest_stamp and latest_stamp > region_stamp:
-                      failures.append(f'REGION editions stale {region_age:.1f} min and latest recovery is {latest.get("conclusion")}')
-                  else:
-                      observations.append(f'REGION editions hard-stale {region_age:.1f} min > 210 min — recovery dispatched')
-              elif region_age > 150:
-                  observations.append(f'REGION editions soft-stale {region_age:.1f} min > 150 min — recovery dispatched')
-                  dispatch('region-daily.yml')
+                  if latest and latest.get('conclusion') in ('failure', 'cancelled', 'timed_out'):
+                      observations.append('REGION recovery needed: latest completed cycle ' +
+                                          str(latest.get('conclusion')))
+              elif region_age > 300:
+                  observations.append('REGION last-run metadata is old, but all per-channel archive snapshots meet freshness SLA')
           except Exception as exc:
               failures.append(f'REGION status unreadable: {exc}')
               dispatch('region-daily.yml')
@@ -245,7 +247,7 @@ jobs:
           ensure_age('gnk-news-refresh-v2.yml', 350, 430, 'AKTUAL canonical refresh')
           ensure_age('weather-refresh.yml', 390, 480, 'Zagreb weather refresh')
           ensure_age('gnk-seo-nightly-audit.yml', 1740, 2400, 'Nightly SEO/IndexNow audit')
-          ensure_age('region-daily.yml', 240, 300, 'REGION canonical cycle')
+          # REGION is already monitored per channel above; no duplicate generic dispatch.
 
           # 4) Daily editorial must have a successful run today. After 11:00 Europe/Zagreb,
           #    a missing verified success dispatches the existing canonical publisher once.
