@@ -28,7 +28,7 @@ on:
   workflow_dispatch:
     inputs:
       channel:
-        description: 'Samo jedan kanal (prazno = svi)'
+        description: 'Samo jedan kanal (prazno = jedna ograničena grupa)'
         required: false
         type: string
       force:
@@ -86,6 +86,9 @@ jobs:
               '7 2,6,10,14,18,22 * * *') ARGS+=(--batch 1) ;;
               *) echo "::error::Unknown REGION schedule — refusing unbounded 17-channel run"; exit 1 ;;
             esac
+          else
+            # Manual and workflow-file push triggers must also be bounded.
+            ARGS+=(--batch "$((GITHUB_RUN_NUMBER % 2))")
           fi
           if [ "${REGION_FORCE:-false}" = "true" ]; then ARGS+=(--force); fi
           node apps/region/engine/daily.mjs "${ARGS[@]}"
