@@ -31,6 +31,15 @@ on:
         description: 'Samo jedan kanal (prazno = jedna ograničena grupa)'
         required: false
         type: string
+      batch:
+        description: 'Ograničena grupa izdanja (0 ili 1; prazno = jedna automatska grupa)'
+        required: false
+        type: choice
+        options:
+          - ''
+          - '0'
+          - '1'
+        default: ''
       force:
         description: 'Zanemari kill-switch (samo za ručnu provjeru)'
         required: false
@@ -75,13 +84,17 @@ jobs:
         shell: bash
         env:
           REGION_CHANNEL: ${{ inputs.channel }}
+          REGION_BATCH: ${{ inputs.batch }}
           REGION_FORCE: ${{ inputs.force }}
           REGION_CRON: ${{ github.event.schedule }}
         run: |-
           set -euo pipefail
           ARGS=()
           if [ -n "${REGION_CHANNEL:-}" ]; then
+            if [ -n "${REGION_BATCH:-}" ]; then echo "::error::Use either channel or batch, not both"; exit 1; fi
             ARGS+=(--channel "$REGION_CHANNEL")
+          elif [ -n "${REGION_BATCH:-}" ]; then
+            case "$REGION_BATCH" in 0|1) ARGS+=(--batch "$REGION_BATCH");; *) echo "::error::Unsupported REGION_BATCH"; exit 1;; esac
           elif [ "$GITHUB_EVENT_NAME" = "schedule" ]; then
             case "$REGION_CRON" in
               '7 0,4,8,12,16,20 * * *') ARGS+=(--batch 0) ;;
