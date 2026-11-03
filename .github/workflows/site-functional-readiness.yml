@@ -20,8 +20,11 @@ permissions:
   contents: read
 
 concurrency:
+  # Preserve the running security and SEO gate. A newer commit can replace
+  # the single pending run, but must not cancel a gate already executing.
+  # Otherwise rapid content commits leave *no* successful readiness result.
   group: site-functional-readiness-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   readiness:
