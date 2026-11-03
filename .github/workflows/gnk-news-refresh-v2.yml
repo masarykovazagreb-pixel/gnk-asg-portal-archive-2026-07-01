@@ -40,7 +40,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: main
-          fetch-depth: 0
+          # Fetch only the selected branch's recent history, not every branch/tag.
+          # Updates still use a fresh origin/main CAS/rebase before non-force push.
+          fetch-depth: 1
+          fetch-tags: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
