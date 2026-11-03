@@ -69,9 +69,10 @@ jobs:
         with:
           # Ne hardkodiraj main: push okidač mora raditi na grani na kojoj je pokrenut.
           ref: ${{ github.ref }}
-          # Fetch only the selected branch's recent history, not every branch/tag.
-          # Updates still use a fresh origin/main CAS/rebase before non-force push.
-          fetch-depth: 100
+          # Keep startup fast on the large 17-channel repository. Download
+          # deeper ancestry only if there is generated content to publish.
+          # Non-force push and ancestry-aware rebase remain mandatory.
+          fetch-depth: 16
           fetch-tags: false
 
       - uses: actions/setup-node@v4
@@ -168,7 +169,13 @@ jobs:
           ref="${{ github.ref_name }}"
           pushed=false
           for attempt in 1 2 3; do
-            git fetch origin "$ref" --no-tags
+            if [ "$attempt" = "1" ] && [ "$(git rev-parse --is-shallow-repository)" = "true" ]; then
+              # Recover sufficient ancestry for a safe rebase when main
+              # advanced during regional generation; never force-push.
+              git fetch origin "$ref" --no-tags --deepen=120
+            else
+              git fetch origin "$ref" --no-tags
+            fi
             # Build regenerira i datoteke koje nisu u commit popisu (index,
             # mreza, jsonld). Git rebase odbija raditi s necommitanim
             # promjenama, pa je do 22. 10. 2026. svaki ciklus tiho padao na
