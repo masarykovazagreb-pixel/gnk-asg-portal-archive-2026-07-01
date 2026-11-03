@@ -63,12 +63,31 @@ jobs:
         run: node scripts/test-editorial-content-policy-v1.mjs
       - name: Enforce editorial policy before materialization
         run: node scripts/validate-editorial-content-policy-v1.mjs
+      - name: Inspect current AKTUAL MEDIA weekly curation readiness
+        id: weekly_ready
+        shell: bash
+        run: |
+          set -euo pipefail
+          # The weekly edition needs eight manually curated, source-linked items.
+          # A missing current-week seed blocks ONLY the weekly edition, not
+          # unrelated approved scheduled editorial pages.
+          node scripts/build-aktual-media-weekly-v1.mjs --readiness > "$RUNNER_TEMP/weekly-readiness.json"
+          cat "$RUNNER_TEMP/weekly-readiness.json"
+          ready="$(node -e 'const x=require(process.argv[1]);process.stdout.write(x.ready?"true":"false")' "$RUNNER_TEMP/weekly-readiness.json")"
+          echo "ready=$ready" >> "$GITHUB_OUTPUT"
+          if [ "$ready" != "true" ]; then
+            echo "::warning title=Weekly issue withheld::No current curated seed with 8 source-verified items. Existing weekly edition remains unchanged; other approved articles continue."
+            echo "AKTUAL MEDIA weekly edition withheld: missing current curated seed. No synthetic articles generated." >> "$GITHUB_STEP_SUMMARY"
+          fi
       - name: Refresh weekly AKTUAL MEDIA magazine when issue week changes
+        if: steps.weekly_ready.outputs.ready == 'true'
         run: node scripts/build-aktual-media-weekly-v1.mjs
       - name: Materialize bilingual weekly issue and archive pages
+        if: steps.weekly_ready.outputs.ready == 'true'
         run: node scripts/build-aktual-media-weekly-archive-v1.mjs --refresh
 
       - name: Tjedni arhiv — standard i slojevi nakon generatora
+        if: steps.weekly_ready.outputs.ready == 'true'
         shell: bash
         run: |-
           set -euo pipefail
