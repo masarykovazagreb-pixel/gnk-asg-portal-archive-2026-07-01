@@ -142,7 +142,7 @@ for(const file of fs.readdirSync('.github/workflows').filter(f=>/\.ya?ml$/i.test
  const path=`.github/workflows/${file}`;
  if(path===approved)continue;
  const source=read(path);
- const writeLine=source.split(/\r?\n/).find(line=>/^\s*(?:run:\s*)?(?:(?:npx|bunx)\s+(?:--yes\s+)?|(?:pnpm|yarn)\s+(?:dlx\s+)?)?wrangler(?:@\d+)?\s+(?:pages\s+)?deploy\b/i.test(line)&&!/--dry-run\b/i.test(line));
+ const writeLine=source.split(/\r?\n/).find(line=>/^\s*(?:run:\s*|if\s+)?(?:!\s*)?(?:(?:npx|bunx)\s+(?:--yes\s+)?|(?:pnpm|yarn)\s+(?:dlx\s+)?)?wrangler(?:@\d+)?\s+(?:pages\s+)?deploy\b/i.test(line)&&!/--dry-run\b/i.test(line));
  const literalProjects=sitesNetworkProjects[file]||worldPortalsProjects[file];
  if(writeLine&&literalProjects){
   const allowed=new Set(literalProjects);
