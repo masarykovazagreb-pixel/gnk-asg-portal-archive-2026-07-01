@@ -4,7 +4,7 @@ name: REGION — dnevni ciklus izdanja
 # Sarajevo, Budimpešta, Ljubljana, Rim, Sofija, Bukurešt) i devet svjetskih
 # (Nairobi, Jakarta, New York, São Paulo, Sydney, Singapur, Kairo, Tokio,
 # Peking): čitanje javnih feedova, osvrti, build, commit na main i deploy —
-# svaka 2 sata, automatski. Ciklus je inkrementalan: novi zapisi ulaze u
+# s dvije izmjenične grupe svaka 2 sata (svaki grad svakih 4 sata). Novi zapisi ulaze u
 # arhivu, stranice se grade za sve kanale, a commit ide samo ako se sadržaj
 # stvarno promijenio.
 #
@@ -180,48 +180,20 @@ jobs:
             gh workflow run region-daily.yml --repo "$GITHUB_REPOSITORY" --ref "$ref" || true
           fi
 
-      - name: Deploy na Cloudflare Pages (samo obrađeni kanali)
+      - name: Provjeri preusmjerenja za obrađene kanale
         if: steps.push.outputs.pushed == 'true' && github.ref == 'refs/heads/main'
         shell: bash
-        env:
-          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |-
           set -euo pipefail
-          if [ -z "${CF_TOKEN:-}" ] || [ -z "${CF_ACCOUNT:-}" ]; then
-            echo "::error::Cloudflare secrets are unavailable; production was not deployed."
-            exit 1
-          fi
-          failed=0
-          # Source of truth for this run: only the channels built in the
-          # previous step. Do not deploy all 17 Pages projects each time.
+          # Site/<city> projects are static 301 redirect stubs, not the
+          # canonical content deployment. Changes to those stubs are handled
+          # by region-deploy.yml; do not redeploy 17 satellites every cycle.
           ids="$(node -e 'const r=require("./apps/region/data/_status.json").lastRun.channels;const ids=Object.keys(r);if(!ids.length||ids.some(id=>!/^[a-z]+$/.test(id)))process.exit(1);process.stdout.write(ids.join(" "))')"
           for id in $ids; do
-            dir="apps/region/site/$id"
-            if [ ! -d "$dir" ]; then
-              echo "::error::Missing built site directory: $dir"
-              failed=$((failed+1))
-              continue
-            fi
-            project="gnk-asg-kanal-$id"
-            code=$(curl -s -o /dev/null -w '%{http_code}' -H "Authorization: Bearer $CF_TOKEN" \
-              "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/$project")
-            if [ "$code" != "200" ]; then
-              if ! curl -fsS -X POST -H "Authorization: Bearer $CF_TOKEN" -H "Content-Type: application/json" \
-                --data "{\"name\":\"$project\",\"production_branch\":\"main\"}" \
-                "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects" >/dev/null; then
-                echo "::error::Could not create Cloudflare Pages project $project"
-                failed=$((failed+1))
-                continue
-              fi
-            fi
-            if ! npx --yes wrangler@4 pages deploy "$dir" --project-name="$project" --branch=main --commit-dirty=true; then
-              echo "::error::Deployment failed: $project"
-              failed=$((failed+1))
-            fi
+            test -f "apps/region/site/$id/index.html"
+            grep -q '301' "apps/region/site/$id/_redirects"
           done
-          echo "REGION Pages deploy: $ids; failed projects: $failed" >> "$GITHUB_STEP_SUMMARY"
-          if [ "$failed" -ne 0 ]; then exit 1; fi
+          echo "Canonical portal content is deployed by exact-SHA workflow; checked redirect stubs: $ids" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Fail visibly if a generated edition did not reach git
         if: steps.commit.outputs.changed == 'true' && steps.push.outputs.pushed != 'true'
@@ -269,7 +241,7 @@ jobs:
             echo "- Promjena: ${{ steps.commit.outputs.changed }}"
             echo "- Zapis na main: ${{ steps.push.outputs.pushed || 'nije bilo promjene' }}"
             echo "- Hub: https://gnk-asg.hr/izdanja/"
-            echo "- Izdanja: Zagreb, Beograd, Sarajevo, Budimpešta, Ljubljana, Rim, Sofija, Bukurešt"
+            echo "- Kanali: 17, dvije rotirajuće grupe (svaki kanal jednom u 4 sata)"
             echo "- Galerija: https://gnk-asg.hr/galerija/"
             echo "- Status: automatski osvrti, nije pojedinačno urednički pregledano"
           } >> "$GITHUB_STEP_SUMMARY"
