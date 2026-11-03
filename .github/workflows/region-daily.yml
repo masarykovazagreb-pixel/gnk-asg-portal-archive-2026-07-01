@@ -17,7 +17,9 @@ on:
     # Svaka 2 sata, cijeli dan: 12 ciklusa dnevno. Minuta je namjerno 7, ne 0 —
     # GitHub odbacuje dio rasporeda na puni sat zbog opterećenja, pa je ciklus
     # 19. i 20. 10. preskočen i izdanja su ostala na 19. 10.
-    - cron: '7 */2 * * *'
+    # Opposite half of the channels on alternating 2-hour slots (full rotation: 4h).
+    - cron: '7 0,4,8,12,16,20 * * *'
+    - cron: '7 2,6,10,14,18,22 * * *'
   # Ručno osvježavanje: izmjena ove datoteke pokreće ciklus i na grani.
   push:
     paths:
@@ -69,14 +71,26 @@ jobs:
 
       - name: Dnevni ciklus (feedovi → osvrti → stranice → hub)
         shell: bash
+        env:
+          REGION_CHANNEL: ${{ inputs.channel }}
+          REGION_FORCE: ${{ inputs.force }}
+          REGION_CRON: ${{ github.event.schedule }}
         run: |-
-          set -uo pipefail
-          ARGS=""
-          if [ -n "${{ inputs.channel }}" ]; then ARGS="$ARGS --channel ${{ inputs.channel }}"; fi
-          if [ "${{ inputs.force }}" = "true" ]; then ARGS="$ARGS --force"; fi
-          node apps/region/engine/daily.mjs $ARGS || echo "::warning::Dio izvora nije dostupan — izdanja se grade iz postojeće arhive."
+          set -euo pipefail
+          ARGS=()
+          if [ -n "${REGION_CHANNEL:-}" ]; then
+            ARGS+=(--channel "$REGION_CHANNEL")
+          elif [ "$GITHUB_EVENT_NAME" = "schedule" ]; then
+            case "$REGION_CRON" in
+              '7 0,4,8,12,16,20 * * *') ARGS+=(--batch 0) ;;
+              '7 2,6,10,14,18,22 * * *') ARGS+=(--batch 1) ;;
+              *) echo "::error::Unknown REGION schedule — refusing unbounded 17-channel run"; exit 1 ;;
+            esac
+          fi
+          if [ "${REGION_FORCE:-false}" = "true" ]; then ARGS+=(--force); fi
+          node apps/region/engine/daily.mjs "${ARGS[@]}"
           test -f apps/portal/kanal/zagreb/index.html
-          node -e "const fs=require('fs');const f=JSON.parse(fs.readFileSync('apps/region/data/_status.json','utf8'));const r=f.lastRun;console.log('kanala:',Object.keys(r.channels).length);const ok=Object.values(r.channels).reduce((a,c)=>a+c.sourcesOk,0);const all=Object.values(r.channels).reduce((a,c)=>a+c.sourcesTotal,0);console.log('izvori:',ok+'/'+all);if(!Object.keys(r.channels).length)process.exit(1)"
+          node -e 'const fs=require("fs");const f=JSON.parse(fs.readFileSync("apps/region/data/_status.json","utf8"));const r=f.lastRun;const ch=Object.values(r.channels);const ok=ch.reduce((a,c)=>a+c.sourcesOk,0);const all=ch.reduce((a,c)=>a+c.sourcesTotal,0);console.log("REGION kanala:",ch.length,"izvori:",ok+"/"+all);if(!ch.length)process.exit(1);if(ok<all)console.log("::warning title=Partial source coverage::"+(all-ok)+" source feeds unavailable; archived pages remain linked to originals.")'
 
       - name: Galerija i matična stranica izdanja
         shell: bash
@@ -163,31 +177,55 @@ jobs:
             gh workflow run region-daily.yml --repo "$GITHUB_REPOSITORY" --ref "$ref" || true
           fi
 
-      - name: Deploy na Cloudflare Pages (svaki kanal svoj projekt)
+      - name: Deploy na Cloudflare Pages (samo obrađeni kanali)
         if: steps.push.outputs.pushed == 'true' && github.ref == 'refs/heads/main'
         shell: bash
         env:
           CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |-
-          set -uo pipefail
+          set -euo pipefail
           if [ -z "${CF_TOKEN:-}" ] || [ -z "${CF_ACCOUNT:-}" ]; then
-            echo "::warning::Cloudflare secrets nisu dostupni — deploy preskočen."
-            exit 0
+            echo "::error::Cloudflare secrets are unavailable; production was not deployed."
+            exit 1
           fi
-          for dir in apps/region/site/*/; do
-            id=$(basename "$dir")
+          failed=0
+          # Source of truth for this run: only the channels built in the
+          # previous step. Do not deploy all 17 Pages projects each time.
+          ids="$(node -e 'const r=require("./apps/region/data/_status.json").lastRun.channels;const ids=Object.keys(r);if(!ids.length||ids.some(id=>!/^[a-z]+$/.test(id)))process.exit(1);process.stdout.write(ids.join(" "))')"
+          for id in $ids; do
+            dir="apps/region/site/$id"
+            if [ ! -d "$dir" ]; then
+              echo "::error::Missing built site directory: $dir"
+              failed=$((failed+1))
+              continue
+            fi
             project="gnk-asg-kanal-$id"
             code=$(curl -s -o /dev/null -w '%{http_code}' -H "Authorization: Bearer $CF_TOKEN" \
               "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/$project")
             if [ "$code" != "200" ]; then
-              curl -s -o /dev/null -X POST -H "Authorization: Bearer $CF_TOKEN" -H "Content-Type: application/json" \
+              if ! curl -fsS -X POST -H "Authorization: Bearer $CF_TOKEN" -H "Content-Type: application/json" \
                 --data "{\"name\":\"$project\",\"production_branch\":\"main\"}" \
-                "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects" || true
+                "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects" >/dev/null; then
+                echo "::error::Could not create Cloudflare Pages project $project"
+                failed=$((failed+1))
+                continue
+              fi
             fi
-            npx --yes wrangler@4 pages deploy "$dir" --project-name="$project" --branch=main --commit-dirty=true \
-              || echo "::warning::Deploy projekta $project nije uspio."
+            if ! npx --yes wrangler@4 pages deploy "$dir" --project-name="$project" --branch=main --commit-dirty=true; then
+              echo "::error::Deployment failed: $project"
+              failed=$((failed+1))
+            fi
           done
+          echo "REGION Pages deploy: $ids; failed projects: $failed" >> "$GITHUB_STEP_SUMMARY"
+          if [ "$failed" -ne 0 ]; then exit 1; fi
+
+      - name: Fail visibly if a generated edition did not reach git
+        if: steps.commit.outputs.changed == 'true' && steps.push.outputs.pushed != 'true'
+        shell: bash
+        run: |
+          echo "::error::REGION generated an editorial package but did not push it; publication incomplete."
+          exit 1
 
       - name: Objavi AKTUAL MEDIA (točan SHA)
         if: steps.push.outputs.pushed == 'true' && github.ref == 'refs/heads/main' && vars.REGION_PORTAL_DEPLOY != 'false'
