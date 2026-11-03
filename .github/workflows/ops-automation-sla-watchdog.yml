@@ -193,8 +193,21 @@ jobs:
               ok = sum(int(c.get('sourcesOk') or 0) for c in region_channels.values())
               total = sum(int(c.get('sourcesTotal') or 0) for c in region_channels.values())
               observations.append(f'REGION editions: {region_age:.1f} min old, {len(region_channels)} channels, sources {ok}/{total}')
-              if len(region_channels) < 8:
-                  failures.append(f'REGION status lists {len(region_channels)} channels, expected 8')
+              expected_ids = [c['id'] for c in json.loads(Path('apps/region/channels.json').read_text(encoding='utf-8'))['channels']]
+              latest_channel_update = {}
+              for region_run in region_status.get('runs', []):
+                  run_at = datetime.fromisoformat(region_run['at'].replace('Z', '+00:00'))
+                  for channel_id in region_run.get('channels', {}):
+                      if channel_id not in latest_channel_update or run_at > latest_channel_update[channel_id]:
+                          latest_channel_update[channel_id] = run_at
+              stale_ids = [channel_id for channel_id in expected_ids
+                           if channel_id not in latest_channel_update or
+                           (now - latest_channel_update[channel_id]).total_seconds() > 330 * 60]
+              observations.append(f'REGION latest saved per-channel coverage: {len(expected_ids) - len(stale_ids)}/{len(expected_ids)} fresh within 330 min')
+              if len(expected_ids) != 17:
+                  failures.append(f'REGION registry expected 17 channels, found {len(expected_ids)}')
+              if stale_ids:
+                  failures.append('REGION channels not refreshed within 330 min: ' + ', '.join(stale_ids))
               if region_age > 210:
                   latest = latest_completed('region-daily.yml')
                   latest_stamp = run_stamp(latest)
