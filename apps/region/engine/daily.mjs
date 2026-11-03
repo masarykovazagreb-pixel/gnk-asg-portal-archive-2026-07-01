@@ -35,6 +35,9 @@ const flag = (name) => process.argv.includes(name);
 const DRY = flag('--dry-run');
 const NO_BUILD = flag('--no-build');
 const ONLY = arg('--channel', '');
+// On the two-hour schedule, alternate deterministic halves of the 17 channels
+// to keep each bounded source/build cycle within the Actions minute budget.
+const BATCH = arg('--batch', '');
 const MAX_AGE_DAYS = Number(arg('--days', '21'));
 const MAX_ITEMS = Number(arg('--max-items', '5000'));
 
@@ -177,8 +180,13 @@ async function main() {
     return;
   }
 
-  const targets = CHANNELS.filter((c) => !ONLY || c.id === ONLY);
-  if (!targets.length) throw new Error(`Nepoznat kanal: ${ONLY}`);
+  if (BATCH !== '' && !['0', '1'].includes(String(BATCH))) throw new Error(`Nepoznata grupa kanala: ${BATCH}`);
+  if (ONLY && BATCH !== '') throw new Error('Do not combine --channel and --batch');
+  const targets = CHANNELS.filter((c, index) =>
+    (!ONLY || c.id === ONLY) && (BATCH === '' || index % 2 === Number(BATCH))
+  );
+  if (!targets.length) throw new Error(`Nepoznat kanal/grupa: ${ONLY || BATCH}`);
+  console.log(`REGION source/build targets: ${targets.length}/${CHANNELS.length} — ${targets.map(c => c.id).join(', ')}`);
 
   const report = {};
   const built = [];
@@ -212,7 +220,10 @@ async function main() {
 
   const failedSources = Object.entries(report).flatMap(([id, r]) => r.failed.map((s) => `${id}/${s}`));
   if (failedSources.length) console.log(`::warning::Nedostupni izvori: ${failedSources.join(', ')}`);
-  console.log(JSON.stringify({ ok: true, report }, null, 2));
+  // "ok" here means the selected channels were processed and written.
+  // It never implies all source feeds succeeded.
+  const sourceCoverageOk = failedSources.length === 0;
+  console.log(JSON.stringify({ ok: true, sourceCoverageOk, channelsProcessed: targets.length, channelsTotal: CHANNELS.length, report }, null, 2));
 }
 
 if (process.argv[1] && /daily\.mjs$/.test(process.argv[1])) {
