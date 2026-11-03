@@ -4,7 +4,7 @@
   "lang": "it",
   "city": "Rim",
   "country": "Italija",
-  "updatedAt": "2026-11-03T17:19:03.397Z",
+  "updatedAt": "2026-11-03T19:46:40.400Z",
   "sources": [
     {
       "id": "ansa",
@@ -14,17 +14,22 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-03T17:18:57.902Z"
+      "checkedAt": "2026-11-03T19:46:29.803Z"
     },
     {
       "id": "repubblica",
       "name": "la Repubblica",
       "url": "https://www.repubblica.it/rss/homepage/rss2.0.xml",
-      "ok": true,
-      "fetched": 30,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-03T17:18:58.279Z"
+      "errors": [
+        "https://www.repubblica.it/rss/homepage/rss2.0.xml: HTTP 403",
+        "https://www.repubblica.it/rss/politica/rss2.0.xml: HTTP 403",
+        "https://www.repubblica.it/rss/economia/rss2.0.xml: HTTP 403",
+        "https://www.repubblica.it/rss/sport/rss2.0.xml: HTTP 403"
+      ],
+      "checkedAt": "2026-11-03T19:46:33.178Z"
     },
     {
       "id": "ilpost",
@@ -36,7 +41,7 @@
       "errors": [
         "https://www.ilpost.it/feed/: HTTP 403"
       ],
-      "checkedAt": "2026-11-03T17:19:00.114Z"
+      "checkedAt": "2026-11-03T19:46:34.723Z"
     },
     {
       "id": "sole24",
@@ -46,7 +51,7 @@
       "fetched": 37,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-03T17:19:00.804Z"
+      "checkedAt": "2026-11-03T19:46:36.140Z"
     },
     {
       "id": "corriere",
@@ -56,17 +61,19 @@
       "fetched": 69,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-03T17:19:01.039Z"
+      "checkedAt": "2026-11-03T19:46:36.964Z"
     },
     {
       "id": "lastampa",
       "name": "La Stampa",
       "url": "https://www.lastampa.it/rss",
-      "ok": true,
-      "fetched": 59,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-03T17:19:01.694Z"
+      "errors": [
+        "https://www.lastampa.it/rss: HTTP 403"
+      ],
+      "checkedAt": "2026-11-03T19:46:38.003Z"
     },
     {
       "id": "fanpage",
@@ -78,7 +85,7 @@
       "errors": [
         "https://www.fanpage.it/feed/: HTTP 403"
       ],
-      "checkedAt": "2026-11-03T17:19:02.442Z"
+      "checkedAt": "2026-11-03T19:46:39.008Z"
     },
     {
       "id": "adnkronos",
@@ -90,10 +97,117 @@
       "errors": [
         "https://www.adnkronos.com/rss: nije feed"
       ],
-      "checkedAt": "2026-11-03T17:19:03.396Z"
+      "checkedAt": "2026-11-03T19:46:40.400Z"
     }
   ],
   "items": [
+    {
+      "slug": "rim-2026-11-03-ansa-il-leader-dei-dem-in-senato-ottimisti-ma-5514a8",
+      "title": "Il leader dei dem in Senato, 'ottimisti ma non cantiamo vittoria troppo presto'",
+      "summary": "Schumer, nessuno un anno fa che potevamo farcela",
+      "date": "2026-11-03T19:26:02.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/03/il-leader-dei-dem-in-senato-ottimisti-ma-non-cantiamo-vittoria-troppo-presto_953fdd10-75dd-4cc3-9813-eb5b47a45d72.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Il leader dei dem in Senato, 'ottimisti ma non cantiamo vittoria troppo presto'",
+      "addedAt": "2026-11-03T19:46:29.804Z"
+    },
+    {
+      "slug": "rim-2026-11-03-ansa-valditara-su-tetto-stranieri-andiamo-avanti-4e92bf",
+      "title": "Valditara, 'su tetto stranieri andiamo avanti, nessuna discriminazione'",
+      "summary": "",
+      "date": "2026-11-03T19:11:06.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/03/valditara-su-tetto-stranieri-andiamo-avanti-nessuna-discriminazione_9295adf4-43b9-41ad-9e88-f49c55301e5b.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Valditara, 'su tetto stranieri andiamo avanti, nessuna discriminazione'",
+      "addedAt": "2026-11-03T19:46:29.804Z"
+    },
+    {
+      "slug": "rim-2026-11-03-ansa-felipe-vi-riceve-4-presidenti-al-palazzo-76aa19",
+      "title": "Felipe VI riceve 4 presidenti al Palazzo reale per il vertice iberoamericano",
+      "summary": "Il monarca ha avuto incontri con i presidenti di Cile, Honduras, Guatemala e Costa Rica",
+      "date": "2026-11-03T18:50:23.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/03/felipe-vi-riceve-4-presidenti-al-palazzo-reale-per-il-vertice-iberoamericano_959f53a4-d1f7-4f38-99b5-86b595919ae1.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Felipe VI riceve 4 presidenti al Palazzo reale per il vertice iberoamericano",
+      "addedAt": "2026-11-03T19:46:29.804Z"
+    },
+    {
+      "slug": "rim-2026-11-03-sole24-manovra-fdi-al-lavoro-su-emendamento-per-d07be6",
+      "title": "Manovra, FdI al lavoro su emendamento per riaprire il condono edilizio in Campania",
+      "summary": "Riapertura dei termini del condono edilizio del 2003. Fratelli d’Italia lavora a un emendamento alla manovra per consentire di sanare le difformità edilizie in Campania, che all’epoca con la giunta...",
+      "date": "2026-11-03T18:47:00.000Z",
+      "url": "https://www.ilsole24ore.com/art/manovra-fdi-lavoro-emendamento-riaprire-condono-edilizio-campania-AJIC5e3B",
+      "source": "sole24",
+      "sourceName": "Il Sole 24 Ore",
+      "categories": [
+        "Italia/Politica"
+      ],
+      "author": "di Redazione Roma",
+      "theme": "drustvo",
+      "image": "https://i2.res.24o.it/images2010/S24/Documenti/2026/11/04/Immagini/Ritagli/condono-U14488572427rbG-1440x752@IlSole24Ore-Web.jpg",
+      "imageAlt": "Manovra, FdI al lavoro su emendamento per riaprire il condono edilizio in Campania",
+      "addedAt": "2026-11-03T19:46:36.140Z"
+    },
+    {
+      "slug": "rim-2026-11-03-ansa-scontri-al-confine-tra-esercito-del-a9e25a",
+      "title": "Scontri al confine tra esercito del Venezuela e guerriglia colombiana, otto morti",
+      "summary": "Ministro Cabello invia militari nella provincia di Apure, non vogliamo conflitti da fuori",
+      "date": "2026-11-03T18:34:48.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/03/scontri-al-confine-tra-esercito-del-venezuela-e-guerriglia-colombiana-otto-morti_ad35e866-2d80-4275-8597-b9d1395efc23.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Scontri al confine tra esercito del Venezuela e guerriglia colombiana, otto morti",
+      "addedAt": "2026-11-03T19:46:29.804Z"
+    },
+    {
+      "slug": "rim-2026-11-03-ansa-ipotesi-emendamento-fdi-per-riaprire-il-bac9ef",
+      "title": "Ipotesi emendamento FdI per riaprire il condono edilizio per la Campania",
+      "summary": "Sul punto impegni di Cirielli in campagna elettorale",
+      "date": "2026-11-03T18:34:13.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/03/ipotesi-emendamento-fdi-per-riaprire-il-condono-edilizio-per-la-campania_b5f94975-5736-4f68-96e9-202101d323b1.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Ipotesi emendamento FdI per riaprire il condono edilizio per la Campania",
+      "addedAt": "2026-11-03T19:46:29.804Z"
+    },
+    {
+      "slug": "rim-2026-11-03-ansa-italiano-arrestato-dall-ice-in-new-jersey-5a1221",
+      "title": "Italiano arrestato dall'Ice in New Jersey per 'frode elettorale'",
+      "summary": "Andrea Morzetta è accusato di aver votato in quattro elezioni pur essendo straniero",
+      "date": "2026-11-03T18:33:32.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/03/italiano-arrestato-dallice-in-new-jersey-per-frode-elettorale_d02a86be-592c-4d60-a579-212ca57164e6.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Italiano arrestato dall'Ice in New Jersey per 'frode elettorale'",
+      "addedAt": "2026-11-03T19:46:29.804Z"
+    },
     {
       "slug": "rim-2026-11-03-ansa-lo-spread-tra-btp-e-bund-tedeschi-chiude-in-bd7bb7",
       "title": "Lo spread tra Btp e Bund tedeschi chiude in calo a 113,2 punti",
