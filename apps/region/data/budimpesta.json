@@ -4,17 +4,23 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-11-03T20:37:32.967Z",
+  "updatedAt": "2026-11-03T23:17:24.499Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": true,
-      "fetched": 50,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-03T20:37:29.430Z"
+      "errors": [
+        "https://telex.hu/rss: HTTP 403",
+        "https://telex.hu/rss/belfold: HTTP 403",
+        "https://telex.hu/rss/kulfold: HTTP 403",
+        "https://telex.hu/rss/gazdasag: HTTP 403",
+        "https://telex.hu/rss/sport: HTTP 403"
+      ],
+      "checkedAt": "2026-11-03T23:17:20.183Z"
     },
     {
       "id": "444",
@@ -24,7 +30,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-03T20:37:29.590Z"
+      "checkedAt": "2026-11-03T23:17:20.459Z"
     },
     {
       "id": "hvg",
@@ -34,7 +40,7 @@
       "fetched": 60,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-03T20:37:29.953Z"
+      "checkedAt": "2026-11-03T23:17:20.788Z"
     },
     {
       "id": "portfolio",
@@ -44,7 +50,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-03T20:37:30.593Z"
+      "checkedAt": "2026-11-03T23:17:21.520Z"
     },
     {
       "id": "index",
@@ -56,7 +62,7 @@
       "errors": [
         "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-03T20:37:32.511Z"
+      "checkedAt": "2026-11-03T23:17:23.395Z"
     },
     {
       "id": "24hu",
@@ -66,7 +72,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-03T20:37:32.660Z"
+      "checkedAt": "2026-11-03T23:17:23.617Z"
     },
     {
       "id": "mandiner",
@@ -76,10 +82,215 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-03T20:37:32.967Z"
+      "checkedAt": "2026-11-03T23:17:24.499Z"
     }
   ],
   "items": [
+    {
+      "slug": "budimpesta-2026-11-03-portfolio-amerikai-valasztas-2026-bezartak-az-elso-4ed1b7",
+      "title": "Amerikai választás 2026: bezártak az első urnák, hamarosan jönnek az eredmények – Kíméletlen vereség vár Trump pártjára?",
+      "summary": "Eljött az amerikai félidős választások napja. Az amerikai választók ma az összes, 435 képviselőházi hely sorsáról döntenek, miközben a szenátori mandátumok mintegy harmada szerepel a szavazólapokon. A Kongresszus alsóházában szinte borítékolható a demokrata többség, a kérdés csak az, hogy mekkorára fog nyúlni. Bár pár hónapja még nem tűnt reálisnak, hogy a demokraták a felsőházi többséget is elhódítsák a republikánusoktól, immár ők a favoritok a szenátusban is. A voksolás lassan a végéhez közelít, az első szavazóhelyiségek magyar idő szerint éjfélkor zártak be Kentuckyban és Indianában. Cikkünk folyamatosan frissül, magyar idő szerint szerda hajnalban pedig élőben közvetítjük, ahogy…",
+      "date": "2026-11-03T23:07:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261104/amerikai-valasztas-2026-bezartak-az-elso-urnak-hamarosan-jonnek-az-eredmenyek-kimeletlen-vereseg-var-trump-partjara-873736",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://pcdn.hu/articles/images-xl/g/e/t/gettyimages-2182376456-866610.jpg",
+      "imageAlt": "Amerikai választás 2026: bezártak az első urnák, hamarosan jönnek az eredmények – Kíméletlen vereség vár Trump pártjára?",
+      "addedAt": "2026-11-03T23:17:21.520Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-03-portfolio-kijott-a-cnn-exit-pollja-kezdhet-igazan-1141f6",
+      "title": "Kijött a CNN exit pollja: kezdhet igazán aggódni Trump?",
+      "summary": "Az amerikai választók túlnyomó többsége elégedetlen az ország helyzetével, a gazdaság állapotával és Donald Trump elnöki teljesítményével – derül ki a CNN választói felmérésének előzetes, országos eredményeiből . A megkérdezettek nagyjából háromnegyede csalódott az Egyesült Államokban zajló folyamatok miatt, tízből négyen pedig kifejezetten dühösnek érzik magukat a kialakult helyzetben.",
+      "date": "2026-11-03T22:44:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261103/kijott-a-cnn-exit-pollja-kezdhet-igazan-aggodni-trump-874066",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://pcdn.hu/articles/images-xl/g/e/t/gettyimages-2295283192-866604.jpg",
+      "imageAlt": "Kijött a CNN exit pollja: kezdhet igazán aggódni Trump?",
+      "addedAt": "2026-11-03T23:17:21.520Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-03-portfolio-milliardos-tetek-forognak-kockan-kiderult-723adf",
+      "title": "Milliárdos tétek forognak kockán: kiderült, mit jósolnak a fogadók a sorsdöntő választásról",
+      "summary": "Több mint 1,48 milliárd dollárnyi (azaz közel 500 milliárd forintnyi) tétet tettek meg a mai amerikai félidős választásokra, ami az eddigi legnagyobb próbatételük elé állítja a Kalshihoz és a Polymarkethez hasonló előrejelzési piacokat - írja a Reuters. A platformok most fokozott figyelem kereszttüzében bizonyíthatják, hogy képesek-e a hagyományos közvélemény-kutatásoknál megbízhatóbban megjósolni a választások kimenetelét.",
+      "date": "2026-11-03T22:28:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261103/milliardos-tetek-forognak-kockan-kiderult-mit-josolnak-a-fogadok-a-sorsdonto-valasztasrol-874064",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://pcdn.hu/articles/images-xl/k/a/l/kalshi-amerikai-valasztasok-valasztas-szenatus-elorejelzes-politika-okostelefon-mobilalkalmaz-866600.jpg",
+      "imageAlt": "Milliárdos tétek forognak kockán: kiderült, mit jósolnak a fogadók a sorsdöntő választásról",
+      "addedAt": "2026-11-03T23:17:21.520Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-03-portfolio-amerikai-valasztasok-bizakodoak-a-c641dc",
+      "title": "Amerikai választások: bizakodóak a politikusok",
+      "summary": "Bár a nyilvánosság előtt a demokraták és a republikánusok egyaránt optimistán nyilatkoznak az amerikai választások várható kimeneteléről, a színfalak mögött Donald Trump elnök már jóval borúlátóbb. Mindeközben az ország több pontján technikai problémák nehezítik a voksolást, New York államban például negyedmillió szavazólapot nem tudtak beolvasni a gépek - írta a CNN .",
+      "date": "2026-11-03T22:05:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261103/amerikai-valasztasok-bizakodoak-a-politikusok-874062",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://pcdn.hu/articles/images-xl/g/e/t/gettyimages-2182438565-866596.jpg",
+      "imageAlt": "Amerikai választások: bizakodóak a politikusok",
+      "addedAt": "2026-11-03T23:17:21.520Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-03-portfolio-meg-be-sem-jottek-az-eredmenyek-trump-968b05",
+      "title": "Még be sem jöttek az eredmények, Trump szövetségese máris asztalt borított: \"őszintének kell lennünk!\"",
+      "summary": "A republikánus jelöltek számára súlyos tehertétel a félidős választásokon az elhúzódó iráni háború és az elszabaduló üzemanyagár – erről beszélt Ron DeSantis leköszönő floridai kormányzó hétfő este Stephen A. Smith rádióműsorában. A republikánus politikus figyelmeztette pártját, hogy nem tagadhatják le a választók előtt a közel-keleti konfliktus gazdasági következményeit, valamint azt sürgette, hogy ne a technológiai óriásvállalatok érdekeit képviseljék - írja a Hill .",
+      "date": "2026-11-03T21:58:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261103/meg-be-sem-jottek-az-eredmenyek-trump-szovetsegese-maris-asztalt-boritott-oszintenek-kell-lennunk-874060",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://pcdn.hu/articles/images-xl/r/o/n/ron-desantis-donald-trump-590630.jpg",
+      "imageAlt": "Még be sem jöttek az eredmények, Trump szövetségese máris asztalt borított: \"őszintének kell lennünk!\"",
+      "addedAt": "2026-11-03T23:17:21.520Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-03-24hu-gulacsiek-hatalmas-verest-kaptak-otthon-6c5542",
+      "title": "Gulácsiék hatalmas verést kaptak otthon, csoda történt az Old Traffordon",
+      "summary": "A ManUnited kétgólos hátrányról nyert, a Barca legyőzte az eddig hibátlan Aston Villát. The post Gulácsiék hatalmas verést kaptak otthon, csoda történt az Old Traffordon first appeared on 24.hu .",
+      "date": "2026-11-03T21:56:35.000Z",
+      "url": "https://24.hu/sport/foci/2026/11/03/bajnokok-ligaja-villarreal-gulacsi-peter-manchester-united/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Foci",
+        "bajnokok ligája",
+        "villarreal",
+        "gulácsi péter"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/gulacsi-1024x576.jpg",
+      "imageAlt": "Gulácsiék hatalmas verést kaptak otthon, csoda történt az Old Traffordon",
+      "addedAt": "2026-11-03T23:17:23.617Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-03-hvg-a-150-ev-torok-hodoltsag-a-sok-nem-a-fidesz-49d408",
+      "title": "„A 150 év török hódoltság a sok, nem a Fidesz 16 éve” – így igazíthatták el a választási aktivistákat egy vajdasági hangfelvétel szerint",
+      "summary": "A Szabad Magyar Szó által megosztott felvétel információik szerint pár héttel az április 12-i választás előtt készült a levélszavazatokról.",
+      "date": "2026-11-03T21:18:19.000Z",
+      "url": "https://hvg.hu/itthon/20261103_szerbia-hangfelvetel-aktivistak-eligazitas-aleksandar-vucic-orban-viktor-valasztas",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "politika",
+        "Vajdaság",
+        "választás"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "politika",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/5c984d31-52de-4973-8ccb-d68498dae175.jpg",
+      "imageAlt": "„A 150 év török hódoltság a sok, nem a Fidesz 16 éve” – így igazíthatták el a választási aktivistákat egy vajdasági hangfelvétel szerint",
+      "addedAt": "2026-11-03T23:17:20.788Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-03-hvg-navracsics-tibor-feledy-botondek-jo-szakmai-1ac142",
+      "title": "Navracsics Tibor: Feledy Botondék jó szakmai munkát végeztek, ezért is kértük fel őket",
+      "summary": "Pécsen kérdezte a Telex a volt területfejlesztési minisztert a Feledy-ügyről.",
+      "date": "2026-11-03T21:02:50.000Z",
+      "url": "https://hvg.hu/itthon/20261103_navracsics-tibor-feledy-botond-valasztasi-megbizas",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "politika",
+        "Navracsics Tibor",
+        "Feledy Botond"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "politika",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/17236aee-3779-4726-80a6-4bdcdbaae299.jpg",
+      "imageAlt": "Navracsics Tibor: Feledy Botondék jó szakmai munkát végeztek, ezért is kértük fel őket",
+      "addedAt": "2026-11-03T23:17:20.788Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-03-hvg-tarr-zoltan-fuggetlen-testuletet-allitott-e8d99f",
+      "title": "Tarr Zoltán független testületet állított fel az ügynökakták társadalmi hatásainak kezelésére",
+      "summary": "A testület tagja Orvos-Tóth Noémi klinikai szakpszichológus és Szabó Andrea szociológus, politológus is.",
+      "date": "2026-11-03T21:00:49.000Z",
+      "url": "https://hvg.hu/itthon/20261103_ugynokaktak-tarsadalmi-hatas-tarr-zoltan-fuggetlen-testulet",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "társadalom",
+        "ügynökakták",
+        "Tarr Zoltán"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "sigurnost",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/00eb46ff-549d-4ad2-91ec-efcf38ffb497.jpg",
+      "imageAlt": "Tarr Zoltán független testületet állított fel az ügynökakták társadalmi hatásainak kezelésére",
+      "addedAt": "2026-11-03T23:17:20.788Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-03-444-lemond-a-spanyol-kozlekedesi-miniszter-a-69-1f2c99",
+      "title": "Lemond a spanyol közlekedési miniszter a 69 halálos áldozattal járó vonatbaleset miatt",
+      "summary": "„Egy olyan országban, mint Spanyolország, a közlekedési miniszter nem maradhat hivatalban, ha kevesebb mint egy év alatt két ilyen súlyos baleset történik” – közölte Óscar Puente.",
+      "date": "2026-11-03T20:50:10.000Z",
+      "url": "https://444.hu/2026/11/03/lemond-a-spanyol-kozlekedesi-miniszter-a-69-halalos-aldozattal-jaro-vonatbaleset-miatt?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "Óscar Puente",
+        "lemondás",
+        "közlekedési miniszter",
+        "spanyolország"
+      ],
+      "author": "Herczeg Márk",
+      "theme": "politika",
+      "image": "https://assets.4cdn.hu/kraken/8PZh5zL9vNiJd5Pys.jpeg",
+      "imageAlt": "Lemond a spanyol közlekedési miniszter a 69 halálos áldozattal járó vonatbaleset miatt",
+      "addedAt": "2026-11-03T23:17:20.460Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-03-24hu-navracsics-feledy-botondek-jo-szakmai-1e7f57",
+      "title": "Navracsics: Feledy Botondék jó szakmai munkát végeztek, ezért is kértük fel őket",
+      "summary": "A volt miniszter szerint Feledy nem pártpolitikai anyagokat, hanem elemzéseket készített, és a kirúgása a Tiszás túlkapások példája. The post Navracsics: Feledy Botondék jó szakmai munkát végeztek, ezért is kértük fel őket first appeared on 24.hu .",
+      "date": "2026-11-03T20:44:40.000Z",
+      "url": "https://24.hu/belfold/2026/11/03/navracsics-reakcio-feledy-botond/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "navracsics tibor",
+        "feledy botond",
+        "pécs"
+      ],
+      "author": "Kerner Zsolt",
+      "theme": "politika",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-1118120486-e1793738657196-1024x575.jpg",
+      "imageAlt": "Navracsics: Feledy Botondék jó szakmai munkát végeztek, ezért is kértük fel őket",
+      "addedAt": "2026-11-03T23:17:23.617Z"
+    },
     {
       "slug": "budimpesta-2026-11-03-hvg-penzmosas-gyanujaval-letartoztattak-a-szerb-8fae94",
       "title": "Pénzmosás gyanújával letartóztatták a szerb meteorológiai intézet igazgatóját",
