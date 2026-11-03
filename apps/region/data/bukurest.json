@@ -4,19 +4,20 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-11-01T23:42:22.793Z",
+  "updatedAt": "2026-11-03T17:21:41.286Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
-      "url": "https://www.agerpres.ro/rss/",
-      "ok": true,
-      "fetched": 20,
+      "url": "https://www.agerpres.ro/rss",
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.agerpres.ro/rss: This operation was aborted"
+        "https://www.agerpres.ro/rss: HTTP 520",
+        "https://www.agerpres.ro/rss/: This operation was aborted"
       ],
-      "checkedAt": "2026-11-01T23:42:16.165Z"
+      "checkedAt": "2026-11-03T17:21:34.678Z"
     },
     {
       "id": "hotnews",
@@ -26,7 +27,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-01T23:42:16.357Z"
+      "checkedAt": "2026-11-03T17:21:34.897Z"
     },
     {
       "id": "zf",
@@ -36,7 +37,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-01T23:42:18.079Z"
+      "checkedAt": "2026-11-03T17:21:36.960Z"
     },
     {
       "id": "profit",
@@ -46,17 +47,17 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-01T23:42:18.443Z"
+      "checkedAt": "2026-11-03T17:21:37.170Z"
     },
     {
       "id": "digi24",
       "name": "Digi24",
       "url": "https://www.digi24.ro/rss",
       "ok": true,
-      "fetched": 163,
+      "fetched": 229,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-01T23:42:20.960Z"
+      "checkedAt": "2026-11-03T17:21:39.637Z"
     },
     {
       "id": "g4media",
@@ -66,7 +67,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-01T23:42:21.964Z"
+      "checkedAt": "2026-11-03T17:21:40.689Z"
     },
     {
       "id": "newsro",
@@ -76,10 +77,574 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-01T23:42:22.792Z"
+      "checkedAt": "2026-11-03T17:21:41.284Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-11-03-g4media-ministrul-florin-manole-psd-cred-ca-sunt-6bb615",
+      "title": "Ministrul Florin Manole (PSD): Cred că sunt destul de multe argumente în favoarea creșterii pensiilor cu 7,3%",
+      "summary": "Ministrul Muncii, Florin Manole (PSD), a declarat, într-un interviu pentru Libertatea, că sunt destul de multe argumente în favoarea creșterii pensiilor cu 7,3%, dar că e normal ca premierul și ministrul de finanțe să fie atenți la respectarea țintei de deficit și a încadrării României în acordurile pe care le avem. „Ținta mea și ținta Partidului […] © G4Media.ro .",
+      "date": "2026-11-03T17:19:34.000Z",
+      "url": "https://www.g4media.ro/ministrul-florin-manole-psd-cred-ca-sunt-destul-de-multe-argumente-in-favoarea-cresterii-pensiilor-cu-73.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "cresterea pensiilor",
+        "florin manole"
+      ],
+      "author": "Ioana Milonean",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro//wp-content/uploads/2023/07/FB1A5535.jpg",
+      "imageAlt": "Ministrul Florin Manole (PSD): Cred că sunt destul de multe argumente în favoarea creșterii pensiilor cu 7,3%",
+      "addedAt": "2026-11-03T17:21:40.689Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-digi24-zelenski-peste-50-de-persoane-s-ar-putea-2e87db",
+      "title": "Zelenski: Peste 50 de persoane s-ar putea afla sub dărâmături, după atacul de la Komîşuvaha. Bilanțul a crescut la 33 de morţi",
+      "summary": "Peste 50 de persoane s-ar putea afla în continuare sub dărâmături, la o zi după un atac rus soldat cu 33 de morţi la Komîşuvaha, în regiunea Zaporojie, potrivit unui nou bilanţ, anunţă marţi, la Berlin, preşedintele ucrainean Volodimir Zelenski.",
+      "date": "2026-11-03T17:19:04.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/zelenski-peste-50-de-persoane-s-ar-putea-afla-sub-daramaturi-dupa-atacul-de-la-komisuvaha-bilantul-a-crescut-la-33-de-morti-4020287",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjAzJTJGMzA0MzcxMl8zMDQz/NzEyX3Njb2FsYS11Y3JhaW5hLmpwZyZo/YXNoPTFjMDY4OGU3NDI5OGEwYWU1NTI2Nzc4NjhlYzhhYzE4.jpg",
+      "imageAlt": "Zelenski: Peste 50 de persoane s-ar putea afla sub dărâmături, după atacul de la Komîşuvaha. Bilanțul a crescut la 33 de morţi",
+      "addedAt": "2026-11-03T17:21:39.637Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-g4media-razboi-hibrid-la-frontiera-nato-polonia-a-f27f26",
+      "title": "Război hibrid la frontiera NATO / Polonia a mobilizat trupe după alerte privind posibile sabotaje la granița cu Rusia / Tusk: ”Am reușit să prevenim orice tentativă de provocare”",
+      "summary": "Premierul polonez Donald Tusk a transmis marți că a fost alertat la scurt timp după miezul nopții cu privire la activități suspecte în nordul țării, la granița cu enclava rusă Kaliningrad, relatează Mediafax. Potrivit șefului guvernului Poloniei, serviciile de informații poloneze și aliate avertizau de câteva săptămâni că ar putea avea loc „acte de diversiune […] © G4Media.ro .",
+      "date": "2026-11-03T17:17:13.000Z",
+      "url": "https://www.g4media.ro/razboi-hibrid-la-frontiera-nato-polonia-a-mobilizat-trupe-dupa-alerte-privind-posibile-sabotaje-la-granita-cu-rusia-tusk-am-reusit-sa-prevenim-orice-tentativa-de-provocare.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Analize",
+        "polonia kaliningrad",
+        "razboi hibrid in polonia",
+        "razboi la granita nato"
+      ],
+      "author": "Augustin Majearu",
+      "theme": "sigurnost",
+      "image": "https://www.g4media.ro//wp-content/uploads/2022/06/kaliningrad-lituania-rusia.jpg",
+      "imageAlt": "Război hibrid la frontiera NATO / Polonia a mobilizat trupe după alerte privind posibile sabotaje la granița cu Rusia / Tusk: ”Am reușit să prevenim orice tentativă de provocare”",
+      "addedAt": "2026-11-03T17:21:40.689Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-newsro-luca-niculescu-la-celebrarea-a-103-ani-de-b66e8b",
+      "title": "Luca Niculescu, la celebrarea a 103 ani de la proclamarea Republicii Turcia: Dincolo de cooperarea strategică şi economică, relaţia dintre România şi Turcia îşi găseşte adevărata…",
+      "summary": "Premierul Luca Niculescu a declarat, marţi, la celebrarea a 103 ani de la proclamarea Republicii Turcia, că dincolo de cooperarea strategică şi economică, relaţia dintre România şi Turcia îşi găseşte adevărata forţă în legăturile dintre oameni, cultivate de-a lungul generaţiilor, el arătând că comunitatea românească din Turcia, respectiv cele turcă şi tătară din România sunt o expresie vie a acestor legături şi exemple de convieţuire şi integrare armonioasă.",
+      "date": "2026-11-03T17:14:55.000Z",
+      "url": "https://www.news.ro/politic-intern/luca-niculescu-celebrarea-103-ani-proclamarea-republicii-turcia-dincolo-cooperarea-strategica-economica-relatia-dintre-romania-turcia-isi-gaseste-adevarata-forta-legaturile-dintre-oameni-cultivate-1922401403552026111922932785",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Luca Niculescu, la celebrarea a 103 ani de la proclamarea Republicii Turcia: Dincolo de cooperarea strategică şi economică, relaţia dintre România şi Turcia îşi găseşte adevărata f",
+      "addedAt": "2026-11-03T17:21:41.285Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-hotnews-serbia-il-aresteaza-pe-proprietarul-unei-b44b0e",
+      "title": "Serbia îl arestează pe proprietarul unei bănci , acuzat că a golit seiful băncii după înfrângerea în alegeri a lui Aleksandar Vučić",
+      "summary": "Autoritățile sârbe l-au reținut pe proprietarul Alta Bank și l-au acuzat că a golit depozitele băncii după recenta înfrângere electorală a lui Aleksandar Vučić. Davor Macura și alți doi funcționari ai băncii au fost arestați în urma unor zile de percheziții la sediul băncii și la domiciliul lui Macura, a anunțat poliția sârbă, potrivit Financial …",
+      "date": "2026-11-03T17:14:50.000Z",
+      "url": "https://hotnews.ro/serbia-il-aresteaza-pe-proprietarul-unei-banci-acuzat-ca-a-golit-seiful-bancii-dupa-infrangerea-in-alegeri-a-lui-aleksandar-vucic-2393850",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Economie"
+      ],
+      "author": "Dan Popa",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Serbia îl arestează pe proprietarul unei bănci , acuzat că a golit seiful băncii după înfrângerea în alegeri a lui Aleksandar Vučić",
+      "addedAt": "2026-11-03T17:21:34.897Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-g4media-circulatia-trenurilor-intre-drobeta-turnu-5bf5d5",
+      "title": "Circulația trenurilor între Drobeta Turnu Severin și Caransebeș se închide pentru cinci ani / Trenurile care asigură legături între sudul și vestul țării vor circula pe rute…",
+      "summary": "Circulația feroviară pe cei aproximativ 112 kilometri dintre Drobeta Turnu Severin și Caransebeș, pe Magistrala 100, urmează să fie suspendată începând cu 17 februarie 2027, pentru o perioadă estimată de cinci ani, relatează Agenția de presă Rador, care citează Radio Reșița. Măsura este necesară pentru lucrările ample de modernizare a infrastructurii feroviare, parte a proiectului […] © G4Media.ro .",
+      "date": "2026-11-03T17:11:50.000Z",
+      "url": "https://www.g4media.ro/circulatia-trenurilor-intre-drobeta-turnu-severin-si-caransebes-se-inchide-pentru-cinci-ani-trenurile-care-asigura-legaturi-intre-sudul-si-vestul-tarii-vor-circula-pe-rute-alternative-e-afectata-i.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "circulatia trenurilor",
+        "se inchide circulatia intre Drobeta și Caransebeș"
+      ],
+      "author": "Augustin Majearu",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro//wp-content/uploads/2026/03/locomotiva-cfr-stricata.jpg",
+      "imageAlt": "Circulația trenurilor între Drobeta Turnu Severin și Caransebeș se închide pentru cinci ani / Trenurile care asigură legături între sudul și vestul țării vor circula pe rute altern",
+      "addedAt": "2026-11-03T17:21:40.689Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-digi24-rasturnare-de-situatie-pentru-wiz-khalifa-ad1aca",
+      "title": "Răsturnare de situație pentru Wiz Khalifa. Rapperul ar putea scăpa de închisoare după o decizie a Curții de Apel București",
+      "summary": "Rapperul american Wiz Khalifa, condamnat la nouă luni de închisoare cu executare după ce a fumat cannabis pe scena festivalului Beach, Please! din Costinești, ar putea scăpa de pedeapsă. Curtea de Apel București i-a admis marți contestația în anulare, a desființat hotărârea de condamnare și a anulat mandatul de executare a pedepsei. Procesul continuă însă, urmând ca apelul procurorilor DIICOT să fie rejudecat pe 12 noiembrie.",
+      "date": "2026-11-03T17:09:16.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/justitie/rasturnare-de-situatie-pentru-wiz-khalifa-rapperul-ar-putea-scapa-de-inchisoare-dupa-o-decizie-a-curtii-de-apel-bucuresti-4020285",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjAzJTJGMzA0MzYxN18zMDQz/NjE3X1dpei1LaGFsaWZhLmpwZyZoYXNo/PTQ3YTE0MTMyMjYyODMzNWVmYzRhMWE3YzJlZDczNGRm.jpg",
+      "imageAlt": "Răsturnare de situație pentru Wiz Khalifa. Rapperul ar putea scăpa de închisoare după o decizie a Curții de Apel București",
+      "addedAt": "2026-11-03T17:21:39.637Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-digi24-fiul-lui-tudorel-toader-acuzat-de-viol-a-5f21d2",
+      "title": "Fiul lui Tudorel Toader, acuzat de viol, a fost eliberat din închisoare și plasat în arest la domiciliu",
+      "summary": "Alexandru Toader, fiul fostului ministru al Justiţiei Tudorel Toader, a fost plasat în arest la domiciliu pentru 19 zile. Înalta Curte de Casaţie şi Justiţie i-a admis contestaţia la măsura arestului preventiv.",
+      "date": "2026-11-03T16:58:34.000Z",
+      "url": "https://www.digi24.ro/stiri/fiul-lui-tudorel-toader-acuzat-de-viol-a-fost-eliberat-din-inchisoare-si-plasat-in-arest-la-domiciliu-4020267",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjI3JTJGMzAzNDA5MV8zMDM0/MDkxX2FsZXhhbmRydS10b2FkZXItc2kt/dHVkb3JlbC10b2FkZXItZm90by1mYi5q/cGcmaGFzaD02MTY1OGZiMDVjMTgxNGY3NDdjMTMzYTYyOGQ2MWIzNQ==.jpg",
+      "imageAlt": "Fiul lui Tudorel Toader, acuzat de viol, a fost eliberat din închisoare și plasat în arest la domiciliu",
+      "addedAt": "2026-11-03T17:21:39.638Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-newsro-statul-new-york-inregistreaza-primul-deces-43fffc",
+      "title": "Statul New York înregistrează primul deces din ultimii 30 de ani, al unui copil, din cauza rujeolei, la o lună după declararea stării de urgenţă, din cauza creşterii contaminărilor",
+      "summary": "Un copil a murit în statul New York după ce s-a îmbolnăvit de rujeolă, - primul caz mortal din ultimii 30 de ani - în această regiune a Statelor Unite, au anunţat autorităţile, la o lună după declararea stării de urgenţă în urma creşterii numărului contaminărilor, relatează AFP.",
+      "date": "2026-11-03T16:58:00.000Z",
+      "url": "https://www.news.ro/externe/statul-new-york-inregistreaza-primul-deces-din-ultimii-30-de-ani-al-unui-copil-din-cauza-rujeolei-la-o-luna-dupa-declararea-starii-de-urgenta-din-cauza-cresterii-contaminarilor-1922405803002026111822932704",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Statul New York înregistrează primul deces din ultimii 30 de ani, al unui copil, din cauza rujeolei, la o lună după declararea stării de urgenţă, din cauza creşterii contaminărilor",
+      "addedAt": "2026-11-03T17:21:41.285Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-hotnews-condamnat-la-inchisoare-in-romania-rapperul-7cb298",
+      "title": "Condamnat la închisoare în România, rapperul Wiz Khalifa ar putea scăpa de pedeapsă. Curtea de Apel Bucureşti i-a admis contestaţia în anulare",
+      "summary": "Rapperul Wiz Khalifa, condamnat la închisoare cu executare pentru că a fumat o ţigară cu cannabis pe scena festivalului „Beach, Please!” din Costineşti, ar putea scăpa de pedeapsă, după ce Curtea de Apel Bucureşti, unde a fost strămutat dosarul la cererea sa, i-a admis contestaţia în anulare. La mijlocul lunii septembrie, rapperul american Thomaz Cameron …",
+      "date": "2026-11-03T16:55:00.000Z",
+      "url": "https://hotnews.ro/condamnat-la-inchisoare-in-romania-rapperul-american-wiz-khalifa-ar-putea-scapa-de-pedeapsa-curtea-de-apel-bucuresti-i-a-admis-contestatia-in-anulare-2393828",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Viorela Marin",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Condamnat la închisoare în România, rapperul Wiz Khalifa ar putea scăpa de pedeapsă. Curtea de Apel Bucureşti i-a admis contestaţia în anulare",
+      "addedAt": "2026-11-03T17:21:34.897Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-digi24-un-echipaj-de-politie-va-patrula-permanent-b3c66c",
+      "title": "Un echipaj de Poliţie va patrula permanent pe Drumul Expres 12, unde în acest an cinci persoane au murit în accidente",
+      "summary": "Un echipaj de poliţişti rutieri va patrula permanent pe Drumul Expres (DEx 12) Craiova - Piteşti, unde în acest an s-au produs 10 accidente rutiere în urma cărora cinci persoane au decedat, măsura dispusă de conducerea Inspectoratului de Poliţie Judeţean (IPJ) Olt urmărind reducerea numărului de accidente de circulaţie, a declarat marţi, într-o conferinţă de presă, şeful Serviciului Rutier Olt, Cristian Tiţa.",
+      "date": "2026-11-03T16:53:24.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/un-echipaj-de-politie-va-patrula-permanent-pe-drumul-expres-12-unde-in-acest-an-cinci-persoane-au-murit-in-accidente-4020263",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjAzJTJGMzA0MzM2NV8zMDQz/MzY1X3BvbGl0aWEtYm13LTctaW5xdWFt/LW9jdGF2LWdhbmVhLnBuZyZoYXNoPTQ4/MDRjOGZhN2NlZTA1ZGMyOWJlZWM0MjE0MWQ0MzUx.png",
+      "imageAlt": "Un echipaj de Poliţie va patrula permanent pe Drumul Expres 12, unde în acest an cinci persoane au murit în accidente",
+      "addedAt": "2026-11-03T17:21:39.638Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-hotnews-trump-isi-face-bilantul-la-jumatatea-d9cd9c",
+      "title": "Trump își face bilanțul la jumătatea mandatului. „Acum doi ani ne aflam într-o situație catastrofală”",
+      "summary": "Preşedintele american Donald Trump şi-a apărat bilanţul, marţi, într-un interviu acordat Fox News, la doar câteva ore după deschiderea primelor secţii de votare în Statele Unite în alegeri cruciale pentru viitorul mandatului său, relatează AFP, preluată de Agerpres. El a făcut apel la alegători în timpul unei convorbiri telefonice „să păstreze măreţia Americii”. „Suntem grozavi …",
+      "date": "2026-11-03T16:52:04.000Z",
+      "url": "https://hotnews.ro/trump-isi-face-bilantul-la-jumatatea-mandatului-acum-doi-ani-ne-aflam-intr-o-situatie-catastrofala-2393835",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Adrian Ilie",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Trump își face bilanțul la jumătatea mandatului. „Acum doi ani ne aflam într-o situație catastrofală”",
+      "addedAt": "2026-11-03T17:21:34.898Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-newsro-ministerul-justitiei-autoritatile-chineze-65179d",
+      "title": "Ministerul Justiţiei: Autorităţile chineze au precizat repetat că finalizarea procedurii de transferare în România a Alinei Apostol e condiţionată de achitarea despăgubirilor…",
+      "summary": "Ministerul Justiţiei a transmis, marţi, referitor la cazul Alinei Apostol, care execută în China o pedeapsă decisă de instanţele din această ţară, că autorităţile chineze au precizat în mod repetat că finalizarea procedurii de transferare în România a femeii este condiţionată de achitarea despăgubirilor restante către victimele infracţiunii. Reprezentanţii MJ au precizat că ministerul nu are un temei legal care să îi permită achitarea obligaţiilor financiare, dar, având în vedere efortul financiar considerabil pe care îl presupune achitarea sumelor restante, au discutat cu familia femeii condamnate pentru a găsi modalităţi alternative de plată, astfel încât să fie îndeplinite condiţiile…",
+      "date": "2026-11-03T16:50:45.000Z",
+      "url": "https://www.news.ro/justitie/ministerul-justitiei-autoritatile-chineze-au-precizat-repetat-finalizarea-procedurii-transferare-romania-alinei-apostol-e-conditionata-achitarea-despagubirilor-restante-mj-temei-legal-ii-permita-1922405003452026111822932564",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Ministerul Justiţiei: Autorităţile chineze au precizat repetat că finalizarea procedurii de transferare în România a Alinei Apostol e condiţionată de achitarea despăgubirilor resta",
+      "addedAt": "2026-11-03T17:21:41.285Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-digi24-federatia-sanitas-ii-cere-lui-manole-0d3d2c",
+      "title": "Federatia Sanitas îi cere lui Manole soluţii pentru creşterea veniturilor angajaţilor din sănătate şi asistenţă socială în 2027",
+      "summary": "Federatia Sanitas îi solicită ministrului Muncii, Florin Manole, găsirea unor soluţii pentru creşterea veniturilor angajaţilor din Sănătate şi Asistenţă socială în 2027 şi „negocieri reale” pentru o nouă lege a salarizării, dar anularea restricţiilor impuse în timpul Guvernului Bolojan. Cele două sisteme au nevoie de personal suficient, de finanţare adecvată şi de condiţii care să permită furnizarea unor servicii publice de calitate, spun sindicaliștii.",
+      "date": "2026-11-03T16:50:17.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/sanatate/federatia-sanitas-ii-cere-lui-manole-solutii-pentru-cresterea-veniturilor-angajatilor-din-sanatate-si-asistenta-sociala-in-2027-4020265",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjAzJTJGMzA0MzQwNl8zMDQz/NDA2X21hbm9sZS1zYW5pdGFzLmpwZyZo/YXNoPWFjOWMzNWY4NjEyOTg5MmUxODFlNTdlNDY5YWNlNDE3.jpg",
+      "imageAlt": "Federatia Sanitas îi cere lui Manole soluţii pentru creşterea veniturilor angajaţilor din sănătate şi asistenţă socială în 2027",
+      "addedAt": "2026-11-03T17:21:39.638Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-newsro-mirabela-gradinaru-despre-viitoarea-clinica-f5dec6",
+      "title": "Mirabela Grădinaru, despre viitoarea Clinică Universitară Integrată de Diabet, Nutriţie şi Boli Metabolice pentru Copii din România: Este o investiţie în şansa copiilor de a…",
+      "summary": "Mirabela Grădinaru, partenera preşedintelui Nicuşor Dan, a participat marţi la lansarea publică a campaniei pentru construirea clinicii Universitare Integrată de Diabet, Nutriţie şi Boli Metabolice pentru Copii din România, un proiect iniţiat de Organizaţia Salvaţi Copiii România, în parteneriat cu Spitalul Clinic CF2 şi Universitatea de Medicină şi Farmacie „Carol Davila”, ea afirmând că această clinică este mai mult decât o investiţie într-un spaţiu medical, este o investiţie în şansa copiilor de a beneficia de îngrijire specializată, coordonată şi adaptată nevoilor lor.",
+      "date": "2026-11-03T16:48:02.000Z",
+      "url": "https://www.news.ro/social/mirabela-gradinaru-viitoarea-clinica-universitara-integrata-diabet-nutritie-boli-metabolice-copii-romania-investitie-sansa-copiilor-beneficia-ingrijire-specializata-coordonata-adaptata-nevoilor-1922404803022026111822932686",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Mirabela Grădinaru, despre viitoarea Clinică Universitară Integrată de Diabet, Nutriţie şi Boli Metabolice pentru Copii din România: Este o investiţie în şansa copiilor de a benefi",
+      "addedAt": "2026-11-03T17:21:41.286Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-profit-lege-dupa-taxiuri-si-motocicletele-si-6b6a36",
+      "title": "LEGE După taxiuri, și motocicletele și mopedele vor avea dreptul de a circula pe benzile speciale pentru autobuze",
+      "summary": "Conducătorii de motociclete și mopede vor avea dreptul să circule pe benzile dedicate circulației mijloacelor de transport în comun, potrivit unui proiect legislativ promulgat acum de șeful statului. După publicarea legii, Guvernul are la dispoziție 60 de zile pentru adoptarea normelor de aplicare a măsurii.",
+      "date": "2026-11-03T16:43:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/auto-transporturi/lege-dupa-taxiuri-si-motocicletele-si-mopedele-vor-avea-dreptul-de-a-circula-pe-benzile-speciale-pentru-autobuze-22930724?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Auto/Transporturi"
+      ],
+      "author": "",
+      "theme": "sport",
+      "image": "https://i0.1616.ro/media/2/2621/33217/22930724/1/moped.jpg?width=800",
+      "imageAlt": "LEGE După taxiuri, și motocicletele și mopedele vor avea dreptul de a circula pe benzile speciale pentru autobuze",
+      "addedAt": "2026-11-03T17:21:37.171Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-zf-in-timp-ce-actiunile-din-tehnologie-se-4f6869",
+      "title": "În timp ce acţiunile din tehnologie se prăbuşesc, aurul atinge minimul ultimului an, iar argintul scade sub 50 de dolari pentru prima dată în 11 luni. Ce spun analiştii?",
+      "summary": "",
+      "date": "2026-11-03T16:42:21.000Z",
+      "url": "https://www.zf.ro/burse-fonduri-mutuale/in-timp-ce-actiunile-din-tehnologie-se-prabusesc-aurul-atinge-minimul-ultimului-an-iar-argintul-scade-sub-50-de-dolari-pentru-prima-data-in-11-luni-ce-spun-analistii-23273660",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Burse - Fonduri mutuale"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/22467/23273660/1/01020.jpg?width=700",
+      "imageAlt": "În timp ce acţiunile din tehnologie se prăbuşesc, aurul atinge minimul ultimului an, iar argintul scade sub 50 de dolari pentru prima dată în 11 luni. Ce spun analiştii?",
+      "addedAt": "2026-11-03T17:21:36.961Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-newsro-schi-alpin-dubla-campioana-olimpica-2b3347",
+      "title": "Schi alpin: Dubla campioană olimpică Michelle Gisin şi-a anunţat retragerea",
+      "summary": "Dubla campioană olimpică Michele Gisin şi-a anunţat retragerea din schiul alpin, la 11 luni după un accident grav suferit în timpul unui antrenament de coborâre.",
+      "date": "2026-11-03T16:41:25.000Z",
+      "url": "https://www.news.ro/sport/schi-alpin-dubla-campioana-olimpica-michelle-gisin-si-a-anuntat-retragerea-1922404103252026111822932626",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Schi alpin: Dubla campioană olimpică Michelle Gisin şi-a anunţat retragerea",
+      "addedAt": "2026-11-03T17:21:41.286Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-newsro-ministrul-sanatatii-am-suplimentat-bugetele-823fce",
+      "title": "Ministrul Sănătăţii: Am suplimentat bugetele pentru cele mai critice zone din sănătate cu încă 230 de milioane de lei / Situaţia de criză din Unităţile de Primiri Urgenţe (UPU)…",
+      "summary": "Ministrul Sănătăţii, Alexandru Rogobete, anunţă că a suplimentat bugetele pentru cele mai critice zone din sănătate cu încă 230 de milioane de lei. El precizează că situaţia de criză din Unităţile de Primiri Urgenţe (UPU) va fi deblocată prin suplimentarea bugetelor cu încă 130 de milioane de lei, faţă de cele 150 de milioane de lei alocate acum două săptămâni.",
+      "date": "2026-11-03T16:35:06.000Z",
+      "url": "https://www.news.ro/social/ministrul-sanatatii-suplimentat-bugetele-cele-critice-zone-sanatate-230-milioane-lei-situatia-criza-unitatile-primiri-urgente-upu-deblocata-suplimentarea-bugetelor-130-milioane-lei-1922403503062026111822932648",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Ministrul Sănătăţii: Am suplimentat bugetele pentru cele mai critice zone din sănătate cu încă 230 de milioane de lei / Situaţia de criză din Unităţile de Primiri Urgenţe (UPU), de",
+      "addedAt": "2026-11-03T17:21:41.286Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-digi24-friedrich-merz-spune-ca-rusia-nu-pare-7bd594",
+      "title": "Friedrich Merz spune că Rusia nu pare dispusă să se angajeze în negocieri de pace serioase cu Ucraina",
+      "summary": "Cancelarul german Friedrich Merz a declarat marţi că Moscova nu pare încă dispusă să se angajeze în negocieri de pace serioase cu Ucraina, înaintea unei noi runde de discuţii între Rusia, Ucraina şi Statele Unite care va avea loc pe 10 şi 11 noiembrie la Abu Dhabi, relatează AFP şi Reuters.",
+      "date": "2026-11-03T16:33:47.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/friedrich-merz-spune-ca-rusia-nu-pare-dispusa-sa-se-angajeze-in-negocieri-de-pace-serioase-cu-ucraina-4020243",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwNCUyRjE1JTJGMjY4NDgyOV8yNjg0/ODI5X2ZyaWVkcmljaC1tZXJ6LXByb2Zp/bWVkaWEtMS5qcGcmaGFzaD1jOTViYmNm/ZmU2Nzg3NWE2MTcwYTRiOTM2YmUyZmVkZQ==.jpg",
+      "imageAlt": "Friedrich Merz spune că Rusia nu pare dispusă să se angajeze în negocieri de pace serioase cu Ucraina",
+      "addedAt": "2026-11-03T17:21:39.638Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-hotnews-rasturnare-de-situatie-in-cazul-toader-a1eace",
+      "title": "Răsturnare de situație în cazul Toader. Decizia luată de Înalta Curte de Casație și Justiție",
+      "summary": "Înalta Curte de Casaţie şi Justiţie a judecat marţi contestaţia lui Alexandru Toader, fiul fostului ministru al Justiţiei Tudorel Toader, la decizia judecătorilor de arestare preventivă în dosarul în care este acuzat de viol și agresiune sexuală. ÎCCJ a decis ca Alexandru Toader să fie transferat în arest la domiciliu. UPDATE 18.31: Înalta Curte de Casație …",
+      "date": "2026-11-03T16:32:00.000Z",
+      "url": "https://hotnews.ro/inalta-curte-decide-astazi-daca-alexandru-toader-ramane-sau-nu-in-arest-preventiv-2393084",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Ramona Ciobanu",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Răsturnare de situație în cazul Toader. Decizia luată de Înalta Curte de Casație și Justiție",
+      "addedAt": "2026-11-03T17:21:34.898Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-zf-sesiune-rosie-la-bursa-de-valori-indicele-7c63e1",
+      "title": "Sesiune roşie la Bursa de Valori: Indicele BET coboară cu 0,8%, iar MedLife şi Electrica închid ziua cu cele mai mari scăderi. Tranzacţie specială de 45 mil. lei cu acţiuni…",
+      "summary": "",
+      "date": "2026-11-03T16:28:25.000Z",
+      "url": "https://www.zf.ro/burse-fonduri-mutuale/sesiune-rosie-la-bursa-de-valori-indicele-bet-coboara-cu-0-8-iar-medlife-si-electrica-inchid-ziua-cu-cele-mai-mari-scaderi-tranzactie-speciala-de-45-mil-lei-cu-actiuni-independenta-sibiu-23273651",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Burse - Fonduri mutuale"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10366/23273651/2/rosiatic.jpg?width=700",
+      "imageAlt": "Sesiune roşie la Bursa de Valori: Indicele BET coboară cu 0,8%, iar MedLife şi Electrica închid ziua cu cele mai mari scăderi. Tranzacţie specială de 45 mil. lei cu acţiuni Indepen",
+      "addedAt": "2026-11-03T17:21:36.961Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-hotnews-alegeri-sua-un-profesor-roman-din-america-f073c3",
+      "title": "Alegeri SUA. Un profesor român din America, despre „o lecție de învățat” pentru judecătorii români: când îi protejează pe cetățeni, judecătorii sunt puternici. Altfel, nu",
+      "summary": "Reacția unor magistrați din SUA la adresa administrației Trump arată că există bariere protectoare pe care puterea judecătorească le poate construi pentru a-i proteja pe cetățeni când conducerea statului abuzează, iar aceasta poate fi o lecție pentru România, explică într-un interviu pentru publicul HotNews, cu ocazia alegerilor de marți din SUA, Aurelian Crăiuțu, profesor de …",
+      "date": "2026-11-03T16:22:55.000Z",
+      "url": "https://hotnews.ro/alegeri-sua-un-profesor-roman-din-america-despre-o-lectie-de-invatat-pentru-judecatorii-romani-cand-ii-protejeaza-pe-cetateni-judecatorii-sunt-puternici-altfel-nu-2393473",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Mona Hera",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Alegeri SUA. Un profesor român din America, despre „o lecție de învățat” pentru judecătorii români: când îi protejează pe cetățeni, judecătorii sunt puternici. Altfel, nu",
+      "addedAt": "2026-11-03T17:21:34.899Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-g4media-breaking-fiul-lui-tudorel-toader-scapa-de-0a854a",
+      "title": "BREAKING | Fiul lui Tudorel Toader scapă de arest și e plasat în arest la domiciliu în dosarul de viol și agresiune sexuală. Decizia Înaltei Curți e definitivă",
+      "summary": "Alexandru Toader, fiul fostului judecător CCR Tudorel Toader, a scăpat marți de arest și a fost plasat de Înalta Curte de Casație și Justiție în arest la domiciliu în dosarul în care procurorii îl acuză de viol și agresiune sexuală. Decizia curții conduse de Lia Savonea e definitivă. Anterior, Curtea de Apel Iași hotărâse ca […] © G4Media.ro .",
+      "date": "2026-11-03T16:22:13.000Z",
+      "url": "https://www.g4media.ro/breaking-fiul-lui-tudorel-toader-scapa-de-arest-si-e-plasat-in-arest-la-domiciliu-in-dosarul-de-viol-si-agresiune-sexuala-decizia-e-definitiva.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Anchete"
+      ],
+      "author": "Alin Ionescu",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro//wp-content/uploads/2025/11/Alexandru-Toader-fiu-Tudorel-Toader.jpg",
+      "imageAlt": "BREAKING | Fiul lui Tudorel Toader scapă de arest și e plasat în arest la domiciliu în dosarul de viol și agresiune sexuală. Decizia Înaltei Curți e definitivă",
+      "addedAt": "2026-11-03T17:21:40.689Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-zf-zf-deschiderea-de-astazi-cum-va-merge-bursa-e9c4fb",
+      "title": "ZF DESCHIDEREA DE ASTĂZI. Cum va merge bursa. Urmăriţi o discuţie miercuri, 4 noiembrie 2026, ora 09.30 cu Liviu Popescu şi Eduard Ivanovici, jurnalişti Ziarul Financiar",
+      "summary": "",
+      "date": "2026-11-03T16:22:10.000Z",
+      "url": "https://www.zf.ro/burse-fonduri-mutuale/zf-deschiderea-de-astazi-cum-va-merge-bursa-urmariti-o-discutie-miercuri-4-noiembrie-2026-ora-09-30-cu-liviu-popescu-si-eduard-ivanovici-jurnalisti-ziarul-financiar-23273648",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Burse - Fonduri mutuale"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/22467/23273648/167/promo-bursa-4-noiembrie.png?width=700",
+      "imageAlt": "ZF DESCHIDEREA DE ASTĂZI. Cum va merge bursa. Urmăriţi o discuţie miercuri, 4 noiembrie 2026, ora 09.30 cu Liviu Popescu şi Eduard Ivanovici, jurnalişti Ziarul Financiar",
+      "addedAt": "2026-11-03T17:21:36.961Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-profit-atacurile-asupra-navelor-din-marea-neagra-aaa468",
+      "title": "Atacurile asupra navelor din Marea Neagră: Transporatorii de containere introduc taxe suplimentare pentru România, Bulgaria și Georgia",
+      "summary": "Transportatorul maritim japonez de containere Ocean Network Express (ONE) introduce suprataxe pentru riscuri de război pentru transporturile care implică România, Bulgaria și Georgia, în urma intensificării atacurilor asupra navelor din Marea Neagră.",
+      "date": "2026-11-03T16:22:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/auto-transporturi/atacurile-asupra-navelor-din-marea-neagra-transporatorii-de-containere-introduc-taxe-suplimentare-pentru-romania-bulgaria-si-georgia-22931763?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Auto/Transporturi"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://i0.1616.ro/media/2/2621/33217/22931763/1/one-nava.jpg?width=800",
+      "imageAlt": "Atacurile asupra navelor din Marea Neagră: Transporatorii de containere introduc taxe suplimentare pentru România, Bulgaria și Georgia",
+      "addedAt": "2026-11-03T17:21:37.171Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-zf-raiffeisen-bank-romania-a-incheiat-primele-635f1f",
+      "title": "Raiffeisen Bank România a încheiat primele nouă luni din an cu 35% mai mulţi clienţi şi active de aproape 100 mld. lei, în creştere cu 21% an/an: „Ne consolidăm nu doar ca bancă…",
+      "summary": "",
+      "date": "2026-11-03T16:18:21.000Z",
+      "url": "https://www.zf.ro/burse-fonduri-mutuale/raiffeisen-bank-romania-incheiat-primele-luni-an-35-multi-clienti-active-aproape-100-mld-lei-crestere-21-an-an-ne-consolidam-banca-ci-rolul-nostru-consultant-financiar-23273646",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Burse - Fonduri mutuale"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10366/23273646/1/raiffeisen-bank-aa.jpg?width=700",
+      "imageAlt": "Raiffeisen Bank România a încheiat primele nouă luni din an cu 35% mai mulţi clienţi şi active de aproape 100 mld. lei, în creştere cu 21% an/an: „Ne consolidăm nu doar ca bancă, c",
+      "addedAt": "2026-11-03T17:21:36.961Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-zf-arctic-stream-integrator-it-listat-pe-bursa-ba0582",
+      "title": "Arctic Stream, integrator IT listat pe bursă, a semnat un contract de aproximativ 5 mil. euro cu un client din zona central guvernamentală pentru o platformă de comunicaţii…",
+      "summary": "",
+      "date": "2026-11-03T16:16:38.000Z",
+      "url": "https://www.zf.ro/burse-fonduri-mutuale/arctic-stream-integrator-it-listat-pe-bursa-a-semnat-un-contract-de-aproximativ-5-mil-euro-cu-un-client-din-zona-central-guvernamentala-pentru-o-platforma-de-comunicatii-securizate-23273644",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Burse - Fonduri mutuale"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/22467/23273644/1/profimedia-0643697920.jpg?width=700",
+      "imageAlt": "Arctic Stream, integrator IT listat pe bursă, a semnat un contract de aproximativ 5 mil. euro cu un client din zona central guvernamentală pentru o platformă de comunicaţii securiz",
+      "addedAt": "2026-11-03T17:21:36.961Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-hotnews-justitia-italiana-redeschide-dupa-50-de-ani-cd1361",
+      "title": "Justiţia italiană redeschide, după 50 de ani, ancheta privind moartea violentă şi misterioasă a lui Pier Paolo Pasolini",
+      "summary": "Justiţia italiană a redeschis ancheta privind asasinarea, în 1975, a scriitorului, regizorului şi jurnalistului Pier Paolo Pasolini, a declarat luni pentru agenția France Presse avocatul care a iniţiat cererea. Stefano Maccioni, care solicită de mai mulţi ani noi investigaţii, a spus pentru AFP că speră ca această redeschidere „să pună capăt acestei poveşti”, scrie News.ro. …",
+      "date": "2026-11-03T16:15:48.000Z",
+      "url": "https://hotnews.ro/justitia-italiana-redeschide-dupa-50-de-ani-ancheta-privind-moartea-violenta-si-misterioasa-a-lui-pier-paolo-pasolini-2393791",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Viorela Marin",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Justiţia italiană redeschide, după 50 de ani, ancheta privind moartea violentă şi misterioasă a lui Pier Paolo Pasolini",
+      "addedAt": "2026-11-03T17:21:34.899Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-g4media-metastaza-psd-ce-urmeaza-c82443",
+      "title": "Metastaza PSD. Ce urmează?",
+      "summary": "PSD a intrat în faza finală a ciclului unui partid politic. Celulele maligne implantate în corpul partidului încă de la transformarea din Partidul Comunist în FSN și apoi PSD au ajuns la metastază. Corupția, aroganța și disprețul față de separația puterilor în stat nu mai pot fi ținute în frâu. Exact ca în Ungaria și […] © G4Media.ro .",
+      "date": "2026-11-03T16:08:15.000Z",
+      "url": "https://www.g4media.ro/metastaza-psd-ce-urmeaza.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Analize"
+      ],
+      "author": "Cristian Pantazi",
+      "theme": "sport",
+      "image": "https://www.g4media.ro//wp-content/uploads/2024/11/PANTAZ_C_0005_INQ_Octav_Ganea-e1732491589441.jpg",
+      "imageAlt": "Metastaza PSD. Ce urmează?",
+      "addedAt": "2026-11-03T17:21:40.690Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-g4media-ministerul-finantelor-inca-o-respingere-a-a516b8",
+      "title": "Ministerul Finanțelor, încă o respingere a narativelor lui Sorin Grindeanu despre ”greaua moștenire”: Raportul privind execuția bugetară pe trimestrul III arată deficit sub…",
+      "summary": "Ministerul Finanțelor a publicat marți Raportul privind execuția bugetară pe trimestrul III 2026, în care arată că deficitul bugetar după nouă luni s-a redus la 3,81% din PIB, față de 5,31% din PIB în perioada similară a anului 2025, iar investițiile publice au crescut cu 15,6 miliarde de lei în perioada iulie – septembrie. Raportul […] © G4Media.ro .",
+      "date": "2026-11-03T16:04:44.000Z",
+      "url": "https://www.g4media.ro/ministerul-finantelor-inca-o-respingere-a-narativelor-lui-sorin-grindeanu-despre-greaua-mostenire-raportul-privind-executia-bugetara-pe-trimestrul-iii-arata-deficit-sub-nivelul-pro.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole"
+      ],
+      "author": "Mihai Roman",
+      "theme": "politika",
+      "image": "https://www.g4media.ro//wp-content/uploads/2024/11/bani-lei-bancnote-cash-numerar-Sursa-foto-Inquam-Photos-Octav-Ganea-4.jpg",
+      "imageAlt": "Ministerul Finanțelor, încă o respingere a narativelor lui Sorin Grindeanu despre ”greaua moștenire”: Raportul privind execuția bugetară pe trimestrul III arată deficit sub nivelul",
+      "addedAt": "2026-11-03T17:21:40.690Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-profit-grafice-diferenta-mare-intre-executie-si-bd64fd",
+      "title": "GRAFICE Diferență mare între execuție și program. Ministerul Finanțelor a programat un deficit de 118 miliarde lei pentru primele nouă luni, dar execuția arată numai 78 miliarde…",
+      "summary": "Ministerul Finanțelor a avut programat să ajungă cu deficitul bugetar la 5,76% din PIB, 118,35 miliarde lei, la finalul lunii septembrie (primele nouă luni din an), dar execuția bugetară arată că deficitul s-a situat pentru primele nouă luni la 3,81% din PIB, 78,3 miliarde lei.",
+      "date": "2026-11-03T16:00:00.000Z",
+      "url": "https://www.profit.ro/taxe-si-consultanta/grafice-diferenta-mare-intre-executie-si-program-ministerul-finantelor-a-programat-un-deficit-de-118-miliarde-lei-pentru-primele-noua-luni-dar-executia-arata-numai-78-miliarde-lei-22930423?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Taxe și Consultanță"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://i0.1616.ro/media/2/2621/33243/22930423/1/pexels-jakubzerdzicki-27459692.jpg?width=800",
+      "imageAlt": "GRAFICE Diferență mare între execuție și program. Ministerul Finanțelor a programat un deficit de 118 miliarde lei pentru primele nouă luni, dar execuția arată numai 78 miliarde le",
+      "addedAt": "2026-11-03T17:21:37.171Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-profit-paypoint-lanseaza-oferta-de-black-friday-7d41c5",
+      "title": "PayPoint lansează oferta de Black Friday pentru comercianți: super pachet cu costuri zero timp de 6 luni",
+      "summary": "Între 6 și 13 noiembrie 2026, comercianții care devin parteneri PayPoint primesc un POS cu care câștigă bani, cont cu card VISA Business atașat, facturare nelimitată cu EasyBill și plăți și încasări nelimitate, cu costuri zero timp de 6 luni. Este un pachet business potrivit oricărei afaceri, fie că este la început de drum, fie că are deja profit.",
+      "date": "2026-11-03T15:40:03.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/paypoint-lanseaza-oferta-de-black-friday-pentru-comercianti-super-pachet-cu-costuri-zero-timp-de-6-luni-22932403?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Povești cu Profit"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33209/22932403/1/pp-blackfriday-banner-1200x800-fara-text.png?width=800",
+      "imageAlt": "PayPoint lansează oferta de Black Friday pentru comercianți: super pachet cu costuri zero timp de 6 luni",
+      "addedAt": "2026-11-03T17:21:37.171Z"
+    },
+    {
+      "slug": "bukurest-2026-11-03-profit-document-stabilirea-din-oficiu-a-cas-si-9abd08",
+      "title": "DOCUMENT Stabilirea din oficiu a CAS si CASS datorate de persoanele fizice - Explicații ANAF",
+      "summary": "Noua procedură privind stabilirea din oficiu a contribuției de asigurări sociale (CAS) și a contribuției de asigurări sociale de sănătate (CASS) datorate de persoanele fizice a fost publicată în Monitorul Oficial.",
+      "date": "2026-11-03T15:25:00.000Z",
+      "url": "https://www.profit.ro/perspective/schimbari-legislative-pentru-firme/document-stabilirea-din-oficiu-a-cas-si-cass-datorate-de-persoanele-fizice-explicatii-anaf-22931913?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Schimbări legislative pentru firme"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/39746/22931913/2/money-7053250-1280.jpg?width=800",
+      "imageAlt": "DOCUMENT Stabilirea din oficiu a CAS si CASS datorate de persoanele fizice - Explicații ANAF",
+      "addedAt": "2026-11-03T17:21:37.171Z"
+    },
     {
       "slug": "bukurest-2026-11-01-agerpres-hochei-steaua-invinsa-acasa-de-csm-galati-21c35f",
       "title": "Hochei: Steaua, învinsă acasă de CSM Galați, în campionat",
