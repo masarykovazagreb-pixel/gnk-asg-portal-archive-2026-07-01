@@ -69,7 +69,10 @@ jobs:
         with:
           # Ne hardkodiraj main: push okidač mora raditi na grani na kojoj je pokrenut.
           ref: ${{ github.ref }}
-          fetch-depth: 0
+          # Fetch only the selected branch's recent history, not every branch/tag.
+          # Updates still use a fresh origin/main CAS/rebase before non-force push.
+          fetch-depth: 100
+          fetch-tags: false
 
       - uses: actions/setup-node@v4
         with:
