@@ -77,9 +77,15 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Provjere mreže (stanje u repozitoriju)
+      # The repository may contain a stale generated output after template
+      # changes. Validate the exact artifact that will be deployed instead
+      # of rejecting the pipeline before its build step runs.
+      - name: Sintaktičke provjere generatora mreže
         shell: bash
-        run: node tests/test-sites-network-v1.mjs
+        run: |
+          set -euo pipefail
+          node --check apps/sites/build.mjs
+          node --check tests/test-sites-network-v1.mjs
 
       - name: Izborni feedovi (neobavezno)
         shell: bash
@@ -90,9 +96,14 @@ jobs:
         shell: bash
         run: node apps/sites/build.mjs
 
-      - name: Provjere mreže (svježi izlaz)
+      - name: Provjere mreže (izgrađeni izlaz, puna usporedba i SEO)
         shell: bash
-        run: node tests/test-sites-network-v1.mjs --no-fresh
+        run: |
+          set -euo pipefail
+          # Strict test rebuilds to a temp folder and checks byte-level
+          # parity plus internal links, structured data, and static assets.
+          node tests/test-sites-network-v1.mjs
+          node tests/test-sites-network-v1.mjs --no-fresh
 
       - uses: actions/upload-artifact@v4
         with:
