@@ -140,13 +140,14 @@ function measure(criterion) {
       // Kao i test-image-proxy-v1: neiskorišten unos (višak) nije kvar — feedovi rotiraju.
       // Ruši samo host kojeg na popisu nema (slika bi tiho nestala).
       const equal = hostsMissing.length === 0;
+      const covered = feedHosts.size - hostsMissing.length;
       return {
-        measured: allow.size,
-        actual: `${allow.size} / ${feedHosts.size}`,
+        measured: covered,
+        actual: `${covered} / ${feedHosts.size}`,
         state: equal ? 'ok' : 'fail',
         note: equal
-          ? { hr: 'popis i feed se podudaraju u cijelosti', en: 'the list and the feed match exactly' }
-          : { hr: `nedostaje: ${hostsMissing.join(', ') || '—'} · višak: ${hostsExtra.join(', ') || '—'}`, en: `missing: ${hostsMissing.join(', ') || '—'} · extra: ${hostsExtra.join(', ') || '—'}` },
+          ? { hr: 'Svi trenutačni izvori slika imaju dopušten host; rezervni hostovi nisu kvar.', en: 'Every current image source host is allowed; unused reserve hosts are not a failure.' }
+          : { hr: `nedostaje: ${hostsMissing.join(', ') || '—'} · rezervni: ${hostsExtra.join(', ') || '—'}`, en: `missing: ${hostsMissing.join(', ') || '—'} · reserved: ${hostsExtra.join(', ') || '—'}` },
       };
     }
     case 'desk-images': {
