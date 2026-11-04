@@ -116,7 +116,7 @@ export async function handleDigitalWorkforce(request,env,ctx,app){
       }catch{}
     }
     const ready=d1&&editorDeskStore;
-    return json(request,{ok:ready,status:ready?'ready':'degraded',checks:{worker:true,assets:Boolean(env.ASSETS),d1Configured,d1,editorDeskStore,storedPackage:stored},version:VERSION,updatedAt:PUBLIC_PACKAGE.updatedAt},ready?200:503);
+    return json(request,{ok:ready,status:ready?'ready':'degraded',checks:{worker:true,assets:Boolean(env.ASSETS),d1Configured,d1,editorDeskStore,storedPackage:stored},version:VERSION,checkedAt:new Date().toISOString(),contentSource:stored?'d1':'embedded-safe-default',healthSemantics:'infrastructure-readiness-only; not evidence of active worker processes or fresh editorial content',updatedAt:PUBLIC_PACKAGE.updatedAt},ready?200:503);
   }
 
   if(path==='/api/public/editor-desk'){
