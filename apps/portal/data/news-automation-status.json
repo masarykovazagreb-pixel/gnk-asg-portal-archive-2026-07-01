@@ -1,7 +1,7 @@
 {
   "ok": true,
   "status": "refreshed",
-  "updated_at": "2026-11-04T19:52:24+01:00",
+  "updated_at": "2026-11-04T21:32:23+01:00",
   "engine": "single_publication_engine_v14_github_actions",
   "cadence": "six times daily at 01:37, 05:37, 09:37, 13:37, 17:37 and 21:37 UTC; watchdog recovery if stale",
   "timezone": "Europe/Zagreb",
@@ -9,11 +9,11 @@
   "max_items_per_source": 6,
   "feeds_configured": 84,
   "feeds_http_ok": 74,
-  "feeds_usable": 50,
-  "feeds_empty": 24,
+  "feeds_usable": 49,
+  "feeds_empty": 25,
   "feeds_failed": 10,
-  "current_cycle_validated_items": 1348,
-  "current_cycle_distinct_sources": 50,
+  "current_cycle_validated_items": 1334,
+  "current_cycle_distinct_sources": 49,
   "source_diversity_floor": 6,
   "public_items_target": 300,
   "public_items_written": 300,
@@ -55,7 +55,7 @@
       "source": "MarketWatch",
       "ok": true,
       "usable": true,
-      "items": 7,
+      "items": 9,
       "error": null
     },
     {
@@ -125,7 +125,7 @@
       "source": "Engadget",
       "ok": true,
       "usable": true,
-      "items": 15,
+      "items": 14,
       "error": null
     },
     {
@@ -273,7 +273,7 @@
       "ok": false,
       "usable": false,
       "items": 0,
-      "error": "HTTP 404"
+      "error": "HTTP 403"
     },
     {
       "source": "Agencia Brasil",
@@ -377,7 +377,7 @@
       "source": "tportal",
       "ok": true,
       "usable": true,
-      "items": 20,
+      "items": 17,
       "error": null
     },
     {
@@ -397,8 +397,8 @@
     {
       "source": "Netokracija",
       "ok": true,
-      "usable": true,
-      "items": 10,
+      "usable": false,
+      "items": 0,
       "error": null
     },
     {
@@ -482,7 +482,7 @@
       "source": "Smithsonian Magazine",
       "ok": true,
       "usable": true,
-      "items": 10,
+      "items": 9,
       "error": null
     },
     {
@@ -545,14 +545,14 @@
       "source": "BBC Sport",
       "ok": true,
       "usable": true,
-      "items": 68,
+      "items": 64,
       "error": null
     },
     {
       "source": "The Guardian Sport",
       "ok": true,
       "usable": true,
-      "items": 23,
+      "items": 25,
       "error": null
     },
     {
