@@ -377,30 +377,45 @@ async function main() {
   await writeFile(NEWS_PATH, `${JSON.stringify(publicItemsFinal, null, 2)}\n`, 'utf8');
   await writeFile(ARCHIVE_PATH, `${JSON.stringify({ updatedAt: new Date().toISOString(), policy: 'archive_latest_1000_prune_to_500_when_full', items: archiveItems }, null, 2)}\n`, 'utf8');
 
-  const okFeeds = results.filter(result => result.ok).length;
+  // A successful HTTP request is not evidence of a usable feed. Likewise,
+  // filling news.json from the archive is not a successful fresh news cycle.
+  const feedsWithItems = results.filter(result => result.ok && result.items.length > 0).length;
+  const feedsHttpOk = results.filter(result => result.ok).length;
+  const feedsEmpty = results.filter(result => result.ok && result.items.length === 0).length;
+  const feedsFailed = results.filter(result => !result.ok).length;
+  const freshSources = new Set(freshValidated.map(item => String(item.source || '').trim()).filter(Boolean)).size;
+  const usableCurrentCycle = freshValidated.length >= 15 && freshSources >= 6;
+  const enoughPublic = publicItemsFinal.length >= 15;
   const status = {
-    ok: publicItemsFinal.length >= 15,
-    status: publicItems.length >= 15 ? 'refreshed' : 'insufficient_items',
+    ok: usableCurrentCycle && enoughPublic,
+    status: usableCurrentCycle && enoughPublic ? 'refreshed' : enoughPublic ? 'archive_fallback' : 'insufficient_items',
     updated_at: nowIsoZagreb(),
     engine: 'single_publication_engine_v14_github_actions',
-    cadence: 'every 2 hours (00:00-22:00 UTC)',
+    cadence: 'six times daily, every four hours; watchdog recovery if stale',
     timezone: TZ,
-    scheduled_interval_hours: 2,
+    scheduled_interval_hours: 4,
     max_items_per_source: MAX_PER_SOURCE,
     feeds_configured: FEEDS.length,
+    feeds_http_ok: feedsHttpOk,
+    feeds_usable: feedsWithItems,
+    feeds_empty: feedsEmpty,
+    feeds_failed: feedsFailed,
+    current_cycle_validated_items: freshValidated.length,
+    current_cycle_distinct_sources: freshSources,
+    source_diversity_floor: 6,
     public_items_target: PUBLIC_TARGET,
-    public_items_written: publicItems.length,
+    public_items_written: publicItemsFinal.length,
     archive_policy: 'archive_latest_1000_prune_to_500_when_full',
     archive_items_written: archiveItems.length,
     rss_images_enabled: true,
     fallback_image: FALLBACK_IMAGE,
     visual_index_fallback: '/visual-index/',
-    feed_results: results.map(result => ({ source: result.feed.source, ok: result.ok, items: result.items.length, error: result.error || null })),
-    last_checked_issue: publicItems.length >= 15 ? null : `only ${publicItems.length} usable items from ${okFeeds}/${FEEDS.length} feeds`
+    feed_results: results.map(result => ({ source: result.feed.source, ok: result.ok, usable: result.ok && result.items.length > 0, items: result.items.length, error: result.error || null })),
+    last_checked_issue: usableCurrentCycle && enoughPublic ? null : `current feed cycle: ${freshValidated.length} valid items from ${freshSources} sources; ${feedsWithItems}/${FEEDS.length} usable feeds; archive fallback=${enoughPublic}`
   };
   await writeFile(STATUS_PATH, `${JSON.stringify(status, null, 2)}\n`, 'utf8');
 
-  if (publicItems.length < 15) process.exitCode = 1;
+  if (!status.ok) process.exitCode = 1;
 }
 
 await main();
