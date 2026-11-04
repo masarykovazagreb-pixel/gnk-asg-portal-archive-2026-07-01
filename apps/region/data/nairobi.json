@@ -4,7 +4,7 @@
   "lang": "en",
   "city": "Nairobi",
   "country": "Kenija",
-  "updatedAt": "2026-11-04T11:44:23.603Z",
+  "updatedAt": "2026-11-04T12:11:37.579Z",
   "sources": [
     {
       "id": "capitalfm",
@@ -14,20 +14,19 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-04T11:44:05.162Z"
+      "checkedAt": "2026-11-04T12:11:13.392Z"
     },
     {
       "id": "nation",
       "name": "Daily Nation",
-      "url": "https://nation.africa/kenya/rss",
-      "ok": false,
-      "fetched": 0,
+      "url": "https://nation.africa/kenya/rss.xml",
+      "ok": true,
+      "fetched": 25,
       "corrupt": 0,
       "errors": [
-        "https://nation.africa/kenya/rss: HTTP 403",
-        "https://nation.africa/kenya/rss.xml: HTTP 404"
+        "https://nation.africa/kenya/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-04T11:44:06.749Z"
+      "checkedAt": "2026-11-04T12:11:14.463Z"
     },
     {
       "id": "standard",
@@ -39,7 +38,7 @@
       "errors": [
         "https://www.standardmedia.co.ke/rss: nije feed"
       ],
-      "checkedAt": "2026-11-04T11:44:07.425Z"
+      "checkedAt": "2026-11-04T12:11:15.525Z"
     },
     {
       "id": "star",
@@ -51,7 +50,7 @@
       "errors": [
         "https://www.the-star.co.ke/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-04T11:44:09.002Z"
+      "checkedAt": "2026-11-04T12:11:17.505Z"
     },
     {
       "id": "businessdaily",
@@ -63,7 +62,7 @@
       "errors": [
         "https://www.businessdailyafrica.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-04T11:44:09.871Z"
+      "checkedAt": "2026-11-04T12:11:18.444Z"
     },
     {
       "id": "citizen",
@@ -75,7 +74,7 @@
       "errors": [
         "https://www.citizen.digital/rss: HTTP 400"
       ],
-      "checkedAt": "2026-11-04T11:44:17.885Z"
+      "checkedAt": "2026-11-04T12:11:27.698Z"
     },
     {
       "id": "kbc",
@@ -85,7 +84,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-04T11:44:22.435Z"
+      "checkedAt": "2026-11-04T12:11:36.062Z"
     },
     {
       "id": "eastafrican",
@@ -97,10 +96,30 @@
       "errors": [
         "https://www.theeastafrican.co.ke/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-04T11:44:23.602Z"
+      "checkedAt": "2026-11-04T12:11:37.578Z"
     }
   ],
   "items": [
+    {
+      "slug": "nairobi-2026-11-04-capitalfm-src-escalates-judges-benefits-dispute-with-d37ed5",
+      "title": "SRC escalates judges’ benefits dispute with JSC to Court of Appeal",
+      "summary": "SRC cites the judgement's wider implications for the constitutional framework governing public-sector remuneration and benefits.",
+      "date": "2026-11-04T12:10:43.000Z",
+      "url": "https://capitalfm.africa/src-escalates-judges-benefits-dispute-with-jsc-to-court-of-appeal/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "News",
+        "daily subsistence allowance",
+        "DSA",
+        "High Court"
+      ],
+      "author": "JEREMIAH WAKAYA",
+      "theme": "drustvo",
+      "image": "https://capitalfm.africa/wp-content/uploads/news/2021/05/PRESIDING-JUDGES-KOOME-ASSUMPTION.jpg",
+      "imageAlt": "SRC escalates judges’ benefits dispute with JSC to Court of Appeal",
+      "addedAt": "2026-11-04T12:11:13.392Z"
+    },
     {
       "slug": "nairobi-2026-11-04-kbc-police-inspector-charged-with-murder-of-dr-0fe953",
       "title": "Police inspector charged with murder of Dr. Victoria Mutuse",
@@ -138,6 +157,21 @@
       "addedAt": "2026-11-04T11:44:22.436Z"
     },
     {
+      "slug": "nairobi-2026-11-04-nation-why-proposed-university-funding-model-is-c1c56c",
+      "title": "Why proposed university funding model is unpopular with education stakeholders",
+      "summary": "It restricts funding solely to education loans and omits provisions for scholarships for...",
+      "date": "2026-11-04T10:52:00.000Z",
+      "url": "https://nation.africa/kenya/news/education/why-proposed-university-funding-model-is-unpopular-5658088",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "https://nation.africa/resource/image/4332836/landscape_ratio16x9/1600/900/f453accd76985cbf0e711bacfecd14d2/ZG/varsity-funding-1.jpg",
+      "imageAlt": "Why proposed university funding model is unpopular with education stakeholders",
+      "addedAt": "2026-11-04T12:11:14.463Z"
+    },
+    {
       "slug": "nairobi-2026-11-04-kbc-wanted-person-why-dci-is-hunting-john-7c3a06",
       "title": "Wanted person: Why DCI is hunting John Masila Nzioka",
       "summary": "According to the DCI, the suspect recently engaged police officers in a shootout in which officers sustained injuries before he escaped the police dragnet. The post Wanted person: Why DCI is hunting John Masila Nzioka appeared first on KBC Digital .",
@@ -156,6 +190,51 @@
       "image": "https://www.kbc.co.ke/wp-content/uploads/2026/11/wanted2.jpg",
       "imageAlt": "Wanted person: Why DCI is hunting John Masila Nzioka",
       "addedAt": "2026-11-04T11:44:22.436Z"
+    },
+    {
+      "slug": "nairobi-2026-11-04-nation-cs-joho-returns-to-class-years-after-degree-a4c94d",
+      "title": "CS Joho returns to class years after degree controversy",
+      "summary": "'Unlike many Kenyans, I started working before chasing books, but that does not mean I am a...",
+      "date": "2026-11-04T10:13:16.000Z",
+      "url": "https://nation.africa/kenya/news/politics/cs-joho-returns-to-class-years-after-degree-controversy--5658146",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://nation.africa/resource/image/4734448/landscape_ratio16x9/1600/900/576722784d698b1639b17bd7b76e256e/vs/joho.jpg",
+      "imageAlt": "CS Joho returns to class years after degree controversy",
+      "addedAt": "2026-11-04T12:11:14.463Z"
+    },
+    {
+      "slug": "nairobi-2026-11-04-nation-have-you-ever-cheated-death-fc834d",
+      "title": "Have you ever cheated death?",
+      "summary": "When a friend narrowly escapes a fatal accident and a flight you took just a week earlier...",
+      "date": "2026-11-04T10:00:00.000Z",
+      "url": "https://nation.africa/kenya/news/gender/have-you-ever-cheated-death--5655460",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://nation.africa/resource/image/5655476/landscape_ratio16x9/1600/900/70696b617f91fe24a40de86cd92fa5fd/zP/accident.jpg",
+      "imageAlt": "Have you ever cheated death?",
+      "addedAt": "2026-11-04T12:11:14.463Z"
+    },
+    {
+      "slug": "nairobi-2026-11-04-nation-kcse-three-deaths-arrest-absenteeism-c7036e",
+      "title": "KCSE: Three deaths, arrest, absenteeism reported across the country",
+      "summary": "Enhanced security features like serialisation and smart padlocks have been used to seal leak...",
+      "date": "2026-11-04T09:58:31.000Z",
+      "url": "https://nation.africa/kenya/news/education/kcse-three-deaths-arrest-absenteeism-reported-across-the-country-5658114",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://nation.africa/resource/image/5658132/landscape_ratio16x9/1600/900/16346424b62291e1eebd3cef93ab155e/Xi/whatsapp-image-2026-11-04-at-08-07-33.jpg",
+      "imageAlt": "KCSE: Three deaths, arrest, absenteeism reported across the country",
+      "addedAt": "2026-11-04T12:11:14.464Z"
     },
     {
       "slug": "nairobi-2026-11-04-kbc-iebc-seeks-stronger-partnerships-to-secure-7a9c48",
@@ -178,6 +257,21 @@
       "addedAt": "2026-11-04T11:44:22.436Z"
     },
     {
+      "slug": "nairobi-2026-11-04-nation-moyale-conflict-explained-guyo-turi-641a48",
+      "title": "Moyale conflict explained | Guyo Turi",
+      "summary": "",
+      "date": "2026-11-04T09:42:07.000Z",
+      "url": "https://nation.africa/kenya/videos/moyale-conflict-explained-guyo-turi-5658112",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://nation.africa/resource/image/5656250/landscape_ratio16x9/1600/900/f0951fd006203a3c10e10ad1613c5196/uq/moyale-town.jpg",
+      "imageAlt": "Moyale conflict explained | Guyo Turi",
+      "addedAt": "2026-11-04T12:11:14.464Z"
+    },
+    {
       "slug": "nairobi-2026-11-04-kbc-kenya-signs-creative-economy-partnership-e93b93",
       "title": "Kenya signs creative economy partnership with Idris Elba",
       "summary": "The Ministry of Foreign Affairs has announced a partnership with internationally acclaimed actor and filmmaker Sir Idris Elba to strengthen the country’s creative economy through investment, technology and access to international markets. The agreement, signed on the sidelines of the 2026 Commonwealth Heads of Government Meeting (CHOGM) in Antigua and Barbuda, is expected to expand […] The post Kenya signs creative economy partnership with Idris Elba appeared first on KBC Digital .",
@@ -195,6 +289,21 @@
       "image": "https://www.kbc.co.ke/wp-content/uploads/2026/11/Songoie-Elba-scaled.jpg",
       "imageAlt": "Kenya signs creative economy partnership with Idris Elba",
       "addedAt": "2026-11-04T11:44:22.437Z"
+    },
+    {
+      "slug": "nairobi-2026-11-04-nation-kibwezi-west-mp-mwengi-mutuse-criticises-92940b",
+      "title": "Kibwezi West MP Mwengi Mutuse criticises Opposition divisions",
+      "summary": "",
+      "date": "2026-11-04T09:40:18.000Z",
+      "url": "https://nation.africa/kenya/videos/kibwezi-west-mp-mwengi-mutuse-criticises-opposition-divisions-5658110",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Kibwezi West MP Mwengi Mutuse criticises Opposition divisions",
+      "addedAt": "2026-11-04T12:11:14.464Z"
     },
     {
       "slug": "nairobi-2026-11-04-capitalfm-police-recover-3-000-goats-and-sheep-after-a0276d",
