@@ -1,18 +1,18 @@
 {
   "ok": true,
   "status": "refreshed",
-  "updated_at": "2026-11-04T06:29:01+01:00",
+  "updated_at": "2026-11-04T06:34:52+01:00",
   "engine": "single_publication_engine_v14_github_actions",
   "cadence": "six times daily at 01:37, 05:37, 09:37, 13:37, 17:37 and 21:37 UTC; watchdog recovery if stale",
   "timezone": "Europe/Zagreb",
   "scheduled_interval_hours": 4,
   "max_items_per_source": 6,
-  "feeds_configured": 85,
+  "feeds_configured": 84,
   "feeds_http_ok": 74,
   "feeds_usable": 50,
   "feeds_empty": 24,
-  "feeds_failed": 11,
-  "current_cycle_validated_items": 1395,
+  "feeds_failed": 10,
+  "current_cycle_validated_items": 1394,
   "current_cycle_distinct_sources": 50,
   "source_diversity_floor": 6,
   "public_items_target": 300,
@@ -85,13 +85,6 @@
       "usable": true,
       "items": 50,
       "error": null
-    },
-    {
-      "source": "Al Jazeera Economy",
-      "ok": false,
-      "usable": false,
-      "items": 0,
-      "error": "HTTP 404"
     },
     {
       "source": "DW Business",
@@ -209,7 +202,7 @@
       "source": "The Hindu BusinessLine",
       "ok": true,
       "usable": true,
-      "items": 53,
+      "items": 52,
       "error": null
     },
     {
