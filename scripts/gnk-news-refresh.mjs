@@ -28,7 +28,8 @@ const FEEDS = [
   { source: 'Sky News Business', group: 'economy', category: 'business', url: 'https://feeds.skynews.com/feeds/rss/business.xml' },
   { source: 'The Independent Business', group: 'economy', category: 'business', url: 'https://www.independent.co.uk/news/business/rss' },
   { source: 'Euronews Business', group: 'economy', category: 'business', url: 'https://www.euronews.com/rss?format=mrss&level=theme&name=business' },
-  { source: 'Al Jazeera Economy', group: 'economy', category: 'business', url: 'https://www.aljazeera.com/xml/rss/economy.xml' },
+  // The previous /xml/rss/economy.xml endpoint returns 404; official all.xml
+  // already appears once in the international source group below.
   { source: 'DW Business', group: 'economy', category: 'business', url: 'https://rss.dw.com/xml/rss-en-bus' },
 
   // --- Tehnologija ---------------------------------------------------
