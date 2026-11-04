@@ -38,4 +38,5 @@ for(const [path,required,forbidden] of pageChecks){
 }
 assert.match(read('apps/portal/index.html'),/href="\/the-code\/"/);
 assert.match(read('apps/portal/en/index.html'),/href="\/en\/the-code\/"/);
+assert.doesNotMatch(read('apps/portal/en/index.html'),/45 related companies/i,'corporate group entities and planned locations must not be conflated');
 console.log(JSON.stringify({ok:true,version:'FULLSTACK_PUBLIC_REGRESSIONS_V1',protectedAuth:'explicit authenticated true',htmlFallbacks:htmlMiddlewares.length,pagesReviewed:pageChecks.length,localeCoverage:['hr','en'],sourceMutation:'no production action'},null,2));
