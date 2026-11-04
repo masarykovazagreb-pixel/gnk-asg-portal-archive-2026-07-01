@@ -24,6 +24,8 @@ for(const marker of [
   assert.ok(writer.includes(marker),'news writer missing truth-in-status marker: '+marker);
 }
 assert.ok(!writer.includes("editor_approved: 'Nermin Sefić'"),'automated RSS items cannot claim individual human approval');
+assert.ok(!writer.includes("https://www.aljazeera.com/xml/rss/economy.xml"),'known 404 category feed must not be advertised as an active source');
+assert.ok(writer.includes("https://www.aljazeera.com/xml/rss/all.xml"),'retain the official general Al Jazeera feed exactly once');
 const historicApproval=records.filter(item=>typeof item.editor_approved==='string').length;
 console.log(JSON.stringify({
   ok:true,version:'GNK_NEWS_INGEST_INTEGRITY_V1',
