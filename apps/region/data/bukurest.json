@@ -4,17 +4,19 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-11-03T23:20:42.162Z",
+  "updatedAt": "2026-11-04T09:11:58.345Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
-      "url": "https://www.agerpres.ro/rss",
+      "url": "https://www.agerpres.ro/rss/",
       "ok": true,
       "fetched": 20,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-03T23:20:34.026Z"
+      "errors": [
+        "https://www.agerpres.ro/rss: HTTP 500"
+      ],
+      "checkedAt": "2026-11-04T09:11:51.677Z"
     },
     {
       "id": "hotnews",
@@ -24,7 +26,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-03T23:20:34.216Z"
+      "checkedAt": "2026-11-04T09:11:52.203Z"
     },
     {
       "id": "zf",
@@ -34,7 +36,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-03T23:20:36.032Z"
+      "checkedAt": "2026-11-04T09:11:54.658Z"
     },
     {
       "id": "profit",
@@ -44,17 +46,17 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-03T23:20:36.311Z"
+      "checkedAt": "2026-11-04T09:11:54.980Z"
     },
     {
       "id": "digi24",
       "name": "Digi24",
       "url": "https://www.digi24.ro/rss",
       "ok": true,
-      "fetched": 235,
+      "fetched": 255,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-03T23:20:39.303Z"
+      "checkedAt": "2026-11-04T09:11:57.002Z"
     },
     {
       "id": "g4media",
@@ -64,7 +66,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-03T23:20:41.366Z"
+      "checkedAt": "2026-11-04T09:11:58.050Z"
     },
     {
       "id": "newsro",
@@ -74,10 +76,673 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-03T23:20:42.160Z"
+      "checkedAt": "2026-11-04T09:11:58.343Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-11-04-agerpres-senat-aur-a-depus-motiunea-simpla-pe-80e2a9",
+      "title": "Senat/ AUR a depus moțiunea simplă pe Finanțe",
+      "summary": "",
+      "date": "2026-11-04T09:11:51.678Z",
+      "url": "https://agerpres.ro/politic/2026/11/04/senat-aur-a-depus-motiunea-simpla-pe-finante--1609824",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Senat/ AUR a depus moțiunea simplă pe Finanțe",
+      "addedAt": "2026-11-04T09:11:51.678Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-agerpres-personalitatea-zilei-femeia-de-afaceri-ruth-925fe1",
+      "title": "PERSONALITATEA ZILEI: Femeia de afaceri Ruth Handler, inventatoarea păpușii Barbie (4 noiembrie)",
+      "summary": "",
+      "date": "2026-11-04T09:11:51.677Z",
+      "url": "https://agerpres.ro/documentare/2026/11/04/personalitatea-zilei-femeia-de-afaceri-ruth-handler-inventatoarea-papusii-barbie-4-noiembrie--1609739",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "PERSONALITATEA ZILEI: Femeia de afaceri Ruth Handler, inventatoarea păpușii Barbie (4 noiembrie)",
+      "addedAt": "2026-11-04T09:11:51.677Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-agerpres-fotbalul-este-facut-din-greseli-a-spus-fec69b",
+      "title": "'Fotbalul este făcut din greșeli', a spus Simeone după înfrângerea lui Atletico în Liga Campionilor",
+      "summary": "",
+      "date": "2026-11-04T09:11:51.677Z",
+      "url": "https://agerpres.ro/sport-extern/2026/11/04/fotbalul-este-facut-din-greseli-a-spus-simeone-dupa-infrangerea-lui-atletico-in-liga-campionilor--1609847",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "'Fotbalul este făcut din greșeli', a spus Simeone după înfrângerea lui Atletico în Liga Campionilor",
+      "addedAt": "2026-11-04T09:11:51.677Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-agerpres-federatia-asociatiilor-bolnavilor-de-cancer-799655",
+      "title": "Federația Asociațiilor Bolnavilor de Cancer solicită integrarea și finanțarea serviciilor de navigare a pacienților în traseele oncologice",
+      "summary": "",
+      "date": "2026-11-04T09:11:51.677Z",
+      "url": "https://agerpres.ro/sanatate/2026/11/04/federatia-asociatiilor-bolnavilor-de-cancer-solicita-integrarea-si-finantarea-serviciilor-de-navigar--1609846",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Federația Asociațiilor Bolnavilor de Cancer solicită integrarea și finanțarea serviciilor de navigare a pacienților în traseele oncologice",
+      "addedAt": "2026-11-04T09:11:51.677Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-agerpres-barbu-am-ajuns-la-1-4-milioane-de-hectare-695275",
+      "title": "Barbu: Am ajuns la 1,4 milioane de hectare reabilitate prin programul de refacere a infrastructurii de irigații",
+      "summary": "",
+      "date": "2026-11-04T09:11:51.677Z",
+      "url": "https://agerpres.ro/economic/2026/11/04/barbu-am-ajuns-la-1-4-milioane-de-hectare-reabilitate-prin-programul-de-refacere-a-infrastructurii-d--1609845",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Barbu: Am ajuns la 1,4 milioane de hectare reabilitate prin programul de refacere a infrastructurii de irigații",
+      "addedAt": "2026-11-04T09:11:51.677Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-agerpres-alegeri-sua-china-se-declara-pregatita-sa-12af9b",
+      "title": "Alegeri SUA/ China se declară pregătită să 'lucreze în continuare' cu Statele Unite",
+      "summary": "",
+      "date": "2026-11-04T09:11:51.677Z",
+      "url": "https://agerpres.ro/politic-extern/2026/11/04/alegeri-sua-china-se-declara-pregatita-sa-lucreze-in-continuare-cu-statele-unite--1609842",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Alegeri SUA/ China se declară pregătită să 'lucreze în continuare' cu Statele Unite",
+      "addedAt": "2026-11-04T09:11:51.677Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-hotnews-cine-este-melat-kiros-prima-reprezentanta-a-4fbdff",
+      "title": "Cine este Melat Kiros, prima reprezentantă a Generației Z aleasă în Congresul SUA",
+      "summary": "Melat Kiros a câștigat cursa electorală pentru a reprezenta primul district congresional din Colorado în Camera Reprezentanților, devenind astfel prima femeie din Generația Z va face parte din legislativul Statelor Unite, relatează NPR. Kiros, o avocată în vârstă de 29 de ani, imigrantă din Etiopia, a obținut marți seară o victorie categorică în acest district …",
+      "date": "2026-11-04T09:10:42.000Z",
+      "url": "https://hotnews.ro/cine-este-melat-kiros-prima-reprezentanta-a-generatiei-z-aleasa-in-congresul-sua-2394634",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International",
+        "alegeri sua",
+        "alegeri sua 2026"
+      ],
+      "author": "Sebastian Jucan",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Cine este Melat Kiros, prima reprezentantă a Generației Z aleasă în Congresul SUA",
+      "addedAt": "2026-11-04T09:11:52.203Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-digi24-doi-copaci-uriasi-s-au-prabusit-peste-sapte-7e4e3c",
+      "title": "Doi copaci uriași s-au prăbușit peste șapte mașini în Craiova. Localnicii spun că au făcut sesizări, dar autoritățile nu au intervenit",
+      "summary": "Doi copaci de mari dimensiuni s-au prăbușit peste șapte autoturisme parcate în Craiova, în urma ploilor. Nimeni nu a fost rănit, însă proprietarii mașinilor avariate sunt revoltați și susțin că arborii ar fi trebuit îndepărtați de mult timp. Președintele asociației de proprietari afirmă că a făcut patru sesizări, fără ca problema să fie rezolvată.",
+      "date": "2026-11-04T09:07:53.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/doi-copaci-uriasi-s-au-prabusit-peste-sapte-masini-in-craiova-localnicii-acuza-ca-au-facut-sesizari-dar-autoritatile-nu-au-intervenit-4021081",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjA0JTJGMzA1MTM5NF8zMDUx/Mzk0X3Bob3RvLWNvbGxhZ2VfcG5nLTIw/MjYtMTEtMDRUMTEwNTU4XzAyMC5wbmcm/aGFzaD1kNGQ0NzQyOGE5MDQyYzU5YWYzNjU5NmQyNjUzMTM5ZQ==.png",
+      "imageAlt": "Doi copaci uriași s-au prăbușit peste șapte mașini în Craiova. Localnicii spun că au făcut sesizări, dar autoritățile nu au intervenit",
+      "addedAt": "2026-11-04T09:11:57.002Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-g4media-pot-fi-identificati-copiii-care-vor-fa8673",
+      "title": "Pot fi identificați copiii care vor manifesta comportamente violente sau de radicalizare? – experta Laura Visu-Petra, coordonatoarea programului masteral Psihologie Judiciară al…",
+      "summary": "Analiză semnată de Laura Visu-Petra, profesor universitar la Facultatea de Psihologie și Științe ale Educației, coordonator al programului de master cu specializarea Psihologie Judiciară si al colectivului de cercetare a diferențelor inter-individuale care predispun la probleme cu legea (RiddleLab), autor a numeroase studii internaționale referitoare la elemente de risc si vulnerabilitate spre comportamente antisociale: I. […] © G4Media.ro .",
+      "date": "2026-11-04T09:06:05.000Z",
+      "url": "https://www.g4media.ro/pot-fi-identificati-copiii-care-vor-manifesta-comportamente-violente-sau-de-radicalizare-experta-laura-visu-petra-coordonatoarea-programului-masteral-psihologie-judiciara-al-ubb.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Analize"
+      ],
+      "author": "Edupedu.ro",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro//wp-content/uploads/2020/06/Laura-Visu-Petra-Foto-Arhiva-personala-e1793783137405.jpg",
+      "imageAlt": "Pot fi identificați copiii care vor manifesta comportamente violente sau de radicalizare? – experta Laura Visu-Petra, coordonatoarea programului masteral Psihologie Judiciară al UB",
+      "addedAt": "2026-11-04T09:11:58.050Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-newsro-mesaj-ro-alert-pentru-zona-de-nord-a-74033b",
+      "title": "Mesaj RO-Alert pentru zona de nord a judeţului Tulcea / Cetăţenii, sfătuiţi să se adăpostească, deoarece există riscul unei incursiuni de drone",
+      "summary": "Locuitorii din nordul judeţului Tulcea au primit, miercuri, un mesaj RO-Alert despre o posibilă incursiune de drone şi au fost sfătuiţi să se adăpostească.",
+      "date": "2026-11-04T09:06:00.000Z",
+      "url": "https://www.news.ro/eveniment/mesaj-ro-alert-pentru-zona-de-nord-a-judetului-tulcea-cetatenii-sfatuiti-sa-se-adaposteasca-deoarece-exista-riscul-unei-incursiuni-de-drone-1922400604002026111122937068",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "",
+      "imageAlt": "Mesaj RO-Alert pentru zona de nord a judeţului Tulcea / Cetăţenii, sfătuiţi să se adăpostească, deoarece există riscul unei incursiuni de drone",
+      "addedAt": "2026-11-04T09:11:58.343Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-newsro-israel-comisia-electorala-nu-a-gasit-nicio-04d5c6",
+      "title": "Israel: Comisia Electorală nu a găsit nicio dovadă de fraudă la alegerile parlamentare",
+      "summary": "Comisia Electorală israeliană a anunţat miercuri că nu a găsit nicio dovadă de fraudă care să afecteze integritatea ultimelor alegeri parlamentare, al căror rezultat este contestat de tabăra prim-ministrului în exerciţiu, Benjamin Netanyahu, relatează AFP.",
+      "date": "2026-11-04T09:04:51.000Z",
+      "url": "https://www.news.ro/externe/israel-comisia-electorala-nu-a-gasit-nicio-dovada-de-frauda-la-alegerile-parlamentare-1922400404512026111122937008",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Israel: Comisia Electorală nu a găsit nicio dovadă de fraudă la alegerile parlamentare",
+      "addedAt": "2026-11-04T09:11:58.343Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-profit-indicele-robor-a-stagnat-a0232e",
+      "title": "Indicele ROBOR a stagnat",
+      "summary": "ROBOR (Romanian Interbank Offer Rate) este rata medie a dobânzii la care se împrumută, între ele, instituțiile bancare din România, în lei, iar evoluția sa este legată, în principal, de nivelul de lichiditate existent în piață și de nivelul dobânzilor BNR.",
+      "date": "2026-11-04T09:03:47.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/financiar/indicele-robor-a-stagnat-22937065?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Financiar"
+      ],
+      "author": "",
+      "theme": "rat",
+      "image": "https://i0.1616.ro/media/2/2621/33210/22937065/8/pngtree-lei-romanian-money-stack-in-11619727.jpg?width=800",
+      "imageAlt": "Indicele ROBOR a stagnat",
+      "addedAt": "2026-11-04T09:11:54.980Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-digi24-germania-reactioneaza-la-pierderea-56918a",
+      "title": "Germania reacționează la pierderea controlului republican în Congresul SUA: „America a ales schimbarea. Alegerile au fost istorice”",
+      "summary": "Coordonatorul transatlantic al Guvernului german, Metin Hakverdi, se așteaptă ca pierderea controlului de către republicani asupra ambelor camere ale Congresului american să schimbe semnificativ echilibrul politic de la Washington, a declarat el, miercuri, pentru DPA.",
+      "date": "2026-11-04T09:03:38.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/ue/germania-reactioneaza-la-pierderea-controlului-republican-in-congresul-sua-america-a-ales-schimbarea-alegerile-au-fost-istorice-4021073",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjA0JTJGMzA1MTM3Ml8zMDUx/MzcyX2J1bmRlc3RhZy5qcGcmaGFzaD1i/MDdlNzExYTFkZjBjMDBiMjFjMzRlZGMzYTRmOTNlMA==.jpg",
+      "imageAlt": "Germania reacționează la pierderea controlului republican în Congresul SUA: „America a ales schimbarea. Alegerile au fost istorice”",
+      "addedAt": "2026-11-04T09:11:57.003Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-zf-scandal-in-germania-cu-banii-pentru-romani-54b259",
+      "title": "Scandal în Germania cu banii pentru români: O familie cu şapte copii poate ajunge la 4.500 de euro lunar alocaţii şi ajutoare sociale, plus costurile locuinţei. Alice Weidel…",
+      "summary": "",
+      "date": "2026-11-04T09:03:25.000Z",
+      "url": "https://www.zf.ro/eveniment/scandal-germania-banii-romani-familie-sapte-copii-ajunge-4-500-euro-lunar-alocatii-ajutoare-sociale-plus-costurile-locuintei-alice-weidel-lidera-afd-ne-jefuiesc-sistemul-social-reactii-dure-romania-23274242",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Eveniment"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10386/23274242/1/39b378fa-cc6b-4204-b473-f441e00e90e4.jpg?width=700",
+      "imageAlt": "Scandal în Germania cu banii pentru români: O familie cu şapte copii poate ajunge la 4.500 de euro lunar alocaţii şi ajutoare sociale, plus costurile locuinţei. Alice Weidel, lider",
+      "addedAt": "2026-11-04T09:11:54.659Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-zf-bogdana-buhos-deloitte-vanzarea-afacerii-de-2b2c0c",
+      "title": "Bogdana Buhoş, Deloitte: Vânzarea afacerii de familie - reţeta succesului post-tranzacţie şi rolul fondatorului",
+      "summary": "",
+      "date": "2026-11-04T09:00:04.000Z",
+      "url": "https://www.zf.ro/opinii/bogdana-buhos-deloitte-vanzarea-afacerii-de-familie-reteta-succesului-post-tranzactie-si-rolul-fondatorului-23274278",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Opinii"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/25326/23274278/1/bogdana-buhos-deloitte.jpg?width=700",
+      "imageAlt": "Bogdana Buhoş, Deloitte: Vânzarea afacerii de familie - reţeta succesului post-tranzacţie şi rolul fondatorului",
+      "addedAt": "2026-11-04T09:11:54.659Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-zf-bursa-de-la-bucuresti-timp-de-15-ani-mai-96b643",
+      "title": "Bursa de la Bucureşti, timp de 15 ani mai liniştită decât vecinii, are acum cele mai mari variaţii de preţ din regiune. Principalii cumpărători nu mai sunt fondurile de pensii, ci…",
+      "summary": "Volatilitatea indicelui de referinţă BET a deve­nit cea mai ridicată dintre principalii indici bursieri din regiune, după ce timp de mai bine de 15 ani bursa de la Bucureşti a avut variaţii de preţ mai temperate decât pieţe precum Viena, Varşovia şi Budapesta.",
+      "date": "2026-11-04T09:00:00.000Z",
+      "url": "https://www.zf.ro/burse-fonduri-mutuale/bursa-bucuresti-timp-15-ani-linistita-vecinii-acum-cele-mari-variatii-pret-regiune-principalii-cumparatori-fondurile-pensii-ci-retailul-eveniment-negativ-amplifica-scaderile-arata-aafbr-23273719",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Burse - Fonduri mutuale"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/22467/23273719/1/4-mihai-caruntu.jpg?width=700",
+      "imageAlt": "Bursa de la Bucureşti, timp de 15 ani mai liniştită decât vecinii, are acum cele mai mari variaţii de preţ din regiune. Principalii cumpărători nu mai sunt fondurile de pensii, ci ",
+      "addedAt": "2026-11-04T09:11:54.659Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-zf-cine-reprezinta-turismul-romanesc-la-unul-c05ec6",
+      "title": "Cine reprezintă turismul românesc la unul dintre cele mai importante târguri de turism din lume? România este reprezentată de 35 de expozanţi la Târgul Internaţional de Turism de…",
+      "summary": "România îşi promovează destinaţiile tu­ristice la World Travel Market (WTM) Londra 2026, unul dintre cele mai impor­tan­te evenimente internaţionale dedicate industriei turismului.",
+      "date": "2026-11-04T09:00:00.000Z",
+      "url": "https://www.zf.ro/companii/reprezinta-turismul-romanesc-unul-dintre-cele-importante-targuri-turism-lume-romania-reprezentata-35-expozanti-targul-international-turism-londra-paralel-medat-anuntat-perioada-1-29-noiembrie-vor-23273748",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Companii"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21337/23273748/2/8-sjh9918.jpg?width=700",
+      "imageAlt": "Cine reprezintă turismul românesc la unul dintre cele mai importante târguri de turism din lume? România este reprezentată de 35 de expozanţi la Târgul Internaţional de Turism de l",
+      "addedAt": "2026-11-04T09:11:54.659Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-profit-openai-chatgpt-se-apropie-de-google-la-e4560c",
+      "title": "OpenAI: ChatGPT se apropie de Google la căutări online",
+      "summary": "OpenAI a făcut publice o nouă serie de cifre privind nivelul de utilizare al lui ChatGPT, într-un efort de a arăta că acesta încă este cel mai popular chatbot.",
+      "date": "2026-11-04T08:59:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/it-c/openai-chatgpt-se-apropie-de-google-la-cautari-online-22935947?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "IT&C"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://i0.1616.ro/media/2/2621/33216/22935947/1/chatgpt-1.jpg?width=800",
+      "imageAlt": "OpenAI: ChatGPT se apropie de Google la căutări online",
+      "addedAt": "2026-11-04T09:11:54.980Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-zf-retailerul-online-de-moda-zalando-din-70853b",
+      "title": "Retailerul online de modă Zalando din Germania îl numeşte pe Dawid Choczyński la conducerea operaţiunilor din Europa Centrală şi de Est. Managerul va coordona nouă pieţe, inclusiv…",
+      "summary": "",
+      "date": "2026-11-04T08:57:07.000Z",
+      "url": "https://www.zf.ro/companii/retail-agrobusiness/retailerul-online-de-moda-zalando-din-germania-il-numeste-pe-dawid-choczy-ski-la-conducerea-operatiunilor-din-europa-centrala-si-de-est-managerul-va-coordona-noua-piete-inclusiv-romania-23274274",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Retail&Agrobusiness"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21335/23274274/1/zalando-dawid-choczynski-general-manager-cee-1-large.jpg?width=700",
+      "imageAlt": "Retailerul online de modă Zalando din Germania îl numeşte pe Dawid Choczyński la conducerea operaţiunilor din Europa Centrală şi de Est. Managerul va coordona nouă pieţe, inclusiv ",
+      "addedAt": "2026-11-04T09:11:54.659Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-newsro-alegeri-in-sua-victor-negrescu-pentru-3be528",
+      "title": "Alegeri în SUA. Victor Negrescu: Pentru România, miza este mai mare decât pare la prima vedere. Vorbim despre finanţarea securităţii europene, prezenţa militară americană…",
+      "summary": "Vicepreşedintele Parlamentului European Victor Negrescu (PSD) afirmă, miercuri, că rezultatul alegerilor din America are mize concrete pentru România – de la finanţarea securităţii europene, prezenţa militară americană, sprijinul pentru Flancul Estic, securitatea Mării Negre, până la relaţiile comerciale dintre Statele Unite şi Uniunea Europeană. ”România trebuie să lucreze eficient atât cu democraţii, cât şi cu republicanii”, este de părere Negrescu.",
+      "date": "2026-11-04T08:57:00.000Z",
+      "url": "https://www.news.ro/politic-intern/alegeri-sua-victor-negrescu-romania-miza-mare-pare-prima-vedere-vorbim-finantarea-securitatii-europene-prezenta-militara-americana-sprijinul-flancul-estic-securitatea-marii-negre-relatiile-1922405704002026111022937007",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Alegeri în SUA. Victor Negrescu: Pentru România, miza este mai mare decât pare la prima vedere. Vorbim despre finanţarea securităţii europene, prezenţa militară americană, sprijinu",
+      "addedAt": "2026-11-04T09:11:58.343Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-digi24-telescopul-spatial-swift-reintra-in-22b415",
+      "title": "Telescopul spațial Swift reintră în atmosferă și e distrus, după 22 de ani în spațiu: NASA a încercat să-l salveze în vară",
+      "summary": "Un telescop spațial învechit al NASA, pentru recuperarea căruia a fost trimisă o navă spațială robotizată în cadrul unei misiuni de salvare eșuate în această vară, se îndrepta miercuri spre o reintrare în atmosferă însoțită de flăcări, la aproape 22 de ani de la lansarea sa pe orbită, scrie Reuters.",
+      "date": "2026-11-04T08:56:36.000Z",
+      "url": "https://www.digi24.ro/stiri/sci-tech/telescopul-spatial-swift-reintra-in-atmosfera-si-e-distrus-dupa-22-de-ani-in-spatiu-nasa-a-incercat-sa-l-salveze-in-vara-4021055",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjA0JTJGMzA1MTMyNV8zMDUx/MzI1X3Byb2ZpbWVkaWEtMTE0Nzc1MzMw/NC5qcGcmaGFzaD04YzM5YWIwZWU5NTQwZWUyZTRiZTc4M2UyY2QyOTZlMA==.jpg",
+      "imageAlt": "Telescopul spațial Swift reintră în atmosferă și e distrus, după 22 de ani în spațiu: NASA a încercat să-l salveze în vară",
+      "addedAt": "2026-11-04T09:11:57.003Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-digi24-america-a-ales-ce-poate-astepta-acum-7c3352",
+      "title": "America a ales. Ce poate aștepta acum România",
+      "summary": "Am studiat și am muncit 12 ani în Statele Unite și am văzut acolo de mai multe ori cum se schimbă majoritățile. Am învățat că alternanța la putere este una dintre forțele democrației americane. Ea ține societatea vie și politica mai responsabilă. Urmăresc evoluțiile din America și din nostalgie, dar mai ales pentru că afectează lumea întreagă și România. M-a molipsit optimismul american, dar mai jos mă străduiesc să fac o analiză obiectivă.",
+      "date": "2026-11-04T08:55:10.000Z",
+      "url": "https://www.digi24.ro/opinii/agora-digi/america-a-ales-ce-poate-astepta-acum-romania-4021057",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjQl/MkYxMiUyRjI4JTJGMjE1ODc3NF8yMTU4/Nzc0X3NlYmFzdGlhbi1idXJkdWphLXNj/YWxlZC0xLmpwZyZoYXNoPTUzZmJiOTVkNjVjODkxOTQ0YzBjMjM4ZjJiMTJkNzAz.jpg",
+      "imageAlt": "America a ales. Ce poate aștepta acum România",
+      "addedAt": "2026-11-04T09:11:57.003Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-g4media-aur-a-depus-motiunea-simpla-impotriva-lui-db04fd",
+      "title": "AUR a depus moțiunea simplă împotriva lui Alexandru Nazare. Va fi dezbătută în plenul Senatului, pe 11 noiembrie",
+      "summary": "AUR a depus, miercuri, în Senat, moţiunea simplă împotriva ministrului Finanţelor, Alexandru Nazare. „Vă depunem moţiunea simplă intitulată: «Bugetul statului la ora adevărului; acelaşi ministru, două contabilităţi, una pentru români, alta pentru Bruxelles». Ea este semnată de către 34 de senatori”, a anunţat, în plenul Senatului, liderul senatorilor AUR, Petrişor Peiu, potrivit Agerpres. Preşedintele de […] © G4Media.ro .",
+      "date": "2026-11-04T08:54:24.000Z",
+      "url": "https://www.g4media.ro/aur-a-depus-motiunea-simpla-impotriva-lui-alexandru-nazare-va-fi-dezbatuta-in-plenul-senatului-pe-11-noiembrie.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "alexandru nazare",
+        "moțiune simplă"
+      ],
+      "author": "Ioana Milonean",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro//wp-content/uploads/2025/08/INSTANT_ALEXANDRU_NAZARE_003_INQUAM_Photos_Octav_Ganea.jpg",
+      "imageAlt": "AUR a depus moțiunea simplă împotriva lui Alexandru Nazare. Va fi dezbătută în plenul Senatului, pe 11 noiembrie",
+      "addedAt": "2026-11-04T09:11:58.050Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-digi24-angajatii-din-ins-protesteaza-miercuri-la-ff6ee9",
+      "title": "Angajații din INS protestează miercuri la Ministerul Finanțelor. Care sunt revendicările sindicaliștilor",
+      "summary": "Angajații Institutului Național de Statistică (INS) protestează miercuri, începând cu ora 10:00, în fața Ministerului Finanțelor. Sindicaliștii cer plata drepturilor salariale restante, câștigate în instanță, și eliminarea inechităților salariale.",
+      "date": "2026-11-04T08:53:58.000Z",
+      "url": "https://www.digi24.ro/stiri/economie/angajatii-din-ins-protesteaza-miercuri-la-ministerul-finantelor-care-sunt-revendicarile-sindicalistilor-4020991",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjA0JTJGMzA1MTA3Nl8zMDUx/MDc2X0lEMTM2OTMzLUlOUVVBTS1QSE9U/T1MtU0FCSU4tQ0lSU1RPVkVBTlUuanBn/Jmhhc2g9MzI3NzIxMTkyNmY4ZThmNzQ0OWI3NzFhNGRmNjNiNjg=.jpg",
+      "imageAlt": "Angajații din INS protestează miercuri la Ministerul Finanțelor. Care sunt revendicările sindicaliștilor",
+      "addedAt": "2026-11-04T09:11:57.003Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-digi24-vlad-ionescu-consilierul-lui-nicusor-dan-in-b45e52",
+      "title": "Vlad Ionescu, consilierul lui Nicușor Dan, în direct la Interviurile Digi24.ro. Alegerile din SUA și miza pentru România",
+      "summary": "Alegerile de la jumătatea mandatului prezidențial din Statele Unite pot schimba echilibrul de putere de la Washington și pot influența direcția administrației Donald Trump în următorii doi ani. Primele rezultate parțiale vor arăta cât sprijin mai are actualul președinte în Congres și în ce măsură își va putea continua agenda, atât pe plan intern, cât și în politica externă.",
+      "date": "2026-11-04T08:53:13.000Z",
+      "url": "https://www.digi24.ro/interviurile-digi24-ro/vlad-ionescu-consilierul-lui-nicusor-dan-in-direct-la-interviurile-digi24-ro-alegerile-din-sua-si-miza-pentru-romania-4020179",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjAzJTJGMzA0MzIyNV8zMDQz/MjI1X0lEMjY2MjUzLUlOUVVBTS1QSE9U/T1MtT0NUQVYtR0FORUEuanBnJmhhc2g9/NTQ5YmIwY2ZkNGQyNDZmOGQ4OWYyNzZlMmQ0MjgwZDE=.jpg",
+      "imageAlt": "Vlad Ionescu, consilierul lui Nicușor Dan, în direct la Interviurile Digi24.ro. Alegerile din SUA și miza pentru România",
+      "addedAt": "2026-11-04T09:11:57.003Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-newsro-taxele-si-impozitele-locale-in-bucuresti-943b29",
+      "title": "Taxele şi impozitele locale în Bucureşti rămân neschimbate în 2027/ Primăria Capitalei a pus în dezbatere publică un proiect de hotărâre ce va fi supus votului în Consiliul…",
+      "summary": "Taxele şi impozitele locale în Bucureşti, dar şi taxa pentru parcarea de reşedinţă şi cea de promovare turistică rămân neschimbate în 2027, a anunţat, miercuri, Primăria Capitalei, care a pus în dezbatere publică un proiect de hotărâre ce va fi supus votului în Consiliul General pe 12 noiembrie. Potrivit sursei citate, primarul general Ciprian Ciucu a luat decizia să le plafoneze la nivelul anului 2026. Este de menţionat că anul trecut, proiectul prin care au fost aprobate impozitele şi taxele locale aveau în vedere rata inflaţiei de 5,6% şi prevedeau majorări la valoarea impozabilă a clădirilor. Tot în 2026, a fost instituită taxa specială pentru promovarea turistică a oraşului.",
+      "date": "2026-11-04T08:52:00.000Z",
+      "url": "https://www.news.ro/social/taxele-impozitele-locale-bucuresti-raman-neschimbate-2027-primaria-capitalei-pus-dezbatere-publica-proiect-hotarare-supus-votului-consiliul-general-12-noiembrie-document-1922405204002026111022936747",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "",
+      "imageAlt": "Taxele şi impozitele locale în Bucureşti rămân neschimbate în 2027/ Primăria Capitalei a pus în dezbatere publică un proiect de hotărâre ce va fi supus votului în Consiliul General",
+      "addedAt": "2026-11-04T09:11:58.344Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-hotnews-noul-congres-al-sua-va-avea-un-numar-record-7abd55",
+      "title": "Noul Congres al SUA va avea un număr record de socialiști democrați în rândurile sale",
+      "summary": "Alegerile organizate marți în Statele Unite pentru Congres au dus la formarea în Camera Reprezentanților a celui mai mare grup de legiuitori ce se identifică drept socialiști democrați, după ce cel puțin șapte candidați susținuți de un grup tot mai influent s-au impus în fața rivalilor lor, relatează agenția EFE, citată de Agerpres. Socialiștii Democrați …",
+      "date": "2026-11-04T08:49:23.000Z",
+      "url": "https://hotnews.ro/noul-congres-al-sua-va-avea-un-numar-record-de-socialisti-in-randurile-sale-2394610",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International",
+        "alegeri sua",
+        "alegeri sua 2026"
+      ],
+      "author": "Sebastian Jucan",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "Noul Congres al SUA va avea un număr record de socialiști democrați în rândurile sale",
+      "addedAt": "2026-11-04T09:11:52.203Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-g4media-usr-acuza-psd-ca-blocheaza-reforma-c71180",
+      "title": "USR acuză PSD că blochează reforma Inspecției Judiciare, o instituție folosită de capii justiției pentru a intimida magistrații reformiști",
+      "summary": "Votul senatorilor PSD împotriva inițiativei legislative USR privind modificarea Legii nr. 305/2022 este expresia clară a dorinței de a face ca justiția să funcționeze discriminatoriu, de a reduce la tăcere magistrații ce nu ascultă de „sună Lia!”, arată USR într-un comunicat. USR a depus un pachet de 12 proiecte legislative menite să contribuie la dezoligarhizarea […] © G4Media.ro .",
+      "date": "2026-11-04T08:48:53.000Z",
+      "url": "https://www.g4media.ro/usr-acuza-psd-ca-blocheaza-reforma-inspectiei-judiciare-o-institutie-folosita-de-capii-justitiei-pentru-a-intimida-magistratii-reformisti.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole"
+      ],
+      "author": "Mihai Roman",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro//wp-content/uploads/2026/01/dreamstime_m_31343379-e1769077199547.jpg",
+      "imageAlt": "USR acuză PSD că blochează reforma Inspecției Judiciare, o instituție folosită de capii justiției pentru a intimida magistrații reformiști",
+      "addedAt": "2026-11-04T09:11:58.051Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-newsro-decizie-strategica-a-grupului-ahold-cd62d4",
+      "title": "Decizie strategică a grupului Ahold Delhaize în România: Shop&Go devine un brand de sine stătător/ Mega Image, Profi şi Shop&Go se reunesc sub aceeaşi identitate organizaţională",
+      "summary": "Ahold Delhaize, proprietarul lanţurilor de magazine Mega Image şi Profi, anunţă că Shop&Go devine un brand de sine stătător în portofoliul de branduri locale ale grupului, cu obiectivul de a-şi construi o poziţionare inovatoare pe segmentul magazinelor de ultraproximitate. Aceasta înseamnă că Shop&Go nu va mai fi doar un format de magazin din reţeaua Mega Image, ci va avea propria identitate, propria conducere şi strategie de business. În acelaşi timp, brandurile Mega Image, Profi şi Shop&Go se reunesc sub aceeaşi identitate organizaţională.",
+      "date": "2026-11-04T08:48:21.000Z",
+      "url": "https://www.news.ro/economic/decizie-strategica-a-grupului-ahold-delhaize-in-romania-shop-go-devine-un-brand-de-sine-statator-mega-image-profi-si-shop-go-se-reunesc-sub-aceeasi-identitate-organizationala-1922404804212026111022936925",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "Decizie strategică a grupului Ahold Delhaize în România: Shop&Go devine un brand de sine stătător/ Mega Image, Profi şi Shop&Go se reunesc sub aceeaşi identitate organizaţională",
+      "addedAt": "2026-11-04T09:11:58.344Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-g4media-un-avion-air-serbia-in-care-s-ar-fi-aflat-d512ad",
+      "title": "Un avion Air Serbia în care s-ar fi aflat foști colaboratori ai lui Aleksandar Vučić, inclusiv fostul șef al serviciilor de informații sârbe, întors la Belgrad din drumul spre…",
+      "summary": "Avionul Air Serbia JU 134, care a decolat de pe aeroportul din Belgrad marți în jurul orei 18:25 spre Moscova, a fost deviat în timp ce se afla deasupra Lituaniei și s-a întors la Belgrad, scrie vreme.com. La bordul aeronavei s-ar fi aflat trei foști colaboratori apropiați ai lui Aleksandar Vučić, inclusiv fostul șef al […] © G4Media.ro .",
+      "date": "2026-11-04T08:43:09.000Z",
+      "url": "https://www.g4media.ro/un-avion-air-serbia-in-care-s-ar-fi-aflat-fosti-colaboratori-ai-lui-aleksandar-vucic-inclusiv-fostul-sef-al-serviciilor-de-informatii-sarbe-intors-la-belgrad-din-drumul-spre-moscova-zborul-a-fost.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole"
+      ],
+      "author": "Teodora Stroe",
+      "theme": "ai",
+      "image": "https://www.g4media.ro//wp-content/uploads/2022/03/Air-Serbia.jpg",
+      "imageAlt": "Un avion Air Serbia în care s-ar fi aflat foști colaboratori ai lui Aleksandar Vučić, inclusiv fostul șef al serviciilor de informații sârbe, întors la Belgrad din drumul spre Mosc",
+      "addedAt": "2026-11-04T09:11:58.051Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-profit-forumul-finante-digitale-in-europa-centrala-86792a",
+      "title": "Forumul Finanțe Digitale în Europa Centrală și de Est 2026. România Digitală – construind încredere, inovare și competitivitate pentru finanțele viitorului",
+      "summary": "Forumul reunește la București, pe 12 noiembrie 2026, în Sala Tronului a Muzeului Național de Artă al României, lideri din zona supravegherii și reglementării, instituții europene și internaționale, bănci centrale, reprezentanți ai pieței de capital, experți și mediul academic. Evenimentul este organizat de Autoritatea de Supraveghere Financiară (ASF), în colaborare cu Institutul de Studii Financiare (ISF).",
+      "date": "2026-11-04T08:39:39.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/forumul-finante-digitale-in-europa-centrala-si-de-est-2026-romania-digitala-construind-incredere-inovare-si-competitivitate-pentru-finantele-viitorului-22936863?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Povești cu Profit"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://i0.1616.ro/media/2/2621/33209/22936863/1/screenshot-2026-11-04-104019.png?width=800",
+      "imageAlt": "Forumul Finanțe Digitale în Europa Centrală și de Est 2026. România Digitală – construind încredere, inovare și competitivitate pentru finanțele viitorului",
+      "addedAt": "2026-11-04T09:11:54.981Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-g4media-esteban-ocon-dat-afara-de-la-haas-nu-va-mai-0d2d38",
+      "title": "Esteban Ocon, dat afară de la Haas – Nu va mai concura în 2026 în Formula 1, după ce s-a certat cu șeful echipei",
+      "summary": "Echipa Haas a confirmat că sezonul din Formula 1 al lui Esteban Ocon este unul încheiat. Pilotul a avut o ceartă cu șeful echipei, Aayo Komatsu, în Mexic, și nu mai apărea pe grila de start până la finalul lui 2026. Francezul Ocon se afla oricum în fața ultimelor curse din Marele Circ, el fiind […] © G4Media.ro .",
+      "date": "2026-11-04T08:37:09.000Z",
+      "url": "https://www.g4media.ro/esteban-ocon-dat-afara-de-la-haas-nu-va-mai-concura-in-2026-in-formula-1-dupa-ce-s-a-certat-cu-seful-echipei.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Sportz",
+        "Esteban Ocon",
+        "formula 1 2026",
+        "haas f1 team"
+      ],
+      "author": "Adrian Ilincescu",
+      "theme": "sport",
+      "image": "https://www.g4media.ro//wp-content/uploads/2026/09/Esteban-Ocon.jpg",
+      "imageAlt": "Esteban Ocon, dat afară de la Haas – Nu va mai concura în 2026 în Formula 1, după ce s-a certat cu șeful echipei",
+      "addedAt": "2026-11-04T09:11:58.051Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-g4media-video-sindicalistii-de-la-institutul-0533b2",
+      "title": "VIDEO Sindicaliștii de la Institutul Național de Statistică protestează și cer banii câștigați definitiv în instanță",
+      "summary": "Câteva zeci de angajați ai Institutului Național de Statistică protestează miercuri în fața Ministerului Finanțelor, nemulțumiți că statul nu le plătește drepturile salariale câștigate definitiv în instanță, potrivit unui comunicat. Este vorba despre restanțe aferente anilor 2025 și 2026, a căror plată a fost amânată de Guvern, pe fondul măsurilor de reducere a cheltuielilor bugetare. […] © G4Media.ro .",
+      "date": "2026-11-04T08:35:25.000Z",
+      "url": "https://www.g4media.ro/video-sindicalistii-de-la-institutul-national-de-statistica-protesteaza-si-cer-banii-castigati-definitiv-in-instanta.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole"
+      ],
+      "author": "Alin Ionescu",
+      "theme": "politika",
+      "image": "https://www.g4media.ro//wp-content/uploads/2026/11/Protest-sindicat-statistica.jpeg",
+      "imageAlt": "VIDEO Sindicaliștii de la Institutul Național de Statistică protestează și cer banii câștigați definitiv în instanță",
+      "addedAt": "2026-11-04T09:11:58.051Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-hotnews-primul-lider-psd-care-reactioneaza-dupa-7c1b90",
+      "title": "Primul lider PSD care reacționează după înfrângerea republicanilor lui Trump. „Miza este mai mare decât pare la prima vedere”",
+      "summary": "Statele Unite intră într-o nouă etapă politică, după victoria democraților în alegerile pentru Senat și Camera Reprezentanților, iar această schimbare are implicații concrete, cu miză inclusiv pentru România, susține europarlamentarul și prim-vicepreședintele PSD Victor Negrescu. „Congresul adoptă legislația și aprobă bugetele federale, Senatul confirmă numeroase numiri importante, iar majoritățile parlamentare pot influența prioritățile de politică …",
+      "date": "2026-11-04T08:35:11.000Z",
+      "url": "https://hotnews.ro/primul-lider-psd-care-reactioneaza-dupa-infrangerea-republicanilor-lui-trump-miza-este-mai-mare-decat-pare-la-prima-vedere-2394583",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International",
+        "Politic"
+      ],
+      "author": "Clarice Dinu",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Primul lider PSD care reacționează după înfrângerea republicanilor lui Trump. „Miza este mai mare decât pare la prima vedere”",
+      "addedAt": "2026-11-04T09:11:52.204Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-profit-ultima-ora-concedieri-in-romania-al-treilea-e10ba4",
+      "title": "ULTIMA ORĂ Concedieri în România. Al treilea val de disponibilizări din acest an la RAAL, unul dintre cei mai mari angajatori din Bistrița-Năsăud. Compania trimite acasă sute de…",
+      "summary": "RAAL, companie specializată în producția de sisteme complete de răcire și schimbătoare de căldură din aliaje de aluminiu și oțel inoxidabil, anunță noi concedieri.",
+      "date": "2026-11-04T08:34:00.000Z",
+      "url": "https://www.profit.ro/perspective/ultima-ora-concedieri-in-romania-al-treilea-val-de-disponibilizari-din-acest-an-la-raal-unul-dintre-cei-mai-mari-angajatori-din-bistrita-nasaud-compania-trimite-acasa-sute-de-oameni-22936783?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Perspective"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33242/22936783/2/042220191139121200-bistrita.jpg?width=800",
+      "imageAlt": "ULTIMA ORĂ Concedieri în România. Al treilea val de disponibilizări din acest an la RAAL, unul dintre cei mai mari angajatori din Bistrița-Năsăud. Compania trimite acasă sute de oa",
+      "addedAt": "2026-11-04T09:11:54.981Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-hotnews-cele-mai-mari-surprize-la-alegerile-din-sua-49a654",
+      "title": "Cele mai mari surprize la alegerile din SUA. Bastioanele republicane care au căzut în fața democraților",
+      "summary": "Victoria zdrobitoare a democraților la alegerile organizate marți în Statele Unite a fost presărată de mai multe surprize majore, Partidul Democrat obținând mandate importante în bastioane ale republicanilor. În unele dintre aceste cazuri rezultatele au sfidat sondajele de opinie care indicau o victorie la o marjă confortabilă pentru candidații republicani. Texas, surpriza alegerilor Una dintre …",
+      "date": "2026-11-04T08:32:52.000Z",
+      "url": "https://hotnews.ro/cele-mai-mari-surprize-la-alegerile-din-sua-bastioanele-republicane-care-au-cazut-in-fata-democratilor-2394518",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International",
+        "alegeri sua",
+        "alegeri sua 2026"
+      ],
+      "author": "Sebastian Jucan",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Cele mai mari surprize la alegerile din SUA. Bastioanele republicane care au căzut în fața democraților",
+      "addedAt": "2026-11-04T09:11:52.204Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-newsro-hidrologii-anunta-cod-galben-de-inundatii-8932da",
+      "title": "Hidrologii anunţă cod galben de inundaţii pe râuri din cinci judeţe ale ţării",
+      "summary": "Institutul Naţional de Hidrologie şi Gospodărire a Apelor anunţă cod galben de inundaţii pe râuri din cinci judeţe ale ţării, până joi, la ora 12.00. Sunt vizate râuri din bazinele hidrografice: Călmăţui, Vedea şi Neajlov, aferente judeţelor Olt, Teleorman, Argeş, Dâmboviţa şi Giurgiu.",
+      "date": "2026-11-04T08:29:46.000Z",
+      "url": "https://www.news.ro/eveniment/hidrologii-anunta-cod-galben-de-inundatii-pe-rauri-din-cinci-judete-ale-tarii-1922402904462026111022936792",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "image": "",
+      "imageAlt": "Hidrologii anunţă cod galben de inundaţii pe râuri din cinci judeţe ale ţării",
+      "addedAt": "2026-11-04T09:11:58.344Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-hotnews-democratii-au-castigat-in-mod-spectaculos-13b34e",
+      "title": "Democrații au câștigat în mod spectaculos Congresul. Ce urmează însă după asta și de ce unii se tem de un Trump „încolțit” și „scăpat de sub control”",
+      "summary": "Democrații vor dispune de noi instrumente pentru a exercita controlul și pentru a investiga guvernul Trump, familia și aliații acestuia, și chiar pe președinte. De asemenea, vor avea un cuvânt de spus în privința cheltuielilor guvernamentale și, eventual, un mandat pentru a anula unele dintre schimbările pe care acesta le-a impus. Dar se vor lovi …",
+      "date": "2026-11-04T08:25:50.000Z",
+      "url": "https://hotnews.ro/democratii-au-castigat-in-mod-spectaculos-congresul-ce-urmeaza-insa-dupa-asta-si-de-ce-unii-se-tem-de-un-trump-incoltit-si-scapat-de-sub-control-2394536",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International",
+        "alegeri sua",
+        "donald trump"
+      ],
+      "author": "Adrian Cochino",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Democrații au câștigat în mod spectaculos Congresul. Ce urmează însă după asta și de ce unii se tem de un Trump „încolțit” și „scăpat de sub control”",
+      "addedAt": "2026-11-04T09:11:52.204Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-hotnews-ce-se-intampla-cu-impozitele-si-taxa-de-4d6adf",
+      "title": "Ce se întâmplă cu impozitele și taxa de parcare în București în 2027. Anunțul Primăriei Capitalei",
+      "summary": "Taxele și impozitele locale, dar și taxa pentru parcarea de reședință rămân neschimbate în 2027, informează Primăria Municipiului București (PMB). „Taxele și impozitele locale în București, dar și taxa pentru parcarea de reședință rămân neschimbate în 2027. Primarul general Ciprian Ciucu a luat decizia să le plafoneze la nivelul anului 2026. Nici taxa de promovare …",
+      "date": "2026-11-04T08:23:32.000Z",
+      "url": "https://hotnews.ro/ce-se-intampla-cu-impozitele-si-taxa-de-parcare-in-bucuresti-in-2027-anuntul-primariei-capitale-2394593",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Maria Ionescu",
+      "theme": "ekonomija",
+      "image": "",
+      "imageAlt": "Ce se întâmplă cu impozitele și taxa de parcare în București în 2027. Anunțul Primăriei Capitalei",
+      "addedAt": "2026-11-04T09:11:52.204Z"
+    },
+    {
+      "slug": "bukurest-2026-11-04-profit-netflix-apeleaza-la-ai-pentru-a-creste-3193cf",
+      "title": "Netflix apelează la AI pentru a crește timpul petrecut de abonați în cadrul platformei",
+      "summary": "Netflix inaugurează AI Discover, o nouă secțiune în cadrul aplicației unde va testa funcții de recomandare a conținutului bazate pe inteligență artificială.",
+      "date": "2026-11-04T08:11:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/it-c/netflix-apeleaza-la-ai-pentru-a-creste-timpul-petrecut-de-abonati-in-cadrul-platformei-22935968?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "IT&C"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://i0.1616.ro/media/2/2621/33216/22935968/2/pexels-samma97-6142159.jpg?width=800",
+      "imageAlt": "Netflix apelează la AI pentru a crește timpul petrecut de abonați în cadrul platformei",
+      "addedAt": "2026-11-04T09:11:54.981Z"
+    },
     {
       "slug": "bukurest-2026-11-03-agerpres-video-alegeri-sua-in-alaska-senatorul-81e178",
       "title": "VIDEO Alegeri SUA: În Alaska, senatorul republican în cursă denunță o 'înșelătorie electorală' a democraților",
