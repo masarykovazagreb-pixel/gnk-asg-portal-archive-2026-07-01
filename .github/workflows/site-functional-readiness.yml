@@ -89,6 +89,8 @@ jobs:
           node scripts/test-news-queue-guardrails.mjs
           node scripts/test-news-publication-seo-contract.mjs
           node scripts/test-news-share-routing-v1.mjs
+          node --check scripts/gnk-news-refresh.mjs
+          node scripts/test-news-ingest-integrity-v1.mjs
 
       - name: Market refresh cadence contract
         shell: bash
