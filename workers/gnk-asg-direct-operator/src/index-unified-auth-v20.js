@@ -9,11 +9,11 @@ async function enhance(request,response){
  if(request.method!=='GET'||![200,401,403,503].includes(response.status))return response;
  const type=String(response.headers.get('content-type')||'').toLowerCase();if(!type.includes('text/html'))return response;
  try{
-  let html=await response.text();
+  let html=await response.clone().text();
   html=html.replace(/<script[^>]+public-unified-design-v3\.js[^>]*><\/script>/gi,'').replace(/<script[^>]+public-unified-menu-v5\.js[^>]*><\/script>/gi,'').replace(/<script[^>]+index-editorial-order-v5\.js[^>]*><\/script>/gi,'');
   const route=pathOf(request),scripts=`${isIndex(route)?EDITORIAL:''}${SHELL}`;
   html=html.includes('</body>')?html.replace('</body>',`${scripts}</body>`):`${html}${scripts}`;
-  const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.delete('location');headers.set('content-type','text/html; charset=utf-8');
+  const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.delete('etag');headers.delete('content-md5');headers.delete('location');headers.set('content-type','text/html; charset=utf-8');
   if(isIndex(route)&&!headers.has('x-gnk-explicit-html-route'))headers.set('x-gnk-explicit-html-route',route==='/'?'/index.html':'/en/index.html');
   headers.set('x-gnk-public-runtime',VERSION);
   headers.set('x-gnk-public-design','v2-unified');
