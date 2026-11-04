@@ -4,7 +4,7 @@
   "lang": "en",
   "city": "Nairobi",
   "country": "Kenija",
-  "updatedAt": "2026-11-04T05:59:50.915Z",
+  "updatedAt": "2026-11-04T11:44:23.603Z",
   "sources": [
     {
       "id": "capitalfm",
@@ -14,19 +14,20 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-04T05:59:33.615Z"
+      "checkedAt": "2026-11-04T11:44:05.162Z"
     },
     {
       "id": "nation",
       "name": "Daily Nation",
-      "url": "https://nation.africa/kenya/rss.xml",
-      "ok": true,
-      "fetched": 25,
+      "url": "https://nation.africa/kenya/rss",
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://nation.africa/kenya/rss: HTTP 403"
+        "https://nation.africa/kenya/rss: HTTP 403",
+        "https://nation.africa/kenya/rss.xml: HTTP 404"
       ],
-      "checkedAt": "2026-11-04T05:59:34.702Z"
+      "checkedAt": "2026-11-04T11:44:06.749Z"
     },
     {
       "id": "standard",
@@ -38,7 +39,7 @@
       "errors": [
         "https://www.standardmedia.co.ke/rss: nije feed"
       ],
-      "checkedAt": "2026-11-04T05:59:35.559Z"
+      "checkedAt": "2026-11-04T11:44:07.425Z"
     },
     {
       "id": "star",
@@ -50,7 +51,7 @@
       "errors": [
         "https://www.the-star.co.ke/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-04T05:59:38.058Z"
+      "checkedAt": "2026-11-04T11:44:09.002Z"
     },
     {
       "id": "businessdaily",
@@ -62,7 +63,7 @@
       "errors": [
         "https://www.businessdailyafrica.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-04T05:59:38.995Z"
+      "checkedAt": "2026-11-04T11:44:09.871Z"
     },
     {
       "id": "citizen",
@@ -74,7 +75,7 @@
       "errors": [
         "https://www.citizen.digital/rss: HTTP 400"
       ],
-      "checkedAt": "2026-11-04T05:59:47.156Z"
+      "checkedAt": "2026-11-04T11:44:17.885Z"
     },
     {
       "id": "kbc",
@@ -84,7 +85,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-04T05:59:49.613Z"
+      "checkedAt": "2026-11-04T11:44:22.435Z"
     },
     {
       "id": "eastafrican",
@@ -96,10 +97,205 @@
       "errors": [
         "https://www.theeastafrican.co.ke/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-04T05:59:50.915Z"
+      "checkedAt": "2026-11-04T11:44:23.602Z"
     }
   ],
   "items": [
+    {
+      "slug": "nairobi-2026-11-04-kbc-police-inspector-charged-with-murder-of-dr-0fe953",
+      "title": "Police inspector charged with murder of Dr. Victoria Mutuse",
+      "summary": "The Director of Public Prosecutions (DPP) Wednesday charged Police Inspector Kenneth Kipkemboi Sang with the murder of Dr. Victoria Nthunya Mutiso. In a statement, the Office of the Director of Public Prosecutions (ODPP) said Sang appeared before the Milimani High Court where he was arraigned before Justice Alexander Muteti and pleaded not guilty to the […] The post Police inspector charged with murder of Dr. Victoria Mutuse appeared first on KBC Digital .",
+      "date": "2026-11-04T11:42:44.000Z",
+      "url": "https://www.kbc.co.ke/police-inspector-charged-with-murder-of-dr-victoria-mutuse/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "More",
+        "Dr Victoria Mutiso"
+      ],
+      "author": "KBC Digital",
+      "theme": "drustvo",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/11/DPP-12.png",
+      "imageAlt": "Police inspector charged with murder of Dr. Victoria Mutuse",
+      "addedAt": "2026-11-04T11:44:22.436Z"
+    },
+    {
+      "slug": "nairobi-2026-11-04-kbc-gachagua-misleading-kenyans-on-rironi-mau-aee1a6",
+      "title": "Gachagua misleading Kenyans on Rironi-Mau Summit project costs – Mbadi",
+      "summary": "Treasury CS says changes to highway's design and concerns over commercial risks informed govt's decision to terminate contract with French firm The post Gachagua misleading Kenyans on Rironi-Mau Summit project costs – Mbadi appeared first on KBC Digital .",
+      "date": "2026-11-04T11:35:09.000Z",
+      "url": "https://www.kbc.co.ke/gachagua-misleading-kenyans-on-rironi-mau-summit-project-costs-mbadi/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "Local News",
+        "NEWS"
+      ],
+      "author": "Eric Biegon",
+      "theme": "drustvo",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/11/MBADI-RIRONI-MAU-SUMMIT.jpeg",
+      "imageAlt": "Gachagua misleading Kenyans on Rironi-Mau Summit project costs – Mbadi",
+      "addedAt": "2026-11-04T11:44:22.436Z"
+    },
+    {
+      "slug": "nairobi-2026-11-04-kbc-wanted-person-why-dci-is-hunting-john-7c3a06",
+      "title": "Wanted person: Why DCI is hunting John Masila Nzioka",
+      "summary": "According to the DCI, the suspect recently engaged police officers in a shootout in which officers sustained injuries before he escaped the police dragnet. The post Wanted person: Why DCI is hunting John Masila Nzioka appeared first on KBC Digital .",
+      "date": "2026-11-04T10:51:44.000Z",
+      "url": "https://www.kbc.co.ke/wanted-person-why-dci-is-hunting-john-masila-nzioka/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "Local News",
+        "NEWS",
+        "DCI",
+        "John Masila Nzioka"
+      ],
+      "author": "Margaret Kalekye",
+      "theme": "drustvo",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/11/wanted2.jpg",
+      "imageAlt": "Wanted person: Why DCI is hunting John Masila Nzioka",
+      "addedAt": "2026-11-04T11:44:22.436Z"
+    },
+    {
+      "slug": "nairobi-2026-11-04-kbc-iebc-seeks-stronger-partnerships-to-secure-7a9c48",
+      "title": "IEBC seeks stronger partnerships to secure 2027 elections",
+      "summary": "The Independent Electoral and Boundaries Commission (IEBC) has underscored the importance of inter-agency collaboration in strengthening electoral integrity and public confidence ahead of the 10th August 2027 General Election. The call was made by IEBC Commissioner Marykaren Sorobit, who represented the Commission Chairperson during the launch of three key justice sector publications. The publications included […] The post IEBC seeks stronger partnerships to secure 2027 elections appeared first on KBC Digital .",
+      "date": "2026-11-04T09:53:24.000Z",
+      "url": "https://www.kbc.co.ke/iebc-calls-for-inter-agency-collaboration-ahead-of-2027-general-election/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "County News",
+        "NEWS",
+        "Commissioner Marykaren Sorobit",
+        "Independent Electoral and Boundaries Commission (IEBC)"
+      ],
+      "author": "Christine Muchira",
+      "theme": "politika",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/11/COMMISSIONER.png",
+      "imageAlt": "IEBC seeks stronger partnerships to secure 2027 elections",
+      "addedAt": "2026-11-04T11:44:22.436Z"
+    },
+    {
+      "slug": "nairobi-2026-11-04-kbc-kenya-signs-creative-economy-partnership-e93b93",
+      "title": "Kenya signs creative economy partnership with Idris Elba",
+      "summary": "The Ministry of Foreign Affairs has announced a partnership with internationally acclaimed actor and filmmaker Sir Idris Elba to strengthen the country’s creative economy through investment, technology and access to international markets. The agreement, signed on the sidelines of the 2026 Commonwealth Heads of Government Meeting (CHOGM) in Antigua and Barbuda, is expected to expand […] The post Kenya signs creative economy partnership with Idris Elba appeared first on KBC Digital .",
+      "date": "2026-11-04T09:41:24.000Z",
+      "url": "https://www.kbc.co.ke/kenya-signs-creative-economy-partnership-with-idris-elba/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "Arts",
+        "Culture",
+        "Creative economy"
+      ],
+      "author": "Nzula Nzyoka",
+      "theme": "ekonomija",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/11/Songoie-Elba-scaled.jpg",
+      "imageAlt": "Kenya signs creative economy partnership with Idris Elba",
+      "addedAt": "2026-11-04T11:44:22.437Z"
+    },
+    {
+      "slug": "nairobi-2026-11-04-capitalfm-police-recover-3-000-goats-and-sheep-after-a0276d",
+      "title": "Police Recover 3,000 Goats and Sheep After Bandit Attack in Marsabit",
+      "summary": "The National Police Service (NPS) said officers recovered 3,000 sheep and goats in Loiyangalani Sub-County, Marsabit County, on Tuesday, following an armed bandit attack on a group of herders.",
+      "date": "2026-11-04T08:08:58.000Z",
+      "url": "https://capitalfm.africa/police-recover-3000-goats-and-sheep-after-bandit-attack-in-marsabit/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "NATIONAL NEWS",
+        "News",
+        "Loiyangalani livestock recovery",
+        "Marsabit bandit attack"
+      ],
+      "author": "EDITORIAL DESK",
+      "theme": "drustvo",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/11/Goats-Recovered-1200x630.jpeg",
+      "imageAlt": "Police Recover 3,000 Goats and Sheep After Bandit Attack in Marsabit",
+      "addedAt": "2026-11-04T11:44:05.162Z"
+    },
+    {
+      "slug": "nairobi-2026-11-04-capitalfm-kenya-s-economy-grew-5pc-annually-between-7a0d14",
+      "title": "Kenya’s Economy Grew 5pc Annually Between 2022 and 2025, Treasury PS Says",
+      "summary": "Kiptoo attributed the performance to improving economic conditions, rising government revenue and increased investor confidence, citing figures presented during the launch of the 34th World Bank Kenya Economic Update in Nairobi on Wednesday.",
+      "date": "2026-11-04T07:46:28.000Z",
+      "url": "https://capitalfm.africa/kenyas-economy-grew-5pc-annually-between-2022-and-2025-treasury-ps-says/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "NATIONAL NEWS",
+        "News",
+        "Chris Kiptoo latest statement",
+        "Kenya economic growth 2025"
+      ],
+      "author": "EDITORIAL DESK",
+      "theme": "politika",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/11/Kiptoo-KK-1200x630.jpeg",
+      "imageAlt": "Kenya’s Economy Grew 5pc Annually Between 2022 and 2025, Treasury PS Says",
+      "addedAt": "2026-11-04T11:44:05.162Z"
+    },
+    {
+      "slug": "nairobi-2026-11-04-capitalfm-muturi-accuses-iebc-of-delaying-2027-1ca9a1",
+      "title": "Muturi Accuses IEBC of Delaying 2027 Election Preparations, Demands Recall of Key Officials",
+      "summary": "Muturi said the commission should take responsibility for delays in its preparations instead of attributing the challenges to ongoing court cases.",
+      "date": "2026-11-04T07:15:45.000Z",
+      "url": "https://capitalfm.africa/muturi-accuses-iebc-of-delaying-2027-election-preparations-demands-recall-of-key-officials/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "NATIONAL NEWS",
+        "News",
+        "2027 General Election Kenya",
+        "IEBC 2027 election preparations"
+      ],
+      "author": "EDITORIAL DESK",
+      "theme": "politika",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/06/Justin-Muturi-a.jpg",
+      "imageAlt": "Muturi Accuses IEBC of Delaying 2027 Election Preparations, Demands Recall of Key Officials",
+      "addedAt": "2026-11-04T11:44:05.162Z"
+    },
+    {
+      "slug": "nairobi-2026-11-04-capitalfm-21-drivers-arrested-in-ntsa-night-crackdown-fdc2b5",
+      "title": "21 Drivers Arrested in NTSA Night Crackdown Along Kakamega-Mumias Road",
+      "summary": "The National Transport and Safety Authority said the arrests followed an inspection targeting motorists and vehicles found violating road safety regulations.",
+      "date": "2026-11-04T06:19:30.000Z",
+      "url": "https://capitalfm.africa/21-drivers-arrested-in-ntsa-night-crackdown-along-kakamega-mumias-road/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "NATIONAL NEWS",
+        "News",
+        "Drunk driving Kenya",
+        "Expired PSV badges Kenya"
+      ],
+      "author": "EDITORIAL DESK",
+      "theme": "sport",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/11/NTSA-1200x630.jpeg",
+      "imageAlt": "21 Drivers Arrested in NTSA Night Crackdown Along Kakamega-Mumias Road",
+      "addedAt": "2026-11-04T11:44:05.162Z"
+    },
+    {
+      "slug": "nairobi-2026-11-04-capitalfm-cs-duale-appointed-to-represent-kenya-on-b0c5a3",
+      "title": "CS Duale Appointed to Represent Kenya on Africa CDC Governing Board",
+      "summary": "Kenya is among seven Member States nominated by the African Union Commission to represent their respective regions on the continental health body's governing organ.",
+      "date": "2026-11-04T06:06:30.000Z",
+      "url": "https://capitalfm.africa/cs-duale-appointed-to-represent-kenya-on-africa-cdc-governing-board/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "NATIONAL NEWS",
+        "News",
+        "Aden Duale",
+        "Africa CDC Governing Board"
+      ],
+      "author": "EDITORIAL DESK",
+      "theme": "drustvo",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/06/ADEN-DUALE-MOH.jpg",
+      "imageAlt": "CS Duale Appointed to Represent Kenya on Africa CDC Governing Board",
+      "addedAt": "2026-11-04T11:44:05.162Z"
+    },
     {
       "slug": "nairobi-2026-11-04-capitalfm-regina-re-s-mother-died-from-multiple-stab-097268",
       "title": "Regina Re’s Mother Died From Multiple Stab Wounds, Autopsy Reveals",
