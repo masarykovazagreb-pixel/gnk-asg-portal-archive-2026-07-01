@@ -248,10 +248,18 @@ function parseFeed(xml, feed) {
       published_at: publishedAt,
       publishedAt,
       verified: true,
-      verification: { article: { ok: true }, image: { ok: true, fallback: false } },
+      verification: {
+        scope: 'source-rss-link-and-image-availability-only; not independent fact-checking',
+        article: { ok: true, method: 'rss-item-has-source-link', independentlyFactChecked: false },
+        image: { ok: true, fallback: false, method: 'validated-on-intake' }
+      },
       share_url: `/podijeli/vijest/${idFor(url, title)}/`,
-      editor_approved: 'Nermin Sefić',
-      editor_role: 'urednik'
+      // RSS ingestion is automated. Do not falsely attribute personal
+      // pre-publication approval to an editor who did not review this item.
+      editor_approved: null,
+      editor_role: 'urednik',
+      editorial_supervision: 'Nermin Sefić',
+      editorial_review_state: 'automated-source-intake-not-individually-approved'
     };
   }).filter(Boolean);
 }
