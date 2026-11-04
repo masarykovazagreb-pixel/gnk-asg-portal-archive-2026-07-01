@@ -60,6 +60,16 @@ jobs:
       - name: GNK ASG S+Chat mobile, scroll, floating launcher and AI safety contract
         run: node tests/test-s-chat-static-v1.mjs
 
+      - name: Frontend and backend security regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/index-digital-workforce-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v20.js
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js
+          node --check scripts/test-public-fullstack-regressions-v1.mjs
+          node scripts/test-public-fullstack-regressions-v1.mjs
+
       - name: Digital workforce API contract
         run: node scripts/test-digital-workforce-api-contract.mjs
 
