@@ -4,7 +4,7 @@
   "lang": "id",
   "city": "Jakarta",
   "country": "Indonezija",
-  "updatedAt": "2026-11-05T07:30:50.703Z",
+  "updatedAt": "2026-11-05T11:18:45.151Z",
   "sources": [
     {
       "id": "antara",
@@ -14,7 +14,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T07:30:43.057Z"
+      "checkedAt": "2026-11-05T11:18:27.967Z"
     },
     {
       "id": "kompas",
@@ -24,10 +24,10 @@
       "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.kompas.com/rss: HTTP 404",
-        "https://nasional.kompas.com/rss: HTTP 404"
+        "https://www.kompas.com/rss: empty response",
+        "https://nasional.kompas.com/rss: empty response"
       ],
-      "checkedAt": "2026-11-05T07:30:45.100Z"
+      "checkedAt": "2026-11-05T11:18:29.652Z"
     },
     {
       "id": "detik",
@@ -39,7 +39,7 @@
       "errors": [
         "https://rss.detik.com/index.php/detikcom: fetch failed"
       ],
-      "checkedAt": "2026-11-05T07:30:47.094Z"
+      "checkedAt": "2026-11-05T11:18:41.497Z"
     },
     {
       "id": "tempo",
@@ -51,7 +51,7 @@
       "errors": [
         "https://www.tempo.co/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-05T07:30:47.909Z"
+      "checkedAt": "2026-11-05T11:18:42.323Z"
     },
     {
       "id": "cnnindonesia",
@@ -61,7 +61,7 @@
       "fetched": 100,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T07:30:48.323Z"
+      "checkedAt": "2026-11-05T11:18:42.485Z"
     },
     {
       "id": "republika",
@@ -71,7 +71,7 @@
       "fetched": 15,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T07:30:48.916Z"
+      "checkedAt": "2026-11-05T11:18:42.981Z"
     },
     {
       "id": "cnbcindonesia",
@@ -81,7 +81,7 @@
       "fetched": 100,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T07:30:49.039Z"
+      "checkedAt": "2026-11-05T11:18:43.393Z"
     },
     {
       "id": "kumparan",
@@ -93,10 +93,335 @@
       "errors": [
         "https://kumparan.com/feed: HTTP 403"
       ],
-      "checkedAt": "2026-11-05T07:30:50.703Z"
+      "checkedAt": "2026-11-05T11:18:45.151Z"
     }
   ],
   "items": [
+    {
+      "slug": "jakarta-2026-11-05-cnbcindonesia-video-dinamika-pemilu-as-kabar-baik-pdb-ri-b2f734",
+      "title": "Video: Dinamika Pemilu AS - Kabar Baik PDB RI, IHSG dan Rupiah Menghijau",
+      "summary": "Dinamika Pemilu AS - Kabar Baik Ekonomi Ri, IHSG dan Rupiah Kompak Menghijau",
+      "date": "2026-11-05T11:16:46.000Z",
+      "url": "https://www.cnbcindonesia.com/market/20261105173745-19-782728/video-dinamika-pemilu-as--kabar-baik-pdb-ri-ihsg-rupiah-menghijau",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://awsimages.detik.net.id/visual/2026/11/05/dinamika-pemilu-as-kabar-baik-ekonomi-ri-ihsg-rupiah-kompak-menghijau-1793875375467_169.png?w=1200&q=90",
+      "imageAlt": "Video: Dinamika Pemilu AS - Kabar Baik PDB RI, IHSG dan Rupiah Menghijau",
+      "addedAt": "2026-11-05T11:18:43.393Z"
+    },
+    {
+      "slug": "jakarta-2026-11-05-antara-dki-akan-revitalisasi-sekolah-hingga-tambah-02521a",
+      "title": "DKI akan revitalisasi sekolah hingga tambah sekolah swasta gratis",
+      "summary": "Gubernur DKI Jakarta Pramono Anung Wibowo akan melakukan revitalisasi sekolah hingga menambah sekolah swasta gratis ...",
+      "date": "2026-11-05T11:16:39.000Z",
+      "url": "https://www.antaranews.com/berita/5834467/dki-akan-revitalisasi-sekolah-hingga-tambah-sekolah-swasta-gratis",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/05/IMG_2091.jpeg",
+      "imageAlt": "DKI akan revitalisasi sekolah hingga tambah sekolah swasta gratis",
+      "addedAt": "2026-11-05T11:18:27.967Z"
+    },
+    {
+      "slug": "jakarta-2026-11-05-antara-bkpm-penerapan-esg-pengaruhi-akses-589e8a",
+      "title": "BKPM: Penerapan ESG pengaruhi akses pembiayaan proyek",
+      "summary": "Kementerian Investasi dan Hilirisasi/Badan Koordinasi Penanaman Modal (BKPM) menyampaikan kepatuhan perusahaan terhadap ...",
+      "date": "2026-11-05T11:16:11.000Z",
+      "url": "https://www.antaranews.com/berita/5834463/bkpm-penerapan-esg-pengaruhi-akses-pembiayaan-proyek",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/05/IMG_1533.jpg",
+      "imageAlt": "BKPM: Penerapan ESG pengaruhi akses pembiayaan proyek",
+      "addedAt": "2026-11-05T11:18:27.967Z"
+    },
+    {
+      "slug": "jakarta-2026-11-05-republika-kita-merayakan-umkm-tetapi-lupa-bertanya-3f34ba",
+      "title": "Kita Merayakan UMKM, Tetapi Lupa Bertanya Mengapa Semua Orang Harus Berdagang",
+      "summary": "Menjamurnya usaha kuliner seperti seblak, cilok, dan gorengan mencerminkan semangat kewirausahaan masyarakat sekaligus memunculkan pertanyaan tentang keterbatasan lapangan kerja dan tantangan ekonomi. (Ilustrasi: AI) Indonesia tampaknya sedang memasuki zaman ketika...",
+      "date": "2026-11-05T11:15:34.000Z",
+      "url": "https://retizen.republika.co.id/posts/791419/kita-merayakan-umkm-tetapi-lupa-bertanya-mengapa-semua-orang-harus-berdagang",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Teh Anget"
+      ],
+      "author": "Retizen",
+      "theme": "ai",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/023489400-1793877334-261105155803-859jpg.jpg",
+      "imageAlt": "Kita Merayakan UMKM, Tetapi Lupa Bertanya Mengapa Semua Orang Harus Berdagang",
+      "addedAt": "2026-11-05T11:18:42.982Z"
+    },
+    {
+      "slug": "jakarta-2026-11-05-antara-pnm-dan-abpednas-kolaborasi-perkuat-d1d351",
+      "title": "PNM dan ABPEDNAS kolaborasi perkuat literasi keuangan, dorong pemberdayaan ekonomi dari desa",
+      "summary": "Jakarta (ANTARA) – Memperkuat ekonomi masyarakat dari tingkat desa menjadi salah satu langkah penting dalam ...",
+      "date": "2026-11-05T11:15:20.000Z",
+      "url": "https://www.antaranews.com/berita/5834459/pnm-dan-abpednas-kolaborasi-perkuat-literasi-keuangan-dorong-pemberdayaan-ekonomi-dari-desa",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/05/WhatsApp-Image-2026-11-05-at-15.47.02.jpeg",
+      "imageAlt": "PNM dan ABPEDNAS kolaborasi perkuat literasi keuangan, dorong pemberdayaan ekonomi dari desa",
+      "addedAt": "2026-11-05T11:18:27.967Z"
+    },
+    {
+      "slug": "jakarta-2026-11-05-cnnindonesia-veda-ega-dianggap-gila-lantaran-belalang-63f3e4",
+      "title": "Veda Ega Dianggap 'Gila' Lantaran Belalang Goreng",
+      "summary": "Veda Ega Pratama mendapat beragam respons lantaran mencoba memperkenalkan belalang goreng setelah menjadi runner up Moto3 Malaysia 2026.",
+      "date": "2026-11-05T11:15:18.000Z",
+      "url": "https://www.cnnindonesia.com/olahraga/20261105164950-156-1423776/veda-ega-dianggap-gila-lantaran-belalang-goreng",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/01/veda-ega-pratama-cetak-sejarah-raih-podium-kedua-moto3-malaysia-1793513784505_169.jpeg?w=360&q=90",
+      "imageAlt": "Veda Ega Dianggap 'Gila' Lantaran Belalang Goreng",
+      "addedAt": "2026-11-05T11:18:42.485Z"
+    },
+    {
+      "slug": "jakarta-2026-11-05-cnbcindonesia-bos-kai-lapor-prabowo-mau-bangun-trem-di-278f5e",
+      "title": "Bos KAI Lapor Prabowo Mau Bangun Trem di Bali Rp 2 Triliun",
+      "summary": "Presiden Prabowo rapat dengan Dirut KAI, Bobby Rasyidin, membahas pembangunan kereta trem di Bali. Proyek ini diperkirakan bernilai Rp2 triliun.",
+      "date": "2026-11-05T11:15:12.000Z",
+      "url": "https://www.cnbcindonesia.com/news/20261105180811-4-782754/bos-kai-lapor-prabowo-mau-bangun-trem-di-bali-rp-2-triliun",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://awsimages.detik.net.id/visual/2026/11/05/direktur-utama-pt-kereta-api-indonesia-persero-bobby-rasyidin-menyampaikan-konferensi-pers-di-istana-negara-kamis-5112026-1793875280411_169.jpeg?w=1200&q=90",
+      "imageAlt": "Bos KAI Lapor Prabowo Mau Bangun Trem di Bali Rp 2 Triliun",
+      "addedAt": "2026-11-05T11:18:43.393Z"
+    },
+    {
+      "slug": "jakarta-2026-11-05-antara-kai-siapkan-anggaran-rp2-triliun-untuk-b36a84",
+      "title": "KAI siapkan anggaran Rp2 triliun untuk proyek kereta Bali",
+      "summary": "Direktur Utama PT Kereta Api Indonesia (Persero) Bobby Rasyidin menyampaikan pemerintah menyiapkan anggaran kurang ...",
+      "date": "2026-11-05T11:14:55.000Z",
+      "url": "https://www.antaranews.com/berita/5834455/kai-siapkan-anggaran-rp2-triliun-untuk-proyek-kereta-bali",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/05/IMG_4371.jpeg",
+      "imageAlt": "KAI siapkan anggaran Rp2 triliun untuk proyek kereta Bali",
+      "addedAt": "2026-11-05T11:18:27.968Z"
+    },
+    {
+      "slug": "jakarta-2026-11-05-republika-republik-keok-tokoh-perancang-perang-iran-2c8d70",
+      "title": "Republik Keok, Tokoh Perancang Perang Iran, Pete Hegseth Bakal Digulingkan dari Kursi Menhan AS",
+      "summary": "WASHINGTON -- Menteri Pertahanan AS Pete Hegseth, pelopor perang Iran terancam digulingkan. Ia sepertinya bakal kambing hitamkan atas kekalahan telak Partai Republik di Pemilu Sela AS. Seperti dilansir CNN, House...",
+      "date": "2026-11-05T11:14:28.000Z",
+      "url": "https://news.republika.co.id/berita/to10k4377/republik-keok-tokoh-perancang-perang-iran-pete-hegseth-bakal-digulingkan-dari-kursi-menhan-as",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Internasional"
+      ],
+      "author": "Teguh Firmansyah",
+      "theme": "rat",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/menter-pertahanan-amerika-serikat-pete_260806155251-618.jpg",
+      "imageAlt": "Republik Keok, Tokoh Perancang Perang Iran, Pete Hegseth Bakal Digulingkan dari Kursi Menhan AS",
+      "addedAt": "2026-11-05T11:18:42.982Z"
+    },
+    {
+      "slug": "jakarta-2026-11-05-cnnindonesia-6-anggota-polri-divonis-10-tahun-kasus-ed49a9",
+      "title": "6 Anggota Polri Divonis 10 Tahun Kasus Kematian 2 Matel di Kalibata",
+      "summary": "Enam anggota Polri dihukum 10 tahun penjara terkait kasus kematian mata elang di Kalibata, Jakarta Selatan, pada Desember tahun lalu.",
+      "date": "2026-11-05T11:13:39.000Z",
+      "url": "https://www.cnnindonesia.com/nasional/20261105180521-12-1423810/6-anggota-polri-divonis-10-tahun-kasus-kematian-2-matel-di-kalibata",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://akcdn.detik.net.id/visual/2019/10/31/57bd5113-e11c-46b7-948b-d8a96adbc8eb_169.jpeg?w=360&q=90",
+      "imageAlt": "6 Anggota Polri Divonis 10 Tahun Kasus Kematian 2 Matel di Kalibata",
+      "addedAt": "2026-11-05T11:18:42.485Z"
+    },
+    {
+      "slug": "jakarta-2026-11-05-antara-pemkab-barito-utara-tingkatkan-kualitas-76bacd",
+      "title": "Pemkab Barito Utara tingkatkan kualitas penyusunan peraturan desa",
+      "summary": "Pemerintah Kabupaten (Pemkab) Barito Utara,Kalimantan Tengah, terus berupaya meningkatkan kualitas tata kelola ...",
+      "date": "2026-11-05T11:13:33.000Z",
+      "url": "https://www.antaranews.com/berita/5834451/pemkab-barito-utara-tingkatkan-kualitas-penyusunan-peraturan-desa",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/05/sosialisasi-perdes-barito-utara.jpeg",
+      "imageAlt": "Pemkab Barito Utara tingkatkan kualitas penyusunan peraturan desa",
+      "addedAt": "2026-11-05T11:18:27.968Z"
+    },
+    {
+      "slug": "jakarta-2026-11-05-republika-antara-keserasian-teks-dan-kesatuan-makna-b05a5b",
+      "title": "Antara Keserasian Teks dan Kesatuan Makna: Telaah Kritis atas Pemikiran Hasani Ahmad Said",
+      "summary": "Prof Hasani Ahmad Said, penulis artikel “Menggagas Munāsabah Alquran: Peran dan Model Penafsiran Alquran”. Membaca Al-Qur'an secara berurutan terkadang menimbulkan kesanadanya kemacetan tulisan. Satu ayat berbicara tentang hukum, kemudian beralih...",
+      "date": "2026-11-05T11:13:27.000Z",
+      "url": "https://retizen.republika.co.id/posts/791441/antara-keserasian-teks-dan-kesatuan-makna-telaah-kritis-atas-pemikiran-hasani-ahmad-said",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Teh Anget"
+      ],
+      "author": "Retizen",
+      "theme": "ai",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/059440600-1793877207-261105180034-907png.png",
+      "imageAlt": "Antara Keserasian Teks dan Kesatuan Makna: Telaah Kritis atas Pemikiran Hasani Ahmad Said",
+      "addedAt": "2026-11-05T11:18:42.982Z"
+    },
+    {
+      "slug": "jakarta-2026-11-05-cnnindonesia-airlangga-pastikan-rekening-gratis-rp50-db4670",
+      "title": "Airlangga Pastikan Rekening Gratis Rp50 Ribu Meluncur Akhir Tahun",
+      "summary": "MenkoAirlangga Hartarto memastikan pemerintah akan meluncurkan program rekening bank gratis pada akhir 2026. Program ini ditargetkan menyasar 25,16 juta warga.",
+      "date": "2026-11-05T11:13:18.000Z",
+      "url": "https://www.cnnindonesia.com/ekonomi/20261105175846-532-1423799/airlangga-pastikan-rekening-gratis-rp50-ribu-meluncur-akhir-tahun",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/05/airlangga-pastikan-rekening-gratis-bersaldo-rp50-ribu-meluncur-akhir-tahun-ini-1793873355957_169.jpeg?w=360&q=90",
+      "imageAlt": "Airlangga Pastikan Rekening Gratis Rp50 Ribu Meluncur Akhir Tahun",
+      "addedAt": "2026-11-05T11:18:42.485Z"
+    },
+    {
+      "slug": "jakarta-2026-11-05-cnnindonesia-keresahan-marini-dan-inspirasi-pembuatan-d731fc",
+      "title": "Keresahan Marini dan Inspirasi Pembuatan Bank Sampah Berdikari",
+      "summary": "Marini memimpin Bank Sampah Berdikari di Jakarta, mengumpulkan 500 nasabah dan 1 ton sampah per minggu. Program ini mendorong kesadaran lingkungan.",
+      "date": "2026-11-05T11:13:01.000Z",
+      "url": "https://www.cnnindonesia.com/nasional/20261105172326-20-1423788/keresahan-marini-dan-inspirasi-pembuatan-bank-sampah-berdikari",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/05/cerita-marini-penggerak-bank-sampah-berdikari-di-jakbar-1793868000129_169.jpeg?w=360&q=90",
+      "imageAlt": "Keresahan Marini dan Inspirasi Pembuatan Bank Sampah Berdikari",
+      "addedAt": "2026-11-05T11:18:42.485Z"
+    },
+    {
+      "slug": "jakarta-2026-11-05-antara-toyota-tarik-kembali-176-737-mobil-di-china-47e907",
+      "title": "Toyota tarik kembali 176.737 mobil di China",
+      "summary": "Toyota diwartakan menarik kembali total 176.737 mobil di China, termasuk di antaranya SUV listrik bZ3X, sedan ...",
+      "date": "2026-11-05T11:12:37.000Z",
+      "url": "https://otomotif.antaranews.com/berita/5834447/toyota-tarik-kembali-176737-mobil-di-china",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "image": "https://img.antaranews.com/cache/800x533/2025/03/10/Toyota.jpg",
+      "imageAlt": "Toyota tarik kembali 176.737 mobil di China",
+      "addedAt": "2026-11-05T11:18:27.968Z"
+    },
+    {
+      "slug": "jakarta-2026-11-05-republika-ksad-pimpin-pemakaman-kapten-nurhafiz-yang-d11942",
+      "title": "KSAD Pimpin Pemakaman Kapten Nurhafiz yang Gugur dalam Kecelakaan Hlikopter Saat Padamkan Karhutla",
+      "summary": "SEMARANG — Kepala Staf Angkatan Darat (KSAD) Jenderal TNI Tandyo Budi Revita memimpin prosesi pemakaman Kapten CPN (Anumerta) Nurhafiz Akbar Rizki Hartio (34 tahun) di Taman Makam Pahlawan (TMP)...",
+      "date": "2026-11-05T11:11:51.000Z",
+      "url": "https://rejogja.republika.co.id/berita/to10fr282/ksad-pimpin-pemakaman-kapten-nurhafiz-yang-gugur-dalam-kecelakaan-hlikopter-saat-padamkan-karhutla",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Jateng"
+      ],
+      "author": "Karta Raharja Ucu",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/kepala-staf-angkatan-darat-ksad-jenderal-tni-tandyo-budi_261105180143-906.jpeg",
+      "imageAlt": "KSAD Pimpin Pemakaman Kapten Nurhafiz yang Gugur dalam Kecelakaan Hlikopter Saat Padamkan Karhutla",
+      "addedAt": "2026-11-05T11:18:42.982Z"
+    },
+    {
+      "slug": "jakarta-2026-11-05-cnbcindonesia-ancaman-baru-dunia-hujan-lebih-singkat-tapi-268071",
+      "title": "Ancaman Baru Dunia: Hujan Lebih Singkat, tapi Makin Deras dan Ganas",
+      "summary": "Hujan deras yang biasanya berlangsung berjam-jam kini berpotensi turun dalam periode lebih singkat dengan intensitas lebih tinggi.",
+      "date": "2026-11-05T11:10:03.000Z",
+      "url": "https://www.cnbcindonesia.com/research/20261105162606-128-782709/ancaman-baru-dunia-hujan-lebih-singkat-tapi-makin-deras-ganas",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://awsimages.detik.net.id/visual/2026/01/14/ilustrasi-hujan-dok-pixabay-1768374740205_169.jpeg?w=1200&q=90",
+      "imageAlt": "Ancaman Baru Dunia: Hujan Lebih Singkat, tapi Makin Deras dan Ganas",
+      "addedAt": "2026-11-05T11:18:43.393Z"
+    },
+    {
+      "slug": "jakarta-2026-11-05-republika-senyum-jokowi-atas-isu-penyadapan-presiden-3b5eea",
+      "title": "Senyum Jokowi Atas Isu Penyadapan Presiden",
+      "summary": "JAKARTA — Senyum terlihat di wajah Presiden ke-7 RI Joko Widodo (Jokowi) saat tiba di Pengadilan Negeri (PN) Jakarta Timur, Kamis (5/11/2026). Di tengah sorotan publik terhadap kasus dugaan...",
+      "date": "2026-11-05T11:07:11.000Z",
+      "url": "https://analisis.republika.co.id/berita/to107z393/senyum-jokowi-atas-isu-penyadapan-presiden",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "News Analysis"
+      ],
+      "author": "Fitriyan Zamzami",
+      "theme": "politika",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/_261105085755-646.png",
+      "imageAlt": "Senyum Jokowi Atas Isu Penyadapan Presiden",
+      "addedAt": "2026-11-05T11:18:42.982Z"
+    },
+    {
+      "slug": "jakarta-2026-11-05-cnbcindonesia-video-wamenlu-as-ungkap-progres-kesepakatan-37f66e",
+      "title": "Video: Wamenlu AS Ungkap Progres Kesepakatan Dagang AS-RI USD 33 M",
+      "summary": "Wamenlu AS Ungkap Progres Kesepakatan Dagang AS-RI Senilai USD 33 Miliar",
+      "date": "2026-11-05T11:05:14.000Z",
+      "url": "https://www.cnbcindonesia.com/news/20261105163208-8-782702/video-wamenlu-as-ungkap-progres-kesepakatan-dagang-as-ri-usd-33-m",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://awsimages.detik.net.id/visual/2026/11/05/wamenlu-as-ungkap-progres-kesepakatan-dagang-as-ri-senilai-usd-33-miliar-1793871445056_169.png?w=1200&q=90",
+      "imageAlt": "Video: Wamenlu AS Ungkap Progres Kesepakatan Dagang AS-RI USD 33 M",
+      "addedAt": "2026-11-05T11:18:43.393Z"
+    },
+    {
+      "slug": "jakarta-2026-11-05-cnbcindonesia-baterai-boros-dan-kuota-terkuras-tanda-hp-cd96d5",
+      "title": "Baterai Boros dan Kuota Terkuras Tanda HP Disadap? Ini Penjelasannya",
+      "summary": "Waspadai tanda ponsel disadap: baterai boros dan kuota data melonjak. Simak!",
+      "date": "2026-11-05T11:05:00.000Z",
+      "url": "https://www.cnbcindonesia.com/tech/20261105164443-37-782705/baterai-boros-dan-kuota-terkuras-tanda-hp-disadap-ini-penjelasannya",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://awsimages.detik.net.id/visual/2020/03/12/875b1aa9-f40b-49a9-9e22-fb1f02cbb6d3_169.jpeg?w=1200&q=90",
+      "imageAlt": "Baterai Boros dan Kuota Terkuras Tanda HP Disadap? Ini Penjelasannya",
+      "addedAt": "2026-11-05T11:18:43.393Z"
+    },
+    {
+      "slug": "jakarta-2026-11-05-cnnindonesia-kapolsek-di-makassar-terkena-panah-saat-9ac0c5",
+      "title": "Kapolsek di Makassar Terkena Panah Saat Bubarkan Tawuran, Ada 1 Tewas",
+      "summary": "Tawuran antarpemuda di Makassar menewaskan satu orang dan melukai Kapolsek. Polisi menyelidiki penyebab dan mengamankan 27 orang terkait insiden ini.",
+      "date": "2026-11-05T11:03:24.000Z",
+      "url": "https://www.cnnindonesia.com/nasional/20261105130853-12-1423625/kapolsek-di-makassar-terkena-panah-saat-bubarkan-tawuran-ada-1-tewas",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://akcdn.detik.net.id/visual/2020/04/21/7c0e582e-a703-43cb-a572-13055f046d5f_169.jpeg?w=360&q=90",
+      "imageAlt": "Kapolsek di Makassar Terkena Panah Saat Bubarkan Tawuran, Ada 1 Tewas",
+      "addedAt": "2026-11-05T11:18:42.485Z"
+    },
     {
       "slug": "jakarta-2026-11-05-republika-sial-food-drinks-indonesia-2026-resmi-2d1262",
       "title": "SIAL Food & Drinks Indonesia 2026 Resmi Dibuka, Hadirkan 500 Merek dari 16 Negara",

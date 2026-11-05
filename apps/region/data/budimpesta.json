@@ -4,17 +4,23 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-11-05T07:23:11.828Z",
+  "updatedAt": "2026-11-05T11:09:37.595Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": true,
-      "fetched": 50,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-05T07:23:07.259Z"
+      "errors": [
+        "https://telex.hu/rss: HTTP 403",
+        "https://telex.hu/rss/belfold: HTTP 403",
+        "https://telex.hu/rss/kulfold: HTTP 403",
+        "https://telex.hu/rss/gazdasag: HTTP 403",
+        "https://telex.hu/rss/sport: HTTP 403"
+      ],
+      "checkedAt": "2026-11-05T11:09:33.085Z"
     },
     {
       "id": "444",
@@ -24,7 +30,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T07:23:07.523Z"
+      "checkedAt": "2026-11-05T11:09:33.294Z"
     },
     {
       "id": "hvg",
@@ -34,7 +40,7 @@
       "fetched": 60,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T07:23:07.757Z"
+      "checkedAt": "2026-11-05T11:09:33.616Z"
     },
     {
       "id": "portfolio",
@@ -44,7 +50,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T07:23:08.570Z"
+      "checkedAt": "2026-11-05T11:09:34.320Z"
     },
     {
       "id": "index",
@@ -56,7 +62,7 @@
       "errors": [
         "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-05T07:23:10.631Z"
+      "checkedAt": "2026-11-05T11:09:36.501Z"
     },
     {
       "id": "24hu",
@@ -66,7 +72,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T07:23:10.852Z"
+      "checkedAt": "2026-11-05T11:09:36.854Z"
     },
     {
       "id": "mandiner",
@@ -76,10 +82,435 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T07:23:11.827Z"
+      "checkedAt": "2026-11-05T11:09:37.595Z"
     }
   ],
   "items": [
+    {
+      "slug": "budimpesta-2026-11-05-hvg-szamos-ujabb-europai-repulojarat-kapott-c72dd3",
+      "title": "Számos újabb európai repülőjárat kapott bombafenyegetést",
+      "summary": "Többet az úti céljuktól eltérő repülőterekre irányítottak.",
+      "date": "2026-11-05T11:05:33.000Z",
+      "url": "https://hvg.hu/vilag/20261105_europai-repulojarat-bombafenyegetes-kenyszerleszallas",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Világ",
+        "közlekedés",
+        "repülőjárat",
+        "bombafenyegetés"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/b087723f-b112-442a-b380-b3d41cf86da8.jpg",
+      "imageAlt": "Számos újabb európai repülőjárat kapott bombafenyegetést",
+      "addedAt": "2026-11-05T11:09:33.616Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-portfolio-evtizedes-melypontra-csokkent-a-szegenyseg-185b0f",
+      "title": "Évtizedes mélypontra csökkent a szegénység Magyarországon, de még mindig 1,7 millió embert veszélyeztet",
+      "summary": "Tovább csökkent a szegénységnek vagy társadalmi kirekesztődésnek kitett magyarok aránya a Központi Statisztikai Hivatal (KSH) frissen megjelent, a háztartások életszínvonalát vizsgáló jelentése szerint. A javulás elsősorban az anyagi nélkülözés visszaszorulásának köszönhető, miközben a jövedelmi szegénység és a munkaerőpiacról való kiszorulás mértéke lényegében nem változott. Az országos adatok ugyanakkor jelentős társadalmi különbségeket takarnak.",
+      "date": "2026-11-05T11:05:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261105/evtizedes-melypontra-csokkent-a-szegenyseg-magyarorszagon-de-meg-mindig-17-millio-embert-veszelyeztet-874404",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://pcdn.hu/articles/images-xl/b/o/l/bolt-bevasarlas-kisker-kiskereskedelem-644105.jpg",
+      "imageAlt": "Évtizedes mélypontra csökkent a szegénység Magyarországon, de még mindig 1,7 millió embert veszélyeztet",
+      "addedAt": "2026-11-05T11:09:34.320Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-24hu-szijjartoek-143-5-millio-forintert-bereltek-1c6723",
+      "title": "Szijjártóék 143,5 millió forintért béreltek magánrepülőt egy 2021-es japán-azeri tútára",
+      "summary": "A Budapest–Oszaka–Tokió útvonalon 139,2 millióba, a Tokió–Baku szakasz 4,2 millióba fájt. The post Szijjártóék 143,5 millió forintért béreltek magánrepülőt egy 2021-es japán-azeri tútára first appeared on 24.hu .",
+      "date": "2026-11-05T11:03:54.000Z",
+      "url": "https://24.hu/fn/gazdasag/2026/11/05/szijjarto-peter-maganrepulo-berles-150-millio-forint-azerbajdzsan-japan/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Gazdaság",
+        "magánrepülő-bérlés",
+        "szijjártó péter",
+        "azerbajdzsán"
+      ],
+      "author": "Rugli Tamás",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-1090275981-e1793876599270-1024x577.jpg",
+      "imageAlt": "Szijjártóék 143,5 millió forintért béreltek magánrepülőt egy 2021-es japán-azeri tútára",
+      "addedAt": "2026-11-05T11:09:36.854Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-hvg-igy-teremthet-rendet-a-telefonjan-levo-172-eea74e",
+      "title": "Így teremthet rendet a telefonján lévő 172 344 darab képernyőkép káoszában",
+      "summary": "Ha azok közé tartozik, akik már sok képernyőmentést készítettek okostelefonjukon utólagos felhasználás céljából, és később már nem találták ezeket a fotógaléria süllyesztőjében, akkor önnek is roppant hasznos lehet egy új alkalmazás. A Pool ugyanis mesterséges intelligencia segítségével rendezi kereshető formába ezeket a mentéseket, és további lehetőségekkel egészíti ki ezeket.",
+      "date": "2026-11-05T11:03:00.000Z",
+      "url": "https://hvg.hu/tudomany/20261105_kepernyokepek-rendszerezese-ingyenes-app-pool",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Tech",
+        "tech",
+        "screenshot",
+        "appajánló"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "ai",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/62f0b7c0-70d9-4a19-90e4-11d3293f858f.jpg",
+      "imageAlt": "Így teremthet rendet a telefonján lévő 172 344 darab képernyőkép káoszában",
+      "addedAt": "2026-11-05T11:09:33.616Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-portfolio-magahoz-tert-a-dollar-megtorpant-a-forint-7ddf9f",
+      "title": "Magához tért a dollár, megtorpant a forint lendülete",
+      "summary": "A demokraták félidős választási tarolása után szerdán gyengült a dollár, a forint pedig másfél havi csúcsra erősödött az euróval szemben – itthon ráadásul a vártnál jobb, 8,2 százalékos éves ipari bővülés is támogatta a hangulatot. A dolláreladási hullám csütörtökön egyelőre megállt, miközben ma a Bank of England kamatdöntése kerül a fókuszba – 2023 augusztusa óta először emelkedhet a brit alapkamat. Csütörtök reggel az euró jegyzése 362,2, a dolláré 321,6.",
+      "date": "2026-11-05T11:03:00.000Z",
+      "url": "https://www.portfolio.hu/deviza/20261105/magahoz-tert-a-dollar-megtorpant-a-forint-lendulete-874388",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Deviza"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://pcdn.hu/articles/images-xl/f/o/r/forint-deviza-euro-587114.jpg",
+      "imageAlt": "Magához tért a dollár, megtorpant a forint lendülete",
+      "addedAt": "2026-11-05T11:09:34.320Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-portfolio-kiszivargott-titokban-felfegyverzi-irant-a-9cb78b",
+      "title": "Kiszivárgott: titokban felfegyverzi Iránt a világ egyik legerősebb országa - Rakétaindítókat vásárolt Teherán",
+      "summary": "Oroszország 90 indítóberendezést adott el Iránnak \"Izdelije 305\"-ös irányított rakétákhoz - tudta meg az FT .",
+      "date": "2026-11-05T11:02:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261105/kiszivargott-titokban-felfegyverzi-irant-a-vilag-egyik-legerosebb-orszaga-raketainditokat-vasarolt-teheran-874462",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://pcdn.hu/articles/images-xl/i/r/a/iran-raketa-oroszorszag-867110.jpg",
+      "imageAlt": "Kiszivárgott: titokban felfegyverzi Iránt a világ egyik legerősebb országa - Rakétaindítókat vásárolt Teherán",
+      "addedAt": "2026-11-05T11:09:34.320Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-hvg-uj-vezetot-nevezett-ki-vitezy-david-a-990a82",
+      "title": "Új vezetőt nevezett ki Vitézy Dávid a légiforgalmi irányítókhoz",
+      "summary": "Az állami tulajdonú HungaroControl a magyar és a koszovói légtér irányításáért felel.",
+      "date": "2026-11-05T10:56:32.000Z",
+      "url": "https://hvg.hu/kkv/20261105_hungarocontrol-legikozlekedes-vitezy-david-kallai-eva",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Vállalkozás",
+        "közlekedés",
+        "HungaroControl",
+        "Kállai Éva"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/436d2557-690e-497f-9d64-8bb38470559e.jpg",
+      "imageAlt": "Új vezetőt nevezett ki Vitézy Dávid a légiforgalmi irányítókhoz",
+      "addedAt": "2026-11-05T11:09:33.616Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-hvg-tobb-le-es-felhajtot-is-lezarnak-penteken-411361",
+      "title": "Több le- és felhajtót is lezárnak pénteken az M5-ös fővárosi csomópontjában",
+      "summary": "A közúti világítást cserélik ki.",
+      "date": "2026-11-05T10:55:22.000Z",
+      "url": "https://hvg.hu/cegauto/20261105_tobb-le-es-felhajtot-is-lezarnak-penteken-az-m5-osnel",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Autó",
+        "közlekedés",
+        "M5-ös",
+        "M51-es autóút"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/4b62c3ab-7677-4dc4-81fc-928b00f99884.jpg",
+      "imageAlt": "Több le- és felhajtót is lezárnak pénteken az M5-ös fővárosi csomópontjában",
+      "addedAt": "2026-11-05T11:09:33.616Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-444-lemondott-merkely-bela-a-semmelweis-egyetem-fd04cc",
+      "title": "Lemondott Merkely Béla, a Semmelweis Egyetem rektora",
+      "summary": "A Telex szerint megrendült a bizalom a rektor és az egyetemet fenntartó alapítvány kuratóriuma között.",
+      "date": "2026-11-05T10:55:01.000Z",
+      "url": "https://444.hu/2026/11/05/lemondott-merkely-bela-a-semmelweis-egyetem-rektora?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "rektori konferencia",
+        "hankó balázs",
+        "merkely béla",
+        "Semmelweis Egyetem"
+      ],
+      "author": "Bódog Bálint",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8JO0X7cw6SUm1Vz10Xs.jpeg",
+      "imageAlt": "Lemondott Merkely Béla, a Semmelweis Egyetem rektora",
+      "addedAt": "2026-11-05T11:09:33.294Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-hvg-lehet-hogy-itt-a-tiszaval-szembejott-a-651ebf",
+      "title": "„Lehet, hogy itt a Tiszával szembejött a valóság” – mi a 2027-es költségvetés legnagyobb politikai kockázata?",
+      "summary": "A Fidesznek több hónapnyi politikai kommunikációs téblábolás, botladozás után először volt mibe kapaszkodnia, amikor a Tisza-kormány ismertette a költségvetési tervezetet – mondja Virág Andrea, a Republikon elemzője. Szerinte a büdzsé egyszerre vált be szimbolikus választási ígéreteket és kerüli a felelőtlenül költekező kormányzat képét. De tekinthető-e baloldalinak az új szemléletű gazdaságpolitika?",
+      "date": "2026-11-05T10:53:15.000Z",
+      "url": "https://hvg.hu/360/20261105_koltsegvetes-2027-politikai-kockazatok-virag-andrea-republikon-buttl-ferenc-kozgazdasz",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "hvg360",
+        "belpolitika",
+        "költségvetés",
+        "szegénység"
+      ],
+      "author": "t.lengyel@hvg.hu (Lengyel Tibor)",
+      "theme": "politika",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/50b96502-6838-4295-91fd-8f4d20c3879b.jpg",
+      "imageAlt": "„Lehet, hogy itt a Tiszával szembejött a valóság” – mi a 2027-es költségvetés legnagyobb politikai kockázata?",
+      "addedAt": "2026-11-05T11:09:33.616Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-24hu-hivatalos-cristiano-ronaldo-visszavonult-a-abeeea",
+      "title": "Hivatalos: Cristiano Ronaldo visszavonult a válogatottól",
+      "summary": "A világsztár maga jelentette be a hírt. The post Hivatalos: Cristiano Ronaldo visszavonult a válogatottól first appeared on 24.hu .",
+      "date": "2026-11-05T10:53:01.000Z",
+      "url": "https://24.hu/sport/foci/2026/11/05/hivatalos-cristiano-ronaldo-visszavonult-a-valogatottol/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Foci",
+        "sport",
+        "foci",
+        "labdarúgás"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/gettyimages-2297302110-e1793875898907-1024x575.jpg",
+      "imageAlt": "Hivatalos: Cristiano Ronaldo visszavonult a válogatottól",
+      "addedAt": "2026-11-05T11:09:36.854Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-hvg-lemondott-merkely-bela-a-semmelweis-egyetem-48fcc7",
+      "title": "Lemondott Merkely Béla a Semmelweis Egyetem rektori posztjáról",
+      "summary": "Bizalomvesztés miatt távozik posztjáról.",
+      "date": "2026-11-05T10:51:13.000Z",
+      "url": "https://hvg.hu/itthon/20261105_lemondott-merkely-bela-a-semmelweis-egyetem-rektori-posztjarol",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "oktatás",
+        "Merkely Béla",
+        "Semmelweis Egyetem"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/7b8e815b-8aba-478c-a9af-49e55668bbc4.jpg",
+      "imageAlt": "Lemondott Merkely Béla a Semmelweis Egyetem rektori posztjáról",
+      "addedAt": "2026-11-05T11:09:33.617Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-portfolio-elszalltak-a-koltsegek-magyarorszagon-efa108",
+      "title": "Elszálltak a költségek Magyarországon: lezárják a többmilliárdos szociális bérlakásprogramot",
+      "summary": "A kormánnyal egyeztetett menetrend szerint, de az eredetileg tervezett idő előtt lezárja öt évvel ezelőtt indított szociális bérlakásprogramját a Magyar Máltai Szeretetszolgálat - írta közleményében a szervezet. Bár a kezdeményezés már több száz hátrányos helyzetű család lakhatási körülményeit javította, az előre nem látható gazdasági és gyakorlati nehézségek miatt a szervezet aránytalanul nagy teherként értékelte a projekt folytatását. A megfizethető lakhatás és a bérlakások is fókuszba kerülnek majd a Portfolio Future of Construction konferencián, érdemes lesz ott lenni!",
+      "date": "2026-11-05T10:50:00.000Z",
+      "url": "https://www.portfolio.hu/ingatlan/20261105/elszalltak-a-koltsegek-magyarorszagon-lezarjak-a-tobbmilliardos-szocialis-berlakasprogramot-874452",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Ingatlan"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://pcdn.hu/articles/images-xl/d/s/c/dsc04938-lpr-867096.jpg",
+      "imageAlt": "Elszálltak a költségek Magyarországon: lezárják a többmilliárdos szociális bérlakásprogramot",
+      "addedAt": "2026-11-05T11:09:34.320Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-portfolio-tisza-kormany-dontott-a-birosag-nem-engedik-800f01",
+      "title": "Tisza-kormány: döntött a bíróság, nem engedik ki Matolcsy Györgyöt, közben egyre nagyobb port kavarnak az ügynökakták",
+      "summary": "Helybenhagyta Matolcsy György és két további gyanúsított letartóztatását a Fővárosi Törvényszék: csütörtöki közleményük szerint többek között bizonyítékok eltüntetésének veszélye miatt döntöttek így. Közben egyre nagyobb politikai vitát vált ki az ügynökakták nyilvánosságra hozatala. A Levéltár bocsánatot kért, amiért Lezsák Sándor neve megfigyeltként tévesen bekerült az ügynökadatbázisba, Bóka János emiatt az oldal felfüggesztését és Tarr Zoltán távozását követeli. Közben Vitézy Dávid bejelentette, hogy januártól Kállai Éva vezeti a HungaroControlt, és ismertette a kormány döntését egy gyömrői iskolaépítésről, valamint a 442-es főút fejlesztésének előkészítéséről.",
+      "date": "2026-11-05T10:49:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261105/tisza-kormany-dontott-a-birosag-nem-engedik-ki-matolcsy-gyorgyot-kozben-egyre-nagyobb-port-kavarnak-az-ugynokaktak-874384",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://pcdn.hu/articles/images-xl/d/_/m/d-mtz20261104007-867002.jpg",
+      "imageAlt": "Tisza-kormány: döntött a bíróság, nem engedik ki Matolcsy Györgyöt, közben egyre nagyobb port kavarnak az ügynökakták",
+      "addedAt": "2026-11-05T11:09:34.321Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-24hu-lemondott-merkely-bela-a-semmelweis-egyetem-0e4381",
+      "title": "Lemondott Merkely Béla a Semmelweis Egyetem rektori posztjáról",
+      "summary": "Merkely január 1-i hatállyal távozik az egyetem éléről. The post Lemondott Merkely Béla a Semmelweis Egyetem rektori posztjáról first appeared on 24.hu .",
+      "date": "2026-11-05T10:47:15.000Z",
+      "url": "https://24.hu/belfold/2026/11/05/merkely-bela-lemondott/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "merkely béla",
+        "semmelweis egyetem",
+        "rektor"
+      ],
+      "author": "Rugli Tamás",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-0516736814-e1793875615876-1024x577.jpg",
+      "imageAlt": "Lemondott Merkely Béla a Semmelweis Egyetem rektori posztjáról",
+      "addedAt": "2026-11-05T11:09:36.854Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-444-tucatnyi-europai-repulojaratot-kellett-583af9",
+      "title": "Tucatnyi európai repülőjáratot kellett eltéríteni bombafenyegetések miatt",
+      "summary": "Cikkünk frissülHivatalos források szerint több európai járatot is bombafenyegetés ért csütörtök délelőtt. Mindössze két nappal korábban hét repülőgépet kutattak át bombafenyegetések miatt, de egyik re...",
+      "date": "2026-11-05T10:46:04.000Z",
+      "url": "https://444.hu/2026/11/05/tucatnyi-europai-repulojaratot-kellett-elteriteni-bombafenyegetesek-miatt?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "ryanair",
+        "wizzair",
+        "bombafenyegetés",
+        "Budapest"
+      ],
+      "author": "Urfi Péter",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8Pc9fyEWyFdV29A1Qms.jpeg",
+      "imageAlt": "Tucatnyi európai repülőjáratot kellett eltéríteni bombafenyegetések miatt",
+      "addedAt": "2026-11-05T11:09:33.294Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-24hu-bombafenyegetesek-tobb-europai-bef3e7",
+      "title": "Bombafenyegetések: több európai repülőjáratot átirányítottak",
+      "summary": "Nem ez az első eset a héten, hogy több járatot is bombafenyegetések értek Európában. The post Bombafenyegetések: több európai repülőjáratot átirányítottak first appeared on 24.hu .",
+      "date": "2026-11-05T10:45:50.000Z",
+      "url": "https://24.hu/kulfold/2026/11/05/europa-repulo-bombafenyegetes-atiranyitas/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Nagyvilág",
+        "repülő",
+        "bombafenyegetés",
+        "európa"
+      ],
+      "author": "Dienes Gábriel",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-1030128369-1024x576.jpg",
+      "imageAlt": "Bombafenyegetések: több európai repülőjáratot átirányítottak",
+      "addedAt": "2026-11-05T11:09:36.855Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-24hu-forgalmi-dugot-idez-elo-jude-bellingham-d2f6ab",
+      "title": "Forgalmi dugót idéz elő Jude Bellingham alsónadrágos óriásplakátja New Yorkban",
+      "summary": "A Real Madrid középpályásának reklámja valóságos turistalátványosság lett. The post Forgalmi dugót idéz elő Jude Bellingham alsónadrágos óriásplakátja New Yorkban first appeared on 24.hu .",
+      "date": "2026-11-05T10:45:18.000Z",
+      "url": "https://24.hu/elet-stilus/2026/11/05/jude-bellingham-modell-calvin-klein/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Kikapcs",
+        "jude bellingham",
+        "calvin klein",
+        "new york"
+      ],
+      "author": "Csontos Kata",
+      "theme": "ekonomija",
+      "image": "https://s.24.hu/app/uploads/2026/11/gettyimages-2290544950-e1793875345166-1024x577.jpg",
+      "imageAlt": "Forgalmi dugót idéz elő Jude Bellingham alsónadrágos óriásplakátja New Yorkban",
+      "addedAt": "2026-11-05T11:09:36.855Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-24hu-ajultra-vertek-egy-ferfit-pecsett-b3ab3b",
+      "title": "Ájultra vertek egy férfit Pécsett",
+      "summary": "Azonosították és elfogták a támadókat. The post Ájultra vertek egy férfit Pécsett first appeared on 24.hu .",
+      "date": "2026-11-05T10:39:38.000Z",
+      "url": "https://24.hu/belfold/2026/11/05/pecs-eszeletlnre-vert-ferfi/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "bűnügy",
+        "pécs",
+        "súlyos testi sértés"
+      ],
+      "author": "Kolontár Krisztián",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-0803252728-2026-07-23t102203-779-1-1024x576.jpg",
+      "imageAlt": "Ájultra vertek egy férfit Pécsett",
+      "addedAt": "2026-11-05T11:09:36.855Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-444-papp-istvan-abtl-foosztalyvezeto-a-0fb8f1",
+      "title": "Papp István ÁBTL-főosztályvezető a beszervezési dossziékról: A nagyjából egymillió oldal rengeteg érzékeny adatot tartalmaz",
+      "summary": "A héten nyilvánosságra hozott információkból viszont nem érdemes messzemenő következtetéseket levonni.",
+      "date": "2026-11-05T10:29:00.000Z",
+      "url": "https://444.hu/2026/11/05/papp-istvan-abtl-foosztalyvezeto-a-beszervezesi-dossziekrol-a-nagyjabol-egymillio-oldal-rengeteg-erzekeny-adatot-tartalmaz?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "állambiztonsági szolgálatok történeti levéltára",
+        "beszervezési dosszié",
+        "beszervezési kísérlet",
+        "Papp István"
+      ],
+      "author": "Bódog Bálint",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8Pc807BqKDaFKeBcs.png",
+      "imageAlt": "Papp István ÁBTL-főosztályvezető a beszervezési dossziékról: A nagyjából egymillió oldal rengeteg érzékeny adatot tartalmaz",
+      "addedAt": "2026-11-05T11:09:33.294Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-444-magyar-peter-bocsanatot-ker-lezsak-22751b",
+      "title": "Magyar Péter bocsánatot kér Lezsák Sándortól",
+      "summary": "Mert tévesen bekerült a neve a hálózati személyek nyilvántartásába.",
+      "date": "2026-11-05T09:59:45.000Z",
+      "url": "https://444.hu/2026/11/05/magyar-peter-bocsanatot-ker-lezsak-sandortol?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "Excel-adathiba",
+        "magyar péter",
+        "ábtl",
+        "lezsák sándor"
+      ],
+      "author": "Urfi Péter",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8P7lYGF3kHF629A1Qms.jpeg",
+      "imageAlt": "Magyar Péter bocsánatot kér Lezsák Sándortól",
+      "addedAt": "2026-11-05T11:09:33.294Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-444-minusz-7-ig-sullyedtunk-tul-vagyunk-az-idei-859c12",
+      "title": "Mínusz 7-ig süllyedtünk, túl vagyunk az idei ősz eddigi leghidegebb reggelén, szinte mindenhol fagyott",
+      "summary": "Brrr.",
+      "date": "2026-11-05T09:54:47.000Z",
+      "url": "https://444.hu/2026/11/05/minusz-7-ig-sullyedtunk-tul-vagyunk-az-idei-osz-eddigi-leghidegebb-reggelen-szinte-mindenhol-fagyott?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "időjárásjelentés",
+        "fagy",
+        "hideg",
+        "időjárás"
+      ],
+      "author": "Bódog Bálint",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8F5YTQhvwIRr1Kasus.jpeg",
+      "imageAlt": "Mínusz 7-ig süllyedtünk, túl vagyunk az idei ősz eddigi leghidegebb reggelén, szinte mindenhol fagyott",
+      "addedAt": "2026-11-05T11:09:33.294Z"
+    },
     {
       "slug": "budimpesta-2026-11-05-telex-suranyi-gyorgy-reagalt-arra-miert-kerult-be-60fadd",
       "title": "Surányi György reagált arra, miért került be a neve az ügynökaktákba",
