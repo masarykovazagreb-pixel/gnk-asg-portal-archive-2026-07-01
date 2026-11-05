@@ -4,17 +4,23 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-11-05T18:01:39.508Z",
+  "updatedAt": "2026-11-05T19:15:30.449Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": true,
-      "fetched": 50,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-05T18:01:34.939Z"
+      "errors": [
+        "https://telex.hu/rss: HTTP 403",
+        "https://telex.hu/rss/belfold: HTTP 403",
+        "https://telex.hu/rss/kulfold: HTTP 403",
+        "https://telex.hu/rss/gazdasag: HTTP 403",
+        "https://telex.hu/rss/sport: HTTP 403"
+      ],
+      "checkedAt": "2026-11-05T19:15:25.467Z"
     },
     {
       "id": "444",
@@ -24,7 +30,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T18:01:35.212Z"
+      "checkedAt": "2026-11-05T19:15:25.689Z"
     },
     {
       "id": "hvg",
@@ -34,7 +40,7 @@
       "fetched": 60,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T18:01:35.447Z"
+      "checkedAt": "2026-11-05T19:15:26.080Z"
     },
     {
       "id": "portfolio",
@@ -44,7 +50,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T18:01:36.350Z"
+      "checkedAt": "2026-11-05T19:15:27.091Z"
     },
     {
       "id": "index",
@@ -56,7 +62,7 @@
       "errors": [
         "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-05T18:01:38.381Z"
+      "checkedAt": "2026-11-05T19:15:29.239Z"
     },
     {
       "id": "24hu",
@@ -66,7 +72,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T18:01:38.565Z"
+      "checkedAt": "2026-11-05T19:15:29.483Z"
     },
     {
       "id": "mandiner",
@@ -76,10 +82,361 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T18:01:39.508Z"
+      "checkedAt": "2026-11-05T19:15:30.449Z"
     }
   ],
   "items": [
+    {
+      "slug": "budimpesta-2026-11-05-24hu-visszatertek-az-eroszakik-es-mar-banjak-cdf992",
+      "title": "Visszatértek az erőszakik, és már bánják, hogy megölték Kennedyt",
+      "summary": "John Malkovichot máris Oscar-esélyesként emlegetik a héten mozikba került Vadló Kilenc főszerepe miatt. Megérdemelné, és nem csak ő. Kritika. The post Visszatértek az erőszakik, és már bánják, hogy megölték Kennedyt first appeared on 24.hu .",
+      "date": "2026-11-05T19:08:02.000Z",
+      "url": "https://24.hu/kultura/2026/11/05/vadlo-kilenc-kritika-martin-mcdonagh-john-malkovich-film/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Kultúra",
+        "filmkritika",
+        "filmtv",
+        "john malkovich"
+      ],
+      "author": "Kránicz Bence",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/vadlo-kilenc_1-1-e1793799850343-1024x577.jpg",
+      "imageAlt": "Visszatértek az erőszakik, és már bánják, hogy megölték Kennedyt",
+      "addedAt": "2026-11-05T19:15:29.483Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-portfolio-osszeomlott-a-dizelalku-jon-a-szuperhatalmi-06c266",
+      "title": "Összeomlott a dízelalku, jön a szuperhatalmi csúcstalálkozó - Híreink az orosz-ukrán háborúról csütörtökön",
+      "summary": "A demokrata többségú Kongresszus Donald Trump elnök ellenállása mellett is újraindíthatja a fegyverszállítmányokat Ukrajnának. Alakul a Putyin-Trump-Hszi csúcstalálkozó, közben Amerika is tárgyal Ukrajnával és dolgoznak egy újfajta biztonsági rendszer kialakításán. A donyecki fronton a helyzet alig változott érdemben az elmúlt napokban, Harkivben Kupjanszkot, Zaporizzsjában Ternuvatyét szorongatják az oroszok. Az orosz-amerikai dízelalku összeomlott: az orosz szállítmányok nem kötnek ki Amerikában. Cikkünk folyamatosan frissül az orosz-ukrán háború csütörtöki eseményeivel.",
+      "date": "2026-11-05T19:07:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261105/osszeomlott-a-dizelalku-jon-a-szuperhatalmi-csucstalalkozo-hireink-az-orosz-ukran-haborurol-csutortokon-874360",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "rat",
+      "image": "https://pcdn.hu/articles/images-xl/u/k/r/ukrajna-haboru-percrol-percre-csutortok-866990.jpg",
+      "imageAlt": "Összeomlott a dízelalku, jön a szuperhatalmi csúcstalálkozó - Híreink az orosz-ukrán háborúról csütörtökön",
+      "addedAt": "2026-11-05T19:15:27.091Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-portfolio-varatlan-fordulat-a-haboru-ugyeben-melania-082895",
+      "title": "Váratlan fordulat a háború ügyében: Melania Trump személyesen avatkozott be, Oroszország és Ukrajna is köszönetet mondott",
+      "summary": "Orosz és ukrán tisztviselőket fogadott csütörtökön a Fehér Házban Melania Trump amerikai first lady, aki a jövő heti, Abu-Dzabiban esedékes béketárgyalások előtt a háború helyett az emberség választására szólította fel a feleket. A ritka személyes találkozó apropóját az a hatnapos tűzszünet adta, amelyet a first lady közvetítésével sikerült tető alá hozni az orosz ellenőrzés alatt álló Oleski városában.",
+      "date": "2026-11-05T19:07:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261105/varatlan-fordulat-a-haboru-ugyeben-melania-trump-szemelyesen-avatkozott-be-oroszorszag-es-ukrajna-is-koszonetet-mondott-874570",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "rat",
+      "image": "https://pcdn.hu/articles/images-xl/m/e/l/melania-trump-867224.jpg",
+      "imageAlt": "Váratlan fordulat a háború ügyében: Melania Trump személyesen avatkozott be, Oroszország és Ukrajna is köszönetet mondott",
+      "addedAt": "2026-11-05T19:15:27.091Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-hvg-akar-a-bortonbe-is-bemegy-a-bizottsag-c75e16",
+      "title": "Akár a börtönbe is bemegy a bizottság Matolcsyért",
+      "summary": "Matolcsy György volt jegybankelnököt és az MNB jelenlegi vezetőjét, az Orbán-kormány volt pénzügyminiszterét, Varga Mihályt hallgatta volna meg csütörtökön az MNB Működésével Kapcsolatos Visszaéléseit Feltáró Vizsgálóbizottság, azonban végül csak Varga Mihály jelent meg, akit a szembetűnő visszaélésekről is kérdeztek az ülésen. Videóriport.",
+      "date": "2026-11-05T19:05:18.000Z",
+      "url": "https://hvg.hu/gazdasag/20261105_akar-a-bortonbe-is-bemegy-a-bizottsag-matolcsyert",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Gazdaság",
+        "videó",
+        "Matolcsy György",
+        "vizsgálóbizottság"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/fcc5949b-68f1-4124-9d67-09572b24493a.jpg",
+      "imageAlt": "Akár a börtönbe is bemegy a bizottság Matolcsyért",
+      "addedAt": "2026-11-05T19:15:26.080Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-24hu-az-egesz-orszagot-erinto-bankvalsag-utan-a90f8f",
+      "title": "Az egész országot érintő bankválság után lemondott Paraguay elnöke",
+      "summary": "A Santiago Peña lemondását előidéző botránynak magyar vonatkozása is van. The post Az egész országot érintő bankválság után lemondott Paraguay elnöke first appeared on 24.hu .",
+      "date": "2026-11-05T19:05:08.000Z",
+      "url": "https://24.hu/kulfold/2026/11/05/paraguay-elnok-lemondas-bank-valsag-otp/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Nagyvilág",
+        "paraguay",
+        "bankválság",
+        "elnök"
+      ],
+      "author": "Ősze András",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/000_d6gj6cu-e1793905250426-1024x577.jpg",
+      "imageAlt": "Az egész országot érintő bankválság után lemondott Paraguay elnöke",
+      "addedAt": "2026-11-05T19:15:29.483Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-hvg-megvizsgaltak-26-836-ferfit-kiderult-milyen-bb84db",
+      "title": "Megvizsgáltak 26 836 férfit, kiderült, milyen hatással van a termékenységre a szűk nadrág",
+      "summary": "Kínai kutatók az eddigi legnagyobb vizsgálatot végezték el a férfiak alsóneműjével és nemzőképességével kapcsolatban.",
+      "date": "2026-11-05T19:03:00.000Z",
+      "url": "https://hvg.hu/tudomany/20261105_spermium-himivarsejt-szuk-nadrag-bo-nadrag",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Tech",
+        "tech",
+        "nemzőképesség",
+        "termékenység"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/50839b5e-1374-4de6-b5f0-ea91aa18f6f8.jpg",
+      "imageAlt": "Megvizsgáltak 26 836 férfit, kiderült, milyen hatással van a termékenységre a szűk nadrág",
+      "addedAt": "2026-11-05T19:15:26.080Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-444-mta-nem-a-jeger-okozza-az-aszalyt-797a39",
+      "title": "MTA: Nem a JÉGER okozza az aszályt",
+      "summary": "Idén az extrém szárazság miatt sokan a jégkármérséklő rendszert kiáltották ki bűnbakként.",
+      "date": "2026-11-05T19:02:11.000Z",
+      "url": "https://444.hu/2026/11/05/mta-nem-a-jeger-okozza-az-aszalyt?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "dél-alföld",
+        "időjárás-módosító rendszerek",
+        "kárpát-medence",
+        "Bóna Szabolcs"
+      ],
+      "author": "Német Szilvi",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/7ltc8HHEfGdh1Z212ms.jpeg",
+      "imageAlt": "MTA: Nem a JÉGER okozza az aszályt",
+      "addedAt": "2026-11-05T19:15:25.689Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-hvg-nem-azert-mondok-tragar-szavakat-mert-42b281",
+      "title": "„Nem azért mondok trágár szavakat, mert káromkodni akarok, hanem mert nyelvtant tanítok”",
+      "summary": "Hogyan lesz a „faszszopó” szóból helyesírási tananyag? Miért ragad meg jobban egy nyelvtani szabály, ha a „fingottam” szóval magyarázzák? És mitől működik a káromkodás a közösségi médiában? Interjú Szabó Dániellel, aki Híresember néven trágár kifejezéseken keresztül tanít magyar nyelvtant a TikTokon és a YouTube-on. (Figyelem: a szövegben időnként nyomdafestéket nem tűrő kifejezések tűnnek fel!)",
+      "date": "2026-11-05T19:02:00.000Z",
+      "url": "https://hvg.hu/elet/20261105_hiresember-karomkodas-nyelvtan-tragarsag-tragarsag-influenszer-interju",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Élet+Stílus",
+        "közösségi média",
+        "influenszer",
+        "nyelv"
+      ],
+      "author": "i.balla@hvg.hu (Balla István)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/33192dee-6e11-4303-a1ae-112356c9f372.jpg",
+      "imageAlt": "„Nem azért mondok trágár szavakat, mert káromkodni akarok, hanem mert nyelvtant tanítok”",
+      "addedAt": "2026-11-05T19:15:26.080Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-24hu-a-nap-legfontosabb-hirei-2026-11-05-d80772",
+      "title": "A nap legfontosabb hírei – 2026.11.05.",
+      "summary": "Lezsék Sándor neve tévedésből került az ügynökaktákba. Lemondott Merkely Béla. Varga Mihály az MNB-ügyről a Parlamentben. The post A nap legfontosabb hírei – 2026.11.05. first appeared on 24.hu .",
+      "date": "2026-11-05T18:54:20.000Z",
+      "url": "https://24.hu/belfold/2026/11/05/a-nap-legfontosabb-hirei-2026-11-05/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "lezsák sándor",
+        "merkely béla",
+        "fidesz"
+      ],
+      "author": "24.hu",
+      "theme": "politika",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-0782747277-e1793820534604-1-1024x577.jpg",
+      "imageAlt": "A nap legfontosabb hírei – 2026.11.05.",
+      "addedAt": "2026-11-05T19:15:29.483Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-portfolio-megindult-a-nagy-ev-vegi-roham-akar-350-7fb9cb",
+      "title": "Megindult a nagy év végi roham: akár 350 ezer forintot is megkereshetnek a diákok",
+      "summary": "A kereskedelem és a logisztika számára az év utolsó két hónapja a legnagyobb próbatétel: a Black Fridaytől a karácsonyi hajrán át az év végi leltárig néhány hét alatt megsokszorozódhat a feladatok száma. A Prodiák Iskolaszövetkezet tapasztalatai szerint egyre több cég nem az állandó létszám bővítésével, hanem előre megtervezett diákmunkával készül a csúcsra, és a toborzás, illetve az adminisztráció terhét is külső partnerre bízza.",
+      "date": "2026-11-05T18:48:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261105/megindult-a-nagy-ev-vegi-roham-akar-350-ezer-forintot-is-megkereshetnek-a-diakok-874568",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Megindult a nagy év végi roham: akár 350 ezer forintot is megkereshetnek a diákok",
+      "addedAt": "2026-11-05T19:15:27.091Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-hvg-videki-prokator-a-lezsak-hibarol-akinek-a39905",
+      "title": "Vidéki prókátor a Lezsák-hibáról: Akinek rinocéroszbőre van, annak ne legyen mimózalelke",
+      "summary": "A komlói ügyvéd szerint az elmúlt évek lejáratásai után hallgatnia kellene a volt kormánypártnak.",
+      "date": "2026-11-05T18:44:27.000Z",
+      "url": "https://hvg.hu/itthon/20261105_videki-prokator-fidesz-lezsak-hiba",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "belpolitika",
+        "Vidéki Prókátor",
+        "ügynökakták"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "politika",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/0d3598d9-afa9-483c-80a0-7f3d5c01e12f.jpg",
+      "imageAlt": "Vidéki prókátor a Lezsák-hibáról: Akinek rinocéroszbőre van, annak ne legyen mimózalelke",
+      "addedAt": "2026-11-05T19:15:26.081Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-444-kozarmisleny-visszavonta-matolcsy-gyorgy-f8f960",
+      "title": "Kozármisleny visszavonta Matolcsy György díszpolgári címét",
+      "summary": "Erről már pár nappal Matolcsy letartóztatása után döntött a képviselő testület.",
+      "date": "2026-11-05T18:36:33.000Z",
+      "url": "https://444.hu/2026/11/05/kozarmisleny-visszavonta-matolcsy-gyorgy-diszpolgari-cimet?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "díszpolgári cím",
+        "díszpolgár",
+        "kozármisleny",
+        "visszavonás"
+      ],
+      "author": "Székely Sarolta",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8P0be5CImd8211pkzs.jpeg",
+      "imageAlt": "Kozármisleny visszavonta Matolcsy György díszpolgári címét",
+      "addedAt": "2026-11-05T19:15:25.689Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-444-a-kormany-megvonna-az-mma-tol-a-jogot-hogy-4bdb2a",
+      "title": "A kormány megvonná az MMA-tól a jogot, hogy beleszóljon a kulturális pénzek elosztásába",
+      "summary": "A Tarr Zoltán vezette minisztérium szerint a változtatással visszaállítanák az NKA 2016 előtti működési rendjét.",
+      "date": "2026-11-05T18:18:39.000Z",
+      "url": "https://444.hu/2026/11/05/a-kormany-megvonna-az-mma-tol-a-jogot-hogy-beleszoljon-a-kulturalis-penzek-elosztasaba?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "NKA reform",
+        "magyar művészeti akadémia",
+        "Társadalmi Kapcsolatokért és Kultúráért Felelős Minisztérium",
+        "kulturális támogatások"
+      ],
+      "author": "Német Szilvi",
+      "theme": "politika",
+      "image": "https://assets.4cdn.hu/kraken/8PcdWIc467nHUyHQs.png",
+      "imageAlt": "A kormány megvonná az MMA-tól a jogot, hogy beleszóljon a kulturális pénzek elosztásába",
+      "addedAt": "2026-11-05T19:15:25.690Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-hvg-hasmeneses-betegseg-soport-vegig-tobb-b3e693",
+      "title": "Hasmenéses betegség söpört végig több nagykanizsai iskolán, a hatóságok a közétkeztetést vizsgálják",
+      "summary": "Hat iskolából kapott jelzést az önkormányzat megbetegedésekről, a hatóságok fertőtlenítő takarítást rendeltek el az egyik főzőkonyhán.",
+      "date": "2026-11-05T18:16:00.000Z",
+      "url": "https://hvg.hu/elet/20261105_hasmeneses-betegseg-nagykanizsa-iskola-hatosag-kozetkeztetes",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Élet+Stílus",
+        "egészség",
+        "ételmérgezés",
+        "hányás"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/e071b351-a68f-4b9a-b52d-83ef6d8fc60a.jpg",
+      "imageAlt": "Hasmenéses betegség söpört végig több nagykanizsai iskolán, a hatóságok a közétkeztetést vizsgálják",
+      "addedAt": "2026-11-05T19:15:26.081Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-444-magyarorszag-senkitol-nem-kap-majd-az-8ca2b3",
+      "title": "Magyarország senkitől nem kap majd az oroszokénál jobb ajánlatot az orosz külügyminiszter-helyettes szerint",
+      "summary": "Szerinte az európai országok lábon lövik magukat, ha lemondanak az orosz energiahordozókat.",
+      "date": "2026-11-05T18:08:47.000Z",
+      "url": "https://444.hu/2026/11/05/magyarorszag-senkitol-nem-kap-majd-az-oroszokenal-jobb-ajanlatot-az-orosz-kulugyminiszter-helyettes-szerint?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "orosz energiafüggőség",
+        "oroszország",
+        "Dmitrij Ljubinszkij",
+        "energiahordozók"
+      ],
+      "author": "Székely Sarolta",
+      "theme": "energija",
+      "image": "https://assets.4cdn.hu/kraken/8PcdKEjZ74KyIZB4s.jpeg",
+      "imageAlt": "Magyarország senkitől nem kap majd az oroszokénál jobb ajánlatot az orosz külügyminiszter-helyettes szerint",
+      "addedAt": "2026-11-05T19:15:25.690Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-24hu-elkezdodott-az-nka-teljeskoru-atalakitasa-05899d",
+      "title": "Elkezdődött az NKA teljeskörű átalakítása, itt vannak a részletek",
+      "summary": "Megszűnnek a Magyar Művészeti Akadémia (MMA) kiváltságos jogkörei a kulturális támogatásokról szóló döntésekben. The post Elkezdődött az NKA teljeskörű átalakítása, itt vannak a részletek first appeared on 24.hu .",
+      "date": "2026-11-05T18:05:36.000Z",
+      "url": "https://24.hu/belfold/2026/11/05/nka-atalakitas-reszletek-kultura/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "nka-támogatások",
+        "nemzeti kulturális alap",
+        "átalakítás"
+      ],
+      "author": "Ősze András",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-1149303605-e1793901787554-1024x577.jpg",
+      "imageAlt": "Elkezdődött az NKA teljeskörű átalakítása, itt vannak a részletek",
+      "addedAt": "2026-11-05T19:15:29.484Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-hvg-milliok-szenvednek-a-hosszu-covidtol-de-2d0eaf",
+      "title": "Milliók szenvednek a hosszú Covidtól, de most jött egy nagyon jó hír",
+      "summary": "A hosszú Covidban szenvedők változatos tüneteket tapasztalhatnak, de egy dolog közös: mindegyik rontja az ember életminőségét. Amerikai kutatók vizsgálata azonban visszaadhatja számukra a reményt.",
+      "date": "2026-11-05T18:03:00.000Z",
+      "url": "https://hvg.hu/tudomany/20261105_hosszu-covid-tunetek-betegseg-gyogyulas",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Tech",
+        "tudomány",
+        "hosszú covid",
+        "koronavírus"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/1e514ac1-ca69-4229-adfc-5fe99fcb3c23.jpg",
+      "imageAlt": "Milliók szenvednek a hosszú Covidtól, de most jött egy nagyon jó hír",
+      "addedAt": "2026-11-05T19:15:26.081Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-05-24hu-nemzetkozi-dijat-iteltek-panyi-szabolcs-355235",
+      "title": "Nemzetközi díjat ítéltek Panyi Szabolcs újságírónak",
+      "summary": "A Magnyitszkij Emberi Jogi Díj „kiemelkedő újságírói” díját kapja a Vsquare munkatársa. The post Nemzetközi díjat ítéltek Panyi Szabolcs újságírónak first appeared on 24.hu .",
+      "date": "2026-11-05T17:59:01.000Z",
+      "url": "https://24.hu/belfold/2026/11/05/panyi-szabolcs-dij-ujsagiro/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "panyi szabolcs",
+        "újságíró",
+        "magnyitszkij emberi jogi díj"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/panyi-1024x575.jpg",
+      "imageAlt": "Nemzetközi díjat ítéltek Panyi Szabolcs újságírónak",
+      "addedAt": "2026-11-05T19:15:29.484Z"
+    },
     {
       "slug": "budimpesta-2026-11-05-hvg-minnesotaban-szavaztam-feliratot-helyeztek-a8454a",
       "title": "Minnesotában „Szavaztam” feliratot helyeztek el az ICE-ügynökök által lelőtt Renee Good és Alex Pretti emlékhelyeinél",

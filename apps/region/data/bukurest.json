@@ -4,19 +4,20 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-11-05T18:06:31.159Z",
+  "updatedAt": "2026-11-05T19:20:24.683Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
-      "url": "https://www.agerpres.ro/rss/",
-      "ok": true,
-      "fetched": 20,
+      "url": "https://www.agerpres.ro/rss",
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.agerpres.ro/rss: This operation was aborted"
+        "https://www.agerpres.ro/rss: This operation was aborted",
+        "https://www.agerpres.ro/rss/: HTTP 500"
       ],
-      "checkedAt": "2026-11-05T18:06:23.209Z"
+      "checkedAt": "2026-11-05T19:20:17.366Z"
     },
     {
       "id": "hotnews",
@@ -26,7 +27,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T18:06:23.383Z"
+      "checkedAt": "2026-11-05T19:20:17.528Z"
     },
     {
       "id": "zf",
@@ -36,7 +37,7 @@
       "fetched": 13,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T18:06:25.285Z"
+      "checkedAt": "2026-11-05T19:20:19.344Z"
     },
     {
       "id": "profit",
@@ -46,17 +47,17 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T18:06:25.530Z"
+      "checkedAt": "2026-11-05T19:20:19.722Z"
     },
     {
       "id": "digi24",
       "name": "Digi24",
       "url": "https://www.digi24.ro/rss",
       "ok": true,
-      "fetched": 280,
+      "fetched": 282,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T18:06:28.653Z"
+      "checkedAt": "2026-11-05T19:20:22.527Z"
     },
     {
       "id": "g4media",
@@ -66,7 +67,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T18:06:30.728Z"
+      "checkedAt": "2026-11-05T19:20:24.237Z"
     },
     {
       "id": "newsro",
@@ -76,10 +77,426 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T18:06:31.158Z"
+      "checkedAt": "2026-11-05T19:20:24.681Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-11-05-g4media-victorie-definitiva-in-justitie-pentru-f3fe23",
+      "title": "Victorie definitivă în justiție pentru gazoductul Tuzla – Podișor / ÎCCJ a respins recursul Bankwatch / Conducta e finalizată și pusă în funcțiune / Producția din Marea Neagră…",
+      "summary": "Înalta Curte de Casație și Justiție (ÎCCJ) a pronunțat miercuri, 4 noiembrie 2026, o decizie definitivă care stabilește legalitatea autorizației de construire pentru gazoductul Tuzla – Podișor, o infrastructură energetică strategică ce va transporta gazele din perimetrul offshore Neptun Deep direct în Sistemul Național de Transport (SNT), anunță Ministerul Energiei. Prin Decizia nr. 4768/2026, magistrații […] © G4Media.ro .",
+      "date": "2026-11-05T19:15:38.000Z",
+      "url": "https://www.g4media.ro/victorie-definitiva-in-justitie-pentru-gazoductul-tuzla-podisor-iccj-a-respins-recursul-bankwatch-conducta-e-finalizata-si-pusa-in-functiune-productia-din-marea-neagra-este-progr.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "cand se extrage gaz din Marea Neagră",
+        "ce se intampla cu gazoductul Tuzla – Podișor",
+        "gazoductul tuzla podisor"
+      ],
+      "author": "Augustin Majearu",
+      "theme": "energija",
+      "image": "https://www.g4media.ro//wp-content/uploads/2023/05/gazoductul-prieteniei.jpg",
+      "imageAlt": "Victorie definitivă în justiție pentru gazoductul Tuzla – Podișor / ÎCCJ a respins recursul Bankwatch / Conducta e finalizată și pusă în funcțiune / Producția din Marea Neagră este",
+      "addedAt": "2026-11-05T19:20:24.237Z"
+    },
+    {
+      "slug": "bukurest-2026-11-05-newsro-peste-600-de-apartamente-din-municipiul-f66a01",
+      "title": "Peste 600 de apartamente din municipiul Braşov, fără căldură şi apă caldă, din cauza unei avarii",
+      "summary": "Peste 600 de apartamente şi un liceu din municipiul Braşov nu au căldură şi nici apă caldă, din cauza unei avarii produse la sistemul de alimentare. Primăria estimează că avaria va fi remediată sâmbătă.",
+      "date": "2026-11-05T19:12:59.000Z",
+      "url": "https://www.news.ro/social/peste-600-de-apartamente-din-municipiul-brasov-fara-caldura-si-apa-calda-din-cauza-unei-avarii-1922401205592026112122949324",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Peste 600 de apartamente din municipiul Braşov, fără căldură şi apă caldă, din cauza unei avarii",
+      "addedAt": "2026-11-05T19:20:24.681Z"
+    },
+    {
+      "slug": "bukurest-2026-11-05-newsro-traian-basescu-noi-nu-am-avut-nicio-44c456",
+      "title": "Traian Băsescu: Noi nu am avut nicio politică faţă de Statele Unite în ultimii ani, din 2004. Am avut doar politica prostului. Abordarea că trebuie să trecem în tabăra…",
+      "summary": "Fostul preşedinte Traian Băsescu afirmă că politica României faţă de Statele Unite ale Americii a fost ”politica prostului care a plătit sute de mii de dolari ca să treacă pe la Mar-a-Lago şi să facă poze cu câte o machetă de-aia cu Trump sau să încerce firme de lobby care să substituie Ministerul de Externe”. Băsescu contestă ideea conform căreia România ar trebui să facă parte dintr-o ”tabără”, cea a republicanilor sau cea a democraţilor, arătând că este ”o abordare de o naivitate demnă de un stat în care Guvernul e format din analfabeţi”.",
+      "date": "2026-11-05T19:09:46.000Z",
+      "url": "https://www.news.ro/politic-intern/traian-basescu-avut-nicio-politica-fata-statele-unite-ultimii-ani-2004-avut-politica-prostului-abordarea-trecem-tabara-democratilor-e-naivitate-demna-stat-guvernul-e-format-analfabeti-1922400905462026112122949246",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Traian Băsescu: Noi nu am avut nicio politică faţă de Statele Unite în ultimii ani, din 2004. Am avut doar politica prostului. Abordarea că trebuie să trecem în tabăra democraţilor",
+      "addedAt": "2026-11-05T19:20:24.682Z"
+    },
+    {
+      "slug": "bukurest-2026-11-05-zf-top-5-cele-mai-citite-stiri-din-zf-in-895b41",
+      "title": "Top 5 cele mai citite ştiri din ZF în ultimele 24 de ore",
+      "summary": "",
+      "date": "2026-11-05T19:07:32.000Z",
+      "url": "https://www.zf.ro/business-hi-tech/top-5-cele-mai-citite-stiri-din-zf-in-ultimele-24-de-ore-23275596",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Business Hi-Tech"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21332/23275596/1/deschidereccz.jpg?width=700",
+      "imageAlt": "Top 5 cele mai citite ştiri din ZF în ultimele 24 de ore",
+      "addedAt": "2026-11-05T19:20:19.344Z"
+    },
+    {
+      "slug": "bukurest-2026-11-05-g4media-video-basescu-despre-pozitia-romaniei-in-9cb4bf",
+      "title": "VIDEO Băsescu, despre poziția României în relația cu SUA: ”Am avut politica prostului” / ”Acum au venit la putere democrații, trebuie să trecem în tabăra lor” / ”O naivitate demnă…",
+      "summary": "Fostul președinte Traian Băsescu a numit politica României în relația cu Statele Unite una a ”prostului” și spune că pare că avem un guvern format din analfabeți. Nici Administrația Prezidențială nu a scăpat: ”a plătit sute de mii de dolari, să treacă pe la Mar A Lago și să facă poze cu câte o machetă […] © G4Media.ro .",
+      "date": "2026-11-05T19:06:42.000Z",
+      "url": "https://www.g4media.ro/video-basescu-despre-pozitia-romaniei-in-relatia-cu-sua-am-avut-politica-prostului-acum-au-venit-la-putere-democratii-trebuie-sa-trecem-in-tabara-lor.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "Băsescu despre alegerile din SUA",
+        "basescu despre trump",
+        "ce spune basescu despre sua"
+      ],
+      "author": "Augustin Majearu",
+      "theme": "politika",
+      "image": "https://www.g4media.ro//wp-content/uploads/2021/11/ID39743_INQUAM_Photos_Octav_Ganea-e1636723838636.jpg",
+      "imageAlt": "VIDEO Băsescu, despre poziția României în relația cu SUA: ”Am avut politica prostului” / ”Acum au venit la putere democrații, trebuie să trecem în tabăra lor” / ”O naivitate demnă ",
+      "addedAt": "2026-11-05T19:20:24.238Z"
+    },
+    {
+      "slug": "bukurest-2026-11-05-hotnews-show-ul-difuzat-de-antena-1-care-a-ajuns-sa-35b294",
+      "title": "Show-ul difuzat de Antena 1 care a ajuns să fie urmărit de peste un milion de români. „MasterChef” de la Pro TV a fost singurul care s-a apropiat",
+      "summary": "Asia Express difuzată de Antena 1 a fost lider de audiență miercuri pe intervalul de difuzare a emisiunii, show-ul prezentat de Irina Fodor fiind urmărit de peste un milion de telespectatori la nivel naţional, potrivit Pagina de Media. Antena 1 a condus clasamentul şi în mediul urban, dar şi pe publicul comercial 21-54 de ani. …",
+      "date": "2026-11-05T19:06:20.000Z",
+      "url": "https://hotnews.ro/show-ul-difuzat-de-antena-1-care-a-ajuns-sa-fie-urmarit-de-peste-un-milion-de-romani-masterchef-de-la-pro-tv-a-fost-singurul-care-s-a-apropiat-2396280",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Ana Teșcan",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Show-ul difuzat de Antena 1 care a ajuns să fie urmărit de peste un milion de români. „MasterChef” de la Pro TV a fost singurul care s-a apropiat",
+      "addedAt": "2026-11-05T19:20:17.528Z"
+    },
+    {
+      "slug": "bukurest-2026-11-05-digi24-un-californian-de-97-de-ani-a-murit-la-48f0b9",
+      "title": "Un californian de 97 de ani a murit la petrecerea de ziua lui, la scurt timp după ce a dansat pe melodia „Stayin’ Alive”",
+      "summary": "Un bărbat din California a murit chiar la petrecerea organizată pentru împlinirea vârstei de 97 de ani, la scurt timp după ce dansase pe celebra melodie „Stayin’ Alive” a trupei Bee Gees. Ultimele sale momente, petrecute alături de prieteni, au fost surprinse într-un videoclip devenit viral pe TikTok.",
+      "date": "2026-11-05T19:04:33.000Z",
+      "url": "https://www.digi24.ro/magazin/stil-de-viata/un-californian-de-97-de-ani-a-murit-la-petrecerea-de-ziua-lui-la-scurt-timp-dupa-ce-a-dansat-pe-melodia-stayin-alive-4023871",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjA1JTJGMzA1NDgxOF8zMDU0/ODE4X3Byb2ZpbWVkaWEtMDUxNjA5MDQ2/Ni5qcGcmaGFzaD02MTA1OGRlOTQwYjg2ZjRjOWI0MzEwYjA4OWZjZjQwNg==.jpg",
+      "imageAlt": "Un californian de 97 de ani a murit la petrecerea de ziua lui, la scurt timp după ce a dansat pe melodia „Stayin’ Alive”",
+      "addedAt": "2026-11-05T19:20:22.527Z"
+    },
+    {
+      "slug": "bukurest-2026-11-05-newsro-va-ramane-mereu-un-reper-selectionerul-27eed6",
+      "title": "„Va rămâne mereu un reper”: selecţionerul portughez vorbeşte despre retragerea lui Cristiano Ronaldo din echipa naţională",
+      "summary": "Jorge Jesus i-a adus un omagiu lui Cristiano Ronaldo şi a declarat că „îi acceptă decizia” după ce legenda fotbalului mondial şi-a anunţat, joi, retragerea din echipa naţională a Portugaliei, la o lună după plecarea din cantonament pe fondul tensiunilor cu antrenorul său.",
+      "date": "2026-11-05T19:00:00.000Z",
+      "url": "https://www.news.ro/sport/va-ramane-mereu-un-reper-selectionerul-portughez-vorbeste-despre-retragerea-lui-cristiano-ronaldo-din-echipa-nationala-1922400005002026112122948603",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "„Va rămâne mereu un reper”: selecţionerul portughez vorbeşte despre retragerea lui Cristiano Ronaldo din echipa naţională",
+      "addedAt": "2026-11-05T19:20:24.682Z"
+    },
+    {
+      "slug": "bukurest-2026-11-05-g4media-ciucu-explicatii-privind-modul-in-care-dace4d",
+      "title": "Ciucu, explicații privind modul în care evoluează lucrările la liniile de tramvai: „Sunt loturi la care se lucrează bine, dar sunt și loturi pentru care lucrările au stagnat”",
+      "summary": "Primarul Capitalei, Ciprian Ciucu, vine cu explicații în contextul nemulțumirilor privind modul în care se derulează lucrările la liniile de tramvai. Ciucu spune că a primit multiple întrebări, de ce nu se văd muncitorii pe șantier, de ce lucrările par că stagnează pe anumite tronsoane. „Adevărul este că sunt loturi (diferite linii de tramvai) la […] © G4Media.ro .",
+      "date": "2026-11-05T18:56:03.000Z",
+      "url": "https://www.g4media.ro/ciucu-explicatii-privind-modul-in-care-evolueaza-lucrarile-la-liniile-de-tramvai.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "București",
+        "linie de tramvai",
+        "lucrari linia de tramvail"
+      ],
+      "author": "Laura Nițulescu",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro//wp-content/uploads/2026/11/891188269_4606406842949754_5905069012728068353_n.jpeg",
+      "imageAlt": "Ciucu, explicații privind modul în care evoluează lucrările la liniile de tramvai: „Sunt loturi la care se lucrează bine, dar sunt și loturi pentru care lucrările au stagnat”",
+      "addedAt": "2026-11-05T19:20:24.238Z"
+    },
+    {
+      "slug": "bukurest-2026-11-05-newsro-melania-trump-isi-exprima-speranta-la-o-acec93",
+      "title": "Melania Trump îşi exprimă speranţa, la o întâlnire la Casa Albă cu reprezentanţi ruşi şi ucraineni, ca armistiţiul de la Oleşkî să fie un prim pas către un armistiţiu ”durabil”",
+      "summary": "Prima Doamnă americană Melania Trump a prezentat joi armistiţiul pe care l-a supervizat la Oleşkî drept o primă etapă către un armistiţiu ”durabil” în Ucraina, în cursul unei reuniuni cu reprezentanţi ruşi şi ucraineni, la Casa Albă, relatează AFP.",
+      "date": "2026-11-05T18:52:14.000Z",
+      "url": "https://www.news.ro/externe/melania-trump-isi-exprima-speranta-la-o-intalnire-la-casa-alba-cu-reprezentanti-rusi-si-ucraineni-ca-armistitiul-de-la-oleski-sa-fie-un-prim-pas-catre-un-armistitiu-durabil-1922405205142026112022948884",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Melania Trump îşi exprimă speranţa, la o întâlnire la Casa Albă cu reprezentanţi ruşi şi ucraineni, ca armistiţiul de la Oleşkî să fie un prim pas către un armistiţiu ”durabil”",
+      "addedAt": "2026-11-05T19:20:24.682Z"
+    },
+    {
+      "slug": "bukurest-2026-11-05-digi24-ce-spune-ministrul-dezvoltarii-despre-cbc438",
+      "title": "Ce spune ministrul Dezvoltării despre impozitele pe balcoanele închise ilegal",
+      "summary": "Nimeni nu va fi obligat să plătească impozit dublu sau taxe înzecite şi nici să cheltuiască mii de lei ca să îşi legalizeze balconul, a transmis joi ministrul Dezvoltării, Lucrărilor Publice şi Administraţiei, Marcel-Alexandru Stoica.",
+      "date": "2026-11-05T18:50:26.000Z",
+      "url": "https://www.digi24.ro/stiri/ce-spune-ministrul-dezvoltarii-despre-impozitele-pe-balcoanele-inchise-ilegal-4023845",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjI5JTJGMzAzNjI5NV8zMDM2/Mjk1X21hcmNlbC1hbGV4YW5kcnUtc3Rv/aWNhLWd1dmVybi5qcGVnJmhhc2g9MWRm/MzI1OGJkYjA2MTI4MjFkMDZmYjVhMDk1MGUxNjA=.jpeg",
+      "imageAlt": "Ce spune ministrul Dezvoltării despre impozitele pe balcoanele închise ilegal",
+      "addedAt": "2026-11-05T19:20:22.527Z"
+    },
+    {
+      "slug": "bukurest-2026-11-05-hotnews-ce-cauta-romanii-pe-google-de-black-friday-1cecce",
+      "title": "Ce caută românii pe Google de Black Friday. Domeniul în care căutările au crescut cu 262%",
+      "summary": "Black Friday nu mai este doar un eveniment de cumpărături concentrat într-o singură zi, ci s-a transformat într-un sezon comercial de aproximativ șase săptămâni, care începe în octombrie și se încheie în prima jumătate a lunii noiembrie, spun reprezentanții Google din România. Aceștia arată, într-un comunicat de presă, că românii caută tot mai mult și …",
+      "date": "2026-11-05T18:46:22.000Z",
+      "url": "https://hotnews.ro/ce-cauta-romanii-pe-google-de-black-friday-cautarile-pentru-servicii-bancare-au-crescut-cu-262-2396236",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Ana Teșcan",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Ce caută românii pe Google de Black Friday. Domeniul în care căutările au crescut cu 262%",
+      "addedAt": "2026-11-05T19:20:17.528Z"
+    },
+    {
+      "slug": "bukurest-2026-11-05-newsro-basescu-despre-botezul-la-care-au-luat-a4091c",
+      "title": "Băsescu, despre botezul la care au luat parte liderii PSD: Această manifestare ne arată că avem nevoie de Kovesi la DNA",
+      "summary": "Fostul preşedinte Traian Băsescu a comentat botezul de weekendul trecut, la care au luat parte liderii PSD ale căror partenere au afişat un lux intens comentat pe reţelele de socializare. ”Această manifestare ne arată că avem nevoie de Kovesi la DNA”, a afirmat Traian Băsescu.",
+      "date": "2026-11-05T18:45:50.000Z",
+      "url": "https://www.news.ro/politic-intern/basescu-despre-botezul-la-care-au-luat-parte-liderii-psd-aceasta-manifestare-ne-arata-ca-avem-nevoie-de-kovesi-la-dna-1922404505502026112022949065",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Băsescu, despre botezul la care au luat parte liderii PSD: Această manifestare ne arată că avem nevoie de Kovesi la DNA",
+      "addedAt": "2026-11-05T19:20:24.682Z"
+    },
+    {
+      "slug": "bukurest-2026-11-05-profit-presat-cel-mai-probabil-de-programul-6c4b26",
+      "title": "Presat, cel mai probabil, de programul încărcat și de acționari. Conducerea Stellantis din America, preluată de fostul șef regional al Volkswagen",
+      "summary": "Antonio Filosa, CEO Stellantis, și-a numit un nou șef în locul său în fruntea operațiunilor din America de Nord, împreună cu o echipă nouă de directori.",
+      "date": "2026-11-05T18:45:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/auto-transporturi/presat-cel-mai-probabil-de-programul-incarcat-si-de-actionari-conducerea-stellantis-din-america-preluata-de-fostul-sef-regional-al-volkswagen-22944283?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Auto/Transporturi"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33217/22944283/1/2023-challenger-new-my23-challenger-gallery-07-jpg-image-1440-result.jpg?width=800",
+      "imageAlt": "Presat, cel mai probabil, de programul încărcat și de acționari. Conducerea Stellantis din America, preluată de fostul șef regional al Volkswagen",
+      "addedAt": "2026-11-05T19:20:19.722Z"
+    },
+    {
+      "slug": "bukurest-2026-11-05-digi24-nato-a-lansat-o-platforma-de-tip-e-commerce-56c3b6",
+      "title": "NATO a lansat o platformă de tip e-commerce, unde țările membre pot cumpăra sisteme antidronă. Cât costă echipamentele",
+      "summary": "NATO a anunţat joi lansarea unei platforme comune destinate să le permită celor 32 de state membre să se doteze mai rapid şi mai eficient cu capacităţi antidrone, în urma creşterii numărului de incidente cu drone în Europa.",
+      "date": "2026-11-05T18:41:35.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/nato-a-lansat-o-platforma-de-tip-e-commerce-unde-tarile-membre-pot-cumpara-sisteme-antidrona-cat-costa-echipamentele-4023833",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwOSUyRjA1JTJGMjk0ODA5MF8yOTQ4/MDkwX3Byb2ZpbWVkaWEtMTEyMDgwMjU3/MC5qcGcmaGFzaD1hZTkxYjE5Yjg1ZDc1ODA5MjA1NGI0ZTk3M2E2OWJlZg==.jpg",
+      "imageAlt": "NATO a lansat o platformă de tip e-commerce, unde țările membre pot cumpăra sisteme antidronă. Cât costă echipamentele",
+      "addedAt": "2026-11-05T19:20:22.527Z"
+    },
+    {
+      "slug": "bukurest-2026-11-05-g4media-intotero-o-acuza-pe-buzoianu-ca-a-pierdut-a85417",
+      "title": "Intotero o acuză pe Buzoianu că a pierdut foarte mulți bani din PNRR: „Şi atunci, vedeţi, trebuie să venim cu soluţii din bugetul de stat” / Buzoianu: „Banii au fost pierduți din…",
+      "summary": "Noua ministră a Mediului, Apelor şi Pădurilor, Natalia Intotero arată că din peste 3,6 miliarde de Euro asigurați prin PNRR, s-a reușit accesarea a puțin peste 1,3 miliarde de euro, punând acest eșec pe seama fostei ministre USR, Diana Buzoianu. Aflată în vizită la Petrorașni, Intotero a arătat că circa 400 de milioane de euro […] © G4Media.ro .",
+      "date": "2026-11-05T18:40:18.000Z",
+      "url": "https://www.g4media.ro/intotero-o-acuza-pe-buzoianu-ca-a-pierdut-foarte-multi-bani-din-pnrr-si-atunci-vedeti-trebuie-sa-venim-cu-solutii-din-bugetul-de-stat-buzoianu-banii-au-fost-pierduti-d.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole"
+      ],
+      "author": "Laura Nițulescu",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro//wp-content/uploads/2026/11/Natalia-Intotero-vizita-baraje.jpg",
+      "imageAlt": "Intotero o acuză pe Buzoianu că a pierdut foarte mulți bani din PNRR: „Şi atunci, vedeţi, trebuie să venim cu soluţii din bugetul de stat” / Buzoianu: „Banii au fost pierduți din c",
+      "addedAt": "2026-11-05T19:20:24.238Z"
+    },
+    {
+      "slug": "bukurest-2026-11-05-digi24-zelenski-cere-ajutor-urgent-pentru-sistemul-c5566f",
+      "title": "Zelenski cere ajutor urgent pentru sistemul energetic al Ucrainei, devastat de atacurile rusești. Apel către Spania și America Latină",
+      "summary": "Președintele ucrainean Volodimir Zelenski a cerut joi, la Madrid, sprijinul Spaniei și al țărilor din America Latină pentru refacerea sistemului energetic al Ucrainei, grav afectat de bombardamentele rusești. În perspectiva unei noi ierni dificile, liderul de la Kiev a avertizat că țara sa are nevoie urgentă de transformatoare, cabluri electrice și generatoare și a făcut apel la companiile din aceste state să accelereze livrările de echipamente.",
+      "date": "2026-11-05T18:39:12.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/mapamond/zelenski-cere-ajutor-urgent-pentru-sistemul-energetic-al-ucrainei-devastat-de-atacurile-rusesti-apel-catre-spania-si-america-latina-4023835",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjA1JTJGMzA1NDc4MF8zMDU0/NzgwX3Byb2ZpbWVkaWEtMTE0OTU2MTEw/Ny5qcGcmaGFzaD1iMGZhOGY4YTVjMjk0NzBmY2M0NzlkMDNjYTZjYTVkMQ==.jpg",
+      "imageAlt": "Zelenski cere ajutor urgent pentru sistemul energetic al Ucrainei, devastat de atacurile rusești. Apel către Spania și America Latină",
+      "addedAt": "2026-11-05T19:20:22.528Z"
+    },
+    {
+      "slug": "bukurest-2026-11-05-g4media-intr-o-scoala-din-prahova-au-mai-ramas-doar-0d5fc6",
+      "title": "Într-o școală din Prahova au mai rămas doar 17 copii / E proaspăt reabilitată, are bază sportivă cu teren sintetic, săli de clasă moderne, table inteligente, teren de sport și…",
+      "summary": "Școala din comuna prahoveană Jugureni a fost reabilitată în urmă cu aproximativ un an și dispune de săli de clasă moderne, table inteligente, teren de sport și microbuze școlare. Cu toate acestea, în unitatea de învățământ învață doar 17 copii, de la clasa pregătitoare până la clasa a VIII-a, relatează Observatorul Prahovean. Profesorii îi pregătesc […] © G4Media.ro .",
+      "date": "2026-11-05T18:37:42.000Z",
+      "url": "https://www.g4media.ro/intr-o-scoala-din-prahova-au-mai-ramas-doar-17-copii-e-proaspat-reabilitata-are-baza-sportiva-cu-teren-sintetic-sali-de-clasa-moderne-table-inteligente-teren-de-sport-si-microbuz-avem.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "școală cu 17 copii"
+      ],
+      "author": "Augustin Majearu",
+      "theme": "sport",
+      "image": "https://www.g4media.ro//wp-content/uploads/2026/11/scoala-prahova.jpg",
+      "imageAlt": "Într-o școală din Prahova au mai rămas doar 17 copii / E proaspăt reabilitată, are bază sportivă cu teren sintetic, săli de clasă moderne, table inteligente, teren de sport și micr",
+      "addedAt": "2026-11-05T19:20:24.238Z"
+    },
+    {
+      "slug": "bukurest-2026-11-05-digi24-italia-anunta-ca-va-trimite-kievului-un-nou-fbd7a7",
+      "title": "Italia anunţă că va trimite Kievului un nou pachet de ajutor militar: „Ne vom onora angajamentele”",
+      "summary": "Italia finalizează un nou pachet de ajutor militar pentru Ucraina, primul din acest an, a declarat ministrul Apărării Guido Crosetto, care a pledat pentru continuarea sprijinului acordat Kievului, în pofida tensiunilor tot mai mari din coaliţia de guvernare cu privire la prelungirea livrărilor de armament, relatează Reuters.",
+      "date": "2026-11-05T18:37:33.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/italia-anunta-ca-va-trimite-kievului-un-nou-pachet-de-ajutor-militar-ne-vom-onora-angajamentele-4023837",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjUl/MkYxMiUyRjIzJTJGMjUwOTQ2OV8yNTA5/NDY5X3N0ZWFnLWl0YWxpYS5qcGcmaGFz/aD1iYTZhNDAxZjJlYmQ5MzA2ZDdiYjFjMzAxNDc3NDAzYw==.jpg",
+      "imageAlt": "Italia anunţă că va trimite Kievului un nou pachet de ajutor militar: „Ne vom onora angajamentele”",
+      "addedAt": "2026-11-05T19:20:22.528Z"
+    },
+    {
+      "slug": "bukurest-2026-11-05-digi24-liderul-suprem-iranian-i-a-transmis-un-aeba12",
+      "title": "Liderul Suprem iranian i-a transmis un mesaj secret lui Putin. Întâlnire la nivel înalt iraniano-rusă la Kremlin",
+      "summary": "Președintele rus Vladimir Putin l-a primit joi la Kremlin pe Mohsen Rezaei, secretarul Consiliului Suprem de Securitate Națională al Iranului. La întâlnire au participat, de asemenea, consilierul prezidențial rus Iuri Ușakov și Igor Kostiukov, șeful agenției ruse de informații militare, GRU, relatează Al Arabyia.",
+      "date": "2026-11-05T18:34:15.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/liderul-suprem-iranian-i-a-transmis-un-mesaj-secret-lui-putin-intalnire-la-nivel-inalt-iraniano-rusa-la-kremlin-4023825",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjA1JTJGMzA1NDc3N18zMDU0/Nzc3X1B1dGluLWwtYS1wcmltaXQtbGEt/S3JlbWxpbi1wZS1zZWNyZXRhcnVsLUNv/bnNpbGl1bHVpLVN1cHJlbS1kZS1TZWN1/cml0YXRlLU5hdGlvbmFsYS1hbC1JcmFu/dWx1aS5qcGcmaGFzaD02ODQyM2VkZTQ0MTQ3NDc3MDhlYjhmNTNkNmJlMjBhNw==.jpg",
+      "imageAlt": "Liderul Suprem iranian i-a transmis un mesaj secret lui Putin. Întâlnire la nivel înalt iraniano-rusă la Kremlin",
+      "addedAt": "2026-11-05T19:20:22.528Z"
+    },
+    {
+      "slug": "bukurest-2026-11-05-newsro-ministrul-dezvoltarii-clarifica-aspecte-3700ca",
+      "title": "Ministrul Dezvoltării clarifică aspecte controversate din Codul amenajării teritoriului, urbanismului şi construcţiilor: Nimeni nu va fi obligat să plătească impozit dublu sau…",
+      "summary": "Ministrul Dezvoltării, Marcel-Alexandru Stoica, a clarificat, printr-un ordin, aspecte controversate din Codul amenajării teritoriului, urbanismului şi construcţiilor. ”Nimeni nu va fi obligat să plătească impozit dublu sau taxe înzecite şi nici să cheltuiască mii de lei ca să-şi legalizeze balconul”, a subliniat el.",
+      "date": "2026-11-05T18:28:03.000Z",
+      "url": "https://www.news.ro/social/ministrul-dezvoltarii-clarifica-aspecte-controversate-codul-amenajarii-teritoriului-urbanismului-constructiilor-nimeni-obligat-plateasca-impozit-dublu-taxe-inzecite-nici-cheltuiasca-mii-lei-1922402805032026112022948725",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "",
+      "imageAlt": "Ministrul Dezvoltării clarifică aspecte controversate din Codul amenajării teritoriului, urbanismului şi construcţiilor: Nimeni nu va fi obligat să plătească impozit dublu sau taxe",
+      "addedAt": "2026-11-05T19:20:24.682Z"
+    },
+    {
+      "slug": "bukurest-2026-11-05-g4media-parcari-reduse-cu-60-in-timisoara-pentru-973f0c",
+      "title": "Parcări reduse cu 60% în Timișoara pentru cei care au domiciliul aici / Primăria vrea să-i convingă așa pe cei mutați aici să se și înregistreze",
+      "summary": "Municipalitatea timișoreană a găsit o bună metodă să îi convingă pe cetățenii veniți din alte localități să își mute domiciliul în orașul de pe Bega, dar și să își înregistreze fiscal aici vehiculele pe care le dețin, relatează DeBanat.ro. Astfel, aceștia ar urma să beneficieze de un tarif redus cu 60% față de cei care […] © G4Media.ro .",
+      "date": "2026-11-05T18:25:42.000Z",
+      "url": "https://www.g4media.ro/parcari-reduse-cu-60-in-timisoara-pentru-cei-care-au-domiciliul-aici-primaria-vrea-sa-i-convinga-asa-pe-cei-mutati-aici-sa-se-si-inregistreze.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Orașul meu",
+        "Timișoara",
+        "cat e parcarea in timisoara",
+        "parcari in timisoara"
+      ],
+      "author": "Augustin Majearu",
+      "theme": "ai",
+      "image": "https://www.g4media.ro//wp-content/uploads/2023/03/parking-spot-gda5f2e8d7_1920-e1695820195706.jpg",
+      "imageAlt": "Parcări reduse cu 60% în Timișoara pentru cei care au domiciliul aici / Primăria vrea să-i convingă așa pe cei mutați aici să se și înregistreze",
+      "addedAt": "2026-11-05T19:20:24.238Z"
+    },
+    {
+      "slug": "bukurest-2026-11-05-hotnews-europa-trebuie-sa-isi-faca-rezerve-de-5581ae",
+      "title": "Europa trebuie să își facă rezerve de materii prime critice, spune cancelarul german Friedrich Merz",
+      "summary": "Europa trebuie să își constituie rezerve de materii prime critice pentru a-și reduce dependența de țările care domină extracția și procesarea acestora, a declarat joi cancelarul german Friedrich Merz, conform Reuters. „Fără materii prime critice nu ar exista baterii, motoare electrice de înaltă performanță, semiconductori moderni și multe alte tehnologii de care economiile noastre vor …",
+      "date": "2026-11-05T18:25:23.000Z",
+      "url": "https://hotnews.ro/europa-trebuie-sa-isi-faca-rezerve-de-materii-prime-critice-spune-cancelarul-german-friedrich-merz-2396214",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Ana Teșcan",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Europa trebuie să își facă rezerve de materii prime critice, spune cancelarul german Friedrich Merz",
+      "addedAt": "2026-11-05T19:20:17.528Z"
+    },
+    {
+      "slug": "bukurest-2026-11-05-profit-plangeti-va-mergeti-la-itm-mesaj-pentru-5b2ab3",
+      "title": "Plângeți-vă, mergeți la ITM! Mesaj pentru angajații ținuți neplătiți peste program al ministrului Muncii",
+      "summary": "Ministrul Muncii are un mesaj pentru angajații care sunt forțați să presteze ore suplimentare neplătite.",
+      "date": "2026-11-05T18:21:00.000Z",
+      "url": "https://www.profit.ro/perspective/plangeti-va-mergeti-la-itm-mesaj-pentru-angajatii-tinuti-neplatiti-peste-program-al-ministrului-muncii-22946424?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Perspective"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33242/22946424/3/screenshot-2026-11-03-143124.png?width=800",
+      "imageAlt": "Plângeți-vă, mergeți la ITM! Mesaj pentru angajații ținuți neplătiți peste program al ministrului Muncii",
+      "addedAt": "2026-11-05T19:20:19.723Z"
+    },
+    {
+      "slug": "bukurest-2026-11-05-hotnews-stiu-ca-multi-se-vor-supara-pe-mine-ioana-391c19",
+      "title": "„Știu că mulți se vor supăra pe mine”. Ioana Dogioiu îl laudă deschis pe Marian Neacșu",
+      "summary": "Ioana Dogioiu, jurnalista care a fost purtătoarea de cuvânt a Guvernului Bolojan, l-a lăudat pe social-democratul Marian Neacșu, despre care susține că „era partea profesionistă” a reprezentanților PSD la ședințele fostei coaliții de guvernare. Vorbind despre perioada în care participa la ședințele coaliției PSD-PNL-UDMR-USR, Dogioiu a declarat, joi, la Europa FM, că Marian Neacșu „este …",
+      "date": "2026-11-05T18:10:06.000Z",
+      "url": "https://hotnews.ro/ioana-dogioiu-laude-la-adresa-lui-marian-neacsu-acum-stiu-ca-multi-se-vor-supara-pe-mine-2396245",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "claudiu manda",
+        "Ioana Dogioiu",
+        "Marian Neacsu"
+      ],
+      "author": "Vladimir Ionescu",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "„Știu că mulți se vor supăra pe mine”. Ioana Dogioiu îl laudă deschis pe Marian Neacșu",
+      "addedAt": "2026-11-05T19:20:17.528Z"
+    },
     {
       "slug": "bukurest-2026-11-05-agerpres-nato-a-lansat-o-platforma-de-tip-e-commerce-471cc4",
       "title": "NATO a lansat o platformă de tip 'e-commerce' pentru achiziția de capacități antidronă dee către statele membre",
@@ -184,6 +601,23 @@
       "image": "",
       "imageAlt": "Cel puţin opt morţi în vestul Turciei, într-un atac armat în provincia Afyonkarahisa",
       "addedAt": "2026-11-05T18:06:31.158Z"
+    },
+    {
+      "slug": "bukurest-2026-11-05-profit-scandal-dan-air-mii-de-rezervari-anulate-0183ed",
+      "title": "Scandal Dan Air, mii de rezervări anulate. REACȚIA Netopia",
+      "summary": "Furnizorul de plăți Netopia revine cu o serie de clarificări după ce compania aeriană românească Dan Air a transmis că peste 11.000 de pasageri au fost afectați de anulări de rezervări pentru neplată, ca urmare a reținerii sumelor de către Netopia.",
+      "date": "2026-11-05T18:00:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/auto-transporturi/scandal-dan-air-mii-de-rezervari-anulate-reactia-netopia-22948666?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Auto/Transporturi"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://i0.1616.ro/media/2/2621/33217/22948666/17/437723945-760895236182710-9208175360795153774-n.jpg?width=800",
+      "imageAlt": "Scandal Dan Air, mii de rezervări anulate. REACȚIA Netopia",
+      "addedAt": "2026-11-05T19:20:19.723Z"
     },
     {
       "slug": "bukurest-2026-11-05-g4media-fanii-ungurilor-de-la-ferencvaros-defileaza-ca72cf",
