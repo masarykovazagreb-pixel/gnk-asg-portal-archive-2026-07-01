@@ -4,7 +4,7 @@
   "lang": "it",
   "city": "Rim",
   "country": "Italija",
-  "updatedAt": "2026-11-05T11:11:44.405Z",
+  "updatedAt": "2026-11-05T18:04:00.279Z",
   "sources": [
     {
       "id": "ansa",
@@ -14,17 +14,22 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T11:11:38.093Z"
+      "checkedAt": "2026-11-05T18:03:49.943Z"
     },
     {
       "id": "repubblica",
       "name": "la Repubblica",
       "url": "https://www.repubblica.it/rss/homepage/rss2.0.xml",
-      "ok": true,
-      "fetched": 30,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-05T11:11:38.566Z"
+      "errors": [
+        "https://www.repubblica.it/rss/homepage/rss2.0.xml: HTTP 403",
+        "https://www.repubblica.it/rss/politica/rss2.0.xml: HTTP 403",
+        "https://www.repubblica.it/rss/economia/rss2.0.xml: HTTP 403",
+        "https://www.repubblica.it/rss/sport/rss2.0.xml: HTTP 403"
+      ],
+      "checkedAt": "2026-11-05T18:03:53.042Z"
     },
     {
       "id": "ilpost",
@@ -36,7 +41,7 @@
       "errors": [
         "https://www.ilpost.it/feed/: HTTP 403"
       ],
-      "checkedAt": "2026-11-05T11:11:39.895Z"
+      "checkedAt": "2026-11-05T18:03:54.902Z"
     },
     {
       "id": "sole24",
@@ -46,7 +51,7 @@
       "fetched": 37,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T11:11:40.667Z"
+      "checkedAt": "2026-11-05T18:03:55.836Z"
     },
     {
       "id": "corriere",
@@ -56,17 +61,19 @@
       "fetched": 69,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T11:11:41.409Z"
+      "checkedAt": "2026-11-05T18:03:56.729Z"
     },
     {
       "id": "lastampa",
       "name": "La Stampa",
       "url": "https://www.lastampa.it/rss",
-      "ok": true,
-      "fetched": 62,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-05T11:11:42.181Z"
+      "errors": [
+        "https://www.lastampa.it/rss: HTTP 403"
+      ],
+      "checkedAt": "2026-11-05T18:03:57.968Z"
     },
     {
       "id": "fanpage",
@@ -78,7 +85,7 @@
       "errors": [
         "https://www.fanpage.it/feed/: HTTP 403"
       ],
-      "checkedAt": "2026-11-05T11:11:43.313Z"
+      "checkedAt": "2026-11-05T18:03:58.969Z"
     },
     {
       "id": "adnkronos",
@@ -90,10 +97,134 @@
       "errors": [
         "https://www.adnkronos.com/rss: nije feed"
       ],
-      "checkedAt": "2026-11-05T11:11:44.405Z"
+      "checkedAt": "2026-11-05T18:04:00.279Z"
     }
   ],
   "items": [
+    {
+      "slug": "rim-2026-11-05-ansa-piantedosi-parere-medico-non-sara-3f835b",
+      "title": "Piantedosi, parere medico non sarà vincolante per evitare il Cpr",
+      "summary": "'Nuova direttiva evita valutazioni influenzate solo da pregiudizi ideologici'",
+      "date": "2026-11-05T17:47:21.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/05/piantedosi-parere-medico-non-sara-vincolante-per-evitare-il-cpr_7d022f4a-1770-4fdf-bd10-ffeb55430d65.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Piantedosi, parere medico non sarà vincolante per evitare il Cpr",
+      "addedAt": "2026-11-05T18:03:49.943Z"
+    },
+    {
+      "slug": "rim-2026-11-05-sole24-fine-vita-il-governo-impugna-la-legge-del-4e1d28",
+      "title": "Fine vita, il governo impugna la legge del Veneto: Salvini non vota in Cdm, Calderoli contrario",
+      "summary": "Il governo ha deciso di impugnare la legge sul fine vita del Veneto , prima Regione amministrata dal centrodestra (il governatore è il leghista Alberto Stefani) a dare il...",
+      "date": "2026-11-05T17:24:39.000Z",
+      "url": "https://www.ilsole24ore.com/art/fine-vita-governo-impugna-legge-veneto-salvini-non-vota-cdm-calderoli-contrario-AJHFDG6B",
+      "source": "sole24",
+      "sourceName": "Il Sole 24 Ore",
+      "categories": [
+        "Italia/Politica"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://i2.res.24o.it/images2010/S24/Documenti/2026/11/06/Immagini/Ritagli/fine_vita-U16053713418nAb-1440x752@IlSole24Ore-Web.jpg",
+      "imageAlt": "Fine vita, il governo impugna la legge del Veneto: Salvini non vota in Cdm, Calderoli contrario",
+      "addedAt": "2026-11-05T18:03:55.836Z"
+    },
+    {
+      "slug": "rim-2026-11-05-ansa-kering-piccioli-lascia-la-direzione-acd5ca",
+      "title": "Kering, Piccioli lascia la direzione creativa di Balenciaga",
+      "summary": "A un mese dall'addio di Vaccarello a Yves Saint Laurent",
+      "date": "2026-11-05T17:16:25.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/05/kering-piccioli-lascia-la-direzione-creativa-di-balenciaga_4e5ed382-2e9e-4260-90c5-7c2ea787a6e2.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Kering, Piccioli lascia la direzione creativa di Balenciaga",
+      "addedAt": "2026-11-05T18:03:49.943Z"
+    },
+    {
+      "slug": "rim-2026-11-05-ansa-il-gas-in-aumento-1-5-a-89-4-euro-al-36d7fb",
+      "title": "Il gas in aumento (+1,5%) a 89,4 euro al Megawattora",
+      "summary": "Sul mercato di Amsterdam di riferimento per l'Europa",
+      "date": "2026-11-05T17:12:49.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/05/il-gas-in-aumento-15-a-894-euro-al-megawattora_d813ac52-2871-4c56-9b0b-7cb7b00c71cd.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "",
+      "imageAlt": "Il gas in aumento (+1,5%) a 89,4 euro al Megawattora",
+      "addedAt": "2026-11-05T18:03:49.943Z"
+    },
+    {
+      "slug": "rim-2026-11-05-ansa-lo-spread-tra-btp-e-bund-chiude-in-rialzo-a-5610b4",
+      "title": "Lo spread tra Btp e Bund chiude in rialzo a 109 punti base",
+      "summary": "Il rendimento del prodotto del Tesoro è al 4,33%",
+      "date": "2026-11-05T17:04:07.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/05/lo-spread-tra-btp-e-bund-chiude-in-rialzo-a-109-punti-base_34b09b7f-6d81-42e0-9856-22795cefac2c.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Lo spread tra Btp e Bund chiude in rialzo a 109 punti base",
+      "addedAt": "2026-11-05T18:03:49.943Z"
+    },
+    {
+      "slug": "rim-2026-11-05-ansa-borsa-l-europa-conclude-incerta-londra-0-3-2a3fb5",
+      "title": "Borsa: l'Europa conclude incerta, Londra -0,3%",
+      "summary": "Giù Amsterdam, in lieve rialzo Parigi e Madrid",
+      "date": "2026-11-05T16:47:19.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/05/borsa-leuropa-conclude-incerta-londra-03_25f3f9cb-6867-4730-9f22-b65b5b03e073.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Borsa: l'Europa conclude incerta, Londra -0,3%",
+      "addedAt": "2026-11-05T18:03:49.943Z"
+    },
+    {
+      "slug": "rim-2026-11-05-ansa-utile-record-sopra-gli-1-5-miliardi-banco-559938",
+      "title": "Utile record sopra gli 1,5 miliardi, Banco Bpm ritocca la cedola",
+      "summary": "Ai soci più un euro ad azione nel 2026, l'acconto sul dividendo sale a 0,5 euro",
+      "date": "2026-11-05T16:45:33.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/05/utile-record-sopra-gli-15-miliardi-banco-bpm-ritocca-la-cedola_322427f1-a7b0-4950-856e-d31ff2be59d9.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Utile record sopra gli 1,5 miliardi, Banco Bpm ritocca la cedola",
+      "addedAt": "2026-11-05T18:03:49.943Z"
+    },
+    {
+      "slug": "rim-2026-11-05-sole24-ucraina-meloni-scrive-a-costa-inaccettabile-c6ccee",
+      "title": "Ucraina, Meloni scrive a Costa: «Inaccettabile Ue in ordine sparso, serve una voce sola»",
+      "summary": "Un’Europa che continua a «procedere in ordine sparso» sull’Ucraina è «inaccettabile»: «Non facciamo altro che l’interesse di chi vuole che questa guerra continui». Giorgia Meloni ha perso la pazienza. Dopo...",
+      "date": "2026-11-05T14:06:00.000Z",
+      "url": "https://www.ilsole24ore.com/art/ucraina-meloni-scrive-costa-inaccettabile-ue-ordine-sparso-serve-voce-sola-AJOuct5B",
+      "source": "sole24",
+      "sourceName": "Il Sole 24 Ore",
+      "categories": [
+        "Italia/Politica"
+      ],
+      "author": "di Manuela Perrone",
+      "theme": "rat",
+      "image": "https://i2.res.24o.it/images2010/S24/Documenti/2026/11/06/Immagini/Ritagli/2026-11-05T102726Z_105647574_RC2QPKAGME5W_RTRMADP_5_UKRAINE-CRISIS-ITALY-U40778247544KWP-1440x752@IlSole24Ore-Web.JPG",
+      "imageAlt": "Ucraina, Meloni scrive a Costa: «Inaccettabile Ue in ordine sparso, serve una voce sola»",
+      "addedAt": "2026-11-05T18:03:55.836Z"
+    },
     {
       "slug": "rim-2026-11-05-repubblica-cristiano-ronaldo-dice-addio-alla-nazionale-cd2780",
       "title": "Cristiano Ronaldo dice addio alla nazionale portoghese: “Volevo essere il migliore”",
