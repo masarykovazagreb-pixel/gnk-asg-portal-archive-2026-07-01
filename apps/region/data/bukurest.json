@@ -4,19 +4,20 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-11-06T20:07:39.225Z",
+  "updatedAt": "2026-11-06T23:06:03.547Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
-      "url": "https://www.agerpres.ro/rss/",
-      "ok": true,
-      "fetched": 20,
+      "url": "https://www.agerpres.ro/rss",
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.agerpres.ro/rss: This operation was aborted"
+        "https://www.agerpres.ro/rss: This operation was aborted",
+        "https://www.agerpres.ro/rss/: This operation was aborted"
       ],
-      "checkedAt": "2026-11-06T20:07:31.164Z"
+      "checkedAt": "2026-11-06T23:05:57.083Z"
     },
     {
       "id": "hotnews",
@@ -26,17 +27,17 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-06T20:07:31.359Z"
+      "checkedAt": "2026-11-06T23:05:57.307Z"
     },
     {
       "id": "zf",
       "name": "Ziarul Financiar",
       "url": "https://www.zf.ro/rss",
       "ok": true,
-      "fetched": 20,
+      "fetched": 19,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-06T20:07:33.166Z"
+      "checkedAt": "2026-11-06T23:05:59.025Z"
     },
     {
       "id": "profit",
@@ -46,7 +47,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-06T20:07:33.381Z"
+      "checkedAt": "2026-11-06T23:05:59.263Z"
     },
     {
       "id": "digi24",
@@ -56,7 +57,7 @@
       "fetched": 258,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-06T20:07:36.505Z"
+      "checkedAt": "2026-11-06T23:06:01.806Z"
     },
     {
       "id": "g4media",
@@ -66,7 +67,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-06T20:07:38.841Z"
+      "checkedAt": "2026-11-06T23:06:03.155Z"
     },
     {
       "id": "newsro",
@@ -76,10 +77,456 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-06T20:07:39.224Z"
+      "checkedAt": "2026-11-06T23:06:03.545Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-11-06-newsro-marco-rubio-se-va-intalni-saptamana-8292f3",
+      "title": "Marco Rubio se va întâlni săptămâna viitoare la Paris cu omologii săi din G7, după înfrângerea electorală suferită de Donald Trump",
+      "summary": "Şeful diplomaţiei americane, Marco Rubio, va participa săptămâna viitoare la o reuniune cu omologii săi din G7 la Paris, a anunţat vineri Departamentul de Stat, la câteva zile după înfrângerea republicanilor în alegerile de la jumătatea mandatului prezidenţial din Statele Unite, relatează AFP.",
+      "date": "2026-11-06T22:56:40.000Z",
+      "url": "https://www.news.ro/externe/marco-rubio-se-va-intalni-saptamana-viitoare-la-paris-cu-omologii-sai-din-g7-dupa-infrangerea-electorala-suferita-de-donald-trump-1922405607402026110022957426",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Marco Rubio se va întâlni săptămâna viitoare la Paris cu omologii săi din G7, după înfrângerea electorală suferită de Donald Trump",
+      "addedAt": "2026-11-06T23:06:03.546Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-newsro-o-masura-istorica-in-belgia-politia-va-464cc1",
+      "title": "O măsură „istorică” în Belgia: Poliţia va putea reţine persoanele fără documente direct la domiciliul acestora",
+      "summary": "Belgia a aprobat vineri un proiect de lege controversat care autorizează poliţia să aresteze, în anumite circumstanţe, persoanele fără documente la domiciliul acestora, spre marea nemulţumire a stângii şi a ONG-urilor. Acest text suscită dezbateri aprinse în ţară de mai mulţi ani, relatează AFP.",
+      "date": "2026-11-06T22:44:13.000Z",
+      "url": "https://www.news.ro/externe/o-masura-istorica-in-belgia-politia-va-putea-retine-persoanele-fara-documente-direct-la-domiciliul-acestora-1922404407132026110022956263",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "O măsură „istorică” în Belgia: Poliţia va putea reţine persoanele fără documente direct la domiciliul acestora",
+      "addedAt": "2026-11-06T23:06:03.546Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-newsro-a-inceput-procesul-autoproclamatului-rege-b85e23",
+      "title": "A început procesul autoproclamatului „rege al Germaniei”, acuzat că a condus o organizaţie criminală care voia să înfiinţeze un stat alternativ",
+      "summary": "Peter Fitzek, în vârstă de 61 de ani, care se autointitulează Peter I, „rege” al Germaniei, a fost trimis în judecată la Düsseldorf, fiind acuzat că a condus o organizaţie criminală împreună cu alţi trei bărbaţi descrişi ca fiind „supuşii” săi de rang înalt. El este membru al grupării interzise „Reichsbürger” (Cetăţenii Reich-ului), care a încercat să înfiinţeze un „Regat al Germaniei” (KRD), relatează BBC.",
+      "date": "2026-11-06T22:32:48.000Z",
+      "url": "https://www.news.ro/externe/a-inceput-procesul-autoproclamatului-rege-al-germaniei-acuzat-ca-a-condus-o-organizatie-criminala-care-voia-sa-infiinteze-un-stat-alternativ-1922403207482026110022956404",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "A început procesul autoproclamatului „rege al Germaniei”, acuzat că a condus o organizaţie criminală care voia să înfiinţeze un stat alternativ",
+      "addedAt": "2026-11-06T23:06:03.546Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-newsro-doi-functionari-de-rang-inalt-ai-fcf923",
+      "title": "Doi funcţionari de rang înalt ai Departamentului Justiţiei îşi dau demisia pe fondul accelerării plecărilor postelectorale în SUA",
+      "summary": "Doi funcţionari de rang înalt ai Departamentului Justiţiei din SUA şi-au dat demisia vineri, accelerând exodul personalităţilor din cadrul departamentului în urma alegerilor de la jumătatea mandatului, în care republicanii preşedintelui Donald Trump au pierdut controlul asupra Congresului, relatează Reuters.",
+      "date": "2026-11-06T22:17:59.000Z",
+      "url": "https://www.news.ro/externe/doi-functionari-de-rang-inalt-ai-departamentului-justitiei-isi-dau-demisia-pe-fondul-accelerarii-plecarilor-postelectorale-in-sua-1922401707592026110022957863",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Doi funcţionari de rang înalt ai Departamentului Justiţiei îşi dau demisia pe fondul accelerării plecărilor postelectorale în SUA",
+      "addedAt": "2026-11-06T23:06:03.546Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-newsro-cazuri-incredibile-in-urgenta-la-iasi-30e10a",
+      "title": "Cazuri incredibile în Urgenţă, la Iaşi: Recordul de alcoolemie, de 7 la mie, aparţine unei femei/ Un tânăr aflat în divorţ a ajuns de trei ori în 24 de ore, de două ori fiind în…",
+      "summary": "Prof. univ. dr. Diana Cimpoeşu, şeful UPU SMURD Iaşi, a povestit câteva cazuri incredibile, de la o pacientă care a ajuns cu alcoolemie de 7 la mie în Urgenţă, fiind admirată de vecini că ”bagă bărbaţii sub masă”, până la un tânăr aflat în divorţ care a ajuns de trei ori în 24 de ore la UPU, de două ori fiind în comă alcoolică.",
+      "date": "2026-11-06T22:17:55.000Z",
+      "url": "https://www.news.ro/social/cazuri-incredibile-in-urgenta-la-iasi-recordul-de-alcoolemie-de-7-la-mie-apartine-unei-femei-un-tanar-aflat-in-divort-a-ajuns-de-trei-ori-in-24-de-ore-de-doua-ori-fiind-in-coma-alcoolica-1922401707552026110022958085",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Cazuri incredibile în Urgenţă, la Iaşi: Recordul de alcoolemie, de 7 la mie, aparţine unei femei/ Un tânăr aflat în divorţ a ajuns de trei ori în 24 de ore, de două ori fiind în co",
+      "addedAt": "2026-11-06T23:06:03.546Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-newsro-dr-diana-cimpoesu-despre-pericolul-a31b6a",
+      "title": "Dr. Diana Cimpoeşu, despre pericolul băuturilor alcoolice produse în gospodărie: Metanolul e un produs care se degajă în momentul în care se produce alcool la temperaturi…",
+      "summary": "Dr. Diana Cimpoeşu, şeful UPU-SMURD Iaşi, consideră că este nevoie de verificarea surselor ilicite de producţie a alcoolului, arătând că unele produse alcoolice făcute în gospodărie pot conţine nu doar etanol, ci şi metanol, un produs care provoacă daune însemnate sănătăţii.",
+      "date": "2026-11-06T22:11:41.000Z",
+      "url": "https://www.news.ro/social/dr-diana-cimpoesu-pericolul-bauturilor-alcoolice-produse-gospodarie-metanolul-e-produs-degaja-momentul-produce-alcool-temperaturi-nepotrivite-instalatii-nepotrivite-contamineaza-alcoolul-1922401107412026110022958046",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Dr. Diana Cimpoeşu, despre pericolul băuturilor alcoolice produse în gospodărie: Metanolul e un produs care se degajă în momentul în care se produce alcool la temperaturi nepotrivi",
+      "addedAt": "2026-11-06T23:06:03.546Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-hotnews-vor-putea-folosi-motociclistii-benzile-1e1c30",
+      "title": "Vor putea folosi motocicliştii benzile pentru transportul în comun? Precizările MAI",
+      "summary": "Modificările la legislaţia rutieră privind circulaţia motocicletelor şi mopedelor pe drumurile publice au intrat în vigoare de vineri, a anunţat Ministerul Afacerilor Interne, care a precizat că, potrivit noilor prevederi, acestea vor putea utiliza benzile destinate mijloacelor de transport în comun în condiţiile stabilite de administratorul drumului, informează Agerpres. „Prin urmare, utilizarea acestor benzi nu …",
+      "date": "2026-11-06T22:10:11.000Z",
+      "url": "https://hotnews.ro/vor-putea-folosi-motociclistii-benzile-pentru-transportul-in-comun-precizarile-mai-2397341",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Viorela Marin",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Vor putea folosi motocicliştii benzile pentru transportul în comun? Precizările MAI",
+      "addedAt": "2026-11-06T23:05:57.307Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-zf-piata-brokerajului-de-asigurari-a-crescut-56c518",
+      "title": "Piaţa brokerajului de asigurări a crescut cu un ritm anual de 18% în S1/2026, spre 10 mld. lei. În top, Safety Broker rămâne lider, Marsh şi Destine se luptă pentru locul secund…",
+      "summary": "Piaţa brokerajului de asigurări a ajuns la un volum al primelor brute intermediate de 9,74 mld. lei la finalul primului semestru (S1) din 2026, în creştere cu 18% faţă de perioada similară a anului trecut, într-un context de stabilizare şi normalizare după eliminarea plafonării tarifelor RCA.",
+      "date": "2026-11-06T22:06:00.000Z",
+      "url": "https://www.zf.ro/banci-si-asigurari/piata-brokerajului-asigurari-crescut-ritm-anual-18-s1-2026-spre-10-mld-lei-top-safety-broker-ramane-lider-marsh-destine-lupta-locul-secund-iar-millenium-broker-cea-mare-crestere-top-10-41-23275571",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Bănci și Asigurări"
+      ],
+      "author": "",
+      "theme": "sport",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/22466/23275571/1/2850488-publimedia-shutterstock.jpg?width=700",
+      "imageAlt": "Piaţa brokerajului de asigurări a crescut cu un ritm anual de 18% în S1/2026, spre 10 mld. lei. În top, Safety Broker rămâne lider, Marsh şi Destine se luptă pentru locul secund, i",
+      "addedAt": "2026-11-06T23:05:59.025Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-hotnews-ciprian-ciucu-suntem-singurul-partid-normal-993171",
+      "title": "Ciprian Ciucu: „Suntem singurul partid normal la cap”. Critici inclusiv la adresa aliaților din USR",
+      "summary": "Primarul general al Capitalei, Ciprian Ciucu, a criticat dur celelalte partide de pe eşicherul politic naţional la întâlnirea cu liberalii buzoieni, informează News.ro. Despre AUR a spus că este un partid de „extremiști neofasciști”, iar despre PSD că este lipsit de lideri, însă criticile liberalilor nu i-au ocolit nici pe cei de la USR. „AUR …",
+      "date": "2026-11-06T21:54:29.000Z",
+      "url": "https://hotnews.ro/ciprian-ciucu-suntem-singurul-partid-normal-la-cap-critici-inclusiv-la-adresa-aliatilor-din-usr-2397330",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "Politic"
+      ],
+      "author": "Adrian Ilie",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Ciprian Ciucu: „Suntem singurul partid normal la cap”. Critici inclusiv la adresa aliaților din USR",
+      "addedAt": "2026-11-06T23:05:57.307Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-digi24-giorgia-meloni-face-un-apel-pentru-47c7c2",
+      "title": "Giorgia Meloni face un apel pentru creșterea cheltuielilor militare, după valul de amenințări cu bombă în Europa",
+      "summary": "Şefa guvernului italian, Giorgia Meloni, a susţinut vineri necesitatea creşterii cheltuielilor pentru apărare şi securitate în Europa pentru a proteja infrastructura civilă în faţa ameninţărilor. Reacția vine după o nouă zi cu alerte false cu bombă care au vizat avioane şi noi atacuri cibernetice, relatează agenţiile AFP şi EFE.",
+      "date": "2026-11-06T21:39:39.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/giorgia-meloni-face-un-apel-pentru-cresterea-cheltuielilor-militare-dupa-valul-de-amenintari-cu-bomba-in-europa-4025779",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwMyUyRjA1JTJGMjYyNTk5OV8yNjI1/OTk5X3Bob3RvLWNvbGxhZ2VfcG5nLTgw/LnBuZyZoYXNoPTE4ZDg2MTAwY2IxMzBkNmYzODliMTU5ZmIyYzY4OGIy.png",
+      "imageAlt": "Giorgia Meloni face un apel pentru creșterea cheltuielilor militare, după valul de amenințări cu bombă în Europa",
+      "addedAt": "2026-11-06T23:06:01.806Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-hotnews-serie-de-demisii-la-departamentul-de-de4c46",
+      "title": "Serie de demisii la Departamentul de Justiţie din SUA. Ce procurori au plecat",
+      "summary": "Procurorul general al SUA, Todd Blanche, a acceptat demisiile mai multor oficiali de rang înalt, inclusiv a adjunctei sale pentru drepturi civile şi a unui procuror însărcinat cu o anchetă privind personalităţi acuzate de preşedintele Donald Trump de conspiraţie împotriva sa, relatează Agerpres citând AFP. Blanche, fost avocat personal al lui Donald Trump, a anunţat …",
+      "date": "2026-11-06T21:35:56.000Z",
+      "url": "https://hotnews.ro/serie-de-demisii-la-departamentul-de-justitie-din-sua-ce-procurori-au-plecat-2397315",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Viorela Marin",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Serie de demisii la Departamentul de Justiţie din SUA. Ce procurori au plecat",
+      "addedAt": "2026-11-06T23:05:57.307Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-hotnews-o-perturbare-stranie-in-vortexul-polar-d29409",
+      "title": "O perturbare stranie în vortexul polar intrigă climatologii. Care pot fi consecințele pentru vremea din Europa",
+      "summary": "Experţii în climatologie au observat o perturbare excepţional de timpurie a vortexului polar, o zonă de joasă presiune atmosferică situată deasupra polilor, un fenomen ale cărui consecinţe sunt încă „incerte” pentru starea vremii în Europa, au precizat agenţiile meteorologice din Franţa şi Regatul Unit pentru AFP, preluată de Agerpres. Vortexul polar este un vast fenomen …",
+      "date": "2026-11-06T21:26:45.000Z",
+      "url": "https://hotnews.ro/o-perturbare-stranie-in-vortexul-polar-intriga-climatologii-care-pot-fi-consecintele-pentru-vremea-din-europa-2397314",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Adrian Ilie",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "O perturbare stranie în vortexul polar intrigă climatologii. Care pot fi consecințele pentru vremea din Europa",
+      "addedAt": "2026-11-06T23:05:57.307Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-g4media-doua-persoane-au-murit-dupa-ce-un-avion-de-b5d8f8",
+      "title": "Două persoane au murit după ce un avion de mici dimensiuni s-a prăbușit pe o autostradă din Germania",
+      "summary": "Două persoane au murit vineri, după ce avionul de mici dimensiuni în care se aflau s-a prăbușit pe o autostradă din Germania. Conform unei anchete inițiale, niciun vehicul nu a fost implicat în accidentul aviatic, relatează Mediafax. Incidentul s-a produs pe o autostradă la nord-est de orașul german Magdeburg, a declarat un purtător de cuvânt […] © G4Media.ro .",
+      "date": "2026-11-06T21:23:39.000Z",
+      "url": "https://www.g4media.ro/doua-persoane-au-murit-dupa-ce-un-avion-de-mici-dimensiuni-s-a-prabusit-pe-o-autostrada-din-germania.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "accident avion de mici dimennsiuni",
+        "autostrada Krähenberge"
+      ],
+      "author": "Redacția",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/11/accident-autostrada-scaled.jpg",
+      "imageAlt": "Două persoane au murit după ce un avion de mici dimensiuni s-a prăbușit pe o autostradă din Germania",
+      "addedAt": "2026-11-06T23:06:03.155Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-digi24-ciprian-ciucu-aur-este-un-partid-de-a4170f",
+      "title": "Ciprian Ciucu: „AUR este un partid de extremişti neofascişti, populişti. PSD nu mai are lider”. Ce spune de USR",
+      "summary": "Primarul general al Capitalei, Ciprian Ciucu, a criticat dur celelalte partide de pe eşicherul politic naţional la întâlnirea cu liberalii buzoieni. „AUR este un partid de extremişti neofascişti, populişti. USR-ul este un partid de agitaţi”, a afirmat el. Despre PSD, Ciucu a susţinut că nu mai are lider: „Manda? Hai să fim serioşi”.",
+      "date": "2026-11-06T21:19:32.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/ciprian-ciucu-aur-este-un-partid-de-extremisti-neofascisti-populisti-psd-nu-mai-are-lider-ce-spune-de-usr-4025771",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjA2JTJGMzA1NjI2N18zMDU2/MjY3X2NpcHJpYW4tY2l1Y3UtaW5xdWFt/LXNhYmluLWNpcnN0b3ZlYW51LmpwZyZo/YXNoPTM4MWU3YjU3NzBmM2QzODRkNzYzMWRhMWFlMWJkNjk2.jpg",
+      "imageAlt": "Ciprian Ciucu: „AUR este un partid de extremişti neofascişti, populişti. PSD nu mai are lider”. Ce spune de USR",
+      "addedAt": "2026-11-06T23:06:01.807Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-g4media-marco-rubio-va-participa-la-o-reuniune-a-95d97e",
+      "title": "Marco Rubio va participa la o reuniune a omologilor din G7 la Paris săptămâna viitoare, după lovitura electorală primită de Trump",
+      "summary": "Secretarul de Stat american Marco Rubio va participa la o reuniune a omologilor săi din G7 la Paris săptămâna viitoare, a anunţat Departamentul de Stat vineri, la doar câteva zile după înfrângerea republicanilor în alegerile intermediare din SUA, relatează Agerpres. Această deplasare, cu obiectivul clar declarat de a „promova interesele americane”, conform unui scurt comunicat, […] © G4Media.ro .",
+      "date": "2026-11-06T21:17:36.000Z",
+      "url": "https://www.g4media.ro/marco-rubio-va-participa-la-o-reuniune-a-omologilor-din-g7-la-paris-saptamana-viitoare-dupa-lovitura-electorala-primita-de-trump.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "marco rubio"
+      ],
+      "author": "Redacția",
+      "theme": "politika",
+      "image": "https://www.g4media.ro/wp-content/uploads/2022/11/Glenn_Hamer__Marco_Rubio_17399097225.jpg",
+      "imageAlt": "Marco Rubio va participa la o reuniune a omologilor din G7 la Paris săptămâna viitoare, după lovitura electorală primită de Trump",
+      "addedAt": "2026-11-06T23:06:03.156Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-digi24-spania-si-olanda-se-confrunta-pentru-279d85",
+      "title": "Spania şi Olanda se confruntă pentru conducerea BCE, după plecarea Christinei Lagarde",
+      "summary": "Spania şi Olanda au depus vineri candidaturile pentru preşedinţia Băncii Centrale Europene (BCE), în vederea înlocuirii Christinei Lagarde, care îşi va încheia mandatul pe 7 februarie 2027. Competiţia face parte dintr-o negociere mai amplă între marile economii ale zonei euro pentru ocuparea funcţiilor de conducere ale instituţiei, relatează Politico.",
+      "date": "2026-11-06T21:15:40.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/spania-si-olanda-se-confrunta-pentru-conducerea-bce-dupa-plecarea-christinei-lagarde-4025765",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjQl/MkYwMSUyRjMwJTJGMTg5MjE4Nl8xODky/MTg2X2NocmlzdGluZS1sYWdhcmRlLTEu/anBnJmhhc2g9YjM0MmYwNzkxNDgwZjllMDBlNDZjZjNkZmMwMjEzN2U=.jpg",
+      "imageAlt": "Spania şi Olanda se confruntă pentru conducerea BCE, după plecarea Christinei Lagarde",
+      "addedAt": "2026-11-06T23:06:01.807Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-digi24-avertisment-pentru-romanii-care-calatoresc-83a0df",
+      "title": "Avertisment pentru românii care călătoresc în Suedia. Anunțul MAE",
+      "summary": "Ministerul de Externe (MAE) informează cetăţenii români care se află, tranzitează sau intenţionează să călătorească în Regatul Suediei că în perioada 12 noiembrie 2026 - 11 mai 2027 autorităţile suedeze vor institui controale la frontierele terestre.",
+      "date": "2026-11-06T21:14:44.000Z",
+      "url": "https://www.digi24.ro/stiri/avertisment-pentru-romanii-care-calatoresc-in-suedia-anuntul-mae-4025769",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwOSUyRjE1JTJGMjk1OTgzM18yOTU5/ODMzX21hZS1pbnF1YW0tb2N0YXYtZ2Fu/ZWEuanBnJmhhc2g9ZGE3MDc0MDBlMTM0MDViNTgxYTljYWQ0OTM2OGQzZTU=.jpg",
+      "imageAlt": "Avertisment pentru românii care călătoresc în Suedia. Anunțul MAE",
+      "addedAt": "2026-11-06T23:06:01.807Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-digi24-polonia-promite-ucrainei-1-8-milioane-de-c830cf",
+      "title": "Polonia promite Ucrainei 1,8 milioane de euro suplimentare pentru generatoare înainte de venirea iernii",
+      "summary": "Pe fondul atacurilor continue ale Rusiei asupra infrastructurii energetice a Ucrainei, Varșovia își intensifică eforturile pentru a-și ajuta vecinul să facă față lunilor reci. Polonia va aloca 8 milioane de zloți (1,8 milioane de euro) suplimentari pentru a contribui la achiziționarea de generatoare pentru Ucraina înainte de venirea iernii, a declarat vineri ministrul de Externe Radosław Sikorski, în contextul în care țările din regiune s-au angajat să consolideze sprijinul militar și financiar acordat Kievului, relatează TVPWorld.",
+      "date": "2026-11-06T21:13:15.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/polonia-promite-ucrainei-18-milioane-de-euro-suplimentare-pentru-generatoare-inainte-de-venirea-iernii-4025755",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjQl/MkYwNSUyRjI1JTJGMTk4NDEzNF8xOTg0/MTM0X3Byb2ZpbWVkaWEtMDg3NTUyMzUw/Ni5qcGcmaGFzaD1iM2I1MjBlMzFhYWRmODUxYjMyZDg2NThlNWVhNjQ2MQ==.jpg",
+      "imageAlt": "Polonia promite Ucrainei 1,8 milioane de euro suplimentare pentru generatoare înainte de venirea iernii",
+      "addedAt": "2026-11-06T23:06:01.807Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-g4media-rogobete-intalnire-la-cluj-cu-presedintele-c0ec4a",
+      "title": "Rogobete, întâlnire la Cluj cu președintele CJ Cluj, Alin Tișe, contestatarul lui Bolojan: „Merg și pentru a identifica problemele și pentru a găsi soluții concrete”",
+      "summary": "Ministrul PSD al Sănătății, Alexandru Rogobete, ajunge sâmbătă la Cluj, iar principala întâlnire o are cu președintele liberal al Consiliului Județean Cluj, Alin Tișe, cel care în ultimele zile și-a întețit atacurile la adresa președintelui PNL, Ilie Bolojan. Tișe l-a acuzat în repetate rânduri pe Bolojan că ar fi responsabil pentru faptul că proiectul Spitalului […] © G4Media.ro .",
+      "date": "2026-11-06T21:11:15.000Z",
+      "url": "https://www.g4media.ro/rogobete-intalnire-la-cluj-cu-presedintele-cj-cluj-alin-tise-contestatarul-lui-bolojan-merg-si-pentru-a-identifica-problemele-si-pentru-a-gasi-solutii-concrete.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "alexandru rogobete",
+        "Alin Tise"
+      ],
+      "author": "Cosmina Fernoagă",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2025/09/tise-spital-copii-santier.jpg",
+      "imageAlt": "Rogobete, întâlnire la Cluj cu președintele CJ Cluj, Alin Tișe, contestatarul lui Bolojan: „Merg și pentru a identifica problemele și pentru a găsi soluții concrete”",
+      "addedAt": "2026-11-06T23:06:03.156Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-hotnews-fondatorul-miscarii-ruse-statul-masculin-49a21b",
+      "title": "Fondatorul mişcării ruse „Statul Masculin” neagă orice implicare în recentele alerte cu bombă din Europa",
+      "summary": "Fondatorul „Statului Masculin”, o mişcare masculinistă rusă care a fost interzisă din 2021 pentru extremism, a negat vineri orice legătură cu alertele false cu bombă care se înmulţesc în Europa, după ce unele instituții afectate de aceste alerte false, precum aeroporturile din Birmingham, Roma şi Sofia, au primit mesaje semnate de aşa-zişi „Luptători ai Statului …",
+      "date": "2026-11-06T21:02:55.000Z",
+      "url": "https://hotnews.ro/fondatorul-miscarii-ruse-statul-masculin-neaga-orice-implicare-in-recentele-alerte-cu-bomba-din-europa-2397231",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Viorela Marin",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Fondatorul mişcării ruse „Statul Masculin” neagă orice implicare în recentele alerte cu bombă din Europa",
+      "addedAt": "2026-11-06T23:05:57.307Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-digi24-volodimir-zelenski-avertizeaza-ca-rusia-caa3b3",
+      "title": "Volodimir Zelenski avertizează că Rusia pregăteşte un atac asupra sectorului energetic şi a podurilor din Ucraina",
+      "summary": "Preşedintele ucrainean Volodimir Zelenski a declarat vineri că are \"informaţii\" despre un atac aerian rusesc planificat care vizează infrastructura civilă şi energetică şi podurile, înaintea unei întâlniri dintre Ucraina, Statele Unite şi Rusia, programată săptămâna viitoare la Abu Dhabi, relatează AFP, citată de Agerpres.",
+      "date": "2026-11-06T20:58:30.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/zelenski-afirma-ca-rusia-pregateste-un-atac-asupra-sectorului-energetic-si-a-podurilor-din-ucraina-4025707",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjA2JTJGMzA1NjIxN18zMDU2/MjE3X3ZvbG9kaW1pci16ZWxlbnNraS1w/cm9maW1lZGlhLTEuanBnJmhhc2g9YmRl/ZTgyODI0N2JmOGQwMjVhOTg5OWE1OTczNjBmZmE=.jpg",
+      "imageAlt": "Volodimir Zelenski avertizează că Rusia pregăteşte un atac asupra sectorului energetic şi a podurilor din Ucraina",
+      "addedAt": "2026-11-06T23:06:01.807Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-hotnews-germania-la-un-pas-sa-aleaga-prima-femeie-186fdd",
+      "title": "Germania, la un pas să aleagă prima femeie președinte. Susținere largă în cadrul coaliției de la putere",
+      "summary": "Actuala preşedintă a parlamentului din landul Bavaria, Ilse Aigner (CSU), în vârstă de 61 de ani, ar putea deveni prima femeie preşedinte din Germania, potrivit unor surse apropiate Uniunii Creştin-Democrate (CDU), relatează AFP, preluată de Agerpres. Nominalizarea ei este aşteptată să fie confirmată luni, la o reuniune a conducerii CDU, partidul cancelarului Friedrich Merz. Confirmarea …",
+      "date": "2026-11-06T20:55:59.000Z",
+      "url": "https://hotnews.ro/germania-la-un-pas-sa-aleaga-prima-femeie-presedinte-sustinere-larga-in-cadrul-coalitiei-de-la-putere-2397293",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Adrian Ilie",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Germania, la un pas să aleagă prima femeie președinte. Susținere largă în cadrul coaliției de la putere",
+      "addedAt": "2026-11-06T23:05:57.308Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-g4media-trump-il-numeste-pe-consilierul-sau-stephen-e86361",
+      "title": "Trump îl numește pe consilierul său Stephen Miller în funcția strategică de șef de cabinet / Președintele american afirmă că fosta șefă de cabinet Susie Wiles se va alătura…",
+      "summary": "Președintele american Donald Trump a declarat vineri că Stephen Miller, consilierul său de lungă durată, va deveni șeful său de cabinet, înlocuind-o pe Susie Wiles după ce republicanii au suferit pierderi semnificative în alegerile de la jumătatea mandatului, din această săptămână, relatează WSJ. Într-o postare pe Truth Social, Trump l-a numit pe Miller unul dintre […] © G4Media.ro .",
+      "date": "2026-11-06T20:49:26.000Z",
+      "url": "https://www.g4media.ro/trump-il-numeste-pe-consilierul-sau-stephen-miller-in-functia-strategica-de-sef-de-cabinet-presedintele-american-afirma-ca-fosta-sefa-de-cabinet-susie-wiles-se-va-alatura-echipei-sale-politice-in-u.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "stephen miller"
+      ],
+      "author": "Laura Nițulescu",
+      "theme": "politika",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/01/stephen-miller-sua.jpg",
+      "imageAlt": "Trump îl numește pe consilierul său Stephen Miller în funcția strategică de șef de cabinet / Președintele american afirmă că fosta șefă de cabinet Susie Wiles se va alătura echipei",
+      "addedAt": "2026-11-06T23:06:03.156Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-g4media-zelenski-afirma-ca-rusia-pregateste-un-atac-7e6f5e",
+      "title": "Zelenski afirmă că Rusia pregăteşte un atac asupra sectorului energetic şi a podurilor din Ucraina",
+      "summary": "Preşedintele ucrainean Volodimir Zelenski a declarat vineri că are „informaţii” despre un atac aerian rusesc planificat care vizează infrastructura civilă şi energetică şi podurile, înaintea unei întâlniri dintre Ucraina, Statele Unite şi Rusia, programată săptămâna viitoare la Abu Dhabi, relatează Agerpres. „Avem informaţii care indică faptul că se pregăteşte un nou atac împotriva sectorului energetic, […] © G4Media.ro .",
+      "date": "2026-11-06T20:25:32.000Z",
+      "url": "https://www.g4media.ro/zelenski-afirma-ca-rusia-pregateste-un-atac-asupra-sectorului-energetic-si-a-podurilor-din-ucraina.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "război ucraina"
+      ],
+      "author": "Redacția",
+      "theme": "energija",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/08/Volodimir-Zelenski.jpg",
+      "imageAlt": "Zelenski afirmă că Rusia pregăteşte un atac asupra sectorului energetic şi a podurilor din Ucraina",
+      "addedAt": "2026-11-06T23:06:03.156Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-profit-exclusiv-video-dorian-popa-vinde-rca-sa-imi-f12811",
+      "title": "EXCLUSIV VIDEO Dorian Popa vinde RCA. „Să îmi scrieți dacă nu suntem forță pe prețuri!”. Vloggerul și-a deschis firmă alături de Cosmin Angheluță, executiv cu experiență de 25 de…",
+      "summary": "Dorian Laurențiu Popa, artist și creator de conținut digital (vlogger), cu peste 2,4 milioane de urmăritori pe Instagram și YouTube, și-a deschis o nouă afacere: platforma hâtzrca.ro, prin care vinde asigurări RCA alături de prietenul său Cosmin Angheluță, fost director general adjunct la Gothaer, cu o experiență de peste 25 de ani în asigurări.",
+      "date": "2026-11-06T20:20:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/financiar/exclusiv-video-dorian-popa-vinde-rca-sa-imi-scrieti-daca-nu-suntem-forta-pe-preturi-vloggerul-si-a-deschis-firma-alaturi-de-cosmin-angheluta-executiv-cu-experienta-de-25-de-ani-in-asigurari-22955704?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Financiar"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://i0.1616.ro/media/2/2621/33210/22955704/1/postare-instagram.jpg?width=800",
+      "imageAlt": "EXCLUSIV VIDEO Dorian Popa vinde RCA. „Să îmi scrieți dacă nu suntem forță pe prețuri!”. Vloggerul și-a deschis firmă alături de Cosmin Angheluță, executiv cu experiență de 25 de a",
+      "addedAt": "2026-11-06T23:05:59.263Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-profit-foto-bolojan-la-cafea-cu-constantin-toma-dabf9a",
+      "title": "FOTO Bolojan, la cafea cu Constantin Toma (PSD) și Ciprian Ciucu (PNL): Să nu se spună că trecem la PSD!",
+      "summary": "Liderul PNL, fostul premier Ilie Bolojan, a dezvăluit că l-a vizitat la Primăria Buzău pe edilul PSD Constantin Toma.",
+      "date": "2026-11-06T20:16:00.000Z",
+      "url": "https://www.profit.ro/stiri/politic/foto-bolojan-la-cafea-cu-constantin-toma-psd-si-ciprian-ciucu-pnl-sa-nu-se-spuna-ca-trecem-la-psd-22957345?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Politic"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33238/22957345/3/id293302-inquam-photos-codrin-unici.jpg?width=800",
+      "imageAlt": "FOTO Bolojan, la cafea cu Constantin Toma (PSD) și Ciprian Ciucu (PNL): Să nu se spună că trecem la PSD!",
+      "addedAt": "2026-11-06T23:05:59.263Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-g4media-radu-miruta-anunta-negocieri-oficiale-usr-86b03b",
+      "title": "Radu Miruță anunță negocieri oficiale USR-PNL pentru liste comune la alegerile din 2028",
+      "summary": "După ce USR și PNL au trecut în opoziție, odată cu învestirea Cabinetului Niculescu, Radu Miruță, prospăt ales numărul 2 al Uniunii Salvați România, a anunțat vineri, 6 noiembrie, pentru presa locală din Gorj, că cele două formațiuni se pregătesc să se alieze pentru a reveni la guvernare în 2028. Anunțul lui Miruță vine la […] © G4Media.ro .",
+      "date": "2026-11-06T20:13:17.000Z",
+      "url": "https://www.g4media.ro/radu-miruta-anunta-negocieri-oficiale-usr-pnl-pentru-liste-comune-la-alegerile-din-2028.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole"
+      ],
+      "author": "Redacția",
+      "theme": "politika",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/05/Ilie-Bolojan-Timisoara-1.jpeg",
+      "imageAlt": "Radu Miruță anunță negocieri oficiale USR-PNL pentru liste comune la alegerile din 2028",
+      "addedAt": "2026-11-06T23:06:03.156Z"
+    },
     {
       "slug": "bukurest-2026-11-06-agerpres-galati-creditorii-au-aprobat-planul-de-69514c",
       "title": "Galați: Creditorii au aprobat planul de vânzare a combinatului Liberty și secției Tubular; prețul de pornire - 200 milioane euro",
@@ -169,6 +616,23 @@
       "image": "",
       "imageAlt": "Rubio va participa la o reuniune a omologilor din G7 la Paris săptămâna viitoare, după lovitura electorală primită de Trump",
       "addedAt": "2026-11-06T20:07:31.164Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-profit-erbasu-anunta-vremuri-dificile-pentru-68e2e6",
+      "title": "Erbașu anunță vremuri dificile pentru sectorul construcțiilor, după finalizarea proiectelor cu fonduri europene. “Până în aprilie, aduceți, aduceți, aduceți!\"",
+      "summary": "Sectorul construcțiilor se va confrunta cu o perioadă dificilă, după una de creștere puternică, ca urmare a finalizării proiectelor de infrastructură cu fonduri europene și a lipsei unor noi contracte în execuție care să asigure activitatea constructorilor, avertizează Cristian Erbașu, proprietar al companiei Erbașu Construcții și președinte al Federației Constructorilor, care compară situația cu cea din 2008.",
+      "date": "2026-11-06T20:06:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/real-estate-constructii/erbasu-anunta-vremuri-dificile-pentru-sectorul-constructiilor-dupa-finalizarea-proiectelor-cu-fonduri-europene-pana-in-aprilie-aduceti-aduceti-aduceti-22955604?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Real Estate&Construcții"
+      ],
+      "author": "",
+      "theme": "sport",
+      "image": "https://i0.1616.ro/media/2/2621/33219/22955604/1/cristian-erbasu.png?width=800",
+      "imageAlt": "Erbașu anunță vremuri dificile pentru sectorul construcțiilor, după finalizarea proiectelor cu fonduri europene. “Până în aprilie, aduceți, aduceți, aduceți!\"",
+      "addedAt": "2026-11-06T23:05:59.263Z"
     },
     {
       "slug": "bukurest-2026-11-06-g4media-ilie-bolojan-prezent-la-sedinta-pnl-buzau-e84898",
