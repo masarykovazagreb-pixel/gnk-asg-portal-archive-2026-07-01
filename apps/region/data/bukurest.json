@@ -4,17 +4,19 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-11-05T23:42:46.351Z",
+  "updatedAt": "2026-11-06T20:07:39.225Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
-      "url": "https://www.agerpres.ro/rss",
+      "url": "https://www.agerpres.ro/rss/",
       "ok": true,
       "fetched": 20,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-05T23:42:39.412Z"
+      "errors": [
+        "https://www.agerpres.ro/rss: This operation was aborted"
+      ],
+      "checkedAt": "2026-11-06T20:07:31.164Z"
     },
     {
       "id": "hotnews",
@@ -24,7 +26,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T23:42:39.639Z"
+      "checkedAt": "2026-11-06T20:07:31.359Z"
     },
     {
       "id": "zf",
@@ -34,7 +36,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T23:42:41.336Z"
+      "checkedAt": "2026-11-06T20:07:33.166Z"
     },
     {
       "id": "profit",
@@ -44,17 +46,17 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T23:42:41.692Z"
+      "checkedAt": "2026-11-06T20:07:33.381Z"
     },
     {
       "id": "digi24",
       "name": "Digi24",
       "url": "https://www.digi24.ro/rss",
       "ok": true,
-      "fetched": 281,
+      "fetched": 258,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T23:42:44.207Z"
+      "checkedAt": "2026-11-06T20:07:36.505Z"
     },
     {
       "id": "g4media",
@@ -64,7 +66,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T23:42:45.510Z"
+      "checkedAt": "2026-11-06T20:07:38.841Z"
     },
     {
       "id": "newsro",
@@ -74,10 +76,671 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-05T23:42:46.350Z"
+      "checkedAt": "2026-11-06T20:07:39.224Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-11-06-agerpres-galati-creditorii-au-aprobat-planul-de-69514c",
+      "title": "Galați: Creditorii au aprobat planul de vânzare a combinatului Liberty și secției Tubular; prețul de pornire - 200 milioane euro",
+      "summary": "",
+      "date": "2026-11-06T20:07:31.166Z",
+      "url": "https://agerpres.ro/economic/2026/11/06/galati-creditorii-au-aprobat-planul-de-vanzare-a-combinatului-liberty-si-sectiei-tubular-pretul-de-p--1610975",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Galați: Creditorii au aprobat planul de vânzare a combinatului Liberty și secției Tubular; prețul de pornire - 200 milioane euro",
+      "addedAt": "2026-11-06T20:07:31.166Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-agerpres-dambovita-parteneriat-initiat-de-prefectura-ce7d80",
+      "title": "Dâmbovița: Parteneriat inițiat de prefectură cu sindicate, patronate și instituții deconcentrate pentru dezvoltarea economică a județului",
+      "summary": "",
+      "date": "2026-11-06T20:07:31.165Z",
+      "url": "https://agerpres.ro/administratie/2026/11/06/dambovita-parteneriat-initiat-de-prefectura-cu-sindicate-patronate-si-institutii-deconcentrate-pentr--1610983",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Dâmbovița: Parteneriat inițiat de prefectură cu sindicate, patronate și instituții deconcentrate pentru dezvoltarea economică a județului",
+      "addedAt": "2026-11-06T20:07:31.165Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-agerpres-trump-il-numeste-pe-consilierul-sau-4bf055",
+      "title": "Trump îl numește pe consilierul său apropiat Stephen Miller în funcția strategică de șef de cabinet",
+      "summary": "",
+      "date": "2026-11-06T20:07:31.165Z",
+      "url": "https://agerpres.ro/politic-extern/2026/11/06/trump-il-numeste-pe-consilierul-sau-apropiat-stephen-miller-in-functia-strategica-de-sef-de-cabinet--1610978",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Trump îl numește pe consilierul său apropiat Stephen Miller în funcția strategică de șef de cabinet",
+      "addedAt": "2026-11-06T20:07:31.165Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-agerpres-un-model-de-limbaj-ai-antrenat-pe-baza-56d5ef",
+      "title": "Un model de limbaj AI, antrenat pe baza limbilor indigene din Mexic, se află în faza de test",
+      "summary": "",
+      "date": "2026-11-06T20:07:31.165Z",
+      "url": "https://agerpres.ro/zigzag/2026/11/06/un-model-de-limbaj-ai-antrenat-pe-baza-limbilor-indigene-din-mexic-se-afla-in-faza-de-test--1610981",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Un model de limbaj AI, antrenat pe baza limbilor indigene din Mexic, se află în faza de test",
+      "addedAt": "2026-11-06T20:07:31.165Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-agerpres-olt-o-femeie-a-fost-injunghiata-pe-strada-3801e4",
+      "title": "Olt: O femeie a fost înjunghiată pe stradă, la Caracal; fostul soț, bănuit de agresiune, în custodia polițiștilor",
+      "summary": "",
+      "date": "2026-11-06T20:07:31.165Z",
+      "url": "https://agerpres.ro/justitie/2026/11/06/olt-o-femeie-a-fost-injunghiata-pe-strada-la-caracal-fostul-sot-banuit-de-agresiune-in-custodia-poli--1610977",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Olt: O femeie a fost înjunghiată pe stradă, la Caracal; fostul soț, bănuit de agresiune, în custodia polițiștilor",
+      "addedAt": "2026-11-06T20:07:31.165Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-agerpres-rubio-va-participa-la-o-reuniune-a-392f5a",
+      "title": "Rubio va participa la o reuniune a omologilor din G7 la Paris săptămâna viitoare, după lovitura electorală primită de Trump",
+      "summary": "",
+      "date": "2026-11-06T20:07:31.164Z",
+      "url": "https://agerpres.ro/politic-extern/2026/11/06/rubio-va-participa-la-o-reuniune-a-omologilor-din-g7-la-paris-saptamana-viitoare-dupa-lovitura-elect--1610984",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Rubio va participa la o reuniune a omologilor din G7 la Paris săptămâna viitoare, după lovitura electorală primită de Trump",
+      "addedAt": "2026-11-06T20:07:31.164Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-g4media-ilie-bolojan-prezent-la-sedinta-pnl-buzau-e84898",
+      "title": "Ilie Bolojan, prezent la ședința PNL Buzău / Fostul premier, strategie pentru a-și consolida poziția de președinte al PNL",
+      "summary": "Președintele PNL, Ilie Bolojan, s-a deplasat la Buzău, vineri seara, pentru a participa la ședința de partid a organizației liberale județene, conform imaginilor transmise de Campus TV. Bolojan a mers însoțit de primarul Capitalei, Ciprian Ciucu, fiind primit de președintele PNL Buzău, deputatul Adrian Mocanu. În urmă cu puține ore, Bolojan s-a întâlnit și cu […] © G4Media.ro .",
+      "date": "2026-11-06T20:01:32.000Z",
+      "url": "https://www.g4media.ro/ilie-bolojan-prezent-la-sedinta-pnl-buzau-fostul-premier-strategie-pentru-consolidarea-pnl.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "ilie bolojan",
+        "pnl buzau"
+      ],
+      "author": "Cosmina Fernoagă",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/11/Ilie-Bolojan-la-Buzau.jpg",
+      "imageAlt": "Ilie Bolojan, prezent la ședința PNL Buzău / Fostul premier, strategie pentru a-și consolida poziția de președinte al PNL",
+      "addedAt": "2026-11-06T20:07:38.842Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-newsro-bolojan-dupa-ce-a-baut-o-cafea-cu-8fc4a5",
+      "title": "Bolojan, după ce a băut o cafea cu Constantin Toma, la Primăria Buzău: Să nu apară altceva, că trecem la PSD",
+      "summary": "Preşedintele PNL, Ilie Bolojan, a dezvăluit, vineri, în faţa liberalilor buzoieni, că la prânz l-a vizitat la Primărie pe primarul PSD Constantin Toma. El a ţinut să lămurească imediat că vizita nu are nicio semnificaţie politică. ”Vă spun să nu apară altceva, că trecem la PSD cumva, da? Deci ca să fiţi liniştiţi”, a declarat Bolojan.",
+      "date": "2026-11-06T20:01:29.000Z",
+      "url": "https://www.news.ro/politic-intern/bolojan-dupa-ce-a-baut-o-cafea-cu-constantin-toma-la-primaria-buzau-sa-nu-apara-altceva-ca-trecem-la-psd-1922400106292026112222957224",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Bolojan, după ce a băut o cafea cu Constantin Toma, la Primăria Buzău: Să nu apară altceva, că trecem la PSD",
+      "addedAt": "2026-11-06T20:07:39.224Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-profit-record-emag-black-friday-cea-mai-complexa-c459e9",
+      "title": "Record eMAG Black Friday: Cea mai complexă comandă a inclus produse din peste 30 de categorii",
+      "summary": "eMAG, cel mai mare retailer local online, anunță că, după primele 10 ore de Black Friday, a vândut peste 3,3 milioane de produse.",
+      "date": "2026-11-06T20:00:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/retail/record-emag-black-friday-cea-mai-complexa-comanda-a-inclus-produse-din-peste-30-de-categorii-22957163?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Retail"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33215/22957163/10/razvan-acsente-emag-black-friday.jpg?width=800",
+      "imageAlt": "Record eMAG Black Friday: Cea mai complexă comandă a inclus produse din peste 30 de categorii",
+      "addedAt": "2026-11-06T20:07:33.381Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-digi24-sefa-de-cabinet-a-lui-donald-trump-susie-9f8bfc",
+      "title": "Șefa de cabinet a lui Donald Trump, Susie Wiles, părăsește administrația. Cu cine o va înlocui președintele",
+      "summary": "Șefa de cabinet a președintelui american Donald Trump, Susie Wiles, părăsește cercul restrâns al puterii de la Casa Albă la doar câteva zile după dezastrul electoral pentru republicani, care au pierdut controlul asupra Congresului în urma alegerilor de la jumătatea mandatului. Adjunctul ei îi va lua locul, scrie focus.de.",
+      "date": "2026-11-06T19:53:56.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/sefa-de-cabinet-a-lui-donald-trump-susie-wiles-paraseste-administratia-cu-cine-o-va-inlocui-presedintele-4025631",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjA2JTJGMzA1NjE5OV8zMDU2/MTk5X1N1c2llLVdpbGVzXy1Gb3RvLVBy/b2ZpbWVkaWEuanBnJmhhc2g9OTU1ZGM5/YWM4ZjhmOWU3ZmEwYTM3OTU5MWE5NmRhY2E=.jpg",
+      "imageAlt": "Șefa de cabinet a lui Donald Trump, Susie Wiles, părăsește administrația. Cu cine o va înlocui președintele",
+      "addedAt": "2026-11-06T20:07:36.505Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-newsro-zidane-se-declara-extrem-de-intristat-de-b0da11",
+      "title": "Zidane se declară „extrem de întristat” de moartea fotbalistului spaniol Jesus de Miguel",
+      "summary": "Zinédine Zidane, selecţionerul echipei naţionale a Franţei, şi-a exprimat vineri speranţa că „nu vom mai vedea niciodată aşa ceva pe un teren de fotbal”, după moartea atacantului echipei Tenerife, Jesus de Miguel, marţi dimineaţă, în urma unui impact cu portarul FC Andorra, în timpul unui meci disputat în Spania, relatează AFP.",
+      "date": "2026-11-06T19:52:17.000Z",
+      "url": "https://www.news.ro/sport/zidane-se-declara-extrem-de-intristat-de-moartea-fotbalistului-spaniol-jesus-de-miguel-1922405206172026112122957123",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Zidane se declară „extrem de întristat” de moartea fotbalistului spaniol Jesus de Miguel",
+      "addedAt": "2026-11-06T20:07:39.224Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-newsro-ministrul-dezvoltarii-nu-putem-sa-venim-noi-e88300",
+      "title": "Ministrul Dezvoltării: Nu putem să venim noi, de la Minister, să spunem: măriţi impozitele şi faceţi asta! Nu! Autonomia locală funcţionează şi fiecare trebuie să decidă/ Nu cred…",
+      "summary": "Ministrul Dezvoltării, Alexandru Stoica, afirmă că eventuale majorări de taxe şi impozite locale depind exclusiv de administraţiile locale, nu de Guvern. El nu se aşteaptă ca impozitele să crească atât de mult cum au crescut anul acesta, acolo unde administraţiile locale vor decide să aprobe majorări ale taxelor.",
+      "date": "2026-11-06T19:47:33.000Z",
+      "url": "https://www.news.ro/social/ministrul-dezvoltarii-putem-venim-minister-spunem-mariti-impozitele-faceti-asta-autonomia-locala-functioneaza-decida-cred-exista-ceva-majorari-au-anul-acesta-1922404706332026112122957066",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Ministrul Dezvoltării: Nu putem să venim noi, de la Minister, să spunem: măriţi impozitele şi faceţi asta! Nu! Autonomia locală funcţionează şi fiecare trebuie să decidă/ Nu cred c",
+      "addedAt": "2026-11-06T20:07:39.224Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-digi24-ilie-bolojan-la-o-intalnire-a-liberalilor-538d29",
+      "title": "Ilie Bolojan, la o întâlnire a liberalilor din Vrancea: „PNL trebuie să le spună corect oamenilor lucrurile”",
+      "summary": "Preşedintele PNL, Ilie Bolojan, a afirmat, la o întâlnire cu primarii liberali şi membrii Biroului Politic Judeţean al PNL Vrancea, că fiecare organizaţie are o responsabilitate în reconstrucţia partidului. „PNL trebuie să le spună corect oamenilor lucrurile. Poate nu sună bine”, a subliniat el.",
+      "date": "2026-11-06T19:44:39.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/ilie-bolojan-la-o-intalnire-a-liberalilor-din-vrancea-pnl-trebuie-sa-le-spuna-corect-oamenilor-lucrurile-4025677",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjA2JTJGMzA1NjE4N18zMDU2/MTg3X3hmZ2Juc2dyLmpwZyZoYXNoPTQ2/NTkxMzdlM2JlMmEwYjNmZTkxNzQ3OTRiNGNmMDdl.jpg",
+      "imageAlt": "Ilie Bolojan, la o întâlnire a liberalilor din Vrancea: „PNL trebuie să le spună corect oamenilor lucrurile”",
+      "addedAt": "2026-11-06T20:07:36.506Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-hotnews-ue-si-ucraina-reactie-ferma-fata-de-acordul-479b36",
+      "title": "UE și Ucraina, reacție fermă față de „acordul mare și frumos” anunțat de Trump. Cum preia Washingtonul din discursul Kremlinului și cum e vizată direct România de „noua…",
+      "summary": "Uniunea Europeană și Kievul au avertizat vineri împotriva oricărei idei de „arhitectură de securitate” dezvoltată pe la spatele lor, după ce preşedintele american Donald Trump a evocat posibilitatea unui „mare acord” privind Ucraina, care ar putea viza „întreaga Europă”. „Avem deja de o arhitectură de securitate europeană”, a declarat la Varșovia șefa diplomației Uniunii Europene, …",
+      "date": "2026-11-06T19:44:31.000Z",
+      "url": "https://hotnews.ro/reactia-ue-si-ucrainei-la-acordul-mare-si-frumos-a-lui-trump-cum-preia-washingtonul-din-discursul-kremlinului-privind-noua-arhitectura-europeana-de-securitate-2397236",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International",
+        "Război în Ucraina"
+      ],
+      "author": "Viorela Marin",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "UE și Ucraina, reacție fermă față de „acordul mare și frumos” anunțat de Trump. Cum preia Washingtonul din discursul Kremlinului și cum e vizată direct România de „noua arhitectură",
+      "addedAt": "2026-11-06T20:07:31.360Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-hotnews-petrolul-invinge-uta-se-apropie-de-podium-f6c6af",
+      "title": "Petrolul învinge UTA, se apropie de podium și are „cel mai fericit antrenor din lume”",
+      "summary": "Ricardo Sousa, antrenorul echipei Petrolul Ploiești, s-a arătat bucuros de succesul obținut în deplasare în fața formației UTA Arad, scor 1-0, în cadrul etapei a 15-a din SuperLiga. Singurul gol al confruntării a fost marcat de Mario Ioniță în minutul 71, iar la finalul partidei tehnicianul a vorbit la superlativ despre prestația și dăruirea elevilor …",
+      "date": "2026-11-06T19:44:00.000Z",
+      "url": "https://hotnews.ro/petrolul-invinge-uta-se-apropie-de-podium-si-are-cel-mai-fericit-antrenor-din-lume-2397263",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "SuperLiga"
+      ],
+      "author": "Adrian Ilie",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Petrolul învinge UTA, se apropie de podium și are „cel mai fericit antrenor din lume”",
+      "addedAt": "2026-11-06T20:07:31.360Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-profit-anunt-feed-ul-for-you-tiktok-efect-nociv-de-f581c4",
+      "title": "ANUNȚ Feed-ul „For You” TikTok, efect nociv de tip „rabbit hole”. Comisia Ruropeană constată preliminar că încalcă prevederile Regulamentului privind serviciile digitale",
+      "summary": "Comisia Ruropeană constată preliminar că feed-ul „For You” al TikTok încalcă prevederile Regulamentului privind serviciile digitale, prin efectul nociv de tip „rabbit hole”.",
+      "date": "2026-11-06T19:42:00.000Z",
+      "url": "https://www.profit.ro/stiri/politic/anunt-feed-ul-for-you-tiktok-efect-nociv-de-tip-rabbit-hole-comisia-ruropeana-constata-preliminar-ca-incalca-prevederile-regulamentului-privind-serviciile-digitale-22957105?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Politic"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33238/22957105/1/tiktok-2.jpg?width=800",
+      "imageAlt": "ANUNȚ Feed-ul „For You” TikTok, efect nociv de tip „rabbit hole”. Comisia Ruropeană constată preliminar că încalcă prevederile Regulamentului privind serviciile digitale",
+      "addedAt": "2026-11-06T20:07:33.382Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-digi24-o-retea-de-fraudatori-din-ucraina-a-obtinut-403f89",
+      "title": "O rețea de fraudatori din Ucraina a obţinut 4,3 milioane de euro de la victime din Germania. Cum acționau",
+      "summary": "Poliţia ucraineană a destructurat o reţea de centre de apel frauduloase, prin intermediul cărora mai multe persoane din Germania au fost înșelate cu milioane de euro.",
+      "date": "2026-11-06T19:39:40.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/o-retea-de-fraudatori-din-ucraina-a-obtinut-43-milioane-de-euro-de-la-victime-din-germania-cum-actionau-4025633",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA0dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjEl/MkYxMiUyRjIyJTJGMTQzMjkwOF8xNDMy/OTA4X2JhbmktbW9zdGVybmlyZS5qcGcm/aGFzaD01NzhlNzI5MTlmM2FlYmFlYWVmNjZiMDEyYmZiNTE4Mw==.jpg",
+      "imageAlt": "O rețea de fraudatori din Ucraina a obţinut 4,3 milioane de euro de la victime din Germania. Cum acționau",
+      "addedAt": "2026-11-06T20:07:36.506Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-digi24-nicusor-dan-si-a-dus-fiul-la-meciul-de-1fc036",
+      "title": "Nicușor Dan și-a dus fiul la meciul de rugby România - Tonga, pe stadionul Arcul de Triumf",
+      "summary": "Președintele Nicușor Dan a asistat vineri seară la meciul naționalei României de rugby cu selecționata din Tonga. Președintele României a stat la tribuna I a Stadionului Arcul de Triumf și a fost însoțit de fiul său, dar a vizitat și vestiarele celor două echipe.",
+      "date": "2026-11-06T19:32:48.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/nicusor-dan-si-a-dus-fiul-la-meciul-de-rugby-romania-tonga-pe-stadionul-arcul-de-triumf-4025639",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjA2JTJGMzA1NjE3MV8zMDU2/MTcxX2Rhbi1zaS1maXVsLWxhLXJ1Z2J5/LWlucXVhbS1hbGV4LW5pY29kaW0ucG5n/Jmhhc2g9YjMzM2RhYjhmN2NjN2NiNzJkMTM3ODc5OWQ5M2ExNjI=.png",
+      "imageAlt": "Nicușor Dan și-a dus fiul la meciul de rugby România - Tonga, pe stadionul Arcul de Triumf",
+      "addedAt": "2026-11-06T20:07:36.506Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-hotnews-odiseea-unui-tablou-furat-de-nazisti-in-acaaef",
+      "title": "Odiseea unui tablou furat de naziști în urmă cu opt decenii. Opera a fost restituită moștenitorilor proprietarei",
+      "summary": "Un tablou pictat de un maestru flamand din secolul al XVII-lea, spoliat de nazişti de la o familie evreiască din Franţa în 1942, a fost restituit vineri moştenitorilor săi în cadrul unei ceremonii organizate la Ministerul Culturii din Paris, informează AFP, preluată de Agerpres. Acea pictură, intitulată „Portrait de femme en bleu” („Portretul unei femei …",
+      "date": "2026-11-06T19:29:32.000Z",
+      "url": "https://hotnews.ro/odiseea-unui-tablou-furat-de-nazisti-in-urma-cu-opt-decenii-opera-a-fost-restituita-mostenitorilor-proprietarei-2397250",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Adrian Ilie",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Odiseea unui tablou furat de naziști în urmă cu opt decenii. Opera a fost restituită moștenitorilor proprietarei",
+      "addedAt": "2026-11-06T20:07:31.360Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-newsro-ministrul-dezvoltarii-astazi-cand-vorbim-5b34a2",
+      "title": "Ministrul Dezvoltării: Astăzi, când vorbim, mai preconizăm încă 2,5 miliarde de lei necesari pentru lucrările care au fost executate prin Programul ”Anghel Saligny”, dar neplătite",
+      "summary": "Ministrul Dezvoltării, Alexandru Stoica, afirmă că, pe lângă facturile în valoare totală de 2,4 miliarde de lei încărcate în platforma online a ministerului de către companiile care au realizat lucrări prin Programul naţional ”Anghel Saligny” prin care Guvernul a alocat bani comunităţilor locale, estimează că mai sunt facturi de încă 2,5 miliarde de lei pe care firmele care au avut contracte cu administraţiile locale şi care au realizat lucrări nu le-au încărcat în platformă.",
+      "date": "2026-11-06T19:27:04.000Z",
+      "url": "https://www.news.ro/economic/ministrul-dezvoltarii-astazi-cand-vorbim-mai-preconizam-inca-2-5-miliarde-de-lei-necesari-pentru-lucrarile-care-au-fost-executate-prin-programul-anghel-saligny-dar-neplatite-1922402706042026112122956947",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Ministrul Dezvoltării: Astăzi, când vorbim, mai preconizăm încă 2,5 miliarde de lei necesari pentru lucrările care au fost executate prin Programul ”Anghel Saligny”, dar neplătite",
+      "addedAt": "2026-11-06T20:07:39.225Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-newsro-fotbal-fc-santos-neymar-jr-este-capitan-iar-1fec82",
+      "title": "Fotbal: FC Santos – Neymar Jr este căpitan, iar tatăl lui a fost numit director general",
+      "summary": "Neymar senior a fost numit director general al clubului FC Santos, a anunţat vineri gruparea din Sao Paulo.",
+      "date": "2026-11-06T19:24:18.000Z",
+      "url": "https://www.news.ro/sport/fotbal-fc-santos-neymar-jr-este-capitan-iar-tatal-lui-a-fost-numit-director-general-1922402406182026112122957023",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Fotbal: FC Santos – Neymar Jr este căpitan, iar tatăl lui a fost numit director general",
+      "addedAt": "2026-11-06T20:07:39.225Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-newsro-spania-si-olanda-se-confrunta-pentru-3d8634",
+      "title": "Spania şi Olanda se confruntă pentru conducerea BCE, după plecarea Christinei Lagarde",
+      "summary": "Spania şi Olanda au depus vineri candidaturile pentru preşedinţia Băncii Centrale Europene (BCE), în vederea înlocuirii Christinei Lagarde, care îşi va încheia mandatul pe 7 februarie 2027. Competiţia face parte dintr-o negociere mai amplă între marile economii ale zonei euro pentru ocuparea funcţiilor de conducere ale instituţiei, relatează Politico.",
+      "date": "2026-11-06T19:17:06.000Z",
+      "url": "https://www.news.ro/economic/spania-si-olanda-se-confrunta-pentru-conducerea-bce-dupa-plecarea-christinei-lagarde-1922401706062026112122957003",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Spania şi Olanda se confruntă pentru conducerea BCE, după plecarea Christinei Lagarde",
+      "addedAt": "2026-11-06T20:07:39.225Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-profit-ultima-ora-plan-de-salvare-a-fostului-sidex-39df5a",
+      "title": "ULTIMA ORĂ Plan de salvare a fostului Sidex: Vânzare prin negociere directă, la preț mult mai mic. Liberty Galați, vizat de mai mulți giganți",
+      "summary": "Liberty Galați, fostul Sidex, are un nou plan de restructurare, care prevede vânzarea Combinatului Siderurgic Galați și a secției Tubular printr-o procedură de negociere directă. Prețul de pornire este de 200 de milioane de euro, fără TVA, pentru ambele active.",
+      "date": "2026-11-06T19:16:00.000Z",
+      "url": "https://www.profit.ro/insider/actualitate/ultima-ora-plan-de-salvare-a-fostului-sidex-vanzare-prin-negociere-directa-la-pret-mult-mai-mic-liberty-galati-vizat-de-mai-multi-giganti-22956945?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/34127/22956945/2/steel-mill-616526-1280.jpg?width=800",
+      "imageAlt": "ULTIMA ORĂ Plan de salvare a fostului Sidex: Vânzare prin negociere directă, la preț mult mai mic. Liberty Galați, vizat de mai mulți giganți",
+      "addedAt": "2026-11-06T20:07:33.382Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-profit-pas-inapoi-elon-musk-recunoaste-esecul-d71ecb",
+      "title": "Pas înapoi. Elon Musk recunoaște eșecul celui mai nou model al mărcii Tesla și-l scoate din producție",
+      "summary": "Șeful Tesla a anunțat că gigafabrica mărcii din Texas va opri producția modelului Cybertruck. Oficial, motivul este legat de producția Cybercab. Neoficial, pickup-ul electric se vinde foarte prost.",
+      "date": "2026-11-06T19:12:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/auto-transporturi/pas-inapoi-elon-musk-recunoaste-esecul-celui-mai-nou-model-al-marcii-tesla-si-l-scoate-din-productie-22956643?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Auto/Transporturi"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://i0.1616.ro/media/2/2621/33217/22956643/1/tesla-gama-lineup.jpg?width=800",
+      "imageAlt": "Pas înapoi. Elon Musk recunoaște eșecul celui mai nou model al mărcii Tesla și-l scoate din producție",
+      "addedAt": "2026-11-06T20:07:33.382Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-g4media-un-barbat-a-amenintat-la-112-ca-urmeaza-sa-3772f4",
+      "title": "Un bărbat a amenințat la 112 că urmează să arunce în aer un tren de călători / Bărbatul a fost descoperit de polițiști într-un tren care se deplasa la Brașov",
+      "summary": "Polițiștii din cadrul Secției Regionale de Poliție Transporturi Brașov, în colaborare cu Inspectoratul de Poliție Județean Brașov, au intervenit, vineri, după ce o persoană a apelat numărul unic de urgență 112 și a amenințat că va arunca în aer un tren de călători. Din primele verificări a reieșit că apelul fusese efectuat în timp ce persoana […] © G4Media.ro .",
+      "date": "2026-11-06T19:10:51.000Z",
+      "url": "https://www.g4media.ro/un-barbat-a-amenintat-la-112-ca-urmeaza-sa-arunce-in-aer-un-tren-de-calatori-barbatul-a-fost-descoperit-de-politisti-intr-un-tren-care-se-deplasa-la-brasov.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "Amenintare cu bomba",
+        "amenintare cu bomba tren"
+      ],
+      "author": "Damian Matei",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/08/dreamstime_m_117678.jpg",
+      "imageAlt": "Un bărbat a amenințat la 112 că urmează să arunce în aer un tren de călători / Bărbatul a fost descoperit de polițiști într-un tren care se deplasa la Brașov",
+      "addedAt": "2026-11-06T20:07:38.842Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-hotnews-bolojenistul-psd-s-a-intalnit-cu-liderul-ec2f35",
+      "title": "„Bolojenistul” PSD s-a întâlnit cu liderul PNL la primăria din Buzău. „Mulțumesc pentru vizită!”",
+      "summary": "Primarul municipiului Buzău, Constantin Toma (PSD), a publicat, vineri, o fotografie în care apare alături de Ilie Bolojan şi Ciprian Ciucu. Toma se află de mai multă vreme în relații încordate cu conducerea PSD, Sorin Grindeanu numindu-l pe primar „bolojenistul” partidului. „Schimb de experienţă între un fost şi doi actuali primari. Administraţie pentru oameni, pentru …",
+      "date": "2026-11-06T19:02:28.000Z",
+      "url": "https://hotnews.ro/bolojenistul-psd-s-a-intalnit-cu-liderul-pnl-la-primaria-din-buzau-multumesc-pentru-vizita-2397234",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "Politic"
+      ],
+      "author": "Adrian Ilie",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "„Bolojenistul” PSD s-a întâlnit cu liderul PNL la primăria din Buzău. „Mulțumesc pentru vizită!”",
+      "addedAt": "2026-11-06T20:07:31.360Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-profit-toate-actiunile-top-10-pe-rosu-bursa-708b83",
+      "title": "Toate acțiunile Top 10, „pe roșu”. Bursa românească încheie săptămâna cu o sesiune de deprecieri severe, în nota piețelor externe GRAFIC",
+      "summary": "Acțiunile producătorilor de gaze naturale au dat tonul corecțiilor la BVB.",
+      "date": "2026-11-06T19:02:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/financiar/piata-de-capital/toate-actiunile-top-10-pe-rosu-bursa-romaneasca-incheie-saptamana-cu-o-sesiune-de-deprecieri-severe-in-nota-pietelor-externe-grafic-22956784?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Piața de capital"
+      ],
+      "author": "",
+      "theme": "energija",
+      "image": "https://i0.1616.ro/media/2/2621/33213/22956784/2/dreamstime-m-109575076.jpg?width=800",
+      "imageAlt": "Toate acțiunile Top 10, „pe roșu”. Bursa românească încheie săptămâna cu o sesiune de deprecieri severe, în nota piețelor externe GRAFIC",
+      "addedAt": "2026-11-06T20:07:33.382Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-g4media-un-transport-de-cipuri-al-companiei-nvidia-2805b1",
+      "title": "Un transport de cipuri al companiei Nvidia, în valoare de 11,4 milioane de dolari, a fost furat în California",
+      "summary": "Un transport de cipuri informatice în valoare de 11,4 milioane de dolari al companiei Nvidia a fost furat în statul american California, relatează vineri Agerpres. Marfa a dispărut după ce a părăsit oraşul Oakland într-un transport care avea ca destinaţie statul Texas, în partea de sud a SUA. Şase paleţi de cipuri au fost încărcate […] © G4Media.ro .",
+      "date": "2026-11-06T19:00:31.000Z",
+      "url": "https://www.g4media.ro/un-transport-de-cipuri-al-companiei-nvidia-in-valoare-de-114-milioane-de-dolari-a-fost-furat-in-california.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "cipuri",
+        "nvidia",
+        "transport cipuri"
+      ],
+      "author": "Redacția",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2025/01/profimedia-0905031966.jpg",
+      "imageAlt": "Un transport de cipuri al companiei Nvidia, în valoare de 11,4 milioane de dolari, a fost furat în California",
+      "addedAt": "2026-11-06T20:07:38.842Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-g4media-chiritoiu-in-cateva-zile-aprobam-preluarea-e2b900",
+      "title": "Chiriţoiu: În câteva zile aprobăm preluarea de către Premier a reţelelor de energie din Oltenia; în esenţă,recreăm CEZ-ul",
+      "summary": "Consiliul Concurenţei va aproba în câteva zile preluarea de către Premier Energy a Distribuţie Energie Oltenia (DEO), în esenţă recreându-se CEZ-ul, a afirmat, vineri, preşedintele instituţiei, Bogdan Chiriţoiu, la un eveniment de specialitate, relateaza Agerpres. „Ce ar fi interesant pe partea de non-investigaţii, terminăm Premier, o aprobăm. În câteva zile o să aprobăm preluarea de […] © G4Media.ro .",
+      "date": "2026-11-06T18:44:16.000Z",
+      "url": "https://www.g4media.ro/chiritoiu-in-cateva-zile-aprobam-preluarea-de-catre-premier-a-retelelor-de-energie-din-oltenia-in-esentarecream-cez-ul.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "consiliul concurenţei",
+        "Distribuţie Energie Oltenia"
+      ],
+      "author": "Redacția",
+      "theme": "energija",
+      "image": "https://www.g4media.ro/wp-content/uploads/2024/06/ID187692_INQUAM_Photos_George_Calin.jpg",
+      "imageAlt": "Chiriţoiu: În câteva zile aprobăm preluarea de către Premier a reţelelor de energie din Oltenia; în esenţă,recreăm CEZ-ul",
+      "addedAt": "2026-11-06T20:07:38.842Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-digi24-primarul-psd-al-buzaului-fotografie-alaturi-26e520",
+      "title": "Primarul PSD al Buzăului, fotografie alături de Ilie Bolojan și Ciprian Ciucu. Mesajul transmis de Constantin Toma",
+      "summary": "Primarul municipiului Buzău, Constantin Toma (PSD), a publicat vineri o fotografie în care apare alături de fostul premier Ilie Bolojan și de primarul Capitalei, Ciprian Ciucu, aflați în vizită la Buzău.",
+      "date": "2026-11-06T18:35:28.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/primarul-psd-al-buzaului-fotografie-alaturi-de-ilie-bolojan-si-ciprian-ciucu-mesajul-transmis-de-constantin-toma-4025577",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjA2JTJGMzA1NjEzOF8zMDU2/MTM4X2N0aW4tdG9tYS5qcGVnJmhhc2g9/M2RlNmRjOWZjMzQ3MTc5Mjg4ZDQ0MGFkNzhlYzIwZWI=.jpeg",
+      "imageAlt": "Primarul PSD al Buzăului, fotografie alături de Ilie Bolojan și Ciprian Ciucu. Mesajul transmis de Constantin Toma",
+      "addedAt": "2026-11-06T20:07:36.506Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-digi24-serbia-ofiterii-de-securitate-care-au-7fc1ce",
+      "title": "Serbia: Ofițerii de securitate care au torturat protestatarii sunt acum ei înșiși arestați",
+      "summary": "Ofițeri sârbi arestați pentru „folosirea forței excesive” împotriva protestatarilor sunt acum arestați. Nouă ofițeri în activitate și un fost ofițer dintr-o unitate de elită a poliției au fost reținuți. Aceștia sunt bănuiți că au torturat, bătut și intimidat participanții la protestele anticorupție, relatează Al Jazeera.",
+      "date": "2026-11-06T18:31:29.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/serbia-ofiterii-de-securitate-care-au-torturat-protestatarii-sunt-acum-ei-insisi-arestati-4025561",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjUl/MkYwOCUyRjE2JTJGMjMyOTYyMV8yMzI5/NjIxX3Byb2ZpbWVkaWEtMTAyOTY0NTg0/MS5qcGcmaGFzaD01YzgzZGJmZGE5NWI5OWQ5YThhM2JjM2ZiYjdmYzRjYw==.jpg",
+      "imageAlt": "Serbia: Ofițerii de securitate care au torturat protestatarii sunt acum ei înșiși arestați",
+      "addedAt": "2026-11-06T20:07:36.506Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-g4media-bavareza-ilse-aigner-ar-putea-deveni-prima-de0527",
+      "title": "Bavareza Ilse Aigner ar putea deveni prima femeie preşedintă a Germaniei",
+      "summary": "Actuala preşedintă a parlamentului din landul Bavaria, Ilse Aigner (CSU), în vârstă de 61 de ani, ar putea deveni prima femeie preşedinte din Germania, potrivit unor surse apropiate Uniunii Creştin-Democrate (CDU), relatează AFP. Nominalizarea ei este aşteptată să fie confirmată luni, la o reuniune a conducerii CDU, partidul cancelarului Friedrich Merz. Confirmarea ar face ca […] © G4Media.ro .",
+      "date": "2026-11-06T18:31:10.000Z",
+      "url": "https://www.g4media.ro/bavareza-ilse-aigner-ar-putea-va-deveni-prima-femeie-presedinte-a-germaniei.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "Ilse Aigner"
+      ],
+      "author": "Redacția",
+      "theme": "ai",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/11/Ilse-Aigner.jpg",
+      "imageAlt": "Bavareza Ilse Aigner ar putea deveni prima femeie preşedintă a Germaniei",
+      "addedAt": "2026-11-06T20:07:38.843Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-hotnews-centrala-de-la-cernavoda-a-fost-repornita-f7197b",
+      "title": "Centrala de la Cernavodă a fost repornită. Câtă energie trimite în sistemul național",
+      "summary": "Unitatea 1 a centralei de la Cernavodă a fost repornită vineri după-amiază, deocamdată producția de energie fiind sub capacitatea reactorului. Centrala a fost reintegrată în Sistemul Energetic Național, după ce și-a încetat complet producția în 13 august, din cauza debitului redus al Dunării. Unitatea 1 are o capacitate nominală de producție de 706 MW. Potrivit …",
+      "date": "2026-11-06T18:31:09.000Z",
+      "url": "https://hotnews.ro/centrala-de-la-cernavoda-a-fost-repornita-cata-energie-trimite-in-sistemul-national-2397226",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Adrian Ilie",
+      "theme": "energija",
+      "image": "",
+      "imageAlt": "Centrala de la Cernavodă a fost repornită. Câtă energie trimite în sistemul național",
+      "addedAt": "2026-11-06T20:07:31.360Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-g4media-toata-floarea-psd-din-suceava-adunata-la-bb29b7",
+      "title": "Toată floarea PSD din Suceava, adunată la conferința susținută de Adrian Năstase, fostul premier social-democrat cu dublă condamnare pentru corupție",
+      "summary": "Fostul premier PSD Adrian Năstase a susținut vineri o conferință la Muzeul Național al Bucovinei, cu tema „Nicolae Titulescu și rețelele de influență ale Europei interbelice”. Conform Suceava News, la eveniment au fost prezenți membri marcanți ai PSD, oameni cu funcții mai noi sau mai vechi în administrația locală și în partid. Mai precis, în […] © G4Media.ro .",
+      "date": "2026-11-06T18:19:03.000Z",
+      "url": "https://www.g4media.ro/toata-floarea-psd-din-suceava-adunata-la-conferinta-sustinuta-de-adrian-nastase-fostul-premier-social-democrat-cu-dubla-condamnare-pentru-coruptie.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "Adrian Năstase",
+        "Muzeul National al Bucovinei"
+      ],
+      "author": "Laura Nițulescu",
+      "theme": "ai",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/11/Nastase.jpeg",
+      "imageAlt": "Toată floarea PSD din Suceava, adunată la conferința susținută de Adrian Năstase, fostul premier social-democrat cu dublă condamnare pentru corupție",
+      "addedAt": "2026-11-06T20:07:38.843Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-hotnews-doi-candidati-pentru-sefia-bancii-centrale-059aa8",
+      "title": "Doi candidați pentru șefia Băncii Centrale Europene, după demisia lui Christine Lagarde",
+      "summary": "Ţările din zona euro au nominalizat vineri doi bancheri centrali veterani pentru a-i succeda lui Christine Lagarde în funcţia de preşedinte al Băncii Centrale Europene (BCE), ambii luptători experimentaţi în situaţii de criză, informează Reuters, preluată de Agerpres. Spania l-a nominalizat pe Pablo Hernandez de Cos, directorul Băncii Reglementelor Internaţionale (BIS), iar Olanda pe Klaas …",
+      "date": "2026-11-06T18:01:56.000Z",
+      "url": "https://hotnews.ro/doi-candidati-pentru-sefia-bancii-centrale-europene-dupa-demisia-lui-christine-lagarde-2397216",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Adrian Ilie",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Doi candidați pentru șefia Băncii Centrale Europene, după demisia lui Christine Lagarde",
+      "addedAt": "2026-11-06T20:07:31.361Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-zf-surpriza-pe-piata-muncii-din-sua-165-000-de-bfaf6a",
+      "title": "Surpriză pe piaţa muncii din SUA: 165.000 de locuri de muncă noi, de aproape trei ori peste estimări. Randamentul titlurilor americane pe 10 ani sare la 4,868%",
+      "summary": "",
+      "date": "2026-11-06T17:37:45.000Z",
+      "url": "https://www.zf.ro/eveniment/surpriza-pe-piata-muncii-din-sua-165-000-de-locuri-de-munca-noi-de-aproape-trei-ori-peste-estimari-randamentul-titlurilor-americane-pe-10-ani-sare-la-4-868-23276316",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Eveniment"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10386/23276316/1/10-muncitori-fabrica-sua-7954413-hepta-mediafax-foto-zuma-press-.jpg?width=700",
+      "imageAlt": "Surpriză pe piaţa muncii din SUA: 165.000 de locuri de muncă noi, de aproape trei ori peste estimări. Randamentul titlurilor americane pe 10 ani sare la 4,868%",
+      "addedAt": "2026-11-06T20:07:33.166Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-zf-cine-nu-are-puterea-si-detasarea-sa-amane-89f786",
+      "title": "Cine nu are puterea şi detaşarea să amâne plăţile, salariile, impozitele, furnizorii şi taxele la stat vin la scadenţă, când vremurile din economie şi din business se schimbă şi…",
+      "summary": "",
+      "date": "2026-11-06T17:36:23.000Z",
+      "url": "https://www.zf.ro/opinii/puterea-detasarea-amane-platile-salariile-impozitele-furnizorii-taxele-stat-vin-scadenta-vremurile-economie-business-schimba-exista-cash-flow-faca-antreprenor-23276314",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Opinii"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10369/23276314/1/66-fini-fini-nou-2.jpg?width=700",
+      "imageAlt": "Cine nu are puterea şi detaşarea să amâne plăţile, salariile, impozitele, furnizorii şi taxele la stat vin la scadenţă, când vremurile din economie şi din business se schimbă şi nu",
+      "addedAt": "2026-11-06T20:07:33.166Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-zf-tesla-arunca-manusa-cybertruck-iese-de-pe-0f605e",
+      "title": "Tesla aruncă mănuşa: Cybertruck iese de pe linia de asamblare după doar 11.586 de unităţi vândute în primele nouă luni ale acestui an, iar Elon Musk mută atenţia grupului spre…",
+      "summary": "",
+      "date": "2026-11-06T17:34:34.000Z",
+      "url": "https://www.zf.ro/eveniment/tesla-arunca-manusa-cybertruck-iese-linia-asamblare-dupa-11-586-unitati-vandute-primele-luni-acestui-an-iar-elon-musk-muta-atentia-grupului-spre-roboti-umanoizi-taxiuri-autonome-inteligenta-23276307",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Eveniment"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10386/23276307/1/eb454bfe-bf25-449d-bae6-f4f2a00c3b3f.jpg?width=700",
+      "imageAlt": "Tesla aruncă mănuşa: Cybertruck iese de pe linia de asamblare după doar 11.586 de unităţi vândute în primele nouă luni ale acestui an, iar Elon Musk mută atenţia grupului spre robo",
+      "addedAt": "2026-11-06T20:07:33.167Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-zf-povestea-black-friday-a-inceput-ca-o-f27d6b",
+      "title": "Povestea Black Friday: a început ca o poreclă dată de poliţiştii americani unei zile de coşmar şi a ajuns fenomenul global de reduceri pe care românii îl aşteaptă în fiecare…",
+      "summary": "",
+      "date": "2026-11-06T17:28:50.000Z",
+      "url": "https://www.zf.ro/eveniment/povestea-black-friday-a-inceput-ca-o-porecla-data-de-politistii-americani-unei-zile-de-cosmar-si-a-ajuns-fenomenul-global-de-reduceri-pe-care-romanii-il-asteapta-in-fiecare-noiembrie-23276303",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Eveniment"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10386/23276303/1/rsz-laptopuri-sm.jpg?width=700",
+      "imageAlt": "Povestea Black Friday: a început ca o poreclă dată de poliţiştii americani unei zile de coşmar şi a ajuns fenomenul global de reduceri pe care românii îl aşteaptă în fiecare noiemb",
+      "addedAt": "2026-11-06T20:07:33.167Z"
+    },
+    {
+      "slug": "bukurest-2026-11-06-zf-cum-ar-fi-sa-imprumuti-un-robot-de-la-c32adb",
+      "title": "Cum ar fi să împrumuţi un robot de la bibliotecă, la fel ca pe o carte? Prof. univ. dr. Răzvan Bologa, Facultatea de Cibernetică, Statistică şi Informatică Economică: La ASE, ca…",
+      "summary": "",
+      "date": "2026-11-06T17:25:19.000Z",
+      "url": "https://www.zf.ro/zf-gen-z/cariera/ar-imprumuti-robot-biblioteca-fel-carte-prof-univ-dr-razvan-bologa-facultatea-cibernetica-statistica-informatica-economica-ase-student-poti-imprumuti-mic-robotel-il-folosesti-seminar-permisul-23276299",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Cariera"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/41827/23276299/1/razvan-bologa.png?width=700",
+      "imageAlt": "Cum ar fi să împrumuţi un robot de la bibliotecă, la fel ca pe o carte? Prof. univ. dr. Răzvan Bologa, Facultatea de Cibernetică, Statistică şi Informatică Economică: La ASE, ca st",
+      "addedAt": "2026-11-06T20:07:33.167Z"
+    },
     {
       "slug": "bukurest-2026-11-05-agerpres-fotbal-ac-milan-invinsa-de-ferencvaros-pe-973e38",
       "title": "Fotbal: AC Milan, învinsă de Ferencvaros pe San Siro, în Europa League",
