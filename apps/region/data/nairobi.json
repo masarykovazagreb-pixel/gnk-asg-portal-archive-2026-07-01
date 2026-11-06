@@ -4,7 +4,7 @@
   "lang": "en",
   "city": "Nairobi",
   "country": "Kenija",
-  "updatedAt": "2026-11-06T16:03:52.932Z",
+  "updatedAt": "2026-11-06T19:26:30.577Z",
   "sources": [
     {
       "id": "capitalfm",
@@ -14,19 +14,20 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-06T16:03:35.459Z"
+      "checkedAt": "2026-11-06T19:26:08.858Z"
     },
     {
       "id": "nation",
       "name": "Daily Nation",
-      "url": "https://nation.africa/kenya/rss.xml",
-      "ok": true,
-      "fetched": 25,
+      "url": "https://nation.africa/kenya/rss",
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://nation.africa/kenya/rss: HTTP 403"
+        "https://nation.africa/kenya/rss: HTTP 403",
+        "https://nation.africa/kenya/rss.xml: HTTP 404"
       ],
-      "checkedAt": "2026-11-06T16:03:36.574Z"
+      "checkedAt": "2026-11-06T19:26:10.621Z"
     },
     {
       "id": "standard",
@@ -38,7 +39,7 @@
       "errors": [
         "https://www.standardmedia.co.ke/rss: nije feed"
       ],
-      "checkedAt": "2026-11-06T16:03:37.435Z"
+      "checkedAt": "2026-11-06T19:26:14.427Z"
     },
     {
       "id": "star",
@@ -50,7 +51,7 @@
       "errors": [
         "https://www.the-star.co.ke/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-06T16:03:39.451Z"
+      "checkedAt": "2026-11-06T19:26:17.019Z"
     },
     {
       "id": "businessdaily",
@@ -62,7 +63,7 @@
       "errors": [
         "https://www.businessdailyafrica.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-06T16:03:40.476Z"
+      "checkedAt": "2026-11-06T19:26:18.119Z"
     },
     {
       "id": "citizen",
@@ -74,7 +75,7 @@
       "errors": [
         "https://www.citizen.digital/rss: HTTP 400"
       ],
-      "checkedAt": "2026-11-06T16:03:48.573Z"
+      "checkedAt": "2026-11-06T19:26:26.329Z"
     },
     {
       "id": "kbc",
@@ -84,7 +85,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-06T16:03:51.043Z"
+      "checkedAt": "2026-11-06T19:26:29.269Z"
     },
     {
       "id": "eastafrican",
@@ -96,10 +97,47 @@
       "errors": [
         "https://www.theeastafrican.co.ke/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-06T16:03:52.932Z"
+      "checkedAt": "2026-11-06T19:26:30.576Z"
     }
   ],
   "items": [
+    {
+      "slug": "nairobi-2026-11-06-kbc-safaricom-group-net-income-rises-36-to-1bc1c1",
+      "title": "Safaricom Group net income rises 36% to KSh58.2 billion as Ethiopia operations near break-even",
+      "summary": "Safaricom PLC has posted a strong financial performance for the first half of the 2026/2027 financial year, with net income rising by 35.9 per cent to KSh58.2 billion, driven by sustained growth in its Kenyan and Ethiopian operations. The telecommunications giant recorded a 13.1 per cent increase in group service revenue to KSh226.1 billion for […] The post Safaricom Group net income rises 36% to KSh58.2 billion as Ethiopia operations near break-even appeared first on KBC Digital .",
+      "date": "2026-11-06T18:44:39.000Z",
+      "url": "https://www.kbc.co.ke/safaricom-group-net-income-rises-36-to-ksh58-2-billion-as-ethiopia-operations-near-break-even/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "Local Business"
+      ],
+      "author": "KBC Digital",
+      "theme": "drustvo",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/11/safaricom-CEO.jpeg",
+      "imageAlt": "Safaricom Group net income rises 36% to KSh58.2 billion as Ethiopia operations near break-even",
+      "addedAt": "2026-11-06T19:26:29.269Z"
+    },
+    {
+      "slug": "nairobi-2026-11-06-capitalfm-in-pictures-charlene-ruto-weds-isaya-yunge-f75dbf",
+      "title": "In pictures: Charlene Ruto weds Isaya Yunge in Mwanza",
+      "summary": "The President and First Lady Rachel Ruto attended the ceremony, alongside invited guests, among them Interior Cabinet Secretary Kipchumba Murkomen.",
+      "date": "2026-11-06T16:21:34.000Z",
+      "url": "https://capitalfm.africa/in-pictures-charlene-ruto-weds-isaya-yunge-in-mwanza/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "Lifestyle",
+        "News",
+        "Charlene Ruto",
+        "Isaiah Yunge"
+      ],
+      "author": "Capital FM",
+      "theme": "politika",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/11/WhatsApp-Image-2026-11-06-at-18.50.02-2-1200x630.jpeg",
+      "imageAlt": "In pictures: Charlene Ruto weds Isaya Yunge in Mwanza",
+      "addedAt": "2026-11-06T19:26:08.858Z"
+    },
     {
       "slug": "nairobi-2026-11-06-capitalfm-tanzanian-opposition-leader-found-guilty-of-c7d716",
       "title": "Tanzanian opposition leader found guilty of inciting unrest but acquitted of treason",
@@ -277,6 +315,25 @@
       "image": "https://nation.africa/resource/image/5653810/landscape_ratio16x9/1600/900/4fffd36a7281bfece328318d50fbb33b/wT/raila-odinga-international-stadium-1.jpg",
       "imageAlt": "Bayern v Ajax: Premium tickets available as phase one sold out",
       "addedAt": "2026-11-06T16:03:36.574Z"
+    },
+    {
+      "slug": "nairobi-2026-11-06-kbc-kenya-south-korea-deepen-agricultural-ties-965146",
+      "title": "Kenya, South Korea deepen agricultural ties through rice self-sufficiency project",
+      "summary": "The K-RiceBelt project is developing dedicated seed production fields in Kirinyaga, with South Korea providing technical and infrastructure support. The post Kenya, South Korea deepen agricultural ties through rice self-sufficiency project appeared first on KBC Digital .",
+      "date": "2026-11-06T13:13:54.000Z",
+      "url": "https://www.kbc.co.ke/kenya-south-korea-deepen-agricultural-ties-through-rice-self-sufficiency-project/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "Agriculture",
+        "Local Business",
+        "NEWS"
+      ],
+      "author": "Eric Biegon",
+      "theme": "drustvo",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/11/KENYA-KOREA-3.jpeg",
+      "imageAlt": "Kenya, South Korea deepen agricultural ties through rice self-sufficiency project",
+      "addedAt": "2026-11-06T19:26:29.269Z"
     },
     {
       "slug": "nairobi-2026-11-06-nation-kcse-candidate-dies-hours-before-sitting-2460b9",
