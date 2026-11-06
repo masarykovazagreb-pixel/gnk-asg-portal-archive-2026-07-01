@@ -109,14 +109,6 @@ const readJSON = (path, fallback) => {
   try { return JSON.parse(readFileSync(path, 'utf8')); } catch { return fallback; }
 };
 
-/* JEDAN IZVOR BROJEVA. Broj tekstova, gradova, jezika i podatkovni dan ne
-   pišu se u tekst nego dolaze iz `network-counts-v1.json`, koji se računa iz
-   stvarnih podataka prije gradnje. Tako ploča ne može tvrditi 4.349 dok
-   arhiva kaže 4.877. */
-const NETWORK_COUNTS = readJSON(join(ROOT, 'apps', 'portal', 'data', 'network-counts-v1.json'), null);
-const DATA_DAY = NETWORK_COUNTS?.dataDay || '';
-const COUNT_BY_ID = new Map((NETWORK_COUNTS?.channels || []).map((c) => [c.id, c]));
-
 /** Hrvatski datum iz ISO dana: 2026-10-23 → 23. 10. 2026. */
 const dayLabel = (day) => {
   if (!day) return '';
@@ -240,9 +232,8 @@ function cityTiles(cards, lang = 'hr') {
   const en = lang === 'en';
   return CHANNELS.map((c) => {
     const card = cards.find((x) => x.id === c.id) || {};
-    /* Broj ide iz izračunatih brojeva mreže, s padom na karticu. */
-    const count = COUNT_BY_ID.get(c.id)?.count ?? card.count ?? 0;
-    const lastDay = (COUNT_BY_ID.get(c.id)?.lastItemAt || card.lastItemAt || '').slice(0, 10);
+    const count = card.count ?? 0;
+    const lastDay = (card.lastItemAt || '').slice(0, 10);
     return tile({
       href: c.base, img: `${c.id}-tile.webp`,
       alt: (en ? CITY_ALT_EN[c.id] : CITY_ALT[c.id]) || `${c.title} — ${en ? 'click opens the edition.' : 'klik otvara izdanje.'}`,
@@ -486,7 +477,7 @@ function networkPodium(circles, cards, lang = 'hr') {
      lagala bi o zemljopisu. */
   const mapped = CHANNELS.filter((c) => GEO[c.id]);
   const offMap = CHANNELS.filter((c) => !GEO[c.id]).map((c) => CITY_SHORT[c.id] || c.city);
-  const counted = mapped.map((c) => ({ c, count: COUNT_BY_ID.get(c.id)?.count ?? ((cards.find((x) => x.id === c.id) || {}).count || 0) }));
+  const counted = mapped.map((c) => ({ c, count: ((cards.find((x) => x.id === c.id) || {}).count || 0) }));
   const total = counted.reduce((sum, x) => sum + x.count, 0);
   const max = Math.max(1, ...counted.map((x) => x.count));
   const nf = (n) => n.toLocaleString('hr-HR');
@@ -534,8 +525,7 @@ function networkPodium(circles, cards, lang = 'hr') {
   /* Brojka uz kartu mora biti zbroj cijele mreže, ne samo gradova koje karta
      stigne nacrtati: prije je pisalo 3.360 tekstova (osam europskih gradova)
      pored "17 izdanja ukupno", pa je traka sama sebi proturječila. */
-  const networkTotal = Number(NETWORK_COUNTS?.texts)
-    || CHANNELS.reduce((sum, c) => sum + ((cards.find((x) => x.id === c.id) || {}).count || 0), 0);
+  const networkTotal = CHANNELS.reduce((sum, c) => sum + ((cards.find((x) => x.id === c.id) || {}).count || 0), 0);
   /* Brojke u traci moraju opisivati cijelu mrežu, ne samo gradove koje karta
      stigne nacrtati. Prije je pisalo „8 gradova · 8 jezika" iako mreža ima
      sedamnaest izdanja na šest kontinenata — karta je bila manja od mreže, a
@@ -926,6 +916,7 @@ function withPublisher(html) {
 }
 
 export function buildAktualCentral({ cards = [] } = {}) {
+  const DATA_DAY = readJSON(join(ROOT, 'apps', 'portal', 'data', 'network-counts-v1.json'), null)?.dataDay || '';
   if (!existsSync(FILE)) return { ok: false, reason: 'nema gnk-aktual/index.html' };
   let html = readFileSync(FILE, 'utf8');
 
@@ -1004,7 +995,7 @@ export function buildAktualCentral({ cards = [] } = {}) {
   const en = lang === 'en';
   const T = (hr, eng) => (en ? eng : hr);
   /* Brojevi iz jednog zapisa; ako ga nema, zbroj stvarnih objava iz kartica. */
-  const networkTexts = Number(NETWORK_COUNTS?.texts) || cards.reduce((sum, card) => sum + (Number(card.count) || 0), 0);
+  const networkTexts = CHANNELS.reduce((sum, c) => sum + (Number(cards.find((card) => card.id === c.id)?.count) || 0), 0);
   const dataDayLine = DATA_DAY
     ? T(`Podatkovni dan: ${dayLabel(DATA_DAY)} Sve brojke na ovoj ploči računaju se iz arhive tog dana, a ne prepisuju iz starih tekstova.`,
         `Data day: ${dayLabel(DATA_DAY)} Every figure on this board is computed from the archive of that day, not copied from older texts.`)

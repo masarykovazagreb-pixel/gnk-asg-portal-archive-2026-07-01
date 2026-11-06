@@ -6,7 +6,8 @@ name: REGION — deploy izdanja
 
 on:
   push:
-    branches: [main, 'arena/**']
+    # Produkcijski Pages projekti samo iz kanonskog pisca; grane ne smiju prepisati noviju arhivu.
+    branches: [main]
     paths:
       - 'apps/region/**'
       - 'apps/portal/scripts/album-nermin-sefic-v1.mjs'
@@ -24,6 +25,7 @@ concurrency:
 
 jobs:
   deploy:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     env:

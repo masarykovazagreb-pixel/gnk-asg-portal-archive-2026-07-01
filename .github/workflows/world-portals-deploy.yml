@@ -18,7 +18,8 @@ name: world-portals-deploy
 
 on:
   push:
-    branches: [main, 'arena/**']
+    # Produkcija koristi samo kanonski izvor na mainu.
+    branches: [main]
     paths:
       - 'apps/world/**'
       - 'apps/region/data/**'
@@ -72,6 +73,7 @@ jobs:
 
   deploy:
     needs: build
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     env:

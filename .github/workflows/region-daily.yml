@@ -18,8 +18,9 @@ on:
     # GitHub odbacuje dio rasporeda na puni sat zbog opterećenja, pa je ciklus
     # 19. i 20. 10. preskočen i izdanja su ostala na 19. 10.
     - cron: '7 */2 * * *'
-  # Ručno osvježavanje: izmjena ove datoteke pokreće ciklus i na grani.
+  # Promjena na mainu pokreće ciklus; radne grane ne smiju pisati u produkciju.
   push:
+    branches: [main]
     paths:
       - '.github/region-refresh-trigger'
       - '.github/workflows/region-daily.yml'
@@ -45,7 +46,7 @@ concurrency:
 
 jobs:
   daily:
-    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
+    if: github.ref == 'refs/heads/main' && vars.GNK_ASG_RELEASE_FENCE != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -54,7 +55,7 @@ jobs:
       - name: Checkout pokrenute grane
         uses: actions/checkout@v4
         with:
-          # Ne hardkodiraj main: push okidač mora raditi na grani na kojoj je pokrenut.
+          # Job se izvodi samo na mainu, kanonskom izvoru podataka.
           ref: ${{ github.ref }}
           fetch-depth: 0
 
@@ -107,7 +108,7 @@ jobs:
           set -euo pipefail
           git config user.name "AKTUAL MEDIA REGION"
           git config user.email "info@gnk-asg.hr"
-          git add apps/region/data apps/region/site apps/portal/kanal apps/portal/usa apps/portal/izdanja apps/portal/gnk-aktual apps/portal/en/gnk-aktual apps/portal/top-teme apps/portal/data/izdanja.json apps/portal/data/izdanja-sport.json apps/portal/data/nermin-sefic-gallery.json apps/portal/data/top-teme.json apps/portal/galerija apps/portal/aktual-media apps/portal/en/aktual-media apps/portal/knowledge-center apps/portal/data/aktual-data-desk-v1.json apps/portal/data/knowledge-base.json apps/portal/sitemap.xml apps/portal/sitemap-index.xml
+          git add apps/region/data apps/region/site apps/portal/kanal apps/portal/usa apps/portal/izdanja apps/portal/gnk-aktual apps/portal/en/gnk-aktual apps/portal/top-teme apps/portal/data/izdanja.json apps/portal/data/network-counts-v1.json apps/portal/data/izdanja-sport.json apps/portal/data/nermin-sefic-gallery.json apps/portal/data/top-teme.json apps/portal/galerija apps/portal/aktual-media apps/portal/en/aktual-media apps/portal/knowledge-center apps/portal/data/aktual-data-desk-v1.json apps/portal/data/knowledge-base.json apps/portal/sitemap.xml apps/portal/sitemap-index.xml
           if git diff --cached --quiet; then
             echo "Nema novih zapisa — stanje je već objavljeno."
             echo "changed=false" >> "$GITHUB_OUTPUT"

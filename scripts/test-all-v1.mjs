@@ -24,6 +24,7 @@ const FAST = args.has('--fast');
 const JSON_OUT = args.has('--json');
 
 const GATES = [
+  { name: 'Produkcijski deploy — samo kanonski main', cmd: ['node', '--test', 'tests/test-main-only-network-deploy-v1.mjs'], required: true },
   { name: 'Brojke huba — HR i EN', cmd: ['node', '--test', 'tests/test-hub-counts-v1.mjs'], required: true },
   { name: 'Dodatni plan — 500 zadataka', cmd: ['node', '--test', 'scripts/factory/test-improvement-work-500-v2.mjs'], required: true },
   { name: 'Alternativno izdanje — lokalni pregled', cmd: ['node', '--test', 'apps/aktual-free/test-build.mjs'], required: true },
