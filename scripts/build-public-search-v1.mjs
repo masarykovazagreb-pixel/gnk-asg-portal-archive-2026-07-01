@@ -1,0 +1,14 @@
+#!/usr/bin/env node
+// Builds a first-party title index. Does not fetch, publish, or index article bodies.
+import {readFileSync,writeFileSync,existsSync} from 'node:fs';import {join,resolve,dirname} from 'node:path';import {fileURLToPath,pathToFileURL} from 'node:url';
+const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..'),PORTAL=join(ROOT,'apps/portal');
+const safePath=p=>typeof p==='string'&&/^\/(?:[a-z0-9][a-z0-9-]*\/)+(?:[a-z0-9][a-z0-9-]*\.html)?$/.test(p)&&!p.startsWith('/podijeli/vijest/');
+export function buildIndex({editorial,channels,archives,approved,exists,now=Date.now()}){
+ if(!Array.isArray(editorial?.items)||!Array.isArray(channels)||!approved||!Array.isArray(approved.approved_urls)||typeof exists!=='function'||!Number.isFinite(now))throw Error('Nevaljan ulaz za indeks pretrage');
+ const allow=new Set(approved.approved_urls),seen=new Set(),out=[];
+ const add=(path,title,date,scope)=>{if(!safePath(path)||typeof title!=='string'||!title.trim()||seen.has(path)||!exists(path))return;let t=Date.parse(date||'');if(!Number.isFinite(t)||t>now)return;if(!allow.has(`https://gnk-asg.hr${path}`))return;seen.add(path);out.push({title:title.trim(),path,date:new Date(t).toISOString().slice(0,10),scope})};
+ for(const item of editorial.items)if(item.status==='published'&&item.in_sitemap===true)add(item.path,item.title,item.publishedAt,'portal');
+ for(const c of channels){if(!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(c.id)||!Array.isArray(archives[c.id]?.items))throw Error(`Nedostaje arhiva ${c.id}`);for(const item of archives[c.id].items){if(!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(item.slug||''))continue;add(`/kanal/${c.id}/clanak/${item.slug}/`,item.title,item.date,c.id)}}
+ out.sort((a,b)=>b.date.localeCompare(a.date)||a.path.localeCompare(b.path));return {version:'PUBLIC_TITLE_SEARCH_V1',note:'Indeks naslova odabranih postojećih objavljenih stranica; ne pretražuje tijelo članaka ni sve webove.',items:out};
+}
+if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href){try{const read=p=>JSON.parse(readFileSync(p,'utf8')),channels=read(join(ROOT,'apps/region/channels.json')).channels,archives=Object.fromEntries(channels.map(c=>[c.id,read(join(ROOT,'apps/region/data',`${c.id}.json`))]));let result=buildIndex({editorial:read(join(PORTAL,'data/editorial-registry.json')),channels,archives,approved:read(join(PORTAL,'data/approved_mentions.json')),exists:path=>existsSync(join(PORTAL,path.slice(1),path.endsWith('/')?'index.html':''))});let out=join(PORTAL,'data/public-search-v1.json'),payload=JSON.stringify(result)+'\n';if(process.argv.includes('--check')){if(!existsSync(out)||readFileSync(out,'utf8')!==payload)throw Error('Indeks nedostaje ili zaostaje');console.log(`Indeks aktualan: ${result.items.length} naslova`)}else{writeFileSync(out,payload);console.log(`Indeks izrađen: ${result.items.length} naslova`);}}catch(e){console.error(e.message);process.exitCode=1}}

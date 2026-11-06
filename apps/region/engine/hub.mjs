@@ -936,6 +936,7 @@ const writePage = (path, html) => {
 
 export async function buildHub() {
   execFileSync(process.execPath, [join(ROOT, 'scripts', 'build-network-counts-v1.mjs')], { cwd: ROOT, stdio: 'inherit' });
+  execFileSync(process.execPath, [join(ROOT, 'scripts', 'build-public-search-v1.mjs')], { cwd: ROOT, stdio: 'inherit' });
   mkdirSync(OUT, { recursive: true });
   ensureDeskTiles(PORTAL, Object.keys(DESKS));
   writePage('', hubPage());

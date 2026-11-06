@@ -906,6 +906,13 @@ export function strengthenAktualBrand(html, lang = 'hr', collection = null) {
 /* Ime izdavača je jedno: AKTUAL MEDIA d.o.o. HR i EN stranica moraju ga
    nositi isto, a dosad HR nije imao `publisher` meta, EN nije imao sidro na
    koje bi se oslonio. Zato jedan pomoćnik radi oboje, bez obzira na jezik. */
+function withSearchAssets(html) {
+  const css = '/assets/public-title-search-v1.css';
+  const js = '/assets/public-title-search-v1.js';
+  if (!html.includes(css)) html = html.replace('</head>', `<link rel="stylesheet" href="${css}">\n</head>`);
+  if (!html.includes(js)) html = html.replace('</head>', `<script src="${js}" defer></script>\n</head>`);
+  return html;
+}
 function withPublisher(html) {
   if (/<meta name="publisher"/.test(html)) {
     return html.replace(/<meta name="publisher" content="[^"]*">/, '<meta name="publisher" content="AKTUAL MEDIA d.o.o.">');
@@ -1129,6 +1136,12 @@ export function buildAktualCentral({ cards = [] } = {}) {
   </div>
 
   <ul class="amc-stripe">${stripeFor(lang)}</ul>
+  <section class="pts" data-public-title-search aria-label="${T('Pretraga', 'Search')}">
+    <h2>${T('Pretraži po riječi ili temi', 'Search by word or topic')}</h2>
+    <p>${T('Interno: naslovi odobrenih stranica u ovom indeksu; ne obuhvaća cijeli web ni sadržaj članaka. Javno: Google pretraga interneta.', 'Internal: titles of approved pages in this index; not the whole site or article bodies. Public: Google web search.')}</p>
+    <form><label>${T('Riječ ili tema', 'Word or topic')}<input type="search" name="q" maxlength="128" required></label><label>${T('Opseg', 'Scope')}<select name="scope"><option value="local">${T('Odabrani naslovi našeg portala', 'Selected titles from our portal')}</option><option value="public">${T('Javno na internetu', 'Public web')}</option></select></label><button type="submit">${T('Traži', 'Search')}</button></form>
+    <p role="status" aria-live="polite"></p><ol></ol><noscript>${T('Pretraga zahtijeva JavaScript.', 'Search requires JavaScript.')}</noscript>
+  </section>
   ${lineBlock(lang)}
 
   <section class="amc-sec" id="izdanja-po-zemljama" aria-labelledby="amcSec1">
@@ -1423,7 +1436,7 @@ ${adHtml}
   html = externalizeCatalogCss(html);
   html = withCatalogLink(html, writeCatalogSheet());
   html = strengthenAktualBrand(html, 'hr', jsonld);
-  writeFileSync(FILE, withPublisher(html));
+  writeFileSync(FILE, withSearchAssets(withPublisher(html)));
 
   /* Engleska stranica dobiva istu traku krugova, s engleskim natpisima. */
   const EN = join(PORTAL, 'en', 'gnk-aktual', 'index.html');
@@ -1478,7 +1491,7 @@ ${adHtml}
     en = externalizeCatalogCss(en);
     en = withCatalogLink(en, writeCatalogSheet());
     en = strengthenAktualBrand(en, 'en', jsonld);
-    writeFileSync(EN, withPublisher(en));
+    writeFileSync(EN, withSearchAssets(withPublisher(en)));
   }
 
   return { ok: true, items: items.length, sources: sources.size, channels: CHANNELS.length, tiles: 15, river: river.length, moda };

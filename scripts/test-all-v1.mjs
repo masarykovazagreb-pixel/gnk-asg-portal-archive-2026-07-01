@@ -24,6 +24,8 @@ const FAST = args.has('--fast');
 const JSON_OUT = args.has('--json');
 
 const GATES = [
+  { name: 'Pretraga — ponašanje sučelja', cmd: ['node', '--test', 'tests/test-public-title-search-browser-v1.mjs'], required: true },
+  { name: 'Pretraga — odobreni naslovi i javni opseg', cmd: ['node', '--test', 'tests/test-public-title-search-v1.mjs'], required: true },
   { name: 'Arhive — detalji sukoba bez prepisivanja', cmd: ['node', '--test', 'scripts/factory/test-archive-conflicts-v1.mjs'], required: true },
   { name: 'Produkcijski deploy — samo kanonski main', cmd: ['node', '--test', 'tests/test-main-only-network-deploy-v1.mjs'], required: true },
   { name: 'Brojke huba — HR i EN', cmd: ['node', '--test', 'tests/test-hub-counts-v1.mjs'], required: true },
