@@ -24,6 +24,10 @@ const FAST = args.has('--fast');
 const JSON_OUT = args.has('--json');
 
 const GATES = [
+  { name: 'Brojke huba — HR i EN', cmd: ['node', '--test', 'tests/test-hub-counts-v1.mjs'], required: true },
+  { name: 'Dodatni plan — 500 zadataka', cmd: ['node', '--test', 'scripts/factory/test-improvement-work-500-v2.mjs'], required: true },
+  { name: 'Alternativno izdanje — lokalni pregled', cmd: ['node', '--test', 'apps/aktual-free/test-build.mjs'], required: true },
+  { name: 'Svijet — registar 10.000 zadataka', cmd: ['node', '--test', 'scripts/factory/test-world-work-10000-v1.mjs'], required: true },
   { name: 'Vlasništvo automatizacija', cmd: ['node', 'scripts/audit-bot-ownership-v1.mjs'], required: true },
   { name: 'Rasporedi u allowlisti', cmd: ['python3', 'scripts/validate-workflow-schedule-allowlist-v2.py'], required: true },
   { name: 'HR/EN index parity', cmd: ['node', 'scripts/build-index-parity.mjs', '--check'], required: true },

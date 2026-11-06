@@ -1,0 +1,2 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';import {tasks} from './improvement-work-500-v2.mjs';
+test('500 zasebnih otvorenih planova',()=>{let c=JSON.parse(readFileSync(new URL('../../apps/region/channels.json',import.meta.url))).channels;let t=tasks(c);assert.equal(t.length,500);assert.equal(new Set(t.map(x=>x.id)).size,500);assert.equal(t.filter(x=>x.scope==='mreža').length,75);assert.ok(t.every(x=>x.status==='open'));assert.throws(()=>tasks([]))});
