@@ -149,14 +149,29 @@ export function exchangeBlock({ root, lang = 'hr', selfHome = '', selfNames = []
 </section>`;
 }
 
+/** Dan podataka, a ne sat ponovne gradnje. Nema izmišljanja dana kada
+ * feedovi nemaju datum: koristimo registrirani dan mreže ili prijavljujemo grešku. */
+export function exchangeDataDay(picks, root) {
+  const dates = picks.map(pick => Date.parse(pick.date || '')).filter(Number.isFinite);
+  if (dates.length) return { day: new Date(Math.max(...dates)).toISOString().slice(0, 10), meaning: 'latest-source-date-utc' };
+  const value = readJson(join(root, 'apps', 'portal', 'data', 'network-counts-v1.json'))?.dataDay;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(value || '')) {
+    const date = new Date(`${value}T00:00:00Z`);
+    if (Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === value) return { day: value, meaning: 'registered-network-data-day' };
+  }
+  throw new Error('Razmjena nema valjan datum izvora ni registrirani dan podataka');
+}
+
 /** Strojno čitljiv zapis razmjene: isti popis koji stranica prikazuje. */
 export function writeExchangeJson(dir, { root, selfHome = '', selfNames = [], limit = 6 }) {
   const picks = pickExchange(root, { selfHome, selfNames, limit: Math.max(limit, 12) });
   if (!picks.length) return;
+  const day = exchangeDataDay(picks, root);
   const payload = {
     version: 1,
-    generated: new Date().toISOString().slice(0, 10),
-    note: 'News exchange of the AKTUAL MEDIA network. Every record links to the publisher that wrote it.',
+    generated: day.day,
+    generatedMeaning: day.meaning,
+    note: 'News exchange of the AKTUAL MEDIA network. The generated field is the latest source date (UTC) or registered data day, not the build time. Each record links to its publisher.',
     items: picks.map((pick) => ({
       edition: pick.name,
       home: pick.home,

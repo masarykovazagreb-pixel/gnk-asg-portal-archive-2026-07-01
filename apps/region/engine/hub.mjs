@@ -15,6 +15,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
 import { esc, longDate, shortDate, stampLocal, scoreFromTitle, truncate, themeFor, safeJson } from './lib.mjs';
 import { CHANNELS, HUB, CONTACT, SOCIAL_IMAGE, CITY_SHORT, CSS as CHANNEL_CSS } from './build.mjs';
 import { publishedItems } from '../../../scripts/lib/publication-gate-v2.mjs';
@@ -934,6 +935,8 @@ const writePage = (path, html) => {
 };
 
 export async function buildHub() {
+  execFileSync(process.execPath, [join(ROOT, 'scripts', 'build-network-counts-v1.mjs')], { cwd: ROOT, stdio: 'inherit' });
+  execFileSync(process.execPath, [join(ROOT, 'scripts', 'build-public-search-v1.mjs')], { cwd: ROOT, stdio: 'inherit' });
   mkdirSync(OUT, { recursive: true });
   ensureDeskTiles(PORTAL, Object.keys(DESKS));
   writePage('', hubPage());
@@ -1023,13 +1026,10 @@ ${entries.map((e) => `<url><loc>${e.loc}</loc><changefreq>daily</changefreq><pri
     console.log(`::warning::Tehnologija budućnosti nije izgrađena: ${error.message}`);
   }
 
-  try {
-    const { buildAktualCentral } = await import('./aktual-central.mjs');
-    const central = buildAktualCentral({ cards });
-    console.log(`[central] ${JSON.stringify(central)}`);
-  } catch (error) {
-    console.log(`::warning::Središnji blok nije izgrađen: ${error.message}`);
-  }
+  const { buildAktualCentral } = await import('./aktual-central.mjs');
+  const central = buildAktualCentral({ cards });
+  if (!central.ok) throw new Error(`Središnji blok nije izgrađen: ${central.reason || 'nepoznata pogreška'}`);
+  console.log(`[central] ${JSON.stringify(central)}`);
 
   /* Trake rubrika (tehnologija, dnevni pregled, događaji, mreža) nose svoj CSS
      u tijelu dokumenta. Na kraju gradnje idu u jedan vanjski list — stranica je
@@ -1042,6 +1042,7 @@ ${entries.map((e) => `<url><loc>${e.loc}</loc><changefreq>daily</changefreq><pri
     console.log(`::warning::Trake rubrika nisu spojene: ${error.message}`);
   }
 
+  execFileSync(process.execPath, [join(ROOT, 'scripts', 'check-hub-counts-v1.mjs')], { cwd: ROOT, stdio: 'inherit' });
   return { channels: CHANNELS.length, sport: collect('sport').length, politics: collect('politika').length, security: collect('sigurnost').length, biznis: collect('ekonomija').length, tehnologija: collect('ai').length, moda: collect('*', DESKS.moda.filter).length, putovanja: collect('*', DESKS.putovanja.filter).length, ljubimci: collect('*', DESKS.ljubimci.filter).length, svijet: collect('*', DESKS.svijet.filter).length };
 }
 

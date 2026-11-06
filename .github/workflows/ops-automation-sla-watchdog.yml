@@ -99,7 +99,9 @@ jobs:
               runs = completed_runs(workflow)
               return runs[0] if runs else None
 
-          _dispatched = set()
+          # Pamti i neuspjeh: ne pokušavaj dvaput u istom ciklusu niti
+          # prikazuj odbijeni zahtjev kao uspješno pokrenut oporavak.
+          _dispatched = {}
           def dispatch(workflow, inputs=None):
               key = (workflow, json.dumps(inputs or {}, sort_keys=True))
               if key in _dispatched:
@@ -121,7 +123,13 @@ jobs:
               body = {'ref': 'main'}
               if inputs:
                   body['inputs'] = inputs
-              request_json(f'{api}/actions/workflows/{workflow_q}/dispatches', method='POST', payload=body)
+              try:
+                  request_json(f'{api}/actions/workflows/{workflow_q}/dispatches', method='POST', payload=body)
+              except Exception as exc:
+                  _dispatched[key] = False
+                  failures.append(f'{workflow}: recovery dispatch failed ({type(exc).__name__})')
+                  return False
+              _dispatched[key] = True
               recoveries.append(workflow)
               print(f'RECOVERY DISPATCHED: {workflow}')
               return True
@@ -130,24 +138,24 @@ jobs:
               stamp, run = latest_success(workflow)
               latest = latest_completed(workflow)
               if not stamp:
-                  dispatch(workflow, inputs)
+                  started = dispatch(workflow, inputs)
                   if latest and latest.get('conclusion') not in (None, 'success'):
                       failures.append(f'{label}: no successful run; latest completed run is {latest.get("conclusion")}')
-                  else:
+                  elif started:
                       observations.append(f'{label}: no successful run yet — recovery dispatched')
                   return
               age = (now - stamp).total_seconds() / 60
               observations.append(f'{label}: last success {age:.1f} min ago (run #{run.get("run_number")})')
               if age > hard_minutes:
-                  dispatch(workflow, inputs)
+                  started = dispatch(workflow, inputs)
                   latest_stamp = run_stamp(latest)
                   if latest and latest.get('conclusion') not in (None, 'success') and latest_stamp and latest_stamp > stamp:
                       failures.append(f'{label}: hard-stale {age:.1f} min and latest recovery is {latest.get("conclusion")}')
-                  else:
+                  elif started:
                       observations.append(f'{label}: hard-stale {age:.1f} min > {hard_minutes} min — recovery dispatched; next run proves recovery')
               elif age > soft_minutes:
-                  observations.append(f'{label}: soft-stale {age:.1f} min > {soft_minutes} min — recovery dispatched')
-                  dispatch(workflow, inputs)
+                  if dispatch(workflow, inputs):
+                      observations.append(f'{label}: soft-stale {age:.1f} min > {soft_minutes} min — recovery dispatched')
 
           # 1) AKTUAL data contract: hard freshness and minimum content.
           status_path = Path('apps/portal/data/news-automation-status.json')
@@ -165,10 +173,10 @@ jobs:
               if age > 180:
                   latest = latest_completed('gnk-news-refresh-v2.yml')
                   latest_stamp = run_stamp(latest)
-                  dispatch('gnk-news-refresh-v2.yml')
+                  started = dispatch('gnk-news-refresh-v2.yml')
                   if latest and latest.get('conclusion') not in (None, 'success') and latest_stamp and latest_stamp > stamp.astimezone(timezone.utc):
                       failures.append(f'AKTUAL data stale {age:.1f} min and latest canonical run is {latest.get("conclusion")}')
-                  else:
+                  elif started:
                       observations.append(f'AKTUAL data stale {age:.1f} min > 180 min SLA — canonical recovery dispatched')
           except Exception as exc:
               failures.append(f'AKTUAL status unreadable: {exc}')
@@ -276,8 +284,8 @@ jobs:
           else:
               observations.append('Editorial publisher: no verified success yet today (publisher schedule: ~10:20 Europe/Zagreb)')
               if now_local.hour >= 11:
-                  observations.append('Editorial publisher: recovery dispatch after missed daily success')
-                  dispatch('editorial-scheduled-publish.yml')
+                  if dispatch('editorial-scheduled-publish.yml'):
+                      observations.append('Editorial publisher: recovery dispatch after missed daily success')
 
           print('\nOBSERVATIONS')
           for row in observations:

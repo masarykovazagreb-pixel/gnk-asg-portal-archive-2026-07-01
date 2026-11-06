@@ -6,7 +6,8 @@ name: TJEDNIK — deploy
 
 on:
   push:
-    branches: [main, 'arena/**']
+    # Produkcijski Pages projekti samo iz kanonskog pisca; grane ne smiju prepisati noviju arhivu.
+    branches: [main]
     paths:
       - 'apps/tjednik/**'
       - '.github/workflows/tjednik-deploy.yml'
@@ -21,6 +22,7 @@ concurrency:
 
 jobs:
   deploy:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:

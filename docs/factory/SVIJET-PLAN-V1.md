@@ -100,3 +100,41 @@ Spajanje grane s `main`-om:
   Ti članci su objavljeni na `main`-u. Brisanje bi ih maknulo s gnk-asg.hr. Slabljenje audita nije dopušteno (AGENTS.md, pravilo 6).
 - Zato se merge NE gura. Grana ostaje na `d404df9e6` (zelena). PR #380 ostaje otvoren.
 - Potrebna odluka: ili rekonstruirati zapise za tih 60 članaka iz stranica (najčišći put), ili vlasnik potvrdi brisanje.
+
+## 9. Stanje 31. 10. 2026. (W1 uvjeti, provjera izvora)
+
+Izvor svih podataka: `config/world-sources-v1.json` (ažurirano 31. 10.) i `docs/factory/IZVJESTAJ-2026-10-31.md` §6. Provjera je pretraga, ne puni uvjeti.
+
+| Država | Ishod |
+|---|---|
+| Austrija | blokirano (ORF, nekomercijalno) |
+| Crna Gora | blokirano (RTCG, javni servis) |
+| Grčka | blokirano (Ekathimerini, nekomercijalno) |
+| Albanija | nije pronađen službeni RSS s uvjetima |
+| Kosovo | pending (Balkan Insight, RFE/RL) |
+| Sjeverna Makedonija | pending (MIA nema pronađen RSS) |
+| Turska | pending (AA live RSS) |
+
+Nijedna država W1 nije odobrena za javnu objavu. Sljedeći korak je čitanje punih uvjeta za Kosovo, Sjevernu Makedoniju i Tursku, pa pravna potvrda (ledger `w1-uvjeti-izvora`).
+
+## 10. Lokalni predlošci država
+
+`node scripts/world/build-country-previews-v1.mjs` gradi 178 lokalnih radnih
+predložaka za trenutačne države `planned` u ignoriranu mapu
+`apps/world/country-previews/`. To nisu funkcionalne redakcije niti javne web
+stranice; ne sadrže izvore ni preuzete sadržaje. `robots.txt` i `noindex` su
+mjere opreza, a ne kontrola pristupa. Predloške ne stavljati na javni hosting.
+Postojeći `live` i `preparing` kanali nisu dio te gradnje. Cloudflare projekti
+nisu ovom naredbom stvoreni. Preduvjeti K1–K6 za stvarnu objavu ostaju na snazi.
+
+### Dvojezični lokalni predlošci
+
+Generator `node scripts/world/build-country-previews-v1.mjs` za svaku od 178 planiranih država izrađuje hrvatsku naslovnicu i povezanu englesku inačicu u `en/`. Nazivi i sadržaj su pripremni, bez članaka i bez tvrdnje o lokalnoj redakciji. Obje inačice imaju odgovarajući `lang`, opis, Open Graph i Twitter meta podatke, vlasničke hashtagove i poveznice prema GNK ASG i AKTUAL MEDIA. Nema izmišljenih canonical adresa; `noindex` i `robots.txt` ostaju uključeni. Ovo je lokalni pregled, ne deployment, a robots pravila nisu kontrola pristupa. Stvarna lokalizacija na druge jezike, uređivanje, prava, objava i produkcijska provjera tek slijede.
+
+### Priprema stvarne objave
+
+Vlasnik je zatražio stvarni deploy, ne prikaz predložaka. `node scripts/world/release-blockers-v1.mjs` daje trenutačni čitljivi inventar prepreka za sve planirane države; pojedinačno npr. `--country=AL`. Popis je samo pomoć za rad, nije alat za objavu ili dokaz spremnosti. Za svaku državu i dalje treba stvarno utvrditi prava, uredništvo, infrastrukturu i prolaz testova; statična adresa iz registra nije dokaz da projekt postoji. Trenutačni workflow `world-portals-deploy.yml` pokriva samo devet postojećih portala, ne 178 novih država.
+
+Pokušaj ručnog pokretanja tog postojećeg workflowa za radnu granu vratio je GitHub HTTP 403 „Resource not accessible by integration”. Pristup deployu i eventualni Cloudflare kapacitet nisu time potvrđeni. Nije izvršena javna objava novih država.
+
+U centru agenata `#svijet-drzave` svaka planirana država ima odjeljak „Što treba za objavu”, izrađen iz istog pregleda prepreka kao CLI. Broj odobrenih izvora samo je stanje posebnog registra; sam po sebi nije dokaz prava, uredništva ili deploya. Prikaz je snimak, ne izvršava objavu, ne prikazuje planiranu adresu kao živu i dostupan je i bez JavaScripta.

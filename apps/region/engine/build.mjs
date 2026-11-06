@@ -378,6 +378,19 @@ const RTL_LANGS = new Set(['ar', 'he', 'fa', 'ur']);
 /* ---------- HTML okvir ---------- */
 
 const STANDARD_HASHTAGS = ['#AKTUALMEDIA', '#GNKASG', '#GNKDINAMO'];
+let buildShellCache = new Map();
+let buildFrameCache = new WeakMap();
+// Inputs are stable while a channel is built. Read the corpus/feed snapshot once
+// per language instead of rereading hundreds of files for every article.
+function cachedShellBlocks(channel, lang) {
+  const key = `${channel.id}:${lang}`;
+  if (!buildShellCache.has(key)) {
+    const editorial = editorialIndexBlock({ root: ROOT, lang, limit: 6 });
+    const exchange = exchangeBlock({ root: ROOT, lang, selfHome: channel.base, selfNames: [channel.city, channel.cityEn].filter(Boolean), limit: 6 });
+    buildShellCache.set(key, `${editorial}\n${exchange}`);
+  }
+  return buildShellCache.get(key);
+}
 function shell(channel, strings, { title, description, path, keywords = [], jsonld = [], body, ogAlt = '', type = 'website', published, modified, root = '', image = '', lang = '', locale = '', robots = 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1', canonicalUrl = '' }) {
   const pageLang = lang || channel.lang;
   // The translated UI is t(lang).ui; locale belongs to the channel record, never strings.locale.
@@ -529,8 +542,7 @@ ${designTokensCss()}
 <a class="skip" href="#sadrzaj">${esc(chromeOf(pageLang).skip)}</a>
 ${houseRibbon({ lang: pageLang, edition: channel.city || channel.title })}
 ${body}
-${editorialIndexBlock({ root: ROOT, lang: pageLang, limit: 6 })}
-${exchangeBlock({ root: ROOT, lang: pageLang, selfHome: channel.base, selfNames: [channel.city, channel.cityEn].filter(Boolean), limit: 6 })}
+${cachedShellBlocks(channel, pageLang)}
 <a class="hublink" href="${CENTRAL}#izdanja-po-zemljama" rel="external noopener" aria-label="${esc(chromeOf(pageLang).hubAria)}"><span aria-hidden="true">←</span> AKTUAL MEDIA</a>
 ${miniRail(channel)}
 <script src="/assets/aktual-radio-mini-v1.js?v=20261023-edmini" defer></script>
@@ -897,6 +909,10 @@ const BOT = {
    `data` je isti skup vijesti izdanja koji nosi naslovnicu — bez novog izvora
    podataka, bez novog upita i bez ijedne izmišljene brojke. */
 function innerFrame(channel, strings, data, { root = '../', themes = true } = {}) {
+  const items = data.items || [];
+  const key = `${channel.id}:${root}:${themes}`;
+  const cached = buildFrameCache.get(items);
+  if (cached?.has(key)) return cached.get(key);
   const chrome = chromeOf(channel.lang);
   /* Samo teme koje ovo izdanje stvarno ima — tema bez ijednog zapisa nema
      svoju stranicu, pa bi veza vodila u prazno (audit je našao 968 takvih
@@ -906,7 +922,7 @@ function innerFrame(channel, strings, data, { root = '../', themes = true } = {}
     <div class="bandhead"><h2>${esc(strings.themes)}</h2></div>
     <p class="chips">${present.map((id) => `<a class="chip" href="${root}tema/${id}/">${esc(strings.themeNames[id] || id)}</a>`).join('')}</p>
   </section>` : '';
-  return `${themesBand}
+  const frame = `${themesBand}
 ${mravinjakSection(channel, strings, data, { root })}
 <section class="page" aria-labelledby="edWebTitle">
   <h2 id="edWebTitle">${esc(chrome.webTitle || strings.otherChannels)}</h2>
@@ -914,6 +930,10 @@ ${mravinjakSection(channel, strings, data, { root })}
   <p class="small"><a href="${root}mreza/">${esc(chrome.allEditions || strings.hub)} →</a></p>
 </section>
 ${meshBlock({ lang: channel.lang, selfUrl: channel.base, theme: 'light' })}`;
+  const entries = cached || new Map();
+  entries.set(key, frame);
+  buildFrameCache.set(items, entries);
+  return frame;
 }
 
 function articlePage(channel, strings, item, items) {
@@ -935,7 +955,11 @@ function articlePage(channel, strings, item, items) {
   paragraphs.push(a.framing(ctx), a.read(ctx));
   const day = item.date.slice(0, 10);
   const checks = checksFor(item, strings);
-  const related = items.filter((i) => i.slug !== item.slug && themeOf(i) === theme).slice(0, 4);
+  const related = [];
+  for (const candidate of items) {
+    if (candidate.slug !== item.slug && themeOf(candidate) === theme) related.push(candidate);
+    if (related.length === 4) break;
+  }
   const score = scoreFromTitle(item.title);
   const tags = [...new Set([...channel.hashtags, channel.country, channel.city, item.sourceName, strings.themeNames[theme] || theme])];
   const bot = BOT[channel.lang] || BOT.hr;
@@ -1316,6 +1340,8 @@ ${footer(channel, strings)}`;
 }
 
 export function buildChannel(channel) {
+  buildShellCache = new Map();
+  buildFrameCache = new WeakMap();
   const strings = t(channel.lang).ui;
   const data = loadChannel(channel);
   data.items = [...data.items]

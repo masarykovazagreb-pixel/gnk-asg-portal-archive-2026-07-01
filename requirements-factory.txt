@@ -1,0 +1,4 @@
+# Python ovisnosti za tvorničke provjere (scripts/factory/*).
+# Instalacija: python3 -m pip install -r requirements-factory.txt
+# image_quality.py i test_factory_v1.py trebaju Pillow; bez njega test-all pada (namjerno).
+pillow==13.0.0

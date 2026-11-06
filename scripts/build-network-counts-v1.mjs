@@ -47,8 +47,12 @@ let newest = '';
 const dates = [];
 
 for (const channel of CHANNELS) {
-  const data = readJSON(join(REGION_DATA, `${channel.id}.json`), { items: [], updatedAt: '' });
-  const items = data.items || [];
+  const data = readJSON(join(REGION_DATA, `${channel.id}.json`));
+  if (!data || !Array.isArray(data.items)) {
+    console.error(`Nedostaje valjana arhiva izdanja ${channel.id}`);
+    process.exit(1);
+  }
+  const items = data.items;
   const last = items[0]?.date || data.updatedAt || '';
   if (last) dates.push(last.slice(0, 10));
   if (last > newest) newest = last;
@@ -113,7 +117,7 @@ if (CHECK) {
   const current = existsSync(OUT) ? readFileSync(OUT, 'utf8') : '';
   /* Dopuštamo razliku u generiranom datumu: provjera gleda brojeve. */
   const a = current ? JSON.parse(current) : {};
-  const same = ['texts', 'cities', 'languages', 'editions', 'sites', 'world'].every((key) => a[key] === counts[key]);
+  const same = ['texts', 'cities', 'languages', 'countries', 'continents', 'editions', 'sites', 'world', 'sources', 'dataDay'].every((key) => a[key] === counts[key]) && Array.isArray(a.channels) && JSON.stringify(a.channels) === JSON.stringify(counts.channels);
   console.log(JSON.stringify({ version: counts.version, check: same ? 'ok' : 'stale', texts: counts.texts, dataDay: counts.dataDay }, null, 2));
   if (!same) process.exit(1);
 } else {

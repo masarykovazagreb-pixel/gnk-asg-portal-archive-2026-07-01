@@ -1,0 +1,9 @@
+# Kandidati za istraživanje otvorenih izvora — 2. 11. 2026.
+
+Ovo su istraživački kandidati, ne odobreni feedovi, ne lokalna redakcija i ne dozvola za automatsku objavu. Pojedinačan sadržaj i slike treba provjeriti prije upotrebe; relevantne izvore nije moguće iz ovog sandboxa izravno HTTP provjeriti zbog mrežnog ograničenja, pa svježina feeda i stvarna dostupnost nisu utvrđene.
+
+- **USGS**: službena stranica o autorskim pravima navodi da su podaci i informacije koje je USGS izradio u američkoj javnoj domeni, ali tuđe fotografije i grafike na njihovim stranicama mogu biti zaštićene; za komercijalnu uporabu lika ili glasa mogu postojati dodatna prava. USGS traži navođenje izvora. Potencijal za znanstvene i geološke vijesti, ne zamjena za nacionalne lokalne deskove. https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits
+- **Wikinews**: kao početni trag za dodatno istraživanje, Wikimedia objašnjava da projekti mogu imati različite licence te spominje CC BY i atribuciju Wikinewsu. Prije integracije potvrditi važeću licencu na konkretnom izdanju i članku, dostupnost službenog feeda, svježinu, redakcijsku provjeru i zasebnu licencu svake slike. https://en.wikipedia.org/wiki/Wikipedia:Copying_within_Wikipedia
+- **Creative Commons**: CC BY 4.0 dopušta komercijalno dijeljenje i prilagodbu uz ispunjavanje uvjeta, uključujući primjerenu atribuciju, vezu na licencu i naznaku promjena; druga prava mogu ograničiti uporabu. Nije ispravno pretpostaviti da je svaki članak ili slika na određenoj domeni pod tom licencom. https://creativecommons.org/licenses/by/4.0/deed.en
+
+Sljedeći korak je dokumentirati točan URL feeda, izmjeriti stvarnu dostupnost, pregledati pojedinačna prava i uredničku relevantnost po državi. Nijedan kandidat ovim zapisom ne dobiva status `approved`.

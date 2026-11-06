@@ -36,6 +36,15 @@ import { refreshTag } from '../../shared/refresh-tag-v1.mjs';
 import { impressumBlock } from '../../shared/impressum-v1.mjs';
 import { authorBand } from '../../shared/author-band-v1.mjs';
 
+// Datum objave nije dokaz datuma izmjene kopije. Izostavi lastmod dok ne
+// postoji pouzdan izvor za izmjenu, umjesto da ga svaki build izmišlja.
+export function columnSitemapEntries(site, columns) {
+  return [
+    `<url><loc>${site.base}kolumna/</loc><changefreq>daily</changefreq><priority>0.6</priority></url>`,
+    ...columns.map(column => `<url><loc>${site.base}kolumna/${column.slug}/</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>`)
+  ].join('\n  ');
+}
+
 const MAX_ITEMS = 60;
 
 const esc = (value) => String(value == null ? '' : value)
@@ -336,11 +345,7 @@ export function buildSyndication({ root, outRoot, dryRun = false }) {
     if (existsSync(sitemapFile) && !dryRun) {
       let xml = readFileSync(sitemapFile, 'utf8');
       xml = xml.replace(/\s*<url><loc>[^<]*\/kolumna\/[^<]*<\/loc>[\s\S]*?<\/url>/g, '');
-      const today = new Date().toISOString().slice(0, 10);
-      const entries = [
-        `<url><loc>${site.base}kolumna/</loc><lastmod>${today}</lastmod><changefreq>daily</changefreq><priority>0.6</priority></url>`,
-        ...columns.map((column) => `<url><loc>${site.base}kolumna/${column.slug}/</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>`)
-      ].join('\n  ');
+      const entries = columnSitemapEntries(site, columns);
       xml = xml.replace('</urlset>', `  ${entries}\n</urlset>`);
       writeFileSync(sitemapFile, xml);
     }

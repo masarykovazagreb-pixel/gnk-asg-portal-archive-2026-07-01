@@ -1,0 +1,123 @@
+# Tvornica: shema objave i razmjene V1
+
+## Što korisnik želi
+
+Korisnik odabire **HR** ili **cijeli svijet** za vlastitu objavu. Prazno izdanje
+može ponuditi svježu poveznicu na izvorni članak drugog izdanja, primjerice
+Hrvatska → Italija. Prvo lokalne vijesti; tek ako su prestare ili nedostaju,
+predložiti druge. Cilj je mreža GNK ASG-a i AKTUAL MEDIA-e s vidljivim izvorom,
+datumom i stvarnim autorstvom, a ne lažno pripisivanje članka Nerminu Sefiću.
+
+## Tok
+
+```text
+vlastiti članak / feed izdanja
+          ↓
+provjera adrese, datuma i statusa izdanja
+          ↓
+plan područja: HR | svijet            lokalni feed svjež?
+          ↓                            ↓ da: lokalni pregled
+kandidati i blokirana odredišta       ↓ ne: prijedlog drugih aktivnih izdanja
+          ↓                            ↓
+provjera izvora, prava, AI oznake, urednika i approved_urls gdje je primjenjivo
+          ↓
+odobrenje stvarnog sadržaja i odredišta → postojeći release / deploy postupak
+          ↓
+potvrda stvarne objave i povratna veza na kanonski članak
+```
+
+Svjetski opseg trenutačno uključuje sve države iz registra, ali **samo aktivna
+izdanja** dobivaju status kandidata. Ostala su nedostupna, ne izmišljaju se
+adrese ni Cloudflare projekti. Kandidat nije dozvola, nije obećanje deploya i
+nije dokaz da stranica postoji ili da ima urednika. Plan ne objavljuje ništa,
+ne šalje mrežne zahtjeve, ne mijenja registre, ne piše vijesti i ne prevodi.
+
+## Prototip naredbi — samo planiranje
+
+```sh
+node scripts/factory/publication-plan-v1.mjs objavi hr --url https://gnk-asg.hr/objave/primjer/
+node scripts/factory/publication-plan-v1.mjs objavi cijeli svijet --url https://gnk-asg.hr/objave/primjer/
+node scripts/factory/publication-plan-v1.mjs razmjena --kanal zagreb
+```
+
+Prve dvije naredbe vraćaju `plan_only_not_published`. URL je primjer, ne dokaz
+da članak postoji. Kandidati se nude ako je točna adresa označena `published`
+u snimku `apps/portal/data/editorial-registry.json` ili je potvrđena u feedu
+aktivnog regionalnog kanala. Za regionalni feed provjeravaju se izvorna adresa,
+kanal i status zapisa; blokirani i nacrti ostaju na čekanju. Nedostupan urednički
+registar zaustavlja plan; nedostupan regionalni feed ne daje potvrdu. Feed je
+samo dokaz da je zapis naveden, ne dokaz prava, odobrenja ili dostupnosti uživo. Razmjena čita lokalne feedove aktivnih kanala, bez mrežnih
+poziva. Ako je lokalna vijest svježa unutar 48 sati, daje `local_fresh`; inače
+predlaže najnoviju svježu objavu svakog drugog aktivnog kanala s izvornom
+poveznicom i datumom. Budući datumi, zastarjele i neodgovarajuće adrese se
+odbacuju. `candidates_require_review` nije objava. Ako nema kandidata, prikazuje
+`no_fresh_candidates`; ne smije se izmišljati vijest. `local_feed_unavailable`
+označava nedostupan ili neispravan lokalni feed, a ne odsutnost vijesti;
+`incomplete_feeds` označava da nisu svi drugi feedovi dostupni. Kod rezultata
+s kandidatima `unavailableChannels` navodi izostale feedove.
+
+## Preostalo prije stvarne objave
+
+- Provjera postojanja i prava svakog izvora i vizuala, ne samo dostupnosti feeda.
+- Potvrda uredničkog pregleda i stvarnog autorstva; `approved_mentions.json`
+  ostaje obavezan gdje su spominjanja zaštićena tim pravilom.
+- Nema automatskog pripisivanja autorstva Nerminu Sefiću; ime u uredničkom
+  identitetu samo prema postojećem standardu, bez stvaranja lažnog potpisa.
+- Novi projekti i ciljane domene moraju postojati i proći postojeće kapije.
+- Vanjske objave, prijevodi i potpune kopije nisu obuhvaćeni ovim prototipom.
+- Bez novog crona ili deploy bota; postojeći single-writer i exact-SHA fence.
+- Ako se kasnije uvede AI pisanje, primijeniti `AGENTS.md`, AI oznaku i stvarnu
+  ljudsku uredničku odgovornost. Ovdje nema modela ni AI generiranja teksta.
+
+## Vidljivi obrazac
+
+Na `/agenti/#tvornica` nalazi se obrazac **Plan objave: Hrvatska ili svijet**.
+U pregledniku koristi istu čistu logiku kao naredbeni alat i lokalni snimak
+registra država i dohvaća urednički registar te po potrebi jedan feed aktivnog
+kanala s iste domene. Prikazuje plan po
+državi, ne šalje URL na poslužitelj i ne objavljuje.
+Ako JavaScript nije dostupan, korisniku se prikazuje objašnjenje. Urednički registar je snimak i rezultat ne provjerava javnu dostupnost uživo niti
+predstavlja odobrenje sadržaja.
+Stvarno pisanje, odobrenje i objava ostaju zasebni koraci koji ovdje nisu
+implementirani; javne i besplatne Cloudflare projekte treba zasebno stvoriti i
+provjeriti prije nego se smatraju postojećima.
+
+### Izvor i datum u rezervnom izboru
+
+Rezervni izbor sada zahtijeva ispravan `home_page_url` kanala, točno podudaranje
+kanala u zapisu, javnu HTTPS poveznicu i oznaku izvornog medija. Blokirani,
+nacrti i zapisi bez izvora preskaču se. Kandidat nosi i jezik feeda, datum,
+poveznicu na članak izdanja, identifikator izvornog medija i njegovu poveznicu.
+To su podaci iz feeda, ne neovisno provjerene činjenice ili prava za objavu.
+
+Polazišta za daljnje poboljšanje: Google preporučuje jasne vidljive datume i
+usklađene strukturirane datume, uz izbjegavanje umjetnog osvježavanja starih
+članaka ([Google Search Central](https://developers.google.com/search/docs/appearance/publication-dates),
+[smjernice za vijesti](https://developers.google.com/search/blog/2019/01/ways-to-succeed-in-google-news)).
+C2PA izričito navodi da podrijetlo samo po sebi nije presuda o istinitosti
+([C2PA, procjena rizika](https://spec.c2pa.org/specifications/specifications/1.4/security/Harms_Modelling.html)).
+Ovdje nije implementirana ni verificirana C2PA potvrda; za buduće fotografije
+potrebno je posebno provjeriti podrijetlo, licencu i kvalitetu.
+
+## Vidljivi pregled razmjene
+
+Na `/agenti/#tvornica` nalazi se obrazac za provjeru razmjene. Najprije dohvaća
+lokalni feed s iste domene. Ako taj feed nije dostupan, ne predlaže zamjenu;
+ako ima svjež zapis, ne dohvaća druge. Tek za ispravan feed bez svježih zapisa
+dohvaća ostale aktivne feedove, do četiri istodobno, s vremenskim ograničenjem.
+Prijedlog prikazuje izvorno izdanje, naslov, datum, medij i jezik. Pregled ne
+preuzima tekst niti objavljuje; feed i njegovi podaci nisu dokaz prava ili istine.
+
+## Stabilan dan podataka razmjene
+
+`exchange.json` zadržava postojeće polje `generated` zbog kompatibilnosti, ali
+od sada u njega zapisuje dan najnovijeg datiranog izvora u UTC-u, a ne današnji
+sat gradnje. `generatedMeaning` označava `latest-source-date-utc`; ako nema
+valjanih datuma izvora, koristi se `network-counts-v1.json` i oznaka
+`registered-network-data-day`. Ako ni taj podatak nije valjan, gradnja pada
+umjesto izmišljanja datuma. Ova oznaka nije potvrda svježine uživo. Isti ulazi
+sada daju isti izlaz i nakon promjene kalendarskog dana.
+
+Regionalni feed u planu sada je dokaz zapisa samo ako ima poznat status (`auto-critique` ili `published`), naslov, naziv izvora i sigurnu HTTPS izvornu poveznicu. Kod rezervnih kandidata provjerava se datum **objave**, ne zamjenski datum izmjene; nepoznati status ili nedostajući datum objave ne postaju svježa vijest. Nijedna od ovih strojnih provjera nije dokaz prava, točnosti ili ljudskog pregleda.
+
+Obrasci imaju ograničenje od 10 sekundi po dohvaćanju, uključujući čitanje JSON odgovora. Istek ili neispravan odgovor ne tumače se kao prazan feed ili dokaz objave; plan javlja nedostupan registar, a razmjena nedostupan feed. Istek ne potvrđuje uzrok mrežnog problema i ne pokreće objavu.

@@ -30,7 +30,6 @@ BOARD = os.path.join(ROOT, "artifacts", "factory", "orchestration-board.json")
 BOARD_MD = os.path.join(ROOT, "docs", "factory", "TABLA-V1.md")
 LEDGER = os.path.join(ROOT, "config", "approvals-ledger-v1.json")
 SOURCES = os.path.join(ROOT, "config", "world-sources-v1.json")
-BRANCH = "arena/af7fc5d1-gnk-asg-portal-archive-2026-07"
 MODES = {"script", "human", "hybrid"}
 CHECK_TYPES = {"file", "cmd", "log_pass", "json_eq", "json_max", "world_sources", "approval",
                "git_ancestor", "radio_count"}
@@ -88,6 +87,15 @@ def git(*args):
     return p.returncode, p.stdout.strip()
 
 
+def current_branch():
+    """Ime stvarnog checkouta, bez pretpostavke da je checkout na stalnoj grani."""
+    rc, branch = git("symbolic-ref", "--quiet", "--short", "HEAD")
+    if rc == 0 and branch:
+        return branch
+    rc, commit = git("rev-parse", "--short", "HEAD")
+    return f"detached:{commit}" if rc == 0 and commit else "nepoznato"
+
+
 def check_git_ancestor(check):
     rc, base = git("rev-parse", "--verify", "-q", check.get("base", "origin/main"))
     if rc:
@@ -101,15 +109,22 @@ def check_git_ancestor(check):
 
 def check_world_sources(check):
     data = load_json(SOURCES)
-    ok, total = [], 0
-    for cc, c in data["countries"].items():
-        if c.get("wave") and c["wave"].startswith("W1"):
-            total += 1
-            if any(s.get("status") == "approved" for s in c.get("sources", [])):
-                ok.append(cc)
+    registry = load_json(os.path.join(ROOT, "config", "world-countries-v1.json"))
+    countries = [c for c in registry["countries"] if str(c.get("wave", "")).startswith("W1")]
     need = check.get("min_approved_per_country", 1)
-    passed = len(ok) == total and total > 0
-    return passed, f"W1: {len(ok)}/{total} država s odobrenim izvorom (potrebno {need} po državi)"
+    if not isinstance(need, int) or isinstance(need, bool) or need < 1:
+        return False, "nevaljan minimalni broj izvora"
+    require_status = check.get("require_status")
+    eligible = 0
+    for country in countries:
+        sources = data.get("countries", {}).get(country.get("cca2"), {}).get("sources", [])
+        approved = sum(1 for source in sources if source.get("status") == "approved")
+        if approved >= need and (not require_status or country.get("status") == require_status):
+            eligible += 1
+    return bool(countries) and eligible == len(countries), (
+        f"W1: {eligible}/{len(countries)} država ispunjava uvjete "
+        f"(najmanje {need} odobrenih izvora" + (f", status {require_status}" if require_status else "") + ")"
+    )
 
 
 def check_approval(check):
@@ -178,37 +193,41 @@ def run_check(agent, run):
 
 
 def compute(cfg, run):
-    agents = cfg["agents"]
-    results = {}
-    for a in agents:
-        ok, detail = run_check(a, run)
-        results[a["id"]] = (ok, detail)
+    """Ovisnosti se ocjenjuju prije agenta; blokirane naredbe se ne izvršavaju."""
+    agents = {a["id"]: a for a in cfg["agents"]}
     states = {}
-    for a in agents:
-        aid = a["id"]
-        ok, detail = results[aid]
-        deps = a.get("depends_on", [])
-        pending_deps = [d for d in deps if results.get(d, (False, ""))[0] is not True]
-        if ok is True:
-            st = "done"
-        elif ok is None:
-            st = "skipped"
-        elif pending_deps:
-            st = "waiting"
-        elif a["mode"] == "human" or a["check"]["type"] in ("approval", "git_ancestor"):
-            st = "human"
+    visiting = set()
+
+    def evaluate(aid):
+        if aid in states:
+            return states[aid]
+        if aid in visiting:
+            raise ValueError("ciklus ovisnosti: " + aid)
+        visiting.add(aid)
+        a = agents[aid]
+        pending = [d for d in a.get("depends_on", []) if evaluate(d)["state"] != "done"]
+        if pending:
+            st, detail = "waiting", "provjera nije pokrenuta: čeka ovisnosti"
         else:
-            st = "ready"
+            ok, detail = run_check(a, run)
+            if ok is True:
+                st = "done"
+            elif ok is None:
+                st = "skipped"
+            elif a["mode"] == "human" or a["check"]["type"] in ("approval", "git_ancestor"):
+                st = "human"
+            else:
+                st = "ready"
         states[aid] = {
-            "id": aid,
-            "name": a["name"],
-            "mode": a["mode"],
-            "state": st,
-            "check": detail,
-            "waiting_on": pending_deps if st == "waiting" else [],
-            "role": a["role"],
+            "id": aid, "name": a["name"], "mode": a["mode"], "state": st,
+            "check": detail, "waiting_on": pending, "role": a["role"],
         }
-    return states
+        visiting.remove(aid)
+        return states[aid]
+
+    for agent in cfg["agents"]:
+        evaluate(agent["id"])
+    return {agent["id"]: states[agent["id"]] for agent in cfg["agents"]}
 
 
 def next_actions(cfg, states):
@@ -228,7 +247,7 @@ def write_outputs(cfg, states, run):
         summary[s["state"]] = summary.get(s["state"], 0) + 1
     board = {
         "version": "FACTORY_ORCHESTRATION_BOARD_V1",
-        "branch": BRANCH,
+        "branch": current_branch(),
         "generatedAt": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "ran_commands": run,
         "summary": summary,
@@ -242,7 +261,7 @@ def write_outputs(cfg, states, run):
     lines = [
         "# Tabla tvorničkih agenata (V1)",
         "",
-        f"Grana: `{BRANCH}`. Generirano: {board['generatedAt']}. Naredbe pokrenute: {run}.",
+        f"Grana: `{board['branch']}`. Generirano: {board['generatedAt']}. Naredbe pokrenute: {run}.",
         "",
         "Stanje: " + ", ".join(f"{k} {v}" for k, v in sorted(summary.items())),
         "",

@@ -62,7 +62,7 @@ jobs:
           convert -list format | grep -i webp
 
       - name: Pillow (za provjeru kvalitete fotografija, tvornica faza 5)
-        run: python3 -m pip install --disable-pip-version-check --quiet pillow
+        run: python3 -m pip install --disable-pip-version-check --quiet -r requirements-factory.txt
 
       - name: Sve provjere
         run: node scripts/test-all-v1.mjs

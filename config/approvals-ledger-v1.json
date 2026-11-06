@@ -91,6 +91,114 @@
       "decision": "odabrano: prvo utvrditi uzrok prije spajanja",
       "status": "čeka",
       "note": "Uzrok iz sandboxa nije vidljiv. Spajanje PR #380 s novim tipom main-a tek nakon odluke."
+    },
+    {
+      "id": "w1-uvjeti-izvora",
+      "date": "2026-10-31",
+      "by": "agent (provjera uvjeta)",
+      "scope": "W1 izvori: Austrija (ORF), Crna Gora (RTCG), Grčka (Ekathimerini) blokirani; Albanija bez pronađenog službenog RSS-a; Kosovo (Balkan Insight, RFE/RL), Sjeverna Makedonija (MIA) i Turska (AA) pending bez pročitanih uvjeta",
+      "decision": "nijedan W1 izvor nije odobren za javnu objavu",
+      "status": "čeka pravnu potvrdu",
+      "note": "Isječci iz pretrage, ne puni uvjeti. Vidi docs/factory/IZVJESTAJ-2026-10-31.md §6."
+    },
+    {
+      "id": "aktualmediaradio-hashtag",
+      "date": "2026-10-31",
+      "by": "agent",
+      "scope": "nacrti radio distribucije (10) nose #AktualMediaRadio, koji nije u popisu odobrenih hashtagova",
+      "decision": "zadržati",
+      "status": "odobreno (vlasnik, 31. 10.)",
+      "note": "Zadržati ili maknuti."
+    },
+    {
+      "id": "radio-oznaka-9068",
+      "date": "2026-10-31",
+      "by": "agent",
+      "scope": "oznaka „AKTUAL MEDIA RADIO“ na 9.068 stranica (9.065 zbog našeg promotivnog bloka, aria-label)",
+      "decision": "nije mijenjano",
+      "status": "čeka vlasnika",
+      "note": "Ranija brojka 24 bila je prije promocije."
+    },
+    {
+      "id": "artefakti-animacija-app",
+      "date": "2026-10-31",
+      "by": "agent",
+      "scope": "animacija/index.html (1,5 MB) i app/index.html (400 KB): noindex, bez lang, app bez title, nisu u sitemapu",
+      "decision": "NE brisati: žive stranice",
+      "status": "čeka OK (dodati lang i title)",
+      "note": "Brisanje odbijeno (žive stranice). Dodavanje lang/title nije izvršeno."
+    },
+    {
+      "id": "concurrency-region-daily",
+      "date": "2026-10-31",
+      "by": "agent (analiza)",
+      "scope": "23 workflowa dijele concurrency gnk-asg-main-mutation (cancel-in-progress: false); zakazani region-daily se otkazuje",
+      "decision": "izdvojeno u vlastitu grupu",
+      "status": "odobreno i izvršeno (31. 10.): gnk-asg-region-daily",
+      "note": "Rizik: gallery-sync, tjednik-daily i worker-groups-sync push-aju bez rebasea (prva dva bez zaštite). Rebase nije uveden: gate „Vlasništvo automatizacija“ ih prijavljuje kao neregistrirane pisce na main."
+    },
+    {
+      "id": "naslovi-h1-60",
+      "date": "2026-10-31",
+      "by": "agent",
+      "scope": "5.676 stranica s h1 >60 znakova (podijeli 575, bukurest 405, sarajevo 383)",
+      "decision": "nije mijenjano",
+      "status": "čeka vlasnika",
+      "note": "Politika naslova."
+    },
+    {
+      "id": "preparing-kanali",
+      "date": "2026-10-31",
+      "by": "agent",
+      "scope": "Washington, Brasília, Canberra: nema zapisa u channels.json i nema izvora",
+      "decision": "nije pokrenuto",
+      "status": "čeka vlasnika",
+      "note": "Potrebni: zapis kanala, dva provjerena izvora, urednik."
+    },
+    {
+      "id": "main-pomak-31-10",
+      "date": "2026-10-31",
+      "by": "agent (provjera)",
+      "scope": "origin/main je u međuvremenu na 2870ad749a (AUTONOMIJA 05:00 UTC, World Monitor refresh); nema zajedničkog pretka s granom",
+      "decision": "PR prema main nije otvoren",
+      "status": "čeka vlasnika",
+      "note": "Vidi main-reinicijalizacija."
+    },
+    {
+      "id": "neispravne-editorial-slike",
+      "date": "2026-10-31",
+      "by": "agent (provjera)",
+      "scope": "dvije datoteke u apps/portal/assets/editorial (…ulaganje-pravne-prepreke-20261006.webp i -v2.webp) nisu valjani WEBP; 0 referenci",
+      "decision": "obrisano (0 referenci)",
+      "status": "izvršeno (31. 10.)",
+      "note": "Revizor provjerava samo postojanje; dodati provjeru dekodiranja."
+    },
+    {
+      "id": "deploy-admin-auth-v6-de9e567",
+      "date": "2026-10-31",
+      "by": "vlasnik (odobrenje) / agent",
+      "scope": "Deploy Admin Auth V6 za de9e567",
+      "decision": "NIJE pokrenuto",
+      "status": "nije izvršeno za de9e567; zaseban deploy na main-u uspješan",
+      "note": "Za de9e567 nije pokrenuto: commit nije na main-u. Zaseban produkcijski run 41200680780 na main-u uspješno je izvršen; to ne dokazuje da je ova grana spojena."
+    },
+    {
+      "id": "workflow-push-rebase-31-10",
+      "date": "2026-10-31",
+      "by": "agent",
+      "scope": "gallery-sync.yml i worker-groups-sync.yml: pokušaj uvođenja rebase petlje",
+      "decision": "poništeno (vraćeno na prijašnje stanje)",
+      "status": "čeka odluku vlasnika: registrirati pisce u allowlisti ili ostaviti",
+      "note": "Gate „Vlasništvo automatizacija“ je pao. Izmjena je vraćena."
+    },
+    {
+      "id": "deploy-admin-auth-v6-run-41200680780",
+      "date": "2026-10-31",
+      "by": "vlasnik / GitHub Actions",
+      "scope": "Deploy Admin Auth V6, produkcijski workflow_dispatch na main-u",
+      "decision": "izvršeno",
+      "status": "uspješno",
+      "note": "Run 41200680780: autorizacija, deploy i provjera produkcijskog izdanja uspješni. headSha workflowa: 29c3e8c837678d74c7005c9db7fd860ebae15d40; headSha ne mora biti odobreni ulazni SHA."
     }
   ]
 }
