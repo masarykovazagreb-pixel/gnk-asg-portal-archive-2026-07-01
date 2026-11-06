@@ -39,6 +39,9 @@ assert.match(VERSION,/DIGITAL_WORKFORCE_API_V4_20261012_D1_RUNTIME_HEALTH/);
   assert.equal(health.checks.d1Configured,true);
   assert.equal(health.checks.d1,true);
   assert.equal(health.checks.editorDeskStore,true);
+  assert.equal(health.contentSource,'embedded-safe-default','empty editor store must not be described as published content');
+  assert.ok(!Number.isNaN(Date.parse(health.checkedAt)),'live infrastructure check must expose a real timestamp');
+  assert.match(health.healthSemantics,/infrastructure-readiness-only/,'do not imply simulated workers are real running processes');
   assert.equal(runCalls,0);
 }
 {

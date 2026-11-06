@@ -13,7 +13,7 @@ async function inject(request,response){
  const type=String(response.headers.get('content-type')||'').toLowerCase();
  if(!type.includes('text/html'))return response;
  try{
-  const sourceHtml=await response.text();
+  const sourceHtml=await response.clone().text();
   let html=applyPortalVisualRedesign(sourceHtml,new URL(request.url).pathname);
   const visualApplied=html!==sourceHtml;
   let suiteScriptInserted=false;
@@ -28,6 +28,8 @@ async function inject(request,response){
   const h=new Headers(response.headers);
   h.delete('content-length');
   h.delete('content-encoding');
+  h.delete('etag');
+  h.delete('content-md5');
   h.set('content-type','text/html; charset=utf-8');
   if(visualApplied)h.set('x-gnk-portal-visual',PORTAL_VISUAL_VERSION);
   return new Response(html,{status:response.status,statusText:response.statusText,headers:h});

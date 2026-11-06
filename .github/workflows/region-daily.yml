@@ -4,7 +4,7 @@ name: REGION — dnevni ciklus izdanja
 # Sarajevo, Budimpešta, Ljubljana, Rim, Sofija, Bukurešt) i devet svjetskih
 # (Nairobi, Jakarta, New York, São Paulo, Sydney, Singapur, Kairo, Tokio,
 # Peking): čitanje javnih feedova, osvrti, build, commit na main i deploy —
-# svaka 2 sata, automatski. Ciklus je inkrementalan: novi zapisi ulaze u
+# s dvije izmjenične grupe svaka 2 sata (svaki grad svakih 4 sata). Novi zapisi ulaze u
 # arhivu, stranice se grade za sve kanale, a commit ide samo ako se sadržaj
 # stvarno promijenio.
 #
@@ -17,8 +17,10 @@ on:
     # Svaka 2 sata, cijeli dan: 12 ciklusa dnevno. Minuta je namjerno 7, ne 0 —
     # GitHub odbacuje dio rasporeda na puni sat zbog opterećenja, pa je ciklus
     # 19. i 20. 10. preskočen i izdanja su ostala na 19. 10.
-    - cron: '7 */2 * * *'
-  # Promjena na mainu pokreće ciklus; radne grane ne smiju pisati u produkciju.
+    # Opposite half of the channels on alternating 2-hour slots (full rotation: 4h).
+    - cron: '7 0,4,8,12,16,20 * * *'
+    - cron: '7 2,6,10,14,18,22 * * *'
+  # Ručno osvježavanje: izmjena ove datoteke pokreće ciklus i na grani.
   push:
     branches: [main]
     paths:
@@ -27,9 +29,18 @@ on:
   workflow_dispatch:
     inputs:
       channel:
-        description: 'Samo jedan kanal (prazno = svi)'
+        description: 'Samo jedan kanal (prazno = jedna ograničena grupa)'
         required: false
         type: string
+      batch:
+        description: 'Ograničena grupa izdanja (0 ili 1; prazno = jedna automatska grupa)'
+        required: false
+        type: choice
+        options:
+          - ''
+          - '0'
+          - '1'
+        default: ''
       force:
         description: 'Zanemari kill-switch (samo za ručnu provjeru)'
         required: false
@@ -41,7 +52,9 @@ permissions:
   actions: write
 
 concurrency:
-  group: gnk-asg-region-daily
+  # Single writer for this resource; cross-resource contention is guarded by
+  # exact-main-SHA/non-force Git push or checked rebase, not by a global queue.
+  group: gnk-asg-region-writer
   cancel-in-progress: false
 
 jobs:
@@ -57,7 +70,11 @@ jobs:
         with:
           # Job se izvodi samo na mainu, kanonskom izvoru podataka.
           ref: ${{ github.ref }}
-          fetch-depth: 0
+          # Keep startup fast on the large 17-channel repository. Download
+          # deeper ancestry only if there is generated content to publish.
+          # Non-force push and ancestry-aware rebase remain mandatory.
+          fetch-depth: 16
+          fetch-tags: false
 
       - uses: actions/setup-node@v4
         with:
@@ -70,14 +87,33 @@ jobs:
 
       - name: Dnevni ciklus (feedovi → osvrti → stranice → hub)
         shell: bash
+        env:
+          REGION_CHANNEL: ${{ inputs.channel }}
+          REGION_BATCH: ${{ inputs.batch }}
+          REGION_FORCE: ${{ inputs.force }}
+          REGION_CRON: ${{ github.event.schedule }}
         run: |-
-          set -uo pipefail
-          ARGS=""
-          if [ -n "${{ inputs.channel }}" ]; then ARGS="$ARGS --channel ${{ inputs.channel }}"; fi
-          if [ "${{ inputs.force }}" = "true" ]; then ARGS="$ARGS --force"; fi
-          node apps/region/engine/daily.mjs $ARGS || echo "::warning::Dio izvora nije dostupan — izdanja se grade iz postojeće arhive."
+          set -euo pipefail
+          ARGS=()
+          if [ -n "${REGION_CHANNEL:-}" ]; then
+            if [ -n "${REGION_BATCH:-}" ]; then echo "::error::Use either channel or batch, not both"; exit 1; fi
+            ARGS+=(--channel "$REGION_CHANNEL")
+          elif [ -n "${REGION_BATCH:-}" ]; then
+            case "$REGION_BATCH" in 0|1) ARGS+=(--batch "$REGION_BATCH");; *) echo "::error::Unsupported REGION_BATCH"; exit 1;; esac
+          elif [ "$GITHUB_EVENT_NAME" = "schedule" ]; then
+            case "$REGION_CRON" in
+              '7 0,4,8,12,16,20 * * *') ARGS+=(--batch 0) ;;
+              '7 2,6,10,14,18,22 * * *') ARGS+=(--batch 1) ;;
+              *) echo "::error::Unknown REGION schedule — refusing unbounded 17-channel run"; exit 1 ;;
+            esac
+          else
+            # Manual and workflow-file push triggers must also be bounded.
+            ARGS+=(--batch "$((GITHUB_RUN_NUMBER % 2))")
+          fi
+          if [ "${REGION_FORCE:-false}" = "true" ]; then ARGS+=(--force); fi
+          node apps/region/engine/daily.mjs "${ARGS[@]}"
           test -f apps/portal/kanal/zagreb/index.html
-          node -e "const fs=require('fs');const f=JSON.parse(fs.readFileSync('apps/region/data/_status.json','utf8'));const r=f.lastRun;console.log('kanala:',Object.keys(r.channels).length);const ok=Object.values(r.channels).reduce((a,c)=>a+c.sourcesOk,0);const all=Object.values(r.channels).reduce((a,c)=>a+c.sourcesTotal,0);console.log('izvori:',ok+'/'+all);if(!Object.keys(r.channels).length)process.exit(1)"
+          node -e 'const fs=require("fs");const f=JSON.parse(fs.readFileSync("apps/region/data/_status.json","utf8"));const r=f.lastRun;const ch=Object.values(r.channels);const ok=ch.reduce((a,c)=>a+c.sourcesOk,0);const all=ch.reduce((a,c)=>a+c.sourcesTotal,0);console.log("REGION kanala:",ch.length,"izvori:",ok+"/"+all);if(!ch.length)process.exit(1);if(ok<all)console.log("::warning title=Partial source coverage::"+(all-ok)+" source feeds unavailable; archived pages remain linked to originals.")'
 
       - name: Galerija i matična stranica izdanja
         shell: bash
@@ -134,7 +170,13 @@ jobs:
           ref="${{ github.ref_name }}"
           pushed=false
           for attempt in 1 2 3; do
-            git fetch origin "$ref" --no-tags
+            if [ "$attempt" = "1" ] && [ "$(git rev-parse --is-shallow-repository)" = "true" ]; then
+              # Recover sufficient ancestry for a safe rebase when main
+              # advanced during regional generation; never force-push.
+              git fetch origin "$ref" --no-tags --deepen=120
+            else
+              git fetch origin "$ref" --no-tags
+            fi
             # Build regenerira i datoteke koje nisu u commit popisu (index,
             # mreza, jsonld). Git rebase odbija raditi s necommitanim
             # promjenama, pa je do 22. 10. 2026. svaki ciklus tiho padao na
@@ -164,31 +206,27 @@ jobs:
             gh workflow run region-daily.yml --repo "$GITHUB_REPOSITORY" --ref "$ref" || true
           fi
 
-      - name: Deploy na Cloudflare Pages (svaki kanal svoj projekt)
+      - name: Provjeri preusmjerenja za obrađene kanale
         if: steps.push.outputs.pushed == 'true' && github.ref == 'refs/heads/main'
         shell: bash
-        env:
-          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |-
-          set -uo pipefail
-          if [ -z "${CF_TOKEN:-}" ] || [ -z "${CF_ACCOUNT:-}" ]; then
-            echo "::warning::Cloudflare secrets nisu dostupni — deploy preskočen."
-            exit 0
-          fi
-          for dir in apps/region/site/*/; do
-            id=$(basename "$dir")
-            project="gnk-asg-kanal-$id"
-            code=$(curl -s -o /dev/null -w '%{http_code}' -H "Authorization: Bearer $CF_TOKEN" \
-              "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/$project")
-            if [ "$code" != "200" ]; then
-              curl -s -o /dev/null -X POST -H "Authorization: Bearer $CF_TOKEN" -H "Content-Type: application/json" \
-                --data "{\"name\":\"$project\",\"production_branch\":\"main\"}" \
-                "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects" || true
-            fi
-            npx --yes wrangler@4 pages deploy "$dir" --project-name="$project" --branch=main --commit-dirty=true \
-              || echo "::warning::Deploy projekta $project nije uspio."
+          set -euo pipefail
+          # Site/<city> projects are static 301 redirect stubs, not the
+          # canonical content deployment. Changes to those stubs are handled
+          # by region-deploy.yml; do not redeploy 17 satellites every cycle.
+          ids="$(node -e 'const r=require("./apps/region/data/_status.json").lastRun.channels;const ids=Object.keys(r);if(!ids.length||ids.some(id=>!/^[a-z]+$/.test(id)))process.exit(1);process.stdout.write(ids.join(" "))')"
+          for id in $ids; do
+            test -f "apps/region/site/$id/index.html"
+            grep -q '301' "apps/region/site/$id/_redirects"
           done
+          echo "Canonical portal content is deployed by exact-SHA workflow; checked redirect stubs: $ids" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Fail visibly if a generated edition did not reach git
+        if: steps.commit.outputs.changed == 'true' && steps.push.outputs.pushed != 'true'
+        shell: bash
+        run: |
+          echo "::error::REGION generated an editorial package but did not push it; publication incomplete."
+          exit 1
 
       - name: Objavi AKTUAL MEDIA (točan SHA)
         if: steps.push.outputs.pushed == 'true' && github.ref == 'refs/heads/main' && vars.REGION_PORTAL_DEPLOY != 'false'
@@ -229,7 +267,7 @@ jobs:
             echo "- Promjena: ${{ steps.commit.outputs.changed }}"
             echo "- Zapis na main: ${{ steps.push.outputs.pushed || 'nije bilo promjene' }}"
             echo "- Hub: https://gnk-asg.hr/izdanja/"
-            echo "- Izdanja: Zagreb, Beograd, Sarajevo, Budimpešta, Ljubljana, Rim, Sofija, Bukurešt"
+            echo "- Kanali: 17, dvije rotirajuće grupe (svaki kanal jednom u 4 sata)"
             echo "- Galerija: https://gnk-asg.hr/galerija/"
             echo "- Status: automatski osvrti, nije pojedinačno urednički pregledano"
           } >> "$GITHUB_STEP_SUMMARY"

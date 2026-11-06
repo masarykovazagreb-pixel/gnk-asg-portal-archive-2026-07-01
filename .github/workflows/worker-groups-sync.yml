@@ -13,7 +13,9 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: gnk-asg-main-mutation
+  # Only this generator shares this queue. Other canonical publishers use
+  # safe non-force main push fencing and must not block worker-group status.
+  group: gnk-asg-worker-groups-writer
   cancel-in-progress: false
 
 permissions:
@@ -24,26 +26,48 @@ jobs:
     # Samo main: feature grane ne smiju dobivati botske commite.
     if: github.ref == 'refs/heads/main' && vars.GNK_ASG_RELEASE_FENCE != 'true'
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          fetch-tags: false
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Build groups and fleet
+      - name: Build and publish groups on current main without force pushes
+        shell: bash
         run: |
           set -euo pipefail
-          node scripts/build-worker-groups-v1.mjs
-          node scripts/build-fleet-status-v1.mjs
-      - name: Commit if changed
-        run: |
-          PATHS="apps/portal/workers/grupacije apps/portal/data/worker-groups.json \
-            apps/portal/automation-status/flota apps/portal/data/fleet-status.json"
-          if [ -z "$(git status --porcelain $PATHS)" ]; then
-            echo "Bez promjena."
-            exit 0
-          fi
           git config user.name "aktual-bot"
           git config user.email "aktual-bot@users.noreply.github.com"
-          git add $PATHS
-          git commit -m "Worker groups: sync s popisom automatizacija i flotom"
-          git push
+          for attempt in 1 2 3; do
+            git fetch origin main --no-tags
+            current_main="$(git rev-parse origin/main)"
+            if [ "$(git rev-parse HEAD)" != "$current_main" ]; then
+              # Generated status is disposable. Rebuild it from actual main,
+              # not by rebasing stale generated files across changing inputs.
+              git reset --hard "$current_main"
+              echo "::notice::Worker-groups main changed; regenerating on latest main (attempt $attempt)."
+            fi
+            node scripts/build-worker-groups-v1.mjs
+            node scripts/build-fleet-status-v1.mjs
+            git add \
+              apps/portal/workers/grupacije \
+              apps/portal/data/worker-groups.json \
+              apps/portal/automation-status/flota \
+              apps/portal/data/fleet-status.json
+            if git diff --cached --quiet; then
+              echo "Nema promjena nakon izgradnje na aktualnom main."
+              exit 0
+            fi
+            git commit -m "Worker groups: sync s popisom automatizacija i flotom"
+            if git push origin HEAD:main; then
+              echo "Worker groups published safely on main."
+              exit 0
+            fi
+            echo "::warning::Main advanced during worker-group publish attempt $attempt; rebuilding."
+          done
+          echo "::error::Worker groups generated but not published after three safe non-force attempts."
+          exit 75

@@ -35,7 +35,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ inputs.approved_sha }}
-          fetch-depth: 0
+          # Exact-SHA protection is checked against origin/main separately.
+          # Full repository history is unnecessary for this pinned release.
+          fetch-depth: 1
+          fetch-tags: false
       - name: Verify main ref, exact reviewed SHA and executive approval
         env:
           DEPLOY_APPROVAL: ${{ inputs.confirm_production_deploy }}
@@ -165,7 +168,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ inputs.approved_sha }}
-          fetch-depth: 0
+          # Exact-SHA protection is checked against origin/main separately.
+          # Full repository history is unnecessary for this pinned release.
+          fetch-depth: 1
+          fetch-tags: false
       - name: Reconfirm exact authorized SHA immediately before production deployment
         env:
           DEPLOY_APPROVAL: ${{ inputs.confirm_production_deploy }}

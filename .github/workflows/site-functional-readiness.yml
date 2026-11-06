@@ -20,8 +20,11 @@ permissions:
   contents: read
 
 concurrency:
+  # Preserve the running security and SEO gate. A newer commit can replace
+  # the single pending run, but must not cancel a gate already executing.
+  # Otherwise rapid content commits leave *no* successful readiness result.
   group: site-functional-readiness-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   readiness:
@@ -57,6 +60,16 @@ jobs:
       - name: GNK ASG S+Chat mobile, scroll, floating launcher and AI safety contract
         run: node tests/test-s-chat-static-v1.mjs
 
+      - name: Frontend and backend security regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check workers/gnk-asg-direct-operator/src/index-digital-workforce-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v20.js
+          node --check workers/gnk-asg-direct-operator/src/index-unified-auth-v21.js
+          node --check scripts/test-public-fullstack-regressions-v1.mjs
+          node scripts/test-public-fullstack-regressions-v1.mjs
+
       - name: Digital workforce API contract
         run: node scripts/test-digital-workforce-api-contract.mjs
 
@@ -76,6 +89,8 @@ jobs:
           node scripts/test-news-queue-guardrails.mjs
           node scripts/test-news-publication-seo-contract.mjs
           node scripts/test-news-share-routing-v1.mjs
+          node --check scripts/gnk-news-refresh.mjs
+          node scripts/test-news-ingest-integrity-v1.mjs
 
       - name: Market refresh cadence contract
         shell: bash
@@ -133,8 +148,12 @@ jobs:
       - name: Public portal audit
         run: node scripts/audit-public-portal-v1.mjs
 
-      - name: Fallback data contract
-        run: node scripts/test-data-fallback-contract.mjs
+      - name: Fallback data contract and stale-state regression
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/freshness-status-v2.mjs --self-test
+          node scripts/test-data-fallback-contract.mjs
 
       - name: Newsroom route preflight
         run: scripts/check-newsroom-route-readiness.sh readiness-preflight

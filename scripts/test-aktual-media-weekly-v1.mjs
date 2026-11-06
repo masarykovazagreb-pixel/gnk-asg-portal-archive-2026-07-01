@@ -97,10 +97,19 @@ function verifyArchivePage({ html, file, canonical, hr, en, expectedItems, expec
   if (!archiveIndex) {
     if (!html.includes('Source:') && !html.includes('Izvor:')) fail(`${label}: source attribution labels are missing`);
     if (!html.includes('AKTUAL MEDIA Editorial Desk') && !html.includes('Uredništvo: AKTUAL MEDIA')) fail(`${label}: editorial publisher attribution is missing`);
-    const nerminPerson = nodes.some((node) => typesOf(node).includes('Person') && /nermin\s+sefi[cć]/i.test(String(node.name || '')));
-    if (/<meta\s+name=["']author["']\s+content=["']Nermin Sefić["']/i.test(html) || /<link\b[^>]*rel=["']author["']/i.test(html) || nerminPerson
-        || /data-author-mark=["']nermin-sefic["']|#NerminSefic|#NerminSefić/i.test(html)) {
-      fail(`${label}: syndicated weekly page contains personal Nermin authorship metadata`);
+    // A Person node may legitimately identify the collection's editor.
+    // Only explicit personal AUTHOR claims are forbidden on syndicated stories.
+    const personAsArticleAuthor = nodes.some((node) =>
+      typesOf(node).some((type) => ['Article', 'NewsArticle', 'OpinionNewsArticle', 'BlogPosting'].includes(type)) &&
+      JSON.stringify(node.author || '').includes(PERSON_ID)
+    );
+    const sourceCardMarkup = [...html.matchAll(/<article\b[^>]*class=["']tw-card["'][^>]*>[\s\S]*?<\/article>/gi)].map((m) => m[0]).join('');
+    if (/<meta\s+name=["']author["']\s+content=["']Nermin Sefić["']/i.test(html) ||
+        /<link\b[^>]*rel=["']author["']/i.test(html) ||
+        /data-author-mark=["']nermin-sefic["']/i.test(html) ||
+        personAsArticleAuthor ||
+        /#NerminSefic|#NerminSefić/i.test(sourceCardMarkup)) {
+      fail(`${label}: syndicated source card or metadata falsely claims personal authorship`);
     }
   } else {
     if (!html.includes('PERMANENT ARCHIVE') && !html.includes('TRAJNA ARHIVA')) fail(`${label}: permanent archive label is missing`);
@@ -110,10 +119,27 @@ function verifyArchivePage({ html, file, canonical, hr, en, expectedItems, expec
   if (!exists(file)) fail(`${label}: static HTML output is missing`);
 }
 
-execFileSync(process.execPath, ['scripts/build-aktual-media-weekly-v1.mjs'], {
-  env: { ...process.env, AKTUAL_WEEKLY_FORCE: '1' }, stdio: 'inherit',
-});
-execFileSync(process.execPath, ['scripts/build-aktual-media-weekly-archive-v1.mjs', '--refresh'], { stdio: 'inherit' });
+// Never manufacture or backdate the next weekly edition when editorial review
+// has not supplied eight source-verified items. Validate the last curated issue
+// and its published archives instead; report the missing new issue separately.
+const readiness = JSON.parse(execFileSync(process.execPath,
+  ['scripts/build-aktual-media-weekly-v1.mjs', '--readiness'],
+  { encoding: 'utf8' },
+).trim());
+if (readiness.ready) {
+  execFileSync(process.execPath, ['scripts/build-aktual-media-weekly-v1.mjs'], {
+    env: { ...process.env, AKTUAL_WEEKLY_FORCE: '1' }, stdio: 'inherit',
+  });
+  execFileSync(process.execPath, ['scripts/build-aktual-media-weekly-archive-v1.mjs', '--refresh'], { stdio: 'inherit' });
+} else {
+  const current = JSON.parse(read('apps/portal/data/aktual-weekly.json'));
+  if (!readiness.issue_week || !current.issue_week || current.issue_week >= readiness.issue_week) {
+    fail('weekly readiness hold invalid: missing current curated seed but current issue date is not older than due week');
+  }
+  console.warn('::warning title=AKTUAL MEDIA Weekly withheld::Current week ' +
+    readiness.issue_week + ' requires eight human-curated, source-verified stories; ' +
+    'validating the existing published issue ' + current.issue_week + ' without creating new content.');
+}
 execFileSync(process.execPath, ['scripts/enforce-nermin-author-seo-v1.mjs'], { stdio: 'inherit' });
 
 const files = {
@@ -233,6 +259,8 @@ if (!workflow.includes('notify_search_engines=false')) fail('scheduled workflow:
 
 console.log(JSON.stringify({
   version: 'AKTUAL_MEDIA_WEEKLY_CONTRACT_V2',
+  current_week_ready: readiness.ready,
+  pending_week: readiness.ready ? null : readiness.issue_week,
   issue_week: issue.issue_week,
   counts: issue.counts,
   archive_editions: indexIssues.length,

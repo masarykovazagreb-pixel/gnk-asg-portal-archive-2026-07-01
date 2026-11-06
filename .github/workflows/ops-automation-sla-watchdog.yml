@@ -105,9 +105,21 @@ jobs:
           def dispatch(workflow, inputs=None):
               key = (workflow, json.dumps(inputs or {}, sort_keys=True))
               if key in _dispatched:
-                  print(f'DEBOUNCE SKIP: {workflow} already attempted this run')
-                  return _dispatched[key]
+                  print(f'DEBOUNCE SKIP: {workflow} already dispatched this run')
+                  return False
               workflow_q = urllib.parse.quote(workflow, safe='')
+              # Debounce ACROSS runs. The previous in-run-only debounce caused
+              # the 12-minute and 42-minute watchdog to enqueue duplicate
+              # writers, cancelling GitHub's one pending concurrency slot.
+              runs = request_json(f'{api}/actions/workflows/{workflow_q}/runs?branch=main&per_page=25').get('workflow_runs', [])
+              active = [run for run in runs if run.get('status') in
+                        ('queued', 'in_progress', 'waiting', 'pending', 'requested')]
+              if active:
+                  observations.append(f'{workflow}: recovery already active — no duplicate dispatch ({len(active)} active)')
+                  print(f'DEBOUNCE SKIP: {workflow} active runs exist')
+                  _dispatched.add(key)
+                  return False
+              _dispatched.add(key)
               body = {'ref': 'main'}
               if inputs:
                   body['inputs'] = inputs
@@ -189,19 +201,34 @@ jobs:
               ok = sum(int(c.get('sourcesOk') or 0) for c in region_channels.values())
               total = sum(int(c.get('sourcesTotal') or 0) for c in region_channels.values())
               observations.append(f'REGION editions: {region_age:.1f} min old, {len(region_channels)} channels, sources {ok}/{total}')
-              if len(region_channels) < 8:
-                  failures.append(f'REGION status lists {len(region_channels)} channels, expected 8')
-              if region_age > 210:
+              expected_ids = [c['id'] for c in json.loads(Path('apps/region/channels.json').read_text(encoding='utf-8'))['channels']]
+              latest_channel_update = {}
+              for region_run in region_status.get('runs', []):
+                  run_at = datetime.fromisoformat(region_run['at'].replace('Z', '+00:00'))
+                  for channel_id in region_run.get('channels', {}):
+                      if channel_id not in latest_channel_update or run_at > latest_channel_update[channel_id]:
+                          latest_channel_update[channel_id] = run_at
+              stale_ids = [channel_id for channel_id in expected_ids
+                           if channel_id not in latest_channel_update or
+                           (now - latest_channel_update[channel_id]).total_seconds() > 330 * 60]
+              observations.append(f'REGION latest saved per-channel coverage: {len(expected_ids) - len(stale_ids)}/{len(expected_ids)} fresh within 330 min')
+              if len(expected_ids) != 17:
+                  failures.append(f'REGION registry expected 17 channels, found {len(expected_ids)}')
+              if stale_ids:
+                  failures.append('REGION channels not refreshed within 330 min: ' + ', '.join(stale_ids))
+              if stale_ids:
+                  # One bounded recovery batch per watchdog pass. Do not
+                  # re-queue 17 channels or create overlapping region writers.
+                  stale_batch = next((str(parity) for parity in (0, 1)
+                                      if any(channel in stale_ids for i, channel in enumerate(expected_ids)
+                                             if i % 2 == parity)), '0')
+                  dispatch('region-daily.yml', {'batch': stale_batch})
                   latest = latest_completed('region-daily.yml')
-                  latest_stamp = run_stamp(latest)
-                  started = dispatch('region-daily.yml')
-                  if latest and latest.get('conclusion') not in (None, 'success') and latest_stamp and latest_stamp > region_stamp:
-                      failures.append(f'REGION editions stale {region_age:.1f} min and latest recovery is {latest.get("conclusion")}')
-                  elif started:
-                      observations.append(f'REGION editions hard-stale {region_age:.1f} min > 210 min — recovery dispatched')
-              elif region_age > 150:
-                  if dispatch('region-daily.yml'):
-                      observations.append(f'REGION editions soft-stale {region_age:.1f} min > 150 min — recovery dispatched')
+                  if latest and latest.get('conclusion') in ('failure', 'cancelled', 'timed_out'):
+                      observations.append('REGION recovery needed: latest completed cycle ' +
+                                          str(latest.get('conclusion')))
+              elif region_age > 300:
+                  observations.append('REGION last-run metadata is old, but all per-channel archive snapshots meet freshness SLA')
           except Exception as exc:
               failures.append(f'REGION status unreadable: {exc}')
               dispatch('region-daily.yml')
@@ -228,7 +255,7 @@ jobs:
           ensure_age('gnk-news-refresh-v2.yml', 350, 430, 'AKTUAL canonical refresh')
           ensure_age('weather-refresh.yml', 390, 480, 'Zagreb weather refresh')
           ensure_age('gnk-seo-nightly-audit.yml', 1740, 2400, 'Nightly SEO/IndexNow audit')
-          ensure_age('region-daily.yml', 240, 300, 'REGION canonical cycle')
+          # REGION is already monitored per channel above; no duplicate generic dispatch.
 
           # 4) Daily editorial must have a successful run today. After 11:00 Europe/Zagreb,
           #    a missing verified success dispatches the existing canonical publisher once.

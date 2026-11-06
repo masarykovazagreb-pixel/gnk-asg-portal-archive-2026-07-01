@@ -119,8 +119,9 @@ const channelPagesProjects={
  // Samostalni portali: svaki ima svoj Pages projekt i vlastitu domenu.
  'arhiva-deploy.yml':'gnk-asg-arhiva',
  'dnevnik-deploy.yml':'gnk-asg-dnevnik',
- 'region-deploy.yml':regionIds.map(regionProject),
- 'region-daily.yml':regionIds.map(regionProject)
+ 'region-deploy.yml':regionIds.map(regionProject)
+ // region-daily.yml owns ONLY the canonical exact-SHA portal dispatch.
+ // Satellite 301 Pages projects have a single owner: region-deploy.yml.
 };
 // Mreža neovisnih izdanja objavljuje šest stranica na vlastite Pages
 // projekte. Popis je zatvoren i mora se poklapati sa stvarnim imenima u
@@ -141,7 +142,7 @@ for(const file of fs.readdirSync('.github/workflows').filter(f=>/\.ya?ml$/i.test
  const path=`.github/workflows/${file}`;
  if(path===approved)continue;
  const source=read(path);
- const writeLine=source.split(/\r?\n/).find(line=>/^\s*(?:run:\s*)?(?:(?:npx|bunx)\s+(?:--yes\s+)?|(?:pnpm|yarn)\s+(?:dlx\s+)?)?wrangler(?:@\d+)?\s+(?:pages\s+)?deploy\b/i.test(line)&&!/--dry-run\b/i.test(line));
+ const writeLine=source.split(/\r?\n/).find(line=>/^\s*(?:run:\s*|if\s+)?(?:!\s*)?(?:(?:npx|bunx)\s+(?:--yes\s+)?|(?:pnpm|yarn)\s+(?:dlx\s+)?)?wrangler(?:@\d+)?\s+(?:pages\s+)?deploy\b/i.test(line)&&!/--dry-run\b/i.test(line));
  const literalProjects=sitesNetworkProjects[file]||worldPortalsProjects[file];
  if(writeLine&&literalProjects){
   const allowed=new Set(literalProjects);
@@ -184,10 +185,15 @@ const expectedDeployments=[
  ...Object.entries(worldPortalsProjects).flatMap(([file,projects])=>projects.map(p=>`${file}:${p}`))
 ];
 assert.deepEqual(
- channelPagesProjects['region-daily.yml'].map(p=>p.replace('gnk-asg-kanal-','')).sort(),
+ channelPagesProjects['region-deploy.yml'].map(p=>p.replace('gnk-asg-kanal-','')).sort(),
  [...regionIds].sort(),
- 'region allowlist must cover every edition in channels.json'
+ 'satellite redirect allowlist must cover every edition in channels.json'
 );
+const regionDailyWorkflow=read('.github/workflows/region-daily.yml');
+assert.doesNotMatch(regionDailyWorkflow, /\bwrangler(?:@\d+)?\s+(?:pages\s+)?deploy\b/i,
+ 'region-daily must not directly deploy satellite Cloudflare Pages projects');
+requireText('canonical region publishing',regionDailyWorkflow,
+ ['gh workflow run deploy-admin-auth-v6.yml', 'approved_sha="$APPROVED_SHA"']);
 assert.deepEqual(
  [...new Set(channelDeployments)].sort(),
  expectedDeployments.sort(),

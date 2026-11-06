@@ -47,6 +47,10 @@ const ALLOWED_HOSTS = new Set([
   'th-thumbnailer.cdn-si-edu.com',
   'bitcoinmagazine.com',
   'e3.365dm.com',
+  // Detik media CDNs: present in the current canonical news feed (Indonesia).
+  // Keep both as exact hosts: do not allow wildcard subdomains.
+  'akcdn.detik.net.id',
+  'awsimages.detik.net.id',
   'www.netokracija.com',
   'www.esa.int',
   'www.nasa.gov',

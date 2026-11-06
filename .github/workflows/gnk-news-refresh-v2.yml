@@ -24,7 +24,9 @@ permissions:
   actions: write
 
 concurrency:
-  group: gnk-asg-main-mutation
+  # Single writer for this resource; cross-resource contention is guarded by
+  # exact-main-SHA/non-force Git push or checked rebase, not by a global queue.
+  group: gnk-asg-news-writer
   cancel-in-progress: false
 
 jobs:
@@ -38,7 +40,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: main
-          fetch-depth: 0
+          # Fetch only the selected branch's recent history, not every branch/tag.
+          # Updates still use a fresh origin/main CAS/rebase before non-force push.
+          fetch-depth: 1
+          fetch-tags: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -87,55 +92,61 @@ jobs:
           console.log(`AKTUAL validated: ${news.length} items, six-refresh daily contract active.`);
           NODE
 
-      - name: Commit refreshed news data
+      - name: Commit refreshed news with bounded exact-main regeneration
         id: commit
         if: steps.control.outputs.should_run == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          expected_base="$(git rev-parse HEAD)"
           git config user.name "gnk-news-bot"
           git config user.email "actions@github.com"
-          git add \
-            apps/portal/data/news.json \
-            apps/portal/data/news_archive.json \
-            apps/portal/data/news-automation-status.json \
-            apps/portal/data/freshness-status.json \
-            apps/portal/gnk-aktual/index.html \
-            apps/portal/en/gnk-aktual/index.html
-          if git diff --cached --quiet; then
-            echo "No news data changes to commit."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-          else
-            git commit -m "Refresh GNK ASG news feed"
-
-            # Operational Single-Writer / Exact-SHA fence. Generated state is
-            # valid only against the main snapshot on which it was computed.
-            # If main moved, defer instead of rebasing generated output.
+          for attempt in 1 2 3; do
             git fetch origin main
             current_main="$(git rev-parse origin/main)"
-            if [ "$current_main" != "$expected_base" ]; then
-              echo "Main moved during news generation: expected $expected_base, found $current_main. Deferring without rebase/push."
-              # 22. 10. 2026.: odgoda je značila čekanje puna četiri sata na
-              # sljedeći termin, pa je AKTUAL bio "mrtav" i po šest sati.
-              # Umjesto toga: jedan svjež ciklus odmah (samo za scheduled run,
-              # da se ne petlja). Novi run gradi iz novog maina — nema rebasea
-              # generiranog stanja, pa exact-SHA fence ostaje netaknut.
-              if [ "${{ github.event_name }}" = "schedule" ]; then
-                echo "::warning::Main se pomaknuo — pokrećem svjež ciklus odmah, bez čekanja sljedećeg termina."
-                gh workflow run gnk-news-refresh-v2.yml --repo "$GITHUB_REPOSITORY" --ref main || true
-              fi
-              exit 75
+            if [ "$(git rev-parse HEAD)" != "$current_main" ]; then
+              # Never transplant generated news over a newer main state.
+              # Rebuild it on the newest HEAD from its real public sources.
+              git reset --hard "$current_main"
+              echo "::notice::Main changed; rebuilding the news feed from current main (attempt $attempt)."
+              node scripts/gnk-news-refresh.mjs
+              node scripts/normalize-aktual-hourly-contract.mjs
+              node scripts/render-aktual-noscript-v1.mjs
+              node scripts/freshness-status-v2.mjs
+              node - <<'NODE'
+          const fs = require('fs');
+          const status = JSON.parse(fs.readFileSync('apps/portal/data/news-automation-status.json','utf8'));
+          const feed = JSON.parse(fs.readFileSync('apps/portal/data/news.json','utf8'));
+          if (!status.ok || status.scheduled_interval_hours !== 4 || !Array.isArray(feed) || feed.length < 50) {
+            throw new Error('Regenerated news failed the required public feed and cadence gates');
+          }
+          console.log('Regenerated verified feed:', feed.length, 'items');
+          NODE
+            fi
+            git add \
+              apps/portal/data/news.json \
+              apps/portal/data/news_archive.json \
+              apps/portal/data/news-automation-status.json \
+              apps/portal/data/freshness-status.json \
+              apps/portal/gnk-aktual/index.html \
+              apps/portal/en/gnk-aktual/index.html
+            if git diff --cached --quiet; then
+              echo "No news changes to commit."
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+              echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+              exit 0
             fi
 
-            # Final compare-and-swap guard: a normal non-force push is rejected
-            # if another writer moves main after the check above.
-            git push origin HEAD:main
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-            echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-          fi
+            git commit -m "Refresh GNK ASG news feed"
+            if git push origin HEAD:main; then
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+              echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            echo "::warning::Main advanced during the non-force news push; fresh generation will retry (attempt $attempt)."
+          done
+          echo "::error::News feed generated but not published after three safe exact-main attempts."
+          exit 75
 
       - name: Dispatch exact-SHA production deploy
         if: steps.control.outputs.should_run == 'true' && steps.commit.outputs.changed == 'true'

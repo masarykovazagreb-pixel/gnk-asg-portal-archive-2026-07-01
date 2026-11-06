@@ -9,8 +9,9 @@ name: Auto deploy main
 #   - GNK_ASG_RELEASE_FENCE=true zaustavlja sve.
 #   - Crvena provjera = nema objave. Nedovršena provjera = čeka se sljedeći ciklus.
 #   - Ako se stanje provjera ne može pročitati, ne objavljuje se (fail-closed).
-#   - Deploy se šalje samo za točan trenutni SHA; ako se main promijeni,
-#     pokušava ponovno s novim SHA-om (do 3 pokušaja).
+#   - Deploy se šalje samo za točan trenutni SHA i samo nakon uspješne
+#     provjere spremnosti tog SHA-a. Nema dugotrajnog čekanja ni više
+#     konkurentnih deploya istog commita.
 #   - Deploy sam drži concurrency grupu gnk-asg-main-mutation; ovaj workflow
 #     namjerno koristi drugu grupu da ne zaključa vlastiti deploy.
 #   - Ako je isti SHA već uspješno objavljen, preskače.
@@ -37,7 +38,7 @@ jobs:
   dispatch:
     if: vars.GNK_ASG_RELEASE_FENCE != 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 55
+    timeout-minutes: 8
     steps:
       - name: Stanje main grane, provjere i zadnja objava
         id: state
@@ -103,83 +104,44 @@ jobs:
           ) || readiness=""
           echo "readiness: ${readiness:-<nema>}"
 
-          if [ -n "$readiness" ] && ! grep -q 'success' <<<"$readiness"; then
+          if [ -z "$readiness" ] || ! grep -q 'success' <<<"$readiness"; then
             echo "gate=no-readiness" >> "$GITHUB_OUTPUT"
-            echo "::notice::Site Functional Readiness nije zelen za $current — čekam."
+            echo "::notice::Nema uspješne Site Functional Readiness za točan main SHA $current — deploy nije pokrenut."
             exit 0
           fi
 
           echo "gate=ready" >> "$GITHUB_OUTPUT"
 
-      - name: Objavi trenutni main (do tri pokušaja)
+      - name: Pokreni jedan exact-SHA deploy nakon potvrđenih testova
         if: steps.state.outputs.gate == 'ready'
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
+          APPROVED_SHA: ${{ steps.state.outputs.main }}
         run: |
-          set -uo pipefail
+          set -euo pipefail
           export GH_REPO="$GITHUB_REPOSITORY"
+          current="$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)"
+          if [ "$current" != "$APPROVED_SHA" ]; then
+            echo "::notice::main se promijenio nakon provjere ($APPROVED_SHA -> $current). Novi exact-SHA CI ciklus preuzet će objavu."
+            exit 0
+          fi
 
-          latest_id() {
-            gh run list --workflow deploy-admin-auth-v6.yml --branch main --limit 1 \
-              --json databaseId --jq '.[0].databaseId // 0' 2>/dev/null || echo 0
-          }
+          active="$(gh run list --workflow deploy-admin-auth-v6.yml --branch main --limit 30 \
+            --json headSha,status \
+            --jq '[.[] | select(.headSha=="'${APPROVED_SHA}'" and .status!="completed")] | length' 2>/dev/null)" || active=""
+          if [ -z "$active" ]; then
+            echo "::warning::Ne mogu provjeriti je li deploy već aktivan. Ne pokrećem duplikat."
+            exit 0
+          fi
+          if [ "$active" -gt 0 ]; then
+            echo "::notice::Exact-SHA deploy za $APPROVED_SHA već je aktivan; ne pokrećem duplikat."
+            exit 0
+          fi
 
-          watch_run() {
-            local id="$1" status="" conclusion=""
-            for _ in $(seq 1 130); do
-              sleep 15
-              read -r status conclusion <<<"$(gh run view "$id" \
-                --json status,conclusion \
-                --jq '"\(.status) \(.conclusion // "")"' 2>/dev/null)" || continue
-              if [ "$status" = "completed" ]; then
-                echo "$conclusion"
-                return 0
-              fi
-            done
-            echo "timeout"
-          }
-
-          wait_for_new_run() {
-            local before="$1" id=""
-            for _ in $(seq 1 12); do
-              sleep 10
-              id=$(latest_id)
-              if [ "$id" != "$before" ] && [ "$id" != "0" ]; then
-                echo "$id"
-                return 0
-              fi
-            done
-            echo ""
-          }
-
-          for attempt in 1 2 3; do
-            sha=$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)
-            before=$(latest_id)
-            echo "::notice::Pokušaj $attempt — objavljujem $sha"
-
-            gh workflow run deploy-admin-auth-v6.yml --ref main \
-              -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
-              -f approved_sha="$sha" \
-              -F notify_search_engines=true || { sleep 20; continue; }
-
-            run_id=$(wait_for_new_run "$before")
-            if [ -z "$run_id" ]; then
-              echo "::warning::Deploy run nije pokrenut u očekivanom vremenu."
-              continue
-            fi
-
-            result=$(watch_run "$run_id")
-            echo "Ishod runa $run_id: $result"
-            if [ "$result" = "success" ]; then
-              echo "::notice::Objavljeno $sha (run $run_id)."
-              exit 0
-            fi
-
-            # najčešći razlog pada je pomak main grane između čitanja i objave
-            echo "::warning::Pokušaj $attempt nije uspio ($result) — provjeravam novi SHA."
-            sleep 10
-          done
-
-          echo "::error::Objava nije uspjela nakon tri pokušaja; potrebna je ručna provjera."
-          exit 1
+          gh workflow run deploy-admin-auth-v6.yml --ref main \
+            -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
+            -f approved_sha="$APPROVED_SHA" \
+            -F notify_search_engines=false
+          echo "::notice::Exact-SHA deploy poslan za $APPROVED_SHA. Status LIVE ovisi o uspjehu zasebnog deploy workflowa i provjeri javne adrese."
+          echo "Deploy dispatched for commit \`$APPROVED_SHA\`; not yet confirmed live." >> "$GITHUB_STEP_SUMMARY"

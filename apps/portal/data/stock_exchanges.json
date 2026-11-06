@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-10-29T14:07:00+00:00",
-  "updated_at": "2026-10-29T14:07:00+00:00",
+  "checked_at": "2026-11-06T14:56:27+00:00",
+  "updated_at": "2026-11-06T14:56:27+00:00",
   "status": "ok",
   "refresh_frequency": "Twice-daily automated reference check via the canonical market writer",
   "refresh_frequency_hr": "Automatska provjera dvaput dnevno kroz kanonski tržišni writer",
@@ -22,7 +22,7 @@
       "value": null,
       "change_percent": null,
       "points": [],
-      "checked_at": "2026-10-29T14:07:00+00:00"
+      "checked_at": "2026-11-06T14:56:27+00:00"
     },
     {
       "id": "crobex10",
@@ -38,7 +38,7 @@
       "value": null,
       "change_percent": null,
       "points": [],
-      "checked_at": "2026-10-29T14:07:00+00:00"
+      "checked_at": "2026-11-06T14:56:27+00:00"
     },
     {
       "id": "nyse",
@@ -51,30 +51,10 @@
       "delay_hr": "Javni informativni indeksni podatak; vrijednost može biti odgođena",
       "delay_en": "Public informational index data; value may be delayed",
       "official_url": "https://www.nyse.com/quote/index/NYA",
-      "checked_at": "2026-10-29T14:07:00+00:00",
-      "value": 24469.89,
-      "change_percent": 3.21,
+      "checked_at": "2026-11-06T14:56:27+00:00",
+      "value": 23879.83,
+      "change_percent": -0.17,
       "points": [
-        [
-          1790688600000,
-          23709.59960938
-        ],
-        [
-          1790775000000,
-          23490.80078125
-        ],
-        [
-          1790861400000,
-          23526.83984375
-        ],
-        [
-          1790947800000,
-          23654.31054688
-        ],
-        [
-          1791207000000,
-          23788.61914062
-        ],
         [
           1791293400000,
           23921.66992188
@@ -145,12 +125,36 @@
         ],
         [
           1793280600000,
-          24469.89453125
+          24517.22070312
+        ],
+        [
+          1793367000000,
+          24293.08984375
+        ],
+        [
+          1793629800000,
+          24372.0703125
+        ],
+        [
+          1793716200000,
+          24307.0390625
+        ],
+        [
+          1793802600000,
+          24686.13085938
+        ],
+        [
+          1793889000000,
+          23955.98046875
+        ],
+        [
+          1793975400000,
+          23879.83203125
         ]
       ],
       "currency": "USD",
-      "source_timestamp": "2026-10-29T13:30:00+00:00",
-      "last_successful_refresh_at": "2026-10-29T14:07:00+00:00"
+      "source_timestamp": "2026-11-06T14:30:00+00:00",
+      "last_successful_refresh_at": "2026-11-06T14:56:27+00:00"
     },
     {
       "id": "nasdaq",
@@ -163,30 +167,10 @@
       "delay_hr": "Javni informativni indeksni podatak; vrijednost može biti odgođena",
       "delay_en": "Public informational index data; value may be delayed",
       "official_url": "https://www.nasdaq.com/market-activity/index/comp",
-      "checked_at": "2026-10-29T14:07:00+00:00",
-      "value": 26192.32,
-      "change_percent": -2.26,
+      "checked_at": "2026-11-06T14:56:27+00:00",
+      "value": 24736.64,
+      "change_percent": -10.37,
       "points": [
-        [
-          1790688600000,
-          26797.5390625
-        ],
-        [
-          1790775000000,
-          26861.06054688
-        ],
-        [
-          1790861400000,
-          26871.59960938
-        ],
-        [
-          1790947800000,
-          27190.859375
-        ],
-        [
-          1791207000000,
-          27477.31054688
-        ],
         [
           1791293400000,
           27599.7890625
@@ -257,12 +241,36 @@
         ],
         [
           1793280600000,
-          26192.31835938
+          26184.72070312
+        ],
+        [
+          1793367000000,
+          25437.0
+        ],
+        [
+          1793629800000,
+          25164.31054688
+        ],
+        [
+          1793716200000,
+          25372.00976562
+        ],
+        [
+          1793802600000,
+          25736.50976562
+        ],
+        [
+          1793889000000,
+          24315.0
+        ],
+        [
+          1793975400000,
+          24736.640625
         ]
       ],
       "currency": "USD",
-      "source_timestamp": "2026-10-29T13:30:00+00:00",
-      "last_successful_refresh_at": "2026-10-29T14:07:00+00:00"
+      "source_timestamp": "2026-11-06T14:30:00+00:00",
+      "last_successful_refresh_at": "2026-11-06T14:56:27+00:00"
     }
   ],
   "errors": [],
