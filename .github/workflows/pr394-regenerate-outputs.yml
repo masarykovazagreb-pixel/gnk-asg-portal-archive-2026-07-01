@@ -33,6 +33,7 @@ jobs:
           set -euo pipefail
           node scripts/apply-refresh-v1.mjs
           python3 scripts/factory/radio_promo_v1.py
+          python3 scripts/factory/apply_standard.py
       - name: Verify all generated changes without suppressing gates
         run: |
           set -euo pipefail
@@ -41,6 +42,7 @@ jobs:
           node tests/test-sites-network-v1.mjs
           node tests/test-refresh-layer-v1.mjs
           python3 scripts/factory/radio_promo_v1.py --check
+          python3 scripts/factory/apply_standard.py --check
       - name: Commit only generated outputs to PR branch
         run: |
           set -euo pipefail
