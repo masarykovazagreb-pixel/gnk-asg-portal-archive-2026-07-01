@@ -169,5 +169,29 @@ for page in PAGES:
     enhance(page)
 ensure_profile_link('index.html', 'nermin-sefic/', 'Nermin Sefić — javni profil')
 ensure_profile_link('en/index.html', 'nermin-sefic/', 'Nermin Sefić — public profile')
-(ROOT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'+'\n'.join(entry(page) for page in PAGES)+'\n</urlset>\n', encoding='utf-8')
-(ROOT/'robots.txt').write_text('User-agent: *\nAllow: /\nDisallow: /admin/\nDisallow: /webmail/\nDisallow: /podijeli/\n\nSitemap: '+SITE+'sitemap.xml\n', encoding='utf-8')
+# Standalone comment index pages are authored outside PAGES because their existing
+# rich HTML and JSON-LD must not be rewritten by the generic SEO enhancer.
+# They still belong in the canonical sitemap, with language alternates.
+def commentary_sitemap_entry(path):
+    return ('  <url><loc>'+escape(SITE+path)+'</loc>'
+            '<changefreq>weekly</changefreq><priority>0.8</priority>'
+            '<xhtml:link rel="alternate" hreflang="hr" href="'+escape(SITE+'komentari/')+'"/>'
+            '<xhtml:link rel="alternate" hreflang="en" href="'+escape(SITE+'en/commentary/')+'"/>'
+            '<xhtml:link rel="alternate" hreflang="x-default" href="'+escape(SITE+'komentari/')+'"/>'
+            '</url>')
+
+commentary_routes = ('komentari/', 'en/commentary/')
+for route in commentary_routes:
+    if not (ROOT/route/'index.html').is_file():
+        raise FileNotFoundError('Missing commentary sitemap page: '+route)
+
+sitemap_entries = [entry(page) for page in PAGES]
+sitemap_entries.extend(commentary_sitemap_entry(route) for route in commentary_routes)
+(ROOT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\\n'+'\\n'.join(sitemap_entries)+'\\n</urlset>\\n', encoding='utf-8')
+
+# robots.txt is maintained as a reviewed, versioned policy file, not generated.
+# Overwriting it here previously removed all named crawler groups and exposed
+# indexing policy for restricted admin routes. Authorization is still mandatory.
+robots_policy = ROOT/'robots.txt'
+if not robots_policy.is_file():
+    raise FileNotFoundError('Missing reviewed robots policy: '+str(robots_policy))
