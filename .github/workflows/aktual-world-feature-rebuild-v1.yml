@@ -1,0 +1,56 @@
+name: AKTUAL World Feature Rebuild V1
+on:
+  push:
+    branches:
+      - feature/aktual-media-world-201
+    paths:
+      - '.github/workflows/aktual-world-feature-rebuild-v1.yml'
+      - 'scripts/build-aktual-world-v1.mjs'
+      - 'apps/portal/autonomija/index.html'
+      - 'apps/portal/en/autonomy/index.html'
+permissions:
+  contents: write
+concurrency:
+  group: aktual-world-feature-rebuild-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  regenerate:
+    if: github.ref == 'refs/heads/feature/aktual-media-world-201' && vars.GNK_ASG_RELEASE_FENCE != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact feature SHA
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Rebuild all country/city HTML, RSS and sitemap from reviewed generator
+        shell: bash
+        run: |
+          set -euo pipefail
+          AKTUAL_WORLD_OUT=apps/portal/gnk-aktual node scripts/build-aktual-world-v1.mjs --base https://gnk-asg.hr/gnk-aktual/
+          node --test tests/test-aktual-world-v1.mjs
+          node tests/test-meta-hygiene-v1.mjs
+          node tests/test-design-system-v1.mjs
+          node tests/test-sitemap-integrity-v1.mjs
+      - name: Commit generated outputs to feature branch only (never main)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- apps/portal/gnk-aktual/media/ apps/portal/gnk-aktual/grad/
+          if git diff --cached --quiet; then
+            echo 'World outputs already up-to-date'
+            exit 0
+          fi
+          git fetch origin feature/aktual-media-world-201
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/feature/aktual-media-world-201)" || {
+            echo 'Feature branch moved, refusing stale generated commit'
+            exit 1
+          }
+          git commit -m 'build(aktual-world): regenerate verified World 201 outputs'
+          git push origin HEAD:refs/heads/feature/aktual-media-world-201

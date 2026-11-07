@@ -71,7 +71,8 @@
       "20 6 * * *"
     ],
     "region-daily.yml": [
-      "7 */2 * * *"
+      "7 0,4,8,12,16,20 * * *",
+      "7 2,6,10,14,18,22 * * *"
     ],
     "auto-deploy-main-v1.yml": [
       "37 0,2,4,6,8,10,12,14,16,18,20,22 * * *"
@@ -99,6 +100,12 @@
     ],
     "world-portals-deploy.yml": [
       "17 1,7,13,19 * * *"
+    ],
+    "aktual-world-source-refresh-v1.yml": [
+      "23 1,7,13,19 * * *"
+    ],
+    "world201-10min-release-controller.yml": [
+      "*/10 * * * *"
     ]
   },
   "protectedManualRelease": [

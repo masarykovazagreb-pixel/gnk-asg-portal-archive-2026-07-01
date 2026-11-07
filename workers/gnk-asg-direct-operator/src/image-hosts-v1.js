@@ -68,6 +68,8 @@ export const REGION_IMAGE_HOSTS = [
   ['images.dailynewsegypt.com', 'Daily News Egypt', 'EG'],
   // Azija i Pacifik
   ['img.antaranews.com', 'ANTARA', 'ID'],
+  ['akcdn.detik.net.id', 'detik (CDN)', 'ID'],
+  ['awsimages.detik.net.id', 'detik (image CDN)', 'ID'],
   ['static.republika.co.id', 'Republika', 'ID'],
   ['dam.mediacorp.sg', 'CNA / Mediacorp', 'SG'],
   ['images.skynewsarabia.com', 'Sky News Arabia', 'AE'],
@@ -77,6 +79,7 @@ export const REGION_IMAGE_HOSTS = [
   ['www.japantimes.co.jp', 'The Japan Times', 'JP'],
   // Amerika
   ['static01.nyt.com', 'The New York Times', 'US'],
+  ['media.cnn.com', 'CNN', 'US'],
   ['s.abcnews.com', 'ABC News', 'US'],
   ['platform.theverge.com', 'The Verge', 'US'],
   ['npr.brightspotcdn.com', 'NPR', 'US'],
