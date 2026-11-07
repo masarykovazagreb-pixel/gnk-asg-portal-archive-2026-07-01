@@ -111,15 +111,23 @@ jobs:
               # Debounce ACROSS runs. The previous in-run-only debounce caused
               # the 12-minute and 42-minute watchdog to enqueue duplicate
               # writers, cancelling GitHub's one pending concurrency slot.
-              runs = request_json(f'{api}/actions/workflows/{workflow_q}/runs?branch=main&per_page=25').get('workflow_runs', [])
+              try:
+                  response = request_json(f'{api}/actions/workflows/{workflow_q}/runs?branch=main&per_page=25')
+                  if not isinstance(response, dict) or not isinstance(response.get('workflow_runs'), list):
+                      raise ValueError('invalid workflow runs response')
+                  runs = response['workflow_runs']
+              except Exception as exc:
+                  _dispatched[key] = False
+                  failures.append(f'{workflow}: recovery preflight failed ({type(exc).__name__})')
+                  return False
               active = [run for run in runs if run.get('status') in
                         ('queued', 'in_progress', 'waiting', 'pending', 'requested')]
               if active:
                   observations.append(f'{workflow}: recovery already active — no duplicate dispatch ({len(active)} active)')
                   print(f'DEBOUNCE SKIP: {workflow} active runs exist')
-                  _dispatched.add(key)
+                  _dispatched[key] = False
                   return False
-              _dispatched.add(key)
+              _dispatched[key] = False
               body = {'ref': 'main'}
               if inputs:
                   body['inputs'] = inputs
