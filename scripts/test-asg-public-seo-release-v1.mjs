@@ -4,8 +4,11 @@ import {readFileSync} from 'node:fs';
 const read = path => readFileSync(path, 'utf8');
 const icon = read('apps/portal/favicon.svg');
 const home = read('apps/portal/index.html');
+const homeEN = read('apps/portal/en/index.html');
 const profile = read('apps/portal/nermin-sefic/index.html');
+const profileEN = read('apps/portal/en/nermin-sefic/index.html');
 const comments = read('apps/portal/komentari/index.html');
+const commentsEN = read('apps/portal/en/commentary/index.html');
 const robots = read('apps/portal/robots.txt');
 const sitemap = read('apps/portal/sitemap.xml');
 const seoGenerator = read('apps/portal/scripts/generate_seo.py');
@@ -21,17 +24,27 @@ assert.match(icon, />ASG</, 'Root favicon contains ASG lettering');
 
 const iconUrl = 'https://gnk-asg.hr/favicon.svg?v=asg-red-20261107';
 exactlyOnce(home, 'href="' + iconUrl + '"', 'Homepage red ASG favicon URL');
+exactlyOnce(homeEN, 'href="' + iconUrl + '"', 'English homepage red ASG favicon URL');
 exactlyOnce(profile, 'href="' + iconUrl + '"', 'Profile red ASG favicon URL');
+exactlyOnce(profileEN, 'href="' + iconUrl + '"', 'English profile red ASG favicon URL');
 exactlyOnce(comments, 'href="/favicon.svg?v=asg-red-20261107"', 'Commentary red ASG favicon URL');
+exactlyOnce(commentsEN, 'href="/favicon.svg?v=asg-red-20261107"', 'English commentary red ASG favicon URL');
 
 exactlyOnce(profile, 'href="../komentari/"', 'Profile links to author comments');
 exactlyOnce(comments, '<link rel="author" href="https://gnk-asg.hr/nermin-sefic/">', 'Commentary author SEO link');
 exactlyOnce(comments, 'href="/nermin-sefic/" rel="author"', 'Commentary displays the author profile link');
 exactlyOnce(comments, '<title>Komentari Nermina Sefića | GNK ASG</title>', 'Commentary SEO title');
 exactlyOnce(comments, '<meta property="og:title" content="Komentari Nermina Sefića | GNK ASG">', 'Commentary share title');
+exactlyOnce(profileEN, 'href="../commentary/"', 'English profile links to commentary');
+exactlyOnce(commentsEN, '<link rel="author" href="https://gnk-asg.hr/en/nermin-sefic/">', 'English commentary author SEO link');
+exactlyOnce(commentsEN, 'href="/en/nermin-sefic/" rel="author"', 'English commentary shows author profile link');
+exactlyOnce(commentsEN, '<title>Commentary by Nermin Sefić | GNK ASG</title>', 'English commentary title');
+exactlyOnce(commentsEN, '<meta property="og:title" content="Commentary by Nermin Sefić | GNK ASG">', 'English commentary share title');
 
 exactlyOnce(profile, '<link rel="canonical" href="https://gnk-asg.hr/nermin-sefic/">', 'Profile canonical');
+exactlyOnce(profileEN, '<link rel="canonical" href="https://gnk-asg.hr/en/nermin-sefic/">', 'English profile canonical');
 exactlyOnce(comments, '<link rel="canonical" href="https://gnk-asg.hr/komentari/">', 'Commentary canonical');
+exactlyOnce(commentsEN, '<link rel="canonical" href="https://gnk-asg.hr/en/commentary/">', 'English commentary canonical');
 exactlyOnce(sitemap, '<loc>https://gnk-asg.hr/nermin-sefic/</loc>', 'Profile present in main sitemap');
 exactlyOnce(sitemap, '<loc>https://gnk-asg.hr/komentari/</loc>', 'Comments root present in main sitemap');
 exactlyOnce(sitemap, '<loc>https://gnk-asg.hr/en/commentary/</loc>', 'English comments root present in main sitemap');
@@ -63,5 +76,5 @@ assert.deepEqual(draftSections, Array.from({length: 20}, (_, i) => i + 1),
 assert.match(drafts, /STATUS:\s*NACRTI ZA AUTORSKU PROVJERU/);
 assert.match(drafts, /nisu odobrene izjave/);
 
-console.log('ASG public SEO release contract passed: favicon, reciprocal author links, canonical sitemaps, 14 restricted routes in ' +
+console.log('ASG public SEO release contract passed: HR/EN favicons, reciprocal author links, canonical sitemaps, 14 restricted routes in ' +
   groups.length + ' crawler groups and 20 unapproved drafts.');
