@@ -20,6 +20,7 @@ concurrency:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   sync:
@@ -63,11 +64,15 @@ jobs:
               exit 0
             fi
             git commit -m "Worker groups: sync s popisom automatizacija i flotom"
-            if git push origin HEAD:main; then
-              echo "Worker groups published safely on main."
+            branch="automation/worker-groups-${GITHUB_RUN_ID}"
+            if git push origin "HEAD:refs/heads/$branch"; then
+              GH_TOKEN="${{ github.token }}" gh pr create --repo "$GITHUB_REPOSITORY" --base main --head "$branch" \
+                --title "Worker groups: review generated status" \
+                --body "Autogenerirana ploča radnih skupina i flote. Bez izravnog zapisa u main; provjeriti CI prije spajanja."
+              echo "Worker group status proposed through a reviewable PR."
               exit 0
             fi
-            echo "::warning::Main advanced during worker-group publish attempt $attempt; rebuilding."
+            echo "::warning::Could not open review branch for worker group changes (attempt $attempt)."
           done
-          echo "::error::Worker groups generated but not published after three safe non-force attempts."
+          echo "::error::Worker groups could not be proposed as a reviewable PR."
           exit 75
