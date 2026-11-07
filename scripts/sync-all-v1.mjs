@@ -48,6 +48,7 @@ export const STEPS = [
   /* ---------- 1. GENERATORI ---------- */
   { id: 'region-channels', group: 'generate', slow: true, file: 'apps/region/engine/build.mjs', why: 'stranice 17 gradskih izdanja' },
   { id: 'region-hub', group: 'generate', file: 'apps/region/engine/hub.mjs', why: 'središnja ploča AKTUAL MEDIA (HR/EN)' },
+  { id: 'network-inventory', group: 'generate', file: 'scripts/factory/build-public-network-inventory-v1.mjs', check: ['--check'], why: 'javni popis webova i izvora (HR/EN)' },
   { id: 'world-portals', group: 'generate', file: 'apps/world/build.mjs', why: 'devet svjetskih portala' },
   { id: 'sites-network', group: 'generate', file: 'apps/sites/build.mjs', why: 'šest samostalnih webova' },
   { id: 'arhiva', group: 'generate', file: 'apps/arhiva/engine/build.mjs', why: 'arhiva AKTUAL' },
