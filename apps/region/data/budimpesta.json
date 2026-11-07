@@ -4,17 +4,23 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-11-07T11:33:41.173Z",
+  "updatedAt": "2026-11-07T15:55:27.088Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": true,
-      "fetched": 50,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-07T11:33:37.350Z"
+      "errors": [
+        "https://telex.hu/rss: HTTP 403",
+        "https://telex.hu/rss/belfold: HTTP 403",
+        "https://telex.hu/rss/kulfold: HTTP 403",
+        "https://telex.hu/rss/gazdasag: HTTP 403",
+        "https://telex.hu/rss/sport: HTTP 403"
+      ],
+      "checkedAt": "2026-11-07T15:55:23.281Z"
     },
     {
       "id": "444",
@@ -24,7 +30,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-07T11:33:37.549Z"
+      "checkedAt": "2026-11-07T15:55:23.469Z"
     },
     {
       "id": "hvg",
@@ -34,7 +40,7 @@
       "fetched": 60,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-07T11:33:37.942Z"
+      "checkedAt": "2026-11-07T15:55:23.816Z"
     },
     {
       "id": "portfolio",
@@ -44,7 +50,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-07T11:33:38.607Z"
+      "checkedAt": "2026-11-07T15:55:24.489Z"
     },
     {
       "id": "index",
@@ -56,7 +62,7 @@
       "errors": [
         "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-07T11:33:40.472Z"
+      "checkedAt": "2026-11-07T15:55:26.391Z"
     },
     {
       "id": "24hu",
@@ -66,7 +72,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-07T11:33:40.711Z"
+      "checkedAt": "2026-11-07T15:55:26.632Z"
     },
     {
       "id": "mandiner",
@@ -76,10 +82,418 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-07T11:33:41.173Z"
+      "checkedAt": "2026-11-07T15:55:27.087Z"
     }
   ],
   "items": [
+    {
+      "slug": "budimpesta-2026-11-07-portfolio-baleset-miatt-lezartak-az-m60-as-autopalya-d25989",
+      "title": "Baleset miatt lezárták az M60-as autópálya egyik oldalát",
+      "summary": "Lezárták az M60-as autópálya Pécs felé vezető oldalát szombat délután Szederkénynél, mert egy kisteherautó szalagkorlátnak ütközött - közölte az Útinform a honlapján.",
+      "date": "2026-11-07T15:41:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261107/baleset-miatt-lezartak-az-m60-as-autopalya-egyik-oldalat-874914",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://pcdn.hu/articles/images-xl/m/a/g/magyarorszag-autopalya-546807.jpg",
+      "imageAlt": "Baleset miatt lezárták az M60-as autópálya egyik oldalát",
+      "addedAt": "2026-11-07T15:55:24.490Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-24hu-vitezy-david-otszorosere-emeljuk-az-81e60c",
+      "title": "Vitézy Dávid: Ötszörösére emeljük az útfelújításokra szánt keretet",
+      "summary": "A közlekedési és beruházási miniszter szerint az a cél, hogy ne csak új utak készüljenek, de a meglévőkön is biztonságosabbak legyen a közlekedés. The post Vitézy Dávid: Ötszörösére emeljük az útfelújításokra szánt keretet first appeared on 24.hu .",
+      "date": "2026-11-07T15:36:36.000Z",
+      "url": "https://24.hu/belfold/2026/11/07/vitezy-david-orszagos-kozuthalozat-felujitas-koltsegvetes-noveles/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "vitézy dávid",
+        "útfelújítás",
+        "költség"
+      ],
+      "author": "Birkás Péter",
+      "theme": "politika",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-1099184093-e1794065750228-1024x574.jpg",
+      "imageAlt": "Vitézy Dávid: Ötszörösére emeljük az útfelújításokra szánt keretet",
+      "addedAt": "2026-11-07T15:55:26.632Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-24hu-halalos-lovoldozes-tortent-krakko-bf9044",
+      "title": "Halálos lövöldözés történt Krakkó belvárosában",
+      "summary": "Legalább öt halálos áldozata és tucatnyi sérültje van annak a lövöldözésnek, amely Krakkó történelmi belvárosában történt. A rendőrség őrizetbe vette a feltételezett elkövetőt. The post Halálos lövöldözés történt Krakkó belvárosában first appeared on 24.hu .",
+      "date": "2026-11-07T15:34:36.000Z",
+      "url": "https://24.hu/kulfold/2026/11/07/krakko-lovoldozes-ket-halott-tiz-serult/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Nagyvilág",
+        "lövöldözés",
+        "krakkó",
+        "lengyelország"
+      ],
+      "author": "D. Kovács Ildikó",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/gettyimages-2303483903-1024x683.jpg",
+      "imageAlt": "Halálos lövöldözés történt Krakkó belvárosában",
+      "addedAt": "2026-11-07T15:55:26.632Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-444-valogatas-nelkul-lovoldozni-kezdett-a-1a9304",
+      "title": "Válogatás nélkül lövöldözni kezdett a járókelőkre egy férfi Krakkó fóterén",
+      "summary": "Legalább öt ember meghalt, sok a sebesült.",
+      "date": "2026-11-07T15:33:56.000Z",
+      "url": "https://444.hu/2026/11/07/valogatas-nelkul-lovoldozni-kezdett-a-jarokelokre-egy-ferfi-krakko-foteren?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "rendőrség",
+        "Donald Tusk",
+        "lövöldözés",
+        "lengyelország"
+      ],
+      "author": "Czinkóczi Sándor",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8Pfa6Q97LlJ91p31DNs.jpeg",
+      "imageAlt": "Válogatás nélkül lövöldözni kezdett a járókelőkre egy férfi Krakkó fóterén",
+      "addedAt": "2026-11-07T15:55:23.469Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-portfolio-fegyveres-lovoldozott-krakko-foteren-oten-ac3cae",
+      "title": "Fegyveres lövöldözött Krakkó főterén: öten meghaltak, tucatnyian megsérültek",
+      "summary": "Öt ember életét vesztette, egy tucatnyian pedig megsebesültek egy lövöldözésben Krakkó főterén szombat délután - írja a BBC . A kis-lengyelországi régió rendőrségének tájékoztatása szerint a sérültek között rendőrök is vannak. A támadót meglőtték és kórházba szállítják.",
+      "date": "2026-11-07T15:30:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261107/fegyveres-lovoldozott-krakko-foteren-oten-meghaltak-tucatnyian-megserultek-874910",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://pcdn.hu/articles/images-xl/g/e/t/gettyimages-2169911696-lengyelorszg-poland-vros-vroskp-ptszet-memlk-vilgrks-798857.jpg",
+      "imageAlt": "Fegyveres lövöldözött Krakkó főterén: öten meghaltak, tucatnyian megsérültek",
+      "addedAt": "2026-11-07T15:55:24.490Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-hvg-afrikai-vagy-telen-rendezett-nyari-olimpia-25644b",
+      "title": "Afrikai vagy télen rendezett nyári olimpia, esetleg újra München? – amit Budapest 2036-os versenytársairól tudni lehet",
+      "summary": "A meglévő létesítmények maximális kihasználását, a hosszú távú tervekhez való illeszkedést, de a politikai és társadalmi támogatottságot is vizsgálja a Nemzetközi Olimpiai Bizottság, amikor szűkíti a 2036-os olimpia megrendezésére aspirálók körét. Megnéztük, kikkel versenyez Budapest.",
+      "date": "2026-11-07T15:28:00.000Z",
+      "url": "https://hvg.hu/gazdasag/20261107_olimpia-2036-nob-palyazat-magyarorszag-nemetorszag-india-afrika-katar-korea",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Gazdaság",
+        "olimpia",
+        "olimpiarendezés",
+        "Nemzetközi Olimpiai Bizottság"
+      ],
+      "author": "szerzo@hvg.hu (Horn Andrea)",
+      "theme": "sport",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/6058d5ea-d0dc-4c3a-9401-59dd93f58b33.jpg",
+      "imageAlt": "Afrikai vagy télen rendezett nyári olimpia, esetleg újra München? – amit Budapest 2036-os versenytársairól tudni lehet",
+      "addedAt": "2026-11-07T15:55:23.816Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-hvg-videon-a-lovoldozes-a-krakkoi-foteren-oten-24b76d",
+      "title": "Videón a lövöldözés a krakkói főtéren, öten meghaltak",
+      "summary": "Az elkövetőt a rendőrök meglőtték.",
+      "date": "2026-11-07T15:25:44.000Z",
+      "url": "https://hvg.hu/vilag/20261107_lengyelorszag-krakko-lovoldozes-halottak",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Világ",
+        "bűnügyek",
+        "Lengyelország",
+        "Krakkó"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/4e347d60-b5e3-4e27-8ee3-280165934824.jpg",
+      "imageAlt": "Videón a lövöldözés a krakkói főtéren, öten meghaltak",
+      "addedAt": "2026-11-07T15:55:23.816Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-24hu-nemet-katonai-beavatkozasrol-szolo-alhirek-febe83",
+      "title": "Német katonai beavatkozásról szóló álhírek terjednek Lengyelországban",
+      "summary": "Több ezer hamis vagy félrevezető tartalom jelent meg Lengyelországban az alkotmánybírósági válság idején. A hatóságok szerint számos esetben bothálózatok és manipulált képek állnak a háttérben. The post Német katonai beavatkozásról szóló álhírek terjednek Lengyelországban first appeared on 24.hu .",
+      "date": "2026-11-07T15:22:17.000Z",
+      "url": "https://24.hu/kulfold/2026/11/07/lengyelorszag-alhirek-alkotmanybirosag-valsag/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Nagyvilág",
+        "lengyelország",
+        "válság",
+        "álhírek"
+      ],
+      "author": "D. Kovács Ildikó",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/000_d6be3ke-e1794064833146-1024x575.jpg",
+      "imageAlt": "Német katonai beavatkozásról szóló álhírek terjednek Lengyelországban",
+      "addedAt": "2026-11-07T15:55:26.632Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-portfolio-odacsapna-a-rivalisoknak-trump-vilagra-da2724",
+      "title": "Odacsapna a riválisoknak Trump: világra szóló megarendezvénnyel mutatja meg Amerika az erejét",
+      "summary": "Donald Trump amerikai elnök és az amerikai Nemzeti Repülési és Űrhajózási Hivatal (NASA) pénteken bemutatta egy új amerikai űr- és repülőipari rendezvény terveit, amely az elnök ígérete szerint a világ más országaiban tartott legnagyobb légibemutatókat is felülmúlja.",
+      "date": "2026-11-07T15:21:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261107/odacsapna-a-rivalisoknak-trump-vilagra-szolo-megarendezvennyel-mutatja-meg-amerika-az-erejet-874908",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://pcdn.hu/articles/images-xl/r/a/k/raketa-602878.jpg",
+      "imageAlt": "Odacsapna a riválisoknak Trump: világra szóló megarendezvénnyel mutatja meg Amerika az erejét",
+      "addedAt": "2026-11-07T15:55:24.490Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-444-lekerult-kovacs-katalin-neve-a-sukoroi-a781c1",
+      "title": "Lekerült Kovács Katalin neve a sukorói Kajak-Kenu Akadémiáról",
+      "summary": "Ezután a bérleti díjat is beszdi az állam. A létesítmény Velencei-tavi Olimpiai és Paralimpiai Központ néven működne tovább.",
+      "date": "2026-11-07T15:14:16.000Z",
+      "url": "https://444.hu/2026/11/07/lekerult-kovacs-katalin-neve-a-sukoroi-kajak-kenu-akademiarol?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "schmidt ádám",
+        "Kovács Katalin Nemzeti Kajak-Kenu Akadémia",
+        "sukoró",
+        "magyar kajak-kenu szövetség"
+      ],
+      "author": "Czinkóczi Sándor",
+      "theme": "sport",
+      "image": "https://assets.4cdn.hu/kraken/86iZyQoI1D0G1xY1J2s.jpeg",
+      "imageAlt": "Lekerült Kovács Katalin neve a sukorói Kajak-Kenu Akadémiáról",
+      "addedAt": "2026-11-07T15:55:23.469Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-hvg-krug-emilia-elarulta-miert-valtott-27136f",
+      "title": "Krug Emília elárulta, miért váltott munkahelyet",
+      "summary": "Azt viszont egyelőre nem tudni, mikor kerül újra képernyőre.",
+      "date": "2026-11-07T15:14:16.000Z",
+      "url": "https://hvg.hu/elet/20261107_krug-emilia-network-4",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Élet+Stílus",
+        "média",
+        "Krug Emília",
+        "NETWORK4"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/57d1019b-8804-45fe-b7df-d46a9e6b58d6.jpg",
+      "imageAlt": "Krug Emília elárulta, miért váltott munkahelyet",
+      "addedAt": "2026-11-07T15:55:23.817Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-portfolio-megszolalt-a-fideszes-polgarmester-a-tisza-b2aa1d",
+      "title": "Megszólalt a fideszes polgármester a Tisza-kormány költségvetéséről: egymilliárd forintot spórolhatnak egyetlen lépésen",
+      "summary": "A benyújtott 2027-es központi költségvetési javaslat egyes elemei enyhíthetik Kecskemét pénzügyi terheit, de továbbra is szoros gazdálkodásra kell készülni - közölte a megyei jogú város polgármestere az MTI-vel.",
+      "date": "2026-11-07T15:14:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261107/megszolalt-a-fideszes-polgarmester-a-tisza-kormany-koltsegveteserol-egymilliard-forintot-sporolhatnak-egyetlen-lepesen-874906",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://pcdn.hu/articles/images-xl/g/e/t/gettyimages-2256565460-812526.jpg",
+      "imageAlt": "Megszólalt a fideszes polgármester a Tisza-kormány költségvetéséről: egymilliárd forintot spórolhatnak egyetlen lépésen",
+      "addedAt": "2026-11-07T15:55:24.490Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-hvg-nosztalgiazik-a-sony-szines-attetszo-7910cd",
+      "title": "Nosztalgiázik a Sony: színes, áttetsző kontrollerek jönnek a PS5-höz",
+      "summary": "Az áttetsző kontroller nem újdonság a Sony kínálatában, a színes, átlátszó DualShock kontrollerek különösen emlékezetesek voltak az eredeti PlayStation korszakában, 1998 körül. Hasonlókkal rukkol ki most is, ám vannak, akik szerint ezzel csak azt akarja feledtetni, hogy meg fogja szüntetni a fizikai lemezek gyártását.",
+      "date": "2026-11-07T15:03:00.000Z",
+      "url": "https://hvg.hu/tudomany/20261107_szines-attetszo-ps5-kontroller-konzoltok-sony",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Tech",
+        "tech",
+        "videojáték",
+        "konzol"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/f5dd1d50-b03a-4b85-914b-1228b09bed06.jpg",
+      "imageAlt": "Nosztalgiázik a Sony: színes, áttetsző kontrollerek jönnek a PS5-höz",
+      "addedAt": "2026-11-07T15:55:23.817Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-24hu-a-nok-szovetsegi-kapitanya-vegig-furt-a-605b7a",
+      "title": "„A nők szövetségi kapitánya végig fúrt a háttérből” – a külföldön sikeres tornaedző itthon nem bírt a közeggel",
+      "summary": "A brit és a svájci tornasportban elért sikerei után a hazai utánpótlásban szerette volna hasznosítani a tapasztalatait Jordanov Zoltán, ám azzal szembesült, hogy az edzőkollégák egy része szabotálja a közös munkát. Jordanov úgy véli, a női szövetségi kapitány hangolta ellene a többi edzőt. The post „A nők szövetségi kapitánya végig fúrt a háttérből” – a külföldön sikeres tornaedző itthon nem bírt a közeggel first appeared on 24.hu .",
+      "date": "2026-11-07T15:00:13.000Z",
+      "url": "https://24.hu/sport/2026/11/07/magyar-noi-torna-utanpotlas-jordanov-zoltan-draskoczy-imre/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Sport",
+        "draskóczy imre",
+        "jordanov zoltán",
+        "sport"
+      ],
+      "author": "Dajka Balázs",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/10/gettyimages-1037127076-e1794063901239-1024x577.jpg",
+      "imageAlt": "„A nők szövetségi kapitánya végig fúrt a háttérből” – a külföldön sikeres tornaedző itthon nem bírt a közeggel",
+      "addedAt": "2026-11-07T15:55:26.632Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-hvg-ijeszto-video-elszabadult-gumiabroncs-40de35",
+      "title": "Ijesztő videó: elszabadult gumiabroncs terített le egy sétáló fiatalt",
+      "summary": "A fiatalt kórházba szállították, agyrázkódással megúszta az esetet",
+      "date": "2026-11-07T14:55:04.000Z",
+      "url": "https://hvg.hu/elet/20261107_repulo-gumiabroncs-setalo-fiatal-agyrazkodas-chile",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Élet+Stílus",
+        "világ",
+        "gumiabroncs",
+        "agyrázkódás"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/f40dfd71-1c0f-44f4-8e9f-b2a64e67b525.jpg",
+      "imageAlt": "Ijesztő videó: elszabadult gumiabroncs terített le egy sétáló fiatalt",
+      "addedAt": "2026-11-07T15:55:23.817Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-hvg-hegedus-zsolt-az-egeszsegugyi-beremelesrol-d2f7be",
+      "title": "Hegedűs Zsolt az egészségügyi béremelésről: Senki nem kerül át másik, főleg alacsonyabb kategóriába",
+      "summary": "Leírta azt is, mi változik.",
+      "date": "2026-11-07T14:48:46.000Z",
+      "url": "https://hvg.hu/elet/20261107_hegedus-zsolt-egeszsegugyi-beremeles-kategoriak",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Élet+Stílus",
+        "egészségügy",
+        "Hegedűs Zsolt",
+        "béremelés"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/9b4a823e-9759-43db-b552-8e8d89b39fdf.jpg",
+      "imageAlt": "Hegedűs Zsolt az egészségügyi béremelésről: Senki nem kerül át másik, főleg alacsonyabb kategóriába",
+      "addedAt": "2026-11-07T15:55:23.817Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-24hu-kina-egy-cegvezetot-szervezett-be-hogy-05c117",
+      "title": "Kína egy cégvezetőt szervezett be, hogy kémkedjen az Nvidia vezére után",
+      "summary": "A New York Times értesülései szerint azzal bízták meg egy MI-cég egyik vezetőjét, hogy szerezzen információkat az amerikai MI-chipekről. The post Kína egy cégvezetőt szervezett be, hogy kémkedjen az Nvidia vezére után first appeared on 24.hu .",
+      "date": "2026-11-07T14:48:27.000Z",
+      "url": "https://24.hu/tech/2026/11/07/jensen-huang-kina-kem-beszervezes/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Tech",
+        "jensen huang",
+        "nvidia",
+        "kina"
+      ],
+      "author": "Birkás Péter",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/jensen-huang-nvidia-kina-kem-beszervezes-2301328017-e1794062782688-1024x574.jpg",
+      "imageAlt": "Kína egy cégvezetőt szervezett be, hogy kémkedjen az Nvidia vezére után",
+      "addedAt": "2026-11-07T15:55:26.632Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-24hu-felszamoljak-a-12-percnyi-kesest-okozo-87ba60",
+      "title": "Felszámolják a 12 percnyi késést okozó lassújeleket a győri fővonalon",
+      "summary": "Több mint tíz helyszínen dolgoznak a szakemberek a Budapest–Győr–Hegyeshalom-vonalon. The post Felszámolják a 12 percnyi késést okozó lassújeleket a győri fővonalon first appeared on 24.hu .",
+      "date": "2026-11-07T14:41:05.000Z",
+      "url": "https://24.hu/belfold/2026/11/07/gyori-fovonal-vasut-felujitas-vitezy-david/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "máv",
+        "lassújelek",
+        "vasút"
+      ],
+      "author": "D. Kovács Ildikó",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-0514593882-e1794062353616-1024x575.jpg",
+      "imageAlt": "Felszámolják a 12 percnyi késést okozó lassújeleket a győri fővonalon",
+      "addedAt": "2026-11-07T15:55:26.632Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-444-zelenszkij-szerint-az-oroszok-eszak-koreai-e75834",
+      "title": "Zelenszkij szerint az oroszok észak-koreai rakétákkal is lőtték őket",
+      "summary": "Az oroszok éjszaka 36 ballisztikus rakétát és 172 drónt lőttek ki Ukrajnára.",
+      "date": "2026-11-07T14:38:27.000Z",
+      "url": "https://444.hu/2026/11/07/zelenszkij-szerint-az-oroszok-eszak-koreai-raketakkal-is-lottek-oket?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "Abu-Dzabi",
+        "kijev",
+        "oroszország",
+        "orosz-ukrán háború"
+      ],
+      "author": "Czinkóczi Sándor",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8PfWClZH4QpumORBs.jpeg",
+      "imageAlt": "Zelenszkij szerint az oroszok észak-koreai rakétákkal is lőtték őket",
+      "addedAt": "2026-11-07T15:55:23.470Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-444-ot-evre-kitiltottak-az-europai-stadionokbol-fbf671",
+      "title": "Öt évre kitiltották az európai stadionokból a Mussolinit éltető Fradi-szurkolót",
+      "summary": "Az olasz rendőrség beazonosította azt a Fradi-szurkolót, aki csütörtökön a milánói dóm előtt Benito Mussolinit ábrázoló pólóban éltette a fasiszta diktátort, miközben több száz társával karlendítéseke...",
+      "date": "2026-11-07T13:54:11.000Z",
+      "url": "https://444.hu/2026/11/07/ot-evre-kitiltottak-az-europai-stadionokbol-a-mussolinit-elteto-fradi-szurkolot?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "olaszország",
+        "kubatov gábor",
+        "milánó",
+        "Ferencváros"
+      ],
+      "author": "Czinkóczi Sándor",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8PfSCYqCDTiSTqO8s.png",
+      "imageAlt": "Öt évre kitiltották az európai stadionokból a Mussolinit éltető Fradi-szurkolót",
+      "addedAt": "2026-11-07T15:55:23.470Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-444-ki-lehet-egyaltalan-szallni-ebbol-a-64bb4f",
+      "title": "Ki lehet egyáltalán szállni ebből a mocsokból? – megjelent Panyi Szabolcs könyve a magyarországi orosz befolyásról",
+      "summary": "Megjelent Panyi Szabolcs Barátság extrákkal – Putyin szolgálói és szolgálatai Magyarországon című könyve, amelyben Panyi azt mutatja meg, hogy a magyarország orosz befolyás nem egyszerűen megtűrt jelenség: a magyar politikai és gazdasági elit nyitottságával találkozva kurzusokon átívelve újra és újra utat talál az állam legfontosabb intézményeibe.",
+      "date": "2026-11-07T13:10:10.000Z",
+      "url": "https://444.hu/2026/11/07/ki-lehet-egyaltalan-szallni-ebbol-a-mocsokbol-megjelent-panyi-szabolcs-konyve-a-magyarorszagi-orosz-befolyasrol?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "gru",
+        "panyi szabolcs",
+        "fidesz",
+        "kádár-korszak"
+      ],
+      "author": "Takács Lili",
+      "theme": "sigurnost",
+      "image": "https://assets.4cdn.hu/kraken/82u3CqCyVJpeSEIps.jpeg",
+      "imageAlt": "Ki lehet egyáltalán szállni ebből a mocsokból? – megjelent Panyi Szabolcs könyve a magyarországi orosz befolyásról",
+      "addedAt": "2026-11-07T15:55:23.470Z"
+    },
     {
       "slug": "budimpesta-2026-11-07-hvg-lehet-e-egy-ceruzahegyezovel-ujat-mondani-9c24ec",
       "title": "Lehet-e egy ceruzahegyezővel újat mondani? „Best of the best” díjakat kaptak magyar tervezők",
