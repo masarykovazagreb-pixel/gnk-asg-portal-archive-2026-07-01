@@ -30,6 +30,7 @@ const GATES = [
   { name: 'Produkcijski deploy — samo kanonski main', cmd: ['node', '--test', 'tests/test-main-only-network-deploy-v1.mjs'], required: true },
   { name: 'Brojke huba — HR i EN', cmd: ['node', '--test', 'tests/test-hub-counts-v1.mjs'], required: true },
   { name: 'Opis huba — puno ime urednika', cmd: ['node', '--test', 'tests/test-central-description-v1.mjs'], required: true },
+  { name: 'Inventar mreže i izvora', cmd: ['node', '--test', 'tests/test-network-inventory-v1.mjs'], required: true },
   { name: 'Dodatni plan — 500 zadataka', cmd: ['node', '--test', 'scripts/factory/test-improvement-work-500-v2.mjs'], required: true },
   { name: 'Alternativno izdanje — lokalni pregled', cmd: ['node', '--test', 'apps/aktual-free/test-build.mjs'], required: true },
   { name: 'Svijet — registar 10.000 zadataka', cmd: ['node', '--test', 'scripts/factory/test-world-work-10000-v1.mjs'], required: true },
