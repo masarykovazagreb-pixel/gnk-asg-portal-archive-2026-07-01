@@ -24,9 +24,9 @@ permissions:
   actions: write
 
 concurrency:
-  # Single writer for this resource; cross-resource contention is guarded by
-  # exact-main-SHA/non-force Git push or checked rebase, not by a global queue.
-  group: gnk-asg-news-writer
+  # Serialize this canonical news writer with all main mutations/deploys.
+  # The dedicated writer guards and exact-main-SHA checks remain in force.
+  group: gnk-asg-main-mutation
   cancel-in-progress: false
 
 jobs:
