@@ -187,7 +187,7 @@ for route in commentary_routes:
 
 sitemap_entries = [entry(page) for page in PAGES]
 sitemap_entries.extend(commentary_sitemap_entry(route) for route in commentary_routes)
-(ROOT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\\n'+'\\n'.join(sitemap_entries)+'\\n</urlset>\\n', encoding='utf-8')
+(ROOT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'+'\n'.join(sitemap_entries)+'\n</urlset>\n', encoding='utf-8')
 
 # robots.txt is maintained as a reviewed, versioned policy file, not generated.
 # Overwriting it here previously removed all named crawler groups and exposed
