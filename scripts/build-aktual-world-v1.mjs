@@ -92,7 +92,8 @@ function buildCountryPage(country) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">\n<link rel="stylesheet" href="/assets/am-design-v1.css" data-am-design="v1">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/am-design-v1.css" data-am-design="v1">
 <title>${escHtml(title)}</title>
 <meta name="description" content="${escHtml(description)}">
 <meta name="keywords" content="Aktual Media ${country.nameEn}, ${country.nameLocal} vijesti, ${country.nameEn} news, ${country.region} news, GNK ASG, GNK Dinamo Ltd, Aktual Media">
@@ -202,7 +203,8 @@ function buildCityPage(city) {
   const title = `AKTUAL MEDIA ${city.nameLocal} — izvori`;
   const cityDescription = `Pregled izvora i poveznica za ${city.nameLocal}. Vijesti ostaju na webu izvornog izdavača; prikazuju se samo provjereni svježi naslovi.`;
   return `<!doctype html>
-<html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">\n<link rel="stylesheet" href="/assets/am-design-v1.css" data-am-design="v1">
+<html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="/assets/am-design-v1.css" data-am-design="v1">
 <title>${escHtml(title)}</title><meta name="description" content="${escHtml(cityDescription)}">
 <link rel="canonical" href="${escHtml(url)}"><link rel="alternate" hreflang="hr" href="${escHtml(url)}"><link rel="alternate" hreflang="x-default" href="${escHtml(url)}"><link rel="alternate" type="application/rss+xml" href="${escHtml(url)}feed.xml" title="RSS ${escHtml(city.nameLocal)}">
 <meta name="robots" content="index,follow">
