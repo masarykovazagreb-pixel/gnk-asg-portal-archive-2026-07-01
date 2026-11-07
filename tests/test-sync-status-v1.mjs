@@ -49,6 +49,9 @@ if (data) {
   for (const id of channelIds) check(webIds.has(id), `ploča ne prikazuje izdanje ${id}`);
   check(data.webs.length >= 32, `ploča prikazuje ${data.webs.length} webova (očekivano najmanje 32)`);
 
+  /* Checkout/build mtimes are not evidence that a website was published. */
+  check(data.webs.every((web) => web.newest === null), 'vrijeme objave nije neovisno potvrđeno');
+
   /* Zapis mora nositi vrijeme i verziju — inače se ne zna koliko je star. */
   check(Boolean(data.generatedAt), 'sync.json nema generatedAt');
   check(data.version === 'AKTUAL_MEDIA_SYNC_STATUS_V1', 'sync.json nema ispravnu verziju');

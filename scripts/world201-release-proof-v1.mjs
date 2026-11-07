@@ -17,13 +17,13 @@ export function checkPublicResponse({name, headers, body, expectedSha}) {
   const type=(map.get('content-type')||'').toLowerCase();
   if(name==='html'){
     if(!type.includes('text/html'))errors.push('html: unexpected content type');
-    if(!/<html\b/i.test(body)||!/aktual/i.test(body)||/\b404\b|stranica nije pronađena/i.test(body))errors.push('html: expected edition content absent');
+    if(!/<html\b/i.test(body)||!/aktual/i.test(body)||!body.includes('https://gnk-asg.hr/gnk-aktual/media/hrvatska/')||/\b404\b|stranica nije pronađena/i.test(body))errors.push('html: expected edition content absent');
   }else if(name==='feed'){
     if(!/(xml|rss|atom)/.test(type))errors.push('feed: unexpected content type');
-    if(!/<(?:rss|feed)\b/i.test(body)||!/<(?:item|entry)\b/i.test(body))errors.push('feed: missing feed or entries');
+    if(!/<rss\b/i.test(body)||!body.includes('https://gnk-asg.hr/gnk-aktual/media/hrvatska/'))errors.push('feed: missing expected channel');
   }else if(name==='sitemap'){
     if(!/xml/.test(type))errors.push('sitemap: unexpected content type');
-    if(!/<(?:urlset|sitemapindex)\b/i.test(body)||!/<loc>\s*https:\/\/gnk-asg\.hr\//i.test(body))errors.push('sitemap: expected canonical entries absent');
+    if(!/<urlset\b/i.test(body)||!body.includes('https://gnk-asg.hr/gnk-aktual/media/hrvatska/'))errors.push('sitemap: expected canonical entries absent');
   }else errors.push('unknown response');
   return errors;
 }

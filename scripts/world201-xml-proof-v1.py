@@ -12,12 +12,15 @@ def check(path, kind):
     root = ET.fromstring(raw)
     local = lambda tag: tag.rsplit('}', 1)[-1].lower()
     if kind == 'feed':
-        if local(root.tag) not in {'rss', 'feed'} or not any(local(x.tag) in {'item', 'entry'} for x in root.iter()):
-            raise ValueError('feed: missing root or entries')
+        channel = next((x for x in root if local(x.tag) == 'channel'), None)
+        if local(root.tag) != 'rss' or channel is None or not any(
+            local(x.tag) == 'link' and (x.text or '').strip() == 'https://gnk-asg.hr/gnk-aktual/media/hrvatska/' for x in channel
+        ):
+            raise ValueError('feed: missing expected RSS channel or canonical link')
     elif kind == 'sitemap':
-        if local(root.tag) not in {'urlset', 'sitemapindex'}:
+        if local(root.tag) != 'urlset':
             raise ValueError('sitemap: invalid root')
-        if not any(local(x.tag) == 'loc' and (x.text or '').strip().startswith('https://gnk-asg.hr/') for x in root.iter()):
+        if not any(local(x.tag) == 'loc' and (x.text or '').strip() == 'https://gnk-asg.hr/gnk-aktual/media/hrvatska/' for x in root.iter()):
             raise ValueError('sitemap: no canonical location')
     else:
         raise ValueError('unknown XML kind')

@@ -19,6 +19,8 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { refreshTag } from '../apps/shared/refresh-tag-v1.mjs';
+import { impressumBlock } from '../apps/shared/impressum-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
@@ -192,6 +194,8 @@ a:hover{text-decoration:underline}
     <p><a href="${BASE}">← Natrag na AKTUAL MEDIA</a> · <a href="https://gnk-asg.hr/nermin-sefic/">Nermin Sefić</a> · <a href="https://gnk-asg.hr/gnk-aktual/">GNK Aktual</a></p>
   </div>
 </div>
+${impressumBlock('hr', {compact:true})}
+${refreshTag('/')}
 </body>
 </html>`;
 }
@@ -206,7 +210,10 @@ function buildCityPage(city) {
   return `<!doctype html>
 <html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="/assets/am-design-v1.css" data-am-design="v1">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <title>${escHtml(title)}</title><meta name="description" content="${escHtml(cityDescription)}">
+<meta name="keywords" content="AKTUAL MEDIA, GNK ASG, GNK DINAMO Ltd, Nermin Sefić">
+<meta name="hashtags" content="#NerminSefić #NerminSefic #GNKASG #GNKDinamoLtd #AktualMedia">
 <link rel="canonical" href="${escHtml(url)}"><link rel="alternate" hreflang="hr" href="${escHtml(url)}"><link rel="alternate" hreflang="x-default" href="${escHtml(url)}"><link rel="alternate" type="application/rss+xml" href="${escHtml(url)}feed.xml" title="RSS ${escHtml(city.nameLocal)}">
 <meta name="robots" content="index,follow">
 <meta property="og:type" content="website"><meta property="og:site_name" content="AKTUAL MEDIA"><meta property="og:title" content="${escHtml(title)}"><meta property="og:description" content="${escHtml(cityDescription)}"><meta property="og:url" content="${escHtml(url)}"><meta property="og:image" content="https://gnk-asg.hr/assets/people/nermin-sefic/nermin-sefic-01-official-desk-portrait.webp">
@@ -220,6 +227,8 @@ function buildCityPage(city) {
 <p class="muted">${headlines.length ? `Poveznice na izvornike, zadnji uspješan dohvat: ${escHtml(cache.updatedAt)}.` : 'Nema svježih provjerenih naslova za ovo izdanje; vijesti nisu automatski objavljene.'}</p>
 <ul>${headlineMarkup}</ul><p><a href="${escHtml(url)}feed.xml">RSS feed</a></p>
 <p class="muted">Prikaz sadrži samo naslove i poveznice. Dostupnost izvora i licencna prava ovise o izvornom izdavaču.</p>
+${impressumBlock('hr', {compact:true})}
+${refreshTag('/')}
 </body></html>`;
 }
 function buildCityRss(city) {
