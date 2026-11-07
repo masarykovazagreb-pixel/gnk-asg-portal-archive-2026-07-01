@@ -11,6 +11,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   refresh-pr:
+    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
