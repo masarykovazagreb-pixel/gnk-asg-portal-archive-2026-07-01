@@ -4,17 +4,23 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-11-07T16:23:56.875Z",
+  "updatedAt": "2026-11-07T21:45:05.982Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": true,
-      "fetched": 50,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-07T16:23:52.402Z"
+      "errors": [
+        "https://telex.hu/rss: HTTP 403",
+        "https://telex.hu/rss/belfold: HTTP 403",
+        "https://telex.hu/rss/kulfold: HTTP 403",
+        "https://telex.hu/rss/gazdasag: HTTP 403",
+        "https://telex.hu/rss/sport: HTTP 403"
+      ],
+      "checkedAt": "2026-11-07T21:45:01.941Z"
     },
     {
       "id": "444",
@@ -24,7 +30,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-07T16:23:52.626Z"
+      "checkedAt": "2026-11-07T21:45:02.191Z"
     },
     {
       "id": "hvg",
@@ -34,7 +40,7 @@
       "fetched": 60,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-07T16:23:53.001Z"
+      "checkedAt": "2026-11-07T21:45:02.550Z"
     },
     {
       "id": "portfolio",
@@ -44,7 +50,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-07T16:23:53.869Z"
+      "checkedAt": "2026-11-07T21:45:03.275Z"
     },
     {
       "id": "index",
@@ -56,7 +62,7 @@
       "errors": [
         "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-07T16:23:55.712Z"
+      "checkedAt": "2026-11-07T21:45:05.210Z"
     },
     {
       "id": "24hu",
@@ -66,7 +72,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-07T16:23:55.928Z"
+      "checkedAt": "2026-11-07T21:45:05.435Z"
     },
     {
       "id": "mandiner",
@@ -76,10 +82,435 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-07T16:23:56.875Z"
+      "checkedAt": "2026-11-07T21:45:05.982Z"
     }
   ],
   "items": [
+    {
+      "slug": "budimpesta-2026-11-07-hvg-harom-holttestet-talaltak-a-krakkoi-b3c934",
+      "title": "Három holttestet találtak a krakkói merénylő otthonában",
+      "summary": "Két nő és egy férfi holttesttét találták meg a férfi otthonában, az áldozatok feltehetően az elkövető családtagjai.",
+      "date": "2026-11-07T21:31:29.000Z",
+      "url": "https://hvg.hu/vilag/20261107_harom-holttest-krakko-lengyelorszag-lovoldozes-tamadas-merenylo-otthon-ebx",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Világ",
+        "bűnügyek",
+        "Lengyelország",
+        "Krakkó"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/96c6318d-9a5d-45e8-af90-1bd18f49dfe1.jpg",
+      "imageAlt": "Három holttestet találtak a krakkói merénylő otthonában",
+      "addedAt": "2026-11-07T21:45:02.550Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-hvg-gadi-eisenkotot-bizza-meg-a-61cef6",
+      "title": "Gadi Eisenkotot bízza meg a kormányalakítással az izraeli államfő",
+      "summary": "A kneszet többsége Netanjahu ellenlábasát javasolta kormányfőnek. Ettől még a patthelyzet marad.",
+      "date": "2026-11-07T21:24:16.000Z",
+      "url": "https://hvg.hu/vilag/20261107_gadi-eisenkot-izrael-kormanyalakitas-megbizas",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Világ",
+        "világ",
+        "Gadi Eisenkot",
+        "Benjamin Netanjahu"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/f1c6480f-311b-407c-af58-9bcb091f6c5a.jpg",
+      "imageAlt": "Gadi Eisenkotot bízza meg a kormányalakítással az izraeli államfő",
+      "addedAt": "2026-11-07T21:45:02.550Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-24hu-krakkoi-lovoldozes-harom-holttestet-e4e895",
+      "title": "Krakkói lövöldözés: három holttestet találtak az elkövető otthonában",
+      "summary": "Ezt a lengyel kormányfő jelentette be. A helyi rendőrfőkapitány szerint legalább egy külföldi állampolgár is van a vérengzés áldozatai között. The post Krakkói lövöldözés: három holttestet találtak az elkövető otthonában first appeared on 24.hu .",
+      "date": "2026-11-07T21:22:58.000Z",
+      "url": "https://24.hu/kulfold/2026/11/07/krakko-lovoldozes-elkoveto-otthona-holttestek-breaking/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Nagyvilág",
+        "lengyelország",
+        "krakkó",
+        "támadás"
+      ],
+      "author": "Vaskor Máté",
+      "theme": "politika",
+      "image": "https://s.24.hu/app/uploads/2026/11/000_d6rn7yz-e1794086565706.jpg",
+      "imageAlt": "Krakkói lövöldözés: három holttestet találtak az elkövető otthonában",
+      "addedAt": "2026-11-07T21:45:05.435Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-hvg-elso-munkanapja-elott-visszalepett-az-egyik-fe06b2",
+      "title": "Első munkanapja előtt visszalépett az egyik tankerületi vezető",
+      "summary": "Balogh Tamás László gyorsan kicsekkolt, egyelőre nem tudni, miért.",
+      "date": "2026-11-07T20:54:55.000Z",
+      "url": "https://hvg.hu/itthon/20261107_tankerulet-vezeto-balogh-tamas-laszlo-visszalepes",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "oktatás",
+        "tankerületi vezetők",
+        "Balogh Tamás"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/274feda1-37df-453c-9a17-a9ab9d70c3e9.jpg",
+      "imageAlt": "Első munkanapja előtt visszalépett az egyik tankerületi vezető",
+      "addedAt": "2026-11-07T21:45:02.550Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-portfolio-tisza-kormany-megszolalt-a-5af9ef",
+      "title": "Tisza-kormány: megszólalt a Külügyminisztérium a lövöldözésről",
+      "summary": "Szombati videójában Orbán Anita külügyminiszter bejelentette, hogy hazánk újra részt vesz a balti államok légtérvédelmében. Több mint egymilliárd forint közpénzt költöttek az Erzsébet-táborok reklámozására az áprilisi választások előtt - ez már Kátai-Németh Vilmos szociális és családügyi miniszter bejegyzéséből derült ki.",
+      "date": "2026-11-07T20:50:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261107/tisza-kormany-megszolalt-a-kulugyminiszterium-a-lovoldozesrol-874850",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://pcdn.hu/articles/images-xl/d/_/h/d-hr20261104029-867610.jpg",
+      "imageAlt": "Tisza-kormány: megszólalt a Külügyminisztérium a lövöldözésről",
+      "addedAt": "2026-11-07T21:45:03.275Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-portfolio-dragulnak-az-autopalya-matricak-mutatjuk-a-b4a918",
+      "title": "Drágulnak az autópálya-matricák, mutatjuk a jövő évi díjakat",
+      "summary": "Megjelentek a 2027. január 1-jétől érvényes hivatalos autópálya-matrica-árak. A D1 kategóriába tartozó személyautók éves országos matricája 62 560 forintba, az éves megyei matrica 7280 forintba kerül 2027-ben. Az augusztusi, 1,3 százalékos inflációhoz igazodó díjemelés mellett az M1 regionális matrica ára változatlan marad.",
+      "date": "2026-11-07T20:50:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261107/dragulnak-az-autopalya-matricak-mutatjuk-a-jovo-evi-dijakat-874952",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://pcdn.hu/articles/images-xl/g/e/t/gettyimages-504907591-autopalya-forgalom-infrastruktura-kozlekedes-kozlekedesfejlesztes-koz-761149.jpg",
+      "imageAlt": "Drágulnak az autópálya-matricák, mutatjuk a jövő évi díjakat",
+      "addedAt": "2026-11-07T21:45:03.275Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-24hu-lando-norris-nyerte-a-zuhogo-eso-miatt-5a037d",
+      "title": "Lando Norris nyerte a zuhogó eső miatt káoszba fulladó időmérőt",
+      "summary": "Sokáig úgy tűnt, meg se lehet tartani az időmérőt, végül a címvédő zárt az élen. The post Lando Norris nyerte a zuhogó eső miatt káoszba fulladó időmérőt first appeared on 24.hu .",
+      "date": "2026-11-07T20:47:21.000Z",
+      "url": "https://24.hu/sport/forma-1/2026/11/07/sao-paulo-i-nagydij-idomero-lando-norris/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Forma-1",
+        "sport",
+        "forma-1",
+        "sao pauló-i nagydíj"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/gettyimages-2304004459-e1794084327986-1024x575.jpg",
+      "imageAlt": "Lando Norris nyerte a zuhogó eső miatt káoszba fulladó időmérőt",
+      "addedAt": "2026-11-07T21:45:05.435Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-24hu-fokozott-keszultseget-rendelt-el-a-cseh-94ca7b",
+      "title": "Fokozott készültséget rendelt el a cseh rendőrség a krakkói lövöldözés után",
+      "summary": "Megelőző biztonsági intézkedéseket vezet be a cseh rendőrség a krakkói lövöldözés után, többek között megerősített utcai jelenléttel és fokozott rendezvénybiztosítással. The post Fokozott készültséget rendelt el a cseh rendőrség a krakkói lövöldözés után first appeared on 24.hu .",
+      "date": "2026-11-07T20:46:11.000Z",
+      "url": "https://24.hu/kulfold/2026/11/07/csehorszag-biztonsagi-intezkedesek-krakko-lovoldozes/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Nagyvilág",
+        "krakkó",
+        "lövöldözés",
+        "csehország"
+      ],
+      "author": "D. Kovács Ildikó",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/gettyimages-2303548493-e1794084275908-1024x575.jpg",
+      "imageAlt": "Fokozott készültséget rendelt el a cseh rendőrség a krakkói lövöldözés után",
+      "addedAt": "2026-11-07T21:45:05.436Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-hvg-tesokat-megtalaltuk-szijjarto-peter-b35e6f",
+      "title": "„Tesókát megtaláltuk” – Szijjártó Péter előkerült, Dubajban tölti az időt",
+      "summary": "Egy magyar youtuber posztolt róla.",
+      "date": "2026-11-07T20:26:45.000Z",
+      "url": "https://hvg.hu/elet/20261107_szijjarto-peter-elokerult-dubajban",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Élet+Stílus",
+        "belpolitika",
+        "Szijjártó Péter",
+        "Dubaj"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/841c3ac8-c229-4efa-aa1f-453a6a316eaa.jpg",
+      "imageAlt": "„Tesókát megtaláltuk” – Szijjártó Péter előkerült, Dubajban tölti az időt",
+      "addedAt": "2026-11-07T21:45:02.550Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-portfolio-uj-muszakot-indit-a-tesla-a-cybertruck-f25f8a",
+      "title": "Új műszakot indít a Tesla a Cybertruck gyártására",
+      "summary": "Újabb műszakot indít a Tesla a Cybertruck gyártósorán, hogy a vállalat még a gyártósor jövő nyári felszámolása előtt teljesíteni tudja a meglévő megrendeléseket. A texasi üzemben felszabaduló kapacitásokat az önvezető Cybercab gyártásának felfuttatására csoportosítják át - írja a Reuters.",
+      "date": "2026-11-07T20:26:00.000Z",
+      "url": "https://www.portfolio.hu/uzlet/20261107/uj-muszakot-indit-a-tesla-a-cybertruck-gyartasara-874950",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Üzlet"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://pcdn.hu/articles/images-xl/c/y/b/cybertruck-867666.jpg",
+      "imageAlt": "Új műszakot indít a Tesla a Cybertruck gyártására",
+      "addedAt": "2026-11-07T21:45:03.275Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-24hu-elhunyt-az-ujpestiek-olimpiai-ezustermes-fecf51",
+      "title": "Elhunyt az újpestiek olimpiai ezüstérmes kapusa, Rothermel Ádám",
+      "summary": "78 éves volt. The post Elhunyt az újpestiek olimpiai ezüstérmes kapusa, Rothermel Ádám first appeared on 24.hu .",
+      "date": "2026-11-07T20:20:55.000Z",
+      "url": "https://24.hu/sport/foci/2026/11/07/meghalt-rothermel-adam/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Foci",
+        "sport",
+        "foci",
+        "labdarúgás"
+      ],
+      "author": "24.hu",
+      "theme": "sport",
+      "image": "https://s.24.hu/app/uploads/2026/10/central-0803252769-27-1024x576.jpg",
+      "imageAlt": "Elhunyt az újpestiek olimpiai ezüstérmes kapusa, Rothermel Ádám",
+      "addedAt": "2026-11-07T21:45:05.436Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-24hu-trump-a-ufc-elnoket-kerte-fel-feher-hazi-e38fdd",
+      "title": "Trump a UFC elnökét kérte fel fehér házi szóvivőnek",
+      "summary": "A korábbi szóvivő mindössze négy nap után távozott hivatalából. The post Trump a UFC elnökét kérte fel fehér házi szóvivőnek first appeared on 24.hu .",
+      "date": "2026-11-07T20:12:19.000Z",
+      "url": "https://24.hu/kulfold/2026/11/07/trump-dana-white-feher-haz-szovivo/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Nagyvilág",
+        "donald trump",
+        "fehér ház",
+        "dana white"
+      ],
+      "author": "D. Kovács Ildikó",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/000_d6rt4we-e1794081858313-1024x575.jpg",
+      "imageAlt": "Trump a UFC elnökét kérte fel fehér házi szóvivőnek",
+      "addedAt": "2026-11-07T21:45:05.436Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-portfolio-o-lehet-izrael-uj-miniszterelnoke-161037",
+      "title": "Ő lehet Izrael új miniszterelnöke",
+      "summary": "Jichák Hercog izraeli államfő Gadi Eizenkotot, Benjámin Netanjahu miniszterelnök legfőbb kihívóját bízta meg a kormányalakítással a patthelyzettel végződő parlamenti választások után. Bár a hivatalban lévő kormányfő szövetsége szerezte a legtöbb mandátumot, elveszítette a többségét, az arab pártok pedig a korábbi vezérkari főnököt támogatták a konzultációkon, így ő kapott elsőként esélyt a koalíciós tárgyalások megkezdésére - jelentette a Reuters .",
+      "date": "2026-11-07T20:11:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261107/o-lehet-izrael-uj-miniszterelnoke-874948",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://pcdn.hu/articles/images-xl/g/a/d/gadi-eizenkot-867664.jpg",
+      "imageAlt": "Ő lehet Izrael új miniszterelnöke",
+      "addedAt": "2026-11-07T21:45:03.275Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-portfolio-a-legnagyobb-ketrecharcszervezet-elerol-e8cf22",
+      "title": "A legnagyobb ketrecharcszervezet éléről igazol sajtófőnököt Donal Trump, a \"holdkóros baloldal\" ellen küzdenének",
+      "summary": "Donald Trump amerikai elnök szombaton a Fehér Ház sajtófőnöki posztját ajánlotta fel Dana White-nak, a UFC ketrecharcszervezet elnök-vezérigazgatójának. A felkérés része annak a nagyszabású személycserének, amelyet az elnök a félidős választásokon elszenvedett súlyos republikánus vereség után indított el - írta a CNBC .",
+      "date": "2026-11-07T20:05:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261107/a-legnagyobb-ketrecharcszervezet-elerol-igazol-sajtofonokot-donal-trump-a-holdkoros-baloldal-ellen-kuzdenenek-874946",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://pcdn.hu/articles/images-xl/d/a/n/dana-white-867662.jpg",
+      "imageAlt": "A legnagyobb ketrecharcszervezet éléről igazol sajtófőnököt Donal Trump, a \"holdkóros baloldal\" ellen küzdenének",
+      "addedAt": "2026-11-07T21:45:03.275Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-hvg-gyanutlan-setalgatas-majd-fegyverropogas-9b0298",
+      "title": "Gyanútlan sétálgatás, majd fegyverropogás, pánik és menekülés – újabb videók jöttek a krakkói lövöldözésről",
+      "summary": "A támadást később terrorcselekménynek minősítették.",
+      "date": "2026-11-07T20:04:56.000Z",
+      "url": "https://hvg.hu/vilag/20261107_krakko-lovoldozes-halottak-aldozatok-menekules-video",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Világ",
+        "bűnügyek",
+        "lövöldözés",
+        "halottak"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "rat",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/a393a5cf-9c1e-4e97-8741-9928738af0b4.jpg",
+      "imageAlt": "Gyanútlan sétálgatás, majd fegyverropogás, pánik és menekülés – újabb videók jöttek a krakkói lövöldözésről",
+      "addedAt": "2026-11-07T21:45:02.550Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-hvg-kihuztak-az-otos-lotto-nyeroszamait-ezekkel-f8daaa",
+      "title": "Kihúzták az ötös lottó nyerőszámait – ezekkel lehetett nyerni",
+      "summary": "Öttalálatos szelvény nem volt a héten.",
+      "date": "2026-11-07T19:58:13.000Z",
+      "url": "https://hvg.hu/elet/20261107_lottoszamok-45-het-sorsolas",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Élet+Stílus",
+        "színes",
+        "Szerencsejáték Zrt.",
+        "lottó"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/712b134c-c406-44ab-9378-daa3ab703115.jpg",
+      "imageAlt": "Kihúzták az ötös lottó nyerőszámait – ezekkel lehetett nyerni",
+      "addedAt": "2026-11-07T21:45:02.550Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-444-a-lengyel-belugyminiszter-szerint-a-krakkoi-359a5e",
+      "title": "A lengyel belügyminiszter szerint a krakkói merénylő szélsőjobboldali nézeteket vallott",
+      "summary": "Otthonról vihette magával az apja fegyvereit.",
+      "date": "2026-11-07T19:53:23.000Z",
+      "url": "https://444.hu/2026/11/07/a-lengyel-belugyminiszter-szerint-a-krakkoi-merenylo-szelsojobboldali-nezeteket-vallott?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "lengyel belügyminiszter",
+        "witokrzyskie Vajdaság",
+        "lövöldözés",
+        "merénylet"
+      ],
+      "author": "Czinkóczi Sándor",
+      "theme": "rat",
+      "image": "https://assets.4cdn.hu/kraken/8PfrO4N7yNyy1NkvAs.jpeg",
+      "imageAlt": "A lengyel belügyminiszter szerint a krakkói merénylő szélsőjobboldali nézeteket vallott",
+      "addedAt": "2026-11-07T21:45:02.192Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-24hu-krakkoi-lovoldozes-25-eves-lengyel-ferfi-az-203a58",
+      "title": "Krakkói lövöldözés: 25 éves lengyel férfi az elkövető, akit vélhetőleg szélsőjobboldali ideológiák vezéreltek",
+      "summary": "Marcin Kierwiński lengyel belügyminiszter sajtótájékoztatón jelentette be, hogy azonosították az elkövetőt, és minden jel arra utal, hogy a férfit „szélsőjobboldali ideológiák” vezérelték. The post Krakkói lövöldözés: 25 éves lengyel férfi az elkövető, akit vélhetőleg szélsőjobboldali ideológiák vezéreltek first appeared on 24.hu .",
+      "date": "2026-11-07T19:52:56.000Z",
+      "url": "https://24.hu/kulfold/2026/11/07/krakkoi-lovoldozes-sajtotajekoztato-merenylo-elkoveto/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Nagyvilág",
+        "krakkó",
+        "lövöldözés",
+        "sajtótájékoztató"
+      ],
+      "author": "Birkás Péter",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/gettyimages-2303509975-1-e1794081154454-1024x575.jpg",
+      "imageAlt": "Krakkói lövöldözés: 25 éves lengyel férfi az elkövető, akit vélhetőleg szélsőjobboldali ideológiák vezéreltek",
+      "addedAt": "2026-11-07T21:45:05.436Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-444-trump-a-ufc-elnoket-kerte-fel-szovivonek-878b13",
+      "title": "Trump a UFC elnökét kérte fel szóvivőnek",
+      "summary": "Az amerikai elnök azt szeretné, ha bunyósokat is vinne magával a Fehér Házba, mert „meg kell védeni az országot az őrült baloldaltól”.",
+      "date": "2026-11-07T19:39:34.000Z",
+      "url": "https://444.hu/2026/11/07/trump-a-ufc-elnoket-kerte-fel-szovivonek?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "Amanda Nunes",
+        "Dana White",
+        "fehér ház",
+        "Islam Makhachev"
+      ],
+      "author": "Czinkóczi Sándor",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8Pfpw70nYyNN1SsvIs.jpeg",
+      "imageAlt": "Trump a UFC elnökét kérte fel szóvivőnek",
+      "addedAt": "2026-11-07T21:45:02.192Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-444-tobb-mint-200-tuntetot-vettek-orizetbe-a-917901",
+      "title": "Több mint 200 tüntetőt vettek őrizetbe a francia rendőrök szombaton",
+      "summary": "Ez volt a megélhetési költségek emelkedése elleni tüntetések negyedik egymást követő hétvégéje.",
+      "date": "2026-11-07T18:53:09.000Z",
+      "url": "https://444.hu/2026/11/07/tobb-mint-200-tuntetot-vettek-orizetbe-a-francia-rendorok-szombaton?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "tüntetés",
+        "rendőrség",
+        "franciaország",
+        "belügyminisztérium"
+      ],
+      "author": "Czinkóczi Sándor",
+      "theme": "sigurnost",
+      "image": "https://assets.4cdn.hu/kraken/8PfmMAyndPIDpoYXs.jpeg",
+      "imageAlt": "Több mint 200 tüntetőt vettek őrizetbe a francia rendőrök szombaton",
+      "addedAt": "2026-11-07T21:45:02.192Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-444-az-eszak-koreai-sport-nagy-napjai-ezek-72bd62",
+      "title": "Az észak-koreai sport nagy napjai ezek",
+      "summary": "Súlyemelésben lenyomhatják Kínát, az U17-es lány focivébén megint a dobogón.",
+      "date": "2026-11-07T18:51:45.000Z",
+      "url": "https://444.hu/2026/11/07/az-eszak-koreai-sport-nagy-napjai-ezek?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "labdarúgás",
+        "sportpolitika",
+        "világbajnokság",
+        "kndk"
+      ],
+      "author": "Tóth-Szenesi Attila",
+      "theme": "sport",
+      "image": "https://assets.4cdn.hu/kraken/8Pfn9SG0sR3N1Bcn5s.jpeg",
+      "imageAlt": "Az észak-koreai sport nagy napjai ezek",
+      "addedAt": "2026-11-07T21:45:02.192Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-07-444-irorszagban-es-finnorszagban-is-tuntettek-dfccc6",
+      "title": "Írországban és Finnországban is tüntettek az adatközpontok elszaporodása ellen",
+      "summary": "Aggódnak a vízszennyezés és a zajterhelés miatt.",
+      "date": "2026-11-07T18:21:11.000Z",
+      "url": "https://444.hu/2026/11/07/irorszagban-es-finnorszagban-is-tuntettek-az-adatkozpontok-elszaporodasa-ellen?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "microsoft",
+        "adatközpont",
+        "Stop Dirty Data Centers",
+        "mi"
+      ],
+      "author": "Czinkóczi Sándor",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8PfkUJIDBbn91Ym12Ws.jpeg",
+      "imageAlt": "Írországban és Finnországban is tüntettek az adatközpontok elszaporodása ellen",
+      "addedAt": "2026-11-07T21:45:02.192Z"
+    },
     {
       "slug": "budimpesta-2026-11-07-24hu-videokon-a-krakkoi-lovoldozes-20a2c7",
       "title": "Videókon a krakkói lövöldözés",
