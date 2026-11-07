@@ -41,3 +41,7 @@ Nakon provjere mergea pokrenuti odobreni **Deploy Admin Auth V6** s aktualnim po
 Obvezna javna provjera: `/gnk-aktual/media/hrvatska/`, `/gnk-aktual/media/hrvatska/feed.xml`, `/gnk-aktual/grad/zagreb/`, `/gnk-aktual/media/sitemap.xml`, `robots`, `canonical`, RSS i stvarni deploy SHA.
 
 **Ograničenja:** Ovo je indeks poveznica i potencijalnih izvora, ne sustav koji AI autonomno piše članke iz tuđih vijesti. Za takvu funkcionalnost potrebna je odvojena urednička i licencna validacija. Brand i urednički navodi preuzeti iz korisnikova paketa; nisu potvrda korporativnog vlasništva ili vanjskih prava.
+
+## GitHub regeneracija — dokaz 7. 11. 2026.
+
+Feature-only workflow `.github/workflows/aktual-world-feature-rebuild-v1.yml` uspješno je dovršio run [42370806911](https://github.com/masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01/actions/runs/42370806911) i napravio commit `4b674deb3aa4c6791055be7374331c7e1e2e178a` sa 423 regenerirane World datoteke. Prošli su ciljano testiranje 201 država/10 gradova, meta-higijena, zajednički dizajn i sitemap integritet. Ovo **nije potvrda** da globalni `test-all` ili produkcijski deploy prolazi. Mrežni status 24/7 objave nije potvrđen. GitHub PR provjere za commit koji je zapisao `github-actions[bot]` mogu ostati `action_required`; pregledati ih na novom ljudskom/povezanom commitu.
