@@ -86,7 +86,9 @@ jobs:
           if [ ! -f ops/imports/aktual-world-source.tar.xz ]; then exit 0; fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add .github/workflows/aktual-world-source-refresh-v1.yml README-AKTUAL-WORLD-201.md scripts/build-aktual-world-v1.mjs scripts/generate-world-countries-v1.mjs scripts/refresh-aktual-world-headlines-v1.mjs tests/test-aktual-world-v1.mjs apps/portal/data/world-countries-v1.json apps/portal/gnk-aktual/media apps/portal/gnk-aktual/grad
+          # The default GITHUB_TOKEN cannot push a newly introduced workflow file.
+          # Stage it separately with the authorized GitHub connection after import.
+          git add README-AKTUAL-WORLD-201.md scripts/build-aktual-world-v1.mjs scripts/generate-world-countries-v1.mjs scripts/refresh-aktual-world-headlines-v1.mjs tests/test-aktual-world-v1.mjs apps/portal/data/world-countries-v1.json apps/portal/gnk-aktual/media apps/portal/gnk-aktual/grad
           git rm ops/imports/aktual-world-source.tar.xz
           git commit -m 'feat(aktual-media): materialize reviewed 201-country 10-city source index'
           git push origin HEAD:feature/aktual-media-world-201
