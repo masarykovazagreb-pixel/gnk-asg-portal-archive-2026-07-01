@@ -79,6 +79,7 @@ export const REGION_IMAGE_HOSTS = [
   ['www.japantimes.co.jp', 'The Japan Times', 'JP'],
   // Amerika
   ['static01.nyt.com', 'The New York Times', 'US'],
+  ['media.cnn.com', 'CNN', 'US'],
   ['s.abcnews.com', 'ABC News', 'US'],
   ['platform.theverge.com', 'The Verge', 'US'],
   ['npr.brightspotcdn.com', 'NPR', 'US'],
