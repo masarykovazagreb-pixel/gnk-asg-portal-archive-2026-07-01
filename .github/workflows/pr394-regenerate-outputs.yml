@@ -1,0 +1,56 @@
+name: PR394 — deterministic generated-output repair
+on:
+  push:
+    branches: [arena/0ba72079-gnk-asg-portal-archive-2026-07]
+    paths:
+      - '.github/workflows/pr394-regenerate-outputs.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: pr394-generated-output-repair
+  cancel-in-progress: false
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Regenerate six independent sites and cross-domain copies
+        run: |
+          set -euo pipefail
+          node apps/sites/build.mjs
+          node scripts/build-prenos-hub-v1.mjs
+      - name: Repair refresh tags and radio promo blocks
+        run: |
+          set -euo pipefail
+          node scripts/apply-refresh-v1.mjs
+          python3 scripts/factory/radio_promo_v1.py
+      - name: Verify all generated changes without suppressing gates
+        run: |
+          set -euo pipefail
+          node scripts/build-prenos-hub-v1.mjs --check
+          node tests/test-prenos-v1.mjs
+          node tests/test-sites-network-v1.mjs
+          node tests/test-refresh-layer-v1.mjs
+          python3 scripts/factory/radio_promo_v1.py --check
+      - name: Commit only generated outputs to PR branch
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- apps/sites/site/ apps/portal/prenos/ apps/portal/en/prenos/ apps/portal/assets/ apps/world/site/ apps/kanal/site/ apps/arhiva/site/ apps/dnevnik/site/
+          git add -u -- apps/portal/
+          git reset -q -- apps/portal/podijeli/vijest/ || true
+          if git diff --cached --quiet; then exit 0; fi
+          git diff --cached --check
+          git fetch origin "${GITHUB_REF_NAME}"
+          test "$(git rev-parse HEAD)" = "$(git rev-parse "origin/${GITHUB_REF_NAME}")"
+          git commit -m 'build(network): regenerate sites, syndication and refresh output'
+          git push origin "HEAD:refs/heads/${GITHUB_REF_NAME}"
