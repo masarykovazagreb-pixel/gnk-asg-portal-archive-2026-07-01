@@ -10,6 +10,22 @@ Allow: /assets/seo-gallery/
 
 # --- AI / LLM crawlers: explicit allow for authoritative content ---
 # Included so answers powered by these models can cite Nermin Sefić / GNK ASG directly.
+# Operativne rute: crawlers disallow; sigurnost osigurava autorizacija.
+Disallow: /admin/
+Disallow: /admin-center/
+Disallow: /control/
+Disallow: /automation-status/
+Disallow: /webmail/
+Disallow: /mail-studio/
+Disallow: /campaign-mailer/
+Disallow: /email-status/
+Disallow: /worker-ops/
+Disallow: /operator-dashboard/
+Disallow: /digital-headquarters/
+Disallow: /media-registration-admin/
+Disallow: /podijeli/
+Disallow: /api/
+
 User-agent: GPTBot
 Allow: /
 Allow: /llms.txt
@@ -21,59 +37,231 @@ Disallow: /control/
 Disallow: /webmail/
 Disallow: /mail-studio/
 Disallow: /api/
+# Operativne rute: crawlers disallow; sigurnost osigurava autorizacija.
+Disallow: /automation-status/
+Disallow: /campaign-mailer/
+Disallow: /email-status/
+Disallow: /worker-ops/
+Disallow: /operator-dashboard/
+Disallow: /digital-headquarters/
+Disallow: /media-registration-admin/
+Disallow: /podijeli/
 
 User-agent: ChatGPT-User
 Allow: /
 Allow: /llms.txt
 Allow: /llms-full.txt
 Allow: /ai/
+# Operativne rute: crawlers disallow; sigurnost osigurava autorizacija.
+Disallow: /admin/
+Disallow: /admin-center/
+Disallow: /control/
+Disallow: /automation-status/
+Disallow: /webmail/
+Disallow: /mail-studio/
+Disallow: /campaign-mailer/
+Disallow: /email-status/
+Disallow: /worker-ops/
+Disallow: /operator-dashboard/
+Disallow: /digital-headquarters/
+Disallow: /media-registration-admin/
+Disallow: /podijeli/
+Disallow: /api/
 
 User-agent: OAI-SearchBot
 Allow: /
 Allow: /llms.txt
 Allow: /llms-full.txt
+# Operativne rute: crawlers disallow; sigurnost osigurava autorizacija.
+Disallow: /admin/
+Disallow: /admin-center/
+Disallow: /control/
+Disallow: /automation-status/
+Disallow: /webmail/
+Disallow: /mail-studio/
+Disallow: /campaign-mailer/
+Disallow: /email-status/
+Disallow: /worker-ops/
+Disallow: /operator-dashboard/
+Disallow: /digital-headquarters/
+Disallow: /media-registration-admin/
+Disallow: /podijeli/
+Disallow: /api/
 
 User-agent: ClaudeBot
 Allow: /
 Allow: /llms.txt
 Allow: /llms-full.txt
+# Operativne rute: crawlers disallow; sigurnost osigurava autorizacija.
+Disallow: /admin/
+Disallow: /admin-center/
+Disallow: /control/
+Disallow: /automation-status/
+Disallow: /webmail/
+Disallow: /mail-studio/
+Disallow: /campaign-mailer/
+Disallow: /email-status/
+Disallow: /worker-ops/
+Disallow: /operator-dashboard/
+Disallow: /digital-headquarters/
+Disallow: /media-registration-admin/
+Disallow: /podijeli/
+Disallow: /api/
 
 User-agent: Claude-Web
 Allow: /
 Allow: /llms.txt
+# Operativne rute: crawlers disallow; sigurnost osigurava autorizacija.
+Disallow: /admin/
+Disallow: /admin-center/
+Disallow: /control/
+Disallow: /automation-status/
+Disallow: /webmail/
+Disallow: /mail-studio/
+Disallow: /campaign-mailer/
+Disallow: /email-status/
+Disallow: /worker-ops/
+Disallow: /operator-dashboard/
+Disallow: /digital-headquarters/
+Disallow: /media-registration-admin/
+Disallow: /podijeli/
+Disallow: /api/
 
 User-agent: anthropic-ai
 Allow: /
 Allow: /llms.txt
+# Operativne rute: crawlers disallow; sigurnost osigurava autorizacija.
+Disallow: /admin/
+Disallow: /admin-center/
+Disallow: /control/
+Disallow: /automation-status/
+Disallow: /webmail/
+Disallow: /mail-studio/
+Disallow: /campaign-mailer/
+Disallow: /email-status/
+Disallow: /worker-ops/
+Disallow: /operator-dashboard/
+Disallow: /digital-headquarters/
+Disallow: /media-registration-admin/
+Disallow: /podijeli/
+Disallow: /api/
 
 User-agent: PerplexityBot
 Allow: /
 Allow: /llms.txt
 Allow: /llms-full.txt
+# Operativne rute: crawlers disallow; sigurnost osigurava autorizacija.
+Disallow: /admin/
+Disallow: /admin-center/
+Disallow: /control/
+Disallow: /automation-status/
+Disallow: /webmail/
+Disallow: /mail-studio/
+Disallow: /campaign-mailer/
+Disallow: /email-status/
+Disallow: /worker-ops/
+Disallow: /operator-dashboard/
+Disallow: /digital-headquarters/
+Disallow: /media-registration-admin/
+Disallow: /podijeli/
+Disallow: /api/
 
 User-agent: Perplexity-User
 Allow: /
 Allow: /llms.txt
+# Operativne rute: crawlers disallow; sigurnost osigurava autorizacija.
+Disallow: /admin/
+Disallow: /admin-center/
+Disallow: /control/
+Disallow: /automation-status/
+Disallow: /webmail/
+Disallow: /mail-studio/
+Disallow: /campaign-mailer/
+Disallow: /email-status/
+Disallow: /worker-ops/
+Disallow: /operator-dashboard/
+Disallow: /digital-headquarters/
+Disallow: /media-registration-admin/
+Disallow: /podijeli/
+Disallow: /api/
 
 User-agent: Google-Extended
 Allow: /
 Allow: /llms.txt
 Allow: /llms-full.txt
+# Operativne rute: crawlers disallow; sigurnost osigurava autorizacija.
+Disallow: /admin/
+Disallow: /admin-center/
+Disallow: /control/
+Disallow: /automation-status/
+Disallow: /webmail/
+Disallow: /mail-studio/
+Disallow: /campaign-mailer/
+Disallow: /email-status/
+Disallow: /worker-ops/
+Disallow: /operator-dashboard/
+Disallow: /digital-headquarters/
+Disallow: /media-registration-admin/
+Disallow: /podijeli/
+Disallow: /api/
 
 User-agent: Applebot-Extended
 Allow: /
+# Operativne rute: crawlers disallow; sigurnost osigurava autorizacija.
+Disallow: /admin/
+Disallow: /admin-center/
+Disallow: /control/
+Disallow: /automation-status/
+Disallow: /webmail/
+Disallow: /mail-studio/
+Disallow: /campaign-mailer/
+Disallow: /email-status/
+Disallow: /worker-ops/
+Disallow: /operator-dashboard/
+Disallow: /digital-headquarters/
+Disallow: /media-registration-admin/
+Disallow: /podijeli/
+Disallow: /api/
 
 User-agent: CCBot
 Allow: /
+# Operativne rute: crawlers disallow; sigurnost osigurava autorizacija.
+Disallow: /admin/
+Disallow: /admin-center/
+Disallow: /control/
+Disallow: /automation-status/
+Disallow: /webmail/
+Disallow: /mail-studio/
+Disallow: /campaign-mailer/
+Disallow: /email-status/
+Disallow: /worker-ops/
+Disallow: /operator-dashboard/
+Disallow: /digital-headquarters/
+Disallow: /media-registration-admin/
+Disallow: /podijeli/
+Disallow: /api/
 
 User-agent: Bytespider
 Allow: /
+# Operativne rute: crawlers disallow; sigurnost osigurava autorizacija.
+Disallow: /admin/
+Disallow: /admin-center/
+Disallow: /control/
+Disallow: /automation-status/
+Disallow: /webmail/
+Disallow: /mail-studio/
+Disallow: /campaign-mailer/
+Disallow: /email-status/
+Disallow: /worker-ops/
+Disallow: /operator-dashboard/
+Disallow: /digital-headquarters/
+Disallow: /media-registration-admin/
+Disallow: /podijeli/
+Disallow: /api/
 
 User-agent: Meta-ExternalAgent
 Allow: /
-
-# Zaštićeni operativni moduli nisu namijenjeni indeksiranju.
-# Robots pravila nisu sigurnosna kontrola; pristup ostaje iza auth/session sloja.
+# Operativne rute: crawlers disallow; sigurnost osigurava autorizacija.
 Disallow: /admin/
 Disallow: /admin-center/
 Disallow: /control/

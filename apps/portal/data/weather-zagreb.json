@@ -2,43 +2,43 @@
   "city": "Zagreb",
   "lat": 45.815,
   "lon": 15.9819,
-  "updated_at": "2026-11-06T20:23:45.784Z",
+  "updated_at": "2026-11-07T08:40:25.570Z",
   "source": "open-meteo.com",
   "state": "live",
   "current": {
-    "temperature_c": 8.5,
-    "feels_like_c": 6,
-    "humidity_pct": 67,
-    "wind_kmh": 5.8,
-    "is_day": false,
+    "temperature_c": 5.7,
+    "feels_like_c": 2,
+    "humidity_pct": 65,
+    "wind_kmh": 10.5,
+    "is_day": true,
     "weather_code": 3,
     "condition_hr": "Oblačno",
     "condition_en": "Overcast"
   },
   "forecast": [
     {
-      "date": "2026-11-06",
-      "max_c": 10.1,
-      "min_c": 7.1,
-      "weather_code": 61,
-      "condition_hr": "Slaba kiša",
-      "condition_en": "Slight rain"
-    },
-    {
       "date": "2026-11-07",
-      "max_c": 9.2,
-      "min_c": 5.6,
+      "max_c": 8.6,
+      "min_c": 5.2,
       "weather_code": 3,
       "condition_hr": "Oblačno",
       "condition_en": "Overcast"
     },
     {
       "date": "2026-11-08",
-      "max_c": 9.4,
-      "min_c": 4.3,
-      "weather_code": 3,
-      "condition_hr": "Oblačno",
-      "condition_en": "Overcast"
+      "max_c": 8.3,
+      "min_c": 4.8,
+      "weather_code": 61,
+      "condition_hr": "Slaba kiša",
+      "condition_en": "Slight rain"
+    },
+    {
+      "date": "2026-11-09",
+      "max_c": 8.9,
+      "min_c": 3.2,
+      "weather_code": 45,
+      "condition_hr": "Magla",
+      "condition_en": "Fog"
     }
   ]
 }

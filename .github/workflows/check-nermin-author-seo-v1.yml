@@ -8,6 +8,14 @@ on:
       - 'apps/portal/autorske-objave/index.html'
       - 'apps/portal/en/autorske-objave/index.html'
       - 'apps/portal/nermin-sefic/index.html'
+      - 'apps/portal/index.html'
+      - 'apps/portal/komentari/index.html'
+      - 'apps/portal/favicon.svg'
+      - 'apps/portal/robots.txt'
+      - 'apps/portal/sitemap.xml'
+      - 'apps/portal/scripts/generate_seo.py'
+      - 'docs/editorial/nermin-sefic-20-komentara-nacrti-2026-11-06.md'
+      - 'scripts/test-asg-public-seo-release-v1.mjs'
       - 'apps/portal/en/nermin-sefic/index.html'
       - 'apps/portal/data/approved_mentions.json'
       - 'scripts/test-nermin-author-seo-v1.mjs'
@@ -20,6 +28,14 @@ on:
       - 'apps/portal/autorske-objave/index.html'
       - 'apps/portal/en/autorske-objave/index.html'
       - 'apps/portal/nermin-sefic/index.html'
+      - 'apps/portal/index.html'
+      - 'apps/portal/komentari/index.html'
+      - 'apps/portal/favicon.svg'
+      - 'apps/portal/robots.txt'
+      - 'apps/portal/sitemap.xml'
+      - 'apps/portal/scripts/generate_seo.py'
+      - 'docs/editorial/nermin-sefic-20-komentara-nacrti-2026-11-06.md'
+      - 'scripts/test-asg-public-seo-release-v1.mjs'
       - 'apps/portal/en/nermin-sefic/index.html'
       - 'apps/portal/data/approved_mentions.json'
       - 'scripts/test-nermin-author-seo-v1.mjs'
@@ -38,4 +54,6 @@ jobs:
         with:
           node-version: '24'
       - name: Validate Nermin Sefić entity and author SEO contract
-        run: node scripts/test-nermin-author-seo-v1.mjs
+        run: |
+          node scripts/test-nermin-author-seo-v1.mjs
+          node scripts/test-asg-public-seo-release-v1.mjs
