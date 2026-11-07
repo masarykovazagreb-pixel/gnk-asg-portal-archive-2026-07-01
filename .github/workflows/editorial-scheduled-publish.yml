@@ -132,7 +132,9 @@ jobs:
           route="apps/portal/komentari/roto-dinamic-apfel-prijava-nije-odobrenje/index.html"
           if [ -f "$route" ]; then
             node scripts/generate-editorial-cover-assets-v1.mjs
-            printf '["/komentari/roto-dinamic-apfel-prijava-nije-odobrenje/"]\n' > "$RUNNER_TEMP/aktual-image-routes.json"
+            # Repair the legacy DINAMO article alongside the new commentary; the global
+            # completeness audit otherwise fails on its stale image/schema/listing.
+            printf '["/komentari/roto-dinamic-apfel-prijava-nije-odobrenje/","/objave/dinamo-zigovi-privremena-mjera-rizik-240-milijuna/"]\n' > "$RUNNER_TEMP/aktual-image-routes.json"
             node scripts/apply-editorial-publication-completeness-v1.mjs --write --routes-file "$RUNNER_TEMP/aktual-image-routes.json"
             node scripts/editorial-registry-v1.mjs
             node scripts/generate-editorial-sitemap-v2.mjs
