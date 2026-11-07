@@ -241,6 +241,11 @@ jobs:
               failures.append(f'REGION status unreadable: {exc}')
               dispatch('region-daily.yml')
 
+          # Reserve check: recover a missing successful regional writer cycle even
+          # when archive timestamps appear fresh. Dispatch uses the same canonical
+          # workflow and the existing per-run debounce; never starts a second writer.
+          ensure_age('region-daily.yml', 210, 300, 'Regional editions canonical cycle', {'batch': '0'})
+
           # 2) Live routes: both language surfaces must answer successfully.
           for label, url in [
               ('AKTUAL HR', 'https://gnk-asg.hr/gnk-aktual/'),
