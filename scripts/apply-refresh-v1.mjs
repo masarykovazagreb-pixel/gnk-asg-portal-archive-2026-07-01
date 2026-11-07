@@ -105,9 +105,14 @@ for (const web of WEBS) {
     if (!/<\/body>/i.test(html)) continue;
     if (html.includes(MARKER)) {
       /* Već ima modul — provjeri je li verzija ista; ako nije, zamijeni. */
-      const current = (html.match(/<script[^>]*data-am-netday="[^"]*"[^>]*><\/script>/) || [])[0];
+      const current = (html.match(/<script\b[^>]*\bdata-am-netday="[^"]*"[^>]*><\/script>/i) || [])[0];
       if (current === TAG) continue;
       if (CHECK) { missing.push(`${rel}: zastarjela verzija modula`); continue; }
+      if (!current) {
+        // Marker outside a valid script is corrupt output: never silently report a repair.
+        missing.push(`${rel}: data-am-netday bez valjanog script taga`);
+        continue;
+      }
       writeFileSync(file, html.replace(current, TAG));
       injected += 1;
       continue;
