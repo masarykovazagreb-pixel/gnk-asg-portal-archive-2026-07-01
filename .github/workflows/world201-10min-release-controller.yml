@@ -1,0 +1,101 @@
+name: WORLD 201 — silent 10-minute release controller
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+concurrency:
+  group: gnk-asg-main-mutation
+  cancel-in-progress: false
+
+jobs:
+  check-and-release:
+    if: github.repository == 'masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01' && vars.GNK_ASG_RELEASE_FENCE != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPOSITORY: ${{ github.repository }}
+      PR_NUMBER: '393'
+      EXPIRES_UTC: '2026-11-08T17:20:20Z'
+      WORKFLOW_FILE: 'world201-10min-release-controller.yml'
+    steps:
+      - name: Check latest release evidence; do nothing unless all release gates are green
+        shell: bash
+        run: |
+          set -euo pipefail
+          notice() { echo "::notice::$1"; }
+          stop_controller() {
+            notice "WORLD 201 10-minute controller stopping: $1"
+            gh api -X PUT "repos/$REPOSITORY/actions/workflows/$WORKFLOW_FILE/disable" >/dev/null || notice "Unable to disable schedule; expiration still prevents action."
+          }
+          now="$(date -u +%s)"
+          deadline="$(date -u -d "$EXPIRES_UTC" +%s)"
+          if (( now >= deadline )); then
+            stop_controller "24-hour limit reached"
+            exit 0
+          fi
+          pr="$(gh api "repos/$REPOSITORY/pulls/$PR_NUMBER")"
+          merged="$(jq -r '.merged // false' <<<"$pr")"
+          state="$(jq -r '.state' <<<"$pr")"
+          if [[ "$state" == "closed" && "$merged" != "true" ]]; then
+            stop_controller "PR was closed without merge"
+            exit 0
+          fi
+          head="$(jq -r '.head.sha' <<<"$pr")"
+          base="$(jq -r '.base.sha' <<<"$pr")"
+          main="$(gh api "repos/$REPOSITORY/commits/main" --jq '.sha')"
+          if [[ "$merged" != "true" ]]; then
+            [[ "$main" == "$base" ]] || { notice "main changed; waiting for fresh mergeability calculation"; exit 0; }
+            [[ "$(jq -r '.mergeable' <<<"$pr")" == "true" ]] || { notice "PR has conflicts; no merge"; exit 0; }
+            runs="$(gh api "repos/$REPOSITORY/actions/runs?event=pull_request&head_sha=$head&per_page=100")"
+            report="$(jq -c --arg sha "$head" '
+              [.workflow_runs[] | select(.head_sha == $sha)]
+              | sort_by(.created_at) | group_by(.name) | map(last)
+              | {total:length, bad:[.[] | select(.conclusion != "success" and .conclusion != "skipped") | .name],
+                required:([.[] | select(.name=="All gates (portal)" and .conclusion=="success")] | length),
+                sitemap:([.[] | select(.name=="Publication Sitemap Registry Gate" and .conclusion=="success")] | length),
+                world:([.[] | select(.name=="Check AKTUAL Media World Edition" and .conclusion=="success")] | length),
+                weekly:([.[] | select(.name=="Check AKTUAL MEDIA Weekly V1" and .conclusion=="success")] | length)}
+            ' <<<"$runs")"
+            notice "CI status: $report"
+            [[ "$(jq -r '.total' <<<"$report")" -ge 30 ]] || exit 0
+            [[ "$(jq -r '.bad | length' <<<"$report")" == "0" ]] || exit 0
+            for gate in required sitemap world weekly; do
+              [[ "$(jq -r ".$gate" <<<"$report")" == "1" ]] || exit 0
+            done
+            notice "Every checked workflow passed; requesting standard protected PR merge, without admin override."
+            if [[ "$(jq -r '.draft' <<<"$pr")" == "true" ]]; then
+              gh pr ready "$PR_NUMBER" --repo "$REPOSITORY" || exit 0
+              notice "PR marked ready; wait for required review/check recalculation."
+              exit 0
+            fi
+            gh pr merge "$PR_NUMBER" --repo "$REPOSITORY" --merge --match-head-commit "$head" || exit 0
+            merged_sha="$(gh api "repos/$REPOSITORY/commits/main" --jq '.sha')"
+            parents="$(gh api "repos/$REPOSITORY/git/commits/$merged_sha" --jq '.parents[].sha')"
+            grep -Fqx "$head" <<<"$parents" || { notice "Main moved or merge parent not confirmed; refuse deploy"; exit 0; }
+            [[ "$merged_sha" == "$(gh api "repos/$REPOSITORY/commits/main" --jq '.sha')" ]] || exit 0
+            gh workflow run deploy-admin-auth-v6.yml --repo "$REPOSITORY" --ref main \
+              -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 -f approved_sha="$merged_sha" || exit 0
+            notice "Exact-SHA deploy requested. Waiting for workflow result and public proof."
+            exit 0
+          fi
+          # A successful deploy must match a known main SHA and the public routes must respond.
+          deployed="$(gh api "repos/$REPOSITORY/actions/runs?event=workflow_dispatch&per_page=100" |
+            jq -r --arg main "$main" '[.workflow_runs[] |
+              select(.name=="Deploy Admin Auth V6" and .head_sha==$main and .conclusion=="success")] | length')"
+          [[ "$deployed" -gt 0 ]] || { notice "PR merged, awaiting exact-SHA successful deploy proof"; exit 0; }
+          for route in \
+            /gnk-aktual/media/hrvatska/ \
+            /gnk-aktual/media/hrvatska/feed.xml \
+            /gnk-aktual/media/sitemap.xml; do
+            code="$(curl -sSL --max-time 12 -o /dev/null -w '%{http_code}' "https://gnk-asg.hr$route" || true)"
+            [[ "$code" == "200" ]] || { notice "Public route not verified: $route ($code)"; exit 0; }
+          done
+          stop_controller "approved exact-SHA deployment and all three public routes verified HTTP 200"
