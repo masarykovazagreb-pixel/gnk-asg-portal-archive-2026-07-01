@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   regenerate:
-    if: github.ref == 'refs/heads/feature/aktual-media-world-201'
+    if: github.ref == 'refs/heads/feature/aktual-media-world-201' && vars.GNK_ASG_RELEASE_FENCE != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
