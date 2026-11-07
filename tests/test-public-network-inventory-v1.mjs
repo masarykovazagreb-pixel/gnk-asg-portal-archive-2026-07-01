@@ -16,7 +16,8 @@ test('javni popis odgovara registrima i povezan je s obje glavne stranice',()=>{
     assert.match(html,/data-am-author="v1"/);assert.match(html,/data-am-impressum/);
     assert.match(html,/data-public-title-search/);assert.match(html,/public-title-search-v1.js/);
     const jsonld=[...html.matchAll(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].map(m=>JSON.parse(m[1]));
-    assert.ok(jsonld.some(x=>x['@type']==='WebSite'));
+    const website=jsonld.find(x=>x['@type']==='WebSite');
+    assert.ok(website);assert.deepEqual(website.inLanguage,['hr','en']);assert.equal(website.publisher['@id'],'https://gnk-asg.hr/#gnk-asg');
     const url=lang==='hr'?'https://gnk-asg.hr/mreza/izvori/':'https://gnk-asg.hr/en/mreza/izvori/';
     assert.ok(readFileSync('apps/portal/sitemap.xml','utf8').includes(`<loc>${url}</loc>`));
     assert.match(html,/#NerminSefić #NerminSefic/);

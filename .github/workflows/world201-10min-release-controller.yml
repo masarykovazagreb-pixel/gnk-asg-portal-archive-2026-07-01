@@ -26,6 +26,10 @@ jobs:
       EXPIRES_UTC: '2026-11-08T17:20:20Z'
       WORKFLOW_FILE: 'world201-10min-release-controller.yml'
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          fetch-tags: false
       - name: Check latest release evidence; do nothing unless all release gates are green
         shell: bash
         run: |
@@ -86,16 +90,39 @@ jobs:
             notice "Exact-SHA deploy requested. Waiting for workflow result and public proof."
             exit 0
           fi
-          # A successful deploy must match a known main SHA and the public routes must respond.
-          deployed="$(gh api "repos/$REPOSITORY/actions/runs?event=workflow_dispatch&per_page=100" |
-            jq -r --arg main "$main" '[.workflow_runs[] |
-              select(.name=="Deploy Admin Auth V6" and .head_sha==$main and .conclusion=="success")] | length')"
-          [[ "$deployed" -gt 0 ]] || { notice "PR merged, awaiting exact-SHA successful deploy proof"; exit 0; }
-          for route in \
-            /gnk-aktual/media/hrvatska/ \
-            /gnk-aktual/media/hrvatska/feed.xml \
-            /gnk-aktual/media/sitemap.xml; do
-            code="$(curl -sSL --max-time 12 -o /dev/null -w '%{http_code}' "https://gnk-asg.hr$route" || true)"
-            [[ "$code" == "200" ]] || { notice "Public route not verified: $route ($code)"; exit 0; }
+          # Do not claim production proof from a successful run's head_sha alone.
+          # First confirm the merged PR is still an ancestor of current main.
+          merge_sha="$(jq -r '.merge_commit_sha // empty' <<<"$pr")"
+          [[ "$merge_sha" =~ ^[0-9a-f]{40}$ ]] || { notice "Missing PR merge SHA; no production proof"; exit 0; }
+          ancestry="$(gh api "repos/$REPOSITORY/compare/$merge_sha...$main" --jq '.status')" || exit 0
+          [[ "$ancestry" == "ahead" || "$ancestry" == "identical" ]] || { notice "Current main does not include PR merge"; exit 0; }
+          [[ "$(git rev-parse HEAD)" == "$main" ]] || { notice "main moved after checkout; retry on a fresh run"; exit 0; }
+          # Exact-SHA authorization is enforced by authorize-production inside
+          # this workflow. Both authorization and deployment jobs must succeed.
+          runs="$(gh api "repos/$REPOSITORY/actions/workflows/deploy-admin-auth-v6.yml/runs?event=workflow_dispatch&per_page=100")"
+          candidates="$(jq -r --arg main "$main" '.workflow_runs[] | select(.name=="Deploy Admin Auth V6" and .head_sha==$main and .conclusion=="success") | .id' <<<"$runs")"
+          verified_run=""
+          for id in $candidates; do
+            jobs="$(gh api "repos/$REPOSITORY/actions/runs/$id/jobs?per_page=100")" || continue
+            if jq -e '[.jobs[] | select(.name=="authorize-production" and .conclusion=="success")] | length == 1' <<<"$jobs" >/dev/null && \
+               jq -e '[.jobs[] | select(.name=="deploy-production" and .conclusion=="success")] | length == 1' <<<"$jobs" >/dev/null; then
+              verified_run="$id"
+              break
+            fi
           done
-          stop_controller "approved exact-SHA deployment and all three public routes verified HTTP 200"
+          [[ -n "$verified_run" ]] || { notice "No successful exact-SHA authorize and deploy jobs"; exit 0; }
+          proof_dir="$(mktemp -d)"
+          trap 'rm -rf "$proof_dir"' EXIT
+          for entry in \
+            'html /gnk-aktual/media/hrvatska/' \
+            'feed /gnk-aktual/media/hrvatska/feed.xml' \
+            'sitemap /gnk-aktual/media/sitemap.xml'; do
+            read -r name route <<<"$entry"
+            curl --fail --silent --show-error --location --max-time 12 \
+              -H 'Cache-Control: no-cache' -D "$proof_dir/$name.headers" \
+              -o "$proof_dir/$name.body" "https://gnk-asg.hr$route" || { notice "Public route unavailable: $route"; exit 0; }
+          done
+          node scripts/world201-release-proof-v1.mjs "$proof_dir" "$main" || { notice "Public content or revision proof missing; do not claim deployed"; exit 0; }
+          python3 scripts/world201-xml-proof-v1.py "$proof_dir" || { notice "Public feed or sitemap XML is invalid"; exit 0; }
+          [[ "$main" == "$(gh api "repos/$REPOSITORY/commits/main" --jq '.sha')" ]] || { notice "main moved during verification; retry"; exit 0; }
+          stop_controller "PR ancestry, authorization and deployment jobs, public content and exact revision verified (run $verified_run)"
