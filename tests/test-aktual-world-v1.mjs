@@ -35,6 +35,8 @@ test('build includes only real generated URLs and no fake headlines',()=>{
     }
     for (const file of [path.join(tmp,'media','hrvatska','index.html'),path.join(tmp,'grad','zagreb','index.html')]) {
       const html=fs.readFileSync(file,'utf8');
+      const keywords=(html.match(/<meta name="keywords" content="([^"]*)"/) || [])[1] || '';
+      assert.ok(!/Nermin\s+Sefi[cć]/i.test(keywords)); assert.match(html,/<meta name="author" content="Nermin Sefić/);
       assert.match(html,/data-am-impressum="v1"/); assert.match(html,/am-refresh-v1\.js/); assert.match(html,/#NerminSefić/); assert.match(html,/rel="icon"/);
       const blocks=[...html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/g)].map(m=>JSON.parse(m[1]));
       const nodes=blocks.flatMap(x=>x['@graph'] || [x]).filter(x=>x['@type']==='WebSite');

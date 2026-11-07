@@ -212,7 +212,8 @@ function buildCityPage(city) {
 <link rel="stylesheet" href="/assets/am-design-v1.css" data-am-design="v1">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <title>${escHtml(title)}</title><meta name="description" content="${escHtml(cityDescription)}">
-<meta name="keywords" content="AKTUAL MEDIA, GNK ASG, GNK DINAMO Ltd, Nermin Sefić">
+<meta name="keywords" content="AKTUAL MEDIA, GNK ASG, GNK DINAMO Ltd">
+<meta name="author" content="Nermin Sefić">
 <meta name="hashtags" content="#NerminSefić #NerminSefic #GNKASG #GNKDinamoLtd #AktualMedia">
 <link rel="canonical" href="${escHtml(url)}"><link rel="alternate" hreflang="hr" href="${escHtml(url)}"><link rel="alternate" hreflang="x-default" href="${escHtml(url)}"><link rel="alternate" type="application/rss+xml" href="${escHtml(url)}feed.xml" title="RSS ${escHtml(city.nameLocal)}">
 <meta name="robots" content="index,follow">
