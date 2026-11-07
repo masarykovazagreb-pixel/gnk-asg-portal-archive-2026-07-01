@@ -1297,6 +1297,7 @@ ${END}`;
   const beograd = items.filter((i) => i.channel.id === 'beograd');
   const beogradSources = new Set(beograd.map((i) => i.sourceName)).size;
   const beogradCount = beograd.length || 0;
+  const zagrebCount = items.filter((i) => i.channel.id === 'zagreb').length;
   const promoBlock = (lang) => {
     const hr = lang !== 'en';
     const t = hr ? {
@@ -1309,7 +1310,7 @@ ${END}`;
       lead: `Novo gradsko izdanje za Srbiju: ${beogradCount} tekstova, ${beogradSources} izvora i dnevni ritam. Uz njega idu poslovni tjednik, moda, galerija i javni status ažurnosti — sve na jednom mjestu.`,
       tiles: [
         ['/kanal/beograd/', 'Beograd', `Srbija · ${beogradCount} tekstova`, 'Novo'],
-        ['/kanal/zagreb/', 'Zagreb', 'Hrvatska · 420 tekstova', ''],
+        ['/kanal/zagreb/', 'Zagreb', `Hrvatska · ${zagrebCount} tekstova`, ''],
         ['/kanal/sarajevo/', 'Sarajevo', 'Bosna i Hercegovina', ''],
         ['https://gnk-asg-tjednik.pages.dev/', 'Business Tjednik', 'Tjednik W43', ''],
         ['/izdanja/moda/', 'Tjednik Mode', 'Moda i stil', ''],
@@ -1331,7 +1332,7 @@ ${END}`;
       lead: `A new city edition for Serbia: ${beogradCount} stories, ${beogradSources} sources and a daily rhythm. Alongside it: the business weekly, mode, gallery and a public freshness status — all in one place.`,
       tiles: [
         ['/kanal/beograd/', 'Belgrade', `Serbia · ${beogradCount} stories`, 'New'],
-        ['/kanal/zagreb/', 'Zagreb', 'Croatia · 420 stories', ''],
+        ['/kanal/zagreb/', 'Zagreb', `Croatia · ${zagrebCount} stories`, ''],
         ['/kanal/sarajevo/', 'Sarajevo', 'Bosnia and Herzegovina', ''],
         ['https://gnk-asg-tjednik.pages.dev/', 'Business Weekly', 'Week W43', ''],
         ['/izdanja/moda/', 'Mode Weekly', 'Fashion and style', ''],

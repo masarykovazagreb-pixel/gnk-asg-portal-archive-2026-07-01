@@ -25,6 +25,7 @@ const VERSION = createHash('sha1')
   .digest('hex')
   .slice(0, 8);
 const CHECK = process.argv.includes('--check');
+const COUNTS_ONLY = process.argv.includes('--counts-only');
 
 const tag = `<link rel="stylesheet" href="${CSS}?v=${VERSION}" data-am-hub-design="v2">`;
 
@@ -109,7 +110,7 @@ for (const rel of PAGES) {
   const sideRight = lang === 'hr'
     ? `AKTUAL MEDIA DESK<br>${nf.format(counts.texts || 0)} tekstova · ${counts.cities || 17} izdanja · ${counts.languages || 14} jezika`
     : `AKTUAL MEDIA DESK<br>${nf.format(counts.texts || 0)} texts · ${counts.cities || 17} editions · ${counts.languages || 14} languages`;
-  html = html.replace(/<div class="am-mast-side">[\s\S]*?<\/div>/, `<div class="am-mast-side">${sideLeft}</div>`);
+  if (!COUNTS_ONLY) html = html.replace(/<div class="am-mast-side">[\s\S]*?<\/div>/, `<div class="am-mast-side">${sideLeft}</div>`);
   html = html.replace(/<div class="am-mast-side right">[\s\S]*?<\/div>/, `<div class="am-mast-side right">${sideRight}</div>`);
 
   /* Hero traka ide odmah iza mastheada, prije atlasa. */
@@ -125,9 +126,11 @@ for (const rel of PAGES) {
   /* Sloj mora biti ZADNJI u headu: stariji listovi i slojevi koji se dodaju
      kasnije (traka, impressum) ne smiju ga prekriti. Zato se veza uvijek
      ukloni pa doda na kraj. */
-  html = html.replace(/\n?<link[^>]*href="\/assets\/aktual-hub-v2\.css\?v=[^"]*"[^>]*>/g, '');
-  if (!/<\/head>/i.test(html)) { missing.push(`${rel} (nema </head>)`); continue; }
-  html = html.replace(/<\/head>/i, `${tag}\n</head>`);
+  if (!COUNTS_ONLY) {
+    html = html.replace(/\n?<link[^>]*href="\/assets\/aktual-hub-v2\.css\?v=[^"]*"[^>]*>/g, '');
+    if (!/<\/head>/i.test(html)) { missing.push(`${rel} (nema </head>)`); continue; }
+    html = html.replace(/<\/head>/i, `${tag}\n</head>`);
+  }
 
   if (html === original) continue;
   if (!CHECK) writeFileSync(file, html);

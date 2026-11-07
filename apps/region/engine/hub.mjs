@@ -1042,6 +1042,8 @@ ${entries.map((e) => `<url><loc>${e.loc}</loc><changefreq>daily</changefreq><pri
     console.log(`::warning::Trake rubrika nisu spojene: ${error.message}`);
   }
 
+  // Refresh the masthead and hero strip from the same counts used by the map.
+  execFileSync(process.execPath, [join(ROOT, 'scripts', 'apply-aktual-hub-design-v1.mjs'), '--counts-only'], { cwd: ROOT, stdio: 'inherit' });
   execFileSync(process.execPath, [join(ROOT, 'scripts', 'check-hub-counts-v1.mjs')], { cwd: ROOT, stdio: 'inherit' });
   return { channels: CHANNELS.length, sport: collect('sport').length, politics: collect('politika').length, security: collect('sigurnost').length, biznis: collect('ekonomija').length, tehnologija: collect('ai').length, moda: collect('*', DESKS.moda.filter).length, putovanja: collect('*', DESKS.putovanja.filter).length, ljubimci: collect('*', DESKS.ljubimci.filter).length, svijet: collect('*', DESKS.svijet.filter).length };
 }
