@@ -6,6 +6,8 @@ on:
     paths:
       - '.github/workflows/aktual-world-feature-rebuild-v1.yml'
       - 'scripts/build-aktual-world-v1.mjs'
+      - 'apps/portal/autonomija/index.html'
+      - 'apps/portal/en/autonomy/index.html'
 permissions:
   contents: write
 concurrency:
