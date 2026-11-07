@@ -1258,7 +1258,8 @@ ${END}`;
      mjestima — dosad je twitter:description ostajao na starom broju tekstova
      i medija i nije se slagao s og:description. */
 
-  const safeDesc = esc(truncate(desc, 178));
+  const metaDesc = `AKTUAL MEDIA: ${CHANNELS.length} gradskih izdanja, ${items.length} tekstova iz ${sources.size} medija, poslovni tjednik, moda i radio. Urednik: Nermin Sefić.`;
+  const safeDesc = esc(metaDesc);
   html = html.replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${safeDesc}">`);
   html = html.replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${safeDesc}">`);
   html = html.replace(/<meta name="twitter:description" content="[^"]*">/, `<meta name="twitter:description" content="${safeDesc}">`);
