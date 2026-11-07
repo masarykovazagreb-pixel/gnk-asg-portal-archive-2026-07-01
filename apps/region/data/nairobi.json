@@ -4,7 +4,7 @@
   "lang": "en",
   "city": "Nairobi",
   "country": "Kenija",
-  "updatedAt": "2026-11-06T21:28:19.466Z",
+  "updatedAt": "2026-11-07T01:13:10.839Z",
   "sources": [
     {
       "id": "capitalfm",
@@ -14,20 +14,19 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-06T21:28:00.969Z"
+      "checkedAt": "2026-11-07T01:12:49.968Z"
     },
     {
       "id": "nation",
       "name": "Daily Nation",
-      "url": "https://nation.africa/kenya/rss",
-      "ok": false,
-      "fetched": 0,
+      "url": "https://nation.africa/kenya/rss.xml",
+      "ok": true,
+      "fetched": 25,
       "corrupt": 0,
       "errors": [
-        "https://nation.africa/kenya/rss: HTTP 403",
-        "https://nation.africa/kenya/rss.xml: HTTP 404"
+        "https://nation.africa/kenya/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-06T21:28:02.710Z"
+      "checkedAt": "2026-11-07T01:12:50.881Z"
     },
     {
       "id": "standard",
@@ -39,7 +38,7 @@
       "errors": [
         "https://www.standardmedia.co.ke/rss: nije feed"
       ],
-      "checkedAt": "2026-11-06T21:28:05.633Z"
+      "checkedAt": "2026-11-07T01:12:52.117Z"
     },
     {
       "id": "star",
@@ -51,7 +50,7 @@
       "errors": [
         "https://www.the-star.co.ke/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-06T21:28:07.338Z"
+      "checkedAt": "2026-11-07T01:12:54.328Z"
     },
     {
       "id": "businessdaily",
@@ -63,7 +62,7 @@
       "errors": [
         "https://www.businessdailyafrica.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-06T21:28:08.336Z"
+      "checkedAt": "2026-11-07T01:12:55.376Z"
     },
     {
       "id": "citizen",
@@ -75,7 +74,7 @@
       "errors": [
         "https://www.citizen.digital/rss: HTTP 400"
       ],
-      "checkedAt": "2026-11-06T21:28:16.569Z"
+      "checkedAt": "2026-11-07T01:13:03.679Z"
     },
     {
       "id": "kbc",
@@ -85,7 +84,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-06T21:28:18.482Z"
+      "checkedAt": "2026-11-07T01:13:08.943Z"
     },
     {
       "id": "eastafrican",
@@ -97,10 +96,70 @@
       "errors": [
         "https://www.theeastafrican.co.ke/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-06T21:28:19.466Z"
+      "checkedAt": "2026-11-07T01:13:10.838Z"
     }
   ],
   "items": [
+    {
+      "slug": "nairobi-2026-11-06-nation-kenya-must-spend-smarter-to-ensure-every-57450d",
+      "title": "Kenya must spend smarter to ensure every child learns",
+      "summary": "Kenya has first-hand experience of the effectiveness of structured pedagogy.",
+      "date": "2026-11-06T21:00:00.000Z",
+      "url": "https://nation.africa/kenya/blogs-opinion/blogs/kenya-must-spend-smarter-to-ensure-every-child-learns-5661702",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://nation.africa/resource/image/5661710/landscape_ratio16x9/1600/900/c41b9f86890b56a1a88589f8d1d57b1d/Qe/pupil-homework.jpg",
+      "imageAlt": "Kenya must spend smarter to ensure every child learns",
+      "addedAt": "2026-11-07T01:12:50.881Z"
+    },
+    {
+      "slug": "nairobi-2026-11-06-nation-is-ai-such-a-threat-to-the-kenyan-legal-a4b9f3",
+      "title": "Is AI such a threat to the Kenyan legal profession?",
+      "summary": "Parliament, the Judiciary and LSK should consider reforms addressing the use of AI-generated...",
+      "date": "2026-11-06T21:00:00.000Z",
+      "url": "https://nation.africa/kenya/blogs-opinion/blogs/is-ai-such-a-threat-to-the-kenyan-legal-profession--5661678",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "https://nation.africa/resource/image/5661688/landscape_ratio16x9/1600/900/72177c84f75477dbbf41445cef60518b/ui/ai.jpg",
+      "imageAlt": "Is AI such a threat to the Kenyan legal profession?",
+      "addedAt": "2026-11-07T01:12:50.881Z"
+    },
+    {
+      "slug": "nairobi-2026-11-06-nation-fight-doping-aggressively-7856f2",
+      "title": "Fight doping aggressively",
+      "summary": "Most of these drugs like Epo are quite expensive and can’t be purchased or administered over...",
+      "date": "2026-11-06T21:00:00.000Z",
+      "url": "https://nation.africa/kenya/blogs-opinion/editorials/fight-doping-aggressively-5661734",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Fight doping aggressively",
+      "addedAt": "2026-11-07T01:12:50.881Z"
+    },
+    {
+      "slug": "nairobi-2026-11-06-nation-long-shakahola-cult-jail-terms-apt-warning-e7aeff",
+      "title": "Long Shakahola cult jail terms apt warning",
+      "summary": "Mackenzie organised what Judge Diana Kavedza described as \"cold and calculated\" killings.",
+      "date": "2026-11-06T21:00:00.000Z",
+      "url": "https://nation.africa/kenya/blogs-opinion/editorials/long-shakahola-cult-jail-terms-apt-warning-5661726",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "",
+      "imageAlt": "Long Shakahola cult jail terms apt warning",
+      "addedAt": "2026-11-07T01:12:50.881Z"
+    },
     {
       "slug": "nairobi-2026-11-06-kbc-safaricom-group-net-income-rises-36-to-1bc1c1",
       "title": "Safaricom Group net income rises 36% to KSh58.2 billion as Ethiopia operations near break-even",
@@ -117,6 +176,36 @@
       "image": "https://www.kbc.co.ke/wp-content/uploads/2026/11/safaricom-CEO.jpeg",
       "imageAlt": "Safaricom Group net income rises 36% to KSh58.2 billion as Ethiopia operations near break-even",
       "addedAt": "2026-11-06T19:26:29.269Z"
+    },
+    {
+      "slug": "nairobi-2026-11-06-nation-four-siblings-one-grave-kwale-father-s-ed8e16",
+      "title": "Four siblings, one grave: Kwale father’s grief after Mtito Andei crash",
+      "summary": "Apostle Mdave lost four of his eight children in the collision that killed 24 people.",
+      "date": "2026-11-06T18:35:32.000Z",
+      "url": "https://nation.africa/kenya/counties/kwale/four-siblings-one-grave-kwale-father-s-grief-after-mtito-andei-crash-5661618",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://nation.africa/resource/image/5661626/landscape_ratio16x9/1600/900/fccf865a16afca569c15670a3c9bf605/Wl/siblings.png",
+      "imageAlt": "Four siblings, one grave: Kwale father’s grief after Mtito Andei crash",
+      "addedAt": "2026-11-07T01:12:50.881Z"
+    },
+    {
+      "slug": "nairobi-2026-11-06-nation-four-acquitted-no-killer-us-based-couple-s-38f814",
+      "title": "Four acquitted, no killer: US-based couple’s murder in Nyamira remains unsolved",
+      "summary": "How did the State, with all its resources, lose a high-profile murder case?",
+      "date": "2026-11-06T17:03:11.000Z",
+      "url": "https://nation.africa/kenya/counties/nyamira/four-acquitted-no-killer-us-based-couple-s-murder-in-nyamira-remains-unsolved-5661518",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://nation.africa/resource/image/5661542/landscape_ratio16x9/1600/900/732a9cc41e5c24b65ca1509e1648e991/mK/couple.jpg",
+      "imageAlt": "Four acquitted, no killer: US-based couple’s murder in Nyamira remains unsolved",
+      "addedAt": "2026-11-07T01:12:50.881Z"
     },
     {
       "slug": "nairobi-2026-11-06-capitalfm-in-pictures-charlene-ruto-weds-isaya-yunge-f75dbf",
