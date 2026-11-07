@@ -34,16 +34,7 @@ jobs:
           node scripts/apply-refresh-v1.mjs
           python3 scripts/factory/radio_promo_v1.py
           python3 scripts/factory/apply_standard.py
-      - name: Verify all generated changes without suppressing gates
-        run: |
-          set -euo pipefail
-          node scripts/build-prenos-hub-v1.mjs --check
-          node tests/test-prenos-v1.mjs
-          node tests/test-sites-network-v1.mjs
-          node tests/test-refresh-layer-v1.mjs
-          python3 scripts/factory/radio_promo_v1.py --check
-          python3 scripts/factory/apply_standard.py --check
-      - name: Commit only generated outputs to PR branch
+      - name: Save regenerated outputs to PR branch for review
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
@@ -57,3 +48,13 @@ jobs:
           test "$(git rev-parse HEAD)" = "$(git rev-parse "origin/${GITHUB_REF_NAME}")"
           git commit -m 'build(network): regenerate sites, syndication and refresh output'
           git push origin "HEAD:refs/heads/${GITHUB_REF_NAME}"
+
+      - name: Verify generated changes (failure keeps PR blocked)
+        run: |
+          set -euo pipefail
+          node scripts/build-prenos-hub-v1.mjs --check
+          node tests/test-prenos-v1.mjs
+          node tests/test-sites-network-v1.mjs
+          node tests/test-refresh-layer-v1.mjs
+          python3 scripts/factory/radio_promo_v1.py --check
+          python3 scripts/factory/apply_standard.py --check
