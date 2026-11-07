@@ -48,8 +48,8 @@ const escHtml = (s) => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt
  */
 function buildCountryPage(country) {
   const url = `${BASE}media/${country.slug}/`;
-  const title = `Aktual Media ${country.nameLocal} · ${country.nameEn} | Izvori vijesti — GNK ASG AKTUAL MEDIA`;
-  const description = `${country.flag} Aktualno iz ${country.nameLocal} — katalog ${country.sources} izvora; naslovi se prikazuju samo nakon provjerene obnove. Brand: Nermin Sefić, GNK ASG, GNK Dinamo Ltd. #NerminSefic #GNKASG #GNKDinamoLtd #AktualMedia`;
+  const title = `AKTUAL MEDIA ${country.nameLocal} — izvori`;
+  const description = `Katalog ${country.sources} informativnih izvora za ${country.nameLocal}. Objavljujemo poveznice na izvorne medije, ne njihove članke; naslovi se prikazuju nakon provjerene obnove.`;
 
   const sources = country.sourcesList.map(s => `<a href="${escHtml(s.url)}" target="_blank" rel="noopener noreferrer">${escHtml(s.name)}</a>`).join(' · ');
 
@@ -71,24 +71,31 @@ function buildCountryPage(country) {
         "address": { "@type": "PostalAddress", "addressCountry": country.code },
       },
       {
+        "@type": "CollectionPage",
+        "name": title,
+        "url": url,
+        "inLanguage": "hr",
+        "description": description,
+      },
+      {
         "@type": "WebSite",
         "name": `Aktual Media ${country.nameLocal}`,
         "url": url,
-        "inLanguage": country.language,
+        "inLanguage": "hr",
         "publisher": { "@type": "Organization", "name": `Aktual Media ${country.nameLocal}` },
       },
     ],
   };
 
   return `<!doctype html>
-<html lang="${country.language}">
+<html lang="hr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <title>${escHtml(title)}</title>
 <meta name="description" content="${escHtml(description)}">
-<meta name="keywords" content="Aktual Media ${country.nameEn}, ${country.nameLocal} vijesti, ${country.nameEn} news, ${country.region} news, Nermin Sefic, GNK ASG, GNK Dinamo Ltd, Aktual Media, #NerminSefic, #GNKASG, #GNKDinamoLtd">
+<meta name="keywords" content="Aktual Media ${country.nameEn}, ${country.nameLocal} vijesti, ${country.nameEn} news, ${country.region} news, GNK ASG, GNK Dinamo Ltd, Aktual Media, #GNKASG, #GNKDinamoLtd">
 <meta name="news_keywords" content="Aktual Media ${country.nameEn}, ${country.nameLocal}, Nermin Sefic, GNK ASG, GNK Dinamo Ltd">
 <meta name="hashtags" content="#NerminSefic #NerminSefić #GNKASG #GNKDinamoLtd #AktualMedia #AktualMedia${country.nameEn.replace(/\s|&/g, '')}">
 <meta name="author" content="Nermin Sefic — GNK ASG / GNK Dinamo Ltd">
@@ -96,7 +103,7 @@ function buildCountryPage(country) {
 <meta name="publisher" content="AKTUAL MEDIA d.o.o.">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 <link rel="canonical" href="${url}">
-<link rel="alternate" hreflang="${country.language}" href="${url}">
+<link rel="alternate" hreflang="hr" href="${url}">
 <link rel="alternate" hreflang="x-default" href="${url}">
 <link rel="alternate" type="application/rss+xml" title="Aktual Media ${country.nameLocal} RSS" href="${BASE}media/${country.slug}/feed.xml">
 <meta property="og:type" content="website">
@@ -192,12 +199,17 @@ function buildCityPage(city) {
   const url = `${BASE}grad/${city.slug}/`;
   const headlines = cityHeadlines(city.slug);
   const headlineMarkup = headlines.map(item => `<li><a href="${escHtml(item.url)}" target="_blank" rel="noopener noreferrer nofollow">${escHtml(item.title)}</a> — ${escHtml(item.source)}</li>`).join('');
-  const title = `AKTUAL MEDIA ${city.nameLocal} — lokalni izvori i poveznice`;
+  const title = `AKTUAL MEDIA ${city.nameLocal} — izvori`;
+  const cityDescription = `Pregled izvora i poveznica za ${city.nameLocal}. Vijesti ostaju na webu izvornog izdavača; prikazuju se samo provjereni svježi naslovi.`;
   return `<!doctype html>
 <html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${escHtml(title)}</title><meta name="description" content="Pregled naslova i izvora za ${escHtml(city.nameLocal)}. Bez preuzimanja članaka trećih medija.">
-<link rel="canonical" href="${escHtml(url)}"><link rel="alternate" type="application/rss+xml" href="${escHtml(url)}feed.xml" title="RSS ${escHtml(city.nameLocal)}">
-<meta name="robots" content="index,follow"><style>body{font:16px/1.7 system-ui;max-width:900px;margin:1rem auto;padding:1rem;background:#071522;color:#eee}a{color:#e3be70}li{margin:1rem 0}.muted{color:#b2c3d8}</style></head><body>
+<title>${escHtml(title)}</title><meta name="description" content="${escHtml(cityDescription)}">
+<link rel="canonical" href="${escHtml(url)}"><link rel="alternate" hreflang="hr" href="${escHtml(url)}"><link rel="alternate" hreflang="x-default" href="${escHtml(url)}"><link rel="alternate" type="application/rss+xml" href="${escHtml(url)}feed.xml" title="RSS ${escHtml(city.nameLocal)}">
+<meta name="robots" content="index,follow">
+<meta property="og:type" content="website"><meta property="og:site_name" content="AKTUAL MEDIA"><meta property="og:title" content="${escHtml(title)}"><meta property="og:description" content="${escHtml(cityDescription)}"><meta property="og:url" content="${escHtml(url)}"><meta property="og:image" content="https://gnk-asg.hr/assets/people/nermin-sefic/nermin-sefic-01-official-desk-portrait.webp">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${escHtml(title)}"><meta name="twitter:description" content="${escHtml(cityDescription)}"><meta name="twitter:image" content="https://gnk-asg.hr/assets/people/nermin-sefic/nermin-sefic-01-official-desk-portrait.webp">
+<script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'CollectionPage',name:title,url,description:cityDescription,inLanguage:'hr',isAccessibleForFree:true})}</script>
+<style>body{font:16px/1.7 system-ui;max-width:900px;margin:1rem auto;padding:1rem;background:#071522;color:#eee}a{color:#e3be70}li{margin:1rem 0}.muted{color:#b2c3d8}</style></head><body>
 <p><a href="${BASE}">AKTUAL MEDIA</a> · <a href="${BASE}media/${escHtml(city.country)}/">${escHtml(city.country)}</a></p>
 <h1>${escHtml(city.flag)} AKTUAL MEDIA ${escHtml(city.nameLocal)}</h1>
 <p>Urednik: Nermin Sefić · GNK ASG · AKTUAL MEDIA</p>
