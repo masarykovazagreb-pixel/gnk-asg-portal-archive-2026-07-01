@@ -190,6 +190,7 @@ jobs:
         run: |
           set -euo pipefail
           node apps/sites/build.mjs
+          node apps/world/build.mjs
           node scripts/build-prenos-hub-v1.mjs
           node scripts/build-sync-status-v1.mjs
           node scripts/apply-design-tokens-v1.mjs
