@@ -30,6 +30,7 @@ on:
       - '.github/workflows/all-gates-v1.yml'
       # Bot-generated commits update these outputs; validate their actual SHA
       # instead of accepting a cancelled pre-regeneration PR run.
+      - 'scripts/**'
       - 'apps/portal/data/public_service_status.json'
       - 'apps/kanal/site/**'
       - 'apps/tjednik/**'
