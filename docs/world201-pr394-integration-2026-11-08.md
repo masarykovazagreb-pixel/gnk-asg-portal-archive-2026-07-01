@@ -32,3 +32,11 @@ Original PR #394 and its branch remain untouched. Existing public deployment mus
 - Generated commit `939e80eee16d6d7454c305fa1712f988fac8ead8` changed **995 paths** (288 new files, zero deletions) and was limited to the explicit generated-data/site allowlist; stage rejected protected news paths, file deletions and any rewrite exceeding 4000 paths.
 - Verified in staging by canonical checks: `tests/test-sites-network-v1.mjs`, `scripts/build-prenos-hub-v1.mjs --check`, `tests/test-sync-status-v1.mjs`, `tests/test-design-system-v1.mjs`, `scripts/public-status-snapshot-v1.mjs --check`.
 - Remaining full `All gates (portal)` failures on previous HEAD were 12 of 109. Those results do not yet prove current full CI is green; this human-app-authored documentation-only update triggers a fresh check on the exact HEAD and must not be treated as merge/deployment approval.
+
+## Audited complete metadata rebuild (8 November 2026, 18:14 UTC)
+
+- Staging [run #42508024608](https://github.com/masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01/actions/runs/42508024608) finished **SUCCESS**, including the guarded metadata repair.
+- Generated commit `e198c912404704be36ee12ffeaf2f7b1a839a5a9` modifies **20,213 public portal paths** and deletes **zero files**. It applies canonical WebSite JSON-LD, brand/favicon, factory attribution and refresh-data-day layers.
+- Before committing, the staging job compared the full rendered visible editorial text of **all 20,192 changed HTML documents** against their original commit, after removing only approved added UI/metadata blocks and normalized network-lead variants; the comparison passed. Protected archived news were separately audited to ensure no body/markup changes beyond existing refresh script dates.
+- Canonical generators and their read-only checks passed in staging: WebSite JSON-LD validator (18,941 eligible public pages, exactly one site node each), factory standard, brand mark and portal refresh.
+- This source-only documentation commit triggers **fresh GitHub App-authored CI** on the exact HEAD. Earlier full `All gates (portal)` on `2740ea933cf201beb136316bd8c9d7f424a113c2` was **104/109**, not green. Do not merge PR #395, deploy main, or declare LIVE until current full CI and deployment are independently proven.
