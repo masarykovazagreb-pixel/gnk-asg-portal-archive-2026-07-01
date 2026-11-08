@@ -1,0 +1,114 @@
+name: WORLD 201 integration - stage generated output only
+on:
+  push:
+    branches:
+      - integration/world201-pr394-main-20261108
+    paths:
+      - .github/workflows/world201-integration-stage.yml
+      - scripts/build-aktual-world-v1.mjs
+      - scripts/build-aktual-media-weekly-archive-v1.mjs
+      - apps/portal/data/world-countries-v1.json
+      - apps/portal/data/aktual-weekly.json
+      - apps/portal/data/aktual-weekly-curation.json
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gnk-asg-world201-pr394-integration-staging
+  cancel-in-progress: false
+
+jobs:
+  regenerate-on-integration-branch:
+    name: Build 201 countries and weekly archive without touching main
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Check out the exact branch commit
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 1
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax-check imported generators and test input completeness
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check scripts/build-aktual-world-v1.mjs
+          node --check scripts/build-aktual-media-weekly-archive-v1.mjs
+          node --check scripts/build-index-parity.mjs
+          node --check scripts/build-sync-status-v1.mjs
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          world=json.loads(Path('apps/portal/data/world-countries-v1.json').read_text())
+          issue=json.loads(Path('apps/portal/data/aktual-weekly.json').read_text())
+          assert world['count']==201 and len(world['countries'])==201, 'World must list 201 countries'
+          assert len(world['cities'])==10, 'World must list 10 cities'
+          assert issue['issue_week']=='2026-11-02', 'Unexpected weekly issue'
+          print('Inputs validated: 201 countries, 10 cities and weekly issue')
+          PY
+      - name: Regenerate WORLD 201 pages from main plus imported sources
+        env:
+          AKTUAL_WORLD_OUT: apps/portal/gnk-aktual
+        run: node scripts/build-aktual-world-v1.mjs --base https://gnk-asg.hr/gnk-aktual/
+      - name: Regenerate HR/EN weekly archive without deleting newer news
+        run: node scripts/build-aktual-media-weekly-archive-v1.mjs
+      - name: Validate all generated XML, page counts and weekly originals
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          portal=Path('apps/portal')
+          out=portal/'gnk-aktual'
+          world=json.loads((portal/'data/world-countries-v1.json').read_text())
+          issue=json.loads((portal/'data/aktual-weekly.json').read_text())
+          for item in world['countries']:
+              d=out/'media'/item['slug']
+              assert (d/'index.html').is_file(), str(d)
+              ET.parse(d/'feed.xml')
+          for item in world['cities']:
+              d=out/'grad'/item['slug']
+              assert (d/'index.html').is_file(), str(d)
+              ET.parse(d/'feed.xml')
+          tree=ET.parse(out/'media/sitemap.xml')
+          assert len(tree.findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}loc'))>=211, 'Incomplete sitemap'
+          week=issue['issue_week']
+          for p in [out/'tjedni'/week/'index.html',portal/'en/gnk-aktual/weekly'/week/'index.html']:
+              assert p.is_file() and p.stat().st_size>500, str(p)
+          for path in [issue['cover_image_hr'],issue['cover_image_en']]:
+              assert (portal/path.lstrip('/')).is_file(), path
+          for section in issue.get('sections',[]):
+              for item in section.get('items',[]):
+                  img=item.get('image','')
+                  if img.startswith('/assets/'):
+                      assert (portal/img.lstrip('/')).is_file(), img
+          print('Validated 211 WORLD pages, 211 RSS feeds, sitemap, and HR/EN weekly archives')
+          PY
+      - name: Stage only generated WORLD and weekly paths; fail on deletion
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add -A -- apps/portal/gnk-aktual/media apps/portal/gnk-aktual/grad apps/portal/gnk-aktual/tjedni apps/portal/en/gnk-aktual/weekly apps/portal/data/aktual-weekly-archives
+          git diff --cached --check
+          if git diff --cached --name-status | grep -q $'^D\t'; then
+            echo 'Deletion detected; refusing generated-output commit.' >&2
+            exit 1
+          fi
+          if git diff --cached --quiet; then
+            echo 'No generated changes; already synchronized.'
+            exit 0
+          fi
+          git fetch origin "$GITHUB_REF_NAME"
+          test "$(git rev-parse HEAD)" = "$(git rev-parse FETCH_HEAD)"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'build(world201): regenerate country-city and weekly pages from latest main'
+          git push origin "HEAD:refs/heads/$GITHUB_REF_NAME"
