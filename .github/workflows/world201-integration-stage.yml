@@ -1,6 +1,11 @@
 name: WORLD 201 integration - stage generated output only
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - integration/world201-pr394-main-20261108
+    paths:
+      - .github/workflows/world201-integration-stage.yml
 
 permissions:
   contents: write
