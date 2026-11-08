@@ -1,0 +1,54 @@
+name: AKTUAL World — source headline refresh PR
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 1,7,13,19 * * *'
+permissions:
+  contents: write
+  pull-requests: write
+concurrency:
+  group: aktual-world-source-refresh
+  cancel-in-progress: false
+jobs:
+  refresh-pr:
+    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test registry and builder
+        run: node --test tests/test-aktual-world-v1.mjs
+      - name: Fetch external headlines as links only
+        env:
+          AKTUAL_FEEDS_PER_COUNTRY: '2'
+          AKTUAL_FETCH_CONCURRENCY: '8'
+          AKTUAL_ITEMS_PER_COUNTRY: '10'
+        run: node scripts/refresh-aktual-world-headlines-v1.mjs
+      - name: Regenerate static pages and RSS without copying article bodies
+        env:
+          AKTUAL_WORLD_OUT: apps/portal/gnk-aktual
+        run: |
+          node scripts/build-aktual-world-v1.mjs --base https://gnk-asg.hr/gnk-aktual/
+          node --test tests/test-aktual-world-v1.mjs
+      - name: Open source-update PR, never deploy or auto-merge
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add apps/portal/data/aktual-world-headlines-v1.json apps/portal/gnk-aktual/media
+          if git diff --cached --quiet; then
+            echo 'No acceptable updated headlines.'
+            exit 0
+          fi
+          # Keep updates in review, no uncontrolled production publishing.
+          branch="auto/aktual-world-refresh-${GITHUB_RUN_ID}"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git checkout -b "$branch"
+          git commit -m 'chore(aktual-world): refresh verified external headline links'
+          git push origin "$branch"
+          gh pr create --base main --head "$branch" --title 'AKTUAL World: osvježi poveznice na izvorne naslove' --body 'Automatski pripremljen skup poveznica i naslova vanjskih izvora. Bez kopiranja članaka i bez automatskog mergea/deploya. Provjeriti prava, svježinu, točnost naslova i CI prije objave.'

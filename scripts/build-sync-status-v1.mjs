@@ -48,11 +48,9 @@ for (const file of readdirSync(workflowDir).filter((f) => f.endsWith('.yml')).so
 /* ---------- 2. Svježina po webu ---------- */
 const channels = readJSON(join(ROOT, 'apps/region/channels.json'), { channels: [] }).channels || [];
 
-const newestIn = (file) => {
-  if (!existsSync(file)) return null;
-  const stat = statSync(file);
-  return stat.mtime.toISOString();
-};
+// A checkout/build mtime is not evidence of a publication or deploy time.
+// Keep freshness unknown until a reliable publishing record is available.
+const newestIn = () => null;
 
 const webs = [];
 for (const channel of channels) {
@@ -111,7 +109,7 @@ writeFileSync(OUT_JSON, `${JSON.stringify(payload, null, 2)}\n`);
 
 /* ---------- 4. Stranica za ljude ---------- */
 const rows = schedules.map((s) => `<tr><td><code>${esc(s.crons.join(' · '))}</code></td><td>${esc(s.name)}</td><td>${s.writes ? 'piše u git' : 'samo provjerava'}</td></tr>`).join('');
-const webRows = payload.webs.map((w) => `<tr><td>${esc(w.id)}</td><td>${esc(w.kind)}</td><td>${w.pages}</td><td>${w.newest ? esc(w.newest.slice(0, 16).replace('T', ' ')) : '—'}</td></tr>`).join('');
+const webRows = payload.webs.map((w) => `<tr><td>${esc(w.id)}</td><td>${esc(w.kind)}</td><td>${w.pages}</td><td>${w.newest ? esc(w.newest.slice(0, 16).replace('T', ' ')) : 'nije provjereno'}</td></tr>`).join('');
 const stepRows = payload.steps.map((s) => `<tr><td>${esc(s.group)}</td><td><code>${esc(s.id)}</code></td><td>${esc(s.why)}</td></tr>`).join('');
 
 const html = `<!doctype html>
@@ -173,7 +171,7 @@ ${designTokensCss()}
 <table><thead><tr><th>Skupina</th><th>Korak</th><th>Što radi</th></tr></thead><tbody>${stepRows}</tbody></table>
 
 <h2>Webovi</h2>
-<table><thead><tr><th>Web</th><th>Vrsta</th><th>Stavki u korijenu</th><th>Zadnja izmjena</th></tr></thead><tbody>${webRows}</tbody></table>
+<table><thead><tr><th>Web</th><th>Vrsta</th><th>Stavki u korijenu</th><th>Zadnja provjerena objava</th></tr></thead><tbody>${webRows}</tbody></table>
 
 <p class="lead">Zapis sastavljen ${esc(now.toISOString().slice(0, 16).replace('T', ' '))} UTC.</p>
 </main>
