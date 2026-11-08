@@ -42,7 +42,7 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          for dir in apps/sites/site apps/portal/prenos apps/portal/en/prenos apps/portal/assets apps/world/site apps/kanal/site apps/arhiva/site apps/dnevnik/site; do
+          for dir in apps/sites/site apps/portal/prenos apps/portal/en/prenos apps/portal/assets apps/kanal/site apps/arhiva/site apps/dnevnik/site; do
             if test -d "$dir"; then git add -A -- "$dir"; fi
           done
           git add -u -- apps/portal/
