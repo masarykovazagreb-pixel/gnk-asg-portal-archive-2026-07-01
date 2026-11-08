@@ -22,6 +22,11 @@ on:
       - 'ops/**'
       - '.github/workflows/**'
   workflow_dispatch:
+  push:
+    branches:
+      - 'arena/0ba72079-gnk-asg-portal-archive-2026-07'
+    paths:
+      - '.github/workflows/all-gates-v1.yml'
 
 permissions:
   contents: read
@@ -70,7 +75,7 @@ jobs:
 
   repair_pr394:
     name: Regenerate PR394 outputs (branch-only)
-    if: github.event_name == 'pull_request' && github.event.pull_request.number == 394 && github.event.pull_request.head.repo.full_name == github.repository && vars.GNK_ASG_RELEASE_FENCE != 'true'
+    if: ((github.event_name == 'pull_request' && github.event.pull_request.number == 394 && github.event.pull_request.head.repo.full_name == github.repository) || (github.event_name == 'push' && github.ref == 'refs/heads/arena/0ba72079-gnk-asg-portal-archive-2026-07')) && vars.GNK_ASG_RELEASE_FENCE != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     permissions:
@@ -81,7 +86,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: ${{ github.head_ref || github.ref_name }}
           fetch-depth: 1
           persist-credentials: true
       - uses: actions/setup-node@v4
@@ -106,7 +111,7 @@ jobs:
           git reset -q -- apps/portal/podijeli/vijest/ || true
           if git diff --cached --quiet; then exit 0; fi
           git diff --cached --check
-          git fetch origin "${{ github.event.pull_request.head.ref }}"
+          git fetch origin "${{ github.head_ref || github.ref_name }}"
           test "$(git rev-parse HEAD)" = "$(git rev-parse FETCH_HEAD)"
           git commit -m 'build(network): regenerate PR394 output and metadata'
-          git push origin "HEAD:refs/heads/${{ github.event.pull_request.head.ref }}"
+          git push origin "HEAD:refs/heads/${{ github.head_ref || github.ref_name }}"
