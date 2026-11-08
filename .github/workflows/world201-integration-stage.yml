@@ -21,6 +21,7 @@ concurrency:
 
 jobs:
   regenerate-on-integration-branch:
+    if: github.ref == 'refs/heads/integration/world201-pr394-main-20261108' && vars.GNK_ASG_RELEASE_FENCE != 'true'
     name: Build 201 countries and weekly archive without touching main
     runs-on: ubuntu-latest
     timeout-minutes: 35
