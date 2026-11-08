@@ -8,7 +8,7 @@
  *
  * Pokretanje: node apps/arhiva/engine/build.mjs
  */
-import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync, cpSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync, cpSync, copyFileSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -64,6 +64,8 @@ const write = (rel, content) => {
 rmSync(SITE, { recursive: true, force: true });
 mkdirSync(SITE, { recursive: true });
 cpSync(join(ROOT, 'apps', 'satellites', 'assets'), join(SITE, 'assets', 'brand'), { recursive: true });
+// Use the canonical publisher favicon, not the retired satellite-specific icon.
+copyFileSync(join(ROOT, 'apps', 'shared', 'brand', 'favicon.svg'), join(SITE, 'assets', 'brand', 'favicon.svg'));
 ensureRefreshModule(SITE);
 
 /* ---------- zajednički dijelovi ---------- */
