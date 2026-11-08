@@ -40,3 +40,10 @@ Original PR #394 and its branch remain untouched. Existing public deployment mus
 - Before committing, the staging job compared the full rendered visible editorial text of **all 20,192 changed HTML documents** against their original commit, after removing only approved added UI/metadata blocks and normalized network-lead variants; the comparison passed. Protected archived news were separately audited to ensure no body/markup changes beyond existing refresh script dates.
 - Canonical generators and their read-only checks passed in staging: WebSite JSON-LD validator (18,941 eligible public pages, exactly one site node each), factory standard, brand mark and portal refresh.
 - This source-only documentation commit triggers **fresh GitHub App-authored CI** on the exact HEAD. Earlier full `All gates (portal)` on `2740ea933cf201beb136316bd8c9d7f424a113c2` was **104/109**, not green. Do not merge PR #395, deploy main, or declare LIVE until current full CI and deployment are independently proven.
+
+## Final canonical brand remediation and current-main integration
+
+- On commit `f77a494db068714f6893da3490c9a2c3d38fa0c7`, full All gates run [#42510539620](https://github.com/masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01/actions/runs/42510539620) passed **108 of 109** checks; only weekly favicon brand parity failed. No bypass was applied.
+- The generated weekly favicon was made canonical at commit `ba267242f68a8d3277a005fb975d4c60416164c6`; the original weekly generator asset was corrected at commit `e1a71e29f30e0639e0ae34d7266e331200e75fb9`, so regeneration retains the canonical icon.
+- Main commit `3cc80279e8dfbff5300d4eedfba85496d30222c6` (latest World Monitor data) was integrated safely into staging as merge commit `1d16b3ab7e62bdfbe8fafbecc6ef8df73802e60c` without force push; main has not been deployed from this staging branch.
+- This review-only documentation commit requests a real fresh PR CI run on the current exact SHA, including `All gates (portal)`, editorial policy, and production package validation. Do not mark PR ready or deploy unless all mandatory checks pass and approval requirements are satisfied.
