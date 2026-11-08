@@ -40,13 +40,6 @@
 /kanal/*/manifest.webmanifest
   Cache-Control: public, max-age=3600
 
-# WORLD LIVE: allow only the approved external news panel as a child frame.
-# The remote host must separately permit embedding (frame-ancestors / X-Frame-Options).
-/gnk-aktual/world-live/*
-  Content-Security-Policy: default-src 'self'; frame-src https://j1hex9qg03f0-d.space-z.ai; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'none'
-  Referrer-Policy: no-referrer
-  Cache-Control: public, max-age=0, must-revalidate
-
 /gnk-aktual/*
   Cache-Control: public, max-age=0, must-revalidate
 
