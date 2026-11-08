@@ -146,6 +146,10 @@ jobs:
             echo "::warning::Main advanced during the non-force news push; fresh generation will retry (attempt $attempt)."
           done
           echo "::error::News feed generated but not published after three safe exact-main attempts."
+          # Do not wait for the four-hour cron after a main push race. Requeue
+          # the same canonical writer; never bypass the release fence or push forcefully.
+          gh workflow run gnk-news-refresh-v2.yml --repo "$GITHUB_REPOSITORY" --ref main || \
+            echo "::warning::Canonical news retry dispatch failed; watchdog remains the fallback."
           exit 75
 
       - name: Dispatch exact-SHA production deploy
