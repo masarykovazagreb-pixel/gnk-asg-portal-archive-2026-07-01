@@ -12,6 +12,7 @@ on:
       - 'apps/portal/**'
       - 'apps/region/**'
       - 'apps/kanal/**'
+      - 'apps/tjednik/**'
       - 'apps/sites/**'
       - 'apps/satellites/**'
       - 'apps/world/**'
@@ -31,6 +32,7 @@ on:
       # instead of accepting a cancelled pre-regeneration PR run.
       - 'apps/portal/data/public_service_status.json'
       - 'apps/kanal/site/**'
+      - 'apps/tjednik/**'
       - 'apps/sites/site/**'
 
 permissions:
@@ -38,7 +40,8 @@ permissions:
 
 concurrency:
   group: all-gates-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  # Keep the current gate run alive while regeneration or PR metadata changes.
+  cancel-in-progress: false
 
 jobs:
   gates:
