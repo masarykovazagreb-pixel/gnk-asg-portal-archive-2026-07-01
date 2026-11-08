@@ -1,15 +1,5 @@
 name: WORLD 201 integration - stage generated output only
 on:
-  push:
-    branches:
-      - integration/world201-pr394-main-20261108
-    paths:
-      - .github/workflows/world201-integration-stage.yml
-      - scripts/build-aktual-world-v1.mjs
-      - scripts/build-aktual-media-weekly-archive-v1.mjs
-      - apps/portal/data/world-countries-v1.json
-      - apps/portal/data/aktual-weekly.json
-      - apps/portal/data/aktual-weekly-curation.json
   workflow_dispatch:
 
 permissions:
