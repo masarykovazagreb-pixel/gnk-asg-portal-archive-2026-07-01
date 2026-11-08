@@ -30,6 +30,10 @@ jobs:
           # WORLD output is intentionally gitignored, but its nine portals must
           # exist in the runner before the transfer contract is validated.
           node apps/world/build.mjs
+          # These satellite outputs are generated and gitignored; build them
+          # in the runner before the refresh-layer gate checks their existence.
+          node apps/arhiva/engine/build.mjs
+          node apps/dnevnik/engine/build.mjs
           node scripts/build-prenos-hub-v1.mjs
       - name: Repair refresh tags and radio promo blocks
         run: |
