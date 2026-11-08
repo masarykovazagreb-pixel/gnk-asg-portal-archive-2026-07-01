@@ -47,3 +47,10 @@ Original PR #394 and its branch remain untouched. Existing public deployment mus
 - The generated weekly favicon was made canonical at commit `ba267242f68a8d3277a005fb975d4c60416164c6`; the original weekly generator asset was corrected at commit `e1a71e29f30e0639e0ae34d7266e331200e75fb9`, so regeneration retains the canonical icon.
 - Main commit `3cc80279e8dfbff5300d4eedfba85496d30222c6` (latest World Monitor data) was integrated safely into staging as merge commit `1d16b3ab7e62bdfbe8fafbecc6ef8df73802e60c` without force push; main has not been deployed from this staging branch.
 - This review-only documentation commit requests a real fresh PR CI run on the current exact SHA, including `All gates (portal)`, editorial policy, and production package validation. Do not mark PR ready or deploy unless all mandatory checks pass and approval requirements are satisfied.
+
+## CI revalidation after fixing icon contract and updating main
+
+- Last full `All gates (portal)` on integration HEAD `62ae7031` was **108/109**, failing only the icon markup contract for the HR/EN network source pages.
+- Generator `scripts/factory/build-public-network-inventory-v1.mjs` and both generated HR/EN `mreza/izvori/index.html` pages were fixed atomically in commit `9d95c5f7b20a4fe393812586f5216ffe8531b0fb`; no article body was changed.
+- Safely integrated the latest `main` at `f5ef0fbe99cfc1c4e6ce7c91b57948cf60a440eb` using GitHub-calculated merge tree in merge commit `f1c621791059038c875bdb5bfb88bd8db1e094c9`. No force push and no deletion performed by this operation.
+- This documentation update requests REAL review-triggered CI on the latest integrated HEAD. Previous checks do not count. Keep PR draft until all required checks complete successfully; only then consider normal PR merge and separately authorized exact-SHA production deployment.
