@@ -26,6 +26,7 @@ jobs:
       - name: Regenerate six independent sites and cross-domain copies
         run: |
           set -euo pipefail
+          node apps/kanal/build.mjs
           node apps/sites/build.mjs
           # WORLD output is intentionally gitignored, but its nine portals must
           # exist in the runner before the transfer contract is validated.
@@ -41,6 +42,8 @@ jobs:
           node scripts/apply-refresh-v1.mjs
           python3 scripts/factory/radio_promo_v1.py
           python3 scripts/factory/apply_standard.py
+          # Refresh the committed repository status snapshot before the 48-hour freshness gate.
+          node scripts/public-status-snapshot-v1.mjs
       - name: Save regenerated outputs to PR branch for review
         run: |
           set -euo pipefail
