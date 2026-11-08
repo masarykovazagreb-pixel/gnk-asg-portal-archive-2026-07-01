@@ -1,0 +1,37 @@
+/* AKTUAL MEDIA Zagreb takeover — isolated, responsive, accessible */
+.am-zg-takeover{--az-red:#d52132;--az-ink:#f7f9fc;--az-muted:#bcc6d4;--az-line:rgba(255,255,255,.16);color:var(--az-ink);font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;max-width:1400px;margin:16px auto 30px}
+.am-zg-takeover a{text-decoration:none;color:inherit}
+.am-zg-takeover a:focus-visible,.am-zg-modal a:focus-visible,.am-zg-modal button:focus-visible{outline:3px solid #ffcf4a;outline-offset:4px}
+.am-zg-strap{display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:10px 16px;background:#df2131;color:#fff;font-size:12px;letter-spacing:.08em;font-weight:800;text-transform:uppercase}
+.am-zg-strap a{border-bottom:1px solid rgba(255,255,255,.75)}
+.am-zg-head{background:#0a1322;border:1px solid var(--az-line);padding:19px 23px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.am-zg-identity{font-size:clamp(22px,3vw,37px);font-weight:950;letter-spacing:-.055em;line-height:1}.am-zg-identity em{font-style:normal;color:#ef4253}.am-zg-head p{margin:7px 0 0;color:var(--az-muted);font-size:13px}.am-zg-head .am-zg-nav{display:flex;flex-wrap:wrap;gap:8px}.am-zg-nav a{font-size:13px;padding:9px 12px;border:1px solid var(--az-line);border-radius:6px}.am-zg-nav a:hover{background:#253650}
+.am-zg-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(250px,1fr);gap:12px;margin-top:12px}
+.am-zg-main{display:flex;min-height:360px;position:relative;flex-direction:column;justify-content:flex-end;border-radius:12px;overflow:hidden;padding:clamp(24px,4vw,48px);background:linear-gradient(120deg,rgba(7,16,32,.95),rgba(14,44,72,.82)),url('/assets/atlas/aktual-media-atlas-1600.webp') center/cover}
+.am-zg-main::before{content:"";position:absolute;inset:0;border:1px solid var(--az-line);border-radius:12px;pointer-events:none}
+.am-zg-main:hover{filter:brightness(1.08)}.am-zg-tag{display:inline-flex;align-self:flex-start;font-weight:800;font-size:11px;letter-spacing:.11em;background:var(--az-red);padding:7px 10px;color:white;border-radius:3px}
+.am-zg-main h2{font-weight:950;font-size:clamp(32px,4.4vw,65px);letter-spacing:-.055em;line-height:1.02;color:#fff;max-width:740px;margin:22px 0 14px}
+.am-zg-main p{font-size:clamp(15px,1.6vw,19px);line-height:1.5;max-width:640px;color:#e4eaf4;margin:0 0 24px}
+.am-zg-main strong{align-self:flex-start;background:#fff;color:#0e192b;padding:12px 18px;border-radius:5px;font-size:14px}
+.am-zg-side{display:grid;gap:12px;grid-template-rows:1fr 1fr}
+.am-zg-side a{display:flex;flex-direction:column;justify-content:space-between;padding:25px;background:#152439;border:1px solid var(--az-line);border-radius:12px;min-height:160px}
+.am-zg-side a:nth-child(2){background:#341c2b}.am-zg-side a:hover{background:#274362}
+.am-zg-side small{color:#ff7a88;letter-spacing:.12em;font-weight:900;text-transform:uppercase}
+.am-zg-side b{font-size:clamp(20px,2.3vw,29px);line-height:1.15;letter-spacing:-.035em}
+.am-zg-side span{font-size:13px;color:#d7dfed}
+.am-zg-sponsor{margin-top:12px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:20px;align-items:center;background:#f5f1e9;color:#132035;border:1px solid #d5b978;padding:17px 23px;border-radius:10px}
+.am-zg-sponsor .am-zg-adlabel{font-size:10px;letter-spacing:.13em;text-transform:uppercase;font-weight:850;border:1px solid #9f8d6b;padding:7px 8px}
+.am-zg-sponsor b{display:block;font-size:clamp(16px,2vw,23px);letter-spacing:-.025em}.am-zg-sponsor p{margin:3px 0 0;font-size:13px}
+.am-zg-sponsor .am-zg-adcta{font-size:14px;font-weight:850;white-space:nowrap;color:#b71b2a}
+.am-zg-sponsor:hover{background:#fff}
+.am-zg-fineprint{color:var(--az-muted);font-size:12px;margin:10px 3px}
+.am-zg-modal[hidden]{display:none!important}.am-zg-modal{position:fixed;z-index:2147483000;inset:0;display:grid;place-items:center;padding:18px}
+.am-zg-shade{position:absolute;inset:0;background:rgba(3,10,23,.8);backdrop-filter:blur(5px)}
+.am-zg-dialog{position:relative;width:min(100%,640px);border-radius:18px;overflow:hidden;background:#0e1c30;color:#fff;border:1px solid #60748d;box-shadow:0 28px 100px #000b;padding:clamp(25px,5vw,42px);font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+.am-zg-dialog .am-zg-close{position:absolute;right:16px;top:12px;border:1px solid #7e90a5;background:#23354a;color:#fff;border-radius:100px;width:38px;height:38px;font-size:23px;cursor:pointer}
+.am-zg-dialog .am-zg-tag{margin-bottom:16px}.am-zg-dialog h2{font-size:clamp(30px,5vw,48px);font-weight:950;letter-spacing:-.05em;line-height:1.06;margin:9px 0 15px}.am-zg-dialog p{color:#d5dfec;font-size:16px;line-height:1.55}
+.am-zg-dialog .am-zg-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}.am-zg-dialog .am-zg-actions a{background:#e72d3c;color:#fff;padding:14px 19px;border-radius:6px;text-decoration:none;font-weight:850}.am-zg-dialog .am-zg-actions a:nth-child(2){background:#263a50;border:1px solid #718096}
+.am-zg-dialog .am-zg-closecopy{font-size:12px;color:#b1c0d1;margin-top:22px}
+@media(max-width:760px){.am-zg-grid{grid-template-columns:1fr}.am-zg-main{min-height:330px}.am-zg-side{grid-template-columns:1fr 1fr;grid-template-rows:auto}.am-zg-side a{min-height:190px;padding:18px}.am-zg-sponsor{grid-template-columns:1fr;gap:9px}}
+@media(max-width:460px){.am-zg-side{grid-template-columns:1fr}.am-zg-side a{min-height:125px}.am-zg-head{padding:18px}.am-zg-main h2{font-size:34px}}
+@media(prefers-reduced-motion:no-preference){.am-zg-main,.am-zg-side a,.am-zg-sponsor{transition:background .2s,filter .2s}}
