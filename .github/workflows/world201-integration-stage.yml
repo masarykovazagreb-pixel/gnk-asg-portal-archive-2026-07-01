@@ -236,3 +236,81 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -m 'build(world201): repair deterministic network, status and design parity on staging'
           git push origin "HEAD:refs/heads/$GITHUB_REF_NAME"
+
+  final-integrity-repair:
+    needs: generated-drift-repair
+    if: github.ref == 'refs/heads/integration/world201-pr394-main-20261108' && vars.GNK_ASG_RELEASE_FENCE != 'true'
+    name: Safely repair JSON-LD, brand, attribution and refresh metadata
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: integration/world201-pr394-main-20261108
+          persist-credentials: true
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run canonical metadata-only generators
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/ensure-website-jsonld-v1.mjs --write > /tmp/world201-jsonld-summary.json
+          node scripts/apply-brand-mark-v1.mjs
+          python3 scripts/factory/apply_standard.py
+          node scripts/apply-refresh-v1.mjs
+          node --check scripts/ensure-website-jsonld-v1.mjs
+          git diff --check
+      - name: Verify metadata and archived article preservation
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/test-website-jsonld-v1.mjs
+          python3 scripts/factory/apply_standard.py --check
+          node scripts/ensure-website-jsonld-v1.mjs > /tmp/world201-verify-jsonld.json
+          node scripts/apply-brand-mark-v1.mjs --check
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess,re
+          files=subprocess.check_output(['git','diff','--name-only','-z']).decode().split('\0')
+          for path in filter(None,files):
+              if not path.startswith('apps/portal/podijeli/vijest/'):
+                  continue
+              previous=subprocess.check_output(['git','show',f'HEAD:{path}'])
+              current=Path(path).read_bytes()
+              pat=re.compile(rb'<script\b[^>]*\bdata-am-netday="[^"]*"[^>]*></script>',re.I)
+              if len(pat.findall(previous)) != 1 or len(pat.findall(current)) != 1:
+                  raise SystemExit('Protected article refresh tag count changed: '+path)
+              if pat.sub(b'<script refresh-normalized></script>',previous) != pat.sub(b'<script refresh-normalized></script>',current):
+                  raise SystemExit('Protected article body/markup changed beyond refresh date: '+path)
+          print('Protected article content unchanged; only existing refresh script dates may differ')
+          PY
+      - name: Strict guarded commit, no deletion or unexpected scale
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add -A -- apps/portal apps/sites/site
+          git diff --cached --check
+          if git diff --cached --name-status | grep -q $'^D\t'; then
+            echo 'Deletion detected; refusing stage' >&2
+            exit 1
+          fi
+          count="$(git diff --cached --name-only | wc -l)"
+          echo "Metadata-only staged paths: $count"
+          if [ "$count" -gt 6000 ]; then
+            echo 'More than 6000 generated paths affected: refusing unreviewed bulk commit' >&2
+            exit 1
+          fi
+          if git diff --cached --quiet; then
+            echo 'Canonical metadata already synchronized.'
+            exit 0
+          fi
+          git fetch origin "$GITHUB_REF_NAME"
+          test "$(git rev-parse HEAD)" = "$(git rev-parse FETCH_HEAD)"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'fix(world201): reconcile public JSON-LD, brand, factory and freshness layers'
+          git push origin "HEAD:refs/heads/$GITHUB_REF_NAME"

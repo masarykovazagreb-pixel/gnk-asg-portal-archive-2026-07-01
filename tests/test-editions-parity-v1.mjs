@@ -328,8 +328,18 @@ else {
 const status = (() => { try { return JSON.parse(read(join(ROOT, 'apps', 'region', 'data', '_status.json'))); } catch { return null; } })();
 if (!status) fails.push('nema apps/region/data/_status.json');
 else {
-  const seen = Object.keys(status.lastRun?.channels || {});
-  for (const channel of CHANNELS) if (!seen.includes(channel.id)) fails.push(`_status.json ne prati ${channel.id}`);
+  // The daily collector deliberately processes alternating channel subsets.
+  // Require every channel to appear in a recent real run, not in one partial run.
+  const referenceAt = Date.parse(status.lastRun?.at || '');
+  const recentRuns = (status.runs || []).filter((run) => {
+    const at = Date.parse(run.at || '');
+    return Number.isFinite(referenceAt) && Number.isFinite(at)
+      && at <= referenceAt && referenceAt - at <= 24 * 60 * 60 * 1000;
+  });
+  const seen = new Set(recentRuns.flatMap((run) => Object.keys(run.channels || {})));
+  for (const channel of CHANNELS) {
+    if (!seen.has(channel.id)) fails.push(`_status.json nema zapis za ${channel.id} u zadnja 24 h`);
+  }
 }
 
 /* ---------- izvještaj ---------- */
