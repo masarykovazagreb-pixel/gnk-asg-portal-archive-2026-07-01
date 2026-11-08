@@ -1,5 +1,5 @@
 /* AKTUAL MEDIA Zagreb takeover — isolated, responsive, accessible */
-.am-zg-takeover{--az-red:#d52132;--az-ink:#f7f9fc;--az-muted:#bcc6d4;--az-line:rgba(255,255,255,.16);color:var(--az-ink);font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;max-width:1400px;margin:16px auto 30px}
+.am-zg-takeover{box-sizing:border-box;width:100%;max-width:100%;min-width:0;--az-red:#d52132;--az-ink:#f7f9fc;--az-muted:#bcc6d4;--az-line:rgba(255,255,255,.16);color:var(--az-ink);font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;margin:16px 0 30px}
 .am-zg-takeover a{text-decoration:none;color:inherit}
 .am-zg-takeover a:focus-visible,.am-zg-modal a:focus-visible,.am-zg-modal button:focus-visible{outline:3px solid #ffcf4a;outline-offset:4px}
 .am-zg-strap{display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:10px 16px;background:#df2131;color:#fff;font-size:12px;letter-spacing:.08em;font-weight:800;text-transform:uppercase}
@@ -36,7 +36,7 @@
 @media(max-width:460px){.am-zg-side{grid-template-columns:1fr}.am-zg-side a{min-height:125px}.am-zg-head{padding:18px}.am-zg-main h2{font-size:34px}}
 @media(prefers-reduced-motion:no-preference){.am-zg-main,.am-zg-side a,.am-zg-sponsor{transition:background .2s,filter .2s}}
 /* International gateway: five columns, fully clickable, typography-led. */
-.am-world-gateway{width:100%;max-width:1400px;margin:16px auto 24px;font-family:Georgia,'Times New Roman',serif;background:#091423;color:#f5f1e8;border:1px solid rgba(233,198,108,.48);border-radius:13px;overflow:hidden;box-shadow:0 12px 36px rgba(0,0,0,.25)}
+.am-world-gateway{box-sizing:border-box;width:100%;max-width:100%;min-width:0;margin:16px 0 24px;font-family:Georgia,'Times New Roman',serif;background:#091423;color:#f5f1e8;border:1px solid rgba(233,198,108,.48);border-radius:13px;overflow:hidden;box-shadow:0 12px 36px rgba(0,0,0,.25)}
 .am-world-gateway .am-world-header{padding:18px 23px 14px;border-bottom:1px solid rgba(233,198,108,.32)}
 .am-world-gateway .am-world-label{display:block;color:#e9c66c;letter-spacing:.13em;font:800 11px system-ui,sans-serif;text-transform:uppercase}
 .am-world-gateway h2{margin:8px 0 5px;color:#fff;font-size:clamp(20px,2.2vw,29px);line-height:1.15}
@@ -56,3 +56,9 @@
 .am-world-gateway .am-world-foot{margin:0;padding:0 20px 16px;color:#b8c6d7;font:12px/1.6 system-ui,sans-serif}
 @media(max-width:760px){.am-world-gateway .am-world-cols{grid-template-columns:repeat(2,minmax(0,1fr))}.am-world-gateway .am-world-col{border-bottom:1px solid rgba(233,198,108,.23);padding:20px}.am-world-gateway .am-world-col:nth-child(2n){border-right:0}.am-world-gateway .am-world-col:last-child{grid-column:1/-1;border-bottom:0}.am-world-gateway .am-world-stat{font-size:34px}}
 @media(max-width:420px){.am-world-gateway .am-world-cols{grid-template-columns:1fr}.am-world-gateway .am-world-col{border-right:0;border-bottom:1px solid rgba(233,198,108,.23)}.am-world-gateway .am-world-col:last-child{grid-column:auto}}
+
+/* Width invariant: both additions follow the existing .am-shell content box. */
+.am-shell > .am-world-gateway,.am-shell > .am-zg-takeover{width:100%;max-width:100%;min-width:0;box-sizing:border-box}
+.am-world-gateway *, .am-zg-takeover *{box-sizing:border-box}
+.am-world-gateway .am-world-cols,.am-world-gateway .am-world-col{min-width:0}
+.am-world-gateway .am-world-stat{overflow-wrap:anywhere}
