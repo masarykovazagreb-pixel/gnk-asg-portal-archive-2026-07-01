@@ -4,7 +4,7 @@
   "lang": "en",
   "city": "Nairobi",
   "country": "Kenija",
-  "updatedAt": "2026-11-08T00:56:01.638Z",
+  "updatedAt": "2026-11-08T05:51:20.951Z",
   "sources": [
     {
       "id": "capitalfm",
@@ -14,19 +14,20 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-08T00:55:44.015Z"
+      "checkedAt": "2026-11-08T05:51:02.641Z"
     },
     {
       "id": "nation",
       "name": "Daily Nation",
-      "url": "https://nation.africa/kenya/rss.xml",
-      "ok": true,
-      "fetched": 25,
+      "url": "https://nation.africa/kenya/rss",
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://nation.africa/kenya/rss: HTTP 403"
+        "https://nation.africa/kenya/rss: HTTP 403",
+        "https://nation.africa/kenya/rss.xml: HTTP 404"
       ],
-      "checkedAt": "2026-11-08T00:55:45.008Z"
+      "checkedAt": "2026-11-08T05:51:04.365Z"
     },
     {
       "id": "standard",
@@ -38,7 +39,7 @@
       "errors": [
         "https://www.standardmedia.co.ke/rss: nije feed"
       ],
-      "checkedAt": "2026-11-08T00:55:45.968Z"
+      "checkedAt": "2026-11-08T05:51:05.401Z"
     },
     {
       "id": "star",
@@ -50,7 +51,7 @@
       "errors": [
         "https://www.the-star.co.ke/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-08T00:55:48.503Z"
+      "checkedAt": "2026-11-08T05:51:08.163Z"
     },
     {
       "id": "businessdaily",
@@ -62,7 +63,7 @@
       "errors": [
         "https://www.businessdailyafrica.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-08T00:55:49.402Z"
+      "checkedAt": "2026-11-08T05:51:09.325Z"
     },
     {
       "id": "citizen",
@@ -74,7 +75,7 @@
       "errors": [
         "https://www.citizen.digital/rss: HTTP 400"
       ],
-      "checkedAt": "2026-11-08T00:55:57.660Z"
+      "checkedAt": "2026-11-08T05:51:18.162Z"
     },
     {
       "id": "kbc",
@@ -84,7 +85,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-08T00:56:00.342Z"
+      "checkedAt": "2026-11-08T05:51:19.681Z"
     },
     {
       "id": "eastafrican",
@@ -96,7 +97,7 @@
       "errors": [
         "https://www.theeastafrican.co.ke/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-08T00:56:01.638Z"
+      "checkedAt": "2026-11-08T05:51:20.951Z"
     }
   ],
   "items": [
