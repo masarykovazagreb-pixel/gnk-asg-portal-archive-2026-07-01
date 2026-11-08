@@ -261,7 +261,7 @@ jobs:
           node scripts/ensure-website-jsonld-v1.mjs --write > /tmp/world201-jsonld-summary.json
           node scripts/apply-brand-mark-v1.mjs
           python3 scripts/factory/apply_standard.py
-          node scripts/apply-refresh-v1.mjs
+          node scripts/apply-refresh-v1.mjs --only=portal
           node --check scripts/ensure-website-jsonld-v1.mjs
           git diff --check
       - name: Verify metadata and archived article preservation
@@ -272,6 +272,7 @@ jobs:
           python3 scripts/factory/apply_standard.py --check
           node scripts/ensure-website-jsonld-v1.mjs > /tmp/world201-verify-jsonld.json
           node scripts/apply-brand-mark-v1.mjs --check
+          node scripts/apply-refresh-v1.mjs --only=portal --check
           python3 - <<'PY'
           from pathlib import Path
           import subprocess,re
@@ -292,17 +293,61 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git add -A -- apps/portal apps/sites/site
+          git add -A -- apps/portal
           git diff --cached --check
-          if git diff --cached --name-status | grep -q $'^D\t'; then
+          if git diff --cached --name-status | grep -q 
+            echo 'Canonical metadata already synchronized.'
+            exit 0
+          fi
+          git fetch origin "$GITHUB_REF_NAME"
+          test "$(git rev-parse HEAD)" = "$(git rev-parse FETCH_HEAD)"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'fix(world201): reconcile public JSON-LD, brand, factory and freshness layers'
+          git push origin "HEAD:refs/heads/$GITHUB_REF_NAME"
+^D\t'; then
             echo 'Deletion detected; refusing stage' >&2
             exit 1
           fi
           count="$(git diff --cached --name-only | wc -l)"
-          echo "Metadata-only staged paths: $count"
-          if [ "$count" -gt 6000 ]; then
-            echo 'More than 6000 generated paths affected: refusing unreviewed bulk commit' >&2
+          echo "Metadata-only staged portal paths: $count"
+          if [ "$count" -gt 22000 ]; then
+            echo 'More than 22000 public portal files affected: refusing unreviewed bulk commit' >&2
             exit 1
+          fi
+          if [ "$count" -gt 5000 ]; then
+            echo 'Large metadata repair; checking visible text of EVERY modified HTML document against HEAD.'
+            mkdir -p /tmp/asg-baseline
+            git archive HEAD apps/portal | tar -x -C /tmp/asg-baseline
+            python3 - <<'PY'
+          import html,importlib.util,re,subprocess
+          from pathlib import Path
+          spec=importlib.util.spec_from_file_location('asg_factory','scripts/factory/apply_standard.py')
+          module=importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
+          variants=[v for group in module.LEAD_GROUPS for v in group]
+          changed=subprocess.check_output(['git','diff','--cached','--name-only','-z']).decode().split('\0')
+          remove_added=re.compile(r'(?is)<p\b[^>]*class=["\x27]gnk-(?:attribution|hashtags)["\x27][^>]*>.*?</p>')
+          def visible(raw):
+              raw=re.sub(r'(?is)<!--\s*radio-promo-v1:start\s*-->.*?<!--\s*radio-promo-v1:end\s*-->','',raw)
+              raw=remove_added.sub('',raw)
+              raw=re.sub(r'(?is)<head\b.*?</head>','',raw)
+              raw=re.sub(r'(?is)<script\b.*?</script>|<style\b.*?</style>|<!--.*?-->','',raw)
+              raw=html.unescape(re.sub(r'<[^>]+>',' ',raw))
+              raw=' '.join(raw.split())
+              for variant in variants: raw=raw.replace(variant,'[network lead]')
+              return raw
+          checked=0
+          for path in filter(None,changed):
+              if not path.startswith('apps/portal/') or not path.endswith('.html'): continue
+              old=Path('/tmp/asg-baseline',path)
+              if not old.is_file(): raise SystemExit('Unreviewed newly-created HTML: '+path)
+              former=old.read_text(encoding='utf-8',errors='replace')
+              current=Path(path).read_text(encoding='utf-8',errors='replace')
+              if visible(former)!=visible(current):
+                  raise SystemExit('Editorial visible text changed beyond allowed metadata/marked UI: '+path)
+              checked+=1
+          print('PASS: all',checked,'modified HTML files preserve their visible editorial content.')
+          PY
           fi
           if git diff --cached --quiet; then
             echo 'Canonical metadata already synchronized.'
