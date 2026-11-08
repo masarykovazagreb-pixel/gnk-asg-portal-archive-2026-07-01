@@ -1,19 +1,19 @@
 {
   "version": "GNK_ASG_FLEET_STATUS_V1",
-  "generatedAt": "2026-11-07T11:32:11.996Z",
+  "generatedAt": "2026-11-08T19:15:27.798Z",
   "runsCollectedAt": "2026-10-20T14:51:28.272Z",
-  "total": 344,
-  "scheduled": 38,
-  "runsPerDay": 248,
+  "total": 349,
+  "scheduled": 41,
+  "runsPerDay": 540,
   "tracked": 57,
   "groups": [
     {
       "id": "izdanja",
       "name": "Izdanja i sadržaj",
       "nameEn": "Editions and content",
-      "automations": 67,
-      "scheduled": 9,
-      "runsPerDay": 43
+      "automations": 68,
+      "scheduled": 10,
+      "runsPerDay": 47
     },
     {
       "id": "trzista",
@@ -99,12 +99,12 @@
       "id": "ostalo",
       "name": "Ostalo",
       "nameEn": "Other",
-      "automations": 6,
-      "scheduled": 6,
-      "runsPerDay": 38
+      "automations": 8,
+      "scheduled": 7,
+      "runsPerDay": 182
     }
   ],
-  "ungrouped": 6,
+  "ungrouped": 8,
   "failing": [
     {
       "workflow": "workforce-supervisor-agent.yml",
