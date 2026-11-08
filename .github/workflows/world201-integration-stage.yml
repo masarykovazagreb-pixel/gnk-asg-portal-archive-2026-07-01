@@ -58,6 +58,12 @@ jobs:
         run: node scripts/build-aktual-world-v1.mjs --base https://gnk-asg.hr/gnk-aktual/
       - name: Regenerate HR/EN weekly archive without deleting newer news
         run: node scripts/build-aktual-media-weekly-archive-v1.mjs
+      - name: Rebuild canonical editorial registry and sitemap metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/editorial-registry-v1.mjs
+          node scripts/generate-editorial-sitemap-v2.mjs
       - name: Validate all generated XML, page counts and weekly originals
         shell: bash
         run: |
@@ -81,6 +87,11 @@ jobs:
           tree=ET.parse(out/'media/sitemap.xml')
           assert len(tree.findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}loc'))>=211, 'Incomplete sitemap'
           week=issue['issue_week']
+          editorial=portal/'editorial-sitemap.xml'
+          ET.parse(editorial)
+          editorial_xml=editorial.read_text()
+          assert f'https://gnk-asg.hr/gnk-aktual/tjedni/{week}/' in editorial_xml, 'HR weekly sitemap route missing'
+          assert f'https://gnk-asg.hr/en/gnk-aktual/weekly/{week}/' in editorial_xml, 'EN weekly sitemap route missing'
           for p in [out/'tjedni'/week/'index.html',portal/'en/gnk-aktual/weekly'/week/'index.html']:
               assert p.is_file() and p.stat().st_size>500, str(p)
           for path in [issue['cover_image_hr'],issue['cover_image_en']]:
@@ -96,7 +107,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git add -A -- apps/portal/gnk-aktual/media apps/portal/gnk-aktual/grad apps/portal/gnk-aktual/tjedni apps/portal/en/gnk-aktual/weekly apps/portal/data/aktual-weekly-archives
+          git add -A -- apps/portal/gnk-aktual/media apps/portal/gnk-aktual/grad apps/portal/gnk-aktual/tjedni apps/portal/en/gnk-aktual/weekly apps/portal/data/aktual-weekly-archives apps/portal/data/editorial-registry.json apps/portal/editorial-sitemap.xml apps/portal/sitemap-index.xml
           git diff --cached --check
           if git diff --cached --name-status | grep -q $'^D\t'; then
             echo 'Deletion detected; refusing generated-output commit.' >&2
