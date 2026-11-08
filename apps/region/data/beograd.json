@@ -4,7 +4,7 @@
   "lang": "sr",
   "city": "Beograd",
   "country": "Srbija",
-  "updatedAt": "2026-11-07T21:44:53.875Z",
+  "updatedAt": "2026-11-08T07:57:22.433Z",
   "sources": [
     {
       "id": "n1",
@@ -14,7 +14,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-07T21:44:49.303Z"
+      "checkedAt": "2026-11-08T07:57:17.273Z"
     },
     {
       "id": "danas",
@@ -24,7 +24,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-07T21:44:49.704Z"
+      "checkedAt": "2026-11-08T07:57:17.743Z"
     },
     {
       "id": "nova",
@@ -34,17 +34,20 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-07T21:44:49.971Z"
+      "checkedAt": "2026-11-08T07:57:17.921Z"
     },
     {
       "id": "politika",
       "name": "Politika",
       "url": "https://www.politika.rs/rss",
-      "ok": true,
-      "fetched": 20,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-07T21:44:50.360Z"
+      "errors": [
+        "https://www.politika.rs/rss: HTTP 403",
+        "https://www.politika.rs/rss/: HTTP 403"
+      ],
+      "checkedAt": "2026-11-08T07:57:19.431Z"
     },
     {
       "id": "rts",
@@ -56,7 +59,7 @@
       "errors": [
         "https://www.rts.rs/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-07T21:44:52.641Z"
+      "checkedAt": "2026-11-08T07:57:21.225Z"
     },
     {
       "id": "b92",
@@ -68,10 +71,364 @@
       "errors": [
         "https://www.b92.net/rss: nije feed"
       ],
-      "checkedAt": "2026-11-07T21:44:53.875Z"
+      "checkedAt": "2026-11-08T07:57:22.433Z"
     }
   ],
   "items": [
+    {
+      "slug": "beograd-2026-11-08-n1-britanski-ambasador-izbori-su-bili-1b569c",
+      "title": "Britanski ambasador: Izbori su bili zanimljivi, nismo imali kontakte sa Studentskom listom sve do poslednjih nedelja kampanje",
+      "summary": "Britanski ambasador Edvard Ferguson izjavio je da očekuje mirnu primopredaju vlasti nakon izbora u Srbiji, kao i da sa novom Vladom želi da otvori raz",
+      "date": "2026-11-08T07:56:14.000Z",
+      "url": "https://n1info.rs/vesti/britanski-ambasador-izbori-su-bili-zanimljivi-nismo-imali-kontakte-sa-studentskom-listom-sve-do-poslednjih-nedelja-kampanje/",
+      "source": "n1",
+      "sourceName": "N1 Srbija",
+      "categories": [
+        "Vesti",
+        "velika britanija",
+        "edvard ferguson",
+        "studentska lista"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://n1info.rs/media/images/1690889092-7I5A6146-copy.width-1200.jpg",
+      "imageAlt": "Britanski ambasador: Izbori su bili zanimljivi, nismo imali kontakte sa Studentskom listom sve do poslednjih nedelja kampanje",
+      "addedAt": "2026-11-08T07:57:17.288Z"
+    },
+    {
+      "slug": "beograd-2026-11-08-nova-prevrnuo-se-autobus-na-auto-putu-u-c22971",
+      "title": "Prevrnuo se autobus na auto-putu u Hrvatskoj, ima poginulih",
+      "summary": "Teška saobraćajna nezgoda dogodila se na auto-putu A3 u Hrvatskoj, na deonici između čvorova Ivanić Grad i Rugvica, u smeru ka Bregani, kada se prevrn",
+      "date": "2026-11-08T07:51:57.000Z",
+      "url": "https://nova.rs/vesti/svet/prevrnuo-se-autobus-na-auto-putu-u-hrvatskoj-ima-poginulih/",
+      "source": "nova",
+      "sourceName": "Nova.rs",
+      "categories": [
+        "Svet",
+        "autobus",
+        "hrvatska",
+        "saobraćajna nesreća"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://nova.rs/media/original_images/1778482850_1770025981_Najnovija_vest_XSexw5.format-avif.width-1.avif",
+      "imageAlt": "Prevrnuo se autobus na auto-putu u Hrvatskoj, ima poginulih",
+      "addedAt": "2026-11-08T07:57:17.921Z"
+    },
+    {
+      "slug": "beograd-2026-11-08-n1-video-jak-zemljotres-u-japanu-povredene-22-077e6c",
+      "title": "(VIDEO) Jak zemljotres u Japanu, povređene 22 osobe",
+      "summary": "Jak zemljotres pogodio je protekle noći, oko jedan sat po lokalnom vremenu, centralni Japan. Ljudi su bežali iz zgrada a povređene su najmanje 22 osob",
+      "date": "2026-11-08T07:51:38.000Z",
+      "url": "https://n1info.rs/svet/video-jak-zemljotres-u-japanu-povredjene-22-osobe/",
+      "source": "n1",
+      "sourceName": "N1 Srbija",
+      "categories": [
+        "Svet",
+        "japan",
+        "zemljotres"
+      ],
+      "author": "",
+      "theme": "potres",
+      "image": "https://n1info.rs/media/images/2025/11/1762121503_shutterstock_2258474135.width-1200.jpg",
+      "imageAlt": "(VIDEO) Jak zemljotres u Japanu, povređene 22 osobe",
+      "addedAt": "2026-11-08T07:57:17.288Z"
+    },
+    {
+      "slug": "beograd-2026-11-08-danas-netanjahuov-protivnik-dobio-mandat-za-78adf0",
+      "title": "Netanjahuov protivnik dobio mandat za formiranje vlade: Ajzenkot blizu premijerske funkcije",
+      "summary": "Izraelski predsednik Isak Hercog poverio je mandat za formiranje nove vlade Gadiju Ajzenkotu, glavnom protivniku premijera Bendžamina Netanjahua.",
+      "date": "2026-11-08T07:47:09.000Z",
+      "url": "https://www.danas.rs/svet/netanjahuov-protivnik-dobio-mandat-za-formiranje-vlade-ajzenkot-blizu-premijerske-funkcije/",
+      "source": "danas",
+      "sourceName": "Danas",
+      "categories": [
+        "Svet",
+        "Benjamin Netanjahu",
+        "Gadi Ajzenkot",
+        "Isak Hercog"
+      ],
+      "author": "Jelena Diković",
+      "theme": "politika",
+      "image": "https://www.danas.rs/wp-content/uploads/2026/10/14397529-e1793953729771.jpg",
+      "imageAlt": "Netanjahuov protivnik dobio mandat za formiranje vlade: Ajzenkot blizu premijerske funkcije",
+      "addedAt": "2026-11-08T07:57:17.743Z"
+    },
+    {
+      "slug": "beograd-2026-11-08-n1-automobil-udario-u-drvo-u-beogradu-zena-e540fa",
+      "title": "Automobil udario u drvo u Beogradu, žena izletela kroz šoferšajbnu",
+      "summary": "Teško povređena osoba, suvozač, proletela je kroz vetrobransko staklo, kada je automobil protekle noći, oko jedan čas posle ponoći, udario u drvo u Ul",
+      "date": "2026-11-08T07:44:08.000Z",
+      "url": "https://n1info.rs/vesti/automobil-udario-u-drvo-u-beogradu-zena-izletela-kroz-sofersajbnu/",
+      "source": "n1",
+      "sourceName": "N1 Srbija",
+      "categories": [
+        "Vesti",
+        "šoferšajbna",
+        "beograd",
+        "saobraćajna nesreća"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://n1info.rs/media/images/2026/5/4/1777897103_adad.width-1200.jpg",
+      "imageAlt": "Automobil udario u drvo u Beogradu, žena izletela kroz šoferšajbnu",
+      "addedAt": "2026-11-08T07:57:17.290Z"
+    },
+    {
+      "slug": "beograd-2026-11-08-nova-jokic-ostao-u-cudu-kada-je-dobio-pitanje-na-f03cf3",
+      "title": "Jokić ostao u čudu kada je dobio pitanje na konferenciji: Ništa mu nije bilo jasno pa usledilo iznenađenje na srspkom",
+      "summary": "Nakon što su Denver Nagetsi u Meksiko Sitiju savladali Indijana Pejserse (114:102) i upisali drugu uzastopnu pobedu u NBA ligi, Nikola Jokić je bio ap",
+      "date": "2026-11-08T07:39:05.000Z",
+      "url": "https://nova.rs/sport/kosarka/jokic-ostao-u-cudu-kada-je-dobio-pitanje-na-konferenciji-nista-mu-nije-bilo-jasno-pa-usledilo-iznenadjenje-na-srspkom/",
+      "source": "nova",
+      "sourceName": "Nova.rs",
+      "categories": [
+        "Košarka",
+        "denver nagets",
+        "nikola jokic"
+      ],
+      "author": "",
+      "theme": "sport",
+      "image": "https://nova.rs/media/images/2026/11/8/1794123445_profimedia-1150599127.width-1200.jpg",
+      "imageAlt": "Jokić ostao u čudu kada je dobio pitanje na konferenciji: Ništa mu nije bilo jasno pa usledilo iznenađenje na srspkom",
+      "addedAt": "2026-11-08T07:57:17.921Z"
+    },
+    {
+      "slug": "beograd-2026-11-08-danas-amss-mraz-i-niske-temperature-uzrok-7442bb",
+      "title": "AMSS: Mraz i niske temperature uzrok klizavih kolovoza, saobraćaj će biti pojačan popodne",
+      "summary": "Hladno jutro, uz mraz i niske temperature, donosi i potencijalno klizave kolovoze, pa vozače očekuju zahtevniji uslovi za vožnju, saopštio je jutros Auto-moto savez Srbije (AMSS).",
+      "date": "2026-11-08T07:34:28.000Z",
+      "url": "https://www.danas.rs/vesti/drustvo/amss-mraz-i-niske-temperature-uzrok-klizavih-kolovoza-saobracaj-ce-biti-pojacan-popodne/",
+      "source": "danas",
+      "sourceName": "Danas",
+      "categories": [
+        "Društvo",
+        "AMSS",
+        "beta",
+        "Klizavi kolovozi"
+      ],
+      "author": "Uglješa Bokić",
+      "theme": "sport",
+      "image": "https://www.danas.rs/wp-content/uploads/2026/04/3-41-e1782713533383.jpg",
+      "imageAlt": "AMSS: Mraz i niske temperature uzrok klizavih kolovoza, saobraćaj će biti pojačan popodne",
+      "addedAt": "2026-11-08T07:57:17.744Z"
+    },
+    {
+      "slug": "beograd-2026-11-08-nova-meteorolozi-najavili-otopljenje-u-srbiji-i-8d516d",
+      "title": "Meteorolozi najavili otopljenje u Srbiji i temperature do 24 stepena, a onda od ovog datuma - sneg",
+      "summary": "Vreme pred nama, po svemu sudeći, biće promenljivo - prvo nam posle ovih mrazeva sledi otopljenje, a onda i snežne padavine.",
+      "date": "2026-11-08T07:25:36.000Z",
+      "url": "https://nova.rs/magazin/vremenska-prognoza/meteorolozi-najavili-otopljenje-u-srbiji-i-temperature-do-24-stepena-a-onda-od-ovog-datuma-sneg/",
+      "source": "nova",
+      "sourceName": "Nova.rs",
+      "categories": [
+        "Vremenska prognoza",
+        "rhmz",
+        "prognoza",
+        "marko čubrilo"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://nova.rs/media/images/2026/11/8/1794122329_profimedia-0969961866.width-1200.jpg",
+      "imageAlt": "Meteorolozi najavili otopljenje u Srbiji i temperature do 24 stepena, a onda od ovog datuma - sneg",
+      "addedAt": "2026-11-08T07:57:17.921Z"
+    },
+    {
+      "slug": "beograd-2026-11-08-nova-video-prelepa-pevacica-jokicu-urucila-a50077",
+      "title": "VIDEO Prelepa pevačica Jokiću uručila trofej, njegova reakcija nasmejala mnoge",
+      "summary": "Nikola Jokić je bio centralna figura NBA spektakla u Meksiko Sitiju, gde su Denver Nagetsi upisali drugu uzastopnu pobedu savladavši Indijana Pejserse",
+      "date": "2026-11-08T07:20:38.000Z",
+      "url": "https://nova.rs/sport/kosarka/video-prelepa-pevacica-jokicu-urucila-trofej-njegova-reakcija-nasmejala-mnoge/",
+      "source": "nova",
+      "sourceName": "Nova.rs",
+      "categories": [
+        "Košarka",
+        "nikola jokić",
+        "denver nagets"
+      ],
+      "author": "",
+      "theme": "sport",
+      "image": "https://nova.rs/media/images/2026/11/8/1794122346_profimedia-1150599167.width-1200.jpg",
+      "imageAlt": "VIDEO Prelepa pevačica Jokiću uručila trofej, njegova reakcija nasmejala mnoge",
+      "addedAt": "2026-11-08T07:57:17.922Z"
+    },
+    {
+      "slug": "beograd-2026-11-08-danas-jutro-hladno-uvece-moguca-kisa-do-13-876ca2",
+      "title": "Jutro hladno, uveče moguća kiša, do 13 stepeni",
+      "summary": "Jutro će u Srbiji biti hladno, mestimično sa slabim mrazom, a magle ili niske oblačnosti biće u nizijama, po kotlinama i rečnim dolinama, saopštio je Republički hidrometeorološki zavod (RHMZ).",
+      "date": "2026-11-08T07:19:34.000Z",
+      "url": "https://www.danas.rs/vesti/drustvo/jutro-hladno-uvece-moguca-kisa-do-13-stepeni/",
+      "source": "danas",
+      "sourceName": "Danas",
+      "categories": [
+        "Društvo",
+        "beta",
+        "Kiša",
+        "Magla"
+      ],
+      "author": "Uglješa Bokić",
+      "theme": "energija",
+      "image": "https://www.danas.rs/wp-content/uploads/2026/10/2-93-e1794122349444.jpg",
+      "imageAlt": "Jutro hladno, uveče moguća kiša, do 13 stepeni",
+      "addedAt": "2026-11-08T07:57:17.744Z"
+    },
+    {
+      "slug": "beograd-2026-11-08-nova-formula-tradicionalne-kineske-medicine-u-04d919",
+      "title": "Formula tradicionalne kineske medicine u laboratorijskim uslovima uništava ćelije raka koje su otporne na lekove",
+      "summary": "Najčešći oblik raka jednjaka u svetu poznat je po tome što se izuzetno teško leči, delimično i zbog problema koji predstavlja otpornost na lekove.",
+      "date": "2026-11-08T07:17:28.000Z",
+      "url": "https://nova.rs/magazin/zdravlje/formula-tradicionalne-kineske-medicine-u-laboratorijskim-uslovima-unistava-celije-raka-koje-su-otporne-na-lekove/",
+      "source": "nova",
+      "sourceName": "Nova.rs",
+      "categories": [
+        "Zdravlje",
+        "narodni lekovi",
+        "kineska medicina",
+        "rak jednjaka"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://nova.rs/media/images/2026/11/2/1793629191_profimedia-0120970313.width-1200.jpg",
+      "imageAlt": "Formula tradicionalne kineske medicine u laboratorijskim uslovima uništava ćelije raka koje su otporne na lekove",
+      "addedAt": "2026-11-08T07:57:17.922Z"
+    },
+    {
+      "slug": "beograd-2026-11-08-n1-sta-kazu-strucnjaci-na-grokica-trend-koji-ea1d04",
+      "title": "Šta kažu stručnjaci na \"Grokica trend\" koji je zaokupirao pažnju dece u Srbiji: Maskirane osobe u odorama časnih sestara plaše prolaznike",
+      "summary": "TikTok trend „Groke“ ili „Grokice“ poslednjih nedelja širi se Srbijom i izaziva strah među decom. Reč je o osobama u crnim odorama i jezivim maskama k",
+      "date": "2026-11-08T07:15:36.000Z",
+      "url": "https://n1info.rs/magazin/lifestyle/tiktok-trend-deca-groke-maskirane-osobe-plase-prolaznike-kako-utice-na-decu/",
+      "source": "n1",
+      "sourceName": "N1 Srbija",
+      "categories": [
+        "Lifestyle",
+        "SciTech",
+        "trend",
+        "katarina jonev"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://n1info.rs/media/images/2026/11/6/1793968683_Untitled.width-1200.png",
+      "imageAlt": "Šta kažu stručnjaci na \"Grokica trend\" koji je zaokupirao pažnju dece u Srbiji: Maskirane osobe u odorama časnih sestara plaše prolaznike",
+      "addedAt": "2026-11-08T07:57:17.290Z"
+    },
+    {
+      "slug": "beograd-2026-11-08-danas-pocelo-glasanje-na-izborima-za-clanove-6f62cf",
+      "title": "Počelo glasanje na izborima za članove nacionalnih saveta nacionalnih manjina",
+      "summary": "Biračka mesta za izbore za članove nacionalnih saveta nacionalnih manjina u Srbiji otvorena su jutros u 7 časova, a prvo glasa ima 481.789 birača upisanih u posebne biračke spiskove svoje nacionalne manjineGlasanje će trajati do 20 časova na 949 biračkih mesta širom Srbije.",
+      "date": "2026-11-08T07:09:35.000Z",
+      "url": "https://www.danas.rs/vesti/politika/izbori-za-clanove-nacionalnih-saveta-nacionalnih-manjina/",
+      "source": "danas",
+      "sourceName": "Danas",
+      "categories": [
+        "Politika",
+        "nacionalni saveti nacionalnih manjina"
+      ],
+      "author": "Jelena Diković",
+      "theme": "politika",
+      "image": "https://www.danas.rs/wp-content/uploads/2026/08/izbori_kula_29032026_0007-scaled-e1792481520399.jpg",
+      "imageAlt": "Počelo glasanje na izborima za članove nacionalnih saveta nacionalnih manjina",
+      "addedAt": "2026-11-08T07:57:17.744Z"
+    },
+    {
+      "slug": "beograd-2026-11-08-danas-pica-na-malo-drugaciji-nacin-hrskave-64bce7",
+      "title": "Pica na malo drugačiji način: Hrskave rolnice od gotovih kora",
+      "summary": "Ako volite picu, ali nemate vremena ili strpljenja za mešenje testa i čekanje da naraste, ove pica rolnice od gotovih kora odlična su alternativa. Pripremaju se od tankih kora za pitu, šunke, sira i paradajz sosa, a nakon pečenja dobijaju hrskavu koricu i sočan nadev sa rastopljenim sirom.",
+      "date": "2026-11-08T07:04:58.000Z",
+      "url": "https://www.danas.rs/zivot/pica-pita-recept-3/",
+      "source": "danas",
+      "sourceName": "Danas",
+      "categories": [
+        "Život",
+        "Recepti",
+        "Brzo pecivo",
+        "Gotove kore"
+      ],
+      "author": "Marija Arsic",
+      "theme": "ekonomija",
+      "image": "https://www.danas.rs/wp-content/uploads/2026/11/shutterstock_2254407291-e1793970038719-300x169.jpg",
+      "imageAlt": "Pica na malo drugačiji način: Hrskave rolnice od gotovih kora",
+      "addedAt": "2026-11-08T07:57:17.744Z"
+    },
+    {
+      "slug": "beograd-2026-11-08-nova-video-jokic-sprecio-brodolom-denvera-i-fd4422",
+      "title": "VIDEO Jokić sprečio brodolom Denvera i pokorio Meksiko, saigrači mu upropastili tripl-dabl",
+      "summary": "Košarkaši Denver Nagetsa slavili su u Meksiko Sitiju protiv Indijana Pejsersa rezultatom 114:102, u okviru NBA meča odigranog van teritorije SAD, ali",
+      "date": "2026-11-08T07:03:59.000Z",
+      "url": "https://nova.rs/sport/kosarka/video-jokic-sprecio-brodolom-denvera-i-pokorio-meksiko-saigraci-mu-upropastili-tripl-dabl/",
+      "source": "nova",
+      "sourceName": "Nova.rs",
+      "categories": [
+        "Košarka",
+        "nikola jokić",
+        "denver nagets"
+      ],
+      "author": "",
+      "theme": "sport",
+      "image": "https://nova.rs/media/images/2026/11/8/1794121369_profimedia-1150599986.width-1200.jpg",
+      "imageAlt": "VIDEO Jokić sprečio brodolom Denvera i pokorio Meksiko, saigrači mu upropastili tripl-dabl",
+      "addedAt": "2026-11-08T07:57:17.922Z"
+    },
+    {
+      "slug": "beograd-2026-11-08-danas-70-godina-filma-deset-zapovesti-kako-je-8bb85a",
+      "title": "70 godina filma „Deset zapovesti“: Kako je nastao jedan od najvećih spektakala u istoriji Holivuda",
+      "summary": "Sedamdeset godina nakon što je prvi put zasijao na bioskopskim platnima, film „Deset zapovesti“ (The Ten Commandments) ostaje mnogo više od običnog filmskog ostvarenja. On predstavlja spomenik pripovedanju u razmerama koje su retko dostignute i jedan od najprepoznatljivijih simbola zlatnog doba holivudskog spektakla.",
+      "date": "2026-11-08T07:00:41.000Z",
+      "url": "https://www.danas.rs/kultura/70-godina-filma-deset-zapovesti/",
+      "source": "danas",
+      "sourceName": "Danas",
+      "categories": [
+        "Kultura",
+        "deset zapovesti",
+        "Film",
+        "Sesil B. Demil"
+      ],
+      "author": "Filip Milosavljevic",
+      "theme": "drustvo",
+      "image": "https://www.danas.rs/wp-content/uploads/2026/11/profimedia-0145164184-e1794051777582.jpg",
+      "imageAlt": "70 godina filma „Deset zapovesti“: Kako je nastao jedan od najvećih spektakala u istoriji Holivuda",
+      "addedAt": "2026-11-08T07:57:17.745Z"
+    },
+    {
+      "slug": "beograd-2026-11-08-n1-odrzavaju-se-izbori-za-savete-nacionalnih-313954",
+      "title": "Održavaju se izbori za savete nacionalnih manjina, pravo glasa ima skoro pola miliona građana",
+      "summary": "U Srbiji se danas održavaju izbori za članove nacionalnih saveta nacionalnih manjina, na kojima pravo glasa ima 481.789 birača upisanih u posebne bira",
+      "date": "2026-11-08T06:56:45.000Z",
+      "url": "https://n1info.rs/vesti/izbori-za-savete-nacionalnih-manjina-2026/",
+      "source": "n1",
+      "sourceName": "N1 Srbija",
+      "categories": [
+        "Vesti",
+        "saveti za nacionalne manjine",
+        "nacionalne manjine",
+        "izbori za nacionalne savete"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://n1info.rs/media/images/1792953811_2026-10-25T110741Z_2119902122_RC28AOASCL03_RTRMADP_3.width-1200.JPG",
+      "imageAlt": "Održavaju se izbori za savete nacionalnih manjina, pravo glasa ima skoro pola miliona građana",
+      "addedAt": "2026-11-08T07:57:17.290Z"
+    },
+    {
+      "slug": "beograd-2026-11-08-n1-kalabrija-italijanski-raj-koji-tek-ceka-3c18f8",
+      "title": "Kalabrija: Italijanski raj koji tek čeka srpske turiste",
+      "summary": "Kristalno čisto more, gradići kao sa filmskog platna, plaže skrivene između stena, sladoled zbog kog se prave posebni izleti i slatki crveni luk koji",
+      "date": "2026-11-08T06:45:00.000Z",
+      "url": "https://n1info.rs/magazin/lifestyle/kalabrija-italijanski-raj-koji-tek-ceka-srpske-turiste/",
+      "source": "n1",
+      "sourceName": "N1 Srbija",
+      "categories": [
+        "Lifestyle",
+        "italija",
+        "destinacija",
+        "putovanje"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://n1info.rs/media/images/2026/11/4/1793794434_Tropea-slike-4-1100x500.width-1200.jpg",
+      "imageAlt": "Kalabrija: Italijanski raj koji tek čeka srpske turiste",
+      "addedAt": "2026-11-08T07:57:17.290Z"
+    },
     {
       "slug": "beograd-2026-11-07-n1-u-kuci-napadaca-iz-krakova-nadena-tela-b5fc4e",
       "title": "U kući napadača iz Krakova nađena tela mrtvog muškarca i dve žene",
