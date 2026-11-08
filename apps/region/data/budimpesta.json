@@ -4,17 +4,23 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-11-08T16:39:13.235Z",
+  "updatedAt": "2026-11-08T21:08:07.763Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": true,
-      "fetched": 50,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-08T16:39:08.836Z"
+      "errors": [
+        "https://telex.hu/rss: HTTP 403",
+        "https://telex.hu/rss/belfold: HTTP 403",
+        "https://telex.hu/rss/kulfold: HTTP 403",
+        "https://telex.hu/rss/gazdasag: HTTP 403",
+        "https://telex.hu/rss/sport: HTTP 403"
+      ],
+      "checkedAt": "2026-11-08T21:08:03.671Z"
     },
     {
       "id": "444",
@@ -24,7 +30,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-08T16:39:09.069Z"
+      "checkedAt": "2026-11-08T21:08:03.876Z"
     },
     {
       "id": "hvg",
@@ -34,7 +40,7 @@
       "fetched": 60,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-08T16:39:09.446Z"
+      "checkedAt": "2026-11-08T21:08:04.226Z"
     },
     {
       "id": "portfolio",
@@ -44,7 +50,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-08T16:39:10.306Z"
+      "checkedAt": "2026-11-08T21:08:05.033Z"
     },
     {
       "id": "index",
@@ -56,7 +62,7 @@
       "errors": [
         "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-08T16:39:12.441Z"
+      "checkedAt": "2026-11-08T21:08:06.992Z"
     },
     {
       "id": "24hu",
@@ -66,7 +72,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-08T16:39:12.652Z"
+      "checkedAt": "2026-11-08T21:08:07.251Z"
     },
     {
       "id": "mandiner",
@@ -76,10 +82,433 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-08T16:39:13.234Z"
+      "checkedAt": "2026-11-08T21:08:07.762Z"
     }
   ],
   "items": [
+    {
+      "slug": "budimpesta-2026-11-08-hvg-forgalmas-uton-szallt-le-egy-cessna-18a0dd",
+      "title": "Forgalmas úton szállt le egy Cessna Floridában, majd belerongyolt egy pickupba",
+      "summary": "Mindenki megúszta a bizarr balesetet.",
+      "date": "2026-11-08T20:45:00.000Z",
+      "url": "https://hvg.hu/cegauto/20261108_cessna-kisrepulogep-kenyszerleszallas-florida-forgalmas-ut",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Autó",
+        "baleset",
+        "Cessna",
+        "repülőgépbaleset"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/7d6e91ed-6827-41ea-b604-99edcac74a62.jpg",
+      "imageAlt": "Forgalmas úton szállt le egy Cessna Floridában, majd belerongyolt egy pickupba",
+      "addedAt": "2026-11-08T21:08:04.226Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-08-24hu-m0-as-uldozes-centiken-mult-a-frontalis-7c5d12",
+      "title": "M0-ás üldözés: centiken múlt a frontális ütközés, az elkövető azt mondja, megijedt a lövésektől",
+      "summary": "A rendőrök egy forgalommal szemben menekülő sofőrt próbáltak megállítani szerda éjjel az M0-áson, több autós is életveszélybe került. The post M0-ás üldözés: centiken múlt a frontális ütközés, az elkövető azt mondja, megijedt a lövésektől first appeared on 24.hu .",
+      "date": "2026-11-08T20:38:40.000Z",
+      "url": "https://24.hu/belfold/2026/11/08/m0-autosuldozes-dany-rendorseg/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "autópálya",
+        "autósüldözés",
+        "baleset"
+      ],
+      "author": "Varga Zsuzsa",
+      "theme": "rat",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-0803254288-1-1024x576.jpg",
+      "imageAlt": "M0-ás üldözés: centiken múlt a frontális ütközés, az elkövető azt mondja, megijedt a lövésektől",
+      "addedAt": "2026-11-08T21:08:07.251Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-08-24hu-negy-telepulesen-rendeztek-idokozi-e9980a",
+      "title": "Négy településen rendeztek időközi választást, két új polgármestert választottak",
+      "summary": "A Mi Hazánk jelöltje lett a második Békésben. The post Négy településen rendeztek időközi választást, két új polgármestert választottak first appeared on 24.hu .",
+      "date": "2026-11-08T20:36:42.000Z",
+      "url": "https://24.hu/belfold/2026/11/08/idokozi-valasztas-tarkany-pernye/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "tárkány",
+        "időközi választás"
+      ],
+      "author": "Papp Atilla",
+      "theme": "politika",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-1091010262-e1794170134698-1024x577.jpg",
+      "imageAlt": "Négy településen rendeztek időközi választást, két új polgármestert választottak",
+      "addedAt": "2026-11-08T21:08:07.251Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-08-24hu-legyozte-a-vasast-22-tetmerkozes-ota-62fe31",
+      "title": "Legyőzte a Vasast, 22 tétmérkőzés óta veretlen a Fradi",
+      "summary": "Angyalföldi sikerével folytatta sorozatát a zöld-fehér csapat. The post Legyőzte a Vasast, 22 tétmérkőzés óta veretlen a Fradi first appeared on 24.hu .",
+      "date": "2026-11-08T20:25:16.000Z",
+      "url": "https://24.hu/sport/foci/2026/11/08/magyar-foci-nb1-vasas-ferencvaros/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Foci",
+        "magyar foci",
+        "nb1",
+        "vasas"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/vasas-ftc-1024x576.jpg",
+      "imageAlt": "Legyőzte a Vasast, 22 tétmérkőzés óta veretlen a Fradi",
+      "addedAt": "2026-11-08T21:08:07.251Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-08-portfolio-donald-trump-megszolalt-az-ujabb-iran-bdf5be",
+      "title": "Donald Trump megszólalt az újabb Irán elleni támadásról",
+      "summary": "Donald Trump amerikai elnök a CNN-nek adott interjújában felettébb valószínűtlennek nevezte az újabb nagyszabású támadásokat Irán ellen, amíg előrelépést lát a tárgyalásokon, de szükség esetén nem zárja ki azokat. A nyilatkozat a kongresszusi választások után hangzott el, amelyeken a republikánusok mindkét házban elveszítették többségüket, részben az iráni háború miatt emelkedő üzemanyagárak következtében.",
+      "date": "2026-11-08T20:18:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261108/donald-trump-megszolalt-az-ujabb-iran-elleni-tamadasrol-875008",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "rat",
+      "image": "https://pcdn.hu/articles/images-xl/u/s/a/usa-iran-kozel-kelet-konfliktus-haboru-695027.jpg",
+      "imageAlt": "Donald Trump megszólalt az újabb Irán elleni támadásról",
+      "addedAt": "2026-11-08T21:08:05.033Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-08-hvg-rijadi-felhokarcolot-tamadtak-meg-a-jemeni-10d293",
+      "title": "Rijádi felhőkarcolót támadtak meg a jemeni lázadók",
+      "summary": "Az Aramco szaúdi állami olajvállalat székhelyét támadták az Irán támogatását élvező jemeni húszi lázadók - közölte vasárnap a szaúdi energetikai minisztérium.",
+      "date": "2026-11-08T20:14:01.000Z",
+      "url": "https://hvg.hu/vilag/20261108_felhokarcolot-tamadtak-a-jemeni-lazadok-rijad-kozpontjaban",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Világ",
+        "világ",
+        "jemeni húszik",
+        "Rijád"
+      ],
+      "author": "szerzo@hvg.hu (MTI)",
+      "theme": "energija",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/2e7385c9-3111-4e8b-87e9-202d660430f5.jpg",
+      "imageAlt": "Rijádi felhőkarcolót támadtak meg a jemeni lázadók",
+      "addedAt": "2026-11-08T21:08:04.226Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-08-24hu-vajon-nyaktilo-ala-kuldik-carricket-vagy-a-04f2e3",
+      "title": "Vajon nyaktiló alá küldik Carricket vagy a hihetetlen hajrák még megmentik a ManUnited edzőjét?",
+      "summary": "A hétközi hihetetlen BL-fordítás után, ezúttal egy nyolcgólos őrületben mentett pontot az MU. The post Vajon nyaktiló alá küldik Carricket vagy a hihetetlen hajrák még megmentik a ManUnited edzőjét? first appeared on 24.hu .",
+      "date": "2026-11-08T20:07:50.000Z",
+      "url": "https://24.hu/sport/foci/2026/11/08/premier-league-manchester-united-michael-carrick/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Foci",
+        "premier league",
+        "angol foci",
+        "manchester united"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/carrick-1024x576.jpg",
+      "imageAlt": "Vajon nyaktiló alá küldik Carricket vagy a hihetetlen hajrák még megmentik a ManUnited edzőjét?",
+      "addedAt": "2026-11-08T21:08:07.251Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-08-24hu-lovoldozes-tortent-split-kozeleben-c1a33b",
+      "title": "Lövöldözés történt Split közelében",
+      "summary": "A lövöldözésben senki sem sérült meg, a rendőrség azonban hajtóvadászatot indított az elkövető férfi után, aki elmenekült a tett helyszínéről. The post Lövöldözés történt Split közelében first appeared on 24.hu .",
+      "date": "2026-11-08T19:58:00.000Z",
+      "url": "https://24.hu/kulfold/2026/11/08/lovoldozes-split-hajtovadaszat/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Nagyvilág",
+        "lövöldözés",
+        "horvátország",
+        "split"
+      ],
+      "author": "Varga Zsuzsa",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-0803252743-1024x576.jpg",
+      "imageAlt": "Lövöldözés történt Split közelében",
+      "addedAt": "2026-11-08T21:08:07.251Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-08-hvg-forma-1-norris-iden-harmadik-futamat-nyerte-a21124",
+      "title": "Forma-1: Norris idén harmadik futamát nyerte Sao Paulóban",
+      "summary": "Verstappen szűk 15 másodperccel maradt le a McLaren pilótája mögött.",
+      "date": "2026-11-08T19:54:32.000Z",
+      "url": "https://hvg.hu/sport/20261108_formula-1-sao-paulo-nagydij-lando-norris-mclaren",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Sport",
+        "autó",
+        "Formula 1",
+        "Forma-1"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/e0ac7930-226e-4013-8b8f-d5ac3b1079eb.jpg",
+      "imageAlt": "Forma-1: Norris idén harmadik futamát nyerte Sao Paulóban",
+      "addedAt": "2026-11-08T21:08:04.226Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-08-24hu-a-nap-legfontosabb-hirei-2026-november-8-703035",
+      "title": "A nap legfontosabb hírei – 2026. november 8.",
+      "summary": "Nincs magyar érintettje a krakkói lövöldözésnek, összeütközött két vonat Egyiptomban. The post A nap legfontosabb hírei – 2026. november 8. first appeared on 24.hu .",
+      "date": "2026-11-08T19:49:50.000Z",
+      "url": "https://24.hu/belfold/2026/11/08/a-nap-legfontosabb-hirei-2026-november-8/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "a nap legfontosabb hírei",
+        "hírösszefoglaló"
+      ],
+      "author": "Papp Atilla",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/000_d6rl9we-e1794140314208-1024x576.jpg",
+      "imageAlt": "A nap legfontosabb hírei – 2026. november 8.",
+      "addedAt": "2026-11-08T21:08:07.251Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-08-444-azbesztet-talaltak-a-hanyattatott-sorsu-d77ad0",
+      "title": "Azbesztet találtak a hányattatott sorsú gyömrői konténeriskola körül, egyelőre letakarták",
+      "summary": "Magyar Péter épp nemrég jelentette be, hogy 11 milliárd forintból megépítik az általános iskola új épületét, az évek óta húzódó felújításra pontot téve, de ez úgy tűnik, nem lesz olyan egyszerű.",
+      "date": "2026-11-08T19:35:53.000Z",
+      "url": "https://444.hu/2026/11/08/azbesztet-talaltak-a-hanyattatott-sorsu-gyomroi-konteneriskola-korul-egyelore-letakartak?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "veszélyes anyag",
+        "fekete istván általános iskola",
+        "Lázár János",
+        "azbeszt"
+      ],
+      "author": "Bábel Vilmos",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8PhOw4ZmSdQhlQLis.png",
+      "imageAlt": "Azbesztet találtak a hányattatott sorsú gyömrői konténeriskola körül, egyelőre letakarták",
+      "addedAt": "2026-11-08T21:08:03.876Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-08-hvg-elrendeltek-a-nyomozast-ruszin-szendi-harom-60b76f",
+      "title": "Elrendelték a nyomozást Ruszin-Szendi három feljelentésére",
+      "summary": "Tizenkét milliárdos tanácsadói „szerződést” is vizsgál az ügyészség.",
+      "date": "2026-11-08T19:21:33.000Z",
+      "url": "https://hvg.hu/gazdasag/20261108_elrendeltek-a-nyomozast-ruszin-szendi-harom-feljelentesere",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Gazdaság",
+        "Magyarország",
+        "honvédség",
+        "Ruszin-Szendi Romulusz"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/1d21d370-ae44-4117-9cb8-821f34a2b3b5.jpg",
+      "imageAlt": "Elrendelték a nyomozást Ruszin-Szendi három feljelentésére",
+      "addedAt": "2026-11-08T21:08:04.226Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-08-hvg-rtl-azbesztet-talaltak-a-gyomroi-iskola-60cb3f",
+      "title": "RTL: azbesztet találtak a gyömrői iskola mellett",
+      "summary": "Félszáz helybéli család követel újabb vizsgálatokat.",
+      "date": "2026-11-08T19:14:00.000Z",
+      "url": "https://hvg.hu/zhvg/20261108_rtl-azbesztet-talaltak-a-gyomroi-iskola-mellett",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Zhvg",
+        "élhető környezet",
+        "azbesztszennyezés",
+        "Győr"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/5c680f3a-0ddb-4bc8-aa38-2ec68202c8c6.jpg",
+      "imageAlt": "RTL: azbesztet találtak a gyömrői iskola mellett",
+      "addedAt": "2026-11-08T21:08:04.226Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-08-portfolio-megjott-az-ukasz-washingtonbol-azonnali-3be724",
+      "title": "Megjött az ukász Washingtonból: azonnali hatállyal le kell zárni a határokat Irakban",
+      "summary": "Az amerikai pénzügyminisztérium arra szólította fel Irakot, hogy kettő kivételével zárja le az összes Irán felé vezető határátkelőjét, amivel Washington tovább akarja növelni a Teheránra nehezedő gazdasági nyomást.",
+      "date": "2026-11-08T19:14:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261108/megjott-az-ukasz-washingtonbol-azonnali-hatallyal-le-kell-zarni-a-hatarokat-irakban-875006",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://pcdn.hu/articles/images-xl/g/e/t/gettyimages-usa-iraq-amerika-diplomacia-geopolitika-haboru-irak-konfliktus-kulpolitika-kulugym-733243.jpg",
+      "imageAlt": "Megjött az ukász Washingtonból: azonnali hatállyal le kell zárni a határokat Irakban",
+      "addedAt": "2026-11-08T21:08:05.033Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-08-portfolio-sulyos-nemzetbiztonsagi-ugy-robbanhat-ki-az-34bdea",
+      "title": "Súlyos nemzetbiztonsági ügy robbanhat ki az Egyesült Államokban: célkeresztbe került az Nvidia vezére",
+      "summary": "Kétpárti kongresszusi vizsgálat indulhat az Egyesült Államokban, miután sajtóhírek szerint az Nvidia vezérigazgatója, Jensen Huang kapcsolatban állt egy feltételezett kínai kémmel. A demokrata és republikánus törvényhozók nemcsak a technológiai óriáscég vezetőjétől várnak magyarázatot a nemzetbiztonsági aggályokra, hanem azt is firtatják, pontosan mit tudott az ügyről a Trump-adminisztráció - írta meg a CNBC .",
+      "date": "2026-11-08T19:03:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261108/sulyos-nemzetbiztonsagi-ugy-robbanhat-ki-az-egyesult-allamokban-celkeresztbe-kerult-az-nvidia-vezere-875004",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://pcdn.hu/articles/images-xl/j/e/n/jensen-huang-784310.jpg",
+      "imageAlt": "Súlyos nemzetbiztonsági ügy robbanhat ki az Egyesült Államokban: célkeresztbe került az Nvidia vezére",
+      "addedAt": "2026-11-08T21:08:05.033Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-08-444-felebredt-a-komabol-es-allami-kituntetest-5be64c",
+      "title": "Felébredt a kómából és állami kitüntetést kap a két rendőr, akik megállították a krakkói merénylőt",
+      "summary": "Mindketten súlyos sérüléseket szenvedtek a tűzpárbajban. A halálos áldozatok száma a férfi családjával együtt már összesen kilenc főnél jár.",
+      "date": "2026-11-08T19:02:02.000Z",
+      "url": "https://444.hu/2026/11/08/felebredt-a-komabol-es-allami-kituntetest-kap-a-ket-rendor-akik-megallitottak-a-krakkoi-merenylot?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "Donald Tusk",
+        "krakkói merénylet",
+        "krakkói terrortámadás",
+        "Jakub Kulik"
+      ],
+      "author": "Bábel Vilmos",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8PgTEHhpF0yLGWB0s.jpeg",
+      "imageAlt": "Felébredt a kómából és állami kitüntetést kap a két rendőr, akik megállították a krakkói merénylőt",
+      "addedAt": "2026-11-08T21:08:03.876Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-08-hvg-utlevel-az-almas-mennyorszagba-teszten-az-ec7511",
+      "title": "Útlevél az almás mennyországba? Teszten az iPhone Duo",
+      "summary": "Kipróbáltuk, hogy milyen mobil a gyakorlatban az Apple első szétnyitható okostelefonjaként jegyzett iPhone Duo, mely elsősorban útlevélhez hasonló kialakításáról, matt hajlékony kijelzőjéről és barátságtalan árcédulájáról ismerszik meg.",
+      "date": "2026-11-08T19:00:00.000Z",
+      "url": "https://hvg.hu/tudomany/20261108_szetnyithato-iphone-duo-apple-teszt-velemeny",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Tech",
+        "techteszt",
+        "iPhone Duo",
+        "Apple"
+      ],
+      "author": "szerzo@hvg.hu (László Ferenc)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/f555ed76-888e-48a5-945b-3cd16347af3b.jpg",
+      "imageAlt": "Útlevél az almás mennyországba? Teszten az iPhone Duo",
+      "addedAt": "2026-11-08T21:08:04.226Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-08-portfolio-osszeutkozott-ket-vonat-halalos-aldozatokat-8e3a7d",
+      "title": "Összeütközött két vonat, halálos áldozatokat követelt a szerencsétlenség Egyiptomban",
+      "summary": "Két vonat ütközött össze vasárnap Egyiptomban, Kairó határában. A legfrissebb adatok szerint hét ember meghalt, 112-en megsérültek. A baleset Gíza kormányzóság al-Ajjat körzetében, a fővárost Asszuánnal összekötő fontos vasútvonalon történt, ahol az egyik szerelvény hátulról belerohant a másikba. Abdel Fattáh esz-Szíszi elnök gyors vizsgálatot rendelt el, és felelősségre vonást ígért, a vasúttársaság pedig a forgalom mielőbbi helyreállításán dolgozik.",
+      "date": "2026-11-08T18:28:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261108/osszeutkozott-ket-vonat-halalos-aldozatokat-kovetelt-a-szerencsetlenseg-egyiptomban-875002",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://pcdn.hu/articles/images-xl/f/e/k/fekete-zaszlo-574818.jpg",
+      "imageAlt": "Összeütközött két vonat, halálos áldozatokat követelt a szerencsétlenség Egyiptomban",
+      "addedAt": "2026-11-08T21:08:05.034Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-08-portfolio-megjott-a-magyarazat-ezert-fordultak-nagyot-a1ed96",
+      "title": "Megjött a magyarázat: ezért fordultak nagyot az üzemanyagárak Magyarországon!",
+      "summary": "A nemzetközi olajpiacon egyszerre több olyan folyamat is kibontakozott, ami kedvező irányba mozdíthatja el az üzemanyagárakat. A közel-keleti béketárgyalásokkal kapcsolatos várakozások, a gyengülő benzinkereslet és az európai stratégiai készletek felszabadítása egyaránt enyhíthetik a korábbi hónapokban kialakult árnyomást, miközben a forint erősödése is segítheti a magyar autósokat. A kép viszont korántsem egyértelmű: a dízelpiac továbbra is rendkívül feszes, és a geopolitikai kockázatok sem tűntek el. Grád Ottó, a Magyar Ásványolaj Szövetség főtitkárának elemzése mentén megnéztük, milyen folyamatok határozhatják meg a következő időszak üzemanyagárait.",
+      "date": "2026-11-08T18:24:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261108/megjott-a-magyarazat-ezert-fordultak-nagyot-az-uzemanyagarak-magyarorszagon-875000",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "energija",
+      "image": "https://pcdn.hu/articles/images-lg/b/e/n/benzinkut-386886.jpg",
+      "imageAlt": "Megjött a magyarázat: ezért fordultak nagyot az üzemanyagárak Magyarországon!",
+      "addedAt": "2026-11-08T21:08:05.034Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-08-444-a-hazelnok-asszony-azert-meg-ne-lassa-7bbb78",
+      "title": "„A házelnök asszony azért meg ne lássa” – parlamenti pronyó, csöcsös miniszterelnöki rihiröhi",
+      "summary": "A kormány és a frakció nemi összetételére tekintve azt lehet hinni, hogy új korszakot élünk, de talán még van mit tenni.",
+      "date": "2026-11-08T18:22:40.000Z",
+      "url": "https://444.hu/2026/11/08/a-hazelnok-asszony-azert-meg-ne-lassa-parlamenti-pronyo-csocsos-miniszterelnoki-rihirohi?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "plakátok",
+        "parlament",
+        "országház",
+        "női test"
+      ],
+      "author": "Munk Veronika",
+      "theme": "politika",
+      "image": "https://assets.4cdn.hu/kraken/8PhJxSz5d0DeDa92s.jpeg",
+      "imageAlt": "„A házelnök asszony azért meg ne lássa” – parlamenti pronyó, csöcsös miniszterelnöki rihiröhi",
+      "addedAt": "2026-11-08T21:08:03.876Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-08-444-talan-az-hogy-konyveket-olvasunk-csak-egy-017d5f",
+      "title": "„Talán az, hogy könyveket olvasunk, csak egy fura, pár száz évig tartó történelmi fennakadás”",
+      "summary": "Először járt hazánkban Joe Hill amerikai regényíró, aki már rég nem csupán arról híres, hogy Stephen King fia. A Szarvak, a Locke & Key képregények és a magyarul most megjelenő Kín király szerzőjét az olvasás haláláról, az AI veszélyeiről és apjával való kapcsolatának alakulásáról is kérdeztük.",
+      "date": "2026-11-08T18:06:23.000Z",
+      "url": "https://444.hu/jo/2026/11/08/talan-az-hogy-konyveket-olvasunk-csak-egy-fura-par-szaz-evig-tarto-tortenelmi-fennakadas?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "kín király",
+        "szerző",
+        "horror",
+        "komédia"
+      ],
+      "author": "Mohos Máté",
+      "theme": "ai",
+      "image": "https://assets.4cdn.hu/kraken/8PRLTIj6whHJmOWGs.jpeg",
+      "imageAlt": "„Talán az, hogy könyveket olvasunk, csak egy fura, pár száz évig tartó történelmi fennakadás”",
+      "addedAt": "2026-11-08T21:08:03.877Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-08-444-40-millio-forintot-fizetett-a-penzes-9e4560",
+      "title": "40 millió forintot fizetett a pénzes hongkongi egy darab fehér szarvasgombáért egy nemzetközi árverésen",
+      "summary": "Az a fehér a párnán a drága gomba.",
+      "date": "2026-11-08T17:54:29.000Z",
+      "url": "https://444.hu/2026/11/08/40-millio-forintot-fizetett-a-kinai-tanar-egy-albai-feher-szarvasgombaert-egy-nemzetkozi-arveresen?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "jótékonyság",
+        "olaszország",
+        "nemzetközi árverés",
+        "alba"
+      ],
+      "author": "Bábel Vilmos",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8PhHxyeMOPsw1AamFs.jpeg",
+      "imageAlt": "40 millió forintot fizetett a pénzes hongkongi egy darab fehér szarvasgombáért egy nemzetközi árverésen",
+      "addedAt": "2026-11-08T21:08:03.877Z"
+    },
     {
       "slug": "budimpesta-2026-11-08-hvg-mondja-el-mindenki-a-tortenetet-az-df8f21",
       "title": "„Mondja el mindenki a történetét!'- Az ügynökaktákról ír Péterfy Gergely az én hetemben",
