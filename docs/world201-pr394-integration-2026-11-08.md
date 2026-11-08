@@ -15,3 +15,6 @@ Original PR #394 and its branch remain untouched. Existing public deployment mus
 - Generated output committed to this integration branch as `f908103b2ef3142707b13c7db0b1ab019e3da4c0` (201 countries, 10 cities, 211 RSS feeds, HR/EN weekly pages; checked by the staging job).
 - PR #395 is draft. Bot-authored follow-on PR checks were marked `action_required`, so a separately authored review-trigger commit is used to obtain actual CI results.
 - No release/deploy on `main` has been triggered by this branch. No result here proves the live website is updated.
+
+- Canonical editorial registry and sitemap repair also succeeded in staging [run #42482497041](https://github.com/masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01/actions/runs/42482497041); `editorial-registry.json`, `editorial-sitemap.xml` and `sitemap-index.xml` were refreshed by the existing canonical generators, not hand-edited. No article body was altered.
+- This user-authored metadata-only commit asks GitHub to execute PR review checks on the final regenerated tree; the branch remains draft and must not be merged or deployed while any required gate fails.
