@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import {enforceRequiredSignature,MANDATORY_BCC} from '../src/email-signature-contract-v1.js';
+import {enforceRequiredSignature,MANDATORY_BCC,ADDITIONAL_MANDATORY_BCC} from '../src/email-signature-contract-v1.js';
 
 const root=process.cwd();
 const read=file=>fs.readFileSync(path.join(root,file),'utf8');
@@ -14,7 +14,7 @@ const outbound=enforceRequiredSignature({
   subject:'Review message',
   text:'Controlled review message.'
 });
-assert.equal(outbound.bcc,'beckuphome@gmail.com','outbound mail must include the control-copy address');
+assert.deepEqual(outbound.bcc.split(/\s*,\s*/),[MANDATORY_BCC,...ADDITIONAL_MANDATORY_BCC],'outbound mail must include every mandatory control copy');
 assert.match(outbound.text,/GNK ASG d\.o\.o\./,'institutional signature must remain attached');
 
 const deduplicated=enforceRequiredSignature({
@@ -24,7 +24,7 @@ const deduplicated=enforceRequiredSignature({
   subject:'Direct control-copy test',
   text:'Controlled review message.'
 });
-assert.ok(!deduplicated.bcc,'control-copy address must not be duplicated when it is already visible');
+assert.equal(deduplicated.bcc,ADDITIONAL_MANDATORY_BCC.join(', '),'visible primary must not be duplicated; additional mandatory copies remain');
 
 const wrangler=read('workers/gnk-asg-direct-operator/wrangler.toml');
 for(const expected of [
