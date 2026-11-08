@@ -68,7 +68,7 @@
     }
 
     function open() {
-      if (opened || alreadySeen()) return;
+      if (modal.hasAttribute("data-am-promo-disabled") || opened || alreadySeen()) return;
       opened = true;
       lastFocus = document.activeElement;
       modal.hidden = false;
@@ -155,7 +155,7 @@
 
     /* ---------- lebdeća reklama: tri proizvoda u rotaciji ---------- */
     var ad = document.getElementById('amAd');
-    if (ad && store('session', 'am-ad-v1:hidden') !== '1' && store('local', 'am-ad-v1:never') !== '1') {
+    if (ad && !modal.hasAttribute('data-am-promo-disabled') && store('session', 'am-ad-v1:hidden') !== '1' && store('local', 'am-ad-v1:never') !== '1') {
       var adItems = Array.prototype.slice.call(ad.querySelectorAll('[data-am-ad-item]'));
       var adDots = Array.prototype.slice.call(ad.querySelectorAll('.am-ad-dots i'));
       var adIndex = 0;
