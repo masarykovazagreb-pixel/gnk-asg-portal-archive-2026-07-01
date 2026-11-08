@@ -68,6 +68,8 @@ export const REGION_IMAGE_HOSTS = [
   ['images.dailynewsegypt.com', 'Daily News Egypt', 'EG'],
   // Azija i Pacifik
   ['img.antaranews.com', 'ANTARA', 'ID'],
+  ['akcdn.detik.net.id', 'detikcom', 'ID'],
+  ['awsimages.detik.net.id', 'detikcom image CDN', 'ID'],
   ['static.republika.co.id', 'Republika', 'ID'],
   ['dam.mediacorp.sg', 'CNA / Mediacorp', 'SG'],
   ['images.skynewsarabia.com', 'Sky News Arabia', 'AE'],
@@ -81,6 +83,7 @@ export const REGION_IMAGE_HOSTS = [
   ['platform.theverge.com', 'The Verge', 'US'],
   ['npr.brightspotcdn.com', 'NPR', 'US'],
   ['media.npr.org', 'NPR', 'US'],
+  ['media.cnn.com', 'CNN', 'US'],
   ['www.propublica.org', 'ProPublica', 'US'],
   ['conteudo.imguol.com.br', 'UOL', 'BR'],
   ['f.i.uol.com.br', 'UOL (Folha)', 'BR'],

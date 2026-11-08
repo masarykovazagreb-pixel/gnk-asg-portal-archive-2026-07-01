@@ -1,12 +1,8 @@
 #!/usr/bin/env node
 /**
- * Osigurava da sitemap-index.xml navodi agent-reviews-sitemap.xml.
- *
- * Generatori sitemap-indeksa pišu indeks iz vlastitog popisa, pa unos koji
- * dodaje objava pregleda (publish-agent-reviews-v1) može nestati pri
- * sljedećoj sinkronizaciji. Ovaj korak ga vraća. Idempotentan je.
- *
- *   node scripts/ensure-agent-sitemap-index-v1.mjs
+ * Ensures canonical published sub-sitemaps survive sitemap-index regeneration.
+ * Idempotent: existing entries are never duplicated. Only local XML files can
+ * be registered; missing files are intentionally skipped.
  */
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -16,22 +12,26 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const PORTAL = join(ROOT, 'apps', 'portal');
 const INDEX = join(PORTAL, 'sitemap-index.xml');
 const SITE = 'https://gnk-asg.hr';
-const SITEMAP = 'agent-reviews-sitemap.xml';
+const SITEMAPS = ['agent-reviews-sitemap.xml', 'gnk-aktual/media/sitemap.xml'];
 
-if (!existsSync(join(PORTAL, SITEMAP)) || !existsSync(INDEX)) {
-  console.log(JSON.stringify({ ok: true, changed: false, reason: 'nema sitemapa pregleda ili indeksa' }));
+if (!existsSync(INDEX)) {
+  console.log(JSON.stringify({ ok: true, changed: false, reason: 'nema sitemap indeksa' }));
   process.exit(0);
 }
-const text = readFileSync(INDEX, 'utf8');
-if (text.includes(SITEMAP)) {
-  console.log(JSON.stringify({ ok: true, changed: false }));
-  process.exit(0);
-}
-const today = new Date().toISOString().slice(0, 10);
-const entry = `  <sitemap>\n    <loc>${SITE}/${SITEMAP}</loc>\n    <lastmod>${today}</lastmod>\n  </sitemap>\n`;
-if (!text.includes('</sitemapindex>')) {
+let content = readFileSync(INDEX, 'utf8');
+if (!content.includes('</sitemapindex>')) {
   console.error('sitemap-index.xml nema </sitemapindex>');
   process.exit(1);
 }
-writeFileSync(INDEX, text.replace('</sitemapindex>', `${entry}</sitemapindex>`));
-console.log(JSON.stringify({ ok: true, changed: true }));
+const today = new Date().toISOString().slice(0, 10);
+const added = [];
+for (const sitemap of SITEMAPS) {
+  if (!existsSync(join(PORTAL, sitemap))) continue;
+  const loc = `${SITE}/${sitemap}`;
+  if (content.includes(`<loc>${loc}</loc>`)) continue;
+  const entry = `  <sitemap>\n    <loc>${loc}</loc>\n    <lastmod>${today}</lastmod>\n  </sitemap>\n`;
+  content = content.replace('</sitemapindex>', `${entry}</sitemapindex>`);
+  added.push(sitemap);
+}
+if (added.length) writeFileSync(INDEX, content, 'utf8');
+console.log(JSON.stringify({ ok: true, changed: added.length > 0, added }));
