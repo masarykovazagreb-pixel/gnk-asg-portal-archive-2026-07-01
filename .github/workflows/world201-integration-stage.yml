@@ -119,3 +119,51 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -m 'build(world201): regenerate country-city and weekly pages from latest main'
           git push origin "HEAD:refs/heads/$GITHUB_REF_NAME"
+
+  homepage-parity:
+    needs: regenerate-on-integration-branch
+    if: github.ref == 'refs/heads/integration/world201-pr394-main-20261108' && vars.GNK_ASG_RELEASE_FENCE != 'true'
+    name: Repair only HR and EN homepage parity on integration branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: integration/world201-pr394-main-20261108
+          persist-credentials: true
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Regenerate and check homepage parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/build-index-parity.mjs
+          node scripts/build-index-parity.mjs --check
+          git diff --check
+      - name: Strict two-file change allowance, no deletions, no blind overwrite
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --name-only > /tmp/homepage-files.txt
+          if grep -Ev '^(apps/portal/index.html|apps/portal/en/index.html)$' /tmp/homepage-files.txt; then
+            echo 'Unexpected path changed by index regeneration; refusing commit.' >&2
+            exit 1
+          fi
+          git add -- apps/portal/index.html apps/portal/en/index.html
+          git diff --cached --check
+          if git diff --cached --name-status | grep -q $'^D\t'; then
+            echo 'Deletion detected; refusing commit.' >&2
+            exit 1
+          fi
+          if git diff --cached --quiet; then
+            echo 'HR/EN homepages already synchronized.'
+            exit 0
+          fi
+          git fetch origin "$GITHUB_REF_NAME"
+          test "$(git rev-parse HEAD)" = "$(git rev-parse FETCH_HEAD)"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'fix(portal): restore generated HR EN homepage index parity'
+          git push origin "HEAD:refs/heads/$GITHUB_REF_NAME"
