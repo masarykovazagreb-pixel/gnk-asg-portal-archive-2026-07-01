@@ -37,6 +37,6 @@
   });
   if(closeMini)closeMini.addEventListener('click',function(){mini.hidden=true;write(dismissKey)});
   if(expand)expand.addEventListener('click',open);
-  if(read(sessionKey)){showMini()}else{timer=setTimeout(open,8500)}
+  if(read(sessionKey)){showMini()}else{timer=setTimeout(open,900)}
   window.addEventListener('pagehide',function(){if(timer)clearTimeout(timer)});
 })();
