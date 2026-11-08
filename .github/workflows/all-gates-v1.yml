@@ -27,6 +27,11 @@ on:
       - 'arena/0ba72079-gnk-asg-portal-archive-2026-07'
     paths:
       - '.github/workflows/all-gates-v1.yml'
+      # Bot-generated commits update these outputs; validate their actual SHA
+      # instead of accepting a cancelled pre-regeneration PR run.
+      - 'apps/portal/data/public_service_status.json'
+      - 'apps/kanal/site/**'
+      - 'apps/sites/site/**'
 
 permissions:
   contents: read
