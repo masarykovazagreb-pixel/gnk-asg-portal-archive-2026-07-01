@@ -18,3 +18,10 @@ Original PR #394 and its branch remain untouched. Existing public deployment mus
 
 - Canonical editorial registry and sitemap repair also succeeded in staging [run #42482497041](https://github.com/masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01/actions/runs/42482497041); `editorial-registry.json`, `editorial-sitemap.xml` and `sitemap-index.xml` were refreshed by the existing canonical generators, not hand-edited. No article body was altered.
 - This user-authored metadata-only commit asks GitHub to execute PR review checks on the final regenerated tree; the branch remains draft and must not be merged or deployed while any required gate fails.
+
+## Follow-up staging: 8 November 2026, 17:19 UTC
+
+- Newer main at `fed969e8a564d05614f23eedbab54e6d16f9ac72` was integrated via safe GitHub-calculated merge tree into staging with commit `750c4e23c7888c6d112836731691c65788a82124`, preserving newer main content without force push.
+- WORLD 201 isolated staging run [#42503648974](https://github.com/masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01/actions/runs/42503648974) passed checks for 211 country/city pages, 211 RSS feeds, XML sitemap, and Croatian/English weekly archive. No generated WORLD changes were required in that run.
+- A guarded homepage parity remediation on staging (run [#42504117705](https://github.com/masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01/actions/runs/42504117705)) completed successfully and produced staging commit `10a2bc593215900f75785161403295562c41adba`. The repair job permitted edits only to `apps/portal/index.html` and `apps/portal/en/index.html` and rejected deletion/unexpected paths.
+- Bot commit checks show `action_required` rather than executed test results, so this documentation-only commit intentionally triggers fresh GitHub App-authored CI validation on the exact staging HEAD. Do NOT treat these checks as success; review gate logs and resolve any remaining issues before standard merge and exact-SHA production deploy.
