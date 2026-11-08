@@ -295,17 +295,7 @@ jobs:
           set -euo pipefail
           git add -A -- apps/portal
           git diff --cached --check
-          if git diff --cached --name-status | grep -q 
-            echo 'Canonical metadata already synchronized.'
-            exit 0
-          fi
-          git fetch origin "$GITHUB_REF_NAME"
-          test "$(git rev-parse HEAD)" = "$(git rev-parse FETCH_HEAD)"
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -m 'fix(world201): reconcile public JSON-LD, brand, factory and freshness layers'
-          git push origin "HEAD:refs/heads/$GITHUB_REF_NAME"
-^D\t'; then
+          if git diff --cached --name-status | grep -q $'^D\t'; then
             echo 'Deletion detected; refusing stage' >&2
             exit 1
           fi
