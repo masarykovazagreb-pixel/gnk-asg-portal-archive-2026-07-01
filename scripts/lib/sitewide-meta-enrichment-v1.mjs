@@ -2,7 +2,8 @@
  * Keeps existing page identity, title, description, canonical and authorship.
  * Only reuses page-provided content; never generates SEO keyword-stuffing. */
 function attr(tag,name){
-  const hit=String(tag).match(new RegExp('(?:^|\\s)'+name.replace(/[.*+?^${}()|[\\]\\]/g,'\\$&')+'\\s*=\\s*(["\\\'])([\\s\\S]*?)\\1','i'));
+  // Attribute names are an internal fixed allowlist: name, property, rel, content, href.
+  const hit=String(tag).match(new RegExp("(?:^|\\s)"+name+"\\s*=\\s*([\"'])([\\s\\S]*?)\\1","i"));
   return hit?hit[2]:'';
 }
 function metaValue(html,field,key){
