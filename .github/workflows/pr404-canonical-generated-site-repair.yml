@@ -35,6 +35,12 @@ jobs:
           NODE
       - name: Regenerate six independent sites with canonical generator
         run: node apps/sites/build.mjs
+      - name: Materialize ignored World, Archive and Daily outputs strictly for validation
+        run: |
+          set -euo pipefail
+          node apps/world/build.mjs
+          node apps/arhiva/engine/build.mjs
+          node apps/dnevnik/engine/build.mjs
       - name: Align refresh tags across six public-site roots using registry data day
         run: node scripts/apply-refresh-v1.mjs
       - name: Materialize canonical public radio promo only
@@ -58,7 +64,7 @@ jobs:
             echo "::error::Unexpected broad generated-file change; refusing auto-commit"
             exit 1
           fi
-          git add -- apps/sites/site apps/portal apps/world/site apps/kanal/site apps/arhiva/site apps/dnevnik/site
+          git add -- apps/sites/site apps/portal apps/kanal/site
           if git diff --cached --quiet; then
             echo 'Already in canonical generated state'
             exit 0
