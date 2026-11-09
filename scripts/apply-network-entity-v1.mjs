@@ -24,6 +24,7 @@ import { join, dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { entityGraphJson, HASHTAGS, PERSON, ORG_AKTUAL, ORG_ASG, ORG_DINAMO, EXPLAINER } from './lib/entity-graph-v1.mjs';
 import { brandHashtagTarget, topicTagsForRoute } from './lib/seo-topic-taxonomy-v1.mjs';
+import { enrichSitewideMeta } from './lib/sitewide-meta-enrichment-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
@@ -252,7 +253,7 @@ export function entityHtml(input, file) {
     if (!has(original, 'id="network-entity-css"')) html = html.replace('</head>', `${CSS}\n</head>`);
   }
 
-  return html;
+  return enrichSitewideMeta(html,{route});
 }
 
 const RUN = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
