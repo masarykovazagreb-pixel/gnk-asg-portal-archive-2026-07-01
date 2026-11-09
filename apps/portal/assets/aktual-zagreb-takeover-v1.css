@@ -65,7 +65,7 @@
 
 /* Compatibility: preserve promo product markup for existing contracts,
    but remove all previous promotional UI from the public display. */
-.am-shell>.am-promo-top,.am-shell>.am-win-row,.am-shell>.am-ad-row,.am-shell>.am-ad-carousel,.am-shell>.am-promo-modal{display:none!important}
+.am-shell>.am-ad,.am-shell>.am-promo-modal{display:none!important}
 .am-zg-main h3{font-weight:950;font-size:clamp(32px,4.4vw,65px);letter-spacing:-.055em;line-height:1.02;color:#fff;max-width:740px;margin:22px 0 14px}
 .am-zg-dialog h3{font-size:clamp(30px,5vw,48px);font-weight:950;letter-spacing:-.05em;line-height:1.06;margin:9px 0 15px;color:#fff}
 .am-world-gateway h3{margin:8px 0 5px;color:#fff;font-size:clamp(20px,2.2vw,29px);line-height:1.15}
