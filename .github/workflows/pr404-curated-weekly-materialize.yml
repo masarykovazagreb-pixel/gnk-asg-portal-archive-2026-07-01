@@ -28,6 +28,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Install ImageMagick required by canonical original-art generator
+        run: |
+          set -euo pipefail
+          if ! command -v convert >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo DEBIAN_FRONTEND=noninteractive apt-get install -y imagemagick
+          fi
+          command -v convert
       - name: Confirm curation and image tooling
         run: |
           set -euo pipefail
