@@ -1,6 +1,10 @@
 name: PR404 - Rebuild Prenos Data Only
 
 on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/pr404-prenos-regenerate.yml
   push:
     branches:
       - feat/aktual-world-ci-release-20261109
