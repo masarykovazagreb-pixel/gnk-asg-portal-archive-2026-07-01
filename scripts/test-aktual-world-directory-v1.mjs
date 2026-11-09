@@ -29,12 +29,16 @@ for(const country of inv.countries){
  const url=`${BASE}/gnk-aktual/media/${country.slug}/`;
  assert.equal(country.url,url,`correct route for ${country.slug}`);
  assert(fs.existsSync(path.join(PORTAL,'gnk-aktual/media',country.slug,'index.html')),`country page exists: ${country.slug}`);
+ assert.equal(country.rss,`${url}feed.xml`,`country-specific RSS link: ${country.slug}`);
+ assert(fs.existsSync(path.join(PORTAL,'gnk-aktual/media',country.slug,'feed.xml')),`country RSS exists: ${country.slug}`);
  assert(html.includes(`href="/gnk-aktual/media/${country.slug}/"`),`directory contains country: ${country.slug}`);
  assert(sitemap.includes(`<loc>${url}</loc>`),`sitemap has country: ${country.slug}`);
 }
 for(const city of inv.cities){
  const url=`${BASE}/gnk-aktual/grad/${city.slug}/`;
  assert(fs.existsSync(path.join(PORTAL,'gnk-aktual/grad',city.slug,'index.html')),`city page exists: ${city.slug}`);
+ assert.equal(city.rss,`${url}feed.xml`,`city-specific RSS link: ${city.slug}`);
+ assert(fs.existsSync(path.join(PORTAL,'gnk-aktual/grad',city.slug,'feed.xml')),`city RSS exists: ${city.slug}`);
  assert(html.includes(`href="/gnk-aktual/grad/${city.slug}/"`),`directory contains city: ${city.slug}`);
  assert(sitemap.includes(`<loc>${url}</loc>`),`sitemap has city: ${city.slug}`);
 }
