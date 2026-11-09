@@ -5,7 +5,7 @@
 ## Sadržaj
 
 - 201 **jedinstvena** država/područje u `apps/portal/data/world-countries-v1.json`. Izvorni paket pogreškom je dvaput sadržavao Moldovu i zato gradio samo 200 URL-ova; drugi zapis zamijenjen je Gvajanom (GY).
-- 201 HTML + 201 XML RSS stranica država, 10 HTML + 10 RSS stranica gradova i sitemap sa **211 postojećih** URL-ova.
+- 201 HTML + 201 XML RSS stranica država, 10 HTML + 10 RSS stranica gradova i sitemap s **212 postojećih** URL-ova (201 zemlja + 10 gradova + novi pregledni imenik).
 - 435 konfiguriranih potencijalnih vanjskih izvora. Nije potvrđeno da je svaki izvor dostupan niti licenciran.
 - `scripts/refresh-aktual-world-headlines-v1.mjs`: dohvaća ograničene **naslove i poveznice**, ne kopira tekst članaka; ograničenja veličine, vremena i URL-a; neuspješni dohvat ne mijenja postojeći cache. Ne jamči neprekidno 24/7 osvježavanje.
 - `scripts/build-aktual-world-v1.mjs`: koristi samo cache mlađi od 24h, inače pokazuje nedostupnost provjerenih naslova; gradi HTML, feed i sitemap bez izmišljanja datumâ ili vijesti.
