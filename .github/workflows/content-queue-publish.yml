@@ -41,8 +41,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Test Content Factory safety gate
-        run: node tests/test-content-queue-preflight-v1.mjs
+      - name: Test Content Factory and AI newsroom export safeguards
+        run: |
+          node tests/test-content-queue-preflight-v1.mjs
+          node --test tests/content-queue-preflight-holds.test.mjs
+          node tests/test-newsroom-content-factory-export-v1.mjs
       - name: Fail closed on duplicate, held or invalid publications
         run: node scripts/content-queue-preflight-v1.mjs
       - name: Publish due calendar items

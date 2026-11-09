@@ -101,6 +101,78 @@ const externalPost=(await externalResponse.json()).post;
 assert.equal(externalPost.status,'manual_review');
 assert.equal(externalPost.sourceUrl,'https://publisher.example/story');
 assert.ok(externalPost.reviewFlags.includes('source-policy-review'));
+assert.equal(externalPost.author,'AKTUAL MEDIA uredništvo');
+assert.equal(externalPost.editorialApproval,null);
+
+const licensedButUnreviewedCommentaryResponse=await enqueue({
+ title:'Komentar koji čeka stvarnu provjeru',
+ summary:'Komentar se temelji na licenciranom vanjskom izvoru, ali još nema zabilježenu ljudsku uredničku provjeru i zasebno odobrenje.',
+ imageUrl:'/assets/editorial/generated/commentary-human-review-policy.svg',
+ category:'commentary',
+ sourceClass:'licensed-external',
+ sourceName:'Publisher',
+ sourceUrl:'https://publisher.example/licensed-commentary',
+ sourceTermsUrl:'https://publisher.example/terms',
+ sourceLicense:'publisher-reviewed-license',
+ sourceTermsVerifiedAt:at
+});
+assert.equal(licensedButUnreviewedCommentaryResponse.status,200);
+const licensedCommentary=(await licensedButUnreviewedCommentaryResponse.json()).post;
+assert.equal(licensedCommentary.status,'manual_review');
+assert.ok(licensedCommentary.reviewFlags.includes('editorial-review-required'));
+assert.equal(licensedCommentary.editorialApproval,null);
+
+const aiSourceSummaryResponse=await enqueue({
+ title:'Izvorni AI nacrt za provjeru',
+ summary:'Kratki izvorni opis događaja služi isključivo kao kontekst za nacrt i ne predstavlja dopuštenje za automatsku objavu.',
+ content:'AI-potpomognuti urednički nacrt čeka sadržajnu provjeru odgovornog urednika.',
+ imageUrl:'/assets/editorial/generated/ai-source-summary-policy.svg',
+ category:'source-summary-business',
+ sourceClass:'licensed-external',
+ sourceName:'Licensed Publisher',
+ sourceUrl:'https://publisher.example/business-story',
+ sourceTermsUrl:'https://publisher.example/terms',
+ sourceLicense:'publisher-reviewed-feed-license',
+ sourceTermsVerifiedAt:at,
+ usageBasis:'limited-feed-metadata-original-commentary-with-link',
+ aiGovernance:{
+  usedAI:true,role:'deployer',purpose:'Draft for human review',riskClassification:'not-high-risk',
+  prohibitedUse:false,prohibitedUseScreenPassed:true,privacyAndRightsReviewed:false,
+  publicInterest:true,generatesOrAltersText:true,deepfake:false,
+  humanEditorialReview:null,disclosure:{visible:true,text:'AI-potpomognuti nacrt; čeka ljudsku provjeru.'}
+ }
+});
+assert.equal(aiSourceSummaryResponse.status,200);
+const aiSourceSummaryPost=(await aiSourceSummaryResponse.json()).post;
+assert.equal(aiSourceSummaryPost.status,'manual_review');
+assert.ok(aiSourceSummaryPost.reviewFlags.includes('ai-human-editorial-review-required'));
+assert.ok(aiSourceSummaryPost.reviewFlags.includes('ai-rights-review-required'));
+assert.ok(aiSourceSummaryPost.reviewFlags.includes('editorial-review-required'));
+assert.equal(aiSourceSummaryPost.editorialApproval,null,'an enqueue request cannot forge approval');
+
+const aiGeneratedNotMarkedPublicInterestResponse=await enqueue({
+ title:'AI tekst bez public-interest oznake',
+ summary:'Ovaj test osigurava da svaka AI-generirana objavna proza traži ljudsku provjeru, čak i ako podnositelj ne označi temu kao javni interes.',
+ imageUrl:'/assets/editorial/generated/ai-not-public-interest-policy.svg',
+ category:'source-summary-entertainment',
+ sourceClass:'licensed-external',
+ sourceName:'Licensed Publisher',
+ sourceUrl:'https://publisher.example/low-public-interest-story',
+ sourceTermsUrl:'https://publisher.example/terms',
+ sourceLicense:'publisher-reviewed-feed-license',
+ sourceTermsVerifiedAt:at,
+ usageBasis:'limited-feed-metadata-original-commentary-with-link',
+ aiGovernance:{
+  usedAI:true,role:'deployer',purpose:'Draft for human review',riskClassification:'unassessed',
+  prohibitedUse:false,prohibitedUseScreenPassed:true,privacyAndRightsReviewed:false,
+  publicInterest:false,generatesOrAltersText:true,deepfake:false,
+  humanEditorialReview:null,disclosure:{visible:true,text:'AI-potpomognuti nacrt; čeka ljudsku provjeru.'}
+ }
+});
+assert.equal(aiGeneratedNotMarkedPublicInterestResponse.status,200);
+const aiNotPublicInterestPost=(await aiGeneratedNotMarkedPublicInterestResponse.json()).post;
+assert.equal(aiNotPublicInterestPost.status,'manual_review');
+assert.ok(aiNotPublicInterestPost.reviewFlags.includes('ai-human-editorial-review-required'));
 
 const invalidSummaryResponse=await enqueue({
  title:'Sažetak bez izvora',
@@ -119,8 +191,12 @@ const workforceSource=fs.readFileSync('workers/gnk-asg-direct-operator/src/digit
 assert.match(queueSource,/buildContentProvenance/);
 assert.match(queueSource,/invalid_source_provenance/);
 assert.match(queueSource,/provenance:sourcePolicy\.provenance/);
-assert.match(writerSource,/sourceClass:'external-publisher-link'/);
-assert.match(writerSource,/usageBasis:'original-summary-with-link'/);
+assert.match(writerSource,/sourceClass:\s*'external-publisher-link'/);
+assert.match(writerSource,/usageBasis:\s*'limited-feed-metadata-original-commentary-with-link'/);
+assert.match(writerSource,/humanEditorialReview: null/);
+assert.match(writerSource,/externalComments: false/);
+assert.equal(firstPartyPost.author,'AKTUAL MEDIA uredništvo','dynamic queue defaults to a neutral editorial desk rather than inventing personal authorship');
+assert.equal(firstPartyPost.editorialApproval,null,'the API must not fabricate an editorial approval record');
 assert.match(workforceSource,/identityType:'synthetic-digital-worker'/);
 assert.match(workforceSource,/digital-workforce-bulletin/);
 assert.match(workforceSource,/digital-workforce-newsroom/);

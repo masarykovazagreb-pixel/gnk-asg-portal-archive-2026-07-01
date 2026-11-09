@@ -53,6 +53,33 @@ try{
   write('apps/portal/data/editorial-plan/publication-holds.json',{holds:[]});
   check('safe due item accepted',0,/"ok": true/);
 
+  const crypto=await import('node:crypto');
+  const aiBodyHash=crypto.createHash('sha256').update('reviewed generated body').digest('hex');
+  const aiInputHash='a'.repeat(64);
+  const aiImage='/assets/editorial/generated/news-test-topic-1-a1b2c3d4e5f6a7b8c9d0.svg';
+  const aiHtml=`<html lang=\"hr\"><head><link rel=\"canonical\" href=\"${canonical}\"><meta name=\"author\" content=\"AKTUAL MEDIA uredništvo\"><meta name=\"ai-generated\" content=\"true\"><meta name=\"ai-disclosure\" content=\"AI-potpomognuti tekst; sadržajno pregledan od urednika.\"><meta name=\"ai-input-content-sha256\" content=\"${aiInputHash}\"><meta name=\"ai-content-sha256\" content=\"${aiBodyHash}\"><meta name=\"source-url\" content=\"https://publisher.example/story\"><meta name=\"source-license\" content=\"test-license\"><meta name=\"source-terms-url\" content=\"https://publisher.example/terms\"><meta property=\"og:image\" content=\"https://gnk-asg.hr${aiImage}\"></head><body><div class=\"article-meta\"><span>AKTUAL MEDIA uredništvo</span><span>Urednička provjera: Test editor</span></div><p class=\"ai-disclosure\">AI-potpomognuti tekst; sadržajno pregledan od urednika.</p><figure><img class=\"article-cover\" src=\"${aiImage}\" alt=\"Test ilustracija\"><figcaption>Izvorna GNK ASG urednička ilustracija, nije fotografija događaja.</figcaption></figure><p>Izvor: <a href=\"https://publisher.example/story\">Publisher</a></p></body></html>`;
+  write('content/factory-queue/komentari/test-odobrenje.html',aiHtml);
+  write('content/factory-queue/review-records/test-odobrenje.json',{
+    version:'GNK_ASG_NEWSROOM_HUMAN_REVIEW_V1',status:'approved',approvedBy:'Test editor',approvedAt:'2026-10-10T05:30:00.000Z',
+    editorialResponsibilityAccepted:true,substantive:true,sourceRightsVerified:true,sourceTextNotCopied:true,
+    originalityAndAttributionReviewed:true,visualRightsVerified:true,imageUrl:aiImage,
+    imageCredit:'GNK ASG — izvorna generirana urednička ilustracija; nije dokumentarna fotografija',privacyAndRightsReviewed:true,
+    prohibitedUse:false,prohibitedUseScreenPassed:true,riskClassification:'not-high-risk',aiDisclosureVisible:true,aiProvider:'Test AI provider',
+    sourceUrl:'https://publisher.example/story',sourceName:'Publisher',sourceClass:'licensed-external',sourceLicense:'test-license',
+    sourceTermsUrl:'https://publisher.example/terms',sourceTermsVerifiedAt:'2026-10-10T05:00:00.000Z',
+    approvedInputContentSha256:aiInputHash,aiContentSha256:aiBodyHash,articleSha256:crypto.createHash('sha256').update(aiHtml).digest('hex')
+  });
+  check('AI content with matching human review record accepted',0,/\"ok\": true/);
+  write('content/factory-queue/komentari/test-odobrenje.html',aiHtml.replace('Publisher','Edited Publisher'));
+  check('AI article changes after review are blocked by hash',1,/reviewed article hash mismatch/);
+  write('content/factory-queue/komentari/test-odobrenje.html',aiHtml);
+  fs.rmSync(path.join(root,'content/factory-queue/review-records/test-odobrenje.json'),{force:true});
+  check('AI content without review sidecar blocked',1,/AI editorial approval record missing/);
+  write('content/factory-queue/review-records/test-odobrenje.json',{status:'approved'});
+  check('AI content without rights/review record blocked',1,/rights or risk assessment incomplete/);
+  write('content/factory-queue/komentari/test-odobrenje.html',html);
+  fs.rmSync(path.join(root,'content/factory-queue/review-records/test-odobrenje.json'),{force:true});
+
   write('apps/portal/data/editorial-registry.json',{items:[{path:'/komentari/test-odobrenje/'}]});
   check('duplicate route blocked',1,/duplicate public route/);
   write('apps/portal/data/editorial-registry.json',{items:[]});
