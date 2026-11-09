@@ -272,6 +272,7 @@ ${items}
 function buildSitemap() {
   const urls = [];
   // Include only routes whose HTML is generated below.
+  urls.push(`  <url><loc>${escXml(`${BASE}media/`)}</loc></url>`);
   // Country pages
   for (const c of data.countries) {
     urls.push(`  <url><loc>${escXml(`${BASE}media/${c.slug}/`)}</loc></url>`);
@@ -285,6 +286,30 @@ function buildSitemap() {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.join('\n')}
 </urlset>`;
+}
+
+function buildWorldDirectory() {
+  const groups = new Map();
+  for (const country of data.countries) {
+    if (!groups.has(country.region)) groups.set(country.region, []);
+    groups.get(country.region).push(country);
+  }
+  const sections = [...groups].map(([region, countries]) => '<section><h2>'+escHtml(region)+'</h2><ul>'+countries.map(c => '<li><a href="/gnk-aktual/media/'+encodeURIComponent(c.slug)+'/">'+escHtml(c.flag)+' '+escHtml(c.nameLocal)+' <small>'+escHtml(c.nameEn)+'</small></a></li>').join('')+'</ul></section>').join('\n');
+  const cities = data.cities.map(c => '<a href="/gnk-aktual/grad/'+encodeURIComponent(c.slug)+'/">'+escHtml(c.flag)+' '+escHtml(c.nameLocal)+'</a>').join(' · ');
+  return `<!doctype html>
+<html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AKTUAL MEDIA WORLD — 201 država i 10 gradova</title>
+<meta name="description" content="Svjetski katalog AKTUAL MEDIA: 201 država i 10 gradova, pojedinačna izdanja, izvori i RSS kanali.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://gnk-asg.hr/gnk-aktual/media/">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/am-design-v1.css" data-am-design="v1">
+<style>body{background:#071522;color:#eef3f8;font:16px/1.55 system-ui;margin:0;padding:24px}main{max-width:1250px;margin:auto}a{color:#e3be70}header{padding:22px 0;border-bottom:1px solid #4c5968}h1{font-size:clamp(1.6rem,4vw,2.8rem)}.regions{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}section{background:#102438;padding:16px;border-radius:12px}ul{list-style:none;margin:0;padding:0}li{padding:5px 0}li a{text-decoration:none}small{color:#abbcd0}footer{margin:24px 0}</style>
+<script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'CollectionPage',name:'AKTUAL MEDIA WORLD — 201 država i 10 gradova',url:'https://gnk-asg.hr/gnk-aktual/media/',isAccessibleForFree:true,inLanguage:'hr'})}</script>
+<script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'WebSite','@id':'https://gnk-asg.hr/#website',url:'https://gnk-asg.hr/',name:'GNK ASG',inLanguage:['hr','en'],publisher:{'@id':'https://gnk-asg.hr/#gnk-asg'}})}</script>
+</head><body><main><header><a href="/gnk-aktual/">← AKTUAL MEDIA</a><h1>🌍 AKTUAL MEDIA WORLD</h1><p>201 država · 10 gradova · povezane stranice i RSS izvori</p><p>Ovo je katalog poveznica. Dostupnost vijesti i RSS zapisa ovisi o zasebnom izdanju.</p></header>
+<h2>Gradska izdanja (10)</h2><p>${cities}</p>
+<div class="regions">${sections}</div><footer><a href="/gnk-aktual/media/sitemap.xml">XML sitemap</a> · <a href="/gnk-aktual/">Povratak na AKTUAL MEDIA</a></footer></main></body></html>`;
 }
 
 // === MAIN ===
@@ -312,6 +337,10 @@ for (const city of data.cities) {
   writeFileSync(join(dir, 'feed.xml'), buildCityRss(city));
   fileCount += 2;
 }
+
+// Country directory (201 countries + 10 cities)
+writeFileSync(join(OUT, 'media', 'index.html'), buildWorldDirectory());
+fileCount += 1;
 
 // Sitemap
 writeFileSync(join(OUT, 'media', 'sitemap.xml'), buildSitemap());
