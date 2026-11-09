@@ -1,0 +1,77 @@
+name: PR404 Curated Weekly Materialization
+
+on:
+  push:
+    branches:
+      - feat/aktual-world-ci-release-20261109
+    paths:
+      - apps/portal/data/aktual-weekly-curation.json
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pr404-weekly-curation-materialize
+  cancel-in-progress: false
+
+jobs:
+  materialize-weekly-issue:
+    if: github.ref == 'refs/heads/feat/aktual-world-ci-release-20261109' && github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/aktual-world-ci-release-20261109
+          persist-credentials: true
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Confirm curation and image tooling
+        run: |
+          set -euo pipefail
+          command -v convert
+          node - <<'NODE'
+          const fs=require('node:fs');
+          const c=JSON.parse(fs.readFileSync('apps/portal/data/aktual-weekly-curation.json'));
+          if(c.issue_week!=='2026-11-09'||!Array.isArray(c.items)||c.items.length<8)throw Error('Current week requires eight selected stories');
+          if(new Set(c.items.map(x=>x.url)).size!==c.items.length)throw Error('Duplicate source URLs');
+          if(new Set(c.items.map(x=>x.source)).size<4)throw Error('Need four independent named sources');
+          for(const x of c.items) {
+            if(!x.url.startsWith('https://')||!x.title||!x.title_en||!x.summary||!x.summary_en||!x.source||!x.source_title||x.published_at!=='2026-11-09') throw Error('Incomplete source evidence '+x.url);
+            if(x.imagePermissionVerified===true)throw Error('External image permission is not documented');
+          }
+          console.log('Eight source-linked bilingual editorial selections validated; image generation required.');
+          NODE
+      - name: Generate only original in-house weekly illustrations
+        run: node scripts/generate-aktual-weekly-cover-assets-v1.mjs
+      - name: Materialize canonical bilingual weekly digest and archive
+        run: |
+          set -euo pipefail
+          node scripts/build-aktual-media-weekly-v1.mjs
+          node scripts/build-aktual-media-weekly-v1.mjs --check
+          node scripts/build-aktual-media-weekly-archive-v1.mjs --refresh
+      - name: Regenerate editorial registry and sitemap canonically
+        run: |
+          set -euo pipefail
+          node scripts/editorial-registry-v1.mjs
+          node scripts/generate-editorial-sitemap-v2.mjs
+      - name: Validate weekly source and static archive contracts
+        run: |
+          set -euo pipefail
+          node scripts/test-aktual-media-weekly-v1.mjs
+          node scripts/build-aktual-media-weekly-v1.mjs --check
+          git diff --check
+      - name: Commit generated editorial assets only to existing feature branch
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- apps/portal/data/aktual-weekly-curation.json apps/portal/data/aktual-weekly.json apps/portal/data/aktual-weekly-archives apps/portal/data/aktual-weekly-image-manifest.json apps/portal/assets/editorial/generated apps/portal/gnk-aktual/tjedni apps/portal/en/gnk-aktual/weekly apps/portal/data/editorial-registry.json apps/portal/editorial-sitemap.xml apps/portal/sitemap-index.xml
+          if git diff --cached --quiet; then
+            echo 'No canonical materialization changes'; exit 0
+          fi
+          git diff --cached --stat
+          git commit -m 'build(weekly): materialize verified 2026-11-09 curated issue with original artwork'
+          git push origin HEAD:feat/aktual-world-ci-release-20261109
