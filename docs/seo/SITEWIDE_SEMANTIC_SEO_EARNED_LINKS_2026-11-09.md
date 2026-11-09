@@ -18,6 +18,7 @@
 - `scripts/sitewide-seo-meta-v1.mjs`: read-only sitewide scan by default, opt-in `--write`.
 - `scripts/audit-sitewide-link-equity-v1.mjs`: reports static internal inbound link counts and page candidates without mistaking them for external backlinks.
 - `scripts/test-sitewide-semantic-seo-v1.mjs`: idempotence, brand links, icon consistency and no unsafe meta injections.
+- `scripts/build-asg-favicon-raster-v1.py`: reproducible **binary** PNG/ICO and iOS/app icon fallbacks, derived from canonical SVG. Run locally with Pillow and CairoSVG and commit output; existing fallback binaries are not represented as updated until generated.
 - `apps/portal/gnk-aktual/media/index.html`: reader-visible citation guidance with contextual links to original sources, methodology and data desk.
 
 ## Safe build and test sequence
