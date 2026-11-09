@@ -38,10 +38,11 @@ for(const city of inv.cities){
  assert(html.includes(`href="/gnk-aktual/grad/${city.slug}/"`),`directory contains city: ${city.slug}`);
  assert(sitemap.includes(`<loc>${url}</loc>`),`sitemap has city: ${city.slug}`);
 }
-assert.equal((sitemap.match(/<loc>/g)||[]).length,211,'201 country + 10 city sitemap URLs');
+assert(sitemap.includes('<loc>'+BASE+'/gnk-aktual/media/</loc>'),'directory entry in sitemap');
+assert.equal((sitemap.match(/<loc>/g)||[]).length,212,'directory + 201 countries + 10 cities sitemap URLs');
 assert(fs.existsSync(path.join(PORTAL,'assets/aktual-world-directory-v1.css')),'directory CSS');
 assert(fs.existsSync(path.join(PORTAL,'assets/aktual-world-directory-v1.js')),'directory search JS');
 for(const p of ['gnk-aktual/index.html','tehnologija-buducnosti/index.html','en/future-technology/index.html','aktual-media/index.html','en/aktual-media/index.html']){
  assert(read(path.join(PORTAL,p)).includes('href="/gnk-aktual/media/"'),`related page links to country directory: ${p}`);
 }
-console.log(JSON.stringify({ok:true,countries:201,cities:10,configuredSources:435,sitemapUrls:211,sourceAvailability:'not independently confirmed'}));
+console.log(JSON.stringify({ok:true,countries:201,cities:10,configuredSources:435,sitemapUrls:212,sourceAvailability:'not independently confirmed'}));
