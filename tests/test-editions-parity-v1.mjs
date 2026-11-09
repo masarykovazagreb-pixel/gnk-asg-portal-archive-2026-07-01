@@ -324,21 +324,24 @@ else {
   }
 }
 
-/* Nadzor: svi kanali moraju biti u _status.json, bez tiho ispalih izdanja. */
+/* Nadzor: regionalni ciklus obrađuje izmjenične grupe, pa lastRun nije popis svih kanala.
+ * Za svaki kanal zahtijevaj stvarno zabilježeno izvršavanje u posljednja 24 sata
+ * u odnosu na najnoviji ciklus; ne stvaraj izmišljene statuse za neobrađene kanale. */
 const status = (() => { try { return JSON.parse(read(join(ROOT, 'apps', 'region', 'data', '_status.json'))); } catch { return null; } })();
 if (!status) fails.push('nema apps/region/data/_status.json');
 else {
-  // The daily collector deliberately processes alternating channel subsets.
-  // Require every channel to appear in a recent real run, not in one partial run.
-  const referenceAt = Date.parse(status.lastRun?.at || '');
-  const recentRuns = (status.runs || []).filter((run) => {
-    const at = Date.parse(run.at || '');
-    return Number.isFinite(referenceAt) && Number.isFinite(at)
-      && at <= referenceAt && referenceAt - at <= 24 * 60 * 60 * 1000;
-  });
-  const seen = new Set(recentRuns.flatMap((run) => Object.keys(run.channels || {})));
+  const runs = [status.lastRun, ...(Array.isArray(status.runs) ? status.runs : [])].filter(Boolean);
+  const latest = Date.parse(status.lastRun?.at || '');
+  check(Number.isFinite(latest), '_status.json nema valjan datum zadnjeg ciklusa');
+  const maxAgeMs = 24 * 60 * 60 * 1000;
   for (const channel of CHANNELS) {
-    if (!seen.has(channel.id)) fails.push(`_status.json nema zapis za ${channel.id} u zadnja 24 h`);
+    const seen = runs.some((run) =>
+      Object.prototype.hasOwnProperty.call(run.channels || {}, channel.id) &&
+      Number.isFinite(Date.parse(run.at || '')) &&
+      Number.isFinite(latest) &&
+      Date.parse(run.at) <= latest && latest - Date.parse(run.at) <= maxAgeMs
+    );
+    if (!seen) fails.push(`_status.json nema izvršavanje za ${channel.id} u posljednja 24 sata`);
   }
 }
 

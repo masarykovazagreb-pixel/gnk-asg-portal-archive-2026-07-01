@@ -23,6 +23,7 @@ import { CHANNELS, HUB } from './build.mjs';
 import { logoFor, logoAlternate, logoJsonLd } from './brand.mjs';
 import { deskArt, deskArtPath } from './desk-art.mjs';
 import { chromeOf } from '../src/chrome.mjs';
+import { applyWorldPreview } from './world-external-promo-v1.mjs';
 
 /* Broj jezika se računa iz channels.json, ne prepisuje u tekst: kad se doda
    izdanje na novom jeziku, naslov i opis ne smiju ostati na starom broju. */
@@ -1432,7 +1433,7 @@ ${adHtml}
       html = `${html.slice(0, at)}\n${RS}\n${railHr}\n${RE}${html.slice(at)}`;
     }
   }
-  html = withPromo(html, 'hr');
+  html = applyWorldPreview(withPromo(html, 'hr'));
   html = withAtlas(html, 'hr');
   html = addPerf(addLogoAlternates(html, ['aktual-media-hr']));
   html = externalizeCatalogCss(html);

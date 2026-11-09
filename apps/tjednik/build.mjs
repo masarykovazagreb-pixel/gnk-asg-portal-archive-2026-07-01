@@ -744,7 +744,10 @@ for (const f of existsSync(ASSETS) ? readdirSync(ASSETS) : []) {
   const from = join(ASSETS, f);
   const to = join(OUT_ASSETS, f);
   if (f.endsWith('.png') || f.endsWith('.svg') || f.endsWith('.css') || f.endsWith('.webp') || f.endsWith('.jpg')) copyFileSync(from, to);
+
 }
+// Override any legacy source favicon with the network-wide canonical mark.
+copyFileSync(join(HERE, '..', 'shared', 'brand', 'favicon.svg'), join(OUT_ASSETS, 'favicon.svg'));
 
 console.log(`Tjednik: ${critiques.length} osvrta, ${weeks.length} tjedana, ${days.length} dodataka → ${OUT}`);
 console.log(`Base: ${BASE}`);

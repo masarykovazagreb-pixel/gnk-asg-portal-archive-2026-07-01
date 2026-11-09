@@ -1056,7 +1056,8 @@ copyTree(assetSrc, join(OUT, 'assets'));
 /* Isti modul osvježavanja kao na portalu — bez njega natpis vodi u 404. */
 ensureRefreshModule(OUT);
 /* Znak mreže za sve kanale — isto kao na svakom drugom webu. */
-write('assets/favicon.svg', FAVICON_SVG);
+// Use the canonical house icon, not the legacy generated variant.
+copyFileSync(join(ROOT, 'apps/shared/brand/favicon.svg'), join(OUT, 'assets/favicon.svg'));
 
 /* komentari */
 for (const slug of new Set([...ARTICLES.map((a) => a.slug), ...PAGES.map((p) => p.slug)])) {

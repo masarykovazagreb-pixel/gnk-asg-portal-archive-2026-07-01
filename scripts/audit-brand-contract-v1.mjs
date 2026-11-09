@@ -123,8 +123,12 @@ for (const base of ['apps/portal', 'apps/sites/site', 'apps/world/site', 'apps/a
       if (up === webRoot) break;
       webRoot = up;
     }
+    // Portal pages can contain nested assets directories for article media.
+    // Their root-relative favicon still belongs to apps/portal/assets, not
+    // to the nearest nested assets directory.
+    const siteRoot = base === 'apps/portal' ? base : relative(ROOT, webRoot);
     const target = pathname.startsWith('/')
-      ? join(ROOT, hostDir || relative(ROOT, webRoot), pathname)
+      ? join(ROOT, hostDir || siteRoot, pathname)
       : resolve(dirname(file), pathname);
     if (!existsSync(target)) { if (iconMisses.length < 10) iconMisses.push(`${base}/${rel}: ikona ${href} ne postoji`); continue; }
     if (readFileSync(target, 'utf8') !== CANONICAL_ICON) { if (iconMisses.length < 10) iconMisses.push(`${base}/${rel}: ikona ${href} nije znak kuće`); continue; }

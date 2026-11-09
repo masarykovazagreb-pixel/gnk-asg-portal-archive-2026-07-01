@@ -36,14 +36,15 @@ const walk = (dir) => {
 
 const srcCache = new Map();
 const srcExists = (src, file) => {
-  if (srcCache.has(src)) return srcCache.get(src);
-  let ok = true;
-  if (/^(?:https?:)?\/\//.test(src) || src.startsWith('data:') || src.startsWith('/api/')) ok = true;
-  else {
-    const clean = src.split('?')[0].split('#')[0];
-    ok = existsSync(clean.startsWith('/') ? join(PORTAL, clean) : resolve(dirname(file), clean));
-  }
-  srcCache.set(src, ok);
+  if (/^(?:https?:)?\/\//.test(src) || src.startsWith('data:') || src.startsWith('/api/')) return true;
+  const clean = src.split('?')[0].split('#')[0];
+  // Cache the resolved path, not the source attribute: relative URLs can point
+  // to different files on different pages. Materializing the string also
+  // prevents V8 retaining each complete HTML document through a substring.
+  const path = clean.startsWith('/') ? join(PORTAL, clean) : resolve(dirname(file), clean);
+  if (srcCache.has(path)) return srcCache.get(path);
+  const ok = existsSync(path);
+  srcCache.set(path, ok);
   return ok;
 };
 
